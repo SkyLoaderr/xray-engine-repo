@@ -346,6 +346,12 @@
 			<File
 				RelativePath="blender_light_direct.h">
 			</File>
+			<File
+				RelativePath="blender_light_mask.cpp">
+			</File>
+			<File
+				RelativePath="blender_light_mask.h">
+			</File>
 			<Filter
 				Name="R1"
 				Filter="">
