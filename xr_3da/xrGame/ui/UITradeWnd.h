@@ -18,6 +18,7 @@ class CEatableItem;
 #include "UIEditBox.h"
 #include "UIListWnd.h"
 #include "UIMessageBox.h"
+#include "UIMultiTextStatic.h"
 
 #include "UICharacterInfo.h"
 #include "UIItemInfo.h"
@@ -46,24 +47,28 @@ public:
 	void DisableAll();
 	void EnableAll();
 
+	void DropCurrentItem();
 
 protected:
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBottom;
 
-	CUIFrameWindow		UIOurBagWnd;
-	CUIFrameWindow		UIOthersBagWnd;
+	CUIStatic			UIOurBagWnd;
+	CUIStatic			UIOthersBagWnd;
 	CUIDragDropList		UIOurBagList;
 	CUIDragDropList		UIOthersBagList;
 
 	CUIStatic			UIOurTradeWnd;
 	CUIStatic			UIOthersTradeWnd;
+	CUIMultiTextStatic	UIOurPriceCaption;
+	CUIMultiTextStatic	UIOthersPriceCaption;
 	CUIDragDropList		UIOurTradeList;
 	CUIDragDropList		UIOthersTradeList;
 
 	//кнопки
 	CUIButton			UIPerformTradeButton;
 	CUIButton			UIToTalkButton;
+	CUIButton			UIDropButton;
 
 	//информация о персонажах 
 	CUIStatic			UIOurIcon;
@@ -87,6 +92,7 @@ protected:
 	bool ToOthersTrade();
 	bool ToOurBag();
 	bool ToOthersBag();
+	void SendEvent_ItemDrop(PIItem pItem);
 	
 	//посчет цены вещей в списке
 	u32 CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade);

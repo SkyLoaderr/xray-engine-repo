@@ -73,6 +73,7 @@ public:
 	bool SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 SlotNum);
 
 protected:
+	friend class CUITradeWnd;
 
 	CUIStatic			UIBagWnd;
 	CUIStatic			UIDescrWnd;

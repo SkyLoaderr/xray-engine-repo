@@ -113,7 +113,9 @@ protected:
 	int GetLastBottomFullCell();
 
 	// Пересчитать состояние скроллбара
-	void ScrollBarRecalculate();
+	// Params:	needScrollToTop	- true если после пересчета состояние необходимо прокрутить скроллбар
+	//							на начало	
+	void ScrollBarRecalculate(bool needScrollToTop);
 
 	//состояние клеточки в сетке
 	E_CELL_STATE& 	GetCell(int row, int col){VERIFY(row<m_iRowsNum && col<m_iColsNum);return m_vGridState[row*GetCols() + col];}

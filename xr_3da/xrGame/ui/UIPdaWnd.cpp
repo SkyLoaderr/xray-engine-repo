@@ -174,7 +174,7 @@ void CUIPdaWnd::AddNewsItem(const char *sData)
 void CUIPdaWnd::UpdateDateTime()
 {
 	static ref_str prevStrTime;
-	const ref_str strTime = InventoryUtilities::GetGameTimeAsString(InventoryUtilities::egtpToMinutes);
+	const ref_str strTime = InventoryUtilities::GetGameDateTimeAsString(InventoryUtilities::edpDateToDay, InventoryUtilities::etpTimeToMinutes);
 
 	if (strTime != prevStrTime)
 	{

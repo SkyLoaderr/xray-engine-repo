@@ -18,8 +18,16 @@
 #include "../eatable_item.h"
 #include "../inventory.h"
 #include "../level.h"
+#include "UIInventoryWnd.h"
+
+#include "../InventoryOwner.h"
+#include "../character_info.h"
 
 using namespace InventoryUtilities;
+
+//////////////////////////////////////////////////////////////////////////
+
+const char * const	TRADE_XML	= "trade_new.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -43,11 +51,11 @@ CUITradeWnd::~CUITradeWnd()
 void CUITradeWnd::Init()
 {
 	CUIXml uiXml;
-	bool xml_result = uiXml.Init("$game_data$","trade.xml");
-	R_ASSERT2(xml_result, "xml file not found");
+	bool xml_result = uiXml.Init("$game_data$", TRADE_XML);
+	R_ASSERT3(xml_result, "xml file not found", TRADE_XML);
 	CUIXmlInit xml_init;
 	
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	//статические элементы интерфейса
 	AttachChild(&UIStaticTop);
@@ -68,15 +76,20 @@ void CUITradeWnd::Init()
 
 	//Списки торговли
 	AttachChild(&UIOurBagWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIOurBagWnd);
+	xml_init.InitStatic(uiXml, "our_bag_static", 0, &UIOurBagWnd);
 	AttachChild(&UIOthersBagWnd);
-	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIOthersBagWnd);
+	xml_init.InitStatic(uiXml, "others_bag_static", 0, &UIOthersBagWnd);
 
 	AttachChild(&UIOurTradeWnd);
 	xml_init.InitStatic(uiXml, "static", 0, &UIOurTradeWnd);
 	AttachChild(&UIOthersTradeWnd);
 	xml_init.InitStatic(uiXml, "static", 1, &UIOthersTradeWnd);
 
+	UIOurTradeWnd.AttachChild(&UIOurPriceCaption);
+	xml_init.InitMultiTextStatic(uiXml, "price_mt_static", 0, &UIOurPriceCaption);
+
+	UIOthersTradeWnd.AttachChild(&UIOthersPriceCaption);
+	xml_init.InitMultiTextStatic(uiXml, "price_mt_static", 0, &UIOthersPriceCaption);
 
 	//Списки Drag&Drop
 	UIOurBagWnd.AttachChild(&UIOurBagList);	
@@ -131,6 +144,10 @@ void CUITradeWnd::Init()
 	AttachChild(&UIToTalkButton);
 	xml_init.InitButton(uiXml, "button", 1, &UIToTalkButton);
 
+	AttachChild(&UIDropButton);
+	xml_init.InitButton(uiXml, "drop_button", 0, &UIDropButton);
+	UIDropButton.SetTextureOffset(5, 0);
+	UIDropButton.SetTextAlign(CGameFont::alLeft);
 
 }
 
@@ -146,6 +163,9 @@ void CUITradeWnd::InitTrade(CInventoryOwner* pOur, CInventoryOwner* pOthers)
 
 	m_pInvOwner = pOur;
 	m_pOthersInvOwner = pOthers;
+	string256	buf;
+	strconcat(buf, m_pOthersInvOwner->CharacterInfo().Name(), "'s items");
+	UIOthersPriceCaption.GetPhraseByIndex(0)->str = buf;
 
 	UICharacterInfoLeft.InitCharacter(m_pInvOwner);
 	UICharacterInfoRight.InitCharacter(m_pOthersInvOwner);
@@ -212,6 +232,21 @@ void CUITradeWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			ToOthersBag();
 		else
 			R_ASSERT2(false, "wrong parent for trade wnd");
+	}
+	else if (&UIDropButton == pWnd)
+	{
+		switch (msg)
+		{
+		case CUIButton::BUTTON_FOCUS_RECEIVED:
+			UIDropButton.SetColor(0xffffffff);
+			break;
+		case CUIButton::BUTTON_FOCUS_LOST:
+			UIDropButton.SetColor(0xc0c8c8c8);
+			break;
+		case CUIButton::BUTTON_CLICKED:
+			if (m_pCurrentDragDropItem && m_pCurrentItem) DropCurrentItem();
+			break;
+		}
 	}
 
 
@@ -431,15 +466,15 @@ void CUITradeWnd::UpdatePrices()
 
 
 	char buf[255];
-	sprintf(buf, "our trade price: %d$", m_iOurTradePrice);
-	UIOurTradeWnd.SetText(buf);
-	sprintf(buf, "others trade price: %d$", m_iOthersTradePrice);
-	UIOthersTradeWnd.SetText(buf);
+	sprintf(buf, "%d$", m_iOurTradePrice);
+	UIOurPriceCaption.GetPhraseByIndex(2)->str = buf;
+	sprintf(buf, "%d$", m_iOthersTradePrice);
+	UIOthersPriceCaption.GetPhraseByIndex(2)->str = buf;
 
 	sprintf(buf, "%d$", m_pInvOwner->m_dwMoney);
-	UIOurBagWnd.UITitleText.SetText(buf);
+	UIOurBagWnd.SetText(buf);
 	sprintf(buf, "%d$", m_pOthersInvOwner->m_dwMoney);
-	UIOthersBagWnd.UITitleText.SetText(buf);
+	UIOthersBagWnd.SetText(buf);
 }
 
 void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
@@ -466,16 +501,7 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 void CUITradeWnd::UpdateLists()
 {
 	//обновить надписи
-	char buf[255];
-	sprintf(buf, "our trade price: 0$", m_iOurTradePrice);
-	UIOurTradeWnd.SetText(buf);
-	sprintf(buf, "others trade price: 0$", m_iOthersTradePrice);
-	UIOthersTradeWnd.SetText(buf);
-	sprintf(buf, "%d$", m_pInvOwner->m_dwMoney);
-	UIOurBagWnd.UITitleText.SetText(buf);
-	sprintf(buf, "%d$", m_pOthersInvOwner->m_dwMoney);
-	UIOthersBagWnd.UITitleText.SetText(buf);
-
+	UpdatePrices();
 	
 	//очистить после предыдущего запуска
 	UIOurBagList.DropAll();
@@ -504,6 +530,8 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetShader(GetEquipmentIconsShader());
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
+
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									(*it)->GetXPos()*INV_GRID_WIDTH,
@@ -547,6 +575,8 @@ void CUITradeWnd::UpdateLists()
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
 
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									(*it)->GetXPos()*INV_GRID_WIDTH,
 									(*it)->GetYPos()*INV_GRID_HEIGHT,
@@ -574,4 +604,24 @@ void CUITradeWnd::SetCurrentItem(CInventoryItem* pItem)
 {
 	m_pCurrentItem = pItem;
 	UIItemInfo.InitItem(m_pCurrentItem);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUITradeWnd::DropCurrentItem()
+{
+	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(!pActor) return;
+
+	m_pCurrentItem->Drop();
+	m_pCurrentDragDropItem->Highlight(false);
+
+	(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
+		DetachChild(m_pCurrentDragDropItem);
+
+	//-----------------------------------------------------------------------
+	CUIInventoryWnd::SendEvent_ItemDrop(m_pCurrentItem);
+	//-----------------------------------------------------------------------
+	SetCurrentItem(NULL);
+	m_pCurrentDragDropItem = NULL;
 }

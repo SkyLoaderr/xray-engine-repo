@@ -31,6 +31,7 @@ void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
 	int left	= pItem->GetUIStaticItem().GetPosX() + 5;
 	int bottom	= pItem->GetUIStaticItem().GetPosY() + pItem->GetUIStaticItem().GetRect().height();
 	
+	pItem->GetFont()->SetColor(0xffffffff);
 	HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(left), 
 						float(bottom - pItem->GetFont()->CurrentHeight()),
 						"%d",	pAmmoItem->m_boxCurr);
@@ -46,6 +47,7 @@ void InventoryUtilities::FoodUpdateProc(CUIDragDropItem* pItem)
 
 	RECT rect = pItem->GetAbsoluteRect();
 	
+	pItem->GetFont()->SetColor(0xffffffff);
 	if(pEatableItem->m_iPortionsNum>0)
 		HUD().OutText(pItem->GetFont(), pItem->GetClipRect(), float(rect.left), 
 							float(rect.bottom - pItem->GetFont()->CurrentHeight()- 2),
@@ -199,28 +201,69 @@ void InventoryUtilities::ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector)
 
 //////////////////////////////////////////////////////////////////////////
 
-const ref_str InventoryUtilities::GetGameTimeAsString(EGetTimePrecision precision, char separator)
+const ref_str InventoryUtilities::GetGameDateTimeAsString(EDatePrecision datePrec, ETimePrecision timePrec,
+													  char dateSeparator, char timeSeparator, char dateTimeSeparatator)
 {
-	string32 buf;
-	ALife::_TIME_ID currMsec = Level().GetGameTime();
+	string32 bufTime, bufDate;
 
-	u8 currSecs		= static_cast<u8>(currMsec / 1000 % 60 & 0xFF);
-	u8 currMins		= static_cast<u8>(currMsec / (1000 * 60) % 60 & 0xFF);
-	u8 currHours	= static_cast<u8>(currMsec / (1000 * 3600) % 24 & 0xFF);
+	ZeroMemory(bufTime, 32);
+	ZeroMemory(bufDate, 32);
 
-	switch (precision)
+	u32 year = 0, month = 0, day = 0, hours = 0, mins = 0, secs = 0, milisecs = 0;
+
+	Level().GetGameDateTime(year, month, day, hours, mins, secs, milisecs);
+
+	// Date
+	switch (datePrec)
 	{
-	case egtpToHours:
-		sprintf(buf, "%02i", currHours);
+	case edpDateToYear:
+		sprintf(bufDate, "%04i", year);
 		break;
-	case egtpToMinutes:
-		sprintf(buf, "%02i%c%02i", currHours, separator, currMins);
+	case edpDateToMonth:
+		sprintf(bufDate, "%04i%c%02i", year, dateSeparator, month);
 		break;
-	case egtpToSeconds:
-		sprintf(buf, "%02i%c%02i%c%02i", currHours, separator, currMins, separator, currSecs);
+	case edpDateToDay:
+		sprintf(bufDate, "%04i%c%02i%c%02i", year, dateSeparator, month, dateSeparator, day);
+		break;
+	case edpDateNone:
 		break;
 	default:
-		R_ASSERT(!"Unknown type of precision");
+		R_ASSERT(!"Unknown type of date precision");
+	}
+
+	// Time
+	switch (timePrec)
+	{
+	case etpTimeToHours:
+		sprintf(bufTime, "%02i", hours);
+		break;
+	case etpTimeToMinutes:
+		sprintf(bufTime, "%02i%c%02i", hours, timeSeparator, mins);
+		break;
+	case etpTimeToSeconds:
+		sprintf(bufTime, "%02i%c%02i%c%02i", hours, timeSeparator, month, timeSeparator, day);
+		break;
+	case etpTimeToMilisecs:
+		sprintf(bufTime, "%02i%c%02i%c%02i%c%02i", hours, timeSeparator, month, timeSeparator, day, timeSeparator, milisecs);
+		break;
+	case etpTimeNone:
+		break;
+	default:
+		R_ASSERT(!"Unknown type of date precision");
+	}
+
+	string32 buf;
+	if (xr_strlen(bufTime) && xr_strlen(bufDate))
+	{
+		sprintf(buf, "%s%c%s", bufDate, dateTimeSeparatator, bufTime);
+	}
+	else if (xr_strlen(bufTime))
+	{
+		strcpy(buf, bufTime);
+	}
+	else if (xr_strlen(bufDate))
+	{
+		strcpy(buf, bufDate);
 	}
 
 	return buf;

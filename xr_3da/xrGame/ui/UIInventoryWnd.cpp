@@ -282,6 +282,8 @@ void CUIInventoryWnd::InitInventory()
 			UIDragDropItem.SetGridHeight(pInv->m_slots[i].m_pIItem->GetGridHeight());
 			UIDragDropItem.SetGridWidth(pInv->m_slots[i].m_pIItem->GetGridWidth());
 
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
+
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									pInv->m_slots[i].m_pIItem->GetXPos()*INV_GRID_WIDTH,
 									pInv->m_slots[i].m_pIItem->GetYPos()*INV_GRID_HEIGHT,
@@ -311,6 +313,8 @@ void CUIInventoryWnd::InitInventory()
 
 		UIDragDropItem.SetGridHeight(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridHeight());
 		UIDragDropItem.SetGridWidth(pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetGridWidth());
+
+		UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 		UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									pInv->m_slots[OUTFIT_SLOT].m_pIItem->GetXPos()*INV_GRID_WIDTH,
@@ -342,6 +346,8 @@ void CUIInventoryWnd::InitInventory()
 
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 									(*it)->GetXPos()*INV_GRID_WIDTH,
@@ -393,6 +399,8 @@ void CUIInventoryWnd::InitInventory()
 
 			UIDragDropItem.SetGridHeight((*it)->GetGridHeight());
 			UIDragDropItem.SetGridWidth((*it)->GetGridWidth());
+
+			UIDragDropItem.SetFont(HUD().pFontLetterica16Russian);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 								(*it)->GetXPos()*INV_GRID_WIDTH,
@@ -1396,7 +1404,7 @@ void	CUIInventoryWnd::SendEvent_ItemDrop			(PIItem	pItem)
 void CUIInventoryWnd::UpdateTime()
 {
 	static ref_str prevStrTime;
-	const ref_str strTime = InventoryUtilities::GetGameTimeAsString(InventoryUtilities::egtpToMinutes);
+	const ref_str strTime = InventoryUtilities::GetGameDateTimeAsString(InventoryUtilities::edpDateNone, InventoryUtilities::etpTimeToMinutes);
 
 	if (strTime != prevStrTime)
 	{

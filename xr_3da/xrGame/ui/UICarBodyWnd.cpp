@@ -22,8 +22,7 @@
 
 using namespace InventoryUtilities;
 
-#define TRADE_ICONS_SCALE (4.f/5.f)
-
+const char * const CAR_BODY_XML	= "carbody.xml";
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -45,11 +44,11 @@ CUICarBodyWnd::~CUICarBodyWnd()
 void CUICarBodyWnd::Init()
 {
 	CUIXml uiXml;
-	uiXml.Init("$game_data$","carbody.xml");
+	uiXml.Init("$game_data$", CAR_BODY_XML);
 	
 	CUIXmlInit xml_init;
 
-	CUIWindow::Init(0,0, Device.dwWidth, Device.dwHeight);
+	CUIWindow::Init(0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 
 	//статические элементы интерфейса
 	AttachChild(&UIStaticTop);
@@ -77,9 +76,11 @@ void CUICarBodyWnd::Init()
 	//Списки Drag&Drop
 	UIOurBagWnd.AttachChild(&UIOurBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 0, &UIOurBagList);
+	UIOurBagList.SetItemsScale(TRADE_ICONS_SCALE);
 
 	UIOthersBagWnd.AttachChild(&UIOthersBagList);	
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 1, &UIOthersBagList);
+	UIOthersBagList.SetItemsScale(TRADE_ICONS_SCALE);
 
 
 	//информация о предмете
@@ -247,6 +248,7 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 	if(msg == CUIDragDropItem::ITEM_DRAG)
 	{
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 
@@ -254,6 +256,7 @@ void CUICarBodyWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
+		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(false);
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 		

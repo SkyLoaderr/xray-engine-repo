@@ -67,7 +67,7 @@ void CUIDragDropList::AttachChild(CUIWindow* pChild)
 		m_DragDropItemsList.push_back(pDragDropItem);
 
 		pDragDropItem->ClipperOn();
-		ScrollBarRecalculate();
+		ScrollBarRecalculate(true);
 	}
 
 	inherited::AttachChild(pChild);
@@ -86,7 +86,7 @@ void CUIDragDropList::DetachChild(CUIWindow* pChild)
 		{
 			RemoveItemFromGrid(pDragDropItem);
 			m_DragDropItemsList.remove(pDragDropItem);
-			ScrollBarRecalculate();
+			ScrollBarRecalculate(false);
 		}
 	}
 
@@ -165,6 +165,8 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 			//выбросить элемент из сетки
 			RemoveItemFromGrid((CUIDragDropItem*)pWnd);
+			dynamic_cast<CUIDragDropItem*>(pWnd)->Highlight(false);
+			
 		}
 	}
 	else if(dynamic_cast<CUIDragDropItem*>(pWnd) && msg == CUIDragDropItem::ITEM_DROP)
@@ -239,11 +241,11 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 						//((CUIDragDropList*)pItem->GetParent())->DetachChild(pItem);
 						pItem->GetParent()->DetachChild(pItem);
 						AttachChild(pItem);
+						pItem->Rescale(m_fItemsScale);
+						pItem->Highlight(true);
 
 						pItem->BringAllToTop(); 
 
-						pItem->Rescale(m_fItemsScale);
-						pItem->Highlight(true);
 
 					}
 					else
@@ -265,12 +267,13 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 			pItem->Rescale(m_fItemsScale);
 
+			ScrollBarRecalculate(false);
+
 			pItem->GetParent()->SetCapture(pItem, false);
 			pItem->Highlight(true);
 			// Просигнализировать о том, что если это был костюм, то надо его опять спрятать
 			pItem->GetMessageTarget()->SendMessage(pItem ,CUIOutfitSlot::OUTFIT_RETURNED_BACK, NULL);
 		}
-		// Приземляем объект.
 	}
 
 	CUIWindow::SendMessage(pWnd, msg, pData);
@@ -284,7 +287,8 @@ void CUIDragDropList::Init(int x, int y, int width, int height)
 //					 GetHeight(), false);
 
 	inherited::Init(x, y, width, height);
-	ScrollBarRecalculate();
+	ScrollBarRecalculate(true);
+	m_ScrollBar.Show(false);
 }
 //инициализация сетки Drag&Drop
 void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, 
@@ -330,7 +334,8 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 
 		//временно!
 		//установить масштаб для клеточки
-		float scale = (GetCellWidth() - 3)/51.f;
+		float scale = (GetCellWidth() - 1)/51.f;
+//		float scale = GetCellWidth()/52.f;
 		
 		CELL_STATIC_IT it=m_vCellStatic.begin();
 
@@ -666,13 +671,15 @@ int CUIDragDropList::GetLastBottomFullCell()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIDragDropList::ScrollBarRecalculate()
+void CUIDragDropList::ScrollBarRecalculate(bool needScrollToTop)
 {
 	const int bottom = GetLastBottomFullCell();
 
 	// Если все элементы помещаются в видимую область, то скроллбар не требуется
-	if (bottom <= GetViewRows())
+	if (bottom < GetViewRows())
 	{
+		if (m_iCurrentFirstRow != 0)
+			SetScrollPos(0);
 		EnableScrollBar(false);
 	}
 	else
@@ -680,10 +687,22 @@ void CUIDragDropList::ScrollBarRecalculate()
 		// Иначе требуется и необходим пересчет
 		EnableScrollBar(true);
 
+		s16 min, max;
+		m_ScrollBar.GetRange(min, max);
 		m_ScrollBar.SetRange(0, s16(bottom));
 		m_ScrollBar.SetPageSize(s16(m_iViewRowsNum));
-		m_ScrollBar.SetScrollPos(0);
+		
+		if (max > bottom)
+		{
+			SetScrollPos(m_ScrollBar.GetScrollPos() - max + bottom);
+		}
+
+		if (needScrollToTop)
+		{
+			SetScrollPos(0);
+		}
 	}
+	UpdateList();
 }
 
 //////////////////////////////////////////////////////////////////////////

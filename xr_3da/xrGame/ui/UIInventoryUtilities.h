@@ -55,13 +55,25 @@ void ClearDragDrop (DD_ITEMS_VECTOR& dd_item_vector);
 
 // Получить значение времени в текстовом виде
 
-// Точность возвращаемого функцией GetGameTimeAsString значения: до часов, до минут, до секунд
-enum EGetTimePrecision
+// Точность возвращаемого функцией GetGameDateTimeAsString значения: до часов, до минут, до секунд
+enum ETimePrecision
 {
-	egtpToHours = 0,
-	egtpToMinutes,
-	egtpToSeconds
+	etpTimeToHours = 0,
+	etpTimeToMinutes,
+	etpTimeToSeconds,
+	etpTimeToMilisecs,
+	etpTimeNone
 };
 
-const ref_str GetGameTimeAsString(EGetTimePrecision precision, char separator = ':');
+// Точность возвращаемого функцией GetGameDateTimeAsString значения: до года, до месяца, до дня
+enum EDatePrecision
+{
+	edpDateToDay,
+	edpDateToMonth,
+	edpDateToYear,
+	edpDateNone
+};
+
+const ref_str GetGameDateTimeAsString(EDatePrecision datePrec, ETimePrecision timePrec,
+									  char dateSeparator = '/', char timeSeparator = ':', char dateTimeSeparatator = ' ');
 };

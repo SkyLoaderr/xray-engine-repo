@@ -145,16 +145,25 @@ RECT CUIWindow::GetAbsoluteRect()
 void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {	
 	//определить DoubleClick
+
+	// В статческой переменной запоминаем адрес себя, для того чтобы другие контолы 
+	// не инициализировали время реакции на даблклик. Т.е. реализовываем что-то типа
+	// семафорчика
+
+//	static CUIWindow *pWnd = NULL;
+
 	if(mouse_action == LBUTTON_DOWN)
 	{
-		u32 dwCurTime =Device.TimerAsync();
-		if(dwCurTime-m_dwLastClickTime < DOUBLE_CLICK_TIME)
+		u32 dwCurTime = Device.TimerAsync();
+		if(dwCurTime - m_dwLastClickTime < DOUBLE_CLICK_TIME)
+		{
 			 mouse_action = LBUTTON_DB_CLICK;
+		}
+//		else
+//			pWnd = this;
 
 		m_dwLastClickTime = dwCurTime;
 	}
-
-
 
 	cursor_pos.x = x;
 	cursor_pos.y = y;
