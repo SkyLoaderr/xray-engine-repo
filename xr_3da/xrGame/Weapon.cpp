@@ -243,7 +243,7 @@ void CWeapon::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collide::r
 		CSector* S			= R.O->Sector();
 
 		// stones or sparks
-		LPCSTR ps_gibs		= "sparks_1";//(Random.randI(5)==0)?"sparks_1":"stones";
+		LPCSTR ps_gibs		= "blood_1";//(Random.randI(5)==0)?"sparks_1":"stones";
 		CPSObject* PS		= new CPSObject(ps_gibs,S,true);
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->PlayAtPos		(vEnd);
