@@ -33,7 +33,7 @@ function main ()
     
     printf ("Bazar3 start")
     update_action (stalker3, military3_2.script_name (),                    
-                   sound ("scripts\\rolik\\crazy_man", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
+                   sound ("scripts\\rolik\\crazy_men", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false))
 
     printf ("Bazar3 end")
 
