@@ -38,5 +38,7 @@ public:
 	virtual BOOL	feel_touch_contact		(CObject* O);
 	virtual void	feel_touch_new			(CObject* O);
 	virtual void	feel_touch_delete		(CObject* O);
+
+			bool	effector_active			() {return m_effector.IsActive();}
 };
 

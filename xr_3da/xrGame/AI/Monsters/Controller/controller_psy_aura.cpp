@@ -33,12 +33,19 @@ void CPsyAuraController::reinit()
 
 void CPsyAuraController::on_activate()
 {
-	if (m_actor) m_current_radius = get_radius()-0.05f;
+	if (m_actor) {
+		if (m_current_radius > get_radius()) m_current_radius = get_radius()-0.05f;
+	}
 }
 
 void CPsyAuraController::on_deactivate()
 {
-	if (m_actor) m_current_radius = m_actor->Position().distance_to(get_object()->Position());
+	//if (m_actor) {
+	//	if (m_current_radius > get_radius()) {
+	//		
+	//	}
+	//	m_current_radius = m_actor->Position().distance_to(get_object()->Position());
+	//}
 }
 
 void CPsyAuraController::schedule_update()
@@ -95,7 +102,8 @@ void CPsyAuraController::frame_update()
 		}
 	}
 
-	if (!b_updated) m_effector.Update(get_radius() + 1.f);
+	if (!b_updated) 
+		m_effector.Update(get_radius() + 1.f);
 }
 
 

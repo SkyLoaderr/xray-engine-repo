@@ -43,7 +43,7 @@ public:
 			void	SetRadius			(float r) {radius = r;}
 			void	Update				(float dist);
 
-			bool	IsActive			() {return (p_effector == 0);}
+			bool	IsActive			() {return (p_effector != 0);}
 
 private:
 			void	Activate			();

@@ -265,7 +265,8 @@ void CController::reinit()
 {
 	inherited::reinit();
 	CPsyAuraController::reinit();
-
+	
+	int_need_deactivate = false;
 }
 
 void CController::control_hit()
@@ -291,6 +292,11 @@ void CController::UpdateCL()
 	inherited::UpdateCL();
 	CJumping::Update();
 	CPsyAuraController::frame_update();
+
+	if (int_need_deactivate && !CPsyAuraController::effector_active()) {
+		processing_deactivate();
+		int_need_deactivate = false;
+	}
 	
 	if (active_control_fx) {
 		u32 time_to_show	= 50;
@@ -331,3 +337,25 @@ void CController::Jump()
 	}
 }
 
+void CController::Die()
+{
+	inherited::Die();
+	CPsyAuraController::deactivate();
+	CPsyAuraController::set_auto_activate(false);
+	
+	processing_activate();
+	int_need_deactivate = true;
+	
+	FreeFromControl();
+}
+
+void CController::net_Destroy()
+{
+	inherited::net_Destroy();
+	FreeFromControl();
+}
+
+void CController::FreeFromControl()
+{
+	for	(u32 i=0; i<m_controlled_objects.size(); i++) dynamic_cast<CControlledEntityBase *>(m_controlled_objects[i])->free_from_control(this);
+}

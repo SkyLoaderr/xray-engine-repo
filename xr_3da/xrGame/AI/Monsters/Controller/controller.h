@@ -27,6 +27,8 @@ class CController : public CAI_Biting,
 
 	u32					time_control_hit_started;
 	bool				active_control_fx;
+	
+	bool				int_need_deactivate;		// internal var
 
 public:
 	xr_vector<CEntity*> m_controlled_objects;
@@ -40,6 +42,9 @@ public:
 	virtual void	reinit				();
 	virtual void	UpdateCL			();
 	virtual void	shedule_Update		(u32 dt);
+	virtual void	Die					();
+
+	virtual void	net_Destroy			();
 
 	virtual	void	CheckSpecParams		(u32 spec_params);
 	virtual bool	UpdateStateManager	();
@@ -54,8 +59,10 @@ public:
 			bool	HasUnderControl		() {return (!m_controlled_objects.empty());}
 			void	TakeUnderControl	(CEntity *);
 			void	UpdateControlled	();
+			void	FreeFromControl		();
 
 			void	set_controlled_task (u32 task);
+
 
 
 			void	play_control_sound_start	();

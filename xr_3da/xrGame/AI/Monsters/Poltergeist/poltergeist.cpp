@@ -8,7 +8,7 @@
 #define HEIGHT_CHANGE_VELOCITY	0.1f
 #define HEIGHT_CHANGE_MIN_TIME	3000
 #define HEIGHT_CHANGE_MAX_TIME	10000
-#define HEIGHT_MIN				0.6f
+#define HEIGHT_MIN				0.4f
 #define HEIGHT_MAX				2.0f
 
 
@@ -130,14 +130,6 @@ void CPoltergeist::UpdateCL()
 	inherited::UpdateCL();
 	
 	def_lerp(m_height, target_height, HEIGHT_CHANGE_VELOCITY, Device.fTimeDelta);
-	
-	Msg("cur_height = [%f] target = [%f]", m_height, target_height);
-
-	HDebug->L_Clear();
-	HDebug->L_AddLine(m_current_position,CalculateRealPosition(),D3DCOLOR_XRGB(255,0,255));
-	HDebug->L_AddPoint(ai().level_graph().vertex_position(level_vertex_id()),0.35f,D3DCOLOR_XRGB(255,0,255));
-
-
 }
 
 void CPoltergeist::ForceFinalAnimation()

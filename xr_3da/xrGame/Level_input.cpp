@@ -249,7 +249,9 @@ void CLevel::IR_OnKeyboardPress(int key)
 		case DIK_6:
 			monster->StrangeSounds(pos);
 			break;
-
+		case DIK_9:
+			monster->ProcessTelekinesis(Level().CurrentEntity());
+			break;
 		}
 	}
 

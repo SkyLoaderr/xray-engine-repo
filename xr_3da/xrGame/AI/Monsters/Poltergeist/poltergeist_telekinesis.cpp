@@ -2,7 +2,7 @@
 #include "poltergeist.h"
 #include "../../../PhysicsShellHolder.h"
 
-#define TELE_RADIUS  2.f
+#define TELE_RADIUS  10.f
 #define TIME_TO_HOLD 2000
 
 void CPoltergeist::ProcessTelekinesis(CObject *target)
