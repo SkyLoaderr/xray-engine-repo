@@ -73,15 +73,6 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,	D3DCULL_CCW		)); 	
 	}
 
-	// Test (bias+scale)
-	Fmatrix			m_T;	m_T.translate	(-0.5f, -0.5f, -0.5f);
-	Fmatrix			m_S;	m_S.scale		( 2.0f,  2.0f,  2.0f);
-	Fmatrix			m_1;	m_1.mul			(m_S,m_T);
-
-							m_T.translate	(-1.0f, -1.0f, -1.0f);
-							m_S.scale		( 2.0f,  2.0f,  2.0f);
-	Fmatrix			m_2;	m_2.mul			(m_T,m_S);
-
 	// 2D texgen (texture adjustment matrix)
 	float	_w						= float(Device.dwWidth);
 	float	_h						= float(Device.dwHeight);
