@@ -90,7 +90,7 @@
 	</item_cost_static>
 
 	<!-- CHARACTER ICON -->
-	<outfit_static x="858" y="314" width="150" height="220"></outfit_static>
+	<outfit_static x="858" y="314" width="128" height="220"></outfit_static>
 
 	<!-- TAB CONTROL FOR WEAPON TYPE SELECT -->
 	<tab x="0" y="690" width="1014" height="78">
