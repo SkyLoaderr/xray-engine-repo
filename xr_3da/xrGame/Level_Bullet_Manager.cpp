@@ -200,6 +200,7 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 
 #define TRACER_WIDTH 0.07f
 #define TRACER_LENGHT 25.f
+#define TRACER_LENGHT_MIN 0.1f
 #define TRACER_LENGTH_TO_WIDTH_RATIO 10.f
 
 void CBulletManager::Render	()
@@ -212,6 +213,9 @@ void CBulletManager::Render	()
 		Fvector dist;
 		dist.sub(bullet->prev_pos,bullet->pos);
 		float length = dist.magnitude();
+
+		if(length<TRACER_LENGHT_MIN)
+			return;
 
 		if(length>TRACER_LENGHT)
 			length = TRACER_LENGHT;
