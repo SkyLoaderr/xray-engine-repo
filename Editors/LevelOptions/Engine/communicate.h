@@ -10,6 +10,16 @@ const u32 XR_MAX_PORTAL_VERTS	= 6;
 #define LCONTROL_DIR1	"$dir1"				// sun2
 #define LCONTROL_STATIC "$static"			// all other static lights
 
+// internal use
+struct b_c_face
+{
+	struct{
+		u16				bOpaque:1;
+	};
+	u16					dwMaterial;
+	u32					dwMaterialGame;
+	Fvector2			t[3];				// TC
+};
 // All types to interact with xrLC
 typedef Fvector			b_vertex;
 
