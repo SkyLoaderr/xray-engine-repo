@@ -198,7 +198,7 @@ void __cdecl	crashthread			( void* )
 class CCC_Crash : public IConsole_Command
 {
 public:
-	CCC_Help(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
+	CCC_Crash(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = TRUE; };
 	virtual void Execute(LPCSTR args) {
 		_beginthread	(crashthread,0,0);
 	}
