@@ -287,11 +287,11 @@ void CParticleTools::Save()
 void CParticleTools::Reload()
 {
 	VERIFY(m_bReady);
+    ResetCurrent	();
 	::Render->PSLibrary.Reload();
     // visual part
     m_ItemProps->ClearProperties();
-    Load();
-    ResetCurrent();
+    UpdateProperties(true);
 }
 
 void CParticleTools::Merge()
@@ -469,8 +469,8 @@ void CParticleTools::CloneCurrent()
 void CParticleTools::ResetCurrent()
 {
 	VERIFY(m_bReady);
-    m_EditPE->Stop(FALSE);
-    m_EditPG->Stop(FALSE);
+    if (m_LibPED) m_EditPE->Stop(FALSE);
+    if (m_LibPGD) m_EditPG->Stop(FALSE);
     m_LibPED= 0;
     m_LibPGD= 0;
 }

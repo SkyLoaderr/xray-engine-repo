@@ -96,8 +96,8 @@ void CPGDef::Save(IWriter& F)
 
 #ifdef _PARTICLE_EDITOR
 	F.open_chunk	(PGD_CHUNK_OWNER);
-    F.w_stringZ		(*m_OwnerName);
-    F.w_stringZ		(*m_ModifName);
+    F.w_stringZ		(*m_OwnerName?*m_OwnerName:"unknown");
+    F.w_stringZ		(*m_ModifName?*m_ModifName:"unknown");
     F.w				(&m_CreateTime,sizeof(m_CreateTime));
     F.w				(&m_ModifTime,sizeof(m_ModifTime));
 	F.close_chunk	();
