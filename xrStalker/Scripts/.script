@@ -1,4 +1,3 @@
-
 function printf(fmt,...)
 	log(string.format(fmt,unpack(arg)))
 end
@@ -483,4 +482,4 @@ function set_current_time (hour, min, sec)
 --	local c_hour = current_time - c_day * 86400000
 
 --	level.set_time_factor     (current_time_factor)
-d
+end
