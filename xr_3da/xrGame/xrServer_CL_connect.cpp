@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#include "hudmanager.h"
+
 
 void xrServer::OnCL_Connected		(IClient* _CL)
 {
@@ -65,6 +67,6 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	P.w_begin		(M_PLIST_ADD);
 	P.w_u32			(CL->ID);
 	P.w_string		(CL->Name);
-	P.w_s16			(CL->g_frags)
+	P.w_s16			(CL->g_frags);
 	SendBroadcast	(0xffffffff,P,net_flags(TRUE,TRUE));
 }

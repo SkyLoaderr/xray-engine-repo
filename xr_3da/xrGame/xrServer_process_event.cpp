@@ -111,6 +111,12 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			R_ASSERT			(c_dest == c_from);		// assure client ownership of event
 
 			// 
+			P.w_begin			(M_EVENT);
+			P.w_u32				(timestamp);
+			P.w_u16				(type);
+			P.w_u16				(destination);
+			P.w_u32				(c_src->ID);
+
 			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
 		}
 		break;
