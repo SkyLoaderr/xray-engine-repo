@@ -22,7 +22,7 @@
 	</frame_window>
 
 	<!-- PHRASES LIST -->
-	<list x="20" y="461" width="591" height="161" item_height="18" active_bg="1">
+	<list x="20" y="61" width="591" height="161" item_height="18" active_bg="1">
 		<font font="letterica18" r="216" g="186" b="140"></font>
 	</list>
 
