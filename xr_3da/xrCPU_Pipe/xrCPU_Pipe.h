@@ -10,7 +10,8 @@ struct	ENGINE_API vertBoned2W;
 class	ENGINE_API CBoneInstance;
 struct	ENGINE_API CKey;
 struct	ENGINE_API CKeyQ;
-struct	ENGINE_API _matrix;
+
+template<class T> struct ENGINE_API _matrix;
 
 // Skinning processor specific functions
 // NOTE: Destination memory is uncacheble write-combining (AGP), so avoid non-linear writes
@@ -25,7 +26,7 @@ typedef void	__stdcall	xrSkin2W	(vertRender* D, vertBoned2W* S, DWORD vCount, CB
 typedef void	__stdcall	xrBoneLerp	(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
 
 // Matrix multiplication
-typedef void	__stdcall	xrM44_Mul	(_matrix* D, _matrix* M1, _matrix* M2);
+typedef void	__stdcall	xrM44_Mul	(_matrix<float>* D, _matrix<float>* M1, _matrix<float>* M2);
 
 // Transfer of geometry into DynamicVertexBuffer & DynamicIndexBuffer with optional xform and index offset
 // NOTE: vCount and iCount usually small numbers (for example 20/40)
@@ -36,7 +37,7 @@ typedef void	__stdcall	xrM44_Mul	(_matrix* D, _matrix* M1, _matrix* M2);
 // xform: SysMem,    non aligned, may be NULL
 typedef void	__stdcall	xrTransfer	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
 										 LPWORD iDest, LPWORD iSrc, DWORD iCount, DWORD iOffset,
-										 _matrix* xform);
+										 _matrix<float>* xform);
 
 
 #pragma pack(push,8)

@@ -3,7 +3,7 @@
 
 #define TRACE_QZERO_TOLERANCE	0.1f
 
-void Fquaternion::set(const _matrix& M){
+void Fquaternion::set(const Fmatrix& M){
 	float trace,s;
 	
 	trace = M._11 + M._22 + M._33;

@@ -18,7 +18,7 @@ public:
 	};
 
 	// Class members
-	IC void set_rapid(const _matrix &a) {
+	IC void set_rapid(const Fmatrix &a) {
         m[0][0]	=  a.m[0][0];	m[0][1]	=  a.m[0][1];	m[0][2]	= -a.m[0][2];
         m[1][0]	=  a.m[1][0];	m[1][1]	=  a.m[1][1];	m[1][2]	= -a.m[1][2];
         m[2][0]	= -a.m[2][0];	m[2][1]	= -a.m[2][1];	m[2][2]	=  a.m[2][2];
@@ -26,7 +26,7 @@ public:
 	IC void set(const _matrix33 &a) {
 		CopyMemory(this,&a,9*sizeof(float));
 	}
-	IC void set(const _matrix &a) {
+	IC void set(const Fmatrix &a) {
     	_11=a._11; _12=a._12; _13=a._13;
     	_21=a._21; _22=a._22; _23=a._23;
     	_31=a._31; _32=a._32; _33=a._33;
@@ -43,7 +43,7 @@ public:
 		_21=matSource._12;	_22=matSource._22;	_23=matSource._32;
 		_31=matSource._13;	_32=matSource._23;	_33=matSource._33;
 	}
-	IC void transpose(const _matrix &matSource)		// faster version of transpose
+	IC void transpose(const Fmatrix &matSource)		// faster version of transpose
 	{
 		_11=matSource._11;	_12=matSource._21;	_13=matSource._31;
 		_21=matSource._12;	_22=matSource._22;	_23=matSource._32;
