@@ -238,7 +238,8 @@ xr_guard.add_to_binder(self.object, char_ini)
             action = nil,
             path_main = nil,
             path_side = nil,
-			path_guard = nil
+			path_guard = nil,
+			path_guard_radius = 0
         }
 xr_bodyguard.add_to_binder(self.object, char_ini)
     -- схема командира
