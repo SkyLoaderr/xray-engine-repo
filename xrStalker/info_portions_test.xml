@@ -61,6 +61,8 @@
 	
 	
 	<info_portion id="location_test1">
+		<article>one</article>
+		<article>two</article>
 		<location >
 			<level>agroprom</level>
 			<icon name="Quest1" x="2" y="8" width="1" height="1"></icon>
@@ -84,6 +86,8 @@
 	</info_portion>
 
 	<info_portion id="location_test2">
+		<article>three</article>
+		<article>four</article>
 		<location >
 			<level>agroprom</level>
 			<icon name="Quest11" x="2" y="8" width="1" height="1"></icon>
