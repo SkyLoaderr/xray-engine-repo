@@ -310,6 +310,9 @@ void CSound::Load		(const CSound *pOriginal)
 	_3D					= pOriginal->_3D;
 	_Freq				= pOriginal->_Freq;
 	dwFreq				= pOriginal->dwFreq;
+	dwFreqBase			= pOriginal->dwFreqBase;
+	dwTimeTotal			= pOriginal->dwTimeTotal;
+	dwBytesPerMS		= pOriginal->dwBytesPerMS;
 	ps.set				(pOriginal->ps);
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;

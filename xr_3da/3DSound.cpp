@@ -13,7 +13,7 @@ extern	DWORD			psSoundFreq;
 extern	float			psSoundVEffects;
 extern	CSoundManager*	pSounds;
 
-const	DWORD			dwLoopAheadMS	= 50;
+const	DWORD			dwLoopAheadMS	= 75;
 const	float			fOcclusionSpeed	= 1.f;
 
 //////////////////////////////////////////////////////////////////////
