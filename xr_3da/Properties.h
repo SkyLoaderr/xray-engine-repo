@@ -88,11 +88,11 @@ class ENGINE_API	CPropertyBase
 protected:
 	
 public:
-	virtual 	LPCSTR		getName			()				= 0;
-	virtual		LPCSTR		getComment		()				= 0;
+	virtual 	LPCSTR		getName			()								= 0;
+	virtual		LPCSTR		getComment		()								= 0;
 	
-	virtual		void		Save			(CFS_Base&  FS)	= 0;
-	virtual		void		Load			(CStream&	FS)	= 0;
+	virtual		void		Save			(CFS_Base&  FS)					= 0;
+	virtual		void		Load			(CStream&	FS, WORD version)	= 0;
 };
 
 // Writers

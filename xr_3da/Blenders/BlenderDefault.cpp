@@ -26,7 +26,7 @@ void	CBlender_default::Save(	CFS_Base& FS )
 }
 void	CBlender_default::Load(	CStream& FS, WORD version )
 {
-	CBlender::Load	(FS);
+	CBlender::Load	(FS,version);
 }
 void	CBlender_default::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
 {

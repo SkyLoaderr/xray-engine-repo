@@ -18,7 +18,7 @@ CBlender_Vertex::CBlender_Vertex()
 
 CBlender_Vertex::~CBlender_Vertex()
 {
-
+	
 }
 
 void	CBlender_Vertex::Save	( CFS_Base& FS	)
@@ -26,7 +26,7 @@ void	CBlender_Vertex::Save	( CFS_Base& FS	)
 	CBlender::Save	(FS);
 }
 
-void	CBlender_Vertex::Load	( CStream& FS	)
+void	CBlender_Vertex::Load	( CStream& FS, WORD version	)
 {
 	CBlender::Load	(FS,version);
 }
