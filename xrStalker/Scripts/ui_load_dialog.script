@@ -234,12 +234,15 @@ end
 
 function load_dialog:AddItemToList(item)
 	local new_item = CUIListItemPair()
+	new_item:SetTextFileName("text")
+	new_item:SetTextDateTime("date-time")
 	local list_box = self:GetListWnd("list_window")
 	local shift = 0
 	local color = GetARGB(255,0,255,255)
 	local parse = false	
 	
-	list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontArialN21Russian(), parse)
+	--list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontArialN21Russian(), parse)
+	list_box:AddItem(new_item)
 	
 end
 
