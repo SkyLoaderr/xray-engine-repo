@@ -691,6 +691,51 @@ void CSE_ALifeItemGrenade::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemExplosive
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemExplosive::CSE_ALifeItemExplosive	(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+{
+	m_fHealth = 1.f;
+}
+
+CSE_ALifeItemExplosive::~CSE_ALifeItemExplosive	()
+{
+}
+
+void CSE_ALifeItemExplosive::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+	tNetPacket.r_float			(m_fHealth);
+}
+
+void CSE_ALifeItemExplosive::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+	tNetPacket.w_float			(m_fHealth);
+}
+
+void CSE_ALifeItemExplosive::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+	tNetPacket.r_float			(m_fHealth);
+}
+
+void CSE_ALifeItemExplosive::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+	tNetPacket.w_float			(m_fHealth);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeItemExplosive::FillProp			(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProp			(pref,items);
+	PHelper.CreateFloat			(items, FHelper.PrepareKey(pref, s_name, "Item health :"), &m_fHealth, 0, 1.f);
+}
+#endif
+
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemBolt
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemBolt::CSE_ALifeItemBolt		(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)

@@ -921,6 +921,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 #include "antirad.h"
 #include "fooditem.h"
 #include "bottleitem.h"
+#include "explosiveitem.h"
 #include "infodocument.h"
 
 #include "ScientificOutfit.h"
@@ -1051,6 +1052,8 @@ extern "C" {
 			case CLSID_IITEM_ANTIRAD:		P = xr_new<CAntirad>();				break;
 			case CLSID_IITEM_FOOD:			P = xr_new<CFoodItem>();			break;
 			case CLSID_IITEM_BOTTLE:		P = xr_new<CBottleItem>();			break;
+			case CLSID_IITEM_EXPLOSIVE:		P = xr_new<CExplosiveItem>();		break;
+			
 			//Info Document
 			case CLSID_IITEM_DOCUMENT:		P = xr_new<CInfoDocument>();		break;
 			case CLSID_IITEM_ATTACH:		P = xr_new<CAttachableItem>();		break;

@@ -3494,6 +3494,16 @@
 								RelativePath=".\HudItem.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="ExplosiveItem"
+							Filter="">
+							<File
+								RelativePath=".\ExplosiveItem.cpp">
+							</File>
+							<File
+								RelativePath=".\ExplosiveItem.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_lift"

@@ -144,6 +144,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemGrenade,CSE_ALifeItem)
 	virtual							~CSE_ALifeItemGrenade();
 SERVER_ENTITY_DECLARE_END
 
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemExplosive,CSE_ALifeItem)
+	float							m_fHealth;
+									CSE_ALifeItemExplosive(LPCSTR caSection);
+	virtual							~CSE_ALifeItemExplosive();
+SERVER_ENTITY_DECLARE_END
+
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItemBolt,CSE_ALifeDynamicObject,CSE_ALifeInventoryItem)
 									CSE_ALifeItemBolt(LPCSTR caSection);
 	virtual							~CSE_ALifeItemBolt();

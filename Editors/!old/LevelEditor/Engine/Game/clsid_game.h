@@ -155,6 +155,7 @@
 #define CLSID_IITEM_FOOD			MK_CLSID('I','I','_','F','O','O','D',' ')
 #define CLSID_IITEM_BOTTLE			MK_CLSID('I','I','_','B','O','T','T','L')
 #define CLSID_IITEM_ANTIRAD			MK_CLSID('I','I','_','A','N','T','I','R')
+#define CLSID_IITEM_EXPLOSIVE		MK_CLSID('I','I','_','E','X','P','L','O')
 
 // Info Document
 #define CLSID_IITEM_DOCUMENT		MK_CLSID('I','I','_','D','O','C',' ',' ')
