@@ -34,10 +34,11 @@ zmey_robber_drop_weap_2     = --[[zmey_robber_base +]] 3 -- Брось оружие, кому г
 zmey_robber_will_kill       = --[[zmey_robber_base +]] 4 -- Еще двинешься, убью
 zmey_robber_do_what_i_say   = --[[zmey_robber_base +]] 5 -- Молодец, будешь жить
 zmey_robber_will_shoot      = --[[zmey_robber_base +]] 6 -- Пристрелю!
-zmey_camper_base            = sound_zmey_base + 200
-zmey_sleeper_base           = sound_zmey_base + 300
-zmey_talker_base            = sound_zmey_base + 400
-zmey_bodyguard_base         = sound_zmey_base + 600
+zmey_camper_base            = sound_zmey_base + 150
+zmey_sleeper_base           = sound_zmey_base + 200
+zmey_talker_base            = sound_zmey_base + 250
+zmey_bodyguard_base         = sound_zmey_base + 300
+zmey_guide_base             = sound_zmey_base + 350
 
 -- Чугай
 chugai_sounds          = global_sounds + 4000

@@ -35,13 +35,13 @@ local role_helper = 2
 local role_puncher = 3
 
 ---------------------------------------------------------------------------------------------------------------------
-class "evaluator_need_robber" (property_evaluator)
+class "evaluator_need_guide" (property_evaluator)
 
-function evaluator_need_robber:__init(storage) super ()
+function evaluator_need_guide:__init(storage) super ()
 	self.stor = storage
 end
 
-function evaluator_need_robber:evaluate ()
+function evaluator_need_guide:evaluate ()
 	local actor = level.actor()
 	if actor then
 		if not actor:alive() then
@@ -50,11 +50,11 @@ function evaluator_need_robber:evaluate ()
 		-- Если у одного бандита испортилось отношение к игроку, испортить с остальными:
 		local team = this.teams[self.stor.team]
 		if team then
-			--utils.trace(this.script_name(), "_bp: xr_robbers: bad_relation_set = %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide: bad_relation_set = %s",
 			--	utils.to_str(team.bad_relation_set))
 			if not team.bad_relation_set then
 				local best_enemy = self.object:best_enemy()
-				--utils.trace(this.script_name(), "_bp: xr_robbers: best_enemy=%s, enemy_actor=%s, rel_en=%s",
+				--utils.trace(this.script_name(), "_bp: xr_guide: best_enemy=%s, enemy_actor=%s, rel_en=%s",
 				--	utils.to_str(best_enemy ~= nil),
 				--	utils.to_str(best_enemy and best_enemy:id() == actor:id()),
 				--	utils.to_str(self.object:relation(actor) == game_object.enemy))
@@ -66,7 +66,7 @@ function evaluator_need_robber:evaluate ()
 						if val.object:relation(actor) ~= game_object.enemy then
 							val.object:set_relation(game_object.enemy, actor)
 							--utils.trace(this.script_name(),
-							--	"_bp: xr_robbers: setting bad relation")
+							--	"_bp: xr_guide: setting bad relation")
 						end
 					end
 				end
@@ -82,13 +82,13 @@ function evaluator_need_robber:evaluate ()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
-class "action_robber_activity" (action_base)
+class "action_guide_activity" (action_base)
 
-function action_robber_activity:__init(npc_name, action_name, storage) super(nil, action_name)
+function action_guide_activity:__init(npc_name, action_name, storage) super(nil, action_name)
 	self.stor = storage
 end
 
-function action_robber_activity:initialize()
+function action_guide_activity:initialize()
 	action_base.initialize(self)
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
@@ -98,8 +98,8 @@ function action_robber_activity:initialize()
 	self:reset_scheme()
 end
 
-function action_robber_activity:reset_scheme()
-	--utils.trace(this.script_name(), "xr_robber:reset_scheme called: self.object:name()='%s'", self.object:name())
+function action_guide_activity:reset_scheme()
+	--utils.trace(this.script_name(), "xr_guide:reset_scheme called: self.object:name()='%s'", self.object:name())
 
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
@@ -137,7 +137,7 @@ function action_robber_activity:reset_scheme()
 
 	self.patrol_rob = patrol(self.stor.path_rob)
 	if not self.patrol_rob then
-		utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.stor.path_rob .. "'")
+		utils.abort("%s", "xr_guide: unable to find patrol path '" .. self.stor.path_rob .. "'")
 	end
 
 	if not self.stor.bait_path then
@@ -145,21 +145,21 @@ function action_robber_activity:reset_scheme()
 	else
 		self.bait_patrol = patrol(self.stor.bait_path)
 		if not self.bait_patrol then
-			utils.abort("%s", "xr_robbers: unable to find patrol path '" .. self.stor.path_bait .. "'")
+			utils.abort("%s", "xr_guide: unable to find patrol path '" .. self.stor.path_bait .. "'")
 		end
 	end
 	
 	self.wpn_activated = true
 	
 	self.state = state_none
-	--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 1 state change: %s", self.object:name(), utils.to_str(self.state))
+	--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 1 state change: %s", self.object:name(), utils.to_str(self.state))
 end
 
-function action_robber_activity:say(what)
-	self.object:play_sound(xr_sounds_id.zmey_robber_base, 1, 0, 1, 0, what)
+function action_guide_activity:say(what)
+	self.object:play_sound(xr_sounds_id.zmey_guide_base, 1, 0, 1, 0, what)
 end
 
-function action_robber_activity:get_bait_object()
+function action_guide_activity:get_bait_object()
 	if self.stor.bait_object then
 		return level.object(self.stor.bait_object)
 	end
@@ -170,10 +170,10 @@ function action_robber_activity:get_bait_object()
 	return nil
 end
 
-function action_robber_activity:distance_to_bait(actor)
+function action_guide_activity:distance_to_bait(actor)
 	if self.bait_patrol then
 		local dist = self.bait_patrol:point(0):distance_to(actor:position())
-		--utils.trace(this.script_name(), "_bp: xr_robbers: distance_to_bait() = %d", dist)
+		--utils.trace(this.script_name(), "_bp: xr_guide: distance_to_bait() = %d", dist)
 		return dist
 	else
 		local bait_obj = self:get_bait_object()
@@ -181,11 +181,11 @@ function action_robber_activity:distance_to_bait(actor)
 			return distance_between(actor, bait_obj)
 		end
 	end
-	--utils.abort("xr_robbers: logic error: unable to determine bait type")
+	--utils.abort("xr_guide: logic error: unable to determine bait type")
 	return nil -- если нет приманки, просто не триггериться на нее, триггериться только на приближение к себе
 end
 
-function action_robber_activity:pick_role()
+function action_guide_activity:pick_role()
 	local robbers = this.teams[self.stor.team].robbers
 	local nearest_without_role = nil -- ближайший к приманке без роли
 	local min_dist = nil
@@ -244,7 +244,7 @@ function action_robber_activity:pick_role()
 end
 
 -- Возвращает true, если никому не присвоена заданная роль
-function action_robber_activity:no_role(which_role)
+function action_guide_activity:no_role(which_role)
 	local robbers = this.teams[self.stor.team].robbers
         for key, val in pairs(robbers) do
 		if val.role == which_role then
@@ -254,8 +254,8 @@ function action_robber_activity:no_role(which_role)
 	return true
 end
 
-function action_robber_activity:fsm_step()
-	--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: self.state = %s",
+function action_guide_activity:fsm_step()
+	--utils.trace(this.script_name(), "_bp: xr_guide [%s]: self.state = %s",
 	--	self.object:name(), utils.to_str(self.state))
 
 	----------------------------------------------------------------------------------------------------
@@ -311,7 +311,7 @@ function action_robber_activity:fsm_step()
 		if (self.state == state_leader_shouting_drop_your_weapon and not isWeapon(active_item)) or
 		   self.state == state_last then
 			self.state = state_puncher_waiting_for_plr_to_drop_weapon
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 0 state change: %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 0 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		end
 	end
@@ -322,7 +322,7 @@ function action_robber_activity:fsm_step()
 		utils.stalker_go_to_waypoint(self.object, self.patrol_rob, 0)
 
 		self.state = state_going_to_camp_point
-		--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 2 state change: %s",
+		--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 2 state change: %s",
 		--	self.object:name(), utils.to_str(self.state))
 		return
 	end
@@ -331,7 +331,7 @@ function action_robber_activity:fsm_step()
 		if utils.stalker_at_waypoint(self.object, self.patrol_rob, 0) then
 			utils.stalker_stop(self.object)
 			self.state = state_looking_at_bait
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 3 state change: %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 3 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		end
 		return
@@ -340,7 +340,7 @@ function action_robber_activity:fsm_step()
 	if self.state == state_looking_at_bait then
 		local dist = distance_between(self.object, actor)
 		team.robbers[self.object:id()].dist_to_actor = dist -- для выбора ролей
-		--utils.trace(this.script_name(), "_bp: xr_robbers: dist = %d", dist)
+		--utils.trace(this.script_name(), "_bp: xr_guide: dist = %d", dist)
 		local see_actor = self.object:see(actor)
 		if dist <= 20 and see_actor then
 			utils.stalker_look_at_stalker(self.object, actor)
@@ -388,7 +388,7 @@ function action_robber_activity:fsm_step()
 			end
 			team.rob_state = rob_state_rob_victim
 			self.state = state_rob_victim
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 4 state change: %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 4 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		end
 
@@ -402,26 +402,26 @@ function action_robber_activity:fsm_step()
 
 		if not self.role then
 			-- Для меня все еще нет роли, просто смотреть на сталкера
-			--utils.trace(this.script_name(), "_bp: xr_robbers: no role for me")
+			--utils.trace(this.script_name(), "_bp: xr_guide: no role for me")
 			utils.stalker_look_at_stalker(self.object, actor)
 		elseif self.role == role_leader then
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am leader", self.object:name())
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: I am leader", self.object:name())
 			self.expiration_time = device():time_global() + 3000
 			self:say(xr_sounds_id.zmey_robber_stop)
 			self.state = state_leader_waiting_for_plr_to_stop
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.2 state change: %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 5.2 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		elseif self.role == role_helper then
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am helper", self.object:name())
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: I am helper", self.object:name())
 			self.expiration_time = device():time_global() + 1000
 			self.state = state_helper_waiting_for_leader
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.3 state change: %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 5.3 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		elseif self.role == role_puncher then
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: I am puncher", self.object:name())
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: I am puncher", self.object:name())
 			self.expiration_time = device():time_global() + 12000
 			self.state = state_puncher_waiting_for_plr_to_drop_weapon
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 5.4 state change: %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 5.4 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		end
 		return
@@ -440,11 +440,11 @@ function action_robber_activity:fsm_step()
 				self:say(xr_sounds_id.zmey_robber_drop_weap)
 				self.expiration_time = device():time_global() + 3000
 				self.state = state_leader_shouting_drop_your_weapon
-				--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 6 state change: %s",
+				--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 6 state change: %s",
 				--	self.object:name(), utils.to_str(self.state))
 			else
 				self.state = state_last
-				--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 6.1 state change: %s",
+				--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 6.1 state change: %s",
 				--	self.object:name(), utils.to_str(self.state))
 			end 
 	
@@ -459,7 +459,7 @@ function action_robber_activity:fsm_step()
 			self:say(xr_sounds_id.zmey_robber_do_what_i_say)
 			self.expiration_time = device():time_global() + 5000
 			self.state = state_last
-			--utils.trace(this.script_name(), "_bp: xr_robbers [%s]: 7 state change: %s",
+			--utils.trace(this.script_name(), "_bp: xr_guide [%s]: 7 state change: %s",
 			--	self.object:name(), utils.to_str(self.state))
 		end
 		return
@@ -494,7 +494,7 @@ function action_robber_activity:fsm_step()
 	end
 
 	if self.state == state_puncher_approaching then
-		utils.trace(this.script_name(), "_bp: xr_robbers [%s]: puncher approaching", self.object:name())
+		utils.trace(this.script_name(), "_bp: xr_guide [%s]: puncher approaching", self.object:name())
 		utils.stalker_look_at_stalker(self.object, actor)
 		if self.object:position():distance_to(actor:position()) < 1.5 then
 			self.object:set_movement_type(move.stand)
@@ -509,7 +509,7 @@ function action_robber_activity:fsm_step()
 	end
 	
 	if self.state == state_puncher_waiting_to_grab_money then
-		utils.trace(this.script_name(), "_bp: xr_robbers [%s, %d]: puncher waiting to grab money",
+		utils.trace(this.script_name(), "_bp: xr_guide [%s, %d]: puncher waiting to grab money",
 			self.object:name(), device():time_global())
 		utils.stalker_look_at_stalker(self.object, actor)
 		local time_global = device():time_global()
@@ -543,7 +543,7 @@ function action_robber_activity:fsm_step()
 	end
 end
 
-function action_robber_activity:execute()
+function action_guide_activity:execute()
 	local prev_state
 	repeat
 		prev_state = self.state
@@ -551,7 +551,7 @@ function action_robber_activity:execute()
 	until prev_state == self.state
 end
 	
-function action_robber_activity:finalize()
+function action_guide_activity:finalize()
 	self.object:clear_animations()
 
 	local team = this.teams[self.stor.team]
@@ -562,65 +562,54 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc, char_ini)
-	printf("xr_robbers: add_to_binder")
-	if not (char_ini == nil or char_ini:section_exist("robber") == true) then
+	printf("xr_guide: add_to_binder")
+	if not (char_ini == nil or char_ini:section_exist("guide") == true) then
 		return
 	end
 
 	local operators    = {}
 	local properties  = {}
 
-	-- FIXME: тут будет robber
+	-- FIXME: тут будет guide
 	npc:add_sound([[script_replics\bandit_1\replics\bandit_ambush_]],
-			20, snd_type.talk, 2, 1, xr_sounds_id.zmey_robber_base)
+			20, snd_type.talk, 2, 1, xr_sounds_id.zmey_guide_base)
 
 	local manager = npc:motivation_action_manager()
 
-	properties["need_robber"] = xr_evaluators_id.zmey_robber_base + 1
-	operators["action_robber"] = xr_actions_id.zmey_robber_base + 1
+	properties["need_guide"] = xr_evaluators_id.zmey_guide_base + 1
+	operators["action_guide"] = xr_actions_id.zmey_guide_base + 1
 
 	-- // evaluators
-	manager:add_evaluator(properties["need_robber"], this.evaluator_need_robber(xr_motivator.storage[npc:id()].robber))
+	manager:add_evaluator(properties["need_guide"], this.evaluator_need_guide(xr_motivator.storage[npc:id()].guide))
 
-	local new_action = this.action_robber_activity(npc, "action_robber_activity", xr_motivator.storage[npc:id()].robber)
+	local new_action = this.action_guide_activity(npc, "action_guide_activity", xr_motivator.storage[npc:id()].guide)
 	new_action:add_precondition(world_property(stalker_ids.property_alive, true))
 	new_action:add_precondition(world_property(stalker_ids.property_enemy, false))
-	new_action:add_precondition(world_property(properties["need_robber"], true))
-	new_action:add_effect(world_property(properties["need_robber"], false))
-	manager:add_action(operators["action_robber"], new_action)
+	new_action:add_precondition(world_property(properties["need_guide"], true))
+	new_action:add_effect(world_property(properties["need_guide"], false))
+	manager:add_action(operators["action_guide"], new_action)
 
 	new_action = manager:action(stalker_ids.action_puzzle_solver)
-	new_action:add_precondition(world_property(properties["need_robber"], false))
+	new_action:add_precondition(world_property(properties["need_guide"], false))
 
 	if char_ini ~= nil then
-		--printf("_bp: calling set_robber")
-		xr_robbers.set_robber(npc)
+		--printf("_bp: calling set_guide")
+		xr_guide.set_guide(npc)
 	end
 end
 
--- Включение грабителя
-function set_robber(object, enabled, team, path_rob, bait_path, bait_object, bait_self, bait_radius)
-	--utils.trace(this.script_name(), "set_robber called: object:name()='%s', team='%s', path_rob='%s'",
+-- Включение поводыря
+function set_guide(object, enabled, team, path_guide)
+	--utils.trace(this.script_name(), "set_guide called: object:name()='%s', team='%s', path_rob='%s'",
 	--	utils.to_str(object:name()), utils.to_str(team), utils.to_str(path_rob) )
 
 	local char_ini = object:spawn_ini()
-	local st = xr_motivator.storage[object:id()].robber
+	local st = xr_motivator.storage[object:id()].guide
 
-	st.enabled = utils.conf_get_bool(char_ini, "robber", "enabled", enabled, object, true)
-	st.team = utils.conf_get_string(char_ini, "robber", "team", team, object, true)
-	st.path_rob = utils.conf_get_string(char_ini, "robber", "path_rob", path_rob, object, true)
+	st.enabled = utils.conf_get_bool(char_ini, "guide", "enabled", enabled, object, true)
+	st.team = utils.conf_get_string(char_ini, "guide", "team", team, object, false)
+	st.path_guide = utils.conf_get_string(char_ini, "guide", "path_guide", path_guide, object, true)
 
-	-- Настройка приманки:
-	st.bait_path = utils.conf_get_string(char_ini, "robber", "bait_path", bait_path, object, false)
-	st.bait_object = utils.conf_get_string(char_ini, "robber", "bait_object", bait_object, object, false)
-	st.bait_self = utils.conf_get_bool(char_ini, "robber", "bait_self", bait_self, object, false)
-	--st.bait_radius = utils.conf_get_ TODO
-
-	if not st.bait_path and not st.bait_object and not st.bait_self then
-		utils.abort("set_robber: object:name()='%s': please specify one of the following fields in customdata: " ..
-			"bait_path, bait_object, bait_self", utils.to_str(object:name()))
-	end
-	
 	if st.action ~= nil then
 		st.action.reset_scheme(st.action)
 	end
