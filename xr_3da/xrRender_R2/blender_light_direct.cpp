@@ -46,4 +46,4 @@ void	CBlender_accum_direct::Compile(CBlender_Compile& C)
 		break;
 	}
 }
- 
+  
