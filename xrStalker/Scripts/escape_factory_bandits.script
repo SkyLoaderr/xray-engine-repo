@@ -35,7 +35,7 @@ function check_enemy( npc )
 
         if actor and enemy:id() == actor:id() then
             npc:play_sound( snd_on_actor, 1, 0 )
-        elseif enemy:name() == "novice" then
+        elseif enemy:name() == "trivial_novice3_0_1" then
             npc:play_sound( snd_novice_again, 1, 0 )
         end
     end
