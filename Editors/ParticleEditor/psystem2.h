@@ -204,6 +204,33 @@ namespace PAPI2
 			float a6=0.0f, float a7=0.0f, float a8=0.0f);
 	};
 
+    struct xDomain
+    {
+    public:
+        PDomainEnum	type;
+        union{
+            float	f[9];
+            Fvector	v[3];
+        };
+        xDomain(){}
+		xDomain(PDomainEnum dtype,
+			float a0=0.0f, float a1=0.0f, float a2=0.0f,
+			float a3=0.0f, float a4=0.0f, float a5=0.0f,
+			float a6=0.0f, float a7=0.0f, float a8=0.0f)
+        {
+        	type=dtype;
+            f[0]=a0;
+            f[1]=a1;
+            f[2]=a2;
+            f[3]=a3;
+            f[4]=a4;
+            f[5]=a5;
+            f[6]=a6;
+            f[7]=a7;
+            f[8]=a8;
+        }
+	};
+
 	//////////////////////////////////////////////////////////////////////
 	// Type codes for all actions
 	enum PActionEnum
@@ -577,11 +604,11 @@ namespace PAPI2
 
 		// state part
 		Flags32			flags;
-		pDomain 		Size;
-		pDomain 		Vel;
-		pDomain 		VertexB;
-		pDomain 		Color;
-		pDomain 		Rot;
+		xDomain 		Size;
+		xDomain 		Vel;
+		xDomain 		VertexB;
+		xDomain 		Color;
+		xDomain 		Rot;
 		float			Alpha;
 		float			Age;
 		float			AgeSigma;
