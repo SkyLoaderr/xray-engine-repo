@@ -96,12 +96,9 @@ void CBuild::BuildCForm()
 	for (vecFaceIt F = cfFaces->begin(); F!=cfFaces->end(); F++)
 	{
 		Face*	T = *F;
-		CL.add_face(
+		CL.add_face	(
 			T->v[0]->P, T->v[1]->P, T->v[2]->P,
-			getTriByEdge(T->v[0],T->v[1],T,*cfFaces),
-			getTriByEdge(T->v[1],T->v[2],T,*cfFaces),
-			getTriByEdge(T->v[2],T->v[0],T,*cfFaces),
-			0,materials[T->dwMaterial].sector,T->dwMaterialGame
+			materials[T->dwMaterial].sector,T->dwMaterialGame
 			);
 		Progress(p_total+=p_cost);		// progress
 	}

@@ -62,11 +62,7 @@ void CBuild::BuildRapid()
 		if (!bAlready) 
 		{
 			F->bProcessed	= true;
-			CL.add_face(
-				F->v[0]->P,F->v[1]->P,F->v[2]->P,
-				CDB::edge_open,CDB::edge_open,CDB::edge_open,
-				0,0,u32(F)
-				);
+			CL.add_face_D	( F->v[0]->P,F->v[1]->P,F->v[2]->P, u32(F) );
 		}
 	}
 
