@@ -15,7 +15,6 @@ extern		pso_MemFill		xrMemFill_x86;
 extern		pso_MemFill32	xrMemFill32_MMX;
 extern		pso_MemFill32	xrMemFill32_x86;
 
-
 void	xrMemory::_initialize	()
 {
 	DWORD	features		= CPU::ID.feature & CPU::ID.os_support;
@@ -109,6 +108,47 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 		break;
 	}
 	return (u32) total;
+}
+
+void	xrMemory::mem_statistic	()
+{
+	mem_compact				();
+	LPCSTR					fn	= "$memstat$.tmp";
+	map<u32,u32>			stats;
+
+	// Dump memory stats into file to avoid reallocation while traversing
+	{
+		IWriter*	F		= FS.w_open(fn);
+		F->w_u32			(0);
+		_HEAPINFO			hinfo;
+		int					heapstatus;
+		hinfo._pentry		= NULL;
+		while( ( heapstatus = _heapwalk( &hinfo ) ) == _HEAPOK )
+			if (hinfo._useflag == _USEDENTRY)	F->w_u32	(hinfo._size);
+		FS.w_close			(F);
+	}
+
+	// Read back and perform sorting
+	{
+		IReader*	F		= FS.r_open	(fn);
+		u32 size			= F->r_u32	();
+		while (!F->eof())
+		{
+			size						= F->r_u32	();
+			map<u32,u32>::iterator I	= stats.find(size);
+			if (I!=stats.end())			I->second += 1;
+			else						stats.insert(make_pair(size,1));
+		}
+		FS.r_close			(F);
+		FS.file_delete		(fn);
+	}
+
+	// Output to log
+	{
+		map<u32,u32>::iterator I		= stats.begin();
+		map<u32,u32>::iterator E		= stats.end();
+		for (; I!=E; I++)	Msg			("%8d : %d",I->first,I->second);
+	}
 }
 
 // xr_strdup

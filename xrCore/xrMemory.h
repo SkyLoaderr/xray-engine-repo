@@ -12,8 +12,9 @@ public:
 
 	u32				stat_calls;
 public:
-	u32				mem_usage	(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
-	void			mem_compact ();
+	u32				mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
+	void			mem_compact		();
+	void			mem_statistic	();
 
 	void*			mem_alloc	(size_t	size							);
 	void			mem_free	(void*	p								);
