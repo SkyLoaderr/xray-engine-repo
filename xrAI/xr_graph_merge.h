@@ -27,6 +27,7 @@ struct CLevelInfo {
 		id = info.id;
 		name = xr_strdup(info.name);
 		offset = info.offset;
+		m_section = info.m_section;
 	}
 
 	IC	bool	operator< (const CLevelInfo &info) const
