@@ -94,3 +94,23 @@ IC	const xr_vector<CDetailPathManager::STravelPathPoint>	&CMovementManager::path
 {
 	return					(CDetailPathManager::path());
 }
+
+IC	void CMovementManager::set_body_orientation(const CMovementManager::SBoneRotation &orientation)
+{
+	m_body				= orientation;
+}
+
+IC	const CMovementManager::SBoneRotation &CMovementManager::body_orientation() const
+{
+	return				(m_body);
+}
+
+IC	CGraphEngine::CBaseParameters	*CMovementManager::base_game_selector()
+{
+	return				(m_base_game_selector);
+}
+
+IC	CGraphEngine::CBaseParameters	*CMovementManager::base_level_selector()
+{
+	return				(m_base_level_selector);
+}

@@ -187,7 +187,7 @@ bool CAI_Flesh::AA_CheckHit()
 
 		VisionElem ve;
 		if (!GetEnemy(ve)) return false;
-		CObject *obj = dynamic_cast<CObject *>(ve.obj);
+		const CObject *obj = dynamic_cast<const CObject *>(ve.obj);
 	
 		// перевод из локальных координат в мировые
 		Fvector trace_from;

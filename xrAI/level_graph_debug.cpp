@@ -126,10 +126,10 @@ void CLevelGraph::render()
 		}
 	}
 
+	draw_travel_line();
+
 	if (!psHUD_Flags.test(HUD_DRAW))
 		return;
-	
-	draw_travel_line();
 	
 	if (psAI_Flags.test(aiBrain)) {
 		if (ai().get_level_graph()) {
@@ -486,65 +486,63 @@ void CLevelGraph::draw_dynamic_obstacles() const
 
 void CLevelGraph::set_start_point	()
 {
-	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-	obj						= Level().Objects.FindObjectByName("localhost/dima");
-	CActor					*actor = dynamic_cast<CActor*>(obj);
-	if (!stalker || !actor)
-		return;
-
-	start.position			= v2d(stalker->Position());
-	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
-	start.direction.y		= _cos(-stalker->m_body.current.yaw);
-	start.vertex_id			= vertex(v3d(start.position));
-
-	dest.position			= v2d(actor->Position());
-	dest.direction.x		= -_sin(actor->r_model_yaw);
-	dest.direction.y		= _cos(actor->r_model_yaw);
-	dest.vertex_id			= vertex(v3d(dest.position));
+//	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+//	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+//	obj						= Level().Objects.FindObjectByName("localhost/dima");
+//	CActor					*actor = dynamic_cast<CActor*>(obj);
+//	if (!stalker || !actor)
+//		return;
+//
+//	start.position			= v2d(stalker->Position());
+//	start.direction.x		= -_sin(-stalker->m_body.current.yaw);
+//	start.direction.y		= _cos(-stalker->m_body.current.yaw);
+//	start.vertex_id			= vertex(v3d(start.position));
+//
+//	dest.position			= v2d(actor->Position());
+//	dest.direction.x		= -_sin(actor->r_model_yaw);
+//	dest.direction.y		= _cos(actor->r_model_yaw);
+//	dest.vertex_id			= vertex(v3d(dest.position));
 	
 //	start.angular_velocity	= 1.f;
 //	start.linear_velocity	= 2.f;
-//	start.position			= Fvector2().set(-50.f,-40.f);
-//	start.direction.set		(0.f,1.f);
-//	start.vertex_id			= vertex(v3d(start.position));
-//	
-//	dest.position			= Fvector2().set(-40.f,-40.f);
-//	dest.direction.set		(0.f,1.f);
-//	dest.vertex_id			= vertex(v3d(dest.position));
-//
-//	static int start_static = 0;
-//	switch ((start_static & 15) >> 2) {
-//		case 0 :
-//			start.direction.set(0.f,1.f);
-//			break;
-//		case 1 :
-//			start.direction.set(1.f,0.f);
-//			break;
-//		case 2 :
-//			start.direction.set(0.f,-1.f);
-//			break;
-//		case 3 :
-//			start.direction.set(-1.f,0.f);
-//			break;
-//	}
-//	switch (start_static & 1) {
-//		case 0 :
-//			dest.direction.set(0.f,1.f);
-//			break;
-//		case 1 :
-//			dest.direction.set(1.f,0.f);
-//			break;
-//		case 2 :
-//			dest.direction.set(0.f,-1.f);
-//			break;
-//		case 3 :
-//			dest.direction.set(-1.f,0.f);
-//			break;
-//	}
-//	++start_static;
+	start.position			= Fvector2().set(-50.f,-40.f);
+	start.direction.set		(0.f,1.f);
+	start.vertex_id			= vertex(v3d(start.position));
+	
+	dest.position			= Fvector2().set(-40.f,-40.f);
+	dest.direction.set		(0.f,1.f);
+	dest.vertex_id			= vertex(v3d(dest.position));
 
-//	
+	static int start_static = 0;
+	switch ((start_static >> 2) & 3) {
+		case 0 :
+			start.direction.set(0.f,1.f);
+			break;
+		case 1 :
+			start.direction.set(1.f,0.f);
+			break;
+		case 2 :
+			start.direction.set(0.f,-1.f);
+			break;
+		case 3 :
+			start.direction.set(-1.f,0.f);
+			break;
+	}
+	switch (start_static & 3) {
+		case 0 :
+			dest.direction.set(0.f,1.f);
+			break;
+		case 1 :
+			dest.direction.set(1.f,0.f);
+			break;
+		case 2 :
+			dest.direction.set(0.f,-1.f);
+			break;
+		case 3 :
+			dest.direction.set(-1.f,0.f);
+			break;
+	}
+	++start_static;
 //	dest.angular_velocity	= 1.f;
 //	dest.linear_velocity	= 2.f;
 
@@ -564,6 +562,11 @@ void CLevelGraph::set_start_point	()
 //	write_trajectory_point	(dest,"dest");
 }
 
+extern bool is_negative(float a);
+//{
+//	return				(!fis_zero(a) && (a < 0.f));
+//}
+
 IC	void adjust_point(
 	const Fvector2		&source, 
 	float				yaw, 
@@ -578,12 +581,24 @@ IC	void adjust_point(
 	TIMER_STOP(AdjustPoint)
 }
 
+enum EVelocityDirectionType {
+	eDirectionTypeFP = u32(0),
+	eDirectionTypeFN = u32(1),
+	eDirectionTypeSP = u32(0),
+	eDirectionTypeSN = u32(2),
+	eDirectionTypePP = eDirectionTypeFP | eDirectionTypeSP, // both linear velocities are positive
+	eDirectionTypeNN = eDirectionTypeFN | eDirectionTypeSN, // both linear velocities are negative
+	eDirectionTypePN = eDirectionTypeFP | eDirectionTypeSN, // the first linear velocity is positive, the second one - negative
+	eDirectionTypeNP = eDirectionTypeFN | eDirectionTypeSP, // the first linear velocity is negative, the second one - positive
+};
+
 IC	void assign_angle(
-	float				&angle, 
-	const float			start_yaw, 
-	const float			dest_yaw, 
-	const bool			positive,
-	const bool			start = true
+	float					&angle, 
+	const float				start_yaw, 
+	const float				dest_yaw, 
+	const bool				positive,
+	const EVelocityDirectionType	direction_type,
+	const bool				start = true
 )
 {
 	TIMER_START(AssignAngle)
@@ -598,7 +613,7 @@ IC	void assign_angle(
 		else
 			angle		= dest_yaw - start_yaw - PI_MUL_2;
 
-	if (!start)
+	if (!start && ((direction_type == eDirectionTypePP) || (direction_type == eDirectionTypeNN)))
 		if (angle < 0.f)
 			angle = angle + PI_MUL_2;
 		else
@@ -618,7 +633,7 @@ IC	void compute_circles(
 {
 	TIMER_START(ComputeCircles)
 	VERIFY				(!fis_zero(point.angular_velocity));
-	point.radius		= point.linear_velocity/point.angular_velocity;
+	point.radius		= _abs(point.linear_velocity)/point.angular_velocity;
 	circles[0].radius	= circles[1].radius = point.radius;
 	VERIFY				(fsimilar(point.direction.square_magnitude(),1.f));
 	circles[0].center.x =  point.direction.y*point.radius + point.position.x;
@@ -633,7 +648,8 @@ IC	bool compute_tangent(
 	const CLevelGraph::SCirclePoint		&start_circle, 
 	const CLevelGraph::STrajectoryPoint	&dest, 
 	const CLevelGraph::SCirclePoint		&dest_circle, 
-	CLevelGraph::SCirclePoint			*tangents
+	CLevelGraph::SCirclePoint			*tangents,
+	const EVelocityDirectionType				direction_type
 )
 {
 	TIMER_START(ComputeTangent)
@@ -653,6 +669,7 @@ IC	bool compute_tangent(
 	direction.sub		(dest.position,dest_circle.center);
 	if (fis_zero(direction.square_magnitude()))
 		direction		= dest.direction;
+
 	dest_yaw			= direction.getH();
 	dest_yaw			= dest_yaw >= 0.f ? dest_yaw : dest_yaw + PI_MUL_2;
 	dest_cp				= dest.direction.cross_product(direction);
@@ -670,11 +687,11 @@ IC	bool compute_tangent(
 				tangents[0]			= tangents[1] = start_circle;
 				if (start_cp >= 0.f) {
 					adjust_point	(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2,true);
+					assign_angle	(tangents[0].angle,start_yaw,yaw1 + PI_DIV_2 < PI_MUL_2 ? yaw1 + PI_DIV_2 : yaw1 - PI - PI_DIV_2,true,direction_type);
 				}
 				else {
 					adjust_point	(start_circle.center,yaw1 - PI_DIV_2,	start_circle.radius,tangents[0].point);
-					assign_angle	(tangents[0].angle,start_yaw,yaw1 - PI_DIV_2 >= 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2,false);
+					assign_angle	(tangents[0].angle,start_yaw,yaw1 - PI_DIV_2 >= 0.f ? yaw1 - PI_DIV_2 : yaw1 + PI + PI_DIV_2,false,direction_type);
 				}
 
 				tangents[1].point	= tangents[0].point;
@@ -730,8 +747,8 @@ IC	bool compute_tangent(
 	temp.sub			(tangents[0].point,start_circle.center);
 	float				tangent_cp = direction.cross_product(temp);
 	if (start_cp*tangent_cp >= 0) {
-		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0);
-		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,false);
+		assign_angle	(tangents[0].angle,start_yaw,yaw1 + alpha < PI_MUL_2 ? yaw1 + alpha : yaw1 + alpha - PI_MUL_2,start_cp >= 0,direction_type);
+		assign_angle	(tangents[1].angle,dest_yaw, yaw2 + alpha < PI_MUL_2 ? yaw2 + alpha : yaw2 + alpha - PI_MUL_2,dest_cp  >= 0,direction_type,false);
 		TIMER_STOP(ComputeTangent)
 		return			(true);
 	}
@@ -739,8 +756,8 @@ IC	bool compute_tangent(
 	// compute external tangent points
 	adjust_point		(start_circle.center,yaw1 - alpha,	start_circle.radius,tangents[0].point);
 	adjust_point		(dest_circle.center, yaw2 - alpha,	dest_circle.radius, tangents[1].point);
-	assign_angle		(tangents[0].angle,start_yaw,yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2,start_cp >= 0);
-	assign_angle		(tangents[1].angle,dest_yaw, yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2,dest_cp  >= 0,false);
+	assign_angle		(tangents[0].angle,start_yaw,yaw1 - alpha >= 0.f ? yaw1 - alpha : yaw1 - alpha + PI_MUL_2,start_cp >= 0,direction_type);
+	assign_angle		(tangents[1].angle,dest_yaw, yaw2 - alpha >= 0.f ? yaw2 - alpha : yaw2 - alpha + PI_MUL_2,dest_cp  >= 0,direction_type,false);
 
 	TIMER_STOP(ComputeTangent)
 	return				(true);
@@ -964,12 +981,13 @@ IC	bool build_trajectory(
 }
 
 IC	bool compute_trajectory(
-	CLevelGraph							&level_graph,
-	CLevelGraph::STrajectoryPoint		&start,
-	CLevelGraph::STrajectoryPoint		&dest,
-	float								straight_velocity,
-	xr_vector<Fvector>					*path,
-	float								&time
+	CLevelGraph						&level_graph,
+	CLevelGraph::STrajectoryPoint	&start,
+	CLevelGraph::STrajectoryPoint	&dest,
+	float							straight_velocity,
+	xr_vector<Fvector>				*path,
+	float							&time,
+	const EVelocityDirectionType	direction_type
 )
 {
 	TIMER_START(ComputeTrajectory)
@@ -986,7 +1004,8 @@ IC	bool compute_trajectory(
 					start_circles[i],
 					dest,
 					dest_circles[j],
-					tangent_points[tangent_count]
+					tangent_points[tangent_count],
+					direction_type
 				)
 			)
 				++tangent_count;
@@ -998,8 +1017,8 @@ IC	bool compute_trajectory(
 
 bool compute_path(
 	CLevelGraph								&level_graph,
-	CLevelGraph::STrajectoryPoint			&start,
-	CLevelGraph::STrajectoryPoint			&dest,
+	CLevelGraph::STrajectoryPoint			&_start,
+	CLevelGraph::STrajectoryPoint			&_dest,
 	xr_vector<CLevelGraph::STravelParams>	&start_set,
 	xr_vector<CLevelGraph::STravelParams>	&dest_set,
 	xr_vector<Fvector>						*m_tpTravelLine
@@ -1007,25 +1026,31 @@ bool compute_path(
 {
 	TIMER_START(ComputePath)
 	xr_vector<Fvector>		travel_line;
+	CLevelGraph::STrajectoryPoint			start = _start;
+	CLevelGraph::STrajectoryPoint			dest = _dest;
 	float					min_time = flt_max, time;
 	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
 	xr_vector<CLevelGraph::STravelParams>::const_iterator I = start_set.begin(), B = I;
 	xr_vector<CLevelGraph::STravelParams>::const_iterator E = start_set.end();
 	for ( ; I != E; ++I) {
+		EVelocityDirectionType				direction_type = eDirectionTypePP;
+		start								= _start;
 		(CLevelGraph::STravelParams&)start	= *I;
+		if (is_negative(start.linear_velocity)) {
+			direction_type	= EVelocityDirectionType(direction_type | eDirectionTypeFN);
+			start.direction.mul	(-1.f);
+		}
 		xr_vector<CLevelGraph::STravelParams>::const_iterator i = dest_set.begin(), b = i;
 		xr_vector<CLevelGraph::STravelParams>::const_iterator e = dest_set.end();
 		for ( ; i != e; ++i) {
+			dest								= _dest;
 			(CLevelGraph::STravelParams&)dest	= *i;
+			if (is_negative(dest.linear_velocity))
+				direction_type	= EVelocityDirectionType(direction_type | eDirectionTypeSN);
+			if (direction_type & eDirectionTypeFN)
+				dest.direction.mul	(-1.f);
 			travel_line.clear				();
-			if (compute_trajectory(level_graph,start,dest,6.f,m_tpTravelLine ? &travel_line : 0,time)) {
-//				Msg		("[L=%f][A=%f][L=%f][A=%f] : %f",
-//					start.linear_velocity,
-//					start.angular_velocity,
-//					dest.linear_velocity,
-//					dest.angular_velocity,
-//					time
-//				);
+			if (compute_trajectory(level_graph,start,dest,6.f,m_tpTravelLine ? &travel_line : 0,time,direction_type)) {
 				if (time < min_time) {
 					min_time = time;
 					if (m_tpTravelLine) {
@@ -1060,33 +1085,41 @@ void fill_params(
 //	start.angular_velocity	= PI_MUL_2;
 //	start.linear_velocity	= 0.f;
 //	start_set.push_back		(start);
-
-	start.angular_velocity	= PI;
-	start.linear_velocity	= 2.15f;
-	start_set.push_back		(start);
-
-	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 4.5f;
-	start_set.push_back		(start);
-
-	start.angular_velocity	= PI_DIV_4;
-	start.linear_velocity	= 6.f;
-	start_set.push_back		(start);
-
+//
+//	start.angular_velocity	= PI;
+//	start.linear_velocity	= 2.15f;
+//	start_set.push_back		(start);
+//
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 4.5f;
+//	start_set.push_back		(start);
+//
+//	start.angular_velocity	= PI_DIV_4;
+//	start.linear_velocity	= 6.f;
+//	start_set.push_back		(start);
+//
 //	dest.angular_velocity	= PI_MUL_2;
 //	dest.linear_velocity	= 0.f;
 //	dest_set.push_back		(dest);
+//
+//	dest.angular_velocity	= PI;
+//	dest.linear_velocity	= 2.15f;
+//	dest_set.push_back		(dest);
+//
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 4.5f;
+//	dest_set.push_back		(dest);
+//
+//	dest.angular_velocity	= PI_DIV_4;
+//	dest.linear_velocity	= 6.f;
+//	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI;
-	dest.linear_velocity	= 2.15f;
-	dest_set.push_back		(dest);
+	start.angular_velocity	= 1.f;
+	start.linear_velocity	= -2.f;
+	start_set.push_back		(start);
 
-	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 4.5f;
-	dest_set.push_back		(dest);
-
-	dest.angular_velocity	= PI_DIV_4;
-	dest.linear_velocity	= 6.f;
+	dest.angular_velocity	= 1.f;
+	dest.linear_velocity	= -2.f;
 	dest_set.push_back		(dest);
 }
 
@@ -1215,6 +1248,10 @@ void CLevelGraph::build_detail_path(
 				P							= I - 1;
 				d							= p;
 				s							= t;
+				if (!m_tpTravelLine.empty()) {
+//					if (is_negative((*I).second.linear_velocity))
+//						s.direction.mul		(-1.f);
+				}
 				VERIFY						(!fis_zero(s.direction.magnitude()));
 				if (!compute_path(level_graph,s,d,start_set,dest_set,0)) {
 					m_tpTravelLine.clear	();

@@ -24,7 +24,6 @@ typedef xr_vector<Fvector>										MemberPlacement;
 typedef xr_vector<u32>											MemberNodes;
 typedef xr_vector<SSearchPlace>									SuspiciousNodes;
 typedef xr_vector<bool>											SuspiciousGroups;
-typedef FixedSET<CObject*>										objVisible;
 
 class CGroup
 {

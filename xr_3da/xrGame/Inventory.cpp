@@ -974,10 +974,10 @@ PIItem CInventory::Get(const u32 id, bool bSearchRuck)
 	return NULL;
 }
 
-f32 CInventory::TotalWeight() 
+f32 CInventory::TotalWeight() const
 {
 	f32 weight = 0;
-	for(PSPIItem it = m_all.begin(); m_all.end() != it; ++it) 
+	for(TIItemSet::const_iterator it = m_all.begin(); m_all.end() != it; ++it) 
 					weight += (*it)->Weight();
 	
 	return weight;

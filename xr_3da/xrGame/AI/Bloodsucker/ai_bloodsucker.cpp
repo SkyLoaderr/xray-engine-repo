@@ -3,7 +3,7 @@
 #include "ai_bloodsucker_effector.h"
 #include "../ai_monsters_misc.h"
 
-#include "..\\..\\hudmanager.h"
+#include "../../hudmanager.h"
 
 //#define AI_SQUAD_ENABLE
 
@@ -182,8 +182,6 @@ void CAI_Bloodsucker::LookDirection(Fvector to_dir, float bone_turn_speed)
 
 	Bones.SetMotion(bone_spine, AXIS_Y, pitch, bone_turn_speed, 100);
 	Bones.SetMotion(bone_head,	AXIS_Y, pitch, bone_turn_speed, 100);	
-
-	m_head = m_body;
 }
 
 void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)

@@ -6,8 +6,7 @@
 //	Description : AI Behaviour for monster "Rat"
 ////////////////////////////////////////////////////////////////////////////
 
-#ifndef __XRAY_AI_RAT__
-#define __XRAY_AI_RAT__
+#pragma once
 
 #include "../../CustomMonster.h"
 #include "../../Inventory.h"
@@ -128,19 +127,18 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		//PHYS
 		float				m_phMass;
 
+		typedef struct tagSSimpleSound {
+			ESoundTypes		eSoundType;
+			u32				dwTime;
+			float			fPower;
+			Fvector			tSavedPosition;
+			CEntityAlive	*tpEntity;
+		} SSimpleSound;
+
+		float				m_fMaxSpeed;
+		float				m_fMinSpeed;
 		// SOUND BEING FELT
 		SSimpleSound		m_tLastSound;
-		
-		// ENEMY
-		SEnemySelected		m_Enemy;
-		CEntity*			m_tSavedEnemy;
-		Fvector				m_tSavedEnemyPosition;
-		u32					m_dwLostEnemyTime;
-		const CLevelGraph::CVertex	*m_tpSavedEnemyNode;
-		u32					m_dwSavedEnemyNodeID;
-		
-		// PERFORMANCE
-		u32					m_previous_query_time;
 		
 		// BEHAVIOUR
 		Fvector				m_tGoalDir;
@@ -218,135 +216,36 @@ class CAI_Rat : public CCustomMonster, CEatableItem
 		BOOL				m_bEatMemberCorpses;
 		BOOL				m_bCannibalism;
 		u32					m_dwEatCorpseInterval;
+		u32					m_previous_query_time;
 public:
 		float				m_fSpeed;
 		bool				m_bMoving;
 		bool				m_bCanAdjustSpeed;
 		bool				m_bStraightForward;
 
-		//////////////////////////
-		// INLINE FUNCTIONS
-		//////////////////////////
-		IC void vfChangeGoal()
-		{
-			Fvector vP;
-			vP.set(m_tSpawnPosition.x,m_tSpawnPosition.y,m_tSpawnPosition.z);
-			m_tGoalDir.x = vP.x+m_tVarGoal.x*::Random.randF(-0.5f,0.5f); 
-			m_tGoalDir.y = vP.y+m_tVarGoal.y*::Random.randF(-0.5f,0.5f);
-			m_tGoalDir.z = vP.z+m_tVarGoal.z*::Random.randF(-0.5f,0.5f);
-		}
-		
-		IC bool bfCheckIfGoalChanged(bool bForceChangeGoal = true)
-		{
-			if (m_fGoalChangeTime<=0){
-				m_fGoalChangeTime += m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
-				if (bForceChangeGoal)
-					vfChangeGoal();
-				return(true);
-			}
-			return(false);
-		};
-
-		IC void vfChooseNewSpeed()
-		{
-			int iRandom = ::Random.randI(0,2);
-			switch (iRandom) {
-				case 0 : {
-					m_fSpeed = m_fMaxSpeed;
-					break;
-				}
-				case 1 : {
-					m_fSpeed = m_fMinSpeed;
-					break;
-				}
-			}
-			m_fSafeSpeed = m_fSpeed;
-		};
-
-		IC void vfUpdateTime(float fTimeDelta)
-		{
-			m_fGoalChangeTime -= fTimeDelta > .1f ? .1f : fTimeDelta;
-		};		
-
-		IC void vfAddActiveMember(bool bForceActive = false)
-		{
-			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if (!m_bActive && (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount))) {
-				m_bActive = true;
-				m_eCurrentState = aiRatFreeHuntingActive;
-				++Group.m_dwActiveCount;
-				shedule.t_min	= m_dwActiveScheduleMin;
-				shedule.t_max	= m_dwActiveScheduleMax;
-				vfRemoveStandingMember();
-			}
-			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
-		};
-		
-		IC void vfRemoveActiveMember()
-		{
-			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if (m_bActive) {
-				R_ASSERT(Group.m_dwActiveCount > 0);
-				--(Group.m_dwActiveCount);
-				m_bActive = false;
-				m_eCurrentState = aiRatFreeHuntingPassive;
-				shedule.t_min	= m_dwPassiveScheduleMin;
-				shedule.t_max	= m_dwPassiveScheduleMax;
-			}
-			//Msg("* Group : alive[%2d], active[%2d]",Group.m_dwAliveCount,Group.m_dwActiveCount);
-		};
-		
-		IC void vfAddStandingMember()
-		{
-			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if ((Group.m_dwAliveCount*m_dwStandingCountPercent/100 >= Group.m_dwStandingCount) && (!m_bStanding)) {
-				++Group.m_dwStandingCount;
-				m_bStanding = true;
-			}
-		};
-		
-		IC void vfRemoveStandingMember()
-		{
-			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-			if (m_bStanding) {
-				R_ASSERT(Group.m_dwStandingCount > 0);
-				--(Group.m_dwStandingCount);
-				m_bStanding = false;
-			}
-		};
-
-		IC bool bfCheckIfSoundFrightful()
-		{
-			return(((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING));
-		};
-
-		IC bool bfCheckIfOutsideAIMap(Fvector &tTemp1)
-		{
-			u32 dwNewNode = level_vertex_id();
-			const CLevelGraph::CVertex *tpNewNode = level_vertex();
-			CLevelGraph::CPosition	QueryPos;
-			ai().level_graph().vertex_position(QueryPos,tTemp1);
-			if (!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*level_vertex(),QueryPos)) {
-				dwNewNode = ai().level_graph().vertex(level_vertex_id(),tTemp1);
-				tpNewNode = ai().level_graph().vertex(dwNewNode);
-			}
-			return(!ai().level_graph().valid_vertex_id(dwNewNode) || !ai().level_graph().inside(*tpNewNode,QueryPos));
-		};
-
+	IC	void	vfChangeGoal			();
+	IC	bool	bfCheckIfGoalChanged	(bool bForceChangeGoal = true);
+	IC	void	vfChooseNewSpeed		();
+	IC	void	vfUpdateTime			(float fTimeDelta);
+	IC	void	vfAddActiveMember		(bool bForceActive = false);
+	IC	void	vfRemoveActiveMember	();
+	IC	void	vfAddStandingMember		();
+	IC	void	vfRemoveStandingMember	();
+	IC	bool	bfCheckIfSoundFrightful	();
+	IC	bool	bfCheckIfOutsideAIMap	(Fvector &tTemp1);
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
 		void	vfAdjustSpeed();
 		bool	bfComputeNewPosition(bool bCanAdjustSpeed = true, bool bStraightForward = false);
-		float	CorpHeuristics(CEntity* E);
-		void	SelectCorp(SEnemySelected& S);
+//		float	CorpHeuristics(CEntity* E);
+//		void	SelectCorp(CEnemy& S);
 		void	vfUpdateMoraleBroadcast(float fValue, float fRadius);
 		void	vfUpdateMorale();
 		void	vfLoadSounds();
 		void	vfLoadAnimations();
 		void	SetDirectionLook();
 		void	vfAimAtEnemy();
-		void	vfSaveEnemy();
 		void	vfSetFire(bool bFire, CGroup &Group);
 		void	vfSetMovementType(float fSpeed);
 		void	vfUpdateDynamicObjects() {};
@@ -381,8 +280,8 @@ public:
 		virtual void  Die();
 		virtual void  Load( LPCSTR section );
 		virtual void  Think();
-		virtual float EnemyHeuristics(CEntity* E);
-		virtual void  SelectEnemy(SEnemySelected& S);
+//		virtual float EnemyHeuristics(CEntity* E);
+//		virtual void  SelectEnemy(CEnemy& S);
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action(float dt);
 		virtual	void  feel_sound_new(CObject* who, int type, const Fvector &Position, float power);
@@ -410,6 +309,10 @@ public:
 #ifdef DEBUG
 		virtual void OnRender			();
 #endif
+		virtual bool				useful					(const CGameObject *object) const;
+		virtual	float				evaluate				(const CGameObject *object) const;
+		virtual	void				reinit					();
+		virtual void				reload					(LPCSTR	section);				
 };
-		
-#endif
+
+#include "ai_rat_inline.h"

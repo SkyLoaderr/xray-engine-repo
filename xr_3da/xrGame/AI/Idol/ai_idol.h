@@ -41,8 +41,8 @@ public:
 
 	virtual void		g_fireParams	(Fvector& P, Fvector& D);
 	virtual void		g_WeaponBones	(int &L, int &R1, int &R2);
-	virtual	float		ffGetFov		(){return 150.f;}
-	virtual	float		ffGetRange		(){return 30.f;}
+	virtual	float		ffGetFov		()const{return 150.f;}
+	virtual	float		ffGetRange		()const{return 30.f;}
 	virtual	void		OnEvent			(NET_Packet& P, u16 type);
 	virtual	void		DropItemSendMessage(CObject *O);
 

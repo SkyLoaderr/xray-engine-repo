@@ -10,7 +10,7 @@
 #include "ParticlesObject.h"
 
 #include "Level.h"
-#include "entity.h"
+#include "entity_alive.h"
 #include "hudmanager.h"
 #include "ai_space.h"
 #include "ai_debug.h"
@@ -125,31 +125,6 @@ int	CLevel::get_RPID(LPCSTR /**name/**/)
 	return -1;
 }
 
-void CLevel::vfMergeKnownEnemies()
-{
-	// Merge visibility data from all units in the team
-	for (u32 T=0; T<Teams.size(); ++T)
-	{
-		CTeam&	TD		= Teams[T];
-		for (u32 S=0; S<TD.Squads.size(); ++S)
-		{
-			CSquad&	SD		= TD.Squads[S];
-			objVisible& VIS	= SD.KnownEnemys;
-
-			VIS.clear		();
-			for (u32 G=0; G<SD.Groups.size(); ++G)
-			{
-				CGroup& GD = SD.Groups[G];
-				for (u32 M=0; M<GD.Members.size(); ++M)
-				{
-					CEntityAlive* E	= dynamic_cast<CEntityAlive*>(GD.Members[M]);
-					if (E && E->g_Alive() && !E->getDestroy())	E->GetVisible(VIS);
-				}
-			}
-		}
-	}
-}
-
 void CLevel::OnFrame	()
 {
 	// Client receive
@@ -211,8 +186,6 @@ void CLevel::OnFrame	()
 	Device.Statistic.netClient.Begin();
 	ClientSend						();
 	Device.Statistic.netClient.End	();
-
-	vfMergeKnownEnemies				();
 
 	CGameFont* F = HUD().pFontDI;
 	// If server - perform server-update

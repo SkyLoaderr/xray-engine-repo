@@ -97,8 +97,10 @@ void CJumping::Execute()
 {
 	if (entity) {
 		// установить целевую точку 
-		u16 bone_id = PKinematics(entity->Visual())->LL_BoneID("bip01_head");
-		CBoneInstance &bone = PKinematics(entity->Visual())->LL_GetBoneInstance(bone_id);
+		CObject		*_entity = const_cast<CObject*>(entity);
+		VERIFY		(_entity);
+		u16 bone_id = PKinematics(_entity->Visual())->LL_BoneID("bip01_head");
+		CBoneInstance &bone = PKinematics(_entity->Visual())->LL_GetBoneInstance(bone_id);
 
 		Fmatrix global_transform;
 		global_transform.set(entity->XFORM());
@@ -131,7 +133,7 @@ void CJumping::Update()
 }
 
 // Проверка на возможность прыжка
-bool CJumping::Check(Fvector from_pos, Fvector to_pos, CObject *pO)
+bool CJumping::Check(Fvector from_pos, Fvector to_pos, const CObject *pO)
 {
 	if (!CanJump() || active || (time_next_allowed > pMonster->m_dwCurrentTime)) return false;
 

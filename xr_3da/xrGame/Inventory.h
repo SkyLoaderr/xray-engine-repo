@@ -81,8 +81,8 @@ public:
 	bool DetachAll();										// Разобрать иерархию объектов. Объект должен быть в рюкзаке
 	void Drop();											// Если объект в инвенторе, то он будет выброшен
 
-	u32		Cost()		{return m_cost;}
-	float	Weight()	{return m_weight;}		
+	u32		Cost()	const	{return m_cost;}
+	float	Weight()const	{return m_weight;}		
 
 	
 	CInventory *m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
@@ -189,7 +189,7 @@ public:
 	CInventory();
 	virtual ~CInventory();
 
-	f32 TotalWeight();										// Вес инвенторя
+	f32 TotalWeight() const;										// Вес инвенторя
 	bool Take(CGameObject *pObj, bool bNotActivate = false);// Взять объект. Объект попадает в рюкзак, если bNotActivate == false, то активировать объект, если у владельца инвентаря ничего не активировано (e.g. трейдер)
 	bool Drop(CGameObject *pObj);							// Выбросить объект
 	bool DropAll();											// Выбросить все

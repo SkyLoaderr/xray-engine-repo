@@ -193,7 +193,7 @@ protected:
 	virtual void			UpdateXForm			();
 protected:
 	// Utilities
-	void					SoundCreate			(ref_sound&		dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void					SoundCreate			(ref_sound&		dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
 	void					SoundDestroy		(ref_sound&		dest);
 	void					ShaderCreate		(ref_shader&	dest, LPCSTR S, LPCSTR T);
 	void					ShaderDestroy		(ref_shader&	dest);

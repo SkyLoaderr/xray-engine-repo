@@ -72,6 +72,13 @@ public:
 		ePathTypeDummy = u32(-1),
 	};
 
+public:
+	struct SBoneRotation {
+		SRotation		current;
+		SRotation		target;
+		float			speed;
+	};
+
 private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
@@ -84,6 +91,12 @@ private:
 	float									m_speed;
 	float									m_old_desirable_speed;
 	bool									m_selector_path_usage;
+	u32										m_dwCurrentFrame;
+
+public:
+	SBoneRotation							m_body;
+
+private:
 
 	IC		void	time_start				();
 	IC		bool	time_over				() const;
@@ -96,18 +109,13 @@ private:
 	friend class CGroup;
 
 public:
-	struct SBoneRotation {
-		SRotation		current;
-		SRotation		target;
-		float			speed;
-	};
-
-	SBoneRotation							m_body;
 
 					CMovementManager		();
 	virtual			~CMovementManager		();
-	virtual void	Init					();
+			void	Init					();
 	virtual void	Load					(LPCSTR caSection);
+	virtual void	reinit					();
+	virtual void	reload					(LPCSTR caSection);
 	IC		bool	actual					() const;
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id);
@@ -123,6 +131,10 @@ public:
 	IC		void	use_selector_path		(bool selector_path_usage);
 	IC		bool	selector_path_used		() const;
 	IC		const xr_vector<STravelPathPoint>	&path	() const;
+	IC		void	set_body_orientation(const CMovementManager::SBoneRotation &orientation);
+	IC		const CMovementManager::SBoneRotation &body_orientation() const;
+	IC		CGraphEngine::CBaseParameters	*base_game_selector();
+	IC		CGraphEngine::CBaseParameters	*base_level_selector();
 			void	update_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;

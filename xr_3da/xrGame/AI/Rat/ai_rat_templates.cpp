@@ -11,14 +11,6 @@
 #include "../ai_monsters_misc.h"
 #include "../../game_graph.h"
 
-void CAI_Rat::vfSaveEnemy()
-{
-	m_tSavedEnemy = m_Enemy.m_enemy;
-	m_tSavedEnemyPosition = m_Enemy.m_enemy->Position();
-	m_tpSavedEnemyNode = m_Enemy.m_enemy->level_vertex();
-	m_dwSavedEnemyNodeID = m_Enemy.m_enemy->level_vertex_id();
-}
-
 void CAI_Rat::vfSetFire(bool bFire, CGroup &/**Group/**/)
 {
 	if (bFire) {
@@ -225,7 +217,7 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	Position()		= tSavedPosition;
 	Position().mad	(tDirection,m_fSpeed*m_fTimeUpdateDelta);
 //	Msg				("[%f][%f][%f]",VPUSH(Position()));
-	m_head.target.yaw	= m_body.target.yaw = -m_tHPB.x;
+	m_body.target.yaw = -m_tHPB.x;
 
 //	Fvector tAcceleration;
 //	tAcceleration.setHP(-m_body.current.yaw,-m_body.current.pitch);

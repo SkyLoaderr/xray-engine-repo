@@ -53,7 +53,8 @@ protected:
 public:
 	IC					CPatrolPathManager			();
 	IC	virtual			~CPatrolPathManager			();
-	IC	virtual	void	Init						();
+	IC			void	Init						();
+	IC	virtual	void	reinit						();
 	IC	virtual	void	set_callback				(const CScriptMonster::SMemberCallback &callback);
 };
 

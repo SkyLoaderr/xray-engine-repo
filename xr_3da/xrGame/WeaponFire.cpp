@@ -126,6 +126,7 @@ BOOL __stdcall firetrace_callback(Collide::rq_result& result, LPVOID params)
 			hit_material_id = B.game_mtl_idx;
 			pThisWeapon->DynamicObjectHit(result, hit_material_id);
 		}
+#pragma todo("Dima to Yura : why this branch is not processed?? Вылетает на уровне fog_dima если стрельнуть в бетонный блок")
 	}
 	//статический объект
 	else

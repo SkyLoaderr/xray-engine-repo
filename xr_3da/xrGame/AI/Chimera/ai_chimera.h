@@ -10,7 +10,7 @@ public:
 							CAI_Chimera			();
 	virtual					~CAI_Chimera		();	
 
-	virtual void			Init				();
+			void			Init				();
 	virtual	void			Load				(LPCSTR section);
 
 	virtual void			StateSelector		();

@@ -46,7 +46,7 @@ IC const CGameGraph::CHeader &CGameGraph::header() const
 	return						(m_header);
 }
 
-IC	bool CGameGraph::mask		(svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const
+IC	bool CGameGraph::mask		(const svector<ALife::_LOCATION_ID,LOCATION_TYPE_COUNT> &M, const ALife::_LOCATION_ID E[LOCATION_TYPE_COUNT]) const
 {
 	for (int i=0; i<LOCATION_TYPE_COUNT; ++i)
 		if ((M[i] != E[i]) && (255 != M[i]))

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "ai_monster_motion_stats.h"
-#include "biting\\ai_biting.h"
+#include "biting/ai_biting.h"
 
 void CMotionStats::update()
 {

@@ -97,13 +97,13 @@ namespace PathManagers {
 		u32				m_dwCurTime;
 
 		// myself
-		CEntity*        m_tMe;
+		const CEntity	*m_tMe;
 		const CLevelGraph::CVertex *m_tpMyNode;
 		Fvector			m_tMyPosition;
 		Fvector			m_tDirection;
 
 		//enemy
-		CEntity*        m_tEnemy;
+		const CEntity	*m_tEnemy;
 		const CLevelGraph::CVertex *m_tpEnemyNode;
 		u32				m_dwEnemyNode;
 		Fvector			m_tEnemyPosition;

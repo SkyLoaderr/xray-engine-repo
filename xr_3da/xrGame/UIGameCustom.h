@@ -4,7 +4,7 @@
 
 
 //класс абстрактного диалога
-#include "ui\\UIDialogWnd.h"
+#include "ui/UIDialogWnd.h"
 
 // refs
 class CUI;

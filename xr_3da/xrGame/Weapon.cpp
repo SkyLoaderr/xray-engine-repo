@@ -10,7 +10,7 @@
 #include "ParticlesObject.h"
 
 #include "HUDManager.h"
-#include "entity.h"
+#include "entity_alive.h"
 #include "actor.h"
 
 

@@ -13,6 +13,7 @@
 #include "ai_sounds.h"
 #include "net_queue.h"
 #include "ai/ai_monster_group.h"
+#include "memory_space.h"
 
 class CHUDManager;
 class CParticlesObject;
@@ -25,10 +26,12 @@ class CSquad
 public:
 	CEntity*					Leader;
 	xr_vector<CGroup>			Groups;
+	xr_vector<CVisibleObject>	m_visible_objects;
+	xr_vector<CSoundObject>		m_sound_objects;
+	xr_vector<CHitObject>		m_hit_objects;
+	u32							m_member_count;
 
-	objVisible					KnownEnemys;
-
-	CSquad() : Leader(0)		{};
+	CSquad() : Leader(0),m_member_count(0)		{};
 
 	bool						Empty			(){return Groups.empty();}
 	int							Size			(){return Groups.size();}
@@ -196,8 +199,6 @@ public:
 	// Save/Load/State
 	void						SLS_Load				(LPCSTR name);		// Game Load
 	void						SLS_Default				();					// Default/Editor Load
-
-	void						vfMergeKnownEnemies		();
 
 	// C/D
 	CLevel();

@@ -45,17 +45,17 @@ public:
 private:
 	ESelectionType			m_selection_type;
 	ALife::_GRAPH_ID		m_previous_vertex_id;
-	ALife::TERRAIN_VECTOR	m_vertex_types;
 	u32						m_time_to_change;
-
+protected:
 				void		select_random_location	(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);
 public:
 	IC						CBaseLocationSelector	();
 	IC	virtual				~CBaseLocationSelector	();
-	IC	virtual void		Init					(const _Graph *graph = 0);
-		virtual void		Load					(LPCSTR caSection);
+	IC			void		Init					();
+	IC	virtual void		reinit					(const _Graph *graph = 0);
 	IC			void		set_selection_type		(const ESelectionType selection_type);
-	IC			void		get_selection_type		() const;
+	IC			void		selection_type			() const;
+	IC			bool		actual					(const _vertex_id_type start_vertex_id, bool path_completed);
 				void		select_location			(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);
 };
 

@@ -1,13 +1,13 @@
 #pragma once
 #include "uigamecustom.h"
 
-#include "ui\\UIInventoryWnd.h"
-#include "ui\\UITradeWnd.h"
-#include "ui\\UIPdaWnd.h"
-#include "ui\\UIMapWnd.h"
-#include "ui\\UIDiaryWnd.h"
-#include "ui\\UITalkWnd.h"
-#include "ui\\UICarBodyWnd.h"
+#include "ui/UIInventoryWnd.h"
+#include "ui/UITradeWnd.h"
+#include "ui/UIPdaWnd.h"
+#include "ui/UIMapWnd.h"
+#include "ui/UIDiaryWnd.h"
+#include "ui/UITalkWnd.h"
+#include "ui/UICarBodyWnd.h"
 
 class CUIGameSP : public CUIGameCustom
 {

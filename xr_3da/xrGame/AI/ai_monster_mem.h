@@ -49,7 +49,7 @@ typedef enum {
 
 typedef struct tagSoundElement
 {
-	CObject				*who;
+	const CObject		*who;
 	TSoundDangerValue	type;
 	Fvector				position;		// позиция звука, не объекта, издавшего звук
 	float				power;
@@ -61,7 +61,7 @@ typedef struct tagSoundElement
 	bool operator < (const tagSoundElement &s) const  { 
 		return (type < s.type);
 	}
-	IC void SetConvert(CObject* who, int eType, const Fvector &position, float power, TTime time) {
+	IC void SetConvert(const CObject* who, int eType, const Fvector &position, float power, TTime time) {
 		this->who = who; type = ConvertSoundType((ESoundTypes)eType); this->position = position; this->power = power; this->time = time;
 	}
 	TSoundDangerValue ConvertSoundType(ESoundTypes stype);
@@ -81,15 +81,15 @@ struct predicate_remove_old_sounds {
 
 // удалить все звуки, принадлежащие данному объекту
 struct remove_sound_owner_pred {
-	CObject *pO;
-	remove_sound_owner_pred(CObject *o) {o = pO;}
+	const CObject *pO;
+	remove_sound_owner_pred(const CObject *o) {o = pO;}
 	bool operator() (const SoundElem &x){ return (x.who == pO); }
 };
 
 struct remove_dead_objects_pred {
 	bool operator() (const SoundElem &x){ 
 		if (x.who) {
-			CEntityAlive *pE = dynamic_cast<CEntityAlive*> (x.who);
+			const CEntityAlive *pE = dynamic_cast<const CEntityAlive*> (x.who);
 			if (pE && pE->g_Alive()) return false;
 		}
 		return true;
@@ -107,7 +107,7 @@ class CSoundMemory
 
 public:
 		void	HearSound				(const SoundElem &s);
-		void	HearSound				(CObject* who, int eType, const Fvector &Position, float power, TTime time);
+		void	HearSound				(const CObject* who, int eType, const Fvector &Position, float power, TTime time);
 	IC	bool	IsRememberSound			() {return (!Sounds.empty());}		
 		void	GetSound				(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
 
@@ -117,7 +117,7 @@ protected:
 
 		void	UpdateHearing			(TTime dt);
 
-		void    RemoveSoundOwner		(CObject *pO);	//удалить все звуки принадлежащие данному объекту
+		void    RemoveSoundOwner		(const CObject *pO);	//удалить все звуки принадлежащие данному объекту
 private:
 		void	CheckValidObjects		(); 			// удалить объекты которые не прошли тест на GetDestroyed(), т.е. ушли в оффлайн
 		void	RemoveDeadObjects		();				// удалить звуки, от мёртвых объектов
@@ -132,7 +132,7 @@ private:
 
 typedef struct tagVisionElem
 {
-	CEntity						*obj;
+	const CEntity				*obj;
 	Fvector						position;
 	const CLevelGraph::CVertex	*vertex;
 	u32							node_id;
@@ -140,7 +140,7 @@ typedef struct tagVisionElem
 
 	tagVisionElem() {obj = 0;}
 
-	IC void Set(CEntity *pE, TTime t) {
+	IC void Set(const CEntity *pE, TTime t) {
 		obj = pE; 	position = pE->Position(); 	vertex = pE->level_vertex();  node_id = pE->level_vertex_id(); time = t; 
 	}
 	void operator = (const tagVisionElem &ve) {
@@ -181,9 +181,9 @@ struct predicate_remove_old_enemies {
 
 // предикат удаления 'старых' врагов
 struct predicate_remove_ignore_objects {
-	CEntity *pObj;
+	const CEntity *pObj;
 
-	predicate_remove_ignore_objects(CEntity *p) { pObj = p; }
+	predicate_remove_ignore_objects(const CEntity *p) { pObj = p; }
 	
 	bool operator() (const VisionElem &x) { 
 		return (pObj == x.obj); 
@@ -205,7 +205,8 @@ class CVisionMemory
 	TTime					timeMemory;				// время хранения визуальных объектов
 	TTime					timeCurrent;			// текущее время
 	
-	DEFINE_VECTOR			(VisionElem, VECTOR_VE, ITERATOR_VE);
+	typedef xr_vector			<VisionElem> VECTOR_VE;
+	typedef VECTOR_VE::iterator	ITERATOR_VE;	
 
 	VECTOR_VE				Objects;
 	VECTOR_VE				Enemies;
@@ -232,7 +233,7 @@ public:
 	IC	void		SetMemoryTime	(TTime t) {timeMemory = t;}
 	IC	void		SetMemoryTimeDef() {timeMemory = timeMemoryDefault;}
 
-		void		AddIgnoreObject	(CEntity *pObj);
+		void		AddIgnoreObject	(const CEntity *pObj);
 protected:
 		void		Init			(TTime mem_time);
 		void		Deinit			();
@@ -273,11 +274,11 @@ private:
 //---------------------------------------------------------------------------------------------------------
 
 typedef struct tagDangerousEnemies {
-	CObject		*who;
-	TTime		time_till_remember;	
+	const CObject	*who;
+	TTime			time_till_remember;	
 
 	bool operator == (const tagDangerousEnemies &obj) {return (who == obj.who);}
-	bool operator == (CObject *obj) {return (who == obj);}
+	bool operator == (const CObject *obj) {return (who == obj);}
 } SDangerousEnemies;
 
 // предикат удаления 'старых' объектов
@@ -307,8 +308,8 @@ public:
 
 	//-------------------------------------------------------
 
-	void	AddDangerousEnemy			(CObject *pO, TTime ttr);
-	bool	IsDangerousEnemy			(CObject *pO);
+	void	AddDangerousEnemy			(const CObject *pO, TTime ttr);
+	bool	IsDangerousEnemy			(const CObject *pO);
 
 private:
 

@@ -42,7 +42,7 @@ void CMovementManager::process_enemy_search()
 		}
 		case ePathStateBuildDetailPath : {
 			Device.Statistic.TEST2.Begin();
-			CDetailPathManager::set_state_patrol_path(false);
+			CDetailPathManager::set_state_patrol_path(true);
 			CDetailPathManager::set_start_position(Position());
 			CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 			CDetailPathManager::set_dest_position(
@@ -54,13 +54,14 @@ void CMovementManager::process_enemy_search()
 				CLevelPathManager::path(),
 				CLevelPathManager::intermediate_index()
 			);
+			
+			Device.Statistic.TEST2.End();
+			
 			if (CDetailPathManager::failed()) {
 				m_path_state	= ePathStateBuildLevelPath;
-				Device.Statistic.TEST2.End();
 				break;
 			}
 			m_path_state		= ePathStatePathVerification;
-			Device.Statistic.TEST2.End();
 			if (time_over())
 				break;
 		}
@@ -74,7 +75,7 @@ void CMovementManager::process_enemy_search()
 			if (!CDetailPathManager::actual())
 				m_path_state	= ePathStateBuildLevelPath;
 			else
-				if (CDetailPathManager::completed(Position())) {
+				if (CDetailPathManager::completed(Position(),!state_patrol_path())) {
 					m_path_state	= ePathStateContinueLevelPath;
 					if (CLevelPathManager::completed())
 						m_path_state	= ePathStateContinueGamePath;

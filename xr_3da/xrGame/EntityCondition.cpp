@@ -114,8 +114,10 @@ void CEntityCondition::Load(LPCSTR section)
 	m_fK_SleepPower = pSettings->r_float(section,"sleep_power");
 	m_fK_SleepSatiety = pSettings->r_float(section,"sleep_satiety");	
 	m_fK_SleepRadiation = pSettings->r_float(section,"sleep_radiation");
+}
 
-
+void CEntityCondition::reinit	()
+{
 }
 
 void CEntityCondition::ChangeHealth(float value)
@@ -535,7 +537,7 @@ void CEntityCondition::Awoke()
 	m_fCurrentSleepRadiation =  1.0f;
 }
 
-bool CEntityCondition::IsLimping()
+bool CEntityCondition::IsLimping() const
 {
 	return (false);//m_fPower*m_fHealth <= .5f);
 }

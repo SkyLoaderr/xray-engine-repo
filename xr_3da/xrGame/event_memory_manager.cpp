@@ -9,10 +9,31 @@
 #include "stdafx.h"
 #include "event_memory_manager.h"
 
-CEventMemoryManager::CEventMemoryManager		()
+CEventMemoryManager::CEventMemoryManager	()
+{
+	Init					();
+}
+
+CEventMemoryManager::~CEventMemoryManager	()
 {
 }
 
-CEventMemoryManager::~CEventMemoryManager		()
+void CEventMemoryManager::Init				()
+{
+}
+
+void CEventMemoryManager::Load				(LPCSTR section)
+{
+}
+
+void CEventMemoryManager::reinit				()
+{
+}
+
+void CEventMemoryManager::reload				(LPCSTR section)
+{
+}
+
+void CEventMemoryManager::update			()
 {
 }

@@ -38,7 +38,8 @@ class
 		_index_type
 	> inherited;
 public:
-	IC	virtual void	Init						(const CLevelGraph *graph = 0);
+	IC			void	Init						();
+	IC			void	reinit						(const CLevelGraph *graph = 0);
 protected:
 	IC			bool	actual						() const;
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);

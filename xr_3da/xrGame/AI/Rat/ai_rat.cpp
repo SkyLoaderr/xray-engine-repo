@@ -29,15 +29,9 @@ CAI_Rat::~CAI_Rat()
 
 void CAI_Rat::Init()
 {
-	inherited::Init			();
 	m_tAction				= eRatActionNone;
 	m_hit_direction.set			(0,0,1);
-	m_tSavedEnemyPosition.set(0,0,0);
 	m_hit_time				= 0;
-	m_tSavedEnemy			= 0;
-	m_tpSavedEnemyNode		= 0;
-	m_dwSavedEnemyNodeID	= u32(-1);
-	m_dwLostEnemyTime		= 0;
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend	= 0;
 	m_bActionStarted		= false;
@@ -67,6 +61,19 @@ void CAI_Rat::Init()
 	m_bStraightForward		= false;
 }
 
+void CAI_Rat::reinit					()
+{
+	inherited::reinit		();
+	CEatableItem::reinit	();
+	Init					();
+}
+
+void CAI_Rat::reload					(LPCSTR	section)
+{
+	inherited::reload		(section);
+	CEatableItem::reload	(section);
+}
+
 void CAI_Rat::Die()
 {
 	inherited::Die( );
@@ -83,7 +90,6 @@ void CAI_Rat::Die()
 	vfRemoveStandingMember();
 	--(Group.m_dwAliveCount);
 	m_eCurrentState = aiRatDie;
-	m_dwDeathTime = Level().timeServer();
 }
 
 void CAI_Rat::Load(LPCSTR section)
@@ -172,7 +178,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 	eye_fov							= tpSE_Rat->fEyeFov;
 	eye_range						= tpSE_Rat->fEyeRange;
-	fEntityHealth							= tpSE_Rat->fHealth;
+	fEntityHealth					= tpSE_Rat->fHealth;
 	m_fMinSpeed						= tpSE_Rat->fMinSpeed;
 	m_fMaxSpeed						= tpSE_Rat->fMaxSpeed;
 	m_fAttackSpeed					= tpSE_Rat->fAttackSpeed;
@@ -207,8 +213,6 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_bStateChanged					= true;
 	set_game_vertex					(ai().cross_table().vertex(level_vertex_id()).game_vertex_id());
 
-	m_body.current					= m_head.current;
-	m_body.target					= m_head.target;
 	m_tHPB.x						= m_body.current.yaw;
 	m_tHPB.y						= m_body.current.pitch;
 	m_tHPB.z						= 0;

@@ -28,27 +28,30 @@ SRotation tfGetOrientation(CEntity *tpEntity)
 	}
 }
 
-bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
+bool bfGetActionSuccessProbability(EntityVec &Members, const xr_set<const CEntityAlive *> &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction)
 {
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)VisibleEnemies.size();
-	while ((i < I) && (j < J)) {
+	xr_set<const CEntityAlive*>::const_iterator	II = VisibleEnemies.begin();
+	for ( ; (i < I) && (j < J); ) {
 		ai().ef_storage().m_tpCurrentMember = dynamic_cast<CEntityAlive *>(Members[i]);
 		if (!(ai().ef_storage().m_tpCurrentMember) || !(ai().ef_storage().m_tpCurrentMember->g_Alive())) {
 			++i;
 			continue;
 		}
-		ai().ef_storage().m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+		ai().ef_storage().m_tpCurrentEnemy = *II;
 		if (!(ai().ef_storage().m_tpCurrentEnemy) || !(ai().ef_storage().m_tpCurrentEnemy->g_Alive())) {
 			++j;
+			++II;
 			continue;
 		}
 		float fProbability = fSuccessProbabilityFunction.ffGetValue()/100.f, fCurrentProbability;
 		if (fProbability > fMinProbability) {
 			fCurrentProbability = fProbability;
 			for (++j; (i < I) && (j < J); ++j) {
-				ai().ef_storage().m_tpCurrentEnemy = dynamic_cast<CEntityAlive *>(VisibleEnemies[j].key);
+				ai().ef_storage().m_tpCurrentEnemy = *II;
 				if (!(ai().ef_storage().m_tpCurrentEnemy) || !(ai().ef_storage().m_tpCurrentEnemy->g_Alive())) {
 					++j;
+					++II;
 					continue;
 				}
 				fProbability = fSuccessProbabilityFunction.ffGetValue()/100.f;
@@ -70,6 +73,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 				}
 				fProbability = 1.0f - fSuccessProbabilityFunction.ffGetValue()/100.f;
 				if (fCurrentProbability*fProbability < fMinProbability) {
+					++II;
 					++j;
 					break;
 				}
@@ -79,16 +83,6 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 		}
 	}
 	return(j >= J);
-}
-
-bool bfIsAnyAlive(objVisible &VisibleEnemies)
-{
-	for (int i=0; i<(int)VisibleEnemies.size(); ++i) {
-		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key);
-		if (tpEntityAlive && tpEntityAlive->g_Alive())
-			return(true);
-	}
-	return(false);
 }
 
 u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity, float fGroupDistance)
@@ -107,17 +101,9 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 		}
 	}
 
-	objVisible	&VisibleEnemies = Level().Teams[dwTeam].Squads[dwSquad].KnownEnemys;
-
-	if (!bfIsAnyAlive(VisibleEnemies))
-		switch (Group.m_dwLastAction) {
-			case 0: return(a0);
-			case 1: return(a1);
-			case 2: return(a2);
-			case 3: return(a3);
-			case 4: return(a4);
-			default: return(a4);
-		}
+	const CEnemyManager					*enemy_manager = dynamic_cast<const CEnemyManager*>(tpEntity);
+	VERIFY								(enemy_manager);
+	const xr_set<const CEntityAlive*>	&VisibleEnemies = enemy_manager->enemies();
 
 	EntityVec	Members;
 	if (!tpEntity)
@@ -182,14 +168,14 @@ Fvector	tfComputeSpringPull(Fvector &tCurrentPosition, Fvector &tSpringPosition,
 
 Fvector tfGetNextCollisionPosition(CCustomMonster *tpCustomMonster, Fvector &tFuturePosition)
 {
-	Fvector	tForcePosition = tfComputeSpringPull(tpCustomMonster->Position(),tFuturePosition,-10.f*tpCustomMonster->m_fCurSpeed);
-	
-	for (int i=0; i<(int)tpCustomMonster->feel_touch.size(); ++i)
-		tForcePosition.add(tfComputeSpringPull(tpCustomMonster->Position(),tpCustomMonster->feel_touch[i]->Position(),100.f));
-
+//	Fvector	tForcePosition = tfComputeSpringPull(tpCustomMonster->Position(),tFuturePosition,-10.f*tpCustomMonster->m_fCurSpeed);
+//	
+//	for (int i=0; i<(int)tpCustomMonster->feel_touch.size(); ++i)
+//		tForcePosition.add(tfComputeSpringPull(tpCustomMonster->Position(),tpCustomMonster->feel_touch[i]->Position(),100.f));
+//
 	Fvector tResult;
-	tResult.add(tpCustomMonster->Position(),tForcePosition);
-	return(tResult);
+//	tResult.add(tpCustomMonster->Position(),tForcePosition);
+	return(tResult.set(0,0,0));
 }
 
 // Загрузка звуков из system.ltx
@@ -202,14 +188,14 @@ void g_vfLoadSounds(SOUND_VECTOR &tpSounds, LPCSTR	prefix, u32 dwMaxCount)
 		_GetItem				(prefix,j,S);
 		if (FS.exist(fn,"$game_sounds$",S,".ogg")){
 			tpSounds.push_back	(ref_sound());
-			::Sound->create		(tpSounds.back(),TRUE,prefix,0);
+			::Sound->create		(tpSounds.back(),TRUE,prefix);
 		}
 		for (u32 i=0; i<dwMaxCount; ++i){
 			string64			name;
 			sprintf				(name,"%s%d",S,i);
 			if (FS.exist(fn,"$game_sounds$",name,".ogg")){
 				tpSounds.push_back(ref_sound());
-				::Sound->create(tpSounds.back(),TRUE,name,0);
+				::Sound->create(tpSounds.back(),TRUE,name);
 			}
 		}
 	}

@@ -11,7 +11,7 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 
-	virtual void	Init				();
+			void	Init				();
 	virtual void	StateSelector		();
 	virtual void	CheckSpecParams		(u32 spec_params);
 

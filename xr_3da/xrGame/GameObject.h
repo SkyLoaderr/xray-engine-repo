@@ -13,11 +13,14 @@ class CPHSynchronize;
 #include "PhysicsRefObject.h"
 #include "level_graph.h"
 #include "ai_object_location.h"
+#include "prefetch_manager.h"
 
 class CGameObject : 
 	public CObject, 
 	public CPhysicsRefObject,
-	virtual public CAI_ObjectLocation
+	virtual public CAI_ObjectLocation,
+	public CPrefetchManager
+
 {
 	typedef CObject inherited;
 	u32						m_dwNetSpawnFrame;
@@ -82,6 +85,10 @@ public:
 #ifdef DEBUG
 	virtual void			OnRender			();
 #endif
+
+			void			Init				();
+	virtual	void			reinit				();
+	virtual	void			reload				(LPCSTR section);
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

@@ -49,7 +49,7 @@ void CSoundMemory::HearSound(const SoundElem &s)
 	if (!s.who) return;									// todo
 	
 	// не регистрировать звуки, у которых владелец - труп // todo
-	CEntityAlive* E = dynamic_cast<CEntityAlive*> (s.who);
+	const CEntityAlive* E = dynamic_cast<const CEntityAlive*> (s.who);
 	if (E) if (!E->g_Alive()) return;
 
 	// поиск в массиве звука
@@ -68,7 +68,7 @@ void CSoundMemory::HearSound(const SoundElem &s)
 	std::sort(Sounds.begin(),Sounds.end());
 }
 
-void CSoundMemory::HearSound(CObject* who, int eType, const Fvector &Position, float power, TTime time)
+void CSoundMemory::HearSound(const CObject* who, int eType, const Fvector &Position, float power, TTime time)
 {
 	SoundElem s;
 	s.SetConvert(who,eType,Position,power,time);
@@ -107,7 +107,7 @@ void CSoundMemory::CheckValidObjects()
 	Sounds.erase   (Result,Sounds.end());
 }
 
-void CSoundMemory::RemoveSoundOwner(CObject *pO)
+void CSoundMemory::RemoveSoundOwner(const CObject *pO)
 {
 	xr_vector<SoundElem>::iterator Result = std::remove_if(Sounds.begin(), Sounds.end(), remove_sound_owner_pred(pO));
 	Sounds.erase   (Result,Sounds.end());
@@ -151,18 +151,29 @@ void CVisionMemory::UpdateVision(TTime dt)
 {
 	timeCurrent	= dt;
 
+	
+	string128 name;
+	strcpy(name,pMonster->cName());
+
+
 	// получить список видимых объектов
 	VisionElem ve;
-	objVisible &VisibleEnemies = Level().Teams[pMonster->g_Team()].Squads[pMonster->g_Squad()].KnownEnemys;
+	{
+		xr_set<const CEntityAlive *>::const_iterator	I = pMonster->enemies().begin();
+		xr_set<const CEntityAlive *>::const_iterator	E = pMonster->enemies().end();
+		for ( ; I != E; ++I) {
+			ve.Set	(*I,timeCurrent);
+			AddEnemy(ve);
+		}
+	}
 
-	for (int i=0, n=VisibleEnemies.size(); i<n; ++i) {
-		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(VisibleEnemies[i].key);
-		if (!pE) R_ASSERT("Visible object is not of class CEntityAlive. Check feel_vision_isRelevant!");
-
-		ve.Set(pE,timeCurrent);
- 
-		if (!pE->g_Alive()) AddObject(ve);
-		else AddEnemy(ve);
+	{
+		xr_set<const CGameObject *>::const_iterator	I = pMonster->CItemManager::items().begin();
+		xr_set<const CGameObject *>::const_iterator	E = pMonster->CItemManager::items().end();
+		for ( ; I != E; ++I) {
+			ve.Set	(dynamic_cast<const CEntity*>(*I),timeCurrent);
+			AddObject(ve);
+		}
 	}
 
 	// удаление объектов, перешедших в оффлайн
@@ -305,7 +316,7 @@ void CVisionMemory::UpdateWithIgnoreObjects()
 	}
 }
 
-void CVisionMemory::AddIgnoreObject(CEntity *pObj)
+void CVisionMemory::AddIgnoreObject(const CEntity *pObj)
 {
 	VisionElem ve;
 	ve.Set(pObj, timeCurrent);
@@ -342,7 +353,7 @@ void CMonsterMemory::UpdateMemory()
 
 }
 
-void CMonsterMemory::AddDangerousEnemy(CObject *pO, TTime ttr)
+void CMonsterMemory::AddDangerousEnemy(const CObject *pO, TTime ttr)
 {
 	DANGER_ENEMIES_VEC_IT res;
 	SDangerousEnemies new_elem;
@@ -358,7 +369,7 @@ void CMonsterMemory::AddDangerousEnemy(CObject *pO, TTime ttr)
 	}
 }
 
-bool CMonsterMemory::IsDangerousEnemy(CObject *pO)
+bool CMonsterMemory::IsDangerousEnemy(const CObject *pO)
 {
 	DANGER_ENEMIES_VEC_IT res;
 

@@ -139,6 +139,9 @@ void CAI_Dog::Load(LPCSTR section)
 
 void CAI_Dog::StateSelector()
 {	
+	
+	HDebug->M_Add(0,cName(),D3DCOLOR_XRGB(255,0,128));
+	
 	VisionElem ve;
 
 	if (C || D || E || F) SetBkgndSound();
@@ -266,7 +269,7 @@ void CAI_Dog::UpdateCL()
 		
 		if (strike_in_jump) return;
 		
-		CEntity *pE = dynamic_cast<CEntity *>(CJumping::GetEnemy());
+		const CEntity *pE = dynamic_cast<const CEntity *>(CJumping::GetEnemy());
 		if (!pE) return;
 
 		Fvector trace_from;

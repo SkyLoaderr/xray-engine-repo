@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "ai_monster_debug.h"
-#include "..\\entity.h"
-#include "..\\hudmanager.h"
+#include "../entity_alive.h"
+#include "../hudmanager.h"
+
+//#define DISABLE_MONSTER_DEBUG
 
 #define DISABLE_MONSTER_DEBUG
 

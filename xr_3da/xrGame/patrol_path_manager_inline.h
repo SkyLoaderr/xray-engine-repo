@@ -19,6 +19,11 @@ IC	CPatrolPathManager::~CPatrolPathManager		()
 
 IC	void CPatrolPathManager::Init				()
 {
+}
+
+IC	void CPatrolPathManager::reinit				()
+{
+	CAI_ObjectLocation::reinit();
 	m_path					= 0;
 	m_start_type			= ePatrolStartTypeDummy;
 	m_route_type			= ePatrolRouteTypeDummy;

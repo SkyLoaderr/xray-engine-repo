@@ -2,7 +2,7 @@
 #include "UIGameCS.h"
 
 #include "UI.h"
-#include "entity.h"
+#include "entity_alive.h"
 #include "hudmanager.h"
 
 static const int money_x_offs = 785; 

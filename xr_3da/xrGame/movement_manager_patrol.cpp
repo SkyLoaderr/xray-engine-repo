@@ -46,15 +46,15 @@ void CMovementManager::process_patrol_path()
 					CLevelPathManager::path(),
 					CLevelPathManager::intermediate_index()
 				);
+				
+				Device.Statistic.TEST2.End();
+				
 				if (CDetailPathManager::failed()) {
 					m_path_state	= ePathStateBuildLevelPath;
-					Device.Statistic.TEST2.End();
 					break;
 				}
 
 				m_path_state		= ePathStatePathVerification;
-
-				Device.Statistic.TEST2.End();
 
 				if (time_over())
 					break;
@@ -69,7 +69,7 @@ void CMovementManager::process_patrol_path()
 				if (!CDetailPathManager::actual())
 					m_path_state	= ePathStateBuildLevelPath;
 				else
-					if (CDetailPathManager::completed(Position(),false)) {
+					if (CDetailPathManager::completed(Position(),!state_patrol_path())) {
 						m_path_state	= ePathStateContinueLevelPath;
 						if (CLevelPathManager::completed()) {
 							m_path_state	= ePathStateSelectPatrolPoint;

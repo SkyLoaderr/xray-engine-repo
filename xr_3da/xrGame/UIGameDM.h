@@ -5,8 +5,8 @@
 #include "UIGameCustom.h"
 
 
-#include "ui\\UIDialogWnd.h"
-#include "ui\\UIInventoryWnd.h"
+#include "ui/UIDialogWnd.h"
+#include "ui/UIInventoryWnd.h"
 
 
 // refs 

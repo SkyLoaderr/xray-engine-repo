@@ -13,6 +13,7 @@ CMovementManager::CMovementManager	()
 {
 	m_base_game_selector			= xr_new<CGraphEngine::CBaseParameters>();
 	m_base_level_selector			= xr_new<CGraphEngine::CBaseParameters>();
+	m_dwCurrentFrame				= u32(-1);
 	Init							();
 }
 
@@ -24,37 +25,65 @@ CMovementManager::~CMovementManager	()
 
 void CMovementManager::Init			()
 {
-	m_time_work						= 300*CPU::cycles_per_microsec;
-	m_speed							= 0.f;
-	m_path_type						= ePathTypeNoPath;
-	m_path_state					= ePathStateDummy;
-	m_path_actuality				= true;
-	m_speed							= 0.f;
-	m_selector_path_usage			= true;
-	m_old_desirable_speed			= 0.f;
-
-	enable_movement					(true);
-	CGameLocationSelector::Init		(&ai().game_graph());
-	CGamePathManager::Init			(&ai().game_graph());
-	CLevelLocationSelector::Init	(ai().get_level_graph() ? &ai().level_graph() : 0);
-	CLevelPathManager::Init			(ai().get_level_graph() ? &ai().level_graph() : 0);
+	CGameLocationSelector::Init		();
+	CGamePathManager::Init			();
+	CLevelLocationSelector::Init	();
+	CLevelPathManager::Init			();
 	CDetailPathManager::Init		();
 	CEnemyLocationPredictor::Init	();
-
-	CGamePathManager::set_evaluator	(m_base_game_selector);
-	CLevelPathManager::set_evaluator(m_base_level_selector);
-	CGameLocationSelector::set_dest_path(CGamePathManager::m_path);
-	CLevelLocationSelector::set_dest_path(CLevelPathManager::m_path);
 }
 
-void CMovementManager::Load			(LPCSTR caSection)
+void CMovementManager::Load			(LPCSTR section)
 {
-	CGameLocationSelector::Load		(caSection);
+}
+
+void CMovementManager::reinit		()
+{
+	if (m_dwCurrentFrame == Device.dwFrame)
+		return;
+
+	m_dwCurrentFrame						= Device.dwFrame;
+	
+	m_time_work								= 30000*CPU::cycles_per_microsec;
+	m_speed									= 0.f;
+	m_path_type								= ePathTypeNoPath;
+	m_path_state							= ePathStateDummy;
+	m_path_actuality						= true;
+	m_speed									= 0.f;
+	m_selector_path_usage					= true;
+	m_old_desirable_speed					= 0.f;
+
+	enable_movement							(true);
+	CGameLocationSelector::reinit			(&ai().game_graph());
+	CLevelLocationSelector::reinit			(ai().get_level_graph() ? &ai().level_graph() : 0);
+	CDetailPathManager::reinit				();
+	CGamePathManager::reinit				(&ai().game_graph());
+	CLevelPathManager::reinit				(ai().get_level_graph() ? &ai().level_graph() : 0);
+	CPatrolPathManager::reinit				();
+	CEnemyLocationPredictor::reinit			();
+
+	CGameLocationSelector::set_dest_path	(CGamePathManager::m_path);
+	CLevelLocationSelector::set_dest_path	(CLevelPathManager::m_path);
+}
+
+void CMovementManager::reload		(LPCSTR section)
+{
+	if (m_dwCurrentFrame == Device.dwFrame)
+		return;
+
+	m_dwCurrentFrame		= Device.dwFrame;
 }
 
 void CMovementManager::update_path()
 {
 	time_start				();
+	
+	if (!CGamePathManager::evaluator())
+		CGamePathManager::set_evaluator	(m_base_game_selector);
+
+	if (!CLevelPathManager::evaluator())
+		CLevelPathManager::set_evaluator(m_base_level_selector);
+
 	if (!actual()) {
 		switch (m_path_type) {
 			case ePathTypeGamePath : {

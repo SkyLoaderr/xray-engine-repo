@@ -19,6 +19,7 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapon(name)
 {
+	m_eSoundShow		= ESoundTypes(SOUND_TYPE_WEAPON_TAKING | eSoundType);
 	m_eSoundHide		= ESoundTypes(SOUND_TYPE_WEAPON_HIDING | eSoundType);
 	m_eSoundShot		= ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING | eSoundType);
 	m_eSoundEmptyClick	= ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);

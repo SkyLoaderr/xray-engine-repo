@@ -38,7 +38,7 @@ class CJumping {
 	TTime			time_next_allowed;		// время следующего разрешенного прыжка
 	float			ph_time;				// расcчетное время прыжка
 
-	CObject			*entity;				// указатель на объект-цель (0 - нет)
+	const CObject	*entity;				// указатель на объект-цель (0 - нет)
 
 	// LTX section params
 	float			m_fJumpFactor;			// коэффициент-делитель времени прыжка
@@ -60,7 +60,7 @@ public:
 			void	AddState				(CMotionDef *motion, EJumpStateType type, bool change, float linear, float angular);			
 			
 	// Общая проверка на прыжок
-			bool	Check					(Fvector from_pos, Fvector to_pos, CObject *pO);
+			bool	Check					(Fvector from_pos, Fvector to_pos, const CObject *pO);
 
 	// Подготовка текущей анимации прыжка
 			bool	PrepareAnimation		(CMotionDef **m);
@@ -73,7 +73,7 @@ public:
 	virtual bool	CanJump					() {return true;}
 
 			bool	IsGlide					() {return ((active) ? JT_GLIDE == ptr_cur->type : false);}
-			CObject	*GetEnemy				() {return entity;}
+			const CObject	*GetEnemy		() {return entity;}
 
 	virtual void	OnJumpStart				() {};
 	virtual void	OnJumpStop				() {};

@@ -32,6 +32,7 @@ struct	SRotation
 {
 	float  yaw, pitch;
 	SRotation() { yaw=pitch=0; }
+	SRotation(float y, float p) { yaw=y;pitch=p; }
 };
 
 enum EPOType {

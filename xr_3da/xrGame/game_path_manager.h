@@ -39,7 +39,8 @@ class
 		_index_type
 	> inherited;
 public:
-	IC	virtual void	Init						(const CGameGraph *graph = 0);
+	IC			void	Init						();
+	IC	virtual	void	reinit						(const CGameGraph *graph = 0);
 protected:
 	IC			bool	actual						() const;
 };

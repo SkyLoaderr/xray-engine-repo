@@ -29,14 +29,14 @@ void CAI_Crow::SSound::Load(LPCSTR prefix)
 	string128 fn;
 	if (FS.exist(fn,"$game_sounds$",prefix,".ogg")){
 		m_Sounds.push_back	(ref_sound());
-		::Sound->create		(m_Sounds.back(),TRUE,prefix,0);
+		::Sound->create		(m_Sounds.back(),TRUE,prefix);
 	}
 	for (int i=0; (i<MAX_SND_COUNT)&&(m_Sounds.size()<MAX_SND_COUNT); ++i){
 		string64		name;
 		sprintf			(name,"%s_%d",prefix,i);
 		if (FS.exist(fn,"$game_sounds$",name,".ogg")){
 			m_Sounds.push_back(ref_sound());
-			::Sound->create(m_Sounds.back(),TRUE,name,0);
+			::Sound->create(m_Sounds.back(),TRUE,name);
 		}
 	}
 	R_ASSERT(m_Sounds.size());
@@ -143,7 +143,7 @@ BOOL CAI_Crow::net_Spawn		(LPVOID DC)
 
 void CAI_Crow::net_Destroy		()
 {
-	Init						();
+	inherited::net_Destroy		();
 }
 
 // crow update

@@ -155,7 +155,7 @@ void CAI_PseudoDog::UpdateCL()
 
 		if (strike_in_jump) return;
 
-		CEntity *pE = dynamic_cast<CEntity *>(CJumping::GetEnemy());
+		const CEntity *pE = dynamic_cast<const CEntity *>(CJumping::GetEnemy());
 		if (!pE) return;
 
 		Fvector trace_from;

@@ -36,11 +36,31 @@ const Fvector& CGroup::GetCentroid()
 
 void CGroup::Member_Add(CEntity* E){
 	Members.push_back(E);
+	CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(E);
+	if (memory_manager) {
+		CSquad		&squad = Level().Teams[E->g_Team()].Squads[E->g_Squad()];
+		memory_manager->CVisualMemoryManager::set_squad_objects	(&squad.m_visible_objects);
+		memory_manager->CSoundMemoryManager::set_squad_objects	(&squad.m_sound_objects);
+		memory_manager->CHitMemoryManager::set_squad_objects	(&squad.m_hit_objects);
+		++(squad.m_member_count);
+	}
 }
 
 void CGroup::Member_Remove(CEntity* E){
 	EntityIt it = std::find(Members.begin(),Members.end(),E);
-	if (Members.end()!=it) Members.erase(it);
+	if (Members.end()!=it) {
+		Members.erase(it);
+		CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(E);
+		if (memory_manager) {
+			CSquad		&squad = Level().Teams[E->g_Team()].Squads[E->g_Squad()];
+			--(squad.m_member_count);
+			if (!squad.m_member_count) {
+				squad.m_visible_objects.clear	();
+				squad.m_sound_objects.clear		();
+				squad.m_hit_objects.clear		();
+			}
+		}
+	}
 }
 
 void CGroup::GetAliveMemberPlacement(MemberPlacement& MP, CEntity* Me)

@@ -24,7 +24,7 @@ public:
 							CAI_Bloodsucker	();
 	virtual					~CAI_Bloodsucker();	
 
-	virtual void			Init					();
+			void			Init					();
 	virtual void			UpdateCL				();
 	virtual void			StateSelector			();
 	virtual BOOL			net_Spawn				(LPVOID DC);

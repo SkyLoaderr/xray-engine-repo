@@ -14,7 +14,7 @@ void CAI_Rat::Exec_Action(float /**dt/**/)
 	switch (m_tAction) {
 		case eRatActionAttackBegin : {
 			u32 dwTime = Level().timeServer();
-			if (m_tSavedEnemy && (m_tSavedEnemy->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
+			if (enemy() && (enemy()->g_Health() > 0) && (dwTime - m_dwStartAttackTime > m_dwHitInterval)) {
 				bool bOk = true;
 
 				for (int i=0; i<SND_ATTACK_COUNT; ++i)
@@ -31,14 +31,17 @@ void CAI_Rat::Exec_Action(float /**dt/**/)
 				Fvector tDirection;
 				Fvector position_in_bone_space;
 				position_in_bone_space.set(0.f,0.f,0.f);
-				tDirection.sub(m_tSavedEnemy->Position(),this->Position());
+				tDirection.sub(enemy()->Position(),this->Position());
 				vfNormalizeSafe(tDirection);
 				
-				if ((this->Local()) && (m_tSavedEnemy) && (CLSID_ENTITY == m_tSavedEnemy->CLS_ID))
-					m_tSavedEnemy->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
+				if ((this->Local()) && enemy() && (CLSID_ENTITY == enemy()->CLS_ID)) {
+					CEntityAlive	*entity_alive = const_cast<CEntityAlive*>(enemy());
+					VERIFY			(entity_alive);
+					entity_alive->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
+				}
 			}
 			else {
-				if (m_tSavedEnemy) {
+				if (enemy()) {
 					bool bOk = true;
 
 					for (int i=0; i<SND_ATTACK_COUNT; ++i)
@@ -91,114 +94,30 @@ void CAI_Rat::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 /**e
 	}
 }
 
-float CAI_Rat::EnemyHeuristics(CEntity* E)
+bool CAI_Rat::useful		(const CGameObject *object) const
 {
-	if (E->g_Team()  == g_Team())	
-		return flt_max;		// don't attack our team
-	
-	if (!E->g_Alive())
-		return flt_max;		// don't attack dead enemies
-	
-	float	g_strength = E->g_Armor()+E->g_Health();
-	
-	float	f1	= Position().distance_to_sqr(E->Position());
-	float	f2	= float(g_strength);
-	return  f1*f2;
+	if (!CItemManager::useful(object))
+		return			(false);
+
+	const CEntityAlive	*entity_alive = dynamic_cast<const CEntityAlive*>(object);
+	if (!entity_alive)
+		return			(false);
+
+	return				(true);
 }
 
-void CAI_Rat::SelectEnemy(SEnemySelected& S)
+float CAI_Rat::evaluate		(const CGameObject *object) const
 {
-	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.m_enemy			= 0;
-	S.m_visible			= FALSE;
-	S.m_cost			= flt_max-1;
-	
-	if (!Known.size())
-		return;
-	// Get visible list
-	feel_vision_get	(m_tpaVisibleObjects);
-	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
-	
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	
-	for (u32 i=0; i<Known.size(); ++i) {
-		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
-		if (!E || E->getDestroy())
-			continue;
-		float		H = EnemyHeuristics(E);
-		if (H<S.m_cost) {
-			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)
-				if (m_tpaVisibleObjects[i] == E) {
-					bVisible = true;
-					break;
-				}
-			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-			if (cost<S.m_cost)	{
-				S.m_enemy		= E;
-				S.m_visible		= bVisible;
-				S.m_cost		= cost;
-				Group.m_bEnemyNoticed = true;
-			}
-		}
-	}
-	if (S.m_enemy)
-		vfSaveEnemy();
-	if (m_tSavedEnemy && m_tSavedEnemy->getDestroy())
-		m_tSavedEnemy = 0;
-}
-
-float CAI_Rat::CorpHeuristics(CEntity* E)
-{
-	if (!E->g_Alive()) {
-		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
-		if (tpEntityAlive && (Level().timeServer() - tpEntityAlive->m_dwDeathTime < m_dwEatCorpseInterval) && (tpEntityAlive->m_fFood > 0) && (m_bEatMemberCorpses || (E->g_Team() != g_Team())) && (m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
-//			return (float)(Level().timeServer() - tpEntityAlive->m_dwDeathTime)/1000.f*(tpEntityAlive->m_fFood*tpEntityAlive->m_fFood);
-			return (tpEntityAlive->m_fFood*tpEntityAlive->m_fFood)*Position().distance_to(E->Position());
+	const CEntityAlive	*entity_alive = dynamic_cast<const CEntityAlive*>(object);
+	VERIFY				(entity_alive);
+	if (!entity_alive->g_Alive()) {
+		if ((Level().timeServer() - entity_alive->m_dwDeathTime < m_dwEatCorpseInterval) && (entity_alive->m_fFood > 0) && (m_bEatMemberCorpses || (entity_alive->g_Team() != g_Team())) && (m_bCannibalism || (entity_alive->SUB_CLS_ID != SUB_CLS_ID)))
+			return		(entity_alive->m_fFood*entity_alive->m_fFood)*Position().distance_to(entity_alive->Position());
 		else
-			return flt_max;
+			return		(flt_max);
 	}
 	else
-		return flt_max;
-}
-
-void CAI_Rat::SelectCorp(SEnemySelected& S)
-{
-	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.m_enemy			= 0;
-	S.m_visible			= FALSE;
-	S.m_cost			= flt_max-1;
-	
-	if (!Known.size())
-		return;
-
-	// Get visible list
-	feel_vision_get	(m_tpaVisibleObjects);
-	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
-	
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	
-	for (u32 i=0; i<Known.size(); ++i) {
-		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
-		float		H = CorpHeuristics(E);
-		if (H < flt_max) {
-			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); ++i)
-				if (m_tpaVisibleObjects[i] == E) {
-					bVisible = true;
-					break;
-				}
-				float	cost	 = bVisible? H*.95f : H;
-			if (cost<S.m_cost)	{
-				S.m_enemy		= E;
-				S.m_visible		= bVisible;
-				S.m_cost		= cost;
-				Group.m_bEnemyNoticed = true;
-			}
-		}
-	}
+		return			(flt_max);
 }
 
 void CAI_Rat::vfUpdateMorale()

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "ai_monster_group.h"
-#include "..\\entity.h"
+#include "../entity_alive.h"
 #include "ai_monster_defs.h"
-#include "..\\movement_manager.h"
+#include "../movement_manager.h"
 
 //////////////////////////////////////////////////////////////////////////
 // SQUAD MANAGER Implementation

@@ -8,11 +8,188 @@
 
 #include "stdafx.h"
 #include "visual_memory_manager.h"
+#include "custommonster.h"
 
 CVisualMemoryManager::CVisualMemoryManager		()
 {
+	Init				();
 }
 
 CVisualMemoryManager::~CVisualMemoryManager		()
 {
+}
+
+void CVisualMemoryManager::Init					()
+{
+	m_max_object_count			= 0;
+}
+
+void CVisualMemoryManager::Load					(LPCSTR section)
+{
+	CGameObject::Load			(section);
+	// visibility
+//	m_dwMovementIdleTime		= pSettings->r_s32(section,"MovementIdleTime");
+//	m_fMaxInvisibleSpeed		= pSettings->r_float(section,"MaxInvisibleSpeed");
+//	m_fMaxViewableSpeed			= pSettings->r_float(section,"MaxViewableSpeed");
+//	m_fMovementSpeedWeight		= pSettings->r_float(section,"MovementSpeedWeight");
+//	m_fDistanceWeight			= pSettings->r_float(section,"DistanceWeight");
+//	m_fSpeedWeight				= pSettings->r_float(section,"SpeedWeight");
+//	m_fVisibilityThreshold		= pSettings->r_float(section,"VisibilityThreshold");
+//	m_fLateralMultiplier		= pSettings->r_float(section,"LateralMultiplier");
+//	m_fShadowWeight				= pSettings->r_float(section,"ShadowWeight");
+
+	m_max_object_count		= pSettings->r_s32(section,"DynamicObjectsCount");
+}
+
+void CVisualMemoryManager::reinit					()
+{
+	CGameObject::reinit			();
+	m_objects					= 0;
+	m_visible_objects.clear		();
+	m_visible_objects.reserve	(100);
+}
+
+void CVisualMemoryManager::reload				(LPCSTR section)
+{
+}
+
+bool CVisualMemoryManager::visible(CGameObject *game_object) const
+{
+	VERIFY				(game_object);
+	
+	if (game_object->getDestroy())
+		return			(false);
+
+	return(true);
+////	if (Level().iGetKeyState(DIK_RCONTROL))
+////		return(false);
+//#ifdef LOG_PARAMETERS
+////	bool		bMessage = g_Alive() && !!dynamic_cast<CActor*>(tpEntity);//!!Levsssssssssssssssssssssel().iGetKeyState(DIK_LALT);
+//	int			iLogParameters = (g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) ? (Level().iGetKeyState(DIK_1) ? 2 : Level().iGetKeyState(DIK_0) ? 1 : 0) : 0;
+//	string4096	S = "";
+//#endif
+//	float fResult = 0.f;
+//	
+//	// computing maximum viewable distance in the specified direction
+//	float fDistance = Position().distance_to(tpEntity->Position()), yaw, pitch;
+//	Fvector tDirection;
+//	tDirection.sub(tpEntity->Position(),Position());
+//	tDirection.getHP(yaw,pitch);
+//
+//	float fEyeFov = eye_fov*PI/180.f, fAlpha = _abs(_min(angle_normalize_signed(yaw - m_head.current.yaw),angle_normalize_signed(pitch - m_head.current.pitch)));
+//	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/m_fLateralMultiplier));
+//	
+//	// computing distance weight
+//	fResult += fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection);
+//	
+//	// computing movement speed weight
+//	float fSpeed = 0;
+//	if (tpEntity->ps_Size() > 1) {
+//		u32 dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
+//		if (dwTime < m_dwMovementIdleTime) {
+//			fSpeed = tpEntity->ps_Element(tpEntity->ps_Size() - 2).Position().distance_to(tpEntity->ps_Element(tpEntity->ps_Size() - 1).Position())/dwTime;
+//			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
+//		}
+//	}
+//	
+//	// computing my ability to view the enemy
+//	fResult += m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight;
+//	
+//	// computing lightness weight
+//	fResult += (1 - float(tpEntity->level_vertex()->light)/255.f)*m_fShadowWeight;
+//	
+//#ifdef LOG_PARAMETERS
+//	if ((g_Alive() && !!dynamic_cast<CActor*>(tpEntity)) && (fResult >= m_fVisibilityThreshold))
+//		HUD().outMessage(0xffffffff,cName(),"%s : %d",fResult >= m_fVisibilityThreshold ? "I see actor" : "I don't see actor",Level().timeServer());
+//	Msg("**********");
+//	Msg("Distance : %f [%f]",fDistance, fDistance >= fMaxViewableDistanceInDirection ? 0.f : m_fDistanceWeight*(1.f - fDistance/fMaxViewableDistanceInDirection));
+//	Msg("MySpeed  : %f [%f]",m_fCurSpeed, m_fCurSpeed < m_fMaxViewableSpeed ? m_fSpeedWeight*(1.f - m_fCurSpeed/m_fMaxViewableSpeed) : m_fSpeedWeight);
+//	Msg("Speed    : %f [%f]",fSpeed, fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight);
+//	Msg("Shadow   : %f [%f]",float(tpEntity->level_vertex()->light)/255.f,(1 - float(tpEntity->level_vertex()->light)/255.f)*m_fShadowWeight);
+//	Msg("Result   : %f [%f]",fResult,m_fVisibilityThreshold);
+////	if (iLogParameters) {
+////		fprintf(ST_VF,"%6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f %6.2f\n",fDistance,fAlpha,fSpeed,speed(),float(tpEntity->level_vertex()->light)/255.f,float(level_vertex()->light)/255.f,tpEntity->Radius(),float(iLogParameters - 1));
+////	}
+//#endif
+//	return(fResult >= m_fVisibilityThreshold);
+}
+
+void CVisualMemoryManager::add_visible_object	(CObject *object)
+{
+	CGameObject *game_object	= dynamic_cast<CGameObject*>(object);
+	CGameObject *self			= dynamic_cast<CGameObject*>(this);
+	if (!game_object || !visible(game_object))
+		return;
+
+	xr_vector<CVisibleObject>::iterator	J = std::find(m_objects->begin(),m_objects->end(),game_object->ID());
+	if (m_objects->end() == J) {
+		CVisibleObject			visible_object;
+
+		visible_object.fill		(game_object,self);
+
+		if (m_max_object_count <= m_objects->size()) {
+			xr_vector<CVisibleObject>::iterator	I = std::min_element(m_objects->begin(),m_objects->end(),SLevelTimePredicate<CGameObject>());
+			VERIFY				(m_objects->end() != I);
+			*I					= visible_object;
+		}
+		else
+			m_objects->push_back	(visible_object);
+	}
+	else
+		(*J).fill				(game_object,self);
+}
+
+void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_object)
+{
+	xr_vector<CVisibleObject>::iterator			J = std::find(m_objects->begin(),m_objects->end(),visible_object.m_object->ID());
+	if (m_objects->end() != J)
+		*J				= visible_object;
+	else
+		if (m_max_object_count <= m_objects->size()) {
+			xr_vector<CVisibleObject>::iterator	I = std::min_element(m_objects->begin(),m_objects->end(),SLevelTimePredicate<CGameObject>());
+			VERIFY								(m_objects->end() != I);
+			*I									= visible_object;
+		}
+		else
+			m_objects->push_back(visible_object);
+}
+	
+void CVisualMemoryManager::update				()
+{
+	m_visible_objects.clear				();
+	feel_vision_get						(m_visible_objects);
+
+	{
+		xr_vector<CVisibleObject>::iterator	I = m_objects->begin();
+		xr_vector<CVisibleObject>::iterator	E = m_objects->end();
+		for ( ; I != E; ++I)
+			(*I).m_visible				= false;
+	}
+
+	{
+		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
+		xr_vector<CObject*>::const_iterator	E = m_visible_objects.end();
+		for ( ; I != E; ++I)
+			add_visible_object			(*I);
+	}
+	
+	// verifying if object is online
+	xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflivePredicate());
+	m_objects->erase						(J,m_objects->end());
+}
+
+bool CVisualMemoryManager::visible(u32 dwNodeID, float yaw) const
+{
+	const CCustomMonster	*const_object = dynamic_cast<const CCustomMonster*>(this);
+	CCustomMonster			*object = const_cast<CCustomMonster*>(const_object);
+	VERIFY					(object);
+	Fvector tDirection;
+	tDirection.sub(ai().level_graph().vertex_position(dwNodeID),object->Position());
+	tDirection.normalize_safe();
+	SRotation tRotation;
+	object->mk_rotation(tDirection,tRotation);
+	if (angle_difference(yaw,tRotation.yaw) <= object->eye_fov*PI/180.f/2.f)
+		return(ai().level_graph().check_vertex_in_direction(level_vertex_id(),object->Position(),dwNodeID));
+	else
+		return(false);
 }

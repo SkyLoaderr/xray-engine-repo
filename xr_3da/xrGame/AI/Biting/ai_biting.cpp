@@ -127,12 +127,6 @@ void CAI_Biting::Load(LPCSTR section)
 
 	LoadSounds						(section);
 
-	eye_fov							= pSettings->r_float(section,"EyeFov");
-	eye_range						= pSettings->r_float(section,"eye_range");
-
-	// prefetching
-	cNameVisual_set					(pSettings->r_string(section,"visual"));
-	
 	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
 	m_dwHealth						= pSettings->r_u32		(section,"Health");
 
@@ -216,7 +210,7 @@ BOOL CAI_Biting::net_Spawn (LPVOID DC)
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
 	
-	m_head.current.yaw = m_head.target.yaw = m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
+	m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
 	
 	R_ASSERT2						(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
 	m_tNextGP						= m_tCurGP = ai().cross_table().vertex(level_vertex_id()).game_vertex_id();

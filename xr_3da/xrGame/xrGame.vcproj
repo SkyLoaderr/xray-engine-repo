@@ -281,6 +281,55 @@
 				Name="AComponents"
 				Filter="">
 				<Filter
+					Name="DamageManager"
+					Filter="">
+					<File
+						RelativePath=".\damage_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\damage_manager.h">
+					</File>
+					<File
+						RelativePath=".\damage_manager_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="EventMemoryManager"
+					Filter="">
+					<File
+						RelativePath=".\event_memory_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\event_memory_manager.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="LocationManager"
+					Filter="">
+					<File
+						RelativePath=".\location_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\location_manager.h">
+					</File>
+					<File
+						RelativePath=".\location_manager_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="MaterialManager"
+					Filter="">
+					<File
+						RelativePath=".\material_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\material_manager.h">
+					</File>
+					<File
+						RelativePath=".\material_manager_inline.h">
+					</File>
+				</Filter>
+				<Filter
 					Name="MemoryManager"
 					Filter="">
 					<File
@@ -289,14 +338,23 @@
 					<File
 						RelativePath=".\memory_manager.h">
 					</File>
+					<File
+						RelativePath=".\memory_manager_inline.h">
+					</File>
+					<File
+						RelativePath=".\memory_space.h">
+					</File>
 					<Filter
-						Name="EventMemoryManager"
+						Name="EnemyManager"
 						Filter="">
 						<File
-							RelativePath=".\event_memory_manager.cpp">
+							RelativePath=".\enemy_manager.cpp">
 						</File>
 						<File
-							RelativePath=".\event_memory_manager.h">
+							RelativePath=".\enemy_manager.h">
+						</File>
+						<File
+							RelativePath=".\enemy_manager_inline.h">
 						</File>
 					</Filter>
 					<Filter
@@ -308,6 +366,32 @@
 						<File
 							RelativePath=".\hit_memory_manager.h">
 						</File>
+						<File
+							RelativePath=".\hit_memory_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ItemManager"
+						Filter="">
+						<File
+							RelativePath=".\item_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\item_manager.h">
+						</File>
+						<File
+							RelativePath=".\item_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="ObjectManager"
+						Filter="">
+						<File
+							RelativePath=".\object_manager.h">
+						</File>
+						<File
+							RelativePath=".\object_manager_inline.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="SoundMemoryManager"
@@ -317,6 +401,9 @@
 						</File>
 						<File
 							RelativePath=".\sound_memory_manager.h">
+						</File>
+						<File
+							RelativePath=".\sound_memory_manager_inline.h">
 						</File>
 					</Filter>
 					<Filter
@@ -328,16 +415,205 @@
 						<File
 							RelativePath=".\visual_memory_manager.h">
 						</File>
+						<File
+							RelativePath=".\visual_memory_manager_inline.h">
+						</File>
 					</Filter>
 				</Filter>
 				<Filter
-					Name="EnemySelector"
+					Name="MovementManager"
 					Filter="">
 					<File
-						RelativePath=".\enemy_selector.cpp">
+						RelativePath=".\movement_manager.cpp">
 					</File>
 					<File
-						RelativePath=".\enemy_selector.h">
+						RelativePath=".\movement_manager.h">
+					</File>
+					<File
+						RelativePath=".\movement_manager_enemy.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_game.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_inline.h">
+					</File>
+					<File
+						RelativePath=".\movement_manager_level.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_patrol.cpp">
+					</File>
+					<File
+						RelativePath=".\movement_manager_physic.cpp">
+					</File>
+					<Filter
+						Name="LocationSelectors"
+						Filter="">
+						<Filter
+							Name="AbstractLocationSelector"
+							Filter="">
+							<File
+								RelativePath=".\abstract_location_selector.h">
+							</File>
+							<File
+								RelativePath=".\abstract_location_selector_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="EnemyLocationPredictor"
+							Filter="">
+							<File
+								RelativePath=".\enemy_location_predictor.cpp">
+							</File>
+							<File
+								RelativePath=".\enemy_location_predictor.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="GameLocationSelector"
+							Filter="">
+							<File
+								RelativePath=".\game_location_selector.h">
+							</File>
+							<File
+								RelativePath=".\game_location_selector_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="LevelLocationSelector"
+							Filter="">
+							<File
+								RelativePath=".\level_location_selector.h">
+							</File>
+							<File
+								RelativePath=".\level_location_selector_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+					<Filter
+						Name="PathManagers"
+						Filter="">
+						<Filter
+							Name="AbstractPathManager"
+							Filter="">
+							<File
+								RelativePath=".\abstract_path_manager.h">
+							</File>
+							<File
+								RelativePath=".\abstract_path_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="DetailPathManager"
+							Filter="">
+							<File
+								RelativePath=".\detail_path_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager.h">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_criteria.cpp">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_dodge.cpp">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_inline.h">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_smooth.cpp">
+							</File>
+							<File
+								RelativePath=".\detail_path_manager_straight.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="GamePathManager"
+							Filter="">
+							<File
+								RelativePath=".\game_path_manager.h">
+							</File>
+							<File
+								RelativePath=".\game_path_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="LevelPathManager"
+							Filter="">
+							<File
+								RelativePath=".\level_path_manager.h">
+							</File>
+							<File
+								RelativePath=".\level_path_manager_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="PatrolPathManager"
+							Filter="">
+							<File
+								RelativePath=".\patrol_path_manager.cpp">
+							</File>
+							<File
+								RelativePath=".\patrol_path_manager.h">
+							</File>
+							<File
+								RelativePath=".\patrol_path_manager_inline.h">
+							</File>
+						</Filter>
+					</Filter>
+				</Filter>
+				<Filter
+					Name="PrefetchManager"
+					Filter="">
+					<File
+						RelativePath=".\prefetch_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\prefetch_manager.h">
+					</File>
+					<File
+						RelativePath=".\prefetch_manager_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="SelectorManager"
+					Filter="">
+					<File
+						RelativePath=".\selector_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\selector_manager.h">
+					</File>
+					<File
+						RelativePath=".\selector_manager_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="SightManager"
+					Filter="">
+					<File
+						RelativePath=".\sight_manager.cpp">
+					</File>
+					<File
+						RelativePath=".\sight_manager.h">
+					</File>
+					<File
+						RelativePath=".\sight_manager_inline.h">
+					</File>
+				</Filter>
+				<Filter
+					Name="SoundPlayer"
+					Filter="">
+					<File
+						RelativePath=".\sound_player.cpp">
+					</File>
+					<File
+						RelativePath=".\sound_player.h">
+					</File>
+					<File
+						RelativePath=".\sound_player_inline.h">
 					</File>
 				</Filter>
 				<Filter
@@ -349,6 +625,9 @@
 					<File
 						RelativePath=".\weapon_manager.h">
 					</File>
+					<File
+						RelativePath=".\weapon_manager_inline.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
@@ -357,24 +636,36 @@
 				<Filter
 					Name="EvaluationFunctions"
 					Filter="">
-					<File
-						RelativePath=".\ef_base.cpp">
-					</File>
-					<File
-						RelativePath=".\ef_base.h">
-					</File>
-					<File
-						RelativePath=".\ef_pattern.cpp">
-					</File>
-					<File
-						RelativePath=".\ef_pattern.h">
-					</File>
-					<File
-						RelativePath=".\ef_primary.cpp">
-					</File>
-					<File
-						RelativePath=".\ef_primary.h">
-					</File>
+					<Filter
+						Name="base"
+						Filter="">
+						<File
+							RelativePath=".\ef_base.cpp">
+						</File>
+						<File
+							RelativePath=".\ef_base.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="primary"
+						Filter="">
+						<File
+							RelativePath=".\ef_primary.cpp">
+						</File>
+						<File
+							RelativePath=".\ef_primary.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="patterns"
+						Filter="">
+						<File
+							RelativePath=".\ef_pattern.cpp">
+						</File>
+						<File
+							RelativePath=".\ef_pattern.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="EvaluationFunctionStorage"
@@ -597,6 +888,9 @@
 						RelativePath=".\CustomMonster.h">
 					</File>
 					<File
+						RelativePath=".\CustomMonster_inline.h">
+					</File>
+					<File
 						RelativePath=".\CustomMonster_VCPU.cpp">
 					</File>
 					<File
@@ -747,6 +1041,9 @@
 						RelativePath="AI\Rat\ai_rat_fsm.cpp">
 					</File>
 					<File
+						RelativePath=".\ai\rat\ai_rat_inline.h">
+					</File>
+					<File
 						RelativePath="AI\Rat\ai_rat_templates.cpp">
 					</File>
 				</Filter>
@@ -779,12 +1076,6 @@
 						RelativePath=".\Ai\Stalker\ai_stalker_alife_misc.cpp">
 					</File>
 					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_animations.cpp">
-					</File>
-					<File
-						RelativePath=".\Ai\Stalker\ai_stalker_animations.h">
-					</File>
-					<File
 						RelativePath=".\Ai\Stalker\ai_stalker_events.cpp">
 					</File>
 					<File
@@ -795,6 +1086,9 @@
 					</File>
 					<File
 						RelativePath=".\Ai\Stalker\ai_stalker_fsm.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\stalker\ai_stalker_inline.h">
 					</File>
 					<File
 						RelativePath=".\Ai\Stalker\ai_stalker_misc.cpp">
@@ -808,6 +1102,33 @@
 					<File
 						RelativePath=".\Ai\Stalker\ai_stalker_space.h">
 					</File>
+					<Filter
+						Name="AnimationManager"
+						Filter="">
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_animations.cpp">
+						</File>
+						<File
+							RelativePath=".\Ai\Stalker\ai_stalker_animations.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="MovementManager"
+						Filter="">
+						<File
+							RelativePath=".\stalker_movement_manager.cpp">
+						</File>
+						<File
+							RelativePath=".\stalker_movement_manager.h">
+						</File>
+						<File
+							RelativePath=".\stalker_movement_manager_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="StateManager"
+						Filter="">
+					</Filter>
 				</Filter>
 				<Filter
 					Name="ai_trader"
@@ -846,7 +1167,7 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="AMovement"
+				Name="ANavigation"
 				Filter="">
 				<Filter
 					Name="AI_ObjectLocation"
@@ -899,150 +1220,6 @@
 					<File
 						RelativePath=".\level_graph_vertex_inline.h">
 					</File>
-				</Filter>
-				<Filter
-					Name="MovementManager"
-					Filter="">
-					<File
-						RelativePath=".\movement_manager.cpp">
-					</File>
-					<File
-						RelativePath=".\movement_manager.h">
-					</File>
-					<File
-						RelativePath=".\movement_manager_enemy.cpp">
-					</File>
-					<File
-						RelativePath=".\movement_manager_game.cpp">
-					</File>
-					<File
-						RelativePath=".\movement_manager_inline.h">
-					</File>
-					<File
-						RelativePath=".\movement_manager_level.cpp">
-					</File>
-					<File
-						RelativePath=".\movement_manager_patrol.cpp">
-					</File>
-					<File
-						RelativePath=".\movement_manager_physic.cpp">
-					</File>
-					<Filter
-						Name="LocationSelectors"
-						Filter="">
-						<Filter
-							Name="AbstractLocationSelector"
-							Filter="">
-							<File
-								RelativePath=".\abstract_location_selector.h">
-							</File>
-							<File
-								RelativePath=".\abstract_location_selector_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="EnemyLocationPredictor"
-							Filter="">
-							<File
-								RelativePath=".\enemy_location_predictor.cpp">
-							</File>
-							<File
-								RelativePath=".\enemy_location_predictor.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="GameLocationSelector"
-							Filter="">
-							<File
-								RelativePath=".\game_location_selector.h">
-							</File>
-							<File
-								RelativePath=".\game_location_selector_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="LevelLocationSelector"
-							Filter="">
-							<File
-								RelativePath=".\level_location_selector.h">
-							</File>
-							<File
-								RelativePath=".\level_location_selector_inline.h">
-							</File>
-						</Filter>
-					</Filter>
-					<Filter
-						Name="PathManagers"
-						Filter="">
-						<Filter
-							Name="AbstractPathManager"
-							Filter="">
-							<File
-								RelativePath=".\abstract_path_manager.h">
-							</File>
-							<File
-								RelativePath=".\abstract_path_manager_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="DetailPathManager"
-							Filter="">
-							<File
-								RelativePath=".\detail_path_manager.cpp">
-							</File>
-							<File
-								RelativePath=".\detail_path_manager.h">
-							</File>
-							<File
-								RelativePath=".\detail_path_manager_criteria.cpp">
-							</File>
-							<File
-								RelativePath=".\detail_path_manager_dodge.cpp">
-							</File>
-							<File
-								RelativePath=".\detail_path_manager_inline.h">
-							</File>
-							<File
-								RelativePath=".\detail_path_manager_smooth.cpp">
-							</File>
-							<File
-								RelativePath=".\detail_path_manager_straight.cpp">
-							</File>
-						</Filter>
-						<Filter
-							Name="GamePathManager"
-							Filter="">
-							<File
-								RelativePath=".\game_path_manager.h">
-							</File>
-							<File
-								RelativePath=".\game_path_manager_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="LevelPathManager"
-							Filter="">
-							<File
-								RelativePath=".\level_path_manager.h">
-							</File>
-							<File
-								RelativePath=".\level_path_manager_inline.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="PatrolPathManager"
-							Filter="">
-							<File
-								RelativePath=".\patrol_path_manager.cpp">
-							</File>
-							<File
-								RelativePath=".\patrol_path_manager.h">
-							</File>
-							<File
-								RelativePath=".\patrol_path_manager_inline.h">
-							</File>
-						</Filter>
-					</Filter>
 				</Filter>
 				<Filter
 					Name="Pathfinding"
@@ -1533,30 +1710,56 @@
 					<Filter
 						Name="Basic"
 						Filter="">
-						<File
-							RelativePath=".\Entity.cpp">
-						</File>
-						<File
-							RelativePath=".\Entity.h">
-						</File>
-						<File
-							RelativePath=".\EntityCondition.cpp">
-						</File>
-						<File
-							RelativePath=".\EntityCondition.h">
-						</File>
-						<File
-							RelativePath=".\GameObject.cpp">
-						</File>
-						<File
-							RelativePath=".\GameObject.h">
-						</File>
-						<File
-							RelativePath="PhysicObject.cpp">
-						</File>
-						<File
-							RelativePath="PhysicObject.h">
-						</File>
+						<Filter
+							Name="Entity"
+							Filter="">
+							<File
+								RelativePath=".\Entity.cpp">
+							</File>
+							<File
+								RelativePath=".\Entity.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="EntityAlive"
+							Filter="">
+							<File
+								RelativePath=".\entity_alive.cpp">
+							</File>
+							<File
+								RelativePath=".\entity_alive.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="EntityCondition"
+							Filter="">
+							<File
+								RelativePath=".\EntityCondition.cpp">
+							</File>
+							<File
+								RelativePath=".\EntityCondition.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="GameObject"
+							Filter="">
+							<File
+								RelativePath=".\GameObject.cpp">
+							</File>
+							<File
+								RelativePath=".\GameObject.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="PhysicObject"
+							Filter="">
+							<File
+								RelativePath="PhysicObject.cpp">
+							</File>
+							<File
+								RelativePath="PhysicObject.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_door"

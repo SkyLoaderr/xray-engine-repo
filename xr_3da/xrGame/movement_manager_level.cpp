@@ -51,21 +51,21 @@ void CMovementManager::process_level_path()
 				CLevelPathManager::path(),
 				CLevelPathManager::intermediate_index()
 			);
+	
+			Device.Statistic.TEST2.End();
+
 			if (CDetailPathManager::failed()) {
 				m_path_state	= ePathStateBuildLevelPath;
-				Device.Statistic.TEST2.End();
 				break;
 			}
 
 			m_path_state		= ePathStatePathVerification;
 
-			Device.Statistic.TEST2.End();
-
 			if (time_over())
 				break;
 		}
 		case ePathStatePathVerification : {
-			if (!CLevelLocationSelector::actual(level_vertex_id()))
+			if (!CLevelLocationSelector::actual(level_vertex_id(),path_completed()))
 				m_path_state	= ePathStateSelectLevelVertex;
 			else
 			if (!CLevelPathManager::actual())
@@ -82,7 +82,7 @@ void CMovementManager::process_level_path()
 			break;
 		}
 		case ePathStatePathCompleted : {
-			if (!CLevelLocationSelector::actual(level_vertex_id()))
+			if (!CLevelLocationSelector::actual(level_vertex_id(),path_completed()))
 				m_path_state	= ePathStateSelectLevelVertex;
 			break;
 		}

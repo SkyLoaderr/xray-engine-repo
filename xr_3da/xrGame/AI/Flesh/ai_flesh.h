@@ -8,7 +8,7 @@ public:
 							CAI_Flesh		();
 	virtual					~CAI_Flesh		();	
 	
-	virtual void	Init					();
+			void	Init					();
 	virtual	void	Load					(LPCSTR section);
 	virtual	BOOL	net_Spawn				(LPVOID DC);
 	virtual void    StateSelector			();
@@ -23,6 +23,8 @@ public:
 #endif
 
 	CBitingSearchEnemy	*stateSearchEnemy;
+
+			void	Testing					();
 
 			void	Testing					();
 

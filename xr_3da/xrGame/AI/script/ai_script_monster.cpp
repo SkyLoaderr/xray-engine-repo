@@ -17,18 +17,36 @@
 
 CScriptMonster::CScriptMonster()
 {
-	m_tpActionQueue.clear	();
-	m_caScriptName			= "";
-	m_bScriptControl		= false;
-	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i) {
-		m_tpCallbacks[i].m_lua_object = 0;
-		m_tpCallbacks[i].m_method_name = "";
-	}
-	InitScript				();
+	Init					();
 }
 
 CScriptMonster::~CScriptMonster()
 {
+}
+
+void CScriptMonster::Init()
+{
+}
+
+void CScriptMonster::reinit()
+{
+	inherited::reinit				();
+
+	while (!m_tpActionQueue.empty()) {
+		xr_delete	(m_tpActionQueue.front());
+		m_tpActionQueue.erase(m_tpActionQueue.begin());
+	}
+
+	for (u32 i=(u32)eActionTypeMovement; i<(u32)eActionTypeCount; ++i) {
+		m_tpCallbacks[i].m_lua_object = 0;
+		m_tpCallbacks[i].m_method_name = "";
+	}
+
+	m_caScriptName					= "";
+	m_bScriptControl				= false;
+	m_tpScriptAnimation				= 0;
+	
+	PKinematics(Visual())->Callback	(0,0);
 }
 
 void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caSciptName)
@@ -73,9 +91,9 @@ bool CScriptMonster::CheckObjectVisibility(const CObject *tpObject)
 	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
 	if (!l_tpCustomMonster)
 		return			(false);
-	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_tpaVisibleObjects);
-	xr_vector<CObject*>::const_iterator	I = l_tpCustomMonster->m_tpaVisibleObjects.begin();
-	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_tpaVisibleObjects.end();
+	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_visible_objects);
+	xr_vector<CObject*>::const_iterator	I = l_tpCustomMonster->m_visible_objects.begin();
+	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_visible_objects.end();
 	for ( ; I != E; ++I)
 		if (tpObject == dynamic_cast<CObject*>(*I))
 			return		(true);
@@ -89,9 +107,9 @@ bool CScriptMonster::CheckTypeVisibility(const char* section_name)
 	CCustomMonster		*l_tpCustomMonster = dynamic_cast<CCustomMonster*>(this);
 	if (!l_tpCustomMonster)
 		return			(false);
-	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_tpaVisibleObjects);
-	xr_vector<CObject*>::const_iterator	I = l_tpCustomMonster->m_tpaVisibleObjects.begin();
-	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_tpaVisibleObjects.end();
+	l_tpCustomMonster->feel_vision_get(l_tpCustomMonster->m_visible_objects);
+	xr_vector<CObject*>::const_iterator	I = l_tpCustomMonster->m_visible_objects.begin();
+	xr_vector<CObject*>::const_iterator	E = l_tpCustomMonster->m_visible_objects.end();
 	for ( ; I != E; ++I)
 	{
 		CObject* pObject = dynamic_cast<CObject*>(*I);
@@ -358,27 +376,12 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 
 void CScriptMonster::ResetScriptData(void * /**P/**/)
 {
-	InitScript				();
-}
-
-void CScriptMonster::InitScript()
-{
-	while (!m_tpActionQueue.empty()) {
-		xr_delete	(m_tpActionQueue.front());
-		m_tpActionQueue.erase(m_tpActionQueue.begin());
-	}
-	// animation
-	m_tpScriptAnimation		= 0;
-
-	// callbacks
-	if (Visual())
-		PKinematics(Visual())->Callback(0,0);
+	Init					();
 }
 
 void CScriptMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
-	InitScript				();
 }
 
 void CScriptMonster::set_callback	(const luabind::object &lua_object, LPCSTR method, const CScriptMonster::EActionType tActionType)

@@ -20,18 +20,23 @@
 //////////////////////////////////////////////////////////////////////
 CGameObject::CGameObject		()
 {
-	m_pPhysicsShell			= NULL;
-	m_tpALife				= 0;
-	m_dwNetSpawnFrame		= u32(-1);
+	Init					();
 }
 
 CGameObject::~CGameObject		()
 {
 }
 
+void CGameObject::Init		()
+{
+	m_dwNetSpawnFrame			= u32(-1);
+	m_pPhysicsShell				= NULL;
+}
+
 void CGameObject::Load(LPCSTR section)
 {
 	inherited::Load			(section);
+	CPrefetchManager::Load	(section);
 	//////////////////////////////////////
 	// С Олеся - ПИВО!!!! (2-я бутылка опять же Диме :-))))
 	// Надо что-то придумать, чтобы флаги правильно 
@@ -45,8 +50,31 @@ void CGameObject::Load(LPCSTR section)
 	//////////////////////////////////////
 }
 
+void CGameObject::reinit	()
+{
+	if (Device.dwFrame == m_dwNetSpawnFrame)
+		return;
+
+	m_dwNetSpawnFrame				= Device.dwFrame;
+
+	CAI_ObjectLocation::reinit	();
+//	CPrefetchManager::reinit	();
+	m_tpALife					= 0;
+}
+
+void CGameObject::reload	(LPCSTR section)
+{
+//	CAI_ObjectLocation::reload	(section);
+//	CPrefetchManager::reload	(section);
+}
+
 void CGameObject::net_Destroy	()
 {
+	if (Device.dwFrame == m_dwNetSpawnFrame)
+		return;
+
+	m_dwNetSpawnFrame				= Device.dwFrame;
+
 	inherited::net_Destroy						();
 	setReady									(FALSE);
 	g_pGameLevel->Objects.net_Unregister		(this);
@@ -56,8 +84,6 @@ void CGameObject::net_Destroy	()
 
 	if (!H_Parent() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec				(level_vertex_id());
-
-	Init										();
 
 	xr_delete									(m_pPhysicsShell);
 }
@@ -102,15 +128,17 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 	m_dwNetSpawnFrame				= Device.dwFrame;
 
-	setDestroy						(FALSE);	// @@@ WT
-
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	R_ASSERT						(E);
-	
+
 	const CSE_Visual				*l_tpVisual = dynamic_cast<const CSE_Visual*>(E);
 	if (l_tpVisual)
 		cNameVisual_set				(l_tpVisual->get_visual());
 
+	reinit							();
+	reload							(cNameSect());
+
+	setDestroy						(FALSE);	// @@@ WT
 
 	// Naming
 	cName_set						(E->s_name);
@@ -348,6 +376,25 @@ void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
 f32 CGameObject::GetMass()
 {
 	return m_pPhysicsShell ? m_pPhysicsShell->getMass() : 0;
+}
+
+u16	CGameObject::PHGetSyncItemsNumber()
+{
+	if(m_pPhysicsShell)	return m_pPhysicsShell->get_ElementsNumber();
+	else				return 0;
+}
+CPHSynchronize*	CGameObject::PHGetSyncItem	(u16 item)
+{
+	if(m_pPhysicsShell) return m_pPhysicsShell->get_ElementSync(item);
+	else				return 0;
+}
+void	CGameObject::PHUnFreeze	()
+{
+	if(m_pPhysicsShell) m_pPhysicsShell->UnFreeze();
+}
+void	CGameObject::PHFreeze()
+{
+	if(m_pPhysicsShell) m_pPhysicsShell->Freeze();
 }
 
 u16	CGameObject::PHGetSyncItemsNumber()

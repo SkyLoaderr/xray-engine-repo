@@ -7,7 +7,7 @@
 #include "stdafx.h"
 #include "InventoryOwner.h"
 #include "gameobject.h"
-#include "entity.h"
+#include "entity_alive.h"
 #include "pda.h"
 #include "actor.h"
 
@@ -17,8 +17,26 @@
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
 //////////////////////////////////////////////////////////////////////////
-CInventoryOwner::CInventoryOwner()
- {
+CInventoryOwner::CInventoryOwner			()
+{
+	Init						();
+}
+CInventoryOwner::~CInventoryOwner			() 
+{
+	if (m_pTrade)
+		xr_delete				(m_pTrade);
+}
+
+void CInventoryOwner::Init					()
+{
+}
+
+void CInventoryOwner::Load					(LPCSTR section)
+{
+}
+
+void CInventoryOwner::reinit				()
+{
 	m_inventory.m_pOwner		= this;
 	m_trade_storage.m_pOwner	= this;
 	m_pTrade					= NULL;
@@ -28,10 +46,11 @@ CInventoryOwner::CInventoryOwner()
 
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
+	m_inventory.Clear			();
 }
-CInventoryOwner::~CInventoryOwner() 
+
+void CInventoryOwner::reload				(LPCSTR section)
 {
-	if(m_pTrade) xr_delete(m_pTrade);
 }
 
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)

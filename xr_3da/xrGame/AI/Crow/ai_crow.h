@@ -6,7 +6,7 @@
 #ifndef __XRAY_AI_CROW__
 #define __XRAY_AI_CROW__
 
-#include "../../entity.h"
+#include "../../entity_alive.h"
 class CAI_Crow : public CEntityAlive
 {
 	typedef	CEntityAlive inherited;
@@ -93,7 +93,7 @@ public:
 					CAI_Crow();
 	virtual			~CAI_Crow();
 	virtual void	Load			( LPCSTR section );
-	virtual void	Init			();
+			void	Init			();
 	virtual BOOL	net_Spawn		( LPVOID DC );
 	virtual void	net_Destroy		();
 	virtual BOOL	renderable_ShadowGenerate	()			{ return FALSE;	}
@@ -111,8 +111,8 @@ public:
 	virtual void	HitImpulse		(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);
 	virtual void	Hit				(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
 	virtual void	Die				(){CreateSkeleton();};
-	virtual	float	ffGetFov		(){return 150.f;}
-	virtual	float	ffGetRange		(){return 30.f;}
+	virtual	float	ffGetFov		()const {return 150.f;}
+	virtual	float	ffGetRange		()const {return 30.f;}
 
 	virtual BOOL	IsVisibleForHUD	()	{ return FALSE;		}
 	virtual bool	IsVisibleForZones() { return false;		}

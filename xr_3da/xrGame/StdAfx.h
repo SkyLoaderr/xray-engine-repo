@@ -6,6 +6,8 @@
 #pragma warning( 4 : 4018 )
 #pragma warning( 4 : 4244 )
 
+#pragma warning(disable:4505)
+
 #include "clsid_game.h"
 
 // #pragma warning(disable:4201)

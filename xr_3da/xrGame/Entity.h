@@ -33,7 +33,7 @@ private:
 protected:
 	// health & shield
 
-	virtual float GetfHealth() { return fHealth; }
+	virtual float GetfHealth() const { return fHealth; }
 	virtual float SetfHealth(float value) {fHealth = value; return value;}
 	PropertyGP(GetfHealth,SetfHealth) float fEntityHealth;
 
@@ -83,10 +83,10 @@ public:
 	bool					IsMyCamera			()const	{ return (dynamic_cast<const CEntity*>(g_pGameLevel->CurrentViewEntity())==this);	}
 
 	float					g_Armor				()const	{ return fArmor;	}
-	virtual float			g_Health			()		{ return fEntityHealth;}
+	virtual float			g_Health			()const	{ return fEntityHealth;}
 	virtual float			g_MaxHealth			()const	{ return m_fMaxHealthValue;	}
 	float					g_Accuracy			()const	{ return fAccuracy;	}
-	virtual BOOL			g_Alive				()		{ return fEntityHealth>0; }
+	virtual BOOL			g_Alive				()const	{ return fEntityHealth>0; }
 	virtual BOOL			g_State				(SEntityState &/**state/**/)	{return FALSE;}
 	virtual bool			AlreadyDie()		{return  0!=m_dwDeathTime?true:false;}
 
@@ -125,14 +125,8 @@ public:
 	_TIME_ID				m_dwDeathTime;
 };
 
-
-class CEntityAlive			: public CEntity, 
-							  virtual public CEntityCondition
-{
-private:
-	typedef	CEntity			inherited;			
-public:
-	EVENT					m_tpEventSay;
+#endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)
+NT					m_tpEventSay;
 	bool					m_bMobility;
 	float					m_fAccuracy;
 	float					m_fIntelligence;
@@ -184,12 +178,7 @@ IC	CPHMovementControl* PMovement()
 	{
 		return &m_PhysicMovementControl;
 	}
-///////////////////////////////////////////////////////////////////////
-	virtual u16				PHGetSyncItemsNumber();
-	virtual CPHSynchronize*	PHGetSyncItem		(u16 item);
-	virtual void			PHUnFreeze			();
-	virtual void			PHFreeze			();
-///////////////////////////////////////////////////////////////////////
+
 };
 
 #endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)

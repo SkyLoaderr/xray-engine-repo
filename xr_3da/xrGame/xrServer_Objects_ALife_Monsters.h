@@ -112,7 +112,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	virtual u8						g_team					();
 	virtual u8						g_squad					();
 	virtual u8						g_group					();
-	IC		float					g_Health				()										{ return fHealth;}
+	IC		float					g_Health				() const									{ return fHealth;}
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,CSE_ALifeSchedulable)
@@ -132,7 +132,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	virtual							~CSE_ALifeMonsterAbstract();
-	IC		float					g_MaxHealth				()											{ return m_fMaxHealthValue;	}
+	IC		float					g_MaxHealth				() const										{ return m_fMaxHealthValue;	}
 #ifdef _EDITOR
 	virtual	void					Update					()	{};
 #else
@@ -270,8 +270,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfCheckForDeletedEvents	();
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
-			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			OBJECT_VECTOR	&tpObjectVector);
-			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector,		OBJECT_VECTOR	*tpObjectVector = 0);
+			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,			OBJECT_VECTOR	&tpObjectVector) const;
+			u16						get_available_ammo_count(const CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector,		OBJECT_VECTOR	*tpObjectVector = 0);
 			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector,		OBJECT_VECTOR	*tpObjectVector = 0);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,					float			&fHitPower);
 	virtual bool					bfPerformAttack			();

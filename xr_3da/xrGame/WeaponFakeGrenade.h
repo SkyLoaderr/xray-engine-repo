@@ -19,7 +19,7 @@ public:
 	CWeaponFakeGrenade(void);
 	virtual ~CWeaponFakeGrenade(void);
 
-	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
+	void SoundCreate(ref_sound& dest, LPCSTR name, int iType, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(ref_sound& dest);
 
 	virtual void Load(LPCSTR section);

@@ -28,7 +28,7 @@ public:
 	float GetMaxHealth() const {return m_fHealthMax;}
 	float GetHealthLost() const {return m_fHealthLost;}
 
-	virtual bool IsLimping();
+	virtual bool IsLimping() const;
 
 	void ChangeHealth(float value);
 	void ChangePower(float value);
@@ -179,6 +179,8 @@ protected:
 	u64 m_iLastTimeCalled;
 	u64 m_iDeltaTime;
 	bool m_bTimeValid;
+
+	virtual void reinit	();
 };
 
 #endif //_ENTITY_CONDITION_H_

@@ -20,7 +20,11 @@ public:
 	CInventoryOwner();
 	virtual ~CInventoryOwner();
 
-	virtual BOOL net_Spawn		(LPVOID DC);
+	virtual BOOL	net_Spawn					(LPVOID DC);
+			void	Init						();
+	virtual void	Load						(LPCSTR section);
+	virtual void	reinit						();
+	virtual void	reload						(LPCSTR section);
 
 	//обновление
 	virtual void UpdateInventoryOwner(u32 deltaT);
@@ -69,6 +73,7 @@ public:
 	virtual LPCSTR GetGameName();
 	virtual LPCSTR GetGameRank();
 	virtual LPCSTR GetGameCommunity();
+	const CInventory &inventory() const {return(m_inventory);}
 
 protected:
 	// торговля

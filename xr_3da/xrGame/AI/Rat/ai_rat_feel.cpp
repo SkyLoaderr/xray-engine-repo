@@ -22,18 +22,16 @@ void CAI_Rat::SetDirectionLook()
 	}
 	else
 		m_body.target.pitch = 0;
-	m_head.target = m_body.target;
 }
 
 void CAI_Rat::vfAimAtEnemy()
 {
 	Fvector	pos1, pos2;
-	//m_Enemy.m_enemy->Center(pos1);
-	pos1 = m_Enemy.m_enemy->Position();
+	//m_Enemy.m_object->Center(pos1);
+	pos1 = enemy()->Position();
 	Center(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,m_body.target);
-	m_head.target.yaw = m_body.target.yaw;
 }
 
 BOOL CAI_Rat::feel_vision_isRelevant(CObject* O)
@@ -64,12 +62,12 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, const Fvector &Position, f
 			m_tLastSound.dwTime			= Level().timeServer();
 			m_tLastSound.fPower			= power;
 			m_tLastSound.tSavedPosition = Position;
-			m_tLastSound.tpEntity		= dynamic_cast<CEntity *>(who);
+			m_tLastSound.tpEntity		= dynamic_cast<CEntityAlive*>(who);
 			//float fDistance = (Position.distance_to(Position()) < 1.f ? 1.f : Position.distance_to(Position()));
 //			if ((eType & SOUND_TYPE_MONSTER_DYING) == SOUND_TYPE_MONSTER_DYING)
 //				m_fMorale += m_fMoraleDeathQuant;///fDistance;
 //			else
-				if (((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) && (!m_Enemy.m_enemy))
+				if (((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING) && !enemy())
 					m_fMorale += m_fMoraleFearQuant;///fDistance;
 				else
 					if ((eType & SOUND_TYPE_MONSTER_ATTACKING) == SOUND_TYPE_MONSTER_ATTACKING)

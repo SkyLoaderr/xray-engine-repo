@@ -27,8 +27,6 @@ void CAI_Idol::Load					(LPCSTR section)
 {
 	setEnabled						(false);
 	inherited::Load					(section);
-	eye_fov							= pSettings->r_float(section,"eye_fov");
-	eye_range						= pSettings->r_float(section,"eye_range");
 }
 
 BOOL CAI_Idol::net_Spawn			(LPVOID DC)

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "../../GameObject.h"
+#include "../../visual_memory_manager.h"
 #include "../../ai_script_space.h"
 
 class CEntityAction;
@@ -40,7 +41,8 @@ protected:
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
-			void				InitScript				();
+			void				Init					();
+	virtual	void				reinit					();
 	virtual BOOL				net_Spawn				(LPVOID DC);
 	virtual void				net_Destroy				();
 			const Fmatrix		GetUpdatedMatrix		(ref_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);
