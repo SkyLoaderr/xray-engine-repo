@@ -22,9 +22,24 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 	switch(C.iElement) 
 	{
 	case 0: 	// deffer
-		C.r2_Pass			("r2_deffer_base_flat","r2_deffer_base_flat");
-		C.r2_Sampler		("s_base",C.L_textures[0]);
-		C.r2_End			();
+		{
+			char				fname	[_MAX_PATH];
+			strcpy				(fname,C.L_textures[0]); if (strext(fname)) *strext(fname)=0;
+			strcat				(fname,"_bump.dds");
+			if (FS.exist("$game_textures$",	fname))
+			{
+				// bump found
+				C.r2_Pass			("r2_deffer_base_bump","r2_deffer_base_bump");
+				C.r2_Sampler		("s_base",C.L_textures[0]);
+				C.r2_Sampler		("s_bump",fname);
+				C.r2_End			();
+			} else {
+				// flat
+				C.r2_Pass			("r2_deffer_base_flat","r2_deffer_base_flat");
+				C.r2_Sampler		("s_base",C.L_textures[0]);
+				C.r2_End			();
+			}
+		}
 		break;
 	case 1:		// smap-direct
 		C.r2_Pass			("r2_shadow_direct_base","r2_shadow_direct_base");
