@@ -63,8 +63,8 @@ function update()
 			-- в первом заходе ракетами не стрелять
 			heli_mgr.heliObject.m_use_rocket_on_attack = false
 
---			local snd = sound_object( "ambient\\gunfire" )
---			snd:play_at_pos( actor, actor:position() )
+			local snd = sound_object( [[characters_voice\human_01\scenario\helicopter\heli_attack]] )
+			snd:play_at_pos( newbies[1], newbies[1]:position() )
 
 			state_init = false
 		end
@@ -125,8 +125,8 @@ end
 function main()
 	actor = get_actor()
 
---	local snd = sound_object( "ambient\\gunfire" )
---	snd:play_at_pos( actor, actor:position():add( vector():set( 0, 100, 0 ) ) )
+--	local snd = sound_object( [[characters_voice\human_01\scenario\helicopter\heli_attack]] )
+--	snd:play_at_pos( actor, actor:position():add( vector():set( 80, 0, 0 ) ) )
 
 	heli_mgr = xr_heli.HeliManager()
 	heli_mgr:initialize( "heli", nil, 30, 30 )
