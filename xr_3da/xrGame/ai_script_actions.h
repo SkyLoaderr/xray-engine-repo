@@ -339,6 +339,7 @@ public:
 	bool							m_bStartedToPlay;
 	Fvector							m_tParticlePosition;
 	Fvector							m_tParticleAngles;
+	Fvector							m_tParticleVelocity;
 
 							CParticleAction		()
 	{
@@ -348,15 +349,18 @@ public:
 		m_bCompleted		= false;
 		m_bStartedToPlay	= false;
 		m_tpParticleSystem	= 0;
-		m_tParticlePosition.set(0,0,0);
+		m_tParticlePosition.set	(0,0,0);
 		m_tParticleAngles.set	(0,0,0);
+		m_tParticleVelocity.set	(0,0,0);
 	}
 
-							CParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), bool bAutoRemove = false)
+#pragma todo("Dima to Dima : Add velocity for particle systems here")
+							CParticleAction		(LPCSTR caPartcileToRun, LPCSTR caBoneName, const Fvector &tPositionOffset = Fvector().set(0,0,0), const Fvector &tAngleOffset = Fvector().set(0,0,0), /**const Fvector &tVelocity = Fvector().set(0,0,0), /**/bool bAutoRemove = false)
 	{
 		SetBone				(caBoneName);
 		SetPosition			(tPositionOffset);
 		SetAngles			(tAngleOffset);
+//		SetVelocity			(tVelocity);
 		SetParticle			(caPartcileToRun,bAutoRemove);
 	}
 
@@ -389,6 +393,13 @@ public:
 			void			SetAngles			(const Fvector &tAngleOffset)
 	{
 		m_tParticleAngles	= tAngleOffset;
+		m_bStartedToPlay	= false;
+		m_bCompleted		= false;
+	}
+
+			void			SetVelocity			(const Fvector &tVelocity)
+	{
+		m_tParticleVelocity	= tVelocity;
 		m_bStartedToPlay	= false;
 		m_bCompleted		= false;
 	}

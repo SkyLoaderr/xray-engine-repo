@@ -116,7 +116,7 @@ void __stdcall ParticleCallback(CBoneInstance *tpBoneInstance)
 		LPCSTR			l_caBoneName = l_tParticleAction.m_caBoneName;
 		if (l_tpScriptMonster->GetCurrentAction() && strlen(l_caBoneName)) {
 			CParticlesObject	*l_tpParticlesObject = l_tParticleAction.m_tpParticleSystem;
-			l_tpParticlesObject->UpdateParent(l_tpScriptMonster->GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),Fvector().set(0,0,0));
+			l_tpParticlesObject->UpdateParent(l_tpScriptMonster->GetUpdatedMatrix(l_caBoneName,l_tParticleAction.m_tParticlePosition,l_tParticleAction.m_tParticleAngles),l_tParticleAction.m_tParticleVelocity);
 		}
 	}
 }
