@@ -151,8 +151,6 @@ void CWeaponMagazined::Update			(DWORD T)
 	inherited::Update	(T);
 	float dt			= float(T)/1000.f;
 
-	VERIFY				(H_Parent());
-	
 	// on state change
 	if (st_target!=st_current)
 	{

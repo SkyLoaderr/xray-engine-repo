@@ -162,6 +162,8 @@ void CWeapon::UpdateXForm	()
 	if (Device.dwFrame!=dwXF_Frame){
 		dwXF_Frame = Device.dwFrame;
 
+		if (0==H_Parent())	return;
+
 		if (hud_mode)
 		{
 			if (m_pHUD)
@@ -205,7 +207,7 @@ void CWeapon::UpdateFP		()
 
 		UpdateXForm		();
 
-		if (hud_mode)	
+		if (hud_mode && (0!=H_Parent()))	
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());
@@ -223,7 +225,7 @@ void CWeapon::UpdateFP		()
 			vLastFD.set				(0.f,0.f,1.f);
 			parent.transform_dir	(vLastFD);
 		} else {
-			// 3rd person
+			// 3rd person or no parent
 			Fmatrix& parent			= svTransform;
 			Fvector& fp				= vFirePoint;
 			Fvector& sp				= vShellPoint;
