@@ -80,12 +80,13 @@ function save_dialog:InitControls()
 	main_frame:AttachChild(txt_caption)
 	
 	-- EDIT box --
---[[	local frame_edit = CUIFrameWindow()  --background for ListView
+	local frame_edit = CUIFrameWindow()  --background for ListView
     frame_edit:SetAutoDelete(true)
+	frame_edit:SetWindowName("frame_edit")
     frame_edit:Init("ui\\ui_pop_up", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
     -- txt_list:ClipperOn()
     main_frame:AttachChild(frame_edit)
-	]]
+	
 	local edit_filename = CUIEditBox()
 	edit_filename:SetAutoDelete(true)
 	edit_filename:SetWindowName("edit_filename")
