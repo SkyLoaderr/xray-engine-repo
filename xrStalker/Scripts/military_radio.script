@@ -35,9 +35,9 @@ end
 function add (npc, action)
 
     --if alife () == nil then
-    if npc:community () == "soldier" then
+    --if npc:community () == "soldier" then
        action:add_precondition (world_property (xr_evaluators_id.sidor_military_radio, true))
-    end   
+    --end   
     --end    
     
     --local comm = npc:character_community ()
