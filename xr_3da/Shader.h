@@ -13,6 +13,7 @@
 #include "sh_texture.h"
 #include "sh_matrix.h"
 #include "sh_constant.h"
+#include "sh_rt.h"
 
 typedef svector<string64,4>	sh_list;
 
