@@ -155,7 +155,6 @@ void CActor::Load		(LPCSTR section )
 	m_fCrouchFactor		= pSettings->ReadFLOAT(section,"crouch_coef");
 
 	Weapons				= new CWeaponList(this);
-	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
 	// sounds
 	char buf[256];
@@ -924,4 +923,7 @@ void CActor::OnDeviceCreate()
 
 	m_normal.Create		(V,"norm");
 	m_crouch.Create		(V,"cr");
+
+	//
+	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 }

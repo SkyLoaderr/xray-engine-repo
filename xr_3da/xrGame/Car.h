@@ -35,6 +35,7 @@ public:
 	virtual void			Update				( DWORD T ); 
 	virtual void			UpdateCL			( ); 
 	virtual void			OnVisible			( ); 
+	virtual void			OnDeviceCreate		( );
 
 	// Network
 	virtual void			net_Export			(NET_Packet& P);				// export to server

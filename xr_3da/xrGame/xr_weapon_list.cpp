@@ -13,8 +13,6 @@ public:
 CWeaponList::CWeaponList	(CEntity* p)
 {
 	m_pParent			= p;
-	R_ASSERT(m_pParent->Visual()->Type==MT_SKELETON);
-
 	m_iActiveWeapon		= -1;
 	m_iSelectedWeapon	= -1;
 	m_iHUDboneL			= -1;

@@ -103,15 +103,6 @@ void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
 
-	CKinematics*	M				= PKinematics(pVisual);
-	R_ASSERT						(M);
-	M->PlayCycle					("init");
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
-	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
-
 	pSounds->Create					(snd_engine,TRUE,"car\\car1",TRUE);
 }
 
@@ -280,4 +271,16 @@ void CCar::PhDataUpdate(dReal step){
 }
 void CCar:: PhTune(dReal step){
 	m_jeep.JointTune(step);
+}
+
+void CCar::OnDeviceCreate()
+{
+	CKinematics*	M				= PKinematics(pVisual);
+	R_ASSERT						(M);
+	M->PlayCycle					("init");
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
+	// clTransform.set					( m_jeep.DynamicData.BoneTransform	);
 }
