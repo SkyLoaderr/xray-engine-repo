@@ -9,6 +9,9 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+	shared_str	eval_line_1;
+	shared_str	eval_line_2;
+	shared_str	eval_line_3;
  
 CStats::CStats()
 {
@@ -98,6 +101,16 @@ void CStats::Show()
 		dwMem_calls		=	Memory.stat_calls;
 		if (mem_count>fMem_calls)	fMem_calls	=	mem_count;
 		else						fMem_calls	=	.9f*fMem_calls + .1f*mem_count;
+	}
+
+	div_t ddd = div(Device.dwFrame,2000);
+	if( ddd.rem < 1000 ){
+		pFont->SetColor	(0xFFFFFFFF	);
+		pFont->OutSet	(0,0);
+		pFont->OutNext	(*eval_line_1);
+		pFont->OutNext	(*eval_line_2);
+		pFont->OutNext	(*eval_line_3);
+		pFont->OnRender	();
 	}
 
 	// Show them
@@ -283,7 +296,18 @@ void CStats::Show()
 void CStats::OnDeviceCreate			()
 {
 	pFont	= xr_new<CGameFont>		("stat_font");
+	
+	if(!pSettings->section_exist("evaluation")
+		||!pSettings->line_exist("evaluation","line1")
+		||!pSettings->line_exist("evaluation","line2")
+		||!pSettings->line_exist("evaluation","line3") )
+		Debug.fatal("");
+
+	eval_line_1 = pSettings->r_string_wb("evaluation","line1");
+	eval_line_2 = pSettings->r_string_wb("evaluation","line2");
+	eval_line_3 = pSettings->r_string_wb("evaluation","line3");
 }
+
 void CStats::OnDeviceDestroy		()
 {
 	xr_delete	(pFont);
