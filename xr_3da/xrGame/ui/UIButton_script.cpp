@@ -15,8 +15,8 @@ void CUIButton::script_register(lua_State *L)
 	[
 		class_<CUIButton, CUIStatic>("CUIButton")
 		.def(							constructor<>())
-		.def("Init",				(void(CUIButton::*)(int,int,int,int))CUIButton::Init )
-		.def("Init",				(void(CUIButton::*)(LPCSTR,int,int,int,int))CUIButton::Init )
+		.def("Init",					(void(CUIButton::*)(int,int,int,int))CUIButton::Init )
+		.def("Init",					(void(CUIButton::*)(LPCSTR,int,int,int,int))CUIButton::Init )
 		.def("SetHighlightColor",		&CUIButton::SetHighlightColor)
 		.def("EnableTextHighlighting",	&CUIButton::EnableTextHighlighting)
 
@@ -29,8 +29,8 @@ void CUIButton::script_register(lua_State *L)
 		.def(							constructor<>())
 		.def("Init",					(void(CUI3tButton::*)(int,int,int,int))CUI3tButton::Init)
 		.def("Init",					(void(CUI3tButton::*)(LPCSTR,int,int,int,int))CUI3tButton::Init)
-		.def("InitTexture",				(void(CUI3tButton::*)(LPCSTR))CUIButton::InitTexture)
-		.def("InitTexture",				(void(CUI3tButton::*)(LPCSTR, LPCSTR, LPCSTR, LPCSTR))CUIButton::InitTexture)
+		.def("InitTexture",				(void(CUI3tButton::*)(LPCSTR))CUI3tButton::InitTexture)
+		.def("InitTexture",				(void(CUI3tButton::*)(LPCSTR, LPCSTR, LPCSTR, LPCSTR))CUI3tButton::InitTexture)
 		.def("SetColor",				(void(CUI3tButton::*)(int, int, int)) &CUI3tButton::SetColor),
 
 

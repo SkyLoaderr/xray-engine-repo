@@ -67,11 +67,6 @@ void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 
 void CUIButton::Init(int x, int y, int width, int height)
 {
-	m_eButtonState = BUTTON_NORMAL;
-	m_ePressMode = NORMAL_PRESS;
-	m_bButtonClicked = false;
-	m_bCursorOverWindow = false;
-
 	CUIStatic::Init(x, y, width, height);
 }
 
@@ -200,8 +195,12 @@ void  CUIButton::OnMouse(int x, int y, EUIMessages mouse_action)
 //прорисовка кнопки
 void  CUIButton::Draw()
 {
-//	CUIWindow::Draw();
+	DrawTexture();
+	CUIWindow::Draw();
+	DrawText();	
+}
 
+void CUIButton::DrawTexture(){
 	Irect rect = GetAbsoluteRect();
 
 	if(m_bAvailableTexture && m_bTextureEnable)
@@ -222,9 +221,9 @@ void  CUIButton::Draw()
 		else
 			m_UIStaticItem.Render();
 	}
+}
 
-	CUIWindow::Draw();
-
+void CUIButton::DrawHighlightedText(){
 	int right_offset;
 	int down_offset;
 
@@ -240,57 +239,74 @@ void  CUIButton::Draw()
 		down_offset = m_iPushOffsetY;
 	}
 
+	Irect rect = GetAbsoluteRect();
+	Irect r = GetSelfClipRect();
+	CGameFont * F = GetFont();
+	F->SetColor(m_HighlightColor);
 
-	if (GetFont())
+	UI()->OutText(F, r, 
+		(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+		(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+	UI()->OutText(F, r, 
+		(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+		(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+	UI()->OutText(F, r,
+		(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+		(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+	UI()->OutText(F, r, 
+		(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+		(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+	UI()->OutText(F, r,
+		(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+		(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+	UI()->OutText(F, r,
+		(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
+		(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+	UI()->OutText(F, r,
+		(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
+		(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+	UI()->OutText(F, r,
+		(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
+		(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
+		m_str);
+}
+
+void CUIButton::DrawText(){
+	int right_offset;
+	int down_offset;
+
+	if(m_eButtonState == BUTTON_UP || m_eButtonState == BUTTON_NORMAL)
+	{
+		right_offset = 0;
+		down_offset = 0;
+	}
+	else
+	{
+		right_offset = m_iPushOffsetX;
+		down_offset = m_iPushOffsetY;
+	}
+
+	Irect rect = GetAbsoluteRect();
+	CGameFont * F = GetFont();
+
+	if (F)
 	{
 		UpdateTextAlign();
-		GetFont()->SetAligment(GetTextAlign());
+		F->SetAligment(GetTextAlign());
 
 		if(IsHighlightText() && m_str && xr_strlen(m_str)>0 && m_bEnableTextHighlighting)
 		{
-			Irect r = GetSelfClipRect();
-			CGameFont * F = GetFont();
-			F->SetColor(m_HighlightColor);
-
-			UI()->OutText(F, r, 
-				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top + down_offset + 1  +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, r, 
-				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, r,
-				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, r, 
-				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, r,
-				(float)rect.left + right_offset + 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top + down_offset + 0 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, r,
-				(float)rect.left + right_offset - 1 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top + down_offset - 0 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, r,
-				(float)rect.left + right_offset - 0 +m_iTextOffsetX + m_iShadowOffsetX, 
-				(float)rect.top + down_offset + 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
-			UI()->OutText(F, r,
-				(float)rect.left + right_offset + 0 +m_iTextOffsetX + m_iShadowOffsetX,  
-				(float)rect.top + down_offset - 1 +m_iTextOffsetY + m_iShadowOffsetY,
-				m_str);
+			DrawHighlightedText();
 		}
 
-		//	inherited::Update();
-		//	return;
-
-
-		GetFont()->SetColor(m_dwFontColor);
+		F->SetColor(m_dwFontColor);
 
 		if (!m_bNewRenderMethod)
 		{

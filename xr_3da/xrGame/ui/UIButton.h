@@ -28,11 +28,14 @@ public:
 
 	virtual void	Init(LPCSTR tex_name, int x, int y, int width, int height);
 	virtual void	Init(int x, int y, int width, int height);
-	
+
 	virtual void	OnMouse(int x, int y, EUIMessages mouse_action);
 
 	//прорисовка окна
 	virtual void	Draw();
+IC	virtual void	DrawTexture();
+IC	virtual void	DrawText();
+IC	virtual void	DrawHighlightedText();
 	//обновление перед прорисовкой
 	virtual void	Update();
 
