@@ -95,15 +95,15 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	P.r_u16		(s_data_size);
 
 	// Real spawn
-	CEntity* E = (CEntity*) Objects.LoadOne	(pSettings,s_name);
-	if (0==E || (!E->Spawn(s_flags&M_SPAWN_OBJECT_LOCAL, s_server_id, o_pos, o_angle, P, s_flags))) 
+	CObject*	O = Objects.LoadOne	(pSettings,s_name);
+	if (0==O || (!O->Spawn(s_flags&M_SPAWN_OBJECT_LOCAL, s_server_id, o_pos, o_angle, P, s_flags))) 
 	{
-		Objects.DestroyObject(E);
+		Objects.DestroyObject(O);
 		Msg("! Failed to spawn entity '%s'",s_name);
 	} else {
-		if (s_replace[0])	E->cNameSET	(s_replace);
-		if ((s_flags&M_SPAWN_OBJECT_LOCAL) && (0==CurrentEntity()))	SetEntity		(E);
-		if (s_flags&M_SPAWN_OBJECT_ACTIVE)							E->OnActivate	( );
+		if (s_replace[0])											O->cNameSET		(s_replace);
+		if ((s_flags&M_SPAWN_OBJECT_LOCAL) && (0==CurrentEntity()))	SetEntity		(O);
+		if (s_flags&M_SPAWN_OBJECT_ACTIVE)							O->OnActivate	( );
 	}
 }
 
