@@ -33,9 +33,30 @@ function action_sleeper_activity:initialize()
 
 	local pp = patrol(self.a.path_main):level_vertex_id(0)
 	xr_position.setPosition(self.object, pp)
+
+	-- нужно его повернуть в одну из указанных позиций
+	self.ptr = patrol (self.a.path_main)
+	-- определ€ем список вершин, которые имеют такие же установленные флаги (текущую игнорируем)
+	self.points = {}
+	for i=0, self.ptr:count()-1, 1 do
+		for j=5, 31, 1 do
+			if self.ptr:flag(0, j) == true and
+			   self.ptr:flag(0, j) == self.ptr:flag(i, j) and
+			   i ~= 0
+			then				
+				table.insert(self.points, i)
+			end
+		end
+	end
 end
 function action_sleeper_activity:execute()
 	if xr_position.onPosition(self.object) == true then
+        	if table.getn(self.points) > 0 then
+			local point = self.ptr:level_vertex_id(self.points[math.random(table.getn(self.points))])
+			local pt = level.vertex_position(point)
+			self.object:set_sight(look.point, pt, 0)
+		end
+
  		self.object:set_item(object.deactivate, self.object:best_weapon())
 		xr_state.change_state(self.object, 4)
 	end
