@@ -13,7 +13,7 @@ end
 
 
 function main()
-	local obj			= get_level_object("searcher")
+	local obj			= get_level_object("search")
 
 	obj:script			( true, script_name() )
 	
