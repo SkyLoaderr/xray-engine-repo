@@ -10,6 +10,7 @@ class	ENGINE_API	CBlender;
 class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;
+class	ENGINE_API	CRT;
 
 #pragma warning(disable : 4275)
 struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
