@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "net_server.h"
 
 #define		BASE_PORT		5445
@@ -6,6 +7,7 @@
 void	dump_URL	(LPCSTR p, IDirectPlay8Address* A);
 
 LPCSTR nameTraffic	= "traffic.net";
+LPCSTR nameBanned	= "banned.ltx";
 
 XRNETSERVER_API int		psNET_ServerUpdate	= 30;		// FPS
 XRNETSERVER_API int		psNET_ServerPending	= 2;
@@ -234,12 +236,17 @@ BOOL IPureServer::Connect(LPCSTR options)
 	CHK_DX(HostSuccess);
 	
 	config_Load		();
+
+	BannedList_Load	();
+
 	return	TRUE;
 }
 
 void IPureServer::Disconnect	()
 {
 	config_Save		();
+
+	BannedList_Save	();
 
     if( NET )	NET->Close(0);
 	
@@ -625,3 +632,26 @@ void			IPureServer::BanAddress			(char* Address, u32 BanTime)
 	if (pNewClient) BannedAddresses.push_back(pNewClient);
 };
 
+void			IPureServer::BannedAddress_Save	(u32 it, IWriter* fs)
+{
+	if (!fs) return;
+	if (it >= BannedAddresses.size()) return;
+
+	char* HAddr = BannedAddresses[it]->HAddr;
+//	string1024 WriteStr = "";
+	fs->w_printf("sv_banplayer ip %i.%i.%i.%i\n", 
+		unsigned char(HAddr[0]), 
+		unsigned char(HAddr[1]), 
+		unsigned char(HAddr[2]), 
+		unsigned char(HAddr[3]));
+};
+
+void			IPureServer::BannedList_Save	()
+{
+	IWriter*		fs	= FS.w_open(nameBanned);
+	for	(u32 it=0; it<BannedAddresses.size(); it++)
+	{
+		BannedAddress_Save(it, fs);
+	};
+	FS.w_close		(fs);
+}
