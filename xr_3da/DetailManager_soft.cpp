@@ -23,7 +23,7 @@ void CDetailManager::soft_Render	()
 	// Get index-stream
 	CIndexStream*	IS	= Device.Streams.Get_IB();
 
-	for (DWORD O=0; O<dm_max_objects; O++)
+	for (DWORD O=0; O<objects.size(); O++)
 	{
 		CList<SlotItem*>&	vis = visible	[O];
 		if (vis.empty())	continue;

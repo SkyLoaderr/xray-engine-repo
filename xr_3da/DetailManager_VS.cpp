@@ -126,7 +126,7 @@ void CDetailManager::VS_Render()
 	DWORD		iOffset	=	0;
 	
 	// Iterate
-	for (DWORD O=0; O<dm_max_objects; O++)
+	for (DWORD O=0; O<objects.size(); O++)
 	{
 		CList<SlotItem*>&	vis = visible	[O];
 		CDetail&	Object		= objects	[O];
