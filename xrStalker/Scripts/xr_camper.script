@@ -32,7 +32,7 @@ end
 class "action_patrol" (action_base)
 function action_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
-	self.move_mgr = move_mgr.move_mgr()
+	self.move_mgr = move_mgr.move_mgr(self.a.npc)
 end
 function action_patrol:initialize()
 	action_base.initialize(self)
@@ -49,7 +49,7 @@ function action_patrol:initialize()
 	end	
 end
 function action_patrol:reset_scheme()
-	self.move_mgr:initialize(self.object)
+	self.move_mgr:initialize()
 	self.move_mgr:reset(self.a.path_walk, 
 					utils.path_parse_waypoints(self.a.path_walk),
 					self.a.path_look,
