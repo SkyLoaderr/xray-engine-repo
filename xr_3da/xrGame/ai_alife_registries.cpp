@@ -535,7 +535,7 @@ void CSE_ALifeScheduleRegistry::update					()
 		//. hack for ALife
 		CSE_ALifeDynamicObject	*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>((*I).second);
 		VERIFY					(dynamic_object);
-		if (!dynamic_object->m_bOnline)
+		if (!dynamic_object->m_bOnline && dynamic_object->used_ai_locations() && dynamic_object->interactive())
 			(*I).second->Update	();
 		I						= next();
 		if (time_over())
