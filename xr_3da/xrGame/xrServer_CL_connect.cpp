@@ -8,13 +8,14 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	Level().HUD()->outMessage		(0xffffffff,"SERVER","Player '%s' connected",CL->Name);
 	NET_Packet		P;
+	DWORD			mode			= net_flags(TRUE,TRUE);
 
 	// Game config
 	P.w_begin		(M_SV_CONFIG_GAME);
 	P.w_u8			(u8(GAME		));
 	P.w_u16			(u16(g_fraglimit));
 	P.w_u16			(u16(g_timelimit));
-	SendTo			(CL->ID,P,net_flags(TRUE,TRUE));
+	SendTo			(CL->ID,P,mode);
 
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
@@ -41,12 +42,12 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 			// Just inform
 			Test->Spawn_Write	(P,FALSE);
 		}
-		SendTo				(CL->ID,P,net_flags(TRUE,TRUE));
+		SendTo				(CL->ID,P,mode);
 	}
 
 	// Send "finished" signal
 	P.w_begin		(M_SV_CONFIG_FINISHED);
-	SendTo			(CL->ID,P,net_flags(TRUE,TRUE));
+	SendTo			(CL->ID,P,mode);
 
 	// Inform new client about already existed players
 	csPlayers.Enter		();
@@ -59,7 +60,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 		P.w_u32		(data->ID);
 		P.w_string	(data->Name);
 		P.w_s16		(data->g_frags);
-		SendTo		(CL->ID,P,net_flags(TRUE,TRUE));
+		SendTo		(CL->ID,P,mode);
 	}
 	csPlayers.Leave		();
 
@@ -68,5 +69,5 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 	P.w_u32			(CL->ID);
 	P.w_string		(CL->Name);
 	P.w_s16			(CL->g_frags);
-	SendBroadcast	(0xffffffff,P,net_flags(TRUE,TRUE));
+	SendBroadcast	(0xffffffff,P,mode);
 }
