@@ -8,10 +8,15 @@
 
 #pragma once
 
+#include "motivation_action_manager.h"
+
 class CEntity;
 class CAI_Stalker;
 
-class CAgentManager : public ISheduled {
+class CAgentManager :
+	public CMotivationActionManager<CAgentManager>,
+	public ISheduled
+{
 protected:
 	typedef ISheduled						inherited;
 	typedef xr_vector<CAI_Stalker*>			MEMBER_STORAGE;

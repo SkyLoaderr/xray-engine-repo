@@ -10,11 +10,15 @@
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
 
+#define SECTION "squad_manager"
+
 CAgentManager::CAgentManager		()
 {
-	shedule.t_min				= pSettings->r_s32	("squad_manager","schedule_min");
-	shedule.t_max				= pSettings->r_s32	("squad_manager","schedule_max");
+	shedule.t_min				= pSettings->r_s32	(SECTION,"schedule_min");
+	shedule.t_max				= pSettings->r_s32	(SECTION,"schedule_max");
 	shedule_register			();
+	reload						(SECTION);
+	reinit						(this);
 }
 
 CAgentManager::~CAgentManager		()
