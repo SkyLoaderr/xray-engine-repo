@@ -9,12 +9,11 @@
 #include "xr_object.h"
 #include "feel_sound.h"
 
-extern	u32			psSoundModel;
-extern	u32			psSoundFreq;
+extern	u32				psSoundModel;
+extern	u32				psSoundFreq;
 extern	float			psSoundVEffects;
-extern	CSoundManager*	pSounds;
 
-const	u32			dwLoopAheadMS	= 75;
+const	u32				dwLoopAheadMS	= 75;
 const	float			fOcclusionSpeed	= 1.f;
 
 //////////////////////////////////////////////////////////////////////
@@ -100,7 +99,7 @@ void CSound::Update_Occlusion	()
 {
 	if (!_3D)			return;
 
-	if (pSounds->IsOccluded(ps.vPosition,1.f,occluder))	{
+	if (Sound_Implementation.IsOccluded(ps.vPosition,1.f,occluder))	{
 		fBaseVolume -=	Device.fTimeDelta*fOcclusionSpeed;
 		clamp		(fBaseVolume,0.f,1.f);
 	} else {

@@ -9,10 +9,9 @@
 #include "xr_sndman.h"
 #include "xr_ini.h"
 
-extern u32 psSoundModel;
-extern u32 psSoundFreq;
-extern float psSoundVEffects;
-extern CSoundManager* pSounds;
+extern u32		psSoundModel;
+extern u32		psSoundFreq;
+extern float	psSoundVEffects;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
