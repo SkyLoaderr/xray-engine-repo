@@ -34,8 +34,8 @@ ECombatAction CSE_ALifeSimulator::tfChooseCombatAction(int iCombatGroupIndex)
 	int i = 0, j = 0, I = (int)Members.size(), J = (int)Enemies.size();
 	float	fMinProbability = I ? Members[0]->m_fRetreatThreshold : 0.f;
 	while ((i < I) && (j < J)) {
-		getAI().m_tpCurrentALifeMember = Members[i];
-		getAI().m_tpCurrentALifeEnemy = Enemies[j];
+		getAI().m_tpCurrentALifeMember	= Members[i];
+		getAI().m_tpCurrentALifeEnemy	= Enemies[j];
 		float fProbability = getAI().m_pfVictoryProbability->ffGetValue()/100.f, fCurrentProbability;
 		if (fProbability > fMinProbability) {
 			fCurrentProbability = fProbability;

@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(37)
+#define SPAWN_VERSION	u16(38)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -52,6 +52,7 @@
 //		and CSE_ALifeTask				appended with try count property
 //		and CSE_ALifePersonalTask		no more exists
 // 37 - бинокль имеет ServerEntity не CSE_ALifeItemWeapon, а CSE_ALifeItem
+// 38 - CSE_ALifeHumanAbstract			appended with the equipment and weapon preferences
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

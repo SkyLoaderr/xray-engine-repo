@@ -214,6 +214,12 @@ namespace ALife {
 		eHitTypeMax,
 	};
 
+	enum ETakeType {
+		eTakeTypeAll,
+		eTakeTypeMin,
+		eTakeTypeRest,
+	};
+
 	IC EHitType	g_tfString2HitType(LPCSTR caHitType)
 	{
 		if (!stricmp(caHitType,"burn"))

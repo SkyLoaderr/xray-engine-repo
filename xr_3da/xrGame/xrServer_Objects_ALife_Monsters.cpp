@@ -829,6 +829,8 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	save_data					(m_baVisitedVertices,tNetPacket);
 	tNetPacket.w_string			(m_caKnownCustomers);
 	save_data					(m_tpKnownCustomers,tNetPacket);
+	save_data					(m_cpEquipmentPreferences,tNetPacket);
+	save_data					(m_cpMainWeaponPreferences,tNetPacket);
 }
 
 void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
@@ -841,6 +843,10 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 		if (m_wVersion > 35) {
 			tNetPacket.r_string	(m_caKnownCustomers);
 			load_data			(m_tpKnownCustomers,tNetPacket);
+			if (m_wVersion > 37) {
+				load_data		(m_cpEquipmentPreferences,tNetPacket);
+				load_data		(m_cpMainWeaponPreferences,tNetPacket);
+			}
 		}
 	}
 }

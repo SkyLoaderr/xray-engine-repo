@@ -331,8 +331,8 @@ public:
 
 	CEquipmentType()
 	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
+		m_fMinResultValue = 1.0;
+		m_fMaxResultValue = 5.0;
 		strcat(m_caName,"EquipmentType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -347,7 +347,7 @@ public:
 	CItemDeterioration()
 	{
 		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
+		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"ItemDeterioration");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -361,8 +361,8 @@ public:
 
 	CEquipmentPreference()
 	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
+		m_fMinResultValue = 1.0;
+		m_fMaxResultValue = 3.0;
 		strcat(m_caName,"EquipmentPreference");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -376,8 +376,8 @@ public:
 
 	CMainWeaponType()
 	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
+		m_fMinResultValue = 1.0;
+		m_fMaxResultValue = 4.0;
 		strcat(m_caName,"MainWeaponType");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -391,8 +391,8 @@ public:
 
 	CMainWeaponPreference()
 	{
-		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
+		m_fMinResultValue = 1.0;
+		m_fMaxResultValue = 3.0;
 		strcat(m_caName,"MainWeaponPreference");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -407,7 +407,7 @@ public:
 	CItemValue()
 	{
 		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
+		m_fMaxResultValue = 2000.0;
 		strcat(m_caName,"ItemValue");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};
@@ -422,7 +422,7 @@ public:
 	CWeaponAmmoCount()
 	{
 		m_fMinResultValue = 0.0;
-		m_fMaxResultValue = 1000.0;
+		m_fMaxResultValue = 100.0;
 		strcat(m_caName,"WeaponAmmoCount");
 		OUT_MESSAGE("* Evaluation function \"%s\" is successfully initalized",m_caName);
 	};

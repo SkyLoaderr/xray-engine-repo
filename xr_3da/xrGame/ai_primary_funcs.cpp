@@ -174,6 +174,11 @@ float CPersonalWeaponTypeFunction::ffGetTheBestWeapon()
 							dwCurrentBestWeapon = 8;
 							break;
 						}
+						case CLSID_GRENADE_F1:
+						case CLSID_GRENADE_RGD5: {
+							dwCurrentBestWeapon = 7;
+							break;
+						}
 						case CLSID_OBJECT_W_SHOTGUN:
 						case CLSID_OBJECT_W_AK74:
 						case CLSID_OBJECT_W_VAL:
@@ -542,7 +547,10 @@ float CEquipmentType::ffGetValue()
 				m_fLastValue = 5;
 				break;
 			}
-			default							: NODEFAULT;
+			default							: {
+				m_fLastValue = 6;
+				break;
+			}
 		}
 		return					(m_fLastValue);
 	}
@@ -611,7 +619,10 @@ float CMainWeaponType::ffGetValue()
 				m_fLastValue	= 4;
 				break;
 			}
-			default				: NODEFAULT;
+			default				: {
+				m_fLastValue	= 5;
+				break;
+			}
 		}
 		return					(m_fLastValue);
 	}
@@ -658,6 +669,6 @@ float CWeaponAmmoCount::ffGetValue()
 	else {
 		CSE_ALifeHumanAbstract	*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(getAI().m_tpCurrentALifeMember);
 		R_ASSERT2				(l_tpALifeHumanAbstract,"Non-human object in WeaponAmmoCount evaluation function");
-		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject)));
+		return					(m_fLastValue = l_tpALifeHumanAbstract->get_available_ammo_count(dynamic_cast<CSE_ALifeItemWeapon*>(getAI().m_tpCurrentALifeObject),getAI().m_tpALife->m_tpObjectVector));
 	}
 }

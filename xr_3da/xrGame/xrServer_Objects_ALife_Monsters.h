@@ -225,12 +225,13 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			void					vfCheckForDeletedEvents	();
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
-			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon);
+			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector);
+			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon, OBJECT_VECTOR &tpObjectVector);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower);
 	virtual bool					bfPerformAttack			();
 	virtual	void					vfUpdateWeaponAmmo		();
 	virtual	void					vfProcessItems			();
-	virtual	void					vfAttachItems			();
+	virtual	void					vfAttachItems			(ETakeType tTakeType = eTakeTypeAll);
 #endif
 #endif
 SERVER_ENTITY_DECLARE_END

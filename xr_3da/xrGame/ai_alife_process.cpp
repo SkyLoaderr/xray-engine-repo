@@ -12,12 +12,14 @@
 
 void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 {
-	Device.Statistic.TEST3.Begin();
+	Device.Statistic.TEST3.Begin		();
 	if (!m_bLoaded) {
-		Device.Statistic.TEST3.End();
+		Device.Statistic.TEST3.End		();
 		return;
 	}
 	
+	vfInitAI_ALifeMembers				();
+
 	switch (m_tZoneState) {
 		case eZoneStateSurge : {
 			vfPerformSurge				();

@@ -80,6 +80,7 @@ class CSE_ALifeSimulator :
 			void					vfPerformCommunication		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract		*tpALifeHumanAbstract2);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
 			void					vfAssignDeathPosition		(CSE_ALifeCreatureAbstract	*tpALifeCreatureAbstract,	_GRAPH_ID tGraphID);
+			void					vfInitAI_ALifeMembers		();
 public:
 	// members
 	bool							m_bLoaded;

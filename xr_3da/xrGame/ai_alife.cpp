@@ -266,6 +266,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	float						l_fTimeFactor = m_fTimeFactor;
 	m_fTimeFactor				= 1;
 
+	vfInitAI_ALifeMembers		();
 	// simulating ALife during the given time period
 	do {
 		switch (m_tZoneState) {
@@ -296,4 +297,12 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 
 	m_fTimeFactor				= l_fTimeFactor;
 	Save						(caSaveName);
+}
+
+void CSE_ALifeSimulator::vfInitAI_ALifeMembers()
+{
+	getAI().m_tpCurrentMember	= 0;
+	getAI().m_tpCurrentEnemy	= 0;
+	getAI().m_tpGameObject		= 0;
+	getAI().m_tpALife			= this;
 }
