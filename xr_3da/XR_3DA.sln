@@ -50,9 +50,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParticleDLL", "..\xrParticl
 		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrXMLParser", "..\xrXMLParser\xrXMLParser.vcproj", "{94A1C366-3D19-48E6-8170-4ADC2E70DF97}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 10
+		SccNumberOfProjects = 11
 		SccLocalPath0 = .
 		CanCheckoutShared = true
 		SolutionUniqueID = {6F8E4AE3-CB8E-4760-8086-796FE333A467}
@@ -91,6 +95,10 @@ Global
 		SccProjectUniqueName9 = ..\\xrParticles\\ParticleDLL.vcproj
 		SccProjectName9 = \u0022$/xrParticles\u0022,\u0020GQJAAAAA
 		SccLocalPath9 = ..\\xrParticles
+		CanCheckoutShared = true
+		SccProjectUniqueName10 = ..\\xrXMLParser\\xrXMLParser.vcproj
+		SccProjectName10 = \u0022$/xrXMLParser\u0022,\u0020MGLAAAAA
+		SccLocalPath10 = ..\\xrXMLParser
 		CanCheckoutShared = true
 	EndGlobalSection
 	GlobalSection(SolutionConfiguration) = preSolution
@@ -151,6 +159,12 @@ Global
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Debug.Build.0 = Debug|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.ActiveCfg = Release|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.Build.0 = Release|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.ActiveCfg = Release|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.Build.0 = Release|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Debug.ActiveCfg = Debug|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Debug.Build.0 = Debug|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.ActiveCfg = Debug|Win32
+		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Mixed.Build.0 = Debug|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.ActiveCfg = Release|Win32
 		{94A1C366-3D19-48E6-8170-4ADC2E70DF97}.Release.Build.0 = Release|Win32
 	EndGlobalSection

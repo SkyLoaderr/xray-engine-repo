@@ -11,7 +11,7 @@
 
 #include <xrCore.h>
 
-#include "xrXMLParserH.h"
+#include "xrXMLParser.h"
 
 #ifdef __BORLANDC__
 #pragma comment( lib, "x:\\xrCoreB.lib"	)

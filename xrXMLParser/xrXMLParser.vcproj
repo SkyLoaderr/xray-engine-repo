@@ -195,6 +195,9 @@
 			Name="Parser"
 			Filter="">
 			<File
+				RelativePath=".\xrXMLParser.cpp">
+			</File>
+			<File
 				RelativePath=".\xrXMLParser.h">
 			</File>
 		</Filter>
