@@ -31,7 +31,7 @@ public:
 	SLevel						m_tLevel;
 	SCompressedGraphVertex		*m_tpaGraph;
 
-								CLevelGraph(SLevel &tLevel, u32 &dwOffset)
+								CLevelGraph(SLevel &tLevel, u32 dwOffset)
 	{
 		m_tLevel				= tLevel;
 		CVirtualFileStream		F(m_tLevel.caLevelName);
@@ -72,7 +72,7 @@ public:
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
-	void						vfSaveVertices(CFS_Memory &tMemoryStream, u32 dwOffset)
+	void						vfSaveVertices(CFS_Memory &tMemoryStream, u32 &dwOffset)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
@@ -84,7 +84,7 @@ public:
 			tVertex.tVertexType		= (*I).tVertexType;
 			tVertex.tLevelID		= (*I).tLevelID;
 			tVertex.dwEdgeOffset	= dwOffset;
-			dwOffset				+= (tVertex.tNeighbourCount = (*I).tNeighbourCount);
+			dwOffset				+= (tVertex.tNeighbourCount = (*I).tNeighbourCount)*sizeof(SGraphEdge);
 			tMemoryStream.write		(&tVertex,sizeof(tVertex));
 		}
 	};
