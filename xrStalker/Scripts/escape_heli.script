@@ -193,10 +193,10 @@ function update()
 		end
 
 		-- если актёр близко, то атаковать его
-		if not actor_is_victim and actor_dist < 30*30 then
-			table.insert( newbies, actor )
-			actor_is_victim = true
-		end
+--		if not actor_is_victim and actor_dist < 30*30 then
+--			table.insert( newbies, actor )
+--			actor_is_victim = true
+--		end
 
 		-- вертолёт атакует новичков
 		if not heli_mgr.enemy then
