@@ -55,7 +55,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 			float width				= ini->r_float("font_size","width");
 			const int cpl			= ini->r_s32	("font_size","cpl");
 			for (int i=0; i<256; i++)
-				TCMap[i].set			((i%cpl)*width,(i/cpl)*fHeight,width);
+				TCMap[i].set		((i%cpl)*width,(i/cpl)*fHeight,width);
 		}
 	}
 	if (!(uFlags&fsDeviceIndependent))
@@ -84,9 +84,10 @@ void CGameFont::OnRender()
 		vTS.set			((int)T->get_Width(),(int)T->get_Height());
 		vHalfPixel.set	(0.5f/float(vTS.x),0.5f/float(vTS.y));
 		for (int i=0; i<256; i++){
-			TCMap[i].x	/= float(vTS.x);
-			TCMap[i].y	/= float(vTS.y);
-			TCMap[i].z	/= float(vTS.x);
+			Fvector& tc	= TCMap[i];
+			tc.x		/= float(vTS.x);
+			tc.y		/= float(vTS.y);
+			tc.z		/= float(vTS.x);
 		}
 		fTCHeight		= fHeight/float(vTS.y);
 		uFlags			|= fsValid;
@@ -146,17 +147,17 @@ void CGameFont::OnRender()
 				float	tu,tv;
 				for (int j=0; j<len; j++)
 				{
-					int c		= CharMap	[(u8)PS.string[j]];
-					Fvector& l	= TCMap		[(u8)PS.string[j]];
-					float scw	= S*l.z;
+					int c			= GetCharRM	(PS.string[j]);
+					const Fvector& l= GetCharTC	(PS.string[j]);
+					float scw		= S*l.z;
 					if ((c>=0)&&!fis_zero(l.z))
 					{
-						tu		= l.x+vHalfPixel.x;
-						tv		= l.y+vHalfPixel.y;
-						v->set	(X,		Y2,	clr2,tu,		tv+fTCHeight);	v++;
-						v->set	(X,		Y,	clr, tu,		tv);			v++;
-						v->set	(X+scw,	Y2,	clr2,tu+l.z,	tv+fTCHeight);	v++;
-						v->set	(X+scw,	Y,	clr, tu+l.z,	tv);			v++;
+						tu			= l.x+vHalfPixel.x;
+						tv			= l.y+vHalfPixel.y;
+						v->set		(X,		Y2,	clr2,tu,		tv+fTCHeight);	v++;
+						v->set		(X,		Y,	clr, tu,		tv);			v++;
+						v->set		(X+scw,	Y2,	clr2,tu+l.z,	tv+fTCHeight);	v++;
+						v->set		(X+scw,	Y,	clr, tu+l.z,	tv);			v++;
 					}
 					X+=scw*vInterval.x;
 				}
@@ -248,15 +249,23 @@ void CGameFont::OutSkip(float val)
 	fCurrentY += val*CurrentHeight();
 }
 
+float CGameFont::SizeOf(char s,float size)
+{
+	return		(uFlags&fsValid)?GetCharTC(s).z*ConvertSize(size)/fHeight*vInterval.x*vTS.x:0.f;
+}
+
 float CGameFont::SizeOf(LPCSTR s,float size)
 {
-	if (uFlags&fsValid){
-		int		len			= xr_strlen(s);
-		float	X			= 0;
-		if (len) for (int j=0; j<len; j++) X+=TCMap[s[j]].z;
-		return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;
-	}else{
-		return 0;
+	if (s&&s[0]){
+		if (uFlags&fsValid){
+			int		len			= xr_strlen(s);
+			float	X			= 0;
+			if (len) 
+				for (int j=0; j<len; j++) 
+					X			+= GetCharTC(s[j]).z;
+			return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;
+		}
 	}
+	return 0;
 }
 

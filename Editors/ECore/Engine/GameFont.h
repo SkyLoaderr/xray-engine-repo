@@ -52,7 +52,9 @@ public:
 		fsForceDWORD		= u32(-1)
 	};
 protected:
-	IC	float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
+	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
+	IC int					GetCharRM		(u8 c)		{return CharMap[c];}
+	IC const Fvector&		GetCharTC		(u8 c)		{return TCMap[c];}
 
 	void					Initialize		(LPCSTR shader, LPCSTR texture, u32 flags);
 public:
@@ -67,6 +69,7 @@ public:
 	IC void					SetInterval		(const Fvector2& v) {vInterval.set(v);};
 	IC void					SetAligment		(EAligment aligment){ eCurrentAlignment=aligment; }
 	IC void					Add				(float _x, float _y, LPCSTR s, u32 _c=0xffffffff, float _size=0.01f);
+	float					SizeOf			(char s, float size);
 	float					SizeOf			(LPCSTR s, float size);
 	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
 	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
