@@ -66,6 +66,7 @@ class "action_patrol" (action_base)
 function action_patrol:__init (npc_name,action_name,storage) super (nil,action_name)
 	self.a = storage
 	self.move_mgr = move_mgr.move_mgr(self.a.npc)
+	self.was_reset  = false
 end
 function action_patrol:initialize()
 	action_base.initialize(self)
@@ -78,7 +79,7 @@ function action_patrol:initialize()
 	self.enemy_position = nil
 end
 function action_patrol:reset_scheme()
-	state_mgr.set_state(self.object, "patrol")
+	state_mgr.set_state(self.object, "patrol")	
 	self.a.signals = {}
 	self.move_mgr:initialize()
 	self.move_mgr:reset(self.a.path_walk, 
@@ -86,10 +87,18 @@ function action_patrol:reset_scheme()
 		self.a.path_look,
 		utils.path_parse_waypoints(self.a.path_look),
 		nil,nil,{obj=self,func=self.process_point})
+	self.was_reset = true
+end
+function action_patrol:activate_scheme()
+        self.was_reset = false
 end
 function action_patrol:execute()
 	action_base.execute (self)
 
+	if not self.was_reset then
+		self:reset_scheme()
+    end
+    
 	--' Ќаходимс€ ли мы недалеко от своей позиции
 	function on_place()
 		if self.a.no_retreat == true then return false end
