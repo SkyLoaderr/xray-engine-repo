@@ -251,7 +251,7 @@ void CSE_ALifeGraphRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObject
 	}
 
 	CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(tpALifeDynamicObject);
-	if ((!l_tpALifeInventoryItem && !dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject)) || (l_tpALifeInventoryItem && !l_tpALifeInventoryItem->bfAttached()))
+	if (!l_tpALifeInventoryItem || (l_tpALifeInventoryItem && !l_tpALifeInventoryItem->bfAttached()))
 		vfAddObjectToGraphPoint(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 }
 
@@ -292,11 +292,13 @@ void CSE_ALifeGraphRegistry::vfAddObjectToGraphPoint(CSE_ALifeDynamicObject *tpA
 #ifdef ALIFE_LOG
 	Msg("[LSS] adding object [%s][%d] to graph point %d",tpALifeDynamicObject->s_name_replace,tpALifeDynamicObject->ID,tNextGraphPointID);
 #endif
-	R_ASSERT2					(!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject),"Can't add a trader to the graph point!");
-	D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tNextGraphPointID].tpObjects.find(tpALifeDynamicObject->ID);
-	R_ASSERT3					(I == m_tpGraphObjects[tNextGraphPointID].tpObjects.end(),"Specified object has already found on the given graph point!",tpALifeDynamicObject->s_name_replace);
-	m_tpGraphObjects[tNextGraphPointID].tpObjects.insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
-	tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
+	if (!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject)) {
+		R_ASSERT2					(!dynamic_cast<CSE_ALifeTrader *>(tpALifeDynamicObject),"Can't add a trader to the graph point!");
+		D_OBJECT_PAIR_IT			I = m_tpGraphObjects[tNextGraphPointID].tpObjects.find(tpALifeDynamicObject->ID);
+		R_ASSERT3					(I == m_tpGraphObjects[tNextGraphPointID].tpObjects.end(),"Specified object has already found on the given graph point!",tpALifeDynamicObject->s_name_replace);
+		m_tpGraphObjects[tNextGraphPointID].tpObjects.insert(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
+		tpALifeDynamicObject->m_tGraphID = tNextGraphPointID;
+	}
 	
 	if (bUpdateSwitchObjects && m_tpCurrentLevel && (getAI().m_tpaGraph[tpALifeDynamicObject->m_tGraphID].tLevelID == m_tCurrentLevelID))
 		vfAddObjectToCurrentLevel(tpALifeDynamicObject);

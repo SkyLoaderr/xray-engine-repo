@@ -329,8 +329,6 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("GetScriptControl",			&CLuaGameObject::GetScriptControl)
 			.def("GetScriptControlName",		&CLuaGameObject::GetScriptControlName)
 			.def("CheckObjectVisibility",		&CLuaGameObject::CheckObjectVisibility)
-			.def("SetAnimation",				&CLuaGameObject::SetAnimation)
-			.def("SetSound",					&CLuaGameObject::SetSound)
 			.def("CheckIfCompleted",			&CLuaGameObject::CheckIfCompleted)
 			.enum_("EStalkerRank")
 			[
@@ -383,7 +381,9 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("eMentalStateZombied",	int(StalkerSpace::eMentalStateZombied)),
 				value("eMentalStateDummy",		int(StalkerSpace::eMentalStateDummy))
 			]
-			.def("UseObject",					&CLuaGameObject::UseObject)
+			.def("SetAnimation",				&CLuaGameObject::SetAnimation)
+			.def("SetSound",					&CLuaGameObject::SetSound)
+			.def("UseObject",					&CLuaGameObject::UseObject)				// time
 			.def("GetRank",						&CLuaGameObject::GetRank)
 			.def("GetWeaponAmmo",				&CLuaGameObject::GetWeaponAmmo)
 			.def("SetBodyState",				&CLuaGameObject::SetBodyState)
@@ -391,12 +391,12 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("SetDestination",				&CLuaGameObject::SetDestination)
 			.def("SetPathType",					&CLuaGameObject::SetPathType)
 			.def("SetPath",						&CLuaGameObject::SetPath)
-			.def("SetWatchObject",				&CLuaGameObject::SetWatchObject)
-			.def("SetWatchDirection",			&CLuaGameObject::SetWatchDirection)
+			.def("SetWatchObject",				&CLuaGameObject::SetWatchObject)		// time
+			.def("SetWatchDirection",			&CLuaGameObject::SetWatchDirection)		// time
 			.def("SetWatchType",				&CLuaGameObject::SetWatchType)
 			.def("SetMentalState",				&CLuaGameObject::SetMentalState)
-			.def("SetWeaponState",				&CLuaGameObject::SetWeaponState)
-			.def("SetWeapon",					&CLuaGameObject::SetWeapon)
+			.def("SetWeaponState",				&CLuaGameObject::SetWeaponState)		// time
+			.def("SetWeapon",					&CLuaGameObject::SetWeapon)				// time
 	];
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);
