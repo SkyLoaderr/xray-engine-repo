@@ -5,6 +5,11 @@ function init    (obj)
        return
     end
 
+	if string.find(obj:name(), "cmp_") then
+		xr_motivator.AddToMotivator(obj)
+		return
+	end
+
     local name, command, group, member = str_split (obj:name ())
     if name == "patrol" then
        --printf ("Bind command %s, group %d, member %d", command, group, member)
