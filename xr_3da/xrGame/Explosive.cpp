@@ -316,6 +316,35 @@ void CExplosive::Explode()
 	
 }
 
+void CExplosive::PositionUpdate()
+{
+	Fvector vel;
+	Fvector& pos=m_vExplodePos;
+	Fvector& dir=m_vExplodeDir;
+	GetExplVelocity(vel);
+	GetExplPosition(pos);
+	GetExplDirection(dir);
+	Fmatrix explode_matrix;
+	explode_matrix.identity();
+	explode_matrix.j.set(dir);
+	Fvector::generate_orthonormal_basis(explode_matrix.j, explode_matrix.i, explode_matrix.k);
+	explode_matrix.c.set(pos);
+	
+}
+void CExplosive::GetExplPosition(Fvector &p)
+{
+	p.set(m_vExplodePos);
+}
+
+void CExplosive::GetExplDirection(Fvector &d)
+{
+	d.set(m_vExplodeDir);
+}
+void CExplosive::GetExplVelocity(Fvector &v)
+{
+	smart_cast<CPhysicsShellHolder*>(cast_game_object())->PHGetLinearVell(v);
+}
+
 void CExplosive::feel_touch_new(CObject* O) 
 {
 	CGameObject *pGameObject = static_cast<CGameObject*>(O);
@@ -341,7 +370,7 @@ void CExplosive::UpdateCL()
 	else
 	{
 		m_fExplodeDuration -= Device.fTimeDelta;
-
+		UpdateExplosionPos();
 		//обновить подсветку взрыва
 		if(m_pLight->get_active() && m_fLightTime>0)
 		{

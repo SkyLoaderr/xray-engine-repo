@@ -6,6 +6,7 @@
 #include "level.h"
 #include "../x_ray.h"
 #include "../igame_persistent.h"
+#include "PhysicsGamePars.h"
 
 extern	pureFrame*				g_pNetProcessor;
 
@@ -40,6 +41,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		R_ASSERT2(Load						(level_id),"Loading failed.");
 
 		// Send physics to single or multithreaded mode
+		LoadPhysicsGameParams				();
 		ph_world							= xr_new<CPHWorld>();
 		ph_world->Create					();
 

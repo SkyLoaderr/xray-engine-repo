@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "PhysicsGamePars.h"
-float object_demage_factor		=		4.f		; //times increace damage from object collision
+float object_damage_factor		=		4.f		; //times increace damage from object collision
 float collide_volume_max		=		200.f	; //max collide sound level
 float collide_volume_min		=		0.f		; //min collide sound level
 
@@ -17,3 +17,9 @@ const float EffectPars::vel_cret_wallmark=30.f;
 const float CharacterEffectPars::vel_cret_sound=20.f;
 const float CharacterEffectPars::vel_cret_particles=30.f;
 const float CharacterEffectPars::vel_cret_wallmark=30.f;
+
+void LoadPhysicsGameParams()
+{
+	collide_volume_min=pSettings->r_float("sound","snd_collide_min_volume");
+	collide_volume_max=pSettings->r_float("sound","snd_collide_max_volume");
+}

@@ -5,7 +5,7 @@ void CPHSimpleCharacter::UpdateStaticDamage(dContact* c,SGameMtl* tri_material,b
 			dReal	smag		=	dDOT(v,v);
 			dReal	plane_pgr	=	_sqrt(smag-norm_prg*norm_prg);
 			dReal	mag			=	0.f;
-				if(tri_material->Flags.is(SGameMtl::flPassable))
+				if(tri_material->Flags.test(SGameMtl::flPassable))
 				{
 					mag					=	_sqrt(smag)*(1.f-tri_material->fFlotationFactor)*tri_material->fBounceDamageFactor;
 				}
@@ -29,7 +29,7 @@ void CPHSimpleCharacter::UpdateDynamicDamage(dContact* c,SGameMtl* obj_material,
 	dMass m;
 	dBodyGetMass(b,&m);
 	const dReal* obj_vel=dBodyGetLinearVel(b);
-	dVector3 obj_vel_effective={obj_vel[0]*object_demage_factor,obj_vel[1]*object_demage_factor,obj_vel[2]*object_demage_factor};
+	dVector3 obj_vel_effective={obj_vel[0]*object_damage_factor,obj_vel[1]*object_damage_factor,obj_vel[2]*object_damage_factor};
 	dVector3 obj_impuls={obj_vel_effective[0]*m.mass,obj_vel_effective[1]*m.mass,obj_vel_effective[2]*m.mass};
 	dVector3 impuls={vel[0]*m_mass,vel[1]*m_mass,vel[2]*m_mass};
 	dVector3 c_mas_impuls={obj_impuls[0]+impuls[0],obj_impuls[1]+impuls[1],obj_impuls[2]+impuls[2]};
@@ -41,7 +41,7 @@ void CPHSimpleCharacter::UpdateDynamicDamage(dContact* c,SGameMtl* obj_material,
 	dReal obj_vel_prg=dDOT(obj_vel_effective,c->geom.normal);
 	dReal c_mass_vel_prg=dDOT(c_mass_vel,c->geom.normal);
 
-	//dReal kin_energy_start=dDOT(vel,vel)*m_mass/2.f+dDOT(obj_vel,obj_vel)*m.mass/2.f*object_demage_factor;
+	//dReal kin_energy_start=dDOT(vel,vel)*m_mass/2.f+dDOT(obj_vel,obj_vel)*m.mass/2.f*object_damage_factor;
 	//dReal kin_energy_end=dDOT(c_mass_vel,c_mass_vel)*cmass/2.f;
 
 	dReal kin_energy_start=vel_prg*vel_prg*m_mass/2.f+obj_vel_prg*obj_vel_prg*m.mass/2.f;

@@ -172,8 +172,8 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		}
 
 		if(usr_data_2){
-			usr_data_2->pushing_b_neg	=	usr_data_2->pushing_b_neg	&& !GMLib.GetMaterialByIdx(usr_data_2->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
-			usr_data_2->pushing_neg		=	usr_data_2->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
+			usr_data_2->pushing_b_neg	=	usr_data_2->pushing_b_neg	&& !GMLib.GetMaterialByIdx(usr_data_2->b_neg_tri.T->material)->Flags.test(SGameMtl::flPassable);
+			usr_data_2->pushing_neg		=	usr_data_2->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_2->neg_tri.T->material)->Flags.test(SGameMtl::flPassable);
 			pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
 			if(usr_data_2->ph_object){
 				usr_data_2->ph_object->InitContact(&c,do_collide,material_1,material_2);
@@ -182,8 +182,8 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		}
 		///////////////////////////////////////////////////////////////////////////////////////
 		if(usr_data_1){ 
-			usr_data_1->pushing_b_neg	=	usr_data_1->pushing_b_neg	&& !GMLib.GetMaterialByIdx(usr_data_1->b_neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
-			usr_data_1->pushing_neg		=	usr_data_1->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri.T->material)->Flags.is(SGameMtl::flPassable);
+			usr_data_1->pushing_b_neg	=	usr_data_1->pushing_b_neg	&& !GMLib.GetMaterialByIdx(usr_data_1->b_neg_tri.T->material)->Flags.test(SGameMtl::flPassable);
+			usr_data_1->pushing_neg		=	usr_data_1->pushing_neg		&& !GMLib.GetMaterialByIdx(usr_data_1->neg_tri.T->material)->Flags.test(SGameMtl::flPassable);
 			pushing_neg=usr_data_1->pushing_b_neg||usr_data_1->pushing_neg;
 			if(usr_data_1->ph_object){
 				usr_data_1->ph_object->InitContact(&c,do_collide,material_1,material_2);
@@ -198,14 +198,14 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		{
 #pragma warning(push)
 #pragma warning(disable:4245)
-			if(material_1->Flags.is(SGameMtl::flSlowDown)&&!(usr_data_2->pushing_neg||usr_data_2->pushing_b_neg))
+			if(material_1->Flags.test(SGameMtl::flSlowDown)&&!(usr_data_2->pushing_neg||usr_data_2->pushing_b_neg))
 #pragma warning(pop)
 			{
 				dBodyID body=dGeomGetBody(g2);
 				R_ASSERT2(body,"static - static collision !!!");
 				add_contact_body_effector(body,c,material_1);
 			}
-			if(material_1->Flags.is(SGameMtl::flPassable)) 
+			if(material_1->Flags.test(SGameMtl::flPassable)) 
 				do_collide=false;
 		//	if(material_2->Flags.is(SGameMtl::flClimable)) 
 		//		do_collide=false;
@@ -214,7 +214,7 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 		{
 #pragma warning(push)
 #pragma warning(disable:4245)
-			if(material_2->Flags.is(SGameMtl::flSlowDown)&&!(usr_data_1->pushing_neg||usr_data_1->pushing_b_neg))
+			if(material_2->Flags.test(SGameMtl::flSlowDown)&&!(usr_data_1->pushing_neg||usr_data_1->pushing_b_neg))
 #pragma warning(pop)
 			{
 
@@ -222,12 +222,12 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 				R_ASSERT2(body,"static - static collision !!!");
 				add_contact_body_effector(body,c,material_2);
 			}
-			if(material_2->Flags.is(SGameMtl::flPassable)) 
+			if(material_2->Flags.test(SGameMtl::flPassable)) 
 				do_collide=false;
 
 		}
 	
-		if(flags_1.is(SGameMtl::flBounceable)&&flags_2.is(SGameMtl::flBounceable))
+		if(flags_1.test(SGameMtl::flBounceable)&&flags_2.test(SGameMtl::flBounceable))
 		{
 			surface.mode		|=	dContactBounce;
 			surface.bounce_vel	=	_max(material_1->fPHBounceStartVelocity,material_2->fPHBounceStartVelocity);

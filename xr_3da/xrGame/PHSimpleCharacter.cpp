@@ -1051,7 +1051,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 	else
 		tri_material=material_1;
 
-	bool bClimable=!!tri_material->Flags.is(SGameMtl::flClimable);
+	bool bClimable=!!tri_material->Flags.test(SGameMtl::flClimable);
 	if(is_control&&m_elevator_state.ClimbingState())
 	{
 		c->surface.mu=0.f;
@@ -1059,7 +1059,7 @@ void CPHSimpleCharacter::InitContact(dContact* c,bool	&do_collide,SGameMtl * mat
 		c->surface.soft_erp=world_erp;
 	}
 	
-	if(tri_material->Flags.is(SGameMtl::flPassable))
+	if(tri_material->Flags.test(SGameMtl::flPassable))
 	{
 		UpdateStaticDamage(c,tri_material,bo1);
 		return;

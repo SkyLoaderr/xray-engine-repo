@@ -40,11 +40,16 @@ public:
 	virtual void				OnBeforeExplosion();
 	virtual void 				SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
 	IC		u16 				CurrentParentID		() const {return m_iCurrentParentID;}
-
+	virtual void				UpdateExplosionPos(){}
+	virtual void				GetExplVelocity(Fvector	&v);
+	virtual void				GetExplPosition(Fvector &p) ;
+	virtual void				GetExplDirection(Fvector &d);
 	virtual void 				GenExplodeEvent (const Fvector& pos, const Fvector& normal);
 	virtual void 				FindNormal(Fvector& normal);
 	virtual CGameObject			*cast_game_object()=0;
 	virtual CExplosive*			cast_explosive(){return this;}
+private:
+			void				PositionUpdate();
 protected:
 	//ID персонажа который иницировал действие
 	u16 m_iCurrentParentID;
