@@ -239,11 +239,11 @@ void CUI::StopMenu (CUIDialogWnd* pDialog, bool bDoHideIndicators)
 	SetMainInputReceiver(NULL);
 	pDialog->Hide();
 
-	if(bDoHideIndicators){
-	ShowIndicators();
-	HideCursor();
-	if(m_bCrosshair) 
-		psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+	if( bDoHideIndicators && !MainInputReceiver() ){
+		ShowIndicators();
+		HideCursor();
+		if(m_bCrosshair) 
+			psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
 	};
 }
 
