@@ -63,8 +63,7 @@ function options_base_tab:InitControls(caption, x_pos, y_pos)
 	self.main_frame = CUIFrameWindow()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
-	self.main_frame:Init("ui\\ui_frame", self.main_rect.x, 
-										 self.main_rect.y, 
+	self.main_frame:Init("ui\\ui_frame", 0, 0, 
 										 self.main_rect.width, 
 										 self.main_rect.height)
 	self:AttachChild(self.main_frame)
