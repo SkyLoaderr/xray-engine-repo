@@ -58,7 +58,6 @@ extern	BOOL	net_cl_inputguaranteed	;
 extern	BOOL	net_sv_control_hit		;
 extern	int		g_dwInputUpdateDelta	;
 extern	BOOL	g_ShowAnimationInfo		;
-extern	BOOL	g_bDynamicCrosshair		;
 extern	BOOL	g_bCalculatePing		;
 extern	BOOL	g_bBearerCantSprint		;
 extern	BOOL	g_bShildedBases			;
@@ -1881,7 +1880,8 @@ void CCC_RegisterCommands()
 
 	CMD4(CCC_SvControlHit,	"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
 	CMD4(CCC_Integer,		"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
-	CMD4(CCC_Integer,		"cl_dynamiccrosshair",	&g_bDynamicCrosshair,	0, 1)	;
+	CMD3(CCC_Mask,			"cl_dynamiccrosshair",	&psHUD_Flags,	HUD_CROSSHAIR_DYNAMIC);
+
 	CMD1(CCC_MainMenu,		"main_menu"				);
 
 	CMD1(CCC_StartTimeSingle,	"start_time_single");
