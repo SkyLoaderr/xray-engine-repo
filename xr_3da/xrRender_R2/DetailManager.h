@@ -29,7 +29,6 @@ class CDetailManager
 {
 public:
 	struct	SlotItem	{
-		Fvector				P;
 		float				scale;
 		float				scale_calculated;
 		Fmatrix				mRotY;

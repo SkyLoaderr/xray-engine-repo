@@ -223,8 +223,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 				RCache.set_ca			(x_array,		base+3,		C.x,			C.y,			C.z,			1.f		);
 
 				dwBatch	++;
-				if (dwBatch == hw_BatchSize)
-				{
+				if (dwBatch == hw_BatchSize)	{
 					// flush
 					u32 dwCNT_verts			= dwBatch * Object.number_vertices;
 					u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
