@@ -434,7 +434,7 @@ IC float	Interpolate			(float* base,		DWORD x, DWORD y, DWORD size)
 }
 IC bool		InterpolateAndDither(float* alpha255,	DWORD x, DWORD y, DWORD size, int dither[16][16] )
 {
-	int		c	= iFloor(Interpolate(alpha255,x,y,size)+.5f);
+	int		c	= iFloor(Interpolate(alpha255,x%size,y%size,size)+.5f);
 	
 	DWORD	row	= y % 16; 
 	DWORD	col	= x % 16;
@@ -506,12 +506,16 @@ void CDetailManager::UpdateCache	(int limit)
 		{
 			for (DWORD x=0; x<d_size; x++)
 			{
+				// shift mask
+                int shift_x = r_jitter.randI(16);
+                int shift_z = r_jitter.randI(16);
+
 				// Iterpolate and dither palette
 				selected.clear();
-				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,d_size,dither))	selected.push_back(0);
-				if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x,z,d_size,dither))	selected.push_back(1);
-				if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,d_size,dither))	selected.push_back(2);
-				if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,d_size,dither))	selected.push_back(3);
+				if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(0);
+				if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(1);
+				if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(2);
+				if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x+shift_x,z+shift_z,d_size,dither))	selected.push_back(3);
 				
 				// Select 
 				if (selected.empty())	continue;
