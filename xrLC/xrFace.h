@@ -1,7 +1,5 @@
 #pragma once
 
-#include "xrShaderDef.h"
-
 #ifndef IC
 #define IC __forceinline
 #endif
