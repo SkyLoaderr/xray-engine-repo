@@ -58,7 +58,7 @@ public:
 
 extern CIdeApp theApp;
 extern CProjectFile * g_pPF;
-
+extern CString encrypt(CString& src);
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

@@ -129,7 +129,7 @@ BOOL CIdeApp::InitInstance()
 CString ss_ini  = 	GetProfileString("options","sSafeIniFile", "" );
 if(ss_ini.GetLength()>0){
 		CString ss_username  = 	GetProfileString("options","sSafeUserName", "" );
-		CString ss_userpass  = 	GetProfileString("options","sSafeUserPassword", "" );
+		CString ss_userpass  = 	encrypt( GetProfileString("options","sSafeUserPassword", "" ) );
 		m_ssConnection.b_Connect(ss_username,ss_userpass,ss_ini);
 }
 

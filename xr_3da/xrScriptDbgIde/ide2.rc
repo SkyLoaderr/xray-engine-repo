@@ -264,6 +264,28 @@ BEGIN
     PUSHBUTTON      "...",IDC_BUTTON1,189,7,18,15
 END
 
+IDD_SS_OPTIONS_DIALOG DIALOGEX 0, 0, 278, 94
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Source Safe Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,169,73,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,221,73,50,14
+    EDITTEXT        IDC_EDIT_SS_INI_FILE,83,7,164,12,ES_AUTOHSCROLL
+    LTEXT           "SourceSafe ini file",IDC_STATIC,7,7,58,12
+    PUSHBUTTON      "...",IDC_BUTTON_SEL_SS_INI,255,7,16,12
+    EDITTEXT        IDC_EDIT_SS_FOLDER,83,22,164,12,ES_AUTOHSCROLL
+    LTEXT           "SourceSafe folder",IDC_STATIC,7,22,58,12
+    EDITTEXT        IDC_EDIT_SS_USER_NAME,84,38,163,12,ES_AUTOHSCROLL
+    LTEXT           "SourceSafe user name",IDC_STATIC,7,38,73,12
+    EDITTEXT        IDC_EDIT_SS_USER_PASS,84,53,163,12,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    LTEXT           "SourceSafe user pass",IDC_STATIC,7,53,73,12
+    CONTROL         "No Source control",IDC_CHECK1,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,70,80,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -290,6 +312,14 @@ BEGIN
         RIGHTMARGIN, 261
         TOPMARGIN, 7
         BOTTOMMARGIN, 44
+    END
+
+    IDD_SS_OPTIONS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 271
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -347,7 +377,7 @@ BEGIN
     END
     POPUP "Tools"
     BEGIN
-        MENUITEM "Options",                     IDR_TOOLS_OPTIONS
+        MENUITEM "SourceSafe Options",          IDR_TOOLS_OPTIONS
     END
 END
 
@@ -419,7 +449,7 @@ BEGIN
     END
     POPUP "Tools"
     BEGIN
-        MENUITEM "Options",                     32824
+        MENUITEM "SourceSafe Options",          32824
     END
 END
 

@@ -8,6 +8,7 @@
 #include "ScintillaView.h"
 #include "LuaDoc.h"
 #include "LuaView.h"
+#include "SSOptionsDlg.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -912,6 +913,15 @@ void CMainFrame::OpenVarTable(char* varName)
 		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 }
 
+CString encrypt(CString& src)
+{
+	CString res;
+	for(int i=0; i<src.GetLength();++i){
+		res.AppendChar(src.GetAt(i)^7);
+	};
+	return res;
+}
+
 void CMainFrame::EvalWatch(CString watch, int iItem)
 {
 //	if (!m_needAnswer)return;
@@ -924,10 +934,24 @@ void CMainFrame::EvalWatch(CString watch, int iItem)
 
 }
 
+
 void CMainFrame::OnToolsOptions()
 {
-	CLuaView* v = GetActiveView();
-//	v->GetProjectFile()->SS_add_to_ss();
+	CSSOptionsDlg dlg;
+
+	dlg.m_ss_ini_name	= AfxGetApp()->GetProfileString("options","sSafeIniFile", "" );
+	dlg.m_ss_folder		= AfxGetApp()->GetProfileString("options","sSafeFolder", "" );
+	dlg.m_ss_username	= AfxGetApp()->GetProfileString("options","sSafeUserName", "" );
+	dlg.m_ss_userpass	= encrypt( AfxGetApp()->GetProfileString("options","sSafeUserPassword", "" ) );
+	dlg.m_no_ss			= (dlg.m_ss_ini_name.GetLength()==0);
+
+	if(dlg.DoModal()==IDOK){
+		AfxGetApp()->WriteProfileString("options","sSafeIniFile", dlg.m_ss_ini_name );
+		AfxGetApp()->WriteProfileString("options","sSafeFolder", dlg.m_ss_folder );
+		AfxGetApp()->WriteProfileString("options","sSafeUserName", dlg.m_ss_username );
+		AfxGetApp()->WriteProfileString("options","sSafeUserPassword", encrypt(dlg.m_ss_userpass) );
+		AfxMessageBox("Restart the application for the changes to take effect");
+	}
 }
 
 BOOL CMainFrame::checkExistingFolder(CString str)

@@ -65,7 +65,8 @@
 				CommandLine="echo copying files to e:\exchange2\debugger
 copy $(TargetDir)$(TargetPath) e:\exchange2\debugger
 copy $(TargetDir)Scilexer.dll e:\exchange2\debugger
-copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger"/>
+copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
+"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -138,7 +139,8 @@ copy $(TargetPath) e:\exchange2\debugger
 echo copying Scilexer.dll to e:\exchange2\debugger
 copy $(TargetDir)Scilexer.dll e:\exchange2\debugger
 echo copying CJ60Lib.dll to e:\exchange2\debugger
-copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger"/>
+copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger
+"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -450,6 +452,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger"/>
 				RelativePath=".\ScriptThreadsBar.h">
 			</File>
 			<File
+				RelativePath=".\SSOptionsDlg.cpp">
+			</File>
+			<File
 				RelativePath="StdAfx.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -637,6 +642,9 @@ copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger"/>
 			</File>
 			<File
 				RelativePath=".\ScriptThreadsBar.cpp">
+			</File>
+			<File
+				RelativePath=".\SSOptionsDlg.h">
 			</File>
 			<File
 				RelativePath="StdAfx.h">

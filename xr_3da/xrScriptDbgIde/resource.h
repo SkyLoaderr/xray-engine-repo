@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by ide2.rc
 //
+#define IDOK2                           3
 #define ID_EDIT_CTRL                    101
 #define ID_VIEW_WORKSPACE               102
 #define ID_VIEW_OUTPUT                  103
@@ -29,6 +30,7 @@
 #define IDD_DEBUG_DIALOG                137
 #define IDD_DIALOG_NEW_PROJECT          140
 #define IDR_MENU1                       142
+#define IDD_SS_OPTIONS_DIALOG           143
 #define IDC_PROJECT_TYPES               1002
 #define IDC_OUTPUT_DIR                  1003
 #define IDC_PROJECT_NAME                1003
@@ -47,9 +49,15 @@
 #define IDC_EDIT_WDIR                   1013
 #define IDC_EDIT_ARGS                   1014
 #define IDC_BUTTON1                     1015
+#define IDC_EDIT_SS_INI_FILE            1018
+#define IDC_BUTTON_SEL_SS_INI           1019
 #define IDD_SCINTILLA_FINDDLGORD        1020
+#define IDC_EDIT_SS_FOLDER              1020
 #define IDD_SCINTILLA_REPLACEDLGORD     1021
+#define IDC_EDIT_SS_USER_NAME           1021
 #define IDC_REGULAR_EXPRESSION          1022
+#define IDC_EDIT_SS_USER_PASS           1022
+#define IDC_CHECK1                      1023
 #define ID_DEBUG_RUNTOCURSOR            32742
 #define ID_PROJECT_ADD_FILES            32771
 #define ID_FILE_OPENPROJECT             32773
@@ -115,9 +123,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_3D_CONTROLS                     1
-#define _APS_NEXT_RESOURCE_VALUE        143
+#define _APS_NEXT_RESOURCE_VALUE        144
 #define _APS_NEXT_COMMAND_VALUE         32887
-#define _APS_NEXT_CONTROL_VALUE         1016
+#define _APS_NEXT_CONTROL_VALUE         1024
 #define _APS_NEXT_SYMED_VALUE           112
 #endif
 #endif
