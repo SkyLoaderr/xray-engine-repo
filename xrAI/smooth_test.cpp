@@ -3,33 +3,6 @@
 #include "graph_engine.h"
 #include "profile.h"
 
-//struct STravelParams {
-//	float			linear_velocity;
-//	float			angular_velocity; 
-//};
-//
-//struct STravelPoint {
-//	Fvector2		position;
-//	u32				vertex_id;
-//};
-//
-//struct SPathPoint : public STravelParams, public STravelPoint {
-//	Fvector2		direction;
-//};
-//
-//struct SCirclePoint {
-//	Fvector2		center;
-//	float			radius;
-//	Fvector2		point;
-//	float			angle;
-//};
-//
-//struct STrajectoryPoint :
-//	public SPathPoint,
-//	public SCirclePoint
-//{
-//};
-//
 IC  Fvector v3d(const Fvector2 &vector2d)
 {
 	return			(Fvector().set(vector2d.x,0.f,vector2d.y));
@@ -719,8 +692,8 @@ void test_smooth_path(LPCSTR name)
 
 	RESET_ALL_TIMERS;
 
-	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+//	SetPriorityClass			(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
+//	SetThreadPriority			(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep						(1);
 	
 	for (int i=0; i<TEST_COUNT; ++i) {
