@@ -72,6 +72,17 @@ bool	compare3_defl		(CDeflector* D1, CDeflector* D2)
 }
 class	pred_remove { public: IC bool	operator() (CDeflector* D) { { if (0==D) return TRUE;}; if (D->bMerged) {D->bMerged=FALSE; return TRUE; } else return FALSE;  }; };
 
+// O(n*n) sorting
+void	dumb_sort	(vecDefl& L)
+{
+	for (int n1=0; n1<L.size(); n1++)
+	{
+		Progress(float(n1)/float(L.size()));
+		for (int n2=1; n2<L.size(); n2++)
+			if (compare2_defl(L[n2],L[n2-1]))	swap(L[n2],L[n2-1]);
+	}
+}
+
 void CBuild::xrPhase_MergeLM()
 {
 	vecDefl			Layer;
@@ -107,8 +118,8 @@ void CBuild::xrPhase_MergeLM()
 			Status		("Selection 2...");
 			Msg			("LS: %d",	Layer.size());
 			Deflector	= Layer[0];
-			if (Layer.size()>2)
-				std::sort	(Layer.begin()+1,Layer.end(),compare2_defl);
+			R_ASSERT	(Deflector);
+			if (Layer.size()>2)	dumb_sort(Layer);
 
 			// Select first deflectors which can fit
 			Status		("Selection 3...");
