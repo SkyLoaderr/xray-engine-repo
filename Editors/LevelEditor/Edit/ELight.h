@@ -120,43 +120,43 @@ protected:
     virtual Fvector& GetPosition	()						{ return m_D3D.position; 	}
     virtual void 	SetPosition		(const Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
 public:
-					CLight		(LPVOID data, LPCSTR name);
-	void 			Construct	(LPVOID data);
-	virtual 		~CLight		();
-    void			CopyFrom	(CLight* src);
+					CLight			(LPVOID data, LPCSTR name);
+	void 			Construct		(LPVOID data);
+	virtual 		~CLight			();
+    void			CopyFrom		(CLight* src);
 
     // pick functions
-	virtual bool 	RayPick		(float& distance, const Fvector& start, const Fvector& direction,
-								SRayPickInfo* pinf = NULL );
-    virtual bool 	FrustumPick	(const CFrustum& frustum);
+	virtual bool 	RayPick			(float& distance, const Fvector& start, const Fvector& direction,
+									SRayPickInfo* pinf = NULL );
+    virtual bool 	FrustumPick		(const CFrustum& frustum);
 
     // change position/orientation methods
-	virtual void 	Scale		(Fvector& amount){;}
+	virtual void 	Scale			(Fvector& amount){;}
 
     // placement functions
-	virtual bool 	GetBox		(Fbox& box);
+	virtual bool 	GetBox			(Fbox& box);
 
     // file system function
-  	virtual bool 	Load		(IReader&);
-	virtual void 	Save		(IWriter&);
-	virtual void	FillProp	(LPCSTR pref, PropItemVec& items);
-	void			FillSunProp	(LPCSTR pref, PropItemVec& items);
-	void			FillPointProp(LPCSTR pref, PropItemVec& items);
-	void			FillSpotProp(LPCSTR pref, PropItemVec& items);
-	virtual bool 	GetSummaryInfo(SSceneSummary* inf);
+  	virtual bool 	Load			(IReader&);
+	virtual void 	Save			(IWriter&);
+	virtual void	FillProp		(LPCSTR pref, PropItemVec& items);
+	void			FillSunProp		(LPCSTR pref, PropItemVec& items);
+	void			FillPointProp	(LPCSTR pref, PropItemVec& items);
+	void			FillSpotProp	(LPCSTR pref, PropItemVec& items);
+	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
 
     // render utility function
-	void 			Set			(int d3dindex);
-	void 			UnSet		();
-    void 			Enable		(BOOL flag);
-    void 			AffectD3D	(BOOL flag);
+	void 			Set				(int d3dindex);
+	void 			UnSet			();
+    void 			Enable			(BOOL flag);
+    void 			AffectD3D		(BOOL flag);
 
-	virtual void 	Render		(int priority, bool strictB2F);
-	virtual void 	OnFrame		();
-    void 			Update		();
+	virtual void 	Render			(int priority, bool strictB2F);
+	virtual void 	OnFrame			();
+    void 			Update			();
 
     // events
-    virtual void    OnShowHint  (AStringVec& dest);
+    virtual void    OnShowHint  	(AStringVec& dest);
 
 	virtual void 	OnDeviceCreate	();
 	virtual void 	OnDeviceDestroy	();

@@ -374,13 +374,13 @@ void CWayObject::Render(int priority, bool strictB2F)
 {
 //	inherited::Render(priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
-		Fbox bb; GetBox(bb);
-        if (::Render->occ_visible(bb)){
-			for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Selected());
-            if( Selected() ){
-                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                DU.DrawSelectionBox(bb,&clr);
-            }
+        RCache.set_xform_world(Fidentity);
+        Device.SetShader		(Device.m_WireShader);
+        for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Selected());
+        if( Selected() ){
+            u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+            Fbox bb; GetBox(bb);
+            DU.DrawSelectionBox(bb,&clr);
         }
     }
 }
@@ -402,7 +402,7 @@ bool CWayObject::FrustumPick(const CFrustum& frustum)
 
 bool CWayObject::IsPointMode()
 {
-	if (Tools.GetTargetClassID()==OBJCLASS_WAY){
+	if (Tools.GetTarget()==OBJCLASS_WAY){
 	    TfraWayPoint* frame=(TfraWayPoint*)Tools.GetFrame(); R_ASSERT(frame);
     	return frame->ebModePoint->Down;
     }else return false;

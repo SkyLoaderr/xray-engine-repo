@@ -55,7 +55,8 @@ CCustomObject::~CCustomObject()
 
 bool CCustomObject::IsRender()
 {
-    return (Selected()&&m_CO_Flags.is(flMotion));
+	Fbox bb; GetBox(bb);
+    return ::Render->occ_visible(bb)||(Selected()&&m_CO_Flags.is(flMotion));
 }
 
 void CCustomObject::OnUpdateTransform()
@@ -76,8 +77,8 @@ void CCustomObject::OnUpdateTransform()
 
 void CCustomObject::Select( int flag )
 {
-    if (m_CO_Flags.is(flVisible)){
-        m_CO_Flags.set			(flSelected,(flag==-1)?(m_CO_Flags.is(flSelected)?FALSE:TRUE):flag);
+    if (m_CO_Flags.is(flVisible)&&(!!m_CO_Flags.is(flSelected)!=flag)){ 
+        m_CO_Flags.set		(flSelected,(flag==-1)?(m_CO_Flags.is(flSelected)?FALSE:TRUE):flag);
         UI.RedrawScene		();
         UI.Command			(COMMAND_UPDATE_PROPERTIES);
     }

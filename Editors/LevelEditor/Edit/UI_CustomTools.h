@@ -6,7 +6,7 @@ class TUI_CustomControl;
 class TUI_Control;
 class ESceneCustomMTools;
 
-#include "UI_Tools.h"
+//#include "UI_Tools.h"
 
 DEFINE_VECTOR(TUI_CustomControl*,ControlsVec,ControlsIt);
 
@@ -20,12 +20,15 @@ class TUI_CustomTools{
     int             action;
     int				sub_target;
 
-    EObjClass		objclass;
 	ESceneCustomMTools* scene_tools;
 
     TUI_CustomControl* FindControl	(int subtarget, int action);
     void            UpdateControl	();
     void			CreateDefaultControls();
+
+	EObjClass 		FClassID;
+public:
+    PropertyGP(FClassID,FClassID) EObjClass ClassID;
 protected:
     void            AddControlCB	(TUI_CustomControl* c);
 public:
@@ -46,7 +49,8 @@ public:
     virtual void 	SetNumRotation	(CCustomObject* O);
     virtual void 	SetNumScale		(CCustomObject* O);
 
-	const EObjClass	ObjClass		()const {return objclass;}
 	ESceneCustomMTools* SceneTools	(){return scene_tools;}
 };
+
+DEFINE_MAP(EObjClass,TUI_CustomTools*,UIToolsMap,UIToolsMapPairIt);
 #endif //ui_customtoolsH

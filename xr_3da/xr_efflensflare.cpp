@@ -189,7 +189,7 @@ void CLensFlare::OnFrame()
 	vecY.crossproduct(vecX, vecDir);
 
 #ifdef _LEVEL_EDITOR
-	if ( Scene.RayPick(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0, false, 0))
+	if ( Scene.RayPickObject(Device.m_Camera.GetPosition(), vSunDir, OBJCLASS_SCENEOBJECT, 0,0))
 #else
 	CObject*	o_main		= g_pGameLevel->CurrentViewEntity();
 	BOOL		o_enable	= FALSE;

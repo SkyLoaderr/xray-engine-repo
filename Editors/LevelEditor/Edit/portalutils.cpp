@@ -31,20 +31,19 @@ CSector* CPortalUtils::GetSelectedSector()
     return sector;
 }
 
-void CPortalUtils::RemoveSectorPortal(CSector* S){
+void CPortalUtils::RemoveSectorPortal(CSector* S)
+{
     // remove existence sector portal
     ObjectList& lst = Scene.ListObj(OBJCLASS_PORTAL);
-    ObjectIt _F = lst.begin();
-    while(_F!=lst.end()){
-    	CPortal* P=(CPortal*)(*_F);
-        if((P->m_SectorFront==S)||(P->m_SectorBack==S)){
-            xr_delete((*_F));
-            ObjectIt _D = _F; _F++;
-            lst.remove((*_D));
-        }else{
-            _F++;
-        }
+    ObjectIt _I = lst.begin();
+    ObjectIt _E = lst.end();
+    for (;_I!=_E;_I++){
+    	CPortal* P=(CPortal*)(*_I);
+        if((P->m_SectorFront==S)||(P->m_SectorBack==S))
+            xr_delete(P);
     }
+    _I = remove(lst.begin(),lst.end(),(CCustomObject*)0);
+    lst.erase(_I,lst.end());
 }
 
 int CPortalUtils::CalculateSelectedPortals()
@@ -83,7 +82,7 @@ void CPortalUtils::RemoveAllPortals()
 {
     // remove all existence portal
 	ObjectList& p_lst = Scene.ListObj(OBJCLASS_PORTAL);
-    for (ObjectIt _F=p_lst.begin(); _F!=p_lst.end(); _F++) delete (*_F);
+    for (ObjectIt _F=p_lst.begin(); _F!=p_lst.end(); _F++) xr_delete(*_F);
 	p_lst.erase(p_lst.begin(),p_lst.end());
 }
 //---------------------------------------------------------------------------
@@ -97,11 +96,9 @@ bool CPortalUtils::CreateDefaultSector()
         sector_def->m_bDefault=true;
         sector_def->CaptureAllUnusedMeshes();
 		if (!sector_def->IsEmpty()){
-         	Scene.AddObject(sector_def,false);
-            Scene.UndoSave();
-	        UI.UpdateScene();
+         	Scene.AppendObject	(sector_def,true);
             return true;
-        } else delete sector_def;
+        } else xr_delete(sector_def);
     }
     return false;
 }
@@ -120,7 +117,7 @@ bool CPortalUtils::RemoveDefaultSector()
     return false;
 }
 //---------------------------------------------------------------------------
-
+/*
 int CPortalUtils::CalculateAllPortals2()
 {
     int bResult=0;
@@ -152,6 +149,7 @@ int CPortalUtils::CalculateAllPortals2()
 	UI.SetStatus("...");
     return bResult;
 }
+*/
 //---------------------------------------------------------------------------
 CSector* CPortalUtils::FindSector(CSceneObject* o, CEditableMesh* m){
 	ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
@@ -493,9 +491,9 @@ public:
                 _O->SetSectors(p_it->s[0],p_it->s[1]);
                 _O->Update();
                 if (_O->Valid()){
-	 	            Scene.AddObject(_O);
+	 	            Scene.AppendObject(_O);
                 }else{
-                	delete _O;
+                	xr_delete(_O);
 				    ELog.Msg(mtError,"Can't simplify Portal :(\nPlease check geometry.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);
                 }
             }else

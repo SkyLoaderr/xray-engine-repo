@@ -56,39 +56,38 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	break;
 	case COMMAND_LOAD:
 		if( !Scene.locked() ){
-            AnsiString full_name;
-			if( p1 || EFS.GetOpenName( _maps_, full_name ) ){
-				AnsiString temp_fn;
-            	if (p1){
-                	temp_fn		= AnsiString((char*)p1);
-                }else{
-	                LPCSTR p	= FS.get_path(_maps_)->m_Path;
-    	        	temp_fn 	= AnsiString(full_name.c_str()+strlen(p)).LowerCase();
-                }
+            AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
+			if( p1 || EFS.GetOpenName( _maps_, temp_fn ) ){
+                if (1==temp_fn.Pos(FS.get_path(_maps_)->m_Path))
+                    temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path)).LowerCase();
+                
                 if (!Scene.IfModified()){
                 	bRes=false;
                     break;
                 }
-                if (!temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_maps_,temp_fn.c_str(),false,true)){
+                if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_maps_,temp_fn.c_str(),false,true)){
                 	bRes=false;
                     break;
                 }
-                if (temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_maps_,temp_fn.c_str(),true,false)){
+                if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_maps_,temp_fn.c_str(),true,false)){
 	                EFS.UnlockFile(_maps_,temp_fn.c_str());
                 }
                 SetStatus("Level loading...");
             	Command			(COMMAND_CLEAR);
-				Scene.Load		(full_name.c_str());
-				m_LastFileName	= temp_fn;
-				ResetStatus		();
-              	Scene.UndoClear	();
-				Scene.UndoSave	();
-                Scene.m_Modified= false;
-			    Command			(COMMAND_UPDATE_CAPTION);
-                Command			(COMMAND_CHANGE_ACTION,eaSelect);
-                // lock
-                EFS.LockFile	(_maps_,temp_fn.c_str());
-                AppendRecentFile(temp_fn.c_str());
+				if (Scene.Load	(_maps_, temp_fn.c_str(), false)){
+                    m_LastFileName	= temp_fn;
+                    ResetStatus		();
+                    Scene.UndoClear	();
+                    Scene.UndoSave	();
+                    Scene.m_RTFlags.set(EScene::flRT_Unsaved|EScene::flRT_Modified,FALSE);
+				    Command			(COMMAND_UPDATE_CAPTION);
+    	            Command			(COMMAND_CHANGE_ACTION,eaSelect);
+        	        // lock
+	                EFS.LockFile	(_maps_,temp_fn.c_str());
+    	            AppendRecentFile(temp_fn.c_str());
+                }else{
+					ELog.DlgMsg	( mtError, "Can't load map '%s'", temp_fn.c_str() );
+                }
                 // update props
 		        Command			(COMMAND_UPDATE_PROPERTIES);
                 RedrawScene		();
@@ -112,9 +111,9 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		if( !Scene.locked() ){
 			if( !m_LastFileName.IsEmpty() ){
                 SetStatus		("Level saving...");
-				Scene.Save		(m_LastFileName.c_str(), false);
+				Scene.Save		(_maps_, m_LastFileName.c_str(), false);
 				ResetStatus		();
-                Scene.m_Modified = false;
+//                Scene.m_Modified = false;
 			    Command(COMMAND_UPDATE_CAPTION);
 			}else{
 				bRes = Command( COMMAND_SAVEAS ); }
@@ -131,18 +130,15 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     }break;
 	case COMMAND_SAVEAS:
 		if( !Scene.locked() ){
-        	AnsiString temp_fn;
+        	AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
 			if(p1 || EFS.GetSaveName( _maps_, temp_fn ) ){
-            	if (p1){
-                	temp_fn		= AnsiString((LPCSTR)p1);
-                }else{
-	                LPCSTR p	= FS.get_path(_maps_)->m_Path;
-    	        	temp_fn 	= AnsiString(temp_fn.c_str()+strlen(p)).LowerCase();
-                }
+                if (1==temp_fn.Pos(FS.get_path(_maps_)->m_Path))
+                    temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path)).LowerCase();
+
                 SetStatus		("Level saving...");
-				Scene.Save		(temp_fn.c_str(), false);
+				Scene.Save		(_maps_, temp_fn.c_str(), false);
 				ResetStatus		();
-                Scene.m_Modified = false;
+//.                Scene.m_Modified = false;
 				// unlock
     	        EFS.UnlockFile	(_maps_,m_LastFileName.c_str());
                 // set new name
@@ -161,20 +157,19 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 	case COMMAND_CLEAR:
 		if( !Scene.locked() ){
             if (!Scene.IfModified()) return false;
-			// unlock
-			EFS.UnlockFile(_maps_,m_LastFileName.c_str());
             // backup map
-            if (!m_LastFileName.IsEmpty()){
+            if (!m_LastFileName.IsEmpty()&&Scene.IsModified()){
 	           	EFS.BackupFile(_maps_,m_LastFileName.c_str());
             }
+			// unlock
+			EFS.UnlockFile(_maps_,m_LastFileName.c_str());
 			Device.m_Camera.Reset	();
 			Scene.Unload			();
             Scene.m_LevelOp.Reset	();
 			m_LastFileName 			= "";
            	Scene.UndoClear			();
-            Scene.m_Modified 		= false;
 			Command(COMMAND_UPDATE_CAPTION);
-			Command(COMMAND_CHANGE_TARGET,etObject,TRUE);
+			Command(COMMAND_CHANGE_TARGET,OBJCLASS_SCENEOBJECT,TRUE);
 			Command(COMMAND_CHANGE_ACTION,eaSelect);
 		    Scene.UndoSave();
 		} else {
@@ -260,7 +255,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	AnsiString fn;
 			if( EFS.GetOpenName( _maps_, fn ) ){
                 SetStatus		("Fragment loading...");
-				Scene.LoadSelection	(fn.c_str());
+				Scene.LoadSelection	(0,fn.c_str());
 				ResetStatus		();
 				Scene.UndoSave	();
                 Command			(COMMAND_CHANGE_ACTION,eaSelect);
@@ -278,7 +273,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
         	AnsiString fn;
 			if( EFS.GetSaveName	( _maps_, fn ) ){
                 SetStatus		("Fragment saving...");
-				Scene.SaveSelection(Tools.CurrentClassID(),fn.c_str());
+				Scene.SaveSelection(Tools.CurrentClassID(),0,fn.c_str());
 				ResetStatus		();
 			}
 		} else {
@@ -483,7 +478,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			bRes = false;
         }
     	break;
-    case COMMAND_RESET_ANIMATION:
+/*    case COMMAND_RESET_ANIMATION:
 		if( !Scene.locked() ){
 	    	Scene.ResetAnimation();
 		}else{
@@ -491,7 +486,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 			bRes = false;
         }
 		break;
-    case COMMAND_SET_SNAP_OBJECTS:
+*/
+		case COMMAND_SET_SNAP_OBJECTS:
 		if( !Scene.locked() ){
 	    	Scene.SetSnapList();
 		}else{
@@ -576,26 +572,26 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
             else if (Key=='A')    		COMMAND0(COMMAND_SELECT_ALL)                   
             else if (Key=='T')    		COMMAND0(COMMAND_MOVE_CAMERA_TO)                   
             else if (Key=='I')    		COMMAND0(COMMAND_INVERT_SELECTION_ALL)         
-            else if (Key=='1') 	 		COMMAND1(COMMAND_CHANGE_TARGET, etGroup)
-            else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, etPS)          
-            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, etDO)          
-            else if (Key=='4')			COMMAND1(COMMAND_CHANGE_TARGET,	etAIMap)		
+            else if (Key=='1') 	 		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_GROUP)
+            else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_PS)          
+            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_DO)          
+            else if (Key=='4')			COMMAND1(COMMAND_CHANGE_TARGET,	OBJCLASS_AIMAP)		
             else if (Key=='W')			COMMAND0(COMMAND_SHOW_OBJECTLIST)              
         }
     }else{
         if (Shift.Contains(ssAlt)){
         	if (Key=='F')   			COMMAND0(COMMAND_FILE_MENU)                    
         }else{
-            if (Key=='1')     			COMMAND1(COMMAND_CHANGE_TARGET, etObject)      
-            else if (Key=='2')  		COMMAND1(COMMAND_CHANGE_TARGET, etLight)       
-            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundSrc)    
-            else if (Key=='4')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundEnv)    
-            else if (Key=='5')  		COMMAND1(COMMAND_CHANGE_TARGET, etGlow)        
-            else if (Key=='6')			COMMAND1(COMMAND_CHANGE_TARGET, etShape)       
-            else if (Key=='7')  		COMMAND1(COMMAND_CHANGE_TARGET, etSpawnPoint)  
-            else if (Key=='8')  		COMMAND1(COMMAND_CHANGE_TARGET, etWay)         
-            else if (Key=='9')  		COMMAND1(COMMAND_CHANGE_TARGET, etSector)      
-            else if (Key=='0')  		COMMAND1(COMMAND_CHANGE_TARGET, etPortal)      
+            if (Key=='1')     			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT)      
+            else if (Key=='2')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_LIGHT)       
+            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SOUND_SRC)    
+            else if (Key=='4')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SOUND_ENV)    
+            else if (Key=='5')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_GLOW)        
+            else if (Key=='6')			COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SHAPE)       
+            else if (Key=='7')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SPAWNPOINT)  
+            else if (Key=='8')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_WAY)         
+            else if (Key=='9')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_SECTOR)      
+            else if (Key=='0')  		COMMAND1(COMMAND_CHANGE_TARGET, OBJCLASS_PORTAL)      
             // simple press
             else if (Key==VK_DELETE)	COMMAND0(COMMAND_DELETE_SELECTION)             
             else if (Key==VK_RETURN)	COMMAND0(COMMAND_SHOW_PROPERTIES)              
@@ -643,8 +639,12 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         SRayPickInfo pinf;
 	    EEditorState est = GetEState();
         switch(est){
-        case esEditLibrary:		bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf); break;
-        case esEditScene:		bPickObject = !!Scene.RayPick(start,direction,OBJCLASS_SCENEOBJECT,&pinf,false,Scene.GetSnapList(false)); break;
+        case esEditLibrary:{
+        	bPickObject = !!TfrmEditLibrary::RayPick(start,direction,&pinf);
+        }break;
+        case esEditScene:{
+        	bPickObject = !!Scene.RayPickObject(start,direction,OBJCLASS_SCENEOBJECT,&pinf,Scene.GetSnapList(false)); break;
+        }
         default: return false;
         }
         if (bPickObject){
@@ -716,7 +716,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (frmEditPrefs->cbBoxPickLimitedDepth->Checked){
 			pinf.inf.range = Device.m_Camera.m_Zfar; // max pick range
-            if (Scene.RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, 0))
+            if (Scene.RayPickObject(st, d, OBJCLASS_SCENEOBJECT, &pinf, 0))
 	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }
@@ -737,7 +737,8 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 	return true;
 }
 //----------------------------------------------------
-void TUI::RealUpdateScene(){
+void TUI::RealUpdateScene()
+{
 	if (GetEState()==esEditScene){
 	    Scene.OnObjectsUpdate();
     	Tools.OnObjectsUpdate(); // обновить все что как-то связано с объектами

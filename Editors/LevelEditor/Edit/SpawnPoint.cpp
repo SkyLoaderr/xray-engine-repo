@@ -280,49 +280,45 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
 	if (m_SpawnData.Valid())    m_SpawnData.Render(_Transform(),priority, strictB2F);
     // render spawn point
     if (1==priority){
-		Fbox bb; GetBox(bb);
-		if (::Render->occ_visible(bb)){
-            if (strictB2F){
-                RCache.set_xform_world(FTransformRP);
-                if (m_SpawnData.Valid()){
-                    // render icon
-				    ref_shader s 	   	= GetIcon(m_SpawnData.m_Data->s_name);
-				    DU.DrawEntity		(0xffffffff,s);
-                }else{
-                	float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
-                    int r = m_dwTeamID%MAX_TEAM;
-                    Fcolor c;
-                    c.set(RP_COLORS[r]);
-                    c.mul_rgb(k*0.9f+0.1f);
-                    DU.DrawEntity(c.get(),Device.m_WireShader);
-                }
+        if (strictB2F){
+            RCache.set_xform_world(FTransformRP);
+            if (m_SpawnData.Valid()){
+                // render icon
+                ref_shader s 	   	= GetIcon(m_SpawnData.m_Data->s_name);
+                DU.DrawEntity		(0xffffffff,s);
             }else{
-                if (fraBottomBar->miSpawnPointDrawText->Checked)
-                {
-                    AnsiString s_name;
-					if (m_SpawnData.Valid()){
-                    	s_name	= m_SpawnData.m_Data->s_name;
-                    }else{
-                        switch (m_Type){
-                        case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
-                        default: THROW2("CSpawnPoint:: Unknown Type");
-                        }
+                float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
+                int r = m_dwTeamID%MAX_TEAM;
+                Fcolor c;
+                c.set(RP_COLORS[r]);
+                c.mul_rgb(k*0.9f+0.1f);
+                DU.DrawEntity(c.get(),Device.m_WireShader);
+            }
+        }else{
+            if (fraBottomBar->miSpawnPointDrawText->Checked){
+                AnsiString s_name;
+                if (m_SpawnData.Valid()){
+                    s_name	= m_SpawnData.m_Data->s_name;
+                }else{
+                    switch (m_Type){
+                    case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
+                    default: THROW2("CSpawnPoint:: Unknown Type");
                     }
-                    FVF::TL	P;
-                    float 			cx,cy;
-                    P.transform		( PPosition, Device.mFullTransform );
-                    cx				= iFloor(Device._x2real(P.p.x));
-                    cy				= iFloor(Device._y2real(P.p.y));
-                    Device.pSystemFont->SetColor(0xffffffff);
-                    Device.pSystemFont->Out		(cx,cy,s_name.c_str());
                 }
-                if( Selected() ){
-	                RCache.set_xform_world(Fidentity);
-                    Fbox bb; GetBox(bb);
-                    u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                    Device.SetShader(Device.m_WireShader);
-                    DU.DrawSelectionBox(bb,&clr);
-                }
+                FVF::TL	P;
+                float 			cx,cy;
+                P.transform		( PPosition, Device.mFullTransform );
+                cx				= iFloor(Device._x2real(P.p.x));
+                cy				= iFloor(Device._y2real(P.p.y));
+                Device.pSystemFont->SetColor(0xffffffff);
+                Device.pSystemFont->Out		(cx,cy,s_name.c_str());
+            }
+            if( Selected() ){
+                RCache.set_xform_world(Fidentity);
+                Fbox bb; GetBox(bb);
+                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                Device.SetShader(Device.m_WireShader);
+                DU.DrawSelectionBox(bb,&clr);
             }
         }
     }

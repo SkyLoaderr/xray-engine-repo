@@ -106,24 +106,23 @@ void __fastcall TfrmObjectList::InitListBox()
     tvItems->IsUpdating = true;
     tvItems->Items->Clear();
     cur_cls = Tools.CurrentClassID();
-    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
-        ObjectList& lst = it->second;
-        if ((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls)){
-            if (IsObjectListClassID(it->first)){
-                TElTreeItem* node = FindFolderByType(it->first);
-                if (!node) node = AddFolder(it->first);
-                VERIFY(node);
-            	if (OBJCLASS_GROUP==it->first){
-                    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                        TElTreeItem* grp_node = AddObject(node,(*_F)->Name,(void*)(*_F));
-                        ObjectList& grp_lst = ((CGroupObject*)(*_F))->GetObjects();
-                        for (ObjectIt _G=grp_lst.begin(); _G!=grp_lst.end(); _G++)
-	                        AddObject(grp_node,(*_G)->Name,(void*)(*_F));
-                    }
-                }else{
-                    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                        AddObject(node,(*_F)->Name,(void*)(*_F));
+    for(SceneToolsMapPairIt it=Scene.FirstTools(); it!=Scene.LastTools(); it++){
+    	ESceneCustomOTools* ot = dynamic_cast<ESceneCustomOTools*>(it->second);
+        if (ot&&IsObjectListClassID(ot->ClassID)&&((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls))){
+            TElTreeItem* node = FindFolderByType(it->first);
+            if (!node) node = AddFolder(it->first);
+            VERIFY(node);
+            ObjectList& lst = ot->GetObjects();
+            if (OBJCLASS_GROUP==it->first){
+                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
+                    TElTreeItem* grp_node = AddObject(node,(*_F)->Name,(void*)(*_F));
+                    ObjectList& grp_lst = ((CGroupObject*)(*_F))->GetObjects();
+                    for (ObjectIt _G=grp_lst.begin(); _G!=grp_lst.end(); _G++)
+                        AddObject(grp_node,(*_G)->Name,(void*)(*_F));
                 }
+            }else{
+                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                    AddObject(node,(*_F)->Name,(void*)(*_F));
             }
         }
     }
@@ -152,21 +151,6 @@ void TfrmObjectList::UpdateState()
         }
     }
 
-/*    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
-        ObjectList& lst = (*it).second;
-        if (IsObjectListClassID((*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                TElTreeItem* node = FindObjectByType((*_F)->ClassID(), (void*)(*_F));
-                if (node){
-                    node->ParentStyle = false;
-                    node->StrikeOut = !(*_F)->Visible();
-                    if (rgSO->ItemIndex==1) 	 node->Hidden = !(*_F)->Visible();
-                    else if (rgSO->ItemIndex==2) node->Hidden = (*_F)->Visible();
-                    if ((*_F)->Visible())		 node->Selected=(*_F)->Selected();
-                }
-            }
-    }
-*/
     tvItems->IsUpdating = false;
 }
 
@@ -198,8 +182,8 @@ void __fastcall TfrmObjectList::ebShowSelClick(TObject *Sender)
 {
     for (TElTreeItem* node = tvItems->GetNextSelected(0); node; node=tvItems->GetNextSelected(node))
         if (node->Parent){
-            ((CCustomObject*)(node->Data))->Show(true);
-            ((CCustomObject*)(node->Data))->Select(true);
+            ((CCustomObject*)(node->Data))->Show	(true);
+            ((CCustomObject*)(node->Data))->Select	(true);
         }
     UpdateState();
 }

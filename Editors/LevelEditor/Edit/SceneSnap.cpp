@@ -12,8 +12,8 @@ ObjectList* EScene::GetSnapList(bool bIgnoreUse)
 {
     EObjClass cls = Tools.CurrentClassID();
     ESceneCustomMTools* mt = m_SceneTools[cls];
-    if (mt)	return bIgnoreUse?&mt->GetSnapList():(fraLeftBar->ebUseSnapList->Down?&mt->GetSnapList():NULL);
-    else    return bIgnoreUse?&m_ESO_SnapObjects:fraLeftBar->ebUseSnapList->Down?&m_ESO_SnapObjects:NULL;
+    if (mt)	return bIgnoreUse?(mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects):(fraLeftBar->ebUseSnapList->Down?(mt->GetSnapList()?mt->GetSnapList():&m_ESO_SnapObjects):NULL);
+    else	return bIgnoreUse?&m_ESO_SnapObjects:fraLeftBar->ebUseSnapList->Down?&m_ESO_SnapObjects:NULL;
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -145,7 +145,7 @@ void EScene::ClearSnapList(bool bCurrentOnly)
     	m_ESO_SnapObjects.clear();
         for (int i=0; i<OBJCLASS_COUNT; i++){
 	        ESceneCustomMTools* mt 		= m_SceneTools[EObjClass(i)];
-            if (mt)	mt->GetSnapList().clear	();
+            if (mt&&mt->GetSnapList())	mt->GetSnapList()->clear();
         }
         UpdateSnapList();
     }

@@ -156,14 +156,12 @@ enum EObjClass{
 };
 
 //----------------------------------------------------
-TUI_CustomTools*NewToolFromTarget		(int tgt);
 CCustomObject*	NewObjectFromClassID	(int _ClassID, LPVOID data, LPCSTR name);
 LPSTR 			GetNameByClassID		(EObjClass cls_id);
 LPSTR 			GetClassNameByClassID	(EObjClass cls_id);
 bool 			IsClassID				(EObjClass cls_id);
 bool 			IsObjectListClassID		(EObjClass cls_id);
 bool 			IsGroupClassID			(EObjClass cls_id);
-EObjClass 		ClassIDFromTargetID		(int target);
 //----------------------------------------------------
 #endif /*_INCDEF_SceneClassList_H_*/
 

@@ -42,7 +42,7 @@ void EScene::UndoSave()
 	UndoItem item;
 	GetTempFileName( FS.get_path(_temp_)->m_Path, "undo", 0, item.m_FileName );
 
-	Save( item.m_FileName, true );
+	Save( 0, item.m_FileName, true );
 	m_UndoStack.push_back( item );
 
 	while( !m_RedoStack.empty() ){
@@ -68,7 +68,7 @@ bool EScene::Undo()
 
 		if( !m_UndoStack.empty() ){
 			Unload();
-         	Load( m_UndoStack.back().m_FileName );
+         	Load( 0, m_UndoStack.back().m_FileName, true );
         }
 
         UI.UpdateScene();
@@ -83,7 +83,7 @@ bool EScene::Redo()
 {
 	if( !m_RedoStack.empty() ){
         Unload();
-		Load( m_RedoStack.back().m_FileName );
+		Load( 0,m_RedoStack.back().m_FileName, true );
 
 		m_UndoStack.push_back( m_RedoStack.back() );
 		m_RedoStack.pop_back();

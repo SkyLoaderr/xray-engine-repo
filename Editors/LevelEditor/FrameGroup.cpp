@@ -38,7 +38,7 @@ void __fastcall TfraGroup::ebMakeGroupClick(TObject *Sender)
     if (Scene.GetQueryObjects(lst,OBJCLASS_DUMMY,1,1,0)) group->GroupObjects(lst);
     if (group->ObjectCount()){
 	    ELog.DlgMsg(mtInformation,"Group '%s' successfully created.\nContain %d object(s)",group->Name,group->ObjectCount());
-        Scene.AddObject(group,true);
+        Scene.AppendObject(group,true);
     }else{
 	    ELog.DlgMsg(mtError,"Group can't created.");
         xr_delete(group);

@@ -87,15 +87,17 @@ BOOL SceneBuilder::BuildLTX()
     CInifile* pIni = xr_new<CInifile>(ltx_filename.c_str(),false);
 
 	Scene.WriteToLTX(pIni);
-
+/*
+//.
     // required strings
     pIni->w_string("static_sounds",		"; sounds","");
     pIni->w_string("sound_environment",	"; sound environment","");
 
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++)
         if (!ParseLTX(pIni,(*it).second)){bResult = FALSE; break;}
+*/
 
-    delete pIni;
+    xr_delete(pIni);
 
 	return bResult;
 }

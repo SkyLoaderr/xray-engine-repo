@@ -11,8 +11,8 @@
 
 TUI_CustomTools::TUI_CustomTools(EObjClass cls, bool bCreateDefaultControls)
 {
-	objclass 	= cls;
-	scene_tools	= Scene.GetMTools(objclass);
+	ClassID 	= cls;
+	scene_tools	= Scene.GetMTools(ClassID);
     sub_target	= 0;
     pCurControl = 0;
     pFrame		= 0;
@@ -88,7 +88,7 @@ void TUI_CustomTools::SetNumPosition(CCustomObject* O)
 {
 	ObjectList objset;
     if(O)objset.push_back(O);
-    else Scene.GetQueryObjects(objset,objclass);
+    else Scene.GetQueryObjects(objset,ClassID);
 	if( !objset.empty() ){
     	Fvector V = objset.front()->PPosition;
         {
@@ -107,7 +107,7 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O)
 {
 	ObjectList objset;
     if(O)objset.push_back(O);
-    else Scene.GetQueryObjects(objset,objclass);
+    else Scene.GetQueryObjects(objset,ClassID);
 	if( !objset.empty() ){
     	Fvector V=objset.front()->PRotation;
         {
@@ -130,7 +130,7 @@ void TUI_CustomTools::SetNumScale(CCustomObject* O)
 {
 	ObjectList objset;
     if(O)objset.push_back(O);
-    else Scene.GetQueryObjects(objset,objclass);
+    else Scene.GetQueryObjects(objset,ClassID);
 	if( !objset.empty() ){
     	Fvector V=objset.front()->PScale;
         {

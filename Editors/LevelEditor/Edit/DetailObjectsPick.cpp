@@ -48,13 +48,11 @@ int EDetailManager::RaySelect(bool flag, float& distance, const Fvector& start, 
     return count;
 }
 
-int EDetailManager::FrustumSelect(bool flag)
+int EDetailManager::FrustumSelect(bool flag, const CFrustum& frustum)
 {
 // box selected only
 
 	if (!fraBottomBar->miDrawDOSlotBoxes->Checked) return 0;
-	CFrustum frustum;
-    if (!UI.SelectionFrustum(frustum)) return 0;
 
     int count=0;
 

@@ -468,7 +468,7 @@ void ESceneAIMapTools::MotionSimulate(Fvector& result, Fvector& start, Fvector& 
 	bb.get_CD		(bbC,bbD);
     static SPickQuery PQ;
     if (m_CFModel)	Scene.BoxQuery(PQ,bb,CDB::OPT_FULL_TEST,m_CFModel);
-    else			Scene.BoxQuery(PQ,bb,CDB::OPT_FULL_TEST,&GetSnapList());
+    else			Scene.BoxQuery(PQ,bb,CDB::OPT_FULL_TEST,GetSnapList());
 	
 	// XForm everything to ellipsoid space
 	Fvector			xf;

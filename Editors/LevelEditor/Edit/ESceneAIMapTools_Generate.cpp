@@ -41,7 +41,7 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(m_Params.fPatchSize/2);	// box 2
 	BB.merge				(B2);   
     if (m_CFModel)	Scene.BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,m_CFModel);
-    else			Scene.BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,&GetSnapList());
+    else			Scene.BoxQuery(PQ,BB,CDB::OPT_FULL_TEST,GetSnapList());
 	DWORD	dwCount 		= PQ.r_count();
 	if (dwCount==0){
 //		Log("chasm1");
@@ -370,7 +370,7 @@ int ESceneAIMapTools::BuildNodes(const Fvector& pos, int sz, bool bIC)
 
 	int cnt			= 0;		
     if (m_CFModel)	cnt=Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,m_CFModel);
-    else			cnt=Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&GetSnapList());
+    else			cnt=Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,GetSnapList());
     if (0==cnt) {
         ELog.Msg	(mtInformation,"Can't align position.");
         return		0;
@@ -550,7 +550,7 @@ void ESceneAIMapTools::UpdateLinks(SAINode* N, bool bIC)
 bool ESceneAIMapTools::GenerateMap()
 {
 	bool bRes = false;
-	if (!GetSnapList().empty()){
+	if (!GetSnapList()->empty()){
 	    if (!RealUpdateSnapList()) return false;
 	    if (m_Nodes.empty()){
 			ELog.DlgMsg(mtError,"Append at least one node.");
@@ -634,8 +634,8 @@ bool ESceneAIMapTools::RealUpdateSnapList()
 	m_Flags.set					(flUpdateSnapList,FALSE);
 	fraLeftBar->UpdateSnapList	();
     Fbox nodes_bb;				CalculateNodesBBox(nodes_bb);
-	if (!GetSnapList().empty()){
-        Fbox snap_bb;			Scene.GetBox(snap_bb,GetSnapList());
+	if (!GetSnapList()->empty()){
+        Fbox snap_bb;			Scene.GetBox(snap_bb,*GetSnapList());
         Fbox bb;				bb.merge(snap_bb,nodes_bb);
         if (!m_AIBBox.similar(bb)){
             m_AIBBox.set		(bb);

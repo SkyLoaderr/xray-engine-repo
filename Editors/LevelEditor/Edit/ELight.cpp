@@ -109,6 +109,8 @@ void CLight::Render(int priority, bool strictB2F)
 {
 	inherited::Render(priority,strictB2F);
     if ((1==priority)&&(false==strictB2F)){
+        Device.SetShader		(Device.m_WireShader);
+        RCache.set_xform_world	(Fidentity);
     	u32 clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
@@ -137,6 +139,8 @@ void CLight::Render(int priority, bool strictB2F)
         default: THROW;
         }
     }else if ((1==priority)&&(true==strictB2F)){
+        Device.SetShader		(Device.m_SelectionShader);
+        RCache.set_xform_world	(Fidentity);
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
             if (m_Flags.is(CLight::flPointFuzzy)){

@@ -2,33 +2,14 @@
 #define ui_toolsH
 
 // refs
-class TUI_CustomTools;
 class TUI_Control;
 class TProperties;
 class TfrmObjectList;
 
 #include "SceneClassList.h"
+#include "ui_customtools.h"
 
 //---------------------------------------------------------------------------
-enum ETarget{
-	etFirstTool=0,
-	etGroup=0,
-    etObject,
-    etLight,
-    etShape,
-    etSoundSrc,
-    etSoundEnv,
-    etGlow,
-    etSpawnPoint,
-    etWay,
-    etSector,
-    etPortal,
-    etPS,
-    etDO,
-    etAIMap,
-    etMaxTarget
-};
-
 enum EAction{
     eaSelect=0,
     eaAdd,
@@ -50,7 +31,7 @@ enum EAxis{
 class TUI_Tools{
     TPanel*         paParent;
     int             sub_target;
-    int             target;
+    EObjClass		target;
     int             action;
 
     Flags32			m_Flags;
@@ -63,17 +44,19 @@ class TUI_Tools{
     };
 
     int				iNeedAction;
-    int				iNeedTarget;
+    EObjClass		iNeedTarget;
 
-    TUI_CustomTools*m_pTools[etMaxTarget];
+    UIToolsMap		UITools;
     TUI_CustomTools*pCurTools;
 
+    void			RegisterTools	(TUI_CustomTools* tools);
+    
     TfrmObjectList*	pObjectListForm;
 
     void __fastcall SetTargetAction	();
 
     void __fastcall SetAction   	(int act);
-    void __fastcall SetTarget   	(int tgt,bool bForced=false);
+    void __fastcall SetTarget   	(EObjClass tgt,bool bForced=false);
 
     TProperties* 	m_Props;
     void __fastcall OnPropsModified	();
@@ -100,8 +83,7 @@ public:
     void __fastcall Render			();
     void __fastcall RenderEnvironment();
 
-    IC int          GetTarget   	(){return target;}
-    IC EObjClass    GetTargetClassID(){return ClassIDFromTargetID(target);}
+    IC EObjClass	GetTarget   	(){return target;}
     IC int          GetAction   	(){return action;}
     IC int          GetSubTarget   	(){return sub_target;}
 
@@ -110,7 +92,7 @@ public:
     void __fastcall ResetSubTarget	();
     void __fastcall SetSubTarget	(int tgt);
 
-    void __fastcall ChangeTarget	(int tgt, bool forced=false);
+    void __fastcall ChangeTarget	(EObjClass tgt, bool forced=false);
     void __fastcall ChangeAction	(int act, bool forced=false);
     void __fastcall OnObjectsUpdate	();
 

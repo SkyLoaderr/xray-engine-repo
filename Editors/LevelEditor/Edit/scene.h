@@ -5,10 +5,12 @@
 #define SceneH
 
 #include "SceneGraph.h"
-#include "ESceneCustomMTools.h"
 #include "Communicate.h"
 #include "pure.h"
 #include "ElTree.hpp"
+
+#include "ESceneCustomMTools.h"
+#include "ESceneCustomOTools.h"
 //refs
 struct FSChunkDef;
 class PropValue;
@@ -85,9 +87,9 @@ public:
 	// addition objects
     CSceneObject*		m_SkyDome;
 
-	typedef	FixedMAP<float,CSceneObject*>   mapObject_D;
-	typedef mapObject_D::TNode	 	    mapObject_Node;
-	mapObject_D						    mapRenderObjects;
+	typedef	FixedMAP<float,CCustomObject*>	mapObject_D;
+	typedef mapObject_D::TNode	 	    	mapObject_Node;
+	mapObject_D						    	mapRenderObjects;
 public:
 	st_LevelOptions	m_LevelOp;
 
@@ -98,7 +100,6 @@ protected:
 
 	int m_LastAvailObject;
 
-	ObjectMap  		m_Objects;
     SceneToolsMap   m_SceneTools;
 
 	xr_deque<UndoItem> m_UndoStack;
@@ -153,8 +154,15 @@ public:
 protected:
     bool 			OnLoadAppendObject			(CCustomObject* O);
     bool 			OnLoadSelectionAppendObject(CCustomObject* O);
+protected:
+	void			RegisterSceneTools			(ESceneCustomMTools* mt, int render_priority);
 public:
-    bool			 m_Modified;
+	enum{
+    	flRT_Unsaved 	= (1<<0),
+    	flRT_Modified 	= (1<<1),
+    };
+    Flags32			m_RTFlags;
+public:
 
 	typedef bool (__closure *TAppendObject)(CCustomObject* object);
 
@@ -163,12 +171,13 @@ public:
 	void 			SaveObject			(CCustomObject* O,IWriter& F);
 	void 			SaveObjects			(ObjectList& lst, u32 chunk_id, IWriter& F);
 public:
-	bool 			Load				(LPCSTR initial, LPCSTR map_name);
+	void			ExportGame			(SExportStreams& F);
+	bool 			Load				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	void 			Save				(LPCSTR initial, LPCSTR map_name, bool bUndo);
 	bool 			LoadSelection		(LPCSTR initial, LPCSTR fname);
 	void 			SaveSelection		(int classfilter, LPCSTR initial, LPCSTR fname);
 	void 			Unload				();
-	void 			ClearObjects		(bool bDestroy);
+	void 			Clear				();
 	void 			LoadCompilerError	(LPCSTR fn);
     void 			ClearCompilerErrors	(){m_CompilerErrors.Clear();}
 
@@ -180,11 +189,13 @@ public:
 	IC void 		waitlock			()        		{ while( locked() ) Sleep(0); }
 
 	IC ESceneCustomMTools* GetMTools	(EObjClass cat)	{ return ((cat>=0)&&(cat<OBJCLASS_COUNT))?m_SceneTools[cat]:0; }
-	IC ObjectList& 	ListObj    			(EObjClass cat)	{ VERIFY((cat>=0)&&(cat<OBJCLASS_COUNT)); return m_Objects[cat]; }
-	IC ObjectIt 	FirstObj      		(EObjClass cat)	{ return ListObj(cat).begin(); }
-	IC ObjectIt 	LastObj       		(EObjClass cat)	{ return ListObj(cat).end(); }
-	IC ObjectPairIt FirstClass			()				{ return m_Objects.begin(); }
-	IC ObjectPairIt LastClass 			()				{ return m_Objects.end(); }
+	IC ESceneCustomOTools* GetOTools	(EObjClass cat)	{ return dynamic_cast<ESceneCustomOTools*>(GetMTools(cat)); }
+	IC SceneToolsMapPairIt FirstTools	()				{ return m_SceneTools.begin(); }
+	IC SceneToolsMapPairIt LastTools	()				{ return m_SceneTools.end(); }
+
+	IC ObjectList&	ListObj    			(EObjClass cat)	{ VERIFY(GetOTools(cat)); return GetOTools(cat)->GetObjects(); }
+	IC ObjectIt 	FirstObj      		(EObjClass cat)	{ VERIFY(GetOTools(cat)); return ListObj(cat).begin(); }
+	IC ObjectIt 	LastObj       		(EObjClass cat)	{ VERIFY(GetOTools(cat)); return ListObj(cat).end(); }
 	IC int 			ObjCount           	(EObjClass cat)	{ return ListObj(cat).size(); }
 	int 			ObjCount 			();
 
@@ -192,9 +203,9 @@ public:
 	void 			Render              (const Fmatrix& camera);
 	void 			OnFrame				(float dT);
 
-	void 			AddObject           (CCustomObject* object, bool bExecUndo=true);
-	bool 			RemoveObject        (CCustomObject* object, bool bExecUndo=true);
-    bool 			ContainsObject      (CCustomObject* object, EObjClass classfilter);
+	void 			AppendObject		(CCustomObject* object, bool bExecUndo=true);
+	bool 			RemoveObject		(CCustomObject* object, bool bExecUndo=true);
+    bool 			ContainsObject		(CCustomObject* object, EObjClass classfilter);
 
     // Snap List Part
 	bool 			FindObjectInSnapList(CCustomObject* O);
@@ -204,19 +215,20 @@ public:
     int 			DelSelFromSnapList	();
     int 			SetSnapList			();
     void 			RenderSnapList		();
+    void 			RenderCompilerErrors();
     void 			ClearSnapList		(bool bCurrentOnly);
     void 			SelectSnapList		();
     void 			UpdateSnapList 	   	();
 	ObjectList* 	GetSnapList			(bool bIgnoreUse);
 
-	CCustomObject*	RayPick   			(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list);
-	int 			BoxPick				(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
+	CCustomObject*	RayPickObject 		(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, ObjectList* from_list);
+	int 			BoxPickObjects		(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* from_list);
     int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list);
     int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, ObjectList* snap_list);
     int				RayQuery			(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, CDB::MODEL* model);
     int 			BoxQuery			(SPickQuery& RQ, const Fbox& bb, u32 flags, CDB::MODEL* model);
 
-	int 			RaySelect           (int flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bOnlyNearest=true); // flag=0,1,-1 (-1 invert)
+	int 			RaySelect           (int flag, EObjClass classfilter=OBJCLASS_DUMMY); // flag=0,1,-1 (-1 invert)
 	int 			FrustumSelect       (int flag, EObjClass classfilter=OBJCLASS_DUMMY);
 	int 			SelectObjects       (bool flag, EObjClass classfilter=OBJCLASS_DUMMY);
 	int 			LockObjects         (bool flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bAllowSelectionFlag=false, bool bSelFlag=true);
@@ -228,8 +240,7 @@ public:
 	int 			CopySelection       (EObjClass classfilter);
 	int 			PasteSelection      ();
 
-    void 			ResetAnimation		();
-    void 			ZoomExtents			(BOOL bSelectedOnly);
+    void 			ZoomExtents			(EObjClass cls, BOOL bSelectedOnly);
 
 	int 			FrustumPick			(const CFrustum& frustum, EObjClass classfilter, ObjectList& ol);
 	int 			SpherePick			(const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol);
@@ -273,6 +284,7 @@ public:
 	void 			OnDestroy		();
     void 			Modified		();
     bool 			IfModified		();
+	bool 			IsUnsaved		();
 	bool 			IsModified		();
 
     int 			GetUndoCount	(){return m_UndoStack.size();}

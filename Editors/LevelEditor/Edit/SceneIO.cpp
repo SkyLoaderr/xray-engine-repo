@@ -28,6 +28,8 @@
 #define CHUNK_DETAILOBJECTS 0x7713
 #define CHUNK_AIMAP			0x7715
 
+#define CHUNK_TOOLS_OFFSET	0x8000
+
 // level options
 #define CHUNK_LO_VERSION		0x7801
 #define CHUNK_LO_NAMES 			0x7802
@@ -151,7 +153,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
 //	Msg("0: %d",F.tell());
     F.open_chunk	(CHUNK_VERSION);
-    F.w_u32		(CURRENT_FILE_VERSION);
+    F.w_u32			(CURRENT_FILE_VERSION);
     F.close_chunk	();
 
 //	Msg("1: %d",F.tell());
@@ -164,24 +166,20 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     F.w_u32		(ObjCount());
 	F.close_chunk	();
 
-//	Msg("3: %d",F.tell());
-    if (GetMTools(OBJCLASS_DO)->IsNeedSave()){
-		F.open_chunk	(CHUNK_DETAILOBJECTS);
-    	GetMTools(OBJCLASS_DO)->Save(F);
-		F.close_chunk	();
-    }
-
-    if (GetMTools(OBJCLASS_AIMAP)->IsNeedSave()){
-        F.open_chunk	(CHUNK_AIMAP);
-        GetMTools(OBJCLASS_AIMAP)->Save	(F);
-        F.close_chunk	();
-    }
-
+    SceneToolsMapPairIt _I = m_SceneTools.begin();
+    SceneToolsMapPairIt _E = m_SceneTools.end();
+    for (; _I!=_E; _I++)
+        if (_I->second&&_I->second->IsNeedSave()){
+        	F.open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
+         	_I->second->Save(F);
+        	F.close_chunk	();
+        }
+        
 //	Msg("4: %d",F.tell());
     if (!bUndo){
 		F.open_chunk	(CHUNK_CAMERA);
-        F.w_fvector3		(Device.m_Camera.GetHPB());
-        F.w_fvector3		(Device.m_Camera.GetPosition());
+        F.w_fvector3	(Device.m_Camera.GetHPB());
+        F.w_fvector3	(Device.m_Camera.GetPosition());
         F.close_chunk	();
     }
 
@@ -194,21 +192,6 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     F.close_chunk	();
 
 //	Msg("6: %d",F.tell());
-    F.open_chunk	(CHUNK_OBJECT_LIST);
-    int count = 0;
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-//        int sz0 = F.tell();
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-            F.open_chunk(count); count++;
-            SaveObject(*_F,F);
-            F.close_chunk();
-        }
-//        int sz1 = F.tell();
-//    	Msg("TARGET: %s, size: %d",GetNameByClassID(it->first),sz1-sz0);
-    }
-	F.close_chunk	();
-//	Msg("TOTAL: %d",F.tell());
 
 	if (!bUndo) EFS.UnlockFile		(0,full_name.c_str(),false);
     // back up previous
@@ -216,6 +199,7 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
     // save data
     F.save_to						(full_name.c_str());
 	if (!bUndo) EFS.LockFile		(0,full_name.c_str(),false);
+    if (!bUndo) m_RTFlags.set		(flRT_Unsaved,FALSE);
 }
 //--------------------------------------------------------------------------------------------------
 
@@ -281,13 +265,13 @@ bool EScene::ReadObjects(IReader& F, u32 chunk_id, TAppendObject on_append)
 
 bool EScene::OnLoadAppendObject(CCustomObject* O)
 {
-	AddObject		(O,false);
+	AppendObject	(O,false);
 	UI.ProgressInc	();
     return true;
 }
 //----------------------------------------------------
 
-bool EScene::Load(LPCSTR initial, LPCSTR map_name)
+bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 {
     DWORD version = 0;
 
@@ -329,9 +313,20 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name)
         if (F->find_chunk(CHUNK_OBJECT_COUNT))
         	obj_cnt = F->r_u32();
 
-        UI.ProgressStart(obj_cnt,"Loading scene...");
+        UI.ProgressStart(obj_cnt,"Loading objects...");
         ReadObjects		(*F,CHUNK_OBJECT_LIST,OnLoadAppendObject);
         UI.ProgressEnd	();
+
+        SceneToolsMapPairIt _I = m_SceneTools.begin();
+        SceneToolsMapPairIt _E = m_SceneTools.end();
+        for (; _I!=_E; _I++)
+            if (_I->second){
+			    IReader* chunk 		= F->open_chunk(CHUNK_TOOLS_OFFSET+_I->first);
+            	if (chunk){
+	                _I->second->Load(*chunk);
+    	            chunk->close	();
+                }
+            }
 
         // snap list
         if (F->find_chunk(CHUNK_SNAPOBJECTS)){
@@ -345,18 +340,19 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name)
             UpdateSnapList();
         }
 
-	    IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
-		if (DO){
-	    	GetMTools(OBJCLASS_DO)->Load(*DO);
-            DO->close();
-        }
+        { // old version
+            IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
+            if (DO){
+                GetMTools(OBJCLASS_DO)->Load(*DO);
+                DO->close();
+            }
 
-	    IReader* AIM = F->open_chunk(CHUNK_AIMAP);
-		if (AIM){
-	    	GetMTools(OBJCLASS_AIMAP)->Load(*AIM);
-            AIM->close();
-        }
-
+            IReader* AIM = F->open_chunk(CHUNK_AIMAP);
+            if (AIM){
+                GetMTools(OBJCLASS_AIMAP)->Load(*AIM);
+                AIM->close();
+            }
+		}        
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
 
         UI.UpdateScene(true);
@@ -365,6 +361,8 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name)
 
         SynchronizeObjects();
 
+	    if (!bUndo) m_RTFlags.set(flRT_Unsaved|flRT_Modified,FALSE);
+        
 		return true;
     }else{
     	ELog.Msg(mtError,"Can't find file: ",map_name);
@@ -386,42 +384,15 @@ void EScene::SaveSelection( int classfilter, LPCSTR initial, LPCSTR fname )
     F.w_u32			(CURRENT_FILE_VERSION);
     F.close_chunk	();
 
-    F.open_chunk	(CHUNK_OBJECT_LIST);
-    int count = 0;
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                if( (*_F)->Selected() ){
-                    F.open_chunk(count); count++;
-                        F.open_chunk	(CHUNK_OBJECT_CLASS);
-                        F.w_u32		((*_F)->ClassID);
-                        F.close_chunk	();
-                        F.open_chunk	(CHUNK_OBJECT_BODY);
-                        (*_F)->Save		(F);
-                        F.close_chunk	();
-                    F.close_chunk();
-                }
-            }
-    }
-	F.close_chunk	();
-
-    if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_DO)){
-        if (GetMTools(OBJCLASS_DO)->IsNeedSave()){
-            F.open_chunk	(CHUNK_DETAILOBJECTS);
-            GetMTools(OBJCLASS_DO)->Save(F);
-            F.close_chunk	();
+    SceneToolsMapPairIt _I = m_SceneTools.begin();
+    SceneToolsMapPairIt _E = m_SceneTools.end();
+    for (; _I!=_E; _I++)
+        if (_I->second&&_I->second->IsNeedSave()){
+        	F.open_chunk	(CHUNK_TOOLS_OFFSET+_I->first);
+         	_I->second->SaveSelection(F);
+        	F.close_chunk	();
         }
-    }
-
-    if ((classfilter==OBJCLASS_DUMMY)||(classfilter==OBJCLASS_AIMAP)){
-        if (GetMTools(OBJCLASS_AIMAP)->IsNeedSave()){
-            F.open_chunk	(CHUNK_AIMAP);
-            GetMTools(OBJCLASS_AIMAP)->Save	(F);
-            F.close_chunk	();
-        }
-    }
-
+        
     F.save_to		(full_name.c_str());
 }
 
@@ -431,7 +402,7 @@ bool EScene::OnLoadSelectionAppendObject(CCustomObject* obj)
     string256 buf;
     GenObjectName	(obj->ClassID,buf,obj->Name);
     obj->Name		= buf;
-    AddObject		(obj, false);
+    AppendObject	(obj, false);
     obj->Select		(true);
     return true;
 }
@@ -444,7 +415,7 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
 	VERIFY( fname );
     AnsiString full_name = (initial)?FS.update_path(full_name,initial,fname):AnsiString(fname);
 
-	ELog.Msg( mtInformation, "EScene: loading %s...", fname );
+	ELog.Msg( mtInformation, "EScene: loading part %s...", fname );
 
     bool res = true;
 
@@ -468,18 +439,31 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
             res = false;
         }
 
-        IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
-        if (DO){
-        	GetMTools(OBJCLASS_DO)->Clear	();
-            GetMTools(OBJCLASS_DO)->Load	(*DO);
-            DO->close();
-        }
+        SceneToolsMapPairIt _I = m_SceneTools.begin();
+        SceneToolsMapPairIt _E = m_SceneTools.end();
+        for (; _I!=_E; _I++)
+            if (_I->second){
+			    IReader* chunk 		= F->open_chunk(CHUNK_TOOLS_OFFSET+_I->first);
+            	if (chunk){
+	                _I->second->LoadSelection(*chunk);
+    	            chunk->close	();
+                }
+            }
 
-        IReader* AIM = F->open_chunk(CHUNK_AIMAP);
-        if (AIM){
-        	GetMTools(OBJCLASS_AIMAP)->Clear();
-            GetMTools(OBJCLASS_AIMAP)->Load	(*AIM);
-            AIM->close();
+        { // old version
+            IReader* DO = F->open_chunk(CHUNK_DETAILOBJECTS);
+            if (DO){
+                GetMTools(OBJCLASS_DO)->Clear	();
+                GetMTools(OBJCLASS_DO)->Load	(*DO);
+                DO->close();
+            }
+
+            IReader* AIM = F->open_chunk(CHUNK_AIMAP);
+            if (AIM){
+                GetMTools(OBJCLASS_AIMAP)->Clear();
+                GetMTools(OBJCLASS_AIMAP)->Load	(*AIM);
+                AIM->close();
+            }
         }
 
         // Synchronize

@@ -572,8 +572,7 @@ void __fastcall TUI::miRecentFilesClick(TObject *Sender)
 {
 	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
     AnsiString fn = MI->Caption;
-    if (FS.exist(fn.c_str()))	Command(COMMAND_LOAD,(u32)fn.c_str());
-    else						ELog.DlgMsg(mtError, "Error reading file '%s'",fn.c_str());
+    Command(COMMAND_LOAD,(u32)fn.c_str());
 }
 //---------------------------------------------------------------------------
 

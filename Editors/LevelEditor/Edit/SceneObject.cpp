@@ -110,7 +110,7 @@ bool CSceneObject::GetUTBox( Fbox& box )
 bool CSceneObject::IsRender()
 {
 	if (!m_pReference) return false;
-    return ::Render->occ_visible(m_TBBox)||inherited::IsRender();
+    return inherited::IsRender();
 }
 
 void CSceneObject::Render(int priority, bool strictB2F)
@@ -213,12 +213,12 @@ bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf)
 
 void CSceneObject::GetFullTransformToWorld( Fmatrix& m )
 {
-    m.set( _Transform() );
+    m.set(_Transform());
 }
 
 void CSceneObject::GetFullTransformToLocal( Fmatrix& m )
 {
-    m.invert(_Transform());
+    m.set(_ITransform());
 }
 
 CEditableObject* CSceneObject::UpdateReference()

@@ -809,12 +809,17 @@ BOOL SceneBuilder::CompileStatic()
 	l_faces		= xr_alloc<b_face>(l_face_cnt);
 	l_verts		= xr_alloc<b_vertex>(l_vert_cnt);
 
-    UI.ProgressStart(Scene.ObjCount(),"Parse static objects...");
 // make hemisphere
 	BuildHemiLights();
 // parse scene
-    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++)
-        if (!ParseStaticObjects((*it).second)){bResult = FALSE; break;}
+    UI.ProgressStart(Scene.ObjCount(),"Parse scene objects...");
+    SceneToolsMapPairIt t_it 	= Scene.FirstTools();
+    SceneToolsMapPairIt t_end 	= Scene.LastTools();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second){
+            ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(t_it->second);
+            if (mt&&!ParseStaticObjects(mt->GetObjects())){bResult = FALSE; break;}
+        }
 	UI.ProgressEnd();
 
     if (bResult&&!UI.NeedAbort()) SaveBuild();

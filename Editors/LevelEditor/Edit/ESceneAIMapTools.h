@@ -131,13 +131,13 @@ public:
 
     virtual void		OnObjectRemove			(CCustomObject* O);
     virtual	void		UpdateSnapList			(){m_Flags.set(flUpdateSnapList,TRUE);}
-	virtual ObjectList&	GetSnapList				(){return m_SnapObjects;}
+	virtual ObjectList*	GetSnapList				(){return &m_SnapObjects;}
 
 	// selection manipulate
     SAINode*			PickNode				(const Fvector& start, const Fvector& dir, float dist);
     virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist);
 	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
-	virtual int	   		FrustumSelect			(bool flag);
+	virtual int	   		FrustumSelect			(bool flag, const CFrustum& frustum);
 	virtual int    		SelectObjects           (bool flag);
 	virtual int    		InvertSelection         ();
 	virtual int 		RemoveSelection         ();
@@ -157,6 +157,8 @@ public:
     // IO
     virtual bool   		Load            		(IReader&);
     virtual void   		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
     virtual bool   		Export          		(LPCSTR fn);
 
 	// device dependent funcs    

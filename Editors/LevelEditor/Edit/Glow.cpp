@@ -69,7 +69,8 @@ bool CGlow::GetBox( Fbox& box )
 	return true;
 }
 
-void CGlow::Render(int priority, bool strictB2F){
+void CGlow::Render(int priority, bool strictB2F)
+{
     if ((1==priority)&&(true==strictB2F)){
     	if (!m_bDefLoad) OnDeviceCreate();
     	// определяем параметры для RayPick
@@ -80,24 +81,22 @@ void CGlow::Render(int priority, bool strictB2F){
         if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
 		RCache.set_xform_world(Fidentity);
-        if (::Render->ViewBase.testSphere_dirty(PPosition,m_fRadius)){
-        	// рендерим Glow
-        	if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPick(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,true,0))||
-            	!fraBottomBar->miGlowTestVisibility->Checked){
-                if (m_GShader){	Device.SetShader(m_GShader);
-                }else{			Device.SetShader(Device.m_WireShader);}
-                m_RenderSprite.Render(PPosition,m_fRadius,m_Flags.is(gfFixedSize));
-			}else{
-                // рендерим bounding sphere
-        		Device.SetShader(Device.m_WireShader);
-                DU.DrawRomboid(PPosition, VIS_RADIUS, 0x00FF8507);
-			}
-            if( Selected() ){
-            	Fbox bb; GetBox(bb);
-                u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                Device.SetShader(Device.m_WireShader);
-                DU.DrawSelectionBox(bb,&clr);
-            }
+        // рендерим Glow
+        if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPickObject(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,0))||
+            !fraBottomBar->miGlowTestVisibility->Checked){
+            if (m_GShader){	Device.SetShader(m_GShader);
+            }else{			Device.SetShader(Device.m_WireShader);}
+            m_RenderSprite.Render(PPosition,m_fRadius,m_Flags.is(gfFixedSize));
+        }else{
+            // рендерим bounding sphere
+            Device.SetShader(Device.m_WireShader);
+            DU.DrawRomboid(PPosition, VIS_RADIUS, 0x00FF8507);
+        }
+        if( Selected() ){
+            Fbox bb; GetBox(bb);
+            u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+            Device.SetShader(Device.m_WireShader);
+            DU.DrawSelectionBox(bb,&clr);
         }
     }
 }

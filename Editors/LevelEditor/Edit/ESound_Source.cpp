@@ -64,15 +64,15 @@ bool ESoundSource::GetBox( Fbox& box )
 void ESoundSource::Render(int priority, bool strictB2F)
 {
     if((1==priority)&&(false==strictB2F)){
-	 	RCache.set_xform_world(Fidentity);
-	 	Device.SetShader(Device.m_WireShader);
-        u32 clr0=Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL0_COLOR:SOUND_NORM_COLOR);
-        u32 clr1=Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL1_COLOR:SOUND_NORM_COLOR);
+	 	RCache.set_xform_world	(Fidentity);
+	 	Device.SetShader		(Device.m_WireShader);
+        u32 clr0				= Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL0_COLOR:SOUND_NORM_COLOR);
+        u32 clr1				= Locked()?SOUND_LOCK_COLOR:(Selected()?SOUND_SEL1_COLOR:SOUND_NORM_COLOR);
         if (Selected()){ 
-        	DU.DrawLineSphere( m_Params.position, m_Params.max_distance, clr1, true );
-        	DU.DrawLineSphere( m_Params.position, m_Params.min_distance, clr0, false );
+        	DU.DrawLineSphere	(m_Params.position, m_Params.max_distance, clr1, true);
+        	DU.DrawLineSphere	(m_Params.position, m_Params.min_distance, clr0, false);
         }else{
-			DU.DrawSound(m_Params.position,VIS_RADIUS, clr1);
+			DU.DrawSound		(m_Params.position,VIS_RADIUS, clr1);
         }
     }
 }

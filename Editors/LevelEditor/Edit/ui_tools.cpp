@@ -24,26 +24,48 @@ TShiftState ssRBOnly;
 TUI_Tools::TUI_Tools()
 {
     m_Flags.zero();
+    for (int i=0; i<OBJCLASS_COUNT; i++)
+        UITools.insert(mk_pair((EObjClass)i,(TUI_CustomTools*)NULL));
 }
 //---------------------------------------------------------------------------
 TUI_Tools::~TUI_Tools()
 {
-    for (u32 i=0; i<etMaxTarget; i++) xr_delete(m_pTools[i]);
+	UIToolsMapPairIt	_I = UITools.begin();
+	UIToolsMapPairIt	_E = UITools.end();
+    for (; _I!=_E; _I++) xr_delete(_I->second);
 }
 //---------------------------------------------------------------------------
 
-TFrame*	TUI_Tools::GetFrame(){
+TFrame*	TUI_Tools::GetFrame()
+{
 	if (pCurTools) return pCurTools->pFrame;
     return 0;
 }
 //---------------------------------------------------------------------------
+void TUI_Tools::RegisterTools(TUI_CustomTools* tools)
+{
+	UITools[tools->ClassID] = tools;
+}
+
+#include "UI_LightTools.h"
+#include "UI_ShapeTools.h"
+#include "UI_ObjectTools.h"
+#include "UI_SoundTools.h"
+#include "UI_GlowTools.h"
+#include "UI_RPointTools.h"
+#include "UI_WayPointTools.h"
+#include "UI_SectorTools.h"
+#include "UI_PortalTools.h"
+#include "UI_PSTools.h"
+#include "UI_DOTools.h"
+#include "UI_GroupTools.h"
+#include "UI_AIMapTools.h"
 
 bool TUI_Tools::OnCreate()
 {
-    target          = etObject;//-1;
+    target          = OBJCLASS_DUMMY;//-1;
     action          = eaSelect;//-1;
     sub_target		= -1;
-    ZeroMemory      (m_pTools,sizeof(TUI_CustomTools*)*etMaxTarget);
     pCurTools       = 0;
     ssRBOnly << ssRight;
     paParent = fraLeftBar->paFrames;   VERIFY(paParent);
@@ -52,10 +74,23 @@ bool TUI_Tools::OnCreate()
     // scene creating
 	Scene.OnCreate	();
 	// create tools
-    for (int tgt=etFirstTool; tgt<etMaxTarget; tgt++)
-		m_pTools[tgt]=NewToolFromTarget(tgt);
+	RegisterTools	(xr_new<TUI_CustomTools>(OBJCLASS_DUMMY,true));
+	RegisterTools	(xr_new<TUI_GroupTools>());
+    RegisterTools	(xr_new<TUI_LightTools>());
+    RegisterTools	(xr_new<TUI_ShapeTools>());
+    RegisterTools	(xr_new<TUI_ObjectTools>());
+    RegisterTools	(xr_new<TUI_SoundSrcTools>());
+    RegisterTools	(xr_new<TUI_SoundEnvTools>());
+    RegisterTools	(xr_new<TUI_GlowTools>());
+    RegisterTools	(xr_new<TUI_SpawnPointTools>());
+    RegisterTools	(xr_new<TUI_SectorTools>());
+    RegisterTools	(xr_new<TUI_PortalTools>());
+    RegisterTools	(xr_new<TUI_WayPointTools>());
+    RegisterTools	(xr_new<TUI_PSTools>());
+    RegisterTools	(xr_new<TUI_DOTools>());
+    RegisterTools	(xr_new<TUI_AIMapTools>());
     // change target to Object
-	UI.Command		(COMMAND_CHANGE_TARGET, etObject);
+	UI.Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
 	m_Props 		= TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
     pObjectListForm = TfrmObjectList::CreateForm();
     return true;
@@ -153,9 +188,8 @@ void __fastcall TUI_Tools::ChangeAction(int act, bool forced){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
+void __fastcall TUI_Tools::SetTarget   (EObjClass tgt,bool bForced)
 {
-	R_ASSERT(tgt!=-1);
     if(bForced||(target!=tgt)){
         target 					= tgt;
         sub_target 				= estDefault;
@@ -163,7 +197,7 @@ void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
             DETACH_FRAME(pCurTools->pFrame);
             pCurTools->OnDeactivate();
         }
-        pCurTools=m_pTools[tgt]; VERIFY(pCurTools);
+        pCurTools				= UITools[tgt]; VERIFY(pCurTools);
         pCurTools->OnActivate	();
         
         pCurTools->SetSubTarget	(sub_target);
@@ -190,7 +224,7 @@ void __fastcall TUI_Tools::SetSubTarget(int tgt)
     pCurTools->SetSubTarget	(tgt);
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::ChangeTarget(int tgt, bool forced)
+void __fastcall TUI_Tools::ChangeTarget(EObjClass tgt, bool forced)
 {
 	// если мышь захвачена - изменим target после того как она освободится
 	if (UI.IsMouseCaptured()||UI.IsMouseInUse()||!forced){
@@ -215,7 +249,7 @@ void __fastcall	TUI_Tools::SetNumScale(CCustomObject* O){
 
 EObjClass TUI_Tools::CurrentClassID()
 {
-	return (fraLeftBar&&fraLeftBar->ebIgnoreMode->Down)?OBJCLASS_DUMMY:GetTargetClassID();
+	return GetTarget();
 }
 //---------------------------------------------------------------------------
 
@@ -272,10 +306,10 @@ void TUI_Tools::RealUpdateProperties()
         }
 
         if (OBJCLASS_DUMMY==cls_id){
-            for (int i=0; i<OBJCLASS_COUNT; i++){
-                ESceneCustomMTools* mt 	= Scene.GetMTools(EObjClass(i));
-                if (mt)	mt->FillProp	(GetClassNameByClassID(i),items);
-            }
+            SceneToolsMapPairIt _I 		= Scene.FirstTools();
+            SceneToolsMapPairIt _E	 	= Scene.LastTools();
+            for (; _I!=_E; _I++)
+                if (_I->second)			_I->second->FillProp(GetClassNameByClassID(_I->first),items);
         }else{
             ESceneCustomMTools* mt		= Scene.GetMTools(cls_id);
             if (mt) mt->FillProp		(GetClassNameByClassID(cls_id),items);
@@ -318,7 +352,7 @@ bool TUI_Tools::IfModified()
 void TUI_Tools::ZoomObject(bool bSelectedOnly)
 {
     if( !Scene.locked() ){
-        Scene.ZoomExtents(bSelectedOnly);
+        Scene.ZoomExtents(CurrentClassID(),bSelectedOnly);
     } else {
         if (UI.GetEState()==esEditLibrary){
             TfrmEditLibrary::ZoomObject();
@@ -405,6 +439,6 @@ void TUI_Tools::RealUpdateObjectList()
 
 bool TUI_Tools::IsModified()
 {
-	return Scene.IsModified();
+	return Scene.IsUnsaved();
 }
 

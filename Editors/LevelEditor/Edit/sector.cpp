@@ -95,7 +95,7 @@ bool CSector::AddMesh	(CSceneObject* O, CEditableMesh* M)
             return true;
         }
     return false;
-}
+}                  
 
 bool CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
 	SItemIt it;
@@ -112,12 +112,14 @@ bool CSector::DelMesh	(CSceneObject* O, CEditableMesh* M){
     return true;
 }
 
-bool CSector::GetBox( Fbox& box ){
+bool CSector::GetBox( Fbox& box )
+{
 	box.set(m_Box);
 	return true;
 }
 
-void CSector::Render(int priority, bool strictB2F){
+void CSector::Render(int priority, bool strictB2F)
+{
 	if (2==priority){
         if (true==strictB2F){
             if (!fraBottomBar->miDrawSectorSolid->Checked){
@@ -198,20 +200,10 @@ void CSector::UpdateVolume()
     m_Flags.set(flNeedUpdateVolume,FALSE);
 }
 //----------------------------------------------------
-void CSector::OnDestroy( ){
+void CSector::OnDestroy( )
+{
     // remove existence sector portal
-    ObjectList& lst = Scene.ListObj(OBJCLASS_PORTAL);
-    ObjectIt _F = lst.begin();
-    while(_F!=lst.end()){
-    	CPortal* P=(CPortal*)(*_F);
-        if((P->m_SectorFront==this)||(P->m_SectorBack==this)){
-            xr_delete((*_F));
-            ObjectIt _D = _F; _F++;
-            lst.remove((*_D));
-        }else{
-            _F++;
-        }
-    }
+    PortalUtils.RemoveSectorPortal(this);
 }
 
 void CSector::OnSceneUpdate()
@@ -287,7 +279,8 @@ void CSector::CaptureInsideVolume(){
 }
 //----------------------------------------------------
 
-void CSector::CaptureAllUnusedMeshes(){
+void CSector::CaptureAllUnusedMeshes()
+{
     U32Vec fl;
     CSceneObject *obj=NULL;
     ObjectList& lst=Scene.ListObj(OBJCLASS_SCENEOBJECT);

@@ -79,13 +79,13 @@ public:
     virtual 			~EDetailManager			();
 
     // snap 
-	virtual ObjectList& GetSnapList				(){return m_SnapObjects;}
+	virtual ObjectList* GetSnapList				(){return &m_SnapObjects;}
     virtual void		UpdateSnapList			(){};
 
 	// selection manipulate
     virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist){return false;}
 	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction);
-	virtual int			FrustumSelect			(bool flag);
+	virtual int			FrustumSelect			(bool flag, const CFrustum& frustum);
 	virtual int			SelectObjects           (bool flag);
 	virtual int			InvertSelection         ();
 	virtual int 		RemoveSelection         (){return 0;};
@@ -109,6 +109,8 @@ public:
     virtual bool   		IsNeedSave				(){return Valid();}
     virtual bool		Load            		(IReader&);
     virtual void		Save            		(IWriter&);
+    virtual bool		LoadSelection      		(IReader&);
+    virtual void		SaveSelection      		(IWriter&);
     virtual bool		Export          		(LPCSTR fn);
 
 	// properties
@@ -127,11 +129,11 @@ public:
     bool				Reinitialize			();
     void				InvalidateSlots			();
 
-    EDetail*			AppendObject			(LPCSTR name, bool bTestUnique=true);
-    bool				RemoveObject			(LPCSTR name);
-    int					RemoveObjects			();
-    DetailIt			FindObjectByNameIt		(LPCSTR name);
-    EDetail*			FindObjectByName		(LPCSTR name);
+    EDetail*			AppendDO				(LPCSTR name, bool bTestUnique=true);
+    bool				RemoveDO				(LPCSTR name);
+    int					RemoveDOs				();
+    DetailIt			FindDOByNameIt			(LPCSTR name);
+    EDetail*			FindDOByName			(LPCSTR name);
 
     void				RemoveColorIndices		();
 	void				AppendIndexObject		(u32 color,LPCSTR name,bool bTestUnique=true);

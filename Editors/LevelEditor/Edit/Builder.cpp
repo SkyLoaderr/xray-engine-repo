@@ -44,7 +44,7 @@ BOOL SceneBuilder::Compile()
     UI.BeginEState(esBuildLevel);
     try{
         do{
-            UI.Command( COMMAND_RESET_ANIMATION );
+//.            UI.Command( COMMAND_RESET_ANIMATION );
 	        // check debug
             bool bTestPortal = Scene.ObjCount(OBJCLASS_SECTOR)||Scene.ObjCount(OBJCLASS_PORTAL);
 	        // validate scene

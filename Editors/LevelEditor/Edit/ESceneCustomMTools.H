@@ -6,21 +6,27 @@ struct SSceneSummary;
 
 class ESceneCustomMTools
 {
-	EObjClass 		FClassID;
+	EObjClass 			FClassID;
 public:
-    PropertyGP(FClassID,FClassID)			EObjClass ClassID;
+	int 				render_priority;
 public:
-					ESceneCustomMTools		(){;}
-	virtual			~ESceneCustomMTools		(){;}
+    PropertyGP(FClassID,FClassID) EObjClass ClassID;
+    enum{
+    	flVisible		= (0<<1),
+    };
+    Flags32				m_Flags;
+public:
+						ESceneCustomMTools		(EObjClass cls){ClassID=cls;render_priority=0;m_Flags.set(flVisible);}
+	virtual				~ESceneCustomMTools		(){;}
                                                
     // snap 
-	virtual ObjectList& GetSnapList				()=0;
+	virtual ObjectList* GetSnapList				()=0;
     virtual void		UpdateSnapList			()=0;
     
 	// selection manipulate
     virtual bool		PickGround				(Fvector& dest, const Fvector& start, const Fvector& dir, float dist)=0;
 	virtual int			RaySelect				(bool flag, float& distance, const Fvector& start, const Fvector& direction)=0;
-	virtual int			FrustumSelect			(bool flag)=0;
+	virtual int			FrustumSelect			(bool flag, const CFrustum& frustum)=0;
 	virtual int 		SelectObjects           (bool flag)=0;
 	virtual int 		InvertSelection         ()=0;
 	virtual int 		RemoveSelection         ()=0;
@@ -36,6 +42,7 @@ public:
 	virtual void		OnDeviceCreate			()=0;
 	virtual void		OnDeviceDestroy			()=0;
 	virtual void		OnSynchronize			()=0;
+	virtual void		OnSceneUpdate			(){;}
     virtual void		OnObjectRemove			(CCustomObject* O)=0;
 	virtual void		OnFrame					()=0;
     virtual void		OnRender				(int priority, bool strictB2F)=0;
@@ -44,7 +51,11 @@ public:
     virtual bool   		IsNeedSave				()=0;
     virtual bool		Load            		(IReader&)=0;
     virtual void		Save            		(IWriter&)=0;
-    virtual bool		Export          		(LPCSTR fn)=0;
+    virtual bool		LoadSelection      		(IReader&)=0;
+    virtual void		SaveSelection      		(IWriter&)=0;
+
+    virtual bool		Export          		(LPCSTR fn){return false;}
+    virtual bool		ExportGame         		(SExportStreams& F){return FALSE;}
 
     // properties
     virtual void		FillProp          		(LPCSTR pref, PropItemVec& items)=0;
@@ -53,6 +64,6 @@ public:
 	virtual bool 		GetSummaryInfo			(SSceneSummary* inf)=0;
 };
 
-typedef xr_map<EObjClass,ESceneCustomMTools*> 	SceneToolsMap;
+DEFINE_MAP(EObjClass,ESceneCustomMTools*,SceneToolsMap,SceneToolsMapPairIt);
 #endif //SceneCustomMToolsH
  

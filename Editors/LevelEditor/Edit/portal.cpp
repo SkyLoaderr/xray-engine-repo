@@ -42,7 +42,8 @@ CPortal::~CPortal(){
 }
 //------------------------------------------------------------------------------
 
-bool CPortal::GetBox( Fbox& box ){
+bool CPortal::GetBox( Fbox& box )
+{
 	if( m_Vertices.empty() ){
 		box.set(0,0,0, 0,0,0);
 		return false;
@@ -54,10 +55,15 @@ bool CPortal::GetBox( Fbox& box ){
 }
 //------------------------------------------------------------------------------
 
-void CPortal::Render(int priority, bool strictB2F){
+void CPortal::Render(int priority, bool strictB2F)
+{
 	if ((1==priority)&&(false==strictB2F)){
         FvectorVec& src 	= m_SimplifyVertices;//(fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         if (src.size()<2) 	return;
+
+        Device.SetShader	(Device.m_WireShader);
+        RCache.set_xform_world	(Fidentity);
+
         u32 				i;
         FvectorVec	 		V;
         V.resize			(src.size()+2);
@@ -66,7 +72,6 @@ void CPortal::Render(int priority, bool strictB2F){
         V[V.size()-1].set	(src[0]);
 		// render portal tris
         Fcolor 				col;
-        Device.SetShader	(Device.m_WireShader);
         // front
 		if (m_SectorFront){
 			col.set			(m_SectorFront->sector_color);
@@ -88,7 +93,6 @@ void CPortal::Render(int priority, bool strictB2F){
         if (!Selected())	col.mul_rgb(0.5f);
     	// render portal edges
         FvectorVec& src_ln 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
-        Device.SetShader	(Device.m_WireShader);
         DU.DrawPrimitiveL	(D3DPT_LINESTRIP, src_ln.size(), src_ln.begin(), src_ln.size(), col.get(), true, true);
         Device.ResetNearer	();
         DU.DrawFaceNormal	(m_Center,m_Normal,1,0xFFFFFFFF);
@@ -182,87 +186,11 @@ bool CPortal::Update(bool bLoadMode){
 	        if (m_SectorFront->RayPick(1000,m_Center,SB_dir)) 	B[m_SectorFront] += 1;
 	        if (m_SectorBack->RayPick(1000,m_Center,SF_dir))	B[m_SectorBack] += 1;
         }
-/*
-        int a_f = A[m_SectorFront];
-        int a_b = A[m_SectorBack];
-        int b_f = B[m_SectorFront];
-        int b_b = B[m_SectorBack];
-        Log("----------",Name);
-        Log("a_f ",a_f);
-        Log("a_b ",a_b);
-        Log("b_f ",b_f);
-        Log("b_b ",b_b);
-*/
         int a = A[m_SectorFront]+A[m_SectorBack];
         int b = B[m_SectorFront]+B[m_SectorBack];
         if (a>b);
         else if (a<b) InvertOrientation();
         else ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
-/*
-        map<CSector*,int> counters;
-        for (u32 i=0; i<m_Vertices.size()-1; i++){
-            Fbox bb; bb.set(m_Vertices[i],m_Vertices[i]); bb.grow(0.01f);
-            SBoxPickInfoVec result;
-	        if (Scene.BoxPick(bb,result)!=2) continue;
-            CSector* s1 = PortalUtils.FindSector(result[0].s_obj,result[0].e_mesh);
-            CSector* s2 = PortalUtils.FindSector(result[1].s_obj,result[1].e_mesh);
-            if (s1==s2) continue;
-            if (((s1==m_SectorFront)&&(s2==m_SectorBack))||((s2==m_SectorFront)&&(s1==m_SectorBack))){
-                for (SBoxPickInfoIt it=result.begin(); it!=result.end(); it++){
-                    for (int k=0; k<it->inf.size(); k++){
-                        CDB::RESULT& r = it->inf[k];
-                        Fvector v[3];
-                        it->s_obj->GetFaceWorld(it->e_mesh,r.id,v);
-                        for (int i=0; i<3; i++){
-                        	for (int y=0; y<m_Vertices.size(); y++)
-                            	if (m_Vertices[y].similar(v[i])) continue;
-                        	if (P.classify(v[i])>0.f)	counters[m_SectorFront] += 1;
-                        	else						counters[m_SectorBack] += 1;
-                        }
-                    }
-                }
-            }
-        }
-        if (counters[m_SectorFront]<=counters[m_SectorBack])
-        	InvertOrientation();
-//    	m_Normal
-//    	m_Center
-/*
-        float step=0.05f;
-        float delta_step=0.05f;
-
-        Fvector SF_point, SB_point;
-        vector<CSector*> front;
-        vector<CSector*> back;
-
-        while(step<=1.f){
-            // test inverted
-            SF_point.mad(m_Center,m_Normal,step);
-            SB_point.mad(m_Center,m_Normal,-step);
-
-            front.clear();
-            back.clear();
-
-            if (m_SectorFront->Intersect	(SF_point,0)==fvFully) front.push_back(m_SectorFront);
-            if (m_SectorBack->Intersect		(SF_point,0)==fvFully) front.push_back(m_SectorBack);
-            if (m_SectorFront->Intersect	(SB_point,0)==fvFully) back.push_back(m_SectorFront);
-            if (m_SectorBack->Intersect		(SB_point,0)==fvFully) back.push_back(m_SectorBack);
-
-            if ((front.empty()||back.empty()) || ((front.size()==2)&&(back.size()==2)))
-                step+=delta_step;
-            else break;
-        }
-        CSector *SF=0,*SB=0;
-        if ((front.size()==1)&&(back.size()==1)) 		{ SF = front[0]; SB = back[0]; }
-        else  if ((front.size()==2)&&(back.size()==1)) 	{ SB = back[0];  SF = front[(SB==front[0])?1:0]; }
-        else  if ((front.size()==1)&&(back.size()==2)) 	{ SF = front[0]; SB = back [(SF==back[0])?1:0]; }
-
-        if (!(SF && (SF!=SB))){
-            ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
-        }else{
-            if (SF!=m_SectorFront) InvertOrientation();
-        }
-*/
     }
 
     return true;

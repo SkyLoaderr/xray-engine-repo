@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_DETAILMANAGER_H__2C7B9CBD_4751_4D3E_8020_4792B800E4E2__INCLUDED_)
-#define AFX_DETAILMANAGER_H__2C7B9CBD_4751_4D3E_8020_4792B800E4E2__INCLUDED_
+#ifndef DetailManagerH
+#define DetailManagerH
 #pragma once
 
 #include "xrpool.h"
@@ -85,7 +85,7 @@ public:
 	PSS								poolSI;
 public:
 #ifdef _EDITOR
-	virtual ObjectList& 			GetSnapList		()=0;
+	virtual ObjectList* 			GetSnapList		()=0;
 #endif
 
 	IC bool							UseVS			()		{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
@@ -136,4 +136,4 @@ public:
 	virtual ~CDetailManager			();
 };
 
-#endif // !defined(AFX_DETAILMANAGER_H__2C7B9CBD_4751_4D3E_8020_4792B800E4E2__INCLUDED_)
+#endif //DetailManagerH

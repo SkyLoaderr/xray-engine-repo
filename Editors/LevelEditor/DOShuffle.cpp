@@ -255,7 +255,7 @@ void __fastcall TfrmDOShuffle::ebAddObjectClick(TObject *Sender)
                     ELog.DlgMsg(mtInformation,"Maximum detail objects in scene '%d'",dm_max_objects);
                     return;
                 }
-             	AddItem(0,s_it->c_str(),(void*)DM->AppendObject(s_it->c_str()));
+             	AddItem(0,s_it->c_str(),(void*)DM->AppendDO(s_it->c_str()));
             }
     }
 }
@@ -265,7 +265,7 @@ void __fastcall TfrmDOShuffle::ebDelObjectClick(TObject *Sender)
 {
 	if (tvItems->Selected){
         LPCSTR name			= AnsiString(tvItems->Selected->Text).c_str();
-        DM->RemoveObject	(name);
+        DM->RemoveDO		(name);
         bObjectModif		= true;
     	bColorIndModif 		= true;
 		for (u32 k=0; k<color_indices.size(); k++)

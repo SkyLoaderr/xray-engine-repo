@@ -5,27 +5,21 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Log.h"
 #include "Scene.h"
-#include "Texture.h"
-#include "ui_tools.h"
 #include "SceneObject.h"
 #include "DetailObjects.h"
-#include "Sector.h"
-#include "Library.h"
-#include "xr_ini.h"
-#include "bottombar.h"
-#include "leftbar.h"
+#include "ESceneAIMapTools.h"
 #include "ui_main.h"
-#include "d3dutils.h"
 #include "PropertiesList.h"
+#include "Sector.h"
 #include "SoundManager.h"
 #include "EParticlesObject.h"
-#include "ESceneAIMapTools.h"
+#include "ui_tools.h"
 //----------------------------------------------------
 EScene Scene;
 //----------------------------------------------------
-void st_Environment::Reset(){
+void st_Environment::Reset()
+{
     m_ViewDist		= 500;
     m_Fogness		= 0.9f;
     m_FogColor.set	(0.5f,0.5f,0.5f,0.f);
@@ -33,7 +27,8 @@ void st_Environment::Reset(){
     m_SkyColor.set	(1,1,1,1);
 }
 
-st_Environment::st_Environment(){
+st_Environment::st_Environment()
+{
 	Reset();
 }
 
@@ -93,12 +88,10 @@ EScene::EScene()
 {
 	m_Valid = false;
 	m_Locked = 0;
-    for (int i=0; i<OBJCLASS_COUNT; i++){
-        ObjectList lst;
-        EObjClass cls = (EObjClass)i;
-        m_Objects.insert(mk_pair(cls,lst));
-        m_SceneTools.insert(mk_pair(cls,(ESceneCustomMTools*)NULL));
-    }
+
+    for (int i=0; i<OBJCLASS_COUNT; i++)
+        m_SceneTools.insert(mk_pair((EObjClass)i,(ESceneCustomMTools*)NULL));
+
     // first init scene graph for objects
     mapRenderObjects.init(MAX_VISUALS);
 // Build options
@@ -113,17 +106,37 @@ EScene::~EScene()
     m_ESO_SnapObjects.clear	();
 }
 
+void EScene::RegisterSceneTools(ESceneCustomMTools* mt, int render_priority)
+{
+    m_SceneTools[mt->ClassID]=mt;
+    mt->render_priority		= render_priority;
+}
+
 void EScene::OnCreate()
 {
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
-    m_SceneTools[OBJCLASS_DO] 	= xr_new<EDetailManager>();
-    m_SceneTools[OBJCLASS_AIMAP]= xr_new<ESceneAIMapTools>();
+
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SCENEOBJECT),	0);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_LIGHT),		1);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_SRC),	2);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SOUND_ENV),	3);
+	RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GROUP),		4);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SHAPE),		5);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_GLOW),		6);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SPAWNPOINT),	7);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_WAY),			8);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_SECTOR),		9);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PORTAL),		10);
+    RegisterSceneTools	   	(xr_new<ESceneCustomOTools>	(OBJCLASS_PS),			11);
+    RegisterSceneTools	   	(xr_new<EDetailManager>		(),						1);
+    RegisterSceneTools	   	(xr_new<ESceneAIMapTools>	(),						100);
+
 	m_LastAvailObject 		= 0;
     m_LevelOp.Reset			();
 	ELog.Msg				( mtInformation, "Scene: initialized" );
 	m_Valid 				= true;
-    m_Modified 				= false;
+    m_RTFlags.zero			();
 	UI.Command				(COMMAND_UPDATE_CAPTION);
 	m_SummaryInfo 			= TProperties::CreateForm();
 }
@@ -145,508 +158,44 @@ void EScene::OnDestroy()
     m_SceneTools.clear		();
 }
 
-void EScene::AddObject( CCustomObject* object, bool bUndo ){
-	VERIFY( object );
-	VERIFY( m_Valid );
-    ObjectList& lst = ListObj(object->ClassID);
-    lst.push_back( object );
-    UI.UpdateScene();
-	if (bUndo){
-	    object->Select(true);
+void EScene::AppendObject( CCustomObject* object, bool bUndo )
+{
+	VERIFY			  	(object);
+	VERIFY				(m_Valid);
+    
+    ESceneCustomOTools* mt	= GetOTools(object->ClassID); VERIFY3(mt,"Can't find Object Tools:",GetClassNameByClassID(object->ClassID));
+    mt->_AppendObject	(object);
+    UI.UpdateScene		();
+    if (bUndo){	
+	    object->Select	(true);
     	UndoSave();
     }
 }
 
 bool EScene::RemoveObject( CCustomObject* object, bool bUndo )
 {
-	VERIFY( object );
-	VERIFY( m_Valid );
-    ObjectList& lst = ListObj(object->ClassID);
-    // remove object from Snap List if exists
-    if (object->ClassID==OBJCLASS_SCENEOBJECT){
-    	// remove froom snap list 
-    	m_ESO_SnapObjects.remove			(object);
-        for (int i=0; i<OBJCLASS_COUNT; i++){
-            ESceneCustomMTools* mt = m_SceneTools[(EObjClass)i];
-            if (mt) mt->OnObjectRemove(object);
+	VERIFY				(object);
+	VERIFY				(m_Valid);
+
+    ESceneCustomOTools* mt 	= GetOTools(object->ClassID);
+    if (mt){
+    	mt->_RemoveObject(object);
+        if (object->ClassID==OBJCLASS_SCENEOBJECT){
+            // signal everyone "I'm deleting"
+            m_ESO_SnapObjects.remove			(object);
+
+            SceneToolsMapPairIt _I = m_SceneTools.begin();
+            SceneToolsMapPairIt _E = m_SceneTools.end();
+            for (; _I!=_E; _I++){
+                ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(_I->second);
+                if (mt) mt->OnObjectRemove(object);
+            }
+            UpdateSnapList						();
         }
-        
-		UpdateSnapList						();
-        
-        // signal everyone "I'm deleting"
-	    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-    	    ObjectList& lst = (*it).second;
-			for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            	(*_F)->OnObjectRemove(object);
-        }
+        UI.UpdateScene	();
     }
-    // remove from scene list
-    lst.remove		(object);
-    UI.UpdateScene	();
-	if (bUndo) 		UndoSave();
+    if (bUndo)		   	UndoSave();
     return true;
-}
-
-bool EScene::ContainsObject( CCustomObject* object, EObjClass classfilter ){
-	VERIFY( object );
-	VERIFY( m_Valid );
-    ObjectList& lst = ListObj(classfilter);
-    ObjectIt it = find( lst.begin(), lst.end(), object );
-    if (it!=lst.end()) return true;
-    return false;
-}
-
-int EScene::ObjCount(){
-	int cnt = 0;
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	cnt+=(*it).second.size();
-	return cnt;
-}
-
-int EScene::FrustumSelect( int flag, EObjClass classfilter ){
-	CFrustum frustum;
-	int count = 0;
-    if (!UI.SelectionFrustum(frustum)) return 0;
-                                                                              
-	if (classfilter==OBJCLASS_DO) 		return GetMTools(OBJCLASS_DO)->FrustumSelect(flag);
-	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->FrustumSelect(flag);
-
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                if((*_F)->Visible()&&(*_F)->FrustumSelect(flag,frustum))
-                	count++;
-    }
-    UI.RedrawScene();
-	return count;
-}
-int EScene::FrustumPick( const CFrustum& frustum, EObjClass classfilter, ObjectList& ol ){
-	int count = 0;
-    ObjectList& lst = ListObj(classfilter);
-	ObjectIt _F = lst.begin();
-	for(;_F!=lst.end();_F++)
-		if((*_F)->Visible()){
-			if( (*_F)->FrustumPick(frustum) ){
-            	ol.push_back(*_F);
-				count++;
-			}
-		}
-	return count;
-}
-
-int EScene::SpherePick( const Fvector& center, float radius, EObjClass classfilter, ObjectList& ol ){
-	int count = 0;
-    ObjectList& lst = ListObj(classfilter);
-	ObjectIt _F = lst.begin();
-	for(;_F!=lst.end();_F++)
-		if((*_F)->Visible()){
-			if( (*_F)->SpherePick(center, radius) ){
-            	ol.push_back(*_F);
-				count++;
-			}
-		}
-	return count;
-}
-
-int EScene::SelectObjects( bool flag, EObjClass classfilter ){
-	int count = 0;
-	if (classfilter==OBJCLASS_DO) 		return GetMTools(OBJCLASS_DO)->SelectObjects(flag);
-	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->SelectObjects(flag);
-
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-	    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-    	        if((*_F)->Visible()){
-        	        (*_F)->Select( flag );
-            	    count++;
-	            }
-    }
-    UI.RedrawScene();
-	return count;
-}
-
-int EScene::LockObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag ){
-	int count = 0;
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                if(bAllowSelectionFlag){
-                    if((*_F)->Selected()==bSelFlag){
-                        (*_F)->Lock( flag );
-                        count++;
-                    }
-                }else{
-                    (*_F)->Lock( flag );
-                    count++;
-                }
-    }
-    UI.RedrawScene();
-	return count;
-}
-
-int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionFlag, bool bSelFlag )
-{
-	int count = 0;
-	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->ShowObjects(flag,bAllowSelectionFlag,bSelFlag);
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                if (bAllowSelectionFlag){
-                    if ((*_F)->Selected()==bSelFlag){
-                        (*_F)->Show( flag );
-                        count++;
-                    }
-                }else{
-                    (*_F)->Show( flag );
-                    count++;
-                }
-            }
-    }
-    UI.RedrawScene();
-	return count;
-}
-
-int EScene::InvertSelection( EObjClass classfilter ){
-	int count = 0;
-    if (classfilter==OBJCLASS_DO)		return GetMTools(OBJCLASS_DO)->InvertSelection	();
-	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->InvertSelection();
-
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-			for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                if((*_F)->Visible()){
-                    (*_F)->Select(-1);
-                    count++;
-                }
-    }
-
-    UI.RedrawScene();
-	return count;
-}
-
-int EScene::RemoveSelection( EObjClass classfilter )
-{
-	int count = 0;
-    ESceneCustomMTools* mt = GetMTools(classfilter);
-	if (mt)	return mt->RemoveSelection();
-    
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
-            ObjectIt _F = lst.begin();
-            while(_F!=lst.end()){
-            	if((*_F)->Selected()){
-                    count ++;
-                    if ((*_F)->OnSelectionRemove()){
-	                    ObjectIt _D = _F; _F++;
-    	             	RemoveObject(*_D,false);
-        	            xr_delete((*_D));
-                    }else{
-                    	_F++;
-                    }
-            	}else{
-                	_F++;
-                }
-            }
-        }
-    }
-
-    UI.UpdateScene(true);
-	return count;
-}
-
-int EScene::RayQuery(SPickQuery& PQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list)
-{
-    VERIFY			(snap_list);
-    PQ.prepare_rq	(start,dir,dist,flags);
-	XRC.ray_options	(flags);
-    for(ObjectIt _F=snap_list->begin();_F!=snap_list->end();_F++)
-        ((CSceneObject*)(*_F))->RayQuery(PQ);
-	return PQ.r_count();
-}
-
-int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, ObjectList* snap_list)
-{
-    VERIFY			(snap_list);
-    PQ.prepare_bq	(bb,flags);
-	XRC.box_options	(flags);
-    for(ObjectIt _F=snap_list->begin();_F!=snap_list->end();_F++)
-        ((CSceneObject*)(*_F))->BoxQuery(PQ);
-	return PQ.r_count();
-}
-
-int EScene::RayQuery(SPickQuery& PQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, CDB::MODEL* model)
-{
-    PQ.prepare_rq	(start,dir,dist,flags);
-	XRC.ray_options	(flags);
-    XRC.ray_query	(model,start,dir,dist);
-    for (int r=0; r<XRC.r_count(); r++)
-        PQ.append	(model,XRC.r_begin()+r);
-	return PQ.r_count();
-}
-
-int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, CDB::MODEL* model)
-{
-    PQ.prepare_bq	(bb,flags);
-	XRC.box_options	(flags);
-    Fvector c,d;
-    bb.getcenter	(c);
-    bb.getradius	(d);
-    XRC.box_query	(model,c,d);
-    for (int r=0; r<XRC.r_count(); r++)
-        PQ.append	(model,XRC.r_begin()+r);
-	return PQ.r_count();
-}
-
-CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list)
-{
-	if( !valid() )
-		return 0;
-
-	float nearest_dist = pinf?pinf->inf.range+EPS_L:flt_max;
-	CCustomObject *nearest_object = 0;
-
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-		ObjectList* lst=0;
-    	if (it->first==OBJCLASS_SCENEOBJECT)
-        	 lst=(snap_list)?snap_list:&(it->second);
-        else lst=&(it->second);
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
-            if (classfilter==OBJCLASS_DO){
-                GetMTools(OBJCLASS_DO)->RaySelect(true,nearest_dist,start,direction);
-            }else if (classfilter==OBJCLASS_AIMAP){
-				GetMTools(OBJCLASS_AIMAP)->RaySelect(true,nearest_dist,start,direction);
-            }else{
-                for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
-                    if((*_F)->Visible()){
-                        if((classfilter==OBJCLASS_SCENEOBJECT)&&!bDynamicTest&&((CSceneObject*)(*_F))->IsDynamic()) continue;
-                        if((*_F)->RayPick(nearest_dist,start,direction,pinf))
-                            nearest_object = (*_F);
-                    }
-                }
-            }
-        }
-    }
-	return nearest_object;
-}
-
-int EScene::RaySelect(int flag, EObjClass classfilter, bool bOnlyNearest){
-	if( !valid() ) return 0;
-
-	float nearest_dist = UI.ZFar();
-	CCustomObject *nearest_object = 0;
-    int count=0;
-
-	Fvector& start		= UI.m_CurrentRStart;
-    Fvector& direction	= UI.m_CurrentRNorm;
-
-	if (classfilter==OBJCLASS_DO) 		return GetMTools(OBJCLASS_DO)->RaySelect(flag,nearest_dist,start,direction);
-	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->RaySelect(flag,nearest_dist,start,direction);
-
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                if((*_F)->Visible()&&(*_F)->RayPick(nearest_dist,start,direction)){
-                	nearest_object=*_F;
-                    count++;
-            	}
-    }
-    if (nearest_object) nearest_object->RaySelect(flag,start,direction);
-    UI.RedrawScene();
-	return count;
-}
-
-int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list){
-	ObjectList& lst = (snap_list)?*snap_list:ListObj(OBJCLASS_SCENEOBJECT);
-	for(ObjectIt _F=lst.begin();_F!=lst.end();_F++)
-        ((CSceneObject*)*_F)->BoxPick(box,pinf);
-    return pinf.size();
-}
-
-int EScene::SelectionCount(bool testflag, EObjClass classfilter){
-	int count = 0;
-    if (classfilter==OBJCLASS_DO)		return GetMTools(OBJCLASS_DO)->SelectionCount(testflag);
-	if (classfilter==OBJCLASS_AIMAP)	return GetMTools(OBJCLASS_AIMAP)->SelectionCount(testflag);
-
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
-			for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-    		    if((*_F)->Visible()	&& ((*_F)->Selected() == testflag)) count++;
-    }
-	return count;
-}
-
-//----------------------------------------------------
-void __fastcall object_Normal_0(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 0, false ); }
-void __fastcall object_Normal_1(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 1, false ); }
-void __fastcall object_Normal_2(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 2, false ); }
-void __fastcall object_Normal_3(EScene::mapObject_Node *N){ ((CSceneObject*)N->val)->Render( 3, false ); }
-//----------------------------------------------------
-void __fastcall object_StrictB2F_0(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 0, true );}
-void __fastcall object_StrictB2F_1(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 1, true );}
-void __fastcall object_StrictB2F_2(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 2, true );}
-void __fastcall object_StrictB2F_3(EScene::mapObject_Node *N){((CSceneObject*)N->val)->Render( 3, true );}
-//----------------------------------------------------
-
-#define RENDER_CLASS(P,C,B2F)\
-    _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,B2F);
-
-#define RENDER_CLASS_NORMAL(P,C)\
- 	Device.SetShader(Device.m_WireShader);\
- 	RCache.set_xform_world(Fidentity);\
-    _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,false);
-
-#define RENDER_CLASS_ALPHA(P,C)\
- 	Device.SetShader(Device.m_SelectionShader);\
- 	RCache.set_xform_world(Fidentity);\
-    _E=LastObj(C); _F=FirstObj(C);\
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(P,true);
-
-void EScene::RenderSky(const Fmatrix& camera)
-{
-	if( !valid() )	return;
-//	draw sky
-	if (m_SkyDome&&fraBottomBar->miDrawSky->Checked){
-        st_Environment& E = m_LevelOp.m_Envs[m_LevelOp.m_CurEnv];
-        m_SkyDome->PPosition = camera.c;
-        m_SkyDome->UpdateTransform(true);
-		Device.SetRS(D3DRS_TEXTUREFACTOR, E.m_SkyColor.get());
-    	m_SkyDome->RenderSingle();
-	    Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
-    }
-}
-
-void EScene::Render( const Fmatrix& camera )
-{
-	if( !valid() )	return;
-//	if( locked() )	return;
-
-	SetLights();
-
-    ObjectIt _F,_E;
-
-	// sort objects
-    const Fvector& cam_pos=Device.m_Camera.GetPosition();
-    ObjectList& lst = ListObj(OBJCLASS_SCENEOBJECT);
-    _E=lst.end(); _F=lst.begin();
-    for(;_F!=_E;_F++){
-        if( (*_F)->Visible()&& (*_F)->IsRender() ){
-            CSceneObject* _pT = (CSceneObject*)(*_F);
-            Fmatrix m; _pT->GetFullTransformToWorld(m);
-            float distSQ = cam_pos.distance_to_sqr(m.c);
-            mapRenderObjects.insertInAnyWay(distSQ,_pT);
-        }
-    }
-// priority #0
-    // normal
-    mapRenderObjects.traverseLR		(object_Normal_0);
-    mapRenderObjects.traverseRL		(object_StrictB2F_0);
-	RENDER_CLASS			(0,OBJCLASS_GROUP,		false);
-    RENDER_CLASS			(0,OBJCLASS_PS,			false);
-	// alpha
-    GetMTools(OBJCLASS_DO)->OnRender	(0,false);
-	RENDER_CLASS			(0,OBJCLASS_GROUP,		true);
-    RENDER_CLASS			(0,OBJCLASS_PS,			true);
-
-// priority #1
-	// normal
-    mapRenderObjects.traverseLR		(object_Normal_1);
-	// draw lights, sounds, respawn points, pclipper, sector, event
-    RENDER_CLASS_NORMAL		(1,OBJCLASS_LIGHT);
-    RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	false);
-    RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	false);
-    RENDER_CLASS_NORMAL		(1,OBJCLASS_SPAWNPOINT);
-    RENDER_CLASS_NORMAL		(1,OBJCLASS_WAY);
-    RENDER_CLASS			(1,OBJCLASS_SHAPE,		false);
-    RENDER_CLASS			(1,OBJCLASS_PS,			false);
-	RENDER_CLASS_NORMAL		(1,OBJCLASS_PORTAL);
-	RENDER_CLASS			(1,OBJCLASS_GROUP,		false);
-    GetMTools(OBJCLASS_DO)->OnRender		(1,false);
-    GetMTools(OBJCLASS_AIMAP)->OnRender		(1,false);
-	// alpha
-    mapRenderObjects.traverseRL(object_StrictB2F_1);
-    GetMTools(OBJCLASS_DO)->OnRender		(1,true);
-    GetMTools(OBJCLASS_AIMAP)->OnRender		(1,true);
-	// draw clip planes, glows, event, sectors, portals
-	RENDER_CLASS_ALPHA		(1,OBJCLASS_LIGHT);
-    RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	true);
-    RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	true);
-	RENDER_CLASS_ALPHA		(1,OBJCLASS_GLOW);
-    RENDER_CLASS			(1,OBJCLASS_SHAPE,		true);
-    RENDER_CLASS			(1,OBJCLASS_PS,			true);
-	RENDER_CLASS			(1,OBJCLASS_GROUP,		true);
-    RENDER_CLASS			(1,OBJCLASS_SPAWNPOINT,	true);
-
-// priority #2
-	// normal
-    mapRenderObjects.traverseLR(object_Normal_2);
-    GetMTools(OBJCLASS_DO)->OnRender(2,				false);
-    RENDER_CLASS_NORMAL		(2,OBJCLASS_SECTOR);
-	RENDER_CLASS			(2,OBJCLASS_GROUP,		false);
-    RENDER_CLASS			(2,OBJCLASS_PS,			false);
-	// alpha
-    mapRenderObjects.traverseRL(object_StrictB2F_2);
-    GetMTools(OBJCLASS_DO)->OnRender(2,				true);
-	RENDER_CLASS_ALPHA		(2,OBJCLASS_SECTOR);
-	RENDER_CLASS			(2,OBJCLASS_GROUP,		true);
-    RENDER_CLASS			(2,OBJCLASS_PS,			true);
-
-// priority #3
-	// normal
-    mapRenderObjects.traverseLR(object_Normal_3);
-    GetMTools(OBJCLASS_DO)->OnRender(3,				false);
-	RENDER_CLASS			(3,OBJCLASS_GROUP,		false);
-    RENDER_CLASS			(3,OBJCLASS_PS,			false);
-	// alpha
-    mapRenderObjects.traverseRL(object_StrictB2F_3);
-    GetMTools(OBJCLASS_DO)->OnRender(3,				true);
-	RENDER_CLASS			(3,OBJCLASS_GROUP,		true);
-    RENDER_CLASS			(3,OBJCLASS_PS,			true);
-
-	// draw lights (flares)
-    RENDER_CLASS			(3,OBJCLASS_LIGHT,		true);
-
-    // render snap
-    RenderSnapList			();
-
-    // draw compiler errors
-	if (1){
-	 	Device.SetShader		(Device.m_SelectionShader);
- 		RCache.set_xform_world	(Fidentity);
-        Device.RenderNearer		(0.0003f);
-		Device.SetRS			(D3DRS_CULLMODE,D3DCULL_NONE);
-        AnsiString temp;
-        int cnt=0;
-        for (ERR::VertIt vit=m_CompilerErrors.m_TJVerts.begin(); vit!=m_CompilerErrors.m_TJVerts.end(); vit++){
-        	temp.sprintf		("TJ: %d",cnt++);
-        	DU.dbgDrawVert(vit->p[0],						0xff0000ff,	temp.c_str());
-        }
-        cnt=0;
-        for (ERR::EdgeIt eit=m_CompilerErrors.m_MultiEdges.begin(); eit!=m_CompilerErrors.m_MultiEdges.end(); eit++){
-        	temp.sprintf		("ME: %d",cnt++);
-        	DU.dbgDrawEdge(eit->p[0],eit->p[1],			0xff00ff00,	temp.c_str());
-        }
-        cnt=0;
-        for (ERR::FaceIt fit=m_CompilerErrors.m_InvalidFaces.begin(); fit!=m_CompilerErrors.m_InvalidFaces.end(); fit++){
-        	temp.sprintf		("IF: %d",cnt++);
-        	DU.dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	0xffff0000,	temp.c_str());
-        }
-	    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
-        Device.ResetNearer		();
-	}
-
-    mapRenderObjects.clear			();
-
-	ClearLights();
 }
 
 void EScene::UpdateSkydome()
@@ -667,59 +216,64 @@ void EScene::OnFrame( float dT )
 	if( !valid() ) return;
 	if( locked() ) return;
 
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-    		(*_F)->OnFrame();
-    }
-    GetMTools(OBJCLASS_AIMAP)->OnFrame();
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->OnFrame();
 }
 
-void EScene::ClearObjects(bool bDestroy)
+void EScene::Clear()
 {
+	// clear snap
     ClearSnapList			(false);
-    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
-        ObjectList& lst = (*it).second;
-        if (bDestroy)
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) delete (*_F);
-        lst.clear();
-    }
-    GetMTools(OBJCLASS_DO)->Clear	();
-    GetMTools(OBJCLASS_AIMAP)->Clear();
-
+	// clear scene tools
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->Clear();
+        
     xr_delete				(m_SkyDome);
     m_CompilerErrors.Clear	();
+
+    m_RTFlags.set			(flRT_Unsaved|flRT_Modified,FALSE);
 }
 //----------------------------------------------------
 
-bool EScene::GetBox(Fbox& box, EObjClass classfilter){
+bool EScene::GetBox(Fbox& box, EObjClass classfilter)
+{
 	return GetBox(box,ListObj(classfilter));
 }
 //----------------------------------------------------
 
-bool EScene::GetBox(Fbox& box, ObjectList& lst){
+bool EScene::GetBox(Fbox& box, ObjectList& lst)
+{
     box.invalidate();
     bool bRes=false;
-	for(ObjectIt it=lst.begin();it!=lst.end();it++){
-		Fbox bb;
+    for(ObjectIt it=lst.begin();it!=lst.end();it++){
+        Fbox bb;
         if((*it)->GetBox(bb)){
             box.modify(bb.min);
             box.modify(bb.max);
             bRes=true;
         }
-	}
+    }
     return bRes;
 }
 //----------------------------------------------------
 
-void EScene::Modified(){
-	m_Modified = true;
+void EScene::Modified()
+{
+	m_RTFlags.set(flRT_Modified|flRT_Unsaved,TRUE);
     UI.Command(COMMAND_UPDATE_CAPTION);
 }
 
+bool EScene::IsUnsaved()
+{
+    return (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI.GetEditFileName().IsEmpty()));
+}
 bool EScene::IsModified()
 {
-    return (m_Modified && (ObjCount()||!UI.GetEditFileName().IsEmpty()));
+    return (m_RTFlags.is(flRT_Modified));
 }
 
 bool EScene::IfModified()
@@ -728,11 +282,11 @@ bool EScene::IfModified()
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         return false;
     }
-    if (m_Modified && (ObjCount()||!UI.GetEditFileName().IsEmpty())){
+    if (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI.GetEditFileName().IsEmpty())){
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_Modified = false; break;
-        case mrNo: m_Modified = false; break;
+        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; break;
+        case mrNo: m_RTFlags.set(flRT_Unsaved,FALSE); break;
         case mrCancel: return false;
         }
     }
@@ -742,7 +296,7 @@ bool EScene::IfModified()
 void EScene::Unload()
 {
 	m_LastAvailObject = 0;
-	ClearObjects(true);
+	Clear();
 	if (m_SummaryInfo) m_SummaryInfo->HideProperties();
 }
 
@@ -839,132 +393,45 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
     return bRes;
 }
 
-void EScene::OnObjectsUpdate(){
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        	(*_F)->OnSceneUpdate();
-	}
+void EScene::OnObjectsUpdate()
+{
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->OnSceneUpdate();
 }
 
 void EScene::OnDeviceCreate()
 {
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        	(*_F)->OnDeviceCreate();
-	}
-    GetMTools(OBJCLASS_AIMAP)->OnDeviceCreate();
-    GetMTools(OBJCLASS_DO)->OnDeviceCreate();
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->OnDeviceCreate();
 }
 
 void EScene::OnDeviceDestroy()
 {
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        	(*_F)->OnDeviceDestroy();
-	}
-    GetMTools(OBJCLASS_AIMAP)->OnDeviceDestroy();
-    GetMTools(OBJCLASS_DO)->OnDeviceDestroy();
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->OnDeviceDestroy();
 }
-
-int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel, int iVis, int iLock){
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = it->second;
-        if ((classfilter==OBJCLASS_DUMMY)||(classfilter==it->first)){
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                if(	((iSel==-1)||((*_F)->Selected()==iSel))&&
-                    ((iVis==-1)||((*_F)->Visible()==iVis))&&
-                    ((iLock==-1)||((*_F)->Locked()==iLock))){
-                        objset.push_back(*_F);
-                }
-            }
-        }
-    }
-    return objset.size();
-}
-
-void EScene::ZoomExtents( BOOL bSel )
-{
-	EObjClass cls = Tools.CurrentClassID();
-	Fbox BB;	BB.invalidate();
-	Fbox bb;
-	if (cls==OBJCLASS_DUMMY){
-        for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-            ObjectList& lst = (*it).second;
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                if ((*_F)->Visible()&&((bSel&&(*_F)->Selected())||(!bSel)))
-                    if ((*_F)->GetBox(bb)) BB.merge(bb);
-        }
-    }else{
-    	ObjectIt _F = FirstObj(cls);
-	    ObjectIt _E = LastObj(cls);
-    	for(;_F!=_E;_F++)
-            if ((*_F)->Visible()&&((bSel&&(*_F)->Selected())||(!bSel)))
-				if ((*_F)->GetBox(bb)) BB.merge(bb);
-    }
-    if (BB.is_valid()) Device.m_Camera.ZoomExtents(BB);
-    else ELog.Msg(mtError,"Can't calculate bounding box. Nothing selected or some object unsupported this function.");
-}
-//--------------------------------------------------------------------------------------------------
-
-void EScene::ResetAnimation(){
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = it->second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-        	(*_F)->ResetAnimation();
-	}
-}
-//--------------------------------------------------------------------------------------------------
-
-void EScene::SynchronizeObjects()
-{
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            (*_F)->OnSynchronize();
-	}
-    GetMTools(OBJCLASS_AIMAP)->OnSynchronize();
-}
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 void EScene::OnShowHint(AStringVec& dest)
 {
-    CCustomObject* obj = RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,true,0);
+    CCustomObject* obj = RayPickObject(UI.m_CurrentRStart,UI.m_CurrentRNorm,Tools.CurrentClassID(),0,0);
     if (obj) obj->OnShowHint(dest);
 }
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-static SSceneSummary s_summary;
-void EScene::ShowSummaryInfo()
+void EScene::ExportGame(SExportStreams& F)
 {
-	s_summary.Clear	();
-	bool bRes=false;
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-            if ((*_F)->GetSummaryInfo(&s_summary)) bRes=true;
-        }
-	}
-    for (int i=0; i<OBJCLASS_COUNT; i++){
-        ESceneCustomMTools* mt = m_SceneTools[(EObjClass)i];
-        if (mt) mt->GetSummaryInfo(&s_summary);
-    }
-    
-    // append sky dome
-	if (m_SkyDome) m_SkyDome->GetSummaryInfo(&s_summary);
-
-	PropItemVec items;
-	if (bRes){
-        // fill items
-        s_summary.FillProp(items);
-        m_SummaryInfo->ShowProperties();
-    }else{
-    	ELog.DlgMsg(mtInformation,"Summary info empty.");
-    }
-	m_SummaryInfo->AssignItems(items,false,"Level Summary Info");
+    SceneToolsMapPairIt t_it 	= m_SceneTools.begin();
+    SceneToolsMapPairIt t_end 	= m_SceneTools.end();
+    for (; t_it!=t_end; t_it++)
+        if (t_it->second)		t_it->second->ExportGame(F);
 }
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 

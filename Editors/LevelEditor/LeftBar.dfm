@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 551
+  Height = 766
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False
@@ -334,7 +334,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 154
       Width = 198
-      Height = 128
+      Height = 111
       Align = alTop
       Color = 10528425
       TabOrder = 1
@@ -527,7 +527,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebProperties: TExtBtn
         Left = 2
-        Top = 112
+        Top = 94
         Width = 195
         Height = 15
         Align = alNone
@@ -546,33 +546,10 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = ebPropertiesClick
       end
-      object ebIgnoreMode: TExtBtn
-        Left = 2
-        Top = 95
-        Width = 195
-        Height = 15
-        Align = alNone
-        AllowAllUp = True
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        BtnColor = 10528425
-        CloseButton = False
-        GroupIndex = 1
-        Caption = 'Ignore Mode'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Margin = 13
-        ParentFont = False
-        OnClick = ebIgnoreModeClick
-      end
     end
     object paTarget: TPanel
       Left = 1
-      Top = 282
+      Top = 265
       Width = 198
       Height = 228
       Align = alTop
@@ -584,6 +561,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -646,6 +624,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -707,6 +686,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -768,6 +748,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -829,6 +810,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -890,6 +872,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -951,6 +934,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -1012,6 +996,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -1073,6 +1058,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -1170,6 +1156,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -1231,6 +1218,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -1292,6 +1280,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -1353,6 +1342,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -1414,6 +1404,7 @@ object fraLeftBar: TfraLeftBar
         Width = 179
         Height = 15
         Align = alNone
+        AllowAllUp = True
         BevelShow = False
         HotTrack = True
         HotColor = 15790320
@@ -2481,7 +2472,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paSnapList: TPanel
       Left = 1
-      Top = 510
+      Top = 493
       Width = 198
       Height = 124
       Align = alTop
@@ -2699,7 +2690,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 15
+    Version = 16
     StoredProps.Strings = (
       'paEdit.Tag'
       'paEdit.Height'
@@ -2710,7 +2701,6 @@ object fraLeftBar: TfraLeftBar
       'ebUseSnapList.Down'
       'paSnapList.Tag'
       'paSnapList.Height'
-      'ebIgnoreMode.Down'
       'ebViewAIMap.Down'
       'ebViewDO.Down'
       'ebViewGlow.Down'
@@ -2763,6 +2753,17 @@ object fraLeftBar: TfraLeftBar
     object SaveAs1: TMenuItem
       Caption = 'Save As...'
       OnClick = ebSaveAsClick
+    end
+    object N21: TMenuItem
+      Caption = '-'
+    end
+    object ebOpenSel: TMenuItem
+      Caption = 'Open Selection...'
+      OnClick = ebOpenSelClick
+    end
+    object ebSaveSel: TMenuItem
+      Caption = 'Save Selection As...'
+      OnClick = ebSaveSelClick
     end
     object N3: TMenuItem
       Caption = '-'
@@ -2892,17 +2893,6 @@ object fraLeftBar: TfraLeftBar
     object UnselectAll1: TMenuItem
       Caption = 'Unselect All'
       OnClick = ebUnselectAllClick
-    end
-    object N21: TMenuItem
-      Caption = '-'
-    end
-    object Load1: TMenuItem
-      Caption = 'Open...'
-      OnClick = Load1Click
-    end
-    object Save2: TMenuItem
-      Caption = 'Save...'
-      OnClick = Save2Click
     end
   end
   object pmToolsVisibility: TMxPopupMenu
@@ -3230,10 +3220,6 @@ object fraLeftBar: TfraLeftBar
     end
     object MenuItem17: TMenuItem
       Caption = '-'
-    end
-    object ResetAnimation1: TMenuItem
-      Caption = 'Reset Animation'
-      OnClick = ebResetAnimationClick
     end
     object ReloadObjects1: TMenuItem
       Caption = 'Reload Objects'

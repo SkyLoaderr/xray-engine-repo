@@ -5,7 +5,9 @@
 #include "ImageThumbnail.h"
 #include "SceneSummaryInfo.h"
 #include "Scene.h"
+#include "SceneObject.h"
 #include "ui_main.h"
+#include "PropertiesList.h"
 
 void SSceneSummary::FillProp(PropItemVec& items)
 {
@@ -133,4 +135,31 @@ void SSceneSummary::FillProp(PropItemVec& items)
     for (AStringSetIt pe_it=pe_static.begin(); pe_it!=pe_static.end(); pe_it++)
         PHelper.CreateCaption(items,FHelper.PrepareKey("Particle System\\Refs",pe_it->c_str()),"-");
 }
+
+static SSceneSummary s_summary;
+void EScene::ShowSummaryInfo()
+{
+	s_summary.Clear	();
+	bool bRes=false;
+
+    SceneToolsMapPairIt _I = m_SceneTools.begin();
+    SceneToolsMapPairIt _E = m_SceneTools.end();
+    for (; _I!=_E; _I++)
+        if (_I->second)	_I->second->GetSummaryInfo(&s_summary);
+    
+    // append sky dome
+	if (m_SkyDome) m_SkyDome->GetSummaryInfo(&s_summary);
+
+	PropItemVec items;
+	if (bRes){
+        // fill items
+        s_summary.FillProp(items);
+        m_SummaryInfo->ShowProperties();
+    }else{
+    	ELog.DlgMsg(mtInformation,"Summary info empty.");
+    }
+	m_SummaryInfo->AssignItems(items,false,"Level Summary Info");
+}
+//--------------------------------------------------------------------------------------------------
+
  

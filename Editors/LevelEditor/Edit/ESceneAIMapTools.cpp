@@ -94,9 +94,8 @@ void SAINode::Save(IWriter& F, ESceneAIMapTools* tools)
     F.w_u8			(flags.get());
 }
 
-ESceneAIMapTools::ESceneAIMapTools()
+ESceneAIMapTools::ESceneAIMapTools():ESceneCustomMTools(OBJCLASS_AIMAP)
 {
-	ClassID   	= OBJCLASS_AIMAP;
     m_Shader	= 0;
     m_Flags.zero();
     
@@ -243,6 +242,11 @@ bool ESceneAIMapTools::Load(IReader& F)
 }
 //----------------------------------------------------
 
+bool ESceneAIMapTools::LoadSelection(IReader& F)
+{
+	Clear();
+	return Load(F);
+}
 void ESceneAIMapTools::OnSynchronize()
 {
 	RealUpdateSnapList	();
@@ -286,6 +290,11 @@ void ESceneAIMapTools::Save(IWriter& F)
     F.close_chunk	();
 }
 //----------------------------------------------------
+
+void ESceneAIMapTools::SaveSelection(IWriter& F)
+{
+	Save(F);
+}
 
 bool ESceneAIMapTools::Valid()
 {

@@ -62,7 +62,7 @@ bool TUI_CustomControl::HiddenMode(){
 //------------------------------------------------------------------------------
 CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift, TBeforeAppendCallback before, TAfterAppendCallback after)
 {
-    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return 0;}
+    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return 0;}
     Fvector p,n;
     CCustomObject* obj=0;
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
@@ -71,8 +71,8 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
     	if (before&&!before(&P)) return 0;
 
 		string256 namebuffer;
-		Scene.GenObjectName(parent_tool->objclass, namebuffer, P.name_prefix.c_str());
-		obj = NewObjectFromClassID(parent_tool->objclass, P.data, namebuffer);
+		Scene.GenObjectName(parent_tool->ClassID, namebuffer, P.name_prefix.c_str());
+		obj = NewObjectFromClassID(parent_tool->ClassID, P.data, namebuffer);
         if (!obj->Valid()){
         	xr_delete(obj);
             return 0;
@@ -83,8 +83,8 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
             return 0;
         }
 		obj->MoveTo(p,n);
-        Scene.SelectObjects(false,parent_tool->objclass);
-		Scene.AddObject(obj);
+        Scene.SelectObjects(false,parent_tool->ClassID);
+		Scene.AppendObject(obj);
 		if (Shift.Contains(ssCtrl)) UI.Command(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
@@ -107,7 +107,7 @@ bool __fastcall TUI_CustomControl::AddEnd(TShiftState _Shift)
 bool TUI_CustomControl::CheckSnapList(TShiftState Shift)
 {
 	if (fraLeftBar->ebSnapListMode->Down){
-	    CCustomObject* O=Scene.RayPick(UI.m_CurrentRStart,UI.m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,false,0);
+	    CCustomObject* O=Scene.RayPickObject(UI.m_CurrentRStart,UI.m_CurrentRNorm,OBJCLASS_SCENEOBJECT,0,0);
         if (Scene.FindObjectInSnapList(O)){
 			if (Shift.Contains(ssAlt)){
             	Scene.DelFromSnapList(O);
@@ -134,19 +134,19 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
 	EObjClass cls = Tools.CurrentClassID();
 
 	if (CheckSnapList(Shift)) return false;
-    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
+    if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene.SelectObjects( false, cls);
 
-    CCustomObject *obj = Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, true, 0);
+    CCustomObject *obj = Scene.RayPickObject( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, 0);
     bBoxSelection    = (obj && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || !obj;
 
     if( bBoxSelection ){
         UI.EnableSelectionRect( true );
         UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
-        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
+        if(obj) obj->Select(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1);
         return true;
     } else {
-        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
+        if(obj) obj->Select(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1);
     }
     return false;
 }
@@ -168,10 +168,11 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
 //------------------------------------------------------------------------------------
 // moving
 //------------------------------------------------------------------------------------
-bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
+bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift)
+{
 	EObjClass cls = Tools.CurrentClassID();
 
-    if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
+    if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene.SelectionCount(true,cls)==0) return false;
 
     if (Shift.Contains(ssCtrl)){
@@ -179,19 +180,11 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift){
 		UI.IR_GetMousePosReal(Device.m_hRenderWnd, UI.m_CurrentCp);
         Device.m_Camera.MouseRayFromPoint(UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.m_CurrentCp);
     	if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
-            EObjClass cls = Tools.CurrentClassID();
-            for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
-                ObjectList& lst = (*it).second;
-                if ((cls==OBJCLASS_DUMMY)||(parent_tool->objclass==(*it).first))
-                    for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                        if((*_F)->Locked()){
-                            ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
-                            continue;
-                        }
-                        if((*_F)->Visible()&&(*_F)->Selected()) (*_F)->MoveTo(p,n);
-                    }
+            ObjectList lst;
+            if (Scene.GetQueryObjects(lst,Tools.CurrentClassID(),1,1,0)){
+                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->MoveTo(p,n);
+				Scene.UndoSave();
             }
-			Scene.UndoSave();
         }
         return false;
     }else{
@@ -234,18 +227,9 @@ void __fastcall TUI_CustomControl::MovingProcess(TShiftState _Shift)
 {
 	Fvector amount;
 	if (DefaultMovingProcess(_Shift,amount)){
-		EObjClass cls = Tools.CurrentClassID();
-        for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
-            ObjectList& lst = (*it).second;
-            if ((cls==OBJCLASS_DUMMY)||(parent_tool->objclass==(*it).first))
-                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                	if((*_F)->Locked()){
-				    	ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
-                        continue;
-                    }
-                    if((*_F)->Visible()&&(*_F)->Selected()) (*_F)->Move( amount );
-                }
-        }
+        ObjectList lst;
+        if (Scene.GetQueryObjects(lst,Tools.CurrentClassID(),1,1,0))
+            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->Move(amount);
     }
 }
 
@@ -262,7 +246,7 @@ bool __fastcall TUI_CustomControl::RotateStart(TShiftState Shift)
 {
 	EObjClass cls = Tools.CurrentClassID();
 
-    if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
+    if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene.SelectionCount(true,cls)==0) return false;
 
     m_RotateVector.set(0,0,0);
@@ -280,24 +264,14 @@ void __fastcall TUI_CustomControl::RotateProcess(TShiftState _Shift)
 
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
 
-		bool flt = (Tools.CurrentClassID()!=OBJCLASS_DUMMY);
-        for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
-            ObjectList& lst = (*it).second;
-            if (!flt||(parent_tool->objclass==(*it).first))
-                for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                	if((*_F)->Locked()){
-				    	ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
-                        continue;
-                    }
-                    if((*_F)->Visible()&&(*_F)->Selected()){
-                        if( fraTopBar->ebCSParent->Down ){
-                            (*_F)->RotateParent( m_RotateVector, amount );
-                        } else {
-                            (*_F)->RotateLocal( m_RotateVector, amount );
-                        }
-                    }
+        ObjectList lst;
+        if (Scene.GetQueryObjects(lst,Tools.CurrentClassID(),1,1,0))
+            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                if( fraTopBar->ebCSParent->Down ){
+                    (*_F)->RotateParent( m_RotateVector, amount );
+                } else {
+                    (*_F)->RotateLocal( m_RotateVector, amount );
                 }
-        }
     }
 }
 bool __fastcall TUI_CustomControl::RotateEnd(TShiftState _Shift)
@@ -312,7 +286,7 @@ bool __fastcall TUI_CustomControl::RotateEnd(TShiftState _Shift)
 bool __fastcall TUI_CustomControl::ScaleStart(TShiftState Shift)
 {
 	EObjClass cls = Tools.CurrentClassID();
-    if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
+    if(Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene.SelectionCount(true,cls)==0) return false;
 	return true;
 }
@@ -331,19 +305,9 @@ void __fastcall TUI_CustomControl::ScaleProcess(TShiftState _Shift)
 	    if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
     }
 
-	bool flt = (Tools.CurrentClassID()!=OBJCLASS_DUMMY);
-    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
-        ObjectList& lst = (*it).second;
-        if (!flt||(parent_tool->objclass==(*it).first))
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
-                if((*_F)->Locked()){
-                    ELog.Msg(mtError,"Object %s - locked.", (*_F)->Name);
-                    continue;
-                }
-                if((*_F)->Visible()&&(*_F)->Selected())
-					(*_F)->Scale( amount );
-            }
-    }
+    ObjectList lst;
+    if (Scene.GetQueryObjects(lst,Tools.CurrentClassID(),1,1,0))
+        for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) (*_F)->Scale( amount );
 }
 bool __fastcall TUI_CustomControl::ScaleEnd(TShiftState _Shift)
 {

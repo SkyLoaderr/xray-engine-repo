@@ -177,7 +177,7 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
             }
 
             obj->MoveTo(pos,up);
-            Scene.AddObject( obj );
+            Scene.AppendObject( obj );
         }
         UI.ProgressEnd();
     }

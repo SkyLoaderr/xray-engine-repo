@@ -13,11 +13,7 @@
 BOOL SceneBuilder::BuildGame()
 {
 	SExportStreams F;
-    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt it = lst.begin();it!=lst.end();it++)
-            (*it)->ExportGame(F);
-    }
+    Scene.ExportGame(F);
 
     // save spawn
     AnsiString lev_spawn = m_LevelPath+"level.spawn";

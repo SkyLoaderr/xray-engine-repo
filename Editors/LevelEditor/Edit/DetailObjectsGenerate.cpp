@@ -197,7 +197,7 @@ void EDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
 
     SBoxPickInfoVec pinf;
     XRC.box_options(0);
-    if (Scene.BoxPick(bbox,pinf,&m_SnapObjects)){
+    if (Scene.BoxPickObjects(bbox,pinf,&m_SnapObjects)){
 		bbox.grow		(EPS_L_VAR);
     	Fplane			frustum_planes[4];
 		frustum_planes[0].build(bbox.min,left_vec);
@@ -454,22 +454,22 @@ bool EDetailManager::UpdateObjects(bool bUpdateTex, bool bUpdateSelectedOnly){
     return true;
 }
 
-CDetailManager::DetailIt EDetailManager::FindObjectByNameIt(LPCSTR name)
+CDetailManager::DetailIt EDetailManager::FindDOByNameIt(LPCSTR name)
 {
 	for (DetailIt it=objects.begin(); it!=objects.end(); it++)
     	if (stricmp(((EDetail*)(*it))->GetName(),name)==0) return it;
     return objects.end();
 }
 
-EDetail* EDetailManager::FindObjectByName(LPCSTR name)
+EDetail* EDetailManager::FindDOByName(LPCSTR name)
 {
-	DetailIt it = FindObjectByNameIt(name);
+	DetailIt it = FindDOByNameIt(name);
 	return (it!=objects.end())?(EDetail*)*it:0;
 }
 
-bool EDetailManager::RemoveObject(LPCSTR name)
+bool EDetailManager::RemoveDO(LPCSTR name)
 {
-    DetailIt it = FindObjectByNameIt(name);
+    DetailIt it = FindDOByNameIt(name);
     if (it!=objects.end()){
         xr_delete		(*it);
         objects.erase	(it);
@@ -478,10 +478,10 @@ bool EDetailManager::RemoveObject(LPCSTR name)
     }else return false;
 }
 
-EDetail* EDetailManager::AppendObject(LPCSTR name, bool bTestUnique)
+EDetail* EDetailManager::AppendDO(LPCSTR name, bool bTestUnique)
 {
     EDetail* D=0;
-	if (bTestUnique&&(0!=(D=FindObjectByName(name)))) return D;
+	if (bTestUnique&&(0!=(D=FindDOByName(name)))) return D;
 
     D = xr_new<EDetail>();
     if (!D->Update(name)){
@@ -506,7 +506,7 @@ void EDetailManager::InvalidateSlots()
     InvalidateCache();
 }
 
-int EDetailManager::RemoveObjects()
+int EDetailManager::RemoveDOs()
 {
 	int cnt=0;
     for (DetailIt it=objects.begin(); it!=objects.end(); it++)
@@ -538,7 +538,7 @@ void EDetailManager::AppendIndexObject(u32 color,LPCSTR name, bool bTestUnique)
         if (DO)
 			m_ColorIndices[color].push_back(DO);
     }else{
-		EDetail* DO = FindObjectByName(name);
+		EDetail* DO = FindDOByName(name);
 	    R_ASSERT(DO);
 		m_ColorIndices[color].push_back(DO);
     }

@@ -126,7 +126,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Quit1;
 	TExtBtn *ebProperties;
 	TExtBtn *ebLightAnimationEditor;
-	TExtBtn *ebIgnoreMode;
 	TExtBtn *ebImages;
 	TMenuItem *N8;
 	TMenuItem *N12;
@@ -160,7 +159,6 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem13;
 	TMenuItem *MenuItem16;
 	TMenuItem *MenuItem17;
-	TMenuItem *ResetAnimation1;
 	TMenuItem *ReloadObjects1;
 	TMenuItem *RefreshLibrary2;
 	TMxPopupMenu *pmImages;
@@ -184,9 +182,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSnapListMode;
 	TExtBtn *ebModeInvert;
 	TBevel *Bevel2;
-	TMenuItem *N21;
-	TMenuItem *Load1;
-	TMenuItem *Save2;
 	TExtBtn *ebViewObject;
 	TExtBtn *ebViewLight;
 	TExtBtn *ebViewSoundSrc;
@@ -201,6 +196,9 @@ __published:	// IDE-managed Components
 	TExtBtn *ebViewPS;
 	TExtBtn *ebViewDO;
 	TExtBtn *ebViewAIMap;
+	TMenuItem *N21;
+	TMenuItem *ebOpenSel;
+	TMenuItem *ebSaveSel;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -235,7 +233,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebUnlockAllClick(TObject *Sender);
 	void __fastcall ebUnlockSelClick(TObject *Sender);
 	void __fastcall ebUnlockUnselClick(TObject *Sender);
-	void __fastcall ebResetAnimationClick(TObject *Sender);
 	void __fastcall ebMakeGameClick(TObject *Sender);
 	void __fastcall ebSceneFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
@@ -290,13 +287,13 @@ __published:	// IDE-managed Components
 	void __fastcall RemoveSelectedFromList1Click(TObject *Sender);
 	void __fastcall ebSnapListModeClick(TObject *Sender);
 	void __fastcall splEmptyMoved(TObject *Sender);
-	void __fastcall Load1Click(TObject *Sender);
-	void __fastcall Save2Click(TObject *Sender);
+	void __fastcall ebOpenSelClick(TObject *Sender);
+	void __fastcall ebSaveSelClick(TObject *Sender);
 	void __fastcall ebViewClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
         __fastcall TfraLeftBar(TComponent* Owner);
-	void ChangeTarget(int tgt);
+	void ChangeTarget(EObjClass tgt);
     void UpdateBar();
     void UpdateSnapList();
     void MinimizeAllFrames();

@@ -12,7 +12,7 @@ SAINode* ESceneAIMapTools::PickNode(const Fvector& start, const Fvector& dir, fl
 //*
 	SPickQuery	PQ;
 	SAINode* R 	= 0;
-	if (Scene.RayQuery(PQ,start,dir,dist,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&GetSnapList())){
+	if (Scene.RayQuery(PQ,start,dir,dist,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,GetSnapList())){
     	Fvector pt;
         pt.mad(start,dir,PQ.r_begin()->range);
 
@@ -55,8 +55,8 @@ SAINode* ESceneAIMapTools::PickNode(const Fvector& start, const Fvector& dir, fl
 bool ESceneAIMapTools::PickGround(Fvector& dest, const Fvector& start, const Fvector& dir, float dist)
 {         	         
 	SPickQuery	PQ;
-	if (!GetSnapList().empty()){
-        if (Scene.RayQuery(PQ,start,dir,dist,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&GetSnapList())){
+	if (!GetSnapList()->empty()){
+        if (Scene.RayQuery(PQ,start,dir,dist,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,GetSnapList())){
             dest.mad(start,dir,PQ.r_begin()->range);
             return true;
         }
@@ -80,12 +80,9 @@ int ESceneAIMapTools::RaySelect(bool flag, float& distance, const Fvector& start
     return count;
 }
 
-int ESceneAIMapTools::FrustumSelect(bool flag)
+int ESceneAIMapTools::FrustumSelect(bool flag, const CFrustum& frustum)
 {
     int count = 0;
-
-	CFrustum frustum;
-    if (!UI.SelectionFrustum(frustum)) return 0;
 
     switch (Tools.GetSubTarget()){
     case estAIMapNode:{

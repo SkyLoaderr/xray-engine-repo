@@ -34,7 +34,7 @@ public:
 	int  CalculatePortals(CSector* SF, CSector* SB);
 	int  CalculateSelectedPortals();
 	int  CalculateAllPortals();
-	int  CalculateAllPortals2();
+//.	int  CalculateAllPortals2();
 	void RemoveAllPortals();
 	void RemoveSectorPortal(CSector* S);
 	bool CreateDefaultSector();

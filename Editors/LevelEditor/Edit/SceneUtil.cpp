@@ -14,43 +14,56 @@
 #include "Render.h"
 
 //----------------------------------------------------
-CCustomObject* EScene::FindObjectByName( LPCSTR name, EObjClass classfilter ){
-	ObjectIt _F = FirstObj(classfilter);
-    ObjectIt _E = LastObj(classfilter);
-	for(;_F!=_E;_F++) if(0==stricmp((*_F)->Name,name)) return (*_F);
-    return 0;
-}
-
-CCustomObject* EScene::FindObjectByName( LPCSTR name, CCustomObject* pass_object ){
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	ObjectIt _F = lst.begin();
-        ObjectIt _E = lst.end();
-    	for(;_F!=_E;_F++){
-            if( (0==stricmp((*_F)->Name,name)) && (pass_object!=(*_F)) )
-                return (*_F);
+CCustomObject* EScene::FindObjectByName( LPCSTR name, EObjClass classfilter )
+{
+	CCustomObject* object = 0;
+    if (classfilter==OBJCLASS_DUMMY){
+        SceneToolsMapPairIt _I = m_SceneTools.begin();
+        SceneToolsMapPairIt _E = m_SceneTools.end();
+        for (; _I!=_E; _I++){
+            ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(_I->second);
+            if (mt&&(0!=(object=mt->FindObjectByName(name)))) return object;
         }
-	}
+    }else{
+        ESceneCustomOTools* mt = GetOTools(classfilter); VERIFY(mt);
+        if (mt&&(0!=(object=mt->FindObjectByName(name)))) return object;
+    }
+    return object;
+}
+
+CCustomObject* EScene::FindObjectByName( LPCSTR name, CCustomObject* pass_object )
+{
+	CCustomObject* object = 0;
+    SceneToolsMapPairIt _I = m_SceneTools.begin();
+    SceneToolsMapPairIt _E = m_SceneTools.end();
+    for (; _I!=_E; _I++){
+        ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(_I->second);
+        if (mt&&(0!=(object=mt->FindObjectByName(name,pass_object)))) return object;
+    }
     return 0;
 }
 
-bool EScene::FindDuplicateName(){
+bool EScene::FindDuplicateName()
+{
 // find duplicate name
-    for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
-        ObjectList& lst = (*it).second;
-    	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-            if (FindObjectByName((*_F)->Name, *_F)){
-//                char buf[1024];
-//                GenObjectName((*_F)->ClassID(),buf);
-//                strcpy((*_F)->GetName(),buf);
-            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",(*_F)->Name);
-                return true;
-            }
-	}
+    SceneToolsMapPairIt _I = m_SceneTools.begin();
+    SceneToolsMapPairIt _E = m_SceneTools.end();
+    for (; _I!=_E; _I++){
+        ESceneCustomOTools* mt = dynamic_cast<ESceneCustomOTools*>(_I->second);
+        if (mt){
+        	ObjectList& lst = mt->GetObjects(); 
+            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+                if (FindObjectByName((*_F)->Name, *_F)){
+                    ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",(*_F)->Name);
+                    return true;
+                }
+        }
+    }
     return false;
 }
 
-void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* pref ){
+void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* pref )
+{
     m_LastAvailObject = 0;
     string128 prefix; prefix[0]=0;
     if (pref&&pref[0]){
@@ -63,32 +76,7 @@ void EScene::GenObjectName( EObjClass cls_id, char *buffer, const char* pref ){
         else   	  			sprintf( buffer, "%s%04d", GetNameByClassID(cls_id), m_LastAvailObject++ );
 	}
 }
-
-//----------------------------------------------------
-/*
-void EScene::SmoothLandscape(){
-
-	ObjectIt f = m_Objects.begin();
-
-	for(;f!=m_Objects.end();f++)
-
-		if( (*f)->ClassID() == OBJCLASS_LANDSCAPE ){
-
-			SLandscape *l = (SLandscape *)(*f);
-			l->ResetPointNormals();
-
-			ObjectIt f1 = m_Objects.begin();
-			for(;f1!=m_Objects.end();f1++)
-				if( (f != f1) && (*f1)->ClassID() == OBJCLASS_LANDSCAPE )
-					l->TryAddPointNormals((SLandscape *)(*f1));
-
-			l->NormalizePointNormals();
-			l->FillD3DPoints();
-		}
-
-}
-*/
-//----------------------------------------------------
+//------------------------------------------------------------------------------
 
 void EScene::SetLights(){
     if (psDeviceFlags.is(rsLighting)){

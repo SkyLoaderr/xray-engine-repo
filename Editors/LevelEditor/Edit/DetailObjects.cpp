@@ -48,7 +48,7 @@ const u32	vs_size				= 3000;
 
 #define DETMGR_VERSION 				0x0002
 //------------------------------------------------------------------------------
-EDetailManager::EDetailManager()
+EDetailManager::EDetailManager():ESceneCustomMTools(OBJCLASS_DO)
 {
 	dtSlots				= 0;
     ZeroMemory			(&dtH,sizeof(dtH));
@@ -68,7 +68,7 @@ EDetailManager::~EDetailManager(){
 
 void EDetailManager::ClearColorIndices()
 {
-    RemoveObjects		();
+    RemoveDOs			();
     m_ColorIndices.clear();
 }
 void EDetailManager::ClearSlots()
@@ -252,7 +252,7 @@ bool EDetailManager::LoadColorIndices(IReader& F)
         ref_cnt			= F.r_u8();
 		for (int j=0; j<ref_cnt; j++){
         	F.r_stringZ	(buf);
-            EDetail* DO	= FindObjectByName(buf);
+            EDetail* DO	= FindDOByName(buf);
             if (DO) 	m_ColorIndices[index].push_back(DO);    
             else		bRes=false;
         }
@@ -326,6 +326,12 @@ bool EDetailManager::Load(IReader& F){
     return true;
 }
 
+bool EDetailManager::LoadSelection(IReader& F)
+{
+	Clear();
+	return Load(F);
+}
+
 void EDetailManager::Save(IWriter& F){
 	// version
 	F.open_chunk		(DETMGR_CHUNK_VERSION);
@@ -361,6 +367,11 @@ void EDetailManager::Save(IWriter& F){
     for (ObjectIt o_it=m_SnapObjects.begin(); o_it!=m_SnapObjects.end(); o_it++)
     	F.w_stringZ		((*o_it)->Name);
     F.close_chunk		();
+}
+
+void EDetailManager::SaveSelection(IWriter& F)
+{
+	Save(F);
 }
 
 bool EDetailManager::Export(LPCSTR fn)
