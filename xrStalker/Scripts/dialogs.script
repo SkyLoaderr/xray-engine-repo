@@ -3,6 +3,13 @@ function break_dialog(first_speaker, second_speaker)
         second_speaker:stop_talk()
 end
 
+function disable_talk_self(first_speaker, second_speaker)
+	first_speaker:disable_talk()
+end
+function disable_talk_victim(first_speaker, second_speaker)
+	second_speaker:disable_talk()
+end
+
 function kickass(first_speaker, second_speaker)
 	xr_punch.punch[first_speaker:id()] = second_speaker
 end
