@@ -12,17 +12,23 @@
 class ENGINE_API CShaderManager
 {
 private:
-	struct str_pred : public binary_function<char*, char*, bool> 
-	{	
+	struct str_pred : public binary_function<char*, char*, bool>
+	{
 		IC bool operator()(LPCSTR x, LPCSTR y) const
 		{	return strcmp(x,y)<0;	}
 	};
-	
+public:
+	DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,CMatrix*,MatrixMap,MatrixPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,CBlender*,BlenderMap,BlenderPairIt,str_pred);
+	DEFINE_MAP_PRED(LPSTR,CTexture*,TextureMap,TexturePairIt,str_pred);
+private:
+
 	// data
-	map<LPSTR,CBlender*,str_pred>	blenders;
-	map<LPSTR,CTexture*,str_pred>	textures;
-	map<LPSTR,CMatrix*,str_pred>	matrices;
-	map<LPSTR,CConstant*,str_pred>	constants;
+	BlenderMap	blenders;
+	TextureMap	textures;
+	MatrixMap	matrices;
+	ConstantMap	constants;
 
 	// shader code array
 	struct sh_Code {
@@ -59,6 +65,8 @@ public:
 	CBlender*						_GetBlender			(LPCSTR Name);
 	CBlender* 						_FindBlender		(LPCSTR Name);
 	DWORD							_GetMemoryUsage		();
+
+    BlenderMap&						_GetBlenders		(){return blenders;}
 	
 	// Debug
 	LPCSTR							DBG_GetTextureName	(CTexture*);
