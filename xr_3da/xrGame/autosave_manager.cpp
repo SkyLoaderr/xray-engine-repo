@@ -33,10 +33,8 @@ CAutosaveManager::CAutosaveManager			()
 	m_not_ready_count			= 0;
 	m_save_state				= eSaveStateWaitForUpdate;
 
-	shedule_unregister			();
 	shedule.t_min				= 5000;
 	shedule.t_max				= 5000;
-	shedule_register			();
 }
 
 CAutosaveManager::~CAutosaveManager			()
@@ -84,8 +82,6 @@ void CAutosaveManager::shedule_Update		(u32 dt)
 		m_save_state			= eSaveStateWaitForUpdate;
 		shedule.t_min			= 5000;
 		shedule.t_max			= 5000;
-		shedule_unregister		();
-		shedule_register		();
 	}
 
 	if (last_autosave_time() + autosave_interval() >= Device.dwTimeGlobal)
@@ -102,6 +98,4 @@ void CAutosaveManager::shedule_Update		(u32 dt)
 
 	shedule.t_min				= 1;
 	shedule.t_max				= 1;
-	shedule_unregister			();
-	shedule_register			();
 }

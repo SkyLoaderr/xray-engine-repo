@@ -10,7 +10,7 @@ CUIGameCustom::CUIGameCustom()
 	uFlags					= 0;
 	shedule.t_min			= 5;
 	shedule.t_max			= 20;
-	shedule_register();
+	shedule_register		();
 }
 
 CUIGameCustom::~CUIGameCustom()

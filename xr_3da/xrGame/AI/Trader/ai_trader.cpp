@@ -225,10 +225,8 @@ BOOL CAI_Trader::net_Spawn			(CSE_Abstract* DC)
 	CBoneInstance			*bone_head =	&smart_cast<CKinematics*>(Visual())->LL_GetBoneInstance(smart_cast<CKinematics*>(Visual())->LL_BoneID("bip01_head"));
 	bone_head->set_callback	(BoneCallback,this);
 
-	shedule_unregister		();
 	shedule.t_min			= 25;
 	shedule.t_max			= 250; // This equaltiy is broken by Dima :-( // 30 * NET_Latency / 4;
-	shedule_register		();
 
 	return					(TRUE);
 }

@@ -16,11 +16,11 @@ game_cl_GameState::game_cl_GameState()
 	shedule.t_min				= 5;
 	shedule.t_max				= 20;
 	m_game_ui_custom			= NULL;
-	shedule_register();
+	shedule_register			();
 
-	m_bVotingEnabled = false;	
-	m_bFriendlyIndicators = false;
-	m_bServerControlHits = true;
+	m_bVotingEnabled			= false;	
+	m_bFriendlyIndicators		= false;
+	m_bServerControlHits		= true;
 }
 
 game_cl_GameState::~game_cl_GameState()
