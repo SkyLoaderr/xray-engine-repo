@@ -1,0 +1,20 @@
+-- File:        UI_MAIN_MULTI_TAB.SCRIPT
+-- Description: Multiplayer tab for Main Menu
+-- Created:     20.12.2004
+-- Author:      Serhiy 0. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+-- Copyright 2004 GSC Game World
+--
+
+class "main_multi_tab" (ui_main_base_tab.main_base_tab)
+
+function main_multi_tab:__init() super()
+end
+
+function main_multi_tab:__finalize() 
+end
+
+function main_multi_tab:InitControls()
+end
+

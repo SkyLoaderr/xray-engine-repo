@@ -797,58 +797,13 @@
 					RelativePath=".\scripts\ui_main_menu.script">
 				</File>
 				<File
+					RelativePath=".\Scripts\ui_main_multi_tab.script">
+				</File>
+				<File
 					RelativePath=".\Scripts\ui_main_new_tab.script">
 				</File>
 				<File
-					RelativePath=".\Scripts\ui_multiplayer_base_tab.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_multiplayer_create.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_multiplayer_create_base_tab.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_multiplayer_create_map_tab.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_multiplayer_dialog.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_multiplayer_find.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_multiplayer_gametype_tab.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_multiplayer_map_tab.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_multiplayer_options_tab.script">
-				</File>
-				<File
 					RelativePath=".\scripts\ui_new_game_dialog.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_options_base_tab.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_options_controls_tab.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_options_dialog.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_options_game_tab.script">
-				</File>
-				<File
-					RelativePath=".\Scripts\ui_options_profiles_tab.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_options_sound_tab.script">
-				</File>
-				<File
-					RelativePath=".\scripts\ui_options_video_tab.script">
 				</File>
 				<File
 					RelativePath=".\scripts\ui_registrator.script">
@@ -859,6 +814,62 @@
 				<File
 					RelativePath=".\scripts\ui_tab_test.script">
 				</File>
+				<Filter
+					Name="multiplayer"
+					Filter="">
+					<File
+						RelativePath=".\Scripts\ui_multiplayer_base_tab.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\ui_multiplayer_create.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_multiplayer_create_base_tab.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_multiplayer_create_map_tab.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\ui_multiplayer_dialog.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\ui_multiplayer_find.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\ui_multiplayer_gametype_tab.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\ui_multiplayer_map_tab.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_multiplayer_options_tab.script">
+					</File>
+				</Filter>
+				<Filter
+					Name="options"
+					Filter="">
+					<File
+						RelativePath=".\scripts\ui_options_base_tab.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_options_controls_tab.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_options_dialog.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_options_game_tab.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\ui_options_profiles_tab.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_options_sound_tab.script">
+					</File>
+					<File
+						RelativePath=".\scripts\ui_options_video_tab.script">
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Tests"
