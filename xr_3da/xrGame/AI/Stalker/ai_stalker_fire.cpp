@@ -307,6 +307,14 @@ void CAI_Stalker::vfSetWeaponState(EWeaponState tWeaponState)
 	if (tWeaponState == eWeaponStateIdle) {
 		if (tpWeapon->STATE == CWeapon::eFire)
 			m_inventory.Action(kWPN_FIRE, CMD_STOP);
+		vector<CInventorySlot>::iterator I = m_inventory.m_slots.begin(), B = I;
+		vector<CInventorySlot>::iterator E = m_inventory.m_slots.end();
+		u32 best_slot = -1;
+		for ( ; I != E; I++)
+			if ((*I).m_pIItem && ((I - B) != m_inventory.m_activeSlot) && (!dynamic_cast<CWeaponMagazined*>((*I).m_pIItem) || dynamic_cast<CWeaponMagazined*>((*I).m_pIItem)->IsAmmoAvailable()))
+				best_slot = I - B;
+		if (best_slot != m_inventory.m_activeSlot)														   
+			m_inventory.Activate(best_slot);
 	}
 	else
 		if (tWeaponState == eWeaponStatePrimaryFire)
