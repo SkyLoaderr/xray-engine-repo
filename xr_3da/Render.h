@@ -41,6 +41,7 @@ public:
 	virtual void					add_Visual				(CVisual*	V	);			// add visual leaf (no culling performed at all)
 	virtual void					add_Lights				(vector<WORD> &V);
 	virtual void					add_Glows				(vector<WORD> &V);
+	virtual void					add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer);
 	
 	virtual void					Calculate				();
 	virtual void					Render					();

@@ -8,7 +8,28 @@
 #include "fbasicvisual.h"
 #include "xr_creator.h"
 #include "CustomHUD.h"
- 
+
+// Implementation
+void	CRender::add_Patch				(Shader* S, Fvector& P1, float s, float a, BOOL bNearer)
+{
+	vecPatches.push_back(SceneGraph::_PatchItem());
+	SceneGraph::_PatchItem& P = vecPatches.back();
+	P.S		= S;
+	P.P		= P1;
+	P.size	= s;
+	P.angle = a;
+	P.nearer= bNearer;
+}
+
+
+
+
+
+
+
+
+
+
 // Font out
 #include "x_ray.h"
 #include "xr_smallfont.h"
