@@ -53,6 +53,7 @@ private:
 			CBaseRestrictionPtr		merge						(CBaseRestrictionPtr bridge, const RESTRICTIONS &temp_restrictions) const;
 			void					merge_in_out_restrictions	();
 			void					merge_free_in_retrictions	();
+	IC		bool					accessible_neighbours		(u32 level_vertex_id);
 			u32						accessible_nearest			(CBaseRestrictionPtr restriction, const Fvector &position);
 
 protected:

@@ -11,7 +11,7 @@
 #include "intrusive_ptr.h"
 
 namespace RestrictionSpace {
-	struct CTimeIntrusiveBase : public CIntrusiveBase {
+	struct CTimeIntrusiveBase : public intrusive_base {
 		u32			m_last_time_dec;
 
 		IC			CTimeIntrusiveBase	() : m_last_time_dec(0)

@@ -15,7 +15,7 @@ namespace RestrictionSpace {
 	struct CTimeIntrusiveBase;
 };
 
-template <typename _1, typename _2> class CIntrusivePtr;
+template <typename _1, typename _2> class intrusive_ptr;
 
 class CSpaceRestriction;
 
@@ -25,7 +25,7 @@ protected:
 #else
 public:
 #endif
-	typedef CIntrusivePtr<CSpaceRestriction,RestrictionSpace::CTimeIntrusiveBase> CRestrictionPtr;
+	typedef intrusive_ptr<CSpaceRestriction,RestrictionSpace::CTimeIntrusiveBase> CRestrictionPtr;
 	typedef xr_map<ref_str,CSpaceRestriction*>				SPACE_RESTRICTIONS;
 	typedef xr_map<ALife::_OBJECT_ID,CRestrictionPtr>		CLIENT_RESTRICTIONS;
 

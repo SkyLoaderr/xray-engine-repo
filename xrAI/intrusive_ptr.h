@@ -12,10 +12,10 @@
 
 #pragma pack(push,4)
 
-struct CIntrusiveBase {
+struct intrusive_base {
 	u32		m_ref_count;
 
-	IC			CIntrusiveBase	() : m_ref_count(0)
+	IC			intrusive_base	() : m_ref_count(0)
 	{
 	}
 
@@ -26,13 +26,13 @@ struct CIntrusiveBase {
 	}
 };
 
-template <typename object_type, typename base_type = CIntrusiveBase>
-class CIntrusivePtr {
+template <typename object_type, typename base_type = intrusive_base>
+class intrusive_ptr {
 private:
 	typedef base_type								base_type;
 	typedef object_type								object_type;
-	typedef CIntrusivePtr<object_type,base_type>	self_type;
-	typedef const object_type *(CIntrusivePtr::*unspecified_bool_type) () const;
+	typedef intrusive_ptr<object_type,base_type>	self_type;
+	typedef const object_type *(intrusive_ptr::*unspecified_bool_type) () const;
 
 private:
 	enum {result = object_type_traits::is_base_and_derived<base_type,object_type>::value};
@@ -44,16 +44,16 @@ protected:
 	IC		void				dec				();
 
 public:
-	IC							CIntrusivePtr	();
-	IC							CIntrusivePtr	(object_type *rhs);
-	IC							CIntrusivePtr	(self_type const &rhs);
-	IC							~CIntrusivePtr	();
+	IC							intrusive_ptr	();
+	IC							intrusive_ptr	(object_type *rhs);
+	IC							intrusive_ptr	(self_type const &rhs);
+	IC							~intrusive_ptr	();
 	IC		self_type			&operator=		(object_type* rhs);
 	IC		self_type			&operator=		(self_type const &rhs);
 	IC		object_type			&operator*		() const;
 	IC		object_type			*operator->		() const;
 	IC		bool				operator!		() const;
-	IC							operator unspecified_bool_type () const {	return(!m_object? 0: &CIntrusivePtr::get);}
+	IC							operator unspecified_bool_type () const {	return(!m_object? 0: &intrusive_ptr::get);}
 	IC		u32					size			();
 	IC		void				swap			(self_type &rhs);
 	IC		bool				equal			(const self_type & rhs)	const;
@@ -63,19 +63,19 @@ public:
 };
 
 template <typename object_type, typename base_type>
-IC			bool				operator==		(CIntrusivePtr<object_type,base_type> const & a, CIntrusivePtr<object_type,base_type> const & b);
+IC			bool				operator==		(intrusive_ptr<object_type,base_type> const & a, intrusive_ptr<object_type,base_type> const & b);
 
 template <typename object_type, typename base_type>
-IC			bool				operator!=		(CIntrusivePtr<object_type,base_type> const & a, CIntrusivePtr<object_type,base_type> const & b);
+IC			bool				operator!=		(intrusive_ptr<object_type,base_type> const & a, intrusive_ptr<object_type,base_type> const & b);
 
 template <typename object_type, typename base_type>
-IC			bool				operator<		(CIntrusivePtr<object_type,base_type> const & a, CIntrusivePtr<object_type,base_type> const & b);
+IC			bool				operator<		(intrusive_ptr<object_type,base_type> const & a, intrusive_ptr<object_type,base_type> const & b);
 
 template <typename object_type, typename base_type>
-IC			bool				operator>		(CIntrusivePtr<object_type,base_type> const & a, CIntrusivePtr<object_type,base_type> const & b);
+IC			bool				operator>		(intrusive_ptr<object_type,base_type> const & a, intrusive_ptr<object_type,base_type> const & b);
 
 template <typename object_type, typename base_type>
-IC			void				swap			(CIntrusivePtr<object_type,base_type> & lhs, CIntrusivePtr<object_type,base_type> & rhs);
+IC			void				swap			(intrusive_ptr<object_type,base_type> & lhs, intrusive_ptr<object_type,base_type> & rhs);
 
 
 #include "intrusive_ptr_inline.h"
