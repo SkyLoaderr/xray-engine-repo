@@ -39,7 +39,7 @@ void CAI_Biting::Think()
 	CTimer T;
 	T.Start();
 	
-	//update_path				();
+	update_path				();
 
 	if (T.GetElapsed_sec() > 0.1f)  {
 		// Time checker	
