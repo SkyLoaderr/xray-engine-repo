@@ -1,0 +1,30 @@
+--[[------------------------------------------------------------------------------------------------
+Space restrictor binder
+Чугай Саша
+--------------------------------------------------------------------------------------------------]]
+
+function bind( obj )
+	obj:bind_object( restrictor_binder( obj ) )
+end
+
+----------------------------------------------------------------------------------------------------
+class "restrictor_binder" ( object_binder )
+
+function restrictor_binder:__init(obj, char_ini) super(obj)
+end
+
+function restrictor_binder:net_spawn(data)
+	if not object_binder.net_spawn( self,data ) then
+		return false
+	end
+
+	db.add_zone( self.object )
+
+	return true
+end
+
+function restrictor_binder:net_destroy()
+	db.del_zone( self.object )
+
+	object_binder.net_destroy(self)
+end
