@@ -54,6 +54,11 @@ void CRenderTarget::phase_bloom	()
 	RCache.set_RT						(NULL,					1);
 	RCache.set_RT						(NULL,					2);
 	RCache.set_ZB						(NULL);					// No need for ZBuffer at all
+	
+	// XForms
+	RCache.set_xform_world				(Fidentity);
+	RCache.set_xform_view				(Device.mView);
+	RCache.set_xform_project			(Device.mProject);
 
 	// Clear	- don't clear - it's stupid here :)
 	// Stencil	- disable
