@@ -22,11 +22,9 @@ void CAI_Biting::Think()
 	time_next_update = Level().timeServer() + 1000 / UPS;
 #endif
 
-	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 
 	InitThink								();
-	
 	
 	MotionStats->update						();
 	

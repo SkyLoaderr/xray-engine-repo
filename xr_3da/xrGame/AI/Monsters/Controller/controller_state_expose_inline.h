@@ -84,3 +84,5 @@ void CStateControllerExposeAbstract::critical_finalize()
 	object->set_controlled_task(u32(eTaskNone));
 }
 
+#undef TEMPLATE_SPECIALIZATION
+#undef CStateControllerExposeAbstract

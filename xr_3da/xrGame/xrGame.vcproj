@@ -2654,6 +2654,12 @@
 								RelativePath=".\ai\Monsters\Controller\controller_state_attack.h">
 							</File>
 							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack_cover.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_state_attack_cover_inline.h">
+							</File>
+							<File
 								RelativePath=".\ai\Monsters\Controller\controller_state_attack_inline.h">
 							</File>
 							<File

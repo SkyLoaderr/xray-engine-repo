@@ -146,6 +146,6 @@ void CMonsterEnemyManager::add_enemy(const CEntityAlive *enemy)
 
 bool CMonsterEnemyManager::see_enemy_now()
 {
-	if (time_last_seen == Level().timeServer()) return true;
+	if (time_last_seen == monster->m_current_update) return true;
 	return false;
 }

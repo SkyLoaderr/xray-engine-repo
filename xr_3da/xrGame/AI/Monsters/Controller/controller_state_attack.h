@@ -12,7 +12,9 @@ protected:
 		eStateRun			= u32(0),
 		eStateMelee,
 		eStateControlAttack,
-		eStateControlExpose
+		eStateControlExpose,
+		eStateFaceEnemy, 
+		eStateTakeCover,
 	};
 
 public:
@@ -20,6 +22,7 @@ public:
 	virtual				~CStateControllerAttack	();
 
 	virtual void		reselect_state			();
+	virtual void		setup_substates			();
 };
 
 #include "controller_state_attack_inline.h"

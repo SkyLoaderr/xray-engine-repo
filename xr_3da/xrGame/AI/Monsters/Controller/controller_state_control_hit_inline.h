@@ -6,8 +6,8 @@
 
 #define CStateControllerControlHitAbstract CStateControlAttack<_Object>
 
-#define GOOD_DISTANCE_FOR_CONTROL_HIT	5.f
-#define CONTROL_PREPARE_TIME			3500
+#define GOOD_DISTANCE_FOR_CONTROL_HIT	8.f
+#define CONTROL_PREPARE_TIME			2900
 
 TEMPLATE_SPECIALIZATION
 CStateControllerControlHitAbstract::CStateControlAttack(_Object *obj) : inherited(obj)

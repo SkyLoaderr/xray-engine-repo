@@ -30,7 +30,7 @@ void CScriptWatchAction::script_register(lua_State *L)
 			]
 			.def(								constructor<>())
 			.def(								constructor<SightManager::ESightType>())
-			.def(								constructor<SightManager::ESightType, const Fvector &>())
+			.def(								constructor<SightManager::ESightType, Fvector &>())
 			.def(								constructor<SightManager::ESightType, CScriptGameObject*>())
 			.def(								constructor<SightManager::ESightType, CScriptGameObject*, LPCSTR>())
 
