@@ -1,0 +1,62 @@
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+class "action_scientist_walk" (action_base)
+function action_scientist_walk:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scientist_walk:initialize ()
+    action_base.initialize (self)
+
+--    self.object:set_detail_path_type( move.line )
+
+    self.object:set_body_state      ( move.standing )
+    self.object:set_mental_state  ( anim.free )
+
+    self.object:set_path_type    ( game_object.patrol_path )
+    self.object:set_sight			(look.path_dir, nil, 0)
+--    self.object:set_item          (object.idle, self.object:best_weapon () )
+    self.object:set_movement_type (move.walk)
+    self.object:set_patrol_path   (self.a.path, patrol.nearest, patrol.continue, true)
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scientist_walk:execute ()
+    action_base.execute (self)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_scientist_walk:finalize ()
+    action_base.finalize (self)
+
+    --self.object:clear_animations ()
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+--scientist binder
+----------------------------------------------------------------------------------------------------------------------
+function add_to_binder(obj)
+
+    local operators     = {}
+    local properties    = {}
+
+
+    properties["enabled"]            = xr_evaluators_id.jon_scientist
+
+    operators["scientist"]       	 = xr_actions_id.jon_scientist
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator (properties["enabled"], enabled_evaluator("enabled_evaluator", xr_motivator.storage[obj:id()].scientist))
+
+    local action = this.action_scientist_walk ("action_scientist_walk", xr_motivator.storage[obj:id()].scientist)
+
+    action:add_precondition         (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition         (world_property (stalker_ids.property_enemy,    false))
+    action:add_precondition         (world_property (properties["enabled"],        true))
+    action:add_effect               (world_property (properties["enabled"],        false))
+    manager:add_action              (operators["scientist"], action)
+
+    action = manager:action 		(stalker_ids.action_puzzle_solver)
+    action:add_precondition         (world_property (properties["enabled"],  false))
+end
