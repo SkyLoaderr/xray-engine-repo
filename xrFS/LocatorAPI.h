@@ -158,6 +158,7 @@ public:
                                                      
     bool						path_exist		(LPCSTR path);
     FS_Path*					get_path		(LPCSTR path);
+    FS_Path*					append_path		(LPCSTR path_alias, LPCSTR root, LPCSTR add, BOOL recursive);
     LPCSTR						update_path		(LPSTR dest, LPCSTR initial, LPCSTR src);
 
     // editor functions

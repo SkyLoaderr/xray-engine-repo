@@ -264,19 +264,10 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
         GetModuleFileName(GetModuleHandle(MODULE_NAME),fn,sizeof(fn));
         _splitpath		(fn,dr,di,0,0);
         strconcat		(app_root,dr,di);                                       
-        FS_Path* P		= xr_new<FS_Path>(app_root,LPCSTR(0),LPCSTR(0),LPCSTR(0),0);
-        bNoRecurse		= !(P->m_Flags.is(FS_Path::flRecurse));
-        Recurse			(P->m_Path);
-        pathes.insert	(mk_pair(xr_strdup("$app_root$"),P));
+		append_path		("$app_root$",app_root,0,FALSE);
     }
 	if (m_Flags.is(flTargetFolderOnly)){
-		VERIFY			(target_folder&&target_folder[0]);
-		string_path		tgt_fld;
-		strcpy			(tgt_fld,target_folder);
-		FS_Path* P		= xr_new<FS_Path>(tgt_fld,LPCSTR(0),LPCSTR(0),LPCSTR(0),0);
-		bNoRecurse		= FALSE;
-		Recurse			(P->m_Path);
-		pathes.insert	(mk_pair(xr_strdup("$target_folder$"),P));
+		append_path		("$target_folder$",target_folder,0,TRUE);
 	}else{
 		// scan root directory
 		bNoRecurse		= TRUE;
@@ -859,6 +850,17 @@ bool CLocatorAPI::path_exist(LPCSTR path)
 {
     PathPairIt P 			= pathes.find(path); 
     return					(P!=pathes.end());
+}
+
+FS_Path* CLocatorAPI::append_path(LPCSTR path_alias, LPCSTR root, LPCSTR add, BOOL recursive)
+{
+	VERIFY			(root&&root[0]);
+	VERIFY			(false==path_exist(path_alias));
+	FS_Path* P		= xr_new<FS_Path>(root,add,LPCSTR(0),LPCSTR(0),0);
+	bNoRecurse		= !recursive;
+	Recurse			(P->m_Path);
+	pathes.insert	(mk_pair(xr_strdup(path_alias),P));
+	return P;
 }
 
 FS_Path* CLocatorAPI::get_path(LPCSTR path)
