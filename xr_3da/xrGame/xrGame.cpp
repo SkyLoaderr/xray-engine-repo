@@ -960,7 +960,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
 				
 		// adjust mode support
-		CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,	0, 2);
+		CMD4(CCC_Integer,			"hud_adjust_mode",			&g_bHudAdjustMode,	0, 3);
 		CMD4(CCC_Float,				"hud_adjust_value",			&g_fHudAdjustValue,	0.0f, 1.0f);
 
 		// Network

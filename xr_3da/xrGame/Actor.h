@@ -371,7 +371,12 @@ protected:
 
 	//смещение firepoint относительно default firepoint дл€ бросани€ болтов и гранат
 	Fvector								m_vMissileOffset;
+public:
+	// ѕолучение, и запись смещени€ дл€ гранат
+	Fvector								GetMissileOffset	() const;
+	void								SetMissileOffset	(const Fvector &vNewOffset);
 
+protected:
 	//косточки используемые при стрельбе
 	int									m_r_hand;
 	int									m_l_finger1;

@@ -1200,3 +1200,14 @@ void	CActor::SetZoomRndSeed		(s32 Seed)
 	if (0 != Seed) m_ZoomRndSeed = Seed;
 	else m_ZoomRndSeed = s32(timeGetTime());
 };
+
+Fvector CActor::GetMissileOffset	() const
+{
+	return m_vMissileOffset;
+}
+
+void CActor::SetMissileOffset		(const Fvector &vNewOffset)
+{
+	m_vMissileOffset.set(vNewOffset);
+}
+

@@ -409,10 +409,14 @@ void CUIMainIngameWnd::Update()
 bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 {
 	// поддержка режима adjust hud mode
-	if (m_pWeapon && g_bHudAdjustMode)
+	if (g_bHudAdjustMode)
 	{
-		CWeaponHUD *pWpnHud = m_pWeapon->GetHUD();
-		if (!pWpnHud) return false;
+		CWeaponHUD *pWpnHud = NULL;
+		if (m_pWeapon)
+		{
+			CWeaponHUD *pWpnHud = m_pWeapon->GetHUD();
+			if (!pWpnHud) return false;
+		}
 
 		Fvector tmpV;
 		bool flag = false;
@@ -497,7 +501,7 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 			if (tmpV.x || tmpV.y || tmpV.z)
 				pWpnHud->SetZoomOffset(tmpV);
 		}
-		else
+		else if (2 == g_bHudAdjustMode)
 		{
 			tmpV = pWpnHud->FirePoint();
 
@@ -536,20 +540,87 @@ bool CUIMainIngameWnd::OnKeyboardPress(int dik)
 				// output coordinate info to the console
 			case DIK_P:
 				string256 tmpStr;
-				sprintf(tmpStr, "%s",
-					*m_pWeapon->cNameSect());
-				Log(tmpStr);
+				if (m_pWeapon)
+				{
+					sprintf(tmpStr, "%s",
+						*m_pWeapon->cNameSect());
+					Log(tmpStr);
+				}
+
 				sprintf(tmpStr, "fire_point\t\t\t= %f,%f,%f",
 					pWpnHud->FirePoint().x,
 					pWpnHud->FirePoint().y,
 					pWpnHud->FirePoint().z);
+
+				Log(tmpStr);
+				flag = true;
+				break;
+			}
+		
+			pWpnHud->SetFirePoint(tmpV);
+		}
+		else
+		{
+			CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
+
+			R_ASSERT(pActor);
+
+			tmpV = pActor->GetMissileOffset();
+
+			if (!pActor) return false;
+			switch (dik)
+			{
+				// Shift +x
+			case DIK_E:
+				tmpV.y += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -x
+			case DIK_Q:
+				tmpV.y -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +z
+			case DIK_D:
+				tmpV.x += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -z
+			case DIK_A:
+				tmpV.x -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift +y
+			case DIK_W:
+				tmpV.z += g_fHudAdjustValue;
+				flag = true;
+				break;
+				// Shift -y
+			case DIK_S:
+				tmpV.z -= g_fHudAdjustValue;
+				flag = true;
+				break;
+				// output coordinate info to the console
+			case DIK_P:
+				string256 tmpStr;
+				if (m_pWeapon)
+				{
+					sprintf(tmpStr, "%s",
+						*m_pWeapon->cNameSect());
+					Log(tmpStr);
+				}
+
+				sprintf(tmpStr, "missile_throw_offset\t\t\t= %f,%f,%f",
+					pActor->GetMissileOffset().x,
+					pActor->GetMissileOffset().y,
+					pActor->GetMissileOffset().z);
+
 				Log(tmpStr);
 				flag = true;
 				break;
 			}
 
-			if (tmpV.x || tmpV.y || tmpV.z)
-				pWpnHud->SetFirePoint(tmpV);
+			pActor->SetMissileOffset(tmpV);
 		}
 
 		if (flag) return true;
