@@ -170,6 +170,10 @@ function main_menu:InitControls()
 	self.main_tab:Show(true)
 	self.main_frame:AttachChild(self.main_tab)
 	
+	self.new_tab = ui_main_new_tab.main_new_tab()
+	self.new_tab:InitControls(self.tab_rect.x, self.tab_rect.y, self)	
+	self.main_frame:AttachChild(self.new_tab)
+	
 --[[
 	----- CODE -------
 -------- BUTTONS ------------------------------- 
@@ -275,15 +279,26 @@ function main_menu:InitCallBacks()
 	self:AddCallback("btn_load",        ui_events.BUTTON_CLICKED,				self,"OnButton_load_clicked")
 	self:AddCallback("btn_multiplayer", ui_events.BUTTON_CLICKED,				self,"OnButton_multiplayer_clicked")
 	self:AddCallback("btn_quit",		ui_events.BUTTON_CLICKED,				self,"OnButton_quit_clicked")
+	self:AddCallback("btn_new_back",	ui_events.BUTTON_CLICKED,				self,"OnButton_back")
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_OK_CLICKED,		self,"OnMsgOk")
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_CANCEL_CLICKED,	self,"OnMsgCancel")
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_YES_CLICKED,		self,"OnMsgYes")
 	self:AddCallback("message_box",     ui_events.MESSAGE_BOX_NO_CLICKED,		self,"OnMsgNo")
 end
 
+function main_menu:HideAllTabs()
+	self.main_tab:Show(false)
+	self.new_tab:Show(false)
+end
+
+function main_menu:OnButton_back(){
+	self:HideAllTabs()
+	self:main_tab:Show(true)
+}
+
 function main_menu:OnButton_new_game_clicked()
-	local dlg = ui_new_game_dialog.new_game_dlg()
-	level.start_stop_menu(dlg, true)
+	self:HideAllTabs()
+	self:new_tab:Show(true)
 end
 
 function main_menu:OnButton_options_clicked()
