@@ -80,9 +80,9 @@ void CGamePersistent::RegisterModel(IRender_Visual* V)
 void CGamePersistent::OnAppStart()
 {
 	// load game materials
-	GMLib.Load								();
-	__super::OnAppStart						();
-	m_pMainUI = xr_new<CMainUI>				();
+	GMLib.Load					();
+	__super::OnAppStart			();
+	m_pMainUI					= xr_new<CMainUI>();
 }
 
 extern void clean_game_globals	();
