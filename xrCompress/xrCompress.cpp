@@ -10,7 +10,7 @@ set_cstr			files;
 
 extern void Recurse	(const char* path);
 
-void ProcessOne(_finddata_t& F, const char* path)
+void ProcessOne		(_finddata_t& F, const char* path)
 {
 	string256		N;
 	strcpy			(N,path);
@@ -23,11 +23,13 @@ void ProcessOne(_finddata_t& F, const char* path)
 		files.insert(strlwr(strdup(N)));
 		Recurse(N);
 	} else {
-		files.insert(strlwr(strdup(N))); 
+		char*	ins	= strlwr(strdup(N));
+		printf		(ins);
+		files.insert(ins); 
 	}
 }
 
-void Recurse(const char* path)
+void Recurse		(const char* path)
 {
     _finddata_t		sFile;
     int				hFile;
@@ -45,11 +47,19 @@ void Recurse(const char* path)
     _findclose		( hFile );
 }
 
-int main(int argc, char* argv[])
+int main			(int argc, char* argv[])
 {
 	InitMath		();
-	printf			("\n");
-	
+	printf			("\n\n");
+
+	if (argc!=2)	{
+		printf("ERROR: u must pass directory name as parameter.\n");
+		return 1;
+	}
+	printf			("Scanning files...");
+	string256		base;
+	strconcat		(base,argv[1],"\\");
+	Recurse			(base);
 	
 
 	return 0;
