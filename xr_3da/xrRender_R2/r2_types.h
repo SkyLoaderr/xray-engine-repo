@@ -41,4 +41,4 @@ const u32					TEX_material_LdotN	= 128;	// diffuse,		X
 const u32					TEX_material_LdotH	= 256;	// specular,	Y
 const u32					TEX_ds2_fade_size	= 256;
 const u32					TEX_float2rgb		= 256;
-const u32					TEX_NCM				= 256;
+const u32					TEX_NCM				= 512;
