@@ -2,10 +2,6 @@
 #pragma hdrstop
 
 #include "TextForm.h"
-#include "SceneClassList.h"
-#include "SceneObject.h"
-#include "Scene.h"
-#include "ChoseForm.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"

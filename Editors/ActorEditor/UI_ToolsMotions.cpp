@@ -184,7 +184,7 @@ void CActorTools::FillMotionProperties()
 	CSMotion* SM = m_pEditObject->GetActiveSMotion();
     m_MotionProps->BeginFillMode();
     if (SM){
-        m_MotionProps->AddItem(0,PROP_TEXT,  		"Name",		m_MotionProps->MakeTextValue (&SM->Name(),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+        m_MotionProps->AddItem(0,PROP_TEXT,  		"Name",		m_MotionProps->MakeTextValue (&SM->Name(),sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Speed", 	m_MotionProps->MakeFloatValue(&SM->fSpeed,	0.f,20.f,0.01f,2));
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Accrue", 	m_MotionProps->MakeFloatValue(&SM->fAccrue,	0.f,20.f,0.01f,2));
         m_MotionProps->AddItem(0,PROP_FLOAT, 		"Falloff", 	m_MotionProps->MakeFloatValue(&SM->fFalloff,	0.f,20.f,0.01f,2));
