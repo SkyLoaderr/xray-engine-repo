@@ -310,7 +310,7 @@ bool CSE_ALifeSimulator::bfValidatePosition(CSE_ALifeDynamicObject *I)
 		else {
 			// assign group position to the member position
 			I->o_Position			= tpfGetObjectByID(tpALifeGroupAbstract->m_tpMembers[0])->o_Position;
-			if (!ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
+			if (ai().level_graph().valid_vertex_position(I->o_Position) && !ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
 				// checking if position is inside the current vertex
 				I->m_tNodeID		= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
 				// validating graph point and changing it if needed
@@ -328,7 +328,7 @@ bool CSE_ALifeSimulator::bfValidatePosition(CSE_ALifeDynamicObject *I)
 	}
 	else {
 		// otherwise validate position, graph point and vertex
-		if (!ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
+		if (ai().level_graph().valid_vertex_position(I->o_Position) && !ai().level_graph().inside(ai().level_graph().vertex(I->m_tNodeID),I->o_Position)) {
 			// checking if position is inside the current vertex
 			I->m_tNodeID			= ai().level_graph().vertex(I->m_tNodeID,I->o_Position);
 			// validating graph point and changing it if needed
