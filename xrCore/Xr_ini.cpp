@@ -82,9 +82,9 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd
 		destructor<IReader>	file(Engine.FS.Open(szFileName));
 #else
 #ifdef _EDITOR
-	    if (!bReadOnly&&!Engine.FS.Exist(szFileName)) Engine.FS.CreateNullFile(szFileName);
+	    if (!bReadOnly&&!FS.exist(szFileName)) Engine.FS.CreateNullFile(szFileName);
 #endif
-		destructor<IReader>	file(xr_new<CFileReader>(szFileName));
+		destructor<IReader>	file(FS.r_open(szFileName));
 #endif
 
 
