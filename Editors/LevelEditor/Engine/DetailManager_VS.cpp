@@ -175,8 +175,10 @@ void CDetailManager::hw_Render()
 	hw_Render_dump			(hwc_s_array,	0, 1, c_hdr );
 }
 
-void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id, u32 c_offset)
+void	CDetailManager::hw_Render_dump		(R_constant* x_array, u32 var_id, u32 lod_id, u32 c_offset)
 {
+	Device.Statistic.RenderDUMP_DT_Count	= 0;
+
 	// Matrices and offsets
 	u32		vOffset	=	0;
 	u32		iOffset	=	0;
@@ -225,6 +227,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 				dwBatch	++;
 				if (dwBatch == hw_BatchSize)	{
 					// flush
+					Device.Statistic.RenderDUMP_DT_Count	+= dwBatch;
 					u32 dwCNT_verts			= dwBatch * Object.number_vertices;
 					u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
 					RCache.Render			(D3DPT_TRIANGLELIST,vOffset, 0,dwCNT_verts,iOffset,dwCNT_prims);
@@ -237,6 +240,7 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 			// flush if nessecary
 			if (dwBatch)
 			{
+				Device.Statistic.RenderDUMP_DT_Count	+= dwBatch;
 				u32 dwCNT_verts			= dwBatch * Object.number_vertices;
 				u32 dwCNT_prims			= (dwBatch * Object.number_indices)/3;
 				RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,dwCNT_verts,iOffset,dwCNT_prims);

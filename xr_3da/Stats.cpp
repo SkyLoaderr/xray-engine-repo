@@ -153,7 +153,7 @@ void CStats::Show()
 		F.OutNext	("R_DUMP:      %2.2fms, %2.1f%%",RenderDUMP.result,	PPP(RenderDUMP.result));	
 		F.OutNext	("  Skinning:  %2.2fms",RenderDUMP_SKIN.result);	
 		F.OutNext	("  Cached:	   %2.2fms",RenderDUMP_Cached.result);	
-		F.OutNext	("  DT_Vis:    %2.2fms",RenderDUMP_DT_VIS.result);	
+		F.OutNext	("  DT_Vis/Cnt:%2.2fms",RenderDUMP_DT_VIS.result,RenderDUMP_DT_Count);	
 		F.OutNext	("  DT_Render: %2.2fms",RenderDUMP_DT_Render.result);	
 		F.OutNext	("  DT_Cache:  %2.2fms",RenderDUMP_DT_Cache.result);	
 		F.OutNext	("  Wallmarks: %2.2fms",RenderDUMP_WM.result);
@@ -192,20 +192,21 @@ void CStats::Show()
 		F.SetColor	(color_rgba(255,0,0,255));
 		F.OutSet	(300,300);
 		F.SetSize	(f_base_size*3);
-		if (fFPS<30)					F.OutNext	("FPS < 30:        %3.1f",fFPS);
-		if (RCache.stat.verts>500000)	F.OutNext	("Verts > 500k:    %d",	RCache.stat.verts);
-		if (RCache.stat.polys>500000)	F.OutNext	("Polys > 500k:    %d",	RCache.stat.polys);
-		if (RCache.stat.calls>1000)		F.OutNext	("DIP/DP > 1k:     %d",	RCache.stat.calls);
-		if (RCache.stat.textures>1000)	F.OutNext	("T_change > 500:  %d",	RCache.stat.textures);
-		if (RCache.stat.ps>100)			F.OutNext	("PS_change > 100: %d",	RCache.stat.ps);
-		if (RCache.stat.vs>100)			F.OutNext	("VS_change > 100: %d",	RCache.stat.vs);
-		if (RCache.stat.vb>100)			F.OutNext	("VB_change > 100: %d",	RCache.stat.vb);
-		if (RCache.stat.ib>100)			F.OutNext	("IB_change > 100: %d",	RCache.stat.ib);
+		if (fFPS<30)					F.OutNext	("FPS       < 30:   %3.1f",	fFPS);
+		if (RCache.stat.verts>500000)	F.OutNext	("Verts     > 500k: %d",	RCache.stat.verts);
+		if (RCache.stat.polys>500000)	F.OutNext	("Polys     > 500k: %d",	RCache.stat.polys);
+		if (RCache.stat.calls>1000)		F.OutNext	("DIP/DP    > 1k:   %d",	RCache.stat.calls);
+		if (RCache.stat.textures>1000)	F.OutNext	("T_change  > 500:  %d",	RCache.stat.textures);
+		if (RCache.stat.ps>100)			F.OutNext	("PS_change > 100:  %d",	RCache.stat.ps);
+		if (RCache.stat.vs>100)			F.OutNext	("VS_change > 100:  %d",	RCache.stat.vs);
+		if (RCache.stat.vb>100)			F.OutNext	("VB_change > 100:  %d",	RCache.stat.vb);
+		if (RCache.stat.ib>100)			F.OutNext	("IB_change > 100:  %d",	RCache.stat.ib);
+		if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 100:  %d",	RenderDUMP_DT_Count);
 		F.OutSkip	();
-		if (fMem_calls>10)				F.OutNext	("MMGR calls > 10: %3.1f",fMem_calls);
-		if (Sheduler.result>5.f)		F.OutNext	("Update > 5ms:	   %3.1f",Sheduler.result);
-		if (UpdateClient.result>3.f)	F.OutNext	("UpdateCL > 3ms:  %3.1f",UpdateClient.result);
-		if (Physics.result>5.f)			F.OutNext	("Physics > 5ms:   %3.1f",Physics.result);	
+		if (fMem_calls>10)				F.OutNext	("MMGR calls > 10:  %3.1f",	fMem_calls);
+		if (Sheduler.result>5.f)		F.OutNext	("Update     > 5ms:	%3.1f",	Sheduler.result);
+		if (UpdateClient.result>3.f)	F.OutNext	("UpdateCL   > 3ms: %3.1f",	UpdateClient.result);
+		if (Physics.result>5.f)			F.OutNext	("Physics    > 5ms: %3.1f",	Physics.result);	
 
 		//////////////////////////////////////////////////////////////////////////
 		F.SetSize	(f_base_size);
