@@ -2188,44 +2188,6 @@ SOURCE=.\xrLevel.h
 # Begin Group "Render"
 
 # PROP Default_Filter ""
-# Begin Group "Lights manager"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\FLightsController.cpp
-
-!IF  "$(CFG)" == "XR_3DA - Win32 Release"
-
-# ADD CPP /FAs
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
-
-!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
-
-# ADD BASE CPP /FAs
-# ADD CPP /FAs
-
-!ENDIF 
-
-# End Source File
-# Begin Source File
-
-SOURCE=.\FLightsController.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\light.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\LightPPA.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\LightPPA.h
-# End Source File
-# End Group
 # Begin Group "Visuals"
 
 # PROP Default_Filter ""
@@ -2473,18 +2435,6 @@ SOURCE=.\FShotMarkVisual.cpp
 SOURCE=.\FShotMarkVisual.h
 # End Source File
 # End Group
-# Begin Group "Glows manager"
-
-# PROP Default_Filter ""
-# Begin Source File
-
-SOURCE=.\GlowManager.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\GlowManager.h
-# End Source File
-# End Group
 # Begin Group "Wallmarks"
 
 # PROP Default_Filter ""
@@ -2635,6 +2585,68 @@ SOURCE=.\occRasterizer.h
 # Begin Source File
 
 SOURCE=.\occRasterizer_core.cpp
+# End Source File
+# End Group
+# Begin Group "Lighting"
+
+# PROP Default_Filter ""
+# Begin Group "Lights manager"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\FLightsController.cpp
+
+!IF  "$(CFG)" == "XR_3DA - Win32 Release"
+
+# ADD CPP /FAs
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
+
+!ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
+
+# ADD BASE CPP /FAs
+# ADD CPP /FAs
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\FLightsController.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\light.h
+# End Source File
+# End Group
+# Begin Group "DLight"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\LightPPA.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LightPPA.h
+# End Source File
+# End Group
+# Begin Group "Projector"
+
+# PROP Default_Filter ""
+# End Group
+# End Group
+# Begin Group "Glows manager"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\GlowManager.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\GlowManager.h
 # End Source File
 # End Group
 # Begin Source File
