@@ -23,7 +23,7 @@ class CEffectorBobbing;
 class CActor: public CEntityAlive, public pureRender
 {
 private:
-	typedef CEntity		inherited;
+	typedef CEntityAlive	inherited;
 protected:
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
