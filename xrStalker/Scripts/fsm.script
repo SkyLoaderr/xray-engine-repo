@@ -6,8 +6,6 @@ class 'FSM'
 
 -- 	инициализаци€ путем задани€ объекта Non-Player Character
 function FSM:__init(npc_obj)
-	log	("here i am")
-
 	-- указатель на подконтрольный NPC
 	self.npc = npc_obj
 	-- матрица, задающа€ граф переходов состо€ний
@@ -15,31 +13,23 @@ function FSM:__init(npc_obj)
 	self.transition_matrix = {[0] = {}}
 	-- номер текущего состо€ни€
 	self.current_state = 0
-
-	log	("scripted FSM for NPC initialized")
 end
 
 -- 	добавление указател€ на булеву
 -- 	функцию услови€ перехода
 function FSM:add_transition(from_state_num, to_state_num, cond_func)
+	printf("in add transition %d, %d ", from_state_num, to_state_num)
 
-	printf("in add transition %d, %d", from_state_num, to_state_num)
-
-	local transition_vector = self.transition_matrix[from_state_num]
-	
-	if transition_vector == nil then
-		log("create new")
-		transition_vector = {}
-		transition_vector[to_state_num] = cond_func
+	if self.transition_matrix[from_state_num] == nil then
+	   self.transition_matrix[from_state_num] = {[to_state_num] = cond_func}
 	else
-		log("add to existing")
-		transition_vector[to_state_num] = cond_func
+	   self.transition_matrix[from_state_num][to_state_num] = cond_func
 	end
 end
 
 -- запуск бесконечного цикла FSM
 function FSM:run()
-	log	("you better run")
+	printf("running FSM for NPC %s", self.npc:name())
 
 	while true do
 		local transition_vector = self.transition_matrix[self.current_state]
