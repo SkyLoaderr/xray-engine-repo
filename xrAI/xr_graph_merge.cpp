@@ -202,7 +202,14 @@ public:
 				xr_delete							(E);
 			}
 			if (i != m_tpGraph->header().vertex_count())
-				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor!");
+				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor!",m_tLevel.name());
+			
+			VERTEX_MAP::const_iterator				I = m_tVertexMap.begin();
+			VERTEX_MAP::const_iterator				E = m_tVertexMap.end();
+			for ( ; I != E; ++I) {
+				R_ASSERT3	(!xr_strlen((*I).second.caConnectName) || ((*I).second.tGraphID < m_tpVertices.size()),"Rebuild graph for the level",m_tLevel.name());
+			}
+
 //			VERIFY3									(i == m_tpGraph->header().vertex_count(), "Rebuild graph for the level ",m_tLevel.name());
 			O->close								();
 		}
@@ -463,6 +470,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 						R_ASSERT				(M != (*K).second->m_tVertexMap.end());
 					}
 					tGraphEdge.dwVertexNumber	= (*M).second.tGraphID + (*K).second->m_dwOffset;
+					VERIFY3						(tConnectionVertex.tGraphID < (*I).second->m_tpVertices.size(),"Rebuild graph for the level",(*I).second->m_tLevel.name());
+					VERIFY3						((*M).second.tGraphID < (*K).second->m_tpVertices.size(),"Rebuild graph for the level",(*K).second->m_tLevel.name());
 					tGraphEdge.fPathDistance	= (*I).second->m_tpVertices[tConnectionVertex.tGraphID].tGlobalPoint.distance_to((*K).second->m_tpVertices[(*M).second.tGraphID].tGlobalPoint);
 					(*I).second->vfAddEdge		((*i).second.tGraphID,tGraphEdge);
 					tGraphEdge.dwVertexNumber	= (*i).second.tGraphID + (*I).second->m_dwOffset;
