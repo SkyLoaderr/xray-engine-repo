@@ -16,18 +16,18 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, DWORD flags)
 
 	if ((flags&clStatic) == clStatic)
 	{
-
-		XRC.bbox_query	(precalc_identity, &Static, M, B );
-		if (XRC.GetBBoxContactCount())
+		Fvector bc,bd;
+		Fbox	xf; 
+		xf.xform	(B,M);
+		xf.get_CD	(bc,bd);
+		
+		XRC.box_query	(&Static, bc, bd);
+		if (XRC.r_count())
 		{
-			if (flags&clQUERY_ONLYFIRST) 
-			{
-				q_result.AddTri(&Static.tris[XRC.BBoxContact[0].id]);
-				return;
-			} else {
-				for (DWORD i=0; i<XRC.GetBBoxContactCount(); i++)
-					q_result.AddTri(&Static.tris[XRC.BBoxContact[i].id]);
-			}
+			CDB::RESULT* it	=XRC.r_begin();
+			CDB::RESULT* end=XRC.r_end	();
+			for (; it!=end; it++)
+				q_result.AddTri(&Static.get_tris() [it->id]);
 		}
 	};
 	if (flags&clQUERY_DYNAMIC)
