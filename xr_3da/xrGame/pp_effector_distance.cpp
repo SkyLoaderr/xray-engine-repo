@@ -31,6 +31,7 @@ BOOL CPPEffectDistance::Process(SPPInfo& pp)
 	pp.noise.intensity	= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
 	pp.noise.grain		= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
 	pp.noise.fps		= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
+	VERIFY(!fis_zero(pp.noise.fps));
 
 	pp.color_base.set	(
 		def.color_base.r	+ (state.color_base.r - def.color_base.r) * factor, 
@@ -82,6 +83,7 @@ void CPPEffectorDistance::Load(LPCSTR section)
 	state.noise.intensity	= pSettings->r_float(section,"noise_intensity");
 	state.noise.grain		= pSettings->r_float(section,"noise_grain");
 	state.noise.fps			= pSettings->r_float(section,"noise_fps");
+	VERIFY(!fis_zero(state.noise.fps));
 
 	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &state.color_base.r, &state.color_base.g, &state.color_base.b);
 	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &state.color_gray.r, &state.color_gray.g, &state.color_gray.b);

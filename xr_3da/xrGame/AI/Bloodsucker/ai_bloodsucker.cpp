@@ -131,6 +131,7 @@ void CAI_Bloodsucker::LoadEffector(LPCSTR section)
 	pp_effector.noise.intensity		= pSettings->r_float(section,"noise_intensity");
 	pp_effector.noise.grain			= pSettings->r_float(section,"noise_grain");
 	pp_effector.noise.fps			= pSettings->r_float(section,"noise_fps");
+	VERIFY(!fis_zero(pp_effector.noise.fps));
 
 	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &pp_effector.color_base.r, &pp_effector.color_base.g, &pp_effector.color_base.b);
 	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &pp_effector.color_gray.r, &pp_effector.color_gray.g, &pp_effector.color_gray.b);

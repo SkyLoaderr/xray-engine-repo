@@ -851,6 +851,8 @@ void CUIInventoryWnd::DropItem()
 	//-----------------------------------------------------------------------
 	SetCurrentItem(NULL);
 	m_pCurrentDragDropItem = NULL;
+
+	UpdateWeight();
 }
 
 void CUIInventoryWnd::EatItem()
@@ -1155,7 +1157,6 @@ bool CUIInventoryWnd::ToBelt()
 	//---------------------------------------------------------------------------
 	SendEvent_Item2Belt(m_pCurrentItem);
 	//---------------------------------------------------------------------------
-
 	return true;
 }
 
@@ -1417,4 +1418,5 @@ void CUIInventoryWnd::UpdateWeight()
 
 	sprintf(buf, "%%cdefaultWeight %s %3.1f %s/%5.1f", cl, total, weightColor, max);
 	UIStaticWeight.SetText(buf);
+	UIStaticWeight.ClipperOff();
 }

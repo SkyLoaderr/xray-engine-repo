@@ -67,6 +67,8 @@ BOOL CSleepEffectorPP::Process(SPPInfo& pp)
 	pp.noise.intensity	= def.noise.intensity	+ (state.noise.intensity	- def.noise.intensity)	* factor;
 	pp.noise.grain		= def.noise.grain		+ (state.noise.grain		- def.noise.grain)		* factor;
 	pp.noise.fps		= def.noise.fps			+ (state.noise.fps			- def.noise.fps)		* factor;	
+	VERIFY(!fis_zero(pp.noise.fps));
+
 
 	pp.color_base.set	(
 		def.color_base.r	+ (state.color_base.r - def.color_base.r) * factor, 

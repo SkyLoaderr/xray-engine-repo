@@ -56,6 +56,7 @@ void CController::Load(LPCSTR section)
 	m_control_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
 	m_control_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
 	m_control_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
+	VERIFY(!fis_zero(m_control_effector.ppi.noise.fps));
 
 	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &m_control_effector.ppi.color_base.r,	&m_control_effector.ppi.color_base.g,	&m_control_effector.ppi.color_base.b);
 	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &m_control_effector.ppi.color_gray.r,	&m_control_effector.ppi.color_gray.g,	&m_control_effector.ppi.color_gray.b);

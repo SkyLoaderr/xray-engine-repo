@@ -104,6 +104,7 @@ void CActor::LoadShootingEffector (LPCSTR section)
 	m_pShootingEffector->ppi.noise.intensity	= pSettings->r_float(section,"noise_intensity");
 	m_pShootingEffector->ppi.noise.grain		= pSettings->r_float(section,"noise_grain");
 	m_pShootingEffector->ppi.noise.fps		= pSettings->r_float(section,"noise_fps");
+	VERIFY(!fis_zero(m_pShootingEffector->ppi.noise.fps));
 
 	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &m_pShootingEffector->ppi.color_base.r, &m_pShootingEffector->ppi.color_base.g, &m_pShootingEffector->ppi.color_base.b);
 	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &m_pShootingEffector->ppi.color_gray.r, &m_pShootingEffector->ppi.color_gray.g, &m_pShootingEffector->ppi.color_gray.b);
@@ -131,6 +132,7 @@ void CActor::LoadSleepEffector	(LPCSTR section)
 	m_pSleepEffector->ppi.noise.intensity	= pSettings->r_float(section,"noise_intensity");
 	m_pSleepEffector->ppi.noise.grain		= pSettings->r_float(section,"noise_grain");
 	m_pSleepEffector->ppi.noise.fps			= pSettings->r_float(section,"noise_fps");
+	VERIFY(!fis_zero(m_pSleepEffector->ppi.noise.fps));
 
 	sscanf(pSettings->r_string(section,"color_base"),	"%f,%f,%f", &m_pSleepEffector->ppi.color_base.r, &m_pSleepEffector->ppi.color_base.g, &m_pSleepEffector->ppi.color_base.b);
 	sscanf(pSettings->r_string(section,"color_gray"),	"%f,%f,%f", &m_pSleepEffector->ppi.color_gray.r, &m_pSleepEffector->ppi.color_gray.g, &m_pSleepEffector->ppi.color_gray.b);
