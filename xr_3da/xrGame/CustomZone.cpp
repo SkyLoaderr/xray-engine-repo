@@ -343,8 +343,8 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_dwLastTimeMoved			= Device.dwTimeGlobal;
 	m_vPrevPos.set				(Position());
 
-	if (Game().Type() != GAME_SINGLE)
-		OnStateSwitch			(eZoneStateDisabled);
+//	if (Game().Type() != GAME_SINGLE)
+//		OnStateSwitch			(eZoneStateDisabled);
 
 	PrefetchArtefacts			();
 

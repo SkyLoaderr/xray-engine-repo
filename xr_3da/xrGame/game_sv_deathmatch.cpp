@@ -100,7 +100,8 @@ void	game_sv_Deathmatch::OnRoundStart			()
 		if (ps->Skip) continue;
 		SpawnPlayer(get_it_2_id(it), "spectator");
 	}
-	///////////////////////////////////////////
+	///////////////////////////////////////////	
+	LoadAnomalySets();
 }
 
 void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
@@ -1275,9 +1276,7 @@ void	game_sv_Deathmatch::LoadAnomalySets			()
 };
 
 void	game_sv_Deathmatch::StartAnomalies			(int AnomalySet)
-{
-	if (m_AnomalySetsList.empty())
-		LoadAnomalySets();
+{	
 	if (m_AnomalySetsList.empty()) return;	
 
 	if (AnomalySet != -1 && u32(AnomalySet) >= m_AnomalySetsList.size())
@@ -1564,8 +1563,28 @@ bool	game_sv_Deathmatch::HasChampion()
 
 bool	game_sv_Deathmatch::check_for_Anomalies()
 {
+	if (m_dwLastAnomalySetID == 1001)
+	{
+		if (!m_AnomalySetsList.empty())
+		{
+			for (u32 i=0; i<m_AnomalySetsList.size(); i++)
+			{
+				ANOMALIES* Anomalies = &(m_AnomalySetsList[i]);
+				for (u32 i=0; i<Anomalies->size(); i++)
+				{
+					const char *pName = ((*Anomalies)[i]).c_str();
+					CCustomZone* pZone = smart_cast<CCustomZone*> (Level().Objects.FindObjectByName(pName));
+					if (!pZone) continue;
+					pZone->ZoneDisable();
+				};
+			};
+		}
+		m_dwLastAnomalySetID = 1000;
+		return false;
+	};
 	if (!m_bAnomaliesEnabled) return false;
-	if (m_dwLastAnomalySetID != 1001)
+
+	if (m_dwLastAnomalySetID < 1000)
 	{
 		if (m_dwLastAnomalyStartTime + m_dwAnomalySetLengthTime > Level().timeServer()) return false;
 	};
