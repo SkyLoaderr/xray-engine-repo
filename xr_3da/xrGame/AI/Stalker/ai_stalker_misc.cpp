@@ -212,10 +212,10 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 	bool _A				= (m_iSoundIndex > -1) && ((m_tpaDynamicSounds[m_iSoundIndex].eSoundType & SOUND_TYPE_WEAPON) == SOUND_TYPE_WEAPON);
 	bool _B				= (m_iSoundIndex > -1) && !A;
 	
-	if ((A || !_A) && (B || !_B))
+	if (A || B)
 		m_iSoundIndex = iIndex;
 	else
-		if (!m_tpaDynamicSounds[m_iSoundIndex].tpEntity || m_tpaDynamicSounds[m_iSoundIndex].tpEntity->g_Alive()) {
+		if (((!A && _A) || (!B && _B)) && (!m_tpaDynamicSounds[m_iSoundIndex].tpEntity || m_tpaDynamicSounds[m_iSoundIndex].tpEntity->g_Alive()) && (Level().timeServer() - m_tpaDynamicSounds[m_iSoundIndex].dwTime < m_dwInertion)) {
 			A = _A;
 			B = _B;
 		}

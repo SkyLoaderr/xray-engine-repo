@@ -87,7 +87,7 @@ LPCSTR caInPlaceNames		[] = {
 };
 
 LPCSTR caGlobalNames		[] = {
-	"death_",
+//	"death_",
 	"damage_",
 	"escape_",
 	0

@@ -81,6 +81,7 @@ void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 	m_run.Create	(K,base,"_run");
 	m_torso[0].Create(K,base,"_1");
 	m_torso[1].Create(K,base,"_2");
+//	m_torso[2].Create(K,base,"_3");
 	m_torso_idle	= K->ID_Cycle(strconcat(buf,base,"_torso_idle"));;
 
 	jump_begin		= K->ID_Cycle(strconcat(buf,base,"_jump_begin"));
