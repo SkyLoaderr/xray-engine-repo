@@ -51,8 +51,9 @@ void	CRenderTarget::phase_combine	()
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
 		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
 		// float	hemi_correct	= envdesc.hemi_color.w*2;
-		Fvector4	ambclr			= { envdesc.ambient.x*2,	envdesc.ambient.y*2,	envdesc.ambient.z*2,		0	};
-		Fvector4	envclr			= { envdesc.sky_color.x*2,	envdesc.sky_color.y*2,	envdesc.sky_color.z*2,		envdesc.sky_factor };
+		const float minamb			= 0.001f;
+		Fvector4	ambclr			= { _max(envdesc.ambient.x*2,minamb),	_max(envdesc.ambient.y*2,minamb),			_max(envdesc.ambient.z*2,minamb),	0	};
+		Fvector4	envclr			= { envdesc.sky_color.x*2+EPS,	envdesc.sky_color.y*2+EPS,	envdesc.sky_color.z*2+EPS,	envdesc.sky_factor					};
 		Fvector4	fogclr			= { envdesc.fog_color.x,	envdesc.fog_color.y,	envdesc.fog_color.z,		0	};
 					envclr.x		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
 					envclr.y		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
