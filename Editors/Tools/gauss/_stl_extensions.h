@@ -60,7 +60,7 @@ template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocat
 	u32		size() const									{ return (u32)__super::size(); } 
 	void	clear()											{ erase(begin(),end());} 
 #ifdef _M_AMD64
-	void	clear_and_free()								{ __super::_clear();	}
+	void	clear_and_free()								{ __super::clear();		}
 #else
 	void	clear_and_free()								{ __super::_Tidy();		}
 #endif
