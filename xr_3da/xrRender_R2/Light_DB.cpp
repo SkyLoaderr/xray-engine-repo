@@ -46,8 +46,7 @@ void CLight_DB::Load			(IReader *fs)
 			u32 controller				= 0;
 			F->r						(&controller,4);
 			F->r						(&Ldata,sizeof(Flight));
-			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
-			{
+			if (Ldata.type==D3DLIGHT_DIRECTIONAL)	{
 				// directional (base)
 				sun_base			= L;
 				L->set_type			(IRender_Light::DIRECT);
