@@ -1070,12 +1070,6 @@
 					RelativePath=".\Stats.h">
 				</File>
 				<File
-					RelativePath="Stats_Timer.cpp">
-				</File>
-				<File
-					RelativePath=".\Stats_Timer.h">
-				</File>
-				<File
 					RelativePath=".\xr_resource.h">
 				</File>
 				<Filter
