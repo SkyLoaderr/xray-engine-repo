@@ -7,7 +7,7 @@ float ffGetStartVolume(ESoundTypes eType)
 		if ((eType & SOUND_TYPE_WEAPON_RECHARGING) == SOUND_TYPE_WEAPON_RECHARGING)
 			return(.15f);
 		else if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-			return(.0f);
+			return(1.0f);
 		else if ((eType & SOUND_TYPE_WEAPON_TAKING) == SOUND_TYPE_WEAPON_TAKING)
 			return(.1f);																		
 		else if ((eType & SOUND_TYPE_WEAPON_HIDING) == SOUND_TYPE_WEAPON_HIDING)
