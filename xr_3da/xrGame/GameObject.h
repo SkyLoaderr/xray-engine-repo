@@ -38,6 +38,7 @@ class CGameObject :
 	u32						m_dwFrameSchedule;
 	u32						m_dwFrameBeforeChild;
 	u32						m_dwFrameBeforeIndependent;
+	bool					m_spawned;
 
 protected:
 	//время удаления объекта

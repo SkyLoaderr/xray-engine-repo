@@ -36,6 +36,7 @@ CGameObject::~CGameObject		()
 {
 	VERIFY						(!m_ini_file);
 	VERIFY						(!m_lua_game_object);
+	VERIFY						(!m_spawned);
 }
 
 void CGameObject::init			()
@@ -53,6 +54,7 @@ void CGameObject::init			()
 	m_dwFrameBeforeIndependent	= u32(-1);
 	m_script_clsid				= -1;
 	m_ini_file					= 0;
+	m_spawned					= false;
 }
 
 void CGameObject::Load(LPCSTR section)
@@ -123,6 +125,7 @@ void CGameObject::net_Destroy	()
 	CScriptBinder::net_Destroy				();
 
 	xr_delete								(m_lua_game_object);
+	m_spawned								= false;
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)
@@ -163,6 +166,7 @@ void __stdcall VisualCallback(CKinematics *tpKinematics);
 
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
+	m_spawned						= true;
 	if (!frame_check(m_dwFrameSpawn))
 		return						(TRUE);
 
@@ -530,6 +534,7 @@ void __stdcall VisualCallback(CKinematics *tpKinematics)
 
 CScriptGameObject *CGameObject::lua_game_object		() const
 {
+	VERIFY							(m_spawned);
 	if (!m_lua_game_object)
 		m_lua_game_object			= xr_new<CScriptGameObject>(const_cast<CGameObject*>(this));
 	return							(m_lua_game_object);
