@@ -9,6 +9,9 @@
 
 CCharacterInfo::CCharacterInfo()
 {
+	m_sGameName		= "noname";
+	m_sTeamName		= "NA";
+	m_sRank			= "novice";
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -27,7 +30,6 @@ bool CCharacterInfo::Load(LPCSTR name_id, LPCSTR xml_file)
 	if (!xml_result) return false;
 
 	int charInfosCount = xml_doc.GetNodesNum("", 0, "character");
-
 	
 	for (int i = 0; i < charInfosCount; ++i)
 	{
@@ -45,8 +47,21 @@ bool CCharacterInfo::Load(LPCSTR name_id, LPCSTR xml_file)
 
 			return true;
 		}
-
 	}
 
 	return false;
+}
+
+
+LPCSTR CCharacterInfo::Name() 
+{
+	return	*m_sGameName;
+}
+LPCSTR CCharacterInfo::Rank()
+{
+	return	*m_sRank;
+}
+LPCSTR CCharacterInfo::Community()
+{
+	return	*m_sTeamName;
 }

@@ -21,6 +21,9 @@ CCustomRocket::CCustomRocket()
 	m_bEnginePresent = false;
 	m_bStopLightsWithEngine = true;
 	m_bLightsEnabled = false;
+
+
+	m_vPrevVel.set(0,0,0);
 }
 
 CCustomRocket::~CCustomRocket	()
@@ -40,6 +43,8 @@ void CCustomRocket::reinit		()
 	m_pFlyParticles = NULL;
 
 	m_pOwner = NULL;
+
+	m_vPrevVel.set(0,0,0);
 }
 
 
@@ -52,6 +57,7 @@ BOOL CCustomRocket::net_Spawn(LPVOID DC)
 void CCustomRocket::net_Destroy() 
 {
 	inherited::net_Destroy();
+	CPHUpdateObject::Deactivate();
 }
 
 
@@ -241,6 +247,8 @@ void CCustomRocket::StartEngine				()
 	m_dwEngineTime = m_dwEngineWorkTime;
 
 	StartEngineParticles();
+
+	CPHUpdateObject::Activate();
 }
 
 void CCustomRocket::StopEngine				()
@@ -253,6 +261,26 @@ void CCustomRocket::StopEngine				()
 		StopLights();
 
 	StopEngineParticles();
+
+	CPHUpdateObject::Deactivate();
+}
+
+
+void CCustomRocket::UpdateEnginePh			()
+{
+	float force = m_fEngineImpulse * Device.fTimeDelta *100.f;
+
+	Fvector l_pos, l_dir;; 
+	l_pos.set(0, 0, 5.f);
+	l_dir.set(XFORM().k);
+	l_dir.normalize();
+
+	m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, force);
+	l_dir.set(0, 1.f, 0);
+	force = m_fEngineImpulse * Device.fTimeDelta * 30.f;
+	m_pPhysicsShell->applyImpulse(l_dir, force);
+
+	//m_pPhysicsShell->set_AngularVel()
 }
 
 
@@ -267,17 +295,6 @@ void CCustomRocket::UpdateEngine				()
 	}
 
 	m_dwEngineTime -= Device.dwTimeDelta;
-	float force = m_fEngineImpulse * Device.fTimeDelta *100.f;
-
-	Fvector l_pos, l_dir;; 
-	l_pos.set(0, 0, 5.f);
-	l_dir.set(XFORM().k);
-	l_dir.normalize();
-	
-	m_pPhysicsShell->applyImpulseTrace(l_pos, l_dir, force);
-	l_dir.set(0, 1.f, 0);
-	force = m_fEngineImpulse * Device.fTimeDelta;
-	m_pPhysicsShell->applyImpulse(l_dir, force);
 }
 
 
@@ -312,15 +329,31 @@ void CCustomRocket::UpdateLights()
 }
 
 
+void CCustomRocket::PhDataUpdate			(float step)
+{
+	
+}
+void CCustomRocket::PhTune					(float step)
+{
+	UpdateEnginePh							();
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////
 //	Particles
 //////////////////////////////////////////////////////////////////////////
+
 void CCustomRocket::UpdateParticles()
 {
 	if(!m_pEngineParticles && !m_pFlyParticles) return;
 
 	Fvector vel;
 	PHGetLinearVell(vel);
+
+	vel.add(m_vPrevVel,vel);
+	vel.mul(0.5f);
+	m_vPrevVel.set(vel);
 
 	Fmatrix particles_xform;
 	particles_xform.identity();

@@ -8,6 +8,7 @@
 #include "targetcscask.h"
 #include "inventory.h"
 #include "hudmanager.h"
+#include "character_info.h"
 
 #define PICKUP_INFO_COLOR 0xFFAAAAAA
 
@@ -82,7 +83,7 @@ void CActor::PickupInfoDraw(CObject* object)
 	}
 	else if(inventory_owner)
 	{
-		draw_str = inventory_owner->GetGameName();
+		draw_str = inventory_owner->CharacterInfo().Name();
 		shift.set(0,1.2f,0);
 	}
 

@@ -6,11 +6,13 @@
 #pragma once
 
 #include "physic_item.h"
+#include "PHObject.h"
 
 class CRocketLauncher;
 
 
-class CCustomRocket : public CPhysicItem
+class CCustomRocket : public CPhysicItem,
+					  public CPHUpdateObject
 {
 private:
 	typedef CPhysicItem inherited;
@@ -43,6 +45,8 @@ public:
 	virtual void			activate_physic_shell	();
 	virtual void			create_physic_shell		();
 
+	virtual void			PhDataUpdate			(float step);
+	virtual void			PhTune					(float step);
 
 	//////////////////////////////////////////////////////////////////////////
 	//	Rocket Properties
@@ -51,6 +55,7 @@ public:
 	virtual	void			StartEngine				();
 	virtual	void			StopEngine				();
 	virtual	void			UpdateEngine			();
+	virtual	void			UpdateEnginePh			();
 
 	virtual	void			StartFlying				();
 	virtual	void			StopFlying				();
@@ -121,6 +126,8 @@ protected:
 	//имя партиклов полета
 	ref_str				m_sFlyParticles;
 	CParticlesObject*	m_pFlyParticles;
+
+	Fvector				m_vPrevVel;
 
 protected:
 	virtual void		StartEngineParticles();

@@ -13,6 +13,10 @@ public:
 	CCharacterInfo();
 	~CCharacterInfo();
 
+	virtual LPCSTR Name();
+	virtual LPCSTR Rank();
+	virtual LPCSTR Community();
+
 	//загрузка профиля персонажа из xml файла,
 	//если профиль не найден - возвращаем false, иначе true
 	bool Load(LPCSTR name_id, LPCSTR xml_file = DEFAULT_CHARACTER_FILE);
