@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ai_selector_template.h"
-#include "..\..\xr_trims.h"
 
 #define CHECK_CONDITION(A)				((qwFlags & A) == A)
 
