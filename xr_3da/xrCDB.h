@@ -19,9 +19,9 @@ namespace CDB
 		RAY_ONLYNEAREST	= (1<<2)
 	};
 	
-	class XRCDB_API Model;
+	class XRCDB_API MODEL;
 		
-	class XRCDB_API Collider 
+	class XRCDB_API COLLIDER 
 	{
 		DWORD	ray_mode;
 		DWORD	box_mode;
@@ -32,7 +32,6 @@ namespace CDB
 		
 		void	ray_mode		(DWORD f)	{	ray_mode = f;		}
 		void	ray_query		(const Fmatrix* parent, const Model *o, const Fvector& start,  const Fvector& dir, float max_range = 10000.f);
-		
 		
 		void	box_mode		(DWORD f)	{	box_mode = f;		}
 		

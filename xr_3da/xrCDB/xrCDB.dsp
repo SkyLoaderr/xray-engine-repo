@@ -85,6 +85,10 @@ LINK32=link.exe
 
 # Name "xrCDB - Win32 Release"
 # Name "xrCDB - Win32 Debug"
+# Begin Group "Kernel"
+
+# PROP Default_Filter ""
+# End Group
 # Begin Source File
 
 SOURCE=.\cl_RAPID.h
