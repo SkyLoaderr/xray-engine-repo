@@ -91,7 +91,7 @@ function main_menu:InitControls()
 	btn:SetText("Save game")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(20)
+	btn:SetTextY(10)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 	
