@@ -145,7 +145,7 @@ void fs_registrator::script_register(lua_State *L)
 			.def("GetAt",								&FS_file_list::GetAt)
 			.def("Free",								&FS_file_list::Free),
 
-		class_<FS_Path>("FS_Path")
+/*		class_<FS_Path>("FS_Path")
 			.def_readonly("m_Path",						&FS_Path::m_Path)
 			.def_readonly("m_Root",						&FS_Path::m_Root)
 			.def_readonly("m_Add",						&FS_Path::m_Add)
@@ -159,7 +159,7 @@ void fs_registrator::script_register(lua_State *L)
 			.def_readonly("size_real",					&CLocatorAPI::file::size_real)
 			.def_readonly("size_compressed",			&CLocatorAPI::file::size_compressed)
 			.def_readonly("modif",						&CLocatorAPI::file::modif),
-
+*/
 		class_<CLocatorAPI>("FS")
 			.enum_("FS_sort_mode")
 			[
