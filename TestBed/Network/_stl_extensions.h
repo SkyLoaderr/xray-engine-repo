@@ -11,7 +11,6 @@ using std::swap;
 
 #ifdef	M_NOSTDCONTAINERS_EXT
 
-#define xr_vector std::vector
 #define xr_list std::list
 #define xr_deque std::deque
 #define xr_stack std::stack
@@ -19,6 +18,22 @@ using std::swap;
 #define xr_multiset std::multiset
 #define xr_map std::map
 #define xr_multimap std::multimap
+
+template <class T>
+class xr_vector	: public std::vector<T> {
+public: 
+	typedef	size_t		size_type;
+	typedef T&			reference;
+	typedef const T&	const_reference;
+public: 
+			xr_vector			()								: std::vector<T>	()				{}
+			xr_vector			(size_t _count, const T& _value): std::vector<T>	(_count,_value)	{}
+	explicit xr_vector			(size_t _count)					: std::vector<T> 	(_count)		{}
+	void	clear				()								{ erase(begin(),end());				} 
+	void	clear_and_free		()								{ std::vector<T>::clear();			}
+	const_reference operator[]	(size_type _Pos) const			{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
+	reference operator[]		(size_type _Pos)				{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
+};
 
 #else
 
