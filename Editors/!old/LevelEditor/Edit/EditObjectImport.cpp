@@ -230,6 +230,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     // polygons
 //					UI->ProgressStart(Ilr->polygon.count,"Fill polygons:");
                     MESH->m_Faces.resize(Ilr->polygon.count);
+					MESH->m_SGs.resize(Ilr->polygon.count,-1);
                     MESH->m_VMRefs.reserve(Ilr->polygon.count*3);
                     IntVec surf_ids;
                     surf_ids.resize(Ilr->polygon.count);
