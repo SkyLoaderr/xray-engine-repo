@@ -73,6 +73,7 @@ void CBaseMonster::reinit()
 
 	m_first_update_initialized		= false;
 
+	m_time_last_rotation_jump		= 0;
 
 	if (m_controlled)				m_controlled->on_reinit();
 

@@ -134,36 +134,36 @@ void CBaseMonster::squad_notify()
 	squad->UpdateGoal(this, goal);
 }
 
+#define ROTATION_JUMP_DELAY		6000
 
 void CBaseMonster::check_rotation_jump()
 {
 	if (MotionMan.IsCriticalAction()) return;
-	
-	// check time
-	// [todo]
-	
+	if (m_time_last_rotation_jump + ROTATION_JUMP_DELAY > Device.dwTimeGlobal)	return;
+
 	Fvector							enemy_position;
 	enemy_position.set				(EnemyMan.get_enemy()->Position());
 
 	if (DirMan.is_face_target(enemy_position, 120 * PI / 180)) return;
 
-	// everything is good, so set animation
-	EMotionAnim						anim = DirMan.is_from_right(enemy_position) ? eAnimJumpRight : eAnimJumpLeft;
-
-	// set sequence
-	MotionMan.Seq_Add				(anim);
-	MotionMan.Seq_Switch			();
-
 	DirMan.face_target				(enemy_position);
 	
+	// everything is good, so set animation sequence
+	EMotionAnim						anim = DirMan.is_from_right(enemy_position) ? eAnimJumpRight : eAnimJumpLeft;
+
+	MotionMan.Seq_Add				(anim);
+	MotionMan.Seq_Switch			();
+	
 	// calculate angular speed according to animation speed and angle difference
-	float	dir_yaw = Fvector().sub(enemy_position, Position()).getH();
 	const CDirectionManager::SAxis &yaw = DirMan.heading();	
 
-	float new_angular_velocity; 
-	float delta_yaw					= angle_difference(yaw.current, dir_yaw);
+	float angular_velocity; 
+	float delta_yaw					= angle_difference(yaw.current, yaw.target);
 	float time						= MotionMan.GetCurAnimTime	();
-	new_angular_velocity			= delta_yaw / time;
+	angular_velocity				= delta_yaw / time;
 
-	MotionMan.ForceAngularSpeed		(new_angular_velocity);
+	// set angular speed in exclusive force mode, coz it has already locked by Seq_Switch
+	DirMan.set_heading_speed		(angular_velocity, true);
+
+	m_time_last_rotation_jump		= Device.dwTimeGlobal;
 }

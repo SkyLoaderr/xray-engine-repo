@@ -11,6 +11,7 @@
 #include "../../ai_object_location.h"
 #include "../../ai_space.h"
 #include "ai_monster_movement_space.h"
+#include "critical_action_info.h"
 
 using namespace MonsterMovement;
 
@@ -203,8 +204,7 @@ void CMonsterMovement::stop_now()
 {
 	enable_movement						(false);
 	disable_path						();
-	m_velocity_linear.target			= 0.f;
-	m_velocity_linear.current			= 0.f;
+	set_linear_velocity					(0.f, true);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -280,11 +280,11 @@ void CMonsterMovement::set_velocity_from_path()
 	const CDetailPathManager::STravelParams &current_velocity	= detail().velocity(cur_point_velocity_index);
 	if (fis_zero(current_velocity.linear_velocity) && (next_point_velocity_index != u32(-1))) {
 		const CDetailPathManager::STravelParams &next_velocity	= detail().velocity(next_point_velocity_index);
-		m_velocity_linear.target	= _abs(next_velocity.linear_velocity);
-		m_object->DirMan.set_angular_speed(next_velocity.real_angular_velocity);
+		set_linear_velocity					(_abs(next_velocity.linear_velocity));
+		m_object->DirMan.set_heading_speed	(next_velocity.real_angular_velocity);
 	} else {
-		m_velocity_linear.target	= _abs(current_velocity.linear_velocity);
-		m_object->DirMan.set_angular_speed(current_velocity.real_angular_velocity);
+		set_linear_velocity					(_abs(current_velocity.linear_velocity));
+		m_object->DirMan.set_heading_speed(current_velocity.real_angular_velocity);
 	}
 
 	if (fis_zero(m_velocity_linear.target)) stop_linear();
@@ -322,4 +322,10 @@ void CMonsterMovement::on_travel_point_change()
 	}
 }
 
-
+void CMonsterMovement::set_linear_velocity(float value, bool force)
+{
+	if (m_object->CriticalActionInfo->is_motion_locked()) return;
+	
+	m_velocity_linear.target				= value;
+	if (force) m_velocity_linear.current	= value;
+}

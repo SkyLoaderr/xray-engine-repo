@@ -292,6 +292,7 @@ IC	void					wake_up				(){m_bSleep = false;}
 private:
 	bool					m_first_update_initialized;
 
+	u32						m_time_last_rotation_jump;
 	// -----------------------------------------------------------------------------
 				void		check_rotation_jump	();
 	// -----------------------------------------------------------------------------

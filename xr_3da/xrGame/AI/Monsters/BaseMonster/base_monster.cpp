@@ -91,7 +91,7 @@ void CBaseMonster::UpdateCL()
 		// Обновить линейную скорости движения
 		movement().update_velocity			();
 
-		// Обновить угловую скорости движения
+		// Обновить направление объекта, его угловые скорости движения
 		DirMan.update_frame					();
 
 		CStepManager::update				();

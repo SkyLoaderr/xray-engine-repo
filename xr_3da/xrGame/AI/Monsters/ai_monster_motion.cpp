@@ -53,7 +53,6 @@ void CMotionManager::reinit()
 	Seq_Init				();
 	
 	fx_time_last_play		= 0;
-	b_forced_velocity		= false;
 	
 	accel_init				();
 	
@@ -187,17 +186,6 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 	}
 }
 
-
-// Установка линейной и угловой скоростей для текущей анимации
-void CMotionManager::set_velocities_from_anim()
-{
-	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-	VERIFY(get_sd()->m_tAnims.end() != item_it);
-
-	pMonster->movement().m_velocity_linear.target	= item_it->second.velocity->velocity.linear;
-	if (!b_forced_velocity) pMonster->DirMan.set_angular_speed(item_it->second.velocity->velocity.angular_real);
-}
-
 // Callback на завершение анимации
 void CMotionManager::OnAnimationEnd() 
 { 
@@ -205,14 +193,6 @@ void CMotionManager::OnAnimationEnd()
 	if (seq_playing) Seq_Switch();
 
 	if (pJumping && pJumping->IsActive()) pJumping->OnAnimationEnd();
-}
-
-// если монстр стоит на месте и играет анимацию движения - force stand idle
-void CMotionManager::FixBadState()
-{	
-//	if (!pMonster->movement().MotionStats->is_good_motion(3) || (IsMoving() && !pMonster->movement().IsMovingOnPath())) {
-//		cur_anim = eAnimStandIdle;
-//	}
 }
 
 void CMotionManager::CheckReplacedAnim()
@@ -258,18 +238,16 @@ void CMotionManager::Seq_Switch()
 		}
 	}
 
-	seq_playing							= true;
+	seq_playing								= true;
 
 	// установить параметры
-	cur_anim_info().motion				= *seq_it;
-	set_velocities_from_anim			();
+	cur_anim_info().motion					= *seq_it;
 
-	ForceAnimSelect						();
+	ForceAnimSelect							();
 
 	// lock path
-	pMonster->movement().enable_movement		(false);
-	pMonster->CriticalActionInfo->set			(CAF_LockPath);
-	pMonster->movement().initialize_movement	();
+	pMonster->movement().stop_now			();
+	pMonster->CriticalActionInfo->set		(CAF_LockPath | CAF_LockTurn | CAF_LockMotion);
 }
 
 
@@ -284,7 +262,8 @@ void CMotionManager::Seq_Finish()
 		prev_motion	= cur_anim_info().motion	= get_sd()->m_tMotions[m_tAction].anim;
 	}
 
-	pMonster->CriticalActionInfo->clear(CAF_LockPath);
+	pMonster->CriticalActionInfo->clear			(CAF_LockPath | CAF_LockTurn | CAF_LockMotion);
+	pMonster->movement().initialize_movement	();
 }
 
 
@@ -389,12 +368,6 @@ float CMotionManager::GetAnimSpeed(EMotionAnim anim)
 	return				(def->Dequantize(def->speed));
 }
 
-
-void CMotionManager::ForceAngularSpeed(float vel)
-{
-	pMonster->DirMan.set_angular_speed(vel);
-	b_forced_velocity = true;
-}
 
 bool CMotionManager::IsStandCurAnim()
 {

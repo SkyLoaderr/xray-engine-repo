@@ -24,9 +24,6 @@ public:
 
 	bool				b_targeted_path;		// предположительно путь ведёт к целевой точке
 
-	SVelocity			m_velocity_linear;
-	//float				m_velocity_angular;
-
 	CMotionStats		*MotionStats;
 
 		bool	IsMoveAlongPathFinished	();
@@ -52,11 +49,14 @@ public:
 	IC	void	set_path_targeted		(bool val = true) {b_targeted_path = val;}
 	// -------------------------------------------------------------------
 
-
 		void	stop_now				();
 	IC	void	stop_linear				() {m_velocity_linear.set		(0.f,0.f);}	// set current && target to zero
 	IC	void	stop_linear_accel		() {m_velocity_linear.target	= 0.f;}		// set target only to zero
-	//IC	void	stop_angular			() {m_velocity_angular			= 0.f;}		// set to zero	
+
+	
+		void	set_linear_velocity		(float value, bool force = false);
+		float	linear_velocity_current	() {return m_velocity_linear.current;}
+		float	linear_velocity_target	() {return m_velocity_linear.target;}
 
 public:
 						CMonsterMovement	(CBaseMonster *base_monster);
@@ -185,8 +185,9 @@ public:
 
 
 private:	
+	
 	bool				m_velocity_reset;
-
+	SVelocity			m_velocity_linear;
 };
 
 #include "ai_monster_movement_inline.h"

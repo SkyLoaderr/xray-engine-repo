@@ -118,13 +118,13 @@ void CMotionManager::SelectVelocities()
 	// установка линейной скорости	
 	if (pMonster->state_invisible) {
 		// если невидимый, то установить скорость из пути
-		pMonster->movement().m_velocity_linear.target	= _abs(path_vel.linear);
+		pMonster->movement().set_linear_velocity(_abs(path_vel.linear));
 	} else {
 		
 		// - проверить на возможность торможения
 		if (!accel_check_braking(0.f)) {
-			pMonster->movement().m_velocity_linear.target	= _abs(anim_vel.linear);
-			if (fis_zero(pMonster->movement().m_velocity_linear.target)) pMonster->movement().stop_linear();
+			pMonster->movement().set_linear_velocity(_abs(anim_vel.linear));
+			if (fis_zero(pMonster->movement().linear_velocity_target())) pMonster->movement().stop_linear();
 		} else {
 			pMonster->movement().stop_linear_accel();
 		}
@@ -149,12 +149,10 @@ void CMotionManager::SelectVelocities()
 
 
 	// установка угловой скорости
-	if (!b_forced_velocity) {
-		item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
-		VERIFY(get_sd()->m_tAnims.end() != item_it);
+	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
+	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
-		pMonster->DirMan.set_angular_speed(item_it->second.velocity->velocity.angular_real);
-	}
+	pMonster->DirMan.set_heading_speed(item_it->second.velocity->velocity.angular_real);
 
 	// применить 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
@@ -221,7 +219,6 @@ void CMotionManager::ScheduledInit()
 void CMotionManager::UpdateScheduled()
 {
 	if (!seq_playing && !TA_IsActive() && (!pJumping || (pJumping && !pJumping->IsActive()))) {
-		b_forced_velocity	= false;
 		Update				();	
 	} else {
 		pMonster->movement().disable_path();

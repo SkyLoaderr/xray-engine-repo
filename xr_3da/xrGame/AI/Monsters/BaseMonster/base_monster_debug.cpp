@@ -111,7 +111,9 @@ CBaseMonster::SDebugInfo CBaseMonster::show_debug_info()
 
 	sprintf(text, "Actual = [%u] Enabled = [%u]", movement().actual(), movement().enabled());
 	DBG().text(this).add_item(text,										x, y+=delta_y, color);
-
+	
+	sprintf(text, "Speed: Linear = [%.3f] Angular = [%.3f]", movement().linear_velocity_current(), DirMan.heading().speed.current);
+	DBG().text(this).add_item(text,										x, y+=delta_y, color);
 	
 	DBG().text(this).add_item("---------------------------------------", x, y+=delta_y, delimiter_color);
 

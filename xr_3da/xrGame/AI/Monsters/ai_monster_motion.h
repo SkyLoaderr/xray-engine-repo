@@ -40,7 +40,6 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 	TTime					fx_time_last_play;
 
 	bool					bad_motion_fixed;		// true, если монстр пытается двигаться, но стоит на месте
-	bool					b_forced_velocity;
 
 	// -------------------------------------------------------------------------------------
 	// Acceleration
@@ -103,10 +102,6 @@ public:
 	
 	// -------------------------------------
 
-	void		set_velocities_from_anim	();
-
-	// -------------------------------------- 	
-
 	void		FrameUpdate				();
 	void		UpdateScheduled			();
 	void		ScheduledInit			();
@@ -153,7 +148,6 @@ private:
 	// дополнительные функции
 	EPState		GetState				(EMotionAnim a);
 
-	void		FixBadState				();
 	bool		IsMoving				();
 
 	void		CheckReplacedAnim		();
@@ -165,7 +159,6 @@ public:
 	// Вызов PrepareAnimation() и установка анимации
 	void		ForceAnimSelect			();
 	
-	void		ForceAngularSpeed		(float vel);
 	float		GetCurAnimTime			();
 	float		GetAnimSpeed			(EMotionAnim anim);
 

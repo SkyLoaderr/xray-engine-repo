@@ -125,7 +125,7 @@ bool CMotionManager::accel_check_braking(float before_interval)
 	if (!accel_active(eAV_Braking))		return false;
 
 	float acceleration = accel_get(eAV_Braking);
-	float braking_dist	= (pMonster->movement().m_velocity_linear.current * pMonster->movement().m_velocity_linear.current) / acceleration;
+	float braking_dist	= (pMonster->movement().linear_velocity_current() * pMonster->movement().linear_velocity_current()) / acceleration;
 	braking_dist += before_interval;
 
 	// проверить точки пути, где необходимо остановиться

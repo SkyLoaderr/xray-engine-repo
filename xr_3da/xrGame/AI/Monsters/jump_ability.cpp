@@ -80,7 +80,7 @@ void CJumpingAbility::start_jump(const Fvector &point)
 	m_blend_speed					= -1.f;
 	m_target_position				= point;
 
-	m_object->DirMan.set_angular_speed(3.f);
+	m_object->DirMan.set_heading_speed(3.f);
 	m_object->DirMan.face_target	(point);
 
 	m_active			= true;

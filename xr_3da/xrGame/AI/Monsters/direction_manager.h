@@ -29,34 +29,29 @@ public:
 	} m_heading, m_pitch;
 
 public:
-				void	init_external			(CBaseMonster *obj) {m_object = obj;}
+	IC			void	init_external			(CBaseMonster *obj) {m_object = obj;}
 				void	reinit					();
+
+				void	update_frame			();
+
+				void	use_path_direction		(bool reversed = false);
 
 				void	face_target				(const Fvector &position,	u32 delay = 0);
 				void	face_target				(const CObject *obj,		u32 delay = 0);
-			IC	void	set_delay				(u32 delay) {m_delay = delay;}
+	IC			void	set_delay				(u32 delay) {m_delay = delay;}
+
+				void	set_heading_speed		(float value, bool force = false);
+				void	set_heading				(float value, bool force = false);
+
+	IC	const	SAxis	&heading				() {return m_heading;}		
 
 				bool	is_face_target			(const Fvector &position,	float eps_angle);
 				bool	is_face_target			(const CObject *obj,		float eps_angle);
 				
-				void	use_path_direction		(bool reversed = false);
-
-				void	force_direction			(const Fvector &dir);
-
 				bool	is_from_right			(const Fvector &position);
 				bool	is_from_right			(float yaw);
 
 				bool	is_turning				();
-
-		const	SAxis	&heading				() {return m_heading;}
-
-		//////////////////////////////////////////////////////////////////////////
-
-				void	update_frame			();
-				
-				void	set_angular_speed		(float value);
-				void	set_heading				(float value) {m_heading.target = value;}
-
 private:				
 				void	pitch_correction		();
 };

@@ -7,6 +7,7 @@
 #include "../../level_navigation_graph.h"
 #include "../../ai_space.h"
 #include "../../ai_object_location.h"
+#include "critical_action_info.h"
 
 void CDirectionManager::reinit()
 {
@@ -25,6 +26,8 @@ void CDirectionManager::reinit()
 
 void CDirectionManager::face_target(const Fvector &position, u32 delay)
 {
+	if (m_object->CriticalActionInfo->is_turn_locked()) return;
+	
 	if (m_time_last_faced + delay > Device.dwTimeGlobal) return;
 	
 	m_delay = delay;
@@ -41,9 +44,15 @@ void CDirectionManager::face_target(const Fvector &position, u32 delay)
 
 	m_time_last_faced	= Device.dwTimeGlobal;
 }
+void CDirectionManager::face_target(const CObject *obj,	u32 delay) 
+{
+	face_target	(obj->Position(), delay);
+}
 
 void CDirectionManager::use_path_direction(bool reversed)
 {
+	if (m_object->CriticalActionInfo->is_turn_locked()) return;
+
 	float yaw,pitch;
 	m_object->movement().detail().direction().getHP	(yaw,pitch);
 
@@ -52,38 +61,33 @@ void CDirectionManager::use_path_direction(bool reversed)
 	m_heading.target = angle_normalize((reversed) ? (-yaw + PI) : (-yaw));
 }
 
-bool CDirectionManager::is_face_target(const Fvector &position, float eps_angle)
+void CDirectionManager::set_heading_speed(float value, bool force) 
 {
-	float						h, p;
-	Fvector().sub				(position, m_object->Position()).getHP(h,p);
-	
-	float						my_h;
-	m_object->Direction().getHP	(my_h, p);
+	if (!force && m_object->CriticalActionInfo->is_turn_locked()) return;
 
-	if (angle_difference(h,my_h) > eps_angle) return false;
-	
-	return true;
+	m_heading.speed.target = value;
 }
 
-void CDirectionManager::face_target(const CObject *obj,	u32 delay) 
+void CDirectionManager::set_heading(float value, bool force) 
 {
-	face_target	(obj->Position(), delay);
+	if (!force && m_object->CriticalActionInfo->is_turn_locked()) return;
+
+	m_heading.target = value;
+}
+
+bool CDirectionManager::is_face_target(const Fvector &position, float eps_angle)
+{
+	float target_h	= Fvector().sub(position, m_object->Position()).getH();
+	float my_h		= m_object->Direction().getH();
+
+	if (angle_difference(target_h,my_h) > eps_angle) return false;
+	
+	return true;
 }
 
 bool CDirectionManager::is_face_target(const CObject *obj, float eps_angle) 
 {
 	return is_face_target(obj->Position(), eps_angle);
-}
-
-void CDirectionManager::force_direction(const Fvector &dir)
-{
-	float	yaw, pitch;
-	
-	dir.getHP	(yaw,pitch);
-	yaw			*= -1;
-	yaw			= angle_normalize(yaw);
-
-	m_heading.current = m_heading.target = yaw;
 }
 
 bool CDirectionManager::is_from_right(const Fvector &position)
@@ -119,8 +123,8 @@ void CDirectionManager::update_frame()
 	
 	// поправка угловой скорости в соответствии с текущей и таргетовой линейной скоростями
 	// heading speed correction
-	if (!fis_zero(m_object->movement().m_velocity_linear.current) && !fis_zero(m_object->movement().m_velocity_linear.target))
-		m_heading.speed.target	= m_heading.speed.target * m_object->movement().m_velocity_linear.current / (m_object->movement().m_velocity_linear.target + EPS_L);
+	if (!fis_zero(m_object->movement().linear_velocity_current()) && !fis_zero(m_object->movement().linear_velocity_target()))
+		m_heading.speed.target	= m_heading.speed.target * m_object->movement().linear_velocity_current() / (m_object->movement().linear_velocity_target() + EPS_L);
 
 	// update heading
 	velocity_lerp				(m_heading.speed.current, m_heading.speed.target, m_heading.acceleration, Device.fTimeDelta);
@@ -174,10 +178,5 @@ void CDirectionManager::pitch_correction()
 	target_dir.getHP	(yaw,pitch);
 
 	m_pitch.target		= -pitch;
-}
-
-void CDirectionManager::set_angular_speed(float value)
-{
-	m_heading.speed.target = value;
 }
 
