@@ -142,7 +142,9 @@ CLensFlare::~CLensFlare()
 void CLensFlare::lerp(int a, int b, float f)
 {
 	if (dwFrame==Device.dwFrame)return;
+#ifndef _EDITOR
 	if (!g_pGameLevel)			return;
+#endif
 	dwFrame			= Device.dwFrame;
 
 	vSunDir.mul		(g_pGamePersistent->Environment.Current.sun_dir,-1);
