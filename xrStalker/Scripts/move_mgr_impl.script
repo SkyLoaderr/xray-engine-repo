@@ -1,0 +1,14 @@
+-- Movement manager
+-- Andrey Fidrya (Zmey), af@svitonline.com
+
+class "move_mgr"
+
+function move_mgr:__init(npc)
+	self.npc = npc
+end
+
+function move_mgr:read_path(path_walk, path_look)
+
+end
+
+
