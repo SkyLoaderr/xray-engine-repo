@@ -145,6 +145,7 @@ void	CHM_Dynamic::Update	()
 }
 float	CHM_Dynamic::Query	(Fvector2& pos)
 {
+	return flt_min;
 }
 
 //
