@@ -30,6 +30,8 @@ CEntity::CEntity()
 
 CEntity::~CEntity()
 {
+	m_bBodyRemoved = false;
+	m_dwDeathTime = 0;
 }
 
 void CEntity::OnEvent		(NET_Packet& P, u16 type)
@@ -245,6 +247,8 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	// Initialize variables
 	fEntityHealth			= 100;
 	fArmor					= 0;
+	m_bBodyRemoved			= false;
+	m_dwDeathTime			= 0;
 	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);

@@ -184,7 +184,26 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 	case GAME_PHASE_INPROGRESS:
 		{
 			LPCSTR	options			=	get_name_id	(id);
-
+			//------------------------------------------------------------
+			xrClientData* xrCData	=	Level().Server->ID_to_client(id);
+			if (xrCData->owner)
+			{
+				if (xrCData->owner->owner != Level().Server->GetServer_client())
+				{
+					xrCData->owner->owner = Level().Server->GetServer_client();
+				};
+				CObject* pObject =  Level().Objects.net_Find(xrCData->owner->ID);
+				if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+				{
+					CActor* pActor = dynamic_cast <CActor*>(pObject);
+					if (pActor)
+					{
+						pActor->m_dwDeathTime = Level().GetGameTime();
+						pActor->m_bAllowDeathRemove = true;
+					};
+				};
+			};
+			//------------------------------------------------------------
 			// Spawn "actor"
 			CSE_Abstract			*E	=	spawn_begin	("actor");													// create SE
 			CSE_ALifeCreatureActor				*A	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
