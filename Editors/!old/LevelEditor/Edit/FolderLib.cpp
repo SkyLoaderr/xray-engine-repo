@@ -500,7 +500,7 @@ TElTreeItem* CFolderHelper::ExpandItem(TElTree* tv, TElTreeItem* node)
 {
 	if (node){
 	    tv->IsUpdating 	= true;
-        TElTreeItem* folder	= node;//->Parent;
+        TElTreeItem* folder	= node->Parent;
         while(folder){
 			if (folder) folder->Expand(false);
         	if (folder->Parent){

@@ -175,6 +175,8 @@ void CParticleTools::OnFrame()
 	if (m_EditObject)
     	m_EditObject->OnFrame();
 
+    if (m_Flags.is(flRemoveAction))
+    	RealRemoveAction();
 	if (m_Flags.is(flApplyParent))
     	RealApplyParent();
 	if (m_Flags.is(flCompileEffect))
@@ -453,7 +455,9 @@ void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR new_full_name)
 void CParticleTools::Remove(LPCSTR name)
 {
 	VERIFY(m_bReady);
-	::Render->PSLibrary.Remove(name);
+	::Render->PSLibrary.Remove	(name);
+	SetCurrentPE				(0);
+	SetCurrentPG				(0);
 }
 
 void CParticleTools::RemoveCurrent()
@@ -644,6 +648,13 @@ void CParticleTools::RealCompileEffect()
 {
     m_LibPED->Compile();
 	m_Flags.set		(flCompileEffect,FALSE);
+}
+
+void CParticleTools::RealRemoveAction()
+{
+	xr_delete		(m_LibPED->m_EActionList[remove_action_num]);
+	m_LibPED->m_EActionList.erase	(m_LibPED->m_EActionList.begin()+remove_action_num);
+	m_Flags.set		(flRemoveAction,FALSE);
 }
 
 LPCSTR CParticleTools::GetInfo()

@@ -23,6 +23,7 @@ public:
     int 				tag;
     LPVOID				m_Object;
     int					icon_index;
+    TColor				prop_color;
 public:
     enum{
     	flShowCB		= (1<<0),
@@ -33,7 +34,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						ListItem		(int _type):type(_type),item(0),key(0),tag(0),icon_index(-1),OnDrawThumbnail(0),OnItemFocused(0),m_Object(0){m_Flags.zero();}
+						ListItem		(int _type):type(_type),prop_color(clBlack),item(0),key(0),tag(0),icon_index(-1),OnDrawThumbnail(0),OnItemFocused(0),m_Object(0){m_Flags.zero();}
 	virtual 			~ListItem		(){};
     void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
     void				SetName			(LPCSTR _key){key=_key;}

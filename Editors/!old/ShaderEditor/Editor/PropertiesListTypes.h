@@ -7,6 +7,7 @@
 
 //---------------------------------------------------------------------------
 enum EPropType{
+	PROP_UNDEF		= -1,
 	PROP_CAPTION	= 0x1000,
 	PROP_BUTTON,
     PROP_CHOOSE,
@@ -137,6 +138,8 @@ public:
     TOnPropItemFocused	OnItemFocused;
     TOnClick			OnClickEvent;
 public:
+	TColor				prop_color;
+	TColor				val_color;
     TRect				draw_rect;
     int 				tag;
     int					subitem;		// multiple selection for each item (SelectTexture for example)
@@ -151,7 +154,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),item(0),key(0),tag(0),subitem(1),OnClickEvent(0),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),prop_color(clBlack),val_color(clBlack),item(0),key(0),tag(0),subitem(1),OnClickEvent(0),OnAfterEditEvent(0),OnBeforeEditEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)

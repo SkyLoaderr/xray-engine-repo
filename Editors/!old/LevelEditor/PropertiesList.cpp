@@ -255,7 +255,6 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
                 LPCSTR k1		= startup_pref;
                 while (k0[0]&&k1[0]&&(k0[0]==k1[0]))	{k0++;k1++; if(k1[0]=='\\')key=k0+1;}
                 if ((k0[0]!='\\')&&(k1[0]!=0))	continue;
-//                key				= k0+1;
             }else{
             	if (1!=_GetItemCount(key.c_str(),'\\')) continue;
             }
@@ -276,6 +275,9 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
         	prop->item->Height 		= ((CanvasValue*)prop->GetFrontValue())->height;
         	prop->item->OwnerHeight = false;
         }
+        // main text set style
+        prop->item->MainStyle->Style= ElhsOwnerDraw;
+        
         // set style
         TElCellStyle* CS    = prop->item->AddStyle();
         CS->OwnerProps 		= true;
@@ -314,15 +316,16 @@ void __fastcall TProperties::AssignItems(PropItemVec& items)
 
     if (m_Flags.is(plItemFolders)){
         for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
-            PropItem* prop		= *it;
+            PropItem* prop 	= *it;
             int cnt 		= _GetItemCount(prop->key.c_str(),'\\');
             if (cnt>1){	
                 AnsiString 	folder;
                 _ReplaceItem(prop->key.c_str(),cnt-1,"",folder,'\\');
-//                folder.Delete(folder.Length(),1);
-//                ListItem* I	= LHelper.FindItem(folder_items,folder.c_str());	
-//                if (!I) I	= 
-                	LHelper.CreateItem(folder_items,folder.c_str(),folder_items.size());
+                if (0==LHelper.FindItem(folder_items,folder.c_str())){
+                	PropItem* P		= PHelper.FindItem(m_Items,prop->key.c_str());
+                    ListItem* I		= LHelper.CreateItem(folder_items,folder.c_str(),0);
+                    if (P) I->prop_color = P->prop_color;
+                }
             }
         }
     }
@@ -374,12 +377,20 @@ void TProperties::FolderRestore()
 }
 void __fastcall TProperties::OnFolderFocused(TElTreeItem* item)
 {
-	AnsiString s;
+	AnsiString s, lfsi;
+    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,lfsi);
 	FHelper.MakeFullName(item,0,s);
     LockUpdating	();
     FolderStore		();
     FillElItems		(m_Items, s.c_str());
     UnlockUpdating	();
+    if (lfsi.Length()){
+		AnsiString 	lfsi_new,new_part;
+        int cnt		= _GetItemCount(s.c_str(),'\\');
+        if (cnt)	_GetItem(s.c_str(),cnt-1,new_part,'\\');
+        _ReplaceItem(lfsi.c_str(),0,new_part.c_str(),lfsi_new,'\\');
+	    SelectItem	(lfsi_new);
+	}
 }
 //---------------------------------------------------------------------------
 
@@ -451,7 +462,7 @@ void DrawButton(TRect R, TCanvas* Surface, LPCSTR caption, bool bDown, bool bSel
 	Surface->Brush->Style 	= bsSolid;
 	Surface->Brush->Color 	= bSelected?TColor(0x00858585):TColor(0x00808080);
 	Surface->FillRect		(R);
-    Surface->Font->Color 	= clBlack;
+//.	Surface->Font->Color 	= clBlack;
     DrawText				(Surface->Handle, caption, -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER | DT_END_ELLIPSIS);
 }
 void DrawButtons(TRect R, TCanvas* Surface, AStringVec& lst, int down_btn, bool bSelected)
@@ -471,13 +482,18 @@ void DrawButtons(TRect R, TCanvas* Surface, AStringVec& lst, int down_btn, bool 
 void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
       TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
 {
+    PropItem* prop 					= (PropItem*)Item->Tag;
+    if (!prop)						return;
+
 	TRect  R1;
-	Surface->Brush->Style = bsClear;
-  	if (SectionIndex == 1){
-    	PropItem* prop 				= (PropItem*)Item->Tag;
+	Surface->Brush->Style 			= bsClear;
+	if (SectionIndex == 0){
+        Surface->Font->Color 		= prop->prop_color;
+        DrawText					(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+	}else if (SectionIndex == 1){
         u32 type 					= prop->type;
         if (prop->Enabled()){
-            Surface->Font->Color 	= clBlack;
+            Surface->Font->Color 	= prop->val_color;
             Surface->Font->Style 	= TFontStyles();           
         }else{
             Surface->Font->Color 	= clSilver;

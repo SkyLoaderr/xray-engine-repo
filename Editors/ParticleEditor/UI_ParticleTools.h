@@ -51,6 +51,10 @@ class CParticleTools: public CToolsCustom
     void				ApplyParent			(bool bForce=false){m_Flags.set(flApplyParent,TRUE); if (bForce) RealApplyParent();}
     void				RealCompileEffect	();
     void				CompileEffect		(bool bForced=false){m_Flags.set(flCompileEffect,TRUE); if (bForced) RealCompileEffect();}
+    u32					remove_action_num;
+    void				RealRemoveAction	();
+public:
+    void				RemoveAction		(u32 idx, bool bForced=false){remove_action_num=idx;m_Flags.set(flRemoveAction,TRUE); if (bForced) RealRemoveAction();}
 public:
 	EEditMode			m_EditMode;
     
@@ -62,6 +66,7 @@ public:
     	flRefreshProps 		= (1<<0),
         flApplyParent		= (1<<1),
         flCompileEffect		= (1<<2),
+        flRemoveAction		= (1<<3),
     };
     Flags32				m_Flags;
 public:

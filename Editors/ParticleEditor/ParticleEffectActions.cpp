@@ -112,44 +112,48 @@ void 	EParticleAction::Save		(IWriter& F)
     for (PBoolMapIt 	b_it=bools.begin(); 	b_it!=bools.end(); 		b_it++)	F.w_u8		(b_it->second.val);
     for (PIntMapIt 		i_it=ints.begin(); 		i_it!=ints.end(); 		i_it++)	F.w_s32		(i_it->second.val);
 }
-void 	EParticleAction::FillProp	(PropItemVec& items, LPCSTR pref)
+void 	EParticleAction::FillProp	(PropItemVec& items, LPCSTR pref, u32 clr)
 {
+    PropValue* V=0;
     for (OrderVecIt o_it=orders.begin(); o_it!=orders.end(); o_it++)
     {
     	LPCSTR name 				= o_it->name.c_str();
 		switch (o_it->type){
         case tpDomain: 
-            domains[o_it->name].FillProp(items, FHelper.PrepareKey(pref,name).c_str());
+            domains[o_it->name].FillProp(items, FHelper.PrepareKey(pref,name).c_str(),clr);
         break;
         case tpVector:{ 
         	PVector& vect = vectors[o_it->name];
         	switch (vect.type){
             case PVector::vNum: 	
-				PHelper.CreateVector	(items,	FHelper.PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
+				V=PHelper.CreateVector	(items,	FHelper.PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
 			break;
             case PVector::vAngle: 	
-				PHelper.CreateAngle3	(items,	FHelper.PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
+				V=PHelper.CreateAngle3	(items,	FHelper.PrepareKey(pref,name).c_str(), &vect.val, vect.mn, vect.mx, 0.001f, 3);            
             break;
             case PVector::vColor: 	
-				PHelper.CreateVColor	(items,	FHelper.PrepareKey(pref,name).c_str(), &vect.val);
+				V=PHelper.CreateVColor	(items,	FHelper.PrepareKey(pref,name).c_str(), &vect.val);
             break;
             }
         }break;
         case tpFloat:{
         	PFloat& flt	= floats[o_it->name];
-            PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,name).c_str(), &flt.val, flt.mn, flt.mx, 0.001f, 3);
+            V=PHelper.CreateFloat		(items,	FHelper.PrepareKey(pref,name).c_str(), &flt.val, flt.mn, flt.mx, 0.001f, 3);
         }break;
         case tpInt:{
         	PInt& el	= ints[o_it->name];
-            PHelper.CreateS32			(items,	FHelper.PrepareKey(pref,name).c_str(), &el.val, el.mn, el.mx);
+            V=PHelper.CreateS32			(items,	FHelper.PrepareKey(pref,name).c_str(), &el.val, el.mn, el.mx);
         }break;
         case tpBool: 
-            PHelper.CreateBOOL			(items,	FHelper.PrepareKey(pref,name).c_str(), &bools[o_it->name].val);
+            V=PHelper.CreateBOOL		(items,	FHelper.PrepareKey(pref,name).c_str(), &bools[o_it->name].val);
         break;
         }
+        if (V) V->Owner()->prop_color	= clr;
     }
-    PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,"Enabled").c_str(), 		&flags, flEnabled);
-    PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,"Draw").c_str(), 			&flags, flDraw);
+    V=PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,"Draw").c_str(), 			&flags, flDraw);
+    V->Owner()->prop_color				= clr;
+    V=PHelper.CreateFlag<Flags32>		(items,	FHelper.PrepareKey(pref,"Enabled").c_str(), 		&flags, flEnabled);
+    V->Owner()->prop_color				= clr;
 }
 void EParticleAction::appendFloat	(LPCSTR name, float v, float mn, float mx)
 {
@@ -899,7 +903,7 @@ EPASource::EPASource				():EParticleAction(PAPI::PASourceID)
 	appendDomain					("Size",			PDomain(PDomain::vNum,FALSE));
 	appendBool						("Single Size",		TRUE);
 	appendDomain					("Color",			PDomain(PDomain::vColor, FALSE, 0x00000000, PAPI::PDPoint,1.f,1.f,1.f,1.f,1.f,1.f,1.f,1.f,1.f));
-	appendFloat						("Alpha",			0.f, 0.f, 1.f);
+	appendFloat						("Color\\Alpha",	0.f, 0.f, 1.f);
 	appendFloat						("Starting Age",	0.f);
 	appendFloat						("Age Sigma",		0.f);
 	appendFloat						("Parent Motion",	0.f);
@@ -911,7 +915,7 @@ void	EPASource::Compile			(IWriter& F)
         							pDomain(EXPAND_DOMAIN(_domain("Velocity"))),
         							pDomain(EXPAND_DOMAIN(_domain("Rotation"))),
         							pDomain(EXPAND_DOMAIN(_domain("Size"))), _bool("Single Size").val,
-        							pDomain(EXPAND_DOMAIN(_domain("Color"))), _float("Alpha").val,
+        							pDomain(EXPAND_DOMAIN(_domain("Color"))), _float("Color\\Alpha").val,
                                     _float("Starting Age").val, _float("Age Sigma").val, _float("Parent Motion").val,
         							_bool("Allow Rotate").val);
 }
@@ -934,7 +938,7 @@ EPATargetColor::EPATargetColor		():EParticleAction(PAPI::PATargetColorID)
 	actionName						= actionType;
     appendVector					("Color",			PVector::vColor, 1.f,1.f,1.f, 0.f,1.f);
     appendFloat						("Alpha",			1.f);
-    appendFloat						("Scale",			1.f);
+    appendFloat						("Scale",			1.f);     
 }
 void	EPATargetColor::Compile	  	(IWriter& F)
 {

@@ -26,10 +26,15 @@ class ECORE_API CPropHelper{
         return val;
     }
 public:
-    IC PropItem* 		FindItem		(PropItemVec& items, const AnsiString& key, EPropType type)
+    IC PropItem* 		FindItem		(PropItemVec& items, const AnsiString& key, EPropType type=PROP_UNDEF)
     {
-    	for (PropItemIt it=items.begin(); it!=items.end(); it++)
-        	if (((*it)->type==type)&&((*it)->key==key)) return *it;
+    	if (type!=PROP_UNDEF){
+            for (PropItemIt it=items.begin(); it!=items.end(); it++)
+                if (((*it)->type==type)&&((*it)->key==key)) return *it;
+        }else{
+            for (PropItemIt it=items.begin(); it!=items.end(); it++)
+                if ((*it)->key==key) return *it;
+        }
         return 0;
     }
 public:

@@ -210,19 +210,25 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop		= *it;
         if (!prop->key.IsEmpty()&&(prop->key[prop->key.Length()]=='\\')){
-        	FHelper.AppendFolder(tvItems,prop->key,!m_Flags.is(ilSuppressIcon));
+        	TElTreeItem* I	= FHelper.AppendFolder(tvItems,prop->key,!m_Flags.is(ilSuppressIcon));
+            I->UseStyles				= true;
+            I->MainStyle->TextColor 	= prop->prop_color;         
+            I->MainStyle->Style			= ElhsOwnerDraw;
         }else{
             prop->item			= FHelper.AppendObject(tvItems,prop->key,false,!m_Flags.is(ilSuppressIcon));
             if (!prop->item){
                 ELog.DlgMsg		(mtError,"Duplicate item name found: '%s'",prop->key);
                 break;
             }
-            prop->item->ImageIndex= prop->icon_index;
-            prop->item->Tag	    = (int)prop;
-            prop->item->UseStyles=true;
+            prop->item->ImageIndex	= prop->icon_index;
+            prop->item->Tag	    	= (int)prop;
+            prop->item->UseStyles	= true;
             prop->item->CheckBoxEnabled = prop->m_Flags.is(ListItem::flShowCB);
             prop->item->ShowCheckBox 	= prop->m_Flags.is(ListItem::flShowCB);
             prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(ListItem::flCBChecked);
+
+	        prop->item->MainStyle->OwnerProps 	= false;
+    	    prop->item->MainStyle->TextColor	= clRed;
             // set flags                                        
             if (prop->m_Flags.is(ListItem::flDrawThumbnail)){
                 prop->item->Height 		= 64;
@@ -429,12 +435,16 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
 {
     ListItem* prop 			= (ListItem*)Item->Tag;
     if (prop){
+    	Surface->Font->Color= prop->prop_color;
         DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
         if (miDrawThumbnails->Checked&&prop->m_Flags.is(ListItem::flDrawThumbnail)){ 
             R.top			+= tvItems->LineHeight-4;
             if (prop->OnDrawThumbnail)
             	prop->OnDrawThumbnail(prop,Surface,R);
         }
+    }else{
+    	Surface->Font->Color= Item->MainStyle->TextColor;
+        DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
     }
 }
 //---------------------------------------------------------------------------

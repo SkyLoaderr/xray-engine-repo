@@ -154,11 +154,9 @@ void __fastcall PS::CPEDef::OnActionEditClick(PropValue* sender, bool& bDataModi
     break;
     case 2:        
         if (ELog.DlgMsg(mtConfirmation, TMsgDlgButtons() << mbYes << mbNo,"Remove action?") == mrYes){
-            xr_delete		(m_EActionList[idx]);
-            m_EActionList.erase	(m_EActionList.begin()+idx);
-            UI->Command		(COMMAND_UPDATE_PROPERTIES,true);
+            PTools->RemoveAction(idx);
+            UI->Command		(COMMAND_UPDATE_PROPERTIES);
             bDataModified	= true;
-            bSafe			= true;
         }
     break;
     }
@@ -196,6 +194,7 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
     if (m_Flags.is(dfSprite)){
 	    P=PHelper.CreateChoose(items,FHelper.PrepareKey				(pref,"Sprite\\Texture"), 	   			&m_TextureName, smTexture);
         P->OnChangeEvent		= OnShaderChange;
+        P->Owner()->subitem		= 2;
 	    P=PHelper.CreateChoose(items,FHelper.PrepareKey				(pref,"Sprite\\Shader"), 	   			&m_ShaderName,	smEShader);
         P->OnChangeEvent		= OnShaderChange;
     	// frame
@@ -245,12 +244,15 @@ void PS::CPEDef::FillProp(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner)
 	B=::PHelper.CreateButton(items,FHelper.PrepareKey(pref,"Actions\\Edit"),"Append",ButtonValue::flFirstOnly);
     B->OnBtnClickEvent		= OnActionsClick;
 	for (EPAVecIt s_it=m_EActionList.begin(); s_it!=m_EActionList.end(); s_it++){
+    	u32 clr				= (*s_it)->flags.is(EParticleAction::flEnabled)?clBlack:clSilver;
     	AnsiString a_pref	= FHelper.PrepareKey(pref,"Actions",AnsiString().sprintf("%s (%s)",*(*s_it)->actionType,*(*s_it)->actionName).c_str());
         ButtonValue* B		= PHelper.CreateButton(items,a_pref,"Up,Down,Remove",ButtonValue::flFirstOnly); B->Owner()->tag = (s_it-m_EActionList.begin());
+        B->Owner()->prop_color	= clr;
         B->OnBtnClickEvent	= OnActionEditClick;
 		P=PHelper.CreateRText	(items,FHelper.PrepareKey(a_pref.c_str(),"Name"),&(*s_it)->actionName);
         P->Owner()->OnAfterEditEvent = OnAfterActionNameEdit;
-    	(*s_it)->FillProp	(items,a_pref.c_str());
+        P->Owner()->prop_color	= clr;
+    	(*s_it)->FillProp	(items,a_pref.c_str(),clr);
     }
 }
 void PS::CPEDef::Compile()
