@@ -65,6 +65,7 @@ IC int	calcSphereSector(Fvector& dir)
 	}
 }
 
+/*
 class Marker {
 private:
 	DWORD	size;	// in dwords
@@ -134,27 +135,27 @@ c_line:
 		return	data[word]&mask;
 	}
 };
-
+*/
 
 // volumetric query
 DEF_VECTOR		(Nearest,DWORD);
 
-struct			Query
+class			Query
 {
+public:
 	Nearest		q_List;
 	Marks		q_Marks;
 	Fvector		q_Base;
 	
-	Query()
+	IC void		Begin	(int count)
 	{
-		q_Marks.assign	(g_nodes.size()+2,false);
+		q_List.reserve	(8192);
+		q_Marks.assign	(count,false);
 	}
 
 	IC void		Init	(Fvector& P)
 	{
 		q_Base.set		(P);
-		for (int i=0; i<q_List.size(); i++)
-			q_Marks[i]	= false;
 		q_List.clear	();
 	}
 
@@ -203,12 +204,11 @@ public:
 			cache.assign	(g_nodes.size()*2,rc);
 		}
 
+		FPU::m24r		();
 		Query			Q;
-		Q.q_List.reserve(8192);
+		Q.Begin			(g_nodes.size());
 		for (DWORD N=Nstart; N<Nend; N++)
 		{
-			FPU::m24r	();
-			
 			// initialize process
 			thProgress	= float(N-Nstart)/float(Nend-Nstart);
 			Node&		BaseNode= g_nodes[N];
@@ -223,13 +223,15 @@ public:
 			Q.Perform		(N);
 			
 			// main cycle: trace rays and compute counts
-			for (Nearest_it it=Q.q_List.begin()+1; it!=Q.q_List.end();  it++)
+			for (Nearest_it it=Q.q_List.begin(); it!=Q.q_List.end();  it++)
 			{
 				// calc dir & range
-				DWORD		ID	= *it;
+				DWORD		ID			= *it;
 				R_ASSERT	(ID<g_nodes.size());
-				Node&		N	= g_nodes[ID];
-				Fvector&	Pos = N.Pos;
+				Q.q_Marks	[ID]		= false;
+				if			(N==ID)	continue;
+				Node&		N			= g_nodes[ID];
+				Fvector&	Pos			= N.Pos;
 				Fvector		Dir;
 				Dir.sub		(Pos,BasePos);
 				float		range		= Dir.magnitude();

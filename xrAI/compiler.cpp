@@ -110,7 +110,7 @@ void xrCompiler(LPCSTR name)
 	mem_Optimize();
 	
 	Phase("Lighting nodes...");
-	xrLight		();
+///	xrLight		();
 //	xrDisplay	();
 	mem_Optimize();
 	
