@@ -126,7 +126,7 @@ function handing_lamp_binder:update(delta)
 	
 	if(device():time_global() > self.time) then
 		printf("force")
-		self.joint:set_max_force_and_velocity(2 + math.random(), 0.2 * self.dir_x_axis, 0)
+		self.joint:set_max_force_and_velocity(3 + math.random(), 0.0 * self.dir_x_axis, 0)
 		//self.joint:set_max_force_and_velocity(2 + math.random(), 0.25 * self.dir_z_axis, 1)
 		self.dir_x_axis	= self.dir_x_axis * (-1)
 		self.dir_z_axis = self.dir_z_axis * (-1)
