@@ -10,7 +10,7 @@ function evaluator_enable:__init (name, storage) super ()
 end
 ------------
 function evaluator_enable:evaluate ()
-    return self.a.enabled
+    return true --self.a.enabled
 end    
 ------------------------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ function evaluator_wound:evaluate ()
            return false
        end
     end       
-    if self.object.health < self.a.threshold == true then
+    if self.object.health < 20 then
        self.a.final = false
        return true
     end
@@ -133,7 +133,7 @@ function action_cover:initialize ()
     action_base.initialize (self)
     
     local pt = self.object:safe_cover (self.object:position (), 50, 0)
-    if pt == nil or self.a.immediate == true then
+    if pt == nil or self.object.health < 10 then
        self.pos = self.object:position ()
        self.vid = self.object:level_vertex_id ()
     else
@@ -441,7 +441,9 @@ function add_to_binder (object, char_ini)
     operators["clear"]          =   xr_actions_id.sidor_act_wounded_base + 6
     operators["stand"]          =   xr_actions_id.sidor_act_wounded_base + 7
     
-    this.set_wounded (object)
+    --this.set_wounded (object)
+    st.sit = false 
+    st.cover = false
     
     local manager = object:motivation_action_manager ()
     manager:add_evaluator (properties["enable"],    this.evaluator_enable       ("enabled", xr_motivator.storage[object:id()].wounded))
@@ -532,11 +534,9 @@ function add_to_binder (object, char_ini)
    	manager:add_action      (operators["enemy"], action)
     
     action = manager:action (stalker_ids.action_puzzle_solver)
---    action:add_precondition (world_property (properties["wound"],  false))
     action:add_precondition (world_property (properties["final"],  true))
     
     action = manager:action (stalker_ids.action_combat_planner)
---    action:add_precondition (world_property (properties["wound"],  false))
     action:add_precondition (world_property (properties["final"],  true))
 
 end
