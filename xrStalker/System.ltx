@@ -675,14 +675,14 @@ cost					= 100000
 
 [m_health]
 GroupControlSection	= spawn_group
-$spawn                   = temp\m_health
+$spawn                   = "temp\m_health"
 cform                    = skeleton
 class                    = O_HEALTH
 visual                   = monsters\crow\crow.ogf
 
 [m_crow]
 GroupControlSection	= spawn_group
-$spawn                   = monsters\Crow		; option for Level Editor
+$spawn                   = "monsters\crow"		; option for Level Editor
 $prefetch 				 = 50
 spawn 	                 = on
 cform                    = skeleton
@@ -710,7 +710,7 @@ ph_friction_wall         = 4.0                              ; ???
 
 [m_stalker_e]
 GroupControlSection	= spawn_group
-$spawn                   = monsters\Stalker		; option for Level Editor
+$spawn                   = "monsters\stalker"		; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		     = 32
 Scheduled		     = on			; option for ALife Simulator
@@ -822,7 +822,7 @@ sound_surrender		 = monsters\stalker\surrender\em1_surrender
 
 [m_stalker_demo]
 GroupControlSection	= spawn_group
-$spawn                   = monsters\Stalker-Demo		; option for Level Editor
+$spawn                   = "monsters\stalker-demo"		; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		     = 32
 Scheduled		     = on			; option for ALife Simulator
@@ -934,7 +934,7 @@ sound_surrender		 = monsters\stalker\surrender\em1_surrender
 
 [rat_group]
 GroupControlSection	= spawn_group
-$spawn               = monsters\Rat-Group		; option for Level Editor
+$spawn               = "monsters\rat-group"		; option for Level Editor
 $npc			     = on			; option for Level Editor
 Human		     	     = off			; option for ALife Simulator
 class                        = AI_RAT_G			; AI class
@@ -942,7 +942,7 @@ monster_section              = m_rat_e
 
 [m_rat_e]
 GroupControlSection	= spawn_group
-$spawn                   = monsters\Rat		; option for Level Editor
+$spawn                   = "monsters\rat"		; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		= 100
 Scheduled		     = on			; option for ALife Simulator
@@ -1023,7 +1023,7 @@ terrain		             = 255,255,255,255,30,40
 
 [m_zombie_e]
 GroupControlSection	= spawn_group
-$spawn                   = monsters\Zombie		; option for Level Editor
+$spawn                   = "monsters\zombie"		; option for Level Editor
 $npc			     = on			; option for Level Editor
 Scheduled		     = on			; option for ALife Simulator
 Human		     	     = off			; option for ALife Simulator
@@ -1164,7 +1164,7 @@ ui\logo                  = 32
 [wpn_fn2000]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\FN-2000					; option for Level Editor
+$spawn                   = "weapons\fn-2000"					; option for Level Editor
 $npc                     = off
 $prefetch 		         = 8
 scheduled                = off                              ; option for ALife Simulator
@@ -1260,7 +1260,7 @@ visual                   = weapon\fn2000\wpn_fn2000_hud.ogf
 [wpn_vintorez]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\Vintorez					; option for Level Editor
+$spawn                   = "weapons\vintorez"					; option for Level Editor
 $npc                     = off
 $prefetch 		         = 8
 scheduled                = off                              ; option for ALife Simulator
@@ -1354,7 +1354,7 @@ visual                   = weapon\vintorez\wpn_vintorez_hud.ogf
 [wpn_lr300]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\LR-300					; option for Level Editor
+$spawn                   = "weapons\lr-300"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -1447,7 +1447,7 @@ visual                   = weapon\lr300\wpn_lr300_hud_banan.ogf
 [wpn_val]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\VAL					; option for Level Editor
+$spawn                   = "weapons\val"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 				= 8
 scheduled            = off              ; option for ALife Simulator
@@ -1543,7 +1543,7 @@ visual                   = weapon\val\wpn_val_hud.ogf
 [wpn_ak74]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\AK-74					; option for Level Editor
+$spawn                   = "weapons\ak-74"					; option for Level Editor
 $npc					= on				; option for Level Editor
 $prefetch 				= 16
 scheduled				= off              ; option for ALife Simulator
@@ -1638,7 +1638,7 @@ visual                   = weapon\ak74\wpn_ak74_hud.ogf
 [wpn_groza]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\Groza					; option for Level Editor
+$spawn                   = "weapons\groza"					; option for Level Editor
 $npc					= on				; option for Level Editor
 $prefetch 				= 16
 scheduled				= off              ; option for ALife Simulator
@@ -1735,7 +1735,7 @@ visual                   = weapon\groza\wpn_groza_new_hud.ogf
 [wpn_hpsa]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\HPSA					; option for Level Editor
+$spawn                   = "weapons\hpsa"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		= 8
 scheduled            = off              ; option for ALife Simulator
@@ -1826,7 +1826,7 @@ visual                   = weapon\hpsa\wpn_hpsa_hud_banan.ogf
 [wpn_pm]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\PM					; option for Level Editor
+$spawn                   = "weapons\pm"					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 		= 8
 scheduled            	= off              ; option for ALife Simulator
@@ -1921,7 +1921,7 @@ visual                   = weapon\pm\wpn_pm_hud_banan.ogf
 [wpn_walther]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\Walther					; option for Level Editor
+$spawn                   = "weapons\walther"					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 		= 8
 scheduled            	= off              ; option for ALife Simulator
@@ -2017,7 +2017,7 @@ visual                   = weapon\walter_99\wpn_walter_99_hud.ogf
 [wpn_usp]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\USP					; option for Level Editor
+$spawn                   = "weapons\usp"					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 			= 8
 scheduled            	= off              ; option for ALife Simulator
@@ -2113,7 +2113,7 @@ visual                   = weapon\usp_45\wpn_usp_45_hud.ogf
 [wpn_rpg7]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\RPG-7					; option for Level Editor
+$spawn                   = "weapons\rpg-7"					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 		 = 16
 scheduled            	= off              ; option for ALife Simulator
@@ -2280,7 +2280,7 @@ ph_mass			 = 5
 [wpn_fort]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\Fort					; option for Level Editor
+$spawn                   = "weapons\fort"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		= 8
 scheduled            = off              ; option for ALife Simulator
@@ -2371,7 +2371,7 @@ visual                   = weapon\fort\wpn_fort_hud_banan.ogf
 [wpn_binoc]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\Binocular					; option for Level Editor
+$spawn                   = "weapons\binocular"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2421,7 +2421,7 @@ visual                   = weapon\binoculars\wpn_binoculars_hud.ogf
 [wpn_m134]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\M-134					; option for Level Editor
+$spawn                   = "weapons\m-134"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 scheduled                = off              ; option for ALife Simulator
 cform                    = skeleton
@@ -2509,7 +2509,7 @@ visual                   = weapon\m134\wpn_m134_hud.ogf
 [wpn_toz34]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\TOZ-34					; option for Level Editor
+$spawn                   = "weapons\toz-34"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2610,7 +2610,7 @@ noise_color		= 200,128,200,50
 [wpn_svd]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\SVD					; option for Level Editor
+$spawn                   = "weapons\svd"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2703,7 +2703,7 @@ visual                   = weapon\svd\wpn_svd_hud.ogf
 [wpn_svu]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn                   = weapons\SVU					; option for Level Editor
+$spawn                   = "weapons\svu"					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2936,7 +2936,7 @@ damage			 = actor_damage
 ;monsters
 [graph_point]
     class                = AI_GRAPH
-    $spawn               = ai\graph point
+    $spawn               = "ai\graph point"
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; AMUNITION
@@ -2944,7 +2944,7 @@ damage			 = actor_damage
 [ammo_9x18_fmj]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x18_fmj ; option for Level Editor
+$spawn			= "weapons\ammo\9x18_fmj" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_18_fmj.ogf
@@ -2976,7 +2976,7 @@ tracer			= off
 [ammo_9x18_pbp]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x18_pbp ; option for Level Editor
+$spawn			= "weapons\ammo\9x18_pbp" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_pbp.ogf
@@ -3007,7 +3007,7 @@ tracer			= off
 [ammo_9x18_pmm]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x18_pmm ; option for Level Editor
+$spawn			= "weapons\ammo\9x18_pmm" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_18_pmm.ogf
@@ -3038,7 +3038,7 @@ tracer			= off
 [ammo_9x19_fmj]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x19_fmj ; option for Level Editor
+$spawn			= "weapons\ammo\9x19_fmj" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_fmj.ogf
@@ -3069,7 +3069,7 @@ tracer			= off
 [ammo_9x19_pbp]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x19_pbp ; option for Level Editor
+$spawn			= "weapons\ammo\9x19_pbp" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_19_pbp.ogf
@@ -3100,7 +3100,7 @@ tracer			= off
 [ammo_5.45x39_fmj]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\5.45x39_fmj ; option for Level Editor
+$spawn			= "weapons\ammo\5.45x39_fmj" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron545.ogf
@@ -3131,7 +3131,7 @@ tracer			= on
 [ammo_5.45x39_ap]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\5.45x39_ap ; option for Level Editor
+$spawn			= "weapons\ammo\5.45x39_ap" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron545_ap.ogf
@@ -3162,7 +3162,7 @@ tracer			= on
 [ammo_5.56x45_ss190]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\5.56x45_ss_190 ; option for Level Editor
+$spawn			= "weapons\ammo\5.56x45_ss_190" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron556.ogf
@@ -3193,7 +3193,7 @@ tracer			= on
 [ammo_5.56x45_ap]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\5.56x45_ap ; option for Level Editor
+$spawn			= "weapons\ammo\5.56x45_ap" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron556_ap.ogf
@@ -3224,7 +3224,7 @@ tracer			= on
 [ammo_5.7x28_fmj]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\5.7x28_fmj ; option for Level Editor
+$spawn			= "weapons\ammo\5.7x28_fmj" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron57.ogf
@@ -3255,7 +3255,7 @@ tracer			= on
 [ammo_5.7x28_ap]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\5.7x28_ap ; option for Level Editor
+$spawn			= "weapons\ammo\5.7x28_ap" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron57_AP.ogf
@@ -3286,7 +3286,7 @@ tracer			= on
 [ammo_7.62x54_7h1]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\7.62x54_7_H_1 ; option for Level Editor
+$spawn			= "weapons\ammo\7.62x54_7_h_1" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_7h1.ogf
@@ -3317,7 +3317,7 @@ tracer			= off
 [ammo_7.62x54_ap]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\7.62x54_ap ; option for Level Editor
+$spawn			= "weapons\ammo\7.62x54_ap" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_AP.ogf
@@ -3348,7 +3348,7 @@ tracer			= on
 [ammo_7.62x54_7h14]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\7.62x54_7_H_14 ; option for Level Editor
+$spawn			= "weapons\ammo\7.62x54_7_h_14" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_7h14.ogf
@@ -3379,7 +3379,7 @@ tracer			= on
 [ammo_9x39_pab9]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x39_pab_9 ; option for Level Editor
+$spawn			= "weapons\ammo\9x39_pab_9" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_pab9.ogf
@@ -3410,7 +3410,7 @@ tracer			= off
 [ammo_9x39_ap]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x39_ap ; option for Level Editor
+$spawn			= "weapons\ammo\9x39_ap" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_AP.ogf
@@ -3441,7 +3441,7 @@ tracer			= off
 [ammo_9x39_sp5]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\9x39_SP_5 ; option for Level Editor
+$spawn			= "weapons\ammo\9x39_sp_5" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_sp5.ogf
@@ -3472,7 +3472,7 @@ tracer			= off
 [ammo_11.43x23_fmj]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\11.43x23_fmj ; option for Level Editor
+$spawn			= "weapons\ammo\11.43x23_fmj" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron45.ogf
@@ -3503,7 +3503,7 @@ tracer			= off
 [ammo_11.43x23_hydro]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\11.43x23_Hydro ; option for Level Editor
+$spawn			= "weapons\ammo\11.43x23_hydro" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron45_Hydro.ogf
@@ -3535,7 +3535,7 @@ tracer			= off
 [ammo_12x70_buck]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\12x70_Buck ; option for Level Editor
+$spawn			= "weapons\ammo\12x70_buck" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\kartech.ogf
@@ -3566,7 +3566,7 @@ tracer			= off
 [ammo_12x76_dart]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\12x76_Dart ; option for Level Editor
+$spawn			= "weapons\ammo\12x76_dart" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\dart.ogf
@@ -3597,7 +3597,7 @@ tracer			= off
 [ammo_12x76_zhekan]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\12x76_Zhekan ; option for Level Editor
+$spawn			= "weapons\ammo\12x76_zhekan" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\zhekan.ogf
@@ -3629,7 +3629,7 @@ tracer			= off
 [ammo_og-7b]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\OG-7-B ; option for Level Editor
+$spawn			= "weapons\ammo\og-7-b" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\rpg.ogf
@@ -3661,7 +3661,7 @@ tracer			= off
 [ammo_vog-25p]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\VOG-25P ; option for Level Editor
+$spawn			= "weapons\ammo\vog-25p" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\vog25p.ogf
@@ -3692,7 +3692,7 @@ tracer			= off
 [ammo_vog-25]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn			= weapons\ammo\VOG-25 ; option for Level Editor
+$spawn			= "weapons\ammo\vog-25" ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\vog25.ogf
@@ -3771,7 +3771,7 @@ ph_friction_wall     = 4.0                              ; ???
 ;-----------------------------------------------------------------------------------
 [flesh_group]
 GroupControlSection	= spawn_group
-$spawn               = monsters\Flesh-Group		; option for Level Editor
+$spawn               = "monsters\flesh-group"		; option for Level Editor
 $npc			     = on						; option for Level Editor
 Human		     	 = off						; option for ALife Simulator
 class                = AI_FLE_G					; AI class
@@ -3779,7 +3779,7 @@ monster_section     = m_flesh_e
 
 [m_flesh_e]
 GroupControlSection	= spawn_group
-$spawn               = monsters\Flesh			; option for Level Editor
+$spawn               = "monsters\flesh"			; option for Level Editor
 $npc			     = on						; option for Level Editor
 $prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -3858,7 +3858,7 @@ terrain				 = 255,255,255,255,30,40
 ;-----------------------------------------------------------------------------------
 [m_chimera_e]
 GroupControlSection	= spawn_group
-$spawn               = monsters\Chimera			; option for Level Editor
+$spawn               = "monsters\chimera"			; option for Level Editor
 $npc			     = on						; option for Level Editor
 $prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -3939,7 +3939,7 @@ terrain				 = 255,255,255,255,30,40
 ;-----------------------------------------------------------------------------------
 [m_dog_e]
 GroupControlSection	= spawn_group
-$spawn               = monsters\Dog				; option for Level Editor
+$spawn               = "monsters\dog"				; option for Level Editor
 $npc			     = on						; option for Level Editor
 $prefetch 			 = 16
 Scheduled		     = on						; option for ALife Simulator
@@ -4017,7 +4017,7 @@ terrain				 = 255,255,255,255,30,40
 ;-----------------------------------------------------------------------------------
 [m_trader]
 GroupControlSection	= spawn_group
-$spawn						= monsters\Trader		; option for Level Editor
+$spawn						= "monsters\trader"		; option for Level Editor
 $prefetch 					= 5
 cform						= skeleton
 class						= AI_TRADE
@@ -4066,21 +4066,21 @@ stalker_friend_sell_price_factor		= 1.1
 ;-----------------------------------------------------------------
 
 [spawn_group_zone]
-$spawn						= ai\group zone									; option for Level Editor
+$spawn						= "ai\group zone"									; option for Level Editor
 class						= AI_SPGRP
 
 [spawn_group]
-$spawn						= ai\spawn group								; option for Level Editor
+$spawn						= "ai\spawn group"								; option for Level Editor
 class						= AI_SPGRP
 
 [level_changer]
 GroupControlSection	= 
-$spawn 			= ai\level changer
+$spawn 			= "ai\level changer"
 ;$prefetch 		= 4
 class			= LVL_CHNG
 
 [level_point]
-$spawn 			= ai\level point
+$spawn 			= "ai\level point"
 ;$prefetch 		= 16
 class			= LVLPOINT
 
