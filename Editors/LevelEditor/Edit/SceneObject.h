@@ -113,6 +113,7 @@ public:
     // load/save methods
   	virtual bool 	Load					(CStream&);
 	virtual void 	Save					(CFS_Base&);
+    virtual bool	ExportSpawn				(CFS_Base&, int chunk_id);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditObject_H_*/

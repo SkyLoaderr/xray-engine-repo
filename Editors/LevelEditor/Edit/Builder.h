@@ -67,12 +67,12 @@ protected:
 
 	bool m_InProgress;
 
-	FSPath m_LevelPath;
 	Fvector m_LevelShift;
 	Fbox m_LevelBox;
 
 	AStringVec m_TexNames;
-
+public:
+	FSPath m_LevelPath;
 protected:
 	bool LightenObjects				();
 	bool PrepareFolders             ();

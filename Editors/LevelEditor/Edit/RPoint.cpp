@@ -11,7 +11,7 @@
 #include "Texture.h"
 #include "Frustum.h"
 #include "D3DUtils.h"
-// export to game
+// export spawn
 #include "net_utils.h"
 #include "xrMessages.h"
 

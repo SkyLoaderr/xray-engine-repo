@@ -12,6 +12,10 @@
 #include "EditMesh.h"
 #include "bone.h"
 #include "motion.h"
+// export spawn
+#include "net_utils.h"
+#include "xrMessages.h"
+#include "builder.h"
 
 //----------------------------------------------------
 #define SCENEOBJ_CURRENT_VERSION		0x0011
@@ -118,4 +122,50 @@ void CSceneObject::Save(CFS_Base& F){
     }
 
 }
+//----------------------------------------------------
+
+bool CSceneObject::ExportSpawn(CFS_Base& F, int chunk_id)
+{
+    if (IsDynamic()){
+    	// export spawn packet
+        NET_Packet Packet;
+        Packet.w_begin		(M_SPAWN);
+        Packet.w_string		("M_DUMMY");
+        Packet.w_string		(Name);
+        Packet.w_u8 		(0xFE);
+        Packet.w_vec3		(PPosition);
+        Fvector a; a.set	(0,PRotation.y,0);
+        Packet.w_vec3		(a);
+        Packet.w_u16		(0);
+        WORD fl 			= M_SPAWN_OBJECT_ACTIVE;//(m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
+        Packet.w_u16		(fl);
+
+        u32	position		= Packet.w_tell	();
+        Packet.w_u16		(0);
+        // spawn info
+        Packet.w_u8 		((1<<0)|(1<<1)|(1<<3));
+		// esAnimated
+        string256 anm_name;
+        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,Engine.FS.m_OMotions.m_DefExt,anm_name));
+        SaveOMotions		(anm_name);
+		// esModel
+        string256 mdl_name;
+        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,Engine.FS.m_GameMeshes.m_DefExt,mdl_name));
+        if (m_pRefs->IsSkeleton()) m_pRefs->ExportSkeletonOGF(mdl_name); else m_pRefs->ExportObjectOGF(mdl_name);
+		// esSound
+        string256 snd_name;
+        Packet.w_string		(Engine.FS.GenerateName(Builder.m_LevelPath.m_Path,Name,Engine.FS.m_GameSounds.m_DefExt,snd_name));
+		Engine.FS.CreateNullFile(snd_name);
+        // data size
+        u16 size			= u16(Packet.w_tell()-position);
+        Packet.w_seek		(position,&size,sizeof(u16));
+
+	    F.open_chunk		(chunk_id);
+        F.write				(Packet.B.data,Packet.B.count);
+        F.close_chunk		();
+    	return true;
+    }
+    return false;
+}
+//----------------------------------------------------
 

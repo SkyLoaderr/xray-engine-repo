@@ -119,6 +119,8 @@ public:
 
     void		RegisterAccess	(LPSTR fn, LPSTR start_msg);
     void		WriteAccessLog	(LPSTR fn, LPSTR start_msg);
-};                     
+
+    LPCSTR		GenerateName	(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name);
+};
 #endif /*_INCDEF_FileSystem_H_*/
 

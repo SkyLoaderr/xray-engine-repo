@@ -586,3 +586,17 @@ void CFileSystem::Close(CStream*& F)
 {
 	_DELETE(F);
 }
+
+LPCSTR CFileSystem::GenerateName(LPCSTR base_path, LPCSTR base_name, LPCSTR def_ext, LPSTR out_name)
+{
+    int cnt = 0;
+	string256 fn;
+    if (base_name)	strconcat	(fn,base_path,base_name,def_ext);
+	else 			sprintf		(fn,"%s%02d%s",base_path,cnt++,def_ext);
+	while (Exist(fn))
+	    if (base_name)	sprintf(fn,"%s%s%02d%s",base_path,base_name,cnt++,def_ext);
+        else 			sprintf(fn,"%s%02d%s",base_path,cnt++,def_ext);
+    strcpy(out_name,fn);
+	return out_name;
+}
+
