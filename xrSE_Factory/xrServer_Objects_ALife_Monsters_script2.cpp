@@ -13,6 +13,17 @@
 
 using namespace luabind;
 
+void CSE_ALifeMonsterBiting::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_monster1(
+			CSE_ALifeMonsterBiting,
+			"cse_alife_monster_biting",
+			CSE_ALifeMonsterAbstract
+		)
+	];
+}
+
 void CSE_ALifeHumanAbstract::script_register(lua_State *L)
 {
 	module(L)[
