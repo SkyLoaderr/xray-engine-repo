@@ -313,7 +313,7 @@ void game_sv_GameState::Create					(shared_str &options)
 	m_bFriendlyIndicators = get_option_i(*options,"fi",0) != 0;
 }
 
-void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
+void	game_sv_GameState::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
 {
 	VERIFY				(E);
 

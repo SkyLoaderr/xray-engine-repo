@@ -130,7 +130,7 @@ void	game_sv_mp_script::SpawnPlayer				(ClientID id, LPCSTR N, LPCSTR SkinName, 
 		{
 			Fvector Pos, Angle;
 			ps_who->setFlag(GAME_PLAYER_FLAG_CS_SPECTATOR);
-			if (!GetPosAngleFromActor(id, Pos, Angle)) assign_RP				(E);
+			if (!GetPosAngleFromActor(id, Pos, Angle)) assign_RP				(E, ps_who);
 			else
 			{
 				E->o_Angle.set(Angle);

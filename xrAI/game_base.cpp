@@ -25,6 +25,7 @@ game_PlayerState::game_PlayerState()
 	LastBuyAcount = 0;
 	//---------------------------------
 	m_bCurrentVoteAgreed = 0;
+	m_s16LastSRoint = -1;
 }
 
 void game_PlayerState::clear()
@@ -36,12 +37,16 @@ void game_PlayerState::clear()
 	lasthitweapon		= 0;
 
 	pItemList.clear();
+	pSpawnPointsList.clear();
+	m_s16LastSRoint = -1;
 	LastBuyAcount = 0;
 }
 
 game_PlayerState::~game_PlayerState()
 {
 	pItemList.clear();
+	pSpawnPointsList.clear();
+	m_s16LastSRoint = -1;
 	LastBuyAcount = 0;
 };
 

@@ -92,7 +92,7 @@ public:
 	virtual		void				Update					();
 				BOOL				AllPlayers_Ready		();
 
-	virtual		void				assign_RP				(CSE_Abstract* E);
+	virtual		void				assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who);
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);//	{};

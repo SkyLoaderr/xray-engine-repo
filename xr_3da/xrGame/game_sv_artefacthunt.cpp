@@ -875,7 +875,7 @@ void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
 		Fvector Pos = pA->o_Position;
 		Fvector Angle = pA->o_Angle;
 
-		assign_RP(l_pC->owner);
+		assign_RP(l_pC->owner, ps);
 
 		NET_Packet	P;
 		u_EventGen(P, GE_MOVE_ACTOR, ps->GameID);

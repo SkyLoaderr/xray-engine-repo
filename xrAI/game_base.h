@@ -67,10 +67,15 @@ public:
 	virtual void	net_Import				(NET_Packet& P);
 #endif
 	//---------------------------------------
-
+	
 	DEF_VECTOR(PLAYER_ITEMS_LIST, u16);
 
 	PLAYER_ITEMS_LIST	pItemList;
+
+	DEF_VECTOR(SPAWN_POINTS_LIST, s16);
+
+	SPAWN_POINTS_LIST	pSpawnPointsList;
+	s16					m_s16LastSRoint;
 
 	s16					LastBuyAcount;
 	DECLARE_SCRIPT_REGISTER_FUNCTION_STRUCT

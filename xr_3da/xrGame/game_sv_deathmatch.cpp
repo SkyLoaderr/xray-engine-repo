@@ -396,7 +396,7 @@ u32		game_sv_Deathmatch::RP_2_Use				(CSE_Abstract* E)
 	return 0;
 };
 
-void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
+void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who)
 {
 	VERIFY				(E);
 	u32		Team		= RP_2_Use(E);
@@ -405,17 +405,18 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	CSE_Spectator		*pSpectator = smart_cast<CSE_Spectator*>(E);
 	if (pSpectator)
 	{
-		inherited::assign_RP(E);
+		inherited::assign_RP(E, ps_who);
 		return;
 	};
 
 	CSE_ALifeCreatureActor	*pA	=	smart_cast<CSE_ALifeCreatureActor*>(E);
 	if (!pA)
 	{
-		inherited::assign_RP(E);
+		inherited::assign_RP(E, ps_who);
 		return;
 	};
 //-------------------------------------------------------------------------------
+	xr_vector<RPoint>&	rp	= rpoints[Team];
 	//create Enemies list
 	xr_vector <u32>					pEnemies;
 	xr_vector <u32>					pFriends;
@@ -429,28 +430,46 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 		if (ps->team == pA->s_team && !teams.empty()) pFriends.push_back(it);
 //		else pEnemies.push_back(it);
 	};
-	
 
-	if (pEnemies.empty()) 
+//	if (pEnemies.empty()) 
 	{
 		u8 OldTeam = pA->s_team;
 		pA->s_team = u8(Team);
-		inherited::assign_RP(E);
+//		inherited::assign_RP(E, ps_who);
+		
+		u16 NumRP = u16(rp.size());
+		if (ps_who->pSpawnPointsList.empty())
+		{
+			for (u16 it=0; it < NumRP; it++)
+			{
+				if (it != ps_who->m_s16LastSRoint)
+					ps_who->pSpawnPointsList.push_back(it);
+			}
+		}
+		int PointID = ::Random.randI((int)ps_who->pSpawnPointsList.size());
+		ps_who->m_s16LastSRoint = ps_who->pSpawnPointsList[PointID];
+		ps_who->pSpawnPointsList.erase(ps_who->pSpawnPointsList.begin()+PointID);
+
+		RPoint&				r	= rp[ps_who->m_s16LastSRoint];
+
+		E->o_Position.set	(r.P);
+		E->o_Angle.set		(r.A);
+
 		pA->s_team = OldTeam;
 		return;
 	};
 //-------------------------------------------------------------------------------	
-	xr_vector<RPoint>&	rp	= rpoints[Team];
+	/*
 	xr_deque<RPointData>			pRPDist;
 	pRPDist.clear();
 
-	u32 NumRP = rp.size();
+	u32 NumRP = rp.size();	
+
 	Fvector DistVect;
 	for (it=0; it < NumRP; it++)
 	{
 		RPoint&				r	= rp[it];
 		pRPDist.push_back(RPointData(it, 1000000.0f));
-
 		for (u32 p=0; p<pEnemies.size(); p++)
 		{
 			xrClientData* xrCData	=	m_server->ID_to_client(get_it_2_id(pEnemies[p]));
@@ -467,6 +486,7 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	RPoint&				r	= rp[(pRPDist.back()).PointID];
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
+	*/
 };
 
 bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)

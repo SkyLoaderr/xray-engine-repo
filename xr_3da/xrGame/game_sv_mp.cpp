@@ -269,7 +269,7 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 	if (pA) 
 	{
 		pA->s_team				=	u8(ps_who->team);
-		assign_RP				(pA);
+		assign_RP				(pA, ps_who);
 		SetSkin(E, pA->s_team, ps_who->skin);
 		ps_who->resetFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_who->RespawnTime = Device.dwTimeGlobal;
@@ -279,7 +279,7 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 		{
 			Fvector Pos, Angle;
 			ps_who->setFlag(GAME_PLAYER_FLAG_CS_SPECTATOR);
-			if (!GetPosAngleFromActor(id, Pos, Angle)) assign_RP				(E);
+			if (!GetPosAngleFromActor(id, Pos, Angle)) assign_RP				(E, ps_who);
 			else
 			{
 				E->o_Angle.set(Angle);
