@@ -119,14 +119,15 @@ end
 
 function handing_lamp_binder:update(delta)
 	object_binder.update(self, delta)
-	printf("update")
+
 	if(self.joint == nil) then
 		self.joint	= self.object:get_physics_shell():get_joint_by_bone_name("provod")
 	end	
 	
 	if(device():time_global() > self.time) then
-		self.joint:set_max_force_and_velocity(10 * self.dir_x_axis, 1, 0)
-		self.joint:set_max_force_and_velocity(10 * self.dir_z_axis, 1, 2)
+		printf("force")
+		self.joint:set_max_force_and_velocity(100 * self.dir_x_axis, 1, 0)
+		self.joint:set_max_force_and_velocity(100 * self.dir_z_axis, 1, 2)
 		self.dir_x_axis	= self.dir_x_axis * (-1)
 		self.dir_z_axis = self.dir_z_axis * (-1)
 		self.time		= device():time_global() + math.random(2000, 4000)
