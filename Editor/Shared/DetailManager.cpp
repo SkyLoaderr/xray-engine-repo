@@ -498,8 +498,8 @@ void CDetailManager::UpdateCache	(int limit)
 		
 		CRandom				r_selection	(0x12071980);
 		CRandom				r_jitter	(0x12071980);
-		CRandom				r_yaw		(DS.r_yaw);
-		CRandom				r_scale		(DS.r_scale);
+		CRandom				r_yaw		(0x12071980);
+		CRandom				r_scale		(0x12071980);
 		
 		// Decompressing itself
 		for (DWORD z=0; z<d_size; z++)
