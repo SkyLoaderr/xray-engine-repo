@@ -3,8 +3,8 @@
 <xml>
 	<specific_character id="escape_trader" team_default = "1">
 		<name>Сидорович</name>
-		<icon x="0" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
+		<icon x="2" y="0"></icon>
+		<map_icon x="6" y="0"></map_icon>
 		<bio>Промышлял торговлей с малых лет. В детском садике продавал цветные карандаши.
 		В школе торговал жевательной резинкой.
 		В институте промышлял продажей легкой наркоты. С появлением Зоны смекнул, что на
@@ -28,8 +28,8 @@
 
 	<specific_character id="rostok_barman" team_default = "1">
 		<name>Панас Федорович</name>
-		<icon x="0" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
+		<icon x="0" y="0"></icon>
+		<map_icon x="1" y="4"></map_icon>
 		<bio>Просто хороший алкаголик. Сидел, выдвигался в президенты Украины.</bio>
 
 		<team>Barman</team>
@@ -44,8 +44,8 @@
 
 	<specific_character id="actor" team_default = "1">
 		<name>Меченый</name>
-		<icon x="0" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
+		<icon x="24" y="6"></icon>
+		<map_icon x="2" y="5"></map_icon>
 
 		<team>Actor</team>
 
