@@ -385,7 +385,8 @@ void CAI_Crow::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, COb
 	set_death_time		();
 	if (eDeathDead!=st_current) 
 	{	
-		Die(who);
+		if (g_Alive())
+			Die(who);
 		st_target = eDeathFall;
 	}
 	else smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(m_Anims.m_death_dead.GetRandom());
