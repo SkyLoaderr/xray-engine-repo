@@ -8,8 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "..\\..\\..\\xr_trims.h"
-#include "..\\..\\xr_weapon_list.h"
 
 void CAI_Rat::vfSaveEnemy()
 {
@@ -104,7 +102,7 @@ void CAI_Rat::vfComputeNewPosition()
 		tpNewNode = Level().AI.Node(dwNewNode);
 	}
 	if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
-		vPosition.y = ffGetY(*tpNewNode,vPosition.x,vPosition.z);
+		vPosition.y = Level().AI.ffGetY(*tpNewNode,vPosition.x,vPosition.z);
 		m_tOldPosition.set(tTemp);
 		m_bNoWay = false;
 	}

@@ -8,10 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "..\\ai_monsters_misc.h"
-#include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\hudmanager.h"
-#include "..\\..\\..\\xr_trims.h"
 
 CAI_Rat::CAI_Rat()
 {
@@ -99,8 +95,6 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(vPosition);
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
-	INIT_SQUAD_AND_LEADER;
-
 	tStateStack.push(eCurrentState = aiRatFreeHunting);
 	
 	return TRUE;

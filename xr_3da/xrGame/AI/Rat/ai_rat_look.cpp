@@ -8,8 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\ai_sounds.h"
 
 void CAI_Rat::SetDirectionLook()
 {

@@ -9,15 +9,52 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
-#include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\hudmanager.h"
-#include "..\\..\\..\\xr_trims.h"
 
 using namespace NAI_Rat_Constants;
 
+void CAI_Rat::Think()
+{
+	bStopThinking = false;
+	do {
+		m_ePreviousState = eCurrentState;
+		switch(eCurrentState) {
+			case aiRatDie : {
+				Die();
+				break;
+			}
+			case aiRatFreeHunting : {
+				FreeHunting();
+				break;
+			}
+			case aiRatAttackFire : {
+				AttackFire();
+				break;
+			}
+			case aiRatAttackRun : {
+				AttackRun();
+				break;
+			}
+			case aiRatTurn : {
+				Turn();
+				break;
+			}
+			case aiRatUnderFire : {
+				UnderFire();
+				break;
+			}
+			case aiRatRetreat : {
+				Retreat();
+				break;
+			}
+		}
+		m_bStateChanged = m_ePreviousState != eCurrentState;
+	}
+	while (!bStopThinking);
+}
 void CAI_Rat::Die()
 {
-	WRITE_TO_LOG("Dying...");
+	//WRITE_TO_LOG("Dying...");
+	bStopThinking = true;
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
@@ -63,123 +100,6 @@ void CAI_Rat::Turn()
 	r_torso_speed = 3*fTurnAngle;
 
 	vfSetMovementType(BODY_STATE_STAND,0);
-}
-
-void CAI_Rat::AttackFire()
-{
-	WRITE_TO_LOG("Attacking enemy...");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(!g_Alive(),aiRatDie)
-	
-	SelectEnemy(m_Enemy);
-	
-	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
-	if (eState != eCurrentState)
-		GO_TO_NEW_STATE_THIS_UPDATE(eState);
-
-	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive())
-		
-	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
-
-	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-	vfNormalizeSafe(tTemp);
-	SRotation sTemp;
-	mk_rotation(tTemp,sTemp);
-	
-	CHECK_IF_GO_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,ATTACK_ANGLE),aiRatAttackRun)
-		
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-
-	Fvector tDistance;
-	tDistance.sub(Position(),m_Enemy.Enemy->Position());
-
-	AI_Path.TravelPath.clear();
-	
-	vfSaveEnemy();
-
-	vfAimAtEnemy();
-
-	vfSetFire(true,Group);
-
-	vfSetMovementType(m_cBodyState,0);
-}
-
-void CAI_Rat::AttackRun()
-{
-	WRITE_TO_LOG("Attack enemy");
-	bStopThinking = true;
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
-	
-	SelectEnemy(m_Enemy);
-
-	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
-	if (eState != eCurrentState) {
-		GO_TO_NEW_STATE_THIS_UPDATE(eState);
-	}
-
-	if (m_Enemy.Enemy)
-		m_dwLostEnemyTime = Level().timeServer();
-
-	if (!(m_Enemy.Enemy) && m_tSavedEnemy && ((m_tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()) || (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME)))
-		m_Enemy.Enemy = m_tSavedEnemy;
-
-	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy || !m_Enemy.Enemy->g_Alive())
-		
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-
-	Fvector tDistance;
-	tDistance.sub(Position(),m_Enemy.Enemy->Position());
-	
-	Fvector tTemp;
-	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
-	vfNormalizeSafe(tTemp);
-	SRotation sTemp;
-	mk_rotation(tTemp,sTemp);
-
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
-		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,ATTACK_ANGLE)) {
-			GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackFire);
-		}
-		else {
-			r_torso_target.yaw = sTemp.yaw;
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
-		}
-	}
-	else
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,ATTACK_ANGLE),aiRatTurn);
-
-	INIT_SQUAD_AND_LEADER;
-	
-	m_tGoalDir.set			(m_Enemy.Enemy->Position());
-	m_fASpeed				= .3f;
-	m_tSpawnPosition.set	(m_Enemy.Enemy->Position());
-	m_tVarGoal.set			(0,0,0);
-	m_fGoalChangeDelta		= 3.f;
-
-	vfSaveEnemy();
-
-	vfUpdateTime(m_fTimeUpdateDelta);
-
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
-		vfAimAtEnemy();
-		r_torso_target.pitch = 0;
-	}
-	else {
-		vfComputeNewPosition();
-		SetDirectionLook();
-	}
-	
-	vfSetFire(false,Group);
-
-	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
-	
-	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
-		m_fSpeed = EPS_S;
-	else 
-		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
-
 }
 
 void CAI_Rat::FreeHunting()
@@ -307,6 +227,123 @@ void CAI_Rat::UnderFire()
 	AI_Path.TravelPath.clear();
 }
 
+void CAI_Rat::AttackFire()
+{
+	WRITE_TO_LOG("Attacking enemy...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(!g_Alive(),aiRatDie)
+	
+	SelectEnemy(m_Enemy);
+	
+	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
+	if (eState != eCurrentState)
+		GO_TO_NEW_STATE_THIS_UPDATE(eState);
+
+	CHECK_IF_GO_TO_PREV_STATE(!(m_Enemy.Enemy) || !m_Enemy.Enemy->g_Alive())
+		
+	CHECK_IF_GO_TO_NEW_STATE((m_Enemy.Enemy->Position().distance_to(vPosition) > ATTACK_DISTANCE),aiRatAttackRun)
+
+	Fvector tTemp;
+	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+	vfNormalizeSafe(tTemp);
+	SRotation sTemp;
+	mk_rotation(tTemp,sTemp);
+	
+	CHECK_IF_GO_TO_NEW_STATE(!Level().AI.bfTooSmallAngle(r_torso_current.yaw,sTemp.yaw,ATTACK_ANGLE),aiRatAttackRun)
+		
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	Fvector tDistance;
+	tDistance.sub(Position(),m_Enemy.Enemy->Position());
+
+	AI_Path.TravelPath.clear();
+	
+	vfSaveEnemy();
+
+	vfAimAtEnemy();
+
+	vfSetFire(true,Group);
+
+	vfSetMovementType(m_cBodyState,0);
+}
+
+void CAI_Rat::AttackRun()
+{
+	WRITE_TO_LOG("Attack enemy");
+	bStopThinking = true;
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+	
+	SelectEnemy(m_Enemy);
+
+	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
+	if (eState != eCurrentState) {
+		GO_TO_NEW_STATE_THIS_UPDATE(eState);
+	}
+
+	if (m_Enemy.Enemy)
+		m_dwLostEnemyTime = Level().timeServer();
+
+	if (!(m_Enemy.Enemy) && m_tSavedEnemy && ((m_tSavedEnemy->Position().distance_to(vPosition) < ffGetRange()) || (Level().timeServer() - m_dwLostEnemyTime < LOST_MEMORY_TIME)))
+		m_Enemy.Enemy = m_tSavedEnemy;
+
+	CHECK_IF_GO_TO_PREV_STATE(!m_Enemy.Enemy || !m_Enemy.Enemy->g_Alive())
+		
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+
+	Fvector tDistance;
+	tDistance.sub(Position(),m_Enemy.Enemy->Position());
+	
+	Fvector tTemp;
+	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
+	vfNormalizeSafe(tTemp);
+	SRotation sTemp;
+	mk_rotation(tTemp,sTemp);
+
+	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
+		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,ATTACK_ANGLE)) {
+			GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackFire);
+		}
+		else {
+			r_torso_target.yaw = sTemp.yaw;
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
+		}
+	}
+	else
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,ATTACK_ANGLE),aiRatTurn);
+
+	INIT_SQUAD_AND_LEADER;
+	
+	m_tGoalDir.set			(m_Enemy.Enemy->Position());
+	m_fASpeed				= .3f;
+	m_tSpawnPosition.set	(m_Enemy.Enemy->Position());
+	m_tVarGoal.set			(0,0,0);
+	m_fGoalChangeDelta		= 3.f;
+
+	vfSaveEnemy();
+
+	vfUpdateTime(m_fTimeUpdateDelta);
+
+	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= ATTACK_DISTANCE) {
+		vfAimAtEnemy();
+		r_torso_target.pitch = 0;
+	}
+	else {
+		vfComputeNewPosition();
+		SetDirectionLook();
+	}
+	
+	vfSetFire(false,Group);
+
+	vfSetMovementType(m_cBodyState,m_fMaxSpeed);
+	
+	if ((!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8)) || m_bNoWay)
+		m_fSpeed = EPS_S;
+	else 
+		m_fSafeSpeed = m_fSpeed = m_fMaxSpeed;
+
+}
+
 void CAI_Rat::Retreat()
 {
 	WRITE_TO_LOG("Retreat");
@@ -371,42 +408,3 @@ void CAI_Rat::Retreat()
 	AI_Path.TravelPath.clear();
 }
 
-void CAI_Rat::Think()
-{
-	bStopThinking = false;
-	do {
-		m_ePreviousState = eCurrentState;
-		switch(eCurrentState) {
-			case aiRatDie : {
-				Die();
-				break;
-			}
-			case aiRatFreeHunting : {
-				FreeHunting();
-				break;
-			}
-			case aiRatAttackFire : {
-				AttackFire();
-				break;
-			}
-			case aiRatAttackRun : {
-				AttackRun();
-				break;
-			}
-			case aiRatTurn : {
-				Turn();
-				break;
-			}
-			case aiRatUnderFire : {
-				UnderFire();
-				break;
-			}
-			case aiRatRetreat : {
-				Retreat();
-				break;
-			}
-		}
-		m_bStateChanged = m_ePreviousState != eCurrentState;
-	}
-	while (!bStopThinking);
-}

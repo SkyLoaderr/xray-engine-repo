@@ -57,6 +57,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	FILE *fTestParameters = fopen(caPath,"rb");
 	if (!fTestParameters) {
 		Msg("Evaluation function : File not found \"%s\"",caPath);
+		R_ASSERT(false);
 		return;
 	}
 	
@@ -64,6 +65,7 @@ void CPatternFunction::vfLoadEF(const char *caFileName)
 	if (m_tEFHeader.dwBuilderVersion != EFC_VERSION) {
 		fclose(fTestParameters);
 		Msg("Evaluation function (%s) : Not supported version of the Evaluation Function Contructor",caPath);
+		R_ASSERT(false);
 		return;
 	}
 

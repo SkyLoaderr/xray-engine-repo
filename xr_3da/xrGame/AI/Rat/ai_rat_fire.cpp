@@ -8,9 +8,6 @@
 
 #include "stdafx.h"
 #include "ai_rat.h"
-#include "..\\..\\xr_weapon_list.h"
-#include "..\\..\\actor.h"
-#include "..\\..\\hudmanager.h"
 #include "..\\..\\ai_funcs.h"
 
 using namespace NAI_Rat_Constants;
@@ -103,8 +100,7 @@ void CAI_Rat::SelectEnemy(SEnemySelected& S)
 	feel_vision_get	(m_tpaVisibleObjects);
 	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
 	
-	INIT_SQUAD_AND_LEADER;
-	CGroup &Group = Squad.Groups[g_Group()];
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	
 	for (DWORD i=0; i<Known.size(); i++) {
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);

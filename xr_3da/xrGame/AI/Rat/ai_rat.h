@@ -10,9 +10,7 @@
 #define __XRAY_AI_RAT__
 
 #include "..\\ai_monsters.h"
-#include "..\\ai_monsters_misc.h"
 #include "..\\..\\CustomMonster.h"
-#include "..\\..\\group.h"
 
 class CBaseFunction;
 
