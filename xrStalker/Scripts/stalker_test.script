@@ -30,18 +30,18 @@ end
 --	printf					("action %s is executed!",self.name)
 --end
 
-function custom_action:finalize()
-	action_base.finalize	(self)
-end
+--function custom_action:finalize()
+--	action_base.finalize	(self)
+--end
 
 class "custom_planner" 		(action_planner)
 
 function custom_planner:__init	() super()
 end
 
-function custom_planner:reinit	(obj, clear_all)
-	action_planner.reinit	(self, obj, clear_all)
-end
+--function custom_planner:reinit	(obj, clear_all)
+--	action_planner.reinit	(self, obj, clear_all)
+--end
 
 function main()
 	-- define world properties
