@@ -305,9 +305,16 @@ BOOL CProject::Load(CArchive &ar)
 		AddFile(pPF);
 	}
 
-	ar >> m_command;
-	ar >> m_arguments;
-	ar >> m_working_dir;
+	try{
+		ar >> m_command;
+		ar >> m_arguments;
+		ar >> m_working_dir;
+	}
+	catch( ... )
+	{
+		//fake.
+		//new version of file saving :)
+	}
 
 	return TRUE;
 }
