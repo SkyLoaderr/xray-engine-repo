@@ -23,7 +23,7 @@ function main()
 	while ( true ) do
 
 		if( monster:action() == nil ) then
-			if(stage == 0)
+			if(stage == 0) then
 				this.action_one( monster )
 				stage = 1
 			else 
