@@ -254,7 +254,7 @@ void xrLoad(LPCSTR name)
 				strlwr			(N);
 				strcat			(N,".thm");
 				IReader* THM	= FS.r_open("$textures$",N);
-				R_ASSERT		(THM);
+				R_ASSERT2		(THM,	N);
 
 				// version
 				u32 version				= 0;
