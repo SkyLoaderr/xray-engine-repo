@@ -14,13 +14,13 @@
 #pragma warning(disable:4530)
 #pragma warning(disable:4267)
 
+#pragma comment(lib,"x:\\xrLUA.lib")
+
 extern "C" {
 	#include "lua.h"
 	#include "lualib.h"
 	#include "lauxlib.h"
 }
-
-#pragma comment(lib,"x:\\xrLUA.lib")
 
 // Lua-bind
 #include <luabind\\luabind.hpp>

@@ -7,57 +7,55 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ai_script_space.h"
 #include "ai_script.h"
 #include "ai_script_lua_extension.h"
 
 using namespace Script;
 
-CScript::CScript(LPCSTR caFileName)
+CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
 {
 	strcpy			(m_caScriptFileName,caFileName);
-	m_tpLuaVirtualMachine = lua_open();
-	if (!m_tpLuaVirtualMachine) {
-		Msg			("! ERROR : Cannot initialize script virtual machine!");
-		return;
-	}
-	// initialize lua standard library functions 
-	luaopen_base	(m_tpLuaVirtualMachine); 
-	luaopen_table	(m_tpLuaVirtualMachine);
-	luaopen_string	(m_tpLuaVirtualMachine);
-	luaopen_math	(m_tpLuaVirtualMachine);
-#ifdef DEBUG
-	luaopen_debug	(m_tpLuaVirtualMachine);
-	lua_pop			(m_tpLuaVirtualMachine,5);
-#else
-	lua_pop			(m_tpLuaVirtualMachine,4);
-#endif
-
-	vfExportToLua	(m_tpLuaVirtualMachine,caFileName);
-
 	Msg				("* Loading design script %s",caFileName);
 
-	CLuaVirtualMachine		*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
-	vfLoadFile				(l_tpThread,caFileName,false);
-	m_tpThreads.push_back	(l_tpThread);
+	if (!bfLoadFile(tpLuaVirtualMachine,caFileName,true)) {
+		m_bActive	= false;
+		return;
+	}
+	string256		l_caNamespaceName, S;
+	_splitpath		(caFileName,0,0,l_caNamespaceName,0);
+	sprintf			(S,"\nfunction script_name()\nreturn \"%s\"\nend\n",l_caNamespaceName);
+	if (!bfLoadBuffer(tpLuaVirtualMachine,S,strlen(S),caFileName)) {
+		m_bActive	= false;
+		return;
+	}
+	lua_call		(tpLuaVirtualMachine,0,0);
+	
+	m_tpLuaThread	= lua_newthread(m_tpLuaVirtualMachine = tpLuaVirtualMachine);
+	
+	sprintf			(S,"\n%s.main()\n",l_caNamespaceName);
+	if (!bfLoadBuffer(m_tpLuaThread,S,strlen(S),"@internal.script")) {
+		lua_pop		(tpLuaVirtualMachine,2);
+		return;
+	}
 }
 
 CScript::~CScript()
 {
-	lua_close		(m_tpLuaVirtualMachine);
 }
 
-void CScript::Update()
+bool CScript::Update()
 {
-	for (int i=0, n = int(m_tpThreads.size()); i<n; i++) {
-		int				l_iErrorCode = lua_resume	(m_tpThreads[i],0);
-		if (l_iErrorCode) {
+	if (!m_bActive)
+		R_ASSERT2	(false,"Cannot resume dead Lua thread!");
+	int				l_iErrorCode = lua_resume(m_tpLuaThread,0);
+	if (l_iErrorCode) {
 #ifdef DEBUG
-			vfPrintOutput(m_tpThreads[i],m_caScriptFileName);
-			vfPrintError(m_tpThreads[i],l_iErrorCode);
+		vfPrintOutput(m_tpLuaThread,m_caScriptFileName);
+		vfPrintError(m_tpLuaThread,l_iErrorCode);
+		m_bActive	= false;
+		return		(false);
 #endif
-			m_tpThreads.erase(m_tpThreads.begin() + i);
-			i--;
-			n--;
-		}
 	}
+	return			(true);
 }

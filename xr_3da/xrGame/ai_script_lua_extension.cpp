@@ -7,11 +7,12 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ai_script_space.h"
 #include "ai_script_lua_extension.h"
 
 using namespace Script;
 
-void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName)
+void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	string256		S,S1;
 	FS.update_path	(S,"$game_data$","script.ltx");
@@ -23,19 +24,12 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine, LPCS
 	string16		I;
 	for (u32 i=0; i<caNamespaceName; i++) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
-		vfLoadFile	(tpLuaVirtualMachine,S,true);
+		bfLoadFile	(tpLuaVirtualMachine,S,true);
 	}
 	xr_delete		(l_tpIniFile);
-
-	sprintf			(S,"\nfunction script_name()\nreturn \"%s\"\nend\n",caScriptName);
-	int				l_iErrorCode = lua_dobuffer(tpLuaVirtualMachine,S,strlen(S),"@preprocessor.script");
-	Msg				("* Loading common script %s","preprocessor.script");
-	vfPrintOutput	(tpLuaVirtualMachine,S);
-	if (l_iErrorCode)
-		vfPrintError(tpLuaVirtualMachine,l_iErrorCode);
 }
 
-void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName)
+void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	open			(tpLuaVirtualMachine);
 
@@ -50,37 +44,63 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScr
 	vfExportActions	(tpLuaVirtualMachine);
 	vfExportObject	(tpLuaVirtualMachine);
 
-	vfLoadStandardScripts(tpLuaVirtualMachine,caScriptName);
+	vfLoadStandardScripts(tpLuaVirtualMachine);
 }
 
-void Script::vfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
+bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
 {
 	string256		l_caNamespaceName;
 	_splitpath		(caScriptName,0,0,l_caNamespaceName,0);
 	if (!strlen(l_caNamespaceName))
-		bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,"_G",bCall);
+		return		(bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,"_G",bCall));
 	else
-		bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall);
+		return		(bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall));
 }
 
-bool Script::bfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
+bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNamespaceName)
 {
-	lua_pushstring	(tpLuaVirtualMachine,caNamespaceName);
+	lua_pushstring	(tpLuaVirtualMachine,"_G");
 	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
-	if (lua_isnil(tpLuaVirtualMachine,-1)) {
-		lua_pop			(tpLuaVirtualMachine,1);
-		lua_newtable	(tpLuaVirtualMachine);
-		lua_pushstring	(tpLuaVirtualMachine,caNamespaceName);
-		lua_pushvalue	(tpLuaVirtualMachine,-2);
-		lua_settable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
-	}
-	else
-		if (!lua_istable(tpLuaVirtualMachine,-1)) {
-			lua_pop			(tpLuaVirtualMachine,1);
-			Msg				(" [LUA] Error : the namespace name %s is already being used by the non-table object!",caNamespaceName);
-			return			(false);
+	LPSTR			S2 = (char*)xr_malloc((strlen(caNamespaceName) + 1)*sizeof(char)), S = S2;
+	strcpy			(S,caNamespaceName);
+	for (;;) {
+		if (!strlen(S)) {
+			lua_pop		(tpLuaVirtualMachine,1);
+			Msg			(" [LUA] Error : the namespace name %s is incorrect!",caNamespaceName);
+			xr_free		(S2);
+			return		(false);
 		}
-	
+		LPSTR			S1 = strchr(S,'.');
+		if (S1)
+			*S1				= 0;
+		lua_pushstring	(tpLuaVirtualMachine,S);
+		lua_gettable	(tpLuaVirtualMachine,-2);
+		if (lua_isnil(tpLuaVirtualMachine,-1)) {
+			lua_pop			(tpLuaVirtualMachine,1);
+			lua_newtable	(tpLuaVirtualMachine);
+			lua_pushstring	(tpLuaVirtualMachine,S);
+			lua_pushvalue	(tpLuaVirtualMachine,-2);
+			lua_settable	(tpLuaVirtualMachine,-4);
+		}
+		else
+			if (!lua_istable(tpLuaVirtualMachine,-1)) {
+				xr_free			(S2);
+				lua_pop			(tpLuaVirtualMachine,2);
+				Msg				(" [LUA] Error : the namespace name %s is already being used by the non-table object!",caNamespaceName);
+				return			(false);
+			}
+			lua_remove		(tpLuaVirtualMachine,-2);
+			if (S1)
+				S			= ++S1;
+			else
+				break;
+	}
+	xr_free			(S2);
+	return			(true);
+}
+
+void vfCopyGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
 	lua_newtable	(tpLuaVirtualMachine);
 	lua_pushstring	(tpLuaVirtualMachine,"_G");
 	lua_gettable	(tpLuaVirtualMachine,LUA_GLOBALSINDEX);
@@ -91,26 +111,46 @@ bool Script::bfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 		lua_settable	(tpLuaVirtualMachine,-6);
 		lua_pop			(tpLuaVirtualMachine, 1);
 	}
+}
 
+bool Script::bfLoadBuffer(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caBuffer, size_t tSize, LPCSTR caScriptName)
+{
+	int				l_iErrorCode = luaL_loadbuffer(tpLuaVirtualMachine,caBuffer,tSize,caScriptName);
+
+	if (l_iErrorCode) {
+#ifdef DEBUG
+		vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
+		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
+#endif
+		return			(false);
+	}
+	return			(true);
+}
+
+bool bfDoFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
+{
 	string256		l_caLuaFileName;
 	IReader			*l_tpFileReader = FS.r_open(caScriptName);
 	R_ASSERT		(l_tpFileReader);
 	strconcat		(l_caLuaFileName,"@",caScriptName);
-	int				l_iErrorCode = luaL_loadbuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName);
-	FS.r_close		(l_tpFileReader);
-
-#ifdef DEBUG
-	if (l_iErrorCode) {
-		vfPrintOutput	(tpLuaVirtualMachine,caScriptName);
-		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
+	
+	if (!bfLoadBuffer(tpLuaVirtualMachine,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),l_caLuaFileName)) {
+		lua_pop			(tpLuaVirtualMachine,2);
+		FS.r_close		(l_tpFileReader);
+		return		(false);
 	}
-#endif
+	FS.r_close		(l_tpFileReader);
 
 	if (bCall)
 		lua_call		(tpLuaVirtualMachine,0,0);
 	else
 		lua_insert		(tpLuaVirtualMachine,-4);
 
+	return			(true);
+}
+
+void vfSetNamespace(CLuaVirtualMachine *tpLuaVirtualMachine)
+{
 	lua_pushnil		(tpLuaVirtualMachine);
 	while (lua_next(tpLuaVirtualMachine, -2) != 0) {
 		lua_pushvalue	(tpLuaVirtualMachine,-2);
@@ -143,7 +183,16 @@ bool Script::bfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LP
 		lua_settable	(tpLuaVirtualMachine,-6);
 		lua_pop			(tpLuaVirtualMachine, 1);
 	}
-	
 	lua_pop			(tpLuaVirtualMachine,3);
+}
+
+bool Script::bfLoadFileIntoNamespace(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, LPCSTR caNamespaceName, bool bCall)
+{
+	if (!bfCreateNamespaceTable(tpLuaVirtualMachine,caNamespaceName))
+		return		(false);
+	vfCopyGlobals	(tpLuaVirtualMachine);
+	if (!bfDoFile(tpLuaVirtualMachine,caScriptName,bCall))
+		return		(false);
+	vfSetNamespace	(tpLuaVirtualMachine);
 	return			(true);
 }

@@ -9,16 +9,18 @@
 #pragma once
 
 #include "ai_script_space.h"
+//struct CLuaVirtualMachine;
 
 DEFINE_VECTOR(CLuaVirtualMachine*,LUA_VM_VECTOR,LUA_VM_IT);
 
 class CScript {
-public:
 	CLuaVirtualMachine	*m_tpLuaVirtualMachine;
-	LUA_VM_VECTOR		m_tpThreads;
+	CLuaVirtualMachine	*m_tpLuaThread;
 	string256			m_caScriptFileName;
+public:
+	bool				m_bActive;
 
-						CScript						(LPCSTR				caFileName);
+						CScript						(CLuaVirtualMachine		*tpLuaVirtualMachine, LPCSTR caFileName);
 	virtual				~CScript					();
-			void		Update						();
+			bool		Update						();
 };

@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ai_script_space.h"
+//struct CLuaVirtualMachine;
 
 namespace Script {
 	void		vfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
@@ -22,10 +23,11 @@ namespace Script {
 	void		vfExportHit					(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportActions				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportObject				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
-	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName);
-	void		vfLoadFile					(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, bool bCall = true);
-	bool		bfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, LPCSTR caNamespaceName, bool bCall);
+	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine);
+	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine);
+	bool		bfLoadBuffer				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caBuffer,		size_t	tSize,				LPCSTR	caScriptName);
+	bool		bfLoadFile					(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	bool	bCall = true);
+	bool		bfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	LPCSTR	caNamespaceName,	bool	bCall);
 #ifdef DEBUG
 	LPCSTR		cafEventToString			(int				iEventCode);
 	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);

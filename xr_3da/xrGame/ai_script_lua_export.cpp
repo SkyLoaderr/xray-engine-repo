@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "ai_script_space.h"
 #include "ai_script_lua_extension.h"
 #include "ParticlesObject.h"
 #include "ai_script_classes.h"
