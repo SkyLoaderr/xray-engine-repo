@@ -43,6 +43,12 @@ void	CRenderTarget::phase_combine	()
 		pv->set						(float(_w+EPS),	EPS,			EPS,	1.f, C, p1.x, p0.y);	pv++;
 		RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
+		// Setup textures
+		IDirect3DBaseTexture9*	e0	= envdesc.sky_r_textures_env[0]->surface_get();
+		IDirect3DBaseTexture9*	e1	= envdesc.sky_r_textures_env[1]->surface_get();
+		t_envmap_0->surface_set		(e0);	_RELEASE(e0);
+		t_envmap_1->surface_set		(e1);	_RELEASE(e1);
+	
 		// Draw
 		RCache.set_Element			(s_combine->E[0]		);
 		RCache.set_c				("m_v2w",		m_v2w	);
