@@ -337,13 +337,23 @@ void xrMergeGraphs(LPCSTR name)
 		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
     }
 	R_ASSERT(tpGraphs.size());
+
+	{
+		LEVEL_PAIR_IT			I = tGraphHeader.tpLevels.begin();
+		LEVEL_PAIR_IT			E = tGraphHeader.tpLevels.end();
+		for ( ; I != E; I++) {
+			GRAPH_P_PAIR_IT		i = tpGraphs.find((*I).second.tLevelID);
+			R_ASSERT			(i != tpGraphs.end());
+			(*i).second->vfGenerateDeathPoints();
+		}
+	}
+
 	
 	Phase("Adding interconnection points");
 	{
 		GRAPH_P_PAIR_IT				I = tpGraphs.begin();
 		GRAPH_P_PAIR_IT				E = tpGraphs.end();
 		for ( ; I != E; I++) {
-			(*I).second->vfGenerateDeathPoints();
 			VERTEX_PAIR_IT			i = (*I).second->m_tVertexMap.begin();
 			VERTEX_PAIR_IT			e = (*I).second->m_tVertexMap.end();
 			for ( ; i != e; i++)
