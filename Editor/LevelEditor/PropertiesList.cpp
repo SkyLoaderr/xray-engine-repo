@@ -33,7 +33,11 @@
 #pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 
+#define TSTRING_COUNT 	4
+#define MCSTRING_COUNT 	11
 const LPSTR BOOLString[2]={"False","True"};
+const LPSTR TEXTUREString[TSTRING_COUNT]={"Custom...","-","$null","$base0"};
+const LPSTR MCString[MCSTRING_COUNT]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
 
 LPCSTR	FlagValue::GetText(){
 	DWORD draw_val 	= *val;
@@ -53,10 +57,27 @@ LPCSTR 	TokenValue2::GetText(){
 	return items[draw_val].c_str();
 }
 LPCSTR	ListValue::GetText(){
-    static AnsiString draw_text = val;
+    static AnsiString draw_text;
+    draw_text = val;
     if (OnDrawValue)OnDrawValue(this, &draw_text);
     return draw_text.c_str();
 }
+
+xrP_TOKEN::Item& GetToken3Item(xrP_TOKEN* p, int idx)
+{
+    R_ASSERT(p&&(idx>=0)&&(idx<p->Count));
+    return *(xrP_TOKEN::Item*)(LPBYTE(p) + sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*idx);
+}
+
+LPCSTR GetToken3(xrP_TOKEN* p, int id)
+{
+	for(int i=0; p->Count; i++){
+		xrP_TOKEN::Item& I = GetToken3Item(p,i);
+    	if (I.ID==id) return I.str;
+    }
+    return 0;
+}
+
 
 //---------------------------------------------------------------------------
 void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
@@ -154,26 +175,32 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     TI->UseStyles 		= true;
     TElCellStyle* CS    = TI->AddStyle();
     CS->OwnerProps 		= true;
+    CS->CellType 		= sftUndef;
 
     switch (type){
-    case PROP_MARKER:	CS->CellType = sftUndef;	break;
-    case PROP_MARKER2:	CS->CellType = sftUndef;	TI->ColumnText->Add(AnsiString((LPSTR)value)); break;
-    case PROP_WAVE:		CS->CellType = sftUndef;	TI->ColumnText->Add("[Wave]");	CS->Style = ElhsOwnerDraw; break;
-    case PROP_BOOL:		CS->CellType = sftUndef;	TI->ColumnText->Add(BOOLString[*(LPDWORD)value]);	CS->Style = ElhsOwnerDraw; break;
+    case PROP_MARKER:		break;
+    case PROP_MARKER2:		TI->ColumnText->Add(AnsiString((LPSTR)value)); 		break;
+    case PROP_WAVE:			TI->ColumnText->Add("[Wave]");						CS->Style = ElhsOwnerDraw; break;
+    case PROP_BOOL:			TI->ColumnText->Add(BOOLString[*(LPDWORD)value]);	CS->Style = ElhsOwnerDraw; break;
     case PROP_FLAG:
     case PROP_TOKEN:
     case PROP_TOKEN2:
     case PROP_LIST:
     case PROP_FLOAT:
-    case PROP_INTEGER:{	CS->CellType = sftUndef; 	PropValue*  P=(PropValue*)value; 	TI->ColumnText->Add(P->GetText()); 	CS->Style = ElhsOwnerDraw; }break;
-    case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add((LPSTR)value);  break;
-    case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
-    case PROP_TEXTURE:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
-    case PROP_SH_ENGINE:CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
-    case PROP_SH_COMPILE:CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
-    case PROP_S_TEXTURE:	CS->CellType = sftUndef;TI->ColumnText->Add(*(AnsiString*)value);  CS->Style = ElhsOwnerDraw; break;
-    case PROP_S_SH_ENGINE:	CS->CellType = sftUndef;TI->ColumnText->Add(*(AnsiString*)value);  CS->Style = ElhsOwnerDraw; break;
-    case PROP_S_SH_COMPILE:	CS->CellType = sftUndef;TI->ColumnText->Add(*(AnsiString*)value);  CS->Style = ElhsOwnerDraw; break;
+    case PROP_INTEGER:{		PropValue*  P=(PropValue*)value; TI->ColumnText->Add(P->GetText()); CS->Style = ElhsOwnerDraw; }break;
+    case PROP_TEXT:			TI->ColumnText->Add((LPSTR)value);  				break;
+    case PROP_COLOR:		CS->Style = ElhsOwnerDraw; 							break;
+    case PROP_TEXTURE:		TI->ColumnText->Add((LPSTR)value);  				CS->Style = ElhsOwnerDraw; break;
+    case PROP_SH_ENGINE:	TI->ColumnText->Add((LPSTR)value);  				CS->Style = ElhsOwnerDraw; break;
+    case PROP_SH_COMPILE:	TI->ColumnText->Add((LPSTR)value);  				CS->Style = ElhsOwnerDraw; break;
+    case PROP_S_TEXTURE:	TI->ColumnText->Add(*(AnsiString*)value);  			CS->Style = ElhsOwnerDraw; break;
+    case PROP_S_SH_ENGINE:	TI->ColumnText->Add(*(AnsiString*)value);  			CS->Style = ElhsOwnerDraw; break;
+    case PROP_S_SH_COMPILE:	TI->ColumnText->Add(*(AnsiString*)value);  			CS->Style = ElhsOwnerDraw; break;
+    // shader part
+	case xrPID_MATRIX:		break;
+	case xrPID_CONSTANT:	break;
+	case PROP_TEXTURE2:		TI->ColumnText->Add((LPSTR)value);					break;
+    case PROP_TOKEN3:{		xrP_TOKEN* V = (xrP_TOKEN*)value; TI->ColumnText->Add(GetToken3(V,V->IDselected)); }break;
     default: THROW2("PROP_????");
     }
     return TI;
@@ -226,6 +253,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
 		    Surface->Brush->Color = rgb2bgr(*(LPDWORD)Item->Data);
             Surface->FillRect(R);
         }break;
+        case PROP_TOKEN3:
         case PROP_BOOL:
             R.Right	-=	10;
             R.Left 	+= 	1;
@@ -309,6 +337,16 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
                 pmEnum->Items->Add(mi);
             }
         }break;
+		case PROP_TOKEN3:{
+            pmEnum->Items->Clear();
+            xrP_TOKEN* tokens = (xrP_TOKEN*)item->Data;
+            for (DWORD i=0; i<tokens->Count; i++){
+                TMenuItem* mi = new TMenuItem(0);
+                mi->Caption = GetToken3Item(tokens,i).str;
+                mi->OnClick = PMItemClick;
+                pmEnum->Items->Add(mi);
+            }
+        }break;
 		case PROP_LIST:{
             pmEnum->Items->Clear();
             ListValue* T = (ListValue*)item->Data;
@@ -332,13 +370,24 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
         case PROP_FLOAT:
         	PrepareLWNumber(item);
         break;
+		case PROP_TEXTURE2:{
+            pmEnum->Items->Clear();
+            for (DWORD i=0; i<TSTRING_COUNT; i++){
+                TMenuItem* mi = new TMenuItem(0);
+                mi->Caption = TEXTUREString[i];
+                mi->OnClick = PMItemClick;
+                pmEnum->Items->Add(mi);
+            }
+        }break;
         };
         switch(type){
         case PROP_TOKEN:
         case PROP_TOKEN2:
+        case PROP_TOKEN3:
         case PROP_LIST:
         case PROP_FLAG:
 		case PROP_BOOL:
+        case PROP_TEXTURE2:
             TPoint P; P.x = X; P.y = Y;
             P=tvProperties->ClientToScreen(P);
             pmEnum->Popup(P.x,P.y-10);
@@ -395,6 +444,14 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
             }
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
+		case PROP_TOKEN3:{
+        	xrP_TOKEN* token_list			= (xrP_TOKEN*)item->Data;
+        	if (token_list->IDselected != GetToken3Item(token_list,mi->MenuIndex).ID){
+	            item->ColumnText->Strings[0]= mi->Caption;
+    	        token_list->IDselected 		= GetToken3Item(token_list,mi->MenuIndex).ID;
+	            Modified();
+            }
+        }break;
 		case PROP_LIST:{
         	ListValue* V				= (ListValue*)item->Data;
             AStringVec& lst				= V->items;
@@ -406,6 +463,23 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
                 Modified();
             }
 			item->ColumnText->Strings[0]= V->GetText();
+        }break;
+		case PROP_TEXTURE2:{
+			LPSTR tex = (LPSTR)item->Data;
+        	if (mi->MenuIndex==0){
+            	LPCSTR name = TfrmChoseItem::SelectTexture(false,tex);
+            	if (name&&name[0]&&strcmp(tex,name)!=0){
+					strcpy(tex,name);
+		            item->ColumnText->Strings[0]= name;
+		            Modified();
+                }
+            }else if (mi->MenuIndex>=2){
+            	if (strcmp(tex,TEXTUREString[mi->MenuIndex])!=0){
+					strcpy(tex,TEXTUREString[mi->MenuIndex]);
+		            item->ColumnText->Strings[0]= TEXTUREString[mi->MenuIndex];
+		            Modified();
+                }
+            }
         }break;
         }
     }
@@ -647,41 +721,6 @@ void __fastcall TfrmProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-// Stream
-//------------------------------------------------------------------------------
-void __fastcall TfrmProperties::FillFromStream(CFS_Memory& stream, DWORD advance)
-{
-    CStream data(stream.pointer(), stream.size());
-    data.Advance(advance);
-    DWORD type;
-    char key[255];
-    TElTreeItem* M=0;
-    TElTreeItem* node;
-/*
-    while (!data.Eof()){
-        int sz=0;
-        type = data.Rdword();
-        data.RstringZ(key);
-        switch(type){
-        case BPID_MARKER:	break;
-        case BPID_TOKEN: 	sz=sizeof(BP_TOKEN)+sizeof(BP_TOKEN::Item)*(((BP_TOKEN*)data.Pointer())->Count); break;
-        case BPID_MATRIX:	sz=sizeof(string64);	break;
-        case BPID_CONSTANT:	sz=sizeof(string64); 	break;
-        case BPID_TEXTURE: 	sz=sizeof(string64); 	break;
-        case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
-        case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
-        case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
-        default: THROW2("BPID_????");
-        }
-        if (type==BPID_MARKER) M = 0;
-        node = form->AddItem(M,type,key,(LPDWORD)data.Pointer());
-        if (type==BPID_MARKER) M = node;
-        data.Advance(sz);
-    }
-*/
-}
-//---------------------------------------------------------------------------
 
 
 

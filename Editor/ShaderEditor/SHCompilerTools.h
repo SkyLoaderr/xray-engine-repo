@@ -8,6 +8,7 @@ struct Shader_xrLC;
 
 class CSHCompilerTools
 {
+	BOOL				m_bFreezeUpdate;
 	BOOL				m_bModified;
 
 	Shader_xrLC*		FindShader			(LPCSTR name);
@@ -35,7 +36,7 @@ public:
 
     bool				IfModified			();
     bool				IsModified			(){return m_bModified;}
-    void				Modified			();
+    void _fastcall		Modified			();
 
     void				OnCreate			();
     void				OnDestroy			();
@@ -45,6 +46,8 @@ public:
     void				SetCurrentShader	(Shader_xrLC* B);
     void				SetCurrentShader	(LPCSTR name);
     void				ApplyChanges		();
+
+	void 				UpdateProperties	();
 };
 //---------------------------------------------------------------------------
 #endif

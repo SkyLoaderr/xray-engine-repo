@@ -54,14 +54,15 @@
       Intermediate\FProgressive.obj Intermediate\FProgressiveFixedVisual.obj 
       Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
       Intermediate\SkeletonX.obj Intermediate\xrBoneLerp.obj 
-      Intermediate\BodyInstance.obj Intermediate\xrXRC.obj Intermediate\Engine.obj"/>
+      Intermediate\BodyInstance.obj Intermediate\xrXRC.obj 
+      Intermediate\Engine.obj Intermediate\PropertiesList.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
     <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
       PropertiesShader.dfm LogForm.dfm Editor\ChoseForm.dfm 
-      Editor\ShaderFunction.dfm Editor\TopBar.dfm"/>
+      Editor\ShaderFunction.dfm Editor\TopBar.dfm Editor\PropertiesList.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib Lib\FreeImage.lib 
       Lib\ETools.lib Lib\memmgr.lib Lib\xrCDB.lib"/>

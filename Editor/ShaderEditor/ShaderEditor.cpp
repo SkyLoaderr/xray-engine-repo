@@ -123,6 +123,7 @@ USEUNIT("Engine\Animations\BodyInstance.cpp");
 USELIB("Lib\xrCDB.lib");
 USEUNIT("Engine\xrXRC.cpp");
 USEUNIT("Editor\Engine.cpp");
+USEFORM("Editor\PropertiesList.cpp", frmProperties);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

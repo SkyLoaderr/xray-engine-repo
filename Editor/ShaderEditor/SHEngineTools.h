@@ -17,6 +17,7 @@ public:
 
 class CSHEngineTools
 {
+	BOOL				m_bFreezeUpdate;
 	BOOL				m_bModified;
 
 	TemplateVec			m_TemplatePalette;
@@ -84,7 +85,7 @@ public:
 
     bool				IfModified			();
     bool				IsModified			(){return m_bModified;}
-    void				Modified			();
+    void __fastcall		Modified			();
 
     void				OnCreate			();
     void				OnDestroy			();
@@ -95,6 +96,8 @@ public:
     void				SetCurrentBlender	(CBlender* B, bool bApply=true);
     void				SetCurrentBlender	(LPCSTR name, bool bApply=true);
     void				ApplyChanges		(bool bForced=false);
+
+	void 				UpdateProperties	();
 };
 //---------------------------------------------------------------------------
 #endif

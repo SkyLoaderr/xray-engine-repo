@@ -47,7 +47,8 @@ public:
     {
     	int draw_val 	= *val;
         if (OnDrawValue)OnDrawValue(this, &draw_val);
-		static AnsiString draw_text	= draw_val;
+		static AnsiString draw_text;
+        draw_text		= draw_val;
         return draw_text.c_str();
     }
 };
@@ -155,6 +156,7 @@ public:		// User declarations
     bool __fastcall IsModified				(){return bModified;}
     void __fastcall RefreshProperties		(){tvProperties->Repaint();}
 
+    void __fastcall SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
     void __fastcall BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
     void __fastcall FillFromStream			(CFS_Memory& stream, DWORD advance);
     void __fastcall EndFillMode				(bool bFullExpand=true);
@@ -220,11 +222,11 @@ public:		// User declarations
 //---------------------------------------------------------------------------
 
 enum EProperties{
-	PROP_TYPE 			= 0x1000,
-	PROP_WAVE,
+	PROP_WAVE 			= 0x1000,
 	PROP_FLAG,
 	PROP_TOKEN,
 	PROP_TOKEN2,
+    PROP_TOKEN3,
 	PROP_LIST,
 	PROP_INTEGER,
 	PROP_FLOAT,
@@ -236,9 +238,10 @@ enum EProperties{
 	PROP_SH_ENGINE,
 	PROP_SH_COMPILE,
 	PROP_TEXTURE,
+	PROP_TEXTURE2,
 	PROP_S_SH_ENGINE,
 	PROP_S_SH_COMPILE,
-	PROP_S_TEXTURE
+	PROP_S_TEXTURE,
 };
 //---------------------------------------------------------------------------
 #endif

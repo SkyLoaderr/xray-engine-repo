@@ -60,6 +60,9 @@ void TUI::Redraw(){
     // end draw
         Device.End();
     }catch(...){
+		_clear87();
+		FPU::m24r();
+    	ELog.DlgMsg(mtError, "Critical error has occured in render routine.\nEditor may work incorrectly.");
         Device.End();
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }

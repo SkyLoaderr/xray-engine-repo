@@ -106,7 +106,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_RESET_ANIMATION:
    		break;
     case COMMAND_SHADER_PROPERTIES:
-    	TfrmShaderProperties::ShowProperties();
+    	Tools.ShowProperties();
     	break;
     case COMMAND_SELECT_PREVIEW_OBJ:
 		Tools.SelectPreviewObject(p1);

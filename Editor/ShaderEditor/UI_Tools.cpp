@@ -10,6 +10,7 @@
 #include "ui_main.h"
 #include "leftbar.h"
 #include "PropertiesShader.h"
+#include "PropertiesList.h"
 #include "Blender.h"
 
 //------------------------------------------------------------------------------
@@ -20,6 +21,7 @@ CShaderTools::CShaderTools()
 {
 	m_EditObject 		= 0;
     m_bCustomEditObject	= false;
+    m_Props				= 0;
 }
 //---------------------------------------------------------------------------
 
@@ -30,7 +32,10 @@ CShaderTools::~CShaderTools()
 
 void CShaderTools::OnChangeEditor()
 {
-    TfrmShaderProperties::InitProperties();
+	switch (ActiveEditor()){
+    case aeEngine: 		SEngine.UpdateProperties(); 	break;
+    case aeCompiler: 	SCompiler.UpdateProperties(); 	break;
+    };
 }
 //---------------------------------------------------------------------------
 
@@ -51,6 +56,8 @@ void CShaderTools::Modified(){
 //---------------------------------------------------------------------------
 
 bool CShaderTools::OnCreate(){
+    // create props
+    m_Props = TfrmProperties::CreateProperties();
 	// shader test locking
 	AnsiString sh_fn = "shaders.xr"; Engine.FS.m_GameRoot.Update(sh_fn);
 	if (Engine.FS.CheckLocking(0,sh_fn.c_str(),false,true))
@@ -80,6 +87,8 @@ void CShaderTools::OnDestroy(){
     Device.seqDevDestroy.Remove(this);
 	SEngine.OnDestroy();
     SCompiler.OnDestroy();
+	// destroy props
+	TfrmProperties::DestroyProperties(m_Props);
 }
 
 void CShaderTools::Render(){
@@ -197,5 +206,11 @@ void CShaderTools::ApplyChanges()
 {
     if (ActiveEditor()==aeEngine)		SEngine.ApplyChanges();
     else if (ActiveEditor()==aeCompiler)SCompiler.ApplyChanges();
+}
+
+void CShaderTools::ShowProperties()
+{
+	m_Props->ShowProperties();
+	TfrmShaderProperties::ShowProperties();
 }
 

@@ -9,6 +9,7 @@
 class CEditableObject;
 class CLibObject;
 class CBlender;
+class TfrmProperties;
 
 enum EActiveEditor{
 	aeEngine = 0,
@@ -37,6 +38,7 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
     bool				m_bCustomEditObject;
     EAction 			m_Action;
 public:
+    TfrmProperties*		m_Props;
     CSHEngineTools		SEngine;
     CSHCompilerTools	SCompiler;
 public:
@@ -80,6 +82,7 @@ public:
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
     bool				Pick				(){return false;}
+    void				ShowProperties		();
 };
 extern CShaderTools	Tools;
 //---------------------------------------------------------------------------

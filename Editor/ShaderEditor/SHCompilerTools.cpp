@@ -17,6 +17,7 @@ CSHCompilerTools::CSHCompilerTools(){
     m_bModified 		= FALSE;
     m_LibShader 		= 0;
     m_bUpdateCurrent	= false;
+    m_bFreezeUpdate		= FALSE;
 }
 
 CSHCompilerTools::~CSHCompilerTools(){
@@ -183,7 +184,7 @@ void CSHCompilerTools::RenameShader(LPCSTR old_full_name, LPCSTR new_full_name){
     strcpy(S->Name,new_full_name);
 	if (S==m_LibShader){
     	m_EditShader = *S;
-    	TfrmShaderProperties::InitProperties();
+        UpdateProperties();
     }
 }
 
@@ -202,7 +203,7 @@ void CSHCompilerTools::SetCurrentShader(Shader_xrLC* S){
 	if (m_LibShader!=S){
         m_LibShader = S;
         if (m_LibShader) m_EditShader = *m_LibShader;
-		TfrmShaderProperties::InitProperties();
+        UpdateProperties();
     }
 }
 
@@ -212,5 +213,11 @@ void CSHCompilerTools::ResetCurrentShader(){
 
 void CSHCompilerTools::SetCurrentShader(LPCSTR name){
 	SetCurrentShader(FindShader(name));
+}
+
+void CSHCompilerTools::UpdateProperties()
+{
+	if (m_bFreezeUpdate) return;
+	TfrmShaderProperties::InitProperties();
 }
 
