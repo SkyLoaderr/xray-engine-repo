@@ -182,7 +182,8 @@ public:
 #endif    
 };
 
-extern XRCORE_API	CLocatorAPI	FS;
+extern XRCORE_API	CLocatorAPI*			xr_FS;
+#define FS (*xr_FS)
 
 #endif // LocatorAPIH
 /*
