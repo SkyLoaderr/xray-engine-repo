@@ -67,6 +67,7 @@ public:
 	u32					size		()						const	{	if (0==p_) return 0; else return p_->dwLength;	}
 	void				swap		(ref_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
 	bool				equal		(const ref_str & rhs)	const	{	return (p_ == rhs.p_);							}
+    ref_str& __cdecl	sprintf		(const char* format, ...);
 };
 
 // res_ptr == res_ptr
