@@ -13,7 +13,6 @@ void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode)
 		Perform_destroy	(e_dest,mode);
 	}
 
-	Msg					("SERVER : perform_destroy for object [%s][%s][%d]",tpSE_Abstract->s_name_replace,tpSE_Abstract->s_name,tpSE_Abstract->ID);
 	NET_Packet			P;
 	P.w_begin			(M_EVENT);
 	P.w_u32				(Device.dwTimeGlobal-NET_Latency*2);

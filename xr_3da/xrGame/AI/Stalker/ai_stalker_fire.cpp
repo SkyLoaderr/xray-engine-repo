@@ -311,7 +311,7 @@ CCoverPoint	*CAI_Stalker::best_cover_point	(
 				break;
 			}
 			case eCoverTypeBest : {
-				choosed = true;
+				choosed = (enemy_distance < current_distance + deviation) && (enemy_distance >= current_distance - deviation);
 				break;
 			}
 			default : NODEFAULT;

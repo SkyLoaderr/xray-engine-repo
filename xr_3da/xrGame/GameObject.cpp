@@ -84,7 +84,6 @@ void CGameObject::net_Destroy	()
 	if (!frame_check(m_dwFrameDestroy))
 		return;
 
-	Msg				("NET_Destroy for [%s][%s][%d]",*cName(),*cNameSect(),ID());
 	if (Visual() && PKinematics(Visual()))
 		PKinematics(Visual())->Callback	(0,0);
 
@@ -394,9 +393,6 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	///PHSetPushOut();????
-	if (dynamic_cast<CBolt*>(this)) {
-		Msg						("Bolt %d is being attached! (%d)",ID(),level_vertex_id());
-	}
 	if (UsedAI_Locations() && ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()))
 		ai().level_graph().ref_dec(level_vertex_id());
 }
@@ -406,9 +402,6 @@ void CGameObject::OnH_B_Independent()
 	inherited::OnH_B_Independent();
 	setup_parent_ai_locations	(false);
 	validate_ai_locations		(false);
-	if (dynamic_cast<CBolt*>(this)) {
-		Msg						("Bolt %d is being attached! (%d)",ID(),level_vertex_id());
-	}
 }
 
 void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
