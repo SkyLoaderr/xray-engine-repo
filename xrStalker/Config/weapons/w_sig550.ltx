@@ -10,7 +10,7 @@ cform               	= skeleton
 class               	= W_AK74
 min_radius          	= 30
 max_radius          	= 100
-description				= enc_weapons1_wpn-l85
+description				= enc_weapons1_wpn-sig550
 	
 ef_main_weapon_type		= 2
 ef_weapon_type			= 6
@@ -32,8 +32,8 @@ single_handed			= 0
 slot 					= 2		; // secondary
 animation_slot			= 8		; type of the animation that will be used
 
-inv_name	        	= L85
-inv_name_short			= L85
+inv_name	        	= SIG550
+inv_name_short			= SIG550
 inv_weight				= 2.5
 
 inv_grid_width			= 5
@@ -83,7 +83,7 @@ bullet_speed				= 880			;начальная скорость пули
 rpm                      	= 650
 ; end ttc
 
-hud                      	= wpn_l85_hud
+hud                      	= wpn_sig550_hud
 normal                   	= 0, 1, 0
 
 ;----------------------------------------------------------
@@ -97,7 +97,7 @@ strap_bone0					= bip01_spine2
 strap_bone1					= bip01_spine1
 
 startup_ammo   		        = 90
-visual         		        = weapons\l85\wpn_l85.ogf
+visual         		        = weapons\sig550\wpn_sig550.ogf
 	
 tracer_head_speed			= 400
 tracer_trail_scale			= 0.75
@@ -171,7 +171,7 @@ fire_point2              	= 0.30, 0.00, 0.05
 fire_bone               	= wpn_body
 orientation             	= 0, 0, 0
 position                	= 0, 0, 0
-visual                  	= weapons\l85\wpn_l85_hud.ogf
+visual                  	= weapons\sig550\wpn_sig550_hud.ogf
 
 grenade_bone            	= grenade
 
@@ -184,21 +184,21 @@ anim_shoot				= shoot
 			
 ;анимации с подключенным подствольником
 ;(режим стрельбы из подствольника)
-anim_idle_g					= idle_grenade
-anim_idle_g_aim				= idle_grenade
-anim_reload_g				= reload_grenade
-anim_shoot_g				= shoot_grenade
-anim_switch_grenade_on		= switch_gl_on
-anim_switch_grenade_off		= switch_gl_off
-anim_draw_g					= draw_grenade
-anim_holster_g				= holster_grenade
+anim_idle_g					= idle_w_gl
+anim_idle_g_aim				= idle_w_gl
+anim_reload_g				= shoot_w_gl
+anim_shoot_g				= shoot_w_gl
+anim_switch_grenade_on		= shoot_w_gl
+anim_switch_grenade_off		= shoot_w_gl
+anim_draw_g					= holster_w_gl
+anim_holster_g				= holster_w_gl
 ;(режим обычной стрельбы)			  
-anim_idle_gl				= idle_with_gl
-anim_idle_gl_aim			= idle_with_gl
-anim_reload_gl				= reload_with_gl
-anim_draw_gl				= draw_with_gl
-anim_holster_gl				= holster_with_gl
-anim_shoot_gl				= shoot_with_gl
+anim_idle_gl				= idle_w_gl
+anim_idle_gl_aim			= idle_w_gl
+anim_reload_gl				= holster_w_gl
+anim_draw_gl				= holster_w_gl
+anim_holster_gl				= holster_w_gl
+anim_shoot_gl				= shoot_w_gl
 
 ;смещения HUD для режима приближения
 zoom_offset					= -0.112500,0.015800,0.000000
