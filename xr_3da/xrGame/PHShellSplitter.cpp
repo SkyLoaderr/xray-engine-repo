@@ -305,7 +305,7 @@ void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_PAIR_VECTOR &out_shel
 
 	for(;i!=e;++i)
 	{
-		out_shels.push_back(ElementSingleSplit(*i));
+		out_shels.push_back(ElementSingleSplit(*i,E));
 	}
 
 	if(!E->FracturesHolder()) m_splitters.erase(spl_i);//delete splitter if the element no longer have fractures
