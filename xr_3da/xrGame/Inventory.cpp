@@ -55,6 +55,9 @@ CInventory::CInventory()
 	} while(true);
 	m_pTarget = NULL;
 
+	m_slots[PDA_SLOT].m_bCanBeActivated = false;
+	m_slots[OUTFIT_SLOT].m_bCanBeActivated = false;
+
 	m_bSlotsUseful = true;
 	m_bBeltUseful = false;
 	m_inventory_mask.resize((RuckWidth()*RuckHeight() - 1)/64 + 1);
@@ -265,7 +268,8 @@ bool CInventory::Activate(u32 slot)
 
 	if(m_iActiveSlot == slot || (m_iNextActiveSlot == slot &&
 		m_iActiveSlot != NO_ACTIVE_SLOT &&
-		m_slots[m_iActiveSlot].m_pIItem && 
+		m_slots[m_iActiveSlot].m_pIItem &&
+		m_slots[m_iActiveSlot].m_bCanBeActivated &&
 		m_slots[m_iActiveSlot].m_pIItem->IsHiding()))
 		return false;
 
