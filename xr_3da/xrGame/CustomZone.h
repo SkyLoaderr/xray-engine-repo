@@ -1,6 +1,6 @@
 #pragma once
 #include "gameobject.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 #include "actor.h"
 
 struct SZonePPInfo 
@@ -24,13 +24,13 @@ public:
 	virtual void net_Destroy();
 	//virtual void Update(u32 dt);
 	virtual void UpdateCL();
-	virtual void Affect(CObject* O) {}
+	virtual void Affect(CObject* /**O/**/) {}
 
 	virtual void feel_touch_new(CObject* O);
 	virtual void feel_touch_delete(CObject* O);
 	virtual BOOL feel_touch_contact(CObject* O);
 
-	virtual void Postprocess(f32 val) {}
+	virtual void Postprocess(f32 /**val/**/) {}
 
 	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=0, BOOL bCtrlFreq=FALSE);
 	void SoundDestroy(ref_sound& dest);

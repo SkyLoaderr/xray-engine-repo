@@ -131,6 +131,6 @@ void CMosquitoBald::UpdateCL()
 	//inherited::Update(dt);
 }
 
-void CMosquitoBald::Postprocess(f32 val) 
+void CMosquitoBald::Postprocess(f32 /**val/**/) 
 {
 }

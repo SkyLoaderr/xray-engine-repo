@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\xr_ioconsole.h"
+#include "../xr_ioconsole.h"
 #include "customzone.h"
 #include "actor.h"
 #include "hudmanager.h"
@@ -25,7 +25,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);
 	CSE_ALifeAnomalousZone		*Z = dynamic_cast<CSE_ALifeAnomalousZone*>(e);
 	
-	for (u32 i=0; i < Z->shapes.size(); i++) 
+	for (u32 i=0; i < Z->shapes.size(); ++i) 
 	{
 		CSE_Shape::shape_def	&S = Z->shapes[i];
 		switch (S.type) 
@@ -53,7 +53,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC)
 
 		CParticlesObject* pStaticPG; s32 l_c = (int)m_effects.size();
 		Fmatrix l_m; l_m.set(renderable.xform);
-		for(s32 i = 0; i < l_c; i++) {
+		for(s32 i = 0; i < l_c; ++i) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
 			IRender_Sector *l_pRS = ::Render->detectSector(c);
 			pStaticPG = xr_new<CParticlesObject>(*m_effects[i],l_pRS,false);
@@ -109,14 +109,14 @@ void CCustomZone::Load(LPCSTR section)
 		if(*l_effectsSTR == ',')
 		{
 			*l_effectsSTR = 0;
-			l_effectsSTR++;
+			++l_effectsSTR;
 
 			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t')
-				l_effectsSTR++;
+				++l_effectsSTR;
 
 			m_effects.push_back(l_effectsSTR);
 		}
-		l_effectsSTR++;
+		++l_effectsSTR;
 	}
 
 // @@@ WT: !!!!!бпелеммн!!!!!
@@ -156,7 +156,7 @@ void CCustomZone::UpdateCL()
 	if(m_ready) 
 	{
 		xr_set<CObject*>::iterator l_it;
-		for(l_it = m_inZone.begin(); l_it != m_inZone.end(); l_it++) 
+		for(l_it = m_inZone.begin(); m_inZone.end() != l_it; ++l_it) 
 		{
 			Affect(*l_it);
 		}
@@ -199,7 +199,7 @@ f32 CCustomZone::Power(f32 dist)
 	return l_pow < 0 ? 0 : l_pow;
 }
 
-void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) 
+void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
 {
 	string256 temp;
 	if (FS.exist(temp,"$game_sounds$",s_name))
@@ -251,7 +251,7 @@ void CCustomZone::OnRender()
 	xr_vector<CCF_Shape::shape_def> &l_shapes = ((CCF_Shape*)CFORM())->Shapes();
 	xr_vector<CCF_Shape::shape_def>::iterator l_pShape;
 	
-	for(l_pShape = l_shapes.begin(); l_pShape != l_shapes.end(); l_pShape++) 
+	for(l_pShape = l_shapes.begin(); l_shapes.end() != l_pShape; ++l_pShape) 
 	{
 		switch(l_pShape->type)
 		{

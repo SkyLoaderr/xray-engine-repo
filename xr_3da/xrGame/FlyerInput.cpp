@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "flyer.h"
-#include "..\xr_input.h"
-#include "..\CameraBase.h"
+#include "../xr_input.h"
+#include "../CameraBase.h"
 
 
 void CFlyer::IR_OnKeyboardPress(int cmd){
@@ -59,7 +59,7 @@ void CFlyer::IR_OnKeyboardHold(int cmd){
 void CFlyer::IR_OnMouseMove(int dx, int dy)
 {
 	float scale		= psMouseSens * psMouseSensScale/50.f;
-	if (cam_active!=efcLookAt)
+	if (efcLookAt!=cam_active)
 		if (dx){
 			float d = float(dx)*scale;
 			cameras[cam_active]->Move((d<0)?kLEFT:kRIGHT, _abs(d));

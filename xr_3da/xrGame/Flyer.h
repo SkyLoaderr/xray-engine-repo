@@ -70,10 +70,10 @@ public:
 	virtual void		Load				(LPCSTR section);
 
 	// Fire control
-	virtual void		g_fireParams		(Fvector& P, Fvector& D) {};
+	virtual void		g_fireParams		(Fvector& /**P/**/, Fvector& /**D/**/) {};
 
 	virtual void		Die					( ){;}
-	virtual void		HitSignal			( int iHitAmount, Fvector& vLocalDir, CEntity* E, s16 element){;}
+	virtual void		HitSignal			( int /**iHitAmount/**/, Fvector& /**vLocalDir/**/, CEntity* /**E/**/, s16 /**element/**/){;}
 
 	virtual void		Update				( u32 DT );
 
