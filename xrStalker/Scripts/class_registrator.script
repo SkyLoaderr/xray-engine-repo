@@ -1,5 +1,5 @@
 if (editor() == false) then
-module ("ce_switcher")
+--module ("ce_switcher")
 --module ("main_menu")
 module ("ui_main_menu")
 
@@ -7,7 +7,7 @@ module ("ui_main_menu")
 end
 --module		("se_smart_terrain")
 module ("smart_terrain")
-module ("se_switcher")
+--module ("se_switcher")
 
 
 function register(object_factory)
