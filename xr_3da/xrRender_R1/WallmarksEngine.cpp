@@ -163,7 +163,7 @@ void CWallmarksEngine::BuildMatrix	(Fmatrix &mView, float invsz, const Fvector& 
 	mView.mulA			(mScale);
 }
 
-void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
+void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
 {
 	// query for polygons in bounding box
 	// calculate adjacency
@@ -189,7 +189,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, Fvector* pVerts, co
 
 	// calc face normal
 	Fvector	N;
-	N.mknormal			(*pTri->verts[0],*pTri->verts[1],*pTri->verts[2]);
+	N.mknormal			(pVerts[pTri->verts[0]],pVerts[pTri->verts[1]],pVerts[pTri->verts[2]]);
 	sml_normal.set		(N);
 
 	// build 3D ortho-frustum
@@ -234,7 +234,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, Fvector* pVerts, co
 	marks.push_back			(W);
 }
 
-void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector &contact_point, ref_shader hShader, float sz)
+void CWallmarksEngine::AddWallmark	(CDB::TRI* pTri, const Fvector* pVerts, const Fvector &contact_point, ref_shader hShader, float sz)
 {
 	// Physics may add wallmarks in parallel with rendering
 	lock.Enter				();

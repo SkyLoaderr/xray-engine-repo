@@ -603,7 +603,7 @@ void CParticleEffect::Render(float LOD)
                 FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,m.size.x*.5f,C,m.rot.x,fov_scale_w,w_2,h_2);
             }
         }
-        dwCount 			= pv-pv_start;
+        dwCount 			= u32(pv-pv_start);
         RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
         if (dwCount)    {
             RCache.set_Geometry	(hGeom);
@@ -622,7 +622,7 @@ void CParticleEffect::ApplyExplosion()
 
     action_list_handle	= pGenActionLists();
 	pNewActionList		(action_list_handle);
-	pExplosion			(0,0,0, 1, 8, 3, 0.1, 1.0f);
+	pExplosion			(0,0,0, 1, 8, 3, 0.1f, 1.0f);
 	pEndActionList		();
 }
 
