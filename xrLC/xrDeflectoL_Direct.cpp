@@ -76,7 +76,7 @@ void CDeflector::L_Direct	(HASH& H)
 		{
 			DWORD		Fcount	= 0;
 			
-//			try {
+			try {
 				for (J=0; J<Jcount; J++) 
 				{
 					// LUMEL space
@@ -106,12 +106,11 @@ void CDeflector::L_Direct	(HASH& H)
 						}
 					}
 				} 
-/*				
 			} catch (...)
 			{
 				Msg("* Access violation. Possibly recovered. ");
 			}
-*/			
+			
 			if (Fcount) {
 				Fcolor	Lumel,R;
 				float	cnt		= float(Fcount);
