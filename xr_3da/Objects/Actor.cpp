@@ -291,26 +291,40 @@ void CActor::feel_touch_new				(CObject* O)
 		if (T)	
 		{
 			// We have similar weapon - just get ammo out of it
-			NET_Packet	P;
+			P.w_begin	(M_EVENT);
+			P.w_u32		(Level().timeServer());
+			P.w_u16		(GE_TRANSFER_AMMO);
+			P.w_u16		(ID());
 
-			if (W->Local())	T->Ammo_add	(W->Ammo_eject());
-			else			
-			{
-				Device.Fatal("Ammo eject from non local weapon not implemented");
-			}
+			P.w_u16		(W->ID());
+			P.w_u16		(T->ID());
+			P.w_u16		(0);
+			Level().Send(P,net_flags(TRUE,TRUE));
 			return;
 		} else {
 			// We doesn't have similar weapon - pick up it
 			NET_Packet	P;
-			P.w_begin	(M_OWNERSHIP_TAKE);
-			P.w_u16		(u16(ID()));
+			P.w_begin	(M_EVENT);
+			P.w_u32		(Level().timeServer());
+			P.w_u16		(GE_OWNERSHIP_TAKE);
+			P.w_u16		(ID());
+
 			P.w_u16		(u16(W->ID()));
 			Level().Send(P,net_flags(TRUE,TRUE));
+			return;
 		}
 	}
 
 	// 
 }
+
+/*
+if (W->Local())	T->Ammo_add	(W->Ammo_eject());
+else			
+{
+Device.Fatal	("Ammo eject from non local weapon not implemented");
+}
+*/
 
 void CActor::feel_touch_delete		(CObject* O)
 {

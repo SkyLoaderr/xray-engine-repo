@@ -91,8 +91,8 @@ public:
 	BOOL					net_HasBandwidth		();
 	
 	// time management
-	IC DWORD	timeServer			() { return Device.dwTimeGlobal + net_TimeDelta; }
-	IC DWORD	timeServer_Async	() { return Device.TimerAsync() + net_TimeDelta; }
-	IC DWORD	timeServer_Delta	() { return net_TimeDelta; }
+	IC DWORD	timeServer			()	{ return Device.dwTimeGlobal + net_TimeDelta; }
+	IC DWORD	timeServer_Async	()	{ return Device.TimerAsync() + net_TimeDelta; }
+	IC DWORD	timeServer_Delta	()	{ return net_TimeDelta; }
 	IC void		timeServer_Correct	(DWORD sv_time, DWORD cl_time);
 };
