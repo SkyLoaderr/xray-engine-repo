@@ -20,7 +20,7 @@ function main ()
 				anim (anim.danger), look (look.search), cond (cond.move_end))
 	end
 
-	while st[1]:action () or st[2]:action () or st[3]:action () do wait () end
+	while st[1]:action () do wait () end
 
 
 	for a = 1, table.getn (st), 1 do
