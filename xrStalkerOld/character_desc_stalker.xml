@@ -206,7 +206,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
-		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
@@ -236,6 +236,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
 		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
@@ -266,7 +267,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>	
-		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
@@ -295,7 +297,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
@@ -324,7 +327,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
@@ -355,7 +359,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>escape_factory_assault_talk</actor_dialog>		
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>		
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
@@ -384,7 +389,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>	
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
@@ -413,7 +419,8 @@
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>escape_lager_access</actor_dialog>
-		<actor_dialog>escape_factory_assault_talk</actor_dialog>	
+		<actor_dialog>escape_factory_assault_talk</actor_dialog>
+		<actor_dialog>escape_factory_assault_attack</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 		<actor_dialog>gar_stalker_about_level</actor_dialog>
 		<actor_dialog>gar_dram_novice_level</actor_dialog>
