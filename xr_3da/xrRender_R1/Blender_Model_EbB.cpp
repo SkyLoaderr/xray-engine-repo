@@ -14,7 +14,6 @@
 CBlender_Model_EbB::CBlender_Model_EbB	()
 {
 	description.CLS		= B_MODEL_EbB;
-	description.version	= 1;
 	strcpy				(oT2_Name,	"$null");
 	strcpy				(oT2_xform,	"$null");
 }
@@ -24,7 +23,7 @@ CBlender_Model_EbB::~CBlender_Model_EbB	()
 	
 }
 
-void	CBlender_Model_EbB::Save	(	IWriter& fs )
+void	CBlender_Model_EbB::Save(	IWriter& fs )
 {
 	IBlender::Save	(fs);
 	xrPWRITE_MARKER	(fs,"Environment map");
@@ -32,7 +31,7 @@ void	CBlender_Model_EbB::Save	(	IWriter& fs )
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_Model_EbB::Load	(	IReader& fs, u16 version )
+void	CBlender_Model_EbB::Load(	IReader& fs, u16 version )
 {
 	IBlender::Load	(fs,version);
 	xrPREAD_MARKER	(fs);
@@ -40,7 +39,7 @@ void	CBlender_Model_EbB::Load	(	IReader& fs, u16 version )
 	xrPREAD_PROP	(fs,xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_Model_EbB::Compile	( CBlender_Compile& C )
+void	CBlender_Model_EbB::Compile(CBlender_Compile& C)
 {
 	IBlender::Compile		(C);
 	if (C.bEditor)	{

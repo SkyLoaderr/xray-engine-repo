@@ -16,8 +16,6 @@
 
 //#define LUABIND_NO_EXCEPTIONS
 
-#pragma comment(lib,"x:\\xrLUA.lib")
-
 //extern "C" {
 	#include "lua.h"
 	#include "lualib.h"

@@ -48,6 +48,7 @@
 #pragma comment( lib, "x:\\xrCore.lib"	)
 #pragma comment( lib, "x:\\xrCDB.lib"	)
 #pragma comment( lib, "x:\\xrSound.lib"	)
+#pragma comment( lib, "x:\\xrLUA.lib"	)
 
 #pragma comment( lib, "winmm.lib"		)
 
@@ -55,6 +56,7 @@
 #pragma comment( lib, "d3dx9.lib"		)
 #pragma comment( lib, "dinput.lib"		)
 #pragma comment( lib, "dxguid.lib"		)
+
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

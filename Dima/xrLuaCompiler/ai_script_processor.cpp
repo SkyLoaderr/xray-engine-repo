@@ -14,14 +14,6 @@
 
 DEFINE_VECTOR(LPSTR,LPSTR_VECTOR,LPSTR_IT);
 
-// I need this because we have to exclude option /EHsc (exception handling) from the project
-namespace boost {
-	void __stdcall throw_exception(const exception &A)
-	{
-		Debug.fatal("Boost exception raised %s",A.what());
-	}
-};
-
 CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 {
 	Msg				("* Initializing %s script processor",caCaption);
