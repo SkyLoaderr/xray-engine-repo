@@ -15,6 +15,8 @@ enum {
     COMMAND_PREVIEW_OBJ_PREF,
     COMMAND_SELECT_PREVIEW_OBJ,
     COMMAND_RESET_ANIMATION,
+
+    COMMAND_LOAD_FIRSTRECENT,
 };
 //------------------------------------------------------------------------------
 

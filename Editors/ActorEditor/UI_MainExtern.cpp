@@ -156,6 +156,11 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	break;
     case COMMAND_RESET_ANIMATION:
     	break;
+    case COMMAND_LOAD_FIRSTRECENT:
+    	if (fraLeftBar->FirstRecentFile()){
+        	bRes = Command(COMMAND_LOAD,(int)fraLeftBar->FirstRecentFile());
+        }
+    	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -178,6 +183,9 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
+    if (Shift.Contains(ssCtrl)){
+		if (Key=='R')					{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
+    }
     return bExec;
 }
 //---------------------------------------------------------------------------
