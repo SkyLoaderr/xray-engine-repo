@@ -31,20 +31,30 @@ public:
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
-		tMemoryStream.write(&m_tObjectID,sizeof(m_tObjectID));
-		tMemoryStream.Wdword(m_tppMap.size());
+		tMemoryStream.write			(&m_tObjectID,sizeof(m_tObjectID));
+		tMemoryStream.Wdword		(m_tppMap.size());
 		OBJECT_PAIR_IT it			= m_tppMap.begin();
 		OBJECT_PAIR_IT E			= m_tppMap.end();
 		for ( ; it != E; it++) {
 			CALifeHuman	*tpALifeHuman = dynamic_cast<CALifeHuman *>((*it).second);
 			if (tpALifeHuman)
-				tMemoryStream.Wbyte(2);
+				tMemoryStream.Wbyte(ALIFE_HUMAN_ID);
 			else {
-				CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*it).second);
-				if (tpALifeMonster)
-					tMemoryStream.Wbyte(1);
-				else
-					tMemoryStream.Wbyte(0);
+				CALifeHumanGroup	*tpALifeHumanGroup = dynamic_cast<CALifeHumanGroup *>((*it).second);
+				if (tpALifeHumanGroup)
+					tMemoryStream.Wbyte(ALIFE_HUMAN_GROUP_ID);
+				else {
+					CALifeMonster	*tpALifeMonster = dynamic_cast<CALifeMonster *>((*it).second);
+					if (tpALifeMonster)
+						tMemoryStream.Wbyte(ALIFE_MONSTER_ID);
+					else {
+						CALifeMonsterGroup	*tpALifeHumanGroup = dynamic_cast<CALifeMonsterGroup *>((*it).second);
+						if (tpALifeHumanGroup)
+							tMemoryStream.Wbyte(ALIFE_MONSTER_GROUP_ID);
+						else
+							tMemoryStream.Wbyte(ALIFE_ITEM_ID);
+					}
+				}
 			}
 			(*it).second->Save(tMemoryStream);
 		}
@@ -57,16 +67,24 @@ public:
 		for (u32 i=0; i<dwCount; i++) {
 			CALifeDynamicObject *tpALifeDynamicObject = 0;
 			switch (tFileStream.Rbyte()) {
-				case 0 : {
+				case ALIFE_ITEM_ID : {
 					tpALifeDynamicObject = new CALifeItem;
 					break;
 				}
-				case 1 : {
+				case ALIFE_MONSTER_ID : {
 					tpALifeDynamicObject = new CALifeMonster;
 					break;
 				}
-				case 2 : {
+				case ALIFE_MONSTER_GROUP_ID : {
+					tpALifeDynamicObject = new CALifeMonsterGroup;
+					break;
+				}
+				case ALIFE_HUMAN_ID : {
 					tpALifeDynamicObject = new CALifeHuman;
+					break;
+				}
+				case ALIFE_HUMAN_GROUP_ID : {
+					tpALifeDynamicObject = new CALifeHumanGroup;
 					break;
 				}
 				default : NODEFAULT;
@@ -131,8 +149,8 @@ public:
 			tFileStream.Read		(&tEvent.tTimeID,		sizeof(tEvent.tTimeID		));
 			tFileStream.Read		(&tEvent.tGraphID,		sizeof(tEvent.tGraphID		));
 			tFileStream.Read		(&tEvent.tBattleResult,	sizeof(tEvent.tBattleResult	));
-			tEvent.tpMonsterGroup1	= new CALifeMonsterGroup;
-			tEvent.tpMonsterGroup2	= new CALifeMonsterGroup;
+			tEvent.tpMonsterGroup1	= new CALifeEventGroup;
+			tEvent.tpMonsterGroup2	= new CALifeEventGroup;
 			tEvent.tpMonsterGroup1->Load(tFileStream);
 			tEvent.tpMonsterGroup2->Load(tFileStream);
 			m_tpMap.insert			(make_pair(tEvent.tEventID,tEvent));

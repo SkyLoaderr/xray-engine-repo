@@ -80,12 +80,52 @@ IC bool	bfSpawnPointPredicate(SSpawnPoint v1, SSpawnPoint v2)
 
 void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 {
-#define MODEL_COUNT				2
 	vector<bool>				tpMarks;
 	tpMarks.resize				(Level().AI.GraphHeader().dwVertexCount);
 	tpMarks.assign				(tpMarks.size(),false);
 	AI::SGraphVertex			*tpaGraph = Level().AI.m_tpaGraph;
-	const char					*caModels[MODEL_COUNT] = {"m_rat_e","m_zombie_e"};
+	u32							uiModelCount;
+	const char					*caModels[] = {
+		// monsters
+		"ent_rat",
+		"ent_zombie",
+		"ent_dog",
+		"ent_controller",
+		// human beings
+		"ent_soldier",
+		"ent_stalker",
+		"ent_trader",
+		// weapon
+		"wpn_fn2000",
+		"wpn_lr300",
+		"wpn_ak74",
+		"wpn_hpsa",
+		"wpn_pm",
+		"wpn_fort",
+		"wpn_binoc",
+		"wpn_toz34",
+		// equipment
+		"eq_radio",
+		"eq_life_saver",
+		"eq_capsule",
+		"eq_container",
+		"eq_psi_probe",
+		"eq_u_detector",
+		"eq_lf_detector",
+		"eq_medikit",
+		"eq_u_medikit",
+		"eq_p_suit",
+		"eq_st_suit",
+		"eq_sc_suit",
+		"eq_ar_suit",
+		// artefacts
+		"art_gravi",
+		"art_radio",
+		"art_magnet",
+		"art_mball",
+		"art_black_droplets",
+		0};
+	for (uiModelCount=0; caModels[uiModelCount]; uiModelCount++);
 	m_tpSpawnPoints.resize		(dwSpawnCount);
 	u16 wGroupID				= 0;
 	m_tSpawnHeader.dwCount		= dwSpawnCount;
@@ -102,7 +142,7 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 			}
 		if (!bOk)
 			m_tpSpawnPoints[i].wGroupID = wGroupID++;
-		j = ::Random.randI(0,MODEL_COUNT);
+		j = ::Random.randI(0,uiModelCount);
 		memcpy(m_tpSpawnPoints[i].caModel,caModels[j],(1 + strlen(caModels[j]))*sizeof(char));
 		m_tpSpawnPoints[i].ucTeam					= (u8)::Random.randI(255);
 		m_tpSpawnPoints[i].ucSquad					= (u8)::Random.randI(255);
@@ -340,7 +380,7 @@ void CAI_ALife::Update(u32 dt)
 #endif
 }
 
-void CAI_ALife::vfProcessNPC(CALifeMonster	*tpALifeMonster)
+void CAI_ALife::vfProcessNPC(CALifeMonsterAbstract	*tpALifeMonster)
 {
 //	Msg						("* Monster %d",dwNPCIndex);
 //	Msg						("* * Time       : %d",tpALifeMonster->m_dwLastUpdateTime);
@@ -363,7 +403,7 @@ void CAI_ALife::vfProcessNPC(CALifeMonster	*tpALifeMonster)
 //	Msg						("* * Health     : %d",tpALifeMonster->m_iHealth);
 }
 
-void CAI_ALife::vfChooseNextRoutePoint(CALifeMonster	*tpALifeMonster)
+void CAI_ALife::vfChooseNextRoutePoint(CALifeMonsterAbstract	*tpALifeMonster)
 {
 	if (tpALifeMonster->m_tNextGraphID != tpALifeMonster->m_tGraphID) {
 		u32 dwCurTime = Level().timeServer();
@@ -430,19 +470,18 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonster	*tpALifeMonster)
 	}
 }
 
-void CAI_ALife::vfCheckForTheBattle(CALifeMonster	*tpALifeMonster)
+void CAI_ALife::vfCheckForTheBattle(CALifeMonsterAbstract	*tpALifeMonster)
 {
 }
 
-void CAI_ALife::vfCheckForDeletedEvents(CALifeHuman	*tpALifeHuman)
+void CAI_ALife::vfCheckForDeletedEvents(CALifeHumanAbstract	*tpALifeHuman)
 {
 	PERSONAL_EVENT_IT it = remove_if(tpALifeHuman->m_tpEvents.begin(),tpALifeHuman->m_tpEvents.end(),CRemovePersonalEventPredicate(m_tEventRegistry.m_tpMap));
 	tpALifeHuman->m_tpEvents.erase(it,tpALifeHuman->m_tpEvents.end());
 }
 
-void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
+void CAI_ALife::vfCheckForItems(CALifeHumanAbstract	*tpALifeHuman)
 {
-	
 	OBJECT_IT it = m_tpGraphObjects[tpALifeHuman->m_tGraphID].tpObjectIDs.begin();
 	OBJECT_IT E  = m_tpGraphObjects[tpALifeHuman->m_tGraphID].tpObjectIDs.end();
 	for( ; it != E; it++) {
@@ -453,35 +492,35 @@ void CAI_ALife::vfCheckForItems(CALifeHuman	*tpALifeHuman)
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
 			// adding new item to the item list
-			if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
-				tpALifeHuman->m_tpItemIDs.push_back(*it);
-				m_tpGraphObjects[tpALifeHuman->m_tGraphID].tpObjectIDs.erase(it);
-				tpALifeHuman->m_fItemMass += tpALifeItem->m_fMass;
-			}
-			else {
-				sort(tpALifeHuman->m_tpItemIDs.begin(),tpALifeHuman->m_tpItemIDs.end(),CSortItemPrdicate(m_tObjectRegistry.m_tppMap));
-				OBJECT_IT	I = tpALifeHuman->m_tpItemIDs.end();
-				OBJECT_IT	S = tpALifeHuman->m_tpItemIDs.begin();
-				float		fItemMass = tpALifeHuman->m_fItemMass;
-				for ( ; I != S; I--) {
-					OBJECT_PAIR_IT II = m_tObjectRegistry.m_tppMap.find((*I));
-					VERIFY(II != m_tObjectRegistry.m_tppMap.end());
-					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
-					VERIFY(tpALifeItemIn);
-					tpALifeHuman->m_fItemMass -= tpALifeItemIn->m_fMass;
-					if (tpALifeItemIn->m_fPrice/tpALifeItemIn->m_fMass >= tpALifeItem->m_fPrice/tpALifeItem->m_fMass)
-						break;
-					if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass)
-						break;
-				}
-				if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
-					tpALifeHuman->m_tpItemIDs.erase		(I,tpALifeHuman->m_tpItemIDs.end());
-					tpALifeHuman->m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
-					tpALifeHuman->m_fItemMass			+= tpALifeItem->m_fMass;
-				}
-				else
-					tpALifeHuman->m_fItemMass = fItemMass;
-			}
+//			if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
+//				tpALifeHuman->m_tpItemIDs.push_back(*it);
+//				m_tpGraphObjects[tpALifeHuman->m_tGraphID].tpObjectIDs.erase(it);
+//				tpALifeHuman->m_fItemMass += tpALifeItem->m_fMass;
+//			}
+//			else {
+//				sort(tpALifeHuman->m_tpItemIDs.begin(),tpALifeHuman->m_tpItemIDs.end(),CSortItemPrdicate(m_tObjectRegistry.m_tppMap));
+//				OBJECT_IT	I = tpALifeHuman->m_tpItemIDs.end();
+//				OBJECT_IT	S = tpALifeHuman->m_tpItemIDs.begin();
+//				float		fItemMass = tpALifeHuman->m_fItemMass;
+//				for ( ; I != S; I--) {
+//					OBJECT_PAIR_IT II = m_tObjectRegistry.m_tppMap.find((*I));
+//					VERIFY(II != m_tObjectRegistry.m_tppMap.end());
+//					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
+//					VERIFY(tpALifeItemIn);
+//					tpALifeHuman->m_fItemMass -= tpALifeItemIn->m_fMass;
+//					if (tpALifeItemIn->m_fPrice/tpALifeItemIn->m_fMass >= tpALifeItem->m_fPrice/tpALifeItem->m_fMass)
+//						break;
+//					if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass)
+//						break;
+//				}
+//				if (tpALifeHuman->m_fItemMass + tpALifeItem->m_fMass < tpALifeHuman->m_fMaxItemMass) {
+//					tpALifeHuman->m_tpItemIDs.erase		(I,tpALifeHuman->m_tpItemIDs.end());
+//					tpALifeHuman->m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
+//					tpALifeHuman->m_fItemMass			+= tpALifeItem->m_fMass;
+//				}
+//				else
+//					tpALifeHuman->m_fItemMass = fItemMass;
+//			}
 		}
 		else {
 		}

@@ -85,11 +85,11 @@ public:
 		vfAddEventToGraphPoint		(tEventID,tNextGraphPointID);
 	}
 
-	void							vfCheckForItems			(CALifeHuman	*tpALifeHuman);
-	void							vfCheckForDeletedEvents	(CALifeHuman	*tpALifeHuman);
-	void							vfCheckForTheBattle		(CALifeMonster	*tpALifeMonster);
-	void							vfChooseNextRoutePoint	(CALifeMonster	*tpALifeMonster);
-	void							vfProcessNPC			(CALifeMonster	*tpALifeMonster);
+	void							vfCheckForItems			(CALifeHumanAbstract	*tpALifeHumanAbstract);
+	void							vfCheckForDeletedEvents	(CALifeHumanAbstract	*tpALifeHumanAbstract);
+	void							vfCheckForTheBattle		(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
+	void							vfChooseNextRoutePoint	(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
+	void							vfProcessNPC			(CALifeMonsterAbstract	*tpALifeMonsterAbstract);
 	void							vfInitTerrain			();
 	void							vfInitLocationOwners	();
 	void							vfInitGraph				();

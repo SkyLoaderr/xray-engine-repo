@@ -22,9 +22,17 @@
 #define EVENT_CHUNK_DATA			0x0003
 #define TASK_CHUNK_DATA				0x0004
 
-class CALifeMonsterGroup;
+#define ALIFE_ITEM_ID				0x00
+#define ALIFE_MONSTER_ID			0x01
+#define ALIFE_MONSTER_GROUP_ID		0x02
+#define ALIFE_HUMAN_ID				0x03
+#define ALIFE_HUMAN_GROUP_ID		0x04
+
+class CALifeMonsterParams;
+class CALifeHumanParams;
+class CALifeEventGroup;
 class CALifeDynamicObject;
-class CALifeMonster;
+class CALifeMonsterAbstract;
 
 namespace ALife {
 	typedef u64	_CLASS_ID;									// Class ID
@@ -39,16 +47,18 @@ namespace ALife {
 
 	const	u32	LOCATION_COUNT	= (u32(1) << (8*sizeof(_LOCATION_ID)));
 
-	DEFINE_VECTOR	(_OBJECT_ID,	OBJECT_VECTOR,			OBJECT_IT);
-	DEFINE_VECTOR	(_EVENT_ID,		EVENT_VECTOR,			EVENT_IT);
-	DEFINE_VECTOR	(_TASK_ID,		TASK_VECTOR,			TASK_IT);
-	DEFINE_VECTOR	(_GRAPH_ID,		GRAPH_VECTOR,			GRAPH_IT);
-	DEFINE_VECTOR	(CALifeMonster*,ALIFE_MONSTER_P_VECTOR, ALIFE_MONSTER_P_IT);
-	DEFINE_VECTOR	(OBJECT_VECTOR,	OBJECT_VECTOR_VECTOR,	OBJECT_VECTOR_IT);
+	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,			OBJECT_IT);
+	DEFINE_VECTOR	(_EVENT_ID,					EVENT_VECTOR,			EVENT_IT);
+	DEFINE_VECTOR	(_TASK_ID,					TASK_VECTOR,			TASK_IT);
+	DEFINE_VECTOR	(_GRAPH_ID,					GRAPH_VECTOR,			GRAPH_IT);
+	DEFINE_VECTOR	(OBJECT_VECTOR,				OBJECT_VECTOR_VECTOR,	OBJECT_VECTOR_IT);
+	DEFINE_VECTOR	(CALifeMonsterParams,		MONSTER_PARAMS_VECTOR,	MONSTER_PARAMS_IT);
+	DEFINE_VECTOR	(CALifeHumanParams,			HUMAN_PARAMS_VECTOR,	HUMAN_PARAMS_IT);
+	DEFINE_VECTOR	(CALifeMonsterAbstract *,	ALIFE_MONSTER_P_VECTOR, ALIFE_MONSTER_P_IT);
 	
-	DEFINE_SVECTOR	(GRAPH_VECTOR,	LOCATION_COUNT,	GRAPH_VECTOR_SVECTOR, GRAPH_VECTOR_IT);
+	DEFINE_SVECTOR	(GRAPH_VECTOR,				LOCATION_COUNT,			GRAPH_VECTOR_SVECTOR,	GRAPH_VECTOR_IT);
 	
-	DEFINE_MAP		(_OBJECT_ID,	CALifeDynamicObject *,	OBJECT_MAP,	OBJECT_PAIR_IT);
+	DEFINE_MAP		(_OBJECT_ID,				CALifeDynamicObject *,	OBJECT_MAP,				OBJECT_PAIR_IT);
 
 	enum EInjureType {
 		eInjureTypeEat = u32(0),
@@ -97,8 +107,8 @@ namespace ALife {
 		_TIME_ID					tTimeID;
 		_GRAPH_ID					tGraphID;
 		EBattleResult				tBattleResult;
-		CALifeMonsterGroup			*tpMonsterGroup1;
-		CALifeMonsterGroup			*tpMonsterGroup2;
+		CALifeEventGroup			*tpMonsterGroup1;
+		CALifeEventGroup			*tpMonsterGroup2;
 	} SEvent;
 
 	typedef struct tagSPersonalEvent {
@@ -110,12 +120,6 @@ namespace ALife {
 		ERelation					tRelation;
 	} SPersonalEvent;
 	
-	typedef struct tagSALifeCorp {
-		EInjureType					tInjureType;
-		Fvector						tPosition;					
-		Fvector						tAngles;					
-	} SALifeCorp;
-
 	typedef struct tagSSpawnHeader {
 		u32							dwVersion;
 		u32							dwCount;
@@ -133,25 +137,27 @@ namespace ALife {
 		float						fBirthProbability;
 		float						fIncreaseCoefficient;
 		float						fAnomalyDeathProbability;
+		float						fMaxItemMass;
+		int							iHealth;
 		u8							ucRoutePointCount;
 		GRAPH_VECTOR				tpRouteGraphPoints;
 	} SSpawnPoint;
-
-	typedef struct tagSGraphPoint {
-		OBJECT_VECTOR	tpObjectIDs;
-		EVENT_VECTOR	tpEventIDs;
-	} SGraphPoint;
 
 	typedef struct tagSALifeHeader {
 		u32							dwVersion;
 		_TIME_ID					tTimeID;
 	} SALifeHeader;
 
-	DEFINE_VECTOR	(SSpawnPoint,	SPAWN_VECTOR,				SPAWN_IT);
-	DEFINE_VECTOR	(SPersonalEvent,PERSONAL_EVENT_VECTOR,		PERSONAL_EVENT_IT);
-	DEFINE_VECTOR	(SGraphPoint,	GRAPH_POINT_VECTOR,			GRAPH_POINT_IT);
+	typedef struct tagSGraphPoint {
+		OBJECT_VECTOR	tpObjectIDs;
+		EVENT_VECTOR	tpEventIDs;
+	} SGraphPoint;
+	
+	DEFINE_VECTOR	(SSpawnPoint,				SPAWN_VECTOR,			SPAWN_IT);
+	DEFINE_VECTOR	(SPersonalEvent,			PERSONAL_EVENT_VECTOR,	PERSONAL_EVENT_IT);
+	DEFINE_VECTOR	(SGraphPoint,				GRAPH_POINT_VECTOR,		GRAPH_POINT_IT);
 
-	DEFINE_MAP		(_EVENT_ID,		SEvent,			EVENT_MAP,	EVENT_PAIR_IT);
-	DEFINE_MAP		(_TASK_ID,		STask,			TASK_MAP,	TASK_PAIR_IT);
+	DEFINE_MAP		(_EVENT_ID,					SEvent,					EVENT_MAP,				EVENT_PAIR_IT);
+	DEFINE_MAP		(_TASK_ID,					STask,					TASK_MAP,				TASK_PAIR_IT);
 };
 

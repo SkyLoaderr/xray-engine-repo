@@ -177,16 +177,16 @@ void CAI_ALife::vfObjectInfo(_OBJECT_ID	&tObjectID)
 	Msg("* Maximum speed : %7.2f",tpALifeMonster->m_fMaxSpeed);
 	Msg("* Distance from : %7.2f",tpALifeMonster->m_fDistanceFromPoint);
 	Msg("* Distance to   : %7.2f",tpALifeMonster->m_fDistanceToPoint);
-	Msg("* Health        : %d",tpALifeMonster->m_iHealth);
+	//Msg("* Health        : %d",tpALifeMonster->m_iHealth);
 
 	CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonster);
 	if (tpALifeHuman) {
-		Msg("* Item mass     : %7.2f",tpALifeHuman->m_fItemMass);
-		Msg("* Max item mass : %7.2f",tpALifeHuman->m_fMaxItemMass);
+		Msg("* Item mass     : %7.2f",tpALifeHuman->m_tHumanParams.m_fCumulativeItemMass);
+		//Msg("* Max item mass : %7.2f",tpALifeHuman->m_fMaxItemMass);
 		Msg("* Items         :");
 		{
-			OBJECT_IT it			= tpALifeHuman->m_tpItemIDs.begin();
-			OBJECT_IT E				= tpALifeHuman->m_tpItemIDs.end();
+			OBJECT_IT it			= tpALifeHuman->m_tHumanParams.m_tpItemIDs.begin();
+			OBJECT_IT E				= tpALifeHuman->m_tHumanParams.m_tpItemIDs.end();
 			for (int i=0; it != E; it++, i++)
 				Msg("* Item ID [%d]  : %d",i,*it);
 		}
@@ -221,7 +221,7 @@ void CAI_ALife::vfEventInfo(_EVENT_ID &tEventID)
 	Msg("* Time  ID  : %d",tEvent.tTimeID);
 	Msg("* Battle    : %d",tEvent.tBattleResult);
 	Msg("* Monster 1 :");
-	CALifeMonsterGroup *tpMG = tEvent.tpMonsterGroup1;
+	CALifeEventGroup *tpMG = tEvent.tpMonsterGroup1;
 	Msg("*     Class  ID    : %d",tpMG->m_tClassID);
 	Msg("*     Object ID    : %d",tpMG->m_tObjectID);
 	Msg("*     Spawn  ID    : %d",tpMG->m_tSpawnID);

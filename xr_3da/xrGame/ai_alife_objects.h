@@ -17,6 +17,63 @@ public:
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints) = 0;
 };
 
+class CALifeMonsterParams {
+public:
+	int								m_iHealth;
+
+	virtual void					Save(CFS_Memory	&tMemoryStream)
+	{
+		tMemoryStream.Wdword		(m_iHealth);
+	};
+	
+	virtual void					Load(CStream	&tFileStream)
+	{
+		m_iHealth					= tFileStream.Rdword();
+	};
+	
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		m_iHealth					= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
+	};
+};
+
+class CALifeHumanParams : public CALifeMonsterParams{
+public:
+	typedef CALifeMonsterParams inherited;
+
+	float							m_fCumulativeItemMass;
+	OBJECT_VECTOR					m_tpItemIDs;
+
+	virtual void					Save(CFS_Memory	&tMemoryStream)
+	{
+		inherited::Save				(tMemoryStream);
+		tMemoryStream.Wfloat		(m_fCumulativeItemMass);
+		tMemoryStream.Wdword		(m_tpItemIDs.size());
+		OBJECT_IT					I = m_tpItemIDs.begin();
+		OBJECT_IT					E = m_tpItemIDs.end();
+		for ( ; I !=E; I++)
+			tMemoryStream.write		(I,sizeof(*I));
+	};
+	
+	virtual void					Load(CStream	&tFileStream)
+	{
+		inherited::Load				(tFileStream);
+		m_fCumulativeItemMass		= tFileStream.Rfloat();
+		m_tpItemIDs.resize			(tFileStream.Rdword());
+		OBJECT_IT					I = m_tpItemIDs.begin();
+		OBJECT_IT					E = m_tpItemIDs.end();
+		for ( ; I !=E; I++)
+			tFileStream.Read		(I,sizeof(*I));
+	};
+	
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init				(tSpawnID,tpSpawnPoints);
+		m_fCumulativeItemMass		= 0.0f;
+		m_tpItemIDs.clear			();
+	};
+};
+
 class CALifeObject : public IPureALifeObject {
 public:
 	_CLASS_ID						m_tClassID;
@@ -53,7 +110,7 @@ public:
 	};
 };
 
-class CALifeMonsterGroup : public CALifeObject {
+class CALifeEventGroup : public CALifeObject {
 public:
 	typedef	CALifeObject inherited;
 	u16								m_wCountAfter;
@@ -108,12 +165,14 @@ public:
 	
 	float							m_fMass;
 	float							m_fPrice;
+	float							m_fHealthValue;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
 		tMemoryStream.Wfloat(m_fMass);
 		tMemoryStream.Wfloat(m_fPrice);
+		tMemoryStream.Wfloat(m_fHealthValue);
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
@@ -121,6 +180,7 @@ public:
 		inherited::Load		(tFileStream);
 		m_fMass				= tFileStream.Rfloat();
 		m_fPrice			= tFileStream.Rfloat();
+		m_fHealthValue		= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -128,10 +188,11 @@ public:
 		inherited::Init		(tSpawnID,tpSpawnPoints);
 		m_fMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "ph_mass");
 		m_fPrice			= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "price");
+		m_fHealthValue		= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "health_value");
 	};
 };
 
-class CALifeMonster : public CALifeDynamicObject {
+class CALifeMonsterAbstract : public CALifeDynamicObject {
 public:
 	typedef	CALifeDynamicObject inherited;
 	
@@ -142,7 +203,6 @@ public:
 	float							m_fMaxSpeed;
 	float							m_fDistanceFromPoint;
 	float							m_fDistanceToPoint;
-	s32								m_iHealth;
 	
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
@@ -154,7 +214,6 @@ public:
 		tMemoryStream.write	(&m_fCurSpeed,				sizeof(m_fCurSpeed));
 		tMemoryStream.write	(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
 		tMemoryStream.write	(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-		tMemoryStream.write	(&m_iHealth,				sizeof(m_iHealth));
 	};
 	
 	virtual	void					Load(CStream	&tFileStream)
@@ -167,7 +226,6 @@ public:
 		tFileStream.Read	(&m_fCurSpeed,				sizeof(m_fCurSpeed));
 		tFileStream.Read	(&m_fDistanceFromPoint,		sizeof(m_fDistanceFromPoint));
 		tFileStream.Read	(&m_fDistanceToPoint,		sizeof(m_fDistanceToPoint));
-		tFileStream.Read	(&m_iHealth,				sizeof(m_iHealth));
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
@@ -180,32 +238,82 @@ public:
 		m_fCurSpeed			= 0.0f;
 		m_fDistanceFromPoint= 0.0f;
 		m_fDistanceToPoint	= 0.0f;
-		m_iHealth			= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
 	};
 };
 
-class CALifeHuman : public CALifeMonster {
+class CALifeMonster : public CALifeMonsterAbstract {
 public:
-	typedef	CALifeMonster inherited;
+	typedef	CALifeMonsterAbstract inherited;
+	
+	CALifeMonsterParams				m_tMonsterParams;
+
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		inherited::Save		(tMemoryStream);
+		m_tMonsterParams.Save(tMemoryStream);
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		inherited::Load		(tFileStream);
+		m_tMonsterParams.Load(tFileStream);
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_tMonsterParams.Init(tSpawnID,tpSpawnPoints);
+	};
+};
+
+class CALifeMonsterGroup : public CALifeMonsterAbstract {
+public:
+	typedef	CALifeMonsterAbstract inherited;
+	
+	MONSTER_PARAMS_VECTOR			m_tpMembers;
+
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		inherited::Save		(tMemoryStream);
+		tMemoryStream.Wdword(m_tpMembers.size());
+		MONSTER_PARAMS_IT I = m_tpMembers.begin();
+		MONSTER_PARAMS_IT E = m_tpMembers.end();
+		for ( ; I != E; I++)
+			(*I).Save(tMemoryStream);
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		inherited::Load		(tFileStream);
+		m_tpMembers.resize(tFileStream.Rdword());
+		MONSTER_PARAMS_IT I = m_tpMembers.begin();
+		MONSTER_PARAMS_IT E = m_tpMembers.end();
+		for ( ; I != E; I++)
+			(*I).Load(tFileStream);
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_tpMembers.resize	(m_wCount);
+		MONSTER_PARAMS_IT I = m_tpMembers.begin();
+		MONSTER_PARAMS_IT E = m_tpMembers.end();
+		for ( ; I != E; I++)
+			(*I).Init(tSpawnID,tpSpawnPoints);
+	};
+};
+
+class CALifeHumanAbstract : public CALifeMonsterAbstract {
+public:
+	typedef	CALifeMonsterAbstract inherited;
 	
 	PERSONAL_EVENT_VECTOR			m_tpEvents;
-	OBJECT_VECTOR					m_tpItemIDs;
 	TASK_VECTOR						m_tpTaskIDs;
-	float							m_fItemMass;
-	float							m_fMaxItemMass;
 
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		// calling inherited
 		inherited::Save(tMemoryStream);
-		// saving items
-		{
-			tMemoryStream.Wdword	(m_tpItemIDs.size());
-			OBJECT_IT it			= m_tpItemIDs.begin();
-			OBJECT_IT E				= m_tpItemIDs.end();
-			for ( ; it != E; it++)
-				tMemoryStream.write	(it,sizeof(*it));
-		}
 		// saving events
 		{
 			tMemoryStream.Wdword(m_tpEvents.size());
@@ -231,22 +339,12 @@ public:
 			for ( ; it != E; it++)
 				tMemoryStream.write	(it,sizeof(*it));
 		}
-		tMemoryStream.Wfloat		(m_fItemMass);
-		tMemoryStream.Wfloat		(m_fMaxItemMass);
 	};
 
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		// calling inherited
 		inherited::Load(tFileStream);
-		// loading items
-		{
-			m_tpItemIDs.resize(tFileStream.Rdword());
-			OBJECT_IT it			= m_tpItemIDs.begin();
-			OBJECT_IT E				= m_tpItemIDs.end();
-			for ( ; it != E; it++)
-				tFileStream.Read	(it,sizeof(*it));
-		}
 		// loading events
 		{
 			m_tpEvents.resize(tFileStream.Rdword());
@@ -272,18 +370,71 @@ public:
 			for ( ; it != E; it++)
 				tFileStream.Read	(it,sizeof(*it));
 		}
-		m_fItemMass					= tFileStream.Rfloat();
-		m_fMaxItemMass				= tFileStream.Rfloat();
 	};
 
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
 		m_tpEvents.	clear			();
-		m_tpItemIDs.clear			();
 		m_tpTaskIDs.clear			();
-		m_fItemMass					= 0.0f;
-		m_fMaxItemMass				= pSettings->ReadFLOAT(tpSpawnPoints[tSpawnID].caModel, "MaxItemMass");
+	};
+};
+
+class CALifeHuman : public CALifeHumanAbstract {
+public:
+	typedef	CALifeHumanAbstract inherited;
+
+	CALifeHumanParams				m_tHumanParams;
+
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		inherited::Save		(tMemoryStream);
+		m_tHumanParams.Save	(tMemoryStream);
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		inherited::Load		(tFileStream);
+		m_tHumanParams.Load	(tFileStream);
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_tHumanParams.Init	(tSpawnID,tpSpawnPoints);
+	};
+};
+
+class CALifeHumanGroup : public CALifeHumanAbstract {
+public:
+	typedef	CALifeHumanAbstract inherited;
+
+	HUMAN_PARAMS_VECTOR				m_tpMembers;
+
+	virtual	void					Save(CFS_Memory &tMemoryStream)
+	{
+		inherited::Save		(tMemoryStream);
+		tMemoryStream.Wdword(m_tpMembers.size());
+		HUMAN_PARAMS_IT		I = m_tpMembers.begin();
+		HUMAN_PARAMS_IT		E = m_tpMembers.end();
+		for ( ; I != E; I++)
+			(*I).Save(tMemoryStream);
+	};
+	
+	virtual	void					Load(CStream	&tFileStream)
+	{
+		inherited::Load		(tFileStream);
+		m_tpMembers.resize	(tFileStream.Rdword());
+		HUMAN_PARAMS_IT		I = m_tpMembers.begin();
+		HUMAN_PARAMS_IT		E = m_tpMembers.end();
+		for ( ; I != E; I++)
+			(*I).Load(tFileStream);
+	};
+
+	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_VECTOR &tpSpawnPoints)
+	{
+		inherited::Init		(tSpawnID,tpSpawnPoints);
+		m_tpMembers.clear	();
 	};
 };
 
