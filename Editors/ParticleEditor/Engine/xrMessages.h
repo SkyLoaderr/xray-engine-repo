@@ -19,7 +19,6 @@ enum {
 
 	M_PLIST_ADD,
 	M_PLIST_REMOVE,
-	M_PLIST_UPDATE,
 
 	M_CHAT,						// DUAL:
 

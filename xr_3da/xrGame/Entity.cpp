@@ -71,12 +71,14 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 		break;
 	case GE_DIE:
 		{
-			u16				id;
+			u16				id,cl;
 			P.r_u16			(id);
+			P.r_u32			(cl);
 			CObject* who	= Level().Objects.net_Find	(id);
 			if (who!=this)	Level().HUD()->outMessage	(0xffffffff,cName(),"Killed by '%s'...",who->cName());
 			else			Level().HUD()->outMessage	(0xffffffff,cName(),"Crashed...");
 			Die				();
+			Level().Players.access(cl).score			++;
 		}
 		break;
 	}
@@ -116,8 +118,6 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 	// If Local() - perform some logic
 	if (Local() && (fHealth>0))
 	{
-		Msg	("~ ----- %f, %f",fHealth,lost_health);
-
 		fHealth				-=	lost_health;
 		fArmor				-=	lost_armor;
 
@@ -127,6 +127,7 @@ void CEntity::Hit			(float perc, Fvector &dir, CObject* who)
 			NET_Packet		P;
 			u_EventGen		(P,GE_DIE,ID()	);
 			P.w_u16			(u16(who->ID())	);
+			P.w_u32			(0);
 			u_EventSend		(P);
 		}
 	}

@@ -12,6 +12,7 @@
 #include "rain.h"
 #include "ai_space.h"
 #include "ai_sounds.h"
+#include "playerlist.h"
 #include "..\fixedset.h"
 
 class CHUDManager;
@@ -66,6 +67,7 @@ public:
 	vector<CTeam>				Teams;
 	CTracer						Tracers;
 	CEffect_Rain				eff_Rain;
+	CPlayers					Players;
 
 	// waypoints
 	typedef struct tagSWayPoint{

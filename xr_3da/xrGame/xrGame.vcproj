@@ -1113,6 +1113,12 @@
 				RelativePath=".\xrServer.h">
 			</File>
 			<File
+				RelativePath="xrServer_CL_connect.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_CL_disconnect.cpp">
+			</File>
+			<File
 				RelativePath=".\xrServer_Entities.cpp">
 			</File>
 			<File
