@@ -369,10 +369,9 @@ BOOL	__stdcall rms_test	(lm_layer&	lm, u32 _r, u32 _g, u32 _b, u32 _a, u32 rms)
 	return TRUE;
 }
 
-u32	__stdcall rms_average	(lm_layer& lm, u32& _r, u32& _g, u32& _b, u32& _a)
+u32	__stdcall rms_average	(lm_layer& lm, base_color& C)
 {
-	u32 x,y,_count;
-	_r=0, _g=0, _b=0, _a=0, _count=0;
+	u32 x,y,_count=0;
 
 	for (y=0; y<lm.height; y++)
 	{
@@ -381,11 +380,7 @@ u32	__stdcall rms_average	(lm_layer& lm, u32& _r, u32& _g, u32& _b, u32& _a)
 			u32	offset	= y*lm.width+x;
 			if (lm.marker[offset]>=254)	
 			{
-				u32 pixel	= lm.Pixel	(offset);
-				_r		+= color_get_R	(pixel);
-				_g		+= color_get_G	(pixel);
-				_b		+= color_get_B	(pixel);
-				_a		+= color_get_A	(pixel);
+				C.add	(lm.surface[offset]);
 				_count	++;
 			}
 		}
@@ -395,24 +390,25 @@ u32	__stdcall rms_average	(lm_layer& lm, u32& _r, u32& _g, u32& _b, u32& _a)
 
 BOOL	compress_Zero		(lm_layer& lm, u32 rms)
 {
-	u32 _r, _g, _b, _a, _count;
-
 	// Average color
-	_count	= rms_average(lm,_r,_g,_b,_a);
+	base_color	_c;
+	u32			_count	= rms_average(lm,_c);
 
 	if (0==_count)	{
-		clMsg("* ERROR: Lightmap not calculated (T:%d)");
-		return FALSE;
-	} else {
-		_r	/= _count;	_g	/= _count;	_b	/= _count; _a	/= _count;
-	}
+		clMsg	("* ERROR: Lightmap not calculated (T:%d)");
+		return	FALSE;
+	} else		_c.scale(_count);
 
 	// Compress if needed
+	u8	_r	= u8_clr	(_c.rgb.x	);
+	u8	_g	= u8_clr	(_c.rgb.y	);
+	u8	_b	= u8_clr	(_c.rgb.z	);
+	u8	_a	= u8_clr	(_c.sun		);
 	if (rms_test(lm,_r,_g,_b,_a,rms))
 	{
 		u32		c_x			= BORDER*2;
 		u32		c_y			= BORDER*2;
-		lm.surface.assign	(c_x*c_y,color_rgba	(_r,_g,_b,_a));
+		lm.surface.assign	(c_x*c_y,_c);
 		lm.height			= 0;
 		lm.width			= 0;
 		return TRUE;
