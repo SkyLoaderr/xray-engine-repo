@@ -63,10 +63,14 @@
 	</info_portion>
 
 
-	<!-- osvedomitel trade information -->
+	<!-- BAR osvedomitel trade information -->
 	<info_portion id="bar_bar_osvedomitel_info_01"></info_portion>
 	<info_portion id="bar_bar_osvedomitel_info_02"></info_portion>
 	<info_portion id="bar_bar_osvedomitel_info_03"></info_portion>
+
+	<!-- BAR HUNTER QUEST -->
+	<info_portion id="bar_bar_hunter_quest_start"></info_portion>
+	<info_portion id="bar_bar_hunter_quest_finish"></info_portion>
 
 	<!-- DOLG BASE -->
 	<info_portion id="bar_dolg_base_pass"></info_portion>
