@@ -4,7 +4,7 @@ function main()
 	printf("started")
 
 	-- загрузка всех кого нужно обсудить и брание их под контроль
-	escape_bobic.init_bobik()
+	escape_bobik.init_bobik()
 	table.insert(work, "escape_bobik")
 
 
@@ -12,8 +12,8 @@ function main()
 		local deleted = {}
 		for k,v in work do
 			if v == "escape_bobik" then
-				if escape_bobic.execute_bobik() == false then
-					escape_bobic.finalize_bobik()
+				if escape_bobik.execute_bobik() == false then
+					escape_bobik.finalize_bobik()
 					table.insert(deleted, k)
 				end
 			end
