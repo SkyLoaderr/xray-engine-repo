@@ -422,7 +422,7 @@ VOID CDeflector::Light(HASH& H)
 	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 
 	// Compression
-	const	DWORD rms		= 4;
+	const	DWORD rms		= 8;
 	DWORD	w,h;
 	if (compress_Zero(lm,rms))	return;		// already with borders
 	else if (compress_RMS(lm,rms,w,h))	
