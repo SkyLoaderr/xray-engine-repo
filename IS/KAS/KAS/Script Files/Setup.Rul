@@ -28,23 +28,29 @@ BOOL	g_NeedReboot;
 #define MSDE_INSTANCE_NAME	 	"kas_sql_srv"
 #define MSDE_INSTANCE_FOLDER	PROGRAMFILES^"Microsoft SQL Server\\Mssql$"+MSDE_INSTANCE_NAME+"\\"
 
+#define MSDE_START_SERVER_CMD	PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe"
+#define MSDE_START_SERVER_PAR	" -Action 1 -Silent 1 -Service mssql$kas_sql_srv"
+                   
 #define DLL_FILE  				TARGETDIR^"SQL_CONFIG.dll"    
 #define SQL_USER_NAME_ 			"sa"
 #define SQL_USER_PASS_ 			"KAStorka40"
-#define SQL_SERVER_HOST_ 		"localhost\\kas_sql_srv"
+#define SQL_SERVER_HOST_ 		"localhost\\"+MSDE_INSTANCE_NAME
 #define SQL_STORED_PROC_DLL_   	"xp_indexing.dll"
 
 #define SETUP_INI_FILE      	SRCDIR^"setupMSDE.ini"
 #define INI_MAIN_SECTION_ID  	"main"
-#define INI_UPDATE_DATE_ID    	"updateDate"
-#define INI_VERSIONDB_ID		"VersionDB"
-#define INI_BUILD_ID			"build"  
+#define INI_VERSION_EXE_ID    	"version_exe"
+#define INI_VERSION_DB_ID		"version_db"
 #define INI_SERVER_ID			"Main_ServerName"
-#define INI_INSTANCE_ID			"instance"
+
+#define REG_SERVER_ID			"Main_ServerName"
+#define REG_INSTANCE_ID			"instance"
+#define REG_VERSION_DB_ID    	"versionDB"
 
 //---------------------------------------------------------------------------
 // User defined function prototype
 //---------------------------------------------------------------------------
+prototype 				CreateStartServerShortcut	();
 prototype 				CreateUninstallShortcut		(); 
 prototype 				ClearFolder					(byval string);
 prototype BOOL 			CheckAdminRights			();
@@ -93,6 +99,13 @@ begin
 	endif;  
 	// Create the shortcut. 
 	AddFolderIcon(SHELL_OBJECT_FOLDER, @IDSL_REMOVE_KAS,strCmdLine, "",TARGETDIR^"MDISplit.ico",0, "", NULL );  
+end;
+//---------------------------------------------------------------------------
+function CreateStartServerShortcut()   
+begin   
+	if ( SYSINFO.WIN9X.bWin9X ) then   
+		AddFolderIcon	(FOLDER_STARTUP, "Start KAS SQLServer","\""+MSDE_START_SERVER_CMD+"\" "+MSDE_START_SERVER_PAR, "",TARGETDIR^"MDISplit.ico",0, "", NULL );  
+	endif;  
 end;
 //---------------------------------------------------------------------------
 function ClearFolder(folder)
@@ -404,7 +417,7 @@ function MSDE_2000_Installed()
 	number 	nResult;
 	BOOL 	bRes;
 	string 	sTmp,db_files,sInsertSQL,sServerName;
-	string 	sPrimReg,sSecReg,sVersion,sBuild,sLastUpdate;
+	string 	sPrimReg,sSecReg,sVersionEXE,sVersionDB;
 	NUMBER 	nvType, nvSize, nLocation;
 begin
 	bRes = CheckMSDEStatus();    
@@ -492,10 +505,9 @@ begin
 		    endif;
 		
 		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_UPDATE_DATE_ID, 	sLastUpdate);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSIONDB_ID,		sVersion);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_BUILD_ID, 		sBuild);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
+			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_EXE_ID,	sVersionEXE);
+			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_DB_ID, 	sVersionDB);
 		
 			// parse serial number      
 			sPrimReg		= "";
@@ -504,8 +516,8 @@ begin
 		                           
 		    SetStatusWindow (90, @IDSL_PROGRESS_REGISTERING_USER);
 			// prepare sql string
-			sInsertSQL = "insert into Summary (primary_reg_id, secondary_reg_id, version_id, build, unique_id, last_update)";
-			sInsertSQL = sInsertSQL+"values('"+sPrimReg+"','"+sSecReg+"','"+sVersion+"','"+sBuild+"',newId(),'"+sLastUpdate+"')"; 
+			sInsertSQL = "insert into Summary (primary_reg_id, secondary_reg_id, unique_id, version_id, last_update)";
+			sInsertSQL = sInsertSQL+"values('"+sPrimReg+"','"+sSecReg+"',newId(),'"+sVersionEXE+"','"+sVersionDB+"')"; 
 		    bRes = SQL_CONFIG.runSQLString	(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
 		    								"KAS",
 		    								sInsertSQL);
@@ -520,15 +532,18 @@ begin
 		    SetStatusWindow (95, @IDSL_PROGRESS_ADD_REGISTRY);
 			// insert registry keys
 			RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", INI_VERSIONDB_ID, REGDB_STRING, sVersion,-1) < 0) then
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_VERSION_DB_ID, REGDB_STRING, sVersionDB,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", INI_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", INI_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
+
+			// create auto-start shortcut
+			CreateStartServerShortcut();
 		else
 	        MessageBox (@IDSL_ERROR_SQLSERVER_CONNECT_FAILED, SEVERE);
 	        bRes	= FALSE;
