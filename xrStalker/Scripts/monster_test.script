@@ -48,11 +48,10 @@ function main()
 	local monster		= debug_get_level_object("trader")
 
     
-    monster:set_callback(game_object.trade_start,               on_trade_start, "obana!");
-    monster:set_callback(game_object.trade_stop,                on_trade_stop);
-    monster:set_callback(game_object.trade_sell_buy_item,       on_trade_sell_buy_item);
-    monster:set_callback(game_object.trade_perform_operation,   on_trade_perform_operation);
-
+    monster:set_callback(callback.trade_start,               on_trade_start, "obana!");
+    monster:set_callback(callback.trade_stop,                on_trade_stop);
+    monster:set_callback(callback.trade_sell_buy_item,       on_trade_sell_buy_item);
+    monster:set_callback(callback.trade_perform_operation,   on_trade_perform_operation);
 
 
 //	monster:script		( true, script_name() )
