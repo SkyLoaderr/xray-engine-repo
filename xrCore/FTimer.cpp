@@ -2,7 +2,6 @@
 #pragma hdrstop
 
 CStatTimer::CStatTimer()
-:T(true)
 {
 	accum	= 0;
 	result	= 0.f;
