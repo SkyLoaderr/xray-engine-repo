@@ -754,7 +754,13 @@ void CDetailPathManager::postprocess_key_points(
 	u32						straight_line_index_negative
 )
 {
-	remove_similar_key_points();
+//	remove_similar_key_points();
+
+	if (m_key_points.size() < 3)
+		return;
+
+	if (m_key_points[m_key_points.size() - 2].position.similar(m_key_points[m_key_points.size() - 1].position,EPS_S))
+		m_key_points.pop_back();
 
 	for (int i=1, n=(int)m_key_points.size() - 1; i < n; ++i) {
 		STravelPoint		key_point0 = compute_better_key_point(m_key_points[i-1],m_key_points[i],m_key_points[i+1],false);
@@ -787,9 +793,10 @@ void CDetailPathManager::postprocess_key_points(
 			m_key_points[i]	= key_point0;
 		else
 			m_key_points[i]	= key_point1;
+		VERIFY				(!m_key_points[i].position.similar(m_key_points[i-1].position,EPS_S));
 	}
 
-	remove_similar_key_points();
+//	remove_similar_key_points();
 }
 
 void CDetailPathManager::add_patrol_point()
