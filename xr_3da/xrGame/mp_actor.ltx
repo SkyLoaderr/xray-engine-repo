@@ -46,7 +46,7 @@ ph_skeleton_airr_ang_factor  = 1.5
 ph_skeleton_hinger_factor1   = 1
 ph_skeleton_ddelay	     	 = 15
 ph_skel_fatal_impulse_factor = 8
-damage			 = stalker_damage
+damage			 = mp_actor_damage
 ;---------------------------------------------------------------------
 ;actor condition
 
@@ -130,6 +130,56 @@ accel_k						= 1						;коэффициент на бег (умножается walk_power, walk_weight_po
 cant_walk_power_begin =	0.301	;порог силы меньше которого актер не может двигаться
 cant_walk_power_end   =	0.311	;порог силы больше которого актер сможет двигаться
 
+[mp_actor_damage]
+;bone_name		 = <hit_scale>,<fwd_damage_anim_index>,<wound_scale>
+;<hit_scale> - коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale> - коэфф. изменения величины открытой раны
+;-1 - нет анимаций, четный номер - спереди, нечетный номер - сзади, УКАЗЫВАЕТСЯ ТОЛЬКО ПЕРЕДНИЙ!!! ЗАДНИЙ НА АВТОМАТЕ
+default			 = 1.0, -1, 1.0
 
+bip01_pelvis 		 = 0.0, 10, 0.0
+bip01_spine 		 = 0.2, 10, 0.8
+bip01_spine1 		 = 0.2, 0, 0.8
+bip01_neck 			 = 0.5, 0, 1.0
+bip01_head 			 = 0.5, 0, 1.0
+eyelid_1 			 = 0.5, 0, 1.0
+eye_left 			 = 0.5, 0, 1.0
+eye_right 			 = 0.5, 0, 1.0
+jaw_1 		 		 = 0.5, 0, 1.0
 
+bip01_l_clavicle	 = 0.1, 4, 0.7
+bip01_l_upperarm	 = 0.05, 4, 0.6
+bip01_l_forearm	 	 = 0.05, 4, 0.5
+bip01_l_hand	 	 = 0.0, 4, 0.2
+bip01_l_finger0	 	 = 0.0, 4, 0.1
+bip01_l_finger01	 = 0.0, 4, 0.1
+bip01_l_finger02	 = 0.0, 4, 0.1
+bip01_l_finger1	 	 = 0.0, 4, 0.1
+bip01_l_finger11	 = 0.0, 4, 0.1
+bip01_l_finger12	 = 0.0, 4, 0.1
+bip01_l_finger2	 	 = 0.0, 4, 0.1
+bip01_l_finger21	 = 0.0, 4, 0.1
+bip01_l_finger22	 = 0.0, 4, 0.1
 
+bip01_r_clavicle	 = 0.1, 2, 0.7
+bip01_r_upperarm	 = 0.05, 2, 0.6
+bip01_r_forearm	 	 = 0.05, 2, 0.5
+bip01_r_hand	 	 = 0.0, 2, 0.2
+bip01_r_finger0	 	 = 0.0, 2, 0.1
+bip01_r_finger01	 = 0.0, 2, 0.1
+bip01_r_finger02	 = 0.0, 2, 0.1
+bip01_r_finger1	 	 = 0.0, 2, 0.1
+bip01_r_finger11	 = 0.0, 2, 0.1
+bip01_r_finger12	 = 0.0, 2, 0.1
+bip01_r_finger2	 	 = 0.0, 2, 0.1
+bip01_r_finger21	 = 0.0, 2, 0.1
+bip01_r_finger22	 = 0.0, 2, 0.1
+
+bip01_l_thigh	 	 = 0.1, 8, 0.5
+bip01_l_calf	 	 = 0.05, 8, 0.4
+bip01_l_foot	 	 = 0.02, 8, 0.3
+bip01_l_toe0	 	 = 0.0, 8, 0.2
+bip01_r_thigh	 	 = 0.1, 6, 0.5
+bip01_r_calf	 	 = 0.05, 6, 0.4
+bip01_r_foot	 	 = 0.02, 6, 0.3
+bip01_r_toe0	 	 = 0.0, 6, 0.2
