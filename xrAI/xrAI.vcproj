@@ -38,7 +38,7 @@
 				ObjectFile=".\Debug/"
 				ProgramDataBaseFileName=".\Debug/"
 				BrowseInformation="0"
-				WarningLevel="3"
+				WarningLevel="4"
 				SuppressStartupBanner="TRUE"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="3"

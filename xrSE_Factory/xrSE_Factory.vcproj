@@ -23,8 +23,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				EnableFiberSafeOptimizations="TRUE"
-				OptimizeForProcessor="2"
+				EnableFiberSafeOptimizations="FALSE"
+				OptimizeForProcessor="0"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRSE_FACTORY_EXPORTS;MSVC"
 				GeneratePreprocessedFile="0"
 				MinimalRebuild="FALSE"
@@ -57,7 +57,7 @@
 				ProgramDatabaseFile="$(OutDir)/$(TargetName).pdb"
 				GenerateMapFile="TRUE"
 				MapFileName="x:\xrSE_Factory.map"
-				SubSystem="0"
+				SubSystem="2"
 				ImportLibrary="x:\xrSE_Factory.lib"
 				TargetMachine="0"/>
 			<Tool
