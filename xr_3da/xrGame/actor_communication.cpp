@@ -348,8 +348,9 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 		relation =  RELATION_REGISTRY().GetRelationType(pInvOwner, static_cast<CInventoryOwner*>(this));
 	else
 	{
-		CEntityAlive* EA = smart_cast<CEntityAlive*>(GO); VERIFY(EA);
-		relation = EA->tfGetRelationType(this);
+///		CEntityAlive* EA = smart_cast<CEntityAlive*>(GO); VERIFY(EA);
+//		relation = EA->tfGetRelationType(this);
+		return;
 	}
 
 	LPCSTR anim_name = NULL;
