@@ -124,3 +124,18 @@ bool CALifeStorageManager::load	(LPCSTR save_name)
 	Msg							("* Game %s is successfully loaded from file '%s' (%.3fs)",save_name, file_name,float(finish - start)*CPU::cycles2seconds);
 	return						(true);
 }
+
+void CALifeStorageManager::save	(NET_Packet &net_packet)
+{
+	prepare_objects_for_save	();
+
+	ref_str						game_name;
+	net_packet.r_stringZ		(game_name);
+	save						(*game_name);
+}
+
+void CALifeStorageManager::prepare_objects_for_save	()
+{
+	Level().ClientSend			();
+	Level().ClientSave			();
+}

@@ -108,9 +108,8 @@ bool CALifeUpdateManager::change_level	(NET_Packet &net_packet)
 	if (m_changing_level)
 		return					(false);
 
-	Level().ClientSend			();
-	Level().ClientSave			();
-	
+	prepare_objects_for_save	();
+
 	m_changing_level			= true;
 	
 	ALife::_GRAPH_ID			safe_graph_vertex_id	= graph().actor()->m_tGraphID;
