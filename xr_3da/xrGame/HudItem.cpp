@@ -72,12 +72,12 @@ void CHudItem::PlaySound(HUD_SOUND& hud_snd,
 
 void CHudItem::renderable_Render()
 {
+	UpdateXForm();
 	if(hud_mode && !m_pHUD->IsHidden() && !IsHidden())
 	{ 
 		// HUD render
 		if(m_bRenderHud)
 		{
-			UpdateXForm();
 			::Render->set_Transform		(&m_pHUD->Transform());
 			::Render->add_Visual		(m_pHUD->Visual());
 		}
