@@ -10,10 +10,10 @@ void	CRenderTarget::phase_smap_direct		(light* L, u32 sub_phase)
 	if (SE_SUN_NEAR==sub_phase)			{
 		// optimized clear
 		D3DRECT		R;
-		R.x1		= L->X.D->minX;
-		R.x2		= L->X.D->maxX;
-		R.y1		= L->X.D->minY;
-		R.y2		= L->X.D->maxY;
+		R.x1		= L->X.D.minX;
+		R.x2		= L->X.D.maxX;
+		R.y1		= L->X.D.minY;
+		R.y2		= L->X.D.maxY;
 		CHK_DX							(HW.pDevice->Clear( 1L, &R,	  D3DCLEAR_ZBUFFER,	0xFFFFFFFF, 1.0f, 0L));
 	} else {
 		// full-clear
