@@ -54,12 +54,12 @@ private:
 
 	struct SLOT
 	{
-		DWORD			dwQueryID;
-		CList<CObject*>	lst;
+		DWORD				dwQueryID;
+		vector<CObject*>	lst;
 	};
 
 	CQList<SLOT>					Dynamic;
-	RAPID::Model					Static;
+	CDB::MODEL						Static;
 	Fvector							Static_Shift;
 
 	void							GetRect			( const Fvector &center, Irect &rect, float range );
@@ -75,8 +75,8 @@ private:
 	IC void							InvTrans		( Fvector& v, int x, int z)		{v.set(CL_SLOT_SIZE*(x+.5f)-Static_Shift.x,0.f,CL_SLOT_SIZE*(z+.5f)-Static_Shift.z);}
 
 	// safe translate auxilary routines
-	CList<Collide::tri>				clContactedT;
-	CList<Collide::elipsoid>		clContactedE;
+	vector<Collide::tri>			clContactedT;
+	vector<Collide::elipsoid>		clContactedE;
 	void							clCheckCollision(SCollisionData& cl);
 	void							clResolveStuck	(SCollisionData& cl, Fvector& position);
 	Fvector							CollideWithWorld(SCollisionData& cl, Fvector position, Fvector velocity,WORD cnt=0);
@@ -89,9 +89,9 @@ public:
 	clQueryCollision				q_result;
 
 	clQueryCollision				q_debug;
-	CList<Fmatrix>					dbg_E;
-	CList<pair<Fsphere,DWORD> >		dbg_S;
-	CList<Fvector2>					dbg_Slot;
+	vector<Fmatrix>					dbg_E;
+	vector<pair<Fsphere,DWORD> >	dbg_S;
+	vector<Fvector2>				dbg_Slot;
 public:
 									CObjectSpace		( );
 									~CObjectSpace		( );
@@ -119,8 +119,8 @@ public:
 	int								GetNearest			( const Fvector &point, float range );
 	BOOL							TestNearestObject	( CCFModel *object, const Fvector& center, float radius);
 
-	RAPID::tri*						GetStaticTris		() { return Static.GetTris();  }
-	RAPID::Model*					GetStaticModel		() { return &Static; }
+	CDB::TRI*						GetStaticTris		() { return Static.tris;  }
+	CDB::MODEL*						GetStaticModel		() { return &Static; }
 
 	// Device dependance and debugging
 	virtual void					OnDeviceCreate		();
