@@ -14,16 +14,10 @@ const float MAX_DISTANCE=50.f;
 
 CLightPPA::CLightPPA()
 {
-	hShader.create				("effects\\light","effects\\light,effects\\light");
-	hGeom.create				(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
 }
 
 CLightPPA::~CLightPPA()
 {
-	R_ASSERT					(active.empty());
-	R_ASSERT					(inactive.empty());
-	hGeom.destroy				();
-	hShader.destroy				();
 }
 
 void CLightPPA::set_active(bool a)
@@ -194,4 +188,18 @@ void	CLightPPA_Manager::Deactivate	(CLightPPA* L)
 	active.erase				(it);
 
 	inactive.insert				(L);
+}
+
+CLightPPA_Manager::CLightPPA_Manager()
+{
+	hShader.create				("effects\\light","effects\\light,effects\\light");
+	hGeom.create				(D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_TEX2, RCache.Vertex.Buffer(), NULL);
+}
+
+CLightPPA_Manager::~CLightPPA_Manager()
+{
+	R_ASSERT					(active.empty());
+	R_ASSERT					(inactive.empty());
+	hGeom.destroy				();
+	hShader.destroy				();
 }
