@@ -608,7 +608,7 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 					            else                        Command(COMMAND_SAVE);}
        	else if (Key=='1') 	 	Command(COMMAND_CHANGE_TARGET, etGroup);
 		else if (Key=='2')		Command(COMMAND_CHANGE_TARGET, etPS);
-		else if (Key=='R')		Command(COMMAND_LOAD_FIRSTRECENT, etPS);
+		else if (Key=='R')		Command(COMMAND_LOAD_FIRSTRECENT);
     }else{
         if (Shift.Contains(ssAlt)){
         	if (Key=='F')   	Command(COMMAND_FILE_MENU);
