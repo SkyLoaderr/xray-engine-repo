@@ -161,6 +161,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 			{
 			case fcvNone:		// nothing to do
 				break;
+/*
 			case fcvPartial:	// addition with TEST
 				{
 					if (!::Render->occ_visible(S.BB))		continue;
@@ -194,6 +195,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					}
 				}
 				break;
+				*/
+			case fcvPartial:	// addition with TEST
 			case fcvFully:		// addition
 				{
 					if (!::Render->occ_visible(S.BB))		continue;
