@@ -2,25 +2,13 @@
 <!-- CHARACTER INFO IN THE INVENTORY MENU -->
 <window>
 	<!-- NAME -->
-	<static x="0" y="0" width="240" height="60">
+	<name_static x="0" y="0" width="240" height="60">
 		<text x="0" y="0" font="letterica16" r="255" g="128" b="64"></text>
-	</static>
+	</name_static>
 
 	<!-- RANK -->
-	<static x="0" y="25" width="240" height="60">
+	<rank_static x="0" y="25" width="240" height="60">
 		<text x="0" y="0" font="letterica16" r="255" g="255" b="255">Rank</text>
-	</static>
-
-	<!-- COMMUNITY -->
-	<static x="0" y="45" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
-	</static>
-
-	<!-- DESCRIPTION -->
-	<description x="0" y="25" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255">Rank</text>
-	</description>
-
-
+	</rank_static>
 </window>
 
