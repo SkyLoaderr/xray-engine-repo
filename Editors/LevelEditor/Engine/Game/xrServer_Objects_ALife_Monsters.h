@@ -378,7 +378,7 @@ add_to_type_list(CSE_ALifeHumanStalker)
 #define script_type_list save_type_list(CSE_ALifeHumanStalker)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
-	string256						m_caAnimations;
+	ref_str							m_caAnimations;
 	u32								m_dwAniPlayType;
 									CSE_ALifeObjectIdol		(LPCSTR caSection);
 	virtual							~CSE_ALifeObjectIdol	();

@@ -222,8 +222,8 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 	inherited2::FillProp		(_pref,items);
 	PHelper().CreateU32			(items, PHelper().PrepareKey(_pref,s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
 
-	AnsiString					S;
-    AnsiString 					pref = PHelper().PrepareKey(_pref,s_name,"ALife\\Supplies").c_str();
+	ref_str						S;
+    ref_str	pref 				= PHelper().PrepareKey(_pref,s_name,"ALife\\Supplies");
 
     supplies_count				= m_tpSupplies.size();
 	PropValue					*V = PHelper().CreateS32(items, PHelper().PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
@@ -232,8 +232,8 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
 	for ( ; I != E; ++I) {
-    	S.sprintf				("Slot #%d",I-B+1).c_str();
-//.		V=PHelper().CreateChoose(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections), smEntity);
+    	S.sprintf				("Slot #%d",I-B+1);
+		V=PHelper().CreateChoose(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Sections"),&(*I).m_caSections, smEntity);
         V->Owner()->subitem		= 8;
 		PHelper().CreateU32		(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Count"), 	&(*I).m_dwCount,	1, 256);
 		PHelper().CreateFloat	(items, PHelper().PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
@@ -1424,7 +1424,6 @@ void CSE_ALifeHumanStalker::FillProp		(LPCSTR pref, PropItemVec& values)
 CSE_ALifeObjectIdol::CSE_ALifeObjectIdol	(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection)
 {
 	m_dwAniPlayType				= 0;
-	m_caAnimations[0]			= 0;
 }
 
 CSE_ALifeObjectIdol::~CSE_ALifeObjectIdol	()
@@ -1457,7 +1456,7 @@ void CSE_ALifeObjectIdol::UPDATE_Write		(NET_Packet& tNetPacket)
 void CSE_ALifeObjectIdol::FillProp			(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp			(pref, items);
-//.	PHelper().CreateText		(items, PHelper().PrepareKey(pref,s_name,"Idol", "Animations"),m_caAnimations,sizeof(m_caAnimations));
+	PHelper().CreateRText		(items, PHelper().PrepareKey(pref,s_name,"Idol", "Animations"),&m_caAnimations);
    	PHelper().CreateU32			(items, PHelper().PrepareKey(pref,s_name,"Idol", "Animation playing type"),&m_dwAniPlayType,0,2,1);
 }	
 #endif
