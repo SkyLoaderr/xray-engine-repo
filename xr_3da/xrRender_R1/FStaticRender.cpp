@@ -131,6 +131,7 @@ void					CRender::add_Visual				(IRender_Visual* V ){ add_leafs_Dynamic(V);					
 void					CRender::add_Geometry			(IRender_Visual* V ){ add_Static(V,View->getMask());						}
 void					CRender::add_Wallmark			(ref_shader& S, const Fvector& P, float s, CDB::TRI* T, Fvector* verts)
 {
+	VERIFY					(_valid(P) && _valid(s) && T && verts);
 	Wallmarks->AddWallmark	(T,verts,P,&*S,s);
 }
 void					CRender::add_Occluder			(Fbox2&	bb_screenspace	)
