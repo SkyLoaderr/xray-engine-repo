@@ -69,7 +69,7 @@ void CSector::traverse			(CFrustum &F, Fbox2& R_scissor)
 		r_scissors.clear					();
 	}
 	r_frustums.push_back		(F);
-	r_scissors.push_back		(R);
+	r_scissors.push_back		(R_scissor);
 
 	// Search visible portals and go through them
 	sPoly	S,D;
@@ -135,7 +135,7 @@ void CSector::traverse			(CFrustum &F, Fbox2& R_scissor)
 			// Cull by HOM (faster algo)
 			if  (
 				(PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && 
-				(!RImplementation.occ_visible(scissor,depth))
+				(!RImplementation.HOM.visible(scissor,depth))
 				)	continue;
 		} else {
 			scissor	= R;
@@ -143,7 +143,7 @@ void CSector::traverse			(CFrustum &F, Fbox2& R_scissor)
 			// Cull by HOM (slower algo)
 			if  (
 				(PortalTraverser.i_options&CPortalTraverser::VQ_HOM) && 
-				(!RImplementation.occ_visible(*P))
+				(!RImplementation.HOM.visible(*P))
 				)	continue;
 		}
 

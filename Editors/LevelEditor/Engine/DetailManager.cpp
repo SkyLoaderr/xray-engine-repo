@@ -188,7 +188,7 @@ void CDetailManager::Render		()
 			u32 mask			= 0xff;
 			u32 res				= View.testSAABB		(S.vis.sphere.P,S.vis.sphere.R,S.vis.box.data(),mask);
 			if (fcvNone==res)							continue;	// invisible-view frustum
-			if (!RImplementation.occ_visible(S.vis))	continue;	// invisible-occlusion
+			if (!RImplementation.HOM.visible(S.vis))	continue;	// invisible-occlusion
 
 			// Calc fade factor	(per slot)
 			float	dist_sq		= EYE.distance_to_sqr	(S.vis.sphere.P);
