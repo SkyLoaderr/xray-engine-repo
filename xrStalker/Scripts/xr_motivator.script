@@ -287,7 +287,17 @@ xr_motivator.storage[self.object:id()].follower = {
 
 xr_motivator.storage[self.object:id()].reactions = {
         enabled = true,
-        evn = xr_reactions.events(self.object)
+        evn = xr_reactions.events(self.object),
+	-- позицию раздражителя
+	position = nil,
+	-- id раздражителя
+	id = nil,
+	-- указатель, что мы получили раздражитель от объекта, за которым мы следим
+	watched = nil,
+	-- время раздражителя
+	time = nil,
+	-- визуальный или звуковой
+	isVisual = nil
     }
 
     --Evaluators
