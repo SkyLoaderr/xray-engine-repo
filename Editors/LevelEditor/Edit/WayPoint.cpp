@@ -405,10 +405,9 @@ void CWayObject::MoveTo(const Fvector& pos, const Fvector& up)
     }else{
     	if (!m_WayPoints.empty()){
             Fvector 	diff;
-            diff.sub	(pos,PPosition);
+            diff.sub	(pos,m_WayPoints.front()->m_vPosition);
             for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
                 (*it)->m_vPosition.add(diff);
-        	PPosition 	= pos;
         }
     }
 }
@@ -421,7 +420,6 @@ void CWayObject::Move(Fvector& amount)
     }else{
         for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++)
             (*it)->m_vPosition.add(amount);
-        PPosition.add	(amount);
     }
 }
 
