@@ -340,6 +340,7 @@ void	CShaderManager::OnDeviceDestroy(void)
 		}
 		_DELETE(shaders[it]);
 	}
+	shaders.clear();
 	
 	//************************************************************************************
 	// Texture List
