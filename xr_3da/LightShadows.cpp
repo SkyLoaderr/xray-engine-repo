@@ -39,19 +39,23 @@ void CLightShadows::OnDeviceDestroy	()
 
 void CLightShadows::set_object	(CObject* O)
 {
-	Fvector		C;
-	O->clCenter	(C);
-	float		D = C.distance_to(Device.vCameraPosition)+O->Radius();
-	if (D < S_distance)		current	= O;
-	else					current = 0;
-	
-	if (current)
+	if (0==O)	current		= 0;
+	else 
 	{
-		id.push_back		(casters.size());
-		casters.push_back	(caster());
-		casters.back().O	= current;
-		casters.back().C	= C;
-		casters.back().D	= D;
+		Fvector		C;
+		O->clCenter	(C);
+		float		D = C.distance_to(Device.vCameraPosition)+O->Radius();
+		if (D < S_distance)		current	= O;
+		else					current = 0;
+		
+		if (current)
+		{
+			id.push_back		(casters.size());
+			casters.push_back	(caster());
+			casters.back().O	= current;
+			casters.back().C	= C;
+			casters.back().D	= D;
+		}
 	}
 }
 
