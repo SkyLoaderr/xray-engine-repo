@@ -27,11 +27,12 @@ void	CRenderTarget::phase_combine	()
 		Fmatrix		m_v2w;			m_v2w.invert				(Device.mView		);
 		CEnvDescriptor&		envdesc	= g_pGamePersistent->Environment.CurrentEnv;
 		float		hemi_correct	= envdesc.hemi_color.w*2;
-		Fvector4	envclr			= { envdesc.sky_color.x*2, envdesc.sky_color.y*2, envdesc.sky_color.z*2, envdesc.sky_factor };
-		Fvector4	fogclr			= { _sqr(envdesc.fog_color.x), _sqr(envdesc.fog_color.y), _sqr(envdesc.fog_color.z), 0		};
-					envclr.x		*= hemi_correct;
-					envclr.y		*= hemi_correct;
-					envclr.z		*= hemi_correct;
+		Fvector4	ambclr			= { envdesc.ambient.x*2,	envdesc.ambient.y*2,	envdesc.ambient.z*2,		0	};
+		Fvector4	envclr			= { envdesc.sky_color.x*2,	envdesc.sky_color.y*2,	envdesc.sky_color.z*2,		envdesc.sky_factor };
+		Fvector4	fogclr			= { envdesc.fog_color.x,	envdesc.fog_color.y,	envdesc.fog_color.z,		0	};
+					envclr.x		*= 2; //hemi_correct;
+					envclr.y		*= 2; //hemi_correct;
+					envclr.z		*= 2; //hemi_correct;
 
 		// Fill VB
 		u32		C					= color_rgba	(255,255,255,255);
@@ -57,6 +58,7 @@ void	CRenderTarget::phase_combine	()
 		// Draw
 		RCache.set_Element			(s_combine->E[0]		);
 		RCache.set_c				("m_v2w",		m_v2w	);
+		RCache.set_c				("L_ambient",	ambclr	);
 		RCache.set_c				("env_color",	envclr	);
 		RCache.set_c				("fog_color",	fogclr	);
 		RCache.set_Geometry			(g_combine				);
