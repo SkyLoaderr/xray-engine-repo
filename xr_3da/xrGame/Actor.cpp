@@ -153,6 +153,7 @@ CActor::CActor() : CEntityAlive()
 	m_bHeavyBreathSndPlaying = false;
 
 	m_controlled_mouse_scale_factor	 = 10.f;
+	SetControlled					(false);
 }
 
 
