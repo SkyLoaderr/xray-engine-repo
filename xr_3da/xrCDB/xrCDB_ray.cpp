@@ -15,6 +15,16 @@ public:
 	float			rRange;
 	float			rRange2;
 
+	IC void			_init		(COLLIDER* CL, TRI* T, const Fvector& C, const Fvector& D, float R)
+	{
+		dest		= CL;
+		tris		= T;
+		rC.set		(C);
+		rD.set		(D);
+		rRange		= R;
+		rRange2		= R*R;
+	}
+
 	IC bool			_box		(const Fvector& bCenter, const Fvector& bExtents, Fvector& coord)
 	{
 		BOOL		Inside = TRUE;
