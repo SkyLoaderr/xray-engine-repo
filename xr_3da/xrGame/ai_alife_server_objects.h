@@ -12,6 +12,9 @@
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
 #include "xrServer_Entity_Custom.h"
+#ifdef _EDITOR
+#include "PropertiesListHelper.h"
+#endif
 
 class CALifeObject : public xrServerEntity {
 public:
@@ -364,7 +367,6 @@ public:
 	};
 
 	#ifdef _EDITOR
-	#include "PropertiesListHelper.h"
 	virtual void FillProp		(LPCSTR pref, PropItemVec& items)
 	{
 		PHelper.CreateU16		(items,	PHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
