@@ -110,7 +110,7 @@ Oles:
 			. TODO: PixelShaders
 			+ TODO: Priority (sort order)
 			. TODO: Disable optimize UV
-			. TODO: Conditions!!!	(scripts? - easy extendable) 
+			. TODO: Conditions!!!	(scripts? = easy extendable) 
 			. TODO: Strip out every building params
 			. TODO: Vertex shaders / ffp
 			. TODO: Comments
