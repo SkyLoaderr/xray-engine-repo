@@ -3,9 +3,7 @@
 
 #include "Stats.h"
 #include "hw.h"
-#include "x_ray.h"
-#include "xr_gamefont.h"
-#include "xr_smallfont.h"
+#include "xr_customfont.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

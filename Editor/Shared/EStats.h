@@ -5,7 +5,7 @@
 #if !defined(AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_)
 #define AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_
 #pragma once
-
+/*
 class ENGINE_API CStatTimer
 {
 	friend class CStats;
@@ -37,9 +37,10 @@ public:
 	IC void		End()
 	{	accum += T.GetElapsed(); }
 };
-
+*/
 class ENGINE_API CStats
 {
+/*
 public:
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
 	DWORD		dwPoly, dwVert;
@@ -48,9 +49,9 @@ public:
 	DWORD		dwTexture_Changes;
 	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
 
-	CStatTimer	EngineTOTAL;		// 
-	CStatTimer	UpdateSheduled;		// 
-	CStatTimer	UpdateClient;		// 
+	CStatTimer	EngineTOTAL;		//
+	CStatTimer	UpdateSheduled;		//
+	CStatTimer	UpdateClient;		//
 	CStatTimer	Physics;			// movement+collision
 	CStatTimer	AI_Range;			// query: range
 	CStatTimer	AI_Path;			// query: path
@@ -59,8 +60,8 @@ public:
 	CStatTimer	AI_Vis_Query;		// visibility detection - portal traversal and frustum culling
 	CStatTimer	AI_Vis_RayTests;	// visibility detection - ray casting
 
-	CStatTimer	RenderTOTAL;		// 
-	CStatTimer	RenderTOTAL_Real;	
+	CStatTimer	RenderTOTAL;		//
+	CStatTimer	RenderTOTAL_Real;
 	CStatTimer	RenderCALC;			// portal traversal, frustum culling, entities "OnVisible"
 	CStatTimer	Animation;			// skeleton calculation
 	CStatTimer	RenderDUMP;			// actual primitive rendering
@@ -79,18 +80,18 @@ public:
 	CStatTimer	Input;				// total time taken by input subsystem (accurate only in single-threaded mode)
 	CStatTimer	clRAY;				// total: ray-testing
 	CStatTimer	clBOX;				// total: box query
-	
+
 	CStatTimer	netClient;
 	CStatTimer	netServer;
-	
+
 	CStatTimer	TEST;				// debug counter
 
-	void	Show		(void);
-
+	void	Show		(CFontBase* font);
+*/
 	CStats	();
 	~CStats	();
 };
-
+/*
 #define UPDATEC(vert,poly,pass)		{ Device.Statistic.dwVert+=(vert)*(pass); Device.Statistic.dwPoly+=(poly)*pass; Device.Statistic.dwCalls+=pass; }
-
+*/
 #endif // !defined(AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_)
