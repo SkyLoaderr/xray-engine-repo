@@ -1382,6 +1382,16 @@
 							</Filter>
 						</Filter>
 					</Filter>
+					<Filter
+						Name="PDA"
+						Filter="">
+						<File
+							RelativePath=".\PDA.cpp">
+						</File>
+						<File
+							RelativePath=".\PDA.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_lift"

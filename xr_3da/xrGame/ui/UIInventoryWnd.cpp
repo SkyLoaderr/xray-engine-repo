@@ -561,7 +561,8 @@ void CUIInventoryWnd::AmmoUpdateProc(CUIDragDropItem* pItem)
 }
 void CUIInventoryWnd::Update()
 {
-	CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	//CActor *l_pA = dynamic_cast<CActor*>(Level().CurrentEntity());
+	CEntityAlive *l_pA = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
 
 	if(l_pA) 
 	{

@@ -58,7 +58,7 @@ char* CInventoryItem::NameComplex()
 	for(PPIItem l_it = m_subs.begin(); l_it != m_subs.end(); l_it++) 
 	{
 		const char *l_subName = (*l_it)->NameShort();
-		if(l_subName) 
+		if(l_subName)
 			strcpy(&m_nameComplex[strlen(m_nameComplex)], l_subName);
 	}
 	return m_nameComplex;
@@ -219,8 +219,9 @@ void CEatableItem::Load(LPCSTR section)
 	m_fRadiationInfluence = pSettings->r_float(section, "eat_radiation");
 }
 
-
-// CInventory class ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+// CInventory class 
+///////////////////////////////////////////////////////////////////////////////
 
 void MergeSame(TIItemList &itemList) 
 {
@@ -895,6 +896,8 @@ CInventoryOwner::CInventoryOwner()
 
 	m_dwMoney					= 0;
 	m_tRank						= eStalkerRankNone;
+
+	m_pPDA = NULL;
 }
 
 CInventoryOwner::~CInventoryOwner() 
