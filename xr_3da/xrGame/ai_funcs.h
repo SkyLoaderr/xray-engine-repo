@@ -235,7 +235,7 @@ public:
 	CPatternFunction				pfAttackSuccessProbability;
 	CPatternFunction				pfDefendSuccessProbability;
 
-	CAI_DDD() {	
+	void vfLoad() {	
 		fpaBaseFunctions[0] = &pfDistance;
 		
 		fpaBaseFunctions[21] = &pfPersonalHealth;
