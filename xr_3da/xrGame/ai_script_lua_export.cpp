@@ -23,7 +23,7 @@
 using namespace luabind;
 using namespace Script;
 
-extern CLuaGameObject *tpfGetActor();
+extern CLuaGameObject	*tpfGetActor();
 
 void LuaLog(LPCSTR caMessage)
 {
@@ -90,6 +90,7 @@ void FlushLogFake()
 void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	function		(tpLuaVirtualMachine,	"log",	LuaLog);
+
 #ifdef DEBUG
 	function		(tpLuaVirtualMachine,	"flush",FlushLog);
 #else
