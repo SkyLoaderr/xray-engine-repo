@@ -438,5 +438,5 @@ HRESULT	CRender::CompileShader			(
         LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
         LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
         LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
-		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
+		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,17,ppShader,ppErrorMsgs,ppConstantTable);
 }
