@@ -607,6 +607,9 @@
 						Name="operator_condition"
 						Filter="">
 						<File
+							RelativePath=".\operator_condition.cpp">
+						</File>
+						<File
 							RelativePath=".\operator_condition.h">
 						</File>
 						<File
@@ -1887,6 +1890,16 @@
 							Name="vertex_managers"
 							Filter="">
 							<Filter
+								Name="fixed"
+								Filter="">
+								<File
+									RelativePath=".\vertex_manager_fixed.h">
+								</File>
+								<File
+									RelativePath=".\vertex_manager_fixed_inline.h">
+								</File>
+							</Filter>
+							<Filter
 								Name="generic"
 								Filter="">
 								<File
@@ -1897,13 +1910,13 @@
 								</File>
 							</Filter>
 							<Filter
-								Name="fixed"
+								Name="hash_fixed"
 								Filter="">
 								<File
-									RelativePath=".\vertex_manager_fixed.h">
+									RelativePath=".\vertex_manager_hash_fixed.h">
 								</File>
 								<File
-									RelativePath=".\vertex_manager_fixed_inline.h">
+									RelativePath=".\vertex_manager_hash_fixed_inline.h">
 								</File>
 							</Filter>
 						</Filter>
