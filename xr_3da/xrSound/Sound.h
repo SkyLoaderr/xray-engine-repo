@@ -80,6 +80,7 @@ struct	ref_sound
 		\sa ~ref_sound()
 	*/
 	ref_sound()							{ handle = 0; feedback=0; g_type=0; g_object=0; }
+	~ref_sound()						{ destroy(); }
 
 	//! Loader/initializer
 	/*!

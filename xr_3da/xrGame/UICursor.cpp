@@ -14,14 +14,12 @@ CUICursor::CUICursor()
 	bVisible	= false;
 	vPos.set	(0.f,0.f);
 
-	hVS			= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	hShader		= Device.Shader.Create		("hud\\cursor","ui\\ui_cursor",FALSE);
+	hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hShader.create	("hud\\cursor","ui\\ui_cursor");
 }
 //--------------------------------------------------------------------
 CUICursor::~CUICursor	()
 {
-	Device.Shader.Delete	(hShader);
-	Device.Shader.DeleteGeom(hVS);
 }
 //--------------------------------------------------------------------
 void CUICursor::Render	()
@@ -29,7 +27,7 @@ void CUICursor::Render	()
 	_VertexStream*	Stream	= &RCache.Vertex; 
 	// actual rendering
 	u32			vOffset;
-	FVF::TL*		pv	= (FVF::TL*)Stream->Lock(4,hVS->vb_stride,vOffset);
+	FVF::TL*		pv	= (FVF::TL*)Stream->Lock(4,hGeom.stride(),vOffset);
 	float			size= 2 * Device.dwWidth * 0.015f;
 	
 	// Convert to screen coords
@@ -44,9 +42,9 @@ void CUICursor::Render	()
 	pv->set(cx+size, cy,		.0001f,.9999f, C, 1, 0); pv++;
 	
 	// unlock VB and Render it as triangle LIST
-	Stream->Unlock					(4,hVS->vb_stride);
+	Stream->Unlock			(4,hGeom.stride());
 	RCache.set_Shader		(hShader);
-	RCache.set_Geometry		(hVS);
+	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 }
 //--------------------------------------------------------------------

@@ -41,10 +41,10 @@ CWeaponRPG7Grenade::CWeaponRPG7Grenade()
 	m_explodeTime = m_engineTime = m_flashTime = 0;
 }
 
-CWeaponRPG7Grenade::~CWeaponRPG7Grenade() {
-	if(hWallmark) Device.Shader.Delete(hWallmark);
+CWeaponRPG7Grenade::~CWeaponRPG7Grenade() 
+{
 	::Render->light_destroy(m_pLight);
-	xr_delete(m_pPhysicsShell);
+	xr_delete	(m_pPhysicsShell);
 	SoundDestroy(sndExplode);
 	SoundDestroy(sndRicochet[0]);
 	SoundDestroy(sndRicochet[1]);
@@ -310,8 +310,9 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 	return l_res;
 }
 
-void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) {
-	if (0==hWallmark)	return;
+void CWeaponRPG7Grenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::ray_query& R) 
+{
+	if (0==hWallmark())	return;
 	
 	if (R.O) {
 		if (R.O->CLS_ID==CLSID_ENTITY)

@@ -27,33 +27,13 @@
 
 CHUDCursor::CHUDCursor	()
 {    
-	hShader				= 0;
-	hVS					= 0;
 	fuzzyShowInfo		= 0.f;
-	OnDeviceCreate		();
-	
-	Device.seqDevCreate.Add		(this);
-	Device.seqDevDestroy.Add	(this);
+	hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+	hShader.create		("hud\\cursor","ui\\cursor");
 }
 
 CHUDCursor::~CHUDCursor	()
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-	
-	OnDeviceDestroy		();
-}
-
-void CHUDCursor::OnDeviceCreate()
-{
-	REQ_CREATE	();
-	hVS			= Device.Shader.CreateGeom	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-	hShader		= Device.Shader.Create		("hud\\cursor","ui\\cursor");
-}
-void CHUDCursor::OnDeviceDestroy()
-{
-	Device.Shader.Delete		(hShader);
-	Device.Shader.DeleteGeom	(hVS);
 }
 
 IC u32 subst_alpha(u32 val, u8 a){ return u32(val&0x00FFFFFF)|u32(a<<24); }
@@ -130,7 +110,7 @@ void CHUDCursor::Render()
 	}
 	// actual rendering
 	u32			vOffset;
-	FVF::TL*	pv		= (FVF::TL*)RCache.Vertex.Lock(4,hVS->vb_stride,vOffset);
+	FVF::TL*	pv		= (FVF::TL*)RCache.Vertex.Lock(4,hGeom.stride(),vOffset);
 	float			size= float(::Render->getTarget()->get_width()) * di_size;
 	float			w_2	= float(::Render->getTarget()->get_width())		/ 2;
 	float			h_2	= float(::Render->getTarget()->get_height())	/ 2;
@@ -145,8 +125,8 @@ void CHUDCursor::Render()
 	pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); pv++;
 	
 	// unlock VB and Render it as triangle LIST
-	RCache.Vertex.Unlock(4,hVS->vb_stride);
+	RCache.Vertex.Unlock(4,hGeom.stride());
 	RCache.set_Shader	(hShader);
-	RCache.set_Geometry	(hVS);
+	RCache.set_Geometry	(hGeom);
 	RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 }
