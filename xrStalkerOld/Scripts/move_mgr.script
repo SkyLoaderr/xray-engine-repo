@@ -536,7 +536,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if suggested_state_moving then
 		self.cur_state_moving = suggested_state_moving
 	else
-		self.cur_state_moving = self.default_state_moving1
+		self.cur_state_moving = default_state_moving1 -- self.default_state_moving1
 	end
 
 	local retv = self.path_walk_info[index]["ret"]
