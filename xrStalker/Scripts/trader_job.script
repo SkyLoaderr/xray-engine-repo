@@ -138,7 +138,7 @@ end
 function artefacts_task_text(original_text, first_speaker, second_speaker)
 
 	local task_list = first_speaker:artefact_tasks()
-
+	printf("first %s, second %s", first_speaker:name(), second_speaker:name())
 	printf("task num %d", table.getn(task_list))
 
 	result_text = string.format("%s\\n", original_text)
