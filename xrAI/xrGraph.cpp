@@ -57,6 +57,7 @@ vector<bool>			q_mark_bit;		// temporal usage mark for queries
 
 vector<SGraphVertex>	tpaGraph;		// graph
 SGraphEdge				*tpaEdges;		// graph edges
+SGraphEdge				*tpaFullEdges;	// graph edges
 stack<u32>				dwaStack;		// stack
 u32						*dwaSortOrder;  // edge sort order
 u32						*dwaEdgeOwner;  // edge owners
@@ -162,6 +163,19 @@ u32 dwfErasePoints()
 	return(dwPointsWONodes);
 }
 
+void vfAllocateMemory()
+{
+	Progress(0.0f);
+	tpaFullEdges = (SGraphEdge *)xr_malloc(tpaGraph.size()*(tpaGraph.size() - 1)*sizeof(SGraphEdge));
+	SGraphEdge	*tpPointer = tpaFullEdges;
+	for (int i=0, N = tpaGraph.size(); i<N; i++) {
+		tpaGraph[i].tpaEdges = tpPointer;
+		tpPointer += N - 1;
+	}
+	Msg("* %d memory allocated",N*(N - 1)*sizeof(SGraphEdge));
+	Progress(1.0f);
+}
+
 void vfPreprocessEdges(u32 dwEdgeCount)
 {
 	Progress(0.0f);
@@ -171,7 +185,7 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++) {
 		SGraphVertex &tGraphVertex = tpaGraph[i]; 
 		memcpy(tpPointer,tGraphVertex.tpaEdges,tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
-		_FREE(tGraphVertex.tpaEdges);
+		//_FREE(tGraphVertex.tpaEdges);
 		tGraphVertex.tpaEdges = tpPointer;
 		tpPointer += tGraphVertex.dwNeighbourCount;
 		for (int k=0; k<(int)tGraphVertex.dwNeighbourCount; k++, j++) {
@@ -179,6 +193,7 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 			dwaEdgeOwner[j] = i;
 		}
 	}
+	_FREE(tpaFullEdges);
 	Progress(1.0f);
 }
 
@@ -280,6 +295,9 @@ void xrBuildGraph(LPCSTR name)
 	tThreadManager.wait();
 	Progress(1.0f);
 	Msg("%d points don't have corresponding nodes (they are removed)",dwfErasePoints());
+
+	Phase("Allocating memory");
+	vfAllocateMemory();
 
 	Phase("Building graph");
 	for (u32 thID=0, dwThreadCount = THREAD_COUNT, N = tpaGraph.size(), M = 0, K = 0; thID<dwThreadCount; M += K, thID++)
