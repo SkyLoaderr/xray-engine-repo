@@ -155,6 +155,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			Device.Statistic.RenderDUMP_DT_Cache.Begin	();
 			Slot&	S		= Query						(_x,_z);
 			Device.Statistic.RenderDUMP_DT_Cache.End	();
+			if (!S.bReady)	continue;
 
 			// Transfer visibile and partially visible slot contents
 			BYTE mask		= 0xff;
@@ -247,10 +248,7 @@ CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 	if (rz<0 || rz>=dhm_matrix)		return empty;
 
 	// Check for unpacked state
-	Slot& D	= *s_data[rz][rx];
-	if (!D.bReady)					return empty;
-
-	return	D;
+	return	*s_data[rz][rx];
 }
 
 //--------------------------------------------------- Decompression
