@@ -15,15 +15,11 @@ CAI_Biting::CAI_Biting()
 {
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
-	
-	_sd_biting::OnCreate();
 }
 
 CAI_Biting::~CAI_Biting()
 {
 	xr_delete(m_pPhysics_support);
-
-	_sd_biting::OnDestroy();
 }
 
 void CAI_Biting::Init()

@@ -70,12 +70,12 @@ public:
 	shared_struc				*_sd;
 	CSharedObj<shared_struc>	*pSharedObj;
 
-			void	OnCreate	()	{pSharedObj	= CSharedObj<shared_struc>::Instance();}
-			void	OnDestroy	()	{pSharedObj->FreeInst();}
+			CSharedClass	() {pSharedObj	= CSharedObj<shared_struc>::Instance();}
+			~CSharedClass	() {pSharedObj->FreeInst();}
 
-			bool	IsLoaded	() {return _sd->IsLoaded();}
-			void	Prepare		(CLASS_ID cls_id)	{_sd = pSharedObj->get_shared(cls_id);}
-			void	Finish		()	{_sd->SetLoad();}
+	bool	IsLoaded		() {return _sd->IsLoaded();}
+	void	Prepare			(CLASS_ID cls_id)	{_sd = pSharedObj->get_shared(cls_id);}
+	void	Finish			()	{_sd->SetLoad();}
 };
 
 

@@ -7,12 +7,10 @@
 
 CMotionManager::CMotionManager() 
 {
-	CSharedClass<_motion_shared>::OnCreate();
 }
 
 CMotionManager::~CMotionManager()
 {
-	CSharedClass<_motion_shared>::OnDestroy();
 }
 
 
