@@ -67,6 +67,7 @@ private:
 	float					m_saved_impulse;
 	Fvector					m_saved_hit_position;
 	Fvector					m_saved_hit_dir;
+	s16						m_saved_element;
 	//PHYS
 	float					m_phMass;
 	//skeleton

@@ -609,8 +609,14 @@ void CAI_Stalker::CreateSkeleton()
 void CAI_Stalker::Update(u32 dt){
 
 	inherited::Update( dt);
+
 	if(m_pPhysicsShell){
-		//m_pPhysicsShell->Update();
+
+	if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)
+		{
+			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.5f,m_saved_element);
+			m_saved_impulse=0.f;
+		}
 		mRotate.set(m_pPhysicsShell->mXFORM);
 		mRotate.c.set(0,0,0);
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
@@ -650,9 +656,12 @@ void CAI_Stalker::UpdateCL(){
 }
 
 void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse){
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+	
+	
 	if(!m_pPhysicsShell){
-		m_saved_impulse=impulse;
+		inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+		m_saved_impulse=impulse*skel_fatal_impulse_factor;
+		m_saved_element=element;
 		m_saved_hit_dir.set(dir);
 		m_saved_hit_position.set(p_in_object_space);
 	}
@@ -664,7 +673,7 @@ void CAI_Stalker::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_
 			else{
 				m_saved_hit_dir.set(dir);
 				m_saved_impulse=impulse*skel_fatal_impulse_factor;
-				//m_saved_element=element;
+				m_saved_element=element;
 				m_saved_hit_position.set(p_in_object_space);
 			}
 		}
