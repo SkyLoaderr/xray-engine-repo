@@ -192,7 +192,7 @@ void CWeaponAutoRifle::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Col
 	CSector* S			= ::Render.getSector(pTri->sector);
 	
 	// smoke
-	PS					= new CPSObject("smokepuffs_1",S,true);
+	CPSObject* PS		= new CPSObject("smokepuffs_1",S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 }
