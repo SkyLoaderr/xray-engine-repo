@@ -94,10 +94,14 @@ public:
 	XML_NODE* NavigateToNode(XML_NODE* start_node, 
 							 const char* path, int node_index = 0);
 
+	void		SetLocalRoot(XML_NODE* pLocalRoot)			{m_pLocalRoot = pLocalRoot;}
+	XML_NODE*	GetLocalRoot()								{return m_pLocalRoot;}
+
 	XML_NODE* GetRoot() {return &m_root;}
 
 protected:
 	XML_NODE m_root;
+	XML_NODE* m_pLocalRoot;
 
 	//буфферная строка
 	char* buf_str;	

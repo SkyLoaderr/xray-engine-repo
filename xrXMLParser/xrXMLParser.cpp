@@ -54,10 +54,9 @@ bool CUIXml::Init(LPCSTR path, const char* xml_filename)
 		
 	F->close();
 
+	m_pLocalRoot = NULL;
+
 	return true;
-
-
-	
 }
 
 XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node, 
@@ -99,7 +98,7 @@ XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node,
 
 XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
 {
-	return NavigateToNode(GetRoot(), path, node_index);
+	return NavigateToNode(GetLocalRoot()?GetLocalRoot():GetRoot(), path, node_index);
 }
 
 
