@@ -121,12 +121,12 @@ void mmgrDone(void)
 	free(test);
 	ZeroMemory(test,50);
 #endif
-	mmgrMessage("**** Checking memory consistency...");
-	_CrtCheckMemory();
-	mmgrMessage("**** Checking memory leaks...");
-	_CrtMemDumpAllObjectsSince(&mmgrState);
+//	mmgrMessage("**** Checking memory consistency...");
+//	_CrtCheckMemory();
+//	mmgrMessage("**** Checking memory leaks...");
+//	_CrtMemDumpAllObjectsSince(&mmgrState);
 //	_CrtDumpMemoryLeaks();
-	if (memLOG)	fclose(memLOG);
+//	if (memLOG)	fclose(memLOG);
 #endif
 }
 
