@@ -5,7 +5,9 @@
 #include "stdafx.h"
 #include "HUDManager.h"
 #include "hudcursor.h"
+
 #include "actor.h"
+#include "car.h"
 
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
@@ -82,6 +84,8 @@ void CHUDManager::Render_Calcualte()
 	if (0==O)						return;
 	CActor*		A					= dynamic_cast<CActor*> (O);
 	if (A && !A->HUDview())			return;
+	CCar*		C					= dynamic_cast<CCar*>	(O);
+	if (C)							return;
 
 	::Render->set_HUD				(TRUE);
 	::Render->set_Object			(O->H_Root());

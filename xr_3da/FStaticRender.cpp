@@ -542,6 +542,7 @@ void	CRender::Render		()
 	}
 
 	pCreator->Environment.RenderLast		();
+	// L_Projector.render					();
 	
 	// Postprocess
 	Target.End				();

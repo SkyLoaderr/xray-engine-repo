@@ -172,6 +172,8 @@ void CLightProjector::calculate	()
 
 		// calculate uv-gen matrix
 		C.UVgen.mul_43			(mView,mInvView);
+		mTemp.scale				(1/p_R,1/p_R,0);
+		C.UVgen.mulA_43			(mTemp);
 		C.UVgen.mulA_43			(mXform2UV);
 		mTemp.translate			(float(s_x*P_o_size)/float(P_rt_size), float(s_y*P_o_size)/float(P_rt_size), 0);
 		C.UVgen.mulA_43			(mTemp);
@@ -188,6 +190,7 @@ void CLightProjector::calculate	()
 		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set					(min,max);
 		::Render->RenderBox		(C.O->Sector(),BB,2);
+		boxes.push_back			(BB);
 	}
 	
 	// Blur
@@ -244,7 +247,6 @@ void CLightProjector::calculate	()
 #define CLS(a) D3DCOLOR_RGBA(a,a,a,a)
 void CLightProjector::render	()
 {
-/*
 	Device.set_xform_world		(Fidentity);
 	Device.Shader.OnFrameEnd	();
 	for (u32 it=0; it<boxes.size(); it++)
@@ -253,7 +255,6 @@ void CLightProjector::render	()
 		Device.Primitive.dbg_DrawAABB	(C,D.x,D.y,D.z,0xffffffff);
 	}
 	boxes.clear();
-*/
 
 	// Debug
 	{
