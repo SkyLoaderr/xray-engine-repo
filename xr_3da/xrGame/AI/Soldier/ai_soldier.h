@@ -94,6 +94,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader);
 		void vfAimAtEnemy();
 		bool bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader);
+	IC	bool bfCheckIfCanKillEnemy();
 		void vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader);
 		void vfSetMovementType(bool bCrouched, float fSpeed);
 		void vfCheckForSavedEnemy();

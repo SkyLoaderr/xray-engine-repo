@@ -14,7 +14,9 @@
 #include "..\\..\\..\\bodyinstance.h"
 
 //#define WRITE_LOG
-#define MIN_RANGE_SWITCH 500
+#define MIN_RANGE_SWITCH	500
+#define	FIRE_ANGLE			PI/30
+#define	FIRE_SAFETY_ANGLE	PI/30
 
 CAI_Soldier::CAI_Soldier()
 {
@@ -186,8 +188,47 @@ IC bool CAI_Soldier::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, F
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	return(fAlpha < PI/10);
+	return(fAlpha < FIRE_SAFETY_ANGLE);
 	//return(false);
+}
+
+bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
+{
+	// setting up an action
+	/**
+	Fvector tFireVector, tMyPosition = S.m_tMyPosition, tEnemyPosition = S.m_tEnemyPosition;
+	tFireVector.x = tMyPosition.x - tEnemyPosition.x;
+	tFireVector.y = tMyPosition.y - tEnemyPosition.y;
+	tFireVector.z = tMyPosition.z - tEnemyPosition.z;
+	vfNormalizeSafe(tFireVector);
+	/**/
+	Fvector tFireVector, tMyPosition = S.m_tMyPosition;
+	tFireVector.direct(r_current.yaw,r_current.pitch);
+	
+	bool bCanKillMember = false;
+
+	for (int i=0, iTeam = g_Team(); i<tpaVisibleObjects.size(); i++) {
+		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(tpaVisibleObjects[i]);
+		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
+			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
+				bCanKillMember = true;
+				break;
+			}
+	}
+	return(bCanKillMember);
+}
+
+IC bool CAI_Soldier::bfCheckIfCanKillEnemy() 
+{
+	Fvector tMyLook;
+	tMyLook.direct(r_current.yaw,r_current.pitch);
+	Fvector tFireVector, tMyPosition = Position(), tEnemyPosition = Enemy.Enemy->Position();
+	tFireVector.x = tMyPosition.x - tEnemyPosition.x;
+	tFireVector.y = tMyPosition.y - tEnemyPosition.y;
+	tFireVector.z = tMyPosition.z - tEnemyPosition.z;
+	vfNormalizeSafe(tFireVector);
+	float fAlpha = acosf(tFireVector.dotproduct(tMyLook));
+	return(fAlpha < FIRE_ANGLE);
 }
 
 bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
@@ -404,28 +445,6 @@ objQualifier* CAI_Soldier::GetQualifier	()
 	return(&SoldierQualifier);
 }
 
-bool CAI_Soldier::bfCheckIfCanKillMember(CAISelectorBase &S, CEntity* &Leader)
-{
-	// setting up an action
-	Fvector tFireVector, tMyPosition = S.m_tMyPosition, tEnemyPosition = S.m_tEnemyPosition;
-	tFireVector.x = tMyPosition.x - tEnemyPosition.x;
-	tFireVector.y = tMyPosition.y - tEnemyPosition.y;
-	tFireVector.z = tMyPosition.z - tEnemyPosition.z;
-	vfNormalizeSafe(tFireVector);
-	
-	bool bCanKillMember = false;
-
-	for (int i=0, iTeam = g_Team(); i<tpaVisibleObjects.size(); i++) {
-		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(tpaVisibleObjects[i]);
-		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
-			if ((CustomMonster->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,CustomMonster->Position()))) {
-				bCanKillMember = true;
-				break;
-			}
-	}
-	return(bCanKillMember);
-}
-
 void CAI_Soldier::vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader)
 {
 	if (bFire) {
@@ -434,8 +453,11 @@ void CAI_Soldier::vfSetFire(bool bFire, CAISelectorBase &S, CEntity* &Leader)
 			Weapons->ActiveWeapon()->Reload();
 		}
 		else
-			if (!bfCheckIfCanKillMember(S,Leader))
-				q_action.setup(AI::AIC_Action::FireBegin);
+			if (bfCheckIfCanKillEnemy())
+				if (!bfCheckIfCanKillMember(S,Leader))
+					q_action.setup(AI::AIC_Action::FireBegin);
+				else
+					q_action.setup(AI::AIC_Action::FireEnd);
 			else
 				q_action.setup(AI::AIC_Action::FireEnd);
 	}
