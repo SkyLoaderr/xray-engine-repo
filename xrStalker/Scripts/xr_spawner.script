@@ -22,6 +22,9 @@ function spawn(npc)
 		xr_spawner.spawner[id]:addList(npc)
 		xr_spawner.spawner[id]:check_spawn(npc.id)
 	end	
+	if char_ini:section_exist ("factory") then
+	   escape_factory.add_member (npc)
+	end    
 	return true
 end
 
