@@ -6799,6 +6799,9 @@
 						RelativePath="PropertiesListTypes.h">
 					</File>
 					<File
+						RelativePath=".\ShapeData.h">
+					</File>
+					<File
 						RelativePath="xrServer_Factory.cpp">
 					</File>
 					<File
