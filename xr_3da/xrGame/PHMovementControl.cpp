@@ -148,7 +148,10 @@ void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float spee
 
 		//////////////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////
-		dir.sub(path[travel_point+1].P,path[travel_point].P);
+		if((m_path_size-1)>(int)travel_point)
+			dir.sub(path[travel_point+1].P,path[travel_point].P);
+		else
+			dir.sub(path[travel_point].P,new_position);
 		m_start_index=travel_point;
 		dir.y=0.f;
 		dir.normalize();
