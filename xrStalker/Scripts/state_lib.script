@@ -110,16 +110,23 @@ states = {
 				bodystate = move.standing,
 				animstate = "sit",
 				animation = nil
-			}
+			},
 
 
 	-- Раненый
-	sit = {		weapon = "strapped",
+	wounded = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,
 				animstate = "wounded",
 				animation = nil
+			},
+	help_me = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "wounded",
+				animation = "help_me"
 			}
 
 			
