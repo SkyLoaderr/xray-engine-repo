@@ -220,11 +220,11 @@ IC	void CAbstractGraph::load			(IReader &stream)
 		chunk1					= chunk0->open_chunk(i);
 		{
 			chunk2				= chunk1->open_chunk(0);
-			load_data			(vertex_id,*chunk1);
+			load_data			(vertex_id,*chunk2);
 			chunk2->close		();
 
 			chunk2				= chunk1->open_chunk(1);
-			load_data			(data,*chunk1);
+			load_data			(data,*chunk2);
 			chunk2->close		();
 		}
 		chunk1->close			();
