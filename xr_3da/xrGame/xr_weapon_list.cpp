@@ -8,7 +8,7 @@
 
 // Factory
 #include "WeaponM134.h"
-#include "WeaponGroza.h"
+#include "WeaponFN2000.h"
 #include "WeaponAK74.h"
 #include "WeaponLR300.h"
 
