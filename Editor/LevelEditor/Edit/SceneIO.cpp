@@ -172,7 +172,9 @@ void EScene::Save(char *_FileName, bool bUndo){
     if (!bUndo) FS.BackupFile	(_FileName);
 
     // save data
+	FS.UnlockFile	(0,_FileName,false);
     F.SaveTo		(_FileName,0);
+	FS.LockFile		(0,_FileName,false);
 }
 //--------------------------------------------------------------------------------------------------
 
