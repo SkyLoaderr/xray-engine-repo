@@ -67,7 +67,7 @@ void CStateFreeNoAlife::execute			()
 		CMovementManager::ePathTypeGamePath,
 		CMovementManager::eDetailPathTypeSmooth,
 		eBodyStateStand,
-		eMovementTypeStand,
+		eMovementTypeWalk,
 		eMentalStateDanger
 	);
 //	m_object->CSightManager::update				(eLookTypeCurrentDirection);

@@ -29,7 +29,9 @@ CGameObject::~CGameObject		()
 
 void CGameObject::Init		()
 {
-	m_dwNetSpawnFrame			= u32(-1);
+	m_dwSpawnFrame0				= u32(-1);
+	m_dwSpawnFrame1				= u32(-1);
+	m_dwSpawnFrame2				= u32(-1);
 	m_pPhysicsShell				= NULL;
 	m_initialized				= false;
 	//добавить одну косточку для партиклов по дефаулту
@@ -59,11 +61,12 @@ void CGameObject::Load(LPCSTR section)
 
 void CGameObject::reinit	()
 {
-	if (Device.dwFrame == m_dwNetSpawnFrame)
+	if (Device.dwFrame == m_dwSpawnFrame0)
 		return;
 
-	m_dwNetSpawnFrame				= Device.dwFrame;
+	m_dwSpawnFrame0				= Device.dwFrame;
 
+	m_visual_callback.clear		();
 	CAI_ObjectLocation::reinit	();
 //	CPrefetchManager::reinit	();
 	m_tpALife					= 0;
@@ -78,12 +81,16 @@ void CGameObject::reload	(LPCSTR section)
 
 void CGameObject::net_Destroy	()
 {
-	if (Device.dwFrame == m_dwNetSpawnFrame)
+	if (Device.dwFrame == m_dwSpawnFrame2)
 		return;
 
-	m_dwNetSpawnFrame				= Device.dwFrame;
-
+	m_dwSpawnFrame2				= Device.dwFrame;
+	m_dwSpawnFrame0				= u32(-1);
+	m_dwSpawnFrame1				= u32(-1);
 	m_initialized					= false;
+	VERIFY							(Visual());
+	if (PKinematics(Visual()))
+		PKinematics(Visual())->Callback	(0,0);
 
 	inherited::net_Destroy						();
 	setReady									(FALSE);
@@ -133,18 +140,21 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 	}
 }
 
+void __stdcall VisualCallback(CKinematics *tpKinematics);
+
 BOOL CGameObject::net_Spawn		(LPVOID	DC)
 {
-	if (Device.dwFrame == m_dwNetSpawnFrame)
+	if (Device.dwFrame == m_dwSpawnFrame1)
 		return						(TRUE);
 
-	m_dwNetSpawnFrame				= Device.dwFrame;
+	m_dwSpawnFrame1					= Device.dwFrame;
+	m_dwSpawnFrame2					= u32(-1);
 
 	CSE_Abstract*		E			= (CSE_Abstract*)DC;
 	R_ASSERT						(E);
 
 	const CSE_Visual				*l_tpVisual = dynamic_cast<const CSE_Visual*>(E);
-	if (l_tpVisual)
+	if (l_tpVisual) 
 		cNameVisual_set				(l_tpVisual->get_visual());
 
 	reinit							();
@@ -434,3 +444,35 @@ BOOL CGameObject::UsedAI_Locations()
 {
 	return					(TRUE);
 }
+
+void CGameObject::add_visual_callback		(visual_callback *callback)
+{
+	VERIFY						(PKinematics(Visual()));
+	CALLBACK_VECTOR_IT			I = std::find(visual_callbacks().begin(),visual_callbacks().end(),callback);
+	VERIFY						(I == visual_callbacks().end());
+
+	if (m_visual_callback.empty())
+		PKinematics(Visual())->Callback(VisualCallback,this);
+	m_visual_callback.push_back	(callback);
+}
+
+void CGameObject::remove_visual_callback	(visual_callback *callback)
+{
+	CALLBACK_VECTOR_IT			I = std::find(m_visual_callback.begin(),m_visual_callback.end(),callback);
+	VERIFY						(I != m_visual_callback.end());
+	m_visual_callback.erase		(I);
+	if (m_visual_callback.empty())
+		PKinematics(Visual())->Callback(0,0);
+}
+
+void __stdcall VisualCallback(CKinematics *tpKinematics)
+{
+	CGameObject						*game_object = dynamic_cast<CGameObject*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
+	VERIFY							(game_object);
+	
+	CGameObject::CALLBACK_VECTOR_IT	I = game_object->visual_callbacks().begin();
+	CGameObject::CALLBACK_VECTOR_IT	E = game_object->visual_callbacks().end();
+	for ( ; I != E; ++I)
+		(*I)						(tpKinematics);
+}
+

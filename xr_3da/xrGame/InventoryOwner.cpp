@@ -21,6 +21,7 @@ CInventoryOwner::CInventoryOwner			()
 {
 	Init						();
 }
+
 CInventoryOwner::~CInventoryOwner			() 
 {
 	if (m_pTrade)
@@ -61,7 +62,7 @@ void CInventoryOwner::reload				(LPCSTR section)
 {
 }
 
-void __stdcall VisualCallback(CKinematics *tpKinematics);
+void __stdcall InventoryCallback(CKinematics *tpKinematics);
 
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 {
@@ -74,10 +75,10 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
     
 	if (use_torch()) {
 		VERIFY			(pThis->Visual());
-		PKinematics		(pThis->Visual())->Callback(VisualCallback,this);
+		pThis->add_visual_callback(InventoryCallback);
 	}
 	
-	if(ai().get_alife())
+	if (ai().get_alife())
 		return			TRUE;
 
 	CSE_Abstract			*E	= (CSE_Abstract*)(DC);
@@ -318,10 +319,12 @@ LPCSTR CInventoryOwner::GetGameCommunity()
 	return "Char Community";
 }
 
-void __stdcall VisualCallback(CKinematics *tpKinematics)
+void __stdcall InventoryCallback(CKinematics *tpKinematics)
 {
 	CInventoryOwner		*inventory_owner = dynamic_cast<CInventoryOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
 	VERIFY				(inventory_owner);
+	CObject				*object = dynamic_cast<CObject*>(inventory_owner);
+	Msg					("Visual callback for object %s",object->cName());
 
 	CInventoryItem		*torch = inventory_owner->m_inventory.Get(CLSID_DEVICE_TORCH,false);
 	if (!torch) {

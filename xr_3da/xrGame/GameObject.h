@@ -25,7 +25,9 @@ class CGameObject :
 
 {
 	typedef CObject inherited;
-	u32						m_dwNetSpawnFrame;
+	u32						m_dwSpawnFrame0;
+	u32						m_dwSpawnFrame1;
+	u32						m_dwSpawnFrame2;
 protected:
 	CSE_ALifeSimulator		*m_tpALife;
 public:
@@ -118,6 +120,21 @@ public:
 
 private:
 	bool					m_initialized;
+
+public:
+	typedef void __stdcall visual_callback(CKinematics *);
+	typedef svector<visual_callback*,6>			CALLBACK_VECTOR;
+	typedef CALLBACK_VECTOR::iterator			CALLBACK_VECTOR_IT;
+
+	CALLBACK_VECTOR			m_visual_callback;
+
+public:
+			void			add_visual_callback		(visual_callback *callback);
+			void			remove_visual_callback	(visual_callback *callback);
+	IC		CALLBACK_VECTOR &visual_callbacks	()
+	{
+		return				(m_visual_callback);
+	}
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

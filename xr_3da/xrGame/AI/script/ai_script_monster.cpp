@@ -15,6 +15,8 @@
 #include "../../ParticlesObject.h"
 #include "../../ai_script_classes.h"
 
+void __stdcall ActionCallback(CKinematics *tpKinematics);
+
 CScriptMonster::CScriptMonster()
 {
 	Init					();
@@ -32,10 +34,6 @@ void CScriptMonster::Init()
 	}
 	// animation
 	m_tpScriptAnimation		= 0;
-
-	// callbacks
-	if (Visual())
-		PKinematics(Visual())->Callback(0,0);
 }
 
 void CScriptMonster::reinit()
@@ -67,6 +65,12 @@ void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caScipt
 				)
 			)
 		);
+	if (bScriptControl && !m_bScriptControl)
+		add_visual_callback			(&ActionCallback);
+	else
+		if (!bScriptControl && m_bScriptControl)
+			remove_visual_callback	(&ActionCallback);
+
 	m_bScriptControl	= bScriptControl;
 	m_caScriptName		= caSciptName;
 #ifdef DEBUG
@@ -154,10 +158,9 @@ void __stdcall ActionCallback(CKinematics *tpKinematics)
 {
 	// sounds
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
-	if (!l_tpScriptMonster->GetCurrentAction()) {
-		tpKinematics->Callback(0,0);
+	VERIFY			(l_tpScriptMonster);
+	if (!l_tpScriptMonster->GetCurrentAction())
 		return;
-	}
 	l_tpScriptMonster->vfUpdateSounds();
 	l_tpScriptMonster->vfUpdateParticles();
 }
@@ -210,7 +213,6 @@ void CScriptMonster::ProcessScripts()
 	}
 
 	bool			l_bCompleted;
-	PKinematics(Visual())->Callback(ActionCallback,this);
 	
 	l_bCompleted	= l_tpEntityAction->m_tMovementAction.m_bCompleted;
 	bfAssignWatch	(l_tpEntityAction);
@@ -451,8 +453,6 @@ LPCSTR CScriptMonster::GetPatrolPathName()
 
 BOOL CScriptMonster::net_Spawn		(LPVOID DC)
 {
-
-
 	if (!inherited::net_Spawn(DC))
 		return						(FALSE);
 
