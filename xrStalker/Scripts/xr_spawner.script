@@ -25,6 +25,9 @@ function spawn(npc)
 	if char_ini:section_exist ("factory") then
 	   escape_factory.add_member (npc)
 	end    
+	if char_ini:section_exist ("escape_raid") then
+	   escape_raid.add_member (npc)
+	end    
 	return true
 end
 

@@ -1,5 +1,6 @@
 module("script_zone")
 module ("escape_factory")
+module ("escape_raid")
 
 --[[------------------------------------------------------------------------------------------------------------------
 ”правление скриптовыми зонами
@@ -167,6 +168,13 @@ function zone_binder:reload( section )
 
    if zone_ini:section_exist( "factory" ) then
    	 z.factory = escape_factory.factory_combat (self.object, zone_ini)
+ 	 if z.factory.ini_ok == false then
+		z.factory = nil
+     end
+  end
+
+   if zone_ini:section_exist( "escape_raid" ) then
+   	 z.factory = escape_raid.escape_raid (self.object, zone_ini)
  	 if z.factory.ini_ok == false then
 		z.factory = nil
      end
