@@ -19,4 +19,5 @@
 #include "..\xr_creator.h"
 #include "..\blenders\blender.h"
 #include "..\blenders\blender_clsid.h"
-#include "r2_render.h"
+#include "xrRender_console.h"
+#include "r2.h"

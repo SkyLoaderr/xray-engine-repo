@@ -142,14 +142,71 @@
 		<Filter
 			Name="Core"
 			Filter="">
+			<File
+				RelativePath="r2.cpp">
+			</File>
+			<File
+				RelativePath="r2.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Details"
 			Filter="">
+			<File
+				RelativePath="DetailFormat.h">
+			</File>
+			<File
+				RelativePath="DetailManager.cpp">
+			</File>
+			<File
+				RelativePath="DetailManager.h">
+			</File>
+			<File
+				RelativePath="DetailManager_CACHE.cpp">
+			</File>
+			<File
+				RelativePath="DetailManager_Decompress.cpp">
+			</File>
+			<File
+				RelativePath="DetailManager_VS.cpp">
+			</File>
+			<File
+				RelativePath="DetailManager_soft.cpp">
+			</File>
+			<File
+				RelativePath="DetailModel.cpp">
+			</File>
+			<File
+				RelativePath="DetailModel.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Stripifier"
 			Filter="">
+			<File
+				RelativePath="NvTriStrip.cpp">
+			</File>
+			<File
+				RelativePath="NvTriStrip.h">
+			</File>
+			<File
+				RelativePath="NvTriStripObjects.cpp">
+			</File>
+			<File
+				RelativePath="NvTriStripObjects.h">
+			</File>
+			<File
+				RelativePath="VertexCache.cpp">
+			</File>
+			<File
+				RelativePath="VertexCache.h">
+			</File>
+			<File
+				RelativePath="xrStripify.cpp">
+			</File>
+			<File
+				RelativePath="xrStripify.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Lights"
@@ -166,6 +223,12 @@
 		<Filter
 			Name="Sector/Portal"
 			Filter="">
+			<File
+				RelativePath="Portal.cpp">
+			</File>
+			<File
+				RelativePath="Portal.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Shading templates"
