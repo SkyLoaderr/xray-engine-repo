@@ -313,6 +313,35 @@ void CUIWindow::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 }
 
+CUIWindow* CUIWindow::GetCurrentMouseHandler(){
+	return GetTop()->GetChildMouseHandler();
+}
+
+CUIWindow* CUIWindow::GetChildMouseHandler(){
+	CUIWindow* pWndResult;
+	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
+
+	for(u32 i=0; i<m_ChildWndList.size(); ++i, ++it)
+	{
+		Irect wndRect = (*it)->GetWndRect();
+		// very strange code.... i can't understand difference between
+		// first and second condition. I Got It from OnMouse() method;
+		if (wndRect.in(cursor_pos) )
+		{
+			if((*it)->IsEnabled())
+			{
+				return pWndResult = (*it)->GetChildMouseHandler();				
+			}
+		}
+		else if ((*it)->IsEnabled() && (*it)->CursorOverWindow())
+		{
+			return pWndResult = (*it)->GetChildMouseHandler();
+		}
+	}
+
+    return this;
+}
+
 //перемесчтить окно на вершину.
 //false если такого дочернего окна нет
 bool CUIWindow::BringToTop(CUIWindow* pChild)

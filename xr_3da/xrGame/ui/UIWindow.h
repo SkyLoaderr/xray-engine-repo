@@ -50,6 +50,8 @@ public:
 	//получить окно самого верхнего уровня
 	CUIWindow*				GetTop				()								{if(m_pParentWnd == NULL) return  this; 
 																				else return  m_pParentWnd->GetTop();}
+	CUIWindow*				GetCurrentMouseHandler();
+	CUIWindow*				GetChildMouseHandler();
 
 
 	//поднять на вершину списка выбранное дочернее окно
