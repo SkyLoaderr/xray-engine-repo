@@ -17,6 +17,7 @@ CBlender_Vertex_aref::CBlender_Vertex_aref()
 	oAREF.value			= 32;
 	oAREF.min			= 0;
 	oAREF.max			= 255;
+	oBlend.value		= FALSE;
 }
 
 CBlender_Vertex_aref::~CBlender_Vertex_aref()
@@ -28,12 +29,25 @@ void	CBlender_Vertex_aref::Save(	CFS_Base& FS )
 {
 	CBlender::Save		(FS);
 	xrPWRITE_PROP		(FS,"Alpha ref",	xrPID_INTEGER,	oAREF);
+	xrPWRITE_PROP		(FS,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
 void	CBlender_Vertex_aref::Load(	CStream& FS, WORD version )
 {
 	CBlender::Load		(FS,version);
-	xrPREAD_PROP		(FS,xrPID_INTEGER,	oAREF);
+
+	switch (version)	
+	{
+	case 0: 
+		xrPREAD_PROP	(FS,xrPID_INTEGER,	oAREF);
+		oBlend.value	= FALSE;
+		break;
+	case 1:
+	default:
+		xrPREAD_PROP	(FS,xrPID_INTEGER,	oAREF);
+		xrPREAD_PROP	(FS,xrPID_BOOL,		oBlend);
+		break;
+	}
 }
 
 void	CBlender_Vertex_aref::Compile(CBlender_Compile& C)
@@ -45,7 +59,8 @@ void	CBlender_Vertex_aref::Compile(CBlender_Compile& C)
 		C.PassBegin		();
 		{
 			C.PassSET_ZB		(TRUE,TRUE	);
-			C.PassSET_Blend		(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,TRUE,oAREF.value);
+			if (oBlend.value)	C.PassSET_Blend			(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.PassSET_Blend			(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,				TRUE,oAREF.value);
 			C.PassSET_LightFog	(FALSE,FALSE);
 			
 			// Stage1 - Base texture
@@ -62,7 +77,8 @@ void	CBlender_Vertex_aref::Compile(CBlender_Compile& C)
 		C.PassBegin		();
 		{
 			C.PassSET_ZB		(TRUE,TRUE);
-			C.PassSET_Blend		(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,TRUE,oAREF.value);
+			if (oBlend.value)	C.PassSET_Blend			(TRUE, D3DBLEND_SRCALPHA,D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.PassSET_Blend			(TRUE, D3DBLEND_ONE, D3DBLEND_ZERO,				TRUE,oAREF.value);
 			C.PassSET_LightFog	(C.bEditor,TRUE);
 			
 			// Stage1 - Base texture

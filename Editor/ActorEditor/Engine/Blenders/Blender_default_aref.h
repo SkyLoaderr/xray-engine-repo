@@ -12,6 +12,7 @@ class CBlender_default_aref : public CBlender
 {
 public:
 	xrP_Integer	oAREF;
+	xrP_BOOL	oBlend;
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: lmap*base.aref";	}
 

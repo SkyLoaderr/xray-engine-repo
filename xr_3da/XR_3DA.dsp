@@ -2607,6 +2607,14 @@ SOURCE=.\LightPPA.h
 # Begin Group "Projector"
 
 # PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\LightProjector.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LightProjector.h
+# End Source File
 # End Group
 # End Group
 # Begin Group "Glows manager"

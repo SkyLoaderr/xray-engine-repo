@@ -7,18 +7,17 @@
 #include "xrSheduler.h"
 
 // refs
-class ENGINE_API CCFModel;
-class ENGINE_API CInifile;
-class ENGINE_API CSector;
-class ENGINE_API CCustomHUD;
-class ENGINE_API NET_Packet;
-struct ENGINE_API NodeCompressed;
+class	ENGINE_API CCFModel;
+class	ENGINE_API CInifile;
+class	ENGINE_API CSector;
+class	ENGINE_API CCustomHUD;
+class	ENGINE_API NET_Packet;
+struct	ENGINE_API NodeCompressed;
 
 enum ESectorMode						{EPM_AT_LOAD, EPM_AUTO };
 
 //-----------------------------------------------------------------------------------------------------------
-//CXR_Object
-//Контейнерный класс для мобильных обьектов
+//	CObject
 //-----------------------------------------------------------------------------------------------------------
 class	ENGINE_API						CObject :	
 	public CEventBase,
@@ -40,16 +39,15 @@ protected:
 	bool								rbVisible;
 	BOOL								bActive;		// was it activated or not - sleeping, not updating, no network messages etc.
 	char*								ObjectName;
-
-	CRandom								Random;
 protected:
-	// Geometric
+	// Geometric (transformation)
 	Fvector								vPosition;
 	Fvector								vScale;
 	Fmatrix								mRotate;
 	CCFModel*							cfModel;
 	svector<SavedPosition,4>			PositionStack;
 	
+	// Model
 	LPSTR								pVisualName;
 	FBasicVisual*						pVisual;
 
