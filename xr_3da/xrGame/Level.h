@@ -95,8 +95,9 @@ public:
 	} SWayPoint;
 	
 	typedef struct tagSWayLink{
-		u16	wFrom;
-		u16	wTo;
+		u16		wFrom;
+		u16		wTo;
+		float	fProbability;
 	} SWayLink;
 
 	typedef struct tagSPath {

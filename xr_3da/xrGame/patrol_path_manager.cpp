@@ -52,10 +52,12 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		luabind::call_member<void>(*(m_callback->m_lua_object),*m_callback->m_method_name,CLuaGameObject(dynamic_cast<CGameObject*>(this)),u32(CScriptMonster::eActionTypeMovement),m_curr_point_index);
 
 	u32						count = 0;
+	float					sum = 0.f;
 	for (u32 i=0, n=m_path->tpaWayLinks.size(); i<n; ++i)
 		if ((m_path->tpaWayLinks[i].wFrom == m_curr_point_index) && (m_path->tpaWayLinks[i].wTo != m_prev_point_index)) {
 			if (!count)
 				temp		= i;
+			sum				+= m_path->tpaWayLinks[i].fProbability;
 			++count;
 		}
 
@@ -81,18 +83,18 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 		}
 	}
 	else {
-		u32				choosed = count - 1;
+		float			fChoosed = 0.f;
 		if (random() && (count > 1))
-			choosed		= ::Random.randI(count);
-		count			= 0;
+			fChoosed	= ::Random.randF(sum);
+		sum				= 0.f;
 		for (int i=0, n=(int)m_path->tpaWayLinks.size(); i<n; ++i)
-			if ((m_path->tpaWayLinks[i].wFrom == m_curr_point_index) && (m_path->tpaWayLinks[i].wTo != m_prev_point_index))
-				if (count == choosed) {
+			if ((m_path->tpaWayLinks[i].wFrom == m_curr_point_index) && (m_path->tpaWayLinks[i].wTo != m_prev_point_index)) {
+				sum		+= m_path->tpaWayLinks[i].fProbability;
+				if (sum >= fChoosed) {
 					temp = i;
 					break;
 				}
-				else
-					++count;
+			}
 		VERIFY			(temp < m_path->tpaWayLinks.size());
 	}
 	

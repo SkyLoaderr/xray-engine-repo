@@ -61,15 +61,18 @@ BOOL CLevel::Load_GameSpecific_Before()
 					OBJ->r_fvector3	(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->r_u32();
 					tPatrolPath.tpaWayPoints[i].dwNodeID = ai().level_graph().vertex(tPatrolPath.tpaWayPoints[i].tWayPoint);
-					tPatrolPath.tpaWayPoints[i].name= "";
+					string256		S;
+					OBJ->r_stringZ	(S);
+					tPatrolPath.tpaWayPoints[i].name = S;
 				}
 
 				R_ASSERT(OBJ->find_chunk(WAYOBJECT_CHUNK_LINKS));
 				u32 dwCountL = OBJ->r_u16();
 				tPatrolPath.tpaWayLinks.resize(dwCountL);
 				for ( i=0; i<(int)dwCountL; ++i){
-					tPatrolPath.tpaWayLinks[i].wFrom = OBJ->r_u16();
-					tPatrolPath.tpaWayLinks[i].wTo = OBJ->r_u16();
+					tPatrolPath.tpaWayLinks[i].wFrom		= OBJ->r_u16();
+					tPatrolPath.tpaWayLinks[i].wTo			= OBJ->r_u16();
+					tPatrolPath.tpaWayLinks[i].fProbability = OBJ->r_float();
 				}
 
 				OBJ->close();
