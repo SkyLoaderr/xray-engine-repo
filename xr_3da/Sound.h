@@ -1,5 +1,11 @@
 #pragma once
 
+#ifdef XRSOUND_EXPORTS
+#define XRSOUND_API __declspec(dllexport)
+#else
+#define XRSOUND_API __declspec(dllimport)
+#endif
+
 // refs
 class	ENGINE_API					CObject;
 class	ENGINE_API					CSound_source;
