@@ -7,7 +7,6 @@
 				<text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие...\nПринеси! Я этого не забуду...</text>
 				<give_info>escape_novice_need_weapon</give_info>
 				<next>1</next>
-				<next>3</next>
 			</phrase>
 			<phrase id="1">
 				<text>Возьми эту пушку, может тебе она подойдет...</text>
@@ -18,10 +17,6 @@
 				<text>Спасибо, брат... Я не забуду твою помощь. Теперь урки поплатятся.\n          [отношение изменены до "Друга"]</text>
 				<give_info>escape_novice_has_weapon</give_info>
 			</phrase>
-			<phrase id="3">
-				<text>Еще чего. Учись решать свои проблемы самостоятельно.</text>
-			</phrase>
-
 		</phrase_list>
 	</dialog>
 
