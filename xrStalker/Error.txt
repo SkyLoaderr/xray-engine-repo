@@ -18,3 +18,4 @@ To OLES :
 -О	resolved	Обьекты у которых парент - рендерятся
 -O	resolved	~160 memory operations per frame
 -O				no particles
+-W				ни хера не работает (level - cs_test)
