@@ -2,10 +2,12 @@ module("m_monster_ai")
 
 local sounds = {}
 
-local bobik_home = patrol("point_bobic"):point(0)
+local bobik_home = nil
 --local bobik_home = vector():set(10, 10, 10)
 
 function main()
+	bobik_home = patrol("point_bobic"):point(0)
+
 	local dog = m_monster_ai.m_MonsterBobic("dog_bobic", this.script_name(), "point_bobic", 3 )
 
     while(dog:execute()) do
