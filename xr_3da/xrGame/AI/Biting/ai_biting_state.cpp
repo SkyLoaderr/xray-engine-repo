@@ -64,6 +64,8 @@ void CBitingRest::Reset()
 	m_dwLastPlanTime	= 0;
 
 	m_tAction			= ACTION_STAND;
+
+	pMonster->SetMemoryTimeDef();
 	
 }
 
@@ -172,7 +174,7 @@ void CBitingAttack::Reset()
 
 	m_tAction			= ACTION_RUN;
 
-	pEnemy				= 0;
+	m_tEnemy.obj		= 0;
 	m_bAttackRat		= false;
 
 	m_fDistMin			= 0.f;	
@@ -218,7 +220,7 @@ void CBitingAttack::Run()
 	if (m_tEnemy.obj != ve.obj) {
 		Reset();
 		Init();
-	} 
+	} else m_tEnemy = ve;
 
 	// ¬ыбор состо€ни€
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
@@ -239,7 +241,13 @@ void CBitingAttack::Run()
 		} else nDoDamage = 1;
 	}
 	
+	// задержка дл€ построени€ пути
 	u32 delay;
+
+	// если враг не виден - бежать к нему
+	if (m_tAction == ACTION_ATTACK_MELEE && (m_tEnemy.position != m_tEnemy.obj->Position())) {
+		m_tAction = ACTION_RUN;
+	}
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
@@ -264,7 +272,7 @@ void CBitingAttack::Run()
 				Fvector EnemyCenter;
 				Fvector MyCenter;
 
-				pEnemy->Center(EnemyCenter);
+				m_tEnemy.obj->Center(EnemyCenter);
 				pMonster->Center(MyCenter);
 
 				EnemyCenter.sub(MyCenter);
@@ -277,7 +285,7 @@ void CBitingAttack::Run()
 			else pMonster->Motion.m_tParams.SetParams(eMotionAttack,0,m_cfBitingRunRSpeed,yaw,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED | MASK_YAW);			
 			pMonster->Motion.m_tTurn.Set(eMotionFastTurnLeft, eMotionFastTurnLeft, 0, m_cfBitingAttackFastRSpeed,m_cfBitingRunAttackMinAngle);
 
-			if (pMonster->AttackMelee(pEnemy,false)) {
+			if (pMonster->AttackMelee(m_tEnemy.obj,false)) {
 				//pMonster->DoDamage(pEnemy);
 				nDoDamage++; 
 			}
@@ -408,6 +416,7 @@ void CBitingHide::Init()
 	pMonster->SaveEnemy();
 
 	SetInertia(30000);
+	pMonster->SetMemoryTime(30000);
 
 	// Test
 	Msg("_ Hide Init _");
@@ -467,6 +476,9 @@ void CBitingDetour::Init()
 	if (!pMonster->GetEnemy(m_tEnemy)) R_ASSERT(false);
 	pMonster->SaveEnemy();
 
+	pMonster->SetInertia(15000);
+	pMonster->SetMemoryTime(15000);
+
 	Msg(" DETOUR init!");
 }
 
@@ -475,10 +487,7 @@ void CBitingDetour::Run()
 	Msg("--- DETOUR ---");
 
 	VisionElem tempEnemy;
-	if (pMonster->GetEnemy(tempEnemy)) {
-		m_tEnemy = tempEnemy;
-		SetInertia(10000);
-	}
+	if (pMonster->GetEnemy(tempEnemy)) m_tEnemy = tempEnemy;
 
 	pMonster->vfUpdateDetourPoint();
 	pMonster->AI_Path.DestNode		= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
@@ -527,6 +536,7 @@ void CBitingPanic::Init()
 	pMonster->SaveEnemy();
 
 	SetInertia(15000);
+	pMonster->SetMemoryTime(15000);
 
 	// Test
 	Msg("_ Panic Init _");
@@ -591,6 +601,7 @@ void CBitingExploreDNE::Init()
 	pMonster->Motion.m_tSeq.Switch();
 
 	SetInertia(20000);
+	pMonster->SetMemoryTime(20000);
 }
 
 void CBitingExploreDNE::Run()
@@ -646,6 +657,7 @@ void CBitingExploreDE::Init()
 
 	// проиграть анимацию испуга
 	SetInertia(20000);
+	pMonster->SetMemoryTime(20000);
 }
 
 void CBitingExploreDE::Run()

@@ -121,6 +121,7 @@ typedef struct tagVisionElem
 // CVisionMemory class
 class CVisionMemory
 {
+	TTime					MemoryTimeDefault;
 	TTime					MemoryTime;				// время хранения визуальных объектов
 	TTime					CurrentTime;			// текущее время
 	
@@ -135,20 +136,23 @@ class CVisionMemory
 	CCustomMonster			*pMonster;
 
 public:
-	IC	bool		IsEnemy() {return (!Enemies.empty());}	 
-	IC	bool		IsObject() {return (!Objects.empty());}	 
+	IC	bool		IsEnemy			() {return (!Enemies.empty());}	 
+	IC	bool		IsObject		() {return (!Objects.empty());}	 
 
-	IC	bool		GetEnemy(VisionElem &ve) {return Get(ve);} 	
-	IC	bool		GetCorpse(VisionElem &ve) {return Get(ve);}
+	IC	bool		GetEnemy		(VisionElem &ve) {return Get(ve);} 	
+	IC	bool		GetCorpse		(VisionElem &ve) {return Get(ve);}
 
-	IC	void		SaveEnemy() {if (Selected.obj) Saved = Selected;}
+	IC	void		SaveEnemy		() {if (Selected.obj) Saved = Selected;}
+
+	IC	void		SetMemoryTime	(TTime t) {MemoryTime = t;}
+	IC	void		SetMemoryTimeDef(TTime t) {MemoryTime = MemoryTimeDefault;}
 
 protected:
-		void		Init(TTime mem_time);
-		void		Deinit();
+		void		Init			(TTime mem_time);
+		void		Deinit			();
 
 		// Заполняет массивы Objects и Enemies и Selected
-		void		UpdateVision(TTime dt);
+		void		UpdateVision	(TTime dt);
 	
 	DEFINE_THIS_CLASS_AS_POLYMORPHIC();
 

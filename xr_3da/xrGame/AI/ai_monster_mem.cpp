@@ -101,7 +101,7 @@ void CSoundMemory::UpdateHearing(TTime dt)
 
 void CVisionMemory::Init(TTime mem_time) 
 {
-	MemoryTime			= mem_time;
+	MemoryTimeDef		= MemoryTime = mem_time;
 	Selected.obj		= 0;
 	
 	pMonster = dynamic_cast<CCustomMonster *>(this);
