@@ -133,10 +133,15 @@
 		<mini_map spot="bar_dolg_petrenko_spot" pointer="quest_pointer"></mini_map>
 	</bar_dolg_petrenko_location>
 
-	<bar_dolg_voronin_location hint="bar_dolg_petrenko_location">
+	<bar_dolg_voronin_location hint="bar_dolg_voronin_location">
 		<level_map spot="bar_dolg_voronin_spot" pointer="quest_pointer"></level_map>
 		<mini_map spot="bar_dolg_voronin_spot" pointer="quest_pointer"></mini_map>
 	</bar_dolg_voronin_location>
+
+	<bar_svoboda_ambush_tiran_location hint="bar_svoboda_ambush_tiran_location">
+		<level_map spot="bar_svoboda_ambush_tiran_spot" pointer="quest_pointer"></level_map>
+		<mini_map spot="bar_svoboda_ambush_tiran_spot" pointer="quest_pointer"></mini_map>
+	</bar_svoboda_ambush_tiran_location>
 
 	<bar_killer_sniper_location hint="bar_killer_sniper_destination">
 		<level_map spot="bar_water_tower_spot" pointer="quest_pointer"></level_map>
@@ -195,6 +200,10 @@
 	<bar_dolg_voronin_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
 	</bar_dolg_voronin_spot>
+
+	<bar_svoboda_ambush_tiran_spot x="0" y="0" width="32" height="32" alignment="c">
+		<texture x="160" y="0" width="32" height="32">ui\ui_icons_map</texture>
+	</bar_svoboda_ambush_tiran_spot>
 
 	<bar_dolg_captain_ivancov_spot x="0" y="0" width="32" height="32" alignment="c">
 		<texture x="128" y="0" width="32" height="32">ui\ui_icons_map</texture>
