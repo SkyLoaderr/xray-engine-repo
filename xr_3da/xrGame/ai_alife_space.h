@@ -111,15 +111,8 @@ namespace ALife {
 
 	DEFINE_VECTOR(STerrainPlace, TERRAIN_VECTOR, TERRAIN_IT);
 
-	struct SArtefactOrganizationOrder {
-		string64				m_caSection;
-		u32						m_dwCount;
-		u32						m_dwPrice;
-	};
-
-	DEFINE_VECTOR		(SArtefactOrganizationOrder,	ARTEFACT_ORG_ORDER_VECTOR,		ARTEFACT_ORG_ORDER_IT);
-
 	struct SArtefactOrder {
+		string64				m_caSection;
 		u32						m_dwCount;
 		u32						m_dwPrice;
 	};

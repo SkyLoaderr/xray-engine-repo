@@ -150,7 +150,7 @@ public:
 	float							m_fUnfreezeProbability;
 	bool							m_bAlreadyInvented;
 	DEMAND_P_VECTOR					m_tpArtefactDemand;
-	ARTEFACT_ORG_ORDER_VECTOR		m_tpArtefactNeed;
+	ARTEFACT_ORDER_VECTOR			m_tpArtefactNeed;
 	LPSTR_VECTOR					m_tpDependency;
 
 
@@ -170,7 +170,7 @@ public:
 	EStalkerRank					m_tTraderRank;
 	EResearchState					m_tResearchState;
 	_TIME_ID						m_tTimeFinish;				// this member is usd for keeping time where some state finishes (research or freeze)
-	ARTEFACT_ORG_ORDER_VECTOR		m_tpOrderedArtefacts;
+	ARTEFACT_ORDER_VECTOR			m_tpOrderedArtefacts;
 	ITEM_COUNT_MAP					m_tpPurchasedArtefacts;
 	string64						m_caDiscoveryToInvestigate;
 

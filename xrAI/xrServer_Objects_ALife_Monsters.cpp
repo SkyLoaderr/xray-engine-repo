@@ -87,6 +87,7 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 		ARTEFACT_TRADER_ORDER_IT	E = m_tpOrderedArtefacts.end();
 		for ( ; I != E; I++) {
 			tNetPacket.w_string	((*I).m_caSection);
+			tNetPacket.w_u32	((*I).m_dwTotalCount);
 			save_data			((*I).m_tpOrders,tNetPacket);
 		}
 	}
@@ -121,8 +122,10 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 				tNetPacket.r_u32	(l_tArtefactOrder.m_dwPrice);
 				(*I).m_tpOrders.push_back(l_tArtefactOrder);
 			}
-			else
+			else {
+				tNetPacket.r_u32	((*I).m_dwTotalCount);
 				load_data			((*I).m_tpOrders,tNetPacket);
+			}
 		}
 	}
 	if (m_wVersion > 30) {

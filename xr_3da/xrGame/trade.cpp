@@ -235,15 +235,16 @@ void CTrade::ShowArtifactPrices()
 	if (pThis.type == TT_TRADER) {
 		CAI_Trader					*l_pTrader = dynamic_cast<CAI_Trader *>(pThis.inv_owner);
 		R_ASSERT					(l_pTrader);
-		Msg							("--TRADE:: [%s]: I need the following artefacts :");
+		Msg							("--TRADE:: [%s]: I need the following artefacts :",pThis.base->cName());
 		ARTEFACT_TRADER_ORDER_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
 		ARTEFACT_TRADER_ORDER_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
-		for ( ; ii != ee; ii++)
-			Msg						("		Artefact %s :\n",pSettings->r_string((*ii).m_caSection,"inv_name"));
+		for ( ; ii != ee; ii++) {
+			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).m_caSection,"inv_name"),(*ii).m_dwTotalCount);
 			ARTEFACT_ORDER_IT		iii = (*ii).m_tpOrders.begin();
 			ARTEFACT_ORDER_IT		eee = (*ii).m_tpOrders.end();
 			for ( ; iii != eee; iii++)
-				Msg					("			%d items for $%d for organization %s\n",(*iii).m_dwCount,(*iii).m_dwPrice,"");//(*iii).m_caSection));
+				Msg					("-       %d items for $%d for organization %s",(*iii).m_dwCount,(*iii).m_dwPrice,(*iii).m_caSection);
+		}
 	}
 	else 
 		Msg("--TRADE:: [%s]: I don't buy artefacts! Go to trader",pThis.base->cName());

@@ -10,7 +10,7 @@
 
 class CArtefactOrderPredicate {
 public:
-	bool							operator()							(const SArtefactOrder tArtefactOrder1, const SArtefactOrder tArtefactOrder2) const
+	bool							operator()							(const SArtefactOrder &tArtefactOrder1, const SArtefactOrder &tArtefactOrder2) const
 	{
 		return						(tArtefactOrder1.m_dwPrice > tArtefactOrder2.m_dwPrice);
 	};
