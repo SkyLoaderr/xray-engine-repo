@@ -56,15 +56,17 @@ public:
 	IC void	w_s8		( s8 a			)	{ w(&a,1);					}			// byte (1b)
 	IC void w_float_q16	( float a, float min, float max)
 	{
-		VERIFY(a>=min && a<=max);
-		float q = (a-min)/(max-min);
-		w_u16( u16(iFloor(q*65535.f+EPS_S)));
+		VERIFY		(a>=min && a<=max);
+		float eps	= ((max-min)/65535.f)/2.f;
+		float q		= (a-min)/(max-min);
+		w_u16( u16(iFloor(q*65535.f+eps)));
 	}
 	IC void w_float_q8	( float a, float min, float max)
 	{
-		VERIFY(a>=min && a<=max);
-		float q = (a-min)/(max-min);
-		w_u8( u8(iFloor(q*255.f+EPS_S)));
+		VERIFY		(a>=min && a<=max);
+		float eps	= ((max-min)/255.f)/2.f;
+		float q		= (a-min)/(max-min);
+		w_u8( u8(iFloor(q*255.f+eps)));
 	}
 	IC void w_angle16	( float a		)	{
 		w_float_q16	(angle_normalize(a),0,PI_MUL_2);
@@ -138,17 +140,19 @@ public:
 	
 	IC void		r_float_q16		(float& A, float min, float max)
 	{
-		u16		val;
-		r_u16	(val);
-		A		= (float(val)/65535.f)*(max-min) + min;
-		VERIFY	(A>=min && A<=max);
+		u16			val;
+		r_u16		(val);
+		float h_err	= ((max-min)/65535.f)/2.f;
+		A			= (float(val)/65535.f)*(max-min) + min + h_err;
+		VERIFY		(A>=min && A<=max);
 	}
 	IC void		r_float_q8		(float& A, float min, float max)
 	{
-		u8		val;
-		r_u8	(val);
-		A		= (float(val)/255.f)*(max-min) + min;
-		VERIFY	(A>=min && A<=max);
+		u8			val;
+		r_u8		(val);
+		float h_err	= ((max-min)/255.f)/2.f;
+		A			= (float(val)/255.f)*(max-min) + min + h_err;
+		VERIFY		(A>=min && A<=max);
 	}
 	IC void		r_angle16		(float& A)		{ r_float_q16	(A,0,PI_MUL_2);	}
 	IC void		r_angle8		(float& A)		{ r_float_q8	(A,0,PI_MUL_2);	}
