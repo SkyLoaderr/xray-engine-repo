@@ -1044,7 +1044,7 @@ quickstart:
 		}
 
 		// now do something with body and joint lists
-		if (jcount>1)	dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
+		if (jcount>3)	dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
 		else			dInternalStepIsland		(world, body, bcount, joint, jcount, stepsize);		
 
 		// what we've just done may have altered the body/joint tag values.
