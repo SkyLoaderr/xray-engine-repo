@@ -249,7 +249,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 	pSounds->PlayAtPos(S,this,vPosition);
 
 	// hit marker
-	if (Local() && (who!=this))	
+	if (Local() && (who!=this) && g_Alive())	
 	{
 		Msg		("%s",who->cName());
 		int id		= -1;
