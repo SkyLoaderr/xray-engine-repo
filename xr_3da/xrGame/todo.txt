@@ -291,4 +291,22 @@ Hello Anton,
   * Compatibility with old/buggy HW
 
 Slipch:
-	*
+	*Оптимизация:
+	
+		1 Xr	Space callission	
+		2 Spase collide enabled objects only
+		3 remove traditional islands - support enabled objects list
+		4 SIMD - some ode function
+		5 LCP and Jacobian for small matrix
+	*Saving for physics
+	*Interacting whith a car - discuss
+	*Kiling bones in breaking ojects and show particles
+	*Destroing a car - discus
+	*Collider - 
+			cylinder - additional points 
+			tri - primitives - remove exceed points
+			dynamic - dynamic passing through
+	*Bugs - Breakable!!
+	*Actor aplying force
+	*Physics - animation blending
+			
