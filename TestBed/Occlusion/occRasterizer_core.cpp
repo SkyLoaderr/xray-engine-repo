@@ -141,7 +141,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	}
 }
 
-void i_test_micro( int x, int y)
+IC void i_test_micro( int x, int y)
 {
 	occTri**	pFrame	= Raster.get_frame();
 	float*		pDepth	= Raster.get_depth();
@@ -167,10 +167,16 @@ void i_test		( int x, int y)
 	i_test_micro	(x,y);
 }
 
-void i_line		( int x1, int y1, int x2, int y2 )
+void i_edge		( float __x1, float __y1, float __x2, float __y2)
 {
-    int dx = abs(x2 - x1);
-    int dy = abs(y2 - y1);
+	int x1	= iFloor(__x1);
+	int x2	= iFloor(__x2);
+    int dx	= abs(x2 - x1);
+
+	int y1	= iFloor(__y1);
+	int y2	= iFloor(__y2);
+    int dy	= abs(y2 - y1);
+
     int sx = x2 >= x1 ? 1 : -1;
     int sy = y2 >= y1 ? 1 : -1;
 	
@@ -202,10 +208,6 @@ void i_line		( int x1, int y1, int x2, int y2 )
 			i_test(x,y);
         }
     }
-}
-IC void i_edge ( float x1, float y1, float x2, float y2)
-{
-	i_line	(iFloor(x1),iFloor(y1),iFloor(x2),iFloor(y2));
 }
 
 
