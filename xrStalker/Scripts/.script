@@ -965,3 +965,21 @@ function near_point_with_bit(point, patrol_path, bit)
 
     return index
 end
+
+-- Рекурсивная распечатка таблицы
+function print_table(table, subs)
+	local sub
+	if subs ~= nil then 
+		sub = subs 
+	else
+		sub = ""
+	end     
+	for k,v in table do
+		if type(v) == "table" then
+			printf(sub.."%s:", k)
+			this.print_sound(v, sub.."    ")
+		else
+			printf(sub.."%s:%s", k,v)
+		end
+	end
+end
