@@ -101,9 +101,9 @@ CSoundManager::CSoundManager(BOOL bCDA )
 CSoundManager::~CSoundManager( )
 {
 	_DELETE			( pMusicStreams	);
-	_DELETE			( p2DSounds	);
+	_DELETE			( p2DSounds		);
 	_DELETE			( pSoundRender	);
-	_DELETE			( pCDA	);
+	_DELETE			( pCDA			);
 
 	if (bPresent){
 		psSoundVMaster = fSaveMasterVol;
@@ -111,7 +111,8 @@ CSoundManager::~CSoundManager( )
 		lpPrimaryBuf->SetVolume( LONG((1-fSaveWaveVol)*float(DSBVOLUME_MIN)) );
 	}
 
-	_RELEASE		( lpPrimaryBuf );
+	_RELEASE		( lpPrimaryBuf	);
+	_SHOW_REF		( "DirectSound", lpDirectSound );
 	_RELEASE		( lpDirectSound );
 }
 

@@ -80,6 +80,7 @@ CInput::~CInput(void)
 		_RELEASE	(pKeyboard);
 	}
 
+	_SHOW_REF	("Input: ",pDI);
 	_RELEASE	(pDI);
 }
 
