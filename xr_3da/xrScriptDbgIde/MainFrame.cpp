@@ -898,7 +898,7 @@ BOOL CMainFrame::ErrorStringToFileLine(CString strError, CString &strPathName, i
 	CString strNum = strFileLine.Mid(nPos1+1, nPos2-nPos1-1);
 	nLine = atoi(strNum);
 	strPathName = strFileLine.Left(nPos1);
-
+/*
 	char file_ext[] = ".script";
 	int end_pos = strError.Find(file_ext);
 	if(end_pos==-1)
@@ -910,9 +910,10 @@ BOOL CMainFrame::ErrorStringToFileLine(CString strError, CString &strPathName, i
 		sLineNum.AppendChar(strError[end_file_pos]);
 	nLine = sLineNum.ToNu
 	//find file name
-	
+*/	
 
 	return TRUE;
+
 }
 
 void CMainFrame::ThreadChanged(int nThreadID)

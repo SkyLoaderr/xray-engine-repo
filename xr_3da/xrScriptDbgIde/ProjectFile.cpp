@@ -278,7 +278,7 @@ EVSSStatus CProjectFile::GetSS_status	()
 void CProjectFile::UpdateSS_status()
 {
 	if(!theApp.m_ssConnection.b_IsConnected()){
-		Change_status(vss_unknown);
+//		Change_status(vss_unknown);
 		return;
 	}
 

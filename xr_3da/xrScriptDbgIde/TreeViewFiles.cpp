@@ -528,6 +528,9 @@ CString str_WhoCheckedOut(IVSSItemPtr vss_item)
 
 EVSSStatus CTreeViewFiles::GetItemStatus(HTREEITEM itm)
 {
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return vss_unknown;
+
 	if(!IsFile(itm))
 		return vss_unknown;
 
@@ -541,6 +544,9 @@ EVSSStatus CTreeViewFiles::GetItemStatus(HTREEITEM itm)
 
 void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm, EVSSStatus status/*=vss_unknown*/)
 {
+	if(!theApp.m_ssConnection.b_IsConnected())
+		return;
+
 	if(!itm)
 		return;
 
