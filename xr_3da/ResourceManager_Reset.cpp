@@ -73,13 +73,20 @@ void	CResourceManager::reset_end				()
 	::Render->reset_end					();
 }
 
+template<class C>	void mdump(C c)
+{
+	if (0==c.size())	return;
+	for (C::iterator I=c.begin(); I!=c.end(); I++)
+		Msg	("*        : %s",I->second->cName.c_str());
+}
+
 CResourceManager::~CResourceManager		()
 {
-	Msg		("* RM_Dump: textures : %d",m_textures.size());
-	Msg		("* RM_Dump: rtargets : %d",m_rtargets.size());
-	Msg		("* RM_Dump: rtargetsc: %d",m_rtargets_c.size());
-	Msg		("* RM_Dump: vs       : %d",m_vs.size());
-	Msg		("* RM_Dump: ps       : %d",m_ps.size());
+	Msg		("* RM_Dump: textures : %d",m_textures.size());		mdump(m_textures);
+	Msg		("* RM_Dump: rtargets : %d",m_rtargets.size());		mdump(m_rtargets);
+	Msg		("* RM_Dump: rtargetsc: %d",m_rtargets_c.size());	mdump(m_rtargets_c);
+	Msg		("* RM_Dump: vs       : %d",m_vs.size());			mdump(m_vs);
+	Msg		("* RM_Dump: ps       : %d",m_ps.size());			mdump(m_ps);
 	Msg		("* RM_Dump: dcl      : %d",v_declarations.size());
 	Msg		("* RM_Dump: states   : %d",v_states.size());
 }
