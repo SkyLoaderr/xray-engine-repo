@@ -167,6 +167,30 @@ force_grow_speed	= 25
 
 cost				= 0
 
+[medkit]
+;GroupControlSection	= spawn_group
+;discovery_dependency = 
+;$spawn 			= "food and drugs\medkit"
+;$prefetch 		= 32
+class			= II_MEDKIT
+cform           = skeleton
+visual          = items\geiger_01.ogf
+
+inv_name			= Medkit
+inv_name_short		= Medkit
+inv_weight			= 0.2
+inv_icon			= ui\ui_inv_medkit				; for inventory menu
+inv_grid_width		= 1
+inv_grid_height		= 1
+cost				= 50
+
+; eatable item
+eat_health = 0.1										
+eat_satiety = 0
+eat_power = 0.05
+eat_radiation = -0.01	
+
+
 [bolt_hud]
 shell_point			= 0.0, 0.0, 0.0
 fire_point          = 0.05, 0.0, 0.1
