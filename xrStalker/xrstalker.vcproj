@@ -1408,6 +1408,9 @@
 					<File
 						RelativePath=".\scripts\utils.script">
 					</File>
+					<File
+						RelativePath=".\scripts\xr_sound.script">
+					</File>
 				</Filter>
 				<Filter
 					Name="Deprecated"
@@ -1468,9 +1471,6 @@
 					</File>
 					<File
 						RelativePath=".\scripts\xr_robbers.script">
-					</File>
-					<File
-						RelativePath=".\scripts\xr_sound.script">
 					</File>
 					<File
 						RelativePath=".\scripts\xr_spawner.script">
