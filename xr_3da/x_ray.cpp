@@ -131,7 +131,7 @@ void Startup				( )
 	xr_delete					( pSettings		);
 
 	LALib.OnDestroy				( );
-	Console->Destroy				( );
+	Console->Destroy			( );
 	xr_delete					(Console);
 	Device.Destroy				( );
 	Engine.Destroy				( );
