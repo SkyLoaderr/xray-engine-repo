@@ -158,8 +158,8 @@ function load_sound(obj)
 	theme["novice_camp_guards"] = load_theme("novice_camp_guards")
 	
 	--print_table(theme)
-	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
-	print_table(theme)
+	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
+	--print_table(theme)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
 --	Sound Player Function
