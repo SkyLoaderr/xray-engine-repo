@@ -147,7 +147,7 @@ void CEditorPreferences::Edit()
         	VERIFY(!CMD->sub_commands.empty());
 		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
             	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
-                string128 nm; 		sprintf(nm,"%s%s%s",CMD->Caption(),xr_strlen(SUB_CMD->Caption())?".":"",SUB_CMD->Caption());
+                string128 nm; 		sprintf(nm,"%s%s%s",CMD->Desc(),xr_strlen(SUB_CMD->Desc())?"\\":"",SUB_CMD->Desc());
                 ShortcutValue* V 	= PHelper().CreateShortcut(props,PrepareKey("Keyboard\\Commands",nm), &SUB_CMD->shortcut);
                 V->OnValidateResultEvent.bind(&CheckValidate);
             }

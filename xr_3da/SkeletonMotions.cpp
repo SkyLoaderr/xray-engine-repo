@@ -16,25 +16,6 @@ u16 find_bone_id(vecBones* bones, shared_str nm)
 		if (bones->at(i)->name==nm) return i;
 	return BI_NONE;
 }
-/*
-CMotionDef* find_motiondef(mdef* mots, u16 mid)
-{
-	mdef::const_iterator I,E;
-	I = mots->begin(); 
-	E = mots->end(); 
-	for ( ; I != E; ++I)
-		if ((*I).second.motion==mid) return (CMotionDef*)&(*I).second;
-	return 0;
-}
-bool find_bone_in_part(CPartition* parts, u16 part_id, u16 bid)
-{
-	VERIFY(part_id!=BI_NONE);
-	CPartDef&	P = (*parts)[part_id];
-	for (u16 i=0; i<P.bones.size(); i++)
-		if (P.bones[i]==bid) return true;
-	return false;
-}
-*/
 
 //-----------------------------------------------------------------------
 BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)

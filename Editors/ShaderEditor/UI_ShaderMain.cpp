@@ -81,16 +81,16 @@ void CShaderMain::RegisterCommands()
 {
 	inherited::RegisterCommands();
     // tools
-	RegisterCommand(COMMAND_SAVE,              	xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSave)));
-	RegisterCommand(COMMAND_SAVE_BACKUP,		xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandSaveBackup)));
-	RegisterCommand(COMMAND_RELOAD,				xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandReload)));
-	RegisterCommand(COMMAND_CLEAR,				xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandClear)));
-    RegisterCommand(COMMAND_UPDATE_LIST,	    xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(STools,CShaderTools::CommandUpdateList)));
-    RegisterCommand(COMMAND_REFRESH_UI_BAR,		xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRefreshUIBar)));
-    RegisterCommand(COMMAND_RESTORE_UI_BAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandRestoreUIBar)));
-    RegisterCommand(COMMAND_SAVE_UI_BAR,        xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandSaveUIBar)));
-	RegisterCommand(COMMAND_UPDATE_TOOLBAR,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateToolBar)));
-    RegisterCommand(COMMAND_UPDATE_CAPTION,     xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandUpdateCaption)));
+	REGISTER_CMD_C	(COMMAND_SAVE,           	STools,CShaderTools::CommandSave);
+	REGISTER_CMD_C	(COMMAND_SAVE_BACKUP,	 	STools,CShaderTools::CommandSaveBackup);
+	REGISTER_CMD_C	(COMMAND_RELOAD,		 	STools,CShaderTools::CommandReload);
+	REGISTER_CMD_C	(COMMAND_CLEAR,			 	STools,CShaderTools::CommandClear);
+    REGISTER_CMD_C	(COMMAND_UPDATE_LIST,	 	STools,CShaderTools::CommandUpdateList);
+    REGISTER_CMD_S	(COMMAND_REFRESH_UI_BAR, 	CommandRefreshUIBar);
+    REGISTER_CMD_S	(COMMAND_RESTORE_UI_BAR,  	CommandRestoreUIBar);
+    REGISTER_CMD_S	(COMMAND_SAVE_UI_BAR,     	CommandSaveUIBar);
+	REGISTER_CMD_S	(COMMAND_UPDATE_TOOLBAR,  	CommandUpdateToolBar);
+    REGISTER_CMD_S	(COMMAND_UPDATE_CAPTION,	CommandUpdateCaption);
 }
 
 char* CShaderMain::GetCaption()

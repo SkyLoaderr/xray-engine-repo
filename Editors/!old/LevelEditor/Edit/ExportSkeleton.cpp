@@ -760,10 +760,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 CBone* B 	= *b_it;
                 Fmatrix mat	= B->_MTransform();
 //.	            VERIFY		(!motion->GetMotionFlags(bone_id).is(st_BoneMotion::flWorldOrient));
-//.         	if (B->IsRoot()){
-//.             	mGT.transform_tiny(T);
-//.             	mat.mulA(mGT);
-//.				}
+	         	if (B->IsRoot()) mat.mulA(mGT);
 				Fquaternion	q;
                 q.set		(mat);
                 CKeyQR&	Kr 	= items[bone_id]._keysQR[frm-motion->FrameStart()];
@@ -773,7 +770,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
                 int	_y 		= int(q.y*KEY_Quant); clamp(_y,-32767,32767); Kr.y =  _y;
                 int	_z 		= int(q.z*KEY_Quant); clamp(_z,-32767,32767); Kr.z =  _z;
                 int	_w 		= int(q.w*KEY_Quant); clamp(_w,-32767,32767); Kr.w =  _w;
-                Kt.set		(B->_Offset());
+                Kt.set		(mat.c);//B->_Offset());
             }
         }
         // free temp storage

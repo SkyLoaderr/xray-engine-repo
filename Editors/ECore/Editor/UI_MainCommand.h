@@ -13,7 +13,7 @@ enum{
 	COMMAND_RELOAD_TEXTURES,
 	COMMAND_CHANGE_AXIS,
 	COMMAND_CHANGE_SNAP,
-    COMMAND_CHANGE_SETTINGS,
+    COMMAND_SET_SETTINGS,
     COMMAND_UNLOAD_TEXTURES,
     COMMAND_EVICT_OBJECTS,
     COMMAND_EVICT_TEXTURES,
@@ -66,34 +66,38 @@ typedef fastdelegate::FastDelegate3<u32,u32,u32&> TECommandEvent;
 
 struct ECORE_API SECommand{
 	bool			editable;
-    LPSTR			caption;
+    LPSTR			name;
+    LPSTR			desc;
     struct SESubCommand{
     	u32			index;
     	SECommand* 	parent;
-    	LPSTR		caption;
+    	LPSTR		desc;
 		xr_shortcut	shortcut;
-        SESubCommand(LPCSTR capt, SECommand* p, u32 idx){caption=xr_strdup(capt);parent=p;index=idx;}
-        ~SESubCommand(){xr_free(caption);}
-	    IC LPCSTR	Caption			(){return caption&&caption[0]?caption:"";}
+    public:
+        			SESubCommand	(LPCSTR d, SECommand* p, u32 idx){desc=xr_strdup(d);parent=p;index=idx;}
+        			~SESubCommand	(){xr_free(desc);}
+	    IC LPCSTR	Desc			(){return desc&&desc[0]?desc:"";}
     };
 	DEFINE_VECTOR	(SESubCommand*,ESubCommandVec,ESubCommandVecIt);
     ESubCommandVec	sub_commands;
     TECommandEvent	command;
-    				SECommand		(LPCSTR capt, LPCSTR sub_capt, bool edit, TECommandEvent cmd):editable(edit),command(cmd)
+public:
+    				SECommand		(LPCSTR n, LPCSTR d, LPCSTR sub_desc, bool edit, TECommandEvent cmd):editable(edit),command(cmd)
                     {
-                    	caption		= xr_strdup(capt);
-                        u32 i_cnt 	= _GetItemCount(sub_capt);
+                    	name		= xr_strdup(n);
+                    	desc		= xr_strdup(d);
+                        u32 i_cnt 	= _GetItemCount(sub_desc);
                         if (0==i_cnt){
                             sub_commands.push_back(xr_new<SESubCommand>("",this,0));
                     	}else{
                             string256 	tmp;
                             for (u32 i_idx=0; i_idx<i_cnt; i_idx++)
-                                sub_commands.push_back(xr_new<SESubCommand>(_GetItem(sub_capt,i_idx,tmp,','),this,i_idx));
+                                sub_commands.push_back(xr_new<SESubCommand>(_GetItem(sub_desc,i_idx,tmp,','),this,i_idx));
                         }
                     }
-					~SECommand		(){xr_free(caption);}
-    IC LPCSTR		Caption			(){return caption&&caption[0]?caption:"";}
-    
+					~SECommand		(){xr_free(name);xr_free(desc);}
+    IC LPCSTR		Name			(){return name&&name[0]?name:"";}
+	IC LPCSTR		Desc			(){return desc&&desc[0]?desc:"";}
 };
 DEFINE_VECTOR(SECommand*,ECommandVec,ECommandVecIt);
 
@@ -104,8 +108,15 @@ ECORE_API void					    EnableReceiveCommands	();
 ECORE_API ECommandVec&  		    GetEditorCommands		();
 ECORE_API SECommand::SESubCommand* 	FindCommandByShortcut	(const xr_shortcut& val);
 
-#define BIND_CMD_EVENT_S(a) 	TECommandEvent().bind(a)
-#define BIND_CMD_EVENT_C(a,b)	TECommandEvent().bind(a,&b)
+#define BIND_CMD_EVENT_S(a) 							TECommandEvent().bind(a)
+#define BIND_CMD_EVENT_C(a,b)							TECommandEvent().bind(a,&b)
+
+#define REGISTER_CMD_S(id,cmd)  						RegisterCommand(id, xr_new<SECommand>(#id,"","",false,BIND_CMD_EVENT_S(cmd)));
+#define REGISTER_CMD_C(id,owner,cmd) 					RegisterCommand(id, xr_new<SECommand>(#id,"","",false,BIND_CMD_EVENT_C(owner,cmd)));
+#define REGISTER_CMD_SE(id,desc,cmd)  					RegisterCommand(id, xr_new<SECommand>(#id,desc,"",true,BIND_CMD_EVENT_S(cmd)));
+#define REGISTER_CMD_CE(id,desc,owner,cmd) 				RegisterCommand(id, xr_new<SECommand>(#id,desc,"",true,BIND_CMD_EVENT_C(owner,cmd)));
+#define REGISTER_CMD_SEn(id,desc,sub_desc,cmd)  		RegisterCommand(id, xr_new<SECommand>(#id,desc,sub_desc,true,BIND_CMD_EVENT_S(cmd)));
+#define REGISTER_CMD_CEn(id,desc,sub_desc,owner,cmd)	RegisterCommand(id, xr_new<SECommand>(#id,desc,sub_desc,true,BIND_CMD_EVENT_C(owner,cmd)));
 
 #endif //UI_MainCommandH
 
