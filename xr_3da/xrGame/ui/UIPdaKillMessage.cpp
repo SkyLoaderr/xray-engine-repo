@@ -64,8 +64,8 @@ int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
 	int height = (int)pFont->CurrentHeight();
 	y = (selfHeight - height)/2;
 
-	if (width > 150)
-		width = 150;
+	if (width > 110)
+		width = 110;
 
 	refStatic.Init(x, y, width + 1, height);
 	refStatic.SetElipsis(CUIStatic::eepEnd, 0);
@@ -75,9 +75,9 @@ int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
 	return width;
 }
 
-void CUIPdaKillMessage::SetTextColor(u32 color){
-	m_victim_name.SetTextColor(color);
-	m_killer_name.SetTextColor(color);
+void CUIPdaKillMessage::SetTextColor(u32 color){	
+	m_victim_name.SetTextColor(subst_alpha(m_victim_name.GetTextColor(), color_get_A(color)));
+	m_killer_name.SetTextColor(subst_alpha(m_killer_name.GetTextColor(), color_get_A(color)));
 	SetColor(color);
 }
 
