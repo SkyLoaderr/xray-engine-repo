@@ -1091,5 +1091,5 @@ contact->depth = outDepth;
   return ret;
 //  for (i=0; i<3; i++) contact[0].pos[i] = vertex[i];
  // contact[0].depth = *depth;
-  return 1;
+ 
 }

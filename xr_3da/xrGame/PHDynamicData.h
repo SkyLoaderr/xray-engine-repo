@@ -18,6 +18,7 @@ dVector3 pos;
 dMatrix3 R;
 private:
 dBodyID body;
+dGeomID geom;
 PHDynamicData* Childs;
 unsigned int numOfChilds;
 
@@ -36,6 +37,37 @@ public:
 			dQtoR(dBodyGetQuaternion(body),R);
 			DMXPStoFMX(R,dBodyGetPosition(body),transform);
 			}
+	void GetTGeomWorldMX(Fmatrix& transform){
+			if(!geom) return;
+			dMatrix3 R;
+			Fmatrix NormTransform,Transform;
+			dVector3 P0={0,0,0,-1};
+			Fvector Translate,Translate1;
+			//compute_final_tx(geom);
+			//dQtoR(dBodyGetQuaternion(body),R);
+			DMXPStoFMX(dBodyGetRotation(body),P0,NormTransform);
+			DMXPStoFMX(dGeomGetRotation(dGeomTransformGetGeom(geom)),P0,Transform);
+	
+
+			memcpy(&Translate,dGeomGetPosition(dGeomTransformGetGeom(geom)),sizeof(Fvector));
+			memcpy(&Translate1,dBodyGetPosition(body),sizeof(Fvector));
+
+			transform.identity();
+			transform.translate_over(Translate);
+			transform.mulA(NormTransform);
+			Transform.translate_over(Translate1);
+			transform.mulA(Transform);
+			
+		//	Translate.add(Translate1);	
+			//transform.translate_over(Translate1);
+
+			//transform.translate_add
+			//normalTransform=oMatrix4x4(dGeomGetRotation(dGeomTransformGetGeom(geom)))*normalTransform;
+			//oMatrix4x4 meshTransform(normalTransform);
+			
+			//meshTransform.PreTranslate(oVector3(dGeomGetPosition(dGeomTransformGetGeom(geom))));
+			//meshTransform.PostTranslate(oVector3(dBodyGetPosition(body)));
+			}
 	static inline DMXPStoFMX(const dReal* R,const dReal* pos,Fmatrix& transform){
 
 			memcpy(&transform,R,sizeof(Fmatrix));
@@ -48,6 +80,8 @@ public:
 		};
 private:
 	void CalculateR_N_PosOfChilds(dBodyID parent);
+public:
+	bool SetGeom(dGeomID ageom);
 };
 
 #endif // !defined(AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_)

@@ -23,18 +23,16 @@ void CPHWorld::Render()
 	Fmatrix M;
 	Fvector scale;
 
-	//Jeep.DynamicData.CalculateData();
-	//memcpy(&center,Jeep.DynamicData.pos,sizeof(Fvector));
+
 	Jeep.DynamicData.GetWorldMX(M);
 	scale.set(Jeep.jeepBox[0]/2.f,Jeep.jeepBox[1]/2.f,Jeep.jeepBox[2]/2.f);
-	//M.scale_over(scale);
-	//Device.Primitive.dbg_DrawAABB	(center,Jeep.jeepBox[0],Jeep.jeepBox[1],Jeep.jeepBox[2],0xffffffff);
 	Device.Primitive.dbg_DrawOBB	(M,scale,0xffffffff);
-	//center.x-=Jeep.jeepBox[0]/2.;
-	//center.x+=Jeep.cabinBox[0]/2.;
-	//center.y+=Jeep.jeepBox[1]/2.;
-	//center.y+=Jeep.cabinBox[1]/2.;
-	//Device.Primitive.dbg_DrawAABB	(center,Jeep.cabinBox[0],Jeep.cabinBox[1],Jeep.cabinBox[2],0xffffffff);
+
+	Jeep.DynamicData.GetTGeomWorldMX(M);
+	scale.set(Jeep.cabinBox[0]/2.f,Jeep.cabinBox[1]/2.f,Jeep.cabinBox[2]/2.f);
+	Device.Primitive.dbg_DrawOBB	(M,scale,0xffffffff);
+
+
 
 	scale.set(1.6f/0.8f*0.28f,1.6f/0.8f*0.28f,1.6f/0.8f*0.28f);
 	Jeep.DynamicData[0].GetWorldMX(M);
@@ -256,6 +254,7 @@ DynamicData.SetChild(0,0,Bodies[1]);
 DynamicData.SetChild(1,0,Bodies[2]);
 DynamicData.SetChild(2,0,Bodies[3]);
 DynamicData.SetChild(3,0,Bodies[4]);
+DynamicData.SetGeom(Geoms[5]);
 
 }
 ////////////////////////////////////////////////////////////////////////////

@@ -32,17 +32,26 @@ PHDynamicData::PHDynamicData(unsigned int numOfchilds,dBodyID Body)
 {
 numOfChilds=numOfchilds;
 body=Body;
+geom=NULL;
 Childs=new PHDynamicData[numOfChilds];
 
 }
 
 bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBodyID body)
 {
+	
 	if(childNum<numOfChilds){
 		Childs[childNum].body=body;
+		Childs[childNum].geom=NULL;
 		Childs[childNum].numOfChilds=numOfchilds;
-		
-		return true;
+
+		if(numOfchilds>0)
+			Childs[childNum].Childs=new PHDynamicData[numOfchilds];
+		else   
+			Childs[childNum].Childs=NULL;
+
+	Childs[childNum].geom=NULL;
+	return true;
 	}
 	else return false;
 }
@@ -94,8 +103,10 @@ for(i=0;i<numOfChilds;i++){
 
 void PHDynamicData::Create(unsigned int numOfchilds, dBodyID Body)
 {
+
 numOfChilds=numOfchilds;
 body=Body;
+geom=NULL;
 Childs=new PHDynamicData[numOfChilds];
 }
 
@@ -109,4 +120,14 @@ void PHDynamicData::Destroy()
 		Childs=NULL;
 		numOfChilds=0;
 		}
+}
+
+bool PHDynamicData::SetGeom(dGeomID ageom)
+{
+	if(! geom){
+		geom=ageom;
+		return true;
+		}
+	else
+		return false;
 }
