@@ -679,7 +679,7 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:select_phrase()
     local rnd = math.random(1, 4)
-    while(rnd ~= self.phrase) do
+    while(rnd == self.phrase) do
        rnd = math.random(1, 4)
     end
     self.phrase = rnd
