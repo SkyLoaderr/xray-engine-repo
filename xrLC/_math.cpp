@@ -2,7 +2,8 @@
 #pragma hdrstop
 
 // Initialized on startup
-ENGINE_API Fmatrix			precalc_identity;
+ENGINE_API Fmatrix			Fidentity;
+ENGINE_API Dmatrix			Didentity;
 ENGINE_API CRandom			Random;
 
 WORD getFPUsw() 
@@ -113,8 +114,9 @@ void InitMath(void)
 	Msg("* CPU Features: %s\n",features);
 
 
-	precalc_identity.identity	();	// Identity matrix
-	pvInitializeStatics			();	// Lookup table for compressed normals
+	Fidentity.identity		();	// Identity matrix
+	Didentity.identity		();	// Identity matrix
+	pvInitializeStatics		();	// Lookup table for compressed normals
 
 	_clear87();
 
