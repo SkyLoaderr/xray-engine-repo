@@ -55,8 +55,17 @@ void CScriptCallback::set			(const luabind::object &lua_object, LPCSTR method)
 
 void CScriptCallback::clear			()
 {
-	xr_delete		(m_lua_function);
-	xr_delete		(m_lua_object);
+	try {
+		xr_delete		(m_lua_function);
+		xr_delete		(m_lua_object);
+		m_method_name	= 0;
+	}
+	catch(...) {
+	}
+
+#ifdef DEBUG
+	init				();
+#endif
 }
 
 void CScriptCallback::clear			(bool member)
