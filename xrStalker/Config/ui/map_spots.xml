@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <map_spots>
 	<actor_spot>
-		<level_map x="0" y="0" width="32" height="32" stretch="1">
+<!--		<level_map x="0" y="0" width="32" height="32" stretch="1"> -->
+		<level_map x="0" y="0" width="32" height="32">
+
 			<texture x="224" y="32" width="32" height="32"> ui\ui_icons_map</texture>
 		</level_map>
 		
