@@ -88,12 +88,25 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 
 	Fvector particle_dir;
 
-	if (R.O) 
+	if (R.O)
 	{
-		if (R.O->CLS_ID==CLSID_ENTITY)
+/*		if (R.O->CLS_ID==CLSID_ENTITY)
 		{
 			//тут добавить отметки крови на живой сущности
 		}
+		*/
+
+		ref_shader* pWallmarkShader = (!mtl_pair || mtl_pair->CollideMarks.empty())?
+NULL:&mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
+
+		if (pWallmarkShader)
+		{
+			//добавить отметку на материале
+			::Render->add_SkeletonWallmark	(&R.O->renderable.xform, 
+							PKinematics(R.O->Visual()), *pWallmarkShader,
+							bullet->pos, bullet->dir, bullet->wallmark_size);
+		}
+
 		particle_dir = vDir;
 		particle_dir.invert();
 
