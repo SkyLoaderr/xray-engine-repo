@@ -135,9 +135,11 @@ void OGF::Save			(IWriter &fs)
 	case MT_PROGRESSIVE:
 		Save_Normal_PM	(fs,H,bVertexColors);		
 		break;
+		/*
 	case MT_PROGRESSIVE_STRIPS:
 		Save_Progressive(fs,H,bVertexColors);		
 		break;
+		*/
 	}
 
 	// Header
