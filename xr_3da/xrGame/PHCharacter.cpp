@@ -479,6 +479,11 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	}
 
 	if(bo1){
+////////////////////////////
+		if(c->geom.normal[1]<0.f) c->geom.normal[1]=-c->geom.normal[1];
+
+
+///////////////////////////////////
 		memcpy(m_death_position,dGeomGetPosition(c->geom.g1),sizeof(dVector3));
 		m_death_position[1]+=c->geom.depth;
 		if(dGeomGetUserData(c->geom.g1)->pushing_neg)
