@@ -1581,38 +1581,24 @@ void PATurbulence::Execute(ParticleEffect *effect, float dt)
     {
         Particle &m = effect->particles[i];
 
-        pV.x = m.pos.x;// + ((float)g_frame*movement.A0());
-        pV.y = m.pos.y;// + ((float)g_frame*movement.A1());
-        pV.z = m.pos.z;// + ((float)g_frame*movement.A2());
+		pVector offs,D;
+		movement.Generate(offs);
 
-        vX.x = pV.x+epsilon;
-        vX.y = pV.y;
-        vX.z = pV.z;
+        pV.add(m.pos,offs);
+        vX.set(pV.x+epsilon,pV.y,pV.z);
+        vY.set(pV.x,pV.y+epsilon,pV.z);
+        vZ.set(pV.x,pV.y,pV.z+epsilon);
 
-        vY.x = pV.x;
-        vY.y = pV.y+epsilon;
-        vY.z = pV.z;
+        float d	=	fractalsum3(pV, frequency, octaves);
+        D.x 	= 	(fractalsum3(vX, frequency, octaves) - d)*(float)magnitude;
+        D.y 	= 	(fractalsum3(vY, frequency, octaves) - d)*(float)magnitude;
+        D.z 	= 	(fractalsum3(vZ, frequency, octaves) - d)*(float)magnitude;
 
-        vZ.x = pV.x;
-        vZ.y = pV.y;
-        vZ.z = pV.z+epsilon;
-
-        float d  = 	fractalsum3(pV, frequency, octaves);
-        float dx = 	(fractalsum3(vX, frequency, octaves) - d)*(float)magnitude;
-        float dy = 	(fractalsum3(vY, frequency, octaves) - d)*(float)magnitude;
-        float dz = 	(fractalsum3(vZ, frequency, octaves) - d)*(float)magnitude;
-
-        float velMagOrig = _sqrt( m.vel.x*m.vel.x + m.vel.y*m.vel.y + m.vel.z*m.vel.z );
-
-        m.vel.x += dx;
-        m.vel.y += dy;
-        m.vel.z += dz;
-
-        float	velMagNow = sqrt( m.vel.x*m.vel.x + m.vel.y*m.vel.y + m.vel.z*m.vel.z );
+        float velMagOrig 	= m.vel.magnitude();
+        m.vel.add	(D);
+        float	velMagNow 	= m.vel.magnitude();
         float	valMagScale = velMagOrig/velMagNow;
-        m.vel.x *= valMagScale;
-        m.vel.y *= valMagScale;
-        m.vel.z *= valMagScale;
+        m.vel.mul(valMagScale);
 	}
 }
 void PATurbulence::Transform(const Fmatrix& m){}
