@@ -392,16 +392,34 @@
 				RelativePath=".\encyclopedia.xml">
 			</File>
 			<File
+				RelativePath=".\encyclopedia_equipment.xml">
+			</File>
+			<File
 				RelativePath=".\encyclopedia_infos.xml">
 			</File>
 			<File
 				RelativePath=".\encyclopedia_mutants.xml">
 			</File>
 			<File
+				RelativePath=".\encyclopedia_social.xml">
+			</File>
+			<File
+				RelativePath=".\encyclopedia_vehicles.xml">
+			</File>
+			<File
 				RelativePath=".\encyclopedia_zone.xml">
 			</File>
 			<File
+				RelativePath=".\string_table_enc_equipment.xml">
+			</File>
+			<File
 				RelativePath=".\string_table_enc_mutants.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_enc_social.xml">
+			</File>
+			<File
+				RelativePath=".\string_table_enc_vehicles.xml">
 			</File>
 			<File
 				RelativePath=".\string_table_enc_zone.xml">
