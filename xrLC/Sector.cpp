@@ -28,7 +28,7 @@ void CSector::BuildHierrarhy()
 	BOOL		bAnyNode = FALSE;
 
 	pBuild->scene_bb.getsize(scene_size);
-	delimiter = _MAX(scene_size.x,_MAX(scene_size.y,scene_size.z));
+	delimiter = _max(scene_size.x,_max(scene_size.y,scene_size.z));
 	delimiter *= 2;
 
 	int		iLevel = 1;
