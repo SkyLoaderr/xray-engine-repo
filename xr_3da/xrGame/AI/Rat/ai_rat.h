@@ -25,6 +25,7 @@ namespace NAI_Rat_Constants
 	const float MIN_PROBABILITY					= 0.5f;
 	const DWORD ACTION_REFRESH_RATE				= 1000;
 	const float ATTACK_STRAIGHT_RUN_DISTANCE	= 10.f;
+	const float	MAX_STABLE_DISTANCE				= 20.f;
 };
 
 class CAI_Rat : public CCustomMonster  

@@ -150,7 +150,7 @@ void CAI_Rat::FreeHuntingActive()
 	m_fASpeed				= .2f;
 	
 	if (bfCheckIfGoalChanged()) {
-		if (m_bStateChanged || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
+		if (m_bStateChanged || (((vPosition.distance_to(m_tSpawnPosition) > MAX_STABLE_DISTANCE) && (::Random.randF(0,1) > m_fChangeActiveStateProbability))))
 			vfChooseNewSpeed();
 		else {
 			vfRemoveActiveMember();
