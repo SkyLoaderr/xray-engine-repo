@@ -13,7 +13,18 @@ end
 function action_process_use:use_callback(victim, who)
 	printf("[%s] used by [%s]", victim:name(), who:name())
 
-	if db.storage[self.object:id()].active_scheme then
+	if self.object:is_talk_enabled() == false then
+		if self.object:active_sound_count() == 0 then
+			sound_e = { rnd = 100,
+				   maxidle = 1, 
+				   sumidle = 0,
+				   themes = { "threat_back" } }
+	
+			xr_sound.sound_update(self.object, sound_e)		
+		end
+	end
+
+	if self.st.on_use == true and db.storage[self.object:id()].active_scheme then
 		if db.actor then
 			if xr_logic.try_switch_to_another_section(victim, self.st, db.actor) then
 				return
@@ -33,11 +44,12 @@ end
 function set_use_checker(npc, ini, scheme, section)
 	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
 	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
-
-	npc:set_callback(callback.use_object, st.action.use_callback, st.action)
+	st.logic.on_use = true
+--	npc:set_callback(callback.use_object, st.action.use_callback, st.action)
 end
 
 function disable_scheme(npc, scheme)
-	npc:set_callback(callback.use_object, nil)
+--	npc:set_callback(callback.use_object, nil)
+	st.logic.on_use = nil
 end
 
