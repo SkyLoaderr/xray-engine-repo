@@ -57,7 +57,7 @@ void CAI_Stalker::ResetScriptData(void *P)
 {
 	inherited::ResetScriptData	(P);
 	if (P)
-		vfSetParameters(0,0,false,eObjectActionIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tMentalState,m_tLookType);
+		vfSetParameters(0,0,false,eObjectActionIdle,m_tPathType,m_tBodyState,eMovementTypeStand,m_tMentalState,eLookTypeDirection);
 }
 
 bool CAI_Stalker::bfAssignMovement(CEntityAction *tpEntityAction)
