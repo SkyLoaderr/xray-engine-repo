@@ -51,8 +51,3 @@ void CStateManagerALife::finalize		()
 {
 	inherited::finalize		();
 }
-
-void CStateManagerALife::update			(u32 time_delta)
-{
-	inherited::update		(time_delta);
-}

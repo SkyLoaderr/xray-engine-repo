@@ -47,10 +47,9 @@ void CStateManagerStalker::reload			(LPCSTR section)
 	inherited::reload		(section);
 }
 
-void CStateManagerStalker::update			(u32 time_delta)
+void CStateManagerStalker::initialize		()
 {
-	execute					();
-	inherited::update		(time_delta);
+	inherited::initialize	();
 }
 
 void CStateManagerStalker::execute			()
@@ -60,4 +59,9 @@ void CStateManagerStalker::execute			()
 	else
 		set_dest_vertex_id	(eStalkerStateDeath);
 	inherited::execute		();
+}
+
+void CStateManagerStalker::finalize			()
+{
+	inherited::finalize		();
 }

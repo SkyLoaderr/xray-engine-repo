@@ -28,8 +28,9 @@ public:
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(CAI_Stalker *object);
 	virtual	void		reload					(LPCSTR section);
+	virtual	void		initialize				();
 	virtual	void		execute					();
-	virtual	void		update					(u32 time_delta);
+	virtual	void		finalize				();
 };
 
 #include "state_manager_stalker_inline.h"

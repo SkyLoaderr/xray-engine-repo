@@ -28,9 +28,6 @@ public:
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
-
-protected:
-	virtual	void		update					(u32 time_delta);
 };
 
 #include "state_manager_alife_inline.h"

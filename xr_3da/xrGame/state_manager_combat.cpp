@@ -51,8 +51,3 @@ void CStateManagerCombat::finalize		()
 {
 	inherited::finalize		();
 }
-
-void CStateManagerCombat::update		(u32 time_delta)
-{
-	inherited::update		(time_delta);
-}

@@ -48,6 +48,7 @@ void CStateManagerState::reload			(LPCSTR section)
 
 void CStateManagerState::update			(u32 time_delta)
 {
+	execute							();
 	CSStateManagerAbstract::update	(time_delta);
 	CSStateManagerAbstract			*state_manager_abstract = dynamic_cast<CSStateManagerAbstract*>(&current_state());
 	if (state_manager_abstract)

@@ -29,7 +29,6 @@ public:
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
-	virtual	void		update					(u32 time_delta);
 };
 
 #include "state_manager_death_inline.h"
