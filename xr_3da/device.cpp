@@ -60,7 +60,7 @@ void CRenderDevice::overdrawBegin	()
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILWRITEMASK,	0xffffffff		));
 
     // Increment the stencil buffer for each pixel drawn
-    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_INCRSAT	));
+    CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP		));
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP		));
     CHK_DX(HW.pDevice->SetRenderState( D3DRS_STENCILPASS,		D3DSTENCILOP_INCRSAT	));
 }
