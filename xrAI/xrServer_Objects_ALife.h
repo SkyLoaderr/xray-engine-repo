@@ -119,7 +119,7 @@ public:
 	u32								m_dwSpawnGroup;
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
-	string64						m_caGroupControl;
+	ref_str							m_caGroupControl;
 
 									CSE_ALifeObject	(LPCSTR caSection);
 	virtual							~CSE_ALifeObject();

@@ -992,7 +992,7 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	inherited2::STATE_Write		(tNetPacket);
 	save_data					(m_tpPath,tNetPacket);
 	save_data					(m_baVisitedVertices,tNetPacket);
-	tNetPacket.w_string			(*m_caKnownCustomers);
+	tNetPacket.w_string			(*m_caKnownCustomers?*m_caKnownCustomers:"");
 	save_data					(m_tpKnownCustomers,tNetPacket);
 	save_data					(m_cpEquipmentPreferences,tNetPacket);
 	save_data					(m_cpMainWeaponPreferences,tNetPacket);
@@ -1041,7 +1041,7 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
-	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	m_caKnownCustomers,  sizeof(m_caKnownCustomers), OBJCLASS_SPAWNPOINT, "m_trader_e")	;
+	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	&m_caKnownCustomers,  OBJCLASS_SPAWNPOINT, "m_trader_e")	;
 	V->Owner()->subitem			= 8;
 }
 #endif

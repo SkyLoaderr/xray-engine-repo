@@ -369,7 +369,7 @@ CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
 	m_bDirectControl			= true;
 	m_bALifeControl				= true;
 	m_tNodeID					= u32(-1);
-	strcpy						(m_caGroupControl,"");
+	m_caGroupControl			= "";
 }
 
 CSE_ALifeObject::~CSE_ALifeObject			()
@@ -385,7 +385,7 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_bDirectControl);
 	tNetPacket.w_u32			(m_tNodeID);
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
-	tNetPacket.w_string			(m_caGroupControl);
+	tNetPacket.w_string			(*m_caGroupControl?*m_caGroupControl:"");
 }
 
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
@@ -415,8 +415,10 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r_u32		(m_tNodeID);
 	if (m_wVersion > 22)
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
-	if (m_wVersion > 23)
-		tNetPacket.r_string		(m_caGroupControl);
+	if (m_wVersion > 23){
+    	string256 tmp;
+		tNetPacket.r_string		(tmp); m_caGroupControl=tmp;
+    }
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)
@@ -432,7 +434,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
 	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),	&m_fProbability,	0,100);
-	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
+	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 }
 #endif
 
