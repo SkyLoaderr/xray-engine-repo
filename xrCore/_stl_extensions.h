@@ -53,13 +53,14 @@ namespace std
 template	<typename T>									class	xr_vector		: public std::vector<T,xr_allocator_t<T> >								{ public: 
 	u32		size() const									{ return (u32)__super::size(); } 
 	void	clear()											{ erase(begin(),end());} 
-	void	compact()										{ _Tidy(); };
+	void	free()											{ _Tidy(); };
 	const_reference operator[](size_type _Pos) const		{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 	reference operator[](size_type _Pos)					{ {VERIFY(_Pos<size());} return (*(begin() + _Pos)); }
 };
 template	<>												class	xr_vector<bool>	: public std::vector<bool,xr_allocator_t<bool> >						{ public: 
-	u32		size() const									{ return (u32)__super::size(); } 
-	void	clear()											{ erase(begin(),end());} 
+	u32		size() const									{ return (u32)__super::size();	} 
+	void	clear()											{ erase(begin(),end());			} 
+	void	free()											{ _Tidy(); };
 };
 
 template	<typename T>									class	xr_list 		: public std::list<T,xr_allocator_t<T> >								{ public: u32 size() const {return (u32)__super::size(); } };
