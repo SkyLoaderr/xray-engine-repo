@@ -29,6 +29,8 @@ CAI_Space::CAI_Space				()
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
+
+	extern string4096		g_ca_stdout;
 	setvbuf					(stderr,g_ca_stdout,_IOFBF,sizeof(g_ca_stdout));
 }
 
