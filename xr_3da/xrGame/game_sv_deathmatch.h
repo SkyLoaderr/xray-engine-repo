@@ -155,7 +155,9 @@ public:
 	virtual		void				LoadDefItemsForTeam		(char* caSection, TEAM_WPN_LIST *pWpnList, DEF_ITEMS_LIST* pDefItems);
 
 	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
+	virtual		bool				IsBuyableItem			(LPCSTR	ItemName);
+	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	//----- Money routines -----------------------------------------------------------------
 	virtual		void				Money_SetStart			(u32	id_who);
-	virtual		s16				GetItemCost				(u32 id_who, s16 ItemID);
+	virtual		s16					GetItemCost				(u32 id_who, s16 ItemID);
 };

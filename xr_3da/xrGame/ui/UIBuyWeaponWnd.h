@@ -384,7 +384,7 @@ public:
 	// ѕолучаем количество денег
 	int			GetMoneyAmount() const			{ return m_iMoneyAmount; }
 	// ”станавливам количество денег
-	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailabilityInShop(); CheckBuyAvailabilityInSlots(); }
+	void		SetMoneyAmount(int moneyAmount)	{ m_iMoneyAmount = moneyAmount; CheckBuyAvailabilityInShop(); }
 
 	// ѕроцедура запоминани€ индекса скина в списке skins типа сетевой игры, после выбора его игроком
 	void		SetSkin			(u8 SkinID);	

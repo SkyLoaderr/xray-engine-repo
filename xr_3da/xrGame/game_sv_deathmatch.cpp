@@ -550,6 +550,17 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 	E->o_Angle.set		(r.A);
 };
 
+bool	game_sv_Deathmatch::IsBuyableItem			(LPCSTR	ItemName)
+{
+	for (u8 i=0; i<TeamList.size(); i++)
+	{
+		TEAM_WPN_LIST	WpnList = TeamList[i].aWeapons;
+		TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), ItemName);
+		if (pWpnI != WpnList.end() && ((*pWpnI) == ItemName)) return true;
+	};
+	return false;
+};
+
 void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
@@ -567,22 +578,66 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 	};
 
 	CSE_ALifeCreatureActor*		e_Actor	= dynamic_cast<CSE_ALifeCreatureActor*>(Level().Server->game->get_entity_from_eid	(ps->GameID));
-	if (!e_Actor)
+	if (e_Actor)
 	{
-		ps->BeltItems.clear();
-		ps->pItemList.clear();
-		for (u32 it = 0; it<ItemsDesired.size(); it++)
-		{
-			game_PlayerState::PlayersItem	NewItem;
-			NewItem.ItemID		= ItemsDesired[it];
-			NewItem.ItemCost	= GetItemCost(id_who, NewItem.ItemID);
-			
-			ps->pItemList.push_back(NewItem);
-		};
-		return;
-	};
+		//-------------------------------------------------------------------------
+		xr_vector<CSE_Abstract*>				ItemsToDelete;
 
-	VERIFY(0);
+		xr_vector<u16>::const_iterator	I = e_Actor->children.begin	();
+		xr_vector<u16>::const_iterator	E = e_Actor->children.end		();
+		for ( ; I != E; ++I) 
+		{
+			CSE_Abstract* pItem = Level().Server->game->get_entity_from_eid(*I);
+			R_ASSERT(pItem);
+			//		if (!IsBuyableItem(pItem->s_name)) continue;
+			WeaponDataStruct* pWpnS = NULL;
+
+			TEAM_WPN_LIST	WpnList = TeamList[ps->team].aWeapons;
+			TEAM_WPN_LIST_it pWpnI	= std::find(WpnList.begin(), WpnList.end(), pItem->s_name);
+			if (pWpnI == WpnList.end() || !((*pWpnI) == pItem->s_name)) continue;
+			pWpnS = &(*pWpnI);
+			//-------------------------------------------
+			bool	found = false;
+//			xr_vector<s16>::iterator	it = ItemsDesired.begin();
+			for (u32 it = 0; it < ItemsDesired.size(); it++)
+			{
+				s16 ItemID = ItemsDesired[it];
+				if ((ItemID & 0xff1f) != pWpnS->SlotItem_ID) continue;
+
+				found = true;
+				ItemsDesired.erase(ItemsDesired.begin()+it);
+				break;
+			};
+			if (found) continue;
+			ItemsToDelete.push_back(pItem);
+		};
+		//-------------------------------------------------------------
+		xr_vector<CSE_Abstract*>::iterator	IDI = ItemsToDelete.begin();
+		xr_vector<CSE_Abstract*>::iterator	EDI = ItemsToDelete.end();
+		for ( ; IDI != EDI; ++IDI) 
+		{
+			CSE_Abstract* pItem = *IDI;
+
+			RemoveItemFromActor	(pItem);
+		};
+		//-------------------------------------------------------------
+	}
+
+	//-------------------------------------------------------------
+	ps->BeltItems.clear();
+	ps->pItemList.clear();
+	for (u32 it = 0; it<ItemsDesired.size(); it++)
+	{
+		game_PlayerState::PlayersItem	NewItem;
+		NewItem.ItemID		= ItemsDesired[it];
+		NewItem.ItemCost	= GetItemCost(id_who, NewItem.ItemID);
+
+		ps->pItemList.push_back(NewItem);
+	};
+	//-------------------------------------------------------------
+	if (!e_Actor) return;
+
+	SpawnWeaponsForActor(e_Actor, ps);
 };
 
 void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
@@ -1179,3 +1234,28 @@ s16 game_sv_Deathmatch::GetItemCost			(u32 id_who, s16 ItemID)
 	}
 	return res;
 }
+
+void	game_sv_Deathmatch::RemoveItemFromActor		(CSE_Abstract* pItem)
+{
+	if (!pItem) return;
+	//-------------------------------------------------------------
+	CSE_ALifeItemWeapon* pWeapon = dynamic_cast<CSE_ALifeItemWeapon*> (pItem);
+	if (pWeapon)
+	{
+	};
+	//-------------------------------------------------------------
+	NET_Packet			P;
+	u_EventGen			(P,GE_OWNERSHIP_REJECT,pItem->ID_Parent);
+	P.w_u16				(pItem->ID);
+	Level().Send(P,net_flags(TRUE,TRUE));
+	
+	xr_vector<u16>::const_iterator	I = pItem->children.begin	();
+	xr_vector<u16>::const_iterator	E = pItem->children.end		();
+	for ( ; I != E; ++I) 
+	{
+		u_EventGen			(P,GE_DESTROY,*I);
+		Level().Send(P,net_flags(TRUE,TRUE));
+	}
+	u_EventGen			(P,GE_DESTROY,pItem->ID);
+	Level().Send(P,net_flags(TRUE,TRUE));
+};

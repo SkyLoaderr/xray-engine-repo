@@ -330,8 +330,6 @@ void CUIGameDM::OnBuyMenu_Ok	()
 		if (ItemID == 0xff) continue;
 		u16 SlotID = SlotsToCheck[s];
 		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
-//		P.w_u8	(SlotsToCheck[s]);
-//		P.w_u8	(ItemID);
 		u16	ID = SlotID << 8 | s16(ItemID);
 		P.w_s16(ID);
 	}
@@ -340,46 +338,11 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	{
 		u8 SectID, ItemID;
 		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
-//		P.w_u8	(SectID);
-//		P.w_u8	(ItemID);
 		u16	ID = (s16(SectID) << 0x08) | s16(ItemID);
 		P.w_s16(ID);
-
 	};	
 	//-------------------------------------------------------------------------------
 	l_pPlayer->u_EventSend		(P);
-
-	/*
-	CObject *l_pObj = Level().CurrentEntity();
-
-	CGameObject *l_pPlayer = dynamic_cast<CGameObject*>(l_pObj);
-	if(!l_pPlayer) return;
-
-	NET_Packet		P;
-	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
-
-	game_cl_GameState::Player* pPlayer = Game().local_player;
-	VERIFY(pPlayer);
-//	P.w_s16		(s16(pCurBuyMenu->GetMoneyAmount()) - pPlayer->money_for_round);
-	
-	P.w_u8		(pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT));
-	P.w_u8		(pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT));
-	P.w_u8		(pCurBuyMenu->GetWeaponIndex(RIFLE_SLOT));
-	P.w_u8		(pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT));
-	P.w_u8		(pCurBuyMenu->GetWeaponIndex(OUTFIT_SLOT));
-
-	P.w_u8		(pCurBuyMenu->GetBeltSize());
-	
-	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
-	{
-		u8 SectID, ItemID;
-		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
-		P.w_u8	(SectID);
-		P.w_u8	(ItemID);
-	};	
-
-	l_pPlayer->u_EventSend		(P);
-	*/
 };
 
 bool		CUIGameDM::CanBeReady				()
@@ -499,16 +462,20 @@ void		CUIGameDM::SetCurrentBuyMenu	()
 
 	game_cl_GameState::Player* P = Game().local_player;
 	if (!P) return;
-	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
+	
 };
 
 void		CUIGameDM::SetBuyMenuItems		()
 {
 	game_cl_GameState::Player* P = Game().local_player;
 	if (!P) return;
+	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (!pCurActor) return;
+
+	pCurBuyMenu->ClearSlots();
+	pCurBuyMenu->ClearRealRepresentationFlags();
 
 	TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
 	TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
@@ -518,4 +485,6 @@ void		CUIGameDM::SetBuyMenuItems		()
 		if ((*I)->getDestroy() || (*I)->m_drop) continue;
 		pCurBuyMenu->MoveWeapon(*pItem->cNameSect(), true);
 	};
+
+	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 };

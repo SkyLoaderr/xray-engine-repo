@@ -54,14 +54,14 @@ public:
 
 	virtual		void				LoadTeams				();
 
-	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
+//	virtual		void				OnPlayerBuyFinished		(u32 id_who, NET_Packet& P);
 
 	virtual		void				OnObjectEnterTeamBase	(u16 id, u16 id_zone);
 	virtual		void				OnObjectLeaveTeamBase	(u16 id, u16 id_zone);
 	
 	bool							IsBuyableItem			(CSE_Abstract* pItem);
 	BOOL							CheckUpgrades			(CSE_Abstract* pItem, u8 IItem);	
-	void							RemoveItemFromActor		(CSE_Abstract* pItem);
+//	void							RemoveItemFromActor		(CSE_Abstract* pItem);
 	void							OnArtefactOnBase		(u32 id_who);
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);

@@ -69,9 +69,6 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 	// Инициализируем вещи
 	Init(strSectionName);
 
-	MoveWeapon("wpn_l85", true);
-	MoveWeapon("wpn_ak74", true);
-
 	Hide();
 }
 
@@ -1628,8 +1625,8 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 	if (dik == g_iOkAccelerator)
 	{
-//		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
-		ClearSlots();
+		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
+//		ClearSlots();
 		return true;
 	}
 

@@ -88,6 +88,7 @@ void game_sv_TeamDeathmatch::OnPlayerChangeTeam(u32 id_who, s16 team)
 	ps_who->team = team;
 	
 	ClearPlayerItems(ps_who);
+	SetPlayersDefItems(ps_who);
 
 	signal_Syncronize();
 }

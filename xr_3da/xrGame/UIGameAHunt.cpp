@@ -211,7 +211,7 @@ static	u8 SlotsToCheck [] = {
 		APPARATUS_SLOT	,		// 4
 		OUTFIT_SLOT		,		// 5
 };
-
+/*
 void CUIGameAHunt::OnBuyMenu_Ok	()
 {
 	if (!m_bBuyEnabled) return;
@@ -250,7 +250,7 @@ void CUIGameAHunt::OnBuyMenu_Ok	()
 	//-------------------------------------------------------------------------------
 	l_pPlayer->u_EventSend		(P);
 };
-
+*/
 BOOL		CUIGameAHunt::CanCallBuyMenu			()
 {
 //	BOOL res = inherited::CanCallBuyMenu();

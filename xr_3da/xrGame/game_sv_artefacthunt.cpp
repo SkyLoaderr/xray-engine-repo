@@ -153,7 +153,7 @@ bool	game_sv_ArtefactHunt::IsBuyableItem				(CSE_Abstract* pItem)
 	if (pAlifeObject->m_tClassID == CLSID_OBJECT_A_M209) return true;
 	return false;
 };
-
+/*
 void	game_sv_ArtefactHunt::RemoveItemFromActor		(CSE_Abstract* pItem)
 {
 	if (!pItem) return;
@@ -167,22 +167,17 @@ void	game_sv_ArtefactHunt::RemoveItemFromActor		(CSE_Abstract* pItem)
 	u_EventGen			(P,GE_OWNERSHIP_REJECT,pItem->ID_Parent);
 	P.w_u16				(pItem->ID);
 	Level().Send(P,net_flags(TRUE,TRUE));
-/*
-	u_EventGen			(P,GE_DESTROY,pItem->ID);
-	Level().Send(P,net_flags(TRUE,TRUE));
-//	*/
-//	Level().Server->Perform_destroy(pItem, net_flags(TRUE, TRUE), TRUE);
+
 	xr_vector<u16>::const_iterator	I = pItem->children.begin	();
 	xr_vector<u16>::const_iterator	E = pItem->children.end		();
 	for ( ; I != E; ++I) {
-//		CSE_Abstract	*e_dest	= get_entity_from_eid(*I);
 		u_EventGen			(P,GE_DESTROY,*I);
 		Level().Send(P,net_flags(TRUE,TRUE));
 	}
 	u_EventGen			(P,GE_DESTROY,pItem->ID);
 	Level().Send(P,net_flags(TRUE,TRUE));
 };
-
+*/
 BOOL	game_sv_ArtefactHunt::CheckUpgrades			(CSE_Abstract* pItem, u8 IItem)
 {
 	CSE_ALifeItemWeapon* pWeapon = dynamic_cast<CSE_ALifeItemWeapon*> (pItem);
@@ -194,7 +189,7 @@ BOOL	game_sv_ArtefactHunt::CheckUpgrades			(CSE_Abstract* pItem, u8 IItem)
 	pWeapon->m_addon_flags.set(IItem >> 0x05);
 	return true;
 };
-
+/*
 void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
@@ -269,7 +264,7 @@ void	game_sv_ArtefactHunt::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 		SpawnWeapon4Actor(e_Actor->ID, GetItemForSlot(DItem.SlotID, DItem.ItemID,  ps), GetItemAddonsForSlot(DItem.SlotID, DItem.ItemID,  ps));
 	};
 };
-
+*/
 BOOL	game_sv_ArtefactHunt::OnTouch				(u16 eid_who, u16 eid_what)
 {
 	xrServer*			S		= Level().Server;
