@@ -22,8 +22,8 @@ EFS_Utils::~EFS_Utils()
 void EFS_Utils::OnCreate()
 {
 #ifdef M_BORLAND
-	FS.update_path			(m_LastAccessFN,_server_data_root_,"access.ini");
-    FS.update_path			(m_AccessLog,	_server_data_root_,"access.log");
+	FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
+    FS.update_path			(m_AccessLog,	"$server_data_root$","access.log");
 #endif
 }                                               
 //----------------------------------------------------
