@@ -29,6 +29,7 @@ CLevelNavigationGraph::CLevelNavigationGraph	()
 #endif
 	m_sectors		= 0;
 	generate		(file_name);
+	Msg				("* Navigation info : %d nodes, %d sectors, %d edges",header().vertex_count(),sectors().vertex_count(),sectors().edge_count());
 }
 
 CLevelNavigationGraph::~CLevelNavigationGraph	()
@@ -396,16 +397,8 @@ void CLevelNavigationGraph::generate_cross	()
 {
 }
 
-bool CLevelNavigationGraph::valid			(LPCSTR filename)
+bool CLevelNavigationGraph::valid			(LPCSTR file_name)
 {
-#ifndef AI_COMPILER
-	string256		file_name;
-	FS.update_path	(file_name,"$level$","level_sectors.ai");
-#else
-	string256		file_name;
-	strconcat		(file_name,filename,"level_sectors.ai");
-#endif
-
 	if (!FS.exist(file_name)) {
 		Msg			("! Sector graph doesn't exist : building...");
 		return		(false);
@@ -413,31 +406,62 @@ bool CLevelNavigationGraph::valid			(LPCSTR filename)
 
 	IReader			*reader = FS.r_open(file_name);
 	R_ASSERT		(reader);
-	reader->r		(&m_level_guid,sizeof(m_level_guid));
+	IReader			*chunk = reader->open_chunk(0);
+	if (!chunk) {
+		Msg			("! Sector graph is invalid : rebuilding...");
+		return		(false);
+	}
+
+	chunk->r		(&m_level_guid,sizeof(m_level_guid));
+	FS.r_close		(chunk);
 	if (m_level_guid != header().guid()) {
 		FS.r_close	(reader);
 		Msg			("! Sector graph doesn't correspond to the level graph : rebuilding...");
 		return		(false);
 	}
 
-	load_data		(m_sectors,*reader);
+	chunk			= reader->open_chunk(1);
+	if (!chunk) {
+		Msg			("! Sector graph is invalid : rebuilding...");
+		return		(false);
+	}
+
+	load_data		(m_sectors,*chunk);
+	FS.r_close		(chunk);
 	
 	FS.r_close		(reader);
 	return			(true);
 }
 
-void CLevelNavigationGraph::generate	(LPCSTR file_name)
+void CLevelNavigationGraph::generate	(LPCSTR filename)
 {
-#ifndef DEBUG
-	R_ASSERT			(valid_graph(file_name));
+#ifndef AI_COMPILER
+	string256			file_name;
+	FS.update_path		(file_name,"$level$","level_sectors.ai");
+#	ifndef DEBUG
+		R_ASSERT		(valid(file_name));
+#	endif
 #else
-	if (!valid(file_name)) {
-		generate_sectors();
-		generate_edges	();
-	}
+	string256			file_name;
+	strconcat			(file_name,filename,"level_sectors.ai");
 #endif
+	
+	if (valid(file_name))
+		return;
 
-	Msg					("* Navigation info : %d nodes, %d sectors, %d edges",header().vertex_count(),sectors().vertex_count(),sectors().edge_count());
-
+	generate_sectors	();
+	generate_edges		();
 	generate_cross		();
+	
+	CMemoryWriter		m;
+	
+	m.open_chunk		(0);
+	save_data			(m_level_guid = header().guid(),m);
+	m.close_chunk		();
+
+	m.open_chunk		(1);
+	save_data			(sectors(),m);
+	m.close_chunk		();
+
+	m.save_to			(file_name);
 }
