@@ -55,7 +55,7 @@
 	
 	<map_goals_list x="540" y="50" width="250" height="500" item_height="18">
 		<font font="letterica16" r="45" g="250" b="200"></font>
-	</map_name_static>
+	</map_goals_list>
 
 </window>
 
