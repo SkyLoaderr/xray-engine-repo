@@ -29,7 +29,6 @@ public:
 	poolSS()
 	{
 		list				= 0;
-		blocks.reserve		(512);
 	}
 	~poolSS()
 	{
