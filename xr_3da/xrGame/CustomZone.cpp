@@ -57,11 +57,11 @@ void CCustomZone::feel_touch_delete		(CObject* O) {
 }
 
 BOOL CCustomZone::feel_touch_contact	(CObject* O) {
-	//if(!dynamic_cast<CActor*>(O)) return false;
+	if(!dynamic_cast<CActor*>(O)) return false;
 	return ((CCF_Shape*)cfModel)->Contact(O);
 }
 
-#ifdef DEBUG
+//#ifdef DEBUG
 void CCustomZone::OnRender() {
 	if(!bDebug) return;
 	Device.Shader.OnFrameEnd();
@@ -84,4 +84,4 @@ void CCustomZone::OnRender() {
 		}
 	}
 }
-#endif
+//#endif

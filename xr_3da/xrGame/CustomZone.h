@@ -20,9 +20,9 @@ public:
 	virtual BOOL		feel_touch_contact	(CObject* O);
 
 	// debug
-#ifdef DEBUG
+//#ifdef DEBUG
 	virtual void		OnRender				( );
-#endif
+//#endif
 
 
 	virtual	void Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){}
