@@ -5,17 +5,14 @@ module("escape1")
 local work = {}
 
 function main()
-  printf("started")
-
-  -- загрузка всех кого нужно обсудить и брание их под контроль
-  escape_bobik.init_bobik  ()
+--  escape_bobik.init_bobik  ()
   scr_trader.init      ()
-  escape_dogs.init    ()
+--  escape_dogs.init    ()
   escape1.init        ()
 
-     table.insert(work, "escape_bobik"  )
+--     table.insert(work, "escape_bobik"  )
   table.insert(work, "scr_trader"    )
-     table.insert(work, "escape_dogs"   )
+--     table.insert(work, "escape_dogs"   )
   table.insert(work, "escape1"     )
 
       while(table.getn(work) > 0) do
