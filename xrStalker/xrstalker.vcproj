@@ -1172,6 +1172,9 @@
 						RelativePath=".\Scripts\bind_physic_object.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\bind_restrictor.script">
+					</File>
+					<File
 						RelativePath=".\Scripts\bind_stalker.script">
 					</File>
 					<File
