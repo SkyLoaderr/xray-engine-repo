@@ -231,12 +231,12 @@ void xrLoad(LPCSTR name)
 				if (strchr(N,'.')) *(strchr(N,'.')) = 0;
 				strlwr			(N);
 				strcat			(N,".thm");
-				IReader* THM	= FS.r_open("$game_textures$",N);
+				IReader* THM	= FS.r_open("$textures$",N);
 				R_ASSERT		(THM);
 
 				// version
-				u32 version		= 0;
-				R_ASSERT		(THM->r_chunk(THM_CHUNK_VERSION,&version));
+				u32 version				= 0;
+				R_ASSERT				(THM->r_chunk(THM_CHUNK_VERSION,&version));
 				if( version!=THM_CURRENT_VERSION )	Debug.fatal("Unsupported version of THM file.");
 
 				// analyze thumbnail information
