@@ -17,10 +17,6 @@ public:
 	T	x,y,z;
 
 	// access operators
-	IC	D3DVECTOR*	d3d(void)							{ return asD3D();					};
-	IC	D3DVECTOR*	asD3D(void)							{ return (D3DVECTOR *)this;			};
-	IC	T*			asDATA(void)						{ return (T *)this;					};
-	IC	DWORD*		asDWORD(void)						{ return (DWORD *)this;				};
 	IC	T&			operator[] (int i)					{ return *((T*)this + i); }
 	IC	T&			operator[] (int i)	const			{ return *((T*)this + i); }
 

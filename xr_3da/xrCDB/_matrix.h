@@ -50,8 +50,6 @@ public:
 		T m[4][4];					// Array
 	};
 
-	IC	D3DMATRIX	*d3d(void) const { return (D3DMATRIX *)this; };
-
 	// Class members
 	IC	void	set			(const Self &a) {
 		i.set(a.i); _14_=a._14;
