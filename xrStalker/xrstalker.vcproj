@@ -1492,9 +1492,6 @@
 					RelativePath=".\scripts\xr_camper.script">
 				</File>
 				<File
-					RelativePath=".\scripts\xr_camper2.script">
-				</File>
-				<File
 					RelativePath=".\scripts\xr_chaser.script">
 				</File>
 				<File
@@ -1562,9 +1559,6 @@
 				</File>
 				<File
 					RelativePath=".\scripts\xr_outcast.script">
-				</File>
-				<File
-					RelativePath=".\scripts\xr_patrol.script">
 				</File>
 				<File
 					RelativePath=".\scripts\xr_position.script">

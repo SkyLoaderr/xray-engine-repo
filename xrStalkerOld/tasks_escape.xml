@@ -23,6 +23,14 @@
 			<text>tutorial_find_artefact_0</text>
 			<icon x="450" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
+		<objective>
+			<text>tutorial_find_artefact_1</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>tutorial_find_artefact_2</text>
+			<icon x="100" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
 	</game_task>
 
 	<game_task id="tutorial_help_wounded">

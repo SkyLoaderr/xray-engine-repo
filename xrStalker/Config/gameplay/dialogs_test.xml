@@ -1,280 +1,92 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="barman_bar">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <give_info>rostok_heli_start</give_info>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <next>4</next>
-            </phrase>
-            <phrase id="4">
-                <action>barman.to_small_room</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="barman_room">
-        <phrase_list>
-            <phrase id="5">
-                <action>barman.about_bobik</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-            </phrase>
-            <phrase id="4">
-                <text />
-                <next>5</next>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <next>4</next>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <next>3</next>
-            </phrase>
-            <phrase id="6">
-                <action>barman.from_small_room</action>
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>6</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="pustishka_test">
-        <phrase_list>
-            <phrase id="2">
-                <text />
-            </phrase>
-            <phrase id="3">
-                <text />
-            </phrase>
-            <phrase id="1">
-                <next>2</next>
-                <next>3</next>
-            </phrase>
-            <phrase id="0">
-                <next>1</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="stalker_helper">
-        <phrase_list>
-            <phrase id="12">
-                <text />
-                <precondition>dialogs.is_health_good</precondition>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="13">
-                <text />
-                <precondition>dialogs.is_medikit_no_present</precondition>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="14">
-                <text />
-                <precondition>dialogs.is_bad_relation</precondition>
-                <next>141</next>
-                <next>142</next>
-            </phrase>
-            <phrase id="141">
-                <text />
-                <next>1411</next>
-            </phrase>
-            <phrase id="1411">
-                <text />
-                <action>dialogs.sell_medikit</action>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="142">
-                <text />
-                <next>1412</next>
-            </phrase>
-            <phrase id="1412">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="21">
-                <text />
-                <precondition>dialogs.have_extra_weapon</precondition>
-                <action>dialogs.trade_help</action>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="22">
-                <text />
-                <precondition>dialogs.no_have_extra_weapon</precondition>
-                <next>1</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <next>31</next>
-                <next>32</next>
-            </phrase>
-            <phrase id="31">
-                <text />
-                <precondition>dialogs.is_good_relation</precondition>
-                <action>dialogs.activate_helper_follow</action>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="32">
-                <text />
-                <precondition>dialogs.is_bad_relation</precondition>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="10">
-                <text />
-                <action>dialogs.disable_helper_2</action>
-                <next>101</next>
-            </phrase>
-            <phrase id="101">
-                <text />
-                <action>dialogs.disable_helper</action>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="11">
-                <text />
-                <precondition>dialogs.is_good_relation</precondition>
-                <action>dialogs.drop_medikit</action>
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>10</next>
-            </phrase>
-            <phrase id="2">
-                <text />
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <precondition>dialogs.is_medikit_present</precondition>
-                <next>11</next>
-                <next>12</next>
-                <next>13</next>
-                <next>14</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="stalker_wounded_friend">
         <phrase_list>
-            <phrase id="11">
-                <text />
-                <action>dialogs.transfer_medikit</action>
-                <action>dialogs.disable_wounded</action>
-            </phrase>
             <phrase id="2">
-                <text />
+                <text></text>
                 <precondition>dialogs.medikit_yes</precondition>
                 <next>21</next>
                 <next>22</next>
             </phrase>
+            <phrase id="22">
+                <text></text>
+                <precondition>dialogs.not_have_money</precondition>
+            </phrase>
+            <phrase id="3">
+                <text></text>
+                <precondition>dialogs.medikit_no</precondition>
+            </phrase>
             <phrase id="21">
-                <text />
+                <text></text>
                 <precondition>dialogs.have_money</precondition>
                 <action>dialogs.wounded_trade</action>
                 <action>dialogs.sell_medikit</action>
             </phrase>
-            <phrase id="22">
-                <text />
-                <precondition>dialogs.not_have_money</precondition>
-            </phrase>
-            <phrase id="3">
-                <text />
-                <precondition>dialogs.medikit_no</precondition>
-            </phrase>
             <phrase id="0">
-                <text />
+                <text></text>
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
             </phrase>
+            <phrase id="11">
+                <text></text>
+                <action>dialogs.transfer_medikit</action>
+                <action>dialogs.disable_wounded</action>
+            </phrase>
             <phrase id="1">
-                <text />
+                <text></text>
                 <precondition>dialogs.medikit_yes</precondition>
                 <next>11</next>
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="trader_job">
+    <dialog id="gar_dolg_bribe">
         <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
+            <phrase id="111">
+                <text>gar_dolg_bribe_111</text>
+                <next>1111</next>
             </phrase>
-            <phrase id="1">
-                <text />
-                <script_text>trader_job.artefacts_task_text</script_text>
+            <phrase id="1111">
+                <text>gar_dolg_bribe_1111</text>
+                <next>11111</next>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="assistance_dialog" priority="-1">
-        <phrase_list>
+            <phrase id="112">
+                <text>gar_dolg_bribe_112</text>
+                <next>1121</next>
+            </phrase>
+            <phrase id="1121">
+                <text>gar_dolg_bribe_1121</text>
+                <next>11211</next>
+            </phrase>
+            <phrase id="11111">
+                <text>gar_dolg_bribe_11111</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="11211">
+                <text>gar_dolg_bribe_11211</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="121">
+                <text>gar_dolg_bribe_121</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="12">
+                <text>gar_dolg_bribe_12</text>
+                <next>121</next>
+            </phrase>
+            <phrase id="11">
+                <text>gar_dolg_bribe_11</text>
+                <next>111</next>
+                <next>112</next>
+            </phrase>
             <phrase id="0">
                 <text></text>
                 <next>1</next>
             </phrase>
             <phrase id="1">
-                <text></text>
-                <action>xr_assistance.set_assistance</action>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="esc_lager_volk_dynamite_done" priority="9">
-    	<precondition>escape_dialog.have_dynamite</precondition>
-        <phrase_list>
-            <phrase id="1">
-                <text>esc_lager_volk_dynamite_done_1</text>
-            </phrase>
-            <phrase id="0">
-                <text>esc_lager_volk_dynamite_done_0</text>
-                <action>escape_dialogs.give_dynamite</action>
-                <give_info>esc_dinamite_done</give_info>
-                <next>1</next>
+                <text>gar_dolg_bribe_1</text>
+                <next>11</next>
+                <next>12</next>
             </phrase>
         </phrase_list>
     </dialog>

@@ -13,7 +13,13 @@
 	</string>
 
 	<string id="tutorial_find_artefact_0">
-		<text>Найди свой первый артефакт.</text>
+		<text>Найти свой первый артефакт.</text>
+	</string>
+	<string id="tutorial_find_artefact_1">
+		<text>Найти первый артефакт.</text>
+	</string>
+	<string id="tutorial_find_artefact_2">
+		<text>Отнести артефакт торговцу.</text>
 	</string>
 
 	<string id="tutorial_help_wounded">
