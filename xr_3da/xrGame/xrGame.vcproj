@@ -4741,6 +4741,12 @@
 								RelativePath=".\helicopter.h">
 							</File>
 							<File
+								RelativePath=".\HelicopterMotion.cpp">
+							</File>
+							<File
+								RelativePath=".\HelicopterMotion.h">
+							</File>
+							<File
 								RelativePath=".\HelicopterMovementManager.cpp">
 							</File>
 							<File

@@ -87,11 +87,13 @@ Fvector	CHelicopterMovementManager::makeIntermediateKey(Fvector& start,
 }
 
 //////////////////////////////////////////////////////
+
 void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount, 
 														const Fvector& fromPos, 
 														xr_vector<Fvector>& keys )
 {
 	Fvector					keyPoint;
+	Fvector					prevPoint;
 	Fvector					down_dir;
 	bool					useXBound;
 	bool					min_max;
@@ -100,24 +102,52 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 	down_dir.set(0.0f, -1.0f, 0.0f);
 
 	Fbox levelBox = Level().ObjectSpace.GetBoundingVolume();
-	keys.push_back(fromPos);
+	keyPoint = fromPos;
+	keys.push_back(keyPoint);
+
+//	useXBound	= _abs(levelBox.max.x-levelBox.min.x)<_abs(levelBox.max.z-levelBox.min.z);//tmp
+//	min_max		= false; //tmp
 	for(u32 i = 0; i<keyCount; ++i)	{
+		prevPoint = keyPoint;
+
 		useXBound	= dice();
 		min_max		= dice();
+		//min_max = !min_max;//tmp
 
 		if(useXBound){
 			(min_max)?keyPoint.x = levelBox.min.x:keyPoint.x = levelBox.max.x;
 			keyPoint.z = ::Random.randF(levelBox.min.z, levelBox.max.z);
+			if( prevPoint.distance_to_xz(keyPoint) < 20.0f )
+			{
+				if( (prevPoint.z > keyPoint.z)&&
+					( (prevPoint.z-levelBox.min.z) > (levelBox.max.z-prevPoint.z)  ) )
+					keyPoint.z -=10.0f;
+				else
+					keyPoint.z +=10.0f;
+			}
 		}else{
 			(min_max)?keyPoint.z = levelBox.min.z:keyPoint.z = levelBox.max.z;
 			keyPoint.x = ::Random.randF(levelBox.min.x, levelBox.max.x);
+
+			if( prevPoint.distance_to_xz(keyPoint) < 20.0f )
+			{
+				if( (prevPoint.x > keyPoint.x)&&
+					( (prevPoint.x-levelBox.min.x) > (levelBox.max.x-prevPoint.x)  ) )
+					keyPoint.x -=10.0f;
+				else
+					keyPoint.x +=10.0f;
+			}
 		}
 
 		keyPoint.y = levelBox.max.y;
 		Level().ObjectSpace.RayPick(keyPoint, down_dir, levelBox.max.y-levelBox.min.y+1.0f, Collide::rqtStatic, cR);
 
 		keyPoint.y = keyPoint.y-cR.range+m_baseAltitude;
-		//промежуточные точки
+		
+		keyPoint.y  = 30.0f;//tmp
+
+//tmp
+/*		//промежуточные точки
 		if( keys.size() )
 		{
 			Fvector& prevPoint = keys.back();
@@ -128,6 +158,7 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 				keys.push_back( makeIntermediateKey(prevPoint, keyPoint, (i/(k+1.0f)) ) );
 			}
 		}
+*/
 		keys.push_back(keyPoint);
 	};
 

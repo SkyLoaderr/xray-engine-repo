@@ -530,7 +530,7 @@ void	CHelicopterMovManager::updatePathHPB(float from_time)
 	Fvector p_prev, p0, p_next, p0_phb_res;
 	float p0_time;
 
-	for(i=minIdx; i<sz-1 ;++i)
+	for(i=minIdx; i<sz-2 ;++i)
 	{
 		CHelicopterMotion::GetKeyT(i, p_prev);
 		CHelicopterMotion::GetKeyT(i+1, p0);
@@ -553,21 +553,26 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 	float s2 = p0.distance_to (p_next);
 
 	Fvector d1,d2;
-	d1.sub(p0, p_prev);
-	d2.sub(p_next, p0);
+	d1.sub(p0, p_prev).normalize_safe();
+	d2.sub(p_next, p0).normalize_safe();
 
-	float p1 = d1.getP();
-	float p2 = d2.getP();
+	float h1 = d1.getH();
+	float h2 = d2.getH();
 
 	float sk;
-	sk = s1+s2/s1;	
 	//y
-	p0_phb_res.y = _flerp(p1, p2, sk);
-
+	sk = s2/(s1+s2);	
+//	p0_phb_res.y = _flerp(h1, h2, sk);
+	
+	p0_phb_res.y = h1;
+	Log("h1=",h1);
+	Log("h2=",h2);
 
 	//z
 /*	Fvector cp;
 	cp.crossproduct (d1,d2);
 	p0_phb_res.z = cp.y;
 */
+	p0_phb_res.x = 0.0f;
+	p0_phb_res.z = 0.0f;
 }
