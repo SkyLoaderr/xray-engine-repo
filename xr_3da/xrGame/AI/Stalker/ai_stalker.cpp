@@ -407,7 +407,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
 			for ( ; I != E; ++I)
 				if ((I - B) != (int)inventory().GetActiveSlot())
-					inventory().Ruck((*I).m_pIItem);
+					if ((*I).m_pIItem->SUB_CLSI_ID != CLSID_IITEM_BOLT)
+						inventory().Ruck((*I).m_pIItem);
 			//		(*I).m_pIItem->Drop();
 			
 			/*TIItemList &l_list = inventory().m_ruck;
