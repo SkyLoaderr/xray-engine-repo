@@ -14,7 +14,7 @@
 #include "ai_script_actions.h"
 #include "..\\cameramanager.h"
 #include "..\\effectorpp.h"
-
+   
 using namespace Script;
 
 void LuaLog(LPCSTR caMessage)
