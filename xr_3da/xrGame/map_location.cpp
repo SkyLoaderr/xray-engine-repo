@@ -70,10 +70,10 @@ void SMapLocation::UpdateAnimation()
 
 //////////////////////////////////////////////////////////////////////////
 
-void SMapLocation::SetColorAnimation(CLAItem *animation)
+void SMapLocation::SetColorAnimation(const ref_str &animationName)
 {
-	R_ASSERT(animation);
-	colorAnimation	= animation;
+	colorAnimation	= LALib.FindItem(*animationName);
+	R_ASSERT(colorAnimation);
 	animationTime	= 0.0f;
 	prevTimeGlobal	= Device.fTimeGlobal;
 }

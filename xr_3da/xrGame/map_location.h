@@ -62,7 +62,7 @@ struct SMapLocation
 	// Показывать или не показывать отметку этого маплокейшина на карте
 	void	UpdateAnimation();
 	// Задать цветовую анимацию для спота
-	void	SetColorAnimation(CLAItem *animation);
+	void	SetColorAnimation(const ref_str &animationName);
 
 private:
 	// Анимация индикатора на карте
