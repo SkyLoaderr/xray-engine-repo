@@ -326,20 +326,20 @@ CHARACTER_RANK_VALUE CScriptGameObject::GetRank		()
 
 void CScriptGameObject::set_desired_position	()
 {
-	CAI_Stalker							*stalker = smart_cast<CAI_Stalker*>(&object());
+	CAI_Stalker										*stalker = smart_cast<CAI_Stalker*>(&object());
 	if (!stalker)
-		ai().script_engine().script_log							(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->movement().set_desired_position	(0);
 }
 
 void CScriptGameObject::set_desired_position	(const Fvector *desired_position)
 {
-	CAI_Stalker							*stalker = smart_cast<CAI_Stalker*>(&object());
+	CAI_Stalker										*stalker = smart_cast<CAI_Stalker*>(&object());
 	if (!stalker)
-		ai().script_engine().script_log							(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else {
-		THROW2							(stalker->movement().restrictions().accessible(*desired_position),*stalker->cName());
+		THROW2										(desired_position || stalker->movement().restrictions().accessible(*desired_position),*stalker->cName());
 		stalker->movement().set_desired_position	(desired_position);
 	}
 }
