@@ -351,11 +351,11 @@ function action_help:initialize ()
     self.object:set_movement_type         (move.stand)
     self.first = false
     self.object:enable_talk ()
-    if self.a.dialog == nil then
-       self.object:set_start_dialog ("tutorial_wounded")
-    else
-       self.object:set_start_dialog (self.a.dialog)    
-    end   
+    --if self.a.dialog == nil then
+       --self.object:set_start_dialog ("tutorial_wounded")
+    --else
+       --self.object:set_start_dialog (self.a.dialog)    
+    --end   
     xr_meet.override_meet (self.object, true)
     self.send_time = device ():time_global ()
 end
@@ -454,7 +454,7 @@ function action_stand:finalize ()
     end 
     
     xr_meet.override_meet (self.object, false)
-    self.object:restore_default_start_dialog ()
+    --self.object:restore_default_start_dialog ()
     action_base.finalize (self)
     self.a.sit = false
 end    
