@@ -422,7 +422,6 @@ void CALifeItem::UPDATE_Write(NET_Packet &tNetPacket)
 	tNetPacket.w_float			(m_fMass);
 	tNetPacket.w_u32			(m_dwCost);
 	tNetPacket.w_u32			(m_iHealthValue);
-	tNetPacket.w_u32			(m_bAttached);
 };
 
 void CALifeItem::UPDATE_Read(NET_Packet &tNetPacket)
@@ -431,9 +430,6 @@ void CALifeItem::UPDATE_Read(NET_Packet &tNetPacket)
 	tNetPacket.r_float			(m_fMass);
 	tNetPacket.r_u32			(m_dwCost);
 	tNetPacket.r_s32			(m_iHealthValue);
-	u32							dwDummy;
-	tNetPacket.r_u32			(dwDummy);
-	m_bAttached					= !!dwDummy;
 };
 
 void CALifeItem::Init(LPCSTR caSection)
@@ -445,7 +441,6 @@ void CALifeItem::Init(LPCSTR caSection)
 		m_iHealthValue			= pSettings->ReadINT(caSection, "health_value");
 	else
 		m_iHealthValue			= 0;
-	m_bAttached					= false;
 };
 
 // CALifeAnomalousZone

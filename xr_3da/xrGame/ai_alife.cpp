@@ -174,7 +174,7 @@ void CAI_ALife::vfCreateNewTask(CALifeTrader *tpTrader)
 	OBJECT_PAIR_IT	E = m_tObjectRegistry.end();
 	for ( ; I != E; I++) {
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
-		if (tpALifeItem && !tpALifeItem->m_bAttached) {
+		if (tpALifeItem && !tpALifeItem->bfAttached()) {
 			CALifeTask					*tpTask = xr_new<CALifeTask>();
 			tpTask->m_tCustomerID		= tpTrader->m_tObjectID;
 			Memory.mem_copy				(tpTask->m_tLocationID,getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));

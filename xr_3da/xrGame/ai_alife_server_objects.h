@@ -49,6 +49,7 @@ public:
 class CALifeMonsterParams : public IPureServerInitObject {
 public:
 	int								m_iHealth;
+	u16								ID;
 	
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
@@ -216,13 +217,16 @@ public:
 	float							m_fMass;
 	u32								m_dwCost;
 	s32								m_iHealthValue;
-	bool							m_bAttached;
 	
 	virtual void					STATE_Write(NET_Packet &tNetPacket);
 	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size);
 	virtual void					UPDATE_Write(NET_Packet &tNetPacket);
 	virtual void					UPDATE_Read(NET_Packet &tNetPacket);
 	virtual void					Init(LPCSTR caSection);
+	IC		bool					bfAttached()
+	{
+		return(ID_Parent < 65534);
+	};
 };
 
 class CALifeAnomalousZone : public CALifeDynamicObject, public CALifeZone {

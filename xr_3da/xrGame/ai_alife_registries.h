@@ -262,7 +262,7 @@ public:
 		
 		CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem) {
-			if (!tpALifeItem->m_bAttached)
+			if (!tpALifeItem->bfAttached())
 				m_tpGraphObjects[tpALifeItem->m_tGraphID].tpObjects.push_back(tpALifeItem);
 			return;
 		}
@@ -319,7 +319,7 @@ public:
 	IC void vfAttachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
 	{
 		tHumanParams.m_tpItemIDs.push_back(tpALifeItem->m_tObjectID);
-		tpALifeItem->m_bAttached = true;
+		tpALifeItem->ID_Parent = tHumanParams.ID;
 		ALIFE_ENTITY_P_IT		I = m_tpGraphObjects[tGraphID].tpObjects.begin();
 		ALIFE_ENTITY_P_IT		E = m_tpGraphObjects[tGraphID].tpObjects.end();
 		for ( ; I != E; I++)
@@ -332,7 +332,7 @@ public:
 
 	IC void vfDetachItem(CALifeHumanParams &tHumanParams, CALifeItem *tpALifeItem, _GRAPH_ID tGraphID)
 	{
-		tpALifeItem->m_bAttached = true;
+		tpALifeItem->ID = 65535;
 		m_tpGraphObjects[tGraphID].tpObjects.push_back(tpALifeItem);
 		tHumanParams.m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 	}

@@ -201,7 +201,7 @@ void CAI_Space::Render()
 						}
 						else {
 							CALifeItem *tpALifeItem = dynamic_cast<CALifeItem *>((*I).second);
-							if (tpALifeItem && !tpALifeItem->m_bAttached) {
+							if (tpALifeItem && !tpALifeItem->bfAttached()) {
 								Fvector t1 = m_tpaGraph[(*I).second->m_tGraphID].tGlobalPoint;
 								t1.y += .6f;
 								NORMALIZE_VECTOR(t1);
