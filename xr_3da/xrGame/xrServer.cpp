@@ -54,6 +54,8 @@ void xrServer::Update	()
 		// 
 		xrServerEntity* E	= ID_to_entity(R.phantom);
 		E->Spawn_Write		(Packet,FALSE);
+		u16					ID;
+		Packet.r_begin		(ID);	R_ASSERT(M_SPAWN==ID);
 		Process_spawn		(Packet,0);
 	}
 

@@ -447,6 +447,13 @@ void CWeapon::OnH_B_Chield		()
 	setVisible					(false);
 	setEnabled					(false);
 	// m_pPhysicsShell->Deactivate	();
+
+	if (Local() && (0xffff!=respawnPhantom)) 
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_RESPAWN,respawnPhantom);
+		u_EventSend		(P);
+	}
 }
 
 void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, float f)

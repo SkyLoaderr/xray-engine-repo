@@ -79,7 +79,6 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	}
 
 	// Phantom
-	respawnTime				= E->RespawnTime;
 	respawnPhantom			= E->ID_Phantom;
 	
 	return	TRUE;
