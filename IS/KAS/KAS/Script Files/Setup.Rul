@@ -37,7 +37,7 @@ BOOL	g_NeedReboot;
 #define SETUP_INI_FILE      	SRCDIR^"setupMSDE.ini"
 #define INI_MAIN_SECTION_ID  	"main"
 #define INI_UPDATE_DATE_ID    	"updateDate"
-#define INI_VERSION_ID			"version"
+#define INI_VERSIONDB_ID		"VersionDB"
 #define INI_BUILD_ID			"build"  
 #define INI_SERVER_ID			"Main_ServerName"
 #define INI_INSTANCE_ID			"instance"
@@ -357,7 +357,7 @@ Dlg_Start:
 
 	// Show Uninstall Confirmation Dialog
     if ( nType = REMOVEALL ) then
-		nResult = MessageBox( SdLoadString( IFX_MAINTUI_MSG ), MB_YESNO );
+		nResult = MessageBox( @IDS_ASK_REMOVE_ALL, MB_YESNO );
 		if (nResult != IDYES ) then
             // In REMOVEONLY mode, abort the setup.
             abort;
@@ -367,50 +367,19 @@ Dlg_Start:
 	// check admin rights
 	if (FALSE=CheckAdminRights()) then abort; endif;
 	
-Dlg_SdFeatureTree:
-	if ( nType = MODIFY ) then
-		szTitle = "";
-		szMsg = SdLoadString( SD_STR_COMPONENT_MAINT_MSG );
-		nResult = SdFeatureTree( szTitle, szMsg, TARGETDIR, "", -1 );
-		if ( nResult = BACK ) goto Dlg_Start;
-    endif;
-
 Dlg_ObjDialogs:
     nResult = ShowObjWizardPages( nResult );
-    if ( ( nResult = BACK ) && ( nType != MODIFY ) ) goto Dlg_Start;
-    if ( ( nResult = BACK ) && ( nType = MODIFY ) ) goto Dlg_SdFeatureTree;
+    if ( ( nResult = BACK ) ) goto Dlg_Start;
 
-	switch(nType)
-
-        case REMOVEALL:
-						
-			// Ensure that all previously installed features are removed
-			// for media that supports updating.
-			MediaGetData( MEDIA, MEDIA_FIELD_MEDIA_FLAGS, nMediaFlags, szIgnore );
-			
-			if( nMediaFlags & MEDIA_FLAG_UPDATEMODE_SUPPORTED ) then
-				FeatureRemoveAllInMediaAndLog();
-			else
-				FeatureRemoveAllInMedia();
-			endif;
-
-        case REPAIR:
-				
-			// Changed for DevStudio 9, Disk1 files are now always updated when installed
-			// so when running from ADDREMOVE we need to prevent these files from being
-			// updated since this will result in files being updated that are locked by the setup.
-			// Updating these files when running from ADDREMOVE should not be needed since updates
-			// are not run directly from Add/Remove.
-            if( ADDREMOVE ) then
-                // Reinstall all previously installed features, except
-                // disk1 features.
-                FeatureUpdate( "" );
-            else
-                // Reinstall all previously installed features.
-                FeatureReinstall();
-            endif;
-
-    endswitch;
+	// Ensure that all previously installed features are removed
+	// for media that supports updating.
+	MediaGetData( MEDIA, MEDIA_FIELD_MEDIA_FLAGS, nMediaFlags, szIgnore );
+	
+	if( nMediaFlags & MEDIA_FLAG_UPDATEMODE_SUPPORTED ) then
+		FeatureRemoveAllInMediaAndLog();
+	else
+		FeatureRemoveAllInMedia();
+	endif;
 end;
 //---------------------------------------------------------------------------
 function MSDE_2000_Installed()
@@ -506,7 +475,7 @@ begin
 		
 		    SetStatusWindow (80, @IDSL_PROGRESS_READ_INI);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_UPDATE_DATE_ID, 	sLastUpdate);
-			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSION_ID, 		sVersion);
+			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_VERSIONDB_ID,		sVersion);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_BUILD_ID, 		sBuild);
 			GetProfString	(SETUP_INI_FILE, INI_MAIN_SECTION_ID, INI_SERVER_ID, 		sServerName);
 		
@@ -534,10 +503,13 @@ begin
 			// insert registry keys
 			nRootKey 				= HKEY_LOCAL_MACHINE;
 			RegDBSetDefaultRoot		(nRootKey);
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "VersionDB", REGDB_STRING, sVersion,-1) < 0) then
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", INI_VERSIONDB_ID, REGDB_STRING, sVersion,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "Main_ServerName", REGDB_STRING, sServerName,-1) < 0) then
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", INI_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
+			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+			endif;
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", INI_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
 		else
@@ -589,7 +561,7 @@ begin
     Disable( DIALOGCACHE );
 	
 	// Show Uninstall Confirmation Dialog
-	if( MessageBox( SdLoadString( IFX_MAINTUI_MSG ), MB_YESNO ) != IDYES ) then
+	if( MessageBox( @IDS_ASK_REMOVE_ALL, MB_YESNO ) != IDYES ) then
         abort;
     endif;
 
@@ -617,11 +589,7 @@ begin
 	nRootKey 				= HKEY_LOCAL_MACHINE;
 	RegDBSetDefaultRoot		(nRootKey);
 	RegDBDeleteKey 			("Software\\KASClient");
-//.
-	nRootKey 				= HKEY_CURRENT_USER;
-	RegDBSetDefaultRoot		(nRootKey);
-	RegDBDeleteKey 			("Software\\KASClient");
-//.
+
     // Show final dialog.
     if ( BATCH_INSTALL ) then
         SdFinishReboot( SdLoadString(IFX_SDFINISH_REMOVE_TITLE), SdLoadString(IFX_SDFINISH_REMOVE_MSG2), SYS_BOOTMACHINE, "", 0 );
@@ -651,7 +619,7 @@ begin
 		if (nLocation=0)	then  mdac_found=TRUE; endif;
 	endif;
 	if (mdac_found=TRUE) then
-		if (AskYesNo("'MDAC' версии 2.8 или выше уже установлен. Переустановить?",NO)=NO) then
+		if (AskYesNo(@IDS_ASK_MDAC_VERSION,NO)=NO) then
 			mdac_need_install = FALSE;
 	 	endif;
 	endif;                                   
@@ -687,24 +655,7 @@ begin
     if ( BATCH_INSTALL ) then
     	SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
     else
-		
-		// If the update service is enabled, show finish dialog that includes
-		// update check option.
-		if( bShowUpdateServiceDlg && ( ENABLED_ISERVICES & SERVICE_ISUPDATE ) ) then
-
-			if( SdFinishUpdateEx( szTitle, szMsg1, szMsg2, szOpt1, szOpt2, TRUE ) ) then
-
-				// Don't check for updates in silent mode.
-				if( MODE != SILENTMODE ) then
-					UpdateServiceCheckForUpdates( "", FALSE );
-				endif;
-
-			endif;
-
-		else
-			SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
-		endif;
-
+		SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
     //}}IS_SCRIPT_TAG(Dlg_SdDinishEx)	
 end;

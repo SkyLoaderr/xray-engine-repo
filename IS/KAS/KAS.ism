@@ -583,7 +583,7 @@
 		<col def="S255">DotNetBuildConfiguration</col>
 		<col def="S255">MsiCommandLine</col>
 		<col def="I4">ISSetupPrerequisiteLocation</col>
-		<row><td>Release 1</td><td>Media</td><td/><td>PackageName</td><td>0</td><td>1049</td><td>2</td><td>1</td><td>Intel</td><td/><td>1049</td><td>3</td><td>0</td><td>0</td><td>0</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>12</td><td/><td/><td/><td/></row>
+		<row><td>Release 1</td><td>Media</td><td/><td>PackageName</td><td>0</td><td>1049</td><td>2</td><td>1</td><td>Intel</td><td/><td>1049</td><td>3</td><td>0</td><td>0</td><td>0</td><td/><td>0</td><td/><td>MediaLocation</td><td/><td>http://</td><td/><td/><td/><td/><td>28</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISReleasePro">
@@ -831,6 +831,10 @@
 		<row><td>IDSL_REMOVE_KAS</td><td>1049</td><td>(P0T!#`$.P0U!#T$.`0U!"``&amp;@00!"$$</td><td>12</td><td/><td>-971468982</td></row>
 		<row><td>IDSL_SETUP_ERROR</td><td>1033</td><td/><td>0</td><td/><td>-971468789</td></row>
 		<row><td>IDSL_SETUP_ERROR</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``_!$`$.`0@`$,$001"!#`$/00^!#($.@0U!"``30!3`$0`10`N````</td><td>26</td><td/><td>-971468789</td></row>
+		<row><td>IDS_ASK_MDAC_VERSION</td><td>1033</td><td/><td>0</td><td/><td>-971493749</td></row>
+		<row><td>IDS_ASK_MDAC_VERSION</td><td>1049</td><td>)P!-`$0`00!#`"&lt;`(``R!#4$0`1!!#@$.`0@`#(`+@`X`"``.`0[!#@$(``R!$L$2`0U!"``0P0V!#4$(`!#!$$$0@0P!#T$/@0R!#L$-00]!"X`(``?!#4$0`0U!$,$001"!#`$/00^!#($.`1"!$P$/P``</td><td>58</td><td/><td>-971493749</td></row>
+		<row><td>IDS_ASK_REMOVE_ALL</td><td>1033</td><td/><td>0</td><td/><td>-971452981</td></row>
+		<row><td>IDS_ASK_REMOVE_ALL</td><td>1049</td><td>(P0T!#`$.P0X!$($3`0@`#($2P0Q!$`$,`0]!#T$/@0U!"``/P1`!#@$.P0^!#8$-00]!#@$-00@`#@$(``R!$$$-00@`#4$,P0^!"``.@0^!#P$/P0^!#T$-00]!$($2P0_````</td><td>50</td><td/><td>-971485717</td></row>
 		<row><td>IDS_PRODUCT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981324427</td></row>
 		<row><td>IDS_PRODUCT_NAME</td><td>1049</td><td>&amp;@0^!#T$001#!#L$3`1"!#`$1@0X!#X$/00]!#X$+0`P!#T$,`0[!#@$0@0X!$&lt;$-01!!#H$,`1/!"``000X!$$$0@0U!#P$,`0`</td><td>37</td><td/><td>1981324427</td></row>
 		<row><td>IDS_SERVER_FEATURE_NAME</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>1981332620</td></row>
