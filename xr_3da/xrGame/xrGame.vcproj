@@ -2052,6 +2052,9 @@
 			Name="Network"
 			Filter="">
 			<File
+				RelativePath=".\id_generator.h">
+			</File>
+			<File
 				RelativePath="NET_Queue.h">
 			</File>
 			<File
@@ -2113,9 +2116,6 @@
 			</File>
 			<File
 				RelativePath="xrServer_perform_GameExport.cpp">
-			</File>
-			<File
-				RelativePath="xrServer_perform_IDgen.cpp">
 			</File>
 			<File
 				RelativePath="xrServer_perform_migration.cpp">

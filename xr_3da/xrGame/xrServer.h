@@ -8,6 +8,7 @@
 
 #include "xrServer_Objects_ALife_All.h"
 #include "game_sv_base.h"
+#include "id_generator.h"
 
 const u32	NET_Latency		= 50;		// time in (ms)
 
@@ -43,16 +44,21 @@ class xrServer	: public IPureServer
 {
 private:
 	xrS_entities				entities;
-	xr_deque<u16>				id_free;
 	xr_multiset<svs_respawn>	q_respawn;
 
+	CID_Generator<u32,u8,u16,u8,u16,0,u16(-1),256> m_tID_Generator;
 public:
 	game_sv_GameState*			game;
 
 	void					Perform_game_export		();
 	BOOL					PerformRP				(CSE_Abstract* E);
 	void					PerformMigration		(CSE_Abstract* E, xrClientData* from, xrClientData* to);
-	u16						PerformIDgen			(u16 desired);
+	
+	IC u16					PerformIDgen			(u16 ID)
+	{
+		return				(m_tID_Generator.tfGetID(ID));
+	}
+
 	void					Perform_connect_spawn	(CSE_Abstract* E, xrClientData* to, NET_Packet& P);
 	void					Perform_transfer		(CSE_Abstract* what, CSE_Abstract* from, CSE_Abstract* to);
 	void					Perform_reject			(CSE_Abstract* what, CSE_Abstract* from);

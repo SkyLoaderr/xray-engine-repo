@@ -45,12 +45,12 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 			}
 		m_tNextFirstSwitchObjectID		= (*I).first;
 
-		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
-#ifdef ALIFE_LOG
-			Msg							("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
-#endif
-			return;
-		}
+//		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
+//#ifdef ALIFE_LOG
+//			Msg							("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
+//#endif
+//			return;
+//		}
 	}
 }
 
