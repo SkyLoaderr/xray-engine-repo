@@ -15,6 +15,7 @@ extern LPCSTR caMovementNames		[];
 extern LPCSTR caMovementActionNames	[];
 extern LPCSTR caInPlaceNames		[];
 extern LPCSTR caGlobalNames			[];
+extern float  faTurnAngles			[];
 
 DEFINE_VECTOR	(CMotionDef*,ANIM_VECTOR, ANIM_IT);
 

@@ -368,10 +368,15 @@ void CAI_Stalker::SelectSound(int &iIndex)
 			}
 }
 
+bool CAI_Stalker::bfCheckSoundForOwner(CObject *tpObject)
+{
+	return(!m_inventory.Get(tpObject->cName(),true));
+}
+
 void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
 	#ifdef WRITE_LOG
-//		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
 	if (!g_Alive()) {
@@ -386,9 +391,10 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 	u32 dwTime = m_dwCurrentUpdate;
 	
 	if ((power >= 0*m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
-		if (this != who) {
+		if ((this != who) && !bfCheckSoundForOwner(who)) {
 			int j;
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
+			Msg("* %s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 			for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
 				if (who == m_tpaDynamicSounds[j].tpEntity) {
 					m_tpaDynamicSounds[j].eSoundType		= ESoundTypes(eType);

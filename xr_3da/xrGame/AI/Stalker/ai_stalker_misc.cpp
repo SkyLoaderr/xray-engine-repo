@@ -31,9 +31,32 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 
 	m_fCurSpeed		= 1.f;
 
-	r_torso_speed	= PI_MUL_2;
-	r_head_speed	= 3*PI_DIV_2;
 	if (AI_Path.TravelPath.size() && ((AI_Path.TravelPath.size() - 1) > AI_Path.TravelStart)) {
+		// if linear speed is too big for a turn 
+		// then decrease linear speed and 
+		// increase angular speed
+//		if ((AI_Path.TravelPath.size() - 2) > AI_Path.TravelStart) {
+//			Fvector tPoint1, tPoint2;
+//			float	yaw1, pitch1, yaw2, pitch2;
+////			tPoint1.sub(AI_Path.TravelPath[AI_Path.TravelStart].P,AI_Path.TravelPath[AI_Path.TravelStart + 1].P);
+////			tPoint2.sub(AI_Path.TravelPath[AI_Path.TravelStart + 1].P,AI_Path.TravelPath[AI_Path.TravelStart + 2].P);
+////			tPoint1.getHP(yaw1,pitch1);
+////			tPoint2.getHP(yaw2,pitch2);
+//			if (ps_Size() > 2) {
+//				tPoint1.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 3).vPosition);
+//				tPoint2.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
+//				tPoint1.getHP(yaw1,pitch1);
+//				tPoint2.getHP(yaw2,pitch2);
+//				//Msg("%f -> %f",yaw1/PI*180.f,yaw2/PI*180.f);
+//				//GetDirectionAngles(yaw1,pitch1);
+//				if (!getAI().bfTooSmallAngle(yaw1,yaw2,1*PI_DIV_6)) {
+//					m_tMovementType = eMovementTypeWalk;
+//					if (m_tStateType == eStateTypePanic)
+//						m_tStateType = eStateTypeDanger;
+//				}
+//			}
+//		}
+
 		switch (m_tBodyState) {
 			case eBodyStateCrouch : {
 				m_fCurSpeed *= m_fCrouchFactor;
@@ -81,8 +104,10 @@ void CAI_Stalker::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvecto
 						break;
 					}
 				}
-				r_torso_speed	= PI;
-				r_head_speed	= 3*PI_DIV_4;
+//				r_torso_speed	= PI;
+//				r_head_speed	= 3*PI_DIV_4;
+				r_torso_speed	= PI_MUL_2;
+				r_head_speed	= 3*PI_DIV_2;
 				break;
 			}
 			default : m_fCurSpeed = 0.f;
