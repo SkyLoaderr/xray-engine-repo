@@ -396,7 +396,7 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 		if (!who || ((this != who) && (!who->H_Parent() || (who->H_Parent() != this)))) {
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			int iIndex = ifFindDynamicObject(tpEntity);
-			if ((((!tpEntity || (tpEntity->g_Team() != g_Team())) && (!who->H_Parent() || !dynamic_cast<CEntity*>(who->H_Parent()) || (dynamic_cast<CEntity*>(who->H_Parent())->g_Team() != g_Team())))) && ((iIndex == -1) || (m_tpaDynamicObjects[iIndex].dwTime < m_dwCurrentUpdate))) {
+			if ((((!tpEntity || (tpEntity->g_Team() != g_Team())) && (!who || !who->H_Parent() || !dynamic_cast<CEntity*>(who->H_Parent()) || (dynamic_cast<CEntity*>(who->H_Parent())->g_Team() != g_Team())))) && ((iIndex == -1) || (m_tpaDynamicObjects[iIndex].dwTime < m_dwCurrentUpdate))) {
 				int j;
 				Msg("* %s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 				for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
