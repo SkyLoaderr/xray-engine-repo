@@ -79,7 +79,7 @@ void CBuild::Light_R2			()
 	FPU::m64r				();
 	Phase					("LIGHT: Hemisphere...");
 	Status					("Calculating... (%d lights)",L_static.hemi.size());
-	u32	start_time			= timeGetTime();
+	CTimer	start_time;		start_time.Start();				
 	Threads.wait			();
-	clMsg					("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+	clMsg					("%f seconds",start_time.GetElapsed_sec());
 }

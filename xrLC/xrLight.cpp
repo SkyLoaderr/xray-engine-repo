@@ -75,10 +75,10 @@ void CBuild::Light()
 		Status			("Lighting...");
 		CThreadManager	threads;
 		const	u32	thNUM	= 6;
-		u32	dwTimeStart	= timeGetTime();
+		CTimer	start_time;	start_time.Start();				
 		for				(int L=0; L<thNUM; L++)	threads.start(xr_new<CLMThread> (L));
 		threads.wait	(500);
-		clMsg			("%d seconds",(timeGetTime()-dwTimeStart)/1000);
+		clMsg			("%f seconds",start_time.GetElapsed_sec());
 	}
 
 	//****************************************** Vertex
@@ -228,10 +228,10 @@ void CBuild::LightVertex	()
 	Status				("Calculating...");
 	CThreadManager		Threads;
 	VLT.init			();
-	u32	start_time		= timeGetTime();
+	CTimer	start_time;	start_time.Start();				
 	for (u32 thID=0; thID<NUM_THREADS; thID++)	Threads.start(xr_new<CVertexLightThread>(thID));
 	Threads.wait		();
-	clMsg				("%d seconds elapsed.",(timeGetTime()-start_time)/1000);
+	clMsg				("%f seconds",start_time.GetElapsed_sec());
 
 	// Process all groups
 	Status				("Transluenting...");
