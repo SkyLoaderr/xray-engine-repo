@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "elight_def.h"
 
 b_params				g_params;
 extern volatile u32		dwInvalidFaces;
