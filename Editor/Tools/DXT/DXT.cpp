@@ -78,9 +78,9 @@ ENGINE_API DWORD* Build32MipLevel(DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPix
 		BYTE* pScanline = pSrc + y*_p;
 		for (DWORD x = 0; x < _w; x += 2){
 			BYTE*	p1	= pScanline + x*4;
-			BYTE*	p2	= p1+4;
-			BYTE*	p3	= p1+_p;
-			BYTE*	p4	= p2+_p;
+			BYTE*	p2	= p1+4;					if (1==_w)	p2 = p1;
+			BYTE*	p3	= p1+_p;				if (1==_h)  p3 = p1;
+			BYTE*	p4	= p2+_p;				if (1==_h)  p4 = p2;
 			float	c_r	= float(DWORD(p1[0])+DWORD(p2[0])+DWORD(p3[0])+DWORD(p4[0])) / 4.f;
 			float	c_g	= float(DWORD(p1[1])+DWORD(p2[1])+DWORD(p3[1])+DWORD(p4[1])) / 4.f;
 			float	c_b	= float(DWORD(p1[2])+DWORD(p2[2])+DWORD(p3[2])+DWORD(p4[2])) / 4.f;
