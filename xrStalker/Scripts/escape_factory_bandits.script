@@ -203,6 +203,9 @@ end
 function add_to_binder( obj )
     -- скрипт
     local a = xr_motivator.storage[obj:id()].escape_factory_bandit
+    if not a.enabled then
+        return
+    end
 
     local name = obj:name()
     local num  = string.sub( name, string.len( name ) )
