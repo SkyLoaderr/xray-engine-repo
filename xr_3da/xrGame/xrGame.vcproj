@@ -1265,6 +1265,16 @@
 							RelativePath="MosquitoBald.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="Mincer"
+						Filter="">
+						<File
+							RelativePath="Mincer.cpp">
+						</File>
+						<File
+							RelativePath="Mincer.h">
+						</File>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter

@@ -1,13 +1,13 @@
 #pragma once
 #include "customzone.h"
 
-class CMosquitoBald :
+class CMincer :
 	public CCustomZone
 {
 typedef	CCustomZone	inherited;
 public:
-	CMosquitoBald(void);
-	virtual ~CMosquitoBald(void);
+	CMincer(void);
+	virtual ~CMincer(void);
 
 	virtual void Load(LPCSTR section);
 	virtual void Update(u32 dt);
@@ -16,6 +16,6 @@ public:
 	virtual void Postprocess(f32 val);
 
 	u32 m_time, m_pp_time;
-	float m_hitImpulseScale;
+	//float m_hitImpulseScale;
 	SPPInfo m_pp;
 };

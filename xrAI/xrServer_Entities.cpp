@@ -1173,6 +1173,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	// Zones
 	case CLSID_ZONE:				return xr_new<xrSE_Zone>			();
 	case CLSID_Z_MBALD:				return xr_new<xrSE_Zone>			();
+	case CLSID_Z_MINCER:			return xr_new<xrSE_Zone>			();
 
 	// Detectors
 	case CLSID_DETECTOR_SIMPLE:		return xr_new<xrSE_Detector>		();

@@ -1,21 +1,21 @@
 #include "stdafx.h"
-#include "mosquitobald.h"
+#include "mincer.h"
 #include "hudmanager.h"
 
 static
 f32 g_pp_fade = 5000.f;
 
-CMosquitoBald::CMosquitoBald(void) {
+CMincer::CMincer(void) {
 	m_time = 0;
 	m_pp_time = 0;
-	m_hitImpulseScale = 1.f;
+	//m_hitImpulseScale = 1.f;
 }
 
-CMosquitoBald::~CMosquitoBald(void) {}
+CMincer::~CMincer(void) {}
 
-void CMosquitoBald::Load(LPCSTR section) {
+void CMincer::Load(LPCSTR section) {
 	inherited::Load(section);
-	m_hitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
+	//m_hitImpulseScale = pSettings->ReadFLOAT(section,"hit_impulse_scale");
 
 	LPCSTR l_PP = pSettings->ReadSTRING(section,"postprocess");
 	m_pp.blur = pSettings->ReadFLOAT(l_PP,"blur");
@@ -25,7 +25,7 @@ void CMosquitoBald::Load(LPCSTR section) {
 	sscanf(pSettings->ReadSTRING(l_PP,"noise_color"), "%d,%d,%d,%d", &m_pp.r, &m_pp.g, &m_pp.b, &m_pp.a);
 }
 
-void CMosquitoBald::Affect(CObject* O) {
+void CMincer::Affect(CObject* O) {
 	CGameObject *l_pO = dynamic_cast<CGameObject*>(O);
 	if(l_pO) {
 		Fvector P; clXFORM().transform_tiny(P,cfModel->getSphere().P);
@@ -34,9 +34,8 @@ void CMosquitoBald::Affect(CObject* O) {
 		Fvector l_dir; l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(.0f,1.f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
 		//l_pO->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		Fvector position_in_bone_space;
-		float power = Power(l_pO->Position().distance_to(P)), impulse = m_hitImpulseScale*power;
+		float power = Power(l_pO->Position().distance_to(P)), impulse = 0;
 		if(power > 0.01f) {
-			m_time = 0;
 			position_in_bone_space.set(0.f,0.f,0.f);
 			NET_Packet		l_P;
 			l_pO->u_EventGen		(l_P,GE_HIT,l_pO->ID());
@@ -51,11 +50,10 @@ void CMosquitoBald::Affect(CObject* O) {
 	}
 }
 
-void CMosquitoBald::Update(u32 dt) {
+void CMincer::Update(u32 dt) {
 	m_time += dt;
 	if(m_time > m_period) {
-		m_time = m_period;
-		//while(m_time > m_period) m_time -= m_period;
+		while(m_time > m_period) m_time -= m_period;
 		m_ready = true;
 	}
 	if(m_pLocalActor && m_pLocalActor->g_Alive()) {
@@ -84,5 +82,5 @@ void CMosquitoBald::Update(u32 dt) {
 	inherited::Update(dt);
 }
 
-void CMosquitoBald::Postprocess(f32 val) {
+void CMincer::Postprocess(f32 val) {
 }
