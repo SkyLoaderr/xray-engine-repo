@@ -200,6 +200,8 @@ protected:
 				return		(true);
 			}
 	virtual	void			spawn_supplies		();
+
+public:
 	virtual void			on_reguested_spawn	(CObject *object);
 };
 
