@@ -508,56 +508,6 @@ float CLevelGraph::cover_in_direction(float fAngle, float b1, float b0, float b3
 	return(fResult);
 }
 
-float CLevelGraph::compute_square(float fAngle, float fAngleOfView, float b1, float b0, float b3, float b2) const
-{
-	fAngle				= angle_normalize(fAngle - PI_DIV_2);
-
-	if (fAngle < PI_DIV_2)
-		;
-	else
-		if (fAngle < PI) {
-			fAngle		-= PI_DIV_2;
-			b3			= b0;
-			b0			= b1;
-			b1			= b2;
-		}
-		else
-			if (fAngle < 3*PI_DIV_2) {
-				fAngle -= PI;
-				b0		= b2;
-				float	bx = b1;
-				b1		= b3;
-				b3		= bx;
-			}
-			else {
-				fAngle -= 3*PI_DIV_2;
-				b1		= b0;
-				b0		= b3;
-				b3		= b2;
-			}
-
-	float				fSquare;
-	
-	if (fAngle + fAngleOfView >= PI_DIV_2) {
-		fSquare			= square(b1,b2,fAngleOfView + fAngle - PI_DIV_2);
-		if (fAngle - fAngleOfView < 0) {
-			fSquare		+= square(b0,b1);
-			fSquare		+= square(b0,b3,fAngleOfView - fAngle);
-		}
-		else
-			fSquare		+= square(b1,b0,PI_DIV_2 - (fAngle - fAngleOfView));
-	}
-	else {
-		fSquare			= square(b0,b1,fAngle + fAngleOfView);
-		if (fAngle - fAngleOfView < 0)
-			fSquare		+= square(b0,b3,fAngleOfView - fAngle);
-		else
-			fSquare		-= square(b0,b1,fAngle - fAngleOfView);
-	}
-
-	return				(fSquare);
-}
-
 float CLevelGraph::vertex_less_cover(u32 vertex_id, float inc_angle) const
 {
 	float best_value	= flt_max;

@@ -47,6 +47,7 @@ private:
 
 protected:
 	IC			void		select_random_location	(const _vertex_id_type start_vertex_id, _vertex_id_type &dest_vertex_id);
+	IC			bool		accessible				(const _vertex_id_type vertex_id) const;
 
 public:
 	IC						CBaseLocationSelector	(CRestrictedObject *object, CSelectorManager *selector_manager, CLocationManager *location_manager);

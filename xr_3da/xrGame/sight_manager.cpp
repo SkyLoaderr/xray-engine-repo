@@ -228,15 +228,15 @@ void CSightManager::Exec_Look		(float dt)
 	m_object->angle_lerp_bounds		(object().movement().m_head.current.yaw,object().movement().m_head.target.yaw,object().movement().m_head.speed,dt);
 	m_object->angle_lerp_bounds		(object().movement().m_head.current.pitch,object().movement().m_head.target.pitch,object().movement().m_head.speed,dt);
 
+#ifdef SIGHT_DEBUG
 	// normalizing torso angles
-	object().movement().m_body.current.yaw	= angle_normalize_signed	(object().movement().m_body.current.yaw);
+	object().movement().m_body.current.yaw		= angle_normalize_signed	(object().movement().m_body.current.yaw);
 	object().movement().m_body.current.pitch	= angle_normalize_signed	(object().movement().m_body.current.pitch);
 
 	// normalizing head angles
-	object().movement().m_head.current.yaw	= angle_normalize_signed	(object().movement().m_head.current.yaw);
+	object().movement().m_head.current.yaw		= angle_normalize_signed	(object().movement().m_head.current.yaw);
 	object().movement().m_head.current.pitch	= angle_normalize_signed	(object().movement().m_head.current.pitch);
 
-#ifdef SIGHT_DEBUG
 //	Msg								("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
 //	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif

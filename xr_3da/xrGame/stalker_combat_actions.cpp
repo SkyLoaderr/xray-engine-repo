@@ -731,9 +731,14 @@ CStalkerActionPostCombatWait::CStalkerActionPostCombatWait	(CCoverPoint **last_c
 void CStalkerActionPostCombatWait::initialize		()
 {
 	inherited::initialize	();
+	
 	object().movement().set_movement_type	(eMovementTypeStand);
+	
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
+
+	if (object().memory().enemy().last_enemy() && object().memory().visual().visible_now(object().memory().enemy().last_enemy()))
+		object().sight().setup	(CSightAction(object().memory().enemy().last_enemy(),true));
 }
 
 void CStalkerActionPostCombatWait::execute			()

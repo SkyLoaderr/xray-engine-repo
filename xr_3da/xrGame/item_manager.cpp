@@ -37,6 +37,9 @@ bool CItemManager::useful			(const CGameObject *object) const
 	if (m_object->movement().restrictions().accessible(m_object->Position()))
 		return				(false);
 
+	if (m_object->movement().restrictions().accessible(m_object->ai_location().level_vertex_id()))
+		return				(false);
+
 	const CInventoryItem	*inventory_item = smart_cast<const CInventoryItem*>(object);
 	if (inventory_item && !inventory_item->useful_for_NPC())
 		return				(false);

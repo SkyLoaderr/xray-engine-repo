@@ -25,7 +25,7 @@ void CStalkerSoundDataVisitor::visit				(CStalkerSoundData *data)
 	if (object().tfGetRelationType(&data->object()) == ALife::eRelationTypeEnemy)
 		return;
 
-	if (!data->object().memory().enemy().selected())
+	if (!data->object().memory().enemy().selected() || data->object().memory().enemy().selected()->getDestroy())
 		return;
 
 	if (object().tfGetRelationType(data->object().memory().enemy().selected()) != ALife::eRelationTypeEnemy)

@@ -20,28 +20,31 @@ public:
 	typedef CScriptCallbackEx<bool>				USEFULE_CALLBACK;
 
 private:
-	CCustomMonster			*m_object;
-	float					m_ignore_monster_threshold;
-	float					m_max_ignore_distance;
-	mutable bool			m_ready_to_save;
-	mutable bool			m_visible_now;
-	u32						m_last_enemy_time;
-	USEFULE_CALLBACK		m_useful_callback;
+	CCustomMonster				*m_object;
+	float						m_ignore_monster_threshold;
+	float						m_max_ignore_distance;
+	mutable bool				m_ready_to_save;
+	mutable bool				m_visible_now;
+	u32							m_last_enemy_time;
+	const CEntityAlive			*m_last_enemy;
+	USEFULE_CALLBACK			m_useful_callback;
 
 protected:
-			bool			expedient			(const CEntityAlive *object) const;
+			bool				expedient			(const CEntityAlive *object) const;
 
 public:
-	IC						CEnemyManager		(CCustomMonster *object);
-	virtual void			reload				(LPCSTR section);
-	virtual bool			useful				(const CEntityAlive *object) const;
-	virtual bool			is_useful			(const CEntityAlive *object) const;
-	virtual	float			evaluate			(const CEntityAlive *object) const;
-	virtual	float			do_evaluate			(const CEntityAlive *object) const;
-	virtual void			update				();
-	virtual void			set_ready_to_save	();
-	IC		u32				last_enemy_time		() const;
-	IC		USEFULE_CALLBACK&useful_callback	();
+	IC							CEnemyManager		(CCustomMonster *object);
+	virtual void				reload				(LPCSTR section);
+	virtual bool				useful				(const CEntityAlive *object) const;
+	virtual bool				is_useful			(const CEntityAlive *object) const;
+	virtual	float				evaluate			(const CEntityAlive *object) const;
+	virtual	float				do_evaluate			(const CEntityAlive *object) const;
+	virtual void				update				();
+	virtual void				set_ready_to_save	();
+	IC		u32					last_enemy_time		() const;
+	IC		const CEntityAlive	*last_enemy			() const;
+	IC		USEFULE_CALLBACK	&useful_callback	();
+			void				remove_links		(CObject *object);
 };
 
 #include "enemy_manager_inline.h"

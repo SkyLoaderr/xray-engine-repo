@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	CEnemyManager::CEnemyManager		(CCustomMonster *object)
+IC	CEnemyManager::CEnemyManager									(CCustomMonster *object)
 {
 	VERIFY						(object);
 	m_object					= object;
@@ -19,9 +19,14 @@ IC	CEnemyManager::CEnemyManager		(CCustomMonster *object)
 	m_last_enemy_time			= 0;
 }
 
-IC	u32	CEnemyManager::last_enemy_time	() const
+IC	u32	CEnemyManager::last_enemy_time								() const
 {
 	return						(m_last_enemy_time);
+}
+
+IC	const CEntityAlive *CEnemyManager::last_enemy					() const
+{
+	return						(m_last_enemy);
 }
 
 IC	CEnemyManager::USEFULE_CALLBACK &CEnemyManager::useful_callback	()

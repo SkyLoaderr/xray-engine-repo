@@ -21,14 +21,7 @@ void CSE_ALifeMonsterAbstract::update		()
 {
 	GameGraph::_GRAPH_ID	start_game_vertex_id = m_tGraphID;
 	bool				bContinue = true;
-	while (
-		bContinue && 
-		bfActive()// && 
-//		(	(ai().game_graph().vertex(m_tGraphID)->level_id() != ai().game_graph().vertex(ai().alife().graph().actor()->m_tGraphID)->level_id())
-//			||
-//			(ai().alife().graph().actor()->o_Position.distance_to(o_Position) > ai().alife().online_distance())
-//		)
-		) {
+	while (bContinue && bfActive()) {
 		vfCheckForPopulationChanges();
 		bContinue		= false;
 		if (move_offline() && (m_tNextGraphID != m_tGraphID)) {
@@ -69,8 +62,8 @@ void CSE_ALifeMonsterAbstract::update		()
 							bOk = true;
 							break;
 						}
-						if (bOk)
-							break;
+					if (bOk)
+						break;
 				}
 			}
 			else {

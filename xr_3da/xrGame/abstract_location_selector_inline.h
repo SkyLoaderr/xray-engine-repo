@@ -152,11 +152,5 @@ IC	void CSelectorTemplate::after_search		()
 {
 }
 
-TEMPLATE_SPECIALIZATION
-IC	bool CSelectorTemplate::accessible			(const _vertex_id_type vertex_id)
-{
-	return					(m_restricted_object ? m_restricted_object->accessible(m_graph->vertex(vertex_id)->level_vertex_id()) : true);
-}
-
 #undef CSelectorTemplate
 #undef TEMPLATE_SPECIALIZATION

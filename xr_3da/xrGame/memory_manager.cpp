@@ -231,4 +231,5 @@ void CMemoryManager::remove_links	(CObject *object)
 	sound().remove_links	(object);
 	hit().remove_links		(object);
 	danger().remove_links	(object);
+	enemy().remove_links	(object);
 }
