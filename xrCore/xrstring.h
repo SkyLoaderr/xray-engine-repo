@@ -61,6 +61,7 @@ public:
 	str_c				operator*	() const						{	return p_?p_->value:0;							}
 	bool				operator!	() const						{	return p_ == 0;									}
 	char				operator[]	(size_t id)						{	return p_->value[id];							}
+	str_c				c_str		() const						{	return p_?p_->value:0;							}
 
 	// misc func
 	u32					size		()						const	{	if (0==p_) return 0; else return p_->dwLength;	}
