@@ -177,7 +177,7 @@ function action_door:close_door()
 	printf("_bp: action_door: setting physics callback from close_door")
 	--level.add_call(self, "close_check", "close_action") -- OK
 	self.object:set_fastcall(self.fastcall,self)
-	
+	self.object:set_fastcall(self.fastcall,self)
 	--level.add_call(self, self.close_check, self.close_action)
 	--level.remove_call(self, self.close_check, self.close_action)
 	--level.add_call(self, action_door.close_check, action_door.close_action)
