@@ -109,6 +109,10 @@ protected:
 	IC		int				compute_difference		(const cell_index &index, bool) const;
 
 public:
+	template <cell_type color_to_move>
+	IC		int				score					() const;
+
+public:
 	IC						COthelloClassicBoard	();
 			void			start_position			();
 			void			show					() const;
@@ -149,6 +153,9 @@ public:
 			int				compute_difference		(const cell_index &index) const;
 	IC		int				compute_difference		(const cell_index &index0, const cell_index &index1) const;
 	IC		int				compute_difference		(LPCSTR move) const;
+
+public:
+	IC		int				score					() const;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

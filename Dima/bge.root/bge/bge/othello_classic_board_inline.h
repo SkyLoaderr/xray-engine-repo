@@ -69,7 +69,7 @@ IC	bool COthelloClassicBoard::passed			() const
 
 IC	bool COthelloClassicBoard::terminal_position	() const
 {
-	return							(m_passed && !m_flip_stack.empty() && m_flip_stack.top().m_passed);
+	return							(!empties() || (m_passed && !m_flip_stack.empty() && m_flip_stack.top().m_passed));
 }
 
 template <COthelloClassicBoard::cell_type opponent_color>
@@ -218,8 +218,12 @@ IC	int	 COthelloClassicBoard::compute_difference	(LPCSTR move) const
 	cell_index						index = string_to_move(move);
 	
 	if (!index) {
-		if (!can_move())
-			return					(-difference());
+		if (!can_move()) {
+			if (color_to_move() == BLACK)
+				return				(difference());
+			else
+				return				(-difference());
+		}
 		ui().error_log				("Move \"%s\" is invalid since there are possible moves!\n",move);
 		return						(difference());
 	}
@@ -250,4 +254,29 @@ IC	bool COthelloClassicBoard::can_move			(const cell_index &index0, const cell_i
 IC	int	 COthelloClassicBoard::compute_difference	(const cell_index &index0, const cell_index &index1) const
 {
 	return							(compute_difference(move_to_string(index0,index1)));
+}
+
+template <COthelloClassicBoard::cell_type _color_to_move>
+IC	int	 COthelloClassicBoard::score			() const
+{
+	if (!empties()) {
+		if (_color_to_move == BLACK)
+			return			(difference());
+		else
+			return			(-difference());
+	}
+
+	if (_color_to_move == BLACK)
+		return			(difference() + empties());
+	else
+		return			(- difference() - empties());
+}
+
+IC	int	 COthelloClassicBoard::score			() const
+{
+	VERIFY					(terminal_position());
+	if (color_to_move() == BLACK)
+		return				(score<BLACK>());
+	else
+		return				(score<WHITE>());
 }

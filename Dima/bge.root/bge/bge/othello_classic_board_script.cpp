@@ -32,5 +32,6 @@ void COthelloClassicBoard::script_register(lua_State *L)
 			.def("compute_difference",	(int (COthelloClassicBoard::*)(const cell_index &,const cell_index &) const)(&COthelloClassicBoard::compute_difference))
 			.def("compute_difference",	(int (COthelloClassicBoard::*)(LPCSTR) const)(&COthelloClassicBoard::compute_difference))
 			.def("terminal_position",	&COthelloClassicBoard::terminal_position)
+			.def("score",				&COthelloClassicBoard::score)
 	];
 }
