@@ -42,7 +42,7 @@ namespace boost {
 
 CScriptProcessor::CScriptProcessor(LPCSTR caFilePath)
 {
-	Msg				("* [SP] Initializing script processor");
+	Msg				("* Initializing script processor for scripts in %s",caFilePath);
 
 	LPSTR_VECTOR	*l_tpFileList = FS.file_list_open(caFilePath);
 	
@@ -101,10 +101,11 @@ CScript::CScript(LPCSTR caFileName)
 	IReader			*l_tpFileReader = FS.r_open(caFileName);
 	R_ASSERT		(l_tpFileReader);
 
-	m_tpThreads.push_back(lua_newthread(m_tpLuaVirtualMachine));
-	int				l_iErrorCode = lua_dobuffer(m_tpThreads[0],static_cast<LPCSTR>(l_tpFileReader->pointer()),l_tpFileReader->length(),static_cast<LPCSTR>(l_tpFileReader->pointer()));
-	if (l_iErrorCode)
-		vfPrintError(m_tpThreads[0],l_iErrorCode);
+	CLuaVirtualMachine	*l_tpThread = lua_newthread(m_tpLuaVirtualMachine);
+	int				i = luaL_loadbuffer(l_tpThread,static_cast<LPCSTR>(l_tpFileReader->pointer()),(size_t)l_tpFileReader->length(),static_cast<LPCSTR>(l_tpFileReader->pointer()));
+	if (i)
+		vfPrintError(m_tpLuaVirtualMachine,i);
+	m_tpThreads.push_back	(l_tpThread);
 
 	FS.r_close		(l_tpFileReader);
 }
@@ -157,7 +158,7 @@ void CScript::vfExportToLua()
 {
 	using namespace luabind;
 	open			(m_tpLuaVirtualMachine);
-	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR))		(Log));
+	function		(m_tpLuaVirtualMachine,"printf",(void(*)(LPCSTR))(Log));
 //	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR,int))	(Log));
-//	function		(m_tpLuaVirtualMachine,"print",(void (*) (LPCSTR,...))(Msg));
+//	function		(m_tpLuaVirtualMachine,"printf",(void (*) (LPCSTR,...))(Msg));
 }
