@@ -1177,6 +1177,7 @@ void CPHElement::Activate(const Fmatrix& start_from,bool disable){
 void CPHElement::CallBack(CBoneInstance* B){
 
 	if(!bActive && !bActivating){
+		if(ph_world->GetSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		bActivating=true;
 		bActive=true;

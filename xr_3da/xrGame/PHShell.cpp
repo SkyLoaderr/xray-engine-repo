@@ -440,7 +440,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 								J->SetAxisDirVsSecondElement (0.f,0.f,1.f,0);
 								if(joint_data.limits[2].limit.y-joint_data.limits[2].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[2].limit.x,joint_data.limits[2].limit.y,0);
+									J->SetLimits(-joint_data.limits[2].limit.y,-joint_data.limits[2].limit.x,0);
 									J->SetAxisSDfactors(joint_data.limits[2].spring_factor,joint_data.limits[2].damping_factor,0);
 								}
 								break;
@@ -453,7 +453,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 								J->SetAxisDirVsSecondElement(0,1,0,0);
 								if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,0);
+									J->SetLimits(-joint_data.limits[1].limit.y,-joint_data.limits[1].limit.x,0);
 									J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,0);
 								}
 								break;
@@ -467,18 +467,18 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 							
 								if(joint_data.limits[2].limit.y-joint_data.limits[2].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[2].limit.x,joint_data.limits[2].limit.y,0);
+									J->SetLimits(-joint_data.limits[2].limit.y,-joint_data.limits[2].limit.x,0);
 									J->SetAxisSDfactors(joint_data.limits[2].spring_factor,joint_data.limits[2].damping_factor,0);
 								}
 								if(joint_data.limits[0].limit.y-joint_data.limits[0].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,1);
+									J->SetLimits(-joint_data.limits[0].limit.y,-joint_data.limits[0].limit.x,1);
 									J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,1);
 								}
 
 								if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,2);
+									J->SetLimits(-joint_data.limits[1].limit.y,-joint_data.limits[1].limit.x,2);
 									J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,2);
 								}
 							
@@ -496,7 +496,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 								J->SetAxisDirVsSecondElement(1,0,0,0);
 								if(joint_data.limits[0].limit.y-joint_data.limits[0].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,0);
+									J->SetLimits(-joint_data.limits[0].limit.y,-joint_data.limits[0].limit.x,0);
 									J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,0);
 								}
 								break;
@@ -510,18 +510,18 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 							J->SetAxisDirVsSecondElement(1.f,0.f,0.f,2);//0-2
 								if(joint_data.limits[2].limit.y-joint_data.limits[2].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[2].limit.x,joint_data.limits[2].limit.y,0);
+									J->SetLimits(-joint_data.limits[2].limit.y,-joint_data.limits[2].limit.x,0);
 									J->SetAxisSDfactors(joint_data.limits[2].spring_factor,joint_data.limits[2].damping_factor,0);
 								}
 								if(joint_data.limits[0].limit.y-joint_data.limits[0].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,2);
+									J->SetLimits(-joint_data.limits[0].limit.y,-joint_data.limits[0].limit.x,2);
 									J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,2);
 								}
 
 								if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,1);
+									J->SetLimits(-joint_data.limits[1].limit.y,-joint_data.limits[1].limit.x,1);
 									J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,1);
 								}
 								break;
@@ -537,18 +537,18 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 							J->SetAxisDirVsSecondElement(0.f,1.f,0.f,2);//1-2
 								if(joint_data.limits[2].limit.y-joint_data.limits[2].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[2].limit.x,joint_data.limits[2].limit.y,1);
+									J->SetLimits(-joint_data.limits[2].limit.y,-joint_data.limits[2].limit.x,1);
 									J->SetAxisSDfactors(joint_data.limits[2].spring_factor,joint_data.limits[2].damping_factor,1);
 								}
 								if(joint_data.limits[0].limit.y-joint_data.limits[0].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,0);
+									J->SetLimits(-joint_data.limits[0].limit.y,-joint_data.limits[0].limit.x,0);
 									J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,0);
 								}
 
 								if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,2);
+									J->SetLimits(-joint_data.limits[1].limit.y,-joint_data.limits[1].limit.x,2);
 									J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,2);
 								}
 								break;
@@ -561,18 +561,18 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 						J->SetAxisDirVsSecondElement(0.f,1.f,0.f,2);//1-2
 								if(joint_data.limits[2].limit.y-joint_data.limits[2].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[2].limit.x,joint_data.limits[2].limit.y,0);
+									J->SetLimits(-joint_data.limits[2].limit.y,-joint_data.limits[2].limit.x,0);
 									J->SetAxisSDfactors(joint_data.limits[2].spring_factor,joint_data.limits[2].damping_factor,0);
 								}
 								if(joint_data.limits[0].limit.y-joint_data.limits[0].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,1);
+									J->SetLimits(-joint_data.limits[0].limit.y,-joint_data.limits[0].limit.x,1);
 									J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,1);
 								}
 
 								if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 								{
-									J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,2);
+									J->SetLimits(-joint_data.limits[1].limit.y,-joint_data.limits[1].limit.x,2);
 									J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,2);
 								}
 							break;
@@ -586,7 +586,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 						J->SetAxisDirVsSecondElement(0,0,1,1);
 						if(joint_data.limits[0].limit.y-joint_data.limits[0].limit.x<M_PI*2.f)
 						{
-							J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,0);	
+							J->SetLimits(-joint_data.limits[0].limit.y,-joint_data.limits[0].limit.x,0);	
 							J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,0);
 						}
 						break;
@@ -600,7 +600,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 						J->SetAxisDirVsSecondElement(0,1,0,1);
 						if(joint_data.limits[0].limit.y-joint_data.limits[0].limit.x<M_PI*2.f)
 						{
-							J->SetLimits(joint_data.limits[0].limit.x,joint_data.limits[0].limit.y,0);	
+							J->SetLimits(-joint_data.limits[0].limit.y,-joint_data.limits[0].limit.x,0);	
 							J->SetAxisSDfactors(joint_data.limits[0].spring_factor,joint_data.limits[0].damping_factor,0);
 						}
 						break;
@@ -614,7 +614,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 						J->SetAxisDirVsSecondElement(1,0,0,1);
 						if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 						{
-							J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,0);	
+							J->SetLimits(-joint_data.limits[1].limit.y,-joint_data.limits[1].limit.x,0);	
 							J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,0);
 						}
 						break;
@@ -628,7 +628,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 						J->SetAxisDirVsSecondElement(0,0,1,1);
 						if(joint_data.limits[1].limit.y-joint_data.limits[1].limit.x<M_PI*2.f)
 						{
-							J->SetLimits(joint_data.limits[1].limit.x,joint_data.limits[1].limit.y,0);	
+							J->SetLimits(-joint_data.limits[1].limit.y,-joint_data.limits[1].limit.x,0);	
 							J->SetAxisSDfactors(joint_data.limits[1].spring_factor,joint_data.limits[1].damping_factor,0);
 						}
 						break;
@@ -642,7 +642,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 						J->SetAxisDirVsSecondElement(1,0,0,1);
 						if(joint_data.limits[2].limit.y-joint_data.limits[2].limit.x<M_PI*2.f)
 						{
-							J->SetLimits(joint_data.limits[2].limit.x,joint_data.limits[2].limit.y,0);	
+							J->SetLimits(-joint_data.limits[2].limit.y,-joint_data.limits[2].limit.x,0);	
 							J->SetAxisSDfactors(joint_data.limits[2].spring_factor,joint_data.limits[2].damping_factor,0);
 						}
 						break;
@@ -656,7 +656,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 						J->SetAxisDirVsSecondElement(0,1,0,1);
 						if(joint_data.limits[2].limit.y-joint_data.limits[2].limit.x<M_PI*2.f)
 						{
-							J->SetLimits(joint_data.limits[2].limit.x,joint_data.limits[2].limit.y,0);	
+							J->SetLimits(-joint_data.limits[2].limit.y,-joint_data.limits[2].limit.x,0);	
 							J->SetAxisSDfactors(joint_data.limits[2].spring_factor,joint_data.limits[2].damping_factor,0);
 						}
 						break;

@@ -165,7 +165,7 @@ void CHangingLamp::CreateBody(float mass)
 	m_pPhysicsShell->SetAirResistance(0.001f, 0.02f);
 	m_pPhysicsShell->setMass(mass);
 	m_pPhysicsShell->SmoothElementsInertia(0.2f);
-
+	m_pPhysicsShell->set_PhysicsRefObject(this);
 
 }
 

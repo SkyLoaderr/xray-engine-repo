@@ -777,7 +777,24 @@ void CCar::SWheelDrive::Init()
 {
 pwheel->Init();
 gear_factor=pwheel->radius/pwheel->car->m_ref_radius;
-pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.i);
+CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(pwheel->bone_id);
+switch(bone_data.IK_data.type)
+{
+	case jtWheelXZ:	
+	case jtWheelYZ:
+		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.i);
+		break;
+	case jtWheelXY:
+	case jtWheelZY:
+		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.j.dotproduct(pwheel->car->m_root_transform.i);
+		break;
+	case jtWheelYX:
+	case jtWheelZX:
+		pos_fvd=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.i);
+		break;
+	default: NODEFAULT;
+}
+
 pos_fvd=pos_fvd>0.f ? -1.f : 1.f;
 
 
@@ -801,7 +818,24 @@ void CCar::SWheelSteer::Init()
 {
 pwheel->Init();
 (bone_map.find(pwheel->bone_id))->second.joint->GetLimits(lo_limit,hi_limit,0);
-pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
+CBoneData& bone_data= PKinematics(pwheel->car->Visual())->LL_GetData(pwheel->bone_id);
+switch(bone_data.IK_data.type)
+{
+case jtWheelXZ:	
+case jtWheelXY:
+	pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.i.dotproduct(pwheel->car->m_root_transform.j);
+	break;
+case jtWheelYZ:	
+case jtWheelYX:
+	pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.j.dotproduct(pwheel->car->m_root_transform.j);
+	break;
+case jtWheelZY:	
+case jtWheelZX:
+	pos_right=bone_map.find(pwheel->bone_id)->second.element->mXFORM.k.dotproduct(pwheel->car->m_root_transform.j);
+	break;
+default: NODEFAULT;
+}
+
 pos_right=pos_right>0.f ? -1.f : 1.f;
 dJointSetHinge2Param(pwheel->joint, dParamFMax, 1000.f);
 dJointSetHinge2Param(pwheel->joint, dParamVel, 0.f);
