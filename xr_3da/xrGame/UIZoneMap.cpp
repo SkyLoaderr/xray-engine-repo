@@ -113,7 +113,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 		}
 		for(u32 i=0; i<Game().targets.size(); i++) {
 			ConvertToLocal(LM,Game().targets[i]->Position(),P);
-			entity.Out	(P.x,P.y,COLOR_FRIEND);
+			entity.Out	(P.x,P.y,COLOR_TARGET);
 		}
 	}
 }
