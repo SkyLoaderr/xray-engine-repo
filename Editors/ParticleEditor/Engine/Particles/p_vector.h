@@ -17,34 +17,31 @@
 #ifdef WIN32
 #define drand48() (((float) rand())/((float) RAND_MAX))
 #define srand48(x) srand(x)
-
-// This is because their stupid compiler thinks it's smart.
-#define inline __forceinline
 #endif
 
 class pVector
 {
 public:
 	float x, y, z;
+
+	IC Fvector& xr(){return *(Fvector*)this;}
+	IC const Fvector& xr() const {return *(Fvector*)this;}
 	
-	inline pVector(float ax, float ay, float az) : x(ax), y(ay), z(az)
-	{
-		//x = ax; y = ay; z = az;
-	}
+	IC pVector(float ax, float ay, float az) : x(ax), y(ay), z(az){}
 	
-	inline pVector() {}
+	IC pVector() {}
 	
-	inline float length() const
+	IC float length() const
 	{
 		return _sqrt(x*x+y*y+z*z);
 	}
 	
-	inline float length2() const
+	IC float length2() const
 	{
 		return (x*x+y*y+z*z);
 	}
 	
-	inline float normalize()
+	IC float normalize()
 	{
 		float onel = 1.0f / _sqrt(x*x+y*y+z*z);
 		x *= onel;
@@ -54,33 +51,33 @@ public:
 		return onel;
 	}
 	
-	inline float operator*(const pVector &a) const
+	IC float operator*(const pVector &a) const
 	{
 		return x*a.x + y*a.y + z*a.z;
 	}
 	
-	inline pVector operator*(const float s) const
+	IC pVector operator*(const float s) const
 	{
 		return pVector(x*s, y*s, z*s);
 	}
 	
-	inline pVector operator/(const float s) const
+	IC pVector operator/(const float s) const
 	{
 		float invs = 1.0f / s;
 		return pVector(x*invs, y*invs, z*invs);
 	}
 	
-	inline pVector operator+(const pVector& a) const
+	IC pVector operator+(const pVector& a) const
 	{
 		return pVector(x+a.x, y+a.y, z+a.z);
 	}
 	
-	inline pVector operator-(const pVector& a) const
+	IC pVector operator-(const pVector& a) const
 	{
 		return pVector(x-a.x, y-a.y, z-a.z);
 	}
 	
-	inline pVector operator-()
+	IC pVector operator-()
 	{
 		x = -x;
 		y = -y;
@@ -88,7 +85,7 @@ public:
 		return *this;
 	}
 	
-	inline pVector& operator+=(const pVector& a)
+	IC pVector& operator+=(const pVector& a)
 	{
 		x += a.x;
 		y += a.y;
@@ -96,7 +93,7 @@ public:
 		return *this;
 	}
 	
-	inline pVector& operator-=(const pVector& a)
+	IC pVector& operator-=(const pVector& a)
 	{
 		x -= a.x;
 		y -= a.y;
@@ -104,7 +101,7 @@ public:
 		return *this;
 	}
 	
-	inline pVector& operator*=(const float a)
+	IC pVector& operator*=(const float a)
 	{
 		x *= a;
 		y *= a;
@@ -112,7 +109,7 @@ public:
 		return *this;
 	}
 	
-	inline pVector& operator/=(const float a)
+	IC pVector& operator/=(const float a)
 	{
 		float b = 1.0f / a;
 		x *= b;
@@ -121,7 +118,7 @@ public:
 		return *this;
 	}
 	
-	inline pVector& operator=(const pVector& a)
+	IC pVector& operator=(const pVector& a)
 	{
 		x = a.x;
 		y = a.y;
@@ -129,7 +126,7 @@ public:
 		return *this;
 	}
 	
-	inline pVector operator^(const pVector& b) const
+	IC pVector operator^(const pVector& b) const
 	{
 		return pVector(
 			y*b.z-z*b.y,

@@ -40,7 +40,12 @@ static inline float NRand(float sigma = 1.0f)
 	else
 		return -y * sigma * ONE_OVER_SIGMA_EXP;
 }
-
+/*
+void PAAvoid::Transform(const Fmatrix& m)
+{
+	position.Transform(m);
+}
+*/
 void PAAvoid::Execute(ParticleGroup *group)
 {
 	float magdt = magnitude * dt;
@@ -1858,3 +1863,51 @@ void pDomain::Generate(pVector &pos) const
 		pos = pVector(0,0,0);
 	}
 }
+
+void pDomain::Transform(const Fmatrix& m)
+{
+	pDomain domain=*this;
+	Transform(&domain,m);
+}
+
+void pDomain::Transform(const pDomain* domain, const Fmatrix& m)
+{
+	switch (type)
+	{
+	case PDBox:
+		break;
+	case PDPlane:
+		break;
+	case PDSphere:
+		m.transform_tiny(p1.xr(),domain->p1.xr());
+		break;
+	case PDCylinder:
+		m.transform_tiny(p1.xr(),domain->p1.xr());
+		m.transform_tiny(p2.xr(),domain->p2.xr());
+		break;
+	case PDCone:
+		break;
+	case PDBlob:
+		break;
+	case PDPoint:
+		m.transform_tiny(p1.xr(),domain->p1.xr());
+		break;
+	case PDLine:
+		m.transform_tiny(p1.xr(),domain->p1.xr());
+		m.transform_tiny(p2.xr(),domain->p2.xr());
+		break;
+	case PDRectangle:
+		break;
+	case PDTriangle:
+		m.transform_tiny(p1.xr(),domain->p1.xr());
+		m.transform_dir(p2.xr(),domain->p2.xr());
+		m.transform_dir(u.xr(),domain->u.xr());
+		m.transform_dir(v.xr(),domain->v.xr());
+		break;
+	case PDDisc:
+		break;
+	default:
+		R_ASSERT2(0,"Unknown domain type.");
+	}
+}
+

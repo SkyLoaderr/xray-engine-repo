@@ -91,7 +91,8 @@ struct pDomain
 	
 	BOOL Within(const pVector &) const;
 	void Generate(pVector &) const;
-	
+	void Transform(const Fmatrix& m);
+	void Transform(const pDomain* domain, const Fmatrix& m);
 	// This constructor is used when default constructing a
 	// ParticleAction that has a pDomain.
 	inline pDomain()
@@ -143,18 +144,17 @@ enum PActionEnum
 	action_enum_force_dword = DWORD(-1)
 };
 
-// This method actually does the particle's action.
-#define ExecMethod	void Execute(ParticleGroup *pg);
-
+///////////////////////////////////////////////////////////////////////////
+// Data types derived from Action.
 struct ParticleAction
 {
 	static float dt;	// This is copied to here from global state.
 	PActionEnum type;	// Type field
 };
 
-///////////////////////////////////////////////////////////////////////////
-// Data types derived from Action.
-
+// This method actually does the particle's action.
+#define ExecMethod	void Execute	(ParticleGroup *pg);\
+					void Transform	(const ParticleAction* from, const Fmatrix& m);
 
 struct PAHeader : public ParticleAction
 {
