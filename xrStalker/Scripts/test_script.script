@@ -20,7 +20,8 @@ printf("----------------------main----")
 	dt:setHMSms(3,4,5,67)
 	dump_time(dt)
 	
-	local dt2 = game.time_struct(dt)
+	local dt2 = game.time_struct()
+	dt2 = dt
 	dump_time(dt2)
 	dump_time(dt)
 	
