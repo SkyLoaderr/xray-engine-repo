@@ -27,7 +27,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	CCar*	car			= smart_cast<CCar*>(m_holder);
 	u16 anim_type       = car->DriverAnimationType();
 	SActorVehicleAnims::SOneTypeCollection& anims=m_vehicle_anims.m_vehicles_type_collections[anim_type];
-	V->PlayCycle(anims.idles[0]);
+	V->PlayCycle(anims.idles[0],FALSE);
 
 	u16 spine_bone		= V->LL_BoneID("bip01_spine1");
 	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
