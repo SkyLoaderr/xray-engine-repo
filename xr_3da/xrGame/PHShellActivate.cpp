@@ -21,8 +21,9 @@
 
 void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 
-	PresetActive();
 	if(bActive)return;
+	PresetActive();
+
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
 
@@ -48,8 +49,9 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 
 void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable){
 
-	PresetActive();	
 	if(bActive)return;
+	PresetActive();	
+	
 	if(!CPHObject::is_active()) vis_update_deactivate();
 	if(!disable)EnableObject();
 
