@@ -70,7 +70,7 @@ void					CRender::create					()
 
 	rmNormal					();
 	marker						= 0;
-}
+} 
 void					CRender::destroy				()
 {
 	PSLibrary.OnDeviceDestroy	();

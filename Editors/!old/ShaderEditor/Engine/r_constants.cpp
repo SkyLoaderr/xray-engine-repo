@@ -79,6 +79,7 @@ BOOL	R_constant_table::parse	(void* _desc, u16 destination)
 				switch (T->Columns)
 				{
 				case 4:
+					Msg		("rows(%d), elements(%d), reg_count(%d)",T->Rows,T->Elements,it->RegisterCount);
 					switch (T->Rows)
 					{
 					case 3:			r_type		=	RC_3x4;		break;
