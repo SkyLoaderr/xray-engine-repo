@@ -240,87 +240,96 @@ void CLensFlare::OnFrame()
 
 void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 {
-	VERIFY(bInit);
-	OnFrame					();
-	if (!bRender) return;
+	VERIFY				(bInit);
+	OnFrame				();
+	if (!bRender)		return;
 	
-	Fcolor dwLight;
-	Fcolor color;
-	Fvector vec, vecSx, vecSy;
-	Fvector vecDx, vecDy;
+	Fcolor				dwLight;
+	Fcolor				color;
+	Fvector				vec, vecSx, vecSy;
+	Fvector				vecDx, vecDy;
 	
-	dwLight.set		( LightColor );
-	vector<SFlare*>	rlist;
+	dwLight.set							( LightColor );
+	svector<Shader*,MAX_Flares>			_2render;
 	
-	DWORD				VS_Offset;
-	FVF::LIT *pv		= (FVF::LIT*) VS->Lock(2*MAX_Flares*4,VS_Offset);
+	DWORD								VS_Offset;
+	FVF::LIT *pv						= (FVF::LIT*) VS->Lock(2*MAX_Flares*4,VS_Offset);
 	
-	float 	fDistance	= FAR_DIST*0.75f;
+	float 	fDistance					= FAR_DIST*0.75f;
 	
 	if (m_Flags.bSource&&bSun)
 	{
-		vecSx.mul(vecX, m_Source.fRadius*fDistance);
-		vecSy.mul(vecY, m_Source.fRadius*fDistance);
+		vecSx.mul			(vecX, m_Source.fRadius*fDistance);
+		vecSy.mul			(vecY, m_Source.fRadius*fDistance);
+		color.set			( dwLight );
 
-		color.set		( dwLight );
-
-		DWORD c = color.get();
-		pv->set(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
-		pv->set(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
-		pv->set(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-		pv->set(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-		rlist.push_back(&m_Source);
+		DWORD c				= color.get();
+		pv->set				(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
+		pv->set				(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
+		pv->set				(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
+		pv->set				(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
+		_2render.push_back	(m_Source->hShader);
 	}
 	
-	if (fBlend>=EPS_L){
-		if(bFlares&&m_Flags.bFlare){
-			vecDx.normalize(vecAxis);
-			vecDy.crossproduct(vecDx, vecDir);
-			for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++){
-				SFlare&	F		= *it;
-				vec.mul(vecAxis, F.fPosition);
-				vec.add(vecCenter);
-				vecSx.mul(vecDx, F.fRadius*fDistance);
-				vecSy.mul(vecDy, F.fRadius*fDistance);
-				float    cl		= F.fOpacity * fBlend;
-				color.set		( dwLight );
-				color.mul_rgba	( cl );
-				DWORD c=color.get();
-				pv->set(vec.x+vecSx.x-vecSy.x, vec.y+vecSx.y-vecSy.y, vec.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
-				pv->set(vec.x+vecSx.x+vecSy.x, vec.y+vecSx.y+vecSy.y, vec.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
-				pv->set(vec.x-vecSx.x+vecSy.x, vec.y-vecSx.y+vecSy.y, vec.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-				pv->set(vec.x-vecSx.x-vecSy.x, vec.y-vecSx.y-vecSy.y, vec.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-				rlist.push_back(it);
+	if (fBlend>=EPS_L)
+	{
+		if(bFlares&&m_Flags.bFlare)
+		{
+			vecDx.normalize		(vecAxis);
+			vecDy.crossproduct	(vecDx, vecDir);
+			for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++)
+			{
+				SFlare&	F			= *it;
+				vec.mul				(vecAxis, F.fPosition);
+				vec.add				(vecCenter);
+				vecSx.mul			(vecDx, F.fRadius*fDistance);
+				vecSy.mul			(vecDy, F.fRadius*fDistance);
+				float    cl			= F.fOpacity * fBlend;
+				color.set			( dwLight );
+				color.mul_rgba		( cl );
+				DWORD c				= color.get();
+				pv->set				(vec.x+vecSx.x-vecSy.x, vec.y+vecSx.y-vecSy.y, vec.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
+				pv->set				(vec.x+vecSx.x+vecSy.x, vec.y+vecSx.y+vecSy.y, vec.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
+				pv->set				(vec.x-vecSx.x+vecSy.x, vec.y-vecSx.y+vecSy.y, vec.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
+				pv->set				(vec.x-vecSx.x-vecSy.x, vec.y-vecSx.y-vecSy.y, vec.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
+				_2render.push_back	(it->hShader);
 			}
 		}
 
 		// gradient
-		if (bGradient&&m_Flags.bGradient&&(fGradientValue>=EPS_L)){
-			vecSx.mul(vecX, m_Gradient.fRadius*fGradientValue*fDistance);
-			vecSy.mul(vecY, m_Gradient.fRadius*fGradientValue*fDistance);
+		if (bGradient && m_Flags.bGradient && (fGradientValue>=EPS_L))
+		{
+			vecSx.mul				(vecX, m_Gradient.fRadius*fGradientValue*fDistance);
+			vecSy.mul				(vecY, m_Gradient.fRadius*fGradientValue*fDistance);
 
-			color.set		( dwLight );
-			color.mul_rgba	( fGradientValue );
+			color.set				( dwLight );
+			color.mul_rgba			( fGradientValue );
 
-			DWORD c = color.get();
-			pv->set(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
-			pv->set(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
-			pv->set(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
-			pv->set(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
-			rlist.push_back(&m_Gradient);
+			DWORD c					= color.get	();
+			pv->set					(vecLight.x+vecSx.x-vecSy.x, vecLight.y+vecSx.y-vecSy.y, vecLight.z+vecSx.z-vecSy.z, c, 0, 0); pv++;
+			pv->set					(vecLight.x+vecSx.x+vecSy.x, vecLight.y+vecSx.y+vecSy.y, vecLight.z+vecSx.z+vecSy.z, c, 0, 1); pv++;
+			pv->set					(vecLight.x-vecSx.x+vecSy.x, vecLight.y-vecSx.y+vecSy.y, vecLight.z-vecSx.z+vecSy.z, c, 1, 1); pv++;
+			pv->set					(vecLight.x-vecSx.x-vecSy.x, vecLight.y-vecSx.y-vecSy.y, vecLight.z-vecSx.z-vecSy.z, c, 1, 0); pv++;
+			_2render.push_back		(m_Gradient->hShader);
 		}
 	}
 	
-	VS->Unlock				();
+	VS->Unlock				(_2render.size()*4);
+
 	Device.set_xform_world	(Fidentity);
-	
-	for (DWORD i=0; i<rlist.size(); i++)
+	for (DWORD i=0; i<_2render.size(); i++)
 	{
-    	if (rlist[i]->hShader){
-			Device.Shader.set_Shader	(rlist[i]->hShader);
-			Device.Primitive.DrawSubset	(P,i*4,4,i*6,2);
-        }
+    	if (_2render[i])
+		{
+			Device.Shader.set_Shader	(_2render[i]);
+
+			DWORD							vBase	= i*4+VS_Offset;
+			Device.Primitive.setVertices	(VS->mFVF,VS->Stride(),VS->pVB);
+			Device.Primitive.setIndices		(vBase, Device.Streams_QuadIB);
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+	    }
 	}
+	UPDATEC					(_2render.size()*4,_2render.size()*2,1);
 }
 
 void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )
