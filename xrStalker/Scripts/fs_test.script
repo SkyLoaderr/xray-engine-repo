@@ -21,4 +21,5 @@ function main()
 //   end
 	
 	flist:Free()
+	printf("aaaaaaaaaaaaaaaaaaaaaaa")
 end
