@@ -3,7 +3,7 @@
 <xml>
 	<specific_character id="svoboda_leader">
 		<name>Лидер группировки "Свобода"</name>
-		<icon x="10" y="0"></icon>
+		<icon x="20" y="6"></icon>
 		<map_icon x="5" y="0"></map_icon>
 		<bio>Лидер группировки "Свобода".</bio>
 
@@ -13,14 +13,13 @@
 		<rank>90</rank>
 		<reputation>-30</reputation>
 
-		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
+		<visual>actors\svoboda\stalker_sv_leader</visual>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
 			ammo_11.43x23_hydro = 1 \n
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
-			device_torch \n
 		</supplies>
 			
 		<start_dialog>hello_dialog</start_dialog>
@@ -43,13 +42,13 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_hood_9</visual>
+		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
-			wpn_bm16 \n
-			ammo_12x70_buck = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 		</supplies>
 					
@@ -72,20 +71,21 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_balon_10</visual>
+		<visual>actors\svoboda\stalker_sv_rukzak_1_1</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
-			ammo_9x18_pmm = 1 \n
+			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_fmj = 1 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
-	</supplies>
+		</supplies>
 					
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
 
 	<specific_character id="svoboda_regular_default3" team_default = "1">
 		<name>Сталкер группировки "Свобода"</name>
@@ -101,42 +101,13 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
+		<visual>actors\svoboda\stalker_sv_rukzak_1</visual>
 		<supplies>
 			[spawn] \n
-			wpn_pb \n
+			wpn_pm \n
 			ammo_9x18_fmj = 1 \n
 			wpn_ak74u \n
-			ammo_5.45x39_fmj = 1 \n
-			device_torch \n
-		</supplies>
-					
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="svoboda_regular_default4" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="24" y="8"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_regular</team>
-		
-		<class>Svoboda_regular</class>
-		<community>freedom</community>
-		
-		<rank>40</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
-		<supplies>
-			[spawn] \n
-			wpn_pb \n
-			ammo_9x18_pmm = 1 \n
-			wpn_mp5 \n
-			ammo_9x19_fmj = 1 \n
+			ammo_5.45x39_ap = 1 \n
 			device_torch \n
 		</supplies>
 					
@@ -160,7 +131,7 @@
 		<rank>50</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_balon_1</visual>
+		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
@@ -192,10 +163,39 @@
 		<visual>actors\svoboda\stalker_sv_hood_91</visual>
 		<supplies>
 			[spawn] \n
-			wpn_colt1911 \n
-			ammo_11.43x23_hydro = 1 \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
 			wpn_svd \n
-			ammo_7.62x54_7h14 = 1 \n
+			ammo_7.62x54_ap = 1 \n
+			device_torch \n
+		</supplies>
+			
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>
+
+	<specific_character id="svoboda_sniper_default3" team_default = "1">
+		<name>Сталкер группировки "Свобода"</name>
+		<icon x="10" y="2"></icon>
+		<map_icon x="5" y="0"></map_icon>
+		<bio>Сталкер группировки "Свобода". Детальная информация отсутствует.</bio>
+
+		<team>Svoboda_sniper</team>
+		
+		<class>Svoboda_sniper</class>
+		<community>freedom</community>
+
+		<rank>50</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\svoboda\stalker_sv_hood_9</visual>
+		<supplies>
+			[spawn] \n
+			wpn_hpsa \n
+			ammo_9x19_pbp = 1 \n
+			wpn_svd \n
+			ammo_7.62x54_ap = 1 \n
 			device_torch \n
 		</supplies>
 			
@@ -219,129 +219,11 @@
 		<rank>70</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_balon_10</visual>
+		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
 			[spawn] \n
 			wpn_hpsa \n
 			ammo_9x19_pbp = 1 \n
-			wpn_l85 = 1,0,0,0
-			ammo_5.56x45_ap = 1 \n
-			device_torch \n
-		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="svoboda_veteran_default2" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="22" y="10"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_specnaz</team>
-		
-		<class>Svoboda_specnaz</class>
-		<community>freedom</community>
-
-		<rank>70</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_hood_9</visual>
-		<supplies>
-			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_fmj = 1 \n
-			wpn_lr300 = 1, 0, 1, 0 \n
-			ammo_5.56x45_ap = 1 \n
-			device_torch \n
-		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="svoboda_veteran_default3" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="24" y="8"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_specnaz</team>
-		
-		<class>Svoboda_specnaz</class>
-		<community>freedom</community>
-
-		<rank>70</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
-		<supplies>
-			[spawn] \n
-			wpn_beretta \n
-			ammo_9x19_pbp = 1 \n
-			wpn_mp5 \n
-			ammo_9x19_pbp = 1 \n
-			wpn_rpg7 \n
-			ammo_og-7b = 2 \n
-			device_torch \n
-		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="svoboda_veteran_default4" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="24" y="8"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_specnaz</team>
-		
-		<class>Svoboda_specnaz</class>
-		<community>freedom</community>
-
-		<rank>70</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
-		<supplies>
-			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_fmj = 1 \n
-			wpn_lr300 = 1, 0, 0, 0 \n
-			ammo_5.56x45_ap = 1 \n
-			device_torch \n
-		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="svoboda_veteran_default5" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="24" y="8"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Боевик группировки "Свобода". Обычно хорошо экипирован. Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_specnaz</team>
-		
-		<class>Svoboda_specnaz</class>
-		<community>freedom</community>
-
-		<rank>70</rank>
-		<reputation>0</reputation>
-
-		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
-		<supplies>
-			[spawn] \n
-			wpn_desert_eagle \n
-			ammo_11.43x23_fmj = 1 \n
 			wpn_lr300 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
@@ -351,6 +233,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
 				
 <!---------------------------SVOBODA MASTER----------------------->
 	<specific_character id="svoboda_master_default1" team_default = "1">
@@ -369,43 +252,12 @@
 		<rank>90</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
-		<supplies>
-			[spawn] \n
-			wpn_usp \n
-			ammo_11.43x23_hydro = 1 \n
-			wpn_lr300 \n
-			ammo_5.56x45_ap = 1 \n
-			device_torch \n
-		</supplies>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>esc_stalker_talk_level</actor_dialog>
-	</specific_character>
-
-	<specific_character id="svoboda_master_default2" team_default = "1">
-		<name>Сталкер группировки "Свобода"</name>
-		<icon x="10" y="0"></icon>
-		<map_icon x="5" y="0"></map_icon>
-		<bio>Хранитель группировки "Свобода". Фанатично предан группировке, вооружен и очень опасен.
-		Детальная информация отсутствует.</bio>
-
-		<team>Svoboda_master</team>
-		
-		<class>Svoboda_master</class>
-		<community>freedom</community>
-
-		
-		<rank>90</rank>
-		<reputation>0</reputation>
-
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
 		<supplies>
 			[spawn] \n
 			wpn_desert_eagle \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_lr300 \n
+			wpn_fn2000 \n
 			ammo_5.56x45_ap = 1 \n
 			device_torch \n
 		</supplies>
@@ -414,5 +266,7 @@
 		<actor_dialog>general_pda_talk</actor_dialog>
 		<actor_dialog>esc_stalker_talk_level</actor_dialog>
 	</specific_character>
+
+
 	
 </xml>
