@@ -39,6 +39,7 @@ To OLES :
 +++J	освещение монстров (химера, плоть) (level - практически на любом (e.g. labaratory_1)) 
 
 
+
 To AlexMX:
 +O	ocasional invalid radius and/or center after update of particle system
 	(pure garbage: #INF, #QNAN, #DEN)
@@ -50,6 +51,7 @@ To AlexMX:
 
 
 To Dima:
+-S	вороны вылетают в ai_primary_func.cpp ffGetValue() -NODEFAULT
 -O	ai_alife_switch.cpp / line 294 - "non RTTI object"
 +K	сталкеры перемещаются быстрее отыгрываемой анимации
 +D	при выставлении у-ка позиции по ноде при звуке у сталкера только(?) в симуляции
