@@ -54,10 +54,9 @@ bool InventoryUtilities::GreaterRoomInRuck(PIItem item1, PIItem item2)
 
 bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 {
-	BOOL* ruck_room = (BOOL*)xr_malloc(width*height*sizeof(BOOL));
-	
-	
-	R_ASSERT(ruck_room);
+	//bool* ruck_room = (BOOL*)xr_malloc(width*height*sizeof(BOOL));
+	xr_vector<bool> ruck_room;
+	ruck_room.resize(width*height);
 
 	int i,j,k,m;
 	int place_row = 0,  place_col = 0;
@@ -123,7 +122,7 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 	}
 
 
-	xr_free(ruck_room);
+//	xr_free(ruck_room);
 
 	//для какого-то элемента места не нашлось
 	if(!found_place) return false;
