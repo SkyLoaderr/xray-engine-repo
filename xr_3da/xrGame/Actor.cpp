@@ -274,12 +274,12 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who)
 void CActor::Die	( )
 {
 	// Play sound
-	pSounds->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
-	cam_Set		(eacFreeLook);
-	g_fireEnd	();
-	bAlive		= FALSE;
-	mstate_wishful	&= ~mcAnyMove;
-	mstate_real		&=~ mcAnyMove;
+	pSounds->PlayAtPos	(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+	cam_Set				(eacFreeLook);
+	g_fireEnd			();
+	bAlive				= FALSE;
+	mstate_wishful	&=	~mcAnyMove;
+	mstate_real		&=	~mcAnyMove;
 }
 
 void CActor::feel_touch_new				(CObject* O)
@@ -740,6 +740,7 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 
 void CActor::g_fireStart	( )
 {
+	if ()
 	Weapons->FireStart	( );
 }
 void CActor::g_fireEnd	( )

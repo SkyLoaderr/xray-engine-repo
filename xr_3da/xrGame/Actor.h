@@ -105,8 +105,6 @@ protected:
 
 	static void	__stdcall SpinCallback(CBoneInstance*);
 private:
-	BOOL					bAlive;
-
 	// Motions
 	DWORD					mstate_wishful;	
 	DWORD					mstate_real;	
