@@ -222,7 +222,7 @@ void CActor::Load(CInifile* ini, const char* section )
 
 	Movement.SetBox		(bbStandBox);
 	
-	ChangeCamStyle		(eacFirstEye);
+	cam_Set				(eacFirstEye);
 
 	// motions
 	PKinematics	V		= PKinematics(pVisual);
@@ -291,8 +291,8 @@ void CActor::Die	( )
 {
 	// Play sound
 	pSounds->Play3DAtPos(sndDie[Random.randI(SND_DIE_COUNT)],vPosition);
-	ChangeCamStyle(eacFreeLook);
-	g_fireEnd();
+	cam_Set		(eacFreeLook);
+	g_fireEnd	();
 	bAlive	= FALSE;
 	mstate_wishful	&= ~mcAnyMove;
 	mstate_real		&= ~mcAnyMove;
@@ -452,9 +452,9 @@ void CActor::Update	(DWORD DT)
 	UpdateTransform			();
 	CObject::Update			(DT);
 	
-	if (IsMyCamera())		UpdateCamera(dt);
+	if (IsMyCamera())		cam_Update	(dt);
 
-	bVisible				= !HUDview();
+	bVisible				= !HUDview	();
 
 	Weapons->Update			(dt,HUDview());
 }

@@ -2,18 +2,15 @@
 #include "Actor.h"
 #include "..\CameraBase.h"
 
-void CActor::ChangeCamStyle	(EActorCameras style){
+void CActor::cam_Set	(EActorCameras style)
+{
 	CCameraBase* old_cam = cameras[cam_active];
 	cam_active = style;
 	old_cam->OnDeactivate();
 	cameras[cam_active]->OnActivate(old_cam);
-	switch(cam_active){
-	case eacFirstEye:	bVisible = false;	break;
-	default:			bVisible = true;	break;
-	}
 }
 
-void CActor::UpdateCamera(float dt)
+void CActor::cam_Update(float dt)
 {
 	Fvector point, dangle;
 	
