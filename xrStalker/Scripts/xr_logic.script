@@ -358,7 +358,7 @@ function reset_generic_schemes_on_scheme_switch(npc, scheme)
 			end
 		end
 	elseif st.stype == modules.stype_item then
-		npc:clear_use_callback()
+		npc:clear_callback(callback.use_object)
 		npc:set_nonscript_usable(true)
 		if get_clsid(npc) == clsid.car then
 			-- Другие объекты под скрипт не берутся, поэтому для них не надо сбрасывать
