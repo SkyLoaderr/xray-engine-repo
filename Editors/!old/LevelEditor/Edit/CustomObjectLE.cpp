@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "scene.h"
+#include "scenecustom.h"
 #include "sceneobject.h"
 #include "ui_main.h"
 #include "ui_leveltools.h"
@@ -23,11 +23,11 @@ void CCustomObject::SnapMove(Fvector& pos, Fvector& rot, const Fmatrix& rotRP, c
     s2.mad(s1,up,EPrefs.snap_moveto);
 
     pinf.inf.range=EPrefs.snap_moveto;
-    if (Scene.RayPickObject( pinf.inf.range, s1, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))||Scene.RayPickObject( pinf.inf.range, s2, dn, OBJCLASS_SCENEOBJECT, &pinf, Scene.GetSnapList(false))){
+    if (IScene->RayPickObject( pinf.inf.range, s1, dn, OBJCLASS_SCENEOBJECT, &pinf, IScene->GetSnapList(false))||IScene->RayPickObject( pinf.inf.range, s2, dn, OBJCLASS_SCENEOBJECT, &pinf, IScene->GetSnapList(false))){
             pos.set(pinf.pt);
             if (Tools->GetSettings(etfNormalAlign)){
                 Fvector verts[3];
-                pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
+                pinf.e_obj->GetFaceWorld(pinf.s_obj->_Transform(),pinf.e_mesh,pinf.inf.id,verts);
                 Fvector vR,vD,vN;
                 vN.mknormal(verts[0],verts[1],verts[2]);
 
@@ -62,9 +62,9 @@ void CCustomObject::OnDetach()
 {
     m_pOwnerObject 		= 0;
     string64 			new_name;
-    Scene.GenObjectName(ClassID,new_name,Name);
+    IScene->GenObjectName(ClassID,new_name,Name);
     Name 				= new_name;
-    Scene.AppendObject	(this,false);
+    IScene->AppendObject(this,false);
     Select				(true);
 }
 
@@ -73,7 +73,7 @@ void CCustomObject::OnAttach(CCustomObject* owner)
 	R_ASSERT(owner);
     R_ASSERT2(!m_pOwnerObject,"Object already has owner!");
     m_pOwnerObject 		= owner;
-    Scene.RemoveObject	(this,false);
+    IScene->RemoveObject(this,false);
     Select				(false);
 }
 
@@ -202,7 +202,7 @@ void __fastcall CCustomObject::OnObjectNameAfterEdit(PropItem* sender, LPVOID ed
 {
 	TextValue* V = (TextValue*)sender->GetFrontValue();
 	AnsiString* new_name = (AnsiString*)edit_val;
-	if (Scene.FindObjectByName(new_name->c_str(),0)) *new_name = V->GetValue();
+	if (IScene->FindObjectByName(new_name->c_str(),0)) *new_name = V->GetValue();
     else *new_name = new_name->LowerCase();
 }
 
@@ -235,7 +235,7 @@ void CCustomObject::FillProp(LPCSTR pref, PropItemVec& items)
 
 void CCustomObject::OnShowHint(AStringVec& dest)
 {
-    dest.push_back(AnsiString("Class: ")+AnsiString(ParentTools->ClassDesc()));
+//	dest.push_back(AnsiString("Class: ")+AnsiString(ParentTools->ClassDesc()));
     dest.push_back(AnsiString("Name:  ")+AnsiString(Name));
     dest.push_back(AnsiString("-------"));
 }
