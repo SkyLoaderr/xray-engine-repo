@@ -11,6 +11,8 @@
 #include "ai_space.h"
 #include "script_engine.h"
 
+extern CSE_Abstract *F_entity_Create	(LPCSTR section);
+
 DLL_API CSE_Abstract *create_object	(LPCSTR section)
 {
 	return				(F_entity_Create(section));

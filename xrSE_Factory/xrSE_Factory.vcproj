@@ -509,6 +509,9 @@
 				Name="ScriptExport"
 				Filter="">
 				<File
+					RelativePath=".\script_lua_export_globals.cpp">
+				</File>
+				<File
 					RelativePath=".\script_lua_export_server_entities.cpp">
 				</File>
 			</Filter>
