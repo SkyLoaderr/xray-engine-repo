@@ -91,6 +91,7 @@ void	CRender::render_lights	(light_Package& LP)
 			light*	L	= LP.v_spot.back	();		LP.v_spot.pop_back			();
 			L->vis_update				();
 			if (L->vis.visible)			{ 
+				LR.compute_xfs_1		(0, L);
 				Target.accum_spot		(L);
 				render_indirect			(L);
 			}
@@ -128,6 +129,7 @@ void	CRender::render_lights	(light_Package& LP)
 		for	(u32 pid=0; pid<Lvec.size(); pid++)	{
 			Lvec[pid]->vis_update		();
 			if (Lvec[pid]->vis.visible)	{
+				LR.compute_xfs_1		(0, Lvec[pid]);
 				render_indirect			(Lvec[pid]);
 				Target.accum_spot		(Lvec[pid]);
 			}

@@ -137,6 +137,7 @@ void CRenderTarget::accum_spot	(light* L)
 			else					_id	= SE_SPOT_NORMAL;
 		} else {
 			_id						= SE_SPOT_UNSHADOWED;
+			m_Shadow				= m_Lmap;
 		}
 		RCache.set_Element			(shader->E[ _id ]	);
 
