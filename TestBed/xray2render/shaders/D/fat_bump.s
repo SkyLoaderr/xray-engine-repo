@@ -54,8 +54,8 @@ v2p_out v_main	( a2v  	IN )
 	// Calculate the 3x3 transform from tangent space to eye-space
 	// TangentToEyeSpace = object2eye * tangent2object
 	//					 = object2eye * transpose(object2tangent) (since the inverse of a rotation is its transpose)
-	float3  T		= normalize (IN.T);
-	float3	B		= normalize (IN.B);
+	float3  T		= float3	(IN.T.x,IN.T.y,IN.T.z);
+	float3	B		= float3	(IN.B.x,IN.B.y,IN.B.z);
 	float3  N		= normalize (IN.N); // super - buper - class !!!
 	float3x3 xform	= mul	((float3x3)m_model2view, 
 								float3x3(
@@ -92,7 +92,7 @@ p2f 	p_main	( v2p_in IN )
 
   // Sample normal and rotate it by matrix
   half3 N	= tex2D		(s_nmap,	IN.tc0);
-  half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), half3(0,1,0));
+  half3 Ne	= mul		(half3x3(IN.M1, IN.M2, IN.M3), N /*half3(0,0,1)*/);
   half3 NeN	= normalize	(Ne);
   OUT.Ne 	= half4		(NeN.x,NeN.y,NeN.z,0);
   return OUT;
