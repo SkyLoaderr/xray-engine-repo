@@ -116,6 +116,7 @@ USELIB("Lib\memmgr.lib");
 USEUNIT("Engine\BLENDERS\Blender_LaEmB.cpp");
 USEUNIT("Engine\BLENDERS\Blender_LmBmmD.cpp");
 USEUNIT("Engine\BLENDERS\Blender_Lm(EbB).cpp");
+USEUNIT("Engine\BLENDERS\Blender_BmmD.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
