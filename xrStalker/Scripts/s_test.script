@@ -14,15 +14,9 @@ function main ()
 --	while true do wait () end	
 
 	local stalker = get_level_object ("stalker")
-	local ak = get_level_object ("ak")
+	local torch = get_level_object ("torch")
 	stalker:script (true, s_test.script_name ())
-
---	action (stalker, object (ak, object.take), cond (cond.object_end))
---	ak:set_queue_size (2)
-	action (stalker, move (move.standing, move.walk, move.line, patrol ("boar_way")),
-			anim ("prisluh"), 
-			--look (look.fire_point, get_actor ()), object (ak, object.fire1, 3), 
-			cond (cond.move_end))
+	action (stalker, object (torch, object.activate), cond (cond.time_end, time_infinite))
 
 	while stalker:action () do wait () end
 
