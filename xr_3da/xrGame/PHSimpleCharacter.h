@@ -131,7 +131,7 @@ public:
 	virtual		void		SetAirControlFactor					(float factor)		{m_air_control_factor=factor;}
 	virtual		void		GetPosition							(Fvector& vpos)		;
 	virtual		float		FootRadius							()					;
-	virtual		void		DeathPosition						(Fvector& deathPos){ deathPos.set(m_death_position);deathPos.y=m_death_position[1]-m_radius;}
+	virtual		void		DeathPosition						(Fvector& deathPos)	;
 	virtual		void		IPosition							(Fvector& pos)		;
 	virtual		u16			ContactBone							();
 	virtual		void		ApplyImpulse						(const Fvector& dir,const dReal P);

@@ -1388,6 +1388,12 @@ float CPHSimpleCharacter::FootRadius()
 	else		return 0.f;
 
 }
+void CPHSimpleCharacter::DeathPosition(Fvector& deathPos)
+{ 
+	if(!b_exist) return;
+	deathPos.set(m_death_position);
+	deathPos.y=m_death_position[1]-m_radius;
+}
 void	CPHSimpleCharacter::	AddControlVel						(const Fvector& vel)
 {
 	m_acceleration.add(vel);
