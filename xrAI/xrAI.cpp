@@ -10,8 +10,8 @@
 #pragma comment(lib,"d3dx8.lib")
 #pragma comment(lib,"IMAGEHLP.LIB")
 #pragma comment(lib,"winmm.LIB")
-#pragma comment(lib,"x:\\magicfm.LIB")
 #pragma comment(lib,"x:\\xrcdb.LIB")
+#pragma comment(lib,"x:\\MagicFM.LIB")
 
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);
