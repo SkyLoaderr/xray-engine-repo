@@ -71,4 +71,4 @@ std::string luabind::detail::stack_content_by_name(lua_State* L, int start_index
 #pragma warning(default:4995)
 #pragma warning(default:4530)
 #pragma warning(default:4267)
-#pragma warning(default:4505)
+//#pragma warning(default:4505)
