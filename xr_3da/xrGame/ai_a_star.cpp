@@ -143,7 +143,7 @@ void CAI_Space::vfUnloadSearch()
 	free(tpaIndexes);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces)
+float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result)
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
@@ -151,10 +151,6 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 
 	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
 	memset(tpaIndexes,0,this->m_header.count*sizeof(TNode *));
-
-	//init member points
-	for (int ii=0; ii<MemberPlaces.size(); ii++)
-		q_mark[MemberPlaces[ii]] = true;
 
 	TNode  *tpOpenedList = taHeap + uiHeap++,
 		   *tpTemp       = tpaIndexes[dwStartNode] = taHeap + uiHeap++,
@@ -184,9 +180,6 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 
 		// check if that node is our goal
 		if (tpBestNode->iIndex == dwGoalNode) {
-
-			for ( ii=0; ii<MemberPlaces.size(); ii++)
-				q_mark[MemberPlaces[ii]] = false;
 
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;
@@ -315,14 +308,11 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			break;
 	}
 	
-	for ( ii=0; ii<MemberPlaces.size(); ii++)
-		q_mark[MemberPlaces[ii]] = false;
-
 	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }
 
-float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance)
+float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance)
 {
 	Device.Statistic.AI_Path.Begin();
 	// initialization
@@ -330,10 +320,6 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 
 	memset(taHeap,0,(this->m_header.count + 1)*sizeof(TNode));
 	memset(tpaIndexes,0,this->m_header.count*sizeof(TNode *));
-
-	//init member points
-	for (int ii=0; ii<MemberPlaces.size(); ii++)
-		q_mark[MemberPlaces[ii]] = true;
 
 	TNode  *tpOpenedList = taHeap + uiHeap++,
 		   *tpTemp       = tpaIndexes[dwStartNode] = taHeap + uiHeap++,
@@ -363,9 +349,6 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 
 		// check if that node is our goal
 		if (tpBestNode->iIndex == dwGoalNode) {
-
-			for ( ii=0; ii<MemberPlaces.size(); ii++)
-				q_mark[MemberPlaces[ii]] = false;
 
 			float fDistance = 0.0;
 			tpTemp1 = tpBestNode;
@@ -494,9 +477,6 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 			break;
 	}
 	
-	for ( ii=0; ii<MemberPlaces.size(); ii++)
-		q_mark[MemberPlaces[ii]] = false;
-
 	Device.Statistic.AI_Path.End();
 	return(MAX_VALUE);
 }

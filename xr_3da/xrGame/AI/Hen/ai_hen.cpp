@@ -255,14 +255,8 @@ void CAI_Hen::Attack()
 				// checking if I need to rebuild the path i.e. previous search
 				// has found better destination node
 				if (AI_Path.bNeedRebuild) {
-					// array for nodes of the members
-					//MemberNodes	MemberPlaces;
-					// filling array members with their nodes
-					Squad.Groups[g_Group()].GetMemberPlacementN(S.taMemberNodes,this);
-					if (S.m_tLeader)
-						S.taMemberNodes.push_back(S.m_tLeader->AI_NodeID);
 					// building a path from and to
-					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,S.taMemberNodes,*(S.m_tpEnemyNode),S.fOptEnemyDistance);
+					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,*(S.m_tpEnemyNode),S.fOptEnemyDistance);
 					if (AI_Path.Nodes.size() > 2) {
 					// if path is long enough then build travel line
 						Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
@@ -278,8 +272,6 @@ void CAI_Hen::Attack()
 				} 
 				else {
 					Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-					if (S.m_tLeader)
-						S.taMemberNodes.push_back(S.m_tLeader->AI_NodeID);
 					// search for the best node according to the 
 					// SelectFollow evaluation function in the radius N meteres
 					S.Init();
@@ -387,15 +379,9 @@ void CAI_Hen::Attack()
 					S.m_tpEnemyNode		= Enemy.Enemy->AI_Node;
 					
 					S.taMembers = Squad.Groups[g_Group()].Members;
-					// array for nodes of the members
-					//MemberNodes	MemberPlaces;
-					// filling array members with their nodes
-					Squad.Groups[g_Group()].GetMemberPlacementN(S.taMemberNodes,this);
-					if (S.m_tLeader)
-						S.taMemberNodes.push_back(S.m_tLeader->AI_NodeID);
 					// building a path from and to
 					AI_Path.DestNode = dwSavedEnemyNodeID;
-					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,S.taMemberNodes);
+					Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 					if (AI_Path.Nodes.size() > 2) {
 					// if path is long enough then build travel line
 						Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
@@ -581,13 +567,7 @@ void CAI_Hen::FollowMe()
 						// checking if I need to rebuild the path i.e. previous search
 						// has found better destination node
 						if (AI_Path.bNeedRebuild) {
-							// array for nodes of the members
-							// filling array members with their nodes
-							Squad.Groups[g_Group()].GetMemberPlacementN(S.taMemberNodes,this);
-							S.taMemberNodes.push_back(Leader->AI_NodeID);
-							// building a path from and to
-							//Level().AI.q_Path	(AI_NodeID,AI_Path.DestNode,AI_Path);
-							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,S.taMemberNodes);
+							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
@@ -762,13 +742,7 @@ void CAI_Hen::FreeHunting()
 					// checking if I need to rebuild the path i.e. previous search
 					// has found better destination node
 					if (AI_Path.bNeedRebuild) {
-						// filling array members with their nodes
-						Squad.Groups[g_Group()].GetMemberPlacementN(S.taMemberNodes,this);
-						if (S.m_tLeader)
-							S.taMemberNodes.push_back(S.m_tLeader->AI_NodeID);
-						// building a path from and to
-						//Level().AI.q_Path	(AI_NodeID,AI_Path.DestNode,AI_Path);
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,S.taMemberNodes);
+						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
 							Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
@@ -783,9 +757,6 @@ void CAI_Hen::FreeHunting()
 					else {
 						// fill arrays of members and exclude myself
 						Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-						// search for the best node according to the 
-						if (S.m_tLeader)
-							S.taMemberNodes.push_back(S.m_tLeader->AI_NodeID);
 						// SelectFollow evaluation function in the radius 35 meteres
 						S.Init();
 						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S);
@@ -919,13 +890,7 @@ void CAI_Hen::Pursuit()
 						// checking if I need to rebuild the path i.e. previous search
 						// has found better destination node
 						if (AI_Path.bNeedRebuild) {
-							// filling array members with their nodes
-							Squad.Groups[g_Group()].GetMemberPlacementN(S.taMemberNodes,this);
-							if (S.m_tLeader)
-								S.taMemberNodes.push_back(S.m_tLeader->AI_NodeID);
-							// building a path from and to
-							//Level().AI.q_Path	(AI_NodeID,AI_Path.DestNode,AI_Path);
-							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,S.taMemberNodes);
+							Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 							if (AI_Path.Nodes.size() > 2) {
 							// if path is long enough then build travel line
 								Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);
@@ -933,15 +898,15 @@ void CAI_Hen::Pursuit()
 									S.taMemberPositions.push_back(S.m_tLeader->Position());
 								AI_Path.BuildTravelLine(Position(),S.taMemberPositions);
 							}
-							else
+							else {
 							// if path is too short then clear it (patch for ExecMove)
 								AI_Path.TravelPath.clear();
+								AI_Path.bNeedRebuild = FALSE;
+							}
 						} 
 						else {
 							// fill arrays of members and exclude myself
 							Squad.Groups[g_Group()].GetMemberInfo(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this);
-							if (S.m_tLeader)
-								S.taMemberNodes.push_back(S.m_tLeader->AI_NodeID);
 							// search for the best node according to the 
 							// SelectFollow evaluation function in the radius 35 meteres
 							S.Init();
@@ -1097,14 +1062,8 @@ void CAI_Hen::UnderFire()
 					// checking if I need to rebuild the path i.e. previous search
 					// has found better destination node
 					if (AI_Path.bNeedRebuild) {
-						// array for nodes of the members
-						// filling array members with their nodes
-						Squad.Groups[g_Group()].GetMemberPlacementN(S.taMemberNodes,this);
-						if (S.m_tLeader)
-							S.taMemberNodes.push_back(Leader->AI_NodeID);
 						// building a path from and to
-						//Level().AI.q_Path	(AI_NodeID,AI_Path.DestNode,AI_Path);
-						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path,S.taMemberNodes);
+						Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 						if (AI_Path.Nodes.size() > 2) {
 						// if path is long enough then build travel line
 							Squad.Groups[g_Group()].GetMemberPlacement(S.taMemberPositions,this);

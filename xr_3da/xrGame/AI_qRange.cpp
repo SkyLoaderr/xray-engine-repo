@@ -53,8 +53,8 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 				Estimator.BestNode	= Test;
 			}
 		}
-		//if (bStop)
-		//	break;
+		if (bStop)
+			break;
 	}
 
 	// Clear q_marks
@@ -63,7 +63,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 		DWORD* end = q_stack.end();
 		for ( ; it!=end; it++)	
 			q_mark[*it] -= 1;
-		q_mark [StartNode]	-= 1;
+//		//q_mark [StartNode]	-= 1;
 	}
 
 	Device.Statistic.AI_Range.End();

@@ -65,8 +65,8 @@ public:
 	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);
 
 	// yet another A* search
-	float			vfFindTheXestPath(DWORD StartNode, DWORD GoalNode, AI::Path& Result, MemberNodes& MemberPlaces);
-	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, MemberNodes& MemberPlaces, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance);
+	float			vfFindTheXestPath(DWORD StartNode, DWORD GoalNode, AI::Path& Result);
+	float			vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, NodeCompressed& tEnemyNode, float fOptimalEnemyDistance);
 	void			vfLoadSearch();
 	void			vfUnloadSearch();
 	// 
@@ -102,8 +102,8 @@ public:
 	}
 
 	// REF-counting
-	IC  void		ref_add			(DWORD ID)	{	if (vfs)	q_mark[ID] += 1; 	}
-	IC	void		ref_dec			(DWORD ID)  {	if (vfs)	q_mark[ID] -= 1;	}
+	IC  BYTE		ref_add			(DWORD ID)	{	return vfs?(q_mark[ID] += 1):0;	}
+	IC	BYTE		ref_dec			(DWORD ID)  {	return vfs?(q_mark[ID] -= 1):0;	}
 
 	// Utilities
 	float			u_SqrDistance2Node	(const Fvector& P, const NodeCompressed* Node);
