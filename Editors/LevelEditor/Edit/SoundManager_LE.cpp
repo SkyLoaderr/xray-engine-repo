@@ -80,7 +80,7 @@ bool CLevelSoundManager::MakeEnvGeometry(CMemoryWriter& F, bool bErrMsg)
         
         Fvector bv[DU_BOX_NUMVERTEX];
         for (int k=0; k<DU_BOX_NUMVERTEX; k++) M.transform_tiny(bv[k],du_box_vertices[k]);
-    	for (k=8; k<DU_BOX_NUMFACES; k++)
+    	for (k=0; k<DU_BOX_NUMFACES; k++)
 			CP.add_face_packed_D(bv[du_box_faces[k*3+0]],bv[du_box_faces[k*3+1]],bv[du_box_faces[k*3+2]],idx);
     }
 

@@ -39,7 +39,13 @@ void ESoundEnvironment::Construct(LPVOID data)
 ESoundEnvironment::~ESoundEnvironment()
 {
 }
+//----------------------------------------------------
 
+void ESoundEnvironment::OnUpdateTransform()
+{
+	inherited::OnUpdateTransform();
+	UI->Command		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
+}
 //----------------------------------------------------
 
 bool ESoundEnvironment::Load(IReader& F)

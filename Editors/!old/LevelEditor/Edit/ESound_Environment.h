@@ -24,6 +24,7 @@ public:
 	void 				Construct		(LPVOID data);
 						~ESoundEnvironment();
     virtual bool		CanAttach		() {return true;}
+    virtual void		OnUpdateTransform();
                         
   	virtual bool 		Load			(IReader&);
 	virtual void 		Save			(IWriter&);
