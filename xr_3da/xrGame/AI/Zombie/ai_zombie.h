@@ -45,6 +45,8 @@ class CAI_Zombie : public CCustomMonster
 			CMotionDef *tpaIdle[2];
 			SAnimState  tWalk;
 			CMotionDef *tWalkForwardCSIP;
+			CMotionDef *tRunForward;
+			CMotionDef *tStandUp;
 			CMotionDef *tpTurnLeft;
 			CMotionDef *tpTurnRight;
 		}SNormalGlobalAnimations;

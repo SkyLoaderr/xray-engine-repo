@@ -40,8 +40,11 @@ void CAI_Zombie::vfLoadAnimations()
 	m_tZombieAnimations.tNormal.tGlobal.tWalk.back	 = tpVisualObject->ID_Cycle("norm_walk_back");
 	m_tZombieAnimations.tNormal.tGlobal.tWalk.ls	 = tpVisualObject->ID_Cycle("norm_walk_ls");
 	m_tZombieAnimations.tNormal.tGlobal.tWalk.rs	 = tpVisualObject->ID_Cycle("norm_walk_rs");
-
+	
 	m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP = tpVisualObject->ID_Cycle("norm_walk_fwd_1");
+
+	m_tZombieAnimations.tNormal.tGlobal.tRunForward	 = tpVisualObject->ID_Cycle("norm_run_fwd");
+	m_tZombieAnimations.tNormal.tGlobal.tStandUp	 = tpVisualObject->ID_Cycle("norm_stand_up");
 
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnLeft	 = tpVisualObject->ID_Cycle("norm_turn_ls");
 	m_tZombieAnimations.tNormal.tGlobal.tpTurnRight  = tpVisualObject->ID_Cycle("norm_turn_rs");
@@ -94,7 +97,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					}
 					else
 						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
 						else
 							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
 								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
@@ -112,7 +115,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 					}
 					else
 						if (_abs(m_fSpeed - m_fAttackSpeed) < EPS_L)
-							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
+							tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tRunForward;
 						else
 							if (_abs(m_fSpeed - m_fMaxSpeed) < EPS_L)
 								tpGlobalAnimation = m_tZombieAnimations.tNormal.tGlobal.tWalkForwardCSIP;
