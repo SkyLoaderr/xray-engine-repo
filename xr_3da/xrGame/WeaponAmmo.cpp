@@ -36,8 +36,8 @@ void CCartridge::Load(LPCSTR section)
 	fWallmarkSize = pSettings->r_float(section, "wm_size");
 	m_ricochet = true;
 	bullet_material_idx =  GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
-
-	R_ASSERT(fWallmarkSize>0);
+	VERIFY	(u16(-1)!=bullet_material_idx);
+	VERIFY	(fWallmarkSize>0);
 }
 
 CWeaponAmmo::CWeaponAmmo(void) 
@@ -169,6 +169,7 @@ bool CWeaponAmmo::Get(CCartridge &cartridge)
 	cartridge.m_buckShot = m_buckShot;
 	cartridge.m_impair = m_impair;
 	cartridge.fWallmarkSize = fWallmarkSize;
+	cartridge.bullet_material_idx = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	if (!psActorFlags.test(AF_UNLIMITEDAMMO) || !m_bCanBeUnlimited || ai().get_alife())
 		--m_boxCurr;
 	return true;

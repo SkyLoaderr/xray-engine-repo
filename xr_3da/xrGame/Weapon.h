@@ -399,11 +399,11 @@ protected:
 	mutable u32				m_dwAmmoCurrentCalcFrame;	//кадр на котором просчитали кол-во патронов
 
 public:
-	xr_vector<shared_str>		m_ammoTypes;
+	xr_vector<shared_str>	m_ammoTypes;
 
 	CWeaponAmmo*			m_pAmmo;
 	u32						m_ammoType;
-	shared_str					m_ammoName;
+	shared_str				m_ammoName;
 
 	// Multitype ammo support
 	xr_stack<CCartridge>	m_magazine;

@@ -23,12 +23,13 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	VERIFY		(m_magazine.size());
 
 	CCartridge &l_cartridge = m_magazine.top();
+	VERIFY		(u16(-1) != l_cartridge.bullet_material_idx);
 
 	//повысить изношенность оружия с учетом влияния конкретного патрона
 	ChangeCondition(-conditionDecreasePerShot*l_cartridge.m_impair);
 
 	
-	float weapon_fire_disp = GetFireDispersion(false);
+	float	weapon_fire_disp = GetFireDispersion(false);
 	Fvector dir_base_disp;
 	dir_base_disp.random_dir(D, weapon_fire_disp, Random);
 

@@ -143,8 +143,6 @@ void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
 	iAmmoElapsed = m_magazine.size();
 	FireTrace(pos,dir);
 }
-
-
 void CWeaponKnife::StartIdleAnim		()
 {
 	m_pHUD->animDisplay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE);
