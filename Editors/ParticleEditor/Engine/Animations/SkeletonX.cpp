@@ -189,7 +189,7 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
 {
 	_Load				(N,data,vCount);
-	inherited::Load		(N, data, dwFlags|VLOAD_NOVERTICES);
+	inherited::Load		(N,data,dwFlags|VLOAD_NOVERTICES);
 
 	hGeom.create		(vertRenderFVF, RCache.Vertex.Buffer(), pIndices);
 }
