@@ -172,6 +172,7 @@ function save_dialog:OnListItemClicked()
 	local item = list_box:GetItem(item_id)
 	
 	local item_text = item:GetText()
+	printf(item_text)
 end
 
 function save_dialog:OnMsgOk()
