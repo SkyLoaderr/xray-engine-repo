@@ -208,11 +208,11 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
 	//jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
-	jeepBox[0]=REAL(3.8)*scaleBox[0];jeepBox[1]=REAL(0.7)*scaleBox[1];jeepBox[2]=REAL(1.38)*scaleBox[2];
+	jeepBox[0]=REAL(3.680)*scaleBox[0];jeepBox[1]=REAL(0.612)*scaleBox[1];jeepBox[2]=0.88f*2.f*scaleBox[2];
 	//cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6f;cabinBox[2]=scaleBox[2]*2.08f;
-	cabinBox[0]=scaleBox[0]*1.7f;cabinBox[1]=scaleBox[1]*0.42f;cabinBox[2]=scaleBox[2]*1.75f;
+	cabinBox[0]=scaleBox[0]*1.7f;cabinBox[1]=scaleBox[1]*0.66f;cabinBox[2]=scaleBox[2]*2.f*0.76f;
 
-	static const dReal wheelRadius = 0.79f/2.f* scaleParam;
+	static const dReal wheelRadius = 0.345f* scaleParam;
 
 	VelocityRate=3.f;
 	DriveForce=0;
@@ -221,8 +221,9 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	Breaks=false;
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
 	//static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
-	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
-	MassShift=0.25f;
+	static const dReal weelSepXF=scaleBox[0]*1.32f,weelSepXB=scaleBox[0]*1.155f,weelSepZ=scaleBox[2]*1.53f/2.f,weelSepY=scaleBox[1]*0.463f;
+	static const dReal cabinSepX=scaleBox[0]*0.61f,cabinSepY=scaleBox[1]*0.55f;
+	MassShift=0.35f;
 	dMass m;
 
 	// car body
@@ -247,7 +248,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	dGeomGetUserData(Geoms[5])->friction=500.f;
 	dGeomGetUserData(Geoms[7])->friction=500.f;
 	dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
-	dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
+	//dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
+	dGeomSetPosition(Geoms[6], -cabinSepX, cabinSepY+MassShift, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
 	dGeomTransformSetGeom(Geoms[5],Geoms[6]);
 	dGeomTransformSetGeom(Geoms[7],Geoms[0]);
@@ -255,10 +257,6 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	dGeomTransformSetInfo(Geoms[7],1);
 	dGeomSetBody(Geoms[5], Bodies[0]);
 	dGeomSetBody(Geoms[7], Bodies[0]);
-
-
-
-	
 
 	// wheel bodies
 	dMassSetSphere(&m, 1, wheelRadius); // density, radius
@@ -272,17 +270,17 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		dBodySetMass(Bodies[i], &m);
 		dBodySetQuaternion(Bodies[i], q);
 		//Geoms[i] = dCreateSphere(0, wheelRadius);
-		Geoms[i] = dCreateCylinder(0, wheelRadius,wheelRadius);
+		Geoms[i] = dCreateCylinder(0, wheelRadius,0.19f);
 		dGeomSetBody(Geoms[i], Bodies[i]);
 	}
 
 
 
 
-	dBodySetPosition(Bodies[1], startPosition[0]-weelSepX, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z
-	dBodySetPosition(Bodies[2], startPosition[0]-weelSepX, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z-0.9, 2.6,   9.3); // x,y,z
-	dBodySetPosition(Bodies[3], startPosition[0]+weelSepX, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z 0.9, 2.6,  10.7); // x,y,z
-	dBodySetPosition(Bodies[4], startPosition[0]+weelSepX, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z 0.9, 2.6,   9.3); // x,y,z
+	dBodySetPosition(Bodies[1], startPosition[0]-weelSepXB, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z
+	dBodySetPosition(Bodies[2], startPosition[0]-weelSepXB, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z-0.9, 2.6,   9.3); // x,y,z
+	dBodySetPosition(Bodies[3], startPosition[0]+weelSepXF, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z 0.9, 2.6,  10.7); // x,y,z
+	dBodySetPosition(Bodies[4], startPosition[0]+weelSepXF, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z 0.9, 2.6,   9.3); // x,y,z
 
 
 
@@ -418,7 +416,7 @@ Fmatrix Translate;
 DynamicData.CalculateData();
 DynamicData.SetAsZeroRecursive();
 
-Translate.translate(0,MassShift-1.f,0);
+Translate.translate(0,MassShift-0.810f,0);
 DynamicData.SetZeroTransform(Translate);
 
 }
