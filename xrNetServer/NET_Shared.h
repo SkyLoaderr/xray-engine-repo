@@ -59,5 +59,6 @@ public:
 	u32		dwTimesBlocked;
 	u32		dwBytesSended;
 	u32		dwBytesPerSec;
+	u32		dwFalseRet;
 };
 
