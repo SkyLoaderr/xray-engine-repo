@@ -120,8 +120,8 @@ BOOL CInventoryOwner::net_Spawn		(CSE_Abstract* DC)
 	}
 	else
 	{
-		CharacterInfo().m_SpecificCharacter.Load(0);
-		CharacterInfo().InitSpecificCharacter (0);
+		CharacterInfo().m_SpecificCharacter.Load(DEFAULT_PROFILE);
+		CharacterInfo().InitSpecificCharacter (DEFAULT_PROFILE);
 		CharacterInfo().m_SpecificCharacter.data()->m_sGameName = (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
 		CEntity* pEntity = smart_cast<CEntity*>(pThis); VERIFY(pEntity);
 		CharacterInfo().m_SpecificCharacter.data()->m_iIconX = pEntity->GetTradeIconX();
