@@ -56,7 +56,7 @@ void CCustomDoor::OnNear( CObject* O )
 {
 /*
 	// check if target
-	if (O->SUB_CLS_ID != clsid_Target) return;
+	if (clsid_Target != O->SUB_CLS_ID) return;
 	
 	// check if not contacted before
 	if (find(Contacted.begin(),Contacted.end(),O)!=Contacted.end()) return;

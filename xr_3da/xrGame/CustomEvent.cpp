@@ -15,7 +15,7 @@ CCustomEvent::CCustomEvent()
 
 CCustomEvent::~CCustomEvent		()
 {
-	for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) 
+	for (tActions_it it=Actions.begin(); Actions.end() != it; ++it) 
 	{
 		Engine.Event.Destroy(it->E);
 		xr_free(it->P1);
@@ -107,7 +107,7 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 				}
 				break;
 			}
-			count--;
+			--count;
 		}
 		shape->ComputeBounds		();
 		g_pGameLevel->ObjectSpace.Object_Register		(this);
@@ -126,7 +126,7 @@ BOOL CCustomEvent::net_Spawn	( LPVOID DC )
 			P.r_string			(str	);
 			Parse				(E,str	);
 			Actions.push_back	(E);
-			count--;
+			--count;
 		}
 	}
 	
@@ -139,7 +139,7 @@ void CCustomEvent::shedule_Update (u32 dt)
 	
 	if (!Contacted.empty()) {
 		CCF_Shape* M = dynamic_cast<CCF_Shape*> (CFORM()); R_ASSERT	(M);
-		for (u32 i=0; i<Contacted.size(); i++) 
+		for (u32 i=0; i<Contacted.size(); ++i) 
 		{
 			// Check if it is still contact us
 			CObject* O = Contacted[i];
@@ -147,16 +147,16 @@ void CCustomEvent::shedule_Update (u32 dt)
 			{
 				// Search if we have some action for this type of object
 				CLASS_ID cls = O->SUB_CLS_ID;
-				for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) {
+				for (tActions_it it=Actions.begin(); Actions.end() != it; ++it) {
 					if ((it->type==1) && (it->CLS == cls) && (it->count))	{
-						if (it->count != 0xffff)	it->count -= 1;
+						if (0xffff != it->count)	it->count -= 1;
 						Engine.Event.Signal(it->E,u32(it->P1),u32(O));
 					}
 				}
 
 				// Erase it from list
 				Contacted.erase(Contacted.begin()+i);
-				i--;
+				--i;
 			}
 		}
 	}
@@ -176,9 +176,9 @@ void CCustomEvent::OnNear( CObject* O )
 
 		// search if we have some action for this type of object
 		CLASS_ID cls = O->SUB_CLS_ID;
-		for (tActions_it it=Actions.begin(); it!=Actions.end(); it++) {
+		for (tActions_it it=Actions.begin(); Actions.end() != it; ++it) {
 			if ((it->type==0) && (it->CLS == cls) && (it->count))	{
-				if (it->count != 0xffff)	it->count -= 1;
+				if (0xffff != it->count)	it->count -= 1;
 				Engine.Event.Signal(it->E,u32(it->P1),u32(O));
 			}
 		}
