@@ -26,7 +26,11 @@ void CBuild::BuildRapid()
 	Status				("Building OBB tree..");
 	RCAST_Model			= new CDB::MODEL;
 	Msg					("aaa");
-	RCAST_Model->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	switch				(RCAST_Model->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS()))
+	{
+	case 0:				break;
+	case CDB::err_memory_0:
+	}
 	Msg					("%d K memory usage",RCAST_Model->memory()/1024);
 	
 	// Saving for AI/DO usage
