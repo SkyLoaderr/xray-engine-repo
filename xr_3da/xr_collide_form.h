@@ -123,10 +123,9 @@ public:
 struct CCF_OBB
 {
 	// Ray test
-	Fmatrix		IM;
-	Fbox		B;
-	// Ready to use OBB
-	Fobb		OBB;
+	Fmatrix		IM;		// world 2 bone xform
+	Fbox		B;		// local(bone) space
+	Fobb		OBB;	// world space
 	u16			elem_id;
 public:
 				CCF_OBB():elem_id(u16(-1)){;}
@@ -143,13 +142,14 @@ private:
 	u32					dwFrame;		// The model itself
 	u32					dwFrameTL;		// Top level
 
-	void			BuildState		();
-	void			BuildTopLevel	();
+	void				BuildState		();
+	void				BuildTopLevel	();
 public:
-					CCF_Skeleton	( CObject* _owner );
+						CCF_Skeleton	( CObject* _owner );
 
-	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	virtual BOOL		_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
+	virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
 };
 
 class ENGINE_API	CCF_Rigid : public ICollisionForm
@@ -167,8 +167,9 @@ private:
 public:
 					CCF_Rigid		( CObject* _owner );
 
-	virtual BOOL	_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
-	virtual void	_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	virtual BOOL		_RayQuery		( const Collide::ray_defs& Q, Collide::rq_results& R);
+	virtual void		_BoxQuery		( const Fbox& B, const Fmatrix& M, u32 flags);
+	xr_vector<CCF_OBB>&	_GetElements	() { return models;	}
 };
 
 class ENGINE_API	CCF_EventBox : public ICollisionForm
