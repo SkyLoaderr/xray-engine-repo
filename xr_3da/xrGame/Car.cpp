@@ -9,13 +9,14 @@
 #define   _USE_MATH_DEFINES
 #include "math.h"
 
-static float car_snd_volume=1.f;
+
 
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
+
 {
 	
 	active_camera	= 0;
@@ -42,6 +43,7 @@ CCar::CCar(void)
 	///////////////////////////////
 	//////////////////////////////
 	/////////////////////////////
+	m_car_sound=xr_new<SCarSound>(this);
 }
 
 CCar::~CCar(void)
@@ -49,7 +51,8 @@ CCar::~CCar(void)
 	xr_delete			(camera[0]);
 	xr_delete			(camera[1]);
 	xr_delete			(camera[2]);
-	snd_engine.destroy	();
+	m_car_sound->Destroy();
+	xr_delete(m_car_sound);
 	ClearExhausts();
 }
 
@@ -70,8 +73,7 @@ void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 void	CCar::Load					( LPCSTR section )
 {
 	inherited::Load					(section);
-	car_snd_volume  				= pSettings->r_float(section,"snd_volume");
-	snd_engine.create				(TRUE,"car\\car1");
+
 
 
 }
@@ -170,7 +172,7 @@ void	CCar::UpdateCL				( )
 	Center	(C);
 	V.set		(lin_vel);
 	
-	UpdateSound();
+	m_car_sound->Update();
 	if(m_owner)
 	{
 		m_pPhysicsShell->InterpolateGlobalTransform(&m_owner->XFORM());
@@ -360,7 +362,8 @@ void CCar::ParseDefinitions()
 	}
 	///////////////////////////////steer/////////////////////////////////////////////////////////////////
 
-
+	///////////////////////////////sound///////////////////////////////////////////////////////
+	m_car_sound->Init();
 
 }
 
@@ -500,12 +503,13 @@ void CCar::Drive()
 void CCar::StartEngine()
 {
 PlayExhausts();
-snd_engine.play_at_pos			(this,Position(),TRUE);
+//m_car_sound.Start();
+m_car_sound->Drive();
 b_engine_on=true;
 }
 void CCar::StopEngine()
 {
-
+m_car_sound->Stop();
 StopExhausts();
 NeutralDrive();//set zero speed
 UpdatePower();//set engine friction;
@@ -514,9 +518,10 @@ b_engine_on=false;
 
 void CCar::Stall()
 {
-	StopEngine();
-	b_stalling=true;
-	m_dwStallTime=Device.dwTimeGlobal;
+	m_car_sound->Stall();
+	NeutralDrive();//set zero speed
+	UpdatePower();//set engine friction;
+	b_engine_on=false;
 }
 void CCar::ReleasePedals()
 {
@@ -941,29 +946,13 @@ float CCar::EngineDriveSpeed()
 	else					  return 0.f;
 }
 
-void CCar::UpdateSound()
-{
-	//float		velocity						= V.magnitude();
-	float		scale							= 0.5f+m_current_rpm/m_torque_rpm/2.f; clamp(scale,0.5f,1.f);
 
-	snd_engine.set_position			(Position());
-	snd_engine.set_frequency		(scale);
-	snd_engine.set_volume			(car_snd_volume);
-	StallSound();
-}
 
 void CCar::StallSound()
 {
 	
 	if(!b_stalling||b_engine_on) return;
-	u32 time_passed=Device.dwTimeGlobal-m_dwStallTime;
-	if(time_passed>2500) 
-	{
-		snd_engine.stop();
-		b_stalling=false;
-		return;
-	}
-	snd_engine.set_volume(car_snd_volume*1000.f/time_passed);
+
 	
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1443,6 +1443,9 @@
 							RelativePath=".\CarInput.cpp">
 						</File>
 						<File
+							RelativePath=".\CarSound.cpp">
+						</File>
+						<File
 							RelativePath=".\CarWheels.cpp">
 						</File>
 					</Filter>

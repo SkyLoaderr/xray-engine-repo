@@ -53,7 +53,6 @@ public:
 	bool b_starting;
 	bool b_stalling;
 	u32	 m_dwStartTime;
-	u32	 m_dwStallTime;
 	float m_fuel;
 	float m_fuel_expence_per_rotation;
 	struct SWheel 
@@ -190,6 +189,34 @@ public:
 		}
 
 	};
+
+	struct SCarSound
+	{
+		ref_sound					snd_engine;
+		enum 
+		{
+			sndOff,
+			sndStalling,
+			sndStoping,
+			sndStarting,
+			sndDrive
+		} eCarSound;
+		void Update();
+		void SwitchOff();
+		void SwitchOn();
+		void Init();
+		void Destroy();
+		void Start();
+		void Stop();
+		void Stall();
+		void Drive();
+		SCarSound(CCar* car);
+		~SCarSound();
+		u32 time_state_start;
+		float volume;
+		CCar* pcar;
+	} *m_car_sound;
+
 private:
 	typedef CEntity			inherited;
 private:
@@ -310,7 +337,6 @@ private:
 	void StopExhausts					();
 	void UpdateExhausts					();
 	void ClearExhausts					();
-	void UpdateSound					();
 	void StallSound						();
 	////////////////////////////////////////////////////
 
@@ -318,7 +344,7 @@ private:
 
 
 
-	ref_sound					snd_engine;
+
 
 	bool					HUDview				( ) { return IsFocused(); }
 
