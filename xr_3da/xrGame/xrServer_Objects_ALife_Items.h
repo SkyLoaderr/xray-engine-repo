@@ -70,6 +70,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	LPCSTR							m_caAmmoSections;
 	u32								m_dwAmmoAvailable;
 	u32								m_dwSlot;
+	u8								m_addon_flags;
 
 									CSE_ALifeItemWeapon(LPCSTR caSection);
 	virtual							~CSE_ALifeItemWeapon();

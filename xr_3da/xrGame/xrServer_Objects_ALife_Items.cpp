@@ -210,6 +210,8 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 	m_dwSlot					= pSettings->r_u32(caSection,"slot");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
         set_visual				(pSettings->r_string(caSection,"visual"));
+
+	m_addon_flags = 0;
 }
 
 CSE_ALifeItemWeapon::~CSE_ALifeItemWeapon	()
@@ -229,6 +231,8 @@ void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 	tNetPacket.r_angle8			(o_Angle.x	);
 	tNetPacket.r_angle8			(o_Angle.y	);
 	tNetPacket.r_angle8			(o_Angle.z	);
+
+	tNetPacket.r_u8				(m_addons_flags);
 }
 
 void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
@@ -244,6 +248,8 @@ void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_angle8			(o_Angle.x	);
 	tNetPacket.w_angle8			(o_Angle.y	);
 	tNetPacket.w_angle8			(o_Angle.z	);
+
+	tNetPacket.w_u8				(m_addons_flags);
 }
 
 void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -252,6 +258,9 @@ void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_u16			(a_current);
 	tNetPacket.r_u16			(a_elapsed);
 	tNetPacket.r_u8				(state);
+	
+	if (m_wVersion > 40)
+		tNetPacket.r_u8				(m_addons_flags);
 }
 
 void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
@@ -260,6 +269,7 @@ void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(a_current);
 	tNetPacket.w_u16			(a_elapsed);
 	tNetPacket.w_u8				(state);
+	tNetPacket.w_u8				(m_addons_flags);
 }
 
 void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time, u32 sender )
