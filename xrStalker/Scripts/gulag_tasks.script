@@ -952,6 +952,12 @@ function loadStates(gname, type)
 		end
 	end
 
+	if type == "rest" then
+		return function(gulag)
+			return 0
+		end
+	end
+
 	if type == "gar_maniac" then
 		return function(gulag)
 			if level.get_time_hours() >= 7 and level.get_time_hours() <= 22 then
