@@ -42,11 +42,9 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
         	return false;
         }
         if (bUpdMotions)bRes = UpdateMotionsStream(source);
-        if (!bRes){
-        	ELog.Msg(mtError,"Can't create preview motions.");
-	        return false;
-        }
-        if (!m_GeometryStream.size()||!m_MotionsStream.size()) 		return false;
+        if (!bRes) ELog.Msg(mtError,"Can't create preview motions.");
+        if (!bRes||!m_GeometryStream.size()||!m_MotionsStream.size())
+         	return false;
         F.write(m_GeometryStream.pointer(),m_GeometryStream.size());
         F.write(m_MotionsStream.pointer(),m_MotionsStream.size());
     }else{
@@ -109,8 +107,12 @@ void CActorTools::MotionModified(){
 	m_bMotionModified = true;
 	UI.Command(COMMAND_UPDATE_CAPTION);
     if (fraLeftBar->ebRenderEngineStyle->Down)
-    	if (m_RenderObject.UpdateVisual(m_pEditObject,false,true))
+    	if (m_RenderObject.UpdateVisual(m_pEditObject,false,true)){
         	PlayMotion();
+        }else{
+        	m_RenderObject.DeleteVisual();
+	        fraLeftBar->SetRenderStyle(false);
+        }
 }
 //---------------------------------------------------------------------------
 

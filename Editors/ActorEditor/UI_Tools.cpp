@@ -148,11 +148,8 @@ bool CActorTools::OnCreate(){
 
     m_bReady = true;
 
-//	m_PSProps->SetCurrent(0);
     ChangeAction(eaSelect);
 
-	// lock
-//    FS.LockFile(0,fn.c_str());
     return true;
 }
 

@@ -70,7 +70,7 @@ LPCSTR 	TokenValue2::GetText()
 {
 	DWORD draw_val 	= GetValue();
     if (OnDrawValue)OnDrawValue(this, &draw_val);
-    if ((draw_val<0)||(draw_val>items.size())) return "";
+    if (draw_val>=items.size()) return 0;
 	return items[draw_val].c_str();
 }
 //------------------------------------------------------------------------------

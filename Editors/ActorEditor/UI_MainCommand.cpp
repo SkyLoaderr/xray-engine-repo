@@ -91,20 +91,26 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		AnsiString fn = m_LastFileName;
 		if (Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)) bRes=Command(COMMAND_SAVE, (DWORD)fn.c_str());
         if (bRes){
+			// unlock
+   	        Engine.FS.UnlockFile(0,m_LastFileName);
         	strcpy(m_LastFileName,fn.c_str());
         	Command(COMMAND_UPDATE_CAPTION);
+            Engine.FS.LockFile(0,m_LastFileName);
+            fraLeftBar->AppendRecentFile(m_LastFileName);
         }
     	}break;
 	case COMMAND_SAVE:{
     	AnsiString fn;
         if (p1)	fn = (char*)p1;
         else	fn = m_LastFileName;
+        Engine.FS.UnlockFile(0,m_LastFileName);
 		if (Tools.Save(fn.c_str())){
         	Command(COMMAND_UPDATE_CAPTION);
 			fraLeftBar->AppendRecentFile(fn.c_str());
         }else{
         	bRes=false;
         }
+        Engine.FS.LockFile(0,m_LastFileName);
     	}break;
     case COMMAND_IMPORT:{
     	AnsiString fn;
@@ -164,10 +170,15 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 			fraLeftBar->AppendRecentFile(m_LastFileName);
 		    fraLeftBar->UpdateMotionList();
         	Command(COMMAND_UPDATE_CAPTION);
+			// lock
+			Engine.FS.LockFile(0,m_LastFileName);
         }
     	}break;
 	case COMMAND_CLEAR:
 		{
+            if (!Tools.IfModified()) return false;
+			// unlock
+			Engine.FS.UnlockFile(0,m_LastFileName);
 			m_LastFileName[0]=0;
 			Device.m_Camera.Reset();
             Tools.Clear();

@@ -115,7 +115,7 @@ bool COMotion::Load(CStream& F){
 //------------------------------------------------------------------------------------------
 CSMotion::CSMotion():CCustomMotion(){
 	mtype			=mtSkeleton;
-    iBoneOrPart		=0;
+    iBoneOrPart		=-1;
     fSpeed			=1.0f;
     fAccrue			=2.0f;
     fFalloff		=2.0f;

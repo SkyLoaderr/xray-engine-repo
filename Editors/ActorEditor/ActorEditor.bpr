@@ -18,13 +18,13 @@
       Intermediate\clsid.obj Intermediate\xr_ini.obj 
       Intermediate\ColorPicker.obj Intermediate\LzHuf.obj 
       Intermediate\UI_Camera.obj Intermediate\UI_MainCommand.obj 
-      Intermediate\FS.obj Intermediate\HW.obj Intermediate\HWCaps.obj 
-      Intermediate\PrimitivesR.obj Intermediate\SharedPrimitive.obj 
-      Intermediate\EditObject.obj Intermediate\Xr_input.obj 
-      Intermediate\fcontroller.obj Intermediate\XR_CustomFont.obj 
-      Intermediate\XR_HUDFont.obj Intermediate\c_dinput.obj 
-      Intermediate\pure.obj Intermediate\xrImage_Resampler.obj 
-      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\Library.obj 
+      Intermediate\FS.obj Intermediate\HWCaps.obj Intermediate\PrimitivesR.obj 
+      Intermediate\SharedPrimitive.obj Intermediate\EditObject.obj 
+      Intermediate\Xr_input.obj Intermediate\fcontroller.obj 
+      Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
+      Intermediate\c_dinput.obj Intermediate\pure.obj 
+      Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
+      Intermediate\LogForm.obj Intermediate\Library.obj 
       Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
       Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
       Intermediate\SH_Texture.obj Intermediate\Shader.obj 
@@ -64,7 +64,8 @@
       Intermediate\ShaderFunction.obj Intermediate\PropertiesListTypes.obj 
       Intermediate\LightAnimLibrary.obj Intermediate\render.obj 
       Intermediate\Frustum.obj Intermediate\xrSkin2W.obj 
-      Intermediate\SoundManager.obj Intermediate\UI_MainMail.obj"/>
+      Intermediate\SoundManager.obj Intermediate\UI_MainMail.obj 
+      Intermediate\defines.obj Intermediate\hw.obj"/>
     <RESFILES value="ActorEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -155,7 +156,6 @@
       <FILE FILENAME="editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\FS.cpp" FORMNAME="" UNITNAME="FS" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\PrimitivesR.cpp" FORMNAME="" UNITNAME="PrimitivesR" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="engine\SharedPrimitive.cpp" FORMNAME="" UNITNAME="SharedPrimitive" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -257,6 +257,8 @@
       <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\hw.cpp" FORMNAME="" UNITNAME="hw" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
@@ -268,7 +270,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=0
-Build=107
+Build=208
 Debug=1
 PreRelease=0
 Special=0
@@ -280,7 +282,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.0.107
+FileVersion=1.0.0.208
 InternalName=
 LegalCopyright=
 LegalTrademarks=
