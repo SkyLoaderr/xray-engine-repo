@@ -349,7 +349,6 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 					if (tpGroupMember)
 						// check if monster is not dead
 						if (tpGroupMember->fHealth <= 0) {
-							graph().level().remove			(tpGroupMember);
 							// detach object from the group
 							tpGroupMember->fHealth			= 0.f;
 							tpGroupMember->m_bDirectControl	= true;
