@@ -1367,9 +1367,27 @@ struct SSS {
 
 lua_State		*L = 0;
 
+luabind::object return_this(LPCSTR namespace_name)
+{
+	string256			S1;
+	strcpy				(S1,namespace_name);
+	LPSTR				S = S1;
+	luabind::object		lua_namespace = luabind::get_globals(L);
+	for (;;) {
+		if (!strlen(S))
+			return		(lua_namespace);
+		LPSTR			I = strchr(S,'.');
+		if (!I)
+			return		(lua_namespace[S]);
+		*I				= 0;
+		lua_namespace	= lua_namespace[S];
+		S				= I + 1;
+	}
+}
+
 luabind::object lua_this()
 {
-	return		(luabind::get_globals(L)["test_this"]);
+	return			(return_this("test_this._1._2._3"));
 }
 
 int __cdecl main(int argc, char* argv[])
@@ -1405,12 +1423,12 @@ int __cdecl main(int argc, char* argv[])
 
 	for (int i=1; i<argc; i++) {
 		string256	l_caScriptName;
-		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\",argv[i],".script");
+		strconcat	(l_caScriptName,"s:\\gamedata\\scripts\\","test_this._1._2._3",".script");
 		printf		("File %s : ",l_caScriptName);
 //		print_stack	(L);
 		bool		b = load_file_into_namespace(L,l_caScriptName,xr_strlen(argv[i]) ? argv[i] : "_G",true);
 //		print_stack	(L);
-		lua_dostring	(L,"test_this.main()");
+		lua_dostring	(L,"test_this._1._2._3.main()");
 		if (xr_strlen(SSS)) {
 			printf		("\n%s\n",SSS);
 			strcpy		(SSS,"");
