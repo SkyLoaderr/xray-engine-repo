@@ -94,7 +94,16 @@ function main()
 				sound	("scripts\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
-				cond	(cond.time_end, 3000)
+				cond	(cond.time_end, 10000)
+				)
+		wait(1000)
+			action(
+				stalker1,
+			  	move	(move.standing, move.walk,move.line,patrol("way0001")),
+				sound	("scripts\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 10000)
 				)
 			action(
 				stalker2,
@@ -102,7 +111,7 @@ function main()
 				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
-				cond	(cond.time_end, 3000)
+				cond	(cond.time_end, 10000)
 				)
                	break		
 		end
