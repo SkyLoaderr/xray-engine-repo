@@ -2,7 +2,7 @@
 
 <xml>
 	<character id="default">
-		<team>Stalker</team>
+		<team>Stalker_general</team>
 	</character>
 	
 	<!-- Stalker  -->	
