@@ -106,5 +106,7 @@
 	<info_portion id="mil_cook_dialog5"></info_portion>
 	<info_portion id="mil_cook_dialog6"></info_portion>
 	
+	<info_portion id="mil_village_monsters_spawn"></info_portion>
+	
 	
 </game_information_portions>
