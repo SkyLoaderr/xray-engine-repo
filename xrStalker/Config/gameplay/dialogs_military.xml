@@ -1379,6 +1379,7 @@
         </phrase_list>
     </dialog>
     <dialog id="mil_cook_common">
+        <precondition>dialogs.dialog_allowed</precondition>
         <phrase_list>
             <phrase id="101">
                 <text>mil_cook_common_101</text>
