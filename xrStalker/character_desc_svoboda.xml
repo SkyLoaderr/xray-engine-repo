@@ -26,7 +26,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
-		<team>Svoboda</team>
+		<team>Svoboda_novice</team>
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -44,7 +44,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
-		<team>Svoboda</team>
+		<team>Svoboda_general</team>
 		<rank>50</rank>
 		<reputation>50</reputation>
 
@@ -62,7 +62,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
-		<team>Svoboda</team>
+		<team>Svoboda_veteran</team>
 		<rank>70</rank>
 		<reputation>50</reputation>
 
@@ -80,7 +80,7 @@
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Свобода".</bio>
 
-		<team>Svoboda</team>
+		<team>Svoboda_master</team>
 		<rank>90</rank>
 		<reputation>50</reputation>
 
