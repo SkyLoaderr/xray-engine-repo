@@ -441,6 +441,7 @@ bool CDetailPathManager::init_build(
 	if (m_start_params.empty())
 		return							(false);
 
+	m_dest_params.clear					();
 	m_dest_params.push_back				(STravelParamsIndex(0.f,PI_MUL_2,u32(-1)));
 
 	return								(true);
