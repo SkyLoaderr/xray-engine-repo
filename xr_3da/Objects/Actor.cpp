@@ -244,6 +244,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	die_bWantRespawn		= FALSE;
 	die_bRespawned			= TRUE;
 
+	m_pArtifact				= 0;
 	return					TRUE;
 }
 
@@ -846,15 +847,25 @@ void CActor::g_PerformDrop	( )
 	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
 
-	//
-	CObject*		O		= Weapons->ActiveWeapon();
-	if (0==O)				return;
+	if (m_pArtifact)
+	{
+		NET_Packet				P;
+		u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+		P.w_u16					(u16(m_pArtifact->ID()));
+		u_EventSend				(P);
 
-	// We doesn't have similar weapon - pick up it
-	NET_Packet				P;
-	u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
-	P.w_u16					(u16(O->ID()));
-	u_EventSend				(P);
+		m_pArtifact				= 0;
+	} else {
+		//
+		CObject*		O		= Weapons->ActiveWeapon();
+		if (0==O)				return;
+
+		// We doesn't have similar weapon - pick up it
+		NET_Packet				P;
+		u_EventGen				(P,GE_OWNERSHIP_REJECT,ID());
+		P.w_u16					(u16(O->ID()));
+		u_EventSend				(P);
+	}
 }
 
 void CActor::g_WeaponBones	(int& L, int& R)

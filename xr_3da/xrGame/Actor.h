@@ -18,6 +18,7 @@ class ENGINE_API CKinematics;
 class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
+class CMercuryBall;
 
 class CActor: 
 	public CEntityAlive, 
@@ -54,8 +55,9 @@ public:
 		mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 	};
 protected:
-	// Weapons
+	// Weapons and Items
 	CWeaponList*			Weapons;
+	CMercuryBall*			m_pArtifact;
 
 	// Respawning after DIE
 	BOOL					die_bWantRespawn;
@@ -133,7 +135,7 @@ protected:
 	float					m_fJumpTime;
 	float					m_fFallTime;
 
-	u32					patch_frame;
+	u32						patch_frame;
 	Fvector					patch_position;
 
 	static void	__stdcall SpinCallback(CBoneInstance*);
@@ -141,8 +143,8 @@ protected:
 	static void	__stdcall HeadCallback(CBoneInstance*);
 private:
 	// Motions
-	u32					mstate_wishful;	
-	u32					mstate_real;	
+	u32						mstate_wishful;	
+	u32						mstate_real;	
 
 	BOOL					m_bJumpKeyPressed;//, m_bJumpInProgress;
 
@@ -177,7 +179,7 @@ private:
 		Fvector				p_pos;					// in world coords
 		Fvector				p_accel;				// in world coords
 		Fvector				p_velocity;				// in world coords
-		u32				mstate;
+		u32					mstate;
 		int					weapon;
 		float				fHealth;
 		float				fArmor;
@@ -194,7 +196,7 @@ private:
 	Fvector					NET_SavedAccel;
 	net_update				NET_Last;
 	BOOL					NET_WasInterpolating;	// previous update was by interpolation or by extrapolation
-	u32					NET_Time;				// server time of last update
+	u32						NET_Time;				// server time of last update
 
 	//------------------------------
 	void					g_cl_CheckControls		(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt);

@@ -29,6 +29,10 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			{
 				R_ASSERT							(BE(Local(),A->Local()));	// remote can't take local
 				A->H_SetParent(this);
+				
+				// 
+				m_pArtifact			= A;
+				// 
 				return;
 			}
 
