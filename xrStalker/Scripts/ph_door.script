@@ -58,7 +58,7 @@ function action_door:initialize()
 		self.st.script_used_more_than_once = true
 	end
 	if self.st.closed then
-		self:close_door(disable_snd)
+		self:close_door()
 	else
 		self:open_door(disable_snd)
 	end
@@ -149,12 +149,7 @@ function action_door:close_check()
 	end
 
 	if self.block then
-		local angle = self.joint:get_axis_angle(90)
-		printf("_bp: action_door:update(): angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
-		if angle >= self.hi_limits then
-			printf("_bp: close_check(): true")
-			return true
-		end
+		return self:is_closed()
 	end
 	printf("_bp: close_check(): false")
 	return false
@@ -189,7 +184,18 @@ function action_door:open_door(disable_snd)
 	end
 end
 
-function action_door:close_door(disable_snd)
+function action_door:is_closed()
+	local angle = self.joint:get_axis_angle(90)
+	printf("_bp: action_door:update(): angle %f limits %f, %f",
+		angle, self.low_limits, self.hi_limits)
+	if angle >= self.hi_limits then
+		printf("_bp: close_check(): true")
+		return true
+	end
+end
+
+function action_door:close_door()
+	local disable_snd = self:is_closed()
 	if not disable_snd then
 		if self.st.snd_close_start then
 			self:door_play_snd_from_set(self.st.snd_close_start)
