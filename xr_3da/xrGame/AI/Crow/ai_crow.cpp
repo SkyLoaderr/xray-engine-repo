@@ -255,7 +255,6 @@ void CAI_Crow::state_DeathFall()
 	Movement.SetPosition(vPosition);
 	Movement.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
 	Movement.GetPosition(vPosition);
-	Log("P: ",vPosition);
 
 	UpdateTransform();
 
