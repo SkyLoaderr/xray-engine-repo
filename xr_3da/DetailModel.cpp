@@ -44,7 +44,7 @@ void CDetail::Load		(CStream* S)
 void CDetail::Optimize	()
 {
 	vector<WORD>		vec_indices, vec_permute;
-	const int			cache	= 14;
+	const int			cache	= HW.Caps.vertex.dwVertexCache;
 
 	// Stripify
 	vec_indices.assign	(indices,indices+number_indices);
