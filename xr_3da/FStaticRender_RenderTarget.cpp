@@ -56,8 +56,8 @@ BOOL CRenderTarget::Create	()
 	
 	// Texture and shader
 	pTexture	= Device.Shader._CreateTexture	(RTname);
-	pShaderSet	= Device.Shader.Create			("screen_set",	RTname);
-	pShaderGray	= Device.Shader.Create			("screen_gray",	RTname);
+	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
+	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pTexture->surface_set	(pSurface);
 	return	TRUE;
 }
