@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "DetailManager.h"
 #include "fstaticrender.h"
-#include "detailformat.h"
 
 const DWORD	vs_size				= 3000;
 const float slot_size			= 4.f;
@@ -349,22 +348,7 @@ IC bool InterpolateAndDither(float* alpha255, DWORD x, DWORD y, DWORD size, int 
 
 void 	CDetailManager::Decompress		(int sx, int sz, Slot& D)
 {
-	// Debug purposes
-	DetailSlot	DS;
-	DS.y_min	= 0;
-	DS.y_max	= .5f;
-	DS.r_yaw	= 0xaaaaaaaa;
-	DS.r_scale	= 0xaaaaaaaa;
-
-	DS.items[0].id			= 1;
-	DS.items[0].palette.a0	= 15;
-	DS.items[0].palette.a1	= 0;
-	DS.items[0].palette.a2	= 15;
-	DS.items[0].palette.a3	= 0;
-
-	DS.items[1].id			= 0xff;
-	DS.items[2].id			= 0xff;
-	DS.items[3].id			= 0xff;
+	DetailSlot&	DS			= QueryDB(sx,sz);
 
 	// Unpacking
 	D.type					= stPending;
@@ -456,4 +440,27 @@ void CDetailManager::UpdateCache	(int limit)
 		// Check for number of decompressions
 		limit--;
 	}
+}
+
+DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
+{
+	static DetailSlot	DS;
+
+	// Debug purposes
+	DS.y_min	= 0;
+	DS.y_max	= .5f;
+	DS.r_yaw	= 0xaaaaaaaa;
+	DS.r_scale	= 0xaaaaaaaa;
+
+	DS.items[0].id			= 1;
+	DS.items[0].palette.a0	= 15;
+	DS.items[0].palette.a1	= 0;
+	DS.items[0].palette.a2	= 15;
+	DS.items[0].palette.a3	= 0;
+
+	DS.items[1].id			= 0xff;
+	DS.items[2].id			= 0xff;
+	DS.items[3].id			= 0xff;
+
+	return DS;
 }

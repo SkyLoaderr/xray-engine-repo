@@ -7,6 +7,7 @@
 #pragma once
 
 #include "xr_list.h"
+#include "detailformat.h"
 
 const int		dm_max_objects	= 32;
 const int		dm_obj_in_slot	= 4;
