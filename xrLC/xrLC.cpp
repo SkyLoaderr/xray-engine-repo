@@ -74,13 +74,13 @@ void Startup(LPSTR     lpCmdLine)
 
 	string32	ID			= BUILD_PROJECT_MARK;
 	string32	id;
-	CStream*	F			= xr_new<CFileStream> (prjName.c_str());
+	IReader*	F			= xr_new<CFileStream> (prjName.c_str());
 	F->Read		(&id,8);
 	if (0==strcmp(id,ID))	{
 		xr_delete		(F);
 		F				= xr_new<CCompressedStream> (prjName.c_str(),ID);
 	}
-	CStream&				FS	= *F;
+	IReader&				FS	= *F;
 
 	// Version
 	DWORD version;

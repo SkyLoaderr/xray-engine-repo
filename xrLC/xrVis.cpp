@@ -45,7 +45,7 @@ exit:
 	return pos*sizeof(WORD);
 }
 
-void SaveDATA(CFS_Base &fs, vector<vecW> &C)
+void SaveDATA(IWriter &fs, vector<vecW> &C)
 {
 	for (vector<vecW>::iterator it=C.begin(); it!=C.end(); it++)
 	{
@@ -112,7 +112,7 @@ void CalculateRelSet(Fvector &pos, vecW &rel_set)
 	}
 }
 
-void CBuild::BuildRelevance(CFS_Base &fs)
+void CBuild::BuildRelevance(IWriter &fs)
 {
 	static Fvector size;
 	static DWORD	nx,ny,nz;

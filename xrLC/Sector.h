@@ -20,7 +20,7 @@ public:
 
 	void BuildHierrarhy	();
 	void Validate		();
-	void Save			(CFS_Base& fs);
+	void Save			(IWriter& fs);
 
 	CSector				(DWORD ID);
 	~CSector			();

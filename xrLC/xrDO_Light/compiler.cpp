@@ -101,9 +101,9 @@ vector<b_rc_face>		g_rc_faces;
 
 //-----------------------------------------------------------------
 template <class T>
-void transfer(const char *name, vector<T> &dest, CStream& F, u32 chunk)
+void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
 {
-	CStream*	O		= F.OpenChunk(chunk);
+	IReader*	O		= F.OpenChunk(chunk);
 	u32		count	= O?(O->Length()/sizeof(T)):0;
 	clMsg			("* %16s: %d",name,count);
 	if (count)  
@@ -161,13 +161,13 @@ void xrLoad(LPCSTR name)
 
 		string32	ID			= BUILD_PROJECT_MARK;
 		string32	id;
-		CStream*	F			= xr_new<CFileStream> (N);
+		IReader*	F			= xr_new<CFileStream> (N);
 		F->Read		(&id,8);
 		if (0==strcmp(id,ID))	{
 			xr_delete			(F);
 			F					= xr_new<CCompressedStream> (N,ID);
 		}
-		CStream&				FS	= *F;
+		IReader&				FS	= *F;
 
 		// Version
 		DWORD version;

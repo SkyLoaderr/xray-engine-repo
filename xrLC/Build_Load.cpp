@@ -4,9 +4,9 @@ b_params				g_params;
 extern u32				dwInvalidFaces;
 
 template <class T>
-void transfer(const char *name, vector<T> &dest, CStream& F, u32 chunk)
+void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
 {
-	CStream*	O		= F.OpenChunk(chunk);
+	IReader*	O	= F.OpenChunk(chunk);
 	u32		count	= O?(O->Length()/sizeof(T)):0;
 	clMsg			("* %16s: %d",name,count);
 	if (count)  
@@ -31,9 +31,9 @@ return 0;
 }
 */
 
-void CBuild::Load	(const b_params& Params, const CStream& _in_FS)
+void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 {
-	CStream&	FS	= const_cast<CStream&>(_in_FS);
+	IReader&	FS	= const_cast<IReader&>(_in_FS);
 	// HANDLE		hLargeHeap	= HeapCreate(0,64*1024*1024,0);
 	// clMsg		("* <LargeHeap> handle: %X",hLargeHeap);
 
@@ -42,7 +42,7 @@ void CBuild::Load	(const b_params& Params, const CStream& _in_FS)
 	float			p_total		= 0;
 	float			p_cost		= 1.f/3.f;
 	
-	CStream*		F			= 0;
+	IReader*		F			= 0;
 
 	// 
 	shaders.Load				("gamedata\\shaders_xrlc.xr");

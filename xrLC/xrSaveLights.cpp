@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "build.h"
 
-void CBuild::SaveLights(CFS_Base &fs)
+void CBuild::SaveLights(IWriter &fs)
 {
 	fs.write_chunk	(fsL_LIGHT_CONTROL,L_control_data.begin(),L_control_data.size());
 

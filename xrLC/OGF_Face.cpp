@@ -170,7 +170,7 @@ void OGF::MakeProgressive()
 	}
 }
 
-void OGF_Base::Save	(CFS_Base &fs)
+void OGF_Base::Save	(IWriter &fs)
 {
 	// BBox (already computed)
 	fs.open_chunk		(OGF_BBOX);
@@ -185,7 +185,7 @@ void OGF_Base::Save	(CFS_Base &fs)
 }
 
 // Represent a node as HierrarhyVisual
-void OGF_Node::Save	(CFS_Base &fs)
+void OGF_Node::Save	(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
 
@@ -207,7 +207,7 @@ void OGF_Node::Save	(CFS_Base &fs)
 
 extern int	RegisterString	(string &T);
 
-void OGF_LOD::Save	(CFS_Base &fs)
+void OGF_LOD::Save	(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
 

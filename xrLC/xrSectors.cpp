@@ -78,7 +78,7 @@ void CBuild::BuildSectors()
 	}
 }
 
-void CBuild::SaveSectors(CFS_Base& fs)
+void CBuild::SaveSectors(IWriter& fs)
 {
 	CFS_Memory MFS;
 	Status("Processing...");

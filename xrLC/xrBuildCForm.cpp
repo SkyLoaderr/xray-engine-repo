@@ -44,7 +44,7 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 	}
 }
 
-void CBuild::BuildCForm(CFS_Base &fs)
+void CBuild::BuildCForm(IWriter &fs)
 {
 	// Collecting data
 	Phase	("CFORM: creating...");
@@ -141,7 +141,7 @@ void CBuild::BuildCForm(CFS_Base &fs)
 	}
 }
 
-void CBuild::BuildPortals(CFS_Base& fs)
+void CBuild::BuildPortals(IWriter& fs)
 {
 	fs.write_chunk(fsL_PORTALS,portals.begin(),portals.size()*sizeof(b_portal));
 }

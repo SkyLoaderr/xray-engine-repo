@@ -127,7 +127,7 @@ void CSector::Validate()
 	R_ASSERT(TreeRoot->Sector == SelfID);
 }
 
-void CSector::Save(CFS_Base &fs)
+void CSector::Save(IWriter &fs)
 {
 	// Root
 	vector<OGF_Base *>::iterator F = find(g_tree.begin(),g_tree.end(),TreeRoot);

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "xrMU_Model.h"
 
-void xrMU_Reference::Load(CStream& F)
+void xrMU_Reference::Load(IReader& F)
 {
 	b_mu_reference		R;
 	F.Read				(&R,sizeof(R));
@@ -14,7 +14,7 @@ void xrMU_Reference::Load(CStream& F)
 	c_bias.set			(0,0,0,0);
 }
 
-void xrMU_Model::Load	(CStream& F)
+void xrMU_Model::Load	(IReader& F)
 {
 	F.RstringZ			(m_name);
 	clMsg				("* Loading model: '%s'...",m_name);

@@ -36,7 +36,7 @@ void	geom_batch_average	(u32 verts, u32 faces)
 	else if (faces<=5000)		g_batch_5000++;
 }
 
-void CBuild::SaveTREE(CFS_Base &fs)
+void CBuild::SaveTREE(IWriter &fs)
 {
 	CFS_Memory			MFS;
 

@@ -89,7 +89,7 @@ private:
 	_face*				load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
 	_vertex*			load_create_vertex	(Fvector& P);
 public:
-	void				Load				(CStream& FS);
+	void				Load				(IReader& FS);
 	void				calc_normals		();
 	void				calc_materials		();
 	void				calc_faceopacity	();
@@ -113,7 +113,7 @@ public:
 	Fvector4			c_scale;
 	Fvector4			c_bias;
 public:
-	void				Load				(CStream& FS);
+	void				Load				(IReader& FS);
 	void				calc_lighting		();
 
 	void				export_cform_game	(CDB::CollectorPacked& CL);

@@ -8,7 +8,7 @@
 extern int	RegisterString		(string &T);
 extern void	geom_batch_average	(u32 verts, u32 faces);
 
-void OGF::Save			(CFS_Base &fs)
+void OGF::Save			(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
 
@@ -63,7 +63,7 @@ void OGF::Save			(CFS_Base &fs)
 	fs.close_chunk		();
 }
 
-void OGF_Reference::Save	(CFS_Base &fs)
+void OGF_Reference::Save	(IWriter &fs)
 {
 	OGF_Base::Save		(fs);
 
@@ -117,7 +117,7 @@ void OGF_Reference::Save	(CFS_Base &fs)
 	fs.close_chunk		();
 }
 
-void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: cached");
 	fs.open_chunk	(OGF_VERTICES);
@@ -140,7 +140,7 @@ void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BO
 	fs.close_chunk();
 }
 
-void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: normal or clod");
 
@@ -198,7 +198,7 @@ void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors,
 
 extern	void xrStripify(std::vector<WORD> &indices, std::vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
 
-void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
+void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg				("- saving: progressive");
 
