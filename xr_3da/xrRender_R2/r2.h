@@ -27,7 +27,8 @@ public:
 		PHASE_NORMAL	= 0,	// E[0]
 		PHASE_SMAP_D	= 1,	// E[1]
 		PHASE_SMAP_P	= 2,	// E[2]
-		PHASE_SMAP_S	= 3		// E[3]
+		PHASE_SMAP_S	= 3,	// E[3]
+		PHASE_EMAP		= 4,	// E[4]
 	};
 
 	BOOL														b_mrt;
