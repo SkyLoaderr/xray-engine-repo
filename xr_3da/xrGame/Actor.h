@@ -336,6 +336,7 @@ public:
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
 	//CWeaponList*						tpfGetWeapons		()	{return Weapons;}
+	virtual f32 GetMass() { return g_Alive()?ph_Movement.GetMass():m_phSkeleton?m_phSkeleton->getMass():0; }
 
 #ifdef DEBUG
 	virtual void						OnRender			();

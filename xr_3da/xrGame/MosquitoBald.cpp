@@ -41,7 +41,7 @@ void CMosquitoBald::Affect(CObject* O) {
 		Fvector l_dir; l_dir.sub(l_pO->Position(), P); l_dir.normalize();
 		//l_pO->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		Fvector position_in_bone_space;
-		float power = Power(l_pO->Position().distance_to(P)), impulse = m_hitImpulseScale*power*(l_pO->m_pPhysicsShell?l_pO->m_pPhysicsShell->getMass():10.f);
+		float power = Power(l_pO->Position().distance_to(P)), impulse = m_hitImpulseScale*power*l_pO->GetMass();
 		if(power > 0.01f) {
 			m_time = 0;
 			position_in_bone_space.set(0.f,0.f,0.f);
