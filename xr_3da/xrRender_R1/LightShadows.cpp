@@ -231,8 +231,8 @@ void CLightShadows::calculate	()
 			float		p_near	=	p_dist-p_R-eps;									
 			float		p_nearR	=	p_dist+eps;									
 			float		p_far	=	_min(Lrange,_max(p_dist+S_fade,p_dist+p_R));	
-			if (p_near<eps)			p_near	= eps;
-			if (p_far<(p_near+eps))	p_far	= p_near+eps;
+			if (p_near<eps)			continue;
+			if (p_far<(p_near+eps))	continue;
 			if (p_hat>0.9f)			continue;
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
@@ -359,6 +359,7 @@ void CLightShadows::render	()
 		xrc.frustum_query		(DB,F);
 		if (0==xrc.r_count())	continue;
 		
+		/*
 		Log							("-----: ",		xrc.r_count());
 		Msg							("light: %x,A(%s),R(%f)",	u32(S.L),S.L->get_active()?"true":"false",S.L->range);
 		if (xrc.r_count() > 5000)	{
@@ -370,6 +371,7 @@ void CLightShadows::render	()
 			Log("slot:  ",	S.slot		);
 			Log("HAT:   ",	S.dbg_HAT	);
 		}
+		*/
 
 		// Clip polys by frustum
 		tess.clear				();
