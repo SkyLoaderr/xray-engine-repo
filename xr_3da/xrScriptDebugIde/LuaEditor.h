@@ -47,6 +47,7 @@ public:
 	void ClearAll();
 	void AddText(const char* szText);
 	void SetReadOnly(BOOL bReadOnly);
+	bool GetReadOnly();
 	void SetEditorMargins();
 	void GrabFocus();
 	void Copy();

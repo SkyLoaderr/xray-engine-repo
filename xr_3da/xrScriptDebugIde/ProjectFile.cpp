@@ -258,6 +258,7 @@ void CProjectFile::Change_status(EVSSStatus st)
 
 EVSSStatus CProjectFile::GetSS_status	()
 {
+	UpdateSS_status();
 	return m_ssStatus;
 }
 

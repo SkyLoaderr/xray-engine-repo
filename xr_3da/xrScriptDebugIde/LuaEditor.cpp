@@ -106,6 +106,9 @@ BOOL CLuaEditor::ToggleBreakpoint(int nLine)
 
 BOOL CLuaEditor::Load(CFile* pFile)
 {
+	bool bReadOnly = GetReadOnly();
+	SetReadOnly(false);
+
 	const int blockSize = 131072;
 
 	Sci(SCI_CLEARALL);
@@ -124,6 +127,7 @@ BOOL CLuaEditor::Load(CFile* pFile)
 	Sci(SCI_SETSAVEPOINT);
 	Sci(SCI_GOTOPOS, 0);
 
+	SetReadOnly(bReadOnly);
 	return TRUE;
 }
 
@@ -297,6 +301,11 @@ void CLuaEditor::SetCallStackMargins()
 	Sci(SCI_SETMARGINSENSITIVEN, 1, FALSE);
 
 	Sci(SCI_MARKERDEFINE, 0, SC_MARK_ARROW);
+}
+
+bool CLuaEditor::GetReadOnly()
+{
+	return	!!Sci(SCI_GETREADONLY);
 }
 
 void CLuaEditor::SetReadOnly(BOOL bReadOnly)
