@@ -116,7 +116,7 @@ void	CBuild::xrPhase_UVmap()
 
 	// Memory compact
 	vecFace		temp;
-	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
+	for (SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
 		temp	= g_XSplit[SP];
 		g_XSplit[SP].clear	();
