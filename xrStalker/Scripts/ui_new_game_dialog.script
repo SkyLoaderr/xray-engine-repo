@@ -58,12 +58,12 @@ function new_game_dlg:InitControls()
 							 height = btn_rect.height}
 							 
 	local btn_normal_rect = {x = btn_rect.x,
-							 y = btn_new_rect.y + btn_new_rect.height + indent,
+							 y = btn_easy_rect.y + btn_easy_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 							 
 	local btn_hard_rect   = {x = btn_rect.x,
-							 y = btn_load_rect.y + btn_load_rect.height + indent,
+							 y = btn_normal_rect.y + btn_normal_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}	
 	
