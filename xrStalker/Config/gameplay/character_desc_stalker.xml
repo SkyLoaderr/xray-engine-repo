@@ -675,9 +675,8 @@
 			[spawn] \n
 			wpn_desert_eagle \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_ak74 = 1, 0, 0, 1 \n
+			wpn_ak74 = 1, 0, 0, 0 \n
 			ammo_5.45x39_ap = 1 \n
-			ammo_vog-25 = 1 \n
 			device_torch \n
 		</supplies>
 			
