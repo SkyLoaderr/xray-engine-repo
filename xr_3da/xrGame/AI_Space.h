@@ -50,6 +50,7 @@ private:
 	// Query
 	vector<BYTE>					q_mark;			// temporal usage mark for queries
 	vector<bool>					q_mark_bit;		// temporal usage mark for queries
+	vector<bool>					q_mark_bit_x;		// temporal usage mark for queries
 	vector<DWORD>					q_stack;
 	
 	// Debug
@@ -65,6 +66,7 @@ public:
 	void			q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, DWORD dwTimeDifference);
 	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
+	void			q_Range_Bit_X	(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
 	//void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, DWORD &BestNode, float &BestCost);
 	DWORD			q_Node			(DWORD PrevNode,  const Fvector& Pos);
 

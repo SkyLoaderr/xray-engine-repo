@@ -267,6 +267,7 @@ class CAI_Zombie : public CCustomMonster
 		// patrol structures
 		vector<Fvector>			m_tpaPatrolPoints;
 		vector<Fvector>			m_tpaPointDeviations;
+		vector<DWORD>			m_dwaNodes;
 		DWORD					m_dwStartPatrolNode;
 		bool					m_bLooped;
 		DWORD					m_dwPatrolPathIndex;

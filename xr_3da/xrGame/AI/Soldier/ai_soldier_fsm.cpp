@@ -610,7 +610,12 @@ void CAI_Soldier::FollowLeaderPatrol()
 			AI_Path.TravelPath.clear();
 			AI_Path.TravelPath.resize(SoldierLeader->AI_Path.TravelPath.size());
 			
-			for (int i=0, j=0; i<SoldierLeader->AI_Path.TravelPath.size(); i++, j++) {
+			vector<DWORD> &dwaNodes = SoldierLeader->m_dwaNodes;
+			
+			CAI_Space &AI = Level().AI;
+			float fHalfSubnodeSize = AI.GetHeader().size*.5f;
+					
+			for (int i=0, j=0, k=0; i<SoldierLeader->AI_Path.TravelPath.size(); i++, j++) {
 				
 				AI_Path.TravelPath[j].floating = FALSE;
 				AI_Path.TravelPath[j].P = SoldierLeader->AI_Path.TravelPath[i].P;
@@ -625,10 +630,11 @@ void CAI_Soldier::FollowLeaderPatrol()
 					else
 						tTemp.sub(SoldierLeader->AI_Path.TravelPath[i].P, SoldierLeader->AI_Path.TravelPath[i - 1].P);
 
-				if ((tTemp.magnitude() < .1f) || ((j > 0) && (COMPUTE_DISTANCE_2D(SoldierLeader->AI_Path.TravelPath[i - 1].P,SoldierLeader->AI_Path.TravelPath[i].P) >= COMPUTE_DISTANCE_2D(SoldierLeader->AI_Path.TravelPath[i - 1].P,SoldierLeader->AI_Path.TravelPath[i < SoldierLeader->AI_Path.TravelPath.size() - 1 ? i + 1 : 0].P)))) {
+				if (tTemp.magnitude() < .1f) {
 					j--;
 					continue;
 				}
+
 				tTemp.y = 0.f;
 				tTemp.normalize();
 				
@@ -650,6 +656,29 @@ void CAI_Soldier::FollowLeaderPatrol()
 							tTemp.set(tTemp.z,0,-tTemp.x);
 				
 				AI_Path.TravelPath[j].P.add(tTemp);
+
+				if ((j > 1) && (COMPUTE_DISTANCE_2D(AI_Path.TravelPath[j].P,AI_Path.TravelPath[j-2].P) <= fHalfSubnodeSize + COMPUTE_DISTANCE_2D(AI_Path.TravelPath[j-1].P,AI_Path.TravelPath[j-2].P))) {
+					j--;
+					continue;
+				}
+
+				int m=k;
+				for ( ; (k < dwaNodes.size()) && (!bfInsideNode(AI,AI.Node(dwaNodes[k]),SoldierLeader->AI_Path.TravelPath[i].P,fHalfSubnodeSize)); k++) ;
+
+				if (k >= dwaNodes.size()) {
+					k = m;
+					AI_Path.TravelPath.erase(AI_Path.TravelPath.begin() + j);
+					j--;
+					continue;
+				}
+				//R_ASSERT(k < dwaNodes.size());
+
+				DWORD dwBestNode;
+				float fBestCost;
+				NodePosition tNodePosition;
+				AI.PackPosition(tNodePosition,AI_Path.TravelPath[j].P);
+				AI.q_Range_Bit_X(dwaNodes[k],SoldierLeader->AI_Path.TravelPath[i].P,4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
+				AI_Path.TravelPath[j].P.y = ffGetY(*(AI.Node(dwBestNode)),AI_Path.TravelPath[j].P.x,AI_Path.TravelPath[j].P.z);
 			}
 			
 			AI_Path.TravelPath.resize(j);
@@ -764,14 +793,17 @@ void CAI_Soldier::Patrol()
 			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 		}
 		
-		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_bLooped,false);
+		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped,false);
 		
+		m_dwCreatePathAttempts++;
+		Msg("paths : %d",m_dwCreatePathAttempts);
+		// invert path if needed
 		if (AI_Path.TravelPath.size()) {
 			if (!m_bLooped) {
 				m_dwLoopCount++;
 				if (m_dwLoopCount % 2 == 0) {
 					DWORD dwCount = AI_Path.TravelPath.size();
-					for (int i=0; i<dwCount / 2; i++) {
+					for ( i=0; i<dwCount / 2; i++) {
 						Fvector tTemp = AI_Path.TravelPath[i].P;
 						AI_Path.TravelPath[i].P = AI_Path.TravelPath[dwCount - i - 1].P;
 						AI_Path.TravelPath[dwCount - i - 1].P = tTemp;

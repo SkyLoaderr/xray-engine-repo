@@ -80,6 +80,7 @@ void CAI_Space::Load(LPCSTR name)
 	// special query tables
 	q_mark.assign		(m_header.count,0);
 	q_mark_bit.assign	(m_header.count,false);
+	q_mark_bit_x.assign	(m_header.count,false);
 
 	// for a* search
 	vfLoadSearch();

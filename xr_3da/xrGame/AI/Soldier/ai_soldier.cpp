@@ -50,6 +50,7 @@ CAI_Soldier::CAI_Soldier()
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwPatrolPathIndex = -1;
+	m_dwCreatePathAttempts = 0;
 }
 
 CAI_Soldier::~CAI_Soldier()

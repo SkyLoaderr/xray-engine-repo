@@ -706,7 +706,7 @@ void CAI_Zombie::Patrol()
 			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 		}
 		
-		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_bLooped);
+		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_dwaNodes, m_bLooped);
 		
 		if (AI_Path.TravelPath.size()) {
 			if (!m_bLooped) {
