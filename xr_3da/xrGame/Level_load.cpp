@@ -255,7 +255,7 @@ BOOL CLevel::Load_GameSpecific_After()
 	if (FS.exist(fn_game, "$level$", "level.ps_static")) {
 		IReader *F = FS.r_open	(fn_game);
 		IRender_Sector* S;
-		CParticlesObject* pStaticPG;
+		CParticlesObject* pStaticParticles;
 		int				chunk = 0;
 		string256		ref_name;
 		Fmatrix			transform;
@@ -263,10 +263,10 @@ BOOL CLevel::Load_GameSpecific_After()
 			OBJ->r_stringZ				(ref_name);
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
 			S							= ::Render->detectSector	(transform.c);
-			pStaticPG					= xr_new<CParticlesObject>			(ref_name,S,false);
-			pStaticPG->SetTransform		(transform);
-			pStaticPG->Play				();
-			m_StaticParticles.push_back	(pStaticPG);
+			pStaticParticles			= xr_new<CParticlesObject>			(ref_name,S,false);
+			pStaticParticles->SetTransform	(transform);
+			pStaticParticles->Play			();
+			m_StaticParticles.push_back	(pStaticParticles);
 			OBJ->close	();
 		}
 		FS.r_close		(F);
