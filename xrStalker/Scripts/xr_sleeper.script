@@ -143,7 +143,7 @@ function add_to_binder(npc, ini, scheme, section, storage)
   	action:add_precondition		(world_property(stalker_ids.property_alive,   	true))
   	action:add_precondition    	(world_property(stalker_ids.property_enemy,   	false))
   	action:add_precondition    	(world_property(properties["need_sleeper"],   	true))
-  	action:add_precondition    	(world_property(properties["state_end"], 	true))
+  	xr_motivator.addCommonPrecondition(action)
  	action:add_effect(world_property(properties["need_sleeper"], false))
   	manager:add_action(operators["action_sleeper"], action)
 

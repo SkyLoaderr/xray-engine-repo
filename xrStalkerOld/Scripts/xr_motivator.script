@@ -120,7 +120,7 @@ function motivator_binder:reload (section)
         }  
 	xr_meet.add_to_binder(self.object, char_ini)
 	--' Компаньон
-	xr_assistance.add_to_binder	(self.object)		
+	xr_assistance.add_to_binder(self.object)		
 	--' помощник, мля !!!
 	xr_motivator.storage[self.object:id ()].sos = {
 		enabled = false,
@@ -129,7 +129,7 @@ function motivator_binder:reload (section)
 		code = 0,
 		need_follow = false
     }
-	xr_sos.add_to_binder (self.object, char_ini)
+	xr_sos.add_to_binder(self.object, char_ini)
 	--' раненый.
 	xr_motivator.storage[self.object:id ()].wounded = {
 		enabled = true,
@@ -160,6 +160,14 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function AddToMotivator(npc)
     npc:bind_object(this.motivator_binder(npc))
+end
+----------------------------------------------------------------------------------------------------------------------
+function addCommonPrecondition(action)
+	action:add_precondition (world_property(xr_evaluators_id.state_change,		true))
+	action:add_precondition (world_property(xr_evaluators_id.reaction,			false))
+	action:add_precondition (world_property(xr_evaluators_id.assistance + 1,	false))
+	action:add_precondition (world_property(xr_evaluators_id.stohe_meet_base + 1,false))
+	
 end
 ----------------------------------------------------------------------------------------------------------------------
 function checkStorage(npc)
