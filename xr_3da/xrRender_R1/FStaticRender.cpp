@@ -232,12 +232,12 @@ void CRender::Calculate				()
 	// Check if camera is too near to some portal - if so force DualRender
 	if (rmPortals) 
 	{
-		Fvector box_radius; box_radius.set(EPS_L*2,EPS_L*2,EPS_L*2);
-		XRC.box_options	(0);
-		XRC.box_query	(rmPortals,Device.vCameraPosition,box_radius);
-		for (int K=0; K<XRC.r_count(); K++)
+		Fvector box_radius;		box_radius.set(EPS_L*2,EPS_L*2,EPS_L*2);
+		Sectors_xrc.box_options	(0);
+		Sectors_xrc.box_query	(rmPortals,Device.vCameraPosition,box_radius);
+		for (int K=0; K<Sectors_xrc.r_count(); K++)
 		{
-			CPortal*	pPortal		= (CPortal*) rmPortals->get_tris()[XRC.r_begin()[K].id].dummy;
+			CPortal*	pPortal		= (CPortal*) rmPortals->get_tris()[Sectors_xrc.r_begin()[K].id].dummy;
 			pPortal->bDualRender	= TRUE;
 		}
 	}
