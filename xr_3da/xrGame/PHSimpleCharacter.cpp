@@ -20,6 +20,8 @@ float object_demage_factor=4.f;
 CPHSimpleCharacter::CPHSimpleCharacter()
 {
 
+	m_object_contact_callback=NULL;
+
 	m_geom_shell=NULL;
 	m_wheel=NULL;
 
@@ -202,9 +204,16 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dGeomGroupAdd(m_geom_group,m_hat_transform);
 	//dGeomGroupAdd(chRGeomGroup,chRCylinder);
 	m_body_interpolation.SetBody(m_body);
+
+	
+	if(m_object_contact_callback)
+	{
+		dGeomUserDataSetObjectContactCallback(m_hat,m_object_contact_callback);
+		dGeomUserDataSetObjectContactCallback(m_geom_shell,m_object_contact_callback);
+		dGeomUserDataSetObjectContactCallback(m_wheel,m_object_contact_callback);
+	}
+
 }
-
-
 void CPHSimpleCharacter::Destroy(){
 	if(!b_exist) return;
 	b_exist=false;
@@ -956,3 +965,14 @@ void CPHSimpleCharacter::doCaptureExist(bool& do_exist)
 {
 do_exist=!!m_capture_joint;
 }
+
+void CPHSimpleCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+m_object_contact_callback=callback;
+if(!b_exist) return;
+
+dGeomUserDataSetObjectContactCallback(m_hat,callback);
+dGeomUserDataSetObjectContactCallback(m_geom_shell,callback);
+dGeomUserDataSetObjectContactCallback(m_wheel,callback);
+}
+

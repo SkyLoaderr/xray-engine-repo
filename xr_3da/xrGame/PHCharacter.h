@@ -1,6 +1,8 @@
 #pragma once
 #include "PHObject.h"
 #include "PHInterpolation.h"
+
+typedef	 void __stdcall ObjectContactCallbackFun(bool& do_colide,	dContact& c);
 class CPhysicsRefObject;
  static enum EEnvironment
 			{
@@ -70,7 +72,7 @@ virtual		void		Destroy								(void)			=0	;
 virtual		void		SetAcceleration						(Fvector accel)	=0	;
 virtual		void		SetPosition							(Fvector pos)	=0	;
 
-
+virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback)=0 ;
 virtual		void		GetVelocity							(Fvector& vvel)	=0	;
 virtual		void		SetVelocity							(Fvector vel)	=0	;
 virtual		void		GetPosition							(Fvector& vpos)	=0	;

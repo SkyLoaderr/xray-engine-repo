@@ -31,6 +31,7 @@ void CPHActorCharacter::Create(dVector3 sizes)
 	dGeomUserDataSetPhObject(m_cap,(CPHObject*)this);
 	dGeomGroupAdd(m_geom_group,m_cap_transform);
 	dGeomSetBody(m_cap_transform,m_body);
+	if(m_object_contact_callback)dGeomUserDataSetObjectContactCallback(m_cap,m_object_contact_callback);
 
 }
 
@@ -280,4 +281,11 @@ void CPHActorCharacter::InitContact(dContact* c){
 	}
 
 
+}
+
+void CPHActorCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
+{
+	inherited::SetObjectContactCallback(callback);
+	if(!b_exist) return;
+	dGeomUserDataSetObjectContactCallback(m_cap,callback);
 }

@@ -4,6 +4,8 @@ extern float object_demage_factor;
 
 class CPHSimpleCharacter : public CPHCharacter {
 protected:
+	/////////////////////////// callback
+	ObjectContactCallbackFun*	m_object_contact_callback;
 	////////////////////////// geometry
 	dGeomID m_geom_shell;
 	dGeomID m_wheel;
@@ -90,7 +92,8 @@ public:
 	virtual		void		Create								(dVector3 sizes)	;
 	virtual		void		Destroy								(void)				;
 
-
+	//get-set
+	virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual		void		SetAcceleration						(Fvector accel)		;
 
 	virtual		void		SetPosition							(Fvector pos)		;

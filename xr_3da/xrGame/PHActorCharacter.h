@@ -8,6 +8,7 @@ class CPHActorCharacter :
 	dGeomID	m_cap;
 	dGeomID m_cap_transform;
 public:
+	virtual	void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
 	virtual	void		InitContact							(dContact* c)		;
 	virtual void		Create								(dVector3 sizes);
 	virtual void		Destroy								(void);

@@ -246,8 +246,8 @@ void CPHCapture::Init(CInifile* ini)
 
 	float pulling_vel_scale =ini->r_float("capture","velocity_scale");				//
 	m_taget_element->set_DynamicLimits(default_l_limit*pulling_vel_scale,default_w_limit*pulling_vel_scale);
-	m_taget_element->PhysicsShell()->set_ObjectContactCallback(object_contactCallbackFun);
-
+	//m_taget_element->PhysicsShell()->set_ObjectContactCallback(object_contactCallbackFun);
+	m_character->SetObjectContactCallback(object_contactCallbackFun);
 }
 
 
@@ -442,6 +442,7 @@ void CPHCapture::Deactivate()
 	Release();
 	if(m_taget_object&&m_taget_element&&m_taget_object->m_pPhysicsShell&&m_taget_object->m_pPhysicsShell->bActive)
 	{
-		m_taget_element->set_ObjectContactCallback(0);
+		//m_taget_element->set_ObjectContactCallback(0);
+		m_character->SetObjectContactCallback(0);
 	}
 }
