@@ -396,7 +396,7 @@ CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)
 	for (DWORD I=0; I<cache.size(); I++)
 	{
 		Slot&	S = cache[I];
-		if ((S.sx==sx)&&(S.sz==sz))	return S;
+		if ((S.sx==sx)&&(S.sz==sz)&&(S.type!=stInvalid))	return S;
 		else {
 			if (S.dwFrameUsed < cache[oldest].dwFrameUsed)	oldest = I;
 		}
