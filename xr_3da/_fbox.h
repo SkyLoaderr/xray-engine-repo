@@ -18,48 +18,47 @@ public:
 	IC	void	set(float x1, float y1, float z1, float x2, float y2, float z2){ min.set(x1,y1,z1);	max.set(x2,y2,z2);};
 	IC	void	set(const _fbox &b)					{ min.set(b.min);	max.set(b.max);	};
 	IC	void	null( )								{ min.set(0,0,0);	max.set(0,0,0);	};
-
+	
 	IC	void	shrink(float s)						{ min.add(s); max.sub(s); };
 	IC	void	shrink(const Fvector& s)			{ min.add(s); max.sub(s); };
 	IC	void	grow(float s)						{ min.sub(s); max.add(s); };
 	IC	void	grow(const Fvector& s)				{ min.sub(s); max.add(s); };
-
+	
 	IC	void	add		(const Fvector &p)			{ min.add(p); max.add(p); };
 	IC	void	offset	(const Fvector &p)			{ min.add(p); max.add(p); };
 	IC	void	add(const _fbox &b, const Fvector &p){ min.add(b.min, p); max.add(b.max, p);	};
-
+	
 	IC	BOOL	contains(float x, float y, float z)	{ return (x>=x1) && (x<=x2) && (y>=y1) && (y<=y2) && (z>=z1) && (z<=z2); };
 	IC	BOOL	contains(const Fvector &p)			{ return contains(p.x,p.y,p.z);	};
 	IC	BOOL	contains(const _fbox &b)			{ return contains(b.min) && contains(b.max); };
-
+	
 	IC	BOOL	similar(const _fbox &b)				{ return min.similar(b.min) && max.similar(b.max); };
-
+	
 	IC	void	invalidate	()						{ min.set(flt_max,flt_max,flt_max); max.set(flt_min,flt_min,flt_min); }
 	IC	void	modify		(const Fvector &p)		{ min.min(p); max.max(p);	}
 	IC	void	merge		(const _fbox &b)		{ modify(b.min); modify(b.max); };
 	IC	void	merge		(const _fbox &b1, const _fbox &b2) { invalidate(); merge(b1); merge(b2); }
-// incorrect!!!
-//	IC	void	transform_tiny	(const _matrix &m)		{ m.transform_tiny(min); m.transform_tiny(max);	}
-//	IC	void	transform_tiny	(const _fbox& B, const _matrix &m)	
-//	{ 
-//		m.transform_tiny(min,B.min);
-//		m.transform_tiny(max,B.max);
-//	}
-
+	IC	void	transform_p	(const _matrix &m)		{ m.transform_tiny(min); m.transform_tiny(max);	}
+	IC	void	transform_p	(const _fbox& B, const _matrix &m)	
+	{ 
+		m.transform_tiny(min,B.min);
+		m.transform_tiny(max,B.max);
+	}
+	
 	IC	void	getsize		(Fvector& R )	const 	{ R.sub( max, min ); };
 	IC	void	getradius	(Fvector& R )	const 	{ getsize(R); R.mul(0.5f); };
-	IC	float	getradius	( )				const 	{ Fvector R; getsize(R); R.mul(0.5f); return R.magnitude(); };
-
+	IC	float	getradius	( )				const 	{ Fvector R; getradius(R); return R.magnitude();	};
+	IC	float	getvolume	()				const	{ Fvector sz; getsize(sz); return sz.x*sz.y*sz.z;	};
 	IC	void	getcenter	(Fvector& C )	const 	{
 		C.x = (min.x + max.x) * 0.5f;
 		C.y = (min.y + max.y) * 0.5f;
 		C.z = (min.z + max.z) * 0.5f;
 	};
 	IC	void	getsphere	(Fvector &C, float &R) const {
-		getcenter(C);
-		R = C.distance_to(max);
+		getcenter			(C);
+		R = C.distance_to	(max);
 	};
-
+	
 	// Detects if this box intersect other
 	IC	BOOL	intersect(const _fbox& box )
 	{
