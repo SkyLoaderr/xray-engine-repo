@@ -156,31 +156,31 @@ object frmPropertiesObject: TfrmPropertiesObject
             RightAlignedText = False
             RightAlignedOrder = False
             Sections.Data = {
-              F4FFFFFF05000000A851230400000000FFFFFFFF000001000000000014000000
-              000000001027000000000000EC43B90504000000000000000000000000000100
-              0000000000000000000100000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000090000000010000000001000000000000
-              000000000000A851230400000000FFFFFFFF00000100000000003C0000000000
-              000010270000000001008048B905000000000000000000000000000001000000
-              0000000000000001000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              000000000000000000000000000090000000080000004D696E696D756D000100
-              0000000000000000000000A851230400000000FFFFFFFF00000100000000003C
-              0000000000000010270000000001004449B90501000000000000000000000000
-              0001000000000000000000000100000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000090000000080000004D6178696D
-              756D0001000000000000000000000000A851230400000000FFFFFFFF00000100
-              000000003C000000000000001027000000000100084AB9050200000000000000
-              0000000000000100000000000000000000010000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000009000000005000000
-              53697A650001000000000000000000000000A851230400000000FFFFFFFF0000
-              0100000000003C000000000000001027000000000100CC4AB905030000000000
-              0000000000000000010000000000000000000001000000000000000000000000
-              0000000000000000000000000000000000000000000000000000000000000000
-              0000000000000000000000000000000000000000000000000000900000000700
+              F4FFFFFF0500000024750041001D0000FFFFFFFF000001000000486F14000000
+              000000001027000000000000EC43B90504000000000065530000000000000100
+              000000000000000000010000000000007753656C656374002475004124750041
+              681D000028544F626A656374202A53656E646572290D0A7B0D0A09696620286D
+              5F5468756D626E61696C29206D5F5468756D626E010000000001000000000000
+              00000000000024750041001D0000FFFFFFFF000001000000486F3C0000000000
+              000010270000000001008048B905000000000000655300000000000001000000
+              00000000000000010000000000007753656C656374002475004124750041681D
+              000028544F626A656374202A53656E646572290D0A7B0D0A09696620286D5F54
+              68756D626E61696C29206D5F5468756D626E080000004D696E696D756D000100
+              000000000000000000000024750041001D0000FFFFFFFF000001000000486F3C
+              0000000000000010270000000001004449B90501000000000065530000000000
+              000100000000000000000000010000000000007753656C656374002475004124
+              750041681D000028544F626A656374202A53656E646572290D0A7B0D0A096966
+              20286D5F5468756D626E61696C29206D5F5468756D626E080000004D6178696D
+              756D000100000000000000000000000024750041001D0000FFFFFFFF00000100
+              0000486F3C000000000000001027000000000100084AB9050200000000006553
+              0000000000000100000000000000000000010000000000007753656C65637400
+              2475004124750041681D000028544F626A656374202A53656E646572290D0A7B
+              0D0A09696620286D5F5468756D626E61696C29206D5F5468756D626E05000000
+              53697A65000100000000000000000000000024750041001D0000FFFFFFFF0000
+              01000000486F3C000000000000001027000000000100CC4AB905030000000000
+              65530000000000000100000000000000000000010000000000007753656C6563
+              74002475004124750041681D000028544F626A656374202A53656E646572290D
+              0A7B0D0A09696620286D5F5468756D626E61696C29206D5F5468756D626E0700
               000043656E7465720001000000000000000000000000}
             StickySections = False
             Tracking = True
@@ -593,14 +593,14 @@ object frmPropertiesObject: TfrmPropertiesObject
               TabOrder = 0
               object RxLabel18: TLabel
                 Left = 4
-                Top = 29
+                Top = 31
                 Width = 64
                 Height = 13
                 Caption = 'Double Sided'
               end
               object lbSurfSideFlag: TLabel
                 Left = 95
-                Top = 29
+                Top = 31
                 Width = 9
                 Height = 13
                 Caption = '...'
@@ -633,8 +633,8 @@ object frmPropertiesObject: TfrmPropertiesObject
               end
               object ebSelectShader: TExtBtn
                 Left = 4
-                Top = 45
-                Width = 40
+                Top = 52
+                Width = 66
                 Height = 16
                 Align = alNone
                 BevelShow = False
@@ -651,13 +651,12 @@ object frmPropertiesObject: TfrmPropertiesObject
                 OnClick = ebSelectShaderClick
               end
               object lbShader: TLabel
-                Left = 44
-                Top = 46
-                Width = 107
+                Left = 6
+                Top = 69
+                Width = 146
                 Height = 13
-                Alignment = taCenter
                 AutoSize = False
-                Caption = '...'
+                Caption = 'default'
                 Color = clBtnFace
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clNavy
@@ -669,8 +668,8 @@ object frmPropertiesObject: TfrmPropertiesObject
               end
               object ebSelectTexture: TExtBtn
                 Left = 4
-                Top = 77
-                Width = 40
+                Top = 118
+                Width = 66
                 Height = 16
                 Align = alNone
                 BevelShow = False
@@ -687,13 +686,12 @@ object frmPropertiesObject: TfrmPropertiesObject
                 OnClick = ebSelectTextureClick
               end
               object lbTexture: TLabel
-                Left = 44
-                Top = 78
-                Width = 107
+                Left = 6
+                Top = 135
+                Width = 146
                 Height = 13
-                Alignment = taCenter
                 AutoSize = False
-                Caption = '...'
+                Caption = 'default'
                 Color = clBtnFace
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clNavy
@@ -705,8 +703,8 @@ object frmPropertiesObject: TfrmPropertiesObject
               end
               object ebSelectShaderXRLC: TExtBtn
                 Left = 4
-                Top = 61
-                Width = 40
+                Top = 85
+                Width = 66
                 Height = 16
                 Align = alNone
                 BevelShow = False
@@ -723,13 +721,12 @@ object frmPropertiesObject: TfrmPropertiesObject
                 OnClick = ebSelectShaderXRLCClick
               end
               object lbShaderXRLC: TLabel
-                Left = 44
-                Top = 62
-                Width = 107
+                Left = 6
+                Top = 102
+                Width = 146
                 Height = 13
-                Alignment = taCenter
                 AutoSize = False
-                Caption = '...'
+                Caption = 'default'
                 Color = clBtnFace
                 Font.Charset = DEFAULT_CHARSET
                 Font.Color = clNavy
