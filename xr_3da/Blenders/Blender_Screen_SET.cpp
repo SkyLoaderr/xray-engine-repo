@@ -63,7 +63,7 @@ void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 
 	switch (version)	{
 	case 2:
-		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_2_oBlendCount;
+		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
 		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
@@ -71,7 +71,7 @@ void	CBlender_Screen_SET::Load	( CStream& FS, WORD version)
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
 		break;
 	case 3:
-		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_2_oBlendCount;
+		xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_4_oBlendCount;
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oClamp);
 		xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
 		xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
