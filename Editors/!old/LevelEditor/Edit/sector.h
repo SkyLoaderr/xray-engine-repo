@@ -64,6 +64,7 @@ public:
 					CSector		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
 	virtual 		~CSector	();
+    virtual bool	CanAttach		() {return false;}
 
     virtual void 	Render		(int priority, bool strictB2F);
 	virtual bool 	RayPick 	(float& distance,const Fvector& start,const Fvector& direction,

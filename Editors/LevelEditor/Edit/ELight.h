@@ -111,6 +111,7 @@ public:
 	void 			Construct		(LPVOID data);
 	virtual 		~CLight			();
     void			CopyFrom		(CLight* src);
+    virtual bool	CanAttach		() {return true;}
 
     // pick functions
 	virtual bool 	RayPick			(float& distance, const Fvector& start, const Fvector& direction,

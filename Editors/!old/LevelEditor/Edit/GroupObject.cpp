@@ -65,7 +65,10 @@ void CGroupObject::OnFrame()
 
 bool CGroupObject::AppendObject(CCustomObject* object)
 {
-	if (object->ClassID==ClassID) return false;
+    if (!object->CanAttach()){
+    	ELog.Msg(mtError,"Can't attach object: '%s'",object->Name);
+	    return false;
+    }
     if (object->GetOwner()){
         if (mrNo==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Object '%s' already in group '%s'. Change group?",object->Name,object->GetOwner()->Name))
         	return false;

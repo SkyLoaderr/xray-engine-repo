@@ -22,6 +22,7 @@ public:
 					CPortal		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
 	virtual 		~CPortal	();
+    virtual bool	CanAttach	() {return false;}
 
     virtual void 	Render		(int priority, bool strictB2F);
 	virtual bool 	RayPick		(float& distance,const Fvector& start,const Fvector& direction,

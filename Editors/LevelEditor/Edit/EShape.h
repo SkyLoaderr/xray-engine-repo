@@ -26,10 +26,11 @@ protected:
 	virtual void 	SetScale		(const Fvector& val);
     virtual void	OnUpdateTransform();
 public:
-					CEditShape 	(LPVOID data, LPCSTR name);
-	void 			Construct	(LPVOID data);
-	virtual 		~CEditShape	();
-
+					CEditShape 		(LPVOID data, LPCSTR name);
+	void 			Construct		(LPVOID data);
+	virtual 		~CEditShape		();
+    virtual bool	CanAttach		() {return true;}
+    
     // pick functions
 	virtual bool 	RayPick		(float& distance, const Fvector& start, const Fvector& direction, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick	(const CFrustum& frustum);

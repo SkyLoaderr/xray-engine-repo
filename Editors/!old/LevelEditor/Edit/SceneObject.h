@@ -52,6 +52,7 @@ public:
 	CEditableObject*UpdateReference			();
 	IC EditMeshVec* Meshes					() {return m_pReference?&m_pReference->Meshes():0;}
     IC LPCSTR		GetRefName				() {return m_pReference?m_pReference->GetName():0;}
+    virtual bool	CanAttach				() {return true;}
 
     // statistics methods
 	IC bool 		IsDynamic     			()	{return (m_pReference?m_pReference->IsDynamic():false); }

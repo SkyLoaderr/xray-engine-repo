@@ -32,7 +32,8 @@ public:
 	                CGlow       (LPVOID data, LPCSTR name);
     void            Construct   (LPVOID data);
 	virtual         ~CGlow      ();
-
+    virtual bool	CanAttach	() {return true;}
+    
     void			Compile		();
 
 	virtual void    Render      (int priority, bool strictB2F);

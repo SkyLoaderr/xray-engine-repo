@@ -28,6 +28,7 @@ public:
 
 	void			UpdateBBoxAndPivot(bool bInitFromFirstObject);
 	virtual bool 	GetBox			(Fbox& box);
+    virtual bool	CanAttach		() {return false;}
 
     virtual void 	NumSetPosition	(const Fvector& pos);
 	virtual void 	NumSetRotation	(const Fvector& rot);

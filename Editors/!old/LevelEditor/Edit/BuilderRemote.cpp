@@ -838,7 +838,10 @@ BOOL SceneBuilder::CompileStatic()
 
 // make hemisphere
 	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene.GetOTools(OBJCLASS_LIGHT));
-	BuildHemiLights	(lt->m_HemiQuality,lt->FindLightControl(lt->m_HemiControl)->name.c_str());
+    LPCSTR h_control	= lt->FindLightControl(lt->m_HemiControl)->name.c_str();
+	BuildHemiLights		(lt->m_HemiQuality,h_control);
+    if (0!=strcmp(LCONTROL_HEMI,h_control))
+		BuildHemiLights	(lt->m_HemiQuality,LCONTROL_HEMI);
 // make sun
 	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
 // parse scene

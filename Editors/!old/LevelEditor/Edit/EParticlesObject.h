@@ -18,6 +18,7 @@ public:
 	                	EParticlesObject   	(LPVOID data, LPCSTR name);
     void            	Construct   		(LPVOID data);
 	virtual         	~EParticlesObject  	();
+    virtual bool		CanAttach			() {return false;}
 
     IParticleCustom*	GetParticles		(){return m_Particles;}
 	LPCSTR				GetReferenceName	(){return m_Particles?*m_Particles->Name():0;}

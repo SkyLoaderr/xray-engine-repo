@@ -23,7 +23,8 @@ public:
 						ESoundEnvironment(LPVOID data, LPCSTR name);
 	void 				Construct		(LPVOID data);
 						~ESoundEnvironment();
-                    
+    virtual bool	CanAttach			() {return false;}
+                        
   	virtual bool 		Load			(IReader&);
 	virtual void 		Save			(IWriter&);
 	virtual void		FillProp		(LPCSTR pref, PropItemVec& values);
