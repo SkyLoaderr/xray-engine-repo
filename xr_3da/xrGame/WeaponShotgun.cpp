@@ -215,6 +215,7 @@ bool CWeaponShotgun::Action(s32 cmd, u32 flags)
 		cmd==kWPN_FIRE && flags&CMD_START &&
 		m_sub_state==eSubstateReloadInProcess		)//остановить перезагрузку
 	{
+		AddCartridge(1);
 		m_sub_state = eSubstateReloadEnd;
 		return true;
 	}
