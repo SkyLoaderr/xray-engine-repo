@@ -45,7 +45,7 @@ BOOL CLight_Render_Direct::compute_xfp_1	(u32 m_phase, light* L)
 	// The last possibility - our main frustum is totally inside test frustum
 	Fvector		p_base			[5];
 	float		p_FOV			= Device.fFOV;
-	float		p_DIST			= g_pGamePersistent->Environment->CurrentEnv.far_plane;
+	float		p_DIST			= g_pGamePersistent->Environment.CurrentEnv.far_plane;
 	Fmatrix		mCam;			mCam.invert			(Device.mView);
 	Fvector						camD,camN,camR,camP;
 	ComputeFrustum				(p_base,p_FOV,1.f,p_DIST,mCam.k,mCam.j,mCam.i,mCam.c);
