@@ -290,33 +290,33 @@ public:
 
 };
 
-void send_message()
-{
-	LPCSTR							mailslot = 	"\\\\*\\mailslot\\game";
-
-	HANDLE							handle	= CreateFile(
-		mailslot,
-		GENERIC_WRITE,
-		FILE_SHARE_READ,
-		0,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		0
-		);
-
-	if (INVALID_HANDLE_VALUE != handle) {
-		BOOL			result; 
-		DWORD			bytes_written; 
-
-		result			= WriteFile(
-			handle,
-			"quit",
-			(DWORD)xr_strlen("quit") + 1,
-			&bytes_written,
-			0
-			);
-	}
-}
+//void send_message()
+//{
+//	LPCSTR							mailslot = 	"\\\\*\\mailslot\\game";
+//
+//	HANDLE							handle	= CreateFile(
+//		mailslot,
+//		GENERIC_WRITE,
+//		FILE_SHARE_READ,
+//		0,
+//		OPEN_EXISTING,
+//		FILE_ATTRIBUTE_NORMAL,
+//		0
+//		);
+//
+//	if (INVALID_HANDLE_VALUE != handle) {
+//		BOOL			result; 
+//		DWORD			bytes_written; 
+//
+//		result			= WriteFile(
+//			handle,
+//			"quit",
+//			(DWORD)xr_strlen("quit") + 1,
+//			&bytes_written,
+//			0
+//			);
+//	}
+//}
 
 class CGraphMerger {
 public:
@@ -447,22 +447,22 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	string256						l_caFileName;
 	FS.update_path					(l_caFileName,"$game_data$","game.graph");
 
-	send_message					();
-
-	while (!DeleteFile(l_caFileName)) {
-		string512					S;
-		sprintf						(S,"Cannot delete file\"%s\"!\nClose all the applications which are using it and press 'Retry'.\nIf you don't want to save the game graph (i.e. all the levels can be INVALID)- press 'Cancel'",l_caFileName);
-		int							result = MessageBox(
-			logWindow,
-			S,
-			"Error!",
-			MB_RETRYCANCEL|MB_ICONWARNING
-		);
-		if (result == IDCANCEL)
-			break;
-		
-		send_message				();
-	}
+//	send_message					();
+//
+//	while (!DeleteFile(l_caFileName)) {
+//		string512					S;
+//		sprintf						(S,"Cannot delete file\"%s\"!\nClose all the applications which are using it and press 'Retry'.\nIf you don't want to save the game graph (i.e. all the levels can be INVALID)- press 'Cancel'",l_caFileName);
+//		int							result = MessageBox(
+//			logWindow,
+//			S,
+//			"Error!",
+//			MB_RETRYCANCEL|MB_ICONWARNING
+//		);
+//		if (result == IDCANCEL)
+//			break;
+//		
+//		send_message				();
+//	}
 	F.save_to						(l_caFileName);
 
 	// free all the graphs
