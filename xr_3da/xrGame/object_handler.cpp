@@ -85,7 +85,7 @@ void CObjectHandler::reload			(LPCSTR section)
 void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemTake	(inventory_item);
-	Msg							("Adding item %s (%d)",*inventory_item->cName(),inventory_item->ID());
+//	Msg							("Adding item %s (%d)",*inventory_item->cName(),inventory_item->ID());
 	add_item					(inventory_item);
 
 	CTorch						*torch = dynamic_cast<CTorch*>(inventory_item);
@@ -96,7 +96,7 @@ void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemDrop	(inventory_item);
-	Msg							("Removing item %s (%d)",*inventory_item->cName(),inventory_item->ID());
+//	Msg							("Removing item %s (%d)",*inventory_item->cName(),inventory_item->ID());
 	remove_item					(inventory_item);
 
 	CTorch						*torch = dynamic_cast<CTorch*>(inventory_item);
