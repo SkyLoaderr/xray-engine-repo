@@ -131,7 +131,7 @@ void	CLightDB_Static::add_sector_lights(vector<WORD> &L)
 		xrLIGHT&  T	= Lights[ID];
 		if (T.dwFrame==Device.dwFrame) continue;
 		
-		if ((T.type == D3DLIGHT_DIRECTIONAL)||(::Render->View->testSphere_dirty	(T.position, T.range))) 
+		if ((T.type == D3DLIGHT_DIRECTIONAL)||(RImplementation->View->testSphere_dirty	(T.position, T.range))) 
 		{
 			Selected.push_back(ID);
 			T.dwFrame=Device.dwFrame;
