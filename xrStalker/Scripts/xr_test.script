@@ -20,7 +20,7 @@ class "action_test_activity" (action_base)
 
 function action_test_activity:__init (npc_name, action_name, storage) super(nil, action_name)
   self.st = storage
-  self.move_mgr = move_mgr.move_mgr()
+  self.move_mgr = move_mgr.move_mgr(storage.npc)
 end
 
 function action_test_activity:initialize()
@@ -31,7 +31,7 @@ function action_test_activity:initialize()
   self.object:set_desired_position()
   self.object:set_desired_direction()
 
-  self.move_mgr:initialize(self.object)
+  self.move_mgr:initialize()
 
   --printf("initiz")
   self.initialized = true
