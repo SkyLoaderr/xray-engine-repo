@@ -438,6 +438,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 				Q.mul_43			(XF,T);
 
 				// Build points
+				/*
 				Fvector A[8],B[8];
 				Fplane  P;
 				A[0].set( -.5f, -.5f, -.5f); A[0].mul(2.f);	Q.transform_tiny	(B[0],A[0]);
@@ -456,12 +457,11 @@ BOOL CCF_Shape::Contact		( CObject* O )
 				P.build(B[3],B[2],B[4]);	if (P.classify(S.P)>S.R) break;
 				P.build(B[1],B[0],B[6]);	if (P.classify(S.P)>S.R) break;
 				return TRUE;
+				*/
 
-				/*
 				// Build frustum
 				F.CreateFromMatrix	(Q,FRUSTUM_P_ALL);
 				if (F.testSphere_dirty(S.P,S.R))	return TRUE;
-				*/
 			}
 			break;
 		}

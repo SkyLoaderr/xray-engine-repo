@@ -20,12 +20,12 @@ void CDetail::Load		(CStream* S)
 	
 	// Vertices
 	u32				size_vertices		= number_vertices*sizeof(fvfVertexIn); 
-	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
+	vertices		= (CDetail::fvfVertexIn *)	xr_malloc	(size_vertices,64);
 	S->Read			(vertices,size_vertices);
 	
 	// Indices
 	u32				size_indices		= number_indices*sizeof(WORD);
-	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
+	indices			= (WORD*)					xr_malloc	(size_indices,64);
 	S->Read			(indices,size_indices);
 	
 	// Validate indices
@@ -68,8 +68,8 @@ void CDetail::Optimize	()
 
 void CDetail::Unload	()
 {
-	if (vertices)		{ _aligned_free(vertices);	vertices=0; }
-	if (indices)		{ _aligned_free(indices);	indices=0;	}
+	if (vertices)		{ xr_free(vertices);	vertices=0; }
+	if (indices)		{ xr_free(indices);	indices=0;	}
 	Device.Shader.Delete(shader);
 }
 
