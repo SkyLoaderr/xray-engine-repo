@@ -70,7 +70,7 @@ IC void CObjectSpace::Object_Move			( CObject *O )
 	VERIFY		(O);
 	CCFModel*	M = O->CFORM();
 
-	Irect&		r0	= M->last_rect;
+	Irect&		r0	= M->rect_last;
 	Irect		r1;
 	GetRect		(M, r1);
 	if (r0.cmp(r1))	return;
@@ -87,7 +87,7 @@ IC void CObjectSpace::Object_Move			( CObject *O )
 				for (iz=r1.y1;iz<=r1.y2;iz++)
 					if (!r0.in(ix,iz))	Dynamic(ix,iz).lst.push_back(O);
 					
-					M->last_rect.set( r1 );				// set model last rect
+					M->rect_last.set( r1 );				// set model last rect
 }
 //----------------------------------------------------------------------
 IC void CObjectSpace::Object_Unregister		( CObject *O )
@@ -95,7 +95,7 @@ IC void CObjectSpace::Object_Unregister		( CObject *O )
 	R_ASSERT	(O);
 	CCFModel*	M = O->CFORM();
 	if (M){
-		Irect&	r0 = M->last_rect;
+		Irect&	r0 = M->rect_last;
 
 		int 	ix, iz;
 		for (ix=r0.x1; ix<=r0.x2; ix++){
@@ -104,7 +104,7 @@ IC void CObjectSpace::Object_Unregister		( CObject *O )
 				lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
 			}
 		}
-		M->last_rect.null();
+		M->rect_last.null();
 	}
 }
 //----------------------------------------------------------------------
