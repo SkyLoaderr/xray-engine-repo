@@ -40,6 +40,7 @@ snd = gar_dm_newbie_thank_you
 arrival_timeout = 20000
 snd_timeout = 20000
 reactions = ignore
+combat_ignore_cond = always
 on_signal = action_end | walker@leave %=actor_friend%
 
 [walker@leave]
@@ -47,4 +48,5 @@ path_walk = val_escort_captive_leave_walk
 path_look = val_escort_captive_leave_look
 meet_dialog = val_escort_hello
 meet_enabled = true
+combat_ignore_cond = always
 on_signal = arrived | nil %+val_escort_captive_offline%

@@ -191,7 +191,10 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.retval_after_rotation = nil
 
-	self.syn_signal_set_tm = nil
+	-- — момента включени€ схемы должна пройти как минимум секунда, прежде чем
+	-- провер€ть состо€ние синхронизации с другими сталкерами (иначе после лоада
+	-- они могут не успеть заспавнитьс€).
+	self.syn_signal_set_tm = device():time_global() + 1000
 	self.syn_signal = nil
 
 	self.sound = nil
@@ -287,7 +290,7 @@ function move_mgr:update()
 		if self:sync_ok() then
 			self:scheme_set_signal(self.syn_signal)
 			self.syn_signal = nil
-			self.syn_signal_set_tm = nil
+			--self.syn_signal_set_tm = nil
 		end
 	end
 	
@@ -354,9 +357,9 @@ function move_mgr:update_standing_state(look_pos)
 end
 
 function move_mgr:time_callback()
-	if self.syn_signal then
-		return
-	end
+	--if self.syn_signal then
+	--	return
+	--end
 	if self.last_index and self.patrol_walk:terminal(self.last_index) then
 		if utils.stalker_at_waypoint(self.object, self.patrol_walk, self.last_index) then
 			-- ≈сли стоим на конечной точке пути и с нее никуда не сдвинулись,
@@ -395,7 +398,7 @@ end
 function move_mgr:turn_end_callback()
 	local syn = self.path_look_info[self.last_look_index]["syn"]
 	if syn then
-		self.syn_signal_set_tm = device():time_global() + 1000
+		--self.syn_signal_set_tm = device():time_global() + 1000
 		self.syn_signal = self.path_look_info[self.last_look_index]["sig"]
 		if not self.syn_signal then
 			utils.abort("object '%s': path_look '%s': syn flag uset without sig flag", self.object:name(), self.path_look)
