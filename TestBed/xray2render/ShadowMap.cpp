@@ -878,9 +878,13 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	D3DXMatrixInverse						(&mInvView,0,&dm_2view);
 	D3DXVec3TransformNormal					(&vLightDir, &vLightDir,&mInvView);
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
+
 	cc.set									(s_Light_Direct_smap.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
 	cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f,		.3f,		1.,			.9	);
 	cc.set									(s_Light_Direct_smap.constants.get("light_xform"),		dm_model2world2view2projection_light	);
+
+	R_constant*	C							= s_Light_Direct_smap.constants.get("jitter");
+	cc.seta									(C,0,)
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
