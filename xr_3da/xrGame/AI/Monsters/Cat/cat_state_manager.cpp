@@ -12,6 +12,7 @@
 #include "cat_state_attack_rat.h"
 #include "../../../clsid_game.h"
 #include "../states/state_test_look_actor.h"
+#include "../critical_action_info.h"
 
 CStateManagerCat::CStateManagerCat(CCat *obj) : inherited(obj)
 {
@@ -25,11 +26,16 @@ CStateManagerCat::CStateManagerCat(CCat *obj) : inherited(obj)
 	add_state(eStateAttackRat,			xr_new<CStateCatAttackRat<CCat> >					(obj));
 
 	add_state(eStateThreaten,			xr_new<CStateMonsterLookActor<CCat> >				(obj));
+
+
+	m_rot_jump_last_time = 0;
 }
 
 CStateManagerCat::~CStateManagerCat()
 {
 }
+
+#define ROTATION_JUMP_DELAY		3000
 
 void CStateManagerCat::execute()
 {
@@ -69,7 +75,32 @@ void CStateManagerCat::execute()
 		else			state_id = eStateRest;
 	}
 
-	state_id = eStateThreaten;
+	if (state_id == eStateAttackRat) {
+		if (!object->MotionMan.IsCriticalAction()) {
+			CObject *target = const_cast<CEntityAlive *>(object->EnemyMan.get_enemy());
+			if (object->CJumpingAbility::can_jump(target)) {
+				object->try_to_jump();
+			}
+		}
+	}
+
+	if (object->CriticalActionInfo->is_fsm_locked()) return;
+	
+	if (state_id == eStateAttackRat) {
+		// check angle
+		float yaw, pitch;
+		Fvector().sub(enemy->Position(), object->Position()).getHP(yaw,pitch);
+		yaw *= -1;	yaw = angle_normalize(yaw);
+		if (angle_difference(yaw,object->m_body.current.yaw) > 2*PI_DIV_3) {
+			
+			if (m_rot_jump_last_time + ROTATION_JUMP_DELAY < Level().timeServer()) {
+				object->MotionMan.SetSpecParams(ASP_ROTATION_JUMP);
+				m_rot_jump_last_time = Level().timeServer();
+				return;
+			}
+			
+		}
+	}
 
 	select_state(state_id); 
 

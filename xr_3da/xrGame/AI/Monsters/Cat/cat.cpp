@@ -2,6 +2,7 @@
 #include "cat.h"
 #include "cat_state_manager.h"
 #include "../../../../skeletonanimated.h"
+#include "../ai_monster_utils.h"
 
 CCat::CCat()
 {
@@ -119,6 +120,50 @@ void CCat::CheckSpecParams(u32 spec_params)
 	}
 
 	if ((spec_params & ASP_ATTACK_RAT) == ASP_ATTACK_RAT) MotionMan.SetCurAnim(eAnimAttackRat);
+
+	if ((spec_params & ASP_ROTATION_JUMP) == ASP_ROTATION_JUMP) {
+		float yaw, pitch;
+		Fvector().sub(EnemyMan.get_enemy()->Position(), Position()).getHP(yaw,pitch);
+		yaw *= -1;
+		yaw = angle_normalize(yaw);
+
+		EMotionAnim anim = eAnimJumpLeft;
+		if (from_right(yaw,m_body.current.yaw)) {
+			anim = eAnimJumpRight;
+			yaw = angle_normalize(yaw + PI / 20);	
+		} else yaw = angle_normalize(yaw - PI / 20);
+
+		MotionMan.Seq_Add(anim);
+		MotionMan.Seq_Switch();
+
+		CMonsterMovement::stop_linear		();
+		CMovementManager::m_body.target.yaw = yaw;
+
+		// calculate angular speed
+		float new_angular_velocity; 
+		float delta_yaw = angle_difference(yaw,m_body.current.yaw);
+		float time = MotionMan.GetCurAnimTime();
+		new_angular_velocity = delta_yaw / time; 
+
+		MotionMan.ForceAngularSpeed(new_angular_velocity);
+
+		return;
+	}
+
+
+}
+
+void CCat::UpdateCL()
+{
+	inherited::UpdateCL				();
+	CJumpingAbility::update_frame	();
+}
+
+void CCat::HitEntityInJump(const CEntity *pEntity)
+{
+	SAAParam params;
+	MotionMan.AA_GetParams	(params, "jump_attack_2");
+	HitEntity				(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 
 

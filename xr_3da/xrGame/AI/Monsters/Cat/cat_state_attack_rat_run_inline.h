@@ -28,7 +28,7 @@ void CStateCatAttackRatRunAbstract::execute()
 	object->MotionMan.accel_deactivate					();
 	object->CMonsterMovement::set_target_point			(object->EnemyMan.get_enemy()->Position(), object->EnemyMan.get_enemy()->level_vertex_id());
 	object->CMonsterMovement::set_rebuild_time			(100 + u32(50.f * dist));
-	object->CMonsterMovement::set_distance_to_end		(2.5f);
+	object->CMonsterMovement::set_distance_to_end		(1.5f);
 	object->CMonsterMovement::set_use_covers			();
 	object->CMonsterMovement::set_cover_params			(5.f, 30.f, 1.f, 30.f);
 	object->CMonsterMovement::set_try_min_time			(false);

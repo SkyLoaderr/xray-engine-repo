@@ -254,9 +254,8 @@ bool CJumpingAbility::can_jump(CObject *target)
 	Fvector source_position		= m_object->Position	();
 	Fvector target_position;
 	target->Center				(target_position);
-
 	
-	float dist = source_position.distance_to(predict_position(target, target_position));
+	float dist = source_position.distance_to(target_position);
 	if ((dist < m_min_distance) || (dist > m_max_distance)) return false;
 	
 	// получить вектор направления и его мир угол
@@ -287,6 +286,22 @@ Fvector CJumpingAbility::predict_position(CObject *obj, const Fvector &pos)
 
 	Fvector prediction_pos;
 	prediction_pos.mad(pos, obj->Direction(), prediction_dist);
+
+	// проверить prediction_pos на дистанцию и угол
+	float dist = m_object->Position().distance_to(prediction_pos);
+	if ((dist < m_min_distance) || (dist > m_max_distance)) return pos;
+	
+	// получить вектор направления и его мир угол
+	Fvector		dir;
+	float		yaw, pitch;
+
+	dir.sub		(prediction_pos, m_object->Position());
+	dir.getHP	(yaw, pitch);
+	yaw			*= -1;
+	yaw			= angle_normalize(yaw);
+
+	// проверка на angle и на dist
+	if (angle_difference(m_object->CMovementManager::m_body.current.yaw, yaw) > m_max_angle) return pos;
 	
 	return prediction_pos;
 }

@@ -35,6 +35,7 @@ class CJumpingAbility {
 	bool			m_active;
 	bool			m_object_hitted;
 	bool			m_velocity_bounced;
+	bool			m_use_prediction;
 
 public:
 					CJumpingAbility		();
@@ -81,7 +82,7 @@ private:
 			bool	is_landing			();	
 			bool	is_on_the_ground	();
 
-
+	// position prediction
 			Fvector	predict_position	(CObject *obj, const Fvector &pos);
 };
 

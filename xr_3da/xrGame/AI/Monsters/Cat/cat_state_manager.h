@@ -20,6 +20,9 @@ class CStateManagerCat : public CStateManagerSecond<CCat> {
 		eStateAttackRat,
 	};
 
+	u32					m_rot_jump_last_time;
+
+
 public:
 						CStateManagerCat	(CCat *obj);	
 	virtual				~CStateManagerCat	();
