@@ -146,6 +146,8 @@ private:
 		Fvector				p_velocity;				// in world coords
 		DWORD				mstate;
 		int					weapon;
+		float				fHealth;
+		float				fArmor;
 
 		net_update()	{
 			dwTimeStamp		= 0;

@@ -61,6 +61,8 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	P.w_angle8			(r_torso.pitch);
 	P.w_sdir			(NET_SavedAccel);
 	P.w_sdir			(Movement.GetVelocity());
+	P.w_float_q16		(fHealth,-1000,1000);
+	P.w_float_q16		(fArmor,-1000,1000);
 }
 
 void CActor::net_Import		(NET_Packet& P)					// import from server
@@ -70,15 +72,17 @@ void CActor::net_Import		(NET_Packet& P)					// import from server
 	net_update		N;
 
 	u8	 flags, tmp;
-	P.r_u32			(N.dwTimeStamp	);
-	P.r_u8			(flags			);
-	P.r_vec3		(N.p_pos		);
-	P.r_u8			(tmp			); N.mstate = DWORD(tmp);
-	P.r_angle8		(N.o_model		);
-	P.r_angle8		(N.o_torso.yaw	);
-	P.r_angle8		(N.o_torso.pitch);
-	P.r_sdir		(N.p_accel		);
-	P.r_sdir		(N.p_velocity	);
+	P.r_u32				(N.dwTimeStamp	);
+	P.r_u8				(flags			);
+	P.r_vec3			(N.p_pos		);
+	P.r_u8				(tmp			); N.mstate = DWORD(tmp);
+	P.r_angle8			(N.o_model		);
+	P.r_angle8			(N.o_torso.yaw	);
+	P.r_angle8			(N.o_torso.pitch);
+	P.r_sdir			(N.p_accel		);
+	P.r_sdir			(N.p_velocity	);
+	P.r_float_q16		(fHealth,-1000,1000);
+	P.r_float_q16		(fArmor,-1000,1000);
 
 	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
 		NET.push_back			(N);
@@ -338,6 +342,7 @@ void CActor::g_Physics				(Fvector& accel, float jump, float dt)
 
 void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, float f)
 {
+	float invf		= 1.f-f;
 	// 
 	o_model			= CEntity::u_lerp_angle	(A.o_model,B.o_model,		f);
 	o_torso.yaw		= CEntity::u_lerp_angle	(A.o_torso.yaw,B.o_torso.yaw,f);
@@ -347,6 +352,8 @@ void CActor::net_update::lerp(CActor::net_update& A, CActor::net_update& B, floa
 	p_velocity.lerp	(A.p_velocity,B.p_velocity,f);
 	mstate			= (f<0.5f)?A.mstate:B.mstate;
 	weapon			= (f<0.5f)?A.weapon:B.weapon;
+	fHealth			= invf*A.fHealth+f*B.fHealth;
+	fArmor			= invf*A.fArmor+f*B.fArmor;
 }
 
 void CActor::ZoneEffect	(float z_amount)
