@@ -219,7 +219,7 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			if( D <=0 ) continue;
 			
 			// Raypick
-			float R		= sqrtf(sqD);
+			float R		= _sqrt(sqD);
 			if (!RayPick(DB,Pnew,Ldir,R,*L))
 				amount += (D*L->energy)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 		}
