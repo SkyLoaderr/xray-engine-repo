@@ -1306,6 +1306,13 @@
 					RelativePath="xr_spawn_merge.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Verify"
+				Filter="">
+				<File
+					RelativePath=".\verify_level_graph.cpp">
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\todo.txt">
