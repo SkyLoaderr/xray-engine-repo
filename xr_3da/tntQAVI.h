@@ -79,10 +79,10 @@ protected:
 
 	DWORD				m_dwFrameTotal;
 	DWORD				m_dwFrameCurrent;
+	u32					m_dwFirstFrameOffset;
 
 
-	DWORD				CalcFrame()
-	{	return DWORD( floor(Device.TimerAsyncMM() * m_fCurrentRate / 1000.0f) ) % m_dwFrameTotal; }
+	DWORD				CalcFrame			();
 
 	BOOL				DecompressFrame		( DWORD	dwFrameNum );
 	VOID				PreRoll				( DWORD dwFrameNum );

@@ -9,6 +9,7 @@ CAviPlayerCustom::CAviPlayerCustom( )
 {
 	ZeroMemory( this, sizeof(*this) );
 	m_dwFrameCurrent	= 0xfffffffd;	// страхуемся от 0xffffffff + 1 == 0
+	m_dwFirstFrameOffset=0;
 }
 
 CAviPlayerCustom::~CAviPlayerCustom( )
@@ -437,4 +438,11 @@ INT CAviPlayerCustom::SetSpeed( INT nPercent )
 	m_fCurrentRate	= m_fRate * FLOAT( nPercent / 100.0f );
 
 	return	res;
+}
+DWORD CAviPlayerCustom::CalcFrame()
+	{	
+		if(0==m_dwFirstFrameOffset)
+			m_dwFirstFrameOffset = Device.TimerAsyncMM()-1;
+
+	return DWORD( floor( (Device.TimerAsyncMM()-m_dwFirstFrameOffset) * m_fCurrentRate / 1000.0f) ) % m_dwFrameTotal; 
 }
