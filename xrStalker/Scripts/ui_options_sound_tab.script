@@ -1,0 +1,15 @@
+-- File:        UI_OPTIONS_SOUND_TAB.SCRIPT
+-- Description: Sound tab for optins tab
+-- Created:     30.11.2004
+-- Author:      Serhiy O. Vynnychenko
+-- Mail:        narrator@gsc-game.kiev.ua
+--
+
+class "options_sound_tab" (ui_options_base_tab.options_base_tab)
+
+function options_sound_tab:__init()
+end
+
+function options_sound_tab:__finalize()
+end
+
