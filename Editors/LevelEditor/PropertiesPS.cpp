@@ -4,6 +4,7 @@
 #include "PropertiesPS.h"
 #include "PSObject.h"
 #include "ShaderFunction.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_check"

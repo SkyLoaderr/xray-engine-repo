@@ -7,6 +7,7 @@
 #include "ChoseForm.h"
 #include "FolderLib.h"
 #include "motion.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"

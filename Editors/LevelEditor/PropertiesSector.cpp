@@ -5,6 +5,7 @@
 #include "Sector.h"
 #include "Scene.h"
 #include "ColorPicker.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

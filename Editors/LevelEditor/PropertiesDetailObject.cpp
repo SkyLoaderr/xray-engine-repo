@@ -4,6 +4,7 @@
 #include "PropertiesDetailObject.h"
 #include "Sector.h"
 #include "DetailFormat.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_check"

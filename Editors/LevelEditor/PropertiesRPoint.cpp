@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "ChoseForm.h"
 #include "PropertiesList.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"

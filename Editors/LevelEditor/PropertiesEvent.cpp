@@ -5,6 +5,7 @@
 #include "Event.h"
 #include "PropertiesList.h"
 #include "EventOneAction.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"

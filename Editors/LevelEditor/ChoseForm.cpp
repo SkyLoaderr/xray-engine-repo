@@ -17,6 +17,7 @@
 #include "ImageManager.h"
 #include "SoundManager.h"
 #include "xr_ini.h"
+#include "ui_main.h"
 
 #ifdef _LEVEL_EDITOR
 #include "PSLibrary.h"

@@ -10,6 +10,7 @@
  #include "ChoseForm.h"
  #include "EditObject.h"
  #include "ColorPicker.h"
+ #include "ui_main.h"
 #else
  #include "Communicate.h"
  #include "ColorPicker.h"

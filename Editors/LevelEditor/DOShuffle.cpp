@@ -14,6 +14,7 @@
 #include "folderlib.h"
 #include "DetailObjects.h"
 #include "PropertiesDetailObject.h"
+#include "ui_main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
