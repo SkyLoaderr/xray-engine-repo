@@ -10,22 +10,22 @@ void xrServer::Perform_transfer(xrServerEntity* what, xrServerEntity* from, xrSe
 	u32			time		= Device.dwTimeGlobal;
 	DWORD		MODE		= net_flags(TRUE,TRUE);
 
-	// 1. Detach "FROM"
+	// 1. Perform migration if need it
+	if (from->owner != to->owner)	PerformMigration(what,from->owner,to->owner);
+	Log						("B");
+
+	// 2. Detach "FROM"
 	vector<u16>& C			= from->children;
 	vector<u16>::iterator c	= find	(C.begin(),C.end(),what->ID);
 	R_ASSERT				(c!=C.end());
 	C.erase					(c);
 	P.w_begin				(M_EVENT);
-	P.w_u32					(time-1);
+	P.w_u32					(time);
 	P.w_u16					(GE_OWNERSHIP_REJECT);
 	P.w_u16					(from->ID);
 	P.w_u16					(what->ID);
 	SendBroadcast			(0xffffffff,P,MODE);
 	Log						("A");
-
-	// 2. Perform migration if need it
-	if (from->owner != to->owner)	PerformMigration(what,from->owner,to->owner);
-	Log						("B");
 
 	// 3. Attach "TO"
 	what->ID_Parent			= to->ID;

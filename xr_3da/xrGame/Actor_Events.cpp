@@ -73,7 +73,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			CTargetCS* A	= dynamic_cast<CTargetCS*>	(O);
 			if (A)
 			{
-				// R_ASSERT							(BE(Local(),A->Local()));	// remote can't eject local
+				R_ASSERT							(BE(Local(),A->Local()));	// remote can't eject local
 				A->H_SetParent						(0);
 				feel_touch.push_back				(A);
 				return;

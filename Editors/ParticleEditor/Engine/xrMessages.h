@@ -26,6 +26,7 @@ enum {
 	GE_RESPAWN,
 	GE_OWNERSHIP_TAKE,			// DUAL: Client request for ownership of an item
 	GE_OWNERSHIP_REJECT,		// DUAL: Client request ownership rejection
+	GE_OWNERSHIP_TRANSFER,		// TO:   Server transfer some item from one entity to another 
 	GE_TRANSFER_AMMO,			// DUAL: Take ammo out of weapon for our weapon
 	GE_HIT,						// 
 	GE_DIE,						// 
