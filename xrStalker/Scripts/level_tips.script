@@ -10,5 +10,5 @@ function fill_tips()
 end
 
 function get_tips(actor)
-	actor:give_game_news("", "", 0,0,0,0)
+	--actor:give_game_news("", "", 0,0,0,0)
 end
