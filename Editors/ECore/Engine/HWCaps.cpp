@@ -10,8 +10,8 @@ void CHWCaps::Update()
 	HW.pDevice->GetDeviceCaps(&caps);
 
 	// ***************** GEOMETRY
-	geometry.dwVersion_major	= (caps.VertexShaderVersion&(0xf << 8ul))>>8;
-	geometry.dwVersion_minor	= (caps.VertexShaderVersion&0xf);
+	geometry.dwVersion_major	= u32 ( (caps.VertexShaderVersion&(0xf << 8ul))>>8 );
+	geometry.dwVersion_minor	= u32 ( (caps.VertexShaderVersion&0xf) );
 	geometry.bSoftware			= (caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT)==0;
 	geometry.bPointSprites		= FALSE;
 	geometry.bNPatches			= (caps.DevCaps & D3DDEVCAPS_NPATCHES)!=0;
@@ -36,8 +36,8 @@ void CHWCaps::Update()
 	Msg					("* GPU vertex cache: %s, %d",(1==vc.OptMethod)?"recognized":"unrecognized",u32(geometry.dwVertexCache));
 
 	// ***************** PIXEL processing
-	raster.dwVersion_major		= (caps.PixelShaderVersion&(0xf << 8ul))>>8;
-	raster.dwVersion_minor		= (caps.PixelShaderVersion&0xf);
+	raster.dwVersion_major		= u32 ( (caps.PixelShaderVersion&(0xf << 8ul))>>8 );
+	raster.dwVersion_minor		= u32 ( (caps.PixelShaderVersion&0xf) );
 	raster.dwStages				= caps.MaxSimultaneousTextures;
 	raster.bNonPow2				= ((caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL)!=0)  || ((caps.TextureCaps & D3DPTEXTURECAPS_POW2)==0);
 	raster.bCubemap				= (caps.TextureCaps & D3DPTEXTURECAPS_CUBEMAP)!=0;
