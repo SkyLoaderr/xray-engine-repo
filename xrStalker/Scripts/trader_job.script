@@ -3,6 +3,7 @@ function main()
 	wait(1000)
 	local 	actor = get_actor()
 	local 	trader = get_level_object("m_trader")
+	local 	stalker = get_level_object("tradeseller_stalker_0_1")
 	GiveInfoViaPda(actor, actor, "actor_start")
 	trader:set_start_dialog("trader_hello_dialog")
 
