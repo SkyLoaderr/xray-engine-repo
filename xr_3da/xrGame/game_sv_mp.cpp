@@ -86,7 +86,8 @@ void game_sv_mp::OnRoundEnd				(LPCSTR reason)
 
 void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 {
-
+	CObject* pObject =  Level().Objects.net_Find(GameID);
+	if (!pObject || pObject->SUB_CLS_ID != CLSID_OBJECT_ACTOR) return;
 	// Remove everything	
 	xrClientData* xrCData	=	m_server->ID_to_client(id_who);
 	
@@ -95,20 +96,18 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	u16 PlayerID = (xrCData != 0) ? xrCData->ps->GameID : GameID;
 	// Kill Player on all clients
 	NET_Packet			P;
-	/*
-	P.w_begin			(M_EVENT);
-	P.w_u32				(Level().timeServer());
-	P.w_u16				(GE_DIE);
-	P.w_u16				(PlayerID);
-	*/
 	u_EventGen(P, GE_DIE, PlayerID);
 	P.w_u16				(PlayerID);
 	P.w_clientID		(id_who);
 	ClientID clientID;clientID.setBroadcast();
-///	m_server->SendBroadcast	(clientID,P,net_flags(TRUE, TRUE, TRUE));
-///	Level().Send(P,net_flags(TRUE,TRUE));
 	u_EventSend(P);
-//	AllowDeadBodyRemove(id_who, GameID);
+	//-------------------------------------------------------
+	CActor* pActor = smart_cast <CActor*>(pObject);
+	if (pActor)
+	{
+		pActor->set_death_time		();
+	}
+	//-------------------------------------------------------
 	signal_Syncronize();
 };
 
@@ -293,15 +292,6 @@ void	game_sv_mp::SpawnPlayer				(ClientID id, LPCSTR N)
 
 void	game_sv_mp::AllowDeadBodyRemove		(ClientID id, u16 GameID)
 {
-	/*
-	xrClientData* xrCData	=	m_server->ID_to_client(id);
-	
-	if (xrCData && xrCData->owner->owner != m_server->GetServerClient())
-	{
-		xrCData->owner->owner = m_server->GetServerClient();
-	};
-	*/
-
 	CSE_Abstract* pSObject = get_entity_from_eid(GameID);
 	pSObject->owner = (xrClientData*)m_server->GetServerClient();
 

@@ -1046,6 +1046,7 @@ void CActor::g_PerformDrop	( )
 }
 
 
+extern	BOOL	g_ShowAnimationInfo		;
 // HUD
 void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 {
@@ -1058,29 +1059,32 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 	}
 
 #ifndef NDEBUG
-	string128 buf;
-	HUD().pFontSmall->SetColor	(0xffffffff);
-	HUD().pFontSmall->OutSet	(170,530);
-	HUD().pFontSmall->OutNext	("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
-	HUD().pFontSmall->OutNext	("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
-	HUD().pFontSmall->OutNext	("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
-	HUD().pFontSmall->OutNext	("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
-	switch (m_PhysicMovementControl->Environment())
+	if (Level().CurrentControlEntity() == this && g_ShowAnimationInfo)
 	{
-	case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
-	case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
-	case CPHMovementControl::peAtWall:		strcpy(buf,"wall");				break;
-	}
-	HUD().pFontSmall->OutNext	(buf);
+		string128 buf;
+		HUD().pFontSmall->SetColor	(0xffffffff);
+		HUD().pFontSmall->OutSet	(170,530);
+		HUD().pFontSmall->OutNext	("Position:      [%3.2f, %3.2f, %3.2f]",VPUSH(Position()));
+		HUD().pFontSmall->OutNext	("Velocity:      [%3.2f, %3.2f, %3.2f]",VPUSH(m_PhysicMovementControl->GetVelocity()));
+		HUD().pFontSmall->OutNext	("Vel Magnitude: [%3.2f]",m_PhysicMovementControl->GetVelocityMagnitude());
+		HUD().pFontSmall->OutNext	("Vel Actual:    [%3.2f]",m_PhysicMovementControl->GetVelocityActual());
+		switch (m_PhysicMovementControl->Environment())
+		{
+		case CPHMovementControl::peOnGround:	strcpy(buf,"ground");			break;
+		case CPHMovementControl::peInAir:		strcpy(buf,"air");				break;
+		case CPHMovementControl::peAtWall:		strcpy(buf,"wall");				break;
+		}
+		HUD().pFontSmall->OutNext	(buf);
 
-	if (IReceived != 0)
-	{
-		float Size = 0;
-		Size = HUD().pFontSmall->GetSize();
-		HUD().pFontSmall->SetSize(Size*2);
-		HUD().pFontSmall->SetColor	(0xffff0000);
-		HUD().pFontSmall->OutNext ("Input :		[%3.2f]", ICoincidenced/IReceived * 100.0f);
-		HUD().pFontSmall->SetSize(Size);
+		if (IReceived != 0)
+		{
+			float Size = 0;
+			Size = HUD().pFontSmall->GetSize();
+			HUD().pFontSmall->SetSize(Size*2);
+			HUD().pFontSmall->SetColor	(0xffff0000);
+			HUD().pFontSmall->OutNext ("Input :		[%3.2f]", ICoincidenced/IReceived * 100.0f);
+			HUD().pFontSmall->SetSize(Size);
+		};
 	};
 #endif
 }

@@ -45,6 +45,7 @@ extern	int		x_m_z;
 extern	BOOL	net_cl_inputguaranteed		;
 extern	BOOL	net_sv_control_hit	;
 extern	int		g_dwInputUpdateDelta		;
+extern	BOOL	g_ShowAnimationInfo		;
 
 		BOOL	g_bCheckTime			= FALSE;
 		int		g_dwEventDelay			= 0	;
@@ -1623,5 +1624,6 @@ void CCC_RegisterCommands()
 	CMD1(CCC_Vote_No,		"cl_voteno"				);
 
 	CMD4(CCC_SvControlHit,		"net_sv_control_hit",	&net_sv_control_hit,	0, 1)	;
+	CMD4(CCC_SvControlHit,		"dbg_show_ani_info",	&g_ShowAnimationInfo,	0, 1)	;
 }
 

@@ -249,6 +249,7 @@ void legs_play_callback		(CBlend *blend)
 	object->m_current_legs	= 0;
 }
 
+BOOL	g_ShowAnimationInfo = TRUE;
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
 	if (g_Alive())
@@ -389,7 +390,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	}
 #ifndef NDEBUG
 #ifdef DEBUG
-	if (Level().CurrentControlEntity() == this)
+	if (Level().CurrentControlEntity() == this && g_ShowAnimationInfo)
 	{
 		string128 buf;
 		strcpy(buf,"");
