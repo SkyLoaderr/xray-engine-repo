@@ -64,6 +64,9 @@ end
 function motivator_binder:reinit()
     object_binder.reinit(self)
     self.object:set_pda_callback(pda_callback)
+
+	self.object:set_hear_callback(hear_callback)
+    
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
@@ -355,13 +358,6 @@ xr_motivator.storage[self.object:id ()].sos =
     }
 xr_sos.add_to_binder (self.object, char_ini)
  
- 
---' œ–Œ¬≈– ¿ —À”’¿, Õ≈ —“»–¿“‹!!!!
-if char_ini:section_exist("soundcheck") == true then 
-	self.object:set_hear_callback(hear_callback)
-	printf("SOUNDCHECK set")
-end
-
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_callback(recepient, who, msg_type)
