@@ -47,6 +47,7 @@ protected:
 
 	xrCriticalSection		csPlayers;
 	svector<IClient*,64>	net_Players;
+	IClient*				SV_Client;
 
 	// Compressor configuration
 	MSYS_CONFIG				msgConfig;

@@ -48,8 +48,6 @@ private:
 
 	CID_Generator<u32,u8,u16,u8,u16,0,u16(-2),256,u16(-1)> m_tID_Generator;
 
-	xrClientData*				SV_Client;
-
 	void						Server_Client_Check (IClient* CL);
 public:
 	game_sv_GameState*			game;

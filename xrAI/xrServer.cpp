@@ -209,11 +209,11 @@ void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 //--------------------------------------------------------------------
 void			xrServer::Server_Client_Check	( IClient* CL )
 {
-	clients_Lock();
+	clients_Lock	();
 	
 	if (SV_Client && SV_Client->ID != CL->ID)
 	{
-		clients_Unlock();
+		clients_Unlock	();
 		return;
 	};
 
@@ -223,7 +223,7 @@ void			xrServer::Server_Client_Check	( IClient* CL )
 		{
 			SV_Client = NULL;
 		};
-		clients_Unlock();
+		clients_Unlock	();
 		return;
 	};
 
