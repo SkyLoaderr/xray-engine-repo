@@ -111,7 +111,6 @@ void CSpawnPoint::CLE_Motion::PlayMotion()
 void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 {
     m_Data 	= create_entity(entity_ref);
-
     if (m_Data){
         if (m_Data->visual()){
             m_Visual	= xr_new<CLE_Visual>(m_Data->visual());
@@ -126,8 +125,8 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR entity_ref)
 				m_Data->flags().set(M_SPAWN_OBJECT_ASPLAYER,TRUE);
             }
         }
-        m_ClassID = pSettings->r_clsid(entity_ref,"class");
-        strcpy(m_Data->name(),entity_ref);
+        m_ClassID 			= pSettings->r_clsid(entity_ref,"class");
+        m_Data->set_name	(entity_ref);
     }
 }
 void CSpawnPoint::SSpawnData::Destroy()
@@ -168,7 +167,7 @@ bool CSpawnPoint::SSpawnData::Load(IReader& F)
 bool CSpawnPoint::SSpawnData::ExportGame(SExportStreams& F, CSpawnPoint* owner)
 {
 	// set params
-    strcpy	  					(m_Data->name_replace(),owner->Name);
+    m_Data->set_name_replace	(owner->Name);
     m_Data->position().set		(owner->PPosition);
     m_Data->angle().set			(owner->PRotation);
 

@@ -148,6 +148,28 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
 }
 //----------------------------------------------------
 
+IC void OrientToNorm(const Fvector& normal, Fmatrix33& form, Fvector& hs)
+{
+    Fvector * ax_pointer= (Fvector*)&form;
+    float max_dot=abs(ax_pointer[0].dotproduct(normal));
+    float min_size=hs.x;
+    int max_ax_i=0,min_size_i=0;
+    for(int i=1;3>i;++i){
+        float dot_pr=abs(ax_pointer[i].dotproduct(normal));
+        if(max_dot<dot_pr){
+            max_ax_i=i;max_dot=dot_pr;
+        }
+        if(min_size>hs[i]){
+            min_size_i=i;min_size=hs[i];
+        }
+    }
+    VERIFY(min_size_i==max_ax_i);
+    if(ax_pointer[max_ax_i].dotproduct(normal)<0.f){
+        ax_pointer[max_ax_i].invert();
+        ax_pointer[(max_ax_i+1)%3].invert();
+    }
+}
+
 bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
 {
 	bool bResult = true;
@@ -196,6 +218,11 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                 }
                 FS.w_close			(W);
 */
+				Fvector obj_normal	= {0,0,0};
+                for (SBFaceVecIt it=P->m_Faces.begin(); it!=P->m_Faces.end(); it++)
+                	for (u32 k=0; k<3; k++) obj_normal.add	((*it)->n[k]);
+                obj_normal.normalize_safe		();
+                
                 // export spawn object
                 {
                     AnsiString entity_ref		= "climable_object";
@@ -205,8 +232,6 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                     // set params
                     strcpy	  					(m_Data->name(),entity_ref.c_str());
                     strcpy	  					(m_Data->name_replace(),sn.c_str());
-                    m_Data->position().set		(P->m_RefOffset); 
-                    m_Data->angle().set			(P->m_RefRotate);
                     // set shape
                     CShapeData::shape_def		shape;
                     shape.type					= CShapeData::cfBox;
@@ -216,6 +241,12 @@ bool ESceneObjectTools::ExportClimableObjects(SExportStreams& F)
                     m_Shape->assign_shapes		(&shape,1);
                     // set visual (empty)
 //.					m_Visual->set_visual		(sn.c_str(),false);
+					// orientate object
+                    OrientToNorm				(obj_normal,P->m_OBB.m_rotate,P->m_OBB.m_halfsize);
+                    Fmatrix M; M.set			(P->m_OBB.m_rotate.i,P->m_OBB.m_rotate.j,P->m_OBB.m_rotate.k,P->m_OBB.m_translate);
+                    M.getXYZ					(P->m_RefRotate); // не i потому что в движке так
+                    m_Data->position().set		(P->m_RefOffset); 
+                    m_Data->angle().set			(P->m_RefRotate);
 
                     NET_Packet					Packet;
                     m_Data->Spawn_Write			(Packet,TRUE);

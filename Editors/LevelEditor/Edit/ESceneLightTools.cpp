@@ -181,7 +181,7 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     ButtonValue*	B 	= 0;
     // hemisphere
-    PHelper().CreateU8		(items,	PrepareKey(pref,"Common\\Hemisphere\\Quality"),		 	&m_HemiQuality,		1,2);
+    PHelper().CreateU8		(items,	PrepareKey(pref,"Common\\Hemisphere\\Quality"),		 	&m_HemiQuality,		1,3);
 //.	PHelper().CreateRToken32(items, PrepareKey(pref,"Common\\Hemisphere\\Light Control"),	&m_HemiControl, 	&*lcontrols.begin(), lcontrols.size());
     
     // sun

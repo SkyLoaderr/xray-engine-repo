@@ -107,15 +107,15 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IR:\SDK\DirectX9.0_sum_2004\Include -IC:\Rad\Borland\CBuilder6\Projects 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_LEVEL_EDITOR -D_DEBUG 
+      -IR:\SDK\DirectX9.0_sum_2004\Include -IC:\Rad\Borland\CBuilder6\Projects 
       -IEngine\Game -IEdit -IEngine -Ir:\borland\components6\alexmx 
       -I$(BCB)\include -I$(BCB)\include\vcl -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\ElPack\Code 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore -IP:\xrCDB 
       -IP:\xrSound -I..\ECore -I..\ECore\Editor -I..\ECore\Engine 
       -I..\ECore\Engine\blenders -I..\ECore\Engine\visuals -I..\xrEProps 
-      -IP:\boost_1_30_0 -IP:\Tools\ETools -src_suffix cpp -D_EDITOR 
-      -D_LEVEL_EDITOR -D_DEBUG -boa"/>
+      -IP:\boost_1_30_0 -IP:\Tools\ETools -boa"/>
     <CFLAG1 value="-Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- -r- 
       -ps -a4 -6 -b- -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$R -$Q -$O- -$A8 -v -JPHNE -M"/>
