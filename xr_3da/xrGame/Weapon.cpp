@@ -1105,7 +1105,12 @@ void CWeapon::UpdateHudPosition	()
 				Fmatrix hud_rotation;
 				hud_rotation.identity();
 				hud_rotation.rotateX(m_pHUD->ZoomRotateX()*m_fZoomRotationFactor);
-				hud_rotation.rotateY(m_pHUD->ZoomRotateY()*m_fZoomRotationFactor);
+
+				Fmatrix hud_rotation_y;
+				hud_rotation_y.identity();
+				hud_rotation_y.rotateY(m_pHUD->ZoomRotateY()*m_fZoomRotationFactor);
+				hud_rotation.mulA(hud_rotation_y);
+
 				Fvector offset = m_pHUD->ZoomOffset();
 				offset.mul(m_fZoomRotationFactor);
 				hud_rotation.translate_over(offset);
