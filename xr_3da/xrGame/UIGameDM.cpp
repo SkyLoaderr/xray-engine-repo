@@ -18,7 +18,8 @@
 
 #define	TEAM0_MENU		"deathmatch_team0"
 #define TIME_MSG_COLOR		0xffff0000
-
+#define SPECTRMODE_MSG_COLOR		0xffff0000
+#define NORMAL_MSG_COLOR	0xffffffff
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM()
 {
@@ -48,6 +49,15 @@ CUIGameDM::CUIGameDM()
 
 	m_time_caption = "timelimit";
 	m_gameCaptions.addCustomMessage(m_time_caption, 0.0f, -0.95f, 0.03f, HUD().pFontDI, CGameFont::alCenter, TIME_MSG_COLOR, "");
+	m_spectrmode_caption = "spetatormode";
+	m_gameCaptions.addCustomMessage(m_spectrmode_caption, 0.0f, -0.9f, 0.03f, HUD().pFontDI, CGameFont::alCenter, SPECTRMODE_MSG_COLOR, "");
+	m_spectator_caption = "spectator";
+	m_gameCaptions.addCustomMessage(m_spectator_caption, 0.0f, 0.0f, 0.03f, HUD().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	m_pressjump_caption = "pressjump";
+	m_gameCaptions.addCustomMessage(m_pressjump_caption, 0.0f, 0.9f, 0.02f, HUD().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+	m_pressbuy_caption = "pressbuy";
+	m_gameCaptions.addCustomMessage(m_pressbuy_caption, 0.0f, 0.95f, 0.02f, HUD().pFontDI, CGameFont::alCenter, NORMAL_MSG_COLOR, "");
+
 //	m_gameCaptions.customizeMessage(m_time_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
 
 	//-----------------------------------------------------------------------
@@ -204,10 +214,18 @@ void CUIGameDM::OnFrame()
 			};
 			//-----------------------------------------------------------
 ///			if (Level().CurrentControlEntity() && Level().CurrentControlEntity()->SUB_CLS_ID == CLSID_SPECTATOR)
+			SetSpectatorMsgCaption("");
+			SetPressJumpMsgCaption("");
+			SetPressBuyMsgCaption("");
+
 			if (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_SPECTATOR)
 			{
 				if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 				{
+					SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
+					SetPressJumpMsgCaption("Press Jump to start");
+					SetPressBuyMsgCaption("Press 'B' to access buy menu");
+					/*
 					HUD().pFontDI->SetAligment		(CGameFont::alCenter);
 
 					HUD().pFontDI->SetColor		(0xffffffff);
@@ -219,6 +237,7 @@ void CUIGameDM::OnFrame()
 					HUD().pFontDI->SetColor		(0xffffffff);
 					HUD().pFontDI->Out			(0.f,0.9f,"Press Jump to start");
 					HUD().pFontDI->SetSize		(OldSize);
+					*/
 				};
 			};
 		}break;
@@ -650,3 +669,24 @@ void CUIGameDM::SetTimeMsgCaption		(LPCSTR str)
 {
 		m_gameCaptions.setCaption(m_time_caption, str, TIME_MSG_COLOR, true);
 }
+
+void CUIGameDM::SetSpectrModeMsgCaption		(LPCSTR str)
+{
+		m_gameCaptions.setCaption(m_spectrmode_caption, str, SPECTRMODE_MSG_COLOR, true);
+}
+
+void CUIGameDM::SetSpectatorMsgCaption		(LPCSTR str)
+{
+		m_gameCaptions.setCaption(m_spectator_caption, str, NORMAL_MSG_COLOR, true);
+}
+
+void CUIGameDM::SetPressJumpMsgCaption		(LPCSTR str)
+{
+		m_gameCaptions.setCaption(m_pressjump_caption, str, NORMAL_MSG_COLOR, true);
+}
+
+void CUIGameDM::SetPressBuyMsgCaption		(LPCSTR str)
+{
+		m_gameCaptions.setCaption(m_pressbuy_caption, str, NORMAL_MSG_COLOR, true);
+}
+

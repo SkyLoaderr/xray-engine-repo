@@ -57,6 +57,11 @@ protected:
 	BOOL					m_bSkinSelected;
 
 	ref_str					m_time_caption;		
+	ref_str					m_spectrmode_caption;		
+	
+	ref_str					m_spectator_caption;
+	ref_str					m_pressjump_caption;
+	ref_str					m_pressbuy_caption;
 
 	virtual	void					ClearLists				();
 	
@@ -101,6 +106,11 @@ public:
 	virtual void					ClearBuyMenu			();
 
 			void					SetTimeMsgCaption		(LPCSTR str);
+			void					SetSpectrModeMsgCaption		(LPCSTR str);
+
+			void					SetSpectatorMsgCaption			(LPCSTR str);
+			void					SetPressJumpMsgCaption			(LPCSTR str);
+			void					SetPressBuyMsgCaption			(LPCSTR str);
 	/////////
 	CUIInventoryWnd					InventoryMenu;
 //	CUITextBanner					TimeMsgStatic, TimeMsgDyn;
