@@ -221,33 +221,33 @@ void CActorTools::FillMotionProperties()
 	CSMotion* SM = m_pEditObject->GetActiveSMotion();
     if (SM){
 		PropValueVec values;
-    	FILL_PROP(values, "Name",		&SM->Name(),  	PROP::CreateText	(sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
-    	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PROP::CreateFloat	(0.f,20.f,0.01f,2));
-    	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PROP::CreateFloat	(0.f,20.f,0.01f,2));
-    	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PROP::CreateFloat	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Name",		&SM->Name(),  	PHelper.CreateText	(sizeof(SM->Name()),NameOnAfterEdit,NameOnBeforeEdit,NameOnDraw));
+    	FILL_PROP(values, "Speed",		&SM->fSpeed,   	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Accrue",		&SM->fAccrue,  	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
+    	FILL_PROP(values, "Falloff", 	&SM->fFalloff, 	PHelper.CreateFloat	(0.f,20.f,0.01f,2));
 
-        FlagValue* TV = PROP::CreateFlag(esmFX,0,0,0,MotionOnChange);
+        FlagValue* TV = PHelper.CreateFlag(esmFX,0,0,0,MotionOnChange);
         FILL_PROP(values, "Type FX", 	&SM->m_dwFlags, TV);
         {
             AStringVec lst;
             lst.push_back("--none--");
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++) lst.push_back(it->alias);
-            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PROP::CreateToken2(&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
-            FILL_PROP(values, "Cycle\\Stop at end",	&SM->m_dwFlags,		PROP::CreateFlag(esmStopAtEnd));
-            FILL_PROP(values, "Cycle\\No mix",		&SM->m_dwFlags,		PROP::CreateFlag(esmNoMix));
+            FILL_PROP(values, "Cycle\\Bone part",	&SM->iBoneOrPart,	PHelper.CreateToken2(&lst,BPOnAfterEdit,BPOnBeforeEdit,BPOnDraw));
+            FILL_PROP(values, "Cycle\\Stop at end",	&SM->m_dwFlags,		PHelper.CreateFlag(esmStopAtEnd));
+            FILL_PROP(values, "Cycle\\No mix",		&SM->m_dwFlags,		PHelper.CreateFlag(esmNoMix));
         }
         {
             AStringVec lst;
             for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++) lst.push_back((*it)->Name());
-            FILL_PROP(values, "FX\\Start bone",		&SM->iBoneOrPart,	PROP::CreateToken2(&lst));
-	    	FILL_PROP(values, "FX\\Power",			&SM->fPower,   		PROP::CreateFloat	(0.f,20.f,0.01f,2));
+            FILL_PROP(values, "FX\\Start bone",		&SM->iBoneOrPart,	PHelper.CreateToken2(&lst));
+	    	FILL_PROP(values, "FX\\Power",			&SM->fPower,   		PHelper.CreateFloat	(0.f,20.f,0.01f,2));
         }
         // fill values
         m_MotionProps->AssignValues(values,true);
         // find cycle/fx root node
-	    PropValue* C 	= PROP::FindProp(values,"Cycle\\Bone part");	R_ASSERT(C&&C->item);
+	    PropValue* C 	= PHelper.FindProp(values,"Cycle\\Bone part");	R_ASSERT(C&&C->item);
         m_pCycleNode 	= C->item->Parent; R_ASSERT(m_pCycleNode); 
-	    PropValue* F 	= PROP::FindProp(values,"FX\\Start bone");		R_ASSERT(F&&F->item);
+	    PropValue* F 	= PHelper.FindProp(values,"FX\\Start bone");		R_ASSERT(F&&F->item);
         m_pFXNode 		= F->item->Parent; R_ASSERT(m_pFXNode); 
 		// first init node
         MotionOnChange(TV);

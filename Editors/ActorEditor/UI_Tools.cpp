@@ -83,10 +83,10 @@ xr_token		sa_token					[ ]={
 void CActorTools::PreviewModel::SetPreferences()
 {
 	PropValueVec values;
-	FILL_PROP(values,	"Scroll",		&m_dwFlags,		PROP::CreateFlag	(pmScroll));
-	FILL_PROP(values,	"Speed (m/c)",	&m_fSpeed,		PROP::CreateFloat	(-10000.f,10000.f,0.01f,2));
-	FILL_PROP(values,	"Segment (m)",	&m_fSegment,	PROP::CreateFloat	(-10000.f,10000.f,0.01f,2));
-	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PROP::CreateToken	(sa_token,sizeof(m_ScrollAxis)));
+	FILL_PROP(values,	"Scroll",		&m_dwFlags,		PHelper.CreateFlag	(pmScroll));
+	FILL_PROP(values,	"Speed (m/c)",	&m_fSpeed,		PHelper.CreateFloat	(-10000.f,10000.f,0.01f,2));
+	FILL_PROP(values,	"Segment (m)",	&m_fSegment,	PHelper.CreateFloat	(-10000.f,10000.f,0.01f,2));
+	FILL_PROP(values,	"Scroll axis",	&m_ScrollAxis,	PHelper.CreateToken	(sa_token,sizeof(m_ScrollAxis)));
 	m_Props->AssignValues(values,true,"Preview prefs");
     m_Props->ShowProperties();
 }
@@ -556,9 +556,9 @@ void CActorTools::FillObjectProperties()
 
 	PropValueVec values;
 
-    FILL_PROP(values, "Make Progressive",		&m_pEditObject->GetFlags(),  	PROP::CreateFlag	(CEditableObject::eoProgressive));
-    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PROP::CreateVector	(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
-    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PROP::CreateVector	(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
+    FILL_PROP(values, "Make Progressive",		&m_pEditObject->GetFlags(),  	PHelper.CreateFlag	(CEditableObject::eoProgressive));
+    FILL_PROP(values, "Transform\\Position",	&m_pEditObject->a_vPosition, 	PHelper.CreateVector(-10000,	10000,0.01,2,0,0,0,OnChangeTransform));
+    FILL_PROP(values, "Transform\\Rotation",	&m_pEditObject->a_vRotate, 		PHelper.CreateVector(-10000,	10000,0.1,1,RotateOnAfterEdit,RotateOnBeforeEdit,RotateOnDraw));
 
     m_pEditObject->FillPropSurf		(0,values,OnChangeShader);
     m_pEditObject->FillPropSummary	(0,values);

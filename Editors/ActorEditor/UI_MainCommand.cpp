@@ -87,9 +87,17 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		AnsiString fn;
 		if (Engine.FS.GetSaveName(Engine.FS.m_SMotions,fn)) Tools.SaveMotions(fn.c_str());
         }break;
+    case COMMAND_SAVE_BACKUP:{
+    	AnsiString fn = AnsiString(Engine.FS.m_UserName)+"_backup.level";
+        Engine.FS.m_Maps.Update(fn);
+    	Command(COMMAND_SAVEAS,(int)fn.c_str());
+    }break;
     case COMMAND_SAVEAS:{
 		AnsiString fn = m_LastFileName;
-		if (Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)) bRes=Command(COMMAND_SAVE, (DWORD)fn.c_str());
+		if (p1||Engine.FS.GetSaveName(Engine.FS.m_Objects,fn)){ 
+        	if (p1) fn= (LPCSTR)p1;
+        	bRes=Command(COMMAND_SAVE, (DWORD)fn.c_str());
+        }
         if (bRes){
 			// unlock
    	        Engine.FS.UnlockFile(0,m_LastFileName);

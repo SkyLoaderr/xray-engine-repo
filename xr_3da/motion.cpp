@@ -238,8 +238,10 @@ bool CSMotion::Load(CStream& F){
 		fFalloff	= F.Rfloat();
 	    fPower		= F.Rfloat();
 		bone_mots.resize(F.Rdword());
+        string64	temp_buf;
 		for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
-			bm_it->flag = F.Rdword();
+        	bm_it->SetName	(itoa(bm_it-bone_mots.begin(),temp_buf,10));
+			bm_it->flag 	= F.Rdword();
 			for (int ch=0; ch<ctMaxChannel; ch++){
 				bm_it->envs[ch] = new CEnvelope();
 				bm_it->envs[ch]->Load(F);
