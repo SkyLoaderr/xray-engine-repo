@@ -168,7 +168,7 @@ function char_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 
    local bind = dik_to_bind(dik)
    if bind == key_bindings.kQUIT then
-      self.m_game_cl:StopMenu(self)
+      self.m_game_cl:StopMenu(self,true)
    end
    return true
 end
