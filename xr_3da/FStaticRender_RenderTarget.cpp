@@ -177,9 +177,6 @@ void CRenderTarget::e_render_duality()
 
 BOOL CRenderTarget::Perform		()
 {
-	set_duality_h					(.15f*sinf(1.f*Device.fTimeGlobal));
-	set_duality_v					(.17f*sinf(1.1f*Device.fTimeGlobal));
-
 	return Available() && ( NeedPostProcess() || (psSupersample>1));
 }
 

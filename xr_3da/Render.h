@@ -25,6 +25,8 @@ public:
 	virtual void					eff_load			(LPCSTR n)	= 0;
 	virtual	void					set_blur			(float f)	= 0;
 	virtual	void					set_gray			(float f)	= 0;
+	virtual void					set_duality_h		(float f)	= 0;
+	virtual void					set_duality_v		(float f)	= 0;
 	virtual void					set_noise			(float f)	= 0;
 	virtual void					set_noise_scale		(float f)	= 0;
 	virtual void					set_noise_color		(u32 f)		= 0;
