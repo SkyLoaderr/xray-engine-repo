@@ -126,6 +126,7 @@ public:
     virtual 			~CActorTools		();
 
     void				Render				();
+	void				RenderEnvironment	(){;}
     void				OnFrame				();
 
     bool				OnCreate			();

@@ -390,7 +390,7 @@ void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
     AnsiString folder,nm,fnames,full_name;
     if (Engine.FS.GetOpenName(Engine.FS.m_SMotion,fnames,true)){
 	    AStringVec lst;
-    	SequenceToList(lst,fnames.c_str());
+    	_SequenceToList(lst,fnames.c_str());
         tvMotions->IsUpdating = true;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
             TElTreeItem* node=0;
@@ -398,7 +398,7 @@ void __fastcall TfraLeftBar::ebMotionsAppendClick(TObject *Sender)
                 node = tvMotions->Selected;
             FHelper.MakeName(node,0,folder,true);
             FHelper.GenerateObjectName(tvMotions,node,nm,ChangeFileExt(ExtractFileName(*it),"").c_str());
-            full_name = folder+nm;
+            full_name = AnsiString(folder+nm).LowerCase();
             if (Tools.AppendMotion(full_name.c_str(),it->c_str())){
                 tvMotions->Selected = FHelper.AppendObject(tvMotions,full_name.c_str());
                 Tools.MotionModified();
