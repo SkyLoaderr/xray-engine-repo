@@ -516,8 +516,6 @@ void CWeapon::load(IReader &input_packet)
 
 void CWeapon::OnEvent				(NET_Packet& P, u16 type) 
 {
-//	inherited::OnEvent(P,type);
-
 	switch (type)
 	{
 	case GE_ADDON_CHANGE:
@@ -536,7 +534,10 @@ void CWeapon::OnEvent				(NET_Packet& P, u16 type)
 			OnStateSwitch	(u32(state));
 		}
 		break;
-
+	default:
+		{
+			inherited::OnEvent(P,type);
+		}break;
 	}
 };
 
