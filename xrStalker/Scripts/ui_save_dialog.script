@@ -29,23 +29,18 @@ function save_dialog:__finalize()
 end
 
 function save_dialog:FillList()
-	local f = getFS()
-	local flist = f:file_list_open("$game_saves$",FS.FS_ListFiles)
+	local flist = getFS():file_list_open_ex("$game_saves$",FS.FS_ListFiles,"*.sav")
 	local f_cnt = flist:Size()
 	
+	flist:Sort(FS.FS_sort_by_modif_down)
+	
 	for	it=0, f_cnt-1 	do
-		local file		=	flist:GetAt(it)	
-		
-	
-		
-		local ext = string.sub(file, string.len(file) - 3)
-		if ext == ".sav" then
-			file = string.sub(file,0 , (string.len(file) - 4))
-			self:AddItemToList(file)
-		end
+		local file		=	flist:GetAt(it)			
+		local file_name = string.sub(file:NameFull(), 0, (string.len(file:NameFull()) - 4))
+		local date_time = "[" .. file:Modif() .. "]"
+		--menu_item =  .. 
+		self:AddItemToList(file_name, date_time)
 	end
-	
-	flist:Free()	
 end
 
 
@@ -239,21 +234,17 @@ function save_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 	return true
 end
 
-function save_dialog:AddItemToList(item)
-	local list_box = self:GetListWnd("list_window")
-	--local shift = 0
-	--local color = GetARGB(255,0,255,255)
-	--local parse = true
+function save_dialog:AddItemToList(file_name, date_time)	
+	local new_item = CUIListItemPair()
 	
-	local new_item = CUIListItemEx()
-	new_item:SetFont(GetFontLetterica25())
-	new_item:SetPerformTextLimit(true)
-	new_item:SetText(item)
+	new_item:SetTextFileName(file_name)
+	new_item:SetTextDateTime(date_time)
+	new_item:SetFontFileName(self.list_file_font)
+	new_item:SetFontDateTime(self.list_date_font)
 
+	local list_box = self:GetListWnd("list_window")
 	
-	--list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
-	list_box:AddItem(new_item)
-	
+	list_box:AddItem(new_item)	
 end
 
 function save_dialog:SaveFile(fileName)
