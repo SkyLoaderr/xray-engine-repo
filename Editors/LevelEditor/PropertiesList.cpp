@@ -131,6 +131,7 @@ void __fastcall TProperties::ClearProperties()
 __fastcall TProperties::TProperties(TComponent* Owner)
 	: TForm(Owner)
 {
+	m_FirstClickItem= 0;
 	bModified 		= false;
     DEFINE_INI		(fsStorage);
 	m_BMCheck 		= new Graphics::TBitmap();
@@ -476,7 +477,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 	TSTItemPart 	IP=(TSTItemPart)0;
     int				HC=0;
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,IP,HC);
-  	if (item&&(HC==1)&&(Button==mbLeft)){
+  	if (item&&(HC==1)&&(Button==mbLeft)&&(m_FirstClickItem==item)){
     	if (!item->Enabled) return;
 		PropItem* prop = (PropItem*)item->Tag;
         if (!prop||prop->m_Flags.is(PropItem::flDisabled)) return;
@@ -638,6 +639,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         }
         prop->OnClick();
     };
+    m_FirstClickItem = item;
 }
 //---------------------------------------------------------------------------
 void __fastcall TProperties::PMItemClick(TObject *Sender)
@@ -1191,6 +1193,7 @@ void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
         if (prop&&prop->m_Flags.is(PropItem::flShowExtBtn)&&prop->OnExtBtnClick)
             pbExtBtn->Tag	= (int)prop;
     }
+	m_FirstClickItem 	= 0;
 }
 //---------------------------------------------------------------------------
 

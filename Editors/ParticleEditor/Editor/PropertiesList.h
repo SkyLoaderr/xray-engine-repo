@@ -64,6 +64,8 @@ private:	// User declarations
 	void __fastcall CustomTextClick(TElTreeItem* item);
 	void __fastcall CustomAnsiTextClick(TElTreeItem* item);
 
+	TElTreeItem* m_FirstClickItem;
+    
 	Graphics::TBitmap* m_BMCheck;
 	Graphics::TBitmap* m_BMDot;
 	Graphics::TBitmap* m_BMEllipsis;
