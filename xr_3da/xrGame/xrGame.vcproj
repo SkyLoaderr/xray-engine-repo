@@ -602,6 +602,28 @@
 						</File>
 					</Filter>
 					<Filter
+						Name="ai_stalker"
+						Filter="">
+						<File
+							RelativePath="AI\Stalker\ai_stalker.cpp">
+						</File>
+						<File
+							RelativePath="AI\Stalker\ai_stalker.h">
+						</File>
+						<File
+							RelativePath="AI\Stalker\ai_stalker_animations.cpp">
+						</File>
+						<File
+							RelativePath="AI\Stalker\ai_stalker_animations.h">
+						</File>
+						<File
+							RelativePath="AI\Stalker\ai_stalker_fire.cpp">
+						</File>
+						<File
+							RelativePath="AI\Stalker\ai_stalker_look.cpp">
+						</File>
+					</Filter>
+					<Filter
 						Name="ai_zombie"
 						Filter="">
 						<File
