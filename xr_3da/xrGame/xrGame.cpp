@@ -695,6 +695,15 @@ public:
 	}
 };
 
+class CCC_FlushLog : public CConsoleCommand {
+public:
+	CCC_FlushLog(LPCSTR N) : CConsoleCommand(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) {
+		FlushLog();
+		Msg		("! Log file has been saved successfully!");
+	}
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -722,6 +731,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD1(CCC_ALifeReload,		"reload"				);		// reload game
 		CMD1(CCC_ALifeLoadFrom,		"load_from"				);		// load game from ...
 		CMD1(CCC_ALifeLoadALifeFrom,"aload_from"			);		// load alife game from ...
+		CMD1(CCC_FlushLog,			"flush"					);		// flush log
 #ifdef ALIFE_SUPPORT_CONSOLE_COMMANDS
 		CMD1(CCC_ALifeListAll,		"al_la"					);		// list all (objects, events and tasks)
 		CMD1(CCC_ALifeListObjects,	"al_lo"					);		// list objects
