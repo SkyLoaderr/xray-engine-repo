@@ -38,6 +38,8 @@ public:
 
 	fvfVertexIn	*vertices;
 	DWORD		number_vertices;
+	WORD		*indices;
+	DWORD		number_indices;
 
 	void		Load		(CStream* S);
 	void		Unload		();
@@ -50,7 +52,6 @@ public:
 	struct	SlotItem
 	{
 		Fvector	P;
-//		float	yaw;
 		float	scale;
 		float	phase_x;
 		float	phase_z;
