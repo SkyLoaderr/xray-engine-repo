@@ -151,7 +151,7 @@ void CAI_Dog::StateSelector()
 void __stdcall CAI_Dog::BoneCallback(CBoneInstance *B)
 {
 	CAI_Dog*	this_class = dynamic_cast<CAI_Dog*> (static_cast<CObject*>(B->Callback_Param));
-	this_class->Bones.Update(B, Level().timeServer());
+	//this_class->Bones.Update(B, Level().timeServer());
 }
 
 BOOL CAI_Dog::net_Spawn (LPVOID DC) 

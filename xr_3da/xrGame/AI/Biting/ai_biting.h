@@ -186,6 +186,7 @@ public:
 			void			SetupVelocityMasks				(bool force_real_speed);
 			void			UpdateVelocityWithPath			();
 			void			UpdateActionWithPath			();
+			void			UpdatePathWithAction			();
 	
 // members
 public:

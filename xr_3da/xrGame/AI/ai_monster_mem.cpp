@@ -56,6 +56,7 @@ void CSoundMemory::Deinit()
 void CSoundMemory::HearSound(const SoundElem &s)
 {
 	if (NONE_DANGEROUS_SOUND	== s.type) return;
+	if (DOOR_OPENING			<= s.type) return;
 	
 	// поиск в массиве звука
 	xr_vector<SoundElem>::iterator it;
@@ -135,7 +136,6 @@ void CSoundMemory::UpdateHearing(TTime dt)
 
 
 //#ifdef DEBUG
-//	// DEBUG
 //	CAI_Biting *pB = dynamic_cast<CAI_Biting*>(this);
 //
 //	pB->HDebug->HT_Clear();

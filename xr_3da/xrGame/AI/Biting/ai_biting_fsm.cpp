@@ -42,7 +42,9 @@ void CAI_Biting::Think()
 		// ¬ыбор текущего состо€ни€
 		StateSelector						();
 		CurrentState->Execute				(m_current_update);
+		UpdatePathWithAction					();
 	}
+	
 
 	// построить путь
 	CMonsterMovement::Frame_Update			();
@@ -212,6 +214,30 @@ void CAI_Biting::UpdateVelocities(STravelParams cur_velocity)
 		if (b_path_end) break;		
 	}
 
+}
+
+void CAI_Biting::UpdatePathWithAction()
+{
+	switch (MotionMan.m_tAction) {
+	case ACT_STAND_IDLE: 
+	case ACT_SIT_IDLE:	 
+	case ACT_LIE_IDLE:
+	case ACT_EAT:
+	case ACT_SLEEP:
+	case ACT_REST:
+	case ACT_LOOK_AROUND:
+	case ACT_ATTACK:
+		disable_path();
+		break;
+	case ACT_WALK_FWD:
+	case ACT_WALK_BKWD:
+	case ACT_RUN:
+	case ACT_DRAG:
+	case ACT_STEAL:
+	case ACT_JUMP:
+		enable_path();
+		break;
+	}
 }
 
 
