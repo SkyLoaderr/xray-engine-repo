@@ -21,6 +21,15 @@ void CSheduler::Initialize		()
 
 void CSheduler::Destroy			()
 {
+	for (u32 it=0; it<Items.size(); it++)
+	{
+		if (0==Items[it].Object)	
+		{
+			Items.erase(Items.begin()+it);
+			it	--;
+		}
+	}
+
 	R_ASSERT			(Items.empty()); 
 	DeleteFiber			(fiber_thread);
 }
