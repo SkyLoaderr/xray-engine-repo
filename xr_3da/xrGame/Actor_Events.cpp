@@ -44,9 +44,9 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			if (W) 
 			{
 				R_ASSERT							(BE(Local(),W->Local()));	// remote can't take local
-				W->H_SetParent						(0);
 				int id	= Weapons->weapon_remove	(W);
 				Weapons->ActivateWeaponHistory		();
+				W->H_SetParent						(0);
 				return;
 			}
 		}

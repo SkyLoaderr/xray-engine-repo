@@ -284,7 +284,7 @@ CObject* CObject::H_SetParent	(CObject* O)
 		// Become independent
 		pCreator->ObjectSpace.Object_Register	(this);
 		Sector_Detect							();
-	}
+	} 
 	CObject* S	= Parent; 
 	Parent		= O; 
 	return		S;
