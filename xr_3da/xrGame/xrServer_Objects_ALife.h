@@ -274,6 +274,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CS
 	void __fastcall					OnChangeAnim				(PropValue* sender);
 	void __fastcall					OnChooseAnim				(PropValue* sender, AStringVec& lst);
 #endif
+	ref_str							engine_sound;
 	ref_str							startup_animation;
 									CSE_ALifeHelicopter			(LPCSTR caSection);
 	virtual							~CSE_ALifeHelicopter		();

@@ -1042,7 +1042,8 @@ void CSE_ALifeHelicopter::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
     CSE_Motion::motion_read		(tNetPacket);
     
     tNetPacket.r_string			(startup_animation);
-    
+//	tNetPacket.r_string			(engine_sound);
+
 #ifdef _EDITOR    
 	CSE_Visual::PlayAnimation	(*startup_animation?*startup_animation:"$editor");
 	CSE_Motion::PlayMotion		();
@@ -1055,6 +1056,7 @@ void CSE_ALifeHelicopter::STATE_Write		(NET_Packet	&tNetPacket)
     CSE_Motion::motion_write	(tNetPacket);
 
     tNetPacket.w_string			(startup_animation);
+    tNetPacket.w_string			(engine_sound);
 }
 
 void CSE_ALifeHelicopter::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -1088,12 +1090,13 @@ void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
     // motions
     if (visual && PSkeletonAnimated(visual))
     {
-        RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), &startup_animation, smCustom);
+        RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup Animation"), &startup_animation, smCustom);
         V->OnChangeEvent		= OnChangeAnim;
         V->OnChooseEvent		= OnChooseAnim;
     }
 
 	CSE_Motion::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),	 values);
+    PHelper.CreateChoose		(values,	FHelper.PrepareKey(pref,s_name,"Engine Sound"), &engine_sound, smSoundSource);
 }
 #endif
 
