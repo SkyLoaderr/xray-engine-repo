@@ -183,6 +183,54 @@
     <string id="mil_lukash_dialog_start_51">
         <text>Вали отсюда.</text>
     </string>
+    <string id="mil_max_dialog_common1_0">
+        <text>У вас тут база ?</text>
+    </string>
+    <string id="mil_max_dialog_common1_1">
+        <text>Как видишь. Резиденция "Свободы". Раньше было неплохим местом, а сейчас...</text>
+    </string>
+    <string id="mil_max_dialog_common1_2">
+        <text>Все так плохо ?</text>
+    </string>
+    <string id="mil_max_dialog_common1_3">
+        <text>Все еще хуже. Старшой наш погиб, а сейчас вместо него Лукаш со своими отморозками. От "Свободы" только название и осталось.</text>
+    </string>
+    <string id="mil_max_dialog_common2_0">
+        <text>Что тут за местность ?</text>
+    </string>
+    <string id="mil_max_dialog_common2_1">
+        <text>Да всего понемногу. Деревня заброшенная, болото, поле артефактов... А что тебя интересует ?</text>
+    </string>
+    <string id="mil_max_dialog_common2_2">
+        <text>Что за деревня ?</text>
+    </string>
+    <string id="mil_max_dialog_common2_3">
+        <text>Жуткое место. Мутанты куча - химеры, зомби и тому подобный хлам. Из аномалий есть тополиный пух, жарка... Туда лучше не соваться, а особенно ночью.</text>
+    </string>
+    <string id="mil_max_dialog_common2_4">
+        <text>Болото ? И что там ?</text>
+    </string>
+    <string id="mil_max_dialog_common2_5">
+        <text>Радиация там неслабая. Никакая защита не помогает. Последний, кто туда совался помер в мучениях, такую дозу схлопотал.</text>
+    </string>
+    <string id="mil_max_dialog_common2_6">
+        <text>А чего он попер на болото ?</text>
+    </string>
+    <string id="mil_max_dialog_common2_7">
+        <text>Да сидит там браток один, совершенно без башни. Выжил в деревне ночью, вот крыша и сорвалась. Ему явно повезло, так как вояки когда-то там заминировали все, а он как-то прошел к домику на болоте и сидит там - отстреливает всех, кто смеет приближаться.</text>
+    </string>
+    <string id="mil_max_dialog_common2_8">
+        <text>Артефакты ? Интересно. Это где ?</text>
+    </string>
+    <string id="mil_max_dialog_common2_80">
+        <text>На восток от базы. Но не советую туда соваться, там появились псевдогиганты. Могут попробовать тебя на обед.</text>
+    </string>
+    <string id="mil_max_dialog_common2_9">
+        <text>А куда дороги ведут ?</text>
+    </string>
+    <string id="mil_max_dialog_common2_90">
+        <text>Отсюда можно на "Росток" попасть, да ты, наверное, оттуда и пришел. К северу выход на Радар, но туда мало кто ходит - никто не хочет закончить свою жизнь в качестве растения. На востоке дорога ведет в мертвый город - наемники там, стреляют кого ни увидят, хотя там есть чем поживиться.</text>
+    </string>
     <string id="mil_max_dialog_first_0">
         <text>Несколько человек. Основательно экипированы.</text>
     </string>
@@ -335,5 +383,23 @@
     </string>
     <string id="mil_zoneguard_dialog_30">
         <text>Как всегда - хреново. Иди, куда шел…</text>
+    </string>
+    <string id="mil_zoneguard_dialog_4">
+        <text>Что тут за болото рядом ?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_41">
+        <text>Радиоактивная лужа. В нее лучше не соваться, нахватаешься рентген и фонарик ночью не нужен будет. Засел там какой-то тип и никого не подпускает, хотя какой дурак туда полезет...</text>
+    </string>
+    <string id="mil_zoneguard_dialog_42">
+        <text>Что за тип ?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_43">
+        <text>А хрен его знает. Говорят, кто-то из наших, который в деревне побывал.</text>
+    </string>
+    <string id="mil_zoneguard_dialog_44">
+        <text>Что за деревня ?</text>
+    </string>
+    <string id="mil_zoneguard_dialog_45">
+        <text>Да есть тут недалеко деревня. Мутантов полно, аномалий. Я сам там не был, недавно тут на базе обретаюсь. Спроси у Макса - он тут давно.</text>
     </string>
 </string_table>
