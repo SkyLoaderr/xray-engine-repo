@@ -16,6 +16,8 @@ CRenderDevice 		Device;
 extern int	rsDVB_Size;
 extern int	rsDIB_Size;
 
+ENGINE_API BOOL g_bRendering = FALSE; 
+
 //---------------------------------------------------------------------------
 CRenderDevice::CRenderDevice()
 {
@@ -304,6 +306,7 @@ BOOL CRenderDevice::Begin	()
 		EPrefs.scene_clear_color,1,0
 		));
 	RCache.OnFrameBegin		();
+	g_bRendering = 	TRUE;
 	return		TRUE;
 }
 
@@ -312,6 +315,7 @@ void CRenderDevice::End()
 {
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
+	g_bRendering = 	FALSE;
 
     seqRender.Process						(rp_Render);
     

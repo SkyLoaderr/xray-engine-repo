@@ -70,8 +70,8 @@ public:
 	RStringSet	pe_static;
     int			face_cnt;
     int			vert_cnt;
-    int			hom_face_cnt;
-    int			hom_vert_cnt;
+    int			hom_face_cnt, hom_vert_cnt;
+    int			snd_occ_face_cnt, snd_occ_vert_cnt;
     int 		object_mu_ref_cnt;
     int 		object_lod_ref_cnt;
     int 		light_point_cnt;
@@ -124,6 +124,8 @@ public:
         vert_cnt			= 0;
         hom_face_cnt		= 0;
         hom_vert_cnt		= 0;
+        snd_occ_face_cnt	= 0;
+        snd_occ_vert_cnt	= 0;
         object_mu_ref_cnt	= 0;
         object_lod_ref_cnt	= 0;
         light_point_cnt		= 0;

@@ -193,16 +193,17 @@ public:
 	// options
 	Flags32			m_Flags;
 	enum{
-		eoDynamic 	 	= (1<<0),
-		eoProgressive 	= (1<<1),
-        eoUsingLOD		= (1<<2),
-        eoHOM			= (1<<3),
-        eoMultipleUsage	= (1<<4),
-		eoFORCE32		= u32(-1)
+		eoDynamic 	 	= (1<<0),			
+		eoProgressive 	= (1<<1),			
+        eoUsingLOD		= (1<<2),			
+        eoHOM			= (1<<3),			
+        eoMultipleUsage	= (1<<4),			
+        eoSoundOccluder	= (1<<5),           
+		eoFORCE32		= u32(-1)           
     };
     IC BOOL			IsDynamic				(){return m_Flags.is(eoDynamic);}
-    IC BOOL			IsStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&!m_Flags.is(eoMultipleUsage);}
-    IC BOOL			IsMUStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&m_Flags.is(eoMultipleUsage);}
+    IC BOOL			IsStatic				(){return !m_Flags.is(eoSoundOccluder)&&!m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&!m_Flags.is(eoMultipleUsage);}
+    IC BOOL			IsMUStatic				(){return !m_Flags.is(eoSoundOccluder)&&!m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&m_Flags.is(eoMultipleUsage);}
 private:
 	// bounding volume
 	Fbox 			m_Box;
@@ -421,9 +422,6 @@ public:
 	bool			ExportOMF				(LPCSTR fname);
     // obj
     bool			ExportOBJ				(LPCSTR name);
-    // HOM
-    bool			ExportHOMPart			(const Fmatrix& parent, IWriter& F);
-    bool			ExportHOM				(LPCSTR fname);
 
 	LPCSTR			GenerateSurfaceName		(LPCSTR base_name);
 #ifdef _MAX_EXPORT

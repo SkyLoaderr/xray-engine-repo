@@ -88,13 +88,17 @@ public:
 	// registrators
 //	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
 //	CRegistrator <pureDeviceCreate>		seqDevCreate;
-	CRegistrator <pureFrame>	seqFrame;
-	CRegistrator <pureRender>	seqRender;
-	CRegistrator <pureAppStart>	seqAppStart;
-	CRegistrator <pureAppEnd>	seqAppEnd;
+	CRegistrator <pureFrame>					seqFrame;
+	CRegistrator <pureRender>					seqRender;
+	CRegistrator <pureAppStart>					seqAppStart;
+	CRegistrator <pureAppEnd>					seqAppEnd;
+	CRegistrator <pureAppActivate	>			seqAppActivate;
+	CRegistrator <pureAppDeactivate	>			seqAppDeactivate;
 public:
 							CRenderDevice 	();
     virtual 				~CRenderDevice	();
+
+	void					Pause			(BOOL bOn){}//.
 
 	bool 					Create			();
 	void 					Destroy			();

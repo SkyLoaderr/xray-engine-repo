@@ -110,7 +110,10 @@ bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
     	inf->hom_face_cnt	+= GetFaceCount	();
     	inf->hom_vert_cnt	+= GetVertexCount();
     }
-
+    if (m_Flags.is(eoSoundOccluder)){
+    	inf->snd_occ_face_cnt += GetFaceCount();
+    	inf->snd_occ_vert_cnt += GetVertexCount();
+    }
 	return true;
 }
 #endif
@@ -133,14 +136,11 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
 /*/
 		RCache.set_xform_world	(parent);
 	    if (m_Flags.is(eoHOM)){
-        	if ((1==priority)&&(false==strictB2F)){
-	            RenderEdge(parent,0,0x00000000);
-                Device.SetShader(Device.m_WireShader);
-                for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-                    for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-                        (*_M)->Render(parent,*s_it);
-                }
-            }
+        	if ((1==priority)&&(false==strictB2F)) 	RenderEdge		(parent,0,0,0x40B64646);
+        	if ((2==priority)&&(true==strictB2F))	RenderSelection	(parent,0,0,0xA0FFFFFF);
+        }else if (m_Flags.is(eoSoundOccluder)){
+        	if ((1==priority)&&(false==strictB2F))	RenderEdge		(parent,0,0,0xFF000000);
+        	if ((2==priority)&&(true==strictB2F))	RenderSelection	(parent,0,0,0xA00000FF);
         }else{
             if(psDeviceFlags.is(rsEdgedFaces)&&(1==priority)&&(false==strictB2F))
                 RenderEdge(parent);

@@ -200,6 +200,7 @@ void TUI::OnAppActivate()
 	if (pInput){
         m_ShiftState.Clear();
      	pInput->OnAppActivate();
+        Device.seqAppActivate.Process	(rp_AppActivate);
     }
     m_bAppActive 	= true;
 }
@@ -211,6 +212,7 @@ void TUI::OnAppDeactivate()
 	if (pInput){
 		pInput->OnAppDeactivate();
         m_ShiftState.Clear();
+        Device.seqAppDeactivate.Process(rp_AppDeactivate);
     }
     HideHint();
     m_bAppActive 	= false;

@@ -93,11 +93,11 @@ public:
     float				fPHBounceStartVelocity;	// ?
 	float				fPHBouncing;            // ?
 	// shoot&bounce&visibility&flotation
-    float		    	fFlotationFactor;		// 0.f - 1.f   	(1.f-проходимый полностью)
+    float		    	fFlotationFactor;		// 0.f - 1.f   	(1.f-полностью проходимый)
     float				fShootFactor;			// 0.f - 1.f	(1.f-полностью простреливаемый)
     float				fBounceDamageFactor;	// 0.f - 100.f
     float				fVisTransparencyFactor;	// 0.f - 1.f	(1.f-полностью прозрачный)
-    float				fSndOcclusionFactor;	// 0.f - 1.f    (1.f-полностью прозрачный)
+    float				fSndOcclusionFactor;	// 0.f - 1.f    (1.f-полностью слышен)
 public:
 	SGameMtl			()
     {

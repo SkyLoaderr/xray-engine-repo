@@ -28,18 +28,25 @@ void CEditableObject::FillSurfaceProps(CSurface* SURF, LPCSTR pref, PropItemVec&
 }
 //---------------------------------------------------------------------------
 
+xr_token eo_type_token[]={
+	{ "Static",					0},
+	{ "Dynamic",				CEditableObject::eoDynamic},
+	{ "Progressive Dynamic",	CEditableObject::eoDynamic|CEditableObject::eoProgressive},
+	{ "HOM",					CEditableObject::eoHOM},
+	{ "Multiple Usage",			CEditableObject::eoMultipleUsage|CEditableObject::eoUsingLOD},
+	{ "Sound Occluder",			CEditableObject::eoSoundOccluder},
+	{ 0,						0}
+};
+
 void CEditableObject::FillBasicProps(LPCSTR pref, PropItemVec& items)
 {
 	PropValue* V=0;
 	PHelper().CreateCaption		(items, PrepareKey(pref,"Reference Name"),		m_LibName.c_str());
+    PHelper().CreateToken32		(items, PrepareKey(pref,"Object Type"),   		&m_Flags.flags,		eo_type_token);
 	PHelper().CreateCaption		(items, PrepareKey(pref,"Version\\Owner Name"),	m_CreateName.c_str());
 	PHelper().CreateCaption		(items, PrepareKey(pref,"Version\\Modif Name"),	m_ModifName.c_str());
 	PHelper().CreateCaption		(items, PrepareKey(pref,"Version\\Creation Time"),Trim(AnsiString(ctime(&m_CreateTime))).c_str());
 	PHelper().CreateCaption		(items, PrepareKey(pref,"Version\\Modified Time"),Trim(AnsiString(ctime(&m_ModifTime))).c_str());
-    PHelper().CreateFlag32		(items,	PrepareKey(pref,"Flags\\Dynamic"),		&m_Flags,		CEditableObject::eoDynamic);
-    PHelper().CreateFlag32		(items,	PrepareKey(pref,"Flags\\HOM"),			&m_Flags,		CEditableObject::eoHOM);
-    V=PHelper().CreateFlag32   	(items, PrepareKey(pref,"Flags\\Use LOD"),		&m_Flags,		CEditableObject::eoUsingLOD);	V->OnChangeEvent.bind(this,&CEditableObject::OnChangeShader);
-    PHelper().CreateFlag32		(items,	PrepareKey(pref,"Flags\\Multiple Usage"),&m_Flags,		CEditableObject::eoMultipleUsage);
     V=PHelper().CreateVector   	(items, PrepareKey(pref,"Transform\\Position"),	&t_vPosition,	-10000,	10000,0.01,2); 		V->OnChangeEvent.bind(this,&CEditableObject::OnChangeTransform);
     V=PHelper().CreateAngle3   	(items, PrepareKey(pref,"Transform\\Rotation"),	&t_vRotate, 	-10000,	10000,0.1,1);		V->OnChangeEvent.bind(this,&CEditableObject::OnChangeTransform);
     V=PHelper().CreateVector   	(items, PrepareKey(pref,"Transform\\Scale"),	&t_vScale, 		0.01,	10000,0.01,2);			V->OnChangeEvent.bind(this,&CEditableObject::OnChangeTransform);
