@@ -77,7 +77,7 @@ void	CRenderTarget::phase_smap_direct()
 {
 	dwWidth						= DSM_size;
 	dwHeight					= DSM_size;
-	RCache.set_RT				(rt_smap_d,				0);
+	RCache.set_RT				(rt_smap_d->pRT,		0);
 	RCache.set_RT				(NULL,					1);
 	RCache.set_RT				(NULL,					2);
 	RCache.set_ZB				(rt_smap_d_ZB);
@@ -87,7 +87,7 @@ void	CRenderTarget::phase_accumulator()
 {
 	dwWidth						= Device.dwWidth;
 	dwHeight					= Device.dwHeight;
-	RCache.set_RT				(rt_Accumulator,		0);
+	RCache.set_RT				(rt_Accumulator->pRT,	0);
 	RCache.set_RT				(NULL,					1);
 	RCache.set_RT				(NULL,					2);
 	RCache.set_ZB				(HW.pBaseZB);
