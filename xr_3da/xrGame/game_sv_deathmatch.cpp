@@ -567,8 +567,7 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(u32 id_who, NET_Packet& P)
 {
 	game_PlayerState*	ps	=	get_id	(id_who);
 	if (!ps || ps->Skip) return;
-
-	s16 MoneyDelta;
+	
 	P.r_s16(ps->LastBuyAcount);
 
 	xr_vector<s16>		ItemsDesired;

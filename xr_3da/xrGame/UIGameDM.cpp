@@ -515,11 +515,11 @@ void		CUIGameDM::SetBuyMenuItems		()
 			if (pWeapon)
 			{
 				u8 Addons = 0;
-				if (pWeapon->IsGrenadeLauncherAttached())
+				if (pWeapon->IsGrenadeLauncherAttached() && pWeapon->GrenadeLauncherAttachable())
 					Addons |= CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
-				if (pWeapon->IsScopeAttached())
+				if (pWeapon->IsScopeAttached() && pWeapon->ScopeAttachable())
 					Addons |= CSE_ALifeItemWeapon::eWeaponAddonScope;
-				if (pWeapon->IsSilencerAttached())
+				if (pWeapon->IsSilencerAttached() && pWeapon->SilencerAttachable())
 					Addons |= CSE_ALifeItemWeapon::eWeaponAddonSilencer;
 
 				ItemID |= Addons << 0x05;
