@@ -96,6 +96,9 @@ void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)
 {
+	if (getDestroy())
+		return;
+
 	if (g_Alive()) {
 		CCoverPoint				*cover = agent_manager().member().member(this).cover();
 		if (cover && who && (who->ID() != ID()) && !fis_zero(amount) && brain().affect_cover())
