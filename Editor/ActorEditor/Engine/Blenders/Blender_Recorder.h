@@ -19,11 +19,13 @@ public:
 	BOOL				bLighting;
 	int					iLayers;
 	int					iLOD;
-private:
+
+public:
 	CSimulator			RS;
 	CBlender*			BT;
 	ShaderElement*		SH;
 
+private:
 	STextureList		passTextures;
 	SMatrixList			passMatrices;
 	SConstantList		passConstants;
