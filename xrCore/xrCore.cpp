@@ -65,4 +65,5 @@ void xrCore::_destroy		()
 	CloseLog				();
 	FS._destroy				();
 	xr_delete				(xr_FS);
+	Memory._destroy			();
 }

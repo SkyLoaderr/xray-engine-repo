@@ -46,7 +46,17 @@ void	xrMemory::_initialize	(BOOL bDebug)
 		element		+=	mem_pools_ebase;
 	}
 #endif    
+
+	g_pStringContainer	= xr_new<str_container>		();
+
 	mem_initialized	= TRUE;
+}
+
+void	xrMemory::_destroy()
+{
+	xr_delete		(g_pStringContainer);
+
+	mem_initialized	= FALSE;
 }
 
 void	xrMemory::mem_compact	()

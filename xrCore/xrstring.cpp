@@ -58,4 +58,5 @@ void		str_container::clean	()
 str_container::~str_container		()
 {
 	clean	();
+	R_ASSERT(container.empty());
 }
