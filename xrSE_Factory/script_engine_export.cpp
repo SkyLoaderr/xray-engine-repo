@@ -19,7 +19,9 @@ template <typename TList> struct Register
 	static void _Register(lua_State *L)
 	{
 		Register<TList::Tail>::_Register(L);
-//		Msg("Exporting %s",typeid(TList::Head).name());
+#ifdef _DEBUG
+		Msg("Exporting %s",typeid(TList::Head).name());
+#endif
 		TList::Head::script_register(L);
 	}
 };
