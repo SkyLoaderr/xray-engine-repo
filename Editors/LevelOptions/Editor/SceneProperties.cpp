@@ -92,7 +92,7 @@ void __fastcall TfrmSceneProperties::FormShow(TObject *Sender)
     SetEditParams();
 #endif
     tvOptions->Items->AddChild(root,"Optimizing");
-    tvOptions->Items->AddChild(root,"Lightmaps");
+    tvOptions->Items->AddChild(root,"Light");
     tvOptions->Items->AddChild(root,"Progressive");
 
     tvOptions->SetFocus();
@@ -132,7 +132,8 @@ void __fastcall TfrmSceneProperties::SetSceneParams(){
     m_BuildParams->m_pm_heuristic		 	= sePM_heuristic->Value;
 }
 
-static int JS2[10]={-1,0,-1,-1,1,-1,-1,-1,-1,2};
+static int JS2[10]	={-1,+0,-1,-1,+1,-1,-1,-1,-1,+2};
+static int LODQ2[8]	={-1,+0,-1,+1,-1,+2,-1,+3};
 void __fastcall TfrmSceneProperties::SetEditParams(){
 // Build Options
     // Normals & optimization
@@ -142,6 +143,8 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
     // Light maps
     seLMPixelsPerMeter->Value      	= m_BuildParams->m_lm_pixels_per_meter;
     rgLMJitterSamples->ItemIndex   	= JS2[m_BuildParams->m_lm_jitter_samples];
+	rgLODQuality->ItemIndex			= LODQ2[iFloor(Scene->m_LevelOp.m_LOD_Quality+0.5f)];
+
     seLMRMS->Value				   	= m_BuildParams->m_lm_rms;
 	seLMRMSZero->Value				= m_BuildParams->m_lm_rms_zero;
 
@@ -155,12 +158,14 @@ void __fastcall TfrmSceneProperties::SetEditParams(){
     sePM_heuristic->Value          	= m_BuildParams->m_pm_heuristic;
 }
 
+static int LODQ[4]={1,3,5,7};
 void __fastcall TfrmSceneProperties::btContinueClick(TObject *Sender)
 {
 #ifdef _LEVEL_EDITOR
 	Scene->m_LevelOp.m_FNLevelPath 	= edLevelPath->Text.c_str();	// Path
     Scene->m_LevelOp.m_LevelPrefix	= edLevelPrefix->Text.LowerCase().c_str();	// Prefix
 	Scene->m_LevelOp.m_BOPText		= mmText->Text.c_str();			// Text
+	Scene->m_LevelOp.m_LOD_Quality 	= LODQ[rgLODQuality->ItemIndex];
 #endif
     SetSceneParams					();
     Close							();
