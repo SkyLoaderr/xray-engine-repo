@@ -191,6 +191,7 @@ void CCF_Skeleton::BuildState()
 		if (!b)	{
 			I->elem_id	= u16(-1);				//. hack - disable invalid bone
 			Msg			("! ERROR: invalid bone xform (Slipch?). Bone disabled.");
+			Msg			("! ERROR: bone_id=[%d], world_pos[%f,%f,%f]",I->elem_id,VPUSH(TW.c));
 			VERIFY2		(b,"! ERROR: invalid bone xform (Slipch?). Bone disabled.");
 		}
 		I->B.set			(
