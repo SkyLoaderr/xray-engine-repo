@@ -1482,3 +1482,7 @@ float CSE_ALifeSmartZone::detect_probability()
 {
 	return						(0.f);
 }
+
+void CSE_ALifeSmartZone::smart_touch	(CSE_ALifeMonsterAbstract *monster)
+{
+}

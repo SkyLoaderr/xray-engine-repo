@@ -51,9 +51,11 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
 
+#ifdef XRGAME_EXPORTS
 	m_iCharacterProfile			= NO_PROFILE;
 	m_iSpecificCharacter		= NO_SPECIFIC_CHARACTER;
 	m_character_profile_init	= false;
+#endif
 	m_trader_flags.zero			();
 	m_trader_flags.set			(eTraderFlagInfiniteAmmo,FALSE);
 }
@@ -63,7 +65,9 @@ CSE_Abstract *CSE_ALifeTraderAbstract::init	()
 	string4096					S;
 	sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
 	base()->m_ini_string		= S;
+#ifdef XRGAME_EXPORTS
 	m_character_profile_init	= false;
+#endif
 
 	return						(base());
 }
@@ -97,7 +101,9 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 			m_trader_flags.assign(tNetPacket.r_u32());
 	}
 
+#ifdef XRGAME_EXPORTS
 	relation_registry.Init(base()->ID);
+#endif
 }
 
 #ifdef XRGAME_EXPORTS

@@ -249,12 +249,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeSmartZone,CSE_ALifeSpaceRestrictor,CSE_ALi
 	virtual CSE_Abstract			*init						();
 	virtual void					update						();
 	virtual float					detect_probability			();
+	virtual void					smart_touch					(CSE_ALifeMonsterAbstract *monster);
 #ifdef XRGAME_EXPORTS
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon			(ALife::EHitType		&tHitType,			float		&fHitPower);
 	virtual	ALife::EMeetActionType	tfGetActionType				(CSE_ALifeSchedulable	*tpALifeSchedulable,int			iGroupIndex, bool bMutualDetection);
 	virtual bool					bfActive					();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector			();
-	virtual void					smart_touch					(CSE_ALifeMonsterAbstract *monster);
 #endif
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeSmartZone)
