@@ -195,7 +195,7 @@ void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 		return;
 	};
 
-	if (pParent && pParent->ID() == artefactBearerID){
+	if (pParent && pParent->ID() == artefactBearerID && GetPlayerByGameID(artefactBearerID)){
 		CObject* pBearer = Level().Objects.net_Find(artefactBearerID);
 		VERIFY(pBearer);
 		D.pos	= pBearer->Position();
