@@ -329,6 +329,7 @@ void	__stdcall _LogCallback		(LPCSTR string)
 	if (string && '!'==string[0] && ' '==string[1])
 		Device.Statistic.errors.push_back	(shared_str(string));
 }
+
 void CStats::OnDeviceCreate			()
 {
 	pFont	= xr_new<CGameFont>		("stat_font");
