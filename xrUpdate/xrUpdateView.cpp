@@ -357,6 +357,7 @@ void CxrUpdateView::OnBnClickedBtnRun()
 	t->exec();
 
 	AfxGetApp()->DoWaitCursor(-1); // 0 => restore, 1=> begin, -1=> end
+	AfxMessageBox("Done");
 }
 
 void CxrUpdateView::OnBnClickedButtonAdd()

@@ -29,22 +29,27 @@ END_MESSAGE_MAP()
 	
 
 // CxrUpdateApp construction
-extern CLogDlg*	g_log_dlg = NULL;
+//extern CLogDlg*	g_log_dlg = NULL;
 extern HWND g_app_wnd =NULL;
 void	__stdcall log_cb_fn (LPCSTR string)
 {
-	if(!g_log_dlg)
+	DWORD a;
+	HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);  
+	BOOL ss = WriteConsole(hStdout,string,strlen(string),&a,NULL);
+	ss = WriteConsole(hStdout,"\n",1,&a,NULL);
+
+/*	if(!g_log_dlg)
 		return;
-//	g_log_dlg->m_list_box.InsertString(0,string);
 	g_log_dlg->m_list_box.AddString(string);
 	g_log_dlg->ShowWindow(SW_SHOW);
 	g_log_dlg->UpdateWindow();
+*/
 }
 
 
 CxrUpdateApp::CxrUpdateApp()
 {
-	m_log_dlg = xr_new<CLogDlg>( MAKEINTRESOURCE(IDD_LOG_DIALOG));
+//	m_log_dlg = xr_new<CLogDlg>( MAKEINTRESOURCE(IDD_LOG_DIALOG));
 
 }
 
@@ -52,9 +57,9 @@ CxrUpdateApp::~CxrUpdateApp()
 {
 	FlushLog();
 	Core._destroy();
-	g_log_dlg = NULL;
-	m_log_dlg->DestroyWindow();
-	xr_delete(m_log_dlg);
+//	g_log_dlg = NULL;
+//	m_log_dlg->DestroyWindow();
+//	xr_delete(m_log_dlg);
 	FreeConsole();
 
 	if( m_pReadThread )
@@ -73,15 +78,11 @@ BOOL CxrUpdateApp::InitInstance()
 {
 	CWinApp::InitInstance();
 
-	g_log_dlg = m_log_dlg;
-	m_log_dlg->Create( MAKEINTRESOURCE(IDD_LOG_DIALOG) , NULL);
-	m_log_dlg->ShowWindow(SW_SHOW);
+//	g_log_dlg = m_log_dlg;
+//	m_log_dlg->Create( MAKEINTRESOURCE(IDD_LOG_DIALOG) , NULL);
+//	m_log_dlg->ShowWindow(SW_SHOW);
 
 	BOOL r = AllocConsole();
-	HANDLE h_in  =GetStdHandle(STD_INPUT_HANDLE);
-	HANDLE h_out =GetStdHandle(STD_OUTPUT_HANDLE);
-	HANDLE h_err =GetStdHandle(STD_ERROR_HANDLE);
-
 	_VerifyPath("x:\\updater");
 	SetCurrentDirectoryA("x:\\updater");
 

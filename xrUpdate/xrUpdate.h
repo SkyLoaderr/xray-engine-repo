@@ -25,7 +25,7 @@ public:
 	BOOL CreateShellRedirect();
 	static UINT ReadPipeThreadProc( LPVOID pParam );
 public:
-	CLogDlg*	m_log_dlg;
+//	CLogDlg*	m_log_dlg;
 	virtual BOOL InitInstance();
 
 	afx_msg void OnAppAbout();
@@ -35,4 +35,4 @@ public:
 extern CxrUpdateApp theApp;
 extern HWND g_app_wnd;
 extern void	__stdcall log_cb_fn (LPCSTR string);
-extern CLogDlg*	g_log_dlg;
+//extern CLogDlg*	g_log_dlg;
