@@ -136,6 +136,7 @@ void CHUDManager::Render_Last()
 	CSpectator*	S					= dynamic_cast<CSpectator*>	(O);
 	if (S)							return;
 
+	// hud itself
 	::Render->set_HUD				(TRUE);
 	::Render->set_Object			(O->H_Root());
 	O->OnHUDDraw					(this);
@@ -144,18 +145,18 @@ void CHUDManager::Render_Last()
 
 void CHUDManager::Render_Direct	()
 {
-	BOOL bAlready = FALSE;
+	BOOL bAlready					= FALSE;
 	if (psHUD_Flags.test(HUD_DRAW))
 	{
 		// draw hit marker
-		HitMarker.Render();
+		HitMarker.Render			();
 		
 		// UI
-		bAlready = ! (pUI && !pUI->Render());
-		pFontDI->OnRender		();
-		pFontSmall->OnRender	();
-		pFontMedium->OnRender	();
-		pFontBigDigit->OnRender	();
+		bAlready					= ! (pUI && !pUI->Render());
+		pFontDI->OnRender			();
+		pFontSmall->OnRender		();
+		pFontMedium->OnRender		();
+		pFontBigDigit->OnRender		();
 
 		pFontHeaderEurope->OnRender	();
 		pFontHeaderRussian->OnRender();

@@ -375,15 +375,9 @@ void	CRender::Render		()
 	// Glows
 	L_Glows->Render			();
 
-	// Patches
-	if (vecPatches.size())  {
-		flush_Patches	();
-	}
-
 	g_pGamePersistent->Environment.RenderLast	();
-	// L_Projector.render					();
 
-	// Postprocess
+	// Postprocess, if necessary
 	Target->End				();
 	L_Projector->finalize	();
 
