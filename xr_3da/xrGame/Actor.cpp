@@ -109,7 +109,7 @@ CActor::CActor() : CEntityAlive()
 
 	m_fRunFactor			= 2.f;
 	m_fCrouchFactor			= 0.2f;
-
+	m_fClimbFactor			= 1.f;
 	m_fCamHeightFactor		= 0.87f;
 
 	m_fFallTime				=	s_fFallTime;
@@ -256,6 +256,7 @@ void CActor::Load	(LPCSTR section )
 	m_fJumpSpeed				= pSettings->r_float(section,"jump_speed");
 	m_fRunFactor				= pSettings->r_float(section,"run_coef");
 	m_fCrouchFactor				= pSettings->r_float(section,"crouch_coef");
+	m_fClimbFactor				= pSettings->r_float(section,"climb_coef");
 	skel_airr_lin_factor		= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
 	skel_airr_ang_factor		= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
 	hinge_force_factor1 		= pSettings->r_float(section,"ph_skeleton_hinger_factor1");

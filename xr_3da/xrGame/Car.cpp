@@ -378,8 +378,6 @@ void CCar::ParseDefinitions()
 	}
 			
 	b_auto_switch_transmission= !!ini->r_bool("car_definition","auto_transmission");
-	m_auto_switch_rpm.set(ini->r_fvector2("car_definition","auto_transmission_rpm"));
-	m_auto_switch_rpm.mul((1.f/60.f*2.f*M_PI));
 
 	InitParabola		();
 

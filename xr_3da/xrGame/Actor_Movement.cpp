@@ -116,6 +116,11 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			mstate_real			&=~	mcJump;
 		}
 	}
+	// update player accel
+	if (mstate_wf&mcFwd)		vControlAccel.z +=  1;
+	if (mstate_wf&mcBack)		vControlAccel.z += -1;
+	if (mstate_wf&mcLStrafe)	vControlAccel.x += -1;
+	if (mstate_wf&mcRStrafe)	vControlAccel.x +=  1;
 
 	if (m_PhysicMovementControl->Environment()==CPHMovementControl::peOnGround || m_PhysicMovementControl->Environment()==CPHMovementControl::peAtWall )
 	{
@@ -160,11 +165,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		{
 			BOOL	bAccelerated		= isAccelerated(mstate_real)&&CanAccelerate();
 
-			// update player accel
-			if (mstate_real&mcFwd)		vControlAccel.z +=  1;
-			if (mstate_real&mcBack)		vControlAccel.z += -1;
-			if (mstate_real&mcLStrafe)	vControlAccel.x += -1;
-			if (mstate_real&mcRStrafe)	vControlAccel.x +=  1;
+
 
 			// correct "mstate_real" if opposite keys pressed
 			if (_abs(vControlAccel.z)<EPS)	mstate_real &= ~(mcFwd+mcBack		);
@@ -176,6 +177,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 				scale	=	m_fWalkAccel/scale;
 				if (bAccelerated)			scale *= m_fRunFactor;
 				if (mstate_real&mcCrouch)	scale *= m_fCrouchFactor;
+				if (mstate_real&mcClimb)	scale *= m_fClimbFactor;
 				vControlAccel.mul			(scale);
 			}else{
 				//				mstate_real	&= ~mcAnyMove;
@@ -309,7 +311,7 @@ bool CActor::CanAccelerate			()
 
 bool	CActor::CanJump				()
 {
-	bool can_Jump = ((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
+	bool can_Jump = !m_PhysicMovementControl->PHCapture() &&((mstate_real&mcJump)==0) && (m_fJumpTime<=0.f) 
 		&& !m_bJumpKeyPressed &&!m_bZoomAimingMode;
 
 	return can_Jump;

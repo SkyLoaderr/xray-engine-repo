@@ -326,6 +326,7 @@ protected:
 	float					m_fJumpSpeed;
 	float					m_fRunFactor;
 	float					m_fCrouchFactor;
+	float					m_fClimbFactor;
 	
 	//////////////////////////////////////////////////////////////////////////
 	// User input/output
