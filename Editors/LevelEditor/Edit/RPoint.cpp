@@ -157,7 +157,8 @@ bool CRPoint::ExportSpawn( CFS_Base& F, int chunk_id )
         Packet.w_vec3		(PPosition);
         Fvector a; a.set	(0,PRotation.y,0);
         Packet.w_vec3		(a);
-        Packet.w_u16		(0);
+        Packet.w_u16		(0xFFFF);	// server id
+        Packet.w_u16		(0xFFFF);   // server parent id
         WORD fl 			= (m_Flags.bActive)?M_SPAWN_OBJECT_ACTIVE:0;
         Packet.w_u16		(fl);
 

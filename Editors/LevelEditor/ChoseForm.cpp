@@ -55,8 +55,10 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntity(LPCSTR init_name)
     CInifile::Root& data = sys_ini->Sections();
     for (CInifile::RootIt it=data.begin(); it!=data.end(); it++)
     {
-    	AnsiString sect=it->Name;
-        if (1==sect.Pos("m_")) FOLDER::AppendObject(form->tvItems,it->Name);
+    	LPCSTR val;
+    	if (it->LineExists("$spawn",&val))
+			if (CInifile::IsBOOL(val))
+            	FOLDER::AppendObject(form->tvItems,it->Name);;
     }
     _DELETE(sys_ini);
     // redraw

@@ -13,9 +13,9 @@ CInifile* CInifile::Create(const char* szFileName, BOOL ReadOnly)
 void CInifile::Destroy(CInifile* ini)
 {	_DELETE(ini); }
 
-//-----------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 //Тело функций Inifile
-//-----------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 ENGINE_API void _parse(LPSTR dest, LPCSTR src)
 {
 	if (src) {
@@ -51,6 +51,18 @@ ENGINE_API void _decorate(LPSTR dest, LPCSTR src)
 	}
 	*dest = 0;
 }
+//------------------------------------------------------------------------------
+
+BOOL	CInifile::Sect::LineExists( LPCSTR L, LPCSTR* val )
+{
+	Item Test; Test.first=(char*)L; SectIt A = std::lower_bound(Data.begin(),Data.end(),Test,item_pred());
+    if (A!=Data.end() && strcmp(A->first,L)==0){
+    	if (val) *val = A->second;
+    	return TRUE;
+    }
+	return FALSE;
+}
+//------------------------------------------------------------------------------
 
 CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly, BOOL bLoad, BOOL SaveAtEnd )
 {
@@ -314,8 +326,9 @@ BOOL	CInifile::ReadBOOL( LPCSTR S, LPCSTR L )
 	char		B[8];
 	strncpy		(B,C,7);
 	strlwr		(B);
-	if (strcmp(B,"on")==0 || strcmp(B,"yes")==0 || strcmp(B,"true")==0 || strcmp(B,"1")==0) return TRUE;
-	else return FALSE;
+    return 		IsBOOL(B);
+//	if (strcmp(B,"on")==0 || strcmp(B,"yes")==0 || strcmp(B,"true")==0 || strcmp(B,"1")==0) return TRUE;
+//	else return FALSE;
 }
 CLASS_ID CInifile::ReadCLSID( LPCSTR S, LPCSTR L)
 {

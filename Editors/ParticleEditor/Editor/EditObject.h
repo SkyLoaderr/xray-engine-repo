@@ -79,7 +79,7 @@ public:
     IC void			SetName			(LPCSTR name){m_Name=name;}
     IC void			SetShader		(LPCSTR name, Shader* sh){R_ASSERT(name&&name[0]); m_ShaderName=name; m_Shader=sh;}
     IC void			ED_SetShader	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
-    IC void 		SetShaderXRLC	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderXRLCName=name;}
+    IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
     IC void			Set2Sided		(BOOL fl){m_Sideflag=fl;}
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
