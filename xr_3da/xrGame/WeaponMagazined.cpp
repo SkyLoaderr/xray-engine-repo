@@ -84,23 +84,24 @@ void CWeaponMagazined::FireStart		()
 	{
 		if (!IsWorking())
 		{
-			if (st_current==eReload)			return;
-			if (st_current==eShowing)			return;
-			if (st_current==eHiding)			return;
+			if (STATE==eReload)			return;
+			if (STATE==eShowing)		return;
+			if (STATE==eHiding)			return;
+
 			if (!iAmmoElapsed && iAmmoCurrent)	
 			{
 				CWeapon::FireStart	();
-				st_target			= eMagEmpty;
+				SwitchState			(eMagEmpty);
 			}
 			else							
 			{
 				CWeapon::FireStart	();
-				st_target			= eFire;
+				SwitchState			(eFire);
 			}
 		}
 	}else{
 		if (!iAmmoElapsed && !iAmmoCurrent)	
-			st_target = eMagEmpty;
+			SwitchState			(eMagEmpty);
 	}
 }
 
@@ -110,7 +111,7 @@ void CWeaponMagazined::FireEnd			()
 	{
 		CWeapon::FireEnd	();
 		if (iAmmoCurrent && !iAmmoElapsed)	TryReload	();
-		else								st_target	= eIdle;
+		else								SwitchState (eIdle);
 	}
 }
 
@@ -121,18 +122,18 @@ void CWeaponMagazined::Reload			()
 
 void CWeaponMagazined::TryReload		()
 {
-	if (iAmmoCurrent && (iAmmoElapsed<iMagazineSize))	st_target = eReload;
-	else												st_target = eIdle;
+	if (iAmmoCurrent && (iAmmoElapsed<iMagazineSize))	SwitchState(eReload);
+	else												SwitchState(eIdle);
 }
 
 void CWeaponMagazined::OnMagazineEmpty	()
 {
-	st_target			=	eMagEmpty;
+	SwitchState			(eMagEmpty);
 }
 
 void CWeaponMagazined::ReloadMagazine	()
 {
-	st_target			=	eIdle;
+	SwitchState			(eIdle);
 	if (iAmmoCurrent>=iMagazineSize)	
 	{
 		iAmmoCurrent += iAmmoElapsed; 
@@ -147,42 +148,41 @@ void CWeaponMagazined::ReloadMagazine	()
 	}
 }
 
+void CWeaponMagazined::OnStateSwitch	(DWORD S)
+{
+	switch (S)
+	{
+	case eIdle:
+		bFlame			= FALSE;
+		switch2_Idle	();
+		break;
+	case eFire:
+		switch2_Fire	();
+		break;
+	case eMagEmpty:
+		bFlame			= FALSE;
+		switch2_Empty	();
+		break;
+	case eReload:
+		switch2_Reload	();
+		break;
+	case eShowing:
+		switch2_Showing	();
+		break;
+	case eHiding:
+		switch2_Hiding	();
+		break;
+	}
+	STATE = S;
+}
+
 void CWeaponMagazined::UpdateCL			()
 {
 	inherited::UpdateCL	();
 	float dt			= Device.fTimeDelta;
-
-	// on state change
-	if (st_target!=st_current)
-	{
-		switch (st_target)
-		{
-		case eIdle:
-			bFlame			= FALSE;
-			switch2_Idle	();
-			break;
-		case eFire:
-			switch2_Fire	();
-			break;
-		case eMagEmpty:
-			bFlame			= FALSE;
-			switch2_Empty	();
-			break;
-		case eReload:
-			switch2_Reload	();
-			break;
-		case eShowing:
-			switch2_Showing	();
-			break;
-		case eHiding:
-			switch2_Hiding	();
-			break;
-		}
-		st_current = st_target;
-	}
 	
 	// cycle update
-	switch (st_current)
+	switch (STATE)
 	{
 	case eShowing:
 	case eHiding:
@@ -228,7 +228,7 @@ void CWeaponMagazined::state_MagEmpty	(float dt)
 {
 	UpdateFP		();
 	OnEmptyClick	();
-	st_target		= eIdle;
+	SwitchState		(eIdle);
 }
 
 void CWeaponMagazined::OnVisible	()
@@ -247,7 +247,7 @@ void CWeaponMagazined::OnVisible	()
 		::Render->set_Transform		(&svTransform);
 		::Render->add_Visual		(Visual());
 	}
-	if (((eFire==st_current) || (eReload==st_current))&& bFlame) 
+	if (((eFire==STATE) || (eReload==STATE))&& bFlame) 
 	{
 		UpdateFP	();
 		OnDrawFlame	();
@@ -270,11 +270,11 @@ void CWeaponMagazined::Show		()
 }
 void CWeaponMagazined::OnShow	()
 {
-	st_target	= eShowing;
+	SwitchState	(eShowing);
 }
 void CWeaponMagazined::OnHide	()
 {
-	st_target	= eHiding;
+	SwitchState	(eHiding);
 }
 void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
@@ -371,17 +371,15 @@ void CWeaponMagazined::OnEmptyClick	()
 {
 	pSounds->PlayAtPos	(sndEmptyClick,H_Root(),vLastFP);
 }
-
 void CWeaponMagazined::OnAnimationEnd()
 {
-	switch (st_current)
+	switch (STATE)
 	{
 	case eReload:	ReloadMagazine();		break;	// End of reload animation
 	case eHiding:	signal_HideComplete();	break;	// End of Hide
-	case eShowing:	st_target = eIdle;		break;	// End of Show
+	case eShowing:	SwitchState(eIdle);		break;	// End of Show
 	}
 }
-
 void CWeaponMagazined::switch2_Idle	()
 {
 	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);

@@ -41,6 +41,7 @@ protected:
 	virtual void	OnZoomIn		();
 	virtual void	OnZoomOut		();
 	virtual void	OnAnimationEnd	();
+	virtual void	OnStateSwitch	(DWORD S);
 
 	void			state_Zooming	(float dt);
 public:

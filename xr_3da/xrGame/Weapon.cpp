@@ -338,7 +338,7 @@ void CWeapon::net_Export	(NET_Packet& P)
 
 	P.w_u32					(Level().timeServer());
 	P.w_u8					(flags);
-	P.w_u8					(st_current);
+	P.w_u8					(STATE);
 
 	P.w_u16					(u16(iAmmoCurrent));
 	P.w_u16					(u16(iAmmoElapsed));
@@ -463,9 +463,17 @@ void CWeapon::UpdateCL		()
 				} else {
 					if (IsWorking())	{ FireEnd(); Log("! END"); }
 				}
-				st_target			= NET_Last.state;
+				SwitchState			(NET_Last.state);
 			}
 		}
+	}
+}
+
+void CWeapon::SwitchState(DWORD S)
+{
+	if (Local() && (S!=STATE))	
+	{
+		OnStateSwitch	(S);
 	}
 }
 

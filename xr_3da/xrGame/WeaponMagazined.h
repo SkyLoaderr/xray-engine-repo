@@ -67,6 +67,8 @@ protected:
 	virtual void	OnShow			();
 	virtual void	OnHide			();
 	virtual void	OnAnimationEnd	();
+	virtual void	OnStateSwitch	(DWORD S);
+
 	void			TryReload		();
 protected:
 	virtual void	ReloadMagazine	();

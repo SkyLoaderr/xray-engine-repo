@@ -126,7 +126,9 @@ protected:
 public:
 
 	// Events/States
-	DWORD					st_current, st_target;
+	DWORD					STATE;
+
+	virtual void			SwitchState			(DWORD S);
 
 	virtual void			OnMagazineEmpty		()			{};
 	virtual void			OnAnimationEnd		()			{};
@@ -135,6 +137,7 @@ public:
 	virtual void			OnZoomIn			()			{};
 	virtual void			OnZoomOut			()			{};
 	virtual void			OnDrawFlame			();
+	virtual void			OnStateSwitch		(DWORD S)	{};
 public:
 							CWeapon				(LPCSTR name);
 	virtual					~CWeapon			();

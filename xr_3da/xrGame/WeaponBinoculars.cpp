@@ -90,6 +90,26 @@ void CWeaponBinoculars::OnVisible	()
 	}
 }
 
+void CWeaponBinoculars::OnStateSwitch	(DWORD S)
+{
+	switch (S)
+	{
+	case eIdle:
+		switch2_Idle	();
+		break;
+	case eShowing:
+		switch2_Showing	();
+		break;
+	case eHiding:
+		switch2_Hiding	();
+		break;
+	case eZooming:
+		switch2_Zooming	();
+		break;
+	}
+	STATE = S;
+}
+	
 void CWeaponBinoculars::UpdateCL	()
 {
 	inherited::UpdateCL	();
@@ -97,36 +117,15 @@ void CWeaponBinoculars::UpdateCL	()
 
 	float dt			= Device.fTimeDelta;
 	
-	// on state change
-	if (st_target!=st_current)
-	{
-		switch (st_target)
-		{
-		case eIdle:
-			switch2_Idle	();
-			break;
-		case eShowing:
-			switch2_Showing	();
-			break;
-		case eHiding:
-			switch2_Hiding	();
-			break;
-		case eZooming:
-			switch2_Zooming	();
-			break;
-		}
-		st_current = st_target;
-	}
-
 	// cycle update
-	switch (st_current)
+	switch (STATE)
 	{
 	case eZooming:
 		state_Zooming	(dt);
 		break;
 	}
 
-	setVisible			(TRUE);
+	// setVisible			(TRUE);
 	bPending			= FALSE;
 	
 	// sound fire loop
@@ -150,40 +149,40 @@ void CWeaponBinoculars::Show	()
 
 void CWeaponBinoculars::OnShow	()
 {
-	st_target	= eShowing;
+	SwitchState	(eShowing);
 }
 
 void CWeaponBinoculars::OnHide	()
 {
-	st_target	= eHiding;
+	SwitchState	(eHiding);
 }
 
 float CWeaponBinoculars::GetZoomFactor()
 {
-	if (eZooming==st_target)	return	fMaxZoomFactor;
-	else						return	inherited::GetZoomFactor();
+	if (eZooming==STATE)	return	fMaxZoomFactor;
+	else					return	inherited::GetZoomFactor();
 }
 
 void CWeaponBinoculars::OnZoomIn()
 {
 	inherited::OnZoomIn			();
-	st_target	= eZooming;
+	SwitchState	(eZooming);
 	fGyroSpeed  = 0;
 }
 
 void CWeaponBinoculars::OnZoomOut()
 {
 	inherited::OnZoomOut();
-	st_target	= eIdle;
+	SwitchState	(eIdle);
 	fGyroSpeed  = 0;
 }
 
 void CWeaponBinoculars::OnAnimationEnd()
 {
-	switch (st_current)
+	switch (STATE)
 	{
 	case eHiding:	signal_HideComplete();	break;	// End of Hide
-	case eShowing:	st_target = eIdle;		break;	// End of Show
+	case eShowing:	SwitchState(eIdle);		break;	// End of Show
 	}
 }
 
@@ -206,7 +205,7 @@ void CWeaponBinoculars::switch2_Zooming	()
 
 void CWeaponBinoculars::switch2_Idle	()
 {
-	switch (st_current)
+	switch (STATE)
 	{
 	case eZooming: 
 		pSounds->PlayAtPos			(sndZoomOut,H_Root(),vLastFP);
