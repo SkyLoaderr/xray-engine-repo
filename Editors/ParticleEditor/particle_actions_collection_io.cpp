@@ -442,9 +442,7 @@ void PATurbulence::Load		(IReader& F)
 	octaves			= F.r_float();
 	magnitude		= F.r_float();
 	epsilon			= F.r_float();
-    pDomain f;
-    F.r	(&f,sizeof(pDomain));
-//    F.r_fvector3	(offset);
+    F.r_fvector3	(offset);
 }
 void PATurbulence::Save		(IWriter& F)
 {
