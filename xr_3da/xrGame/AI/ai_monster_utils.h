@@ -5,14 +5,24 @@
 // возвращает позицию объекта, если он находится на ноде, или центр его ноды
 IC Fvector get_valid_position(const CEntity *entity, const Fvector &actual_position) 
 {
-	if (ai().level_graph().inside(entity->level_vertex(), actual_position)) return actual_position;
-	else return ai().level_graph().vertex_position(entity->level_vertex());
+	if (
+		ai().level_graph().valid_vertex_id(entity->level_vertex_id()) &&
+		ai().level_graph().valid_vertex_position(entity->Position()) && 
+		ai().level_graph().inside(entity->level_vertex_id(), entity->Position())
+	)
+		return			(actual_position);
+	else
+		return			(ai().level_graph().vertex_position(entity->level_vertex()));
 }
 
 // возвращает true, если объект entity находится на ноде
 IC bool object_position_valid(const CEntity *entity)
 {
-	return ai().level_graph().inside(entity->level_vertex_id(), entity->Position());
+	return				(
+		ai().level_graph().valid_vertex_id(entity->level_vertex_id()) &&
+		ai().level_graph().valid_vertex_position(entity->Position()) && 
+		ai().level_graph().inside(entity->level_vertex_id(), entity->Position())
+	);
 }
 
 IC Fvector random_position(const Fvector &center, float R) 
