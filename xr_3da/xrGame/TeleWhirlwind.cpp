@@ -61,7 +61,7 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 			if(obj->PPhysicsShell())
 			{
 				obj->PPhysicsShell()->SetAirResistance(0.f,0.f);
-				//obj->m_pPhysicsShell->set_ApplyByGravity(TRUE);
+				obj->m_pPhysicsShell->set_ApplyByGravity(TRUE);
 			}
 
 			return result;
@@ -151,8 +151,14 @@ void		CTeleWhirlwindObject::		raise					(float step)
 
 			Fvector diff;
 			diff.sub(center,pos);
-			float mag=diff.magnitude();
-			
+			float mag=_sqrt(diff.x*diff.x+diff.z*diff.z);
+			Fvector lc;lc.set(center);
+			if(mag>1.f)
+			{
+				lc.y/=mag;
+			}
+			diff.sub(lc,pos);
+			mag=diff.magnitude();
 			float accel=k/mag/mag/mag;//*E->getMass()
 			Fvector dir;
 			if(mag<mag_eps)
@@ -174,7 +180,7 @@ void		CTeleWhirlwindObject::		raise					(float step)
 			Fvector delta_pos;delta_pos.set(predict_vel);delta_pos.mul(fixed_step);
 			Fvector predict_pos;predict_pos.add(pos,delta_pos);
 			
-			Fvector predict_diff;predict_diff.sub(center,predict_pos);
+			Fvector predict_diff;predict_diff.sub(lc,predict_pos);
 			float predict_mag=predict_diff.magnitude();
 			float predict_v=predict_vel.magnitude();
 
