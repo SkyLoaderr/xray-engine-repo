@@ -135,7 +135,7 @@ void CHUDCursor::Render()
 						}
 						else
 						{
-							if (dist < g_fMinReconSpeed) fuzzyShowInfo += g_fMinReconSpeed*Device.fTimeDelta;
+							if (dist < g_fMinReconDist) fuzzyShowInfo += g_fMinReconSpeed*Device.fTimeDelta;
 							else fuzzyShowInfo = 0;
 						};
 
