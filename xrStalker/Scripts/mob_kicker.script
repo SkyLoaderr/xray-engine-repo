@@ -1,0 +1,37 @@
+--------------------------------------------------------------------------------
+class "mob_kicker"
+------------------
+function mob_kicker:__init (npc, storage)
+    self.st = storage
+    self.object = npc
+end
+------------------
+function mob_kicker:reset_scheme ()
+end
+------------------
+function mob_kicker:update (delta)
+end
+--------------------------------------------------------------------------------
+    
+
+
+--------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+
+	local new_action = mob_kicker (npc, storage)
+	xr_logic.subscribe_action_for_events(npc, storage, new_action)
+end
+--------------------------------------------------------------------------------
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind (npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions (ini, section, npc)
+--	st.no_reset        = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
+--	st.alife_mode      = mob_alife_mgr.cfg_get_mode(ini, section, npc)
+--	st.path_walk       = utils.cfg_get_string(ini, section, "path_walk", npc, true,  gulag_name)
+--  st.path_look       = utils.cfg_get_string(ini, section, "path_look", npc, false, gulag_name)
+
+	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
+	st.path_look_info = nil -- не загружены.
+end
+
