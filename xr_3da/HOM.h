@@ -17,6 +17,8 @@ public:
 	void					Load	();
 	void					Unload	();
 	void					Render	(CFrustum& base);
+
+	BOOL					Visible	(Fbox& B);
 	
 	CHOM();
 	~CHOM();
