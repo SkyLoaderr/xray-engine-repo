@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(CTreeViewFiles, CTreeView)
 
 CTreeViewFiles::CTreeViewFiles()
 {
-	CString working_folder  = 	AfxGetApp()->GetProfileString("options","sSafeFolder", "$/xrStalker/Scripts/" );
+	working_folder  = 	AfxGetApp()->GetProfileString("options","sSafeFolder", "$/xrStalker/Scripts/" );
 }
 
 CTreeViewFiles::~CTreeViewFiles()
@@ -399,7 +399,9 @@ long CTreeViewFiles::VSSGetStatus(HTREEITEM itm)
 	str = m_pTree->GetItemText(itm);
 
 	IVSSItemPtr vssItem;
-	CComBSTR file_name = working_folder+str;
+	CString str_;
+	str_.Format("%s%s",working_folder,str);
+	CComBSTR file_name = str_;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
 	if(vssItem==NULL)
 		return -1;

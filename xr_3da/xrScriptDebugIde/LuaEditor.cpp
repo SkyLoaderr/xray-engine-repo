@@ -597,11 +597,11 @@ void CLuaEditor::setupLexer_ex()
   SetKeyWords(0, keywords);
 
   //Setup styles
-//  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 10, "Verdana");
-  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 10, "Courier");
+//  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 12, "Courier");
+  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 10, "Verdana");
   StyleClearAll();
   SetAStyle(SCE_LUA_DEFAULT, RGB(0, 0, 0));
-  SetAStyle(SCE_LUA_COMMENT, RGB(0, 0x80, 0));
+  SetAStyle(SCE_LUA_COMMENT, RGB(0, 0x80, 0x80));////
   SetAStyle(SCE_LUA_COMMENTLINE, RGB(0, 0x80, 0));
   SetAStyle(SCE_LUA_COMMENTDOC, RGB(0, 0x80, 0));
   SetAStyle(SCE_C_COMMENTLINEDOC, RGB(0, 0x80, 0));
