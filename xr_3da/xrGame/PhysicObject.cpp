@@ -21,15 +21,22 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 
 	R_ASSERT(!cfModel);
 	switch(m_type) {
-		case epotBox : cfModel = xr_new<CCF_Rigid>(this); break;
-		default : cfModel = xr_new<CCF_Skeleton>(this);
+		case epotBox:			cfModel = xr_new<CCF_Rigid>(this);		break;
+		case epotFixedChain:	cfModel = xr_new<CCF_Skeleton>(this);	break;
+		default: NODEFAULT; 
 	}
 	pCreator->ObjectSpace.Object_Register(this);
 	cfModel->OnMove();
 
-	R_ASSERT				(pVisual&&PKinematics(pVisual));
-	PKinematics(pVisual)->PlayCycle("idle");
-	PKinematics(pVisual)->Calculate();
+	switch(m_type) {
+		case epotBox:				break;
+		case epotFixedChain:
+			R_ASSERT				(pVisual&&PKinematics(pVisual));
+			PKinematics(pVisual)->PlayCycle("idle");
+			PKinematics(pVisual)->Calculate();
+			break;
+		default: NODEFAULT; 
+	}
 	CreateBody				();
 
 	setVisible(true);
