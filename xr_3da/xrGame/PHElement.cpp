@@ -417,17 +417,13 @@ void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const 
 void CPHElement::Update(){
 	if(!bActive) return;
 	if(bActivating) bActivating=false;
-	if( !dBodyIsEnabled(m_body)) return;
+	if( !dBodyIsEnabled(m_body)&&!bUpdate) return;
 
 	//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
 	//					  dBodyGetPosition(m_body),
 	//					  mXFORM);
 
-	m_body_interpolation.InterpolateRotation(mXFORM);	
-	m_body_interpolation.InterpolatePosition(mXFORM.c);
-
-
-	mXFORM.mulB(m_inverse_local_transform);
+	InterpolateGlobalTransform(&mXFORM);
 
 	if(push_untill)//temp_for_push_out||(!temp_for_push_out&&object_contact_callback)
 		if(push_untill<Device.dwTimeGlobal) unset_Pushout();
@@ -1436,6 +1432,7 @@ void CPHElement::get_State(SPHNetState& state)
 }
 void CPHElement::set_State(const SPHNetState& state)
 {
+	bUpdate=true;
 	SetGlobalPositionDynamic(state.position);
 	setQuaternion(state.quaternion);
 	m_body_interpolation.SetPosition(state.previous_position,0);
