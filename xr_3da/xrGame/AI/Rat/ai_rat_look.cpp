@@ -19,7 +19,7 @@ bool CAI_Rat::bfCheckForVisibility(CEntity* tpEntity)
 	
 	// computing maximum viewable distance in the specified direction
 	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(r_current.yaw,r_current.pitch);
+	tCurrentWatchDirection.setHP	(r_torso_current.yaw,r_torso_current.pitch);
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
 	tTemp.normalize();
@@ -95,6 +95,9 @@ void CAI_Rat::vfAimAtEnemy()
 	svCenter(pos2);
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
+	
+	r_torso_target.yaw += m_fBananPadlaCorrection;
+	
 	r_spine_target.yaw = r_target.yaw = r_torso_target.yaw;
 	//r_target.yaw += PI_DIV_6;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
