@@ -221,7 +221,7 @@ void CLevel::OnFrame	()
 			for (u32 I=0; I<Server->client_Count(); ++I)	{
 				IClient*	C = Server->client_Get(I);
 				F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Retried(%2d), Blocked(%2d)",
-					Server->game->get_option_s(C->Name,"name",C->Name),
+					Server->game->get_option_s(*C->Name,"name",*C->Name),
 //					C->Name,
 					C->stats.getPing(),
 					float(C->stats.getBPS()),// /1024,

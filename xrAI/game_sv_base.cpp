@@ -35,7 +35,7 @@ LPCSTR				game_sv_GameState::get_name_it				(u32 it)
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->client_Get		(it);
 	if (0==C)			return 0;
-	else				return &C->Name[0];
+	else				return *C->Name;
 }
 
 LPCSTR				game_sv_GameState::get_name_id				(u32 id)								// DPNID
@@ -43,7 +43,7 @@ LPCSTR				game_sv_GameState::get_name_id				(u32 id)								// DPNID
 	xrServer*		S	= Level().Server;
 	xrClientData*	C	= (xrClientData*)S->ID_to_client	(id);
 	if (0==C)			return 0;
-	else				return &C->Name[0];
+	else				return *C->Name;
 }
 
 u32					game_sv_GameState::get_count				()

@@ -54,7 +54,7 @@ void game_sv_TeamDeathmatch::OnPlayerConnect	(u32 id_who)
 		NET_Packet			P;
 		P.w_begin			(M_GAMEMESSAGE);
 		P.w_u32				(GMSG_PLAYER_JOIN_TEAM);
-		P.w_string			(get_option_s(xrCData->Name,"name",xrCData->Name));
+		P.w_string			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
 		P.w_u16				(ps_who->team);
 		u_EventSend(P);
 	};
