@@ -83,6 +83,17 @@ public:
 	virtual CCustomZone	*cast_custom_zone				()							{return this;}
 
 protected:
+	enum EZoneFlags{
+		eIgnoreNonAlive			=(1<<0),
+		eIgnoreSmall			=(1<<1),
+		eIgnoreArtefact			=(1<<2),
+		eVisibleByDetector		=(1<<3),
+		eBlowoutWind			=(1<<4),
+		eBlowoutLight			=(1<<5),
+		eIdleLight				=(1<<6),
+		eSpawnBlowoutArtefacts	=(1<<7),
+	};
+	Flags32				m_zone_flags;
 	//список объетков, находящихся в зоне
 	CActor*				m_pLocalActor;
 
@@ -166,25 +177,18 @@ protected:
 	void					UpdateBlowout				();
 	
 	//ветер
-	bool					m_bBlowoutWindEnable;
 	bool					m_bBlowoutWindActive;
 	u32						m_dwBlowoutWindTimeStart;
 	u32						m_dwBlowoutWindTimePeak;
 	u32						m_dwBlowoutWindTimeEnd;
 	//сила ветра (увеличение текущего) (0,1) когда в аномалию попадает актер
 	float					m_fBlowoutWindPowerMax;
-	float					m_fBlowoutWindPowerCur;
-	float					m_fRealWindPower;
+	float					m_fStoreWindPower;
 				
 	void					StartWind					();
 	void					StopWind					();
 	void					UpdateWind					();
 
-
-	//игнорирование воздействия зоны на виды объектов
-	bool					m_bIgnoreNonAlive;
-	bool					m_bIgnoreSmall;
-	bool					m_bIgnoreArtefacts;
 
 	//время, через которое, зона перестает реагировать 
 	//на объект мертвый объект (-1 если не указано)
@@ -224,7 +228,6 @@ protected:
 	//подсветка аномалии
 
 	//подсветка idle состояния
-	bool					m_bIdleLight;
 	ref_light				m_pIdleLight;
 	Fcolor					m_IdleLightColor;
 	float					m_fIdleLightRange;
@@ -238,7 +241,6 @@ protected:
 
 
 	//подсветка выброса
-	bool					m_bBlowoutLight;
 	ref_light				m_pLight;
 	float					m_fLightRange;
 	Fcolor					m_LightColor;
@@ -257,7 +259,15 @@ protected:
 	DEFINE_VECTOR(SZoneObjectInfo,OBJECT_INFO_VEC,OBJECT_INFO_VEC_IT);
 	OBJECT_INFO_VEC			m_ObjectInfoMap;
 
-
+	void					CreateHit					(	u16 id_to, 
+															u16 id_from, 
+															const Fvector& hit_dir, 
+															float hit_power, 
+															s16 bone_id, 
+															const Fvector& pos_in_bone, 
+															float hit_impulse, 
+															ALife::EHitType hit_type);
+		
 	virtual	void Hit (float P, Fvector &dir,	
 					  CObject* who, s16 element,
 					  Fvector position_in_object_space, 
@@ -290,9 +300,7 @@ protected:
 
 	//видимость зоны детектором
 public:
-	virtual			bool	VisibleByDetector			() {return m_bVisibleByDetector;}
-protected:
-	bool					m_bVisibleByDetector;
+	bool		VisibleByDetector			() {return !!m_zone_flags.test(eVisibleByDetector);}
 
 	//////////////////////////////////////////////////////////////////////////
 	// список артефактов
@@ -312,7 +320,7 @@ protected:
 	ARTEFACT_VECTOR			m_SpawnedArtefacts;
 
 	//есть ли вообще функция выбрасывания артефактов во время срабатывания
-	bool					m_bSpawnBlowoutArtefacts;
+//	bool					m_bSpawnBlowoutArtefacts;
 	//вероятность того, что артефакт засповниться при единичном 
 	//срабатывании аномалии
 	float					m_fArtefactSpawnProbability;

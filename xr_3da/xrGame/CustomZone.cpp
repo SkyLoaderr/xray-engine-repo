@@ -20,24 +20,17 @@
 
 CCustomZone::CCustomZone(void) 
 {
+	m_zone_flags.zero			();
+
 	m_fMaxPower					= 100.f;
 	m_fAttenuation				= 1.f;
 	m_dwPeriod					= 1100;
 	m_fEffectiveRadius			= 0.75f;
-	
 	m_bZoneReady				= false;
 	m_bZoneActive				= false;
-
-	m_bIgnoreNonAlive			= false;
-	m_bIgnoreSmall				= false;
-	m_bIgnoreArtefacts			= true;
-
 	m_eHitTypeBlowout			= ALife::eHitTypeWound;
-
 	m_pLocalActor				= NULL;
-
 	m_pIdleParticles			= NULL;
-
 	m_pLight					= NULL;
 	m_pIdleLight				= NULL;
 	m_pIdleLAnim				= NULL;
@@ -49,19 +42,11 @@ CCustomZone::CCustomZone(void)
 
 
 	m_dwAffectFrameNum			= 0;
-	m_dwLastTimeMoved			= 0;
-
-	m_bSpawnBlowoutArtefacts	= false;
 	m_fArtefactSpawnProbability = 0.f;
-
 	m_fThrowOutPower			= 0.f;
 	m_fArtefactSpawnHeight		= 0.f;
-
-	m_fBlowoutWindPowerCur		= m_fBlowoutWindPowerMax = m_fRealWindPower = 0.f;
-	m_bBlowoutWindActive		= false;
-
+	m_fBlowoutWindPowerMax = m_fStoreWindPower = 0.f;
 	m_fDistanceToCurEntity		= flt_max;
-
 	m_ef_weapon_type			= u32(-1);
 }
 
@@ -85,11 +70,11 @@ void CCustomZone::Load(LPCSTR section)
 	m_fEffectiveRadius		= pSettings->r_float(section,			"effective_radius");
 	m_eHitTypeBlowout		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type"));
 
-	m_bIgnoreNonAlive		= !!pSettings->r_bool(section,			"ignore_nonalive");
-	m_bIgnoreSmall			= !!pSettings->r_bool(section,			"ignore_small");
-	m_bIgnoreArtefacts		= !!pSettings->r_bool(section,			"ignore_artefacts");
+	m_zone_flags.set(eIgnoreNonAlive,	pSettings->r_bool(section,	"ignore_nonalive"));
+	m_zone_flags.set(eIgnoreSmall,		pSettings->r_bool(section,	"ignore_small"));
+	m_zone_flags.set(eIgnoreArtefact,	pSettings->r_bool(section,	"ignore_artefacts"));
+	m_zone_flags.set(eVisibleByDetector,pSettings->r_bool(section,	"visible_by_detector"));
 
-	m_bVisibleByDetector	= !!pSettings->r_bool(section,			"visible_by_detector");
 
 	//загрузить времена для зоны
 	m_StateTime[eZoneStateIdle]			= -1;
@@ -188,8 +173,7 @@ void CCustomZone::Load(LPCSTR section)
 	else
 		m_dwBlowoutSoundTime = 0;
 
-	if(pSettings->line_exist(section,"blowout_explosion_time")) 
-	{
+	if(pSettings->line_exist(section,"blowout_explosion_time"))	{
 		m_dwBlowoutExplosionTime = pSettings->r_u32(section,"blowout_explosion_time"); 
 		if (s32(m_dwBlowoutExplosionTime)>m_StateTime[eZoneStateBlowout])	{
 			m_dwBlowoutExplosionTime=m_StateTime[eZoneStateBlowout];
@@ -199,17 +183,15 @@ void CCustomZone::Load(LPCSTR section)
 	else
 		m_dwBlowoutExplosionTime = 0;
 
-
-	m_bBlowoutWindEnable	= !!pSettings->r_bool(section,"blowout_wind"); 
-	if(m_bBlowoutWindEnable) 
-	{
+	m_zone_flags.set(eBlowoutWind,  pSettings->r_bool(section,"blowout_wind"));
+	if( m_zone_flags.test(eBlowoutWind) ){
 		m_dwBlowoutWindTimeStart = pSettings->r_u32(section,"blowout_wind_time_start"); 
 		m_dwBlowoutWindTimePeak = pSettings->r_u32(section,"blowout_wind_time_peak"); 
 		m_dwBlowoutWindTimeEnd = pSettings->r_u32(section,"blowout_wind_time_end"); 
 		R_ASSERT(m_dwBlowoutWindTimeStart < m_dwBlowoutWindTimePeak);
 		R_ASSERT(m_dwBlowoutWindTimePeak < m_dwBlowoutWindTimeEnd);
-		if((s32)m_dwBlowoutWindTimeEnd < m_StateTime[eZoneStateBlowout])
-		{
+
+		if((s32)m_dwBlowoutWindTimeEnd < m_StateTime[eZoneStateBlowout]){
 			m_dwBlowoutWindTimeEnd =u32( m_StateTime[eZoneStateBlowout]-1);
 			Msg("! ERROR: invalid 'blowout_wind_time_end' in '%s'",section);
 		}
@@ -219,10 +201,9 @@ void CCustomZone::Load(LPCSTR section)
 	}
 
 	//загрузить параметры световой вспышки от взрыва
-	m_bBlowoutLight			= !!pSettings->r_bool (section, "blowout_light");
+	m_zone_flags.set(eBlowoutLight, pSettings->r_bool (section, "blowout_light"));
 
-	if(m_bBlowoutLight)
-	{
+	if(m_zone_flags.test(eBlowoutLight) ){
 		sscanf(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
 		m_fLightRange			= pSettings->r_float(section,"light_range");
 		m_fLightTime			= pSettings->r_float(section,"light_time");
@@ -232,9 +213,8 @@ void CCustomZone::Load(LPCSTR section)
 	}
 
 	//загрузить параметры idle подсветки
-	m_bIdleLight			= !!pSettings->r_bool (section, "idle_light");
-
-	if(m_bIdleLight)
+	m_zone_flags.set(eIdleLight,	pSettings->r_bool (section, "idle_light"));
+	if( m_zone_flags.test(eIdleLight) )
 	{
 		m_fIdleLightRange = pSettings->r_float(section,"idle_light_range");
 		m_fIdleLightRangeDelta = pSettings->r_float(section,"idle_light_range_delta");
@@ -245,11 +225,8 @@ void CCustomZone::Load(LPCSTR section)
 
 
 	//загрузить параметры для разбрасывания артефактов
-	
-	m_bSpawnBlowoutArtefacts = !!pSettings->r_bool(section,"spawn_blowout_artefacts");
-	
-	
-	if(m_bSpawnBlowoutArtefacts)
+	m_zone_flags.set(eSpawnBlowoutArtefacts,	pSettings->r_bool(section,"spawn_blowout_artefacts"));
+	if( m_zone_flags.test(eSpawnBlowoutArtefacts) )
 	{
 		m_fArtefactSpawnProbability	= pSettings->r_float (section,"artefact_spawn_probability");
 		if(pSettings->line_exist(section,"artefact_spawn_particles")) 
@@ -310,25 +287,24 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_dwPeriod					= Z->m_period;
 
 	if (GameID() != GAME_SINGLE)
-		m_bSpawnBlowoutArtefacts = false;
+		m_zone_flags.set(eSpawnBlowoutArtefacts,	FALSE);
 
 
 	//добавить источники света
-	if (m_bIdleLight) {
+	if ( m_zone_flags.test(eIdleLight) ){
 		m_pIdleLight = ::Render->light_create();
 		m_pIdleLight->set_shadow(true);
 	}
 	else
 		m_pIdleLight = NULL;
 
-	if (m_bBlowoutLight) {
+	if ( m_zone_flags.test(eBlowoutLight) ) {
 		m_pLight = ::Render->light_create();
 		m_pLight->set_shadow(true);
 	}
 	else
 		m_pLight = NULL;
 
-//	setVisible(true);
 	shedule_register			();
 	setEnabled					(true);
 
@@ -345,7 +321,6 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 
 	PrefetchArtefacts			();
 
-	m_fRealWindPower			= g_pGamePersistent->Environment.wind_strength;
 	m_fDistanceToCurEntity		= flt_max;
 	m_bBlowoutWindActive		= false;
 
@@ -527,7 +502,9 @@ void CCustomZone::shedule_Update(u32 dt)
 void CCustomZone::feel_touch_new	(CObject* O) 
 {
 	
+#ifdef DEBUG
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
+#endif
 	if(smart_cast<CActor*>(O) && O == Level().CurrentEntity())
 					m_pLocalActor	= smart_cast<CActor*>(O);
 
@@ -548,9 +525,9 @@ void CCustomZone::feel_touch_new	(CObject* O)
 	else
 		object_info.small_object = false;
 
-	if((object_info.small_object && m_bIgnoreSmall) ||
-		(object_info.nonalive_object && m_bIgnoreNonAlive) || 
-		(pArtefact && m_bIgnoreArtefacts))
+	if((object_info.small_object && m_zone_flags.test(eIgnoreSmall)) ||
+		(object_info.nonalive_object && m_zone_flags.test(eIgnoreNonAlive)) || 
+		(pArtefact && m_zone_flags.test(eIgnoreArtefact)))
 		object_info.zone_ignore = true;
 	else
 		object_info.zone_ignore = false;
@@ -566,8 +543,10 @@ void CCustomZone::feel_touch_new	(CObject* O)
 
 void CCustomZone::feel_touch_delete(CObject* O) 
 {
+#ifdef DEBUG
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"leaving a zone.");
-	
+#endif
+
 	if(smart_cast<CActor*>(O)) m_pLocalActor = NULL;
 	CGameObject* pGameObject =smart_cast<CGameObject*>(O);
 	if(!pGameObject->getDestroy())
@@ -933,7 +912,7 @@ void CCustomZone::UpdateBlowout()
 		m_dwBlowoutSoundTime<(u32)m_iStateTime)
 		m_blowout_sound.play_at_pos	(this, Position());
 
-	if(m_bBlowoutWindEnable && m_dwBlowoutWindTimeStart>=(u32)m_iPreviousStateTime && 
+	if(m_zone_flags.test(eBlowoutWind) && m_dwBlowoutWindTimeStart>=(u32)m_iPreviousStateTime && 
 		m_dwBlowoutWindTimeStart<(u32)m_iStateTime)
 		StartWind();
 
@@ -1140,7 +1119,7 @@ void CCustomZone::SpawnArtefact()
 
 void CCustomZone::BornArtefact()
 {
-	if(!m_bSpawnBlowoutArtefacts || m_SpawnedArtefacts.empty()) return;
+	if(!m_zone_flags.test(eSpawnBlowoutArtefacts) || m_SpawnedArtefacts.empty()) return;
 
 	if(::Random.randF(0.f, 1.f)> m_fArtefactSpawnProbability) return;
 
@@ -1182,7 +1161,7 @@ void CCustomZone::ThrowOutArtefact(CArtefact* pArtefact)
 
 void CCustomZone::PrefetchArtefacts()
 {
-	if (!m_bSpawnBlowoutArtefacts || m_ArtefactSpawn.empty()) return;
+	if (FALSE==m_zone_flags.test(eSpawnBlowoutArtefacts) || m_ArtefactSpawn.empty()) return;
 
 	for(u32 i = m_SpawnedArtefacts.size(); i < PREFETCHED_ARTEFACTS_NUM; ++i)
 		SpawnArtefact();
@@ -1193,7 +1172,7 @@ void CCustomZone::StartWind()
 	if(m_fDistanceToCurEntity>WIND_RADIUS) return;
 
 	m_bBlowoutWindActive = true;
-	m_fRealWindPower = g_pGamePersistent->Environment.wind_strength;
+	m_fStoreWindPower = g_pGamePersistent->Environment.wind_strength;
 	clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
 }
 
@@ -1201,7 +1180,7 @@ void CCustomZone::StopWind()
 {
 	if(!m_bBlowoutWindActive) return;
 	m_bBlowoutWindActive = false;
-	g_pGamePersistent->Environment.wind_strength = m_fRealWindPower;
+	g_pGamePersistent->Environment.wind_strength = m_fStoreWindPower;
 }
 
 void CCustomZone::UpdateWind()
@@ -1216,14 +1195,14 @@ void CCustomZone::UpdateWind()
 
 	if(m_dwBlowoutWindTimePeak > (u32)m_iStateTime)
 	{
-		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + ( m_fRealWindPower - m_fBlowoutWindPowerMax)*
+		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + ( m_fStoreWindPower - m_fBlowoutWindPowerMax)*
 								float(m_dwBlowoutWindTimePeak - (u32)m_iStateTime)/
 								float(m_dwBlowoutWindTimePeak - m_dwBlowoutWindTimeStart);
 		clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
 	}
 	else
 	{
-		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + (m_fRealWindPower - m_fBlowoutWindPowerMax)*
+		g_pGamePersistent->Environment.wind_strength = m_fBlowoutWindPowerMax + (m_fStoreWindPower - m_fBlowoutWindPowerMax)*
 			float((u32)m_iStateTime - m_dwBlowoutWindTimePeak)/
 			float(m_dwBlowoutWindTimeEnd - m_dwBlowoutWindTimePeak);
 		clamp(g_pGamePersistent->Environment.wind_strength, 0.f, 1.f);
@@ -1239,4 +1218,29 @@ u32	CCustomZone::ef_weapon_type		() const
 {
 	VERIFY	(m_ef_weapon_type != u32(-1));
 	return	(m_ef_weapon_type);
+}
+
+void CCustomZone::CreateHit	(	u16 id_to, 
+								u16 id_from, 
+								const Fvector& hit_dir, 
+								float hit_power, 
+								s16 bone_id, 
+								const Fvector& pos_in_bone, 
+								float hit_impulse, 
+								ALife::EHitType hit_type)
+{
+	if (OnServer())
+	{
+		NET_Packet	l_P;
+		u_EventGen	(l_P,GE_HIT, id_to);
+		l_P.w_u16	(id_from);
+		l_P.w_u16	(id_from);
+		l_P.w_dir	(hit_dir);
+		l_P.w_float	(hit_power);
+		l_P.w_s16	(bone_id);
+		l_P.w_vec3	(pos_in_bone);
+		l_P.w_float	(hit_impulse);
+		l_P.w_u16	( (u16)hit_type );
+		u_EventSend	(l_P);
+	};
 }

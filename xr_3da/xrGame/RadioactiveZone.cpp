@@ -52,6 +52,9 @@ void CRadioactiveZone::Affect(SZoneObjectInfo* O)
 		{
 			m_dwDeltaTime = 0;
 			position_in_bone_space.set(0.f,0.f,0.f);
+
+			CreateHit(GO->ID(),ID(),dir,power,BI_NONE,position_in_bone_space,impulse,ALife::eHitTypeRadiation);
+/*
 			if (OnServer())
 			{
 				NET_Packet		P;
@@ -66,6 +69,7 @@ void CRadioactiveZone::Affect(SZoneObjectInfo* O)
 				P.w_u16			(ALife::eHitTypeRadiation);
 				CGameObject::u_EventSend	(P);
 			};
+*/
 		}
 	}
 }

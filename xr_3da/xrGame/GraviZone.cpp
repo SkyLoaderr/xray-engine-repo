@@ -236,7 +236,8 @@ void CBaseGraviZone ::	AffectThrow(SZoneObjectInfo* O, CPhysicsShellHolder* GO,c
 	{
 		m_dwDeltaTime = 0;
 		position_in_bone_space.set(0.f,0.f,0.f);
-
+		CreateHit(GO->ID(),ID(),throw_in_dir,power,0,position_in_bone_space,impulse,m_eHitTypeBlowout);
+/*
 		if (OnServer())
 		{
 			NET_Packet	l_P;
@@ -245,13 +246,13 @@ void CBaseGraviZone ::	AffectThrow(SZoneObjectInfo* O, CPhysicsShellHolder* GO,c
 			l_P.w_u16	(ID());
 			l_P.w_dir	(throw_in_dir);
 			l_P.w_float	(power);
-			l_P.w_s16	(0/*(s16)BI_NONE*/);
+			l_P.w_s16	(0);
 			l_P.w_vec3	(position_in_bone_space);
 			l_P.w_float	(impulse);
 			l_P.w_u16	((u16)m_eHitTypeBlowout);
 			u_EventSend	(l_P);
 		};
-
+*/
 
 		PlayHitParticles(GO);
 	}

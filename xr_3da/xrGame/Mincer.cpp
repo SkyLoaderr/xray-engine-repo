@@ -142,6 +142,12 @@ void CMincer::NotificateDestroy			(CPHDestroyableNotificate *dn)
 		PP->StartParticles(m_torn_particles,Fvector().set(0,1,0),ID());
 	}
 	m_tearing_sound.play_at_pos(this,m_telekinetics.Center());
+
+	Fvector position_in_bone_space, throw_in_dir;
+	position_in_bone_space.set		(0.0f, 0.0f, 0.0f);
+	throw_in_dir.set				(1.0f, 0.0f, 1.0f);
+	CreateHit(obj->ID(),ID(),throw_in_dir,0.0f,0,position_in_bone_space,impulse,ALife::eHitTypeExplosion);
+/*
 	if (OnServer())
 	{
 		NET_Packet	l_P;
@@ -150,7 +156,7 @@ void CMincer::NotificateDestroy			(CPHDestroyableNotificate *dn)
 		l_P.w_u16	(ID());
 		l_P.w_dir	(Fvector().set(1.f,0.f,1.f));//dir
 		l_P.w_float	(0.f);
-		l_P.w_s16	(0/*(s16)BI_NONE*/);
+		l_P.w_s16	(0);
 		Fvector		position_in_bone_space={0.f,0.f,0.f};
 		l_P.w_vec3	(position_in_bone_space);
 		l_P.w_float	(impulse);
@@ -160,6 +166,7 @@ void CMincer::NotificateDestroy			(CPHDestroyableNotificate *dn)
 	//	obj->H_SetParent(NULL);
 		return;
 	};
+*/
 }
 void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist)
 {
@@ -168,7 +175,10 @@ void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float
 	//dir.random_dir(throw_in_dir,2.f*M_PI);
 	if(EA->CLS_ID!=CLSID_OBJECT_ACTOR)
 	{
-		
+		Fvector pos_in_bone_space;
+		pos_in_bone_space.set(0,0,0);
+		CreateHit(EA->ID(),ID(),throw_in_dir,power,0,pos_in_bone_space,0.0f,m_eHitTypeBlowout);
+/*		
 		if (OnServer())
 		{
 			NET_Packet	l_P;
@@ -177,12 +187,13 @@ void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float
 			l_P.w_u16	(ID());
 			l_P.w_dir	(throw_in_dir);
 			l_P.w_float	(power);
-			l_P.w_s16	(0/*(s16)BI_NONE*/);
+			l_P.w_s16	(0);
 			l_P.w_vec3	(Fvector().set(0,0,0));
 			l_P.w_float	(0);
 			l_P.w_u16	((u16)m_eHitTypeBlowout);
 			u_EventSend	(l_P);
 		}
+*/
 	}
 	inherited::AffectPullAlife(EA,throw_in_dir,dist);
 
