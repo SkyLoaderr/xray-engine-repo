@@ -1326,6 +1326,9 @@
 					Name="Libraries"
 					Filter="">
 					<File
+						RelativePath=".\scripts\db.script">
+					</File>
+					<File
 						RelativePath=".\scripts\level_tips.script">
 					</File>
 					<File
