@@ -51,39 +51,33 @@ void CActor::cam_Update(float dt, float fFOV)
 		return;
 	}
 	
-	Fvector point, dangle;
+	Fvector point={0,CameraHeight(),0}, dangle={0,0,0};
 	
-	// calc eye point from player height
-
-	point.set					(0.f,CameraHeight(),0.f);
-	XFORM().transform_tiny		(point);
-
 	// soft crouch
-	float dS = point.y-fPrevCamPos;
+	float dS					= point.y-fPrevCamPos;
 	if (_abs(dS)>EPS_L){
-		point.y = 0.7f*fPrevCamPos+0.3f*point.y;
+		point.y					= 0.7f*fPrevCamPos+0.3f*point.y;
 	}
 
 	// save previous position of camera
-	fPrevCamPos=point.y;
-
-	// apply shift
-	point.mad					(Device.vCameraDirection,cam_shift);
+	fPrevCamPos					= point.y;
 
 	// apply inertion
-	switch (cam_active)
-	{
-
+	switch (cam_active){
 	case eacFirstEye:
-		dangle.set			(0,0,0);
+		if (!fis_zero(r_torso.roll)){
+			float radius		= point.y*0.5f;
+			float alpha			= r_torso.roll/2.f;
+			point.x				= radius*_sin(alpha);
+			point.y				= radius+radius*_cos(alpha);
+			dangle.z			= (PI_DIV_2-((PI+alpha)/2));
+		}
 		break;
-	case eacLookAt: 
-		dangle.set			(0,0,0);
-		break;
-	case eacFreeLook: 
-		dangle.set			(0,0,0);
-		break;
+	case eacLookAt: 		break;
+	case eacFreeLook: 		break;
 	}
+	XFORM().transform_tiny		(point);
+
 
 	CCameraBase* C			= cam_Active();
 	C->Update				(point,dangle);

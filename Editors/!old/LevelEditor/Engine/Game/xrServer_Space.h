@@ -29,9 +29,9 @@ public:\
 
 struct	SRotation
 {
-	float  yaw, pitch;
-	SRotation() { yaw=pitch=0; }
-	SRotation(float y, float p) { yaw=y;pitch=p; }
+	float  yaw, pitch, roll;
+	SRotation() { yaw=pitch=roll=0; }
+	SRotation(float y, float p, float r) { yaw=y;pitch=p;roll=r; }
 };
 
 enum EPOType {

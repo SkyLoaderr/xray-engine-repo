@@ -23,6 +23,8 @@ void key_binding_registrator::script_register(lua_State *L)
 				value("kBACK",						int(kBACK)),
 				value("kL_STRAFE",					int(kL_STRAFE)),
 				value("kR_STRAFE",					int(kR_STRAFE)),
+				value("kL_LOOKOUT",					int(kL_LOOKOUT)),
+				value("kR_LOOKOUT",					int(kR_LOOKOUT)),
 				value("kLEFT",						int(kLEFT)),
 				value("kRIGHT",						int(kRIGHT)),
 				value("kUP",						int(kUP)),

@@ -793,9 +793,6 @@ void CActor::shedule_Update	(u32 DT)
 		return;
 	}
 
-	cam_shift				= 0.f;
-	cam_gray				= 0.f;
-
 	// 
 	clamp					(DT,0u,100u);
 	float	dt	 			=  float(DT)/1000.f;
@@ -1088,6 +1085,9 @@ void CActor::OnHUDDraw	(CCustomHUD* /**hud/**/)
 		inventory().ActiveItem()->renderable_Render();
 	}
 
+	HUD().pFontSmall->SetColor	(0xffffffff);
+	HUD().pFontSmall->OutSet	(170,100);
+	HUD().pFontSmall->OutNext	("Lookout:       [%s]",mstate_real&mcLLookout?"LEFT":mstate_real&mcRLookout?"RIGHT":"NONE");
 #ifndef NDEBUG
 	string128 buf;
 	HUD().pFontSmall->SetColor	(0xffffffff);

@@ -24,6 +24,9 @@ _keybind  keybind[]		= {
 	{ "lstrafe",		kL_STRAFE		},	
 	{ "rstrafe",		kR_STRAFE		},
 
+	{ "llookout",		kL_LOOKOUT		},	
+	{ "rlookout",		kR_LOOKOUT		},
+
 	{ "repair",			kREPAIR			},
 
 	{ "cam_1",			kCAM_1			},	
@@ -191,14 +194,14 @@ public:
 	}
 	virtual void Save(IWriter* F) 
 	{
-		F->w_printf("unbindall\n");
+		F->w_printf("unbindall\r\n");
 		for (int i=0; i<2048; ++i) {
 			if (key_binding[i]) {
 				for (int j=0; keybind[j].name; ++j) {
 					if (keybind[j].DIK==key_binding[i]) {
 						for (int k=0; keynames[k].name; ++k) {
 							if (keynames[k].DIK==i) {
-								F->w_printf("bind %s %s\n", keybind[j].name, keynames[k].name);
+								F->w_printf("bind %s %s\r\n", keybind[j].name, keynames[k].name);
 							}
 						}
 					}

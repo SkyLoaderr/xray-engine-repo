@@ -35,17 +35,19 @@ IC static void generate_orthonormal_basis1(const Fvector& dir,Fvector& updir, Fv
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 {
 	// изменилось состояние
-	if (mstate_wf != mstate_real)
-	{
-		
-		if ((mstate_real&mcCrouch)&&(0==(mstate_wf&mcCrouch)))
-		{
-
-			if (ActivateBox(0))
-			{
+	if (mstate_wf != mstate_real){
+		if ((mstate_real&mcCrouch)&&(0==(mstate_wf&mcCrouch))){
+			if (ActivateBox(0)){
 				mstate_real &= ~mcCrouch;
 			}
 		}
+	}
+	// Lookout
+	if (mstate_real&mcAnyAction){
+		mstate_real			&= ~mcLookout;
+	}else{
+		if (mstate_wf&mcLookout)	mstate_real		|= mstate_wf&mcLookout;
+		else						mstate_real		&= ~mcLookout;
 	}
 	// закончить приземление
 	if (mstate_real&(mcLanding|mcLanding2)){
@@ -110,7 +112,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 
 	if(!CanAccelerate()&&isAccelerated(mstate_real))
 	{
-		mstate_real				^=mcAccel;
+		mstate_real				^=mcAccel; // toggle accel
 	};		
 }
 
@@ -363,26 +365,32 @@ bool CActor::g_LadderOrient()
 void CActor::g_cl_Orientate	(u32 mstate_rl, float dt)
 {
 	// capture camera into torso (only for FirstEye & LookAt cameras)
+	float tgt_roll		=	0.f;
 	if (eacFreeLook!=cam_active){
-
 		r_torso.yaw		=	cam_Active()->GetWorldYaw	();
 		r_torso.pitch	=	cam_Active()->GetWorldPitch	();
 
-		unaffected_r_torso_yaw	 = r_torso.yaw;
-		unaffected_r_torso_pitch = r_torso.pitch;
+		unaffected_r_torso.yaw		= r_torso.yaw;
+		unaffected_r_torso.pitch	= r_torso.pitch;
+		unaffected_r_torso.roll		= r_torso.roll;
 	}
 
 	CWeapon *pWeapon = smart_cast<CWeapon*>(inventory().GetActiveSlot() != NO_ACTIVE_SLOT ? 
 		inventory().m_slots[inventory().GetActiveSlot()].m_pIItem : NULL);
 
-	if(pWeapon) 
-	{
-		Fvector dangle;
-		dangle = pWeapon->GetRecoilDeltaAngle();
-		r_torso.yaw		=	unaffected_r_torso_yaw + dangle.y;
-		r_torso.pitch	=	unaffected_r_torso_pitch + dangle.x;
+	if(pWeapon){
+		Fvector			dangle;
+		dangle			= pWeapon->GetRecoilDeltaAngle();
+		r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
+		r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
 	}
 
+	if (mstate_rl&mcLookout)
+		tgt_roll		=	(mstate_rl&mcLLookout)?-ACTOR_LOOKOUT_ANGLE:ACTOR_LOOKOUT_ANGLE;
+	if (!fsimilar(tgt_roll,r_torso.roll,EPS)){
+		angle_lerp		(r_torso.roll,tgt_roll,PI_MUL_2,dt);
+		r_torso.roll	= angle_normalize_signed(r_torso.roll);
+	}
 
 	// если есть движение - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
@@ -419,8 +427,9 @@ void CActor::g_sv_Orientate(u32 /**mstate_rl/**/, float /**dt/**/)
 	{
 		Fvector dangle;
 		dangle = pWeapon->GetRecoilDeltaAngle();
-		r_torso.yaw		=	unaffected_r_torso_yaw + dangle.y;
-		r_torso.pitch	=	unaffected_r_torso_pitch + dangle.x;
+		r_torso.yaw		=	unaffected_r_torso.yaw + dangle.y;
+		r_torso.pitch	=	unaffected_r_torso.pitch + dangle.x;
+		r_torso.roll	=	unaffected_r_torso.roll + dangle.z;
 	}
 }
 

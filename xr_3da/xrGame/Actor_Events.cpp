@@ -201,9 +201,10 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			r_model_yaw				= NewRot.y;
 			r_torso.yaw				= NewRot.y;
 			r_torso.pitch			= -NewRot.x;
-			unaffected_r_torso_yaw	 = r_torso.yaw;
-			unaffected_r_torso_pitch = r_torso.pitch;
-			cam_Active()->Set		(-unaffected_r_torso_yaw,unaffected_r_torso_pitch,0);
+			unaffected_r_torso.yaw	= r_torso.yaw;
+			unaffected_r_torso.pitch= r_torso.pitch;
+			unaffected_r_torso.roll	= r_torso.roll;
+			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch,unaffected_r_torso.roll);
 			Level().CurrentControlEntity()->ForceTransform(M);
 		}break;
 	}

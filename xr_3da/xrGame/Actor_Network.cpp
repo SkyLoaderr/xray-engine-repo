@@ -42,8 +42,9 @@ void CActor::net_Export	(NET_Packet& P)					// export to server
 	Fvector				p = Position();
 	P.w_vec3			(p);//Position());
 	P.w_angle8			(r_model_yaw);
-	P.w_angle8			(unaffected_r_torso_yaw	);//(r_torso.yaw);
-	P.w_angle8			(unaffected_r_torso_pitch);//(r_torso.pitch);
+	P.w_angle8			(unaffected_r_torso.yaw	);//(r_torso.yaw);
+	P.w_angle8			(unaffected_r_torso.pitch);//(r_torso.pitch);
+//.	P.w_angle8			(unaffected_r_torso.roll);//(r_torso.roll);
 	P.w_u8				(u8(g_Team()));
 	P.w_u8				(u8(g_Squad()));
 	P.w_u8				(u8(g_Group()));
@@ -307,6 +308,7 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
+//.	P.r_angle8			(N.o_torso.roll	);
 	id_Team				= P.r_u8();
 	id_Squad			= P.r_u8();
 	id_Group			= P.r_u8();
@@ -316,8 +318,9 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	if (OnClient())
 	//------------------------------------------------
 	{
-		unaffected_r_torso_yaw	 = N.o_torso.yaw;
-		unaffected_r_torso_pitch = N.o_torso.pitch;
+		unaffected_r_torso.yaw		= N.o_torso.yaw;
+		unaffected_r_torso.pitch	= N.o_torso.pitch;
+		unaffected_r_torso.roll		= N.o_torso.roll;
 	};
 
 	P.r_float			(fDummy);
@@ -540,11 +543,13 @@ void	CActor::NetInput_Send()
 
 void CActor::NetInput_Apply			(net_input* pNI)
 {
-	cam_Active()->yaw = pNI->cam_yaw;
+	cam_Active()->yaw	= pNI->cam_yaw;
 	cam_Active()->pitch = pNI->cam_pitch;
+	cam_Active()->roll	= pNI->cam_roll;
 
-	unaffected_r_torso_yaw = -pNI->cam_yaw;
-	unaffected_r_torso_pitch = pNI->cam_pitch;
+	unaffected_r_torso.yaw		= -pNI->cam_yaw;
+	unaffected_r_torso.pitch	= pNI->cam_pitch;
+	unaffected_r_torso.roll		= pNI->cam_roll;
 	//-----------------------------------
 	if (OnClient())
 	{
@@ -611,6 +616,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		E->o_model = E->o_Angle.y;
 		E->o_torso.yaw = E->o_Angle.y;
 		E->o_torso.pitch = -E->o_Angle.x;
+		E->o_torso.roll = E->o_Angle.z;
 	}
 /*	else
 	{
@@ -622,12 +628,14 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	r_model_yaw				= E->o_model;
 	r_torso.yaw				= E->o_torso.yaw;
 	r_torso.pitch			= E->o_torso.pitch;
+	r_torso.roll			= E->o_torso.roll;
 
-	unaffected_r_torso_yaw	 = r_torso.yaw;
-	unaffected_r_torso_pitch = r_torso.pitch;
+	unaffected_r_torso.yaw	= r_torso.yaw;
+	unaffected_r_torso.pitch= r_torso.pitch;
+	unaffected_r_torso.roll	= r_torso.roll;
 
 	cam_Set	(eacFirstEye);
-	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
+	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,E->o_torso.roll);		// set's camera orientation
 
 	// *** movement state - respawn
 	mstate_wishful			= 0;
@@ -780,18 +788,39 @@ BOOL	CActor::net_Relevant		()				// relevant for export to server
 		return Local() & g_Alive();
 	};
 };
-void	CActor::OnChangeVisual()
+
+void	CActor::SetCallbacks()
 {
-	// take index spine bone
-	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual());
+	CKinematics* V		= smart_cast<CKinematics*>(Visual());
 	VERIFY				(V);
-	int spine_bone		= V->LL_BoneID("bip01_spine1");
-	int shoulder_bone	= V->LL_BoneID("bip01_spine2");
-	int head_bone		= V->LL_BoneID("bip01_head");
-	V->LL_GetBoneInstance(u16(spine_bone)).set_callback		(SpinCallback,this);
+	u16 spine0_bone		= V->LL_BoneID("bip01_spine");
+	u16 spine1_bone		= V->LL_BoneID("bip01_spine1");
+	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
+	u16 head_bone		= V->LL_BoneID("bip01_head");
+	V->LL_GetBoneInstance(u16(spine0_bone)).set_callback	(Spin0Callback,this);
+	V->LL_GetBoneInstance(u16(spine1_bone)).set_callback	(Spin1Callback,this);
 	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(ShoulderCallback,this);
 	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(HeadCallback,this);
+}
+void	CActor::ResetCallbacks()
+{
+	CKinematics* V		= smart_cast<CKinematics*>(Visual());
+	VERIFY				(V);
+	u16 spine0_bone		= V->LL_BoneID("bip01_spine");
+	u16 spine1_bone		= V->LL_BoneID("bip01_spine1");
+	u16 shoulder_bone	= V->LL_BoneID("bip01_spine2");
+	u16 head_bone		= V->LL_BoneID("bip01_head");
+	V->LL_GetBoneInstance(u16(spine0_bone)).set_callback	(0,0);
+	V->LL_GetBoneInstance(u16(spine1_bone)).set_callback	(0,0);
+	V->LL_GetBoneInstance(u16(shoulder_bone)).set_callback	(0,0);
+	V->LL_GetBoneInstance(u16(head_bone)).set_callback		(0,0);
+}
 
+void	CActor::OnChangeVisual()
+{
+	CSkeletonAnimated* V= smart_cast<CSkeletonAnimated*>(Visual());
+	VERIFY				(V);
+	SetCallbacks		();
 	m_anims.			Create			(V);
 	m_vehicle_anims.	Create			(V);
 	CDamageManager::reload(pSettings->r_string(cNameSect(),"damage"),pSettings);
@@ -826,6 +855,7 @@ void ACTOR_DEFS::net_update::lerp(ACTOR_DEFS::net_update& A, ACTOR_DEFS::net_upd
 	o_model			= angle_lerp	(A.o_model,B.o_model,		f);
 	o_torso.yaw		= angle_lerp	(A.o_torso.yaw,B.o_torso.yaw,f);
 	o_torso.pitch	= angle_lerp	(A.o_torso.pitch,B.o_torso.pitch,f);
+	o_torso.roll	= angle_lerp	(A.o_torso.roll,B.o_torso.roll,f);
 	p_pos.lerp		(A.p_pos,B.p_pos,f);
 	p_accel			= (f<0.5f)?A.p_accel:B.p_accel;
 	p_velocity.lerp	(A.p_velocity,B.p_velocity,f);
@@ -849,8 +879,9 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 		///////////////////////////////////////////////
 		IStart.Pos				= Position();
 		IStart.o_model			= r_model_yaw;
-		IStart.o_torso.yaw		= unaffected_r_torso_yaw;
-		IStart.o_torso.pitch	= unaffected_r_torso_pitch;
+		IStart.o_torso.yaw		= unaffected_r_torso.yaw;
+		IStart.o_torso.pitch	= unaffected_r_torso.pitch;
+		IStart.o_torso.roll		= unaffected_r_torso.roll;
 		///////////////////////////////////////////////
 		CPHSynchronize* pSyncObj = NULL;
 		pSyncObj = PHGetSyncItem(0);
@@ -924,7 +955,7 @@ void CActor::PH_I_CrPr		()		// actions & operations between two phisic predictio
 	if (g_Alive())
 	{
 		if (OnClient())
-			cam_Active()->Set		(-unaffected_r_torso_yaw,unaffected_r_torso_pitch,0);		// set's camera orientation
+			cam_Active()->Set		(-unaffected_r_torso.yaw,unaffected_r_torso.pitch,unaffected_r_torso.roll);		// set's camera orientation
 		////////////////////////////////////
 		CPHSynchronize* pSyncObj = NULL;
 		pSyncObj = PHGetSyncItem(0);
@@ -1095,8 +1126,9 @@ void	CActor::CalculateInterpolationParams()
 	///////////////////////////////////////////////
 	IStart.Pos				= Position();
 	IStart.o_model			= r_model_yaw;
-	IStart.o_torso.yaw		= unaffected_r_torso_yaw;
-	IStart.o_torso.pitch	= unaffected_r_torso_pitch;
+	IStart.o_torso.yaw		= unaffected_r_torso.yaw;
+	IStart.o_torso.pitch	= unaffected_r_torso.pitch;
+	IStart.o_torso.roll		= unaffected_r_torso.roll;
 	/////////////////////////////////////////////////////////////////////
 	IRec.Pos				= RecalculatedState.position;
 	IRec.o_model			= NET_Last.o_model;
@@ -1106,6 +1138,7 @@ void	CActor::CalculateInterpolationParams()
 	IEnd.o_model			= IRec.o_model			;
 	IEnd.o_torso.yaw		= IRec.o_torso.yaw		;
 	IEnd.o_torso.pitch		= IRec.o_torso.pitch	;	
+	IEnd.o_torso.roll		= IRec.o_torso.roll	;	
 	/////////////////////////////////////////////////////////////////////
 	Fvector SP0, SP1, SP2, SP3;
 	Fvector HP0, HP1, HP2, HP3;

@@ -257,10 +257,8 @@ protected:
 
 	// Rotation
 	SRotation				r_torso;
-	
 	//положение торса без воздействия эффекта отдачи оружия
-	float					unaffected_r_torso_yaw;
-	float					unaffected_r_torso_pitch;
+	SRotation				unaffected_r_torso;
 
 	//ориентация модели
 	float					r_model_yaw_dest;
@@ -280,7 +278,10 @@ public:
 	CMotionDef*				m_current_head;
 
 	// callback на анимации модели актера
-	static void	__stdcall	SpinCallback		(CBoneInstance*);
+	void					SetCallbacks		();
+	void					ResetCallbacks		();
+	static void	__stdcall	Spin0Callback		(CBoneInstance*);
+	static void	__stdcall	Spin1Callback		(CBoneInstance*);
 	static void	__stdcall	ShoulderCallback	(CBoneInstance*);
 	static void	__stdcall	HeadCallback		(CBoneInstance*);
 	static void __stdcall	VehicleHeadCallback	(CBoneInstance*);
@@ -320,8 +321,6 @@ protected:
 	// Cameras
 	CCameraBase*			cameras[eacMaxCam];
 	EActorCameras			cam_active;
-	float					cam_gray;				// for zone-effects
-	float					cam_shift;				// for zone-effects
 	float					fPrevCamPos;
 	CEffectorBobbing*		pCamBobbing;
 

@@ -8,7 +8,9 @@
 class CMotionDef;
 class CSkeletonAnimated;
 
-#define ACTOR_HEIGHT 1.75f
+#define ACTOR_HEIGHT		1.75f
+#define ACTOR_LOOKOUT_ANGLE	PI_DIV_4
+#define ACTOR_LOOKOUT_SPEED	2.f
 
 namespace ACTOR_DEFS 
 {
@@ -41,9 +43,13 @@ enum EMoveCommand
 	mcLanding	= (1ul<<9ul),
 	mcLanding2	= (1ul<<10ul),
 	mcClimb		= (1ul<<11ul),
-	mcCreep		= (1ul<<12ul),
-	mcSprint	= (1ul<<13ul),
-	mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
+	mcSprint	= (1ul<<12ul),
+	mcLLookout	= (1ul<<13ul),
+	mcRLookout	= (1ul<<14ul),
+	mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe),
+	mcAnyAction = (mcAnyMove|mcTurn|mcJump|mcFall|mcLanding|mcLanding2),
+	mcAnyState	= (mcCrouch|mcAccel|mcClimb|mcSprint),
+	mcLookout	= (mcLLookout|mcRLookout),
 };
 
 // enum для определения действия над вещью на которую наведен в текущее время прицел.
@@ -155,6 +161,7 @@ struct					net_input
 	u8					cam_mode;
 	float				cam_yaw;
 	float				cam_pitch;
+	float				cam_roll;
 
 	bool operator < (const u32 Time)
 	{

@@ -16,6 +16,8 @@ enum	EKeyBinding
 	kSPRINT_TOGLE	,
 	kACCEL			,
 	kREPAIR			,
+	kL_LOOKOUT		,
+	kR_LOOKOUT		,
 
 	kCAM_1			,
 	kCAM_2			,
