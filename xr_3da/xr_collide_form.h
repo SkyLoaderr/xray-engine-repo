@@ -89,14 +89,15 @@ protected:
 		int			element;
 	};
 
-	Fsphere			Sphere;
-
 	BOOL			enabled, enabled_prev;
 
 	CObject*		owner;			// владелец
 	Irect			last_rect;		// последние занимаемые слоты
 	Fbox			s_box;			// BBox объекта
 	DWORD			dwQueryID;
+
+public:
+	Fsphere			Sphere;
 public:
 
 					CCFModel		( CObject* _owner );

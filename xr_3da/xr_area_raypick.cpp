@@ -25,7 +25,8 @@ BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 	if(dwQueryID!=S.dwQueryID){
 		S.dwQueryID = dwQueryID;
 		if(bDebug) test_cnt++;
-		if(TestRaySlot(x,z,O,D)){
+		if(TestRaySlot(x,z,O,D))
+		{
 			if(bDebug){
 				slot_cnt++;
 				pApp->pFont->OutNext("{%d,%d}",x,z);
@@ -33,7 +34,8 @@ BOOL CObjectSpace::nl_append(int x, int z, const Fvector2& O, const Fvector2& D)
 				dbg_Slot.back().set(float(x),float(z));
 			}
 	
-			for(DWORD I=0; I<S.lst.size(); I++) {
+			for(DWORD I=0; I<S.lst.size(); I++) 
+			{
 				CCFModel* M = S.lst[I]->CFORM();
 				if(M->GetEnable() && M->dwQueryID!=dwQueryID){
 					M->dwQueryID=dwQueryID;
@@ -80,17 +82,14 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
     int sz	= z2 >= z1 ? 1 : -1;
 	
 	if((dx==0)&&(dz==0)){
-//		pApp->pFont->Out(-1.f,0.6f,"Variant 0");
 		nl_append(x1,z1,S,D);
 	}else if( dz <= dx ){
-//		pApp->pFont->Out(-1.f,0.6f,"Variant X");
         int d  = ( dz << 1 ) - dx;
         int d1 = dz << 1;
         int d2 = ( dz - dx ) << 1;
 		
 		nl_append(x1,z1,S,D);
 		nl_append(x1,z1+sz,S,D);
-//		nl_append(x1,z1-sz,S,D);
 
 		for(int x=x1+sx, z=z1, i=1; i<=dx; i++, x+=sx){
 			if ( d > 0)	{d+=d2; z+=sz;}
@@ -101,14 +100,12 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 			if (!nl_append(x,z,S,D)) break;
 		}
 	}else{
-//		pApp->pFont->Out(-1.f,0.6f,"Variant Z");
 		int d  = ( dx << 1 ) - dz;
 		int d1 = dx << 1;
 		int d2 = ( dx - dz ) << 1;
 		
 		nl_append(x1,z1,S,D);
 		nl_append(x1+sx,z1,S,D);
-//		nl_append(x1-sx,z1,S,D);
 		
 		for(int x=x1, z=z1+sz, i=1; i<=dz; i++, z+=sz){
 			if ( d > 0){d+=d2; x+=sx;}
@@ -122,6 +119,7 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 	if(bDebug)
 		pApp->pFont->Out(-1.f,0.55f,"NL: %d, Test: %d, Slot: %d", nl_cnt, test_cnt, slot_cnt);
 }
+
 //--------------------------------------------------------------------------------
 // Occluded/No
 BOOL CObjectSpace::RayTest( const Fvector &start, const Fvector &dir, float range, BOOL bDynamic, Collide::ray_cache* cache)
@@ -208,12 +206,15 @@ BOOL CObjectSpace::RayPick( const Fvector &start, const Fvector &dir, float rang
 		CCFModel&	M = *(*nl_idx);
 		
 		DWORD C = D3DCOLOR_XRGB(64,64,64);
-		if (M._svRayTest(Q)) {
-			C = D3DCOLOR_XRGB(128,128,196);
-			if (Q.range<R.range) {
-				R.O			= M.owner;
-				R.range		= Q.range;
-				R.element	= Q.element;
+		if (M.Sphere.intersect(Q.start,Q.dir))	
+		{
+			C	= D3DCOLOR_XRGB(128,128,196);
+			if (M._svRayTest(Q)) {
+				if (Q.range<R.range) {
+					R.O			= M.owner;
+					R.range		= Q.range;
+					R.element	= Q.element;
+				}
 			}
 		}
 		if (bDebug) dbg_S.push_back(make_pair(M.GetSphere(),C));
