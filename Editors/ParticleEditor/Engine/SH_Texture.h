@@ -31,7 +31,6 @@ public:
 	void							Load		(LPCSTR Name);
 	void							Unload		(void);
 	void							Apply		(u32 dwStage);
-	static u32						MemUsage	(IDirect3DBaseTexture9* T);
 	
 	void							surface_set	(IDirect3DBaseTexture9* surf);
 	IDirect3DBaseTexture9*			surface_get ();

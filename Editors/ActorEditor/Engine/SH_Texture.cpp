@@ -149,9 +149,10 @@ void CTexture::Load(LPCSTR cName)
 			if (buffer[0])	
 			{
 				// Load another texture
-				D3DFORMAT f; u32 W,H;
+				D3DFORMAT f; u32 W,H,M;
 				pSurface = TWLoader2D
 					(
+					M,
 					buffer,
 					tpfCompressed,
 					tmBOX4,
@@ -166,7 +167,7 @@ void CTexture::Load(LPCSTR cName)
 				if (pSurface)	{
 					pSurface->SetPriority	(PRIORITY_LOW);
 					seqDATA.push_back		(pSurface);
-					dwMemoryUsage			+= MemUsage	(pSurface);
+					dwMemoryUsage			+= M;
 				}
 			}
 		}
@@ -174,9 +175,10 @@ void CTexture::Load(LPCSTR cName)
 	} else 
 	{
 		// Normal texture
-		D3DFORMAT f; u32 W,H;
+		D3DFORMAT f; u32 W,H,M;
 		pSurface = TWLoader2D
 			(
+			M,
 			cName,
 			tpf32,
 			tmBOX4,
@@ -192,32 +194,8 @@ void CTexture::Load(LPCSTR cName)
 		// Calc memory usage and preload into vid-mem
 		if (pSurface) {
 			pSurface->SetPriority	(PRIORITY_NORMAL);
-			dwMemoryUsage			=	MemUsage(pSurface);
+			dwMemoryUsage			=	M;
 		}
-	}
-}
-
-u32 CTexture::MemUsage	(IDirect3DBaseTexture9* pTexture)
-{
-	switch (pTexture->GetType())
-	{
-	case D3DRTYPE_TEXTURE:
-		{
-			IDirect3DTexture9*	T		= (IDirect3DTexture9*)pTexture;
-			u32 dwMemory	= 0;
-			if (T) {
-				for (u32 L=0; L<T->GetLevelCount(); L++)
-				{
-					D3DSURFACE_DESC	desc;
-					R_CHK			(T->GetLevelDesc(L,&desc));
-#pragma todo("DX9: surf.desc.size used :(")
-					//dwMemory		+= desc.Size;
-				}
-			}
-			return	dwMemory;
-		}
-	default:
-		return 0;
 	}
 }
 
