@@ -400,7 +400,7 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(ClientID id_who, LPSTR Name)
 //	LPCSTR	Name = NULL;
 
 //	Name = get_name_id(id_who);
-	Name = get_option_s(Name,"name",Name);
+//	Name = get_option_s(Name,"name",Name);
 
 
 	

@@ -442,7 +442,7 @@ void game_sv_GameState::OnEvent (NET_Packet &tNetPacket, u16 type, u32 time, Cli
 			tNetPacket.r_clientID(ID);
 			string64 PlayerName;
 			tNetPacket.r_stringZ(PlayerName);
-			OnPlayerDisconnect(ID, PlayerName);
+			OnPlayerDisconnect(ID, get_option_s(PlayerName,"name",PlayerName));
 		}break;
 
 	case GAME_EVENT_PLAYER_KILLED:
