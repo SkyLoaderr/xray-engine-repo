@@ -17,8 +17,10 @@ float ssaLIMIT_SS		= 16.f;
 float ssaDONTSORT_SS	= 25.f*25.f;
 float ssaLIMIT;
 float ssaDONTSORT;
-const float ssLOD		= 64.f;
-const float ssaLOD		= (ssLOD*ssLOD)/(800*600);
+const float ssLOD_A		= 96.f;
+const float ssLOD_B		= 64.f;
+const float ssaLOD_A	= (ssLOD_A*ssLOD_A)/(800*600);
+const float ssaLOD_B	= (ssLOD_B*ssLOD_B)/(800*600);
 
 IC	float	CalcSSA(float& distSQ, Fvector& C, CVisual* V)
 {
@@ -238,7 +240,8 @@ void CRender::add_leafs_Static(CVisual *pVisual)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	InsertSG_Static		(pVisual);
+			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
+			if (ssa<ssaLOD_B)	InsertSG_Static		(pVisual);
 			else										
 			{
 				// Add all children, doesn't perform any tests
@@ -354,7 +357,8 @@ void CRender::add_Static(CVisual *pVisual, DWORD planes)
 		{
 			FLOD		* pV	= (FLOD*) pVisual;
 			float		D;
-			if (CalcSSA(D,pV->bv_Position,pV)<ssaLOD)	InsertSG_Static		(pVisual);
+			float		ssa		= CalcSSA(D,pV->bv_Position,pV);
+			if (ssa<ssaLOD_B)	InsertSG_Static		(pVisual);
 			else										
 			{
 				// Add all children, perform tests

@@ -35,6 +35,7 @@ public:
 	SceneGraph::mapMatrix_T							mapMatrix;
 	SceneGraph::mapSorted_T							mapSorted;
 	SceneGraph::mapHUD_T							mapHUD;
+	SceneGraph::mapLOD_T							mapLOD;
 	SceneGraph::vecPatches_T						vecPatches;
 
 	vector<FCached*>								vecCached;
@@ -43,6 +44,7 @@ public:
 	vector<SceneGraph::mapNormalTextures::TNode*>	lstTexturesTemp;
 	vector<SceneGraph::mapNormalMatrices::TNode*>	lstMatrices;
 	vector<SceneGraph::mapNormalConstants::TNode*>	lstConstants;
+	vector<SceneGraph::_LodItem>					lstLODs;
 	vector<CVisual*>								lstVisuals;
 
 	CVS*											vsPatches;

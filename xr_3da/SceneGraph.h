@@ -23,6 +23,10 @@ namespace SceneGraph
 		float			angle;
 		BOOL			nearer;
 	};
+	struct _LodItem		{
+		float			ssa;
+		CVisual*		pVisual;
+	};
 
 	// Higher level	- NORMAL
 	struct mapNormalDirect
@@ -69,6 +73,9 @@ namespace SceneGraph
 
 	typedef FixedMAP<float,_MatrixItem>				mapHUD_T;
 	typedef mapSorted_T::TNode						mapHUD_Node;
+
+	typedef FixedMAP<float,_LodItem>				mapLOD_T;
+	typedef mapLOD_T::TNode							mapLOD_Node;
 
 	typedef std::vector<_PatchItem>					vecPatches_T;
 };
