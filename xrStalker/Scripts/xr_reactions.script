@@ -173,7 +173,6 @@ function action_wait:execute()
 end
 function action_wait:finalize()
 	action_base.finalize (self)
-    self.object:clear_animations()
 end
 function action_wait:set_prisluh(prisluh)
 	if prisluh == true then
@@ -181,6 +180,7 @@ function action_wait:set_prisluh(prisluh)
 	end
 	if prisluh == false then
 		xr_state.anim_update(nil, self.object)
+	    	self.object:clear_animations()
 	end
 end
 
