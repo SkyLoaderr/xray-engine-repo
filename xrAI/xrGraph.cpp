@@ -41,6 +41,7 @@ NodeCompressed**		m_nodes_ptr;	// pointers to node's data
 vector<bool>			q_mark_bit;		// temporal usage mark for queries
 
 vector<SGraphVertex>	tpaGraph;		// graph
+stack<u32>				dwaStack;		// stack
 
 void vfLoafAIMap(LPCSTR name)
 {
@@ -56,7 +57,7 @@ void vfLoafAIMap(LPCSTR name)
 	// dispatch table
 	m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
 	Progress(0.0f);
-	for (u32 I=0; I<m_header.count; I++)
+	for (u32 I=0; I<m_header.count; Progress(float(++I)/m_header.count))
 	{
 		m_nodes_ptr[I]	= (NodeCompressed*)vfs->Pointer();
 
@@ -65,11 +66,11 @@ void vfLoafAIMap(LPCSTR name)
 
 		u32			L = C.links;
 		vfs->Advance	(L*sizeof(NodeLink));
-		Progress(float(I + 1)/m_header.count);
 	}
 
 	// special query tables
 	q_mark_bit.assign	(m_header.count,false);
+	Progress(1.0f);
 }
 
 void vfLoadAIPoints(LPCSTR name)
@@ -91,8 +92,11 @@ void vfLoadAIPoints(LPCSTR name)
 			tGraphVertex.ucVertexType		= 0;
 			tGraphVertex.tpaEdges			= 0;
 			tpaGraph.push_back				(tGraphVertex);
+			if (id % 100 == 0)
+				Status("Vertexes being read : %d",id);
 		}
 		O->Close();
+		Status("Vertexes being read : %d",id);
 	}
 }
 
@@ -126,11 +130,11 @@ u32 dwfFindCorrespondingNode(Fvector &tPoint)
 u32 dwfInitNodes()
 {
 	u32 dwPointsWONodes = 0;
-	Progress(0);
-	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(i + 1)/tpaGraph.size()), i++)
+	Progress(0.0f);
+	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
 		if ((tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint)) == u32(-1))
 			dwPointsWONodes++;
-	Progress(1);
+	Progress(1.0f);
 	return(dwPointsWONodes);
 }
 
@@ -141,8 +145,8 @@ void vfSaveGraph(LPCSTR name)
 	
 	CFS_Memory	tGraph;
 	tGraph.Wdword(m_header.version);	
-	Progress(0);
-	for (int i=0; i<(int)tpaGraph.size(); i++) {
+	Progress(0.0f);
+	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size())) {
 		SGraphVertex &tGraphVertex = tpaGraph[i];
 		tGraph.Wvector(tGraphVertex.tPoint);
 		tGraph.Wbyte(tGraphVertex.ucVertexType);
@@ -152,9 +156,8 @@ void vfSaveGraph(LPCSTR name)
 			tGraph.Wdword(tGraphVertex.tpaEdges[j].dwVertexNumber);	
 			tGraph.Wfloat(tGraphVertex.tpaEdges[j].fPathDistance);	
 		}
-		Progress(float(i + 1)/tpaGraph.size());
 	}
-	Progress(1);
+	Progress(1.0f);
 	tGraph.SaveTo(fName,0);
 	Msg("%d bytes saved",int(tGraph.tell()));
 }
@@ -162,10 +165,11 @@ void vfSaveGraph(LPCSTR name)
 void vfBuildGraph()
 {
 	float fDistance;
-	Progress(0);
-	for (int i=0; i<(int)tpaGraph.size() - 1; i++) {
+	u32 N = tpaGraph.size() - 1, M = N + 1, NM = N*M;
+	Progress(0.0f);
+	for (int i=0; i<(int)N; Progress(float(++i)/N)) {
 		SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
-		for (int j = i + 1; j<(int)tpaGraph.size(); j++) {
+		for (int j = i + 1; j<(int)M; Progress((float(i)*N + ++j)/NM)) {
 			SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 			if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < MAX_DISTANCE_TO_CONNECT) {
 				vfFindTheShortestPath(tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance);
@@ -179,11 +183,38 @@ void vfBuildGraph()
 					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
 				}
 			}
-			Progress((float(i + 1)*(tpaGraph.size() - 1) + j + 1)/(tpaGraph.size() - 1)/(tpaGraph.size() - 1));
 		}
-		Progress(float(i + 1)/(tpaGraph.size() - 1));
 	}
-	Progress(1);
+	Progress(1.0f);
+}
+
+bool bfCheckForGraphConnectivity()
+{
+	if (!tpaGraph.size())
+		return(true);
+
+	while (dwaStack.size())
+		dwaStack.pop();
+	dwaStack.push(0);
+	q_mark_bit[0] = true;
+	while (!dwaStack.empty()) {
+		u32 dwCurrentVertex = dwaStack.top();
+		dwaStack.pop();
+		SGraphVertex &tGraphVertex = tpaGraph[dwCurrentVertex];
+		for (int i=0; i<(int)tGraphVertex.dwNeighbourCount; i++)
+			if (!q_mark_bit[tGraphVertex.tpaEdges[i].dwVertexNumber]) {
+				dwaStack.push(tGraphVertex.tpaEdges[i].dwVertexNumber);
+				q_mark_bit[tGraphVertex.tpaEdges[i].dwVertexNumber] = true;
+			}
+	}
+	for (int i=0; i<(int)tpaGraph.size(); i++)
+		if (!q_mark_bit[i]) {
+			q_mark_bit.assign(m_header.count,false);
+			return(false);
+		}
+	
+	q_mark_bit.assign(m_header.count,false);
+	return(true);
 }
 
 void xrBuildGraph(LPCSTR name)
@@ -211,6 +242,14 @@ void xrBuildGraph(LPCSTR name)
 		j += tpaGraph[i].dwNeighbourCount;
 	Msg("%d edges built",j);
 
+	Phase("Checking graph connectivity");
+	if ((j < ((int)tpaGraph.size() - 1)) || !bfCheckForGraphConnectivity()) {
+		Msg("Graph is not connected!");
+		R_ASSERT(false);
+	}
+	else
+		Msg("Graph is connected");
+	
 	Phase("Saving graph");
 	vfSaveGraph(name);
 
@@ -218,7 +257,9 @@ void xrBuildGraph(LPCSTR name)
 	vfUnloadSearch();
 	
 	Phase("Freeing graph being built");
-	for (i=0; i<(int)tpaGraph.size(); i++)
+	Progress(0.0f);
+	for (i=0; i<(int)tpaGraph.size(); Progress(float(i)/(tpaGraph.size() - 1)),i++)
 		_FREE(tpaGraph[i].tpaEdges);
 	tpaGraph.clear();
+	Progress(1.0f);
 }
