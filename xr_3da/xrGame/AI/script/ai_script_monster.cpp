@@ -676,7 +676,7 @@ void CScriptMonster::hit_callback	(float amount, const Fvector &vLocalDir, const
 	if (!dynamic_cast<const CGameObject*>(who))
 		return;
 
-	SCRIPT_CALLBACK_EXECUTE_5(m_tSoundCallback, 
+	SCRIPT_CALLBACK_EXECUTE_5(m_tHitCallback, 
 		lua_game_object(),
 		amount,
 		vLocalDir,

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../effectorPP.h"
-#include "../../effector.h"
+#include "../CameraEffector.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CMonsterEffector
@@ -22,7 +22,7 @@ public:
 //////////////////////////////////////////////////////////////////////////
 // CMonsterEffectorHit
 //////////////////////////////////////////////////////////////////////////
-class CMonsterEffectorHit : public CEffector {
+class CMonsterEffectorHit : public CCameraEffector {
 	typedef CEffector inherited;	
 
 	float total;

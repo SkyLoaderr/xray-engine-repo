@@ -2,6 +2,8 @@
 #include "ai_pseudodog.h"
 #include "../ai_monster_utils.h"
 #include "../ai_monster_effector.h"
+#include "../../actor.h"
+#include "../../ActorEffector.h"
 
 CAI_PseudoDog::CAI_PseudoDog()
 {
@@ -223,8 +225,11 @@ void CAI_PseudoDog::CheckSpecParams(u32 spec_params)
 		MotionMan.Seq_Add(eAnimAttackPsi);
 		MotionMan.Seq_Switch();
 
-		Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_psi_effector.ppi, m_psi_effector.time, m_psi_effector.time_attack, m_psi_effector.time_release));
-		Level().Cameras.AddEffector(xr_new<CMonsterEffectorHit>(m_psi_effector.ce_time,m_psi_effector.ce_amplitude,m_psi_effector.ce_period_number,m_psi_effector.ce_power));
+		CActor *pA = dynamic_cast<CActor *>(Level().CurrentEntity());
+		if (pA) {
+			pA->EffectorManager().AddEffector(xr_new<CMonsterEffectorHit>(m_psi_effector.ce_time,m_psi_effector.ce_amplitude,m_psi_effector.ce_period_number,m_psi_effector.ce_power));
+			Level().Cameras.AddEffector(xr_new<CMonsterEffector>(m_psi_effector.ppi, m_psi_effector.time, m_psi_effector.time_attack, m_psi_effector.time_release));
+		}
 	}
 }
 

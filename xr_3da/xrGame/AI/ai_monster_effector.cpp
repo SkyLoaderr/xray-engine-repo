@@ -7,7 +7,7 @@
 // CMonsterEffector
 //////////////////////////////////////////////////////////////////////////
 CMonsterEffector::CMonsterEffector(const SPPInfo &ppi, float life_time, float attack_time, float release_time) :
-		CEffectorPP(EEffectorPPType(MONSTER_EFFECTOR_TYPE_ID), life_time)
+		CEffectorPP(EEffectorPPType(eCEHit), life_time)
 {
 	state		= ppi;
 	m_total		= life_time;
@@ -74,7 +74,7 @@ BOOL CMonsterEffector::Process(SPPInfo& pp)
 //////////////////////////////////////////////////////////////////////////
 
 CMonsterEffectorHit::CMonsterEffectorHit(float time, float amp, float periods, float power) 
-	: CEffector(EEffectorType(MONSTER_EFFECTOR_TYPE_ID + 1), time, FALSE)
+	: CCameraEffector(ECameraEffectorType(eCEHit + 1), time, FALSE)
 {
 	total			= time;
 
