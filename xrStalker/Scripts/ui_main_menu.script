@@ -57,7 +57,7 @@ function main_menu:InitControls()
 							 height = self.btn_rect.height}
 	-- Bottom align
 	local btn_quit_rect    = {x = self.btn_rect.x,
-							 y = self.bottom_align_y - btn_rect.height ,
+							 y = self.bottom_align_y - self.btn_rect.height ,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	local btn_bonus_rect   = {x = self.btn_rect.x,
