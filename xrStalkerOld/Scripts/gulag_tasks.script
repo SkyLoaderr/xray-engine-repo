@@ -20,7 +20,9 @@ function loadJob(sj, gname, type, squad, groups)
 			prior = 7, state = {0,1},
 			squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
-			leader_name = nil,
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol")
+						end,
 			escape_path = gname.."_patrol_look_0" }
 		table.insert(sj, t)			
 		t = { name = "follower",
@@ -28,7 +30,9 @@ function loadJob(sj, gname, type, squad, groups)
 			prior = 7, state = {0,1},
 			squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
-			leader_name = nil,
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol")
+						end,
 			escape_path = gname.."_patrol_look_0" }
 		table.insert(sj, t)	
 		t = { name = "walker",
@@ -148,83 +152,315 @@ function loadJob(sj, gname, type, squad, groups)
 			path_look = gname.."_alarm_center_look" }
 		table.insert(sj, t)			
 	end
+--'-----------------------------------------------------------------------------------------
+--' AGROPROM BASE
+--'-----------------------------------------------------------------------------------------
+	if type == "agro_baza" then	
+		--' STATE 0
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep1"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep2"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep3"}
+		table.insert(sj, t)			
+		t = { name = "sleeper",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep4"}
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_kamp"}
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_kamp"}
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_kamp"}
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 1, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_kamp"}
+		table.insert(sj, t)			
+
+		t = { name = "patrol",
+			object = nil, begin = nil, idle = 5*60*60*1000,
+			prior = 8, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			patrol_path = gname.."_patrul_walk",
+			path_look = gname.."_patrul_ret",
+			escape_path = gname.."_patrul_ret" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 5*60*60*1000,
+			prior = 7, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol")
+						end,
+			escape_path = gname.."_patrul_ret" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 5*60*60*1000,
+			prior = 7, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol")
+						end,
+			escape_path = gname.."_patrul_ret" }
+		table.insert(sj, t)	
+
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_walk1",
+			path_look = gname.."_look1" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_walk2",
+			path_look = gname.."_look2" }
+		table.insert(sj, t)					
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_walk4",
+			path_look = gname.."_look4" }
+		table.insert(sj, t)				
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_walk5",
+			path_look = gname.."_look5" }
+		table.insert(sj, t)			
+		t = { name = "walker",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_walk6",
+			path_look = gname.."_look6" }
+		table.insert(sj, t)			
+
+		t = { name = "raid",
+			idle = 3*60*60*1000,
+			prior = 8, state = {1},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			patrol_path = gname.."_factory_raid",
+			path_look = nil,
+			escape_path = nil }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			idle = 3*60*60*1000,
+			prior = 7, state = {1},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("raid")
+						end,
+			escape_path = nil }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			idle = 3*60*60*1000,
+			prior = 7, state = {1},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("raid")
+						end,
+			escape_path = nil }
+		table.insert(sj, t)	
+	end
 --'------------------------------------------------------------------------------------------------------
 --' Dolg kamp at the Garbage
 --'------------------------------------------------------------------------------------------------------
 	if type == "dolg_kamp" then	
 		t = { name = "kamp",
 			object = nil, begin = nil, idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			center_point = gname.."_center",
-			patrol_path = nil,
-			path_look = nil }
+			patrol_path = {gname.."_walk1", gname.."_walk2"},
+			path_look = {gname.."_look1", gname.."_look2"} }
 		table.insert(sj, t)			
 		t = { name = "kamp",
 			object = nil, begin = nil, idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			center_point = gname.."_center",
-			patrol_path = nil,
-			path_look = nil }
+			patrol_path = {gname.."_walk1", gname.."_walk2"},
+			path_look = {gname.."_look1", gname.."_look2"} }
 		table.insert(sj, t)			
 		t = { name = "kamp",
 			object = nil, begin = nil, idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			center_point = gname.."_center",
-			patrol_path = nil,
-			path_look = nil }
+			patrol_path = {gname.."_walk1", gname.."_walk2"},
+			path_look = {gname.."_look1", gname.."_look2"} }
 		table.insert(sj, t)			
 		t = { name = "kamp",
 			object = nil, begin = nil, idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			center_point = gname.."_center",
-			patrol_path = nil,
-			path_look = nil }
+			patrol_path = {gname.."_walk1", gname.."_walk2"},
+			path_look = {gname.."_look1", gname.."_look2"} }
 		table.insert(sj, t)			
 		t = { name = "kamp",
 			object = nil, begin = nil, idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			center_point = gname.."_center",
-			patrol_path = nil,
-			path_look = nil }
+			patrol_path = {gname.."_walk1", gname.."_walk2"},
+			path_look = {gname.."_look1", gname.."_look2"} }
 		table.insert(sj, t)			
 		t = { name = "kamp",
 			object = nil, begin = nil, idle = 0,
-			prior = 1, state = {0},
+			prior = 1, state = {0,1},
 			squad = squad, group = groups[1],
 			in_rest = "", out_rest = "",
 			center_point = gname.."_center",
-			patrol_path = nil,
-			path_look = nil }
+			patrol_path = {gname.."_walk1", gname.."_walk2"},
+			path_look = {gname.."_look1", gname.."_look2"} }
 		table.insert(sj, t)			
 
-		t = { name = "guard",
+		t = { name = "raid",
 			object = nil, begin = nil, idle = 0,
-			prior = 2, state = {0},
-			squad = squad, group = groups[1],
+			prior = 8, state = {0},
+			squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
-			center_point = gname.."_point1"}
+			patrol_path = gname.."_patrol_move",
+			path_look = gname.."_patrol_look",
+			escape_path = gname.."_patrol_look" }
 		table.insert(sj, t)			
-		t = { name = "guard",
+		t = { name = "follower",
 			object = nil, begin = nil, idle = 0,
-			prior = 2, state = {0},
-			squad = squad, group = groups[1],
+			prior = 7, state = {0},
+			squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
-			center_point = gname.."_point2"}
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("raid")
+						end,
+			escape_path = gname.."_patrol_look" }
 		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 0,
+			prior = 7, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("raid")
+						end,
+			escape_path = gname.."_patrol_look" }
+		table.insert(sj, t)	
 
+		t = { name = "camper",
+			object = nil, begin = nil, idle = 0,
+			prior = 9, state = {1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_raid_sniper_walk1",
+			path_look = gname.."_raid_sniper_look1" }
+		table.insert(sj, t)	
+		t = { name = "camper",
+			object = nil, begin = nil, idle = 0,
+			prior = 9, state = {1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_raid_sniper_walk2",
+			path_look = gname.."_raid_sniper_look2" }
+		table.insert(sj, t)	
+		t = { name = "camper",
+			object = nil, begin = nil, idle = 0,
+			prior = 9, state = {1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_raid_sniper_walk3",
+			path_look = gname.."_raid_sniper_look3" }
+		table.insert(sj, t)			
+					
+		t = { name = "zoneguard",
+			object = nil, begin = nil, idle = 0,
+			prior = 10, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_zg_walk1",
+			team = "garbage_dolg_guadrs",
+			zone_guard = "zone_guard",
+			zone_warn = "zone_warn"}
+		table.insert(sj, t)			
+		t = { name = "zoneguard",
+			object = nil, begin = nil, idle = 0,
+			prior = 10, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_zg_walk2",
+			team = "garbage_dolg_guadrs",
+			zone_guard = "zone_guard",
+			zone_warn = "zone_warn"}
+		table.insert(sj, t)			
+		t = { name = "zoneguard",
+			object = nil, begin = nil, idle = 0,
+			prior = 10, state = {0,1},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_zg_walk3",
+			team = "garbage_dolg_guadrs",
+			zone_guard = "zone_guard",
+			zone_warn = "zone_warn"}
+		table.insert(sj, t)			
 
 	end
-
 
 --'------------------------------------------------------------------------------------------------------
 --' Stalkers meeteing in a round
@@ -318,12 +554,919 @@ function loadJob(sj, gname, type, squad, groups)
 			end
 		end
 	end
+
+--'------------------------------------------------------------------------------------------------------
+--' "Dolg" headquarters on Rostok
+--'------------------------------------------------------------------------------------------------------
+	if type == "dolg_hq" then
+		-- лидер
+		t = { name = "walker",
+			idle = 0,
+			prior = 10, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = "dolg_leader_way_01",
+			path_look = "dolg_path_look_02",
+			predicate = function(obj) 
+							return obj:profile_name() == "dolg_leader"
+						end}
+		table.insert(sj, t)
+		-- телохранители
+		t = { name = "bodyguard",
+			idle = 0,
+			prior = 9, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_telohranitel_way_01",
+			path_side = "dolg_telohranitel_way_11",
+			path_center = "dolg_telohranitel_way_01-02",
+			zone_guard = "dolg_bodyguard_script_zone_attack",
+			never_allow = false,
+			block_unarmed = false,
+			predicate = function(obj) 
+							return obj:profile_name() == "dolg_master"
+						end }
+		table.insert(sj, t)
+		t = { name = "bodyguard",
+			idle = 0,
+			prior = 9, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_telohranitel_way_02",
+			path_side = "dolg_telohranitel_way_22",
+			path_center = "dolg_telohranitel_way_01-02",
+			zone_guard = "dolg_bodyguard_script_zone_attack",
+			never_allow = false,
+			block_unarmed = false,
+			predicate = function(obj) 
+							return obj:profile_name() == "dolg_master"
+						end }
+		table.insert(sj, t)
+		t = { name = "bodyguard",
+			idle = 0,
+			prior = 9, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_telohranitel_way_03",
+			path_side = "dolg_telohranitel_way_33",
+			path_center = "dolg_telohranitel_way_03-04",
+			zone_guard = "dolg_bodyguard_script_zone_attack",
+			never_allow = false,
+			block_unarmed = false,
+			predicate = function(obj) 
+							return obj:profile_name() == "dolg_master"
+						end }
+		table.insert(sj, t)
+		t = { name = "bodyguard",
+			idle = 0,
+			prior = 9, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_telohranitel_way_04",
+			path_side = "dolg_telohranitel_way_44",
+			path_center = "dolg_telohranitel_way_03-04",
+			zone_guard = "dolg_bodyguard_script_zone_attack",
+			never_allow = false,
+			block_unarmed = false,
+			predicate = function(obj) 
+							return obj:profile_name() == "dolg_master"
+						end }
+		table.insert(sj, t)
+		-- охрана
+		t = { name = "zoneguard",
+			idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			team = "dolg_hq_guards",
+			path_walk = "dolg_guard_way_01",
+			path_look = "dolg_path_look_04",
+			zone_guard = "dolg_guard_script_zone_attack",
+			zone_warn = "dolg_guard_script_zone_warn",
+			enable_dialog = true }
+		table.insert(sj, t)
+		t = { name = "zoneguard",
+			idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			team = "dolg_hq_guards",
+			path_walk = "dolg_guard_way_02",
+			path_look = "dolg_path_look_04",
+			zone_guard = "dolg_guard_script_zone_attack",
+			zone_warn = "dolg_guard_script_zone_warn",
+			enable_dialog = true }
+		table.insert(sj, t)
+		-- обычные
+		t = { name = "walker",
+			idle = 0,
+			prior = 4, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = "dolg_idle_way_01" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 4, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = "dolg_idle_way_02" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 4, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = "dolg_idle_way_03" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 4, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = "dolg_path_way_01",
+			path_look = "dolg_look_way_05" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 4, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = "dolg_sniper_way_01",
+			path_look = "dolg_path_look_04" }
+		table.insert(sj, t)
+		-- спящие
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_sleep_way_01" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_sleep_way_02" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_sleep_way_03" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_sleep_way_04" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_sleep_way_05" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_sleep_way_06" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_main = "dolg_sleep_way_07" }
+		table.insert(sj, t)
+	end
+
+--'------------------------------------------------------------------------------------------------------
+--' "KILLER" headquarters on MILITARY
+--'------------------------------------------------------------------------------------------------------
+	if type == "mil_merc" then		
+		t = { name = "walker", idle = 0,
+			prior = 11, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_guard_1",
+			path_look = gname.."_guard_look_1"}
+		table.insert(sj, t)
+		t = { name = "walker", idle = 0,
+			prior = 11, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_guard_2",
+			path_look = gname.."_guard_look_2"}
+		table.insert(sj, t)
+		t = { name = "walker", idle = 0,
+			prior = 10, state = {0},
+			squad = squad, group = groups[1],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_hq_1",
+			path_look = gname.."_hq_look_1"}
+		table.insert(sj, t)
+		
+		t = { name = "camper",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_sniper_2",
+			path_look = gname.."_sniper_look_2" }
+		table.insert(sj, t)
+		t = { name = "walker", idle = 0,
+			prior = 4, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_prison_1",
+			path_look = gname.."_prison_look_1"}
+		table.insert(sj, t)
+		t = { name = "patrol",
+			object = nil, begin = nil, idle = 0,
+			prior = 6, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			patrol_path = gname.."_patrol_path_2",
+			path_look = gname.."_patrol_look_2",
+			escape_path = gname.."_patrol_look_2" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 0,
+			prior = 5, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol")
+						end,
+			escape_path = gname.."_patrol_look_2" }
+		table.insert(sj, t)			
+		t = { name = "follower",
+			object = nil, begin = nil, idle = 0,
+			prior = 5, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol")
+						end,
+			escape_path = gname.."_patrol_look_2" }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_sleep_1",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)				
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_sleep_1",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+		t = { name = "kamp",
+			object = nil, begin = nil, idle = 0,
+			prior = 2, state = {0},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			center_point = gname.."_sleep_1",
+			patrol_path = nil,
+			path_look = nil }
+		table.insert(sj, t)			
+
+		t = { name = "camper",
+			object = nil, begin = nil, idle = 0,
+			prior = 8, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_sniper_1",
+			path_look = gname.."_sniper_look_1" }
+		table.insert(sj, t)
+		t = { name = "walker", idle = 0,
+			prior = 4, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_patrol_path_3",
+			path_look = gname.."_patrol_look_3"}
+		table.insert(sj, t)
+		t = { name = "walker", idle = 0,
+			prior = 7, state = {0},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			path_walk = gname.."_entrance_1",
+			path_look = gname.."_entrance_look_1"}
+		table.insert(sj, t)
+
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep_b1" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep_b2" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep_b3" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep_b4" }
+		table.insert(sj, t)
+		t = { name = "sleeper",
+			idle = 0,
+			prior = 1, state = {0},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			path_main = gname.."_sleep_b5" }
+		table.insert(sj, t)
+	end
+--'------------------------------------------------------------------------------------------------------
+--' "Monolith" headquarters on Pripyat'
+--' состояния: 0=ночь, 1=день (без тревоги)
+--'------------------------------------------------------------------------------------------------------
+	if type == "monolith_hq" then
+		-- патруль 1
+		t = { name = "patrol1",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			patrol_path = "pripyat_patrol_path1",
+			path_look = "pripyat_patrol_look1",
+			escape_path = "pripyat_patrol_escape1",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "follower",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol1")
+						end,
+			escape_path = "pripyat_patrol_escape1",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "follower",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[3],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol1")
+						end,
+			escape_path = "pripyat_patrol_escape1",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+
+		-- патруль 2
+		t = { name = "patrol2",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			patrol_path = "pripyat_patrol_path2",
+			path_look = "pripyat_patrol_look2",
+			escape_path = "pripyat_patrol_escape2",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "follower",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol2")
+						end,
+			escape_path = "pripyat_patrol_escape2",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "follower",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[4],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol2")
+						end,
+			escape_path = "pripyat_patrol_escape2",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+
+		-- патруль 3
+		t = { name = "patrol3",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[5],
+			in_rest = "", out_rest = "",
+			patrol_path = "pripyat_patrol_path3",
+			path_look = "pripyat_patrol_look3",
+			escape_path = "pripyat_patrol_escape3",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "follower",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[5],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol3")
+						end,
+			escape_path = "pripyat_patrol_escape3",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "follower",
+			idle = 0,
+			prior = 10, state = {1},
+			squad = squad, group = groups[5],
+			in_rest = "", out_rest = "",
+			leader =	function(gulag)							
+							return gulag:nameStalkerOnJob("patrol3")
+						end,
+			escape_path = "pripyat_patrol_escape3",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+
+		-- часовые в у входов недалеко от лидера
+		t = { name = "walker",
+			idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0031_walk",
+			path_look = "m_stalker_wolf0031_look",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[2],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0032_walk",
+			path_look = "m_stalker_wolf0032_look",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[11],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0008_walk",
+			path_look = "m_stalker_wolf0008_look",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_sniper"
+						end }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[11],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0007_walk",
+			path_look = "m_stalker_wolf0007_look",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+
+		-- часовой на балконе внутри с видом на главный вход
+		t = { name = "walker",
+			idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[7],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0002_walk",
+			path_look = "m_stalker_wolf0002_look",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+
+		-- часовой возле окон с видом на внутренний дворик. возле актового зала
+		t = { name = "camper",
+			idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[7],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0016_walk",
+			path_look = "m_stalker_wolf0016_look" }
+		table.insert(sj, t)
+
+		-- часовой в актовом зале
+		t = { name = "walker",
+			idle = 0,
+			prior = 9, state = {0,1},
+			squad = squad, group = groups[7],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0045_walk",
+			path_look = "m_stalker_wolf0045_look" }
+		table.insert(sj, t)
+
+		-- отряд левой руки
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_left_hand"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+
+		-- отряд правой руки
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[9],
+			in_rest = "", out_rest = "",
+			center_point = "right_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_right_hand"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[9],
+			in_rest = "", out_rest = "",
+			center_point = "right_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[9],
+			in_rest = "", out_rest = "",
+			center_point = "right_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[9],
+			in_rest = "", out_rest = "",
+			center_point = "right_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 8, state = {1},
+			squad = squad, group = groups[9],
+			in_rest = "", out_rest = "",
+			center_point = "right_hand_kamp",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_specnaz"
+						end }
+		table.insert(sj, t)
+
+		-- кэмперы на балконе над главным входом. Они видят всю площадь
+		t = { name = "camper",
+			idle = 0,
+			prior = 7, state = {0,1},
+			squad = squad, group = groups[6],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0015_walk",
+			path_look = "m_stalker_wolf0015_look",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_sniper"
+						end }
+		table.insert(sj, t)
+		t = { name = "camper",
+			idle = 0,
+			prior = 7, state = {0,1},
+			squad = squad, group = groups[6],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0017_walk",
+			path_look = "m_stalker_wolf0017_look",
+			predicate =	function(obj)
+							return obj:profile_name() == "monolit_sniper"
+						end }
+		table.insert(sj, t)
+
+		-- прогуливающиеся на площади
+		t = { name = "walker",
+			idle = 0,
+			prior = 6, state = {0,1},
+			squad = squad, group = groups[6],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0003_walk" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 6, state = {1},
+			squad = squad, group = groups[6],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0004_walk" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 6, state = {1},
+			squad = squad, group = groups[6],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf0005_walk" }
+		table.insert(sj, t)
+		t = { name = "walker",
+			idle = 0,
+			prior = 6, state = {1},
+			squad = squad, group = groups[6],
+			in_rest = "", out_rest = "",
+			path_walk = "m_stalker_wolf00018_walk" }
+		table.insert(sj, t)
+
+		-- лагерь возле левой руки
+		t = { name = "kamp",
+			idle = 0,
+			prior = 1, state = {1},
+			squad = squad, group = groups[12],
+			in_rest = "", out_rest = "",
+			center_point = "near_left_hand_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 1, state = {1},
+			squad = squad, group = groups[12],
+			in_rest = "", out_rest = "",
+			center_point = "near_left_hand_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 1, state = {1},
+			squad = squad, group = groups[12],
+			in_rest = "", out_rest = "",
+			center_point = "near_left_hand_kamp" }
+		table.insert(sj, t)
+
+		-- лагерь на втором этаже в главном здании
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0,1},
+			squad = squad, group = groups[13],
+			in_rest = "", out_rest = "",
+			center_point = "inside_kamp_1" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0,1},
+			squad = squad, group = groups[13],
+			in_rest = "", out_rest = "",
+			center_point = "inside_kamp_1" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0,1},
+			squad = squad, group = groups[13],
+			in_rest = "", out_rest = "",
+			center_point = "inside_kamp_1" }
+		table.insert(sj, t)
+
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0,1},
+			squad = squad, group = groups[13],
+			in_rest = "", out_rest = "",
+			center_point = "inside_kamp_2" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0,1},
+			squad = squad, group = groups[13],
+			in_rest = "", out_rest = "",
+			center_point = "inside_kamp_2" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0,1},
+			squad = squad, group = groups[13],
+			in_rest = "", out_rest = "",
+			center_point = "inside_kamp_2" }
+		table.insert(sj, t)
+
+		-- лагерь во внутреннем дворике главного здания
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {1},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "inner_yard_kamp_1" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {1},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "inner_yard_kamp_1" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {1},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "inner_yard_kamp_1" }
+		table.insert(sj, t)
+
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {1},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "inner_yard_kamp_2" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {1},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "inner_yard_kamp_2" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {1},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "inner_yard_kamp_2" }
+		table.insert(sj, t)
+
+		-- место для сна 1 (актовый зал)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "concert_hall_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "concert_hall_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "concert_hall_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "concert_hall_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "concert_hall_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[14],
+			in_rest = "", out_rest = "",
+			center_point = "concert_hall_kamp" }
+		table.insert(sj, t)
+
+		-- место для сна 2 (место левой руки)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp" }
+		table.insert(sj, t)
+		t = { name = "kamp",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[8],
+			in_rest = "", out_rest = "",
+			center_point = "left_hand_kamp" }
+		table.insert(sj, t)
+
+	end
 end
 
 function loadStates(gname, type)
 	if type == "blockpost" then
-		return function(obj)
-			for k,v in obj do
+		return function(gulag)
+			for k,v in gulag.Object do
 				enemy = v:best_enemy()
 				if enemy ~= nil then
 					enemy_type = get_clsid(enemy)
@@ -341,7 +1484,11 @@ function loadStates(gname, type)
 	end
 	if type == "dolg_kamp" then
 		return function()
-			return 0
+			if garbage_monster_attack.raid_proceed() then
+				return 1
+			else
+				return 0
+			end
 		end
 	end
 	if type == "bandits_camp" then
@@ -349,6 +1496,31 @@ function loadStates(gname, type)
 			return 0
 		end
 	end
+	if type == "dolg_hq" then
+		return function()
+			return 0
+		end
+	end
+	if type == "agro_baza" then
+		return function(gulag)
+			return gulag.state
+		end
+	end	
+	if type == "mil_merc" then
+		return function(gulag)
+			return gulag.state
+		end
+	end
+	if type == "monolith_hq" then
+		return function(gulag)
+			if level.get_time_hours() >= 8 and level.get_time_hours() <= 21 then
+				return 1
+			else
+				return 0
+			end
+		end
+	end	
+
 end
 
 function get_megafone(type, name)
