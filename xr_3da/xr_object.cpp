@@ -119,7 +119,7 @@ void CObject::Load				( CInifile* ini, const char *section )
 	}
 	
 	// shadow
-	sh_Shader					= Device.Shader.Create	("shadow","shadow",false);
+	sh_Shader					= Device.Shader.Create	("effects\\shadow","effects\\shadow",false);
 	sh_Size						= Radius()/2;
 }
 
