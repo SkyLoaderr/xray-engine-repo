@@ -154,6 +154,6 @@ void path_test(LPCSTR caLevelName)
 	xr_delete	(path_manager);
 	xr_delete	(a_star);
 #ifdef TIME_TEST	
-	path_test_old			(caLevelName);
+//	path_test_old			(caLevelName);
 #endif
 }

@@ -1173,7 +1173,6 @@ public:
 
 	IC		u32			compute_bucket_id(CGraphNode &node) const
 	{
-//		int					f = iFloor(bucket_count*(node.f() - min_bucket_value)/(max_bucket_value - min_bucket_value));// + _dist_type(1.5));
 		int					f = int(bucket_count*(node.f() - min_bucket_value)/(max_bucket_value - min_bucket_value));// + _dist_type(1.5));
 		if (f < 0)
 			f				= 0;
