@@ -32,7 +32,6 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 			return;
 		}
 
-		_OBJECT_ID						l_tSaveObjectID = m_tNextFirstSwitchObjectID;
 		(*I).second->m_qwSwitchCounter	= m_qwCycleCounter;
 		ProcessOnlineOfflineSwitches	((*I).second);
 		
@@ -41,12 +40,12 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 			R_ASSERT2					(m_tpCurrentLevel->end() != I,"Cannot find specified object on the current level map");
 		}
 		++I;
-		if (!m_bSwitchChanged || (l_tSaveObjectID == m_tNextFirstSwitchObjectID))
-			if (m_tpCurrentLevel->end() == I) {
-				// this map cannnot be empty, because at least actor must belong to it
-				R_ASSERT2					(!m_tpCurrentLevel->empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
-				I							= m_tpCurrentLevel->begin();
-			}
+		if (m_tpCurrentLevel->end() == I) {
+			// this map cannnot be empty, because at least actor must belong to it
+			R_ASSERT2					(!m_tpCurrentLevel->empty(),"Impossible situation : current level contains no objects! (where is an actor, for example?)");
+			I							= m_tpCurrentLevel->begin();
+		}
+		
 		m_tNextFirstSwitchObjectID		= (*I).first;
 
 //		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
@@ -78,8 +77,6 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 				return;
 			}
 
-			_OBJECT_ID						l_tSaveObjectID = m_tNextFirstSwitchObjectID;
-			
 			(*I).second->m_qwUpdateCounter	= m_qwCycleCounter;
 			(*I).second->Update				();
 
@@ -90,18 +87,17 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 				R_ASSERT2					(m_tpScheduledObjects.end() != I,"Cannot find specified object on the current level map");
 			}
 			++I;
-			if (!m_bUpdateChanged || (l_tSaveObjectID == m_tNextFirstSwitchObjectID))
+			if (m_tpScheduledObjects.end() == I) {
+				I							= m_tpScheduledObjects.begin();
 				if (m_tpScheduledObjects.end() == I) {
-					I						= m_tpScheduledObjects.begin();
-					if (m_tpScheduledObjects.end() == I) {
 #ifdef DEBUG
-						if (psAI_Flags.test(aiALife)) {
-							Msg				("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
-						}
-#endif
-						return;
+					if (psAI_Flags.test(aiALife)) {
+						Msg					("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
 					}
+#endif
+					return;
 				}
+			}
 			m_tNextFirstProcessObjectID		= (*I).first;
 
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
