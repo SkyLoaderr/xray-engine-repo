@@ -109,6 +109,7 @@ void __fastcall TfrmObjectList::InitListBox()
     for(SceneToolsMapPairIt it=Scene.FirstTools(); it!=Scene.LastTools(); it++){
     	ESceneCustomOTools* ot = dynamic_cast<ESceneCustomOTools*>(it->second);
         if (ot&&((cur_cls==OBJCLASS_DUMMY)||(it->first==cur_cls))){
+        	if (it->first==OBJCLASS_DUMMY) continue;
             TElTreeItem* node = FindFolderByType(it->first);
             if (!node) node = AddFolder(it->first);
             VERIFY(node);
@@ -239,6 +240,13 @@ void __fastcall TfrmObjectList::tvItemsKeyPress(TObject *Sender,
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmObjectList::tvItemsItemFocused(TObject *Sender)
+{
+    UpdateSelection();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmObjectList::tvItemsAfterSelectionChange(
+      TObject *Sender)
 {
     UpdateSelection();
 }

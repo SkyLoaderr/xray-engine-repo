@@ -41,6 +41,7 @@ __published:	// IDE-managed Components
 	void __fastcall rgSOClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
+	void __fastcall tvItemsAfterSelectionChange(TObject *Sender);
 private:	// User declarations
     int obj_count;
     int cur_cls;

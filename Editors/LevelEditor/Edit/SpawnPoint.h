@@ -66,6 +66,9 @@ public:
     void            Construct   	(LPVOID data);
     virtual         ~CSpawnPoint   	();
 
+	IC bool 		RefCompare		(LPCSTR ref){return ref&&ref[0]&&m_SpawnData.Valid()?(strcmp(ref,m_SpawnData.m_Data->s_name)==0):false; }
+    IC LPCSTR		GetRefName		() 			{return m_SpawnData.Valid()?m_SpawnData.m_Data->s_name:0;}
+
     bool			CreateSpawnData	(LPCSTR entity_ref);
 	virtual void    Render      	( int priority, bool strictB2F );
 	virtual bool    RayPick     	( float& distance,	const Fvector& start,	const Fvector& direction, SRayPickInfo* pinf = NULL );
