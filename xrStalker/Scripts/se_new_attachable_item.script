@@ -4,23 +4,6 @@ end
 
 class "CSE_NewAttachableItem"				(cse_alife_item)
 
-/**
-function CSE_NewAttachableItem:init			()
-	log							("CSE_NewAttachableItem::init called!")
-	return						(self)
-end
-
-function CSE_NewAttachableItem:UPDATE_Write	(packet)
-	log							("CSE_NewAttachableItem::UPDATE_Write called!")
-	cse_alife_item.UPDATE_Write	(self,packet)
-end
-
-function CSE_NewAttachableItem:UPDATE_Read	(packet)
-	log							("CSE_NewAttachableItem::UPDATE_Read called!")
-	cse_alife_item.UPDATE_Read	(self,packet)
-end
-/**/
-
 function CSE_NewAttachableItem:__init		(section) super(section)
 	log							("CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	// flags16
