@@ -341,6 +341,9 @@
 				RelativePath="shaders\D\cm_normal.s">
 			</File>
 			<File
+				RelativePath="shaders\D\cm_to_bloom.s">
+			</File>
+			<File
 				RelativePath="shaders\D\fat_base.s">
 			</File>
 			<File
