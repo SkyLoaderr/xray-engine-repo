@@ -1223,6 +1223,9 @@
 				<File
 					RelativePath=".\ai_debug.h">
 				</File>
+				<File
+					RelativePath=".\dbg_draw_frustum.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="AEval"
@@ -1555,9 +1558,6 @@
 					</File>
 					<File
 						RelativePath=".\CustomMonster_VCPU.cpp">
-					</File>
-					<File
-						RelativePath=".\dbg_draw_frustum.cpp">
 					</File>
 				</Filter>
 				<Filter
