@@ -11,14 +11,20 @@
     #pragma comment(lib,	"x:\\eaxB.lib"			)
     #pragma comment(lib,	"x:\\oggB.lib"			)
     #pragma comment(lib,	"x:\\vorbisfileB.lib"	)
-    #pragma comment(lib,	"xrCoreB.lib"			)
-    #pragma comment(lib,	"xrCDBB.lib"			)
+    #pragma comment(lib,	"x:\xrCoreB.lib"		)
+    #pragma comment(lib,	"x:\xrCDBB.lib"			)
+#ifdef OPENAL
+    #pragma comment(lib,	"x:\OpenAL32B.lib"		)
+#endif
 #else
 	#pragma comment(lib,	"x:\\eax.lib"			)
 	#pragma comment(lib,	"x:\\vorbis.lib")
 	#pragma comment(lib,	"x:\\vorbisfile.lib"	)
     #pragma comment(lib,	"x:\\xrCore"			)
     #pragma comment(lib,	"x:\\xrCDB"				)
+#ifdef OPENAL
+    #pragma comment(lib,	"x:\OpenAL32.lib"		)
+#endif
 #endif
 
 #pragma comment(lib,	"dsound.lib" 		)

@@ -6,6 +6,8 @@
 #define stdafxH
 #pragma once
 
+#define OPENAL                       
+
 #include <xrCore.h>
 
 #include <dsound.h>

@@ -5,10 +5,6 @@
 #include "soundrender_core.h"
 #include "soundrender_source.h"
 #include "soundrender_emitter.h"
-#include "soundrender_target.h"
-
-CSoundRender_Core				SoundRender;
-CSound_manager_interface*		Sound		= &SoundRender;
 
 int		psSoundTargets			= 12;
 Flags32	psSoundFlags			= {ssHardware | ssEAX};
@@ -25,11 +21,8 @@ int		psSoundCacheSizeMB		= 16;
 CSoundRender_Core::CSoundRender_Core	()
 {
 	bPresent					= FALSE;
+    bEAX						= FALSE;
 	bUserEnvironment			= FALSE;
-	pDevice						= NULL;
-	pBuffer						= NULL;
-	pListener					= NULL;
-	pExtensions					= NULL;
 	geom_MODEL					= NULL;
 	geom_ENV					= NULL;
 	s_environment				= NULL;
@@ -39,80 +32,16 @@ CSoundRender_Core::CSoundRender_Core	()
     e_current.set_identity		();
     e_target.set_identity		();
     bListenerMoved				= FALSE;
+    bReady						= FALSE;
 }
 
 CSoundRender_Core::~CSoundRender_Core()
 {
 }
-/*
-BOOL QuerySupport(LPKSPROPERTYSET pExtensions, ULONG ulQuery, DWORD& m_dwSupport)
-{
-    ULONG ulSupport = 0;
-    HRESULT hr 		= pExtensions->QuerySupport(DSPROPSETID_EAX20_ListenerProperties, ulQuery, &ulSupport);
-    if ( FAILED(hr) ) return FALSE;
- 
-    if ( (ulSupport&(KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET)) == (KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET) )
-    {
-        m_dwSupport |= (DWORD)(1 << ulQuery); 
-        return TRUE;
-    }
- 
-    return FALSE;
-}
-*/
+
 void CSoundRender_Core::_initialize	(u64 window)
 {
-	bPresent			= FALSE;
-	if (strstr			( Core.Params,"-nosound"))		return;
 	Timer.Start			( );
-
-	// Device
-	if( FAILED			( EAXDirectSoundCreate8( NULL, &pDevice, NULL ) ) )
-		if( FAILED		( DirectSoundCreate8( NULL, &pDevice, NULL ) ) )	return;
-	if( FAILED			( pDevice->SetCooperativeLevel(  (HWND)window, DSSCL_PRIORITY ) ) )	
-	{
-		_destroy();
-		return;
-	}
-
-	// Create primary buffer.
-	DSBUFFERDESC		dsbd;
-	WAVEFORMATEX		wfm;
-	ZeroMemory			( &dsbd, sizeof( DSBUFFERDESC ) );
-	dsbd.dwSize			= sizeof( DSBUFFERDESC );
-	dsbd.dwFlags		= DSBCAPS_CTRL3D | DSBCAPS_PRIMARYBUFFER;
-	dsbd.dwBufferBytes	= 0;
-	if( FAILED	( pDevice->CreateSoundBuffer( &dsbd, &pBuffer, NULL ) ) )
-	{
-		_destroy();
-		return;
-	}
-
-	// Calculate primary buffer format.
-	dsCaps.dwSize				= sizeof(DSCAPS);
-	R_ASSERT					(pDevice);
-	R_CHK						(pDevice->GetCaps (&dsCaps));
-
-	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
-	switch	( psSoundFreq )
-	{
-	default:
-	case sf_22K:	wfm.nSamplesPerSec = 22050; break;
-	case sf_44K:	wfm.nSamplesPerSec = 44100; break;
-	}
-	wfm.wFormatTag				= WAVE_FORMAT_PCM;
-	wfm.nChannels				= (dsCaps.dwFlags&DSCAPS_PRIMARYSTEREO)?2:1;
-	wfm.wBitsPerSample			= (dsCaps.dwFlags&DSCAPS_PRIMARY16BIT)?16:8;
-	wfm.nBlockAlign				= wfm.wBitsPerSample / 8 * wfm.nChannels;
-	wfm.nAvgBytesPerSec			= wfm.nSamplesPerSec * wfm.nBlockAlign;
-
-	// For safety only :)
-	R_CHK(pBuffer->SetFormat	(&wfm));
-	R_CHK(pBuffer->Play			(0,0,DSBPLAY_LOOPING));
-
-	// Get listener interface.
-	R_CHK(pBuffer->QueryInterface( IID_IDirectSound3DListener8, (VOID**)&pListener ));
-	R_ASSERT					(pListener);
 
 	// Initialize listener data
 	Listener.dwSize				= sizeof(DS3DLISTENER);
@@ -124,65 +53,21 @@ void CSoundRender_Core::_initialize	(u64 window)
 	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 
-    // Create property set
-	if (psSoundFlags.test(ssHardware)){
-        IDirectSoundBuffer*		pTempBuf;
-        WAVEFORMATEX 			wave;
-        Memory.mem_fill			(&wave, 0, sizeof(WAVEFORMATEX));
-        wave.wFormatTag 		= WAVE_FORMAT_PCM;
-        wave.nChannels 			= 1; 
-        wave.nSamplesPerSec 	= 22050; 
-        wave.wBitsPerSample 	= 16; 
-        wave.nBlockAlign 		= wave.wBitsPerSample / 8 * wave.nChannels;
-        wave.nAvgBytesPerSec	= wave.nSamplesPerSec * wave.nBlockAlign;
-
-        DSBUFFERDESC 			desc;
-        Memory.mem_fill			(&desc, 0, sizeof(DSBUFFERDESC));
-        desc.dwSize 			= sizeof(DSBUFFERDESC); 
-        desc.dwFlags 			= DSBCAPS_STATIC|DSBCAPS_CTRL3D; 
-        desc.dwBufferBytes 		= 64;  
-        desc.lpwfxFormat 		= &wave; 
-
-		if (DS_OK==pDevice->CreateSoundBuffer(&desc, &pTempBuf, NULL)){
-        	BOOL bEAXres		= TRUE;
-			if (FAILED(pTempBuf->QueryInterface(IID_IKsPropertySet, (LPVOID *)&pExtensions))){
-                bEAXres			= FALSE;
-            }else{
-                ULONG support	= 0;
-                if (FAILED(pExtensions->QuerySupport(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ALLPARAMETERS, &support)))
-	                bEAXres		= FALSE;
-                if ((support & (KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET)) != (KSPROPERTY_SUPPORT_GET|KSPROPERTY_SUPPORT_SET))
-	                bEAXres		= FALSE;
-            }
-            if (!bEAXres){
-                Log				("EAX 2.0 not supported");
-                _RELEASE		(pExtensions);
-            }
-        }
-        _RELEASE				(pTempBuf);
-    }
-
     // load environment
 	env_load					();
 
-	bPresent					=	TRUE;
-
-	// Pre-create targets
-	CSoundRender_Target*	T	= 0;
-	for (u32 tit=0; tit<u32(psSoundTargets); tit++)
-	{
-		T							=	xr_new<CSoundRender_Target>();
-		T->_initialize				();	
-		s_targets.push_back			(T);
-	}
+	bPresent					= TRUE;
 
 	// Cache
-	cache_bytes_per_line		= (sdef_target_block/8)*wfm.nAvgBytesPerSec/1000;
+	cache_bytes_per_line		= (sdef_target_block/8)*(wfm.nSamplesPerSec*4)/1000;
     cache.initialize			(psSoundCacheSizeMB*1024,cache_bytes_per_line);
+
+    bReady						= TRUE;
 }
 
 void CSoundRender_Core::_destroy	()
 {
+    bReady						= FALSE;
 	cache.destroy				();
 	env_unload					();
 
@@ -193,20 +78,6 @@ void CSoundRender_Core::_destroy	()
     // remove emmiters
 	for (u32 eit=0; eit<s_emitters.size(); eit++)
     	xr_delete				(s_emitters[eit]);
-
-    // remove targets
-	CSoundRender_Target*	T	= 0;
-	for (u32 tit=0; tit<s_targets.size(); tit++)
-	{
-		T						= s_targets[tit];
-		T->_destroy				();
-        xr_delete				(T);
-	}
-    
-	_RELEASE		( pExtensions	);
-	_RELEASE		( pListener		);
-	_RELEASE		( pBuffer		);
-	_RELEASE		( pDevice		);
 }
 
 void CSoundRender_Core::env_load	()
@@ -278,12 +149,12 @@ void CSoundRender_Core::set_geometry_env(IReader* I)
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
 	for (u32 it=0; it<H.facecount; it++)
 	{
-		CDB::TRI*	T		= tris+it;
-		u16		id_front	= (u16)((T->dummy&0x0000ffff)>>0);		//	front face
-		u16		id_back		= (u16)((T->dummy&0xffff0000)>>16);		//	back face
-		R_ASSERT			(id_front<ids.size());
-		R_ASSERT			(id_back<ids.size());
-		T->dummy			= u32(ids[id_back]<<16) | u32(ids[id_front]);
+		CDB::TRI*	T	= tris+it;
+		u16		id_front= (u16)((T->dummy&0x0000ffff)>>0);		//	front face
+		u16		id_back	= (u16)((T->dummy&0xffff0000)>>16);		//	back face
+		R_ASSERT		(id_front<(u16)ids.size());
+		R_ASSERT		(id_back<(u16)ids.size());
+		T->dummy		= u32(ids[id_back]<<16) | u32(ids[id_front]);
 	}
 	geom_ENV			= xr_new<CDB::MODEL> ();
 	geom_ENV->build		(verts, H.vertcount, tris, H.facecount );
@@ -375,7 +246,7 @@ void	CSoundRender_Core::destroy(ref_sound& S )
 	S.handle			= NULL;
 }
 
-CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
+CSoundRender_Environment*	CSoundRender_Core::get_environment			( const Fvector& P )
 {
 	static CSoundRender_Environment	identity;
 
@@ -434,6 +305,22 @@ void						CSoundRender_Core::env_apply		()
     bListenerMoved			= TRUE;
 }
 
+void CSoundRender_Core::update_listener( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
+{
+    clamp							(dt,EPS_S,1.f/10.f);
+    Listener.vVelocity.sub			(P, Listener.vPosition );
+    Listener.vVelocity.div			(dt);
+    if (!Listener.vPosition.similar(P)){
+        Listener.vPosition.set		(P);
+        bListenerMoved				= TRUE;
+    }
+    //last_pos						= P;
+    Listener.vOrientFront.set		(D);
+    Listener.vOrientTop.set			(N);
+    Listener.fDopplerFactor			= EPS_S;
+    Listener.fRolloffFactor			= psSoundRolloff;
+}
+
 #ifdef _EDITOR
 void						CSoundRender_Core::set_user_env		( CSound_environment* E)
 {
@@ -465,27 +352,6 @@ void						CSoundRender_Core::refresh_sources()
     	CSoundRender_Source* s = s_sources[sit];
     	s->unload		();
 		s->load			(*s->fname,s->_3D);
-    }
-}
-void						CSoundRender_Core::set_environment_size(CSound_environment* src_env, CSound_environment** dst_env)
-{
-	if (pExtensions){
-    	CSoundRender_Environment* SE 	= static_cast<CSoundRender_Environment*>(src_env); 
-    	CSoundRender_Environment* DE 	= static_cast<CSoundRender_Environment*>(*dst_env); 
-    	// set all params                                                                                                          
-        R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, NULL, 0, &SE->EnvironmentSize, sizeof(float)));
-        i_set_eax						(SE);
-        R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENTSIZE, NULL, 0, &DE->EnvironmentSize, sizeof(float)));
-        i_get_eax						(DE);
-    }
-}
-void						CSoundRender_Core::set_environment(u32 id, CSound_environment** dst_env)
-{
-	if (pExtensions){
-    	CSoundRender_Environment* DE 	= static_cast<CSoundRender_Environment*>(*dst_env); 
-    	// set all params                                                                                                          
-        R_CHK(pExtensions->Set			(DSPROPSETID_EAX_ListenerProperties, DSPROPERTY_EAXLISTENER_ENVIRONMENT, NULL, 0, &id, sizeof(id)));
-        i_get_eax						(DE);
     }
 }
 #endif

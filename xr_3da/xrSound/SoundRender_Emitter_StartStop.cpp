@@ -25,7 +25,7 @@ void CSoundRender_Emitter::start(ref_sound* _owner, BOOL _loop, float delay)
 
 void CSoundRender_Emitter::stop	()
 {
-	if (target)	SoundRender.i_stop		(this);
+	if (target)	SoundRender->i_stop		(this);
 	if (owner)	
 	{
 		owner->feedback			= NULL;
@@ -36,14 +36,14 @@ void CSoundRender_Emitter::stop	()
 
 void CSoundRender_Emitter::rewind()
 {
-	u32 dwTime					=	SoundRender.Timer.GetElapsed_ms();
+	u32 dwTime					=	SoundRender->Timer.GetElapsed_ms();
 	u32 dwDiff					=	dwTime-dwTimeStarted;
 	dwTimeStarted				+=	dwDiff;
 	dwTimeToStop				+=	dwDiff;
 	dwTimeToPropagade			=	dwTime;
 
 	position					=	0;
-	if (target)	SoundRender.i_rewind	(this);
+	if (target)	SoundRender->i_rewind	(this);
 }
 
 void CSoundRender_Emitter::cancel()
@@ -54,15 +54,15 @@ void CSoundRender_Emitter::cancel()
 	case stPlaying:
 		// switch to: SIMULATE
 		state					=	stSimulating;		// switch state
-		SoundRender.i_stop		(this);
+		SoundRender->i_stop		(this);
 		break;
 	case stPlayingLooped:
 		// switch to: SIMULATE
 		state					=	stSimulatingLooped;	// switch state
-		SoundRender.i_stop		(this);
+		SoundRender->i_stop		(this);
 		break;
 	default:
-		R_ASSERT2	(0, "Non playing ref_sound forced out of render queue");
+		Debug.fatal	("Non playing ref_sound forced out of render queue");
 		break;
 	}
 }

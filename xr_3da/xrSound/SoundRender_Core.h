@@ -9,14 +9,14 @@
 
 class CSoundRender_Core					: public CSound_manager_interface
 {
-private:
+protected:
 	struct SListener 
 	{
 		u32				dwSize;
 		Fvector			vPosition;
 		Fvector			vVelocity;
-		Fvector			vOrientFront;
-		Fvector			vOrientTop;
+		Fvector			vOrientFront; 
+		Fvector			vOrientTop; 
 		float			fDistanceFactor;
 		float			fRolloffFactor;
 		float			fDopplerFactor;
@@ -31,17 +31,14 @@ public:
 public:
 	BOOL								bPresent;
 	BOOL								bUserEnvironment;
-	
-	// DSound interface
-	IDirectSound8*						pDevice;				// The device itself
-	IDirectSoundBuffer*					pBuffer;				// The primary buffer (mixer destination)
-	IDirectSound3DListener8*			pListener;
-	LPKSPROPERTYSET						pExtensions;
+    BOOL	 							bEAX;					// Boolean variable to indicate presence of EAX Extension 
+    BOOL								bReady;
+
+    WAVEFORMATEX						wfm;
 	SListener							Listener;
 	CTimer								Timer;
 	sound_event*						Handler;
-	DSCAPS								dsCaps;
-private:
+protected:
 	// Collider
 	CDB::COLLIDER						geom_DB;
 	CDB::MODEL*							geom_MODEL;
@@ -65,8 +62,8 @@ public:
 	~CSoundRender_Core					();
 
 	// General
-	virtual void						_initialize				( u64 window );
-	virtual void						_destroy				( );
+	virtual void  						_initialize				( u64 window )=0;
+	virtual void						_destroy				( )=0;
 	virtual void						_restart				( );
 
 	// Sound interface
@@ -90,11 +87,13 @@ public:
 	virtual void						refresh_env_library		();
 	virtual void						set_user_env			(CSound_environment* E);
 	virtual void						refresh_sources			();
-    virtual void						set_environment			(u32 id, CSound_environment** dst_env);
-    virtual void						set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env);
+    virtual void						set_environment			(u32 id, CSound_environment** dst_env)=0;
+    virtual void						set_environment_size	(CSound_environment* src_env, CSound_environment** dst_env)=0;
 #endif
-	void								i_set_eax				(CSound_environment* E);
-	void								i_get_eax				(CSound_environment*& E);
+	virtual void						i_set_eax				(CSound_environment* E)=0;
+	virtual void						i_get_eax				(CSound_environment* E)=0;
+
+	virtual void						update_listener			( const Fvector& P, const Fvector& D, const Fvector& N, float dt )=0;
 public:
 	CSoundRender_Source*				i_create_source			( LPCSTR name, BOOL _3D		);
 	void								i_destroy_source		( CSoundRender_Source*  S	);
@@ -105,12 +104,11 @@ public:
 	BOOL								i_allow_play			( CSoundRender_Emitter* E	);
 
 	BOOL								get_occlusion			( Fvector& P, float R, Fvector* occ );
-	CSoundRender_Environment*			get_environment			( Fvector& P );
+	CSoundRender_Environment*			get_environment			( const Fvector& P );
 
 	void								env_load				();
 	void								env_unload				();
 	void								env_apply				();
 };
-
-extern CSoundRender_Core	SoundRender;
+extern CSoundRender_Core* SoundRender;
 #endif

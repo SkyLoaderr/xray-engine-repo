@@ -6,44 +6,27 @@
 
 class CSoundRender_Target
 {
+protected:
 	WAVEFORMATEX				wfx;
-	IDirectSoundBuffer*			pBuffer_base;
-	IDirectSoundBuffer8*		pBuffer;
-	IDirectSound3DBuffer8*		pControl;
-
-	BOOL						bDX7;
-
-	u32							buf_time;		// ms
-	u32							buf_size;		// bytes
-	u32							buf_block;
-
-	s32							cache_hw_volume;
-	s32							cache_hw_freq;
-
 	CSoundRender_Emitter*		pEmitter;
-	u32							pos_write;		// bytes
 	BOOL						rendering;
 public:
 	float						priority;
-private:
-	BOOL						isDX7			() { return bDX7; };
-	void						fill_block		();
-	u32							calc_interval	(u32 ptr);
 public:
-	void						_initialize		();
-	void						_destroy		();
+								CSoundRender_Target	(void);
+	virtual 					~CSoundRender_Target(void);
 
-	CSoundRender_Emitter*		get_emitter		()	{ return pEmitter;	}
-	BOOL						get_Rendering	()	{ return rendering;	}
+	CSoundRender_Emitter*		get_emitter			()	{ return pEmitter;	}
+	BOOL						get_Rendering		()	{ return rendering;	}
 
-	void						start			(CSoundRender_Emitter* E);
-	void						render			();
-	void						rewind			();
-	void						stop			();
-	void						update			();
-	void						fill_parameters	();
+	virtual void				_initialize			()=0;
+	virtual void				_destroy			()=0;
 
-	CSoundRender_Target(void);
-	~CSoundRender_Target(void);
+	virtual void				start				(CSoundRender_Emitter* E)=0;
+	virtual void				render				()=0;
+	virtual void				rewind				()=0;
+	virtual void				stop				()=0;
+	virtual void				update				()=0;
+	virtual void				fill_parameters		()=0;
 };
 #endif

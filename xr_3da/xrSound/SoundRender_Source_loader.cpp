@@ -50,8 +50,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	R_ASSERT3				(ovi->rate==44100,"Invalid source rate:",pName);
 	ov_halfrate				(ovf,psSoundFreq==sf_22K);
 
-	WAVEFORMATEX			wfxdest;
-	SoundRender.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
+	WAVEFORMATEX wfxdest 	= SoundRender->wfm;
 	wfxdest.nChannels		= u16(ovi->channels); 
 	wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
 	wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
@@ -104,7 +103,7 @@ void CSoundRender_Source::load(LPCSTR name,	BOOL b3D)
     }
 #endif
 	LoadWave			(fn,_3D);	R_ASSERT(wave);
-	SoundRender.cache.cat_create	(CAT, dwBytesTotal);
+	SoundRender->cache.cat_create	(CAT, dwBytesTotal);
 
 	if (dwTimeTotal<100)					{
 		Msg	("! WARNING: Invalid wave length (must be at least 100ms), file: %s",fn);
@@ -115,7 +114,7 @@ void CSoundRender_Source::unload()
 {
 	ov_clear						(ovf);
 	FS.r_close						(wave);
-	SoundRender.cache.cat_destroy	(CAT);
+	SoundRender->cache.cat_destroy	(CAT);
     dwTimeTotal						= 0;
     dwBytesTotal					= 0;
     dwBytesPerMS					= 0;

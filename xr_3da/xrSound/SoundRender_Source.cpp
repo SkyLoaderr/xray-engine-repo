@@ -24,8 +24,8 @@ CSoundRender_Source::~CSoundRender_Source	()
 void CSoundRender_Source::decompress		(u32 line)
 {
 	// decompression of one cache-line
-	u32		line_size	= SoundRender.cache.get_linesize();
-	char*	dest		= (char*)	SoundRender.cache.get_dataptr	(CAT,line);
+	u32		line_size	= SoundRender->cache.get_linesize();
+	char*	dest		= (char*)	SoundRender->cache.get_dataptr	(CAT,line);
 	u32		seek_offs	= (psSoundFreq==sf_22K)?(line*line_size):(line*line_size)/2;
 	u32		left_file	= dwBytesTotal - seek_offs;
 	u32		left		= _min	(left_file,line_size);

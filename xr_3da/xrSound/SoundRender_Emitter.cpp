@@ -44,7 +44,7 @@ void CSoundRender_Emitter::PropagadeEvent()
 	dwTimeToPropagade			+= ::Random.randI	(sdef_event_pulse-30,sdef_event_pulse+30);
 	if (0==owner)					return;
 	if (0==owner->g_type)			return;
-	if (0==SoundRender.Handler)		return;
+	if (0==SoundRender->Handler)	return;
 
 	// Calculate range
 	float	limitV					= .01f;
@@ -53,5 +53,5 @@ void CSoundRender_Emitter::PropagadeEvent()
 	if	(clip<0)					return;
 
 	// Inform objects
-	SoundRender.s_events.push_back	(mk_pair(owner,range));
+	SoundRender->s_events.push_back	(mk_pair(owner,range));
 }

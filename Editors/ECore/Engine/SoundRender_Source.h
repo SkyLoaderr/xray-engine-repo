@@ -2,7 +2,6 @@
 #define SoundRender_SourceH
 #pragma once
 
-#include "soundrender.h"
 #include "soundrender_cache.h"
 
 // refs
