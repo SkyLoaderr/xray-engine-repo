@@ -34,7 +34,7 @@ end
 function game_last_playerState:net_Import (P)
 
       game_PlayerState.net_Import(self)
-      P:r_stringZ(self.var_1)
+      self.var_1 = P:r_stringZ()
       P:r_u32(self.var_2)
       P:r_float(self.var_3)
 
