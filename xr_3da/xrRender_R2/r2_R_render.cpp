@@ -17,7 +17,8 @@ void CRender::render_main	()
 	phase									= PHASE_NORMAL;
 
 	// Calculate sector(s) and their objects
-	set_Recorder	(&main_coarse_structure);
+	if (ps_r2_ls_flags.test(R2FLAG_SUN))	set_Recorder	(&main_coarse_structure);
+	else									set_Recorder	(NULL);
 	if (pLastSector)
 	{
 
@@ -196,7 +197,7 @@ void CRender::Render		()
 	}
 
 	// Directional light - fucking sun
-	render_sun								();
+	if (ps_r2_ls_flags.test(R2FLAG_SUN))	render_sun	();
 
 	// Lighting, non dependant on OCCQ
 	Target.phase_accumulator				();
