@@ -14,8 +14,6 @@ void _InitSurface	()
 // Rendering of rect
 void _rect_register	(_rect &R, CDeflector* D, BOOL bRotate)
 {
-	collected.push_back(R);
-	
 	LPDWORD lm	= D->lm.pSurface;
 	DWORD	s_x	= D->lm.dwWidth+2*BORDER;
 	DWORD	s_y = D->lm.dwHeight+2*BORDER;
@@ -87,7 +85,7 @@ bool Place_Perpixel	(_rect& R, CDeflector* D, BOOL bRotate)
 }
 
 // Check for intersection
-BOOL _rect_place(_rect &r, CDeflector* D)
+BOOL _rect_place(vector<_rect>& dest, _rect &r, CDeflector* D)
 {
 	// Normal
 	{
@@ -102,6 +100,7 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 				R.init(_X,_Y,_X+r.b.x,_Y+r.b.y);
 				if (Place_Perpixel(R,D,FALSE)) {
 					_rect_register(R,D,FALSE);
+					dest.push_back(R);
 					return TRUE;
 				}
 			}
@@ -122,6 +121,7 @@ BOOL _rect_place(_rect &r, CDeflector* D)
 				R.init(_X,_Y,_X+r.b.y,_Y+r.b.x);
 				if (Place_Perpixel(R,D,TRUE)) {
 					_rect_register(R,D,TRUE);
+					dest.push_back(R);
 					return TRUE;
 				}
 			}
