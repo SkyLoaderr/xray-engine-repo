@@ -528,3 +528,106 @@ void CLuaEditor::OnMouseMove(UINT nFlags, CPoint point)
 */	
 	CWnd::OnMouseMove(nFlags, point);
 }
+
+void CLuaEditor::SetLexer(int lexer, BOOL bDirect)
+{
+  Sci(SCI_SETLEXER, (WPARAM) lexer, 0/*, bDirect*/);
+}
+void CLuaEditor::SetKeyWords(int keywordSet, const char* keyWords, BOOL bDirect)
+{
+  Sci(SCI_SETKEYWORDS, (WPARAM) keywordSet, (LPARAM) keyWords/*, bDirect*/);
+}
+
+void CLuaEditor::StyleClearAll(BOOL bDirect)
+{
+  Sci(SCI_STYLECLEARALL, 0, 0/*, bDirect*/);
+}
+
+void CLuaEditor::SetAStyle(int style, COLORREF fore, COLORREF back, int size, const char* face) 
+{
+	StyleSetFore(style, fore);
+	StyleSetBack(style, back);
+	if (size >= 1)
+		StyleSetSize(style, size);
+	if (face) 
+		StyleSetFont(style, face);
+}
+
+const char cppKeyWords[] = 
+	"and and_eq asm auto bitand bitor bool break "
+  "case catch char class compl const const_cast continue "
+  "default delete do double dynamic_cast else enum explicit export extern false float for "
+  "friend goto if inline int long mutable namespace new not not_eq "
+  "operator or or_eq private protected public "
+  "register reinterpret_cast return short signed sizeof static static_cast struct switch "
+  "template this throw true try typedef typeid typename union unsigned using "
+  "virtual void volatile wchar_t while xor xor_eq ";
+
+void CLuaEditor::StyleSetFore(int style, COLORREF fore, BOOL bDirect)
+{
+  Sci(SCI_STYLESETFORE, (WPARAM) style, (LPARAM) fore/*, bDirect*/);
+}
+
+void CLuaEditor::StyleSetBack(int style, COLORREF back, BOOL bDirect)
+{
+  Sci(SCI_STYLESETBACK, (WPARAM) style, (LPARAM) back/*, bDirect*/);
+}
+
+void CLuaEditor::StyleSetBold(int style, BOOL bold, BOOL bDirect)
+{
+  Sci(SCI_STYLESETBOLD, (WPARAM) style, (LPARAM) bold/*, bDirect*/);
+}
+
+void CLuaEditor::StyleSetSize(int style, int sizePoints, BOOL bDirect)
+{
+  Sci(SCI_STYLESETSIZE, (WPARAM) style, (LPARAM) sizePoints/*, bDirect*/);
+}
+
+void CLuaEditor::StyleSetFont(int style, const char* fontName, BOOL bDirect)
+{
+  Sci(SCI_STYLESETFONT, (WPARAM) style, (LPARAM) fontName/*, bDirect*/);
+}
+
+void CLuaEditor::setupLexer_ex()
+{
+  const char keywords[] = "module class self __finalize __init and break do else elseif end false for function global if in local nil not or repeat return then true until while";
+  //Setup the Lexer
+//  SetLexer(SCLEX_CPP);
+  SetLexer(SCLEX_LUA);
+  SetKeyWords(0, keywords);
+
+  //Setup styles
+//  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 10, "Verdana");
+  SetAStyle(STYLE_DEFAULT, RGB(0, 0, 0), RGB(0xff, 0xff, 0xff), 10, "Courier");
+  StyleClearAll();
+  SetAStyle(SCE_LUA_DEFAULT, RGB(0, 0, 0));
+  SetAStyle(SCE_LUA_COMMENT, RGB(0, 0x80, 0));
+  SetAStyle(SCE_LUA_COMMENTLINE, RGB(0, 0x80, 0));
+  SetAStyle(SCE_LUA_COMMENTDOC, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTLINEDOC, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTDOCKEYWORD, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTDOCKEYWORDERROR, RGB(0, 0x80, 0));
+  SetAStyle(SCE_LUA_NUMBER, RGB(0, 0x80, 0x80));
+  SetAStyle(SCE_LUA_WORD, RGB(0, 0, 0x80));
+  StyleSetBold(SCE_LUA_WORD, 1);
+  SetAStyle(SCE_LUA_STRING, RGB(0x80, 0, 0x80));
+  SetAStyle(SCE_LUA_IDENTIFIER, RGB(0, 0, 0));
+  SetAStyle(SCE_LUA_PREPROCESSOR, RGB(0x80, 0, 0));
+  SetAStyle(SCE_LUA_OPERATOR, RGB(0x80, 0x80, 0));
+
+/*  SetAStyle(SCE_C_DEFAULT, RGB(0, 0, 0));
+  SetAStyle(SCE_C_COMMENT, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTLINE, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTDOC, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTLINEDOC, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTDOCKEYWORD, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_COMMENTDOCKEYWORDERROR, RGB(0, 0x80, 0));
+  SetAStyle(SCE_C_NUMBER, RGB(0, 0x80, 0x80));
+  SetAStyle(SCE_C_WORD, RGB(0, 0, 0x80));
+  StyleSetBold(SCE_C_WORD, 1);
+  SetAStyle(SCE_C_STRING, RGB(0x80, 0, 0x80));
+  SetAStyle(SCE_C_IDENTIFIER, RGB(0, 0, 0));
+  SetAStyle(SCE_C_PREPROCESSOR, RGB(0x80, 0, 0));
+  SetAStyle(SCE_C_OPERATOR, RGB(0x80, 0x80, 0));
+*/
+}

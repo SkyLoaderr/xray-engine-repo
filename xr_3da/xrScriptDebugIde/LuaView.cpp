@@ -140,7 +140,8 @@ int CLuaView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	
 	m_editor.SetEditorMargins();
-	m_editor.SetLuaLexer();
+//	m_editor.SetLuaLexer();
+	m_editor.setupLexer_ex();
 
 /*	CRect r;
 	if (!m_Edit.Create(WS_CHILD|WS_VISIBLE|WS_TABSTOP, r, this, 0))

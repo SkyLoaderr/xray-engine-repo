@@ -82,7 +82,17 @@ public:
 	void	SetSel(long start, long end, BOOL bDirect = TRUE);
 	int		PointXFromPosition(long pos, BOOL bDirect = TRUE);
 	int		PointYFromPosition(long pos, BOOL bDirect = TRUE);
-
+//lexer
+	void	SetLexer(int lexer, BOOL bDirect = TRUE);
+	void	SetKeyWords(int keywordSet, const char* keyWords, BOOL bDirect = TRUE);
+	void	StyleClearAll(BOOL bDirect = TRUE);
+	void	SetAStyle(int style, COLORREF fore, COLORREF back=RGB(0xff, 0xff, 0xff), int size=-1, const char *face=0);
+	void	StyleSetFore(int style, COLORREF fore, BOOL bDirect = TRUE);
+	void	StyleSetBack(int style, COLORREF back, BOOL bDirect = TRUE);
+	void	StyleSetBold(int style, BOOL bold, BOOL bDirect = TRUE);
+	void	StyleSetSize(int style, int sizePoints, BOOL bDirect = TRUE);
+	void	StyleSetFont(int style, const char* fontName, BOOL bDirect = TRUE);
+	void	setupLexer_ex();
 // thread safe functions
 	//void tsAddText(const char *szMsg) {	AddText(szMsg); };
 	//void tsSetReadOnly(BOOL bReadOnly) { SetReadOnly(bReadOnly); };
