@@ -32,7 +32,7 @@ template<class SHARED_TYPE, class KEY_TYPE> class CSharedObj : public CSingleton
 
 public:
 				CSharedObj	() {};
-				~CSharedObj	() {};
+	virtual		~CSharedObj	() {};
 
 	// Access to data
 	SHARED_TYPE	*get_shared	(KEY_TYPE id);
@@ -70,7 +70,7 @@ template<class SHARED_TYPE, class KEY_TYPE> class CSharedClass {
 	CSharedObj<SHARED_TYPE, KEY_TYPE>	*pSharedObj;
 public:
 					CSharedClass	() {pSharedObj	= CSharedObj<SHARED_TYPE,KEY_TYPE>::Instance();}
-					~CSharedClass	() {pSharedObj->FreeInst();}
+	virtual			~CSharedClass	() {pSharedObj->FreeInst();}
 
 	void			load_shared		(KEY_TYPE key, LPCSTR section) {
 		_sd = pSharedObj->get_shared(key);
