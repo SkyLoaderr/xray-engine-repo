@@ -38,6 +38,7 @@
 #define LZO_VERSION             0x1080
 #define LZO_VERSION_STRING      "1.08"
 #define LZO_VERSION_DATE        "Jul 12 2002"
+#define LZO_UNALIGNED_OK_4
 
 /* internal Autoconf configuration file - only used when building LZO */
 #if defined(LZO_HAVE_CONFIG_H)
