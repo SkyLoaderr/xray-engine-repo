@@ -431,17 +431,14 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			m_pCurrentDragDropItem->Highlight(true); break;
 	}
 
-	////по нажатию правой кнопки
-	//else if(msg == DRAG_DROP_ITEM_RBUTTON_CLICK)
-	//{
-	//	m_pCurrentDragDropItem = (CUIDragDropItemMP*)pWnd;
-
-	//	ActivatePropertiesBox();
-	//}
+	//по нажатию правой кнопки
+	if(msg == DRAG_DROP_ITEM_RBUTTON_CLICK)
+	{
+		SetCurrentDDItem(pWnd);
+		ActivatePropertiesBox();
+	}
 	//сообщение от меню вызываемого правой кнопкой
-	//else 
-	/*if(pWnd == &UIPropertiesBox &&
-		msg == PROPERTY_CLICKED)
+	else if(pWnd == &UIPropertiesBox &&	msg == PROPERTY_CLICKED)
 	{
 		if(UIPropertiesBox.GetClickedItem())
 		{
@@ -474,7 +471,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				break;
 			}
 		}
-	}*/
+	}
 
 
 	// Кнопки ОК и Отмена
