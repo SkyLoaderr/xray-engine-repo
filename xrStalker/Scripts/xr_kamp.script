@@ -296,7 +296,7 @@ function action_go_patrol:initialize()
 			begin = nil,
 			max_idle = 5,
 			sum_idle = 5 }
-	self.relax_idle = {time = 5,
+	self.relax_idle = {time = 5000,
 			begin = nil }
 
 	-- Описание предназначения флагов:
@@ -356,7 +356,7 @@ function action_go_patrol:execute()
 		if self.object:level_vertex_id() == self.ptr:level_vertex_id(value) then
 			-- стоим и смотрим, отыгрывая разные анимации
 			if self.relax_time.begin == nil	then
-				if self.relax_idle.begin == nil or (device():time_global() - self.relax_idle.begin) >= 3000 then
+				if self.relax_idle.begin == nil or (device():time_global() - self.relax_idle.begin) >= self.relax_idle.time then
 					-- инициализируем остановку
 					self.relax_time.begin = device():time_global()
 					self.relax_time.idle = math.random(self.relax_time.max_idle) + self.relax_time.sum_idle
@@ -366,12 +366,12 @@ function action_go_patrol:execute()
 				self.object:set_movement_type(move.stand)				
 
 				-- Выход из остановки
-				if device():time_global() - self.relax_time.begin >= self.relax_time.idle then
+				if device():time_global() - self.relax_time.begin >= self.relax_time.idle*1000 then
 					self.object:set_movement_type(move.walk)				
 					self.relax_time.begin = nil
 					self.relax_idle.begin = device():time_global()
 				end
-			end
+			end		
 		end
 	end
 	
