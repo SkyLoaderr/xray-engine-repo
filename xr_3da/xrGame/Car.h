@@ -22,19 +22,24 @@ virtual void PhTune(dReal step){};
 virtual void InitContact(dContact* c){};
 virtual void StepFrameUpdate(dReal step){};
 public:
-
+bool rsp,lsp,fwp,bkp,brp;
+Fmatrix m_root_transform;
 enum eStateDrive
 {
 drive,
-neutral,
-breaks
+neutral
 };
+
+eStateDrive e_state_drive;
+
 enum eStateSteer
 {
 right,
 idle,
 left
 };
+
+eStateSteer e_state_steer;
 
 bool b_wheels_limited;
 
@@ -46,7 +51,6 @@ struct SWheel
 		dJointID joint;
 		CCar*	car;
 		void Init();//asumptions: bone_map is 1. ini parsed 2. filled in 3. bone_id is set 
-		void Neutral();
 		SWheel(CCar* acar)
 		{
 			car=acar;
@@ -57,13 +61,16 @@ struct SWheel
 struct SWheelDrive  
 {
 	SWheel* pwheel;
+	float	pos_fvd;
 	float gear_factor;
 	void Init();
 	void Drive();
+	void Neutral();
 };
 struct SWheelSteer 
 {
 	SWheel* pwheel;
+	float pos_right;
 	float lo_limit;
 	float hi_limit;
 	float steering_velocity;
@@ -73,7 +80,9 @@ struct SWheelSteer
 		return dJointGetHinge2Angle1 (pwheel->joint);
 	}
 	void Init();
-	void Steer(int dir);
+	void SteerRight();
+	void SteerLeft();
+	void SteerIdle();
 	void Limit();
 };
 struct SWheelBreak 
@@ -82,6 +91,7 @@ struct SWheelBreak
 	float break_torque;
 	void Init();
 	void Break();
+	void Neutral();
 };
 
 private:
@@ -103,6 +113,7 @@ xr_vector <SWheelDrive> m_driving_wheels;
 xr_vector <SWheelSteer> m_steering_wheels;
 xr_vector <SWheelBreak> m_breaking_wheels;
 xr_vector <float>		m_gear_ratious;
+float					m_current_gear_ratio;
 float					m_power;
 float					m_axle_friction;
 float					m_max_rpm;
@@ -116,14 +127,31 @@ int	  m_exhaust_ids[2];
 CPGObject* m_pExhaustPG1;
 CPGObject* m_pExhaustPG2;
 ////////////////////////////////////////////////////
-void Steer(const char& steering);
 float GetSteerAngle();
 void LimitWeels();
 void Drive();
+
 void NeutralDrive();
-void Steer(int steering);
+void SteerRight();
+void SteerLeft();
+void SteerIdle();
+void Transmision(size_t num);
+
+void PressRight();
+void PressLeft();
+void PressForward();
+void PressBack();
+void PressBreaks();
+
+void ReleaseRight();
+void ReleaseLeft();
+void ReleaseForward();
+void ReleaseBack();
+void ReleaseBreaks();
+
 void Revert();
 void Break();
+void Unbreak();
 void ParseDefinitions				();
 void CreateSkeleton					();//creates m_pPhysicsShell
 void InitWheels						();

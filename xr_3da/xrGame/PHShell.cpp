@@ -597,7 +597,6 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 	else
 	{	
 		B.set_callback(0,root_e);
-		//B.Callback_Param=root_e;
 		E=root_e;
 	}
 
