@@ -322,8 +322,10 @@ void CALifeSurgeManager::update_tasks()
 
 void CALifeSurgeManager::assign_stalker_customers()
 {
-	SCHEDULE_P_MAP::const_iterator	I = scheduled().objects().begin();
-	SCHEDULE_P_MAP::const_iterator	E = scheduled().objects().end();
+//	SCHEDULE_P_MAP::const_iterator	I = scheduled().objects().begin();
+//	SCHEDULE_P_MAP::const_iterator	E = scheduled().objects().end();
+	D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
+	D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 	for ( ; I != E; ++I) {
 		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = smart_cast<CSE_ALifeHumanAbstract*>((*I).second);
 		if (l_tpALifeHumanAbstract && xr_strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {
