@@ -95,7 +95,13 @@ function action_sniper_idle:__init (name, storage) super (nil, name)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_sniper_idle:initialize ()
-    printf("!!!Initialize")
+    local path		= patrol(self.a.rest_path)
+    self.last_point	= path:level_vertex_id  (path:count() - 1)      --ѕоследн€€ точка пути
+    self.point_path = patrol(self.a.point_path)
+    self.rest_point	= point_with_bit_id(self.point_path, 0)  --“очка, в которой будем сидеть
+	printf("rest point __________%d", self.rest_point)
+    self.prev_point = -1
+
     action_base.initialize (self)
 
     self.animation      = xr_state.anims(self.object)
@@ -105,13 +111,7 @@ function action_sniper_idle:initialize ()
         self:init_state_sit_down()
     else
         self:init_state_walk()
-    end
-    local path		= patrol(self.a.rest_path)
-    self.last_point	= path:level_vertex_id  (path:count() - 1)      --ѕоследн€€ точка пути
-    self.rest_point	= point_with_bit_id(self.a.point_path, 0)  --“очка, в которой будем сидеть
-	printf("rest point __________%d", self.rest_point)
-    self.prev_point = -1
-    
+    end 
     
      self.object:set_callback (self, "move_callback", game_object.movement)
      printf("1")
@@ -128,7 +128,7 @@ function action_sniper_idle:init_state_sit_down  ()
 		self.object:set_detail_path_type	(move.line)
         self.object:set_sight               (look.danger, nil, 0)
         self.object:set_item                (object.activate, self.object:best_weapon())
-        self.object:set_desired_direction	(point_with_bit(self.a.point_path, 2):sub(level.vertex_position(self.rest_point)) )
+        self.object:set_desired_direction	(point_with_bit(self.point_path, 2):sub(level.vertex_position(self.rest_point)) )
     end
 
     self.object:set_mental_state            (anim.free)
@@ -237,7 +237,7 @@ function action_sniper_idle:move_callback(obj, action_type, index)
 
     self.object:set_movement_type	(move.stand)
 	self.object:set_body_state		(move.standing)
-    self.object:set_sight			(look.fire_point, point_with_bit(self.a.point_path, 2), 0)
+    self.object:set_sight			(look.fire_point, point_with_bit(self.point_path, 2), 0)
     self.state       = LOOK
     self.time      = device():time_global() + time_to_look
     self.time_sight = device():time_global() + 1000
@@ -385,6 +385,7 @@ end
 function action_camper:initialize ()
     self.camper_point   = nil
     self.end_of_path    = patrol(self.a.camper_path):level_vertex_id(patrol(self.a.camper_path):count() - 1)
+    self.point_path     = patrol(self.a.point_path)
     self.state        = 0
     self.time          = 0
     self.look_point      = nil          --точка в которую будем смотреть, когда сидим и кемперим
@@ -392,10 +393,10 @@ function action_camper:initialize ()
 
     action_base.initialize   (self)
 
-  self.object:set_item      (object.activate, self.object:best_weapon())
+	self.object:set_item      (object.activate, self.object:best_weapon())
     self.object:clear_animations  ()
 
-    self.camper_point   = near_point_with_bit(self.object:position(), self.a.point_path, 1)
+    self.camper_point   = near_point_with_bit(self.object:position(), patrol(self.a.point_path), 1)
     self.state        = hide
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -403,9 +404,9 @@ function action_camper:execute ()
     action_base.execute (self)
 
     if(self.state == hide) then
-        if( self.object:level_vertex_id() ~= self.a.point_path:level_vertex_id(self.camper_point) ) then
+        if( self.object:level_vertex_id() ~= self.point_path:level_vertex_id(self.camper_point) ) then
         --≈сли находимс€ не в точке, в которой будем пр€татс€, тогда бежим туда
-            self.object:set_dest_level_vertex_id(self.a.point_path:level_vertex_id(self.camper_point))
+            self.object:set_dest_level_vertex_id(self.point_path:level_vertex_id(self.camper_point))
             self.object:set_movement_type   (move.run)
           self.object:set_body_state      (move.standing)
           self.object:set_sight          (look.path_dir, nil, 0)
@@ -457,7 +458,7 @@ function action_camper:move_callback(obj, action_type, index)
   if(self.prev_point == index) then return end    --“ут только что останавливались
 
     self.object:set_movement_type   (move.stand)
-    self.object:set_sight          (look.fire_point, point_with_bit(self.a.point_path, 2), 0)
+    self.object:set_sight          (look.fire_point, point_with_bit(self.point_path, 2), 0)
 
     self.time      = device():time_global() + time_camper_look
     self.state      = LOOK
@@ -468,8 +469,8 @@ function action_camper:select_look_point()
     --ѕросматривает какой бит после второго установлен в точке пути self.camper_point и еще в пути точку с этим битом
     for i = 3, 20 do
 
-        if(self.a.point_path:flag(self.camper_point, i)) then
-            self.look_point  = point_with_bit(self.a.point_path, i, self.camper_point)
+        if(self.point_path:flag(self.camper_point, i)) then
+            self.look_point  = point_with_bit(self.point_path, i, self.camper_point)
             return
         end
     end
@@ -490,8 +491,12 @@ end
 --sniper binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(obj, char_ini)
+    if(char_ini == nil) then printf("char ini is nil") else printf("char ini not nil") end
+    if(char_ini:section_exist("sniper")) then printf("section is") else printf("section not") end
+    
     if char_ini == nil or char_ini:section_exist("sniper") == true then
     
+    printf("bind sniper")
     local operators     = {}
     local properties    = {}
 
@@ -578,7 +583,17 @@ end
 function set_sniper(object, enabled, rest_path, camper_path, point_path)
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].sniper
---[[
+
+	if(enabled == nil) then
+		if(char_ini:line_exist ("sniper", "enabled") == true) then
+			st.enabled = char_ini:r_bool("sniper", "enabled")
+		else
+			st.enabled = false
+		end
+	else
+		st.enabled = enabled
+	end
+	
     if rest_path == nil then
 		if (char_ini:line_exist ("sniper", "rest_path") == true) then
 			st.rest_path = char_ini:r_string("sniper", "rest_path")
@@ -590,7 +605,8 @@ function set_sniper(object, enabled, rest_path, camper_path, point_path)
     end
     if point_path == nil then
 		if (char_ini:line_exist ("sniper", "point_path") == true) then
-			st.point_path = patrol( char_ini:r_string("sniper", "point_path") )
+			st.point_path = char_ini:r_string("sniper", "point_path")
+			printf("Point path = %s", st.point_path)
 		else		
 			st.enabled = false
 		end
@@ -606,7 +622,6 @@ function set_sniper(object, enabled, rest_path, camper_path, point_path)
 	else
 		st.camper_path = camper_path
     end
-	]]
 	xr_motivator.checkStorage(object)
 end
 
