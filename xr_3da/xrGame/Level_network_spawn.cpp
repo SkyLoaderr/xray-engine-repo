@@ -7,16 +7,16 @@ void CLevel::g_cl_Spawn		(LPCSTR name, int rp, int team, int squad, int group)
 	P.w_begin	(M_SPAWN);
 	P.w_string	(name);
 	P.w_string	("");
-	P.w_u8		((rp>=0)?u8(rp):0xff);
+	P.w_u8		((rp>=0)?u8(rp):u8(0xff));
 	P.w_vec3	(dummyPos);
 	P.w_vec3	(dummyAngle);
 	P.w_u16		(0xffff);	// srv-id	| by server
 	P.w_u16		(0xffff);
 	P.w_u16		(M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL);
 	P.w_u16		(3);		// data size
-	P.w_u8		(team);
-	P.w_u8		(squad);
-	P.w_u8		(group);
+	P.w_u8		(u8(team));
+	P.w_u8		(u8(squad));
+	P.w_u8		(u8(group));
 	Send		(P,net_flags(TRUE));
 }
 

@@ -89,7 +89,7 @@ void CCustomMonster::Load		(LPCSTR section)
 	m_fCurSpeed				= m_fMaxSpeed;
 
 	// Motions
-	CKinematics* V			= PKinematics(pVisual);
+	CKinematics* skeleton	= PKinematics(pVisual);
 	m_current				= 0;
 
 	// weapons
@@ -102,8 +102,8 @@ void CCustomMonster::Load		(LPCSTR section)
 
 	// take index spine bone
 	//"torso1"
-	int torso_bone			= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(section,"bone_torso"));
-	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
+	int torso_bone			= skeleton->LL_BoneID(pSettings->ReadSTRING(section,"bone_torso"));
+	skeleton->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
 
 	//
 	m_iHealth = pSettings->ReadINT(section,"health");
@@ -188,8 +188,6 @@ void CCustomMonster::SelectAnimation(const Fvector& _view, const Fvector& _move,
 	R_ASSERT(fsimilar(_move.magnitude(),1));
 
 	CMotionDef*	S=0;
-
-	bool bCrouched = false; 
 
 	if (iHealth<=0) {
 		// Die
@@ -552,7 +550,7 @@ void CCustomMonster::OnRender()
 
 	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
 		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+		for (unsigned i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
 			Fvector tP0 = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 			tP0.y += .35f;
 			if (Group.m_tpaSuspiciousNodes[i].dwSearched == 0)		

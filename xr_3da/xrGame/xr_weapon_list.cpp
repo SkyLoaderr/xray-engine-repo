@@ -92,7 +92,6 @@ int	CWeaponList::weapon_add			(CWeapon* W)		// add, return index
 }
 int	CWeaponList::weapon_remove		(CWeapon* W)		// remove, return last
 {
-	int S							= m_iActiveWeapon;
 	m_iActiveWeapon					= -1;
 	m_iSelectedWeapon				= -1;
 	WeaponVec::iterator	it			= find(m_Weapons.begin(),m_Weapons.end(),W);
@@ -192,7 +191,7 @@ void CWeaponList::LeaveWeapon(CLASS_ID cls)
 
 CWeapon*	CWeaponList::getWeaponByWeapon(CWeapon* W)
 {
-	for (int it=0; it<m_Weapons.size(); it++)
+	for (u32 it=0; it<m_Weapons.size(); it++)
 	{
 		CWeapon* T							= m_Weapons[it];
 		if (typeid(*W)==typeid(*T))	return	T;

@@ -7,7 +7,6 @@ void CLevel::ClientReceive()
 	{
 		u16			m_type;
 		u16			ID;
-		DWORD		cl_time	= P->r_begin(m_type);
 		switch (m_type)
 		{
 		case M_SPAWN:

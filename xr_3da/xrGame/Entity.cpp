@@ -63,7 +63,7 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 		P.w_begin	(M_HIT				);
 		P.w_u16		(u16(net_ID)		);
 		P.w_u16		(u16(who->net_ID)	);
-		P.w_u8		(perc				);
+		P.w_u8		(u8(perc)			);
 		P.w_dir		(dir				);
 		Level().Send(P,net_flags(TRUE)	);
 	} else {
@@ -84,7 +84,7 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 	vLocalDir.invert		();
 
 	// hit impulse
-	HitImpulse				(dir,vLocalDir,perc);
+	HitImpulse				(dir,vLocalDir,float(perc));
 	
 	// Calc HitAmount
 	int iHitAmount, iOldHealth=iHealth;

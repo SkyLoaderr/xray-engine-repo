@@ -424,8 +424,8 @@ void CActor::ZoneEffect	(float z_amount)
 
 	// Calc shift func
 	float f_x			= Device.fTimeGlobal;
-	float f_sin4x		= _sin(4.f*f_x);
-	float f_sin4x_s		= _sin(PI/3.f + 4.f*f_x);
+	float f_sin4x		= sinf(4.f*f_x);
+	float f_sin4x_s		= sinf(PI/3.f + 4.f*f_x);
 	float f_sin4x_sa	= _abs(f_sin4x_s);
 	float F				= (f_sin4x+f_sin4x_sa)+(1+f_sin4x*f_sin4x_sa)+ 0.3f*sinf(tanf(PI/(2.1f)*sinf(f_x)));
 
@@ -459,7 +459,7 @@ void CActor::Update	(DWORD DT)
 
 	// zone test
 	float z_amount		= 0;
-	for (int za=0; za<zone_areas.size(); za++)
+	for (u32 za=0; za<zone_areas.size(); za++)
 	{
 		Fvector	P; 
 		P.set			(zone_areas[za].x,zone_areas[za].y,zone_areas[za].z);

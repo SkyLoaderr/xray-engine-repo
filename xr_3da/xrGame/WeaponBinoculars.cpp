@@ -228,8 +228,8 @@ void CWeaponBinoculars::OnHide	()
 
 float CWeaponBinoculars::GetZoomFactor()
 {
-	if (st_target=eZooming)	return	fMaxZoomFactor;
-	else					return	inherited::GetZoomFactor();
+	if (eZooming==st_target)	return	fMaxZoomFactor;
+	else						return	inherited::GetZoomFactor();
 }
 
 void CWeaponBinoculars::OnZoomIn()
