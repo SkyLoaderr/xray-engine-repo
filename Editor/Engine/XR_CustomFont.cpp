@@ -22,7 +22,8 @@ CFontBase::~CFontBase()
 {
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
-	OnDeviceDestroy	();
+	Device.Shader.Delete		(pShader);
+	OnDeviceDestroy				();
 }
 
 void CFontBase::OnDeviceCreate()
@@ -32,7 +33,7 @@ void CFontBase::OnDeviceCreate()
 }
 void CFontBase::OnDeviceDestroy()
 {
-	REQ_DESTROY();
+	REQ_DESTROY		();
 	Device.Shader.Delete	(pShader);
 }
 
