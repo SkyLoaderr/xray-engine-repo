@@ -20,21 +20,21 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 		xrSE_Weapon*	W			=	dynamic_cast<xrSE_Weapon*> (e_what);
 		if (W) 
 		{
-			// Weapon
-			vector<u16>&	C			=	A->children;
-			u8 slot						=	W->get_slot	();
-			for (u32 it=0; it<C.size(); it++)
-			{
-				xrServerEntity*		Et	= S->ID_to_entity				(C[it]);
-				if (0==Et)				continue;
-				xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
-				if (0==T)				continue;
-				if (slot == T->get_slot())	
-				{
-					// We've found same slot occupied - disallow ownership
-					return FALSE;
-				}
-			}
+			//// Weapon
+			//vector<u16>&	C			=	A->children;
+			//u8 slot						=	W->get_slot	();
+			//for (u32 it=0; it<C.size(); it++)
+			//{
+			//	xrServerEntity*		Et	= S->ID_to_entity				(C[it]);
+			//	if (0==Et)				continue;
+			//	xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
+			//	if (0==T)				continue;
+			//	if (slot == T->get_slot())	
+			//	{
+			//		// We've found same slot occupied - disallow ownership
+			//		return FALSE;
+			//	}
+			//}
 
 			// Weapon slot empty - ownership OK
 			return TRUE;
@@ -103,16 +103,16 @@ void	game_sv_Single::Update			()
 
 void	game_sv_Single::OnPlayerKillPlayer	(u32 id_killer, u32 id_killed)
 {
-	xrServer*	S					=	Level().Server;
-	// Drop everything
-	vector<u16>*	C				=	get_children(id_killed);
-	if (0==C)						return;
-	while(C->size())
-	{
-		u16		eid						= (*C)[0];
+	//xrServer*	S					=	Level().Server;
+	//// Drop everything
+	//vector<u16>*	C				=	get_children(id_killed);
+	//if (0==C)						return;
+	//while(C->size())
+	//{
+	//	u16		eid						= (*C)[0];
 
-		xrServerEntity*		from		= S->ID_to_entity(get_id_2_eid(id_killed));
-		xrServerEntity*		what		= S->ID_to_entity(eid);
-		S->Perform_reject				(what,from);
-	}
+	//	xrServerEntity*		from		= S->ID_to_entity(get_id_2_eid(id_killed));
+	//	xrServerEntity*		what		= S->ID_to_entity(eid);
+	//	S->Perform_reject				(what,from);
+	//}
 }
