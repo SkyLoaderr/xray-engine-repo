@@ -284,48 +284,49 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
 	u32 dwBestWeapon = 2;
-	for (int i=0; i<(int)Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponCount(); i++) {
-		CWeapon *tpCustomWeapon = Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponByIndex(i);
-		if (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10) {
-			u32 dwCurrentBestWeapon = 0;
-			switch (tpCustomWeapon->SUB_CLS_ID) {
-				case CLSID_OBJECT_W_M134	: {
-					dwCurrentBestWeapon = 9;
-					break;
+	if (Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList())
+		for (int i=0; i<(int)Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponCount(); i++) {
+			CWeapon *tpCustomWeapon = Level().m_tpAI_DDD->m_tpCurrentMember->GetItemList()->getWeaponByIndex(i);
+			if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
+				u32 dwCurrentBestWeapon = 0;
+				switch (tpCustomWeapon->SUB_CLS_ID) {
+					case CLSID_OBJECT_W_M134	: {
+						dwCurrentBestWeapon = 9;
+						break;
+					}
+					case CLSID_OBJECT_W_FN2000	: {
+						dwCurrentBestWeapon = 8;
+						break;
+					}
+					case CLSID_OBJECT_W_AK74	: {
+						dwCurrentBestWeapon = 6;
+						break;
+					}
+					case CLSID_OBJECT_W_LR300	: {
+						dwCurrentBestWeapon = 6;
+						break;
+					}
+					case CLSID_OBJECT_W_HPSA	: {
+						dwCurrentBestWeapon = 5;
+						break;
+					}
+					case CLSID_OBJECT_W_PM		: {
+						dwCurrentBestWeapon = 5;
+						break;
+					}
+					case CLSID_OBJECT_W_FORT	: {
+						dwCurrentBestWeapon = 5;
+						break;
+					}
+					default						: {
+						dwCurrentBestWeapon = 0;
+						break;
+					}
 				}
-				case CLSID_OBJECT_W_FN2000	: {
-					dwCurrentBestWeapon = 8;
-					break;
-				}
-				case CLSID_OBJECT_W_AK74	: {
-					dwCurrentBestWeapon = 6;
-					break;
-				}
-				case CLSID_OBJECT_W_LR300	: {
-					dwCurrentBestWeapon = 6;
-					break;
-				}
-				case CLSID_OBJECT_W_HPSA	: {
-					dwCurrentBestWeapon = 5;
-					break;
-				}
-				case CLSID_OBJECT_W_PM		: {
-					dwCurrentBestWeapon = 5;
-					break;
-				}
-				case CLSID_OBJECT_W_FORT	: {
-					dwCurrentBestWeapon = 5;
-					break;
-				}
-				default						: {
-					dwCurrentBestWeapon = 0;
-					break;
-				}
+				if (dwCurrentBestWeapon > dwBestWeapon)
+					dwBestWeapon = dwCurrentBestWeapon;
 			}
-			if (dwCurrentBestWeapon > dwBestWeapon)
-				dwBestWeapon = dwCurrentBestWeapon;
 		}
-	}
 	return(float(dwBestWeapon));
 }
 
