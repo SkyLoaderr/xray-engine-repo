@@ -121,7 +121,7 @@ void	CBlender_Recorder::Stage_Texture	(LPCSTR name, sh_list& lst)
 	int id		= ParseName(name);
 	LPCSTR N	=  name;
 	if (id>=0)	{
-		if (id>=lst.size())	Device.Fatal	("Not enought textures for shader. Base texture: '%s'.",lst[0]);
+		if (id>=int(lst.size()))	Device.Fatal("Not enought textures for shader. Base texture: '%s'.",lst[0]);
 		N = lst [id];
 	}
 	passTextures.push_back	(Device.Shader._CreateTexture(N));
