@@ -806,6 +806,7 @@ public:
 			parameters
 		);
 		m_params		= &parameters;
+		goal_node_index	= _index_type(-1);
 	}
 
 	IC	bool		is_goal_reached	(const _index_type node_index)
@@ -826,6 +827,7 @@ public:
 			m_params->m_vertex_id	= node_index;
 			return					(true);
 		}
+		inherited::is_goal_reached	(node_index);
 	}
 };
 
