@@ -9,6 +9,10 @@
 #include "UIGroup.h"
 #include "UIGameCustom.h"
 
+#include "ui\UIFrameWindow.h"
+#include "ui\UIButton.h"
+
+
 #define UI_BASE_WIDTH	800
 #define UI_BASE_HEIGHT	600
 
@@ -48,6 +52,10 @@ class CUI{
 	CUIWeapon			UIWeapon;
 	CUIHealth			UIHealth;
 	CUISquad			UISquad;
+
+	CUIFrameWindow		UIMainWindow;
+	CUIButton			UIButton1;
+	CUIButton			UIButton2;
 
 	CUIGameCustom*		pUIGame;
 

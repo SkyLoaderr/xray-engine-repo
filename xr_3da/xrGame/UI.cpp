@@ -21,6 +21,22 @@ CUI::CUI(CHUDManager* p)
 	UIHealth.Init	();
 	UISquad.Init	();
 
+	/*UIMainWindow.Init("ui\\ui_hud_frame", 100,100, 500,500);
+	
+	UIMainWindow.AttachChild(&UIButton1);
+	UIMainWindow.AttachChild(&UIButton2);
+
+	UIButton1.Init(10,10,128,128);
+	UIButton2.Init(10,210,128,128);*/
+
+			
+	//show the cursor
+	UICursor.SetPos(Device.dwWidth/2, Device.dwHeight/2);
+	//UICursor.Show();
+	UICursor.Hide();
+
+	
+
 	m_Parent		= p;
 	pUIGame			= 0;
 
@@ -111,6 +127,13 @@ bool CUI::Render()
 		UIZoneMap.Render();
 		UIWeapon.Render();
 		UIHealth.Render();
+
+	//
+	//	UIMainWindow.Draw();
+
+		//render cursor only when it visible
+		if(UICursor.IsVisible())
+					UICursor.Render();
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->Render	();
@@ -119,24 +142,48 @@ bool CUI::Render()
 //--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) return true;
+	if(dik==MOUSE_1)
+	{
+		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
+			CUIWindow::LBUTTON_DOWN);
+		return true;
+	}
+
+	if (pUIGame&&pUIGame->OnKeyboardPress(dik)) 
+	{
+		return true;
+	}
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::OnKeyboardRelease(int dik)
 {
-	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) return true;
+	if(dik==MOUSE_1)
+	{
+		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
+			CUIWindow::LBUTTON_UP);
+		return true;
+	}
+
+
+
+	if (pUIGame&&pUIGame->OnKeyboardRelease(dik)) 
+	{
+		return true;
+	}
 	return false;
 }
 //--------------------------------------------------------------------
 
 bool CUI::OnMouseMove(int dx,int dy)
 {
-	if (UICursor.bVisible)
+	if (UICursor.IsVisible())
 	{ 
-		UICursor.vPos.x+=(float)dx;
-		UICursor.vPos.y+=(float)dy;
+		UICursor.MoveBy(dx, dy);
+
+		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
+							CUIWindow::MOUSE_MOVE);
 		return true;
 	}
 	return false;
