@@ -37,13 +37,12 @@ void 	CDetailManager::cache_Task		(int gx, int gz, Slot* D)
 	D->sx					= sx;
 	D->sz					= sz;
 
-	D->vis.box.min.set		(sx*dm_slot_size,				DS.y_min,	sz*dm_slot_size);
-	D->vis.box.max.set		(D->vis.box.min.x+dm_slot_size,	DS.y_max,	D->vis.box.min.z+dm_slot_size);
+	D->vis.box.min.set		(sx*dm_slot_size,				DS.r_ybase(),					sz*dm_slot_size);
+	D->vis.box.max.set		(D->vis.box.min.x+dm_slot_size,	DS.r_ybase()+DS.r_yheight(),	D->vis.box.min.z+dm_slot_size);
 	D->vis.box.grow			(EPS_L);
 
-	for (int i=0; i<dm_obj_in_slot; i++)
-	{
-		D->G[i].id			= DS.items[i].id;
+	for (u32 i=0; i<dm_obj_in_slot; i++)	{
+		D->G[i].id			= DS.r_id	(i);
 		for (u32 clr=0; clr<D->G[i].items.size(); clr++)
 			poolSI.destroy(D->G[i].items[clr]);
 		D->G[i].items.clear	();
@@ -178,18 +177,10 @@ DetailSlot&	CDetailManager::QueryDB(int sx, int sz)
 		return dtSlots				[linear_id];
 	} else {
 		// Empty slot
-		DS_empty.y_min				= 0;
-		DS_empty.y_max				= EPS_L;
-
-		DS_empty.items[0].id		= 0xff;
-		DS_empty.items[1].id		= 0xff;
-		DS_empty.items[2].id		= 0xff;
-		DS_empty.items[3].id		= 0xff;
-
-		DS_empty.color.a0			= 8;
-		DS_empty.color.a1			= 8;
-		DS_empty.color.a2			= 8;
-		DS_empty.color.a3			= 8;
+		DS_empty.w_id				(0,DetailSlot::ID_Empty);
+		DS_empty.w_id				(1,DetailSlot::ID_Empty);
+		DS_empty.w_id				(2,DetailSlot::ID_Empty);
+		DS_empty.w_id				(3,DetailSlot::ID_Empty);
 		return DS_empty;
 	}
 }

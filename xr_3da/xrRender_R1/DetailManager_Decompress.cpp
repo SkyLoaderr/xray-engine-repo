@@ -67,10 +67,10 @@ void		CDetailManager::cache_Decompress(Slot* S)
 	float		alpha255	[dm_obj_in_slot][4];
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
-		alpha255[i][0]	= 255.f*float(DS.items[i].palette.a0)/15.f;
-		alpha255[i][1]	= 255.f*float(DS.items[i].palette.a1)/15.f;
-		alpha255[i][2]	= 255.f*float(DS.items[i].palette.a2)/15.f;
-		alpha255[i][3]	= 255.f*float(DS.items[i].palette.a3)/15.f;
+		alpha255[i][0]	= 255.f*float(DS.palette[i].a0)/15.f;
+		alpha255[i][1]	= 255.f*float(DS.palette[i].a1)/15.f;
+		alpha255[i][2]	= 255.f*float(DS.palette[i].a2)/15.f;
+		alpha255[i][3]	= 255.f*float(DS.palette[i].a3)/15.f;
 	}
 
 	// Prepare to selection
@@ -100,10 +100,10 @@ void		CDetailManager::cache_Decompress(Slot* S)
 
 			// Iterpolate and dither palette
 			selected.clear();
-			if ((DS.items[0].id!=0xff)&& InterpolateAndDither(alpha255[0],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(0);
-			if ((DS.items[1].id!=0xff)&& InterpolateAndDither(alpha255[1],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(1);
-			if ((DS.items[2].id!=0xff)&& InterpolateAndDither(alpha255[2],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(2);
-			if ((DS.items[3].id!=0xff)&& InterpolateAndDither(alpha255[3],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(3);
+			if ((DS.id0!=DetailSlot::ID_Empty)&& InterpolateAndDither(alpha255[0],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(0);
+			if ((DS.id1!=DetailSlot::ID_Empty)&& InterpolateAndDither(alpha255[1],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(1);
+			if ((DS.id2!=DetailSlot::ID_Empty)&& InterpolateAndDither(alpha255[2],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(2);
+			if ((DS.id3!=DetailSlot::ID_Empty)&& InterpolateAndDither(alpha255[3],x,z,shift_x,shift_z,d_size,dither))	selected.push_back(3);
 
 			// Select
 			if (selected.empty())	continue;
@@ -111,7 +111,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			if (selected.size()==1)	index = selected[0];
 			else					index = selected[r_selection.randI(selected.size())];
 
-			CDetail*	Dobj	= objects[DS.items[index].id];
+			CDetail*	Dobj	= objects[DS.r_id(index)];
 			SlotItem*	ItemP	= poolSI.create();
 			SlotItem&	Item	= *ItemP;
 
@@ -171,14 +171,17 @@ Device.Statistic.TEST0.End		();
 			Bounds.merge					(ItemBB);
 
 			// Color
+#pragma todo("Color decompression broken")
+			/*
 			DetailPalette*	c_pal			= (DetailPalette*)&DS.color;
 			float gray255	[4];
 			gray255[0]						=	255.f*float(c_pal->a0)/15.f;
 			gray255[1]						=	255.f*float(c_pal->a1)/15.f;
 			gray255[2]						=	255.f*float(c_pal->a2)/15.f;
 			gray255[3]						=	255.f*float(c_pal->a3)/15.f;
-			float c_f						=	Interpolate		(gray255,x,z,d_size)+.5f;
-			int c_dw						=	iFloor			(c_f);
+			*/
+			float c_f						=	1.f;	//Interpolate		(gray255,x,z,d_size)+.5f;
+			int c_dw						=	255;	//iFloor			(c_f);
 			clamp							(c_dw,0,255);
 			Item.C_dw						=	color_rgba		(c_dw,c_dw,c_dw,255);
 			Item.C							=	c_f/255.f;
