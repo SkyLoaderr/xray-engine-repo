@@ -40,10 +40,7 @@ void Jitter_Select(Fvector2* &Jitter, u32& Jcount)
 	}
 }
 
-IC void GET(
-			lm_layer &lm, 
-			int x, int y, u32 ref, u32 &count, 
-			base_color& dst)
+void GET			(lm_layer &lm, int x, int y, u32 ref, u32 &count,  base_color& dst)
 {
 	// wrap pixels
 	if (x<0) return;

@@ -13,22 +13,15 @@ BOOL	hasImplicitLighting(Face* F)
 	return (T.THM.flags.test(STextureParams::flImplicitLighted));
 }
 
-class ImplicitLumel
-{
-public:
-	Fvector	color;
-	u32	marker;
-};
-
 class ImplicitDeflector
 {
 public:
 	b_BuildTexture*			texture;
-	ImplicitLumel*			lmap;
-	ImplicitLumel*			temp;
+	lm_layer				lmap;
+	lm_layer				temp;
 	vecFace					faces;
 	
-	ImplicitDeflector() : texture(0),lmap(0),temp(0)
+	ImplicitDeflector() : texture(0)
 	{
 	}
 	~ImplicitDeflector()
@@ -36,18 +29,15 @@ public:
 		Deallocate	();
 	}
 	
-	void			Allocate()
+	void			Allocate	()
 	{
-		u32 size	= Width()*Height()*sizeof(ImplicitLumel);
-		lmap		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(lmap);
-		temp		= (ImplicitLumel*)xr_malloc	(size);	R_ASSERT(temp);
-		ZeroMemory	(lmap,size);
-		ZeroMemory	(temp,size);
+		lmap.create	(Width(),Height());
+		temp.create	(Width(),Height());
 	}
-	void			Deallocate()
+	void			Deallocate	()
 	{
-		xr_free		(temp);
-		xr_free		(lmap);
+		temp.destroy();
+		lmap.destroy();
 	}
 	
 	u32		Width()	{ return texture->dwWidth; }
@@ -58,63 +48,9 @@ public:
 		return texture->pSurface[y*Width()+x];
 	}
 	
-	ImplicitLumel& Lumel(u32 x, u32 y)	
+	base_color& Lumel(u32 x, u32 y)	
 	{ 
 		return lmap[y*Width()+x];
-	}
-	IC void GET(int x, int y, u32 ref,ImplicitLumel& mix)
-	{
-		// wrap pixels
-		if (x<0) x+=(int)Width();
-		else if (x>=(int)Width())	x-=(int)Width();
-		if (y<0) y+=(int)Height();
-		else if (y>=(int)Height())	y-=(int)Height();
-		
-		// summarize
-		ImplicitLumel&	L = Lumel	(x,y);
-		if (L.marker<=ref)			return;
-		
-		mix.color.add	(L.color);
-		mix.marker		+= 1;
-	}
-	
-	BOOL ApplyBorders(u32 ref) 
-	{
-		BOOL bNeedContinue = FALSE;
-		
-		CopyMemory(temp,lmap,Width()*Height()*sizeof(ImplicitLumel));
-		for (int y=0; y<(int)Height(); y++) {
-			for (int x=0; x<(int)Width(); x++)
-			{
-				ImplicitLumel&	L	= Lumel(x,y);
-				if (L.marker==0)
-				{
-					ImplicitLumel	mix;
-					mix.color.set	(0,0,0);
-					mix.marker		= 0;
-					GET(x-1,y-1,ref,mix);
-					GET(x  ,y-1,ref,mix);
-					GET(x+1,y-1,ref,mix);
-					
-					GET(x-1,y  ,ref,mix);
-					GET(x+1,y  ,ref,mix);
-					
-					GET(x-1,y+1,ref,mix);
-					GET(x  ,y+1,ref,mix);
-					GET(x+1,y+1,ref,mix);
-					
-					if (mix.marker) 
-					{
-						mix.color.div		(float(mix.marker));
-						mix.marker			= ref;
-						temp[y*Width()+x]	= mix;
-						bNeedContinue		= TRUE;
-					}
-				}
-			}
-		}
-		CopyMemory(lmap,temp,Width()*Height()*sizeof(ImplicitLumel));
-		return bNeedContinue;
 	}
 	
 	void	Bounds	(u32 ID, Fbox2& dest)
@@ -160,7 +96,6 @@ public:
 	{
 		R_ASSERT				(DATA);
 		ImplicitDeflector&		defl	= *DATA;
-		xr_vector<R_Light>		Lights	= pBuild->L_layers.front().lights;
 		CDB::COLLIDER			DB;
 		
 		// Setup variables
@@ -171,32 +106,30 @@ public:
 		// Jitter data
 		Fvector2	JS;
 		JS.set		(g_params.m_lm_jitter/dim.x, g_params.m_lm_jitter/dim.y);
-		u32		Jcount;
+		u32			Jcount;
 		Fvector2*	Jitter;
 		Jitter_Select(Jitter, Jcount);
 		
 		// Lighting itself
 		DB.ray_options	(0);
-		Fcolor			C[9];
-		for (u32 J=0; J<9; J++)	C[J].set(0,0,0,0);
 		for (u32 V=y_start; V<y_end; V++)
 		{
 			for (u32 U=0; U<defl.Width(); U++)
 			{
-				u32		Fcount	= 0;
+				base_color	C;
+				u32			Fcount	= 0;
 				
 				try {
-					for (J=0; J<Jcount; J++) 
+					for (u32 J=0; J<Jcount; J++) 
 					{
 						// LUMEL space
-						Fvector2 P;
-						P.x = float(U)/dim.x + half.x + Jitter[J].x * JS.x;
-						P.y	= float(V)/dim.y + half.y + Jitter[J].y * JS.y;
-						xr_vector<Face*>&	space	= ImplicitHash->query(P.x,P.y);
+						Fvector2				P;
+						P.x						= float(U)/dim.x + half.x + Jitter[J].x * JS.x;
+						P.y						= float(V)/dim.y + half.y + Jitter[J].y * JS.y;
+						xr_vector<Face*>& space	= ImplicitHash->query(P.x,P.y);
 						
 						// World space
 						Fvector wP,wN,B;
-						C[J].set(0,0,0,0);
 						for (vecFaceIt it=space.begin(); it!=space.end(); it++)
 						{
 							Face	*F	= *it;
@@ -210,7 +143,7 @@ public:
 								wP.from_bary(V1->P,V2->P,V3->P,B);
 								wN.from_bary(V1->N,V2->N,V3->N,B);
 								wN.normalize();
-								LightPoint	(&DB, RCAST_Model, C[J], wP, wN, &*Lights.begin(), &*Lights.end(), F);
+								LightPoint	(&DB, RCAST_Model, C, wP, wN, pBuild->L_static, LP_dont_hemi, F);
 								Fcount		++;
 							}
 						}
@@ -219,29 +152,11 @@ public:
 				{
 					clMsg("* THREAD #%d: Access violation. Possibly recovered.",thID);
 				}
-				/*
-				C[0].set(1,1,1,1);
-				C[1].set(1,1,1,1);
-				C[2].set(1,1,1,1);
-				C[3].set(1,1,1,1);
-				C[4].set(1,1,1,1);
-				C[5].set(1,1,1,1);
-				C[6].set(1,1,1,1);
-				C[7].set(1,1,1,1);
-				C[8].set(1,1,1,1);
-				Fcount		= 1;
-				*/
 				if (Fcount) {
 					// Calculate lighting amount
-					Fcolor		Lumel,R;
-					float cnt	= float(Fcount);
-					R.r =		(C[0].r + C[1].r + C[2].r + C[3].r + C[4].r + C[5].r + C[6].r + C[7].r + C[8].r)/cnt;
-					R.g =		(C[0].g + C[1].g + C[2].g + C[3].g + C[4].g + C[5].g + C[6].g + C[7].g + C[8].g)/cnt;
-					R.b	=		(C[0].b + C[1].b + C[2].b + C[3].b + C[4].b + C[5].b + C[6].b + C[7].b + C[8].b)/cnt;
-					Lumel.lerp	(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-					Lumel.a		= 1.f;
+					C.scale				(Fcount);
 					
-					ImplicitLumel& L	= defl.Lumel(U,V);
+					base_color& L	= defl.Lumel(U,V);
 					L.color.x			= Lumel.r;
 					L.color.y			= Lumel.g;
 					L.color.z			= Lumel.b;
@@ -333,7 +248,7 @@ void CBuild::ImplicitLighting()
 					cccT.set	(OLD);
 
 					// Retreive Lumel
-					ImplicitLumel&	L = defl.Lumel(U,V);
+					base_color&	L = defl.Lumel(U,V);
 					
 					// Modulate & save
 					cccT.r		*= L.color.x;
