@@ -109,12 +109,11 @@ void CDetailManager::Load		()
 	m_slots->Close	();
 	
 	// Initialize 'vis' and 'cache'
-	visible[0].resize	(dm_max_objects);
-	visible[1].resize	(dm_max_objects);
-	visible[2].resize	(dm_max_objects);
+	visible[0].resize	(objects.size());
+	visible[1].resize	(objects.size());
+	visible[2].resize	(objects.size());
 	cache_Initialize	();
 
-	
 	// Make dither matrix
 	bwdithermap		(2,dither);
 

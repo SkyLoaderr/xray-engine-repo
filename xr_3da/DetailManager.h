@@ -56,8 +56,9 @@ public:
 		Slot()				{ type=stReady; sx=sz=0; BB.invalidate(); }
 	};
 
-	DEFINE_SVECTOR	(vector<SlotItem*>,dm_max_objects,vis_list,vis_it);
-	DEFINE_SVECTOR	(CDetail*,dm_max_objects,DetailVec,DetailIt);
+	typedef		vector <vector<SlotItem*> >			vis_list;
+	typedef		svector<CDetail*,dm_max_objects>	DetailVec;
+	typedef		DetailVec::iterator					DetailIt;
 public:	
 	int								dither			[16][16];
 public:
