@@ -91,7 +91,7 @@
 #define CLSID_OBJECT_W_GROZA		MK_CLSID('W','_','G','R','O','Z','A',' ')
 #define CLSID_OBJECT_W_KNIFE		MK_CLSID('W','_','K','N','I','F','E',' ')
 
-#define CLSID_OBJECT_M_WPN			MK_CLSID('O','_','M','W','P','N',' ',' ')
+#define CLSID_OBJECT_W_MOUNTED		MK_CLSID('W','_','M','O','U','N','T','D')
 
 // Weapons Ammo
 #define CLSID_OBJECT_A_M134			MK_CLSID('A','_','M','1','3','4',' ',' ')
