@@ -373,7 +373,7 @@ function set_guard(object, enable, path_main, path_hideout, search_light)
 		        	    	st.path_hideout = st.path_main
 			        end
 			else
-				st.enabled = false
+				st.path_hideout = st.path_main
 			end
 		else
 			st.path_hideout = path_hideout

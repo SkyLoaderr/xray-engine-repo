@@ -43,8 +43,8 @@ function action_sleeper_activity:__init (npc_name,action_name,storage) super (ni
 
     self.state_none = 0
     self.state_standing_before_anim = 1
-    self.state_anim_playing = 3
-    self.state_moving = 4
+    self.state_anim_playing = 2
+    self.state_moving = 3
 
     self.state = self.state_none
 
@@ -52,9 +52,6 @@ function action_sleeper_activity:__init (npc_name,action_name,storage) super (ni
 
   -- TODO: выбирать активный путь в зависимости от погоды (сделать выбор функцией)
     self.path_active = self.path_main
-
-    -- ‘лажок, включить если прибыли в путь, состо€щий из одной точки
-    self.arrived_to_single_point_path = true
 
     -- “очка, в которую смотрели в прошлый раз. ≈е запоминаем дл€ того, чтобы не делать паузу между анимаци€ми,
     -- если собираемс€ смотреть в ту же самую точку, не поворачива€сь никуда...
@@ -67,7 +64,8 @@ function action_sleeper_activity:initialize()
     self.object:set_desired_position()
     self.object:set_desired_direction()
 
-    self.object:set_item(object.deactivate, self.object:best_weapon())
+    --self.object:set_item(object.deactivate, self.object:best_weapon())
+    self.object:set_detail_path_type(move.line)
     self.object:set_body_state(move.standing)
     self.object:set_movement_type(move.walk)
     self.object:set_path_type(game_object.patrol_path)
@@ -89,7 +87,6 @@ function action_sleeper_activity:waypoint_callback(obj, action_type, index)
     end
 
     local ptr = patrol(self.path_active)
-    self.arrived_to_single_point_path = true
     self.object:set_movement_type(move.stand)
 
     -- ¬ыбрать случайно одну из точек, чтобы посмотреть в нее:
@@ -129,12 +126,17 @@ function action_sleeper_activity:look_at_waypoint(pt)
 
     self.object:set_item(object.deactivate, self.object:best_weapon())
 end
+
 function action_sleeper_activity:execute()
-    if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
-	xr_state.change_state(self.object, 4)
-	self.state = self.state_anim_playing
-    end
+	printf("sleeper[%d]: self.state = %d", device():time_global(), self.state)
+	if self.state == self.state_standing_before_anim and self.expiration_time and
+	   device():time_global() >= self.expiration_time then
+		xr_state.change_state(self.object, 0)
+		xr_state.change_state(self.object, 4)
+		self.state = self.state_anim_playing
+	end
 end
+
 function action_sleeper_activity:finalize()
   self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгл€да уже не актуально
 
