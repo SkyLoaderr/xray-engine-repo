@@ -3,12 +3,23 @@
 class CUIDialogWnd;
 class CUIWindow;
 
+class dlgItem{
+public:
+	dlgItem			(CUIWindow* pWnd);
+	CUIWindow*		wnd;
+	bool			enabled;
+	bool operator < (const dlgItem& itm);
+};
+
 class CDialogHolder :public ISheduled
 {
 	//dialogs
 	xr_stack<CUIDialogWnd*>									m_input_receivers;
-	xr_vector<CUIWindow*>									m_dialogsToRender;
+/*	xr_vector<CUIWindow*>									m_dialogsToRender;
 	xr_vector<CUIWindow*>									m_dialogsToErase;
+*/
+	xr_vector<dlgItem>										m_dialogsToRender;
+
 
 	void					StartMenu						(CUIDialogWnd* pDialog);
 	void					StopMenu						(CUIDialogWnd* pDialog);

@@ -142,6 +142,7 @@ void CTexture::Load		()
 	if (FS.exist(fn,"$game_textures$",*cName,".avi")){
 		// AVI
 		pAVI = xr_new<CAviPlayerCustom>();
+
 		if (!pAVI->Load(fn)) {
 			xr_delete(pAVI);
 			Debug.fatal("Can't open video stream");
@@ -218,6 +219,7 @@ void CTexture::Unload	()
 		pSurface	= 0;
 	}
 	_RELEASE		(pSurface);
+
 	xr_delete		(pAVI);
 }
 

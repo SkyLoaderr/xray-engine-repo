@@ -190,6 +190,17 @@ CUIDialogWnd* main_input_receiver()
 {
 	return HUD().GetUI()->MainInputReceiver();
 }
+void hide_indicators()
+{
+	HUD().GetUI()->HideIndicators();
+	psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
+}
+
+void show_indicators()
+{
+	HUD().GetUI()->ShowIndicators();
+	psHUD_Flags.set(HUD_CROSSHAIR, TRUE);
+}
 
 
 bool is_level_present()
@@ -242,6 +253,8 @@ void CLevel::script_register(lua_State *L)
 		def("add_dialog_to_render",				add_dialog_to_render),
 		def("remove_dialog_to_render",			remove_dialog_to_render),
 		def("main_input_receiver",				main_input_receiver),
+		def("hide_indicators",					hide_indicators),
+		def("show_indicators",					show_indicators),
 		def("add_call",							((void (*) (const luabind::functor<bool> &,const luabind::functor<void> &)) &add_call)),
 		def("add_call",							((void (*) (const luabind::object &, LPCSTR, LPCSTR)) &add_call)),
 		def("present",							is_level_present)

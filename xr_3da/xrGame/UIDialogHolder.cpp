@@ -4,6 +4,21 @@
 #include "MainUI.h"
 #include "UICursor.h"
 
+dlgItem::dlgItem(CUIWindow* pWnd)
+{
+	wnd		= pWnd;
+	enabled = true;
+}
+
+bool dlgItem::operator < (const dlgItem& itm)
+{
+	return (int)enabled < (int)itm.enabled;
+}
+
+bool operator == (const dlgItem& i1, const dlgItem& i2)
+{
+	return i1.wnd == i2.wnd;
+}
 //----------CDialogHolder--------------
 CDialogHolder::CDialogHolder()
 {
@@ -46,31 +61,32 @@ void CDialogHolder::StopMenu (CUIDialogWnd* pDialog)
 
 void CDialogHolder::AddDialogToRender(CUIWindow* pDialog)
 {
-	if(std::find(m_dialogsToRender.begin(), m_dialogsToRender.end(), pDialog) == m_dialogsToRender.end() )
+	dlgItem itm(pDialog);
+	if(std::find(m_dialogsToRender.begin(), m_dialogsToRender.end(), itm) == m_dialogsToRender.end() )
 	{
-		m_dialogsToRender.push_back(pDialog);
+		m_dialogsToRender.push_back(itm);
 		pDialog->Show(true);
 	}
 }
 
 void CDialogHolder::RemoveDialogToRender(CUIWindow* pDialog)
 {
-	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),pDialog);
+	dlgItem itm(pDialog);
+	xr_vector<dlgItem>::iterator it = std::find(m_dialogsToRender.begin(),m_dialogsToRender.end(),itm);
 	if(it != m_dialogsToRender.end())
 	{
-		(*it)->Show(false);
-		(*it)->Enable(false);
-//		m_dialogsToRender.erase(it);
-		m_dialogsToErase.push_back(*it);
+		(*it).wnd->Show(false);
+		(*it).wnd->Enable(false);
+		(*it).enabled = false;
 	}
 }
 
 void CDialogHolder::DoRenderDialogs()
 {
-	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
+	xr_vector<dlgItem>::iterator it = m_dialogsToRender.begin();
 	for(; it!=m_dialogsToRender.end();++it)
-		if((*it)->IsShown())
-			(*it)->Draw();
+		if( (*it).enabled && (*it).wnd->IsShown() )
+			(*it).wnd->Draw();
 
 }
 CUIDialogWnd* CDialogHolder::MainInputReceiver()
@@ -98,21 +114,25 @@ void CDialogHolder::StartStopMenu(CUIDialogWnd* pDialog, bool bDoHideIndicators)
 	else
 		StartMenu(pDialog);
 
-	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToErase.begin(), m_dialogsToErase.end(), pDialog);
+/*	xr_vector<CUIWindow*>::iterator it = std::find(m_dialogsToErase.begin(), m_dialogsToErase.end(), pDialog);
 	if (m_dialogsToErase.end() != it)
 		m_dialogsToErase.erase(it);
-
+*/
 }
 
 void CDialogHolder::shedule_Update(u32 dt)
 {
 	ISheduled::shedule_Update(dt);
-	xr_vector<CUIWindow*>::iterator it = m_dialogsToRender.begin();
+	xr_vector<dlgItem>::iterator it = m_dialogsToRender.begin();
 	for(; it!=m_dialogsToRender.end();++it)
-		if((*it)->IsEnabled())
-			(*it)->Update();
+		if((*it).enabled && (*it).wnd->IsEnabled())
+			(*it).wnd->Update();
 
 
+	std::sort	(m_dialogsToRender.begin(), m_dialogsToRender.end() );
+	while	((m_dialogsToRender.size()) && (!m_dialogsToRender[m_dialogsToRender.size()-1].enabled)) 
+		m_dialogsToRender.pop_back();
+/*
 	for(it = m_dialogsToErase.begin(); it!=m_dialogsToErase.end(); ++it)
 	{
 		xr_vector<CUIWindow*>::iterator it_find = std::find(m_dialogsToRender.begin(),
@@ -123,7 +143,7 @@ void CDialogHolder::shedule_Update(u32 dt)
 		}
 	}
 	m_dialogsToErase.clear();
-
+*/
 }
 float CDialogHolder::shedule_Scale()
 {
@@ -136,6 +156,6 @@ void CDialogHolder::CleanInternals()
 		m_input_receivers.pop();
 
 	m_dialogsToRender.clear();
-	m_dialogsToErase.clear();
+//	m_dialogsToErase.clear();
 	GetUICursor()->Hide();
 }

@@ -25,6 +25,7 @@ CAviPlayerCustom::~CAviPlayerCustom( )
 	if( m_pMovieData )	xr_free( m_pMovieData );
 	if( m_pMovieIndex ) xr_free( m_pMovieIndex );
 
+	xr_delete(alpha);
 }
 
 //---------------------------------
@@ -113,17 +114,6 @@ BOOL CAviPlayerCustom::Load (char* fname)
 
 	AVIFileRelease( aviFile );
 
-/*
-	// разбираем хидер видеострима
-	m_dwFrameTotal	= strh.dwLength;
-	m_fRate			= (float) strh.dwRate / (float)strh.dwScale;
-	m_fCurrentRate	= m_fRate;
-
-	R_ASSERT( strh.left == 0 );		// пытаемся выловить авишку с ненулевыми координатами верхнего левого угла
-	R_ASSERT( strh.top == 0 );
-	m_dwWidth		= strh.right;
-	m_dwHeight		= strh.bottom;
-*/
 	R_ASSERT			( m_dwWidth && m_dwHeight );
 
 	m_pDecompressedBuf	= (BYTE *)xr_malloc( m_dwWidth * m_dwHeight * 4 + 4);
