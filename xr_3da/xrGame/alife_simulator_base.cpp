@@ -298,9 +298,9 @@ void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool 
 		CSE_ALifeDynamicObject			*II = objects().object(item->base()->ID_Parent);
 #ifdef DEBUG
 		if (std::find(II->children.begin(),II->children.end(),item->base()->ID) != II->children.end()) {
-			if (psAI_Flags.test(aiALife)) {
+//			if (psAI_Flags.test(aiALife)) {
 				Msg						("[LSS] Specified item [%s][%d] is already attached to the specified object [%s][%d]",item->base()->s_name_replace,item->base()->ID,II->s_name_replace,II->ID);
-			}
+//			}
 			Debug.fatal					("[LSS] Cannot recover from the previous error!");
 		}
 #endif
