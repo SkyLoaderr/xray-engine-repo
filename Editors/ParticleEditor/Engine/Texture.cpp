@@ -203,10 +203,6 @@ _DDS_2D:
 		{
 			// Check for LMAP and compress if needed
 			strlwr					(fn);
-			if (psDeviceFlags.is(rsCompressLMAPs)	&& strstr(fn,"lmap#"))
-			{
-				IMG.Format			= D3DFMT_DXT1;
-			}
 
 			// Load   SYS-MEM-surface, bound to device restrictions
 			IDirect3DTexture9*		T_sysmem;

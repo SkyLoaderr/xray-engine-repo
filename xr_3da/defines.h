@@ -24,7 +24,6 @@ enum {
 	rsAntialias			= (1ul<<6ul),
 	rsWarmHZB			= (1ul<<7ul),
 	rsNormalize			= (1ul<<8ul),
-	rsCompressLMAPs		= (1ul<<9ul),
 	rsOcclusion			= (1ul<<10ul),
 	rsStatistic			= (1ul<<11ul),
 	rsDetails			= (1ul<<12ul),

@@ -16,7 +16,6 @@ static struct _DF {
 	{"rsWireframe",		rsWireframe		},
 	{"rsAntialias",		rsAntialias		},
 	{"rsNormalize",		rsNormalize		},
-	{"rsCompressLMAPs",	rsCompressLMAPs	},
     {NULL,0}
 };
 

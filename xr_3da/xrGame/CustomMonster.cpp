@@ -18,7 +18,6 @@
 using namespace AI;
 
 Flags32		psAI_Flags	= {0};
-ENGINE_API extern float psGravity;
  
 void CCustomMonster::SAnimState::Create(CSkeletonAnimated* K, LPCSTR base)
 {

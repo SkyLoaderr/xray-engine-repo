@@ -313,21 +313,23 @@ void CCC_Register()
 	CMD1(CCC_E_Signal,	"e_signal"				);
 
 	// Render device states
-	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,rsNoVSync);
-	CMD3(CCC_Mask,		"rs_anisotropic",		&psDeviceFlags,rsAnisotropic);
-	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,rsWireframe);
-	CMD3(CCC_Mask,		"rs_renormalize",		&psDeviceFlags,rsNormalize);
-	CMD3(CCC_Mask,		"rs_antialias",			&psDeviceFlags,rsAntialias);
-	CMD3(CCC_Mask,		"rs_warm_hzb",			&psDeviceFlags,rsWarmHZB);
-	CMD3(CCC_Mask,		"rs_triplebuffer",		&psDeviceFlags,rsTriplebuffer);
-	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,rsFullscreen);
-	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,rsClearBB);
-	CMD3(CCC_Mask,		"rs_compress_lmaps",	&psDeviceFlags,rsCompressLMAPs);
-	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,rsOcclusion);
-	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,rsStatistic);
-	CMD3(CCC_Mask,		"rs_postprocess",		&psDeviceFlags,rsPostprocess);
-	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,rsRefresh60hz);
-	
+	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,		rsNoVSync);
+	CMD3(CCC_Mask,		"rs_anisotropic",		&psDeviceFlags,		rsAnisotropic);
+	CMD3(CCC_Mask,		"rs_wireframe",			&psDeviceFlags,		rsWireframe);
+	CMD3(CCC_Mask,		"rs_renormalize",		&psDeviceFlags,		rsNormalize);
+	CMD3(CCC_Mask,		"rs_antialias",			&psDeviceFlags,		rsAntialias);
+	CMD3(CCC_Mask,		"rs_warm_hzb",			&psDeviceFlags,		rsWarmHZB);
+	CMD3(CCC_Mask,		"rs_triplebuffer",		&psDeviceFlags,		rsTriplebuffer);
+	CMD3(CCC_Mask,		"rs_fullscreen",		&psDeviceFlags,		rsFullscreen);
+	CMD3(CCC_Mask,		"rs_clear_bb",			&psDeviceFlags,		rsClearBB);
+	CMD3(CCC_Mask,		"rs_compress_lmaps",	&psDeviceFlags,		rsCompressLMAPs);
+	CMD3(CCC_Mask,		"rs_occlusion",			&psDeviceFlags,		rsOcclusion);
+	CMD3(CCC_Mask,		"rs_stats",				&psDeviceFlags,		rsStatistic);
+	CMD3(CCC_Mask,		"rs_postprocess",		&psDeviceFlags,		rsPostprocess);
+	CMD3(CCC_Mask,		"rs_refresh_60hz",		&psDeviceFlags,		rsRefresh60hz);
+
+	CMD4(CCC_Float,		"rs_vis_distance",		&rsDT_Range,		5,		50	);
+
 	CMD3(CCC_Mask,		"rs_detail",			&psDeviceFlags,		rsDetails	);
 
 	CMD1(CCC_Gamma,		"rs_c_gamma"			);
