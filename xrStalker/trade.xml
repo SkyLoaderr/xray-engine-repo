@@ -74,12 +74,12 @@
 	</price_mt_static>
 	
 	<!-- DEAL INFO -->
-	<deal_static x="10" y="10" width="347" height="212">
-		<text font="letterica18" r="255" g="255" b="255" x="50" y="10">SOSO</text>
+	<deal_static x="10" y="10" width="300" height="210">
+		<text font="letterica18" r="255" g="255" b="255" x="50" y="10"></text>
 	</deal_static>
 
 	<!-- DEAL BUTTON -->
-	<deal_button x="20" y="100" width="107" height="36">
+	<deal_button x="50" y="100" width="107" height="36">
 		<texture>ui\ui_button_06</texture>
 		<text font="graffiti22" r="238" g="153" b="26" align="c">Ok</text>
 	</deal_button>
