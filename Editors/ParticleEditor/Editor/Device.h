@@ -39,9 +39,9 @@ public:
 
     CModelPool				Models;
 public:
-    int 					dwWidth, dwHeight;
-    int 					m_RenderWidth_2, m_RenderHeight_2;
-    int 					m_RealWidth, m_RealHeight;
+    u32 					dwWidth, dwHeight;
+    u32 					m_RenderWidth_2, m_RenderHeight_2;
+    u32 					m_RealWidth, m_RealHeight;
     float					m_RenderArea;
     float 					m_ScreenQuality;
 
@@ -151,7 +151,7 @@ public:
     void					UpdateView		();
 	void					UpdateTimer		();
 
-    bool					MakeScreenshot	(DWORDVec& pixels, DWORD& width, DWORD& height);
+    bool					MakeScreenshot	(U32Vec& pixels, u32& width, u32& height);
 
 	void 					InitTimer		();
 	// Mode control

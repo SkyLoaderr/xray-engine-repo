@@ -76,6 +76,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	Tools.SCompiler.Save();
 		Command(COMMAND_UPDATE_CAPTION);
     	break;
+    case COMMAND_SAVE_BACKUP:
+		Command(COMMAND_SAVE);
+    	break;
     case COMMAND_RELOAD:
     	if (Tools.ActiveEditor()==aeEngine){
 	    	if (!Tools.SEngine.IfModified()) return false;
@@ -150,7 +153,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	bRes = Tools.IsModified();
 		break;
     case COMMAND_CHANGE_ACTION:
-    	Tools.ChangeAction(p1);
+    	Tools.ChangeAction((EAction)p1);
 		break;
     case COMMAND_UNDO:
     case COMMAND_REDO:

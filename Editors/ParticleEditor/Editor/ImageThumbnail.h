@@ -17,7 +17,7 @@ private:
 friend class CImageManager;
 	AnsiString		m_Name;
     int				m_Age;
-	DWORDVec 		m_Pixels;
+	U32Vec 			m_Pixels;
     STextureParams	m_TexParams;
     THMType			m_Type;
 public:
@@ -29,12 +29,12 @@ public:
     // Object routines
     IC int			_VertexCount	(){R_ASSERT(IsObject()); return m_TexParams.vertex_count;}
     IC int			_FaceCount		(){R_ASSERT(IsObject()); return m_TexParams.face_count;}
-	void 			CreateFromData	(LPDWORD p, int w, int h, int fc, int vc);
+	void 			CreateFromData	(u32* p, u32 w, u32 h, int fc, int vc);
     // Texture routines
-    IC int			_Width			(){R_ASSERT(IsTexture()); return m_TexParams.width;}
-    IC int			_Height			(){R_ASSERT(IsTexture()); return m_TexParams.height;}
-    IC int			_Alpha			(){R_ASSERT(IsTexture()); return m_TexParams.HasAlphaChannel();}
-	void 			CreateFromData	(LPDWORD p, int w, int h);
+    IC u32			_Width			(){R_ASSERT(IsTexture()); return m_TexParams.width;}
+    IC u32			_Height			(){R_ASSERT(IsTexture()); return m_TexParams.height;}
+    IC u32			_Alpha			(){R_ASSERT(IsTexture()); return m_TexParams.HasAlphaChannel();}
+	void 			CreateFromData	(u32* p, u32 w, u32 h);
 	void 			Draw			(TPanel* panel, TPaintBox* pbox, bool bStretch);
     void			VFlip			();
     // thumbnail public routines

@@ -15,17 +15,17 @@ CImageManager ImageManager;
 extern bool IsFormatRegister(LPCSTR ext);
 extern FIBITMAP* Surface_Load(char* full_name);
 extern "C" __declspec(dllimport)
-bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
-				 STextureParams* options, DWORD depth);
+bool DXTCompress(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
+				 STextureParams* options, u32 depth);
 
-bool IsValidSize(int w, int h){
+bool IsValidSize(u32 w, u32 h){
 	if (!btwIsPow2(h)) return false;
     if (h*6==w) return true;
 	if (!btwIsPow2(w)) return false;
     return true;
 }
                  
-bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
+bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a)
 {
     if (!Engine.FS.Exist(full_name,true)) return false;
 	AnsiString ext = ExtractFileExt(full_name).LowerCase();
@@ -36,7 +36,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
         h 					= img.dwHeight;
         a					= img.bAlpha;
         data.resize			(w*h);
-		CopyMemory			(data.begin(),img.pData,sizeof(DWORD)*data.size());
+		CopyMemory			(data.begin(),img.pData,sizeof(u32)*data.size());
 		if (!IsValidSize(w,h))	ELog.Msg(mtError,"Texture (%s) - invalid size: [%d, %d]",full_name,w,h);
         return true;
     }else{
@@ -44,7 +44,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
         if (bm){
             w 				= FreeImage_GetWidth (bm);
             h 				= FreeImage_GetHeight(bm);
-		    int w4			= w*4;
+		    u32 w4			= w*4;
             data.resize		(w*h);
             for (int y=h-1; y>=0; y--) CopyMemory(data.begin()+(h-y-1)*w,FreeImage_GetScanLine(bm,y),w4);
             a				= FIC_RGBALPHA==FreeImage_GetColorType(bm);
@@ -59,7 +59,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, DWORD* data, int w, int h, int a)
+void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, u32* data, u32 w, u32 h, u32 a)
 {
 	R_ASSERT(THM);
 	// create thumbnail
@@ -68,7 +68,7 @@ void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, DWORD* data, int w,
 	THM->m_TexParams.height= h;
     if (a) 	THM->m_TexParams.flag |= STextureParams::flHasAlpha;
     else	THM->m_TexParams.flag &=~STextureParams::flHasAlpha;
-//T	imf_Process(THM->m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,data,THM->_Width(),THM->_Height(),imf_box);
+	imf_Process(THM->m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,data,THM->_Width(),THM->_Height(),imf_box);
     THM->VFlip();
 }
 
@@ -80,8 +80,8 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
 	AnsiString base_name 		= src_name;
     if (path)	path->Update	(base_name);
     else		Engine.FS.m_Textures.Update	(base_name);
-    DWORDVec data;
-    int w, h, a;
+    U32Vec data;
+    u32 w, h, a;
     if (!Surface_Load(base_name.c_str(),data,w,h,a)){
     	ELog.DlgMsg(mtError,"Can't load texture '%s'.\nCheck file existance",src_name.c_str());
      	return;
@@ -107,8 +107,8 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnai
 	Engine.FS.m_GameTextures.Update(game_name);
     int base_age 			= Engine.FS.GetFileAge(base_name);
 
-    DWORDVec data;
-    int w, h, a;
+    U32Vec data;
+    u32 w, h, a;
     if (!Surface_Load(base_name.c_str(),data,w,h,a)) return;
     MakeGameTexture(THM,game_name.c_str(),data.begin());
 
@@ -119,13 +119,13 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnai
 //------------------------------------------------------------------------------
 // создает игровую текстуру
 //------------------------------------------------------------------------------
-void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, DWORD* load_data)
+void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, u32* load_data)
 {
 	Engine.FS.VerifyPath(game_name);
     // flip
-    int w = THM->_Width();
-    int h = THM->_Height();
-    int w4= w*4;
+    u32 w = THM->_Width();
+    u32 h = THM->_Height();
+    u32 w4= w*4;
     // compress
     bool bRes 	= DXTCompress(game_name, (LPBYTE)load_data, w, h, w4, &THM->m_TexParams, 4);
     if (!bRes){
@@ -139,11 +139,11 @@ void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, DWOR
 //------------------------------------------------------------------------------
 // загружает 32-bit данные
 //------------------------------------------------------------------------------
-bool CImageManager::LoadTextureData(const AnsiString& src_name, DWORDVec& data, int& w, int& h)
+bool CImageManager::LoadTextureData(const AnsiString& src_name, U32Vec& data, u32& w, u32& h)
 {
 	AnsiString fn = src_name;
 	Engine.FS.m_Textures.Update(fn);
-    int a;
+    u32 a;
     if (!Surface_Load(fn.c_str(),data,w,h,a)) return false;
     return true;
 }
@@ -206,8 +206,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FilePairIt it=M_BASE.begin();
 	FilePairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
-	    DWORDVec data;
-    	int w, h, a;
+	    U32Vec data;
+    	u32 w, h, a;
 
         string256 base_name; strcpy(base_name,it->first.c_str());
         UI.ProgressInc(base_name);
@@ -324,19 +324,19 @@ int CImageManager::GetLocalNewTextures(FileMap& files)
 BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
 {
 	compl 			= 0;
-    DWORDVec data;
-    int w, h, a;
+    U32Vec data;
+    u32 w, h, a;
     if (!Surface_Load(fname,data,w,h,a)) return FALSE;
     if (1==w & 1==h)					 return TRUE;
 
-    DWORD w_2 	= (1==w)?w:w/2;
-    DWORD h_2 	= (1==h)?h:h/2;
+    u32 w_2 	= (1==w)?w:w/2;
+    u32 h_2 	= (1==h)?h:h/2;
     // scale down(lanczos3) and up (bilinear, as video board)
-    LPDWORD pScaled     = LPDWORD(malloc((w_2)*(h_2)*4));
-    LPDWORD pRestored   = LPDWORD(malloc(w*h*4));
+    u32* pScaled     = (u32*)(malloc((w_2)*(h_2)*4));
+    u32* pRestored   = (u32*)(malloc(w*h*4));
     try {
-//T    	imf_Process     (pScaled,	w_2,h_2,data.begin(),w,h,imf_lanczos3	);
-//T        imf_Process		(pRestored,	w,h,pScaled,w_2,h_2,imf_filter 		    );
+    	imf_Process     (pScaled,	w_2,h_2,data.begin(),w,h,imf_lanczos3	);
+        imf_Process		(pRestored,	w,h,pScaled,w_2,h_2,imf_filter 		    );
     } catch (...)
     {
         Msg             ("* ERROR: imf_Process");
@@ -347,7 +347,7 @@ BOOL CImageManager::CheckCompliance(LPCSTR fname, int& compl)
     // Analyze
     float 		difference	= 0;
     float 		maximal 	= 0;
-    for (DWORD p=0; p<data.size(); p++)
+    for (u32 p=0; p<data.size(); p++)
     {
         Fcolor 		c1,c2;
     	c1.set		(data[p]);
@@ -411,20 +411,20 @@ IC void SetCamera(float angle, const Fvector& C, float height, float radius, flo
     Device.SetTransform		(D3DTS_PROJECTION,P);
 }
 
-IC void CopyLODImage(DWORDVec& src, DWORDVec& dest, int src_w, int src_h, int id, int pitch)
+IC void CopyLODImage(U32Vec& src, U32Vec& dest, u32 src_w, u32 src_h, int id, int pitch)
 {
 	for (int y=0; y<src_h; y++)
-    	CopyMemory(dest.begin()+y*pitch+id*src_w,src.begin()+y*src_w,src_w*sizeof(DWORD));
+    	CopyMemory(dest.begin()+y*pitch+id*src_w,src.begin()+y*src_w,src_w*sizeof(u32));
 }
 
-IC void GET(DWORDVec& pixels, int w, int h, int x, int y, DWORD ref, DWORD &count, DWORD &r, DWORD &g, DWORD &b)
+IC void GET(U32Vec& pixels, u32 w, u32 h, u32 x, u32 y, u32 ref, u32 &count, u32 &r, u32 &g, u32 &b)
 {
     // wrap pixels
     if (x<0) return; else if (x>=w)	return;
 	if (y<0) return; else if (y>=h)	return;
 
     // summarize
-    DWORD pixel = pixels[y*w + x];
+    u32 pixel = pixels[y*w + x];
     if (RGBA_GETALPHA(pixel)<=ref) return;
 
     r+=RGBA_GETRED  (pixel);
@@ -433,19 +433,19 @@ IC void GET(DWORDVec& pixels, int w, int h, int x, int y, DWORD ref, DWORD &coun
     count++;
 }
 
-BOOL ApplyBorders(DWORDVec& pixels, int w, int h, DWORD ref)
+BOOL ApplyBorders(U32Vec& pixels, u32 w, u32 h, u32 ref)
 {
     BOOL    bNeedContinue = FALSE;
 
     try {
-        DWORDVec result;
+        U32Vec result;
         result.resize(w*h);
 
         CopyMemory(result.begin(),pixels.begin(),w*h*4);
         for (int y=0; y<h; y++){
             for (int x=0; x<w; x++){
                 if (RGBA_GETALPHA(pixels[y*w+x])==0) {
-                    DWORD C=0,r=0,g=0,b=0;
+                    u32 C=0,r=0,g=0,b=0;
                     GET(pixels,w,h,x-1,y-1,ref,C,r,g,b);
                     GET(pixels,w,h,x  ,y-1,ref,C,r,g,b);
                     GET(pixels,w,h,x+1,y-1,ref,C,r,g,b);
@@ -472,10 +472,10 @@ BOOL ApplyBorders(DWORDVec& pixels, int w, int h, DWORD ref)
     return bNeedContinue;
 }
 
-void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int tgt_h, int samples, int age)
+void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 tgt_h, int samples, int age)
 {
-    DWORD src_w=tgt_w,src_h=tgt_h;
-	DWORDVec pixels;
+    u32 src_w=tgt_w,src_h=tgt_h;
+	U32Vec pixels;
 
     Fvector C;
     Fvector S;
@@ -490,15 +490,15 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
 	ECameraStyle save_style = Device.m_Camera.GetStyle();
 
     float D		= 500.f;
-    DWORDVec new_pixels;
+    U32Vec new_pixels;
     new_pixels.resize(src_w*src_h*samples);
 	Device.m_Camera.SetStyle(csPlaneMove);
     Device.m_Camera.SetDepth(D*2,true);
 
-    int pitch 		= src_w*samples;
+    u32 pitch 		= src_w*samples;
 
     // save render params
-    DWORD old_flag 	= 	psDeviceFlags;
+    u32 old_flag 	= 	psDeviceFlags;
     // set render params
 
     dwClearColor 	= 	0x0000000;
@@ -515,13 +515,13 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
 	    SetCamera(angle,C,S.y,R,D);
 	    Device.MakeScreenshot(pixels,src_w,src_h);
         // copy LOD to final
-		for (DWORD y=0; y<src_h; y++)
-    		CopyMemory(new_pixels.begin()+y*pitch+frame*src_w,pixels.begin()+y*src_w,src_w*sizeof(DWORD));
+		for (u32 y=0; y<src_h; y++)
+    		CopyMemory(new_pixels.begin()+y*pitch+frame*src_w,pixels.begin()+y*src_w,src_w*sizeof(u32));
     }
-    DWORDVec border_pixels = new_pixels;
-    for (DWORDIt it=new_pixels.begin(); it!=new_pixels.end(); it++)
+    U32Vec border_pixels = new_pixels;
+    for (U32It it=new_pixels.begin(); it!=new_pixels.end(); it++)
         *it=(RGBA_GETALPHA(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
-    for (DWORD ref=254; ref>0; ref--)
+    for (u32 ref=254; ref>0; ref--)
         ApplyBorders(new_pixels,pitch,src_h,ref);
     for (int t=0; t<int(new_pixels.size()); t++)
         new_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
@@ -531,7 +531,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
     Engine.FS.VerifyPath(out_name.c_str());
     
     CImage* I = new CImage();
-    I->Create	(tgt_w*samples,tgt_h,(u32*)new_pixels.begin()); //T
+    I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());
     I->Vflip	();
     I->SaveTGA	(out_name.c_str());
     _DELETE		(I);
@@ -554,13 +554,13 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
 {
 	BOOL bResult = TRUE;
     // save render params
-    DWORD old_flag 	= 	psDeviceFlags;
+    u32 old_flag 	= 	psDeviceFlags;
     // set render params
 	psDeviceFlags 	&=~	rsStatistic;
     psDeviceFlags 	&=~	rsDrawGrid;
 
-	DWORDVec pixels;
-    DWORD w=256,h=256;
+	U32Vec pixels;
+    u32 w=256,h=256;
     if (Device.MakeScreenshot(pixels,w,h)){
         EImageThumbnail tex(tex_name,EImageThumbnail::EITObject,false);
         tex.CreateFromData(pixels.begin(),w,h,obj->GetFaceCount(),obj->GetVertexCount());

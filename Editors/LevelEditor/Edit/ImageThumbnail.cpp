@@ -7,7 +7,7 @@
 #include "xr_tokens.h"
 
 //----------------------------------------------------
-bool DrawThumbnail(HDC hdc, DWORDVec& data, int offs_x, int offs_y, int dest_w, int dest_h, int src_w, int src_h)
+bool DrawThumbnail(HDC hdc, U32Vec& data, int offs_x, int offs_y, int dest_w, int dest_h, int src_w, int src_h)
 {
     BITMAPINFO bi;
     ZeroMemory					(&bi, sizeof(bi));
@@ -33,9 +33,9 @@ void EImageThumbnail::VFlip()
 {
 //	return;
 	R_ASSERT(!m_Pixels.empty());
-	DWORD line[THUMB_WIDTH];
-    DWORD sz_ln=sizeof(DWORD)*THUMB_WIDTH;
-    DWORD y2 = THUMB_WIDTH-1;
+	u32 line[THUMB_WIDTH];
+    u32 sz_ln=sizeof(u32)*THUMB_WIDTH;
+    u32 y2 = THUMB_WIDTH-1;
     for (int y=0; y<THUMB_HEIGHT/2; y++,y2--){
     	CopyMemory(line,m_Pixels.begin()+y2*THUMB_WIDTH,sz_ln);
     	CopyMemory(m_Pixels.begin()+y2*THUMB_WIDTH,m_Pixels.begin()+y*THUMB_WIDTH,sz_ln);
@@ -57,23 +57,23 @@ EImageThumbnail::~EImageThumbnail()
 	m_Pixels.clear();
 }
 
-void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h)
+void EImageThumbnail::CreateFromData(u32* p, u32 w, u32 h)
 {
 	R_ASSERT(IsTexture()); 
 	R_ASSERT(p&&(w>0)&&(h>0));
 //	imf_filter	imf_box  imf_triangle  imf_bell  imf_b_spline  imf_lanczos3  imf_mitchell
 	m_Pixels.resize(THUMB_SIZE);
-//T	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
+	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
     m_TexParams.width = w;
     m_TexParams.height= h;
     m_TexParams.flag&=~STextureParams::flHasAlpha;
 }
 
-void EImageThumbnail::CreateFromData(LPDWORD p, int w, int h, int fc, int vc)
+void EImageThumbnail::CreateFromData(u32* p, u32 w, u32 h, int fc, int vc)
 {
 	R_ASSERT(p&&(w>0)&&(h>0));
 	m_Pixels.resize(THUMB_SIZE);
-//T	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
+	imf_Process(m_Pixels.begin(),THUMB_WIDTH,THUMB_HEIGHT,p,w,h,imf_box);
     m_TexParams.vertex_count = vc;
     m_TexParams.face_count	 = fc;
 }
@@ -98,7 +98,7 @@ bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
 
     CCompressedStream F(fn.c_str(),THM_SIGN);
 
-    DWORD version = 0;
+    u32 version = 0;
 
     R_ASSERT(F.ReadChunk(THM_CHUNK_VERSION,&version));
     if( version!=THM_CURRENT_VERSION ){
@@ -108,7 +108,7 @@ bool EImageThumbnail::Load(LPCSTR src_name, FSPath* path)
 
     R_ASSERT(F.FindChunk(THM_CHUNK_DATA));
     m_Pixels.resize(THUMB_SIZE);
-    F.Read(m_Pixels.begin(),THUMB_SIZE*sizeof(DWORD));
+    F.Read(m_Pixels.begin(),THUMB_SIZE*sizeof(u32));
 
     R_ASSERT(F.FindChunk(THM_CHUNK_TYPE));
     m_Type	= THMType(F.Rdword());
@@ -153,7 +153,7 @@ void EImageThumbnail::Save(int age, FSPath* path){
 	F.close_chunk	();
 
 	F.open_chunk	(THM_CHUNK_DATA);
-    F.write			(m_Pixels.begin(),m_Pixels.size()*sizeof(DWORD));
+    F.write			(m_Pixels.begin(),m_Pixels.size()*sizeof(u32));
 	F.close_chunk	();
 
     F.open_chunk	(THM_CHUNK_TYPE);

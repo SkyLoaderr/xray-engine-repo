@@ -352,7 +352,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
     string256 fn;
     FilePairIt it=texture_map.begin();
     FilePairIt _E=texture_map.end();
-    UI.ProgressStart(texture_map.size(),"Export assosiation");
+    UI.ProgressStart(texture_map.size(),"Export association");
     bool bRes=true;
     for (;it!=_E; it++){
         EImageThumbnail* m_Thm = new EImageThumbnail(it->first.c_str(),EImageThumbnail::EITTexture);
@@ -360,7 +360,7 @@ void __fastcall TfrmImageLib::ebExportAssociationClick(TObject *Sender)
         if (m_Thm->Valid()&&(m_Thm->_Format().flag&STextureParams::flHasDetailTexture)){
         	AnsiString tmp;
             tmp.sprintf("%s, %f",m_Thm->_Format().detail_name,m_Thm->_Format().detail_scale);
-	    	ini->WriteString("assosiation", it->first.c_str(), tmp.c_str());
+	    	ini->WriteString("association", it->first.c_str(), tmp.c_str());
         }
         _DELETE(m_Thm);
 		if (UI.NeedAbort()){ bRes=false; break; }

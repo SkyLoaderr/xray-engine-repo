@@ -361,7 +361,7 @@ void CRenderDevice::UnloadTextures(){
     Shader.DeferredUnload();
 }
 
-bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height)
+bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 {
 	if (!bReady) return false;
 
@@ -386,7 +386,7 @@ bool CRenderDevice::MakeScreenshot(DWORDVec& pixels, DWORD& width, DWORD& height
 	DWORD* pPixel	= (DWORD*)D.pBits;
 
     UI.ProgressStart(height,"Screenshot making");
-    DWORDIt it 		= pixels.begin();
+    U32It it 		= pixels.begin();
     for (int h=height-1; h>=0; h--,it+=width){
         LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h));
         CopyMemory	(it,dt,sizeof(DWORD)*width);
