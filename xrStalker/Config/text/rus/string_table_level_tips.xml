@@ -23,5 +23,8 @@
 	<string id="esc_trader_about_anomalies">
 		<text>Осторожней! Ты рядом с аномалиями. Используй болты, чтобы определить их границы.</text>
 	</string>
+	<string id="tips_esc_trader_about_anomalies">
+		<text>Осторожней! Ты рядом с аномалиями. Используй болты, чтобы определить их границы.</text>
+	</string>
 	
 </string_table>
