@@ -117,10 +117,15 @@ end
 class "pp_linear_lerp" (effector)
 
 function pp_linear_lerp:__init(effector_type,start_power,dest_power,life_time) super(effector_type,device():time_global())
+	printf			("01")
 	self.start_time = device():time_global()
+	printf			("02")
 	self.stop_time	= self.start_time + life_time
+	printf			("03")
 	self.min_power	= start_power
+	printf			("04")
 	self.max_power	= dest_power
+	printf			("05")
 end
 
 function pp_linear_lerp:process(pp)
@@ -146,8 +151,8 @@ function pp_linear_lerp:process(pp)
 
 	dual.h			= self.min_power.dual.h 		 + (self.max_power.dual.h 			- self.min_power.dual.h 		)	* d
 	dual.v			= self.min_power.dual.v 		 + (self.max_power.dual.v 			- self.min_power.dual.v 		)	* d
-	noise.grain		= self.min_power.noise.grain 	 + (self.max_power.noise.grain 	- self.min_power.noise.grain 	)	* d
-	noise.intensity = self.min_power.noise.intensity + (self.max_power.noise.intensity - self.min_power.noise.intensity) 	* d
+	noise.grain		= self.min_power.noise.grain 	 + (self.max_power.noise.grain 		- self.min_power.noise.grain 	)	* d
+	noise.intensity = self.min_power.noise.intensity + (self.max_power.noise.intensity	- self.min_power.noise.intensity) 	* d
 	color.r			= self.min_power.noise.color.r 	 + (self.max_power.noise.color.r 	- self.min_power.noise.color.r 	)	* d
 	color.g			= self.min_power.noise.color.g 	 + (self.max_power.noise.color.g 	- self.min_power.noise.color.g 	)	* d
 	color.b			= self.min_power.noise.color.b 	 + (self.max_power.noise.color.b 	- self.min_power.noise.color.b 	)	* d 
