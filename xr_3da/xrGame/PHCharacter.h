@@ -15,9 +15,11 @@ class CPHCharacter : public CPHObject
 #endif
 {
 protected:
+//////////////////////////
 list<CPHObject*>::iterator m_ident;
 CPHInterpolation m_body_interpolation;
 dBodyID m_body;
+/////////////////////
 dBodyID m_wheel_body;
 dGeomID m_geom_shell;
 dGeomID m_wheel;
@@ -28,18 +30,20 @@ dGeomID m_geom_group;
 dGeomID m_wheel_transform;
 dGeomID m_shell_transform;
 dGeomID m_cap_transform;
+/////////////////////////////
 dJointID m_wheel_joint;
+/////////////////////////////
 dVector3 m_control_force;
-Fvector	m_acceleration;	
+Fvector	 m_acceleration;	
 dVector3 m_wall_contact_normal;
 dVector3 m_ground_contact_normal;
 dVector3 m_clamb_depart_position;
 dVector3 m_depart_position;
 dVector3 m_wall_contact_position;
 dVector3 m_ground_contact_position;
-dReal	m_jump_depart_hight;
+dReal	 m_jump_depart_hight;
 dReal jump_up_velocity;//=6.0f;//5.6f;
-Fvector* pvPosition;
+//Fvector* pvPosition;
 dReal m_mass;
 dReal m_max_velocity;
 Fvector m_position;
@@ -72,6 +76,7 @@ bool b_pure_climb;
 bool b_at_wall;
 bool was_control;
 bool b_stop_control;
+bool b_on_object;
 u32 m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
@@ -82,8 +87,9 @@ dVector3 previous_p1;
 dReal previous_v;
 u32 dis_count_f;
 u32 dis_count_f1;
-u32* p_lastMaterial;
 /////////////////////////////////////////////////////////////////////////////
+u32* p_lastMaterial;
+
 
 void Disable										();
 public:
@@ -156,6 +162,7 @@ virtual		Fvector		GetPosition							(void)				;
 virtual		void		SetMas								(dReal mass)		;
 private:
 			void		ApplyAcceleration					()					;
+			bool		ValidateWalkOn						()					;
 public:	
 #ifdef DEBUG
 virtual		void		OnRender							()					;

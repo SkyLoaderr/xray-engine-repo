@@ -1398,6 +1398,7 @@ void CPHElement::PhDataUpdate(dReal step){
 //m_body_interpolation.UpdateRotations();
 //return;
 	if(attached) {
+		if( !dBodyIsEnabled(m_body)) return;
 		m_body_interpolation.UpdatePositions();
 		m_body_interpolation.UpdateRotations();
 		return;
@@ -1413,12 +1414,14 @@ void CPHElement::PhDataUpdate(dReal step){
  ////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////
+	
 				const dReal scale=1.01f;
 				const dReal scalew=1.01f;
 				const dReal* vel1= dBodyGetLinearVel(m_body);
 				dBodySetLinearVel(m_body,vel1[0]/scale,vel1[1]/scale,vel1[2]/scale);
 				const dReal* wvel1 = dBodyGetAngularVel(m_body);
 				dBodySetAngularVel(m_body,wvel1[0]/scalew,wvel1[1]/scalew,wvel1[2]/scalew);
+			
 /////////////////////////////////////////////////////////////////
 				static const dReal u = -0.1f;
 				static const dReal w_limit = M_PI/16.f/fixed_step;

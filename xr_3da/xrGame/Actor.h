@@ -153,6 +153,7 @@ protected:
 	float					hinge_force_factor1;
 	float					hinge_force_factor2;
 	float					hinge_vel;
+	float					skel_fatal_impulse_factor;
 	int						skel_ddelay;
 							
 	///////////////////////////////////////////////////

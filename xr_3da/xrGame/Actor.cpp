@@ -124,6 +124,7 @@ void CActor::Load		(LPCSTR section )
 	skel_ddelay			=pSettings->ReadINT(section,"ph_skeleton_ddelay");
 	hinge_force_factor2 =pSettings->ReadFLOAT(section,"ph_skeleton_hinger_factor2");
 	hinge_vel			=pSettings->ReadFLOAT(section,"ph_skeleton_hinge_vel");
+	skel_fatal_impulse_factor=pSettings->ReadFLOAT(section,"ph_skel_fatal_impulse_factor");
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
 	Weapons				= xr_new<CWeaponList> (this);
@@ -351,7 +352,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		ph_Movement.ApplyImpulse(dir,impulse);
 		m_saved_dir.set(dir);
 		m_saved_position.set(position_in_bone_space);
-		m_saved_impulse=impulse;
+		m_saved_impulse=impulse*skel_fatal_impulse_factor;
 		m_saved_element=element;
 	}
 	else if(m_phSkeleton) 
@@ -359,7 +360,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
 	else{
 		m_saved_dir.set(dir);
-		m_saved_impulse=impulse;
+		m_saved_impulse=impulse*skel_fatal_impulse_factor;
 		m_saved_element=element;
 		m_saved_position.set(position_in_bone_space);
 	}
