@@ -52,7 +52,7 @@ public:
         o_Angle.set					(0.f,0.f,0.f);
         o_Position.set				(0.f,0.f,0.f);
 		m_bALifeControl				= false;
-		m_wVersion					= SPAWN_VERSION;
+		m_wVersion					= 0;
 	}
 	
 	virtual							~xrServerEntity()
