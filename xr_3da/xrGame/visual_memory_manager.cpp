@@ -304,8 +304,16 @@ void CVisualMemoryManager::update				(float time_delta)
 	}
 
 	// verifying if object is online
-	xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflivePredicate());
-	m_objects->erase					(J,m_objects->end());
+	{
+		xr_vector<CVisibleObject>::iterator	J = remove_if(m_objects->begin(),m_objects->end(),SRemoveOfflinePredicate());
+		m_objects->erase					(J,m_objects->end());
+	}
+
+	// verifying if object is online
+	{
+		xr_vector<CNotYetVisibleObject>::iterator	J = remove_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),SRemoveOfflinePredicate());
+		m_not_yet_visible_objects.erase				(J,m_not_yet_visible_objects.end());
+	}
 }
 
 bool CVisualMemoryManager::visible(u32 _level_vertex_id, float yaw, float eye_fov) const

@@ -25,8 +25,14 @@ class CVisualMemoryManager :
 	public CVisualMemory
 {
 public:
-	struct SRemoveOfflivePredicate {
+	struct SRemoveOfflinePredicate {
 		bool		operator()						(const CVisibleObject &object) const
+		{
+			VERIFY	(object.m_object);
+			return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
+		}
+		
+		bool		operator()						(const CNotYetVisibleObject &object) const
 		{
 			VERIFY	(object.m_object);
 			return	(!!object.m_object->getDestroy() || object.m_object->H_Parent());
