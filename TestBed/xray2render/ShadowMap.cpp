@@ -7,7 +7,8 @@
 enum COMBINE_MODE
 {
 	CM_NORMAL,
-	CM_DBG_NORMALS
+	CM_DBG_NORMALS,
+	CM_DBG_ACCUMULATOR
 };
 //-----------------------------------------------------------------------------
 // Globals variables and definitions
@@ -106,6 +107,7 @@ class CMyD3DApplication : public CD3DApplication
 	// Shaders
 	R_shader						s_Scene2fat;
 	R_shader						s_CombineDBG_Normals;
+	R_shader						s_CombineDBG_Accumulator;
 	R_shader						s_Light_Direct;
 
 	//  ************************
@@ -159,6 +161,7 @@ public:
 	HRESULT RenderLight_Direct			();
 	HRESULT RenderCombine				(COMBINE_MODE M);
 	HRESULT RenderCombineDBG_Normals	();
+	HRESULT RenderCombineDBG_Accumulator();
 
 	HRESULT UpdateTransform	();
 
@@ -255,7 +258,7 @@ HRESULT CMyD3DApplication::Render		()
 
 		RenderFAT					();
 		RenderLight_Direct			();
-		RenderCombine				(CM_DBG_NORMALS);
+		RenderCombine				(CM_DBG_ACCUMULATOR);
 
         // Output statistics
         m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
@@ -417,9 +420,10 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A8R8G8B8,		&d_Accumulator,&d_Accumulator_S);
 
 	// Create shaders
-	s_Scene2fat.compile			(m_pd3dDevice,"shaders\\D\\fat_base.s");
-	s_CombineDBG_Normals.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
-	s_Light_Direct.compile		(m_pd3dDevice,"shaders\\D\\light_direct.s");
+	s_Scene2fat.compile				(m_pd3dDevice,"shaders\\D\\fat_base.s");
+	s_CombineDBG_Normals.compile	(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
+	s_CombineDBG_Accumulator.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_accumulator.s");
+	s_Light_Direct.compile			(m_pd3dDevice,"shaders\\D\\light_direct.s");
 
 	// Create shadow map texture and retrieve surface
 	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
@@ -760,17 +764,17 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// samplers and texture (NORM)
-	m_pd3dDevice->SetTexture				(0, d_Normal);
-	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
-	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetTexture				(1, d_Normal);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Light_Direct.ps);
 	m_pd3dDevice->SetVertexShader			(s_Light_Direct.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
-	D3DXVECTOR3 vLightDir					= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
+	D3DXVECTOR3 vLightDir					= D3DXVECTOR3(-1.0f, -1.0f, 1.0f);
 	D3DXMATRIX	mInvView;
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	D3DXMatrixInverse						(&mInvView,0,&dm_2view);
@@ -810,6 +814,35 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Normals	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Normals.ps);
 	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Normals.vs);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	cc.flush								(m_pd3dDevice);
+
+	// Render Quad
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Cleanup
+	m_pd3dDevice->SetTexture				(0, NULL);
+
+	return S_OK;
+}
+
+//-----------------------------------------------------------------------------
+// Name: RenderCombineDBG_Accumulator			()
+//-----------------------------------------------------------------------------
+HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
+{
+	// samplers and texture
+	m_pd3dDevice->SetTexture				(0, d_Accumulator);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Accumulator.ps);
+	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Accumulator.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
 	cc.flush								(m_pd3dDevice);
 
