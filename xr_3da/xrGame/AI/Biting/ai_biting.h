@@ -202,11 +202,9 @@ public:
 	virtual BOOL			feel_vision_isRelevant			(CObject* O);
 
 	// path routines
-			void			vfInitSelector					(PathManagers::CAbstractVertexEvaluator &S, bool hear_sound = false);
-			void			Path_GetAwayFromPoint			(const CEntity *pE, Fvector position, float dist);
-			void			Path_CoverFromPoint				(const CEntity *pE, Fvector position);
+			void			InitSelector					(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos);
+			void			Path_GetAwayFromPoint			(Fvector position, float dist);
 			void			Path_ApproachPoint				(Fvector position);
-			void			Path_WalkAroundObj				(const CEntity *pE, Fvector position);
 			
 			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
 			void			SetSelectorPathParams			();
@@ -294,14 +292,8 @@ public:
 	xr_vector<u32>			m_tpaPointNodes;
 	xr_vector<u32>			m_tpaNodes;
 
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorFreeHunting;
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorCover;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorGetAway;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorApproach;
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorHearSnd;
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorWalkAround;
-	
-	PathManagers::CAbstractVertexEvaluator	*m_tSelectorCommon;
 
 
 	EBitingPathState		m_tPathState;
@@ -391,9 +383,6 @@ public:
 	bool IsMovingOnPath			();
 	bool ObjectNotReachable		(const CEntity *entity);
 
-	void InitSelectorCommon		(float dist_opt, float weight_opt, float dist_min, float weight_min, float dist_max, float weight_max);
-	void Path_CommonSelector	(const CEntity *pE, Fvector position);
-
 	Fvector	RandomPosInR		(const Fvector &p, float r);
 
 	void	UpdateVelocities	(STravelParams cur_velocity);
@@ -429,41 +418,6 @@ public:
 };
 
 
-/////////////////////
-// Inline Section
-//////////////////////
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Attack Stops
-IC void CAI_Biting::AS_Init() {
-	_as.active	= false;
-}
-IC void CAI_Biting::AS_Load(LPCSTR section) {
-	_as.min_dist	= pSettings->r_float(section,"as_min_dist");
-	_as.step		= pSettings->r_float(section,"as_step");
-}
-IC void CAI_Biting::AS_Start() {
-	_as.active			= true;
-	_as.prev_prev_hit	= true;
-	_as.prev_hit		= true;
-}
-IC void CAI_Biting::AS_Stop() {
-	_as.active				= false;
-	m_fCurMinAttackDist		= _sd->m_fMinAttackDist;
-}
-IC void CAI_Biting::AS_Check(bool hit_success) {
-	if (!_as.active) return;
-
-	_as.prev_prev_hit	= _as.prev_hit;
-	_as.prev_hit		= hit_success;
-
-	if ((!_as.prev_prev_hit && !_as.prev_prev_hit) && ((m_fCurMinAttackDist >= _as.min_dist) && (m_fCurMinAttackDist >= _as.min_dist + _as.step))) {
-			m_fCurMinAttackDist -= _as.step;
-	} else if (_as.prev_prev_hit && _as.prev_prev_hit && (m_fCurMinAttackDist < _sd->m_fMinAttackDist - _as.step)) {
-			m_fCurMinAttackDist += _as.step;
-	}
-}
-
-IC bool CAI_Biting::AS_Active() {return _as.active;}
+#include "ai_biting_inline.h"
 
 

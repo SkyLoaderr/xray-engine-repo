@@ -13,92 +13,66 @@
 #include "../../game_graph.h"
 #include "../../game_level_cross_table.h"
 
-#define MIN_RANGE_SEARCH_TIME_INTERVAL	 4000		// 2 сек
-#define TIME_TO_SEARCH					60000
-#define DODGE_AMPLITUDE					.5f
-#define MAX_DODGE_DISTANCE				1.5f
-
 
 /////////////////////////////////////////////////////////////////////////////////////
 // ‘ункци€ InitSelector
-void CAI_Biting::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, bool hear_sound)
+void CAI_Biting::InitSelector(PathManagers::CAbstractVertexEvaluator &S, Fvector target_pos)
 {
 	S.m_dwCurTime		= m_current_update;
 	S.m_tMe				= this;
 	S.m_tpMyNode		= level_vertex();
 	S.m_tMyPosition		= Position();
-
-	if (!hear_sound && m_tEnemy.obj) {
-		S.m_tEnemyPosition	= m_tEnemy.position;
-	}
-	
-	S.m_dwStartNode		= level_vertex_id();		// текущий узел
+	S.m_dwStartNode		= level_vertex_id();		
 	S.m_tStartPosition	= Position();
+
+	S.m_tEnemyPosition	= target_pos;
+	S.m_tEnemy			= 0;
 }
 
 // high level 
-void CAI_Biting::Path_GetAwayFromPoint(const CEntity *pE, Fvector position, float dist)
+void CAI_Biting::Path_GetAwayFromPoint(Fvector position, float dist)
 {
-	if (pE) {
-		m_tEnemy.Set(pE,0);									// forse enemy selection
-		vfInitSelector(*m_tSelectorGetAway, false);
-	} else {
-		vfInitSelector(*m_tSelectorGetAway, true);
-		m_tSelectorGetAway->m_tEnemyPosition = position;
-	}
-	
-	float dist_to_point = position.distance_to(Position());
-
-	m_tSelectorGetAway->m_fMinEnemyDistance = dist_to_point + 3.f;
-	m_tSelectorGetAway->m_fMaxEnemyDistance = m_tSelectorGetAway->m_fMinEnemyDistance + m_tSelectorGetAway->m_fSearchRange + dist;
-	m_tSelectorGetAway->m_fOptEnemyDistance = m_tSelectorGetAway->m_fMaxEnemyDistance;
+//	Fvector target_pos;
+//	Fvector dir;
+//	dir.sub(Position(), position);
+//	if (fsimilar(dir.square_magnitude(),0.f)) dir.set(0.f,0.f,1.f);
+//	dir.normalize();	
+//	target_pos.mad(position,dir,dist);
+//	
 
 	CLevelLocationSelector::set_evaluator(m_tSelectorGetAway);
-}
+	InitSelector(*m_tSelectorGetAway, position);
 
-
-void CAI_Biting::Path_CoverFromPoint(const CEntity *pE, Fvector position)
-{
-//	if (pE) {
-//		m_tEnemy.Set(pE,0); 									// forse enemy selection
-//		vfInitSelector(*m_tSelectorCover, false);
-//	} else {
-//		vfInitSelector(*m_tSelectorCover, true);
-//		m_tSelectorCover->m_tEnemyPosition = position;
-//	}
-//
-//	float dist_to_point = position.distance_to(Position());
-//
-//	m_tSelectorCover->m_fMinEnemyDistance = dist_to_point + 3.f;
-//	m_tSelectorCover->m_fMaxEnemyDistance = dist_to_point + m_tSelectorCover->m_fSearchRange;
-//	m_tSelectorCover->m_fOptEnemyDistance = m_tSelectorCover->m_fMaxEnemyDistance;
-//
-//	vfChoosePointAndBuildPath(m_tSelectorCover, 0, true, 0, rebuild_time);
+	CLevelLocationSelector::set_query_interval(3000);	
 }
 
 void CAI_Biting::Path_ApproachPoint(Fvector position)
 {
-	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
+	bool new_params = false;
 
-	vfInitSelector(*m_tSelectorApproach, true);
-	m_tSelectorApproach->m_tEnemyPosition = position;
-	m_tSelectorApproach->m_tEnemy		  = 0;
-}
+	// перестраивать если дошЄл до конца пути
+	if (NeedRebuildPath(2,0.5f)) new_params = true;
+	// перестраивать если вышел временной квант
+	if (m_tSelectorApproach->m_dwCurTime  + 2000 < m_dwCurrentTime) new_params = true;
 
-void CAI_Biting::Path_WalkAroundObj(const CEntity *pE, Fvector position)
-{
-	if (pE) {
-		m_tEnemy.Set(pE,0); 									// forse enemy selection
-		vfInitSelector(*m_tSelectorWalkAround, false);
+	if (!new_params) return;
+
+	// если нода в пр€мой видимости - не использовать селектор
+	u32 node_id = ai().level_graph().check_position_in_direction(level_vertex_id(),Position(),position);
+	if (node_id != u32(-1)) {
+		set_level_dest_vertex	(node_id);
+		set_dest_position		(position);
+
+		// хранить в данном селекторе врем€ последнего перестраивани€ пути
+		m_tSelectorApproach->m_dwCurTime = m_dwCurrentTime;
 	} else {
+		CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
+		InitSelector(*m_tSelectorApproach, position);
+		
+		CLevelLocationSelector::set_query_interval(3000);	
 
-		vfInitSelector(*m_tSelectorWalkAround, true);
-		m_tSelectorWalkAround->m_tEnemyPosition = position;
 	}
-
-	CLevelLocationSelector::set_evaluator(m_tSelectorWalkAround);
 }
-
 
 
 // –азвернуть объект в направление движени€ по пути
@@ -210,6 +184,7 @@ bool CAI_Biting::NeedRebuildPath(float dist_to_end)
 	float cur_dist_to_end = 0.f;
 	for (u32 i=CDetailPathManager::curr_travel_point_index(); i<CDetailPathManager::path().size()-1; i++) {
 		cur_dist_to_end += CDetailPathManager::path()[i].position.distance_to(CDetailPathManager::path()[i+1].position);
+		if (cur_dist_to_end > dist_to_end) break;
 	}
 
 	if (!IsMovingOnPath() || (cur_dist_to_end < dist_to_end)) return true;
@@ -229,30 +204,6 @@ bool CAI_Biting::ObjectNotReachable(const CEntity *entity)
 	if (MotionMan.BadMotionFixed()) return true;
 
 	return false;
-}
-
-void CAI_Biting::InitSelectorCommon(float dist_opt, float weight_opt, float dist_min, float weight_min, float dist_max, float weight_max)
-{
-	m_tSelectorCommon->m_fMinEnemyDistance			= dist_min;
-	m_tSelectorCommon->m_fMaxEnemyDistance			= dist_max;
-	m_tSelectorCommon->m_fOptEnemyDistance			= dist_opt;
-
-	m_tSelectorCommon->m_fMinEnemyDistanceWeight	= weight_min;
-	m_tSelectorCommon->m_fMaxEnemyDistanceWeight	= weight_max;
-	m_tSelectorCommon->m_fOptEnemyDistanceWeight	= weight_opt;
-}
-
-void CAI_Biting::Path_CommonSelector(const CEntity *pE, Fvector position)
-{
-	if (pE) {
-		m_tEnemy.Set(pE,0); 									// forse enemy selection
-		vfInitSelector(*m_tSelectorCommon, false);
-	} else {
-		vfInitSelector(*m_tSelectorCommon, true);
-		m_tSelectorCommon->m_tEnemyPosition = position;
-	}
-	
-	CLevelLocationSelector::set_evaluator(m_tSelectorCommon);
 }
 
 Fvector CAI_Biting::RandomPosInR(const Fvector &p, float R)

@@ -16,21 +16,11 @@ void CAI_Biting::Think()
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 	
-//	CTimer T; 
-//	Msg("-----------------------------------------------------------------------------");
-//	Msg("Monster = [%s]", cName());
-//	Msg("-----------------------------------------------------------------------------");	
-
 	MotionStats->update						();
 
-//	T.Start();
 	vfUpdateParameters						();
-//	Msg("* UpdateParameters:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
-//	T.Start();
-	// if gliding -return;
 	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
-//	Msg("* if (JumpState):: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 	// pre-update path parameters
 	enable_movement							(true);
@@ -43,46 +33,30 @@ void CAI_Biting::Think()
 		SetState							(stateRest);
 	}
 
-//	T.Start();
 	// Squad calculations
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
 	pSquad->UpdateMonsterData(this,const_cast<CEntity *>(m_tEnemy.obj));
 	if ((pSquad->GetLeader() == this)) {
 		pSquad->UpdateDecentralized();
 	} 
-//	Msg("* UpdateDecentralized:: Elapsed time (sec): %f",T.GetElapsed_sec());
-
-//	MotionMan.m_tAction = ACT_WALK_FWD;
-//	//Path_ApproachPoint(Level().CurrentEntity()->Position());
-//	set_path_type (CMovementManager::ePathTypeLevelPath);
-//	set_dest_position(Level().CurrentEntity()->Position());
-//	set_level_dest_vertex(dynamic_cast<CAI_ObjectLocation *>(Level().CurrentEntity())->level_vertex_id());
-
-
-	SetupVelocityMasks(false);
 
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
 
-//	T.Start();
 	// update path
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
 	CDetailPathManager::set_try_min_time	(b_try_min_time); 
+	
 	update_path								();
-//	Msg("* Update Path:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
-//	T.Start();
 	PreprocessAction						();
 	MotionMan.ProcessAction					();
-//	Msg("* Process Action:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 	SetVelocity								();
 	set_desirable_speed						(m_fCurSpeed);
 	
 	// process sound
-//	T.Start();
 	ControlSound							(m_current_update);
-//	Msg("* Control Sound:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 	// Debuging
 #ifdef DEBUG

@@ -21,8 +21,6 @@ CAI_Biting::CAI_Biting()
 
 	m_tSelectorApproach				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 	m_tSelectorGetAway				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
-	m_tSelectorWalkAround			= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
-	m_tSelectorCommon				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 
 
 #ifdef DEBUG
@@ -36,8 +34,6 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(m_pPhysics_support);
 	xr_delete(m_tSelectorApproach);
 	xr_delete(m_tSelectorGetAway);
-	xr_delete(m_tSelectorWalkAround);
-	xr_delete(m_tSelectorCommon);
 
 #ifdef DEBUG
 	xr_delete(HDebug);
@@ -132,7 +128,6 @@ void CAI_Biting::Load(LPCSTR section)
 	
 	m_tSelectorApproach->Load		(section,"selector_approach");
 	m_tSelectorGetAway->Load		(section,"selector_getaway");
-	m_tSelectorWalkAround->Load		(section,"selector_walk_around");
 
 	LoadSounds						(section);
 

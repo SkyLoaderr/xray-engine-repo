@@ -172,11 +172,13 @@ namespace PathManagers {
 						CVertexEvaluator			()
 		{
 			m_path			= 0;
+			m_dwCurTime		= 0;
 		}
 
 						CVertexEvaluator			(LPCSTR section, LPCSTR Name)
 		{
 			Load			(section, Name);
+			m_dwCurTime		= 0;
 		}
 
 		virtual void	Load						(LPCSTR section, LPCSTR Name)

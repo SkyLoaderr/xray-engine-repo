@@ -177,7 +177,7 @@ void CBitingEat::Run()
 
 		if (IS_NEED_REBUILD()) {
 			pMonster->SetPathParams(pMonster->level_vertex_id(),pMonster->Position()); 
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 30);
+			pMonster->Path_GetAwayFromPoint(pCorpse->Position(), 20);
 		}	
 
 		if (cur_dist > 10.f || (IS_NEED_REBUILD() && (cur_dist > 3.f))) {
@@ -238,7 +238,7 @@ void CBitingEat::Run()
 		
 		if (IS_NEED_REBUILD()) {
 			pMonster->SetPathParams(pMonster->level_vertex_id(),pMonster->Position()); 
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 20);
+			pMonster->Path_GetAwayFromPoint(pCorpse->Position(), 20);
 		}	
 
 		// если не может тащить

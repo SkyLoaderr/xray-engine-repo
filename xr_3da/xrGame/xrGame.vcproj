@@ -808,6 +808,9 @@
 						RelativePath="AI\Biting\ai_biting_fsm.cpp">
 					</File>
 					<File
+						RelativePath=".\ai\biting\ai_biting_inline.h">
+					</File>
+					<File
 						RelativePath="AI\Biting\ai_biting_misc.cpp">
 					</File>
 					<File
@@ -851,6 +854,9 @@
 						</File>
 						<File
 							RelativePath=".\ai\biting\ai_biting_state_panic.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_state_panic.h">
 						</File>
 						<File
 							RelativePath=".\ai\biting\ai_biting_state_rest.cpp">
@@ -1014,6 +1020,24 @@
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_motion_stats.h">
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_movement.cpp">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCLCompilerTool"/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\ai\ai_monster_movement.h">
+						<FileConfiguration
+							Name="Debug|Win32"
+							ExcludedFromBuild="TRUE">
+							<Tool
+								Name="VCCustomBuildTool"/>
+						</FileConfiguration>
 					</File>
 					<File
 						RelativePath=".\ai\ai_monster_share.h">

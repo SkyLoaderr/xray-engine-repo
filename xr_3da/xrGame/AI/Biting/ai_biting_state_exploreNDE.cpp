@@ -30,13 +30,12 @@ void CBitingExploreNDE::Init()
 
 void CBitingExploreNDE::Run()
 {
-	//UpdateFlags();
 
 	// обновить позицию звука
 	SoundElem se;
 	pMonster->GetSound(se);
-	if ((se.who != m_tSound.who) || (se.position.distance_to(m_tSound.position) > 10.f)) Init();
-	if (!target_pos.similar(se.position,3.0)) target_pos = se.position;
+	if ((se.who != m_tSound.who) || (se.position.distance_to(m_tSound.position) > 5.f)) Init();
+	else m_tSound = se;
 
 
 	switch (m_tAction) {
@@ -50,17 +49,15 @@ void CBitingExploreNDE::Run()
 		if (angle_difference(pMonster->m_body.target.yaw, pMonster->m_body.current.yaw) < PI_DIV_6) m_tAction = ACTION_GOTO_SOUND_SOURCE;
 		break;
 	
-	case ACTION_GOTO_SOUND_SOURCE:			{ // идти к источнику
+	case ACTION_GOTO_SOUND_SOURCE:			// идти к источнику
 		LOG_EX("nde: GOTO_SOUND_SOURCE");
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
-		
-		pMonster->Path_ApproachPoint(target_pos);
+		pMonster->Path_ApproachPoint(m_tSound.position);
 		pMonster->SetSelectorPathParams();
 
 		// если монстр дошел до позиции звука, перейти к следующему заданию
-		if (m_tSound.position.distance_to(pMonster->Position()) < 1.5f) m_tAction = ACTION_LOOK_AROUND; 
-											}
+		if (m_tSound.position.distance_to(pMonster->Position()) < 1.0f) m_tAction = ACTION_LOOK_AROUND; 
 		break;
 	case ACTION_LOOK_AROUND:
 		LOG_EX("nde: LOOK_AROUND");
@@ -71,21 +68,3 @@ void CBitingExploreNDE::Run()
 
 	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
 }
-
-//void CBitingExploreNDE::UpdateFlags()
-//{
-//	const xr_vector<SoundElem>	&sounds = pMonster->GetSoundData();
-//	
-//	SoundElem cur_sound;
-//	pMonster->GetSound(cur_sound);
-//
-//	if (m_dwStateStartedTime != m_dwCurrentTime) {
-//		if ((cur_sound.type == m_tSound.time) && (cur_sound.time != m_tSound.time)) {
-//			flags |= SF_MANY_DIFFERENT_SOUNDS;
-//		}
-//	}
-//
-////	if ()
-//
-//}
-

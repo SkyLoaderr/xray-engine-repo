@@ -32,12 +32,11 @@ class CBitingAttack : public IState {
 
 	TTime			LastTimeRebuild;				// время последнего обновления пути
 
-	u32				init_flags;
-	u32				frame_flags;
-	u32				flags;
+	Flags32			init_flags;
+	Flags32			frame_flags;
+	Flags32			flags;
 
 	bool			b_silent_run;					// не издавать звука во время бега
-
 	bool			b_in_threaten;
 
 	CJumping		*pJumping;

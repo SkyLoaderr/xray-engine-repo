@@ -14,13 +14,11 @@
 class CAI_Biting;
 
 #define IS_NEED_REBUILD() pMonster->NeedRebuildPath(2,0.5f)
-#define is_(param)		((flags & param) == param)
-#define not_(param)		((flags & param) != param)
-
 
 
 #include "ai_biting_state_attack.h"
 #include "ai_biting_state_exploreNDE.h"
+#include "ai_biting_state_panic.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest class
@@ -150,32 +148,6 @@ private:
 	virtual void	Run				();
 };
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingPanic class	// убегать от противника
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBitingPanic : public IState {
-	CAI_Biting		*pMonster;
-
-	VisionElem		m_tEnemy;
-
-	// implementation of 'face the most open area'
-	bool			bFacedOpenArea;
-	Fvector			cur_pos;			
-	Fvector			prev_pos;
-	TTime			m_dwStayTime;
-
-	bool			m_bInvisibility;
-
-	typedef IState inherited;
-public:
-					CBitingPanic			(CAI_Biting *p, bool invisibility);
-
-	virtual void	Reset			();	
-
-private:
-	virtual void	Init			();
-	virtual void	Run				();
-};
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingExploreDNE class	// Explore danger-non-expedient enemy

@@ -55,7 +55,7 @@ void CBitingAttack::Init()
 	UpdateInitFlags();
 
 	// ”становка дистанции аттаки
-	if ((init_flags & AF_ATTACK_RAT) == AF_ATTACK_RAT) {
+	if (init_flags.is(AF_ATTACK_RAT)) {
 		m_fDistMin = 0.7f;				// todo: make as ltx parameters
 		m_fDistMax = 2.8f;				// todo: make as ltx parameters
 	}
@@ -91,11 +91,11 @@ void CBitingAttack::Run()
 
 	
 	UpdateFrameFlags();
-	flags = frame_flags | init_flags;
+	flags.or(frame_flags, init_flags.get());
 
 	
 	// обновить минимальную и максимальную дистанции до врага
-	if (not_(AF_ATTACK_RAT)) {
+	if (!flags.is(AF_ATTACK_RAT)) {
 		m_fDistMin = pMonster->m_fCurMinAttackDist;
 		m_fDistMax = pMonster->_sd->m_fMaxAttackDist - (pMonster->_sd->m_fMinAttackDist - pMonster->m_fCurMinAttackDist);
 	}
@@ -119,13 +119,13 @@ void CBitingAttack::Run()
 	
 	
 	// если враг не виден на прот€жении 1 сек - бежать к нему
-	if (not_(AF_SEE_ENEMY) && (m_tEnemy.time + 1000 < m_dwCurrentTime))	m_tAction = ACTION_RUN;
+	if (!flags.is(AF_SEE_ENEMY) && (m_tEnemy.time + 1000 < m_dwCurrentTime))	m_tAction = ACTION_RUN;
 	
 	// ѕроверить, достижим ли противник
-	if (is_(AF_ENEMY_IS_NOT_REACHABLE) && !b_attack_melee) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
+	if (flags.is(AF_ENEMY_IS_NOT_REACHABLE) && !b_attack_melee) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
 	
 	// проверить на возможность прыжка
-	if (is_(AF_HAS_JUMP_ABILITY)) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
+	if (flags.is(AF_HAS_JUMP_ABILITY)) pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj);
 	
 	// восстановить некоторые переменные
 	if (!b_attack_melee) bEnableBackAttack = true;
@@ -161,7 +161,7 @@ void CBitingAttack::Run()
 				if (alg_type == SAA_DEVIATION) {
 					if (squad_ai_last_updated !=0 ) {		// нова€ позици€
 						pMonster->Path_ApproachPoint(target);
-						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
+						pMonster->SetSelectorPathParams();
 						squad_target_selected = true;
 						pMonster->set_use_dest_orientation	(false);
 					}
@@ -210,12 +210,12 @@ void CBitingAttack::Run()
 				pMonster->FaceTarget(m_tEnemy.obj);
 			DO_IN_TIME_INTERVAL_END();
 			
-			if (is_(AF_CAN_ATTACK_FROM_BACK)) {
+			if (flags.is(AF_CAN_ATTACK_FROM_BACK)) {
 				pMonster->MotionMan.SetSpecParams(ASP_BACK_ATTACK);
 				bEnableBackAttack = false;
 			}
 
-			if (is_(AF_ATTACK_RAT)) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
+			if (flags.is(AF_ATTACK_RAT)) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 
 			pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
 
@@ -257,16 +257,9 @@ void CBitingAttack::Run()
 		// **********************************
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 
-			DO_IN_TIME_INTERVAL_BEGIN(LastTimeRebuild,500 + 50.f * dist);
-				bNeedRebuild = true; 
-			DO_IN_TIME_INTERVAL_END();
-			if (IS_NEED_REBUILD()) bNeedRebuild = true;
-			
-			if (bNeedRebuild) {
-				pMonster->Path_ApproachPoint(m_tEnemy.obj->Position());
-				pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-				pMonster->set_use_dest_orientation	(false);
-			}
+			pMonster->Path_ApproachPoint(m_tEnemy.obj->Position());
+			pMonster->SetSelectorPathParams();
+			pMonster->set_use_dest_orientation	(false);
 			
 			pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay, SND_PRIORITY_NORMAL);
 
@@ -275,7 +268,7 @@ void CBitingAttack::Run()
 
 
 	// ѕроверить возможность невидимости
-	if (is_(AF_HAS_INVISIBILITY_ABILITY) && (ACTION_THREATEN != m_tAction)) {
+	if (flags.is(AF_HAS_INVISIBILITY_ABILITY) && (ACTION_THREATEN != m_tAction)) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
 		CActor			*pA  =  dynamic_cast<CActor*>(Level().CurrentEntity());
 
@@ -292,7 +285,7 @@ void CBitingAttack::Run()
 	}
 	
 
-	init_flags		^= AF_NEW_ENEMY;
+	init_flags.set(AF_NEW_ENEMY,FALSE);
 	m_tPrevAction	= m_tAction; 
 	
 }
@@ -318,7 +311,7 @@ bool CBitingAttack::CheckStartThreaten()
 	if (b_in_threaten) return false;
 
 	// проверка флагов
-	if (not_(AF_LOW_MORALE) || is_(AF_ENEMY_DOESNT_SEE_ME) || is_(AF_ENEMY_GO_FARTHER_FAST) || is_(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
+	if (!flags.is(AF_LOW_MORALE) || flags.is(AF_ENEMY_DOESNT_SEE_ME) || flags.is(AF_ENEMY_GO_FARTHER_FAST) || flags.is(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
 		return false;
 	}
 
@@ -352,7 +345,7 @@ bool CBitingAttack::CheckEndThreaten()
 	if (angle_difference(angle_normalize(-pMonster->m_body.current.yaw),h) > PI_DIV_6) return true;
 	
 	// проверка флагов
-	if (not_(AF_LOW_MORALE) || is_(AF_ENEMY_DOESNT_SEE_ME) || is_(AF_ENEMY_GO_FARTHER_FAST) || is_(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
+	if (!flags.is(AF_LOW_MORALE) || flags.is(AF_ENEMY_DOESNT_SEE_ME) || flags.is(AF_ENEMY_GO_FARTHER_FAST) || flags.is(AF_REMEMBER_HIT_FROM_THIS_ENEMY)) {
 		return true;
 	}
 
@@ -388,7 +381,7 @@ bool CBitingAttack::CheckThreaten()
 
 bool CBitingAttack::CheckSteal()
 {
-	if (not_(AF_ATTACK_RAT) &&  is_(AF_THIS_IS_THE_ONLY_ENEMY) &&  is_(AF_ENEMY_DOESNT_SEE_ME) && not_(AF_ENEMY_GO_FARTHER_FAST)) {
+	if (!flags.is(AF_ATTACK_RAT) &&  flags.is(AF_THIS_IS_THE_ONLY_ENEMY) &&  flags.is(AF_ENEMY_DOESNT_SEE_ME) && !flags.is(AF_ENEMY_GO_FARTHER_FAST)) {
 		b_silent_run = true;
 		
 		// ¬ычислить отклонение по пути
@@ -453,47 +446,47 @@ bool CBitingAttack::CanAttackFromBack()
 
 void CBitingAttack::UpdateInitFlags() 
 {
-	init_flags = 0;
+	init_flags.zero();
 
 	const CAI_Rat *tpRat = dynamic_cast<const CAI_Rat *>(m_tEnemy.obj);
-	if (tpRat) init_flags |= AF_ATTACK_RAT;
+	if (tpRat) init_flags.or(AF_ATTACK_RAT);
 
 	// определить способности
 	pJumping = dynamic_cast<CJumping *>(pMonster);
-	if (pJumping)			init_flags |= AF_HAS_JUMP_ABILITY;
-	if (m_bInvisibility)	init_flags |= AF_HAS_INVISIBILITY_ABILITY;
+	if (pJumping)			init_flags.or(AF_HAS_JUMP_ABILITY);
+	if (m_bInvisibility)	init_flags.or(AF_HAS_INVISIBILITY_ABILITY);
 
-	init_flags |= AF_NEW_ENEMY;
+	init_flags.or(AF_NEW_ENEMY);
 }
 
 void CBitingAttack::UpdateFrameFlags() 
 {
-	frame_flags = 0;
+	frame_flags.zero();
 
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME)		
-		frame_flags |= AF_ENEMY_DOESNT_SEE_ME;
+		frame_flags.or(AF_ENEMY_DOESNT_SEE_ME);
 	
 	if ((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) 	
-		frame_flags |= AF_ENEMY_GO_FARTHER_FAST;
+		frame_flags.or(AF_ENEMY_GO_FARTHER_FAST);
 	
 	if (pMonster->IsDangerousEnemy(m_tEnemy.obj))											
-		frame_flags |= AF_REMEMBER_HIT_FROM_THIS_ENEMY;
+		frame_flags.or(AF_REMEMBER_HIT_FROM_THIS_ENEMY);
 	
 	if (pMonster->GetEnemyNumber()==1)		
-		frame_flags |= AF_THIS_IS_THE_ONLY_ENEMY;
+		frame_flags.or(AF_THIS_IS_THE_ONLY_ENEMY);
 	
 	if (pMonster->ObjectNotReachable(m_tEnemy.obj))
-		frame_flags |= AF_ENEMY_IS_NOT_REACHABLE;
+		frame_flags.or(AF_ENEMY_IS_NOT_REACHABLE);
 
 	// флаги движени€ по пути
-	if (pMonster->IsMovingOnPath())			frame_flags |= AF_GOOD_MOVEMENT;
-	if (IS_NEED_REBUILD())					frame_flags |= AF_NEED_REBUILD_PATH;
+	if (pMonster->IsMovingOnPath())			frame_flags.or(AF_GOOD_MOVEMENT);
+	if (IS_NEED_REBUILD())					frame_flags.or(AF_NEED_REBUILD_PATH);
 
-	if (pMonster->GetEntityMorale() < 0.8f) frame_flags |= AF_LOW_MORALE;
+	if (pMonster->GetEntityMorale() < 0.8f) frame_flags.or(AF_LOW_MORALE);
 
-	if (CanAttackFromBack())				frame_flags |= AF_CAN_ATTACK_FROM_BACK;
+	if (CanAttackFromBack())				frame_flags.or(AF_CAN_ATTACK_FROM_BACK);
 
-	if (m_tEnemy.time == m_dwCurrentTime)	frame_flags |= AF_SEE_ENEMY;
+	if (m_tEnemy.time == m_dwCurrentTime)	frame_flags.or(AF_SEE_ENEMY);
 
 }
 

@@ -15,30 +15,15 @@ CBitingPanic::CBitingPanic(CAI_Biting *p, bool invisibility)
 	SetPriority(PRIORITY_HIGH);
 }
 
-void CBitingPanic::Reset()
-{
-	inherited::Reset();
-
-	m_tEnemy.obj	= 0;
-
-	cur_pos.set		(0.f,0.f,0.f);
-	prev_pos		= cur_pos;
-	bFacedOpenArea	= false;
-	m_dwStayTime	= 0;
-}
-
 void CBitingPanic::Init()
 {
-	LOG_EX("panic init");
-
+	LOG_EX("PANIC:: Init");
 	inherited::Init();
 
 	// Получить врага
-	m_tEnemy = pMonster->m_tEnemy;
+	m_tEnemy		= pMonster->m_tEnemy;
 
-	SetInertia(15000);
-	pMonster->SetMemoryTime(15000);
-
+	m_tAction		= ACTION_RUN;
 }
 
 void CBitingPanic::Run()
@@ -46,14 +31,48 @@ void CBitingPanic::Run()
 	if (pMonster->m_tEnemy.obj != m_tEnemy.obj) Init();
 	else m_tEnemy = pMonster->m_tEnemy;
 	
-	cur_pos = pMonster->Position();
+	Fvector dir;
+	dir.sub(pMonster->Position(), m_tEnemy.position);
+	dir.normalize();
+	Fvector target_pos;
+	target_pos.mad(pMonster->Position(), dir, 20);
 
-	// implementation of 'face the most open area'
-	if (!bFacedOpenArea && cur_pos.similar(prev_pos) && (0 != m_dwStayTime) && (m_dwStayTime + 300 < m_dwCurrentTime) && (m_dwStateStartedTime + 3000 < m_dwCurrentTime)) {
-		bFacedOpenArea	= true;
-		pMonster->enable_movement	(false);
-		pMonster->m_body.target.yaw = angle_normalize(pMonster->m_body.target.yaw + PI);
-	} 
+	switch (m_tAction) {
+		
+		/**************/
+		case ACTION_RUN:
+		/**************/
+		
+			LOG_EX("PANIC:: Run away");
+			pMonster->MotionMan.m_tAction	= ACT_RUN;
+
+			pMonster->Path_ApproachPoint	(target_pos);	
+
+			// если не видел врага > 8 сек 
+			if (m_tEnemy.time + 8000 < m_dwCurrentTime) {
+				m_tAction = ACTION_FACE_BACK_SCARED;
+				pMonster->m_body.target.yaw = angle_normalize(pMonster->m_body.target.yaw + PI);
+			}
+
+			break;
+		
+		/***************************/
+		case ACTION_FACE_BACK_SCARED:
+		/***************************/
+
+			LOG_EX("PANIC:: Face Back scared!");
+			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
+			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
+			pMonster->enable_movement		(false);
+
+			// если враг виден
+			if (m_tEnemy.time + 1000 > m_dwCurrentTime) m_tAction = ACTION_RUN;
+
+			break;
+	}
+	
+
+	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
 
 	if (m_bInvisibility) {
 		CAI_Bloodsucker *pBS =	dynamic_cast<CAI_Bloodsucker *>(pMonster);
@@ -69,26 +88,5 @@ void CBitingPanic::Run()
 		}
 	}
 
-	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
-
-	if (!cur_pos.similar(prev_pos)) {
-		bFacedOpenArea = false;
-		m_dwStayTime = 0;
-	} else if (0 == m_dwStayTime) m_dwStayTime = m_dwCurrentTime;
-
-	if (!bFacedOpenArea) {
-			pMonster->MotionMan.m_tAction = ACT_RUN;
-	} else {
-		if (!IS_NEED_REBUILD())	pMonster->MotionMan.m_tAction = ACT_RUN;
-		else  {
-			pMonster->MotionMan.SetSpecParams(ASP_STAND_SCARED);
-			pMonster->MotionMan.m_tAction	= ACT_STAND_IDLE;
-		}
-	}
-	
-	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-	pMonster->Path_GetAwayFromPoint(m_tEnemy.obj,m_tEnemy.position, 30);	
-
-	prev_pos = cur_pos;
 }
 

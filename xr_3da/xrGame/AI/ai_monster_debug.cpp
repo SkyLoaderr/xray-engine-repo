@@ -3,10 +3,10 @@
 #include "../entity_alive.h"
 #include "../hudmanager.h"
 
-#define DISABLE_MONSTER_DEBUG
-#ifdef DEBUG
-	#undef	DISABLE_MONSTER_DEBUG
-	#define DISABLE_MONSTER_DEBUG
+#define	DISABLE_MONSTER_DEBUG
+
+#ifdef _DEBUG
+	#undef DISABLE_MONSTER_DEBUG
 #endif
 
 CMonsterDebug::CMonsterDebug(CEntityAlive *pM, const Fvector &shift_vec, float height)
@@ -38,13 +38,8 @@ void CMonsterDebug::M_Add(u32 index, LPCSTR str, u32 col)
 
 void CMonsterDebug::M_Update()
 { 
-
-
+#ifndef DISABLE_MONSTER_DEBUG	
 	if (!active) return;
-
-#ifdef DISABLE_MONSTER_DEBUG
-	if (active) return;
-#endif
 
 	Fmatrix res;
 	res.mul(Device.mFullTransform,pMonster->XFORM());
@@ -64,7 +59,7 @@ void CMonsterDebug::M_Update()
 		HUD().pFontMedium->OutSet(x,y-=floor_height);
 		HUD().pFontMedium->OutNext(_data[i].text);
 	}
-
+#endif
 }
 
 //-------------------------------------------------------------------------------------
@@ -107,11 +102,8 @@ void CMonsterDebug::L_Clear()
 
 void CMonsterDebug::L_Update()
 {
+#ifndef DISABLE_MONSTER_DEBUG	
 	if (!active) return;
-
-#ifdef DISABLE_MONSTER_DEBUG
-	if (active) return;
-#else
 
 	for (u32 i=0; i<_points.size(); i++) {
 		RCache.dbg_DrawAABB(_points[i].pos,_points[i].box_size,_points[i].box_size,_points[i].box_size,_points[i].col);
@@ -155,15 +147,13 @@ void CMonsterDebug::HT_Clear()
 
 void CMonsterDebug::HT_Update()
 {
+#ifndef DISABLE_MONSTER_DEBUG	
 	if (!active) return;
-#ifdef DISABLE_MONSTER_DEBUG
-	if (active) return;
-#endif
-
 
 	for (u32 i=0; i<_text.size(); i++) {
 		HUD().pFontMedium->OutSet(_text[i].x,_text[i].y);
 		HUD().pFontMedium->OutNext(_text[i].text);
 	}
+#endif
 }
 

@@ -76,7 +76,6 @@ void CMonsterSound::PlaySound(ESoundType sound_type)
 
 	current = &sv->at(::Random.randI((int)sv->size()));
 	current->play_at_pos(pMonster,pMonster->eye_matrix.c);
-	//current->feedback->set_volume(1.f);
 
 	delay			= 0;
 	time_next_play	= 0;
@@ -90,6 +89,5 @@ void CMonsterSound::PlayBkgndSound()
 {
 	bkgnd = &sndBkground.at(::Random.randI((int)sndBkground.size()));
 	bkgnd->play_at_pos(Level().CurrentEntity(),Level().CurrentEntity()->Position());
-	///bkgnd->feedback->set_volume(1.f);
 }
 
