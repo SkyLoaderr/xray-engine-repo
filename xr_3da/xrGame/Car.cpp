@@ -347,13 +347,20 @@ void CCar::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, flo
 
 }
 
+
 void CCar::ApplyDamage(u16 level)
 {
 	CDamagableItem::ApplyDamage(level);
 	switch(level)
 	{
 		case 1: m_damage_particles.Play1(this);break;
-		case 2: m_damage_particles.Play2(this);break;
+		case 2: 
+			{
+				m_damage_particles.Play2(this);
+				xr_map<u16,SDoor>::iterator	   i=m_doors.begin(),e=m_doors.end();
+				for(;e!=i;++i)i->second.Open();
+			}
+											   break;
 		case 3: m_fuel=0.f;					   break;	
 	}
 
