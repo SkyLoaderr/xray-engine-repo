@@ -174,7 +174,7 @@ extern "C" {
 		case CLSID_HUDMANAGER:			P = new CHUDManager();			break;
 		case CLSID_OBJECT_ACTOR:		P = new CActor();				break;
 		case CLSID_TARGET:				P = new CCustomTarget();		break;
-//		case CLSID_SPECTATOR:			P = new CSpectator();			break;
+		case CLSID_SPECTATOR:			P = new CSpectator();			break;
 
 		case CLSID_AI_RAT:				P = new CAI_Rat();				break;
 		case CLSID_AI_SOLDIER:			P =	new CAI_Soldier();			break;
