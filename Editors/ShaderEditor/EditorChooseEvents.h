@@ -61,13 +61,13 @@ void __stdcall  FillObject(ChooseItemVec& items, void* param)
 void __stdcall  SelectObject(SChooseItem* item, PropItemVec& info_items)
 {
 	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(*item->name);
-    thm->FillInfo					(info_items);
+    if (thm->Valid()) thm->FillInfo	(info_items);
     xr_delete						(thm);
 }
 void __stdcall  DrawObjectTHM(LPCSTR name, HDC hdc, const Irect& r)
 {
 	EObjectThumbnail* thm			= xr_new<EObjectThumbnail>(name);
-    thm->Draw						(hdc,r);
+    if (thm->Valid()) thm->Draw		(hdc,r);
     xr_delete						(thm);
 }
 //---------------------------------------------------------------------------
@@ -169,13 +169,13 @@ void __stdcall  FillTexture(ChooseItemVec& items, void* param)
 void __stdcall  SelectTexture(SChooseItem* item, PropItemVec& info_items)
 {
 	ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(*item->name);
-    thm->FillInfo					(info_items);
+    if (thm->Valid()) thm->FillInfo	(info_items);
     xr_delete						(thm);
 }
 void __stdcall  DrawTextureTHM(LPCSTR name, HDC hdc, const Irect& r)
 {
 	ETextureThumbnail* thm			= xr_new<ETextureThumbnail>(name);
-    thm->Draw						(hdc,r);
+    if (thm->Valid()) thm->Draw		(hdc,r);
     xr_delete						(thm);
 }
 //---------------------------------------------------------------------------
