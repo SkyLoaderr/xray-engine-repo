@@ -398,6 +398,8 @@ CInventory::CInventory()
 		else break;
 	} while(true);
 	m_pTarget = NULL;
+
+	m_bBeltUseful = false;
 }
 
 CInventory::~CInventory() 
@@ -572,6 +574,8 @@ bool CInventory::Slot(PIItem pIItem)
 
 bool CInventory::Belt(PIItem pIItem) 
 {
+	if(!m_bBeltUseful) return false;
+
 	if(!pIItem || !pIItem->m_belt) return false;
 	if(m_belt.size() == m_maxBelt) return false;
 	

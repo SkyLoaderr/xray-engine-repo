@@ -65,7 +65,6 @@ public:
 	u32	m_cost;												// цена по умолчанию
 	u32	Cost() {return m_cost;}
 
-
 	const char* m_sIconTexture;								//текстура с иконкой для меню
 	
 	int m_iGridWidth;										//ширина в сетке инвенторя
@@ -144,6 +143,8 @@ public:
 	f32 m_takeDist;											// Максимальное расстояние на котором можно подобрать объект
 	PIItem m_pTarget;										// Объект на который наведен прицел
 
+
+	bool m_bBeltUseful;										//флаг, показывающий наличие пояса в инвенторе
 
 	//для проверки свободного места
 	static bool GreaterRoomInRuck(PIItem item1, PIItem item2);

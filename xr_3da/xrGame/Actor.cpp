@@ -114,6 +114,9 @@ CActor::CActor() : CEntityAlive()
 	if (self)	self->spatial.type	|=	STYPE_VISIBLEFORAI;
 
 	m_trade = xr_new<CTrade>(this);
+
+	//разрешить использование пояса в inventory
+	m_inventory.m_bBeltUseful = true;
 }
 
 CActor::~CActor()
