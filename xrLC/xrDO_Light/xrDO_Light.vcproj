@@ -195,16 +195,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Debug"
-				Filter="">
-				<File
-					RelativePath=".\DebugKernel.cpp">
-				</File>
-				<File
-					RelativePath=".\DebugKernel.h">
-				</File>
-			</Filter>
-			<Filter
 				Name="FS"
 				Filter="">
 				<File
