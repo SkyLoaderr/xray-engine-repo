@@ -84,19 +84,25 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 		Fvector	V1		= *T.verts[0];
 		Fvector V2		= *T.verts[1];
 		Fvector V3		= *T.verts[2];
-		Fvector N;		N.mknormal(V1,V2,V3);
+		Fplane  Poly;	Poly.build(V1,V2,V3);
 
 		// Test for poly facing away from light
+		if (Poly.classify(sphere.P)<0)	continue;
+		/*
 		D1.sub(V1,sphere.P); D1.normalize_safe	();
 		D2.sub(V2,sphere.P); D2.normalize_safe	();
 		D3.sub(V3,sphere.P); D3.normalize_safe	();
 		if ((N.dotproduct(D1)>=0)&&(N.dotproduct(D2)>=0)&&(N.dotproduct(D3)>=0))	continue;	
+		*/
 
 		// Test for poly facing away from camera
+		if (Poly.classify(cam)<0)		continue;
+		/*
 		D1.sub(V1,cam);		D1.normalize_safe	();
 		D2.sub(V2,cam);		D2.normalize_safe	();
 		D3.sub(V3,cam);		D3.normalize_safe	();
 		if ((N.dotproduct(D1)>=0)&&(N.dotproduct(D2)>=0)&&(N.dotproduct(D3)>=0))	continue;	
+		*/
 
 		// BOX clipping
 		sPoly			src,dst;
@@ -111,9 +117,9 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 		// Triangulation
 		PPA_Vertex		vert1,vert2,vert3;
 		Fvector			uv;
-		vert1.N.set(N);	mk_vertex(vert1,(*P)[0],sphere.P,sphere.R*2);
-		vert2.N.set(N);	mk_vertex(vert2,(*P)[1],sphere.P,sphere.R*2);
-		vert3.N.set		(N);
+		vert1.N.set		(Poly.n);	mk_vertex(vert1,(*P)[0],sphere.P,sphere.R*2);
+		vert2.N.set		(Poly.n);	mk_vertex(vert2,(*P)[1],sphere.P,sphere.R*2);
+		vert3.N.set		(Poly.n);
 		for (DWORD i=2; i<P->size(); i++)
 		{
 			mk_vertex		(vert3,(*P)[i],sphere.P,sphere.R*2);
