@@ -299,7 +299,11 @@
 			</phrase>
 			<phrase id="1">
 				<text>Отлично, ты хорошо поработал. Вот твои деньги. \n          [получено 1500 рублей]</text>
+				<next>2</next>
 				<action>trader_job.give_box02_to_trader</action>
+			</phrase>
+			<phrase id="2">
+				<text>Спасибо... надеюсь мы еще увидимся. Удачи!</text>
 			</phrase>
 		</phrase_list>
 	</dialog>
