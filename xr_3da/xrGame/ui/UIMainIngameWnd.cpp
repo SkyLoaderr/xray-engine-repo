@@ -39,7 +39,7 @@
 #include "../actorcondition.h"
 
 #include "../string_table.h"
-#include "clsid_game.h"
+#include "../clsid_game.h"
 
 //////////////////////////////////////////////////////////////////////////
 
