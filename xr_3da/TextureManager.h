@@ -124,6 +124,7 @@ public:
 	void	DeferredLoad	(BOOL E)	{ bDeferredLoad=E;	}
 	void	DeferredUpload	();
 	void	DeferredUnload	();
+	void	Evict			();
 	
 	// API
 	IC void	set_Code		(DWORD dwCode);

@@ -110,8 +110,8 @@ void CRender::LoadBuffers(CStream *fs)
 	FVF.resize(count);
 	VB.resize(count);
 
-	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
-
+	Device.Shader.Evict		();
+	
 	for (DWORD i=0; i<count; i++)
 	{
 		DWORD vFVF	= fs->Rdword	();

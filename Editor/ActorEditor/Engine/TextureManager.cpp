@@ -421,21 +421,21 @@ void	CShaderManager::OnFrameEnd	()
 	cache.Invalidate	();
 }
 
-void CShaderManager::DeferredUpload	()
+void	CShaderManager::DeferredUpload	()
 {
 	if (!Device.bReady)				return;
 	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
 		t->second->Load(t->first);
 }
 
-void CShaderManager::DeferredUnload	()
+void	CShaderManager::DeferredUnload	()
 {
 	if (!Device.bReady)				return;
 	for (map<LPSTR,CTexture*,str_pred>::iterator t=textures.begin(); t!=textures.end(); t++)
 		t->second->Unload();
 }
 
-void CShaderManager::ED_UpdateTextures(vector<LPSTR>& names)
+void	CShaderManager::ED_UpdateTextures(vector<LPSTR>& names)
 {
 	// 1. Unload
 	for (DWORD nid=0; nid<names.size(); nid++)
@@ -448,7 +448,7 @@ void CShaderManager::ED_UpdateTextures(vector<LPSTR>& names)
 	DeferredUpload	();
 }
 
-DWORD CShaderManager::_GetMemoryUsage()
+DWORD	CShaderManager::_GetMemoryUsage()
 {
 	DWORD mem = 0;
 	map<LPSTR,CTexture*,str_pred>::iterator I = textures.begin	();
@@ -458,4 +458,9 @@ DWORD CShaderManager::_GetMemoryUsage()
 		mem += I->second->dwMemoryUsage;
 	}
 	return mem;
+}
+
+void	CShaderManager::Evict()
+{
+	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
 }

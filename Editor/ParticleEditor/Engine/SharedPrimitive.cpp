@@ -12,7 +12,7 @@ int		rsDIB_Size		= 512;
 
 void CVertexStream::Create	()
 {
-	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
+	Device.Shader.Evict		();
 
 	// Get vertex size
 	mStride		= D3DXGetFVFVertexSize(mFVF);
@@ -44,8 +44,8 @@ void CVertexStream::Destroy	()
 
 void CIndexStream::Create	()
 {
-	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
-
+	Device.Shader.Evict		();
+	
 	// Calc size
 	R_ASSERT	(mCount);
 	DWORD		dwMEM_Request	= mCount*mStride;

@@ -14,8 +14,8 @@ void	CPrimitive::VB_Attach	(DWORD FVF, IDirect3DVertexBuffer8* VB)
 }
 void	CPrimitive::VB_Create	(DWORD FVF, DWORD dwCount,DWORD dwUsage, DWORD srcFVF, VOID* pData)
 {
-	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
-
+	Device.Shader.Evict		();
+	
 	vShader = FVF;
 	vSize	= D3DXGetFVFVertexSize(FVF);
 	if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
@@ -69,8 +69,8 @@ void	CPrimitive::IB_Replicate(CPrimitive& P)
 }
 void	CPrimitive::IB_Create	(DWORD dwBaseVert, DWORD dwCount, DWORD dwUsage,VOID* pData)
 {
-	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
-
+	Device.Shader.Evict		();
+	
 	dwBaseVertex=dwBaseVert;
 	if (HW.Caps.vertex.bSoftware)	dwUsage|=D3DUSAGE_SOFTWAREPROCESSING;
 	R_CHK(HW.pDevice->CreateIndexBuffer(

@@ -63,7 +63,7 @@ void CDetailManager::VS_Load()
 	}
 
 	// Create VB/IB
-	CHK_DX			(HW.pDevice->ResourceManagerDiscardBytes(0));
+	Device.Shader.Evict		();
 	R_CHK			(HW.pDevice->CreateVertexBuffer(dwVerts*vSize,dwUsage,0,dwPool,&VS_VB));
 	R_CHK			(HW.pDevice->CreateIndexBuffer(dwIndices*2,dwUsage,D3DFMT_INDEX16,dwPool,&VS_IB));
 	Msg("* [DETAILS] Batch(%d), VB(%dK), IB(%dK)",VS_BatchSize,(dwVerts*vSize)/1024, (dwIndices*2)/1024);
