@@ -689,7 +689,7 @@ end
 
 -- создание нового гулага по конфигурации для данного smart_terrain
 function create_gulag( self )
-	the_actor = level.actor()
+	the_actor = db.actor
 
 	-- выбор гулагов, которые могут быть созданы
 	local avail = {}
