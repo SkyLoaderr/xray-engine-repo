@@ -28,13 +28,13 @@ function main()
 			
 
 
---			helicopter:heli_goto_stay_point( vecVia, 600000 )
+--			helicopter:heli_goto_stay_point( vecVia, 6000 )
 
-			helicopter:heli_go_to_point(vecDst,vecVia,500000)
+			helicopter:heli_go_to_point(vecDst,vecVia,50)
 
-			wait(20000)
+			wait(40000)
     	
-			helicopter:heli_goto_stay_point( vecVia, 6000000 )
+			helicopter:heli_goto_stay_point( vecVia, 6000 )
 
 
 		end
