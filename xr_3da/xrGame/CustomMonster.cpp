@@ -645,6 +645,7 @@ void CCustomMonster::HitSignal(float /**perc/**/, Fvector& /**vLocalDir/**/, COb
 
 void CCustomMonster::Die	()
 {
+	processing_deactivate	();
 }
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
@@ -668,6 +669,9 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 		set_level_dest_vertex	(level_vertex_id());
 
 	// Eyes
+	if (g_Alive())
+		processing_activate		();
+
 	eye_bone					= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
 	// weapons
@@ -743,6 +747,8 @@ void CCustomMonster::net_Destroy()
 {
 	inherited::net_Destroy	();
 	CScriptMonster::net_Destroy();
+	if (g_Alive())
+		processing_deactivate	();
 }
 
 BOOL CCustomMonster::UsedAI_Locations()
