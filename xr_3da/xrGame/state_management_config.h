@@ -10,6 +10,6 @@
 
 //#define NO_AI
 #ifdef DEBUG
-#define LOG_STATE
+//#define LOG_STATE
 #endif
 
