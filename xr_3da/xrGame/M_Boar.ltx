@@ -74,15 +74,6 @@ RunTurnAngular			= 2.6
 Drag					= 0.6 
 Steal					= 1.5
   
-; state times
-LieIdleTimeMin		= 5000
-LieIdleTimeMax		= 7000
-StandIdleTimeMin	= 3000
-StandIdleTimeMax	= 5000
-FreeWalkTimeMin		= 3000
-FreeWalkTimeMax		= 5000
-SleepTimeMin		= 2000
-SleepTimeMax		= 3000
 
 ;attack parameters
 MinAttackDist		= 2.0
@@ -145,6 +136,11 @@ sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во врем
 sleep_power = 1.0		;1.5
 sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
+
+eat_freq			=	5.0		; частота укусов в сек
+eat_slice			=	0.001	; увеличение сытости при 1 укусе
+eat_slice_weight	=	10.0	; уменьшение еды у трупа
+
 
 ; Morale
 MoraleSuccessAttackQuant	= 0.3;
