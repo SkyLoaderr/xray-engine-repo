@@ -8,6 +8,8 @@
 #include "actor.h"
 #include "inventory.h"
 
+#define GRENADE_REMOVE_TIME		180000
+
 CGrenade::CGrenade(void) 
 {
 	m_eSoundCheckout = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING);
@@ -24,10 +26,19 @@ void CGrenade::Load(LPCSTR section)
 	CExplosive::Load(section);
 
 	HUD_SOUND::LoadSound(section,"snd_checkout",sndCheckout,TRUE,m_eSoundCheckout);
+
+	//////////////////////////////////////
+	//время убирания оружия с уровня
+	if(pSettings->line_exist(section,"grenade_remove_time"))
+		m_dwGrenadeRemoveTime = pSettings->r_u32(section,"grenade_remove_time");
+	else
+		m_dwGrenadeRemoveTime = GRENADE_REMOVE_TIME;
+	//////////////////////////////////////
 }
 
 BOOL CGrenade::net_Spawn(LPVOID DC) 
 {
+	m_dwGrenadeIndependencyTime = 0;
 	return (inherited::net_Spawn(DC) && CExplosive::net_Spawn(DC));
 }
 
@@ -42,6 +53,20 @@ void CGrenade::OnH_B_Independent()
 	m_pHUD->StopCurrentAnimWithoutCallback();
 	inherited::OnH_B_Independent();
 }
+
+void CGrenade::OnH_A_Independent() 
+{
+	
+	m_dwGrenadeIndependencyTime = Level().timeServer();
+	inherited::OnH_A_Independent();
+}
+
+void CGrenade::OnH_A_Chield()
+{
+	m_dwGrenadeIndependencyTime = 0;
+	inherited::OnH_A_Chield();
+}
+
 
 u32 CGrenade::State(u32 state) 
 {
@@ -266,4 +291,22 @@ void CGrenade::setup_physic_shell		()
 void CGrenade::create_physic_shell		()
 {
 	inherited::create_physic_shell();
+}
+
+bool CGrenade::NeedToDestroyObject()	const
+{
+	if (Game().type == GAME_SINGLE) return false;
+	if (Remote()) return false;
+	if (TimePassedAfterIndependant() > m_dwGrenadeRemoveTime)
+		return true;
+
+	return false;
+}
+
+ALife::_TIME_ID	 CGrenade::TimePassedAfterIndependant()	const
+{
+	if(!H_Parent() && m_dwGrenadeIndependencyTime != 0)
+		return Level().timeServer() - m_dwGrenadeIndependencyTime;
+	else
+		return 0;
 }

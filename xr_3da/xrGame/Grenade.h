@@ -20,6 +20,8 @@ public:
 	virtual void net_Destroy();
 	
 	virtual void OnH_B_Independent();
+	virtual void OnH_A_Independent();
+	virtual void OnH_A_Chield();
 	
 	virtual void OnEvent(NET_Packet& P, u16 type);
 	
@@ -40,7 +42,7 @@ public:
 	virtual void						net_Import			(NET_Packet& P);					// import from server
 	virtual void						net_Export			(NET_Packet& P);					// export to server
 	virtual void renderable_Render() {inherited::renderable_Render();}
-	virtual void OnH_A_Chield() {inherited::OnH_A_Chield();}
+//	virtual void OnH_A_Chield() {inherited::OnH_A_Chield();}
 	virtual void OnH_B_Chield() {inherited::OnH_B_Chield();}
 
 	virtual bool IsPending() const {return inherited::IsPending();}
@@ -51,6 +53,12 @@ public:
 					 Fvector position_in_object_space, float impulse, 
 					 ALife::EHitType hit_type = ALife::eHitTypeWound)	{inherited::Hit(P, dir, who, element, position_in_object_space,impulse,hit_type);}
 
+	virtual bool			NeedToDestroyObject	() const; 
+	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
+protected:
+	//время удаления оружия
+	ALife::_TIME_ID			m_dwGrenadeRemoveTime;
+	ALife::_TIME_ID			m_dwGrenadeIndependencyTime;
 protected:
 	HUD_SOUND		sndCheckout;
 	ESoundTypes		m_eSoundCheckout;
