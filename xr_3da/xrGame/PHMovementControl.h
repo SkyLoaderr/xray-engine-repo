@@ -20,6 +20,7 @@ void				PHReleaseObject();
 void				Jump(const Fvector &jump_velocity);
 void				Jump(const Fvector &start_point, const Fvector &end_point, float time);
 void				Jump(const Fvector &end_point, float time);
+bool				JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEnabled()&&m_character->JumpState());};
 bool			b_exect_position;
 public:
 
