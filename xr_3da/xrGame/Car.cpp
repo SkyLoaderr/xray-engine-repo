@@ -134,7 +134,12 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 void	CCar::net_Destroy()
 {
 	inherited::net_Destroy();
-	if(m_pPhysicsShell)m_pPhysicsShell->Deactivate();
+	if(m_pPhysicsShell)
+	{
+		m_pPhysicsShell->Deactivate();
+		m_pPhysicsShell->ZeroCallbacks();
+		xr_delete(m_pPhysicsShell);
+	}
 	ClearExhausts();
 	m_wheels_map.clear();
 	m_steering_wheels.clear();

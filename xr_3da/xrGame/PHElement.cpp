@@ -3,12 +3,14 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 ///////////////////////////////////////////////////////////////
-///#pragma warning(disable:4995)
-//#include "..\ode\src\collision_kernel.h"
+#pragma warning(disable:4995)
+#pragma warning(disable:4267)
+
+#include "..\ode\src\collision_kernel.h"
 //#include <..\ode\src\joint.h>
 //#include <..\ode\src\objects.h>
-
-//#pragma warning(default:4995)
+#pragma warning(default:4267)
+#pragma warning(default:4995)
 ///////////////////////////////////////////////////////////////////
 
 #include "ExtendedGeom.h"
@@ -1274,6 +1276,7 @@ void CPHElement::CallBack1(CBoneInstance* B)
 	Fmatrix parent;
 
 	if(bActivating){
+		if(ph_world->GetSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
