@@ -47,6 +47,7 @@ extern Flags32		ps_r2_ls_flags;				// r2-only
 extern Fvector		ps_r2_ls_hemi;				// r2-only
 extern Fvector		ps_r2_aa_barier;			// r2-only
 extern Fvector		ps_r2_aa_weight;			// r2-only
+extern float		ps_r2_aa_kernel;			// r2-only
 
 enum
 {

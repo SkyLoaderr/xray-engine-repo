@@ -48,6 +48,7 @@ Flags32		ps_r2_ls_flags			= { R2FLAG_SUN | R2FLAG_SKY | R2FLAG_SPOT_UNMASK };	//
 Fvector		ps_r2_ls_hemi			= { 1,1,1};											// r2-only
 Fvector		ps_r2_aa_barier			= { .8f, .1f, 0};	// r2-only
 Fvector		ps_r2_aa_weight			= { .25f,.25f,0};	// r2-only
+float		ps_r2_aa_kernel			= .9f;				// r2-only
 
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
@@ -101,6 +102,7 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_sky",				&ps_r2_ls_flags,			R2FLAG_SKY);
 	CMD3(CCC_Mask,		"r2_bump_af",			&ps_r2_ls_flags,			R2FLAG_BUMP_AF);
 	CMD3(CCC_Mask,		"r2_spot_unmask",		&ps_r2_ls_flags,			R2FLAG_SPOT_UNMASK);
+	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.01f,	0.99f	);
 
 	tw_min.set			(0,0,0);	tw_max.set			(2,2,2);
 	CMD4(CCC_Vector3,	"r2_ls_hemi",			&ps_r2_ls_hemi,				tw_min, tw_max	);
