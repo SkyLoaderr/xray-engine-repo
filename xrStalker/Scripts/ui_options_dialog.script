@@ -89,7 +89,7 @@ function options_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	main_frame:AttachChild(btn)
+	self.main_frame:AttachChild(btn)
 	
 	--------->> SOUND
 	btn = CUIButton()
@@ -101,7 +101,7 @@ function options_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	main_frame:AttachChild(btn)	
+	self.main_frame:AttachChild(btn)	
 	
 	--------->> GAME
 	btn = CUIButton()
@@ -113,7 +113,7 @@ function options_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	main_frame:AttachChild(btn)
+	self.main_frame:AttachChild(btn)
 	
 	--------->> CONTROLS
 	btn = CUIButton()
@@ -125,7 +125,7 @@ function options_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	main_frame:AttachChild(btn)
+	self.main_frame:AttachChild(btn)
 	
 	--------->> BACK
 	btn = CUIButton()
@@ -137,7 +137,7 @@ function options_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	main_frame:AttachChild(btn)
+	self.main_frame:AttachChild(btn)
 	
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
@@ -148,7 +148,7 @@ function options_dialog:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	self:Register(btn)
-	main_frame:AttachChild(btn)
+	self.main_frame:AttachChild(btn)
 		
 	-- Message Box --
 	message_box = CUIMessageBox()
@@ -162,7 +162,7 @@ function options_dialog:InitControls()
 	message_box:SetStyle(0)	
 	message_box:Hide()
 	self:Register(message_box)
-	main_frame:AttachChild(message_box)
+	self.main_frame:AttachChild(message_box)
 	message_box:AutoCenter()
 end
 
