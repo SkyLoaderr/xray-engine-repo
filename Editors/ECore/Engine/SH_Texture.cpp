@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #include "ResourceManager.h"
-#include "texture.h"
+#include "render.h"
 #include "xr_avi.h"
 
 #define		PRIORITY_HIGH	12
