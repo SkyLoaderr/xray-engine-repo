@@ -41,7 +41,7 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstrac
 	m_tpEvents.clear			();
 
 	string4096					S;
-	sprintf						(S,"%s\n[game_info]\n\tname_id\t= default\n",!*m_ini_string ? "" : *m_ini_string);
+	sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*m_ini_string ? "" : *m_ini_string);
 	m_ini_string				= S;
 }
 
