@@ -119,7 +119,6 @@ function trader_dont_has_job(first_speaker, second_speaker)
 	end
 	return false
 end
-function blockpost_case_progress()
--- task.completed - задание (цель выполнена) task.in_progress - в стадии выполнения task.fail - провалено
-	return task.in_progress
+function task_blockpost_case_begin(first_speaker, second_speaker)
+	--first_speaker:set_task_state(task.in_progress, "blockpost_case", 0)
 end
