@@ -57,10 +57,12 @@ To AlexMX:
 
 
 To Dima:
++K	сталкеры перемещаютс€ быстрее отыгрываемой анимации
 -D	Can't update online object во врем€ симул€ции
 -D	при выставлении у-ка позиции по ноде при звуке у сталкера только(?) в симул€ции
--K	после оффлайна оживают трупы
-+K	сталкеры перемещаютс€ быстрее отыгрываемой анимации 
-
-To mr.Bug:
+-D	после оффлайна оживают трупы
 -D	xrServer::Process_event_reject(...) вылетает R_ASSERT(0xffff != e_entity->ID_Parent) в симул€ции
+-D	вылетает где-то здесь или похерилс€ стэк:
+	CSE_ALifeSimulator::vfValidatePosition :
+		if (tpALifeAbstractGroup) {
+			if (tpALifeAbstractGroup->m_tpMembers.empty())
