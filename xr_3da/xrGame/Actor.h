@@ -164,6 +164,8 @@ public:
 	CMotionDef*				m_current_legs;
 	CMotionDef*				m_current_torso;
 
+	bool					m_bAllowDeathRemove;
+
 protected:
 	// skeleton
 

@@ -461,6 +461,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	// load damage params
 	CDamageManager::Load	(*cNameSect());
 
+	m_bAllowDeathRemove = false;
+
 	return					TRUE;
 }
 
@@ -1639,9 +1641,9 @@ bool  CActor::NeedToDestroyEntity()
 	{
 		return false;
 	}
-	else
+	else //if(this != Level().CurrentEntity())
 	{
-		if(TimePassedAfterDeath()>BODY_REMOVE_TIME)
+		if(TimePassedAfterDeath()>BODY_REMOVE_TIME && m_bAllowDeathRemove)
 			return true;
 		else
 			return false;
