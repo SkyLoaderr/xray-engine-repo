@@ -104,6 +104,111 @@ path_walk = alarm_left_walk
 path_look = alarm_left_look
 
 ;-------------------------------------------------------------------------------------------------
+;-- ESCAPE LAGER
+;-------------------------------------------------------------------------------------------------
+;;Волк
+;[walker@esc_lager_wolf]
+;path_walk = wolf_walk
+;path_look = wolf_look
+
+;;перекупщик хлама
+;[walker@esc_lager_bariga]
+;path_walk = hlam_walk
+;path_look = hlam_look
+
+
+;охранники
+[zoneguard1@esc_lager]
+path_walk  = guard_walk1
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone1
+team       = guards
+snd_greet  = novice_camp_guards
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker1@esc_lager
+
+[zoneguard1@esc_lager_friend]
+path_walk  = guard_walk1
+zone_warn  = guard_warn_zone
+team       = guards
+snd_greet  = talk_hello_friend
+no_move    = true
+on_info    = {+tutorial_volk_acquainted} walker1@esc_lager
+
+[zoneguard2@esc_lager]
+path_walk  = guard_walk2
+zone_guard = guard_kill_zone
+zone_warn  = guard_warn_zone2
+team       = guards
+snd_greet  = novice_camp_guards
+on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker2@esc_lager
+
+[zoneguard2@esc_lager_friend]
+path_walk  = guard_walk2
+zone_warn  = guard_warn_zone
+team       = guards
+snd_greet  = talk_hello_friend
+no_move    = true
+on_info    = {+tutorial_volk_acquainted} walker2@esc_lager
+
+[walker1@esc_lager]
+path_walk  = guard_walk1
+
+[walker2@esc_lager]
+path_walk  = guard_walk2
+
+[walker3@esc_lager]
+path_walk  = guard_walk3
+
+[walker4@esc_lager]
+path_walk  = guard_walk4
+
+; сидящие днём у костра
+[kamp1@esc_lager]
+center_point  = camp_center
+patrol_path_1 = camp_walk1
+path_look_1   = camp_look1
+patrol_path_2 = camp_walk2
+path_look_2   = camp_look2
+patrol_path_3 = camp_walk3
+path_look_3   = camp_look3
+
+;спящие ночью
+[sleeper1@esc_lager]
+path_main = camp_sleep1
+
+[sleeper2@esc_lager]
+path_main = camp_sleep2
+
+[sleeper3@esc_lager]
+path_main = camp_sleep3
+
+;-------------------------------------------------------------------------------------------------
+;-- ESCAPE FACTORY BANDITS
+;-------------------------------------------------------------------------------------------------
+; снайпер, охраняющий лестницу на чердак
+;[camper@esc_fabrika_bandit]
+;path_walk = day_night_sniper_walk
+;path_look = day_night_sniper_look
+;radius    = 5
+
+; часовые днём
+[walker1@esc_fabrika_bandit_day]
+path_walk = day_walk1
+path_look = day_look1
+
+[walker2@esc_fabrika_bandit_day]
+path_walk = day_walk2
+path_look = day_look2
+
+[walker3@esc_fabrika_bandit_day]
+path_walk = day_walk3
+path_look = day_look3
+
+; сидящие у костра всегда и сидящие у костра ночью
+[kamp@esc_fabrika_bandit]
+center_point = camp_center
+
+;-------------------------------------------------------------------------------------------------
 ;-- GARBAGE BANDITS
 ;-------------------------------------------------------------------------------------------------
 [walker1@gar_bandits]
@@ -320,106 +425,64 @@ path_main = sleep3
 path_main = sleep4
 
 ;-------------------------------------------------------------------------------------------------
-;-- ESCAPE LAGER
+;-- AGROPROM. Soldiers on the factory
 ;-------------------------------------------------------------------------------------------------
-;;Волк
-;[walker@esc_lager_wolf]
-;path_walk = wolf_walk
-;path_look = wolf_look
+[walker1@agr_factory_shoot]
+path_walk = walk_shoot1
+path_look = look_shoot1
+on_info   = {+agr_factory_combat_proceed} walker1@agr_factory
 
-;;перекупщик хлама
-;[walker@esc_lager_bariga]
-;path_walk = hlam_walk
-;path_look = hlam_look
+[walker1@agr_factory]
+path_walk = walk1
+path_look = look1
 
 
-;охранники
-[zoneguard1@esc_lager]
-path_walk  = guard_walk1
-zone_guard = guard_kill_zone
-zone_warn  = guard_warn_zone1
-team       = guards
-snd_greet  = novice_camp_guards
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker1@esc_lager
+[walker2@agr_factory_shoot]
+path_walk = walk_shoot2
+path_look = look_shoot2
+on_info   = {+agr_factory_combat_proceed} walker2@agr_factory
 
-[zoneguard1@esc_lager_friend]
-path_walk  = guard_walk1
-zone_warn  = guard_warn_zone
-team       = guards
-snd_greet  = talk_hello_friend
-no_move    = true
-on_info    = {+tutorial_volk_acquainted} walker1@esc_lager
+[walker2@agr_factory]
+path_walk = walk2
+path_look = look2
 
-[zoneguard2@esc_lager]
-path_walk  = guard_walk2
-zone_guard = guard_kill_zone
-zone_warn  = guard_warn_zone2
-team       = guards
-snd_greet  = novice_camp_guards
-on_info    = {+tutorial_wounded_help -tutorial_wounded_die} walker2@esc_lager
 
-[zoneguard2@esc_lager_friend]
-path_walk  = guard_walk2
-zone_warn  = guard_warn_zone
-team       = guards
-snd_greet  = talk_hello_friend
-no_move    = true
-on_info    = {+tutorial_volk_acquainted} walker2@esc_lager
+[walker3@agr_factory_shoot]
+path_walk = walk_shoot3
+path_look = look_shoot3
+on_info   = {+agr_factory_combat_proceed} walker3@agr_factory
 
-[walker1@esc_lager]
-path_walk  = guard_walk1
+[walker3@agr_factory]
+path_walk = walk3
+path_look = look3
 
-[walker2@esc_lager]
-path_walk  = guard_walk2
 
-[walker3@esc_lager]
-path_walk  = guard_walk3
+[walker4@agr_factory_shoot]
+path_walk = walk_shoot4
+path_look = look_shoot4
+on_info   = {+agr_factory_combat_proceed} walker4@agr_factory
 
-[walker4@esc_lager]
-path_walk  = guard_walk4
+[walker4@agr_factory]
+path_walk = walk4
+path_look = look4
 
-; сидящие днём у костра
-[kamp1@esc_lager]
-center_point  = camp_center
-patrol_path_1 = camp_walk1
-path_look_1   = camp_look1
-patrol_path_2 = camp_walk2
-path_look_2   = camp_look2
-patrol_path_3 = camp_walk3
-path_look_3   = camp_look3
 
-;спящие ночью
-[sleeper1@esc_lager]
-path_main = camp_sleep1
+[walker5@agr_factory_shoot]
+path_walk = walk_shoot5
+path_look = look_shoot5
+on_info   = {+agr_factory_combat_proceed} walker5@agr_factory
 
-[sleeper2@esc_lager]
-path_main = camp_sleep2
+[walker5@agr_factory]
+path_walk = walk5
+path_look = look5
 
-[sleeper3@esc_lager]
-path_main = camp_sleep3
 
-;-------------------------------------------------------------------------------------------------
-;-- ESCAPE FACTORY BANDITS
-;-------------------------------------------------------------------------------------------------
-; снайпер, охраняющий лестницу на чердак
-;[camper@esc_fabrika_bandit]
-;path_walk = day_night_sniper_walk
-;path_look = day_night_sniper_look
-;radius    = 5
+[walker6@agr_factory_shoot]
+path_walk = walk_shoot6
+path_look = look_shoot6
+on_info   = {+agr_factory_combat_proceed} walker6agr_factory
 
-; часовые днём
-[walker1@esc_fabrika_bandit_day]
-path_walk = day_walk1
-path_look = day_look1
+[walker6@agr_factory]
+path_walk = walk6
+path_look = look6
 
-[walker2@esc_fabrika_bandit_day]
-path_walk = day_walk2
-path_look = day_look2
-
-[walker3@esc_fabrika_bandit_day]
-path_walk = day_walk3
-path_look = day_look3
-
-; сидящие у костра всегда и сидящие у костра ночью
-[kamp@esc_fabrika_bandit]
-center_point = camp_center
