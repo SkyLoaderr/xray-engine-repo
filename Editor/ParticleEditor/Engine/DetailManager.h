@@ -51,6 +51,11 @@ public:
 		Fbox				BB;
 		SlotPart			G[dm_obj_in_slot];
 	};
+	struct VS_Model
+	{
+		IDirect3DVertexBuffer8*	VB;
+		IDirect3DIndexBuffer8*	IB;
+	};
 public:	
 	int						dither			[16][16];
 public:
@@ -60,7 +65,6 @@ public:
 public:
 	svector<CDetail,dm_max_objects>			objects;
 	svector<Slot,dm_cache_size>				cache;
-
 	svector<CList<SlotItem*>,dm_max_objects> visible;
 
 public:
@@ -73,8 +77,7 @@ public:
 
 	DWORD					VS_Code;
 	DWORD					VS_BatchSize;
-	IDirect3DVertexBuffer8*	VS_VB;
-	IDirect3DIndexBuffer8*	VS_IB;
+	svector<VS_Model,dm_max_objects>	VS_Models;		
 	void					VS_Load			();
 	void					VS_Unload		();
 	void					VS_Render		();
