@@ -4,7 +4,6 @@
 
 Сделать:
     - сказать про запутывания
-    - звуки, подобрать готовые реплики
     - настоящие звуки
     - анимации
     - двери
@@ -92,7 +91,7 @@ function action_small_room:initialize()
     self.object:set_mental_state        ( anim.free )
     self.object:set_item                ( object.idle, nil )
 
-    self.turn_end = game.time() + 12000
+    self.turn_end = game.time() + 25000
 
     self.object:enable_talk()
     self.object:set_start_dialog( "barman_room" )
@@ -130,6 +129,8 @@ function check_change( npc )
             xr_position.setPosition( npc, this.id_bar )
         end
 
+        npc:set_sight( look.danger, nil, 0 )
+
         this.near_bar = not this.near_bar
         change_act_timeout = nil
     end
@@ -142,8 +143,9 @@ function add_to_binder( npc )
     this.id_room = path:level_vertex_id( 1 )
 
     this.near_bar = true
+    xr_motivator.storage[npc:id()].state.dist = 1
     xr_position.setPosition( npc, this.id_bar )
-    
+
     -- sounds
     this.snds_idle_bar  = xr_sounds.create_sound_constructor( "barman", subtheme_idle_bar )
     this.snds_idle_room = xr_sounds.create_sound_constructor( "barman", subtheme_idle_room )
