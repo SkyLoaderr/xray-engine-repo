@@ -97,32 +97,21 @@ function HeliManager:HeliOnPoint( p )
 
 				printf( "1" ) ]]
 			else
-				-- опять заходим на врага
-				self.heliObject:SetDestPosition( self.enemy:position() )
-				--self.heliObject:SetCurrVelocity( attack_speed )
-				--self.heliObject.on_point_range_dist = 10
-
-				self.attack_pass_state = 0
-				self.attack_passes     = self.attack_passes - 1
-
 				printf( "2" )
+				if is_object_online( self.enemy:id() ) and self.enemy:alive() then
+					-- опять заходим на врага
+					self.heliObject:SetDestPosition( self.enemy:position() )
+					--self.heliObject:SetCurrVelocity( attack_speed )
+					--self.heliObject.on_point_range_dist = 10
+
+					self.attack_pass_state = 0
+					self.attack_passes     = self.attack_passes - 1
+				else
+					self:finish_attack()
+				end
 			end
 		else
-			-- закончить атаку
-			if self.path then
-				self.heliObject:GoPatrolByPatrolPath( self.path, 0 )  --0==from_idx
-				self.heliObject:SetCurrVelocity( self.patrol_speed )
-			else
-				self:send_to_stay_point()
-			end
-
-			self.heliObject:SetEnemy( nil )
-			self.enemy = nil
-
-			self.attack_pass_state = 0
-			--self.heliObject.on_point_range_dist = 10
-
-			printf( "[heli] attack finished" )
+			self:finish_attack()
 		end
 --		self.heliObject:SetCurrVelocity(35)  -- m/sec (max)
 	end
@@ -131,6 +120,24 @@ function HeliManager:HeliOnPoint( p )
 	if self.heliObject:GetState() == CHelicopter.eMovingToPoint and not self.path then
 		self.heliObject:SetCurrVelocity( 0 )
 	end
+end
+
+-- закончить атаку
+function HeliManager:finish_attack()
+	if self.path then
+		self.heliObject:GoPatrolByPatrolPath( self.path, 0 )  --0==from_idx
+		self.heliObject:SetCurrVelocity( self.patrol_speed )
+	else
+		self:send_to_stay_point()
+	end
+
+	self.heliObject:SetEnemy( nil )
+	self.enemy = nil
+
+	self.attack_pass_state = 0
+	--self.heliObject.on_point_range_dist = 10
+
+	printf( "[heli] attack finished" )
 end
 
 function HeliManager:update()
