@@ -1,0 +1,97 @@
+is_creature_entered = false
+is_actor_entered = false
+stalker_already_saw_actor = false
+
+-- функция вызывается из игры после того как объект object вошел в зону zone
+function on_enter(zone,object)
+	is_creature_entered = true
+	printf("Object %s entered zone %s",object:name(),zone:name())
+	if event_zone_id == zone:id() and actor_id == object:id() then 
+		printf("actor entering in our zone")
+		is_actor_entered = true
+	end
+end
+
+function on_exit(zone,object)
+	is_creature_entered = false
+	is_actor_entered = false
+	printf("Object %s exited zone %s",object:name(),zone:name())
+end
+
+function main()
+
+	local event	= get_level_object("script_zone0000")
+--  создаем глоб. переменную содержащую id зоны объект который доступен по переменной event 
+	event_zone_id = event:id()
+ 
+	local actor   	= get_actor()
+	local trader	= get_level_object("m_trader0000")
+
+--  создаем глоб. переменную содержащую id актера который доступен по переменной actor 
+	actor_id = actor:id()
+	local sound_01 = sound_object("scripts\\alarm\\f_side_rustle")
+	local sound_cough = sound_object("scripts\\idle\\cough1")
+	local sound_holodno = sound_object("scripts\\idle\\say_holodno")
+	local sound_chto_s_toboy = sound_object("scripts\\idle\\say_chto_s_toboy")
+	local sound_dai_vipit = sound_object("scripts\\idle\\say_dai_vipit")
+	local sound_ti_pyuaniy = sound_object("scripts\\idle\\say_ti_pyuaniy")
+	local sound_skuchno = sound_object("scripts\\idle\\say_skuchno")
+	local sound_baran = sound_object("scripts\\idle\\say_baran")
+	local sound_wind = sound_object("scripts\\idle\\ew_gusty_over1")
+
+
+	event:clear_callback(true)
+	event:clear_callback(false)
+
+	event:set_callback(pr_script_01.on_enter,true)
+	event:set_callback(pr_script_01.on_exit,false)
+
+	while true do
+		if is_actor_entered and actor.health > 0 then 
+			printf("entered")
+			flush()
+			sound_ti_pyuaniy:play_at_pos		(trader,trader:position(),0);
+			wait(3000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if is_actor_entered and actor.health > 0 then 
+			printf("entered")
+			flush()
+			sound_chto_s_toboy:play_at_pos		(trader,trader:position(),0);
+			wait(3000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if is_actor_entered and actor.health > 0 then 
+			printf("entered")
+			flush()
+			sound_baran:play_at_pos		(trader,trader:position(),0);
+			wait(3000)			
+			break
+		end
+		wait()			
+	end
+
+	while true do
+		if is_actor_entered == false and actor.health > 0 then 
+			printf("exit")
+			flush()
+			sound_skuchno:play_at_pos		(trader,trader:position(),0);
+			wait(3000)			
+			break
+		end
+		wait()			
+	end
+
+	event:clear_callback(true)
+	event:clear_callback(false)
+
+end
+
