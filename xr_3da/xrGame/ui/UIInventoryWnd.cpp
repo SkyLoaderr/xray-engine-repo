@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "UIInventoryWnd.h"
 
-#include "..\\..\\XRXMLParser\\xrXMLParser.h"
+#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
 

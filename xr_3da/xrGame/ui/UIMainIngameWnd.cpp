@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "UIMainIngameWnd.h"
 
-#include "..\\..\\XRXMLParser\\xrXMLParser.h"
+#include "xrXMLParser.h"
 #include "UIXmlInit.h"
 
 #include "..\\Entity.h"

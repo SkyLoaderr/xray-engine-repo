@@ -1886,6 +1886,9 @@
 					<File
 						RelativePath=".\ui\UIXmlInit.h">
 					</File>
+					<File
+						RelativePath=".\ui\xrXMLParser.h">
+					</File>
 				</Filter>
 			</Filter>
 		</Filter>
