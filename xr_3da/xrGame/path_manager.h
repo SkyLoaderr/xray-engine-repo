@@ -707,3 +707,103 @@ public:
 	}
 };
 
+template <
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CLevelGraph,
+		_DataStorage,
+		PathManagers::SPosition<
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManager <
+			CLevelGraph,
+			_DataStorage,
+			PathManagers::SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CLevelGraph _Graph;
+	typedef PathManagers::SPosition<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> _Parameters;
+	typedef typename CPathManager <
+				_Graph,
+				_DataStorage,
+				PathManagers::SBaseParameters<
+					_dist_type,
+					_index_type,
+					_iteration_type
+				>,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
+protected:
+	Fvector				m_position;
+	float				m_epsilon;
+	_dist_type			m_min_distance;
+	_index_type			m_vertex_id;
+
+public:
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+				const _Graph			*_graph,
+				_DataStorage			*_data_storage,
+				xr_vector<_index_type>	*_path,
+				const _index_type		_start_node_index,
+				const _index_type		_goal_node_index,
+				_Parameters				&parameters
+			)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			parameters
+		);
+		m_position		= parameters.m_position;
+		m_epsilon		= parameters.m_epsilon;
+	}
+
+	IC	bool		is_goal_reached	(const _index_type node_index)
+	{
+		if (!graph->inside(node_index,m_position)) {
+			float				distance = graph->distance(m_vertex_id,m_position);
+			if (distance < m_min_distance) {
+				m_min_distance	= distance;
+				m_vertex_id		= node_index;
+			}
+			return				(false);
+		}
+
+		if ((_abs(m_position.y - ai().level_graph().vertex_plane_y(node_index,m_position.x,m_position.z)) >= m_epsilon))
+			return				(false);
+		else {
+			m_min_distance		= 0.f;
+			m_vertex_id			= node_index;
+			return				(true);
+		}
+	}
+};
+

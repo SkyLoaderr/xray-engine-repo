@@ -36,6 +36,42 @@ namespace PathManagers {
 		typename _index_type,
 		typename _iteration_type
 	>
+	struct SPosition : public SBaseParameters<
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> {
+		const Fvector	&m_position;
+		float			m_epsilon;
+
+		IC	SPosition (
+				const Fvector			&position,
+				float					epsilon,
+				_dist_type				max_range = _dist_type(6000),
+				_iteration_type			max_iteration_count = _iteration_type(-1),
+				_index_type				max_visited_node_count = _index_type(-1)
+			)
+			:
+			SBaseParameters<
+				_dist_type,
+				_index_type,
+				_iteration_type
+			>(
+				max_range,
+				max_iteration_count,
+				max_visited_node_count
+			),
+			m_position(position),
+			m_epsilon(epsilon)
+		{
+		}
+	};
+
+	template <
+		typename _dist_type,
+		typename _index_type,
+		typename _iteration_type
+	>
 	struct SFlooder  : public SBaseParameters<
 		_dist_type,
 		_index_type,
