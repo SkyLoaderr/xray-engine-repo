@@ -19,8 +19,6 @@ public:
 	NodeCompressed*								AI_Node;
 	u32											respawnPhantom;
 	CPhysicsShell*								m_pPhysicsShell;
-	ALife::_GRAPH_ID							m_tGraphID;
-	float										m_fDistance;
 
 	// Utilities
 	void					u_EventGen			(NET_Packet& P, u32 type, u32 dest	);
@@ -30,8 +28,6 @@ public:
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual BOOL			net_Relevant		()	{ return getLocal() && getActive();	}	// send messages only if active and local
-	virtual void			net_Export			(NET_Packet &tNetPacket);
-	virtual void			net_Import			(NET_Packet &tNetPacket);
 
 	virtual BOOL			Ready				()	{ return getReady() && getActive();	}	// update only if active and fully initialized by/for network
 	virtual void			Sector_Detect		();

@@ -121,27 +121,6 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	return	TRUE;
 }
 
-void CGameObject::net_Export(NET_Packet &tNetPacket)
-{
-	if (Level().game.type != GAME_SINGLE)
-		R_ASSERT			(Local());
-
-	tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
-	tNetPacket.w_float			(m_fDistance);
-}
-
-void CGameObject::net_Import(NET_Packet &tNetPacket)
-{
-	if (Level().game.type != GAME_SINGLE)
-		R_ASSERT				(Remote());
-	
-	tNetPacket.r				(&m_tGraphID,sizeof(m_tGraphID));
-	tNetPacket.r_float			(m_fDistance);
-	
-	setVisible					(TRUE);
-	setEnabled					(TRUE);
-}
-
 void CGameObject::Sector_Detect	()
 {
 	if (H_Parent())
