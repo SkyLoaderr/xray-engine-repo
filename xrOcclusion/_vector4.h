@@ -39,11 +39,21 @@ public:
 	IC	SelfRef		div(const Self &a, const Self &v)	{ x=a.x/v.x;y=a.y/v.y;	z=a.z/v.z;	w=a.w/v.w;	return *this; }
 	IC  SelfRef		div(const Self &a, T s)				{ x=a.x/s;  y=a.y/s;	z=a.z/s;	w=a.w/s;	return *this; }
 
-	IC BOOL 		similar(const Self& v, T E=EPS_L)	{ return _abs(x-v.x)<E && _abs(y-v.y)<E && _abs(z-v.z)<E && _abs(w-v.w)<E;};
+	IC	BOOL 		similar(const Self& v, T E=EPS_L)	{ return _abs(x-v.x)<E && _abs(y-v.y)<E && _abs(z-v.z)<E && _abs(w-v.w)<E;};
 
-	IC T			magnitude_sqr ()					{ return x*x + y*y + z*z + w*w;		}
-	IC T			magnitude()							{ return _sqrt(magnitude_sqr());	}
+	IC	T			magnitude_sqr ()					{ return x*x + y*y + z*z + w*w;		}
+	IC	T			magnitude()							{ return _sqrt(magnitude_sqr());	}
 	IC	SelfRef		normalize()							{ return mul(1/magnitude());		}
+
+	IC	SelfRef		lerp(const Self &p1, const Self &p2, T t )
+	{
+		T invt = 1.f-t;
+		x = p1.x*invt + p2.x*t;
+		y = p1.y*invt + p2.y*t;
+		z = p1.z*invt + p2.z*t;
+		z = p1.z*invt + p2.z*t;
+		return *this;	
+	}
 };
 
 typedef							_vector4<float>		Fvector4;
