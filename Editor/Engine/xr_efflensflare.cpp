@@ -1,16 +1,17 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "xr_efflensflare.h"
 #include "xr_trims.h"
 #include "xr_tokens.h"
-#include "xr_area.h"
-#include "environment.h"
-#include "x_ray.h"
-#include "xr_creator.h"
 #include "xr_ini.h"
-#include "xr_object.h"
 
-// font
-#include "xr_smallfont.h"
+
+#ifndef _LEVEL_EDITOR
+	#include "xr_creator.h"
+	#include "xr_object.h"
+#else
+#endif
 
 struct FlareVertex {
 	Fvector p;
@@ -24,6 +25,10 @@ struct FlareVertex {
 		tu=u; tv=v;
 	};
 };
+
+
+#define FAR_DIST pCreator->Environment.Current.Far
+
 
 #define FVF_FlareVertex		( D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1 )
 #define MAX_Flares	12
@@ -166,7 +171,7 @@ void CLensFlare::OnMove()
 	if(fDot <= 0.01f){	bRender = false; return;} else bRender = true;
 	
 	// Calculate the point directly in front of us, on the far clip plane
-	float 	fDistance	= pCreator->Environment.Current.Far*0.75f;
+	float 	fDistance	= FAR_DIST*0.75f;
 	vecCenter.mul(vecDir, fDistance);
 	vecCenter.add(vecPos);
 	// Calculate position of light on the far clip plane
@@ -181,7 +186,8 @@ void CLensFlare::OnMove()
 	matEffCamPos.transform_dir(vecX);
 	vecX.normalize();
 	vecY.crossproduct(vecX, vecDir);
-	
+
+#ifndef _LEVEL_EDITOR
 	pCreator->CurrentEntity()->CFORM()->Enable( pCreator->CurrentEntity()->bVisible );
 	if ( pCreator->ObjectSpace.RayTest( Device.vCameraPosition, vSunDir) )
 	{
@@ -190,6 +196,14 @@ void CLensFlare::OnMove()
 		fBlend = fBlend + BLEND_SPEED * Device.fTimeDelta;
 	}
 	pCreator->CurrentEntity()->CFORM()->EnableRollback( );
+#else
+	if ( Scene.RayTest( Device.vCameraPosition, vSunDir) )
+	{
+		fBlend = fBlend - BLEND_SPEED * Device.fTimeDelta;
+	}else{
+		fBlend = fBlend + BLEND_SPEED * Device.fTimeDelta;
+	}
+#endif
 	clamp( fBlend, 0.0f, 1.0f );
 	
 	// gradient
@@ -210,7 +224,11 @@ void CLensFlare::OnMove()
 		float    cl			= kx * ky * fGradientDensity * 0.3f * fBlend;
 		
 		if (!((fabsf(scr_pos.x) > sun_max) || (fabsf(scr_pos.y) > sun_max)))
+#ifndef _LEVEL_EDITOR
 			pCreator->Environment.SetGradient(cl);
+#else
+			UI.SetGradient(cl);
+#endif
 	}
 }
 
@@ -228,7 +246,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 	
 	FlareVertex *pv = (FlareVertex*) P.VB_Lock(D3DLOCK_NOSYSLOCK|D3DLOCK_DISCARD);
 	
-	float 	fDistance	= pCreator->Environment.Current.Far*0.75f;
+	float 	fDistance	= FAR_DIST*0.75f;
 	
 	if (bSourcePresent){
 		vecSx.mul(vecX, Flares[0].fRadius*fDistance);
