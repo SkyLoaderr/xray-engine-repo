@@ -6,8 +6,8 @@
 static const float y_spin_factor		= 0.3f;
 static const float y_shoulder_factor	= 0.6f;
 static const float y_head_factor		= 0.1f;
-static const float p_spin_factor		= 0.3f;
-static const float p_shoulder_factor	= 0.6f;
+static const float p_spin_factor		= 0.2f;
+static const float p_shoulder_factor	= 0.7f;
 static const float p_head_factor		= 0.1f;
 
 #include "hudmanager.h"
@@ -28,6 +28,14 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	float				bone_pitch	= angle_normalize_signed(A->r_torso.pitch)*p_spin_factor;
 	spin.setXYZ			(bone_yaw,bone_pitch,0);
 	B->mTransform.mulB_43(spin);
+/*
+	CHUDManager* HUD	= (CHUDManager*)Level().HUD();
+	string128 buf;
+	HUD->pHUDFont->Color(0xffffffff);
+	HUD->pHUDFont->OutSet(220,450);
+	HUD->pHUDFont->OutNext("Bone Pitch:      [%3.2f]",A->r_torso.pitch);
+	HUD->pHUDFont->OutNext("Bone PitchS:     [%3.2f]",bone_pitch);
+*/
 }
 
 void __stdcall CActor::ShoulderCallback(CBoneInstance* B)
