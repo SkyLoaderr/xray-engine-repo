@@ -902,7 +902,7 @@ void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,cons
 	if(ax==-1) 
 		switch(eType){
 					case welding:				; 
-					case ball:					break;
+					case ball:					return;
 					case hinge:					axes[0].force=force;
 						axes[0].velocity=velocity;
 						break;
@@ -929,7 +929,7 @@ void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,cons
 		switch(eType){
 
 						case welding:				; 
-						case ball:					break;
+						case ball:					return;
 						case hinge:					ax=0;
 							break;
 						case hinge2:				;

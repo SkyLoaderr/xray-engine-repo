@@ -487,12 +487,14 @@ void CAI_Stalker::CreateSkeleton()
 	element->setDensity(density);
 	element->set_ParentElement(parent);
 	m_pPhysicsShell->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
+	//joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
+	joint=P_create_Joint(CPhysicsJoint::welding,root,element);
 	joint->SetAnchorVsSecondElement(0,0,0);
 	joint->SetAxisVsSecondElement(1,0,0,0);
 	joint->SetAxisVsSecondElement(0,1,0,2);
 	joint->SetLimits(-M_PI/4.f,M_PI/4.f,0);//
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
+	//joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
+	joint->SetLimits(-0.f,0.f,2);
 	joint->SetLimits(-M_PI/8.f,M_PI/8.f,1);
 	joint->SetForceAndVelocity(hinge_force);
 	joint->SetForceAndVelocity(hinge_force*10,1.5f,2);

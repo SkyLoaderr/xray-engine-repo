@@ -43,8 +43,7 @@ class CAI_Crow : public CEntityAlive
 public:
 	void				OnHitEndPlaying(CBlend* B);
 protected:
-	CMovementControl	Movement;	// ??????
-
+	
 	struct SCrowAnimations
 	{
 		SAnim		m_idle;
@@ -87,6 +86,8 @@ protected:
 
 	void			state_DeathFall	();
 	void			state_Flying	();
+
+	void			CreateSkeleton();
 public:
 					CAI_Crow();
 	virtual			~CAI_Crow();

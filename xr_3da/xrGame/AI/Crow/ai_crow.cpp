@@ -86,6 +86,8 @@ CAI_Crow::~CAI_Crow()
 {
 	// removing all data no more being neded 
 	m_Sounds.m_idle.Unload		();
+	xr_delete(m_pPhysicsShell);
+
 }
 
 void CAI_Crow::Load( LPCSTR section )
@@ -104,7 +106,7 @@ void CAI_Crow::Load( LPCSTR section )
 	fIdleSoundDelta				= pSettings->r_float	(section,"idle_sound_delta");
 	fIdleSoundTime				= fIdleSoundDelta+fIdleSoundDelta*Random.randF(-.5f,.5f);
 
-	Movement.SetParent			(this);
+
 }
 
 BOOL CAI_Crow::net_Spawn		(LPVOID DC)
@@ -141,7 +143,7 @@ void CAI_Crow::switch2_DeathFall()
 {
 	Fvector V;
 	V.mul(mRotate.k,fSpeed);
-	Movement.SetVelocity(V);
+//	Movement.SetVelocity(V);
 	PKinematics(pVisual)->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
 void CAI_Crow::Update(u32 DT)
@@ -253,14 +255,14 @@ void CAI_Crow::state_DeathFall()
 {
 	Fvector tAcceleration;
 	tAcceleration.set(0,-10.f,0);
-	Movement.SetPosition(vPosition);
-	Movement.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
-	Movement.GetPosition(vPosition);
+	//Movement.SetPosition(vPosition);
+	//Movement.Calculate	(tAcceleration,0,0,Device.fTimeDelta > .1f ? .1f : Device.fTimeDelta,false);
+	//Movement.GetPosition(vPosition);
 
 	UpdateTransform();
 
-	if (Movement.Environment() == CMovementControl::peOnGround)
-		st_target = eDeathDead;
+	//if (Movement.Environment() == CMovementControl::peOnGround)
+	//	st_target = eDeathDead;
 }
 
 void CAI_Crow::UpdateCL()
@@ -346,5 +348,16 @@ void CAI_Crow::HitImpulse	(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir
 	}break;
 	}
 */
+//	if(m_pPhysicsShell) inherited::Hit(amount,vWorldDir,0,0,)
 }
 //---------------------------------------------------------------------
+void CAI_Crow::CreateSkeleton()
+{
+	m_pPhysicsShell=P_create_Shell();
+	Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); obb.m_rotate.identity();
+	CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
+	m_pPhysicsShell->add_Element(E);
+	m_pPhysicsShell->setMass(10.);
+	if(!H_Parent())
+		m_pPhysicsShell->Activate(svXFORM(),0,svXFORM());
+}
