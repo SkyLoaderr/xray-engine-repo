@@ -12,7 +12,7 @@ int GetVertexIndex(Vertex *F)
 int getCFormVID(vecVertex& V,Vertex *F)
 {
 	vecVertexIt it = std::lower_bound(V.begin(),V.end(),F);
-	return inr(it-V.begin());
+	return int(it-V.begin());
 }
 
 int bCriticalErrCnt = 0;
@@ -122,14 +122,14 @@ void CBuild::BuildCForm(IWriter &fs)
 	// Header
 	hdrCFORM hdr;
 	hdr.version		= CFORM_CURRENT_VERSION;
-	hdr.vertcount	= CL.getVS();
-	hdr.facecount	= CL.getTS();
+	hdr.vertcount	= (u32)CL.getVS();
+	hdr.facecount	= (u32)CL.getTS();
 	hdr.aabb		= BB;
 	MFS.w			(&hdr,sizeof(hdr));
 
 	// Data
-	MFS.w			(CL.getV(),CL.getVS()*sizeof(Fvector));
-	MFS.w			(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
+	MFS.w			(CL.getV(),(u32)CL.getVS()*sizeof(Fvector));
+	MFS.w			(CL.getT(),(u32)CL.getTS()*sizeof(CDB::TRI));
 
 	// Compress chunk
 	fs.w_chunk		(fsL_CFORM|CFS_CompressMark,MFS.pointer(),MFS.size());

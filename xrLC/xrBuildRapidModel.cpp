@@ -80,7 +80,7 @@ void CBuild::BuildRapid()
 
 	Status					("Building OBB tree..");
 	RCAST_Model				= xr_new<CDB::MODEL> ();
-	RCAST_Model->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	RCAST_Model->build		(CL.getV(),(int)CL.getVS(),CL.getT(),(int)CL.getTS());
 
 	// Saving for AI/DO usage
 	Status					("Saving...");
@@ -108,17 +108,17 @@ void CBuild::BuildRapid()
 	// Header
 	hdrCFORM hdr;
 	hdr.version				= CFORM_CURRENT_VERSION;
-	hdr.vertcount			= CL.getVS();
-	hdr.facecount			= CL.getTS();
+	hdr.vertcount			= (u32)CL.getVS();
+	hdr.facecount			= (u32)CL.getTS();
 	hdr.aabb				= scene_bb;
 	MFS->w					(&hdr,sizeof(hdr));
 
 	// Data
-	MFS->w					(CL.getV(),CL.getVS()*sizeof(Fvector));
-	MFS->w					(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
+	MFS->w					(CL.getV(),(u32)CL.getVS()*sizeof(Fvector));
+	MFS->w					(CL.getT(),(u32)CL.getTS()*sizeof(CDB::TRI));
 	MFS->close_chunk		();
 
 	MFS->open_chunk			(1);
-	MFS->w					(&*rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
+	MFS->w					(&*rc_faces.begin(),(u32)rc_faces.size()*sizeof(b_rc_face));
 	MFS->close_chunk		();
 }
