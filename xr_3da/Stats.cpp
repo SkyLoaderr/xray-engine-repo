@@ -81,9 +81,8 @@ void CStats::Show()
 	if (psDeviceFlags & rsStatistic) 
 	{
 		CFontHUD&	F = *((CFontHUD*)font);
-		F.Size		(0.016f		);
 		F.Color		(0xFFFFFFFF	);
-		F.OutSet	(-1.f,-.95f	);
+		F.OutSet	(0,0);
 		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",fFPS,fRFPS);
 		F.OutNext	("TPS:         %2.2f M",fTPS);
 		F.OutNext	("VERT:        %d/%d",dwVert,dwVert/dwCalls);
@@ -130,6 +129,7 @@ void CStats::Show()
 		F.OutNext	("netClient:   %2.2fms, %d",netClient.result,netClient.count);
 		F.OutNext	("netServer:   %2.2fms, %d",netServer.result,netServer.count);
 		F.OutNext	("TEST:        %2.2fms, %d",TEST.result,TEST.count);
+		F.OnRender	();
 	}
 
 	{
