@@ -3,7 +3,7 @@
 #include "ai_alife.h"
 #include "xrServer_Objects.h"
 
-void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, bool bErase)
+void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode)
 {
 	NET_Packet			P;
 	P.w_begin			(M_EVENT);
@@ -13,8 +13,7 @@ void xrServer::Perform_destroy	(CSE_Abstract* tpSE_Abstract, u32 mode, bool bEra
 	//Msg					("*** SERVER-destroy: %s, ID=%d",tpSE_Abstract->s_name, tpSE_Abstract->ID);
 
 	SendBroadcast		(0xffffffff,P,mode);
-	if (bErase)
-		entities.erase	(tpSE_Abstract->ID);
+
 	entity_Destroy		(tpSE_Abstract);
 }
 
@@ -29,8 +28,6 @@ void xrServer::SLS_Clear		()
 
 	// Collect entities
 	u32					mode	= net_flags(TRUE,TRUE);
-	xrS_entities::iterator		I=entities.begin(),E=entities.end();
-	for ( ; I!=E; ++I)
-		Perform_destroy			(I->second,mode,false);
-	entities.clear				();
+	while (entities.begin() != entities.end())
+		Perform_destroy			(entities.begin()->second,mode);
 }

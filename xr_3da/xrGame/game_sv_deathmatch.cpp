@@ -265,11 +265,11 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 
 				CSE_Abstract*		what		= S->ID_to_entity(eid);
 				if (!what) continue;
-				S->Perform_destroy				(what,net_flags(TRUE, TRUE), TRUE);
+				S->Perform_destroy				(what,net_flags(TRUE, TRUE));
 			}
 		};
 		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
-		S->Perform_destroy				(from,net_flags(TRUE, TRUE), TRUE);
+		S->Perform_destroy				(from,net_flags(TRUE, TRUE));
 	}
 //	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
 };

@@ -29,18 +29,10 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 		}
 	} else {
 		// Destroy entities
-		for (; I!=E; ++I) {
-			CSE_Abstract*	entity		= I->second;
-			//entities.erase	(entity->ID);
-
-			//////////////////////////////////////////////////////////////////////////
-			//.!!! What does it mean?! we cannot specify E instead of entities.end(), 
-			// because we change map during the loop
-			//////////////////////////////////////////////////////////////////////////
-			
+		while (!entities.empty())		{
+			CSE_Abstract*	entity		= entities.begin()->second;
 			entity_Destroy	(entity);
 		}
-		entities.clear();
 	}
 	csPlayers.Leave			();
 

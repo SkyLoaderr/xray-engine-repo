@@ -579,7 +579,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 						if (!xr_strcmp((*i).first,l_tpALifeDynamicObject->s_name)) {
 							CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeDynamicObject);
 							m_tpServer->entity_Destroy	(l_tpAbstract);
-							xr_delete					(l_tpAbstract);
+							xr_delete					(l_tpAbstract); 
 							m_tObjectRegistry.erase		(*ii);
 							tTrader.children.erase		(ii);
 							l_bFoundObject				= true;

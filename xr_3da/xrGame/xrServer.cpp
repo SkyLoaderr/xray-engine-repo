@@ -147,9 +147,10 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 {
 	u16			type;
 	P.r_begin	(type);
+
+	csPlayers.Enter			();
 	xrClientData* CL		= ID_to_client(sender);
 
-	csPlayers.Enter				();
 	switch (type)
 	{
 	case M_UPDATE:	Process_update		(P,sender);	break;		// No broadcast
@@ -188,8 +189,9 @@ CSE_Abstract*	xrServer::entity_Create		(LPCSTR name)
 void			xrServer::entity_Destroy	(CSE_Abstract *&P)
 {
 	R_ASSERT					(P);
+	entities.erase				(P->ID);
 	m_tID_Generator.vfFreeID	(P->ID,Device.TimerAsync());
-	if (!P->m_bALifeControl)
+	if (!P->m_bALifeControl)	
 		F_entity_Destroy		(P);
 }
 

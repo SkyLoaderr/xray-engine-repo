@@ -121,7 +121,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 
 			// Perfrom real destroy
 			entity_Destroy		(e_entity	);
-			entities.erase		(id_entity	);
 		}
 		break;
 	case GE_HIT:
@@ -215,7 +214,6 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 //				}
 			}
 			entity_Destroy		(e_dest);
-			entities.erase		(id_dest);	
 		}
 		break;
 	case GE_GRENADE_EXPLODE:
