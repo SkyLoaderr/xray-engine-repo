@@ -80,7 +80,7 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		sprintf(str, "%s%s: %%cdefault%3.2f", fieldsCaptionColor, *stbl("weight"), pInvItem->Weight());
 		UIWeight.SetText(str);
 
-		sprintf(str, "%s%s: %%cdefault%d", fieldsCaptionColor, *stbl("cost"), pInvItem->Cost());
+		sprintf(str, "%s%s: %%cdefault%d", fieldsCaptionColor, *stbl("base cost"), pInvItem->Cost());
 		UICost.SetText(str);
 
 		sprintf(str, "%s%s: %%cdefault%3.2f", fieldsCaptionColor, *stbl("condition"), pInvItem->GetCondition());

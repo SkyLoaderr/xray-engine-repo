@@ -8,17 +8,17 @@
 	</static>
 
 	<!-- WEIGHT -->
-	<static x="210" y="150" width="200" height="20">
-		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
-	</static>
-
-	<!-- COST -->
 	<static x="210" y="130" width="200" height="20">
 		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
-	<!-- CONDITION -->
+	<!-- COST -->
 	<static x="210" y="170" width="200" height="20">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	</static>
+
+	<!-- CONDITION -->
+	<static x="210" y="150" width="200" height="20">
 		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 

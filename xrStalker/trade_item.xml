@@ -7,17 +7,17 @@
 	</static>
 
 	<!-- WEIGHT -->
-	<s	<static x="190" y="33" width="140" height="18">
-text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	<static x="190" y="15" width="140" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
 	<!-- COST -->
-	<s	<static x="190" y="15" width="240" height="18">
-text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
+	<static x="190" y="51" width="240" height="18">
+		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 	
 	<!-- CONDITION -->
-	<static x="190" y="51" width="240" height="18">
+	<static x="190" y="33" width="240" height="18">
 		<text x="0" y="0" font="letterica18" r="240" g="217" b="182"></text>
 	</static>
 
