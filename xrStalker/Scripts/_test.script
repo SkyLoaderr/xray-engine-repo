@@ -1,8 +1,10 @@
+привет
 sss = "2andy{Scope+GrenadeLauncher+Silencer}, di_ma123{GrenadeLauncher}, oles, alexMX"
 local i = string.find(sss,";")
 if i~=nil then sss = string.sub(sss,0, i-1 ) end
 print(sss)
 print("")
+
 
 local default_items={}
 

@@ -37,7 +37,7 @@ end
 ---------------------------------------------------------
 function game_sv_LastStanding:Create   (str)
    game_sv_mp_script.Create(self, str)
-   self.lifecount = self:get_option_i (str,"lifecount",3)
+   self.lifecount = self:get_option_i (str,"lifecount",5)
 
    self:loadGameOptions()
 
@@ -195,18 +195,38 @@ end
 ---------------------------------------------------------
 function game_sv_LastStanding:checkForRoundEnd()
 	local		cnt		= self:get_players_count	()
+   local    in_game_cnt = cnt;
 	for	it=0, cnt-1 	do
 		local ps		=	self:get_it	(it)
       if ps.lifecount == 0 then
+         in_game_cnt = in_game_cnt-1
+      end
+   end
+
+    if (cnt>1 and in_game_cnt == 1) or (cnt==1 and in_game_cnt == 0) then
          self:OnRoundEnd()
-         end
    end
 end
 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnRoundEnd()
-   game_sv_mp_script.OnRoundEnd(self,"SOME REASON")
+   self:switch_Phase(game_phases.GAME_PHASE_PENDING)
+   local P = net_packet()
 
+   local winner = "unknown"
+	local		cnt		= self:get_players_count	()
+	for	it=0, cnt-1 	do
+		local ps		=	self:get_it	(it)
+      if ps.lifecount ~= 0 then
+         winner = ps:getName()
+      end
+   end
+   local msg = string.format("Round is over. Winner is %s",winner)
+
+   self:GenerateGameMessage (P)
+   P:w_u32				   (game_messages.GAME_EVENT_ROUND_END)
+   P:w_stringZ			(msg)
+   self:u_EventSend(P)
 end
 
 ---------------------------------------------------------
@@ -251,17 +271,17 @@ function game_sv_LastStanding:GetRespawnPoint(team_idx)
 end 
 ---------------------------------------------------------
 function game_sv_LastStanding:OnPlayerHitPlayer(game_id_hitter, game_id_hitted, P)
-      local ps_hitter = self:get_eid(game_id_hitter)
-      local ps_hitted = self:get_eid(game_id_hitted)
+--      local ps_hitter = self:get_eid(game_id_hitter)
+--      local ps_hitted = self:get_eid(game_id_hitted)
 
-      if ps_hitted == nil or ps_hitter == nil or ps_hitted.GameID==ps_hitter.GameID then return end
+--      if ps_hitted == nil or ps_hitter == nil or ps_hitted.GameID==ps_hitter.GameID then return end
       --for example:
-      local impulse = self:GetHitParamsImpulse(P)
-      local power = self:GetHitParamsPower(P)
-      impulse        = impulse* 1.01
-      power          = power * 1.01
+--      local impulse = self:GetHitParamsImpulse(P)
+--      local power = self:GetHitParamsPower(P)
+--      impulse        = impulse* 1.01
+--      power          = power * 1.01
 
-      self:SetHitParams(P, impulse, power)
+--      self:SetHitParams(P, impulse, power)
 end
 
 
@@ -274,7 +294,7 @@ function game_sv_LastStanding:OnPlayerKillPlayer(cl_id_killer, cl_id_killed)
    ps_killed.lifecount = ps_killed.lifecount -1
    ps_killed.deaths = ps_killed.deaths+1
    ps_killed:setFlag(game_player_flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)
-   if ps_killed.ID ~=ps_killer.ID then 
+   if ps_killed.GameID ~=ps_killer.GameID then 
       ps_killer.kills = ps_killer.kills+1
    end
    

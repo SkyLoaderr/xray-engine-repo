@@ -41,18 +41,25 @@ function game_cl_LastStanding:shedule_Update (dt)
       
       if (self:Phase()==game_phases.GAME_PHASE_PENDING) then
          self.m_game_ui:SetTodoCaption("Press FIRE to enter the game")
-      else
-         self.m_game_ui:SetTodoCaption("Kill your enemies")
+--         self.m_game_ui:SetLifeCaption("")
       end
 
       if self:Phase()==game_phases.GAME_PHASE_INPROGRESS then
          local ps_local	= self:GetLocalPlayer()
          local msg = string.format("You have %d lives", ps_local.lifecount)
          self.m_game_ui:SetLifeCaption(msg)
-      else
-         self.m_game_ui:SetLifeCaption("")
-      end
+         
+         if   ps_local.lifecount~=0 then
+            if ps_local:testFlag(game_player_flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD) then
+               self.m_game_ui:SetTodoCaption("Press Fire to enter the game")
+            else
+               self.m_game_ui:SetTodoCaption("Kill your enemies")
+            end
 
+         else
+            self.m_game_ui:SetTodoCaption("You are out of game :(")
+         end
+      end
    end
 
 end
@@ -85,12 +92,18 @@ end
 
 function game_cl_LastStanding:TranslateGameMessage(msg, P)
    if msg == game_messages.GAME_EVENT_ROUND_STARTED then
-      self:CommonMessageOut("R O U N D  S T A R T E D !!!")
+      self:CommonMessageOut("R O U N D  S T A R T E D")
+
+   elseif msg == game_messages.GAME_EVENT_ROUND_END then
+      local msg = P:r_stringZ()
+      self.m_game_ui:SetLifeCaption(msg)
+      self:CommonMessageOut(msg)
+
    elseif msg == game_messages.GAME_EVENT_PLAYER_CONNECTED then
       local name = P:r_stringZ()
       local msg = string.format("Player %s connected.", name)
       self:CommonMessageOut(msg)
-
+   
    elseif msg == game_messages.GAME_EVENT_PLAYER_DISCONNECTED then
       local name = P:r_stringZ()
       local msg = string.format("Player %s disconnected.", name)
@@ -122,8 +135,11 @@ function game_cl_LastStanding:OnKeyboardPress(key)
 		( is_actor and  (ps_local:testFlag(game_player_flags.GAME_PLAYER_FLAG_VERY_VERY_DEAD)) )		or
 		( self:Phase() == game_phases.GAME_PHASE_PENDING		)								or
 		( is_spectator and self:CanBeReady()	)
+
+      local b_is_in_game = (ps_local.lifecount~=0 and self:Phase() == game_phases.GAME_PHASE_INPROGRESS) or
+                                          (self:Phase() == game_phases.GAME_PHASE_PENDING)
 		
-		if b_need_to_send_ready then
+		if b_need_to_send_ready and b_is_in_game then
 				local P = net_packet()
 				self:GameEventGen	(P, ps_local.GameID	)
 				P:w_u16(game_messages.GAME_EVENT_PLAYER_READY);
