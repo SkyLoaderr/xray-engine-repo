@@ -85,35 +85,41 @@ function pp_effector:process(pp)
 	
 	local dual		= duality()
 	local noise		= noise()
-	local blend		= color()
-	local color		= color()
+	local base		= color()
+	local gray		= color()
+	local add		= color()
 
-	dual.h			= self.max_power.dual.h 			* d
-	dual.v			= self.max_power.dual.v 			* d
+	dual.h			= self.max_power.dual.h 		* d
+	dual.v			= self.max_power.dual.v 		* d
+	
 	noise.grain		= self.max_power.noise.grain 		* d
-	noise.intensity = self.max_power.noise.intensity 	* d
-	color.r			= self.max_power.noise.color.r 		* d
-	color.g			= self.max_power.noise.color.g 		* d
-	color.b			= self.max_power.noise.color.b 		* d 
-	color.a			= self.max_power.noise.color.a 		* d 
-	pp.gray			= self.max_power.gray 				* d
-	pp.blur			= self.max_power.blur 				* d
+	noise.intensity 	= self.max_power.noise.intensity 	* d
+	noise.fps		= self.max_power.noise.fps 		* d
 	
-	noise.fps		= self.max_power.noise.fps 			* d
-	blend.r			= self.max_power.blend_color.r 		* d
-	blend.g			= self.max_power.blend_color.g 		* d
-	blend.b			= self.max_power.blend_color.b 		* d 
-	blend.a			= self.max_power.blend_color.a 		* d 
+	base.r			= self.max_power.color_base.r 		* d
+	base.g			= self.max_power.color_base.g 		* d
+	base.b			= self.max_power.color_base.b 		* d 
 
-	pp.blend_color	= blend
+	gray.r			= self.max_power.color_gray.r 		* d
+	gray.g			= self.max_power.color_gray.g 		* d
+	gray.b			= self.max_power.color_gray.b 		* d 
+
+	add.r			= self.max_power.color_add.r 		* d
+	add.g			= self.max_power.color_add.g 		* d
+	add.b			= self.max_power.color_add.b 		* d 
+
+	pp.gray			= self.max_power.gray 			* d
+	pp.blur			= self.max_power.blur 			* d
 	
-	noise.color		= color
 	pp.dual			= dual
 	pp.noise		= noise
+	pp.color_base		= base
+	pp.color_gray		= gray
+	pp.color_add		= add
 	
 	self.info		= pp
 	
-	return          true
+	return          	true
 end
 
 function pp_effector:finished()
@@ -151,30 +157,37 @@ function pp_linear_lerp:process(pp)
 	
 	local dual		= duality()
 	local noise		= noise()
-	local blend		= color()
-	local color		= color()
+	local base		= color()
+	local gray		= color()
+	local add		= color()
 
-	dual.h			= self.min_power.dual.h 		 + (self.max_power.dual.h 			- self.min_power.dual.h 		)	* d
-	dual.v			= self.min_power.dual.v 		 + (self.max_power.dual.v 			- self.min_power.dual.v 		)	* d
-	noise.grain		= self.min_power.noise.grain 	 + (self.max_power.noise.grain 		- self.min_power.noise.grain 	)	* d
-	noise.intensity = self.min_power.noise.intensity + (self.max_power.noise.intensity	- self.min_power.noise.intensity) 	* d
-	color.r			= self.min_power.noise.color.r 	 + (self.max_power.noise.color.r 	- self.min_power.noise.color.r 	)	* d
-	color.g			= self.min_power.noise.color.g 	 + (self.max_power.noise.color.g 	- self.min_power.noise.color.g 	)	* d
-	color.b			= self.min_power.noise.color.b 	 + (self.max_power.noise.color.b 	- self.min_power.noise.color.b 	)	* d 
-	color.a			= self.min_power.noise.color.a 	 + (self.max_power.noise.color.a 	- self.min_power.noise.color.a 	)	* d 
-	pp.gray			= self.min_power.gray 			 + (self.max_power.gray 			- self.min_power.gray 			)	* d
-	pp.blur			= self.min_power.blur 			 + (self.max_power.blur 			- self.min_power.blur 			)	* d
+	dual.h			= self.min_power.dual.h 		+ (self.max_power.dual.h 		- self.min_power.dual.h 	)	* d
+	dual.v			= self.min_power.dual.v 		+ (self.max_power.dual.v 		- self.min_power.dual.v 	)	* d
+	
+	noise.grain		= self.min_power.noise.grain 		+ (self.max_power.noise.grain 		- self.min_power.noise.grain 	)	* d
+	noise.intensity 	= self.min_power.noise.intensity 	+ (self.max_power.noise.intensity	- self.min_power.noise.intensity) 	* d
+	noise.fps		= self.min_power.noise.fps 		+ (self.max_power.noise.fps 		- self.min_power.noise.fps 	)	* d
+	
+	base.r			= self.min_power.color_base.r 	 	+ (self.max_power.color_base.r 		- self.min_power.color_base.r 	)	* d
+	base.g			= self.min_power.color_base.g 	 	+ (self.max_power.color_base.g 		- self.min_power.color_base.g 	)	* d
+	base.b			= self.min_power.color_base.b 	 	+ (self.max_power.color_base.b 		- self.min_power.color_base.b 	)	* d 
 
-	noise.fps		= self.min_power.noise.fps 		 + (self.max_power.noise.fps 		- self.min_power.noise.fps 		)	* d
-	blend.r			= self.min_power.blend_color.r 	 + (self.max_power.blend_color.r 	- self.min_power.blend_color.r 	)	* d
-	blend.g			= self.min_power.blend_color.g 	 + (self.max_power.blend_color.g 	- self.min_power.blend_color.g 	)	* d
-	blend.b			= self.min_power.blend_color.b 	 + (self.max_power.blend_color.b 	- self.min_power.blend_color.b 	)	* d 
-	blend.a			= self.min_power.blend_color.a 	 + (self.max_power.blend_color.a 	- self.min_power.blend_color.a 	)	* d 
+	gray.r			= self.min_power.color_gray.r 	 	+ (self.max_power.color_gray.r 		- self.min_power.color_gray.r 	)	* d
+	gray.g			= self.min_power.color_gray.g 	 	+ (self.max_power.color_gray.g 		- self.min_power.color_gray.g 	)	* d
+	gray.b			= self.min_power.color_gray.b 	 	+ (self.max_power.color_gray.b 		- self.min_power.color_gray.b 	)	* d 
 
-	pp.blend_color	= blend
-	noise.color		= color
+	add.r			= self.min_power.color_add.r 	 	+ (self.max_power.color_add.r 		- self.min_power.color_add.r 	)	* d
+	add.g			= self.min_power.color_add.g 	 	+ (self.max_power.color_add.g 		- self.min_power.color_add.g 	)	* d
+	add.b			= self.min_power.color_add.b 	 	+ (self.max_power.color_add.b 		- self.min_power.color_add.b 	)	* d 
+
+	pp.gray			= self.min_power.gray 			+ (self.max_power.gray 			- self.min_power.gray 		)	* d
+	pp.blur			= self.min_power.blur 			+ (self.max_power.blur 			- self.min_power.blur 		)	* d
+
 	pp.dual			= dual
 	pp.noise		= noise
+	pp.color_base		= base
+	pp.color_gray		= gray
+	pp.color_add		= add
 	
 	self.info		= pp
 	
