@@ -193,6 +193,10 @@ void CBuild::Run()
 	fs.close_chunk();
 
 	FPU::m24r();
+	Phase	("Checking T-Junctions...");
+	CorrectTJunctions();
+
+	FPU::m24r();
 	Phase	("Optimizing...");
 	PreOptimize		();
 
