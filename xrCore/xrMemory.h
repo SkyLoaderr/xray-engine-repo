@@ -21,6 +21,13 @@ public:
 };
 extern XRCORE_API	xrMemory	Memory;
 
+#undef ZeroMemory
+#undef CopyMemory
+#undef FillMemory
+#define ZeroMemory(a,b)	Memory.mem_fill(a,0,b)
+#define CopyMemory(a,b,c) Memory.mem_copy(a,b,c)
+#define FillMemory(a,b,c) Memory.mem_fill(a,c,b)
+
 // new
 template <class T>
 IC	T*		xr_new		()
