@@ -27,6 +27,8 @@ public:
 	R_dsgraph::mapLOD_T											mapLOD;
 
 #if RENDER==R_R2
+	R_dsgraph::mapNormal_T										mapNormal_EM;		// elevation maps
+	R_dsgraph::mapMatrix_T										mapMatrix_EM;
 	R_dsgraph::mapEmissive_T									mapEmissive;
 #endif
 
