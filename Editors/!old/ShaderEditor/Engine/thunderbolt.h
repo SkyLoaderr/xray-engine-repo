@@ -20,14 +20,14 @@ struct CThunderboltDesc
 	{
     	float					fOpacity;
 	    Fvector2				fRadius;
-        shared_str					texture;
-        shared_str					shader;
+        shared_str				texture;
+        shared_str				shader;
         ref_shader				hShader;
     	SFlare()				{ fOpacity = 0; fRadius.set(0.f,0.f);}
 	};
     SFlare						m_GradientTop;
     SFlare						m_GradientCenter;
-    shared_str						name;
+    shared_str					name;
 
 public:
 								CThunderboltDesc	(CInifile* pIni, LPCSTR sect);
@@ -52,6 +52,8 @@ private:
     CThunderboltDesc*			current;
 
     Fmatrix				  		current_xform;
+	Fvector3					current_direction;
+
 	ref_geom			  		hGeom_model;
     // states
 	enum EState

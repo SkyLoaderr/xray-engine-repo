@@ -64,7 +64,7 @@ CEffect_Thunderbolt::CEffect_Thunderbolt()
 
     // params
     p_var_alt		= pSettings->r_fvector2							( "thunderbolt_common","altitude" );  
-	p_var_alt.x	= deg2rad(p_var_alt.x); p_var_alt.y	= deg2rad(p_var_alt.y);
+	p_var_alt.x		= deg2rad(p_var_alt.x); p_var_alt.y	= deg2rad(p_var_alt.y);
     p_var_long		= deg2rad	(				 pSettings->r_float	( "thunderbolt_common","delta_longitude" ));
     p_min_dist		= _min		(MAX_DIST_FACTOR,pSettings->r_float	( "thunderbolt_common","min_dist_factor" ));
     p_tilt			= deg2rad	(pSettings->r_float					( "thunderbolt_common","tilt" ));
@@ -128,13 +128,13 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
     current		            = palette[Random.randI(palette.size())]; VERIFY(current);
 
     Fmatrix XF,S;
-    Fvector dir,pos,dev;
+    Fvector pos,dev;
     float sun_h, sun_p; 
     SUN_DIR.getHP			(sun_h,sun_p);
     float alt	            = Random.randF(p_var_alt.x,p_var_alt.y);
     float lng	            = Random.randF(sun_h-p_var_long+PI,sun_h+p_var_long+PI); 
     float dist	            = Random.randF(FAR_DIST*p_min_dist,FAR_DIST*MAX_DIST_FACTOR);
-    dir.setHP	            (lng,alt);
+    current_direction.setHP	(lng,alt);
     pos.mad		            (Device.vCameraPosition,dir,dist);
     dev.x		            = Random.randF(-p_tilt,p_tilt);
     dev.y		            = Random.randF(0,PI_MUL_2);
@@ -166,6 +166,7 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
 		current->snd.play_at_pos_unlimited(0,pos,FALSE,dist/300.f);
 		current->snd.set_range	(dist/2,dist*2.f);
     }
+	current_direction.invert	();	// for env-sun
 }
 
 void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
@@ -197,6 +198,10 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
 
         g_pGamePersistent->Environment.CurrentEnv.sky_color.add(lightning_phase*p_sky_color);
         g_pGamePersistent->Environment.CurrentEnv.sun_color.add(lightning_phase*p_sun_color);
+
+		if (::Render->get_generation()==IRender_interface::GENERATION_R2)	{
+			g_pGamePersistent->Environment.CurrentEnv.sun_dir = current_direction;
+		}
     }
 }
 
