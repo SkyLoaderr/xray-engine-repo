@@ -59,14 +59,18 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 
 #ifdef ENGINE_BUILD
 	if (!Engine.FS.Exist(szFileName))
-#endif
-#ifdef _EDITOR
-	if (!FS.Exist(szFileName))
-#endif
 	{
 		R_ASSERT(!ReadOnly);
 		return;
 	}
+#endif
+#ifdef _EDITOR
+	if (!FS.Exist(szFileName))
+	{
+		R_ASSERT(!ReadOnly);
+		return;
+	}
+#endif
 
 	CFileStream file(szFileName);
 
