@@ -74,26 +74,21 @@ bool CAI_Biting::bfAssignWatch(CEntityAction *tpEntityAction)
 	
 	CWatchAction	&l_tWatchAction = tpEntityAction->m_tWatchAction;
 
-//	Fvector new_pos;
-//	switch (l_tWatchAction.m_tWatchType) {
-//		case MonsterSpace::ELookType::eLookTypePoint:
-//
-//
-//
-//
-//case CWatchAction::eGoalTypeDirection: 
-//			new_pos.mad(Position(), l_tWatchAction.m_tWatchVector, 2.f);
-//			LookPosition(new_pos);
-//			break;
-//		case CWatchAction::eGoalTypeObject:
-//			LookPosition(l_tWatchAction.m_tpObjectToWatch->Position());
-//			break;
-//	}	
-//	
-//	if ((CWatchAction::eGoalTypeWatchType != l_tWatchAction.m_tGoalType) && (angle_difference(m_body.target.yaw,m_body.current.yaw) < EPS_L) )
-//		l_tWatchAction.m_bCompleted = true;
-//	else
-//		l_tWatchAction.m_bCompleted = false;
+	Fvector new_pos;
+	switch (l_tWatchAction.m_tWatchType) {
+		case MonsterSpace::eLookTypePoint:
+			LookPosition(l_tWatchAction.m_tWatchVector);
+			break;
+		case MonsterSpace::eLookTypeDirection:
+			new_pos.mad(Position(), l_tWatchAction.m_tWatchVector, 2.f);
+			LookPosition(new_pos);
+			break;
+	}
+
+	if (angle_difference(m_body.target.yaw,m_body.current.yaw) < EPS_L)
+		l_tWatchAction.m_bCompleted = true;
+	else
+		l_tWatchAction.m_bCompleted = false;
 	
 	return		(!l_tWatchAction.m_bCompleted);
 }
