@@ -55,7 +55,7 @@ void CAI_Stalker::OnDeviceCreate	()
 
 	CTimer		T; T.Start		();
 	CStalkerAnimations::Load		(PKinematics(pVisual));
-	// Msg		("--spawn--dc-anim-load: %f ms",1000.f*T.GetAsync());
+	Msg		("--spawn--dc-anim-load: %f ms",1000.f*T.GetAsync());
 	T.Start		();
 	vfAssignBones					(pSettings,cNameSect());
 	// Msg		("--spawn--dc-anim-bones: %f ms",1000.f*T.GetAsync());
