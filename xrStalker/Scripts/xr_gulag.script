@@ -4,21 +4,21 @@ class "fract"
 function fract:__init(name, char_ini)
 	self.name = name
 
-	self.state = 0 		-- состояние схемы. 0 - дефолтовое. 1 и дальше - различные особые состояния, например тревога для блокпоста
+	self.state = 0
 	self.stateBegin = nil
 
-	self.checkTime = 60*60*1000 	-- 1 игровой час
+	self.checkTime = 60*60*1000
 	self.checkBegin = nil
 
 	self.broadcastTime = 2*60*1000
 	self.broadcastBegin = nil 
 
-	self.casualities = 0  	-- потери на блокпосте
+	self.casualities = 0  	
 
-	self.Object = {}        -- список ресурсов
-	self.Job = {}           -- список заданий
-	self.States = {}	-- список состояний
-	self.Guest = {}		-- список гостей, находящихся на территории группировки
+	self.Object = {}        
+	self.Job = {}           
+	self.States = {}	
+	self.Guest = {}		
 
 	self:loadJob(name)
 	table.sort(self.Job, function(a,b) return a.prior > b.prior end)
@@ -28,7 +28,7 @@ function fract:__init(name, char_ini)
 		self.music = gramofon.m_gramofon("blockpost_rupor")
 	end
 
-	-- инициализация территории
+
         if char_ini:line_exist("fraction", "zone") == true then
 		self.territory_name = char_ini:r_string("fraction", "zone")
         end
@@ -36,10 +36,9 @@ function fract:__init(name, char_ini)
 end
 function fract:zone_enter(zone, obj)
 	printf("ENTER %s", obj:name())
-	-- нужно определить свой это или чужой. Если чужой - добавить его в список гостей
+
 	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
 		if self.Guest[obj:id()] == nil then
-			-- отметить как гостя
 			self.Guest[obj:id()] = {object = obj,
 						time = nil,
 						vertex = nil }			
@@ -48,7 +47,6 @@ function fract:zone_enter(zone, obj)
 end
 function fract:zone_exit(zone, obj)
 	printf("EXIT %s", obj:name())
-	-- нужно удалить чудака из списка гостей, если он там есть.
 	if obj ~= nil and (get_clsid(obj) == clsid.stalker or get_clsid(obj) == clsid.actor ) then
 		if self.Guest[obj:id()] ~= nil then
 			self.Guest[obj:id()] = nil
@@ -67,8 +65,7 @@ function fract:broadcast()
 	        v.object:give_info_portion_via_pda("dolg_territory", v.object) 
 	end	
 end
-function fract:calculate() -- просчет лагеря
-	-- проверка не закончилось ли время особого состояния
+function fract:calculate() 
 	if self.stateBegin ~= nil and self.state ~= 0 then
 		local timeout = 0
 		for k,v in self.States do
@@ -84,12 +81,10 @@ function fract:calculate() -- просчет лагеря
 		end
 	end
 	
-	-- матюгальник
 	if self.music ~= nil then
 		self.music:update()
 	end
 
-	-- убирание мертвых сталкеров	
 	for k,v in self.Object do
 		if v:alive() ~= true then
 			self:changeCasualities(1)
@@ -97,15 +92,12 @@ function fract:calculate() -- просчет лагеря
 		end
 	end
 
-	-- обнуление несуществующих акторов у заданий
 	for k,v in self.Job do
-		-- проверить что этот актор есть в обжектах
 		if v.object ~= nil and self.Object[v.object:id()] == nil then
 			v.object = nil				
 		end
 	end
 
-	-- рассылка по всем гостям в лагере
 	if self.territory == nil and self.territory_name ~= nil then
 	        self.territory = level.object(self.territory_name)
 		if self.territory ~= nil then
@@ -119,7 +111,6 @@ function fract:calculate() -- просчет лагеря
 		self:broadcast()
 	end		
 
-	-- пересчет работ
 	if self.checkBegin == nil or
 	   game.time() - self.checkBegin > self.checkTime then
 		self:updateJob()
@@ -780,8 +771,10 @@ function getJob(fraction, npc)
 	end
 end
 function needRaid(fraction)
+	printf("[RAID] needraid")
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
+		printf("[RAID] cc %d", cc)
 		if cc >= 3 then return true end
 	end
 	return false			
@@ -794,6 +787,7 @@ end
 function startRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
+		printf("[RAID] StartRaid cc %d", cc)
 		xr_gulag.fraction[fraction]:changeCasualities(-cc)
 	end
 end
