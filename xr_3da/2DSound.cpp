@@ -68,7 +68,7 @@ LPDIRECTSOUNDBUFFER C2DSound::LoadWaveAs2D(const char *pName)
 
 //	2411252 - Andy
 
-	pSounds->lpPrimaryBuf->GetFormat(&wfxdest,sizeof(wfxdest),0);
+	pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
 		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
 		wfxdest.nChannels		= pFormat->nChannels;
@@ -81,7 +81,7 @@ LPDIRECTSOUNDBUFFER C2DSound::LoadWaveAs2D(const char *pName)
 
 		// Secondly convert to best format for 2D
 		CopyMemory				(pFormat,&wfxdest,sizeof(wfxdest));
-		pSounds->lpPrimaryBuf->GetFormat(&wfxdest,sizeof(wfxdest),0);
+		pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 		wfxdest.nChannels		= pFormat->nChannels;
 		wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
@@ -96,13 +96,13 @@ LPDIRECTSOUNDBUFFER C2DSound::LoadWaveAs2D(const char *pName)
 		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
 		converted				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
 	}
-	if (!converted)				{_FREE(pFormat); return NULL; }
+	if (!converted)				{ _FREE(pFormat); return NULL; }
 
-	dsBD.dwBufferBytes	= dwLen;
-	dsBD.lpwfxFormat	= &wfxdest;
+	dsBD.dwBufferBytes			= dwLen;
+	dsBD.lpwfxFormat			= &wfxdest;
 
 	// Creating buffer and fill it with data
-    if (SUCCEEDED(pSounds->lpDirectSound->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
+    if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
         LPVOID	pMem1, pMem2;
         DWORD	dwSize1, dwSize2;
 
@@ -155,18 +155,18 @@ void C2DSound::Load		(LPCSTR name)
 	bNeedUpdate			= true;
 }
 
-void C2DSound::Load(C2DSound *pOriginal)
+void C2DSound::Load		(C2DSound *pOriginal)
 {
 	fName				= strdup(pOriginal->fName);
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;
 	dwStatus			= 0;
-	pSounds->lpDirectSound->DuplicateSoundBuffer(pOriginal->pBuffer,&pBuffer);
+	pSounds->pDevice->DuplicateSoundBuffer(pOriginal->pBuffer,&pBuffer);
 	VERIFY				(pBuffer);
 	bNeedUpdate			= true;
 }
 
-void C2DSound::Update()
+void C2DSound::Update	()
 {
 	if (dwStatus&DSBSTATUS_BUFFERLOST) pBuffer->Restore();
 	if (bNeedUpdate) {
@@ -176,7 +176,7 @@ void C2DSound::Update()
 	}
 }
 
-void C2DSound::OnMove()
+void C2DSound::OnMove	()
 {
 	pBuffer->GetStatus(&dwStatus);
 	if ( dwStatus & DSBSTATUS_PLAYING ) {
