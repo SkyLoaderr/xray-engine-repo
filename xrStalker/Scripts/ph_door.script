@@ -133,6 +133,14 @@ function action_door:update(delta)
 	--]]
 end
 
+function action_door:fastcall()
+	if self:close_check() then
+		self:close_action()
+		return true
+	end
+	return false
+end
+
 function action_door:close_check()
 	printf("_bp: close_check(): %d", device():time_global())
 	if not self.initialized then
@@ -190,7 +198,8 @@ function action_door:close_door(disable_snd)
 
 	-- Ставим коллбек для отлова окончания закрытия двери (чтобы заблокировать ее и проиграть звук, если нужно):
 	printf("_bp: action_door: setting physics callback from close_door")
-	level.add_call(self, "close_check", "close_action")
+	--level.add_call(self, "close_check", "close_action") -- OK
+	self.object:set_fastcall(self, self.fastcall)
 	--level.add_call(self, self.close_check, self.close_action)
 	--level.remove_call(self, self.close_check, self.close_action)
 	--level.add_call(self, action_door.close_check, action_door.close_action)
