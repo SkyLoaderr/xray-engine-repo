@@ -149,7 +149,7 @@ void CWeaponRPG7Grenade::Load(LPCSTR section) {
 }
 
 static const u32 EXPLODE_TIME	= 5000;
-static const u32 FLASH_TIME		= 500;
+static const u32 FLASH_TIME		= 1000;
 static const u32 ENGINE_TIME	= 3000;
 void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal) 
 {
