@@ -56,9 +56,6 @@ CUIInventoryWnd::CUIInventoryWnd()
 	Init();
 
 	SetFont(HUD().pFontMedium);
-
-	m_vDragDropItems.clear();
-	m_vDragDropItems.reserve(MAX_ITEMS);
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
@@ -710,11 +707,7 @@ void CUIInventoryWnd::Update()
 
 		
 		//убрать объект drag&drop для уже использованной вещи
-		//for(int i = 0; i <m_iUsedItems; ++i) 
-		int i = 0;
-		for(DRAG_DROP_VECTOR_it it = m_vDragDropItems.begin(); 
-			m_vDragDropItems.end() != it; 
-			++it, ++i) 
+		for(int i = 0; i <m_iUsedItems; i++) 
 		{
 			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
 			if(pItem && !pItem->Useful())
@@ -728,9 +721,6 @@ void CUIInventoryWnd::Update()
 					m_pCurrentItem = NULL;
 					m_pCurrentDragDropItem = NULL;
 				}
-
-				i = 0;
-				it = m_vDragDropItems.begin(); 
 			}
 		}
 	}
