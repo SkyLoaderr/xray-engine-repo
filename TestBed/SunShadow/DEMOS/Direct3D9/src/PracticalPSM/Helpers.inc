@@ -237,7 +237,7 @@ HRESULT CPracticalPSM::SetRenderStates( bool shadowPass )
         m_pd3dDevice->SetTextureStageState(1, D3DTSS_TEXCOORDINDEX, 1);
         m_pd3dDevice->SetTextureStageState(1, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_PROJECTED);
 
-        m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+        m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);		//. OLES: perf problem?
     }
     else 
     {
@@ -259,7 +259,7 @@ HRESULT CPracticalPSM::SetRenderStates( bool shadowPass )
         m_pd3dDevice->Clear(0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB(0, 60, 60, 60), 1.0f, 0L);
         m_pd3dDevice->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 
-        m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);	//. OLES: models are oriented opposite
+        m_pd3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);		//. OLES: perf problem?
     }
     return S_OK;
 }
