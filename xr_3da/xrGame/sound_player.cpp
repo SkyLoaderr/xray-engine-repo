@@ -35,6 +35,8 @@ void CSoundPlayer::clear			()
 {
 	while (!m_sounds.empty())
 		remove						(m_sounds.begin()->first);
+
+	m_sound_mask					= 0;
 }
 
 void CSoundPlayer::reinit			()
@@ -141,7 +143,7 @@ void CSoundPlayer::update_playing_sounds()
 			(*I).m_sound->feedback->set_position(compute_sound_point(*I));
 		else
 			if (!(*I).started() && (Device.dwTimeGlobal >= (*I).m_start_time))
-				(*I).play_at_pos			(m_object,compute_sound_point(*I));
+				(*I).play_at_pos		(m_object,compute_sound_point(*I));
 	}
 }
 
