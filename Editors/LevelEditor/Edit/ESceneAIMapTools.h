@@ -46,6 +46,12 @@ struct SAINode					// definition of "patch" or "node"
 	SAINode*	nRight	()	{return n3;}
 	SAINode*	nBack	()	{return n4;}
 	
+    int			Links	()	{int cnt=0; for (int k=0; k<4; k++) if(n[k]) cnt++; return cnt;}
+	void		PointLF	(Fvector& D, float patch_size);
+	void		PointFR	(Fvector& D, float patch_size);
+	void		PointRB	(Fvector& D, float patch_size);
+	void		PointBL	(Fvector& D, float patch_size);
+
     void   		Load	(IReader&, ESceneAIMapTools*);
     void   		Save	(IWriter&, ESceneAIMapTools*);
 };
@@ -86,14 +92,14 @@ protected:
     void 				hash_Initialize			();
 	void 				hash_Clear				();
     void				HashRect				(const Fvector& v, float radius, Irect& result);
-	AINodeVec&			HashMap					(int ix, int iz);
-	AINodeVec&			HashMap					(Fvector& V);
+	AINodeVec*			HashMap					(int ix, int iz);
+	AINodeVec*			HashMap					(Fvector& V);
 	SAINode*			FindNode				(Fvector& vAt, float eps=0.05f);
 	SAINode* 			FindNeighbor			(SAINode* N, int side);
 
-	void				RegisterNode			(SAINode* N);
-    void				UnregisterNode			(SAINode*);
-	SAINode* 			BuildNode				(Fvector& vFrom, Fvector& vAt, bool bIgnoreConstraints);
+    void				RemoveNode				(AINodeIt N);
+	SAINode* 			BuildNode				(Fvector& vFrom, Fvector& vAt, bool bIgnoreConstraints, bool bSuperIgnoreConstraints=false);
+	int	 				BuildNodes				(const Fvector& pos, int sz, bool bIgnoreConstraints);
 	void 				BuildNodes				();
 	BOOL 				CreateNode				(Fvector& vAt, SAINode& N, bool bIgnoreConstraints);
 	BOOL 				CanTravel				(Fvector _from, Fvector _at);
@@ -118,6 +124,8 @@ public:
     	flUpdateHL 			= (1<<15),
     };
     Flags32				m_Flags;
+
+    float 				m_VisRadius;
 public:
 						ESceneAIMapTools 	   	();
 	virtual        	 	~ESceneAIMapTools 		();
@@ -159,18 +167,22 @@ public:
     bool				GenerateMap				();
 
     void				AddEmitter				(const Fvector& pos);
-    void				AddNode					(const Fvector& pos, bool bIgnoreConstraints, bool bAutoLink);
+    int					AddNode					(const Fvector& pos, bool bIgnoreConstraints, bool bAutoLink, int cnt);
 
     ObjectList&			SnapObjects				(){return m_SnapObjects;}
     bool				FillSnapList			(ObjectList* lst);
 
     AIEmitterVec&		Emitters				(){return m_Emitters;}
+    AINodeVec&			Nodes					(){return m_Nodes;}
     
     void				MakeLinks				(u8 side_flag, EMode mode);
     void				RemoveLinks				();
     void				InvertLinks				();
 
 	void 				UpdateHLSelected		(){m_Flags.set(flUpdateHL,TRUE);}
+
+    void 				SmoothNodes				();
+    void				RemoveInvalidNodes		(int link);
 };
 #endif // ESceneAIMapToolsH
 

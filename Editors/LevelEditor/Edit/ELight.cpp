@@ -113,10 +113,14 @@ void CLight::Render(int priority, bool strictB2F){
             if (Selected()) DU.DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_SELRANGE, clr );
             else			DU.DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_RANGE, clr );
         break;
-        case D3DLIGHT_SPOT:
+        case D3DLIGHT_SPOT:{
+//        	Fmatrix m;
+//            m.translate(m_D3D.position);
+//		 	RCache.set_xform_world(m);
+//        	DU.DrawIdentCone(clr);
         	if (Selected())	DU.DrawSpotLight( m_D3D.position, m_D3D.direction, m_D3D.range, m_D3D.phi, clr );
             else			DU.DrawSpotLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, m_D3D.phi, clr );
-        break;
+        }break;
         default: THROW;
         }
     }else if ((3==priority)&&(true==strictB2F)){

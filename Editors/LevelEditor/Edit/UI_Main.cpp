@@ -340,12 +340,14 @@ void TUI::ShowObjectHint(){
 void TUI::SetStatus(LPSTR s){
 	VERIFY(m_bReady);
     fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
+    ELog.Msg(mtInformation,s);
 }
 void TUI::ProgressInfo(LPCSTR text)
 {
 	if (text){
 		fraBottomBar->paStatus->Caption=fraBottomBar->sProgressTitle+" ("+text+")";
     	fraBottomBar->paStatus->Repaint();
+	    ELog.Msg(mtInformation,fraBottomBar->paStatus->Caption.c_str());
     }
 }
 void TUI::ProgressStart(float max_val, const char* text)
@@ -358,6 +360,7 @@ void TUI::ProgressStart(float max_val, const char* text)
 	fraBottomBar->fStatusProgress=0;
 	fraBottomBar->cgProgress->Progress=0;
 	fraBottomBar->cgProgress->Visible=true;
+    ELog.Msg(mtInformation,text);
 }
 void TUI::ProgressEnd()
 {

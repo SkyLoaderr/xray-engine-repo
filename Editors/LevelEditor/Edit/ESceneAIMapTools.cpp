@@ -7,6 +7,9 @@
 #include "ESceneAIMapTools.h"
 #include "xrLevel.h"
 #include "Scene.h"
+#include "ui_main.h"
+#include "ui_tools.h"
+#include "ui_aimaptools.h"
 
 // chunks
 #define AIMAP_VERSION  				0x0002
@@ -19,6 +22,46 @@
 #define AIMAP_CHUNK_NODES			0x0006
 #define AIMAP_CHUNK_SNAP_OBJECTS	0x0007
 //----------------------------------------------------
+
+void SAINode::PointLF(Fvector& D, float patch_size)
+{
+	Fvector	d;	d.set(0,-1,0);
+	Fvector	v	= Pos;	
+	float	s	= patch_size/2;
+	v.x			-= s;
+	v.z			+= s;
+	Plane.intersectRayPoint(v,d,D);
+}
+
+void SAINode::PointFR(Fvector& D, float patch_size)
+{
+	Fvector	d;	d.set(0,-1,0);
+	Fvector	v	= Pos;	
+	float	s	= patch_size/2;
+	v.x			+= s;
+	v.z			+= s;
+	Plane.intersectRayPoint(v,d,D);
+}
+
+void SAINode::PointRB(Fvector& D, float patch_size)
+{
+	Fvector	d;	d.set(0,-1,0);
+	Fvector	v	= Pos;	
+	float	s	= patch_size/2;
+	v.x			+= s;
+	v.z			-= s;
+	Plane.intersectRayPoint(v,d,D);
+}
+
+void SAINode::PointBL(Fvector& D, float patch_size)
+{
+	Fvector	d;	d.set(0,-1,0);
+	Fvector	v	= Pos;	
+	float	s	= patch_size/2;
+	v.x			-= s;
+	v.z			-= s;
+	Plane.intersectRayPoint(v,d,D);
+}
 
 void SAINode::Load(IReader& F, ESceneAIMapTools* tools)
 {
@@ -59,6 +102,7 @@ ESceneAIMapTools::ESceneAIMapTools()
     m_BBox.invalidate	();
 //    m_Header.size_y				= m_Header.aabb.max.y-m_Header.aabb.min.y+EPS_L;
 	hash_Initialize();
+    m_VisRadius	= 30;
 }
 //----------------------------------------------------
 
@@ -235,16 +279,170 @@ void ESceneAIMapTools::AddEmitter(const Fvector& pos)
     Scene.UndoSave();
 }
 
-void ESceneAIMapTools::AddNode(const Fvector& pos, bool bIgnoreConstraints, bool bAutoLink)
+int ESceneAIMapTools::AddNode(const Fvector& pos, bool bIgnoreConstraints, bool bAutoLink, int sz)
 {
    	Fvector Pos				= pos;
-	SAINode* N 				= BuildNode(Pos,Pos,bIgnoreConstraints);
-	if (N){
-    	N->flags.set		(SAINode::flSelected,TRUE); 
-    	if (bAutoLink) 		UpdateLinks(N,bIgnoreConstraints);
-    	Scene.UndoSave		();
+    if (1==sz){
+        SAINode* N 			= BuildNode(Pos,Pos,bIgnoreConstraints,true);
+        if (N){
+            N->flags.set	(SAINode::flSelected,TRUE); 
+            if (bAutoLink) 	UpdateLinks(N,bIgnoreConstraints);
+            return			1;
+        }else{
+            ELog.Msg		(mtError,"Can't create node.");
+            return 			0;
+        }
     }else{
-    	ELog.Msg			(mtError,"Can't create node.");
+		return BuildNodes	(Pos,sz,bIgnoreConstraints);
     }
+}
+
+void ESceneAIMapTools::RemoveNode(AINodeIt it)
+{
+	R_ASSERT(it!=m_Nodes.end());
+	SAINode* node = *it;
+    // unregister node from hash
+	AINodeVec* V = HashMap(node->Pos); R_ASSERT2(V,"AINode position out of bounds.");
+	for (AINodeIt I=V->begin(); I!=V->end(); I++)
+    	if (node==*I){V->erase(I); return;}
+    // remove node from list
+    m_Nodes.erase	(it);
+    // remove all link to this node
+    Irect rect;
+    HashRect		(node->Pos,m_Params.fPatchSize,rect);
+    for (int x=rect.x1; x<=rect.x2; x++){
+        for (int z=rect.y1; z<=rect.y2; z++){
+            AINodeVec* nodes	= HashMap(x,z);
+            if (nodes){
+                for (AINodeIt h_it=nodes->begin(); h_it!=nodes->end(); h_it++){
+                    if ((*h_it)->n1==node) 		(*h_it)->n1	= 0;
+                    else if ((*h_it)->n2==node)	(*h_it)->n2	= 0;
+                    else if ((*h_it)->n3==node)	(*h_it)->n3	= 0;
+                    else if ((*h_it)->n4==node)	(*h_it)->n4	= 0;
+                }
+            }
+        }
+    }
+    // delete node & erase from list
+    xr_delete		(node);
+}
+
+void ESceneAIMapTools::RemoveInvalidNodes(int link)
+{
+    UI.ProgressStart	(m_Nodes.size(), "Removing invalid nodes...");
+	int count=0;
+    for (int k=0; k<(int)m_Nodes.size(); k++){
+        AINodeIt it = m_Nodes.begin()+k;
+        if (link==(*it)->Links()){
+        	RemoveNode	(it);
+            k--;
+            count++;
+        }
+        if (k%128==0) {
+            UI.ProgressInc	();
+            if (UI.NeedAbort()) break;
+        }
+    }
+    UI.ProgressEnd		();
+    ELog.DlgMsg			(mtInformation,"Removed '%d' invalid nodes.",count);
+	Scene.UndoSave		();
+}
+
+int ESceneAIMapTools::SelectObjects(bool flag)
+{
+	int count = 0;
+
+    switch (Tools.GetSubTarget()){
+    case estAIMapEmitter:{
+	    for (AIEmitterIt it=m_Emitters.begin(); it!=m_Emitters.end(); it++)
+        	it->flags.set(SAIEmitter::flSelected,flag);
+		count = m_Emitters.size();
+    }break;
+    case estAIMapNode:{
+        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
+            (*it)->flags.set(SAINode::flSelected,flag);
+		count = m_Nodes.size();
+    }break;
+    }
+    UpdateHLSelected	();
+    UI.RedrawScene		();
+    return count;
+}
+
+int ESceneAIMapTools::RemoveSelection()
+{
+	int count=0;
+    switch (Tools.GetSubTarget()){
+    case estAIMapEmitter:{
+	    for (int k=0; k<(int)m_Emitters.size(); k++){
+        	if (m_Emitters[k].flags.is(SAIEmitter::flSelected)){
+            	m_Emitters.erase(m_Emitters.begin()+k);
+				count++;
+                k--;
+            }
+        }
+    }break;
+    case estAIMapNode:{
+    	if (m_Nodes.size()==SelectionCount(true)){
+        	Clear(true);
+        }else{
+        	// remove link to sel nodes
+	        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
+            	for (int k=0; k<4; k++) if ((*it)->n[k]&&(*it)->n[k]->flags.is(SAINode::flSelected)) (*it)->n[k]=0;
+            // remove sel nodes
+            for (int k=0; k<(int)m_Nodes.size(); k++){
+                AINodeIt it = m_Nodes.begin()+k;
+                if ((*it)->flags.is(SAINode::flSelected)){
+                	RemoveNode		(it);
+                    k--;
+                    count++;
+                }
+            }
+        }
+    }break;
+    }
+    if (count){ 
+	    UpdateHLSelected	();
+    	UI.RedrawScene		();
+    }
+    return count;
+}
+
+int ESceneAIMapTools::InvertSelection()
+{
+	int count=0;
+    switch (Tools.GetSubTarget()){
+    case estAIMapEmitter:{
+	    for (AIEmitterIt it=m_Emitters.begin(); it!=m_Emitters.end(); it++)
+        	it->flags.invert(SAIEmitter::flSelected);
+		count = m_Emitters.size();
+    }break;
+    case estAIMapNode:{
+        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
+            (*it)->flags.invert(SAINode::flSelected);
+	    count = m_Nodes.size();
+    }break;
+    }
+    UpdateHLSelected	();
+    UI.RedrawScene		();
+    return count;
+}
+
+int ESceneAIMapTools::SelectionCount(bool testflag)
+{
+	int count = 0;
+    switch (Tools.GetSubTarget()){
+    case estAIMapEmitter:{
+	    for (AIEmitterIt it=m_Emitters.begin(); it!=m_Emitters.end(); it++)
+            if (it->flags.is(SAIEmitter::flSelected)==testflag)
+				count++;
+    }break;
+    case estAIMapNode:{
+        for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
+            if ((*it)->flags.is(SAINode::flSelected)==testflag)
+                count++;
+    }break;
+    }
+    return count;
 }
 

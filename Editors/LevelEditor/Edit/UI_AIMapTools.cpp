@@ -15,6 +15,9 @@ TUI_AIMapTools::TUI_AIMapTools():TUI_CustomTools(OBJCLASS_AIMAP,false)
 	// node tools
     AddControlCB(xr_new<TUI_ControlAIMapNodeSelect>		(estAIMapNode,		eaSelect, 	this));
     AddControlCB(xr_new<TUI_ControlAIMapNodeAdd>		(estAIMapNode,		eaAdd, 		this));
+    AddControlCB(xr_new<TUI_ControlAIMapNodeMove>		(estAIMapNode,		eaMove,		this));
+    AddControlCB(xr_new<TUI_ControlAIMapNodeRotate>		(estAIMapNode,		eaRotate,	this));
+    
     // emitter tools
     AddControlCB(xr_new<TUI_ControlAIMapEmitterSelect>	(estAIMapEmitter,	eaSelect, 	this));
     AddControlCB(xr_new<TUI_ControlAIMapEmitterAdd>		(estAIMapEmitter,	eaAdd, 		this));
@@ -42,11 +45,13 @@ TUI_ControlAIMapNodeAdd::TUI_ControlAIMapNodeAdd(int st, int act, TUI_CustomTool
 
 bool __fastcall TUI_ControlAIMapNodeAdd::Start(TShiftState Shift)
 {
+	append_nodes = 0;
 	Fvector p;
     if (Scene.m_AIMap->PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.ZFar())){
     	Scene.m_AIMap->SelectObjects(false);
-	    Scene.m_AIMap->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down);
+	    append_nodes=Scene.m_AIMap->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,((TfraAIMap*)parent_tool->pFrame)->seBrushSize->Value);
 		if (!Shift.Contains(ssAlt)){ 
+		    if (append_nodes) Scene.UndoSave();
         	ResetActionToSelect();
             return false;
         }else return true;
@@ -57,12 +62,13 @@ void TUI_ControlAIMapNodeAdd::Move(TShiftState _Shift)
 {
 	Fvector p;
     if (Scene.m_AIMap->PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,UI.ZFar())){
-	    Scene.m_AIMap->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down);
+	    append_nodes+=Scene.m_AIMap->AddNode(p,((TfraAIMap*)parent_tool->pFrame)->ebIgnoreConstraints->Down,((TfraAIMap*)parent_tool->pFrame)->ebAutoLink->Down,((TfraAIMap*)parent_tool->pFrame)->seBrushSize->Value);
     }
 }
 bool TUI_ControlAIMapNodeAdd::End(TShiftState _Shift)
 {
 	if (!_Shift.Contains(ssAlt)) ResetActionToSelect();
+    if (append_nodes) Scene.UndoSave();
 	return true;
 }
 
@@ -70,7 +76,7 @@ bool TUI_ControlAIMapNodeAdd::End(TShiftState _Shift)
 // Emitter Add
 //------------------------------------------------------------------------------
 TUI_ControlAIMapEmitterAdd::TUI_ControlAIMapEmitterAdd(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent)
-{
+{                         
 }
 bool __fastcall TUI_ControlAIMapEmitterAdd::Start(TShiftState Shift)
 {
@@ -208,5 +214,86 @@ void __fastcall TUI_ControlAIMapEmitterMove::Move(TShiftState _Shift)
 bool __fastcall TUI_ControlAIMapEmitterMove::End(TShiftState _Shift)
 {
 	return MovingEnd(_Shift);
+}
+
+//------------------------------------------------------------------------------------
+// Node Move
+//------------------------------------------------------------------------------------
+TUI_ControlAIMapNodeMove::TUI_ControlAIMapNodeMove(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent)
+{
+}
+bool TUI_ControlAIMapNodeMove::Start(TShiftState Shift)
+{
+    if(Scene.m_AIMap->SelectionCount(true)==0) return false;
+
+    if (fraTopBar->ebAxisY->Down){
+        m_MovingXVector.set(0,0,0);
+        m_MovingYVector.set(0,1,0);
+    }else{
+        m_MovingXVector.set(0,0,0);
+        m_MovingYVector.set(0,0,0);
+    }
+    m_MovingReminder.set(0,0,0);
+    return true;
+}
+
+void __fastcall TUI_ControlAIMapNodeMove::Move(TShiftState _Shift)
+{
+	Fvector amount;
+	if (DefaultMovingProcess(_Shift,amount)){
+       	AINodeVec& lst = Scene.m_AIMap->Nodes();
+        for(AINodeIt _F = lst.begin();_F!=lst.end();_F++)
+            if((*_F)->flags.is(SAINode::flSelected)){ 
+            	(*_F)->Pos.add(amount);
+            	(*_F)->Plane.build((*_F)->Pos,(*_F)->Plane.n);
+            }
+    }
+}
+
+bool __fastcall TUI_ControlAIMapNodeMove::End(TShiftState _Shift)
+{
+	return MovingEnd(_Shift);
+}
+
+//------------------------------------------------------------------------------------
+// Rotate Node
+//------------------------------------------------------------------------------------
+TUI_ControlAIMapNodeRotate::TUI_ControlAIMapNodeRotate(int st, int act, TUI_CustomTools* parent):TUI_CustomControl(st,act,parent)
+{
+}                                           
+bool __fastcall TUI_ControlAIMapNodeRotate::Start(TShiftState Shift)
+{
+    if(Scene.m_AIMap->SelectionCount(true)==0) return false;
+
+    m_RotateVector.set(0,0,0);
+    if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
+    else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,0,0);
+    else if (fraTopBar->ebAxisZ->Down) m_RotateVector.set(0,0,1);
+	m_fRotateSnapAngle = 0;
+    return true;
+}
+
+void __fastcall TUI_ControlAIMapNodeRotate::Move(TShiftState _Shift)
+{
+    if (_Shift.Contains(ssLeft)){
+        float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
+
+        if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
+
+        Fmatrix R;
+        if 	(fis_zero(m_RotateVector.x)) 	R.rotateZ(amount);
+        else								R.rotateX(amount);
+        
+       	AINodeVec& lst = Scene.m_AIMap->Nodes();
+        for(AINodeIt _F = lst.begin();_F!=lst.end();_F++)
+            if((*_F)->flags.is(SAINode::flSelected)){
+            	R.transform_dir((*_F)->Plane.n);
+            	(*_F)->Plane.build((*_F)->Pos,(*_F)->Plane.n);
+            }
+    }
+}
+bool __fastcall TUI_ControlAIMapNodeRotate::End(TShiftState _Shift)
+{
+	return RotateEnd(_Shift);
 }
 

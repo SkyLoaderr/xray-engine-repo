@@ -54,10 +54,10 @@ void CEditableObject::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent,
         (*m)->RayQuery(parent, inv_parent, pinf);
 }
 
-void CEditableObject::BoxQuery(const Fmatrix& parent, SPickQuery& pinf)
+void CEditableObject::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
 {
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-        (*m)->BoxQuery(parent, pinf);
+        (*m)->BoxQuery(parent, inv_parent, pinf);
 }
 
 #ifdef _LEVEL_EDITOR
@@ -67,10 +67,10 @@ bool CEditableObject::FrustumPick(const CFrustum& frustum, const Fmatrix& parent
 	return false;
 }
 
-bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf){
+bool CEditableObject::BoxPick(CSceneObject* obj, const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf){
 	bool picked = false;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
-        if ((*m)->BoxPick(box, parent, pinf)){
+        if ((*m)->BoxPick(box, inv_parent, pinf)){
         	pinf.back().s_obj = obj;
             picked = true;
         }
@@ -90,8 +90,9 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     if (m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
-		RCache.set_xform_world(parent);
+//.		Device.Models.Render(m_Visual,parent,priority,strictB2F,1.f);
 
+		RCache.set_xform_world	(parent);
 	    if (m_Flags.is(eoHOM)){
         	if ((1==priority)&&(false==strictB2F)){
 	            RenderEdge(parent,0,0x00000000);
@@ -115,6 +116,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
                 }
             }
         }
+
     }
 }
 
@@ -271,17 +273,14 @@ void CEditableObject::OnDeviceDestroy()
 void CEditableObject::DefferedLoadRP()
 {
 	if (m_LoadState.is(LS_RBUFFERS)) return;
-/*
-    EditMeshIt _M=m_Meshes.begin();
-    EditMeshIt _E=m_Meshes.end();
-    AnsiString tmp;
-    tmp.sprintf("Creating RB: '%s'",GetName());
-    UI.ProgressStart((float)m_Meshes.size(),tmp.c_str());
-	for (; _M!=_E; _M++){
-	    UI.ProgressInc();
-    	(*_M)->CreateRenderBuffers();
-    }
-*/
+/*    
+    CMemoryWriter 	F;
+    PrepareOGF		(F);
+	IReader R		(F.pointer(), F.size());
+    m_Visual 		= Device.Models.Create(&R);
+    //..
+*/    
+
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
        (*s_it)->OnDeviceCreate();

@@ -10,7 +10,6 @@
 #include "motion_simulator.h"
 #include "MgcAppr3DPlaneFit.h"
 
-//. box????
 static SPickQuery	PQ;
 
 IC void SnapXZ	(Fvector&	V, float ps)
@@ -36,7 +35,7 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 
 	Fbox	BB;				BB.set	(PointUp,PointUp);		BB.grow(m_Params.fPatchSize/2);	// box 1
 	Fbox	B2;				B2.set	(PointDown,PointDown);	B2.grow(m_Params.fPatchSize/2);	// box 2
-	BB.merge				(B2);
+	BB.merge				(B2);   
 	Scene.BoxQuery			(PQ,BB,CDB::OPT_FULL_TEST,&m_SnapObjects);
 	DWORD	dwCount 		= PQ.r_count();
 	if (dwCount==0){
@@ -50,11 +49,11 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	for (DWORD i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
-		CDB::TRI&	T = (PQ.r_begin()+i)->T;
+		Fvector*	V = (PQ.r_begin()+i)->verts;
 
-		D.v[0].set	(*T.verts[0]);
-		D.v[1].set	(*T.verts[1]);
-		D.v[2].set	(*T.verts[2]);
+		D.v[0].set	(V[0]);
+		D.v[1].set	(V[1]);
+		D.v[2].set	(V[2]);
 		D.N.mknormal(D.v[0],D.v[1],D.v[2]);
 		if (D.N.y<=0)	continue;
 
@@ -69,7 +68,7 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 	static svector<Fvector,RCAST_Total>	normals;	normals.clear();
 	Fvector P,D; D.set(0,-1,0);
 
-	float coeff = 0.5f*m_Params.fPatchSize/float(RCAST_Count);
+	float coeff 	= 0.5f*m_Params.fPatchSize/float(RCAST_Count);
 
 	for (int x=-RCAST_Count; x<=RCAST_Count; x++) 
 	{
@@ -103,7 +102,7 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 		return	FALSE;
 	}
 //.
-	float rc_lim = bIC?0.5f:0.7f;
+	float rc_lim = bIC?0.015f:0.7f;
 	if (float(points.size())/float(RCAST_Total) < rc_lim) {
 //		Msg		("Partial chasm at [%f,%f,%f].",vAt.x,vAt.y,vAt.z);
 		return	FALSE;
@@ -198,7 +197,8 @@ BOOL ESceneAIMapTools::CreateNode(Fvector& vAt, SAINode& N, bool bIC)
 		}
 		float perc = float(num_successed_rays)/float(RCAST_Total);
 //.		if (!bIC&&(perc < 0.5f)){
-		if (perc < 0.5f){
+		float perc_lim = bIC?0.015f:0.5f;
+		if (perc < perc_lim){
 			//			Msg		("Floating node.");
 			return	FALSE;
 		}
@@ -222,8 +222,10 @@ void ESceneAIMapTools::hash_Initialize()
 
 void ESceneAIMapTools::hash_FillFromNodes()
 {
-	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++)
-		HashMap((*it)->Pos).push_back	(*it);
+	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
+    	AINodeVec* V = HashMap((*it)->Pos); R_ASSERT2(V,"AINode position out of bounds.");
+        V->push_back	(*it);
+    }
 }
 
 void ESceneAIMapTools::hash_Clear()
@@ -255,13 +257,12 @@ void ESceneAIMapTools::HashRect(const Fvector& v, float radius, Irect& result)
 	result.y2 			= iFloor((v.z-VMmin.z+radius)*scale.z);	clamp(result.y2,0,HDIM_Z);
 }
 
-AINodeVec& ESceneAIMapTools::HashMap(int ix, int iz)
+AINodeVec* ESceneAIMapTools::HashMap(int ix, int iz)
 {
-	R_ASSERT(ix<=HDIM_X && iz<=HDIM_Z);
-	return m_HASH[ix][iz];
+	return (ix<=HDIM_X && iz<=HDIM_Z)?&m_HASH[ix][iz]:0;
 }
 
-AINodeVec& ESceneAIMapTools::HashMap(Fvector& V)
+AINodeVec* ESceneAIMapTools::HashMap(Fvector& V)
 {
 	// Calculate offset,scale,epsilon
 	Fvector				VMmin,	VMscale, VMeps, scale;
@@ -280,30 +281,15 @@ AINodeVec& ESceneAIMapTools::HashMap(Fvector& V)
 	DWORD ix,iz;
 	ix = iFloor((V.x-VMmin.x)*scale.x);
 	iz = iFloor((V.z-VMmin.z)*scale.z);
-	R_ASSERT(ix<=HDIM_X && iz<=HDIM_Z);
-	return m_HASH[ix][iz];
-}
-
-void ESceneAIMapTools::UnregisterNode(SAINode* node)
-{
-	VERIFY(node);
-	AINodeVec& V= HashMap(node->Pos);
-	for (AINodeIt I=V.begin(); I!=V.end(); I++)
-    	if (node==*I){V.erase(I); return;}
-}
-
-void ESceneAIMapTools::RegisterNode(SAINode* N)
-{
-	m_Nodes.push_back			(N);
-	HashMap(N->Pos).push_back	(N);
+	return (ix<=HDIM_X && iz<=HDIM_Z)?&m_HASH[ix][iz]:0;
 }
 
 SAINode* ESceneAIMapTools::FindNode(Fvector& vAt, float eps)
 {
-	AINodeVec& V= HashMap(vAt);
+	AINodeVec* V = HashMap(vAt);
+    if (!V) return 0;
 
-	for (AINodeIt I=V.begin(); I!=V.end(); I++)
-	{
+	for (AINodeIt I=V->begin(); I!=V->end(); I++){
 		SAINode* N = *I;
 		if (vAt.similar(N->Pos,eps)) return N;
 	}
@@ -331,31 +317,114 @@ BOOL ESceneAIMapTools::CanTravel(Fvector _from, Fvector _at)
 	return FALSE;
 }
 
-SAINode* ESceneAIMapTools::BuildNode(Fvector& vFrom, Fvector& vAt, bool bIC)	// return node's index
+SAINode* ESceneAIMapTools::BuildNode(Fvector& vFrom, Fvector& vAt, bool bIC, bool bSuperIC)	// return node's index
 {
 	// *** Test if we can travel this path
 	SnapXZ			(vAt,m_Params.fPatchSize);
 
 	if (!(bIC||CanTravel(vFrom, vAt)))	return 0;
 
-	// *** set up xr_new<node
-	SAINode* N 		= xr_new<SAINode>();
-	if (CreateNode(vAt,*N,bIC)) {
+	// *** set up node
+	SAINode N;
+
+	BOOL bRes		= CreateNode(vAt,N,bIC);
+    if (!bRes&&bIC&&bSuperIC){
+    	Fvector D	= {0,1,0};
+		N.Plane.build(vAt,D);					// build plane
+		N.Plane.intersectRayPoint(vAt,D,N.Pos);	// "project" position
+        bRes		= TRUE;
+    }
+	if (bRes) {
 		//*** check if similar node exists
-		SAINode* old = FindNode(N->Pos);
+		SAINode* old = FindNode(N.Pos);
 		if (!old){
 			// register xr_new<node
-			RegisterNode(N);
-			return N;
+            AINodeVec* V 		= HashMap(N.Pos);
+            if (V){ 
+	        	m_Nodes.push_back	(xr_new<SAINode>(N));
+                V->push_back		(m_Nodes.back());
+                return m_Nodes.back();
+            }else return 0;
 		}else{
 			// where already was node - return it
-	    	xr_delete(N);
 			return old;
 		}
 	}else{ 
-    	xr_delete(N);
     	return 0;
     }
+}
+
+int ESceneAIMapTools::BuildNodes(const Fvector& pos, int sz, bool bIC)
+{
+    // Align emitter
+    Fvector			Pos = pos;
+    SnapXZ			(Pos,m_Params.fPatchSize);
+    Pos.y			+= 1;
+    Fvector			Dir; Dir.set(0,-1,0);
+		
+    if (Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&m_SnapObjects)==0) {
+        ELog.Msg	(mtInformation,"Can't align position.");
+        return		0;
+    } else {
+        Pos.y 		= Pos.y - PQ.r_begin()->range;
+    }
+		
+    // Build first node
+    int oldcount 	= m_Nodes.size();
+    SAINode* start 	= BuildNode(Pos,Pos,bIC);
+    if (!start)		return 0;
+
+    // Estimate nodes
+    float estimated_nodes	= (2*sz-1)*(2*sz-1);
+
+    if (estimated_nodes>1024) UI.ProgressStart(1, "Building nodes...");
+    float radius			= sz*m_Params.fPatchSize-EPS_L;
+    // General cycle
+    for (int k=0; k<(int)m_Nodes.size(); k++){
+        SAINode* N 			= m_Nodes[k];
+        // left 
+        if (0==N->n1){
+            Pos.set			(N->Pos);
+            Pos.x			-=	m_Params.fPatchSize;
+            if (Pos.distance_to(start->Pos)<=radius)
+	            N->n1		=	BuildNode(N->Pos,Pos,bIC);
+        }
+        // fwd
+        if (0==N->n2){
+            Pos.set			(N->Pos);
+            Pos.z			+=	m_Params.fPatchSize;
+            if (Pos.distance_to(start->Pos)<=radius)
+	            N->n2		=	BuildNode(N->Pos,Pos,bIC);
+        }
+        // right
+        if (0==N->n3){
+            Pos.set			(N->Pos);
+            Pos.x			+=	m_Params.fPatchSize;
+            if (Pos.distance_to(start->Pos)<=radius)
+	            N->n3		=	BuildNode(N->Pos,Pos,bIC);
+        }
+        // back
+        if (0==N->n4){
+            Pos.set			(N->Pos);
+            Pos.z			-=	m_Params.fPatchSize;
+            if (Pos.distance_to(start->Pos)<=radius)
+	            N->n4		=	BuildNode(N->Pos,Pos,bIC);
+        }
+        if (estimated_nodes>1024){
+            if (k%128==0) {
+                float	p1	= float(k)/float(m_Nodes.size());
+                float	p2	= float(m_Nodes.size())/estimated_nodes;
+                float	p	= 0.1f*p1+0.9f*p2;
+
+                clamp	(p,0.f,1.f);
+                UI.ProgressUpdate(p);
+                // check need abort && redraw
+                if (UI.NeedAbort()) break;
+            }
+        }
+    }
+	if (estimated_nodes>1024) UI.ProgressEnd();
+    return oldcount-m_Nodes.size();
 }
 
 void ESceneAIMapTools::BuildNodes()
@@ -364,7 +433,7 @@ void ESceneAIMapTools::BuildNodes()
 	m_Nodes.reserve	(1024*1024);
 
 	// Initialize hash
-	hash_Initialize ();
+//	hash_Initialize ();
 
 	for (DWORD em=0; em<m_Emitters.size(); em++) 
 	{
@@ -375,8 +444,8 @@ void ESceneAIMapTools::BuildNodes()
 		Fvector			Dir; Dir.set(0,-1,0);
 		
 		if (Scene.RayQuery(PQ,Pos,Dir,3,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL,&m_SnapObjects)==0) {
-			Msg		("Can't align emitter");
-			abort	();
+            ELog.Msg	(mtInformation,"Can't align position.");
+            continue;
 		} else {
 			Pos.y = Pos.y - PQ.r_begin()->range;
 		}
@@ -385,17 +454,18 @@ void ESceneAIMapTools::BuildNodes()
 		int oldcount 	= m_Nodes.size();
 		SAINode* start 	= BuildNode(Pos,Pos,false);
 		if (!start)							continue;
-		if (int(m_Nodes.size())<=oldcount)	continue;
-
+		if ((0==oldcount)&&(int(m_Nodes.size())<=oldcount))	continue;
+	}
+    if (!m_Nodes.empty()){
 		// Estimate nodes
-		Fvector	LevelSize;
+		Fvector	Pos,LevelSize;
 		m_BBox.getsize	(LevelSize);
 		float estimated_nodes	= (LevelSize.x/m_Params.fPatchSize)*(LevelSize.z/m_Params.fPatchSize);
 
 		UI.ProgressStart		(1, "Building nodes...");
 		// General cycle
-		for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
-        	SAINode* N = *it;
+    	for (int k=0; k<(int)m_Nodes.size(); k++){
+	        SAINode* N 			= m_Nodes[k];
 			// left 
 			if (0==N->n1){
 				Pos.set			(N->Pos);
@@ -420,16 +490,15 @@ void ESceneAIMapTools::BuildNodes()
 				Pos.z			-=	m_Params.fPatchSize;
 				N->n4			=	BuildNode(N->Pos,Pos,false);
 			}
-            DWORD i = it-m_Nodes.begin();
-			if (i%512==0) {
-				float	p1	= float(i)/float(m_Nodes.size());
+			if (k%512==0) {
+				float	p1	= float(k)/float(m_Nodes.size());
 				float	p2	= float(m_Nodes.size())/estimated_nodes;
 				float	p	= 0.1f*p1+0.9f*p2;
 
 				clamp	(p,0.f,1.f);
 				UI.ProgressUpdate(p);
                 // check need abort && redraw
-//.				if (i%4096) UI.RedrawScene(true);
+				if (k%32768==0) UI.RedrawScene(true);
                 if (UI.NeedAbort()) break;
 			}
 		}
@@ -497,7 +566,8 @@ bool ESceneAIMapTools::GenerateMap()
 	if (!m_SnapObjects.empty()){
         if (!m_Emitters.empty()){
             // clear
-            Clear				(true);
+            if (!m_Nodes.empty()&&(mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Remove existing nodes?")))
+	            Clear			(true);
                 
             // building
             Scene.lock			();
@@ -576,13 +646,18 @@ SAINode* ESceneAIMapTools::FindNeighbor(SAINode* N, int side)
 	case 2: Pos.x += m_Params.fPatchSize; break;
 	case 3: Pos.z -= m_Params.fPatchSize; break;
     }
-    AINodeVec& nodes	= HashMap(Pos);
-	for (AINodeIt I=nodes.begin(); I!=nodes.end(); I++)
-        if (fsimilar((*I)->Pos.x,Pos.x)&&fsimilar((*I)->Pos.z,Pos.z)) return *I;
-    return 0;
+	AINodeVec* nodes = HashMap(Pos);
+    float dy		= flt_max;
+    SAINode* R		= 0;
+    if (nodes)
+        for (AINodeIt I=nodes->begin(); I!=nodes->end(); I++)
+            if (fsimilar((*I)->Pos.x,Pos.x)&&fsimilar((*I)->Pos.z,Pos.z)){ 
+            	float _dy = _abs((*I)->Pos.y-Pos.y);
+            	if (_dy<dy){dy=_dy; R=*I;}
+            }
+    return R;
 }
 
-static AINodeVec g_nodes;
 void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode)
 {
 	if (!side_flag) return;
@@ -594,7 +669,7 @@ void ESceneAIMapTools::MakeLinks(u8 side_flag, EMode mode)
             	switch (mode){
                 case mdAppend:{ 
                     SAINode* S 				= FindNeighbor(T,k);
-                    if (S) T->n[k] = S;
+                    if (S&&S->flags.is(SAINode::flSelected)) T->n[k] = S;
                 }break;
                 case mdRemove:{ 
                     SAINode* S 				= FindNeighbor(T,k);
@@ -657,4 +732,194 @@ void ESceneAIMapTools::MakeLinks(bool bUp, bool bDown)
     UpdateHLSelected	();
 }
 */
+#define		merge(pt)	if (fsimilar(P.y,REF.y,0.5f)) { c++; pt.add(P); }
+void ESceneAIMapTools::SmoothNodes()
+{
+    UI.ProgressStart		(m_Nodes.size(), "Smoothing nodes...");
+
+	AINodeVec	smoothed;	smoothed.reserve(m_Nodes.size());
+	U8Vec		mark;		mark.assign		(m_Nodes.size(),0);
+
+    int	sm_nodes=0;
+    
+    EnumerateNodes			();
+	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
+		SAINode& N = **it;
+		if (N.flags.is(SAINode::flSelected)){
+        	sm_nodes++;
+        
+            Fvector	P1,P2,P3,P4,P,REF;
+            int		c;
+
+            // smooth point LF
+            {
+                bool	bCorner	= false;
+
+                c=1;	N.PointLF(REF,m_Params.fPatchSize);	P1.set(REF);
+                if (N.nLeft()) {
+                    SAINode& L = *N.nLeft();
+
+                    L.PointFR(P,m_Params.fPatchSize);	merge(P1);
+                    if (L.nForward()) {
+                        bCorner = true;
+                        SAINode& C = *L.nForward();
+
+                        C.PointRB(P,m_Params.fPatchSize);	merge(P1);
+                    }
+                }
+                if (N.nForward()) {
+                    SAINode& F = *N.nForward();
+
+                    F.PointBL(P,m_Params.fPatchSize);	merge(P1);
+                    if ((!bCorner) && F.nLeft()) {
+                        bCorner = true;
+
+                        SAINode& C = *F.nLeft();
+                        C.PointRB(P,m_Params.fPatchSize);	merge(P1);
+                    }
+                }
+                R_ASSERT(c<=4);
+                P1.div(float(c));
+            }
+
+            // smooth point FR
+            {
+                bool	bCorner = false;
+
+                c=1;	N.PointFR(REF,m_Params.fPatchSize); P2.set(REF);
+                if (N.nForward()) {
+                    SAINode& F = *N.nForward();
+
+                    F.PointRB(P,m_Params.fPatchSize);	merge(P2);
+                    if (F.nRight()) {
+                        bCorner = true;
+                        SAINode& C = *F.nRight();
+
+                        C.PointBL(P,m_Params.fPatchSize);	merge(P2);
+                    }
+                }
+                if (N.nRight()) {
+                    SAINode& R = *N.nRight();
+
+                    R.PointLF(P,m_Params.fPatchSize);	merge(P2);
+                    if ((!bCorner) && R.nForward()) {
+                        bCorner = true;
+
+                        SAINode& C = *R.nForward();
+                        C.PointBL(P,m_Params.fPatchSize);	merge(P2);
+                    }
+                }
+                R_ASSERT(c<=4);
+                P2.div(float(c));
+            }
+
+            // smooth point RB
+            {
+                bool	bCorner = false;
+
+                c=1;	N.PointRB(REF,m_Params.fPatchSize); P3.set(REF);
+                if (N.nRight()) {
+                    SAINode& R = *N.nRight();
+
+                    R.PointBL(P,m_Params.fPatchSize);	merge(P3);
+                    if (R.nBack()) {
+                        bCorner = true;
+                        SAINode& C = *R.nBack();
+
+                        C.PointLF(P,m_Params.fPatchSize);	merge(P3);
+                    }
+                }
+                if (N.nBack()) {
+                    SAINode& B = *N.nBack();
+
+                    B.PointFR(P,m_Params.fPatchSize);	merge(P3);
+                    if ((!bCorner) && B.nRight()) {
+                        bCorner = true;
+
+                        SAINode& C = *B.nRight();
+                        C.PointLF(P,m_Params.fPatchSize);	merge(P3);
+                    }
+                }
+                R_ASSERT(c<=4);
+                P3.div(float(c));
+            }
+
+            // smooth point BL
+            {
+                bool	bCorner = false;
+
+                c=1;	N.PointBL(REF,m_Params.fPatchSize); P4.set(REF);
+                if (N.nBack()) {
+                    SAINode& B = *N.nBack();
+
+                    B.PointLF(P,m_Params.fPatchSize);	merge(P4);
+                    if (B.nLeft()) {
+                        bCorner = true;
+                        SAINode& C = *B.nLeft();
+
+                        C.PointFR(P,m_Params.fPatchSize);	merge(P4);
+                    }
+                }
+                if (N.nLeft()) {
+                    SAINode& L = *N.nLeft();
+
+                    L.PointRB(P,m_Params.fPatchSize);	merge(P4);
+                    if ((!bCorner) && L.nBack()) {
+                        bCorner = true;
+
+                        SAINode& C = *L.nBack();
+                        C.PointFR(P,m_Params.fPatchSize);	merge(P4);
+                    }
+                }
+                R_ASSERT(c<=4);
+                P4.div(float(c));
+            }
+
+            // align plane
+            Fvector data[4]; data[0]=P1; data[1]=P2; data[2]=P3; data[3]=P4;
+            Fvector vOffs,vNorm,D;
+            vNorm.set(N.Plane.n);
+            vOffs.set(N.Pos);
+            Mgc::OrthogonalPlaneFit(
+                4,(Mgc::Vector3*)data,
+                *((Mgc::Vector3*)&vOffs),
+                *((Mgc::Vector3*)&vNorm)
+            );
+            if (vNorm.y<0) vNorm.invert();
+            // create _new node
+            SAINode* NEW 	= xr_new<SAINode>(N);
+            NEW->n1 		= (SAINode*)(N.n1?N.n1->idx:InvalidNode);
+            NEW->n2 		= (SAINode*)(N.n2?N.n2->idx:InvalidNode);
+            NEW->n3 		= (SAINode*)(N.n3?N.n3->idx:InvalidNode);
+            NEW->n4 		= (SAINode*)(N.n4?N.n4->idx:InvalidNode);
+            NEW->Plane.build(vOffs,vNorm);
+            D.set			(0,1,0);
+            N.Plane.intersectRayPoint(N.Pos,D,NEW->Pos);	// "project" position
+            smoothed.push_back	(NEW);
+        }else{
+            // create _new node
+            SAINode* NEW 	= xr_new<SAINode>(N);
+            NEW->n1 		= (SAINode*)(N.n1?N.n1->idx:InvalidNode);
+            NEW->n2 		= (SAINode*)(N.n2?N.n2->idx:InvalidNode);
+            NEW->n3 		= (SAINode*)(N.n3?N.n3->idx:InvalidNode);
+            NEW->n4 		= (SAINode*)(N.n4?N.n4->idx:InvalidNode);
+            smoothed.push_back	(NEW);
+        }
+
+        int k = it-m_Nodes.begin();
+        if (k%128==0) {
+            UI.ProgressUpdate(k);
+            if (UI.NeedAbort()) break;
+        }
+    }
+    UI.ProgressEnd();
+    Clear				(true);
+    m_Nodes 			= smoothed;
+	DenumerateNodes		();
+    hash_FillFromNodes	();
+
+    UpdateHLSelected	();
+    
+	if (sm_nodes) 		Scene.UndoSave();
+}
 

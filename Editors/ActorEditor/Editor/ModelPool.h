@@ -22,6 +22,8 @@ class ENGINE_API CModelPool
 
 	void				OnDestroy			();
 public:
+                        CModelPool			();
+                        ~CModelPool			();
 	IVisual*			Instance_Create		(u32 Type);
 	IVisual*			Instance_Duplicate	(IVisual* V);
 	IVisual*			Instance_Load		(const char* N);
@@ -33,8 +35,7 @@ public:
 	IVisual*			Create				(IReader* data);
 	void				Delete				(IVisual* &V);
 
-	CModelPool			();
-	~CModelPool			();
+	void 				Render				(IVisual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD=1.f);
 };
 
 #endif // !defined(AFX_MODELPOOL_H__F4AB6697_66F2_45A2_A501_4E791B8C0A3E__INCLUDED_)

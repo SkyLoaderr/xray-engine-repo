@@ -15,7 +15,8 @@ CEditableMesh::~CEditableMesh(){
 #endif
 }
 
-void CEditableMesh::Construct(){
+void CEditableMesh::Construct()
+{
 	m_Box.set	(0,0,0,0,0,0);
     m_Visible	= 1;
     m_Locked	= 0;

@@ -33,37 +33,38 @@ bool ESceneAIMapTools::Export(LPCSTR fn)
 {
 	R_ASSERT(Valid());
 
-    IWriter& F		= *FS.w_open(fn);
+    IWriter* F		= FS.w_open(fn);
     
-	F.open_chunk	(E_AIMAP_CHUNK_VERSION);
-	F.w_u16			(E_AIMAP_VERSION);
-	F.close_chunk	();
+	F->open_chunk	(E_AIMAP_CHUNK_VERSION);
+	F->w_u16		(E_AIMAP_VERSION);
+	F->close_chunk	();
 
-	F.open_chunk	(E_AIMAP_CHUNK_BOX);
-    F.w				(&m_BBox,sizeof(m_BBox));
-	F.close_chunk	();
+	F->open_chunk	(E_AIMAP_CHUNK_BOX);
+    F->w			(&m_BBox,sizeof(m_BBox));
+	F->close_chunk	();
 
-	F.open_chunk	(E_AIMAP_CHUNK_PARAMS);
-    F.w				(&m_Params,sizeof(m_Params));
-	F.close_chunk	();
+	F->open_chunk	(E_AIMAP_CHUNK_PARAMS);
+    F->w			(&m_Params,sizeof(m_Params));
+	F->close_chunk	();
 
     EnumerateNodes	();
-	F.open_chunk	(E_AIMAP_CHUNK_NODES);
-    F.w_u32			(m_Nodes.size());
+	F->open_chunk	(E_AIMAP_CHUNK_NODES);
+    F->w_u32		(m_Nodes.size());
 	for (AINodeIt it=m_Nodes.begin(); it!=m_Nodes.end(); it++){
         u32 			id;
         u16 			pl;
         NodePosition 	np;
     
-        id = (*it)->n1?(u32)(*it)->idx:InvalidNode; 		F.w(&id,3);
-        id = (*it)->n2?(u32)(*it)->idx:InvalidNode; 		F.w(&id,3);
-        id = (*it)->n3?(u32)(*it)->idx:InvalidNode; 		F.w(&id,3);
-        id = (*it)->n4?(u32)(*it)->idx:InvalidNode; 		F.w(&id,3);
-        pl = pvCompress ((*it)->Plane.n);	 				F.w_u16(pl);
-        PackPosition	(np,(*it)->Pos,m_BBox,m_Params); 	F.w(&np,sizeof(np));
+        id = (*it)->n1?(u32)(*it)->n1->idx:InvalidNode;  	F->w(&id,3);
+        id = (*it)->n2?(u32)(*it)->n2->idx:InvalidNode;  	F->w(&id,3);
+        id = (*it)->n3?(u32)(*it)->n3->idx:InvalidNode;  	F->w(&id,3);
+        id = (*it)->n4?(u32)(*it)->n4->idx:InvalidNode;  	F->w(&id,3);
+        pl = pvCompress ((*it)->Plane.n);	 				F->w_u16(pl);
+        PackPosition	(np,(*it)->Pos,m_BBox,m_Params); 	F->w(&np,sizeof(np));
     }
-	F.close_chunk	();
+	F->close_chunk	();
 
+    FS.w_close		(F);
 	return true;
 }
 /*

@@ -7,6 +7,7 @@
 #include "d3dutils.h"
 #include "du_box.h"
 #include "du_sphere.h"
+#include "du_cone.h"
 
 CDrawUtilities DU;
 
@@ -108,6 +109,7 @@ void CDrawUtilities::UpdateGrid(int number_of_cell, float square_size, int subdi
 
 void CDrawUtilities::OnDeviceCreate()
 {
+	m_Cone.CreateFromData		(D3DPT_TRIANGLELIST,DU_CONE_NUMFACES,D3DFVF_XYZ,du_cone_vertices,DU_CONE_NUMVERTEX,du_cone_faces,DU_CONE_NUMFACES*3);
 	m_Sphere.CreateFromData		(D3DPT_TRIANGLELIST,DU_SPHERE_NUMFACES,D3DFVF_XYZ,du_sphere_vertices,DU_SPHERE_NUMVERTEX,du_sphere_faces,DU_SPHERE_NUMFACES*3);
     m_SolidBox.CreateFromData	(D3DPT_TRIANGLELIST,DU_BOX_NUMFACES,D3DFVF_XYZ,du_box_vertices,DU_BOX_NUMVERTEX,du_box_faces,DU_BOX_NUMFACES*3);
     m_WireBox.CreateFromData	(D3DPT_LINELIST,DU_BOX_NUMLINES,D3DFVF_XYZ,du_box_vertices,DU_BOX_NUMVERTEX,du_box_lines,DU_BOX_NUMLINES*2);
@@ -149,6 +151,7 @@ void CDrawUtilities::OnDeviceCreate()
 
 void CDrawUtilities::OnDeviceDestroy()
 {
+	m_Cone.Destroy		();
 	m_Sphere.Destroy	();
     m_SolidBox.Destroy	();
     m_WireBox.Destroy	();
@@ -353,6 +356,13 @@ void CDrawUtilities::DrawSound(const Fvector& p, float r, u32 c){
 	DrawCross(p, r,r,r, r,r,r, c, true);
 }
 //------------------------------------------------------------------------------
+void CDrawUtilities::DrawIdentCone(u32 clr)
+{
+	Device.SetRS	(D3DRS_TEXTUREFACTOR,	clr);
+	m_Cone.Render	();
+	Device.SetRS	(D3DRS_TEXTUREFACTOR,	0xffffffff);
+}
+
 void CDrawUtilities::DrawIdentSphere(u32 clr)
 {
 	Device.SetRS	(D3DRS_TEXTUREFACTOR,	clr);

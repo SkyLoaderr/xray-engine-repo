@@ -19,6 +19,7 @@
 void CEditableMesh::CreateRenderBuffers()
 {
     if (m_LoadState.is(LS_RBUFFERS)) return;
+
     if (!m_LoadState.is(LS_PNORMALS)) GeneratePNormals();
     R_ASSERT2(m_RenderBuffers.empty(),"Render buffer already exist.");
 

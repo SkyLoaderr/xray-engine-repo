@@ -58,9 +58,10 @@ public:
 // Utilities
 //----------------------------------------------------
 class CDrawUtilities{
-    SPrimitiveBuffer			m_Sphere;
-    SPrimitiveBuffer			m_SolidBox;
-    SPrimitiveBuffer			m_WireBox;
+	SPrimitiveBuffer		m_Cone;
+    SPrimitiveBuffer		m_Sphere;
+    SPrimitiveBuffer		m_SolidBox;
+    SPrimitiveBuffer		m_WireBox;
 public:
 	SGeometry* 	vs_L;
 	SGeometry* 	vs_TL;
@@ -93,6 +94,7 @@ public:
     void DrawSound(const Fvector& p, float radius, u32 clr);
     void DrawLineSphere(const Fvector& p, float radius, u32 clr, bool bCross);
     void DrawIdentSphere(u32 clr);
+    void DrawIdentCone	(u32 clr);
 
 	void dbgDrawPlacement(const Fvector& p, int sz, u32 clr, LPCSTR caption=0, u32 clr_font=0xffffffff);
     void dbgDrawVert(const Fvector& p0, u32 clr, LPCSTR caption=0);

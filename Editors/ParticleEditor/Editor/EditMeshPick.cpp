@@ -79,10 +79,10 @@ void CEditableMesh::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, S
         pinf.append(parent,m_CFModel,XRC.r_begin()+r);
 }
 
-void CEditableMesh::BoxQuery(const Fmatrix& parent, SPickQuery& pinf)
+void CEditableMesh::BoxQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
 {
     if (!m_CFModel) GenerateCFModel();
-    XRC.box_query(parent, m_CFModel, pinf.m_BB);
+    XRC.box_query(inv_parent, m_CFModel, pinf.m_BB);
     for (int r=0; r<XRC.r_count(); r++)
         pinf.append(parent,m_CFModel,XRC.r_begin()+r);
 }
@@ -170,11 +170,11 @@ void CEditableMesh::GetTiesFaces(int start_id, U32Vec& fl, float fSoftAngle, boo
 }
 //----------------------------------------------------
 
-bool CEditableMesh::BoxPick(const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf)
+bool CEditableMesh::BoxPick(const Fbox& box, const Fmatrix& inv_parent, SBoxPickInfoVec& pinf)
 {
     if (!m_CFModel) GenerateCFModel();
 
-    XRC.box_query(parent, m_CFModel, box);
+    XRC.box_query(inv_parent, m_CFModel, box);
     if (XRC.r_count()){
     	pinf.push_back(SBoxPickInfo());
 		pinf.back().e_obj 	= m_Parent;

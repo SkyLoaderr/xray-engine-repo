@@ -19,9 +19,14 @@ class TUI_CustomTools;
         Fbox 				m_BB; 
     	Flags32				m_Flags;
     	struct SResult{
-        	CDB::TRI		T;
+        	Fvector			verts[3];
             float			range;
-            SResult			(CDB::TRI& t):T(t){;}
+            SResult			(const Fmatrix& parent, CDB::TRI& t, float r){
+                parent.transform_tiny(verts[0],*t.verts[0]);
+                parent.transform_tiny(verts[1],*t.verts[1]);
+                parent.transform_tiny(verts[2],*t.verts[2]);
+                range		= r;
+            }
         };
 		DEFINE_VECTOR(SResult,ResultVec,ResultIt);
     public:
@@ -32,7 +37,7 @@ class TUI_CustomTools;
             m_Direction.set	(dir);
             m_Dist			= dist;
             m_Flags.set		(flags);
-        	results.clear	();
+        	results.clear	();          
         }
         IC void	prepare_bq	(const Fbox& bbox, u32 flags)
         {
@@ -43,11 +48,7 @@ class TUI_CustomTools;
 		IC void append		(const Fmatrix& parent, CDB::MODEL* M, CDB::RESULT* R)
         {
         	CDB::TRI* T		= M->get_tris()+R->id;
-            SResult	D		(*T);
-            D.range			= R->range;
-            parent.transform_tiny(*D.T.verts[0],*T->verts[0]);
-            parent.transform_tiny(*D.T.verts[1],*T->verts[1]);
-            parent.transform_tiny(*D.T.verts[2],*T->verts[2]);
+            SResult	D		(parent, *T, R->range);
             if (m_Flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty()){
 	            SResult& S	= results.back();
                 if (D.range<S.range) S = D;

@@ -1,6 +1,6 @@
 object frmPropertiesEObject: TfrmPropertiesEObject
-  Left = 787
-  Top = 592
+  Left = 813
+  Top = 631
   Width = 467
   Height = 363
   BiDiMode = bdRightToLeft

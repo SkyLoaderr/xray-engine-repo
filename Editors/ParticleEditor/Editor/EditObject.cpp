@@ -22,6 +22,8 @@ CEditableObject::CEditableObject(LPCSTR name)
 	m_Flags.zero	();
     m_Version		= 0;
 
+    m_Visual		= 0;
+    
 	m_Box.invalidate();
 
     m_LoadState.zero();

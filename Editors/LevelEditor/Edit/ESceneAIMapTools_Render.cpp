@@ -51,6 +51,7 @@ void ESceneAIMapTools::OnDeviceDestroy()
 static const u32 block_size = 2000;
 void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
 {
+	if (OBJCLASS_AIMAP!=Tools.CurrentClassID()) return;
     if (1==priority){
         if (false==strictB2F){
             // render emitters
@@ -72,7 +73,7 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
                 Device.SetShader	(m_Shader);
                 Device.SetRS		(D3DRS_CULLMODE,		D3DCULL_NONE);
                 Irect rect;
-                HashRect			(Device.m_Camera.GetPosition(),30,rect);
+                HashRect			(Device.m_Camera.GetPosition(),m_VisRadius,rect);
 
                 u32 vBase;
                 _VertexStream* Stream= &RCache.Vertex;
@@ -84,58 +85,57 @@ void ESceneAIMapTools::OnRender(int priority, bool strictB2F)
                 Device.Statistic.TEST2.Begin();
                 for (int x=rect.x1; x<=rect.x2; x++){
                     for (int z=rect.y1; z<=rect.y2; z++){
-                        AINodeVec& nodes	= HashMap(x,z);
-                        for (AINodeIt it=nodes.begin(); it!=nodes.end(); it++){
-                            SAINode& N = **it;
-                            if (Render->ViewBase.testSphere_dirty(N.Pos,m_Params.fPatchSize)){
-                                u32 clr;
-                            	if (N.flags.is(SAINode::flSelected))clr = 0xffffffff;
-                                else 								clr = N.flags.is(SAINode::flHLSelected)?0xff909090:0xff606060;
-                                int k = 0;
-                                if (N.n1) k |= 1<<0;
-                                if (N.n2) k |= 1<<1;
-                                if (N.n3) k |= 1<<2;
-                                if (N.n4) k |= 1<<3;
-                                Fvector		v;
-                                FVF::LIT	v1,v2,v3,v4;
-                                float st 	= 0.25f;
-                                float tt	= 0.01f;
-                                Fvector	DUP; DUP.set(0,1,0);   
-                                v.set(N.Pos.x-st,N.Pos.y,N.Pos.z-st);	N.Plane.intersectRayPoint(v,DUP,v1.p);	v1.p.mad(v1.p,N.Plane.n,tt); v1.t.set(node_tc[k][0]); v1.color=clr;	// minX,minZ
-                                v.set(N.Pos.x+st,N.Pos.y,N.Pos.z-st);	N.Plane.intersectRayPoint(v,DUP,v2.p);	v2.p.mad(v2.p,N.Plane.n,tt); v2.t.set(node_tc[k][1]); v2.color=clr;	// maxX,minZ
-                                v.set(N.Pos.x+st,N.Pos.y,N.Pos.z+st);	N.Plane.intersectRayPoint(v,DUP,v3.p);	v3.p.mad(v3.p,N.Plane.n,tt); v3.t.set(node_tc[k][2]); v3.color=clr;	// maxX,maxZ
-                                v.set(N.Pos.x-st,N.Pos.y,N.Pos.z+st);	N.Plane.intersectRayPoint(v,DUP,v4.p);	v4.p.mad(v4.p,N.Plane.n,tt); v4.t.set(node_tc[k][3]); v4.color=clr;	// minX,maxZ
-                                pv->set(v3); pv++;
-                                pv->set(v2); pv++;
-                                pv->set(v1); pv++;
-                                pv->set(v1); pv++;
-                                pv->set(v4); pv++;
-                                pv->set(v3); pv++;
-                                cnt+=6;
-                                if (cnt>=block_size-6){
-                                    Stream->Unlock	(cnt,m_RGeom->vb_stride);
-                                    Device.DP		(D3DPT_TRIANGLELIST,m_RGeom,vBase,cnt/3);
-                                    pv 				= (FVF::LIT*)Stream->Lock(block_size,m_RGeom->vb_stride,vBase);
-                                    cnt				= 0;
-                                }	
+                        AINodeVec* nodes	= HashMap(x,z);
+                        if (nodes){
+                            for (AINodeIt it=nodes->begin(); it!=nodes->end(); it++){
+                                SAINode& N = **it;
+                                if (Render->ViewBase.testSphere_dirty(N.Pos,m_Params.fPatchSize)){
+                                    u32 clr;
+                                    if (N.flags.is(SAINode::flSelected))clr = 0xffffffff;
+                                    else 								clr = N.flags.is(SAINode::flHLSelected)?0xff909090:0xff606060;
+                                    int k = 0;
+                                    if (N.n1) k |= 1<<0;
+                                    if (N.n2) k |= 1<<1;
+                                    if (N.n3) k |= 1<<2;
+                                    if (N.n4) k |= 1<<3;
+                                    Fvector		v;
+                                    FVF::LIT	v1,v2,v3,v4;
+                                    float st 	= 0.25f;
+                                    float tt	= 0.01f;
+                                    Fvector	DUP; DUP.set(0,1,0);   
+                                    v.set(N.Pos.x-st,N.Pos.y,N.Pos.z-st);	N.Plane.intersectRayPoint(v,DUP,v1.p);	v1.p.mad(v1.p,N.Plane.n,tt); v1.t.set(node_tc[k][0]); v1.color=clr;	// minX,minZ
+                                    v.set(N.Pos.x+st,N.Pos.y,N.Pos.z-st);	N.Plane.intersectRayPoint(v,DUP,v2.p);	v2.p.mad(v2.p,N.Plane.n,tt); v2.t.set(node_tc[k][1]); v2.color=clr;	// maxX,minZ
+                                    v.set(N.Pos.x+st,N.Pos.y,N.Pos.z+st);	N.Plane.intersectRayPoint(v,DUP,v3.p);	v3.p.mad(v3.p,N.Plane.n,tt); v3.t.set(node_tc[k][2]); v3.color=clr;	// maxX,maxZ
+                                    v.set(N.Pos.x-st,N.Pos.y,N.Pos.z+st);	N.Plane.intersectRayPoint(v,DUP,v4.p);	v4.p.mad(v4.p,N.Plane.n,tt); v4.t.set(node_tc[k][3]); v4.color=clr;	// minX,maxZ
+                                    pv->set(v3); pv++;
+                                    pv->set(v2); pv++;
+                                    pv->set(v1); pv++;
+                                    pv->set(v1); pv++;
+                                    pv->set(v4); pv++;
+                                    pv->set(v3); pv++;
+                                    cnt+=6;
+                                    if (cnt>=block_size-6){
+                                        Stream->Unlock	(cnt,m_RGeom->vb_stride);
+                                        Device.DP		(D3DPT_TRIANGLELIST,m_RGeom,vBase,cnt/3);
+                                        pv 				= (FVF::LIT*)Stream->Lock(block_size,m_RGeom->vb_stride,vBase);
+                                        cnt				= 0;
+                                    }	
+                                }
                             }
                         }
                     }
                 }
                 Device.Statistic.TEST2.End();
                 Device.Statistic.TEST0.End();
-                if (cnt){
-                    Stream->Unlock	(cnt,m_RGeom->vb_stride);
-                    Device.DP		(D3DPT_TRIANGLELIST,m_RGeom,vBase,cnt/3);
-                }
+				Stream->Unlock		(cnt,m_RGeom->vb_stride);
+                if (cnt) Device.DP	(D3DPT_TRIANGLELIST,m_RGeom,vBase,cnt/3);
                 Device.SetRS		(D3DRS_CULLMODE,		D3DCULL_CCW);
             }
         }else{
             // render snap
-			if (OBJCLASS_AIMAP==Tools.CurrentClassID())
-                if (m_Flags.is(flDrawSnapObjects))
-                    for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) 
-                        if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection(0x4046B646);
+            if (m_Flags.is(flDrawSnapObjects))
+                for(ObjectIt _F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) 
+                    if((*_F)->Visible()) ((CSceneObject*)(*_F))->RenderSelection(0x4046B646);
         }
     }
 }

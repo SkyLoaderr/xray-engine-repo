@@ -215,7 +215,7 @@ void CSceneObject::RayQuery(SPickQuery& pinf)
 void CSceneObject::BoxQuery(SPickQuery& pinf)
 {
 	if (!m_pReference) return;
-    m_pReference->BoxQuery(_Transform(), pinf);
+    m_pReference->BoxQuery(_Transform(), _ITransform(), pinf);
 }
 
 bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf)

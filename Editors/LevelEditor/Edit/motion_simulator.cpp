@@ -486,7 +486,7 @@ void msimulator_Simulate(Fvector& result, Fvector& start, Fvector& end, float _r
 	Lvelocity.mul	(xf);
 
 	cl_data.vLastSafePosition.set	(Lposition);
-
+                                 
 	// Get the data for the triangles in question and scale to ellipsoid space
 	int tri_count			= PQ.r_count();
 	clContactedT.resize		(tri_count);
@@ -495,11 +495,11 @@ void msimulator_Simulate(Fvector& result, Fvector& start, Fvector& end, float _r
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
-			CDB::TRI&	O		= (PQ.r_begin()+i_t)->T;
+			Fvector* V			= (PQ.r_begin()+i_t)->verts;
 
-			T.p[0].mul			(*O.verts[0],xf);
-			T.p[1].mul			(*O.verts[1],xf);
-			T.p[2].mul			(*O.verts[2],xf);
+			T.p[0].mul			(V[0],xf);
+			T.p[1].mul			(V[1],xf);
+			T.p[2].mul			(V[2],xf);
 			T.N.mknormal		(T.p[0],T.p[1],T.p[2]);
 			
 			T.d = -T.N.dotproduct(T.p[0]);

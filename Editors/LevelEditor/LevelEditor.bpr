@@ -115,7 +115,7 @@
       intermediate\UI_AIMapTools.obj intermediate\DetailObjectsPick.obj 
       intermediate\ESceneAIMapTools_Generate.obj 
       intermediate\motion_simulator.obj intermediate\ESceneAIMapTools_Render.obj 
-      intermediate\AIMapExport.obj"/>
+      intermediate\AIMapExport.obj intermediate\du_cone.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -402,6 +402,7 @@
       <FILE FILENAME="edit\motion_simulator.cpp" FORMNAME="" UNITNAME="motion_simulator" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESceneAIMapTools_Render.cpp" FORMNAME="" UNITNAME="ESceneAIMapTools_Render" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\AIMapExport.cpp" FORMNAME="" UNITNAME="AIMapExport" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\du_cone.cpp" FORMNAME="" UNITNAME="du_cone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

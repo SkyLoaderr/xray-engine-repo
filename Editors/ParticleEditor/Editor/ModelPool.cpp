@@ -170,3 +170,53 @@ void	CModelPool::Delete(IVisual* &V)
 	}
 }
 
+IC bool	_IsRender(IVisual* visual, const Fmatrix& transform, u32 priority, bool strictB2F)
+{
+	if ((priority==(visual->hShader?visual->hShader->E[0]->Flags.iPriority:1))&&(strictB2F==!!(visual->hShader?visual->hShader->E[0]->Flags.bStrictB2F:false))){
+        Fbox bb; bb.xform(visual->vis.box,transform);
+        return ::Render->occ_visible(bb);
+    }
+    return false;
+}
+
+void 	CModelPool::Render(IVisual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD)
+{
+    // render visual
+    RCache.set_xform_world(mTransform);
+    switch (m_pVisual->Type){
+    case MT_SKELETON:{
+        CKinematics* pV					= (CKinematics*)m_pVisual;
+        vector<IVisual*>::iterator I,E;
+        I = pV->children.begin			();
+        E = pV->children.end			();
+        for (; I!=E; I++){
+            IVisual* V					= *I;
+            // frustum test
+			if (_IsRender(V,mTransform,priority,strictB2F)){
+		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
+    	        V->Render		 		(m_fLOD);
+            }
+        }
+    }break;
+    case MT_HIERRARHY:{
+        FHierrarhyVisual* pV			= (FHierrarhyVisual*)m_pVisual;
+        vector<IVisual*>::iterator 		I,E;
+        I = pV->children.begin			();
+        E = pV->children.end			();
+        for (; I!=E; I++){
+            IVisual* V					= *I;
+			if (_IsRender(V,mTransform,priority,strictB2F)){
+		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
+	            V->Render		 		(m_fLOD);
+            }
+        }
+    }break;
+    default:
+		if (_IsRender(m_pVisual,mTransform,priority,strictB2F)){
+	        RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+            m_pVisual->Render		 	(m_fLOD);
+        }
+        break;
+    }
+}
+
