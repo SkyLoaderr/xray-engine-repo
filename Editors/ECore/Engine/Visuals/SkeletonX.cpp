@@ -284,7 +284,7 @@ s16	q_P		(float v)
 }
 u8	q_N		(float v)
 {
-	int		_v	= clampr(iFloor(((v+1.f)*.5f)*255.f + .5f), 0, 255);
+	int		_v	= clampr(iFloor((v+1.f)*127.5f), 0, 255);
 	return	u8	(_v);
 }
 s16	q_tc	(float v)
@@ -292,6 +292,17 @@ s16	q_tc	(float v)
 	int		_v	= clampr(iFloor(v*(32767.f/16.f)), -32768, 32767);
 	return	s16	(_v);
 }
+#ifdef _DEBUG
+float errN	(Fvector3 v, u8* qv)
+{
+	Fvector3	uv;	
+	uv.set		(float(qv[0]),float(qv[1]),float(qv[2])).div(255.f).mul(2.f).sub(1.f);
+	uv.normalize();
+	return		v.dotproduct(uv);
+}
+#else
+float errN	(Fvector3 v, u8* qv)	{ return 0; }
+#endif
 
 static	D3DVERTEXELEMENT9 dwDecl_01W	[] =	// 24bytes
 {
@@ -305,9 +316,9 @@ static	D3DVERTEXELEMENT9 dwDecl_01W	[] =	// 24bytes
 struct	vertHW_1W
 {
 	s16			_P		[4];
-	u8			_N_I	[4];
-	u8			_T		[4];
-	u8			_B		[4];
+	u32			_N_I	;
+	u32			_T		;
+	u32			_B		;
 	s16			_tc		[2];
 	void set	(Fvector3& P, Fvector3 N, Fvector3 T, Fvector3 B, Fvector2& tc, int index)
 	{
@@ -318,18 +329,9 @@ struct	vertHW_1W
 		_P[1]		= q_P(P.y);
 		_P[2]		= q_P(P.z);
 		_P[3]		= q_P(1);
-		_N_I[0]		= q_N(N.x);
-		_N_I[1]		= q_N(N.y);
-		_N_I[2]		= q_N(N.z);
-		_N_I[3]		= u8(index);
-		_T[0]		= q_N(T.x);
-		_T[1]		= q_N(T.y);
-		_T[2]		= q_N(T.z);
-		_T[3]		= 0;
-		_B[0]		= q_N(B.x);
-		_B[1]		= q_N(B.y);
-		_B[2]		= q_N(B.z);
-		_B[3]		= 0;
+		_N_I		= color_rgba(q_N(N.x), q_N(N.y), q_N(N.z), u8(index));
+		_T			= color_rgba(q_N(T.x), q_N(T.y), q_N(T.z), 0);
+		_B			= color_rgba(q_N(B.x), q_N(B.y), q_N(B.z), 0);
 		_tc[0]		= q_tc(tc.x);
 		_tc[1]		= q_tc(tc.y);
 	}
@@ -347,9 +349,9 @@ static	D3DVERTEXELEMENT9 dwDecl_2W	[] =	// 28bytes
 struct	vertHW_2W
 {
 	s16			_P		[4];
-	u8			_N_w	[4];
-	u8			_T		[4];
-	u8			_B		[4];
+	u32			_N_w	;
+	u32			_T		;
+	u32			_B		;
 	s16			_tc_i	[4];
 	void set(Fvector3& P, Fvector3 N, Fvector3 T, Fvector3 B, Fvector2& tc, int index0, int index1, float w)
 	{
@@ -360,18 +362,9 @@ struct	vertHW_2W
 		_P[1]		= q_P	(P.y);
 		_P[2]		= q_P	(P.z);
 		_P[3]		= 1;
-		_N_w[0]		= q_N	(N.x);
-		_N_w[1]		= q_N	(N.y);
-		_N_w[2]		= q_N	(N.z);
-		_N_w[3]		= u8	(clampr(iFloor(w*255.f+.5f),0,255));
-		_T[0]		= q_N	(T.x);
-		_T[1]		= q_N	(T.y);
-		_T[2]		= q_N	(T.z);
-		_T[3]		= 0;
-		_B[0]		= q_N	(B.x);
-		_B[1]		= q_N	(B.y);
-		_B[2]		= q_N	(B.z);
-		_B[3]		= 0;
+		_N_w		= color_rgba(q_N(N.x), q_N(N.y), q_N(N.z), u8(clampr(iFloor(w*255.f+.5f),0,255)));
+		_T			= color_rgba(q_N(T.x), q_N(T.y), q_N(T.z), 0);
+		_B			= color_rgba(q_N(B.x), q_N(B.y), q_N(B.z), 0);
 		_tc_i[0]	= q_tc	(tc.x);
 		_tc_i[1]	= q_tc	(tc.y);
 		_tc_i[2]	= s16	(index0);
