@@ -120,6 +120,7 @@ void  CWeaponHUD::net_DestroyHud	()
 void CWeaponHUD::UpdatePosition(const Fmatrix& trans)
 {
 	Transform().mul	(trans,m_pSharedHudInfo->m_Offset);
+	VERIFY							(!fis_zero(DET(Transform())));
 }
 
 CMotionDef* CWeaponHUD::animGet		(LPCSTR name)
