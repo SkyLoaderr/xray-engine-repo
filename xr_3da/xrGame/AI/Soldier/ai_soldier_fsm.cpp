@@ -22,7 +22,7 @@
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define TORSO_START_SPEED				PI_DIV_4
 #define DISTANCE_TO_REACT				2.14f
-#define RECHARGE_MEDIAN					(2.f/3.f)
+#define RECHARGE_MEDIAN					(1.f/3.f)
 #define RECHARGE_EPSILON				(0.f/6.f)
 
 /**
@@ -1368,6 +1368,25 @@ void CAI_Soldier::OnAttackFireAlone()
 	CHECK_IF_SWITCH_TO_NEW_STATE(!((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI_DIV_6) || ((fabsf(fabsf(r_torso_target.yaw - r_torso_current.yaw) - PI_MUL_2) < PI_DIV_6))),aiSoldierTurnOver)
 	
 	vfSaveEnemy();
+
+	if (g_Squad() == MEGAPHONE_SQUAD) {
+		if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+			if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+				m_tpSoundBeingPlayed = 0;
+				m_dwLastRadioTalk = dwCurTime;
+			}
+			if ((dwCurTime - m_dwLastSoundRefresh > m_fRadioRefreshRate) && ((dwCurTime - m_dwLastRadioTalk > m_fMaxRadioIinterval) || ((dwCurTime - m_dwLastRadioTalk > m_fMinRadioIinterval) && (::Random.randF(0,1) > (dwCurTime - m_dwLastRadioTalk - m_fMinRadioIinterval)/(m_fMaxRadioIinterval - m_fMinRadioIinterval))))) {
+				m_dwLastSoundRefresh = dwCurTime;
+				// Play hit-sound
+				m_tpSoundBeingPlayed = &(sndRadio[0]);
+				
+				if (m_tpSoundBeingPlayed->feedback)			
+					return;
+
+				pSounds->PlayAtPos(*m_tpSoundBeingPlayed,this,vPosition);
+			}
+		}
+	}
 
 	if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f) || (PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw) < PI/30.f)) {
 		vfSetFire(true,Group);

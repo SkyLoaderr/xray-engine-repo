@@ -54,6 +54,10 @@ void CAI_Soldier::vfLoadSounds()
 	pSounds->Create(sndRadio[1],TRUE,"monsters\\Soldier\\Radio\\vo2",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 	pSounds->Create(sndRadio[2],TRUE,"monsters\\Soldier\\Radio\\vo3",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
 	pSounds->Create(sndRadio[3],TRUE,"monsters\\Soldier\\Radio\\R1",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	if (g_Squad() == MEGAPHONE_SQUAD) {
+		pSounds->Delete(sndRadio[0]);
+		pSounds->Create(sndRadio[0],TRUE,"monsters\\Soldier\\Radio\\megafon_1m",0,SOUND_TYPE_MONSTER_TALKING_HUMAN);
+	}
 	pSounds->Create(sndSteps[0],TRUE,"Actor\\StepL",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
 	pSounds->Create(sndSteps[1],TRUE,"Actor\\StepR",0,SOUND_TYPE_MONSTER_WALKING_HUMAN);
 }

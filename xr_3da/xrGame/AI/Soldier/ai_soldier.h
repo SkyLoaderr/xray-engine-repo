@@ -21,6 +21,7 @@ class CAI_Soldier : public CCustomMonster
 		SND_DIE_COUNT=4,
 		SND_RADIO_COUNT=4,
 		SND_STEP_COUNT=2,
+		MEGAPHONE_SQUAD=31,
 	};
 
 	enum ESoldierStates 	{
