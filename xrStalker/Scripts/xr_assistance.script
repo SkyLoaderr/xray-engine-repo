@@ -38,13 +38,14 @@ function action_assistance:initialize()
 	self.object:set_mental_state(anim.free)
 	self.object:set_item(object.idle, self.object:best_weapon())
 	self.move_type = move.stand
+	self.object:enable_talk()	
 end
 function action_assistance:execute()
 	action_base.execute(self)
 	--'1. Если мы находимся за большим радиусом - необходимо выбрать новую точку
 	if self.a.assist_point == nil or
 	   (self.object:position():distance_to(self.a.actor:position()) >= self.a.desired_distance and
-	   level.vertex_position(self.a.assist_point):distance_to(self.object:position()) >= self.a.desired_distance)
+	   level.vertex_position(self.a.assist_point):distance_to(self.a.actor:position()) >= 2*self.a.desired_distance)
 	then
 		self.a.assist_point = select_position(self.object, self.a)
 	end
@@ -82,6 +83,7 @@ function action_assistance:execute()
 end
 function action_assistance:finalize()
 	action_base.finalize(self)
+	self.object:disable_talk()
 	xr_state.anim_update(nil, self.object)
 	local enemy = self.object:best_enemy()
 	if enemy ~= nil then
