@@ -6,10 +6,10 @@
 #ifdef _EDITOR
 	#include "PropertiesListHelper.h"
 #endif
-#include "ai_alife_interfaces.h"
+#include "ai_alife_server_objects.h"
 
 // refs
-class xrServerEntity;
+//class xrServerEntity;
 class xrClientData;
 
 // t-defs
@@ -53,119 +53,6 @@ public:
 #endif
 
 //
-class xrServerEntity : public IPureMainObject {
-public:
-	BOOL							net_Ready;
-	BOOL							net_Processed;	// Internal flag for connectivity-graph
-	
-	u8								m_ucVersion;
-	u16								RespawnTime;
-
-	u16								ID;				// internal ID
-	u16								ID_Parent;		// internal ParentID, 0xffff means no parent
-	u16								ID_Phantom;		// internal PhantomID, 0xffff means no phantom
-	xrClientData*					owner;
-	vector<u16>						children;
-
-	// spawn data
-	string64						s_name;
-	string64						s_name_replace;
-	u8								s_gameid;
-	u8								s_RP;
-	Flags16							s_flags;		// state flags
-
-	// update data
-	Fvector							o_Position;
-	Fvector							o_Angle;
-
-	// for ALife control
-	bool							m_bALifeControl;
-
-									xrServerEntity()
-	{
-		RespawnTime					= 0;
-		net_Ready					= FALSE;
-		ID							= 0xffff;
-        ID_Parent					= 0xffff;
-		ID_Phantom					= 0xffff;
-		owner						= 0;
-		s_gameid					= 0;
-		s_RP						= 0xFE;			// Use supplied coords
-        s_flags.set					(M_SPAWN_OBJECT_ACTIVE);
-		ZeroMemory					(s_name,		sizeof(string64));
-		ZeroMemory					(s_name_replace,sizeof(string64));
-        o_Angle.set					(0.f,0.f,0.f);
-        o_Position.set				(0.f,0.f,0.f);
-		m_bALifeControl				= false;
-	}
-	
-	virtual							~xrServerEntity()
-	{
-	}
-	
-	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
-	virtual u8						g_team			(){return 0;};
-	virtual u8						g_squad			(){return 0;};
-	virtual u8						g_group			(){return 0;};
-
-	virtual void					Init			(LPCSTR	caSection){};
-	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
-	void							Spawn_Read		(NET_Packet &tNetPacket);
-	// editor integration
-#ifdef _EDITOR
-    virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
-#endif
-};
-
-class CALifeObject : public xrServerEntity {
-public:
-	_CLASS_ID						m_tClassID;
-	_OBJECT_ID						m_tObjectID;
-	_GRAPH_ID						m_tGraphID;
-	float							m_fDistance;
-	u16								m_wCount;
-	bool							m_bOnline;
-
-									CALifeObject()
-	{
-		m_bOnline					= false;
-		m_wCount					= 1;
-		m_fDistance					= 0.0f;
-		m_tClassID					= _CLASS_ID(-1);
-		m_tObjectID					= _OBJECT_ID(-1);
-		m_tGraphID					= _GRAPH_ID(-1);
-	};
-
-	virtual void					STATE_Write(NET_Packet &tNetPacket)
-	{
-	}
-
-	virtual void					STATE_Read(NET_Packet &tNetPacket, u16 size)
-	{
-	}
-
-	virtual void					UPDATE_Write(NET_Packet &tNetPacket)
-	{
-		tNetPacket.w				(&m_tClassID,sizeof(m_tClassID));
-		tNetPacket.w				(&m_tObjectID,sizeof(m_tObjectID));
-		tNetPacket.w				(&m_tGraphID,sizeof(m_tGraphID));
-		tNetPacket.w_float			(m_fDistance);
-		tNetPacket.w_u16			(m_wCount);
-		tNetPacket.w_u32			(m_bOnline);
-	}
-
-	virtual void					UPDATE_Read(NET_Packet &tNetPacket)
-	{
-		tNetPacket.r				(&m_tClassID,sizeof(m_tClassID));
-		tNetPacket.r				(&m_tObjectID,sizeof(m_tObjectID));
-		tNetPacket.r				(&m_tGraphID,sizeof(m_tGraphID));
-		tNetPacket.r_float			(m_fDistance);
-		tNetPacket.r_u16			(m_wCount);
-		u32							dwDummy;
-		tNetPacket.r_u32			(dwDummy);
-		m_bOnline					= !!dwDummy;
-	};
-};
 
 //
 #define xrSE_DECLARE_BEGIN(__A,__B)	class __A : public __B	{ typedef __B inherited; public:
@@ -181,7 +68,7 @@ xrSE_EDITOR_METHODS\
 };
 
 //***** Weapon
-xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeItem)
 	u32						timestamp;
 	u8						flags;
 	u8						state;
@@ -231,7 +118,7 @@ xrSE_DECLARE_BEGIN(xrSE_Dummy,xrServerEntity)
 xrSE_DECLARE_END
 
 //***** MercuryBall
-xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeObject)
+xrSE_DECLARE_BEGIN(xrSE_MercuryBall,CALifeItem)
 	string64				s_Model;
     xrSE_MercuryBall		();
 xrSE_DECLARE_END

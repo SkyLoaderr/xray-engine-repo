@@ -19,7 +19,7 @@
 #define	FIRE_ANGLE						PI/10
 #define DISTANCE_TO_STEP				.85f
 
-bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
+bool CAI_Soldier::bfCheckPath(NodePath &Path) {
 	CAI_Space &AI = Level().AI;
 	for (int i=1; i<(int)Path.Nodes.size(); i++) 
 		if (AI.q_mark[Path.Nodes[i]])

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ai_alife_space.h"
+#include "ai_space.h"
 using namespace ALife;
 using namespace AI;
 
@@ -143,8 +145,8 @@ void free_map(map<T1,T2 *> &tpMap)
 IC void save_bool_vector(vector<bool> &baVector, NET_Packet &tNetPacket)
 {
 	tNetPacket.w_u32			(baVector.size());
-	BOOL_IT 					I = baVector.begin();
-	BOOL_IT 					E = baVector.end();
+	vector<bool>::iterator 		I = baVector.begin();
+	vector<bool>::iterator 		E = baVector.end();
 	u32							dwMask = 0;
 	if (I != E) {
 		for (int j=0; I != E; I++, j++) {
@@ -165,8 +167,8 @@ IC void load_bool_vector(vector<bool> &baVector, NET_Packet &tNetPacket)
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	baVector.resize				(dwDummy);
-	BOOL_IT 					I = baVector.begin();
-	BOOL_IT 					E = baVector.end();
+	vector<bool>::iterator 		I = baVector.begin();
+	vector<bool>::iterator 		E = baVector.end();
 	u32							dwMask = 0;
 	for (int j=32; I != E; I++, j++) {
 		if (j >= 32) {

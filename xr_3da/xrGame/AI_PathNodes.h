@@ -4,7 +4,7 @@ class CCustomMonster;
 
 namespace AI
 {
-	class CPathNodes : public AI::Path
+	class CPathNodes : public NodePath
 	{
 	public:
 		class CTravelNode

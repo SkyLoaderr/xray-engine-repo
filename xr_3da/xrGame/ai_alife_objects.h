@@ -10,7 +10,7 @@
 
 #include "ai_alife_interfaces.h"
 #include "ai_alife_templates.h"
-#include "ai_alife_spawn.h"
+//#include "ai_alife_spawn.h"
 
 class CALifeGameTime : public IPureALifeLSObject {
 public:

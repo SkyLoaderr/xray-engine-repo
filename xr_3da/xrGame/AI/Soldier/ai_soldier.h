@@ -563,7 +563,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfAssignBones(CInifile *ini, const char *section);
 		void vfLoadAnimations();
 		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
-		bool bfCheckPath(AI::Path &Path);
+		bool bfCheckPath(NodePath &Path);
 		void SetLessCoverLook(NodeCompressed *tNode, bool bSpine = true);
 		void SetLessCoverLook();
 		void SetDirectionLook();
