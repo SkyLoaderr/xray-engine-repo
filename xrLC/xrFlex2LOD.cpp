@@ -59,8 +59,7 @@ void	CBuild::Flex2LOD()
 						Fcolor			vC; 
 						OGF_Vertex&		oV	= verts[v_it];
 						float			oD	= ptPos.distance_to(oV.P);
-						if (oD>=sm_range)	continue;
-						float			oA  = 1/(1+10*oD*oD);
+						float			oA  = 1/(1+100*oD*oD);
 						vC.set			(oV.Color); 
 						vC.mul_rgb		(oA);
 						_C.r			+= vC.r;
