@@ -25,7 +25,9 @@ private:
 		mSize		= 0;
 		mPosition	= 0;
 		mDiscardID	= 0;
+#ifdef DEBUG
 		dbg_lock	= 0;
+#endif
 	}
 public:
 	void						Create			();
