@@ -416,6 +416,9 @@
 			RelativePath=".\xr_sniper.script">
 		</File>
 		<File
+			RelativePath=".\xr_sos.script">
+		</File>
+		<File
 			RelativePath=".\xr_sound.script">
 		</File>
 		<File
