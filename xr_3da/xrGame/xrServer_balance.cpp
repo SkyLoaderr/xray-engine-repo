@@ -2,7 +2,7 @@
 
 xrClientData* xrServer::SelectBestClientToMigrateTo	(CSE_Abstract* E, BOOL bForceAnother)
 {
-	return SV_Client;
+	return (xrClientData*)SV_Client;
 //
 //	if (bForceAnother)
 //	{
