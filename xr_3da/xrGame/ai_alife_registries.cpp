@@ -10,6 +10,7 @@
 #include "ai_alife_registries.h"
 #include "ai_alife_templates.h"
 #include "ai_alife_predicates.h"
+#include "ai_alife_space.h"
 #include "ai_space.h"
 
 ////////////////////////////////////////////////////////////////////////////
@@ -95,43 +96,6 @@ void CSE_ALifeObjectRegistry::Add(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 	m_tObjectRegistry.insert	(std::make_pair(tpALifeDynamicObject->ID,tpALifeDynamicObject));
 }
 
-bool CSE_ALifeObjectRegistry::bfCheckIfTaskCompleted(CSE_Abstract &CSE_Abstract, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
-{
-	if (tpALifeHumanAbstract->m_dwCurTask >= tpALifeHumanAbstract->m_tpTasks.size())
-		return(false);
-	I = CSE_Abstract.children.begin();
-	OBJECT_IT	E = CSE_Abstract.children.end();
-	CSE_ALifePersonalTask	&tPersonalTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
-	for ( ; I != E; I++) {
-		switch (tPersonalTask.m_tTaskType) {
-			case eTaskTypeSearchForItemCL :
-			case eTaskTypeSearchForItemCG : {
-				if (!strcmp(m_tObjectRegistry[*I]->s_name,tPersonalTask.m_caSection))
-					return(true);
-				break;
-			}
-			case eTaskTypeSearchForItemOL :
-			case eTaskTypeSearchForItemOG : {
-				if (m_tObjectRegistry[*I]->ID == tPersonalTask.m_tObjectID)
-					return(true);
-				break;
-			}
-		}
-	}
-	return(false);
-}
-
-bool CSE_ALifeObjectRegistry::bfCheckIfTaskCompleted(CSE_ALifeHumanAbstract *tpALifeHuman, OBJECT_IT &I)
-{
-	return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
-}
-
-bool CSE_ALifeObjectRegistry::bfCheckIfTaskCompleted(CSE_ALifeHumanAbstract *tpALifeHuman)
-{
-	OBJECT_IT I;
-	return(bfCheckIfTaskCompleted(tpALifeHuman,I));
-}
-
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeEventRegistry
 ////////////////////////////////////////////////////////////////////////////
@@ -177,6 +141,7 @@ CSE_ALifeTaskRegistry::CSE_ALifeTaskRegistry()
 {
 	m_tTaskID					= 0;
 	m_tTaskRegistry.clear		();
+	m_tTaskCrossMap.clear		();
 }
 
 CSE_ALifeTaskRegistry::~CSE_ALifeTaskRegistry()
@@ -197,15 +162,29 @@ void CSE_ALifeTaskRegistry::Load(IReader	&tFileStream)
 	R_ASSERT2					(tFileStream.find_chunk(TASK_CHUNK_DATA),"Can't find chunk TASK_CHUNK_DATA");
 	tFileStream.r				(&m_tTaskID,sizeof(m_tTaskID));
 	load_data					(m_tTaskRegistry,tFileStream,tfChooseTaskKeyPredicate);
+	TASK_PAIR_IT				I = m_tTaskRegistry.begin();
+	TASK_PAIR_IT				E = m_tTaskRegistry.end();
+	for ( ; I != E; I++)
+		Update((*I).second);
 }
 
 void CSE_ALifeTaskRegistry::Add	(CSE_ALifeTask	*tpTask)
 {
-	if (m_tTaskRegistry.find(tpTask->m_tTaskID) != m_tTaskRegistry.end()) {
-		R_ASSERT2				((*(m_tTaskRegistry.find(tpTask->m_tTaskID))).second == tpTask,"The specified task is already presented in the Task Registry!");
-		R_ASSERT2				((*(m_tTaskRegistry.find(tpTask->m_tTaskID))).second != tpTask,"Task with the specified ID is already presented in the Task Registry!");
-	}
+	if (m_tTaskRegistry.find(tpTask->m_tTaskID) != m_tTaskRegistry.end())
+		R_ASSERT2				(true,"The specified task is already presented in the Task Registry!");
 	m_tTaskRegistry.insert		(std::make_pair(tpTask->m_tTaskID = m_tTaskID++,tpTask));
+	Update						(tpTask);
+}
+
+void CSE_ALifeTaskRegistry::Update(CSE_ALifeTask	*tpTask)
+{
+	R_ASSERT2					(tpTask == tpfGetTaskByID(tpTask->m_tTaskID),"Cannot find a specified task in the Task registry!");
+	OBJECT_TASK_PAIR_IT			J = m_tTaskCrossMap.find(tpTask->m_tCustomerID);
+	if (J == m_tTaskCrossMap.end()) {
+		m_tTaskCrossMap.insert	(std::make_pair(tpTask->m_tCustomerID,TASK_SET()));
+		J						= m_tTaskCrossMap.find(tpTask->m_tCustomerID);
+	}
+	(*J).second.insert			(tpTask->m_tTaskID);
 }
 
 ////////////////////////////////////////////////////////////////////////////

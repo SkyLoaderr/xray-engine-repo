@@ -41,15 +41,14 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 #ifndef SILENCE
 				Msg("TAKE - %s (%d)", O->cName(),O->ID());
 #endif
-				////if(m_inventory.m_activeSlot == 0xffffffff) {
-				////	if(PIItem(O)->m_slot < 0xffffffff) {
-				////		m_inventory.Slot(PIItem(O)); 
-				////		m_inventory.Activate(PIItem(O)->m_slot);
-				////	}
-				////}
-				//if(PIItem(O)->m_slot < 0xffffffff && !m_inventory.m_slots[PIItem(O)->m_slot].m_pIItem)) { m_inventory.Slot(PIItem(O)); }
-				//if(m_inventory.Slot(PIItem(O)) && PIItem(O)->m_slot == 1) m_inventory.Activate(PIItem(O)->m_slot);
 			}
+			else {
+				DropItemSendMessage(O);
+#ifndef SILENCE
+				Msg("TAKE - can't take! - Dropping for valid server information %s (%d)", O->cName(),O->ID());
+#endif
+			}
+
 
 
 			//// Test for Detector

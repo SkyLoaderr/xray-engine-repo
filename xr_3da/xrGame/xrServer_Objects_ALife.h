@@ -45,7 +45,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeTask,CPureServerObject)
 	_OBJECT_ID						m_tCustomerID;
 	float							m_fCost;
 	ETaskType						m_tTaskType;
-	bool							m_dwTryCount;
+	u32								m_dwTryCount;
 	union {
 		string32					m_caSection;
 		_OBJECT_ID					m_tObjectID;

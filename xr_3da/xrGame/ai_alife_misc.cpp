@@ -11,26 +11,6 @@
 #include "ai_space.h"
 #include "ai_alife_predicates.h"
 
-void CSE_ALifeSimulator::vfCreateNewTask(CSE_ALifeTrader *tpTrader)
-{
-	OBJECT_PAIR_IT						I = m_tObjectRegistry.begin();
-	OBJECT_PAIR_IT						E = m_tObjectRegistry.end();
-	for ( ; I != E; I++) {
-		CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>((*I).second);
-		if (tpALifeItem && !tpALifeItem->bfAttached()) {
-			CSE_ALifeTask				*tpTask = xr_new<CSE_ALifeTask>();
-			tpTask->m_tCustomerID		= tpTrader->ID;
-			Memory.mem_copy				(tpTask->m_tLocationID,getAI().m_tpaGraph[tpALifeItem->m_tGraphID].tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
-			tpTask->m_tObjectID			= tpALifeItem->ID;
-			tpTask->m_tTimeID			= tfGetGameTime();
-			tpTask->m_tTaskType			= eTaskTypeSearchForItemOL;
-			CSE_ALifeTaskRegistry::Add	(tpTask);
-			tpTrader->m_tpTaskIDs.push_back(tpTask->m_tTaskID);
-			break;
-		}
-	}
-}
-
 CSE_ALifeTrader *CSE_ALifeSimulator::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHuman)
 {
 	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
@@ -64,7 +44,38 @@ void CSE_ALifeSimulator::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALife
 		}
 }
 
-void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
+bool CSE_ALifeSimulator::bfChooseNextRoutePoint(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+{
+	bool				bOk = false;
+	if (tpALifeHumanAbstract->m_tTaskState != eTaskStateSearching) {
+		if (tpALifeHumanAbstract->m_tNextGraphID != tpALifeHumanAbstract->m_tGraphID) {
+			_TIME_ID										tCurTime = tfGetGameTime();
+			tpALifeHumanAbstract->m_fDistanceFromPoint	+= float(tCurTime - tpALifeHumanAbstract->m_tTimeID)/1000.f * tpALifeHumanAbstract->m_fCurSpeed;
+			if (tpALifeHumanAbstract->m_fDistanceToPoint - tpALifeHumanAbstract->m_fDistanceFromPoint < EPS_L) {
+				bOk = true;
+				if ((tpALifeHumanAbstract->m_fDistanceFromPoint - tpALifeHumanAbstract->m_fDistanceToPoint > EPS_L) && (tpALifeHumanAbstract->m_fCurSpeed > EPS_L))
+					tpALifeHumanAbstract->m_tTimeID			= tCurTime - _TIME_ID(iFloor((tpALifeHumanAbstract->m_fDistanceFromPoint - tpALifeHumanAbstract->m_fDistanceToPoint)*1000.f/tpALifeHumanAbstract->m_fCurSpeed));
+				tpALifeHumanAbstract->m_fDistanceToPoint	= tpALifeHumanAbstract->m_fDistanceFromPoint	= 0.0f;
+				tpALifeHumanAbstract->m_tPrevGraphID		= tpALifeHumanAbstract->m_tGraphID;
+				vfChangeObjectGraphPoint(tpALifeHumanAbstract,tpALifeHumanAbstract->m_tGraphID,tpALifeHumanAbstract->m_tNextGraphID);
+			}
+		}
+		else {
+			if (++tpALifeHumanAbstract->m_dwCurNode < tpALifeHumanAbstract->m_tpaVertices.size()) {
+				tpALifeHumanAbstract->m_tNextGraphID		= _GRAPH_ID(tpALifeHumanAbstract->m_tpaVertices[tpALifeHumanAbstract->m_dwCurNode]);
+				tpALifeHumanAbstract->m_fDistanceToPoint	= getAI().ffGetDistanceBetweenGraphPoints(tpALifeHumanAbstract->m_tGraphID,tpALifeHumanAbstract->m_tNextGraphID);
+				bOk = true;
+			}
+			else
+				tpALifeHumanAbstract->m_fCurSpeed	= 0.f;
+		}
+	}
+	else {
+	}
+	return				(bOk);
+}
+
+void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
 {
 	if (tpALifeMonsterAbstract->m_tNextGraphID != tpALifeMonsterAbstract->m_tGraphID) {
 		_TIME_ID								tCurTime = tfGetGameTime();
@@ -76,13 +87,6 @@ void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALif
 			CSE_ALifeAbstractGroup					*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeMonsterAbstract);
 			if (tpALifeAbstractGroup)
 				tpALifeAbstractGroup->m_bCreateSpawnPositions = true;
-			else {
-#pragma todo("Dima to Dima : Add stalker search state code here")
-				CSE_ALifeHumanAbstract *l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
-				if (l_tpALifeHumanAbstract && (l_tpALifeHumanAbstract->m_tTaskState == eTaskStateAccomplishing)) {
-					
-				}
-			}
 		}
 	}
 	if (tpALifeMonsterAbstract->m_tNextGraphID == tpALifeMonsterAbstract->m_tGraphID) {
@@ -180,10 +184,7 @@ bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &CSE_Abstract, _GRAPH_ID tG
 	bool bOk = false;
 	for (int I=0; I<(int)m_tpGraphObjects[tGraphID].tpObjects.size(); I++) {
 		u16 wID = m_tpGraphObjects[tGraphID].tpObjects[I]->ID;
-		OBJECT_PAIR_IT	i = m_tObjectRegistry.find(wID);
-		VERIFY(i != m_tObjectRegistry.end());
-		CSE_ALifeDynamicObject *tpALifeDynamicObject = (*i).second;
-		VERIFY(tpALifeDynamicObject);
+		CSE_ALifeDynamicObject *tpALifeDynamicObject = tpfGetObjectByID(wID);
 		CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
 		if (tpALifeItem && !tpALifeItem->m_bOnline) {
 			// adding _new item to the item list
@@ -201,9 +202,7 @@ bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &CSE_Abstract, _GRAPH_ID tG
 				u32			dwCount = (u32)CSE_Abstract.children.size();
 				int			i;
 				for ( i=(int)dwCount - 1; i>=0; i--) {
-					OBJECT_PAIR_IT II = m_tObjectRegistry.find(CSE_Abstract.children[i]);
-					VERIFY(II != m_tObjectRegistry.end());
-					CSE_ALifeItem *tpALifeItemIn = dynamic_cast<CSE_ALifeItem *>((*II).second);
+					CSE_ALifeItem *tpALifeItemIn = dynamic_cast<CSE_ALifeItem *>(tpfGetObjectByID(CSE_Abstract.children[i]));
 					VERIFY(tpALifeItemIn);
 					tpALifeTraderParams->m_fCumulativeItemMass -= tpALifeItemIn->m_fMass;
 					if (float(tpALifeItemIn->m_dwCost)/tpALifeItemIn->m_fMass >= float(tpALifeItemIn->m_dwCost)/tpALifeItem->m_fMass)
@@ -228,43 +227,28 @@ bool CSE_ALifeSimulator::bfProcessItems(CSE_Abstract &CSE_Abstract, _GRAPH_ID tG
 	return(bOk);
 }
 
-void CSE_ALifeSimulator::vfCommunicateWithTrader(CSE_ALifeHumanAbstract *tpALifeHuman, CSE_ALifeTrader *tpTrader)
+bool CSE_ALifeSimulator::bfCheckIfTaskCompleted(CSE_Abstract &CSE_Abstract, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I)
 {
-//	// update items
-//	TASK_PAIR_IT T = m_tTaskRegistry.find(tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tTaskID);
-//	if (T != m_tTaskRegistry.end()) {
-//		OBJECT_IT	I;
-//		if (bfCheckIfTaskCompleted(tpALifeHuman, I)) {
-//			CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(m_tObjectRegistry[*I]);
-//			if (tpTrader->m_dwMoney >= tpALifeItem->m_dwCost) {
-//				tpALifeHuman->m_tpaVertices.clear();
-//				tpTrader->m_tpItemIDs.push_back(*I);
-//				tpALifeHuman->m_tpItemIDs.erase(I);
-//				tpTrader->m_fCumulativeItemMass += tpALifeItem->m_fMass;
-//				tpALifeHuman->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
-//				tpTrader->m_dwMoney -= tpALifeItem->m_dwCost;
-//				tpALifeHuman->m_dwMoney += tpALifeItem->m_dwCost;
-//				m_tTaskRegistry.erase(T);
-//				tpTrader->m_tpTaskIDs.erase(lower_bound(tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),(*T).first));
-//				tpALifeHuman->m_tpTaskIDs.erase(lower_bound(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),(*T).first));
-//			}
-//		}
-//	}
-//	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	// TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	if (!tpTrader->m_tpTaskIDs.size()) {
-//		vfCreateNewDynamicObject	(m_tpSpawnPoints.begin() + randI(m_tpSpawnPoints.size() - 2),true);
-//		vfCreateNewTask				(tpTrader);
-//	}
-//	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	// END OF TEMPORARY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//
-//	// update events
-//	
-//	// update tasks
-//	m_tpBufferTaskIDs.resize(tpALifeHuman->m_tpTaskIDs.size() + tpTrader->m_tpTaskIDs.size());
-//	set_union(tpALifeHuman->m_tpTaskIDs.begin(),tpALifeHuman->m_tpTaskIDs.end(),tpTrader->m_tpTaskIDs.begin(),tpTrader->m_tpTaskIDs.end(),m_tpBufferTaskIDs.begin());
-//	tpALifeHuman->m_tpTaskIDs = m_tpBufferTaskIDs;
+	if (int(tpALifeHumanAbstract->m_dwCurTaskID) < 0)
+		return(false);
+	I				= CSE_Abstract.children.begin();
+	OBJECT_IT		E = CSE_Abstract.children.end();
+	CSE_ALifeTask	&tTask = *tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID);
+	for ( ; I != E; I++) {
+		switch (tTask.m_tTaskType) {
+			case eTaskTypeSearchForItemCL :
+			case eTaskTypeSearchForItemCG : {
+				if (!strcmp(tpfGetObjectByID(*I)->s_name,tTask.m_caSection))
+					return(true);
+				break;
+			}
+			case eTaskTypeSearchForItemOL :
+			case eTaskTypeSearchForItemOG : {
+				if (tpfGetObjectByID(*I)->ID == tTask.m_tObjectID)
+					return(true);
+				break;
+			}
+		}
+	}
+	return(false);
 }

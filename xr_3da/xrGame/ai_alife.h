@@ -44,6 +44,25 @@ private:
 	ITEM_COUNT_MAP					m_tpTraderItems;
 	ORGANIZATION_ORDER_MAP			m_tpSoldArtefacts;
 
+	// inline
+	IC		bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract		*tpALifeHuman,			OBJECT_IT &I)
+	{
+		return(bfCheckIfTaskCompleted(*tpALifeHuman,tpALifeHuman,I));
+	}
+
+	IC		bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract		*tpALifeHuman)
+	{
+		OBJECT_IT I;
+		return(bfCheckIfTaskCompleted(tpALifeHuman,I));
+	}
+
+	IC		void					vfSetCurrentTask			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract, _TASK_ID &tTaskID)
+	{
+		tpALifeHumanAbstract->m_dwCurTaskID = tpfGetTaskByID(tTaskID)->m_tTaskID;
+	}
+
+
+
 	// comnmon
 			void					vfUpdateDynamicData			(bool bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
@@ -63,15 +82,25 @@ private:
 			void					vfKillCreatures				();
 			void					vfBallanceCreatures			();
 			void					vfUpdateTasks				();
+			void					vfAssignStalkerCustomers	();
+			void					vfValidatePosition			(CSE_ALifeDynamicObject		*I);
+
 	// after surge
+			bool					bfCheckIfTaskCompleted		(CSE_Abstract				&CSE_Abstract,			CSE_ALifeHumanAbstract *tpALifeHumanAbstract,	OBJECT_IT &I);
+			void					vfChooseTask				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfGoToCustomer				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfAccomplishTask			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfSearchObject				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
+			void					vfChooseHumanTask			(CSE_ALifeHumanAbstract		*tpALifeHuman);
 			CSE_ALifeTrader *		tpfGetNearestSuitableTrader	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
-			void					vfCommunicateWithTrader		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,	CSE_ALifeTrader *tpTrader);
+			void					vfCommunicateWithCustomer	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract, CSE_ALifeTraderAbstract *tpTraderAbstract);
 			void					vfUpdateMonster				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfUpdateHuman				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
-			bool					bfProcessItems				(CSE_Abstract				&CSE_Abstract,			_GRAPH_ID		tGraphID, float fMaxItemMass, float fProbability);
+			bool					bfProcessItems				(CSE_Abstract				&CSE_Abstract,			_GRAPH_ID		tGraphID, float fMaxItemMass,	float fProbability);
 			bool					bfCheckForItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 			void					vfCheckForDeletedEvents		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 			void					vfCheckForTheBattle			(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+			bool					bfChooseNextRoutePoint		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 			void					vfChooseNextRoutePoint		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfProcessNPC				(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
 			void					vfRemoveOnlineObject		(CSE_ALifeDynamicObject		*tpALifeDynamicObject, bool bAddToScheduled = true);
@@ -103,11 +132,11 @@ public:
 			void					vfListTasks					();
 			void					vfListTerrain				();
 			void					vfListSpawnPoints			();
-			void					vfObjectInfo				(_OBJECT_ID					&tObjectID);
-			void					vfEventInfo					(_EVENT_ID					&tEventID);
-			void					vfTaskInfo					(_TASK_ID					&tTaskID);
-			void					vfSpawnPointInfo			(_SPAWN_ID					&tSpawnID);
-			void					vfGraphVertexInfo			(_GRAPH_ID					&tGraphID);
+			void					vfObjectInfo				(_OBJECT_ID					tObjectID);
+			void					vfEventInfo					(_EVENT_ID					tEventID);
+			void					vfTaskInfo					(_TASK_ID					tTaskID);
+			void					vfSpawnPointInfo			(_SPAWN_ID					tSpawnID);
+			void					vfGraphVertexInfo			(_GRAPH_ID					tGraphID);
 			void					vfSetOnlineDistance			(float						fNewDistance);
 			void					vfSetProcessTime			(int						iMicroSeconds);
 			void					vfSetSwitchDelay			(int						iMilliSeconds);

@@ -13,7 +13,7 @@
 
 void CSE_ALifeSimulator::vfReleaseObject(CSE_Abstract *tpSE_Abstract, bool bForceDelete)
 {
-	CSE_ALifeDynamicObject			*tpALifeDynamicObject = m_tObjectRegistry[tpSE_Abstract->ID];
+	CSE_ALifeDynamicObject			*tpALifeDynamicObject = tpfGetObjectByID(tpSE_Abstract->ID);
 	VERIFY							(tpALifeDynamicObject);
 	m_tObjectRegistry.erase			(tpSE_Abstract->ID);
 	
@@ -53,7 +53,7 @@ void CSE_ALifeSimulator::vfCreateOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeItem			*tpItem = dynamic_cast<CSE_ALifeItem*>(m_tObjectRegistry[*I]);
+			CSE_ALifeItem			*tpItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*I));
 			if (!tpItem)
 				continue;
 			tpItem->s_flags.or		(M_SPAWN_UPDATE);
@@ -95,7 +95,7 @@ void CSE_ALifeSimulator::vfRemoveOnlineObject(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					I = tpALifeDynamicObject->children.begin();
 		OBJECT_IT					E = tpALifeDynamicObject->children.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeItem			*tpItem = dynamic_cast<CSE_ALifeItem*>(m_tObjectRegistry[*I]);
+			CSE_ALifeItem			*tpItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*I));
 			if (!tpItem)
 				continue;
 
@@ -137,16 +137,15 @@ void CSE_ALifeSimulator::vfSwitchObjectOnline(CSE_ALifeDynamicObject *tpALifeDyn
 		OBJECT_IT					E = tpALifeAbstractGroup->m_tpMembers.end();
 		u32							N = (u32)(E - I);
 		for ( ; I != E; I++) {
-			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
-			VERIFY					(J != m_tObjectRegistry.end());
+			CSE_ALifeDynamicObject	*J = tpfGetObjectByID(*I);
 			if (tpALifeAbstractGroup->m_bCreateSpawnPositions) {
-				(*J).second->o_Position	= tpALifeDynamicObject->o_Position;
-				(*J).second->m_tNodeID	= tpALifeDynamicObject->m_tNodeID;
-				CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
-				if (tpEnemy)
-					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
+				J->o_Position		= tpALifeDynamicObject->o_Position;
+				J->m_tNodeID		= tpALifeDynamicObject->m_tNodeID;
+				CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(J);
+				if (l_tpALifeMonsterAbstract)
+					l_tpALifeMonsterAbstract->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
 			}
-			vfCreateOnlineObject	((*J).second, false);
+			vfCreateOnlineObject	(J, false);
 		}
 		tpALifeAbstractGroup->m_bCreateSpawnPositions = false;
 		vfRemoveObjectFromScheduled	(tpALifeDynamicObject);
@@ -176,9 +175,7 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 		OBJECT_IT I = tpALifeAbstractGroup->m_tpMembers.begin();
 		OBJECT_IT E = tpALifeAbstractGroup->m_tpMembers.end();
 		if (I != E) {
-			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
-			VERIFY					(J != m_tObjectRegistry.end());
-			CSE_ALifeMonsterAbstract	*tpGroupMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
+			CSE_ALifeMonsterAbstract	*tpGroupMember	= dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(*I));
 			CSE_ALifeMonsterAbstract	*tpGroup		= dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeAbstractGroup);
 			if (tpGroupMember && tpGroup) {
 				tpGroup->m_fCurSpeed	= tpGroup->m_fGoingSpeed;
@@ -191,14 +188,11 @@ void CSE_ALifeSimulator::vfSwitchObjectOffline(CSE_ALifeDynamicObject *tpALifeDy
 				CSE_ALifeGraph::SGraphEdge	*tpaEdges = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tpGroup->m_tGraphID].dwEdgeOffset);
 				tpGroup->m_tPrevGraphID	= _GRAPH_ID(tpaEdges[randI(0,wNeighbourCount)].dwVertexNumber);
 			}
-			vfRemoveOnlineObject	((*J).second,false);
+			vfRemoveOnlineObject	(tpGroupMember,false);
 			I++;
 		}
-		for ( ; I != E; I++) {
-			OBJECT_PAIR_IT			J = m_tObjectRegistry.find(*I);
-			VERIFY					(J != m_tObjectRegistry.end());
-			vfRemoveOnlineObject	((*J).second,false);
-		}
+		for ( ; I != E; I++)
+			vfRemoveOnlineObject	(tpfGetObjectByID(*I),false);
 		vfAddObjectToScheduled		(tpALifeDynamicObject);
 		vfAddObjectToGraphPoint		(tpALifeDynamicObject,tpALifeDynamicObject->m_tGraphID);
 	}
@@ -215,14 +209,12 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 			CSE_ALifeAbstractGroup *tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(I);
 			if (tpALifeAbstractGroup)
 				for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
-					OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
-					VERIFY					(J != m_tObjectRegistry.end());
-					CSE_ALifeMonsterAbstract	*tpEnemy = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
-					if (tpEnemy && tpEnemy->fHealth <= 0) {
-						(*J).second->m_bDirectControl	= true;
-						(*J).second->m_bOnline			= true;
+					CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeAbstractGroup->m_tpMembers[i]));
+					if (l_tpALifeMonsterAbstract && l_tpALifeMonsterAbstract->fHealth <= 0) {
+						l_tpALifeMonsterAbstract->m_bDirectControl	= true;
+						l_tpALifeMonsterAbstract->m_bOnline			= true;
 						tpALifeAbstractGroup->m_tpMembers.erase(tpALifeAbstractGroup->m_tpMembers.begin() + i);
-						vfUpdateDynamicData((*J).second);
+						vfUpdateDynamicData(l_tpALifeMonsterAbstract);
 						i--;
 						N--;
 						continue;
@@ -230,17 +222,11 @@ void CSE_ALifeSimulator::vfFurlObjectOffline(CSE_ALifeDynamicObject *I)
 				}
 				vfSwitchObjectOffline(I);
 		}
-		else {
-			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
-			VERIFY				(J != m_tObjectRegistry.end());
-			if (!(*J).second->m_bOnline) {
-				VERIFY			(false);
-				vfSwitchObjectOffline(I);
-			}
-		}
+		else
+			R_ASSERT2	(tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Object online - parent offline...");
 }
 
-void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
+void CSE_ALifeSimulator::vfValidatePosition(CSE_ALifeDynamicObject *I)
 {
 	// updating node if it is invalid and object is not attached and online
 	if ((I->m_bOnline || (I->m_tNodeID <= 0) || (I->m_tNodeID >= getAI().Header().count)) && (I->ID_Parent == 0xffff)) {
@@ -251,11 +237,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			if (tpALifeAbstractGroup->m_tpMembers.empty())
 				vfReleaseObject(I);
 			else {
-				// getting pointer to the very first group member via its ID
-				OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[0]);
-				R_ASSERT2				(J != m_tObjectRegistry.end(),"Group member not found in the Object registry!");
 				// assign group position to the member position
-				I->o_Position			= (*J).second->o_Position;
+				I->o_Position			= tpfGetObjectByID(tpALifeAbstractGroup->m_tpMembers[0])->o_Position;
 				if (!getAI().bfInsideNode(getAI().Node(I->m_tNodeID),I->o_Position)) {
 					// checking if position is inside the current node
 					I->m_tNodeID		= getAI().q_Node(I->m_tNodeID,I->o_Position);
@@ -289,7 +272,13 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 			}
 		}
 	}
-	
+}
+
+void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
+{
+	// updating node if it is invalid and object is not attached and online
+	vfValidatePosition			(I);
+
 	// checking if the object is online
 	if (I->m_bOnline) {
 		// checking if the object is not attached
@@ -315,11 +304,8 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 
 				// iterating on group members
 				for (u32 i=0, N = (u32)tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
-					// getting pointer to the group member via its ID
-					OBJECT_PAIR_IT			J = m_tObjectRegistry.find(tpALifeAbstractGroup->m_tpMembers[i]);
-					R_ASSERT2				(J != m_tObjectRegistry.end(),"Group member is not found in the Object registry!");
 					// casting group member to the abstract monster to get access to the Health property
-					CSE_ALifeMonsterAbstract	*tpGroupMember = dynamic_cast<CSE_ALifeMonsterAbstract*>((*J).second);
+					CSE_ALifeMonsterAbstract	*tpGroupMember = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpfGetObjectByID(tpALifeAbstractGroup->m_tpMembers[i]));
 					if (tpGroupMember)
 						// check if monster is not dead
 						if (tpGroupMember->fHealth <= 0) {
@@ -336,7 +322,7 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 						else
 							// so, monster is not dead
 							// checking if the object is _not_ ready to switch offline
-							if (m_tpActor->o_Position.distance_to((*J).second->o_Position) <= m_fOnlineDistance)
+							if (m_tpActor->o_Position.distance_to(tpGroupMember->o_Position) <= m_fOnlineDistance)
 								// so, it is not ready, breaking a cycle, because we can't 
 								// switch group offline since not all the group members are ready
 								// to switch offline
@@ -355,13 +341,9 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 					I->m_dwLastSwitchTime = Device.TimerAsync();
 			}
 		}
-		else {
-			// getting pointer to the parent object via its ID
-			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
-			R_ASSERT2			(J != m_tObjectRegistry.end(),"Invalid parent object ID!");
+		else
 			// checking if parent is online too
-			R_ASSERT2			((*J).second->m_bOnline,"Parent offline, item online...");
-		}
+			R_ASSERT2			(tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent offline, item online...");
 	}
 	else {
 		// so, the object is offline
@@ -393,13 +375,9 @@ void CSE_ALifeSimulator::ProcessOnlineOfflineSwitches(CSE_ALifeDynamicObject *I)
 				// set its start time to from which it wants to switch offline to the current time
 				I->m_dwLastSwitchTime = Device.TimerAsync();
 		}
-		else {
+		else
 			// so, object is attached
-			// getting pointer to the parent object via its ID
-			OBJECT_PAIR_IT		J = m_tObjectRegistry.find(I->ID_Parent);
-			R_ASSERT2			(J != m_tObjectRegistry.end(),"Invalid parent object ID!");
 			// checking if parent is offline too
-			R_ASSERT2			(!(*J).second->m_bOnline,"Parent online, item offline...");
-		}
+			R_ASSERT2			(!tpfGetObjectByID(I->ID_Parent)->m_bOnline,"Parent online, item offline...");
 	}
 }

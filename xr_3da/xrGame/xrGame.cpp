@@ -274,9 +274,9 @@ public:
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
-				ALife::_OBJECT_ID id1 = ALife::_OBJECT_ID(-1);
+				int id1 = -1;
 				sscanf(args ,"%d",&id1);
-				tpGame->m_tpALife->vfObjectInfo(id1);
+				tpGame->m_tpALife->vfObjectInfo(_OBJECT_ID(id1));
 			}
 			else
 				Log("!ALife simulator is not loaded!");
@@ -293,9 +293,9 @@ public:
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
-				ALife::_EVENT_ID id1 = ALife::_EVENT_ID(-1);
+				int id1 = -1;
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tpALife->m_tEventID)
+				if (id1 >= int(tpGame->m_tpALife->m_tEventID))
 					Msg("Invalid event ID! (%d)",id1);
 				else
 					tpGame->m_tpALife->vfEventInfo(id1);
@@ -315,9 +315,9 @@ public:
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tpALife->m_bLoaded) {
-				ALife::_TASK_ID id1 = ALife::_TASK_ID(-1);
+				int id1 = -1;
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tpALife->m_tTaskID)
+				if (id1 >= int(tpGame->m_tpALife->m_tTaskID))
 					Msg("Invalid task ID! (%d)",id1);
 				else
 					tpGame->m_tpALife->vfTaskInfo(id1);

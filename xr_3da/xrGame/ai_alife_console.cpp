@@ -153,197 +153,127 @@ void CSE_ALifeSimulator::vfListSpawnPoints()
 //	Msg("Total %d spawn points",i);
 }
 
-void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	&tObjectID)
+void CSE_ALifeSimulator::vfObjectInfo(_OBJECT_ID	tObjectID)
 {
-//	string4096		S;
-//	string16		S1;
-//	OBJECT_PAIR_IT	I = m_tObjectRegistry.find(tObjectID);
-//	Msg("%s->Object information :",cName());
-//	if (I == m_tObjectRegistry.end()) {
-//		Msg("Object not found! (ID = %d)",tObjectID);
-//		return;
-//	}
-//	
-//	CSE_ALifeDynamicObject	*tpALifeDynamicObject = (*I).second;
-//	string64		tString;
-//	Memory.mem_copy	(tString,&(tpALifeDynamicObject->m_caSection),sizeof(tpALifeDynamicObject->m_caSection));
-//	tString[sizeof(tpALifeDynamicObject->m_caSection)] = 0;
-//	Msg("* Class ID      : %s[%I64u]",tString,tpALifeDynamicObject->m_caSection);
-//	Msg("* ObjectID      : %d",tpALifeDynamicObject->ID);
-//	Msg("* Spawn ID      : %d",tpALifeDynamicObject->m_tSpawnID);
-//	Msg("* Graph ID      : %d",tpALifeDynamicObject->m_tGraphID);
-//	Msg("* Count         : %d",tpALifeDynamicObject->m_wCount);
-//	vfPrintTime("* Update        :",tpALifeDynamicObject->m_tTimeID);
-//	//Msg("* Update        : %d",tpALifeDynamicObject->m_tTimeID);
-//	
-//	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
-//	if (tpALifeItem) {
-//		Msg("* Mass          : %7.2f",tpALifeItem->m_fMass);
-//		Msg("* Price         : %d",tpALifeItem->m_dwCost);
-//		return;
-//	}
-//	
-//	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
-//	if (tpALifeMonsterAbstract) {
-//		Msg("* Graph ID next : %d",tpALifeMonsterAbstract->m_tNextGraphID);
-//		Msg("* Graph ID prev : %d",tpALifeMonsterAbstract->m_tPrevGraphID);
-//		Msg("* Current speed : %7.2f",tpALifeMonsterAbstract->m_fCurSpeed);
-//		Msg("* Going speed   : %7.2f",tpALifeMonsterAbstract->m_fGoingSpeed);
-//		Msg("* Distance from : %7.2f",tpALifeMonsterAbstract->m_fDistanceFromPoint);
-//		Msg("* Distance to   : %7.2f",tpALifeMonsterAbstract->m_fDistanceToPoint);
-//	}
-//	
+	string4096		S;
+	string16		S1;
+	OBJECT_PAIR_IT	I = m_tObjectRegistry.find(tObjectID);
+	//Msg				("%s->Object information :",cName());
+	if (I == m_tObjectRegistry.end()) {
+		Msg			("Object not found! (ID = %d)",tObjectID);
+		return;
+	}
+	
+	CSE_ALifeDynamicObject	*tpALifeDynamicObject = (*I).second;
+	string64		tString;
+	Memory.mem_copy	(tString,tpALifeDynamicObject->s_name,sizeof(tpALifeDynamicObject->s_name));
+	Msg("* Class ID      : %s[%I64u]",tString,tpALifeDynamicObject->s_name);
+	Msg("* ObjectID      : %d",tpALifeDynamicObject->ID);
+	Msg("* Spawn ID      : %d",tpALifeDynamicObject->m_tSpawnID);
+	Msg("* Graph ID      : %d",tpALifeDynamicObject->m_tGraphID);
+	vfPrintTime("* Update        :",tpALifeDynamicObject->m_tTimeID);
+	
+	CSE_ALifeItem *tpALifeItem = dynamic_cast<CSE_ALifeItem *>(tpALifeDynamicObject);
+	if (tpALifeItem) {
+		Msg("* Mass          : %7.2f",tpALifeItem->m_fMass);
+		Msg("* Price         : %d",tpALifeItem->m_dwCost);
+		return;
+	}
+	
+	CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
+	if (tpALifeMonsterAbstract) {
+		Msg("* Graph ID next : %d",tpALifeMonsterAbstract->m_tNextGraphID);
+		Msg("* Graph ID prev : %d",tpALifeMonsterAbstract->m_tPrevGraphID);
+		Msg("* Current speed : %7.2f",tpALifeMonsterAbstract->m_fCurSpeed);
+		Msg("* Going speed   : %7.2f",tpALifeMonsterAbstract->m_fGoingSpeed);
+		Msg("* Distance from : %7.2f",tpALifeMonsterAbstract->m_fDistanceFromPoint);
+		Msg("* Distance to   : %7.2f",tpALifeMonsterAbstract->m_fDistanceToPoint);
+	}
+	
 //	CSE_ALifeMonsterParams *tpALifeMonsterParams = dynamic_cast<CSE_ALifeMonsterParams *>(tpALifeDynamicObject);
 //	if (tpALifeMonsterParams) {
 //		Msg("* Health        : %d",tpALifeMonsterParams->m_iHealth);
 //	}
 //		
-//	CSE_ALifeMonsterGroup *tpALifeMonsterGroup = dynamic_cast<CSE_ALifeMonsterGroup *>(tpALifeDynamicObject);
-//	if (tpALifeMonsterGroup) {
-//		MONSTER_PARAMS_P_IT		I = tpALifeMonsterGroup->m_tpMembers.begin();
-//		MONSTER_PARAMS_P_IT		E = tpALifeMonsterGroup->m_tpMembers.end();
-//		for (int i=0; I != E; I++, i++)
-//			Msg("* Member ID [%d]: %d",i,(*I)->m_iHealth);
-//		return;
-//	}
-//	
-//	CSE_ALifeTraderParams *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderParams *>(tpALifeDynamicObject);
-//	if (tpALifeTraderParams) {
-//		Msg("* Rank          : %d",tpALifeTraderParams->m_tRank);
-//		Msg("* Money         : %d",tpALifeTraderParams->m_dwMoney);
-//		Msg("* Item mass     : %7.2f",tpALifeTraderParams->m_fCumulativeItemMass);
-//		{
-//			OBJECT_IT I			= tpALifeTraderParams->m_tpItemIDs.begin();
-//			OBJECT_IT E			= tpALifeTraderParams->m_tpItemIDs.end();
-//			S[0] = 0;
-//			for (int j=0; I != E; I++, j++) {
-//				if (j)
-//					strcat(S,",");
-//				strcat(S,itoa(*I,S1,10));
-//			}
-//			vfPrintLargeString("* Items",S,E - tpALifeTraderParams->m_tpItemIDs.begin(),105);
-//		}
-//	}
-//		
-//	CSE_ALifeTraderAbstract *tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
-//	if (tpALifeTraderAbstract) {
-//		{
-//			PERSONAL_EVENT_P_IT	I = tpALifeTraderAbstract->m_tpEvents.begin();
-//			PERSONAL_EVENT_P_IT	E = tpALifeTraderAbstract->m_tpEvents.end();
-//			S[0] = 0;
-//			for (int j=0; I != E; I++, j++) {
-//				if (j)
-//					strcat(S,",");
-//				strcat(S,itoa((*I)->m_tEventID,S1,10));
-//			}
-//			vfPrintLargeString("* Events",S,E - tpALifeTraderAbstract->m_tpEvents.begin(),105);
-//		}
-//		{
-//			TASK_IT				I = tpALifeTraderAbstract->m_tpTaskIDs.begin();
-//			TASK_IT				E = tpALifeTraderAbstract->m_tpTaskIDs.end();
-//			S[0] = 0;
-//			for (int j=0; I != E; I++, j++) {
-//				if (j)
-//					strcat(S,",");
-//				strcat(S,itoa((*I),S1,10));
-//			}
-//			vfPrintLargeString("* Tasks",S,E - tpALifeTraderAbstract->m_tpTaskIDs.begin(),105);
-//		}
-//		//
-//		Msg("* Max item mass : %7.2f",tpALifeTraderAbstract->m_fMaxItemMass);
-//	}
-//		
-//	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeDynamicObject);
-//	if (tpALifeHumanAbstract) {
-//		Msg("* Search speed  : %7.2f",tpALifeHumanAbstract->m_fSearchSpeed);
-//		Msg("* Task state    : %7.2f",tpALifeHumanAbstract->m_tTaskState);
-//		Msg("* Current node  : %7.2f",tpALifeHumanAbstract->m_dwCurNode);
-//		Msg("* Current point : %7.2f",tpALifeHumanAbstract->m_dwCurTaskLocation);
-//		Msg("* Current task  :");
-//		if (tpALifeHumanAbstract->m_tpTaskIDs.size()) {
-//			CSE_ALifePersonalTask	&tTask = *(tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]);
-//			Msg("* Task  ID    : %d",tTask.m_tTaskID);
-//			vfPrintTime("* Time  ID  :",tTask.m_tTimeID);
-//			Msg("* Customer ID : %d",tTask.m_tCustomerID);
-//			Msg("* Task type   : %d",tTask.m_tTaskType);
-//			if (tTask.m_tTaskType == eTaskTypeSearchForItemOG) {
-//				Msg("* Graph ID    : %d",tTask.m_tGraphID);
-//				Msg("* Object ID   : %d",tTask.ID);
-//			}
-//			else if (tTask.m_tTaskType == eTaskTypeSearchForItemOL) {
-//				Msg("* Location ID : %d",tTask.m_tLocationID);
-//				Msg("* Object ID   : %d",tTask.ID);
-//			}
-//			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCG) {
-//				string64 tString;
-//				Memory.mem_copy(tString,&(tTask.m_caSection),sizeof(tTask.m_caSection));
-//				tString[sizeof(tTask.m_caSection)] = 0;
-//				Msg("* Graph ID    : %d",tTask.m_tGraphID);
-//				Msg("* Class ID    : %d (%s)",tTask.m_caSection,tString);
-//			}
-//			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCL) {
-//				string64 tString;
-//				Memory.mem_copy(tString,&(tTask.m_caSection),sizeof(tTask.m_caSection));
-//				tString[sizeof(tTask.m_caSection)] = 0;
-//				Msg("* Location ID : %d",tTask.m_tLocationID);
-//				Msg("* Class ID    : %d (%s)",tTask.m_caSection,tString);
-//			}
-//		}
-//		{
-//			PERSONAL_TASK_P_IT	I = tpALifeHumanAbstract->m_tpTasks.begin();
-//			PERSONAL_TASK_P_IT	E = tpALifeHumanAbstract->m_tpTasks.end();
-//			for (int j=0; I != E; I++, j++) {
-//				Msg("* Task  ID    : %d",(*I)->m_tTaskID);
-//				vfPrintTime(S,(*I)->m_tTimeID);
-//				Msg("* Cost hope   : %7.2f",(*I)->m_fCost);
-//				Msg("* Try count   : %d",(*I)->m_dwTryCount);
-//			}
-//		}
-//	}
-//	CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeDynamicObject);
-//	if (tpALifeHuman) {
-//		{
-//			TASK_IT				I = tpALifeHuman->m_tpTaskIDs.begin();
-//			TASK_IT				E = tpALifeHuman->m_tpTaskIDs.end();
-//			S[0] = 0;
-//			for (int j=0; I != E; I++, j++) {
-//				if (j)
-//					strcat(S,",");
-//				strcat(S,itoa(*I,S1,10));
-//			}
-//			vfPrintLargeString("Tasks",S,E - tpALifeHuman->m_tpTaskIDs.begin(),105);
-//		}
-//		return;
-//	}
-//	
-//	CSE_ALifeHumanGroup *tpALifeHumanGroup = dynamic_cast<CSE_ALifeHumanGroup *>(tpALifeDynamicObject);
-//	if (tpALifeHumanGroup) {
-//		Msg("* Members       :");
-//		{
-//			HUMAN_PARAMS_P_IT		I = tpALifeHumanGroup->m_tpMembers.begin();
-//			HUMAN_PARAMS_P_IT		E = tpALifeHumanGroup->m_tpMembers.begin();
-//			for (int i=0; I != E; I++, i++) {
-//				Msg("* Member ID [%d]: %d",i,*I);
-//				Msg("* Health        : %d",(*I)->m_iHealth);
-//				Msg("* Money         : %d",(*I)->m_dwMoney);
-//				Msg("* Item mass     : %7.2f",(*I)->m_fCumulativeItemMass);
-//				{
-//					OBJECT_IT I			= tpALifeHuman->m_tpItemIDs.begin();
-//					OBJECT_IT E			= tpALifeHuman->m_tpItemIDs.end();
-//					S[0] = 0;
-//					for (int j=0; I != E; I++, j++) {
-//						if (j)
-//							strcat(S,",");
-//						strcat(S,itoa(*I,S1,10));
-//					}
-//					vfPrintLargeString("Items",S,E - tpALifeHuman->m_tpItemIDs.begin(),105);
-//				}
-//			}
-//		}
-//	}
+	CSE_ALifeAbstractGroup *tpALifeMonsterGroup = dynamic_cast<CSE_ALifeAbstractGroup *>(tpALifeDynamicObject);
+	if (tpALifeMonsterGroup) {
+		OBJECT_IT				I = tpALifeMonsterGroup->m_tpMembers.begin();
+		OBJECT_IT				E = tpALifeMonsterGroup->m_tpMembers.end();
+		for (int i=0; I != E; I++, i++)
+			Msg("* Member ID [%d]: %d",i,*I);
+		return;
+	}
+	
+	CSE_ALifeTraderAbstract *tpALifeTraderParams = dynamic_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
+	if (tpALifeTraderParams) {
+		Msg("* Rank          : %d",tpALifeTraderParams->m_tRank);
+		Msg("* Money         : %d",tpALifeTraderParams->m_dwMoney);
+		Msg("* Item mass     : %7.2f",tpALifeTraderParams->m_fCumulativeItemMass);
+		OBJECT_IT I			= tpALifeTraderParams->children.begin();
+		OBJECT_IT E			= tpALifeTraderParams->children.end();
+		S[0] = 0;
+		for (int j=0; I != E; I++, j++) {
+			if (j)
+				strcat(S,",");
+			strcat(S,itoa(*I,S1,10));
+		}
+		vfPrintLargeString("* Items",S,int(E - tpALifeTraderParams->children.begin()),105);
+	}
+		
+	CSE_ALifeTraderAbstract *tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract *>(tpALifeDynamicObject);
+	if (tpALifeTraderAbstract) {
+		PERSONAL_EVENT_P_IT	I = tpALifeTraderAbstract->m_tpEvents.begin();
+		PERSONAL_EVENT_P_IT	E = tpALifeTraderAbstract->m_tpEvents.end();
+		S[0] = 0;
+		for (int j=0; I != E; I++, j++) {
+			if (j)
+				strcat(S,",");
+			strcat(S,itoa((*I)->m_tEventID,S1,10));
+		}
+		vfPrintLargeString("* Events",S,int(E - tpALifeTraderAbstract->m_tpEvents.begin()),105);
+		Msg("* Max item mass : %7.2f",tpALifeTraderAbstract->m_fMaxItemMass);
+	}
+		
+	CSE_ALifeHumanAbstract *tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeDynamicObject);
+	if (tpALifeHumanAbstract) {
+		Msg("* Search speed  : %7.2f",tpALifeHumanAbstract->m_fSearchSpeed);
+		Msg("* Task state    : %7.2f",tpALifeHumanAbstract->m_tTaskState);
+		Msg("* Current node  : %7.2f",tpALifeHumanAbstract->m_dwCurNode);
+		Msg("* Current point : %7.2f",tpALifeHumanAbstract->m_dwCurTaskLocation);
+		Msg("* Current task  :");
+		if (int(tpALifeHumanAbstract->m_dwCurTaskID) >= 0) {
+			CSE_ALifeTask			&tTask = *tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID);
+			Msg("* Task  ID    : %d",tTask.m_tTaskID);
+			vfPrintTime("* Time  ID  :",tTask.m_tTimeID);
+			Msg("* Customer ID : %d",tTask.m_tCustomerID);
+			Msg("* Task type   : %d",tTask.m_tTaskType);
+			if (tTask.m_tTaskType == eTaskTypeSearchForItemOG) {
+				Msg("* Graph ID    : %d",tTask.m_tGraphID);
+				Msg("* Object ID   : %d",tTask.m_tObjectID);
+			}
+			else if (tTask.m_tTaskType == eTaskTypeSearchForItemOL) {
+				Msg("* Location ID : %d",tTask.m_tLocationID);
+				Msg("* Object ID   : %d",tTask.m_tObjectID);
+			}
+			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCG) {
+				string64 tString;
+				Memory.mem_copy(tString,&(tTask.m_caSection),u32(strlen(tTask.m_caSection) + 1)*sizeof(char));
+				tString[sizeof(tTask.m_caSection)] = 0;
+				Msg("* Graph ID    : %d",tTask.m_tGraphID);
+				Msg("* Class ID    : %d (%s)",tTask.m_caSection,tString);
+			}
+			else if (tTask.m_tTaskType == eTaskTypeSearchForItemCL) {
+				string64 tString;
+				Memory.mem_copy(tString,&(tTask.m_caSection),u32(strlen(tTask.m_caSection) + 1)*sizeof(char));
+				tString[sizeof(tTask.m_caSection)] = 0;
+				Msg("* Location ID : %d",tTask.m_tLocationID);
+				Msg("* Class ID    : %d (%s)",tTask.m_caSection,tString);
+			}
+		}
+	}
 }
 
-void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID &tEventID)
+void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID tEventID)
 {
 	EVENT_PAIR_IT I = m_tEventRegistry.find(tEventID);
 	if (I == m_tEventRegistry.end()) {
@@ -394,7 +324,7 @@ void CSE_ALifeSimulator::vfEventInfo(_EVENT_ID &tEventID)
 	}
 }
 
-void CSE_ALifeSimulator::vfTaskInfo(_TASK_ID &tTaskID)
+void CSE_ALifeSimulator::vfTaskInfo(_TASK_ID tTaskID)
 {
 	TASK_PAIR_IT I = m_tTaskRegistry.find(tTaskID);
 	if (I == m_tTaskRegistry.end()) {
@@ -431,7 +361,6 @@ void CSE_ALifeSimulator::vfTaskInfo(_TASK_ID &tTaskID)
 		Msg("* Class ID    : %d (%s)",tTask.m_caSection,tString);
 	}
 	string4096	S;
-	string16	S1;
 	S[0] = 0;
 	{
 		OBJECT_PAIR_IT I = m_tObjectRegistry.begin();
@@ -440,21 +369,12 @@ void CSE_ALifeSimulator::vfTaskInfo(_TASK_ID &tTaskID)
 			CSE_ALifeHumanAbstract *tpALifeHuman = dynamic_cast<CSE_ALifeHumanAbstract *>((*I).second);
 			if (!tpALifeHuman)
 				continue;
-			TASK_IT i = tpALifeHuman->m_tpTaskIDs.begin();
-			TASK_IT e = tpALifeHuman->m_tpTaskIDs.end();
-			for ( ; i != e; i++)
-				if ((*i) == tTaskID) {
-					if (j++)
-						strcat(S,",");
-					strcat(S,itoa((*I).first,S1,10));
-					break;
-				}
 		}
 		vfPrintLargeString(S,"Monsters, who know about the task",j,105);
 	}
 }
 
-void CSE_ALifeSimulator::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
+void CSE_ALifeSimulator::vfSpawnPointInfo(_SPAWN_ID tSpawnID)
 {
 //	CSE_ALifeSpawnPoint &tSpawnPoint = *(m_tpSpawnPoints[tSpawnID]);
 //	Msg("%s->Spawn-point information :",cName());
@@ -491,7 +411,7 @@ void CSE_ALifeSimulator::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 //	}
 }
 
-void CSE_ALifeSimulator::vfGraphVertexInfo(_GRAPH_ID &tGraphID)
+void CSE_ALifeSimulator::vfGraphVertexInfo(_GRAPH_ID tGraphID)
 {
 	CSE_ALifeGraph::SGraphVertex &tGraphVertex = getAI().m_tpaGraph[tGraphID];
 	Msg("%s->Graph vertex information :",cName());

@@ -49,6 +49,8 @@
 // 35 - CSE_ALifeTrader					artefact order structures changed
 // 36 - CSE_ALifeTrader					appended with the organization identifier property
 //		and CSE_ALifeHumanAbstract		appended with known_traders property
+//		and CSE_ALifeTask				appended with try count property
+//		and CSE_ALifePersonalTask		no more exists
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

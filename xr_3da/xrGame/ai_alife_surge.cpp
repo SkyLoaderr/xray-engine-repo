@@ -37,7 +37,6 @@ void CSE_ALifeSimulator::vfCreateObjectFromSpawnPoint(CSE_ALifeDynamicObject *&i
 	CSE_ALifeObjectRegistry::Add(i);
 	vfUpdateDynamicData			(i);
 	i->m_bALifeControl			= true;
-	//m_tpServer->entity_Destroy	(tpSE_Abstract);
 
 	CSE_ALifeMonsterAbstract	*l_tpALifeMonsterAbstract	= dynamic_cast<CSE_ALifeMonsterAbstract*>(i);
 	if (l_tpALifeMonsterAbstract)
@@ -247,6 +246,7 @@ void CSE_ALifeSimulator::vfBallanceCreatures()
 					if (l_tpALifeAnomalousZone)
 						continue;
 
+#pragma todo("Dima to Dima : Decide where to spawn an actor!")
 //					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract	= dynamic_cast<CSE_ALifeCreatureAbstract*>(*j);
 //					if (l_tpALifeCreatureAbstract)
 //						continue;
@@ -274,9 +274,7 @@ void CSE_ALifeSimulator::vfKillCreatures()
 			if (l_tpALifeAbstractGroup) {
 				_GRAPH_ID			l_tGraphID = l_tpALifeCreatureAbstract->m_tGraphID;
 				for (u32 i=0, N = (u32)l_tpALifeAbstractGroup->m_tpMembers.size(); i<N; i++) {
-					OBJECT_PAIR_IT				J = m_tObjectRegistry.find(l_tpALifeAbstractGroup->m_tpMembers[i]);
-					R_ASSERT2					(J != m_tObjectRegistry.end(),"There is no object being attached as a group member!");
-					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>((*J).second);
+					CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = dynamic_cast<CSE_ALifeCreatureAbstract*>(tpfGetObjectByID(l_tpALifeAbstractGroup->m_tpMembers[i]));
 					R_ASSERT2					(l_tpALifeCreatureAbstract,"Group class differs from the member class!");
 					getAI().m_tpCurrentALifeObject = l_tpALifeCreatureAbstract;
 					if (randF(100) > getAI().m_pfSurgeDeathProbability->ffGetValue()) {
@@ -462,12 +460,8 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 		xr_vector<u16>::iterator	i = tTrader.children.begin();
 		xr_vector<u16>::iterator	e = tTrader.children.end();
 		for ( ; i != e; i++) {
-			// getting pointer to the purchased item from the object registry
-			OBJECT_PAIR_IT	j = m_tObjectRegistry.find(*i);
-			R_ASSERT2		(j != m_tObjectRegistry.end(),"Trader purchased unregistered item!");
-			
 			// checking if the purchased item is an artefact
-			CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>((*j).second);
+			CSE_ALifeItemArtefact *l_tpALifeItemArtefact = dynamic_cast<CSE_ALifeItemArtefact*>(tpfGetObjectByID(*i));
 			if (!l_tpALifeItemArtefact)
 				continue;
 
@@ -527,10 +521,9 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 					xr_vector<u16>::iterator	ee = tTrader.children.end();
 					for ( ; ii != ee; ii++) {
 						// getting pointer to the purchased item from the object registry
-						OBJECT_PAIR_IT	jj = m_tObjectRegistry.find(*ii);
-						R_ASSERT2		(jj != m_tObjectRegistry.end(),"Trader purchased unregistered item!");
-						if (!strcmp((*i).first,(*jj).second->s_name)) {
-							CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>((*jj).second);
+						CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = tpfGetObjectByID(*ii);
+						if (!strcmp((*i).first,l_tpALifeDynamicObject->s_name)) {
+							CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeDynamicObject);
 							m_tpServer->entity_Destroy	(l_tpAbstract);
 							xr_delete					(l_tpAbstract);
 							m_tObjectRegistry.erase		(*ii);
@@ -613,12 +606,8 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 		xr_vector<u16>::iterator	i = tTrader.children.begin();
 		xr_vector<u16>::iterator	e = tTrader.children.end();
 		for ( ; i != e; i++) {
-			// getting pointer to the purchased item from the object registry
-			OBJECT_PAIR_IT	j = m_tObjectRegistry.find(*i);
-			R_ASSERT2		(j != m_tObjectRegistry.end(),"Trader purchased unregistered item!");
-
 			// checking if the purchased item is an item
-			CSE_ALifeItem *l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>((*j).second);
+			CSE_ALifeItem *l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpfGetObjectByID(*i));
 			if (!l_tpALifeItem)
 				continue;
 
@@ -685,8 +674,6 @@ void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeTrader &tTrader)
 				l_tpALifeItem->m_bALifeControl = true;
 				CSE_ALifeObjectRegistry::Add(i);
 				vfUpdateDynamicData			(i);
-				//CSE_Abstract				*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeItem);
-				//m_tpServer->entity_Destroy	(l_tpAbstract);
 			}
 		}
 	}
@@ -723,19 +710,56 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 						jj = ii;
 					}
 				}
-				R_ASSERT2		(jj != ee,"Data mismatch!");
+				R_ASSERT2					(jj != ee,"Data mismatch!");
+
 				// creating new task
 				CSE_ALifeTask				*l_tpALifeTask = xr_new<CSE_ALifeTask>();
 				l_tpALifeTask->m_tTaskType	= eTaskTypeSearchForItemCG;
 				strcpy						(l_tpALifeTask->m_caSection,(*I).first);
-				l_tpALifeTask->m_tGraphID	= (*jj)->m_tGraphID;
+				l_tpALifeTask->m_tGraphID	= (*II)->m_tGraphID;
 				l_tpALifeTask->m_tTimeID	= tfGetGameTime();
 				l_tpALifeTask->m_tCustomerID= (*jj)->ID;
-#pragma todo("Correct task price")
+#pragma todo("Dima to Dima : Correct task price")
 				l_tpALifeTask->m_fCost		= 100.f;
 				l_tpALifeTask->m_tTaskID	= m_tTaskID++;
 				CSE_ALifeTaskRegistry::Add	(l_tpALifeTask);
 			}
+		}
+	}
+}
+
+void CSE_ALifeSimulator::vfAssignStalkerCustomers()
+{
+	ALIFE_MONSTER_P_PAIR_IT			I = m_tpScheduledObjects.begin();
+	ALIFE_MONSTER_P_PAIR_IT			E = m_tpScheduledObjects.end();
+	for ( ; I != E; I++) {
+		CSE_ALifeHumanAbstract		*l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>((*I).second);
+		if (l_tpALifeHumanAbstract && strlen(l_tpALifeHumanAbstract->m_caKnownCustomers)) {
+//			u32						N = _GetItemCount(l_tpALifeHumanAbstract->m_caKnownCustomers);
+//			if (!N)
+//				continue;
+//			
+//			string32				S;
+//			l_tpALifeHumanAbstract->m_tpKnownCustomers.clear();
+//			for (u32 i=0; i<N; i++) {
+//				_GetItem(l_tpALifeHumanAbstract->m_caKnownCustomers,i,S);
+//				bool				bOk = false;
+//				OBJECT_PAIR_IT		II = m_tObjectRegistry.begin();
+//				OBJECT_PAIR_IT		EE = m_tObjectRegistry.end();
+//				for ( ; II != EE; II++) {
+//					CSE_ALifeTraderAbstract *l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>((*II).second);
+//					if (l_tpTraderAbstract) {
+//						if (!strcmp((*II).second->s_name_replace,S)) {
+//							l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back((*II).second->ID);
+//							bOk		= true;
+//							break;
+//						}
+//					}
+//				}
+//				R_ASSERT3			(bOk,"There is no customer for the stalker ",l_tpALifeHumanAbstract->s_name_replace);
+//			}
+			l_tpALifeHumanAbstract->m_tpKnownCustomers.push_back(tpfGetNearestSuitableTrader(l_tpALifeHumanAbstract)->ID);
+			l_tpALifeHumanAbstract->m_caKnownCustomers[0] = 0;
 		}
 	}
 }
@@ -764,6 +788,7 @@ void CSE_ALifeSimulator::vfPerformSurge()
 			vfUpdateArtefactOrders	(**I);
 	}
 	vfUpdateTasks					();
+	vfAssignStalkerCustomers		();
 	
 	// updating dynamic data
 	vfUpdateDynamicData				(false);

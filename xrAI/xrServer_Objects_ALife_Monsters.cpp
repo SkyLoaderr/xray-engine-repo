@@ -21,6 +21,17 @@
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTraderAbstract
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	m_fCumulativeItemMass		= 0.0f;
+	m_dwMoney					= 0;
+	if (pSettings->line_exist(caSection, "money"))
+		m_dwMoney 				= pSettings->r_u32(caSection, "money");
+	m_tRank						= EStalkerRank(pSettings->r_u32(caSection, "rank"));
+	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
+	m_tpEvents.clear			();
+}
+
 CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()
 {
 	delete_data					(m_tpEvents);
@@ -35,8 +46,9 @@ void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	if (m_wVersion > 19) {
 		load_data				(m_tpEvents,tNetPacket);
+		TASK_VECTOR				l_tpTaskIDs;
 		if (m_wVersion < 36)
-			load_data			(m_tpTaskIDs,tNetPacket);
+			load_data			(l_tpTaskIDs,tNetPacket);
 	}
 }
 

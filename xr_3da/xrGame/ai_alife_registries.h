@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ai_alife_a_star.h"
-#include "ai_alife_space.h"
 #include "ai_alife_objects.h"
 using namespace ALife;
 
@@ -22,9 +21,19 @@ public:
 	virtual	void					Save						(IWriter &tMemoryStream);
 	virtual void					Load						(IReader &tFileStream);
 			void					Add							(CSE_ALifeDynamicObject *tpALifeDynamicObject);
-			bool					bfCheckIfTaskCompleted		(CSE_Abstract &CSE_Abstract, CSE_ALifeHumanAbstract *tpALifeHumanAbstract, OBJECT_IT &I);
-			bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract *tpALifeHuman, OBJECT_IT &I);
-			bool					bfCheckIfTaskCompleted		(CSE_ALifeHumanAbstract *tpALifeHuman);
+
+	IC		CSE_ALifeDynamicObject	*tpfGetObjectByID			(_OBJECT_ID tObjectID, bool bNoAssert = false)
+	{
+		OBJECT_PAIR_IT				I = m_tObjectRegistry.find(tObjectID);
+		
+		if (!bNoAssert)
+			R_ASSERT2				(I != m_tObjectRegistry.end(),"Specified object hasn't been found in the Object registry!");
+		else
+			if (I == m_tObjectRegistry.end())
+				return				(0);
+
+		return						((*I).second);
+	}
 };
 
 class CSE_ALifeEventRegistry : public IPureALifeLSObject {
@@ -37,18 +46,46 @@ public:
 	virtual	void					Save						(IWriter &tMemoryStream);
 	virtual	void					Load						(IReader &tFileStream);
 	virtual	void					Add							(CSE_ALifeEvent	*tpEvent);
+	
+	IC		CSE_ALifeEvent			*tpfGetEventByID			(_EVENT_ID tEventID, bool bNoAssert = false)
+	{
+		EVENT_PAIR_IT				I = m_tEventRegistry.find(tEventID);
+
+		if (!bNoAssert)
+			R_ASSERT2				(I != m_tEventRegistry.end(),"Specified event hasn't been found in the Event registry!");
+		else
+			if (I == m_tEventRegistry.end())
+				return				(0);
+
+		return						((*I).second);
+	}
 };
 
 class CSE_ALifeTaskRegistry : public IPureALifeLSObject {
 public:
 	_TASK_ID						m_tTaskID;					// идентификатор карты событий
 	TASK_MAP						m_tTaskRegistry;			// список событий игры
+	OBJECT_TASK_MAP					m_tTaskCrossMap;
 
 									CSE_ALifeTaskRegistry		();
 	virtual							~CSE_ALifeTaskRegistry		();
 	virtual	void					Save						(IWriter &tMemoryStream);
 	virtual	void					Load						(IReader &tFileStream);
 	virtual	void					Add							(CSE_ALifeTask *tpTask);
+	virtual	void					Update						(CSE_ALifeTask *tpTask);
+
+	IC		CSE_ALifeTask			*tpfGetTaskByID				(_TASK_ID tTaskID, bool bNoAssert = false)
+	{
+		TASK_PAIR_IT				I = m_tTaskRegistry.find(tTaskID);
+
+		if (!bNoAssert)
+			R_ASSERT2				(I != m_tTaskRegistry.end(),"Specified event hasn't been found in the Task registry!");
+		else
+			if (I == m_tTaskRegistry.end())
+				return				(0);
+
+		return						((*I).second);
+	}
 };
 
 class CSE_ALifeGraphRegistry : public CSE_ALifeAStar {

@@ -18,20 +18,8 @@ public:
 	EStalkerRank					m_tRank;
 	float							m_fMaxItemMass;
 	PERSONAL_EVENT_P_VECTOR			m_tpEvents;
-	TASK_VECTOR						m_tpTaskIDs;
 	
-									CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
-	{
-		m_fCumulativeItemMass		= 0.0f;
-		m_dwMoney					= 0;
-		if (pSettings->line_exist(caSection, "money"))
-			m_dwMoney 				= pSettings->r_u32(caSection, "money");
-		m_tRank						= EStalkerRank(pSettings->r_u32(caSection, "rank"));
-		m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
-		m_tpEvents.clear			();
-		m_tpTaskIDs.clear			();
-	};
-
+									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();
 
 	virtual void					STATE_Write		(NET_Packet &tNetPacket);

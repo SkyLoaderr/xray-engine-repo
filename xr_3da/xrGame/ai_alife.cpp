@@ -54,13 +54,12 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 	
 	CSE_ALifeItem						*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(tpALifeDynamicObject);
 	if (l_tpALifeItem && l_tpALifeItem->bfAttached()) {
-		OBJECT_PAIR_IT					II = m_tObjectRegistry.find(l_tpALifeItem->ID_Parent);
-		R_ASSERT2						(II != m_tObjectRegistry.end(),"Parent object doesn't exist!");
-		xr_vector<u16>::iterator		i = (*II).second->children.begin();
-		xr_vector<u16>::iterator		e = (*II).second->children.end();
+		CSE_ALifeDynamicObject			*II = tpfGetObjectByID(l_tpALifeItem->ID_Parent);
+		xr_vector<u16>::iterator		i = II->children.begin();
+		xr_vector<u16>::iterator		e = II->children.end();
 		for ( ; i != e; i++)
 			VERIFY(*i != l_tpALifeItem->ID);
-		(*II).second->children.push_back(l_tpALifeItem->ID);
+		II->children.push_back(l_tpALifeItem->ID);
 	}
 }
 

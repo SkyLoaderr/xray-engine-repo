@@ -104,14 +104,17 @@ void CSE_ALifePersonalEvent::FillProp	(LPCSTR pref, PropItemVec& values)
 CSE_ALifeTask::CSE_ALifeTask				()
 {
 	m_dwTryCount				= 0;
+	m_caSection[0]				= 0;
 }
 
 void CSE_ALifeTask::STATE_Write				(NET_Packet &tNetPacket)
 {
+	tNetPacket.w_u32			(m_dwTryCount);
 }
 
 void CSE_ALifeTask::STATE_Read				(NET_Packet &tNetPacket, u16 size)
 {
+	tNetPacket.r_u32			(m_dwTryCount);
 }
 
 void CSE_ALifeTask::UPDATE_Write			(NET_Packet &tNetPacket)
