@@ -23,6 +23,7 @@ SMapLocation::SMapLocation()
 	marker_show				= false;
 	icon_color				= 0xffffffff;
 	type_flags.zero			();
+	colorAnimation			= NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
