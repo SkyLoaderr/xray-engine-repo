@@ -288,7 +288,7 @@ BOOL CTaskBatchExecute::load				(CInifile& ini, LPCSTR section)
 
 //	m_app_name		= ini.r_string(section,	"app_name");
 	m_params		= ini.r_string_wb(section,	"params");
-	m_working_folder= ini.r_string(section,	"working_folder");
+	m_working_folder= ini.r_string_wb(section,	"working_folder");
 
 	u32 file_count		= ini.r_u32(section,		"file_count");
 	for(u32 i=0; i<file_count; ++i){
