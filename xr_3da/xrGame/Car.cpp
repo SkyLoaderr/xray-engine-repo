@@ -48,12 +48,12 @@ void	CCar::Load					( CInifile* ini, const char *section )
 	inherited::Load					(ini,section);
 
 	CKinematics*	M				= PKinematics(pVisual);
-
+	R_ASSERT						(M);
 	M->PlayCycle					("init");
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontL")).set_callback	(cb_WheelFL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontR")).set_callback	(cb_WheelFR,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearL")).set_callback	(cb_WheelBL,this);
-	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearR")).set_callback	(cb_WheelBR,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontl")).set_callback	(cb_WheelFL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_frontr")).set_callback	(cb_WheelFR,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearl")).set_callback	(cb_WheelBL,this);
+	M->LL_GetInstance				(M->LL_BoneID("phy_wheel_rearr")).set_callback	(cb_WheelBR,this);
 }
 
 BOOL	CCar::Spawn					( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags )
@@ -66,6 +66,8 @@ void	CCar::Update				( DWORD T )
 	inherited::Update				(T);
 
 	float dt						= float(T)/1000.f;
+	
+	vPosition.y						+= sinf(Device.fTimeGlobal);
 
 	UpdateTransform					();
 	if (IsMyCamera())				cam_Update(dt);
