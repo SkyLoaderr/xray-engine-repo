@@ -291,4 +291,4 @@ function Trader:get_random (_min, _max, _exclude)
     
     return rnd
     
-emd          
+end          
