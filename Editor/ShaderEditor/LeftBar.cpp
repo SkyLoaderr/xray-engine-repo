@@ -271,6 +271,7 @@ void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
                 	if (FOLDER::IsObject(item)) Tools.Engine.RemoveBlender(full_name.c_str());
                 }
 				Tools.Engine.ResetCurrentBlender();
+                Tools.Engine.ApplyChanges(true);
 	            pNode->Delete();
                 Tools.Engine.Modified();
         	}
@@ -280,6 +281,7 @@ void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 				FOLDER::MakeName(pNode,0,full_name,false);
 	            Tools.Engine.RemoveBlender(full_name.c_str());
 				Tools.Engine.ResetCurrentBlender();
+                Tools.Engine.ApplyChanges(true);
 	            pNode->Delete();
                 Tools.Engine.Modified();
         	}

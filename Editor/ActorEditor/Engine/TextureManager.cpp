@@ -332,7 +332,7 @@ Shader*	CShaderManager::Create(LPCSTR s_shader, LPCSTR s_textures, LPCSTR s_cons
 	CBlender_Recorder	Recorder		(&S);
 #ifdef M_BORLAND
     if (!B){
-    	ELog.DlgMsg(mtError,"Can't find shader '%s'",s_shader);
+    	ELog.Msg(mtError,"Can't find shader '%s'",s_shader);
     	return 0;
     }
 	B->Compile			(Recorder, L_textures, L_constants, L_matrices,0,TRUE);
