@@ -324,6 +324,10 @@ BOOL CWeapon::net_Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	P.r_u16					(current);	iAmmoCurrent	= current;
 	P.r_u16					(elapsed);	iAmmoElapsed	= elapsed;
 
+	//
+	bVisible				= TRUE;
+	Sector_Detect			();
+
 	return bResult;
 }
 

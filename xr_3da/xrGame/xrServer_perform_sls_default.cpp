@@ -15,7 +15,9 @@ void xrServer::SLS_Default	()
 			P.B.count	=	S->Length();
 			S->Read			(P.B.data,P.B.count);
 			S->Close		();
-			
+
+			u16				ID;
+			P.r_begin		(ID);		R_ASSERT(M_SPAWN==ID);
 			Process_spawn	(P,0);
 
 			S_id		+=	1;
