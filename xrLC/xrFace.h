@@ -2,17 +2,31 @@
 
 #include "shader_xrlc.h"
 
+class base_lighting
+{
+	xr_vector<R_Light>		rgb;
+	xr_vector<Fvector>		hemi;
+	float					hemi_e;
+	xr_vector<Fvector>		sun;
+	float					sun_e;
+};
+class base_color
+{
+	Fvector					rgb;
+	float					hemi;
+	float					sun;
+};
 class base_Vertex	
 {
 public: 
 	Fvector					P;
 	Fvector					N;
-	Fcolor					C;		// all_lights(R,G,B),	???(A)
+	base_color				C;		// all_lighting info
 	float					L_hemi;	// hemisphere
 public:
 	virtual ~base_Vertex()	= 0; 
 };
-class base_Face		
+class base_Face
 {
 public: 
 	Fvector					basis_tangent		[3];
@@ -126,12 +140,10 @@ class Face	: public base_Face
 public:
 	Vertex*					v[3];			// vertices
 	Fvector					N;				// face normal
-	svector<_TCF,4>			tc;				// TC
+	svector<_TCF,2>			tc;				// TC
 
 	void*					pDeflector;		// does the face has LM-UV map?
-	svector<CLightmap*,4>	lmap_layers;
-
-
+	svector<CLightmap*,1>	lmap_layers;
 
 	virtual Fvector2*		getTC0				( ) { return tc[0].uv; }
 

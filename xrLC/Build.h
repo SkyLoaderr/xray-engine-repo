@@ -43,12 +43,12 @@ struct b_BuildTexture : public b_texture
 
 struct R_Control
 {
-	string64				name;
-	xr_vector<u32>			data;
+	string64					name;
+	xr_vector<u32>				data;
 };
 struct R_Layer
 {
-	R_Control				control;
+	R_Control					control;
 	xr_vector<R_Light>			lights;
 };
 
