@@ -105,7 +105,7 @@ void CCustomDetector::Update(u32 dt) {
 		if(l_maxPow > 0) {
 			if(!m_noise.feedback) Sound->PlayAtPos(m_noise, this, P, true);
 			if(m_noise.feedback) {
-				l_maxPow = __max(logf(l_maxPow), -10.f) / 10.f + 1.f;
+				l_maxPow = __max(logf(l_maxPow) / 10.f + 1.f, .0f);
 				m_noise.feedback->SetVolume(l_maxPow);
 
 				m_noise.feedback->SetPosition(P);
