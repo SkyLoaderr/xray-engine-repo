@@ -1,13 +1,33 @@
 #ifndef EnvironmentH
 #define EnvironmentH
 
-#include "xr_efflensflare.h"
-#include "rain.h"
-#include "thunderbolt.h"
-
+// refs
 class ENGINE_API	IRender_Visual;
 class ENGINE_API	CInifile;
 class ENGINE_API 	CEnvironment;
+
+// refs - effects
+class ENGINE_API	CLensFlare;	
+class ENGINE_API	CEffect_Rain;
+class ENGINE_API	CEffect_Thunderbolt;
+
+// t-defs
+class ENGINE_API	CEnvModifier
+{
+public:
+	Fvector3			position;
+	float				radius;
+	float				power;
+
+	float				far_plane;
+	Fvector3			fog_color;
+	float				fog_density;
+	Fvector3			ambient;
+	Fvector3			lmap_color;
+
+	void				load		(IReader*		fs);
+	float				sum			(CEnvModifier&	_another, Fvector3& view);
+};
 
 class ENGINE_API	CEnvDescriptor
 {
@@ -48,7 +68,7 @@ public:
 	void				load		(LPCSTR exec_tm, LPCSTR sect, CEnvironment* parent);
     void				unload		();
     
-	void				lerp		(CEnvDescriptor& A, CEnvDescriptor& B, float f);
+	void				lerp		(CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power);
 };
 
 class ENGINE_API	CEnvironment
@@ -60,6 +80,7 @@ class ENGINE_API	CEnvironment
 public:
 	DEFINE_VECTOR			(CEnvDescriptor*,EnvVec,EnvIt);
 	DEFINE_MAP_PRED			(ref_str,EnvVec,WeatherMap,WeatherPairIt,str_pred);
+
 	// Environments
 	CEnvDescriptor			CurrentEnv;
 	CEnvDescriptor*			CurrentA;
@@ -69,8 +90,11 @@ public:
     EnvVec*					CurrentWeather;
     ref_str					CurrentWeatherName;
 	WeatherMap				Weathers;
+	xr_vector<CEnvModifier>	Modifiers;
+
 	ref_shader				sh_2sky;
 	ref_geom				sh_2geom;
+
 	CEffect_Rain*			eff_Rain;
 	CLensFlare*				eff_LensFlare;
 	CEffect_Thunderbolt*	eff_Thunderbolt;
@@ -80,13 +104,6 @@ public:
 	ref_texture				tonemap;
 
     void					SelectEnvs			(float gt);
-#ifdef _EDITOR
-public:
-	float					ed_from_time;
-	float					ed_to_time;
-#endif
-
-
 public:
 							CEnvironment		();
 							~CEnvironment		();
@@ -94,24 +111,31 @@ public:
 	void					load				();
     void					unload				();
 
+	void					mods_load			();
+	void					mods_unload			();
+
 	void					OnFrame				();
 
 	void					RenderFirst			();
 	void					RenderLast			();
 
-    void					OnDeviceCreate		();
-    void					OnDeviceDestroy		();
-
-    void					SetWeather			(LPCSTR name);
-    LPCSTR					GetWeather			(){return *CurrentWeatherName;}
-
+    void					SetWeather			(ref_str name);
+    ref_str					GetWeather			()					{ return CurrentWeatherName;}
 	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
 
+	// editor-related
+#ifdef _EDITOR
+public:
+	float					ed_from_time;
+	float					ed_to_time;
+public:
+	void					OnDeviceCreate		();
+	void					OnDeviceDestroy		();
     void					ED_Reload			();
+#endif
 };
 
 ENGINE_API extern Flags32	psEnvFlags;
-ENGINE_API extern float		psGravity;
 ENGINE_API extern float		psVisDistance;
 
 #endif //EnvironmentH

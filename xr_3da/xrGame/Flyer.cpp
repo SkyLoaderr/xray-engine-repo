@@ -123,7 +123,7 @@ void CFlyer::CheckControls(Fvector &vControlAccel, float& fYawAccel)
 	}
 
 	vControlAccel.y *= 0.75f;
-	if (_abs(vControlAccel.y)>EPS_L) vControlAccel.y -= psGravity*.25f;
+	//if (_abs(vControlAccel.y)>EPS_L) vControlAccel.y -= psGravity*.25f;
 }
 
 void CFlyer::SetAnimation( )

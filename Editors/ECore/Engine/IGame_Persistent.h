@@ -29,7 +29,7 @@ public:
 	virtual void					OnAppCycleEnd		();
 	virtual void					OnFrame				();
 
-	virtual void					RegisterModel	(IRender_Visual* V)
+	virtual void					RegisterModel		(IRender_Visual* V)
 #ifndef _EDITOR
      = 0;
 #else
@@ -45,5 +45,4 @@ public:
 
 extern ENGINE_API	IGame_Persistent*	g_pGamePersistent;
 #endif //IGame_PersistentH
-
 

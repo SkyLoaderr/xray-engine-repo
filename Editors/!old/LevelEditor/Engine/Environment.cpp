@@ -7,16 +7,19 @@
 
 #include "Environment.h"
 #include "xr_efflensflare.h"
+#include "rain.h"
+#include "thunderbolt.h"
+
 #include "xr_trims.h"
 
 #ifndef _EDITOR
 	#include "IGame_Level.h"
 #endif
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-ENGINE_API	float	psGravity		= 20.f;
-ENGINE_API	float	psVisDistance	= 1.f;
+ENGINE_API	float			psVisDistance	= 1.f;
 
 //////////////////////////////////////////////////////////////////////////
 // shader/blender
@@ -132,17 +135,18 @@ void CEnvDescriptor::unload	()
 	sky_r_textures.push_back(0);
 	sky_r_textures.push_back(0);
 }
-void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
+void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f, CEnvModifier& M, float m_power)
 {
-	float	fi				= 1-f;
+	float	_power			=	1.f/(m_power+1);	// the environment itself
+	float	fi				=	1-f;
 	sky_r_textures.clear	();
 	sky_r_textures.push_back(A.sky_texture);
 	sky_r_textures.push_back(B.sky_texture);
 	sky_factor				= f;
 	sky_color.lerp			(A.sky_color,B.sky_color,f);
-	far_plane				= (fi*A.far_plane + f*B.far_plane)*psVisDistance;
-	fog_color.lerp			(A.fog_color,B.fog_color,f);
-	fog_density				= fi*A.fog_density + f*B.fog_density;
+	far_plane				= (fi*A.far_plane + f*B.far_plane + M.far_plane)*psVisDistance*_power;
+	fog_color.lerp			(A.fog_color,B.fog_color,f).add(M.fog_color).mul(_power);
+	fog_density				= (fi*A.fog_density + f*B.fog_density + M.fog_density)*_power;
 	fog_near				= (1.0f - fog_density)*0.85f * far_plane;
 	fog_far					= 0.95f * far_plane;
 	rain_density			= fi*A.rain_density + f*B.rain_density;
@@ -151,13 +155,58 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	bolt_duration			= fi*A.bolt_duration + f*B.bolt_duration;
     wind_velocity			= fi*A.wind_velocity + f*B.wind_velocity;
     wind_direction			= fi*A.wind_direction + f*B.wind_direction;
-	ambient.lerp			(A.ambient,B.ambient,f);
-	lmap_color.lerp			(A.lmap_color,B.lmap_color,f);
+	ambient.lerp			(A.ambient,B.ambient,f).add(M.ambient).mul(_power);
+	lmap_color.lerp			(A.lmap_color,B.lmap_color,f).add(M.lmap_color).mul(_power);
 	hemi_color.lerp			(A.hemi_color,B.hemi_color,f);
 	sun_color.lerp			(A.sun_color,B.sun_color,f);
 	sun_dir.lerp			(A.sun_dir,B.sun_dir,f).normalize();
 }
+void	CEnvModifier::load	(IReader* fs)
+{
+	position		= fs->r_fvector3();
+	radius			= fs->r_float	();
+	power			= fs->r_float	();
+	far_plane		= fs->r_float	();
+	fog_color		= fs->r_fvector3();
+	fog_density		= fs->r_float	();
+	ambient			= fs->r_fvector3();
+	lmap_color		= fs->r_fvector3();
+}
+float	CEnvModifier::sum	(CEnvModifier& M, Fvector3& view)
+{
+	float	_dist_sq	=	view.distance_to_sqr(M.position);
+	if (_dist_sq>=(M.radius*M.radius))	return 0;
+	float	_att		=	1-_sqrt(_dist_sq)/M.radius;	[0..1];
+	float	_power		=	M.power*_att;
+	far_plane			+=	M.far_plane*_power;
+	fog_color.mad		(M.fog_color,_power);
+	fog_density			+=	M.fog_density*_power;
+	ambient.mad			(M.ambient,_power);
+	lmap_color.mad		(M.lmap_color,_power);
+	return				_power;
+}
 
+void	CEnvironment::mods_load			()
+{
+	Modifiers.clear_and_free			();
+	string_path							path;
+	if (FS.exist(path,"$level$","level.envmod"))	
+	{
+		IReader*	fs	= FS.r_open		(path);
+		u32			id	= 0;
+		while		(fs->find_chunk(id))	
+		{
+			CEnvModifier		E;
+			E.load				(fs);
+			Modifiers.push_back	(E);
+		}
+		FS.r_close	(fs);
+	}
+}
+void	CEnvironment::mods_unload		()
+{
+	Modifiers.clear_and_free			();
+}
 //////////////////////////////////////////////////////////////////////////
 // environment
 static const float day_tm	= 86400.f;
@@ -183,9 +232,8 @@ CEnvironment::~CEnvironment	()
 	OnDeviceDestroy			();
 }
 
-IC bool sort_env_pred(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
+IC bool sort_env_pred		(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
 {	return x->exec_time < y->exec_time;	}
-
 void CEnvironment::load		()
 {
 	tonemap					= Device.Resources->_CreateTexture("$user$tonemap");	//. hack
@@ -241,25 +289,17 @@ void CEnvironment::unload	()
 	tonemap				= 0;
 }
 
-void CEnvironment::SetWeather(LPCSTR name)
+void CEnvironment::SetWeather(ref_str name)
 {
-	if (name&&name[0]){
-        R_ASSERT2			(name&&name[0],"Empty weather name");
+	if (*name && xr_strlen(name))	{
         WeatherPairIt it	= Weathers.find(name);
         R_ASSERT3			(it!=Weathers.end(),"Invalid weather name.",name);
         CurrentWeather		= &it->second;
-        CurrentWeatherName	= *it->first;
+        CurrentWeatherName	= it->first;
     }else{
 #ifndef _EDITOR
 		Debug.fatal			("Empty weather name");
 #endif
-/*
-		CurrentWeather		= 0;
-		CurrentWeatherName	= 0;
-		CurrentA			= 0;
-		CurrentB			= 0;
-        eff_Rain->
-*/
         unload				();
         load				();
     }
@@ -319,7 +359,7 @@ void CEnvironment::SelectEnvs(float gt)
 void CEnvironment::OnFrame()
 {
 #ifdef _EDITOR
-	if (!psDeviceFlags.is(rsEnvironment)) return;
+	if (!psDeviceFlags.is(rsEnvironment))		return;
 	fGameTime				+= Device.fTimeDelta*fTimeFactor;
     if (fsimilar(ed_to_time,day_tm)&&fsimilar(ed_from_time,0.f)){
 	    if (fGameTime>day_tm)	fGameTime-=day_tm;
@@ -347,9 +387,22 @@ void CEnvironment::OnFrame()
 	    t_fact				= (fGameTime-CurrentA->exec_time)/(CurrentB->exec_time-CurrentA->exec_time); 
     }
     clamp					(t_fact,0.f,1.f);
-    
-	CurrentEnv.lerp						(*CurrentA,*CurrentB,t_fact);
-	CurrentEnv.sky_r_textures.push_back	(tonemap);	//. hack
+
+	// modifiers
+	CEnvModifier			EM;
+	EM.far_plane			= 0;
+	EM.fog_color			= { 0,0,0 };
+	EM.fog_density			= 0;
+	EM.ambient				= { 0,0,0 };
+	EM.lmap_color			= { 0,0,0 };
+	Fvector	view			= Device.vCameraPosition;
+	float	mpower			= 0;
+	for (xr_vector<CEnvModifier>::iterator mit=Modifiers.begin(); mit!=Modifiers.end(); mit++)
+		mpower += EM.sum(*mit,view);
+
+	// final lerp
+	CurrentEnv.lerp						(*CurrentA,*CurrentB,t_fact,EM,mpower);
+	CurrentEnv.sky_r_textures.push_back	(tonemap);		//. hack
     int id								= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
 	eff_LensFlare->OnFrame				(id);
     BOOL tb_enabled						= (t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
@@ -405,24 +458,22 @@ void CEnvironment::RenderLast		()
     eff_Thunderbolt->Render			();
 }
 
+#ifdef _EDITOR
 void CEnvironment::OnDeviceCreate()
 {
 	sh_2sky.create			(&b_skybox,"skybox_2t");
 	sh_2geom.create			(v_skybox_fvf,RCache.Vertex.Buffer(), RCache.Index.Buffer());
     load					();
 }
-
 void CEnvironment::OnDeviceDestroy()
 {
 	unload					();
 	sh_2sky.destroy			();
 	sh_2geom.destroy		();
 }
-
 void CEnvironment::ED_Reload()
 {
 	OnDeviceDestroy			();
 	OnDeviceCreate			();
 }
-
-
+#endif
