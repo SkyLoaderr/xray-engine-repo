@@ -109,7 +109,6 @@ void CDetailManager::Load		()
 	m_slots->Close	();
 	
 	// Initialize 'vis' and 'cache'
-	ZeroMemory			(&visible,sizeof(visible));	
 	visible[0].resize	(dm_max_objects);
 	visible[1].resize	(dm_max_objects);
 	visible[2].resize	(dm_max_objects);
