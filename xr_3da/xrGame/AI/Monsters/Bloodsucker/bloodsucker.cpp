@@ -326,6 +326,7 @@ void CAI_Bloodsucker::on_activate()
 	state_invisible = true;
 
 	//spatial.type |= STYPE_VISIBLEFORAI;
+
 }
 
 void CAI_Bloodsucker::on_deactivate()
@@ -362,6 +363,7 @@ CBaseMonster::SDebugInfo CAI_Bloodsucker::show_debug_info()
 	string128 text;
 	sprintf(text, "Invisibility Value = [%f]", CInvisibility::get_value());
 	DBG().text(this).add_item(text, info.x, info.y+=info.delta_y, info.color);
+	DBG().text(this).add_item("---------------------------------------", info.x, info.y+=info.delta_y, info.delimiter_color);
 
 	return CBaseMonster::SDebugInfo();
 }

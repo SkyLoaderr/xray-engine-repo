@@ -28,6 +28,7 @@ void CLevel::IR_OnMouseWheel( int direction )
 // Обработка нажатия клавиш
 void CLevel::IR_OnKeyboardPress(int key)
 {
+	
 //	if (pHUD->IsUIActive())			
 	if (pHUD->GetUI()->IR_OnKeyboardPress(key)) return;
 	if ( Game().IR_OnKeyboardPress(key) ) return;
@@ -229,29 +230,37 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 
 
-#ifdef _DEBUG
-
-	//CObject *obj = Level().Objects.FindObjectByName("monster");
-	//if (obj) {
-	//	CAI_Bloodsucker *monster = smart_cast<CAI_Bloodsucker *>(obj);
-
-	//	switch (key) {
-	//	case DIK_1:
-	////		monster->turn_actor_to_me();
-	//		break;
-	////	case DIK_2:
-	////		//monster->SetUpperState(false);
-	////		break;
-	////	case DIK_5:
-	////		monster->try_to_jump();
-	////		break;
+	//#ifdef _DEBUG
+	//
+	//	CObject *obj = Level().CurrentEntity();
+	//	if (obj) {
+	//		CActor *actor = smart_cast<CActor *>(obj);
+	//
+	//		switch (key) {
+	//		case DIK_1:
+	//			// Hit
+	//			NET_Packet		P;
+	//			actor->u_EventGen(P,GE_HIT, actor->ID());
+	//			P.w_u16			(actor->ID());
+	//			P.w_u16			(actor->ID());
+	//			P.w_dir			(Fvector().set(0.f,1.f,0.f));
+	//			P.w_float		(10.f);
+	//			P.w_s16			(BI_NONE);
+	//			P.w_vec3		(Fvector().set(0.f,0.f,0.f));
+	//			P.w_float		(0.f);
+	//			P.w_u16			(u16(ALife::eHitTypeTelepatic));
+	//			actor->u_EventSend(P);
+	//			break;
+	//			////	case DIK_2:
+	//			////		//monster->SetUpperState(false);
+	//			////		break;
+	//			////	case DIK_5:
+	//			////		monster->try_to_jump();
+	//			////		break;
+	//		}
 	//	}
-	//}
-
-#endif
-
-
-
+	//
+	//#endif
 
 
 }

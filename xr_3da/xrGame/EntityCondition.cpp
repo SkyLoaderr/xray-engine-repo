@@ -496,6 +496,10 @@ void CEntityCondition::UpdatePower()
 
 void CEntityCondition::UpdatePsyHealth()
 {
+	if(m_fPsyHealth>0)
+	{
+		m_fDeltaPsyHealth += m_fV_PsyHealth*m_fCurrentSleepPsyHealth*m_iDeltaTime/1000;
+	}
 }
 
 

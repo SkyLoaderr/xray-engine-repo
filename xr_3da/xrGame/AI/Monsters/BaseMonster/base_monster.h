@@ -207,6 +207,7 @@ public:
 			void			vfUpdateParameters				();
 			void			HitEntity						(const CEntity *pEntity, float fDamage, float impulse, Fvector &dir);
 	virtual	void			HitEntityInJump					(const CEntity *pEntity) {}
+			void			PsyHit							(const CGameObject *object, float value)
 			
 			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
 			CBoneInstance *GetBoneInstance					(int bone_id);

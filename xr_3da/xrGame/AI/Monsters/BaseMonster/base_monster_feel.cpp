@@ -150,3 +150,18 @@ void CBaseMonster::SetAttackEffector()
 	}
 }
 
+void CBaseMonster::PsyHit(const CGameObject *object, float value) 
+{
+	NET_Packet		P;
+	
+	u_EventGen		(P,GE_HIT, object->ID());				// 
+	P.w_u16			(ID());									// own
+	P.w_u16			(ID());									// own
+	P.w_dir			(Fvector().set(0.f,1.f,0.f));			// direction
+	P.w_float		(value);								// hit value	
+	P.w_s16			(BI_NONE);								// bone
+	P.w_vec3		(Fvector().set(0.f,0.f,0.f));			
+	P.w_float		(0.f);									
+	P.w_u16			(u16(ALife::eHitTypeTelepatic));
+	u_EventSend		(P);
+}
