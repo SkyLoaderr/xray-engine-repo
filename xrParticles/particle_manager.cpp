@@ -162,12 +162,13 @@ void CParticleManager::SetMaxParticles(int effect_id, u32 max_particles)
 	ParticleEffect *pe = GetEffectPtr(effect_id);
 	pe->Resize		(max_particles);
 }
-void CParticleManager::SetCallback(int effect_id, OnBirthParticleCB b, OnDeadParticleCB d, void* owner)
+void CParticleManager::SetCallback(int effect_id, OnBirthParticleCB b, OnDeadParticleCB d, void* owner, u32 param)
 {
 	ParticleEffect *pe = GetEffectPtr(effect_id);
 	pe->b_cb		= b;
 	pe->d_cb		= d;
     pe->owner		= owner;
+    pe->param		= param;
 }
 void CParticleManager::GetParticles(int effect_id, Particle*& particles, u32& cnt)
 {

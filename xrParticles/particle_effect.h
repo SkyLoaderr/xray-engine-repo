@@ -13,10 +13,13 @@ namespace PAPI{
         OnBirthParticleCB 	b_cb;
         OnDeadParticleCB	d_cb;
         void*				owner;
+        u32					param;
         
         public:
 					ParticleEffect	(int mp)
 		{
+        	owner					= 0;
+            param 					= 0;
         	b_cb					= 0;
         	d_cb					= 0;
    			p_count					= 0;

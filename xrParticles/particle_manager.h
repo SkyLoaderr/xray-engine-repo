@@ -38,7 +38,7 @@ namespace PAPI{
         // effect
         virtual void				RemoveParticle		(int effect_id, u32 p_id);
         virtual void				SetMaxParticles		(int effect_id, u32 max_particles);
-        virtual void				SetCallback			(int effect_id, OnBirthParticleCB b, OnDeadParticleCB d, void* owner);
+        virtual void				SetCallback			(int effect_id, OnBirthParticleCB b, OnDeadParticleCB d, void* owner, u32 param);
     	virtual void				GetParticles		(int effect_id, Particle*& particles, u32& cnt);
     	virtual u32					GetParticlesCount	(int effect_id);
 
