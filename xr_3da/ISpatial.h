@@ -33,6 +33,8 @@ enum
 	STYPE_VISIBLEFORAI			= (1<<3),
 	STYPE_REACTTOSOUND			= (1<<4),
 	STYPE_PHYSIC				= (1<<5),
+
+	STYPEFLAG_INVALIDSECTOR		= (1<<16)
 };
 //////////////////////////////////////////////////////////////////////////
 // Comment: 
@@ -78,6 +80,7 @@ public:
 	virtual		void			spatial_unregister	();
 	virtual		void			spatial_move		();
 	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
+				void			spatial_updatesector();
 
 	virtual		CObject*		dcast_CObject		()	{ return 0;	}
 	virtual		Feel::Sound*	dcast_FeelSound		()	{ return 0;	}

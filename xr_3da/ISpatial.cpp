@@ -86,8 +86,7 @@ void	ISpatial::spatial_move	()
 	if (spatial.node_ptr)
 	{
 		//*** somehow it was determined that object has been moved
-		IRender_Sector*		S				= ::Render->detectSector(spatial_sector_point());
-		if (S)				spatial.sector	= S;
+		spatial.type		|=				STYPEFLAG_INVALIDSECTOR;
 
 		//*** check if we are supposed to correct it's spatial location
 		if			(spatial_inside())	return;		// ???
@@ -97,6 +96,14 @@ void	ISpatial::spatial_move	()
 		//*** we are not registered yet, or already unregistered
 		//*** ignore request
 	}
+}
+
+void	ISpatial::spatial_updatesector	()
+{
+	if (0== (spatial.type&STYPEFLAG_INVALIDSECTOR))	return;
+	spatial.type						&=	~STYPEFLAG_INVALIDSECTOR;
+	IRender_Sector*		S				=	::Render->detectSector(spatial_sector_point());
+	if (S)				spatial.sector	=	S;
 }
 
 //////////////////////////////////////////////////////////////////////////
