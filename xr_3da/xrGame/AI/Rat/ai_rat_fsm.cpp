@@ -118,7 +118,7 @@ void CAI_Rat::Death()
 {
 	//WRITE_TO_LOG("Dying...");
 	bStopThinking = true;
-	Msg("%s [health : %3.f]",cName(),fHealth);
+	Msg("%s [health : %4.1f]",cName(),m_fFood);
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
@@ -730,6 +730,8 @@ void CAI_Rat::EatCorp()
 {
 	WRITE_TO_LOG("Eating a corp");
 
+	m_bFiring = false;
+
 	CHECK_IF_GO_TO_NEW_STATE(!g_Alive(),aiRatDie)
 
 	SelectEnemy(m_Enemy);
@@ -738,8 +740,10 @@ void CAI_Rat::EatCorp()
 
 	SelectCorp(m_Enemy);
 
-	if (!m_Enemy.Enemy)
-		m_fGoalChangeTime = m_fGoalChangeDelta+m_fGoalChangeDelta*::Random.randF(-0.5f,0.5f);
+	if (!m_Enemy.Enemy) {
+		vfChangeGoal();
+		m_fGoalChangeTime = 10.f;
+	}
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy || (m_fMorale < m_fMoraleNormalValue));
 
@@ -756,11 +760,16 @@ void CAI_Rat::EatCorp()
 	
 	vfUpdateTime(m_fTimeUpdateDelta);
 
-	vfComputeNewPosition();
-
-	m_fSpeed = m_fMaxSpeed;
-
-	SetDirectionLook();
+	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
+		vfAimAtEnemy();
+		m_fSpeed = 0;
+		UpdateTransform();
+	}
+	else {
+		vfComputeNextDirectionPosition();
+		m_fSpeed = m_fMaxSpeed;
+		SetDirectionLook();
+	}
 
 	Fvector tTemp;
 	tTemp.sub(m_Enemy.Enemy->Position(),vPosition);
@@ -784,12 +793,15 @@ void CAI_Rat::EatCorp()
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
 	
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
+	m_Enemy.Enemy->clCenter(tTemp);
+	if (tTemp.distance_to(vPosition) <= m_fAttackDistance) {
+		m_fSpeed = m_fSafeSpeed = 0.f;
 		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
-			if (Level().timeServer() - m_dwLastRangeSearch > 1000) {
+			if (Level().timeServer() - m_dwLastRangeSearch > m_dwHitInterval) {
 				m_dwLastRangeSearch = Level().timeServer();
-				m_Enemy.Enemy->m_fFood -= 1.f;
+				m_Enemy.Enemy->m_fFood -= m_fHitPower/10.f;
 			}
+			m_bFiring = true;
 		}
 		else {
 			r_torso_target.yaw = sTemp.yaw;

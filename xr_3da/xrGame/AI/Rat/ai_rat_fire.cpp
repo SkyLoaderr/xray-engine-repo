@@ -128,7 +128,8 @@ float CAI_Rat::CorpHeuristics(CEntity* E)
 	if (!E->g_Alive()) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(E);
 		if (tpEntityAlive && (Level().timeServer() - tpEntityAlive->m_dwDeathTime < m_dwEatCorpInterval) && (tpEntityAlive->m_fFood > 0) && (m_bEatMemberCorps || (E->g_Team() != g_Team())) && (m_bCannibalism || (E->SUB_CLS_ID != SUB_CLS_ID)))
-			return (float)(Level().timeServer() - tpEntityAlive->m_dwDeathTime)*(tpEntityAlive->m_fFood*tpEntityAlive->m_fFood);
+//			return (float)(Level().timeServer() - tpEntityAlive->m_dwDeathTime)/1000.f*(tpEntityAlive->m_fFood*tpEntityAlive->m_fFood);
+			return (tpEntityAlive->m_fFood*tpEntityAlive->m_fFood)*vPosition.distance_to(E->Position());
 		else
 			return flt_max;
 	}
@@ -155,14 +156,14 @@ void CAI_Rat::SelectCorp(SEnemySelected& S)
 	for (u32 i=0; i<Known.size(); i++) {
 		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
 		float		H = CorpHeuristics(E);
-		if (H<S.fCost) {
+		if (H < flt_max) {
 			bool bVisible = false;
 			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
 				if (m_tpaVisibleObjects[i] == E) {
 					bVisible = true;
 					break;
 				}
-			float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
+				float	cost	 = bVisible? H*.95f : H;
 			if (cost<S.fCost)	{
 				S.Enemy		= E;
 				S.bVisible	= bVisible;
