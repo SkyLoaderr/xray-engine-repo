@@ -11,7 +11,7 @@ void UIScriptWnd::script_register(lua_State *L)
 {
 	module(L)
 	[
-		class_<UIScriptWnd>("UIScriptWnd")
+		class_<UIScriptWnd, CUIDialogWnd>("UIScriptWnd")
 		.def(					constructor<>())
 
 		.def("Load",			&UIScriptWnd::Load)

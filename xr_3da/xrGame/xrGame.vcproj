@@ -8350,6 +8350,9 @@
 						RelativePath=".\ui\UIButton.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIButton_script.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\UICheckButton.cpp">
 					</File>
 					<File
@@ -8396,6 +8399,9 @@
 						RelativePath=".\ui\UIStatic.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIStatic_script.cpp">
+					</File>
+					<File
 						RelativePath=".\ui\UITextBanner.cpp">
 					</File>
 					<File
@@ -8438,6 +8444,9 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIWindow.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIWindow_script.cpp">
 					</File>
 				</Filter>
 				<Filter

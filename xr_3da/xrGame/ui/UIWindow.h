@@ -164,6 +164,7 @@ public:
 
 	// Name of the window
 	virtual ref_str WindowName() { return ""; }
+	LPCSTR	WindowName_script() {return *(WindowName());}
 protected:
 	//список дочерних окон
 	WINDOW_LIST m_ChildWndList;
@@ -212,4 +213,9 @@ protected:
 public:
 	// ѕоследн€€ позици€ мышки
 	POINT cursor_pos;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUIWindow)
+#undef script_type_list
+#define script_type_list save_type_list(CUIWindow)

@@ -13,6 +13,8 @@
 
 #include "../uistaticitem.h"
 
+#include "../script_export_space.h"
+
 #define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 
 class CUIFrameWindow;
@@ -42,10 +44,14 @@ public:
 	virtual void SetTextAlign(CGameFont::EAligment align) {m_eTextAlign = align;}
 	CGameFont::EAligment GetTextAlign() {return m_eTextAlign;}
 
+	void		 SetTextAlign_script(u32 align) {m_eTextAlign = (CGameFont::EAligment)align;}
+	u32			 GetTextAlign_script() {return (u32)m_eTextAlign;}
+
 	void SetColor(u32 color) {m_UIStaticItem.SetColor(color);}
 	u32 GetColor() const { return m_UIStaticItem.GetColor();}
 	
 	void InitTexture(LPCSTR tex_name);
+	void SetOriginalRect (int x, int y, int width, int height){m_UIStaticItem.SetOriginalRect(x,y,width,height);};
 	CUIStaticItem* GetStaticItem() {return &m_UIStaticItem;}
 
 	virtual void ClipperOn();
@@ -177,6 +183,11 @@ protected:
 
 public:
 	static void Elipsis(STRING &str, const RECT &rect, EElipsisPosition elipsisPos, CGameFont *pFont);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUIStatic)
+#undef script_type_list
+#define script_type_list save_type_list(CUIStatic)
 
 #endif // _UI_STATIC_H_

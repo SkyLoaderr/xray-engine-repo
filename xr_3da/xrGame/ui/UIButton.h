@@ -14,6 +14,7 @@
 #include "../uistaticitem.h"
 #include "UIStatic.h"
 
+#include "../script_export_space.h"
 
 
 class CUIButton : public CUIStatic
@@ -124,6 +125,11 @@ protected:
 	// Смещение подсветки текста
 	int				m_iShadowOffsetX;
 	int				m_iShadowOffsetY;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUIButton)
+#undef script_type_list
+#define script_type_list save_type_list(CUIButton)
 
 #endif // _UI_BUTTON_H_

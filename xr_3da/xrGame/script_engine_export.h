@@ -65,9 +65,13 @@
 #	include "game_cl_mp_script.h"
 #	include "UIGame_custom_script.h"
 #	include "UI/UIScriptWnd.h"
+#	include "UI/UIStatic.h"
+#	include "UI/UIButton.h"
+
 #	include "script_ui_registrator.h"
 #	include "key_binding_registrator.h"
 #	include	"PhysicsShell.h"
 #	include "script_task.h"
 #	include "script_string_table.h"
+
 #endif
