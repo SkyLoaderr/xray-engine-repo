@@ -152,16 +152,16 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 //		pWeapon = new CWeaponM134(); 
 		strcpy(sect_name,"wpn_m134en");
 		break;
-	case CLSID_OBJECT_W_GROZA:
-//		pWeapon = new CWeaponGroza(); 
+	case CLSID_OBJECT_W_FN2000:
+		pWeapon = new CWeaponFN2000	(); 
 		strcpy(sect_name,"wpn_groza");
 		break;
 	case CLSID_OBJECT_W_AK74:
-		pWeapon = new CWeaponAK74(); 
+		pWeapon = new CWeaponAK74	(); 
 		strcpy(sect_name,"wpn_ak74");
 		break;
 	case CLSID_OBJECT_W_LR300:
-		pWeapon = new CWeaponLR300(); 
+		pWeapon = new CWeaponLR300	(); 
 		strcpy(sect_name,"wpn_lr300");
 		break;
 	}
