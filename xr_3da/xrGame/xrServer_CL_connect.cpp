@@ -43,7 +43,7 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	// Game config (all, info includes new player)
 	game->OnPlayerConnect			(CL->ID,CL->Name);
-	game->signal_Syncronize			();
+	Perform_game_export				();
 
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
