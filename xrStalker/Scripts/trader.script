@@ -3,7 +3,6 @@ is_actor_entered = false
 trader_already_saw_actor = false
 
 -- функция вызывается из игры после того как объект object вошел в зону zone
-
 function on_enter(zone,object)
 	is_creature_entered = true
 	printf("Object %s entered zone %s",object:name(),zone:name())
