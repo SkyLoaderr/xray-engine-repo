@@ -195,7 +195,7 @@ void CWallmarksEngine::AddWallmark_internal	(CDB::TRI* pTri, const Fvector* pVer
 	// build 3D ortho-frustum
 	Fmatrix				mView,mRot;
 	BuildMatrix			(mView,1/sz,contact_point);
-	mRot.rotateZ		(::Random.randF(0,PI_MUL_2));
+	mRot.rotateZ		(::Random.randF(deg2rad(-20),deg2rad(20)));
 	mView.mulA_43		(mRot);
 	sml_clipper.CreateFromMatrix	(mView,FRUSTUM_P_LRTB);
 
