@@ -236,7 +236,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	R_ASSERT						(!NET.empty());
 	net_update& N					= NET.back();
 	P.w_float						(inventory().TotalWeight());
-	P.w_u32							(0);
+	P.w_u32							(m_dwMoney);
 	P.w_u32							(0);
 
 	P.w_float_q16					(fEntityHealth,-500,1000);
@@ -265,8 +265,8 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 		P.w					(&f1,						sizeof(f1));
 	}
 
-	P.w_float						(inventory().TotalWeight());
-	P.w_u32							(m_dwMoney);
+	P.w_float						(0);
+	P.w_u32							(0);
 	P.w_u32							(0);
 
 	CScriptBinder::net_Export		(P);
