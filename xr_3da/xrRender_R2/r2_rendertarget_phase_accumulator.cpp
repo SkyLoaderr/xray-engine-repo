@@ -71,8 +71,19 @@ void	CRenderTarget::phase_accumulator()
 	L_dir.normalize				();
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
 
+	// Calculate light-brightness
+	Fvector		L_clr;	
+	L_clr.div					(RImplementation.Lights.sun_color, ps_r2_ls_dynamic_range);
+	float		L_max			= _max(_max(L_clr.x,L_clr.y),L_clr.z);
+	float		L_mag			= L_clr.magnitude()/_sqrt(3.f);
+	float		L_gray			= (L_clr.x + L_clr.y + L_clr.z)/3.f;
+	float		L_brightness	= (L_max+L_mag+L_gray)/3.f;		// maximal brightness at dot(L,N)=1
+	float		L_clip			= (4.f / 255.f) / (L_brightness);
+	s32			A_clip			= _max(4,iFloor(L_clip*255.f));
+
 	// Render
-	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
+	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_ALPHAREF,			A_clip	));
+	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0		));
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
 

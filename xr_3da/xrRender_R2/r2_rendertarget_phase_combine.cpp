@@ -14,6 +14,8 @@ void	CRenderTarget::phase_combine	()
 	// Clear	- don't clear - it's stupid here :)
 
 	// Stencil	- draw only where stencil >= 0x1
+	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
+	/*
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,			0x01				));
@@ -22,6 +24,7 @@ void	CRenderTarget::phase_combine	()
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	));
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	));
+	*/
 
 	// Misc		- draw everything (no culling)
 	CHK_DX(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
