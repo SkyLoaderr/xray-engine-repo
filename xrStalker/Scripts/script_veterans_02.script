@@ -6,9 +6,9 @@ function main()
 
 			wait(1000)			
 
-			walker04:script	(true,  script_veterans_01.script_name())
-			walker05:script	(true,  script_veterans_01.script_name())
-			walker06:script	(true,  script_veterans_01.script_name())
+			walker04:script	(true,  script_veterans_02.script_name())
+			walker05:script	(true,  script_veterans_02.script_name())
+			walker06:script	(true,  script_veterans_02.script_name())
 
 			action(
 				walker04,
@@ -32,12 +32,12 @@ function main()
 
 	while walker04:action() do
 		if walker04:see(actor) or walker05:see(actor) or walker06:see(actor) then
-			walker04:script	(false,  script_veterans_01.script_name())
-			walker05:script	(false,  script_veterans_01.script_name())
-			walker06:script	(false,  script_veterans_01.script_name())
-			walker04:script	(true,  script_veterans_01.script_name())
-			walker05:script	(true,  script_veterans_01.script_name())
-			walker06:script	(true,  script_veterans_01.script_name())
+			walker04:script	(false,  script_veterans_02.script_name())
+			walker05:script	(false,  script_veterans_02.script_name())
+			walker06:script	(false,  script_veterans_02.script_name())
+			walker04:script	(true,  script_veterans_02.script_name())
+			walker05:script	(true,  script_veterans_02.script_name())
+			walker06:script	(true,  script_veterans_02.script_name())
 
 			action(
 				walker04,
@@ -73,9 +73,9 @@ function main()
 			wait(1000)			
 
 			rainbow_mochi_ego:play_at_pos		(walker05,walker05:position(),0);
-			walker04:script	(false,  script_veterans_01.script_name())
-			walker05:script	(false,  script_veterans_01.script_name())
-			walker06:script	(false,  script_veterans_01.script_name())
+			walker04:script	(false,  script_veterans_02.script_name())
+			walker05:script	(false,  script_veterans_02.script_name())
+			walker06:script	(false,  script_veterans_02.script_name())
 		end
 		wait()
 		break
@@ -116,12 +116,12 @@ function main()
 		wait()			
 	end
 
-			walker04:script	(false,  script_veterans_01.script_name())
-			walker05:script	(false,  script_veterans_01.script_name())
-			walker06:script	(false,  script_veterans_01.script_name())
-			walker04:script	(true,  script_veterans_01.script_name())
-			walker05:script	(true,  script_veterans_01.script_name())
-			walker06:script	(true,  script_veterans_01.script_name())
+			walker04:script	(false,  script_veterans_02.script_name())
+			walker05:script	(false,  script_veterans_02.script_name())
+			walker06:script	(false,  script_veterans_02.script_name())
+			walker04:script	(true,  script_veterans_02.script_name())
+			walker05:script	(true,  script_veterans_02.script_name())
+			walker06:script	(true,  script_veterans_02.script_name())
 
 			action(
 				walker04,
