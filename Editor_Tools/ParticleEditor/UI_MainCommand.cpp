@@ -112,7 +112,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
     case COMMAND_GRID_SLOT_SIZE:{
     	float step = frmEditorPreferences->seGridSquareSize->Increment;
-        float& val = frmEditorPreferences->seGridSquareSize->Value;
+        float val = frmEditorPreferences->seGridSquareSize->Value;
     	if (p1){
 	    	if (val<1) step/=10.f;
         	frmEditorPreferences->seGridSquareSize->Value += step;
