@@ -21,6 +21,7 @@ object ClipMaker: TClipMaker
   OldCreateOrder = False
   ParentBiDiMode = False
   Scaled = False
+  OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -603,12 +604,12 @@ object ClipMaker: TClipMaker
         FlatAlwaysEdge = True
         OnClick = ebPlayClick
       end
-      object ebPause: TExtBtn
+      object ebPlayCycle: TExtBtn
         Left = 41
         Top = 2
         Width = 20
         Height = 15
-        Hint = 'Pause'
+        Hint = 'Play Looped'
         Align = alNone
         BevelShow = False
         HotTrack = True
@@ -621,26 +622,34 @@ object ClipMaker: TClipMaker
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         Glyph.Data = {
-          9E010000424D9E0100000000000036000000280000000B0000000A0000000100
-          18000000000068010000120B0000120B00000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFF
-          FFFFFFFFA5A5A5ADADADFFFFFFFFFFFFFFFFFFADADADA5A5A5FFFFFFFFFFFF00
-          0000FFFFFF969696000000000000969696FFFFFF969696000000000000969696
-          FFFFFF000000FFFFFF969696000000000000969696FFFFFF9696960000000000
-          00969696FFFFFF000000FFFFFF969696000000000000969696FFFFFF96969600
-          0000000000969696FFFFFF000000FFFFFF969696000000000000969696FFFFFF
-          969696000000000000969696FFFFFF000000FFFFFF9696960000000000009696
-          96FFFFFF969696000000000000969696FFFFFF000000FFFFFF96969600000000
-          0000969696FFFFFF969696000000000000969696FFFFFF000000FFFFFFFFFFFF
-          A5A5A5ADADADFFFFFFFFFFFFFFFFFFADADADA5A5A5FFFFFFFFFFFF000000FFFF
+          9E020000424D9E020000000000003600000028000000120000000B0000000100
+          18000000000068020000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFA7A7A7FFFFFFFFFFFFFFFF
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF0000BABABA0000005050508E8E8EFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000000000FFFFFFFFFFFF
+          0000BABABA0000000000000000004F4F4F7B7B7BFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFF000000FFFFFF000000000000000000000000FFFFFF0000BABABA000000
+          000000000000000000080808282828898989FFFFFFFFFFFF000000FFFFFFFFFF
+          FFFFFFFF000000000000FFFFFF0000000000BABABA0000000000000000000000
+          000000000000001212121F1F1FC6C6C6000000FFFFFF000000FFFFFFFFFFFF00
+          0000FFFFFF0000000000BABABA00000000000000000000000008080828282889
+          8989FFFFFFFFFFFF000000FFFFFF000000000000FFFFFFFFFFFFFFFFFF000000
+          0000BABABA0000000000000000004F4F4F7B7B7BFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFF000000000000000000000000FFFFFF000000FFFFFF0000BABABA000000
+          5050508E8E8EFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF0000
+          00000000FFFFFFFFFFFFFFFFFFFFFFFF0000FFFFFFA7A7A7FFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
           0000}
         ParentFont = False
         ParentShowHint = False
         ShowHint = True
         Transparent = False
         FlatAlwaysEdge = True
-        OnClick = ebPauseClick
+        OnClick = ebPlayCycleClick
       end
       object ebStop: TExtBtn
         Left = 61
@@ -752,9 +761,9 @@ object ClipMaker: TClipMaker
       TabOrder = 2
       object Panel4: TPanel
         Left = 0
-        Top = 135
+        Top = 102
         Width = 103
-        Height = 15
+        Height = 48
         Align = alBottom
         BevelOuter = bvNone
         ParentColor = True
@@ -793,6 +802,72 @@ object ClipMaker: TClipMaker
           BtnColor = 10528425
           CloseButton = False
           Caption = 'Append'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebAppendClipClick
+        end
+        object ebLoadClips: TExtBtn
+          Left = 1
+          Top = 32
+          Width = 51
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          HotColor = 15790320
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = 'Load'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebLoadClipsClick
+        end
+        object ebSaveClips: TExtBtn
+          Left = 52
+          Top = 32
+          Width = 51
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          HotColor = 15790320
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = 'Save'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'MS Sans Serif'
+          Font.Style = []
+          ParentFont = False
+          Transparent = False
+          FlatAlwaysEdge = True
+          OnClick = ebSaveClipsClick
+        end
+        object ExtBtn1: TExtBtn
+          Left = 1
+          Top = 15
+          Width = 52
+          Height = 15
+          Align = alNone
+          BevelShow = False
+          HotTrack = True
+          HotColor = 15790320
+          BtnColor = 10528425
+          CloseButton = False
+          Caption = 'Remove'
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
           Font.Height = -11

@@ -88,17 +88,21 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	AnsiString temp_fn;
         if (p1)	temp_fn = (char*)p1;
         else	temp_fn = m_LastFileName;
-        EFS.UnlockFile(_objects_,m_LastFileName.c_str());
+        EFS.UnlockFile(_objects_,temp_fn.c_str());
         CTimer T;
         T.Start();
 		if (Tools.Save(_objects_,temp_fn.c_str())){
             ELog.Msg(mtInformation,"Object '%s' successfully saved. Saving time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
         	Command(COMMAND_UPDATE_CAPTION);
 			AppendRecentFile(temp_fn.c_str());
+            AnsiString mfn;
+            FS.update_path(mfn,_objects_,temp_fn.c_str());
+//.            EFS.MarkFile(mfn.c_str(),false);
+            EFS.BackupFile(_objects_,temp_fn.c_str());
         }else{
         	bRes=false;
         }
-        EFS.LockFile(_objects_,m_LastFileName.c_str());
+        EFS.LockFile(_objects_,temp_fn.c_str());
     	}break;
     case COMMAND_IMPORT:{
         AnsiString temp_fn;
@@ -122,6 +126,7 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
                 	AnsiString mfn;
                     FS.update_path(mfn,_import_,temp_fn.c_str());
                     EFS.MarkFile(mfn.c_str(),true);
+                    EFS.BackupFile(_objects_,temp_fn.c_str());
                 }else{
                     Command( COMMAND_CLEAR );
                 }

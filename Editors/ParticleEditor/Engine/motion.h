@@ -183,5 +183,6 @@ public:
 public:
 	virtual void	Save	(IWriter& F);
 	virtual bool	Load	(IReader& F);
+    bool			Equal	(CClip* c);
 };
 #endif

@@ -34,8 +34,6 @@ static const TColor CLIP_ACTIVE_COLOR		= 0x00C1C1C1;
 static const TColor BP_INACTIVE_COLOR		= 0x00686868;
 static const TColor BP_ACTIVE_COLOR			= 0x00C1C1C1;
 
-static int g_ClipID=0;
-
 TClipMaker::CUIClip::CUIClip(LPCSTR n, TClipMaker* own, float r_t) 
 {
 	owner				= own;
@@ -73,11 +71,6 @@ void TClipMaker::DestroyForm(TClipMaker* form)
 void TClipMaker::ShowEditor(CEditableObject* O)
 {
 	m_CurrentObject = O; VERIFY(O);
-    ClipVec& src 	= O->Clips();
-    clips.resize	(src.size());
-    UIClipIt t_it	= clips.begin();
-    for (ClipIt s_it=src.begin(); s_it!=src.end(); s_it++, t_it++)
-    	*t_it		= xr_new<CUIClip>(**s_it,this,s_it-src.begin());
 	Show			();
     UpdateClips		();
     UpdateProperties();
@@ -85,19 +78,19 @@ void TClipMaker::ShowEditor(CEditableObject* O)
 
 void TClipMaker::HideEditor()
 {
+	m_CurrentObject = 0;
 	Clear			();
 	Hide			();
 }
 
 void TClipMaker::Clear()
 {
+	m_ClipList->ClearList();
 	m_RTFlags.zero	();
-	m_CurrentObject = 0;
 	for (UIClipIt it=clips.begin(); it!=clips.end(); it++)
     	xr_delete	(*it);
     clips.clear		();
     sel_clip		= 0;
-    g_ClipID		= 0;
 }
 
 __fastcall TClipMaker::TClipMaker(TComponent* Owner) : TForm(Owner)
@@ -140,22 +133,45 @@ void __fastcall TClipMaker::FormShow(TObject *Sender)
 
 void __fastcall TClipMaker::FormCloseQuery(TObject *Sender, bool &CanClose)
 {
-	int res = ELog.DlgMsg(mtConfirmation, "Save changes before quit?");
-    switch (res){
-    case mrYes:{
-    	ClipVec& tgt = m_CurrentObject->Clips();
-        for (ClipIt it=tgt.begin(); it!=tgt.end(); it++)
-            xr_delete	(*it);
-        tgt.resize(clips.size());
-        ClipIt t_it=tgt.begin();
+	CanClose		= true;
+/*	bool bAsk		= false;
+    ClipVec& tgt 	= m_CurrentObject->Clips();
+    if (tgt.size()!=clips.size()) bAsk=true;
+    else{
+        ClipIt t_it		= tgt.begin();
         for (UIClipIt s_it=clips.begin(); s_it!=clips.end(); s_it++,t_it++){
-        	*t_it = xr_new<CClip>();
-            **t_it= *(CClip*)*s_it;
+            if (!(*s_it)->Equal(*t_it)){
+                bAsk 	= true;
+                break;
+            }
         }
-    }break;
-    case mrNo: 	break;
-    case mrCancel: CanClose=false; break;
     }
+	if (bAsk){
+        int res 	= ELog.DlgMsg(mtConfirmation, "Save changes before quit?");
+        switch (res){
+        case mrYes:{
+            for (ClipIt it=tgt.begin(); it!=tgt.end(); it++)
+                xr_delete	(*it);
+            tgt.resize(clips.size());
+            ClipIt t_it=tgt.begin();
+            for (UIClipIt s_it=clips.begin(); s_it!=clips.end(); s_it++,t_it++){
+                *t_it = xr_new<CClip>();
+                **t_it= *(CClip*)*s_it;
+            }
+            Tools.Modified();
+        }break;
+        case mrNo: 	break;
+        case mrCancel: CanClose=false; break;
+        }
+    }
+*/
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+//.	Clear();
 }
 //---------------------------------------------------------------------------
 
@@ -366,8 +382,6 @@ void __fastcall TClipMaker::BPMouseUp(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-
-
 void __fastcall TClipMaker::OnClipItemFocused(ListItemsVec& items)
 {
 	if (!items.empty()){
@@ -407,12 +421,13 @@ void TClipMaker::RealUpdateProperties()
     PropItemVec		p_items;
     PropValue* V	= 0;
 	PHelper.CreateCaption		(p_items,"Length",				FloatTimeToStrTime(m_TotalLength,true,true,true,true));
-    V=PHelper.CreateFloat		(p_items,"Zoom",					&m_Zoom,			1.f,1000.f,0.1f,1);
+    V=PHelper.CreateFloat		(p_items,"Zoom",				&m_Zoom,			1.f,1000.f,0.1f,1);
     V->OnChangeEvent			= OnZoomChange;
     if (sel_clip){
-	    V=PHelper.CreateRText	(p_items,"Current Clip\\Name",	&sel_clip->name);
+    	ListItem* l_owner		= m_ClipList->FindItem(*sel_clip->name); VERIFY(l_owner);
+	    V=PHelper.CreateRName	(p_items,"Current Clip\\Name",	&sel_clip->name,	l_owner);
         V->OnChangeEvent		= OnNameChange;
-	    V=PHelper.CreateFloat	(p_items,"Current Clip\\Length",	&sel_clip->length,	0.f,10000.f,0.1f,2);
+	    V=PHelper.CreateFloat	(p_items,"Current Clip\\Length",&sel_clip->length,	0.f,10000.f,0.1f,2);
         V->OnChangeEvent		= OnClipLengthChange;
         for (u32 k=0; k<4; k++){
             LPCSTR mname		= sel_clip->CycleName(k);	
@@ -427,18 +442,22 @@ void TClipMaker::RealUpdateProperties()
 
 void TClipMaker::SelectClip(CUIClip* clip)
 {
-    sel_clip		= clip;
-    AnsiString nm	= sel_clip?*sel_clip->name:"";
-    m_ClipList->SelectItem(nm,true,false,true);
-    RepaintClips	();
-    UpdateProperties();
+	if (sel_clip!=clip){
+        AnsiString nm	= clip?*clip->name:"";
+        sel_clip		= clip;
+        m_ClipList->SelectItem(nm,true,false,true);
+        RepaintClips	();
+        UpdateProperties();
+    }
     if (sel_clip)
-	    sbBase->HorzScrollBar->Position = sbBase->HorzScrollBar->Range*(sel_clip->RunTime()/m_TotalLength);
+        sbBase->HorzScrollBar->Position = sbBase->HorzScrollBar->Range*(sel_clip->RunTime()/m_TotalLength);
 }
 
 void TClipMaker::InsertClip()
 {
-	CUIClip* clip		= xr_new<CUIClip>(AnsiString(AnsiString("clip_")+g_ClipID++).c_str(),this,sel_clip?sel_clip->RunTime()-EPS_L:0);
+	AnsiString nm;
+    FHelper.GenerateObjectName(m_ClipList->tvItems,0,nm,"clip",true);
+	CUIClip* clip	= xr_new<CUIClip>(nm.c_str(),this,sel_clip?sel_clip->RunTime()-EPS_L:0);
     clips.push_back	(clip);
     UpdateClips		(true,false);     
     SelectClip		(clip);
@@ -447,10 +466,66 @@ void TClipMaker::InsertClip()
 
 void TClipMaker::AppendClip()
 {
-	CUIClip* clip		= xr_new<CUIClip>(AnsiString(AnsiString("clip_")+g_ClipID++).c_str(),this,sel_clip?sel_clip->RunTime()+sel_clip->Length()-EPS_L:0);
+	AnsiString nm;
+    FHelper.GenerateObjectName(m_ClipList->tvItems,0,nm,"clip",true);
+	CUIClip* clip	= xr_new<CUIClip>(nm.c_str(),this,sel_clip?sel_clip->RunTime()+sel_clip->Length()-EPS_L:0);
     clips.push_back	(clip);
     UpdateClips		(true,false);
     SelectClip		(clip);
+}
+//---------------------------------------------------------------------------
+
+#define	CHUNK_CLIPS	0x9001
+
+void TClipMaker::LoadClips()
+{
+	AnsiString fn;
+    bool bRes=true;
+	if (EFS.GetOpenName("$clips$",fn)){
+    	Clear		();
+    	IReader* F	= FS.r_open(fn.c_str()); VERIFY(F);
+        IReader* C 	= F->open_chunk(CHUNK_CLIPS);
+        if(C){
+            IReader* M   = C->open_chunk(0);
+            for (int count=1; M; count++) {
+                CUIClip* clip	= xr_new<CUIClip>(this);
+                if (!clip->Load(*M)){
+                    ELog.Msg(mtError,"Unsupported clip version. Load failed.");
+                    xr_delete(clip);
+                    bRes = false;
+                }
+                M->close();
+                if (!bRes)	break;
+                clips.push_back(clip);
+                M = C->open_chunk(count);
+            }
+            C->close	();
+            UpdateClips	();
+        }
+        FS.r_close(F);
+    }
+}
+//---------------------------------------------------------------------------
+
+void TClipMaker::SaveClips()
+{
+    if (!clips.empty()){
+		AnsiString fn;
+        if (EFS.GetSaveName("$clips$",fn)){
+            IWriter* F	= FS.w_open(fn.c_str()); VERIFY(F);
+            F->open_chunk	(CHUNK_CLIPS);
+            int count = 0;
+            for (UIClipIt c_it=clips.begin(); c_it!=clips.end(); c_it++){
+                F->open_chunk(count); count++;
+                (*c_it)->Save(*F);
+                F->close_chunk();
+            }
+            F->close_chunk	();
+            FS.w_close(F);
+        }
+    }else{
+    	ELog.DlgMsg(mtError,"Clip list empty.");
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -631,18 +706,24 @@ void TClipMaker::RealUpdateClips()
     for (it=clips.begin(); it!=clips.end(); it++)
     	LHelper.CreateItem		(l_items,*(*it)->name,0,0,*it);
 	m_ClipList->AssignItems		(l_items,true);
+	// select default clip
+ 	if (!clips.empty()&&(sel_clip==0)) 
+    	SelectClip(clips[0]);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TClipMaker::fsStorageRestorePlacement(TObject *Sender)
 {
-	m_ClipProps->RestoreParams(fsStorage);
+	m_ClipProps->RestoreParams	(fsStorage); 
+    int idx 					= fsStorage->ReadInteger("sel_clip",0);
+    if (idx<(int)clips.size())	SelectClip(clips[idx]);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TClipMaker::fsStorageSavePlacement(TObject *Sender)
 {
 	m_ClipProps->SaveParams(fsStorage);
+    fsStorage->WriteInteger		("sel_clip",sel_clip?sel_clip->idx:0);
 }
 //---------------------------------------------------------------------------
 
@@ -671,8 +752,14 @@ void TClipMaker::OnFrame()
         VERIFY(play_clip<clips.size());
         if (m_CurrentPlayTime>(clips[play_clip]->RunTime()+clips[play_clip]->Length())){
         	play_clip++;
-            if (play_clip>=clips.size()) play_clip=0;
-            PlayAnimation(clips[play_clip]);
+            if (play_clip>=clips.size()){ 
+			    if (m_RTFlags.is(flRT_PlayingLooped)){
+    	        	play_clip=0;
+                }else{
+                	Stop();
+                }
+            }
+		    if (m_RTFlags.is(flRT_Playing)) PlayAnimation(clips[play_clip]);
         }
 		// play onframe
     	if (m_CurrentPlayTime>m_TotalLength) m_CurrentPlayTime-=m_TotalLength;
@@ -691,6 +778,18 @@ void __fastcall TClipMaker::ebInsertClipClick(TObject *Sender)
 void __fastcall TClipMaker::ebAppendClipClick(TObject *Sender)
 {
 	AppendClip		();	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::ebLoadClipsClick(TObject *Sender)
+{
+	LoadClips		();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TClipMaker::ebSaveClipsClick(TObject *Sender)
+{
+	SaveClips		();
 }
 //---------------------------------------------------------------------------
 
@@ -721,13 +820,13 @@ void __fastcall TClipMaker::ebNextClipClick(TObject *Sender)
 
 void __fastcall TClipMaker::ebPlayClick(TObject *Sender)
 {
-    Play		();
+    Play		(FALSE);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TClipMaker::ebPauseClick(TObject *Sender)
+void __fastcall TClipMaker::ebPlayCycleClick(TObject *Sender)
 {
-    Pause		();
+	Play		(TRUE);
 }
 //---------------------------------------------------------------------------
 
@@ -737,13 +836,18 @@ void __fastcall TClipMaker::ebStopClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TClipMaker::Play()
+void TClipMaker::Play(BOOL bLoop)
 {
-	if (sel_clip){
-		m_RTFlags.set	(flRT_Playing,TRUE);
-        play_clip		= sel_clip->idx;
-    	m_CurrentPlayTime=sel_clip->run_time;
-        PlayAnimation	(sel_clip);
+	if (!Tools.m_RenderObject.m_pVisual){
+    	Log("!Empty visual.");
+    }else{
+        if (sel_clip){
+            m_RTFlags.set	(flRT_Playing,TRUE);
+            m_RTFlags.set	(flRT_PlayingLooped,bLoop);
+            play_clip		= sel_clip->idx;
+            m_CurrentPlayTime=sel_clip->run_time;
+            PlayAnimation	(sel_clip);
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -753,12 +857,6 @@ void TClipMaker::Stop()
 	m_RTFlags.set	(flRT_Playing,FALSE);
     m_CurrentPlayTime=0.f;
     RepaintClips	();
-}
-//---------------------------------------------------------------------------
-
-void TClipMaker::Pause()
-{
-	m_RTFlags.set	(flRT_Playing,FALSE);
 }
 //---------------------------------------------------------------------------
 
@@ -790,6 +888,7 @@ void __fastcall TClipMaker::ebTrashDragDrop(TObject *Sender,
     }
 }
 //---------------------------------------------------------------------------
+
 
 
 

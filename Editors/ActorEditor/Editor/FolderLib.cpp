@@ -250,7 +250,7 @@ TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, AnsiString full_name)
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name)
+TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name, bool allow_duplicate)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
@@ -269,24 +269,24 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name)
     }
 	AnsiString obj;
 	_GetItem(full_name.c_str(),fld_cnt,obj,'\\');
-    if (FindItemInFolder(TYPE_OBJECT,tv,fld_node,obj)) return 0;
+    if (!allow_duplicate&&FindItemInFolder(TYPE_OBJECT,tv,fld_node,obj)) return 0;
 	return LL_CreateObject(tv,fld_node,obj);
 }
 //---------------------------------------------------------------------------
 
-void CFolderHelper::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref)
+void CFolderHelper::GenerateFolderName(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref, bool num_first)
 {
-	name = pref;
     int cnt = 0;
+    if (num_first) name.sprintf("%s_%02d",pref,cnt++); else name = pref;
     while (FindItemInFolder(TYPE_FOLDER,tv,node,name))
     	name.sprintf("%s_%02d",pref,cnt++);
 }
 //---------------------------------------------------------------------------
 
-void CFolderHelper::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref)
+void CFolderHelper::GenerateObjectName(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref, bool num_first)
 {
-	name = pref;
     int cnt = 0;
+    if (num_first) name.sprintf("%s_%02d",pref,cnt++); else name = pref;
     while (FindItemInFolder(TYPE_OBJECT,tv,node,name))
     	name.sprintf("%s_%02d",pref,cnt++);
 }

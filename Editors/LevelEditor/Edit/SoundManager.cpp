@@ -28,7 +28,7 @@ int	CSoundManager::GetSoundEnvs(AStringVec& items)
 bool CSoundManager::OnCreate()
 {
 	psSoundFreq			= sf_22K;
-    Sound->_initialize	((u32)Device.m_hWnd);
+    Sound->_initialize	((u64)Device.m_hWnd);
     return true;
 }
 

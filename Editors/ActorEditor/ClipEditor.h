@@ -66,7 +66,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TExtBtn *ebPrevClip;
 	TExtBtn *ebPlay;
-	TExtBtn *ebPause;
+	TExtBtn *ebPlayCycle;
 	TExtBtn *ebStop;
 	TExtBtn *ebNextClip;
 	TBevel *Bevel17;
@@ -77,6 +77,9 @@ __published:	// IDE-managed Components
 	TExtBtn *ebInsertClip;
 	TExtBtn *ebAppendClip;
 	TExtBtn *ebTrash;
+	TExtBtn *ebLoadClips;
+	TExtBtn *ebSaveClips;
+	TExtBtn *ExtBtn1;
 	void __fastcall ebInsertClipClick(TObject *Sender);
 	void __fastcall gtClipPaint(TObject *Sender);
 	void __fastcall ebAppendClipClick(TObject *Sender);
@@ -94,7 +97,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebPrevClipClick(TObject *Sender);
 	void __fastcall ebNextClipClick(TObject *Sender);
 	void __fastcall ebPlayClick(TObject *Sender);
-	void __fastcall ebPauseClick(TObject *Sender);
+	void __fastcall ebPlayCycleClick(TObject *Sender);
 	void __fastcall ebStopClick(TObject *Sender);
 	void __fastcall ClipMouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
@@ -116,6 +119,9 @@ __published:	// IDE-managed Components
 	void __fastcall ebTrashDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall ebLoadClipsClick(TObject *Sender);
+	void __fastcall ebSaveClipsClick(TObject *Sender);
 public:
 	class CUIClip: public CClip{
     public:                               
@@ -125,6 +131,7 @@ public:
     public:
         				CUIClip			(const CClip& src, TClipMaker* own, float rt){*(CClip*)this=src; idx=-1;owner=own; run_time=rt;}
         				CUIClip			(LPCSTR name, TClipMaker* owner, float r_t);
+        				CUIClip			(TClipMaker* own){owner=own;}
         				~CUIClip		();
         int				PWidth			(){return length*owner->m_Zoom;}
         int				PLeft			(){return run_time*owner->m_Zoom;}
@@ -139,6 +146,7 @@ protected:
     	flRT_UpdateProperties	= (1<<1),
     	flRT_UpdateClips		= (1<<2),
     	flRT_Playing			= (1<<3),
+    	flRT_PlayingLooped		= (1<<4),
     };
     Flags32				m_RTFlags;
 	
@@ -155,6 +163,8 @@ protected:
     void				PlayAnimation	(CUIClip* clip);
     
 	void 				RemoveAllClips	();
+	void 				LoadClips		();
+	void 				SaveClips		();
 	void 				InsertClip		();
 	void 				AppendClip		();
 	void				RemoveClip		(CUIClip* clip);
@@ -182,9 +192,8 @@ public:
     float				m_TotalLength;
     float				m_Zoom;
 
-    void				Play			();
+    void				Play			(BOOL bLoop);
     void				Stop			();
-    void				Pause			();
 public:		// User declarations
 	__fastcall 			TClipMaker		(TComponent* Owner);
 

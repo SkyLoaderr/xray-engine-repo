@@ -57,12 +57,12 @@ public:
 	TElTreeItem* 		FindItemInFolder	(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
 	TElTreeItem* 		FindItemInFolder	(EItemType type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
     TElTreeItem* 		AppendFolder		(TElTree* tv, AnsiString full_name);
-	TElTreeItem*		AppendObject		(TElTree* tv, AnsiString full_name);
+	TElTreeItem*		AppendObject		(TElTree* tv, AnsiString full_name, bool allow_duplicate=false);
     TElTreeItem* 		FindObject			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0, bool bIgnoreExt=false);
     TElTreeItem* 		FindFolder			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
     TElTreeItem* 		FindItem			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0); 
-    void 				GenerateFolderName	(TElTree* tv, TElTreeItem* node,AnsiString& name,AnsiString pref="folder");
-	void 				GenerateObjectName	(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref="object");
+    void 				GenerateFolderName	(TElTree* tv, TElTreeItem* node,AnsiString& name,AnsiString pref="folder", bool num_first=false);
+	void 				GenerateObjectName	(TElTree* tv, TElTreeItem* node, AnsiString& name,AnsiString pref="object", bool num_first=false);
 	AnsiString	 		GetFolderName		(const AnsiString& full_name, AnsiString& dest);
 	AnsiString	 		GetObjectName		(const AnsiString& full_name, AnsiString& dest);
     AnsiString			ReplacePart			(AnsiString old_name, AnsiString ren_part, int level, LPSTR dest);

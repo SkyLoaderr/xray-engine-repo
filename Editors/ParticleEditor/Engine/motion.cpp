@@ -455,7 +455,7 @@ void CClip::Save(IWriter& F)
 
 	F.open_chunk	(EOBJ_CLIP_DATA_CHUNK);
     F.w_stringZ		(*name);
-    for (int k=0; k<4; k++) F.w_stringZ(*cycles[k]);
+    for (int k=0; k<4; k++) F.w_stringZ(*cycles[k]?*cycles[k]:"");
     F.w_u32			(fxs.size());
     for (RStrIt it=fxs.begin(); it!=fxs.end(); it++) F.w_stringZ(**it);
     F.w_float		(length);
@@ -475,6 +475,23 @@ bool CClip::Load(IReader& F)
     fxs.resize		(F.r_u32());
     for (RStrIt it=fxs.begin(); it!=fxs.end(); it++){ F.r_stringZ(buf); *it=buf;}
     length			= F.r_float();
+    return true;
+}
+//------------------------------------------------------------------------------
+
+bool CClip::Equal(CClip* c)
+{
+    if (!name.equal(c->name)) 			return false;
+    if (!cycles[0].equal(c->cycles[0])) return false;
+    if (!cycles[1].equal(c->cycles[1])) return false;
+    if (!cycles[2].equal(c->cycles[2])) return false;
+    if (!cycles[3].equal(c->cycles[3])) return false;
+    if (fxs.size()!=c->fxs.size())		return false;
+    RStrIt s_it=fxs.begin();
+    RStrIt t_it=c->fxs.begin();
+    for (;s_it!=fxs.end(); s_it++,t_it++)
+    	if (!s_it->equal(*t_it)) 		return false;
+    if (length!=c->length)				return false;
     return true;
 }
 //------------------------------------------------------------------------------

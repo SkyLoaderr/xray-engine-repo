@@ -222,12 +222,21 @@ public:
 	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
         return V;					
     }
+    IC RTextValue* 		CreateRName		(PropItemVec& items, AnsiString key, ref_str* val, ListItem* owner)  
+    {   RTextValue* V	= (RTextValue*) CreateRText	(items,key,val);
+        V->Owner()->OnAfterEditEvent   	= NameAfterEdit;
+        V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
+        V->Owner()->OnDrawTextEvent 	= NameDraw;
+        V->Owner()->tag					= (int)owner; VERIFY(owner);
+	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
+        return V;					
+    }
     IC TextValue* 		CreateName_TI	(PropItemVec& items, AnsiString key, LPSTR val, int lim, TElTreeItem* owner)  
     {   TextValue* V	= (TextValue*) 	CreateText	(items,key,val,lim);
         V->Owner()->OnAfterEditEvent   	= NameAfterEdit_TI;
         V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
         V->Owner()->OnDrawTextEvent 	= NameDraw;
-        V->Owner()->tag					= (int)owner;
+        V->Owner()->tag					= (int)owner; VERIFY(owner);
 	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
         return V;					
     }

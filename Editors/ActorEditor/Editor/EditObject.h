@@ -135,7 +135,6 @@ DEFINE_VECTOR	(CSurface,SurfInstVec,SurfInstIt);
 DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
-DEFINE_VECTOR	(CClip*,ClipVec,ClipIt);
 
 struct SBonePart{
 	AnsiString 		alias;
@@ -170,7 +169,6 @@ class CEditableObject{
 	// skeleton
 	BoneVec			m_Bones;
 	SMotionVec		m_SMotions;
-    ClipVec			m_Clips;
     BPVec			m_BoneParts;
     CSMotion*		m_ActiveSMotion;
 public:
@@ -271,7 +269,6 @@ public:
     IC void			SkeletonPlay 			()	{m_SMParam.Play();}
     IC void			SkeletonStop 			()	{m_SMParam.Stop();}
     IC void			SkeletonPause 			()	{m_SMParam.Pause();}
-    IC ClipVec&		Clips					()	{return m_Clips;}
 
 
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
@@ -438,7 +435,6 @@ public:
 #define EOBJ_CHUNK_BONEPARTS		0x0919
 #define EOBJ_CHUNK_ACTORTRANSFORM	0x0920
 #define EOBJ_CHUNK_BONES2			0x0921
-#define EOBJ_CHUNK_CLIPS			0x0922
 //----------------------------------------------------
 
 

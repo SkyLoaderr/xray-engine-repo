@@ -93,8 +93,9 @@ public:
 
         // internal
         ilRT_FullExpand	= (1<<30),
-        ilRT_UpdateLocked=(1<<31),
+//        ilRT_UpdateLocked=(1<<31),
     };
+    s32					iLocked;
     Flags32				m_Flags;
 	// events
     TOnItemsFocused		OnItemsFocused;
@@ -129,10 +130,11 @@ public:		// User declarations
     int __fastcall		GetSelected				(ElItemsVec& items);
     int __fastcall		GetSelected				(LPCSTR pref, ListItemsVec& items, bool bOnlyObject);
     TElTreeItem*		GetSelected				(){return (tvItems->MultiSelect)?0:tvItems->Selected;}
+    ListItem*			FindItem				(LPCSTR full_name);
 
-    void 				LockUpdating			(){ tvItems->IsUpdating = true; m_Flags.set(ilRT_UpdateLocked,TRUE); }
-    void 				UnlockUpdating			(){ tvItems->IsUpdating = false;m_Flags.set(ilRT_UpdateLocked,FALSE); }
-    bool				IsLocked				(){ return m_Flags.is(ilRT_UpdateLocked); }
+    void 				LockUpdating			(){ tvItems->IsUpdating = true; iLocked++; }
+    void 				UnlockUpdating			(){ tvItems->IsUpdating = false;iLocked--; VERIFY(iLocked>=0);}
+    bool				IsLocked				(){ return (iLocked>0); }
 
     void				SetImages				(TImageList* image_list){tvItems->Images=image_list;}
 

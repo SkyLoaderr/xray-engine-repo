@@ -84,6 +84,13 @@ void __fastcall TItemList::DeselectAll()
     else 						tvItems->Selected   = 0;
 }
 //---------------------------------------------------------------------------
+ListItem* TItemList::FindItem(LPCSTR full_name)
+{
+	TElTreeItem* item;              
+    FHelper.FindObject			(tvItems,full_name,&item);
+    return item?(ListItem*)item->Tag:0;
+}
+//---------------------------------------------------------------------------
 void __fastcall TItemList::SelectItem(const AnsiString& full_name, bool bVal, bool bLeaveSel, bool bExpand)
 {
 	TElTreeItem* item;              
@@ -107,6 +114,7 @@ __fastcall TItemList::TItemList(TComponent* Owner) : TForm(Owner)
     OnItemsFocused	= 0;
     OnCloseEvent	= 0;
     OnItemRename	= 0;
+    iLocked			= 0;
 }
 //---------------------------------------------------------------------------
 
