@@ -326,7 +326,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                     B.mulA				(_Transform());
                     RCache.set_xform_world(B);
                     Device.SetShader	(Device.m_WireShader);
-                    DU.DrawCross		(zero,S.R,S.R,S.R, S.R,S.R,S.R,m_DrawEdgeColor,false);
+                    DU.DrawCross		(zero,1.f,m_DrawEdgeColor,false);
                     DU.DrawIdentSphere	(true,true,clr,m_DrawEdgeColor);
                 }break;
                 case cfBox:

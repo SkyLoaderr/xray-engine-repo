@@ -73,6 +73,7 @@ void __fastcall TfraDetailObject::ebResetSlotsClick(TObject *Sender)
 void __fastcall TfraDetailObject::ebClearDetailsClick(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to clear details?")==mrYes){
+    	UI->Command(COMMAND_UPDATE_PROPERTIES);
 		DM->Clear();
 		Scene.UndoSave();
     }
