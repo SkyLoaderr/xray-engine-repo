@@ -231,6 +231,13 @@ function load_sound(obj)
 	-- radar monolith
 	theme["monolith_mumble"] = load_theme("patrol_radio_1", true)
 	
+	---------------------------------------------------------------------
+	-- ONLY for rolik !!!
+	theme["silent_voice"] = load_theme("silent_voice")
+	theme["soldier_radio1"] = load_theme("soldier_radio1")
+	theme["soldier_radio2"] = load_theme("soldier_radio2")
+	theme["soldier_radio3"] = load_theme("soldier_radio3")
+	
 	--printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 	--print_table(theme)
 end
