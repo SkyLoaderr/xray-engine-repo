@@ -3192,6 +3192,7 @@ if(!bActive)
 void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 {
 contact_callback=callback;
+push_untill=0;
 if(!bActive)
 	{
 	return;
