@@ -206,5 +206,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("set_fov",						&CScriptGameObject::set_fov)
 		.def("set_range",					&CScriptGameObject::set_range)
 
+		.def("head_orientation",			&CScriptGameObject::head_orientation)
+
 	;return	(instance);
 }
