@@ -511,8 +511,8 @@ bool CSE_ALifeHumanAbstract::bfCanGetItem(CSE_ALifeInventoryItem *tpALifeInvento
 	for ( ; I != E; I++) {
 		bool		l_bOk = true;
 		u64			l_qwItemBitMask = (*I)->m_qwGridBitMask;
-		for (int i=0, n=RUCK_HEIGHT - (*I)->m_iGridHeight, m=RUCK_WIDTH - (*I)->m_iGridWidth; i<=n && l_bOk; i++, l_qwItemBitMask >>= RUCK_WIDTH - m)
-			for (int j=0; j<=m; j++, l_qwItemBitMask >>= 1)
+		for (int i=0, n=RUCK_HEIGHT - (*I)->m_iGridHeight, m=RUCK_WIDTH - (*I)->m_iGridWidth; i<=n && l_bOk; i++, l_qwItemBitMask <<= RUCK_WIDTH - m)
+			for (int j=0; j<=m; j++, l_qwItemBitMask <<= 1)
 				if ((l_qwInventoryBitMask ^ l_qwItemBitMask) == (l_qwInventoryBitMask | l_qwItemBitMask)) {
 					l_qwInventoryBitMask |= l_qwItemBitMask;
 					l_bOk = false;
