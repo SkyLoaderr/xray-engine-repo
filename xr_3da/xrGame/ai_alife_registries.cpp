@@ -199,12 +199,9 @@ void CSE_ALifeGraphRegistry::Init()
 	inherited::Init				();
 
 	for (int i=0; i<LOCATION_TYPE_COUNT; i++) {
-		m_tpTerrain[i].resize	(LOCATION_COUNT);
 		{
-			GRAPH_VECTOR_IT			I = m_tpTerrain[i].begin();
-			GRAPH_VECTOR_IT			E = m_tpTerrain[i].end();
-			for ( ; I != E; I++)
-				(*I).clear			();
+			for (int j=0; j<LOCATION_COUNT; j++)
+				m_tpTerrain[i][j].clear();
 		}
 		for (_GRAPH_ID j=0; j<(_GRAPH_ID)getAI().GraphHeader().dwVertexCount; j++)
 			m_tpTerrain[i][getAI().m_tpaGraph[j].tVertexTypes[i]].push_back(j);

@@ -95,7 +95,8 @@ public:
 	CSE_ALifeCreatureActor			*m_tpActor;
 	D_OBJECT_P_MAP					*m_tpCurrentLevel;
 	GRAPH_POINT_VECTOR				m_tpGraphObjects;					// по точке графа получить все 
-	GRAPH_VECTOR_SVECTOR			m_tpTerrain[LOCATION_TYPE_COUNT];	// массив списков: по идетнификатору 
+	GRAPH_VECTOR					m_tpTerrain[LOCATION_TYPE_COUNT][LOCATION_COUNT];	
+																		// массив списков: по идетнификатору 
        																	//	местности получить список точек 
 																		//  графа
 	_OBJECT_ID						m_tNextFirstSwitchObjectID;

@@ -116,18 +116,16 @@ void CSE_ALifeSimulator::vfListTerrain()
 	Msg("%s->Listing terrain locations :",cName());
 	char *S = (char *)xr_malloc(128*1024*sizeof(char));
 	for (int j=0; j<LOCATION_TYPE_COUNT; j++) {
-		GRAPH_VECTOR_IT	I = m_tpTerrain[j].begin();
-		GRAPH_VECTOR_IT	E = m_tpTerrain[j].end();
-		for (int i=0; I != E; I++, i++) {
-			GRAPH_IT	it1 = (*I).begin();
-			GRAPH_IT	E1  = (*I).end();
+		for (int i=0; i<LOCATION_COUNT; i++) {
+			GRAPH_IT	I = m_tpTerrain[j][i].begin();
+			GRAPH_IT	E = m_tpTerrain[j][i].end();
 			int			j;
 			S[0]		= 0;
 			string16	S1;
-			for ( j=0; it1 != E1; it1++, j++) {
+			for ( j=0; I != E; I++, j++) {
 				if (j)
 					strcat(S,",");
-				strcat(S,itoa(*it1,S1,10));
+				strcat(S,itoa(*I,S1,10));
 			}
 
 			if (j)

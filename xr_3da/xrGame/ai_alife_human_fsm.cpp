@@ -114,7 +114,7 @@ void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
 				case eTaskTypeSearchForItemCL :
 				case eTaskTypeSearchForItemOL : {
 #pragma todo("Dima to Dima : add graph point type item search")
-					//m_baVisitedVertices.assign(tpALife->m_tpTerrain[l_tpTask->m_tLocationID].size(),false);
+					//m_baVisitedVertices.assign(tpALife->m_tpTerrain[0][l_tpTask->m_tLocationID].size(),false);
 					//m_tDestGraphPointIndex = tpALife->m_tpTerrain[l_tpTask->m_tLocationID][m_dwCurTaskLocation = 0];
 					//m_baVisitedVertices[m_dwCurTaskLocation] = true;
 					break;
