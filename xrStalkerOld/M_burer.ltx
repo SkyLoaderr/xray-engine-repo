@@ -157,19 +157,9 @@ health_hit_part			= 0.5						;процент хита, уходящий на отнимание здоровья
 power_hit_part			= 1.0						;процент хита, уходящий на отнимание силы
 psy_health_v			= 0.1						;скорость восстановления psy-здоровья
 
-burn_immunity			= 0.8						;коэффициенты иммунитета 
-strike_immunity			= 0.7
-shock_immunity			= 1.0
-wound_immunity			= 1.0
-radiation_immunity		= 0.0
-telepatic_immunity		= 1.0
-chemical_burn_immunity	= 1.0
-explosion_immunity		= 0.5
-fire_wound_immunity		= 0.5
-
 ;открытые раны
 bleeding_v						= 0						;потеря крови при номинальной ране в секунду
-wound_incarnation_v				= 0.01				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
+wound_incarnation_v				= 0.07				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
 min_wound_size					= 0.01
 
 sleep_health					= 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
@@ -266,10 +256,20 @@ species					= burer
 ;<hit_scale>	- коэфф. изменения хита (уменьшения здоровья) 
 ;<wound_scale>	- коэфф. изменения величины открытой раны
 
-default				= 0.1, -1, 0.1
+default				= 0.01, -1, 0.1
 
-bip01_pelvis 		= 1.0, -1, 0.1
-bip01_spine 		= 1.0, -1, 0.1
-bip01_spine1 		= 1.0, -1, 0.1
-bip01_neck 			= 1.0, -1, 0.1
-bip01_head 			= 3.0, -1, 0.50
+bip01_pelvis 			= 0.1, -1, 0.1
+bip01_spine 			= 0.2, -1, 0.1
+bip01_spine1 			= 0.2, -1, 0.1
+bip01_neck 				= 0.2, -1, 0.1
+bip01_head 				= 1.0, -1, 0.50
+
+burn_immunity			= 0.8						;коэффициенты иммунитета 
+strike_immunity			= 0.7
+shock_immunity			= 1.0
+wound_immunity			= 1.0
+radiation_immunity		= 0.0
+telepatic_immunity		= 1.0
+chemical_burn_immunity	= 1.0
+explosion_immunity		= 0.5
+fire_wound_immunity		= 0.2
