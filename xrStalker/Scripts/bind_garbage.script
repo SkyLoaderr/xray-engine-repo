@@ -1,0 +1,52 @@
+// Rush monsters
+class "CRushMonster" (object_binder)
+
+function CRushMonster:__init(obj) super(obj)
+end 
+
+function CRushMonster:reload(section)
+	object_binder.reload(self, section)
+	
+	self.char_ini	= self.object:spawn_ini()
+	self.rest_way	= patrol (utils.mob_get_string(self.char_ini, "gameplay", "path_walk", nil, self.object, true))
+	self.end_work	= false
+	self.actor_near = false
+	self.freed		= false
+end
+
+function CRushMonster:update(delta)
+	object_binder.update(self, delta)
+	if(self.end_work) then return end
+	if(self:test_to_end_work() == false) then return end
+	// Если еще не взяли под скрипт, то берем
+	if(self.object:get_script() == false) then
+		self.object:script(true, script_name())
+	end
+	self:set_action()
+end
+
+function CRushMonster:set_action()
+
+	if(self.object:action()) then return end
+    action (self.object, move (move.run_fwd, self.rest_way), cond(cond.move_end))
+end
+
+function CRushMonster:test_to_end_work()
+	
+	//self.enemy= level.object(self.enemy_name)
+	
+	
+	// Учитываем, хиты и наличие врага рядом. Если это присуствует, то атакуем
+	if self.object:alive () then 
+       return true 
+    end
+	
+	// Если мертвый, то больше скрипт не работает
+	if self.object:alive() then return false end
+	
+	// Мертвый, заканчиваем работу
+	self.end_work		= true
+	
+	return true
+end
+

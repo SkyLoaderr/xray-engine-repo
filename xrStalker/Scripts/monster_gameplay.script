@@ -3,6 +3,7 @@
 // [gameplay], а в поле script идет имя скрипта.
 
 module("bind_escape")
+module("bind_garbage")
 
 function bind(obj, char_ini)
 	local script_name = utils.mob_get_string(char_ini, "gameplay", "script", nil, obj, true)
@@ -14,6 +15,8 @@ function bind(obj, char_ini)
 		obj:bind_object(bind_escape.CBoarPlayWithCorpse(obj))
 	elseif(script_name == "escape_dogs") then
 		obj:bind_object(bind_escape.CDangerDogs(obj))
+	elseif(script_name == "garbage_rush") then
+	    obj:bind_object(bind_garbage.CRushMonster(obj))	
 	end 
 end 
 
