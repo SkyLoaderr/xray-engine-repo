@@ -162,8 +162,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	
 	// Initial Y offset for left and right (due to pixel rounding)
 	float e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
-	float t;
-	float leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
+	float t,leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
 	
 	// find initial values, step values
 	if ( ((mE1<mE2)&&(Sect==BOTTOM)) || ((mE1>mE2)&&(Sect==TOP)) ) 
@@ -190,7 +189,7 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 		t		= e1_init_dY/E1[1]; // Initial fraction of offset
 		rightX	= startp1[0] + E1[0]*t; right_dX = mE1;
 		rightZ	= startp1[2] + E1[2]*t; right_dZ = E1[2]/E1[1];
-	}	
+	}
 
 	// Now scan all lines in this section
 	float lhx = left_dX/2;	leftX	+= lhx;	// half pixel
