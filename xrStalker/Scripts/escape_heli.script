@@ -27,6 +27,10 @@ local attack_end
 local actor_is_victim
 local actor_was_attacked
 
+local wounded_spawn_time
+local fly_away_time
+
+
 function get_actor()
 	while not db.actor do
 		wait()
@@ -246,8 +250,6 @@ function update()
 --			actor:give_info_portion( "tutorial_wounded_start" )
 --			news_manager.send_news( actor, "tutorial_trader_look_vagon" )
 
-			actor:give_info_portion( "tutorial_wounded_must_spawn" )
-
 			-- отправить вертолёт патрулировать уровень
 			heli_mgr:set_path( "heli_path_patrol" )
 			heli_mgr.not_die = false
@@ -256,8 +258,15 @@ function update()
 			fly_away_time:setHMS( 0, 10, 0)
 			fly_away_time:add( game.get_game_time() )
 
+			wounded_spawn_time = device():time_global() + 5000
 
 			state_init = false
+		end
+
+		if wounded_spawn_time < device():time_global() and
+		   actor:dont_has_info( "tutorial_wounded_must_spawn" )
+		then
+			actor:give_info_portion( "tutorial_wounded_must_spawn" )
 		end
 
 		if game.get_game_time() > fly_away_time then
