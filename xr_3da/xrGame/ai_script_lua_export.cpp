@@ -27,7 +27,8 @@ using namespace Script;
 void LuaLog(LPCSTR caMessage)
 {
 	Msg			("* [LUA] %s",caMessage);
-	g_ca_stdout	+= sprintf(g_ca_stdout,"%s",caMessage);
+	if (g_ca_stdout)
+		g_ca_stdout	+= sprintf(g_ca_stdout,"%s",caMessage);
 }
 
 double get_time()
