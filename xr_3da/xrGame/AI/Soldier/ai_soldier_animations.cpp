@@ -201,11 +201,11 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			case aiSoldierLyingDown : {
 				switch (m_cBodyState) {
 					case BODY_STATE_STAND : {
-						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
+						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
 						break;
 					}
 					case BODY_STATE_CROUCH : {
-						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
+						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1];
 						break;
 					}
 					case BODY_STATE_LIE : {
@@ -475,13 +475,28 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 						if (dot > .7f)
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
-									for (int i=0; i<5; i++)
-										if (tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
-											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+									switch (eCurrentState) {
+										case aiSoldierPatrolRoute : {
+											for (int i=3; i<5; i++)
+												if (tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
+													tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+													break;
+												}
+											if (!tpGlobalAnimation)
+												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(3,5)];
 											break;
 										}
-									if (!tpGlobalAnimation)
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(0,5)];
+										default : {
+											for (int i=0; i<5; i++)
+												if (tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
+													tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+													break;
+												}
+											if (!tpGlobalAnimation)
+												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(0,5)];
+											break;
+										}
+									}
 									break;
 								}
 								case BODY_STATE_CROUCH : {

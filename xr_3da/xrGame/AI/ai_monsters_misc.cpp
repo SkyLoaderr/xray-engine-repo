@@ -488,8 +488,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 							break;
 						}
 						else {
-							VERIFY(false);
-							//tpaPath.clear();
+							//VERIFY(false);
+							tpaPath.clear();
 							return;
 						}
 				}
@@ -563,14 +563,14 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 					if ((COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance) || 
 						((!bLooped) && (iCurrentPatrolPoint == 1))) {
 						if ((!tpaPath.size()) || COMPUTE_DISTANCE_2D(tTravelNode.P,tpaPath[tpaPath.size() - 1].P) > fSegmentSizeMin)
-							/**
+							/**/
 							if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
 								tpaPath.push_back(tTravelNode);
 							else
 							/**/
 								tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
 						else
-							tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
+							tpaPath.push_back(tTravelNode);
 					}
 					tPrevPoint = tTravelNode.P;
 					dwPrevNode = dwCurNode;
@@ -675,8 +675,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 							dwaNodes.push_back(iSavedIndex);
 						}
 						else {
-							VERIFY(false);
-							//tpaPath.clear();
+							//VERIFY(false);
+							tpaPath.clear();
 							return;
 						}
 					}
@@ -745,6 +745,9 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 		}
 	}
 	/**/
+
+	//if (bLooped)
+	//	tpaPath.push_back(tpaPath[0]);
 }
 
 void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints, bool &bLooped)

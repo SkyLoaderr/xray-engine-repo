@@ -21,6 +21,8 @@
 #define MIN_COVER_MOVE					120
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
+#define TORSO_START_SPEED				PI_DIV_4
+#define DISTANCE_NEAR					30.f
 
 /**
 void CAI_Soldier::OnAttackFire()
@@ -314,21 +316,6 @@ void CAI_Soldier::OnSitting()
 	//}
 }
 
-void CAI_Soldier::OnLyingDown()
-{
-	WRITE_TO_LOG("Lying down...");
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-
-	vfSetMovementType(BODY_STATE_LIE,0);
-	vfSetFire(false,Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]);
-	
-	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (m_tpCurrentGlobalBlend) && (!(m_tpCurrentGlobalBlend->playing))) {
-	AI_Path.TravelPath.clear();
-	
-	CHECK_IF_GO_TO_PREV_STATE(((m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0]) || (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0])) && (Level().timeServer() - dwHitTime > 500))
-}
-
 void CAI_Soldier::OnMoreDeadThanAlive()
 {
 	WRITE_TO_LOG("More dead than alive");
@@ -517,32 +504,6 @@ void CAI_Soldier::OnPatrolHurtNonAggressiveUnderFire()
 	}
 	
 	vfSetFire(false,Group);
-}
-
-void CAI_Soldier::OnPatrolHurt()
-{
-	WRITE_TO_LOG("Patrol hurt");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown)
-	
-	INIT_SQUAD_AND_LEADER;
-
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	DWORD dwCurTime = Level().timeServer();
-
-	if (dwCurTime - dwHitTime >= m_dwPatrolShock) {
-		CHECK_IF_GO_TO_NEW_STATE(iHealth < 0,aiSoldierPatrolHurtNonAggressiveUnderFire)
-		GO_TO_NEW_STATE(aiSoldierPatrolHurtAggressiveUnderFire);
-	}
-
-	AI_Path.TravelPath.clear();
-
-	vfSetFire(false,Group);
-
-	vfSetMovementType(BODY_STATE_LIE,0);
 }
 
 void CAI_Soldier::OnPursuit()
@@ -813,7 +774,7 @@ void CAI_Soldier::OnLookingOver()
 
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)
 
-	r_torso_target.yaw = r_torso_target.yaw + PI - PI/180;
+	//r_torso_target.yaw = r_torso_target.yaw + PI - PI/180;
 	r_torso_target.pitch = -PI_DIV_4*0;
 	r_torso_speed = PI_DIV_4;
 }
@@ -1091,7 +1052,7 @@ void CAI_Soldier::OnPatrol()
 	
 	DWORD dwCurTime = Level().timeServer();
 
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
 	
 	INIT_SQUAD_AND_LEADER;
 	
@@ -1417,6 +1378,81 @@ void CAI_Soldier::OnPointAtSmth()
 	vfSetMovementType(m_cBodyState,0);
 }
 
+void CAI_Soldier::OnLyingDown()
+{
+	WRITE_TO_LOG("Lying down...");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	vfSetMovementType(BODY_STATE_LIE,0);
+	vfSetFire(false,Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]);
+	
+	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (m_tpCurrentGlobalBlend) && (!(m_tpCurrentGlobalBlend->playing))) {
+	AI_Path.TravelPath.clear();
+	
+	//CHECK_IF_GO_TO_PREV_STATE(((m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0]) || (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0])) && (Level().timeServer() - dwHitTime > 2500))
+	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - dwHitTime > 2000)
+}
+
+void CAI_Soldier::OnPatrolHurt()
+{
+	WRITE_TO_LOG("Patrol hurt");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	AI_Path.TravelPath.clear();
+
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	DWORD dwCurTime = Level().timeServer();
+
+	vfSetFire(false,Group);
+
+	//vfSetMovementType(BODY_STATE_LIE,0);
+
+	tWatchDirection.sub(tHitPosition,vPosition);
+	float fDistance = tWatchDirection.magnitude();
+	mk_rotation(tWatchDirection,r_torso_target);
+		
+	if (fDistance < DISTANCE_NEAR) {
+		r_torso_speed = TORSO_START_SPEED;
+		vfSetMovementType(BODY_STATE_CROUCH,0);
+	}
+	else {
+		r_torso_speed = 1*PI_DIV_2;
+		CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown);
+		r_torso_speed = TORSO_START_SPEED;
+		r_torso_target.yaw = r_torso_current.yaw;
+	}
+
+	SelectEnemy(Enemy);
+
+	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
+		return;
+               
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierDefendFireAlone)
+
+	dwHitTime = 0;
+	GO_TO_NEW_STATE(aiSoldierHurtAloneDefend);
+}
+
+void CAI_Soldier::OnDefendFireAlone()
+{
+	WRITE_TO_LOG("Defend fire alone");
+}
+
+void CAI_Soldier::OnHurtAloneDefend()
+{
+	WRITE_TO_LOG("Hurt alone defend");
+
+	DWORD dwCurTime = Level().timeServer();
+	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+
+	//if (m_cBodyState)
+}
+
 void CAI_Soldier::Think()
 {
 	bStopThinking = false;
@@ -1496,10 +1532,6 @@ void CAI_Soldier::Think()
 				Jumping();
 				break;
 			}
-			case aiSoldierLyingDown : {
-				LyingDown();
-				break;
-			}
 			/**/
 			case aiSoldierDie : {
 				Die();
@@ -1551,6 +1583,22 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierPointAtSmth : {
 				OnPointAtSmth();
+				break;
+			}
+			case aiSoldierLyingDown : {
+				OnLyingDown();
+				break;
+			}
+			case aiSoldierPatrolHurt : {
+				OnPatrolHurt();
+				break;
+			}
+			case aiSoldierDefendFireAlone : {
+				OnDefendFireAlone();
+				break;
+			}
+			case aiSoldierHurtAloneDefend : {
+				OnHurtAloneDefend();
 				break;
 			}
 			/**/

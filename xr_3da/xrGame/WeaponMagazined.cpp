@@ -16,8 +16,14 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponMagazined::CWeaponMagazined(LPCSTR name) : CWeapon(name)
+CWeaponMagazined::CWeaponMagazined(LPCSTR name, ESoundTypes eSoundType) : CWeapon(name)
 {
+	m_eSoundShow = ESoundTypes(SOUND_TYPE_WEAPON_CHANGING | eSoundType);
+	m_eSoundHide = ESoundTypes(SOUND_TYPE_WEAPON_HIDING | eSoundType);
+	m_eSoundShot = ESoundTypes(SOUND_TYPE_WEAPON_SHOOTING | eSoundType);
+	m_eSoundEmptyClick = ESoundTypes(SOUND_TYPE_WEAPON_EMPTY_CLICKING | eSoundType);
+	m_eSoundReload = ESoundTypes(SOUND_TYPE_WEAPON_RECHARGING | eSoundType);
+	m_eSoundRicochet = ESoundTypes(SOUND_TYPE_WEAPON_BULLET_RICOCHET | eSoundType);
 	fTime			= 0;
 }
 

@@ -36,7 +36,6 @@ class CAI_Soldier : public CCustomMonster
 
 		aiSoldierMoreDeadThanAlive,
 		
-		aiSoldierPatrolHurt,
 		aiSoldierPatrolHurtAggressiveUnderFire,
 		aiSoldierPatrolHurtNonAggressiveUnderFire,
 		aiSoldierPatrolUnderFire,
@@ -62,6 +61,9 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierLyingDown,
 		aiSoldierAttackAim,
 		aiSoldierPointAtSmth,
+		aiSoldierPatrolHurt,
+		aiSoldierDefendFireAlone,
+		aiSoldierHurtAloneDefend,
 	};
 	
 	enum EGestureStates {
@@ -342,7 +344,6 @@ class CAI_Soldier : public CCustomMonster
 
 		void OnSitting();
 
-		void OnPatrolHurt();
 		void OnPatrolHurtAggressiveUnderFire();
 		void OnPatrolHurtNonAggressiveUnderFire();
 		void OnPatrolUnderFire();
@@ -368,7 +369,9 @@ class CAI_Soldier : public CCustomMonster
 		void OnStandingUp();
 		void OnAttackAim();
 		void OnPointAtSmth();
-
+		void OnPatrolHurt();
+		void OnDefendFireAlone();
+		void OnHurtAloneDefend();
 
 		// miscellanious funtions	
 		void SelectSound(int &iIndex);

@@ -16,14 +16,8 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponHPSA::CWeaponHPSA() : CWeaponMagazined("HPSA")
+CWeaponHPSA::CWeaponHPSA() : CWeaponMagazined("HPSA",SOUND_TYPE_WEAPON_PISTOL)
 {
-	m_eSoundShow = SOUND_TYPE_WEAPON_CHANGING_PISTOL;
-	m_eSoundHide = SOUND_TYPE_WEAPON_HIDING_PISTOL;
-	m_eSoundShot = SOUND_TYPE_WEAPON_SHOOTING_PISTOL;
-	m_eSoundEmptyClick = SOUND_TYPE_WEAPON_EMPTY_CLICKING_PISTOL;
-	m_eSoundReload = SOUND_TYPE_WEAPON_RECHARGING_PISTOL;
-	m_eSoundRicochet = SOUND_TYPE_WEAPON_BULLET_RICOCHET_PISTOL;
 }
 
 CWeaponHPSA::~CWeaponHPSA()

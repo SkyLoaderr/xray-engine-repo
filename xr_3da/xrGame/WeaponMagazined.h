@@ -84,7 +84,7 @@ protected:
 	virtual void	state_Fire		(BOOL bHUD, float dt);
 	virtual void	state_MagEmpty	(BOOL bHUD, float dt);
 public:
-					CWeaponMagazined	(LPCSTR name);
+					CWeaponMagazined	(LPCSTR name,ESoundTypes eSoundType);
 	virtual			~CWeaponMagazined	();
 
 	virtual void	Load			(CInifile* ini, const char* section);

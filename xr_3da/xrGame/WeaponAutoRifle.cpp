@@ -16,7 +16,7 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CWeaponAutoRifleA::CWeaponAutoRifleA(LPCSTR name) : CWeaponMagazined(name)
+CWeaponAutoRifleA::CWeaponAutoRifleA(LPCSTR name, ESoundTypes eSoundType) : CWeaponMagazined(name, eSoundType)
 {
 }
 
