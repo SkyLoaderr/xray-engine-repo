@@ -90,6 +90,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u32								timestamp;
 	u8								flags;
 	u8								state;
+	u8								ammo_type;
 	u16								a_current;
 	u16								a_elapsed;
 	float							m_fHitPower;

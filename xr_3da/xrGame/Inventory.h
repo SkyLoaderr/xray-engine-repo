@@ -14,6 +14,8 @@ public:
 
 	PIItem	m_pIItem;
 	ref_str m_name;
+	//может ли слот стать активным
+	bool m_bCanBeActivated;
 };
 typedef xr_vector<CInventorySlot> TISlotArr;
 

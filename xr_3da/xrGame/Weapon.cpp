@@ -468,7 +468,9 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	//iAmmoCurrent					= E->a_current;
 	iAmmoElapsed					= E->a_elapsed;
 	m_flagsAddOnState				= E->m_addon_flags.get();
-
+	m_ammoType						= E->ammo_type;
+	STATE = NEXT_STATE				= E->state;
+	
 	if(iAmmoElapsed) 
 	{
 		CCartridge l_cartridge; 
@@ -542,6 +544,8 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u16					(u16(iAmmoElapsed));
 
 	P.w_u8					(m_flagsAddOnState);
+	P.w_u8					((u8)m_ammoType);
+	P.w_u8					((u8)STATE);
 }
 
 void CWeapon::net_Import	(NET_Packet& P)
@@ -555,7 +559,7 @@ void CWeapon::net_Import	(NET_Packet& P)
 	P.r_u16					(ammo_elapsed);
 	iAmmoElapsed = int(ammo_elapsed);
 
-	P.r_u8					(m_flagsAddOnState);
+	P.r_u8					(m_flagsAddOnState);	
 }
 
 void CWeapon::shedule_Update	(u32 dT)

@@ -266,6 +266,8 @@ CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSe
 	a_current					= 90;
 	a_elapsed					= 0;
 	state						= 0;
+	ammo_type					= 0;
+
 	m_fHitPower					= pSettings->r_float(caSection,"hit_power");
 	m_tHitType					= g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
 	m_caAmmoSections			= pSettings->r_string(caSection,"ammo_class");
@@ -289,6 +291,8 @@ void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 	tNetPacket.r_u16			(a_elapsed);
 
 	tNetPacket.r_u8				(m_addon_flags.flags);
+	tNetPacket.r_u8				(ammo_type);
+	tNetPacket.r_u8				(state);
 }
 
 void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
@@ -300,6 +304,7 @@ void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(a_elapsed);
 
 	tNetPacket.w_u8				(m_addon_flags.get());
+	//tNetPacket.w_u8				(ammo_type);
 }
 
 void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -311,6 +316,9 @@ void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	
 	if (m_wVersion > 40)
 		tNetPacket.r_u8			(m_addon_flags.flags);
+
+	if (m_wVersion > 46)
+		tNetPacket.r_u8			(ammo_type);
 }
 
 void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
@@ -320,6 +328,7 @@ void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(a_elapsed);
 	tNetPacket.w_u8				(state);
 	tNetPacket.w_u8				(m_addon_flags.get());
+	tNetPacket.w_u8				(ammo_type);
 }
 
 void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time, u32 sender )
@@ -364,8 +373,9 @@ u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
 void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: total"),		&a_current,0,1000,1);
+	PHelper.CreateU8			(items,FHelper.PrepareKey(pref,s_name,"Ammo type:"), &ammo_type,0,255,1);
 	PHelper.CreateU16			(items,FHelper.PrepareKey(pref,s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
+	
 
 	if ((EAddonStatus)pSettings->r_s32(s_name,"scope_status") == eAddonAttachable)
 	       PHelper.CreateFlag<Flags8>(items,FHelper.PrepareKey(pref,s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);

@@ -16,6 +16,7 @@ using namespace InventoryUtilities;
 CInventorySlot::CInventorySlot() 
 {
 	m_pIItem = NULL;
+	m_bCanBeActivated = true;
 }
 
 CInventorySlot::~CInventorySlot() 
@@ -289,39 +290,6 @@ bool CInventory::Activate(u32 slot)
 	}
 
 	return false;
-/*	
-	return false;
-	if(slot == NO_ACTIVE_SLOT)
-	{
-		if(m_iActiveSlot < m_slots.size()) 
-		{
-			m_slots[m_iActiveSlot].m_pIItem->Deactivate();
-			m_iActiveSlot = slot;
-		}
-		return false;
-	} 
-
-	if(slot < m_slots.size() && m_slots[slot].m_pIItem == NULL) return false;
-
-	//если активный слот чем-то занят, неразрешать его деактивацию 
-//	if(m_iActiveSlot < m_slots.size() && m_slots[m_iActiveSlot].m_pIItem &&
-//		m_slots[m_iActiveSlot].m_pIItem->IsPending()) 
-//		return false;
-
-	if(m_iActiveSlot < m_slots.size()) 
-	{
-		m_slots[m_iActiveSlot].m_pIItem->Deactivate();
-		if(slot < m_slots.size()) 
-			m_iNextActiveSlot = slot;
-		else  
-			m_iActiveSlot = slot;
-	} 
-	else if(m_slots[slot].m_pIItem->Activate()) 
-	{
-		m_iActiveSlot = slot;
-	}
-	
-	return false;*/
 }
 
 PIItem CInventory::ActiveItem()const
@@ -438,24 +406,6 @@ void CInventory::Update()
 
 		m_iActiveSlot = m_iNextActiveSlot;
 	}
-
-/*	if((m_iNextActiveSlot < m_slots.size()) && !bActiveSlotVisible)
-	{
-		if(m_slots[m_iNextActiveSlot].m_pIItem)
-		{
-			if(m_slots[m_iNextActiveSlot].m_pIItem->Activate())
-			{
-				m_iActiveSlot = m_iNextActiveSlot;
-				m_iNextActiveSlot = NO_ACTIVE_SLOT;
-			}
-			else if(m_iActiveSlot == NO_ACTIVE_SLOT || 
-					!m_slots[m_iActiveSlot].m_pIItem->Activate())
-			{
-				m_iActiveSlot = m_iNextActiveSlot = NO_ACTIVE_SLOT;
-			}
-		}
-		else m_iActiveSlot = m_iNextActiveSlot = NO_ACTIVE_SLOT;
-	}*/
 	
 	//проверить рюкзак и пояс, есть ли вещи, которые нужно выкинуть
 	u32		drop_count = 0;
@@ -586,9 +536,9 @@ PIItem CInventory::Get(const u32 id, bool bSearchRuck) const
 	return NULL;
 }
 
-f32 CInventory::TotalWeight() const
+float CInventory::TotalWeight() const
 {
-	f32 weight = 0;
+	float weight = 0;
 	for(TIItemSet::const_iterator it = m_all.begin(); m_all.end() != it; ++it) 
 					weight += (*it)->Weight();
 	
