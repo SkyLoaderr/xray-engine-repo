@@ -1117,11 +1117,11 @@ void CCar::SExhaust::Init()
 	CKinematics* K=PKinematics(pcar->Visual());
 	CBoneData&	bone_data=K->LL_GetData(u16(bone_id));
 	transform.set(bone_data.bind_transform);
-	transform.mulA(pcar->XFORM());
-	Fmatrix element_transform;
-	pelement->InterpolateGlobalTransform(&element_transform);
-	element_transform.invert();
-	transform.mulA(element_transform);
+	///transform.mulA(pcar->XFORM());
+	//Fmatrix element_transform;
+	//pelement->InterpolateGlobalTransform(&element_transform);
+	//element_transform.invert();
+	//transform.mulA(element_transform);
 	p_pgobject=xr_new<CParticlesObject>(*pcar->m_exhaust_particles,pcar->Sector(),false);
 	
 	Fvector zero_vel = {0.f,0.f,0.f};
