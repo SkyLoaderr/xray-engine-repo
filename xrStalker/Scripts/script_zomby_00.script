@@ -10,15 +10,11 @@ function main()
 	local prof_privet_hosh_potorgovat = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat")
 	local prof_privet_hosh_potorgovat2 = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat2")
 
-
-	wait(1000)		
-
-	stalker1:script	(true,  this.script_name())
-
 	while true do
 		if stalker1:see(actor) then
 			printf("script 2!")
 			flush()
+			stalker1:script	(true,this.script_name())
 			action(
 				stalker1,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
