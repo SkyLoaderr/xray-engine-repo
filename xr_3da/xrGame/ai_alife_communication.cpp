@@ -246,39 +246,38 @@ bool CSE_ALifeSimulator::bfGetItemIndexes	(ITEM_P_VECTOR &tpTrader, int iSum1, I
 
 bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, ITEM_P_VECTOR &tpTrader1, INT_VECTOR &tpIndexes1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, ITEM_P_VECTOR &tpTrader2, INT_VECTOR &tpIndexes2)
 {
-	m_tpBlockedItems1		= tpALifeHumanAbstract1->children;
-	m_tpBlockedItems2		= tpALifeHumanAbstract2->children;
-	
 	{
 		INT_IT				I = tpIndexes2.begin();
 		INT_IT				E = tpIndexes2.end();
-		for ( ; I != E; I++)
+		for ( ; I != E; I++) {
 			tpALifeHumanAbstract1->children.push_back(tpTrader2[*I]->ID);
-	}
-	{
-		INT_IT				I = tpIndexes1.begin();
-		INT_IT				E = tpIndexes1.end();
-		for ( ; I != E; I++)
-			tpALifeHumanAbstract2->children.push_back(tpTrader1[*I]->ID);
-	}
-	{
-		INT_IT				I = tpIndexes1.begin();
-		INT_IT				E = tpIndexes1.end();
-		for ( ; I != E; I++)
-			tpALifeHumanAbstract1->children.erase(std::find(tpALifeHumanAbstract1->children.begin(),tpALifeHumanAbstract1->children.end(),tpTrader1[*I]->ID));
-	}
-	{
-		INT_IT				I = tpIndexes2.begin();
-		INT_IT				E = tpIndexes2.end();
-		for ( ; I != E; I++)
 			tpALifeHumanAbstract2->children.erase(std::find(tpALifeHumanAbstract2->children.begin(),tpALifeHumanAbstract2->children.end(),tpTrader2[*I]->ID));
+		}
+	}
+	{
+		INT_IT				I = tpIndexes1.begin();
+		INT_IT				E = tpIndexes1.end();
+		for ( ; I != E; I++) {
+			tpALifeHumanAbstract2->children.push_back(tpTrader1[*I]->ID);
+			tpALifeHumanAbstract1->children.erase(std::find(tpALifeHumanAbstract1->children.begin(),tpALifeHumanAbstract1->children.end(),tpTrader1[*I]->ID));
+		}
 	}
 
 	bool					l_bResult = tpALifeHumanAbstract1->bfCanGetItem(0) && tpALifeHumanAbstract2->bfCanGetItem(0);
 
 	if (!l_bResult) {
-		tpALifeHumanAbstract1->children	= m_tpBlockedItems1;
-		tpALifeHumanAbstract2->children	= m_tpBlockedItems2;
+		{
+			INT_IT				I = tpIndexes1.begin();
+			INT_IT				E = tpIndexes1.end();
+			for ( ; I != E; I++)
+				tpALifeHumanAbstract1->children.push_back(tpTrader1[*I]->ID);
+		}
+		{
+			INT_IT				I = tpIndexes2.begin();
+			INT_IT				E = tpIndexes2.end();
+			for ( ; I != E; I++)
+				tpALifeHumanAbstract2->children.push_back(tpTrader2[*I]->ID);
+		}
 		return				(false);
 	}
 	else
@@ -538,6 +537,7 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 				
 				m_tpBlockedItems1.clear();
 				m_tpBlockedItems1.insert(m_tpBlockedItems1.end(),tpALifeHumanAbstract2->children.end() - l_iItemCount2,tpALifeHumanAbstract2->children.end());
+				tpALifeHumanAbstract1->children.resize(tpALifeHumanAbstract1->children.size() - l_iItemCount1);
 
 				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1);
 				break;
