@@ -7,7 +7,8 @@
 #include "..\xr_object.h"
 #include "lighttrack.h"
 
-// tir2.xrdemo		-> 45.20
+// tir2.xrdemo		-> 45.2
+// tir2.xrdemo		-> 61.8
 
 const	float		P_distance		= 48;					// switch distance between LOW-q light and HIGH-q light
 const	float		P_distance2		= P_distance*P_distance;
