@@ -352,10 +352,13 @@ void TUI::ShowObjectHint(){
     if (!ShowHint(SS)&&m_pHintWindow) HideHint();
 }
 //---------------------------------------------------------------------------
-void TUI::SetStatus(LPSTR s){
+void TUI::SetStatus(LPSTR s, bool bOutLog)
+{
 	VERIFY(m_bReady);
-    fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
-    ELog.Msg(mtInformation,s);
+    if (fraBottomBar->paStatus->Caption!=s){
+	    fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
+    	if (bOutLog) ELog.Msg(mtInformation,s);
+    }
 }
 void TUI::ProgressInfo(LPCSTR text)
 {

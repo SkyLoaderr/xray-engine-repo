@@ -181,7 +181,7 @@ public:
     void 			ProgressInc			(const char* info=0);
 
     void 			OutCameraPos		();
-    void 			SetStatus			(LPSTR s);
+    void 			SetStatus			(LPSTR s, bool bOutLog=true);
 
 	// direct input
 	virtual void 	IR_OnMouseMove		(int x, int y);
