@@ -75,6 +75,7 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 
 		.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::functor<void>&))CScriptGameObject::AddEventCallback)
 		.def("AddEventCallback",			(void(CScriptGameObject::*)(s16, const luabind::object&, LPCSTR))CScriptGameObject::AddEventCallback)
+		.def("RemoveEventCallback",			&CScriptGameObject::RemoveEventCallback)
 
 		.def("position",					&CScriptGameObject::Position)
 		.def("direction",					&CScriptGameObject::Direction)

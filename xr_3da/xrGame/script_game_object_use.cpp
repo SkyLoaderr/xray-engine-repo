@@ -32,6 +32,15 @@ void CScriptGameObject::AddEventCallback			(s16 event, const luabind::object &lu
 	c->m_event			= event;
 }
 
+void CScriptGameObject::RemoveEventCallback			(s16 event)
+{
+	CALLBACK_IT it = m_callbacks.find(event);
+	if(it!=m_callbacks.end()){
+		xr_delete(it->second);
+		m_callbacks.erase(it);
+	}
+}
+
 void CScriptGameObject::SetUseCallback(const luabind::functor<void> &tpUseCallback)
 {
 	CUsableScriptObject	*l_tpUseableScriptObject = smart_cast<CUsableScriptObject*>(&object());

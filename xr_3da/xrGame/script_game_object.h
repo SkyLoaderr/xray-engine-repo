@@ -92,6 +92,7 @@ public:
 	CALLBACKS							m_callbacks;
 	void								AddEventCallback			(s16 event, const luabind::functor<void> &lua_function);
 	void								AddEventCallback			(s16 event, const luabind::object &lua_object, LPCSTR method);
+	void								RemoveEventCallback			(s16 event);
 	void								OnEventRaised(s16 event, NET_Packet& P);
 
 			CScriptGameObject	*Parent				() const;
