@@ -8,14 +8,14 @@ function fe(item, parent)
 	parent:drop_item(item,p)
 end
 
-function  main00()
+function  main()
 	local news_id = "general_new_task"
     db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
-    db.actor:set_news_show_time(news_id, 0)
-    db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
-    db.actor:set_news_show_time(news_id, -1)
-    db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
-    db.actor:set_news_show_time(news_id, 0)	
+//    db.actor:set_news_show_time(news_id, 0)
+//    db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
+//    db.actor:set_news_show_time(news_id, -1)
+//    db.actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50)
+//    db.actor:set_news_show_time(news_id, 0)	
 end
 
 function main01()
@@ -68,7 +68,7 @@ function main03 ()
 	
 end
 
-function main()
+function main000()
 	local psy_hit 					= hit();
 	psy_hit.power 					= 10;
 	psy_hit.direction 				= vector():set( 0, 0, 0 );
