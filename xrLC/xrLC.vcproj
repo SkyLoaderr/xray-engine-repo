@@ -933,6 +933,10 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="Simplify"
+			Filter="">
+		</Filter>
 		<File
 			RelativePath=".\xrGameMaterials.h">
 		</File>
