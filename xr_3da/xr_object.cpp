@@ -53,7 +53,6 @@ CObject::CObject		( )
 
 	pSector						= 0;
 	SectorMode					= EPM_AUTO;
-	vPositionPrevious.set		(flt_min,flt_min,flt_min);
 
 	ObjectName					= 0;
 	dwMinUpdate					= 20;
@@ -172,7 +171,7 @@ void CObject::Update	( DWORD T )
 		PositionStack.back().dwTime		= Device.dwTimeGlobal;
 		PositionStack.back().vPosition	= vPosition;
 	} else {
-		if (PositionStack.back().similar(vPosition,0.005f))
+		if (PositionStack.back().vPosition.similar(vPosition,0.005f))
 		{
 			PositionStack.back().dwTime	= Device.dwTimeGlobal;
 		} else {

@@ -31,7 +31,7 @@ public:
 	struct SavedPosition
 	{
 		DWORD	dwTime;
-		Fvector	vPosision;
+		Fvector	vPosition;
 	};
 protected:
 	// some property variables
