@@ -37,6 +37,11 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 	
 	IReader* lods 	= data->open_chunk	(OGF_P_LODS);
 	R_ASSERT		(lods);
+    u32 reserved;
+    reserved		= lods->r_u32();	// reserved 16 bytes
+    reserved		= lods->r_u32();
+    reserved		= lods->r_u32();
+    reserved		= lods->r_u32();
     SW_count		= lods->r_u32();
     pSWs			= xr_alloc<SlideWindow>(SW_count);
     for (u32 it=0; it<SW_count; it++){

@@ -179,6 +179,10 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
             // PMap
             if (part->m_SWR.size()) {
                 F.open_chunk(OGF_P_LODS);
+                F.w_u32			(0);			// reserved space 16 bytes
+                F.w_u32			(0);
+                F.w_u32			(0);
+                F.w_u32			(0);
                 F.w_u32			(part->m_SWR.size()); // num collapses
                 for (u32 swr_idx=0; swr_idx<part->m_SWR.size(); swr_idx++)
                     F.w			(&part->m_SWR[swr_idx],sizeof(VIPM_SWR));
