@@ -132,10 +132,8 @@ const char* CInventoryItem::NameShort()
 LPCSTR CInventoryItem::NameComplex() 
 {
 	const char *l_name = Name();
-	if(l_name) 
-		m_nameComplex = l_name; 
-	else 
-		m_nameComplex = 0;
+	if(l_name) 	m_nameComplex = l_name; 
+	else 		m_nameComplex = 0;
 
 	/*for(PPIItem l_it = m_subs.begin(); m_subs.end() != l_it; ++l_it) 
 	{
@@ -154,9 +152,9 @@ LPCSTR CInventoryItem::NameComplex()
 		else
 			strcpy(&m_nameComplex[xr_strlen(m_nameComplex)], " excelent");
 		*/
-		string256	temp;
-		sprintf		(temp,"%s %f",*m_nameComplex,GetCondition());
-		m_nameComplex = temp;
+		string256		temp;
+		sprintf			(temp,"%s %f",*m_nameComplex,GetCondition());
+		m_nameComplex	= temp;
 	}
 
 
