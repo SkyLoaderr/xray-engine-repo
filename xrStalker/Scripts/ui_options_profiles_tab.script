@@ -53,7 +53,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	local lst_frame = CUIStatic()
 	lst_frame:SetAutoDelete(true)
 	lst_frame:SetWindowName("list_frame")
-	lst_frame:Init(lst_rect.x, lst_rect.y, lst_rect.width, lst_rect.height)
+	lst_frame:Init("ui\\ui_frame_very_small", lst_rect.x, lst_rect.y, lst_rect.width, lst_rect.height)
 	self.main_frame:AttachChild(lst_frame)
 	
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
