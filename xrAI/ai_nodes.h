@@ -12,7 +12,7 @@
 #include "xrThread.h"
 
 #include "xrGraph.h"
-#include "ai_map.h"
+#include "level_graph.h"
 #include "ai_a_star_search.h"
 
 

@@ -10,9 +10,9 @@
 
 #include "xrLevel.h"
 #include "ai_alife_space.h"
-#include "ai_alife_cross_table.h"
-#include "ai_alife_graph.h"
-#include "ai_map.h"
+#include "game_level_cross_table.h"
+#include "game_graph.h"
+#include "level_graph.h"
 
 #define CROSS_TABLE_NAME_RAW	"level.gct.raw"
 

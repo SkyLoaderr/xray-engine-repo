@@ -2,7 +2,7 @@
 #include "compiler.h"
 #include "communicate.h"
 #include "levelgamedef.h"
-#include "ai_map.h"
+#include "level_graph.h"
 #include "AIMapExport.h"
 
 void xrLoad(LPCSTR name)

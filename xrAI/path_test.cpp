@@ -7,8 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_map.h"
-#include "ai_alife_graph.h"
+#include "level_graph.h"
+#include "game_graph.h"
 #include "test_table.h"
 #include "data_storage_priority_queue.h"
 #include "data_storage_heap.h"

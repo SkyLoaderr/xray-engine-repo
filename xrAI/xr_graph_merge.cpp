@@ -14,7 +14,7 @@
 #include "game_base.h"
 #include "xrServer_Objects_ALife_All.h"
 #include "xrCrossTable.h"
-#include "ai_map.h"
+#include "level_graph.h"
 #include "net_utils.h"
 #include "ai_alife_templates.h"
 using namespace ALife;
