@@ -7,8 +7,10 @@
 void CShaderManager::xrStartUp()
 {
 #ifdef _EDITOR
-	if (!FS.Exist("game\\shaders.xr")) return;
-	CCompressedStream		FS("game\\shaders.xr","shENGINE");
+	AnsiString sh = "shaders.xr";
+    FS.m_GameRoot.Update(sh);
+	if (!FS.Exist(sh.c_str())) return;
+	CCompressedStream		FS(sh.c_str(),"shENGINE");
 #else
 	CCompressedStream		FS("shaders.xr","shENGINE");
 #endif
