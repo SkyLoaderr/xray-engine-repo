@@ -4,6 +4,8 @@
 ** See Copyright Notice in lua.h
 */
 
+#include <xrCore.h>
+
 
 #include <ctype.h>
 #include <string.h>

@@ -4,6 +4,8 @@
 ** See Copyright Notice in lua.h
 */
 
+#include <xrCore.h>
+
 
 #include <ctype.h>
 #include <limits.h>
@@ -101,7 +103,7 @@ static void freeblock (void *block, size_t size) {
     lua_assert(checkblocksize(block, size));
     block = checkblock(block, size);
     fillmem(block, size+HEADER+MARKSIZE);	/* erase block */
-    free(block);							/* free original block */
+    xr_free(block);							/* _free original block */
     memdebug_numblocks--;
     memdebug_total -= size;
   }
@@ -124,7 +126,7 @@ void *debug_realloc (void *block, size_t oldsize, size_t size) {
     size_t realsize = HEADER+size+MARKSIZE;
     size_t commonsize = (oldsize < size) ? oldsize : size;
     if (realsize < size) return NULL;  /* overflow! */
-    newblock = malloc(realsize);  /* alloc a new block */
+    newblock = xr_malloc(realsize);  /* alloc a new block */
     if (newblock == NULL) return NULL;
     if (block) {
       memcpy(cast(char *, newblock)+HEADER, block, commonsize);

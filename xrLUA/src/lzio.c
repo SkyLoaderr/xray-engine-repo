@@ -3,6 +3,8 @@
 ** a generic input stream interface
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
+
 
 
 #include <string.h>

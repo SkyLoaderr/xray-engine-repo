@@ -3,6 +3,7 @@
 ** Library for Table Manipulation
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
 
 
 #include <stddef.h>

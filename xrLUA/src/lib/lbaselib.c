@@ -3,6 +3,8 @@
 ** Basic library
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
+
 
 
 

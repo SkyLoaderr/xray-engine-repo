@@ -3,6 +3,8 @@
 ** Standard I/O (and system) library
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
+
 
 
 #include <errno.h>

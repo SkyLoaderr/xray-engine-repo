@@ -69,6 +69,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrXMLParser", "..\xrXMLPars
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrLUA", "..\xrLUA\xrLUA.vcproj", "{F496E4E3-22D5-4294-A0FB-A1EFDA7E2450}"
 	ProjectSection(ProjectDependencies) = postProject
+		{A0F7D1FB-59A7-4717-A7E4-96F37E91998E} = {A0F7D1FB-59A7-4717-A7E4-96F37E91998E}
 	EndProjectSection
 EndProject
 Global

@@ -21,6 +21,8 @@
 ** performance penalties.
 */
 
+#include <xrCore.h>
+
 #include <string.h>
 
 #define ltable_c
@@ -329,7 +331,7 @@ Table *luaH_new (lua_State *L, int narray, int lnhash) {
   luaC_link(L, valtogco(t), LUA_TTABLE);
   t->metatable = hvalue(defaultmeta(L));
   t->flags = cast(lu_byte, ~0);
-  /* temporary values (kept only if some malloc fails) */
+  /* temporary values (kept only if some _malloc fails) */
   t->array = NULL;
   t->sizearray = 0;
   t->lsizenode = 0;

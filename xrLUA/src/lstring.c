@@ -3,6 +3,8 @@
 ** String table (keeps all strings handled by Lua)
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
+
 
 
 #include <string.h>

@@ -5,6 +5,7 @@
 ** See Copyright Notice in lua.h
 */
 
+#include <xrCore.h>
 
 #define lopcodes_c
 

@@ -3,6 +3,8 @@
 ** Auxiliary functions to manipulate prototypes and closures
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
+
 
 
 #include <stdlib.h>

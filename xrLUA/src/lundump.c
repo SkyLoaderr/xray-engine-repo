@@ -3,6 +3,8 @@
 ** load pre-compiled Lua chunks
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
+
 
 #define lundump_c
 

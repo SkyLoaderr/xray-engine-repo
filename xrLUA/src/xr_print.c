@@ -1,3 +1,5 @@
+#include <xrCore.h>
+
 #include <stdarg.h>
 #include "xr_print.h"
 

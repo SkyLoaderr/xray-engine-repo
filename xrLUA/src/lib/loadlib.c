@@ -25,6 +25,8 @@
 * on top of which loadlib could be implemented.
 *
 */
+#include <xrCore.h>
+
 
 #include "lua.h"
 #include "lauxlib.h"

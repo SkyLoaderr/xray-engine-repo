@@ -3,6 +3,7 @@
 ** Standard library for string operations and pattern-matching
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
 
 
 #include <ctype.h>

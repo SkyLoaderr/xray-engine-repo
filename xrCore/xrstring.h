@@ -7,6 +7,7 @@
 typedef const char*		str_c;
 
 //////////////////////////////////////////////////////////////////////////
+#pragma warning(disable : 4200)
 struct		XRCORE_API	str_value
 {
 	u32					dwReference		;
@@ -16,6 +17,7 @@ struct		XRCORE_API	str_value_cmp
 {
 	IC bool		operator ()	(const str_value* A, const str_value* B) const	{ return strcmp(A->value,B->value)<0;	};
 };
+#pragma warning(default : 4200)
 
 //////////////////////////////////////////////////////////////////////////
 class		XRCORE_API	str_container

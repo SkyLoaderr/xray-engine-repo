@@ -4,6 +4,8 @@
 ** See Copyright Notice in lua.h
 */
 
+#include <xrCore.h>
+
 #include <stddef.h>
 
 #define ldump_c

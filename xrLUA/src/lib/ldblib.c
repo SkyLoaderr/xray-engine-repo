@@ -3,6 +3,8 @@
 ** Interface from Lua to its debug API
 ** See Copyright Notice in lua.h
 */
+#include <xrCore.h>
+
 
 
 #include <stdio.h>

@@ -4,6 +4,8 @@
 ** See Copyright Notice in lua.h
 */
 
+#include <xrCore.h>
+
 
 #include <stdlib.h>
 
@@ -25,7 +27,7 @@
 ** block size; some allocators may use that.)
 */
 #ifndef l_realloc
-#define l_realloc(b,os,s)	realloc(b,s)
+#define l_realloc(b,os,s)	xr_realloc(b,s)
 #endif
 
 /*
@@ -33,7 +35,7 @@
 ** allocators may use that.)
 */
 #ifndef l_free
-#define l_free(b,os)		free(b)
+#define l_free(b,os)		xr_free(b)
 #endif
 
 
