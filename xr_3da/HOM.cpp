@@ -6,6 +6,7 @@
 #include "HOM.h"
 #include "occRasterizer.h"
 #include "cl_collector.h"
+#include "frustum.h"
 
 int a[2][2][2] = { 0,0,0,0,0,0,0,0 };
 
@@ -168,7 +169,7 @@ void CHOM::Render		(CFrustum& base)
 	
 	Device.Statistic.RenderCALC_HOM.Begin	();
 	Raster.clear		();
-	Render_DB			();
+	Render_DB			(base);
 	Raster.propagade	();
 	Device.Statistic.RenderCALC_HOM.End		();
 }
