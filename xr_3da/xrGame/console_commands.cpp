@@ -76,6 +76,8 @@ extern	BOOL	g_b_COD_PickUpMode		;
 		BOOL	g_bDebugNode			= FALSE;
 		u32		g_dwDebugNodeSource		= 0;
 		u32		g_dwDebugNodeDest		= 0;
+extern	BOOL	g_bDrawBulletHit;
+
 #endif
 
 int g_AI_inactive_time = 0;
@@ -1684,6 +1686,21 @@ struct CCC_StartTimeEnvironment: public IConsole_Command {
 		Level().Server->game->SetEnvironmentGameTimeFactor(g_qwEStartGameTime,g_fTimeFactor);
 	}
 };
+#ifdef DEBUG
+struct CCC_DbgBullets : public CCC_Integer {
+	CCC_DbgBullets(LPCSTR N, int* V, int _min=0, int _max=999) : CCC_Integer(N,V,_min,_max) {};
+
+	virtual void	Execute	(LPCSTR args)
+	{
+		extern FvectorVec g_hit[];
+		g_hit[0].clear();
+		g_hit[1].clear();
+		g_hit[2].clear();
+		CCC_Integer::Execute	(args);
+	}
+};
+
+#endif
 
 void CCC_RegisterCommands()
 {
@@ -1847,6 +1864,7 @@ void CCC_RegisterCommands()
 
 	CMD3(CCC_Mask,		"dbg_draw_ph_contacts",			&ph_dbg_draw_mask,	phDbgDrawContacts);
 	CMD3(CCC_Mask,		"dbg_draw_ph_anabled_aabbs",	&ph_dbg_draw_mask,	phDbgDrawEnabledAABBS);
+	CMD4(CCC_DbgBullets,"dbg_draw_bullet_hit",			&g_bDrawBulletHit,	0, 1)	;
 #endif
 
 

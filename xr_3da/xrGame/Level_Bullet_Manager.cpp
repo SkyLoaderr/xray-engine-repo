@@ -244,9 +244,28 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	return true;
 }
 
+#ifdef DEBUG
+	BOOL g_bDrawBulletHit = FALSE;
+#endif
 
 void CBulletManager::Render	()
 {
+#ifdef DEBUG
+	//0-рикошет
+	//1-застрявание пули в материале
+	//2-пробивание материала
+	if(g_bDrawBulletHit){
+		extern FvectorVec g_hit[];
+		FvectorIt it;
+		u32 C[3] = {0xffff0000,0xff00ff00,0xff0000ff};
+		RCache.set_xform_world(Fidentity);
+		for(int i=0; i<3; ++i)
+			for(it=g_hit[i].begin();it!=g_hit[i].end();++it){
+				RCache.dbg_DrawAABB(*it,0.01f,0.01f,0.01f,C[i]);
+			}
+	}
+#endif
+
 	if(m_Bullets.empty()) return;
 
 	m_Lock.Enter		();

@@ -43,17 +43,17 @@ BOOL __stdcall CBulletManager::firetrace_callback(collide::rq_result& result, LP
 	{
 		//получить косточку и ее материал
 		CKinematics* V = 0;
-		if (0!=(V=smart_cast<CKinematics*>(result.O->Visual())))
-		{
-			CBoneData& B = V->LL_GetData((u16)result.element);
-			hit_material_idx = B.game_mtl_idx;
-			Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
-		}
-		/*else
-		{
-			hit_material_idx = GAMEMTL_NONE_IDX;
-			Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
-		}*/
+		//если мы попали по родителю на первых же
+		//кадре, то игнорировать это, так как это он
+		//и стрел€л
+		if( !(result.O->ID() == bullet->parent_id &&  bullet->fly_dist<PARENT_IGNORE_DIST) )
+
+			if (0!=(V=smart_cast<CKinematics*>(result.O->Visual())))
+			{
+				CBoneData& B = V->LL_GetData((u16)result.element);
+				hit_material_idx = B.game_mtl_idx;
+				Level().BulletManager().DynamicObjectHit(bullet, end_point, result, hit_material_idx);
+			}
 	}
 	//статический объект
 	else
@@ -120,9 +120,11 @@ void CBulletManager::FireShotmark (const SBullet* bullet, const Fvector& vDir, c
 		if (pWallmarkShader && ShowMark)
 		{
 			//добавить отметку на материале
+			Fvector p;
+			p.mad(bullet->pos,bullet->dir,R.range-0.01f);
 			::Render->add_SkeletonWallmark	(&R.O->renderable.xform, 
 							PKinematics(R.O->Visual()), *pWallmarkShader,
-							bullet->pos, bullet->dir, bullet->wallmark_size);
+							p, bullet->dir, bullet->wallmark_size);
 		}		
 	} 
 	else 
@@ -193,8 +195,9 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	//если мы попали по родителю на первых же
 	//кадре, то игнорировать это, так как это он
 	//и стрел€л
-	if(R.O->ID() == bullet->parent_id &&  bullet->fly_dist<PARENT_IGNORE_DIST)
-		return;
+// moved to firetrace_callback
+//	if(R.O->ID() == bullet->parent_id &&  bullet->fly_dist<PARENT_IGNORE_DIST)
+//		return;
 
 	bool NeedShootmark = true;
 	
@@ -258,6 +261,9 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 	}
 }
 
+#ifdef DEBUG
+FvectorVec g_hit[3];
+#endif
 
 std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvector& end_point, 
 									collide::rq_result& R, u16 target_material, 
@@ -283,6 +289,11 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 
 	float impulse;
 
+#ifdef DEBUG
+	Fvector dbg_bullet_pos;
+	dbg_bullet_pos.mad(bullet->pos,bullet->dir,R.range);
+	int bullet_state = 0;
+#endif
 	//рикошет
 	if(shoot_factor<RICOCHET_THRESHOLD && 
 		bullet->flags.test(SBullet::RICOCHET_ENABLED_FLAG))
@@ -313,6 +324,10 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		float energy_lost = 1.f - bullet->speed/old_speed;
 		//импульс переданный объекту равен пр€мопропорционален потер€нной энергии
 		impulse = bullet->hit_impulse*speed_factor*bullet->impulse_k*energy_lost;
+
+		#ifdef DEBUG
+		bullet_state = 0;
+		#endif		
 	}
 	//застр€вание пули в материале
 	else if(shoot_factor <  STUCK_THRESHOLD)
@@ -320,6 +335,9 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		bullet->speed  = 0.f;
 		//передаем весь импульс целиком
 		impulse = bullet->hit_impulse*bullet->impulse_k*speed_factor;
+		#ifdef DEBUG
+		bullet_state = 1;
+		#endif		
 	}
 	//пробивание материала
 	else
@@ -337,8 +355,15 @@ std::pair<float, float>  CBulletManager::ObjectHit	(SBullet* bullet, const Fvect
 		Fvector rand_normal;
 		rand_normal.random_dir(bullet->dir, PI_DIV_6*energy_lost, Random);
 		bullet->dir.set(rand_normal);
+		#ifdef DEBUG
+		bullet_state = 2;
+		#endif		
 	}
-
+#ifdef DEBUG
+	extern g_bDrawBulletHit;
+	if(g_bDrawBulletHit)
+		g_hit[bullet_state].push_back(dbg_bullet_pos);
+#endif
 
 	return std::make_pair(power, impulse);
 }
