@@ -86,6 +86,7 @@ struct ECORE_API STextureParams{
     u32			        border_color;
     u32			        fade_color;
     u32			        fade_amount;
+	u8					fade_delay;
     u32			        mip_filter;
     int			        width;
     int			        height;
@@ -159,6 +160,7 @@ extern xr_token	ttype_token[];
 #define THM_CHUNK_MATERIAL				0x0816
 #define THM_CHUNK_BUMP					0x0817
 #define THM_CHUNK_EXT_NORMALMAP			0x0818
+#define THM_CHUNK_FADE_DELAY			0x0819
 //----------------------------------------------------
 #define THUMB_WIDTH 	128
 #define THUMB_HEIGHT 	128

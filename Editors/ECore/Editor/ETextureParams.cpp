@@ -93,9 +93,11 @@ void STextureParams::Load(IReader& F)
     	F.r_stringZ			(bump_name);
     }
 
-    if (F.find_chunk(THM_CHUNK_EXT_NORMALMAP)){
+    if (F.find_chunk(THM_CHUNK_EXT_NORMALMAP))
 	    F.r_stringZ			(ext_normal_map_name);
-    }
+
+	if (F.find_chunk(THM_CHUNK_FADE_DELAY))
+		fade_delay			= F.r_u8();
 }
 
 
@@ -136,6 +138,10 @@ void STextureParams::Save(IWriter& F)
     F.open_chunk	(THM_CHUNK_EXT_NORMALMAP);
     F.w_stringZ		(ext_normal_map_name);
     F.close_chunk	();
+
+	F.open_chunk	(THM_CHUNK_FADE_DELAY);
+	F.w_u8			(fade_delay);
+	F.close_chunk	();
 }
 
 
@@ -194,8 +200,10 @@ void STextureParams::FillProp(LPCSTR base_name, PropItemVec& items, PropValue::T
 
         PHelper().CreateFlag32		(items, "Fade\\Enable Color",		&flags,				flFadeToColor);
 		PHelper().CreateFlag32		(items, "Fade\\Enabled Alpha",		&flags,				flFadeToAlpha);
-		PHelper().CreateU32			(items, "Fade\\Amount",				&fade_amount,		0,1000,0);
+		PHelper().CreateU8			(items,	"Fade\\Delay",				&fade_delay,		0,255);
+		PHelper().CreateU32			(items, "Fade\\Amount",				&fade_amount,		0,100,0);
         PHelper().CreateColor	   	(items, "Fade\\Color",				&fade_color			);
+		PHelper().CreateU8			(items,	"Fade\\Alpha",				&fade_color,		0,255);
 
         PHelper().CreateFlag32		(items, "Border\\Enabled Color",	&flags,				flColorBorder);
         PHelper().CreateFlag32		(items, "Border\\Enabled Alpha",	&flags,				flAlphaBorder);
