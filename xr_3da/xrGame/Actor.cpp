@@ -1366,8 +1366,9 @@ void CActor::g_fireParams	(Fvector &fire_pos, Fvector &fire_dir)
 	}
 	else
 	{
+		Fvector		fire_normal;
 		if (cam_Active()->style != eacFreeLook)
-			cam_Active()->Get(fire_pos, fire_dir, Fvector());
+			cam_Active()->Get(fire_pos, fire_dir, fire_normal);
 		else
 		{
 			fire_pos = Device.vCameraPosition;
