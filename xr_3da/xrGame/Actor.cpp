@@ -128,7 +128,8 @@ CActor::~CActor()
 
 	if(m_phSkeleton) {
 		m_phSkeleton->Deactivate();
-		xr_delete<CPhysicsShell>(m_phSkeleton);}
+		xr_delete<CPhysicsShell>(m_phSkeleton);
+	}
 
 	xr_delete(m_trade);
 }
@@ -321,15 +322,17 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	ph_Movement.SetVelocity	(0,0,0);
 
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
-	CSE_ALifeCreatureActor				*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);
+	CSE_ALifeCreatureActor	*E	= dynamic_cast<CSE_ALifeCreatureActor*>(e);
 
 	// Dima : 24.02.2003
 	cNameVisual_set			(E->get_visual());
 
 	//
-	r_model_yaw				= E->o_Angle.y;
-	cam_Active()->Set		(E->o_Angle.y,0,0);		// set's camera orientation
-
+	r_model_yaw				= E->o_model;
+	r_torso.yaw				= E->o_torso.yaw;
+	r_torso.pitch			= E->o_torso.pitch;
+	cam_Active()->Set		(-E->o_torso.yaw,E->o_torso.pitch,0);		// set's camera orientation
+	
 	// *** movement state - respawn
 	mstate_wishful			= 0;
 	mstate_real				= 0;
@@ -356,8 +359,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_pArtifact				= 0;
 
 	CSE_ALifeTraderAbstract	 *pTA	= dynamic_cast<CSE_ALifeTraderAbstract*>(e);
-	m_dwMoney	= pTA->m_dwMoney;
-	m_tRank		= pTA->m_tRank;
+	m_dwMoney				= pTA->m_dwMoney;
+	m_tRank					= pTA->m_tRank;
 
 
 	// @@@: WT - !!!ВРЕМЕННО!!! - спавним каждому актеру детектор
@@ -367,6 +370,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 		//CSE_Abstract*		D	= F_entity_Create("grenade_f1");
 		CSE_Abstract*		D	= F_entity_Create("bolt");
 		R_ASSERT			(D);
+		CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT							(l_tpALifeDynamicObject);
+		l_tpALifeDynamicObject->m_tNodeID	= E->m_tNodeID;
 		// Fill
 		strcpy				(D->s_name,"bolt");
 		strcpy				(D->s_name_replace,"");
@@ -397,7 +403,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	V->LL_GetInstance(shoulder_bone).set_callback	(ShoulderCallback,this);
 	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
 
-	m_anims.Create		(V);
+	m_anims.Create			(V);
 	//
 	//Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
@@ -734,11 +740,12 @@ void CActor::ZoneEffect	(float z_amount)
 void CActor::UpdateCL()
 {
 	inherited::UpdateCL();
-	if(m_vehicle)
-	{
+
+	if (m_vehicle) {
 		m_vehicle->UpdateCL();
 		return;
 	}
+	
 	if (!g_Alive())			
 
 		if(m_phSkeleton)
