@@ -3982,10 +3982,15 @@ $spawn						= on											; option for Level Editor
 class						= AI_SPGRP
 
 [level_changer]
-GroupControlSection	= spawn_group_zone
+GroupControlSection	= 
 $spawn 			= on
 $prefetch 		= 4
 class			= LVL_CHNG
+
+[level_point]
+$spawn 			= on
+$prefetch 		= 16
+class			= LVLPOINT
 
 [organizations]																; a list of organization sections
 	agroprom
