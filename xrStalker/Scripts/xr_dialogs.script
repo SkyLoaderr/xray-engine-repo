@@ -141,6 +141,13 @@ function dialog_mgr:reset_dialog()
 --	printf( "reset dialog" )
 end
 
+-- отменить текущий период молчанки между диалогами
+function dialog_mgr:reset_idle()
+	if self.team then
+		self.a.idle_end = 0
+	end
+end
+
 -- подготовка новой фразы
 function dialog_mgr:new_phrase()
 	clear_table( avail )
