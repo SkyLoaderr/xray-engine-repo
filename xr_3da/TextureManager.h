@@ -23,9 +23,11 @@ private:
 
 	// cache
 	CShader*						cache_shader;
+	CTexture*						cache_surfaces	[8];
 	CTextureArray*					cache_textures;
 	CConstantArray*					cache_constants;
 	DWORD							cache_pass;
+	
 public:
 	CTexture*						_CreateTexture	(LPCSTR Name);
 	CShader*						_CreateShader	(LPCSTR Name);

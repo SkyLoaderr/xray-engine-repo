@@ -18,6 +18,7 @@ protected:
 		DWORD	iPriority	:	2;
 		DWORD	bStrictB2F	:	1;
 		DWORD	bLighting	:	1;
+		DWORD	bPixelShader:	1;
 	};
 protected:
 	virtual void				internal_Activate	()				= 0;
@@ -49,7 +50,11 @@ public:
 class	ENGINE_API	CTextureArray
 {
 public:
-	svector<svector<CTexture*,8>,8>		textures;
+	typedef	svector<CTexture*,8>	VECTOR;	
+
+	svector<VECTOR,8>	textures;
+
+	VECTOR&				Pass		(DWORD ID)	{ return textures[ID]; }
 
 	CTextureArray()
 	{
@@ -84,7 +89,11 @@ public:
 class	ENGINE_API	CConstantArray
 {
 public:
-	svector<svector<CConstant*,8>,8>	constants;
+	typedef svector<CConstant*,8>	VECTOR;
+
+	svector<VECTOR,8>	constants;
+
+	VECTOR&				Pass		(DWORD ID)	{ return constants[ID]; }
 
 	CConstantArray()
 	{
@@ -95,7 +104,7 @@ public:
 // 
 struct ENGINE_API	Shader
 {
-	CShader_Base*	S;
+	CShader*		S;
 	CTextureArray*	T;
 	CConstantArray* C;
 };
