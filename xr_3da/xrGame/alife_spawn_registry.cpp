@@ -38,12 +38,13 @@ void CALifeSpawnRegistry::save	(IWriter &memory_stream)
 
 void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 {
-	IReader						*chunk;
+	IReader						*chunk, *chunk0;
 	Msg							("* Loading spawn registry...");
 	R_ASSERT2					(file_stream.find_chunk(SPAWN_CHUNK_DATA),"Cannot find chunk SPAWN_CHUNK_DATA!");
+	chunk0						= file_stream.open_chunk(SPAWN_CHUNK_DATA);
 	
-	chunk						= file_stream.open_chunk(0);
-	file_stream.r_stringZ		(m_spawn_name);
+	chunk						= chunk0->open_chunk(0);
+	chunk0->r_stringZ			(m_spawn_name);
 	chunk->close				();
 
 	string256					file_name;
@@ -63,12 +64,11 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 
 	stream						= FS.r_open(file_name);
 	load						(*stream);
+	FS.r_close					(stream);
 	
-	chunk						= file_stream.open_chunk(1);
+	chunk						= chunk0->open_chunk(1);
 	load_updates				(*chunk);
 	chunk->close				();
-
-	FS.r_close					(stream);
 }
 
 void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
