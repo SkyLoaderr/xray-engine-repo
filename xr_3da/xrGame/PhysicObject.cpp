@@ -55,6 +55,8 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 		if(p.z>max.z)max.z=p.z;
 	}
 
+	min.sub(EPS_S);
+	max.add(EPS_S);
 	P.w_vec3(min);
 	P.w_vec3(max);
 
@@ -167,6 +169,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 		PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
 		for(u16 bone=0;e!=i;i++,bone++)
 		{
+			R_ASSERT(bone<PHGetSyncItemsNumber());
 			PHGetSyncItem(bone)->set_State(*i);
 		}
 		saved_bones.clear();
