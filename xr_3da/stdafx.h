@@ -133,7 +133,7 @@ using namespace std;
 
 // TODO: reference additional headers your program requires here
 
-#pragma comment( lib, "xrCDB.lib"		)
+#pragma comment( lib, "x:\\xrCDB.lib"	)
 
 #pragma comment( lib, "imagehlp.lib"	)
 #pragma comment( lib, "winmm.lib"		)
