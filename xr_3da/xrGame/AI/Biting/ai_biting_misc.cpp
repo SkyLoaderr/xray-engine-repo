@@ -12,6 +12,7 @@
 #include "..\\..\\hudmanager.h"
 
 #include "..\\..\\ai_script_actions.h"
+#include "..\\ai_monster_jump.h"
 
 // A - я слышу опасный звук
 // B - я слышу неопасный звук
@@ -186,22 +187,25 @@ bool CAI_Biting::IsStanding (TTime time)
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // обработка скриптов
+////////////////////////////////////////////////////////////////////////////////////////////
+
 bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 {
 	if (!inherited::bfAssignMovement(tpEntityAction))
 		return		(false);
 
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
-	// build path to the point
-
-	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
 	MotionMan.m_tAction = EAction(l_tMovementAction.m_tActState);
 	
-	if (MotionMan.m_tAction == ACT_DRAG) {
-		MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
-	}
+	CJumping  *pJ = dynamic_cast<CJumping*>(this);
 	
-	MotionMan.ProcessAction();
+	if (pJ && !pJ->IsActive() && (MotionMan.m_tAction == ACT_JUMP)) {
+		pJ->Check(Position(), l_tMovementAction.m_tDestinationPosition, 0);
+	} else 	if (MotionMan.m_tAction == ACT_DRAG) {
+		MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
+		vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
+		MotionMan.ProcessAction();
+	}
 	return			(true);		
 }
 
@@ -229,15 +233,5 @@ bool CAI_Biting::bfAssignObject(CEntityAction *tpEntityAction)
 	return	(true);
 }
 
-bool CAI_Biting::bfAssignAnimation (CEntityAction *tpEntityAction)
-{
-	if (!inherited::bfAssignAnimation(tpEntityAction))
-		return		(false);
 
-//	CAnimationAction &l_tAnimAction	 = tpEntityAction->m_tAnimationAction;
-//
-//	Msg("Biting use script...");
-//	MotionMan.SCRIPT_SetAnim(l_tAnimAction.m_caAnimationToPlay);
-	return true;
-}
 

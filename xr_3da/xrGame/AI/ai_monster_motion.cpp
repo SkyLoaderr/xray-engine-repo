@@ -565,8 +565,4 @@ void CMotionManager::UpdateVisual()
 
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// Scripting
-#define TEST_STRING(a,b,c) {if (strcmp(a,b) == 0) cur_anim = c;}
-
 

@@ -383,33 +383,6 @@ void CAI_Biting::Path_ApproachPoint(CEntity *pE, Fvector position, TTime rebuild
 // Развернуть объект в направление движения
 void CAI_Biting::SetDirectionLook(bool bReversed)
 {
-//	int i = ps_Size();		// position stack size
-//	
-//	if (i<2) return;
-//
-//	CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
-//
-//	Fvector dir;
-//	dir.sub(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-//	
-//	if (dir.magnitude() < EPS_L) return;
-//	
-//	vfNormalizeSafe(dir);
-//	
-//	float yaw,pitch;
-//	dir.getHP(yaw,pitch);
-//
-//	r_torso_target.yaw = -yaw;
-//	r_torso_target.pitch = 0;
-//
-//	if (bReversed) r_torso_target.yaw = angle_normalize(r_torso_target.yaw + PI);
-//	else r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-//	
-//	Msg("TARGET YAW CHANGED:: SetDirLook / target_yaw = [%f]", r_torso_target.yaw);
-//	
-//
-//	r_target = r_torso_target;
-	
 	if (AI_Path.TravelPath.empty() || (AI_Path.TravelStart >= AI_Path.TravelPath.size()-1)) return;
 	
 	Fvector vstart,vnext;

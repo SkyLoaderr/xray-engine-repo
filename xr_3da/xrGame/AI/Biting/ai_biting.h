@@ -198,7 +198,6 @@ public:
 
 
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
-	virtual	bool			bfAssignAnimation				(CEntityAction	*tpEntityAction);
 	virtual	bool			bfAssignObject					(CEntityAction	*tpEntityAction);
 
 			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
