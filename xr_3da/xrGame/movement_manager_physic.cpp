@@ -26,7 +26,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 			CDetailPathManager::path().empty() ||
 			CDetailPathManager::completed(dest_position) || 
 			(CDetailPathManager::curr_travel_point_index() >= CDetailPathManager::path().size() - 1) ||
-			(CDetailPathManager::dest_position().similar(Position(),.1f)) ||
+//			(CDetailPathManager::dest_position().similar(Position(),.1f)) ||
 			fis_zero(old_desirable_speed())
 		)
 	{

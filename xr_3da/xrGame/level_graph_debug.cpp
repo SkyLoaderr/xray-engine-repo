@@ -506,22 +506,59 @@ void CLevelGraph::set_start_point	()
 //	start.angular_velocity	= 1.f;
 //	start.linear_velocity	= 2.f;
 //	start.position			= Fvector2().set(-50.f,-40.f);
-//	start.direction.set		(1.f,1.f);
+//	start.direction.set		(0.f,1.f);
 //	start.vertex_id			= vertex(v3d(start.position));
+//	
+//	dest.position			= Fvector2().set(-40.f,-40.f);
+//	dest.direction.set		(0.f,1.f);
+//	dest.vertex_id			= vertex(v3d(dest.position));
+//
+//	static int start_static = 0;
+//	switch ((start_static & 15) >> 2) {
+//		case 0 :
+//			start.direction.set(0.f,1.f);
+//			break;
+//		case 1 :
+//			start.direction.set(1.f,0.f);
+//			break;
+//		case 2 :
+//			start.direction.set(0.f,-1.f);
+//			break;
+//		case 3 :
+//			start.direction.set(-1.f,0.f);
+//			break;
+//	}
+//	switch (start_static & 1) {
+//		case 0 :
+//			dest.direction.set(0.f,1.f);
+//			break;
+//		case 1 :
+//			dest.direction.set(1.f,0.f);
+//			break;
+//		case 2 :
+//			dest.direction.set(0.f,-1.f);
+//			break;
+//		case 3 :
+//			dest.direction.set(-1.f,0.f);
+//			break;
+//	}
+//	++start_static;
+
 //	
 //	dest.angular_velocity	= 1.f;
 //	dest.linear_velocity	= 2.f;
-//	dest.position			= Fvector2().set(-50.f,-40.f);
-//	dest.direction.set		(-1.f,1.f);
+
+//	start.position.set		(-42.369289f,-27.931879f);
+//	start.direction.set		(-0.007825f,0.999969f);
+//	start.vertex_id			= vertex(v3d(start.position));
+//
+//	dest.position.set		(-42.342930f,-28.019650f);
+//	dest.direction.set		(0.699997f,0.000000f);
 //	dest.vertex_id			= vertex(v3d(dest.position));
-
-//	start.position.set		(-41.801155f,-29.429924f);
-//	start.direction.set		(4.4425301e-006f,1.000000f);
-//	start.vertex_id			= 9055;
-
-//	dest.position.set		(-52.441914f,-19.850077f);
-//	dest.direction.set		(-10.500000f,-9.8000031f);
-//	dest.vertex_id			= 9296;
+//
+//	STrajectoryPoint		temp = start;
+//	start					= dest;
+//	dest					= temp;
 
 //	write_trajectory_point	(start,"start");
 //	write_trajectory_point	(dest,"dest");
@@ -566,6 +603,9 @@ IC	void assign_angle(
 			angle = angle + PI_MUL_2;
 		else
 			angle = angle - PI_MUL_2;
+
+	if (fsimilar(_abs(angle),PI_MUL_2,EPS_L))
+		angle	  = 0;
 
 	VERIFY				(_valid(angle));
 	TIMER_STOP(AssignAngle)
@@ -1017,8 +1057,8 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-	start.angular_velocity	= PI_MUL_2;
-	start.linear_velocity	= 0.f;
+	start.angular_velocity	= PI_DIV_8;
+	start.linear_velocity	= 1.05f;
 	start_set.push_back		(start);
 
 //	start.angular_velocity	= PI;
@@ -1033,8 +1073,8 @@ void fill_params(
 //	start.linear_velocity	= 6.f;
 //	start_set.push_back		(start);
 
-	dest.angular_velocity	= PI_MUL_2;
-	dest.linear_velocity	= 0.f;
+	dest.angular_velocity	= PI_DIV_8;
+	dest.linear_velocity	= 1.05f;
 	dest_set.push_back		(dest);
 
 //	dest.angular_velocity	= PI;
@@ -1062,8 +1102,16 @@ void CLevelGraph::build_detail_path(
 
 	fill_params								(start,dest,start_set,dest_set);
 
-	start.direction.normalize				();
-	dest.direction.normalize				();
+	if (start.direction.square_magnitude() < EPS_L)
+		start.direction.set					(0.f,1.f);
+	else
+		start.direction.normalize			();
+
+	if (dest.direction.square_magnitude() < EPS_L)
+		dest.direction.set					(0.f,1.f);
+	else
+		dest.direction.normalize			();
+
 	m_tpTravelLine.clear					();
 
 	if (!ai().graph_engine().search(level_graph,start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters()))
