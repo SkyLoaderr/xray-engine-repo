@@ -42,7 +42,7 @@ namespace AI {
 
 class CAStar;
 
-class CAI_Space	: public CSE_ALifeGraph, public CAI_DDD, public CSE_ALifeCrossTable, public pureDeviceCreate, pureDeviceDestroy
+class CAI_Space			: public CSE_ALifeGraph, public CAI_DDD, public CSE_ALifeCrossTable, public pureDeviceCreate, pureDeviceDestroy
 {
 private:
 	// Initial data
