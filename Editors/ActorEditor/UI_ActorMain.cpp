@@ -18,7 +18,6 @@ CActorMain*&	AUI=(CActorMain*)UI;
 
 CActorMain::CActorMain()
 {               
-	int y=xr_strlen("aaa");
 }
 //---------------------------------------------------------------------------
 

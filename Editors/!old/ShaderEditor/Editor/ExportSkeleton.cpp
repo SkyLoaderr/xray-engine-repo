@@ -314,6 +314,10 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                     }
                 }
             }
+            if (!split.valid()){
+				ELog.Msg(mtError,"Degenerate split found (Material '%s'). Removed.",surf->_Name());
+                m_Splits.pop_back();
+            }
         }
         // mesh fin
         MESH->UnloadSVertices();

@@ -144,9 +144,10 @@ void CEditorPreferences::OnCreate()
 	INI_NAME	(fn);
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), TRUE, TRUE, TRUE);
 
-    psDeviceFlags.flags		= R_U32_SAFE	("editor_prefs","device_flags"		,psDeviceFlags.flags);
+    psDeviceFlags.flags		= R_U32_SAFE	("editor_prefs","device_flags",	psDeviceFlags.flags);
+    psSoundFlags.flags		= R_U32_SAFE	("editor_prefs","sound_flags",	psSoundFlags.flags)
 
-    Tools->m_Settings.flags	= R_U32_SAFE	("editor_prefs","tools_settings",	Tools->m_Settings.flags);
+    Tools->m_Settings.flags	= R_U32_SAFE	("editor_prefs","tools_settings",Tools->m_Settings.flags);
     
     view_np				= R_FLOAT_SAFE	("editor_prefs","view_np"			,view_np		 	);
     view_fp				= R_FLOAT_SAFE	("editor_prefs","view_fp"			,view_fp		 	);
@@ -207,6 +208,7 @@ void CEditorPreferences::OnDestroy()
     CInifile* 	I = xr_new<CInifile>(fn.c_str(), FALSE, TRUE, TRUE);
 
     I->w_u32	("editor_prefs","device_flags",		psDeviceFlags.flags	);
+    I->w_u32	("editor_prefs","sound_flags",		psSoundFlags.flags	);
 
     I->w_u32	("editor_prefs","tools_settings",	Tools->m_Settings.flags	);
 

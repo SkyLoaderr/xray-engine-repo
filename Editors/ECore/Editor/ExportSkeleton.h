@@ -139,6 +139,12 @@ class CExportSkeleton{
 
 		void 			MakeProgressive();
         SSplit			(CSurface* surf, const Fbox& bb);
+        bool			valid()
+        {
+        	if (m_Verts.empty()) return false;
+        	if (m_Faces.empty()) return false;
+            return true;
+        }
     };
 	DEFINE_VECTOR		(SSplit,SplitVec,SplitIt);
 	SplitVec			m_Splits;

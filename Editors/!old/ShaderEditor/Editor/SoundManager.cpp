@@ -37,7 +37,7 @@ int	CSoundManager::GetSoundEnvs(AStringVec& items)
 bool CSoundManager::OnCreate()
 {
 	psSoundFreq			= sf_44K;
-	psSoundFlags.set	(ssHardware,FALSE);
+//	psSoundFlags.set	(ssHardware,FALSE);
     Sound->_initialize	((u64)Device.m_hWnd);
     return true;
 }

@@ -412,7 +412,7 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       OnClick = ClickOptionsMenuItem
     end
-    object N3: TMenuItem
+    object N1: TMenuItem
       Caption = '-'
       GroupIndex = 4
     end
