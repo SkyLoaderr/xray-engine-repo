@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #pragma hdrstop
 
+#include <malloc.h>
+
 bool	pred_mdbg	(const xrMemory::mdbg& A)	{
 	return (0==A._p && 0==A._size);
 }

@@ -203,6 +203,8 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	CBlender_Compile	C;
 	Shader				S;
 
+	MDB;
+
 	// Access to template
 	C.BT				= NULL;
 	C.bEditor			= FALSE;
@@ -212,6 +214,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	_ParseList			(C.L_textures,	s_textures	);
 
 	// Compile element	(LOD0 - HQ)
+	MDB;
 	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal_hq",LUA_TFUNCTION))
 	{
 		// Analyze possibility to detail this shader
@@ -228,6 +231,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	}
 
 	// Compile element	(LOD1)
+	MDB;
 	if (Script::bfIsObjectPresent(LSVM,s_shader,"normal",LUA_TFUNCTION))
 	{
 		C.iElement			= 1;
@@ -236,6 +240,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	}
 
 	// Compile element
+	MDB;
 	if (Script::bfIsObjectPresent(LSVM,s_shader,"l_point",LUA_TFUNCTION))
 	{
 		C.iElement			= 2;
@@ -244,6 +249,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	}
 
 	// Compile element
+	MDB;
 	if (Script::bfIsObjectPresent(LSVM,s_shader,"l_spot",LUA_TFUNCTION))
 	{
 		C.iElement			= 3;
@@ -252,6 +258,7 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	}
 
 	// Compile element
+	MDB;
 	if (Script::bfIsObjectPresent(LSVM,s_shader,"l_special",LUA_TFUNCTION))
 	{
 		C.iElement			= 4;
@@ -260,10 +267,12 @@ Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
 	}
 
 	// Search equal in shaders array
+	MDB;
 	for (u32 it=0; it<v_shaders.size(); it++)
 		if (S.equal(v_shaders[it]))	return v_shaders[it];
 
 	// Create _new_ entry
+	MDB;
 	Shader*		N			=	xr_new<Shader>(S);
 	N->dwFlags				|=	xr_resource::RF_REGISTERED;
 	v_shaders.push_back		(N);
