@@ -118,6 +118,7 @@ void CLevel::ClientReceive()
 			break;
 		case M_EVENT:
 			game_events->insert		(*P);
+			if (g_bDebugEvents)		ProcessGameEvents();
 			break;
 		case M_EVENT_PACK:
 			NET_Packet	tmpP;
@@ -127,6 +128,7 @@ void CLevel::ClientReceive()
                 P->r(&tmpP.B.data, tmpP.B.count);
 
 				game_events->insert		(tmpP);
+				if (g_bDebugEvents)		ProcessGameEvents();
 			};			
 			break;
 		case M_MIGRATE_DEACTIVATE:	// TO:   Changing server, just deactivate

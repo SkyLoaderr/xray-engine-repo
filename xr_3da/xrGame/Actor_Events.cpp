@@ -54,9 +54,12 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 
 				//добавить новый артефакт в меню, если
 				//мы работали с устройством сочетания 
-				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				CUIGameSP* pGameSP = NULL;
+				CUI* ui = HUD().GetUI();
+				if( ui&&ui->UIGame() )
+					pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
 				
-				CArtefact* pArtefact = smart_cast<CArtefact*>(O);
+/*				CArtefact* pArtefact = smart_cast<CArtefact*>(O);
 				if(pGameSP && pArtefact)
 				{
 					if(pGameSP->MainInputReceiver() == &pGameSP->InventoryMenu &&
@@ -65,6 +68,7 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 						pGameSP->InventoryMenu.AddArtefactToMerger(pArtefact);
 					}
 				}
+*/
 
 
 /*				CScope* pScope = smart_cast<CScope*>(O);

@@ -158,6 +158,7 @@ public:
 	virtual void				OnEvent					( EVENT E, u64 P1, u64 P2 );
 	virtual void				OnFrame					( void );
 	virtual void				OnRender				( );
+	void						ProcessGameEvents		( );
 
 	// Input
 	virtual	void				IR_OnKeyboardPress		( int btn );
@@ -331,5 +332,7 @@ IC bool					OnClient()	{ return Level().IsClient();				}
 
 class  CPHWorld;
 extern CPHWorld*				ph_world;
+extern BOOL						g_bDebugEvents;
+
 
 #endif // !defined(AFX_LEVEL_H__38F63863_DB0C_494B_AFAB_C495876EC671__INCLUDED_)

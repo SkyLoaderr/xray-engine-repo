@@ -106,7 +106,7 @@ void CExplosive::Load(CInifile *ini,LPCSTR section)
 
 void CExplosive::net_Destroy	()
 {
-
+	m_bExploding = false;
 	StopLight();
 }
 

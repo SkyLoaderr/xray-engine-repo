@@ -77,6 +77,7 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 			GEN.w_u16			(E->ID_Parent);
 			GEN.w_u16			(u16(O->ID()));
 			game_events->insert	(GEN);
+			if (g_bDebugEvents)	ProcessGameEvents();
 		}
 	}
 }

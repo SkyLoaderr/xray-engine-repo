@@ -155,7 +155,7 @@ void CGrenade::Throw()
 		//установить ID того кто кинул гранату
 		pGrenade->SetInitiator( H_Parent()->ID() );
 	}
-
+//	Msg("Twrow grenade id=[%d] time=%f",ID(),Device.fTimeGlobal);
 	inherited::Throw			();
 	m_fake_missile->processing_activate();//@sliph 
 }

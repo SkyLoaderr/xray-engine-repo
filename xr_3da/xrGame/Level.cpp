@@ -68,6 +68,8 @@ u32			lvInterpSteps = 0;
 
 CLevel::CLevel():IPureClient(Device.GetTimerGlobal())
 {
+	g_bDebugEvents				= strstr(Core.Params,"-debug_ge")?TRUE:FALSE;
+
 //	XML_DisableStringCaching();
 	Server						= NULL;
 
@@ -235,19 +237,10 @@ int	CLevel::get_RPID(LPCSTR /**name/**/)
 	return -1;
 }
 
-void CLevel::OnFrame	()
-{
-	// Client receive
-	if (net_isDisconnected())	
-	{
-		Engine.Event.Defer			("kernel:disconnect");
-		return;
-	} else {
-		Device.Statistic.netClient.Begin();
-		ClientReceive					();
-		Device.Statistic.netClient.End	();
-	}
+BOOL		g_bDebugEvents = FALSE	;
 
+void CLevel::ProcessGameEvents		()
+{
 	// Game events
 	{
 		NET_Packet			P;
@@ -301,6 +294,23 @@ void CLevel::OnFrame	()
 			}
 		}
 	}
+}
+
+void CLevel::OnFrame	()
+{
+	// Client receive
+	if (net_isDisconnected())	
+	{
+		Engine.Event.Defer			("kernel:disconnect");
+		return;
+	} else {
+		Device.Statistic.netClient.Begin();
+		ClientReceive					();
+		Device.Statistic.netClient.End	();
+	}
+
+	ProcessGameEvents	();
+
 	//Net sync
 	if (!ai().get_alife())
 		Device.Statistic.TEST2.Begin();
