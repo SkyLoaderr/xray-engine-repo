@@ -172,9 +172,15 @@ u32 CAI_Space::q_Node(u32 PrevNode, const Fvector& BasePos, bool bShortSearch)
 	// Perform neibourhood search
 	u32 BestNode;
 	float BestCost;
-	q_Range_Bit(PrevNode,BasePos,m_header.size*7,&QueryPos,BestNode,BestCost);
-	//q_Range_Bit(PrevNode,BasePos,m_header.size*3,BestNode,BestCost);
-	if (BestCost <= 7*m_header.size)	{
+	q_Range_Bit(PrevNode,BasePos,m_header.size*3,&QueryPos,BestNode,BestCost);
+	if (BestCost <= 3*m_header.size)	{
+		// small distance from node
+		Device.Statistic.AI_Node.End();
+		return BestNode;
+	}
+	
+	q_Range_Bit(PrevNode,BasePos,m_header.size*30,&QueryPos,BestNode,BestCost);
+	if (BestCost <= 30*m_header.size)	{
 		// small distance from node
 		Device.Statistic.AI_Node.End();
 		return BestNode;

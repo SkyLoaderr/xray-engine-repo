@@ -82,22 +82,32 @@ void CCustomMonster::Exec_Look		( float dt )
 		break;
 	}
 	
-	bool a1;
-	bool a2;
-	
-	a1 = angle_lerp	(r_current.yaw,	r_target.yaw,	L->o_look_speed, dt);
-	a2 = angle_lerp	(r_current.pitch,	r_target.pitch,	L->o_look_speed, dt);
-	
-	a1 = angle_lerp	(r_torso_current.yaw,	r_torso_target.yaw,	r_torso_speed, dt);
-	a2 = angle_lerp	(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
+//	r_current.yaw = angle_normalize(r_current.yaw);
+//	r_target.yaw = angle_normalize(r_target.yaw);
+//	r_torso_current.yaw = angle_normalize(r_torso_current.yaw);
+//	r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
 
-	if (a1 && a2) L->setCompleted();
+	angle_lerp_bounds(r_torso_current.yaw,r_torso_target.yaw,r_torso_speed,dt);
+	angle_lerp_bounds(r_torso_current.pitch,r_torso_target.pitch,r_torso_speed,dt);
+
+	bool a1 = angle_lerp_bounds(r_current.yaw,r_target.yaw,L->o_look_speed,dt);
+	bool a2 = angle_lerp_bounds(r_current.pitch,r_target.pitch,L->o_look_speed,dt);
+
+	if (a1 && a2)
+		L->setCompleted();
+
+//	bool a1, a2;
 	
+//	a1 = angle_lerp	(r_current.yaw,	r_target.yaw,	L->o_look_speed, dt);
+//	a2 = angle_lerp	(r_current.pitch,	r_target.pitch,	L->o_look_speed, dt);
+//	
+//	a1 = angle_lerp	(r_torso_current.yaw,	r_torso_target.yaw,	r_torso_speed, dt);
+//	a2 = angle_lerp	(r_torso_current.pitch,	r_torso_target.pitch,	r_torso_speed, dt);
+
 	if (Device.dwTimeGlobal>=L->o_timeout)	L->setTimeout();
 	
 	mRotate.setHPB					(-NET_Last.o_model,0,0);
-	//mRotate.setHPB					(-r_torso_current.yaw,0,0);
-
+	
 	//
 	Engine.Sheduler.Slice			();
 }

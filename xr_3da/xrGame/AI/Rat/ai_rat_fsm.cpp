@@ -162,14 +162,9 @@ void CAI_Rat::Turn()
 	
 	INIT_SQUAD_AND_LEADER
 	
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-
-	vfSetFire(false,Group);
-
-	float fTurnAngle = _min(_abs(r_torso_target.yaw - r_torso_current.yaw), PI_MUL_2 - _abs(r_torso_target.yaw - r_torso_current.yaw));
 	r_torso_speed = PI_MUL_2;
 
-	vfSetMovementType(BODY_STATE_STAND,0);
+	m_fSpeed = 0;
 }
 
 void CAI_Rat::FreeHuntingActive()
@@ -216,6 +211,9 @@ void CAI_Rat::FreeHuntingActive()
 			vfRemoveActiveMember();
 		}
 	}
+
+	if (m_bStateChanged)
+		vfChooseNewSpeed();
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -402,6 +400,8 @@ void CAI_Rat::AttackRun()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(!m_Enemy.Enemy);
 
+	vfSaveEnemy();
+
 	Fvector tDistance;
 	tDistance.sub(Position(),m_Enemy.Enemy->Position());
 	
@@ -411,27 +411,14 @@ void CAI_Rat::AttackRun()
 	SRotation sTemp;
 	mk_rotation(tTemp,sTemp);
 
-	if (m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) {
-		if (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)) {
-			GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackFire);
-		}
-		else {
-			r_torso_target.yaw = sTemp.yaw;
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
-		}
-	}
-	else
-		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,m_fAttackAngle),aiRatTurn);
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE((m_Enemy.Enemy->Position().distance_to(vPosition) <= m_fAttackDistance) && (Level().AI.bfTooSmallAngle(r_torso_target.yaw, sTemp.yaw,m_fAttackAngle)),aiRatAttackFire)
 
-	INIT_SQUAD_AND_LEADER;
-	
 	m_tGoalDir.set			(m_Enemy.Enemy->Position());
 	
-	vfSaveEnemy();
-
 	vfUpdateTime(m_fTimeUpdateDelta);
 
 	m_fSpeed = m_fAttackSpeed;
+
 	if (bfComputeNextDirectionPosition())
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatTurn);
 }

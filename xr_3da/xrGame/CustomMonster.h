@@ -156,6 +156,23 @@ public:
 			p_pos.set		(0,0,0);
 		}
 		void	lerp	(net_update& A,net_update& B, float f);
+		
+//		IC bool angle_lerp_bounds(float &a, float b, float c)
+//		{
+//			float fDifference;
+//			if ((fDifference = fabsf(a - b)) > PI - EPS_L)
+//				fDifference = PI_MUL_2 - fDifference;
+//
+//			if (c >= fDifference) {
+//				a = b;
+//				return(true);
+//			}
+//			
+//			angle_lerp(a,b,c);
+//
+//			return(false);
+//		}
+//
 	};
 	deque<net_update>	NET;
 	net_update			NET_Last;
@@ -232,6 +249,22 @@ public:
 		m_dwLoopCount = 0;
 		m_iCurrentPatrolIndex = -1;
 		m_bPatrolPathInverted = false;
+	};
+
+	IC		bool		angle_lerp_bounds(float &a, float b, float c, float d)
+	{
+		float fDifference;
+		if ((fDifference = fabsf(a - b)) > PI - EPS_L)
+			fDifference = PI_MUL_2 - fDifference;
+
+		if (c*d >= fDifference) {
+			a = b;
+			return(true);
+		}
+		
+		angle_lerp(a,b,c,d);
+
+		return(false);
 	};
 	
 public:
