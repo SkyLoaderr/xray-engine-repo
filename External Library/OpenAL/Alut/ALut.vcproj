@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="7.10"
 	Name="ALut"
-	SccProjectName="&quot;$/OGG/OpenAL&quot;, WTSAAAAA"
+	SccProjectName="&quot;$/External Library/OpenAL&quot;, WTSAAAAA"
 	SccAuxPath=""
 	SccLocalPath=".."
 	SccProvider="MSSCCI:Microsoft Visual SourceSafe">
