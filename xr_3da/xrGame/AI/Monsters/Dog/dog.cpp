@@ -106,7 +106,7 @@ void CAI_Dog::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimSitIdle);
 		MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 		MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
-		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkBkwd);
+		MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
 		MotionMan.LinkAction(ACT_RUN,			eAnimRun); 
 		MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 		MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
@@ -114,7 +114,7 @@ void CAI_Dog::Load(LPCSTR section)
 		MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
 		MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
 		MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);	
-		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimSniff);
+		MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 		
 		MotionMan.AA_Load(pSettings->r_string(section, "attack_params"));
 
