@@ -110,7 +110,8 @@ end
 
 function move_mgr:standing_on_terminal_waypoint()
 	for idx = 0, self.patrol_walk:count() - 1 do
-		if utils.stalker_at_waypoint(self.object, self.patrol_walk, idx) then
+		if utils.stalker_at_waypoint(self.object, self.patrol_walk, idx) and
+		   self.patrol_walk:terminal(idx) then
 			return true, idx
 		end
 	end
@@ -247,6 +248,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	local is_term, idx = self:standing_on_terminal_waypoint()
 	if is_term then
+		printf("_bp: object '%s': TERMINAL WAYPOINT", self.object:name())
 		-- Стоим на терминальной вершине пути  - сразу иммитировать прибытие
 		self:waypoint_callback(self.object, nil, idx)
 	else
