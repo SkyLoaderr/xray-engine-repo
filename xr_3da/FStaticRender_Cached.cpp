@@ -45,7 +45,6 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 			CopyMemory	(verts,V.pVertices,V.vCount*Stride);
 			
 			// Transfer indices (in 32bit lines)
-			/*
 			VERIFY	(iOffset<65535);
 			{
 				DWORD	iCount	= V.iCount;
@@ -56,15 +55,6 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 				LPDWORD	dit		= LPDWORD(indices);
 				for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
 				if		(iCount&1)	indices[iCount-1] = V.pIndices[iCount-1]+WORD(iOffset);
-			}
-			*/
-			{
-				WORD*	iDest	= indices;
-				WORD*	iSrc	= V.pIndices;
-				WORD*	iSrc_End= iSrc+V.iCount;
-				WORD	offs	= WORD(iOffset);
-				for (; iSrc!=iSrc_End; iSrc++, iDest++)
-					*iDest = *iSrc + offs;
 			}
 
 			// Increment counters
