@@ -28,10 +28,10 @@ SChooseEvents* TfrmChoseItem::GetEvents	(u32 choose_ID)
     	return &it->second;
     }else return 0;
 }
-void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, TOnDrawThumbnail on_thm)
+void TfrmChoseItem::AppendEvents(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, TOnDrawThumbnail on_thm, TOnChooseClose on_close)
 {
 	EventsMapIt it 	= m_Events.find(choose_ID); VERIFY(it==m_Events.end());
-    m_Events.insert	(std::make_pair(choose_ID,SChooseEvents(caption,on_fill,on_sel,on_thm)));
+    m_Events.insert	(std::make_pair(choose_ID,SChooseEvents(caption,on_fill,on_sel,on_thm,on_close)));
 }
 void TfrmChoseItem::ClearEvents()
 {
@@ -66,22 +66,18 @@ int __fastcall TfrmChoseItem::SelectItem(u32 choose_ID, LPCSTR& dest, int sel_cn
     if (items){
     	VERIFY2(item_fill.empty(),"ChooseForm: Duplicate source.");
     	form->m_Items				= *items;
-	    form->Caption				= "Select Item";
-	    form->item_select_event		= item_select;
-        form->item_draw_thm			= 0;
+        form->E.Set					("Select Item",0,item_select,0,0);
     }else if (!item_fill.empty()){
     	// custom
-        item_fill					(form->m_Items,fill_param);
-	    form->Caption				= "Select Item";
-	    form->item_select_event		= item_select;
-        form->item_draw_thm			= 0;
+        form->E.Set					("Select Item",item_fill,item_select,0,0);
     }else{
-    	SChooseEvents* E			= GetEvents(choose_ID); VERIFY(E);
-        E->on_fill					(form->m_Items,fill_param);
-	    form->Caption				= E->caption.c_str();
-	    form->item_select_event		= item_select.empty()?E->on_sel:item_select;
-        form->item_draw_thm			= E->on_thm;
+    	SChooseEvents* e			= GetEvents(choose_ID); VERIFY2(e,"Can't find choose event.");
+    	form->E						= *e;
     }
+	// set & fill
+    form->Caption					= form->E.caption.c_str();
+    if (!form->E.on_fill.empty())	form->E.on_fill(form->m_Items,fill_param);
+
     form->FillItems					();
     
 	form->paItemsCount->Caption		= AnsiString(" Items in list: ")+AnsiString(form->tvItems->Items->Count);
@@ -210,7 +206,8 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 
 void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 {
-    if (tvItems->Selected) m_LastSelection=tvItems->Selected->Text;
+    if (tvItems->Selected) 	m_LastSelection=tvItems->Selected->Text;
+    if (!E.on_close.empty())E.on_close();
 	Action 			= caFree;
     form 			= 0;
 }
@@ -329,8 +326,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
     lbItemName->Caption	= "";
     lbHint->Caption    	= "";
 	if (Item&&FHelper.IsObject(Item)&&Item->Tag){
-    	if (ebExt->Down&&!item_select_event.empty())	
-        	item_select_event	((SChooseItem*)Item->Tag,items);
+    	if (ebExt->Down&&!E.on_sel.empty())	
+        	E.on_sel	((SChooseItem*)Item->Tag,items);
         lbItemName->Caption 	= Item->Text;
         lbHint->Caption 		= Item->Hint;
     }
@@ -344,10 +341,10 @@ void __fastcall TfrmChoseItem::paImagePaint(TObject *Sender)
 {
 	TElTreeItem* Item 	= tvItems->Selected;
 	if (Item&&FHelper.IsObject(Item)&&Item->Tag){
-    	if (ebExt->Down&&!item_select_event.empty()){
+    	if (ebExt->Down&&!E.on_sel.empty()){
         	SChooseItem* itm 	= (SChooseItem*)Item->Tag;
-            if (!item_draw_thm.empty()){
-            	item_draw_thm(*itm->name,paImage->Canvas->Handle,Irect().set(0,0,paImage->Width,paImage->Height));
+            if (!E.on_thm.empty()){
+            	E.on_thm(*itm->name,paImage->Canvas->Handle,Irect().set(0,0,paImage->Width,paImage->Height));
             }
         }        	
     }

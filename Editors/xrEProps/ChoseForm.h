@@ -90,8 +90,7 @@ private:	// User declarations
     bool 			bMultiSel;
     int 			iMultiSelLimit;
 
-	TOnChooseSelectItem			item_select_event;
-    TOnDrawThumbnail		    item_draw_thm;
+    SChooseEvents 	E;
 
     ChooseItemVec	m_Items;
 	void __fastcall FillItems	();
@@ -107,7 +106,7 @@ public:		// User declarations
     __fastcall 					TfrmChoseItem	(TComponent* Owner);
 	static int	 	__fastcall 	SelectItem		(u32 choose_ID, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, TOnChooseFillItems item_fill=0, void* fill_param=0, TOnChooseSelectItem item_select=0, ChooseItemVec* items=0);
 
-    static void					AppendEvents	(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, TOnDrawThumbnail on_thm);
+    static void					AppendEvents	(u32 choose_ID, LPCSTR caption, TOnChooseFillItems on_fill, TOnChooseSelectItem on_sel, TOnDrawThumbnail on_thm, TOnChooseClose on_close);
     static void					ClearEvents		();
     static SChooseEvents*		GetEvents		(u32 choose_ID);
 };
