@@ -97,7 +97,6 @@ void CAI_Space::Load()
 	q_mark_bit.assign		(m_header.count,false);
 	q_mark_bit_x.assign		(m_header.count,false);
 	m_baNodeMarks.assign	(m_header.count,false);
-	
 #pragma todo("This is very big memory suppose, try to tune it to a reasonable value")
 	q_stack.reserve			(m_header.count);
 	m_dwaNodeStackM.reserve	(m_header.count);
