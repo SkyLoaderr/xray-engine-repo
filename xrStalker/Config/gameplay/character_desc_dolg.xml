@@ -13,7 +13,7 @@
 		<rank>95</rank>
 		<reputation>90</reputation>
 
-		<visual>actors\dolg\stalker_do_nauchaniy</visual>
+		<visual>actors\dolg\stalker_do_nauchniy</visual>
 		<supplies>
 			[spawn] \n
 			wpn_usp \n
