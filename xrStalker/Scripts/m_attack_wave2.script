@@ -207,7 +207,7 @@ function Monster:process ()
 	if self.moving == true then 
 	   if self.npc:action () then return end
 	   printf ("Attacker %s is end move", self.npc:name ())	
-	   moving = false
+	   self.moving = false
     end	 
 
 	local enemy = nil
