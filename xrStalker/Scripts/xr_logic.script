@@ -313,7 +313,7 @@ function parse_condlist(npc, section, field, src)
 	return lst
 end
 
-function conf_get_number_and_condlist(ini, section, field, npc)
+function cfg_get_number_and_condlist(ini, section, field, npc)
 	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
 	if not str then
 		return nil
@@ -333,7 +333,7 @@ function conf_get_number_and_condlist(ini, section, field, npc)
 	return t
 end
 
-function conf_get_string_and_condlist(ini, section, field, npc)
+function cfg_get_string_and_condlist(ini, section, field, npc)
 	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
 	if not str then
 		return nil
@@ -353,7 +353,7 @@ function conf_get_string_and_condlist(ini, section, field, npc)
 	return t
 end
 
-function conf_get_condlist(ini, section, field, npc)
+function cfg_get_condlist(ini, section, field, npc)
 	local str = utils.cfg_get_string(ini, section, field, npc, false, "")
 	if not str then
 		return nil
@@ -385,10 +385,10 @@ function cfg_get_switch_conditions(ini, section, npc)
 	local t
 	local n = 1
 
-	n = add_condition(l, n, conf_get_number_and_condlist(ini, section, "on_actor_dist_le",       npc))
-	n = add_condition(l, n, conf_get_number_and_condlist(ini, section, "on_actor_dist_le_nvis",  npc))
-	n = add_condition(l, n, conf_get_string_and_condlist(ini, section, "on_signal",              npc))
-	n = add_condition(l, n, conf_get_condlist           (ini, section, "on_info",                npc))
+	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_le",       npc))
+	n = add_condition(l, n, cfg_get_number_and_condlist(ini, section, "on_actor_dist_le_nvis",  npc))
+	n = add_condition(l, n, cfg_get_string_and_condlist(ini, section, "on_signal",              npc))
+	n = add_condition(l, n, cfg_get_condlist           (ini, section, "on_info",                npc))
 
 	return l
 end
