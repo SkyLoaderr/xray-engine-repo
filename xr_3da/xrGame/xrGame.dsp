@@ -537,6 +537,18 @@ SOURCE=.\ai_hen.cpp
 SOURCE=.\ai_hen.h
 # End Source File
 # End Group
+# Begin Group "ai_rat"
+
+# PROP Default_Filter ""
+# Begin Source File
+
+SOURCE=.\ai_rat.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ai_rat.h
+# End Source File
+# End Group
 # End Group
 # Begin Source File
 
