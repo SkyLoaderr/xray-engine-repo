@@ -10,7 +10,7 @@ operators["action_rest"]       = xr_actions_id.sidor_act_rest     + 0
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_satiety" (property_evaluator)
 ----------------------
-function evaluator_satiety:__init (treshold, name) super ()
+function evaluator_satiety:__init (treshold, name) super (nil, name)
     self.treshold = treshold
     self.value = false
 end
@@ -26,7 +26,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "evaluator_food" (property_evaluator)
 ----------------------
-function evaluator_food:__init (name) super ()
+function evaluator_food:__init (name) super (nil, name)
 end
 ----------------------
 function evaluator_food:evaluate ()
