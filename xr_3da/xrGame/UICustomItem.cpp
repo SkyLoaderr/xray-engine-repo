@@ -7,6 +7,7 @@
 //////////////////////////////////////////////////////////////////////
 CUICustomItem::CUICustomItem()
 {    
+	uFlags			= 0;
 	iRect.lt.set	(0,0); iRect.rb.set(0,0);
 }
 //--------------------------------------------------------------------
@@ -23,6 +24,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, in
 	Fvector2		hp;
 	ts.set			((int)T->get_Width(),(int)T->get_Height());
 	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
+	
+	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
 
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
