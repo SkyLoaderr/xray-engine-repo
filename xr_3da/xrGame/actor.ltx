@@ -111,53 +111,55 @@ use_limping_state	 = on
 
 
 [actor_damage]
-;bone_name		 = <hit_scale>,<fwd_damage_anim_index> 
+;bone_name		 = <hit_scale>,<fwd_damage_anim_index>,<wound_scale>
+;<hit_scale> - коэфф. изменения хита (уменьшения здоровья) 
+;<wound_scale> - коэфф. изменения величины открытой раны
 ;-1 - нет анимаций, четный номер - спереди, нечетный номер - сзади, УКАЗЫВАЕТСЯ ТОЛЬКО ПЕРЕДНИЙ!!! ЗАДНИЙ НА АВТОМАТЕ
-default			 = 1.0, -1
+default			 = 1.0, -1, 1.0
 
-bip01_pelvis 		 = 0.5, 10
-bip01_spine 		 = 0.5, 10
-bip01_spine1 		 = 0.7, 0
-bip01_neck 			 = 5.0, 0
-bip01_head 			 = 5.0, 0
-eyelid_1 			 = 5.0, 0
-eye_left 			 = 5.0, 0
-eye_right 			 = 5.0, 0
-jaw_1 		 		 = 5.0, 0
+bip01_pelvis 		 = 0.5, 10, 1.0
+bip01_spine 		 = 0.5, 10, 1.0
+bip01_spine1 		 = 0.7, 0, 1.0
+bip01_neck 			 = 5.0, 0, 1.0
+bip01_head 			 = 5.0, 0, 1.0
+eyelid_1 			 = 5.0, 0, 1.0
+eye_left 			 = 5.0, 0, 1.0
+eye_right 			 = 5.0, 0, 1.0
+jaw_1 		 		 = 5.0, 0, 1.0
 
-bip01_l_clavicle	 = 0.5, 4
-bip01_l_upperarm	 = 0.3, 4
-bip01_l_forearm	 	 = 0.3, 4
-bip01_l_hand	 	 = 0.2, 4
-bip01_l_finger0	 	 = 0.1, 4
-bip01_l_finger01	 = 0.1, 4
-bip01_l_finger02	 = 0.1, 4
-bip01_l_finger1	 	 = 0.1, 4
-bip01_l_finger11	 = 0.1, 4
-bip01_l_finger12	 = 0.1, 4
-bip01_l_finger2	 	 = 0.1, 4
-bip01_l_finger21	 = 0.1, 4
-bip01_l_finger22	 = 0.1, 4
+bip01_l_clavicle	 = 0.5, 4, 1.0
+bip01_l_upperarm	 = 0.3, 4, 1.0
+bip01_l_forearm	 	 = 0.3, 4, 1.0
+bip01_l_hand	 	 = 0.2, 4, 1.0
+bip01_l_finger0	 	 = 0.1, 4, 1.0
+bip01_l_finger01	 = 0.1, 4, 1.0
+bip01_l_finger02	 = 0.1, 4, 1.0
+bip01_l_finger1	 	 = 0.1, 4, 1.0
+bip01_l_finger11	 = 0.1, 4, 1.0
+bip01_l_finger12	 = 0.1, 4, 1.0
+bip01_l_finger2	 	 = 0.1, 4, 1.0
+bip01_l_finger21	 = 0.1, 4, 1.0
+bip01_l_finger22	 = 0.1, 4, 1.0
 
-bip01_r_clavicle	 = 0.5, 2
-bip01_r_upperarm	 = 0.3, 2
-bip01_r_forearm	 	 = 0.3, 2
-bip01_r_hand	 	 = 0.2, 2
-bip01_r_finger0	 	 = 0.1, 2
-bip01_r_finger01	 = 0.1, 2
-bip01_r_finger02	 = 0.1, 2
-bip01_r_finger1	 	 = 0.1, 2
-bip01_r_finger11	 = 0.1, 2
-bip01_r_finger12	 = 0.1, 2
-bip01_r_finger2	 	 = 0.1, 2
-bip01_r_finger21	 = 0.1, 2
-bip01_r_finger22	 = 0.1, 2
+bip01_r_clavicle	 = 0.5, 2, 1.0
+bip01_r_upperarm	 = 0.3, 2, 1.0
+bip01_r_forearm	 	 = 0.3, 2, 1.0
+bip01_r_hand	 	 = 0.2, 2, 1.0
+bip01_r_finger0	 	 = 0.1, 2, 1.0
+bip01_r_finger01	 = 0.1, 2, 1.0
+bip01_r_finger02	 = 0.1, 2, 1.0
+bip01_r_finger1	 	 = 0.1, 2, 1.0
+bip01_r_finger11	 = 0.1, 2, 1.0
+bip01_r_finger12	 = 0.1, 2, 1.0
+bip01_r_finger2	 	 = 0.1, 2, 1.0
+bip01_r_finger21	 = 0.1, 2, 1.0
+bip01_r_finger22	 = 0.1, 2, 1.0
 
-bip01_l_thigh	 	 = 0.4, 8
-bip01_l_calf	 	 = 0.4, 8
-bip01_l_foot	 	 = 0.1, 8
-bip01_l_toe0	 	 = 0.1, 8
-bip01_r_thigh	 	 = 0.1, 6
-bip01_r_calf	 	 = 0.1, 6
-bip01_r_foot	 	 = 0.1, 6
-bip01_r_toe0	 	 = 0.1, 6
+bip01_l_thigh	 	 = 0.4, 8, 1.0
+bip01_l_calf	 	 = 0.4, 8, 1.0
+bip01_l_foot	 	 = 0.1, 8, 1.0
+bip01_l_toe0	 	 = 0.1, 8, 1.0
+bip01_r_thigh	 	 = 0.1, 6, 1.0
+bip01_r_calf	 	 = 0.1, 6, 1.0
+bip01_r_foot	 	 = 0.1, 6, 1.0
+bip01_r_toe0	 	 = 0.1, 6, 1.0
