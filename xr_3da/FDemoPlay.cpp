@@ -114,8 +114,9 @@ void CDemoPlay::stat_Stop	()
 		for (u32	it=1; it<stat_table.size(); it++)
 		{
 			string32		id;
-			itoa			(it,id,10);
-			res.w_float		("per_frame_stats",		id, 1.f / stat_table[it]);
+			sprintf			(id,"%7d",it);
+			for (u32 c=0; id[c]; c++) if (' '==id[c]) id[c] = '0';
+			res.w_float		("per_frame_stats",	id, 1.f / stat_table[it]);
 		}
 
 		Console->Execute	("quit");
