@@ -501,8 +501,6 @@ function add_to_binder(object)
 
 	local manager = object:motivation_action_manager()
 
-	printf("KAMP BASE %d", xr_evaluators_id.stohe_kamp_base)
-
 	properties["state_end"]		= xr_evaluators_id.state_change
 	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
 	properties["kamp_end"]		= xr_evaluators_id.stohe_kamp_base + 1
@@ -522,6 +520,7 @@ function add_to_binder(object)
 	action = this.action_go_patrol (object:name(),"action_go_patrol", xr_motivator.storage[object:id()].kamp)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition		(world_property(properties["state_end"], 	true))
 	action:add_precondition		(world_property(properties["need_patrol"],	true))
 	action:add_effect 		(world_property(properties["kamp_end"], 	true))
@@ -537,14 +536,35 @@ function add_to_binder(object)
 	action:add_effect 		(world_property(properties["kamp_end"], 	true))
 	manager:add_action (operators["wait"], action)
 
-	action = this.action_go_position (object:name(),"action_go_position", xr_motivator.storage[object:id()].kamp)
+	action = this.action_go_position (object:name(),"action_go_kamp", xr_motivator.storage[object:id()].kamp)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["state_end"], 	true))
+	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition 	(world_property(properties["on_position"], 	false))
 	action:add_effect 		(world_property(properties["on_position"], 	true))
 	manager:add_action (operators["go_position"], action)
 
 	action = manager:action (stalker_ids.action_puzzle_solver)	
 	action:add_precondition		(world_property(properties["kamp_end"],		true))
+end
+-- включение лагеря
+function set_kamp(object)
+    local char_ini = object:spawn_ini()
+
+    if char_ini:section_exist ("kamp") == true then
+        if char_ini:line_exist("kamp", "enabled") == true then
+                xr_motivator.storage[object:id()].kamp.enabled = char_ini:r_bool("kamp", "enabled")
+        end
+        if char_ini:line_exist("kamp", "center_point") == true then
+                xr_motivator.storage[object:id()].kamp.center_point = char_ini:r_string("kamp", "center_point")
+        else
+            xr_motivator.storage[object:id()].kamp.enabled = false
+        end
+        local i = 1
+        while char_ini:line_exist("kamp", "patrol_path_"..i) == true do
+            xr_motivator.storage[object:id()].kamp.patrol_path[i] = char_ini:r_string("kamp", "patrol_path_"..i)
+            i = i + 1
+        end
+    end
 end
