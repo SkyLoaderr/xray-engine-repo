@@ -7,11 +7,11 @@
 
 #define CFS_CompressMark	(1ul << 31ul)
 
-XRCORE_API void VerifyPath	(LPCSTR path);
+XRFS_API void VerifyPath	(LPCSTR path);
 //------------------------------------------------------------------------------------
 // Write
 //------------------------------------------------------------------------------------
-class XRCORE_API IWriter
+class XRFS_API IWriter
 {
 private:
 	xr_stack<u32>	chunk_pos;
@@ -83,7 +83,7 @@ public:
 	void			w_chunk		(u32 type, void* data, u32 size);
 };
 
-class XRCORE_API CMemoryWriter : public IWriter
+class XRFS_API CMemoryWriter : public IWriter
 {
 	BYTE*			data;
 	u32				position;
@@ -114,7 +114,7 @@ public:
 //------------------------------------------------------------------------------------
 // Read
 //------------------------------------------------------------------------------------
-class XRCORE_API IReader {
+class XRFS_API IReader {
 protected:
 	char *			data;
 	int				Pos;
@@ -154,9 +154,8 @@ public:
 	void			skip_stringZ();
 
 	void			r_stringZ	(ref_str& dest);
-#ifdef _EDITOR
-	void			r_stringZ	(AnsiString& dest);
-#endif
+	void			r_stringZ	(std::string& dest);
+
 	IC u64			r_u64		()			{	u64 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
 	IC u32			r_u32		()			{	u32 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
 	IC u16			r_u16		()			{	u16 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
@@ -209,7 +208,7 @@ public:
 	void			close		();
 };
 
-class XRCORE_API CVirtualFileRW : public IReader
+class XRFS_API CVirtualFileRW : public IReader
 {
 private:
 	HANDLE	hSrcFile,hSrcMap;

@@ -10,10 +10,10 @@ struct	xr_token;
 //Описание Inifile
 //-----------------------------------------------------------------------------------------------------------
 
-class XRCORE_API CInifile
+class XRFS_API CInifile
 {
 public:
-	struct XRCORE_API Item
+	struct XRFS_API Item
 	{
 		ref_str	first;
 		ref_str	second;
@@ -23,7 +23,7 @@ public:
 	};
 	typedef xr_vector<Item>			Items;
 	typedef Items::iterator			SectIt;
-    struct XRCORE_API Sect {
+    struct XRFS_API Sect {
 		ref_str			Name;
 		Items			Data;
 
@@ -128,7 +128,7 @@ public:
 };
 
 // Main configuration file
-extern XRCORE_API CInifile *pSettings;
+extern XRFS_API CInifile *pSettings;
 
 
 #endif //__XR_INI_H__

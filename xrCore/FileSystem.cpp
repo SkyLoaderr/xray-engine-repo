@@ -5,11 +5,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-//#ifdef M_BORLAND
 #include "cderr.h"
 #include "commdlg.h"
 
-EFS_Utils EFS;
+EFS_Utils*	xr_EFS	= NULL;
 //----------------------------------------------------
 EFS_Utils::EFS_Utils( )
 {
@@ -19,23 +18,32 @@ EFS_Utils::~EFS_Utils()
 {
 }
 
-void EFS_Utils::OnCreate()
+std::string	EFS_Utils::ChangeFileExt(LPCSTR src, LPCSTR ext)
 {
-#ifdef M_BORLAND
+	std::string	tmp;
+	LPSTR src_ext	= strext(src);
+    if (src_ext){
+	    size_t		ext_pos	= src_ext-src;
+        tmp.assign	(src,0,ext_pos);
+    }else{
+        tmp			= src;
+    }
+    tmp				+= ext;
+    return tmp;
+}
+
+std::string	EFS_Utils::ChangeFileExt(const std::string& src, LPCSTR ext)
+{
+	return ChangeFileExt(src.c_str(),ext);
+}
+
+void EFS_Utils::_initialize()
+{
 	FS.update_path			(m_LastAccessFN,"$server_data_root$","access.ini");
     FS.update_path			(m_AccessLog,	"$server_data_root$","access.log");
-#endif
 }                                               
 //----------------------------------------------------
-/*
-#ifdef _MSC_VER
-#define utimbuf _utimbuf
-LPCSTR ExtractFileExt(const string& fn)
-{
-	return strext(fn.c_str());
-}
-#endif
-*/
+
 LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext)
 {
 	ZeroMemory(dest,sizeof(dest));
@@ -151,14 +159,14 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, char *buffer, int sz_buf, LPCSTR of
 	return bRes;
 }
 //----------------------------------------------------
-LPSTR EFS_Utils::AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name)
+LPCSTR EFS_Utils::AppendFolderToName(LPSTR tex_name, int depth, BOOL full_name)
 {
 	string256 _fn;
 	strcpy(tex_name,AppendFolderToName(tex_name, _fn, depth, full_name));
 	return tex_name;
 }
 
-LPSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name)
+LPCSTR EFS_Utils::AppendFolderToName(LPCSTR src_name, LPSTR dest_name, int depth, BOOL full_name)
 {
 	ref_str tmp = src_name;
     LPCSTR s 	= src_name;

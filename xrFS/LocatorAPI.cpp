@@ -32,10 +32,6 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
 	m_Add			= _Add?xr_strdup(_Add):0;
 	m_Root			= _Root?xr_strdup(_Root):0;
     m_Flags.assign	(flags);
-#ifdef _EDITOR
-	// Editor(s)/User(s) wants pathes already created in "real" file system :)
-	VerifyPath		(m_Path);
-#endif
 }
 
 FS_Path::~FS_Path	()
@@ -72,22 +68,17 @@ LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
 	return strlwr	(strconcat(dest,m_Path,temp));
 }
 
-#ifdef __BORLANDC__
-const AnsiString& FS_Path::_update(AnsiString& dest)const
-{
-	return dest=AnsiString(AnsiString(m_Path)+dest).LowerCase();
-}
-const AnsiString& FS_Path::_update(AnsiString& dest, LPCSTR src)const
+void FS_Path::_update(std::string& dest, LPCSTR src)const
 {
     R_ASSERT(src);
-	return dest=AnsiString(AnsiString(m_Path)+src).LowerCase();
+    dest			= std::string(m_Path)+src;
+    xr_strlwr		(dest);
 }
-void __fastcall FS_Path::rescan_path_cb()
+void FS_Path::rescan_path_cb()
 {
 	m_Flags.set(flNeedRescan,TRUE);
     FS.m_Flags.set(CLocatorAPI::flNeedRescan,TRUE);
 }
-#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -307,18 +298,23 @@ void CLocatorAPI::_initialize	(u32 flags)
 	r_close			(F);
 	DWORD	M2		= Memory.mem_usage();
 	Msg				("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
+
 #ifdef __BORLANDC__
-    // set event handlers
-    SetEventNotification();
+	m_Flags.set		(flEventNotificator,TRUE);
+//.    
 #endif
+	if (m_Flags.is(flEventNotificator)){
+	    // set event handlers
+	    SetEventNotification();
+    }
 	m_Flags.set		(flReady,TRUE);
 }
 void CLocatorAPI::_destroy		()
 {
-#ifdef __BORLANDC__
-    // clear event handlers
-    ClearEventNotification		();
-#endif
+	if (m_Flags.is(flEventNotificator)){
+        // clear event handlers
+        ClearEventNotification		();
+    }
 
 	for				(files_it I=files.begin(); I!=files.end(); I++)
 	{
@@ -340,19 +336,10 @@ void CLocatorAPI::_destroy		()
     archives.clear	();
 }
 
-const CLocatorAPI::file* CLocatorAPI::exist			(const char* F)
+const CLocatorAPI::file* CLocatorAPI::exist			(const char* fn)
 {
-	// проверить нужно ли пересканировать пути
-    check_pathes	();
-
-	string_path		N;
-	strcpy			(N,F);
-	strlwr			(N);
-	file			desc;
-	desc.name		= N;
-	
-	files_it	I 	= files.find(desc);
-	return (I!=files.end())?&(*I):0;
+	files_it it		= file_find_it(fn);
+	return (it!=files.end())?&(*it):0;
 }
 
 const CLocatorAPI::file* CLocatorAPI::exist			(const char* path, const char* name)
@@ -368,7 +355,7 @@ const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const
 	return exist(fn);
 }
 
-const CLocatorAPI::file* CLocatorAPI::exist				(char* fn, const char* path, const char* name, const char* ext)
+const CLocatorAPI::file* CLocatorAPI::exist			(char* fn, const char* path, const char* name, const char* ext)
 {
 	string_path nm;
 	strconcat		(nm,name,ext);
@@ -434,6 +421,119 @@ void	CLocatorAPI::file_list_close	(xr_vector<char*>* &lst)
 	}
 }
 
+struct fl_mask{
+	bool 	b_cmp_nm;
+    bool	b_cmp_ext;
+	ref_str nm;
+    ref_str ext;
+    fl_mask():b_cmp_nm(false),b_cmp_ext(false){};
+};
+
+DEFINE_VECTOR(fl_mask,FLMaskVec,FLMaskVecIt);
+int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR path, u32 flags, LPCSTR mask)
+{
+	R_ASSERT		(path);
+	VERIFY			(flags);
+	// проверить нужно ли пересканировать пути
+    check_pathes	();
+               
+	std::string		N;
+	if (FS.path_exist(path))	update_path(N,path,"");
+    else						N=path;
+
+	file			desc;
+	desc.name		= N.c_str();
+	files_it	I 	= files.find(desc);
+	if (I==files.end())	return 0;
+
+    BOOL b_mask 	= FALSE;
+	FLMaskVec 		masks;
+	if (mask){
+		int cnt		= _GetItemCount(mask);
+		string64	buf;
+		for (int k=0; k<cnt; k++){
+        	_GetItem(mask,k,buf);
+            fl_mask item;
+        	// name
+			string64 nm;
+        	_GetItem(buf,0,nm,'.'); 
+			if (nm&&nm[0]&&(nm[0]!='*'))	{	item.nm=nm; item.b_cmp_nm=true;		}
+			// extension
+            LPCSTR ext	= strext(buf);
+			if (ext&&ext[0]&&(ext[1]!='*'))	{	item.ext=ext; item.b_cmp_ext=true; 	}
+            masks.push_back(item);
+        }
+        b_mask		= !masks.empty();
+	}
+
+	size_t base_len	= N.size();
+	for (++I; I!=files.end(); I++)
+	{
+		const file& entry = *I;
+		if (0!=strncmp(entry.name,N.c_str(),base_len))	break;	// end of list
+		LPCSTR end_symbol = entry.name+xr_strlen(entry.name)-1;
+		if ((*end_symbol) !='\\')	{
+			// file
+			if ((flags&FS_ListFiles) == 0)	continue;
+			LPCSTR entry_begin 		= entry.name+base_len;
+			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
+			// check extension
+			if (b_mask){
+                string128 tmp;
+                ref_str nm 			= _GetItem(entry_begin,0,tmp,'.');
+				ref_str ext 		= strext(entry_begin);
+                bool bOK			= false;
+                for (FLMaskVecIt it=masks.begin(); it!=masks.end(); it++){
+                	bool bNM		= true;
+                    bool bEXT		= true;
+                    if (it->b_cmp_nm)	if (nm!=it->nm) 	bNM =false;
+                    if (it->b_cmp_ext)	if (ext!=it->ext) 	bEXT=false;
+                    bOK				= bNM&&bEXT;
+                    if (bOK)		break;
+                }
+                if (!bOK)			continue;
+			}
+			std::string fn			= entry_begin;
+			// insert file entry
+			if (flags&FS_ClampExt)	fn = EFS.ChangeFileExt(fn,"");
+			u32 fl = (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
+			dest.insert(mk_pair(fn.c_str(),FS_QueryItem(entry.size_real,entry.modif,fl)));
+		} else {
+			// folder
+			if ((flags&FS_ListFolders) == 0)continue;
+			LPCSTR entry_begin 		= entry.name+base_len;
+
+			if ((flags&FS_RootOnly)&&(strstr(entry_begin,"\\")!=end_symbol))	continue;	// folder in folder
+			u32 fl = FS_QueryItem::flSubDir|(entry.vfs?FS_QueryItem::flVFS:0);
+			dest.insert(mk_pair(entry_begin,FS_QueryItem(entry.size_real,entry.modif,fl)));
+		}
+	}
+	return dest.size();
+}
+
+bool CLocatorAPI::file_find(FS_QueryItem& dest, LPCSTR path, LPCSTR name, bool clamp_ext)
+{
+	R_ASSERT			(path);
+	// проверить нужно ли пересканировать пути
+    check_pathes		();
+
+	std::string			N;
+	if (FS.path_exist(path))	update_path(N,path,name);
+    else						N=std::string(path)+name;
+
+	file				desc;
+	desc.name			= N.c_str();
+	files_it	I 		= files.find(desc);
+	if (I==files.end())	return false;
+
+	size_t base_len		= N.size();
+    const file& entry 	= *I;
+    std::string fn		= (clamp_ext)?EFS.ChangeFileExt(entry.name+base_len,""):std::string(entry.name+base_len);
+    u32 fl 				= (entry.vfs!=0xffffffff?FS_QueryItem::flVFS:0);
+    dest.set			(entry.size_real,entry.modif,fl);
+    return true;
+}
+
 IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 {
 	IReader* R		= 0;
@@ -475,7 +575,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 
 					string_path	fname_in_cache	;
 					update_path	(fname_in_cache,"$cache$",path_file+len_base);
-					files_it	fit	= file_find(fname_in_cache);
+					files_it	fit	= file_find_it(fname_in_cache);
 					if (fit!=files.end())	
 					{
 						// use
@@ -605,7 +705,7 @@ void	CLocatorAPI::w_close(IWriter* &S)
     Register	(fname,0xffffffff,0,st.st_size,st.st_size,(u32)st.st_mtime);
 }
 
-CLocatorAPI::files_it CLocatorAPI::file_find(LPCSTR fname)
+CLocatorAPI::files_it CLocatorAPI::file_find_it(LPCSTR fname)
 {
 	// проверить нужно ли пересканировать пути
     check_pathes	();
@@ -626,7 +726,7 @@ BOOL CLocatorAPI::dir_delete(LPCSTR path,LPCSTR nm,BOOL remove_files)
     files_set 	folders;
     files_it I;
 	// remove files
-    I					= file_find(fpath);
+    I					= file_find_it(fpath);
     if (I!=files.end()){
         size_t base_len			= xr_strlen(fpath);
         for (; I!=files.end(); ){
@@ -663,7 +763,7 @@ void CLocatorAPI::file_delete(LPCSTR path, LPCSTR nm)
 	if (path&&path[0]) 	update_path(fname,path,nm);
     else				strcpy(fname,nm);
 
-    const files_it I	= file_find(fname);
+    const files_it I	= file_find_it(fname);
     if (I!=files.end()){
 	    // remove file
     	unlink			(I->name);
@@ -686,9 +786,9 @@ void CLocatorAPI::file_copy(LPCSTR src, LPCSTR dest)
 
 void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 {
-	files_it	S		= file_find(src);
+	files_it	S		= file_find_it(src);
 	if (S!=files.end()){
-		files_it D		= file_find(dest);
+		files_it D		= file_find_it(dest);
 		if (D!=files.end()){ 
 	        if (!bOwerwrite) return;
             unlink		(D->name);
@@ -714,7 +814,7 @@ void CLocatorAPI::file_rename(LPCSTR src, LPCSTR dest, bool bOwerwrite)
 
 int	CLocatorAPI::file_length(LPCSTR src)
 {
-	files_it	I		= file_find(src);
+	files_it	I		= file_find_it(src);
 	return (I!=files.end())?I->size_real:-1;
 }
 
@@ -736,23 +836,17 @@ LPCSTR CLocatorAPI::update_path(LPSTR dest, LPCSTR initial, LPCSTR src)
     return get_path(initial)->_update(dest,src);
 }
 
-#ifdef __BORLANDC__
-const AnsiString& CLocatorAPI::update_path(LPCSTR initial, AnsiString& path)
-{
-    return get_path(initial)->_update(path);
-}
-const AnsiString& CLocatorAPI::update_path(AnsiString& dest, LPCSTR initial, LPCSTR src)
+void CLocatorAPI::update_path(std::string& dest, LPCSTR initial, LPCSTR src)
 {
     return get_path(initial)->_update(dest,src);
 }
-#endif    
 
 int CLocatorAPI::get_file_age(LPCSTR nm)
 {
 	// проверить нужно ли пересканировать пути
     check_pathes	();
 
-	files_it I 		= file_find(nm);
+	files_it I 		= file_find_it(nm);
     return (I!=files.end())?I->modif:-1;
 }
 
@@ -768,7 +862,7 @@ void CLocatorAPI::set_file_age(LPCSTR nm, int age)
     R_ASSERT2	(0==_utime(nm,&tm),"Can't set file age.");
     
     // update record
-	files_it I 		= file_find(nm);
+	files_it I 		= file_find_it(nm);
     if (I!=files.end()){
     	file& F		= (file&)*I;
     	F.modif		= age;

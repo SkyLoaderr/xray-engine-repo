@@ -1,30 +1,48 @@
-#ifndef LocatorAPI_borlandH
-#define LocatorAPI_borlandH
+#ifndef LocatorAPI_NotificationsH
+#define LocatorAPI_NotificationsH
 #pragma once
 
-class TShellChangeThread : public Classes::TThread
+class CThread
 {
-	typedef Classes::TThread inherited;
-    friend class TCustomShellChangeNotifier;
+	static void __cdecl startup(void* P);
+protected:
+	volatile u32			thID;
+	volatile BOOL			Terminated;
+public:
+							CThread			(u32 _ID)
+	{
+		thID				= _ID;
+        Terminated			= FALSE;
+    }
+	virtual 				~CThread		(){}
+	void					Start			()
+	{
+		_beginthread		(startup,0,this);
+	}
+	virtual	void			Execute			() = 0;
+    void					Terminate		() {Terminated=TRUE;}
+};
+
+class CFS_PathNotificator : public CThread
+{
 private:
     struct Path{
-    	AnsiString			FDirectory;
-        HANDLE 				FWaitHandle;
-        TThreadMethod 		FChangeEvent;
-		bool 				bRecurse;
+    	ref_str						FDirectory;
+        HANDLE 						FWaitHandle;
+        fastdelegate::FastDelegate0	FChangeEvent;
+		BOOL 						bRecurse;
     };
     DEFINE_VECTOR(HANDLE,HANDLEVec,HANDLEIt);
     DEFINE_VECTOR(Path,PathVec,PathIt);
     PathVec					events;
-//	bool 					FWaitChanged;
 public:
 	HANDLE 					FMutex;
 	unsigned 				FNotifyOptionFlags;
 protected:
-	virtual void __fastcall Execute();
+	virtual void  			Execute				();
 public:
-	__fastcall virtual 		TShellChangeThread	();
-	__fastcall virtual 		~TShellChangeThread	();
+					 		CFS_PathNotificator	();
+	virtual 				~CFS_PathNotificator();
     void					RegisterPath		(FS_Path& path);
 };
 

@@ -5,12 +5,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef M_BORLAND
 #include <io.h>
 #include <fcntl.h>
 #include <sys\stat.h>
 
-bool EFS_Utils::GetOpenName(LPCSTR initial, AnsiString& buffer, bool bMulti, LPCSTR offset, int start_flt_ext ){
+bool EFS_Utils::GetOpenName(LPCSTR initial, std::string& buffer, bool bMulti, LPCSTR offset, int start_flt_ext )
+{
 	string4096 buf;
 	strcpy(buf,buffer.c_str());
 	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset,start_flt_ext);
@@ -18,7 +18,8 @@ bool EFS_Utils::GetOpenName(LPCSTR initial, AnsiString& buffer, bool bMulti, LPC
 	return bRes;
 }
 
-bool EFS_Utils::GetSaveName( LPCSTR initial, AnsiString& buffer, LPCSTR offset, int start_flt_ext ){
+bool EFS_Utils::GetSaveName( LPCSTR initial, std::string& buffer, LPCSTR offset, int start_flt_ext )
+{
 	string4096 buf;
 	strcpy(buf,buffer.c_str());
 	bool bRes = GetSaveName(initial,buf,sizeof(buf),offset,start_flt_ext);
@@ -27,36 +28,36 @@ bool EFS_Utils::GetSaveName( LPCSTR initial, AnsiString& buffer, LPCSTR offset, 
 }
 //----------------------------------------------------
 
-void EFS_Utils::MarkFile(const AnsiString& fn, bool bDeleteSource)
+void EFS_Utils::MarkFile(LPCSTR fn, bool bDeleteSource)
 {
-	AnsiString ext = ExtractFileExt(fn);
-	ext.Insert("~",2);
-	AnsiString backup_fn = ChangeFileExt(fn,ext);
+	std::string ext = strext(fn);
+	ext.insert		(1,"~");
+	std::string backup_fn = EFS.ChangeFileExt(fn,ext.c_str());
 	if (bDeleteSource){
-		FS.file_rename(fn.c_str(),backup_fn.c_str(),true);
+		FS.file_rename(fn,backup_fn.c_str(),true);
 	}else{
-		FS.file_copy(fn.c_str(),backup_fn.c_str());
+		FS.file_copy(fn,backup_fn.c_str());
 	}
 }
 
 #define BACKUP_FILE_LEVEL 15
 
-void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname, bool bMsg)
+void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg)
 {
 	R_ASSERT(initial);
-	AnsiString src_name; 
-	FS.update_path(src_name,initial,fname.c_str());
+	std::string src_name; 
+	FS.update_path(src_name,initial,fname);
 	if (FS.exist(src_name.c_str())){
-		AnsiString 			dst_name,dst_path,del_name;
+		std::string			dst_name,dst_path,del_name;
 		FS_Path* P 			= FS.get_path(initial);
 		string64			t_stemp;
-		dst_name.sprintf	("%s%s.%s_%s",P->m_Add,fname.c_str(),Core.UserName,timestamp(t_stemp));
-		FS.update_path		("$server_backup$",dst_name);
+        dst_name			= std::string(P->m_Add)+fname+"."+Core.UserName+"_"+timestamp(t_stemp);
+		FS.update_path		(dst_name,"$server_backup$",dst_name.c_str());
         FS.update_path		(dst_path,"$server_backup$",P->m_Add);
 
         // удалить лишние бэкап файлы
         FS_QueryMap lst;
-        AnsiString mask		= ChangeFileExt(fname.LowerCase(),".*");
+        std::string mask	= EFS.ChangeFileExt(fname,".*"); xr_strlwr(mask);
 		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=BACKUP_FILE_LEVEL){
         	do{
             	FS_QueryPairIt  min_it  = lst.begin();
@@ -73,11 +74,11 @@ void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname, bool bMsg)
 		FS.file_copy		(src_name.c_str(),dst_name.c_str());
 		WriteAccessLog		(dst_name.c_str(),"Backup");
 	}else{
-    	if (bMsg)			Log("!Can't backup file:",fname.c_str());
+    	if (bMsg)			Log("!Can't backup file:",fname);
     }
 }
 
-AnsiString&	EFS_Utils::AppendFolderToName(AnsiString& tex_name, int depth, BOOL full_name)
+std::string	EFS_Utils::AppendFolderToName(std::string& tex_name, int depth, BOOL full_name)
 {
 	string1024 nm;
 	strcpy(nm,tex_name.c_str());
@@ -85,14 +86,14 @@ AnsiString&	EFS_Utils::AppendFolderToName(AnsiString& tex_name, int depth, BOOL 
 	return tex_name;
 }
 
-void EFS_Utils::WriteAccessLog(LPSTR fn, LPSTR start_msg)
+void EFS_Utils::WriteAccessLog(LPCSTR fn, LPCSTR start_msg)
 {
 	string1024	buf;
 	string256	dt_buf, tm_buf;
 	sprintf(buf, "%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
-	int hf = open( m_AccessLog, _O_WRONLY|_O_APPEND|_O_BINARY );
+	int hf 		= open( m_AccessLog.c_str(), _O_WRONLY|_O_APPEND|_O_BINARY );
 	if( hf<=0 )
-		hf = open( m_AccessLog,
+		hf = open( m_AccessLog.c_str(),
 		_O_WRONLY|_O_CREAT|_O_TRUNC| _O_BINARY,
 		_S_IREAD | _S_IWRITE );
 
@@ -102,15 +103,15 @@ void EFS_Utils::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 	_close( hf );
 }
 
-void EFS_Utils::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
+void EFS_Utils::RegisterAccess(LPCSTR fn, LPCSTR start_msg, bool bLog)
 {
-	CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
+	CInifile*	ini = CInifile::Create(m_LastAccessFN.c_str(),false);
 	ini->w_string("last_access",fn,Core.CompName);
 	CInifile::Destroy(ini);
 	if (bLog) 	WriteAccessLog(fn,start_msg);
 }
 
-BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool bMsg)
+BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPCSTR fname, bool bOnlySelf, bool bMsg)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
@@ -126,7 +127,7 @@ BOOL EFS_Utils::CheckLocking(LPCSTR initial, LPSTR fname, bool bOnlySelf, bool b
     return FALSE;
 }
 
-BOOL EFS_Utils::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
+BOOL EFS_Utils::LockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
@@ -145,7 +146,7 @@ BOOL EFS_Utils::LockFile(LPCSTR initial, LPSTR fname, bool bLog)
 	return bRes;
 }
 
-BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
+BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPCSTR fname, bool bLog)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
@@ -161,16 +162,16 @@ BOOL EFS_Utils::UnlockFile(LPCSTR initial, LPSTR fname, bool bLog)
 	return false;
 }
 
-LPCSTR EFS_Utils::GetLockOwner(LPCSTR initial, LPSTR fname)
+LPCSTR EFS_Utils::GetLockOwner(LPCSTR initial, LPCSTR fname)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) FS.update_path(fn,initial,fn);
 
-	CInifile*	ini = CInifile::Create(m_LastAccessFN,true);
+	CInifile*	ini = CInifile::Create(m_LastAccessFN.c_str(),true);
 	static string256 comp;
 	strcpy(comp,ini->line_exist("last_access",fn)?ini->r_string("last_access",fn):"unknown");
 	CInifile::Destroy(ini);
 
 	return comp;
 }
-#endif
+
