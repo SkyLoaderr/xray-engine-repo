@@ -11,6 +11,8 @@
 #define		CLSID_SPAWN_ZONE		MK_CLSID('S','_','Z','O','N','E',' ',' ')
 #define		CLSID_SPAWN_ENTITY		MK_CLSID('S','_','E','N','T','I','T','Y')
 
+// CFORM usage
+
 // Description
 #pragma pack(push,4)
 class CSpawn_DESC
