@@ -276,24 +276,7 @@ function path_parse_waypoints(pathname)
 
 	for pt = 0, cnt - 1 do
 		printf("_bp: %s", ptr:name(pt))
-		rslt[pt] = parse_waypoint_data(ptr:name(pt))
-		--[[
-		if pathname=="path_walker_look" and pt == 0 then
-			rslt[pt] = parse_waypoint_data("wp01|anim=hide|time=2000|prob=99|snd=weather,state,wait|snd_wait_anim=true") --|snd=weather,state,wait|snd_prob=100|snd_from=1|snd_to=2")
-		elseif pathname=="path_walker_look" and pt == 1 then
-			rslt[pt] = parse_waypoint_data("wp02|anim=idle|time=500")
-		elseif pathname=="path_walker_look" and pt == 2 then
-			rslt[pt] = parse_waypoint_data("wp03|anim=idle|time=500|prob=1")
-		elseif pathname=="path_walker_walk" and pt == 0 then
-			rslt[pt] = parse_waypoint_data("wp01|run=true")
-		elseif pathname=="path_walker_walk" and pt == 1 then
-			rslt[pt] = parse_waypoint_data("wp02|run=true")
-		elseif pathname=="path_walker_walk" and pt == 2 then
-			rslt[pt] = parse_waypoint_data("wp03|run=true|danger=true")
-		else
-			rslt[pt] = {}
-		end
-		]]
+		rslt[pt] = parse_waypoint_data(pathname, ptr:name(pt))
 		if not rslt[pt] then
 			utils.abort("error while parsing point %d of path '%s'", pt, pathname)
 		end
