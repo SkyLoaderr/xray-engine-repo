@@ -5,10 +5,7 @@ module("script_zone")
 Чугай Саша
 
 Сделать:
-	- если зона создалась, а сталкер не добавился
 	- если нету такого типа гулага
-	- fraction types->gulag
-
 	- если сталкер под фракцией заходит в зону другой фракции
 
 Идеи:
@@ -131,14 +128,14 @@ function zone_binder:reload( section )
 		return
 	end
 
-	if zone_ini:section_exist( "fraction1" ) then
-		-- если управление фракциями ещё не создано, то создать
-		if not z.zone_fractions then
-			z.zone_fractions = zone_fractions( self.object, zone_ini )
+	if zone_ini:section_exist( "gulag1" ) then
+		-- если управление галагами ещё не создано, то создать
+		if not z.zone_gulags then
+			z.zone_gulags = zone_gulags( self.object, zone_ini )
 
 			-- если ошибка инициализации, то прибить
-			if not z.zone_fractions.ini_ok then
-				z.zone_fractions = nil
+			if not z.zone_gulags.ini_ok then
+				z.zone_gulags = nil
 			end
 		end
 	end
@@ -185,103 +182,107 @@ function zone_binder:on_leave( zone, obj )
 end
 
 ----------------------------------------------------------------------------------------------------------------------
---Класс zone_fractions. Он управляет фракциями (гулагами), которые могут образоваться в этой схеме.
+--Класс zone_gulags. Он управляет гулагами, которые могут образоваться в этой схеме.
 ----------------------------------------------------------------------------------------------------------------------
 
-class "zone_fractions"
+class "zone_gulags"
 
-function zone_fractions:__init( zone, ini )
+function zone_gulags:__init( zone, ini )
 	local sect
 
 	self.zone            = zone
 	self.stalkers        = {}    -- group и squad для каждого сталкера
-	self.fractions       = {}    -- настройки фракций, возможных в этой зоне
-	self.fraction        = nil   -- экземпляр текущей фракции
-	self.fraction_name   = nil   -- имя текущей фракции
-	self.fraction_params = nil   -- ссылка на ini настройки текущей фракции в табличке fractions
-	self.type            = nil   -- тип текущей фракции зоны
+	self.gulags          = {}    -- настройки гулагов, возможных в этой зоне
+	self.gulag           = nil   -- экземпляр текущего гулага
+	self.gulag_name      = zone:name()   -- имя текущего гулага
 
-	-- прочитать настройки всех возможных фракций
-	local f  = self.fractions
-	local fi = 1
+	-- прочитать настройки всех возможных гулагов
+	local g  = self.gulags
+	local gi = 1
 
 	repeat
-		sect = "fraction"..fi
+		sect = "gulag"..gi
 
 		if not ini:section_exist( sect ) then
 			break
 		end
 
-		table.insert( f, {} )
-		local ffi = f[fi]
+		table.insert( g, {} )
+		local ggi = g[gi]
 
 		if ini:line_exist( sect, "type" ) then
-			ffi.type                            = ini:r_string( sect, "type" )
-			ffi.idle_min, ffi.idle_max          = r_nums( ini, sect, "idle",       12,     24 )
-			ffi.duration_min, ffi.duration_max  = r_nums( ini, sect, "duration",   100000, 100001 )
---			ffi.prefix                          = r_str ( ini, sect, "prefix",     self.zone:name() )
-			ffi.capacity                        = r_num ( ini, sect, "capacity",   100 )
-			ffi.stay_min, ffi.stay_max          = r_nums( ini, sect, "stay",       100000, 100001 )
-			ffi.probability                     = r_num ( ini, sect, "p",          100 )
-			ffi.squad                           = r_num ( ini, sect, "squad" )
-			ffi.group                           = r_num ( ini, sect, "group" )
-			ffi.preconditions                   = r_str ( ini, sect, "preconditions" )
+			ggi.type                            = ini:r_string( sect, "type" )
+			ggi.idle_min, ggi.idle_max          = r_nums( ini, sect, "idle",       12,     24 )
+			ggi.duration_min, ggi.duration_max  = r_nums( ini, sect, "duration",   100000, 100001 )
+			ggi.capacity                        = r_num ( ini, sect, "capacity",   100 )
+			ggi.stay_min, ggi.stay_max          = r_nums( ini, sect, "stay",       100000, 100001 )
+			ggi.probability                     = r_num ( ini, sect, "p",          100 )
+			ggi.squad                           = r_num ( ini, sect, "squad" )
+			ggi.groups                          = r_str ( ini, sect, "groups" )
+			ggi.preconditions                   = r_str ( ini, sect, "preconditions" )
 		else
-			table.remove( f, fi )
+			table.remove( g, gi )
 			break
 		end
 
-		if ffi.preconditions then
-			ffi.preconditions = parse_names( ffi.preconditions )
+		if ggi.preconditions then
+			ggi.preconditions = parse_names( ggi.preconditions )
 		end
 
-		fi = fi + 1
+		if ggi.groups then
+			ggi.groups = parse_nums( ggi.groups )
+		end
+
+		gi = gi + 1
 	until false
 
-	if fi <= 1 then
+	if gi <= 1 then
 		return
 	end
+
+	self.gulag_name = zone:name()
 
 	self.ini_ok = true
 end
 
--- добавить сталкера во фракцию
-function zone_fractions:add_stalker( obj )
-	if not self.fraction:stalkerExist( obj ) then
-		-- если во фракции есть свободные места, то добавить
-		local n = self.fraction:get_population()
+-- добавить сталкера в гулаг
+function zone_gulags:add_stalker( obj )
+	-- если он не входит уже в какой-то гулаг
+	if not xr_gulag.isUnderFraction( obj ) then
+		-- если в гулаге есть свободные места, то добавить
+		local n = self.gulag:get_population()
 
---		printf( "%d %d %d", n, self.capacity, self.fraction:get_capacity() )
-		if n < self.capacity and n < self.fraction:get_capacity() and math.random( 100 ) <= self.probability then
-			if self.fraction:addObject( obj ) then
+--		printf( "%d %d %d", n, self.gparams.capacity, self.gulag:get_capacity() )
+		if n < self.gparams.capacity and n < self.gulag:get_capacity() and math.random( 100 ) <= self.gparams.probability then
+			if self.gulag:addObject( obj ) then
 				self.stalkers[obj:id()] = {
 					group    = obj:group(),
 					squad    = obj:squad(),
-					stay_end = math.random( self.fraction_params.stay_min, self.fraction_params.stay_max ) * h2ms + game.time()
+					stay_end = math.random( self.gparams.stay_min, self.gparams.stay_max ) * h2ms + game.time()
 				}
 
-				printf( "[zone %s] adding %s to zonal fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
+				printf( "[zone %s] adding %s to gulag type=%s", self.zone:name(), obj:name(), self.gparams.type )
 			end
 		end
 	end
 end
 
 -- отпустить сталкера
-function zone_fractions:free_stalker( obj )
-	self.fraction:removeObject( obj )
+function zone_gulags:free_stalker( obj )
+	self.gulag:removeObject( obj )
 
 	local backup = self.stalkers[obj:id()]
 	obj:change_team( obj:team(), backup.squad, backup.group )
 
 	self.stalkers[obj:id()] = nil
 
-	printf( "[zone %s] removing %s from fraction type=%s", self.zone:name(), obj:name(), self.fraction_type )
+	printf( "[zone %s] removing %s from gulag type=%s", self.zone:name(), obj:name(), self.gparams.type )
 end
 
--- может ли данная фракция создаться в данный момент?
-function zone_fractions:is_fract_available( fract_params )
-	if fract_params.preconditions then
-		for i, v in fract_params.preconditions do
+-- может ли данный гулаг создаться в данный момент?
+function zone_gulags:is_gulag_available( gulag_params )
+	if gulag_params.preconditions then
+		for i, v in gulag_params.preconditions do
 			if not the_actor:has_info( v ) then
 				return false
 			end
@@ -291,42 +292,30 @@ function zone_fractions:is_fract_available( fract_params )
 	return true
 end
 
--- создание новой фракции по конфигурации для данной зоны
-function zone_fractions:create_fraction()
+-- создание нового гулага по конфигурации для данной зоны
+function zone_gulags:create_gulag()
 	if not the_actor then
 		the_actor = level.actor()
 	end
 
-	-- выбор фракций, которые могут быть созданы
-	local avail_fracts = {}
-	for i, v in self.fractions do
-		if self:is_fract_available( v ) then
-			table.insert( avail_fracts, v )
+	-- выбор гулагов, которые могут быть созданы
+	local avail = {}
+	for i, v in self.gulags do
+		if self:is_gulag_available( v ) then
+			table.insert( avail, v )
 		end
 	end
 
-	if table.getn( avail_fracts ) > 0 then
+	if table.getn( avail ) > 0 then
 		-- создание 
-		local fparams = avail_fracts[math.random( 1, table.getn( avail_fracts ) )]
+		self.gparams = avail[math.random( 1, table.getn( avail ) )]  -- ссылка на настройки текущего гулага
 
-		self.fraction_params = fparams
-
-		self.fraction_type = fparams.type
-		self.fraction_name = self.zone:name() --.. "_" .. fparams.type
---		self.prefix        = fparams.prefix
-		self.duration_end  = math.random( fparams.duration_min, fparams.duration_max ) * h2ms + game.time()
-		self.probability   = fparams.probability
-		self.capacity      = fparams.capacity
-		self.squad         = fparams.squad
-		self.group         = fparams.group
+		self.duration_end  = math.random( self.gparams.duration_min, self.gparams.duration_max ) * h2ms + game.time()
 		self.check_time    = game.time() + check_period
 
---		self.fraction      = xr_gulag.fract( self.fraction_name )
-		self.fraction      = xr_gulag.createGulag( self.fraction_name, self.fraction_type )
+		self.gulag         = xr_gulag.createGulag( self.gulag_name, self.gparams.type, self.gparams.squad, self.gparams.groups )
 
---		fraction_types[fparams.type].setup_jobs( self )
-
-		printf( "[zone %s] creating fraction of type %s", self.zone:name(), fparams.type )
+		printf( "[zone %s] creating gulag of type %s", self.zone:name(), self.gparams.type )
 
 		return true
 	else
@@ -334,30 +323,31 @@ function zone_fractions:create_fraction()
 	end
 end
 
--- всех освободить, убить фракцию
-function zone_fractions:remove_fraction()
-	-- освободить всех, кто ещё жив в фракции
-	for k, obj in self.fraction.Object do
+-- всех освободить, убить гулаг
+function zone_gulags:remove_gulag()
+	-- освободить всех, кто ещё жив в гулаге
+	for k, obj in self.gulag.Object do
 		self:free_stalker( obj )
 	end
 
-	self.fraction = nil
-	self.idle_end = math.random( self.fraction_params.idle_min, self.fraction_params.idle_max ) * h2ms + game.time()
+	xr_gulag.destroyGulag( self.gulag_name )
+	self.gulag    = nil
+	self.idle_end = math.random( self.gparams.idle_min, self.gparams.idle_max ) * h2ms + game.time()
 
-	printf( "[zone %s] removing zonal fraction type=%s", self.zone:name(), self.fraction_type )
+	printf( "[zone %s] removing gulag type=%s", self.zone:name(), self.gparams.type )
 end
 
 -- callback на вход в зону
-function zone_fractions:on_enter( obj )
+function zone_gulags:on_enter( obj )
 	if get_clsid( obj ) == clsid.stalker then
 		local ini = obj:spawn_ini()
 
 		if ini and ini:section_exist( "zones" ) then
-			if self.fraction then
+			if self.gulag then
 				self:add_stalker( obj )
 			else
 				if not self.idle_end or self.idle_end < game.time() then
-					if self:create_fraction() then
+					if self:create_gulag() then
 						self:add_stalker( obj )
 					end
 				end
@@ -367,10 +357,10 @@ function zone_fractions:on_enter( obj )
 end
 
 -- обновление
-function zone_fractions:update()
-	if self.fraction then
+function zone_gulags:update()
+	if self.gulag then
 --		if self.duration_end < game.time() then
---			self:remove_fraction()
+--			self:remove_gulag()
 --		else
 			-- периодически проверять, не собрался ли кто-то к этому времени уже уходить
 			if self.check_time < game.time() then
@@ -378,7 +368,7 @@ function zone_fractions:update()
 
 				local n = 0
 
-				for id, obj in self.fraction.Object do
+				for id, obj in self.gulag.Object do
 					if self.stalkers[id].stay_end < game.time() then
 						self:free_stalker( obj )
 					else
@@ -386,14 +376,14 @@ function zone_fractions:update()
 					end
 				end
 
-				-- если мужиков в фракции больше не осталось, убрать фракцию
+				-- если мужиков в гулаге больше не осталось, убрать гулаг
 				if n == 0 then
-					self:remove_fraction()
+					self:remove_gulag()
 				else
-					self.fraction:calculate()
+					self.gulag:calculate()
 				end
 			else
-				self.fraction:calculate()
+				self.gulag:calculate()
 			end
 --		end
 	end

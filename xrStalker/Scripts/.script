@@ -706,6 +706,18 @@ function parse_names( s )
     return t
 end
 
+-- парсит строку вида "n1, n2, n3..." в таблицу { n1, n2, n3, ... } где n1, n2, n3... - целые числа
+-- Чугай
+function parse_nums( s )
+    local t = {}
+
+    for entry in string.gfind( s, "([%w_\\]+)%p*" ) do
+        table.insert( t, tonumber( entry ) )
+    end
+
+    return t
+end
+
 -- взвешенная случайная выборка из таблицы вида { obj1 = weight1, obj2 = weight2, ... }
 -- Возвращает один из obj. Веса >= 0
 -- Чугай

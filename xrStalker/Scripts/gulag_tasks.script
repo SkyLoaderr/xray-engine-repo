@@ -1,3 +1,5 @@
+local t
+
 function loadJob(sj, gname, type)
 --'-----------------------------------------------------------------------------------------
 --' ESCAPE BLOCKPOST
@@ -146,6 +148,66 @@ function loadJob(sj, gname, type)
 			path_look = gname.."_alarm_center_look" }
 		table.insert(sj, t)			
 	end
+--'------------------------------------------------------------------------------------------------------
+--' BANDITS CAMP. Sleepers и Walkers. Кол-во тех и тех определяется кол-вом путей на уровне
+--'------------------------------------------------------------------------------------------------------
+	if type == "bandits_camp" then	
+	--' STATE 0
+		--' walkers
+		local s1 = gname.."_walk_"
+		local s2 = gname.."_look_"
+		local sn1, sn2
+		local n = 1
+
+		while true do
+			sn1 = s1..n
+			if level.patrol_path_exists( sn1 ) then
+				t = {
+					name = "walker",
+					idle = 0,
+					prior = 1, state = {0},
+					squad = 1, group = 1,
+					in_rest = "", out_rest = "",
+					path_walk = sn1
+				}
+
+				--' path_look - не обязателен
+				sn2 = s2..n
+				if level.patrol_path_exists( sn2 ) then
+					t.path_look = sn2
+				end
+
+				table.insert(sj, t)
+
+				n = n + 1
+			else
+				break
+			end
+		end
+
+		--'sleepers
+		s1 = gname.."_sleep_"
+		n = 1
+
+		while true do
+			sn1 = s1..n
+			if level.patrol_path_exists( sn1 ) then
+				t = {
+					name = "sleeper",
+					idle = 0,
+					prior = 0, state = {0},
+					squad = 1, group = 1,
+					in_rest = "", out_rest = "",
+					path_main = sn1
+				}
+				table.insert(sj, t)
+
+				n = n + 1
+			else
+				break
+			end
+		end
+	end
 end
 
 function loadStates(gname, type)
@@ -164,6 +226,12 @@ function loadStates(gname, type)
 	   				end
 				end
 			end
+			return 0
+		end
+	end
+
+	if type == "bandits_camp" then
+		return function()
 			return 0
 		end
 	end

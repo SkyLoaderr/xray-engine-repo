@@ -62,6 +62,13 @@ function fract:checkNpc(npc)
 		return true
 	end
 
+	if self.type == "bandits_camp" and
+	   type == "bandit"
+	then
+		printf( "BANDIT" )
+		return true
+	end
+
 	return false
 end
 
@@ -94,7 +101,7 @@ function fract:calculate()
 	end
 	
 	self:updateJob()
-	self:print()
+--	self:print()
 end
 function fract:changeState(state)
 	if self.music ~= nil then
@@ -290,6 +297,9 @@ function createGulag(name, type)
 		xr_gulag.fraction[name] = xr_gulag.fract(name, type)
 	end
 	return xr_gulag.fraction[name]
+end
+function destroyGulag(name)
+	xr_gulag.fraction[name] = nil
 end
 
 function isUnderFraction(npc)
