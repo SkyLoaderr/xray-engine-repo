@@ -81,13 +81,13 @@ function SinglePatrol:callback (obj, action_type, index)
 
 	--обработаем развилку
 	if ptr:flag (index, 1) then
-	   action_first (obj, move (move.standing, move.stand, move.line, ptr),
+	   action_first (obj, --move (move.standing, move.stand, move.line, ptr),
 					 self.anims_razv:get_animation (), cond (cond.anim_end))
 	   return	
 	   end	
 	--обработаем конечную точку
 	if ptr:flag (index, 2) then
-	   action_first (obj, move (move.standing, move.stand, move.line, ptr),
+	   action_first (obj, --move (move.standing, move.stand, move.line, ptr),
 					 self.anims_end:get_animation (), cond (cond.anim_end))
 	   return 
 	   end	  	
@@ -128,14 +128,14 @@ function Guardian:process ()
 
 	if self.started == false then
 	   self.npc:script (true, self.script_name)
-	   action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+	   action (self.npc, --move (move.standing, move.stand, move.line, patrol (self.path_name)),
 			   look (look.search), anim (anim.free), cond (cond.anim_end))
 	   self.started = true
 	   return 
 	   end
 	if self.npc:action () then return end
 	reset_action (self.npc, self.script_name)
-    action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+    action (self.npc, --move (move.standing, move.stand, move.line, patrol (self.path_name)),
  		    look (look.search), self.anims_check:get_animation (), cond (cond.anim_end))
 end
 

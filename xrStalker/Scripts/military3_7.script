@@ -39,21 +39,21 @@ function main ()
 		  wait ()
 		  local t = game.time () - old_time
 		  if t > 20000 and math.random (1, 100) > 50 and played == false then
-			 action_first (bredun1.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun1.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
-			 action_first (bredun2.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun2.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
-			 action_first (bredun3.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun3.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
-			 action_first (bredun4.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun4.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
-			 action_first (bredun5.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun5.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
-			 action_first (bredun6.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun6.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
-			 action_first (bredun7.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun7.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
-			 action_first (bredun8.npc, move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
+			 action_first (bredun8.npc, --move (move.standing, move.stand, move.line, patrol ("patrol_way2")),
 						   anim_end:get_animation (), cond (cond.anim_end))		  	
 			 
 	      	 horror_sound:play_at_pos (actor, actor:position (), 0);
