@@ -68,9 +68,6 @@ IC BOOL shared(occTri* T1, occTri* T2)
 // Rasterize a scan line between given X point values, corresponding Z values and current color
 void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float startZ, float endZ)
 {
-	occTri**	pFrame	= Raster.get_frame();
-	float*		pDepth	= Raster.get_depth();
-
 	// calculate span(s)
 	float	start_c	= leftX+lhx;
 	float	end_c	= rightX+rhx;
@@ -88,7 +85,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	Vclamp			(minT,1,occ_dim0-1);
 	Vclamp			(maxT,1,occ_dim0-1);
 	if (minT >= maxT)		return;
-
+	
 	int minX		= minPixel(startX), maxX = maxPixel(endX);
 	Vclamp			(minX,0,occ_dim0);
 	Vclamp			(maxX,0,occ_dim0);
@@ -102,6 +99,10 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	float Z			= startZ + (minT - startR)/lenR * Zlen;		// interpolate Z to the start
 	float Zend		= startZ + (maxT - startR)/lenR * Zlen;		// interpolate Z to the end
 	float dZ		= (Zend-Z)/(maxT-minT);						// incerement in Z / pixel wrt dX
+	
+	// gain access to buffers
+	occTri**	pFrame	= Raster.get_frame();
+	float*		pDepth	= Raster.get_depth();
 	
 	// left connector
 	int	i_base		= curY*occ_dim0;
