@@ -214,8 +214,7 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	pIndices->Unlock	();
 
 	// Create HW VB in case this is possible
-	if (RenderMode==RM_SINGLE)
-	{
+	if (RenderMode==RM_SINGLE)	{
 		VERIFY				(Vertices1W);
 		vBase				= 0;
 		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
@@ -247,8 +246,7 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 	inherited::Load		(N,data,dwFlags|VLOAD_NOVERTICES);
 
 	// Create HW VB in case this is possible
-	if (RenderMode==RM_SINGLE)
-	{
+	if (RenderMode==RM_SINGLE)	{
 		VERIFY				(Vertices1W);
 		vBase				= 0;
 		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
