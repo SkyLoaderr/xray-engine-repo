@@ -7,8 +7,6 @@ const DWORD XR_MAX_UVMAPS		= 1;
 const DWORD XR_MAX_TEXTURES		= 32;
 const DWORD XR_MAX_PORTAL_VERTS	= 6;
 
-#include "light.h"
-
 // All types to interact with xrLC
 typedef Fvector b_vertex;
 

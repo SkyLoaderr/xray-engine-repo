@@ -67,11 +67,11 @@ struct NodeCompressed
 	BYTE			light;			// 1
 	BYTE			cover[4];		// 4
 	BYTE			link_count;		// 1		
-};								// 2+6+6+1+1+4+1 = 21b + links
+};									// 2+6+6+1+1+4+1 = 21b + links
 #pragma warning(default:4200)
 #pragma pack(pop)
 
-#define XRCL_CURRENT_VERSION	12
+#define XRCL_CURRENT_VERSION	11
 #define XRCL_PRODUCTION_VERSION	8
 #define CFORM_CURRENT_VERSION	2
 #define XRAI_CURRENT_VERSION	2
