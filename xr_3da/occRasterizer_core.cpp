@@ -115,8 +115,7 @@ void i_iterate	(occRasterizer* OCC, occTri* T, int startY, int endY, float leftX
 	}
 }
 
-template <class TYPE, int Sect, BOOL bMiddle>
-void i_section	(occRasterizer* OCC, float *A, float *B, float *C, TYPE* T)
+__forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
@@ -201,13 +200,13 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, TYPE* T)
 }
 
 void i_section_b0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section<occTri,BOTTOM,0>	(OCC,A,B,C,T);	}
+{	i_section	(OCC,A,B,C,T,BOTTOM,0);	}
 void i_section_b1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section<occTri,BOTTOM,1>	(OCC,A,B,C,T);	}
+{	i_section	(OCC,A,B,C,T,BOTTOM,1);	}
 void i_section_t0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section<occTri,TOP,0>		(OCC,A,B,C,T);	}
+{	i_section	(OCC,A,B,C,T,TOP,0);	}
 void i_section_t1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
-{	i_section<occTri,TOP,1>		(OCC,A,B,C,T);	}
+{	i_section	(OCC,A,B,C,T,TOP,1);	}
 
 void occRasterizer::rasterize	(occTri* T)
 {
