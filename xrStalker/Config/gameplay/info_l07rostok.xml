@@ -107,10 +107,7 @@
 	<info_portion id="bar_dolg_veteran_gain"></info_portion>
 	<info_portion id="bar_dolg_veteran_done"></info_portion>
 
-	<info_portion id="bar_dolg_community_leader">
-		<task>bar_dolg_svoboda_leader_kill_quest</task>
-		<action>level_tasks.notify_new_task</action>
-	</info_portion>
+	<info_portion id="bar_dolg_community_leader"></info_portion>
 	<info_portion id="bar_dolg_community_leader_talk"></info_portion>
 	<info_portion id="bar_dolg_community_leader_done"></info_portion>
 
@@ -138,9 +135,10 @@
 	<info_portion id="bar_kill_svoboda_ambush_voronin"></info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_done"></info_portion>
 
-	<info_portion id="bar_kill_svoboda_leader_start"></info_portion>
+	<info_portion id="bar_kill_svoboda_leader_start">
 		<task>bar_dolg_svoboda_leader_kill_quest</task>
 		<action>level_tasks.notify_new_task</action>
+	</info_portion>
 	<info_portion id="mil_kill_svoboda_leader_killed"></info_portion>
 	<info_portion id="bar_kill_svoboda_leader_voronin"></info_portion>
 	<info_portion id="bar_kill_svoboda_leader_done"></info_portion>
