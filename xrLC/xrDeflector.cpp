@@ -129,7 +129,7 @@ IC BOOL UVpointInside(Fvector2 &P, UVtri &T)
 CDeflector::CDeflector()
 {
 	Deflector		= this;
-	N.set			(0,1,0);
+	normal.set		(0,1,0);
 	Sphere.P.set	(flt_max,flt_max,flt_max);
 	Sphere.R		= 0;
 	bMerged			= FALSE;
@@ -139,14 +139,15 @@ CDeflector::~CDeflector()
 {
 }
 
-VOID CDeflector::OA_Export()
+void CDeflector::OA_Export()
 {
 	if (UVpolys.empty()) return;
 
 	// Correct normal
 	//  (semi-proportional to pixel density)
 	FPU::m64r		();
-	N.set			(0,0,0);
+	Fvector			tN;
+	tN.set			(0,0,0);
 	float density	= 0;
 	float fcount	= 0;
 	for (UVIt it = UVpolys.begin(); it!=UVpolys.end(); it++)
@@ -155,23 +156,24 @@ VOID CDeflector::OA_Export()
 		Fvector	SN;
 		SN.set	(F->N);
 		SN.mul	(1+EPS*F->CalcArea());
-		N.add	(SN);
+		tN.add	(SN);
 
 		density	+= F->Shader().lm_density;
 		fcount	+= 1.f;
 	}
-	N.normalize	();
-	density		/= fcount;
+	if (tN.magnitude()>EPS_S && _valid(tN))	normal.set(tN).normalize();
+	else									clMsg("* ERROR: Internal precision error in CDeflector::OA_Export");
+	density			/= fcount;
 	
 	// Orbitrary Oriented Ortho - Projection
 	Fmatrix		mView;
     Fvector		at,from,up,right,y;
 	at.set		(0,0,0);
-	from.add	(at,N );
+	from.add	(at,normal);
 	y.set		(0,1,0);
-	if (_abs(N.y)>.99f) y.set(1,0,0);
-	right.crossproduct(y,N);	right.normalize_safe();
-	up.crossproduct(N,right);	up.normalize_safe();
+	if (_abs(normal.y)>.99f)		y.set(1,0,0);
+	right.crossproduct(y,normal);	right.normalize_safe();
+	up.crossproduct(normal,right);	up.normalize_safe();
 	mView.build_camera(from,at,up);
 
 	Fbox bb; bb.invalidate();
