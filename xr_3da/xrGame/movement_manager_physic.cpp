@@ -87,7 +87,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	setEnabled(false);
-	Level().ObjectSpace.GetNearest		(dest_position,1.f); 
+	Level().ObjectSpace.GetNearest		(dest_position,2.f); 
 	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
 	setEnabled(true);
 #endif
