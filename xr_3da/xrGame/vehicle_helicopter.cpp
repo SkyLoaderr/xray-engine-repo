@@ -45,9 +45,11 @@ BOOL CVehicleHelicopter::net_Spawn			(LPVOID DC)
 		return			(FALSE);
 
 	// assigning m_animator here
-	CSE_Abstract		*abstract = (CSE_Abstract*)(DC);
-	CSE_ALifeHelicopter	*helicopter = dynamic_cast<CSE_ALifeHelicopter*>(abstract);
-	VERIFY				(helicopter);
+	CSE_Abstract		*abstract=(CSE_Abstract*)(DC);
+	CSE_ALifeHelicopter	*heli	= dynamic_cast<CSE_ALifeHelicopter*>(abstract);
+	VERIFY				(heli);
+
+//	heli
 
 	return				(TRUE);
 }
