@@ -38,6 +38,7 @@ protected:
 	float							m_altitude;
 	float							m_maxFireDist;
 
+	HitTypeSVec						m_HitTypeK;
 
 	ref_sound						m_engineSound;
 	CHelicopterMovementManager		m_movementMngr;

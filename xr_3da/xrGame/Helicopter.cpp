@@ -79,7 +79,7 @@ CHelicopter::init()
 	m_destEnemy = 0;
 //	m_velocity = 5.0f;
 	m_velocity = 25.0f;
-	m_altitude = 20.0f;
+	m_altitude = 40.0f;
 	m_cur_x_rot = 0.0f;
 	m_cur_y_rot = 0.0f;
 	m_tgt_x_rot = 0.0f;
@@ -102,6 +102,11 @@ CHelicopter::init()
 	m_time_last_patrol_start	= 0;
 	m_time_last_patrol_end		= 0;
 
+	m_HitTypeK.resize(ALife::eHitTypeMax);
+
+	for(int i=0; i<ALife::eHitTypeMax; i++)
+		m_HitTypeK[i] = 1.0f;
+
 //	FireStart();
 }
 
@@ -116,11 +121,21 @@ CHelicopter::reinit()
 void		
 CHelicopter::Load(LPCSTR section)
 {
-	inherited::Load		(section);
+	inherited::Load			(section);
 	CShootingObject::Load	(section);
 
 	m_sAmmoType = pSettings->r_string(section, "ammo_class");
 	m_CurrentAmmo.Load(*m_sAmmoType);
+
+	m_HitTypeK[ALife::eHitTypeBurn]			= pSettings->r_float(section,"burn_immunity");
+	m_HitTypeK[ALife::eHitTypeStrike]		= pSettings->r_float(section,"strike_immunity");
+	m_HitTypeK[ALife::eHitTypeShock]		= pSettings->r_float(section,"shock_immunity");
+	m_HitTypeK[ALife::eHitTypeWound]		= pSettings->r_float(section,"wound_immunity");
+	m_HitTypeK[ALife::eHitTypeRadiation]	= pSettings->r_float(section,"radiation_immunity");
+	m_HitTypeK[ALife::eHitTypeTelepatic]	= pSettings->r_float(section,"telepatic_immunity");
+	m_HitTypeK[ALife::eHitTypeChemicalBurn] = pSettings->r_float(section,"chemical_burn_immunity");
+	m_HitTypeK[ALife::eHitTypeFireWound]	= pSettings->r_float(section,"fire_wound_immunity");
+	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
 
 }
 
@@ -191,6 +206,7 @@ CHelicopter::net_Spawn(LPVOID	DC)
 	}
 	m_engineSound.create(TRUE,*heli->engine_sound);
 	m_engineSound.play_at_pos(0,XFORM().c,sm_Looped);
+
 
 	setVisible			(true);
 	setEnabled			(true);
@@ -305,8 +321,14 @@ CHelicopter::Hit(	float P,
 					float impulse,  
 					ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
-	if(hit_type != ALife::eHitTypeFireWound)
-		return;
+/*	if(hit_type != ALife::eHitTypeFireWound)
+		return;*/
+
+	//нормализуем силу удара -------
+	float hit_power		= P/100.f;
+//	hit_power			= HitOutfitEffect(hit_power, hit_type);
+	hit_power			*= m_HitTypeK[hit_type];
+//-----------
 
 	bonesIt It = m_hitBones.find(element);
 	if(It != m_hitBones.end())
@@ -318,7 +340,7 @@ CHelicopter::Hit(	float P,
 	}else
 //		CEntity::Hit(P,dir,who,element,position_in_bone_space,impulse,hit_type );
 	{
-		SetfHealth(GetfHealth()-P*0.05f);
+		SetfHealth(GetfHealth()-hit_power);
 //		SetfHealth(-0.5f);
 		float h= GetfHealth();
 		Log("----Helicopter::Hit(). health=%f",h);
