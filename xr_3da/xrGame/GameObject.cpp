@@ -31,6 +31,13 @@ void CGameObject::Init		()
 {
 	m_dwNetSpawnFrame			= u32(-1);
 	m_pPhysicsShell				= NULL;
+
+	//добавить одну косточку для партиклов по дефаулту
+	SBoneInfo bone_info;
+	m_ParticlesBonesList.clear();
+	bone_info.index = 0;
+	bone_info.offset.set(0,0,0);
+	m_ParticlesBonesList.push_back(bone_info);
 }
 
 void CGameObject::Load(LPCSTR section)

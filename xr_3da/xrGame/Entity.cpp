@@ -148,20 +148,71 @@ void CEntity::Load		(LPCSTR section)
 	//загрузить параметры иконки торговли
 	CKinematics* pKinematics=PKinematics(Visual());
 	CInifile* ini = NULL;
-	if(pKinematics) ini = pKinematics->LL_UserData();
-	if(ini && ini->section_exist("icon"))
-	{
-		m_iTradeIconX = ini->r_u32("icon","icon_x");
-		m_iTradeIconY = ini->r_u32("icon","icon_y");
 
-		m_iMapIconX = ini->r_u32("icon","map_icon_x");
-		m_iMapIconY = ini->r_u32("icon","map_icon_y");
-	}
-	else
+/*			ref_str	first;
+		ref_str	second;
+		ref_str	comment;
+
+		Item() : first(0), second(0), comment(0) {};
+	};
+	typedef xr_vector<Item>			Items;
+	typedef Items::iterator			SectIt;
+    struct XRCORE_API Sect {
+		ref_str			Name;
+		Items			Data;
+
+		IC SectIt		begin()		{ return Data.begin();	}
+		IC SectIt		end()		{ return Data.end();	}
+		IC size_t		size()		{ return Data.size();	}
+		IC void			clear()		{ Data.clear();			}
+	    BOOL			line_exist	(LPCSTR L, LPCSTR* val=0);
+*/
+	
+	if(pKinematics) ini = pKinematics->LL_UserData();
+	if(ini)
 	{
-		m_iTradeIconX = m_iTradeIconY = 0;
-		m_iMapIconX = 1;
-		m_iMapIconY = 4;
+		if(ini->section_exist("icon"))
+		{
+			m_iTradeIconX = ini->r_u32("icon","icon_x");
+			m_iTradeIconY = ini->r_u32("icon","icon_y");
+
+			m_iMapIconX = ini->r_u32("icon","map_icon_x");
+			m_iMapIconY = ini->r_u32("icon","map_icon_y");
+		}
+		else
+		{
+			m_iTradeIconX = m_iTradeIconY = 0;
+			m_iMapIconX = 1;
+			m_iMapIconY = 4;
+		}
+
+		//считать список косточек и соответствующих
+		//офсетов  куда можно вешать партиклы
+		if(ini->section_exist("particles_bones"))
+		{
+			m_ParticlesBonesList.clear();
+
+			SBoneInfo bone_info;
+			string256 str_buf;
+
+			CInifile::Sect& sect = ini->r_section("particles_bones");
+
+			for(u32 i=0; i<sect.size(); i+=1)
+			{
+				CInifile::Item& item = *(sect.begin()+i);
+				
+				if(!strcmp(*item.first,"bone"))
+				{
+					bone_info.index = pKinematics->LL_BoneID(_GetItem(*item.second,0,str_buf));
+					bone_info.offset.x = (float)atof(_GetItem(*item.second,1,str_buf));
+					bone_info.offset.y = (float)atof(_GetItem(*item.second,2,str_buf));
+					bone_info.offset.z = (float)atof(_GetItem(*item.second,3,str_buf));
+
+				}
+				R_ASSERT2(!strcmp(*item.first,"bone"), "wrong format for 'particles bones section'");
+				m_ParticlesBonesList.push_back(bone_info);
+			}
+		}
 	}
 }
 

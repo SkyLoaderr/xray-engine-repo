@@ -9,6 +9,7 @@ struct SZonePPInfo
 	u32 r, g, b, a;
 };
 
+
 class CCustomZone :
 	public CGameObject,
 	public Feel::Touch
@@ -30,9 +31,6 @@ public:
 	virtual BOOL feel_touch_contact(CObject* O);
 
 	virtual void Postprocess(f32 /**val/**/) {}
-
-	void SoundCreate(ref_sound& dest, LPCSTR name, int iType=st_SourceType, BOOL bCtrlFreq=FALSE);
-	void SoundDestroy(ref_sound& dest);
 
 	virtual void spatial_register();
 	virtual void spatial_unregister();
@@ -82,8 +80,8 @@ protected:
 	//объект партиклов обычного состояния зоны
 	CParticlesObject* m_pIdleParticles;
 
-	//список партиклов для объетов внутри зоны
-	DEFINE_MAP (CObject*,CParticlesObject*, ATTACHED_PARTICLES_MAP, ATTACHED_PARTICLES_MAP_IT);
+	//список партиклов для объетов внутри зоны (каждому объету соответствует вектор указателей партиклов)
+	DEFINE_MAP (CObject*, PARTICLES_PTR_VECTOR, ATTACHED_PARTICLES_MAP, ATTACHED_PARTICLES_MAP_IT);
 	ATTACHED_PARTICLES_MAP m_IdleParticlesMap;
 
 	//для визуализации зоны
@@ -94,6 +92,6 @@ protected:
 	
 	virtual void PlayHitParticles(CGameObject* pObject);
 
-	virtual void PlayObjectIdleParticles(CObject* pObject);
-	virtual void StopObjectIdleParticles(CObject* pObject);
+	virtual void PlayObjectIdleParticles(CGameObject* pObject);
+	virtual void StopObjectIdleParticles(CGameObject* pObject);
 };

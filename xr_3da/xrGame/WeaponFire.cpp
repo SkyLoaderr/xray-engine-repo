@@ -183,10 +183,11 @@ void CWeapon::StartFlameParticles	()
 }
 void CWeapon::StopFlameParticles	()
 {
-//	StopParticles(m_pFlameParticles);
 	if(!m_sFlameParticles) return;
-
 	if(m_pFlameParticles == NULL) return;
+	//имеет смысл принудительно останавливать только 
+	//зацикленные партиклы
+	if(!m_pFlameParticles->IsLooped()) return;
 
 	m_pFlameParticles->Stop();
 	m_pFlameParticles->PSI_destroy();

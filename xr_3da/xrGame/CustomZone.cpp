@@ -30,9 +30,9 @@ CCustomZone::CCustomZone(void)
 
 CCustomZone::~CCustomZone(void) 
 {
-	SoundDestroy(m_idle_sound);
-	SoundDestroy(m_blowout_sound);
-	SoundDestroy(m_hit_sound);
+	m_idle_sound.destroy();
+	m_blowout_sound.destroy();
+	m_hit_sound.destroy();
 }
 
 void CCustomZone::Load(LPCSTR section) 
@@ -53,12 +53,24 @@ void CCustomZone::Load(LPCSTR section)
 //////////////////////////////////////////////////////////////////////////
 
 	LPCSTR sound_str = NULL;
-	sound_str = pSettings->r_string(section,"idle_sound");
-	SoundCreate		(m_idle_sound, sound_str);
-	sound_str = pSettings->r_string(section,"blowout_sound");
-	SoundCreate		(m_blowout_sound, sound_str);
-	sound_str = pSettings->r_string(section,"hit_sound");
-	SoundCreate		(m_hit_sound, sound_str);
+	
+	if(pSettings->line_exist(section,"idle_sound")) 
+	{
+		sound_str = pSettings->r_string(section,"idle_sound");
+		m_idle_sound.create(TRUE, sound_str, st_SourceType);
+	}
+	
+	if(pSettings->line_exist(section,"blowout_sound")) 
+	{
+		sound_str = pSettings->r_string(section,"blowout_sound");
+		m_blowout_sound.create(TRUE, sound_str, st_SourceType);
+	}
+	
+	if(pSettings->line_exist(section,"hit_sound")) 
+	{
+		sound_str = pSettings->r_string(section,"hit_sound");
+		m_hit_sound.create(TRUE, sound_str, st_SourceType);
+	}
 
 /*	string512		m_effectsSTR;
 	strcpy			(m_effectsSTR,pSettings->r_string(section,"effects"));
@@ -97,9 +109,19 @@ void CCustomZone::Load(LPCSTR section)
 		++l_effectsSTR;
 	}*/
 
+	if(pSettings->line_exist(section,"idle_particles")) 
+		m_sIdleParticles	= pSettings->r_string(section,"idle_particles");
+	if(pSettings->line_exist(section,"blowout_particles")) 
+		m_sBlowoutParticles = pSettings->r_string(section,"blowout_particles");
 
-	m_sIdleParticles	= pSettings->r_string(section,"idle_particles");
-	m_sBlowoutParticles = pSettings->r_string(section,"blowout_particles");
+	if(pSettings->line_exist(section,"hit_small_particles")) 
+		m_sHitParticlesSmall = pSettings->r_string(section,"hit_small_particles");
+	if(pSettings->line_exist(section,"hit_big_particles")) 
+		m_sHitParticlesBig = pSettings->r_string(section,"hit_big_particles");
+	if(pSettings->line_exist(section,"idle_small_particles")) 
+		m_sIdleObjectParticlesBig = pSettings->r_string(section,"idle_big_particles");
+	if(pSettings->line_exist(section,"idle_big_particles")) 
+		m_sIdleObjectParticlesSmall = pSettings->r_string(section,"idle_small_particles");
 }
 
 BOOL CCustomZone::net_Spawn(LPVOID DC) 
@@ -163,25 +185,36 @@ void CCustomZone::net_Destroy()
 	StopIdleParticles();
 }
 
-//void CCustomZone::Update(u32 dt) {
-	//inherited::Update	(dt);
 void CCustomZone::UpdateCL() 
 {
-	//u32 dt = Device.dwTimeDelta;
 	inherited::UpdateCL();
+
+	//вычислить время срабатывания зоны
+	if(!m_inZone.empty())
+		m_dwDeltaTime += Device.dwTimeDelta;	
+	else
+		m_dwDeltaTime = 0;
+
+	if(m_dwDeltaTime > m_dwPeriod) 
+	{
+		m_dwDeltaTime = m_dwPeriod;
+		m_bZoneReady = true;
+	}
+
 
 	const Fsphere& s		= CFORM()->getSphere();
 	Fvector					P;
 	XFORM().transform_tiny(P,s.P);
-	//feel_touch.clear(); m_inZone.clear();
 	feel_touch_update		(P,s.R);
 
+	
+	
 	if(m_bZoneReady) 
 	{
-		xr_set<CObject*>::iterator l_it;
-		for(l_it = m_inZone.begin(); m_inZone.end() != l_it; ++l_it) 
+		xr_set<CObject*>::iterator it;
+		for(it = m_inZone.begin(); m_inZone.end() != it; ++it) 
 		{
-			Affect(*l_it);
+			Affect(*it);
 		}
 		m_bZoneReady = false;
 	}
@@ -194,7 +227,8 @@ void CCustomZone::feel_touch_new(CObject* O)
 	if(dynamic_cast<CActor*>(O) && O == Level().CurrentEntity()) 
 					m_pLocalActor = dynamic_cast<CActor*>(O);
 
-	PlayObjectIdleParticles(O);
+	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
+	PlayObjectIdleParticles(pGameObject);
 }
 
 void CCustomZone::feel_touch_delete(CObject* O) 
@@ -202,10 +236,9 @@ void CCustomZone::feel_touch_delete(CObject* O)
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"leaving a zone.");
 	
 	m_inZone.erase(O);
-
 	if(dynamic_cast<CActor*>(O)) m_pLocalActor = NULL;
-
-	StopObjectIdleParticles(O);
+	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
+	StopObjectIdleParticles(pGameObject);
 }
 
 BOOL CCustomZone::feel_touch_contact(CObject* O) 
@@ -226,21 +259,6 @@ float CCustomZone::Power(float dist)
 	return power < 0 ? 0 : power;
 }
 
-void CCustomZone::SoundCreate(ref_sound& dest, LPCSTR s_name, int iType, BOOL /**bCtrlFreq/**/) 
-{
-	string256	temp;
-	if (FS.exist(temp,"$game_sounds$",s_name,".ogg"))
-	{
-		Sound->create(dest,TRUE,s_name,iType);
-		return;
-	}
-	Debug.fatal	("Can't find ref_sound '%s'",s_name,cName());
-}
-
-void CCustomZone::SoundDestroy(ref_sound& dest) 
-{
-	Sound->destroy(dest);
-}
 
 void CCustomZone::spatial_register()
 {
@@ -365,7 +383,7 @@ void CCustomZone::PlayIdleParticles()
 
 void CCustomZone::StopIdleParticles()
 {
-	SoundDestroy(m_idle_sound);
+	m_idle_sound.stop();
 
 	if(!m_pIdleParticles) return;
 	m_pIdleParticles->Stop();
@@ -389,7 +407,6 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 {
 	Sound->play_at_pos	(m_blowout_sound ,this, pObject->Position());
 
-	CParticlesObject* pParticles = NULL;
 	ref_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
@@ -404,33 +421,41 @@ void CCustomZone::PlayHitParticles(CGameObject* pObject)
 		particle_str = m_sHitParticlesBig;
 	}
 
-	pParticles = xr_new<CParticlesObject>(*particle_str,Sector());
-	pParticles->UpdateParent(pObject->XFORM(),zero_vel);
-	pParticles->Play();
+	pObject->StartParticles(*particle_str, 0, 
+						  Fvector().set(0,0,0), 
+						  Fvector().set(0,1,0), (u16)ID(), true);
 }
 
 
-void CCustomZone::PlayObjectIdleParticles(CObject* pObject)
+void CCustomZone::PlayObjectIdleParticles(CGameObject* pObject)
 {
-	CParticlesObject* pParticles = NULL;
 	ref_str particle_str = NULL;
 
 	//разные партиклы для объектов разного размера
 	if(pObject->Radius()<SMALL_OBJECT_RADIUS)
 	{
-		if(!m_sHitParticlesSmall) return;
-		particle_str = m_sHitParticlesSmall;
+		if(!m_sIdleObjectParticlesSmall) return;
+		particle_str = m_sIdleObjectParticlesSmall;
 	}
 	else
 	{
-		if(!m_sHitParticlesBig) return;
-		particle_str = m_sHitParticlesBig;
+		if(!m_sIdleObjectParticlesBig) return;
+		particle_str = m_sIdleObjectParticlesBig;
 	}
 
-	pParticles = xr_new<CParticlesObject>(*particle_str,Sector());
-	pParticles->UpdateParent(pObject->XFORM(),zero_vel);
-	pParticles->Play();
+	
+	//запустить партиклы на объекте
+	PARTICLES_PTR_VECTOR particles_vector;
+	pObject->StartParticlesOnAllBones(particles_vector,
+									  *particle_str,
+									  (u16)ID(), false);
+	//запомнить добавленные партиклы
+	m_IdleParticlesMap[pObject] = particles_vector;
 }
-void CCustomZone::StopObjectIdleParticles(CObject* pObject)
+void CCustomZone::StopObjectIdleParticles(CGameObject* pObject)
 {
+	ATTACHED_PARTICLES_MAP_IT it = m_IdleParticlesMap.find(pObject);
+	if(m_IdleParticlesMap.end() == it) return;
+	//остановить партиклы
+	pObject->StopParticles(it->second);
 }

@@ -37,16 +37,8 @@ void CMosquitoBald::Load(LPCSTR section)
 //void CMosquitoBald::Update(u32 dt) {
 void CMosquitoBald::UpdateCL() 
 {
-	u32 dt = Device.dwTimeDelta;
-	m_dwDeltaTime += dt;
+	u32 dt =Device.dwTimeDelta;
 
-	if(m_dwDeltaTime > m_dwPeriod) 
-	{
-		m_dwDeltaTime = m_dwPeriod;
-		//while(m_dwDeltaTime > m_dwPeriod) m_dwDeltaTime -= m_dwPeriod;
-		m_bZoneReady = true;
-	}
-	
 	if(m_pLocalActor && m_pLocalActor->g_Alive()) 
 	{
 		IRender_Target*		T	= ::Render->getTarget();

@@ -71,7 +71,10 @@ void CWeaponCustomPistol::OnAnimationEnd() {
 	return inherited::OnAnimationEnd();
 }
 
-void CWeaponCustomPistol::FireEnd() {
+void CWeaponCustomPistol::FireEnd() 
+{
+	m_shotNum = 0;
+	
 	if(fTime<=0) 
 	{
 		bPending = false;

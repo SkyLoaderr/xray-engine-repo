@@ -39,7 +39,7 @@ CParticlesObject* CParticlesPlayer::StartParticles(ref_str particles_name,
 	pParticlesInfo->sender_id = sender_id;
 	pParticlesInfo->auto_remove = auto_remove;
 
-	R_ASSERT3(pParticlesObject->IsLooped()&&!auto_remove,"Can't attach looped particle system with auto-remove flag.", *particles_name);
+	R_ASSERT3(!(pParticlesObject->IsLooped()&&auto_remove),"Can't attach looped particle system with auto-remove flag.", *particles_name);
 
 	//добавить новую запись в map
 	m_ParticlesInfoMap[pParticlesObject] = pParticlesInfo;
@@ -50,7 +50,23 @@ CParticlesObject* CParticlesPlayer::StartParticles(ref_str particles_name,
 		
 	return pParticlesObject;
 }
-	
+
+
+void CParticlesPlayer::StartParticlesOnAllBones(PARTICLES_PTR_VECTOR& particles_vector,
+												ref_str particles_name,
+												u16 sender_id,
+												bool auto_remove)
+{
+	for(BONE_INFO_VECTOR_IT it = m_ParticlesBonesList.begin();
+							it != m_ParticlesBonesList.end();
+							it++)
+	{
+		CParticlesObject* pParticles = StartParticles(particles_name, (*it).index, (*it).offset, 
+													  Fvector().set(0,1,0),sender_id, auto_remove);
+		particles_vector.push_back(pParticles);
+	}
+}
+
 void CParticlesPlayer::StopParticles(CParticlesObject* particles_object)
 {
 	PARTICLES_INFO_MAP_IT it = m_ParticlesInfoMap.find(particles_object);
@@ -60,6 +76,18 @@ void CParticlesPlayer::StopParticles(CParticlesObject* particles_object)
 	CParticlesObject* pParticlesObject = it->first;
 	pParticlesObject->Stop();
 }
+
+void CParticlesPlayer::StopParticles(PARTICLES_PTR_VECTOR& particles_vector)
+{
+	for(PARTICLES_PTR_VECTOR_IT it = particles_vector.begin();
+							    it != particles_vector.end();
+							    it++)
+	{
+		StopParticles(*it);
+	}
+}
+
+
 void CParticlesPlayer::StopParticles(u32 sender_id)
 {
 	for(PARTICLES_INFO_MAP_IT it = m_ParticlesInfoMap.begin();
