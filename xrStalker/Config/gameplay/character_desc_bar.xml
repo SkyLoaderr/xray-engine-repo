@@ -257,7 +257,7 @@
 		<rank>40</rank>
 		<reputation>0</reputation>
  
-		<visual>actors\novice\green_stalker_2</visual>
+		<visual>actors\novice\green_stalker_8</visual>
 		<supplies>
 			[spawn] \n
 			ammo_5.56x45_ss190 \n
