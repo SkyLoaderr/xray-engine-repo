@@ -46,17 +46,10 @@ function zone_binder:net_spawn( server_object )
 			if alife() then
 				self.managers.cl_smart_terrain = smart_terrain.cl_smart_terrain( server_object, ini )
 			else
-				printf( "No simulation! SMART_TERRAIN %s disabled.", self.object:name() )
+				printf( "No simulation! SMART_TERRAIN '%s' disabled.", self.object:name() )
 			end
 		else
 			utils.abort( "You must use SMART_TERRAIN instead of SCRIPT_ZONE %s", self.object:name() )
-		end
-	end
-
-	if ini:section_exist( "sound" ) then
-		self.managers.zone_sound = xr_zones_sound.zone_sound( self.object, ini )
-		if not self.managers.zone_sound.ini_ok then
-			utils.abort( "'sound' manager NOT initialized" )
 		end
 	end
 
@@ -87,8 +80,8 @@ function zone_binder:net_spawn( server_object )
 		self.managers.spawner = xr_spawner.spawner
 	end
 
-	if ini:section_exist( "tips" ) then
-		utils.abort( "script zone '%s': You must use restrictor instead of sctript zone for level tips", self.object:name() )
+	if ini:section_exist( "tips" ) or ini:section_exist( "no_weapon" ) or ini:section_exist( "sound" ) then
+		utils.abort( "script zone '%s': You must use a restrictor instead of sctript zone", self.object:name() )
 	end
 
 	return true

@@ -56,6 +56,11 @@ function restrictor_binder:net_spawn(data)
 		need_update = true
 	end
 
+	if ini:section_exist( "sound" ) then
+		self.managers.zone_sound = xr_zones_sound.zone_sound( self.object, self, ini )
+		need_update = true
+	end
+
 	if need_update then
 		updatable_binders[self.object:id()] = self
 	end
