@@ -16,7 +16,6 @@ namespace CDB
 
 	void	Collector::add_face	(
 		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		u32 e01, u32 e12, u32 e20,				// edges
 		WORD material, WORD sector, u32 dummy	// misc
 		)
 	{
@@ -24,9 +23,6 @@ namespace CDB
 		T.IDverts()	[0] = verts.size();
 		T.IDverts()	[1] = verts.size()+1;
 		T.IDverts()	[2] = verts.size()+2;
-		T.IDadj()	[0]	= e01;
-		T.IDadj()	[1]	= e12;
-		T.IDadj()	[2]	= e20;
 		T.material		= material;
 		T.sector		= sector;
 		T.dummy			= dummy;
@@ -39,7 +35,6 @@ namespace CDB
 
 	void	Collector::add_face_packed	(
 		Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-		u32 e01, u32 e12, u32 e20,				// edges
 		WORD material, WORD sector, u32 dummy,	// misc
 		float eps
 		)
@@ -48,9 +43,6 @@ namespace CDB
 		T.IDverts()	[0] = VPack(v0,eps);
 		T.IDverts()	[1] = VPack(v1,eps);
 		T.IDverts()	[2] = VPack(v2,eps);
-		T.IDadj()	[0]	= e01;
-		T.IDadj()	[1]	= e12;
-		T.IDadj()	[2]	= e20;
 		T.material		= material;
 		T.sector		= sector;
 		T.dummy			= dummy;

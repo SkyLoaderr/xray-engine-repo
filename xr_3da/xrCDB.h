@@ -144,32 +144,23 @@ namespace CDB
 	};
 
 	//
-	const u32 edge_open = 0xffffffff;
-
 	class XRCDB_API Collector
 	{
 		xr_vector<Fvector>	verts;
 		xr_vector<TRI>		faces;
 
-		u32					VPack(Fvector& V, float eps);
+		u32				VPack				(Fvector& V, float eps);
 	public:
-		void			add_face(
-			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-			u32 e01, u32 e12, u32 e20,				// edges
-			WORD material, WORD sector, u32 dummy	// misc
-			);
-		void			add_face_packed(
-			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-			u32 e01, u32 e12, u32 e20,				// edges
-			WORD material, WORD sector, u32 dummy,	// misc
-			float eps = EPS
-			);
-		void			calc_adjacency	();
+		void			add_face			( Fvector& v0, Fvector& v1, Fvector& v2, u16 material, u16 sector	);
+		void			add_face_D			( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy );
+		void			add_face_packed		( Fvector& v0, Fvector& v1, Fvector& v2, WORD material, WORD sector, float eps = EPS );
+		void			add_face_packed_D	( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy, float eps = EPS );
+		void			calc_adjacency		();
 
-		Fvector*		getV()	{ return &*verts.begin();	}
-		size_t			getVS()	{ return verts.size();	}
-		TRI*			getT()	{ return &*faces.begin();	}
-		size_t			getTS() { return faces.size();	}
+		Fvector*		getV			()	{ return &*verts.begin();	}
+		size_t			getVS			() 	{ return verts.size();		}
+		TRI*			getT			()	{ return &*faces.begin();	}
+		size_t			getTS			()	{ return faces.size();		}
 	};
 
 	const u32 clpMX = 28, clpMY=16, clpMZ=28;
@@ -182,23 +173,20 @@ namespace CDB
 		xr_vector<TRI>		faces;
 
 		Fvector				VMmin, VMscale;
-		DWORDList			VM	[clpMX+1][clpMY+1][clpMZ+1];
+		DWORDList			VM		[clpMX+1][clpMY+1][clpMZ+1];
 		Fvector				VMeps;
 
-		u32					VPack	(Fvector& V);
+		u32					VPack		(Fvector& V);
 	public:
-		CollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
+		CollectorPacked		(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
 
-		void				add_face(
-			Fvector& v0, Fvector& v1, Fvector& v2,	// vertices
-			u32 e01, u32 e12, u32 e20,				// edges
-			WORD material, WORD sector, u32 dummy	// misc
-			);
-		xr_vector<Fvector>& getV_Vec()	{ return verts;	}
+		void				add_face	( Fvector& v0, Fvector& v1, Fvector& v2, u16 material, u16 sector );
+		void				add_face_D	( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy );
+		xr_vector<Fvector>& getV_Vec()	{ return verts;				}
 		Fvector*			getV()		{ return &*verts.begin();	}
-		size_t				getVS()		{ return verts.size();	}
+		size_t				getVS()		{ return verts.size();		}
 		TRI*				getT()		{ return &*faces.begin();	}
-		size_t				getTS()		{ return faces.size();	}
+		size_t				getTS()		{ return faces.size();		}
 	};
 };
 
