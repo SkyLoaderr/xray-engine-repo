@@ -220,7 +220,6 @@ IC void i_section	(int Sect, BOOL bMiddle)
 		// check 'endY' for out-of-triangle 
 		int test = iFloor(currentC[1]);
 		if (endY   >=test) endY --;
-		if (startY > endY) return;
 
 		// Find the edge differences
 		E1[0] = currentB[0]-currentA[0]; E2[0] = currentC[0]-currentA[0];
@@ -235,13 +234,15 @@ IC void i_section	(int Sect, BOOL bMiddle)
 		// check 'startY' for out-of-triangle 
 		int test = iCeil(currentA[1]);
 		if (startY < test) startY ++;
-		if (startY > endY) return;
 
 		// Find the edge differences
 		E1[0] = currentC[0]-currentA[0]; E2[0] = currentC[0]-currentB[0];
 		E1[1] = currentC[1]-currentA[1]; E2[1] = currentC[1]-currentB[1];
 		E1[2] = currentC[2]-currentA[2]; E2[2] = currentC[2]-currentB[2];
 	}
+	Vclamp(startY,0,occ_dim);
+	Vclamp(endY,  0,occ_dim);
+	if (startY >= endY) return;
 	
 	// Compute the inverse slopes of the lines, ie rate of change of X by Y
 	float mE1	= E1[0]/E1[1];
