@@ -128,6 +128,9 @@ void	CRenderTarget::OnDeviceCreate	()
 		s_bloom_dbg_1				= Device.Shader.Create		("effects\\screen_set",		r2_RT_bloom1);
 		s_bloom_dbg_2				= Device.Shader.Create		("effects\\screen_set",		r2_RT_bloom2);
 		s_bloom						= Device.Shader.Create_B	(b_bloom,					"r2\\bloom");
+		rt_Bloom_ZB					= NULL;
+		if (RImplementation.b_nv3x)
+			R_CHK					(HW.pDevice->CreateDepthStencilSurface	(w,h,HW.Caps.fDepth,D3DMULTISAMPLE_NONE,0,TRUE,&rt_Bloom_ZB,NULL));
 	}
 
 	// COMBINE
@@ -222,6 +225,7 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(s_bloom_dbg_1			);
 	Device.Shader.DeleteGeom	(g_bloom_filter			);
 	Device.Shader.DeleteGeom	(g_bloom_build			);
+	_RELEASE					(rt_Bloom_ZB			);
 
 	// SPOT
 	Device.Shader.Delete		(s_accum_spot_s			);

@@ -45,7 +45,13 @@ void CRenderTarget::phase_accumulator_init()
 	// ***** Downsample into bloom2.rgba *****
 	if (0)
 	{
-		u_setrt								(rt_Bloom_2,NULL,NULL,NULL); // No need for ZBuffer at all
+		// 1. ZB doesn't help
+		// 2. Viewport doesn't help
+		// 3. ZEnable doesn't help
+		u_setrt								(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);				// No need for ZBuffer at all
+		D3DVIEWPORT9 VP						= {0,0,Device.dwWidth/2,Device.dwHeight/2,0,1.f };
+		CHK_DX	(HW.pDevice->SetViewport(&VP));
+		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,			FALSE				));
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		FALSE				));
 		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_NONE		)); 	
 
@@ -68,6 +74,7 @@ void CRenderTarget::phase_accumulator_init()
 		RCache.set_Geometry			(g_combine);
 		RCache.set_Element			(s_accum_mask->E[1]);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
+		CHK_DX	(HW.pDevice->SetRenderState	( D3DRS_ZENABLE,		TRUE				));
 	}
 
 	// ***** Assuming next usage will be for directional light *****
@@ -78,6 +85,8 @@ void CRenderTarget::phase_accumulator_init()
 	{
 		// Restore targets
 		u_setrt								(rt_Accumulator,NULL,NULL,HW.pBaseZB);
+		D3DVIEWPORT9 VP						= {0,0,Device.dwWidth,Device.dwHeight,0,1.f };
+		CHK_DX(HW.pDevice->SetViewport(&VP));
 
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILENABLE,		TRUE				));
 		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_STENCILFUNC,		D3DCMP_LESSEQUAL	));

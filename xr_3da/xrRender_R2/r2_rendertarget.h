@@ -35,6 +35,8 @@ private:
 	CRT*						rt_Generic;		// 32bit		(r,g,b,a)				// post-process, intermidiate results, etc.
 	CRT*						rt_Bloom_1;		// 32bit, dim/4	(r,g,b,?)
 	CRT*						rt_Bloom_2;		// 32bit, dim/4	(r,g,b,?)
+	IDirect3DSurface9*			rt_Bloom_ZB;
+
 
 	// D-smap
 	CRT*						rt_smap_d;		// 32bit, (depth)	(eye-space)

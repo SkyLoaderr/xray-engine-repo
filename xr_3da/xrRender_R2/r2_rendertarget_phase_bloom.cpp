@@ -50,7 +50,7 @@ void CRenderTarget::phase_bloom	()
 	u32		Offset;
 
 	// Targets
-	u_setrt								(rt_Bloom_1,NULL,NULL,NULL);		// No need for ZBuffer at all
+	u_setrt								(rt_Bloom_1,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
 	
 	// XForms
 	RCache.set_xform_world				(Fidentity);
@@ -183,7 +183,7 @@ void CRenderTarget::phase_bloom	()
 		// Perform filtering
 		Fvector4	w0,w1;
 		CalcGauss_k7				(w0,w1,ps_r2_ls_bloom_kernel,1.f);
-		u_setrt						(rt_Bloom_2,NULL,NULL,NULL);		// No need for ZBuffer at all
+		u_setrt						(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
 		RCache.set_Element			(s_bloom->E[1]);
 		RCache.set_ca				("weight", 0,			w0);
 		RCache.set_ca				("weight", 1,			w1);
@@ -262,7 +262,7 @@ void CRenderTarget::phase_bloom	()
 		// Perform filtering
 		Fvector4	w0,w1;
 		CalcGauss_k7				(w0,w1,ps_r2_ls_bloom_kernel,1.f);
-		u_setrt						(rt_Bloom_1,NULL,NULL,NULL);		// No need for ZBuffer at all
+		u_setrt						(rt_Bloom_1,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
 		RCache.set_Element			(s_bloom->E[2]);
 		RCache.set_ca				("weight", 0,			w0);
 		RCache.set_ca				("weight", 1,			w1);
@@ -273,7 +273,7 @@ void CRenderTarget::phase_bloom	()
 	// 
 	{
 		// Render skybox/skydome into Bloom2.rgbx
-		u_setrt								(rt_Bloom_2,NULL,NULL,NULL);		// No need for ZBuffer at all
+		u_setrt								(rt_Bloom_2,NULL,NULL,rt_Bloom_ZB);		// No need for ZBuffer at all
 		RImplementation.rmFar				();
 		pCreator->Environment.RenderFirst	();
 		RImplementation.rmNormal			();
