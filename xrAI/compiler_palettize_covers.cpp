@@ -34,18 +34,11 @@
 #include "stdafx.h"
 #include "compiler.h"
 
-// Function definitions
-void	initnet(u8 *thepic, int len, int sample);
-void	unbiasnet();
-void	inxbuild();
-u8		inxsearch(int b, int g, int r);
-void	learn();
-
 // four primes near 500 - assume no image has a length so large
 // that it is divisible by all four primes
 #define dimension		4
 const u32 prime[dimension + 1] = {499, 491, 487, 503, 509};
-#define minpicturebytes	(dimanesion*prime[dimension])			// minimum size for input image
+#define minpicturebytes	(dimension*prime[dimension])			// minimum size for input image
 // Network Definitions
 // -------------------
 #define netsize			256					// number of colours used
@@ -367,12 +360,8 @@ void learn()
 	return;
 }
 
-IC u8   compress(const float c)
-{
-	int			cover = iFloor(c*255.f+EPS_L);
-	clamp		(cover,0,255);
-	return		(u8(cover));
-}
+extern BYTE	compress(float c, int max_value);
+extern void xrPalettizeCovers(u32 *data, u32 N);
 
 void xrPalettizeCovers()
 {
@@ -384,23 +373,69 @@ void xrPalettizeCovers()
 	Nodes::const_iterator				E = g_nodes.end();
 	for ( ; I != E; ++I)
 		for (int i=0; i<dimension; ++i)
-			data[dimension*(I - B) + i] = compress((*I).cover[i]);
+			data[dimension*(I - B) + i] = compress((*I).cover[i],255);
 
-	initnet		(data,dimension*N,1);
-	learn		();
-	unbiasnet	();
+//	initnet		(data,dimension*N,30);
+//	learn		();
+//	unbiasnet	();
+//
+//	for (int i=0; i<(int)N; ++i)
+//		g_nodes[i].cover_index = inxsearch((u8*)(data + i));
+//
+//	g_covers_palette.resize(netsize);
+//	{
+//		Msg		("Palette");
+//		xr_vector<SCover>::iterator					I = g_covers_palette.begin(), B = I;
+//		xr_vector<SCover>::iterator					E = g_covers_palette.end();
+//		for ( ; I != E; ++I) {
+//			for (int i=0; i<dimension; ++i)
+//				(*I).cover[i]	= network[I - B][i];
+//			Msg	(
+//				"[%.3f][%.3f][%.3f][%.3f]",
+//				float((*I).cover[0])/255.f,
+//				float((*I).cover[1])/255.f,
+//				float((*I).cover[2])/255.f,
+//				float((*I).cover[3])/255.f
+//			);
+//		}
+//	}
+//
+	u32				*l_data = (u32*)data;
+	xrPalettizeCovers(l_data,N);
 
-	for (int i=0; i<(int)N; ++i)
-		g_nodes[i].cover_index = inxsearch((u8*)(data + i));
+	xr_map<u32,u32>	l_map;
+	u32				l_palette_size = 0;
+	for (u32 i=0; i<N; ++i)
+		if (l_map.find(l_data[i]) == l_map.end()) {
+			l_map.insert(std::make_pair(l_data[i],l_palette_size));
+			g_nodes[i].cover_index = l_palette_size++;
+		}
+		else
+			g_nodes[i].cover_index = l_map.find(l_data[i])->second;
 
-	g_covers_palette.resize(netsize);
+	VERIFY	(l_palette_size == l_map.size());
+
+	Msg		("Palette size : %d",l_palette_size);
+
+//	g_covers_palette.resize(netsize);
+	g_covers_palette.resize(l_palette_size);
 	{
+		Msg		("Palette");
+		xr_map<u32,u32>::iterator					i = l_map.begin();
 		xr_vector<SCover>::iterator					I = g_covers_palette.begin(), B = I;
 		xr_vector<SCover>::iterator					E = g_covers_palette.end();
-		for ( ; I != E; ++I)
-			for (int i=0; i<dimension; ++i)
-				(*I).cover[i]	= network[I - B][i];
+		for ( ; I != E; ++I, ++i) {
+			Memory.mem_copy((*I).cover,&(*i).first,sizeof((*I).cover));
+			Msg	(
+				"[%.3f][%.3f][%.3f][%.3f]",
+				float((*I).cover[0])/255.f,
+				float((*I).cover[1])/255.f,
+				float((*I).cover[2])/255.f,
+				float((*I).cover[3])/255.f
+				);
+		}
 	}
+
 
 	float		l_sum_sqr = 0.f;
 	float		l_sum = 0.f;
