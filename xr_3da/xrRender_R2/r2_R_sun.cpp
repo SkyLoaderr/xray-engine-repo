@@ -822,7 +822,7 @@ void CRender::render_sun				()
 		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target.phase_smap_direct			(fuckingsun					);
+			Target.phase_smap_direct			(fuckingsun, SE_SUN_FAR		);
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
 			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
@@ -830,7 +830,7 @@ void CRender::render_sun				()
 			fuckingsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
 				fuckingsun->X.D.transluent			= TRUE;
-				Target.phase_smap_direct_tsh		(fuckingsun);
+				Target.phase_smap_direct_tsh		(fuckingsun, SE_SUN_FAR	);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
@@ -1009,7 +1009,7 @@ void CRender::render_sun_near	()
 		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target.phase_smap_direct			(fuckingsun					);
+			Target.phase_smap_direct			(fuckingsun	, SE_SUN_NEAR	);
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
 			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
@@ -1017,7 +1017,7 @@ void CRender::render_sun_near	()
 			fuckingsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
 				fuckingsun->X.D.transluent			= TRUE;
-				Target.phase_smap_direct_tsh		(fuckingsun);
+				Target.phase_smap_direct_tsh		(fuckingsun, SE_SUN_NEAR);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}

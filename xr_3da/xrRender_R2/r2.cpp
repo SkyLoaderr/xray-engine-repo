@@ -71,6 +71,7 @@ void					CRender::create					()
 	// nvstencil on NV40 and up
 	o.nvstencil			= FALSE;
 	if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	o.nvstencil = TRUE;
+	if (strstr(Core.Params,"-nonvs"))		o.nvstencil	= FALSE;
 
 	// options (smap-pool-size)
 	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
