@@ -334,7 +334,8 @@ function checkNpc(npc_community, gulag_type)
 
 	if gulag_type == "campers" or
 	   gulag_type == "walkers" or
-	   gulag_type == "rest"
+	   gulag_type == "rest" or
+	   gulag_type == "search"
 	then
 		return true
 	end

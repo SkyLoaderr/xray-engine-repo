@@ -56,6 +56,16 @@ function loadJob(sj, gname, type, squad, groups)
 			table.insert(sj, t)
 		end
 	end
+	--' один walker
+	if type == "search" then
+		t = { section = "walker@search",
+			idle = 0,
+			prior = 0, state = {0},
+			squad = squad, group = groups[i],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
 	--' отдых
 	if type == "rest" then
 		t = { section = "rest@rest",
