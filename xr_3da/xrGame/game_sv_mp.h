@@ -18,7 +18,7 @@ protected:
 	bool			m_bVotingActive;
 	u32				m_uVoteEndTime;
 	shared_str		m_pVoteCommand;
-	//-------------------------------------------------------
+protected:
 
 	virtual		void				SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed);
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
