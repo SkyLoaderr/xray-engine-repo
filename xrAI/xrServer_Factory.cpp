@@ -108,7 +108,7 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_OBJECT_W_VAL:		
 		case CLSID_OBJECT_W_VINTOREZ:	
 		case CLSID_OBJECT_W_WALTHER:	
-		case CLSID_OBJECT_W_USP45:		
+		case CLSID_OBJECT_W_USP45: 		
 		case CLSID_OBJECT_W_GROZA:		
 		case CLSID_OBJECT_W_FORT:		
 		case CLSID_OBJECT_W_SHOTGUN:	
