@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "physicobject.h"
 #include "PhysicsShell.h"
+#include "Physics.h"
 CPhysicObject::CPhysicObject(void) {
 	m_type = epotBox;
 	m_mass = 10.f;
@@ -178,16 +179,27 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 
 	CKinematics* pKinematics=PKinematics(Visual());
 	m_pPhysicsShell		= P_create_Shell();
-	CPhysicsElement* fixed_element=NULL;
-	if(*po->fixed_bones)
+
+	LPCSTR	fixed_bones=*po->fixed_bones;
+	if(fixed_bones)
 	{
-		u32 fixed_bone_id=pKinematics->LL_BoneID(*po->fixed_bones);
-		R_ASSERT2(BI_NONE!=fixed_bone_id,"wrong fixed bone");
-		bone_map.clear();
-		bone_map.insert(mk_pair(fixed_bone_id,physicsBone()));
+		bone_map					.clear();
+
+		int count =					_GetItemCount(fixed_bones);
+		for (int i=0 ;i<count; ++i) 
+		{
+			string64					fixed_bone							;
+			_GetItem					(fixed_bones,i,fixed_bone)			;
+			u16 fixed_bone_id=pKinematics->LL_BoneID(fixed_bone)			;
+			R_ASSERT2(BI_NONE!=fixed_bone_id,"wrong fixed bone")			;
+			bone_map.insert(mk_pair(fixed_bone_id,physicsBone()))			;
+		}
+		
+		
+
 		m_pPhysicsShell->build_FromKinematics(pKinematics,&bone_map);
-		fixed_element=bone_map.find(fixed_bone_id)->second.element;
-		R_ASSERT2(fixed_element,"fixed bone has no physics");
+		
+
 
 		//m_pPhysicsShell->add_Joint(P_create_Joint(CPhysicsJoint::enumType::full_control,0,fixed_element));
 	}
@@ -199,16 +211,14 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 	m_pPhysicsShell->Activate(true,!po->flags.test(CSE_ALifeObjectPhysic::flActive));//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
-	if(fixed_element)
+
+	BONE_P_PAIR_IT i=bone_map.begin(),e=bone_map.end();
+	for(;i!=e;i++)
 	{
-		dMass m;
-		dMassSetBox(&m,1.f,10000.f,10000.f,10000.f);
-		dMassAdjust(&m,100000000.f);
-		dBodySetMass(fixed_element->get_body(),&m);
-		dBodySetGravityMode(fixed_element->get_body(),0);
+		CPhysicsElement* fixed_element=i->second.element;
+		R_ASSERT2(fixed_element,"fixed bone has no physics");
+		FixBody(fixed_element->get_body());
 	}
-
-
 }
 
 void CPhysicObject::net_Export(NET_Packet& P)

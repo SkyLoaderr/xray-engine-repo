@@ -22,8 +22,8 @@ struct physicsBone
 		element=NULL;
 	}
 };
-DEFINE_MAP	(u32,	physicsBone,	BONE_P_MAP,	BONE_P_PAIR_IT);
-
+DEFINE_MAP	(u16,	physicsBone,	BONE_P_MAP,	BONE_P_PAIR_IT);
+typedef const  BONE_P_MAP :: iterator			BONE_P_PAIR_CIT;
 // ABSTRACT:
 class	CPhysicsBase
 {

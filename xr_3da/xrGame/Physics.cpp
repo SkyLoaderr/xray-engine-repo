@@ -802,7 +802,18 @@ cutted_add_speed/add_speed/fixed_step*m.mass*add_vel[2]-force[2]
 }
 */
 //limit for angular accel
-
+void FixBody(dBodyID body)
+{
+	FixBody(body,10000.f,100000000.f);
+}
+void FixBody(dBodyID body,float ext_param,float mass_param)
+{
+	dMass m;
+	dMassSetBox(&m,1.f,ext_param,ext_param,ext_param);
+	dMassAdjust(&m,mass_param);
+	dBodySetMass(body,&m);
+	dBodySetGravityMode(body,0);
+}
 
 void BodyCutForce(dBodyID body,float l_limit,float w_limit)
 {
