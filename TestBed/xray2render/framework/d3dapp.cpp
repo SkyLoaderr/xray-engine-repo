@@ -740,7 +740,7 @@ HRESULT CD3DApplication::Initialize3DEnvironment()
 
     // Create the device
     hr = m_pD3D->CreateDevice( m_d3dSettings.AdapterOrdinal(), pDeviceInfo->DevType,
-                               m_hWndFocus, behaviorFlags, &m_d3dpp,
+                               m_hWndFocus, behaviorFlags | D3DCREATE_FPU_PRESERVE | D3DCREATE_MULTITHREADED, &m_d3dpp,
                                &m_pd3dDevice );
 
     if( SUCCEEDED(hr) )

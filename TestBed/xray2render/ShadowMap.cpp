@@ -802,7 +802,7 @@ void	CalcGauss	(
 	for (int i=-n; i<=0; i++)
 	{
 		// w.push_back		(1.f);
-		float weight	=	expf(fabsf(-float(i*i)/(2*r*r)));
+		float weight	=	expf	(float(i*i)/(2*r*r));
 		w.push_back		(weight);	// weight
 
 		float offset	= bs*float(-i); 
