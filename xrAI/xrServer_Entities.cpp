@@ -3,7 +3,6 @@
 
 #include "xr_ini.h"
 #include "xrServer_Entities.h"
-#include ""
 
 #ifdef _EDITOR
 	#include "clsid_game.h"

@@ -337,6 +337,9 @@
 			<File
 				RelativePath=".\xrGame.cpp">
 			</File>
+			<File
+				RelativePath="xr_ini.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Game"
@@ -1433,6 +1436,9 @@
 			Filter="">
 			<File
 				RelativePath="NET_Queue.h">
+			</File>
+			<File
+				RelativePath="NET_utils.h">
 			</File>
 			<File
 				RelativePath="PropertiesListTypes.h">
