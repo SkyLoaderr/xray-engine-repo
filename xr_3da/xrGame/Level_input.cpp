@@ -121,7 +121,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 	case DIK_F9:{
-		CStalkerMovementManager* move = dynamic_cast<CStalkerMovementManager*>(Objects.FindObjectByName("m_stalker_e0000"));
+		CStalkerMovementManager* move = dynamic_cast<CStalkerMovementManager*>(Objects.FindObjectByName("m_stalker_e"));
 		if (!move)
 			return;
 
