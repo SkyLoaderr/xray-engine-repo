@@ -324,6 +324,18 @@ void CRender::Calculate()
 					// renderable
 					IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
 					VERIFY							(renderable);
+
+					// Occlusion
+					vis_data&		v_orig			= renderable->renderable.visual->vis;
+					vis_data		v_copy			= v_orig;
+					v_copy.box.xform				(renderable->renderable.xform);
+					BOOL			bVisible		= HOM.visible(v_copy);
+					v_orig.frame					= v_copy.frame;
+					v_orig.hom_frame				= v_copy.hom_frame;
+					v_orig.hom_tested				= v_copy.hom_tested;
+					if (!bVisible)					continue;
+
+					// Rendering
 					set_Object						(renderable);
 					renderable->renderable_Render	();
 					set_Object						(0);
