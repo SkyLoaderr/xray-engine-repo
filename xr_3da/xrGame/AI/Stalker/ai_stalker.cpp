@@ -40,8 +40,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_tpWeaponToTake				= 0;
 	m_bActionStarted				= false;
 	
-//	m_fAccuracy						= 0.f;
-//	m_fIntelligence					= 0.f;
+//	m_fAccuracy						= 100.f;
+//	m_fIntelligence					= 100.f;
 	
 	m_pPhysicsShell					= NULL;
 	m_saved_impulse					= 0.f;
@@ -65,7 +65,6 @@ void CAI_Stalker::Die				()
 	Fvector	dir;
 	AI_Path.Direction				(dir);
 	SelectAnimation					(clTransform.k,dir,AI_Path.fSpeed);
-//	CreateSkeleton					();
 }
 
 void CAI_Stalker::Load				(LPCSTR section)
@@ -661,13 +660,10 @@ void CAI_Stalker::CreateSkeleton()
 void CAI_Stalker::UpdateCL(){
 
 	inherited::UpdateCL();
-	if(m_pPhysicsShell){
-		//m_pPhysicsShell->Update();
+	if(m_pPhysicsShell)
 		clTransform.set(m_pPhysicsShell->mXFORM);
-		
-	}
 	else
-		if (fHealth <= 0)
+		if (!g_Alive())
 			CreateSkeleton();
 }
 

@@ -209,6 +209,9 @@ void CAI_Stalker::Attack()
 
 	vfChoosePointAndBuildPath	(m_tSelectorReload);
 
+	for (int i=0; i<(int)AI_Path.TravelPath.size(); i++)
+		Msg("[%f][%f][%f]",VPUSH(AI_Path.TravelPath[i].P));
+
 	vfSetFire					(true,*getGroup());
 
 	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeFirePoint,m_tEnemy.Enemy->Position());

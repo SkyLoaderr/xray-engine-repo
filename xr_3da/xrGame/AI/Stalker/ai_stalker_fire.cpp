@@ -125,8 +125,8 @@ bool CAI_Stalker::bfCheckIfCanKillEnemy()
 		return(false);
 
 	Fvector fire_pos, fire_dir;
-	Weapons->GetFireParams(vPosition,fire_dir);
-	fire_pos.sub(m_tEnemy.Enemy->Position(),fire_pos);
+	Weapons->GetFireParams(fire_pos,fire_dir);
+	fire_pos.sub(m_tEnemy.Enemy->Position(),vPosition);
 	float yaw1,yaw2,pitch1,pitch2;
 	fire_pos.getHP(yaw1,pitch1);
 	fire_dir.getHP(yaw2,pitch2);

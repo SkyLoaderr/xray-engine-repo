@@ -206,7 +206,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(CAISelectorBase &tSelector, bool bCa
 	if (AI_Path.bNeedRebuild)
 		vfBuildPathToDestinationPoint	(0,bCanStraighten);
 	else {
-		vfInitSelector					(tSelector,Squad,Leader);
+		//vfInitSelector					(tSelector,Squad,Leader);
 		vfSearchForBetterPosition		(tSelector,Squad,Leader);
 	}
 }
@@ -663,12 +663,8 @@ void CAI_Stalker::vfChooseSuspiciousNode(CAISelectorBase &tSelector)
 			tSelector.m_tpEnemyNode = getAI().Node(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
 			tSelector.m_tEnemyPosition = getAI().tfGetNodeCenter(tSelector.m_tpEnemyNode);
 		}
-		else {
-			if (!Group.m_tpaSuspiciousNodes.size())
-				vfInitSelector(m_tSelectorRetreat,Squad,Leader);
-			else
-				vfChoosePointAndBuildPath(m_tSelectorRetreat);
-		}
+		else
+			vfChoosePointAndBuildPath(m_tSelectorRetreat);
 		m_bActionStarted = true;
 	}
 	else {
