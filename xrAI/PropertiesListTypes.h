@@ -322,11 +322,11 @@ public:
     ChooseItemVec*		m_Items;
 	typedef fastdelegate::FastDelegate1<ChooseValue*>	TOnChooseValueFill;
     TOnChooseValueFill	OnChooseFillEvent;
-    u32					m_FillParam;
+    void*				m_FillParam;
 // utils
     void				AppendChooseItem	(const SChooseItem& item){VERIFY(m_Items); m_Items->push_back(item);}
 public:
-						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, u32 param):RTextValue(val),m_ChooseID(cid),m_StartPath(path),m_Items(0),m_FillParam(param),OnChooseFillEvent(0){}
+						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, void* param):RTextValue(val),m_ChooseID(cid),m_StartPath(path),m_Items(0),m_FillParam(param),OnChooseFillEvent(0){}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;
