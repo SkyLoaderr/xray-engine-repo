@@ -226,3 +226,14 @@ void game_sv_GameState::Create					(LPCSTR options)
 		Engine.FS.Close	(F);
 	}
 }
+
+void game_sv_GameState::assign_RP				(xrServerEntity* E)
+{
+	VERIFY				(E);
+
+	int team;
+	vector<RPoint>&		rp	= rpoints[E->g_team()];
+	RPoint&				r	= rp[::Random.randI(rp.size())];
+	E->o_Position.set	(r.P);
+	E->o_Angle.set		(r.A);
+}

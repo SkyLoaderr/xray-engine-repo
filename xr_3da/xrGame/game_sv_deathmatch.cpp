@@ -109,12 +109,13 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	strcpy			(A->s_name_replace,get_option_s(options,"name","Player"));					// name
 	A->s_gameid		=	u8(type);																// game-type
 	A->s_team		=	u8(0);																	// no-team
-	A->s_RP			=	0xff;																	// auto-select
+	A->s_RP			=	0xFE;																	// use supplied
 	A->ID			=	0xffff;																	// server must generate ID
 	A->ID_Parent	=	0xffff;																	// no-parent
 	A->ID_Phantom	=	0xffff;																	// no-phantom
 	A->s_flags		=	M_SPAWN_OBJECT_ACTIVE  | M_SPAWN_OBJECT_LOCAL | M_SPAWN_OBJECT_ASPLAYER;// flags
 	A->RespawnTime	=	0;																		// no-respawn
+	assign_RP		(A);
 
 	// Send
 	NET_Packet						P;

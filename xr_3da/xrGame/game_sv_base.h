@@ -35,6 +35,7 @@ public:
 	virtual		void				signal_Syncronize		();
 	virtual		void				signal_Destroy			()	{};
 	virtual		void				signal_Create			();
+	virtual		void				assign_RP				(xrServerEntity* E);
 
 	// Utilities
 	virtual		u32					get_alive_count			(u32 team);
