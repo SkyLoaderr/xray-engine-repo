@@ -80,7 +80,7 @@ void CWeaponMagazined::UpdateXForm(BOOL bHUDView)
 	}
 }
 
-void CWeaponMagazined::UpdateFP(BOOL bHUDView)
+void CWeaponMagazined::UpdateFP		(BOOL bHUDView)
 {
 	if (Device.dwFrame!=dwFP_Frame) 
 	{
