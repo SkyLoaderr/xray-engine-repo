@@ -170,7 +170,7 @@ function motivator_binder:reload(section)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_save_relevant()
-	printf("motivator_binder:net_save_relevant(): self.object:name()='%s'", self.object:name())
+	--printf("motivator_binder:net_save_relevant(): self.object:name()='%s'", self.object:name())
 	return true
 end
 ----------------------------------------------------------------------------------------------------------------------
