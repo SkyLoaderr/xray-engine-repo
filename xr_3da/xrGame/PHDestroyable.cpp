@@ -106,7 +106,7 @@ void CPHDestroyable::Load(CInifile* ini,LPCSTR section)
 		shell_holder->cNameVisual_set(m_destroyed_obj_visual_names[0]);
 
 	}
-	else
+	else if(0==xr_strcmp(section,"destroyed"))
 	{
 		CInifile::Sect& data		= ini->r_section(section);
 		if(data.size()>0) m_flags.set(fl_destroyable,TRUE);
