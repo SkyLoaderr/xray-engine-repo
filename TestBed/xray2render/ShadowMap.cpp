@@ -668,6 +668,23 @@ HRESULT CreatePower(IDirect3DDevice9* D, DWORD size, float P, LPDIRECT3DTEXTURE9
 	return S_OK;
 }
 
+// Gauss filtering coeffs
+void	CalcGauss	(int n=7, float r=3.3f, float t=1.f, float bs=1.2f)
+const int	n	= 7;		// kernel size
+const float r	= 3.3f;		// gaussian radius
+const float t	= 1;		// grid dimension
+const float bs	= 1.2f;		// bilinear interpolation (1=point sampling, 2=twice the kernel size - interpolated)
+
+float		w [2*n+1];	float* _w = w;
+float		u [2*n+1];	float* _u = u;
+for (int i=-n; i<=n; i++)
+{
+	*_w++	= expf(-float(i*i)/(2*r*r));
+	*_u++	= bs*float(i)/t;
+}
+
+
+
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
 	m_pFont->RestoreDeviceObjects();
