@@ -209,7 +209,7 @@ IC void CBackend::set_Shader			(Shader* S, u32 pass)
 
 IC void CBackend::set_Geometry			(SGeometry* _geom)
 {
-	set_Format			(_geom->dcl._get());
+	set_Format			(_geom->dcl._get()->dcl);
 	set_Vertices		(_geom->vb, _geom->vb_stride);
 	set_Indices			(_geom->ib);
 }

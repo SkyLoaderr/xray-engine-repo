@@ -72,8 +72,8 @@ void	CBlender_Compile::PassEnd			()
 	SetMapping				();
 
 	SPass					P;
-	P.ps					= ps->ps;
-	P.vs					= vs->vs;
+	P.ps					= ps;
+	P.vs					= vs;
 	P.constants				= Device.Shader._CreateConstantTable(ctable);
 	P.state					= Device.Shader._CreateState		(RS.GetContainer());
 	P.T						= Device.Shader._CreateTextureList	(passTextures);

@@ -43,8 +43,8 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	// Create shaders
 	SPS* ps					= Device.Shader._CreatePS			(_ps);
 	SVS* vs					= Device.Shader._CreateVS			(_vs);
-	dest.ps					= ps->ps;
-	dest.vs					= vs->vs;
+	dest.ps					= ps;
+	dest.vs					= vs;
 	ctable.merge			(&ps->constants);
 	ctable.merge			(&vs->constants);
 	SetMapping				();
