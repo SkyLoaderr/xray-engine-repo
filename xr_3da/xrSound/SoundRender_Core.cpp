@@ -35,6 +35,7 @@ CSoundRender_Core::CSoundRender_Core	()
 	s_environment				= NULL;
 	Handler						= NULL;
 	s_targets_pu				= 0;
+	s_emitters_u				= 0;
 }
 
 CSoundRender_Core::~CSoundRender_Core()

@@ -43,6 +43,8 @@ public:
 	u32							dwTimeStarted;			// time of "Start"
 	u32							dwTimeToStop;			// time to "Stop"
 	u32							dwTimeToPropagade;
+
+	u32							marker;
 public:
 	void						PropagadeEvent			();
 	BOOL						isPlaying				(void)					{ return state!=stStopped; }
@@ -55,7 +57,7 @@ public:
 
 	void						fill_block				(void* ptr, u32 size);
 
-	float						priority				()						{ return smooth_volume;	}
+	float						priority				();
 	void						start					(sound* _owner, BOOL _loop);
 	void						update					(float dt);
 	BOOL						update_culling			(float dt);

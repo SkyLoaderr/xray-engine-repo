@@ -25,6 +25,8 @@ class CSoundRender_Target
 	CSoundRender_Emitter*		pEmitter;
 	u32							pos_write;		// bytes
 	BOOL						rendering;
+public:
+	float						priority;
 private:
 	void						fill_block		();
 	u32							calc_interval	(u32 ptr);

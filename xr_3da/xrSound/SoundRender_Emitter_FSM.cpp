@@ -135,6 +135,13 @@ BOOL	CSoundRender_Emitter::update_culling	(float dt)
 	else				return	SoundRender.i_allow_play	(this);
 }
 
+float	CSoundRender_Emitter::priority				()
+{
+	float	dist		= SoundRender.Listener.vPosition.distance_to	(p_source.position);
+	float	att			= p_source.min_distance/(psSoundRolloff*dist);	clamp(att,0.f,1.f);
+	return	smooth_volume*att;
+}
+
 void	CSoundRender_Emitter::update_environment	(float dt)
 {
 	if (bMoved)			e_target	= *SoundRender.get_environment	(p_source.position);

@@ -40,6 +40,7 @@ private:
 	// Containers
 	vector<CSoundRender_Source*>		s_sources;
 	vector<CSoundRender_Emitter*>		s_emitters;
+	u32									s_emitters_u;			// emitter update marker
 	vector<CSoundRender_Target*>		s_targets;
 	vector<CSoundRender_Target*>		s_targets_defer;
 	u32									s_targets_pu;			// parameters update

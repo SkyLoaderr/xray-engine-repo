@@ -19,11 +19,31 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 {
 	u32 it;
 
+	s_emitters_u	++;
+
+	// Firstly update emitters, which are now being rendered
+	for (it=0; it<s_targets.size(); it++)
+	{
+		CSoundRender_Target*	T	= s_targets	[it];
+		CSoundRender_Emitter*	E	= T->get_emitter();
+		if (E) {
+			E->update	(dt);
+			E->marker	= s_emitters_u;
+			T->priority	= E->priority();
+		} else {
+			T->priority	= -1;
+		}
+	}
+
 	// Update emmitters
 	for (it=0; it<s_emitters.size(); it++)
 	{
 		CSoundRender_Emitter*	pEmitter = s_emitters[it];
-		pEmitter->update		(dt);
+		if (pEmitter->marker!=s_emitters_u)
+		{
+			pEmitter->update		(dt);
+			pEmitter->marker		= s_emitters_u;
+		}
 		if (!pEmitter->isPlaying())		
 		{
 			// Stopped
