@@ -4,7 +4,32 @@
 #include "xrIsect.h"
 #include "math.h"
 
-void blit	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)
+void lm_layer::Pack (xr_vector<u32>& dest)	
+{
+	dest.resize			(width*height);
+	xr_vector<base_color>::iterator I=surface.begin();
+	xr_vector<base_color>::iterator E=surface.end();
+	xr_vector<u32>::iterator		W=dest.begin();
+	for (; I!=E; I++)
+	{
+		u8	_r	= u8_clr(I->rgb.x);
+		u8	_g	= u8_clr(I->rgb.y);
+		u8	_b	= u8_clr(I->rgb.z);
+		u8	_d	= u8_clr(I->sun);
+		*W++	= color_rgba(_r,_g,_b,_d);
+	}
+}
+u32 lm_layer::Pixel	(u32 ID)
+{
+	xr_vector<base_color>::iterator I = surface.begin()+ID;
+	u8	_r	= u8_clr(I->rgb.x);
+	u8	_g	= u8_clr(I->rgb.y);
+	u8	_b	= u8_clr(I->rgb.z);
+	u8	_d	= u8_clr(I->sun);
+	return	color_rgba(_r,_g,_b,_d);
+}
+
+void blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF)
 {
 	R_ASSERT(ds_x>=(ss_x+px));
 	R_ASSERT(ds_y>=(ss_y+py));
@@ -15,6 +40,28 @@ void blit	(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, 
 			u32 dy = py+y;
 			u32 sc = src[y*ss_x+x];
 			if (color_get_A(sc)>=aREF) dest[dy*ds_x+dx] = sc;
+		}
+}
+
+void blit			(lm_layer& dst, lm_layer& src, u32 px, u32 py, u32 aREF)
+{
+	u32		ds_x	= dst.width;
+	u32		ds_y	= dst.height;
+	u32		ss_x	= src.width;
+	u32		ss_y	= src.height;
+	R_ASSERT(ds_x>=(ss_x+px));
+	R_ASSERT(ds_y>=(ss_y+py));
+	for (u32 y=0; y<ss_y; y++)
+		for (u32 x=0; x<ss_x; x++)
+		{
+			u32 dx = px+x;
+			u32 dy = py+y;
+			base_color	sc = src.surface[y*ss_x+x];
+			u8			sm = src.marker [y*ss_x+x];
+			if (sm>=aREF) {
+				dst.surface	[dy*ds_x+dx] = sc;
+				dst.marker	[dy*ds_x+dx] = sm;
+			}
 		}
 }
 
@@ -55,7 +102,6 @@ CDeflector::CDeflector()
 }
 CDeflector::~CDeflector()
 {
-	xr_free			(layer.lm.pSurface);
 }
 
 VOID CDeflector::OA_Export()

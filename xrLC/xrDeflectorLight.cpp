@@ -308,84 +308,84 @@ IC u32	rms_diff	(u32 a, u32 b)
 	if (a>b)	return a-b;
 	else		return b-a;
 }
-BOOL	__stdcall rms_test	(b_texture& lm, u32 w, u32 h, u32 rms)
+BOOL	__stdcall rms_test	(lm_layer& lm, u32 w, u32 h, u32 rms)
 {
 	if ((w<=1) || (h<=1))	return FALSE;
 
 	// scale down(lanczos3) and up (bilinear, as video board)
-	u32*	pScaled		= (u32*)(xr_malloc(w*h*4));
-	u32*	pRestored	= (u32*)(xr_malloc(lm.width*lm.height*4));
+	xr_vector<u32>	pOriginal;	lm.Pack			(pOriginal);
+	xr_vector<u32>	pScaled;	pScaled.resize	(w*h);
+	xr_vector<u32>	pRestored;	pRestored.resize(lm.width*lm.height);
 	try {
-		imf_Process	(pScaled,	w,h,(u32*)lm.pSurface,lm.width,lm.height,imf_lanczos3	);
-		imf_Process	(pRestored,	lm.width,lm.height,pScaled,w,h,imf_filter				);
+		imf_Process	(&*pScaled.begin(),		w,			h,			&*pOriginal.begin(),	lm.width,lm.height,imf_lanczos3	);
+		imf_Process	(&*pRestored.begin(),	lm.width,	lm.height,	&*pScaled.begin(),		w,h,imf_filter					);
 	} catch (...)
 	{
 		clMsg	("* ERROR: imf_Process");
-		xr_free	(pScaled);
-		xr_free	(pRestored);
 		return	FALSE;
 	}
-	xr_free		(pScaled);
 
 	// compare them
 	const u32 limit = 254-BORDER;
 	for (u32 y=0; y<lm.height; y++)
 	{
-		u32*	scan_lmap	= lm.pSurface+y*lm.width;
-		u32*	scan_rest	= (u32*)(pRestored)+y*lm.width;
+		u32		offset		= y*lm.width;
+		u8*		scan_mark	= (u8*)	&*(lm.marker.begin()+offset);
+		u32*	scan_lmap	= (u32*)&*(pOriginal.begin()+offset);
+		u32*	scan_rest	= (u32*)&*(pRestored.begin()+offset);
 		for (u32 x=0; x<lm.width; x++)
 		{
-			u32 pixel	= scan_lmap[x];
-			if (color_get_A(pixel)>=limit)	
+			if (scan_mark[x]>=limit)	
 			{
+				u32 pixel	= scan_lmap[x];
 				u32 pixel_r	= scan_rest[x];
-				if (rms_diff(color_get_R(pixel_r),color_get_R(pixel))>rms)		goto fail;
-				if (rms_diff(color_get_G(pixel_r),color_get_G(pixel))>rms)	goto fail;
-				if (rms_diff(color_get_B(pixel_r),color_get_B(pixel))>rms)	goto fail;
+				if (rms_diff(color_get_R(pixel_r),color_get_R(pixel))>rms)	return FALSE;
+				if (rms_diff(color_get_G(pixel_r),color_get_G(pixel))>rms)	return FALSE;
+				if (rms_diff(color_get_B(pixel_r),color_get_B(pixel))>rms)	return FALSE;
+				if (rms_diff(color_get_A(pixel_r),color_get_A(pixel))>rms)	return FALSE;
 			}
 		}
 	}
-	xr_free	(pRestored);
 	return	TRUE;
-
-fail:
-	xr_free	(pRestored);
-	return	FALSE;
 }
 
-BOOL	__stdcall rms_test	(b_texture&	lm, u32 _r, u32 _g, u32 _b, u32 rms)
+BOOL	__stdcall rms_test	(lm_layer&	lm, u32 _r, u32 _g, u32 _b, u32 _a, u32 rms)
 {
 	u32 x,y;
 	for (y=0; y<lm.height; y++)
 	{
 		for (x=0; x<lm.width; x++)
 		{
-			u32 pixel	= lm.pSurface	[y*lm.width+x];
-			if (color_get_A(pixel)>=254)	{
+			u32	offset	= y*lm.width+x;
+			if (lm.marker[offset]>=254)	{
+				u32 pixel	= lm.Pixel(offset);
 				if (rms_diff(_r, color_get_R(pixel))>rms)	return FALSE;
 				if (rms_diff(_g, color_get_G(pixel))>rms)	return FALSE;
 				if (rms_diff(_b, color_get_B(pixel))>rms)	return FALSE;
+				if (rms_diff(_a, color_get_A(pixel))>rms)	return FALSE;
 			}
 		}
 	}
 	return TRUE;
 }
 
-u32	__stdcall rms_average	(b_texture& lm, u32& _r, u32& _g, u32& _b)
+u32	__stdcall rms_average	(lm_layer& lm, u32& _r, u32& _g, u32& _b, u32& _a)
 {
 	u32 x,y,_count;
-	_r=0, _g=0, _b=0, _count=0;
+	_r=0, _g=0, _b=0, _a=0, _count=0;
 
 	for (y=0; y<lm.height; y++)
 	{
 		for (x=0; x<lm.width; x++)
 		{
-			u32 pixel	= lm.pSurface[y*lm.width+x];
-			if ((color_get_A(pixel))>=254)	
+			u32	offset	= y*lm.width+x;
+			if (lm.marker[offset]>=254)	
 			{
+				u32 pixel	= lm.Pixel	(offset);
 				_r		+= color_get_R	(pixel);
 				_g		+= color_get_G	(pixel);
 				_b		+= color_get_B	(pixel);
+				_a		+= color_get_A	(pixel);
 				_count	++;
 			}
 		}
@@ -393,39 +393,33 @@ u32	__stdcall rms_average	(b_texture& lm, u32& _r, u32& _g, u32& _b)
 	return	_count;
 }
 
-BOOL	compress_Zero			(b_texture& lm, u32 rms)
+BOOL	compress_Zero		(lm_layer& lm, u32 rms)
 {
-	u32 _r, _g, _b, _count;
+	u32 _r, _g, _b, _a, _count;
 
 	// Average color
-	_count	= rms_average(lm,_r,_g,_b);
+	_count	= rms_average(lm,_r,_g,_b,_a);
 
 	if (0==_count)	{
 		clMsg("* ERROR: Lightmap not calculated (T:%d)");
 		return FALSE;
 	} else {
-		_r	/= _count;	_g	/= _count;	_b	/= _count;
+		_r	/= _count;	_g	/= _count;	_b	/= _count; _a	/= _count;
 	}
 
 	// Compress if needed
-	if (rms_test(lm,_r,_g,_b,rms))
+	if (rms_test(lm,_r,_g,_b,_a,rms))
 	{
-		xr_free	(lm.pSurface);		// release OLD
 		u32		c_x			= BORDER*2;
 		u32		c_y			= BORDER*2;
-		u32		c_size		= c_x*c_y;
-		u32*	compressed	= (u32*)(xr_malloc(c_size*4));
-		u32	c_fill			= color_rgba	(_r,_g,_b,255);
-		for (u32 p=0; p<c_size; p++)	compressed[p]=c_fill;
-
-		lm.pSurface			= compressed;
+		lm.surface.assign	(c_x*c_y,color_rgba	(_r,_g,_b,_a));
 		lm.height			= 0;
 		lm.width			= 0;
 		return TRUE;
 	}
 	return FALSE;
 }
-BOOL	compress_RMS			(b_texture& lm, u32 rms, u32& w, u32& h)
+BOOL	compress_RMS		(lm_layer& lm, u32 rms, u32& w, u32& h)
 {
 	// *** Try to bilinearly filter lightmap down and up
 	w=0, h=0;
@@ -514,9 +508,9 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 	LightsSelected->select(pBuild->L_static,Sphere.P,Sphere.R);
 
 	// Register _new layer
-	Layer& lm			= layer;
-	lm.width			= width;
-	lm.height			= height;
+	lm_layer& lm		= layer;
+	lm.width			= dwWidth;
+	lm.height			= dwHeight;
 
 	// Calculate and fill borders
 	L_Calculate			(DB,LightsSelected,H);
@@ -531,7 +525,6 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 			// Reacalculate lightmap at lower resolution
 			lm.width	= w;
 			lm.height	= h;
-			xr_free		(lm.pSurface);
 			L_Calculate	(DB,LightsSelected,H);
 		}
 	} catch (...)
@@ -544,72 +537,73 @@ VOID CDeflector::Light(CDB::COLLIDER* DB, base_lighting* LightsSelected, HASH& H
 		if (lm.width==1)	
 		{
 			// Horizontal ZERO - vertical line
-			b_texture		T;
-			T.width		= 2*BORDER;
+			lm_layer		T;
+			T.width			= 2*BORDER;
 			T.height		= lm.height+2*BORDER;
-			u32 size		= T.width*T.height*4;
-			T.pSurface		= (u32*)(xr_malloc(size));
-			ZeroMemory		(T.pSurface,size);
+			u32 size		= T.width*T.height;
+			T.surface.resize(size);
+			T.marker.resize	(size);
 
 			// Transfer
 			for (u32 y=0; y<T.height; y++)
 			{
-				int		py			= int(y)-BORDER;
-				clamp	(py,0,int(lm.height-1));
-				u32	C			= lm.pSurface[py];
-				T.pSurface[y*2+0]	= C; 
-				T.pSurface[y*2+1]	= C;
+				int			py		= int(y)-BORDER;
+				clamp				(py,0,int(lm.height-1));
+				base_color	C		= lm.surface[py];
+				T.surface[y*2+0]	= C; 
+				T.marker [y*2+0]	= 255;
+				T.surface[y*2+1]	= C;
+				T.marker [y*2+1]	= 255;
 			}
 
 			// Exchange
-			xr_free			(lm.pSurface);
-			T.width		= 0;
+			T.width			= 0;
 			T.height		= lm.height;
 			lm				= T;
 		} else if (lm.height==1) 
 		{
 			// Vertical ZERO - horizontal line
-			b_texture		T;
-			T.width		= lm.width+2*BORDER;
+			lm_layer		T;
+			T.width			= lm.width+2*BORDER;
 			T.height		= 2*BORDER;
-			u32 size		= T.width*T.height*4;
-			T.pSurface		= (u32*)(xr_malloc(size));
-			ZeroMemory		(T.pSurface,size);
+			u32 size		= T.width*T.height;
+			T.surface.resize(size);
+			T.marker.resize	(size);
 
 			// Transfer
 			for (u32 x=0; x<T.width; x++)
 			{
-				int		px			= int(x)-BORDER;
-				clamp	(px,0,int(lm.width-1));
-				u32	C			= lm.pSurface[px];
-				T.pSurface[0*T.width+x]	= C;
-				T.pSurface[1*T.width+x]	= C;
+				int			px			= int(x)-BORDER;
+				clamp					(px,0,int(lm.width-1));
+				base_color	C			= lm.surface[px];
+				T.surface	[0*T.width+x]	= C;
+				T.marker	[0*T.width+x]	= 255;
+				T.surface	[1*T.width+x]	= C;
+				T.marker	[1*T.width+x]	= 255;
 			}
 
 			// Exchange
-			xr_free			(lm.pSurface);
-			T.width		= lm.width;
+			T.width			= lm.width;
 			T.height		= 0;
 			lm				= T;
 		} else {
 			// Generic blit
-			b_texture		lm_old	= lm;
-			b_texture		lm_new;
-			lm_new.width	= (lm_old.width+2*BORDER);
-			lm_new.height	= (lm_old.height+2*BORDER);
-			u32 size		= lm_new.width*lm_new.height*4;
-			lm_new.pSurface	= (u32*)(xr_malloc(size));
-			ZeroMemory		(lm_new.pSurface,size);
-			blit			(lm_new.pSurface,lm_new.width,lm_new.height,lm_old.pSurface,lm_old.width,lm_old.height,BORDER,BORDER,255-BORDER);
-			xr_free			(lm_old.pSurface);
-			lm				= lm_new;
-			ApplyBorders	(lm,254);
-			ApplyBorders	(lm,253);
-			ApplyBorders	(lm,252);
-			ApplyBorders	(lm,251);
+			lm_layer		lm_old	= lm;
+			lm_layer		lm_new;
+			lm_new.width			= (lm_old.width+2*BORDER);
+			lm_new.height			= (lm_old.height+2*BORDER);
+			u32 size				= lm_new.width*lm_new.height;
+			lm_new.surface.resize	(size);
+			lm_new.marker.resize	(size);
+			blit					(lm_new,lm_old,BORDER,BORDER,255-BORDER);
+			lm						= lm_new;
+			ApplyBorders			(lm,254);
+			ApplyBorders			(lm,253);
+			ApplyBorders			(lm,252);
+			ApplyBorders			(lm,251);
 			for	(ref=250; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
-			lm.width		= lm_old.width;
-			lm.height		= lm_old.height;
+			lm.width				= lm_old.width;
+			lm.height				= lm_old.height;
 		}
 	} catch (...)
 	{

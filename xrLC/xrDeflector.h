@@ -16,7 +16,9 @@ struct lm_layer
 	xr_vector<base_color>	surface;
 	xr_vector<u8>			marker;
 
-	u32						Area ()	{ return (width+2*BORDER)*(height+2*BORDER); }
+	u32						Area ()						{ return (width+2*BORDER)*(height+2*BORDER); }
+	u32						Pixel(u32 ID);
+	void					Pack (xr_vector<u32>& dest);
 
 	lm_layer()				{ width=height=0; }
 };
@@ -77,6 +79,7 @@ typedef xr_vector<UVtri>::iterator UVIt;
 
 extern void		Jitter_Select	(Fvector2* &Jitter, u32& Jcount);
 extern void		blit			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
+extern void		blit			(lm_layer& dst, lm_layer& src, u32 px, u32 py, u32 aREF);
 extern void		blit_r			(u32* dest, u32 ds_x, u32 ds_y, u32* src, u32 ss_x, u32 ss_y, u32 px, u32 py, u32 aREF);
 extern void		LightPoint		(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags, Face* skip);
 
