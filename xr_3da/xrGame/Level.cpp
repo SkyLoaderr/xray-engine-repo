@@ -214,29 +214,33 @@ void CLevel::OnFrame	()
 			F->OutNext	("OUT: %4d/%4d (%2.1f%%)",	S->bytes_out_real,	S->bytes_out,	100.f*float(S->bytes_out_real)/float(S->bytes_out));
 			F->OutNext	("client_2_sever ping: %d",	net_Statistic.getPing());
 			F->OutNext	("SPS/Sended : %4d/%4d", S->dwBytesPerSec, S->dwBytesSended);
+			F->OutNext	("sv_urate/cl_urate : %4d/%4d", psNET_ServerUpdate, psNET_ClientUpdate);
+			
 			
 			F->SetColor	(D3DCOLOR_XRGB(255,255,255));
 			for (u32 I=0; I<Server->client_Count(); ++I)	{
 				IClient*	C = Server->client_Get(I);
-				F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Blocked(%2d)",
+				F->OutNext("%10s: P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Retried(%2d), Blocked(%2d)",
 					Server->game->get_option_s(C->Name,"name",C->Name),
 //					C->Name,
 					C->stats.getPing(),
 					float(C->stats.getBPS()),// /1024,
 					C->stats.getMPS_Receive	(),
 					C->stats.getMPS_Send	(),
+					C->stats.getRetriedCount(),
 					C->stats.dwTimesBlocked
 					);
 			}
 			if (OnClient())
 			{
-				F->OutNext("P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Blocked(%2d), Sended(%2d), SPS(%2d)",
+				F->OutNext("P(%d), BPS(%2.1fK), MRR(%2d), MSR(%2d), Retried(%2d), Blocked(%2d), Sended(%2d), SPS(%2d)",
 					//Server->game->get_option_s(C->Name,"name",C->Name),
 					//					C->Name,
 					net_Statistic.getPing(),
 					float(net_Statistic.getBPS()),// /1024,
 					net_Statistic.getMPS_Receive	(),
 					net_Statistic.getMPS_Send	(),
+					net_Statistic.getRetriedCount(),
 					net_Statistic.dwTimesBlocked,
 					net_Statistic.dwBytesSended,
 					net_Statistic.dwBytesPerSec

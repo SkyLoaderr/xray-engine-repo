@@ -1027,12 +1027,13 @@ void CActor::OnRender	()
 		HUD().pFontSmall->OutSet	(170,630);
 		HUD().pFontSmall->SetSize	(16.0f);
 		HUD().pFontSmall->SetColor	(0xffff0000);
+		/*
 		HUD().pFontSmall->OutNext	("NumUpdates:      [%.2f]",g_fNumUpdates);
 		if (!Level().InterpolationDisabled())
 			HUD().pFontSmall->OutNext	("Intepolation:      [%d]",Level().GetInterpolationSteps());
 		else
 			HUD().pFontSmall->OutNext	("Intepolation:      [Disabled]");
-		
+		*/
 
 //		HUD().pFontSmall->OutNext	("Accel:    [%3.2f, %3.2f, %3.2f]",VPUSH(CurState.accel));
 

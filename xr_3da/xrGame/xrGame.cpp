@@ -67,6 +67,10 @@ extern	float	g_fMaxReconSpeed	;
 BOOL	g_bCheckTime = TRUE;
 int		g_dwEventDelay = 0;
 
+BOOL		net_cl_inputguaranteed = TRUE;
+int			net_cl_inputupdaterate = 100;
+int			g_dwInputUpdateDelta = 10;
+
 //extern int x_m_x = 0;
 //extern int x_m_z = 0;
 
@@ -803,6 +807,25 @@ public:
 	}
 };
 
+class CCC_Net_CL_InputUpdateRate : public CCC_Integer {
+protected:
+	int		*value_blin;
+public:
+	CCC_Net_CL_InputUpdateRate(LPCSTR N, int* V, int _min=0, int _max=999) :
+	  CCC_Integer(N,V,_min,_max),
+		  value_blin(V)
+	  {};
+
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  CCC_Integer::Execute(args);
+		  if ((*value_blin > 0) && g_pGameLevel)
+		  {
+			 g_dwInputUpdateDelta = 1000/(*value_blin);
+		  };
+	  }
+};
+
 class CCC_Net_CL_ClearStats : public IConsole_Command {
 public:
 	CCC_Net_CL_ClearStats(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -996,6 +1019,10 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		CMD1(CCC_Net_CL_Resync,		"net_cl_resync" );
 		CMD1(CCC_Net_CL_ClearStats,		"net_cl_clearstats" );
 		CMD1(CCC_Net_SV_ClearStats,		"net_sv_clearstats" );
+		CMD4(CCC_Integer,			"net_cl_inputguaranteed",		&net_cl_inputguaranteed,	0, 1)	;
+		CMD4(CCC_Net_CL_InputUpdateRate,	"net_cl_inputupdaterate",		&net_cl_inputupdaterate, 1, 100)	;
+
+
 		CMD3(CCC_Mask,				"g_unlimitedammo",				&psActorFlags,	AF_UNLIMITEDAMMO);
 				
 		// adjust mode support

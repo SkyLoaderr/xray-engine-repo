@@ -120,6 +120,7 @@ void			CUIGameAHunt::OnFrame()
 {
 	inherited::OnFrame();
 
+	HUD().pFontDI->SetSize	(0.02f);
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 	switch (Game().phase)
 	{

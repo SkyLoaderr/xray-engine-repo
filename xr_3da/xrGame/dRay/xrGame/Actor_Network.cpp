@@ -395,6 +395,9 @@ void CActor::NetInput_Save()
 	NET_InputStack.push_back(NI);
 }
 
+extern	BOOL net_cl_inputguaranteed;
+extern	int g_dwInputUpdateDelta;
+static	u32	dwLastUpdateTime = 0;
 void	CActor::NetInput_Send()
 {
 	//----------- for E3 -----------------------------
@@ -410,16 +413,19 @@ void	CActor::NetInput_Send()
 	NP.w_begin		(M_CL_INPUT);
 
 	NP.w_u16		(u16(ID()));
-	NP.w_u32		(NI.m_dwTimeStamp);
-	NP.w_u32		(NI.mstate_wishful);
+//	NP.w_u32		(NI.m_dwTimeStamp);
+//	NP.w_u32		(NI.mstate_wishful);
 
-	NP.w_u8			(NI.cam_mode	);
+//	NP.w_u8			(NI.cam_mode	);
 	NP.w_float		(NI.cam_yaw		);
 	NP.w_float		(NI.cam_pitch	);
 
 //	if (Level().net_HasBandwidth()) 
+	u32 DeviceTime = Device.dwTimeGlobal;
+	if (dwLastUpdateTime+g_dwInputUpdateDelta < DeviceTime)
 	{ 
-		Level().Send	(NP,net_flags(TRUE,TRUE));
+		Level().Send	(NP,net_flags(net_cl_inputguaranteed,TRUE));
+		dwLastUpdateTime = DeviceTime;
 	};
 };
 
@@ -427,10 +433,10 @@ void CActor::net_ImportInput	(NET_Packet &P)
 {
 	net_input			NI;
 
-	P.r_u32				(NI.m_dwTimeStamp);
-	P.r_u32				(NI.mstate_wishful);
+//	P.r_u32				(NI.m_dwTimeStamp);
+//	P.r_u32				(NI.mstate_wishful);
 
-	P.r_u8				(NI.cam_mode);
+//	P.r_u8				(NI.cam_mode);
 
 	P.r_float			(NI.cam_yaw);
 	P.r_float			(NI.cam_pitch);
@@ -440,8 +446,8 @@ void CActor::net_ImportInput	(NET_Packet &P)
 
 void CActor::NetInput_Apply			(net_input* pNI)
 {
-	mstate_wishful = pNI->mstate_wishful;
-	cam_Set	(EActorCameras(pNI->cam_mode));
+//	mstate_wishful = pNI->mstate_wishful;
+//	cam_Set	(EActorCameras(pNI->cam_mode));
 	cam_Active()->yaw = pNI->cam_yaw;
 	cam_Active()->pitch = pNI->cam_pitch;
 
