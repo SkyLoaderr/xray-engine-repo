@@ -30,12 +30,12 @@ void CAI_Stalker::g_fireParams(Fvector& P, Fvector& D)
 void CAI_Stalker::g_WeaponBones	(int &L, int &R1, int &R2)
 {
 	CKinematics *V	= PKinematics(Visual());
-	R1				= V->LL_BoneID("bip01_r_hand");
-	R2				= V->LL_BoneID("bip01_r_finger2");
+	R1				= m_r_hand;
+	R2				= m_r_finger2;
 	if ((IsLimping() && (m_tMentalState == eMentalStateFree)) || (GetCurrentAction() && !GetCurrentAction()->m_tAnimationAction.m_bHandUsage))
-		L				= R2;
+		L			= R2;
 	else
-		L				= V->LL_BoneID("bip01_l_finger1");
+		L			= m_r_finger1;
 }
 
 void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)

@@ -55,6 +55,10 @@ void CAI_Stalker::reinit			()
 	m_dwLastSoundUpdate				= 0;
 	m_dwLastUpdate					= 0;
 	m_tTaskState					= eTaskStateChooseTask;
+
+	m_r_hand						= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
+	m_r_finger1						= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
+	m_r_finger2						= PKinematics(Visual())->LL_BoneID("bip01_r_finger1");
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
