@@ -275,7 +275,7 @@ void CUIDragDropList::Init(int x, int y, int width, int height)
 //					 GetHeight(), false);
 
 	inherited::Init(x, y, width, height);
-//	ScrollBarRecalculate();
+	ScrollBarRecalculate();
 }
 //инициализация сетки Drag&Drop
 void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, 
