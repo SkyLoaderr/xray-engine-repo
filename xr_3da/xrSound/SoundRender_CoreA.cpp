@@ -116,8 +116,14 @@ void CSoundRender_CoreA::_initialize	(u64 window)
 	for (u32 tit=0; tit<u32(psSoundTargets); tit++)
 	{
 		T						=	xr_new<CSoundRender_TargetA>();
-		T->_initialize			();	
-		s_targets.push_back		(T);
+		if (T->_initialize()){	
+			s_targets.push_back	(T);
+        }else{
+        	Log					("!OpenAL: Max targets - ",tit);
+            T->_destroy			();
+        	xr_delete			(T);
+        	break;
+        }
 	}
 }
 

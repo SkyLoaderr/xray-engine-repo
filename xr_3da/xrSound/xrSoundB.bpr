@@ -36,7 +36,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS"/>
+    <USERDEFINES value="_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrSoundB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0_sum_2004\Include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;P:\xrCore;R:\SDK\ogg\ogg\include;R:\SDK\ogg\vorbis\include;R:\SDK\eax20\Include;R:\SDK\OpenAL\include;R:\SDK\OpenAL\include\AL"/>
@@ -45,18 +45,19 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IR:\SDK\DirectX9.0_sum_2004\Include -I$(BCB)\include -I$(BCB)\include\vcl 
+    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -D_DEBUG 
+      -IR:\SDK\DirectX9.0_sum_2004\Include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IP:\xrCore 
       -IR:\SDK\ogg\ogg\include -IR:\SDK\ogg\vorbis\include 
       -IR:\SDK\eax20\Include -IR:\SDK\OpenAL\include -IR:\SDK\OpenAL\include\AL 
-      -src_suffix cpp -D_EDITOR -D_XRSOUNDB -DXRSOUND_EXPORTS -boa"/>
-    <CFLAG1 value="-WD -O2 -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
-      -6 -b- -k -vi -tWD -tWM -c"/>
-    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
+      -boa"/>
+    <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
+      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
+    <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mu /w2 /zn"/>
-    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi"/>
+    <AFLAGS value="/mu /w2 /zi"/>
+    <LFLAGS value="-IIntermediate -D&quot;&quot; -aa -Tpd -x -Gi -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
@@ -191,8 +192,8 @@ Item1=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=3
-Item0=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS
-Item1=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
+Item0=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
+Item1=_EDITOR;_XRSOUNDB;XRSOUND_EXPORTS
 Item2=_XRSOUNDB;XRSOUND_EXPORTS;_DEBUG
 
 [HistoryLists\hlIntOutputDir]
@@ -213,7 +214,7 @@ Item4=!run
 DebugSourceDirs=$(BCB)\source\vcl;P:\Editors\xrEProps\
 
 [Parameters]
-RunParams=-opena
+RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=

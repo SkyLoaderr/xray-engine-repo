@@ -14,7 +14,7 @@ CSoundRender_Target::~CSoundRender_Target(void)
 {
 }
 
-void	CSoundRender_Target::_initialize()
+BOOL CSoundRender_Target::_initialize()
 {
 	// Calc format
 	wfx.wFormatTag			= WAVE_FORMAT_PCM;
@@ -24,6 +24,7 @@ void	CSoundRender_Target::_initialize()
 	wfx.nBlockAlign			= wfx.nChannels * wfx.wBitsPerSample / 8;
 	wfx.nAvgBytesPerSec		= wfx.nSamplesPerSec * wfx.nBlockAlign;
 	wfx.cbSize				= 0;
+    return					TRUE;
 }
 
 void	CSoundRender_Target::start			(CSoundRender_Emitter* E)

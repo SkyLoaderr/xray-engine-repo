@@ -64,7 +64,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	//Msg	("! update: targets");
 	s_targets_defer.clear	();
 	s_targets_pu			++;
-	u32 PU					= s_targets_pu%s_targets.size();
+	// u32 PU				= s_targets_pu%s_targets.size();
 	for (it=0; it<s_targets.size(); it++)
 	{
 		CSoundRender_Target*	T	= s_targets	[it];

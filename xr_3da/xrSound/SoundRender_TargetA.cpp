@@ -17,17 +17,24 @@ CSoundRender_TargetA::~CSoundRender_TargetA()
 {
 }
 
-void	CSoundRender_TargetA::_initialize		()
+BOOL	CSoundRender_TargetA::_initialize		()
 {
 	inherited::_initialize();
     // initialize buffer
 	A_CHK(alGenBuffers	(sdef_target_count, pBuffers));	
-	A_CHK(alGenSources	(1, &pSource));                	
-	A_CHK(alSourcei		(pSource, AL_LOOPING, AL_FALSE));
-    A_CHK(alSourcef		(pSource, AL_MIN_GAIN, 0.f));
-    A_CHK(alSourcef		(pSource, AL_MAX_GAIN, 1.f));
-	A_CHK(alSourcef		(pSource, AL_GAIN, 	cache_gain));
-	A_CHK(alSourcef		(pSource, AL_PITCH,	cache_pitch));
+    alGenSources		(1, &pSource);
+    ALenum error		= alGetError();
+    if (AL_NO_ERROR==error){
+        A_CHK(alSourcei	(pSource, AL_LOOPING, AL_FALSE));
+        A_CHK(alSourcef	(pSource, AL_MIN_GAIN, 0.f));
+        A_CHK(alSourcef	(pSource, AL_MAX_GAIN, 1.f));
+        A_CHK(alSourcef	(pSource, AL_GAIN, 	cache_gain));
+        A_CHK(alSourcef	(pSource, AL_PITCH,	cache_pitch));
+        return			TRUE;
+    }else{
+    	Msg				("!OpenAL: Can't create source. Error: %s.",(LPCSTR)alGetString(error));
+        return 			FALSE;
+    }
 }
 
 void	CSoundRender_TargetA::_destroy		()

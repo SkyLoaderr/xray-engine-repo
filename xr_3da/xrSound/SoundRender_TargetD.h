@@ -28,7 +28,7 @@ public:
 								CSoundRender_TargetD	();
 	virtual 					~CSoundRender_TargetD	();
 
-	virtual void				_initialize				();
+	virtual BOOL				_initialize				();
 	virtual void				_destroy				();
 
 	virtual void				start					(CSoundRender_Emitter* E);

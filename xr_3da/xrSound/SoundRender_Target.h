@@ -19,7 +19,7 @@ public:
 	CSoundRender_Emitter*		get_emitter			()	{ return pEmitter;	}
 	BOOL						get_Rendering		()	{ return rendering;	}
 
-	virtual void				_initialize			()=0;
+	virtual BOOL				_initialize			()=0;
 	virtual void				_destroy			()=0;
 
 	virtual void				start				(CSoundRender_Emitter* E)=0;

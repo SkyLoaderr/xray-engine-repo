@@ -22,7 +22,7 @@ CSoundRender_TargetD::~CSoundRender_TargetD()
 {
 }
 
-void	CSoundRender_TargetD::_initialize	()
+BOOL CSoundRender_TargetD::_initialize	()
 {
 	inherited::_initialize();
 
@@ -65,6 +65,8 @@ void	CSoundRender_TargetD::_initialize	()
 	R_CHK	(pControl->SetConeOrientation	(0,0,1,DS3D_DEFERRED));
 	R_CHK	(pControl->SetConeOutsideVolume	(0,DS3D_DEFERRED));
 	R_CHK	(pControl->SetVelocity			(0,0,0,DS3D_DEFERRED));
+
+    return TRUE;
 }
 
 void	CSoundRender_TargetD::_destroy		()
