@@ -151,7 +151,18 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 void CAI_Soldier::SetLessCoverLook()
 {
 	if (AI_Path.TravelPath.empty() || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1))
-		SetLessCoverLook(AI_Node);
+		if (ps_Size())
+			SetLessCoverLook(AI_Node);
+		else {
+			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = 0.f;
+			for (float fIncrement = 0.f; fIncrement < PI_MUL_2; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
+				float fSquare0 = ffCalcSquare(fIncrement,fAngleOfView,AI_Node);
+				if (fSquare0 > fMaxSquare) {
+					fMaxSquare = fSquare0;
+					r_torso_target.yaw = r_target.yaw = fIncrement;
+				}
+			}
+		}
 	else {
 		SetDirectionLook();
 		
@@ -682,8 +693,9 @@ bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID, bool bIfRayPick)
 			mk_rotation(tDirection,tRotation);
 			
 			fResult0 = ffGetCoverInDirection(tRotation.yaw,Level().AI.Node(dwNodeID));
-			if (min(fResult0,fResult1) > 1.0f) {
-				return(true);
+			if (min(fResult0,fResult1) > .8f) {
+				//return(true);
+				return(Level().ObjectSpace.RayTest(eye_matrix.c,tPosition,fDistance,FALSE) == TRUE);
 // 				fDistance = eye_matrix.c.distance_to(tPosition);
 //				tPosition.normalize_safe();
 //				return(Level().ObjectSpace.RayTest(eye_matrix.c,tPosition,fDistance,FALSE) == TRUE);

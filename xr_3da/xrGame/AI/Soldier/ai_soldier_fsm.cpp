@@ -317,16 +317,18 @@ void CAI_Soldier::OnFindAloneFire()
  					if (AI_Path.bNeedRebuild)
 						vfBuildPathToDestinationPoint(0);
 					else
-						if (AI_Path.DestNode != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID) {
+						//if (AI_Path.DestNode != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID) 
+						{
 							vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 							if ((SelectorPatrol.BestNode == AI_NodeID) && (AI_NodeID != Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
+								AI_Path.bNeedRebuild = TRUE;
 								AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
-								vfBuildPathToDestinationPoint(0);
 							}
 						}
 				}
 				else {
-					if (!Group.m_tpaSuspiciousNodes.size() && (Level().AI.u_SqrDistance2Node(vPosition,tpSavedEnemyNode) > 1.f)) {
+					//if (!Group.m_tpaSuspiciousNodes.size() && (Level().AI.u_SqrDistance2Node(vPosition,tpSavedEnemyNode) > 1.f)) {
+					if (!Group.m_tpaSuspiciousNodes.size()) {
 						vfInitSelector(SelectorPatrol,Squad,Leader);
 
 						if (AI_Path.bNeedRebuild)
@@ -1061,7 +1063,8 @@ void CAI_Soldier::OnLookingOver()
 		SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
 	}
 
-	SetDirectionLook();
+	SetLessCoverLook();
+	//SetDirectionLook();
 	vfStopFire();
 	vfSetMovementType(WALK_NO);
 	r_torso_speed = TORSO_SLOW_SPEED;
