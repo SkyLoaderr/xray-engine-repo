@@ -65,7 +65,7 @@ void	__stdcall	xrTransfer_x86	(LPVOID vDest, LPVOID vSrc, u32 vCount, u32 vStrid
 		LPDWORD	send	= sit+count;
 		LPDWORD	dit		= LPDWORD(iDest);
 		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
-		if		(iCount&1)	iDest[iCount-1]=iSrc[iCount-1]+WORD(iOffset);
+		if		(iCount&1)	iDest[iCount-1]=iSrc[iCount-1]+u16(iOffset);
 	}
 	/*
 	{
@@ -110,7 +110,7 @@ loop_start:
 			LPWORD	s_end	= s_it+remain;
 			LPWORD	d_it	= LPWORD(dend);
 			LPWORD	d_end	= d_it+remain;
-			WORD	w_item	= WORD(iOffset);
+			u16	w_item	= u16(iOffset);
 			for (; s_it!=s_end; ) *d_it++ = w_item + *s_it++;
 		}
 	}

@@ -10,7 +10,7 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 	{
 	case WM_ACTIVATE:
 		{
-			WORD fActive	= LOWORD(wParam);
+			u16 fActive	= LOWORD(wParam);
 			BOOL fMinimized = (BOOL) HIWORD(wParam);
 			Device.bActive	= (fActive!=WA_INACTIVE) && (!fMinimized);
 			if (Device.bActive)	{

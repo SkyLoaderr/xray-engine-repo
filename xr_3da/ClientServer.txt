@@ -23,7 +23,7 @@ typedef DWORD CRC32;
 
 MSYS_CONFIG			// server 2 client - first packet ever, uncompressed
 {
-	WORD			probability_table[256];
+	u16				probability_table[256];
 }
  
 M_CONNECT			// client 2 server

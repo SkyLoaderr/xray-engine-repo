@@ -16,7 +16,7 @@ public:
 	string128					cName;
 	string32					cComputer;
 	u32							cTime;
-	WORD						version;
+	u16							version;
 	
 	CBlender_DESC()	
 	{
@@ -55,7 +55,7 @@ public:
 	virtual			BOOL		canBeLMAPped	()	= 0;
 	
 	virtual			void		Save			(IWriter& fs);
-	virtual			void		Load			(IReader& fs, WORD version);
+	virtual			void		Load			(IReader& fs, u16 version);
 	
 	virtual			void		Compile			(CBlender_Compile& C);
 

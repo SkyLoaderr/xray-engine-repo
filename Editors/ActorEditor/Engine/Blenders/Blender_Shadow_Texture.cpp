@@ -22,7 +22,7 @@ void	CBlender_ShTex::Save	( IWriter& fs	)
 	IBlender::Save	(fs);
 }
 
-void	CBlender_ShTex::Load	( IReader& fs, WORD version	)
+void	CBlender_ShTex::Load	( IReader& fs, u16 version	)
 {
 	IBlender::Load	(fs,version);
 }

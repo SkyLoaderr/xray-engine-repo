@@ -34,8 +34,8 @@ namespace AI {
 	class	C_Command	{
 	public:
 		u32			Command;
-		WORD			Result;
-		WORD			Mode;
+		u16			Result;
+		u16			Mode;
 		C_Target		Tmode;
 		C_TargetObject	Tobject;
 		u32			o_timeout;
@@ -59,7 +59,7 @@ namespace AI {
 		{
 			Command		= Cmd;
 			Result		= 0;
-			Mode		= WORD(mode);
+			Mode		= u16(mode);
 			Tmode		= T;
 			switch (T) {
 			case t_Object:		Tobject.Object		= *((CEntity**)Tobj);	break;

@@ -14,8 +14,8 @@ struct	MSYS_CONFIG	// server 2 client - first packet ever, uncompressed
 {
 	u32			sign1;	// 0x12071980;
 	u32			sign2;	// 0x26111975;
-	WORD			send	[256];
-	WORD			receive	[256];
+	u16			send	[256];
+	u16			receive	[256];
 };
 struct	MSYS_PING
 {

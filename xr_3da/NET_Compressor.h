@@ -24,7 +24,7 @@ struct	NET_Compressor_FREQ
 	{
 		for (u32 I=0; I<256; I++) table[I] = 0;
 	}
-	void	setFromWORDS	(WORD* data)
+	void	setFromWORDS	(u16* data)
 	{
 		for (u32 I=0; I<256; I++) table[I] = u32(data[I]);
 	}
@@ -109,7 +109,7 @@ private:
 
 	/* Decode a byte/short without modelling                     */
 	BYTE				decode_byte			( );
-	WORD				decode_short		( );
+	u16				decode_short		( );
 
 	/* Finish decoding                                           */
 	void				done_decoding		( );
@@ -119,8 +119,8 @@ public:
 	~NET_Compressor			();
 
 	void					Initialize	(NET_Compressor_FREQ& compress, NET_Compressor_FREQ& decompress);
-	WORD					Compress	(BYTE* dest, BYTE* src, u32 count);	// return size of compressed
-	WORD					Decompress	(BYTE* dest, BYTE* src, u32 count);	// return decompressed size
+	u16					Compress	(BYTE* dest, BYTE* src, u32 count);	// return size of compressed
+	u16					Decompress	(BYTE* dest, BYTE* src, u32 count);	// return decompressed size
 };
 
 #endif // !defined(AFX_NET_COMPRESSOR_H__21E1ED1C_BF92_4BF0_94A8_18A27486EBFD__INCLUDED_)

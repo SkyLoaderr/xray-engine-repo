@@ -92,7 +92,7 @@ public:
 	virtual		LPCSTR		getComment		()								= 0;
 
 	virtual		void		Save			(IWriter&	fs)					= 0;
-	virtual		void		Load			(IReader&	fs, WORD version)	= 0;
+	virtual		void		Load			(IReader&	fs, u16 version)	= 0;
 };
 
 // Writers

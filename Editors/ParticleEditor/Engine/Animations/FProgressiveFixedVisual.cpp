@@ -43,8 +43,8 @@ void FProgressiveFixedVisual::Load(const char* N, IReader *data, u32 dwFlags)
 	// PMAP_FACES
 	R_ASSERT(fs->find_chunk(0x3));
 	u32 fCount = fs->r_u32();
-	faces_affected = xr_alloc<WORD>(fCount);
-	fs->r(faces_affected,fCount*sizeof(WORD));
+	faces_affected = xr_alloc<u16>(fCount);
+	fs->r(faces_affected,fCount*sizeof(u16));
 
 	fs->close();
 }
@@ -69,7 +69,7 @@ void FProgressiveFixedVisual::SetLOD(float LOD)
 	
 	// First cycle - try to improve quality
 	if (V_Current!=dwCount) {
-		WORD*					Indices = 0;
+		u16*					Indices = 0;
 		R_CHK					(pIndices->Lock	(0,0,(void**)&Indices,0));
 		
 		while (V_Current<dwCount) {
@@ -77,7 +77,7 @@ void FProgressiveFixedVisual::SetLOD(float LOD)
 			
 			// fixup faces
 			u32	dwEnd = u32(S.numFixFaces)+FIX_Current;
-			WORD	V_Cur = WORD(V_Current);
+			u16	V_Cur = u16(V_Current);
 			for (u32 I=FIX_Current; I<dwEnd; I++) {
 				//				VERIFY(Indices[faces_affected[I]]==S.vsplitVert);
 				Indices[faces_affected[I]]=V_Cur;
@@ -96,7 +96,7 @@ void FProgressiveFixedVisual::SetLOD(float LOD)
 			Vsplit&	S	=	vsplit[V_Current-V_Minimal];
 			
 			// fixup faces
-			WORD V_New		= WORD(S.vsplitVert);
+			u16 V_New		= u16(S.vsplitVert);
 			u32 dwEnd		= FIX_Current;
 			u32 dwStart	= dwEnd-S.numFixFaces;
 			for (u32 I=dwStart; I<dwEnd; I++) {

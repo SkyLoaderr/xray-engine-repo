@@ -31,7 +31,7 @@ void	CBlender_LmEbB::Save(	IWriter& fs )
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
 
-void	CBlender_LmEbB::Load(	IReader& fs, WORD version )
+void	CBlender_LmEbB::Load(	IReader& fs, u16 version )
 {
 	IBlender::Load	(fs,version);
 	xrPREAD_MARKER	(fs);

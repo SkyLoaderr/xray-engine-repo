@@ -90,8 +90,8 @@ public:
 	} SWayPoint;
 	
 	typedef struct tagSWayLink{
-		WORD	wFrom;
-		WORD	wTo;
+		u16	wFrom;
+		u16	wTo;
 	} SWayLink;
 
 	typedef xr_vector<Fvector>			SPointVector;

@@ -42,7 +42,7 @@
                           D3DFVF_TEX1 )
 */
 
-BOOL ValidateIndices(u32 vCount, u32 iCount, WORD* pIndices);
+BOOL ValidateIndices(u32 vCount, u32 iCount, u16* pIndices);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
 // MESH as it is represented in file
@@ -92,14 +92,14 @@ enum OGF_Chuncks {
     OGF_forcedword	= 0xFFFFFFFF
 };
 
-const WORD	xrOGF_SMParamsVersion= 1;
+const u16	xrOGF_SMParamsVersion	= 1;
 
 // OGF_HEADER
-const BYTE	xrOGF_FormatVersion	= 3;
+const BYTE	xrOGF_FormatVersion		= 3;
 struct ogf_header {
-	BYTE format_version;	// = xrOGF_FormatVersion
-	BYTE type;				// MT
-	WORD flags;				// =0
+	BYTE format_version;			// = xrOGF_FormatVersion
+	BYTE type;						// MT
+	u16	 flags;						// =0
 };
 
 // OGF_BBOX
@@ -140,7 +140,7 @@ struct ogf_bsphere {
 
 // OGF_INDICES
 //	u32		Count
-//  ..indices itself (WORD[Count]);
+//  ..indices itself (u16[Count]);
 
 // OGF_P_MAP
 //		PMAP_HEADER = 0x1
@@ -150,7 +150,7 @@ struct ogf_bsphere {
 //			VSPLIT[dwVertCount-MinVertCount]
 //		PMAP_FACES	= 0x3
 //			u32 dwCount
-//			WORD[dwCount]
+//			u16[dwCount]
 
 // OGF_SF_LINK
 //  Z-String - name of visual

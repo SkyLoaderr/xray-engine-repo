@@ -101,10 +101,10 @@ typedef xr_list  <NvFaceInfo*>     NvFaceInfoList;
 typedef xr_list  <NvFaceInfoVec*>  NvStripList;
 typedef xr_vector<NvEdgeInfo*>     NvEdgeInfoVec;
 
-typedef xr_vector<WORD> WordVec;
-typedef xr_vector<int> IntVec;
-typedef xr_vector<MyVertex> MyVertexVec;
-typedef xr_vector<MyFace> MyFaceVec;
+typedef xr_vector<u16>			WordVec;
+typedef xr_vector<int>			IntVec;
+typedef xr_vector<MyVertex>		MyVertexVec;
+typedef xr_vector<MyFace>		MyFaceVec;
 
 template<class T> 
 inline void SWAP(T& first, T& second) 

@@ -94,8 +94,8 @@ void IPureServer::config_Load()
 	msgConfig.sign1				= 0x12071980;
 	msgConfig.sign2				= 0x26111975;
 	u32	I;
-	for (I=0; I<256; I++)		msgConfig.send[I]		= WORD(traffic_in[I]);
-	for (I=0; I<256; I++)		msgConfig.receive[I]	= WORD(traffic_out[I]);
+	for (I=0; I<256; I++)		msgConfig.send[I]		= u16(traffic_in[I]);
+	for (I=0; I<256; I++)		msgConfig.receive[I]	= u16(traffic_out[I]);
 
 	// initialize compressors
 	net_Compressor.Initialize	(traffic_out,traffic_in);

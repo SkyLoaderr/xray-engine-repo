@@ -4,7 +4,7 @@
 #include "NvTriStrip.h"
 #include "VertexCache.h"
 
-int xrSimulate (xr_vector<WORD> &indices, int iCacheSize )
+int xrSimulate (xr_vector<u16> &indices, int iCacheSize )
 {
 	VertexCache C(iCacheSize);
 
@@ -19,7 +19,7 @@ int xrSimulate (xr_vector<WORD> &indices, int iCacheSize )
 	return count;
 }
 
-void xrStripify		(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength)
+void xrStripify		(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSize, int iMinStripLength)
 {
 	SetCacheSize	(iCacheSize);
 	SetMinStripSize	(iMinStripLength);
@@ -49,7 +49,7 @@ void xrStripify		(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCache
 	}
 
 	// Copy indices
-	Memory.mem_copy	(&*indices.begin(),xPGROUP[0].indices,indices.size()*sizeof(WORD));
+	Memory.mem_copy	(&*indices.begin(),xPGROUP[0].indices,indices.size()*sizeof(u16));
 
 	// Release memory
 	xPGROUP.clear	();

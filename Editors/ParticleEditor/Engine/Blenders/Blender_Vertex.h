@@ -14,7 +14,7 @@ public:
 	virtual		BOOL		canBeLMAPped()	{ return FALSE; }
 
 	virtual		void		Save			(IWriter&  fs);
-	virtual		void		Load			(IReader&	fs, WORD version);
+	virtual		void		Load			(IReader&	fs, u16 version);
 
 	virtual		void		Compile			(CBlender_Compile& C);
 

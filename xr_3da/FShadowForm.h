@@ -11,9 +11,9 @@
 // These are the shadow volumes
 struct SHADOW_V
 {
-	WORD*   pwShadVolIndices;      // tri indices into vertex buffer VB for DrawPrim
-	WORD*   pwShadVolSideIndices;  // ptrs into main index array pwShadVolIndices for Side tris of shadow volume
-	WORD*   pwShadVolCapIndices;   // ptrs into main index array pwShadVolIndices for cap tris of shadow volume
+	u16*   pwShadVolIndices;      // tri indices into vertex buffer VB for DrawPrim
+	u16*   pwShadVolSideIndices;  // ptrs into main index array pwShadVolIndices for Side tris of shadow volume
+	u16*   pwShadVolCapIndices;   // ptrs into main index array pwShadVolIndices for cap tris of shadow volume
 	u32   dwNumVertices;
 	u32   dwNumSideIndices;
 	u32   dwNumCapIndices;
@@ -30,7 +30,7 @@ class FShadowForm : public IRender_Visual
 {
 	// Data
 	LPDIRECT3DVERTEXBUFFER7	pVB;
-	xr_vector<WORD>			Indices;
+	xr_vector<u16>			Indices;
 	u32					dwNumVertices;
 
 	BOOL					g_bDrawShadowVolCaps;
@@ -38,7 +38,7 @@ class FShadowForm : public IRender_Visual
 	// Resulting shadow volume
 	LPDIRECT3DVERTEXBUFFER7	pProjected;
 	SHADOW_V				S;
-	WORD*					pwCHI;
+	u16*					pwCHI;
 
 	// Private methods
 public:

@@ -342,7 +342,7 @@ void	CEffect_Rain::Render	()
 		u32						vCount_Lock		= particles_cache*DM_Drop->number_vertices;
 		u32						iCount_Lock		= particles_cache*DM_Drop->number_indices;
 		IRender_DetailModel::fvfVertexOut* v_ptr= (IRender_DetailModel::fvfVertexOut*) RCache.Vertex.Lock	(vCount_Lock, hGeom_Drops->vb_stride, v_offset);
-		WORD*					i_ptr			= _IS.Lock													(iCount_Lock, i_offset);
+		u16*					i_ptr			= _IS.Lock													(iCount_Lock, i_offset);
 		while (P)	{
 			Particle*	next	=	P->next;
 			

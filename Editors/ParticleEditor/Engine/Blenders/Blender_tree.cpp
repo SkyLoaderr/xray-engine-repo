@@ -28,7 +28,7 @@ void	CBlender_Tree::Save		(IWriter& fs )
 	xrPWRITE_PROP		(fs,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
-void	CBlender_Tree::Load		(IReader& fs, WORD version )
+void	CBlender_Tree::Load		(IReader& fs, u16 version )
 {
 	IBlender::Load		(fs,version);
 	xrPREAD_PROP		(fs,xrPID_BOOL,		oBlend);

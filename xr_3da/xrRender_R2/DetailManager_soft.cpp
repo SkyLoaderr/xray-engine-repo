@@ -66,7 +66,7 @@ void CDetailManager::soft_Render	()
 			// Lock buffers
 			u32	vBase,iBase,iOffset=0;
 			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	_VS.Lock(vCount_Lock,soft_Geom->vb_stride,vBase);
-			WORD*	iDest					= (WORD*)					_IS.Lock(iCount_Lock,iBase);
+			u16*	iDest					= (u16*)					_IS.Lock(iCount_Lock,iBase);
 
 			// Filling itself
 			for (u32 item=item_start; item<item_end; item++)
@@ -106,7 +106,7 @@ void CDetailManager::soft_Render	()
 					LPDWORD	dit		= LPDWORD(iDest);
 					for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
 					if		(Object.number_indices&1)
-						iDest[Object.number_indices-1]=Object.indices[Object.number_indices-1]+WORD(iOffset);
+						iDest[Object.number_indices-1]=Object.indices[Object.number_indices-1]+u16(iOffset);
 				}
 
 				// Increment counters

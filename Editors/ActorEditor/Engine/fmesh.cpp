@@ -5,7 +5,7 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
-BOOL ValidateIndices(u32 vCount, u32 iCount, WORD* pIndices)
+BOOL ValidateIndices(u32 vCount, u32 iCount, u16* pIndices)
 {
 	if (vCount>65535)	return FALSE;
 	if (iCount%3)		return FALSE;

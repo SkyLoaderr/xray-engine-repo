@@ -54,7 +54,7 @@ void FShadowForm::Load(IReader *data)
 		u32 dwCount = data->ReadDWORD();
 		VERIFY(dwCount%3 == 0);
 		Indices.resize(dwCount);
-		data->Read(Indices.begin(), sizeof(WORD)*dwCount);
+		data->Read(Indices.begin(), sizeof(u16)*dwCount);
 	} else {
 		THROW;
 	}
@@ -71,12 +71,12 @@ void FShadowForm::Load(IReader *data)
     // of vertices in c-hull is dwNumVertices).
     // (dwNumVertices+1)*2 for triangle mesh to hold shadowvolume sides +
     // dwNumVertices to hold triangle-fan
-	S.pwShadVolIndices	= xr_alloc<WORD>((dwNumVertices+1)*3);
+	S.pwShadVolIndices	= xr_alloc<u16>((dwNumVertices+1)*3);
 
 	// Allocate memory for the hull (max size is dwNumInVertices+1 times the
 	// the storage space for a u32 and a ptr to a vertex
 	u32 dwElementSize	= sizeof(u32) + sizeof(COLORVERTEX*)+4;
-	pwCHI				= (WORD*)(xr_alloc<BYTE>((dwNumVertices+1)*dwElementSize));
+	pwCHI				= (u16*)(xr_alloc<BYTE>((dwNumVertices+1)*dwElementSize));
 }
 
 //-----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ void FShadowForm::Load(IReader *data)
 //       pInVertices are copied into a vertex buffer created within S
 //-----------------------------------------------------------------------------
 extern VOID Find2DConvexHull(	u32 dwNumInVertices, COLORVERTEX* pInVertices,
-								u32* pdwNumOutIndices, WORD* ppOutIndices );
+								u32* pdwNumOutIndices, u16* ppOutIndices );
 
 void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
 {
@@ -121,7 +121,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
     pProjected->ProcessVertices( D3DVOP_TRANSFORM, 0, dwNumVertices, pVB, 0, HW.pDevice, 0 );
 
     COLORVERTEX* pProjVertices;
-    WORD*        pHullIndices = pwCHI;
+    u16*        pHullIndices = pwCHI;
     u32        dwNumHullIndices;
 
     if( SUCCEEDED( pProjected->Lock(
@@ -161,7 +161,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
         else
            S.dwNumCapIndices = 0;
 
-        WORD* pIndexPtr = S.pwShadVolSideIndices = S.pwShadVolIndices;
+        u16* pIndexPtr = S.pwShadVolSideIndices = S.pwShadVolIndices;
 
         // Triangles for all facets but final one
         for( i=0; i<dwNumHullIndices; i++ )
@@ -171,12 +171,12 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
             // index of the projected vertex corresponding to the pHullIndices[i]
             // vertex.
             *pIndexPtr++ = pHullIndices[i];
-            *pIndexPtr++ = (WORD)( dwNumVertices+i );
+            *pIndexPtr++ = (u16)( dwNumVertices+i );
         }
 
         // Add tris for final facet (i==dwNumHullIndices)
         *pIndexPtr++ = pHullIndices[0];
-        *pIndexPtr++ = (WORD)( dwNumVertices+0 );
+        *pIndexPtr++ = (u16)( dwNumVertices+0 );
 
         S.pwShadVolCapIndices = pIndexPtr;
 
@@ -186,7 +186,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
             {
                 // Draw a fan over the shadvolume cap. Note: only the back-facing
                 // cap is done here (which is why we're count backwards).
-                *pIndexPtr++ = (WORD)i;
+                *pIndexPtr++ = (u16)i;
             }
         }
 

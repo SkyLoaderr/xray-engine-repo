@@ -58,10 +58,10 @@ struct NodePosition
 };
 struct NodeCompressed
 {
-	WORD			plane;			// 2
+	u16				plane;			// 2
 	NodePosition	p0;				// 2+2+2 = 6
 	NodePosition	p1;				// 2+2+2 = 6
-	BYTE			light;			// 1
+	u8				light;			// 1
 
 	u8				cover	[4];	// 4
 	u8				links	: 6;	// 1

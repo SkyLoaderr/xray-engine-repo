@@ -6,9 +6,9 @@ XRCORE_API Fmatrix			Fidentity;
 XRCORE_API Dmatrix			Didentity;
 XRCORE_API CRandom			Random;
 
-WORD getFPUsw() 
+u16 getFPUsw() 
 {
-	WORD SW;
+	u16 SW;
 	__asm fstcw SW;
 	return SW;
 }

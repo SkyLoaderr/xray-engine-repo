@@ -30,7 +30,7 @@ void	CBlender_LmBmmD::Save		(IWriter& fs )
 	xrPWRITE_PROP	(fs,"Name",				xrPID_TEXTURE,	oT2_Name);
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT2_xform);
 }
-void	CBlender_LmBmmD::Load		(IReader& fs, WORD version )
+void	CBlender_LmBmmD::Load		(IReader& fs, u16 version )
 {
 	IBlender::Load	(fs,version);
 	xrPREAD_MARKER	(fs);

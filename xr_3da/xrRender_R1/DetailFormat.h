@@ -54,7 +54,7 @@
 	u32			index_count;
 
 	fvfVertexIn*	vertices;
-	WORD*			indices;
+	u16*			indices;
 */
 
 #define DO_NO_WAVING	0x0001

@@ -98,7 +98,7 @@ public:
 	IC u32						DiscardID()		{ return mDiscardID;	}
 	void						Flush()			{ mPosition=mSize;		}
 
-	IC WORD*					Lock			( u32 Count, u32& vOffset )
+	IC u16*						Lock			( u32 Count, u32& vOffset )
 	{
 		vOffset					= 0;
 		BYTE* pLockedData		= 0;

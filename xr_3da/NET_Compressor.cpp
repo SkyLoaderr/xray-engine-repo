@@ -182,11 +182,11 @@ BYTE NET_Compressor::decode_byte		( )
     return BYTE(tmp);
 }
 
-WORD NET_Compressor::decode_short		( )
+u16 NET_Compressor::decode_short		( )
 {
 	u32 tmp	=	decode_culshift(16);
     decode_update	( 1,tmp,(freq)1<<16);
-    return WORD(tmp);
+    return u16(tmp);
 }
 
 
@@ -222,12 +222,12 @@ void NET_Compressor::Initialize	(NET_Compressor_FREQ& compress, NET_Compressor_F
 	CS.Leave		();
 }
 
-WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, u32 count)
+u16 NET_Compressor::Compress	(BYTE* dest, BYTE* src, u32 count)
 {
 	R_ASSERT		(dest && src && count);
 
 	Memory.mem_copy	(dest,src,count);
-	return WORD		(count);
+	return u16		(count);
 
 	/*
 	CS.Enter		();
@@ -244,21 +244,21 @@ WORD NET_Compressor::Compress	(BYTE* dest, BYTE* src, u32 count)
 	}
 
     // close the encoder
-	*LPWORD(dest)			=	WORD(count);
+	*LPWORD(dest)			=	u16(count);
 	u32 size				=	done_encoding(); //-1+2;
 	CS.Leave		();
 
-    return WORD(size);
+    return u16(size);
 	*/
 }
 
 
-WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
+u16 NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
 {
 	R_ASSERT(dest && src && count);
 
 	Memory.mem_copy	(dest,src,count);
-	return			WORD(count);
+	return			u16(count);
 
 	/*
 	CS.Enter		();
@@ -289,7 +289,7 @@ WORD NET_Compressor::Decompress	(BYTE* dest, BYTE* src, u32 count)
 
     done_decoding	();
 	CS.Leave		();
-	return WORD		(size);
+	return u16		(size);
 	*/
 }
 

@@ -11,7 +11,7 @@
 #pragma pack(push,1)
 struct ENGINE_API Vsplit
 {
-	WORD	vsplitVert;		// the vert which I'm splitting off of;
+	u16		vsplitVert;		// the vert which I'm splitting off of;
 							// (the vert I create is just the current end of the VB)
 	BYTE	numNewTriangles;
 	BYTE	numFixFaces;
@@ -30,10 +30,10 @@ protected:
 	u32			I_Current;
 	u32			FIX_Current;
 	u32			iRefresh;		// 0..PM_REFRESH
-	WORD*			faces_affected;	// shared
-	Vsplit*			vsplit;			// shared
+	u16*		faces_affected;	// shared
+	Vsplit*		vsplit;			// shared
 
-	void			pm_copy			(IRender_Visual *pFrom);
+	void		pm_copy		(IRender_Visual *pFrom);
 public:
 	virtual void Render		(float LOD);	// LOD - Level Of Detail  [0.0f - min, 1.0f - max], Used
 	virtual void Load		(const char* N, IReader *data,u32 dwFlags);

@@ -2,11 +2,11 @@
 #include "xr_effgamma.h"
 #include "device.h"
 
-IC WORD clr2gamma(float c)
+IC u16 clr2gamma(float c)
 {
 	int C=iFloor(c);
 	clamp		(C,0,65535);
-	return WORD	(C);
+	return u16	(C);
 }
 void CGammaControl::Update() 
 {

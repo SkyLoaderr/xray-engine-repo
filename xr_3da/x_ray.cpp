@@ -101,13 +101,6 @@ void Startup				( )
 	Engine.Destroy				( );
 }
 
-WORD getFPUsw() 
-{
-	WORD SW;
-	__asm fstcw SW;
-	return SW;
-}
-
 static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 {
 	switch( msg ){

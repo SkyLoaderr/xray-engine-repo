@@ -5,18 +5,18 @@
 
 #pragma pack(push,1)
 struct tgaImgSpecHeader{
-	WORD tgaXOrigin;
-	WORD tgaYOrigin;
-	WORD tgaXSize;
-	WORD tgaYSize;
-	BYTE tgaDepth;
-	BYTE tgaImgDesc;
+	u16		tgaXOrigin;
+	u16		tgaYOrigin;
+	u16		tgaXSize;
+	u16		tgaYSize;
+	BYTE	tgaDepth;
+	BYTE	tgaImgDesc;
 };
 struct tgaHeader{
-	BYTE tgaIDL;
-	BYTE tgaMapType;
-	BYTE tgaImgType;
-	BYTE tgaClrMapSpec[5];
+	BYTE	tgaIDL;
+	BYTE	tgaMapType;
+	BYTE	tgaImgType;
+	BYTE	tgaClrMapSpec[5];
 	tgaImgSpecHeader tgaImgSpec;
 };
 #pragma pack(pop)

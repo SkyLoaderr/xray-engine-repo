@@ -83,7 +83,7 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 
 	// params
 	bone_or_part= short	(b);
-	motion		= WORD	(m);
+	motion		= u16	(m);
 	speed		= Quantize(INI->r_float(section,"speed"));
 	power		= Quantize(INI->r_float(section,"power"));
 	accrue		= Quantize(INI->r_float(section,"accrue"));
@@ -734,13 +734,13 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	// Load definitions
 	IReader* MP = data->open_chunk(OGF_SMPARAMS2);
     if (MP){
-	    WORD vers = MP->r_u16();
+	    u16 vers = MP->r_u16();
         R_ASSERT(vers==xrOGF_SMParamsVersion);
         // partitions
-        WORD part_count;
+        u16 part_count;
         part_count = MP->r_u16();
         string128 buf;
-        for (WORD part_i=0; part_i<part_count; part_i++){
+        for (u16 part_i=0; part_i<part_count; part_i++){
             CPartDef&	PART	= (*partition)[part_i];
             MP->r_stringZ(buf);
             PART.Name			= _strlwr(xr_strdup(buf));
@@ -752,8 +752,8 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
         m_fx	= xr_new<mdef> ();
 
         // motion defs (cycle&fx)
-        WORD mot_count			= MP->r_u16();
-        for (WORD mot_i=0; mot_i<mot_count; mot_i++){
+        u16 mot_count			= MP->r_u16();
+        for (u16 mot_i=0; mot_i<mot_count; mot_i++){
             MP->r_stringZ(buf);
 	        u32 dwFlags		= MP->r_u32();
             CMotionDef	D;		D.Load(this,MP,dwFlags);
@@ -765,10 +765,10 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		IReader* MP = data->open_chunk(OGF_SMPARAMS);
         if (MP){
             // partitions
-            WORD part_count;
+            u16 part_count;
             part_count = MP->r_u16();
             string128 buf;
-            for (WORD part_i=0; part_i<part_count; part_i++){
+            for (u16 part_i=0; part_i<part_count; part_i++){
                 CPartDef&	PART	= (*partition)[part_i];
                 MP->r_stringZ(buf);
                 PART.Name			= _strlwr(xr_strdup(buf));
@@ -780,8 +780,8 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
             m_fx	= xr_new<mdef> ();
 
             // motion defs (cycle&fx)
-            WORD mot_count			= MP->r_u16();
-            for (WORD mot_i=0; mot_i<mot_count; mot_i++){
+            u16 mot_count			= MP->r_u16();
+            for (u16 mot_i=0; mot_i<mot_count; mot_i++){
                 MP->r_stringZ(buf);
                 BYTE bCycle			=	MP->r_u8();
 				CMotionDef	D;		D.Load(this,MP,bCycle?0:esmFX);

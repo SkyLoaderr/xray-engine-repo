@@ -111,7 +111,7 @@ void COMotion::Save(IWriter& F)
 bool COMotion::Load(IReader& F)
 {
 	CCustomMotion::Load(F);
-	WORD vers	= F.r_u16();
+	u16 vers	= F.r_u16();
     if (vers==0x0003){
 	    Clear	();
         for (int ch=0; ch<ctMaxChannel; ch++){
@@ -339,7 +339,7 @@ void CSMotion::Save(IWriter& F)
 bool CSMotion::Load(IReader& F)
 {
 	CCustomMotion::Load(F);
-	WORD vers	= F.r_u16();
+	u16 vers	= F.r_u16();
 	if (vers==0x0004){
 	    iBoneOrPart	= F.r_u32();          
 		m_Flags.set	(esmFX,F.r_u8());

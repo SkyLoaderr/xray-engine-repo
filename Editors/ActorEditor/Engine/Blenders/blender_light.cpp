@@ -26,7 +26,7 @@ void	CBlender_LIGHT::Save	( IWriter& fs	)
 	IBlender::Save	(fs);
 }
 
-void	CBlender_LIGHT::Load	( IReader& fs, WORD version	)
+void	CBlender_LIGHT::Load	( IReader& fs, u16 version	)
 {
 	IBlender::Load	(fs,version);
 }

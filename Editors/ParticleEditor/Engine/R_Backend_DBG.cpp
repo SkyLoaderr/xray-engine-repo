@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-void CBackend::dbg_Draw			(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, WORD* pIdx, int pcnt)
+void CBackend::dbg_Draw			(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, u16* pIdx, int pcnt)
 {
 	OnFrameEnd					();
 	CHK_DX(HW.pDevice->SetFVF	(FVF::F_L));
@@ -35,7 +35,7 @@ void CBackend::dbg_DrawOBB		(Fmatrix& T, Fvector& half_dim, u32 C)
 	aabb[6].set( +1, +1, +1, C ); // 6
 	aabb[7].set( +1, -1, +1, C ); // 7
 
-	WORD		aabb_id[12*2] = {
+	u16		aabb_id[12*2] = {
 		0,1,  1,2,  2,3,  3,0,  4,5,  5,6,  6,7,  7,4,  1,5,  2,6,  3,7,  0,4
 	};
 	set_xform_world	(mL2W_Transform);
@@ -103,7 +103,7 @@ void CBackend::dbg_DrawEllipse(Fmatrix& T, u32 C)
 			0.3536f,-0.1464f,-0.9239f,  0.3827f,0.0000f,-0.9239f,  0.3536f,0.1464f,-0.9239f,
 			0.2706f,0.2706f,-0.9239f,  0.1464f,0.3536f,-0.9239f,  0.0000f,0.0000f,-1.0000f
 	};
-	WORD gFaces[224*3] =
+	u16 gFaces[224*3] =
 	{
 		0,1,2, 0,2,3, 0,3,4, 0,4,5, 0,5,6, 0,6,7, 0,7,8, 0,8,9, 0,9,10,
 			0,10,11, 0,11,12, 0,12,13, 0,13,14, 0,14,15, 0,15,16, 0,16,1, 1,17,18, 1,18,2,

@@ -57,10 +57,10 @@ void	IBlender::Save(IWriter& fs )
 	xrPWRITE_PROP	(fs,"Transform",		xrPID_MATRIX,	oT_xform);
 }
 
-void	IBlender::Load(	IReader& fs, WORD version )
+void	IBlender::Load(	IReader& fs, u16 version )
 {
 	// Read desc and doesn't change version
-	WORD	V		= description.version;
+	u16	V		= description.version;
 	fs.r			(&description,sizeof(description));
 	description.version	= V;
 

@@ -153,7 +153,7 @@ namespace CDB
 	public:
 		void			add_face			( Fvector& v0, Fvector& v1, Fvector& v2, u16 material, u16 sector	);
 		void			add_face_D			( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy );
-		void			add_face_packed		( Fvector& v0, Fvector& v1, Fvector& v2, WORD material, WORD sector, float eps = EPS );
+		void			add_face_packed		( Fvector& v0, Fvector& v1, Fvector& v2, u16 material, u16 sector, float eps = EPS );
 		void			add_face_packed_D	( Fvector& v0, Fvector& v1, Fvector& v2, u32 dummy, float eps = EPS );
 		void			calc_adjacency		( xr_vector<u32>& dest		);
 

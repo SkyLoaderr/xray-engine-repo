@@ -226,7 +226,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 					bOk = true;
 					for ( i=1; i<(int)dwCountL; i++)
 						if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
-							WORD wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
+							u16 wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
 							tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;
 							tPatrolPath.tpaWayLinks[i].wFrom = wTemp;
 							wTemp = tPatrolPath.tpaWayLinks[i - 1].wTo;

@@ -32,7 +32,7 @@ void __fastcall render_Cached(xr_vector<FCached*>& cache)
 		u32	vBase,	iBase;
 		u32	Stride	= vs->Stride();
 		BYTE*	verts	= LPBYTE(vs->Lock(v_count,vBase));
-		WORD*	indices	= LPWORD(is->Lock(i_count,iBase));
+		u16*	indices	= LPWORD(is->Lock(i_count,iBase));
 		u32	iOffset	= 0;
 		for (u32 I=Start; I!=End; I++)
 		{
@@ -51,7 +51,7 @@ void __fastcall render_Cached(xr_vector<FCached*>& cache)
 				LPDWORD	send	= sit+count;
 				LPDWORD	dit		= LPDWORD(indices);
 				for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
-				if		(iCount&1)	indices[iCount-1] = V.pIndices[iCount-1]+WORD(iOffset);
+				if		(iCount&1)	indices[iCount-1] = V.pIndices[iCount-1]+u16(iOffset);
 			}
 
 			// Increment counters

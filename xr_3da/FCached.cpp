@@ -71,7 +71,7 @@ void TransferGeometry	(LPVOID vDest, LPVOID vSrc, u32 vCount, u32 vStride,
 		LPDWORD	send	= sit+count;
 		LPDWORD	dit		= LPDWORD(iDest);
 		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
-		if		(iCount&1)	iDest[iCount-1]=iSrc[iCount-1]+WORD(iOffset);
+		if		(iCount&1)	iDest[iCount-1]=iSrc[iCount-1]+u16(iOffset);
 	}
 }
 
@@ -126,7 +126,7 @@ void FCached::Load(const char* N, IReader *data, u32 dwFlags)
 		R_ASSERT		(iCount%3 == 0);
 
 		u32	mem_size	= iCount*2;
-		pIndices		= (WORD*)xr_malloc(mem_size);
+		pIndices		= (u16*)xr_malloc(mem_size);
 		data->r			(pIndices,mem_size);
 	}
 	

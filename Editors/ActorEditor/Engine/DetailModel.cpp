@@ -13,7 +13,7 @@ void CDetail::Unload	()
 	shader.destroy		();
 }
 
-void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest, u32 iOffset)
+void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, u16* iDest, u32 iOffset)
 {
 	// Transfer vertices
 	{
@@ -38,7 +38,7 @@ void CDetail::transfer	(Fmatrix& mXform, fvfVertexOut* vDest, u32 C, WORD* iDest
 		LPDWORD	dit		= LPDWORD(iDest);
 		for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
 		if		(number_indices&1)	
-			iDest[number_indices-1]=indices[number_indices-1]+WORD(iOffset);
+			iDest[number_indices-1]=indices[number_indices-1]+u16(iOffset);
 	}
 }
 
@@ -64,8 +64,8 @@ void CDetail::Load		(IReader* S)
 	S->r			(vertices,size_vertices);
 	
 	// Indices
-	u32				size_indices		= number_indices*sizeof(WORD);
-	indices			= (WORD*)					xr_malloc	(size_indices);
+	u32				size_indices		= number_indices*sizeof(u16);
+	indices			= (u16*)					xr_malloc	(size_indices);
 	S->r			(indices,size_indices);
 	
 	// Validate indices
@@ -88,7 +88,7 @@ void CDetail::Load		(IReader* S)
 
 void CDetail::Optimize	()
 {
-	xr_vector<WORD>		vec_indices, vec_permute;
+	xr_vector<u16>		vec_indices, vec_permute;
 	const int			cache	= HW.Caps.vertex.dwVertexCache;
 
 	// Stripify
@@ -102,7 +102,7 @@ void CDetail::Optimize	()
 		// Msg					("* DM: %d verts, %d indices, VT: %d/%d",number_vertices,number_indices,vt_old,vt_new);
 
 		// Copy faces
-		Memory.mem_copy		(indices,&*vec_indices.begin(),vec_indices.size()*sizeof(WORD));
+		Memory.mem_copy		(indices,&*vec_indices.begin(),vec_indices.size()*sizeof(u16));
 
 		// Permute vertices
 		xr_vector<fvfVertexIn>	verts;
