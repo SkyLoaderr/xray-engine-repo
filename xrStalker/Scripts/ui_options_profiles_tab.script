@@ -28,6 +28,11 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 					   y = self.top_align_y,
 					   width = 300,
 					   height = self.btn_rect.height}
+	local edit_rect = {x = 0,
+					   y = self.top_align_y,
+					   width = 50,
+					   height = self.btn_rect.height}
+	edit_rect.x = self.main_frame.width - edit_rect.width - self.indent
 	local lst_rect  = {x = info_rect.x,
 					   y = info_rect.y + info_rect.height + self.indent,
 					   width = 350,
@@ -35,11 +40,12 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	
 	-- INIT DATA>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	
 	-- <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CODE
-    local frame_info = CUIFrameWindow()
-	frame_info:SetAutoDelete(true)
-	frame_info:SetWindowName("info_label")
-	frame_info:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
-	self.main_frame:AttachChild(frame_info)
+	-- INFO
+    local frame = CUIFrameWindow()
+	frame:SetAutoDelete(true)
+	frame:SetWindowName("info_label")
+	frame:Init("ui\\ui_frame_very_small", info_rect.x, info_rect.y, info_rect.width, info_rect.height)
+	self.main_frame:AttachChild(frame)
 	
 	local caption = CUIStatic()
 	caption:SetAutoDelete(true)
@@ -50,11 +56,19 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 	caption:SetText("Current Profile: xxx")
 	self.main_frame:AttachChild(caption)
 	
-	local lst_frame = CUIFrameWindow()
-	lst_frame:SetAutoDelete(true)
-	lst_frame:SetWindowName("list_frame")
-	lst_frame:Init("ui\\ui_frame_very_small", lst_rect.x, lst_rect.y, lst_rect.width, lst_rect.height)
-	self.main_frame:AttachChild(lst_frame)
+	-- LIST
+	frame = CUIFrameWindow()
+	frame:SetAutoDelete(true)
+	frame:SetWindowName("list_frame")
+	frame:Init("ui\\ui_frame_very_small", lst_rect.x, lst_rect.y, lst_rect.width, lst_rect.height)
+	self.main_frame:AttachChild(frame)
+	
+	-- EDIT
+	frame = CUIFrameWindow()
+	frame:SetAutoDelete(true)
+	frame:SetWindowName("edit_frame")
+	frame:Init("ui\\ui_frame_very_small", edit_rect.x, edit_rect.y, edit_rect.width, edit_rect.height)
+	self.main_frame:AttachChild(frame)
 	
 	-- CODE >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	
