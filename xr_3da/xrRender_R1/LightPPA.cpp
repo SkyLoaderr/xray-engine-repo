@@ -147,6 +147,7 @@ void CLightR_Manager::render_point	()
 	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
 	{
 		light*	L					= *it;
+		VERIFY						(L->spatial.sector);
 
 		//		1. Calculate light frustum
 		Fvector						L_dir,L_up,L_right,L_pos;
@@ -291,6 +292,7 @@ void CLightR_Manager::add			(light* L)
 		// spot/flash
 		selected_spot.push_back		(L);
 	}
+	VERIFY							(L->spatial.sector);
 }
 
 CLightR_Manager::CLightR_Manager	()
