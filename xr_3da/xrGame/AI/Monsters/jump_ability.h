@@ -1,7 +1,7 @@
 #pragma once
 
 #include "monster_event_manager_defs.h"
-#include "../../SkeletonAnimated.h"
+#include "../../../SkeletonAnimated.h"
 
 class CAnimTriple;
 class CBaseMonster;

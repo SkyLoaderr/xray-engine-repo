@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../SkeletonAnimated.h"
+#include "../../../SkeletonAnimated.h"
 
 enum EStateAnimTriple {
 	eStatePrepare,
