@@ -50,10 +50,10 @@
 		<font font="letterica16" r="190" g="190" b="225"></font>
 	</biography_list> -->
 
-	<!-- MASK FRAME -->
+	<!-- MASK FRAME 
 	<mask_frame_window x="0" y="0" width="10" height="10">
 		<base_texture>ui\ui_pda_frame2</base_texture>
-	</mask_frame_window>
+	</mask_frame_window> -->
 	
 	<!-- NAME -->
 	<static x="0" y="0" width="260" height="18">
