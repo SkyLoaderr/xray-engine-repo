@@ -80,7 +80,8 @@ enum {
 	rsStatistic			= (1ul<<11ul),
 	rsDetails			= (1ul<<12ul),
 	mtSound				= (1ul<<16ul),
-	mtInput				= (1ul<<17ul)
+	mtInput				= (1ul<<17ul),
+// 20-32 bit - defined in Editor
 };
 ENGINE_API extern	DWORD	psCurrentMode		;
 ENGINE_API extern	DWORD	psCurrentBPP		;
