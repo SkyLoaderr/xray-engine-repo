@@ -36,7 +36,7 @@ public:
 	BOOL						b_nv3x;
 	BOOL						b_HW_smap;
 	BOOL						b_noshadows;
-	BOOL						b_emap;
+	BOOL						b_Tshadows;						// transluent shadows
 	BOOL						b_distortion;
 	BOOL						b_nvstecil;
 public:

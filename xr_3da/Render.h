@@ -99,7 +99,7 @@ class	ENGINE_API	IRender_interface
 {
 public:
 	// options
-	u32								m_skinning;
+	s32								m_skinning;
 
 	// data
 	CFrustum						ViewBase;
@@ -115,7 +115,7 @@ public:
 	virtual void					level_Unload			()											= 0;
 
 	virtual IDirect3DBaseTexture9*	texture_load			(LPCSTR	fname)								= 0;
-			void					shader_option_skinning	(u32 mode)									{ m_skinning=mode;	}
+			void					shader_option_skinning	(s32 mode)									{ m_skinning=mode;	}
 	virtual HRESULT					shader_compile			(
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,

@@ -215,7 +215,7 @@ CRender::CRender()
 	b_HW_smap			= (strstr(Core.Params,"-hw_smap"))?TRUE:FALSE;
 	b_noshadows			= (strstr(Core.Params,"-noshadows"))?TRUE:FALSE;
 	b_fp16				= (strstr(Core.Params,"-fp16"))?TRUE:FALSE;
-	b_emap				= (strstr(Core.Params,"-emap"))?TRUE:FALSE;
+	b_Tshadows			= (strstr(Core.Params,"-notsh"))?FALSE:TRUE;
 	b_distortion		= (strstr(Core.Params,"-nodistort"))?FALSE:TRUE;
 	b_nvstecil			= (strstr(Core.Params,"-nonvstencil"))?FALSE:TRUE;
 }
@@ -286,8 +286,8 @@ HRESULT	CRender::shader_compile			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	if (b_emap)		{
-		defines[def_it].Name		=	"USE_EMAP";
+	if (b_Tshadows)		{
+		defines[def_it].Name		=	"USE_TSHADOWS";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
@@ -297,6 +297,11 @@ HRESULT	CRender::shader_compile			(
 		def_it						++;
 	}
 	// skinning
+	if (m_skinning<0)		{
+		defines[def_it].Name		=	"SKIN_NONE";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
 	if (0==m_skinning)		{
 		defines[def_it].Name		=	"SKIN_0";
 		defines[def_it].Definition	=	"1";

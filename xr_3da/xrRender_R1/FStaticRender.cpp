@@ -482,6 +482,11 @@ HRESULT	CRender::shader_compile			(
 		}
 	}
 	// options
+	if (m_skinning<0)		{
+		defines[def_it].Name		=	"SKIN_NONE";
+		defines[def_it].Definition	=	"1";
+		def_it						++;
+	}
 	if (0==m_skinning)		{
 		defines[def_it].Name		=	"SKIN_0";
 		defines[def_it].Definition	=	"1";

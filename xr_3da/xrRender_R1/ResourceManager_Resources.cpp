@@ -146,6 +146,7 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR _name)
 {
 	string_path			name;
 	strcpy				(name,_name);
+	if (0 == ::Render->m_skinning)	strcat(name,"_0");
 	if (1 == ::Render->m_skinning)	strcat(name,"_1");
 	if (2 == ::Render->m_skinning)	strcat(name,"_2");
 	LPSTR N				= LPSTR		(name);
