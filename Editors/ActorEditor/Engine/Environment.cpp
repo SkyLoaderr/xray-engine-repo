@@ -180,7 +180,7 @@ IC bool sort_env_pred(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
 
 void CEnvironment::load		()
 {
-    if (!eff_Rain)			eff_Rain 		= xr_new<CEffect_Rain>();
+    if (!eff_Rain)    		eff_Rain 		= xr_new<CEffect_Rain>();
     if (!eff_LensFlare)		eff_LensFlare 	= xr_new<CLensFlare>();
     if (!eff_Thunderbolt)	eff_Thunderbolt	= xr_new<CEffect_Thunderbolt>();
 	if (Weathers.empty()){

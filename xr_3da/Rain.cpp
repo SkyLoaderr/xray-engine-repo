@@ -42,7 +42,6 @@ CEffect_Rain::CEffect_Rain()
 	destructor<IReader>	F			(FS.r_open("$game_meshes$","dm\\rain.dm"));
 	DM_Drop							= ::Render->model_CreateDM		(&F());
 
-
 	//
 	SH_Rain.create					("effects\\rain","fx\\rain");
 	hGeom_Rain.create				(FVF::F_LIT, RCache.Vertex.Buffer(), RCache.QuadIB);

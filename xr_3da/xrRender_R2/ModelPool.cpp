@@ -3,19 +3,31 @@
 //////////////////////////////////////////////////////////////////////
   
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "ModelPool.h"
 
-#include "..\fmesh.h"
-#include "..\fvisual.h"
-#include "..\fprogressivefixedvisual.h"
-#include "..\fhierrarhyvisual.h"
-#include "..\bodyinstance.h"
-#include "..\fcached.h"
-#include "..\flod.h"
-#include "..\skeletonx.h"
-#include "ftreevisual.h"
-#include "PSVisual.h"
-#include "ParticleGroup.h"
+#ifndef _EDITOR
+    #include "..\fmesh.h"
+    #include "..\fvisual.h"
+    #include "..\fprogressivefixedvisual.h"
+    #include "..\fhierrarhyvisual.h"
+    #include "..\bodyinstance.h"
+    #include "..\fcached.h"
+    #include "..\flod.h"
+    #include "..\skeletonx.h"
+    #include "ftreevisual.h"
+    #include "PSVisual.h"
+    #include "ParticleGroup.h"
+#else
+    #include "fmesh.h"
+    #include "fvisual.h"
+    #include "fprogressivefixedvisual.h"
+    #include "ParticleGroup.h"
+    #include "skeletonX.h"
+    #include "fhierrarhyvisual.h"
+    #include "bodyinstance.h"
+#endif
 
 IRender_Visual*	CModelPool::Instance_Create(u32 type)
 {
@@ -41,26 +53,22 @@ IRender_Visual*	CModelPool::Instance_Create(u32 type)
 	case MT_SKELETON_GEOMDEF_ST:
 		V	= xr_new<CSkeletonX_ST> ();
 		break;
-	case MT_PARTICLE_SYSTEM:
-		V	= xr_new<CPSVisual> ();
-		break;
 	case MT_PARTICLE_EFFECT:
 		V	= xr_new<PS::CParticleEffect> ();
 		break;
 	case MT_PARTICLE_GROUP:
 		V	= xr_new<PS::CParticleGroup> ();
 		break;
-	case MT_CACHED:
-		V	= xr_new<FCached> ();
-		break;
+#ifndef _EDITOR
 	case MT_LOD:
 		V	= xr_new<FLOD> ();
 		break;
 	case MT_TREE:
 		V	= xr_new<FTreeVisual> ();
 		break;
+#endif
 	default:
-		R_ASSERT2(0,"Unknown visual type");
+		Debug.fatal("Unknown visual type");
 		break;
 	}
 	R_ASSERT	(V);
@@ -74,6 +82,9 @@ IRender_Visual*	CModelPool::Instance_Duplicate	(IRender_Visual* V)
 	IRender_Visual* N		= Instance_Create(V->Type);
 	N->Copy			(V);
 	N->Spawn		();
+    // inc ref counter
+	for (xr_vector<ModelDef>::iterator I=Models.begin(); I!=Models.end(); I++) 
+		if (I->model==V){ I->refs++; break;}
 	return N;
 }
 
@@ -149,7 +160,7 @@ void CModelPool::Destroy()
 	// Registry
 	for (REGISTRY_IT it=Registry.begin(); it!=Registry.end(); it++)
 	{
-		xr_delete	(it->first);
+		xr_delete	((IRender_Visual*)it->first);
 		xr_free		(it->second);
 	}
 	Registry.clear();
@@ -270,8 +281,13 @@ void	CModelPool::Discard	(IRender_Visual* &V)
 		{
 			if (I->name[0] && (0==strcmp(I->name,name))) 
 			{
-				xr_delete		(I->model);	
-				Models.erase	(I);
+            	VERIFY(I->refs>0);
+            	I->refs--; 
+                if (0==I->refs){
+	            	I->model->Release();
+					xr_delete		(I->model);	
+					Models.erase	(I);
+                }
 				break;
 			}
 		}
@@ -287,13 +303,6 @@ void	CModelPool::Discard	(IRender_Visual* &V)
 	V	=	NULL;
 }
 
-IRender_Visual* CModelPool::CreatePS	(PS::SDef* source, PS::SEmitter* E)
-{
-	CPSVisual* V	= (CPSVisual*)Instance_Create(MT_PARTICLE_SYSTEM);
-	V->Compile		(source,E);
-	return V;
-}
-
 IRender_Visual* CModelPool::CreatePE	(PS::CPEDef* source)
 {
 	PS::CParticleEffect* V	= (PS::CParticleEffect*)Instance_Create(MT_PARTICLE_EFFECT);
@@ -307,3 +316,68 @@ IRender_Visual* CModelPool::CreatePG	(PS::CPGDef* source)
 	V->Compile		(source);
 	return V;
 }
+
+#ifdef _EDITOR
+IC bool	_IsRender(IRender_Visual* visual, const Fmatrix& transform, u32 priority, bool strictB2F)
+{
+	if ((priority==(visual->hShader?visual->hShader->E[0]->Flags.iPriority:1))&&(strictB2F==!!(visual->hShader?visual->hShader->E[0]->Flags.bStrictB2F:false))){
+        Fbox bb; bb.xform(visual->vis.box,transform);
+        return ::Render->occ_visible(bb);
+    }
+    return false;
+}
+
+void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD)
+{
+    // render visual
+    RCache.set_xform_world(mTransform);
+    switch (m_pVisual->Type){
+    case MT_SKELETON:
+    case MT_HIERRARHY:{
+        FHierrarhyVisual* pV			= dynamic_cast<FHierrarhyVisual*>(m_pVisual); R_ASSERT(pV);
+        xr_vector<IRender_Visual*>::iterator 		I,E;
+        I = pV->children.begin			();
+        E = pV->children.end			();
+        for (; I!=E; I++){
+            IRender_Visual* V			= *I;
+			if (_IsRender(V,mTransform,priority,strictB2F)){
+		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
+	            V->Render		 		(m_fLOD);
+            }
+        }
+    }break;
+    case MT_PARTICLE_GROUP:{
+        PS::CParticleGroup* pV			= dynamic_cast<PS::CParticleGroup*>(m_pVisual); R_ASSERT(pV);
+        xr_vector<IRender_Visual*>::iterator 		I,E;
+        I = pV->children.begin			();
+        E = pV->children.end			();
+        for (; I!=E; I++)
+            Render						(*I,Fidentity,priority,strictB2F,m_fLOD);
+    }break;
+    case MT_PARTICLE_EFFECT:{
+		if (_IsRender(m_pVisual,Fidentity,priority,strictB2F)){
+	        RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+            m_pVisual->Render		 	(m_fLOD);
+        }
+    }break;
+    default:
+		if (_IsRender(m_pVisual,mTransform,priority,strictB2F)){
+	        RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+            m_pVisual->Render		 	(m_fLOD);
+        }
+        break;
+    }
+}
+
+void 	CModelPool::RenderSingle(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD)
+{
+	for (int p=0; p<4; p++){
+    	Render(m_pVisual,mTransform,p,false,m_fLOD);
+    	Render(m_pVisual,mTransform,p,true,m_fLOD);
+    }
+}
+void CModelPool::OnDeviceDestroy()
+{
+	Destroy();
+}
+#endif

@@ -1,11 +1,15 @@
 // ModelPool.h: interface for the CModelPool class.
 //////////////////////////////////////////////////////////////////////
+#ifndef ModelPoolH
+#define ModelPoolH
 #pragma once
 
 // refs
 class ENGINE_API IRender_Visual;
 namespace PS	{ 
 	struct ENGINE_API SEmitter; 
+	struct ENGINE_API CPEDef; 
+    struct ENGINE_API CPGDef;
 };
 
 // defs
@@ -23,6 +27,8 @@ private:
 	{
 		string128			name;
 		IRender_Visual*		model;
+        u32					refs;
+        ModelDef(){name[0]=0;refs=0;model=0;}
 	};
 
 	typedef xr_multimap<LPCSTR,IRender_Visual*,str_pred>	POOL;
@@ -37,6 +43,8 @@ private:
 
 	void					Destroy	();
 public:
+                            CModelPool			();
+	virtual 				~CModelPool			();
 	IRender_Visual*			Instance_Create		(u32 Type);
 	IRender_Visual*			Instance_Duplicate	(IRender_Visual* V);
 	IRender_Visual*			Instance_Load		(LPCSTR N);
@@ -44,7 +52,6 @@ public:
 	void					Instance_Register	(LPCSTR N, IRender_Visual* V);
 	IRender_Visual*			Instance_Find		(LPCSTR N);
 
-	IRender_Visual*			CreatePS			(PS::SDef* source, PS::SEmitter* E);
 	IRender_Visual*			CreatePE			(PS::CPEDef* source);
 	IRender_Visual*			CreatePG			(PS::CPGDef* source);
 	IRender_Visual*			Create				(LPCSTR name);
@@ -54,6 +61,10 @@ public:
 
 	void					Logging				(BOOL bEnable)	{ bLogging=bEnable; }
 
-	CModelPool			();
-	virtual ~CModelPool	();
+#ifdef _EDITOR    
+	void					OnDeviceDestroy		();
+	void 					Render				(IRender_Visual* m_pVisual, const Fmatrix& mTransform, int priority, bool strictB2F, float m_fLOD);
+	void 					RenderSingle		(IRender_Visual* m_pVisual, const Fmatrix& mTransform, float m_fLOD);
+#endif
 };
+#endif //ModelPoolH
