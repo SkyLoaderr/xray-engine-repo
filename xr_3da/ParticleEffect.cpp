@@ -188,12 +188,10 @@ void CParticleEffect::OnDeviceDestroy()
 	}
 }
 //----------------------------------------------------
-IC void FillSprite	(FVF::LIT*& pv, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float r1, float r2, u32 clr, float angle)
+IC void FillSprite	(FVF::LIT*& pv, const Fvector& T, const Fvector& R, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float r1, float r2, u32 clr, float angle)
 {
 	float sa	= _sin(angle);  
 	float ca	= _cos(angle);  
-	const Fvector& T 	= Device.vCameraTop;
-	const Fvector& R 	= Device.vCameraRight;
 	Fvector Vr, Vt;
 	Vr.x 		= T.x*r1*sa+R.x*r1*ca;
 	Vr.y 		= T.y*r1*sa+R.y*r1*ca;
@@ -265,25 +263,38 @@ void CParticleEffect::Render(float LOD)
 					r_y			+= speed*m_Def->m_VelocityScale.y;
 				}
 				if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
-					Fvector 	dir;
 					float speed	= m.vel.magnitude();
-					if (speed>=EPS_S)	dir.div	(m.vel,speed);
-					else				dir.setHP(-m_Def->m_APDefaultRotation.y,-m_Def->m_APDefaultRotation.x);
-					if (m_RT_Flags.is(flRT_XFORM)){
-						Fvector p,d;
-						m_XFORM.transform_tiny	(p,m.pos);
-						m_XFORM.transform_dir	(d,dir);
-						FillSprite	(pv,p,d,lt,rb,r_x,r_y,m.color,m.rot.x);
-					}else{
-						FillSprite	(pv,m.pos,dir,lt,rb,r_x,r_y,m.color,m.rot.x);
-					}
+                    if ((speed<EPS_S)&&m_Def->m_Flags.is(CPEDef::dfWorldAlign)){
+                    	Fmatrix	M;  	
+                        M.setXYZ			(m_Def->m_APDefaultRotation);
+                        if (m_RT_Flags.is(flRT_XFORM)){
+                            Fvector p;
+                            m_XFORM.transform_tiny(p,m.pos);
+	                        M.mulB_43		(m_XFORM);
+                            FillSprite		(pv,M.k,M.i,p,lt,rb,r_x,r_y,m.color,m.rot.x);
+                        }else{
+                            FillSprite		(pv,M.k,M.i,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
+                        }
+                    }else{
+						Fvector 			dir;
+                        if (speed>=EPS_S)	dir.div	(m.vel,speed);
+                        else				dir.setHP(-m_Def->m_APDefaultRotation.y,-m_Def->m_APDefaultRotation.x);
+                        if (m_RT_Flags.is(flRT_XFORM)){
+                            Fvector p,d;
+                            m_XFORM.transform_tiny	(p,m.pos);
+                            m_XFORM.transform_dir	(d,dir);
+                            FillSprite	(pv,p,d,lt,rb,r_x,r_y,m.color,m.rot.x);
+                        }else{
+                            FillSprite	(pv,m.pos,dir,lt,rb,r_x,r_y,m.color,m.rot.x);
+                        }
+                    }
 				}else{
 					if (m_RT_Flags.is(flRT_XFORM)){
 						Fvector p;
 						m_XFORM.transform_tiny	(p,m.pos);
-						FillSprite	(pv,p,lt,rb,r_x,r_y,m.color,m.rot.x);
+						FillSprite	(pv,Device.vCameraTop,Device.vCameraRight,p,lt,rb,r_x,r_y,m.color,m.rot.x);
 					}else{
-						FillSprite	(pv,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
+						FillSprite	(pv,Device.vCameraTop,Device.vCameraRight,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
 					}
 				}
 			}
@@ -292,7 +303,11 @@ void CParticleEffect::Render(float LOD)
 			if (dwCount)    {
 				RCache.set_xform_world	(Fidentity);
 				RCache.set_Geometry		(hGeom);
+
+                u32 cm					= RCache.get_CullMode();
+                RCache.set_CullMode		(D3DCULL_NONE);
 				RCache.Render	   		(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
+                RCache.set_CullMode		(cm); 
 			}
 		}
 	}

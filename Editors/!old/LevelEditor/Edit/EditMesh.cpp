@@ -328,7 +328,6 @@ void CEditableMesh::DumpAdjacency(){
     }
 */
 }
-
 //----------------------------------------------------------------------------
 
 int CEditableMesh::FindVMapByName(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap){
@@ -337,3 +336,11 @@ int CEditableMesh::FindVMapByName(VMapVec& vmaps, const char* name, EVMType t, B
 	}
 	return -1;
 }
+//----------------------------------------------------------------------------
+
+bool CEditableMesh::Validate()
+{
+	return true;
+}
+//----------------------------------------------------------------------------
+

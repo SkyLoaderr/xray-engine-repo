@@ -197,7 +197,7 @@ public:
 	bool 			CreateMailslot		();
 	void 			CheckMailslot		();
 	void 			OnReceiveMail		(LPCSTR msg);
-//	void 			SendMail			();
+	void 			SendMail			(LPCSTR name, LPCSTR dest, LPCSTR msg);
 
     void			CheckWindowPos		(TForm* form);
 

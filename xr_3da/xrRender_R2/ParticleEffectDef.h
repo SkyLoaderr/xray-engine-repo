@@ -71,12 +71,13 @@ namespace PS
             dfCollisionDel	= (1<<17),
             dfVelocityScale	= (1<<18),
             dfCollisionDyn	= (1<<19),
+			dfWorldAlign	= (1<<20),
 		};
-		shared_str				m_Name;
+		shared_str		  	m_Name;
 		Flags32				m_Flags;
 	// texture
-		shared_str				m_ShaderName;
-		shared_str				m_TextureName;
+		shared_str		  	m_ShaderName;
+		shared_str		  	m_TextureName;
 		ref_shader			m_CachedShader;
 		SFrame				m_Frame;
 	// compiled actions

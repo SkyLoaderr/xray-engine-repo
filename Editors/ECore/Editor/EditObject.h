@@ -86,6 +86,10 @@ public:
 #endif
 		tag			= 0;
 	}
+    IC bool			Validate		()
+    {
+    	return (0!=xr_strlen(m_Texture))&&(0!=xr_strlen(m_ShaderName));
+    }
 #ifdef _EDITOR
 					~CSurface		(){R_ASSERT(!m_Shader);}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
@@ -436,6 +440,8 @@ public:
 	CSurface*		CreateSurface			(MObject shader);
 #endif
 	bool			ExportLWO				(LPCSTR fname);
+
+    bool			Validate				();
 };
 //----------------------------------------------------
 //----------------------------------------------------

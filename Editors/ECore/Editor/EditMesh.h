@@ -306,6 +306,8 @@ public:
 
     // device dependent routine
 	void 			ClearRenderBuffers		();
+
+    bool			Validate				();
 };
 //----------------------------------------------------
 #endif /*_INCDEF_EditableMesh_H_*/
