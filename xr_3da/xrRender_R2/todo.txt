@@ -12,7 +12,6 @@ done, works OK			:	2*DXT5	bumpmaps + heightmaps	- lower quality, 8 bit, faster(?
 						:	L8		encoding of encodeB + mov instead add
 						:	A8L8	encoding of material
 ----------------------------
-			
 smap_res:	fixed(36.0), adaptive(36.9), minus one RT-switch(37.5)
 433/1.08Ghz:optimized spot-shadow-shaders + aref( 31.3  )
 433/1.08Ghz:agressive scissoring				( 33.8  )
@@ -148,4 +147,18 @@ deffer -----| RT_1		=	norm.mid		|--decompress---| RT_N	= norm.mid,	4xFP16		|--ac
 			| RT_COLOR	=	rgb.gloss		|				\-------------------------------/				\---------------------------/
 			| RT_ACCUM	=	hemi+emissive	|				
 -----------------------------------------------------------------------------------------------
-			
+light	- logic:
+	color-animator + brightness
+	motion		= pos + rotation
+	name		(access)
+	
+light	- physic:
+	type		= spot/point/...
+	flags		= shadow cast/active/...
+	xform		= pos/dir/right/...
+	range		= 
+	cone-angle	= (spot)
+	virtual-size= point/spot
+	color		= 
+	texture		= 
+	

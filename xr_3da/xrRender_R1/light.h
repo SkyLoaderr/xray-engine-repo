@@ -13,6 +13,7 @@ public:
 	}				flags;
 	Fvector			position;
 	Fvector			direction;
+	Fvector			right;
 	float			range;
 	float			cone;
 	Fcolor			color;

@@ -663,6 +663,9 @@
 				RelativePath="Build_Load.cpp">
 			</File>
 			<File
+				RelativePath=".\ELight_def.h">
+			</File>
+			<File
 				RelativePath=".\Sector.cpp">
 			</File>
 			<File
