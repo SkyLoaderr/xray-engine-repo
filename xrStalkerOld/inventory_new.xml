@@ -37,12 +37,15 @@
         <title x="100" y="0" width="240" height="60"><text font="graffiti22" r="255" g="255" b="255" a="130">Personal</text></title>
     </frame_window>
     
-    <outfit_info_window x="10" y="15" width="268" height="460"/>
+    <!-- OUTFIT INFO -->
+    <outfit_info_window x="40" y="32" width="268" height="460">
+		<text font="medium" r="255" g="255" b="255" a="130"></text>
+	</outfit_info_window>
 
     <!-- BELT STATIC BACKGROUND -->
     <static x="10" y="140" width="1014" height="128">
         <texture> ui\ui_inv_belt</texture>
-        <text x="25" y="2" font="graffiti22" r="255" g="255" b="255" a="130">Belt</text>
+        <text x="25" y="2" font="graffiti22" r="255" g="255" b="255" a="130"></text>
     </static>
 
     <button x="600" y="715" width="150" height="40">
