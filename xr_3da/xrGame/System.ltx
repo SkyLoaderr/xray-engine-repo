@@ -232,45 +232,6 @@ class				= O_PHYSIC
 remove_time			= 120; after this time  unbreaked removable bone will be removed
 script_binding      = physic_object.init
 
-[device_torch]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn				= "devices\torch"
-$prefetch 			= 32
-class				= D_TORCH
-cform				= skeleton
-visual				= equipments\light_night.ogf
-cost				= 50
-inv_name			= "Torch"
-inv_name_short		= "Torch"
-inv_weight			= 1.0	;.5
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 16
-inv_grid_y			= 12
-position			= .35,.25,0
-light_trace_bone	= cone_bone
-attach_angle_offset		= 0, -3.14, 1.6
-attach_position_offset	= 0.105, 0.00, 0.085
-attach_bone_name		= bip01_head
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; night vision
-
-night_vision				= on
-night_vision_texture		= wpn\wpn_night
-night_vision_effector		= postprocess_night
-
-snd_night_vision_on			= weapons\nv_start
-snd_night_vision_off		= weapons\nv_off
-snd_night_vision_idle		= weapons\nv_loop
-
-night_vision_recharge_time			= 6		;(c) время зарядки аккамулятора
-night_vision_recharge_time_min		= 2		;(c) мин. время зарядки аккамулятора, после которого уст-во уже может работать
-night_vision_discharge_time			= 12	;(c) время разрядки (работы) устройства после полной зарядки
-
-
-
 [search_light]
 GroupControlSection	= spawn_group
 $spawn 				= "physics\search light"
