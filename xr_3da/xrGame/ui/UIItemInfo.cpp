@@ -113,8 +113,8 @@ void CUIItemInfo::InitItem(CInventoryItem* pInvItem)
 		UIItemImage.ClipperOn();
 
 		// –азместить текстуру по центру статика
-		Irect &r	= UIItemImage.GetUIStaticItem().GetOriginalRect();
-		RECT &r2	= UIItemImage.GetWndRect();
+		Irect	r	= UIItemImage.GetUIStaticItem().GetOriginalRect();
+		RECT	r2	= UIItemImage.GetWndRect();
 
 		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
 		{
