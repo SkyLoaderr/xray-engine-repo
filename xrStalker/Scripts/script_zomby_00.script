@@ -1,6 +1,7 @@
 function main()
 
 	local stalker_zomby	= get_level_object("m_stalker_e0002")
+	printf("stalker_zomby : %s",stalker_zomby:name())
 
 	local prof_zomby = sound_object("scripts\\stalker_prof\\prof_zomby")
 	local prof_privet_hosh_potorgovat = sound_object("scripts\\stalker_prof\\prof_privet_hosh_potorgovat")
