@@ -15,7 +15,8 @@ ZONE_INFO::ZONE_INFO	()
 
 ZONE_INFO::~ZONE_INFO	()
 {
-	pParticle->PSI_destroy();
+	if(pParticle)
+		pParticle->PSI_destroy();
 }
 
 CCustomDetector::CCustomDetector(void) 
