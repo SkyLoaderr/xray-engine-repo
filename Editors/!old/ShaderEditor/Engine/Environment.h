@@ -77,6 +77,7 @@ public:
 
 	float					fGameTime;
 	float					fTimeFactor;
+	ref_texture				tonemap;
 
     void					SelectEnvs			(float gt);
 #ifdef _EDITOR

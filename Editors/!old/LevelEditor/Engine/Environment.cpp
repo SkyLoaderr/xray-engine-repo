@@ -30,8 +30,9 @@ public:
 	virtual		void		Compile			(CBlender_Compile& C)
 	{
 		C.r_Pass			("sky2",		"sky2",		FALSE,	TRUE, FALSE);
-		C.r_Sampler_clf		("s_sky0",		"$null");
-		C.r_Sampler_clf		("s_sky1",		"$null");
+		C.r_Sampler_clf		("s_sky0",		"$null"			);
+		C.r_Sampler_clf		("s_sky1",		"$null"			);
+		C.r_Sampler_rtf		("s_tonemap",	"$user$tonemap"	);	//. hack
 		C.r_End				();
 	}
 };
@@ -129,6 +130,7 @@ void CEnvDescriptor::unload	()
 	sky_r_textures.clear	();
 	sky_r_textures.push_back(0);
 	sky_r_textures.push_back(0);
+	sky_r_textures.push_back(0);
 }
 void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 {
@@ -186,6 +188,7 @@ IC bool sort_env_pred(const CEnvDescriptor*& x, const CEnvDescriptor*& y)
 
 void CEnvironment::load		()
 {
+	tonemap					= Device.Resources->_CreateTexture("$user$tonemap");	//. hack
     if (!eff_Rain)    		eff_Rain 		= xr_new<CEffect_Rain>();
     if (!eff_LensFlare)		eff_LensFlare 	= xr_new<CLensFlare>();
     if (!eff_Thunderbolt)	eff_Thunderbolt	= xr_new<CEffect_Thunderbolt>();
@@ -235,6 +238,7 @@ void CEnvironment::unload	()
     CurrentEnv.unload	();
     CurrentA			= 0;
     CurrentB			= 0;
+	tonemap				= 0;
 }
 
 void CEnvironment::SetWeather(LPCSTR name)
@@ -344,11 +348,12 @@ void CEnvironment::OnFrame()
     }
     clamp					(t_fact,0.f,1.f);
     
-	CurrentEnv.lerp			(*CurrentA,*CurrentB,t_fact);
-    int id					= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
-	eff_LensFlare->OnFrame	(id);
-    BOOL tb_enabled			= (t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
-    eff_Thunderbolt->OnFrame(tb_enabled,CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
+	CurrentEnv.lerp						(*CurrentA,*CurrentB,t_fact);
+	CurrentEnv.sky_r_textures.push_back	(tonemap);	//. hack
+    int id								= (t_fact<0.5f)?CurrentA->lens_flare_id:CurrentB->lens_flare_id;
+	eff_LensFlare->OnFrame				(id);
+    BOOL tb_enabled						= (t_fact<0.5f)?CurrentA->thunderbolt:CurrentB->thunderbolt;
+    eff_Thunderbolt->OnFrame			(tb_enabled,CurrentEnv.bolt_period,CurrentEnv.bolt_duration);
 
 	// ******************** Environment params (setting)
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	color_rgba_f(CurrentEnv.fog_color.x,CurrentEnv.fog_color.y,CurrentEnv.fog_color.z,0) )); 

@@ -17,7 +17,7 @@
 
 #define r2_RT_luminance_t64	"$user$lum_t64"			// --- temp
 #define r2_RT_luminance_t8	"$user$lum_t8"			// --- temp
-#define r2_RT_luminance		"$user$luminance"		// --- result
+#define r2_RT_luminance		"$user$tonemap"			// --- result
 
 #define	r2_RT_smap_d_surf	"$user$smap_d_surf"		// ---	directional
 #define	r2_RT_smap_d_depth	"$user$smap_d_depth"	// ---	directional
