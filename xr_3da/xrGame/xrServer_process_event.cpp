@@ -107,14 +107,15 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			//
 			if (c_src->owner->ID == id_src)
 			{
+				game->OnPlayerKillPlayer	(c_src->ID,c_dest->ID);
+
 				// Main unit
-				// c_src->g_frags	++;
-				P.w_begin			(M_EVENT);
-				P.w_u32				(timestamp);
-				P.w_u16				(type);
-				P.w_u16				(destination);
-				P.w_u16				(id_src);
-				P.w_u32				(c_src->ID);
+				P.w_begin					(M_EVENT);
+				P.w_u32						(timestamp);
+				P.w_u16						(type);
+				P.w_u16						(destination);
+				P.w_u16						(id_src);
+				P.w_u32						(c_src->ID);
 			}
 			SendBroadcast		(0xffffffff,P,MODE);
 		}
