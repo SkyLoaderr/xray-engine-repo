@@ -174,6 +174,30 @@ void CWeapon::UpdateXForm	()
 
 		if (0==H_Parent())	return;
 
+		// Get access to entity and its visual
+		CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
+		R_ASSERT		(E);
+		CKinematics*	V		= PKinematics	(E->Visual());
+		VERIFY			(V);
+
+		// Get matrices
+		int				boneL,boneR;
+		E->g_WeaponBones(boneL,boneR);
+		V->Calculate	();
+		Fmatrix& mL		= V->LL_GetTransform(boneL);
+		Fmatrix& mR		= V->LL_GetTransform(boneR);
+
+		// Calculate
+		Fmatrix			mRes;
+		Fvector			R,D,N;
+		D.sub			(mL.c,mR.c);	D.normalize_safe();
+		R.crossproduct	(mR.j,D);		R.normalize_safe();
+		N.crossproduct	(D,R);			N.normalize_safe();
+		mRes.set		(R,N,D,mR.c);
+		mRes.mulA_43	(E->clXFORM());
+		UpdatePosition	(mRes);
+
+		//
 		if (hud_mode)
 		{
 			if (m_pHUD)
@@ -183,28 +207,6 @@ void CWeapon::UpdateXForm	()
 				m_pHUD->UpdatePosition			(trans);
 			}
 		} else {
-			// Get access to entity and its visual
-			CEntityAlive*	E		= dynamic_cast<CEntityAlive*>(H_Parent());
-			R_ASSERT		(E);
-			CKinematics*	V		= PKinematics	(E->Visual());
-			VERIFY			(V);
-
-			// Get matrices
-			int				boneL,boneR;
-			E->g_WeaponBones(boneL,boneR);
-			V->Calculate	();
-			Fmatrix& mL		= V->LL_GetTransform(boneL);
-			Fmatrix& mR		= V->LL_GetTransform(boneR);
-
-			// Calculate
-			Fmatrix			mRes;
-			Fvector			R,D,N;
-			D.sub			(mL.c,mR.c);	D.normalize_safe();
-			R.crossproduct	(mR.j,D);		R.normalize_safe();
-			N.crossproduct	(D,R);			N.normalize_safe();
-			mRes.set		(R,N,D,mR.c);
-			mRes.mulA_43	(E->clXFORM());
-			UpdatePosition	(mRes);
 		}
 	}
 }

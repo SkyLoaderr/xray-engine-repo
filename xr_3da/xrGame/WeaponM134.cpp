@@ -178,6 +178,22 @@ void CWeaponM134::UpdateXForm	()
 	{
 		dwXF_Frame = Device.dwFrame;
 
+		// 
+		Fmatrix mRes;
+		CKinematics* V	= PKinematics		(H_Parent()->Visual());
+		V->Calculate	();
+		Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
+		Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
+
+		Fvector			R,D,N;
+		D.sub			(mL.c,mR.c);	D.normalize_safe();
+		R.crossproduct	(mR.j,D);		R.normalize_safe();
+		N.crossproduct	(D,R);			N.normalize_safe();
+		mRes.set		(R,N,D,mR.c);
+		mRes.mulA		(H_Parent()->clXFORM());
+		UpdatePosition	(mRes);
+
+		// 
 		if (hud_mode) {
 			if (m_pHUD)	{
 				Fmatrix			trans;
@@ -185,19 +201,6 @@ void CWeaponM134::UpdateXForm	()
 				m_pHUD->UpdatePosition(trans);
 			}
 		} else {
-			Fmatrix mRes;
-			CKinematics* V	= PKinematics		(H_Parent()->Visual());
-			V->Calculate	();
-			Fmatrix& mL		= V->LL_GetTransform(m_pContainer->m_iACTboneL);
-			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
-			
-			Fvector			R,D,N;
-			D.sub			(mL.c,mR.c);	D.normalize_safe();
-			R.crossproduct	(mR.j,D);		R.normalize_safe();
-			N.crossproduct	(D,R);			N.normalize_safe();
-			mRes.set		(R,N,D,mR.c);
-			mRes.mulA		(H_Parent()->clXFORM());
-			UpdatePosition	(mRes);
 		}
 	}
 }
