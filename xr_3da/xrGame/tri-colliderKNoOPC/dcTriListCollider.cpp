@@ -888,7 +888,7 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),SphereCenterF,AABB);
 
 	// 
-	//int count                                       =XRC.r_count   ();
+	int count                                       = (int)XRC.r_count   ();
 	CDB::RESULT*    R_begin                         = XRC.r_begin();
 	CDB::RESULT*    R_end                           = XRC.r_end();
 	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();

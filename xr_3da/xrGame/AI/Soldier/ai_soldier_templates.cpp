@@ -170,7 +170,7 @@ void CAI_Soldier::vfSearchForBetterPositionWTime(IBaseAI_NodeEvaluator &S, CSqua
 
 void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 {
-	bool bSafeFire = m_bFiring;
+//	bool bSafeFire = m_bFiring;
 	
 //	if (!Weapons || !Weapons->ActiveWeapon())
 //		return;

@@ -129,7 +129,7 @@ void CAI_Stalker::ForwardStraight()
 	float						fDistance = vPosition.distance_to(m_tEnemy.Enemy->Position());
 
 	if (bPlayingHumming && bfIfHuman()) {
-		m_tpCurrentSound = &m_tpSoundAlarm[::Random.randI(m_tpSoundAlarm.size())];
+		m_tpCurrentSound = &m_tpSoundAlarm[::Random.randI((int)m_tpSoundAlarm.size())];
 		m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
 		m_tpCurrentSound->feedback->set_volume(1.f);
 	}
@@ -246,7 +246,7 @@ void CAI_Stalker::Panic()
 			}
 			case eActionStateStand : {
 				if (!m_tpCurrentSound) {
-					m_tpCurrentSound = &m_tpSoundSurrender[::Random.randI(m_tpSoundSurrender.size())];
+					m_tpCurrentSound = &m_tpSoundSurrender[::Random.randI((int)m_tpSoundSurrender.size())];
 					m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
 					m_tpCurrentSound->feedback->set_volume(1.f);
 				}
@@ -323,7 +323,7 @@ void CAI_Stalker::Detour()
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
 
 	u32 dwDelay1, dwDelay2;
-	float f;
+	float f = 0;
 	if (C)	f =100.f;
 	if (D)	f =80.f;
 	if (E)	f =60.f;
@@ -349,7 +349,7 @@ void CAI_Stalker::Detour()
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			if (!AI_Path.DestNode) {
 				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
-				for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+				for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
 					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 			}
 			vfSetParameters			((F || G) ? 0 : &m_tSelectorFreeHunting,0,false,eWeaponStateIdle,(F || G) ? ePathTypeStraight : ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,(F || G) ? eLookTypePoint : eLookTypeFirePoint,tPoint);
@@ -415,7 +415,7 @@ void CAI_Stalker::ForwardCover()
 	}
 
 	if (bPlayingHumming && bfIfHuman()) {
-		m_tpCurrentSound = &m_tpSoundAlarm[::Random.randI(m_tpSoundAlarm.size())];
+		m_tpCurrentSound = &m_tpSoundAlarm[::Random.randI((int)m_tpSoundAlarm.size())];
 		m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
 		m_tpCurrentSound->feedback->set_volume(1.f);
 	}
@@ -584,7 +584,7 @@ void CAI_Stalker::SearchEnemy()
 			break;
 		}
 		case eActionStateWatch   : {
-			if ((int(Group.m_tpaSuspiciousNodes.size()) - 1) < m_iSuspPoint) {
+			if (((int)Group.m_tpaSuspiciousNodes.size() - 1) < m_iSuspPoint) {
 				m_tSavedEnemy = 0;
 				m_dwInertion = 0;
 				return;
@@ -598,7 +598,7 @@ void CAI_Stalker::SearchEnemy()
 		}
 		case eActionStateWatchGo : {
 			OUT_TEXT("The higher-level prediction");
-			if ((m_iCurrentSuspiciousNodeIndex == -1) || (Group.m_tpaSuspiciousNodes.size() < (m_iCurrentSuspiciousNodeIndex + 1)) || getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
+			if ((m_iCurrentSuspiciousNodeIndex == -1) || ((int)Group.m_tpaSuspiciousNodes.size() < (m_iCurrentSuspiciousNodeIndex + 1)) || getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
 				if (m_iCurrentSuspiciousNodeIndex != -1)
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
 				m_iCurrentSuspiciousNodeIndex = ifGetSuspiciousAvailableNode(m_iCurrentSuspiciousNodeIndex,Group);
@@ -729,7 +729,7 @@ void CAI_Stalker::ExploreDNE()
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			if (!AI_Path.DestNode) {
 				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
-				for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+				for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
 					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 			}
 			vfSetParameters			(0,0,false,eWeaponStateIdle,ePathTypeCriteria,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
@@ -894,7 +894,7 @@ void CAI_Stalker::ExploreNDNE()
 			AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 			if (!AI_Path.DestNode) {
 				Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
-				for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+				for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
 					Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 			}
 			vfSetParameters(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
@@ -986,7 +986,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 	}
 	if (!AI_Path.DestNode) {
 		Msg("! Invalid graph point node (graph index %d)",m_tNextGP);
-		for (int i=0; i<getAI().GraphHeader().dwVertexCount; i++)
+		for (int i=0; i<(int)getAI().GraphHeader().dwVertexCount; i++)
 			Msg("%3d : %6d",i,getAI().m_tpaGraph[i].tNodeID);
 	}
 	float					yaw,pitch;
@@ -1008,7 +1008,7 @@ void CAI_Stalker::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 		}
 		case eActionStateDontWatch : {
 			if (!m_tpCurrentSound) {
-				m_tpCurrentSound = &m_tpSoundHumming[::Random.randI(m_tpSoundHumming.size())];
+				m_tpCurrentSound = &m_tpSoundHumming[::Random.randI((int)m_tpSoundHumming.size())];
 				m_tpCurrentSound->play_at_pos(this,eye_matrix.c);
 				m_tpCurrentSound->feedback->set_volume(1.f);
 			}

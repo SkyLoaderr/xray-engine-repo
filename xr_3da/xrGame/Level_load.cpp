@@ -15,7 +15,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 
 	int i;
 	int iStartPoint = -1, iFinishPoint = -1, iCurPoint = 0, iPrevPoint = -1;
-	u32 N = tpPatrolPath.tpaWayPoints.size(), dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
+	u32 N = (u32)tpPatrolPath.tpaWayPoints.size(), dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
 
 	tpaFrom.resize		(N);
 	tpaTo.resize		(N);
@@ -114,7 +114,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	float fHalfSubnodeSize = getAI().Header().size*.5f;
 
 	xr_vector<Fvector> &tpaVector0 = tpPatrolPath.tpaVectors[0];
-	u32 M = tpaVector0.size();
+	u32 M = (u32)tpaVector0.size();
 
 	for (int I=1; I<3; I++) {
 		xr_vector<Fvector> &tpaVector1 = ((I == 1) ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2]);

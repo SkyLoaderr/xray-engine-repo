@@ -6,11 +6,9 @@ CMercuryBall::CMercuryBall(void) {}
 CMercuryBall::~CMercuryBall(void) {}
 
 BOOL CMercuryBall::net_Spawn(LPVOID DC) {
-	inherited::net_Spawn(DC);
+	inherited::net_Spawn		(DC);
 	setVisible					(true);
 	setEnabled					(true);
-	xrServerEntity				*e	= (xrServerEntity*)(DC);
-	xrSE_MercuryBall			*E	= dynamic_cast<xrSE_MercuryBall*>(e);
 	//cNameVisual_set				(E->s_Model);
 
 	CKinematics* V				= PKinematics(Visual());

@@ -61,7 +61,7 @@ void CUIInventory::OnFrame() {
 						if(!strcmp((*l_it2)->Name(), &l_name[i][3])) { l_cnt++; l_tmpSet.erase(l_it2); l_it2 = l_it3; }
 					}
 					if(l_cnt>1) {
-						u32 l_len = strlen(l_name[i]);
+						u32 l_len = (u32)strlen(l_name[i]);
 						l_name[i][l_len] = ' '; l_name[i][l_len+1] = 'x';
 						if(l_cnt>=10) { l_name[i][l_len+2] = '0'+u8(l_cnt/10); l_name[i][l_len+3] = '0'+u8(l_cnt%10); l_name[i][l_len+4] = 0; }
 						else { l_name[i][l_len+2] = '0'+u8(l_cnt%10); l_name[i][l_len+3] = 0; }
@@ -85,7 +85,7 @@ void CUIInventory::OnFrame() {
 						if(!strcmp((*l_it2)->NameComplex(), &l_name[i][3])) { l_cnt++; l_tmpSet.erase(l_it2); l_it2 = l_it3; }
 					}
 					if(l_cnt>1) {
-						u32 l_len = strlen(l_name[i]);
+						u32 l_len = (u32)strlen(l_name[i]);
 						l_name[i][l_len] = ' '; l_name[i][l_len+1] = 'x';
 						if(l_cnt>=10) { l_name[i][l_len+2] = '0'+u8(l_cnt/10); l_name[i][l_len+3] = '0'+u8(l_cnt%10); l_name[i][l_len+4] = 0; }
 						else { l_name[i][l_len+2] = '0'+u8(l_cnt%10); l_name[i][l_len+3] = 0; }
@@ -114,7 +114,7 @@ bool CUIInventory::OnKeyboardPress(int dik) {
 					//l_pA->u_EventGen(P,GE_OWNERSHIP_REJECT,l_pA->ID());
 					//P.w_u16(u16(l_inv.m_slots[dik-DIK_1].m_pIItem->ID()));
 					//l_pA->u_EventSend(P);
-				} else if(dik-DIK_1 < l_inv.m_slots.size()) l_inv.Ruck(l_inv.m_slots[dik-DIK_1].m_pIItem);
+				} else if(dik-DIK_1 < (int)l_inv.m_slots.size()) l_inv.Ruck(l_inv.m_slots[dik-DIK_1].m_pIItem);
 				return true;
 			} else if(gs_DIK2CHR[dik] >= 'a' && gs_DIK2CHR[dik] <= 'z') {
 				char l_c = 'a'; TIItemList l_tmpSet;

@@ -203,7 +203,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 				P.w_u16			(u16(ID()));
 				P.w_dir			(l_dir);
 				P.w_float		(l_hit);
-				P.w_s16			(RQ.element);
+				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
 				u_EventSend		(P);
@@ -211,7 +211,7 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &normal)
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG; s32 l_c = m_effects.size();
+	CPGObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
 		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
@@ -631,7 +631,7 @@ void CWeaponMagazinedWGrenade::SwitchMode() {
 	while(m_magazine.size()) { l_magazine.push(m_magazine.top()); m_magazine.pop(); }
 	while(m_magazine2.size()) { m_magazine.push(m_magazine2.top()); m_magazine2.pop(); }
 	while(l_magazine.size()) { m_magazine2.push(l_magazine.top()); l_magazine.pop(); }
-	iAmmoElapsed = m_magazine.size();
+	iAmmoElapsed = (int)m_magazine.size();
 	
 
 	if(m_grenadeMode) m_pHUD->animPlay(mhud_switch_g[Random.randI(mhud_switch_g.size())],FALSE,this);

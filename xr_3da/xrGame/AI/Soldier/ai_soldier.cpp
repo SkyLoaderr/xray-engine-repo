@@ -219,9 +219,9 @@ void CAI_Soldier::OnEvent(EVENT E, u32 P1, u32 P2)
 {
 
 	if (E == m_tpEventSay) {
-		if (0==P2 || u32(this)==P2) {
+		if (0==P2 || (u32)(this)==P2) {
 			char* caTextToShow;
-			caTextToShow = (char *)P1;
+			caTextToShow = (char *)(P1);
 			HUD().outMessage(0xffffffff,cName(),"%s",caTextToShow);
 		}
 	}

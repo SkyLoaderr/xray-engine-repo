@@ -948,7 +948,7 @@ const char* CWeapon::Name() {
 int CWeapon::GetAmmoCurrent() {
 	int l_count = iAmmoElapsed;
 	if(!m_pInventory) return l_count;
-	for(int i = 0; i < m_ammoTypes.size(); i++) {
+	for(int i = 0; i < (int)m_ammoTypes.size(); i++) {
 		LPCSTR l_ammoType = m_ammoTypes[i];
 		if(dynamic_cast<CActor*>(H_Parent())) {
 			TIItemList &l_list = m_pInventory->m_belt;

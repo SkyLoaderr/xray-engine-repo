@@ -239,7 +239,7 @@ void CGrenade::Explode() {
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG; s32 l_c = m_effects.size();
+	CPGObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	for(s32 i = 0; i < l_c; i++) {
 		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector()); pStaticPG->play_at_pos(vPosition);
 	}

@@ -239,14 +239,14 @@ public:
 	}
 #else
 	// game
-	IC u32				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(it!=materials.end()); return it-materials.begin();}
-	IC u32				GetMaterialIdx	(LPCSTR name){GameMtlIt it=GetMaterialIt(name);R_ASSERT(it!=materials.end()); return it-materials.begin();}
+	IC u32				GetMaterialIdx	(int ID){GameMtlIt it=GetMaterialItByID(ID);R_ASSERT(it!=materials.end()); return (u32)(it-materials.begin());}
+	IC u32				GetMaterialIdx	(LPCSTR name){GameMtlIt it=GetMaterialIt(name);R_ASSERT(it!=materials.end()); return (u32)(it-materials.begin());}
 	IC SGameMtl*		GetMaterial		(u32 idx){R_ASSERT(idx<materials.size()); return materials[idx];}
 #endif
 
 	IC GameMtlIt		FirstMaterial	(){return materials.begin();}
 	IC GameMtlIt		LastMaterial	(){return materials.end();}
-	IC u32				CountMaterial	(){return materials.size();}
+	IC u32				CountMaterial	(){return (u32)materials.size();}
 
 // material pair routine
 #ifdef _EDITOR

@@ -217,7 +217,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 				P.w_u16			(u16(ID()));
 				P.w_dir			(l_dir);
 				P.w_float		(l_hit);
-				P.w_s16			(RQ.element);
+				P.w_s16			((s16)RQ.element);
 				P.w_vec3		(l_bs_pos);
 				P.w_float		(l_hit/(E?E->HitScale(RQ.element):1.f));
 				u_EventSend		(P);
@@ -225,7 +225,7 @@ void CWeaponRPG7Grenade::Explode(const Fvector &pos, const Fvector &normal)
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
-	CPGObject* pStaticPG; s32 l_c = m_effects.size();
+	CPGObject* pStaticPG; s32 l_c = (s32)m_effects.size();
 	Fmatrix l_m; l_m.identity(); l_m.c.set(pos);l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 	for(s32 i = 0; i < l_c; i++) {
 		pStaticPG = xr_new<CPGObject>(m_effects[i],Sector());
@@ -395,7 +395,7 @@ void CWeaponRPG7Grenade::OnH_B_Independent() {
 		m_state			= stEngine;
 		m_engineTime	= ENGINE_TIME;
 
-		CPGObject* pStaticPG; s32 l_c = m_trailEffects.size();
+		CPGObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
 		Fmatrix l_m; l_m.set(svTransform);// GetBasis(normal, l_m.k, l_m.i);
 		for(s32 i = 0; i < l_c; i++) {
 			pStaticPG = xr_new<CPGObject>(m_trailEffects[i],Sector(),false);

@@ -161,7 +161,7 @@ void CTorch::UpdateCL()
 			int frame;
 			u32 clr			= lanim->Calculate(Device.fTimeGlobal,frame); // возвращает в формате BGR
 			Fcolor			fclr;
-			fclr.set		(color_get_B(clr),color_get_G(clr),color_get_R(clr),1);
+			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
 			fclr.mul_rgb	(fBrightness/255.f);
 			light_render->set_color(fclr);
 		}

@@ -91,10 +91,8 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	
 	SHurt	tHurt;
 	tHurt.dwTime	= Level().timeServer();
-#pragma warning(disable:4706)
-	if (tHurt.tpEntity = dynamic_cast<CEntity*>(who))
+	if (0 != (tHurt.tpEntity = dynamic_cast<CEntity*>(who)))
 		vfUpdateHurt(tHurt);
-#pragma warning(default:4706)
 
 	feel_sound_new(who,SOUND_TYPE_WEAPON_SHOOTING,who->Position(),1.f);
 

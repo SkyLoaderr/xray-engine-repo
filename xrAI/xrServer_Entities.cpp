@@ -105,7 +105,7 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 //***** WeaponAmmo
 xrSE_WeaponAmmo::xrSE_WeaponAmmo(LPCSTR caSection) : CALifeItem(caSection), xrServerEntity(caSection)
 {
-	a_elapsed = m_boxSize = pSettings->r_s32(caSection, "box_size");
+	a_elapsed = m_boxSize = (u16)pSettings->r_s32(caSection, "box_size");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
         set_visual		(pSettings->r_string(caSection,"visual"));
 }

@@ -73,7 +73,7 @@ void CHitMarker::Render()
 				fHitMarks[i] -= Device.fTimeDelta;
 			}
 		}
-		u32 Count						= D-Start;
+		u32 Count						= (u32)(D - Start);
 		RCache.Vertex.Unlock	(Count,hVS->vb_stride);
 		if (Count)
 		{

@@ -50,7 +50,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CMemoryWriter &store) {
 		l_pWeapon->Spawn_Write(l_packet, true);
 		l_pWeapon->ID = id_save;				// restore wpn entity ID 
 		l_pWeapon->state = 4;
-		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?(l_pCilds->size()-(l_pPS->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT?2:1)):l_chunk++); l_mem.w(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?((int)l_pCilds->size()-(l_pPS->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT?2:1)):l_chunk++); l_mem.w(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 	}
 }
 
@@ -504,7 +504,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 		{
 			// Weapon
 			xr_vector<u16>&	C			=	A->children;
-			u8 slot						=	W->get_slot	();
+			//u8 slot						=	W->get_slot	();
 			for (u32 it=0; it<C.size(); it++)
 			{
 				xrServerEntity*		Et	= S->ID_to_entity				(C[it]);
@@ -761,7 +761,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 	if (iAmmoMagCount)	
 	{ 
 		// Buy ammo
-		int		slot			=	get_option_i(what,"primary") ? 1:2;
+		//int		slot			=	get_option_i(what,"primary") ? 1:2;
 
 		// Search weapon slot
 		xrServer*		S		=	Level().Server;
@@ -773,7 +773,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 			if (0==Et)				continue;
 			xrSE_Weapon*		T	= dynamic_cast<xrSE_Weapon*>	(Et);
 			if (0==T)				continue;
-			if (true || slot == T->get_slot())	
+//			if (true || slot == T->get_slot())	
 			{
 				// We've found this slot - buy something :) |  491 05 36 - Andy
 
@@ -826,7 +826,7 @@ void game_sv_CS::OnPlayerBuy		(u32 id_who, u16 eid_who, LPCSTR what)
 				F_entity_Destroy	(E);
 				return;
 			}
-			u8 slot					=	W->get_slot	();
+			//u8 slot					=	W->get_slot	();
 			for (u32 it=0; it<C->size(); it++)
 			{
 				xrServerEntity*		Et	= S->ID_to_entity				((*C)[it]);

@@ -60,7 +60,7 @@ void CAI_Idol::SelectAnimation		(const Fvector& _view, const Fvector& _move, flo
 		switch (m_dwAnyPlayType) {
 			case 0 : {
 				if (!m_bPlaying) {
-					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI(0,m_tpaAnims.size())],TRUE,AnimCallback,this);
+					m_tpCurrentBlend		= PKinematics(pVisual)->PlayCycle	(m_tpaAnims[::Random.randI((int)m_tpaAnims.size())],TRUE,AnimCallback,this);
 					m_bPlaying				= true;
 				}
 				break;

@@ -31,12 +31,12 @@ public:
 		P.w_u32			(timestamp	);
 		P.w_u16			(type		);
 		P.w_u16			(destination);
-		if (data.size())	P.w(data.begin(),data.size());
+		if (data.size())	P.w(data.begin(),(u32)data.size());
 	}
 	void				implication	(NET_Packet& P) const
 	{
-		Memory.mem_copy	(P.B.data,data.begin(),data.size());
-		P.B.count		= data.size();
+		Memory.mem_copy	(P.B.data,data.begin(),(u32)data.size());
+		P.B.count		= (u32)data.size();
 		P.r_pos			= 0;
 	}
 };

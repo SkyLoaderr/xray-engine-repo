@@ -108,7 +108,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
     }
 
 #ifndef _EDITOR
-	material_count		= materials.size();
+	material_count		= (u32)materials.size();
     material_pairs_rt.resize(material_count*material_count,0);
     for (GameMtlPairIt p_it=material_pairs.begin(); p_it!=material_pairs.end(); p_it++){
     	SGameMtlPair* S	= *p_it;

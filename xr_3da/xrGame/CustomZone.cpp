@@ -44,7 +44,7 @@ BOOL CCustomZone::net_Spawn(LPVOID DC) {
 //		setVisible(true);
 		setEnabled(true);
 
-		CPGObject* pStaticPG; s32 l_c = m_effects.size();
+		CPGObject* pStaticPG; s32 l_c = (int)m_effects.size();
 		Fmatrix l_m; l_m.set(svTransform);//l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
 		for(s32 i = 0; i < l_c; i++) {
 			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);

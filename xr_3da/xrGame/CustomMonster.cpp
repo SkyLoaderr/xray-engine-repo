@@ -343,7 +343,7 @@ void CCustomMonster::UpdateCL	()
 					select=id;
 			}
 			if (select >= 0) {
-				if (select == NET.size()-1)
+				if (select == (int)NET.size()-1)
 					select--;
 				// Interpolate state
 				net_update&	A			= NET[select+0];
@@ -430,7 +430,7 @@ void CCustomMonster::GetVisible			(objVisible& R)
 	xr_vector<feel_visible_Item>::iterator I=feel_visible.begin(),E=feel_visible.end();
 	for (; I!=E; I++)	if (positive(I->fuzzy)) {
 		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive *>(I->O);
-		CActor		 *tpActor = dynamic_cast<CActor *>(I->O);
+		//CActor		 *tpActor = dynamic_cast<CActor *>(I->O);
 #ifdef IGNORE_ACTOR
 		if (tpEntityAlive && (tfGetRelationType(tpEntityAlive) != eRelationTypeFriend) && !tpActor)
 #else

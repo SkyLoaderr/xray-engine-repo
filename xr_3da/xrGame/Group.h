@@ -68,7 +68,7 @@ public:
 	void						Member_Remove		(CEntity* E);
 
 	bool						Empty				(){return Members.empty();}
-	int							Size				(){return Members.size();}
+	int							Size				(){return (int)Members.size();}
 
 	void						GetAliveMemberPlacement		(MemberPlacement& P, CEntity* Me);
 	void						GetAliveMemberDedication	(MemberPlacement& P, CEntity* Me);

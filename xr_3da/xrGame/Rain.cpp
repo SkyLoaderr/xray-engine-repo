@@ -309,7 +309,7 @@ void	CEffect_Rain::Render	()
 		P.mad(pos_head, lineTop,-w);	verts->set(P,0xffffffff,1,1);	verts++;
 		P.mad(pos_head, lineTop,w);		verts->set(P,0xffffffff,1,0);	verts++;
 	}
-	u32 vCount					= verts-start;
+	u32 vCount					= (u32)(verts-start);
 	RCache.Vertex.Unlock	(vCount,hGeom_Rain->vb_stride);
 	
 	// Render if needed

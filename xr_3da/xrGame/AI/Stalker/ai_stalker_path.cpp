@@ -140,7 +140,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		m_tpaTravelPath.clear		();
 		m_tpaPointNodes.clear		();
 
-		u32							N = AI_Path.Nodes.size();
+		u32							N = (int)AI_Path.Nodes.size();
 		if (!N) {
 			Msg("! Node list is empty!");
 			AI_Path.Nodes.clear();
@@ -186,7 +186,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			m_tpaPointNodes.push_back(AI_Path.Nodes[N - 1]);
 		}
 		
-		m_tpaDeviations.resize	(N = m_tpaPoints.size());
+		m_tpaDeviations.resize	(N = (int)m_tpaPoints.size());
 		
 		if (m_tPathType == ePathTypeStraight)
 			AI_Path.TravelPath.clear();
@@ -202,7 +202,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			m_tpaLine.push_back(m_tpaPoints[i]);
 			//getAI().vfCreateFastRealisticPath(m_tpaLine,m_tpaPointNodes[i-1],m_tpaDeviations,m_tpaTravelPath,m_tpaNodes,false,false,0,0);
 			getAI().bfCreateStraightPTN_Path(m_tpaPointNodes[i-1],m_tpaPoints[i-1],m_tpaPoints[i],m_tpaTravelPath,m_tpaNodes, i == 1);
-			u32 n = m_tpaTravelPath.size();
+			u32 n = (u32)m_tpaTravelPath.size();
 			for (u32 j= 0; j<n; j++) {
 				T.P = m_tpaTravelPath[j];
 				if (m_tPathType == ePathTypeStraight)
@@ -241,7 +241,7 @@ void CAI_Stalker::vfDodgeTravelLine()
 {
 	Device.Statistic.TEST0.Begin();
 
-	int							N = m_tpaTempPath.size();
+	int							N = (int)m_tpaTempPath.size();
 	AI_Path.TravelPath.resize	(N);
 	Fvector						tLeft, tRight, tStartPosition;
 	
@@ -334,14 +334,14 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			break;
 		}
 		case ePathTypeStraightDodge : {
-			if (::Random.randI(0,100) < m_dwRandomFactor)
+			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
 				m_tPathType = ePathTypeStraight;
 			else
 				m_tPathType = ePathTypeDodge;
 			break;
 		}
 		case ePathTypeDodgeCriteria : {
-			if (::Random.randI(0,100) < m_dwRandomFactor)
+			if (::Random.randI(0,100) < (int)m_dwRandomFactor)
 				m_tPathType = ePathTypeDodge;
 			else
 				m_tPathType = ePathTypeCriteria;

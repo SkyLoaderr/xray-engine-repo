@@ -315,7 +315,7 @@ bool CInventory::Action(s32 cmd, u32 flags) {
 		case kWPN_5 :
 		case kWPN_6 : {
 			if(flags&CMD_START) {
-				if(m_activeSlot == cmd - kWPN_1) m_slots[cmd - kWPN_1].m_pIItem->Action(kWPN_NEXT, CMD_START);
+				if((int)m_activeSlot == cmd - kWPN_1) m_slots[cmd - kWPN_1].m_pIItem->Action(kWPN_NEXT, CMD_START);
 				else Activate(cmd - kWPN_1);
 				return true;
 			}

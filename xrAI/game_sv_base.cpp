@@ -272,8 +272,8 @@ void				game_sv_GameState::assign_RP				(xrServerEntity* E)
 		else
 			R_ASSERT2(tpTeamed,"Non-teamed object is assigning to respawn point!");
 	}
-	xr_vector<RPoint>&		rp	= rpoints[l_uc_team];
-	RPoint&				r	= rp[::Random.randI(rp.size())];
+	xr_vector<RPoint>&	rp	= rpoints[l_uc_team];
+	RPoint&				r	= rp[::Random.randI((int)rp.size())];
 	E->o_Position.set	(r.P);
 	E->o_Angle.set		(r.A);
 }
