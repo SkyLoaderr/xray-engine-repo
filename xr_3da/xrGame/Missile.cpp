@@ -82,8 +82,8 @@ void CMissile::Load(LPCSTR section)
 BOOL CMissile::net_Spawn(LPVOID DC) 
 {
 #pragma todo("Dima to Yura : find out why m_pInventory != NULL on net_spawn after net_destroy")
-	R_ASSERT(!m_pInventory);
-	//m_pInventory = 0;
+	//R_ASSERT(!m_pInventory);
+	m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	CSkeletonRigid* V = PSkeletonRigid(Visual());
