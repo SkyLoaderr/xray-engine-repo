@@ -164,7 +164,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 			NET_Packet		P;
 			CStream*		S		= 0;
 			int				S_id	= 0;
-			while (0!=(S = SP.OpenChunk(S_id)))
+			while (0!=(S = SP->OpenChunk(S_id)))
 			{
 				P.B.count	=	S->Length();
 				S->Read		(P.B.data,P.B.count);
