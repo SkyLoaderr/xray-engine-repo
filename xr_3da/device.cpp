@@ -121,8 +121,9 @@ void __cdecl	mt_Thread	(void *ptr)	{
 		}
 		// we has granted permission to execute
 		mt_Thread_marker			= Device.dwFrame;
-		for (u32 pit=0; pit<seqParallel.size(); pit++)
-			seqParallel[pit]		();
+		for (u32 pit=0; pit<Device.seqParallel.size(); pit++)
+			Device.seqParallel[pit]	();
+		Device.seqParallel.clear	();
 		Device.seqFrameMT.Process	(rp_Frame);
 
 		// now we give control to device - signals that we are ended our work
