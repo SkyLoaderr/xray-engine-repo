@@ -163,7 +163,9 @@ void CLog::Msg(TMsgDlgType mt, LPCSTR _Format, ...)
 	EConsole.print(mt,buf);
 #endif
 #ifdef _LW_EXPORT
-	g_msg->info(buf,0);
+	switch (mt){
+	case mtError: g_msg->error(buf,0); break;
+	}
 #endif
 
 	::LogExecCB = FALSE;
