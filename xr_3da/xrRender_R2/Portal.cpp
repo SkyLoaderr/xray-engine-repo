@@ -121,6 +121,78 @@ void CSector::Render_objects	(CFrustum& F)
 	}
 }
 
+void CSector::Render_objects_s	(CFrustum& F, Fvector& __P, Fmatrix& __X)
+{
+	// Render everything
+	{
+		Fvector	Tpos;
+		RImplementation.set_Frustum		(&F);
+		RImplementation.add_Geometry	(pRoot);
+
+		// Persistant models
+		vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
+		for (; I!=E; I++) {
+			CObject* O = *I;
+			if (O->getVisible()) 
+			{
+				vis_data&	vis				= O->Visual	()->vis;
+				O->clXFORM().transform_tiny	(Tpos, vis.sphere.P);
+				if (F.testSphere_dirty(Tpos,vis.sphere.R))	
+				{
+					RImplementation.set_Object	(O);
+					O->OnVisible				();
+					RImplementation.set_Object	(0);
+				}
+			}
+		}
+	}
+
+	// Search visible portals and go through them
+	CSector*	pLastSector		= (CSector*)RImplementation.getSectorActive();
+	for (u32 I=0; I<Portals.size(); I++)
+	{
+		sPoly	S,D;
+		if (Portals[I]->dwFrame != RImplementation.marker) {
+			CPortal* PORTAL = Portals[I];
+			CSector* pSector;
+
+			if (PORTAL->bDualRender) {
+				pSector = PORTAL->getSector			(this);
+			} else {
+				pSector = PORTAL->getSectorBack		(__P);
+				if (pSector==this)			continue;
+				if (pSector==pLastSector)	continue;
+			}
+
+			// SSA
+			Fvector	dir2portal;
+			dir2portal.sub		(PORTAL->S.P,__P);
+			float R				=	PORTAL->S.R;
+			float distSQ		=	dir2portal.square_magnitude();
+			float ssa			=	R*R/distSQ;
+			dir2portal.div		(_sqrt(distSQ));
+			ssa					*=	_abs(PORTAL->P.n.dotproduct(dir2portal));
+			if (ssa<r_ssaDISCARD)	continue;
+
+			// Clip by frustum
+			vector<Fvector> &	POLY = PORTAL->getPoly();
+			S.assign			(&*POLY.begin(),POLY.size()); D.clear();
+			sPoly* P			= F.ClipPoly(S,D);
+			if (0==P)			continue;
+
+			// Cull by HOM
+			if (!RImplementation.occ_visible(*P))	continue;
+
+			// Create _new_ frustum and recurse
+			CFrustum			Clip;
+			Clip.CreateFromPortal(P,__P,__X);
+			PORTAL->dwFrame		= RImplementation.marker;
+			PORTAL->bDualRender	= FALSE;
+			pSector->Render_objects_s(Clip,__P,__X);
+		}
+	}
+}
+
 void CSector::Render_prepare	(CFrustum &F)
 {
 	// Render prepare

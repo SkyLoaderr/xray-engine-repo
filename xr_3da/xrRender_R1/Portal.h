@@ -94,6 +94,7 @@ public:
 	void					Render_prepare	(CFrustum& F); //. temp
 	void					Render			(CFrustum& F);
 	void					Render_objects	(CFrustum& F);
+	void					Render_objects_s(CFrustum& F, Fvector& P, Fmatrix& X);
 	void					Load			(IReader& fs);
 	void					DebugDump		();
 	IVisual*				Root			()	{ return pRoot; }

@@ -98,6 +98,7 @@ public:
 	void							render_scenegraph		();
 	void							render_hud				();
 	void							render_smap_direct		(Fmatrix& mCombined);
+	void							render_smap_sector		(Fmatrix& mCombined, Fvector& C);
 public:
 	// Loading / Unloading
 	virtual	void					level_Load				();
