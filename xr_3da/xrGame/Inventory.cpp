@@ -287,7 +287,7 @@ void SortRuckAndBelt(CInventory *pInventory)
 
 
 //сравнивает элементы по пространству занимаемому ими в рюкзаке
-bool GreaterRoomInRuck(PIItem item1, PIItem item2)
+bool CInventory::GreaterRoomInRuck(PIItem item1, PIItem item2)
 {
 	int item1_room = item1->m_iGridWidth*item1->m_iGridHeight;
 	int item2_room = item2->m_iGridWidth*item2->m_iGridHeight;
@@ -304,7 +304,7 @@ bool GreaterRoomInRuck(PIItem item1, PIItem item2)
 }
 
 
-bool FreeRuckRoom(CInventory *pInventory) 
+bool CInventory::FreeRuckRoom() 
 {
 	bool ruck_room[RUCK_HEIGHT][RUCK_WIDTH];
 
@@ -319,7 +319,7 @@ bool FreeRuckRoom(CInventory *pInventory)
 			ruck_room[i][j] = false;
 
 
-	TIItemList ruck_list(pInventory->m_ruck);
+	ruck_list = m_ruck;
 	
 	ruck_list.sort(GreaterRoomInRuck);
 	
@@ -449,7 +449,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 					m_ruck.erase(std::find(m_ruck.begin(), m_ruck.end(), l_pIItem));
 					return true;
 				} 
-				else if(m_ruck.size() > m_maxRuck || !l_pIItem->m_ruck || !FreeRuckRoom(this)) 
+				else if(m_ruck.size() > m_maxRuck || !l_pIItem->m_ruck || !FreeRuckRoom()) 
 				{
 					if(Belt(l_pIItem)) 
 						return true;
@@ -457,7 +457,7 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 						return !Drop(l_pIItem);
 				}
 			} 
-			else if(m_ruck.size() > m_maxRuck || !FreeRuckRoom(this)) 
+			else if(m_ruck.size() > m_maxRuck || !FreeRuckRoom()) 
 			{
 				if(Belt(l_pIItem)) 
 					return true;

@@ -137,6 +137,14 @@ public:
 	u32 m_maxRuck, m_maxBelt;								// Максимальное кол-во объектов в рюкзаке и на поясе
 	f32 m_takeDist;											// Максимальное расстояние на котором можно подобрать объект
 	PIItem m_pTarget;										// Объект на который наведен прицел
+
+
+	//для проверки свободного места
+	static bool GreaterRoomInRuck(PIItem item1, PIItem item2);
+	bool FreeRuckRoom();
+	//буферный список для сортировки
+	TIItemList ruck_list;
+
 	CInventoryOwner *m_pOwner;
 };
 
