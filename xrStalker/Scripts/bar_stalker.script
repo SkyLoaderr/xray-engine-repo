@@ -408,24 +408,15 @@ function add_to_binder (npc, ini)
     manager:add_action              (operators["meat"], action)
   
     action = this.action_bar_single ("action_bar_single", st)
-    printf ("STEP 1")
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
-    printf ("STEP 2")
     action:add_precondition         (world_property (property["complete"],          false))
-    printf ("STEP 3")
     action:add_precondition         (world_property (property["meat"],              false))
-    printf ("STEP 4")
     action:add_precondition         (world_property (property["inter"],             false))
-    printf ("STEP 5")
     action:add_effect               (world_property (property["complete"],          true))
-    printf ("STEP 6")
     manager:add_action              (operators["single"], action)
-    printf ("STEP 7")
                
     action = manager:action (stalker_ids.action_puzzle_solver)
-    printf ("STEP 8")
     action:add_precondition (world_property (property["complete"],  true))
-    printf ("STEP 9")
     
 end
 ----------------------------------------------------------------------------
