@@ -329,52 +329,6 @@ void CSkeletonX_PM::AfterLoad(CKinematics* parent, u16 child_idx)
 	inherited2::_CollectBoneFaces	(this,iBase+SW.offset,SW.num_tris*3);
 }
 
-BOOL CSkeletonX_ext::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
-{
-	VERIFY				(*Vertices1W);
-	bool intersect		= FALSE;
-	for (CBoneData::FacesVecIt it=faces.begin(); it!=faces.end(); it++){
-		Fvector			p[3];
-		u32 idx			= (*it)*3;
-		for (u32 k=0; k<3; k++){
-			vertBoned1W& vert		= Vertices1W[indices[idx+k]];
-			const Fmatrix& xform	= Parent->LL_GetBoneInstance((u16)vert.matrix).mRenderTransform; 
-			xform.transform_tiny	(p[k],vert.P);
-		}
-		float u,v,range	= flt_max;
-		if (CDB::TestRayTri(S,D,p,u,v,range,true)&&(range<dist)){
-			normal.mknormal(p[0],p[1],p[2]);
-			dist		= range;
-			intersect	= TRUE;
-		}
-	}
-	return intersect;
-}
-BOOL CSkeletonX_ext::_PickBoneSoft2W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
-{
-	VERIFY				(*Vertices2W);
-	bool intersect		= FALSE;
-	for (CBoneData::FacesVecIt it=faces.begin(); it!=faces.end(); it++){
-		Fvector			p[3];
-		u32 idx			= (*it)*3;
-		for (u32 k=0; k<3; k++){
-			Fvector		P0,P1;
-			vertBoned2W& vert		= Vertices2W[indices[idx+k]];
-			Fmatrix& xform0			= Parent->LL_GetBoneInstance(vert.matrix0).mRenderTransform; 
-			Fmatrix& xform1			= Parent->LL_GetBoneInstance(vert.matrix1).mRenderTransform; 
-			xform0.transform_tiny	(P0,vert.P);
-			xform1.transform_tiny	(P1,vert.P);
-			p[k].lerp				(P0,P1,vert.w);
-		}
-		float u,v,range	= flt_max;
-		if (CDB::TestRayTri(S,D,p,u,v,range,true)&&(range<dist)){
-			normal.mknormal(p[0],p[1],p[2]);
-			dist		= range;
-			intersect	= TRUE;
-		}
-	}
-	return intersect;
-}
 BOOL CSkeletonX_ext::_PickBoneHW1W		(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces)
 {
 	vertHW_1W* vertices;
