@@ -7,8 +7,8 @@ enum fsL_Chunks {
 	fsL_VBUFFERS,		//*
 	fsL_CFORM,			//*
 	fsL_PORTALS,		//*		- Portal polygons
-	fsL_LIGHTS,			//*
-	fsL_LIGHT_KEYS,		//*		- keyframes
+	fsL_LIGHT_CONTROL,	//*
+	fsL_LIGHT_DYNAMIC,	//*		
 	fsL_GLOWS,			//*		- All glows inside level
 	fsL_SECTORS,		//*		- All sectors on level
 	fsL_IBUFFERS,		//*		- Relevance map

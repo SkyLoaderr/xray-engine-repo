@@ -113,7 +113,9 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 	{
 		// Controlles/Layers
 		{
-			F = FS.OpenChunk(EB_Light_control);
+			F = FS.OpenChunk		(EB_Light_control);
+			L_control_data.assign	(LPBYTE(F->Pointer()),LPBYTE(F->Pointer())+F->Length());
+
 			R_Layer			temp;
 			
 			while (!F->Eof())

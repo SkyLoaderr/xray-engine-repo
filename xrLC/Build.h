@@ -66,6 +66,8 @@ public:
 
 	vector<R_Layer>			L_layers;
 	vector<b_light_dynamic>	L_dynamic;
+	
+	vector<BYTE>			L_control_data;
 
 	Shader_xrLC_LIB			shaders;
 	string					path;

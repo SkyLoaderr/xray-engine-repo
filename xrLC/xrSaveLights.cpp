@@ -4,18 +4,14 @@
 
 void CBuild::SaveLights(CFS_Base &fs)
 {
-	fs.open_chunk(fsL_LIGHTS);
-	for (DWORD i=0; i<lights_dynamic.size(); i++) 
+	fs.write_chunk	(fsL_LIGHT_CONTROL,L_control_data.begin(),L_control_data.size());
+
+	fs.open_chunk	(fsL_LIGHT_DYNAMIC);
+	for (DWORD i=0; i<L_dynamic.size(); i++) 
 	{
-		b_light&	BL = lights_dynamic[i];
-		xrLIGHT		L;
-		ZeroMemory	(&L,sizeof(L));
-		CopyMemory	(&L,&BL,sizeof(Flight));
-		L.flags.bAffectDynamic	= BL.flags.bAffectDynamic;
-		L.flags.bAffectStatic	= BL.flags.bAffectStatic;
-		L.flags.bProcedural		= BL.flags.bProcedural;
-		CopyMemory	(&L.name,&BL.name,sizeof(L.name));
-		fs.write	(&L,sizeof(L));
+		b_light_dynamic& L	= L_dynamic[i];
+		fs.Wdword	(L.controller_ID);
+		fs.write	(&L.data,sizeof(L.data));
 	}
 	fs.close_chunk();
 }
