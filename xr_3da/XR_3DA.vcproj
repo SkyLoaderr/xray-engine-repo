@@ -1497,6 +1497,9 @@
 					RelativePath=".\ObjectAnimator.h">
 				</File>
 				<File
+					RelativePath="bone.h">
+				</File>
+				<File
 					RelativePath=".\envelope.h">
 				</File>
 				<File
