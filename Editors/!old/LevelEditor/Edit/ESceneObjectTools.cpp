@@ -74,7 +74,7 @@ void ESceneObjectTools::FillAppendRandomProperties()
     PHelper.CreateAngle3		(items,"Rotate\\Maximum",&m_AppendRandomMaxRotation);
     V=PHelper.CreateChoose		(items,"Objects",&temp,smObject); V->Owner()->subitem = 32;
 
-    m_Props->AssignItems		(items,true);
+    m_Props->AssignItems		(items);
     
     if (mrOk==m_Props->ShowPropertiesModal())
     	_SequenceToList			(m_AppendRandomObjects,temp.c_str());

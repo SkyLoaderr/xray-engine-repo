@@ -407,11 +407,23 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
+#include "scene.h"
+void __fastcall	CSE_ALifeObject::OnChooseGroupControl(PropValue* sender, ChooseItemVec& lst)
+{
+	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
+    ObjectList objects;
+    Scene.GetQueryObjects		(objects,OBJCLASS_SPAWNPOINT,-1,-1,-1);
+    
+    for (ObjectIt it=objects.begin(); it!=objects.end(); it++)
+        if ((*it)->OnChooseQuery(gcs))	lst.push_back(SChooseItem((*it)->Name,""));
+}
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp				(pref, items);
 	PHelper.CreateFloat				(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
-//.	PHelper.CreateSceneItem			(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
+    RChooseValue* V;
+    V=PHelper.CreateChoose			(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);
+    V->OnChooseEvent				= OnChooseGroupControl;
 	if (m_flags.is(flUseSwitches)) {
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
@@ -809,22 +821,22 @@ void __fastcall	CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 	PlayAnimation				(*startup_animation);
 }
 
-void __fastcall	CSE_ALifeObjectPhysic::OnChooseAnim(PropValue* sender, AStringVec& lst)
+void __fastcall	CSE_ALifeObjectPhysic::OnChooseAnim(PropValue* sender, ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
     CSkeletonAnimated::accel_map::iterator _I, _E;
     _I							= ll_motions->begin();
     _E							= ll_motions->end();
-    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+    for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
 
-void __fastcall	CSE_ALifeObjectPhysic::OnChooseBone(PropValue* sender, AStringVec& lst)
+void __fastcall	CSE_ALifeObjectPhysic::OnChooseBone(PropValue* sender, ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel  	*ll_bones	= PKinematics(visual)->LL_Bones();
     CSkeletonAnimated::accel::iterator _I, _E;
     _I							= ll_bones->begin();
     _E							= ll_bones->end();
-    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+    for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
 
 void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
@@ -1001,22 +1013,22 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 	PlayAnimation				(*startup_animation);
 }
 
-void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseAnim(PropValue* sender, AStringVec& lst)
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseAnim(PropValue* sender, ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
     CSkeletonAnimated::accel_map::iterator _I, _E;
     _I							= ll_motions->begin();
     _E							= ll_motions->end();
-    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+    for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
 
-void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseBone(PropValue* sender, AStringVec& lst)
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseBone(PropValue* sender, ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel  	*ll_bones	= PKinematics(visual)->LL_Bones();
     CSkeletonAnimated::accel::iterator _I, _E;
     _I							= ll_bones->begin();
     _E							= ll_bones->end();
-    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+    for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
 void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
 {
@@ -1202,13 +1214,13 @@ void __fastcall	CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
 	CSE_Visual::PlayAnimation	(*startup_animation);
 }
 
-void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(PropValue* sender, AStringVec& lst)
+void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(PropValue* sender, ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
     CSkeletonAnimated::accel_map::iterator _I, _E;
     _I							= ll_motions->begin();
     _E							= ll_motions->end();
-    for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
+    for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
 void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
 {

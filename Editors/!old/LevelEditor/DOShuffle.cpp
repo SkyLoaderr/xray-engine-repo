@@ -189,7 +189,7 @@ void __fastcall TfrmDOShuffle::tvItemsItemFocused(TObject *Sender)
 		PHelper.CreateFloat			(items,"Max Scale",	&dd->m_fMaxScale,		0.1f, 100.f);
 		PHelper.CreateFlag<Flags32>	(items,"No Waving",	&dd->m_Flags, DO_NO_WAVING);
     }
-    m_ObjectProps->AssignItems	(items,true);
+    m_ObjectProps->AssignItems	(items);
     paImage->Repaint			();
 }
 //---------------------------------------------------------------------------

@@ -96,8 +96,8 @@ public:
     void __fastcall	OnFuzzyDataChange	(PropValue* value);
     void __fastcall	OnFuzzyTypeChange	(PropValue* value);
 
-    void __fastcall	OnFuzzyGenerateClick(PropValue* value, bool& bModif);
-    void __fastcall	OnAutoClick		(PropValue* value, bool& bModif);
+    void __fastcall	OnFuzzyGenerateClick(PropValue* value, bool& bModif, bool& bSafe);
+    void __fastcall	OnAutoClick		(PropValue* value, bool& bModif, bool& bSafe);
     void __fastcall	OnNeedUpdate	(PropValue* value);
 
     void __fastcall	OnPointDataChange(PropValue* value);

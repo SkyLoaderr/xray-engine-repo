@@ -229,7 +229,7 @@ void __fastcall EParticlesObject::OnRefChange(PropValue* V)
     }
 }
 
-void __fastcall EParticlesObject::OnControlClick(PropValue* sender, bool& bModif)
+void __fastcall EParticlesObject::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){

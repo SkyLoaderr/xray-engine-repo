@@ -61,7 +61,7 @@ void TfrmPropertiesEObject::FillBasicProps()
     	CEditableObject* 	O = S->GetReference();
         O->FillBasicProps	(0,items);
     }
-	m_BasicProp->AssignItems(items,true);
+	m_BasicProp->AssignItems(items);
 }
 //---------------------------------------------------------------------------
 
@@ -80,7 +80,7 @@ void TfrmPropertiesEObject::FillSurfProps()
         	O->FillSurfaceProps(*it,pref.c_str(),values);
         }
     }
-    m_SurfProp->AssignItems(values,true);
+    m_SurfProp->AssignItems(values);
 }
 //---------------------------------------------------------------------------
 

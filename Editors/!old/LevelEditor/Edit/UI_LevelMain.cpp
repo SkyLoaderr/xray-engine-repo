@@ -116,7 +116,11 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
 
 	case COMMAND_RELOAD:
 		if( !Scene.locked() ){
-        	Command(COMMAND_LOAD,(int)m_LastFileName.c_str());
+            AnsiString temp_fn	= p1?AnsiString((char*)p1).LowerCase():m_LastFileName;
+            AnsiString save_fn	= m_LastFileName;
+        	Command				(COMMAND_LOAD,(int)temp_fn.c_str());
+            m_LastFileName		= save_fn;
+            Command				(COMMAND_UPDATE_CAPTION);
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
 			bRes = false;

@@ -378,7 +378,7 @@ void __stdcall 	hemi_callback(float x, float y, float z, float E, LPVOID P)
     H->T.light.direction.set(x,y,z);
     H->dest->push_back  (H->T);
 }
-void SceneBuilder::BuildHemiLights(u8 quality)
+void SceneBuilder::BuildHemiLights(u8 quality, LPCSTR lcontrol)
 {
     BLVec 				dest;
     Flight				RL;
@@ -390,7 +390,7 @@ void SceneBuilder::BuildHemiLights(u8 quality)
         h_data.dest 	= &dest;
         h_data.T.light	= RL;
         xrHemisphereBuild(quality,FALSE,0.5f,1.f,hemi_callback,&h_data);
-        int control_ID	= BuildLightControl(LCONTROL_HEMI);
+        int control_ID	= BuildLightControl(lcontrol);
         for (BLIt it=dest.begin(); it!=dest.end(); it++){
             l_light_static.push_back(b_light_static());
             b_light_static& sl	= l_light_static.back();
@@ -838,7 +838,7 @@ BOOL SceneBuilder::CompileStatic()
 
 // make hemisphere
 	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene.GetOTools(OBJCLASS_LIGHT));
-	BuildHemiLights	(lt->m_HemiQuality);
+	BuildHemiLights	(lt->m_HemiQuality,lt->FindLightControl(lt->m_HemiControl)->name.c_str());
 // make sun
 	BuildSun		(lt->m_SunShadowQuality,lt->m_SunShadowDir);
 // parse scene

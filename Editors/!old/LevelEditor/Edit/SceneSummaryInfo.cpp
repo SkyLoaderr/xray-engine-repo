@@ -56,9 +56,13 @@ void SSceneSummary::FillProp(PropItemVec& items)
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Size"), 			AnsiString().sprintf("%d x %d x %s",T->_Width(),T->_Height(),T->_Format().HasAlpha()?"32b":"24b"));
             PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Memory Usage"),	AnsiString().sprintf("%d Kb",iFloor(tex_mem/1024)));
             if (T->_Format().flags.is_any(STextureParams::flDiffuseDetail|STextureParams::flBumpDetail)){
-            	std::pair<AStringSetIt, bool> I=det_textures.insert(*T->_Format().detail_name);
-	            V=PHelper.CreateChoose(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Texture"),	(AnsiString*)&*I.first,smTexture); 	V->Owner()->Enable(FALSE);
-	            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Scale"),		AnsiString().sprintf("%3.2f",T->_Format().detail_scale));
+            	if (*T->_Format().detail_name){
+	            	std::pair<AStringSetIt, bool> I=det_textures.insert(*T->_Format().detail_name);
+		            V=PHelper.CreateChoose(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Texture"),	(AnsiString*)&*I.first,smTexture); 	V->Owner()->Enable(FALSE);
+	    	        PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Detail\\Scale"),		AnsiString().sprintf("%3.2f",T->_Format().detail_scale));
+                }else{
+		        	ELog.Msg(mtError,"Empty details on texture: '%s'",t_it->c_str());
+                }
             }
 //            PHelper.CreateCaption(items,FHelper.PrepareKey(pref.c_str(),"Used In"),			objects);
         }
@@ -155,7 +159,7 @@ void EScene::ShowSummaryInfo()
     }else{
     	ELog.DlgMsg(mtInformation,"Summary info empty.");
     }
-	m_SummaryInfo->AssignItems(items,false);
+	m_SummaryInfo->AssignItems(items);
 }
 //--------------------------------------------------------------------------------------------------
 

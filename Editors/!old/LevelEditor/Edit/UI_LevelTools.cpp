@@ -252,7 +252,7 @@ void CLevelTools::RealUpdateProperties()
             if (mt) mt->FillProp	(mt->ClassDesc(),items);
         }
 
-		m_Props->AssignItems		(items,true);
+		m_Props->AssignItems		(items);
     }
 	m_Flags.set(flUpdateProperties,FALSE);
 }

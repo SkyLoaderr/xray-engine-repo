@@ -9,6 +9,7 @@
 #include "ExportSkeleton.h"
 #include "xrServer_Objects_ALife.h"
 #include "clsid_game.h"
+#include "ui_main.h"
 
 //----------------------------------------------------
 struct SBVert{
@@ -42,6 +43,15 @@ public:
         uv[2]		= *_uv[2];
         n.set		(0,0,0);
     }
+    float			CalcArea()
+    {
+    	Fvector V0,V1;
+        V0.sub		(p[1],p[0]);
+        V1.sub		(p[2],p[0]);
+        float sqm0	= V0.square_magnitude();
+        float sqm1	= V1.square_magnitude();
+        return		0.5f*_sqrt(sqm0*sqm1-_sqr(V0.dotproduct(V1)));
+    }
 };
 
 struct SBBone
@@ -51,7 +61,9 @@ struct SBBone
 	AnsiString		parent;
 	Fvector			offset;
     u32				f_cnt;
-				    SBBone				(AnsiString _nm, AnsiString _parent, AnsiString _mtl, u32 _f_cnt):name(_nm),parent(_parent),mtl(_mtl),f_cnt(_f_cnt)
+    float			area;
+				    SBBone				(AnsiString _nm, AnsiString _parent, AnsiString _mtl, u32 _f_cnt, float _area)
+                    					:name(_nm),parent(_parent),mtl(_mtl),f_cnt(_f_cnt),area(_area)
     {
     	offset.set	(0,0,0);
     }
@@ -74,34 +86,35 @@ struct SBPart: public CExportSkeletonCustom
 public:
 					SBPart				(){m_Reference=0;}
     virtual bool 	Export				(IWriter& F);
-    void			append_face			(SBFace* F)
+	void			append_face			(SBFace* F)
     {
     	m_Faces.push_back				(F);
     }
-    void			use_face			(SBFace* F, u32& cnt, u32 bone_id)
+    void			use_face			(SBFace* F, u32& cnt, u32 bone_id, float& area)
     {
     	VERIFY							(F->bone_id==-1);
         F->marked						= true;
         F->bone_id						= bone_id;
+        area							+= F->CalcArea();
         cnt++;
     }
-    void			recurse_fragment	(SBFace* F, u32& cnt, u32 bone_id, u32 max_faces)
+    void			recurse_fragment	(SBFace* F, u32& cnt, u32 bone_id, u32 max_faces, float& area)
     {
     	if (F){
-        	if (!F->marked)	use_face	(F,cnt,bone_id);
+        	if (!F->marked)	use_face	(F,cnt,bone_id,area);
             // fill nearest
             SBFaceVec r_vec;
             for (SBFaceVecIt n_it=F->adjs.begin(); n_it!=F->adjs.end(); n_it++){
                 if (cnt>=max_faces)		break;
                 if ((*n_it)->marked)	continue;
-	        	use_face				(*n_it,cnt,bone_id);
+	        	use_face				(*n_it,cnt,bone_id,area);
                 r_vec.push_back			(*n_it);
             }     
             // recurse adjs   	
             for (SBFaceVecIt a_it=r_vec.begin(); a_it!=r_vec.end(); a_it++){
                 if (cnt>=max_faces)				break;
                 if ((*a_it)->bone_id!=bone_id)	continue;
-                recurse_fragment				(*a_it,cnt,bone_id,max_faces);
+                recurse_fragment				(*a_it,cnt,bone_id,max_faces,area);
             } 
         }
     }
@@ -168,15 +181,16 @@ public:
                 }
             }
             if (!F)						break;
+            float area					= 0;
 	        u32 face_accum				= 0;
             u32 face_max_count 			= Random.randI(bone_face_min,bone_face_max+1);
             // fill faces
-            recurse_fragment			(F,face_accum,bone_idx,face_max_count);
+            recurse_fragment			(F,face_accum,bone_idx,face_max_count,area);
             if (face_accum==1){
 //            	F->marked				= false;
                 F->bone_id				= -1;
             }else{
-                m_Bones.push_back		(SBBone(bone_idx,parent_bone,F->surf->_GameMtlName(),face_accum));
+                m_Bones.push_back		(SBBone(bone_idx,parent_bone,F->surf->_GameMtlName(),face_accum,area));
                 parent_bone				= "0";
                 bone_idx				++;
                 face_accum_total		+= face_accum;
@@ -359,10 +373,8 @@ bool SBPart::Export	(IWriter& F)
         Fvector rot={0,0,0};
         F.w_fvector3(rot);
         F.w_fvector3(bone.offset);
-        F.w_float   (0.f);			// mass
-        F.w_float   (0.f);			// center of mass        
-        F.w_float   (0.f);                         
-        F.w_float   (0.f);                         
+        F.w_float   (bone.area);	// mass (для Кости посчитал площадь)
+        F.w_fvector3(shape.box.m_translate);	// center of mass        
     }
     F.close_chunk();
 /*
@@ -456,7 +468,9 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
     SBAdjVec	adjs;
 	// collect verts&&faces
     {
+	    UI->ProgressStart(m_Objects.size(),"Prepare geometry...");
         for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
+            UI->ProgressInc			();
             CSceneObject* obj 		= dynamic_cast<CSceneObject*>(*it); VERIFY(obj);
             if (obj->IsStatic()){
                 CEditableObject *O 	= obj->GetReference();
@@ -465,6 +479,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                     if (!build_mesh	(T,*M,verts,faces)){bResult=false;break;}
             }
         }
+	    UI->ProgressEnd();
     }
     // make adjacement
     if (bResult){
@@ -474,7 +489,9 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
     }
     // extract parts
     if (bResult){
+	    UI->ProgressStart(faces.size(),"Extract Parts...");
 		for (SBFaceVecIt f_it=faces.begin(); f_it!=faces.end(); f_it++){
+            UI->ProgressInc		();
         	SBFace* F	= *f_it;
             if (!F->marked){
 		    	SBPart* P 		= xr_new<SBPart>();
@@ -482,16 +499,22 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
 		    	parts.push_back	(P);
             }
         }
+	    UI->ProgressEnd();
     }
     // simplify parts
     if (bResult){
+	    UI->ProgressStart(parts.size(),"Simplify Parts...");
         for (SBPartVecIt p_it=parts.begin(); p_it!=parts.end(); p_it++){	
+            UI->ProgressInc		();
         	(*p_it)->prepare	(adjs);
         }
+	    UI->ProgressEnd();
     }
     // export parts
     if (bResult){
+	    UI->ProgressStart(parts.size(),"Export Parts...");
         for (SBPartVecIt p_it=parts.begin(); p_it!=parts.end(); p_it++){	
+            UI->ProgressInc		();
         	SBPart*	P			= *p_it;
             // export visual
             AnsiString sn		= AnsiString().sprintf("meshes\\obj_%d.ogf",(p_it-parts.begin()));
@@ -523,6 +546,7 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                 F.spawn.stream.close_chunk	();
             }
         }
+	    UI->ProgressEnd();
     }
     // clean up
     {

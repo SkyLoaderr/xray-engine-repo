@@ -169,7 +169,7 @@ void __fastcall	ESoundSource::OnChangeSource	(PropValue* prop)
 	m_Source.set_params			(&m_Params);
 }
 
-void __fastcall ESoundSource::OnControlClick(PropValue* sender, bool& bModif)
+void __fastcall ESoundSource::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){

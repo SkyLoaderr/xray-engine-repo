@@ -10,6 +10,7 @@
 #include "ColorPicker.h"
 #include "ui_main.h"
 #include "PropertiesList.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma link "multi_edit"
 #pragma link "Gradient"
@@ -20,7 +21,6 @@
 #pragma resource "*.dfm"
 
 TfrmEditLightAnim* TfrmEditLightAnim::form=0;
-AnsiString TfrmEditLightAnim::m_LastSelection;
 
 //---------------------------------------------------------------------------
 __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
@@ -29,13 +29,42 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
     DEFINE_INI(fsStorage);
     bFinalClose		= false;
     m_CurrentItem 	= 0;
-//	bFreezeUpdate 	= false;
     iMoveKey        = -1;
-    InplaceTextEdit->Editor->Color			= TColor(0x00A0A0A0);
-    InplaceTextEdit->Editor->BorderStyle	= bsNone;
     m_Props 		= 0;
+    m_Items			= 0;
 }
 //---------------------------------------------------------------------------
+void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
+{
+    m_Props = TProperties::CreateForm("LAProps",paProps,alClient,OnModified);
+    m_Items	= TItemList::CreateForm("LA Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
+    m_Items->OnModifiedEvent= OnModified;
+    m_Items->OnItemFocused 	= OnItemFocused;
+    m_Items->OnItemRemove 	= LALib.RemoveObject;
+    m_Items->OnItemRename 	= LALib.RenameObject;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLightAnim::FormDestroy(TObject *Sender)
+{
+	TProperties::DestroyForm(m_Props);
+    TItemList::DestroyForm(m_Items);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLightAnim::fsStorageRestorePlacement(
+      TObject *Sender)
+{            
+	m_Props->RestoreParams(fsStorage);
+}                    
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLightAnim::fsStorageSavePlacement(TObject *Sender)
+{
+	m_Props->SaveParams(fsStorage);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmEditLightAnim::OnModified()
 {
 	ebSave->Enabled = true;
@@ -55,14 +84,6 @@ void __fastcall TfrmEditLightAnim::FormShow(TObject *Sender)
 {
     ebSave->Enabled = false;
     UI->BeginEState(esEditLightAnim);
-
-    if (!m_LastSelection.IsEmpty()){
-    	TElTreeItem *node=FHelper.FindObject(tvItems,m_LastSelection);
-	    if (node){
-    	    tvItems->Selected = node;
-        	tvItems->EnsureVisible(node);
-	    }
-    }
 
     InitItems();
 	// check window position
@@ -107,32 +128,25 @@ bool TfrmEditLightAnim::FinalClose(){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::tvItemsItemFocused(TObject *Sender)
+void __fastcall TfrmEditLightAnim::OnItemFocused(TElTreeItem* item)
 {
-//	if (bFreezeUpdate) return;
-
-    TElTreeItem* node = tvItems->Selected;
-
-    if (node&&FHelper.IsObject(node)){
-        // change thm
-        AnsiString nm,obj_fn,thm_fn;
-        FHelper.MakeName		(node,0,nm,false);
+    if (item&&FHelper.IsObject(item)){
+        ListItem* prop 			= (ListItem*)item->Tag; VERIFY(prop);
+        AnsiString nm			= prop->Key();
 		CLAItem* I  			= LALib.FindItem(nm.c_str());
-        SetCurrentItem			(I);
+        SetCurrentItem			(I,prop);
     }else{
-        SetCurrentItem			(0);
+        SetCurrentItem			(0,0);
     }
 }
-
 //---------------------------------------------------------------------------
+
 void TfrmEditLightAnim::InitItems()
 {
-	tvItems->IsUpdating		= true;
-    SetCurrentItem			(0);
-    tvItems->Items->Clear();
+	ListItemsVec items;
     for (LAItemIt it=LALib.Items.begin(); it!=LALib.Items.end(); it++)
-        FHelper.AppendObject(tvItems,(*it)->cName);
-	tvItems->IsUpdating		= false;
+    	LHelper.CreateItem(items,(*it)->cName,0,0,0);
+    m_Items->AssignItems(items,false,true);
 }
 //---------------------------------------------------------------------------
 
@@ -143,16 +157,6 @@ void __fastcall TfrmEditLightAnim::FormKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
-void __fastcall TfrmEditLightAnim::tvItemsKeyPress(TObject *Sender, char &Key){
-	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
-    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    if (node){
-    	tvItems->Selected = node;
-		tvItems->EnsureVisible(node);
-    }
-}
-//---------------------------------------------------------------------------
 void TfrmEditLightAnim::UpdateView()
 {
 	if (m_CurrentItem){
@@ -168,75 +172,66 @@ void TfrmEditLightAnim::UpdateView()
     }
 }
 //------------------------------------------------------------------------------
-void TfrmEditLightAnim::GetItemData()
+void __fastcall	TfrmEditLightAnim::OnFrameCountAfterEdit  (PropItem* v, LPVOID val)
 {
-    PropItemVec items;
-	if (m_CurrentItem){
-        PHelper.CreateName_TI	(items,	"Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName), tvItems->Items->LookForItem(0,m_CurrentItem->cName,0,0,false,true,false,true,true));
-        PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
-        PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
-    }
-    m_Props->AssignItems		(items,true);
-    UpdateView();
+	if (*(int*)val!=m_CurrentItem->iFrameCount) OnModified();
+	m_CurrentItem->Resize(*(int*)val);
+    UpdateView();    
 }
 //---------------------------------------------------------------------------
 
-void TfrmEditLightAnim::SetCurrentItem(CLAItem* I)
+void TfrmEditLightAnim::SetCurrentItem(CLAItem* I, ListItem* owner)
 {
-	m_CurrentItem = I;
-    if (m_CurrentItem) 	tvItems->Selected = FHelper.FindObject(tvItems,m_CurrentItem->cName);
-    else				tvItems->Selected = 0;
-    paItemProps->Visible = tvItems->Selected;
+	m_CurrentItem 				= I;
+    paItemProps->Visible 		= !!I;
     // fill data
-    GetItemData();
+    PropItemVec items;
+	if (m_CurrentItem){
+        PropValue* V=0;                                              
+        PHelper.CreateName		(items, "Name",			m_CurrentItem->cName,		sizeof(m_CurrentItem->cName), owner);
+        PHelper.CreateFloat		(items,	"FPS",			&m_CurrentItem->fFPS,		0.1f,1000,1.f,1);
+        V=PHelper.CreateS32		(items,	"Frame Count",	&m_CurrentItem->iFrameCount,1,100000,1);
+        V->Owner()->OnAfterEditEvent = OnFrameCountAfterEdit;
+    }
+    m_Props->AssignItems		(items);
+    UpdateView					();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::ebAddAnimClick(TObject *Sender)
 {
+    // folder name
     AnsiString folder;
-	FHelper.MakeName(tvItems->Selected,0,folder,true);
-    CLAItem* I = LALib.AppendItem(folder.c_str(),0);
-    FHelper.AppendObject(tvItems,I->cName);
-    SetCurrentItem(I);
-    OnModified();
+    TElTreeItem* item 			= m_Items->GetSelected(); 
+    if (item) 					FHelper.MakeName(item,0,folder,true);
+    CLAItem* I 					= LALib.AppendItem(folder.c_str(),0);
+    InitItems					();
+    m_Items->SelectItem			(I->cName,true,false,true);
+    OnModified					();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::ebDeleteAnimClick(TObject *Sender)
 {
-	TElTreeItem* node = tvItems->Selected;
-    if (node){
-	    AnsiString name;
-		FHelper.MakeName(node,0,name,false);
-        if (node->GetPrev()) 		tvItems->Selected = node->GetPrev();
-        else if (node->GetNext())	tvItems->Selected = node->GetNext();
-        else						tvItems->Selected = 0;
-		LALib.DeleteItem(name.c_str());
-        node->Delete();
-	    OnModified();
-    }else{
-    	ELog.DlgMsg(mtError,"Select item at first");
-    }
+	m_Items->RemoveSelItems		();	
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::ebSaveClick(TObject *Sender)
 {
-	ebSave->Enabled = false;
-	LALib.Save();
+	ebSave->Enabled				 = false;
+	LALib.Save					();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmEditLightAnim::ebReloadClick(TObject *Sender)
 {
-	ebSave->Enabled = false;
-	m_CurrentItem = 0;
-	LALib.Reload();
-//	bFreezeUpdate = true;
-	m_Props->ClearProperties();
-    InitItems();
-//	bFreezeUpdate = false;
+	ebSave->Enabled 			= false;
+	m_CurrentItem 				= 0;
+	LALib.Reload				();
+	m_Props->ClearProperties	();
+    m_Items->ClearList			();
+    InitItems					();
 }
 //---------------------------------------------------------------------------
 
@@ -402,110 +397,6 @@ void __fastcall TfrmEditLightAnim::sePointerExit(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::tvItemsDragDrop(TObject *Sender,
-      TObject *Source, int X, int Y)
-{
-	FHelper.DragDrop(Sender,Source,X,Y,OnRenameItem);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::tvItemsDragOver(TObject *Sender,
-      TObject *Source, int X, int Y, TDragState State, bool &Accept)
-{
-	FHelper.DragOver(Sender,Source,X,Y,State,Accept);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::tvItemsStartDrag(TObject *Sender,
-      TDragObject *&DragObject)
-{
-	FHelper.StartDrag(Sender,DragObject);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::OnRenameItem(LPCSTR p0, LPCSTR p1, EItemType type)
-{
-	LALib.RenameItem(p0,p1);
-	OnModified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::tvItemsMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	if (Button==mbRight)	FHelper.ShowPPMenu(pmActionList);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::Rename1Click(TObject *Sender)
-{
-	TElTreeItem* node = tvItems->Selected;
-    if (node) tvItems->EditItem(node,-1);
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::InplaceTextEditValidateResult(
-      TObject *Sender, bool &InputValid)
-{
-	TElTreeInplaceAdvancedEdit* IE=0;
-    IE=InplaceTextEdit;
-
-    AnsiString new_text = AnsiString(IE->Editor->Text).LowerCase();
-    IE->Editor->Text = new_text;
-
-    TElTreeItem* node = IE->Item;
-    for (TElTreeItem* item=node->GetFirstSibling(); item; item=item->GetNextSibling()){
-        if ((item->Text==new_text)&&(item!=IE->Item)){
-            InputValid = false;
-            return;
-        }
-    }
-    AnsiString full_name;
-    if (FHelper.IsFolder(node)){
-        for (item=node->GetFirstChild(); item&&(item->Level>node->Level); item=item->GetNext()){
-            if (FHelper.IsObject(item)){
-                FHelper.MakeName(item,0,full_name,false);
-                string256 new_nm;
-                FHelper.ReplacePart(full_name,new_text,node->Level,new_nm);
-                LALib.RenameItem(full_name.c_str(),new_nm);
-            }
-        }
-    }else if (FHelper.IsObject(node)){
-        FHelper.MakeName(node,0,full_name,false);
-        string256 new_nm;
-        FHelper.ReplacePart(full_name,new_text.c_str(),node->Level,new_nm);
-		LALib.RenameItem(full_name.c_str(),new_nm);
-    }
-    tvItems->Selected=node;
-	OnModified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::CreateFolder1Click(TObject *Sender)
-{
-	AnsiString folder;
-    AnsiString start_folder;
-    FHelper.MakeName(tvItems->Selected,0,start_folder,true);
-    FHelper.GenerateFolderName(tvItems,tvItems->Selected,folder);
-    folder = start_folder+folder;
-	TElTreeItem* node = FHelper.AppendFolder(tvItems,folder);
-    if (tvItems->Selected) tvItems->Selected->Expand(false);
-    tvItems->EditItem(node,-1);
-	OnModified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::ExpandAll1Click(TObject *Sender)
-{
-	tvItems->FullExpand();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::CollapseAll1Click(TObject *Sender)
-{
-	tvItems->FullCollapse();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmEditLightAnim::OnIdle()
 {
 	if (form){
@@ -596,31 +487,6 @@ void __fastcall TfrmEditLightAnim::ebFirstFrameClick(TObject *Sender)
 {
 	sePointer->Value	= 0;
 	pbG->Repaint();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
-{
-    m_Props = TProperties::CreateForm("",paProps,alClient,OnModified);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::FormDestroy(TObject *Sender)
-{
-	TProperties::DestroyForm(m_Props);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::fsStorageRestorePlacement(
-      TObject *Sender)
-{
-	m_Props->RestoreParams(fsStorage);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLightAnim::fsStorageSavePlacement(TObject *Sender)
-{
-	m_Props->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 

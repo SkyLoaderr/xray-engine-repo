@@ -23,6 +23,12 @@ public:
     virtual void   		Save            		(IWriter&);
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
+
+    // group function
+    void				UngroupObjects			(bool bUndo=true);
+	void 				GroupObjects			(bool bUndo=true);
+	void 				CenterToGroup			();
+    void 				AlignToObject			();
 };
 //---------------------------------------------------------------------------
 #endif

@@ -35,6 +35,7 @@ void ESceneLightTools::Clear(bool bSpecific)
     AppendLightControl	(LCONTROL_STATIC);
     AppendLightControl	(LCONTROL_HEMI);
     AppendLightControl	(LCONTROL_SUN);
+    m_HemiControl		= FindLightControl(LCONTROL_HEMI)->id;
 }
 //------------------------------------------------------------------------------
 
@@ -143,7 +144,7 @@ void  ESceneLightTools::OnRender(int priority, bool strictB2F)
 }
 //------------------------------------------------------------------------------
 
-void __fastcall ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModified)
+void __fastcall ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	AppendLightControl(GenLightControlName().c_str());
     UI->Command(COMMAND_UPDATE_PROPERTIES);
@@ -151,7 +152,7 @@ void __fastcall ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& 
 }
 //------------------------------------------------------------------------------
 
-void __fastcall ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, bool& bDataModified)
+void __fastcall ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     AnsiString item_name = sender->Owner()->Item()->Text;
@@ -179,7 +180,9 @@ void ESceneLightTools::FillProp(LPCSTR pref, PropItemVec& items)
 {
     ButtonValue*	B 	= 0;
     // hemisphere
-    PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Hemisphere\\Quality"),		&m_HemiQuality,		1,2);
+    PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Hemisphere\\Quality"),				&m_HemiQuality,		1,2);
+	PHelper.CreateAToken<u32>(items,FHelper.PrepareKey(pref,"Common\\Hemisphere\\Light Control"),	&m_HemiControl, &lcontrols);
+    
     // sun
     PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Visible"),&m_Flags,			flShowSun);
     PHelper.CreateU8	(items,	FHelper.PrepareKey(pref,"Common\\Sun Shadow\\Quality"),		&m_SunShadowQuality,1,2);

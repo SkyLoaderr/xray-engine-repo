@@ -7,6 +7,7 @@ class ESceneCustomOTools: public ESceneCustomMTools
 {
 	typedef ESceneCustomMTools inherited;
 protected:
+	ObjectList			m_ObjectsInGroup;
 	ObjectList			m_Objects;
     
 	bool 				OnLoadSelectionAppendObject(CCustomObject* obj);

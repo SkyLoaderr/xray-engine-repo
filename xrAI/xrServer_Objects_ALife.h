@@ -126,7 +126,9 @@ public:
 	u32								m_tNodeID;
 	ref_str							m_caGroupControl;
 	flags32							m_flags;							
-
+#ifdef _EDITOR
+	void __fastcall					OnChooseGroupControl(PropValue* sender, ChooseItemVec& lst);
+#endif
 									CSE_ALifeObject		(LPCSTR caSection);
 	virtual							~CSE_ALifeObject	();
 	virtual bool					used_ai_locations	() const;
@@ -232,8 +234,8 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 #ifdef _EDITOR
 	void __fastcall					OnChangeAnim	(PropValue* sender);
-	void __fastcall					OnChooseAnim	(PropValue* sender, AStringVec& lst);
-	void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
+	void __fastcall					OnChooseAnim	(PropValue* sender, ChooseItemVec& lst);
+	void __fastcall					OnChooseBone	(PropValue* sender, ChooseItemVec& lst);
 #endif
 	u32 							type;
 	f32 							mass;
@@ -254,8 +256,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
 
 #ifdef _EDITOR
     void __fastcall					OnChangeAnim	(PropValue* sender);
-    void __fastcall					OnChooseAnim	(PropValue* sender, AStringVec& lst);
-    void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
+    void __fastcall					OnChooseAnim	(PropValue* sender, ChooseItemVec& lst);
+    void __fastcall					OnChooseBone	(PropValue* sender, ChooseItemVec& lst);
     void __fastcall					OnChangeFlag	(PropValue* sender);
 #endif
     enum{
@@ -309,7 +311,7 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion)
 #ifdef _EDITOR
 	void __fastcall					OnChangeAnim				(PropValue* sender);
-	void __fastcall					OnChooseAnim				(PropValue* sender, AStringVec& lst);
+	void __fastcall					OnChooseAnim				(PropValue* sender, ChooseItemVec& lst);
 #endif
 	ref_str							engine_sound;
 	ref_str							startup_animation;

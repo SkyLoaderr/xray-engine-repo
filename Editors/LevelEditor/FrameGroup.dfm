@@ -152,7 +152,6 @@ object fraGroup: TfraGroup
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      OnClick = ebAlignToObjectClick
     end
   end
 end

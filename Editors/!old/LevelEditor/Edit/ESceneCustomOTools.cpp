@@ -37,6 +37,7 @@ BOOL ESceneCustomOTools::_AppendObject(CCustomObject* object)
 
 BOOL ESceneCustomOTools::_RemoveObject(CCustomObject* object)
 {
+	m_ObjectsInGroup.remove(object);
 	m_Objects.remove(object);
     return FALSE;
 }

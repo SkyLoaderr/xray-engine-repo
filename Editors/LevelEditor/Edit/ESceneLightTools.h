@@ -27,6 +27,7 @@ protected:
     Flags32				m_Flags;
 	// hemisphere
 	u8					m_HemiQuality;
+    u32					m_HemiControl;
     // sun
     u8					m_SunShadowQuality;
     Fvector2			m_SunShadowDir;
@@ -38,8 +39,8 @@ protected:
     // light control
 	int					lcontrol_last_idx;
 	ATokenVec			lcontrols;
-    void __fastcall 	OnControlAppendClick		(PropValue* sender, bool& bDataModified);
-    void __fastcall 	OnControlRenameRemoveClick	(PropValue* sender, bool& bDataModified);
+    void __fastcall 	OnControlAppendClick		(PropValue* sender, bool& bDataModified, bool& bSafe);
+    void __fastcall 	OnControlRenameRemoveClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 protected:
     // controls
     virtual void 		CreateControls			();

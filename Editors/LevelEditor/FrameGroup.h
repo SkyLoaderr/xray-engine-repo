@@ -12,7 +12,7 @@
 #include "ExtBtn.hpp"
 #include "ESceneCustomMTools.h"
 // refs
-class CEditObject;
+class ESceneGroupTools;
 //---------------------------------------------------------------------------
 class TfraGroup : public TForm
 {
@@ -30,10 +30,10 @@ __published:	// IDE-managed Components
 	void __fastcall ebMakeGroupClick(TObject *Sender);
 	void __fastcall ebUngroupClick(TObject *Sender);
 	void __fastcall ebCenterToGroupClick(TObject *Sender);
-	void __fastcall ebAlignToObjectClick(TObject *Sender);
 private:	// User declarations
+	ESceneGroupTools* ParentTools;
 public:		// User declarations
-	__fastcall TfraGroup(TComponent* Owner);
+	__fastcall TfraGroup(TComponent* Owner, ESceneGroupTools* gt);
 };
 //---------------------------------------------------------------------------
 #endif
