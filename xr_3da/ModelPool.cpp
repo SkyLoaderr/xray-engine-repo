@@ -95,7 +95,7 @@ FBasicVisual*	CModelPool::Instance_Load		(const char* N)
 	// Actual loading
 	CFileStream			data(fn);
 	ogf_header			H;
-	data.ReadChunk		(OGF_HEADER,&H);
+	data.ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
 	V->Load				(fn,&data,0);
 

@@ -80,9 +80,9 @@ void CDetailManager::Load		()
 	dtFS = new CVirtualFileStream(fn);
 
 	// Header
-	dtFS->ReadChunk	(0,&dtH);
-	R_ASSERT		(dtH.version == DETAIL_VERSION);
-	DWORD m_count	= dtH.object_count;
+	dtFS->ReadChunkSafe	(0,&dtH,sizeof(dtH));
+	R_ASSERT			(dtH.version == DETAIL_VERSION);
+	DWORD m_count		= dtH.object_count;
 
 	// Models
 	CStream* m_fs	= dtFS->OpenChunk(1);

@@ -36,17 +36,17 @@ void FBasicVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	// header
 	VERIFY(data);
 	ogf_header hdr;
-	if (data->ReadChunk(OGF_HEADER,&hdr))
+	if (data->ReadChunkSafe(OGF_HEADER,&hdr,sizeof(hdr)))
 	{
-		VERIFY(hdr.format_version==xrOGF_FormatVersion);
-		Type			= hdr.type;
+		VERIFY	(hdr.format_version==xrOGF_FormatVersion);
+		Type	= hdr.type;
 	} else {
 		THROW;
 	}
 
 	// BBox
 	ogf_bbox bbox;
-	if (data->ReadChunk(OGF_BBOX,&bbox))
+	if (data->ReadChunkSafe(OGF_BBOX,&bbox,sizeof(bbox)))
 	{
 		bv_BBox.set		(bbox.min,bbox.max);
 		bv_Position.sub	(bbox.max,bbox.min);

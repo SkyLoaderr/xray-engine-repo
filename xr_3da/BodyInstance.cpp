@@ -554,7 +554,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 	// Load animation
 	CStream* MS = data->OpenChunk(OGF_MOTIONS);
 	DWORD dwCNT = 0;
-	MS->ReadChunk(0,&dwCNT);
+	MS->ReadChunkSafe	(0,&dwCNT,sizeof(dwCNT));
 	for (DWORD M=0; M<dwCNT; M++)
 	{
 		R_ASSERT(MS->FindChunk(M+1));

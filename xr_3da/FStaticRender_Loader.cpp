@@ -141,8 +141,8 @@ void CRender::LoadVisuals(CStream *fs)
 
 	while ((chunk=fs->OpenChunk(index))!=0)
 	{
-		chunk->ReadChunk(OGF_HEADER,&H);
-		V = Models.Instance_Create(H.type);
+		chunk->ReadChunkSafe		(OGF_HEADER,&H,sizeof(H));
+		V = Models.Instance_Create	(H.type);
 		V->Load(0,chunk,0);
 		Visuals.push_back(V);
 
