@@ -408,13 +408,15 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	// Create targets
 	DWORD				w = m_d3dsdBackBuffer.Width, h = m_d3dsdBackBuffer.Height;
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Position,&d_Position_S);
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Normal,&d_Normal_S);
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Color,&d_Color_S);
-	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Accumulator,&d_Accumulator_S);
+	D3DFORMAT			F = D3DFMT_A16B16G16R16F;
+	CreateRT			(m_pd3dDevice,w,h,F,&d_Position,&d_Position_S);
+	CreateRT			(m_pd3dDevice,w,h,F,&d_Normal,&d_Normal_S);
+	CreateRT			(m_pd3dDevice,w,h,F,&d_Color,&d_Color_S);
+	CreateRT			(m_pd3dDevice,w,h,F,&d_Accumulator,&d_Accumulator_S);
 
 	// Create shaders
-	s_Scene2fat.compile	(m_pd3dDevice,"shaders\\D\\fat_base.s");
+	s_Scene2fat.compile			(m_pd3dDevice,"shaders\\D\\fat_base.s");
+	s_CombineDBG_Normals.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
 
 	// Create shadow map texture and retrieve surface
 	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
@@ -513,21 +515,27 @@ HRESULT CMyD3DApplication::FinalCleanup()
 HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
                                           D3DFORMAT Format )
 {
-	if (dwBehavior & D3DCREATE_PUREDEVICE)
-		return E_FAIL;
+	BOOL	bDebug	= TRUE;
 
-    if (pCaps->PixelShaderVersion < D3DPS_VERSION(2, 0))
-        return E_FAIL;
-	if (pCaps->VertexShaderVersion < D3DVS_VERSION(2, 0))
-		return E_FAIL;
+	if (bDebug)
+	{
+		if (dwBehavior & D3DCREATE_PUREDEVICE)					return E_FAIL;
+		if (pCaps->DeviceType==D3DDEVTYPE_HAL)					return E_FAIL;
+		// if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0) return E_FAIL;
+		return S_OK;
+	} else {
+		if (dwBehavior & D3DCREATE_PUREDEVICE)					return E_FAIL;
+		if (pCaps->PixelShaderVersion < D3DPS_VERSION(2, 0))	return E_FAIL;
+		if (pCaps->VertexShaderVersion < D3DVS_VERSION(2, 0))	return E_FAIL;
+	}
 
+	/*
 	if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0)
 	{
 		return E_FAIL;
 	}
 
 	// If device doesn't support 1.1 vertex shaders in HW, switch to SWVP.
-	/*
     if (pCaps->VertexShaderVersion < D3DVS_VERSION(1, 1))
     {
         if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0)
