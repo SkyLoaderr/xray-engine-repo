@@ -358,7 +358,6 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_kill_monster:initialize ()
     xr_state.change_state    (self.object, 0)      --Поднимаем, если сидели
-  xr_state.change_state  (self.object, 0)
 
     action_base.initialize (self)
 
