@@ -32,9 +32,9 @@ public:
 	CSector*						Back()								{ return pBack;		}
 	CSector*						Front()								{ return pFace;		}
 	CSector*						getSector		(CSector* pFrom)	{ return pFrom==pFace?pBack:pFace; }
-	CSector*						getSectorFacing	(Fvector& V)		{ if (P.classify(V)>0) return pFace; else return pBack; }
-	CSector*						getSectorBack	(Fvector& V)		{ if (P.classify(V)>0) return pBack; else return pFace;	}
-	float							distance		(Fvector &V)		{ return _abs(P.classify(V)); }
+	CSector*						getSectorFacing	(const Fvector& V)	{ if (P.classify(V)>0) return pFace; else return pBack; }
+	CSector*						getSectorBack	(const Fvector& V)	{ if (P.classify(V)>0) return pBack; else return pFace;	}
+	float							distance		(const Fvector &V)	{ return _abs(P.classify(V)); }
 	virtual ~CPortal				();
 };
 
