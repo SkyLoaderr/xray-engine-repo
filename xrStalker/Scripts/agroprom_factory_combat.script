@@ -6,7 +6,8 @@
 
 Сделать:
     -- улёт вертолёта
-    -- доклад командиру в институте
+    -- info_portion
+    -- pda message
 --------------------------------------------------------------------------------------------------------------------]]
 
 local a_wait    = 0
@@ -73,6 +74,12 @@ function add_actions( npc, acts )
 end
 
 function main()
+    the_actor  = get_actor()
+
+    if the_actor:has_info( "agroprom_factory_combat" ) then
+        return
+    end
+    
     local events = {
         e_wait,    5000,
         e_explode, "factory_combat_grnd_3",
@@ -102,8 +109,6 @@ function main()
     }
 
     ----------   
-
-    the_actor  = get_actor()
 
     local zone = get_level_object( "zone_factory_combat" )
     zone:set_callback( this.on_enter, true )
@@ -143,6 +148,9 @@ function main()
 
         wait( 500 )
     end
+
+--    the_actor:give_info_portion_via_pda( "agroprom_factory_combat", get_level_object( "factory_corpse_1" ) )
+    the_actor:give_info_portion( "agroprom_factory_combat" )
 
     local snd = sound_object( "ambient\\gunfire" )
     snd:play_at_pos( npcs[1], npcs[1]:position() )
