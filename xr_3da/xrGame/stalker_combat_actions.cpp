@@ -521,9 +521,6 @@ void CStalkerActionLookOut::execute		()
 		return;
 	}
 
-#if 0
-	object().movement().set_nearest_accessible_position(mem_object.m_object_params.m_position,mem_object.m_object_params.m_level_vertex_id);
-#else
 	Fvector								position = mem_object.m_object_params.m_position;
 	object().m_ce_close->setup			(position,10.f,170.f,10.f);
 	CCoverPoint							*point = ai().cover_manager().best_cover(object().Position(),10.f,*object().m_ce_close,CStalkerMovementRestrictor(m_object,true));
@@ -542,7 +539,6 @@ void CStalkerActionLookOut::execute		()
 			object().movement().set_nearest_accessible_position	();
 		}
 	}
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
