@@ -307,7 +307,7 @@ void CAI_Stalker::ForwardStraight()
 			&m_tSelectorFreeHunting,
 			0,
 			eWeaponStatePrimaryFire,
-			ePathTypeDodge,
+			ePathTypeStraight,
 			eBodyStateStand,
 			eMovementTypeRun,
 			eLookTypeFirePoint,
