@@ -28,6 +28,7 @@ void CALifeSpawnRegistry::save	(IWriter &memory_stream)
 	
 	memory_stream.open_chunk	(0);
 	memory_stream.w_stringZ		(m_spawn_name);
+	memory_stream.w				(&header().guid(),sizeof(header().guid()));
 	memory_stream.close_chunk	();
 	
 	memory_stream.open_chunk	(1);
@@ -44,9 +45,11 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	R_ASSERT2					(file_stream.find_chunk(SPAWN_CHUNK_DATA),"Cannot find chunk SPAWN_CHUNK_DATA!");
 	chunk0						= file_stream.open_chunk(SPAWN_CHUNK_DATA);
 	
+	GUID						guid;
 	chunk						= chunk0->open_chunk(0);
 	VERIFY						(chunk);
 	chunk->r_stringZ			(m_spawn_name);
+	chunk->r					(&guid,sizeof(guid));
 	chunk->close				();
 
 	string256					file_name;
@@ -65,7 +68,7 @@ void CALifeSpawnRegistry::load	(IReader &file_stream, LPCSTR game_name)
 	VERIFY3						(spawn_age >= graph_age,"Rebuild spawn file ",file_name);
 
 	stream						= FS.r_open(file_name);
-	load						(*stream);
+	load						(*stream,&guid);
 	FS.r_close					(stream);
 	
 	chunk						= chunk0->open_chunk(1);
@@ -95,12 +98,13 @@ void CALifeSpawnRegistry::load	(LPCSTR spawn_name)
 	FS.r_close					(stream);
 }
 
-void CALifeSpawnRegistry::load	(IReader &file_stream)
+void CALifeSpawnRegistry::load	(IReader &file_stream, GUID	*save_guid)
 {
 	IReader						*chunk;
 	chunk						= file_stream.open_chunk(0);
 	m_header.load				(*chunk);
 	chunk->close				();
+	R_ASSERT2					(!save_guid || (*save_guid == header().guid()),"Saved game doesn't correspond to the spawn : REBUILD SPAWN FILE!");
 
 	chunk						= file_stream.open_chunk(1);
 	m_spawns.load				(*chunk);

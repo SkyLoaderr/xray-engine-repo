@@ -13,6 +13,11 @@ IC	u32	CALifeSpawnHeader::version		() const
 	return			(m_version);
 }
 
+IC	const GUID &CALifeSpawnHeader::guid	() const
+{
+	return			(m_guid);
+}
+
 IC	u32	CALifeSpawnHeader::count		() const
 {
 	return			(m_count);
