@@ -680,7 +680,8 @@ void CSE_ALifeSimulator::vfUpdateTasks()
 	TRADER_SET_PAIR_IT			E = m_tpCrossTraders.end();
 	for ( ; I != E; I++) {
 		ITEM_SET_PAIR_IT		J = m_tArtefactAnomalyMap.find((*I).first);
-		R_ASSERT2				(J != m_tArtefactAnomalyMap.end(),"Unknown artefact!");
+		if (J == m_tArtefactAnomalyMap.end())
+			continue;
 		// iterating on the anomaly types that can generate this type of artefact
 		U32_SET_IT				i = (*J).second.begin();
 		U32_SET_IT				e = (*J).second.end();

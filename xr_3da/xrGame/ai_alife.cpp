@@ -284,16 +284,6 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 	}
 	while (tfGetGameTime() < l_tFinishTime);
 
-	// setting up the first switched object
-	R_ASSERT2					(m_tpCurrentLevel->begin() != m_tpCurrentLevel->end(),"It is impossible, because at least actor must be in the switch objects map");
-	m_tNextFirstSwitchObjectID	= (*(m_tpCurrentLevel->begin())).second->ID;
-
-	// setting up the first scheduled object
-	if (m_tpScheduledObjects.size())
-		m_tNextFirstProcessObjectID = (*m_tpScheduledObjects.begin()).second->ID;
-	else
-		m_tNextFirstProcessObjectID	= _OBJECT_ID(-1);
-
 	m_fTimeFactor				= l_fTimeFactor;
 	Save						(caSaveName);
 }
