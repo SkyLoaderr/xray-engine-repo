@@ -9139,6 +9139,12 @@
 					Name="Buttons"
 					Filter="">
 					<File
+						RelativePath=".\ui\UI3tButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UI3tButton.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIButton.cpp">
 					</File>
 					<File
