@@ -233,7 +233,7 @@ states = {
 
 
 	
-	barman_walk = {	weapon = nil,
+	barman_walk = {	weapon = "none",
 				movement = move.walk,
 				mental = anim.free,
 				bodystate = move.standing,
@@ -241,7 +241,7 @@ states = {
 				animation = nil
 			},
 
-	barman_wait = {	weapon = nil,
+	barman_wait = {	weapon = "none",
 				movement = move.stand,
 				mental = anim.free,
 				bodystate = move.standing,

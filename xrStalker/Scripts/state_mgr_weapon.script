@@ -14,6 +14,7 @@ function eva_state_mgr_weapon:evaluate()
 		return true
 	end
 ]]
+
 	if (state_lib.states[self.st.target_state].weapon == nil) or
 	   (state_lib.states[self.st.target_state].weapon == "strapped" and
 		self.object:weapon_strapped()) or
@@ -22,7 +23,9 @@ function eva_state_mgr_weapon:evaluate()
 		self.object:weapon_unstrapped() and	
 		self.object:active_item() ~= nil and		
 		self.object:best_weapon() ~= nil and
-		self.object:active_item():id() == self.object:best_weapon():id())
+		self.object:active_item():id() == self.object:best_weapon():id()) or
+	   (state_lib.states[self.st.target_state].weapon == "none" and
+	    self.object:active_item() == nil)
 	then
 		--printf("eva_state_mgr_weapon:evaluate() TRUE")
 		return true
@@ -75,6 +78,23 @@ function eva_state_mgr_weapon_unstrapped_now:evaluate()
 end
 
 
+--' Необходимо ли спрятать оружие вообще
+class "eva_state_mgr_weapon_none" (property_evaluator)
+function eva_state_mgr_weapon_none:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_weapon_none:evaluate()
+	return state_lib.states[self.st.target_state].weapon == "none"
+end
+--' Спрятано ли оружие вообще.
+class "eva_state_mgr_weapon_none_now" (property_evaluator)
+function eva_state_mgr_weapon_none_now:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_none_now:evaluate()
+	return 	self.object:active_item() == nil	
+end
+
+
 --' Достать оружие
 class "act_state_mgr_weapon_unstrapp" (action_base)
 function act_state_mgr_weapon_unstrapp:__init(name) super (nil, name)
@@ -104,5 +124,21 @@ function act_state_mgr_weapon_strapp:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_strapp:finalize()
+	action_base.finalize(self)
+end
+
+--' убрать оружие
+class "act_state_mgr_weapon_none" (action_base)
+function act_state_mgr_weapon_none:__init(name) super (nil, name)
+end
+function act_state_mgr_weapon_none:initialize()
+	action_base.initialize(self)
+	self.object:set_item(object.idle, nil)
+end
+function act_state_mgr_weapon_none:execute()
+--	printf("*STATE MGR* Weapon Strap action")
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_none:finalize()
 	action_base.finalize(self)
 end

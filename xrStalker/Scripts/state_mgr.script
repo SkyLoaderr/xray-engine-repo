@@ -141,6 +141,8 @@ function state_manager:__init(npc)
 	self.properties["weapon_strapped_now"]	= 14
 	self.properties["weapon_unstrapped"]	= 15
 	self.properties["weapon_unstrapped_now"]= 16
+	self.properties["weapon_none"]			= 17
+	self.properties["weapon_none_now"]		= 18
 	
 	self.properties["movement"]				= 21
 	self.properties["movement_walk"]		= 22
@@ -193,6 +195,8 @@ function state_manager:__init(npc)
 	self.planner:add_evaluator(self.properties["weapon_strapped_now"],		state_mgr_weapon.eva_state_mgr_weapon_strapped_now("state_mgr_weapon_strapped_now", self))
 	self.planner:add_evaluator(self.properties["weapon_unstrapped"],		state_mgr_weapon.eva_state_mgr_weapon_unstrapped("state_mgr_weapon_unstrapped", self))
 	self.planner:add_evaluator(self.properties["weapon_unstrapped_now"],	state_mgr_weapon.eva_state_mgr_weapon_unstrapped_now("state_mgr_weapon_unstrapped_now", self))
+	self.planner:add_evaluator(self.properties["weapon_none"],				state_mgr_weapon.eva_state_mgr_weapon_none("state_mgr_weapon_none", self))
+	self.planner:add_evaluator(self.properties["weapon_none_now"],			state_mgr_weapon.eva_state_mgr_weapon_none_now("state_mgr_weapon_none_now", self))
 	
 	self.planner:add_evaluator(self.properties["movement"],					state_mgr_movement.eva_state_mgr_movement("state_mgr_movement", self))
 	self.planner:add_evaluator(self.properties["movement_walk"],			state_mgr_movement.eva_state_mgr_movement_walk("state_mgr_movement_walk", self))
@@ -244,6 +248,7 @@ function state_manager:__init(npc)
 	
 	self.operators["weapon_strapp"]			= 11
 	self.operators["weapon_unstrapp"]		= 12
+	self.operators["weapon_none"]			= 13
 	
 	self.operators["movement"]				= 21
 	self.operators["movement_walk"]			= 22
@@ -288,6 +293,14 @@ function state_manager:__init(npc)
 	action:add_effect 			(world_property(self.properties["weapon"], 				true))
 	action:add_effect 			(world_property(self.properties["weapon_strapped_now"],	true))
 	self.planner:add_action(self.operators["weapon_strapp"], action)
+
+	action = state_mgr_weapon.act_state_mgr_weapon_none("state_mgr_weapon_none")
+	action:add_precondition		(world_property(self.properties["locked"],				false))
+	action:add_precondition		(world_property(self.properties["weapon_none"],			true))
+	action:add_precondition		(world_property(self.properties["animstate_idle_now"],	true))
+	action:add_effect 			(world_property(self.properties["weapon"], 				true))
+	action:add_effect 			(world_property(self.properties["weapon_none_now"],		true))
+	self.planner:add_action(self.operators["weapon_none"], action)
 
 
 	action = state_mgr_movement.act_state_mgr_movement_walk("state_mgr_movement_walk")
