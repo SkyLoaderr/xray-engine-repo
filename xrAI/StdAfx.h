@@ -28,7 +28,7 @@
 // for merging spawns
 #include <dplay8.h>
 #include "clsid_game.h"
-#include "..\\xr_ini.h"
+#include "xr_ini.h"
 #include "..\\device.h"
 #include "..\\net_server.h"
 #include "..\\net_client.h"
