@@ -28,7 +28,7 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 	float distSQ;	if (CalcSSA(distSQ,Center,pVisual)<=ssaLIMIT)	return;
 
 	// Select List and add to it
-	ShaderElement*		sh		= ShowLM?pVisual->hShader->lighting:pVisual->hShader->lod0;
+	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->lod0:pVisual->hShader->lod1;
 	if (sh->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
@@ -36,6 +36,7 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
 		N->val.nearer			= val_bNearer;
+		L_Shadows.add_element	(N);
 	} else {
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
 		SceneGraph::mapMatrixItem::TNode* C	= N->val.insertInAnyWay	(distSQ	);

@@ -85,6 +85,13 @@ void CLightProjector::set_object	(CObject* O)
 	}
 }
 
+// 
+void CLightProjector::setup		(int id)
+{
+	VERIFY				(id<receivers.size());
+	Device.set_xform	(D3DTS_TEXTURE0,receivers[id].UVgen);
+}
+
 //
 void CLightProjector::calculate	()
 {
@@ -94,6 +101,9 @@ void CLightProjector::calculate	()
 	Device.Shader.set_RT		(RT_temp->pRT,HW.pTempZB);
 	CHK_DX(HW.pDevice->Clear	(0,0, D3DCLEAR_ZBUFFER | (HW.Caps.bStencil?D3DCLEAR_STENCIL:0), 0,1,0 ));
 	Device.set_xform_world		(Fidentity);
+
+	Fmatrix	mInvView;
+	mInvView.invert				(Device.mView);
 	
 	// iterate on objects
 	int	slot_id		= 0;
@@ -119,6 +129,9 @@ void CLightProjector::calculate	()
 		v_N.set					(0,0,-1);
 		mView.build_camera		(v_C,C.C,v_N);
 		Device.set_xform_view	(mView);
+
+		// calculate uv-gen matrix
+		C.UVgen.mul_43			(mView,mInvView);
 		
 		// combine and build frustum
 		Fmatrix		mCombine;

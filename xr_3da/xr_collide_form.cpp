@@ -223,15 +223,14 @@ void CCF_Skeleton::BuildState()
 
 void CCF_Skeleton::BuildTopLevel()
 {
-	dwFrameTL			=Device.dwFrame;
+	dwFrameTL			= Device.dwFrame;
 	CVisual* K			= owner->Visual();
 	Fbox& B				= K->bv_BBox;
 	s_box.min.average	(B.min);
 	s_box.max.average	(B.max);
 	s_box.grow			(0.05f);
-	Fvector X; s_box.getcenter(X);
-	Sphere.P.set		(owner->Position());
-	Sphere.P.add		(X);
+
+	owner->clCenter		(Sphere.P);
 	Sphere.R			+= K->bv_Radius;
 	Sphere.R			*= 0.5f;
 }
