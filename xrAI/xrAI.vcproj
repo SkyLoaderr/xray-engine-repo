@@ -483,6 +483,9 @@
 						RelativePath=".\data_storage.h">
 					</File>
 					<File
+						RelativePath=".\data_storage_base.h">
+					</File>
+					<File
 						RelativePath=".\graph.h">
 					</File>
 					<File

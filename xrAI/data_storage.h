@@ -15,7 +15,7 @@ template <
 	bool		bEuclidianHeuristics	= true, 
 	u8			index_bits				= 24, 
 	u8			mask_bits				= 8
->	class CHeapDataStorage
+>	class CDataStorageBinaryHeap
 {
 	#pragma pack(push,4)
 	struct SGraphNode {
@@ -73,7 +73,7 @@ template <
 public:
 	typedef SGraphNode CGraphNode;
 
-						CHeapDataStorage(const _index_type node_count)
+						CDataStorageBinaryHeap(const _index_type node_count)
 	{
 		cur_path_id				= _path_id_type(0);
 		max_node_count			= node_count;
@@ -99,7 +99,7 @@ public:
 		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
-	virtual				~CHeapDataStorage()
+	virtual				~CDataStorageBinaryHeap()
 	{
 		xr_free					(nodes);
 		xr_free					(indexes);
@@ -225,7 +225,7 @@ template <
 	bool		bEuclidianHeuristics,
 	u8			index_bits,
 	u8			mask_bits
->	class CDLSLDataStorage
+>	class CDataStorageDLSL
 {
 	#pragma pack(push,4)
 	struct SGraphNode {
@@ -265,14 +265,6 @@ template <
 	};
 #pragma pack(pop)
 
-	class CGraphNodePredicate {
-	public:
-		IC			bool	operator()(SGraphNode *node1, SGraphNode *node2)
-		{
-			return				(node1->f() > node2->f());
-		};
-	};
-
 	_path_id_type		cur_path_id;
 	_index_type			node_count;
 	_index_type			max_node_count;
@@ -285,7 +277,7 @@ template <
 public:
 	typedef SGraphNode CGraphNode;
 
-						CDLSLDataStorage(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1)))
+						CDataStorageDLSL(const _index_type node_count, const _dist_type _max_distance = _dist_type(u32(-1)))
 	{
 		max_node_count			= node_count;
 		max_distance			= _max_distance;
@@ -308,7 +300,7 @@ public:
 		Msg						("* Data storage allocated %d bytes of memory",memory_usage);
 	}
 
-	virtual				~CDLSLDataStorage()
+	virtual				~CDataStorageDLSL()
 	{
 		xr_free					(nodes);
 		xr_free					(indexes);
