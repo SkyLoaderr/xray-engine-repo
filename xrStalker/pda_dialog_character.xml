@@ -36,38 +36,13 @@
 
 	<!-- RELATION CAPTION -->
 	<relation_caption x="121" y="91" width="240" height="15">
-		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">relation</text>
+		<text x="0" y="0" font="letterica16" r="128" g="128" b="128" a="255">reputation</text>
 	</relation_caption>
 
 	<!-- BIO -->
 	<biography_list x="0" y="143" width="262" height="242" item_height="15">
 		<font font="letterica16" r="190" g="190" b="225"></font>
 	</biography_list>
-	
-	<!-- ALL DOWN IS OLD!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-	
-	<!-- ICON -->
-	<icon_static x="0" y="0" width="106" height="120"></icon_static>
 
-	<!-- NAME -->
-	<static x="30" y="182" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="255" g="128" b="64"></text>
-	</static>
-
-	<!-- RANK -->
-	<static x="121" y="14" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="150" g="150" b="180">Rank</text>
-	</static>
-
-	<!-- COMMUNITY -->
-	<static x="121" y="60" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
-	</static>
-
-
-	<!-- RELATION -->
-	<relation_static x="121" y="106" width="240" height="60">
-		<text x="0" y="0" font="letterica18" r="150" g="150" b="180"></text>
-	</relation_static>
 </window>
 

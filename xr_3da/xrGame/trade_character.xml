@@ -36,7 +36,7 @@
 
 	<!-- RELATION CAPTION -->
 	<relation_caption x="15" y="166" width="125" height="15">
-		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">relation</text>
+		<text x="0" y="0" font="letterica16" r="216" g="186" b="140">reputation</text>
 	</relation_caption>
 </window>
 
