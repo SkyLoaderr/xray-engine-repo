@@ -6,7 +6,7 @@
 #include "WatchList.h"
 
 #include "MainFrame.h"
-
+#include "winuser.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -28,6 +28,7 @@ CWatchList::~CWatchList()
 BEGIN_MESSAGE_MAP(CWatchList, CCJListCtrl)
 	//{{AFX_MSG_MAP(CWatchList)
 	ON_WM_LBUTTONDBLCLK()
+	ON_WM_KEYDOWN()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -60,6 +61,26 @@ void CWatchList::OnLButtonDblClk(UINT nFlags, CPoint point)
 		EditLabel(lvhti.iItem);
 	}else
 		CCJListCtrl::OnLButtonDblClk(nFlags, point);
+}
+void CWatchList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if(nChar != 0x000000ff )//del
+		return;
+
+
+POSITION pos = GetFirstSelectedItemPosition();
+	if (pos == NULL)
+		return;
+
+	while (pos)
+	{
+		int nItem = GetNextSelectedItem(pos);
+		DeleteItem(nItem);
+	};
+
+	if(GetItemCount() == 0)
+		AddEmptyRow();
+
 }
 
 void CWatchList::AddEditItem(LVITEM &item)
