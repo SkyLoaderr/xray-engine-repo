@@ -34,6 +34,7 @@ public:
 	IC		const ALife::D_OBJECT_P_VECTOR	&spawns						() const;
 	IC		void							assign_artefact_position	(CSE_ALifeAnomalousZone	*anomaly, CSE_ALifeDynamicObject *object);
 	IC		const ALife::ITEM_SET_MAP		&artefact_anomaly_map		() const;
+	IC		bool							valid_spawn_id				(ALife::_SPAWN_ID spawn_id) const;
 };
 
 #include "alife_spawn_registry_inline.h"

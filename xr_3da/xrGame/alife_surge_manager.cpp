@@ -215,6 +215,8 @@ void CALifeSurgeManager::ballance_creatures()
 		D_OBJECT_P_MAP::const_iterator	I = objects().objects().begin();
 		D_OBJECT_P_MAP::const_iterator	E = objects().objects().end();
 		for ( ; I != E; ++I) {
+			if (!spawns().valid_spawn_id((*I).second->m_tSpawnID))
+				continue;
 //			Msg							("object %s, spawn group %d",(*I).second->s_name_replace,(*I).second->m_tSpawnID);
 			CSE_ALifeCreatureAbstract	*l_tpALifeCreatureAbstract = smart_cast<CSE_ALifeCreatureAbstract*>((*I).second);
 			CSE_ALifeGroupAbstract		*l_tpALifeGroupAbstract = smart_cast<CSE_ALifeGroupAbstract*>((*I).second);
