@@ -115,6 +115,7 @@
 #define CLSID_Z_FRYUP  				MK_CLSID('Z','_','F','R','Y','U','P ',' ')
 #define CLSID_Z_DEAD  				MK_CLSID('Z','_','D','E','A','D',' ',' ')
 #define CLSID_LEVEL_CHANGER			MK_CLSID('L','V','L','_','C','H','N','G')
+#define CLSID_SCRIPT_ZONE			MK_CLSID('S','C','R','I','P','T','Z','N')
 
 // Detectors
 #define CLSID_DETECTOR_SIMPLE		MK_CLSID('D','_','S','I','M','D','E','T')

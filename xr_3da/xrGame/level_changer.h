@@ -8,7 +8,8 @@
 
 #pragma once
 
-#include "CustomZone.h"
+#include "GameObject.h"
+#include "..\feel_touch.h"
 
 class CLevelChanger : public CGameObject, public Feel::Touch {
 private:

@@ -1696,6 +1696,16 @@
 							RelativePath=".\RadioactiveZone.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="ScriptZone"
+						Filter="">
+						<File
+							RelativePath=".\script_zone.cpp">
+						</File>
+						<File
+							RelativePath=".\script_zone.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="_lamp"

@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "level_changer.h"
+#include "actor.h"
 
 CLevelChanger::~CLevelChanger	()
 {

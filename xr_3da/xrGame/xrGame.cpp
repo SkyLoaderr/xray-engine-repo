@@ -841,109 +841,110 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "pda.h"
 
 #include "physicobject.h"
+#include "script_zone.h"
 
 extern "C" {
 	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
 	{
 		DLL_Pure*	P	= 0;
-		switch (cls)
-		{
-		case CLSID_GAME_LEVEL:			P = xr_new<CLevel>();				break;
-		case CLSID_GAME_PERSISTANT:		P = xr_new<CGamePersistent>();		break;
-		case CLSID_HUDMANAGER:			P = xr_new<CHUDManager>();			break;
-		case CLSID_OBJECT_ACTOR:		P = xr_new<CActor>();				break;
-		case CLSID_TARGET:				P = xr_new<CCustomTarget>();		break;
-		case CLSID_SPECTATOR:			P = xr_new<CSpectator>();			break;
+		switch (cls) {
+			case CLSID_GAME_LEVEL:			P = xr_new<CLevel>();				break;
+			case CLSID_GAME_PERSISTANT:		P = xr_new<CGamePersistent>();		break;
+			case CLSID_HUDMANAGER:			P = xr_new<CHUDManager>();			break;
+			case CLSID_OBJECT_ACTOR:		P = xr_new<CActor>();				break;
+			case CLSID_TARGET:				P = xr_new<CCustomTarget>();		break;
+			case CLSID_SPECTATOR:			P = xr_new<CSpectator>();			break;
 
-		case CLSID_AI_GRAPH:												break;
-		case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
-		case CLSID_AI_FLESH:			P = xr_new<CAI_Flesh>();			break;
-		case CLSID_AI_CHIMERA:			P = xr_new<CAI_Chimera>();			break;
-		case CLSID_AI_DOG_RED:			P = xr_new<CAI_Dog>();				break;
-		case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
-		case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
-		case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
-		case CLSID_AI_IDOL:				P = xr_new<CAI_Idol>();				break;
-		case CLSID_AI_BLOODSUCKER:		P = xr_new<CAI_Bloodsucker>();		break;
-		case CLSID_AI_BOAR:				P = xr_new<CAI_Boar>();				break;
+			case CLSID_AI_GRAPH:												break;
+			case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
+			case CLSID_AI_FLESH:			P = xr_new<CAI_Flesh>();			break;
+			case CLSID_AI_CHIMERA:			P = xr_new<CAI_Chimera>();			break;
+			case CLSID_AI_DOG_RED:			P = xr_new<CAI_Dog>();				break;
+			case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Soldier>();			break;
+			case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
+			case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
+			case CLSID_AI_IDOL:				P = xr_new<CAI_Idol>();				break;
+			case CLSID_AI_BLOODSUCKER:		P = xr_new<CAI_Bloodsucker>();		break;
+			case CLSID_AI_BOAR:				P = xr_new<CAI_Boar>();				break;
 
-		// Trader
-		case CLSID_AI_TRADER:			P = xr_new<CAI_Trader>();			break;
+			// Trader
+			case CLSID_AI_TRADER:			P = xr_new<CAI_Trader>();			break;
 
-		case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
-		case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;
+			case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
+			case CLSID_CAR_NIVA:			P = xr_new<CCar>();					break;
 
-		// Artifacts
-		case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
-		case CLSID_ARTEFACT:			P = xr_new<CArtifact>();			break;
+			// Artifacts
+			case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
+			case CLSID_ARTEFACT:			P = xr_new<CArtifact>();			break;
 
-		// Targets
-		case CLSID_TARGET_ASSAULT:		P = xr_new<CTargetAssault>();		break;
-		case CLSID_TARGET_CS_BASE:		P = xr_new<CTargetCSBase>();		break;
-		case CLSID_TARGET_CS_CASK:		P = xr_new<CTargetCSCask>();		break;
-		case CLSID_TARGET_CS:			P = xr_new<CTargetCS>();			break;
-			
-		case CLSID_OBJECT_W_FN2000:		P = xr_new<CWeaponFN2000>();		break;
-		case CLSID_OBJECT_W_AK74:		P = xr_new<CWeaponAK74>();			break;
-		case CLSID_OBJECT_W_LR300:		P = xr_new<CWeaponLR300>();			break;
-		case CLSID_OBJECT_W_HPSA:		P = xr_new<CWeaponHPSA>	();			break;
-		case CLSID_OBJECT_W_PM:			P = xr_new<CWeaponPM>	();			break;
-		case CLSID_OBJECT_A_PM:			P = xr_new<CWeaponAmmo>	();			break;
-		case CLSID_OBJECT_W_FORT:		P = xr_new<CWeaponFORT>	();			break;
-		case CLSID_OBJECT_W_BINOCULAR:	P = xr_new<CWeaponBinoculars>();	break;
-		case CLSID_OBJECT_W_SHOTGUN:	P = xr_new<CWeaponShotgun>();		break;
-		case CLSID_OBJECT_W_SVD:		P = xr_new<CWeaponSVD>();			break;
-		case CLSID_OBJECT_W_SVU:		P = xr_new<CWeaponSVU>();			break;
-		case CLSID_OBJECT_W_RPG7:		P = xr_new<CWeaponRPG7>();			break;
-		case CLSID_OBJECT_W_VAL:		P = xr_new<CWeaponVal>();			break;
-		case CLSID_OBJECT_W_VINTOREZ:	P = xr_new<CWeaponVintorez>();		break;
-		case CLSID_OBJECT_W_WALTHER:	P = xr_new<CWeaponWalther>();		break;
-		case CLSID_OBJECT_W_USP45:		P = xr_new<CWeaponUSP45>();			break;
-		case CLSID_OBJECT_W_GROZA:		P = xr_new<CWeaponGroza>();			break;
-		case CLSID_OBJECT_W_KNIFE:		P = xr_new<CWeaponKnife>();			break;
+			// Targets
+			case CLSID_TARGET_ASSAULT:		P = xr_new<CTargetAssault>();		break;
+			case CLSID_TARGET_CS_BASE:		P = xr_new<CTargetCSBase>();		break;
+			case CLSID_TARGET_CS_CASK:		P = xr_new<CTargetCSCask>();		break;
+			case CLSID_TARGET_CS:			P = xr_new<CTargetCS>();			break;
+				
+			case CLSID_OBJECT_W_FN2000:		P = xr_new<CWeaponFN2000>();		break;
+			case CLSID_OBJECT_W_AK74:		P = xr_new<CWeaponAK74>();			break;
+			case CLSID_OBJECT_W_LR300:		P = xr_new<CWeaponLR300>();			break;
+			case CLSID_OBJECT_W_HPSA:		P = xr_new<CWeaponHPSA>	();			break;
+			case CLSID_OBJECT_W_PM:			P = xr_new<CWeaponPM>	();			break;
+			case CLSID_OBJECT_A_PM:			P = xr_new<CWeaponAmmo>	();			break;
+			case CLSID_OBJECT_W_FORT:		P = xr_new<CWeaponFORT>	();			break;
+			case CLSID_OBJECT_W_BINOCULAR:	P = xr_new<CWeaponBinoculars>();	break;
+			case CLSID_OBJECT_W_SHOTGUN:	P = xr_new<CWeaponShotgun>();		break;
+			case CLSID_OBJECT_W_SVD:		P = xr_new<CWeaponSVD>();			break;
+			case CLSID_OBJECT_W_SVU:		P = xr_new<CWeaponSVU>();			break;
+			case CLSID_OBJECT_W_RPG7:		P = xr_new<CWeaponRPG7>();			break;
+			case CLSID_OBJECT_W_VAL:		P = xr_new<CWeaponVal>();			break;
+			case CLSID_OBJECT_W_VINTOREZ:	P = xr_new<CWeaponVintorez>();		break;
+			case CLSID_OBJECT_W_WALTHER:	P = xr_new<CWeaponWalther>();		break;
+			case CLSID_OBJECT_W_USP45:		P = xr_new<CWeaponUSP45>();			break;
+			case CLSID_OBJECT_W_GROZA:		P = xr_new<CWeaponGroza>();			break;
+			case CLSID_OBJECT_W_KNIFE:		P = xr_new<CWeaponKnife>();			break;
 
-		// Inventory
-		case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
-		case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;
-		case CLSID_IITEM_ANTIRAD:		P = xr_new<CAntirad>();				break;
-		case CLSID_IITEM_BREAD:			P = xr_new<CBread>();				break;
-		//Info Document
-		case CLSID_IITEM_DOCUMENT:		P = xr_new<CInfoDocument>();		break;
+			// Inventory
+			case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
+			case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;
+			case CLSID_IITEM_ANTIRAD:		P = xr_new<CAntirad>();				break;
+			case CLSID_IITEM_BREAD:			P = xr_new<CBread>();				break;
+			//Info Document
+			case CLSID_IITEM_DOCUMENT:		P = xr_new<CInfoDocument>();		break;
 
-		//Equipment outfit
-		case CLSID_EQUIPMENT_SCIENTIFIC:P = xr_new<CScientificOutfit>();	break;
-		case CLSID_EQUIPMENT_STALKER:	P = xr_new<CStalkerOutfit>();		break;
-		case CLSID_EQUIPMENT_MILITARY:	P = xr_new<CMilitaryOutfit>();		break;
-		case CLSID_EQUIPMENT_EXO:		P = xr_new<CExoOutfit>();			break;
+			//Equipment outfit
+			case CLSID_EQUIPMENT_SCIENTIFIC:P = xr_new<CScientificOutfit>();	break;
+			case CLSID_EQUIPMENT_STALKER:	P = xr_new<CStalkerOutfit>();		break;
+			case CLSID_EQUIPMENT_MILITARY:	P = xr_new<CMilitaryOutfit>();		break;
+			case CLSID_EQUIPMENT_EXO:		P = xr_new<CExoOutfit>();			break;
 
-		// Grenades
-		case CLSID_GRENADE_F1:			P = xr_new<CF1>();					break;
-		case CLSID_OBJECT_G_RPG7:		P = xr_new<CWeaponRPG7Grenade>();	break;
-		case CLSID_GRENADE_RGD5:		P = xr_new<CRGD5>();				break;
-		case CLSID_OBJECT_G_FAKE:		P = xr_new<CWeaponFakeGrenade>();	break;
+			// Grenades
+			case CLSID_GRENADE_F1:			P = xr_new<CF1>();					break;
+			case CLSID_OBJECT_G_RPG7:		P = xr_new<CWeaponRPG7Grenade>();	break;
+			case CLSID_GRENADE_RGD5:		P = xr_new<CRGD5>();				break;
+			case CLSID_OBJECT_G_FAKE:		P = xr_new<CWeaponFakeGrenade>();	break;
 
-		// Zones
-		case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;
-		case CLSID_Z_MBALD:				P = xr_new<CMosquitoBald>();		break;
-		case CLSID_Z_MINCER:			P = xr_new<CMincer>();				break;
-		case CLSID_Z_ACIDF:				P = xr_new<CMosquitoBald>();		break;
-		case CLSID_Z_GALANT:			P = xr_new<CMosquitoBald>();		break;
-		case CLSID_Z_RADIO:				P = xr_new<CRadioactiveZone>();		break;
-		case CLSID_Z_BFUZZ:				P = xr_new<CMosquitoBald>();		break;
-		case CLSID_Z_RUSTYH:			P = xr_new<CMosquitoBald>();		break;
-		case CLSID_Z_DEAD:				P = xr_new<CMosquitoBald>();		break;
-		case CLSID_LEVEL_CHANGER:		P = xr_new<CLevelChanger>();		break;
+			// Zones
+			case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;
+			case CLSID_Z_MBALD:				P = xr_new<CMosquitoBald>();		break;
+			case CLSID_Z_MINCER:			P = xr_new<CMincer>();				break;
+			case CLSID_Z_ACIDF:				P = xr_new<CMosquitoBald>();		break;
+			case CLSID_Z_GALANT:			P = xr_new<CMosquitoBald>();		break;
+			case CLSID_Z_RADIO:				P = xr_new<CRadioactiveZone>();		break;
+			case CLSID_Z_BFUZZ:				P = xr_new<CMosquitoBald>();		break;
+			case CLSID_Z_RUSTYH:			P = xr_new<CMosquitoBald>();		break;
+			case CLSID_Z_DEAD:				P = xr_new<CMosquitoBald>();		break;
+			case CLSID_LEVEL_CHANGER:		P = xr_new<CLevelChanger>();		break;
+			case CLSID_SCRIPT_ZONE:			P = xr_new<CScriptZone>();			break;
 
-		// Detectors
-		case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;
+			// Detectors
+			case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;
 
-		// Devices
-		case CLSID_DEVICE_TORCH:		P = xr_new<CTorch>();				break;
-		case CLSID_DEVICE_PDA:			P = xr_new<CPda>();					break;
+			// Devices
+			case CLSID_DEVICE_TORCH:		P = xr_new<CTorch>();				break;
+			case CLSID_DEVICE_PDA:			P = xr_new<CPda>();					break;
 
-		// entity
-		case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
-		case CLSID_OBJECT_PHYSIC:		P = xr_new<CPhysicObject>();			break;
+			// entity
+			case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
+			case CLSID_OBJECT_PHYSIC:		P = xr_new<CPhysicObject>();		break;
 		}
 		R_ASSERT2		(P,"Unknown object class");
 		P->SUB_CLS_ID	= cls;

@@ -199,7 +199,12 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject
 									CSE_ALifeDynamicObjectVisual(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeLevelChanger,CSE_ALifeDynamicObject,CSE_Shape)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape)
+									CSE_ALifeScriptZone		(LPCSTR caSection);
+	virtual							~CSE_ALifeScriptZone	();
+SERVER_ENTITY_DECLARE_END
+
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeLevelChanger,CSE_ALifeScriptZone)
 	_GRAPH_ID						m_tNextGraphID;
 	u32								m_dwNextNodeID;
 	Fvector							m_tNextPosition;

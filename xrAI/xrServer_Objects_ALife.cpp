@@ -552,9 +552,49 @@ void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeScriptZone
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeScriptZone::CSE_ALifeScriptZone(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
+{
+}
+
+CSE_ALifeScriptZone::~CSE_ALifeScriptZone()
+{
+}
+
+void CSE_ALifeScriptZone::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited1::STATE_Read		(tNetPacket,size);
+	cform_read					(tNetPacket);
+}
+
+void CSE_ALifeScriptZone::STATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::STATE_Write		(tNetPacket);
+	cform_write					(tNetPacket);
+}
+
+void CSE_ALifeScriptZone::UPDATE_Read	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Read		(tNetPacket);
+}
+
+void CSE_ALifeScriptZone::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited1::UPDATE_Write	(tNetPacket);
+}
+
+#ifdef _EDITOR
+void CSE_ALifeScriptZone::FillProp		(LPCSTR pref, PropItemVec& items)
+{
+	inherited1::FillProp		(pref,items);
+}
+#endif
+
+////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeLevelChanger
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
+CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScriptZone(caSection), CSE_Abstract(caSection)
 {
 	m_tNextGraphID				= _GRAPH_ID(-1);
 	m_dwNextNodeID				= u32(-1);
@@ -570,8 +610,7 @@ CSE_ALifeLevelChanger::~CSE_ALifeLevelChanger()
 
 void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
-	inherited1::STATE_Read		(tNetPacket,size);
-	cform_read					(tNetPacket);
+	inherited::STATE_Read		(tNetPacket,size);
 	if (m_wVersion < 34) {
 		tNetPacket.r_u32		();
 		tNetPacket.r_u32		();
@@ -590,7 +629,7 @@ void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 
 void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited1::STATE_Write		(tNetPacket);
+	inherited::STATE_Write		(tNetPacket);
 	cform_write					(tNetPacket);
 	tNetPacket.w				(&m_tNextGraphID,sizeof(m_tNextGraphID));
 	tNetPacket.w_u32			(m_dwNextNodeID);
@@ -604,18 +643,18 @@ void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
 
 void CSE_ALifeLevelChanger::UPDATE_Read	(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Read		(tNetPacket);
+	inherited::UPDATE_Read		(tNetPacket);
 }
 
 void CSE_ALifeLevelChanger::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
-	inherited1::UPDATE_Write	(tNetPacket);
+	inherited::UPDATE_Write		(tNetPacket);
 }
 
 #ifdef _EDITOR
 void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProp		(pref,items);
+	inherited::FillProp			(pref,items);
 	
 	CInifile					*Ini = 0;
 
