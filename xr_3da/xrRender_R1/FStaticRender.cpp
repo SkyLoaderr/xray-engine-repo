@@ -329,8 +329,10 @@ void CRender::Calculate				()
 
 			// update light-vis for current entity / actor
 			CObject*	O					= g_pGameLevel->CurrentViewEntity();
-			CROS_impl*	R					= (CROS_impl*) O->ROS();
-			R->update						(O);
+			if (O)		{
+				CROS_impl*	R					= (CROS_impl*) O->ROS();
+				R->update						(O);
+			}
 		}
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 		{
@@ -369,7 +371,7 @@ void CRender::Calculate				()
 							// track lighting environment
 							VERIFY				(renderable->renderable.ROS);
 							CROS_impl*		T = (CROS_impl*)renderable->renderable.ROS;
-							//. T->update			(renderable);
+							T->update			(renderable);
 						}
 						set_Object						(renderable);
 						renderable->renderable_Render	();
