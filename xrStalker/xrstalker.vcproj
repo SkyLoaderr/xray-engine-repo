@@ -1440,9 +1440,6 @@
 						RelativePath=".\scripts\xr_sound.script">
 					</File>
 					<File
-						RelativePath=".\scripts\xr_sounds.script">
-					</File>
-					<File
 						RelativePath=".\scripts\xr_spawner.script">
 					</File>
 					<File
