@@ -1360,6 +1360,7 @@ void CAI_Soldier::OnPointAtSmth()
 	vfSetMovementType(m_cBodyState,0);
 }
 
+/**
 void CAI_Soldier::OnLyingDown()
 {
 	WRITE_TO_LOG("Lying down...");
@@ -1401,6 +1402,7 @@ void CAI_Soldier::OnStandingUp()
 		GO_TO_PREV_STATE;
 	}
 }
+/**/
 
 void CAI_Soldier::OnPatrolHurt()
 {
@@ -1430,7 +1432,14 @@ void CAI_Soldier::OnPatrolHurt()
 	}
 	else {
 		r_torso_speed = 1*PI_DIV_2;
-		CHECK_IF_SWITCH_TO_NEW_STATE(m_cBodyState != BODY_STATE_LIE,aiSoldierLyingDown);
+		if (m_cBodyState != BODY_STATE_LIE) {
+			Lie();
+			if (m_cBodyState == BODY_STATE_STAND)
+				m_tpAnimationBeingWaited = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0];
+			else
+				m_tpAnimationBeingWaited = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0];
+			SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
+		}
 		r_torso_speed = TORSO_START_SPEED;
 		r_torso_target.yaw = r_torso_current.yaw;
 	}
@@ -1466,7 +1475,7 @@ void CAI_Soldier::OnHurtAloneDefend()
 
 	DWORD dwCurTime = Level().timeServer();
 	
-	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
 
 	INIT_SQUAD_AND_LEADER
 	
@@ -1500,7 +1509,7 @@ void CAI_Soldier::OnHurtAloneDefend()
 				SetDirectionLook();
 			}
 			else
-				vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+				vfSetMovementType(m_cBodyState,m_fMinSpeed);
 			break;
 		}
 		case BODY_STATE_CROUCH : {
@@ -1512,13 +1521,41 @@ void CAI_Soldier::OnHurtAloneDefend()
 		}
 		case BODY_STATE_LIE : {
 			if (dwCurTime - dwHitTime > 15000) {
-				SWITCH_TO_NEW_STATE(aiSoldierStandingUp);
+				if (m_cBodyState != BODY_STATE_STAND) {
+					StandUp();
+					m_tpAnimationBeingWaited = tSoldierAnimations.tLie.tGlobal.tpStandUp;
+					SWITCH_TO_NEW_STATE(aiSoldierWaitForAnimation);
+				}
 			}
 			else
 				vfSetMovementType(m_cBodyState,m_fMinSpeed);
 			break;
 		}
 	}
+}
+
+void CAI_Soldier::OnWaitingForAnimation()
+{
+	WRITE_TO_LOG("Waiting for animation...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	if (m_bStateChanged)
+		m_bActionStarted = true;
+		
+	CHECK_IF_GO_TO_PREV_STATE(!m_bActionStarted);
+}
+
+void CAI_Soldier::OnWaitingForTime()
+{
+	WRITE_TO_LOG("Waiting for time...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = Level().timeServer();
+		
+	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - m_dwLastRangeSearch > m_dwTimeBeingWaited);
 }
 
 void CAI_Soldier::Think()
@@ -1649,10 +1686,10 @@ void CAI_Soldier::Think()
 				OnPointAtSmth();
 				break;
 			}
-			case aiSoldierLyingDown : {
-				OnLyingDown();
-				break;
-			}
+//			case aiSoldierLyingDown : {
+//				OnLyingDown();
+//				break;
+//			}
 			case aiSoldierPatrolHurt : {
 				OnPatrolHurt();
 				break;
@@ -1665,8 +1702,16 @@ void CAI_Soldier::Think()
 				OnHurtAloneDefend();
 				break;
 			}
-			case aiSoldierStandingUp : {
-				OnStandingUp();
+//			case aiSoldierStandingUp : {
+//				OnStandingUp();
+//				break;
+//			}
+			case aiSoldierWaitForAnimation : {
+				OnWaitingForAnimation();
+				break;
+			}
+			case aiSoldierWaitForTime : {
+				OnWaitingForTime();
 				break;
 			}
 			/**/

@@ -57,13 +57,15 @@ class CAI_Soldier : public CCustomMonster
 		aiSoldierRecharge,
 		aiSoldierNoWeapon,
 		aiSoldierSteal,
-		aiSoldierStandingUp,
-		aiSoldierLyingDown,
+		//aiSoldierStandingUp,
+		//aiSoldierLyingDown,
 		aiSoldierAttackAim,
 		aiSoldierPointAtSmth,
 		aiSoldierPatrolHurt,
 		aiSoldierDefendFireAlone,
 		aiSoldierHurtAloneDefend,
+		aiSoldierWaitForAnimation,
+		aiSoldierWaitForTime,
 	};
 	
 	enum EGestureStates {
@@ -209,18 +211,19 @@ class CAI_Soldier : public CCustomMonster
 			SNormalAnimations	tNormal;
 			SCrouchAnimations	tCrouch;
 			SLieAnimations		tLie;
-		}SSoldierAnimations;
+		} SSoldierAnimations;
 
 		SSoldierAnimations	tSoldierAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
 		CMotionDef*			m_tpCurrentTorsoAnimation;
 		CMotionDef*			m_tpCurrentLegsAnimation;
+		CMotionDef*			m_tpAnimationBeingWaited;
 		CBlend*				m_tpCurrentGlobalBlend;
 		CBlend*				m_tpCurrentTorsoBlend;
 		CBlend*				m_tpCurrentLegsBlend;
 		char				m_cGestureState;
 		float				m_fAddAngle;
-
+		DWORD				m_dwTimeBeingWaited;
 		
 		// head turns
 		static void __stdcall HeadSpinCallback(CBoneInstance*);
@@ -242,7 +245,6 @@ class CAI_Soldier : public CCustomMonster
 //		float			m_fAddAngle;
 		
 		// action data
-		bool			m_bActionStarted;
 		bool			m_bJumping;
 		
 		// hit data
@@ -365,13 +367,15 @@ class CAI_Soldier : public CCustomMonster
 		void OnRecharge();
 		void OnNoWeapon();
 		void OnSteal();
-		void OnLyingDown();
-		void OnStandingUp();
+		//void OnLyingDown();
+		//void OnStandingUp();
 		void OnAttackAim();
 		void OnPointAtSmth();
 		void OnPatrolHurt();
 		void OnDefendFireAlone();
 		void OnHurtAloneDefend();
+		void OnWaitingForAnimation();
+		void OnWaitingForTime();
 
 		// miscellanious funtions	
 		void SelectSound(int &iIndex);
@@ -402,6 +406,7 @@ class CAI_Soldier : public CCustomMonster
 		void vfUpdateDynamicObjects();
 		void SetLook(Fvector tPosition);
 	public:
+		bool		  m_bActionStarted;
 					   CAI_Soldier();
 		virtual		  ~CAI_Soldier();
 		virtual void  Update(DWORD DT);

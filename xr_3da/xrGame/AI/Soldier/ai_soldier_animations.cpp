@@ -152,6 +152,12 @@ void CAI_Soldier::vfLoadAnimations()
 	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpIdle);
 }
 
+static void __stdcall vfPlayCallBack(CBlend* B)
+{
+	CAI_Soldier* tpSoldier = (CAI_Soldier*)B->CallbackParam;
+	tpSoldier->m_bActionStarted = false;
+}
+
 void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, float speed)
 {
 	//R_ASSERT(fsimilar(_view.magnitude(),1));
@@ -198,39 +204,44 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	}
 		/**/
 		switch (eCurrentState) {
-			case aiSoldierLyingDown : {
-				switch (m_cBodyState) {
-					case BODY_STATE_STAND : {
-						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
-						break;
-					}
-					case BODY_STATE_CROUCH : {
-						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1];
-						break;
-					}
-					case BODY_STATE_LIE : {
-						break;
-					}
-				}
+			case aiSoldierWaitForAnimation : {
+				tpGlobalAnimation = m_tpAnimationBeingWaited;
 				tpTorsoAnimation = tpLegsAnimation = 0;
 				break;
 			}
-			case aiSoldierStandingUp : {
-				switch (m_cBodyState) {
-					case BODY_STATE_STAND : {
-						break;
-					}
-					case BODY_STATE_CROUCH : {
-						break;
-					}
-					case BODY_STATE_LIE : {
-						tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpStandUp;
-						break;
-					}
-				}
-				tpTorsoAnimation = tpLegsAnimation = 0;
-				break;
-			}
+//			case aiSoldierLyingDown : {
+//				switch (m_cBodyState) {
+//					case BODY_STATE_STAND : {
+//						tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1];
+//						break;
+//					}
+//					case BODY_STATE_CROUCH : {
+//						tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[1];
+//						break;
+//					}
+//					case BODY_STATE_LIE : {
+//						break;
+//					}
+//				}
+//				tpTorsoAnimation = tpLegsAnimation = 0;
+//				break;
+//			}
+//			case aiSoldierStandingUp : {
+//				switch (m_cBodyState) {
+//					case BODY_STATE_STAND : {
+//						break;
+//					}
+//					case BODY_STATE_CROUCH : {
+//						break;
+//					}
+//					case BODY_STATE_LIE : {
+//						tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpStandUp;
+//						break;
+//					}
+//				}
+//				tpTorsoAnimation = tpLegsAnimation = 0;
+//				break;
+//			}
 //			case aiSoldierJumping : {
 //				switch (m_cBodyState) {
 //					case BODY_STATE_STAND : {
@@ -585,7 +596,10 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 		//Msg("restarting animation..."); 
 		m_tpCurrentGlobalAnimation = tpGlobalAnimation;
 		if (tpGlobalAnimation) {
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
+			if (eCurrentState == aiSoldierWaitForAnimation)
+				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation,TRUE,vfPlayCallBack,this);
+			else
+				m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tpGlobalAnimation);
 		}
 	}
 
