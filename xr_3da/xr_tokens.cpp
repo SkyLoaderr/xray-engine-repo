@@ -40,10 +40,8 @@ xr_token							snd_model_token							[ ]={
 	{ 0,							0											}
 };
 xr_token							vid_mode_token							[ ]={
-#ifdef DEBUG
 	{ "160x120",					160											},
 	{ "320x240",					320											},
-#endif
 	{ "512x384",					512											},
 	{ "640x480",					640											},
 	{ "800x600",					800											},
