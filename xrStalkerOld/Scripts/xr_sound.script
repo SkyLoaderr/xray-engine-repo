@@ -65,8 +65,8 @@ snd_files = {
 	gar_dm_newbie_help_me          = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]],
 	gar_dm_newbie_thank_you        = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_thank_you_]],
 	
-	val_prisoner_captive_help_me   = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]]
-	bar_dolg_base_guard_backoff	   = [[characters_voice\human_01\scenario\guard_novice_camp\guard_novice_camp_stop_tutorial_1]]
+	val_prisoner_captive_help_me   = [[characters_voice\human_01\scenario\dramatic_garbage\dramatic_newbie_help_me_]],
+	bar_dolg_base_guard_backoff	   = [[characters_voice\human_01\scenario\guard_novice_camp\guard_novice_camp_stop_tutorial_1]],
 	bar_dolg_base_guard_no_talk	   = [[characters_voice\human_01\talk\rejection\stalker\rejection_2]]
 }
 -----------------------------------------------------------------------------------------------------------------------------------
