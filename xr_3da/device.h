@@ -123,7 +123,8 @@ public:
 	CRITICAL_SECTION	mt_csLeave;
 	volatile BOOL		mt_bMustExit;
 };
-extern ENGINE_API CRenderDevice Device;
+
+extern		ENGINE_API CRenderDevice Device;
 
 #include "R_Backend_Runtime.h"
 
