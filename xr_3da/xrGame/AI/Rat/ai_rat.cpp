@@ -194,8 +194,9 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_fAttackAngle					= tpSE_Rat->fAttackAngle/180.f*PI;
 	m_fAttackSuccessProbability		= tpSE_Rat->fAttackSuccessProbability;
 
-	m_tCurGP						= tpSE_Rat->m_tGraphID;
-	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
+//	m_tCurGP						= tpSE_Rat->m_tGraphID;
+//	m_tNextGP						= tpSE_Rat->m_tNextGraphID;
+	m_tCurGP						= m_tNextGP = game_vertex_id();
 
 	int								iPointCount	= (int)vertex_types().size();
 	for (int j=0; j<iPointCount; ++j)
