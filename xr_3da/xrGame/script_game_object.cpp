@@ -244,7 +244,7 @@ LPCSTR CScriptGameObject::WhoHitSectionName()
 						dynamic_cast<CEntityCondition*>(m_tpGameObject);
 	
 	if (pEntityCondition)
-		return			(*pEntityCondition->GetWhoHitLastTime()->cNameSect());
+		return			pEntityCondition->GetWhoHitLastTime()?(*pEntityCondition->GetWhoHitLastTime()->cNameSect()):NULL;
 	else 
 	{
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptGameObject : cannot access class member  WhoHitName()");
