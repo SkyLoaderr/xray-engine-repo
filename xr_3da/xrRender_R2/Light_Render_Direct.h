@@ -12,7 +12,7 @@ private:
 
 	SGeometry*						g_debug;
 	Shader*							s_debug;
-private:
+public:
 	Fmatrix							L_view;
 	Fmatrix							L_project;
 public:
