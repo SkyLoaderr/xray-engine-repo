@@ -138,7 +138,7 @@ void CGrenade::OnAnimationEnd()
 				m_pInventory->SetActiveSlot(NO_ACTIVE_SLOT);
 			}
 		
-			if(dynamic_cast<CActor*>(H_Parent()))
+			if(dynamic_cast<CActor*>(H_Parent()) && m_pInventory)
 			{
 				//найти такую же гранату и положить в рюкзак
 				CGrenade *pNext = dynamic_cast<CGrenade*>(m_pInventory->Same(this,false));

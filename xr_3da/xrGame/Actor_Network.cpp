@@ -108,7 +108,9 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 
 	float health;
 	P.r_float_q16 (health,-1000,1000);
-	fEntityHealth = health;
+	//----------- for E3 -----------------------------
+	if (OnClient())fEntityHealth = health;
+	//------------------------------------------------
 
 	float				fDummy;
 	u32					dwDummy;
@@ -119,8 +121,13 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_angle8			(N.o_model		);
 	P.r_angle8			(N.o_torso.yaw	);
 	P.r_angle8			(N.o_torso.pitch);
-	unaffected_r_torso_yaw	 = N.o_torso.yaw;
-	unaffected_r_torso_pitch = N.o_torso.pitch;
+	//----------- for E3 -----------------------------
+	if (OnClient())
+	//------------------------------------------------
+	{
+		unaffected_r_torso_yaw	 = N.o_torso.yaw;
+		unaffected_r_torso_pitch = N.o_torso.pitch;
+	};
 
 	P.r_float			(fDummy);
 	P.r_u32				(dwDummy);
@@ -129,16 +136,36 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	P.r_u16				(tmp			); N.mstate = u32(tmp);
 	P.r_sdir			(N.p_accel		);
 	P.r_sdir			(N.p_velocity	);
-	P.r_float_q16		(fArmor,-1000,1000);
+	float				fRArmor;
+	P.r_float_q16		(fRArmor,-1000,1000);
+	//----------- for E3 -----------------------------
+	if (OnClient())		fArmor = fRArmor;
+	//------------------------------------------------
 
 	u8					ActiveSlot;
 	P.r_u8				(ActiveSlot);
-	if (ActiveSlot == 0xff) inventory().SetActiveSlot(NO_ACTIVE_SLOT);
-	else inventory().Activate(u32(ActiveSlot));
+	
+	//----------- for E3 -----------------------------
+	if (OnClient())
+	//------------------------------------------------
+	{
+		if (ActiveSlot == 0xff) inventory().SetActiveSlot(NO_ACTIVE_SLOT);
+		else inventory().Activate(u32(ActiveSlot));
+	}
+	//----------- for E3 -----------------------------
+	if (Local() && OnClient()) return;
 	//-------------------------------------------------
-	if (!NET.empty() && N.dwTimeStamp <= NET.back().dwTimeStamp) return;
-	NET.push_back			(N);
-	if (NET.size()>5) NET.pop_front();
+	if (!NET.empty() && N.dwTimeStamp < NET.back().dwTimeStamp) return;
+
+	if (!NET.empty() && N.dwTimeStamp == NET.back().dwTimeStamp)
+	{
+		NET.back() = N;
+	}
+	else
+	{
+		NET.push_back			(N);
+		if (NET.size()>5) NET.pop_front();
+	}	
 	//-----------------------------------------------
 	net_Import_Base_proceed	();
 	//-----------------------------------------------
@@ -205,7 +232,11 @@ void		CActor::net_Import_Physic			( NET_Packet& P)
 {
 	net_update_A			N_A;
 
-	N_A.dwTimeStamp			= NET.back().dwTimeStamp;
+	if (!NET.empty())
+		N_A.dwTimeStamp			= NET.back().dwTimeStamp;
+	else
+		N_A.dwTimeStamp			= Level().timeServer();
+
 	P.r_u8					( *((u8*)&(N_A.State.enabled)) );
 
 	P.r_vec3				( N_A.State.angular_vel);
@@ -226,13 +257,21 @@ void		CActor::net_Import_Physic			( NET_Packet& P)
 
 	N_A.State.previous_position	= N_A.State.position;
 	N_A.State.previous_quaternion = N_A.State.quaternion;
+	//----------- for E3 -----------------------------
+	if (Local() && OnClient()) return;
 	//-----------------------------------------------
-	if (!NET_A.empty() && N_A.dwTime1 <= NET_A.back().dwTime1) return;
+	if (!NET_A.empty() && N_A.dwTime1 < NET_A.back().dwTime1) return;
+	if (!NET_A.empty() && N_A.dwTime1 == NET_A.back().dwTime1)
+	{
+		NET_A.back() = N_A;
+	}
+	else
+	{
+		NET_A.push_back			(N_A);
+		if (NET_A.size()>5) NET_A.pop_front();
+	}
 
 	if (!NET_A.empty()) m_bInterpolate = true;
-
-	NET_A.push_back			(N_A);
-	if (NET_A.size()>5) NET_A.pop_front();
 	//-----------------------------------------------
 	net_Import_Physic_proceed();
 	//-----------------------------------------------
@@ -245,7 +284,9 @@ void	CActor::net_Import_Physic_proceed	( )
 	net_update N		= NET.back();
 	net_update_A N_A	= NET_A.back();
 
-	if (Remote())
+	//----------- for E3 -----------------------------
+	if (Remote() || OnServer())
+	//------------------------------------------------
 	{
 		m_bHasUpdate = true;
 
@@ -285,7 +326,7 @@ void	CActor::net_Import_Physic_proceed	( )
 };
 
 void CActor::net_Import		(NET_Packet& P)					// import from server
-{	
+{
 	if (Level().timeServer() != g_dwLastUpdateTime)
 	{
 		g_dwNumUpdates++;
@@ -331,6 +372,10 @@ void CActor::NetInput_Save()
 {
 	net_input	NI;
 
+	//----------- for E3 -----------------------------
+//	if (Local() && OnClient()) return;
+	//-------------------------------------------------
+
 	if (getSVU() || !g_Alive()) return; //don't need to store/send input on server
 
 	//Store Input
@@ -344,11 +389,18 @@ void CActor::NetInput_Save()
 	if (!NET_InputStack.empty() && NET_InputStack.back().m_dwTimeStamp == NI.m_dwTimeStamp)
 		NET_InputStack.pop_back();
 
+	if (NET_InputStack.size()>5)
+		NET_InputStack.pop_back();
+
 	NET_InputStack.push_back(NI);
 }
 
 void	CActor::NetInput_Send()
 {
+	//----------- for E3 -----------------------------
+//	if (Local() && OnClient()) return;
+	//-------------------------------------------------
+
 	if (getSVU() || !g_Alive()) return; //don't need to store/send input on server
 
 	//Send Input
@@ -365,7 +417,7 @@ void	CActor::NetInput_Send()
 	NP.w_float		(NI.cam_yaw		);
 	NP.w_float		(NI.cam_pitch	);
 
-	if (Level().net_HasBandwidth()) 
+//	if (Level().net_HasBandwidth()) 
 	{ 
 		Level().Send	(NP,net_flags(TRUE,TRUE));
 	};
@@ -593,7 +645,9 @@ void CActor::PH_B_CrPr		()	// actions & operations before physic correction-pred
 	if (!pSyncObj) return;
 	///////////////////////////////////////////////
 
-	if (Local())
+	//----------- for E3 -----------------------------
+	if (Local() && OnClient())
+	//------------------------------------------------
 	{
 		PHUnFreeze();
 
@@ -643,7 +697,9 @@ void CActor::PH_I_CrPr		()		// actions & operations between two phisic predictio
 	////////////////////////////////////
 	pSyncObj->get_State(RecalculatedState);
 
-	if (Local())
+	//----------- for E3 -----------------------------
+	if (Local() && OnClient())
+	//------------------------------------------------
 	{
 		NetInput_Update(g_dwTime1);
 	};
@@ -660,7 +716,9 @@ void CActor::PH_A_CrPr		()
 	if (!pSyncObj) return;
 	////////////////////////////////////
 	pSyncObj->get_State(PredictedState);
-	if (Local())
+	//----------- for E3 -----------------------------
+	if (Local() && OnClient())
+	//------------------------------------------------
 	{
 		xr_deque<net_input>::iterator	B = NET_InputStack.begin();
 		xr_deque<net_input>::iterator	E = NET_InputStack.end();
@@ -716,26 +774,12 @@ void CActor::make_Interpolation	()
 			{
 				float factor = float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
 
-//				Position().lerp(IStartPos, IEndPos, factor);
 				Position().lerp(IStart.Pos, IEnd.Pos, factor);
-				/*
-				if (Remote())
-				{
-					r_model_yaw					= angle_lerp(IStart.o_model, IEnd.o_model, factor);
-					unaffected_r_torso_yaw		= angle_lerp(IStart.o_torso.yaw, IEnd.o_torso.yaw, factor);
-					unaffected_r_torso_pitch	= angle_lerp(IStart.o_torso.pitch, IEnd.o_torso.pitch, factor);
-				};
-				*/
 
-				/*
-				o_model			= angle_lerp	(A.o_model,B.o_model,		f);
-				o_torso.yaw		= angle_lerp	(A.o_torso.yaw,B.o_torso.yaw,f);
-				o_torso.pitch	= angle_lerp	(A.o_torso.pitch,B.o_torso.pitch,f);
-				*/
+				g_Orientate				(NET_Last.mstate,0			);
 
-				g_Orientate					(NET_Last.mstate,0			);
-
-				cam_Active()->Set		(-unaffected_r_torso_yaw,unaffected_r_torso_pitch,0);		// set's camera orientation
+				if (OnClient())
+					cam_Active()->Set		(-unaffected_r_torso_yaw,unaffected_r_torso_pitch,0);		// set's camera orientation
 			};
 		};
 	};

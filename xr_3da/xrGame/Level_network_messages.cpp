@@ -80,6 +80,16 @@ void CLevel::ClientReceive()
 				if (0 == O)		break;
 				O->net_ImportInput(*P);
 			}break;
+		//----------- for E3 -----------------------------
+		case M_CL_UPDATE:
+			{
+				P->r_u16		(ID);
+				u8  size;	P->r_u8	(size);
+				CObject*	O	= Objects.net_Find		(ID);
+				if (0 == O)		break;
+				O->net_Import(*P);
+			}break;
+		//------------------------------------------------
 		case M_GAMEMESSAGE:
 			{
 				Game().OnGameMessage(*P);

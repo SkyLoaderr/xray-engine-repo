@@ -162,6 +162,7 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 				Process_spawn		(P,sender);	
 		}break;
 	case M_EVENT:	Process_event		(P,sender); break;	
+	case M_CL_UPDATE:
 	case M_CL_INPUT:
 		{
 			xrClientData* CL		= ID_to_client	(sender);

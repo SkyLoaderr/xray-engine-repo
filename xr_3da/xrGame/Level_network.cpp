@@ -19,9 +19,29 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend	()
 {
-	if (!net_HasBandwidth() || OnClient())	return;
+	if (!net_HasBandwidth()) return;
 	NET_Packet				P;
 	u32						start	= 0;
+	//----------- for E3 -----------------------------
+	if (OnClient()) 
+	{
+		if (!CurrentEntity()) return;
+		CObject* pObj = CurrentEntity();
+		if (pObj->getDestroy()) return;
+
+		P.w_begin		(M_CL_UPDATE);
+
+		u32			position;
+		P.w_u16			(u16(pObj->ID())	);
+		P.w_chunk_open8	(position);
+		pObj->net_Export			(P);
+		P.w_chunk_close8	(position);
+		
+		if (P.B.count>5)				Send	(P, net_flags(FALSE));
+		return;
+	};
+	//-------------------------------------------------
+
 	while (1)				{
 		P.w_begin						(M_UPDATE);
 		start	= Objects.net_Export	(&P, start, 48);
@@ -45,7 +65,7 @@ void CLevel::net_Update	()
 	Device.Statistic.netClient.End		();
 
 	// If server - perform server-update
-	if (Server)	{
+	if (Server && OnServer())	{
 		Device.Statistic.netServer.Begin();
 		Server->Update					();
 		Device.Statistic.netServer.End	();

@@ -69,6 +69,13 @@ void	game_sv_ArtefactHunt::OnRoundStart			()
 	m_delayedRoundEnd = false;
 	m_dwArtefactSpawnTime = 0;
 	m_ArtefactsSpawnedTotal = 0;
+	
+	m_ArtefactBearerID = 0;
+	m_TeamInPosession = 0;
+	m_dwArtefactRemoveTime = -1;
+
+	m_ArtefactsSpawnedTotal = 0;
+	m_dwArtefactID = 0;
 
 /*
 	// Respawn all players and some info
@@ -431,6 +438,9 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 	m_dwArtefactSpawnTime = -1;
 	m_dwArtefactRemoveTime = 0;
 
+	m_ArtefactBearerID = 0;
+	m_TeamInPosession = 0;
+
 	m_ArtefactsSpawnedTotal++;
 };
 
@@ -447,6 +457,9 @@ void	game_sv_ArtefactHunt::RemoveArtefact			()
 	//-----------------------------------------------
 	m_dwArtefactSpawnTime = 0;
 	m_dwArtefactRemoveTime = -1;
+
+	m_ArtefactBearerID = 0;
+	m_TeamInPosession = 0;
 };
 
 void	game_sv_ArtefactHunt::Update			()
@@ -497,6 +510,17 @@ void	game_sv_ArtefactHunt::Update			()
 						{
 							RemoveArtefact();
 						};
+					};
+				};
+				if (m_dwArtefactID != 0)
+				{
+					CSE_Abstract*		E	= get_entity_from_eid	(m_dwArtefactID);
+					if (!E) 
+					{
+						m_dwArtefactSpawnTime = 0;
+						m_dwArtefactRemoveTime = -1;
+						m_ArtefactBearerID = 0;
+						m_TeamInPosession = 0;
 					};
 				};
 			}break;

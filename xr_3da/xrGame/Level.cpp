@@ -193,7 +193,9 @@ void CLevel::OnFrame	()
 		}
 	}
 	//Net sync
+	Device.Statistic.TEST2.Begin();
 	if (m_bNeed_CrPr)					make_NetCorrectionPrediction();
+	Device.Statistic.TEST2.End();
 
 	// Inherited update
 	inherited::OnFrame					();
@@ -240,7 +242,9 @@ void CLevel::OnFrame	()
 	ai().script_engine().script_processor("level")->update();
 
 	//просчитать полет пуль
+	Device.Statistic.TEST0.Begin();
 	BulletManager().Update	();
+	Device.Statistic.TEST0.End();
 }
 
 void CLevel::OnRender()
@@ -248,7 +252,9 @@ void CLevel::OnRender()
 	inherited::OnRender	();
 	
 	//отрисовать трассы пуль
+	Device.Statistic.TEST1.Begin();
 	BulletManager().Render();
+	Device.Statistic.TEST1.End();
 	//отрисовать интерфейc пользователя
 	HUD().RenderUI();
 
