@@ -318,6 +318,10 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 	m_fDistanceFromPoint		= 0.0f;
 	m_fDistanceToPoint			= 0.0f;
 	m_tpaTerrain.clear			();
+
+	if (pSettings->line_exist(caSection,"monster_section"))
+		caSection				= pSettings->r_string(caSection,"monster_section");
+
 	m_fMaxHealthValue	 		= pSettings->r_float	(caSection,"MaxHealthValue");
 	if (pSettings->line_exist(caSection,"hit_power")) {
 		m_fHitPower				= pSettings->r_float(caSection,"hit_power");
@@ -334,24 +338,17 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 		svector<float,eHitTypeMax>::iterator	B = m_fpImmunityFactors.begin(), I = B;
 		svector<float,eHitTypeMax>::iterator	E = m_fpImmunityFactors.end();
 		for ( ; I != E; I++)
-			*I						= pSettings->r_float(caSection,strcat(strcpy(S,g_cafHitType2String(EHitType(I - B))),"_immunity"));
+			*I					= pSettings->r_float(caSection,strcat(strcpy(S,g_cafHitType2String(EHitType(I - B))),"_immunity"));
 	}
 
 	if (pSettings->line_exist(caSection,"retreat_threshold"))
 		m_fRetreatThreshold		= pSettings->r_float(caSection,"retreat_threshold");
 	else
 		m_fRetreatThreshold		= 0.2f;
-	m_fEyeRange					= pSettings->r_float(caSection,"eye_range");;
+	m_fEyeRange					= pSettings->r_float(caSection,"eye_range");
 
-	LPCSTR						S;
-	if (pSettings->line_exist(caSection,"monster_section")) {
-		S						= pSettings->r_string	(pSettings->r_string(caSection,"monster_section"),"terrain");
-		m_fGoingSpeed			= pSettings->r_float	(pSettings->r_string(caSection,"monster_section"), "going_speed");
-	}
-	else {
-		S						= pSettings->r_string	(caSection,"terrain");
-		m_fGoingSpeed			= pSettings->r_float	(caSection, "going_speed");
-	}
+	m_fGoingSpeed				= pSettings->r_float(caSection, "going_speed");
+	LPCSTR						S = pSettings->r_string(caSection,"terrain");
 	u32							N = _GetItemCount(S);
 	R_ASSERT					(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
 	STerrainPlace				tTerrainPlace;
