@@ -67,10 +67,14 @@ void CRender::Render	()
 		Device.Statistic.RenderDUMP.Begin		();
 		{
 			Target.phase_accumulator				();
-			Target.accum_direct						(dls_phase);
+			Target.shadow_direct					(dls_phase);
 		}
 		Device.Statistic.RenderDUMP.End			();
 	}
+
+	// Multiply by lighting contribution
+	Target.phase_accumulator				();
+	Target.accum_direct						();
 
 	// Postprocess
 	Target.phase_combine					();

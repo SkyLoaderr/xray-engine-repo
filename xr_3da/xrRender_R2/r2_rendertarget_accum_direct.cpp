@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void CRenderTarget::accum_direct	(u32 dls_phase)
+void CRenderTarget::shadow_direct	(u32 dls_phase)
 {
 	// *** assume accumulator setted up ***
 	float			z_bias				= dls_phase?0.006f:0.003f;
@@ -97,4 +97,35 @@ void CRenderTarget::accum_direct	(u32 dls_phase)
 			RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 		}
 	}
+}
+
+void CRenderTarget::accum_direct()
+{
+	u32		Offset;
+	u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
+	float	_w					= float(Device.dwWidth);
+	float	_h					= float(Device.dwHeight);
+
+	Fvector2					p0,p1;
+	p0.set						(.5f/_w, .5f/_h);
+	p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
+
+	// Fill vertex buffer
+	float	d_Z	= EPS_S, d_W = 1.f;
+	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+	pv->set						(EPS,			float(_h+EPS),	d_Z,	d_W, C, p0.x, p1.y);	pv++;
+	pv->set						(EPS,			EPS,			d_Z,	d_W, C, p0.x, p0.y);	pv++;
+	pv->set						(float(_w+EPS),	float(_h+EPS),	d_Z,	d_W, C, p1.x, p1.y);	pv++;
+	pv->set						(float(_w+EPS),	EPS,			d_Z,	d_W, C, p1.x, p0.y);	pv++;
+	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
+	RCache.set_Geometry			(g_combine);
+	RCache.set_Element			(s_accum_direct->E[2]);
+
+	// Constants
+	Fvector		L_dir;
+	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
+	L_dir.normalize				();
+	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
+	RCache.set_c				("light_color",		1,1,1,1);
+	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
