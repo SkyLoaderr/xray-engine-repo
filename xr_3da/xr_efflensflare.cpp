@@ -279,8 +279,8 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares){
 	HW.pDevice->SetTransform	( D3DTS_WORLD, precalc_identity.d3d());
 
 	for (DWORD i=0; i<rlist.size(); i++){
-		Device.Shader.Set(rlist[i]->hShader);
-		Device.Primitive.DrawSubset(P,i*4,4,i*6,2);
+		Device.Shader.set_Shader	(rlist[i]->hShader);
+		Device.Primitive.DrawSubset	(P,i*4,4,i*6,2);
 	}
 }
 

@@ -10,11 +10,17 @@
 CFontBase::CFontBase()
 {
 	Stream = Device.Streams.Create(FVF::F_TL,MAX_CHARS*4);
+	OnDeviceCreate	();
 }
 
 CFontBase::~CFontBase()
 {
-	Device.Shader.Delete(pShader);
+	OnDeviceDestroy	();
+}
+
+void CFontBase::OnDeviceDestroy()
+{
+	Device.Shader.Delete	(pShader);
 }
 
 #ifndef RGBA_GETALPHA
@@ -26,7 +32,7 @@ CFontBase::~CFontBase()
 
 void CFontBase::OnRender()
 {
-	Device.Shader.Set	(pShader);
+	Device.Shader.set_Shader	(pShader);
 	Fvector2 UVSize;	UVSize.set(1.f/float(iNumber),1.f/float(iNumber));
 	Fvector2 HalfPixel;	HalfPixel.set(.5f/TextureSize.x,.5f/TextureSize.y);
 

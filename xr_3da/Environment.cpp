@@ -279,18 +279,18 @@ void CEnvironment::RenderFirst()
 				E = pV->chields.end		();
 				for (; I!=E; I++)		
 				{
-					FBasicVisual* V		= *I;
-					Device.Shader.Set	(V->hShader);
-					CHK_DX				(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
-					V->Render			(1.f);
+					FBasicVisual* V				= *I;
+					Device.Shader.set_Shader	(V->hShader);
+					CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
+					V->Render					(1.f);
 				}
 					
 			}
 			break;
 		default:
-			Device.Shader.Set	(pSkydome->hShader);
-			CHK_DX				(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
-			pSkydome->Render	(1.f);
+			Device.Shader.set_Shader	(pSkydome->hShader);
+			CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
+			pSkydome->Render			(1.f);
 			break;
 		}
 	}

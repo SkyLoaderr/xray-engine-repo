@@ -14,9 +14,10 @@ protected:
 	IC virtual	float		GetRealHeight(float sz)	{return (sz*TextureSize.y/iNumber)*scale;}
 	IC virtual	float		GetCurrentSize()		{return fCurrentSize*TextureSize.y/iNumber;}
 public:
-					CFontHUD	();
-	void			SetScale	(float sc){scale=sc;}
-	float			GetScale	(){return scale;}
+	virtual	void	OnDeviceCreate	();
+
+	void			SetScale		(float sc)	{scale=sc;		}
+	float			GetScale		()			{return scale;	}
 };
 
 #endif // _XR_HUDFONT_H_

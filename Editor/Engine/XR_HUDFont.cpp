@@ -6,9 +6,11 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CFontHUD::CFontHUD()
+void CFontHUD::OnDeviceCreate()
 {
-	pShader = Device.Shader.Create("font","fonts\\font_hud",false);
+	if (!Device.bReady)	return;
+	
+	pShader = Device.Shader.Create("font","fonts\\font_hud");
 
 	TextureSize.x	= 128;
 	TextureSize.y	= 128;
@@ -20,8 +22,8 @@ CFontHUD::CFontHUD()
 //	CharMap[' ']=-1;
 
 	// Default params
-	Color(0xFFFFFFFF);
-	Size (1.f);
+	Color	(0xFFFFFFFF);
+	Size	(1.f);
 	Interval(0.75f,1.f);
 	SetScale(1.f);
 }

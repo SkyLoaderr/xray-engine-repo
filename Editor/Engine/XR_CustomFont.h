@@ -4,7 +4,7 @@
 
 class ENGINE_API CFontBase
 #ifdef ENGINE_BUILD
-	:public pureRender
+	:public pureRender, pureDeviceDestroy, pureDeviceCreate
 #endif
 {
 	struct String {
@@ -47,10 +47,11 @@ public:
 	void					OutSet	(float x, float y) { fCurrentX=x; fCurrentY=y; }
 	void __cdecl            OutNext	(char *fmt, ...);
 	void __cdecl            OutPrev	(char *fmt, ...);
-	void					OutSkip	()	{ 	fCurrentY += fCurrentSize*2.f; }
+	IC void					OutSkip	()	{ 	fCurrentY += fCurrentSize*2.f; }
 	void __cdecl 			Out		(float _x, float _y, char *fmt, ...);
 
-	virtual void			OnRender(void);
+	virtual void			OnRender		();
+	virtual void			OnDeviceDestroy	();
 
 	IC	void				Clear	()  { strings.clear(); }
 };

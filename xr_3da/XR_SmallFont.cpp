@@ -7,11 +7,9 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CFontSmall::CFontSmall()
+void CFontSmall::OnDeviceCreate()
 {
-//	FILE_NAME tex_name;
-//	pSettings->ReadString	( "interface", "font_small", tex_name );
-	pShader = Device.Shader.Create("font","fonts\\small",false);
+	pShader			= Device.Shader.Create("font","fonts\\small");
 
 	TextureSize.x	= 256;
 	TextureSize.y	= 256;
@@ -22,7 +20,7 @@ CFontSmall::CFontSmall()
 	CharMap[' ']=-1;
 
 	// Default params
-	Color(D3DCOLOR_RGBA(0x00,0x00,0xff,0xff));
-	Size (0.025f);
+	Color	(D3DCOLOR_RGBA(0x00,0x00,0xff,0xff));
+	Size	(0.025f);
 	Interval(0.65f,1.f);
 }

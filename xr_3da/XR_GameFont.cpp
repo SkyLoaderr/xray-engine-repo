@@ -6,17 +6,15 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
-CFontGame::CFontGame()
+void	CFontGame::OnDeviceCreate	()
 {
-//	FILE_NAME tex_name;
-//	pSettings->ReadString	( "interface", "font_game", tex_name );
-	pShader = Device.Shader.Create("font","fonts\\game",false);
+	if (!Device.bReady)	return;
 
+	pShader			= Device.Shader.Create	("font","fonts\\game");
 	TextureSize.x	= 256;
 	TextureSize.y	= 256;
 	iNumber			= 8;
-
+	
 	// Character map
 	int i;
 	for (i=0; i<256; CharMap[i++]=-1);
@@ -25,9 +23,9 @@ CFontGame::CFontGame()
 	for (i=0; i<10;  i++) CharMap[i+'0']=i+52;
 	CharMap[':']=62;
 	CharMap['!']=63;
-
+	
 	// Default params
-	Color(D3DCOLOR_RGBA(0x66,0xFB,0x23,0xff));
-	Size (0.05f);
+	Color	(D3DCOLOR_RGBA(0x66,0xFB,0x23,0xff));
+	Size	(0.05f);
 	Interval(0.65f,1.f);
 }
