@@ -372,22 +372,22 @@ int luaX_lex (LexState *ls, SemInfo *seminfo) {
         return TK_EOS;
       }
 	  case '/':	{
-		  next(LS);
-		  if (LS->current == '/') {
-			  while (LS->current != '\n' && LS->current != EOZ)
-				  next(LS);
+		  next(ls);
+		  if (ls->current == '/') {
+			  while (ls->current != '\n' && ls->current != EOZ)
+				  next(ls);
 			  continue;
-		  } else if (LS->current == '*') {
-			  next(LS);
-			  while (LS->current != EOZ) {
-				  if (LS->current == '*') {
-					  next(LS);
-					  if (LS->current == '/') {
-						  next(LS);
+		  } else if (ls->current == '*') {
+			  next(ls);
+			  while (ls->current != EOZ) {
+				  if (ls->current == '*') {
+					  next(ls);
+					  if (ls->current == '/') {
+						  next(ls);
 						  break;
 					  }
 				  }
-				  next(LS);
+				  next(ls);
 			  }
 			  continue;
 		  } else
