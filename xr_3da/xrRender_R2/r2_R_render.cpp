@@ -201,7 +201,7 @@ void CRender::Render	()
 	// Sorting by SSA and changes minimizations
 	RCache.set_xform_world			(Fidentity);
 
-	mapNormalVS&	vs	= mapNormal;
+	mapNormalVS&	vs			= mapNormal;
 	vs.getANY_P					(lstVS);
 	std::sort					(lstVS.begin(), lstVS.end(), cmp_vs);
 	for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
@@ -275,7 +275,7 @@ void CRender::Render	()
 	RCache.set_xform_world	(Fidentity);
 	Details.Render			(Device.vCameraPosition);
 
-	pCreator->Environment.RenderFirst	();
+	// pCreator->Environment.RenderFirst	();
 
 	// NORMAL-matrix		*** actors and dyn. objects
 	mapMatrix.traverseANY	(matrix_L1);
