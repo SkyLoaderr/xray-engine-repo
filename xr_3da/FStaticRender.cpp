@@ -408,11 +408,31 @@ IC	bool	cmp_matrices		(SceneGraph::mapNormalMatrices::TNode* N1, SceneGraph::map
 IC	bool	cmp_constants		(SceneGraph::mapNormalConstants::TNode* N1, SceneGraph::mapNormalConstants::TNode* N2)
 {	return (N1->val.ssa > N2->val.ssa);		}
 
-IC	bool	cmp_textures_lex	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+IC	bool	cmp_textures_lex2	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
 {	
-	STextureList*	t1	= N1->key;
-	STextureList*	t2	= N2->key;
-	return			lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
+	STextureList*	t1			= N1->key;
+	STextureList*	t2			= N2->key;
+	if ((*t1)[0] < (*t2)[0])	return true;
+	if ((*t1)[0] > (*t2)[0])	return false;
+	if ((*t1)[1] < (*t2)[1])	return true;
+	else						return false;
+}
+IC	bool	cmp_textures_lex3	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+{	
+	STextureList*	t1			= N1->key;
+	STextureList*	t2			= N2->key;
+	if ((*t1)[0] < (*t2)[0])	return true;
+	if ((*t1)[0] > (*t2)[0])	return false;
+	if ((*t1)[1] < (*t2)[1])	return true;
+	if ((*t1)[1] > (*t2)[1])	return false;
+	if ((*t1)[2] < (*t2)[2])	return true;
+	else						return false;
+}
+IC	bool	cmp_textures_lexN	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
+{	
+	STextureList*	t1			= N1->key;
+	STextureList*	t2			= N2->key;
+	return lexicographical_compare(t1->begin(),t1->end(),t2->begin(),t2->end());
 }
 IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::mapNormalTextures::TNode* N2)
 {	
@@ -420,40 +440,49 @@ IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::
 }
 
 const float	ssa_important		= .005f;
-IC	bool	fnd_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, const float val)
-{
-	return	(N1->val.ssa > ssa_important);
-}
-
 void		sort_tlist			
 	(
 	vector<SceneGraph::mapNormalTextures::TNode*>& lst, 
 	vector<SceneGraph::mapNormalTextures::TNode*>& temp, 
 	SceneGraph::mapNormalTextures& textures, 
-	BOOL bSSA
+	BOOL	bSSA,
+	int		amount
 	)
 {
 	if (bSSA)	
 	{
-		// Split into 2 parts
-		SceneGraph::mapNormalTextures::TNode* _it	= textures.begin	();
-		SceneGraph::mapNormalTextures::TNode* _end	= textures.end		();
-		for (; _it!=_end; _it++)	{
-			if (_it->val.ssa > ssa_important)	lst.push_back	(_it);
-			else								temp.push_back	(_it);
+		if (amount<=1)
+		{
+			// Just sort by SSA
+			textures.getANY_P			(lst);
+			std::sort					(lst.begin(), lst.end(), cmp_textures_ssa);
+		} 
+		else 
+		{
+			// Split into 2 parts
+			SceneGraph::mapNormalTextures::TNode* _it	= textures.begin	();
+			SceneGraph::mapNormalTextures::TNode* _end	= textures.end		();
+			for (; _it!=_end; _it++)	{
+				if (_it->val.ssa > ssa_important)	lst.push_back	(_it);
+				else								temp.push_back	(_it);
+			}
+
+			// 1st - part - SSA, 2nd - lexicographically
+			std::sort					(lst.begin(),	lst.end(),	cmp_textures_ssa);
+			if (2==amount)				std::sort	(temp.begin(),	temp.end(),	cmp_textures_lex2);
+			else if (3==amount)			std::sort	(temp.begin(),	temp.end(),	cmp_textures_lex3);
+			else						std::sort	(temp.begin(),	temp.end(),	cmp_textures_lexN);
+
+			// merge lists
+			lst.insert					(lst.end(),temp.begin(),temp.end());
 		}
-
-		// 1st - part - SSA, 2nd - lexicographically
-		std::sort					(lst.begin(),	lst.end(),	cmp_textures_ssa);
-		std::sort					(temp.begin(),	temp.end(),	cmp_textures_lex);
-
-		// merge lists
-		lst.insert					(lst.end(),temp.begin(),temp.end());
 	}
 	else 
 	{
 		textures.getANY_P			(lst);
-		std::sort					(lst.begin(), lst.end(), cmp_textures_lex);
+		if (2==amount)				std::sort	(lst.begin(),	lst.end(),	cmp_textures_lex2);
+		else if (3==amount)			std::sort	(lst.begin(),	lst.end(),	cmp_textures_lex3);
+		else						std::sort	(lst.begin(),	lst.end(),	cmp_textures_lexN);
 	}
 }
 
@@ -499,6 +528,12 @@ void	CRender::Render		()
 	for (DWORD pr=0; pr<4; pr++)
 	{
 		if (0==mapNormal[pr][0].size())	continue;
+
+		if (1==pr)
+		{
+			Device.set_xform_world	(Fidentity);
+			Details.Render			(Device.vCameraPosition);
+		}
 
 		for (DWORD pass_id=0; pass_id<8; pass_id++)	{
 			SceneGraph::mapNormalCodes&		codes	= mapNormal	[pr][pass_id];
@@ -567,9 +602,6 @@ void	CRender::Render		()
 
 			Device.set_xform_world	(Fidentity);
 			L_Dynamic.Render		();		// L_DB has priority the same as normal geom
-
-			Device.set_xform_world	(Fidentity);
-			Details.Render			(Device.vCameraPosition);
 
 			Device.set_xform_world	(Fidentity);
 			L_Shadows.render		();
