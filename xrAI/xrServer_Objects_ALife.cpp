@@ -90,6 +90,7 @@ struct SFillPropData{
             locations[i].clear	();
         level_ids.clear			();
         story_names.clear		();
+		character_profile_indxs.clear();
     }        
     void 		dec				()
     {
