@@ -194,9 +194,12 @@ void CreateLog(BOOL bQuiet)
 void CloseLog(void)
 {
 	CloseLogWindow();
+	// Don't cleanup log
+	/*
 	for (DWORD i=0; i<LogFile.size(); i++) {
 		_FREE(LogFile[i]);
 	}
+	*/
 	LogFile.clear();
 	LogFileAddons.clear();
 }
