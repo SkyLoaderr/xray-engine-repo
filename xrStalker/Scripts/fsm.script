@@ -59,6 +59,7 @@ end
 
 function lua_testclass:print()
 	print(self.name)
+	log	("fuck")
 end
 
 
