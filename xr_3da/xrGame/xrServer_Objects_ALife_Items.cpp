@@ -232,7 +232,7 @@ void CSE_ALifeItemWeapon::UPDATE_Read		(NET_Packet	&tNetPacket)
 	tNetPacket.r_angle8			(o_Angle.y	);
 	tNetPacket.r_angle8			(o_Angle.z	);
 
-	tNetPacket.r_u8				(m_addons_flags);
+	tNetPacket.r_u8				(m_addon_flags);
 }
 
 void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
@@ -249,7 +249,7 @@ void CSE_ALifeItemWeapon::UPDATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_angle8			(o_Angle.y	);
 	tNetPacket.w_angle8			(o_Angle.z	);
 
-	tNetPacket.w_u8				(m_addons_flags);
+	tNetPacket.w_u8				(m_addon_flags);
 }
 
 void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -260,7 +260,7 @@ void CSE_ALifeItemWeapon::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_u8				(state);
 	
 	if (m_wVersion > 40)
-		tNetPacket.r_u8				(m_addons_flags);
+		tNetPacket.r_u8				(m_addon_flags);
 }
 
 void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
@@ -269,7 +269,7 @@ void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_u16			(a_current);
 	tNetPacket.w_u16			(a_elapsed);
 	tNetPacket.w_u8				(state);
-	tNetPacket.w_u8				(m_addons_flags);
+	tNetPacket.w_u8				(m_addon_flags);
 }
 
 void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time, u32 sender )
