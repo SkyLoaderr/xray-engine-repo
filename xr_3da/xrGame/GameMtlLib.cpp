@@ -125,7 +125,9 @@ void SGameMtlPair::Load(IReader& fs)
 	mtl1				= fs.r_u32();
 	ID					= fs.r_u32();
 	ID_parent			= fs.r_u32();
-	OwnProps.assign		(fs.r_u32());
+    u32 own_mask		= fs.r_u32(); 
+    if (GAMEMTL_NONE_ID==ID_parent) OwnProps.one	();
+    else							OwnProps.assign	(own_mask);
 
 	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
 	fs.r_stringZ		(buf); 	BreakingSounds	= buf.size()?*buf:"";

@@ -70,6 +70,7 @@ namespace PS
             dfCollision		= (1<<16),
             dfCollisionDel	= (1<<17),
             dfVelocityScale	= (1<<18),
+            dfCollisionDyn	= (1<<19),
 		};
 		ref_str				m_Name;
 		Flags32				m_Flags;
