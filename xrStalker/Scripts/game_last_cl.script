@@ -5,35 +5,10 @@ module("game_last_tmp")
 module("game_last_dialog")
 module("game_last_charselect_dlg")
 module("game_last_header_wnd")
---include
-module("ui_base_dialog")
-
-module("ui_options_dialog")
-module("ui_options_base_tab")
-module("ui_options_video_tab")
-module("ui_options_sound_tab")
-module("ui_options_game_tab")
-module("ui_options_controls_tab")
-module("ui_options_profiles_tab")
-
-module("ui_multiplayer_dialog")
-module("ui_multiplayer_find")
-module("ui_multiplayer_create")
-module("ui_multiplayer_base_tab")
-module("ui_multiplayer_map_tab")
-module("ui_multiplayer_gametype_tab")
-
-
-module("ui_save_dialog")
-module("ui_load_dialog")
-module("ui_main_menu")
-module("ui_new_game_dialog")
-
 
 class "game_cl_LastStanding" (game_cl_mp_script)
 
 function game_cl_LastStanding:__init() super()
-//xx
 end
 
 
@@ -111,22 +86,6 @@ function game_cl_LastStanding:createGameUI ()
 
    self.m_header_wnd = game_last_header_wnd.header_wnd()
    self.m_game_ui:AddDialogToRender(self.m_header_wnd)  --always visible.use RemoveDialogToRender to hide this window
-
-	-- SAVE DIALOG
-   self.m_save_dlg = ui_save_dialog.save_dialog()
-   self.m_save_dlg:SetClGame(self)
-   
-    -- LOAD DIALOG   
-   self.m_load_dlg = ui_load_dialog.load_dialog()
-   self.m_load_dlg:SetClGame(self)
-   
-    -- MAIN MENU
-   self.m_main_menu = ui_main_manu.main_menu()
-   self.m_main_manu:SetClGame(self)   
-    -- NEW GAME
-   self.m_new_game_dlg = ui_new_game_dialog.new_game_dlg()
-   self.m_new_game_dlg:SetClGame(self)
-   
    return self.m_game_ui
 end
 
@@ -180,13 +139,7 @@ end
 
 
 function game_cl_LastStanding:OnKeyboardPress(key)
---- call
-	if key_bindings.kEXT_1 == key then
-      self:StartStopMenu(self.m_save_dlg, true)
-      return true
-   end
 
---[[
 	if key_bindings.kWPN_FIRE == key  then
 	
 		local b_need_to_send_ready = false
@@ -253,7 +206,7 @@ function game_cl_LastStanding:OnKeyboardPress(key)
    end
 
 
-]]
+
 	return game_cl_mp_script.OnKeyboardPress(self, key)
 
 end
