@@ -23,7 +23,6 @@ ENGINE_API	CApplication*	pApp			= NULL;
 ENGINE_API	CCreator*		pCreator		= NULL;
 
 // externs
-extern void					InitMath			(void);
 extern BOOL					StartGame			(u32 num);
 
 // startup point
