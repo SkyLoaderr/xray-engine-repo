@@ -478,7 +478,7 @@ void CRender::render_sun				()
 
 		// Create frustum for query
 		cull_frustum._clear			();
-		for (int p=0; p<cull_planes.size(); p++)
+		for (u32 p=0; p<cull_planes.size(); p++)
 			cull_frustum._add		(cull_planes[p]);
 
 		// Create approximate ortho-xform
@@ -639,8 +639,8 @@ void CRender::render_sun				()
 
 		BoundingBox frustumAABB2D( frustumPnts, sizeof(frustumPnts)/sizeof(D3DXVECTOR3) );
 
-		float x_scale = max( fabsf(frustumAABB2D.maxPt.x), fabsf(frustumAABB2D.minPt.x) );
-		float y_scale = max( fabsf(frustumAABB2D.maxPt.y), fabsf(frustumAABB2D.minPt.y) );
+		float x_scale = max( _abs(frustumAABB2D.maxPt.x), _abs(frustumAABB2D.minPt.x) );
+		float y_scale = max( _abs(frustumAABB2D.maxPt.y), _abs(frustumAABB2D.minPt.y) );
 		x_scale = 1.f/x_scale;
 		y_scale = 1.f/y_scale;
 
@@ -694,7 +694,7 @@ void CRender::render_sun				()
 
 		//  this shear balances the "trapezoid" around the y=0 axis (no change to the projection pt position)
 		//  since we are redistributing the trapezoid, this affects the projection field of view (shear_amt)
-		float shear_amt = (max_slope + fabsf(min_slope))*0.5f - max_slope;
+		float shear_amt = (max_slope + _abs(min_slope))*0.5f - max_slope;
 		max_slope = max_slope + shear_amt;
 
 		D3DXMATRIX trapezoid_shear( 1.f, shear_amt, 0.f, 0.f,
@@ -822,7 +822,7 @@ void CRender::render_sun				()
 		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target.phase_smap_direct			(fuckingsun, SE_SUN_FAR		);
+			Target->phase_smap_direct			(fuckingsun, SE_SUN_FAR		);
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
 			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
@@ -830,7 +830,7 @@ void CRender::render_sun				()
 			fuckingsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
 				fuckingsun->X.D.transluent			= TRUE;
-				Target.phase_smap_direct_tsh		(fuckingsun, SE_SUN_FAR	);
+				Target->phase_smap_direct_tsh		(fuckingsun, SE_SUN_FAR	);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
@@ -844,8 +844,8 @@ void CRender::render_sun				()
 	}
 
 	// Accumulate
-	Target.phase_accumulator	();
-	Target.accum_direct			(SE_SUN_FAR);
+	Target->phase_accumulator	();
+	Target->accum_direct		(SE_SUN_FAR);
 
 	// Restore XForms
 	RCache.set_xform_world		(Fidentity			);
@@ -898,7 +898,7 @@ void CRender::render_sun_near	()
 		hull.compute_caster_model	(cull_planes,fuckingsun->direction);
 #ifdef	DEBUG
 		for (u32 it=0; it<cull_planes.size(); it++)
-			RImplementation.Target.dbg_addplane(cull_planes[it],0xffffffff);
+			RImplementation.Target->dbg_addplane(cull_planes[it],0xffffffff);
 #endif
 
 		// Search for default sector - assume "default" or "outdoor" sector is the largest one
@@ -1009,7 +1009,7 @@ void CRender::render_sun_near	()
 		bool	bNormal							= mapNormal[0].size() || mapMatrix[0].size();
 		bool	bSpecial						= mapNormal[1].size() || mapMatrix[1].size() || mapSorted.size();
 		if ( bNormal || bSpecial)	{
-			Target.phase_smap_direct			(fuckingsun	, SE_SUN_NEAR	);
+			Target->phase_smap_direct			(fuckingsun	, SE_SUN_NEAR	);
 			RCache.set_xform_world				(Fidentity					);
 			RCache.set_xform_view				(Fidentity					);
 			RCache.set_xform_project			(fuckingsun->X.D.combine	);	
@@ -1017,7 +1017,7 @@ void CRender::render_sun_near	()
 			fuckingsun->X.D.transluent			= FALSE;
 			if (bSpecial)						{
 				fuckingsun->X.D.transluent			= TRUE;
-				Target.phase_smap_direct_tsh		(fuckingsun, SE_SUN_NEAR);
+				Target->phase_smap_direct_tsh		(fuckingsun, SE_SUN_NEAR);
 				r_dsgraph_render_graph				(1);			// normal level, secondary priority
 				r_dsgraph_render_sorted				( );			// strict-sorted geoms
 			}
@@ -1031,8 +1031,8 @@ void CRender::render_sun_near	()
 	}
 
 	// Accumulate
-	Target.phase_accumulator	();
-	Target.accum_direct			(SE_SUN_NEAR);
+	Target->phase_accumulator	();
+	Target->accum_direct		(SE_SUN_NEAR);
 
 	// Restore XForms
 	RCache.set_xform_world		(Fidentity			);

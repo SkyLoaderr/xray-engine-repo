@@ -43,7 +43,7 @@ void	light::vis_prepare			()
 	xform_calc										();
 	RCache.set_xform_world							(m_xform);
 	vis.query_order	= RImplementation.occq_begin	(vis.query_id);
-	RImplementation.Target.draw_volume				(this);
+	RImplementation.Target->draw_volume				(this);
 	RImplementation.occq_end						(vis.query_id);
 }
 

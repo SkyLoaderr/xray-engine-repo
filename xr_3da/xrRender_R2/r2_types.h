@@ -64,6 +64,8 @@ const		u32					occq_size			= 256	;	// queue for occlusion queries
 #define		SE_MASK_SPOT		0
 #define		SE_MASK_POINT		1
 #define		SE_MASK_DIRECT		2
+#define		SE_MASK_ACCUM_VOL	3
+#define		SE_MASK_ACCUM_2D	4
 
 // sun
 #define		SE_SUN_NEAR			0

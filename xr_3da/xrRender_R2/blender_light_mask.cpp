@@ -27,5 +27,15 @@ void	CBlender_accum_direct_mask::Compile(CBlender_Compile& C)
 		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
 		C.r_End				();
 		break;
+	case SE_MASK_ACCUM_VOL:	// copy accumulator (temp -> real), volumetric (usually after blend)
+		C.r_Pass			("accum_volume",	"copy_p",			false,	FALSE,FALSE);
+		C.r_Sampler_rtf		("s_base",			r2_RT_accum_temp	);
+		C.r_End				();
+		break;
+	case SE_MASK_ACCUM_2D:	// copy accumulator (temp -> real), 2D (usually after sun-blend)
+		C.r_Pass			("null",			"copy",				false,	FALSE,FALSE);
+		C.r_Sampler_rtf		("s_base",			r2_RT_accum_temp	);
+		C.r_End				();
+		break;
 	}
 }

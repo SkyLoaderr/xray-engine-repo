@@ -159,7 +159,7 @@ void	generate_jitter	(DWORD*	dest, u32 elem_count)
 		Ivector2	test;
 		test.set	(::Random.randI(0,256),::Random.randI(0,256));
 		BOOL		valid = TRUE;
-		for (int t=0; t<samples.size(); t++)
+		for (u32 t=0; t<samples.size(); t++)
 		{
 			int		dist	= _abs(test.x-samples[t].x)+_abs(test.y-samples[t].y);
 			if (dist<32)	{
@@ -169,7 +169,7 @@ void	generate_jitter	(DWORD*	dest, u32 elem_count)
 		}
 		if (valid)	samples.push_back	(test);
 	}
-	for	(int it=0; it<elem_count; it++, dest++)
+	for	(u32 it=0; it<elem_count; it++, dest++)
 		*dest	= color_rgba(samples[2*it].x,samples[2*it].y,samples[2*it+1].y,samples[2*it+1].x);
 }
 
