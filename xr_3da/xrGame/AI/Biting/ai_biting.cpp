@@ -14,7 +14,7 @@
 #include "../../game_graph.h"
 #include "../../phmovementcontrol.h"
 #include "../../xrserver_objects_alife_monsters.h"
-
+#include "../ai_monster_jump.h"
 
 CAI_Biting::CAI_Biting()
 {
@@ -343,7 +343,9 @@ void CAI_Biting::UpdateCL()
 		CMaterialManager::update(Device.fTimeDelta,vol,freq,!!fis_zero(speed()));
 	}
 
-	PitchCorrection();
+	CJumping *pJumping = dynamic_cast<CJumping *>(this);
+	if (!pJumping || !pJumping->IsActive())
+		PitchCorrection();
 
 
 	m_pPhysics_support->in_UpdateCL();
