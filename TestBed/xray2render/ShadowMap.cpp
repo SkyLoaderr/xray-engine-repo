@@ -682,7 +682,6 @@ void	CalcGauss	(
 					 )
 {
 	// calculate
-	D3DXVECTOR4		scale	= D3DXVECTOR4(1/tw,1/th,0,0);
 	vector<float>	w;
 	for (int i=-n; i<=n; i++)
 	{
@@ -690,19 +689,19 @@ void	CalcGauss	(
 
 		if (i>0)		continue;						// exploit symmetry : offsets
 		float offset	= bs*float(i); 
-		H.push_back		(scale*D3DXVECTOR4(offset,0,0,0));
-		V.push_back		(scale*D3DXVECTOR4(0,offset,0,0));
+		H.push_back		(D3DXVECTOR4(offset/tw,0,0,0));
+		V.push_back		(D3DXVECTOR4(0,offset/th,0,0));
 	}
 
 	// scale weights
 	float mag				= 0;
-	for (i=0; i<w.size(); i++)	mag		+= w[i];
-	for (i=0; i<w.size(); i++)	w[i]	= s_out*w[i]/mag;
+	for (i=0; i<s32(w.size()); i++)	mag		+= w[i];
+	for (i=0; i<s32(w.size()); i++)	w[i]	= s_out*w[i]/mag;
 
 	// exploit symmetry and pack weights
 	D3DXVECTOR4	buf;
 	int			buf_p	= 0;
-	for (i=0; i<w.size(); i++)
+	for (i=0; i<s32(w.size()); i++)
 	{
 		buf[buf_p++]	= w[i];
 		if (4==buf_p)	{ W.push_back	(buf); buf_p=0; }
