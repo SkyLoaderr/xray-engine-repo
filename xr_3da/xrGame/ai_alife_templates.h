@@ -191,6 +191,18 @@ void load_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 };
 
 template <class T1, class T2, class M>
+void load_map(xr_map<T1,T2> &tpMap, M &tNetPacket)
+{
+	tpMap.clear					();
+	u32							dwCount	= tNetPacket.r_u32();
+	for (int i=0 ; i<(int)dwCount; i++) {
+		T2						*T = xr_new<T2>();
+		T->Load					(tNetPacket);
+		tpMap.insert			(mk_pair(tfGetKey(T),T));
+	}
+};
+
+template <class T1, class T2, class M>
 void load_initialized_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 {
 	R_ASSERT2					(tNetPacket.r_u32() != tpMap.size(),"Initialized and saved map length mismatch!");

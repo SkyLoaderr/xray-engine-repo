@@ -504,8 +504,8 @@ CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 	ORGANIZATION_P_PAIR_IT		I = m_tOrganizationRegistry.begin();
 	ORGANIZATION_P_PAIR_IT		E = m_tOrganizationRegistry.end();
 	for ( ; I != E; I++) {
-		LPCSTR_IT				i = (*I).second->m_tpPossibleDiscoveries.begin();
-		LPCSTR_IT				e = (*I).second->m_tpPossibleDiscoveries.end();
+		LPSTR_IT				i = (*I).second->m_tpPossibleDiscoveries.begin();
+		LPSTR_IT				e = (*I).second->m_tpPossibleDiscoveries.end();
 		for ( ; i != e; i++) {
 			DISCOVERY_P_PAIR_IT j = m_tDiscoveryRegistry.find(*i);
 			if (j == m_tDiscoveryRegistry.end())

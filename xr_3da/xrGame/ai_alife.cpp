@@ -467,6 +467,7 @@ void CSE_ALifeSimulator::vfPerformSurge()
 		vfAssignPrices			(**I);
 		vfGiveMilitariesBribe	(**I);
 	}
+	vfUpdateOrganizations		();
 	vfKillCreatures				();
 	vfBallanceCreatures			();
 }
@@ -574,6 +575,142 @@ void CSE_ALifeSimulator::vfKillCreatures()
 void CSE_ALifeSimulator::vfGiveMilitariesBribe(CSE_ALifeTrader &tTrader)
 {
 	tTrader.m_dwMoney = u32(float(tTrader.m_dwMoney)*.9f);
+}
+
+void CSE_ALifeSimulator::vfUpdateOrganizations()
+{
+	// iterating on all the organizations
+	ORGANIZATION_P_PAIR_IT	I = m_tOrganizationRegistry.begin();
+	ORGANIZATION_P_PAIR_IT	E = m_tOrganizationRegistry.end();
+	for ( ; I != E; I++) {
+		switch ((*I).second->m_tResearchState) {
+			case eResearchStateLeft : {
+				// asking if we have to join zone investigations
+				if (randF(1) < (*I).second->m_fJoinProbability)
+					(*I).second->m_tResearchState = eResearchStateJoin;
+				break;
+			}
+			case eResearchStateJoin : {
+				// asking if we have to left zone investigations
+				if (!strlen((*I).second->m_caDiscoveryToInvestigate) && (*I).second->m_tpOrderedArtefacts.empty() && (randF(1) < (*I).second->m_fLeftProbability))
+					(*I).second->m_tResearchState = eResearchStateLeft;
+				else {
+					// selecting discovery we would like to investigate
+					CSE_ALifeDiscovery	*l_tpBestDiscovery = 0;
+					bool				l_bGoToResearch = false;
+					LPSTR_IT			i = (*I).second->m_tpPossibleDiscoveries.begin();
+					LPSTR_IT			e = (*I).second->m_tpPossibleDiscoveries.end();
+					for ( ; i != e; i++) {
+						// getting pointer to discovery object from the discovery registry
+						DISCOVERY_P_PAIR_IT			j = m_tDiscoveryRegistry.find(*i);
+						R_ASSERT2					(j != m_tDiscoveryRegistry.end(),"Invalid discovery name in the possible iscoveries parameters in the 'system.ltx'!");
+						
+						// checking if discovery has not been invented yet
+						if ((*j).second->m_bAlreadyInvented)
+							continue;
+						
+						// checking if discovery depends on the non-invented discoveries
+						LPSTR_IT					II = (*j).second->m_tpDependency.begin();
+						LPSTR_IT					EE = (*j).second->m_tpDependency.end();
+						bool						l_bFoundDiscovery = true;
+						for ( ; II != EE; II++) {
+							DISCOVERY_P_PAIR_IT		J = m_tDiscoveryRegistry.find(*II);
+							R_ASSERT2				(J != m_tDiscoveryRegistry.end(),"Invalid discovery dependency!");
+							if (!(*J).second->m_bAlreadyInvented) {
+								l_bFoundDiscovery = false;
+								break;
+							}
+						}
+						if (!l_bFoundDiscovery)
+							break;
+						
+						// checking if artefacts being used during discovery invention are known
+						// and there are enough artefacts purchased for discovery
+						ARTEFACT_ORDER_IT			ii = (*j).second->m_tpArtefactNeed.begin();
+						ARTEFACT_ORDER_IT			ee = (*j).second->m_tpArtefactNeed.end();
+						bool						l_bIsReadyForInvention = true;
+						for ( ; ii != ee; ii++) {
+							ARTEFACT_COUNT_PAIR_IT	jj = m_tArtefactRegistry.find((LPSTR)(*ii).m_caSection);
+							if (jj == m_tArtefactRegistry.end()) {
+								l_bFoundDiscovery	= false;
+								break;
+							}
+							else {
+								jj = (*I).second->m_tpPurchasedArtefacts.find((LPSTR)(*ii).m_caSection);
+								if ((jj == (*I).second->m_tpPurchasedArtefacts.end()) || ((*jj).second < (*ii).m_dwCount))
+									l_bIsReadyForInvention = false;
+							}
+						}
+						if (l_bFoundDiscovery) {
+							l_tpBestDiscovery		= (*j).second;
+							l_bGoToResearch			= l_bIsReadyForInvention;
+						}
+					}
+					// checking if we did select the discovery
+					if (l_tpBestDiscovery) {
+						strcpy((*I).second->m_caDiscoveryToInvestigate,  l_tpBestDiscovery->m_caDiscoveryIdentifier);
+						// checking if we are ready to invent it
+						if (l_bGoToResearch) {
+							(*I).second->m_tResearchState = eResearchStateResearch;
+							(*I).second->m_tpOrderedArtefacts.clear();
+						}
+						else {
+							// if not - order artefacts needed for the discovery
+							(*I).second->m_tpOrderedArtefacts = l_tpBestDiscovery->m_tpArtefactNeed;
+						}
+					}
+					(*I).second->m_tpPurchasedArtefacts.clear();
+				}
+				break;
+			}
+			case eResearchStateResearch : {
+				// getting pointer to discovery object from the discovery registry
+				DISCOVERY_P_PAIR_IT	i = m_tDiscoveryRegistry.find((*I).second->m_caDiscoveryToInvestigate);
+				R_ASSERT2(i != m_tDiscoveryRegistry.end(),"Unknown discovery!");
+				
+				// checking if we've got any result
+				if (randF(1) < (*i).second->m_fResultProbability) {
+					// checking if we've invented the discovery
+					if (randF(1) < (*i).second->m_fSuccessProbability) {
+						R_ASSERT2(!(*i).second->m_bAlreadyInvented,"Discovery has been already invented!");
+						(*i).second->m_bAlreadyInvented = true;
+						(*I).second->m_tResearchState = eResearchStateJoin;
+						// ordering artefacts
+						DEMAND_P_IT			ii = (*i).second->m_tpArtefactDemand.begin();
+						DEMAND_P_IT			ee = (*i).second->m_tpArtefactDemand.end();
+						(*I).second->m_tpOrderedArtefacts.resize(ee - ii);
+						ARTEFACT_ORDER_IT	II = (*I).second->m_tpOrderedArtefacts.begin();
+						for ( ; ii != ee; ii++, II++) {
+							strcpy((*II).m_caSection,(*ii)->m_caSection);
+							(*II).m_dwCount	= randI((*ii)->m_dwMinArtefactCount,(*ii)->m_dwMaxArtefactCount);
+							(*II).m_dwPrice	= randI((*ii)->m_dwMinArtefactPrice,(*ii)->m_dwMaxArtefactPrice);
+						}
+					}
+					else
+						// checking if we've destroyed laboratory during investigations
+						if (randF(1) < (*i).second->m_fDestroyProbability) {
+							(*I).second->m_tResearchState = eResearchStateFreeze;
+							(*I).second->m_tpOrderedArtefacts.clear();
+						}
+						else {
+							// otherwise - we finished with investigations without any discovery;
+							(*I).second->m_tResearchState = eResearchStateJoin;
+						}
+				}
+				break;
+			}
+			case eResearchStateFreeze : {
+				// getting pointer to discovery object from the discovery registry
+				DISCOVERY_P_PAIR_IT	i = m_tDiscoveryRegistry.find((*I).second->m_caDiscoveryToInvestigate);
+				R_ASSERT2(i != m_tDiscoveryRegistry.end(),"Unknown discovery!");
+				// checking if we've restored
+				if (randF(1) < (*i).second->m_fUnfreezeProbability)
+					(*I).second->m_tResearchState = eResearchStateJoin;
+				break;
+			}
+			default : NODEFAULT;
+		}
+	}
 }
 
 void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)

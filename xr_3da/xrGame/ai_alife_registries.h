@@ -118,6 +118,7 @@ class CSE_ALifeOrganizationRegistry : public IPureALifeLSObject {
 public:
 	ORGANIZATION_P_MAP				m_tOrganizationRegistry;
 	DISCOVERY_P_MAP					m_tDiscoveryRegistry;
+	ARTEFACT_COUNT_MAP				m_tArtefactRegistry;
 
 									CSE_ALifeOrganizationRegistry();
 	virtual							~CSE_ALifeOrganizationRegistry();

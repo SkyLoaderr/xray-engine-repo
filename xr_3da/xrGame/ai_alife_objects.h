@@ -121,47 +121,19 @@ public:
 	};
 };
 
-class CSE_ALifeArtefactDemand : public IPureALifeLSObject {
+class CSE_ALifeArtefactDemand {
 public:
 	LPCSTR							m_caSection;
 	u32								m_dwMinArtefactCount;
 	u32								m_dwMaxArtefactCount;
 	u32								m_dwMinArtefactPrice;
 	u32								m_dwMaxArtefactPrice;
-	u32								m_dwRealArtefactCount;
-	u32								m_dwRealArtefactPrice;
 
-									CSE_ALifeArtefactDemand(LPCSTR caSection, u32 dwMinArtefactCount, u32 dwMaxArtefactCount, u32 dwMinArtefactPrice, u32 dwMaxArtefactPrice) :	m_caSection(caSection), m_dwMinArtefactCount(dwMinArtefactCount), m_dwMaxArtefactCount(dwMaxArtefactCount), m_dwMinArtefactPrice(dwMinArtefactPrice), m_dwMaxArtefactPrice(dwMaxArtefactPrice),	m_dwRealArtefactCount(0), m_dwRealArtefactPrice(0)
+									CSE_ALifeArtefactDemand(LPCSTR caSection, u32 dwMinArtefactCount, u32 dwMaxArtefactCount, u32 dwMinArtefactPrice, u32 dwMaxArtefactPrice) :	m_caSection(caSection), m_dwMinArtefactCount(dwMinArtefactCount), m_dwMaxArtefactCount(dwMaxArtefactCount), m_dwMinArtefactPrice(dwMinArtefactPrice), m_dwMaxArtefactPrice(dwMaxArtefactPrice)
 	{
 	}
 	
 	virtual							~CSE_ALifeArtefactDemand()
-	{
-	}
-
-	virtual void					Save(IWriter	&tMemoryStream)
-	{
-		tMemoryStream.w_u32			(m_dwRealArtefactCount);
-		tMemoryStream.w_u32			(m_dwRealArtefactPrice);
-	}
-
-	virtual void					Load(IReader	&tFileStream)
-	{
-		m_dwRealArtefactCount		= tFileStream.r_u32();
-		m_dwRealArtefactPrice		= tFileStream.r_u32();
-	};
-};
-
-class CSE_ALifeArtefactNeed {
-public:
-	LPCSTR							m_caSection;
-	u32								m_dwArtefactCount;
-
-									CSE_ALifeArtefactNeed(LPCSTR caSection, u32 dwArtefactCount) :	m_caSection(caSection), m_dwArtefactCount(dwArtefactCount)
-	{
-	}
-
-	virtual							~CSE_ALifeArtefactNeed()
 	{
 	}
 };
@@ -171,12 +143,12 @@ public:
 	LPCSTR							m_caDiscoveryIdentifier;
 	float							m_fSuccessProbability;
 	float							m_fDestroyProbability;
-	_TIME_ID						m_tFreezeTime;
-	_TIME_ID						m_tResearchTime;
+	float							m_fResultProbability;
+	float							m_fUnfreezeProbability;
 	bool							m_bAlreadyInvented;
 	DEMAND_P_VECTOR					m_tpArtefactDemand;
-	NEED_P_VECTOR					m_tpArtefactNeed;
-	LPCSTR_VECTOR					m_tpDependency;
+	ARTEFACT_ORDER_VECTOR			m_tpArtefactNeed;
+	LPSTR_VECTOR					m_tpDependency;
 	CLSID_VECTOR					m_tpClassIDs;
 
 
@@ -189,10 +161,15 @@ public:
 class CSE_ALifeOrganization : public IPureALifeLSObject {
 public:
 	LPCSTR							m_caOrganizationIdentifier;
-	LPCSTR_VECTOR					m_tpPossibleDiscoveries;
+	LPSTR_VECTOR					m_tpPossibleDiscoveries;
 	float							m_fJoinProbability;
 	float							m_fLeftProbability;
 	EResearchState					m_tResearchState;
+	_TIME_ID						m_tTimeFinish;				// this member is usd for keeping time where some state finishes (research or freeze)
+	ARTEFACT_ORDER_VECTOR			m_tpOrderedArtefacts;
+	ARTEFACT_COUNT_MAP				m_tpPurchasedArtefacts;
+	string64						m_caDiscoveryToInvestigate;
+
 
 
 									CSE_ALifeOrganization(LPCSTR caSection);

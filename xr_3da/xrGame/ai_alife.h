@@ -57,6 +57,7 @@ private:
 	void							vfAssignPrices				(CSE_ALifeTrader			&tTrader);
 	void							vfKillCreatures				();
 	void							vfBallanceCreatures			();
+	void							vfUpdateOrganizations		();
 	// after surge
 	CSE_ALifeTrader *				tpfGetNearestSuitableTrader	(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 	void							vfCommunicateWithTrader		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,	CSE_ALifeTrader *tpTrader);
