@@ -33,7 +33,7 @@ float		ps_r1_ssaHZBvsTEX			= 256.f	;
 int			ps_r1_tf_Anisotropic		= 0		;
 float		ps_r1_tf_Mipbias			= -0.5f	;
 Flags32		ps_r1_flags					= { R1FLAG_DLIGHTS };		// r1-only
-float		ps_r1_lmodel_lerp			= 0.5f	;
+float		ps_r1_lmodel_lerp			= 0.1f	;
 
 // R1-specific
 int			ps_r1_GlowsPerFrame			= 16	;					// r1-only
