@@ -12,6 +12,7 @@
 
 #include "motion.h"
 #include "bone.h"
+#include "EditMesh.h"
 
 //----------------------------------------------------
 class fBoneNameEQ {
@@ -47,6 +48,14 @@ void CEditableObject::OnFrame()
     }
 }
 #endif
+
+void CEditableObject::OnBindTransformChange()
+{
+    for(EditMeshIt mesh_it=FirstMesh();mesh_it!=LastMesh();mesh_it++){
+        CEditableMesh* MESH = *mesh_it;
+        MESH->GenerateSVertices();
+    }
+}
 
 void CEditableObject::GotoBindPose()
 {
@@ -93,21 +102,11 @@ static void Calculate(CBone* bone, CSMotion* motion, bool bCalcInv, bool bCalcRe
 		if (parent_bone) 
         	M.mulA	(parent_bone->_LITransform());
     }else{
-	    if (0==strcmp(bone->Name(),"phy_door_left"))	Log("phy_door_left",r);
-//	    if (0==strcmp(bone->Name(),"phy_door_right"))	Log("phy_door_right",r);
         M.setXYZi	(r.x,r.y,r.z);
         M.c.set		(bone->_Offset());
         L.mul		(parent_bone?parent_bone->_LTransform():Fidentity,M);
     }
 	if (bCalcInv) bone->_LITransform().invert(L);
-/*
-    if (bCalcRest){
-    	Fmatrix& R	= bone->_RTransform();
-        R.setXYZi	(bone->_RestRotate());
-        R.c.set		(bone->_RestOffset());
-        if (parent_bone) R.mulA(parent_bone->_RTransform());
-    }
-*/    
     bone->flags.set(CBone::flCalculate,TRUE);
 }
 

@@ -44,18 +44,16 @@ __published:	// IDE-managed Components
 	TLabel *mxLabel2;
 	TLabel *mxLabel3;
 	TLabel *lbInfo;
-	TPanel *paImage;
-	TPaintBox *pbImage;
 	TPanel *Panel4;
 	TElTree *tvItems;
 	TPanel *paItemsCount;
+	TMxPanel *paImage;
     void __fastcall sbSelectClick(TObject *Sender);
     void __fastcall sbCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
-	void __fastcall pbImagePaint(TObject *Sender);
 	void __fastcall tvItemsDblClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvItemsItemChange(TObject *Sender, TElTreeItem *Item,
@@ -71,6 +69,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebMultiRemoveClick(TObject *Sender);
 	void __fastcall ebMultiClearClick(TObject *Sender);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
+	void __fastcall paImagePaint(TObject *Sender);
 private:	// User declarations
 	static TfrmChoseItem* form;
     static AnsiString select_item;

@@ -108,6 +108,9 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
         void			PlayMotion			(CSMotion* motion); 
         void			RestoreParams		(TFormStorage* s);
         void			SaveParams			(TFormStorage* s);
+        void			PlayCycle			(LPCSTR name, int part);
+        void			PlayFX				(LPCSTR name, float power);
+        void			StopAnimation		();
     };
 
     bool				m_bObjectModified;
@@ -147,6 +150,8 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     
 	void __fastcall 	OnJointTypeChange		(PropValue* sender);
 	void __fastcall 	OnShapeTypeChange		(PropValue* sender);
+
+	void __fastcall 	OnBindTransformChange	(PropValue* V);
 
     SMotionVec 			appended_motions;
 protected:
@@ -284,6 +289,8 @@ public:
     void				RefreshProperties	(){;}
     
 	void				GetStatTime			(float& a, float& b, float& c);
+
+    bool				IsEngineMode		();
 };
 extern CActorTools	Tools;
 

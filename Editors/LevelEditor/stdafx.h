@@ -174,13 +174,14 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #pragma comment(lib,"ETools.lib")
 #pragma comment(lib,"LWO.lib")
 #pragma comment(lib,"xrHemisphere.lib")
+#pragma comment(lib,"oggencB.lib")
 
 // path definition
 #define _server_root_		"$server_root$"
 #define _server_data_root_	"$server_data_root$"
 #define _local_root_		"$local_root$"
-
 #define _import_			"$import$"
+#define _sounds_			"$sounds$"
 #define _textures_			"$textures$"
 #define _objects_			"$objects$"
 #define _maps_				"$maps$"

@@ -33,7 +33,7 @@ xr_token					tfmt_token						[ ]={
 	{ 0,					0									}
 };
 
-void STextureParams::LoadTex(IReader& F)
+void STextureParams::Load(IReader& F)
 {
     R_ASSERT(F.find_chunk(THM_CHUNK_TEXTUREPARAM));
     F.r					(&fmt,sizeof(ETFormat));
@@ -54,15 +54,8 @@ void STextureParams::LoadTex(IReader& F)
         detail_scale = F.r_float();
     }
 }
-void STextureParams::LoadObj(IReader& F)
-{
-    if (F.find_chunk(THM_CHUNK_OBJECTPARAM)){
-        face_count 		= F.r_u32();
-        vertex_count 	= F.r_u32();
-    }
-}
 
-void STextureParams::SaveTex(IWriter& F)
+void STextureParams::Save(IWriter& F)
 {
     F.open_chunk	(THM_CHUNK_TEXTUREPARAM);
     F.w				(&fmt,sizeof(ETFormat));
@@ -85,13 +78,4 @@ void STextureParams::SaveTex(IWriter& F)
     F.w_float		(detail_scale);
     F.close_chunk	();
 }
-
-void STextureParams::SaveObj(IWriter& F)
-{
-    F.open_chunk	(THM_CHUNK_OBJECTPARAM);
-    F.w_u32			(face_count);
-    F.w_u32			(vertex_count);
-    F.close_chunk	();
-}
-
 

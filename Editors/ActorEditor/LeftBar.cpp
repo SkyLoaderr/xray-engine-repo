@@ -182,6 +182,13 @@ void __fastcall TfraLeftBar::ebSceneCommands1MouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExtBtn3MouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	FHelper.ShowPPMenu(pmSounds,dynamic_cast<TExtBtn*>(Sender));
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebPreviewObjectClickMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
@@ -335,6 +342,24 @@ void __fastcall TfraLeftBar::ExportDM1Click(TObject *Sender)
 void __fastcall TfraLeftBar::ExtBtn1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_SHOW_CLIPMAKER );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::MenuItem2Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SOUND_EDITOR );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::MenuItem4Click(TObject *Sender)
+{
+	UI.Command( COMMAND_SYNC_SOUNDS );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
+{
+	UI.Command( COMMAND_CHECK_SOUNDS );
 }
 //---------------------------------------------------------------------------
 

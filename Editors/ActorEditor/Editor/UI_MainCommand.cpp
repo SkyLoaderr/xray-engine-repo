@@ -13,12 +13,14 @@
 #include "EditorPref.h"
 #include "main.h"
 #include "ImageEditor.h"
+#include "SoundEditor.h"
 #include "d3dutils.h"
 
 #include "PSLibrary.h"
 #include "Library.h"
 #include "LightAnimLibrary.h"
 
+#include "ImageManager.h"
 #include "SoundManager.h"
 #include "ResourceManager.h"
 #include "igame_persistent.h"
@@ -73,15 +75,25 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_CHANGE_ACTION:
 		Tools.ChangeAction((EAction)p1);
         break;
+	case COMMAND_SOUND_EDITOR:
+    	TfrmSoundLib::EditLib(AnsiString("Sound Editor"));
+        break;
+	case COMMAND_SYNC_SOUNDS:
+    	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to synchronize sounds?")==mrYes)
+			SndLib.RefreshSounds(true);
+        break;
+	case COMMAND_CHECK_SOUNDS:
+    	TfrmSoundLib::ImportSounds();
+        break;
     case COMMAND_IMAGE_EDITOR:
-    	TfrmImageLib::EditImageLib(AnsiString("Image Editor"));
+    	TfrmImageLib::EditLib(AnsiString("Image Editor"));
     	break;
 	case COMMAND_CHECK_TEXTURES:
     	TfrmImageLib::ImportTextures();
     	break;
 	case COMMAND_REFRESH_TEXTURES:
     	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to synchronize textures?")==mrYes)
-			Device.RefreshTextures(0);
+			ImageLib.RefreshTextures(0);
 		break;
 	case COMMAND_RELOAD_TEXTURES:
     	Device.ReloadTextures();

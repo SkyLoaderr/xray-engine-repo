@@ -125,7 +125,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             }
 			if (fraBottomBar->miDrawBoneAxis->Checked){ 
             	Fmatrix mat; mat.mul(parent,M);
-	          	DU.DrawObjectAxis(mat,0.03f);
+	          	DU.DrawObjectAxis(mat,0.03f,(*b_it)->flags.is(CBone::flSelected));
             }
 			if (fraBottomBar->miDrawBoneNames->Checked){ 
             	parent.transform_tiny(p1);

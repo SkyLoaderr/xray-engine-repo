@@ -711,7 +711,7 @@ void CDrawUtilities::DrawAxis(const Fmatrix& T)
     Device.pSystemFont->Out(p[5].x-1,p[5].y-1,"z");
 }
 
-void CDrawUtilities::DrawObjectAxis(const Fmatrix& T, float sz)
+void CDrawUtilities::DrawObjectAxis(const Fmatrix& T, float sz, bool sel)
 {
 	VERIFY( Device.bReady );
 	_VertexStream*	Stream	= &RCache.Vertex;
@@ -731,12 +731,12 @@ void CDrawUtilities::DrawObjectAxis(const Fmatrix& T, float sz)
 
     u32 vBase;
 	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
-	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); pv++;
-	pv->set	(d.x,d.y,0,1, 0xFF0000FF, 0,0); pv++;
-	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); pv++;
-	pv->set	(r.x,r.y,0,1, 0xFFFF0000, 0,0); pv++;
-	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); pv++;
-	pv->set	(n.x,n.y,0,1, 0xFF00FF00, 0,0);
+	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); 				pv++;
+	pv->set	(d.x,d.y,0,1, sel?0xFF0000FF:0xFF000080, 0,0); 	pv++;
+	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); 				pv++;
+	pv->set	(r.x,r.y,0,1, sel?0xFFFF0000:0xFF800000, 0,0); 	pv++;
+	pv->set	(c.x,c.y,0,1, 0xFF222222, 0,0); 				pv++;
+	pv->set	(n.x,n.y,0,1, sel?0xFF00FF00:0xFF008000, 0,0);
 	Stream->Unlock(6,vs_TL->vb_stride);
 
 	// Render it as line list
@@ -745,11 +745,11 @@ void CDrawUtilities::DrawObjectAxis(const Fmatrix& T, float sz)
     Device.DP		(D3DPT_LINELIST,vs_TL,vBase,3);
 	Device.SetRS	(D3DRS_SHADEMODE,Device.dwShadeMode);
 
-    Device.pSystemFont->SetColor(0xFF909090);
+    Device.pSystemFont->SetColor(sel?0xFF000000:0xFF909090);
     Device.pSystemFont->Out(r.x,r.y,"x");
     Device.pSystemFont->Out(n.x,n.y,"y");
     Device.pSystemFont->Out(d.x,d.y,"z");
-    Device.pSystemFont->SetColor(0xFF000000);
+    Device.pSystemFont->SetColor(sel?0xFFFFFFFF:0xFF000000);
     Device.pSystemFont->Out(r.x-1,r.y-1,"x");
     Device.pSystemFont->Out(n.x-1,n.y-1,"y");
     Device.pSystemFont->Out(d.x-1,d.y-1,"z");

@@ -3,7 +3,8 @@
 
 #include "FolderLib.h"
 #include "PropertiesListHelper.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
+#include "ImageManager.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -598,7 +599,8 @@ bool CFolderHelper::NameAfterEdit(TElTreeItem* node, AnsiString value, AnsiStrin
 bool CFolderHelper::DrawThumbnail(TCanvas *Surface, TRect &R, LPCSTR fname, u32 thm_type)
 {
 	if (fname&&fname[0]){
-        EImageThumbnail* m_Thm 	= xr_new<EImageThumbnail>(fname,EImageThumbnail::THMType(thm_type));
+        EImageThumbnail* m_Thm 	= ImageLib.CreateThumbnail(fname,EImageThumbnail::THMType(thm_type));
+        VERIFY		(m_Thm);
         int dw 		= R.Width()-R.Height();
         if (dw>=0) 	R.right		-= dw;
         bool bRes 	= m_Thm->Valid();

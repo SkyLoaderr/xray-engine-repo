@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 487
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 277
+    Height = 487
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 35
+      Top = 245
       Width = 298
       Height = 2
       Cursor = crVSplit
@@ -44,7 +44,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 298
-      Height = 82
+      Height = 97
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -90,7 +90,7 @@ object fraLeftBar: TfraLeftBar
       object ebSceneFile: TExtBtn
         Left = 2
         Top = 16
-        Width = 207
+        Width = 295
         Height = 15
         Align = alNone
         BevelShow = False
@@ -119,8 +119,8 @@ object fraLeftBar: TfraLeftBar
       end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 64
-        Width = 207
+        Top = 80
+        Width = 295
         Height = 15
         Align = alNone
         BevelShow = False
@@ -140,7 +140,7 @@ object fraLeftBar: TfraLeftBar
       object ebPreviewObjectClick: TExtBtn
         Left = 2
         Top = 32
-        Width = 207
+        Width = 295
         Height = 15
         Align = alNone
         BevelShow = False
@@ -170,7 +170,7 @@ object fraLeftBar: TfraLeftBar
       object ebSceneCommands1: TExtBtn
         Left = 2
         Top = 48
-        Width = 207
+        Width = 295
         Height = 15
         Align = alNone
         BevelShow = False
@@ -198,10 +198,41 @@ object fraLeftBar: TfraLeftBar
         Spacing = 3
         OnMouseDown = ebSceneCommands1MouseDown
       end
+      object ExtBtn3: TExtBtn
+        Left = 2
+        Top = 64
+        Width = 295
+        Height = 15
+        Align = alNone
+        BevelShow = False
+        HotTrack = True
+        HotColor = 15790320
+        BtnColor = 10528425
+        CloseButton = False
+        Caption = 'Sounds'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        Margin = 3
+        ParentFont = False
+        Spacing = 3
+        OnMouseDown = ExtBtn3MouseDown
+      end
     end
     object paModel: TPanel
       Left = 1
-      Top = 83
+      Top = 98
       Width = 298
       Height = 49
       Hint = 'Scene commands'
@@ -406,7 +437,7 @@ object fraLeftBar: TfraLeftBar
         HotTrack = True
         HotColor = 15790320
         CloseButton = False
-        Caption = 'Track View'
+        Caption = 'Clip Maker'
         Font.Charset = DEFAULT_CHARSET
         Font.Color = clWindowText
         Font.Height = -11
@@ -421,9 +452,9 @@ object fraLeftBar: TfraLeftBar
     end
     object paObjectProperties: TPanel
       Left = 1
-      Top = 132
+      Top = 147
       Width = 298
-      Height = 226
+      Height = 98
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -453,7 +484,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 15
         Width = 296
-        Height = 210
+        Height = 82
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -462,7 +493,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paCurrentMotion: TPanel
       Left = 1
-      Top = 37
+      Top = 247
       Width = 298
       Height = 239
       Align = alBottom
@@ -539,7 +570,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 13
+    Version = 14
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
@@ -712,6 +743,40 @@ object fraLeftBar: TfraLeftBar
     object Checknewtextures1: TMenuItem
       Caption = 'Check New Textures'
       OnClick = Checknewtextures1Click
+    end
+  end
+  object pmSounds: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 10921638
+    MarginEndColor = 2763306
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 181
+    Top = 58
+    object MenuItem1: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Sound Editor'
+      OnClick = MenuItem2Click
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem4: TMenuItem
+      Caption = 'Synchronize Sounds'
+      OnClick = MenuItem4Click
+    end
+    object MenuItem5: TMenuItem
+      Caption = 'Check New Sounds'
+      OnClick = MenuItem5Click
     end
   end
 end

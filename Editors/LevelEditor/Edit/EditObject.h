@@ -292,6 +292,7 @@ public:
 	void 			CalculateAnimation		(CBone* bone, CSMotion* motion, bool bGenInvMat=false, bool bCalcRest=false);
     void			CalculateAnimation		(CSMotion* motion, bool bGenInvMat=false, bool bCalcRest=false);
 	void			GotoBindPose			();
+    void			OnBindTransformChange	();
 
     // statistics methods
     int 			GetFaceCount			();

@@ -19,7 +19,7 @@
 #include "NumericVector.h"
 #include "TextForm.h"
 #include "ui_main.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 
 #ifdef _LEVEL_EDITOR
 	#include "Scene.h"
@@ -483,7 +483,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked){ 
                     R.top+=tvProperties->LineHeight-4;
-                    FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::EITTexture);
+                    FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
                 }
             break;
             case PROP_WAVE:

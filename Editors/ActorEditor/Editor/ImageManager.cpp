@@ -2,14 +2,13 @@
 #pragma hdrstop
 
 #include "ImageManager.h"
-#include "ETextureParams.h"
-#include "ImageThumbnail.h"
 #include "xrImage_Resampler.h"
 #include "freeimage.h"
 #include "Image.h"
 #include "ui_main.h"
 #include "EditObject.h"
-CImageManager ImageManager;
+#include "ResourceManager.h"
+CImageManager ImageLib;
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 extern bool IsFormatRegister(LPCSTR ext);
@@ -62,7 +61,7 @@ bool Surface_Load(LPCSTR full_name, U32Vec& data, u32& w, u32& h, u32& a)
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, u32* data, u32 w, u32 h, u32 a)
+void CImageManager::MakeThumbnailImage(ETextureThumbnail* THM, u32* data, u32 w, u32 h, u32 a)
 {
 	R_ASSERT(THM);
 	// create thumbnail
@@ -77,7 +76,7 @@ void CImageManager::MakeThumbnailImage(EImageThumbnail* THM, u32* data, u32 w, u
 //------------------------------------------------------------------------------
 // создает тхм
 //------------------------------------------------------------------------------
-void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiString& src_name, LPCSTR initial, bool bSetDefParam){
+void CImageManager::CreateTextureThumbnail(ETextureThumbnail* THM, const AnsiString& src_name, LPCSTR initial, bool bSetDefParam){
 	R_ASSERT(src_name.Length());
 	AnsiString base_name;
     if (initial)	FS.update_path(base_name,initial,src_name.c_str());
@@ -103,9 +102,10 @@ void CImageManager::CreateTextureThumbnail(EImageThumbnail* THM, const AnsiStrin
 //------------------------------------------------------------------------------
 // создает новую текстуру
 //------------------------------------------------------------------------------
-void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnail* thumb){
+void CImageManager::CreateGameTexture(const AnsiString& src_name, ETextureThumbnail* thumb)
+{
 	R_ASSERT(src_name.Length());
-    EImageThumbnail* THM 	= thumb?thumb:xr_new<EImageThumbnail>(src_name.c_str(),EImageThumbnail::EITTexture);
+    ETextureThumbnail* THM 	= thumb?thumb:xr_new<ETextureThumbnail>(src_name.c_str());
 	AnsiString base_name 	= src_name;
 	AnsiString game_name 	= ChangeFileExt(src_name,".dds");
 	FS.update_path			(_textures_,base_name);
@@ -146,7 +146,7 @@ void CImageManager::MakeGameTexture(LPCSTR game_name, u32* data, u32 w, u32 h, S
     }
     R_ASSERT(bRes&&FS.file_length(game_name));
 }
-void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, u32* load_data)
+void CImageManager::MakeGameTexture(ETextureThumbnail* THM, LPCSTR game_name, u32* load_data)
 {
 	VerifyPath(game_name);
     // flip
@@ -193,13 +193,13 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
         // copy thm
 		AnsiString fn = ChangeFileExt(it->first,".thm");
 		src_name 	= p_import	+ AnsiString(fn);
-		EFS.UpdateTextureNameWithFolder(fn);
+		EFS.AppendFolderToName(fn);
 		dest_name 	= p_textures+ AnsiString(fn);
 		FS.file_rename(src_name.c_str(),dest_name.c_str(),true);
     	// copy sources
 		fn 			= it->first;
 		src_name 	= p_import	+ fn;
-		EFS.UpdateTextureNameWithFolder(fn);
+		EFS.AppendFolderToName(fn);
 		dest_name 	= p_textures+ ChangeFileExt(fn,".tga");
         if (FS.exist(dest_name.c_str()))
 	        EFS.BackupFile	(_textures_,ChangeFileExt(fn,".tga"));
@@ -215,9 +215,9 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
             I->Vflip	();
             I->SaveTGA	(dest_name.c_str());
             xr_delete	(I);
-            FS.set_file_age(dest_name.c_str(), FS.get_file_age(src_name.c_str()));
         }
-        EFS.WriteAccessLog(dest_name.c_str(),"Replace");
+        FS.set_file_age		(dest_name.c_str(), FS.get_file_age(src_name.c_str()));
+        EFS.WriteAccessLog	(dest_name.c_str(),"Replace");
         EFS.MarkFile		(src_name,true);
     }
 }    
@@ -264,18 +264,18 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
   		FS_QueryPairIt gm = M_GAME.find(base_name);
     	bool bGame= bThm || ((gm==M_GAME.end()) || ((gm!=M_GAME.end())&&(gm->second.modif!=it->second.modif)));
 
-		EImageThumbnail* THM=0;
+		ETextureThumbnail* THM=0;
 
     	// check thumbnail
     	if (sync_thm&&bThm){
-        	THM = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
+        	THM = xr_new<ETextureThumbnail>(it->first.c_str());
 		    bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);
             MakeThumbnailImage(THM,data.begin(),w,h,a);
             THM->Save	(it->second.modif);
         }
         // check game textures
     	if (bForceGame||(sync_game&&bGame)){
-        	if (!THM) THM = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture); 
+        	if (!THM) THM = xr_new<ETextureThumbnail>(it->first.c_str()); 
             R_ASSERT(THM);
             if (data.empty()){ bool bRes = Surface_Load(fn.c_str(),data,w,h,a); R_ASSERT(bRes);}
 			if (IsValidSize(w,h)){
@@ -313,9 +313,9 @@ void CImageManager::SynchronizeTexture(LPCSTR tex_name, int age)
 {
     AStringVec modif;
     FS_QueryMap t_map;
-    t_map.insert(mk_pair(tex_name,FS_QueryItem(0,age,0)));
-    SynchronizeTextures(true,true,true,&t_map,&modif);
-    Device.RefreshTextures(&modif);
+    t_map.insert		(mk_pair(tex_name,FS_QueryItem(0,age,0)));
+    SynchronizeTextures	(true,true,true,&t_map,&modif);
+    RefreshTextures		(&modif);
 }
 /*
 int	CImageManager::GetServerModifiedTextures(FS_QueryMap& files)
@@ -359,7 +359,7 @@ int	CImageManager::GetServerModifiedTextures(FS_QueryMap& files)
 //------------------------------------------------------------------------------
 int CImageManager::GetTextures(FS_QueryMap& files)
 {                	
-    return FS.file_list(files,_textures_,FS_ListFiles,".tga,.bmp");
+    return FS.file_list(files,_textures_,FS_ListFiles,".tga,.bmp"); 
 }
 //------------------------------------------------------------------------------
 // возвращает список текстур, которые нужно обновить
@@ -612,7 +612,7 @@ BOOL CImageManager::CreateOBJThumbnail(LPCSTR tex_name, CEditableObject* obj, in
 	U32Vec pixels;
     u32 w=256,h=256;
     if (Device.MakeScreenshot(pixels,w,h)){
-        EImageThumbnail tex(tex_name,EImageThumbnail::EITObject,false);
+        EObjectThumbnail tex(tex_name,false);
         tex.CreateFromData(pixels.begin(),w,h,obj->GetFaceCount(),obj->GetVertexCount());
         tex.Save(age);
     }else{
@@ -658,4 +658,31 @@ BOOL CImageManager::RemoveTexture(LPCSTR fname, EItemType type)
     }
     return FALSE;
 }
+
+EImageThumbnail* CImageManager::CreateThumbnail(LPCSTR src_name, ECustomThumbnail::THMType type, bool bLoad)
+{
+    switch (type){
+    case ECustomThumbnail::ETObject: 	return xr_new<EObjectThumbnail>	(src_name,bLoad);
+    case ECustomThumbnail::ETTexture:	return xr_new<ETextureThumbnail>(src_name,bLoad);
+    default: NODEFAULT;
+    }
+    return 0;
+}
+
+//------------------------------------------------------------------------------
+// если передан параметр modif - обновляем DX-Surface only и только из списка
+// иначе полная синхронизация
+//------------------------------------------------------------------------------
+void CImageManager::RefreshTextures(AStringVec* modif)
+{
+	UI.SetStatus("Refresh textures...");
+    if (modif) Device.Resources->ED_UpdateTextures(modif);
+	else{
+    	AStringVec modif_files;
+    	ImageLib.SynchronizeTextures(true,true,false,0,&modif_files);
+        Device.Resources->ED_UpdateTextures(&modif_files);
+    }
+	UI.SetStatus("");
+}
+
 

@@ -2,22 +2,11 @@
 #pragma hdrstop
 
 #include "ItemListHelper.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
+#include "ImageManager.h"
 //---------------------------------------------------------------------------
 
 CListHelper LHelper;
-
-void CListHelper::DrawThumbnail(TCanvas *Surface, TRect &R, LPCSTR fname)
-{
-	if (fname&&fname[0]){
-        EImageThumbnail* m_Thm 	= xr_new<EImageThumbnail>(fname,EImageThumbnail::EITTexture);
-        int dw = R.Width()-R.Height();
-        if (dw>=0) R.right		-= dw;
-        if (m_Thm->Valid()) 	m_Thm->Draw(Surface,R);
-        xr_delete				(m_Thm);
-    }
-}
-//---------------------------------------------------------------------------
 
 bool CListHelper::NameAfterEdit(ListItem* sender, AnsiString value, AnsiString& N)
 {

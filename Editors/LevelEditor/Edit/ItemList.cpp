@@ -13,7 +13,7 @@
 #include "NumericVector.h"
 #include "TextForm.h"
 #include "ui_main.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -531,9 +531,9 @@ void __fastcall TItemList::tvItemsHeaderResize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void TItemList::RemoveSelItems()
+void TItemList::RemoveSelItems(CFolderHelper::TOnItemRemove on_remove)
 {
-	R_ASSERT(m_Flags.is(ilEditMenu));
+	R_ASSERT(m_Flags.is(ilEditMenu)||on_remove);
     ElItemsVec sel_items;
     if (GetSelected(sel_items)){
     	tvItems->IsUpdating = true; // LockUpdating нельзя
@@ -541,7 +541,7 @@ void TItemList::RemoveSelItems()
         tvItemsAfterSelectionChange	(0);
         bool bSelChanged=false;
         for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
-			if (!FHelper.RemoveItem(tvItems,*it,OnItemRemove)){
+			if (!FHelper.RemoveItem(tvItems,*it,on_remove?on_remove:OnItemRemove)){
             	AnsiString fn;
                 FHelper.MakeFullName(*it,0,fn);
             	SelectItem(fn,true,true,false);

@@ -26,8 +26,6 @@ public:
         items.push_back	(item);
         return			item;
     }
-
-	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------
 extern CListHelper LHelper;

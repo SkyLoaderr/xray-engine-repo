@@ -22,6 +22,7 @@ USEFORM("Editor\ShaderFunction.cpp", frmShaderFunction);
 USEFORM("Editor\TextForm.cpp", frmText);
 USEFORM("Editor\TopBar.cpp", fraTopBar); /* TFrame: File Type */
 USEFORM("ClipEditor.cpp", ClipMaker);
+USEFORM("Editor\SoundEditor.cpp", frmSoundLib);
 //---------------------------------------------------------------------------
 WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 {

@@ -79,7 +79,10 @@ __published:	// IDE-managed Components
 	TExtBtn *ebTrash;
 	TExtBtn *ebLoadClips;
 	TExtBtn *ebSaveClips;
-	TExtBtn *ExtBtn1;
+	TBevel *Bevel14;
+	TMxLabel *MxLabel5;
+	TMxPanel *paFXs;
+	TBevel *Bevel21;
 	void __fastcall ebInsertClipClick(TObject *Sender);
 	void __fastcall gtClipPaint(TObject *Sender);
 	void __fastcall ebAppendClipClick(TObject *Sender);
@@ -115,13 +118,20 @@ __published:	// IDE-managed Components
 	void __fastcall ebTrashClick(TObject *Sender);
 	void __fastcall ebTrashDragOver(TObject *Sender, TObject *Source, int X,
           int Y, TDragState State, bool &Accept);
-	void __fastcall paClipsPaint(TObject *Sender);
+	void __fastcall ClipPaint(TObject *Sender);
 	void __fastcall ebTrashDragDrop(TObject *Sender, TObject *Source, int X,
           int Y);
 	void __fastcall FormCloseQuery(TObject *Sender, bool &CanClose);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall ebLoadClipsClick(TObject *Sender);
 	void __fastcall ebSaveClipsClick(TObject *Sender);
+	void __fastcall BPEndDrag(TObject *Sender, TObject *Target, int X,
+          int Y);
+	void __fastcall BPStartDrag(TObject *Sender, TDragObject *&DragObject);
+	void __fastcall ClipStartDrag(TObject *Sender,
+          TDragObject *&DragObject);
+	void __fastcall ClipEndDrag(TObject *Sender, TObject *Target, int X,
+          int Y);
 public:
 	class CUIClip: public CClip{
     public:                               
@@ -129,16 +139,18 @@ public:
     	s32				idx;
         TClipMaker* 	owner;
     public:
-        				CUIClip			(const CClip& src, TClipMaker* own, float rt){*(CClip*)this=src; idx=-1;owner=own; run_time=rt;}
         				CUIClip			(LPCSTR name, TClipMaker* owner, float r_t);
-        				CUIClip			(TClipMaker* own){owner=own;}
+        				CUIClip			(TClipMaker* own, float r_t){owner=own;run_time=r_t;fx_power=1.f;}
         				~CUIClip		();
         int				PWidth			(){return length*owner->m_Zoom;}
         int				PLeft			(){return run_time*owner->m_Zoom;}
         int				PRight			(){return PLeft()+PWidth();}
         float			Length			(){return length;}
         float			RunTime			(){return run_time;}
-        LPCSTR			CycleName		(u16 bp){VERIFY(bp<4); return (cycles[bp]=="")?0:*cycles[bp];}
+        AnsiString		CycleName		(u16 bp){VERIFY(bp<4); 	return *cycles[bp];	}
+        AnsiString		FXName			()      {				return *fx;			}
+        void			SetCycle		(LPCSTR name, u16 part);
+        void			SetFX			(LPCSTR name);
     };
 protected:
     enum{

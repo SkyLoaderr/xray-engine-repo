@@ -533,6 +533,8 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
         case emBone:	
 			if (Shift.Contains(ssCtrl))
         		OnBoneModified();
+            if (Shift.Contains(ssAlt))
+        		OnBoneModified();
         break;
         }
     }break;
@@ -545,6 +547,8 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
         case emBone:	
 			if (Shift.Contains(ssCtrl))
 	        	OnBoneModified();		
+            if (Shift.Contains(ssAlt))
+        		OnBoneModified();
         break;
         }
     }break;
@@ -593,11 +597,17 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
 	            m_pEditObject->a_vPosition.add(amount);
         break;
         case emBone:
-        	if (Shift.Contains(ssCtrl)){
-                BoneVec lst;
-                if (m_pEditObject->GetSelectedBones(lst))
+            BoneVec lst;
+            if (m_pEditObject->GetSelectedBones(lst)){
+                if (Shift.Contains(ssCtrl)){
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->ShapeMove(amount);
+                }else if (Shift.Contains(ssAlt)){
+                    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                        (*b_it)->BindRotate(amount);
+                    m_pEditObject->OnBindTransformChange();
+                    RefreshSubProperties();
+                }
             }
         break;
         }
@@ -607,7 +617,7 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
     	switch (m_EditMode){
         case emObject:
-			if (Shift.Contains(ssCtrl))
+			if (Shift.Contains(ssCtrl))             
 	            m_pEditObject->a_vRotate.mad(m_RotateVector,amount);
         break;
         case emBone:{
@@ -618,6 +628,11 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
                 if (Shift.Contains(ssCtrl)){
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->ShapeRotate(rot);
+                }else if (Shift.Contains(ssAlt)){
+                    for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
+                        (*b_it)->BindRotate(rot);
+                    m_pEditObject->OnBindTransformChange();
+	            	RefreshSubProperties();
                 }else{
                     for (BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++)
                         (*b_it)->BoneRotate(m_RotateVector,amount);
@@ -727,5 +742,10 @@ void CActorTools::ShowClipMaker()
 {
 	if (CurrentObject()&&CurrentObject()->IsSkeleton()&&CurrentObject()->SMotionCount())
     	m_ClipMaker->ShowEditor(CurrentObject());
+}
+
+bool CActorTools::IsEngineMode()
+{
+    return (fraLeftBar->ebRenderEngineStyle->Down);
 }
 

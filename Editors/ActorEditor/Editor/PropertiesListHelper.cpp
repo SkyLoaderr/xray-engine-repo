@@ -3,7 +3,7 @@
 
 #include "PropertiesListHelper.h"
 #include "ItemListHelper.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 //---------------------------------------------------------------------------
 
 CPropHelper PHelper;

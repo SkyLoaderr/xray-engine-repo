@@ -134,7 +134,7 @@ public:
     void DrawGrid	();
     void DrawPivot	(const Fvector& pos, float sz=5.f);
 	void DrawAxis	(const Fmatrix& T);
-	void DrawObjectAxis(const Fmatrix& T, float sz=0.1f);
+	void DrawObjectAxis(const Fmatrix& T, float sz, bool sel);
 	void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd);
 
     void DrawPrimitiveL(D3DPRIMITIVETYPE pt, u32 pc, Fvector* vertices, int vc, u32 color, bool bCull, bool bCycle);

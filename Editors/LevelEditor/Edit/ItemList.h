@@ -145,15 +145,17 @@ public:		// User declarations
     {
 //		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvItems->HeaderSections->Item[0]->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),miDrawThumbnails->Checked);
+        SaveSelection							(fs);
     }
     void __fastcall 	LoadParams				(TFormStorage* fs)
     {
+    	LoadSelection							(fs);
 //		tvItems->HeaderSections->Item[0]->Width = fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Name.c_str()),tvItems->HeaderSections->Item[0]->Width);
         miDrawThumbnails->Checked				= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Name.c_str()),false);
         RefreshForm			();
     }
 
-    void 				RemoveSelItems			();
+    void 				RemoveSelItems			(CFolderHelper::TOnItemRemove on_remove=0);
     void 				RenameSelItem			();
 };
 //---------------------------------------------------------------------------

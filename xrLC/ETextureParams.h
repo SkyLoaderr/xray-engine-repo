@@ -102,10 +102,8 @@ struct STextureParams{
 			return FALSE;
 		}
 	}
-    void LoadTex (IReader& F);
-    void SaveTex (IWriter& F);
-    void LoadObj (IReader& F);
-    void SaveObj (IWriter& F);
+    void Load (IReader& F);
+    void Save (IWriter& F);
 };
 #pragma pack( pop )
 
@@ -115,8 +113,6 @@ extern xr_token	tfmt_token[];
 extern xr_token	ttype_token[];
 
 //----------------------------------------------------
-#define THM_CURRENT_VERSION				0x0012
-//----------------------------------------------------
 #define THM_CHUNK_VERSION				0x0810
 #define THM_CHUNK_DATA					0x0811
 #define THM_CHUNK_TEXTUREPARAM			0x0812
@@ -124,6 +120,7 @@ extern xr_token	ttype_token[];
 #define THM_CHUNK_TEXTURE_TYPE			0x0814
 #define THM_CHUNK_DETAIL_EXT			0x0815
 #define THM_CHUNK_OBJECTPARAM			0x0816
+#define THM_CHUNK_SOUNDPARAM			0x0817
 //----------------------------------------------------
 #define THM_SIGN 		"THM_FILE"
 #define THUMB_WIDTH 	128

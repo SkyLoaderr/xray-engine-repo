@@ -186,7 +186,7 @@ void CCustomObject::Render(int priority, bool strictB2F)
 	if ((1==priority)&&(false==strictB2F)){
         if (fraBottomBar->miDrawObjectsPivot->Checked&&Selected()){
             Device.SetShader(Device.m_WireShader);
-            DU.DrawObjectAxis(FTransformRP);
+            DU.DrawObjectAxis(FTransformRP,0.1f,Selected());
         }
         if (m_Motion&&Visible()&&Selected())
             AnimationDrawPath();

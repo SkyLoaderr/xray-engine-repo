@@ -1,10 +1,9 @@
 //---------------------------------------------------------------------------
-
 #include "stdafx.h"
 #pragma hdrstop
 
 #include "ImageEditor.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "ImageManager.h"
 #include "PropertiesList.h"
 #include "FolderLib.h"
@@ -15,12 +14,12 @@
 #pragma link "ElXPThemedControl"
 #pragma link "ExtBtn"
 #pragma link "mxPlacemnt"
+#pragma link "MXCtrls"
 #pragma resource "*.dfm"
 TfrmImageLib* TfrmImageLib::form = 0;
 FS_QueryMap	TfrmImageLib::texture_map;
 FS_QueryMap	TfrmImageLib::modif_map;
 FS_QueryMap	TfrmImageLib::compl_map;
-AnsiString TfrmImageLib::m_LastSelection="";
 bool TfrmImageLib::bFormLocked=false;
 //---------------------------------------------------------------------------
 __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
@@ -33,11 +32,22 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
 
 void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
-	ImageProps = TProperties::CreateForm("",paProperties,alClient);
+	m_ItemProps = TProperties::CreateForm("",paProperties,alClient);
+    m_ItemList	= TItemList::CreateForm("Items",paItems,alClient);
+    m_ItemList->OnItemsFocused 	= OnItemsFocused;
+    m_ItemList->SetImages(ImageList);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bImport){
+void __fastcall TfrmImageLib::FormDestroy(TObject *Sender)
+{
+    TProperties::DestroyForm(m_ItemProps);
+    TItemList::DestroyForm	(m_ItemList);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::EditLib(AnsiString& title, bool bImport)
+{
 	if (!form){
         form 				= xr_new<TfrmImageLib>((TComponent*)0);
         form->Caption 		= title;
@@ -45,10 +55,8 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bImport){
         form->ebRemoveTexture->Enabled = !bImport;
         compl_map.clear		();
 
-        if (!form->bImportMode)  ImageManager.GetTextures(texture_map);
+        if (!form->bImportMode)  ImageLib.GetTextures(texture_map);
 		form->modif_map.clear	();
-        form->m_Thm 			= 0;
-        form->m_SelectedName 	= "";
 
         form->paTextureCount->Caption = AnsiString(" Images in list: ")+AnsiString(texture_map.size());
     }
@@ -61,12 +69,12 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bImport){
 void __fastcall TfrmImageLib::ImportTextures()
 {
 	texture_map.clear();
-    int new_cnt = ImageManager.GetLocalNewTextures(texture_map);
+    int new_cnt = ImageLib.GetLocalNewTextures(texture_map);
     if (new_cnt){
     	if (ELog.DlgMsg(mtInformation,"Found %d new texture(s)",new_cnt))
-    		EditImageLib(AnsiString("Update images"),true);
+    		EditLib(AnsiString("Update images"),true);
     }else{
-    	ELog.DlgMsg(mtInformation,"No new textures found.");
+    	ELog.DlgMsg(mtInformation,"Can't find new textures.");
     }
 }
 
@@ -76,7 +84,7 @@ void __fastcall TfrmImageLib::UpdateImageLib()
     if (bImportMode&&!texture_map.empty()){
     	AStringVec modif;
         LockForm();
-        ImageManager.SafeCopyLocalToServer(texture_map);
+        ImageLib.SafeCopyLocalToServer(texture_map);
 		// rename with folder
 		FS_QueryMap	files=texture_map;
         texture_map.clear();
@@ -84,26 +92,26 @@ void __fastcall TfrmImageLib::UpdateImageLib()
         FS_QueryPairIt it=files.begin();
         FS_QueryPairIt _E=files.end();
         for (;it!=_E; it++){
-        	EFS.UpdateTextureNameWithFolder(ChangeFileExt(it->first,".tga").c_str(),fn);
+        	EFS.AppendFolderToName(ChangeFileExt(it->first,".tga").c_str(),fn);
             texture_map.insert(mk_pair(fn,FS_QueryItem(it->second.size,it->second.modif,it->second.flags.get())));
         }
         // sync
-		ImageManager.SynchronizeTextures(true,true,true,&texture_map,&modif);
+		ImageLib.SynchronizeTextures(true,true,true,&texture_map,&modif);
         UnlockForm();
-    	Device.RefreshTextures(&modif);
+    	ImageLib.RefreshTextures(&modif);
     }else{
 	    // save game textures
         if (modif_map.size()){
             AStringVec modif;
 	        LockForm();
-            ImageManager.SynchronizeTextures(true,true,true,&modif_map,&modif);
+            ImageLib.SynchronizeTextures(true,true,true,&modif_map,&modif);
             UnlockForm();
-	        Device.RefreshTextures(&modif);
+	        ImageLib.RefreshTextures(&modif);
         }
 	}
 }
 
-bool __fastcall TfrmImageLib::HideImageLib()
+bool __fastcall TfrmImageLib::HideLib()
 {
 	if (form){
     	form->Close();
@@ -115,58 +123,43 @@ bool __fastcall TfrmImageLib::HideImageLib()
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
-    InitItemsList(m_LastSelection.IsEmpty()?0:m_LastSelection.c_str());
+    InitItemsList		();
 	// check window position
-	UI.CheckWindowPos(this);
+	UI.CheckWindowPos	(this);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 {
-	if (!form) return;
-    form->Enabled = false;
-
-	xr_delete(m_Thm);
-    m_SelectedName = "";
-
-    TProperties::DestroyForm(ImageProps);
-
-	form = 0;
-	Action = caFree;
+	if (!form) 		return;
+    form->Enabled 	= false;
+    DestroyTHMs		();
+	form 			= 0;
+	Action 			= caFree;
 }
 //---------------------------------------------------------------------------
-void TfrmImageLib::InitItemsList(const char* nm)
+void TfrmImageLib::InitItemsList()
 {
-	tvItems->IsUpdating = true;
+	ListItemsVec items;
 
-    tvItems->Selected = 0;
-    tvItems->Items->Clear();
+    ListItem* V;
     // fill
 	FS_QueryPairIt it = texture_map.begin();
 	FS_QueryPairIt _E = texture_map.end();
     if (compl_map.size()){
         for (; it!=_E; it++){
-            TElTreeItem* node 	= FHelper.AppendObject(tvItems,it->first);
-            FS_QueryPairIt c_it	= compl_map.find(it->first);
+        	V = LHelper.CreateItem	(items,it->first.c_str(),0);
+			FS_QueryPairIt c_it	= compl_map.find(it->first);
             if (c_it!=compl_map.end()){
                 int A,M;
                 ExtractCompValue(c_it->second.modif,A,M);
-                if ((A<2)&&(M<50)){
-                	node->ImageIndex = 0;
-                    if (node->Parent) node->Parent->Expand(false);
-                }
+                V->icon_index = ((A<=2)&&(M<=50))?0:1;
             }
         }
     }else{
         for (; it!=_E; it++)
-            FHelper.AppendObject(tvItems,it->first);
+        	LHelper.CreateItem(items,it->first.c_str(),0);
     }
-
-    // redraw
-    TElTreeItem *node=0;
-    if (!nm)	node = tvItems->Items->GetFirstNode();
-    else 		node = FHelper.FindObject(tvItems,nm);
-	tvItems->IsUpdating = false;
-    FHelper.RestoreSelection(tvItems,node,false);
+    m_ItemList->AssignItems(items,false,true);
 }
 
 //---------------------------------------------------------------------------
@@ -186,7 +179,7 @@ void __fastcall TfrmImageLib::ebOkClick(TObject *Sender)
 	if (bFormLocked) return;
 
 	UpdateImageLib();
-    HideImageLib();
+    HideLib();
 }
 //---------------------------------------------------------------------------
 
@@ -197,109 +190,33 @@ void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
     	return;
     }
 
-    HideImageLib();
+    HideLib();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::SaveTextureParams(){
-	if (m_Thm&&(ImageProps->IsModified()||bImportMode)){
-        m_Thm->Save(0,bImportMode?_import_:0);
-	    FS_QueryPairIt it=texture_map.find(m_SelectedName); R_ASSERT(it!=texture_map.end());
-        modif_map.insert(*it);
-    }
-}
-
-void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
+void __fastcall TfrmImageLib::SaveTextureParams()
 {
-	TElTreeItem* Item = tvItems->Selected;
-	if (Item&&Item->Data){
-		// save previous data
-        SaveTextureParams();
-        // make new name
-    	FHelper.MakeName(Item,0,m_SelectedName,false);
-		xr_delete(m_Thm);
-        // get new texture
-        if (bImportMode){
-        	m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture,false);
-            AnsiString fn = m_SelectedName;
-            EFS.UpdateTextureNameWithFolder(fn);
-//            if (!(m_Thm->Load(m_SelectedName.c_str(),&EFS.m_Import)||m_Thm->Load(fn.c_str(),&EFS.m_Textures)))
-            if (!m_Thm->Load(m_SelectedName.c_str(),_import_)){
-            	bool bLoad = m_Thm->Load(fn.c_str(),_textures_);
-            	ImageManager.CreateTextureThumbnail(m_Thm,m_SelectedName.c_str(),_import_,!bLoad);
-            }
-        }else			 m_Thm = xr_new<EImageThumbnail>(m_SelectedName.c_str(),EImageThumbnail::EITTexture);
-        if (!m_Thm->Valid()){
-        	pbImage->Repaint();
-            ImageProps->ClearProperties();
-            lbFileName->Caption 	= "/Error/";
-            lbInfo->Caption			= "/Error/";
-        }else{
-        	pbImagePaint(Sender);
-            lbFileName->Caption 	= "\""+ChangeFileExt(m_SelectedName,"")+"\"";
-            AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlpha()?"32b":"24b");
-            if (!compl_map.empty()){
-				FS_QueryPairIt it 	= compl_map.find(m_SelectedName);
-                if (it!=compl_map.end()){
-                	int A,M;
-	                ExtractCompValue(it->second.modif,A,M);
-	    	        AnsiString t2; 	t2.sprintf(" [A:%d%% M:%d%%]",A,M);
-            		temp			+= t2;
-                }
-            }
-            lbInfo->Caption			= temp;
-
-		    PropItemVec values;
-            m_Thm->FillProp(values);
-            ImageProps->AssignItems(values,true);
-
-            m_LastSelection = m_SelectedName;
+	if (m_ItemProps->IsModified()||bImportMode){
+	    for (THMIt t_it=m_THMs.begin(); t_it!=m_THMs.end(); t_it++){
+            (*t_it)->Save(0,bImportMode?_import_:0);
+            AnsiString fn = ChangeFileExt((*t_it)->Name(),".tga");
+            FS_QueryPairIt it=texture_map.find(fn); R_ASSERT(it!=texture_map.end());
+            modif_map.insert(*it);
         }
-    }else{
-		ImageProps->ClearProperties();
-		xr_delete(m_Thm);
-        m_SelectedName = "";
-		lbFileName->Caption	= "...";
-		lbInfo->Caption		= "...";
-       	pbImage->Repaint();
     }
 }
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmImageLib::pbImagePaint(TObject *Sender)
-{
-    if (m_Thm) m_Thm->Draw(pbImage);
-}
-//---------------------------------------------------------------------------
-
-
-extern bool __fastcall LookupFunc(TElTreeItem* Item, void* SearchDetails);
-
-void __fastcall TfrmImageLib::tvItemsKeyPress(TObject *Sender, char &Key)
-{
-	TElTreeItem* node = tvItems->Items->LookForItemEx(tvItems->Selected,-1,false,false,false,&Key,LookupFunc);
-    if (!node) node = tvItems->Items->LookForItemEx(0,-1,false,false,false,&Key,LookupFunc);
-    FHelper.RestoreSelection(tvItems,node,false);
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::fsStorageRestorePlacement(TObject *Sender)
 {
-	ImageProps->RestoreParams(fsStorage);
+	m_ItemProps->RestoreParams(fsStorage);
+    m_ItemList->LoadParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *Sender)
 {
-	ImageProps->SaveParams(fsStorage);
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TfrmImageLib::tvItemsKeyDown(TObject *Sender, WORD &Key,
-      TShiftState Shift)
-{
-//
+	m_ItemProps->SaveParams(fsStorage);
+    m_ItemList->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -308,11 +225,9 @@ void __fastcall TfrmImageLib::ebCheckAllComplianceClick(TObject *Sender)
 	if (bFormLocked) return;
 
 	LockForm();
-    ImageManager.CheckCompliance(texture_map,compl_map);
+    ImageLib.CheckCompliance(texture_map,compl_map);
 	UnlockForm();
-    AnsiString last_name = tvItems->Selected?AnsiString(tvItems->Selected->Text):AnsiString("");
-    InitItemsList(last_name.IsEmpty()?0:last_name.c_str());
-//	tvItemsItemFocused(Sender);
+    InitItemsList();
 }
 //---------------------------------------------------------------------------
 
@@ -320,16 +235,19 @@ void __fastcall TfrmImageLib::ebCheckSelComplianceClick(TObject *Sender)
 {
 	if (bFormLocked) return;
 
-	if (tvItems->Selected){
-    	int compl=0;
-        AnsiString 	fname;
-        FS.update_path			(fname,_textures_,m_SelectedName.c_str());
-	    if (ImageManager.CheckCompliance(fname.c_str(),compl)){
-	    	compl_map.insert	(mk_pair(m_SelectedName,FS_QueryItem(0,compl)));
-            tvItemsItemFocused(Sender);
-        }else{
-	    	ELog.DlgMsg(mtError,"Some error found in check.");
+    ListItemsVec items;
+    if (m_ItemList->GetSelected(0,items,false)){
+        for (ListItemsIt it=items.begin(); it!=items.end(); it++){
+	    	int compl			= 0;
+            AnsiString 	fname,src_name=ChangeFileExt((*it)->Key(),".tga");
+            FS.update_path		(fname,_textures_,src_name.c_str());
+            if (ImageLib.CheckCompliance(fname.c_str(),compl)){
+                compl_map.insert(mk_pair(src_name,FS_QueryItem(0,compl)));
+            }else{
+                ELog.DlgMsg(mtError,"Some error found in check.");
+            }
         }
+        InitItemsList();
     }else{
     	ELog.DlgMsg(mtError,"At first select item!");
     }
@@ -354,7 +272,7 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
     UI.ProgressStart		(texture_map.size(),"Export association");
     bool bRes=true;
     for (;it!=_E; it++){
-        EImageThumbnail* m_Thm = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
+        ETextureThumbnail* m_Thm = xr_new<ETextureThumbnail>(it->first.c_str());
 	    UI.ProgressInc(it->first.c_str());
         if (m_Thm->Valid()&&(m_Thm->_Format().flags.is(STextureParams::flHasDetailTexture))){
         	AnsiString det;
@@ -378,53 +296,84 @@ void __fastcall TfrmImageLib::ebRebuildAssociationClick(TObject *Sender)
 
 void __fastcall TfrmImageLib::ebRemoveTextureClick(TObject *Sender)
 {
-  	FHelper.RemoveItem(tvItems,tvItems->Selected,ImageManager.RemoveTexture);
+	m_ItemList->RemoveSelItems(ImageLib.RemoveTexture);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmImageLib::ExtBtn1Click(TObject *Sender)
+void TfrmImageLib::DestroyTHMs()
 {
-/*	LockForm();
-	{
-        string256 fn;
-        FS_QueryPairIt it		= texture_map.begin();
-        FS_QueryPairIt _E		= texture_map.end();
-        UI.ProgressStart		(texture_map.size(),"Resave Texture THM");
-        bool bRes=true;
-        for (;it!=_E; it++){
-	        UI.ProgressInc(it->first.c_str());
-            EImageThumbnail* m_Thm = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITTexture);
-            if ( m_Thm){ 
-                m_Thm->Save			();
-                xr_delete(m_Thm);
-            }
-            if (UI.NeedAbort()){ bRes=false; break; }
-        }
-        UI.ProgressEnd();
-    }
-    {
-	    FS_QueryMap mp;
-    	FS.file_list(mp,_objects_,FS_ListFiles|FS_ClampExt,".thm");
+    for (THMIt it=m_THMs.begin(); it!=m_THMs.end(); it++)
+    	xr_delete(*it);
+    m_THMs.clear();
+}
 
-        string256 fn;
-        FS_QueryPairIt it		= mp.begin();
-        FS_QueryPairIt _E		= mp.end();
-        UI.ProgressStart		(mp.size(),"Resave Object THM");
-        bool bRes=true;
-        for (;it!=_E; it++){
-	        UI.ProgressInc(it->first.c_str());
-            EImageThumbnail* m_Thm = xr_new<EImageThumbnail>(it->first.c_str(),EImageThumbnail::EITObject);
-            if ( m_Thm){ 
-                m_Thm->Save			();
-                xr_delete(m_Thm);
-            }
-            if (UI.NeedAbort()){ bRes=false; break; }
-        }
-        UI.ProgressEnd();
-    }
+void __fastcall TfrmImageLib::OnItemsFocused(ListItemsVec& items)
+{
+	PropItemVec props;
+
+    SaveTextureParams	();
+    DestroyTHMs			();
     
-	UnlockForm();
-*/
+	if (!items.empty()){
+	    for (ListItemsIt it=items.begin(); it!=items.end(); it++){
+            ListItem* prop = *it;
+            if (prop){
+            	ETextureThumbnail* thm=0;
+                if (bImportMode){
+                    thm = xr_new<ETextureThumbnail>(prop->Key(),false);
+                    AnsiString fn = prop->Key();
+                    EFS.AppendFolderToName(fn);
+        //            if (!(m_Thm->Load(m_SelectedName.c_str(),&EFS.m_Import)||m_Thm->Load(fn.c_str(),&EFS.m_Textures)))
+                    if (!thm->Load(prop->Key(),_import_)){
+                        bool bLoad = thm->Load(fn.c_str(),_textures_);
+                        ImageLib.CreateTextureThumbnail(thm,prop->Key(),_import_,!bLoad);
+                    }
+                }else thm = xr_new<ETextureThumbnail>(prop->Key());
+                m_THMs.push_back	(thm);
+                thm->FillProp		(props);
+            }
+        }
+    }
+	m_ItemProps->AssignItems		(props,true);
+
+    if (m_THMs.size()==1){
+        ETextureThumbnail* thm		= m_THMs.back();
+        if (!thm->Valid()){
+        	paImage->Repaint		();
+            lbFileName->Caption 	= "/Error/";
+            lbInfo->Caption			= "/Error/";
+        }else{
+        	paImage->Repaint		();
+            lbFileName->Caption 	= "\""+ChangeFileExt(thm->Name(),"")+"\"";
+            AnsiString temp; 		temp.sprintf("%d x %d x %s",thm->_Width(),thm->_Height(),thm->_Format().HasAlpha()?"32b":"24b");
+            if (!compl_map.empty()){
+				FS_QueryPairIt it 	= compl_map.find(ChangeFileExt(thm->Name(),".tga"));
+                if (it!=compl_map.end()){
+                	int A,M;
+	                ExtractCompValue(it->second.modif,A,M);
+	    	        AnsiString t2; 	t2.sprintf(" [A:%d%% M:%d%%]",A,M);
+            		temp			+= t2;
+                }
+            }
+            lbInfo->Caption			= temp;
+        }
+	}else{
+		lbFileName->Caption	= "...";
+		lbInfo->Caption		= "...";
+       	paImage->Repaint	();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::paImageResize(TObject *Sender)
+{
+	paImage->Height = paImage->Width;	
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::paImagePaint(TObject *Sender)
+{
+	if (m_THMs.size()==1) m_THMs.back()->Draw(paImage);
 }
 //---------------------------------------------------------------------------
 

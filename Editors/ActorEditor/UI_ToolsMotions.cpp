@@ -16,6 +16,28 @@
 #include "ItemList.h"
 //---------------------------------------------------------------------------
 
+void CActorTools::EngineModel::PlayCycle(LPCSTR name, int part)
+{
+    CMotionDef* D = PSkeletonAnimated(m_pVisual)->ID_Cycle_Safe(name);
+    if (D)
+        D->PlayCycle(PSkeletonAnimated(m_pVisual),part,TRUE,0,0);
+}
+
+void CActorTools::EngineModel::PlayFX(LPCSTR name, float power)
+{
+    PSkeletonAnimated(m_pVisual)->PlayFX(name,power);
+}
+
+void CActorTools::EngineModel::StopAnimation()
+{
+    if (m_pVisual){
+        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(0);
+        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(1);
+        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(2);
+        PSkeletonAnimated(m_pVisual)->LL_CloseCycle(3);
+    }
+}
+
 bool CActorTools::EngineModel::UpdateGeometryStream(CEditableObject* source)
 {
 	m_GeometryStream.clear();
@@ -216,7 +238,8 @@ void CActorTools::MakePreview()
 
 void CActorTools::PlayMotion()
 {
-	if (m_pEditObject)
+	if (m_pEditObject){
+	    m_ClipMaker->Stop();
     	if (fraLeftBar->ebRenderEditorStyle->Down) m_pEditObject->SkeletonPlay();
         else if (fraLeftBar->ebRenderEngineStyle->Down) {
         	if (m_Flags.is(flUpdateMotionKeys))	{ OnMotionKeysModified();	}
@@ -224,6 +247,7 @@ void CActorTools::PlayMotion()
         	if (m_Flags.is(flUpdateGeometry))	{ OnGeometryModified(); 	}
             m_RenderObject.PlayMotion(m_pEditObject->GetActiveSMotion());
         }
+    }
 }
 
 void CActorTools::StopMotion()

@@ -10,7 +10,7 @@
 #include "Library.h"
 #include "EditObject.h"
 #include "LevelGameDef.h"
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "FolderLib.h"
 #include "LightAnimLibrary.h"
 #include "ImageManager.h"
@@ -225,7 +225,7 @@ void __fastcall TfrmChoseItem::FillTexture()
 {
     form->Caption					= "Select Texture";
     FS_QueryMap	lst;
-    if (ImageManager.GetTextures(lst)){
+    if (ImageLib.GetTextures(lst)){
 	    FS_QueryPairIt	it			= lst.begin();
     	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
@@ -348,11 +348,6 @@ void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
-{
-    if (m_Thm) m_Thm->Draw(pbImage);
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfrmChoseItem::tvItemsDblClick(TObject *Sender)
 {
@@ -469,13 +464,13 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
         case smTexture:{
 	        AnsiString nm;
         	FHelper.MakeName		(Item,0,nm,false);
-            if (nm!=NONE_CAPTION)	m_Thm	= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITTexture);
-	        if (!m_Thm||!m_Thm->Valid()) pbImage->Repaint();
-            else	 				pbImagePaint(Sender);
+            if (nm!=NONE_CAPTION)	m_Thm	= xr_new<ETextureThumbnail>(nm.c_str());
+	        if (!m_Thm||!m_Thm->Valid()) paImage->Repaint();
+            else	 				paImage->Repaint();
 	        lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
     	    lbFileName->Caption 	= "\""+Item->Text+"\"";
             AnsiString temp; 		
-            if (m_Thm) temp.sprintf	("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Alpha()?"32b":"24b");
+            if (m_Thm) temp.sprintf	("%d x %d x %s",((ETextureThumbnail*)m_Thm)->_Width(),((ETextureThumbnail*)m_Thm)->_Height(),((ETextureThumbnail*)m_Thm)->_Alpha()?"32b":"24b");
             lbInfo->Caption			= temp;
         }break;
         case smObject:{
@@ -484,10 +479,9 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
             fn						= ChangeFileExt(nm,".thm");
 		    FS.update_path			(_objects_,fn);
             if (FS.exist(fn.c_str())){
-	    	    m_Thm 					= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITObject);
-    	        if (!m_Thm->Valid()) 	pbImage->Repaint();
-        	    else				 	pbImagePaint(Sender);
-            }else						pbImage->Repaint();
+	    	    m_Thm 				= xr_new<EObjectThumbnail>(nm.c_str());
+            }
+            paImage->Repaint		();
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+Item->Text+".object\"";
             lbInfo->Caption			= "-";
@@ -495,7 +489,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
         case smSoundSource:{
 	        AnsiString fn;
         	FHelper.MakeName		(Item,0,fn,false);
-            fn						= ChangeFileExt(fn,".wav");
+            fn						= ChangeFileExt(fn,".ogg");
             const CLocatorAPI::file* file	= FS.exist(_game_sounds_,fn.c_str());
             if (file){
             	m_Snd.create		(TRUE,fn.c_str());
@@ -505,9 +499,9 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
                 if (src) temp.sprintf	("Size: %.2f Kb\nTime: %.2f sec",float(file->size_real)/1024.f,float(src->dwTimeTotal)/1000.f);
                 lbInfo->Caption			= temp;
-            }else						pbImage->Repaint();
+            }else						paImage->Repaint();
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbFileName->Caption		= "\""+Item->Text+".wav\"";
+			lbFileName->Caption		= "\""+Item->Text+".ogg\"";
         }break;
         default:
 			lbItemName->Caption = "\""+Item->Text+"\"";
@@ -519,6 +513,12 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 		lbFileName->Caption	= "-";
 		lbInfo->Caption		= "-";
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmChoseItem::paImagePaint(TObject *Sender)
+{
+	if (m_Thm) m_Thm->Draw(paImage,false);
 }
 //---------------------------------------------------------------------------
 

@@ -264,7 +264,7 @@ AnsiString CEditableObject::GetLODTextureName()
 	AnsiString l_name;
     string256 nm; strcpy(nm,m_LibName.c_str()); _ChangeSymbol(nm,'\\','_');
     l_name = "lod_"+AnsiString(nm);
-    l_name = EFS.UpdateTextureNameWithFolder(l_name);
+    l_name = EFS.AppendFolderToName(l_name);
     return l_name;
 }
 

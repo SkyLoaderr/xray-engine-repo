@@ -351,21 +351,6 @@ void CRenderDevice::ReloadTextures()
 	Resources->ED_UpdateTextures(0);
 	UI.SetStatus("");
 }
-//------------------------------------------------------------------------------
-// если передан параметр modif - обновляем DX-Surface only и только из списка
-// иначе полная синхронизация
-//------------------------------------------------------------------------------
-void CRenderDevice::RefreshTextures(AStringVec* modif)
-{
-	UI.SetStatus("Refresh textures...");
-    if (modif) Resources->ED_UpdateTextures(modif);
-	else{
-    	AStringVec modif_files;
-    	ImageManager.SynchronizeTextures(true,true,false,0,&modif_files);
-        Resources->ED_UpdateTextures(&modif_files);
-    }
-	UI.SetStatus("");
-}
 
 void CRenderDevice::UnloadTextures()
 {
