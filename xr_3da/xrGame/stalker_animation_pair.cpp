@@ -64,6 +64,7 @@ void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCa
 
 	if (!global_animation()) {
 		float				pos = 0.f;
+		VERIFY				(!m_blend || !fis_zero(m_blend->timeTotal));
 		if (m_step_dependence && m_blend && !fis_zero(m_blend->timeTotal))
 			pos				= fmod(m_blend->timeCurrent,m_blend->timeTotal)/m_blend->timeTotal;
 		m_blend				= skeleton_animated->PlayCycle(animation(),TRUE,callback,object);

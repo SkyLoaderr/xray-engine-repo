@@ -77,6 +77,17 @@ IC	CSmartCastStats	&stats						()
 	return						(*CSmartCastStats::instance());
 }
 
+#ifdef SMART_CAST_STATS_ALL
+CSmartCastStats* g_smart_cast_opt = 0;
+
+IC	CSmartCastStats	&stats_all					()
+{
+	if (!g_smart_cast_opt)
+		g_smart_cast_opt		= xr_new<CSmartCastStats>();
+	return						(*g_smart_cast_opt);
+}
+#endif
+
 IC	void CSmartCastStats::add					(LPCSTR from, LPCSTR to)
 {
 	CStats					temp(from,to,1);
@@ -123,10 +134,22 @@ void add_smart_cast_stats		(LPCSTR from, LPCSTR to)
 #endif
 }
 
+void add_smart_cast_stats_all	(LPCSTR from, LPCSTR to)
+{
+#ifdef SMART_CAST_STATS
+#	ifdef SMART_CAST_STATS_ALL
+		stats_all().add			(from,to);
+#	endif
+#endif
+}
+
 void show_smart_cast_stats		()
 {
 #ifdef SMART_CAST_STATS
 	stats().show				();
+#	ifdef SMART_CAST_STATS_ALL
+	stats_all().show			();
+#	endif
 #else
 	Msg							("! SMART_CAST_STATS macros is not defined, stats is disabled");
 #endif
@@ -136,6 +159,9 @@ void clear_smart_cast_stats		()
 {
 #ifdef SMART_CAST_STATS
 	stats().clear				();
+#	ifdef SMART_CAST_STATS_ALL
+	stats_all().clear			();
+#	endif
 #else
 	Msg							("! SMART_CAST_STATS macros is not defined, stats is disabled");
 #endif
@@ -145,6 +171,9 @@ void release_smart_cast_stats	()
 {
 #ifdef SMART_CAST_STATS
 	CSmartCastStats::_release	();
+#	ifdef SMART_CAST_STATS_ALL
+		xr_delete				(g_smart_cast_opt);
+#	endif
 #endif
 }
 

@@ -19,6 +19,11 @@
 #ifdef PURE_DYNAMIC_CAST
 #	define smart_cast dynamic_cast
 #else
+
+#	ifdef DEBUG
+//#		define SMART_CAST_STATS_ALL
+#	endif
+
 #	ifndef DECLARE_SPECIALIZATION
 #		include "smart_cast_impl0.h"
 #	else
