@@ -73,7 +73,6 @@ void CAI_Hen::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	dwHitTime = Level().timeServer();
 	tHitDir.set(D);
 	tHitDir.normalize();
-	Msg("i am hit");
 
 	// Play hit-sound
 	sound3D& S = sndHit[Random.randI(SND_HIT_COUNT)];
@@ -293,7 +292,6 @@ void CAI_Hen::Attack()
 				S.m_dwHitTime		= dwHitTime;
 				
 				S.m_dwCurTime		= Level().timeServer();
-				//Msg("%d : %d",S.m_dwHitTime,S.m_dwCurTime);
 				
 				S.m_tMe				= this;
 				S.m_tpMyNode		= AI_Node;
@@ -364,11 +362,9 @@ void CAI_Hen::Attack()
 					
 				if (!bCanKillMember) {
 					q_action.setup(AI::AIC_Action::FireBegin);
-					Msg("I am firing");
 				}
 				else {
 					q_action.setup(AI::AIC_Action::FireEnd);
-					Msg("no fire");
 				}
 				/**/
 				// checking flag to stop processing more states
@@ -450,7 +446,6 @@ void CAI_Hen::Attack()
 				q_look.o_look_speed=_FB_look_speed;
 				
 				q_action.setup(AI::AIC_Action::FireEnd);
-				Msg("no fire");
 
 				// checking flag to stop processing more states
 				m_fCurSpeed = m_fMaxSpeed;
