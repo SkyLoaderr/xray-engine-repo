@@ -906,6 +906,8 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateAngle			(values, FHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
     PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
+	PHelper.CreateTexture		(values, FHelper.PrepareKey(pref,s_name,"Glow texture"),	glow_texture,		sizeof(glow_texture));
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Glow radius"),		&glow_radius,		0.1f, 1000.f);
 
     // motions
     if (visual && PSkeletonAnimated(visual))
