@@ -30,10 +30,11 @@ function evaluator_wound:evaluate ()
            return false
        end
     end       
-    if self.object.health < 20 then
+    if self.object.health < 0.20 then
        self.a.final = false
        return true
     end
+    self.a.final = true
     return false    
 end
 ------------------------------------------------------------------------------------------
@@ -60,7 +61,7 @@ function evaluator_final:__init (name, storage) super ()
 end
 ------------
 function evaluator_final:evaluate ()
-    if self.object.health < 20 and self.a.ignore_time == 0 then 
+    if self.object.health < 0.20 and self.a.ignore_time == 0 then 
        self.a.final = false 
     end
     return self.a.final
@@ -133,7 +134,7 @@ function action_cover:initialize ()
     action_base.initialize (self)
     
     local pt = self.object:safe_cover (self.object:position (), 50, 0)
-    if pt == nil or self.object.health < 10 then
+    if pt == nil or self.object.health < 0.10 then
        self.pos = self.object:position ()
        self.vid = self.object:level_vertex_id ()
     else
@@ -160,7 +161,7 @@ function action_cover:execute ()
     action_base.execute (self)
     if self.stage == 0 then
        if self.object:level_vertex_id () == self.vid and self.pos:distance_to (self.object:position ()) < 1.0 then
-          if self.object.health < 10 then 
+          if self.object.health < 0.10 then 
              self.a.cover = true
              return
           end   
@@ -419,10 +420,9 @@ end
 ------------------------------------------------------------------------------------------
 function add_to_binder (object, char_ini)
 
+    printf ("BASE EVALUATORS %d", xr_evaluators_id.sidor_wounded_base)
     local operators     = {}
     local properties    = {}
-    
-    printf ("BASE = %d", xr_evaluators_id.sidor_wounded_base + 0)
     
     properties["enable"]        =   xr_evaluators_id.sidor_wounded_base + 0
     properties["wound"]         =   xr_evaluators_id.sidor_wounded_base + 1
@@ -441,9 +441,9 @@ function add_to_binder (object, char_ini)
     operators["clear"]          =   xr_actions_id.sidor_act_wounded_base + 6
     operators["stand"]          =   xr_actions_id.sidor_act_wounded_base + 7
     
-    --this.set_wounded (object)
     xr_motivator.storage[object:id()].wounded.sit = false
     xr_motivator.storage[object:id()].wounded.cover = false
+    xr_motivator.storage[object:id()].wounded.ignore_time = 0
     
     local manager = object:motivation_action_manager ()
     manager:add_evaluator (properties["enable"],    this.evaluator_enable       ("enabled", xr_motivator.storage[object:id()].wounded))
@@ -530,7 +530,7 @@ function add_to_binder (object, char_ini)
     action:add_precondition (world_property (properties["cover"],           true))
     action:add_precondition (world_property (properties["sit"],             true))
     action:add_effect       (world_property (properties["final"],           true))
-    --action:add_effect       (world_property (properties["wound"],           false))
+    --action:add_effect       (world_property (properties["wound"],         false))
    	manager:add_action      (operators["enemy"], action)
     
     action = manager:action (stalker_ids.action_puzzle_solver)
@@ -542,34 +542,3 @@ function add_to_binder (object, char_ini)
 end
 ------------
 
---function set_wounded (npc, enabled, threshold, immediate)
---
---	local char_ini = npc:spawn_ini()
---	local st = xr_motivator.storage[npc:id()].wounded
---    if enabled == nil then
---       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "enabled") == true then
---          st.enabled = char_ini:r_bool("wounded", "enabled")
---       end
---    else
---       st.enabled = enabled     
---    end
---    
---    if threshold == nil then
---       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "threshold") == true then
---          st.threshold = char_ini:r_u32 ("wounded", "threshold") / 100.0
---       end
---    else
---       st.threshold = threshold
---    end
---    
---    if immediate == nil then
---       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "immediate") == true then
---          st.immediate = char_ini:r_bool ("wounded", "immediate")
---       end
---    else
---       st.immediate = immediate
---    end
---   
---    st.sit = false 
---    st.cover = false
---end
