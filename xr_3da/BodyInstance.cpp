@@ -184,6 +184,7 @@ CBlend*	CKinematics::PlayFX			(LPCSTR  N, float power_scale)
 CBlend*	CKinematics::LL_PlayFX(int bone, int motion, float blendAccrue, float blendFalloff, float Speed, float Power)
 {
 	if (motion<0)	return 0;
+//.	if (blend_fx.size()>=MAX_BLENDED) return 0;
 	if (bone<0)		bone = iRoot;
 	
 	CBlend*	B		= IBlend_Create();
