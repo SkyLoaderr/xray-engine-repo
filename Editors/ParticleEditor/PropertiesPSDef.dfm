@@ -1,6 +1,6 @@
 object frmPropertiesPSDef: TfrmPropertiesPSDef
-  Left = 478
-  Top = 241
+  Left = 765
+  Top = 411
   BorderIcons = [biSystemMenu]
   BorderStyle = bsToolWindow
   Caption = 'Particle System'
