@@ -115,6 +115,10 @@ BOOL CEffect_Thunderbolt::RayPick(const Fvector& s, const Fvector& d, float& dis
     return bRes;
 }
 
+IC bool sound_pred(const CEffect_Thunderbolt::SoundDesc& x, float val)
+{
+	return x.time<val;
+};
 #define FAR_DIST g_pGamePersistent->Environment.CurrentEnv.far_plane
 #define SUN_DIR  g_pGamePersistent->Environment.CurrentEnv.sun_dir
 void CEffect_Thunderbolt::Bolt(float period, float lt)
@@ -156,8 +160,8 @@ void CEffect_Thunderbolt::Bolt(float period, float lt)
     }else{
 	    next_lightning_time = Device.fTimeGlobal+period+Random.randF(-period*0.3f,period*0.3f);
     	float val			= Device.fTimeGlobal+dist/300.f;
-	    FloatDeqIt it		= std::lower_bound(sound_times.begin(),sound_times.end(),val);
-    	sound_times.insert	(it,val);
+	    SoundDeqIt it		= std::lower_bound(sound_times.begin(),sound_times.end(),val,sound_pred);
+    	sound_times.insert	(it,SoundDesc(val,pos));
     }
 }
 
@@ -170,13 +174,13 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
     	if (state==stIdle)	Bolt(period,duration);
     }
     if (!sound_times.empty()){
-    	float next_tm = sound_times.front();
-        if (Device.fTimeGlobal>next_tm){
+    	SoundDesc& next_tm 	= sound_times.front();
+        if (Device.fTimeGlobal>next_tm.time){
             // play sound
-            float dist = lightning_center.distance_to(Device.vCameraPosition);
+            float dist = next_tm.pos.distance_to(Device.vCameraPosition);
+			current->snd.play_at_pos_unlimited(0,next_tm.pos,FALSE);
+			current->snd.set_range	(dist/10,dist*2.f);
             sound_times.pop_front	();
-			current->snd.play_at_pos_unlimited(0,lightning_center,FALSE);
-			current->snd.set_range	(dist/10,dist+EPS_L);
         }
     }
 	if (state==stWorking){
@@ -196,7 +200,7 @@ void CEffect_Thunderbolt::Render()
 	if (state==stWorking){
     	VERIFY	(current);
 
-        // render
+        // lightning model
         float dv			= lightning_phase*0.5f;
         dv					= (lightning_phase>0.5f)?Random.randI(2)*0.5f:dv;
 
