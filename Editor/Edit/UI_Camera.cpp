@@ -50,6 +50,7 @@ void CUI_Camera::SetStyle(ECameraStyle new_style){
 void CUI_Camera::Reset(){
 	m_HPB.set(0,0,0);
     m_Position.set(0,5,-20);
+	SetStyle(m_Style);
     BuildCamera();
 }
 
