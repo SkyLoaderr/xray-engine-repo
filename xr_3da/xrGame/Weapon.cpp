@@ -813,9 +813,7 @@ int CWeapon::GetAmmoCurrent() const
 
 float CWeapon::GetConditionMisfireProbability() const
 {
-	float mis = misfireProbability+powf(1.f-GetCondition(), 3.f);
-	clamp(mis,0.0f,0.99f);
-	return mis;
+	return misfireProbability*(1.f-GetCondition());
 }
 
 BOOL CWeapon::CheckForMisfire()
@@ -980,7 +978,7 @@ void CWeapon::SwitchState(u32 S)
 {
 	NEXT_STATE		= S;	// Very-very important line of code!!! :)
 	if (CHudItem::object().Local() && !CHudItem::object().getDestroy()/* && (S!=NEXT_STATE)*/ 
-		&& m_pInventory)	
+		&& m_pInventory && OnServer())	
 	{
 		// !!! Just single entry for given state !!!
 		NET_Packet		P;
