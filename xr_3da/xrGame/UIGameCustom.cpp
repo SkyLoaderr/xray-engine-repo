@@ -1,6 +1,22 @@
 #include "stdafx.h"
 #include "UIGameCustom.h"
 
+CUIGameCustom::CUIGameCustom()
+{
+	m_Parent=NULL;
+	uFlags=0;
+	m_pUserMenu=NULL;
+
+	shedule.t_min = 5;
+	shedule.t_max = 20;
+	shedule_register();
+}
+
+CUIGameCustom::~CUIGameCustom()
+{
+	shedule_unregister();
+}
+
 bool CUIGameCustom::IR_OnMouseMove(int dx,int dy)
 {
 	if(m_pUserMenu)
@@ -31,13 +47,28 @@ void CUIGameCustom::StartStopMenu(CUIDialogWnd* pDialog)
 	}
 }
 
+float CUIGameCustom::shedule_Scale		() 
+{
+	return 0.5f;
+};
+
+void CUIGameCustom::shedule_Update		(u32 dt)
+{
+	inherited::shedule_Update(dt);
+
+	if(m_pUserMenu)
+	{
+		m_pUserMenu->Update();
+	}
+}
 
 void CUIGameCustom::OnFrame() 
 {
 	if(m_pUserMenu)
 	{
-		m_pUserMenu->Update();
+	//	m_pUserMenu->Update();
 	}
+
 }
 
 void CUIGameCustom::Render()

@@ -11,8 +11,9 @@ class CUI;
 class CTeamBaseZone;
 
 
-class CUIGameCustom :public DLL_Pure
+class CUIGameCustom :public DLL_Pure, public ISheduled
 {
+	typedef ISheduled inherited;
 protected:
 	u32					uFlags;
 	CUI*				m_Parent;
@@ -25,10 +26,12 @@ public:
 	void				SetFlag					(u32 mask, BOOL flag){if (flag) uFlags|=mask; else uFlags&=~mask; }
 	void				InvertFlag				(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
 	BOOL				GetFlag					(u32 mask){return uFlags&mask;}
+
+	virtual				float					shedule_Scale		();
+	virtual				void					shedule_Update		(u32 dt);
 	
-public:
-						CUIGameCustom			(){m_Parent=NULL;uFlags=0;m_pUserMenu=NULL;}
-	virtual				~CUIGameCustom			(){}
+						CUIGameCustom			()
+	virtual				~CUIGameCustom			()
 
 			void		SetUI					(CUI* parent){m_Parent=parent;}
 	virtual	void		Init					()	{};

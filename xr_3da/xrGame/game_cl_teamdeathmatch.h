@@ -1,9 +1,9 @@
 #pragma once
-#include "game_cl_base.h"
+#include "game_cl_deathmatch.h"
 
-class game_cl_TeamDeathmatch :public game_cl_GameState
+class game_cl_TeamDeathmatch :public game_cl_Deathmatch
 {
-typedef game_cl_GameState inherited;
+typedef game_cl_Deathmatch inherited;
 
 protected:
 	virtual			void				TranslateGameMessage	(u32 msg, NET_Packet& P);

@@ -1,9 +1,9 @@
 #pragma once
-#include "game_cl_base.h"
+#include "game_cl_teamdeathmatch.h"
 
-class game_cl_ArtefactHunt :public game_cl_GameState
+class game_cl_ArtefactHunt :public game_cl_TeamDeathmatch
 {
-	typedef game_cl_GameState inherited;
+	typedef game_cl_TeamDeathmatch inherited;
 protected:
 	ref_sound						pMessageSounds[8];
 
