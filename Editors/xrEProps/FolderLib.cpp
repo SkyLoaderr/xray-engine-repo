@@ -341,9 +341,9 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject* Source, int X, int Y, TOn
         // delete folders
         if (bFolderMove){
             AnsiString 		old_name;
-            MakeName		(item,0,old_name,false);
+            MakeName		(*it,0,old_name,false);
             after_drag		(old_name.c_str(),0,TYPE_FOLDER);
-            item->Delete	();
+            (*it)->Delete	();
         }
     }
     FS.unlock_rescan();
