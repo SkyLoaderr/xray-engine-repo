@@ -16,7 +16,6 @@
 #include "xrGraph.h"
 #include "ai_nodes.h"
 #include "ai_a_star_search.h"
-//#include "ai_a_star.h"
 
 extern CStream*					vfs;			// virtual file
 extern hdrNODES					m_header;		// m_header
@@ -230,7 +229,6 @@ class CGraphThread : public CThread
 	float				m_fMaxDistance;
 	CCriticalSection	*m_tpCriticalSection;
 	vector<u32>			tpaNodes;
-	vector<u32>			tpaNodes1;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 
 public:
@@ -288,48 +286,7 @@ public:
 								m_fMaxDistance,
 								tCurrentGraphVertex.tPoint,
 								tNeighbourGraphVertex.tPoint,
-								tpaNodes1);
-//							vfFindTheShortestPath(
-//								(TNode *)m_tpHeap, 
-//								(TIndexNode *)m_tpIndexes, 
-//								m_dwAStarStaticCounter, 
-//								tCurrentGraphVertex.dwNodeID,
-//								tNeighbourGraphVertex.dwNodeID,
-//								fDistance,
-//								m_fMaxDistance,
-//								tCurrentGraphVertex.tPoint,
-//								tNeighbourGraphVertex.tPoint,
-//								tpaNodes);
-//							float fSafeDistance = fDistance;
-//							vfFindTheShortestPath(
-//								(TNode *)m_tpHeap, 
-//								(TIndexNode *)m_tpIndexes, 
-//								m_dwAStarStaticCounter, 
-//								tCurrentGraphVertex.dwNodeID,
-//								tNeighbourGraphVertex.dwNodeID,
-//								fDistance,
-//								m_fMaxDistance,
-//								tCurrentGraphVertex.tPoint,
-//								tNeighbourGraphVertex.tPoint,
-//								tpaNodes1,true);
-//							if (fabsf(fDistance - fSafeDistance) > EPS_L) {
-//								m_tpCriticalSection->Enter();
-//								Msg("%d[%7.2f], %d[%7.2f]",i,fSafeDistance,j,fDistance);
-//								m_tpCriticalSection->Leave();
-//							}
-//							m_tpCriticalSection->Enter();
-//							if (tpaNodes.size() != tpaNodes1.size()) {
-//								Msg("%d[%9.4f], %d[%9.4f]",i,fSafeDistance,j,fDistance);
-//								Msg("* different sizes (%d, %d)!",tpaNodes.size(),tpaNodes1.size());
-//							}
-//							bool bOk = true;
-//							for (int ii=0; ii<(int)min(tpaNodes.size(),tpaNodes1.size()); ii++)
-//								if (tpaNodes[ii] != tpaNodes1[ii]) {
-//									if (bOk)
-//										Msg("%d[%9.4f], %d[%9.4f]",i,fSafeDistance,j,fDistance);
-//									bOk = false;
-//									Msg("* [%d(%d)][%d(%d)] %d : %d -> %d",i,tCurrentGraphVertex.dwNodeID,j,tNeighbourGraphVertex.dwNodeID,ii,tpaNodes[ii],tpaNodes1[ii]);
-//								}
+								tpaNodes);
 						}
 						if (fDistance < m_fMaxDistance) {
 							m_tpCriticalSection->Enter();

@@ -62,9 +62,6 @@ stack<u32>				dwaStack;		// stack
 u32						*dwaSortOrder;  // edge sort order
 u32						*dwaEdgeOwner;  // edge owners
 
-static 
-CCriticalSection		tCriticalSection; // synchronization
-
 void vfLoafAIMap(LPCSTR name)
 {
 	FILE_NAME	fName;
@@ -95,8 +92,6 @@ void vfLoafAIMap(LPCSTR name)
 	// special query tables
 	q_mark_bit.assign	(m_header.count,false);
 	Progress(1.0f);
-
-//	vfLoadSearch();
 }
 
 void vfLoadAIPoints(LPCSTR name)
@@ -348,7 +343,8 @@ void vfSaveGraph(LPCSTR name)
 
 void xrBuildGraph(LPCSTR name)
 {
-	CThreadManager		tThreadManager;
+	CThreadManager		tThreadManager;		// multithreading
+	CCriticalSection	tCriticalSection;	// thread synchronization
 
 	Msg("Building Level %s",name);
 
