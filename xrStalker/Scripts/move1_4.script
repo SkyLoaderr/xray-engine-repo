@@ -1,0 +1,25 @@
+function main ()
+
+    local stalker1 = get_level_object ("stalker_guard1")
+    local stalker2 = get_level_object ("stalker_guard2")
+
+    stalker1:script (true, move1_1.script_name())
+    stalker2:script (true, move1_1.script_name())
+
+    action (stalker1, 
+			move (move.standing, move.walk, move.line, patrol ("guard_way1")),
+      		look (look.search), 
+			anim (anim.free), 
+			cond (cond.time_end, 1000000))
+    action (stalker2, 
+			move (move.standing, move.walk, move.line, patrol ("guard_way2")),
+      		look (look.search), 
+			anim (anim.free), 
+			cond (cond.time_end, 1000000))
+
+    while stalker1:action () and stalker2:action () do wait () end
+
+    stalker1:script (false, move1_1.script_name())
+    stalker2:script (false, move1_1.script_name())
+
+end
