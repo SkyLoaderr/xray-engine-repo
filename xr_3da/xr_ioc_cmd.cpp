@@ -288,6 +288,8 @@ extern char			psNET_Name[32];
 extern int			psNET_Port;
 extern int			psSheduler;
 extern Flags32		psEnvFlags;
+extern float		rsDT_Range;
+
 
 void CCC_Register()
 {
@@ -340,6 +342,7 @@ void CCC_Register()
 	CMD4(CCC_Integer,	"rs_skeleton_update",	&psSkeletonUpdate,	2,		128	);
 	CMD4(CCC_Integer,	"rs_vb_size",			&rsDVB_Size,		32,		4096);
 	CMD4(CCC_Integer,	"rs_ib_size",			&rsDIB_Size,		32,		4096);
+	CMD4(CCC_Float,		"rs_dt_range",			&rsDT_Range,		5,		50	);
 	
 	// Network
 	CMD4(CCC_Integer,	"net_cl_update_rate",	&psNET_ClientUpdate,3,		100	);

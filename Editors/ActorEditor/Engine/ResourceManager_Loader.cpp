@@ -5,7 +5,7 @@
 #include "blenders\blender.h"
 
 // eye-params
-extern	float			psDT_Range;
+float					rsDT_Range	= 30;
 class cl_dt_scaler		: public R_constant_setup {
 public:
 	float				scale;
