@@ -94,7 +94,7 @@ Comments:
 
 #ifdef _WIN32
 #  pragma warning (disable : 4786)
-#  pragma comment (lib,"nv_math.h")
+#  pragma comment (lib,"nv_math.lib")
 #endif
 
 
