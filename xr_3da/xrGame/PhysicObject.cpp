@@ -157,7 +157,7 @@ void CPhysicObject::CreateSkeleton(LPCSTR fixed_bone)
 {
 	if (!pVisual) return;
 
-	int iFBone = PKinematics(pVisual)->LL_BoneID(strlwr(fixed_bone));
+	int iFBone = PKinematics(pVisual)->LL_BoneID(fixed_bone);
 
 	Fmatrix ident;
 	float density=100.f;
