@@ -53,14 +53,14 @@ void FLOD::Render		(float LOD		)
 	dot	= Ldir.dotproduct	(facets[7].N); if (dot>best_dot) { best_id=7; best_dot=dot; }
 
 	// Fill VB
-	_face&		F			= facets[best_id];
-	DWORD		vOffset		= 0;
-	FVF::LIT*	V			= (FVF::LIT*) Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
+	_face&		F					= facets[best_id];
+	DWORD		vOffset				= 0;
+	FVF::LIT*	V					= (FVF::LIT*) Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
 	V[0].set	(F.v[0].v,F.v[0].c,F.v[0].t.x,F.v[0].t.y);
 	V[1].set	(F.v[1].v,F.v[1].c,F.v[1].t.x,F.v[1].t.y);
 	V[2].set	(F.v[2].v,F.v[2].c,F.v[2].t.x,F.v[2].t.y);
 	V[3].set	(F.v[3].v,F.v[3].c,F.v[3].t.x,F.v[3].t.y);
-	Device.Streams.Vertex.Unlock(4,hVS->dwStride);
+	Device.Streams.Vertex.Unlock	(4,hVS->dwStride);
 
 	// Draw IT
 	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
