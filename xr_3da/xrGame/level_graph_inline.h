@@ -8,7 +8,12 @@
 
 #pragma once
 
+#ifdef AI_COMPILER
 #include "profile.h"
+#else
+#define TIMER_START(a)
+#define TIMER_STOP(a)
+#endif
 
 IC const CLevelGraph::CHeader &CLevelGraph::header	() const
 {
