@@ -124,7 +124,9 @@ void CBastArtifact::shedule_Update(u32 dt)
 
 void CBastArtifact::UpdateCL() 
 {
-	inherited::UpdateCL();
+	//Log						("--- A - CBastArtifact",*cName());
+	//Log						("--- A - CBastArtifact",renderable.xform);
+	inherited::UpdateCL		();
 
 	//современем энергия по немногу тоже уменьшается
 	if(m_fEnergy>0) m_fEnergy -= m_fEnergyDecreasePerTime*Device.fTimeDelta;
@@ -264,6 +266,7 @@ BOOL CBastArtifact::feel_touch_contact(CObject* O)
 
 void CBastArtifact::setup_physic_shell	()
 {
+	inherited::setup_physic_shell();
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
 	m_pPhysicsShell->set_ContactCallback(NULL);

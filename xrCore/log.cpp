@@ -114,7 +114,7 @@ void Log(const char *msg, const Fvector &dop) {
 void Log(const char *msg, const Fmatrix &dop) {
 	char buf[1024];
 
-	sprintf	(buf,"Matrix:\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n"	,dop.i.x,dop.i.y,dop.i.z,dop._14_
+	sprintf	(buf,"%s:\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n",msg,dop.i.x,dop.i.y,dop.i.z,dop._14_
 																				,dop.j.x,dop.j.y,dop.j.z,dop._24_
 																				,dop.k.x,dop.k.y,dop.k.z,dop._34_
 																				,dop.c.x,dop.c.y,dop.c.z,dop._44_);

@@ -28,6 +28,8 @@ public:
 
 	float GetDetectionDist() {return m_fDetectionDist;}
 
+	virtual void create_physic_shell();
+
 protected:
 	//расстояние обнаружения артифакта детектором
 	float		m_fDetectionDist;

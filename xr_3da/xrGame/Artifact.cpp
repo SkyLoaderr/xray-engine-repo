@@ -94,3 +94,8 @@ void CArtifact::SoundDestroy(ref_sound& dest)
 {
 	::Sound->destroy			(dest);
 }
+
+void CArtifact::create_physic_shell	()
+{
+	create_box2sphere_physic_shell	();
+}
