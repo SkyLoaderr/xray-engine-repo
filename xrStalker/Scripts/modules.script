@@ -1,8 +1,9 @@
 
 -- Типы схем:
 stype_stalker = 0
-stype_mobile = 1
-stype_item = 2
+stype_mobile  = 1
+stype_item    = 2
+stype_heli    = 3
 
 ----------------------------------------------------------------------
 -- Загрузка схем:
@@ -29,7 +30,6 @@ module ("xr_logic")
 module ("xr_conditions")
 module ("xr_conditions_impl")
 module ("xr_effects")
-module ("xr_sounds")
 module ("xr_zones")
 module ("xr_spawner")
 
@@ -120,3 +120,8 @@ load_scheme("mob_trade",      "mob_trade",   stype_mobile)
 ----------------------------------------------------------------------
 load_scheme("ph_door",        "ph_door",     stype_item)
 
+----------------------------------------------------------------------
+-- Загрузка модулей вертолёта:
+----------------------------------------------------------------------
+--load_scheme("heli_move",      "heli_move",   stype_heli)
+--load_scheme("heli_attack",    "heli_attack", stype_heli)
