@@ -1814,7 +1814,7 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::Draw()
 		for (int i = 0; i < CUIDragDropItemMP::NUM_OF_ADDONS; ++i)
 		{
 
-			if(0 == m_AddonInfo[i].iAttachStatus)
+			if(0 == m_AddonInfo[i].iAttachStatus || !m_pAddon[i])
 				continue;
 
 			pDDItemMP	= m_pAddon[i];
