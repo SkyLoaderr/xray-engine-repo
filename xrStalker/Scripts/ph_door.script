@@ -47,8 +47,9 @@ function action_door:initialize()
 	self.object:set_nonscript_usable(false)
 	self.object:set_use_callback(self, "door_callback")
 
-	printf("_bp: action_door: setting physics callback from initialize")
-	level.add_call(self, "close_check", "close_action")
+	-- Не надо: делается в close_door
+	--printf("_bp: action_door: setting physics callback from initialize")
+	--level.add_call(self, "close_check", "close_action")
 
 	if self.st.snd_init then
 		self:door_play_snd_from_set(self.st.snd_init)
