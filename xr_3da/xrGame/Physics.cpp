@@ -2411,16 +2411,61 @@ void CPHJoint::CreateBall()
 
 m_joint=dJointCreateBall(phWorld,0);
 Fvector pos;
-Fmatrix location;
+Fmatrix first_matrix,second_matrix;
 CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
 CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
-first->InterpolateGlobalTransform(&location);
 
-location.transform_tiny(pos,anchor);
-dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
-dJointAttach(m_joint,first->get_body(),second->get_body());
+
+
+dBodyID body1=0;
+dBodyID body2=0;
+
+if(first)
+{
+	first->InterpolateGlobalTransform(&first_matrix);
+	body1=first->get_body();
+}
+else
+{
+	first_matrix.identity();
+}
+
+if(second)
+{
+	second->InterpolateGlobalTransform(&second_matrix);
+	body2=second->get_body();
+}
+else
+{
+	second_matrix.identity();
 
 }
+
+switch(vs_anchor){
+case vs_first :first_matrix.transform_tiny(pos,anchor); break;
+case vs_second:second_matrix.transform_tiny(pos,anchor); break;
+case vs_global:					
+default:pos.set(anchor);	
+}
+
+if(!(body1&&body2)) 
+{
+
+	m_joint=dJointCreateBall(phWorld,0);
+	dJointAttach(m_joint,body1,body2);
+
+
+	dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
+
+	return;
+}
+
+dJointAttach(m_joint,first->get_body(),second->get_body());
+dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
+
+
+}
+
 
 void CPHJoint::CreateCarWeel()
 {
@@ -2740,12 +2785,16 @@ default:pos.set(anchor);
 if(!(body1&&body2)) 
 {
 	m_joint=dJointCreateHinge(phWorld,0);
+
 	dJointAttach(m_joint,body1,body2);
+
 	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
+	
 	dJointSetHingeParam(m_joint,dParamLoStop ,0.00f);
 	dJointSetHingeParam(m_joint,dParamHiStop ,0.00f);
+
 	dJointSetHingeParam(m_joint,dParamCFM,world_cfm/10.f);
-	//dJointSetHingeParam(m_joint,dParamStopERP,world_erp/10.f);
+	dJointSetHingeParam(m_joint,dParamStopERP,world_erp/10.f);
 	dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm/10.f);
 	return;
 }
