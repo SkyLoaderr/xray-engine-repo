@@ -101,6 +101,7 @@
 				<text>Есть два задания. Притащить ящик с блокпоста \n и выкрасть кое-что с Агропрома.</text>
 				<next>2</next>
 				<next>3</next>
+				<next>11</next>
 			</phrase>
 			<phrase id="2">
 				<dont_has_info>trader_start2</dont_has_info>
@@ -145,6 +146,11 @@
 			<phrase id="10">
 				<text>Ну как знаешь.</text>
 			</phrase>
+			<phrase id="11">
+				<text>Что-то я передумал работать.</text>
+				<next>10</next>
+			</phrase>
+
 		</phrase_list>
 	</dialog>
 
