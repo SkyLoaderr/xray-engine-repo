@@ -17,7 +17,7 @@ template <
 	typename _edge_weight_type = float,
 	typename _vertex_id_type = u32
 >
-class CGraphAbstract : public IPureSerializeObject<IReader,IWriter> {
+class CGraphAbstract {
 public:
 	typedef CVertex<
 		_data_type,
@@ -47,8 +47,6 @@ private:
 public:
 	IC									CGraphAbstract	();
 	virtual								~CGraphAbstract	();
-	virtual void						save			(IWriter &stream);
-	virtual void						load			(IReader &stream);
 	IC		bool						operator==		(const CGraphAbstract &obj) const;
 	IC		void						clear			();
 	IC		void						add_vertex		(const _data_type &data, const _vertex_id_type &vertex_id);
@@ -70,6 +68,17 @@ public:
 	IC		bool						is_accessible	(const _vertex_id_type vertex_index) const;
 	IC		const CVertex 				*value			(const _vertex_id_type vertex_index, const_iterator i) const;
 	IC		void						begin			(const CVertex *vertex, const_iterator &b, const_iterator &e) const;
+};
+
+template <
+	typename _data_type = Loki::EmptyType,
+	typename _edge_weight_type = float,
+	typename _vertex_id_type = u32
+>
+class CGraphAbstractSerialize : public CGraphAbstract<_data_type,_edge_weight_type,_vertex_id_type>, public IPureSerializeObject<IReader,IWriter> {
+public:
+	virtual void						save			(IWriter &stream);
+	virtual void						load			(IReader &stream);
 };
 
 #include "graph_abstract_inline.h"

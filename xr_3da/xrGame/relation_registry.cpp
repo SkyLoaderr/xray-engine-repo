@@ -36,6 +36,7 @@ void RELATION_DATA::load (IReader& stream)
 	load_data(personal, stream);
 	load_data(communities, stream);
 }
+
 void RELATION_DATA::save (IWriter& stream)
 {
 	save_data(personal, stream);

@@ -15,24 +15,24 @@ namespace LevelNavigationGraph {
 	class  CSector;
 };
 
-template <typename, typename, typename> class CGraphAbstract;
+template <typename, typename, typename> class CGraphAbstractSerialize;
 
 class CLevelNavigationGraph : public CLevelGraph {
 private:
-	typedef CLevelGraph							inherited;
+	typedef CLevelGraph									inherited;
 
 public:
-	typedef LevelNavigationGraph::CSector		CSector;
-	typedef CGraphAbstract<CSector,u32,u32>		CSectorGraph;
+	typedef LevelNavigationGraph::CSector				CSector;
+	typedef CGraphAbstractSerialize<CSector,u32,u32>	CSectorGraph;
 
 public:
-	typedef LevelNavigationGraph::CCellVertex	CCellVertex;
-	typedef xr_vector<CCellVertex>				VERTEX_VECTOR;
-	typedef xr_vector<VERTEX_VECTOR>			LINE_VECTOR;
-	typedef xr_vector<LINE_VECTOR>				MARK_TABLE;
+	typedef LevelNavigationGraph::CCellVertex			CCellVertex;
+	typedef xr_vector<CCellVertex>						VERTEX_VECTOR;
+	typedef xr_vector<VERTEX_VECTOR>					LINE_VECTOR;
+	typedef xr_vector<LINE_VECTOR>						MARK_TABLE;
 
 public:
-	typedef xr_vector<CCellVertex*>				CROSS_TABLE;
+	typedef xr_vector<CCellVertex*>						CROSS_TABLE;
 
 private:
 	CSectorGraph				*m_sectors;

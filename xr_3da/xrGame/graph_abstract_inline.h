@@ -156,10 +156,64 @@ IC	const CAbstractGraph &CAbstractGraph::header						() const
 }
 
 TEMPLATE_SPECIALIZATION
+IC	bool CAbstractGraph::operator==		(const CGraphAbstract &obj) const
+{
+	if (vertex_count() != obj.vertex_count())
+		return					(false);
+
+	if (edge_count() != obj.edge_count())
+		return					(false);
+
+	return						(equal(vertices(),obj.vertices()));
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const _edge_weight_type CAbstractGraph::get_edge_weight(const _vertex_id_type vertex_index0, const _vertex_id_type vertex_index1, const_iterator i) const
+{
+	VERIFY						(edge(vertex_index0,vertex_index1));
+	return						((*i).weight());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CAbstractGraph::is_accessible	(const _vertex_id_type vertex_index) const
+{
+	return						(true);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const typename CAbstractGraph::CVertex *CAbstractGraph::value	(const _vertex_id_type vertex_index, const_iterator i) const
+{
+	return						((*i).vertex());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CAbstractGraph::begin	(const CVertex *vertex, const_iterator &b, const_iterator &e) const
+{
+	VERIFY						(vertex);
+	b							= vertex->edges().begin();
+	e							= vertex->edges().end();
+}
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CAbstractGraph
+
+#define TEMPLATE_SPECIALIZATION template <\
+	typename _data_type,\
+	typename _edge_weight_type,\
+	typename _vertex_id_type\
+>
+
+#define CAbstractGraph CGraphAbstractSerialize<\
+	_data_type,\
+	_edge_weight_type,\
+	_vertex_id_type\
+>
+
+TEMPLATE_SPECIALIZATION
 IC	void CAbstractGraph::save			(IWriter &stream)
 {
 	stream.open_chunk			(0);
-	stream.w_u32				((u32)m_vertices.size());
+	stream.w_u32				((u32)vertices().size());
 	stream.close_chunk			();
 	
 	stream.open_chunk			(1);
@@ -251,45 +305,6 @@ IC	void CAbstractGraph::load			(IReader &stream)
 			add_edge			(vertex_id0,vertex_id1,edge_weight);
 		}
 	}
-}
-
-TEMPLATE_SPECIALIZATION
-IC	bool CAbstractGraph::operator==		(const CGraphAbstract &obj) const
-{
-	if (vertex_count() != obj.vertex_count())
-		return					(false);
-
-	if (edge_count() != obj.edge_count())
-		return					(false);
-
-	return						(equal(vertices(),obj.vertices()));
-}
-
-TEMPLATE_SPECIALIZATION
-IC	const _edge_weight_type CAbstractGraph::get_edge_weight(const _vertex_id_type vertex_index0, const _vertex_id_type vertex_index1, const_iterator i) const
-{
-	VERIFY						(edge(vertex_index0,vertex_index1));
-	return						((*i).weight());
-}
-
-TEMPLATE_SPECIALIZATION
-IC	bool CAbstractGraph::is_accessible	(const _vertex_id_type vertex_index) const
-{
-	return						(true);
-}
-
-TEMPLATE_SPECIALIZATION
-IC	const typename CAbstractGraph::CVertex *CAbstractGraph::value	(const _vertex_id_type vertex_index, const_iterator i) const
-{
-	return						((*i).vertex());
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CAbstractGraph::begin	(const CVertex *vertex, const_iterator &b, const_iterator &e) const
-{
-	VERIFY						(vertex);
-	b							= vertex->edges().begin();
-	e							= vertex->edges().end();
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -5,20 +5,20 @@
 #include "profile.h"
 #include "graph_abstract.h"
 
-typedef LevelNavigationGraph::CSector		CSector;
-typedef LevelNavigationGraph::CCellVertex	CCellVertex;
-typedef CCellVertex::_use_type				_use_type;
+typedef LevelNavigationGraph::CSector				CSector;
+typedef LevelNavigationGraph::CCellVertex			CCellVertex;
+typedef CCellVertex::_use_type						_use_type;
 
 const _use_type left	= 1 << 0;
 const _use_type up		= 1 << 3;
 const _use_type right	= 1 << 2;
 const _use_type down	= 1 << 1;
 
-typedef CGraphAbstract<CSector,u32,u32>		CSectorGraph;
-typedef xr_vector<CCellVertex>				VERTEX_VECTOR;
-typedef xr_vector<VERTEX_VECTOR>			VERTEX_VECTOR1;
-typedef xr_vector<VERTEX_VECTOR1>			VERTEX_VECTOR2;
-typedef xr_vector<CCellVertex*>				CROSS_VECTOR;
+typedef CGraphAbstractSerailize<CSector,u32,u32>	CSectorGraph;
+typedef xr_vector<CCellVertex>						VERTEX_VECTOR;
+typedef xr_vector<VERTEX_VECTOR>					VERTEX_VECTOR1;
+typedef xr_vector<VERTEX_VECTOR1>					VERTEX_VECTOR2;
+typedef xr_vector<CCellVertex*>						CROSS_VECTOR;
 
 IC	CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
 {
