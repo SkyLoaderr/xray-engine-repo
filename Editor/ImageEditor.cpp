@@ -37,6 +37,8 @@ void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
         form->m_Thm = 0;
         form->m_SelectedName = "";
 
+        form->paTextureCount->Caption = AnsiString(" Images in library: ")+AnsiString(texture_map.size());
+
         // scene locking
         Scene.lock();
     }

@@ -13,6 +13,7 @@
 #include "CSPIN.h"
 
 #include "CustomObject.h"
+#include "EditObject.h"
 #include "ElHeader.hpp"
 #include "ElTree.hpp"
 #include "ElXPThemedControl.hpp"
@@ -26,7 +27,6 @@
 #include <Menus.hpp>
 
 class CEditMesh;
-class CSurface;
 class CSMotion;
 class COMotion;
 class EImageThumbnail;
@@ -238,8 +238,6 @@ __published:	// IDE-managed Components
 	void __fastcall tvMeshesItemFocused(TObject *Sender);
 	void __fastcall tvSurfacesItemFocused(TObject *Sender);
 private:	// User declarations
-    CSurface* 				m_Surf;
-
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;
     AnsiString   			last_name;
@@ -256,7 +254,12 @@ private:	// User declarations
 
     // static part
     static EImageThumbnail*	m_Thumbnail;
-	static CEditableObject* m_EditObject;
+	static CEditableObject* m_LibObject;
+    static SurfInstVec 		m_EditSurfaces;
+
+    static void				GetSurfacesFromObject();
+    static void				SetSurfacesToObject();
+
 	static 	TfrmPropertiesObject* form;
 
     // object init&save
@@ -268,7 +271,7 @@ public:		// User declarations
     static void __fastcall 	HideProperties();
     static bool __fastcall 	Visible(){return !!form;}
     static void	SetCurrent	(CEditableObject* object);
-    static void	Reset		(){m_EditObject=0;}
+    static void	Reset		(){m_LibObject=0;}
     static bool	IsModified	(){return form?form->ebOk->Enabled:false;}
     static void	OnPick		(const SRayPickInfo& pinf);
 };

@@ -35,6 +35,7 @@
 
 TfrmEditLibrary* TfrmEditLibrary::form=0;
 AnsiString TfrmEditLibrary::m_LastSelection;
+FileMap TfrmEditLibrary::modif_map;
 
 //---------------------------------------------------------------------------
 __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
@@ -95,6 +96,8 @@ void __fastcall TfrmEditLibrary::ZoomObject(){
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
 {
+	modif_map.clear();
+    
     InitObjects();
     ebSave->Enabled = false;
     UI.BeginEState(esEditLibrary);
@@ -145,7 +148,11 @@ bool TfrmEditLibrary::CloseEditLibrary(bool bReload){
     }
     if (bReload){
         UI.SetStatus("Objects reloading...");
-        UI.Command(COMMAND_RELOAD_OBJECTS);
+        FilePairIt it=modif_map.begin();
+		FilePairIt _E=modif_map.end();
+        for (;it!=_E;it++)
+        	Lib.ReloadObject(it->first.c_str());
+//		UI.Command(COMMAND_RELOAD_OBJECTS);
         UI.SetStatus("");
     }
     Close();
@@ -160,6 +167,7 @@ bool TfrmEditLibrary::FinalClose(){
 void TfrmEditLibrary::OnModified(){
 	if (!form) return;
     form->ebSave->Enabled = true;
+    if (form->m_SelectedObject) modif_map.insert(make_pair(form->m_SelectedObject->GetName(),0));
 }
 //---------------------------------------------------------------------------
 
@@ -190,6 +198,8 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
         }
 
         if (cbPreview->Checked||TfrmPropertiesObject::Visible()){
+        	if (TfrmPropertiesObject::IsModified())
+            	modif_map.insert(make_pair(m_SelectedObject->GetName(),0));
         	Lib.RemoveEditObject(m_SelectedObject);
             m_SelectedObject = Lib.CreateEditObject(nm.c_str());
             R_ASSERT(m_SelectedObject);

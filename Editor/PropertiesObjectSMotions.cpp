@@ -11,7 +11,7 @@
 //---------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
 {
-	if (!m_EditObject) return;
+	if (!m_LibObject) return;
 // Set up surfaces&textures
     AnsiString name;
     tvSMotions->IsUpdating = true;
@@ -23,7 +23,7 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
     root->Bold = true;
     root->Underlined = false;
 
-    for (SMotionIt s_it=m_EditObject->m_SMotions.begin(); s_it!=m_EditObject->m_SMotions.end(); s_it++){
+    for (SMotionIt s_it=m_LibObject->m_SMotions.begin(); s_it!=m_LibObject->m_SMotions.end(); s_it++){
         TElTreeItem *Item = tvSMotions->Items->AddChildObject(root,(*s_it)->Name(),(TObject*)*s_it);
         Item->ShowCheckBox = true;
         Item->CheckBoxType = ectCheckBox;
@@ -31,19 +31,19 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
     }
     root->Expand(false);
 
-    lbSMotionCount->Caption = m_EditObject->m_SMotions.size();
-    lbSBoneCount->Caption	= m_EditObject->m_Bones.size();
+    lbSMotionCount->Caption = m_LibObject->m_SMotions.size();
+    lbSBoneCount->Caption	= m_LibObject->m_Bones.size();
 
     lbActiveSMotion->Caption 	= "...";
-    if (m_EditObject->m_ActiveSMotion){
-        TElTreeItem* Item 		= FindSMotionItem(m_EditObject->m_ActiveSMotion->Name());
+    if (m_LibObject->m_ActiveSMotion){
+        TElTreeItem* Item 		= FindSMotionItem(m_LibObject->m_ActiveSMotion->Name());
         Item->Checked 			= true;
         lbActiveSMotion->Caption= Item->Text;
     }
 
     // fill bone list
     cbSStartMotionBone->Items->Clear();
-    for(BoneIt it=m_EditObject->FirstBone(); it!=m_EditObject->LastBone(); it++)
+    for(BoneIt it=m_LibObject->FirstBone(); it!=m_LibObject->LastBone(); it++)
         cbSStartMotionBone->Items->Add(AnsiString((*it)->Name()));
 
     // temporary!!! add none bone part
@@ -62,13 +62,13 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSAppendMotionClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
     AnsiString fn;
     if (FS.GetOpenName(&FS.m_SMotion,fn)){
-    	CSMotion* M=m_EditObject->AppendSMotion(fn.c_str());
+    	CSMotion* M=m_LibObject->AppendSMotion(fn.c_str());
     	if (M){
         	char buf[1024];
-            m_EditObject->GenerateSMotionName(buf,M->Name(),M);
+            m_LibObject->GenerateSMotionName(buf,M->Name(),M);
             M->SetName(buf);
 
             // append to list
@@ -79,7 +79,7 @@ void __fastcall TfrmPropertiesObject::ebSAppendMotionClick(TObject *Sender)
             tvSMotions->Selected = Item;
 
         	ELog.DlgMsg(mtInformation,"Motion '%s' appended.",M->Name());
-    		lbSMotionCount->Caption = m_EditObject->m_SMotions.size();
+    		lbSMotionCount->Caption = m_LibObject->m_SMotions.size();
 		    OnModified(Sender);
         }else
         	ELog.DlgMsg(mtError,"Append failed.");
@@ -89,11 +89,11 @@ void __fastcall TfrmPropertiesObject::ebSAppendMotionClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSReloadMotionClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
     if (selected_smotion){
     	AnsiString fn;
 	    if (FS.GetOpenName(&FS.m_SMotion,fn)){
-    		if (m_EditObject->ReloadSMotion(selected_smotion,fn.c_str())){
+    		if (m_LibObject->ReloadSMotion(selected_smotion,fn.c_str())){
 	        	ELog.DlgMsg(mtInformation,"Motion '%s' reloaded.",selected_smotion->Name());
 		        seSMotionChange				(Sender);
 			    OnModified(Sender);
@@ -106,13 +106,13 @@ void __fastcall TfrmPropertiesObject::ebSReloadMotionClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSDeleteMotionClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
     if (tvSMotions->Selected){
         TElTreeItem* Item 	= tvSMotions->Selected;
         if (Item->Data){
-	        m_EditObject->RemoveSMotion(AnsiString(Item->Text).c_str());
+	        m_LibObject->RemoveSMotion(AnsiString(Item->Text).c_str());
     	    Item->Delete();
-    		lbSMotionCount->Caption = m_EditObject->m_SMotions.size();
+    		lbSMotionCount->Caption = m_LibObject->m_SMotions.size();
 	    	OnModified(Sender);
 		    selected_smotion = 0;
         }
@@ -134,7 +134,7 @@ TElTreeItem* TfrmPropertiesObject::FindSMotionItem(const char* name){
     return 0;
 }
 void __fastcall TfrmPropertiesObject::ebSResetActiveMotion(TElTreeItem* ignore_item){
-	if (m_EditObject){
+	if (m_LibObject){
 //		lbActiveSMotion->Caption 		= "...";
 	    for ( TElTreeItem* node = tvSMotions->Items->GetFirstNode(); node; node = node->GetNext())
     	    if (node->Checked&&(ignore_item!=node)){ node->Checked = false; break; }
@@ -145,11 +145,11 @@ void __fastcall TfrmPropertiesObject::ebSResetActiveMotion(TElTreeItem* ignore_i
 void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
       TElTreeItem *Item, TItemChangeMode ItemChangeMode)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
 	switch(ItemChangeMode){
     case icmText:
         if (FEditNode){
-            if (!m_EditObject->RenameSMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
+            if (!m_LibObject->RenameSMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
                 ELog.DlgMsg(mtError,"Motion with name '%s' already present.",AnsiString(Item->Text).c_str());
                 FEditNode = 0;
                 Item->Text = last_name;
@@ -163,13 +163,13 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
         }
     break;
     case icmCheckState:
-    	if (m_EditObject){
+    	if (m_LibObject){
             if (Item->Checked){
 		    	lbActiveSMotion->Caption 	 = Item->Text;
-    		    m_EditObject->SetActiveSMotion((CSMotion*)Item->Data);
+    		    m_LibObject->SetActiveSMotion((CSMotion*)Item->Data);
             }else{
 		    	lbActiveSMotion->Caption 	 = "...";
-    		    m_EditObject->SetActiveSMotion(0);
+    		    m_LibObject->SetActiveSMotion(0);
             }
         	ebSResetActiveMotion(Item);
 			OnModified(Sender);
@@ -190,7 +190,7 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemSelectedChange(
     }else{
     	// select new motion
 
-        CSMotion* M					= (CSMotion*)Item->Data;//m_EditObject->FindMotionByName(Item->Text.c_str());
+        CSMotion* M					= (CSMotion*)Item->Data;//m_LibObject->FindMotionByName(Item->Text.c_str());
         VERIFY(M);
         lbSMotionName->Caption 		= M->Name();
         lbSMotionFrames->Caption	= AnsiString(M->FrameStart())+AnsiString(" .. ")+AnsiString(M->FrameEnd());
@@ -257,21 +257,21 @@ void __fastcall TfrmPropertiesObject::seSMotionSpeedLWChange(
 
 void __fastcall TfrmPropertiesObject::ebSMotionClearClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
     TElTreeItem* Item = tvSMotions->Items->GetFirstNode(); Item->Clear();
-	m_EditObject->ClearSMotions();
+	m_LibObject->ClearSMotions();
 	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::ebSMotionSaveClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
 	AnsiString fn;
-    if (m_EditObject->SMotionCount()){
-    	fn = m_EditObject->GetName();
+    if (m_LibObject->SMotionCount()){
+    	fn = m_LibObject->GetName();
     	if(FS.GetSaveName(&FS.m_SMotions,fn)){
-        	m_EditObject->SaveSMotions(fn.c_str());
+        	m_LibObject->SaveSMotions(fn.c_str());
 	    	ELog.DlgMsg(mtInformation,"Motions saved.");
         }
     }else{
@@ -282,14 +282,14 @@ void __fastcall TfrmPropertiesObject::ebSMotionSaveClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebSMotionLoadClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
 	AnsiString fn;
     if (FS.GetOpenName(&FS.m_SMotions,fn)){
     	TElTreeItem* Item = tvSMotions->Items->GetFirstNode(); Item->Clear();
-		m_EditObject->ClearSMotions();
-		m_EditObject->LoadSMotions(fn.c_str());
+		m_LibObject->ClearSMotions();
+		m_LibObject->LoadSMotions(fn.c_str());
         tsSAnimationShow(Sender);
-		ELog.DlgMsg(mtInformation,"%d motion loaded.",m_EditObject->SMotionCount());
+		ELog.DlgMsg(mtInformation,"%d motion loaded.",m_LibObject->SMotionCount());
 		OnModified(Sender);
     }
 }

@@ -66,6 +66,7 @@ private:	// User declarations
 	static TfrmEditLibrary *form;
     CEditableObject* m_SelectedObject;
 	static AnsiString m_LastSelection;
+    static FileMap modif_map;
 public:		// User declarations
     __fastcall TfrmEditLibrary(TComponent* Owner);
     static bool FinalClose();

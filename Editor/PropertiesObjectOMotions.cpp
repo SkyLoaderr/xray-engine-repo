@@ -8,7 +8,7 @@
 // motions
 //---------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
-	if (!m_EditObject) return;
+	if (!m_LibObject) return;
 // Set up surfaces&textures
     AnsiString name;
     tvOMotions->IsUpdating = true;
@@ -20,7 +20,7 @@ void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
     root->Bold = true;
     root->Underlined = false;
 
-    for (OMotionIt m_it=m_EditObject->m_OMotions.begin(); m_it!=m_EditObject->m_OMotions.end(); m_it++){
+    for (OMotionIt m_it=m_LibObject->m_OMotions.begin(); m_it!=m_LibObject->m_OMotions.end(); m_it++){
         TElTreeItem *Item = tvOMotions->Items->AddChildObject(root,(*m_it)->Name(),(TObject*)*m_it);
         Item->ShowCheckBox = true;
         Item->CheckBoxType = ectCheckBox;
@@ -28,11 +28,11 @@ void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
     }
     root->Expand(false);
 
-    lbOMotionCount->Caption = m_EditObject->m_OMotions.size();
+    lbOMotionCount->Caption = m_LibObject->m_OMotions.size();
 
     lbActiveOMotion->Caption 	= "...";
-    if (m_EditObject->m_ActiveOMotion){
-        TElTreeItem* Item 		= FindOMotionItem(m_EditObject->m_ActiveOMotion->Name());
+    if (m_LibObject->m_ActiveOMotion){
+        TElTreeItem* Item 		= FindOMotionItem(m_LibObject->m_ActiveOMotion->Name());
         Item->Checked 			= true;
         lbActiveOMotion->Caption	= Item->Text;
     }
@@ -55,7 +55,7 @@ void __fastcall TfrmPropertiesObject::tvOMotionsItemSelectedChange(
     if (Item->Level==0){
     	gbOMotion->Hide();
     }else{
-        COMotion* M					= (COMotion*)Item->Data;//m_EditObject->FindMotionByName(Item->Text.c_str());
+        COMotion* M					= (COMotion*)Item->Data;//m_LibObject->FindMotionByName(Item->Text.c_str());
         VERIFY2(M,"Can't find motion in 'm_OMotions'.");
         lbOMotionName->Caption 		= M->Name();
         lbOMotionFrames->Caption	= AnsiString(M->FrameStart())+AnsiString(" .. ")+AnsiString(M->FrameEnd());
@@ -69,13 +69,13 @@ void __fastcall TfrmPropertiesObject::tvOMotionsItemSelectedChange(
 
 void __fastcall TfrmPropertiesObject::ebOAppendMotionClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
     AnsiString fn;
     if (FS.GetOpenName(&FS.m_OMotion,fn)){
-    	COMotion* M=m_EditObject->AppendOMotion(fn.c_str());
+    	COMotion* M=m_LibObject->AppendOMotion(fn.c_str());
     	if (M){
         	char buf[1024];
-            m_EditObject->GenerateOMotionName(buf,M->Name(),M);
+            m_LibObject->GenerateOMotionName(buf,M->Name(),M);
             M->SetName(buf);
 
             // append to list
@@ -86,7 +86,7 @@ void __fastcall TfrmPropertiesObject::ebOAppendMotionClick(TObject *Sender)
             tvOMotions->Selected = Item;
 
         	ELog.DlgMsg(mtInformation,"Motion '%s' appended.",M->Name());
-    		lbOMotionCount->Caption = m_EditObject->m_OMotions.size();
+    		lbOMotionCount->Caption = m_LibObject->m_OMotions.size();
 		    OnModified(Sender);
         }else
         	ELog.DlgMsg(mtError,"Append failed.");
@@ -96,13 +96,13 @@ void __fastcall TfrmPropertiesObject::ebOAppendMotionClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebODeleteMotionClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
     if (tvOMotions->Selected){
         TElTreeItem* Item 	= tvOMotions->Selected;
         if (Item->Data){
-	        m_EditObject->RemoveOMotion(AnsiString(Item->Text).c_str());
+	        m_LibObject->RemoveOMotion(AnsiString(Item->Text).c_str());
     	    Item->Delete();
-    		lbOMotionCount->Caption = m_EditObject->m_OMotions.size();
+    		lbOMotionCount->Caption = m_LibObject->m_OMotions.size();
 	    	OnModified(Sender);
 		    selected_omotion = 0;
         }
@@ -131,11 +131,11 @@ void __fastcall TfrmPropertiesObject::tvOMotionsTryEdit(TObject *Sender,
 void __fastcall TfrmPropertiesObject::tvOMotionsItemChange(TObject *Sender,
       TElTreeItem *Item, TItemChangeMode ItemChangeMode)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
 	switch(ItemChangeMode){
     case icmText:
         if (FEditNode){
-            if (!m_EditObject->RenameOMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
+            if (!m_LibObject->RenameOMotion(last_name.c_str(),AnsiString(Item->Text).c_str())){
                 ELog.DlgMsg(mtError,"Motion with name '%s' already present.",AnsiString(Item->Text).c_str());
                 FEditNode = 0;
                 Item->Text = last_name;
@@ -149,13 +149,13 @@ void __fastcall TfrmPropertiesObject::tvOMotionsItemChange(TObject *Sender,
         }
     break;
     case icmCheckState:
-    	if (m_EditObject){
+    	if (m_LibObject){
             if (Item->Checked){
 		    	lbActiveOMotion->Caption 	 = Item->Text;
-    		    m_EditObject->SetActiveOMotion((COMotion*)Item->Data);
+    		    m_LibObject->SetActiveOMotion((COMotion*)Item->Data);
             }else{
 		    	lbActiveOMotion->Caption 	 = "...";
-    		    m_EditObject->SetActiveOMotion(0);
+    		    m_LibObject->SetActiveOMotion(0);
             }
         	ebOResetActiveMotion(Item);
 			OnModified(Sender);
@@ -173,7 +173,7 @@ TElTreeItem* TfrmPropertiesObject::FindOMotionItem(const char* name){
 
 
 void __fastcall TfrmPropertiesObject::ebOResetActiveMotion(TElTreeItem* ignore_item){
-	if (m_EditObject){
+	if (m_LibObject){
 //		lbActiveOMotion->Caption 		= "...";
 	    for ( TElTreeItem* node = tvOMotions->Items->GetFirstNode(); node; node = node->GetNext())
     	    if (node->Checked&&(ignore_item!=node)){ node->Checked = false; break; }
@@ -183,21 +183,21 @@ void __fastcall TfrmPropertiesObject::ebOResetActiveMotion(TElTreeItem* ignore_i
 
 void __fastcall TfrmPropertiesObject::ebOMotionClearClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
     TElTreeItem* Item = tvOMotions->Items->GetFirstNode(); Item->Clear();
-	m_EditObject->ClearOMotions();
+	m_LibObject->ClearOMotions();
 	OnModified(Sender);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::ebOMotionSaveClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
 	AnsiString fn;
-    if (m_EditObject->OMotionCount()){
-    	fn = m_EditObject->GetName();
+    if (m_LibObject->OMotionCount()){
+    	fn = m_LibObject->GetName();
 	    if (FS.GetSaveName(&FS.m_OMotions,fn)){
-        	m_EditObject->SaveOMotions(fn.c_str());
+        	m_LibObject->SaveOMotions(fn.c_str());
 	    	ELog.DlgMsg(mtInformation,"Motions saved.");
         }
     }else{
@@ -208,13 +208,13 @@ void __fastcall TfrmPropertiesObject::ebOMotionSaveClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesObject::ebOMotionLoadClick(TObject *Sender)
 {
-	VERIFY(m_EditObject);
+	VERIFY(m_LibObject);
 	AnsiString fn;
     if (FS.GetOpenName(&FS.m_OMotions,fn)){
 	    TElTreeItem* Item = tvOMotions->Items->GetFirstNode(); Item->Clear();
-		m_EditObject->ClearOMotions();
-		m_EditObject->LoadOMotions(fn.c_str());
-		ELog.DlgMsg(mtInformation,"%d motion loaded.",m_EditObject->OMotionCount());
+		m_LibObject->ClearOMotions();
+		m_LibObject->LoadOMotions(fn.c_str());
+		ELog.DlgMsg(mtInformation,"%d motion loaded.",m_LibObject->OMotionCount());
         tsOAnimationShow(Sender);
 		OnModified(Sender);
     }

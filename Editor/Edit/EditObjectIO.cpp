@@ -52,6 +52,7 @@ bool CEditableObject::LoadObject(const char* fname){
     bool bRes = Load(*OBJ);
     OBJ->Close();
 	_DELETE(F);
+    if (bRes) m_LoadName = fname;
     return bRes;
 }
 
@@ -75,6 +76,7 @@ void CEditableObject::SaveObject(const char* fname){
     FS.VerifyPath(fname);
 
     F.SaveTo(fname,0);
+	m_LoadName = fname;
 //    UI.ProgressStart(2,"Compressing...");
 //    UI.ProgressUpdate(1);
 //    F.SaveTo(fname,"OBJECT");
@@ -301,7 +303,7 @@ COMotion* CEditableObject::LoadOMotion(const char* fname){
 //------------------------------------------------------------------------------
 bool CEditableObject::Reload()
 {
-	R_ASSERT2(0,"TODO:: Reload ...");
-	return false;
+	ClearGeometry();
+    return Load(m_LoadName.c_str());
 }
 

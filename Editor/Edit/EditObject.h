@@ -29,6 +29,7 @@ class CSurface
 public:
     				CSurface		(){ZeroMemory(this,sizeof(CSurface));}
 					~CSurface		(){ if (m_Shader) Device.Shader.Delete(m_Shader);}
+	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
     IC int			_Priority		()const {return m_Shader->Flags.iPriority;}
     IC bool			_StrictB2F		()const {return m_Shader->Flags.bStrictB2F;}
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
@@ -41,6 +42,7 @@ public:
     IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
     IC void			SetShader		(LPCSTR name, Shader* sh){R_ASSERT(name&&name[0]&&sh); m_ShaderName=name; m_Shader=sh;}
+    IC void			ED_SetShader	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
     IC void 		SetShaderXRLC	(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderXRLCName=name;}
     IC void			Set2Sided		(BOOL fl){m_Sideflag=fl;}
     IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
@@ -49,6 +51,7 @@ public:
 };
 
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
+DEFINE_VECTOR	(CSurface,SurfInstVec,SurfInstIt);
 DEFINE_VECTOR	(CEditableMesh*,EditMeshVec,EditMeshIt);
 DEFINE_VECTOR	(CBone*,BoneVec,BoneIt);
 DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
@@ -105,6 +108,7 @@ public:
     IC bool			IsModified				(){return t_bOnModified;}
     IC void			Modified				(){t_bOnModified=true;}
 
+    AnsiString		m_LoadName;
     int				m_RefCount;
 protected:
     st_Version		m_ObjVer;

@@ -234,7 +234,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
         }
     }else{
         TElTreeItem* itm_node = FOLDER::FindObject(tvItems,m_LastSelection[form->Mode].c_str());
-        TElTreeItem* fld_node = 0;//FOLDER::FindFolder(tvItems,last_item[form->Mode].c_str());;
+        TElTreeItem* fld_node = 0;
         if (itm_node){
         	if (bMultiSel){
 				tvMulti->Items->Add(0,itm_node->Text);

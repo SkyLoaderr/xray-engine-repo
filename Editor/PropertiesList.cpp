@@ -119,7 +119,7 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, DWORD type,
     case PROP_FLOAT:{  	CS->CellType = sftFloating;	FloatValue*F=(FloatValue*)value;
     					AnsiString s,fmt; fmt.sprintf("%%.%df",F->dec); s.sprintf(fmt.c_str(),*F->val);
                         TI->ColumnText->Add(s); CS->Style = ElhsOwnerDraw; }break;
-    case PROP_INTEGER:{	CS->CellType = sftNumber; 	IntValue*  I=(IntValue*)value; TI->ColumnText->Add(*I->val); CS->Style = ElhsOwnerDraw; }break;
+    case PROP_INTEGER:{	CS->CellType = sftNumber; 	IntValue*  I=(IntValue*)value; TI->ColumnText->Add(AnsiString(*I->val)); CS->Style = ElhsOwnerDraw; }break;
     case PROP_TEXT:		CS->CellType = sftText; 	TI->ColumnText->Add((LPSTR)value);  break;
     case PROP_COLOR:	CS->CellType = sftUndef; 	CS->Style = ElhsOwnerDraw; break;
     case PROP_TEXTURE:	CS->CellType = sftUndef; 	TI->ColumnText->Add((LPSTR)value);  CS->Style = ElhsOwnerDraw; break;
@@ -374,7 +374,7 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
 		seNumber->MinValue 	= V->lim_mn;
         seNumber->MaxValue 	= V->lim_mx;
 	    seNumber->Increment	= V->inc;
-        seNumber->LWSensitivity=V->inc/100;
+        seNumber->LWSensitivity=float(V->inc)/100;
 	    seNumber->Decimal  	= 0;
     	seNumber->ValueType	= vtInt;
 	    seNumber->Value 	= *V->val;

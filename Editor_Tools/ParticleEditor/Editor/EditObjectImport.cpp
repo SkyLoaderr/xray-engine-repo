@@ -93,11 +93,11 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                             char tex_name[_MAX_FNAME];
                             _splitpath( tname, 0, 0, tex_name, 0 );
                             if (_GetItemCount(tex_name,'_')>1){
-                            	char fn[_MAX_FNAME];
+                            	char _fn[_MAX_FNAME];
                             	char fld[_MAX_FNAME];
                                 _GetItem(tex_name,0,fld,'_');
-                                sprintf(fn,"%s\\%s",fld,tex_name);
-	                            Osf->SetTexture(fn);
+                                sprintf(_fn,"%s\\%s",fld,tex_name);
+	                            Osf->SetTexture(_fn);
                             }else{
 	                            Osf->SetTexture(tex_name);
                             }
@@ -305,6 +305,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
 	    UI.SetStatus("");
     	if (bResult) 	VerifyMeshNames();
         else			ELog.DlgMsg(mtError,"Can't parse LWO object.");
+		if (bResult)	m_LoadName = ChangeFileExt(fname,".object");
         return bResult;
     }else
 		ELog.DlgMsg(mtError,"Can't import LWO object file.");

@@ -95,16 +95,18 @@ TElTreeItem* FOLDER::FindObject(TElTree* tv, LPCSTR full_name, TElTreeItem** las
 
     // find folder item
     int itm = 0;
-	char fld[64];
-	TElTreeItem* node = 0;
+    char fld[64];
+    TElTreeItem* node = 0;
     TElTreeItem* last_node = 0;
-    do{
-    	_GetItem(full_name,itm++,fld,'\\');
-        last_node = node;
-        node = FindItemInFolder(TYPE_FOLDER,tv,node,fld);
-    }while (node&&(itm<cnt));
+    if (cnt){
+        do{
+            _GetItem(full_name,itm++,fld,'\\');
+            last_node = node;
+            node = FindItemInFolder(TYPE_FOLDER,tv,node,fld);
+        }while (node&&(itm<cnt));
+    }
 
-    if(!node){
+    if(cnt&&!node){
 		if (last_valid_node) *last_valid_node=last_node;
         if (last_valid_idx) *last_valid_idx=--itm;
     }else{

@@ -15,24 +15,24 @@
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::tsInfoShow(TObject *Sender)
 {
-	if (!m_EditObject) return;
+	if (!m_LibObject) return;
 // Set up info
     paBB->Visible = true;
 
-    const Fvector& P=m_EditObject->t_vPosition;
+    const Fvector& P=m_LibObject->t_vPosition;
     sePositionX->Value = P.x;
     sePositionY->Value = P.y;
     sePositionZ->Value = P.z;
-    const Fvector& R=m_EditObject->t_vRotate;
+    const Fvector& R=m_LibObject->t_vRotate;
     seRotateX->Value = R.x;
     seRotateY->Value = R.y;
     seRotateZ->Value = R.z;
-    const Fvector& S=m_EditObject->t_vScale;
+    const Fvector& S=m_LibObject->t_vScale;
     seScaleX->Value = S.x;
     seScaleY->Value = S.y;
     seScaleZ->Value = S.z;
 
-    Fbox& BB = m_EditObject->GetBox();
+    Fbox& BB = m_LibObject->GetBox();
     for (int col=1; col<5; col++){
         Fvector p;
         switch(col){
