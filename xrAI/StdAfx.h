@@ -98,6 +98,12 @@ using namespace std;
 #define NO_XR_3DBUFFER
 #define NO_XR_3DLISTENER
 #define NO_XR_VERTEX
+
+#define xr_malloc malloc
+#define xr_free free
+#define xr_realloc realloc
+#define xr_strdup strdup
+
 #include "clsid.h"
 #include "debugkernel.h"
 #include "defines.h"
