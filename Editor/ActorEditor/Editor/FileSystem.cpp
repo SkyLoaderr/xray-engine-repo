@@ -113,8 +113,6 @@ bool FileExists(LPCSTR fn){
 }
 #endif
 
-#include <malloc.h>
-
 bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool bMulti, LPCSTR offset ){
 	VERIFY(buffer&&(sz_buf>0));
 	char flt[1024];ZeroMemory(flt,sizeof(char)*1024);
@@ -238,7 +236,7 @@ bool CFileSystem::Exist(char* fn, const char* path, const char* name, const char
 
 
 bool CFileSystem::Exist( FSPath *initial, const char *_FileName, bool bMessage){
-	FILE_NAME fn;
+	string256 fn;
     strcpy(fn, _FileName);
     initial->Update(fn);
 	return Exist(fn,bMessage);
@@ -321,7 +319,7 @@ bool CFileSystem::CreateNullFile(const char* fn){
 
 void CFileSystem::ProcessOne(_finddata_t& F, const char* path, bool bOnlyDir)
 {
-	FILE_NAME	N;
+	string256	N;
 	strcpy		(N,path);
 	strcat		(N,F.name);
 
@@ -342,8 +340,8 @@ void CFileSystem::Recurse(const char* path)
     _finddata_t		sFile;
     int				hFile;
 
-	FILE_NAME		N;
-	FILE_NAME		dst;
+	string256		N;
+	string256		dst;
 
     strcpy			(N,path);
     strcat			(N,"*.*");

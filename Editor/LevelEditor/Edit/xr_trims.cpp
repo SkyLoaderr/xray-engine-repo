@@ -30,7 +30,7 @@ AnsiString& ListToSequence2(AStringVec& lst){
 void SequenceToList(AStringVec& lst, LPCSTR in){
 	lst.clear();
     int t_cnt=_GetItemCount(in);
-    char T[MAX_OBJ_NAME];
+    string256 T;
     for (int i=0; i<t_cnt; i++){
         _GetItem(in,i,T,',',0);
         lst.push_back(T);
