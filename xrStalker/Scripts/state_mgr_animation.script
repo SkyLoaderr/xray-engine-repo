@@ -594,6 +594,14 @@ function animation:play_rnd(state, rnd)
 		return
 	end
 	
+	-- !!! проверка что закончился играться наш звук
+	if self.sound_played then
+		if self.npc:active_sound_count() == 0 then
+			self.sound_played = false
+		end
+		return
+	end
+	
 	--' Определение промежутков времени между анимациями	
 	self.states.begin = device():time_global()
 	self.states.idle = (math.random(self.animations[state].prop.maxidle) + 
@@ -621,6 +629,9 @@ function animation:play_rnd(state, rnd)
 		printf("rnd animations added for [%s]", utils.to_str(state))
 		if self.animations[state].rnd[self:weapon_slot()][r] ~= nil then
 		   self.npc:add_animation(self.animations[state].rnd[self:weapon_slot()][r], true)
+			-- добавить рандомный звук
+			xr_sound.set_sound_play(self.npc, self.mgr.synsound)
+			self.sound_played = true		   
 		else
 			printf("ANIM ERROR: Select wrong animation %d of %d, type: %s, weapon_slot: %d", r,
 						table.getn(self.animations[state].rnd[self:weapon_slot()]),

@@ -614,8 +614,9 @@ function state_manager:__init(npc)
 	self.combat = false
 	self.alife = true
 	self.emerg = {}
+	self.synsound = nil
 end
-function state_manager:set_state(state_name, callback, timeout, target, emerg)
+function state_manager:set_state(state_name, callback, timeout, target, emerg, synsound)
 	printf("Set State called: for %s State: %s", self.npc:name(), state_name)
 	if state_lib.states[state_name] == nil then
 		utils.abort("ERROR: ILLEGAL SET STATE CALLED!!! %s fo %s", state_name, self.npc:name())
@@ -655,6 +656,12 @@ function state_manager:set_state(state_name, callback, timeout, target, emerg)
 		end
 	end
 
+	if synsound ~= nil then		
+		if self.synsound ~= synsound then
+			-- тута нада вставить ресет звуков.
+		end
+		self.synsound = synsound
+	end
 	
 	if target ~= nil then
 		self.look_position = target.look_position
@@ -693,9 +700,9 @@ end
 
 
 
-function set_state(npc, state_name, callback, timeout, target, emerg)
+function set_state(npc, state_name, callback, timeout, target, emerg, synsound)
 	if db.storage[npc:id()].state_mgr then
-		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg)
+		db.storage[npc:id()].state_mgr:set_state(state_name, callback, timeout, target, emerg, synsound)
 	end
 end
 

@@ -4,54 +4,7 @@
 --	update: Чугай Александр (Chugai)
 ----------------------------------------------------------------------------------------------------------------------
 
-
------------------------------------------------------------------------------------------------------------------------------------
---	Установка и распарсивание тем в файлы.
------------------------------------------------------------------------------------------------------------------------------------
-function set_sound(npc, sound, now)
-	--printf("*SND* try to change SND")
-	if (db.sound[npc:id()] == nil or
-	   db.sound[npc:id()].theme ~= sound) or
-	   now == true
-	then
-		printf("*SND* change SND to [%s]", utils.to_str(sound))
-		-- Туточки надобно распарсить имена тем в их id
-		if sound == nil then sound = "weather, state" end
-		db.sound[npc:id()].theme = sound
-		db.sound[npc:id()].snd = parse_names(sound)
-		db.sound[npc:id()].last_snd = {}
-		if now == true then
-			stop_play_sound(npc)
-			db.sound[npc:id()].begin = nil
-		end
-	end
-end
-
-function set_sound_play(npc, sound)
-	printf("*SND* play SND to [%s]", utils.to_str(sound))
-	if db.sound[npc:id()].last_snd == nil then
-		db.sound[npc:id()].last_snd = {}
-	end
-	this.play_sound(npc, parse_names(sound))
-end
-
-function update(npc)
-	if npc:active_sound_count() ~= 0 then return end
-	
-	if db.sound[npc:id()].snd == nil then return end
---	printf("*SND* [%s] - [%s] : [%s]", device():time_global(), 
---									   utils.to_str(db.sound[npc:id()].begin),
---									   utils.to_str(db.sound[npc:id()].idle))
-	if db.sound[npc:id()].begin == nil or
-	   device():time_global() - db.sound[npc:id()].begin >= db.sound[npc:id()].idle
-	then
-		this.play_sound(npc, db.sound[npc:id()].snd)
-	end
-end
-
-
-function play_sound(npc, themes)
-	function get_sound(path, tt)
+	function get_sound(path, tt, npc)
 		if path == nil then return nil end
 		if path.exec == nil then
 
@@ -74,18 +27,82 @@ function play_sound(npc, themes)
 			get_sound(path.types[path.exec(path.types, npc, target)], tt)
 		end
 	end
+-----------------------------------------------------------------------------------------------------------------------------------
+--	Установка и распарсивание тем в файлы.
+-----------------------------------------------------------------------------------------------------------------------------------
+function set_sound(npc, sound, now)
+	--printf("*SND* try to change SND")
+	if (db.sound[npc:id()] == nil or
+	   db.sound[npc:id()].theme ~= sound) or
+	   now == true
+	then
+		printf("*SND* change SND to [%s]", utils.to_str(sound))
+		-- Туточки надобно распарсить имена тем в их id
+		if sound == nil then sound = "weather, state" end
+		db.sound[npc:id()].theme = sound
+		db.sound[npc:id()].snd = parse_names(sound)
+		if db.sound[npc:id()].last_snd == nil then
+			db.sound[npc:id()].last_snd = {}
+		else	
+		
+			local snd_table = {}
+			local t = 0		
+			for k,v in db.sound[npc:id()].snd do
+				snd_table[t] = {}
+				get_sound(sound_theme.theme[v], snd_table[t], npc)
+				t = t + 1
+			end	
+			for k,v in snd_table do
+				if v.into_id then db.sound[npc:id()].last_snd[v.into_id] = nil end
+				if v.rnd_id then db.sound[npc:id()].last_snd[v.rnd_id] = nil end
+			end	
+			
+			
+		end
+		if now == true then
+			stop_play_sound(npc)
+			db.sound[npc:id()].begin = nil
+		end
+	end
+end
 
+function set_sound_play(npc, sound)
+	printf("*SND* play SND to [%s]", utils.to_str(sound))
+	if db.sound[npc:id()].last_snd == nil then
+		db.sound[npc:id()].last_snd = {}
+	end
+	stop_play_sound(npc)
+	this.play_sound(npc, parse_names(sound))
+end
+
+function update(npc)
+	if npc:active_sound_count() ~= 0 then return end
+	
+	if db.sound[npc:id()].snd == nil then return end
+--	printf("*SND* [%s] - [%s] : [%s]", device():time_global(), 
+--									   utils.to_str(db.sound[npc:id()].begin),
+--									   utils.to_str(db.sound[npc:id()].idle))
+	if db.sound[npc:id()].begin == nil or
+	   device():time_global() - db.sound[npc:id()].begin >= db.sound[npc:id()].idle
+	then
+		this.play_sound(npc, db.sound[npc:id()].snd)
+	end
+end
+
+
+function play_sound(npc, themes)
 	-- нужно составить список тем
 	local snd_table = {}
 	local t = 0		
 	for k,v in themes do
 		snd_table[t] = {}
-		get_sound(sound_theme.theme[v], snd_table[t])
+		get_sound(sound_theme.theme[v], snd_table[t], npc)
 		t = t + 1
 	end	
 	--printf("*")
 	--print_table(snd_table)
 	--printf("*")
+	if t == 0 then return end
 	-- из списка тем выбираем одну.	
 	local snd = snd_table[math.random(0, t-1)]
 	if snd ~= nil then
