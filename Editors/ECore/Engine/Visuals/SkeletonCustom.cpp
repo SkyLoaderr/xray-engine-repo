@@ -48,8 +48,8 @@ void	CBoneData::DebugQuery		(BoneDebug& L)
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-bool	pred_N(const ref_str&	N, LPCSTR B)			{
-	return xr_strcmp(*N,B)<0;
+bool	pred_N(const std::pair<ref_str,u32>&	N, LPCSTR B)			{
+	return xr_strcmp(*N.first,B)<0;
 }
 u16		CKinematics::LL_BoneID		(LPCSTR B)			{
 	accel::iterator I	= std::lower_bound	(bone_map_N->begin(),bone_map_N->end(),B,pred_N);
@@ -57,8 +57,8 @@ u16		CKinematics::LL_BoneID		(LPCSTR B)			{
 	if (0 != xr_strcmp(*(I->first),B))	return BI_NONE;
 	return				u16(I->second);
 }
-bool	pred_P(const ref_str&	N, const ref_str& B)	{
-	return N._get() < B._get();
+bool	pred_P(const std::pair<ref_str,u32>&	N, const ref_str& B)	{
+	return N.first._get() < B._get();
 }
 u16		CKinematics::LL_BoneID		(const ref_str& B)	{
 	accel::iterator I	= std::lower_bound	(bone_map_P->begin(),bone_map_P->end(),B,pred_P);
@@ -70,8 +70,8 @@ u16		CKinematics::LL_BoneID		(const ref_str& B)	{
 //
 LPCSTR CKinematics::LL_BoneName_dbg	(u16 ID)
 {
-	CKinematics::accel::iterator _I, _E=bone_map->end();
-	for (_I	= bone_map->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
+	CKinematics::accel::iterator _I, _E=bone_map_N->end();
+	for (_I	= bone_map_N->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
 	return 0;
 }
 
@@ -86,8 +86,7 @@ void CKinematics::DebugRender(Fmatrix& XFORM)
 	Fvector Z;  Z.set(0,0,0);
 	Fvector H1; H1.set(0.01f,0.01f,0.01f);
 	Fvector H2; H2.mul(H1,2);
-	for (u32 i=0; i<dbgLines.size(); i+=2)
-	{
+	for (u32 i=0; i<dbgLines.size(); i+=2)	{
 		Fmatrix& M1 = bone_instances[dbgLines[i]].mTransform;
 		Fmatrix& M2 = bone_instances[dbgLines[i+1]].mTransform;
 
@@ -137,6 +136,13 @@ void	CKinematics::IBoneInstances_Destroy()
 	}
 }
 
+bool	pred_sort_N(const std::pair<ref_str,u32>& A, const std::pair<ref_str,u32>& B)	{
+	return xr_strcmp(A.first,B.first)<0;
+}
+bool	pred_sort_P(const std::pair<ref_str,u32>& A, const std::pair<ref_str,u32>& B)	{
+	return N.first._get() < B.first._get();
+}
+
 void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	Msg				("skeleton: %s",N);
@@ -148,29 +154,32 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
     if (UD)			UD->close();
 
 	// Globals
-	bone_map		= xr_new<accel> ();
-	bones			= xr_new<vecBones> ();
+	bone_map_N		= xr_new<accel>		();
+	bone_map_P		= xr_new<accel>		();
+	bones			= xr_new<vecBones>	();
 	bone_instances	= NULL;
 
 	// Load bones
 	xr_vector<ref_str>	L_parents;
 
-	R_ASSERT(data->find_chunk(OGF_BONE_NAMES));
+	R_ASSERT		(data->find_chunk(OGF_BONE_NAMES));
 
     visimask.zero	();
 	u32 dwCount 	= data->r_u32();
 	// Msg				("!!! %d bones",dwCount);
-	if (dwCount >= 64)	Msg			("!!! More than 64 bones is a crazy thing! (%d), %s",dwCount,N);
-	//R_ASSERT3		(dwCount < 64, "More than 64 bones is a crazy thing!",N);
+	// if (dwCount >= 64)	Msg			("!!! More than 64 bones is a crazy thing! (%d), %s",dwCount,N);
+	VERIFY3			(dwCount < 64, "More than 64 bones is a crazy thing!",N);
 	for (; dwCount; dwCount--)		{
-		string256 buf;
+		string256	buf;
 
 		// Bone
 		u16			ID				= u16(bones->size());
 		data->r_stringZ(buf);		strlwr(buf);
 		CBoneData* pBone 			= CreateBoneData(ID);
 		bones->push_back			(pBone);
-		bone_map->insert			(mk_pair(ref_str(buf),ID));
+		ref_str		bname			= ref_str(buf);
+		bone_map_N->push_back		(mk_pair(bname,ID));
+		bone_map_P->push_back		(mk_pair(bname,ID));
 
 		// It's parent
 		data->r_stringZ				(buf);	strlwr(buf);
@@ -179,12 +188,14 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 		data->r						(&pBone->obb,sizeof(Fobb));
         visimask.set				(u64(1)<<ID,TRUE);
 	}
+	std::sort	(bone_map_N->begin(),bone_map_N->end(),pred_sort_N);
+	std::sort	(bone_map_P->begin(),bone_map_P->end(),pred_sort_P);
 
 	// Attach bones to their parents
 	iRoot = BI_NONE;
 	for (u32 i=0; i<bones->size(); i++) {
-		LPCSTR	P 	= *L_parents[i];
-		CBoneData* B= (*bones)[i];
+		ref_str	P 		= L_parents[i];
+		CBoneData* B	= (*bones)[i];
 		if (!P||!P[0]) {
 			// no parent - this is root bone
 			R_ASSERT	(BI_NONE==iRoot);

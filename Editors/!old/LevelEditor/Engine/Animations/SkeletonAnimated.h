@@ -162,7 +162,7 @@ class ENGINE_API	CSkeletonAnimated	: public CKinematics
 	friend class								CBoneData;
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
-public:
+public: 
 	typedef xr_map<ref_str,CMotionDef,str_pred>	mdef;
 private:
 	CBlendInstance*								blend_instances;

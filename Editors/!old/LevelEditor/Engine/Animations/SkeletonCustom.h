@@ -75,6 +75,10 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	typedef FHierrarhyVisual	inherited;
 	friend class				CBoneData;
 	friend class				CSkeletonX;
+protected:
+	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
+		IC bool operator()(const ref_str& x, const ref_str& y) const	{	return xr_strcmp(x,y)<0;	}
+	};
 public:
 	typedef xr_vector<std::pair<ref_str,u32> >	accel;
 protected:
