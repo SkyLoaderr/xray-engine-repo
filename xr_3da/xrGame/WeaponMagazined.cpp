@@ -508,6 +508,9 @@ void CWeaponMagazined::switch2_Idle	()
 void CWeaponMagazined::switch2_Fire	()
 {
 	m_bFireSingleShot = true;
+
+	if(OnClient() && !IsWorking())
+		FireStart();
 }
 void CWeaponMagazined::switch2_Empty()
 {

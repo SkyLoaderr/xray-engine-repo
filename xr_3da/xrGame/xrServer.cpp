@@ -168,6 +168,10 @@ u32 xrServer::OnMessage(NET_Packet& P, DPNID sender)			// Non-Zero means broadca
 			if (CL)	CL->net_Ready	= TRUE;
 			if (SV_Client) SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
 		}break;
+	case M_GAMEMESSAGE:
+		{
+			SendBroadcast		(0xffffffff,P,net_flags(TRUE,TRUE));
+		}break;
 	case M_CLIENTREADY:
 		{
 			xrClientData* CL		= ID_to_client(sender);

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "hudmanager.h"
 
 game_cl_GameState::game_cl_GameState()
 {
@@ -87,3 +88,49 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 void	game_cl_GameState::net_signal		(NET_Packet& P)
 {
 }
+
+void	game_cl_GameState::OnGameMessage	(NET_Packet& P)
+{
+	if (!HUD().GetUI()) return;
+	u32 Message;
+	P.r_u32(Message);
+
+	switch (Message)
+	{
+	case GMSG_PLAYER_CONNECTED:
+		{
+			string64 PlayerName;
+			P.r_string(PlayerName);
+			HUD().outMessage			(0xffffffff,"","Player %s connected",PlayerName);
+		}break;
+	case GMSG_PLAYER_DISCONNECTED:
+		{
+			string64 PlayerName;
+			P.r_string(PlayerName);
+			HUD().outMessage			(0xffffffff,"","Player %s disconnected",PlayerName);
+		}break;
+	case GMSG_PLAYER_KILLED:
+		{
+			u16 PlayerID, KillerID, WeaponID;
+			P.r_u16 (PlayerID);
+			P.r_u16 (KillerID);
+			P.r_u16 (WeaponID);
+
+			CObject* pPlayer = Level().Objects.net_Find(PlayerID);
+			CObject* pKiller = Level().Objects.net_Find(KillerID);
+			CObject* pWeapon = Level().Objects.net_Find(WeaponID);
+
+			if (pWeapon)
+				HUD().outMessage			(0xffffffff,"","%d killed from %d by %d",PlayerID, WeaponID, KillerID);
+//			HUD().outMessage			(0xffffffff,"","%s killed from %s by %s",pPlayer->cName(), pWeapon->cName(), pKiller->cName());
+			else
+				HUD().outMessage			(0xffffffff,"","%d killed by %d",PlayerID, KillerID);
+//			HUD().outMessage			(0xffffffff,"","%s killed by %s",pPlayer->cName(), pKiller->cName());
+			
+		}break;
+	default:
+		{
+			R_ASSERT2(0,"Unknown Game Message");
+		}break;
+	};
+};

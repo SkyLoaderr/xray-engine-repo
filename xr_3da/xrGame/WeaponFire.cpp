@@ -59,6 +59,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 			float(iHitPower),
 			fHitImpulse,
 			H_Parent()->ID(),
+			ID(),
 			ALife::eHitTypeFireWound,
 			fireDistance,
 			l_cartridge);

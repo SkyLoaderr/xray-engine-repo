@@ -269,6 +269,7 @@ void CExplosive::Explode()
 				NET_Packet		P;
 				u_EventGen		(P,GE_HIT,l_pGO->ID());
 				P.w_u16			(u16(m_iCurrentParentID));
+				P.w_u16			(ID());
 				P.w_dir			(l_dir);
 				P.w_float		(l_impuls);
 				P.w_s16			(l_element);

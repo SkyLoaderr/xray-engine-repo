@@ -77,9 +77,9 @@ void xrServer::OnCL_Connected		(IClient* _CL)
 
 	Server_Client_Check(CL);
 
-	if (!CL->flags.bLocal)
-	{			
-		HUD().outMessage		(0xffffffff,"SERVER","Player '%s' connected",game->get_option_s(CL->Name,"name",CL->Name));
-	};
+///	if (!CL->flags.bLocal)
+///	{			
+///		HUD().outMessage		(0xffffffff,"SERVER","Player '%s' connected",game->get_option_s(CL->Name,"name",CL->Name));
+///	};
 
 }

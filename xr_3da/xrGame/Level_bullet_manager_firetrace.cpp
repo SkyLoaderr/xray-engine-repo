@@ -248,6 +248,7 @@ void CBulletManager::DynamicObjectHit (SBullet* bullet, const Fvector& end_point
 		NET_Packet		P;
 		CGameObject::u_EventGen	(P,GE_HIT,R.O->ID());
 		P.w_u16			(bullet->parent_id);
+		P.w_u16			(bullet->weapon_id);
 		P.w_dir			(bullet->dir);
 		P.w_float		(power);
 		P.w_s16			((s16)R.element);

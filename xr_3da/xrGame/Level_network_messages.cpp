@@ -80,6 +80,10 @@ void CLevel::ClientReceive()
 				if (0 == O)		break;
 				O->net_ImportInput(*P);
 			}break;
+		case M_GAMEMESSAGE:
+			{
+				Game().OnGameMessage(*P);
+			}break;
 		case M_CHANGE_LEVEL:
 			{
 				Engine.Event.Defer	("KERNEL:disconnect");

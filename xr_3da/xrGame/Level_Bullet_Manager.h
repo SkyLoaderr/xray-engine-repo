@@ -23,6 +23,7 @@ struct SBullet
 		float power,
 		float impulse,
 		u16	sender_id,
+		u16 sendersweapon_id,
 		ALife::EHitType e_hit_type,
 		float maximum_distance,
 		const CCartridge& cartridge);
@@ -46,6 +47,8 @@ struct SBullet
 	float			speed;
 	//ID персонажа который иницировал действие
 	u16				parent_id;
+	//ID оружия из которого была выпущены пуля
+	u16				weapon_id;
 	//для отладки
 	//предыдущая позиция
 	Fvector			prev_pos;

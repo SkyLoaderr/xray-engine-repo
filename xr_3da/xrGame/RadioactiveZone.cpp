@@ -54,6 +54,7 @@ void CRadioactiveZone::Affect(CObject* O)
 			NET_Packet		l_P;
 			l_pO->u_EventGen	(l_P,GE_HIT,l_pO->ID());
 			l_P.w_u16			(u16(ID()));
+			l_P.w_u16			(ID());
 			l_P.w_dir			(l_dir);
 			l_P.w_float			(power);
 			l_P.w_s16			((s16)0);

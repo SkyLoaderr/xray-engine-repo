@@ -22,6 +22,7 @@ enum {
 	M_CL_INPUT,					// Client Input Data
 	M_CLIENTREADY,				// Client has finished to load level and are ready to play
 	M_CHANGE_LEVEL,				// changing level
+	M_GAMEMESSAGE,					// Game Message
 	MSG_FORCEDWORD				= u32(-1)
 };
 
@@ -81,6 +82,22 @@ enum
 	M_UPDATE_WEAPON_FORCEDWORD	= u32(-1)
 };
 
+enum
+{
+	GMSG_PLAYER_CONNECTED		= 0,
+	GMSG_PLAYER_DISCONNECTED	,
+	
+	GMSG_PLAYER_KILLED			,
+	
+	
+	GMSG_ARTEFACT_SPAWNED		,
+	GMSG_ARTEFACT_TAKEN			,
+	GMSG_ARTEFACT_DROPPED		,
+	GMSG_ARTEFACT_ONBASE		,
+
+
+	GMSG_FORCEDWORD	= u32(-1)
+};
 /*
 M_SV_CONFIG_GAME
 {

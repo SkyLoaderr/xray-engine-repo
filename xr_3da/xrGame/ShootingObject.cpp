@@ -216,6 +216,7 @@ void CShootingObject::DynamicObjectHit (Collide::rq_result& R, u16 target_materi
 		NET_Packet		P;
 		u_EventGen		(P,GE_HIT,R.O->ID());
 		P.w_u16			(u16(m_iCurrentParentID));
+		P.w_u16			(ID());
 		P.w_dir			(m_vCurrentShootDir);
 		P.w_float		(power);
 		P.w_s16			((s16)R.element);

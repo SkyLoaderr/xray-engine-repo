@@ -50,6 +50,9 @@ struct	game_PlayerState
 	u16			ping;
 
 	u16			GameID;
+	//---------------------------
+	u16			m_lasthitter;
+	u16			m_lasthitweapon;
 
 	game_PlayerState();
 	~game_PlayerState();

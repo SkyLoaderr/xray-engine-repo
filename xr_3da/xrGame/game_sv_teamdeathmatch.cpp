@@ -116,6 +116,9 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 
 	if (fraglimit && (teams[ps_killer->team-1].score >= fraglimit) )OnFraglimitExceed();
 
+	// Send Message About Player Killed
+	SendPlayerKilledMessage(id_killer, id_killed);
+
 	signal_Syncronize();
 }
 
@@ -138,50 +141,59 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 
 	if (!e_hitter || !e_hitted) return;
 
-	CSE_Abstract*		a_hitter		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitter);
-	CSE_Abstract*		a_hitted		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitted);
+	CSE_ALifeCreatureActor*		a_hitter		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitter);
+	CSE_ALifeCreatureActor*		a_hitted		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitted);
 
 	if (!a_hitter || !a_hitted) return;
 
 	game_PlayerState*	ps_hitter = &a_hitter->owner->ps;
 	game_PlayerState*	ps_hitted = &a_hitted->owner->ps;
-	
-	if (ps_hitter == ps_hitted) return;
 
+	u32 BCount = P.B.count;
+	//---------------------------------------
+	// read hit event
+	u32 PowRPos, ImpRPos;
+
+	u16				WeaponID;
+	Fvector			dir;
+	float			power, impulse;
+	s16				element;
+	Fvector			position_in_bone_space;
+	u16				hit_type;
+
+	u32	RPos = P.r_pos;
+	P.r_u16			(WeaponID);
+	P.r_dir			(dir);						PowRPos = P.r_pos;
+	P.r_float		(power);
+	P.r_s16			(element);
+	P.r_vec3		(position_in_bone_space);	ImpRPos = P.r_pos;
+	P.r_float		(impulse);
+	P.r_u16			(hit_type);	//hit type
+	P.r_pos = RPos;
+	//---------------------------------------
 	if (ps_hitted->team != ps_hitter->team)
 	{
 	}
 	else
 	{
-		//friendly fire case
 		//---------------------------------------
-		// read hit event
-		u32 PowRPos, ImpRPos;
-
-		Fvector			dir;
-		float			power, impulse;
-		s16				element;
-		Fvector			position_in_bone_space;
-		u16				hit_type;
-
-		u32	RPos = P.r_pos;
-		P.r_dir			(dir);						PowRPos = P.r_pos;
-		P.r_float		(power);
-		P.r_s16			(element);
-		P.r_vec3		(position_in_bone_space);	ImpRPos = P.r_pos;
-		P.r_float		(impulse);
-		P.r_u16			(hit_type);	//hit type
-		P.r_pos = RPos;
+		//friendly fire case
 
 		power *= m_fFriendlyFireModifier;
 		impulse *= m_fFriendlyFireModifier;
 
-		u32 BCount = P.B.count;
 		P.B.count	= PowRPos;	P.w_float(power);
 		P.B.count	= ImpRPos;	P.w_float(impulse);
-		P.B.count	= BCount;
 		//---------------------------------------
 	};
+	//---------------------------------------
+	if (power > 0)
+	{
+		ps_hitted->m_lasthitter = a_hitter->ID;
+		ps_hitted->m_lasthitweapon = WeaponID;
+	};
+	//---------------------------------------
+	P.B.count	= BCount;
 };
 
 /*

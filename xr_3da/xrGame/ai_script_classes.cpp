@@ -23,6 +23,7 @@ void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 	NET_Packet		P;
 	m_tpGameObject->u_EventGen(P,GE_HIT,m_tpGameObject->ID());
 	P.w_u16			(u16(tLuaHit.m_tpDraftsman->ID()));
+	P.w_u16			(0);
 	P.w_dir			(tLuaHit.m_tDirection);
 	P.w_float		(tLuaHit.m_fPower);
 	CKinematics		*V = PKinematics(m_tpGameObject->Visual());

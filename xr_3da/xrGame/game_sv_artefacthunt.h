@@ -16,8 +16,6 @@ public:
 	virtual		void				OnRoundStart			();							// старт раунда
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed);
 
-	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P);
-
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 
 //	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);

@@ -28,6 +28,7 @@ void SBullet::Init(const Fvector& position,
 				   float power,
 				   float impulse,
 				   u16	sender_id,
+				   u16 sendersweapon_id,
 				   ALife::EHitType e_hit_type,
 				   float maximum_distance,
 				   const CCartridge& cartridge)
@@ -48,6 +49,7 @@ void SBullet::Init(const Fvector& position,
 	fly_dist		= 0;
 
 	parent_id		= sender_id;
+	weapon_id		= sendersweapon_id;
 	hit_type		= e_hit_type;
 
 	max_dist		= maximum_distance;

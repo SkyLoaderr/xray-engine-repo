@@ -94,6 +94,7 @@ void CMincer::Affect(CObject* O)
 			NET_Packet	P;
 			pObject->u_EventGen		(P,GE_HIT,pObject->ID());
 			P.w_u16					(u16(pObject->ID()));
+			P.w_u16					(ID());
 			P.w_dir					(dir);
 			P.w_float				(power);
 			P.w_s16					((s16)0);

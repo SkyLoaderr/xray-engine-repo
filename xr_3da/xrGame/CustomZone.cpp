@@ -440,6 +440,7 @@ void CCustomZone::Affect(CObject* O)
 		NET_Packet	l_P;
 		u_EventGen	(l_P,GE_HIT, pGameObject->ID());
 		l_P.w_u16	(u16(pGameObject->ID()));
+		l_P.w_u16	(ID());
 		l_P.w_dir	(hit_dir);
 		l_P.w_float	(power);
 		l_P.w_s16	((s16)0);

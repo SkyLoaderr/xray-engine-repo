@@ -56,6 +56,9 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
 	}
 
+	// Send Message About Player Killed
+	SendPlayerKilledMessage(id_killer, id_killed);
+
 	signal_Syncronize();
 }
 
@@ -238,12 +241,24 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 {
 	__super::OnPlayerConnect	(id_who);
 
+	xrClientData* xrCData	=	Level().Server->ID_to_client(id_who);
 	game_PlayerState*	ps_who	=	get_id	(id_who);
 
 	ClearPlayerState(ps_who);
 	ps_who->team				=	0;	
 
 	SpawnActor(id_who, "spectator");
+
+	// Send Message About Client Connected
+	if (xrCData)
+	{
+		NET_Packet			P;
+		P.w_begin			(M_GAMEMESSAGE);
+		P.w_u32				(GMSG_PLAYER_CONNECTED);
+		P.w_string			(get_option_s(xrCData->Name,"name",xrCData->Name));
+
+		u_EventSend(P);
+	};
 }
 
 
@@ -267,32 +282,24 @@ void game_sv_Deathmatch::OnPlayerDisconnect		(u32 id_who)
 	{
 		KillPlayer	(id_who);
 		AllowDeadBodyRemove(id_who);
+
+		// Send Message About Client DisConnected
+		if (xrCData)
+		{
+			NET_Packet			P;
+			P.w_begin			(M_GAMEMESSAGE);
+			P.w_u32				(GMSG_PLAYER_DISCONNECTED);
+			P.w_string			(get_option_s(xrCData->Name,"name",xrCData->Name));
+
+			u_EventSend(P);
+		};
 	}
 	else
 	{	
-		/*
-		xr_vector<u16>*	C				=	get_children(id_who);
 
-		if (C)
-		{
-			xr_vector<u16>::iterator i,e;
-			i=C->begin();
-			e=C->end();
-			for(;i!=e;++i)
-				//	while(C->size())
-			{
-				u16		eid						= (*i);
-
-				CSE_Abstract*		what		= S->ID_to_entity(eid);
-				if (!what) continue;
-				S->Perform_destroy				(what,net_flags(TRUE, TRUE));
-			}
-		};
-		*/
 		CSE_Abstract*		from		= S->ID_to_entity(get_id_2_eid(id_who));
 		S->Perform_destroy				(from,net_flags(TRUE, TRUE), FALSE);
-	}
-//	HUD().outMessage			(0xffffffff,"DM","Player '%s' disconnected",Name);
+	};
 };
 
 void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
@@ -403,8 +410,7 @@ void	game_sv_Deathmatch::KillPlayer				(u32 id_who)
 	P.w_u16				(0);
 	P.w_u32				(xrCData->ID);
 	S->SendBroadcast	(0xffffffff,P,net_flags(TRUE, TRUE, TRUE));
-//	u_EventSend(P);
-//	Level().uEvent
+
 };
 
 void	game_sv_Deathmatch::OnPlayerWantsDie		(u32 id_who)
@@ -518,6 +524,8 @@ void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
 
 	ps->kills				= 0;
 	ps->deaths				= 0;
+	ps->m_lasthitter		= 0;
+	ps->m_lasthitweapon		= 0;
 
 	Memory.mem_fill(ps->Slots, 0xff, sizeof(ps->Slots));
 };
@@ -746,3 +754,72 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	//-------------------------------------------
 };
 
+void	game_sv_Deathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P)
+{
+	CSE_Abstract*		e_hitter		= get_entity_from_eid	(id_hitter	);
+	CSE_Abstract*		e_hitted		= get_entity_from_eid	(id_hitted	);
+
+	if (!e_hitter || !e_hitted) return;
+
+	CSE_ALifeCreatureActor*		a_hitter		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitter);
+	CSE_ALifeCreatureActor*		a_hitted		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitted);
+
+	if (!a_hitter || !a_hitted) return;
+
+//	game_PlayerState*	ps_hitter = &a_hitter->owner->ps;
+	game_PlayerState*	ps_hitted = &a_hitted->owner->ps;
+
+	u32 BCount = P.B.count;
+	//---------------------------------------
+	// read hit event
+	u32 PowRPos, ImpRPos;
+
+	u16				WeaponID;
+	Fvector			dir;
+	float			power, impulse;
+	s16				element;
+	Fvector			position_in_bone_space;
+	u16				hit_type;
+
+	u32	RPos = P.r_pos;
+	P.r_u16			(WeaponID);
+	P.r_dir			(dir);						PowRPos = P.r_pos;
+	P.r_float		(power);
+	P.r_s16			(element);
+	P.r_vec3		(position_in_bone_space);	ImpRPos = P.r_pos;
+	P.r_float		(impulse);
+	P.r_u16			(hit_type);	//hit type
+	P.r_pos = RPos;
+	
+	if (power > 0)
+	{
+		ps_hitted->m_lasthitter = a_hitter->ID;
+		ps_hitted->m_lasthitweapon = WeaponID;
+	};
+	//---------------------------------------
+	P.B.count	= BCount;
+};
+
+void	game_sv_Deathmatch::SendPlayerKilledMessage	(u32 id_killer, u32 id_killed)
+{
+	game_PlayerState*	ps_killer	=	get_id	(id_killer);
+	game_PlayerState*	ps_killed	=	get_id	(id_killed);
+	if (!ps_killed || !ps_killer) return;
+
+	NET_Packet			P;
+	P.w_begin			(M_GAMEMESSAGE);
+	P.w_u32				(GMSG_PLAYER_KILLED);
+	P.w_u16				(ps_killed->GameID);
+	if (ps_killer->GameID == ps_killed->m_lasthitter)
+	{
+		P.w_u16				(ps_killer->GameID);
+		P.w_u16				(ps_killed->m_lasthitweapon);
+	}
+	else
+	{
+		P.w_u16				(ps_killer->GameID);
+		P.w_u16				(0);
+	};
+
+	u_EventSend(P);
+};

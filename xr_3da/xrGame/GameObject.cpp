@@ -116,7 +116,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 	{
 	case GE_HIT:
 		{
-			u16				id;
+			u16				id,weapon_id;
 			Fvector			dir;
 			float			power, impulse;
 			s16				element;
@@ -124,6 +124,7 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			u16				hit_type;
 
 			P.r_u16			(id);
+			P.r_u16			(weapon_id);
 			P.r_dir			(dir);
 			P.r_float		(power);
 			P.r_s16			(element);
