@@ -72,12 +72,13 @@ void CPHMovementControl::AddControlVel	(const Fvector& vel)
 }
 void CPHMovementControl::ApplyImpulse(const Fvector& dir,const dReal P)
 {
+	if(fis_zero(P))return;
 	Fvector force;
 	force.set(dir);
 	force.mul(P/fixed_step);
 	
 	AddControlVel(force);
- 	//m_character->ApplyImpulse(dir,P);
+ 	m_character->ApplyImpulse(dir,P);
 }
 void CPHMovementControl::SetVelocityLimit(float val)
 {
@@ -119,75 +120,32 @@ void CPHMovementControl::Calculate(Fvector& vAccel,const Fvector& camDir,float /
 	fActualVelocity=vVelocity.magnitude();
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
-	//if(gcontact_Was)
+
  	{
 		fContactSpeed=m_character->ContactVelocity();
-		//m_character->ContactVelocity()=0.f;
+
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
 
 		gcontact_HealthLost			= 0;
 		if (fContactSpeed>fMinCrashSpeed) 
 		{
-			//float k=10000.f/(B-A);
-			//float dh=_sqrt((dv-A)*k);
-			gcontact_HealthLost = 
+				gcontact_HealthLost = 
 				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
 	}
 	CheckEnvironment(vPosition);
 	bSleep=false;
-}
-
-void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,float dt){
-
-	
-	if(m_capture) 
-	{
-		if(m_capture->Failed()) xr_delete(m_capture);
-	}
-	
-	
-	m_character->IPosition(vPosition);
-
-
-	m_character->SetDesiredPosition(desired_pos);
-	m_character->BringToDesired(dt,velocity);
-
-
-	m_character->GetVelocity(vVelocity); 
-	fActualVelocity=vVelocity.magnitude();
-	gcontact_Was=m_character->ContactWas();
-	fContactSpeed=0.f;
-	//if(gcontact_Was)
-	{
-		fContactSpeed=m_character->ContactVelocity();
-		//m_character->ContactVelocity()=0.f;
-		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
-
-		gcontact_HealthLost			= 0;
-		if (fContactSpeed>fMinCrashSpeed) 
-		{
-			//float k=10000.f/(B-A);
-			//float dh=_sqrt((dv-A)*k);
-			gcontact_HealthLost = 
-				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
-		}
-	}
-	CheckEnvironment(vPosition);
-	bSleep=false;
-
-
 }
 
 void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPathPoint>& path,float speed,  u32& travel_point,  float& precision  )
 {
-	
+
 	if(m_capture) 
 	{
 		if(m_capture->Failed()) xr_delete(m_capture);
 	}
-	
-	
+
+
 	Fvector new_position;
 	m_character->IPosition(new_position);
 
@@ -200,7 +158,6 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	dir.set(0,0,0);
 	if(m_path_size==0)
 	{
-		//m_character->SetMaximumVelocity(0.f);
 		speed=0;
 		vPosition.set(new_position);
 	}
@@ -221,17 +178,16 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		m_path_distance=0;
 		vPathDir.set(dir);
 		vPathPoint.set(vPosition);
-	
+
 
 	}
 	else {
 		Fvector dif;
-	
+
 		dif.sub(new_position,vPathPoint);
 		float radius = dif.magnitude()*2.f;
 		if(m_path_size==1)
 		{
-			//m_character->SetMaximumVelocity(0.f);
 			speed=0.f;
 			vPosition.set(new_position);	//todo - insert it in PathNearestPoint
 			index=0;
@@ -265,16 +221,14 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 
 			travel_point=(u32)index;
 			m_start_index=index;
-			dir.y=0.f;
-
-#pragma TODO ("this must be done on the funnction start!!")
 			if(fis_zero(speed)) dir.set(0,0,0);
-
-
 		}
-		
+
 	}
-/////////////////////////////////////////////////////////////////
+
+	dir.y=0.f;
+	dir.normalize_safe();
+	/////////////////////////////////////////////////////////////////
 	if(bExernalImpulse)
 	{
 
@@ -286,7 +240,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 		V.add(vExternalImpulse);
 		m_character->ApplyForce(vExternalImpulse);
 		speed=V.magnitude();
-		
+
 		if(!fis_zero(speed))
 		{
 			dir.set(V);
@@ -299,22 +253,18 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 
 	m_character->SetMaximumVelocity(speed);
 	m_character->SetAcceleration(dir);
-//////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////
 	m_character->GetVelocity(vVelocity); 
 	fActualVelocity=vVelocity.magnitude();
 	gcontact_Was=m_character->ContactWas();
 	fContactSpeed=0.f;
-	//if(gcontact_Was)
+
 	{
 		fContactSpeed=m_character->ContactVelocity();
-		//m_character->ContactVelocity()=0.f;
 		gcontact_Power				= fContactSpeed/fMaxCrashSpeed;
-
 		gcontact_HealthLost			= 0;
 		if (fContactSpeed>fMinCrashSpeed) 
 		{
-			//float k=10000.f/(B-A);
-			//float dh=_sqrt((dv-A)*k);
 			gcontact_HealthLost = 
 				(100*(fContactSpeed-fMinCrashSpeed))/(fMaxCrashSpeed-fMinCrashSpeed);
 		}
@@ -322,10 +272,7 @@ void CPHMovementControl::Calculate(const xr_vector<DetailPathManager::STravelPat
 	CheckEnvironment(vPosition);
 	bSleep=false;
 	b_exect_position=false;
-	
-
 }
-
 
 void CPHMovementControl::PathNearestPoint(const xr_vector<DetailPathManager::STravelPathPoint>  &path,			//in path
 										  const Fvector					&new_position,  //in position

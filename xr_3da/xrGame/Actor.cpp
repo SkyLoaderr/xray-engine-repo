@@ -397,7 +397,7 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 
 			if (psActorFlags.test(AF_GODMODE))
 			{
-				inherited::Hit(0.f,dir,who,element,position_in_bone_space, 0.f, hit_type);
+				inherited::Hit(0.f,dir,who,element,position_in_bone_space,impulse, hit_type);
 				return;
 			}
 			else inherited::Hit		(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
