@@ -217,4 +217,11 @@
 	<character id="stalker_agr_krot">
 		<class>stalker_agr_krot</class>
 	</character>	
+
+
+	<!-- Drammoment Garbage Novice  -->
+	<character id="stalker_gar_dram_novice">
+		<class>stalker_gar_dram_novice</class>
+	</character>	
+
 </xml>
