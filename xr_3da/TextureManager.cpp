@@ -54,13 +54,13 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 	if (I!=textures.end())	
 	{
 		CTexture *T		=	I->second;
-		T->dwRefCount	+=	1;
+		T->dwReference	+=	1;
 		return		T;
 	}
 	else 
 	{
 		CTexture *T		= new CTexture;
-		T->dwRefCount	= 1;
+		T->dwReference	= 1;
 		textures.insert	(make_pair(strdup(Name),T));
 		if (Device.bReady && !bDeferredLoad) T->Load(Name);
 		return		T;
@@ -69,7 +69,7 @@ CTexture* CShaderManager::_CreateTexture	(LPCSTR Name)
 void	CShaderManager::_DeleteTexture		(CTexture* &T)
 {
 	R_ASSERT(T);
-	T->dwRefCount	--;
+	T->dwReference	--;
 	T=0;
 }
 //--------------------------------------------------------------------------------------------------------------
