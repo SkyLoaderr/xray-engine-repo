@@ -8,7 +8,6 @@ void	xrMemory::dbg_check			()							{ }
 
 #else
 
-#include "xrCore_platform.h"
 #include <malloc.h>
 
 bool	pred_mdbg	(const xrMemory::mdbg& A)	{

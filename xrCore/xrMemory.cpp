@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include	"xrCore_platform.h"
 #include	"xrsharedmem.h"
 
 #include	<malloc.h>

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "xrCore_platform.h"
 
 xrCriticalSection::xrCriticalSection	()
 {

@@ -5,8 +5,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "xrCore_platform.h"
-
 #pragma warning(disable:4995)
 #include <io.h>
 #include <direct.h>

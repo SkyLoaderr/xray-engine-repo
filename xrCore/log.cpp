@@ -1,10 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef DEBUG
-#include "xrCore_platform.h"
-#endif
-
 #include <time.h>
 #include "resource.h"
 #include "log.h"
