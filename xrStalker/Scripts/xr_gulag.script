@@ -377,6 +377,14 @@ function fract:setJob(npc) -- выбирает для данного npc наиболее приоритетное зад
 		end
 	end
 end
+function fract:getJob(npc)
+	for k,v in self.Job do
+		if v.object == npc:id() then	
+			return v.name
+		end
+	end
+	return nil
+end
 function fract:clearAllJob(npc)
 	-- изменения в списке заданий
 	for k,v in self.Job do
@@ -448,9 +456,16 @@ end
 class "evaluator_alarm" (property_evaluator)
 function evaluator_alarm:__init() super()
 end
-function evaluator_alarm:evaluate()
+function evaluator_alarm:evaluate()                                                                   
+	-- если мы сейчас патрульные - то не поднимать тревогу(возвращать что типа тревога уже поднята)
 	local f = xr_gulag.isUnderFraction(self.object)
 	if f ~= nil then
+		if xr_gulag.getJob(f, self.object) == "patrol" or
+		   xr_gulag.getJob(f, self.object) == "follower"		
+		then
+			return true		
+		end
+
 		local s = xr_gulag.getFractionState(f)
 		if s == 1 then
 			return true
@@ -554,3 +569,8 @@ function resetJob(fraction, npc)
 	xr_gulag.fraction[fraction]:clearAllJob(npc)
 	xr_gulag.fraction[fraction]:calculate()
 end         
+function getJob(fraction, npc)
+	if fraction ~= nil and npc ~= nil then
+		return xr_gulag.fraction[fraction]:getJob(npc)
+	end
+end
