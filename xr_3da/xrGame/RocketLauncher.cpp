@@ -59,7 +59,7 @@ void CRocketLauncher::AttachRocket(u16 rocket_id, CGameObject* parent_rocket_lau
 	VERIFY(m_pRocket == NULL);
 	m_pRocket = dynamic_cast<CCustomRocket*>(Level().Objects.net_Find(rocket_id));
 	//хозяином выставляем того, кто стреляет, а не непосредственно оружие
-	m_pRocket->m_pOwner = dynamic_cast<CGameObject*>(parent_rocket_launcher->H_Parent());
+	m_pRocket->m_pOwner = dynamic_cast<CGameObject*>(parent_rocket_launcher->H_Root());
 	VERIFY(m_pRocket->m_pOwner);
 	m_pRocket->H_SetParent(parent_rocket_launcher);
 }
