@@ -29,6 +29,22 @@ IC	T*		xr_new		()
 	return new (ptr) T();
 }
 
+// new(1)
+template <class T, class P1>
+IC	T*		xr_new		(P1 p1)
+{
+	T* ptr	= Memory.mem_alloc(sizeof(T));
+	return new (ptr) T(p1);
+}
+
+// new(1)
+template <class T, class P1, class P2>
+IC	T*		xr_new		(P1 p1, P2 p2)
+{
+	T* ptr	= Memory.mem_alloc(sizeof(T));
+	return new (ptr) T(p1,p2);
+}
+
 // delete
 template <class T>
 IC	void	xr_delete	(T* &ptr)
