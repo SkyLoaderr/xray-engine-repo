@@ -169,8 +169,8 @@ void i_test		( int x, int y)
 
 void i_edge		( int x1, int y1, int x2, int y2)
 {
-    int dx	= abs(x2 - x1);
-    int dy	= abs(y2 - y1);
+    int dx	= _abs(x2 - x1);
+    int dy	= _abs(y2 - y1);
 
     int sx = x2 >= x1 ? 1 : -1;
     int sy = y2 >= y1 ? 1 : -1;

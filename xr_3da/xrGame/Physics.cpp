@@ -1026,7 +1026,7 @@ void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density){
 	vector<Fobb>::iterator i_box=m_boxes_data.begin();
 	if(m_boxes_data.size()==1,m_spheras_data.size()==0){
 	Fvector& hside=(*i_box).m_halfsize;
-	//dReal hs=min(max(hside.x,hside.y),hside.z);
+	//dReal hs=_min(_max(hside.x,hside.y),hside.z);
 	dMassSetBox(&m_mass,1,hside.x*2.f,hside.y*2.f,hside.z*2.f);
 	dMassAdjust(&m_mass,hside.x*hside.y*hside.z*8.f*density);
 	//dMassSetBox(&m_mass,1.f,hs*2.f,hs*2.f,hs*2.f);

@@ -109,7 +109,7 @@ m_contact_velocity=0.f;
 previous_p[0]=dInfinity;
 dis_count_f=0;
 //////////////////////////
-m_radius=min(sizes[0],sizes[2])/2.f;
+m_radius=_min(sizes[0],sizes[2])/2.f;
 m_cyl_hight=sizes[1]-2.f*m_radius;
 if (m_cyl_hight<0.f) m_cyl_hight=0.01f;
 
@@ -820,7 +820,7 @@ EEnvironment	 CPHSimpleCharacter::CheckInvironment(){
 void CPHWheeledCharacter::Create(dVector3 sizes){
 
 //chRCylinder=dCreateBox(0,0.8f,2.f,0.8f);
-m_radius=min(sizes[0],sizes[2])/2.f;
+m_radius=_min(sizes[0],sizes[2])/2.f;
 m_cap=dCreateSphere(0,0.5f);
 m_wheel=dCreateSphere(0,0.5f);
 m_geom_shell=dCreateCylinder(0,0.4f,2.f);
