@@ -1,4 +1,4 @@
-
+#define INTERNAL_BUILD
 #include "StdAfx.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
@@ -6,6 +6,7 @@
 #include "dRay/include/dRay.h"
 #include <ode\src\objects.h>
 #include <ode\src\geom_internal.h>
+#include "ExtendedGeom.h"
 float friction_table[2]={5000.f,100.f};
 
 
@@ -236,6 +237,11 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dGeomSetBody(Geoms[5], Bodies[5]);
 	Geoms[5]=dCreateGeomTransform(0);
 	Geoms[7]=dCreateGeomTransform(0);
+	dGeomCreateUserData(Geoms[5]);
+	dGeomCreateUserData(Geoms[7]);
+	dGeomCreateUserData(Geoms[0]);
+	dGeomCreateUserData(Geoms[6]);
+
 	dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
 	dGeomSetPosition(Geoms[6], -jeepBox[0]/2.f+cabinBox[0]/2.f+0.55f, cabinBox[1]/2.f+jeepBox[1]/2.f+MassShift, 0.f); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
@@ -261,8 +267,8 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 		Bodies[i] = dBodyCreate(world);
 		dBodySetMass(Bodies[i], &m);
 		dBodySetQuaternion(Bodies[i], q);
-		Geoms[i] = dCreateSphere(0, wheelRadius);
-		//Geoms[i] = dCreateCylinder(0, wheelRadius,wheelRadius);
+		//Geoms[i] = dCreateSphere(0, wheelRadius);
+		Geoms[i] = dCreateCylinder(0, wheelRadius,wheelRadius);
 		dGeomSetBody(Geoms[i], Bodies[i]);
 	}
 
@@ -332,6 +338,7 @@ void CPHJeep::Destroy(){
 //	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
 //	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
 //	dGeomDestroy(GeomsGroup);
+	for(UINT i=0;i<NofGeoms;i++) dGeomDestroyUserData(Geoms[i]);
 	DynamicData.Destroy();
 
 }
@@ -738,9 +745,9 @@ else
 		contacts[i].surface.mu = 5000.f;
 		
 		if(contacts[i].geom.g2->data) 
-			contacts[i].surface.mu=*((float*)contacts[i].geom.g2->data);
+			contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
 		if(contacts[i].geom.g1->data) 
-			contacts[i].surface.mu=*((float*)contacts[i].geom.g1->data);
+			contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
 		
 	
 		contacts[i].surface.bounce = 0.0f;//0.1f;
@@ -810,8 +817,9 @@ void CPHElement::			create_Box		(Fobb&		V){
 														m_trans.push_back(trans);
 														dGeomGroupAdd(m_group,trans);
 														dGeomTransformSetInfo(trans,1);
-														
-														trans->data=&friction_table[1];
+														dGeomCreateUserData(trans);
+														dGeomCreateUserData(geom);
+														dGeomGetUserData(trans)->friction=friction_table[1];
 														
 														
 														}
@@ -857,10 +865,13 @@ vector<Fobb>::iterator i_box;
 void CPHElement::			destroy	(){
 	vector<dGeomID>::iterator i;
 	for(i=m_geoms.begin();i!=m_geoms.end();i++){
+	dGeomDestroyUserData(*i);
 	dGeomDestroy(*i);
 	}
 	for(i=m_trans.begin();i!=m_trans.end();i++){
+	dGeomDestroyUserData(*i);
 	dGeomDestroy(*i);
+	
 	}
 	dGeomDestroy(m_group);
 	dBodyDestroy(m_body);
@@ -957,7 +968,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	Fvector mc;
 	mc.set(m_mass_center);
 	m0.transform_tiny(mc);
-	dBodySetPosition(m_body,mc.x,mc.y+0.0f,mc.z);
+	dBodySetPosition(m_body,mc.x,mc.y+30.0f,mc.z);
 	Fmatrix33 m33;
 	m33.set(m0);
 	dMatrix3 R;

@@ -31,37 +31,16 @@ int dCollideBP (const dxGeom* o1, const dxGeom* o2, int flags, dContactGeom *con
 
 #define CONTACT(Ptr, Stride) ((dContactGeom*) (((byte*)Ptr) + (Stride)))
 
-struct Triangle {
-	dReal* v0;
-	dReal* v1;
-	dReal* v2;
-	dVector3 side0;
-	dVector3 side1;
-	dVector3 norm;
-	dReal dist;
-	dReal pos;
-	dReal depth;
-	bool compare (Triangle t1){
-
-		if(t1.v0[0]!=v0[0] ||
-			t1.v0[1]!=v0[1] ||
-			t1.v0[2]!=v0[2] ||
-			t1.v1[0]!=v1[0] ||
-			t1.v1[1]!=v1[1] ||
-			t1.v1[2]!=v1[2] ||
-			t1.v2[0]!=v2[0] ||
-			t1.v2[1]!=v2[1] ||
-			t1.v2[2]!=v2[2]) return false;
-		else return true;
 
 
-	}
-};
-static	dVector3 last_pos={dInfinity,0.f,0.f,0.f};
 static 	vector<Triangle> pos_tries;
 static 	vector<Triangle> neg_tries;
+/*
+static	dVector3 last_pos={dInfinity,0.f,0.f,0.f};
 static bool pushing_neg=false,pushing_b_neg=false;
 Triangle neg_tri={NULL,NULL,NULL,{0,0,0,0},{0,0,0,0},{0,0,0,0},0,0,0},b_neg_tri={NULL,NULL,NULL,{0,0,0,0},{0,0,0,0},{0,0,0,0},0,0,0};
+*/
+
 extern "C" int dSortTriBoxCollide (
 								const dxGeom *o1, const dxGeom *o2,
 								int flags, dContactGeom *contact, int skip,
@@ -75,7 +54,13 @@ extern "C" int dSortTriBoxCollide (
 	int ret=0;
 	Triangle tri;
 	//bool pushing_b_neg_reset=false,pushing_neg_reset=false;
+	dxGeomUserData* data=dGeomGetUserData(o1);
+	Triangle &neg_tri=data->neg_tri;
+	Triangle &b_neg_tri=data->b_neg_tri;
+	dReal* last_pos=data->last_pos;
 
+	bool &pushing_neg=data->pushing_neg;
+	bool &pushing_b_neg=data->pushing_b_neg;
 	pos_tries.clear	();
 	neg_tries.clear	();
 	//pos_dist=dInfinity,
@@ -88,6 +73,7 @@ extern "C" int dSortTriBoxCollide (
 	const dVector3 hside={box->side[0]/2.f,box->side[1]/2.f,box->side[2]/2.f,-1};
 	const dReal *R = o1->R;
 
+	if(last_pos[0]==dInfinity) memcpy(last_pos,p,sizeof(dVector3));
 
 	if(pushing_neg){
 		dReal sidePr=
@@ -140,6 +126,7 @@ extern "C" int dSortTriBoxCollide (
 		tri.dist=dDOT(p,tri.norm)-tri.pos;
 		tri.depth=sidePr-tri.dist;
 		if(tri.dist<0.f){
+		 if(!(dDOT(last_pos,tri.norm)-tri.pos<0.f)){
 			if(TriContainPoint(tri.v0,tri.v1,tri.v2,
 				tri.norm,tri.side0,
 				tri.side1,p)
@@ -161,6 +148,7 @@ extern "C" int dSortTriBoxCollide (
 				//	pushing_b_neg_reset=true;
 				}
 			}
+		}
 		}
 		else{
 			pos_tries.push_back(tri);
@@ -189,7 +177,18 @@ extern "C" int dSortTriBoxCollide (
 	}
 	*/
 	vector<Triangle>::iterator i;
+	
+	for(i=pos_tries.begin();i!=pos_tries.end();i++)
+		ret+=dTriBox (i->v0,i->v1,i->v2,
+		o1,
+		o2,
+		3,
+		CONTACT(contact, ret * skip),   skip);
 
+pushing_neg=pushing_neg&&(!ret);
+
+
+//return ret;
 	if(neg_depth<dInfinity&&ret==0){
 		bool include = true;
 
@@ -216,13 +215,9 @@ extern "C" int dSortTriBoxCollide (
 
 	}
 
+	pushing_b_neg=pushing_b_neg&&(!ret);
 	//if(ret==0)
-	for(i=pos_tries.begin();i!=pos_tries.end();i++)
-		ret+=dTriBox (i->v0,i->v1,i->v2,
-		o1,
-		o2,
-		3,
-		CONTACT(contact, ret * skip),   skip);
+
 
 
 	if(b_neg_depth<dInfinity&&((b_count>1)||pushing_b_neg)&&ret==0){
@@ -236,6 +231,7 @@ extern "C" int dSortTriBoxCollide (
 					break;
 				}
 		};
+		
 		if(include)	{	
 			ret+=dSortedTriBox(b_neg_tri.side0,b_neg_tri.side1,b_neg_tri.norm,
 			b_neg_tri.v0,b_neg_tri.v1,b_neg_tri.v2,b_neg_tri.dist,
@@ -246,7 +242,7 @@ extern "C" int dSortTriBoxCollide (
 		}
 
 	}
-
+	memcpy(last_pos,p,sizeof(dVector3));
 	return ret;
 }
 
@@ -283,9 +279,6 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	AABB.x+=dFabs(velocity[0])*0.01f;
 	AABB.y+=dFabs(velocity[1])*0.01f;
 	AABB.z+=dFabs(velocity[2])*0.01f;
-	
-	Device.Primitive.dbg_DrawAABB	(AABB,BoxCenter->x,BoxCenter->y,BoxCenter->z,0xffffffff);
-	
 	//
 	XRC.box_options                (0);
 	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),*BoxCenter,AABB);
@@ -334,6 +327,63 @@ return dSortTriBoxCollide (Box,
 			*/
 }
 
+
+
+int dcTriListCollider::CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom* Contacts, int Stride){
+
+
+	Fvector* CylinderCenter;
+	Fvector AABB;
+	dReal CylinderRadius,CylinderLength;
+	CylinderCenter=(Fvector*)const_cast<dReal*>(dGeomGetPosition(Cylinder));
+	
+
+	dGeomCylinderGetParams (Cylinder, &CylinderRadius,&CylinderLength);
+	
+	
+
+	dReal* R=const_cast<dReal*>(dGeomGetRotation(Cylinder));
+
+AABB.x =  dFabs (R[0] * CylinderRadius) +
+    REAL(0.5) *dFabs (R[1] * CylinderLength) + dFabs (R[2] * CylinderRadius);
+
+AABB.y = dFabs (R[4] * CylinderRadius) +
+    REAL(0.5) * dFabs (R[5] *CylinderLength) + dFabs (R[6] * CylinderRadius);
+
+ AABB.z =  dFabs (R[8] * CylinderRadius) +
+    REAL(0.5) *dFabs (R[9] * CylinderLength) + dFabs (R[10] *CylinderRadius);
+
+	const dReal*velocity=dBodyGetLinearVel(dGeomGetBody(Cylinder));
+	AABB.x+=dFabs(velocity[0])*0.01f;
+	AABB.y+=dFabs(velocity[1])*0.01f;
+	AABB.z+=dFabs(velocity[2])*0.01f;
+	
+	
+	//
+	XRC.box_options                (0);
+	XRC.box_query                  (Level().ObjectSpace.GetStaticModel(),* CylinderCenter,AABB);
+
+	// 
+//	int count                                       =XRC.r_count   ();
+	CDB::RESULT*    R_begin                         = XRC.r_begin();
+	CDB::RESULT*    R_end                           = XRC.r_end();
+	CDB::TRI*       T_array                         = Level().ObjectSpace.GetStaticTris();
+	int OutTriCount = 0;
+
+	///@slipch
+			
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+        {
+            CDB::TRI* T = T_array + Res->id;
+			OutTriCount+=dTriCyl ((dReal*)T->verts[0],(dReal*)T->verts[1],(dReal*)T->verts[2],
+								  Cylinder,
+								  Geometry,
+								  3,
+								  CONTACT(Contacts, OutTriCount * Stride),   Stride);
+		}
+return OutTriCount;
+}
+///end @slipch
 
 
 

@@ -22,7 +22,7 @@ public:
 
 	int CollideBox(dxGeom* Box, int Flags, dContactGeom* Contact, int Stride);
 	int CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Contact, int Stride);
-
+	int CollideCylinder(dxGeom* Cylinder, int Flags, dContactGeom* Contacts, int Stride);
 #ifdef DEBUG
 	virtual void			OnRender			();
 #endif

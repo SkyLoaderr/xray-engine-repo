@@ -1,5 +1,5 @@
 #include "stdafx.h"
-
+#define INTERNAL_BUILD
 #include <include/ode/common.h>
 #include <include/ode/geom.h>
 #include <include/ode/rotation.h>
@@ -12,9 +12,11 @@
 #include "dTriCollideK.h"
 #include "dxTriList.h"
 #include "dcTriListCollider.h"
+#include "../dCylinder/dCylinder.h"
+#include "../ExtendedGeom.h"
 #include "dcTriListCollider.cpp"	// Allow inlining
 
-#include "../dCylinder/dCylinder.h"
+
 
 int dTriListClass = -1;
 
@@ -90,7 +92,18 @@ int FUNCCALL dCollideBTL(dxGeom* TriList, dxGeom* Box, int Flags, dContactGeom* 
 
 }
 
+int dCollideCTL(dxGeom* TriList, dxGeom* Cyl, int Flags, dContactGeom* Contact, int Stride)throw()
+{
 
+	if (ValidateCollision(Cyl, TriList)){
+
+		return GetData(TriList)->CollideCylinder(Cyl, Flags, Contact, Stride);
+
+	}
+
+	else return 0;
+
+}
 
 
 
@@ -104,6 +117,8 @@ dColliderFn* FUNCCALL dTriListColliderFn(int num)
 	if (num ==dSphereClass) {
 		return (dColliderFn*)&dCollideSTL;
 	}
+
+	if (num == dCylinderClass) return (dColliderFn*)&dCollideCTL;
 	/*
 	if (num ==dCylinderClass) {
 		return (dColliderFn*)&dCollideSTL;
