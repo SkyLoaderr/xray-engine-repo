@@ -171,6 +171,18 @@ void	game_sv_Deathmatch::Update					()
 			{
 				if (m_dwSM_LastSwitchTime<Level().timeServer())
 					SM_SwitchOnNextActivePlayer();
+				CObject* pObject = Level().CurrentViewEntity();
+				if (pObject && pObject->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
+				{
+					char Text[1024];
+					sprintf(Text, "Following %s", pObject->cName().c_str());
+
+					float OldSize = HUD().pFontDI->GetSize			();
+					HUD().pFontDI->SetSize		(0.03f);
+					HUD().pFontDI->SetColor		(0xffff0000);
+					HUD().pFontDI->Out			(0.f,-0.9f,Text);
+					HUD().pFontDI->SetSize		(OldSize);
+				};
 			};
 		}
 		break;
