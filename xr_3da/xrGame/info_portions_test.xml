@@ -126,27 +126,14 @@
 	
 	<!-- infoportions for factory on escape -->
 	<!-- agree for move to factory -->
-	<info_portion id="move_to_factory">
+	<info_portion id="escape_factory_quest">
 		<location >
 			<level>escape</level>
 			<text>Go to factory</text>
 		</location>
 	</info_portion>
-	<!-- kill all without sniper -->
-	<info_portion id="kill_em_all">
-		<location >
-			<level>escape</level>
-			<text>Agree for kill sniper</text>
-		</location>
-	</info_portion>
 	<!-- sniper is dead -->
 	<info_portion id="sniper_dead">
-		<location >
-			<level>escape</level>
-			<text>Sniper is dead</text>
-		</location>
-	</info_portion>
-	<info_portion id="kill_sniper">
 		<location >
 			<level>escape</level>
 			<text>Sniper is dead</text>
