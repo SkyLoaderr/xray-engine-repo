@@ -7,7 +7,7 @@ void CLevel::net_Stop		()
 	IPureClient::Disconnect		();
 	if (Server)
 	{
-		Server->Disconnect	();
+		Server->Disconnect		();
 		xr_delete				(Server);
 	}
 }
