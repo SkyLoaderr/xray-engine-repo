@@ -77,7 +77,7 @@ CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	CGameObject		*current_weapon = l_tpStalker->GetCurrentWeapon();
@@ -88,7 +88,7 @@ CLuaGameObject *CLuaGameObject::GetCurrentEquipment() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	CGameObject		*current_equipment = l_tpStalker->GetCurrentEquipment();
@@ -99,7 +99,7 @@ CLuaGameObject *CLuaGameObject::GetFood() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	CGameObject		*food = l_tpStalker->GetFood();
@@ -110,7 +110,7 @@ CLuaGameObject *CLuaGameObject::GetMedikit() const
 {
 	CAI_Stalker		*l_tpStalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!l_tpStalker) {
-		LuaOut		(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetCurrentWeapon!");
 		return		(0);
 	}
 	CGameObject		*medikit = l_tpStalker->GetMedikit();
@@ -170,7 +170,7 @@ u32	CLuaGameObject::Cost			() const
 {
 	CInventoryItem		*inventory_item = dynamic_cast<CInventoryItem*>(m_tpGameObject);
 	if (!inventory_item) {
-		LuaOut			(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member Cost!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member Cost!");
 		return			(false);
 	}
 	return				(inventory_item->Cost());
@@ -180,7 +180,7 @@ float CLuaGameObject::GetCondition	() const
 {
 	CInventoryItem		*inventory_item = dynamic_cast<CInventoryItem*>(m_tpGameObject);
 	if (!inventory_item) {
-		LuaOut			(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member Cost!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member Cost!");
 		return			(false);
 	}
 	return				(inventory_item->GetCondition());
@@ -192,7 +192,7 @@ u32	CLuaGameObject::GetInventoryObjectCount() const
 	if (l_tpInventoryOwner)
 		return			(l_tpInventoryOwner->inventory().dwfGetObjectCount());
 	else {
-		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member obj_count!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member obj_count!");
 		return			(0);
 	}
 }
@@ -206,7 +206,7 @@ CLuaGameObject	*CLuaGameObject::GetActiveItem()
 		else
 			return		(0);
 	else {
-		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member activge_item!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member activge_item!");
 		return			(0);
 	}
 }
@@ -223,7 +223,7 @@ CLuaGameObject	*CLuaGameObject::GetObjectByName	(LPCSTR caObjectName) const
 			return		(l_tpGameObject->lua_game_object());
 	}
 	else {
-		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
 		return			(0);
 	}
 }
@@ -240,7 +240,7 @@ CLuaGameObject	*CLuaGameObject::GetObjectByIndex	(int iIndex) const
 			return		(l_tpGameObject->lua_game_object());
 	}
 	else {
-		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member object!");
 		return			(0);	
 	}
 }
@@ -252,7 +252,7 @@ CLuaGameObject *CLuaGameObject::GetEnemy() const
 		if (l_tpCustomMonster->GetCurrentEnemy()) return (l_tpCustomMonster->GetCurrentEnemy()->lua_game_object());
 		else return (0);
 	} else {
-		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
 		return			(0);
 	}
 }
@@ -264,7 +264,7 @@ CLuaGameObject *CLuaGameObject::GetCorpse() const
 		if (l_tpCustomMonster->GetCurrentCorpse()) return (l_tpCustomMonster->GetCurrentCorpse()->lua_game_object());
 		else return (0);
 	else {
-		LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
 		return			(0);
 	}
 }
@@ -276,7 +276,7 @@ void  CLuaGameObject::set_body_state			(EBodyState body_state)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_body_state	(body_state);
 }
@@ -285,7 +285,7 @@ void  CLuaGameObject::set_movement_type		(EMovementType movement_type)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_movement_type	(movement_type);
 }
@@ -294,7 +294,7 @@ void  CLuaGameObject::set_mental_state		(EMentalState mental_state)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_mental_state	(mental_state);
 }
@@ -303,7 +303,7 @@ void  CLuaGameObject::set_path_type			(CMovementManager::EPathType path_type)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_path_type	(path_type);
 }
@@ -312,7 +312,7 @@ void  CLuaGameObject::set_detail_path_type	(CMovementManager::EDetailPathType de
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_detail_path_type	(detail_path_type);
 }
@@ -321,7 +321,7 @@ void  CLuaGameObject::add_sound		(LPCSTR prefix, u32 max_count, ESoundTypes type
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 	else
 		sound_player->add		(prefix,max_count,type,priority,mask,internal_type,bone_name);
 }
@@ -330,7 +330,7 @@ void CLuaGameObject::remove_sound	(u32 internal_type)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member add!");
 	else
 		sound_player->remove	(internal_type);
 }
@@ -339,7 +339,7 @@ void CLuaGameObject::set_sound_mask	(u32 sound_mask)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member set_sound_mask!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member set_sound_mask!");
 	else
 		sound_player->set_sound_mask(sound_mask);
 }
@@ -348,7 +348,7 @@ void CLuaGameObject::set_sight		(ELookType tLookType, const Fvector	*tPointToLoo
 {
 	CSightManager				*sight_manager = dynamic_cast<CSightManager*>(m_tpGameObject);
 	if (!sight_manager)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSightManager : cannot access class member set_sight!");
 	else
 		sight_manager->update	(tLookType,tPointToLook,dwLookOverDelay);
 }
@@ -357,7 +357,7 @@ u32 CLuaGameObject::GetRank		()
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker) {
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetRank!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member GetRank!");
 		return					(ALife::eStalkerRankNone);
 	}
 	else
@@ -368,7 +368,7 @@ void CLuaGameObject::play_sound		(u32 internal_type)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
 		sound_player->play		(internal_type);
 }
@@ -377,7 +377,7 @@ void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time)
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
 		sound_player->play		(internal_type,max_start_time);
 }
@@ -386,7 +386,7 @@ void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
 		sound_player->play		(internal_type,max_start_time,min_start_time);
 }
@@ -395,7 +395,7 @@ void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
 		sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time);
 }
@@ -404,7 +404,7 @@ void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min
 {
 	CSoundPlayer				*sound_player = dynamic_cast<CSoundPlayer*>(m_tpGameObject);
 	if (!sound_player)
-		LuaOut					(Lua::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CSoundPlayer : cannot access class member play!");
 	else
 		sound_player->play		(internal_type,max_start_time,min_start_time,max_stop_time,min_stop_time);
 }
@@ -413,7 +413,7 @@ void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action)
 {
 	CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
 	if (!object_handler)
-		LuaOut					(Lua::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
 	else
 		object_handler->set_goal(object_action);
 }
@@ -422,7 +422,7 @@ void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action, CLuaG
 {
 	CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
 	if (!object_handler)
-		LuaOut					(Lua::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
 	else
 		object_handler->set_goal(object_action,lua_game_object ? lua_game_object->object() : 0);
 }
@@ -431,7 +431,7 @@ void CLuaGameObject::set_desired_position	()
 {
 	CAI_Stalker							*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut							(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log							(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_desired_position	(0);
 }
@@ -440,7 +440,7 @@ void CLuaGameObject::set_desired_position	(const Fvector *desired_position)
 {
 	CAI_Stalker							*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut							(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log							(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_desired_position	(desired_position);
 }
@@ -449,7 +449,7 @@ void  CLuaGameObject::set_desired_direction	()
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_desired_direction	(0);
 }
@@ -458,7 +458,7 @@ void  CLuaGameObject::set_desired_direction	(const Fvector *desired_direction)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_desired_direction	(desired_direction);
 }
@@ -467,7 +467,7 @@ void  CLuaGameObject::set_node_evaluator		(CAbstractVertexEvaluator *node_evalua
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_node_evaluator	(node_evaluator);
 }
@@ -476,7 +476,7 @@ void  CLuaGameObject::set_node_evaluator		()
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_node_evaluator	(0);
 }
@@ -485,7 +485,7 @@ void  CLuaGameObject::set_path_evaluator		()
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_path_evaluator	(0);
 }
@@ -494,7 +494,7 @@ void  CLuaGameObject::set_path_evaluator		(CAbstractVertexEvaluator *path_evalua
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
-		LuaOut					(Lua::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_path_evaluator	(path_evaluator);
 }

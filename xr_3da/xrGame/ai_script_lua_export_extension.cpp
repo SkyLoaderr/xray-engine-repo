@@ -7,8 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_script_space.h"
-#include "ai_script_lua_extension.h"
+#include "script_space.h"
 #include "ai_script_effector.h"
 #include "../cameramanager.h"
 #include "luabind/return_reference_to_policy.hpp"
@@ -24,7 +23,6 @@
 #include "script_binder_object.h"
 
 using namespace luabind;
-using namespace Script;
 
 CRenderDevice &get_device()
 {
@@ -75,9 +73,9 @@ float get_time_factor()
 	return			(Level().GetGameTimeFactor());
 }
 
-void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_artifact_merger()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CArtifactMerger>("artifact_merger")
 		.def("get_mercury_ball_num",	&CArtifactMerger::GetMercuryBallNum)
@@ -97,9 +95,9 @@ void Script::vfExportArtifactMerger(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_effector()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<SPPInfo::SDuality>("duality")
 			.def_readwrite("h",					&SPPInfo::SDuality::h)
@@ -137,9 +135,9 @@ void Script::vfExportEffector(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_level()
 {
-	module(tpLuaVirtualMachine,"level")
+	module(lua(),"level")
 	[
 		// declarations
 		def("cameras",						get_camera_manager),
@@ -152,15 +150,15 @@ void Script::vfExportLevel(CLuaVirtualMachine *tpLuaVirtualMachine)
 		def("get_time_factor",					get_time_factor)
 	];
 
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		def("device",							get_device)
 	];
 }
 
-void Script::vfExportParticles(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_particles()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CParticlesObject>("particles")
 			.def(								constructor<LPCSTR,bool>())
@@ -197,9 +195,9 @@ int bit_not(int i)
 
 struct SSoundType{};
 
-void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_memory_objects()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<SRotation>("rotation")
 			.def_readonly("yaw",			&SRotation::yaw)
@@ -299,9 +297,9 @@ void Script::vfExportMemoryObjects(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_object()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CAbstractVertexEvaluator>("vertex_evaluator"),
 

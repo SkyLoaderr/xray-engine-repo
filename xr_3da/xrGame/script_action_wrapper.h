@@ -9,7 +9,7 @@
 #pragma once
 
 #include "action_base.h"
-#include "ai_script_space.h"
+#include "script_space.h"
 
 typedef CActionBase<CLuaGameObject> CScriptAction;
 

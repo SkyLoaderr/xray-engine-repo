@@ -9,8 +9,6 @@ class CSE_Abstract;
 // id_*		- means player-id
 // eid_*	- means entity-id
 
-class	CScriptProcessor;
-
 class	game_sv_GameState	: public game_GameState
 {
 protected:
@@ -23,7 +21,6 @@ public:
 	BOOL							sv_force_sync;
 	xr_vector<RPoint>				rpoints	[4];
 	// scripts
-	CScriptProcessor				*m_tpScriptProcessor;
 	u64								m_qwStartProcessorTime;
 	u64								m_qwStartGameTime;
 	float							m_fTimeFactor;

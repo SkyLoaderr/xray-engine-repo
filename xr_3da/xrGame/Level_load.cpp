@@ -4,6 +4,7 @@
 #include "ai_space.h"
 #include "ParticlesObject.h"
 #include "ai_script_processor.h"
+#include "script_engine.h"
 
 void CLevel::vfCreateAllPossiblePaths(LPCSTR sName, SPath &tpPatrolPath)
 {
@@ -174,10 +175,12 @@ BOOL CLevel::Load_GameSpecific_After()
 	}
 	
 	// loading scripts
-	xr_delete					(m_tpScriptProcessor);
+	ai().script_engine().remove_script_processor("level");
 
 	if (pLevel->section_exist("level_scripts") && pLevel->line_exist("level_scripts","script"))
-		m_tpScriptProcessor		= xr_new<CScriptProcessor>("Level",pLevel->r_string("level_scripts","script"));
+		ai().script_engine().add_script_processor("level",xr_new<CScriptProcessor>("level",pLevel->r_string("level_scripts","script")));
+	else
+		ai().script_engine().add_script_processor("level",xr_new<CScriptProcessor>("level",""));
 
 	return TRUE;
 }

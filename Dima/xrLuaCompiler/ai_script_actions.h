@@ -9,7 +9,6 @@
 #pragma once
 
 #include "ai_monster_space.h"
-#include "ai_script_lua_space.h"
 #include "car.h"
 #include "movement_manager.h"
 #include "ai_script_sound.h"
@@ -548,7 +547,7 @@ public:
 			m_bCompleted	= false;
 		}
 		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
 			m_bStartedToPlay= true;
 			m_bCompleted	= true;
 		}

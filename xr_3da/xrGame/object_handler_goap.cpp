@@ -28,9 +28,6 @@ CObjectHandlerGOAP::~CObjectHandlerGOAP	()
 
 void CObjectHandlerGOAP::init	()
 {
-#ifdef LOG_ACTION
-	m_use_log						= true;
-#endif
 }
 
 void CObjectHandlerGOAP::Load			(LPCSTR section)
@@ -68,6 +65,10 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 	add_operator					(u32(eWorldOperatorNoItemsIdle),action);
 
 	set_goal						(eObjectActionIdle);
+
+#ifdef LOG_ACTION
+//	m_use_log						= true;
+#endif
 }
 
 void CObjectHandlerGOAP::reload			(LPCSTR section)
@@ -106,7 +107,7 @@ CInventoryItem *CObjectHandlerGOAP::best_weapon() const
 		if ((*I)->getDestroy())
 			continue;
 		CWeapon		*weapon = dynamic_cast<CWeapon*>(*I);
-		if (weapon && (weapon->GetAmmoCurrent() > weapon->GetAmmoMagSize()/10)) {
+		if (weapon && (weapon->GetAmmoCurrent() > 0*weapon->GetAmmoMagSize()/10)) {
 			ai().ef_storage().m_tpGameObject	= weapon;
 			u32	current_weapon_type = ai().ef_storage().m_pfPersonalWeaponType->dwfGetWeaponType();
 			if (current_weapon_type > best_weapon_type) {
@@ -633,37 +634,5 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 
 void CObjectHandlerGOAP::update(u32 time_delta)
 {
-	inherited::update			(time_delta);
-#ifdef LOG_ACTION
-	if (m_use_log) {
-//		// printing current world state
-//		{
-//			Msg						("%6d : Current world state",Level().timeServer());
-//			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-//			EVALUATOR_MAP::const_iterator	E = evaluators().end();
-//			for ( ; I != E; ++I) {
-//				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
-//				char				temp = '?';
-//				if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first)) {
-//					temp				= (*J).value() ? '+' : '-';
-//					Msg					("%5c : %s",temp,property2string((*I).first));
-//				}
-//			}
-//		}
-//		// printing target world state
-//		{
-//			Msg						("%6d : Target world state",Level().timeServer());
-//			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-//			EVALUATOR_MAP::const_iterator	E = evaluators().end();
-//			for ( ; I != E; ++I) {
-//				xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
-//				char				temp = '?';
-//				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
-//					temp				= (*J).value() ? '+' : '-';
-//					Msg					("%5c : %s",temp,property2string((*I).first));
-//				}
-//			}
-//		}
-	}
-#endif
+	inherited::update		(time_delta);
 }

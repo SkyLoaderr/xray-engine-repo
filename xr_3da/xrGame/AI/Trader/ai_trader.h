@@ -10,7 +10,7 @@
 
 #include "../../CustomMonster.h"
 #include "../../inventoryowner.h"
-#include "../../ai_script_space.h"
+#include "../../script_space.h"
 #include "../script/ai_script_monster.h"
 #include "../script/ai_script_monster.h"
 #include "../ai_monster_bones.h"

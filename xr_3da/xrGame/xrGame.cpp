@@ -740,8 +740,8 @@ public:
 		if (!xr_strlen(S))
 			Log("* Specify script name!");
 		else {
-			VERIFY(Level().GetScriptProcessor());
-			Level().GetScriptProcessor()->AddScript(S);
+			if (ai().script_engine().script_processor("level"))
+				ai().script_engine().script_processor("level")->add_script(S);
 		}
 	}
 };
@@ -885,6 +885,7 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 		XML_DisableStringCaching	();
 		VERIFY						(!g_ai_space);
 		g_ai_space					= xr_new<CAI_Space>();
+		ai().script_engine().export	();
 		}
 		break;
 	case DLL_PROCESS_DETACH:

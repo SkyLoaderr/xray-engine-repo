@@ -3,6 +3,7 @@
 #include "LevelGameDef.h"
 #include "ai_script_processor.h"
 #include "xrServer_Objects_ALife_Monsters.h"
+#include "script_engine.h"
 
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
@@ -265,7 +266,7 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 		FS.r_close	(F);
 	}
 	// loading scripts
-	xr_delete					(m_tpScriptProcessor);
+	ai().script_engine().remove_script_processor("game");
 	LPCSTR						caSection = "";
 	switch (type) {
 		case GAME_ANY			: {
@@ -304,7 +305,9 @@ void game_sv_GameState::Create					(LPSTR &/**options/**/)
 	CInifile					*l_tpIniFile = xr_new<CInifile>(S);
 	R_ASSERT					(l_tpIniFile);
 	if (l_tpIniFile->r_string(caSection,"script"))
-		m_tpScriptProcessor		= xr_new<CScriptProcessor>("Game",l_tpIniFile->r_string(caSection,"script"));
+		ai().script_engine().add_script_processor("game",xr_new<CScriptProcessor>("game",l_tpIniFile->r_string(caSection,"script")));
+	else
+		ai().script_engine().add_script_processor("game",xr_new<CScriptProcessor>("game",""));
 	xr_delete					(l_tpIniFile);
 }
 
@@ -372,13 +375,13 @@ void game_sv_GameState::Update		()
 		xrClientData*	C		= (xrClientData*)	S->client_Get(it);
 		C->ps.ping				= u16(C->stats.getPing());
 	}
-	if (m_tpScriptProcessor)
-		m_tpScriptProcessor->Update();
+	
+	if (ai().script_engine().script_processor("game"))
+		ai().script_engine().script_processor("game")->update();
 }
 
 game_sv_GameState::game_sv_GameState()
 {
-	m_tpScriptProcessor			= 0;
 	m_qwStartProcessorTime		= CPU::GetCycleCount();
 	m_qwStartGameTime			= 12*60*60*1000;
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
@@ -386,7 +389,7 @@ game_sv_GameState::game_sv_GameState()
 
 game_sv_GameState::~game_sv_GameState()
 {
-	xr_delete					(m_tpScriptProcessor);
+	ai().script_engine().remove_script_processor("game");
 }
 
 ALife::_TIME_ID game_sv_GameState::GetGameTime()

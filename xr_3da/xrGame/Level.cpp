@@ -25,6 +25,7 @@
 #include "Level_Bullet_Manager.h"
 
 #include "ai_script_processor.h"
+#include "script_engine.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -62,8 +63,6 @@ CLevel::CLevel()
 	CShootingObject::bullet_material_idx  = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);
 	BulletManager().bullet_material_idx   = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);;
 
-
-	m_tpScriptProcessor			= 0;
 //----------------------------------------------------
 	m_bNeed_CrPr					= false;
 	m_dwNumSteps				= 0;
@@ -122,7 +121,8 @@ CLevel::~CLevel()
 	}
 	m_PatrolPaths.clear();
 	
-	xr_delete			(m_tpScriptProcessor);
+	ai().script_engine().remove_script_processor("level");
+
 	xr_free				(m_caServerOptions);
 	xr_free				(m_caClientOptions);
 }
@@ -255,8 +255,7 @@ void CLevel::OnFrame	()
 	
 	g_pGamePersistent->Environment.SetGameTime(GetGameDayTimeSec(),GetGameTimeFactor());
 
-	if (m_tpScriptProcessor)
-		m_tpScriptProcessor->Update();
+	ai().script_engine().script_processor("level")->update();
 
 	//просчитать полет пуль 
 	BulletManager().Update();

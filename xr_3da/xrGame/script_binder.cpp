@@ -7,8 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "script_space.h"
+#include "script_engine.h"
 #include "script_binder.h"
-#include "ai_script_lua_extension.h"
 #include "xrServer_Objects_ALife.h"
 #include "script_binder_object.h"
 
@@ -29,19 +30,16 @@ void CScriptBinder::init			()
 
 void CScriptBinder::reinit			()
 {
-	inherited::reinit		();
 	if (m_object)
 		m_object->reinit	();
 }
 
 void CScriptBinder::Load			(LPCSTR section)
 {
-	inherited::Load			(section);
 }
 
 void CScriptBinder::reload			(LPCSTR section)
 {
-	inherited::reload		(section);
 	VERIFY					(!m_object);
 	if (!pSettings->line_exist(section,"script_binding"))// || true)
 		return;
@@ -66,14 +64,15 @@ void CScriptBinder::reload			(LPCSTR section)
 		strcpy				(function,J + 1);
 	}
 
-	if	(!Script::bfIsObjectPresent(ai().lua(),name_space,function,LUA_TFUNCTION)) {
-		Lua::LuaOut			(Lua::eLuaMessageTypeError,"function %s is not loaded!",string_to_run);
+	if	(!ai().script_engine().object(name_space,function,LUA_TFUNCTION)) {
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"function %s is not loaded!",string_to_run);
 		return;
 	}
 
-	luabind::object			lua_namespace	= Script::lua_namespace_table(ai().lua(),name_space);
+	luabind::object			lua_namespace	= ai().script_engine().name_space(name_space);
 	luabind::functor<void>	lua_function	= luabind::object_cast<luabind::functor<void> >(lua_namespace[function]);
-	lua_function			(lua_game_object());
+	CGameObject				*game_object = dynamic_cast<CGameObject*>(this);
+	lua_function			(game_object ? game_object->lua_game_object() : 0);
 	
 	if (m_object)
 		m_object->reload	(section);
@@ -81,9 +80,6 @@ void CScriptBinder::reload			(LPCSTR section)
 
 BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 {
-	if (!inherited::net_Spawn(DC))
-		return				(FALSE);
-
 	CSE_Abstract			*abstract = (CSE_Abstract*)DC;
 	if (m_object && !m_object->net_Spawn(abstract))
 		return				(FALSE);
@@ -93,7 +89,6 @@ BOOL CScriptBinder::net_Spawn		(LPVOID DC)
 
 void CScriptBinder::net_Destroy		()
 {
-	inherited::net_Destroy	();
 	if (m_object)
 		m_object->net_Destroy	();
 	xr_delete				(m_object);

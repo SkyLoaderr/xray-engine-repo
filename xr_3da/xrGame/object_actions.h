@@ -92,7 +92,7 @@ protected:
 
 public:
 						CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, CPropertyStorage *storage, LPCSTR action_name = "");
-	virtual void		initialize			();
+	virtual void		execute				();
 };
 
 //////////////////////////////////////////////////////////////////////////

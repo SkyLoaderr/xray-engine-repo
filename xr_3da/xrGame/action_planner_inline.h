@@ -129,10 +129,43 @@ void CPlanner::update				(u32 time_delta)
 
 #ifdef LOG_ACTION
 	// printing solution
-	if (m_use_log && m_solution_changed) {
-		Msg						("%6d : Solution",Level().timeServer());
-		for (int i=0; i<(int)solution().size(); ++i)
-			Msg					("%s",action2string(solution()[i]));
+	if (m_use_log) {
+		if (m_solution_changed) {
+			Msg						("%6d : Solution",Level().timeServer());
+			for (int i=0; i<(int)solution().size(); ++i)
+				Msg					("%s",action2string(solution()[i]));
+		}
+		if (!m_actuality) {
+			// printing current world state
+			{
+				Msg						("%6d : Current world state",Level().timeServer());
+				EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+				EVALUATOR_MAP::const_iterator	E = evaluators().end();
+				for ( ; I != E; ++I) {
+					xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(current_state().conditions().begin(),current_state().conditions().end(),CWorldProperty((*I).first,false));
+					char				temp = '?';
+					if ((J != current_state().conditions().end()) && ((*J).condition() == (*I).first)) {
+						temp				= (*J).value() ? '+' : '-';
+						Msg					("%5c : %s",temp,property2string((*I).first));
+					}
+				}
+			}
+			// printing target world state
+			{
+				Msg						("%6d : Target world state",Level().timeServer());
+				EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+				EVALUATOR_MAP::const_iterator	E = evaluators().end();
+				for ( ; I != E; ++I) {
+					xr_vector<COperatorCondition>::const_iterator J = std::lower_bound(target_state().conditions().begin(),target_state().conditions().end(),CWorldProperty((*I).first,false));
+					char				temp = '?';
+					if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
+						temp				= (*J).value() ? '+' : '-';
+						Msg					("%5c : %s",temp,property2string((*I).first));
+					}
+				}
+			}
+//			VERIFY2						(m_actuality,"Problem solver couldn't build a valid path - verify your conditions, effects and goals!");
+		}
 	}
 #endif
 

@@ -10,10 +10,7 @@
 
 class CScriptBinderObject;
 
-class CScriptBinder : virtual public CGameObject {
-protected:
-	typedef CGameObject inherited;
-
+class CScriptBinder {
 protected:
 	CScriptBinderObject	*m_object;
 

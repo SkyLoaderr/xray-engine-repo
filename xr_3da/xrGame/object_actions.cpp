@@ -40,10 +40,12 @@ void CObjectActionShow::initialize		()
 {
 	inherited::initialize			();
 	VERIFY							(m_item);
-	if (m_object->inventory().ActiveItem() && m_object->inventory().ActiveItem()->GetSlot() == m_item->GetSlot())
-		m_object->inventory().Ruck	(m_object->inventory().ActiveItem());
+	if (m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem)
+		m_object->inventory().Ruck	(m_object->inventory().m_slots[m_item->GetSlot()].m_pIItem);
+	m_object->inventory().SetActiveSlot(NO_ACTIVE_SLOT);
 	m_object->inventory().Slot		(m_item);
-	m_object->inventory().Activate	(m_item->GetSlot());
+	bool							result = m_object->inventory().Activate	(m_item->GetSlot());
+	VERIFY							(result);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,9 +57,9 @@ CObjectActionHide::CObjectActionHide	(CInventoryItem *item, CAI_Stalker *owner, 
 {
 }
 
-void CObjectActionHide::initialize		()
+void CObjectActionHide::execute		()
 {
-	inherited::initialize			();
+	inherited::execute				();
 	VERIFY							(m_item);
 	m_object->inventory().Activate	(NO_ACTIVE_SLOT);
 }

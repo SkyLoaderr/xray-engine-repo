@@ -27,9 +27,6 @@ CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
 
 void CMotivationActionManagerStalker::init				()
 {
-#ifdef LOG_ACTION
-	m_use_log				= true;
-#endif
 }
 
 #ifdef LOG_ACTION
@@ -59,6 +56,10 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	inherited::reinit		(object,clear_all);
 
 	m_storage.set_property	(eWorldPropertyDead,false);
+
+#ifdef LOG_ACTION
+	m_use_log				= true;
+#endif
 }
 
 void CMotivationActionManagerStalker::reload			(LPCSTR section)

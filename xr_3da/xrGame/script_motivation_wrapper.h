@@ -9,7 +9,7 @@
 #pragma once
 
 #include "motivation.h"
-#include "ai_script_space.h"
+#include "script_space.h"
 
 typedef CMotivation<CLuaGameObject> CScriptMotivation;
 

@@ -263,7 +263,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 					l_tObjectAction.m_bCompleted = true;
 			}
 			else
-				LuaOut(Lua::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
+				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
 
 //			if (inventory().ActiveItem()) {
 //				inventory().Action(kWPN_FIRE,	CMD_STOP);
@@ -273,7 +273,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 //					l_tObjectAction.m_bCompleted = true;
 //			}
 //			else
-//				LuaOut(Lua::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
+//				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"cannot reload active item because it is not selected!");
 			break;
 		}
 		case eObjectActionActivate : {
@@ -325,7 +325,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		}
 		case eObjectActionTake : {
 			if (inventory().GetItemFromInventory(*l_tObjectAction.m_tpObject->cName())) {
-				LuaOut(Lua::eLuaMessageTypeError,"item is already in the inventory!");
+				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"item is already in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}
 			feel_touch_new(l_tObjectAction.m_tpObject);
@@ -334,7 +334,7 @@ bool CAI_Stalker::bfAssignObject(CEntityAction *tpEntityAction)
 		}
 		case eObjectActionDrop : {
 			if (!inventory().GetItemFromInventory(*l_tObjectAction.m_tpObject->cName())) {
-				LuaOut(Lua::eLuaMessageTypeError,"item is not in the inventory!");
+				ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError,"item is not in the inventory!");
 				return	((l_tObjectAction.m_bCompleted = true) == false);
 			}
 			DropItemSendMessage(l_tObjectAction.m_tpObject);

@@ -7,8 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_script_space.h"
-#include "ai_script_lua_extension.h"
+#include "script_space.h"
 #include "luabind/return_reference_to_policy.hpp"
 #include "luabind/out_value_policy.hpp"
 #include "luabind/adopt_policy.hpp"
@@ -31,11 +30,10 @@
 #include "script_binder_object_wrapper.h"
 
 using namespace luabind;
-using namespace Script;
 
-void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_action_management()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CPropertyStorage>("property_storage")
 			.def(								constructor<>())
@@ -108,9 +106,9 @@ void Script::vfExportActionManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportMotivationManagement(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_motivation_management()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CScriptMotivation,CScriptMotivationWrapper>("motivation")
 			.def_readonly("object",				&CScriptMotivation::m_object)

@@ -7,49 +7,39 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_script_space.h"
+#include "script_space.h"
+#include "script_engine.h"
 #include "ai_script.h"
-#include "ai_script_lua_extension.h"
 
-using namespace Script;
-
-CScript::CScript(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caFileName)
+CScript::CScript(LPCSTR caFileName)
 {
 	m_bActive			= false;
 	m_caScriptFileName	= caFileName;
 	Msg					("* Loading design script %s",caFileName);
 
-	if (!bfLoadFile(tpLuaVirtualMachine,caFileName,true))
+	if (!ai().script_engine().load_file(caFileName,true))
 		return;
 
 	string256		l_caNamespaceName, S;
 	_splitpath		(caFileName,0,0,l_caNamespaceName,0);
 	sprintf			(S,"\nfunction %s.script_name()\nreturn \"%s\"\nend\n",l_caNamespaceName,l_caNamespaceName);
-	if (!bfLoadBuffer(tpLuaVirtualMachine,S,xr_strlen(S),caFileName))
+
+	if (!ai().script_engine().load_buffer(ai().script_engine().lua(),S,xr_strlen(S),caFileName))
 		return;
-
-	lua_call		(tpLuaVirtualMachine,0,0);
-
-//	int				l_iErrorCode = lua_pcall(tpLuaVirtualMachine,0,0,0);
-//	if (l_iErrorCode) {
-//#ifdef DEBUG
-//		vfPrintOutput	(tpLuaVirtualMachine,l_caNamespaceName);
-//		vfPrintError	(tpLuaVirtualMachine,l_iErrorCode);
-//#endif
-//		return;
-//	}
 	
-	m_tpLuaThread	= lua_newthread(m_tpLuaVirtualMachine = tpLuaVirtualMachine);
-	
-#ifdef DEBUG
-	lua_sethook		(m_tpLuaVirtualMachine, Script::LuaHookCall,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
-#endif
+	lua_call		(ai().script_engine().lua(),0,0);
 
+	m_tpLuaThread	= lua_newthread(ai().script_engine().lua());
+	
 	sprintf			(S,"\n%s.main()\n",l_caNamespaceName);
-	if (!bfLoadBuffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script")) {
-		lua_pop		(tpLuaVirtualMachine,2);
+	if (!ai().script_engine().load_buffer(m_tpLuaThread,S,xr_strlen(S),"@internal.script")) {
+		lua_pop		(ai().script_engine().lua(),2);
 		return;
 	}
+
+#ifdef DEBUG
+	lua_sethook		(m_tpLuaThread, CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+#endif
 
 	m_bActive		= true;
 }
@@ -65,8 +55,8 @@ bool CScript::Update()
 	int				l_iErrorCode = lua_resume(m_tpLuaThread,0);
 	if (l_iErrorCode) {
 #ifdef DEBUG
-		if (!bfPrintOutput(m_tpLuaThread,*m_caScriptFileName,l_iErrorCode))
-			vfPrintError(m_tpLuaThread,l_iErrorCode);
+		if (!ai().script_engine().print_output(m_tpLuaThread,*m_caScriptFileName,l_iErrorCode))
+			ai().script_engine().print_error(m_tpLuaThread,l_iErrorCode);
 		m_bActive	= false;
 		return		(false);
 #endif

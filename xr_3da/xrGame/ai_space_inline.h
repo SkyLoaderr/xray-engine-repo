@@ -69,20 +69,14 @@ IC	void						CAI_Space::set_alife		(CSE_ALifeSimulator *alife_simulator)
 	m_alife_simulator = alife_simulator;
 }
 
-IC	IWriter						&CAI_Space::lua_output		() const
-{
-	VERIFY			(m_lua_output);
-	return			(*m_lua_output);
-}
-
-IC	lua_State					*CAI_Space::lua				() const
-{
-	VERIFY			(m_lua_virtual_machine);
-	return			(m_lua_virtual_machine);
-}
-
 IC	const CCoverManager			&CAI_Space::cover_manager	() const
 {
 	VERIFY			(m_cover_manager);
 	return			(*m_cover_manager);
+}
+
+IC	CScriptEngine				&CAI_Space::script_engine	() const
+{
+	VERIFY			(m_script_engine);
+	return			(*m_script_engine);
 }

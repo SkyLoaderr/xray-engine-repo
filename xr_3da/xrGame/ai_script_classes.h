@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_script_space.h"
+#include "script_space.h"
 #include "ai_script_bind.h"
 #include "ai_script_actions.h"
 #include "script_zone.h"
@@ -115,7 +115,7 @@ public:
 	{
 		CEntity				*l_tpEntity = dynamic_cast<CEntity*>(m_tpGameObject);
 		if (!l_tpEntity) {
-			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member Kill!",*m_tpGameObject->cName());
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member Kill!",*m_tpGameObject->cName());
 			return;
 		}
 		l_tpEntity->KillEntity	(who ? who->m_tpGameObject : 0);
@@ -141,7 +141,7 @@ public:
 	{
 		CEntityAlive		*l_tpEntityAlive = dynamic_cast<CEntityAlive*>(m_tpGameObject);
 		if (!l_tpEntityAlive) {
-			LuaOut			(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member Alive!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member Alive!");
 			return			(false);
 		}
 		return				(!!l_tpEntityAlive->g_Alive());
@@ -151,13 +151,13 @@ public:
 	{
 		CEntityAlive		*l_tpEntityAlive1 = dynamic_cast<CEntityAlive*>(m_tpGameObject);
 		if (!l_tpEntityAlive1) {
-			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",*m_tpGameObject->cName());
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*m_tpGameObject->cName());
 			return;
 		}
 		
 		CEntityAlive		*l_tpEntityAlive2 = dynamic_cast<CEntityAlive*>(who->m_tpGameObject);
 		if (!l_tpEntityAlive2) {
-			LuaOut			(Lua::eLuaMessageTypeError,"%s cannot access class member!",*who->m_tpGameObject->cName());
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*who->m_tpGameObject->cName());
 			return;
 		}
 		
@@ -176,7 +176,7 @@ public:
 	{
 		CScriptMonster		*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut		(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member GetCurrentAction!");
+			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member GetCurrentAction!");
 		else
 			if (l_tpScriptMonster->GetCurrentAction())
 				return		(xr_new<CEntityAction>(l_tpScriptMonster->GetCurrentAction()));
@@ -187,7 +187,7 @@ public:
 	{
 		CScriptMonster		*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut		(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member AddAction!");
+			ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CSciptMonster : cannot access class member AddAction!");
 		else
 			l_tpScriptMonster->AddAction(tpEntityAction, bHighPriority);
 	}
@@ -199,7 +199,7 @@ public:
 		if (l_tpCustomMonster)
 			return			(l_tpCustomMonster->CheckObjectVisibility(tpLuaGameObject->m_tpGameObject));
 		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckObjectVisibility!");
 			return			(false);
 		}
 	}
@@ -210,7 +210,7 @@ public:
 		if (l_tpCustomMonster)
 			return			(l_tpCustomMonster->CheckTypeVisibility(section_name));
 		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckTypeVisibility!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member CheckTypeVisibility!");
 			return			(false);
 		}
 	}
@@ -224,7 +224,7 @@ public:
 			return			(*pEntityCondition->GetWhoHitLastTime()->cName());
 		else 
 		{
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
 			return			NULL;
 		}
 	}
@@ -238,7 +238,7 @@ public:
 			return			(*pEntityCondition->GetWhoHitLastTime()->cNameSect());
 		else 
 		{
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
 			return			NULL;
 		}
 	}
@@ -250,7 +250,7 @@ public:
 		if (l_tpCustomMonster)
 			l_tpCustomMonster->UseObject(tpLuaGameObject->m_tpGameObject);
 		else
-			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member UseObject!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CLuaGameObject : cannot access class member UseObject!");
 	}
 
 			CLuaGameObject	*GetCurrentWeapon	() const;
@@ -277,7 +277,7 @@ public:
 		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
 		if (!l_tpScriptZone && !l_tpTrader)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
 		else if (l_tpScriptZone) l_tpScriptZone->set_callback(tpZoneCallback,bOnEnter);
 		else l_tpTrader->set_callback(tpZoneCallback,bOnEnter);
 	}
@@ -288,7 +288,7 @@ public:
 		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
 		if (!l_tpScriptZone && !l_tpTrader)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone or CTrader: cannot access class member set_callback!");
 		else if (l_tpScriptZone) l_tpScriptZone->set_callback(object,method,bOnEnter);
 		else l_tpTrader->set_callback(object,method,bOnEnter);
 	}
@@ -299,7 +299,7 @@ public:
 		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
 		if (!l_tpScriptZone && !l_tpTrader)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptZone : cannot access class member set_callback!");
 		else if (l_tpScriptZone)l_tpScriptZone->clear_callback(bOnEnter);
 		else l_tpTrader->clear_callback(bOnEnter);
 	}
@@ -308,7 +308,7 @@ public:
 		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
 		if (!l_tpTrader) 
-			LuaOut			(Lua::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
 		else l_tpTrader->set_trade_callback(tpTradeCallback);
 	}
 	
@@ -316,7 +316,7 @@ public:
 		CAI_Trader	*l_tpTrader	= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
 		if (!l_tpTrader) 
-			LuaOut			(Lua::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member set_trade_callback!");
 		else l_tpTrader->set_trade_callback(object, method);
 	}
 
@@ -325,7 +325,7 @@ public:
 		CAI_Trader	*l_tpTrader		= dynamic_cast<CAI_Trader*>	(m_tpGameObject);
 
 		if (!l_tpTrader) 
-			LuaOut			(Lua::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_trade_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CAI_Trader : cannot access class member clear_trade_callback!");
 		else l_tpTrader->clear_trade_callback();
 	}
 
@@ -335,7 +335,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
 		else
 			l_tpScriptMonster->set_callback(lua_object,method,tActionType);
 	}
@@ -344,7 +344,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
 		else
 			l_tpScriptMonster->set_callback(lua_function,tActionType);
 	}
@@ -353,7 +353,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_callback!");
 		else
 			l_tpScriptMonster->clear_callback(tActionType);
 	}
@@ -420,7 +420,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster) {
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member GetActionByIndex!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member GetActionByIndex!");
 			return			(0);
 		}
 		else
@@ -431,7 +431,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_sound_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_sound_callback!");
 		else
 			l_tpScriptMonster->set_sound_callback(lua_object,method);
 	}
@@ -440,7 +440,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_sound_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_sound_callback!");
 		else
 			l_tpScriptMonster->set_sound_callback(lua_function);
 	}
@@ -449,7 +449,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_hit_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_hit_callback!");
 		else
 			l_tpScriptMonster->clear_sound_callback(member_callback);
 	}
@@ -458,7 +458,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_hit_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_hit_callback!");
 		else
 			l_tpScriptMonster->set_hit_callback(lua_object,method);
 	}
@@ -467,7 +467,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_hit_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_hit_callback!");
 		else
 			l_tpScriptMonster->set_hit_callback(lua_function);
 	}
@@ -476,7 +476,7 @@ public:
 	{
 		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
 		if (!l_tpScriptMonster)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_hit_callback!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member clear_hit_callback!");
 		else
 			l_tpScriptMonster->clear_hit_callback(member_callback);
 	}
@@ -485,7 +485,7 @@ public:
 	{
 		CMemoryManager	*memory_manager = dynamic_cast<CMemoryManager*>(m_tpGameObject);
 		if (!memory_manager) {
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member memory!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member memory!");
 			return			(0);
 		}
 		else
@@ -500,7 +500,7 @@ public:
 		CObjectHandlerGOAP	*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
 #endif
 		if (!object_handler) {
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member best_weapon!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member best_weapon!");
 			return			(0);
 		}
 		else {
@@ -513,7 +513,7 @@ public:
 	{
 		CMissile			*missile = dynamic_cast<CMissile*>(m_tpGameObject);
 		if (!missile)
-			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member explode!");
+			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member explode!");
 		else {
 			NET_Packet			P;
 			missile->u_EventGen	(P,GE_GRENADE_EXPLODE,missile->ID());	
@@ -528,7 +528,7 @@ public:
 	{
 		CScriptBinder			*binder = dynamic_cast<CScriptBinder*>(m_tpGameObject);
 		if (!binder)
-			LuaOut				(Lua::eLuaMessageTypeError,"CScriptBinder : cannot access class member bind_object!");
+			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CScriptBinder : cannot access class member bind_object!");
 		else
 			binder->set_object	(object);
 	}
@@ -537,7 +537,7 @@ public:
 	{
 		CMotivationActionManager<CLuaGameObject>	*manager = dynamic_cast<CMotivationActionManager<CLuaGameObject>*>(m_tpGameObject);
 		if (!manager)
-			LuaOut				(Lua::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
+			ai().script_engine().script_log				(ScriptStorage::eLuaMessageTypeError,"CMotivationActionManager : cannot access class member motivation_action_manager!");
 		return					(manager);
 	}
 

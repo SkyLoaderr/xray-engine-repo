@@ -403,13 +403,19 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 		if (!tpTorsoAnimation) {
 #ifdef OLD_OBJECT_HANDLER
 			switch (stalker->CObjectHandler::current_state_id()) {
-#else
-			switch (stalker->CObjectHandlerGOAP::current_action_id()) {
-#endif
 				case eObjectActionAim1 :
 				case eObjectActionAim2 :
 				case eObjectActionFire1 :
 				case eObjectActionFire2 :
+#else
+			switch (stalker->CObjectHandlerGOAP::current_action_state_id()) {
+				case CObjectHandlerGOAP::eWorldOperatorAim1 :
+				case CObjectHandlerGOAP::eWorldOperatorAim2 :
+				case CObjectHandlerGOAP::eWorldOperatorAimingReady1 :
+				case CObjectHandlerGOAP::eWorldOperatorAimingReady2 :
+				case CObjectHandlerGOAP::eWorldOperatorFire1 :
+				case CObjectHandlerGOAP::eWorldOperatorFire2 :
+#endif
 				{
 //					Msg				("%6d : weapon state %s",Level().timeServer(),"Aim");
 					tpTorsoAnimation = m_tAnims.A[l_tBodyState].m_tTorso.A[dwCurrentAniSlot].A[stalker->IsLimping() ? 9 : 6].A[0];

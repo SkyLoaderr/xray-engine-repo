@@ -6,9 +6,9 @@
 //#include "Physics.h"
 
 #include "ui/UIInventoryUtilities.h"
-#include "ai_script_lua_space.h"
 
 #include "eatable_item.h"
+#include "script_engine.h"
 
 using namespace InventoryUtilities;
 
@@ -423,7 +423,7 @@ void CInventory::Update()
 	bool bActiveSlotVisible;
 	
 	if(m_iActiveSlot == NO_ACTIVE_SLOT || 
-        !m_slots[m_iActiveSlot].m_pIItem ||
+		!m_slots[m_iActiveSlot].m_pIItem ||
         m_slots[m_iActiveSlot].m_pIItem->IsHidden())
 	{ 
 		bActiveSlotVisible = false;
@@ -433,7 +433,8 @@ void CInventory::Update()
 		bActiveSlotVisible = true;
 	}
 
-
+//	if (ActiveItem() && ActiveItem()->IsHidden())
+//		m_slots[m_iActiveSlot].m_pIItem = 0;
 
 	if(m_iNextActiveSlot != m_iActiveSlot && !bActiveSlotVisible)
 	{
@@ -759,7 +760,7 @@ CInventoryItem	*CInventory::tpfGetObjectByIndex(int iIndex)
                 return	(*l_it);
 	}
 	else {
-		LuaOut	(Lua::eLuaMessageTypeError,"invalid inventory index!");
+		ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"invalid inventory index!");
 		return	(0);
 	}
 	R_ASSERT(false);
@@ -772,7 +773,7 @@ CInventoryItem	*CInventory::GetItemFromInventory(LPCSTR caItemName)
 	for(PSPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
 		if (!xr_strcmp((*l_it)->cName(),caItemName))
 			return	(*l_it);
-	LuaOut	(Lua::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*dynamic_cast<CGameObject*>(m_pOwner)->cName());
+	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Object with name %s is not found in the %s inventory!",caItemName,*dynamic_cast<CGameObject*>(m_pOwner)->cName());
 	return	(0);
 }
 

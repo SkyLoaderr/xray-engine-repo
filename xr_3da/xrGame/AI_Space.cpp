@@ -13,9 +13,9 @@
 #include "graph_engine.h"
 #include "ef_storage.h"
 #include "ai_space.h"
-#include "ai_script_lua_extension.h"
 #include "cover_manager.h"
 #include "cover_point.h"
+#include "script_engine.h"
 
 CAI_Space *g_ai_space = 0;
 
@@ -25,33 +25,10 @@ CAI_Space::CAI_Space				()
 	m_game_graph			= xr_new<CGameGraph>();
 	m_graph_engine			= xr_new<CGraphEngine>(game_graph().header().vertex_count());
 	m_cover_manager			= xr_new<CCoverManager>();
+	m_script_engine			= xr_new<CScriptEngine>();
 	m_level_graph			= 0;
 	m_cross_table			= 0;
 	m_alife_simulator		= 0;
-
-	string256				l_caLogFileName;
-	strconcat               (l_caLogFileName,Core.ApplicationName,"_",Core.UserName,"_lua.log");
-	FS.update_path          (l_caLogFileName,"$logs$",l_caLogFileName);
-	m_lua_output			= FS.w_open(l_caLogFileName);
-
-	m_lua_virtual_machine	= 0;
-	m_lua_virtual_machine	= lua_open();
-	if (!m_lua_virtual_machine) {
-		Msg					("! ERROR : Cannot initialize script virtual machine!");
-		return;
-	}
-	// initialize lua standard library functions 
-	luaopen_base			(m_lua_virtual_machine); 
-	luaopen_table			(m_lua_virtual_machine);
-	luaopen_string			(m_lua_virtual_machine);
-	luaopen_math			(m_lua_virtual_machine);
-#ifdef DEBUG
-	luaopen_debug			(m_lua_virtual_machine);
-#endif
-	lua_settop				(m_lua_virtual_machine,0);
-	lua_setgcthreshold		(m_lua_virtual_machine,64);
-
-	Script::vfExportToLua	(m_lua_virtual_machine);
 }
 
 CAI_Space::~CAI_Space				()
@@ -59,9 +36,7 @@ CAI_Space::~CAI_Space				()
 	unload					();
 	xr_delete				(m_ef_storage);
 	xr_delete				(m_game_graph);
-	FS.w_close				(m_lua_output);
-	if (m_lua_virtual_machine)
-		lua_close			(m_lua_virtual_machine);
+	xr_delete				(m_script_engine);
 }
 
 void CAI_Space::load				(LPCSTR level_name)
@@ -106,10 +81,10 @@ void CAI_Space::load				(LPCSTR level_name)
 
 void CAI_Space::unload				()
 {
+	script_engine().unload	();
 	xr_delete				(m_graph_engine);
 	xr_delete				(m_level_graph);
 	xr_delete				(m_cross_table);
-	lua_settop				(m_lua_virtual_machine,0);
 }
 
 #ifdef DEBUG

@@ -8,8 +8,10 @@
 
 #pragma once
 
-#include "ai_script_space.h"
+#include "script_space.h"
+#include "script_engine.h"
 #include "ai_script_bind.h"
+#include "script_engine.h"
 
 class CLuaGameObject;
 
@@ -27,7 +29,7 @@ public:
 		if (FS.exist(l_caFileName,"$game_sounds$",caSoundName,".ogg"))
 			::Sound->create	(*(m_tpSound = xr_new<ref_sound>()),TRUE,caSoundName,sound_type);
 		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
+			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"File not found \"%s\"!",l_caFileName);
 			m_tpSound		= 0;
 		}
 	}
@@ -115,7 +117,7 @@ public:
 		if (l_tpSoundParams)
 			return			(l_tpSoundParams->position);
 		else {
-			LuaOut			(Lua::eLuaMessageTypeError,"Sound was not launched, can't get position!");
+			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeError,"Sound was not launched, can't get position!");
 			return			(Fvector().set(0,0,0));
 		}
 	}

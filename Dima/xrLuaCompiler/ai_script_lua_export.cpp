@@ -7,8 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_script_space.h"
-#include "ai_script_lua_extension.h"
+#include "script_space.h"
 #include "ai_script_classes.h"
 #include "ai_script_actions.h"
 #include "ai_script_sound.h"
@@ -19,15 +18,15 @@
 //#include "luabind/dependency_policy.hpp"
 //#include "luabind/discard_result_policy.hpp"
 //#include "luabind/iterator_policy.hpp"
+#include "script_engine.h"
 
 using namespace luabind;
-using namespace Script;
 
 extern CLuaGameObject	*tpfGetActor();
 
 void LuaLog(LPCSTR caMessage)
 {
-	Lua::LuaOut	(Lua::eLuaMessageTypeMessage,"%s",caMessage);
+	ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeMessage,"%s",caMessage);
 }
 
 double get_time()
@@ -35,50 +34,44 @@ double get_time()
 	return((double)Level().GetGameTime());
 }
 
-void vfLuaErrorHandler(CLuaVirtualMachine *tpLuaVirtualMachine)
+int CScriptEngine::lua_panic(CLuaVirtualMachine *L)
 {
-	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"))
-		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
-}
-
-int Script::LuaPanic(CLuaVirtualMachine *tpLuaVirtualMachine)
-{
-	if (!bfPrintOutput(tpLuaVirtualMachine,"unknown script"))
-		vfPrintError(tpLuaVirtualMachine,LUA_ERRRUN);
+	if (!print_output(L,"unknown script"))
+		print_error(L,LUA_ERRRUN);
 	return(0);
 }
 
-void Script::LuaHookCall(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug)
+void CScriptEngine::lua_hook_call(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
 {
 	return;
-//	lua_getinfo(tpLuaVirtualMachine,"nSlu",tpLuaDebug);
-//	Lua::ELuaMessageType	l_tLuaMessageType = Lua::eLuaMessageTypeError;
+//	lua_getinfo(lua(),"nSlu",tpLuaDebug);
+//	ScriptStorage::ELuaMessageType	l_tLuaMessageType = ScriptStorage::eLuaMessageTypeError;
 //	LPCSTR	S = "";
 //	switch (tpLuaDebug->event) {
 //		case LUA_HOOKCALL		: {
-//			l_tLuaMessageType = Lua::eLuaMessageTypeHookCall;
+//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookCall;
 //			break;
 //		}
 //		case LUA_HOOKRET		: {
-//			l_tLuaMessageType = Lua::eLuaMessageTypeHookReturn;
+//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookReturn;
 //			break;
 //		}
 //		case LUA_HOOKLINE		: {
-//			l_tLuaMessageType = Lua::eLuaMessageTypeHookLine;
+//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookLine;
 //			break;
 //		}
 //		case LUA_HOOKCOUNT		: {
-//			l_tLuaMessageType = Lua::eLuaMessageTypeHookCount;
+//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookCount;
 //			break;
 //		}
 //		case LUA_HOOKTAILRET	: {
-//			l_tLuaMessageType = Lua::eLuaMessageTypeHookTailReturn;
+//			l_tLuaMessageType = ScriptStorage::eLuaMessageTypeHookTailReturn;
 //			break;
 //		}
 //		default					: NODEFAULT;
 //	}
 //
-//	LuaOut		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
+//	ai().script_engine().script_log		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
 }
 
 #ifndef DEBUG
@@ -87,20 +80,26 @@ void FlushLogFake()
 }
 #endif
 
-void Script::vfExportGlobals(CLuaVirtualMachine *tpLuaVirtualMachine)
+void LoadScriptModule(LPCSTR script_name)
 {
-	function		(tpLuaVirtualMachine,	"log",	LuaLog);
-
-#ifdef DEBUG
-	function		(tpLuaVirtualMachine,	"flush",FlushLog);
-#else
-	function		(tpLuaVirtualMachine,	"flush",FlushLogFake);
-#endif
+	ai().script_engine().add_file(script_name);
 }
 
-void Script::vfExportFvector(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_globals()
 {
-	module(tpLuaVirtualMachine)
+	function	(lua(),	"log",		LuaLog);
+
+#ifdef DEBUG
+	function	(lua(),	"flush",	FlushLog);
+#else
+	function	(lua(),	"flush",	FlushLogFake);
+#endif
+	function	(lua(),	"module",	LoadScriptModule);
+}
+
+void CScriptEngine::export_fvector()
+{
+	module(lua())
 	[
 		class_<Fvector>("vector")
 			.def_readwrite("x",					&Fvector::x)
@@ -175,9 +174,9 @@ void Script::vfExportFvector(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportFmatrix(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_fmatrix()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<Fmatrix>("matrix")
 			.def_readwrite("i",					&Fmatrix::i)
@@ -263,9 +262,9 @@ void Script::vfExportFmatrix(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportGame(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_game()
 {
-	module(tpLuaVirtualMachine,"game")
+	module(lua(),"game")
 	[
 		// declarations
 		def("time",								get_time)
@@ -274,9 +273,9 @@ void Script::vfExportGame(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportDevice(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_device()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CRenderDevice>("render_device")
 			.def_readonly("width",					&CRenderDevice::dwWidth)
@@ -295,9 +294,9 @@ void Script::vfExportDevice(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_sound()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CSound_params>("sound_params")
 			.def_readwrite("position",			&CSound_params::position)
@@ -339,9 +338,9 @@ void Script::vfExportSound(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportHit(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_hit()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CLuaHit>("hit")
 			.enum_("hit_type")
@@ -368,9 +367,9 @@ void Script::vfExportHit(CLuaVirtualMachine *tpLuaVirtualMachine)
 	];
 }
 
-void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
+void CScriptEngine::export_actions()
 {
-	module(tpLuaVirtualMachine)
+	module(lua())
 	[
 		class_<CPatrolPathParams>("patrol")
 			.enum_("start")

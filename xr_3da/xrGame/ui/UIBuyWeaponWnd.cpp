@@ -27,7 +27,7 @@
 #include "../scope.h"
 #include "../grenadelauncher.h"
 
-#include "../ai_script_space.h"
+#include "../script_space.h"
 #include "../ai_script_processor.h"
 
 #include "../eatable_item.h"

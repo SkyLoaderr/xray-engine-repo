@@ -57,7 +57,6 @@ public:
 //by Dandy
 //for the fog over the map
 class CFogOfWar;
-class CScriptProcessor;
 //менеджер полета пуль
 class CBulletManager;
 
@@ -99,9 +98,6 @@ private:
 public:
 	//////////////////////////////////////////////	
 	
-	// scripts
-	CScriptProcessor			*m_tpScriptProcessor;
-	CScriptProcessor*			GetScriptProcessor() {return m_tpScriptProcessor;}
 	// static particles
 	DEFINE_VECTOR(CParticlesObject*,POVec,POIt);
 	POVec						m_StaticParticles;

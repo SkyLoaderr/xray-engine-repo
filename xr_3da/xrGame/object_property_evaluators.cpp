@@ -95,7 +95,7 @@ CObjectPropertyEvaluatorNoItems::CObjectPropertyEvaluatorNoItems(CAI_Stalker *ow
 
 CObjectPropertyEvaluatorNoItems::_value_type CObjectPropertyEvaluatorNoItems::evaluate	()
 {
-	return			(!m_object->inventory().ActiveItem());
+	return			(!m_object->inventory().ActiveItem() || m_object->inventory().ActiveItem()->IsHidden());
 }
 
 //////////////////////////////////////////////////////////////////////////

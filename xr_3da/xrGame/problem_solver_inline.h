@@ -248,7 +248,7 @@ TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::solve			()
 {
 #ifndef AI_COMPILER
-	m_solution_changed			= true;
+	m_solution_changed			= false;
 	if (m_actuality) {
 		bool			actual = true;
 		xr_vector<COperatorCondition>::const_iterator	I = current_state().conditions().begin();

@@ -114,9 +114,9 @@ void CScriptMonster::SetScriptControl(const bool bScriptControl, ref_str caScipt
 	m_caScriptName		= caSciptName;
 #ifdef DEBUG
 	if (bScriptControl)
-		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s set object %s under its control",*caSciptName,*cName());
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeInfo,"Script %s set object %s under its control",*caSciptName,*cName());
 	else
-		LuaOut			(Lua::eLuaMessageTypeInfo,"Script %s freed object %s from its control",*caSciptName,*cName());
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeInfo,"Script %s freed object %s from its control",*caSciptName,*cName());
 #endif
 	if (!bScriptControl)
 		ResetScriptData(this);
@@ -289,7 +289,7 @@ void CScriptMonster::ProcessScripts()
 	if (m_tpActionQueue.empty()) {
 #ifdef DEBUG
 		if (empty_queue)
-			LuaOut	(Lua::eLuaMessageTypeInfo,"Object %s has an empty script queue!",*cName());
+			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Object %s has an empty script queue!",*cName());
 #endif
 		return;
 	}

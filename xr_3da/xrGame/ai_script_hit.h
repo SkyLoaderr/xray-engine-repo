@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "ai_script_space.h"
+#include "script_space.h"
 #include "ai_script_bind.h"
 
 class CLuaHit {
