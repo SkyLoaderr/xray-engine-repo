@@ -68,7 +68,7 @@
 	<!-- OUTFIT SLOT -->
 	<dragdrop_list x="828" y="314" width="150" height="220"
 			cell_width = "53" cell_height="53"
-			rows_num="4" cols_num="4" show_grid="1" />
+			rows_num="4" cols_num="4" show_grid="0" />
 
 	<!-- STATIC BCAKGROUND FOR MP TABCONTROL -->
 	<!--static_tab x="0" y="690" width="1024" height="128">
