@@ -52,7 +52,7 @@ void CDetailManager::VS_Load()
 		dwIndices	+=	D.number_indices*VS_BatchSize;
 	}
 	DWORD			vSize		= sizeof(vertHW);
-	Msg("* [DETAILS] %d v, %d p",dwVerts,dwIndices/3);
+	Msg("* [DETAILS] %d v(%d), %d p",dwVerts,vSize,dwIndices/3);
 
 	// Determine POOL & USAGE
 	DWORD dwUsage	=	D3DUSAGE_WRITEONLY;
