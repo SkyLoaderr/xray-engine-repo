@@ -37,7 +37,16 @@ void CPHActorCharacter::Create(dVector3 sizes)
 void CPHActorCharacter::Destroy()
 {
 	if(!b_exist) return;
+	if(m_restrictor) {
+		dGeomDestroyUserData(m_restrictor);
+		dGeomDestroy(m_restrictor);
+		m_restrictor=NULL;
+	}
 
+	if(m_restrictor_transform){
+		dGeomDestroyUserData(m_restrictor_transform);
+		m_restrictor_transform=NULL;
+	}
 	inherited::Destroy();
 }
 
