@@ -844,7 +844,7 @@ void CCustomMonster::ChangeTeam(int team, int squad, int group)
 	VERIFY2(g_Alive(), "Try to change team of a dead object");
 	
 	// remove from current team
-	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member	(this);
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member	(this,false);
 
 	id_Team					= team;
 	id_Squad				= squad;

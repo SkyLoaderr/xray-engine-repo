@@ -68,7 +68,7 @@ void CEntity::Die(CObject* who)
 {
 	set_ready_to_save	();
 	fEntityHealth		= -1.f;
-	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this,false);
 }
 
 //обновление состояния
@@ -268,7 +268,7 @@ BOOL CEntity::net_Spawn		(CSE_Abstract* DC)
 void CEntity::net_Destroy	()
 {
 	if (g_Alive())
-		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
+		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this,true);
 	inherited::net_Destroy	();
 	set_ready_to_save		();
 }

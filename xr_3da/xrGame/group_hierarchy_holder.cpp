@@ -91,7 +91,7 @@ void CGroupHierarchyHolder::register_in_group_senses	(CEntity *member)
 	}
 }
 
-void CGroupHierarchyHolder::unregister_in_group			(CEntity *member)
+void CGroupHierarchyHolder::unregister_in_group			(CEntity *member, bool member_is_destroying)
 {
 	VERIFY						(member);
 	MEMBER_REGISTRY::iterator	I = std::find(m_members.begin(),m_members.end(),member);
@@ -99,7 +99,7 @@ void CGroupHierarchyHolder::unregister_in_group			(CEntity *member)
 	m_members.erase				(I);
 }
 
-void CGroupHierarchyHolder::unregister_in_squad			(CEntity *member)
+void CGroupHierarchyHolder::unregister_in_squad			(CEntity *member, bool member_is_destroying)
 {
 	if (leader() && (leader()->ID() == member->ID())) {
 		update_leader					();
@@ -111,13 +111,16 @@ void CGroupHierarchyHolder::unregister_in_squad			(CEntity *member)
 	}
 }
 
-void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
+void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member, bool member_is_destroying)
 {
-	if (get_agent_manager())
+	if (get_agent_manager()) {
 		agent_manager().member().remove	(member);
-
-	if (get_agent_manager() && agent_manager().member().members().empty())
-		m_agent_manager					= 0;
+		if (agent_manager().member().members().empty())
+			if (!member_is_destroying)
+				m_agent_manager			= 0;
+			else
+				xr_delete				(m_agent_manager);
+	}
 
 	if (m_members.empty()) {
 		xr_delete						(m_visible_objects);
@@ -126,7 +129,7 @@ void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
 	}
 }
 
-void CGroupHierarchyHolder::unregister_in_group_senses	(CEntity *member)
+void CGroupHierarchyHolder::unregister_in_group_senses	(CEntity *member, bool member_is_destroying)
 {
 	CCustomMonster			*monster = smart_cast<CCustomMonster*>(member);
 	if (monster) {
@@ -144,10 +147,10 @@ void CGroupHierarchyHolder::register_member				(CEntity *member)
 	register_in_group_senses	(member);
 }
 
-void CGroupHierarchyHolder::unregister_member			(CEntity *member)
+void CGroupHierarchyHolder::unregister_member			(CEntity *member, bool member_is_destroying)
 {
-	unregister_in_group			(member);
-	unregister_in_squad			(member);
-	unregister_in_agent_manager	(member);
-	unregister_in_group_senses	(member);
+	unregister_in_group			(member,member_is_destroying);
+	unregister_in_squad			(member,member_is_destroying);
+	unregister_in_agent_manager	(member,member_is_destroying);
+	unregister_in_group_senses	(member,member_is_destroying);
 }

@@ -64,10 +64,10 @@ private:
 			void					register_in_agent_manager	(CEntity *member);
 			void					register_in_group_senses	(CEntity *member);
 private:
-			void					unregister_in_group			(CEntity *member);
-			void					unregister_in_squad			(CEntity *member);
-			void					unregister_in_agent_manager	(CEntity *member);
-			void					unregister_in_group_senses	(CEntity *member);
+			void					unregister_in_group			(CEntity *member, bool member_is_destroying);
+			void					unregister_in_squad			(CEntity *member, bool member_is_destroying);
+			void					unregister_in_agent_manager	(CEntity *member, bool member_is_destroying);
+			void					unregister_in_group_senses	(CEntity *member, bool member_is_destroying);
 
 public:
 	IC								CGroupHierarchyHolder		(CSquadHierarchyHolder *squad);
@@ -75,7 +75,7 @@ public:
 	IC		CAgentManager			&agent_manager				() const;
 	IC		const MEMBER_REGISTRY	&members					() const;
 			void					register_member				(CEntity *member);
-			void					unregister_member			(CEntity *member);
+			void					unregister_member			(CEntity *member, bool member_is_destroying);
 	IC		CSquadHierarchyHolder	&squad						() const;
 	IC		CEntity					*leader						() const;
 			void					update_leader				();
