@@ -133,10 +133,12 @@ void CWeaponHPSA::OnShot		(BOOL bHUDView)
 	pSounds->Play3DAtPos	(sndFireShoot,vLastFP);
 
 	// Camera
-	if (bHUDView)	{
-		CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
-		if (S)			S->Shot();
+	CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
+	if (bHUDView &&	(0==S))	{
+		S = new CEffectorShot(camRelax,camDispersion);
+		Level().Cameras.AddEffector(S);
 	}
+	if (bHUDView)	S->Shot();
 
 	// Animation
 	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);

@@ -60,6 +60,10 @@ private:
 
 	EM134State		st_current, st_target;
 
+	CMotionDef*		mhud_idle;	
+	CMotionDef*		mhud_fire;	
+	CMotionDef*		mhud_spinup;
+	
 	void			DrawFlame		(const Fvector& fp, const Fvector& fd, bool bHUDView);
 	virtual void	UpdateFP		(BOOL bHUD);
 	virtual void	UpdateXForm		(BOOL bHUD);

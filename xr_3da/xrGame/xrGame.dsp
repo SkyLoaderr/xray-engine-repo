@@ -268,19 +268,6 @@ SOURCE=.\WeaponMagazined.h
 # Begin Source File
 
 SOURCE=.\WeaponM134.cpp
-
-!IF  "$(CFG)" == "xrGame - Win32 Release"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Debug"
-
-# PROP Exclude_From_Build 1
-
-!ELSEIF  "$(CFG)" == "xrGame - Win32 Mixed"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 

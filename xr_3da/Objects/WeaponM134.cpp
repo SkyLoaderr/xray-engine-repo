@@ -125,9 +125,11 @@ void CWeaponM134::Load(CInifile* ini, const char* section)
 	
 	PKinematics(pVisual)->PlayCycle("idle");
 	PKinematics(pVisual)->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);
-	
-	PKinematics(m_pHUD->Visual())->PlayCycle("idle");
 	PKinematics(m_pHUD->Visual())->LL_GetInstance(iHUDRotBone).set_callback	(RotateCallback_hud,this);
+
+	mhud_idle		= m_pHUD->animGet("idle");	
+	mhud_fire		= m_pHUD->animGet("fire");	
+	mhud_spinup		= m_pHUD->animGet("spinup");	
 }
 
 void CWeaponM134::FlameLOAD()
@@ -172,7 +174,6 @@ void CWeaponM134::FireEnd(){
 		st_target = eM134Brake;
 	}
 }
-
 
 void CWeaponM134::UpdateXForm(BOOL bHUDView)
 {
