@@ -54,11 +54,10 @@
       Intermediate\FBasicVisual.obj Intermediate\FHierrarhyVisual.obj 
       Intermediate\FProgressive.obj Intermediate\FProgressiveFixedVisual.obj 
       Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
-      Intermediate\SkeletonX.obj Intermediate\xrBoneLerp.obj 
-      Intermediate\BodyInstance.obj Intermediate\ExportSkeleton.obj 
-      Intermediate\xrXRC.obj Intermediate\Blender_Blur.obj 
-      Intermediate\SH_RT.obj Intermediate\SH_VS.obj 
-      Intermediate\Blender_Shadow_World.obj 
+      Intermediate\SkeletonX.obj Intermediate\BodyInstance.obj 
+      Intermediate\ExportSkeleton.obj Intermediate\xrXRC.obj 
+      Intermediate\Blender_Blur.obj Intermediate\SH_RT.obj 
+      Intermediate\SH_VS.obj Intermediate\Blender_Shadow_World.obj 
       Intermediate\Blender_Shadow_Texture.obj Intermediate\CustomObjectMisc.obj 
       Intermediate\Blender_Model.obj Intermediate\cpuid.obj Intermediate\_math.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
@@ -74,7 +73,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Editor;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Editor;Engine;Engine\Blenders;Engine;Engine;Engine\Blenders;Engine\Blenders;Editor;Engine\Blenders;Engine;Engine"/>
+    <PATHCPP value=".;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;editor;engine;engine;editor;engine;engine;engine;engine;engine;engine;engine;editor;engine;editor;engine;editor;engine;engine;engine;engine;editor;engine;engine;engine;engine;lib;engine;engine;Editor;Editor;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Engine\BLENDERS;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Engine;Editor;Editor;Editor;Editor;Editor;Editor;Editor;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Editor;Editor;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Editor;Engine;Engine\Blenders;Engine;Engine;Engine\Blenders;Engine\Blenders;Editor;Engine\Blenders;Engine;Engine"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -231,7 +230,6 @@
       <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\xrBoneLerp.cpp" FORMNAME="" UNITNAME="xrBoneLerp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\BodyInstance.cpp" FORMNAME="" UNITNAME="BodyInstance" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Lib\xrCDB.lib" FORMNAME="" UNITNAME="xrCDB" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -257,7 +255,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=0
-Build=41
+Build=42
 Debug=1
 PreRelease=0
 Special=0
@@ -269,7 +267,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=GSC Game World
 FileDescription=
-FileVersion=1.0.0.41
+FileVersion=1.0.0.42
 InternalName=
 LegalCopyright=
 LegalTrademarks=
