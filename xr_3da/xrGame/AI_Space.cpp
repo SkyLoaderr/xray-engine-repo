@@ -433,7 +433,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 		selected	= -1;
 		for (u32 I=0; I<m_header.count; I++) {
 			NodeCompressed	*N = m_nodes_ptr[I];
-			float			f = u_SqrDistance2Node(pos,N);d
+			float			f = u_SqrDistance2Node(pos,N);
 			if (f < min_dist) {
 				min_dist = f;
 				selected = I;
