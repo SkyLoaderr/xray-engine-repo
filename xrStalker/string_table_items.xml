@@ -4,6 +4,7 @@
 	<string id="item test1">
 		<text>This is a ITEM test string</text>
 		<text ln="rus">Тоже самое но на русском</text>
+		<text ln="ger">die deutsche Sprache</text>
 	</string>
 	<string id="item test2">
 		<text>This is a another ITEM test string</text>
