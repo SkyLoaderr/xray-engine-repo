@@ -12,6 +12,8 @@ CSound_manager_interface*		Sound		= SoundRender;
 
 CSoundRender_CoreA::CSoundRender_CoreA	():CSoundRender_Core()
 {
+	pDevice						= 0;
+	pContext					= 0;
     eaxSet						= 0;
     eaxGet						= 0;
 }
@@ -29,16 +31,28 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     ALCubyte* 			        deviceSpecifier;
 //	ALCubyte 			        deviceName[] = "DirectSound3D";
     // OpenAL device
-    ALCdevice*	pDevice	        = alcOpenDevice		(NULL);
+    pDevice						= alcOpenDevice		(NULL);
+	if (pDevice == NULL){
+		Log						("Failed to create OpenAL device.");
+		bPresent				= FALSE;
+		return;
+	}
+
     // Get the device specifier.
 #ifndef _EDITOR    
     deviceSpecifier         	= alcGetString		(pDevice, ALC_DEVICE_SPECIFIER);
 	Msg				        	("OpenAL: Using device '%s'.", deviceSpecifier);
 #endif    
     // Create context
-    ALCcontext*	pContext        = alcCreateContext	(pDevice,NULL);
+    pContext					= alcCreateContext	(pDevice,NULL);
+	if (0==pContext){
+		Log						("Failed to create OpenAL context.");
+		bPresent				= FALSE;
+		alcCloseDevice			(pDevice); pDevice = 0;
+		return;
+	}
     // Set active context
-    A_CHK				        (alcMakeContextCurrent(pContext));
+    AC_CHK				        (alcMakeContextCurrent(pContext));
 
     // initialize listener
     A_CHK				        (alListener3f		(AL_POSITION,0.f,0.f,0.f));
@@ -94,15 +108,11 @@ void CSoundRender_CoreA::_destroy	()
 		T->_destroy				();
         xr_delete				(T);
 	}
-    // Get the current context.
-    ALCcontext* pCurContext		= alcGetCurrentContext();
-    // Get the device used by that context.
-    ALCdevice* 	pCurDevice		= alcGetContextsDevice(pCurContext);
     // Reset the current context to NULL.
     alcMakeContextCurrent		(NULL);         
     // Release the context and the device.
-    alcDestroyContext			(pCurContext);
-    alcCloseDevice				(pCurDevice);
+    alcDestroyContext			(pContext); pContext	= 0;
+    alcCloseDevice				(pDevice);	pDevice		= 0;
 }
 
 void	CSoundRender_CoreA::i_eax_set			(const GUID* guid, u32 prop, void* val, u32 sz)

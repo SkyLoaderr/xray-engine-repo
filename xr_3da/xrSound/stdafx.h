@@ -19,7 +19,7 @@
 #	include <AL/alc.h>
 #	include <AL/alut.h>
 #	define A_CHK(expr)	{ expr; ALCenum error=alGetError(); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alGetString(error)); }
-#	define AC_CHK(expr)	{ expr; ALCenum error=alcGetError(); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alcGetString(error)); }
+#	define AC_CHK(expr)	{ expr; ALCenum error=alcGetError(pDevice); VERIFY2(error==AL_NO_ERROR,(LPCSTR)alcGetString(pDevice,error)); }
 #else
 #	include <dsound.h>
 #	define _RELEASE(x)	{ if(x) { (x)->Release();       (x)=NULL; } }
