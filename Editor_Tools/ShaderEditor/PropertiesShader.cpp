@@ -49,8 +49,7 @@ TfrmShaderProperties* TfrmShaderProperties::form=0;
 __fastcall TfrmShaderProperties::TfrmShaderProperties(TComponent* Owner)
 	: TForm(Owner)
 {
-    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+	DEFINE_INI(fsStorage);
 	m_BMEllipsis = new Graphics::TBitmap();
 	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
 }

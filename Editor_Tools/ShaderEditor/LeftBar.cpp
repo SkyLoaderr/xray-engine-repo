@@ -49,8 +49,8 @@ void __fastcall PanelMaximizeOnlyClick(TObject *Sender)
 __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
         : TFrame(Owner)
 {
-    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
-    fsStorage->IniFileName = buf;
+	DEFINE_INI(fsStorage);
+
     InplaceEngineEdit->Editor->Color		= TColor(0x00A0A0A0);
     InplaceEngineEdit->Editor->BorderStyle	= bsNone;
     InplaceCompilerEdit->Editor->Color		= TColor(0x00A0A0A0);

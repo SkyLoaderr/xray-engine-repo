@@ -322,7 +322,7 @@ LPCSTR CSHEngineTools::GenerateConstantName(LPSTR name){
 
 CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
 	// append blender
-    char old_name[128]; if (parent) strcpy(old_name,parent->GetName());
+    char old_name[128]; if (parent) strcpy(old_name,parent->getName());
     CBlender* B = CBlender::Create(cls_id);
     if (parent) *B = *parent;
     char name[128]; name[0]=0;

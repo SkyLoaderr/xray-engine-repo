@@ -84,7 +84,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Tools.ZoomObject();
     	break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible)
+		if (frmMain->Visible&&m_bReady)
         	m_D3DWindow->SetFocus();
     	break;
     case COMMAND_UPDATE_CAPTION:

@@ -16,7 +16,7 @@
 #include "UI_Main.h"
 
 bool TUI::Command( int _Command, int p1, int p2 ){
-//	char filebuffer[MAX_PATH]="";
+	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
 
     bool bRes = true;
 
@@ -24,6 +24,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 	case COMMAND_INITIALIZE:{
 		FS.OnCreate			();
 		InitMath			();
+        // make interface
+	    fraBottomBar		= new TfraBottomBar(0);
+    	fraLeftBar  		= new TfraLeftBar(0);
+	    fraTopBar   		= new TfraTopBar(0);
+		//----------------
         if (UI.OnCreate()){
             Tools.OnCreate	();
             Lib.OnCreate	();
@@ -36,6 +41,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
+		//----------------
+        _DELETE(fraLeftBar);
+	    _DELETE(fraTopBar);
+    	_DELETE(fraBottomBar);
+		//----------------
 		Lib.OnDestroy	();
 		Tools.OnDestroy	();
         UI.OnDestroy	();
@@ -79,8 +89,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		Tools.ZoomObject();
     	break;
     case COMMAND_RENDER_FOCUS:
-		if (frmMain->Visible&&g_bEditorValid)
-        	m_D3DWindow->SetFocus();
+		if (frmMain->Visible&&m_bReady) m_D3DWindow->SetFocus();
     	break;
     case COMMAND_UPDATE_CAPTION:
     	frmMain->UpdateCaption();
@@ -135,6 +144,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 
 void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 {
+	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
 		if (Key=='S') 				Command(COMMAND_SAVE);
     }else{
@@ -150,6 +160,7 @@ void __fastcall TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
 void __fastcall TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 {
+	VERIFY(m_bReady);
     if (Shift.Contains(ssCtrl)){
         if (Key=='S')				Command(COMMAND_SAVE);
     }
