@@ -78,7 +78,7 @@ IC bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
 
 
 template <bool bClass3, bool bFirst>
-class ray_collider
+class box_collider
 {
 public:
 	COLLIDER*		dest;
@@ -213,4 +213,33 @@ public:
 
 void COLLIDER::box_query(const MODEL *m_def, const Fvector& b_center, const Fvector& b_dim)
 {
+	// Get nodes
+	const AABBNoLeafTree* T = (const AABBNoLeafTree*)m_def->tree->GetTree();
+	const AABBNoLeafNode* N = T->GetNodes();
+	
+	// Binary dispatcher
+	if (box_mode&OPT_FULL_TEST) 
+	{
+		if (box_mode&OPT_ONLYFIRST)
+		{
+			box_collider<true,true> BC;
+			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._stab	(N);
+		} else {
+			box_collider<true,false> BC;
+			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._stab	(N);
+		}
+	} else {
+		if (box_mode&OPT_ONLYFIRST)
+		{
+			box_collider<false,true> BC;
+			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._stab	(N);
+		} else {
+			box_collider<false,false> BC;
+			BC._init	(this,m_def->tris,b_center,b_dim);
+			BC._stab	(N);
+		}
+	}
 }

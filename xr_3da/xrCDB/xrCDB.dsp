@@ -268,6 +268,8 @@ SOURCE=.\xrCDB_box.cpp
 
 !IF  "$(CFG)" == "xrCDB - Win32 Release"
 
+# ADD CPP /FAs
+
 !ELSEIF  "$(CFG)" == "xrCDB - Win32 Debug"
 
 !ENDIF 
