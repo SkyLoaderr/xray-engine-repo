@@ -202,6 +202,7 @@ struct st_Version{
 #pragma comment(lib,"LWO.lib")
 #pragma comment(lib,"xrHemisphere.lib")
 
-#pragma hdrstop
 #endif
+
+#pragma hdrstop
 
