@@ -139,6 +139,13 @@ states = {
 				animstate = "sit",
 				animation = nil
 			},
+	sleep = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "sleep",
+				animation = "sleeping"
+			},
 	eating = {	weapon = "strapped",
 				movement = move.stand,
 				mental = anim.free,

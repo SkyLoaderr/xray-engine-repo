@@ -122,9 +122,6 @@ function action_sleeper_activity:reset_scheme()
 end	
 
 function action_sleeper_activity:callback(mode, number)
-	self.object:set_movement_type(move.stand)
-	self.object:set_body_state(move.crouch)
-	self.object:set_mental_state(anim.danger)
 	self.state = state_sleeping
 	return true
 end
@@ -132,10 +129,6 @@ end
 function action_sleeper_activity:execute()
 	action_base.execute(self)
 
-	if xr_state.finish_state(self.object) ~= true then	
-		return
-	end
-	
 	if self.state == state_walking then
 		self.move_mgr:update()
 		if self.move_mgr:arrived_to_first_waypoint() then
@@ -147,26 +140,11 @@ function action_sleeper_activity:execute()
 	end
 
 	if self.state == state_sleeping then
-		self.object:set_item(object.deactivate, self.object:best_weapon())	
 		if self.st.wakeable then
-			xr_state.change_state(self.object, xr_state.sit)
+			state_mgr.set_state(self.object, "sit")
 			xr_sound.sound_update(self.object, self.sound_w)
-		else		
-			xr_state.change_state(self.object, xr_state.sleep)
-			if self.timer.begin == nil then
-				self.timer.begin = device():time_global()/1000
-				self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
-			end		
-			if device():time_global()/1000 - self.timer.begin > self.timer.idle then
-				self.timer.begin = device():time_global()/1000
-				self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
-				if math.random(100) < self.timer.random then
-					-- добавление рандомных анимаций
-					self.object:clear_animations()
-        			self.object:add_animation("spit_1",true)	
-					self.object:add_animation("spit_2",true)
-				end
-			end
+		else
+			state_mgr.set_state(self.object, "sleep")
 			xr_sound.sound_update(self.object, self.sound_s)
 		end
 		if xr_logic.try_switch_to_another_section(self.object, self.st, db.actor) then
@@ -176,7 +154,6 @@ function action_sleeper_activity:execute()
 end
 
 function action_sleeper_activity:finalize()
-	xr_state.change_state(self.object, xr_state.stand)
 	self.move_mgr:finalize()
    	action_base.finalize(self)
 end
