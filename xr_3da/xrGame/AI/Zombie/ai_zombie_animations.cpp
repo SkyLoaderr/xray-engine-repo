@@ -108,75 +108,34 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 		}
 	}
 	else
-		switch (eCurrentState) {
-			default : {
-				if (speed<0.2f) {
-					switch (m_cBodyState) {
-						case BODY_STATE_STAND : {
-							if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
-								tpLegsAnimation = tZombieAnimations.tNormal.tLegs.tpTurn;
-							break;
-						}
-						case BODY_STATE_CROUCH : {
-							break;
-						}
-						case BODY_STATE_LIE : {
-							break;
-						}
-					}
-					switch (eCurrentState) {
-						/**/
-						case aiZombieAttackFire : {
-							switch (m_cBodyState) {
-								case BODY_STATE_STAND : {
-									tpGlobalAnimation = 0;
-									for (int i=0 ;i<2; i++)
-										if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
-											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-											break;
-										}
-									
-									if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
-									break;
-								}
-								case BODY_STATE_CROUCH : {
-									break;
-								}
-								case BODY_STATE_LIE : {
-									break;
-								}
-							}
-							break;
-						}
-						/**/
-						default : {
-							switch (m_cBodyState) {
-								case BODY_STATE_STAND : {
-									tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpIdle;
-									break;
-								}
-								case BODY_STATE_CROUCH : {
-									break;
-								}
-								case BODY_STATE_LIE : {
-									break;
-								}
-							}
-							break;
-						}
-					}
+		if (speed<0.2f) {
+			switch (m_cBodyState) {
+				case BODY_STATE_STAND : {
+					if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
+						tpLegsAnimation = tZombieAnimations.tNormal.tLegs.tpTurn;
+					break;
 				}
-				else {
-					//Msg("moving...");
-					Fvector view = _view; view.y=0; view.normalize_safe();
-					Fvector move = _move; move.y=0; move.normalize_safe();
-					float	dot  = view.dotproduct(move);
-					
-					SAnimState* AState = 0;
+				case BODY_STATE_CROUCH : {
+					break;
+				}
+				case BODY_STATE_LIE : {
+					break;
+				}
+			}
+			switch (eCurrentState) {
+				/**/
+				case aiZombieAttackFire : {
 					switch (m_cBodyState) {
 						case BODY_STATE_STAND : {
-							AState = &tZombieAnimations.tNormal.tGlobal.tWalk;
+							tpGlobalAnimation = 0;
+							for (int i=0 ;i<2; i++)
+								if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+									tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+									break;
+								}
+							
+							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
 							break;
 						}
 						case BODY_STATE_CROUCH : {
@@ -186,62 +145,99 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 							break;
 						}
 					}
-					
-					if (dot>0.7f)
-						tpGlobalAnimation = AState->fwd;
-					else 
-						if ((dot<=0.7f)&&(dot>=-0.7f)) {
-							Fvector cross; 
-							cross.crossproduct(view,move);
-							if (cross.y > 0)
-								tpGlobalAnimation = AState->rs;
-							else
-								tpGlobalAnimation = AState->ls;
-						}
-						else
-							tpGlobalAnimation = AState->back;
-
-					switch (eCurrentState) {
-						/**/
-						case aiZombieAttackFire : {
-							switch (m_cBodyState) {
-								case BODY_STATE_STAND : {
-									tpGlobalAnimation = 0;
-									for (int i=0 ;i<2; i++)
-										if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
-											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
-											break;
-										}
-									
-									if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
-										tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
-									break;
-								}
-								case BODY_STATE_CROUCH : {
-									break;
-								}
-								case BODY_STATE_LIE : {
-									break;
-								}
-							}
+					break;
+				}
+				/**/
+				default : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
+							tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpIdle;
 							break;
 						}
-						/**/
-						default : {
-							switch (m_cBodyState) {
-								case BODY_STATE_STAND : {
-									break;
-								}
-								case BODY_STATE_CROUCH : {
-									break;
-								}
-								case BODY_STATE_LIE : {
-									break;
-								}
-							}
+						case BODY_STATE_CROUCH : {
+							break;
+						}
+						case BODY_STATE_LIE : {
 							break;
 						}
 					}
+					break;
+				}
+			}
+		}
+		else {
+			//Msg("moving...");
+			Fvector view = _view; view.y=0; view.normalize_safe();
+			Fvector move = _move; move.y=0; move.normalize_safe();
+			float	dot  = view.dotproduct(move);
+			
+			SAnimState* AState = 0;
+			switch (m_cBodyState) {
+				case BODY_STATE_STAND : {
+					AState = &tZombieAnimations.tNormal.tGlobal.tWalk;
+					break;
+				}
+				case BODY_STATE_CROUCH : {
+					break;
+				}
+				case BODY_STATE_LIE : {
+					break;
+				}
+			}
+			
+			if (dot>0.7f)
+				tpGlobalAnimation = AState->fwd;
+			else 
+				if ((dot<=0.7f)&&(dot>=-0.7f)) {
+					Fvector cross; 
+					cross.crossproduct(view,move);
+					if (cross.y > 0)
+						tpGlobalAnimation = AState->rs;
+					else
+						tpGlobalAnimation = AState->ls;
+				}
+				else
+					tpGlobalAnimation = AState->back;
+
+			switch (eCurrentState) {
+				/**/
+				case aiZombieAttackFire : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
+							tpGlobalAnimation = 0;
+							for (int i=0 ;i<2; i++)
+								if (tZombieAnimations.tNormal.tGlobal.tpaAttack[i] == m_tpCurrentGlobalAnimation) {
+									tpGlobalAnimation = m_tpCurrentGlobalAnimation;
+									break;
+								}
+							
+							if (!tpGlobalAnimation || !m_tpCurrentGlobalBlend || !m_tpCurrentGlobalBlend->playing)
+								tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaAttack[::Random.randI(0,2)];
+							break;
+						}
+						case BODY_STATE_CROUCH : {
+							break;
+						}
+						case BODY_STATE_LIE : {
+							break;
+						}
+					}
+					break;
+				}
+				/**/
+				default : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
+							break;
+						}
+						case BODY_STATE_CROUCH : {
+							break;
+						}
+						case BODY_STATE_LIE : {
+							break;
+						}
+					}
+					break;
 				}
 			}
 		}

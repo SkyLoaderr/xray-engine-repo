@@ -57,9 +57,11 @@ protected:
 
 public:
 
-	#define BODY_STATE_STAND	0
-	#define BODY_STATE_CROUCH	1
-	#define BODY_STATE_LIE		2
+	enum EBodyStates {
+		BODY_STATE_STAND=0,
+		BODY_STATE_CROUCH,
+		BODY_STATE_LIE,
+	};
 	// Lighting and effects
 //	CLightPPA			TEST;
 

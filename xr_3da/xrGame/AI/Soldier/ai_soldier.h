@@ -320,7 +320,7 @@ class CAI_Soldier : public CCustomMonster
 		CSoldierSelectorSenseSomething		SelectorSenseSomething;
 		CSoldierSelectorUnderFire			SelectorUnderFire;
 
-		/**/
+		/**
 		void AttackRun();
 		void AttackFire();
 		
@@ -344,8 +344,6 @@ class CAI_Soldier : public CCustomMonster
 		void Retreat();
 		void SenseSomething();
 		void UnderFire();
-		/**/
-		void Die();
 		void Jumping();
 		void LyingDown();
 		void NoWeapon();
@@ -353,9 +351,9 @@ class CAI_Soldier : public CCustomMonster
 		void Patrol();
 		void PatrolReturn();
 		void FollowLeaderPatrol();
-
-		void Test();
+		/**/
 		
+		void Die();
 		// miscellanious funtions	
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);

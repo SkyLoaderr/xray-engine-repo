@@ -128,8 +128,6 @@ void CUI::SelectGroup(int idx){
 	}
 }
 //--------------------------------------------------------------------
-static int ii=0;
-
 bool CUI::OnKeyboardPress(int dik)
 {
 	// mode event
@@ -158,12 +156,6 @@ bool CUI::OnKeyboardPress(int dik)
 	// set trigger
 	case DIK_F: InvertFlag(gtAgressive);		break;
 	case DIK_G: InvertFlag(gtQuiet);			break;
-	case DIK_O:{
-		char a[255];
-		sprintf(a,"%d: %s",ii,"Karma");
-		AddMessage(a,"Test");		
-		ii++;
-			   }break;
 	default: return false;
 	}
 	return true;
