@@ -257,6 +257,9 @@
 				RelativePath="..\..\..\ode\src\array.h">
 			</File>
 			<File
+				RelativePath="..\..\..\ode\src\Bounder33.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\collision_kernel.h">
 			</File>
 			<File
@@ -297,6 +300,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\step.h">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\StepJointInternal.h">
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\testing.h">
@@ -362,9 +368,6 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\Bounder33.cpp">
-			</File>
-			<File
-				RelativePath="..\..\..\ode\src\Bounder33.h">
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\collision_kernel.cpp">
@@ -443,6 +446,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\stepfast.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\StepJointInternal.cpp">
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\testing.cpp">

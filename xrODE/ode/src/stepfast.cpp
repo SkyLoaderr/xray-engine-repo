@@ -41,6 +41,7 @@
 #include "step.h"
 #include <stdlib.h>
 #include "Lcp33.h"
+#include "StepJointInternal.h"
 // misc defines
 
 #define ALLOCA dALLOCA16
@@ -873,13 +874,24 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			}
 
 			joints[j]->vtable->getInfo2 (joints[j], Jinfo + j);
-
+			
 			//dInternalStepIslandFast is an exact copy of the old routine with one
 			//modification: the calculated forces are added back to the facc and tacc
 			//vectors instead of applying them to the bodies and moving them.
 			if (info[j].m > 0)
 			{
-				dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], ministep);
+				switch( joints[j]->vtable->typenum ) 
+				{
+				case dJointTypeContact: 
+					if(info[j].m==3){
+						dInternalStepJointContact (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], ministep); 
+						//dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], ministep);
+						
+						break;
+					};
+
+				default: dInternalStepFast (world, bodyPair, GIPair, GinvIPair, joint, info[j], Jinfo[j], ministep);
+				}
 			}		
 		}
 		//  }
