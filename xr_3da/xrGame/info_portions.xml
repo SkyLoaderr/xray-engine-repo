@@ -3,7 +3,7 @@
 
 <game_information_portions>
 
-	<info_portion index="1" id="actor_start">
+	<info_portion id="actor_start">
 		<location >
 			<level>0</level>
 			<x>-250</x>
@@ -16,7 +16,7 @@
 		<dialog>trader_talk_about</dialog>
 	</info_portion>
 
-	<info_portion index="2" id="trader_start1">
+	<info_portion id="trader_start1">
 		<location >
 			<level>0</level>
 			<object>trader1</object>
@@ -29,7 +29,7 @@
 		<disable>1</disable>
 	</info_portion>
 
-	<info_portion index="3" id="trader_start2">
+	<info_portion id="trader_start2">
 		<dialog>job_box</dialog>
 	</info_portion>
 
