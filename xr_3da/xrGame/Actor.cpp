@@ -937,6 +937,7 @@ void CActor::Update	(u32 DT)
 	if (!sndLanding.feedback&&(mstate_real&(mcLanding|mcLanding2))){
 		sndLanding.clone	(mtl_pair->HitSounds[0]);
 		::Sound->play_at_pos	(sndLanding,this,s_pos);
+		sndLanding.feedback->set_volume(.2f);
 	}
 
 	m_inventory.Update(DT);

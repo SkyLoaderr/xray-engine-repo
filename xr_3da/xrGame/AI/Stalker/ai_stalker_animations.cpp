@@ -305,10 +305,6 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		}
 		return;
 	}
-	if (m_tStateType != eStateTypeDanger) {
-		tpLegsAnimation = m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tStateType];
-		return;
-	}
 	// moving
 	float					yaw, pitch;
 	GetDirectionAngles		(yaw,pitch);
@@ -319,6 +315,14 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 		fAnimationSwitchFactor = .0f;
 	if	(((m_tDesirableDirection == eMovementDirectionRight) && (m_tMovementDirection == eMovementDirectionLeft))	||	((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight)))
 		fAnimationSwitchFactor = .0f;
+
+	if (m_tStateType != eStateTypeDanger)
+		if (getAI().bfTooSmallAngle(r_torso_current.yaw,yaw,PI_DIV_6)) {
+			tpLegsAnimation = m_tAnims.A[m_tBodyState].m_tMoves.A[m_tMovementType].A[eMovementDirectionForward].A[m_tStateType];
+			return;
+		}
+		else
+			fAnimationSwitchFactor = .0f;
 
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
 		// moving forward
