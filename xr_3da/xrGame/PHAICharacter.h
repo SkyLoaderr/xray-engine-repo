@@ -13,7 +13,7 @@ public:
 	virtual		void		BringToDesired						(float time,float velocity,float force=1.f)											;
 	virtual		bool		TryPosition							(Fvector pos)																		;
 	virtual		void		Jump								(const Fvector& jump_velocity);
-	virtual		void		SetMaximumVelocity					(dReal vel)												 {m_max_velocity=vel/1.25f;}
+	virtual		void		SetMaximumVelocity					(dReal vel)												 {m_max_velocity=vel;}
 
 #ifdef DEBUG
 	virtual		void		OnRender							()														;
