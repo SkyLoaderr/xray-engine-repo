@@ -197,51 +197,51 @@ void IPureClient::Disconnect()
 	net_csEnumeration.Leave			();
 
 	// Release interfaces
-    _RELEASE	(net_Address_server);
-    _RELEASE	(net_Address_device);
-    _RELEASE	(NET);
+	_RELEASE	(net_Address_server);
+	_RELEASE	(net_Address_device);
+	_RELEASE	(NET);
 }
 
 HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 {
-    HRESULT     hr = S_OK;
+	HRESULT     hr = S_OK;
 
-    switch (dwMessageType)
-    {
-        case DPN_MSGID_ENUM_HOSTS_RESPONSE:
-        {
-            PDPNMSG_ENUM_HOSTS_RESPONSE     pEnumHostsResponseMsg;
-            const DPN_APPLICATION_DESC*     pDesc;
-            HOST_NODE*                      pHostNode = NULL;
-            WCHAR*                          pwszSession = NULL;
+	switch (dwMessageType)
+	{
+	case DPN_MSGID_ENUM_HOSTS_RESPONSE:
+		{
+			PDPNMSG_ENUM_HOSTS_RESPONSE     pEnumHostsResponseMsg;
+			const DPN_APPLICATION_DESC*     pDesc;
+			HOST_NODE*                      pHostNode = NULL;
+			WCHAR*                          pwszSession = NULL;
 
-            pEnumHostsResponseMsg			= (PDPNMSG_ENUM_HOSTS_RESPONSE) pMessage;
-            pDesc							= pEnumHostsResponseMsg->pApplicationDescription;
+			pEnumHostsResponseMsg			= (PDPNMSG_ENUM_HOSTS_RESPONSE) pMessage;
+			pDesc							= pEnumHostsResponseMsg->pApplicationDescription;
 
-            // Insert each host response if it isn't already present
+			// Insert each host response if it isn't already present
 			net_csEnumeration.Enter			();
 			BOOL	bHostRegistered			= FALSE;
-            for (DWORD I=0; I<net_Hosts.size(); I++)
-            {
+			for (DWORD I=0; I<net_Hosts.size(); I++)
+			{
 				HOST_NODE&	N = net_Hosts	[I];
-                if	( pDesc->guidInstance == N.dpAppDesc.guidInstance)
-                {
-                    // This host is already in the list
-                    bHostRegistered = TRUE;
-                    break;
-                }
-            }
+				if	( pDesc->guidInstance == N.dpAppDesc.guidInstance)
+				{
+					// This host is already in the list
+					bHostRegistered = TRUE;
+					break;
+				}
+			}
 
 			if (!bHostRegistered) 
 			{
 				// This host session is not in the list then so insert it.
 				HOST_NODE	NODE;
 				ZeroMemory	(&NODE, sizeof(HOST_NODE));
-				
+
 				// Copy the Host Address
 				R_CHK		(pEnumHostsResponseMsg->pAddressSender->Duplicate(&NODE.pHostAddress ) );
 				PSGP.memCopy(&NODE.dpAppDesc,pDesc,sizeof(DPN_APPLICATION_DESC));
-				
+
 				// Null out all the pointers we aren't copying
 				NODE.dpAppDesc.pwszSessionName					= NULL;
 				NODE.dpAppDesc.pwszPassword						= NULL;
@@ -249,34 +249,35 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 				NODE.dpAppDesc.dwReservedDataSize				= 0;
 				NODE.dpAppDesc.pvApplicationReservedData		= NULL;
 				NODE.dpAppDesc.dwApplicationReservedDataSize	= 0;
-				
+
 				if( pDesc->pwszSessionName)
 					R_CHK(WideCharToMultiByte(CP_ACP,0,pDesc->pwszSessionName,-1,NODE.dpSessionName,sizeof(NODE.dpSessionName),0,0));
 
 				net_Hosts.push_back			(NODE);
 			}
 			net_csEnumeration.Leave			();
-            break;
-        }
-		
-        case DPN_MSGID_TERMINATE_SESSION:
-        {
-            PDPNMSG_TERMINATE_SESSION   pTermSessionMsg;
+		}
+		break;
 
-            pTermSessionMsg = (PDPNMSG_TERMINATE_SESSION) pMessage;
+		/*
+	case DPN_MSGID_TERMINATE_SESSION:
+		{
+			PDPNMSG_TERMINATE_SESSION   pTermSessionMsg;
 
-            printf("\nThe Session has been terminated!\n");
-            break;
-        }
-    
-        case DPN_MSGID_RECEIVE:
-        {
+			pTermSessionMsg = (PDPNMSG_TERMINATE_SESSION) pMessage;
+
+			printf("\nThe Session has been terminated!\n");
+		}
+		break;
+		*/
+	case DPN_MSGID_RECEIVE:
+		{
 			DWORD			time	= Device.TimerAsync();
-            PDPNMSG_RECEIVE	pMsg	= (PDPNMSG_RECEIVE) pMessage;
+			PDPNMSG_RECEIVE	pMsg	= (PDPNMSG_RECEIVE) pMessage;
 			void*			m_data	= pMsg->pReceiveData;
 			DWORD			m_size	= pMsg->dwReceiveDataSize;
 			MSYS_CONFIG*	cfg		= (MSYS_CONFIG*)m_data;
-			
+
 			if ((m_size>2*sizeof(DWORD)) && (cfg->sign1==0x12071980) && (cfg->sign2==0x26111975))
 			{
 				// Internal system message
@@ -289,7 +290,6 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 					DWORD		delta	= msg->dwTime_Server + ping/2 - time;
 					net_DeltaArray.push	(delta);
 					Sync_Average		();
-//					Msg					("* ping: %d",ping);
 				} else if ((m_size == sizeof(MSYS_CONFIG)))
 				{
 					// It is configuration message
@@ -308,11 +308,40 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 				P->B.count		= net_Compressor.Decompress(P->B.data,LPBYTE(m_data),m_size);
 				P->timeReceive	= time;
 			}
-            break;
-        }
-    }
+		}
+		break;
+	default:
+		{
+			LPSTR	msg;	
+			switch (dwMessageType)
+			{
+			case DPN_MSGID_ADD_PLAYER_TO_GROUP:			msg = "DPN_MSGID_ADD_PLAYER_TO_GROUP"; break;
+			case DPN_MSGID_ASYNC_OP_COMPLETE:			msg = "DPN_MSGID_ASYNC_OP_COMPLETE"; break;
+			case DPN_MSGID_CLIENT_INFO:					msg	= "DPN_MSGID_CLIENT_INFO"; break;
+			case DPN_MSGID_CONNECT_COMPLETE:			msg	= "DPN_MSGID_CONNECT_COMPLETE"; break;
+			case DPN_MSGID_CREATE_GROUP:				msg	= "DPN_MSGID_CREATE_GROUP"; break;
+			case DPN_MSGID_CREATE_PLAYER:				msg = "DPN_MSGID_CREATE_PLAYER"; break;
+			case DPN_MSGID_DESTROY_GROUP: 				msg = "DPN_MSGID_DESTROY_GROUP"; break;
+			case DPN_MSGID_DESTROY_PLAYER: 				msg = "DPN_MSGID_DESTROY_PLAYER"; break;
+			case DPN_MSGID_ENUM_HOSTS_QUERY:			msg = "DPN_MSGID_ENUM_HOSTS_QUERY"; break;
+			case DPN_MSGID_GROUP_INFO:					msg = "DPN_MSGID_GROUP_INFO"; break;
+			case DPN_MSGID_HOST_MIGRATE:				msg = "DPN_MSGID_HOST_MIGRATE"; break;
+			case DPN_MSGID_INDICATE_CONNECT:			msg = "DPN_MSGID_INDICATE_CONNECT"; break;
+			case DPN_MSGID_INDICATED_CONNECT_ABORTED:	msg = "DPN_MSGID_INDICATED_CONNECT_ABORTED"; break;
+			case DPN_MSGID_PEER_INFO:					msg = "DPN_MSGID_PEER_INFO"; break;
+			case DPN_MSGID_REMOVE_PLAYER_FROM_GROUP:	msg = "DPN_MSGID_REMOVE_PLAYER_FROM_GROUP"; break;
+			case DPN_MSGID_RETURN_BUFFER:				msg = "DPN_MSGID_RETURN_BUFFER"; break;
+			case DPN_MSGID_SEND_COMPLETE:				msg = "DPN_MSGID_SEND_COMPLETE"; break;
+			case DPN_MSGID_SERVER_INFO:					msg = "DPN_MSGID_SERVER_INFO"; break;
+			case DPN_MSGID_TERMINATE_SESSION:			msg = "DPN_MSGID_TERMINATE_SESSION"; break;
+			default:									msg = "???"; break;
+			}
+			Msg("! ***** : %s",msg);
+		}
+		break;
+	}
 
-    return S_OK;
+	return S_OK;
 }
 
 void	IPureClient::timeServer_Correct(DWORD sv_time, DWORD cl_time)
