@@ -68,40 +68,49 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		LPCSTR	sname		= 0;
-		LPCSTR	sname_ps	= 0;
+		LPCSTR	vsname		= 0;
+		LPCSTR	psname		= 0;
+		u32		mskin		= RImplementation.m_skinning;
 		switch (C.iElement)
 		{
 		case SE_R1_NORMAL_HQ:	
-			sname				= "model_def_hq"; 
-			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
-			else				C.r_Pass	(sname,sname,TRUE);
+			vsname = psname =	"model_def_hq";
+			if (1==mskin)		vsname		= "model_def_hq_1";
+			if (2==mskin)		vsname		= "model_def_hq_2";
+			if (oBlend.value)	C.r_Pass	(vsname,psname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.r_Pass	(vsname,psname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler_clf		("s_lmap",	"$user$projector",true);
 			C.r_End				();
 			break;
 		case SE_R1_NORMAL_LQ:
-			sname				= "model_def_lq"; 
-			if (oBlend.value)	C.r_Pass	(sname,sname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
-			else				C.r_Pass	(sname,sname,TRUE);
+			vsname = psname =	"model_def_lq"; 
+			if (1==mskin)		vsname		= "model_def_lq_1";
+			if (2==mskin)		vsname		= "model_def_lq_2";
+			if (oBlend.value)	C.r_Pass	(vsname,psname,TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.r_Pass	(vsname,psname,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_End				();
 			break;
 		case SE_R1_LPOINT:
-			sname				= "model_def_point";
-			sname_ps			= "add_point";
-			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
-			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
+			vsname				= "model_def_point";
+			psname				= "add_point";
+			if (1==mskin)		vsname		= "model_def_point_1";
+			if (2==mskin)		vsname		= "model_def_point_2";
+			if (oBlend.value)	C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
+			else				C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler_clf		("s_lmap",	TEX_POINT_ATT);
 			C.r_Sampler_clf		("s_att",	TEX_POINT_ATT);
 			C.r_End				();
 			break;
 		case SE_R1_LSPOT:
-			sname				= "model_def_spot";
-			sname_ps			= "add_spot";
-			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
-			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
+			vsname				= "model_def_spot";
+			psname				= "add_spot";
+			if (1==mskin)		vsname		= "model_def_spot_1";
+			if (2==mskin)		vsname		= "model_def_spot_2";
+			if (oBlend.value)	C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
+			else				C.r_Pass	(vsname,psname,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler_clf		("s_lmap",	"internal\\internal_light_att",		true);
 			C.r_Sampler_clf		("s_att",	TEX_SPOT_ATT);

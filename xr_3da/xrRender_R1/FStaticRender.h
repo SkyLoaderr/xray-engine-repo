@@ -27,6 +27,7 @@ public:
 	};
 
 	BOOL														b_distortion;
+	u32															m_skinning;
 public:
 	// Sector detection and visibility
 	CSector*													pLastSector;
