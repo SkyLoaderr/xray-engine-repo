@@ -96,6 +96,7 @@ Geom = dCreateTriList(space, 0, 0);
 
 void CPHMesh ::Destroy(){
 						dGeomDestroy(Geom);
+						dTriListClass=-1;
 						}
 
 
@@ -141,11 +142,12 @@ void CPHWorld::Destroy(){
 	//for(i=elements.begin();i!=elements.end();i++){
 	//delete(*i);
 	//}
+	//dGeomDestroy(plane);
 	dJointGroupEmpty(ContactGroup);
 	dSpaceDestroy(Space);
 	dWorldDestroy(phWorld);
 	dCloseODE();
-
+	dCylinderClassUser=-1;
 }
 
 //////////////////////////////////////////////////////////////////////////////

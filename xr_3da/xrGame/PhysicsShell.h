@@ -71,18 +71,19 @@ public:
 	virtual	void			add_Cylinder			(const Pcylinder&	V)							= 0;
 	virtual void			add_Shape				(const SBoneShape& shape)						= 0;
 	virtual void			add_Shape				(const SBoneShape& shape,const Fmatrix& offset)	= 0;
+	virtual void			add_Mass				(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass)=0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
 	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;	
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
 	virtual	dBodyID			get_body				()												= 0;
-
 	virtual ~CPhysicsElement	()																	{};
 };
 
 //ABSTRACT:
 // Joint between two elements 
+
 class CPhysicsJoint	
 {
 
@@ -105,30 +106,7 @@ enum enumType{				//joint type
 
 	enumType eType;          //type of the joint
 
-	float m_erp;				 //joint erp
-	float m_cfm;				 //joint cfm
 
-	enum eVs {				//coordinate system 
-		vs_first,			//in first local
-		vs_second,			//in second local 
-		vs_global			//in global 
-	};
-	struct SPHAxis {
-		float high;			//high limit
-		float low;			//law limit
-		float zero;			//zero angle position
-		float erp;			//limit erp
-		float cfm;			//limit cfm
-		eVs   vs;			//coordinate system 
-		float force;		//max force
-		float velocity;		//velocity to achieve
-		Fvector direction;	//axis direction
-		IC void set_limits(float h, float l) {high=h; low=l;}
-		IC void set_direction(const Fvector& v){direction.set(v);}
-		IC void set_direction(const float x,const float y,const float z){direction.set(x,y,z);}
-		IC void set_param(const float e,const float c){erp=e;cfm=c;}	
-		SPHAxis();
-	};
 
 
 protected:
@@ -140,7 +118,8 @@ protected:
 public:
 	virtual ~CPhysicsJoint	()																{};
 	
-	virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
+	//virtual void SetAxis					(const SPHAxis& axis,const int axis_num)		=0;
+	virtual void Activate					()												=0;
 	virtual void SetAnchor					(const Fvector& position)						=0;
 	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num)=0;
 	virtual void SetJointSDfactors			(float spring_factor,float damping_factor)		=0;
