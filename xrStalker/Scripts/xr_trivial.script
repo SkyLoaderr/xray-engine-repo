@@ -13,7 +13,7 @@ local time_to_speak = 12000     --Через какое время примерно зомби произносит фр
 
 local time_walk2    = 10000     --Время ходьбы для навичка номер2
 
-local time_to_look  = 20000     --Время, через которое обиженный новичок смотрит по сторонам
+local time_to_look  = 30000     --Время, через которое обиженный новичок смотрит по сторонам
 
 local walk_speak  = xr_sounds_id.zombe_walk_speak
 local stand_speak   = xr_sounds_id.zombe_stand_speak
@@ -593,8 +593,8 @@ end
 function stalker_novice3_action:init_state_walk()
     self.a.curState = walk
     self.a.time = device():time_global()
-    self.b.speak_time = self.a.time + (math.random()+0.5)   * novice_speak      --Когда произнесу некоторую фразу
-    self.b.time_stand = self.a.time + (math.random() + 0.5) * time_to_look
+    self.b.speak_time = self.a.time + novice_speak3      --Когда произнесу некоторую фразу
+    self.b.time_stand = self.a.time + time_to_look
 
     self.object:clear_animations()
     self.object:set_desired_direction()
