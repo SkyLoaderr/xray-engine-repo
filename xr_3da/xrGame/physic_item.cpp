@@ -189,5 +189,6 @@ void CPhysicItem::create_box2sphere_physic_shell()
 
 void CPhysicItem::create_physic_shell()
 {
-	create_box_physic_shell();
+	///create_box_physic_shell();
+	inherited::create_physic_shell();
 }
