@@ -528,9 +528,15 @@ IC	u32	CLevelGraph::row_length				() const
 
 IC	bool CLevelGraph::valid_vertex_position	(const Fvector &position) const
 {
+	if ((position.x < header().box().min.x) || (position.x > header().box().max.x) ||(position.z < header().box().min.z) ||(position.x > header().box().max.z))
+		return			(false);
+
 	float				sp = 1/header().cell_size();
-	if (!(iFloor((position.z - header().box().min.z)*sp  + EPS_S + .5f) < (int)m_row_length))
+	if (!(iFloor((position.z - header().box().min.z)*sp + EPS_S + .5f) < (int)m_row_length))
 		return			(false);
 	
+	if (!(iFloor((position.x - header().box().min.x)*sp + EPS_S + .5f) < (int)m_column_length))
+		return			(false);
+
 	return				(vertex_position(position).xz() < header().vertex_count());
 }
