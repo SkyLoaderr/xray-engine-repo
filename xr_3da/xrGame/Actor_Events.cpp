@@ -98,9 +98,15 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			P.r_s32		(cmd);
 			u32 flags;
 			P.r_u32		(flags);
-			
+			s32 RandomSeed;
+			P.r_s32		(RandomSeed);
+						
 			if (flags & CMD_START)
+			{
+				if (cmd == kWPN_ZOOM)
+					SetZoomRndSeed(RandomSeed);
 				IR_OnKeyboardPress(cmd);
+			}
 			else
 				IR_OnKeyboardRelease(cmd);
 //			inventory().Action(cmd, flags);

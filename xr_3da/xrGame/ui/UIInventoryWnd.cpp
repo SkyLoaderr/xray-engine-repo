@@ -1145,6 +1145,14 @@ void CUIInventoryWnd::AddItemToBag(PIItem pItem)
 
 void CUIInventoryWnd::AttachAddon()
 {
+	if (OnClient())
+	{
+		NET_Packet P;
+		m_pItemToUpgrade->u_EventGen(P, GE_ADDON_ATTACH, m_pItemToUpgrade->ID());
+		P.w_u32(m_pCurrentItem->ID());
+		m_pItemToUpgrade->u_EventSend(P);
+		return;
+	};
 	R_ASSERT(m_pItemToUpgrade);
 	m_pItemToUpgrade->Attach(m_pCurrentItem);
 
@@ -1172,6 +1180,14 @@ void CUIInventoryWnd::AttachAddon()
 }
 void CUIInventoryWnd::DetachAddon(const char* addon_name)
 {
+	if (OnClient())
+	{
+		NET_Packet P;
+		m_pCurrentItem->u_EventGen(P, GE_ADDON_DETACH, m_pCurrentItem->ID());
+		P.w_string(addon_name);
+		m_pCurrentItem->u_EventSend(P);
+		return;
+	};
 	m_pCurrentItem->Detach(addon_name);
 
 

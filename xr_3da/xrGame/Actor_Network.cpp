@@ -489,6 +489,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	m_bHasUpdate = false;
 	m_bInInterpolation = false;
 	m_bInterpolate = false;
+
 	/*
 	if (OnClient() && E->s_flags.is(M_SPAWN_OBJECT_LOCAL))
 	{

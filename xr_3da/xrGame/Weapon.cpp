@@ -479,7 +479,15 @@ void CWeapon::net_Import	(NET_Packet& P)
 
 	u16 ammo_elapsed = 0;
 	P.r_u16					(ammo_elapsed);
-	P.r_u8					(m_flagsAddOnState);
+	u8 NewAddonState;
+//	P.r_u8					(m_flagsAddOnState);
+	P.r_u8					(NewAddonState);
+	if (m_flagsAddOnState != NewAddonState)
+	{
+		m_flagsAddOnState = NewAddonState;
+		UpdateAddonsVisibility();
+		InitAddons();
+	};
 
 	u8 ammoType, wstate;
 	P.r_u8					(ammoType);
@@ -546,6 +554,8 @@ void CWeapon::OnH_A_Independent	()
 void CWeapon::OnH_A_Chield		()
 {
 	inherited::OnH_A_Chield		();
+
+	UpdateAddonsVisibility		();
 };
 
 void CWeapon::OnH_B_Chield		()
@@ -885,19 +895,20 @@ bool CWeapon::SilencerAttachable()
 
 void CWeapon::UpdateAddonsVisibility()
 {
-	CKinematics* pHudVisual = PKinematics(m_pHUD->Visual()); R_ASSERT(pHudVisual);
+	CKinematics* pHudVisual = PKinematics(m_pHUD->Visual());// R_ASSERT(pHudVisual);
+	if (H_Parent() != Level().CurrentEntity()) pHudVisual = NULL;
 	CKinematics* pWeaponVisual = PKinematics(Visual()); R_ASSERT(pWeaponVisual);
 	
 	if(ScopeAttachable())
 	{
 		if(IsScopeAttached())
 		{
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
+			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_scope"),TRUE,TRUE);
 		}
 		else
 		{
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
+			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_scope"),FALSE,TRUE);
 		}
 	}
@@ -905,12 +916,12 @@ void CWeapon::UpdateAddonsVisibility()
 	{
 		if(IsSilencerAttached())
 		{
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
+			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_silencer"),TRUE,TRUE);
 		}
 		else
 		{
-			pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
+			if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_silencer"),FALSE,TRUE);
 		}
 	}
@@ -918,12 +929,12 @@ void CWeapon::UpdateAddonsVisibility()
 	{
 		if(IsGrenadeLauncherAttached())
 		{
-			//pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
+			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),TRUE,TRUE);
 		}
 		else
 		{
-			//pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
+			//if (pHudVisual) pHudVisual->LL_SetBoneVisible(pHudVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
 			pWeaponVisual->LL_SetBoneVisible(pWeaponVisual->LL_BoneID("wpn_launcher"),FALSE,TRUE);
 		}
 	}

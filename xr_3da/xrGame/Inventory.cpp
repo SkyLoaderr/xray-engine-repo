@@ -334,6 +334,7 @@ void CInventory::SendActionEvent(s32 cmd, u32 flags)
 	pActor->u_EventGen		(P,GE_INV_ACTION, pActor->ID());
 	P.w_s32					(cmd);
 	P.w_u32					(flags);
+	P.w_s32					(pActor->GetZoomRndSeed());		//Random Seed
 	pActor->u_EventSend		(P);
 };
 
@@ -367,8 +368,12 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		case kWPN_4:
 		case kWPN_5:
 		case kWPN_6:
+			{
+				SendActionEvent(cmd, flags);
+			}break;
 		case kWPN_ZOOM : 
 			{
+				pActor->SetZoomRndSeed();
 				SendActionEvent(cmd, flags);
 			}break;
 		}

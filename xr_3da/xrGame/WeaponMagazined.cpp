@@ -799,6 +799,7 @@ void CWeaponMagazined::OnZoomIn			()
 		CEffectorZoomInertion* S = dynamic_cast<CEffectorZoomInertion*>	(pActor->EffectorManager().GetEffector(eCEZoom));
 		if (!S)	
 			S = (CEffectorZoomInertion*)pActor->EffectorManager().AddEffector(xr_new<CEffectorZoomInertion> ());
+		S->SetRndSeed(pActor->GetZoomRndSeed());
 		R_ASSERT				(S);
 	}
 }

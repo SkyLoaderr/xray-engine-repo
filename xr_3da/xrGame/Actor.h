@@ -157,13 +157,18 @@ protected:
 	BOOL					b_DropActivated;
 	float					f_DropPower;
 
+	//random seed для Zoom mode
+	s32						m_ZoomRndSeed;
 
 	//разрешения на удаление трупа актера 
 	//после того как контролирующий его игрок зареспавнился заново. 
 	//устанавливается в game
 public:
 	bool					m_bAllowDeathRemove;
-												
+
+	////////////////////////////////////////////////////////
+	void					SetZoomRndSeed			(s32 Seed = 0);
+	s32						GetZoomRndSeed			()	{ return m_ZoomRndSeed;	};
 	/////////////////////////////////////////////////////////
 	// car usage
 	/////////////////////////////////////////////////////////

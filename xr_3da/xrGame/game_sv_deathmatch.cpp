@@ -226,18 +226,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 					//------------------------------------------------------------
 					SpawnActor(id, "actor");
 					//------------------------------------------------------------
-					pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(xrCData->owner);
-					R_ASSERT2(pA, "Owner not a Actor");
-
-					SpawnItem4Actor(pA->ID, GetItemForSlot(KNIFE_SLOT, 0xff, ps));
-					SpawnItem4Actor(pA->ID, GetItemForSlot(PISTOL_SLOT, 0xff,  ps));
-					SpawnItem4Actor(pA->ID, GetItemForSlot(RIFLE_SLOT, 0xff,  ps));
-					SpawnItem4Actor(pA->ID, GetItemForSlot(GRENADE_SLOT, 0xff,  ps));
-
-					for (u32 i = 0; i<ps->BeltItems.size(); i++)
-					{
-						SpawnItem4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
-					};
+					SpawnWeaponsForActor(xrCData->owner, ps);
 					//------------------------------------------------------------
 				};				
 			};			
@@ -377,26 +366,6 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 
 	signal_Syncronize();
 }
-
-void	game_sv_Deathmatch::SpawnItem4Actor			(u32 actorId, LPCSTR N)
-{
-	if (!N) return;
-	CSE_Abstract			*E	=	spawn_begin	(N);
-	E->ID_Parent = u16(actorId);
-
-	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
-
-	/////////////////////////////////////////////////////////////////////////////////
-	//если это оружие - спавним его с полным магазином
-	CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
-	if (pWeapon)
-	{
-		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
-	};
-	/////////////////////////////////////////////////////////////////////////////////
-
-	spawn_end				(E,Level().Server->GetServer_client()->ID);
-};
 
 #include "../CameraBase.h"
 
@@ -577,6 +546,78 @@ const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_Pla
 	return wpnTeamsSectStorage[ps->team][SlotNum][Item & 0x1f].c_str();
 };
 
+u8 		game_sv_Deathmatch::GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
+{
+	if (!ps) return 0;
+
+	if (0xff == ps->Slots[SlotNum]) return 0;
+
+	u8 res = (ps->Slots[SlotNum] >> 0x05);
+
+	return res;
+};
+
+void	game_sv_Deathmatch::SpawnItem4Actor			(u32 actorId, LPCSTR N)
+{
+	if (!N) return;
+	CSE_Abstract			*E	=	spawn_begin	(N);
+	E->ID_Parent = u16(actorId);
+
+	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+
+	spawn_end				(E,Level().Server->GetServer_client()->ID);
+};
+
+void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId, LPCSTR N, u8 Addons)
+{
+	if (!N) return;
+	CSE_Abstract			*E	=	spawn_begin	(N);
+	E->ID_Parent = u16(actorId);
+
+	E->s_flags.set			(M_SPAWN_OBJECT_LOCAL);	// flags
+
+	/////////////////////////////////////////////////////////////////////////////////
+	//если это оружие - спавним его с полным магазином
+	CSE_ALifeItemWeapon		*pWeapon	=	dynamic_cast<CSE_ALifeItemWeapon*>(E);
+	if (pWeapon)
+	{
+		pWeapon->a_elapsed = pWeapon->get_ammo_magsize();
+
+		if (Addons & CSE_ALifeItemWeapon::eWeaponAddonScope)
+		{
+			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonScope);
+		}
+		if (Addons & CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher)
+		{
+			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher);
+		}
+		if (Addons & CSE_ALifeItemWeapon::eWeaponAddonSilencer)
+		{
+			pWeapon->m_addon_flags.or(CSE_ALifeItemWeapon::eWeaponAddonSilencer);
+		}
+	};
+	/////////////////////////////////////////////////////////////////////////////////
+
+	spawn_end				(E,Level().Server->GetServer_client()->ID);
+};
+
+void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState*	ps)
+{
+	CSE_ALifeCreatureActor* pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(pE);
+	R_ASSERT2(pA, "Owner not a Actor");
+	if (!pA) return;
+
+	SpawnWeapon4Actor(pA->ID, GetItemForSlot(KNIFE_SLOT, 0xff, ps), GetItemAddonsForSlot(KNIFE_SLOT, 0xff, ps));
+	SpawnWeapon4Actor(pA->ID, GetItemForSlot(PISTOL_SLOT, 0xff,  ps), GetItemAddonsForSlot(PISTOL_SLOT, 0xff,  ps));
+	SpawnWeapon4Actor(pA->ID, GetItemForSlot(RIFLE_SLOT, 0xff,  ps), GetItemAddonsForSlot(RIFLE_SLOT, 0xff,  ps));
+
+	SpawnItem4Actor(pA->ID, GetItemForSlot(GRENADE_SLOT, 0xff,  ps));
+
+	for (u32 i = 0; i<ps->BeltItems.size(); i++)
+	{
+		SpawnItem4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
+	};
+};
 void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection)
 {
 	WPN_SECT_NAMES		wpnOneType;
@@ -704,3 +745,4 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	pV->set_visual(SkinName);
 	//-------------------------------------------
 };
+

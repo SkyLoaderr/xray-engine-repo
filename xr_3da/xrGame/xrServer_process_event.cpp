@@ -232,6 +232,11 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			SendBroadcast		(0xffffffff,P,MODE);
 		}break;
+	case GE_ADDON_ATTACH:
+	case GE_ADDON_DETACH:
+		{			
+			SendTo(SV_Client->ID, P, net_flags(TRUE, TRUE));
+		}break;
 	default:
 		R_ASSERT2	(0,"Game Event not implemented!!!");
 		break;

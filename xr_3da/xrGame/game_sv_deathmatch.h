@@ -53,6 +53,7 @@ protected:
 	void							SpawnActor				(u32 id, LPCSTR N);
 	bool							GetPosAngleFromActor	(u32 id, Fvector& Pos, Fvector &Angle);
 	void							SpawnItem4Actor			(u32 actorId, LPCSTR N);
+	void							SpawnWeapon4Actor		(u32 actorId, LPCSTR N, u8 Addons = 0);
 	void							KillPlayer				(u32 id_who);
 public:
 	virtual		void				Create					(LPSTR &options);
@@ -88,7 +89,9 @@ public:
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);//	{};
 
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
+	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
 	virtual		const char * 		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
+	virtual		u8 					GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
 
 	virtual		void				LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection);
 	virtual		void				LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSection);

@@ -14,6 +14,7 @@ class CEffectorZoomInertion : public CCameraEffector
 
 	float	m_fEpsilon;
 	Fvector	m_vCurrentPoint;
+	Fvector m_vLastPoint;
 	Fvector	m_vTargetPoint;
 	Fvector	m_vTargetVel;
 
@@ -29,6 +30,8 @@ class CEffectorZoomInertion : public CCameraEffector
 	float	m_fZoomAimingSpeedK;
 	//время через которое эффектор меняет направление движения
 	u32		m_dwDeltaTime;
+
+	CRandom		m_Random;
 public:
 	CEffectorZoomInertion				();
 	virtual ~CEffectorZoomInertion		();
@@ -39,5 +42,6 @@ public:
 	virtual	BOOL	Process				(Fvector &delta_p, Fvector &delta_d,
 											Fvector &delta_n, float& fFov,
 											float& fFar, float& fAspect);
+	virtual	void	SetRndSeed				(s32 Seed) { m_Random.seed(Seed); };
 
 };

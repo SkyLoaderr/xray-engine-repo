@@ -255,6 +255,22 @@ void CInventoryItem::UpdateCL()
 void CInventoryItem::OnEvent (NET_Packet& P, u16 type)
 {
 	inherited::OnEvent(P, type);
+	switch (type)
+	{
+	case GE_ADDON_DETACH:
+		{
+			string64			i_name;
+			P.r_string			(i_name);
+			Detach(i_name);
+		}break;
+	case GE_ADDON_ATTACH:
+		{
+			u32 ItemID;
+			P.r_u32			(ItemID);
+			CInventoryItem*	 ItemToAttach	= dynamic_cast<CInventoryItem*>(Level().Objects.net_Find(ItemID));
+			if (ItemToAttach) Attach(ItemToAttach);
+		}break;
+	}
 }
 
 //процесс отсоединения вещи заключается в спауне новой вещи 

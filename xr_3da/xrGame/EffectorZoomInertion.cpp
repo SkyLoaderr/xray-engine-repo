@@ -15,6 +15,7 @@
 CEffectorZoomInertion::CEffectorZoomInertion	() : CCameraEffector(eCEZoom,100000.f,TRUE)
 {
 	Load();
+	SetRndSeed(timeGetTime());
 }
 
 CEffectorZoomInertion::~CEffectorZoomInertion	()
@@ -42,7 +43,7 @@ void CEffectorZoomInertion::Load		()
 	m_vTargetVel.set(0.f,0.f,0.f);
 	m_vCurrentPoint.set(0.f,0.f,0.f);
 	m_vTargetPoint.set(0.f,0.f,0.f);
-
+	m_vLastPoint.set(0.f,0.f,0.f);
 }
 
 void CEffectorZoomInertion::SetParams	(float disp)
@@ -85,19 +86,15 @@ BOOL CEffectorZoomInertion::Process		(Fvector &p, Fvector &d, Fvector &n,
 		m_fEpsilon = 2*m_fFloatSpeed;
 
 		float half_disp_radius = m_fDispRadius/2.f;
-		m_vTargetPoint.x = Random.randF(-half_disp_radius,half_disp_radius);
-		m_vTargetPoint.y = Random.randF(-half_disp_radius,half_disp_radius);
-
-		//Fvector norm = {0.f,0.f,1.f};
-		//m_vTargetPoint.random_dir(norm, m_fDispRadius, Random);
-		//m_vTargetPoint.z = 0.f;
+		m_vTargetPoint.x = m_Random.randF(-half_disp_radius,half_disp_radius);
+		m_vTargetPoint.y = m_Random.randF(-half_disp_radius,half_disp_radius);
 
 		m_vTargetVel.sub(m_vTargetPoint, m_vCurrentPoint);
-		m_vTargetVel.normalize_safe();
-		m_vTargetVel.mul(m_fFloatSpeed);
+
+		m_vLastPoint.set(m_vCurrentPoint);
 	}
 
-	m_vCurrentPoint.add(m_vTargetVel);
+	m_vCurrentPoint.lerp(m_vLastPoint, m_vTargetPoint, float(m_dwTimePassed)/m_dwDeltaTime);
 
 	m_vOldCameraDir = d;	
 
