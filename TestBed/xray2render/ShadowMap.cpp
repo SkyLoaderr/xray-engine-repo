@@ -93,6 +93,9 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
 	LPDIRECT3DSURFACE9				d_Accumulator_S;
 
+	// Special textures
+	LPDIRECT3DTEXTURE9				t_SpecularPower_32;
+
 	// Matrices
 	D3DXMATRIX						dm_model2world;
 	D3DXMATRIX						dm_model2world2view;
@@ -424,6 +427,11 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_CombineDBG_Normals.compile	(m_pd3dDevice,"shaders\\D\\cm_dbg_normals.s");
 	s_CombineDBG_Accumulator.compile(m_pd3dDevice,"shaders\\D\\cm_dbg_accumulator.s");
 	s_Light_Direct.compile			(m_pd3dDevice,"shaders\\D\\light_direct.s");
+
+	// Create special textures
+	m_pd3dDevice->CreateTexture		(512,1, 1, 0, D3DFMT_R16F, D3DPOOL_DEFAULT, pT, NULL)
+t_SpecularPower_32				
+
 
 	// Create shadow map texture and retrieve surface
 	if (FAILED(m_pd3dDevice->CreateTexture(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, 1, 
