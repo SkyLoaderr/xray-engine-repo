@@ -1,3 +1,19 @@
+[m_boar_attack_params]
+
+;---------------------------------------------------------------------------------------------------------------------------------------------
+;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)   |	Field of hit_test  (left,right, top, bottom) |	Test Dist
+;---------------------------------------------------------------------------------------------------------------------------------------------
+stand_attack_0 =	  	0.5,		50,		    500,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,								  3.5
+stand_attack_1 =	  	0.5,		50,		    500,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,								  3.5
+stand_attack_2 =	  	0.5,		50,		    500,        0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,								  3.5
+
+[m_boar_step_params]
+;----------------------------------------------------------------------------------------------------------------
+;	anim			| time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
+;----------------------------------------------------------------------------------------------------------------
+stand_walk_fwd_0=	   0.2,     1,	  0.25,    0.7,    0.5,		1.0,     0.7,    1.0
+
+
 [m_boar_e]
 GroupControlSection	= spawn_group
 $spawn               = "monsters\boar"				; option for Level Editor
@@ -180,3 +196,6 @@ step_snd_drag			= 1.0, 2.0
 
 squad_attack_algorithm	= 1
 attack_effector			= monster_attack_effector
+
+attack_params			= m_boar_attack_params
+step_params				= m_boar_step_params
