@@ -39,7 +39,6 @@ end
 -- Обычное поведение
 class "action_sleeper_activity" (action_base)
 function action_sleeper_activity:__init (npc_name,action_name,storage) super (nil, action_name)
-  --printf("_bp: action_sleeper_activity: __init")
     self.a = storage
 
     self.state_none = 0
@@ -61,30 +60,25 @@ function action_sleeper_activity:__init (npc_name,action_name,storage) super (ni
     -- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
     self.last_look_index = nil
 end
-
 function action_sleeper_activity:initialize()
-  --printf("_bp: action_sleeper_activity: initialize")
     action_base.initialize(self)
     self.object:set_node_evaluator()
     self.object:set_path_evaluator()
     self.object:set_desired_position()
     self.object:set_desired_direction()
 
-    self.object:set_item(object.idle, self.object:best_weapon())
-    self.object:set_detail_path_type(move.line)
+    self.object:set_item(object.deactivate, self.object:best_weapon())
     self.object:set_body_state(move.standing)
     self.object:set_movement_type(move.walk)
     self.object:set_path_type(game_object.patrol_path)
     self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
-    --self.object:set_mental_state(anim.free)
-    --self.object:set_sight(look.search, nil, 0)
-    self.object:set_sight(look.danger, nil, 0)
+    self.object:set_mental_state(anim.free)
+    self.object:set_sight(look.search, nil, 0)
 
     self.state = self.state_moving
 
     self.object:set_callback(self, "waypoint_callback", game_object.movement)
 end
-
 function action_sleeper_activity:waypoint_callback(obj, action_type, index)
     -- Будет использоваться позже для вызова этой функции с целью иммитации коллбека (для путей, состоящих из одной точки):
     self.last_action_type = action_type
@@ -133,62 +127,18 @@ function action_sleeper_activity:look_at_waypoint(pt)
     self.object:set_sight(look.direction, look_pt, 0)
     self.last_look_index = pt
 
-	self.object:set_item(object.deactivate, self.object:best_weapon())
+    self.object:set_item(object.deactivate, self.object:best_weapon())
 end
 function action_sleeper_activity:execute()
-  --[[printf("_debug_sleeper [%s]: state [%d], animation_count [%d]",
-    self.object:name(), self.state, self.object:animation_count())]]
-
     if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
-    --printf("_debug_sleeper [%s]: adding animations", self.object:name())
---[[
-        while self.object:animation_count() <= 1 do
-            local animate = math.random(1, 10)
-            if animate == 1 then
-                            self.object:add_animation("stoya_ruje_ 0", true)
-                        elseif animate == 2 then
-                            self.object:add_animation("vishka_3", false)
-                        elseif animate == 3 then
-                            self.object:add_animation("norm_torso_2_idle_1", false)
-                        elseif animate == 4 then
-                            self.object:add_animation("norm_torso_2_idle_2", true)
-                        elseif animate == 5 then
-                            self.object:add_animation("norm_torso_2_idle_3", false)
-                        elseif animate == 6 then
-                            self.object:add_animation("chasovoy_0", true)
-                        elseif animate == 7 then
-                            self.object:add_animation("chasovoy_1", true)
-                        elseif animate == 8 then
-                            self.object:add_animation("chasovoy_2", true)
-                        elseif animate == 9 then
-                            self.object:add_animation("chasovoy_3", true)
-                        elseif animate == 10 then
-                            self.object:add_animation("chasovoy_4", true)
-                        end
-        end
-]]
 	xr_state.change_state(self.object, 4)
-
-    self.state = self.state_anim_playing
+	self.state = self.state_anim_playing
     end
-
-  --printf("_debug_sleeper [%s]: animation_count=%d", self.object:name(), self.object:animation_count())
-
-  --[[
-  if self.state == self.state_anim_playing and self.object:animation_count() <= 1 then
-        self.state = self.state_moving
-
-        self:waypoint_callback(self.object, self.last_action_type, self.last_index)
-    end
-    ]]
 end
 function action_sleeper_activity:finalize()
-  --printf("_bp: FINALIZE")
   self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгляда уже не актуально
 
     self.object:clear_callback(game_object.movement)
-    self.object:clear_animations()
-
     action_base.finalize(self)
 end
 
@@ -196,10 +146,8 @@ end
 --Guard binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc)
-  --printf("_bp: add_to_binder (sleeper)")
   local operators    = {}
   local properties  = {}
-
 
   sounds["commander_snd"]     = xr_sounds_id.zmey_sleeper_base + 1
   sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_sleeper_base + 2
@@ -209,32 +157,32 @@ function add_to_binder(npc)
   sounds["soldier_alarm"]     = xr_sounds_id.zmey_sleeper_base + 6
 
   npc:add_sound ("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
-     npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",     20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
-    npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
+  npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
+  npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",     20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
+  npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
+  npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
+  npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
 
-   local manager = npc:motivation_action_manager()
+  local manager = npc:motivation_action_manager()
 
   properties["need_sleeper"]   = xr_evaluators_id.zmey_sleeper_base + 1
   properties["state_end"]      = xr_evaluators_id.state_change
 
   operators["action_sleeper"]   = xr_actions_id.zmey_sleeper_base + 1
 
-   -- // evaluators
-    manager:add_evaluator (properties["need_sleeper"],   this.evaluator_need_sleeper  (xr_motivator.storage[npc:id()].sleeper))
+  -- // evaluators
+  manager:add_evaluator (properties["need_sleeper"],   this.evaluator_need_sleeper  (xr_motivator.storage[npc:id()].sleeper))
 
-   local new_action = this.action_sleeper_activity(npc, "action_sleeper_activity", xr_motivator.storage[npc:id()].sleeper)
-    new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
-    new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
-    new_action:add_precondition    (world_property(properties["need_sleeper"],   true))
-    new_action:add_precondition        (world_property(properties["state_end"], 	true))
-    new_action:add_effect(world_property(properties["need_sleeper"], false))
-    manager:add_action(operators["action_sleeper"], new_action)
+  local new_action = this.action_sleeper_activity(npc, "action_sleeper_activity", xr_motivator.storage[npc:id()].sleeper)
+  new_action:add_precondition    (world_property(stalker_ids.property_alive,   	true))
+  new_action:add_precondition    (world_property(stalker_ids.property_enemy,   	false))
+  new_action:add_precondition    (world_property(properties["need_sleeper"],   	true))
+  new_action:add_precondition    (world_property(properties["state_end"], 	true))
+  new_action:add_effect(world_property(properties["need_sleeper"], false))
+  manager:add_action(operators["action_sleeper"], new_action)
 
-    new_action = manager:action(stalker_ids.action_puzzle_solver)
-    new_action:add_precondition(world_property(properties["need_sleeper"], false))
+  new_action = manager:action(stalker_ids.action_puzzle_solver)
+  new_action:add_precondition(world_property(properties["need_sleeper"], false))
 end
 
 -- функции
