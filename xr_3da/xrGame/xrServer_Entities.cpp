@@ -469,7 +469,7 @@ public:
 };
 
 //--------------------------------------------------------------------
-xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
+xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
 	CLASS_ID cls = pSettings->ReadCLSID(name,"class");
 
@@ -488,7 +488,7 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 	return 0;
 }
 
-void			xrServer::entity_Destroy	(xrServerEntity* P)
+void			F_entity_Destroy	(xrServerEntity* P)
 {
 	R_ASSERT	(P);
 	ids_used	[P->ID]	= false;

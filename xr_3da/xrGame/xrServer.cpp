@@ -202,3 +202,17 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	// Send this to all other clients
 	SendBroadcast		(CL->ID,P,net_flags(TRUE));
 }
+
+//--------------------------------------------------------------------
+xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
+{
+	return F_entity_Create(name);
+}
+
+void			xrServer::entity_Destroy	(xrServerEntity* P)
+{
+	R_ASSERT			(P);
+	ids_used			[P->ID]	= false;
+	F_entity_Destroy	(P);
+}
+

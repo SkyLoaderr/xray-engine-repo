@@ -77,5 +77,7 @@ public:
 	}
 };
 
+xrServerEntity*	F_entity_Create		(LPCSTR name);
+void			F_entity_Destroy	(xrServerEntity* P);
 
 #endif
