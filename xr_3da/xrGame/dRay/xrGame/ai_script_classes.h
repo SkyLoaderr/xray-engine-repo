@@ -157,21 +157,21 @@ public:
 		return				(!!l_tpEntityAlive->g_Alive());
 	}
 
-	IC		void			GetRelationType		(CLuaGameObject* who)
+	IC		ALife::ERelationType	GetRelationType		(CLuaGameObject* who)
 	{
 		CEntityAlive		*l_tpEntityAlive1 = dynamic_cast<CEntityAlive*>(m_tpGameObject);
 		if (!l_tpEntityAlive1) {
 			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*m_tpGameObject->cName());
-			return;
+			return ALife::eRelationTypeDummy;
 		}
 		
 		CEntityAlive		*l_tpEntityAlive2 = dynamic_cast<CEntityAlive*>(who->m_tpGameObject);
 		if (!l_tpEntityAlive2) {
 			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"%s cannot access class member!",*who->m_tpGameObject->cName());
-			return;
+			return ALife::eRelationTypeDummy;
 		}
 		
-		l_tpEntityAlive1->tfGetRelationType(l_tpEntityAlive2);
+		return l_tpEntityAlive1->tfGetRelationType(l_tpEntityAlive2);
 	}
 
 	// CScriptMonster

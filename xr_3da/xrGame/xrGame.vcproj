@@ -4975,6 +4975,9 @@
 							RelativePath=".\InfoPortion.h">
 						</File>
 						<File
+							RelativePath=".\map_location.h">
+						</File>
+						<File
 							RelativePath=".\Phrase.cpp">
 						</File>
 						<File
