@@ -719,7 +719,7 @@ public:
 	IC		bool			CheckIfTimeOver()
 	{
 		if (m_bFirstTime) {
-			m_tActionCondition.m_tStartTime	= Level().GetGameTime();
+			m_tActionCondition.m_tStartTime	= Device.TimerAsync();
 			m_bFirstTime	= false;
 		}
 		return((m_tActionCondition.m_tLifeTime >= 0) && ((m_tActionCondition.m_tStartTime + m_tActionCondition.m_tLifeTime) < Device.TimerAsync()));
