@@ -128,6 +128,7 @@ namespace AI {
 	const float _A_look_speed			= PI;
 	class _Attack				: public State
 	{
+		BOOL					bBuildPathToLostEnemy;
 	public:
 		CEntity*				EnemySaved;			// жертва
 		_Attack()				: State(aiAttack)

@@ -218,7 +218,10 @@ namespace AI {
 		
 		if (Enemy.E)
 		{
-			if (Enemy.Visible) {
+			if (Enemy.Visible) 
+			{
+				bBuildPathToLostEnemy = FALSE;
+
 				//***** attack him
 				q_look.setup(
 					AI::AIC_Look::Look, 
@@ -265,10 +268,12 @@ namespace AI {
 				}
 				return	FALSE;
 			} else {
-				// We has enemy but it's invisible to us - we or him is under cover
-				Level().AI.q_Path			(Me->AI_NodeID, Enemy.E->AI_NodeID, Me->AI_Path);
-				Me->AI_Path.BuildTravelLine	(Me->Position());
-
+				if (!bBuildPathToLostEnemy)	{
+					// We has enemy but it's invisible to us - we or him is under cover
+					Level().AI.q_Path			(Me->AI_NodeID, Enemy.E->AI_NodeID, Me->AI_Path);
+					Me->AI_Path.BuildTravelLine	(Me->Position());
+					bBuildPathToLostEnemy		= TRUE;
+				}
 				// look
 				q_look.setup(
 					AI::AIC_Look::Look, 
