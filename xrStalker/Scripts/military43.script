@@ -3,9 +3,12 @@ function main ()
 	local st = {get_level_object ("stalker1"), get_level_object ("stalker2"), get_level_object ("stalker3")}
 	local pt = {patrol ("way1"), patrol ("way2"), patrol ("way3")}
 	
+	local weapons = {get_level_object ("ak1"),  get_level_object ("ak2"), get_level_object ("ak3")}
+	
 	for a = 1, table.getn (st), 1 do
 		st[a]:script (true, military43.script_name ())
-		action (st[a], anim (anim.free), object (st[a]:best_weapon (), object.activate), cond (cond.time_end, time_infinite))
+		action (st[a], object (weapons[a], object.activate), anim (anim.free), object (st[a]:best_weapon (), object.activate), 
+		        cond (cond.time_end, time_infinite))
 	end
 
 	printf ("Best weapon for stalker %s is %s", st[1]:name (), st[1]:best_weapon ():name ())
