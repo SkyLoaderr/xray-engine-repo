@@ -303,10 +303,10 @@ void CCustomMonster::Update	( DWORD DT )
 		Device.Statistic.AI_Think.Begin	();
 		Think							();
 		Device.Statistic.AI_Think.End	();
-		if (m_fCurSpeed < EPS_L) {
-			AI_Path.TravelPath.clear();
-			AI_Path.TravelStart = 0;
-		}
+//		if (m_fCurSpeed < EPS_L) {
+//			AI_Path.TravelPath.clear();
+//			AI_Path.TravelStart = 0;
+//		}
 
 		//
 		Engine.Sheduler.Slice			();
