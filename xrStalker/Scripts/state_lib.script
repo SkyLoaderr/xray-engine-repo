@@ -22,9 +22,37 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
+	run = {		weapon = "strapped",
+				movement = move.run,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
 	patrol = {	weapon = "unstrapped",
 				movement = move.walk,
 				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
+	raid = {	weapon = "unstrapped",
+				movement = move.walk,
+				mental = anim.danger,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = nil
+			},
+	attack = {	weapon = "unstrapped",
+				movement = move.walk,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = nil
+			},			
+	assault = {	weapon = "unstrapped",
+				movement = move.run,
+				mental = anim.danger,
 				bodystate = move.standing,
 				animstate = "stand",
 				animation = nil
@@ -47,7 +75,6 @@ states = {
 				animstate = "stand",
 				animation = "idle"
 			},
-
 	threat = {	weapon = "unstrapped",
 				movement = move.stand,
 				mental = anim.danger,
@@ -55,7 +82,20 @@ states = {
 				animstate = "stand",
 				animation = nil
 			},
-
+	hide = {	weapon = "unstrapped",
+				movement = move.stand,
+				mental = anim.danger,
+				bodystate = move.crouch,
+				animstate = "stand",
+				animation = "hide"
+			},
+	prisluh = {	weapon = nil,
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "prisluh"
+			},
 
 	-- Сидячие состояния
 	sit = {		weapon = "strapped",
