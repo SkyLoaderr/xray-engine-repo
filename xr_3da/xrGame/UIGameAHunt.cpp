@@ -41,8 +41,8 @@ void CUIGameAHunt::Init	()
 	pFragListT1->Init(1);
 	pFragListT2->Init(2);
 
-	int ScreenW = Device.dwWidth;
-	int ScreenH = Device.dwHeight;
+	int ScreenW = UI_BASE_WIDTH;
+	int ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
 	RECT FrameRect = pFragListT1->GetFrameRect ();
 	int FrameW	= FrameRect.right - FrameRect.left;

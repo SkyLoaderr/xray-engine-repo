@@ -61,8 +61,8 @@ void CUIDragDropList::AttachChild(CUIWindow* pChild)
 	{
 		PlaceItemInGrid(pDragDropItem);
 
-		pDragDropItem->SetWidth(GetCellWidth()*pDragDropItem->GetGridWidth());
-		pDragDropItem->SetHeight(GetCellHeight()*pDragDropItem->GetGridHeight());
+//		pDragDropItem->SetWidth(GetCellWidth()*pDragDropItem->GetGridWidth());
+//		pDragDropItem->SetHeight(GetCellHeight()*pDragDropItem->GetGridHeight());
 
 		pDragDropItem->SetCellWidth(GetCellWidth());
 		pDragDropItem->SetCellHeight(GetCellHeight());

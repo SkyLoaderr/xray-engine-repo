@@ -82,8 +82,8 @@ void	CUIGameDM::Init				()
 	pPlayerList->SetAutoDelete(true);
 
 
-	int ScreenW = Device.dwWidth;
-	int ScreenH = Device.dwHeight;
+	int ScreenW = UI_BASE_WIDTH;
+	int ScreenH = UI_BASE_HEIGHT;
 	//-----------------------------------------------------------
 	RECT FrameRect = pFragList->GetFrameRect ();
 	int FrameW	= FrameRect.right - FrameRect.left;
