@@ -119,7 +119,6 @@ void CDetailManager::soft_Render	()
 			Device.Primitive.setIndices		(vBase, _IS.Buffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
-			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 		}
 		
 		// Clean up

@@ -296,7 +296,6 @@ void CApplication::LoadTitle(char *S, char *S2)
 	Device.Primitive.setVertices	(ll_hVS->dwHandle,ll_hVS->dwStride,Device.Streams.Vertex.Buffer());
 	Device.Primitive.setIndices		(Offset,Device.Streams.QuadIB);;
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
-	UPDATEC							(4,2,1);
 
 	// Draw title
 	Log			(S,S2);

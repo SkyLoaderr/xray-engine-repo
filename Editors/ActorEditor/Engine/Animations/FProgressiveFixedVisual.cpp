@@ -123,7 +123,6 @@ void FProgressiveFixedVisual::Render(float LOD)
 		Device.Primitive.setVertices	(vShader,vSize,pVertices);
 		Device.Primitive.setIndices		(vBase,	pIndices);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,V_Current,iBase,I_Current/3);
-		UPDATEC							(V_Current,I_Current/3,1);
 	}
 }
 

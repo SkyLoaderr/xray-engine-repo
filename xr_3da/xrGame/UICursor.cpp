@@ -49,6 +49,5 @@ void CUICursor::Render	()
 	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Stream->Buffer());
 	Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
-	UPDATEC							(4,2,1);
 }
 //--------------------------------------------------------------------

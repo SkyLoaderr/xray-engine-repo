@@ -102,7 +102,6 @@ void Fvisual::Render	(float LOD)
 	Device.Primitive.setVertices	(vShader,vSize,pVertices);
 	Device.Primitive.setIndices		(vBase,	pIndices);
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,iBase,dwPrimitives);
-	UPDATEC							(vCount,dwPrimitives,1);
 }
 
 #define PCOPY(a)	a = pFrom->a

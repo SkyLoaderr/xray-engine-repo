@@ -224,7 +224,6 @@ void CLightProjector::calculate	()
 		Device.Primitive.setVertices	(vs_Blur->dwHandle,vs_Blur->dwStride,Device.Streams.Vertex.Buffer());
 		Device.Primitive.setIndices		(Offset,Device.Streams.QuadIB);
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
-		UPDATEC							(4,2,1);
 
 /*
 		for (int it=0; it<1; it++)	

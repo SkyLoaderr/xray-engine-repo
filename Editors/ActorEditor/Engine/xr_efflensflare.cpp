@@ -332,7 +332,6 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 	    }
 	}
-	UPDATEC					(_2render.size()*4,_2render.size()*2,1);
 }
 
 void CLensFlare::Update( Fvector& sun_dir, Fcolor& color )

@@ -205,7 +205,6 @@ void CGlowManager::Render()
 				Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
 				Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount,0,vCount/2);
-				UPDATEC							(vCount,vCount/2,1);
 			}
 		}
 	}

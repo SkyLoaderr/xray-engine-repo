@@ -261,7 +261,6 @@ void CWallmarksEngine::Render()
 						Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.Buffer());
 						Device.Primitive.setIndices		(0,0);
 						Device.Primitive.Render			(D3DPT_TRIANGLELIST,w_offset,w_count/3);
-						UPDATEC							(w_count,w_count/3,1);
 
 						// Restart (re-lock/re-calc)
 						w_verts		= (FVF::LIT*)	Device.Streams.Vertex.Lock	(MAX_TRIS*3,VS->dwStride,w_offset);
