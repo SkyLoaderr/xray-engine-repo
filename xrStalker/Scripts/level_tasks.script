@@ -519,13 +519,13 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_svoboda_rg6_done" then
 		set_task_state(task.completed, "bar_dolg_rg6_quest", 0)
 
-	elseif info_id == "bar_kill_borov_voronin" then
+	elseif info_id == "bar_kill_borov_done" then
 		set_task_state(task.completed, "bar_dolg_borov_quest", 0)
 
-	elseif info_id == "bar_kill_svoboda_ambush_voronin" then
+	elseif info_id == "bar_kill_svoboda_ambush_done" then
 		set_task_state(task.completed, "bar_dolg_svoboda_ambush_quest", 0)
 
-	elseif info_id == "bar_kill_svoboda_leader_voronin" then
+	elseif info_id == "bar_kill_svoboda_leader_done" then
 		set_task_state(task.completed, "bar_dolg_svoboda_leader_kill_quest", 0)
 
 	elseif info_id == "bar_bar_hunter_quest_start" then
