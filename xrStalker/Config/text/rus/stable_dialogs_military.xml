@@ -30,4 +30,25 @@
     <string id="mil_dolg_job_013">
         <text>Нет</text>
     </string>
+    <string id="rozgovor1_0">
+        <text>default text</text>
+    </string>
+    <string id="rozgovor1_1">
+        <text>Как дела?</text>
+    </string>
+    <string id="rozgovor1_11">
+        <text>Отлично....</text>
+    </string>
+    <string id="rozgovor1_2">
+        <text>Че делаешь?</text>
+    </string>
+    <string id="rozgovor1_22">
+        <text>Втыкаю....</text>
+    </string>
+    <string id="rozgovor1_3">
+        <text>Да?</text>
+    </string>
+    <string id="rozgovor1_33">
+        <text>Нет...</text>
+    </string>
 </string_table>

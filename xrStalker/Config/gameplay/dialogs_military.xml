@@ -28,20 +28,54 @@
                 <text>mil_dolg_job_0124</text>
                 <next>0125</next>
             </phrase>
-            <phrase id="0">
-                <text>mil_dolg_job_0</text>
-                <next>01</next>
-            </phrase>
             <phrase id="0123">
                 <text>mil_dolg_job_0123</text>
                 <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0125">
+                <text>mil_dolg_job_0125</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text>mil_dolg_job_0</text>
+                <next>01</next>
             </phrase>
             <phrase id="013">
                 <text>mil_dolg_job_013</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="0125">
-                <text>mil_dolg_job_0125</text>
+        </phrase_list>
+    </dialog>
+    <dialog id="rozgovor1">
+        <phrase_list>
+            <phrase id="0">
+                <text>rozgovor1_0</text>
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+            </phrase>
+            <phrase id="1">
+                <text>rozgovor1_1</text>
+                <next>11</next>
+            </phrase>
+            <phrase id="11">
+                <text>rozgovor1_11</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="2">
+                <text>rozgovor1_2</text>
+                <next>22</next>
+            </phrase>
+            <phrase id="22">
+                <text>rozgovor1_22</text>
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="3">
+                <text>rozgovor1_3</text>
+                <next>33</next>
+            </phrase>
+            <phrase id="33">
+                <text>rozgovor1_33</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
