@@ -309,6 +309,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 void CActor::g_Orientate	(u32 mstate_rl, float dt)
 {
+	if(!g_Alive())return;
 	// visual effect of "fwd+strafe" like motion
 	float calc_yaw = 0;
 	if(mstate_real&mcClimb)

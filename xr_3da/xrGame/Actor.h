@@ -71,11 +71,12 @@ public:
 	virtual								~CActor				();
 
 public:
-	virtual CInventoryOwner*			cast_inventory_owner	()						{return this;}
-	virtual CActor*						cast_actor				()						{return this;}
-	virtual CGameObject*				cast_game_object		()						{return this;}
-	virtual IInputReceiver*				cast_input_receiver		()						{return this;}
+	virtual CInventoryOwner*			cast_inventory_owner		()						{return this;}
+	virtual CActor*						cast_actor					()						{return this;}
+	virtual CGameObject*				cast_game_object			()						{return this;}
+	virtual IInputReceiver*				cast_input_receiver			()						{return this;}
 	virtual	CCharacterPhysicsSupport*	character_physics_support	()						{return m_pPhysics_support;}
+	virtual CPHDestroyable*				ph_destroyable				();
 public:
 
 	virtual void						Load				( LPCSTR section );

@@ -1420,3 +1420,8 @@ float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
 
 	return hit_power;
 }
+
+CPHDestroyable*	CActor::	ph_destroyable	()
+{
+	return smart_cast<CPHDestroyable*>(character_physics_support());
+}

@@ -5,7 +5,8 @@
 #include "object_factory.h"
 #include "xrServer_Objects_ALife.h"
 #include "Level.h"
-
+#include "PhysicsShell.h"
+#include "Actor.h"
 CPHDestroyable::CPHDestroyable()
 {
 	m_flags.flags=0;
@@ -16,8 +17,16 @@ void CPHDestroyable::Destroy(u16 parent_id/*=u16(-1)*/)
 	
 	if(!CanDestroy())return ;
 //////////send destroy to self //////////////////////////////////////////////////////////////////
-	CPhysicsShellHolder* obj=PPhysicsShellHolder();
-
+	CPhysicsShellHolder	*obj	=PPhysicsShellHolder()		;
+	CActor				*A		=smart_cast<CActor*>(obj)	;
+	if(A)
+	{
+		obj->PPhysicsShell()->Deactivate();
+		xr_delete(obj->PPhysicsShell());
+		obj->setVisible(FALSE);
+		obj->setEnabled(FALSE);
+	}
+	else
 	{
 		NET_Packet			P;
 		obj->u_EventGen			(P,GE_DESTROY,obj->ID());
