@@ -2,7 +2,7 @@
 #include "../ai_monster_state.h"
 #include "burer_attack_melee.h"
 #include "burer.h"
-#include "../../ai_monster_movement.h"
+#include "../ai_monster_movement.h"
 
 #define MIN_DIST_MELEE_ATTACK	5.f
 #define MAX_DIST_MELEE_ATTACK	9.f

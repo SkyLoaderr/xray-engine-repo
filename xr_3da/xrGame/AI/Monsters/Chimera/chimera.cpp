@@ -3,7 +3,7 @@
 #include "chimera_state_manager.h"
 #include "../../../../skeletonanimated.h"
 #include "../../../detail_path_manager.h"
-#include "../../ai_monster_movement.h"
+#include "../ai_monster_movement.h"
 
 CChimera::CChimera()
 {
