@@ -668,6 +668,8 @@ function action_raid:finalize ()
 end
 -------------
 function action_raid:reset_scheme ()
+    if self.a.raid_path == nil then return end
+
 	if self.a.path_walk_info == nil then
 	   self.a.path_walk_info = utils.path_parse_waypoints(self.a.raid_path)
 	end

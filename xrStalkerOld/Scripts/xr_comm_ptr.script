@@ -356,6 +356,7 @@ function action_raid:finalize ()
 end
 -------------
 function action_raid:reset_scheme ()
+    if self.a.raid_path == nil then return end
 	if self.a.raid_walk_info == nil then
 	   self.a.raid_walk_info = utils.path_parse_waypoints(self.a.raid_path)
 	end
@@ -365,9 +366,7 @@ function action_raid:reset_scheme ()
 	self.move_mgr:reset(self.a.raid_path, self.a.raid_walk_info, self.a.raid_look, self.a.raid_look_info, self.a.team, nil, {obj = self, func = self.callback})
 	local id = self.object:id()
     local size = table.getn (xr_motivator.storage[id].followers)
-    printf ("test 1")
     if size == 0 then return end
-    printf ("test 2")
     for a = 1, size, 1 do
         xr_motivator.storage[id].followers[a].raid_process = true
         --local npc = xr_motivator.storage[self.object:id()].followers[a].npc
@@ -450,7 +449,7 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.patrol_path  = utils.cfg_get_string (ini, section, "patrol_path", npc, true,  gulag_name)
 	st.patrol_look  = utils.cfg_get_string (ini, section, "patrol_look", npc, false, gulag_name)
 	st.escape_path  = utils.cfg_get_string (ini, section, "escape_path", npc, false, gulag_name)
-	st.raid_enabled = utils.cfg_get_bool   (ini, section, "raid_enabled",npc, false, gulag_name)
+	st.raid_enabled = utils.cfg_get_bool   (ini, section, "raid_enabled",npc, false)
 	st.raid_path    = utils.cfg_get_string (ini, section, "raid_path",   npc, false, gulag_name)
 	st.raid_look    = utils.cfg_get_string (ini, section, "raid_look",   npc, false, gulag_name)
 	st.team         = utils.cfg_get_string (ini, section, "team",        npc, false, gulag_name)
