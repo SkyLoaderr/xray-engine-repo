@@ -47,6 +47,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 			// Clone from Phantom
 			E->ID					=	PerformIDgen(0xffff);
 			E->owner				=	CL		= SelectBestClientToMigrateTo	(E);
+			E->s_flags				&=	~M_SPAWN_OBJECT_PHANTOM;
 			ids_used[E->ID]			=	true;
 			entities.insert			(make_pair(E->ID,E));
 		} else {
