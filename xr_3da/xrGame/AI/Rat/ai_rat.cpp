@@ -49,7 +49,6 @@ CAI_Rat::CAI_Rat()
 	m_fDHeading				= 0;
 	m_fGoalChangeDelta		= 10.f;
 	m_fGoalChangeTime		= 0.f;
-	m_fSpeed				= m_fMaxSpeed;
 	m_fASpeed				= .2f;
 	m_fMinHeight			= 0.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
@@ -116,14 +115,17 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceIinterval");
 	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
 	//fire
-	m_fHitPower       = (float)pSettings->ReadINT(section,"HitPower");
-	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");
+	m_fHitPower			= (float)pSettings->ReadINT(section,"HitPower");
+	m_dwHitInterval		= pSettings->ReadINT(section,"HitInterval");
+
+	m_fSpeed			= m_fMaxSpeed;
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 {
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
+	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(vPosition);
 	INIT_SQUAD_AND_LEADER;
 

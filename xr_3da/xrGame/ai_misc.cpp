@@ -408,12 +408,12 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 				// assign y-values to the circle points being built
 				j = iStartI;
 				dwCurNode = iNodeIndex = dwPrevNode;
-				if (bfInsideNode(tpNode = Node(iNodeIndex),tpaPath[j], fHalfSubNodeSize)) {
+				if (bfInsideNode(tpNode = Node(iNodeIndex),tpaPath[j])) {
 					do	{
 						tpaPath[j].y = ffGetY(*(Node(iNodeIndex)),tpaPath[j].x,tpaPath[j].z);
 						j++;
 					}
-					while ((j<(int)tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j], fHalfSubNodeSize)));
+					while ((j<(int)tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j])));
 					dwCurNode = iNodeIndex;
 				}
 				while (j < (int)tpaPath.size()) {
@@ -422,13 +422,13 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 					iCount = tpNode->links;
 					for ( i=0; i < iCount; i++) {
 						iNodeIndex = UnpackLink(taLinks[i]);
-						if (bfInsideNode(tpNode = Node(iNodeIndex),tpaPath[j], fHalfSubNodeSize)) {
+						if (bfInsideNode(tpNode = Node(iNodeIndex),tpaPath[j])) {
 							do	{
 								tpaPath[j].y = ffGetY(*(Node(iNodeIndex)),tpaPath[j].x,tpaPath[j].z);
 								tPrevPoint = tpaPath[j - 1];
 								j++;
 							}
-							while ((j<(int)tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j], fHalfSubNodeSize)));
+							while ((j<(int)tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j])));
 							dwCurNode = iNodeIndex;
 							dwaNodes.push_back(iNodeIndex);
 							break;
@@ -461,7 +461,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 							NodePosition tNodePosition;
 							PackPosition(tNodePosition,tpaPath[j]);
 							q_Range_Bit_X(dwCurNode,tPrevPoint,4*fHalfSubNodeSize,&tNodePosition,dwBestNode,fBestCost);
-							if (bfInsideNode(Node(dwBestNode),tpaPath[j],fHalfSubNodeSize)) {
+							if (bfInsideNode(Node(dwBestNode),tpaPath[j])) {
 								dwCurNode = dwBestNode;
 								tpaPath[j].y = ffGetY(*(Node(dwBestNode)),tpaPath[j].x,tpaPath[j].z);
 								dwaNodes.push_back(dwBestNode);
@@ -486,7 +486,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 				tTravelNode = tPrevPoint = tPrevPrevPoint;
 
 				iSavedIndex = -1;
-				while (!bfInsideNode(Node(dwCurNode),tFinishPoint, fHalfSubNodeSize)) {
+				while (!bfInsideNode(Node(dwCurNode),tFinishPoint)) {
 					UnpackContour(tCurContour,dwCurNode);
 					tpNode = Node(dwCurNode);
 					taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
@@ -537,7 +537,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						dwaNodes.push_back(iSavedIndex);
 					}
 					else
-						if (bfInsideNode(tpNode,tFinishPoint, fHalfSubNodeSize)) {
+						if (bfInsideNode(tpNode,tFinishPoint)) {
 							tTravelNode = tFinishPoint;
 							tTravelNode.y = ffGetY(*(tpNode),tTravelNode.x,tTravelNode.z);
 							tPrevPoint = tTravelNode;
@@ -636,7 +636,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 					dwaNodes.push_back(iSavedIndex);
 				}
 				else
-					if (bfInsideNode(tpNode,tFinishPoint, fHalfSubNodeSize)) {
+					if (bfInsideNode(tpNode,tFinishPoint)) {
 						tTravelNode = tFinishPoint;
 						tTravelNode.y = ffGetY(*(tpNode),tTravelNode.x,tTravelNode.z);
 						tPrevPoint = tTravelNode;
@@ -758,7 +758,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 	// check path for y-values - this is because of the bug I didn't fix
 	for ( i=0, j=0; i<(int)tpaPath.size(); i++) {
 		int k=j;
-		for ( ; (j < (int)dwaNodes.size()) && (!bfInsideNode(Node(dwaNodes[j]),tpaPath[i],fHalfSubNodeSize)); j++) ;
+		for ( ; (j < (int)dwaNodes.size()) && (!bfInsideNode(Node(dwaNodes[j]),tpaPath[i])); j++) ;
 		if (j >= (int)dwaNodes.size()) {
 			j=k;
 			tpaPath.erase(tpaPath.begin() + i);
@@ -886,7 +886,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 				dwCurNode = iSavedIndex;
 			}
 			else
-				if (bfInsideNode(tpNode,tFinishPoint, fHalfSubNodeSize)) {
+				if (bfInsideNode(tpNode,tFinishPoint)) {
 					tTravelNode = tFinishPoint;
 					tPrevPoint = tTravelNode;
 					dwPrevNode = dwCurNode;
@@ -1050,7 +1050,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 			dwCurNode = iSavedIndex;
 		}
 		else
-			if (bfInsideNode(tpNode,tFinishPoint, fHalfSubNodeSize)) {
+			if (bfInsideNode(tpNode,tFinishPoint)) {
 				tTravelNode = tFinishPoint;
 				tPrevPoint = tTravelNode;
 				dwPrevNode = dwCurNode;
@@ -1161,7 +1161,7 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 	dwCurNode = dwStartNode;
 	tTempPoint = tTravelNode = tPrevPoint = tStartPoint;
 
-	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition,fHalfSubNodeSize) && (fCurDistance < fDistance)) {
+	while (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition) && (fCurDistance < fDistance)) {
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
@@ -1209,7 +1209,7 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 			dwCurNode = iSavedIndex;
 		}
 		else
-			if (bfInsideNode(tpNode,tFinishPoint, fHalfSubNodeSize)) {
+			if (bfInsideNode(tpNode,tFinishPoint)) {
 				tTravelNode = tFinishPoint;
 				tPrevPoint = tTravelNode;
 				dwPrevNode = dwCurNode;
@@ -1218,7 +1218,7 @@ DWORD CAI_Space::dwfCheckPositionInDirection(DWORD dwStartNode, Fvector tStartPo
 			else
 				return(DWORD(-1));
 	}
-	if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition,fHalfSubNodeSize))
+	if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPosition))
 		return(dwCurNode);
 	else
 		return(DWORD(-1));

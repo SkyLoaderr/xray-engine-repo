@@ -184,7 +184,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 //				}
 //			}
 			
-			for (int m=k; (k < (int)tpaNodes.size()) && (!AI.bfInsideNode(AI.Node(tpaNodes[k]),tpaVector0[i],fHalfSubnodeSize)); k++) ;
+			for (int m=k; (k < (int)tpaNodes.size()) && (!AI.bfInsideNode(AI.Node(tpaNodes[k]),tpaVector0[i])); k++) ;
 
 			if (k >= (int)tpaNodes.size()) {
 				k = m;

@@ -134,9 +134,10 @@ public:
 				((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
 	}
 	
-	IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition, float fHalfSubNodeSize)
+	IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition)
 	{
 		Fvector tP0, tP1;
+		float fHalfSubNodeSize = m_header.size*.5f;
 		UnpackPosition(tP0,tpNode->p0);
 		UnpackPosition(tP1,tpNode->p1);
 		return(

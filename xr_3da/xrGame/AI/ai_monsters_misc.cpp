@@ -277,7 +277,7 @@ void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector 
 		dwCurNode = iSavedIndex;
 	}
 	else
-		if (AI.bfInsideNode(tpNode,tFinishPoint, fHalfSubNodeSize)) {
+		if (AI.bfInsideNode(tpNode,tFinishPoint)) {
 			tTravelNode.P = tFinishPoint;
 			tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
 		}

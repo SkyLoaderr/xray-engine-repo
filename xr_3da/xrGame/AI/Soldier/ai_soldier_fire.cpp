@@ -856,7 +856,7 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	int iCount = AI_Node->links;
 	for (int i=0; i<iCount; i++) {
 		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
- 		if (Level().AI.bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.35f)) {
+ 		if (Level().AI.bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
 			bOk = true;
 			break;
 		}
@@ -897,7 +897,7 @@ bool CAI_Soldier::bfSetLookToDangerPlace()
 	int iCount = AI_Node->links;
 	for (int i=0; i<iCount; i++) {
 		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
- 		if (Level().AI.bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.35f)) {
+ 		if (Level().AI.bfInsideNode(tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P)) {
 			bOk = true;
 			break;
 		}

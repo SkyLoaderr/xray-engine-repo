@@ -411,9 +411,21 @@ void CAI_Rat::FreeState()
 		mRotate.setHPB(m_tHPB.x,m_tHPB.y,m_tHPB.z);
 
 		// Update position
-		m_tOldPosition.set(vPosition);
+		Fvector tTemp;
+		tTemp.set(vPosition);
 		vPosition.mad(tDirection,m_fSpeed*m_fTimeUpdateDelta);
-		vPosition.y = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+		if (!AI_Node) {
+			if (AI_NodeID = Level().AI.q_Node(0,vPosition))
+				AI_Node = Level().AI.Node(AI_NodeID);
+		}
+		if (AI_Node && Level().AI.bfInsideNode(AI_Node,vPosition)) {
+			vPosition.y = ffGetY(*AI_Node,vPosition.x,vPosition.z);
+			m_tOldPosition.set(tTemp);
+		}
+		else {
+			vPosition.set(m_tOldPosition);
+			m_fSafeSpeed = m_fSpeed = EPS_S;
+		}
 
 		SetDirectionLook();
 
