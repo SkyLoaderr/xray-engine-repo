@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 868
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -2129,14 +2129,6 @@ object fraLeftBar: TfraLeftBar
     Top = 137
     object MenuItem18: TMenuItem
       Caption = '-'
-    end
-    object miMakeAIPath: TMenuItem
-      Caption = 'Make AI Map Mask'
-      OnClick = miMakeAIPathClick
-    end
-    object miClearAIMask: TMenuItem
-      Caption = 'Clear AI Map Mask'
-      OnClick = miClearAIMaskClick
     end
   end
 end

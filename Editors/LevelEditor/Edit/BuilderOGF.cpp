@@ -24,10 +24,8 @@ bool SceneBuilder::BuildSkyModel(){
 	return false;
 }
 
-// some types
 bool SceneBuilder::BuildHOMModel()
 {
-	// build HOM model
 	CMemoryWriter F;
 
     F.open_chunk(0);

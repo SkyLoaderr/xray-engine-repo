@@ -177,8 +177,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebGame;
 	TMxPopupMenu *pmGame;
 	TMenuItem *MenuItem18;
-	TMenuItem *miMakeAIPath;
-	TMenuItem *miClearAIMask;
     void __fastcall ebClearClick(TObject *Sender);
     void __fastcall ebLoadClick(TObject *Sender);
     void __fastcall ebSaveClick(TObject *Sender);
@@ -263,8 +261,6 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall ExtBtn2MouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall miClearAIMaskClick(TObject *Sender);
-	void __fastcall miMakeAIPathClick(TObject *Sender);
 	void __fastcall ebGameMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 private:	// User declarations

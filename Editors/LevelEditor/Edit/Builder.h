@@ -110,6 +110,7 @@ protected:
 
     bool 	BuildSkyModel			();
     bool 	BuildHOMModel			();
+    bool	BuildAIMapMask			();
     BOOL	ParseStaticObjects		(ObjectList& lst, LPCSTR prefix=0);
     BOOL 	CompileStatic		   	();
 

@@ -108,9 +108,8 @@
       intermediate\ESound_Environment.obj intermediate\SoundManager_LE.obj 
       intermediate\xrRender_console.obj intermediate\Blender_Palette.obj 
       intermediate\EParticlesObject.obj intermediate\ParticleGroupEditor.obj 
-      intermediate\SceneSummaryInfo.obj intermediate\Scene_ai_map_mask.obj 
-      intermediate\Custom2DProjector.obj intermediate\R_Backend_xform.obj 
-      intermediate\Blender_Recorder_R2.obj"/>
+      intermediate\SceneSummaryInfo.obj intermediate\Custom2DProjector.obj 
+      intermediate\R_Backend_xform.obj intermediate\Blender_Recorder_R2.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -386,7 +385,6 @@
       <FILE FILENAME="edit\EParticlesObject.cpp" FORMNAME="" UNITNAME="EParticlesObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ParticleGroupEditor.cpp" FORMNAME="" UNITNAME="ParticleGroupEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneSummaryInfo.cpp" FORMNAME="" UNITNAME="SceneSummaryInfo" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Scene_ai_map_mask.cpp" FORMNAME="" UNITNAME="Scene_ai_map_mask" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\Custom2DProjector.cpp" FORMNAME="" UNITNAME="Custom2DProjector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

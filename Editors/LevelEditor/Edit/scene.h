@@ -8,7 +8,6 @@
 #include "Communicate.h"
 #include "pure.h"
 #include "ElTree.hpp"
-#include "Scene_ai_map_mask.h"
 //refs
 struct FSChunkDef;
 class PropValue;
@@ -94,8 +93,6 @@ public:
 	st_LevelOptions	m_LevelOp;
 
     vector<CLight*> frame_light;
-
-	CAIMapMask		m_AIMask;
 protected:
 	bool m_Valid;
 	int m_Locked;

@@ -626,17 +626,7 @@ void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::miClearAIMaskClick(TObject *Sender)
-{
-	UI.Command(COMMAND_CLEAR_AI_MAP_MASK);
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::miMakeAIPathClick(TObject *Sender)
-{
-	UI.Command(COMMAND_MAKE_AI_MAP_MASK);
-}
-//---------------------------------------------------------------------------
 
 
 
