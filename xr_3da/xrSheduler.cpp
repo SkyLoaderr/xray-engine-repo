@@ -114,6 +114,7 @@ void CSheduler::ProcessStep			()
 	u32	dwTime					= Device.dwTimeGlobal;
 
 	// Normal priority
+	CTimer						eTimer;
 	while (!Items.empty() && Top().dwTimeForExecute < dwTime)
 	{
 		// Update
@@ -144,9 +145,17 @@ void CSheduler::ProcessStep			()
 		Push						(TNext);
 
 		// Real update call
+		eTimer.Start				();
 		T.Object->shedule.b_locked	= TRUE;
 		T.Object->shedule_Update	(Elapsed);
 		T.Object->shedule.b_locked	= FALSE;
+		u32	execTime				= eTimer.GetElapsed_ms		();
+		if (execTime>3)
+		{
+			CObject*	O				= dynamic_cast<CObject*> (T.Object);
+			if (O)						Msg	("! xrSheduler: object exceed timelimit (%s / %dms)",O->cName(),execTime);
+			else						Msg	("! xrSheduler: object exceed timelimit (%x / %dms)",T.Object,execTime);
+		}	
 
 		Slice						();
 	}
