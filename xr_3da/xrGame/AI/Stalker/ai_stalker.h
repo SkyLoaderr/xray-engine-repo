@@ -55,6 +55,7 @@ private:
 	u32						m_dwActionEndTime;
 	bool					m_bIfSearchFailed;
 	bool					_A,_B,_C,_D,_E,_F,_G,_H,_I,_J,_K,_L,_M;
+	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
 	vector<Fvector>			m_tpaPoints;
 	vector<Fvector>			m_tpaDeviations;
@@ -237,6 +238,12 @@ private:
 			void			Hide							();
 			void			Detour							();
 			void			SearchEnemy						();
+			void			ExploreDE						();
+			void			ExploreDNE						();
+			void			ExploreNDE						();
+			void			ExploreNDNE						();
+			void			TakeItems						();
+			void			AccomplishTask					();
 
 			// selectors
 			void			vfInitSelector					(IBaseAI_NodeEvaluator &S, CSquad &Squad, CEntity* &Leader);
