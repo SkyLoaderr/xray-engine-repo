@@ -268,17 +268,7 @@ void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 
 void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 {
-    if (m_Thm){
-        RECT r;
-        r.left = 2; r.top = 2;
-        float w, h;
-        w = m_Thm->_Width();
-        h = m_Thm->_Height();
-        if (w!=h)	pbImage->Canvas->FillRect(pbImage->BoundsRect);
-        if (w>h){   r.right = pbImage->Width-1; r.bottom = h/w*pbImage->Height-1;
-        }else{      r.right = w/h*pbImage->Width-1; r.bottom = pbImage->Height-1;}
-        m_Thm->DrawStretch(paImage->Handle, &r);
-    }
+    if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
 }
 //---------------------------------------------------------------------------
 

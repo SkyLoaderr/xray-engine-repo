@@ -23,7 +23,7 @@ friend class CImageManager;
 	void 			DrawStretch		(HANDLE handle, RECT *rect);
 public:
 					EImageThumbnail	(LPCSTR src_name, THMType type, bool bLoad=true);
-					~EImageThumbnail();
+	virtual			~EImageThumbnail();
 
     // thumbnail public routines
     IC int			_Width			(){return m_TexParams.width;}

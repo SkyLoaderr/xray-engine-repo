@@ -49,7 +49,6 @@ __published:	// IDE-managed Components
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall pbImagePaint(TObject *Sender);
-	void __fastcall pbImageDblClick(TObject *Sender);
 	void __fastcall ebConvertClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvItemsItemFocused(TObject *Sender);

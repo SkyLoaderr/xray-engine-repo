@@ -65,7 +65,6 @@ USEUNIT("edit\EditObjectIO.cpp");
 USEUNIT("PropertiesObjectSMotions.cpp");
 USEUNIT("edit\EditObjectMotions.cpp");
 USEUNIT("PropertiesObjectOMotions.cpp");
-USEUNIT("PropertiesObjectSurfaces.cpp");
 USEUNIT("PropertiesObjectMeshes.cpp");
 USEUNIT("PropertiesObjectInfo.cpp");
 USEUNIT("edit\BuilderSkeletonOGF.cpp");

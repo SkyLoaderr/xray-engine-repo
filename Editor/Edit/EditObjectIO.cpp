@@ -56,6 +56,17 @@ bool CEditableObject::LoadObject(const char* fname){
 }
 
 void CEditableObject::SaveObject(const char* fname){
+	if (IsModified()){
+        // update transform matrix
+        Fmatrix	mTransform,mScale,mTranslate,mRotate;
+        mRotate.setHPB			(t_vRotate.y, t_vRotate.x, t_vRotate.z);
+        mScale.scale			(t_vScale);
+        mTranslate.translate	(t_vPosition);
+        mTransform.mul			(mTranslate,mRotate);
+        mTransform.mul			(mScale);
+        TranslateToWorld		(mTransform);
+    }
+
     CFS_Memory F;
     F.open_chunk(CHUNK_OBJECT_BODY);
     Save(F);

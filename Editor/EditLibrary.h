@@ -49,16 +49,13 @@ __published:	// IDE-managed Components
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebPropertiesClick(TObject *Sender);
-    void __fastcall ebDeleteItemClick(TObject *Sender);
     void __fastcall tvObjectsDblClick(TObject *Sender);
-    void __fastcall ebLoadObjectClick(TObject *Sender);
 //    void __fastcall ebEditObjectClick(TObject *Sender);
 //    void __fastcall ebApplyEditClick(TObject *Sender);
 //    void __fastcall ebCancelEditClick(TObject *Sender);
     void __fastcall cbPreviewClick(TObject *Sender);
 	void __fastcall ebMakeThmClick(TObject *Sender);
 	void __fastcall ebUnloadClick(TObject *Sender);
-	void __fastcall ebReloadObjectClick(TObject *Sender);
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvObjectsItemFocused(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);

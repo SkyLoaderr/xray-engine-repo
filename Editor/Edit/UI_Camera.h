@@ -36,7 +36,7 @@ protected:
     void			ArcBall		(TShiftState Shift, float X, float Y);
 public:
 					CUI_Camera	();
-    				~CUI_Camera	();
+    virtual			~CUI_Camera	();
 
 	void			BuildCamera	();
 	void			Reset		();

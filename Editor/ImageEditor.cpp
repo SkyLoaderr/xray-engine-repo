@@ -6,9 +6,6 @@
 #include "ImageEditor.h"
 #include "UI_Main.h"
 #include "scene.h"
-#include "main.h"
-#include "texture.h"
-#include "previewimage.h"
 #include "ImageThumbnail.h"
 #include "ImageManager.h"
 #include "PropertiesList.h"
@@ -227,23 +224,7 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 
 void __fastcall TfrmImageLib::pbImagePaint(TObject *Sender)
 {
-    if (m_Thm){
-        RECT r;
-        r.left = 2; r.top = 2;
-        float w, h;
-        w = m_Thm->_Width();
-        h = m_Thm->_Height();
-        if (w!=h)	pbImage->Canvas->FillRect(pbImage->BoundsRect);
-        if (w>h){   r.right = pbImage->Width-1; r.bottom = h/w*pbImage->Height-1;
-        }else{      r.right = w/h*pbImage->Width-1; r.bottom = pbImage->Height-1;}
-        m_Thm->DrawStretch(paImage->Handle, &r);
-    }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmImageLib::pbImageDblClick(TObject *Sender)
-{
-//S	if (sel_tex) TfrmPreviewImage::Run(sel_tex);
+    if (m_Thm) m_Thm->Draw(paImage,pbImage,true);
 }
 //---------------------------------------------------------------------------
 

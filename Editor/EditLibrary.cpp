@@ -204,8 +204,6 @@ void TfrmEditLibrary::InitObjects()
 {
 	tvObjects->IsUpdating		= true;
     tvObjects->Items->Clear();
-//    FOLDER::AppendFolder(tvObjects,SKYDOME_FOLDER);
-//    FOLDER::AppendFolder(tvObjects,DETAILOBJECT_FOLDER);
     AStringVec& lst = Lib->Objects();
     AnsiString nm;
     for(AStringIt it=lst.begin(); it!=lst.end(); it++){
@@ -220,8 +218,6 @@ void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Key==VK_ESCAPE) 	ebCancel->Click();
-	else if (Key==VK_DELETE)ebDeleteItemClick(Sender);
-	else if (Key==VK_INSERT)ebLoadObjectClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -248,114 +244,7 @@ void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ebLoadObjectClick(TObject *Sender)
-{
-/*
-	int handle;
-	char _FileName[MAX_PATH]="";
-    if( FS.GetOpenName( &FS.m_Import, _FileName ) ){
-    	VERIFY( _FileName );
-    	ELog.Msg( mtInformation, "EditLib: loading %s...", _FileName );
-        char name[1024];
-        char ext[32];
-        _splitpath( _FileName, 0, 0, name, ext );
-        CLibObject* LO = new CLibObject();
-		LO->SetName(name);
-        if (LO->ImportFrom(_FileName)){
-            LO->m_bNeedSave = true;
-            // append to library
-            Lib->AddObject(LO);
-			// generate object name
-        	CEditableObject* O = LO->GetReference();
-            char obj_name[MAX_OBJ_NAME];
-            Lib->GenerateObjectName(obj_name,O->GetName(),LO);
-        	LO->SetName(obj_name);
-            // find last folder
-            TElTreeItem* node = tvObjects->Selected;
-            AnsiString folder;
-            FOLDER::MakeName(node,0,folder,true);
-			LO->SetName(folder+AnsiString("\\")+obj_name);
-		    tvObjects->Selected = FOLDER::AppendObject(tvObjects,LO->GetName());
-            ebPropertiesClick(Sender);
-            // init folders
-            OnModified();
-            LO->SaveObject();
 
-			FS.MarkFile(_FileName);
-    	}else{
-        	_DELETE(LO);
-        }
-	}
-*/
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLibrary::ebDeleteItemClick(TObject *Sender)
-{
-/*
-    TElTreeItem* pNode = tvObjects->Selected;
-    if (pNode){
-		AnsiString full_name;
-    	if (FOLDER::IsFolder(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
-		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
-                    FOLDER::MakeName(item,0,full_name,false);
-                	if (FOLDER::IsObject(item))
-                    	Lib->RemoveObject(full_name.c_str());
-                }
-	            pNode->Delete();
-				OnModified();
-        	}
-        }
-    	if (FOLDER::IsObject(pNode)){
-	        if (ELog.DlgMsg(mtConfirmation, "Delete selected object?") == mrYes){
-				FOLDER::MakeName(pNode,0,full_name,false);
-				Lib->RemoveObject(full_name.c_str());
-	            pNode->Delete();
-				OnModified();
-        	}
-        }
-    }else{
-		ELog.DlgMsg(mtInformation, "At first selected item.");
-    }
-*/
-}
-//---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::ebReloadObjectClick(TObject *Sender)
-{
-/*
-    TElTreeItem* pNode = tvObjects->Selected;
-    if (pNode){
-    	if (FOLDER::IsObject(pNode)){
-	    	AnsiString name; FOLDER::MakeName(pNode,0,name,false);
-    	    CLibObject* obj = Lib->SearchObject(name.c_str());
-            if (obj){
-				AnsiString fn = obj->GetSrcName();
-			    if( FS.GetOpenName( &FS.m_Import, fn ) ){
-                	// save old params
-                    bool bDynamic  = obj->GetReference()->IsDynamic();
-                    AnsiString ltx = obj->GetReference()->GetClassScript();
-                    // reload file
-                	if (obj->ImportFrom(fn.c_str())){
-                    	// restore params
-	                    obj->GetReference()->SetDynamic(bDynamic);
-    	                obj->GetReference()->GetClassScript() = ltx;
-
-			            obj->m_bNeedSave = true;
-                    	ELog.DlgMsg(mtInformation,"Reload successful.");
-
-                        FS.MarkFile(fn);
-                    }else{
-                    	ELog.DlgMsg(mtInformation,"Reload failed.");
-                    }
-		            OnModified();
-                }
-    		}
-        }
-    }
-*/
-}
-//---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::ebCancelClick(TObject *Sender)
 {
     CloseEditLibrary(true);

@@ -51,10 +51,6 @@ __published:	// IDE-managed Components
     TMultiObjCheck *cbMakeDynamic;
     TMxLabel *RxLabel11;
     TPanel *paBottom;
-	TMxPopupMenu *pmNumericSet;
-	TMenuItem *Position1;
-	TMenuItem *Rotation1;
-	TMenuItem *Scale1;
 	TPanel *Panel2;
 	TGroupBox *GroupBox4;
 	TMxLabel *RxLabel1;
@@ -242,7 +238,6 @@ __published:	// IDE-managed Components
 	void __fastcall tvMeshesItemFocused(TObject *Sender);
 	void __fastcall tvSurfacesItemFocused(TObject *Sender);
 private:	// User declarations
-    EImageThumbnail*		m_Thm;
     CSurface* 				m_Surf;
 
     CSMotion* 				selected_smotion;
@@ -260,6 +255,7 @@ private:	// User declarations
     TElTreeItem* 			FindSMotionItem(const char* name);
 
     // static part
+    static EImageThumbnail*	m_Thumbnail;
 	static CEditableObject* m_EditObject;
 	static 	TfrmPropertiesObject* form;
 

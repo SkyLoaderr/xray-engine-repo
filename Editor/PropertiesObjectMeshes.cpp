@@ -18,6 +18,7 @@ void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
 // Set up meshes
     AnsiString name;
 
+    tvMeshes->IsUpdating = true;
 	tvMeshes->Items->Clear();
 
     EditMeshIt m_it = m_EditObject->m_Meshes.begin();
@@ -29,21 +30,24 @@ void __fastcall TfrmPropertiesObject::tsMeshesShow(TObject *Sender)
         name = (*m_it)->GetName();
         tvMeshes->Items->AddChildObject(root,name,(TObject*)(*m_it));
     }
-    tvMeshes->FullExpand();
     tvMeshes->Sort(true);
+    tvMeshes->FullExpand();
+    tvMeshes->IsUpdating = false;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesObject::tvMeshesItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item = tvMeshes->Selected;
-    if (Item->Level==0){
-		lbVertices->Caption 	= m_EditObject->GetVertexCount();
-		lbFaces->Caption 		= m_EditObject->GetFaceCount();
-    }else{
-        CEditableMesh* M		= (CEditableMesh*)Item->Data;
-		lbVertices->Caption 	= M->GetVertexCount();
-		lbFaces->Caption 		= M->GetFaceCount();
+    if (Item){
+	    if (Item->Level==0){
+			lbVertices->Caption 	= m_EditObject->GetVertexCount();
+			lbFaces->Caption 		= m_EditObject->GetFaceCount();
+	    }else{
+    	    CEditableMesh* M		= (CEditableMesh*)Item->Data;
+			lbVertices->Caption 	= M->GetVertexCount();
+			lbFaces->Caption 		= M->GetFaceCount();
+    	}
     }
 }
 //---------------------------------------------------------------------------

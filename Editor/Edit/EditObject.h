@@ -28,7 +28,7 @@ class CSurface
     DWORD			m_dwFVF;
 public:
     				CSurface		(){ZeroMemory(this,sizeof(CSurface));}
-				    ~CSurface		(){ if (m_Shader) Device.Shader.Delete(m_Shader);}
+					~CSurface		(){ if (m_Shader) Device.Shader.Delete(m_Shader);}
     IC int			_Priority		()const {return m_Shader->Flags.iPriority;}
     IC bool			_StrictB2F		()const {return m_Shader->Flags.bStrictB2F;}
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
@@ -104,7 +104,7 @@ public:
 
     bool			t_bOnModified;
     IC bool			IsModified				(){return t_bOnModified;}
-    IC bool			Modified				(){t_bOnModified=true;}
+    IC void			Modified				(){t_bOnModified=true;}
 protected:
     st_Version		m_ObjVer;
 

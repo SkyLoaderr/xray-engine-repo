@@ -96,8 +96,8 @@ void ELibrary::ReloadLibrary(){
 void ELibrary::RefreshLibrary(){
 	EditObjPairIt O = m_EditObjects.begin();
 	EditObjPairIt E = m_EditObjects.end();
-//    for(; O!=E; O++)
-//    	delete O->second;
+    for(; O!=E; O++)
+    	O->second->Reload();
 }
 //----------------------------------------------------
 

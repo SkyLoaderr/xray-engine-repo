@@ -11,6 +11,7 @@ void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
 	if (!m_EditObject) return;
 // Set up surfaces&textures
     AnsiString name;
+    tvOMotions->IsUpdating = true;
     tvOMotions->Items->Clear();
 
     // create root tree node (object name)
@@ -42,6 +43,7 @@ void __fastcall TfrmPropertiesObject::tsOAnimationShow(TObject *Sender){
 
     FEditNode = 0;
     selected_omotion = 0;
+    tvOMotions->IsUpdating = false;
 }
 //---------------------------------------------------------------------------
 

@@ -21,12 +21,11 @@ float g_MinBoxSize 	= 0.05f;
 CEditableObject::CEditableObject(LPCSTR name)
 {
 	m_LibName		= name;
-//    m_LibParent 	= parent;
 
 	m_DynamicObject = false;
     m_ObjVer.reset	();
 
-	m_Box.set		( 0,0,0, 0,0,0 );
+	m_Box.invalidate();
 
     m_LoadState 	= 0;
 
@@ -131,25 +130,14 @@ int CEditableObject::GetVertexCount(){
 void CEditableObject::UpdateBox(){
 	VERIFY(!m_Meshes.empty());
     Fvector pt;
-    bool boxdefined = false;
     EditMeshIt m = m_Meshes.begin();
     for(;m!=m_Meshes.end();m++){
         Fbox meshbox;
         (*m)->GetBox(meshbox);
-        if(boxdefined){
-            for(int i=0; i<8; i++){
-                Fvector pt;
-                meshbox.getpoint(i, pt);
-                m_Box.modify(pt);
-            }
-        }else{
-            meshbox.getpoint( 0, pt );
-            m_Box.set(pt,pt);
-            boxdefined = true;
-            for(int i=1; i<8; i++){
-                meshbox.getpoint( i, pt );
-                m_Box.modify(pt);
-            }
+        for(int i=0; i<8; i++){
+            Fvector pt;
+            meshbox.getpoint(i, pt);
+            m_Box.modify(pt);
         }
     }
 }
