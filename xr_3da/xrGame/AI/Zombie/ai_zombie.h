@@ -32,7 +32,6 @@ class CAI_Zombie : public CCustomMonster
 			aiZombieFreeHuntingPassive,
 			aiZombieAttackFire,
 			aiZombieAttackRun,
-			aiZombieUnderFire,
 			aiZombiePursuit,
 			aiZombieReturnHome,
 		};
@@ -274,7 +273,6 @@ class CAI_Zombie : public CCustomMonster
 		void	AttackFire();
 		void	AttackRun();
 		void	Turn();
-		void	UnderFire();
 		void	Pursuit();
 		void	ReturnHome();
 	public:

@@ -67,10 +67,6 @@ void CAI_Zombie::Think()
 				Turn();
 				break;
 			}
-			case aiZombieUnderFire : {
-				UnderFire();
-				break;
-			}
 			case aiZombiePursuit : {
 				Pursuit();
 				break;
@@ -281,62 +277,6 @@ void CAI_Zombie::FreeHuntingPassive()
 	UpdateTransform();
 
 	vfAddActiveMember();
-
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	vfSetFire(false,Group);
-}
-
-void CAI_Zombie::UnderFire()
-{
-	WRITE_TO_LOG("UnderFire");
-
-	bStopThinking = true;
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
-
-	SelectEnemy(m_Enemy);
-	
-	if (m_Enemy.Enemy) {
-		GO_TO_NEW_STATE_THIS_UPDATE(aiZombieAttackRun);
-	}
-	else {
-		if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
-			if (m_tLastSound.tpEntity && (m_tLastSound.tpEntity->g_Team() != g_Team()) && (!bfCheckIfSoundFrightful())) {
-				m_tSavedEnemy = m_tLastSound.tpEntity;
-				m_dwLostEnemyTime = Level().timeServer();
-				SWITCH_TO_NEW_STATE(aiZombieAttackRun);
-			}
-			m_dwLastRangeSearch = Level().timeServer();
-			Fvector tTemp;
-			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
-			tTemp.normalize_safe();
-			tTemp.mul(m_fUnderFireDistance);
-			m_tSpawnPosition.add(vPosition,tTemp);
-		}
-		//if (m_fMorale >= m_fMoraleNormalValue - EPS_L) {
-		//	GO_TO_PREV_STATE;
-		//}
-	}
-
-	m_tGoalDir = m_tSpawnPosition;
-	
-	vfUpdateTime(m_fTimeUpdateDelta);
-
-	vfComputeNewPosition();
-
-	SetDirectionLook();
-
-	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8) || m_bNoWay) {
-		m_fSpeed = .1f;
-		if (m_bNoWay) {
-			float fAngle = ::Random.randF(m_fWallMinTurnValue,m_fWallMaxTurnValue);
-			r_torso_target.yaw = r_torso_current.yaw + fAngle;
-			r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiZombieTurn);
-		}
-	}
-	else 
-		m_fSafeSpeed = m_fSpeed = m_fAttackSpeed;
 
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
