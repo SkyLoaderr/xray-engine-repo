@@ -11,7 +11,7 @@
 		<texture>ui\ui_mn_weapons</texture>
 	</static>
 	<!-- ammo name -->
-	<static x="115" y="22" width="85" height="30">
+	<static x="65" y="22" width="85" height="30">
 		<text x="0" y="0" font="graffiti32" r="238" g="155" b="23" a="255">Ammo</text>
 	</static>
 	<!-- weapon icon -->
