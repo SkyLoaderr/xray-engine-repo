@@ -5,6 +5,7 @@
 #include "PhysicsShell.h"
 #include "../skeletonanimated.h"
 #include "Actor.h"
+const float default_hinge_friction = 5.f;
 CCharacterPhysicsSupport::~CCharacterPhysicsSupport()
 {
 	if(!b_skeleton_in_shell)xr_delete(m_physics_skeleton);
@@ -211,7 +212,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 
 			if(skel_ddelay==0)
 			{
-				m_pPhysicsShell->set_JointResistance(5.f*hinge_force_factor1);//5.f*hinge_force_factor1
+				m_pPhysicsShell->set_JointResistance(default_hinge_friction*hinge_force_factor1);//5.f*hinge_force_factor1
 				//m_pPhysicsShell->SetAirResistance()
 
 			}
@@ -292,6 +293,7 @@ void CCharacterPhysicsSupport::ActivateShell			()
 		CActor* A=smart_cast<CActor*>(&m_EntityAlife);
 		R_ASSERT2(A,"not an actor has actor type");
 		if(A->Holder()) return;
+		if(m_eState==esRemoved)return;
 	}
 	if(m_pPhysicsShell) return;
 	Fvector velocity;

@@ -5,6 +5,7 @@
 #include "PHShellSplitter.h"
 #include "PHFracture.h"
 #include "PHJointDestroyInfo.h"
+#include "PHCollideValidator.h"
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
 //#include "../ode/src/collision_kernel.h"
@@ -209,6 +210,7 @@ void CPHShell::PresetActive()
 	{
 		m_space=dSimpleSpaceCreate(0);
 		dSpaceSetCleanup(m_space,0);
+
 	}
 }
 

@@ -5,12 +5,13 @@
 #include "level.h"
 #include "PHMoveStorage.h"
 #include "dRayMotions.h"
-
+#include "PHCollideValidator.h"
 	CPHObject::CPHObject()
 {
 	m_flags.flags=0;
 	spatial.type|=STYPE_PHYSIC;
 	m_island.Init();
+	CPHCollideValidator::InitObject(*this);
 }
 
 void CPHObject::activate()
@@ -132,6 +133,8 @@ void CPHObject::UnFreeze()
 	ph_world->RemoveFreezedObject(this);
 	ph_world->AddObject(this);
 }
+
+
 
 CPHUpdateObject::CPHUpdateObject()
 {

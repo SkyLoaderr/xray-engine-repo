@@ -11,6 +11,7 @@
 #include "MathUtils.h"
 #include "PhysicsShellHolder.h"
 #include "../skeletoncustom.h"
+#include "PHCollideValidator.h"
 //#pragma warning(disable:4995)
 //#pragma warning(disable:4267)
 //#include "../ode/src/collision_kernel.h"
@@ -1319,4 +1320,9 @@ CODEGeom* CPHShell::get_GeomByID(u16 bone_id)
 		if(ret) return ret;
 	}
 	return NULL;
+}
+
+void	CPHShell::RegisterToCLGroup	(CGID g)	
+{
+	CPHCollideValidator::RegisterObjToGroup(g,*static_cast<CPHObject*>(this));
 }

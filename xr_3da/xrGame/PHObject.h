@@ -4,8 +4,8 @@
 #include "../ispatial.h"
 #include "PHItemList.h"
 #include "PHIsland.h"
-
-
+typedef u32	CLClassBits;
+typedef u32	CLBits;
 DEFINE_VECTOR(ISpatial*,qResultVec,qResultIt)
 class CPHObject;
 class CPHUpdateObject;
@@ -27,7 +27,10 @@ class CPHObject :
 					fl_ray_motions					=(1<<4)
 				};
 
-			CPHIsland		m_island;
+			CPHIsland			m_island;
+			CLBits				m_collide_bits;
+		
+			_flags<CLClassBits>	m_collide_class_bits;
 
 public:
 			enum ECastType
@@ -92,6 +95,10 @@ virtual		CPHMoveStorage*	MoveStorage						()										{return NULL;}
 virtual		ECastType		CastType						(){return tpNotDefinite;}
 virtual		void			vis_update_activate				()										{}
 virtual		void			vis_update_deactivate			()										{}
+IC			CLBits&						collide_bits		()										{return m_collide_bits;}
+IC			_flags<CLClassBits>&		collide_class_bits	()										{return m_collide_class_bits;}
+IC			const CLBits&				collide_bits		()const 								{return m_collide_bits;}
+IC			const _flags<CLClassBits>&	collide_class_bits 	()const 								{return m_collide_class_bits;}
 };
 
 

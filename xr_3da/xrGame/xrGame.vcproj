@@ -5376,6 +5376,16 @@
 								RelativePath=".\UsableScriptObject.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="CollideVavidator"
+							Filter="">
+							<File
+								RelativePath=".\PHCollideValidator.cpp">
+							</File>
+							<File
+								RelativePath=".\PHCollideValidator.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Inventory"

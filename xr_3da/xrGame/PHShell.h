@@ -65,6 +65,11 @@ public:
 			void			PureActivate			();
 	virtual void			Deactivate				()		;
 
+	virtual			_flags<CLClassBits>&	CollideClassBits	()			{return CPHObject::collide_class_bits();}
+	virtual			CLBits&					CollideBits			()			{return CPHObject::collide_bits();}
+	virtual const	_flags<CLClassBits>&	CollideClassBits	()const		{return CPHObject::collide_class_bits();}
+	virtual const	CLBits&					CollideBits			()const		{return CPHObject::collide_bits();}
+	virtual			void					RegisterToCLGroup	(CGID g)	;
 	virtual void			setMass					(float M)									;
 
 	virtual void			setMass1				(float M)									;

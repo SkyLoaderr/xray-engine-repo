@@ -8,7 +8,8 @@
 #include "PHSynchronize.h"
 #include "MathUtils.h"
 #include "../skeletoncustom.h"
-
+#include "PHObject.h"
+#include "PHCollideValidator.h"
 #define F_MAX         3.402823466e+38F
 
 u32 CPHSkeleton::remove_time=5000;
@@ -78,11 +79,11 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 	}
 	else 
 	{
-		CPhysicsShellHolder* obj=PPhysicsShellHolder();
-
+		CPhysicsShellHolder	*obj	=	PPhysicsShellHolder();
+		CKinematics			*K		=	NULL;
 		if (obj->Visual())
 		{
-			CKinematics* K= smart_cast<CKinematics*>(obj->Visual());
+			K= smart_cast<CKinematics*>(obj->Visual());
 			if(K)
 			{
 				K->LL_SetBoneRoot(po->saved_bones.root_bone);
@@ -91,6 +92,19 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 		}
 		SpawnInitPhysics(D);
 		RestoreNetState(po);
+
+		if(K)
+		{
+			CInifile* ini=K->LL_UserData();
+			if(ini&&ini->section_exist("collide"))
+			{
+				if(ini->r_bool("collide","not_collide_parts"))
+				{
+					CGID gr= CPHCollideValidator::RegisterGroup();
+					obj->PPhysicsShell()->RegisterToCLGroup(gr);
+				}
+			}
+		}
 	}
 	return false;
 }

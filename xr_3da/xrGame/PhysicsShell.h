@@ -21,6 +21,9 @@ class NET_Packet;
 struct SBoneShape;
 class  CPHShellSplitterHolder;
 class CKinematics;
+typedef u32	CLClassBits;
+typedef u32	CLBits;
+typedef u32	CGID;
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -247,6 +250,12 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
 	virtual CPHIsland*			PIsland					()													= 0;
+	
+	virtual			_flags<CLClassBits>&CollideClassBits()													= 0;
+	virtual			CLBits&				CollideBits		()													= 0;
+	virtual const	_flags<CLClassBits>&CollideClassBits()const												= 0;
+	virtual const	CLBits&				CollideBits		()const												= 0;
+	virtual			void				RegisterToCLGroup(CGID g)											= 0;
 
 	virtual bool				isFractured				()													= 0;
 	virtual CPHShellSplitterHolder*	SplitterHolder		()													= 0;
