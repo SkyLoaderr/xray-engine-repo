@@ -516,7 +516,7 @@ public:
     {	
         std::string		draw_val;
         if (!OnDrawText.empty())	OnDrawText(this, draw_val);
-        else 			return HaveCaption()?caption[GetValueEx()?1:0].c_str():0;
+        else 			return HaveCaption()?caption[GetValueEx()?1:0].c_str():"";
         return			draw_val;
     }
     virtual bool		Equal			(PropValue* val){return !!value->equal(*((FlagValue<T>*)val)->value,mask);}

@@ -121,10 +121,10 @@ namespace PS
 		void __stdcall  	FindActionByName	(LPCSTR new_name, bool& res);
 		void __stdcall  	CollisionFrictionOnAfterEdit	(PropValue* sender, float& edit_val, bool& accepted);
 		void __stdcall  	CollisionFrictionOnBeforeEdit	(PropValue* sender, float& edit_val);
-		void __stdcall  	CollisionFrictionOnDraw			(PropValue* sender, shared_str& draw_val);
+		void __stdcall  	CollisionFrictionOnDraw			(PropValue* sender, std::string& draw_val);
 		void __stdcall  	CollisionCutoffOnAfterEdit		(PropValue* sender, float& edit_val, bool& accepted);
 		void __stdcall  	CollisionCutoffOnBeforeEdit		(PropValue* sender, float& edit_val);
-		void __stdcall  	CollisionCutoffOnDraw			(PropValue* sender, shared_str& draw_val);
+		void __stdcall  	CollisionCutoffOnDraw			(PropValue* sender, std::string& draw_val);
 		void __stdcall  	OnActionEditClick	(PropValue* sender, bool& bDataModified, bool& bSafe);
 	    void __stdcall  	OnFrameResize		(PropValue* sender);
 	    void __stdcall  	OnShaderChange		(PropValue* sender);

@@ -159,13 +159,13 @@ class ECORE_API CEditableObject{
 	ref_geom 		vs_SkeletonGeom;
 #endif
 // desc
-	shared_str			m_CreateName;
+	shared_str 		m_CreateName;
     time_t			m_CreateTime;
-	shared_str			m_ModifName;
+	shared_str 		m_ModifName;
     time_t			m_ModifTime;
     
 // general
-	shared_str			m_ClassScript;
+	std::string		m_ClassScript;
 
 	SurfaceVec		m_Surfaces;
 	EditMeshVec		m_Meshes;
@@ -286,7 +286,7 @@ public:
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
 
-	IC shared_str		GetClassScript			()	{return m_ClassScript;}
+	IC std::string&	GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}
 
     // animation

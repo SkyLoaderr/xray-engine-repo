@@ -636,6 +636,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             switch(type){
             case PROP_TIME:
             case PROP_CTEXT:
+            case PROP_STEXT:
             case PROP_RTEXT:
                 if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
             break;
@@ -793,6 +794,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_CHOOSE:			ChooseClick		(item); 	break;
                 case PROP_NUMERIC:			PrepareLWNumber	(item);		break;
 	            case PROP_CTEXT:
+                case PROP_STEXT:
                 case PROP_RTEXT:
                 	if ((X-prop->draw_rect.x1)<(prop->draw_rect.width()-(m_BMEllipsis->Width+2)))	PrepareLWText(item);
                     else								                   							ExecTextEditor(prop);
@@ -1255,6 +1257,14 @@ void TProperties::PrepareLWText(TElTreeItem* item)
 		edText->Text 		= edit_val.c_str();
 		edText->MaxLength	= V->lim;
 	}break;
+    case PROP_STEXT:{
+		STextValue* V		= dynamic_cast<STextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+        std::string edit_val= V->GetValue();
+	    prop->BeforeEdit<STextValue,std::string>(edit_val);
+        edText->EditMask	= "";
+		edText->Text 		= edit_val.c_str();
+		edText->MaxLength	= 0;
+    }break;
     case PROP_RTEXT:{
 		RTextValue* V		= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
         shared_str edit_val	= V->GetValue();
@@ -1295,16 +1305,25 @@ void TProperties::ApplyLWText()
 	    switch (prop->type){
         case PROP_CTEXT:{
 			CTextValue* V		= dynamic_cast<CTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			std::string new_val		= AnsiString(edText->Text).c_str();
+			std::string new_val	= AnsiString(edText->Text).c_str();
             if (prop->AfterEdit<CTextValue,std::string>(new_val))
                 if (prop->ApplyValue<CTextValue,LPCSTR>(new_val.c_str())){
                     Modified();
                 }
             item->ColumnText->Strings[0] = prop->GetDrawText().c_str();
         }break;
+        case PROP_STEXT:{
+			STextValue* V		= dynamic_cast<STextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+			std::string new_val	= AnsiString(edText->Text).c_str();
+            if (prop->AfterEdit<STextValue,std::string>(new_val))
+                if (prop->ApplyValue<STextValue,std::string>(new_val)){
+                    Modified();
+                }
+            item->ColumnText->Strings[0] = prop->GetDrawText().c_str();
+        }break;
         case PROP_RTEXT:{
 			RTextValue* V		= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			shared_str new_val		= AnsiString(edText->Text).c_str();
+			shared_str new_val	= AnsiString(edText->Text).c_str();
             if (prop->AfterEdit<RTextValue,shared_str>(new_val))
                 if (prop->ApplyValue<RTextValue,shared_str>(new_val)){
                     Modified();
@@ -1351,6 +1370,7 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
         edText->Update();
 	    switch (prop->type){
     	case PROP_CTEXT:
+        case PROP_STEXT:
     	case PROP_RTEXT:{
 			AnsiString new_val	= edText->Text;
 			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str()))
@@ -1376,6 +1396,19 @@ void TProperties::ExecTextEditor(PropItem* prop)
             	edit_val	= tmp.c_str();
 			    if (prop->AfterEdit<CTextValue,std::string>(edit_val))
                     if (prop->ApplyValue<CTextValue,LPCSTR>(edit_val.c_str()))
+                        Modified();
+                prop->Item()->ColumnText->Strings[0] = prop->GetDrawText().c_str();
+            }
+        }break;
+    	case PROP_STEXT:{
+            STextValue* V	= dynamic_cast<STextValue*>(prop->GetFrontValue()); R_ASSERT(V);
+            std::string edit_val= V->GetValue();
+		    prop->BeforeEdit<STextValue,std::string>(edit_val);
+            AnsiString tmp	= edit_val.c_str();
+            if (TfrmText::RunEditor(tmp,AnsiString(prop->Item()->Text).c_str(),false)){
+            	edit_val	= tmp.c_str();
+			    if (prop->AfterEdit<STextValue,std::string>(edit_val))
+                    if (prop->ApplyValue<STextValue,std::string>(edit_val))
                         Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetDrawText().c_str();
             }

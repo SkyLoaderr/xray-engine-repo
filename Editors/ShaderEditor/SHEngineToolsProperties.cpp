@@ -37,13 +37,13 @@ void __fastcall CSHEngineTools::FillMatrixProps(PropItemVec& items, LPCSTR pref,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, shared_str& draw_val)
+void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, std::string& draw_val)
 {
-	if (draw_val[1]!='$') draw_val="Custom";
+	if (draw_val[0]!='$') draw_val="Custom";
 }
 //---------------------------------------------------------------------------
 
-void CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, shared_str& nm, bool& res)
+void CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, std::string& nm, bool& res)
 {
 	CListValue* V 	= dynamic_cast<CListValue*>(sender);  R_ASSERT(V);
 	VERIFY			(nm.size());
@@ -75,7 +75,7 @@ void __fastcall CSHEngineTools::FillConstProps(PropItemVec& items, LPCSTR pref, 
 }
 //---------------------------------------------------------------------------
 
-void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, shared_str& nm, bool& res)
+void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, std::string& nm, bool& res)
 {
 	CListValue* V 	= dynamic_cast<CListValue*>(sender);  R_ASSERT(V);
     VERIFY			(nm.size());
@@ -95,13 +95,13 @@ void CSHEngineTools::ConstOnAfterEdit(PropValue* sender, shared_str& nm, bool& r
     }
 }
 //------------------------------------------------------------------------------
-void CSHEngineTools::NameOnAfterEdit(PropValue* sender, shared_str& new_name, bool& res)
+void CSHEngineTools::NameOnAfterEdit(PropValue* sender, std::string& new_name, bool& res)
 {
 	CTextValue* V 			= dynamic_cast<CTextValue*>(sender); R_ASSERT(V);
-    AnsiString nn			= *new_name;
+    AnsiString nn			= new_name.c_str();
 	if (FHelper.NameAfterEdit((TElTreeItem*)m_CurrentItem->Item(),*V->GetValue(),nn)){
     	new_name			= nn.c_str();
-    	RemoteRenameBlender(V->GetValue(),*new_name);
+    	RemoteRenameBlender(V->GetValue(),new_name.c_str());
     }
 }
 //------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ void CSHEngineTools::RealUpdateProperties()
         PHelper().CreateCaption(items,"Owner",desc->cComputer);
 		CTextValue* V = PHelper().CreateCText(items,"Name",desc->cName,sizeof(desc->cName));
 		V->OnAfterEditEvent.bind		(this,&CSHEngineTools::NameOnAfterEdit);
-		V->OnBeforeEditEvent.bind		(&PHelper(),&IPropHelper::NameBeforeEdit);
+		V->OnBeforeEditEvent.bind		(&PHelper(),&IPropHelper::CNameBeforeEdit);
 		V->Owner()->OnDrawTextEvent.bind(&PHelper(),&IPropHelper::CNameDraw);
 
         while (!data.eof()){

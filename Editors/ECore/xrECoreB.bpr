@@ -102,13 +102,12 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG 
-      -IR:\SDK\DirectX9.0_sum_2004\Include -IEditor -IEngine -IEngine\Visuals 
+    <IDLCFLAGS value="-IR:\SDK\DirectX9.0_sum_2004\Include -IEditor -IEngine -IEngine\Visuals 
       -IEngine\Blenders -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
       -IR:\Borland\CBuilder6\Include\Mfc -IP:\xrCore -IP:\Editors\xrEProps 
-      -I..\..\Tools\Etools -boa"/>
+      -I..\..\Tools\Etools -src_suffix cpp -D_EDITOR -D_ECOREB -D_DEBUG -boa"/>
     <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
       -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
@@ -350,8 +349,9 @@ Item1=XRLC_Intermediate
 Item2=xrLC_Options
 
 [HistoryLists\hlFinalOutputDir]
-Count=1
+Count=2
 Item0=x:\
+Item1=z:\
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
@@ -361,7 +361,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ActorEditor.exe
+HostApplication=z:\LevelEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

@@ -131,7 +131,7 @@ void ETextureThumbnail::Save(int age, LPCSTR path)
 
 void ETextureThumbnail::FillProp(PropItemVec& items, PropValue::TOnChange on_type_change)
 {
-	m_TexParams.FillProp		(items,on_type_change);
+	m_TexParams.FillProp		(m_SrcName.c_str(),items,on_type_change);
 }
 //------------------------------------------------------------------------------
 

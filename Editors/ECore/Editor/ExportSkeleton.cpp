@@ -604,7 +604,8 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     if (m_Source->GetClassScript().size()){
         F.open_chunk(OGF_S_USERDATA);
-        F.w(*m_Source->GetClassScript(),m_Source->GetClassScript().size());
+        std::string aaa;
+        F.w_stringZ(aaa);//m_Source->m_ClassScript);
         F.close_chunk();
     }
 
