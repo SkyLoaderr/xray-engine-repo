@@ -83,6 +83,8 @@ void	game_PlayerState::net_Export		(NET_Packet& P)
 	P.w_u16			(	GameID	);
 	P.w_u8			(	skin	);
 	P.w_u8			(	m_bCurrentVoteAgreed	);
+
+	P.w_u32			(Device.dwTimeGlobal - DeathTime);
 };
 
 void	game_PlayerState::net_Import		(NET_Packet& P)
@@ -100,6 +102,9 @@ void	game_PlayerState::net_Import		(NET_Packet& P)
 	P.r_u16			(	GameID	);
 	P.r_u8			(	skin	);
 	P.r_u8			(	m_bCurrentVoteAgreed	);
+
+	DeathTime = P.r_u32();
+//	DeathTime = Level().timeServer() - xdt;
 };
 
 game_TeamState::game_TeamState()

@@ -253,6 +253,19 @@ void game_cl_Deathmatch::Check_Invincible_Players()
 {
 };
 
+void game_cl_Deathmatch::ConvertTime2String		(string64* str, u32 Time)
+{
+	if (!str) return;
+	
+	u32 RHour = Time / 3600000;
+	Time %= 3600000;
+	u32 RMinutes = Time / 60000;
+	Time %= 60000;
+	u32 RSecs = Time / 1000;
+
+	sprintf(*str,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
+};
+
 void game_cl_Deathmatch::shedule_Update			(u32 dt)
 {
 	//fake
@@ -264,6 +277,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 		m_game_ui->SetSpectatorMsgCaption("");
 		m_game_ui->SetPressJumpMsgCaption("");
 		m_game_ui->SetPressBuyMsgCaption("");
+		m_game_ui->SetForceRespawnTimeCaption("");
 	};
 
 	switch (Phase())
@@ -278,14 +292,8 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 				{
 					u32 lts = Level().timeServer();
 					u32 Rest = (start_time + timelimit) - lts;
-
-					u32 RHour = Rest / 3600000;
-					Rest %= 3600000;
-					u32 RMinutes = Rest / 60000;
-					Rest %= 60000;
-					u32 RSecs = Rest / 1000;
 					string64 S;
-					sprintf(S,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
+					ConvertTime2String(&S, Rest);
 					//SetTimeMsgCaption(S);
 					if(m_game_ui)
 						m_game_ui->SetTimeMsgCaption(S);
@@ -354,6 +362,22 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					sprintf(VoteTimeResStr, "Time Left : %d:%d; Agreed %.2f%", MinitsLeft, SecsLeft, float(NumAgreed)/players.size());
 					if (m_game_ui)
 						m_game_ui->SetVoteTimeResultMsg(VoteTimeResStr);
+				};
+
+				if (local_player && local_player->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD) && m_u32ForceRespawn)
+				{
+					if(m_game_ui)
+					{
+						//					u32 lts = Level().timeServer();
+						//					u32 Rest = (start_time + local_player->DeathTime) - lts;
+						u32 Rest = m_u32ForceRespawn - local_player->DeathTime;
+						string64 S;
+						ConvertTime2String(&S, Rest);
+						string128 FullS;
+						sprintf(FullS, "Time to Respawn : %s", S);
+
+						m_game_ui->SetForceRespawnTimeCaption(FullS);
+					};
 				};
 			};
 		}break;

@@ -155,6 +155,7 @@ void game_sv_GameState::net_Export_State						(NET_Packet& P, ClientID to)
 	P.w_u8			(u8(m_bVotingEnabled));
 	P.w_u8			(u8(m_bFriendlyIndicators));
 	P.w_u8			(u8(net_sv_control_hit));
+	P.w_u32			(m_u32ForceRespawn);
 
 	// Players
 //	u32	p_count			= get_players_count() - ((g_pGamePersistent->bDedicatedServer)? 1 : 0);

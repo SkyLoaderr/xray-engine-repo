@@ -45,6 +45,7 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	m_bVotingEnabled = !!P.r_u8();
 	m_bFriendlyIndicators = !!P.r_u8();
 	m_bServerControlHits = !!P.r_u8();
+	m_u32ForceRespawn = P.r_u32();
 
 	// Players
 	u16	p_count;

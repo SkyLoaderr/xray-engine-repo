@@ -242,7 +242,11 @@ u32 xrServer::OnMessage(NET_Packet& P, ClientID sender)			// Non-Zero means broa
 	case M_CLIENTREADY:
 		{
 			xrClientData* CL		= ID_to_client(sender);
-			if (CL)	CL->net_Ready	= TRUE;
+			if (CL)	
+			{
+				CL->net_Ready	= TRUE;
+				CL->ps->DeathTime = Device.dwTimeGlobal;
+			};
 			game->signal_Syncronize	();
 			VERIFY					(verify_entities());
 		}break;

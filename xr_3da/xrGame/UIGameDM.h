@@ -47,6 +47,7 @@ protected:
 	shared_str					m_vote_caption0, m_vote_caption1;
 	shared_str					m_votetimeresult_caption;
 	shared_str					m_round_result_caption;		
+	shared_str					m_force_respawn_time_caption;
 
 	virtual	void					ClearLists				();
 
@@ -65,6 +66,7 @@ public:
 			void					SetPressJumpMsgCaption			(LPCSTR str);
 			void					SetPressBuyMsgCaption			(LPCSTR str);
 			void					SetRoundResultCaption			(LPCSTR str);
+			void					SetForceRespawnTimeCaption		(LPCSTR str);
 
 			void					SetVoteMessage					(LPCSTR str);
 			void					SetVoteTimeResultMsg			(LPCSTR str);

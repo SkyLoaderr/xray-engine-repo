@@ -31,6 +31,7 @@ protected:
 	bool								m_bVotingEnabled;
 	bool								m_bFriendlyIndicators;
 	bool								m_bServerControlHits;
+	u32									m_u32ForceRespawn;
 
 public:
 	typedef xr_map<ClientID,game_PlayerState*> PLAYERS_MAP;

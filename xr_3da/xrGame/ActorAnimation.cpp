@@ -441,9 +441,13 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		}
 	}
 #ifdef DEBUG
-	HUD().pFontSmall->SetColor	(0xffffffff);
-	HUD().pFontSmall->OutSet	(170,450);
-	HUD().pFontSmall->OutNext	("LUMINOCITY: [%f]",ROS()->get_luminocity());
+	if ((Level().CurrentControlEntity() == this) && g_ShowAnimationInfo) 
+	{
+
+		HUD().pFontSmall->SetColor	(0xffffffff);
+		HUD().pFontSmall->OutSet	(170,450);
+		HUD().pFontSmall->OutNext	("LUMINOCITY: [%f]",ROS()->get_luminocity());
+	};
 #endif
 
 #ifdef _DEBUG

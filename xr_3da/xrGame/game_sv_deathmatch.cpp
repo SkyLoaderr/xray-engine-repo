@@ -1479,6 +1479,7 @@ void	game_sv_Deathmatch::check_ForceRespawn		()
 	{
 		xrClientData *l_pC = (xrClientData*)	m_server->client_Get	(it);
 		game_PlayerState* ps	= l_pC->ps;
+		if (!l_pC->net_Ready || ps->Skip) continue;
 		if (!ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) continue;
 		u32 CurTime = Device.dwTimeGlobal;
 		if (ps->DeathTime + m_u32ForceRespawn < CurTime)

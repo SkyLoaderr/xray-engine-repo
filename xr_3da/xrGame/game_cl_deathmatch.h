@@ -73,6 +73,8 @@ protected:
 	virtual		void				LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* pBuyMenu, PRESET_ITEMS* pPresetItems);
 	virtual		s16					GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID);
 
+	virtual		void				ConvertTime2String		(string64* str, u32 Time);
+
 public:
 	virtual		char*				getTeamSection			(int Team);
 	virtual	void					SetCurrentBuyMenu		();
