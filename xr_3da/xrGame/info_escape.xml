@@ -3,7 +3,7 @@
 <game_information_portions>
     <info_portion id="escape_novice_need_weapon">
         <location>
-            <level></level>
+            <level>l01_escape</level>
             <object>001</object>
             <icon name="" x="2" y="3" width="1" height="1" marker="0"></icon>
             <text>ѕомочь ограбленному новичку</text>
@@ -19,7 +19,7 @@
     
 	<info_portion id="escape_need_blockpost_case">
         <location>
-            <level></level>
+            <level>l01_escape</level>
             <object>000</object>
 			<icon name="ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
             <text>”красть €щик с блокпоста</text>
