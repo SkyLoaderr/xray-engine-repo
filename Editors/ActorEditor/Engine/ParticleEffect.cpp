@@ -210,9 +210,9 @@ void CParticleEffect::Play()
 	m_RT_Flags.set		(flRT_Playing,TRUE);
    	pStartPlaying		(m_HandleActionList);
 }
-void CParticleEffect::Stop(BOOL bFinishPlaying)
+void CParticleEffect::Stop(BOOL bDefferedStop)
 {
-	if (bFinishPlaying){
+	if (bDefferedStop){
 		m_RT_Flags.set	(flRT_DefferedStop,TRUE);
     	pStopPlaying	(m_HandleActionList);
     }else{

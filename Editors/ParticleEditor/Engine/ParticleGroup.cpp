@@ -173,15 +173,15 @@ void CParticleGroup::Play()
 	m_RT_Flags.set 	(flRT_Playing,TRUE);
 }
 
-void CParticleGroup::Stop(bool bFinishPlaying)
+void CParticleGroup::Stop(BOOL bDefferedStop)
 {
-	if (bFinishPlaying){
+	if (bDefferedStop){
 		m_RT_Flags.set	(flRT_DefferedStop,TRUE);
     }else{
     	m_RT_Flags.set	(flRT_Playing,FALSE);
     }
     for (u32 i=0; i<children.size(); i++)
-        ((CParticleEffect*)children[i])->Stop(bFinishPlaying);
+        ((CParticleEffect*)children[i])->Stop(bDefferedStop);
 }
 
 void CParticleGroup::OnDeviceCreate()

@@ -3,6 +3,7 @@
 #define ParticleGroupH
 
 #include "FHierrarhyVisual.h"
+#include "ParticleCustom.h"
 
 namespace PS{
 class ENGINE_API CParticleEffect;
@@ -63,22 +64,22 @@ public:
 public:
 						CParticleGroup	();
 						~CParticleGroup	(){;}
-	void	 			OnFrame			(u32 dt);
+	virtual void	 	OnFrame			(u32 dt);
 
 	virtual void		Copy			(IRender_Visual* pFrom) {Debug.fatal("Can't duplicate particle system - NOT IMPLEMENTED");}
 
-    void 				OnDeviceCreate	();
-    void 				OnDeviceDestroy	();
+    virtual void 		OnDeviceCreate	();
+    virtual void 		OnDeviceDestroy	();
 
-    void				UpdateParent	(const Fmatrix& m, const Fvector& velocity);
+    virtual void		UpdateParent	(const Fmatrix& m, const Fvector& velocity);
 
     BOOL				Compile			(CPGDef* def);
 
 	const CPGDef*		GetDefinition	(){return m_Def;}
 
-	void				Play			();
-    void				Stop			(bool bFinishPlaying=true);
-    BOOL				IsPlaying		(){return m_RT_Flags.is(flRT_Playing);}
+	virtual void		Play			();
+    virtual void		Stop			(BOOL bDefferedStop=TRUE);
+    virtual BOOL		IsPlaying		(){return m_RT_Flags.is(flRT_Playing);}
 };
 
 }
