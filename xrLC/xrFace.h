@@ -15,7 +15,7 @@ class CLightmap;
 // Typedefs
 typedef vector<Vertex*>			vecVertex;
 typedef vecVertex::iterator		vecVertexIt;
-typedef vector<Face*>			vecFace;
+typedef CList<Face*>			vecFace;
 typedef vecFace::iterator		vecFaceIt;
 
 extern const int edge2idx[3][2];
