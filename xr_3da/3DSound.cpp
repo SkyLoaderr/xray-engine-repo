@@ -116,7 +116,7 @@ void CSound::PropagadeEvent()
 	if (0==pCreator)		return;
 
 	// Calculate range
-	float	limitV			= .05f;
+	float	limitV			= .01f;
 	float	clip			= (ps.flMinDistance*fVolume) / (psSoundRolloff*limitV); // (Dmin*V)/(R*V')
 	float	range			= _min(ps.flMaxDistance,clip);
 	if	(clip<0)			return;
@@ -140,7 +140,7 @@ void CSound::PropagadeEvent()
 		float A				= ps.flMinDistance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
 		clamp				(A,0.f,1.f);
 		float Power			= A*fVolume;
-		if (Power>EPS)		L->soundEvent		(owner->g_object,owner->g_type,ps.vPosition,Power);
+		if (Power>EPS_S)	L->soundEvent		(owner->g_object,owner->g_type,ps.vPosition,Power);
 	}
 }
 
