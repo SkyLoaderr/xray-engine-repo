@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "render.h"
 #include "flightscontroller.h"
+#include "xrLevel.h"
 
 // Disables all lights
 void CLightDB_Static::UnselectAll	(void) 
@@ -19,7 +20,7 @@ void	CLightDB_Static::Select		(Fvector &pos, float fRadius)
 	{
 		int		num	= *it;
 		xrLIGHT &L	= Lights[num];
-		if (L.data.type == D3DLIGHT_DIRECTIONAL)		Enable(num);
+		if (L.type == D3DLIGHT_DIRECTIONAL)		Enable(num);
 		else {
 			float	R	= fRadius+L.range;
 			if (pos.distance_to_sqr(L.position) < R*R)	Enable(num);
@@ -70,8 +71,9 @@ void CLightDB_Static::Load			(CStream *fs)
 		F				= fs->OpenChunk		(fsL_LIGHT_DYNAMIC);
 
 		DWORD size		= F->Length();
-		DWORD count		= size/sizeof(xrLIGHT);
-		R_ASSERT		(count*sizeof(xrLIGHT) == size);
+		DWORD element	= sizeof(Flight)+4;
+		DWORD count		= size/element;
+		R_ASSERT		(count*element == size);
 		Lights.resize	(count);
 		Distance.resize	(count);
 		Enabled.resize	(count);
@@ -80,7 +82,7 @@ void CLightDB_Static::Load			(CStream *fs)
 		{
 			
 			F->Read						(&Lights[i].dwController,4);
-			F->Read						(&Lights[i].data,sizeof(Flight));
+			F->Read						(&Lights[i],sizeof(Flight));
 
 			Lights[i].specular.set		(Lights[i].diffuse);
 			Lights[i].specular.mul_rgb	(0.2f);
@@ -95,7 +97,7 @@ void CLightDB_Static::Load			(CStream *fs)
 
 		F->Close		();
 	}
-	Msg	("* Layers/Lights : %d / %d",count,);
+	Msg	("* Layers/Lights : %d / %d",Layers.size(),count);
 }
 
 void CLightDB_Static::Unload		(void)

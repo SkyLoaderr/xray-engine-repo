@@ -3,12 +3,11 @@
 #pragma once
 
 #pragma pack(push,4)
-class xrLIGHT 
+class xrLIGHT       : public Flight
 {
 public:
 	DWORD			dwFrame;
 	DWORD			dwController;
-	Flight			data;
 };
 
 class xrLIGHT_control
