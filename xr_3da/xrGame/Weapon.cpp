@@ -547,12 +547,10 @@ void CWeapon::net_Export	(NET_Packet& P)
 	P.w_u16					(u16(0/*iAmmoElapsed*/));
 
 	//////
-	Fvector debug_vector = XFORM().c;
-	P.w_vec3				(debug_vector);
-	//P.w_vec3				(XFORM().c);
+	P.w_vec3				(Position());
 
 	float					_x,_y,_z;
-	XFORM().getHPB			(_y,_x,_z);
+	XFORM().getHPB			(_x,_y,_z);
 	P.w_angle8				(_x);
 	P.w_angle8				(_y);
 	P.w_angle8				(_z);
@@ -588,7 +586,7 @@ void CWeapon::shedule_Update	(u32 dT)
 {
 	// Queue shrink
 	u32	dwTimeCL		= Level().timeServer()-NET_Latency;
-	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
+//	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
 	// Inherited
 	inherited::shedule_Update	(dT);
@@ -699,11 +697,27 @@ void CWeapon::UpdateCL		()
 			light_render->set_active(false);
 	}
 
+	if (0==H_Parent() && m_pPhysicsShell)		
+	{
+		m_pPhysicsShell->Update	();
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		XFORM().set			(m_pPhysicsShell->mXFORM);
+		Position().set			(XFORM().c);
+	}
+
 	if (Remote() && NET.size())
 	{
 		// distinguish interpolation/extrapolation
 		u32	dwTime			= Level().timeServer()-NET_Latency;
 		net_update&	N		= NET.back();
+		if (NET.size() > 1)
+		{
+			NET.pop_front();
+		};
+		NET_Last = N;
+		XFORM().setHPB(NET_Last.angles.x, NET_Last.angles.y, NET_Last.angles.z);
+		Position().set(NET_Last.pos);
+/*
 		if ((dwTime > N.dwTimeStamp) || (NET.size()<2))
 		{
 			// BAD.	extrapolation
@@ -738,15 +752,10 @@ void CWeapon::UpdateCL		()
 				}
 			}
 		}
+*/		
 	}
 
-	if (0==H_Parent() && m_pPhysicsShell)		
-	{
-		m_pPhysicsShell->Update	();
-		XFORM().set			(m_pPhysicsShell->mXFORM);
-		XFORM().set			(m_pPhysicsShell->mXFORM);
-		Position().set			(XFORM().c);
-	}
+	
 }
 
 void CWeapon::SwitchState(u32 S)
