@@ -107,7 +107,7 @@ public:
 	virtual IRender_Portal*			getPortal				(int id);
 	virtual IRender_Sector*			getSector				(int id);
 	virtual IRender_Sector*			getSectorActive			();
-	virtual IRender_Visual*				getVisual				(int id);
+	virtual IRender_Visual*			getVisual				(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
 	virtual IDirect3DVertexBuffer9*	getVB					(int id);
 	virtual IDirect3DIndexBuffer9*	getIB					(int id);

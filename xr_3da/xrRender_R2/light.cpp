@@ -3,6 +3,7 @@
 
 light::light(void)
 {
+	spatial.type	= STYPE_LIGHTSOURCE;
 	flags.type		= POINT;
 	flags.bStatic	= false;
 	flags.bActive	= false;
@@ -29,7 +30,7 @@ light::~light(void)
 	Device.Shader.Delete	(s_point_uns);
 }
 
-void light::set_texture(LPCSTR name)
+void light::set_texture		(LPCSTR name)
 {
 	if (NULL==name)
 	{
@@ -51,40 +52,26 @@ void light::set_active(bool a)
 {
 	if (a)
 	{
-		if (flags.bActive)	return;
-		flags.bActive		= true;
-		RImplementation.Lights.Activate		(this);	
+		if (flags.bActive)					return;
+		flags.bActive						= true;
+		RImplementation.Lights.Activate		(this);
+		spatial_register					();
 	}
 	else
 	{
-		if (!flags.bActive)	return;
-		flags.bActive		= false;
+		if (!flags.bActive)					return;
+		flags.bActive						= false;
 		RImplementation.Lights.Deactivate	(this);
+		spatial_unregister					();
 	}
 }
 
 void	light::set_position	(const Fvector& P)
 { 
 	if (position.similar(P))	return;
+	position.set				(P);
 
-	position.set	(P);			
-	CSector* S		= (CSector*)	RImplementation.detectSector(position);
-
-	// Initial search
-	Fvector	 _P		= position;
-	u32		 cnt	= 0;
-	while (0==S && cnt<32) 
-	{
-		cnt		++;
-		_P.y	+=	.1f;
-		S		=	(CSector*) RImplementation.detectSector(position);
-	}
-
-	if (0==S && sector)			return;	// Search failed? - keep old sector
-	if (sector==S)				return;	// Sector doesn't changed? - keep old sector
-
-	// Sector changed
-	if (sector)			sector->lightRemove	(this);
-	sector	= S;
-	if (sector)			sector->lightAdd	(this);
+	spatial.center				= P;
+	spatial.range				= range;
+	spatial_move				();
 }

@@ -1,6 +1,8 @@
 #pragma once
 
-class light		:	public IRender_Light
+#include "..\ispatial.h"
+
+class light		:	public IRender_Light, public ISpatial
 {
 public:
 	struct {

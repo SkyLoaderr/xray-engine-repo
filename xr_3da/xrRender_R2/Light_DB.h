@@ -1,6 +1,5 @@
 #pragma once
 
-#include "..\light.h"
 #include "light.h"
 
 class CLight_DB
@@ -9,13 +8,12 @@ public:
 	Fvector3				sun_dir;
 	Fvector3				sun_color;
 private:
-	xr_vector<xrLIGHT_control>	v_static_controls;
-	xr_vector<light*>			v_static;
-	xr_set<light*>				v_dynamic_active;
-	xr_set<light*>				v_dynamic_inactive;
+	xr_vector<light*>		v_static;
+	xr_set<light*>			v_dynamic_active;
+	xr_set<light*>			v_dynamic_inactive;
 public:
-	xr_vector<light*>			v_selected_shadowed;
-	xr_vector<light*>			v_selected_unshadowed;
+	xr_vector<light*>		v_selected_shadowed;
+	xr_vector<light*>		v_selected_unshadowed;
 public:
 	void					add_sector_lights	(xr_vector<WORD> &	L);
 	void					add_sector_dlight	(light*			L);

@@ -14,23 +14,6 @@ void CLight_DB::Load			(IReader *fs)
 {
 	IReader* F	= 0;
 
-	// Controllers/Layers
-	{
-		F				= fs->open_chunk		(fsL_LIGHT_CONTROL);
-		xrLIGHT_control	temp;
-
-		while (!F->eof())
-		{
-			F->r						(temp.name,sizeof(temp.name));
-			u32 cnt						= F->r_u32();
-			temp.data.resize			(cnt);
-			F->r						(&*temp.data.begin(),cnt*sizeof(u32));
-			v_static_controls.push_back	(temp);
-		}
-
-		F->close		();
-	}
-
 	// Lights itself
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_DYNAMIC);
@@ -89,7 +72,6 @@ void CLight_DB::Load			(IReader *fs)
 
 void CLight_DB::Unload		()
 {
-	v_static_controls.clear	();
 	for	(u32 it=0; it<v_static.size(); it++)	xr_delete(v_static[it]);
 	v_static.clear			();
 }

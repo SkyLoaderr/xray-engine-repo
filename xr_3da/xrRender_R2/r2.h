@@ -109,7 +109,7 @@ public:
 	virtual IRender_Portal*			getPortal				(int id);
 	virtual IRender_Sector*			getSector				(int id);
 	virtual IRender_Sector*			getSectorActive			();
-	virtual IRender_Visual*				getVisual				(int id);
+	virtual IRender_Visual*			getVisual				(int id);
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id);
 	virtual IDirect3DVertexBuffer9*	getVB					(int id);
 	virtual IDirect3DIndexBuffer9*	getIB					(int id);
@@ -118,11 +118,9 @@ public:
 
 	// Main 
 	virtual void					flush					();
-	virtual void					set_Object				(CObject*	O	);
+	virtual void					set_Object				(IRenderable*		O	);
 	virtual void					add_Visual				(IRender_Visual*	V	);			// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IRender_Visual*	V	);			// add visual(s)	(all culling performed)
-	virtual void					add_Lights				(xr_vector<WORD> &V);
-	virtual void					add_Glows				(xr_vector<WORD> &V);
 	virtual void					add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer);
 	virtual void					add_Wallmark			(Shader* S, const Fvector& P, float s, CDB::TRI* T);
 
@@ -131,7 +129,7 @@ public:
 	virtual void					blender_destroy			(IBlender* &);
 
 	//
-	virtual IRender_ObjectSpecific*	ros_create				(CObject* parent);
+	virtual IRender_ObjectSpecific*	ros_create				(IRenderable*		parent);
 	virtual void					ros_destroy				(IRender_ObjectSpecific* &);
 
 	// Lighting
@@ -139,12 +137,12 @@ public:
 	virtual void					light_destroy			(IRender_Light* &);
 
 	// Models
-	virtual IRender_Visual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E);
-	virtual IRender_Visual*				model_CreatePG			(LPCSTR name);
-	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F);
-	virtual IRender_Visual*				model_Create			(LPCSTR name);
-	virtual IRender_Visual*				model_Create			(LPCSTR name, IReader* data);
-	virtual IRender_Visual*				model_Duplicate			(IRender_Visual*	V);
+	virtual IRender_Visual*			model_CreatePS			(LPCSTR name, PS::SEmitter* E);
+	virtual IRender_Visual*			model_CreatePE			(LPCSTR	name);
+	virtual IRender_DetailModel*	model_CreateDM			(IReader* F);
+	virtual IRender_Visual*			model_Create			(LPCSTR name);
+	virtual IRender_Visual*			model_Create			(LPCSTR name, IReader* data);
+	virtual IRender_Visual*			model_Duplicate			(IRender_Visual*	V);
 	virtual void					model_Delete			(IRender_Visual* &	V);
 	virtual void 					model_Delete			(IRender_DetailModel* & F);
 
