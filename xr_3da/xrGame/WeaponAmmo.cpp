@@ -84,7 +84,9 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC)
 	CSE_Abstract					*e		= (CSE_Abstract*)(DC);
 	CSE_ALifeItemAmmo					*l_pW	= dynamic_cast<CSE_ALifeItemAmmo*>(e);
 	m_boxCurr = l_pW->a_elapsed;
-	R_ASSERT(m_boxCurr <= m_boxSize);
+	
+	if(m_boxCurr > m_boxSize)
+		l_pW->a_elapsed = m_boxCurr = m_boxSize;
 
 	return bResult;
 }
