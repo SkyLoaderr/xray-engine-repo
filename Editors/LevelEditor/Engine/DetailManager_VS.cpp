@@ -40,9 +40,9 @@ short QC (float v)
 void CDetailManager::hw_Load	()
 {
 	// Analyze batch-size
-	hw_BatchSize	= (u32(HW.Caps.vertex.dwRegisters)-c_hdr)/c_size;
+	hw_BatchSize	= (u32(HW.Caps.geometry.dwRegisters)-c_hdr)/c_size;
 	clamp			(hw_BatchSize,(u32)0,(u32)50);
-	Msg				("* [DETAILS] VertexConsts(%d), Batch(%d)",u32(HW.Caps.vertex.dwRegisters),hw_BatchSize);
+	Msg				("* [DETAILS] VertexConsts(%d), Batch(%d)",u32(HW.Caps.geometry.dwRegisters),hw_BatchSize);
 
 	// Pre-process objects
 	u32			dwVerts		= 0;
@@ -58,7 +58,7 @@ void CDetailManager::hw_Load	()
 
 	// Determine POOL & USAGE
 	u32 dwUsage		=	D3DUSAGE_WRITEONLY;
-	if (HW.Caps.vertex.bSoftware)	{
+	if (HW.Caps.geometry.bSoftware)	{
 		dwUsage	|=	D3DUSAGE_SOFTWAREPROCESSING;
 	}
 

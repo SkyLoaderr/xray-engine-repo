@@ -169,10 +169,9 @@ SVS*	CResourceManager::_CreateVS		(LPCSTR name)
 		FS.update_path				(cname,	"$game_shaders$", strconcat(cname,::Render->getShaderPath(),name,".vs"));
 		LPCSTR						target		= NULL;
 
-		/*if (HW.Caps.vertex.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
-		else*/ if (HW.Caps.vertex.dwVersion>=CAP_VERSION(2,0))	target="vs_2_0";
-		else 													target="vs_1_1";
-
+		/*if (HW.Caps.geometry.dwVersion>=CAP_VERSION(3,0))			target="vs_3_0";
+		else*/ if (HW.Caps.geometry.dwVersion>=CAP_VERSION(2,0))	target="vs_2_0";
+		else 														target="vs_1_1";
 
 		// vertex
 		IReader*					fs			= FS.r_open(cname);

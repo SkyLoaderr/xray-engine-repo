@@ -40,7 +40,7 @@ void CSkeletonX_PM::Copy	(IRender_Visual *V)
 	indices					= X->indices;
 
 	u32		dwCount			= dwPrimitives*3;
-	BOOL	bSoft			= HW.Caps.vertex.bSoftware;
+	BOOL	bSoft			= HW.Caps.geometry.bSoftware;
 	u32		dwUsage			= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool			= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_MANAGED;
 	BYTE*	bytes			= 0;
@@ -204,7 +204,7 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 	indices				= LPWORD(xr_malloc(dwCount*2));
 	Memory.mem_copy		(indices,data->pointer(),dwCount*2);
 	dwPrimitives		= dwCount/3;
-	BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+	BOOL	bSoft		= HW.Caps.geometry.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 	u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 	D3DPOOL	dwPool		= bSoft?D3DPOOL_SYSTEMMEM:D3DPOOL_MANAGED;
 	BYTE*	bytes		= 0;
@@ -218,7 +218,7 @@ void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags)
 		VERIFY				(Vertices1W);
 		vBase				= 0;
 		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
-		BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+		BOOL	bSoft		= HW.Caps.geometry.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 		u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 		BYTE*	bytes		= 0;
 		R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
@@ -250,7 +250,7 @@ void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags)
 		VERIFY				(Vertices1W);
 		vBase				= 0;
 		u32		vStride		= D3DXGetFVFVertexSize		(vertRenderFVF);
-		BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+		BOOL	bSoft		= HW.Caps.geometry.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 		u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 		BYTE*	bytes		= 0;
 		R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));

@@ -35,7 +35,7 @@ void CRT::Create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 	// Pow2
 	if (!btwIsPow2(w) || !btwIsPow2(h))
 	{
-		if (!HW.Caps.pixel.bNonPow2)	return;
+		if (!HW.Caps.raster.bNonPow2)	return;
 	}
 
 	// Check width-and-height of render target surface

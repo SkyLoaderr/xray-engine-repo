@@ -6,7 +6,7 @@
 
 void CBackend::OnFrameEnd	()
 {
-	for (u32 stage=0; stage<HW.Caps.pixel.dwStages; stage++)
+	for (u32 stage=0; stage<HW.Caps.raster.dwStages; stage++)
 		CHK_DX(HW.pDevice->SetTexture(0,0));
 	CHK_DX				(HW.pDevice->SetStreamSource	(0,0,0,0));
 	CHK_DX				(HW.pDevice->SetIndices			(0));
@@ -54,7 +54,7 @@ void CBackend::Invalidate	()
 
 void	CBackend::set_ClipPlanes(u32 _enable, Fplane*	_planes /*=NULL */, u32 count/* =0*/)
 {
-	if (0==HW.Caps.vertex.dwClipPlanes)	return;
+	if (0==HW.Caps.geometry.dwClipPlanes)	return;
 	if (!_enable)	{
 		CHK_DX	(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE,FALSE));
 		return;
@@ -62,7 +62,7 @@ void	CBackend::set_ClipPlanes(u32 _enable, Fplane*	_planes /*=NULL */, u32 count
 
 	// Enable and setup planes
 	VERIFY	(_planes && count);
-	if		(count>HW.Caps.vertex.dwClipPlanes)	count=HW.Caps.vertex.dwClipPlanes;
+	if		(count>HW.Caps.geometry.dwClipPlanes)	count=HW.Caps.geometry.dwClipPlanes;
 
 	D3DXMATRIX			worldToClipMatrixIT;
 	D3DXMatrixInverse	(&worldToClipMatrixIT,NULL,(D3DXMATRIX*)&Device.mFullTransform);
@@ -82,7 +82,7 @@ void	CBackend::set_ClipPlanes(u32 _enable, Fplane*	_planes /*=NULL */, u32 count
 
 void	CBackend::set_ClipPlanes(u32 _enable, Fmatrix*	_xform  /*=NULL */, u32 fmask/* =0xff */)
 {
-	if (0==HW.Caps.vertex.dwClipPlanes)	return;
+	if (0==HW.Caps.geometry.dwClipPlanes)	return;
 	if (!_enable)	{
 		CHK_DX	(HW.pDevice->SetRenderState(D3DRS_CLIPPLANEENABLE,FALSE));
 		return;

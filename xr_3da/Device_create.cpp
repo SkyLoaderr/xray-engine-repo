@@ -21,21 +21,10 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	vCameraRight.set		(1,0,0);
 
 	HW.Caps.Update			();
-	for (u32 i=0; i<HW.Caps.pixel.dwStages; i++) 
-	{
-		if (psDeviceFlags.test(rsAnisotropic))	{
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MINFILTER,	D3DTEXF_ANISOTROPIC ));
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR		));
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR		));
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAXANISOTROPY, 4				));
-		} else {
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR 		));
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR 		));
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MIPFILTER,	D3DTEXF_LINEAR		));
-			CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAXANISOTROPY, 4				));
-		}
+	for (u32 i=0; i<HW.Caps.raster.dwStages; i++)				{
 		float fBias = -1.f;
-		CHK_DX(HW.pDevice->SetSamplerState		( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
+		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MAXANISOTROPY, 4				));
+		CHK_DX(HW.pDevice->SetSamplerState	( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_DITHERENABLE,		TRUE				));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_COLORVERTEX,		TRUE				));

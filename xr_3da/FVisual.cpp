@@ -63,7 +63,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 			vCount				= data->r_u32				();
 			u32 vStride			= D3DXGetFVFVertexSize		(fvf);
 
-			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+			BOOL	bSoft		= HW.Caps.geometry.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 			u32		dwUsage		= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 			BYTE*	bytes		= 0;
 			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vStride,dwUsage,0,D3DPOOL_MANAGED,&pVertices,0));
@@ -91,7 +91,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 			iCount				= data->r_u32();
 			dwPrimitives		= iCount/3;
 
-			BOOL	bSoft		= HW.Caps.vertex.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
+			BOOL	bSoft		= HW.Caps.geometry.bSoftware || (dwFlags&VLOAD_FORCESOFTWARE);
 			u32	dwUsage			= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
 			BYTE*	bytes		= 0;
 
