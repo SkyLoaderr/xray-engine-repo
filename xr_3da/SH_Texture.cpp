@@ -65,7 +65,6 @@ void CTexture::Apply	(DWORD dwStage)
 		}
 	}
 	CHK_DX(HW.pDevice->SetTexture(dwStage,pSurface));
-	Device.Statistic.dwTexture_Changes++;
 }
 
 void CTexture::Load(LPCSTR cName)
