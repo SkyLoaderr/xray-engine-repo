@@ -140,14 +140,6 @@ CRender::~CRender()
 {
 }
 
-void CRender::flush_Models	()
-{
-	/*
-	mapMatrix.traverseANY	(matrix_L1);
-	mapMatrix.clear			();
-	*/
-}
-
 // Device events
 void CRender::OnDeviceCreate	()
 {
