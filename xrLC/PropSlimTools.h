@@ -9,12 +9,14 @@
 
 #include "ArbitraryList.h"
 
+#pragma pack(push,1)
 struct VIPM_SWR
 {
 	u32		offset;					// Offset of the first index in the index buffer to start at (note! no retrictions. Can easily be >64k)
 	u16		num_tris;				// Number of tris to render (most cards can't do more than 65536)
 	u16		num_verts;				// Number of vertices to render with (using WORD indices)
 };
+#pragma pack(pop)
 struct VIPM_Result
 {
 	ArbitraryList<u16>		permute_verts;
