@@ -12,7 +12,7 @@ dlgItem::dlgItem(CUIWindow* pWnd)
 
 bool dlgItem::operator < (const dlgItem& itm)
 {
-	return (int)enabled < (int)itm.enabled;
+	return (int)enabled > (int)itm.enabled;
 }
 
 bool operator == (const dlgItem& i1, const dlgItem& i2)
@@ -144,7 +144,9 @@ void CDialogHolder::shedule_Update(u32 dt)
 
 	if( m_dialogsToRender.size() )
 	{
+
 		std::sort	(m_dialogsToRender.begin(), m_dialogsToRender.end() );
+
 		while	((m_dialogsToRender.size()) && (!m_dialogsToRender[m_dialogsToRender.size()-1].enabled)) 
 			m_dialogsToRender.pop_back();
 	}
