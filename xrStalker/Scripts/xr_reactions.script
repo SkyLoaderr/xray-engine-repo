@@ -324,8 +324,7 @@ function events:calculate()  -- Производить перерасчет и обновление раздражителе
 		end
 
 		if continue and (so_id == clsid.stalker or so_id == clsid.actor) then
-			if (so:squad() == self.npc:squad() and 
-			   so:group() == self.npc:group()) or
+			if (so:squad() == self.npc:squad()) or
                            (device():time_global() - stime > self.time_reaction)
 			then
 				continue = false
