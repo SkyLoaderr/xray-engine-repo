@@ -10,12 +10,24 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	game->OnPlayerDisconnect(CL->ID);
 	game->signal_Syncronize	();
 
-	// Migrate entities
+	//
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
-	for (; I!=E; I++)
+	if (client_Count()>1)
 	{
-		xrServerEntity*	E	= I->second;
-		if (E->owner == CL)		PerformMigration	(E,(xrClientData*)CL,SelectBestClientToMigrateTo(E,TRUE));
+		// Migrate entities
+		for (; I!=E; I++)
+		{
+			xrServerEntity*	entity		= I->second;
+			if (entity->owner == CL)	PerformMigration	(entity,(xrClientData*)CL,SelectBestClientToMigrateTo(entity,TRUE));
+		}
+	} else {
+		// Destroy entities
+		for (; I!=E; I++)
+		{
+			xrServerEntity*	entity		= I->second;
+			entities.erase	(entity->ID);
+			entity_Destroy	(entity);
+		}
 	}
 	csPlayers.Leave			();
 }
