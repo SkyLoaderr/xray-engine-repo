@@ -1,7 +1,7 @@
 #ifndef SoundRender_CoreH
 #define SoundRender_CoreH
 #pragma once
-
+                                          
 #include "SoundRender.h"
 #include "SoundRender_Environment.h"
 #include "SoundRender_Cache.h"

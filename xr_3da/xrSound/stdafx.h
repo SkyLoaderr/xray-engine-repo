@@ -6,15 +6,15 @@
 #define stdafxH
 #pragma once
 
-//#define OPENAL                       
-
 #include <xrCore.h>
 
 #include <vorbis/codec.h>
 #include <vorbis/vorbisfile.h>
 #include <eax.h>             
 
-#ifdef OPENAL
+//#define _OPENAL
+
+#ifdef _OPENAL
 #	include <AL/al.h>
 #	include <AL/alc.h>
 #	include <AL/alut.h>

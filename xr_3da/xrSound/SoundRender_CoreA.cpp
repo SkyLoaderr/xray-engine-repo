@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifdef OPENAL
+#ifdef _OPENAL
 
 #include "soundrender_coreA.h"
 #include "soundrender_targetA.h"
 
-CSoundRender_CoreA				SoundRenderA;
+CSoundRender_CoreA				SoundRenderA;                
 CSoundRender_Core*				SoundRender = &SoundRenderA;
 CSound_manager_interface*		Sound		= SoundRender;
 
@@ -50,9 +50,9 @@ void CSoundRender_CoreA::_initialize	(u64 window)
     // Check for EAX extension
     bEAX 				        = alIsExtensionPresent		((ALubyte*)"EAX");
 
-    eaxSet 				        = (EAXSet)alGetProcAddress	((ALubyte*)"EAXSet");
+    eaxSet 				        = (EAXSet*)alGetProcAddress	((ALubyte*)"EAXSet");
     if (eaxSet==NULL) bEAX 		= false;
-    eaxGet 				        = (EAXGet)alGetProcAddress	((ALubyte*)"EAXGet");
+    eaxGet 				        = (EAXGet*)alGetProcAddress	((ALubyte*)"EAXGet");
     if (eaxGet==NULL) bEAX 		= false;
 
 	ZeroMemory					( &wfm, sizeof( WAVEFORMATEX ) );
@@ -96,7 +96,7 @@ void CSoundRender_CoreA::_destroy	()
     // Get the device used by that context.
     ALCdevice* 	pCurDevice		= alcGetContextsDevice(pCurContext);
     // Reset the current context to NULL.
-    alcMakeContextCurrent		(NULL);
+    alcMakeContextCurrent		(NULL);         
     // Release the context and the device.
     alcDestroyContext			(pCurContext);
     alcCloseDevice				(pCurDevice);
@@ -104,11 +104,11 @@ void CSoundRender_CoreA::_destroy	()
 
 void	CSoundRender_CoreA::i_eax_set			(const GUID* guid, u32 prop, void* val, u32 sz)
 {
-	A_CHK(eaxSet	      	    (guid, prop, NULL, val, sz));
+	A_CHK(eaxSet	      	    (guid, prop, 0, val, sz));
 }
 void	CSoundRender_CoreA::i_eax_get			(const GUID* guid, u32 prop, void* val, u32 sz)
 {
-	A_CHK(eaxGet	      	    (guid, prop, NULL, val, sz));
+	A_CHK(eaxGet	      	    (guid, prop, 0, val, sz));
 }
 
 void CSoundRender_CoreA::update_listener		( const Fvector& P, const Fvector& D, const Fvector& N, float dt )

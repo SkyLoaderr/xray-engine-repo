@@ -2,13 +2,17 @@
 #define SoundRender_CoreAH
 #pragma once
 
-#include "SoundRender_Core.h"
+#include "SoundRender_Core.h"            
+
+// temorary patch
+typedef ALenum    __cdecl EAXGet(const struct _GUID *propertySetID,ALuint property,ALuint source,ALvoid *value,ALuint size);
+typedef ALenum    __cdecl EAXSet(const struct _GUID *propertySetID,ALuint property,ALuint source,ALvoid *value,ALuint size);
 
 class CSoundRender_CoreA: public CSoundRender_Core
 {
 	typedef CSoundRender_Core inherited;
-    EAXSet					eaxSet;					// EAXSet function, retrieved if EAX Extension is supported
-    EAXGet					eaxGet;					// EAXGet function, retrieved if EAX Extension is supported
+	EAXSet*					eaxSet;					// EAXSet function, retrieved if EAX Extension is supported
+	EAXGet*					eaxGet;					// EAXGet function, retrieved if EAX Extension is supported
 
 	struct SListener{
 		Fvector				position;

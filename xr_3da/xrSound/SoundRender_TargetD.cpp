@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifndef OPENAL
+#ifndef _OPENAL
 
 #include "soundrender_targetD.h"
 #include "soundrender.h"

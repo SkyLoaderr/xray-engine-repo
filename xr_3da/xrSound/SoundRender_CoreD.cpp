@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#ifndef OPENAL
+#ifndef _OPENAL
 
 #include "soundrender_coreD.h"
 #include "soundrender_targetD.h"
@@ -157,13 +157,13 @@ void CSoundRender_CoreD::_destroy	()
 void	CSoundRender_CoreD::i_eax_set			(const GUID* guid, u32 prop, void* val, u32 sz)
 {
 	VERIFY	(pExtensions);
-//	R_CHK	(pExtensions->Set		(*guid, prop, NULL, 0, val, sz));
+	R_CHK	(pExtensions->Set		(*guid, prop, NULL, 0, val, sz));
 }
 void	CSoundRender_CoreD::i_eax_get			(const GUID* guid, u32 prop, void* val, u32 sz)
 {
 	unsigned long total_bytes;
 	VERIFY	(pExtensions);
-//	R_CHK	(pExtensions->Get		(*guid, prop, NULL, 0, val, sz, &total_bytes));
+	R_CHK	(pExtensions->Get		(*guid, prop, NULL, 0, val, sz, &total_bytes));
 }
 
 void CSoundRender_CoreD::update_listener( const Fvector& P, const Fvector& D, const Fvector& N, float dt )
