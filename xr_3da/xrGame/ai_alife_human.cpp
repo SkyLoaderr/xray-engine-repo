@@ -50,13 +50,13 @@ void CSE_ALifeHumanAbstract::vfSetCurrentTask(CSE_ALifeSimulator	*tpALife, _TASK
 
 bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint(CSE_ALifeSimulator *tpALife)
 {
-	bool			bOk = false;
+	bool			bContinue = false;
 	if (m_tTaskState != eTaskStateSearchItem) {
 		if (m_tNextGraphID != m_tGraphID) {
 			_TIME_ID				tCurTime = tpALife->tfGetGameTime();
 			m_fDistanceFromPoint	+= float(tCurTime - m_tTimeID)/1000.f*m_fCurSpeed;
 			if (m_fDistanceToPoint - m_fDistanceFromPoint < EPS_L) {
-				bOk = true;
+				bContinue			= true;
 				if ((m_fDistanceFromPoint - m_fDistanceToPoint > EPS_L) && (m_fCurSpeed > EPS_L))
 					m_tTimeID		= tCurTime - _TIME_ID(iFloor((m_fDistanceFromPoint - m_fDistanceToPoint)*1000.f/m_fCurSpeed));
 				m_fDistanceToPoint	= m_fDistanceFromPoint	= 0.0f;
@@ -68,7 +68,7 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint(CSE_ALifeSimulator *tpALife)
 			if (++m_dwCurNode < m_tpPath.size()) {
 				m_tNextGraphID		= _GRAPH_ID(m_tpPath[m_dwCurNode]);
 				m_fDistanceToPoint	= getAI().ffGetDistanceBetweenGraphPoints(m_tGraphID,m_tNextGraphID);
-				bOk = true;
+				bContinue = true;
 			}
 			else
 				m_fCurSpeed	= 0.f;
@@ -76,7 +76,7 @@ bool CSE_ALifeHumanAbstract::bfChooseNextRoutePoint(CSE_ALifeSimulator *tpALife)
 	}
 	else {
 	}
-	return			(bOk);
+	return			(bContinue);
 }
 
 bool CSE_ALifeHumanAbstract::bfProcessItems(CSE_ALifeSimulator *tpALife)

@@ -15,7 +15,7 @@ void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 {
 	if (fHealth <= 0)
 		return;
-#ifdef OLD_BEHAVOIUR
+#ifdef OLD_BEHAVIOUR
 	inherited2::Update		(tpALife);
 	tpALife->vfCheckForTheBattle(this);
 	bfProcessItems			(tpALife);
