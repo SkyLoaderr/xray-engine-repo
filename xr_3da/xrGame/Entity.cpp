@@ -218,7 +218,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	CActor	*pA = dynamic_cast<CActor*>(this);
 	if (!pA) {
 		Level().SquadMan.RegisterMember((u8)id_Squad, this);
-		Level().SquadMan.Dump();
+		//Level().SquadMan.Dump();
 	}
 
 	// Initialize variables
@@ -246,7 +246,7 @@ void CEntity::net_Destroy	()
 	CActor	*pA = dynamic_cast<CActor*>(this);
 	if (!pA) {
 		Level().SquadMan.RemoveMember((u8)g_Squad(), this);
-		Level().SquadMan.Dump();
+		//Level().SquadMan.Dump();
 	}
 
 	inherited::net_Destroy	();

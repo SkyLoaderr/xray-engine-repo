@@ -46,7 +46,7 @@ void CAI_Boar::Load(LPCSTR section)
 	inherited::Load	(section);
 
 	BEGIN_LOAD_SHARED_MOTION_DATA();
-	
+
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, &inherited::_sd->m_fsVelocityNone,				PS_STAND);
 	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
 	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, &inherited::_sd->m_fsVelocityStandTurn,			PS_STAND);
@@ -77,13 +77,15 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
 	MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimLieStandUp,		false);
 
+	
+
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimDragCorpse);
-	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun	, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
@@ -230,3 +232,27 @@ void CAI_Boar::UpdateCL()
 	angle_lerp(_cur_delta, _target_delta, _velocity, Device.fTimeDelta);
 }
 
+
+void CAI_Boar::ProcessTurn()
+{
+	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
+	if (delta_yaw < deg(1)) return;
+	
+	EMotionAnim anim = MotionMan.GetCurAnim();
+	
+	bool turn_left = true;
+	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
+
+	switch (anim) {
+		case eAnimStandIdle: 
+			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			return;
+		default:
+			if (delta_yaw > deg(30)) {
+				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+				MotionMan.b_ignore_path_velocity_check = true;
+			}
+			return;
+	}
+
+}

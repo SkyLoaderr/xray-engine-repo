@@ -138,6 +138,9 @@ public:
 	virtual	CEntity			*GetCurrentEnemy				();
 	virtual	CEntity 		*GetCurrentCorpse				();
 	
+	virtual void			SetScriptControl				(const bool bScriptControl, ref_str caSciptName);
+
+
 	// ---------------------------------------------------------------------------------
 	
 	virtual void			ProcessTurn						() {}
@@ -185,7 +188,7 @@ public:
 			bool			UpdateVelocityWithPath			();
 			void			UpdateActionWithPath			();
 			void			UpdatePathWithAction			();
-			void			UpdateTargetVelocityWithPath	();
+			void			UpdateTargetVelocityWithPath	(float before_interval = 0.f);
 	
 // members
 public:
@@ -266,6 +269,12 @@ public:
 #ifdef 	DEEP_TEST_SPEED
 	TTime	time_next_update;
 #endif
+
+//////////////////////////////////////////////////////////////////////////
+// Motion Tests
+	void					TranslateActionToPathParams ();
+
+
 };
 
 #include "ai_biting_inline.h"

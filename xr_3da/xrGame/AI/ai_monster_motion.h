@@ -54,6 +54,7 @@ public:
 	
 	EAction					m_tAction;
 	CMotionDef				*m_tpCurAnim;
+	bool					b_ignore_path_velocity_check;
 
 public:
 
@@ -94,6 +95,11 @@ public:
 	// выполнить текущий m_tAction
 	void		ProcessAction			();
 	void		FinalizeProcessing		();
+
+	// -------------------------------------- 	
+
+	void		ProcessActionEx			();
+
 
 	// подготовить текущую анимацию на запрос из SelectAnimation
 	bool		PrepareAnimation		();
@@ -171,6 +177,29 @@ public:
 	bool		VelocityChain_GetAnim	(float cur_speed, EMotionAnim target_anim, EMotionAnim &new_anim, float &a_speed);
 
 	bool		IsStandCurAnim			();
+
+
+	//////////////////////////////////////////////////////////////////////////
+
+	void		Update					();
+
+private:
+	void		RetrieveAnimation		();
+	EAction		GetActionFromPath		();
+
+	EAction		VelocityIndex2Action	(u32 velocity_index);
+	
+	void		ApplyAnimation			();
+
+//////////////////////////////////////////////////////////////////////////
+// DEBUG
+
+private:
+	LPCSTR		GetAnimationName		(EMotionAnim anim);
+	LPCSTR		GetActionName			(EAction action);
+
+// end DEBUG
+//////////////////////////////////////////////////////////////////////////
 
 };
 

@@ -45,28 +45,45 @@ void CAI_Biting::Think()
 			pSquad->UpdateDecentralized();
 		} 
 	}
-	
-	if (MotionMan.Seq_Active()) disable_path();
-	else {
-		// Выбор текущего состояния
-		StateSelector						();
-		CurrentState->Execute				(m_current_update);
-	}
-	// Обработать action
-	MotionMan.ProcessAction					();
 
-	UpdatePathWithAction					();
+	StateSelector						();
+	CurrentState->Execute				(m_current_update);
 
-	if (CMonsterMovement::is_path_targeted())
-		UpdateTargetVelocityWithPath		();
-	
+	TranslateActionToPathParams				();
+
 	// построить путь
 	CMonsterMovement::Frame_Update			();
+	
+	// Выбрать анимацию и соотв. параметры согласно текущему действию
+	//MotionMan.RetrieveAnimation				();
+	//MotionMan.ApplyAnimation				();
 
-	MotionMan.FinalizeProcessing			();
+	MotionMan.Update						();
 
 	// установить текущую скорость
 	CMonsterMovement::Frame_Finalize		();
+
+//	if (MotionMan.Seq_Active()) disable_path();
+//	else {
+//		// Выбор текущего состояния
+//		StateSelector						();
+//		CurrentState->Execute				(m_current_update);
+//	}
+//	// Обработать action
+//	MotionMan.ProcessAction					();
+//
+//	UpdatePathWithAction					();
+//
+//	if (CMonsterMovement::is_path_targeted())
+//		UpdateTargetVelocityWithPath		();
+//	
+//	// построить путь
+//	CMonsterMovement::Frame_Update			();
+//
+//	MotionMan.FinalizeProcessing			();
+//
+//	// установить текущую скорость
+//	CMonsterMovement::Frame_Finalize		();
 
 	// Debuging
 #ifdef DEBUG
@@ -122,7 +139,7 @@ bool CAI_Biting::UpdateVelocityWithPath()
 			next_point_velocity_index = CDetailPathManager::path()[curr_travel_point_index() + 1].velocity;
 
 		if ((cur_point_velocity_index == eVelocityParameterStand) && (next_point_velocity_index != u32(-1))) {
-			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI_DIV_6/6) {
+			if (angle_difference(m_body.current.yaw, m_body.target.yaw) < PI / 180) {
 				cur_point_velocity_index = next_point_velocity_index;
 			}
 		}
@@ -144,16 +161,18 @@ bool CAI_Biting::UpdateVelocityWithPath()
 
 void CAI_Biting::UpdatePathWithAction()
 {
-	if (MotionMan.IsStandCurAnim()) {
+	if (MotionMan.IsStandCurAnim() && !fis_zero(m_velocity_linear.current)) {
 		disable_path();
 		m_velocity_linear.current = 0.f;
 	} else enable_path();
 }
 
-void CAI_Biting::UpdateTargetVelocityWithPath()
+void CAI_Biting::UpdateTargetVelocityWithPath(float before_interval)
 {
 	float acceleration	= GetAcceleration();
 	float dist_to_end	= (m_velocity_linear.current * m_velocity_linear.current) / acceleration;
+
+	dist_to_end += before_interval;
 	
 	if (IsPathEnd(dist_to_end) && IsMovingOnPath()) {
 		m_velocity_linear.target = 0.f;

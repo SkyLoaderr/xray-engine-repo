@@ -359,9 +359,16 @@ struct SVelocity {
 	void	set		(float c, float t) {current = c; target = t;}
 }; 
 
+struct SMotionVel {
+	float linear;
+	float angular;
+	void	set		(float l, float a) {linear = l; angular = a;}
+};
 
 enum EActivityState {
 	MS_Calm,
 	MS_Aggressive
 };
 
+
+#define deg(x) (x * PI / 180)
