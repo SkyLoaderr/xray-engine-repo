@@ -69,13 +69,11 @@ void CAI_Rat::Die()
 	
 	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 	
-	//r_torso_target.pitch = 0;
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
 	vfRemoveStandingMember();
 	Group.m_dwAliveCount--;
 	eCurrentState = aiRatDie;
-	//vfAddMorale(m_fMoraleDecreaseQuant, m_fMoraleDecreaseRadius);
 }
 
 void CAI_Rat::OnDeviceCreate()
@@ -138,7 +136,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	if (!inherited::net_Spawn(DC))	return FALSE;
 	
 	m_tOldPosition.set(vPosition);
-	m_tSpawnPosition.set(vPosition);
+	m_tSpawnPosition.set(Level().get_squad(g_Team(),g_Squad()).Leader->Position());
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
 	tStateStack.push(eCurrentState = aiRatFreeHuntingActive);
 	vfAddActiveMember(true);
