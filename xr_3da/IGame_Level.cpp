@@ -125,6 +125,14 @@ void IGame_Level::OnFrame		( )
 	// Log				("- level:on-frame: ",u32(Device.dwFrame));
 	if (_abs(Device.fTimeDelta)<EPS_S) return;
 
+	// Play req particle systems
+	while (ps_needtoplay.size())
+	{
+		CPS_Instance*	psi		= ps_needtoplay.back	();
+		ps_needtoplay.pop_back	();
+		psi->Play				();
+	}
+
 	// Update all objects
 	::Sound->update_events		( );
 	VERIFY						(bReady);
@@ -133,11 +141,11 @@ void IGame_Level::OnFrame		( )
 	pHUD->OnFrame				( );
 
 	// Destroy inactive particle systems
-	while (ps_destoy.size())
+	while (ps_destroy.size())
 	{
-		CPS_Instance*	psi						= ps_destoy.back	();
-		ps_destoy.pop_back						();
-		xr_delete								(psi);
+		CPS_Instance*	psi		= ps_destroy.back	();
+		ps_destroy.pop_back		();
+		xr_delete				(psi);
 	}
 
 	// Ambience

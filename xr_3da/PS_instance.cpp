@@ -32,12 +32,12 @@ void CPS_Instance::shedule_Update	(u32 dt)
 
 	// remove???
 	if (m_bAutoRemove && m_iLifeTime<=0)
-		g_pGameLevel->ps_destoy.push_back	(this);
+		g_pGameLevel->ps_destroy.push_back	(this);
 }
 //----------------------------------------------------
 void CPS_Instance::PSI_destroy		()
 {
 	m_iLifeTime						= 0;
-	g_pGameLevel->ps_destoy.push_back	(this);
+	g_pGameLevel->ps_destroy.push_back	(this);
 }
 //----------------------------------------------------

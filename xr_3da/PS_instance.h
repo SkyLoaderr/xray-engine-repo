@@ -23,6 +23,8 @@ public:
 
 	void				PSI_destroy		();
 
+	virtual void		Play			()=0;
+
 	virtual void		shedule_Update	(u32 dt);
 };
 

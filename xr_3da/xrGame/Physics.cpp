@@ -562,9 +562,8 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				if(vel_cret>15.f && !mtl_pair->CollideParticles.empty())
 				{
 					LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
-					//отыграть партиклы столкновения в материалов
-					CParticlesObject* pStaticPG;
-					pStaticPG = xr_new<CParticlesObject>(ps_name);
+					//отыграть партиклы столкновения материалов
+					CParticlesObject* ps = xr_new<CParticlesObject>(ps_name);
 
 					Fmatrix pos; 
 					Fvector zero_vel = {0.f,0.f,0.f};
@@ -572,8 +571,8 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 					Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
 					pos.c.set(*((Fvector*)c->pos));
 
-					pStaticPG->UpdateParent(pos,zero_vel);
-					pStaticPG->Play();
+					ps->UpdateParent(pos,zero_vel);
+					Level().ps_needtoplay.push_back(ps);
 				}
 
 			}

@@ -83,16 +83,15 @@ NULL:
 	if(ps_name)
 	{
 		//отыграть партиклы попадания в материал
-		CParticlesObject* pStaticPG;
-		pStaticPG = xr_new<CParticlesObject>(ps_name, this->Sector());
+		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name, this->Sector());
 
 		Fmatrix pos;
 		pos.k.normalize(particle_dir);
 		Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
 		pos.c.set(vEnd);
 
-		pStaticPG->UpdateParent(pos,zero_vel);
-		pStaticPG->Play();
+		ps->UpdateParent(pos,zero_vel);
+		Level().ps_needtoplay.push_back(ps);
 	}
 }
 
