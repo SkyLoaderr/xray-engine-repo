@@ -82,6 +82,8 @@ public:
 	//путь задается в форме PARENT:CHILD:CHIDLS_CHILD
 	//node_index - номер, если узлов с одним именем несколько
 	XML_NODE* NavigateToNode(const char* path, int node_index = 0);
+	XML_NODE* NavigateToNode(XML_NODE* start_node, 
+							 const char* path, int node_index = 0);
 
 	XML_NODE* GetRoot() {return &m_root;}
 

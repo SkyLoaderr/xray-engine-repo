@@ -36,7 +36,7 @@ XRXMLPARSER_API CUIXml::~CUIXml()
 
 
 //инициализация и загрузка XML файла
-bool XRXMLPARSER_API CUIXml::Init(LPCSTR path, const char* xml_filename)
+bool CUIXml::Init(LPCSTR path, const char* xml_filename)
 {
 	//if(!m_root.LoadXmlFile(xml_filename))
 	//	return false;
@@ -58,8 +58,9 @@ bool XRXMLPARSER_API CUIXml::Init(LPCSTR path, const char* xml_filename)
 	
 }
 
-
-XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
+XML_NODE* CUIXml::NavigateToNode(XML_NODE* start_node, 
+								 const char* path, 
+								 int node_index)
 {
 	XML_NODE* node = NULL;
 
@@ -76,11 +77,9 @@ XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
 	token = strtok( buf_str, seps );
 
 	if( token != NULL )
-			node = m_root.GetNthChildWithTag( token, node_index);
+			node = start_node->GetNthChildWithTag( token, node_index);
 
-	//path don't exists
-//	ASSERT(node!=NULL);
-	
+
     while( token != NULL )
     {
 		// Get next token: 
@@ -97,6 +96,11 @@ XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
 
 
 	return node;
+}
+
+XML_NODE* CUIXml::NavigateToNode(const char* path, int node_index)
+{
+	return NavigateToNode(GetRoot(), path, node_index);
 }
 
 
