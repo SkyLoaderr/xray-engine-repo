@@ -128,9 +128,9 @@ void CStalkerActionFreeNoALife::initialize	()
 //	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypePosition,look_pos,true));
 
 	m_object->set_detail_path_type	(eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateCrouch);
+	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeStand);
-	m_object->set_mental_state		(eMentalStateDanger);
+	m_object->set_mental_state		(eMentalStateFree);
 //	m_object->CObjectHandler::set_goal	(eObjectActionUse,m_object->inventory().GetItemFromInventory("bread"));
 //	dynamic_cast<CAttachableItem*>(m_object->inventory().GetItemFromInventory("hand_radio"))->enable(false);
 #endif
