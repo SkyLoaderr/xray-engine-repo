@@ -185,12 +185,12 @@ function hear_callback(self, who, sound_type, sound_position, sound_power)
 		return "none"
 	end
 	
-	if who:id() ~= self:id() then
+	--if who:id() ~= self:id() then
 		--printf("SOUNDCHECK %s to %s [%s], %f, dist: %d m.", self:name(), who:name(), relation(self, who), sound_power, self:position():distance_to(who:position()))
-	end
+	--end
 end
 ----------------------------------------------------------------------------------------------------------------------
-	function AddToMotivator(npc)
+function AddToMotivator(npc)
     npc:bind_object(this.motivator_binder(npc))
 end
 ----------------------------------------------------------------------------------------------------------------------
