@@ -14,7 +14,7 @@
 //#include "Texturizer.h"
 #include "EditObject.h"
 #include "DPatch.h"
-//#include "AITraffic.h"
+#include "DetailObjects.h"
 #include "Sector.h"
 #include "Library.h"
 #include "xr_ini.h"
@@ -79,7 +79,7 @@ void st_LevelOptions::Reset(){
 	m_LevelName		= "Unnamed place";
 
     m_Envs.resize	(1);
-    
+
     m_SkydomeObjName= "";
     InitDefaultText	();
 
@@ -104,6 +104,7 @@ EScene::EScene(){
 // Build options
     m_BuildParams.Init();
     m_DetailPatches = new CDPatchSystem();
+    m_DetailObjects	= new CDetailManager();
     m_SkyDome = 0;
     ClearSnapList();
 }
@@ -112,6 +113,7 @@ EScene::~EScene(){
 	VERIFY( m_Valid == false );
     m_SnapObjects.clear();
     _DELETE(m_DetailPatches);
+    _DELETE(m_DetailObjects);
     _DELETE(m_SkyDome);
 }
 
@@ -455,6 +457,8 @@ void EScene::Render( Fmatrix *_Camera ){
     	// render normal objects
 	    mapRenderObjects.traverseLR		(object_Normal);
     }
+    // draw detail objects (normal)
+    m_DetailObjects->Render(rpNormal);
 
 	// draw detail patches
     m_DetailPatches->Render();
@@ -462,19 +466,18 @@ void EScene::Render( Fmatrix *_Camera ){
     // render normal alpha objects
     mapRenderObjects.traverseRL		(object_AlphaNormal);
 
-    // render snap 
+    // render snap
     if (fraLeftBar->ebEnableSnapList->Down)
 		for(_F=m_SnapObjects.begin();_F!=m_SnapObjects.end();_F++) if((*_F)->Visible()) ((CEditObject*)(*_F))->RenderSelection(precalc_identity);
+
+    // draw detail objects (alpha)
+    m_DetailObjects->Render(rpAlphaNormal);
 
 	// draw PS
     UI->Device.SetTransform(D3DTRANSFORMSTATE_WORLD,precalc_identity);
     _F = FirstObj(OBJCLASS_PS);
     _E = LastObj(OBJCLASS_PS);
    	for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpAlphaNormal);
-
-	// draw alpha DO cluster
-    _E=LastObj(OBJCLASS_DOCLUSTER); _F=FirstObj(OBJCLASS_DOCLUSTER);
-    for(;_F!=_E;_F++) if((*_F)->Visible()) (*_F)->Render(precalc_identity, rpAlphaNormal);
 
 	// draw clip planes, glows, event, sectors, portals
 	RENDER_CLASS_ALPHA(OBJCLASS_OCCLUDER);
@@ -533,33 +536,32 @@ void EScene::ClearObjects(bool bDestroy){
         lst.clear();
     }
     m_DetailPatches->Clear();
+    m_DetailObjects->Clear();
     _DELETE(m_SkyDome);
     ClearSnapList();
 }
 //----------------------------------------------------
 
 bool EScene::GetBox(Fbox& box, EObjClass classfilter){
-	int objcount = ObjCount(classfilter);
-	if( objcount <= 0 )	return false;
-
-    box.set(0,0,0, 0,0,0);
-
-
-	ObjectIt i = FirstObj(classfilter);
-	ObjectIt _E = LastObj(classfilter);
-	for(;i!=_E;i++)
-        if( (*i)->GetBox(box) ) break;
-
-	for(;i!=_E;i++){
-		Fbox bb;
-        if( (*i)->GetBox(bb) ){
-            box.modify( bb.min );
-            box.modify( bb.max );
-        }
-	}
-	return true;
+	return GetBox(box,ListObj(classfilter));
 }
 //----------------------------------------------------
+
+bool EScene::GetBox(Fbox& box, ObjectList& lst){
+    box.invalidate();
+    bool bRes=false;
+	for(ObjectIt it=lst.begin();it!=lst.end();it++){
+		Fbox bb;
+        if((*it)->GetBox(bb)){
+            box.modify(bb.min);
+            box.modify(bb.max);
+            bRes=true;
+        }
+	}
+    return bRes;
+}
+//----------------------------------------------------
+
 void EScene::Modified(){
 	m_Modified = true;
     UI->Command(COMMAND_UPDATE_CAPTION);

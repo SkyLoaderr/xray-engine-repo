@@ -102,15 +102,15 @@ bool CEditObject::Load(CStream& F){
             F.RstringZ(buf);
             CLibObject* LO = Lib->SearchObject(buf);
             if (!LO){
-                Log->DlgMsg( mtError, "CEditObject: '%s' not found in library", buf );
+                Log->Msg( mtError, "CEditObject: '%s' not found in library", buf );
 	            bRes = false;
     	        break;
-            }                                              
+            }
             if (0==(m_LibRef=LO->GetReference())){
-                Log->DlgMsg( mtError, "CEditObject: '%s' can't load", buf );
+                Log->Msg( mtError, "CEditObject: '%s' can't load", buf );
 	            bRes = false;
     	        break;
-            }       
+            }
             if(!CheckVersion())
                 Log->Msg( mtError, "CEditObject: '%s' different file version! Some objects will work incorrectly.", buf );
         }else{

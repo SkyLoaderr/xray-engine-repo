@@ -123,7 +123,7 @@ void __fastcall _verify(const char *expr, char *file, int line);
 #define _RC_NEAR RC_NEAR
 
 // some user components
-#include "dx7todx8.h"
+#include "shared/dx7todx8.h"
 #include "clsid.h"
 #include "shared/vector.h"
 #include "shared/FixedVector.h"

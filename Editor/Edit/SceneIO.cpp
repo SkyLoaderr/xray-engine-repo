@@ -8,6 +8,7 @@
 #include "scene.h"
 #include "ui_main.h"
 #include "DPatch.h"
+#include "DetailObjects.h"
 
 // file: SceneChunks.h
 #define CURRENT_FILE_VERSION    0x00000005
@@ -23,6 +24,7 @@
 #define CHUNK_SNAPOBJECTS   0x7710
 #define CHUNK_LEVELOP       0x7711
 #define CHUNK_OBJECT_COUNT  0x7712
+#define CHUNK_DETAILOBJECTS 0x7713
 
 // level options
 #define CHUNK_LO_VERSION		0x7801
@@ -136,6 +138,12 @@ void EScene::Save(char *_FileName, bool bUndo){
 		F.close_chunk	();
     }
 
+    if (m_DetailObjects->ObjCount()){
+		F.open_chunk	(CHUNK_DETAILOBJECTS);
+    	m_DetailObjects->Save(F);
+		F.close_chunk	();
+    }
+
     if (!bUndo){
 		F.open_chunk	(CHUNK_CAMERA);
         F.Wvector		(UI->Device.m_Camera.GetHPB());
@@ -232,12 +240,18 @@ bool EScene::Load(char *_FileName){
 
 
         // detail patches
-	    CStream* S = F->OpenChunk(CHUNK_DETAILPATCHES);
-		if (S){
-	    	m_DetailPatches->Load(*S);
-            S->Close();
+	    CStream* DP = F->OpenChunk(CHUNK_DETAILPATCHES);
+		if (DP){
+	    	m_DetailPatches->Load(*DP);
+            DP->Close();
         }
 
+        // detail objects
+	    CStream* DO = F->OpenChunk(CHUNK_DETAILOBJECTS);
+		if (DO){
+	    	m_DetailObjects->Load(*DO);
+            DO->Close();
+        }
         //
         if (F->FindChunk(CHUNK_CAMERA)){
         	Fvector hpb, pos;

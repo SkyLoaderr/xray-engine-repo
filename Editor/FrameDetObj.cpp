@@ -10,6 +10,7 @@
 #include "DetailObjects.h"
 #include "EditObject.h"
 #include "LeftBar.h"
+#include "Texture.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "CloseBtn"
@@ -34,42 +35,25 @@ void __fastcall TfraDetailObject::ExpandClick(TObject *Sender)
 {
     PanelMaximizeOnlyClick(Sender);
 }
-
-//---------------------------------------------------------------------------
-void __fastcall TfraDetailObject::ebObjectNameClick(TObject *Sender){
-	LPCSTR N = TfrmChoseItem::SelectObject(false, true, DETAILOBJECT_FOLDER, lbObjectName->Caption.c_str());
-    if (!N) return;
-	CLibObject* O = Lib->SearchObject(N);
-    if (O)	lbObjectName->Caption = O->GetRefName();
-	else	lbObjectName->Caption = "";
-}
 //---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::fsStorageRestorePlacement(
-      TObject *Sender)
+void __fastcall TfraDetailObject::ExtBtn1Click(TObject *Sender)
 {
-	if (!lbObjectName->Caption.IsEmpty())
-		if (!Lib->SearchObject(lbObjectName->Caption.c_str())) lbObjectName->Caption = "";
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraDetailObject::ebModeClusterClick(TObject *Sender)
-{
-	if (UI->m_Tools->GetAction()==eaAdd){
-		paObjectBrush->Hide();
-		paClusterBrush->Show();
-	    UI->Command(COMMAND_UPDATE_TOOLBAR);
+	LPCSTR T = TfrmChoseItem::SelectTexture(false,(Scene->m_DetailObjects->m_pBaseTexture)?Scene->m_DetailObjects->m_pBaseTexture->name():0);
+    if (T){
+		Scene->m_DetailObjects->GenerateSlots(T);
     }
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraDetailObject::ebModeObjectsClick(TObject *Sender)
+void __fastcall TfraDetailObject::ExtBtn4Click(TObject *Sender)
 {
-	if (UI->m_Tools->GetAction()==eaAdd){
-		paClusterBrush->Hide();
-		paObjectBrush->Show();
-	    UI->Command(COMMAND_UPDATE_TOOLBAR);
-    }
+    // !!!!!!!!!!!!!!!!!!!!!
+	Scene->m_DetailObjects->AppendObject(0xFF0000,"flower_yellow");
+	Scene->m_DetailObjects->AppendObject(0x00FF00,"grass");
+	Scene->m_DetailObjects->AppendObject(0x0000FF,"flower_podor");
+	Scene->m_DetailObjects->AppendObject(0xFF00FF,"flower_violet");
+    // !!!!!!!!!!!!!!!!!!!!!
 }
 //---------------------------------------------------------------------------
 

@@ -104,7 +104,8 @@ class CEditMesh {
     friend class CSector;
     friend class CPortalUtils;
     friend class SceneBuilder;
-    
+    friend class CDetail;
+
 	char m_Name[MAX_OBJ_NAME];
 
     CEditObject*	m_Parent;

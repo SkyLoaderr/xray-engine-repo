@@ -23,6 +23,7 @@ class CLight;
 class CEditObject;
 class CEditMesh;
 class CDPatchSystem;
+class CDetailManager;
 class CInifile;
 class CStream;
 class CFS_Base;
@@ -79,6 +80,7 @@ class EScene {
 public:
 	// addition objects
     CDPatchSystem* 	m_DetailPatches;
+    CDetailManager*	m_DetailObjects;
     CEditObject*	m_SkyDome;
 
     ObjectList		m_SnapObjects;
@@ -200,7 +202,8 @@ public:
 	bool SearchName					(char *name);
 
     bool GetBox						(Fbox& box, EObjClass classfilter);
-	void UpdateSkydome				();    
+    bool GetBox						(Fbox& box, ObjectList& lst);
+	void UpdateSkydome				();
     void WriteToLTX					(CInifile* pIni);
     
 public:

@@ -164,6 +164,8 @@ USEUNIT("shared\FS.cpp");
 USEUNIT("edit\Statistic.cpp");
 USEOBJ("ed_debug\_math.obj");
 USEOBJ("ed_debug\cpuid.obj");
+USEFORM("DOShuffle.cpp", frmDOShuffle);
+USEFORM("DOOneColor.cpp", frmOneColor);
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -189,6 +191,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->Title = "Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
+		Application->CreateForm(__classid(TfrmOneColor), &frmOneColor);
 		frmMain->SetHInst(hInst);
 
         _DELETE(frmSplash);
