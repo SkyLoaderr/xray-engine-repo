@@ -32,7 +32,7 @@ void CUIFragList::OnFrame()
 	map<DWORD,CPlayers::Item>::iterator E=Level().Players.items.end();
 
 	CGameFont* H		= Level().HUD()->pHUDFont;
-	H->OutSet			(list_rect.lt.x,list_rect.lt.y);
+	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	H->Color			(0xb0a0a0a0);
 	int k=1;
 	for (;I!=E;I++,k++)

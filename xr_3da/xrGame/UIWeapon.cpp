@@ -40,15 +40,13 @@ void CUIWeapon::Render()
 
 void CUIWeapon::Out(CWeapon* W){
 	if (W){
-//		float sc	= Level().HUD()->GetScale();
 		CGameFont* H= Level().HUD()->pHUDFont;
 		H->Color	(0x80ffffff);
-		H->Out		(position.x+6,	position.y+15,"%s",W->GetName());
+		H->Out		(float(position.x+6),	float(position.y+15),"%s",W->GetName());
 		int	AE		= W->GetAmmoElapsed();
 		int	AC		= W->GetAmmoCurrent();
 		if ((AE>=0)&&(AC>=0))
-			H->Out	(position.x+3,	position.y+2,"%d/%d",AE,AC);
-//		H->Out		(position.x+34,	position.y+50,"%d/%d",0,0);
+			H->Out	(float(position.x+3),	float(position.y+2),"%d/%d",AE,AC);
 		cur_shader	= W->GetUIIcon();
 	}else{
 		cur_shader	= 0;

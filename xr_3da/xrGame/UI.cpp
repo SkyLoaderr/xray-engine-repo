@@ -74,7 +74,7 @@ void CUI::OnFrame()
 		UIHealth.Out(m_Actor->g_Health(),m_Actor->g_Armor());
 		// weapon
 		CWeaponList* wpns = m_Actor->GetItemList();
-		if (wpns&&wpns->ActiveWeapon()) UIWeapon.Out(wpns->ActiveWeapon());
+		if (wpns) UIWeapon.Out(wpns->ActiveWeapon());
 		// out GAME-style depend information
 		switch (GAME){
 			case GAME_SINGLE:		

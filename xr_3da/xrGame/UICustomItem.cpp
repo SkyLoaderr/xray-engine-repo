@@ -58,7 +58,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, 
 	angle			+=PI_DIV_2;
 	_sincos			(angle,_sin2,_cos2);
 
-	Ivector2 C,RS;
+	Fvector2 C;
+	Ivector2 RS;
 	iRect.getsize	(RS);
 	float sc		= Level().HUD()->GetScale();
 	float sz		= sc*((RS.x>RS.y)?RS.x:RS.y)*0.7071f;
@@ -68,9 +69,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, DWORD color, 
 	RBt.set			(float(iRect.x2)/float(iTexSize.x)+vHalfPixel.x,float(iRect.y2)/float(iTexSize.y)+vHalfPixel.y);
 
 	// Rotation
-	iRect.getcenter	(C); 
-	C.mul			(sc);
-	C.add			(pos);
+	iRect.getcenter	(RS); 
+	C.set			(RS.x*sc+pos.x,RS.y*sc+pos.y);
 
 	Pointer->set	(C.x+_sin1*sz,	C.y+_cos1*sz,	color, LTt.x, RBt.y); Pointer++;
 	Pointer->set	(C.x-_sin2*sz,	C.y-_cos2*sz,	color, LTt.x, LTt.y); Pointer++;
