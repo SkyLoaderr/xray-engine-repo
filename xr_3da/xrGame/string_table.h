@@ -23,19 +23,20 @@ struct STRING_TABLE_DATA
 class CStringTable 
 {
 public:
-	CStringTable			();
-	virtual ~CStringTable	();
+	CStringTable						();
+	virtual ~CStringTable				();
 
-	static void Destroy		();
+	static void Destroy					();
 	
-	STRING_INDEX IndexById	(const STRING_ID& str_id)		const;
-	STRING_VALUE operator() (const STRING_ID& str_id)		const;
-	STRING_VALUE operator() (const STRING_INDEX str_index)	const;
+	STRING_INDEX IndexById				(const STRING_ID& str_id)		const;
+	STRING_VALUE operator()				(const STRING_ID& str_id)		const;
+	STRING_VALUE operator()				(const STRING_INDEX str_index)	const;
 
 	static BOOL	 m_bWriteErrorsToLog;
 private:
-	virtual void Init		();
-	virtual void Load		(LPCSTR xml_file);
-	
+	virtual void Init					();
+	virtual void Load					(LPCSTR xml_file);
+	STRING_VALUE ParseLine				(LPCSTR str);
+	bool		 GetKeyboardItem		(LPCSTR src, char* dst);
 	static STRING_TABLE_DATA* pData;
 };

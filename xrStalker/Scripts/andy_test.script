@@ -1,9 +1,7 @@
 function main()
-local a = get_actor()
-local b = level.object("stalker001")
-
-transfer_ammo(b,a,"ammo_9x19_fmj")
-//transfer_ammo(b,a,"ammo_9x19_fmj")
+	local a = get_actor()
+	local news_id = "tips_esc_trader_how_to_talk"
+	a:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,0)
 end
 
 
@@ -13,17 +11,12 @@ function transfer_ammo(first_speaker, second_speaker, item)
 	if obj ~= nil then
 		first_speaker:transfer_item(obj, second_speaker)
 	end
-	obj = first_speaker:object(item)
-	if obj ~= nil then
-		first_speaker:transfer_item(obj, second_speaker)
-	end
+--	obj = first_speaker:object(item)
+--	if obj ~= nil then
+--		first_speaker:transfer_item(obj, second_speaker)
+--	end
 end
 
-
-function __main()
-	local a = level.actor()
-	a:give_game_news("tips_esc_trader_how_to_talk", "ui\\ui_icons_task", 0,100,50,50,5000)
-end
 
 function _main ()
 

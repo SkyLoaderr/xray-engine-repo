@@ -6,6 +6,7 @@
 #include "string_table.h"
 
 #include "ui/xrxmlparser.h"
+#include "xr_level_controller.h"
 
 #define STRING_TABLE_SECT "string_table"
 
@@ -93,13 +94,53 @@ void CStringTable::Load	(LPCSTR xml_file)
 			if(m_bWriteErrorsToLog && pData->m_sLanguage && string_text)
 				Msg("[string table] '%s' no translation in '%s'", string_name, pData->m_sLanguage);
 		}
-
+		
 		R_ASSERT3(string_text, "string table entry does not has a text", string_name);
-
-		pData->m_Strings.push_back(STRING_VALUE(string_text));
+		
+		STRING_VALUE str_val = ParseLine(string_text);
+		
+		pData->m_Strings.push_back(str_val);
 		pData->m_StringTable.insert(mk_pair(STRING_ID(string_name), STRING_INDEX(pData->m_Strings.size()-1)));
 	}
 }
+
+
+STRING_VALUE CStringTable::ParseLine(LPCSTR str)
+{
+//	LPCSTR str = "1 $$action_left$$ 2 $$action_right$$ 3 $$action_left$$ 4";
+	std::string res;
+	int k = 0;
+	const char* b;
+	#define ACTION_STR "$$ACTION_"
+	int LEN = (int)xr_strlen(ACTION_STR);
+	char buff[64];
+	char srcbuff[64];
+	while( (b = strstr( str+k,ACTION_STR)) !=0 )
+	{
+		buff[0]=0;
+		srcbuff[0]=0;
+		res.append(str+k, b-str-k);
+		const char* e = strstr( b+LEN,"$$" );
+
+		int len = (int)(e-b-LEN);
+
+		strncpy(srcbuff,b+LEN, len);
+		srcbuff[len]=0;
+		GetActionBinding(srcbuff,buff);
+//		GetKeyboardItem(srcbuff,buff);
+		res.append(buff, xr_strlen(buff) );
+		k=(int)(b-str);
+		k+=len;
+		k+=LEN;
+		k+=2;
+	};
+	if(k<(int)xr_strlen(str)){
+		res.append(str+k);
+	}
+	
+	return STRING_VALUE(res.c_str());
+}
+
 
 STRING_VALUE CStringTable::operator() (const STRING_ID& str_id) const
 {

@@ -108,6 +108,8 @@ public:
 	void clear();
 	void save(IWriter* F);
 };
+void GetActionBinding(LPCSTR action, char* dst_buff);
+
 extern ConsoleBindCmds	bindConsoleCmds;
 
 #define MOUSE_1		0x100
