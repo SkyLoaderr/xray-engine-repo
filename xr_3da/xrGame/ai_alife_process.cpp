@@ -97,7 +97,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 				MONSTER_P_PAIR_IT		M = m_tpScheduledObjects.find(m_tNextFirstProcessObjectID), I;
 				int i=1;
 				for (I = M ; I != E; I++, i++) {
-					vfProcessNPC		((*I).second);
+					(*I).second->Update(this);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
 						Device.Statistic.TEST3.End();
@@ -105,7 +105,7 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 					}
 				}
 				for (I = B; I != M; I++, i++) {
-					vfProcessNPC		((*I).second);
+					(*I).second->Update(this);
 					if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= qwMaxProcessTime) {
 						m_tNextFirstProcessObjectID = (++I == E) ? (*B).second->ID : (*I).second->ID;
 						Device.Statistic.TEST3.End();
@@ -118,23 +118,4 @@ void CSE_ALifeSimulator::shedule_Update			(u32 dt)
 		default : NODEFAULT;
 	}
 	Device.Statistic.TEST3.End();
-}
-
-void CSE_ALifeSimulator::vfProcessNPC(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
-{
-	if (tpALifeMonsterAbstract->fHealth <= 0)
-		return;
-
-	CSE_ALifeHumanAbstract *tpHuman = dynamic_cast<CSE_ALifeHumanAbstract *>(tpALifeMonsterAbstract);
-	if (tpHuman)
-		vfUpdateHuman(tpHuman);
-	else
-		vfUpdateMonster(tpALifeMonsterAbstract);
-	tpALifeMonsterAbstract->m_tTimeID = tfGetGameTime();
-}
-
-void CSE_ALifeSimulator::vfUpdateMonster(CSE_ALifeMonsterAbstract *tpALifeMonsterAbstract)
-{
-	vfChooseNextRoutePoint	(tpALifeMonsterAbstract);
-	vfCheckForTheBattle		(tpALifeMonsterAbstract);
 }

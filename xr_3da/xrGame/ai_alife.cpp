@@ -275,7 +275,7 @@ void CSE_ALifeSimulator::vfNewGame(LPCSTR caSaveName)
 				MONSTER_P_PAIR_IT	I = m_tpScheduledObjects.begin();
 				MONSTER_P_PAIR_IT	E = m_tpScheduledObjects.end();
 				for ( ; I != E; I++)
-					vfProcessNPC	((*I).second);
+					(*I).second->Update(this);
 
 				break;
 			}

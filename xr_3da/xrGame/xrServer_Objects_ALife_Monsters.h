@@ -11,6 +11,8 @@
 
 #include "xrServer_Objects_ALife.h"
 
+class CSE_ALifeSimulator;
+
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
 public:
 	float							m_fCumulativeItemMass;
@@ -59,24 +61,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureAbstract,CSE_ALifeDynamicObjectVisu
 	bool							m_bDeathIsProcessed;
 									
 									CSE_ALifeCreatureAbstract(LPCSTR caSection);
-
-	virtual u8						g_team			()
-	{
-		return s_team;
-	}
-
-	virtual u8						g_squad			()
-	{
-		return s_squad;
-	}
-
-	virtual u8						g_group			()
-	{
-		return s_group;
-	}
+	virtual u8						g_team					();
+	virtual u8						g_squad					();
+	virtual u8						g_group					();
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,IPureSchedulableObject)
 	_GRAPH_ID						m_tNextGraphID;
 	_GRAPH_ID						m_tPrevGraphID;
 	float							m_fGoingSpeed;
@@ -85,36 +75,12 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract)
 	float							m_fDistanceToPoint;
 	TERRAIN_VECTOR					m_tpaTerrain;
 	
-									CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
-	{
-		m_tNextGraphID				= m_tGraphID;
-		m_tPrevGraphID				= m_tGraphID;
-		m_fCurSpeed					= 0.0f;
-		m_fDistanceFromPoint		= 0.0f;
-		m_fDistanceToPoint			= 0.0f;
-		m_tpaTerrain.clear			();
-		LPCSTR						S;
-		if (pSettings->line_exist(caSection,"monster_section")) {
-			S						= pSettings->r_string	(pSettings->r_string(caSection,"monster_section"),"terrain");
-			m_fGoingSpeed			= pSettings->r_float	(pSettings->r_string(caSection,"monster_section"), "going_speed");
-		}
-		else {
-			S						= pSettings->r_string	(caSection,"terrain");
-			m_fGoingSpeed			= pSettings->r_float	(caSection, "going_speed");
-		}
-		u32							N = _GetItemCount(S);
-		R_ASSERT					(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
-		STerrainPlace				tTerrainPlace;
-		tTerrainPlace.tMask.resize	(LOCATION_TYPE_COUNT);
-		string16					I;
-		for (u32 i=0; i<N;) {
-			for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
-				tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
-			tTerrainPlace.dwMinTime	= atoi(_GetItem(S,i++,I))*1000;
-			tTerrainPlace.dwMaxTime	= atoi(_GetItem(S,i++,I))*1000;
-			m_tpaTerrain.push_back	(tTerrainPlace);
-		}
-	};
+									CSE_ALifeMonsterAbstract(LPCSTR caSection);
+#ifdef _EDITOR
+									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator){};
+#else
+									virtual	void					Update					(CSE_ALifeSimulator *tpALifeSimulator);
+#endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CSE_ALifeTraderAbstract)
@@ -127,11 +93,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCreatureCrow,CSE_ALifeCreatureAbstract)
-									CSE_ALifeCreatureCrow		(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
-	{
-		if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
-    	    set_visual				(pSettings->r_string(caSection,"visual"));
-	};
+									CSE_ALifeCreatureCrow		(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract)
@@ -202,20 +164,47 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	string128						m_caKnownCustomers;
 	OBJECT_VECTOR					m_tpKnownCustomers;
 
-									CSE_ALifeHumanAbstract(LPCSTR caSection);
-	virtual							~CSE_ALifeHumanAbstract();
+									CSE_ALifeHumanAbstract	(LPCSTR caSection);
+	virtual							~CSE_ALifeHumanAbstract	();
+#ifndef _EDITOR
+	virtual	void					Update					(CSE_ALifeSimulator	*tpALife);
+			// FSM
+			void					vfChooseTask			(CSE_ALifeSimulator	*tpALife);
+			void					vfHealthCare			(CSE_ALifeSimulator	*tpALife);
+			void					vfBuySupplies			(CSE_ALifeSimulator	*tpALife);
+			void					vfGoToCustomer			(CSE_ALifeSimulator	*tpALife);
+			void					vfBringToCustomer		(CSE_ALifeSimulator	*tpALife);
+			void					vfGoToSOS				(CSE_ALifeSimulator	*tpALife);
+			void					vfSendSOS				(CSE_ALifeSimulator	*tpALife);
+			void					vfAccomplishTask		(CSE_ALifeSimulator	*tpALife);
+			void					vfSearchObject			(CSE_ALifeSimulator	*tpALife);
+			// FSM miscellanious
+			void					vfChooseHumanTask		(CSE_ALifeSimulator	*tpALife);
+			bool					HealthIsGood			();
+			bool					CanTreat				();
+			bool					EnoughMoneyToTreat		();
+			bool					EnoughTimeToTreat		();
+			bool					EnoughEquipmentToGo		();
+			bool					DistanceToTraderIsBig	();
+			bool					EnoughMoneyToEquip		();
+			// miscellanious
+			bool					bfCheckIfTaskCompleted	(CSE_ALifeSimulator	*tpALife, OBJECT_IT &I);
+			bool					bfCheckIfTaskCompleted	(CSE_ALifeSimulator	*tpALife);
+			bool					bfProcessItems			(CSE_ALifeSimulator	*tpALife);
+			void					vfCheckForDeletedEvents	(CSE_ALifeSimulator	*tpALife);
+			bool					bfChooseNextRoutePoint	(CSE_ALifeSimulator	*tpALife);
+			void					vfSetCurrentTask		(CSE_ALifeSimulator	*tpALife, _TASK_ID &tTaskID);
+#endif
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHumanStalker,CSE_ALifeHumanAbstract)
-									CSE_ALifeHumanStalker	(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection), CSE_Abstract(caSection)
-	{
-	};
+									CSE_ALifeHumanStalker	(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectIdol,CSE_ALifeHumanAbstract)
 	string256						m_caAnimations;
 	u32								m_dwAniPlayType;
-									CSE_ALifeObjectIdol(LPCSTR caSection);
+									CSE_ALifeObjectIdol		(LPCSTR caSection);
 SERVER_ENTITY_DECLARE_END
 
 #endif

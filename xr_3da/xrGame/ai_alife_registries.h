@@ -105,16 +105,17 @@ public:
 									CSE_ALifeGraphRegistry		();
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
-			void					vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID);
-			void					vfAddObjectToGraphPoint		(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tNextGraphPointID);
-			void					vfChangeObjectGraphPoint	(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID);
+			void					vfAssignGraphPosition		(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract);
+			void					vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject	*tpALifeDynamicObject);
+			void					vfRemoveObjectFromGraphPoint(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphID);
+			void					vfAddObjectToGraphPoint		(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tNextGraphPointID);
+			void					vfChangeObjectGraphPoint	(CSE_ALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID		tGraphPointID,		_GRAPH_ID tNextGraphPointID);
 			// events
-			void					vfRemoveEventFromGraphPoint	(CSE_ALifeEvent *tpEvent, _GRAPH_ID tGraphID);
-			void					vfAddEventToGraphPoint		(CSE_ALifeEvent *tpEvent, _GRAPH_ID tNextGraphPointID);
-			void					vfChangeEventGraphPoint		(CSE_ALifeEvent *tpEvent, _GRAPH_ID tGraphPointID, _GRAPH_ID tNextGraphPointID);
-			void					vfAttachItem				(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest = true);
-			void					vfDetachItem				(CSE_Abstract &CSE_Abstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest = true);
-			void					vfRemoveObjectFromCurrentLevel(CSE_ALifeDynamicObject *tpALifeDynamicObject);
+			void					vfRemoveEventFromGraphPoint	(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tGraphID);
+			void					vfAddEventToGraphPoint		(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tNextGraphPointID);
+			void					vfChangeEventGraphPoint		(CSE_ALifeEvent			*tpEvent,				_GRAPH_ID		tGraphPointID,		_GRAPH_ID tNextGraphPointID);
+			void					vfAttachItem				(CSE_Abstract			&CSE_Abstract,			CSE_ALifeItem	*tpALifeItem,		_GRAPH_ID tGraphID,			bool bALifeRequest = true);
+			void					vfDetachItem				(CSE_Abstract			&CSE_Abstract,			CSE_ALifeItem	*tpALifeItem,		_GRAPH_ID tGraphID,			bool bALifeRequest = true);
 };
 
 class CSE_ALifeTraderRegistry {
@@ -124,6 +125,7 @@ public:
 
 			void					Init						();
 			void					Update						(CSE_ALifeDynamicObject *tpALifeDynamicObject);
+			CSE_ALifeTrader			*tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHumanAbstract);
 };
 
 class CSE_ALifeScheduleRegistry {

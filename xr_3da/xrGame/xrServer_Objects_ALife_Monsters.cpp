@@ -267,6 +267,21 @@ void CSE_ALifeCreatureAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_angle8			(o_torso.pitch	);
 };
 
+u8 CSE_ALifeCreatureAbstract::g_team		()
+{
+	return s_team;
+}
+
+u8 CSE_ALifeCreatureAbstract::g_squad		()
+{
+	return s_squad;
+}
+
+u8 CSE_ALifeCreatureAbstract::g_group		()
+{
+	return s_group;
+}
+
 #ifdef _EDITOR
 void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 {
@@ -281,19 +296,50 @@ void CSE_ALifeCreatureAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterAbstract
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
+{
+	m_tNextGraphID				= m_tGraphID;
+	m_tPrevGraphID				= m_tGraphID;
+	m_fCurSpeed					= 0.0f;
+	m_fDistanceFromPoint		= 0.0f;
+	m_fDistanceToPoint			= 0.0f;
+	m_tpaTerrain.clear			();
+	LPCSTR						S;
+	if (pSettings->line_exist(caSection,"monster_section")) {
+		S						= pSettings->r_string	(pSettings->r_string(caSection,"monster_section"),"terrain");
+		m_fGoingSpeed			= pSettings->r_float	(pSettings->r_string(caSection,"monster_section"), "going_speed");
+	}
+	else {
+		S						= pSettings->r_string	(caSection,"terrain");
+		m_fGoingSpeed			= pSettings->r_float	(caSection, "going_speed");
+	}
+	u32							N = _GetItemCount(S);
+	R_ASSERT					(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	STerrainPlace				tTerrainPlace;
+	tTerrainPlace.tMask.resize	(LOCATION_TYPE_COUNT);
+	string16					I;
+	for (u32 i=0; i<N;) {
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
+		tTerrainPlace.dwMinTime	= atoi(_GetItem(S,i++,I))*1000;
+		tTerrainPlace.dwMaxTime	= atoi(_GetItem(S,i++,I))*1000;
+		m_tpaTerrain.push_back	(tTerrainPlace);
+	}
+}
+
 void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
+	inherited1::STATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
-	inherited::STATE_Read		(tNetPacket, size);
+	inherited1::STATE_Read		(tNetPacket, size);
 }
 
 void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Write		(tNetPacket);
+	inherited1::UPDATE_Write	(tNetPacket);
 	tNetPacket.w				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
 	tNetPacket.w				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
 	tNetPacket.w				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
@@ -304,7 +350,7 @@ void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 
 void CSE_ALifeMonsterAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 {
-	inherited::UPDATE_Read		(tNetPacket);
+	inherited1::UPDATE_Read		(tNetPacket);
 	tNetPacket.r				(&m_tNextGraphID,			sizeof(m_tNextGraphID));
 	tNetPacket.r				(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
 	tNetPacket.r				(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
@@ -316,7 +362,7 @@ void CSE_ALifeMonsterAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
-  	inherited::FillProp			(pref,items);
+  	inherited1::FillProp		(pref,items);
 }
 #endif
 
@@ -386,6 +432,12 @@ void CSE_ALifeCreatureActor::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureCrow
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeCreatureCrow::CSE_ALifeCreatureCrow(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
+{
+	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
+		set_visual				(pSettings->r_string(caSection,"visual"));
+}
+
 void CSE_ALifeCreatureCrow::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	if (m_wVersion > 20) {
@@ -790,6 +842,10 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanStalker
 //////////////////////////////////////////////////////////////////////////
+CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection), CSE_Abstract(caSection)
+{
+}
+
 void CSE_ALifeHumanStalker::STATE_Write		(NET_Packet &tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
@@ -811,11 +867,12 @@ void CSE_ALifeHumanStalker::UPDATE_Read		(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CSE_ALifeHumanStalker::FillProp	(LPCSTR pref, PropItemVec& values)
+void CSE_ALifeHumanStalker::FillProp		(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 }
 #endif
+
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectIdol
 //////////////////////////////////////////////////////////////////////////

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_alife_human_fsm.cpp
-//	Created 	: 14.01.2003
-//  Modified 	: 14.01.2003
+//	Created 	: 24.07.2003
+//  Modified 	: 24.07.2003
 //	Author		: Dmitriy Iassenev
 //	Description : A-Life FSM of humans
 ////////////////////////////////////////////////////////////////////////////
@@ -9,119 +9,210 @@
 #include "stdafx.h"
 #include "ai_alife.h"
 
-void CSE_ALifeSimulator::vfChooseTask(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::Update			(CSE_ALifeSimulator *tpALife)
 {
-	_GRAPH_ID				tGraphID = _GRAPH_ID(-1);
-	vfChooseHumanTask		(tpALifeHumanAbstract);
-	CSE_ALifeTask			*l_tpTask = tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID);
-	switch (l_tpTask->m_tTaskType) {
-		case eTaskTypeSearchForItemCG :
-		case eTaskTypeSearchForItemOG : {
-			tGraphID		= l_tpTask->m_tGraphID;
-			break;
-										}
-		case eTaskTypeSearchForItemCL :
-		case eTaskTypeSearchForItemOL : {
-#pragma todo("Dima to Dima : add graph point type item search")
-			//VERIFY		(m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID].size());
-			//tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID].size());
-			//tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID].size(),false);
-			//tGraphID		= m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
-			//tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
-			break;
-										}
-		default				: NODEFAULT;
-	};
-	tpALifeHumanAbstract->m_tTaskState = eTaskStateAccomplishTask;
-	ffFindMinimalPath		(tpALifeHumanAbstract->m_tGraphID,tGraphID,tpALifeHumanAbstract->m_tpaVertices);
-	tpALifeHumanAbstract->m_dwCurNode = 0;
-	tpALifeHumanAbstract->m_tNextGraphID = tpALifeHumanAbstract->m_tGraphID;
-	tpALifeHumanAbstract->m_fCurSpeed	= tpALifeHumanAbstract->m_fGoingSpeed;
+	if (fHealth <= 0)
+		return;
+	inherited2::Update		(tpALife);
+	tpALife->vfCheckForTheBattle(this);
+	bfProcessItems			(tpALife);
+	return;
+//	R_ASSERT3			(!m_bOnline,"Can't update online object ",s_name_replace);
+//	bool				bOk;
+//	do {
+//		switch (m_tTaskState) {
+//			case eTaskStateChooseTask : {
+//				vfChooseTask(tpALife);
+//				break;
+//										}
+//			case eTaskStateHealthCare : {
+//				vfHealthCare(tpALife);
+//				break;
+//										}
+//			case eTaskStateBuySupplies : {
+//				vfBuySupplies(tpALife);
+//				break;
+//										 }
+//			case eTaskStateGoToCustomer : {
+//				vfGoToCustomer(tpALife);
+//				break;
+//										  }
+//			case eTaskStateBringToCustomer : {
+//				vfBringToCustomer(tpALife);
+//				break;
+//											 }
+//			case eTaskStateGoToSOS : {
+//				vfGoToSOS(tpALife);
+//				break;
+//									 }
+//			case eTaskStateSendSOS : {
+//				vfSendSOS(tpALife);
+//				break;
+//									 }
+//			case eTaskStateAccomplishTask : {
+//				vfAccomplishTask(tpALife);
+//				break;
+//											}
+//			case eTaskStateSearchItem : {
+//				vfSearchObject	(tpALife);
+//				break;
+//										}
+//			default				: NODEFAULT;
+//		}
+//		bOk						= bfChooseNextRoutePoint(tpALife);
+//		//vfCheckForTheBattle		(tpALife);
+//		//vfProcessItems			(tpALife);
+//		//vfCheckForDeletedEvents	(tpALifeHumanAbstract);
+//	}
+//	while (bOk && (tpALife->m_tpActor->o_Position.distance_to(o_Position) > tpALife->m_fOnlineDistance));
+//	m_tTimeID					= tpALife->tfGetGameTime();
 }
 
-void CSE_ALifeSimulator::vfHealthCare(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfChooseTask(CSE_ALifeSimulator *tpALife)
+{
+	if (!HealthIsGood()) {
+		if (!CanTreat()) {
+			if (!EnoughMoneyToTreat() || !EnoughTimeToTreat()) {
+				m_tTaskState = eTaskStateSendSOS;
+				return;
+			}
+			else {
+				m_tTaskState = eTaskStateBuySupplies;
+				return;
+			}
+		}
+		else {
+			m_tTaskState = eTaskStateHealthCare;
+			return;
+		}
+	}
+	else {
+		if (!EnoughEquipmentToGo()) {
+			if (DistanceToTraderIsBig() || !EnoughMoneyToEquip()) {
+				m_tTaskState = eTaskStateSendSOS;
+				return;
+			}
+			else {
+				m_tTaskState = eTaskStateBuySupplies;
+				return;
+			}
+		}
+		else {
+			_GRAPH_ID				tGraphID = _GRAPH_ID(-1);
+			vfChooseHumanTask		(tpALife);
+			CSE_ALifeTask			*l_tpTask = tpALife->tpfGetTaskByID(m_dwCurTaskID);
+			switch (l_tpTask->m_tTaskType) {
+				case eTaskTypeSearchForItemCG :
+				case eTaskTypeSearchForItemOG : {
+					tGraphID		= l_tpTask->m_tGraphID;
+					break;
+												}
+				case eTaskTypeSearchForItemCL :
+				case eTaskTypeSearchForItemOL : {
+#pragma todo("Dima to Dima : add graph point type item search")
+//					tpfGetCurrentTask()
+//					VERIFY		(m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].size());
+//					tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].size());
+//					tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID].size(),false);
+//					tGraphID	= m_tpTerrain[tpALifeHumanAbstract->m_tpTasks[tpALifeHumanAbstract->m_dwCurTask]->m_tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
+//					tpALifeHuman->m_baVisitedVertices[tpALifeHumanAbstract->m_dwCurTaskLocation] = true;
+					break;
+												}
+				default				: NODEFAULT;
+			};
+			m_tTaskState			= eTaskStateAccomplishTask;
+			tpALife->ffFindMinimalPath(m_tGraphID,tGraphID,m_tpaVertices);
+			m_dwCurNode				= 0;
+			m_tNextGraphID			= m_tGraphID;
+			m_fCurSpeed				= m_fGoingSpeed;
+		}
+	}
+}
+
+void CSE_ALifeHumanAbstract::vfHealthCare(CSE_ALifeSimulator *tpALife)
 {
 	// if health is low -> use medikit
 	// if hunhry -> eat or drink vodka
 	// if irradiating -> use antirad or drink vodka 
 	// if tired -> sleep, take a rest
-	tpALifeHumanAbstract->m_tTaskState = eTaskStateChooseTask;
+	m_tTaskState = eTaskStateChooseTask;
 }
 
-void CSE_ALifeSimulator::vfBuySupplies(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfBuySupplies(CSE_ALifeSimulator *tpALife)
 {
 	// choose an appropriate trader and go to him to buy supplies
 }
 
-void CSE_ALifeSimulator::vfGoToCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfGoToCustomer(CSE_ALifeSimulator *tpALife)
 {
 	// go to customer to get something to accomplish task
-	if ((tpALifeHumanAbstract->m_dwCurNode >= (tpALifeHumanAbstract->m_tpaVertices.size() - 1)) && (tpALifeHumanAbstract->m_tGraphID == tpALifeHumanAbstract->m_tNextGraphID)) {
-		tpALifeHumanAbstract->m_tpaVertices.clear();
-		tpALifeHumanAbstract->m_dwCurNode = 0;
-		if (int(tpALifeHumanAbstract->m_dwCurTaskID) > 0) {
-			CSE_ALifeTask			*l_tpTask = tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID);
-			CSE_ALifeTraderAbstract	*l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(tpfGetObjectByID(l_tpTask->m_tCustomerID));
+	if ((m_dwCurNode >= (m_tpaVertices.size() - 1)) && (m_tGraphID == m_tNextGraphID)) {
+		m_tpaVertices.clear();
+		m_dwCurNode = 0;
+		if (int(m_dwCurTaskID) > 0) {
+			CSE_ALifeTask			*l_tpTask = tpALife->tpfGetTaskByID(m_dwCurTaskID);
+			CSE_ALifeTraderAbstract	*l_tpTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(tpALife->tpfGetObjectByID(l_tpTask->m_tCustomerID));
 			if (l_tpTraderAbstract)
-				vfCommunicateWithCustomer(tpALifeHumanAbstract,l_tpTraderAbstract);
+				tpALife->vfCommunicateWithCustomer(this,l_tpTraderAbstract);
 		}
-		tpALifeHumanAbstract->m_tTaskState = eTaskStateChooseTask;
+		m_tTaskState = eTaskStateChooseTask;
 	}
 }
 
-void CSE_ALifeSimulator::vfBringToCustomer(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfBringToCustomer(CSE_ALifeSimulator *tpALife)
 {
 	// go to customer to sell found artefacts
 }
 
-void CSE_ALifeSimulator::vfGoToSOS(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfGoToSOS(CSE_ALifeSimulator *tpALife)
 {
 	// go to person who sent SOS to save or kill
 }
 
-void CSE_ALifeSimulator::vfSendSOS(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfSendSOS(CSE_ALifeSimulator *tpALife)
 {
 	// send SOS by myself
 }
 
-void CSE_ALifeSimulator::vfAccomplishTask(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfAccomplishTask(CSE_ALifeSimulator *tpALife)
 {
 	// build path and wait until we go to the end of it
-	if ((tpALifeHumanAbstract->m_dwCurNode + 1 >= (tpALifeHumanAbstract->m_tpaVertices.size())) && (tpALifeHumanAbstract->m_tGraphID == tpALifeHumanAbstract->m_tNextGraphID)) {
-		if (bfCheckIfTaskCompleted(tpALifeHumanAbstract)) {
-			ffFindMinimalPath	(tpALifeHumanAbstract->m_tGraphID,tpfGetObjectByID(tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,tpALifeHumanAbstract->m_tpaVertices);
-			tpALifeHumanAbstract->m_dwCurNode = 0;
-			tpALifeHumanAbstract->m_tTaskState = eTaskStateGoToCustomer;
+	if ((m_dwCurNode + 1 >= (m_tpaVertices.size())) && (m_tGraphID == m_tNextGraphID)) {
+		if (bfCheckIfTaskCompleted(tpALife)) {
+			tpALife->ffFindMinimalPath	(m_tGraphID,tpALife->tpfGetObjectByID(tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tCustomerID)->m_tGraphID,m_tpaVertices);
+			m_dwCurNode		= 0;
+			m_tTaskState	= eTaskStateGoToCustomer;
 		}
 		else {
-			switch (tpfGetTaskByID(tpALifeHumanAbstract->m_dwCurTaskID)->m_tTaskType) {
-			case eTaskTypeSearchForItemCG :
-			case eTaskTypeSearchForItemOG : {
-				if ((tpALifeHumanAbstract->m_dwCurNode + 1>= (tpALifeHumanAbstract->m_tpaVertices.size())) && (tpALifeHumanAbstract->m_tGraphID == tpALifeHumanAbstract->m_tNextGraphID)) {
-					tpfGetTaskByID		(tpALifeHumanAbstract->m_dwCurTaskID)->m_dwTryCount++;
-					tpALifeHumanAbstract->m_tTaskState = eTaskStateChooseTask;
+			switch (tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_tTaskType) {
+				case eTaskTypeSearchForItemCG :
+				case eTaskTypeSearchForItemOG : {
+					if ((m_dwCurNode + 1>= (m_tpaVertices.size())) && (m_tGraphID == m_tNextGraphID)) {
+						tpALife->tpfGetTaskByID	(m_dwCurTaskID)->m_dwTryCount++;
+						m_tTaskState = eTaskStateChooseTask;
+					}
+					break;
 				}
-				break;
-											}
-			case eTaskTypeSearchForItemCL :
-			case eTaskTypeSearchForItemOL : {
-				tpfGetTaskByID		(tpALifeHumanAbstract->m_dwCurTaskID)->m_dwTryCount++;
-				tpALifeHumanAbstract->m_tTaskState = eTaskStateChooseTask;
-				//				for (tpALifeHuman->m_dwCurTaskLocation++; (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID].size()) && (tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation]); tpALifeHuman->m_dwCurTaskLocation++);
-				//					if (tpALifeHuman->m_dwCurTaskLocation < m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID].size()) {
-				//						tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
-				//						ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tpTerrain[tpALifeHuman->m_tpTasks[tpALifeHuman->m_dwCurTask]->m_tLocationID][tpALifeHuman->m_dwCurTaskLocation],tpALifeHuman->m_tpaVertices);
-				//						tpALifeHuman->m_dwCurNode = 0;
-				//					}
-				//					else
-				//						tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
-											}
+				case eTaskTypeSearchForItemCL :
+				case eTaskTypeSearchForItemOL : {
+	//				tpALife->tpfGetTaskByID(m_dwCurTaskID)->m_dwTryCount++;
+	//				m_tTaskState		= eTaskStateChooseTask;
+	//				for (m_dwCurTaskLocation++; (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) && (m_baVisitedVertices[m_dwCurTaskLocation]); m_dwCurTaskLocation++);
+	//				if (m_dwCurTaskLocation < tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID].size()) {
+	//					m_baVisitedVertices[m_dwCurTaskLocation] = true;
+	//					tpAlife->ffFindMinimalPath(m_tGraphID,tpAlife->m_tpTerrain[m_tpTasks[m_dwCurTask]->m_tLocationID][m_dwCurTaskLocation],m_tpaVertices);
+	//					m_dwCurNode = 0;
+	//				}
+	//				else
+	//					m_tTaskState	= eTaskStateChooseTask;
+					break;
+				}
+				default :				NODEFAULT;
 			}
 		}
 	}
 }
 
-void CSE_ALifeSimulator::vfSearchObject(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+void CSE_ALifeHumanAbstract::vfSearchObject(CSE_ALifeSimulator *tpALife)
 {
 }
-

@@ -375,6 +375,21 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &CSE_Abstract, CSE_ALifeI
 	tpTraderParams->m_fCumulativeItemMass -= tpALifeItem->m_fMass;
 }
 
+void CSE_ALifeGraphRegistry::vfAssignGraphPosition(CSE_ALifeMonsterAbstract	*tpALifeMonsterAbstract)
+{
+	tpALifeMonsterAbstract->m_tNextGraphID					= tpALifeMonsterAbstract->m_tPrevGraphID = tpALifeMonsterAbstract->m_tGraphID;
+	tpALifeMonsterAbstract->m_fDistanceToPoint				= tpALifeMonsterAbstract->m_fDistance;
+	_GRAPH_ID												tGraphID = tpALifeMonsterAbstract->m_tNextGraphID;
+	u16														wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
+	CSE_ALifeGraph::SGraphEdge								*tpaEdges = (CSE_ALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
+	for (int i=0; i<wNeighbourCount; i++)
+		if (tpaEdges[i].fPathDistance > tpALifeMonsterAbstract->m_fDistance) {
+			tpALifeMonsterAbstract->m_fDistanceFromPoint	= tpaEdges[i].fPathDistance - tpALifeMonsterAbstract->m_fDistance;
+			break;
+		}
+}
+
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTraderRegistry
 ////////////////////////////////////////////////////////////////////////////
@@ -391,6 +406,25 @@ void CSE_ALifeTraderRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObjec
 		m_tpTraders.push_back(tpALifeTrader);
 		std::sort(m_tpTraders.begin(),m_tpTraders.end(),CCompareTraderRanksPredicate());
 	}
+}
+
+CSE_ALifeTrader *CSE_ALifeTraderRegistry::tpfGetNearestSuitableTrader(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
+{
+	float			fBestDistance = MAX_NODE_ESTIMATION_COST;
+	CSE_ALifeTrader *tpBestTrader = 0;
+	TRADER_P_IT		I = m_tpTraders.begin();
+	TRADER_P_IT		E = m_tpTraders.end();
+	Fvector			&tGlobalPoint = getAI().m_tpaGraph[tpALifeHumanAbstract->m_tGraphID].tGlobalPoint;
+	for ( ; I != E; I++) {
+//		if ((*I)->m_tRank != tpALifeHumanAbstract->m_tRank)
+//			break;
+		float		fCurDistance = getAI().m_tpaGraph[(*I)->m_tGraphID].tGlobalPoint.distance_to(tGlobalPoint);
+		if (fCurDistance < fBestDistance) {
+			fBestDistance	= fCurDistance;
+			tpBestTrader	= *I;
+		}
+	}
+	return			(tpBestTrader);
 }
 
 ////////////////////////////////////////////////////////////////////////////

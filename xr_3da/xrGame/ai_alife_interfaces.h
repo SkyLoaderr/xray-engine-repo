@@ -10,6 +10,7 @@
 #define XRAY_AI_ALIFE_INTERFACES
 
 class NET_Packet;
+class CSE_ALifeSimulator;
 
 interface IPureALifeLObject {
 public:
@@ -32,4 +33,8 @@ public:
 	virtual void					UPDATE_Read	(NET_Packet &tNetPacket)				= 0;
 };
 
+interface IPureSchedulableObject {
+public:
+	virtual void					Update(CSE_ALifeSimulator *tpALifeSimulator)		= 0;
+};
 #endif
