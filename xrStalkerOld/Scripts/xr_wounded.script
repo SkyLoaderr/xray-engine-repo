@@ -542,34 +542,34 @@ function add_to_binder (object, char_ini)
 end
 ------------
 
-function set_wounded (npc, enabled, threshold, immediate)
-
-	local char_ini = npc:spawn_ini()
-	local st = xr_motivator.storage[npc:id()].wounded
-    if enabled == nil then
-       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "enabled") == true then
-          st.enabled = char_ini:r_bool("wounded", "enabled")
-       end
-    else
-       st.enabled = enabled     
-    end
-    
-    if threshold == nil then
-       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "threshold") == true then
-          st.threshold = char_ini:r_u32 ("wounded", "threshold") / 100.0
-       end
-    else
-       st.threshold = threshold
-    end
-    
-    if immediate == nil then
-       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "immediate") == true then
-          st.immediate = char_ini:r_bool ("wounded", "immediate")
-       end
-    else
-       st.immediate = immediate
-    end
-   
-    st.sit = false 
-    st.cover = false
-end
+--function set_wounded (npc, enabled, threshold, immediate)
+--
+--	local char_ini = npc:spawn_ini()
+--	local st = xr_motivator.storage[npc:id()].wounded
+--    if enabled == nil then
+--       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "enabled") == true then
+--          st.enabled = char_ini:r_bool("wounded", "enabled")
+--       end
+--    else
+--       st.enabled = enabled     
+--    end
+--    
+--    if threshold == nil then
+--       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "threshold") == true then
+--          st.threshold = char_ini:r_u32 ("wounded", "threshold") / 100.0
+--       end
+--    else
+--       st.threshold = threshold
+--    end
+--    
+--    if immediate == nil then
+--       if char_ini:section_exist ("wounded") == true and char_ini:line_exist("wounded", "immediate") == true then
+--          st.immediate = char_ini:r_bool ("wounded", "immediate")
+--       end
+--    else
+--       st.immediate = immediate
+--    end
+--   
+--    st.sit = false 
+--    st.cover = false
+--end
