@@ -92,8 +92,8 @@ void CTexture::Load()
 	}
 
 	// Material
-	{
-		LPCSTR		descr					=	Device.Resources->m_description->r_string("specification",*cName);
+	if (Device.Resources->m_description->line_exist("specification",*cName))	{
+		LPCSTR		descr			=	Device.Resources->m_description->r_string("specification",*cName);
 		string256	bmode,bparam;	float mid;
 		sscanf		(descr,"bump_mode[%s:%f], material[%f]",bmode,bparam,&mid);
 		m_material							=	mid;
