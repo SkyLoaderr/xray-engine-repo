@@ -1,7 +1,6 @@
 #include "stdafx.h"
-#include "device.h"
+#include "xrSound.h"
 #include "xr_cda.h"
-#include "xr_sndman.h"
 #include "xr_ini.h"
 
 CCDA::CCDA( ) {

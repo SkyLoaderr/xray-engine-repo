@@ -3,14 +3,12 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "xrSound.h"
 #include "3DSoundRender.h"
 #include "3DSound.h"
-#include "device.h"
-#include "xr_sndman.h"
-#include "xr_ini.h"
 
 int		psSoundRelaxTime		= 3;
-u32	psSoundFlags			= ssWaveTrace;
+u32		psSoundFlags			= ssWaveTrace;
 float	psSoundOcclusionScale	= 0.85f;
 float	psSoundCull				= 0.07f;
 float	psSoundRolloff			= 0.3f;
@@ -26,9 +24,7 @@ CSoundRender::CSoundRender()
 	pExtensions					= NULL;
 
     // Get listener interface.
-	R_ASSERT					(pSounds);
-	R_ASSERT					(pSounds->pBuffer);
-    pSounds->pBuffer->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
+    Sound_Implementation.pBuffer->QueryInterface( IID_IDirectSound3DListener, (VOID**)&pListener );
 	R_ASSERT					(pListener);
 
 	// Initialize listener data
@@ -87,7 +83,10 @@ void CSoundRender::OnMove()
 
 	// Start deferred sounds
 	for (vector<sound_defer>::iterator it=defer.begin(); it!=defer.end(); it++)
-		it->P->Play	(0,0,it->F);
+	{
+		IDirectSoundBuffer*		B = (IDirectSoundBuffer*) it->P;
+		B->Play					(0,0,it->F);
+	}
 }
 
 int CSoundRender::FindByName			(LPCSTR name, BOOL _3D, BOOL _Freq) {
@@ -130,33 +129,6 @@ int	CSoundRender::CreateSound			(LPCSTR name, BOOL _3D, BOOL _Freq, BOOL bNotCli
 	// sound not found - create new
 	CSound *pSnd	= new CSound(_3D);
 	pSnd->Load		(name,_Freq);
-
-	// search for empty slot
-	if ((fnd=FindEmptySlot())>=0) {
-		// empty slot
-		sounds[fnd].push_back(pSnd);
-		refcounts[fnd]+=1;
-		return fnd;
-	}
-	return Append(pSnd);
-}
-
-int	CSoundRender::CreateSound			(CInifile *pIni, LPCSTR section)
-{
-	FILE_NAME	fn;
-	strcpy(fn,pIni->ReadSTRING(section, "fname"));
-	BOOL _3D	= pIni->LineExists(section, "ctrl_3d");
-	BOOL _Freq	= pIni->LineExists(section, "ctrl_freq");
-	
-	int fnd;
-	if ((fnd=FindByName(fn,_3D,_Freq))>=0) {
-		refcounts[fnd]+=1;
-		return fnd;
-	}
-
-	// sound not found - create new
-	CSound *pSnd = new CSound		(_3D);
-	pSnd->Load							(pIni,section);
 
 	// search for empty slot
 	if ((fnd=FindEmptySlot())>=0) {
@@ -226,7 +198,7 @@ void CSoundRender::Reload()
 				sounds[i][j]->Stop();
 				_RELEASE(sounds[i][j]->pBuffer3D);
 				_RELEASE(sounds[i][j]->pBuffer);
-				pSounds->pDevice->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);
+				Sound_Implementation.pDevice->DuplicateSoundBuffer(sounds[i][0]->pBuffer,&sounds[i][j]->pBuffer);
 				VERIFY	(sounds[i][j]->pBuffer);
 				sounds[i][j]->pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&sounds[i][j]->pBuffer3D));
 				sounds[i][j]->bNeedUpdate = true;

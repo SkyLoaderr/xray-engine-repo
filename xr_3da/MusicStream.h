@@ -10,8 +10,7 @@
 class ENGINE_API CSoundStream;
 class ENGINE_API CInifile;
 
-class ENGINE_API CMusicStream
-{
+class CMusicStream {
 	vector<CSoundStream*>	streams;
 	int						FindEmptySlot();
 public:

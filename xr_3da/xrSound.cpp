@@ -9,8 +9,8 @@
 #include "3DSoundRender.h"
 #include "cl_intersect.h"
 
-CSoundManager					Sound_Implementation;
-ENGINE_API	CSound_interface*	Sound = &Sound_Implementation;
+CSoundManager							Sound_Implementation;
+ENGINE_API	CSound_manager_interface*	Sound = &Sound_Implementation;
 
 // sound props
 u32		psSoundFreq				= 0;

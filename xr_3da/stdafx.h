@@ -143,6 +143,8 @@ using namespace std;
 #include "properties.h"
 #include "xrXRC.h"
 
+#include "sound.h"
+
 // TODO: reference additional headers your program requires here
 
 #pragma comment( lib, "x:\\xrCDB.lib"	)

@@ -7,17 +7,18 @@
 class ENGINE_API CInifile;
 class ENGINE_API CStream;
 
-class ENGINE_API CSoundStream
+class ENGINE_API CSoundStream : 
+	public CSound_stream_interface
 {
 protected:
 	struct sxr_riff{
-		char	id[4];  	// identifier string = "RIFF"
+		u8		id[4];  	// identifier string = "RIFF"
 		u32		len;    	// remaining length after this header
 		char	wave_id[4];	// "WAVE"
 	};
 	
 	struct sxr_hdr{
-		char  id[4];		// identifier, e.g. "fmt " or "data"
+		u8		id[4];		// identifier, e.g. "fmt " or "data"
 		u32		len; 		// remaining chunk length after header
 	};
 	
@@ -40,19 +41,19 @@ private:
 
     LPDIRECTSOUNDBUFFER     pBuffer;
 
-// ADPCM
+	// ADPCM
 	HACMSTREAM				hAcmStream;
 	ACMSTREAMHEADER			stream;
 	WAVEFORMATEX*			pwfx;
 	WAVEFORMATEX*			psrc;
-	u32					dwFMT_Size;
-	u32					dwSrcBufSize;
-	u32					dwTotalSize;
+	u32						dwFMT_Size;
+	u32						dwSrcBufSize;
+	u32						dwTotalSize;
 	unsigned char			*WaveSource,*WaveDest;
 
-    u32					writepos;
+    u32						writepos;
 	BOOL					isPresentData; // признак окончания буфера
-	u32					dwDecPos;
+	u32						dwDecPos;
 	CStream*				hf;
 	int					    DataPos;
 

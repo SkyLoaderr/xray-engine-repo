@@ -3,8 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "xrSound.h"
 #include "3DSound.h"
-#include "xr_sndman.h"
 #include "xr_creator.h"
 #include "xr_object.h"
 #include "feel_sound.h"

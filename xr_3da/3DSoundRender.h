@@ -6,16 +6,7 @@
 #define AFX_3DSOUNDRENDER_H__1D9A4469_E055_453C_8E18_8C5A23820A1A__INCLUDED_
 #pragma once
 
-#include "xr_snd_defs.h"
-
-struct 	sound_defer
-{
-	LPVOID 							P;
-	u32								F;
-
-	sound_defer(LPVOID _P, u32 _F) : P(_P), F(_F) {};
-};
-
+#include "3dsound.h"
 
 // refs
 class ENGINE_API CSound;

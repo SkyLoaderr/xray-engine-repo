@@ -9,13 +9,13 @@ typedef enum CDA_STATE{
 	CDA_STATE_NOTREADY
 };
 
-class ENGINE_API CCDA
+class CCDA
 {
 	char					retStr[64];
 	UINT					retLen;
 	MCIERROR				err;
 
-	u32					dwCurTrack;
+	u32						dwCurTrack;
 	BOOL					bWorking;
 	BOOL					bPaused;
 

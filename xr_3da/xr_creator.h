@@ -6,7 +6,6 @@
 #include "environment.h"
 #include "cameramanager.h"
 #include "xr_area.h"
-#include "xr_snd_defs.h"
 
 // refs
 class ENGINE_API CCursor;

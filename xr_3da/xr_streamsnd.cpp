@@ -1,9 +1,8 @@
 #include "stdafx.h"
 
+#include "xrSound.h"
 #include "xr_streamsnd.h"
-#include "xr_sndman.h"
 #include "x_ray.h"
-#include "device.h"
 #include "xr_tokens.h"
 #include "xr_ini.h"
 
@@ -319,5 +318,5 @@ void CSoundStream::LoadADPCM( )
 	// wave source -- alloc on Play
 
     // DSound----------------------------------------------------------------
-	ADPCMCreateSoundBuffer	(pSounds->pDevice, &pBuffer, pwfx);
+	ADPCMCreateSoundBuffer	(Sound_Implementation.pDevice, &pBuffer, pwfx);
 }

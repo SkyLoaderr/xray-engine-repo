@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include <msacm.h>
+
+#include "xrSound.h"
 #include "3dsound.h"
-#include "xr_sndman.h"
-#include "xr_ini.h"
 
 void* ParseWave		(CStream *data, LPWAVEFORMATEX &wfx, u32 &len)
 {
@@ -109,7 +109,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	void*					converted;
 
 	//	2411252 - Andy
-	pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
+	Sound_Implementation.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
 		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
 		wfxdest.nChannels		= pFormat->nChannels;
@@ -121,7 +121,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 
 		// Secondly convert to best format for 2D
 		PSGP.memCopy			(pFormat,&wfxdest,sizeof(wfxdest));
-		pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
+		Sound_Implementation.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 		wfxdest.nChannels		= pFormat->nChannels;
 		wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
@@ -143,7 +143,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	dwFreq = dwFreqBase			= wfxdest.nSamplesPerSec;
 
 	// Creating buffer and fill it with data
-	if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
+	if (SUCCEEDED(Sound_Implementation.pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
 		LPVOID	pMem1,		pMem2;
 		DWORD	dwSize1,	dwSize2;
 
@@ -204,7 +204,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	WAVEFORMATEX			wfxdest;
 	void*					converted;
 
-	pSounds->pBuffer->GetFormat	(&wfxdest,sizeof(wfxdest),0);
+	Sound_Implementation.pBuffer->GetFormat	(&wfxdest,sizeof(wfxdest),0);
 	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=1)||(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec))
 	{
 		Msg("! WARNING: Invalid wave format (must be 22KHz,16bit,mono), file: %s",pName);
@@ -220,7 +220,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 
 		// Secondly convert to best format for 3D
 		PSGP.memCopy			(pFormat,&wfxdest,sizeof(wfxdest));
-		pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
+		Sound_Implementation.pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 		wfxdest.nChannels		= 1;
 		wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
 		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
@@ -243,7 +243,7 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	dwFreq = dwFreqBase			= wfxdest.nSamplesPerSec;
 
 	// Creating buffer and fill it with data
-    if (SUCCEEDED(pSounds->pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
+    if (SUCCEEDED(Sound_Implementation.pDevice->CreateSoundBuffer(&dsBD, &pBuf, NULL))){
         LPVOID	pMem1, pMem2;
         DWORD	dwSize1, dwSize2;
 
@@ -328,7 +328,7 @@ void CSound::Load		(const CSound *pOriginal)
 	ps.set				(pOriginal->ps);
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;
-	pSounds->pDevice->DuplicateSoundBuffer	(pOriginal->pBuffer,&pBuffer);
+	Sound_Implementation.pDevice->DuplicateSoundBuffer	(pOriginal->pBuffer,&pBuffer);
 	VERIFY				(pBuffer);
 	if (_3D)	
 	{
@@ -336,18 +336,5 @@ void CSound::Load		(const CSound *pOriginal)
 		ps.dwMode			= DS3DMODE_DISABLE;
 	}
 	bNeedUpdate			= true;
-}
-
-void CSound::Load		(CInifile *pIni, const char *pSection)
-{
-	VERIFY				(pIni&&pSection);
-	
-	fName				= strlwr(xr_strdup(pIni->ReadSTRING(pSection,"fname")));
-	fBaseVolume			= pIni->ReadFLOAT	( pSection, "volume" );
-	ps.flMinDistance	= pIni->ReadFLOAT	( pSection, "mindist");
-	ps.flMaxDistance	= pIni->ReadFLOAT	( pSection, "maxdist");
-	_Freq				= pIni->LineExists	( pSection, "ctrl_freq");
-	_3D					= pIni->LineExists	( pSection, "ctrl_3d");
-	Load				( LPSTR(0) );
 }
 

@@ -1,3 +1,5 @@
+#pragma once
+
 #include "sound.h"
 
 // refs
@@ -8,9 +10,9 @@ class CSound;
 
 // t-defs
 class CSoundManager :
-	public CSound_interface
+	public CSound_manager_interface
 {
-private:	
+public:	
 	BOOL							bPresent;
 	
 	// Saves
@@ -59,8 +61,8 @@ public:
 	virtual BOOL					IsOccluded				( Fvector& P, float R, Fvector* occ )													;
 
 	// Stream interface
-	virtual CSoundStream*			CreateStream			( LPCSTR fName )																		;
-	virtual void					DeleteStream			( CSoundStream* pSnd )																	;
+	virtual CSound_stream_interface*CreateStream			( LPCSTR fName )																		;
+	virtual void					DeleteStream			( CSound_stream_interface* pSnd )														;
 
 	virtual void					OnFrame					( )																						;
 };

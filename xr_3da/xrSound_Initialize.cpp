@@ -1,6 +1,9 @@
 #include "stdafx.h"
 
 #include "xrSound.h"
+#include "3dsoundrender.h"
+#include "MusicStream.h"
+#include "xr_cda.h"
 
 CSoundManager::CSoundManager	()
 {
@@ -28,7 +31,7 @@ void CSoundManager::Initialize		()
 	if (bPresent) 
 	{
 		// 3D Sounds
-		pSoundRender	= new CSoundRender( );
+		pSoundRender	= new CSoundRender	( );
 
 		// Streams Sounds
 		pMusicStreams	= new CMusicStream	( );
