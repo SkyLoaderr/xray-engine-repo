@@ -27,6 +27,13 @@ struct XRCORE_API xr_token
 	int 	id;
 };
 
+struct XRCORE_API xr_token2
+{
+	LPCSTR	name;
+	LPCSTR	info;
+	int 	id;
+};
+
 // generic
 template <class T>	IC T		_min	(T a, T b)	{ return a<b?a:b;	}
 template <class T>	IC T		_max	(T a, T b)	{ return a>b?a:b;	}
