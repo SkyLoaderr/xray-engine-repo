@@ -2,6 +2,7 @@
 #define _RENDER_H_
 
 #include "frustum.h"
+#include "vis_common.h"
 
 // refs
 class ENGINE_API	CStream;
