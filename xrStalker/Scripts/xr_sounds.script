@@ -16,16 +16,16 @@ end
 function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set, sub_phrase)
 
     if obj == nil or theme == nil then return end
-    printf ("Theme %s", theme)
+--    printf ("Theme %s", theme)
     if sub_theme == nil or table.getn (themes[theme]) < sub_theme then
        sub_theme = this.get_random_subtheme (theme)
        if sub_theme == 0 then return end
     end
-    printf ("Sub_theme %d", sub_theme)
+--    printf ("Sub_theme %d", sub_theme)
     if phrase_set == nil or table.getn (themes[theme][sub_theme]) < (phrase_set - 1) then
        phrase_set = math.random (1, table.getn (themes[theme][sub_theme]) - 1)
     end
-    printf ("Phrase_set %d", phrase_set)
+--    printf ("Phrase_set %d", phrase_set)
     if sub_phrase == nil or this.get_num_subphrases (theme, sub_theme, phrase_set) < sub_phrase then
        local num = this.get_num_subphrases (theme, sub_theme, phrase_set)
        if num == 0 then
@@ -40,7 +40,7 @@ function play_sound_rnd (obj, min_delay, max_delay, theme, sub_theme, phrase_set
     else
        sub_phrase = sub_phrase - 1
     end
-    printf ("Sub_phrase %d", sub_phrase)
+--    printf ("Sub_phrase %d", sub_phrase)
     obj:set_sound_mask (-1)
     obj:set_sound_mask (0)
     obj:play_sound (themes[theme][sub_theme][1] + phrase_set - 1, max_delay, min_delay, 1, 0, sub_phrase)
@@ -401,6 +401,33 @@ function load_common (obj, sounds_base)
                obj:add_sound ("script_replics\\bandit_1\\idle\\bandit_idle_3",  1, snd_type.talk, 2, 1, id ()),
                obj:add_sound ("script_replics\\bandit_1\\idle\\bandit_idle_4",  1, snd_type.talk, 2, 1, id ()),
                obj:add_sound ("script_replics\\bandit_1\\idle\\bandit_idle_8",  1, snd_type.talk, 2, 1, id ()),
+              }
+              }
+
+    themes["sos"] =
+               {
+               -- пришел
+               {
+               sounds_base,
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_1",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_2",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_3",  1, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\bandit_1\\replics\\bandit_about_zone_4",  1, snd_type.talk, 2, 1, id ())
+              },
+              -- ожидание
+              {
+               sounds_base,
+               obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_",  30, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\radio\\commander\\radio_start_",  30, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, id ()),
+              },
+              --ушел
+              {
+               sounds_base,
+               obj:add_sound ("script_replics\\radio\\commander\\radio_reply_",  30, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\radio\\message\\radio_voice_",    30, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, id ()),
+               obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, id ())
               }
               }
 
