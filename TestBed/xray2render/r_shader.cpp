@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 #include "r_shader.h"
 
 BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)

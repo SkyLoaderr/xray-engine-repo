@@ -1,3 +1,5 @@
+#ifndef r_constantsH
+#define r_constantsH
 #pragma once
 
 enum
@@ -83,3 +85,4 @@ public:
 		return equal(*C);
 	}
 };
+#endif

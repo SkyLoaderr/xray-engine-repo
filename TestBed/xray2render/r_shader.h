@@ -1,3 +1,5 @@
+#ifndef r_shaderH
+#define r_shaderH
 #pragma once
 
 #include "r_constants.h"
@@ -11,3 +13,4 @@ public:
 public:
 	BOOL						compile		(LPDIRECT3DDEVICE9 D, LPCSTR name);
 };
+#endif

@@ -1,3 +1,5 @@
+#ifndef r_backendH
+#define r_backendH
 #pragma once
 
 #include "r_DStreams.h"
@@ -138,3 +140,4 @@ public:
 };
 
 extern ENGINE_API CBackend RCache;
+#endif

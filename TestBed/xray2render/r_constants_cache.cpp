@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "r_constants_cache.h"
 
 void R_constant_array::fatal()

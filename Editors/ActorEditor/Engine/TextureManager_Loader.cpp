@@ -120,24 +120,28 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	m_constants.clear	();
 
 	// VS
-	for (map_VSIt v=m_vs.begin(); v!=m_vs.end(); v++)
-	{
-//		if (0!=v->second->dwReference)
-//			Msg("! WARNING: Vertex shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
-		xr_free		((char*)v->first);
-		xr_delete	(v->second);
-	}
-	m_vs.clear	();
+    {
+        for (map_VSIt v=m_vs.begin(); v!=m_vs.end(); v++)
+        {
+    //		if (0!=v->second->dwReference)
+    //			Msg("! WARNING: Vertex shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
+            xr_free		((char*)v->first);
+            xr_delete	(v->second);
+        }
+        m_vs.clear	();
+    }
 	
 	// PS
-	for (map_PSIt v=m_ps.begin(); v!=m_ps.end(); v++)
-	{
-//		if (0!=v->second->dwReference)
-//			Msg("! WARNING: Pixel shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
-		xr_free		((char*)v->first);
-		xr_delete	(v->second);
-	}
-	m_ps.clear	();
+    {
+        for (map_PSIt v=m_ps.begin(); v!=m_ps.end(); v++)
+        {
+    //		if (0!=v->second->dwReference)
+    //			Msg("! WARNING: Pixel shader still referenced [%d]: '%s'",v->second->dwReference,v->first);
+            xr_free		((char*)v->first);
+            xr_delete	(v->second);
+        }
+        m_ps.clear	();
+    }
 
 	// Release blenders
 	for (map_BlenderIt b=m_blenders.begin(); b!=m_blenders.end(); b++)

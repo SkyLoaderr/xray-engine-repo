@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 void CBackend::dbg_Draw(D3DPRIMITIVETYPE T, FVF::L* pVerts, int vcnt, WORD* pIdx, int pcnt)
 {

@@ -1,5 +1,5 @@
-#ifndef _R_BACKEND_RUNTIME_H_
-#define _R_BACKEND_RUNTIME_H_
+#ifndef R_BACKEND_RUNTIMEH
+#define R_BACKEND_RUNTIMEH
 #pragma once
 
 #include "sh_texture.h"
