@@ -5,6 +5,7 @@
 
 #define xr_stdcall 
 //#define xr_stdcall __stdcall
+//#define xr_stdcall __cdecl
 
 //						FastDelegate.h 
 //	Efficient delegates in C++ that generate only two lines of asm code!
@@ -69,7 +70,7 @@
 #define FASTDELEGATEDECLARE(CLASSNAME)		\
 class CLASSNAME;							\
 namespace fastdelegate { namespace detail {	\
-const int CLASSNAME##workaround = sizeof( void (CLASSNAME::*)(void)); } }
+const int CLASSNAME##workaround = sizeof( void (xr_stdcall CLASSNAME::*)(void)); } }
 
 #else
 // On other compilers, just forward-declare the class.
@@ -143,7 +144,7 @@ inline OutputClass horrible_cast(const InputClass input){
 #endif
 
 // The size of a single inheritance member function pointer.
-const int SINGLE_MEMFUNCPTR_SIZE = sizeof(void (GenericClass::*)());
+const int SINGLE_MEMFUNCPTR_SIZE = sizeof(void (xr_stdcall GenericClass::*)());
 
 //						SimplifyMemFunc< >::Convert()
 //
@@ -661,7 +662,7 @@ public:
 #define DLGT_DECLAREDELEGATE(NUM, FUNCLIST, INVOKELIST)							\
 class FastDelegate##NUM { 														\
 private:																		\
-	typedef void (detail::GenericClass::*GenericMemFn)FUNCLIST;					\
+	typedef void (xr_stdcall detail::GenericClass::*GenericMemFn)FUNCLIST;					\
 	typedef void (*StaticFunctionPtr)FUNCLIST;									\
 	detail::ClosurePtr<GenericMemFn, StaticFunctionPtr> m_Closure;				\
 public:																			\

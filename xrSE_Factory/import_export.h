@@ -18,9 +18,9 @@ public:
 	FastDelegate1<LPCSTR>	test0;
 	FastDelegate1<int>		test1;
 
-private:
-//			void			test_0			(LPCSTR);
-//			void			test_1			(int);
+public:
+//	virtual	void xr_stdcall	test_0			(LPCSTR) = 0;
+//	virtual void xr_stdcall	test_1			(int) = 0;
 
 public:
 	virtual void __stdcall	test_test0		()=0;

@@ -20,12 +20,11 @@ extern CSE_Abstract *F_entity_Create	(LPCSTR section);
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 
-class DLL_API CTestImpl:public CTestInterface{
-private:
-			void test_0			(LPCSTR);
-			void test_1			(int);
+class DLL_API CTestImpl:public CTestInterface {
 public:
 							CTestImpl		();
+	virtual	void xr_stdcall	test_0			(LPCSTR);
+	virtual void xr_stdcall	test_1			(int);
 	virtual void __stdcall	test_test0		();
 	virtual void __stdcall	test_test1		();
 };
@@ -44,6 +43,8 @@ CTestImpl::CTestImpl	()
 {
 	test0.bind			(this,&CTestImpl::test_0);
 	test1.bind			(this,&CTestImpl::test_1);
+	test_test0			();
+	test_test1			();
 }
 
 void CTestImpl::test_0		(LPCSTR str)
@@ -58,17 +59,11 @@ void CTestImpl::test_1		(int num)
 
 void CTestImpl::test_test0	()
 {
-//	CTestImpl*			self;
-//	__asm mov [self],eax;
-//	self->test0			("VC7.1 : OK!");
 	test0				("VC7.1 : OK!");
 }
 
 void CTestImpl::test_test1	()
 {
-//	CTestImpl*			self;
-//	__asm mov [self],eax;
-//	self->test_1		(1);
 	test1				(1);
 }
 
