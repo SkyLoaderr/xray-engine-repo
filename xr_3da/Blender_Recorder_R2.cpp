@@ -21,9 +21,11 @@ void	CBlender_Compile::r2_Pass		(LPCSTR _vs, LPCSTR _ps, BOOL bZtest, BOOL bZwri
 	dest.vs					= vs->vs;
 	dest.constants			= Device.Shader._CreateConstantTable(&ps->constants,&vs->constants);
 }
-void	CBlender_Compile::r2_Sampler	(LPCSTR name,	LPCSTR texture, u32		address=D3DTADDRESS_WRAP,	u32 fmin=D3DTEXF_LINEAR,	u32 fmip=D3DTEXF_LINEAR,	u32 fmag=D3DTEXF_LINEAR,	u32 element=0)
+
+void	CBlender_Compile::r2_Sampler	(LPCSTR name, LPCSTR texture, u32 address, u32 fmin, u32 fmip, u32 fmag, u32 element)
 {
 }
+
 void	CBlender_Compile::r2_End		()
 {
 	dest.state				= Device.Shader._CreateState		(RS.GetContainer());

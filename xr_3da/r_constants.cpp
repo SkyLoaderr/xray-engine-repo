@@ -9,14 +9,15 @@ static	poolSS<R_constant,64>		g_constant_allocator;
 
 void	R_constant_table::fatal		(LPCSTR S)
 {
+	Debug.fatal	(S);
 }
 
 // predicates
-bool	p_search	(R_constant* C, LPCSTR S)
+IC bool	p_search	(R_constant* C, LPCSTR S)
 {
 	return strcmp(C->name,S)<0;
 }
-bool	p_sort		(R_constant* C1, R_constant* C2)
+IC bool	p_sort		(R_constant* C1, R_constant* C2)
 {
 	return strcmp(C1->name,C2->name)<0;
 }
@@ -28,7 +29,6 @@ R_constant* R_constant_table::get	(LPCSTR S)
 	if (I==table.end() || (0!=strcmp((*I)->name,S)))	return 0;
 	else												return *I;
 }
-
 BOOL	R_constant_table::parse	(D3DXSHADER_CONSTANTTABLE* desc, u16 destination)
 {
 	D3DXSHADER_CONSTANTINFO* it		= (D3DXSHADER_CONSTANTINFO*) (LPBYTE(desc)+desc->ConstantInfo);
