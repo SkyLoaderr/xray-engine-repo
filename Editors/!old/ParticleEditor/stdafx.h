@@ -64,6 +64,9 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
     #define ENGINE_API		__declspec(dllimport)
 #endif
 
+//#define ECORE_API
+//#define ENGINE_API
+
 #define DLL_API			__declspec(dllimport)
 #define PropertyGP(a,b)	__declspec( property( get=a, put=b ) )
 #define THROW			Debug.fatal("THROW");
@@ -144,7 +147,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 // external dependencies
 
 #ifndef _ECOREB
-#	pragma comment(lib,"ECoreB.lib")
+#	pragma comment(lib,"xrECoreB.lib")
 #endif
 
 #pragma comment(lib,"xrEPropsB.lib")
@@ -153,7 +156,7 @@ struct astr_pred : public std::binary_function<const AnsiString&, const AnsiStri
 #pragma comment(lib,"xrSoundB.lib")
 #pragma comment(lib,"xrCDBB.lib")
 
-#pragma comment(lib,"dinput.lib")
+#pragma comment(lib,"dinputB.lib")
 #pragma comment(lib,"freeimageB.lib")
 //#pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"dxtB.lib")
