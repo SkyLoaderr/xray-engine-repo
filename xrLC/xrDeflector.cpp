@@ -130,9 +130,6 @@ VOID CDeflector::OA_Export()
 		T->owner = F;
 	}
 	bb.getsphere(Center,Radius);
-
-//	lm.dwWidth	+= 2*BORDER;	// border
-//	lm.dwHeight	+= 2*BORDER;	// border
 }
 
 BOOL CDeflector::OA_Place(Face *owner)

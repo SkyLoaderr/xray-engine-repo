@@ -282,6 +282,7 @@ VOID CDeflector::Light()
 	lm.dwWidth	= s_x;	lm.dwHeight	= s_y;
 	ApplyBorders(lm,254);
 	ApplyBorders(lm,253);
+	ApplyBorders(lm,252);
 	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
 }
 
