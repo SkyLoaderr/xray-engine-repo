@@ -2,25 +2,23 @@
 //
 
 #include "stdafx.h"
+#include "fs.h"
 
-typedef set<char*,pred_str>	set_cstr;
-typedef set_cstr::iterator	set_cstr_it;
-	
-set_cstr				files;
 CFS_File*				fs=0;
 CFS_Memory				fs_desc;
 
 void Compress			(const char* path)
 {
-	printf				("%s\n",path);
+	printf				("%-80s   ",path);
 
 	// Compress into BaseFS
 	CVirtualFileStream	src(path);
-	DWORD	c_ptr		= fs->tell();
-	BYTE*	c_data		= 0;
-	DWORD	c_size		= 0;
+	DWORD		c_ptr	= fs->tell();
+	BYTE*		c_data	= 0;
+	unsigned	c_size	= 0;
 	_compressLZ			(&c_data,&c_size,src.Pointer(),src.Length());
 	fs->write			(c_data,c_size);
+	printf				("%%%3.1f\n",100.f*float(c_size)/float(src.Length()));
 
 	// Write description
 	fs_desc.WstringZ	(path);
@@ -31,19 +29,17 @@ void Compress			(const char* path)
 void Recurse		(const char* path);
 void ProcessOne		(_finddata_t& F, const char* path)
 {
-	string256		N;
+	string512		N;
 	strcpy			(N,path);
 	strcat			(N,F.name);
 	
 	if (F.attrib&_A_SUBDIR) {
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
-		strcat(N,"\\");
-		files.insert(strlwr(strdup(N)));
+		strcat		(N,"\\");
 		Recurse		(N);
 	} else {
-		char*	ins	= strlwr(strdup(N));
-		files.insert(ins); 
+		Compress	(strlwr(N));
 	}
 }
 
@@ -52,7 +48,7 @@ void Recurse		(const char* path)
     _finddata_t		sFile;
     int				hFile;
 	
-	string256		N;
+	string512		N;
 	strcpy			(N,path);
 	strcat			(N,"*.*");
 	
@@ -78,13 +74,13 @@ int main			(int argc, char* argv[])
 	if (0==chdir(argv[1]))
 	{
 		string256		fname;
-		strconcat		(fname,"..\\",argv[1],".xr");
+		strconcat		(fname,"..\\",argv[1],".xrp");
 		fs				= new CFS_File(fname);
 		fs->open_chunk	(0);
 		Recurse			("");
 		fs->close_chunk	();
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
-		//
+		delete fs;
 	} else {
 		printf("ERROR: folder not found.\n");
 		return 3;
