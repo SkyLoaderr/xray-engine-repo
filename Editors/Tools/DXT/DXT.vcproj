@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib nvDXTlib.lib"
 				OutputFile="x:\dxt.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="TRUE"
@@ -110,7 +110,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/MACHINE:I386"
-				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				AdditionalDependencies="odbc32.lib odbccp32.lib nvDXTlib.lib"
 				OutputFile="x:\dxt.dll"
 				LinkIncremental="2"
 				SuppressStartupBanner="TRUE"
@@ -193,18 +193,6 @@
 		</Filter>
 		<File
 			RelativePath=".\dds.h">
-		</File>
-		<File
-			RelativePath=".\FS.cpp">
-		</File>
-		<File
-			RelativePath=".\FS.h">
-		</File>
-		<File
-			RelativePath=".\LzHuf.cpp">
-		</File>
-		<File
-			RelativePath=".\lzhuf.h">
 		</File>
 		<File
 			RelativePath=".\ReadMe.txt">
