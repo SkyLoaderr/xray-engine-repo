@@ -35,6 +35,10 @@ end
 
 function game_cl_LastStanding:shedule_Update (dt)
 	game_cl_mp_script.shedule_Update	(self, dt)
+
+   if self.m_game_ui ~= nil then
+      self.m_game_ui:ShowPlayersList(self:Phase()==game_phases.game_phases.GAME_PHASE_PENDING)
+   end
 end
 
 function game_cl_LastStanding:createGameUI ()
