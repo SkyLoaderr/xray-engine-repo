@@ -20,19 +20,22 @@ path_look = pl3
 path_main = sleep_1
 
 ;-------------------------------------------------------------------------------------------------
-;-- ”ниверсальный гулаг "кемперы"
+;-- ”ниверсальный гулаг "кэмперы"
 ;-------------------------------------------------------------------------------------------------
 [camper1@campers]
 path_walk = camper_walk1
 path_look = camper_look1
+meet_enabled = true
 
 [camper2@campers]
 path_walk = camper_walk2
 path_look = camper_look2
+meet_enabled = true
 
 [camper3@campers]
 path_walk = camper_walk3
 path_look = camper_look3
+meet_enabled = true
 
 ;-------------------------------------------------------------------------------------------------
 ;-- ”ниверсальный гулаг "ходоки" (walkers)
@@ -40,14 +43,17 @@ path_look = camper_look3
 [walker1@walkers]
 path_walk = walker_walk1
 path_look = walker_look1
+meet_enabled = true
 
 [walker2@walkers]
 path_walk = walker_walk2
 path_look = walker_look2
+meet_enabled = true
 
 [walker3@walkers]
 path_walk = walker_walk3
 path_look = walker_look3
+meet_enabled = true
 
 ;-------------------------------------------------------------------------------------------------
 ;-- ”ниверсальный гулаг "поиск" (тот же walker)
@@ -55,17 +61,20 @@ path_look = walker_look3
 [walker@search]
 path_walk = search_walk
 path_look = search_look
+meet_enabled = true
 
 ;-------------------------------------------------------------------------------------------------
 ;-- ”ниверсальный гулаг "отдых"
 ;-------------------------------------------------------------------------------------------------
 [rest@rest]
 path_rest = rest
+meet_talk_enabled = true
 on_signal = rest_end | {~50} walker@rest, {~100} sleeper@rest
 
 [walker@rest]
 path_walk = rest_walk
 path_look = rest_look
+meet_enabled = true
 on_timer  = 50000 | {~50} rest@rest, {~100} sleeper@rest
 
 [sleeper@rest]
