@@ -24,9 +24,10 @@ void	CBlender_Recorder::SetParams		(int iPriority, bool bStrictB2F, bool bLighti
 {
 	SH->Flags.iPriority		= iPriority;
 	SH->Flags.bStrictB2F	= bStrictB2F;
-	SH->Flags.bLighting		= bLighting;
+	SH->Flags.bLighting		= FALSE;
 	SH->Flags.bPixelShader	= bPixelShader;
 }
+
 //
 void	CBlender_Recorder::PassBegin		()
 {
