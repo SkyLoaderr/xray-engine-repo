@@ -112,10 +112,12 @@ void CLightPPA_Manager::Render()
 		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
 		// Calculations and rendering
+		Device.Statistic.RenderDUMP_Lights.Begin();
 		Fcolor				factor;
 		factor.mul_rgba		(PPL.color,(1-alpha));
 		CHK_DX				(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,factor.get()));
 		PPL.Render			(VS);
+		Device.Statistic.RenderDUMP_Lights.End	();
 	}
 
 	// Clean up
