@@ -31,10 +31,10 @@ direction               = 0, 0, 1
 orientation             = -12, 7, 0
 
 ;--STRAP PARAMETERS-----------------------------------------------------------------
-strap_position         		= -0.1,-0.45,0.2			; position (offset) and orientation of the weapon when it is strapped
-strap_orientation      		= 1.57,0,0						; (3rd person view)
-strap_bone0					= bip01_spine2
-strap_bone1					= bip01_spine1
+;strap_position         		= -0.1,-0.45,0.2			; position (offset) and orientation of the weapon when it is strapped
+;strap_orientation      		= 1.57,0,0						; (3rd person view)
+;strap_bone0					= bip01_spine2
+;strap_bone1					= bip01_spine1
 
 visual                  = weapons\binoculars\wpn_binoculars.ogf
 hand_dependence		 	= 1
@@ -55,7 +55,7 @@ immunities_sect			= weapon
 
 inv_name		 		= BINOCULAR
 inv_name_short		 = BINOCULAR
-inv_weight		 = 1.0	;.5
+inv_weight		 				= 1.0
 
 ;не показывать кол-во патронов
 show_ammo					= false
@@ -90,7 +90,7 @@ grenade_launcher_status		= 0
 
 zoom_enabled				= true
 scope_texture				= wpn\wpn_crosshair_bino
-scope_zoom_factor			= 15 ; 4x ;37,5 			;1.6X
+scope_zoom_factor			= 7.5 ; 8x ;37,5 			;1.6X
 
 
 ;-----------------------------------------------------------------------------------
@@ -111,14 +111,14 @@ condition_shot_dec 			= 0.00003	;увеличение износа при каждом выстреле
 ;-----------------------------------------------------------------------------------
 ;-----------------------------------------------------------------------------------
 ; ttc
-hit_power                	= 62.5
-hit_impulse		 		 	= 87.5
+hit_power                	= 1
+hit_impulse		 		 	= 1
 hit_type = fire_wound	
 
-fire_distance            	= 200
-bullet_speed		 	 	= 280		
-rpm                      	= 300
-rpm_empty_click 	 		= 200
+fire_distance            	= 1
+bullet_speed		 	 	= 1		
+rpm                      	= 1
+rpm_empty_click 	 		= 1
 ; end ttc
 
 ;-----------------------------------------------------------------------------------
