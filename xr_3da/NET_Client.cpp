@@ -464,7 +464,23 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 		}
 		break;
 	case DPN_MSGID_TERMINATE_SESSION:
-		net_Disconnected	= TRUE;
+		{
+			PDPNMSG_TERMINATE_SESSION 	pMsg	= (PDPNMSG_TERMINATE_SESSION ) pMessage;
+			char*			m_data	= (char*)pMsg->pvTerminateData;
+			u32				m_size	= pMsg->dwTerminateDataSize;
+			HRESULT			m_hResultCode = pMsg->hResultCode;
+
+			net_Disconnected	= TRUE;
+
+			if (m_size != 0)
+			{
+				Msg("- Session terminated : %s", m_data);
+			}
+			else
+			{
+				Msg("- Session terminated : %s", (::Debug.error2string(m_hResultCode)).c_str());
+			}
+		};
 		break;
 	default:
 		{
