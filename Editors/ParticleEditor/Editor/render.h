@@ -78,6 +78,8 @@ public:
 	virtual void			rmNear					();
 	virtual void			rmFar					();
 	virtual void			rmNormal				();
+
+    virtual LPCSTR			getShaderPath			(){return "XR1\\";}
 };
 
 IC  float   CalcSSA(Fvector& C, float R)

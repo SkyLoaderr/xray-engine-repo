@@ -163,25 +163,6 @@ void CActorTools::OnMotionTypeChange(PropValue* sender)
 }
 //------------------------------------------------------------------------------
                         
-void __fastcall CActorTools::BPOnAfterEdit(PropItem* sender, LPVOID edit_val)
-{
-    (*((DWORD*)edit_val))--;
-}
-//------------------------------------------------------------------------------
-
-void __fastcall CActorTools::BPOnBeforeEdit(PropItem* sender, LPVOID edit_val)
-{
-    (*((DWORD*)edit_val))++;
-}
-//------------------------------------------------------------------------------
-
-void __fastcall CActorTools::BPOnDraw(PropValue* sender, LPVOID draw_val)
-{
-	TokenValue2* V = dynamic_cast<TokenValue2*>(sender); R_ASSERT(V);
-    (*((DWORD*)draw_val))++;
-}
-//------------------------------------------------------------------------------
-
 void __fastcall CActorTools::OnMotionNameChange(PropValue* V)
 {
     OnMotionKeysModified();
@@ -199,7 +180,7 @@ void __fastcall CActorTools::OnMotionControlClick(PropValue* sender, bool& bModi
     bModif = false;
 }
 //------------------------------------------------------------------------------
-static TokenValue4::ItemVec bone_parts;
+static TokenValue3Custom::ItemVec bone_parts;
 
 void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem* sender)
 {
@@ -224,27 +205,24 @@ void CActorTools::FillMotionProperties(PropItemVec& items, LPCSTR pref, ListItem
         PHelper.CreateFloat		(items,FHelper.PrepareKey(pref,"Motion\\Falloff"), 	&SM->fFalloff,0.f,20.f,0.01f,2);
 
         PropValue /**C=0,*/*TV=0;
-        TV = PHelper.CreateFlag8(items,FHelper.PrepareKey(pref,"Motion\\Type FX"),	&SM->m_Flags, esmFX);
+        TV = PHelper.CreateFlag<Flags8>(items,FHelper.PrepareKey(pref,"Motion\\Type FX"),	&SM->m_Flags, esmFX);
         TV->OnChangeEvent		= OnMotionTypeChange;
         if (SM->m_Flags.is(esmFX)){
         	bone_parts.clear	();
             for (BoneIt it=m_pEditObject->FirstBone(); it!=m_pEditObject->LastBone(); it++)
-				bone_parts.push_back	(TokenValue4::Item((*it)->index,(*it)->Name()));
-			PHelper.CreateToken4(items,FHelper.PrepareKey(pref,"Motion\\FX\\Start bone"),	(u32*)&SM->m_BoneOrPart,	&bone_parts, sizeof(SM->m_BoneOrPart));
+				bone_parts.push_back	(TokenValue3Custom::Item((*it)->index,(*it)->Name()));
+			PHelper.CreateToken3<u16>	(items,FHelper.PrepareKey(pref,"Motion\\FX\\Start bone"),	(u16*)&SM->m_BoneOrPart,	&bone_parts);
 
             PHelper.CreateFloat	(items,FHelper.PrepareKey(pref,"Motion\\FX\\Power"),	 	&SM->fPower,   	0.f,20.f,0.01f,2);
         }else{
         	bone_parts.clear	();
-            bone_parts.push_back(TokenValue4::Item(BI_NONE,"--all bones--"));
+            bone_parts.push_back(TokenValue3Custom::Item(BI_NONE,"--all bones--"));
             for (BPIt it=m_pEditObject->FirstBonePart(); it!=m_pEditObject->LastBonePart(); it++)
-				bone_parts.push_back	(TokenValue4::Item(it-m_pEditObject->FirstBonePart(),it->alias));
-			PHelper.CreateToken4(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Bone part"),		(u32*)&SM->m_BoneOrPart,	&bone_parts, sizeof(SM->m_BoneOrPart));
-//            C->Owner()->OnAfterEditEvent	= BPOnAfterEdit;
-//           C->Owner()->OnBeforeEditEvent	= BPOnBeforeEdit;
-//            C->Owner()->OnDrawTextEvent		= BPOnDraw;
-            PHelper.CreateFlag8	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Stop at end"),	&SM->m_Flags,	esmStopAtEnd);
-            PHelper.CreateFlag8	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\No mix"),	  	&SM->m_Flags,	esmNoMix);
-            PHelper.CreateFlag8	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Sync part"),		&SM->m_Flags,	esmSyncPart);
+				bone_parts.push_back	(TokenValue3Custom::Item(it-m_pEditObject->FirstBonePart(),it->alias));
+			PHelper.CreateToken3<u16>	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Bone part"),		&SM->m_BoneOrPart,	&bone_parts);
+            PHelper.CreateFlag<Flags8>	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Stop at end"),	&SM->m_Flags,	esmStopAtEnd);
+            PHelper.CreateFlag<Flags8>	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\No mix"),	  	&SM->m_Flags,	esmNoMix);
+            PHelper.CreateFlag<Flags8>	(items,FHelper.PrepareKey(pref,"Motion\\Cycle\\Sync part"),		&SM->m_Flags,	esmSyncPart);
         }
     }
 }
@@ -378,9 +356,9 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         PHelper.CreateFloat			(items, FHelper.PrepareKey(pref,"Bone\\Mass"),						&BONE->mass, 			0.f, 10000.f);
         PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Center Of Mass"),			&BONE->center_of_mass, 	-10000.f, 10000.f);
 //		PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(BONE->_LTransform().c)));
-        V=PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset());              V->OnChangeEvent = OnBindTransformChange;
-        V=PHelper.CreateAngle3		(items, FHelper.PrepareKey(pref,"Bone\\Bind Rotation"),				&BONE->_RestRotate());				V->OnChangeEvent = OnBindTransformChange;
-		V=PHelper.CreateToken		(items,	FHelper.PrepareKey(pref,"Bone\\Shape\\Type"),				&BONE->shape.type, shape_types, 1);	V->OnChangeEvent = OnShapeTypeChange;
+        V=PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset(),	-10000.f, -10000.f);V->OnChangeEvent = OnBindTransformChange;
+        V=PHelper.CreateAngle3		(items, FHelper.PrepareKey(pref,"Bone\\Bind Rotation"),				&BONE->_RestRotate());						V->OnChangeEvent = OnBindTransformChange;
+		V=PHelper.CreateToken<u32>	(items,	FHelper.PrepareKey(pref,"Bone\\Shape\\Type"),				(u32*)&BONE->shape.type, shape_types);		V->OnChangeEvent = OnShapeTypeChange;
         switch (BONE->shape.type){
         case SBoneShape::stBox:
 	        PHelper.CreateVector	(items, FHelper.PrepareKey(pref,"Bone\\Shape\\Box\\Center"),		&BONE->shape.box.m_translate, -10000.f, 10000.f);
@@ -411,13 +389,13 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         
         PHelper.CreateCaption		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Current Rotation"),	AnsiString().sprintf("{%3.2f, %3.2f, %3.2f}",VPUSH(lim_rot)));
     	SJointIKData& data			= BONE->IK_data;
-        V=PHelper.CreateFlag32		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Breakable"),			&data.ik_flags, SJointIKData::flBreakable);
+        V=PHelper.CreateFlag<Flags32>(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Breakable"),			&data.ik_flags, SJointIKData::flBreakable);
         V->OnChangeEvent			= OnJointTypeChange;
         if (data.ik_flags.is(SJointIKData::flBreakable)){
 	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Break Force"),		&data.break_force, 	0.f, 1000000000.f);
 	        PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,"Bone\\Joint\\Break Torque"),		&data.break_torque, 0.f, 1000000000.f);
         }
-		V=PHelper.CreateToken		(items,	FHelper.PrepareKey(pref,"Bone\\Joint\\Type"),				&data.type,	joint_types, 4);    	V->OnChangeEvent = OnJointTypeChange;
+		V=PHelper.CreateToken<u32>	(items,	FHelper.PrepareKey(pref,"Bone\\Joint\\Type"),				(u32*)&data.type,	joint_types);  	V->OnChangeEvent = OnJointTypeChange;
         switch (data.type){
         case jtRigid: 
         break; 
@@ -478,7 +456,7 @@ void CActorTools::FillObjectProperties(PropItemVec& items, LPCSTR pref, ListItem
 {
 	R_ASSERT(m_pEditObject);
     PropValue* V=0;
-    PHelper.CreateFlag32	(items, "Object\\Flags\\Make Progressive",	&m_pEditObject->m_Flags,		CEditableObject::eoProgressive);
+    PHelper.CreateFlag<Flags32>(items, "Object\\Flags\\Make Progressive",	&m_pEditObject->m_Flags,		CEditableObject::eoProgressive);
     V=PHelper.CreateVector	(items, "Object\\Transform\\Position",		&m_pEditObject->a_vPosition, 	-10000,	10000,0.01,2);
     V->OnChangeEvent 		= OnChangeTransform;
     V=PHelper.CreateAngle3	(items, "Object\\Transform\\Rotation",		&m_pEditObject->a_vRotate, 		-10000,	10000,0.1,1);

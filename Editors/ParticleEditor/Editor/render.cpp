@@ -33,7 +33,6 @@ void					CRender::ShutDown				()
 
 void					CRender::OnDeviceCreate			()
 {
-	::Device.Resources->SetHLSL_path("XR1\\");
 	Models						= xr_new<CModelPool>	();
     Models->Logging				(FALSE);
 

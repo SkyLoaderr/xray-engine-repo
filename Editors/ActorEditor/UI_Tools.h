@@ -63,7 +63,7 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
             saZn,
             saXp,
             saXn,
-            saforceDWORD=(-1)
+            saforceDWORD=u32(-1)
         };
         EScrollAxis		m_ScrollAxis;
     public:
@@ -133,9 +133,6 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 	void __fastcall		OnMotionTypeChange		(PropValue* sender);
 
 	void __fastcall 	OnChangeTransform		(PropValue* sender);
-	void __fastcall 	BPOnAfterEdit			(PropItem* sender, LPVOID edit_val);
-	void __fastcall 	BPOnBeforeEdit			(PropItem* sender, LPVOID edit_val);
-	void __fastcall 	BPOnDraw				(PropValue* sender, LPVOID draw_val);
 	void __fastcall 	OnMotionNameChange		(PropValue* sender);
 
 	void __fastcall 	OnMotionEditClick		(PropValue* sender, bool& bModif);
