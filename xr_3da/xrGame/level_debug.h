@@ -32,6 +32,7 @@ public:
 		};
 	
 	public:
+#ifdef	DEBUG
 		IC	void	add_item		(T data) {
 			m_data.push_back	(data);	
 			std::sort			(m_data.begin(), m_data.end(), sort_id_pred());
@@ -57,6 +58,15 @@ public:
 				process_pred(*it);
 			}
 		}
+#else
+		IC	void	add_item		(T data)			{};
+		IC	void	remove_item		(LPCSTR text)		{};
+		IC	void	remove_item		(u32 id)			{};
+		IC	void	clear			()					{};
+
+		template<class T>
+		IC	void	process			(T &process_pred)	{};
+#endif
 	};
 
 	//////////////////////////////////////////////////////////////////////////

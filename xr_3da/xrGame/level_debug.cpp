@@ -219,7 +219,7 @@ void CLevelDebug::CLevelInfo::add_item(const Fvector &pos, float radius, u32 col
 
 struct DrawLevelPredicate {
 	void operator() (CLevelDebug::SLevelItem s) {
-	
+#ifdef DEBUG
 		if (s.ptype == CLevelDebug::SLevelItem::ePoint) {
 			RCache.dbg_DrawAABB(s.position1,0.35f,0.35f,0.35f,s.color);
 
@@ -235,6 +235,7 @@ struct DrawLevelPredicate {
 			RCache.dbg_DrawAABB(s.position1,s.radius,s.radius,s.radius,s.color);
 		}
 	}
+#endif	
 };
 
 void CLevelDebug::CLevelInfo::draw_info()
