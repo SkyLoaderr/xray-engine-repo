@@ -69,7 +69,18 @@ bool CParticleTools::OnCreate()
 
 	// lock
     EFS.LockFile(0,fn.c_str());
-
+/*    
+    AnsiString fn1;
+    FS.update_path(fn1,_game_data_,"a.txt");
+	HANDLE handle;
+    handle=CreateFile(fn1.c_str(),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,0,0);
+    handle=CreateFile(fn1.c_str(),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,0,0);
+    handle=CreateFile(fn1.c_str(),GENERIC_READ,FILE_SHARE_READ|FILE_SHARE_WRITE,0,OPEN_EXISTING,0,0);
+    handle=CreateFile(fn1.c_str(),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,0,0);
+    LPVOID lpMsgBuf;
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL);
+	LocalFree( lpMsgBuf );
+*/
     m_EditPE 		= Device.Models.CreatePE(0);
     m_EditPG		= Device.Models.CreatePG(0);
     m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnItemModified);
@@ -241,21 +252,21 @@ void CParticleTools::Load()
 
 void CParticleTools::Save()
 {
-	VERIFY(m_bReady);
-    ApplyChanges();
-	m_bModified = false;
+	VERIFY			(m_bReady);
+    ApplyChanges	();
+	m_bModified 	= false;
 	// backup
     EFS.BackupFile	(_game_data_,"particles2.xr");
 	// save   
     EFS.UnlockFile	(_game_data_,"particles2.xr",false);
-	::Render->PSystems.Save();
+	::Render->PSLibrary.Save();
     EFS.LockFile	(_game_data_,"particles2.xr",false);
 }
 
 void CParticleTools::Reload()
 {
 	VERIFY(m_bReady);
-	::Render->PSystems.Reload();
+	::Render->PSLibrary.Reload();
     // visual part
     m_ItemProps->ClearProperties();
     Load();
@@ -275,28 +286,28 @@ void CParticleTools::Rename(LPCSTR old_full_name, LPCSTR new_full_name)
 {
 	VERIFY(m_bReady);
     // is effect
-	PS::CPEDef* E = ::Render->PSystems.FindPED(old_full_name);
+	PS::CPEDef* E = ::Render->PSLibrary.FindPED(old_full_name);
     if (E){
-        ::Render->PSystems.RenamePED(E,new_full_name);
+        ::Render->PSLibrary.RenamePED(E,new_full_name);
     	return;
     }
     // is group
-	PS::CPGDef* G = ::Render->PSystems.FindPGD(old_full_name);
+	PS::CPGDef* G = ::Render->PSLibrary.FindPGD(old_full_name);
     if (G){
-        ::Render->PSystems.RenamePGD(G,new_full_name);
+        ::Render->PSLibrary.RenamePGD(G,new_full_name);
     	return;
     }
     // is system
-	PS::SDef* S = ::Render->PSystems.FindPS(old_full_name); R_ASSERT(S);
+	PS::SDef* S = ::Render->PSLibrary.FindPS(old_full_name); R_ASSERT(S);
     ApplyChanges();
-    ::Render->PSystems.RenamePS(S,new_full_name);
+    ::Render->PSLibrary.RenamePS(S,new_full_name);
     if (S==m_LibPS){ m_EditPS = *S; }
 }
 
 void CParticleTools::RemovePS(LPCSTR name)
 {
 	VERIFY(m_bReady);
-	::Render->PSystems.Remove(name);
+	::Render->PSLibrary.Remove(name);
 }
 
 void CParticleTools::ResetCurrent()
@@ -362,17 +373,17 @@ void CParticleTools::SetCurrentPG(PS::CPGDef* P)
 
 PS::SDef* CParticleTools::FindPS(LPCSTR name)
 {
-	return ::Render->PSystems.FindPS(name);
+	return ::Render->PSLibrary.FindPS(name);
 }
 
 PS::CPEDef*	CParticleTools::FindPE(LPCSTR name)
 {
-	return ::Render->PSystems.FindPED(name);
+	return ::Render->PSLibrary.FindPED(name);
 }
 
 PS::CPGDef*	CParticleTools::FindPG(LPCSTR name)
 {
-	return ::Render->PSystems.FindPGD(name);
+	return ::Render->PSLibrary.FindPGD(name);
 }
 
 void CParticleTools::UpdateCurrent()
@@ -396,7 +407,7 @@ void CParticleTools::UpdateEmitter()
 PS::SDef* CParticleTools::ClonePS(LPCSTR name)
 {
 	VERIFY(m_bReady);
-	PS::SDef* S = ::Render->PSystems.FindPS(name); R_ASSERT(S);
+	PS::SDef* S = ::Render->PSLibrary.FindPS(name); R_ASSERT(S);
 	return AppendPS(S);
 }
 
@@ -717,8 +728,8 @@ PS::SDef* CParticleTools::AppendPS(PS::SDef* src)
     string64 new_name;
     string64 pref		={0};
     if (src) 			strcat(pref,src->m_Name);
-    ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
-    PS::SDef* S 		= ::Render->PSystems.AppendPS(src);
+    ::Render->PSLibrary.GenerateName	(new_name,folder_name.c_str(),pref);
+    PS::SDef* S 		= ::Render->PSLibrary.AppendPS(src);
     strcpy				(S->m_Name,new_name);
 
     UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
@@ -734,8 +745,8 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
     string64 new_name;
     string64 pref		={0};
     if (src) 			strcat(pref,src->m_Name);
-    ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
-    PS::CPEDef* S 		= ::Render->PSystems.AppendPED(src);
+    ::Render->PSLibrary.GenerateName	(new_name,folder_name.c_str(),pref);
+    PS::CPEDef* S 		= ::Render->PSLibrary.AppendPED(src);
     strcpy				(S->m_Name,new_name);
 
     UI.Command			(COMMAND_UPDATE_PROPERTIES,true);
@@ -751,8 +762,8 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
     string64 new_name;
     string64 pref		={0};
     if (src) 			strcat(pref,src->m_Name);
-    ::Render->PSystems.GenerateName	(new_name,folder_name.c_str(),pref);
-    PS::CPGDef* S 		= ::Render->PSystems.AppendPGD(src);
+    ::Render->PSLibrary.GenerateName	(new_name,folder_name.c_str(),pref);
+    PS::CPGDef* S 		= ::Render->PSLibrary.AppendPGD(src);
     strcpy				(S->m_Name,new_name);
 
     UI.Command			(COMMAND_UPDATE_PROPERTIES,true);

@@ -286,7 +286,7 @@ bool CPSObject::Compile(PS::SDef* source){
 //----------------------------------------------------
 
 bool CPSObject::Compile(LPCSTR name){
-	PS::SDef* source = ::Render->PSystems.FindPS(name);
+	PS::SDef* source = ::Render->PSLibrary.FindPS(name);
     return Compile(source);
 }
 //----------------------------------------------------
