@@ -60,21 +60,23 @@ void SCarLight::ParseDefinitions(LPCSTR section)
 
 void SCarLight::Switch()
 {
-	bool state=!isOn();
-	glow_render ->set_active(state);
-	light_render->set_active(state);
+	if(isOn())TurnOff();
+	else	  TurnOn();
 }
 void SCarLight::TurnOn()
 {
 	if(isOn()) return;
+	PKinematics(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,TRUE,TRUE);
+	PKinematics(m_holder->PCar()->Visual())->Calculate();
 	glow_render ->set_active(true);
 	light_render->set_active(true);
 }
 void SCarLight::TurnOff()
 {
 	if(!isOn()) return;
-	glow_render ->set_active(false);
+ 	glow_render ->set_active(false);
 	light_render->set_active(false);
+	PKinematics(m_holder->PCar()->Visual())->LL_SetBoneVisible(bone_id,FALSE,TRUE);
 }
 
 bool SCarLight::isOn()
