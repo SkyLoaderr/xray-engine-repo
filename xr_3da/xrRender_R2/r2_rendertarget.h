@@ -152,7 +152,6 @@ public:
 	void						phase_smap_spot			(light* L);
 	void						phase_smap_spot_tsh		(light* L);
 	void						phase_accumulator		();
-	void						phase_accumulator_init	();
 	void						shadow_direct			(light* L, u32 dls_phase);
 	BOOL						enable_scissor			(light* L);		// true if intersects near plane
 	void						draw_volume				(light* L);

@@ -695,9 +695,6 @@
 				RelativePath="r2_rendertarget_phase_accumulator.cpp">
 			</File>
 			<File
-				RelativePath="r2_rendertarget_phase_accumulator_init.cpp">
-			</File>
-			<File
 				RelativePath="r2_rendertarget_phase_bloom.cpp">
 			</File>
 			<File
