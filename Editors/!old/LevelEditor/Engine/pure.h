@@ -18,6 +18,7 @@ DECLARE_MESSAGE(AppDeactivate);
 DECLARE_MESSAGE(AppCycleStart);
 DECLARE_MESSAGE(AppCycleEnd);
 
+
 //-----------------------------------------------------------------------------
 struct _REG_INFO {
 	void*	Object;

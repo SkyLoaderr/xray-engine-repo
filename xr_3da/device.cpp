@@ -143,7 +143,6 @@ void CRenderDevice::Run			()
 {
     MSG         msg;
     BOOL		bGotMsg;
-	g_bPause.set(1,FALSE);
 	Log				("Starting engine...");
 	SetThreadName	("X-RAY Primary thread");
 
@@ -255,26 +254,27 @@ void CRenderDevice::FrameMove()
 		dwTimeDelta		=	20;
 		dwTimeGlobal	+=	20;
 	} else {
-		if(g_bPause.get()){
-			dwTimeDelta		=	0;
-			fTimeDelta		=	0.0f;
-			dwTimeGlobal	=	g_dwPause_TimeGlobal;
-			fTimeGlobal		=	g_fPause_TimeGlobal;
-		}else{
 		// Timer
 		float fPreviousFrameTime = Timer.GetElapsed_sec(); Timer.Start();	// previous frame
 		fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;			// smooth random system activity - worst case ~7% error
 		if (fTimeDelta>.06666f) fTimeDelta=.06666f;							// limit to 15fps minimum
+		
+		if(Pause())
+			fTimeDelta = 0.0f;
 
 		u64	qTime		= TimerGlobal.GetElapsed_clk();
-		fTimeGlobal		= float(qTime)*CPU::cycles2seconds - g_fPause_TimeGlobal;
-		dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second) - g_dwPause_TimeGlobal;
+		fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
+		dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second);
 		dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
-		}
 	}
 
 	// Frame move
 	Statistic.EngineTOTAL.Begin	();
 	seqFrame.Process			(rp_Frame);
 	Statistic.EngineTOTAL.End	();
+}
+
+void	CRenderDevice::Pause							(bool bOn)
+{
+	g_pauseMngr.Pause(bOn);
 }

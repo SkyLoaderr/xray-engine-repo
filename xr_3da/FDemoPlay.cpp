@@ -12,7 +12,8 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time,FALSE)
+CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time,FALSE),
+	stat_Timer_frame(true), stat_Timer_total(true)
 {
 	Msg					("! Playing demo: %s",name);
 	Console->Execute	("hud_weapon 0");

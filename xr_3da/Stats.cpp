@@ -109,7 +109,7 @@ void CStats::Show()
 		pFont->OnRender	();
 	}
 
-	if(g_bPause.get()  ){
+	if( Device.Pause()  ){
 		u32 sz = pFont->GetSize();
 		pFont->SetSize(32);
 		pFont->SetColor	(0x80FF0000	);

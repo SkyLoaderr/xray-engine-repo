@@ -106,7 +106,8 @@ game_GameState::game_GameState()
 	phase				=	GAME_PHASE_NONE;
 	round				=	-1;
 
-	m_qwStartProcessorTime		= CPU::GetCycleCount();
+//	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_qwStartProcessorTime		= Level().timeServer_Async();
 	m_qwStartGameTime			= 12*60*60*1000;
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
 
@@ -147,7 +148,8 @@ void game_GameState::switch_Phase		(u32 new_phase)
 
 ALife::_TIME_ID game_GameState::GetGameTime()
 {
-	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(CPU::GetCycleCount() - m_qwStartProcessorTime)*CPU::cycles2milisec));
+//	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(CPU::GetCycleCount() - m_qwStartProcessorTime)*CPU::cycles2milisec));
+	return			(m_qwStartGameTime + iFloor(m_fTimeFactor*float(Level().timeServer_Async() - m_qwStartProcessorTime)));
 }
 
 float game_GameState::GetGameTimeFactor()
@@ -158,20 +160,16 @@ float game_GameState::GetGameTimeFactor()
 void game_GameState::SetGameTimeFactor (const float fTimeFactor)
 {
 	m_qwStartGameTime			= GetGameTime();
-	m_qwStartProcessorTime		= CPU::GetCycleCount();
+//	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_qwStartProcessorTime		= Level().timeServer_Async();
 	m_fTimeFactor				= fTimeFactor;
 }
 
 void game_GameState::SetGameTimeFactor	(ALife::_TIME_ID GameTime, const float fTimeFactor)
 {
 	m_qwStartGameTime			= GameTime;
-	m_qwStartProcessorTime		= CPU::GetCycleCount();
+//	m_qwStartProcessorTime		= CPU::GetCycleCount();
+	m_qwStartProcessorTime		= Level().timeServer_Async();
 	m_fTimeFactor				= fTimeFactor;
 
 }
-
-/*
-void game_GameState::SetGameTime (ALife::_TIME_ID GameTime)
-{
-	m_qwStartGameTime			= GameTime;
-}*/

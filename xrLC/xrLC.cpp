@@ -58,7 +58,7 @@ void Startup(LPSTR     lpCmdLine)
 	Sleep				(150);
 	
 	// Faster FPU 
-	CTimer	dwStartupTime;	dwStartupTime.Start();
+	CTimer	dwStartupTime(false);	dwStartupTime.Start();
 	SetPriorityClass		(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
 
 	/*

@@ -36,7 +36,7 @@ void CLevel::g_cl_Spawn		(LPCSTR name, u8 rp, u16 flags)
 
 void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 {
-	CTimer		T;
+//	CTimer		T(false);
 
 #ifdef DEBUG
 	//Msg					("* CLIENT: Spawn: %s, ID=%d", E->s_name, E->ID);
@@ -47,11 +47,11 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 	else									psNET_Flags.set	(NETFLAG_MINIMIZEUPDATES,FALSE);
 
 	// Client spawn
-	T.Start		();
+//	T.Start		();
 	CObject*	O		= Objects.Create	(*E->s_name);
 	// Msg				("--spawn--CREATE: %f ms",1000.f*T.GetAsync());
 
-	T.Start		();
+//	T.Start		();
 	if (0==O || (!O->net_Spawn	(E))) 
 	{
 		O->net_Destroy			( );

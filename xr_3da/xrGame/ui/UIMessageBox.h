@@ -47,9 +47,9 @@ public:
 
 
 protected:
-	CUIButton m_UIButton1;
-	CUIButton m_UIButton2;
-	CUIButton m_UIButton3;
+	CUIButton m_UIButtonYesOk;
+	CUIButton m_UIButtonNo;
+	CUIButton m_UIButtonCancel;
 
 	CUIStatic m_UIStatic;
 	 

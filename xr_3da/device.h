@@ -35,6 +35,7 @@ private:
 	void									_Create		(LPCSTR shName);
 	void									_Destroy	(BOOL	bKeepTextures);
 	void									_SetupStates();
+	
 public:
     HWND									m_hWnd;
 	LRESULT									MsgProc		(HWND,UINT,WPARAM,LPARAM);
@@ -80,14 +81,16 @@ public:
 	float									fFOV;
 	float									fASPECT;
 	
-	CRenderDevice() 
+	CRenderDevice() :TimerGlobal(true), Timer(true)
 	{
 	    m_hWnd              = NULL;
 		bActive				= FALSE;
 		bReady				= FALSE;
 		Timer.Start			();
+		
 	};
-
+	void	Pause							(bool bOn);
+	IC BOOL	Pause							(){return g_pauseMngr.Paused();};
 	// Scene control
 	void PreCache							(u32 frames);
 	BOOL Begin								();
@@ -128,9 +131,6 @@ public:
 
 extern		ENGINE_API		CRenderDevice		Device;
 extern		ENGINE_API		bool				g_bBenchmark;
-extern		ENGINE_API		Flags32				g_bPause;
-extern		ENGINE_API		float				g_fPause_TimeGlobal;
-extern		ENGINE_API		float				g_dwPause_TimeGlobal;
 
 
 #include	"R_Backend_Runtime.h"

@@ -11,7 +11,7 @@ CMemoryWriter			fs_desc;
 
 u32						bytesSRC=0,bytesDST=0;
 u32						filesTOTAL=0,filesSKIP=0,filesVFS=0,filesALIAS=0;
-CTimer					t_compress;
+CTimer					t_compress(false);
 u64						t_compress_total;
 u8*						c_heap	= NULL;
 
