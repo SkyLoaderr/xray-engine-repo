@@ -88,6 +88,10 @@ void	CRenderTarget::OnDeviceCreate	()
 
 void	CRenderTarget::OnDeviceDestroy	()
 {
+	// Material
+	t_material->surface_set		(NULL);
+	_RELEASE					(t_material_surf);
+
 	// COMBINE
 	Device.Shader.DeleteGeom	(g_combine				);
 	Device.Shader.Delete		(s_combine_dbg_Position	);
