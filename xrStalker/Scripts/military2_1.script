@@ -16,8 +16,7 @@ function main ()
 	local weapon2 = get_level_object ("ak_stalker2")
     local torch = get_level_object ("torch")
     local testway = patrol ("way_test")
-	local baseway = patrol ("way_base")
-
+	
     local sound1_1 = sound_object ("scripts\\Rolik\\Stalker1_1")	
     local sound1_2 = sound_object ("scripts\\Rolik\\Stalker1_2")
     local sound1_3 = sound_object ("scripts\\Rolik\\Stalker1_3")
