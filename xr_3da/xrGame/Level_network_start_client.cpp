@@ -64,7 +64,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		}
 
 		// And receiving spawn information (game-state)
-		BOOL bFinished	= FALSE;
+		BOOL bFinished		= FALSE;
 		while (!bFinished) 
 		{
 			for (NET_Packet* P = net_Retreive(); P; P=net_Retreive())

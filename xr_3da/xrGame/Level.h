@@ -150,7 +150,12 @@ public:
 	void						g_cl_Spawn				(LPCSTR name, int rp, int team, int squad, int group);	// only signal 2 server
 	void						g_sv_Spawn				(NET_Packet* P);								// server reply parsing and spawning
 	
-	CHUDManager*				HUD						(){return (CHUDManager*)pHUD;}
+	CHUDManager*				HUD						()	{ return (CHUDManager*)pHUD; }
+
+	// Save/Load/State
+	void						SLS_Save				(LPCSTR name);		// Game Save
+	void						SLS_Load				(LPCSTR name);		// Game Load
+	void						SLS_Default				();					// Default/Editor Load
 
 	// C/D
 	CLevel();

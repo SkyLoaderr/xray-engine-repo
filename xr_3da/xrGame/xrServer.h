@@ -158,6 +158,7 @@ public:
 		csPlayers.Leave		();
 		return 0;
 	}
+
 	IC xrServerEntity*		ID_to_entity		(u16 ID)
 	{
 		if (0xffff==ID)				return 0;
@@ -168,6 +169,8 @@ public:
 
 	// main
 	void					Update				();
+	void					Save				(CFS_Base& FS);
+	void					Load				(CStream&  FS);
 };
 
 #endif // !defined(AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_)

@@ -273,6 +273,18 @@
 			<File
 				RelativePath="Level_network.cpp">
 			</File>
+			<File
+				RelativePath="Level_network_messages.cpp">
+			</File>
+			<File
+				RelativePath="Level_network_spawn.cpp">
+			</File>
+			<File
+				RelativePath="Level_network_start_client.cpp">
+			</File>
+			<File
+				RelativePath="Level_network_start_server.cpp">
+			</File>
 			<Filter
 				Name="Basic"
 				Filter="">
@@ -1012,7 +1024,13 @@
 				RelativePath="xrServer_balance.cpp">
 			</File>
 			<File
+				RelativePath="xrServer_perform_load.cpp">
+			</File>
+			<File
 				RelativePath="xrServer_perform_migration.cpp">
+			</File>
+			<File
+				RelativePath="xrServer_perform_save.cpp">
 			</File>
 			<File
 				RelativePath="xrServer_process_ownership.cpp">
