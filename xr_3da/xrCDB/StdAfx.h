@@ -9,6 +9,7 @@
 
 #include <xrCore.h>
 
+#define ENGINE_API
 #include "opcode.h"
 
 // TODO: reference additional headers your program requires here
