@@ -195,6 +195,24 @@ void CPda::OnH_A_Chield()
 	if(H_Parent()->ID() == m_idOriginalOwner)
 		TurnOn					();
 
+	//передать информацию содержащуюся в pda
+	//объекту, который его поднял
+	CActor* actor = smart_cast<CActor*>(H_Parent());
+	if(!actor) return;
+
+	//создать и отправить пакет о получении новой информации
+	if(NO_INFO_INDEX != GetInfoPortion())
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
+		P.w_u16			(ID());						//отправитель
+		P.w_s32			(GetInfoPortion());			//сообщение
+		P.w_u8			(1);						//добавление сообщения
+		u_EventSend		(P);
+	}
+
+
+
 	inherited::OnH_A_Chield		();
 }
 

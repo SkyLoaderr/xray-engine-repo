@@ -107,7 +107,6 @@ void CInventoryOwner::TransferInfo(INFO_INDEX info_index, bool add_info) const
 bool CInventoryOwner::HasInfo(INFO_INDEX info_index) const
 {
 	const KNOWN_INFO_VECTOR* known_info = m_known_info_registry->registry().objects_ptr ();
-	
 	if(!known_info) return false;
 
 	if(std::find_if(known_info->begin(), known_info->end(), CFindByIDPred(info_index)) == known_info->end())
@@ -116,3 +115,15 @@ bool CInventoryOwner::HasInfo(INFO_INDEX info_index) const
 	return true;
 }
 
+bool CInventoryOwner::GetInfo	(INFO_INDEX info_index, INFO_DATA& info_data) const
+{
+	const KNOWN_INFO_VECTOR* known_info = m_known_info_registry->registry().objects_ptr ();
+	if(!known_info) return false;
+
+	KNOWN_INFO_VECTOR::const_iterator it = std::find_if(known_info->begin(), known_info->end(), CFindByIDPred(info_index));
+	if(known_info->end() == it)
+		return false;
+
+	info_data = *it;
+	return true;
+}

@@ -11,13 +11,17 @@
 //					
 //T_INI_LOADER	-	тип класса CIni_IdToIndex, 
 //					откуда будет браться информация размерах таблицы
+//TABLE_INDEX		-	порядковый номер таблицы, нужен только в том случае
+//					если мы хотим сгененрировать несколько таблиц с одинаковыми
+//					T_ITEM и T_INI_LOADER
 
 
-#define TEMPLATE_SPECIALIZATION	template<typename T_ITEM, typename T_INI_LOADER>
-#define CSIni_Table	CIni_Table<T_ITEM, T_INI_LOADER>
+#define TEMPLATE_SPECIALIZATION		template<typename T_ITEM, typename T_INI_LOADER, u16 TABLE_INDEX >
+#define TEMPLATE_SPECIALIZATION_D	template<typename T_ITEM, typename T_INI_LOADER, u16 TABLE_INDEX = 0>
+#define CSIni_Table	CIni_Table<T_ITEM, T_INI_LOADER, TABLE_INDEX>
 
 
-TEMPLATE_SPECIALIZATION
+TEMPLATE_SPECIALIZATION_D
 class CIni_Table
 {
 public:
@@ -37,6 +41,28 @@ private:
 	LPCSTR				table_sect;
 	//ширина таблицы, если -1 то таблица делается квадратной (ширина равна высоте)
 	int					table_width;
+
+	//перобразование из LPCSTR в T_ITEM
+
+	template <typename T_CONVERT_ITEM>
+        T_ITEM				convert			(LPCSTR)
+	{
+		STATIC_CHECK(false, Specialization_for_convert_in_CIni_Table_not_found);
+		NODEFAULT;
+	}
+
+	template <>
+		T_ITEM				convert<int>		(LPCSTR str)
+	{
+		return atoi(str);
+	}
+
+	template <>
+		T_ITEM				convert<float>		(LPCSTR str)
+	{
+		return (float)atof(str);
+	}
+
 };
 
 /*
@@ -95,7 +121,7 @@ typename CSIni_Table::ITEM_TABLE& CSIni_Table::table	()
 		(*m_pTable)[cur_index].resize(cur_table_width);
 		for(std::size_t j=0; j<cur_table_width; j++)
 		{
-			(*m_pTable)[cur_index][j] = (T_ITEM)atoi(_GetItem(*(*i).second,(int)j,buffer));
+			(*m_pTable)[cur_index][j] = convert<typename T_ITEM>(_GetItem(*(*i).second,(int)j,buffer));
 		}
 	}
 

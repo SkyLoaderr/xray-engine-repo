@@ -12,6 +12,7 @@
 #include "script_bind_macroses.h"
 #include "script_export_space.h"
 #include "script_callback.h"
+#include "xr_time.h"
 
 enum EPdaMsg;
 enum ESoundTypes;
@@ -195,6 +196,7 @@ public:
 	//предикаты наличия/отсутствия порции информации у персонажа
 			bool				HasInfo				(LPCSTR info_id);
 			bool				DontHasInfo			(LPCSTR info_id);
+			xrTime				GetInfoTime			(LPCSTR info_id);
 	//работа с заданиями
 			ETaskState			GetGameTaskState	(LPCSTR task_id, int objective_num);
 			void				SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num);

@@ -64,12 +64,15 @@ void CInfoDocument::OnH_A_Chield()
 	if(!pInvOwner) return;
 	
 	//создать и отправить пакет о получении новой информации
-	NET_Packet		P;
-	u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
-	P.w_u16			(ID());						//отправитель
-	P.w_s32			(m_iInfoIndex);				//сообщение
-	P.w_u8			(1);						//добавление сообщения
-	u_EventSend		(P);
+	if(NO_INFO_INDEX != m_iInfoIndex)
+	{
+		NET_Packet		P;
+		u_EventGen		(P,GE_INFO_TRANSFER, H_Parent()->ID());
+		P.w_u16			(ID());						//отправитель
+		P.w_s32			(m_iInfoIndex);				//сообщение
+		P.w_u8			(1);						//добавление сообщения
+		u_EventSend		(P);
+	}
 }
 
 void CInfoDocument::OnH_B_Independent() 

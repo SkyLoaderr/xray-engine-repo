@@ -282,6 +282,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("give_game_news",				&CScriptGameObject::GiveGameNews)
 			.def("has_info",					&CScriptGameObject::HasInfo)
 			.def("dont_has_info",				&CScriptGameObject::DontHasInfo)
+			.def("get_info_time",				&CScriptGameObject::GetInfoTime)
 
 			.def("get_task_state",				&CScriptGameObject::GetGameTaskState)
 			.def("set_task_state",				&CScriptGameObject::SetGameTaskState)

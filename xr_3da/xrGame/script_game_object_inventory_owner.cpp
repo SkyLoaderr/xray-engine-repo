@@ -94,6 +94,18 @@ bool  CScriptGameObject::DontHasInfo			(LPCSTR info_id)
 	return !pInventoryOwner->HasInfo(CInfoPortion::IdToIndex(info_id));
 }
 
+xrTime CScriptGameObject::GetInfoTime			(LPCSTR info_id)
+{
+	CInventoryOwner* pInventoryOwner = smart_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return xrTime(0);
+
+	INFO_DATA info_data;
+	if(pInventoryOwner->GetInfo(CInfoPortion::IdToIndex(info_id), info_data))
+		return xrTime(info_data.receive_time);
+	else
+		return xrTime(0);
+}
+
 
 bool CScriptGameObject::SendPdaMessage(EPdaMsg pda_msg, CScriptGameObject* pForWho)
 {

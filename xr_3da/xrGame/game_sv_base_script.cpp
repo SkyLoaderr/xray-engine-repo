@@ -14,52 +14,10 @@
 #include <luabind/operator.hpp>
 #include "xrMessages.h"
 #include "ui/UIInventoryUtilities.h"
+#include "xr_time.h"
 
 using namespace luabind;
 
-#define sec2ms		1000
-#define min2ms		60*sec2ms
-#define hour2ms		60*min2ms
-#define day2ms		24*hour2ms
-
-class xrTime{
-ALife::_TIME_ID		m_time;
-public:
-	xrTime():m_time(0){}
-	xrTime(const xrTime& other):m_time(other.m_time){}
-	xrTime(ALife::_TIME_ID t):m_time(t){}
-
-	bool	operator <		(const xrTime& other)	const			{ return m_time < other.m_time;			}
-	bool	operator >		(const xrTime& other)	const			{ return m_time > other.m_time;			}
-	bool	operator >=		(const xrTime& other)	const			{ return m_time >= other.m_time;		}
-	bool	operator <=		(const xrTime& other)	const			{ return m_time <= other.m_time;		}
-	bool	operator ==		(const xrTime& other)	const			{ return m_time == other.m_time;		}
-	xrTime	operator +		(const xrTime& other)					{ return xrTime(m_time+other.m_time);	}
-	xrTime	operator -		(const xrTime& other)					{ return xrTime(m_time-other.m_time);	}
-	float	diffSec			(const xrTime& other)					{ 
-		if(*this>other) 
-			return (m_time-other.m_time)/(float)sec2ms; 
-		return ((other.m_time-m_time)/(float)sec2ms)*(-1.0f);	
-	}
-	void	add				(const xrTime& other)					{  m_time += other.m_time;				}
-	void	sub				(const xrTime& other)					{  if(*this>other)m_time -= other.m_time; else m_time=0;	}
-
-	void	setHMS			(int h, int m, int s)					{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms);}
-	void	setHMSms		(int h, int m, int s, int ms)			{ m_time=0; m_time+=(h*hour2ms+m*min2ms+s*sec2ms+ms);}
-
-	LPCSTR	dateToString	(int mode)								{ return *InventoryUtilities::GetDateAsString(m_time,(InventoryUtilities::EDatePrecision)mode);}
-	LPCSTR	timeToString	(int mode)								{ return *InventoryUtilities::GetTimeAsString(m_time,(InventoryUtilities::ETimePrecision)mode);}
-};
-
-u32 get_time()
-{
-	return u32(Level().GetGameTime() & u32(-1));
-}
-
-xrTime get_time_struct()
-{
-	return xrTime( Level().GetGameTime() );
-}
 void game_sv_GameState::script_register(lua_State *L)
 {
 

@@ -7510,6 +7510,12 @@
 						<File
 							RelativePath=".\game_sv_event_queue.h">
 						</File>
+						<File
+							RelativePath=".\xr_time.cpp">
+						</File>
+						<File
+							RelativePath=".\xr_time.h">
+						</File>
 						<Filter
 							Name="artefact_hunt"
 							Filter="">

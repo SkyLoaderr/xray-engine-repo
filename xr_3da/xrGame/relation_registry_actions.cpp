@@ -149,12 +149,12 @@ void RELATION_REGISTRY::Action (CEntityAlive* from, CEntityAlive* to, ERelationA
 				else if(ALife::eRelationTypeNeutral == relation_before_attack)
 				{
 					delta_goodwill = neutral_kill_goodwill;
-					delta_reputation = neutral_attack_reputation;
+					delta_reputation = neutral_kill_reputation;
 				}
 				else if(ALife::eRelationTypeFriend == relation_before_attack)
 				{
 					delta_goodwill = friend_kill_goodwill;
-					delta_reputation = friend_attack_reputation;
+					delta_reputation = friend_kill_reputation;
 				}
 
 				CHARACTER_GOODWILL community_goodwill = (CHARACTER_GOODWILL)(CHARACTER_COMMUNITY::sympathy(stalker->Community())*
