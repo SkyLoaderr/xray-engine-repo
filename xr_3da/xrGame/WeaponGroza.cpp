@@ -148,8 +148,8 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 		switch(st_target)
 		{
 		case eIdle:
-			Level().Cameras.SetEffector	(0);
-			bFlame						= FALSE;
+			if (bHUDView)	Level().Cameras.SetEffector	(0);
+			bFlame			= FALSE;
 			break;
 		case eFire:
 			pSounds->Play3DAtPos(sndFire,vLastFP,true);
@@ -177,6 +177,11 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			{
 				bFlame			= TRUE;
 				fTime			+=fTimeToFire;
+
+				if (bHUDView)	(
+					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector();
+					if (S)			S->Shot();
+				}
 
 				UpdateFP		(bHUDView);
 				FireTrace		(p1,vLastFP,d);
@@ -219,7 +224,7 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 	if ((st_current==eFire) && bFlame) 
 	{
-		if (0==Level().Cameras.GetEffector())	Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(.2f)));
+		if (bHUDView &&	(0==Level().Cameras.GetEffector()))	Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(.2f)));
 
 		UpdateFP	(bHUDView);
 
