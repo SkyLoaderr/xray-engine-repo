@@ -1,5 +1,21 @@
 function set_storyline(object, char_ini)
 
+    -- Реакция на бобика
+    if char_ini:section_exist ("bobik") == true and 
+       char_ini:line_exist("bobik", "enabled") == true and 
+       char_ini:r_bool("bobik", "enabled") == true 
+    then
+        escape_bobic.add_to_binder(object)
+    end
+
+
+
+
+
+
+
+
+
 xr_motivator.storage[object:id()].robber = {
         enabled = false,
     leader = false,
@@ -119,9 +135,5 @@ xr_motivator.storage[object:id()].agroprom_military_commander = {
     escape_factory_bandits.add_to_binder(object)
     agroprom_military_commander.add_to_binder(object)    
     
-    if char_ini:section_exist ("bobik") == true then
-        escape_bobic.add_to_binder(object)
-    end
-
 --    escape.raid_init (object)
 end
