@@ -745,6 +745,10 @@
 						RelativePath=".\script_engine_inline.h"
 						>
 					</File>
+					<File
+						RelativePath=".\script_space.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="lua"

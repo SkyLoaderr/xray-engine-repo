@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ui.h"
+
 struct lua_State;
 
 class CScriptEngine {
