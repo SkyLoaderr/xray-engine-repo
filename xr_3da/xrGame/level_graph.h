@@ -46,6 +46,16 @@ private:
 		eLineIntersectionEqual		= u32(2)
 	};
 
+	IReader				*m_reader;		// level graph virtual storage
+	CHeader				m_header;		// level graph header
+	u32					m_palette_size;
+	Cover				*m_cover_palette;
+	u8					*m_nodes;		// nodes array
+	CVertex				**m_nodes_ptr;	// pointers to vertex's data
+	xr_vector<u8>		m_ref_counts;	// reference counters for handling dynamic objects
+	u32					m_level_id;		// unique level identifier
+	u32					m_row_length;
+public:
 	struct SSegment
 	{
 		Fvector v1;
@@ -57,17 +67,7 @@ private:
 		Fvector v3;
 		Fvector v4;
 	};
-	
-	IReader				*m_reader;		// level graph virtual storage
-	CHeader				m_header;		// level graph header
-	u32					m_palette_size;
-	Cover				*m_cover_palette;
-	u8					*m_nodes;		// nodes array
-	CVertex				**m_nodes_ptr;	// pointers to vertex's data
-	xr_vector<u8>		m_ref_counts;	// reference counters for handling dynamic objects
-	u32					m_level_id;		// unique level identifier
-	u32					m_row_length;
-public:
+
 #ifdef AI_COMPILER
 	xr_vector<bool>		q_mark_bit;
 #endif
