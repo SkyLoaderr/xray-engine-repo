@@ -22,10 +22,6 @@
 	</info_portion>
 	<info_portion id="tutorial_alarm_played">
 	</info_portion>
-	<info_portion id="tutorial_help_wounded_start">
-	</info_portion>
-	<info_portion id="tutorial_help_wounded_played">
-	</info_portion>
 	
 	<info_portion id="tutorial_wounded_start">
 		<task>tutorial_help_wounded</task>
