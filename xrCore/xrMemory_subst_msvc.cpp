@@ -35,7 +35,6 @@ void*	xrMemory::mem_alloc		(size_t size)
 		*acc_header(_ptr)		=	mem_generic;
 	} else {
 		//	accelerated
-		if (debug_mode)	size		+=	4;
 		u32	pool					=	get_pool	(size+_footer);
 		if (mem_generic==pool)		
 		{
@@ -51,7 +50,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 		}
 	}
 
-	if (debug_mode)				dbg_register	(_ptr,_size);
+	if (debug_mode)				dbg_register	(_ptr,size);
 	return	_ptr;
 }
 
@@ -64,12 +63,10 @@ void	xrMemory::mem_free		(void* P)
 	if (mem_generic==pool)		
 	{
 		// generic
-		// stat_counter			-=	xr_aligned_msize	(_real);
 		xr_aligned_free			(_real);
 	} else {
 		// pooled
 		R_ASSERT2				(pool<mem_pools_count,"Memory corruption");
-		// stat_counter			-=	mem_pools[pool].get_element	();
 		mem_pools[pool].destroy	(_real);
 	}
 }
