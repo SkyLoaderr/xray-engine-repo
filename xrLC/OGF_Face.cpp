@@ -39,6 +39,23 @@ WORD OGF::_BuildVertex	(OGF_Vertex& V1)
 	return vertices.size()-1;
 }
 
+void OGF::_BuildFace	(OGF_Vertex& V1, OGF_Vertex& V2, OGF_Vertex& V3)
+{
+	OGF_Face F;
+	DWORD	VertCount = vertices.size();
+	F.v[0]	= _BuildVertex(V1);
+	F.v[1]	= _BuildVertex(V2);
+	F.v[2]	= _BuildVertex(V3);
+	if (!F.Degenerate()) {
+		for (itOGF_F I=faces.begin(); I!=faces.end(); I++)
+			if (I->Equal(F)) return;
+			faces.push_back(F);
+	} else {
+		if (vertices.size()>VertCount) 
+			vertices.erase(vertices.begin()+VertCount,vertices.end());
+	}
+}
+
 void OGF::Optimize()
 {
 	// Real optimization
