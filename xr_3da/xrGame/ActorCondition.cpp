@@ -9,7 +9,9 @@ CActorCondition::CActorCondition(void)
 
 
 	m_fMedkit = 0.3f;
+	m_fMedkitWound = 0.1f;
 	m_fAntirad = 0.3f;
+
 }
 
 CActorCondition::~CActorCondition(void)
@@ -25,6 +27,7 @@ void CActorCondition::Load(LPCSTR section)
 
 	//temporary
 	m_fMedkit = pSettings->r_float(section,"medkit");
+	m_fMedkitWound = pSettings->r_float(section,"medkit_wound");
 	m_fAntirad = pSettings->r_float(section,"antirad");
 
 }

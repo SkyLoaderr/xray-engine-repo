@@ -23,6 +23,7 @@ public:
 	
 	
 	float m_fMedkit;
+	float m_fMedkitWound;
 	float m_fAntirad;
 
 protected:

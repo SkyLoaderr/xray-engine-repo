@@ -1154,8 +1154,9 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 			
 			//уменьшить силу игрока из-за выполненого прыжка
-			ConditionJump((m_inventory.TotalWeight()+GetMass())/
-					  (m_inventory.m_maxWeight + GetMass()));
+			if (!psActorFlags.test(AF_GODMODE))	
+					ConditionJump((m_inventory.TotalWeight()+GetMass())/
+								  (m_inventory.m_maxWeight + GetMass()));
 		}
 
 		/*
@@ -1435,12 +1436,16 @@ float CActor::Radius()const
 
 void CActor::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, s16 element)
 {
+	if (psActorFlags.test(AF_GODMODE)) return;
+
 	CActorCondition::ConditionHit(who, hit_power, hit_type, element);
 }
 
 void CActor::UpdateCondition()
 {
-	if(isAccelerated(mstate_real))
+	if (psActorFlags.test(AF_GODMODE)) return;
+
+	if(isAccelerated(mstate_real) && (mstate_real&mcAnyMove))
 	{
 		ConditionAccel((m_inventory.TotalWeight()+GetMass())/
 						(m_inventory.m_maxWeight+GetMass()));
