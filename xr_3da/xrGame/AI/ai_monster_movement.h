@@ -143,7 +143,7 @@ public:
 
 		bool		check_build_conditions	();
 
-		bool		actual_params			();
+	IC	bool		actual_params			();
 };
 
 #include "ai_monster_movement_inline.h"

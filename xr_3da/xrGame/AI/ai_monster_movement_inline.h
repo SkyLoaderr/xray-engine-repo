@@ -38,7 +38,7 @@ IC void	CMonsterMovement::set_distance_to_end(float dist)
 	m_distance_to_path_end = dist;
 }
 
-bool CMonsterMovement::actual_params()
+IC bool CMonsterMovement::actual_params()
 {
 	return m_actual;
 }
