@@ -63,7 +63,7 @@ CSoundStream* CMusicStream::CreateSound	(LPCSTR name	)
 
 void	CMusicStream::DeleteSound	(CSoundStream* pSnd)
 {
-	int slot;
+	int slot=-1;
 	for (DWORD i=0; i<streams.size(); i++){
 		if (streams[i]==pSnd) { slot = i; break; }
 	}

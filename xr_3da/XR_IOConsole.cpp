@@ -86,7 +86,7 @@ void CConsole::OnRender	()
 	CHK_DX(HW.pDevice->Clear(1,&R,D3DCLEAR_TARGET,D3DCOLOR_XRGB(32,32,32),1,0));
 
 	float dwMaxY=float(Device.dwHeight);
-	float dwMaxX=float(Device.dwWidth/2);
+	// float dwMaxX=float(Device.dwWidth/2);
 	if (bGame) { fMaxY=0.f; dwMaxY/=2; } else fMaxY=1.f;
 
 	char buf[96];
@@ -236,7 +236,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 				LPCSTR	clipdata = (LPCSTR)GlobalLock(hmem);
 				strncpy (editor,clipdata,255); editor[255]=0;
 				for (u32 i=0; i<strlen(editor); i++)
-					if (isprint(editor[i]))	editor[i]=tolower(editor[i]);
+					if (isprint(editor[i]))	editor[i]=char(_tolower(editor[i]));
 					else					editor[i]=' ';
 				
 				GlobalUnlock( hmem );

@@ -328,7 +328,7 @@ void CLensFlare::Render(BOOL bSun, BOOL bFlares, BOOL bGradient)
 			Device.Shader.set_Shader		(_2render[i]);
 
 			DWORD							vBase	= i*4+VS_Offset;
-			Device.Primitive.setIndices		(vBase, Device.Streams_QuadIB);
+			Device.Primitive.setIndices		(vBase, Device.Streams.QuadIB);
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 	    }
 	}

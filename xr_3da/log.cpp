@@ -177,7 +177,7 @@ void CreateLog(BOOL bQuiet)
 	// Calculating build
 	long Time;
 	time(&Time);
-	int build=0, mnum, dnum, ynum, mcnt;
+	int build=0, mnum=0, dnum, ynum, mcnt;
 	char mon[4];
 	char buf[128];
 	strcpy(buf,__DATE__);

@@ -23,7 +23,7 @@ int __cdecl MyAllocHook(
 	int     nLine   )
 {
    char *operation[] = { "?", "ALLOC", "REALLOC", "FREE"				};
-   char *blockType[] = { "FREE", "NORMAL", "CRT", "IGNORE", "CLIENT"	};
+   // char *blockType[] = { "FREE", "NORMAL", "CRT", "IGNORE", "CLIENT"	};
 
    if (nBlockUse==_CRT_BLOCK) return( TRUE );
 

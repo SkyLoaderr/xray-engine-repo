@@ -19,13 +19,13 @@ void	CSharedStreams::OnDeviceCreate	()
 			int		ICnt= 0;
 			for (int i=0; i<dwTriCount; i++)
 			{
-				Indices[ICnt++]=Cnt+0;
-				Indices[ICnt++]=Cnt+1;
-				Indices[ICnt++]=Cnt+2;
+				Indices[ICnt++]=u16(Cnt+0);
+				Indices[ICnt++]=u16(Cnt+1);
+				Indices[ICnt++]=u16(Cnt+2);
 
-				Indices[ICnt++]=Cnt+3;
-				Indices[ICnt++]=Cnt+2;
-				Indices[ICnt++]=Cnt+1;
+				Indices[ICnt++]=u16(Cnt+3);
+				Indices[ICnt++]=u16(Cnt+2);
+				Indices[ICnt++]=u16(Cnt+1);
 
 				Cnt+=4;
 			}
@@ -44,7 +44,7 @@ void	CSharedStreams::OnDeviceDestroy	()
 	Vertex.Destroy		();
 
 	// Quad
-	_RELEASE					(Streams_QuadIB);
+	_RELEASE			(QuadIB);
 }
 
 

@@ -205,7 +205,7 @@ void IPureClient::Disconnect()
 
 HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 {
-	HRESULT     hr = S_OK;
+	// HRESULT     hr = S_OK;
 
 	switch (dwMessageType)
 	{
@@ -213,8 +213,8 @@ HRESULT	IPureClient::net_Handler(DWORD dwMessageType, PVOID pMessage)
 		{
 			PDPNMSG_ENUM_HOSTS_RESPONSE     pEnumHostsResponseMsg;
 			const DPN_APPLICATION_DESC*     pDesc;
-			HOST_NODE*                      pHostNode = NULL;
-			WCHAR*                          pwszSession = NULL;
+			// HOST_NODE*                      pHostNode = NULL;
+			// WCHAR*                          pwszSession = NULL;
 
 			pEnumHostsResponseMsg			= (PDPNMSG_ENUM_HOSTS_RESPONSE) pMessage;
 			pDesc							= pEnumHostsResponseMsg->pApplicationDescription;

@@ -379,7 +379,7 @@ void CRender::flush_Patches	()
 		Device.Shader.set_Element		(vecPatches[current].S);
 
 		Device.Primitive.setVertices	(vsPatches->dwHandle,vsPatches->dwStride,Device.Streams.Vertex.Buffer());
-		Device.Primitive.setIndices		(vOffset,Device.Streams_QuadIB);;
+		Device.Primitive.setIndices		(vOffset,Device.Streams.QuadIB);;
 		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4*p_count,0,2*p_count);
 		UPDATEC							(4*p_count,2*p_count,1);
 		current	+=	p_count;

@@ -181,7 +181,7 @@ void IPureServer::Disconnect()
 
 HRESULT	IPureServer::net_Handler(DWORD dwMessageType, PVOID pMessage)
 {
-    HRESULT     hr = S_OK;
+    // HRESULT     hr = S_OK;
 	
     switch (dwMessageType)
     {

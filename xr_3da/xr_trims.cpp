@@ -77,7 +77,7 @@ DWORD _ParseItem ( char* src, xr_token* token_list )
 	for( int i=0; token_list[i].name; i++ )
 		if( !stricmp(src,token_list[i].name) )
 			return token_list[i].id;
-	return -1;
+	return DWORD(-1);
 }
 
 DWORD _ParseItem ( char* src, int ind, xr_token* token_list )

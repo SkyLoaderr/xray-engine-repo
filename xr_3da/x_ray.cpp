@@ -294,7 +294,7 @@ void CApplication::LoadTitle(char *S, char *S2)
 	Device.Streams.Vertex.Unlock	(4,ll_hVS->dwStride);
 	Device.Shader.set_Shader		(ll_hLogo);
 	Device.Primitive.setVertices	(ll_hVS->dwHandle,ll_hVS->dwStride,Device.Streams.Vertex.Buffer());
-	Device.Primitive.setIndices		(Offset,Device.Streams_QuadIB);;
+	Device.Primitive.setIndices		(Offset,Device.Streams.QuadIB);;
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 	UPDATEC							(4,2,1);
 
