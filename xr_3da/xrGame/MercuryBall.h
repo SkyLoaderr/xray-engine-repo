@@ -1,5 +1,6 @@
 #pragma once
 #include "gameobject.h"
+#include "PhysicsShell.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // –тутный шар
@@ -18,5 +19,5 @@ public:
 	virtual void OnDeviceCreate();
 	virtual void OnDeviceDestroy();
 
-	BOOL net_Spawn(LPVOID DC);
+	virtual BOOL			net_Spawn			(LPVOID DC);
 };

@@ -64,6 +64,16 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 				feel_touch.push_back				(W);
 				return;
 			}
+
+			// Test for Artifact
+			CMercuryBall* A	= dynamic_cast<CMercuryBall*>	(O);
+			if (A)
+			{
+				R_ASSERT							(BE(Local(),A->Local()));	// remote can't eject local
+				A->H_SetParent						(0);
+				feel_touch.push_back				(A);
+				return;
+			}
 		}
 		break;
 	case GE_TRANSFER_AMMO:

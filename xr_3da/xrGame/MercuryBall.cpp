@@ -24,6 +24,10 @@ void CMercuryBall::OnH_B_Independent() {
 	inherited::OnH_B_Independent();
 	setVisible					(true);
 	setEnabled					(true);
+	CObject*	E		= dynamic_cast<CObject*>(H_Parent());
+	R_ASSERT		(E);
+	svTransform.set(E->clXFORM());
+	vPosition.set(svTransform.c);
 }
 
 void CMercuryBall::OnDeviceCreate() {

@@ -38,10 +38,6 @@ void	game_sv_CS::OnRoundStart	()
 	}
 }
 
-//void	game_sv_CS::OnRoundEnd		()
-//{
-//}
-
 void	game_sv_CS::OnTeamScore		(u32 team)
 {
 	// Increment/decrement money
@@ -114,20 +110,6 @@ BOOL	game_sv_CS::OnTargetTouched	(u32 id_who, u32 eid_target)
 
 		if(l_pCSBase->g_team() == ps_who->team) {				// Если игрок пришел на свою базу
 			ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_BASE;
-/*			if(ps_who->flags&GAME_PLAYER_FLAG_HASARTFCT) {		// и у него есть артефакт
-				teams[ps_who->team].num_targets++;
-				// @@@ WT : нужно выбросить артефакт
-				ps_who->flags &= ~GAME_PLAYER_FLAG_HASARTFCT;
-				if(teams[ps_who->team].num_targets == 3) {		// если у команды 3 артефакта - Победа!!!
-					OnTeamScore(ps_who->team);
-					u32	cnt = get_count();						// Доп. бонус за выполнение задания
-					for(u32 it=0; it<cnt; it++)	{
-						game_PlayerState* ps = get_it(it);
-						if(ps->team == ps_who->team) ps->money_for_round += 1000;
-					}											//
-					OnRoundEnd("MISSION_complete");
-				}
-			}*/
 		} else ps_who->flags |= GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE;
 		Unlock();
 		return false;

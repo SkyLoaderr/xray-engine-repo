@@ -10,7 +10,6 @@ public:
 
 	// Events
 	virtual		void				OnRoundStart			();										// старт раунда
-	//virtual		void				OnRoundEnd				();
 
 	virtual		void				OnTeamScore				(u32 team);								// команда выиграла
 	virtual		void				OnTeamsInDraw			();										// ничья
