@@ -87,9 +87,9 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	{
 		if		(debug_mode)	dbg_unregister	(P);
 		void*	_real2			=	xr_aligned_offset_realloc	(_real,size,16,0x1);
-		if		(debug_mode)	dbg_register	(P);
 		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
+		if		(debug_mode)	dbg_register	(_ptr);
 	} else {
 		R_ASSERT2				(p_current<mem_pools_count,"Memory corruption");
 		u32		s_current		= mem_pools[p_current].get_element();
