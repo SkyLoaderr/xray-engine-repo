@@ -217,7 +217,7 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 					if(l_pMBall) break;
 				}
 				if (l_pMBall){
-					S->Perform_transfer(l_pMBall, A, l_pCSCask);		// Отдаем игроку
+					S->Perform_transfer(l_pMBall, l_pCSCask, A);		// Отдаем игроку
 					ps_who->flags |= GAME_PLAYER_FLAG_CS_HAS_ARTEFACT;
 					teams[(ps_who->team+1)%2].num_targets--;
 					signal_Syncronize();
