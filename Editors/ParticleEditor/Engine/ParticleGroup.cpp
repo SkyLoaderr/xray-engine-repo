@@ -57,10 +57,8 @@ void CParticleGroup::pAnimate(float speed, BOOL random_playback)
 }
 void CParticleGroup::pFrameExec(Particle *m)
 {
-    if (m_Flags.test(flRandomFrame)){
+    if (m_Flags.test(flRandomFrame))
     	m->frame	= Random.randI(m_Animation.m_iFrameCount);
-        Log("frame",m->frame);
-    }
     if (m_Flags.test(flAnimated)&&m_Flags.test(flRandomPlayback)&&Random.randI(2))	
     	m->flags	|= Particle::ANIMATE_CCW;
 }
