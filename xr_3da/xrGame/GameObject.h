@@ -142,8 +142,8 @@ public:
 	CGameObject();
 	virtual ~CGameObject();
 
-	virtual BOOL			UsedAI_Locations	();
-
+	virtual BOOL			UsedAI_Locations				();
+	virtual	bool			can_validate_position_on_spawn	(){return true;}
 #ifdef DEBUG
 	virtual void			OnRender			();
 #endif

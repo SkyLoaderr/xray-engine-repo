@@ -520,7 +520,10 @@ protected:
 	void					NetInput_Send			( );
 	void					NetInput_Apply			(net_input* pNI);
 	void					NetInput_Update			( u32 Time );
-	
+
+
+////////////////////////////////////////////////////////////////////////////
+virtual	bool				can_validate_position_on_spawn	(){return false;}
 	///////////////////////////////////////////////////////
 	// апдайт с данными физики
 	xr_deque<net_update_A>	NET_A;

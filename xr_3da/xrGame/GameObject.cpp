@@ -263,7 +263,14 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 			validate_ai_locations	(false);
 
 			// validating position
-			if (UsedAI_Locations())
+			if	(
+					UsedAI_Locations() && 
+					ai().level_graph().inside(
+						ai_location().level_vertex_id(),
+						Position()
+					) &&
+					can_validate_position_on_spawn()
+				)
 				Position().y		= EPS_L + ai().level_graph().vertex_plane_y(*ai_location().level_vertex(),Position().x,Position().z);
 		
 		}
