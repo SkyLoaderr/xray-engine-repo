@@ -15,7 +15,7 @@
 
 extern const char * const	CHAT_MP_WND_XML;
 extern const int			fadeDelay;
-	   const char * const	CHAT_LOG_ITEMS_ANIMATION	= "ui_chat_mp_anim";
+	   const char * const	CHAT_LOG_ITEMS_ANIMATION	= "ui_mp_chat";
 
 //////////////////////////////////////////////////////////////////////////
 
