@@ -517,7 +517,6 @@ function fract:setJob(npc, job)
 	if job.name == "guard" then
 		job.object = npc
 		job.begin = game.time()
-		printf("JOB %s", job.path_main)
 		if job.running then printf("running") else printf("walking") end
 	    xr_guard.set_guard(npc, true, job.path_main, job.path_hideout, job.running, job.search_light)
 	end
