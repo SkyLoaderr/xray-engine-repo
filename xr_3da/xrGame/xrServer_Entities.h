@@ -190,6 +190,11 @@ xrSE_DECLARE_BEGIN(xrSE_Enemy,xrSE_Teamed)
 	u8						flags;
 	float					o_model;				// model yaw
 	SRotation				o_torso;				// torso in world coords
+	float					fHealth;
+							xrSE_Enemy()
+	{
+		fHealth				= 100;
+	}
 xrSE_DECLARE_END
 
 xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
@@ -199,7 +204,6 @@ xrSE_DECLARE_BEGIN(xrSE_Rat,xrSE_Enemy)
 	// Personal characteristics:
 	float					fEyeFov;
 	float					fEyeRange;
-	float					fHealth;
 	float					fMinSpeed;
 	float					fMaxSpeed;
 	float					fAttackSpeed;
@@ -231,7 +235,6 @@ xrSE_DECLARE_BEGIN(xrSE_Zombie,xrSE_Enemy)
 	// Personal characteristics:
 	float					fEyeFov;
 	float					fEyeRange;
-	float					fHealth;
 	float					fMinSpeed;
 	float					fMaxSpeed;
 	float					fAttackSpeed;
@@ -253,7 +256,6 @@ xrSE_DECLARE_BEGIN(xrSE_Dog,xrSE_Enemy)
 	// Personal characteristics:
 	float					fEyeFov;
 	float					fEyeRange;
-	float					fHealth;
 	float					fMinSpeed;
 	float					fMaxSpeed;
 	float					fAttackSpeed;
@@ -283,7 +285,6 @@ xrSE_DECLARE_BEGIN(xrSE_Human,xrSE_Enemy)
 	string64				caModel;
 	
 	// Personal characteristics:
-	float					fHealth;
 							xrSE_Human();
 xrSE_DECLARE_END
 //***** Zone

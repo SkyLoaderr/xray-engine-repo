@@ -369,7 +369,7 @@ public:
 	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
 	{
 		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
-		if (tpALifeMonsterAbstract)
+		if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl)
 			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
 	};	
 };

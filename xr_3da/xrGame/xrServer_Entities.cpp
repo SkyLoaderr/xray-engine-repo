@@ -414,6 +414,8 @@ void xrSE_Enemy::UPDATE_Read		(NET_Packet& P)
 	P.r_angle8			(o_model		);
 	P.r_angle8			(o_torso.yaw	);
 	P.r_angle8			(o_torso.pitch	);
+	if (m_wVersion >= 5)
+		P.r_float		(fHealth);
 }
 void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 {
@@ -424,11 +426,13 @@ void xrSE_Enemy::UPDATE_Write		(NET_Packet& P)
 	P.w_angle8			(o_model		);
 	P.w_angle8			(o_torso.yaw	);
 	P.w_angle8			(o_torso.pitch	);
+	P.w_float			(fHealth);
 }
 #ifdef _EDITOR
 void	xrSE_Enemy::FillProp			(LPCSTR pref, PropItemVec& items)
 {
   	inherited::FillProp(pref,items);
+   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
 }
 #endif
 
@@ -694,7 +698,6 @@ void xrSE_Rat::FillProp(LPCSTR pref, PropItemVec& items)
 	// personal characteristics
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
-   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Minimum speed" 		),&fMinSpeed,						0,10,0.1);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Maximum speed" 		),&fMaxSpeed,						0,10,0.1);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Attack speed" 			),&fAttackSpeed,					0,10,0.1);
@@ -805,7 +808,6 @@ void xrSE_Zombie::FillProp(LPCSTR pref, PropItemVec& items)
 	// personal characteristics
 	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
-   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Minimum speed" 		),&fMinSpeed,						0,10,0.1);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Maximum speed" 		),&fMaxSpeed,						0,10,0.1);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Attack speed" 			),&fAttackSpeed,					0,10,0.1);
@@ -936,7 +938,6 @@ void xrSE_Dog::FillProp(LPCSTR pref, PropItemVec& items)
 	// personal characteristics
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Field of view" 		),&fEyeFov,							0,170,10);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Eye range" 			),&fEyeRange,						0,300,10);
-   	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Health" 				),&fHealth,							0,200,5);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Minimum speed" 		),&fMinSpeed,						0,10,0.1);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Maximum speed" 		),&fMaxSpeed,						0,10,0.1);
    	PHelper.CreateFloat(		items, PHelper.PrepareKey(pref,s_name,"Personal",	"Attack speed" 			),&fAttackSpeed,					0,10,0.1);
