@@ -46,11 +46,6 @@ void CAI_Stalker::Death()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 }
 
-void CAI_Stalker::Defend()
-{
-	WRITE_TO_LOG("Defending");
-}
-
 void CAI_Stalker::RetreatUnknown()
 {
 	WRITE_TO_LOG("Retreating unknown");
@@ -191,6 +186,7 @@ void CAI_Stalker::Recharge()
 void CAI_Stalker::Attack()
 {
 	WRITE_TO_LOG("Attacking");
+	
 	SelectEnemy(m_tEnemy);
 
 	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(!m_tEnemy.Enemy,eStalkerStatePursuitKnown);
@@ -202,7 +198,7 @@ void CAI_Stalker::Attack()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
 
-	vfChoosePointAndBuildPath	(m_tSelectorReload);
+	vfChoosePointAndBuildPath	(m_tSelectorFreeHunting);
 
 	vfSetFire					(true,*getGroup());
 
@@ -290,6 +286,12 @@ void CAI_Stalker::PursuitUnknown()
 	m_tMySavedPosition		= m_tpaDynamicSounds[iIndex].tMySavedPosition;
 	m_dwMyNodeID			= m_tpaDynamicSounds[iIndex].dwMyNodeID;
 
+	if (m_tSavedEnemy) {
+		EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
+		if (eState == eStalkerStateRetreatKnown)
+			GO_TO_NEW_STATE_THIS_UPDATE(eStalkerStateRetreatKnown);
+	}
+
 	GO_TO_NEW_STATE_THIS_UPDATE(eStalkerStatePursuitKnown);
 }
 
@@ -297,10 +299,16 @@ void CAI_Stalker::PursuitKnown()
 {
 	WRITE_TO_LOG("Pursuiting known");
 	
+	INIT_SQUAD_AND_LEADER;
+
 	if (m_bStateChanged) {
-		getGroup()->m_tpaSuspiciousNodes.clear();
-		vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
-		vfClasterizeSuspiciousNodes(*getGroup());
+		if (Leader == this) {
+			getGroup()->m_tpaSuspiciousNodes.clear();
+			vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(m_tSavedEnemyPosition)/4.5f,60.f)),*getGroup());
+			vfClasterizeSuspiciousNodes(*getGroup());
+			m_iCurrentSuspiciousNodeIndex = -1;
+			return;
+		}
 		m_iCurrentSuspiciousNodeIndex = -1;
 	}
 	
@@ -323,6 +331,31 @@ void CAI_Stalker::PursuitKnown()
 	vfChooseSuspiciousNode		(m_tSelectorFreeHunting);
 	
 	vfSetMovementType			(eBodyStateStand,eMovementTypeRun,eLookTypePatrol);
+	
+	if (m_fCurSpeed < EPS_L)
+		r_torso_target.yaw		= r_target.yaw;
+}
+
+void CAI_Stalker::Defend()
+{
+	WRITE_TO_LOG("Defending");
+	
+	SelectEnemy(m_tEnemy);
+
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(!m_tEnemy.Enemy,eStalkerStatePursuitKnown);
+
+	EStalkerStates eState = EStalkerStates(dwfChooseAction(m_dwActionRefreshRate,m_fAttackSuccessProbability,g_Team(),g_Squad(),g_Group(),eStalkerStateAttack,eStalkerStateDefend,eStalkerStateRetreatKnown));
+	CHECK_IF_GO_TO_NEW_STATE_THIS_UPDATE(eState != m_eCurrentState,eState);
+
+	vfSetFire					(false,*getGroup());
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE_AND_UPDATE(Weapons->ActiveWeapon() && !Weapons->ActiveWeapon()->GetAmmoElapsed(),eStalkerStateRecharge);
+
+	vfChoosePointAndBuildPath	(m_tSelectorReload);
+
+	vfSetFire					(true,*getGroup());
+
+	vfSetMovementType			(eBodyStateStand,eMovementTypeWalk,eLookTypeFirePoint,m_tEnemy.Enemy->Position());
 	
 	if (m_fCurSpeed < EPS_L)
 		r_torso_target.yaw		= r_target.yaw;
