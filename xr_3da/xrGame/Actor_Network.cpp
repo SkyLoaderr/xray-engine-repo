@@ -760,7 +760,7 @@ void CActor::net_Destroy	()
 	m_holder=NULL;
 	m_holderID=u16(-1);
 
-	cam_UnsetLadder();
+//	cam_UnsetLadder();
 }
 
 void CActor::net_Relcase	(CObject* O)
