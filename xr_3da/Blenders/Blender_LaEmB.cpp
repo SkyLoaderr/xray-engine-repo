@@ -48,95 +48,9 @@ void	CBlender_LaEmB::Compile(CBlender_Compile& C)
 	if (C.bEditor)	{
 		if (0==stricmp(oT2_const,"$null"))
 		{
-			// NO CONSTANT
-			
-			C.PassBegin		();
-			{
-				C.PassSET_ZB			(TRUE,TRUE);
-				C.PassSET_Blend_SET	();
-				C.PassSET_LightFog	(TRUE,TRUE);
-				
-				// Stage1 - Env texture
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
-					C.Stage_Texture		(oT2_Name,		C.L_textures		);
-					C.Stage_Matrix		(oT2_xform,		C.L_matrices,		0);
-					C.Stage_Constant		("$null",		C.L_constants		);
-				}
-				C.StageEnd			();
-				
-				// Stage2 - Base texture
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
-					C.Stage_Texture		(oT_Name,		C.L_textures		);
-					C.Stage_Matrix		(oT_xform,		C.L_matrices,		0);
-					C.Stage_Constant		("$null",		C.L_constants		);
-				}
-				C.StageEnd			();
-			}
-			C.PassEnd			();
+			compile_ED(C);
 		} else {
-			// WITH CONSTANT
-			
-			// Pass0 - (lmap+env*const)
-			C.PassBegin		();
-			{
-				C.PassSET_ZB			(TRUE,TRUE);
-				C.PassSET_Blend_SET	();
-				C.PassSET_LightFog	(TRUE,TRUE);
-				
-				// Stage1 - Env texture * constant
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-					C.Stage_Texture		(oT2_Name,		C.L_textures		);
-					C.Stage_Matrix		(oT2_xform,		C.L_matrices,		0);
-					C.Stage_Constant		(oT2_const,		C.L_constants		);
-				}
-				C.StageEnd			();
-				
-				// Stage2 - Diffuse color
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_DIFFUSE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-					C.StageSET_Alpha		(D3DTA_DIFFUSE,	  D3DTOP_ADD,			D3DTA_CURRENT);
-					C.Stage_Texture		("$null",		C.L_textures		);
-					C.Stage_Matrix		("$null",		C.L_matrices,		0);
-					C.Stage_Constant		("$null",		C.L_constants		);
-				}
-				C.StageEnd			();
-			}
-			C.PassEnd			();
-			
-			// Pass1 - *base
-			C.PassBegin		();
-			{
-				C.PassSET_ZB			(TRUE,FALSE);
-				C.PassSET_Blend_MUL	();
-				C.PassSET_LightFog	(FALSE,TRUE);
-				
-				// Stage2 - Diffuse color
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.Stage_Texture		(oT_Name,		C.L_textures		);
-					C.Stage_Matrix		(oT_xform,		C.L_matrices,		0);
-					C.Stage_Constant		("$null",		C.L_constants		);
-				}
-				C.StageEnd			();
-			}
-			C.PassEnd			();
+			compile_EDc(C);
 		}
 	} else {
 		switch (HW.Caps.pixel.dwStages)
@@ -154,13 +68,91 @@ void	CBlender_LaEmB::Compile(CBlender_Compile& C)
 	}
 }
 
+// EDITOR --- NO CONSTANT
+void CBlender_LaEmB::compile_ED	(CBlender_Compile& C)
+{
+	C.PassBegin		();
+	{
+		C.PassSET_ZB		(TRUE,TRUE);
+		C.PassSET_Blend_SET	();
+		C.PassSET_LightFog	(TRUE,TRUE);
+		
+		// Stage1 - Env texture
+		C.StageBegin		();
+		C.StageSET_Address	(D3DTADDRESS_WRAP);
+		C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+		C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_ADD,			D3DTA_DIFFUSE);
+		C.StageSET_TMC		(oT2_Name, oT2_xform, "$null", 0);
+		C.StageEnd			();
+		
+		// Stage2 - Base texture
+		C.StageBegin		();
+		C.StageSET_Address	(D3DTADDRESS_WRAP);
+		C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+		C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_CURRENT);
+		C.StageSET_TMC		(oT_Name, oT_xform, "$null", 0);
+		C.StageEnd			();
+	}
+	C.PassEnd			();
+}
+
+// EDITOR --- WITH CONSTANT
+void CBlender_LaEmB::compile_EDc	(CBlender_Compile& C)
+{
+	// Pass0 - (lmap+env*const)
+	C.PassBegin		();
+	{
+		C.PassSET_ZB		(TRUE,TRUE);
+		C.PassSET_Blend_SET	();
+		C.PassSET_LightFog	(TRUE,TRUE);
+		
+		// Stage1 - Env texture * constant
+		C.StageBegin		();
+		C.StageSET_Address	(D3DTADDRESS_WRAP);
+		C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+		C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+		C.StageSET_TMC		(oT2_Name, oT2_xform, oT2_const, 0);
+		C.StageEnd			();
+		
+		// Stage2 - Diffuse color
+		C.StageBegin		();
+		C.StageSET_Address	(D3DTADDRESS_WRAP);
+		C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+		C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_ADD,			D3DTA_CURRENT);
+		C.Stage_Texture		("$null");
+		C.Stage_Matrix		("$null",0);
+		C.Stage_Constant	("$null");
+		C.StageEnd			();
+	}
+	C.PassEnd			();
+	
+	// Pass1 - *base
+	C.PassBegin		();
+	{
+		C.PassSET_ZB		(TRUE,FALSE);
+		C.PassSET_Blend_MUL	();
+		C.PassSET_LightFog	(FALSE,TRUE);
+		
+		// Stage2 - Diffuse color
+		C.StageBegin		();
+		C.StageSET_Address	(D3DTADDRESS_WRAP);
+		C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+		C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+		C.Stage_Texture		(oT_Name		);
+		C.Stage_Matrix		(oT_xform,		0);
+		C.Stage_Constant	("$null"		);
+		C.StageEnd			();
+	}
+	C.PassEnd			();
+}
+
 //
 void CBlender_LaEmB::compile_2	(CBlender_Compile& C)
 {
 	C.PassBegin		();
 	{
 		C.PassSET_ZB		(TRUE,TRUE);
-		C.PassSET_Blend_SET();
+		C.PassSET_Blend_SET	();
 		C.PassSET_LightFog	(FALSE,TRUE);
 		
 		// Stage0 - Lightmap
