@@ -516,7 +516,7 @@ void CPHWorld::Create(){
 	ContactGroup = dJointGroupCreate(0);		
 	dWorldSetGravity(phWorld, 0,-2.f*9.81f, 0);//-2.f*9.81f
 	Mesh.Create(Space,phWorld);
-	Jeep.Create(0,phWorld);//(Space,phWorld)
+	Jeep.Create(Space,phWorld);//(Space,phWorld)
 	Gun.Create(Space);
 	dReal k_p=1000000.f;
 	dReal k_d=2000.f;
@@ -700,7 +700,7 @@ else
 	{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 250.f;
+		contacts[i].surface.mu = 5000.f;
 		contacts[i].surface.bounce = 0.0f;//0.1f;
 		contacts[i].surface.bounce_vel =0.001f;//0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
@@ -963,6 +963,9 @@ void CPHShell::Deactivate(){
 	(*i)->Deactivate();
 bActive=false;
 }
+static dVector3 mean_w={0.f,0.f,0.f,0.f};
+static dVector3 mean_v={0.f,0.f,0.f,0.f};
+static UINT dis_count=0;
 void CPHShell::Update(){
 	vector<CPHElement*>::iterator i;
 	for(i=elements.begin();i!=elements.end();i++)
@@ -984,6 +987,29 @@ void CPHShell::Update(){
 				if(mag>w_limit){
 					dReal f=mag/w_limit;
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
+				}
+				mean_v[0]+=pos[0];
+				mean_v[1]+=pos[1];
+				mean_v[2]+=pos[2];
+
+				mean_w[0]+=rot[0];
+				mean_w[1]+=rot[1];
+				mean_w[2]+=rot[2];
+				dis_count++;
+				if(dis_count==50){	
+	
+					dReal mag_v=sqrtf(mean_v[0]*mean_v[0]+mean_v[1]*mean_v[1]+mean_v[2]*mean_v[2])/50.f;
+					dReal mag_w=sqrtf(mean_w[0]*mean_w[0]+mean_w[1]*mean_w[1]+mean_w[2]*mean_w[2])/50.f;
+					if(mag_v<0.002 && mag_w<M_PI/180.f/10.f)
+						dBodyDisable(m_body);
+
+					mean_w[0]=0.f;
+					mean_w[1]=0.f;
+					mean_w[2]=0.f;
+					mean_v[0]=0.f;
+					mean_v[1]=0.f;
+					mean_v[2]=0.f;
+					dis_count=0;
 				}
 				//dBodyAddTorque(m_body, u * rot[0]*mag, u * rot[1]*mag, u * rot[2]*mag);
 			/////////////////////////////////////////////////////////////////
