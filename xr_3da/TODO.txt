@@ -1,7 +1,7 @@
 new:
 *	O(1) AI node search
 * 	SW - VIPM (прогр. меши)
-* 	LUA threads
+* 	LUA threads - example
 *	Self-reference in _vector2<T>, _vector3<T>, _vector4<T>, _matrix<T>, etc.
 
 *	Animation compression 				- 32bit quats / 48bit pos (???)		- или T на ключ, или T на скелет/motion
