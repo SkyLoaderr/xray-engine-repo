@@ -490,11 +490,20 @@ void  CLuaGameObject::set_path_evaluator		()
 		stalker->set_path_evaluator	(0);
 }
 
-void  CLuaGameObject::set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator)
+void CLuaGameObject::set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 	if (!stalker)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
 	else
 		stalker->set_path_evaluator	(path_evaluator);
+}
+
+void CLuaGameObject::set_patrol_path		(LPCSTR path_name, const CMovementManager::EPatrolStartType patrol_start_type, const CMovementManager::EPatrolRouteType patrol_route_type, bool random)
+{
+	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
+	if (!stalker)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->set_path		(path_name,patrol_start_type,patrol_route_type,random);
 }

@@ -100,3 +100,18 @@ IC	void CPatrolPathManager::make_inactual	()
 	m_actuality				= false;
 	m_completed				= false;
 }
+
+IC	void CPatrolPathManager::set_path		(ref_str path_name)
+{
+	VERIFY2					(Level().m_PatrolPaths.find(*path_name) != Level().m_PatrolPaths.end(),*path_name);
+	set_path				(&(Level().m_PatrolPaths.find(*path_name)->second), path_name);
+}
+
+IC	void CPatrolPathManager::set_path		(ref_str path_name, const EPatrolStartType patrol_start_type, const EPatrolRouteType patrol_route_type, bool random)
+{
+	VERIFY2					(Level().m_PatrolPaths.find(*path_name) != Level().m_PatrolPaths.end(),*path_name);
+	set_path				(&(Level().m_PatrolPaths.find(*path_name)->second), path_name);
+	set_start_type			(patrol_start_type);
+	set_route_type			(patrol_route_type);
+	set_random				(random);
+}

@@ -569,4 +569,5 @@ public:
 			void				set_node_evaluator		(CAbstractVertexEvaluator *node_evaluator);
 			void				set_path_evaluator		();
 			void				set_path_evaluator		(CAbstractVertexEvaluator *path_evaluator);
+			void				set_patrol_path			(LPCSTR path_name, const CMovementManager::EPatrolStartType patrol_start_type, const CMovementManager::EPatrolRouteType patrol_route_type, bool random);
 };
