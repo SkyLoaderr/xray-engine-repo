@@ -25,7 +25,8 @@ struct tgaHeader{
 #define IMG_24B 0
 #define IMG_32B 1
 
-class ENGINE_API TGAdesc{
+class ENGINE_API TGAdesc
+{
 public:
 	int format;
 	int scanlenght;
@@ -35,7 +36,6 @@ public:
 	TGAdesc()	{ data = 0; };
 	~TGAdesc()	{};
 
-	VOID maketga( char *fname );
 	VOID maketga( IWriter &fs );
 };
 

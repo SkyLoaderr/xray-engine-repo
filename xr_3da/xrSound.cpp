@@ -10,13 +10,6 @@
 CSoundManager							Sound_Implementation;
 ENGINE_API	CSound_manager_interface*	Sound = &Sound_Implementation;
 
-// sound props
-u32		psSoundFreq				= 0;
-u32		psSoundModel			= 0;
-float	psSoundVMaster			= 1.0f;
-float	psSoundVEffects			= 1.0f;
-float	psSoundVMusic			= 0.7f;
-
 //-----------------------------------------------------------------------------
 void CSoundManager::SetVMusic	( )
 {

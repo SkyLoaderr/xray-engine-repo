@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include "..\xr_trims.h"
-#include "..\xr_tokens.h"
 
 #include "game_sv_single.h"
 #include "game_sv_deathmatch.h"

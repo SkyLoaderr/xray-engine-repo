@@ -2,7 +2,6 @@
 #include "UICHTMenu.h"
 #include "HUDManager.h"
 #include "UICustomMenu.h"
-#include "..\\xr_trims.h"
 
 #define BUY_MENU_OFFS_ROW	200
 #define BUY_MENU_OFFS_COL	0

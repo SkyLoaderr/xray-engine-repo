@@ -77,9 +77,11 @@ void CRender::Screenshot		(BOOL bSquare)
 
 	string64		buf,buf1;
 	strconcat		(buf,Path.SShot,"ss_",Core.UserName,"_",itoa(timeGetTime(),buf1,10));
+	IWriter*		fs  = FS.w_open(buf);
 
 	TGAdesc			p;
 	p.format		= IMG_24B;
+
 	if (bSquare){
 		u32* data	= (u32*)xr_malloc(Device.dwHeight*Device.dwHeight*4);
 		imf_Process	(data,Device.dwHeight,Device.dwHeight,(u32*)D.pBits,Device.dwWidth,Device.dwHeight,imf_lanczos3);
@@ -87,7 +89,7 @@ void CRender::Screenshot		(BOOL bSquare)
 		p.width		= Device.dwHeight;
 		p.height	= Device.dwHeight;
 		p.data		= data;
-		p.maketga	(buf);
+		p.maketga	(*fs);
 		xr_free		(data);
 	}else{
 		// 
@@ -95,8 +97,10 @@ void CRender::Screenshot		(BOOL bSquare)
 		p.width			= Device.dwWidth;
 		p.height		= Device.dwHeight;
 		p.data			= D.pBits;
-		p.maketga		(buf);
+		p.maketga	(*fs);
 	}
+
+	FS.w_close		(fs);
 	
 	R_CHK(pFB->UnlockRect());
 	pFB->Release	();

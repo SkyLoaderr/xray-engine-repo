@@ -10,6 +10,11 @@ float	psSoundOcclusionScale	= 0.85f;
 float	psSoundCull				= 0.07f;
 float	psSoundRolloff			= 0.3f;
 float	psSoundDoppler			= 0.3f;
+u32		psSoundFreq				= 0;
+u32		psSoundModel			= 0;
+float	psSoundVMaster			= 1.0f;
+float	psSoundVEffects			= 1.0f;
+float	psSoundVMusic			= 0.7f;
 
 CSoundRender_Core::CSoundRender_Core	()
 {
