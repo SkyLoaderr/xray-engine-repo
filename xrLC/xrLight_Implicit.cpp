@@ -244,7 +244,7 @@ void CBuild::ImplicitLighting()
 			u32	w					= TEX.dwWidth;
 			u32	h					= TEX.dwHeight;
 			u32	pitch				= w*4;
-			STextureParams fmt;
+			STextureParams			fmt;
 			fmt.fmt					= STextureParams::tfDXT5;
 			fmt.flags.set			(STextureParams::flDitherColor,		FALSE);
 			fmt.flags.set			(STextureParams::flGenerateMipMaps,	FALSE);

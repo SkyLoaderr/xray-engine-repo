@@ -16,7 +16,7 @@ void CBuild::Flex2OGF()
 	g_tree.reserve	(4096);
 	for (splitIt it=g_XSplit.begin(); it!=g_XSplit.end(); it++)
 	{
-		R_ASSERT( ! (*it)->empty() );
+		R_ASSERT			( ! (*it)->empty() );
 		
 		u32 MODEL_ID		= u32(it-g_XSplit.begin());
 		
@@ -40,16 +40,28 @@ void CBuild::Flex2OGF()
 			TRY(pOGF->textures.push_back(T));
 			
 			try {
-				for (u32 lmit=0; lmit<F->lmap_layers.size(); lmit++)
+				if (hasImplicitLighting(F))
 				{
-					// If lightmaps persist
-					CLightmap* LM	= F->lmap_layers[lmit];
-					R_ASSERT		(LM);
-					strcpy			(T.name, LM->lm_texture.name);
-					T.pSurface		= &(LM->lm_texture);
-					R_ASSERT		(T.pSurface);
+					// specific lmap
+					string512	tn;
+					strconcat		(tn,T.name,"_lm.dds");
+					strcpy			(T.name, tn);
+					T.pSurface		= T.pSurface;	// Leave surface intact
 					R_ASSERT		(pOGF);
 					pOGF->textures.push_back(T);
+				} else {
+					// normal	lmap
+					for (u32 lmit=0; lmit<F->lmap_layers.size(); lmit++)
+					{
+						// If lightmaps persist
+						CLightmap* LM	= F->lmap_layers[lmit];
+						R_ASSERT		(LM);
+						strcpy			(T.name, LM->lm_texture.name);
+						T.pSurface		= &(LM->lm_texture);
+						R_ASSERT		(T.pSurface);
+						R_ASSERT		(pOGF);
+						pOGF->textures.push_back(T);
+					}
 				}
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }
 			
