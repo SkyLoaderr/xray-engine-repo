@@ -368,7 +368,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
 	PHelper.CreateFloat			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_fProbability,	0,100);
-	PHelper.CreateList			(items, PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  sizeof(m_caGroupControl), pSettings->r_string("GroupControlSection"));
+	PHelper.CreateSceneItem		(items, PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 }
 #endif
 
@@ -789,7 +789,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         
 		if (!bFound)
 			startup_animation[0]= 0;
-        PropValue				*tNetPacket = PHelper.CreateList	(values,	PHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, &vec);
+        PropValue				*tNetPacket = PHelper.CreateList	(values,	PHelper.PrepareKey(pref,s_name,"Startup animation"), startup_animation, sizeof(startup_animation), &vec);
         tNetPacket->OnChangeEvent			= OnChangeAnim;
 		// motions
         vec.clear				();
@@ -804,7 +804,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
         
 		if (!bFound)
 			spot_bone[0]		= 0;
-		PHelper.CreateList		(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,			&vec);
+		PHelper.CreateList		(values, PHelper.PrepareKey(pref,s_name,"Guide bone"),		spot_bone,	sizeof(spot_bone), &vec);
     }
 }
 #endif

@@ -35,7 +35,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="_XRCDBB;XRCDB_EXPORTS"/>
+    <USERDEFINES value="_EDITOR;_XRCDBB;XRCDB_EXPORTS"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="xrCDBB.bpf"/>
     <INCLUDEPATH value="R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\AlexMX;R:\Borland\Components6\ElPack\Code\Source;R:\VS7.NET\Vc7\atlmfc\include;P:\xrCore"/>
@@ -47,10 +47,10 @@
     <IDLCFLAGS value="-IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source 
-      -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -src_suffix cpp -D_XRCDBB 
-      -DXRCDB_EXPORTS -boa"/>
-    <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl60.csm -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 -6 
-      -b- -k -vi -tWD -tWM -c"/>
+      -IR:\VS7.NET\Vc7\atlmfc\include -IP:\xrCore -src_suffix cpp -D_EDITOR 
+      -D_XRCDBB -DXRCDB_EXPORTS -boa"/>
+    <CFLAG1 value="-WD -O2 -H=$(BCB)\lib\vcl60.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -ps -a4 
+      -6 -b- -k -vi -tWD -tWM -c"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zn"/>
@@ -174,9 +174,11 @@ Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=2
-Item0=_XRCDBB;XRCDB_EXPORTS
-Item1=_XRCDBB;XRCDB_EXPORTS;_DEBUG
+Count=4
+Item0=_EDITOR;_XRCDBB;XRCDB_EXPORTS
+Item1=_EDITOR;_XRCDBB;XRCDB_EXPORTS;_DEBUG
+Item2=_XRCDBB;XRCDB_EXPORTS;_DEBUG
+Item3=_XRCDBB;XRCDB_EXPORTS
 
 [HistoryLists\hlIntOutputDir]
 Count=3

@@ -98,7 +98,6 @@ private:	// User declarations
     void __fastcall FillEntity		();
     void __fastcall FillGameObject	();
     void __fastcall FillGameMaterial();
-    void __fastcall FillSceneObject	();
 
     void __fastcall AppendItem		(LPCSTR name);
 public:		// User declarations
@@ -116,12 +115,11 @@ public:		// User declarations
         smLAnim,
         smGameObject,
         smGameMaterial,
-        smSceneObject,
         smMaxMode
     };
 protected:
-    static ESelectMode Mode;
-    static AnsiString m_LastSelection[smMaxMode];
+    ESelectMode Mode;
+    static AnsiString m_LastSelection[smMaxMode]; 
 public:		// User declarations
     __fastcall 					TfrmChoseItem	(TComponent* Owner);
     static int	 	__fastcall 	SelectItem		(ESelectMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, bool bIgnoreExt=false, AStringVec* items=0);

@@ -87,6 +87,8 @@ public:
 
     bool			AttachObject	(CCustomObject* obj);
     void			DetachObject	();
+    
+    virtual bool	OnChooseQuery	(LPCSTR specific);
 };
 
 #endif /*_INCDEF_Glow_H_*/

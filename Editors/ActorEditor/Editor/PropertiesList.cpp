@@ -19,6 +19,10 @@
 #include "NumericVector.h"
 #include "TextForm.h"
 #include "ui_main.h"
+
+#ifdef _LEVEL_EDITOR
+	#include "Scene.h"
+#endif
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "multi_edit"
@@ -467,6 +471,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_LIBOBJECT:
             case PROP_GAMEOBJECT:
             case PROP_ENTITY:
+            case PROP_SCENE_ITEM:
 			case PROP_GAMEMTL:
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
@@ -682,6 +687,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_LIBOBJECT:
                 case PROP_GAMEOBJECT:
                 case PROP_ENTITY:
+                case PROP_SCENE_ITEM:
                 case PROP_TEXTURE:
                 case PROP_ESHADER:
                 case PROP_CSHADER:		CustomTextClick(item);      break;
@@ -959,7 +965,9 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 	AnsiString edit_val		= V->GetValue();
 	prop->OnBeforeEdit		(&edit_val);
     LPCSTR new_val			= 0;
+    LPVOID filter			= 0;
     TfrmChoseItem::ESelectMode mode;
+    AStringVec items;
     bool bIgnoreExt 		= false;
     switch (prop->type){
     case PROP_ESHADER:		mode = TfrmChoseItem::smShader;							break;
@@ -974,9 +982,18 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
     case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
     case PROP_LIBPG:		mode = TfrmChoseItem::smPG;			                    break;
     case PROP_GAMEMTL:		mode = TfrmChoseItem::smGameMaterial; 					break;
+    case PROP_SCENE_ITEM:{ 
+#ifdef _LEVEL_EDITOR
+		SceneItemValue* SI	= dynamic_cast<SceneItemValue*>(V); R_ASSERT(SI);
+        ObjectList& lst 	= Scene.ListObj(SI->clsID);
+        for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
+        	if ((*_F)->OnChooseQuery(SI->specific.c_str())) items.push_back((*_F)->Name);
+#endif
+     	mode = TfrmChoseItem::smCustom;
+    }break;
     default: THROW2("Unknown prop");
     }
-    if (TfrmChoseItem::SelectItem(mode,new_val,prop->subitem,edit_val.c_str(),bIgnoreExt)){
+    if (TfrmChoseItem::SelectItem(mode,new_val,prop->subitem,edit_val.c_str(),bIgnoreExt,&items)){
         edit_val			= new_val;
         prop->OnAfterEdit	(&edit_val);
         if (prop->ApplyValue(edit_val.c_str())){

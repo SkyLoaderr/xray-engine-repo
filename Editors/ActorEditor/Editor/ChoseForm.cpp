@@ -33,15 +33,15 @@
 #pragma link "ElXPThemedControl"
 #pragma resource "*.dfm"
 TfrmChoseItem *TfrmChoseItem::form=0;
-TfrmChoseItem::ESelectMode TfrmChoseItem::Mode;
 AnsiString TfrmChoseItem::select_item="";
 AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
 //---------------------------------------------------------------------------
 int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, bool bIgnoreExt, AStringVec* items)
 {
 	VERIFY(!form);
+	ESelectMode Mode				= mode;
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
-	form->Mode						= mode;
+	form->Mode						= Mode;
     form->bMultiSel 				= sel_cnt>1;
     form->iMultiSelLimit 			= sel_cnt;
     form->bIgnoreExt 				= bIgnoreExt;
@@ -69,7 +69,6 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
     case smLAnim: 		form->FillLAnim();		break;
     case smGameObject: 	form->FillGameObject();	break;
     case smGameMaterial:form->FillGameMaterial();break;
-    case smSceneObject:	form->FillSceneObject();break;
     default:
     	THROW2("ChooseForm: Unknown Item Type");
     }
@@ -232,24 +231,6 @@ void __fastcall TfrmChoseItem::FillGameMaterial()
 	for ( ;_F!=_E;_F++)				AppendItem((*_F)->name);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmChoseItem::FillSceneObject()
-{
-#ifdef _LEVEL_EDITOR
-    form->Caption					= "Select Scene Object";
-    ObjectPairIt it					= Scene.FirstClass();
-    ObjectPairIt _E					= Scene.LastClass();
-    for(; it!=_E; it++){
-    	if (IsGroupClassID(it->first)){
-            LPCSTR pref					= GetClassNameByClassID(it->first);
-            ObjectList& lst = it->second;
-            for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
-                AppendItem				(PHelper.PrepareKey(pref,(*_F)->Name));
-        }
-	}
-#endif
-}
-//---------------------------------------------------------------------------
-
 //---------------------------------------------------------------------------
 // implementation
 //---------------------------------------------------------------------------

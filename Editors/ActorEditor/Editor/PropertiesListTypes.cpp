@@ -58,12 +58,3 @@ LPCSTR TokenValue4::GetText(TOnDrawTextEvent OnDrawText)
 }
 //------------------------------------------------------------------------------
 
-LPCSTR	ListValue::GetText(TOnDrawTextEvent OnDrawText)
-{
-    prop_draw_text=GetValue();
-    if (OnDrawText)OnDrawText(this, &prop_draw_text);
-    return prop_draw_text.c_str();
-}
-//------------------------------------------------------------------------------
-
-

@@ -54,7 +54,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR initial, u32 flags, LPCSTR 
 			// insert file entry
 			if (flags&FS_ClampExt)	fn = ChangeFileExt(fn,"");
 			u32 fl = (entry.vfs?FS_QueryItem::flVFS:0);
-			dest.insert(mk_pair(fn,FS_QueryItem(entry.size,entry.modif,fl)));
+			dest.insert(mk_pair(fn,FS_QueryItem(entry.size_real,entry.modif,fl)));
 		} else {
 			// folder
 			if ((flags&FS_ListFolders) == 0)continue;
@@ -62,7 +62,7 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR initial, u32 flags, LPCSTR 
 
 			if ((flags&FS_RootOnly)&&(strstr(entry_begin,"\\")!=end_symbol))	continue;	// folder in folder
 			u32 fl = FS_QueryItem::flSubDir|(entry.vfs?FS_QueryItem::flVFS:0);
-			dest.insert(mk_pair(entry_begin,FS_QueryItem(entry.size,entry.modif,fl)));
+			dest.insert(mk_pair(entry_begin,FS_QueryItem(entry.size_real,entry.modif,fl)));
 		}
 	}
 	for (LPSTRIt it=exts.begin(); it!=exts.end(); it++)

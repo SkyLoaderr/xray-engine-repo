@@ -148,10 +148,10 @@ public:
     {   return			(TokenValue3*)	AppendValue		(items,key,xr_new<TokenValue3>(val,cnt,lst),PROP_TOKEN3);}
 	IC TokenValue4*   	CreateToken4	(PropItemVec& items, LPCSTR key, u32* val, const TokenValue4::ItemVec* lst, int p_size)
     {   return			(TokenValue4*)	AppendValue		(items,key,xr_new<TokenValue4>(val,lst,p_size),PROP_TOKEN4);}
-	IC ListValue* 	 	CreateList		(PropItemVec& items, LPCSTR key, LPSTR val, AStringVec* lst)
-    {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lst),PROP_LIST);       }
-	IC ListValue* 	 	CreateListA		(PropItemVec& items, LPCSTR key, LPSTR val, u32 cnt, LPCSTR* lst)
-    {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,cnt,lst),PROP_LIST);	}
+	IC ListValue* 	 	CreateList		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, AStringVec* lst)
+    {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lim,lst),PROP_LIST);       }
+	IC ListValue* 	 	CreateListA		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, u32 cnt, LPCSTR* lst)
+    {   return			(ListValue*)	AppendValue		(items,key,xr_new<ListValue>(val,lim,cnt,lst),PROP_LIST);	}
     IC U32Value*  		CreateColor		(PropItemVec& items, LPCSTR key, u32* val)
     {   return			(U32Value*)		AppendValue		(items,key,xr_new<U32Value>(val,0x00000000,0xffffffff,1,0),PROP_COLOR);}
     IC ColorValue*		CreateFColor	(PropItemVec& items, LPCSTR key, Fcolor* val)
@@ -231,6 +231,8 @@ public:
         V->Owner()->tag					= tag;
         return V;					
     }
+    IC SceneItemValue*	CreateSceneItem	(PropItemVec& items, LPCSTR key, LPSTR val, int lim, EObjClass cls, LPCSTR type)
+    {	return			(SceneItemValue*)AppendValue(items,key,xr_new<SceneItemValue>(val,lim,cls,type),PROP_SCENE_ITEM);    }
 	void 				DrawThumbnail	(TCanvas *Surface, TRect &R, LPCSTR fname);
 };
 //---------------------------------------------------------------------------

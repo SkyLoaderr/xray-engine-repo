@@ -515,3 +515,8 @@ Shader* CSpawnPoint::GetIcon(LPCSTR name)
 }
 //----------------------------------------------------
 
+bool CSpawnPoint::OnChooseQuery(LPCSTR specific)
+{
+	return (m_SpawnData.Valid()&&(0==strcmp(m_SpawnData.m_Data->s_name,specific)));
+}
+

@@ -112,6 +112,8 @@ public:
     void            OnAttach		(CCustomObject* owner);
     CCustomObject* 	GetOwner		(){return m_pOwnerObject;}
 
+    virtual bool	OnChooseQuery	(LPCSTR specific){return true;}
+    
     // change position/orientation methods
     virtual void 	NumSetPosition	(const Fvector& pos)	{ SetPosition(pos); }
 	virtual void 	NumSetRotation	(const Fvector& rot)	{ SetRotation(rot);	}

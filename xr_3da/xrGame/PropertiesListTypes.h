@@ -50,7 +50,8 @@ enum EPropType{
     PROP_GAMEMTL,
 	PROP_A_GAMEMTL,
     PROP_ENTITY,
-	PROP_WAVE
+	PROP_WAVE,
+    PROP_SCENE_ITEM,
 };
 // refs
 struct 	xr_token;        
@@ -511,32 +512,37 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class ListValue: public PropValue{
-	AnsiString			init_value;
-	LPSTR				value;
+class ListValue: public TextValue{
 public:                                   
 	AStringVec 			items;
-						ListValue		(LPSTR val, AStringVec* _items):value(val),init_value(*val),items(*_items){};
-						ListValue		(LPSTR val, u32 cnt, LPCSTR* _items):value(val),init_value(*val){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
-	virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
+public:                                   
+						ListValue		(LPSTR val, int lim, AStringVec* _items):TextValue(val,lim),items(*_items){};
+						ListValue		(LPSTR val, int lim, u32 cnt, LPCSTR* _items):TextValue(val,lim){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual bool		Equal			(PropValue* prop)
     {
     	AStringIt s_it	= items.begin();
     	AStringIt d_it	= ((ListValue*)prop)->items.begin();
     	for (; s_it!=items.end(); s_it++,d_it++)
         	if ((*s_it)!=(*d_it)) {m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); return false;}
-    	return (0==strcmp(value,((ListValue*)prop)->value));
+        return TextValue::Equal(prop);
     }
-    virtual bool		ApplyValue		(LPVOID val)
+};
+//------------------------------------------------------------------------------
+
+class SceneItemValue: public TextValue{
+public:                  	
+	EObjClass			clsID;
+	AnsiString			specific;
+public:
+						SceneItemValue	(LPSTR val, int lim, EObjClass class_id, LPCSTR _type):TextValue(val,lim),clsID(class_id){if(_type) specific=_type;};
+	virtual bool		Equal			(PropValue* prop)
     {
-        if (0!=strcmp((LPCSTR)val,value)){
-            strcpy(value,(LPCSTR)val);
-            return		true;
+    	if ((clsID!=((SceneItemValue*)prop)->clsID)||(specific!=((SceneItemValue*)prop)->specific)){
+        	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
+            return false;
         }
-    	return 			false;
+        return TextValue::Equal(prop);
     }
-    LPCSTR				GetValue		(){return value;}
-    virtual void		ResetValue		(){strcpy(value,init_value.c_str());}
 };
 //------------------------------------------------------------------------------
 
