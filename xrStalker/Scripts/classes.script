@@ -29,10 +29,10 @@ function AnimationSet:get_animation ()
 	if self.flags == 0 then
 	   self.current_animation = self.current_animation  + 1
 	   if self.current_animation > size then self.current_animation = 1 end
-   	   return self.anims_list[self.current_animation], self.anims_flags[self.current_animation]
+   	   return self.anims_list[self.current_animation]
 	   end
 	self.current_animation = math.random (1, size)
- 	return self.anims_list[self.current_animation], self.anims_flags[self.current_animation]
+ 	return self.anims_list[self.current_animation]
 end
 
 ----------------------------------------------------------------------------------------------------
