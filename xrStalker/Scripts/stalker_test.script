@@ -70,7 +70,14 @@ function main ()
     
 	while stalker:action() do
 --]
-	while true do
+
+    action				(
+		stalker,
+		look			(look.fire_point,actor),
+		cond			(cond.time_end,100000)
+    )
+    
+	while stalker:action() do
 		wait			()
     end
     
