@@ -102,6 +102,7 @@ public:
 	virtual CVisual*				getVisual				(int id);
 	virtual DWORD					getFVF					(int id);
 	virtual IDirect3DVertexBuffer8*	getVB					(int id);
+	virtual IDirect3DIndexBuffer8*	getIB					(int id);
 	virtual CSector*				detectSector			(Fvector& P);
 	virtual CRender_target*			getTarget				();
 	

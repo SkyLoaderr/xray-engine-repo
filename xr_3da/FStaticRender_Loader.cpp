@@ -103,7 +103,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 {
 	Device.Shader.Evict		();
 	DWORD	dwUsage			= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
-	DWORD	dwPool			= HW.Caps.vertex.bSoftware?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
+	D3DPOOL	dwPool			= HW.Caps.vertex.bSoftware?D3DPOOL_SYSTEMMEM:D3DPOOL_DEFAULT;
 
 	// Vertex buffers
 	{
@@ -127,7 +127,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 			PSGP.memCopy		(pData,fs().Pointer(),vCount*vSize);
 			VB[i]->Unlock		();
 
-			fs().Advance		(vSize*vCount);
+			fs().Advance		(vCount*vSize);
 		}
 	}
 
@@ -149,7 +149,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 			PSGP.memCopy		(pData,fs().Pointer(),iCount*2);
 			IB[i]->Unlock		();
 
-			fs().Advance		(iSize*2);
+			fs().Advance		(iCount*2);
 		}
 	}
 }
