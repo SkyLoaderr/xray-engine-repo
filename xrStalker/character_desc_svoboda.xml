@@ -83,7 +83,7 @@
 		<rank>90</rank>
 		<reputation>50</reputation>
 
-		<visual>actors\svoboda\stalker_sv_naychniy</visual>
+		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
 			
 		<start_dialog>hello_dialog</start_dialog>
 		<actor_dialog>general_pda_talk</actor_dialog>
