@@ -20,6 +20,7 @@ private:
 	CLAItem*		lanim;
 	
 	float			fHealth;
+	float			fBrightness;
 
 	void			AddElement		(CPhysicsElement* root_e, int id);
 	void			CreateBody		();
