@@ -374,7 +374,7 @@ void CWeapon::Light_Render	(Fvector& P)
 	light_render.SetColor		(light_build.color.r*light_scale,light_build.color.g*light_scale,light_build.color.b*light_scale);
 	light_render.SetRange		(light_build.sphere.R*light_scale);
 	
-	::Render->Lights_Dynamic.Add(&light_render);
+	::Render->L_add				(&light_render);
 }
 
 void CWeapon::Render(BOOL bHUDView)

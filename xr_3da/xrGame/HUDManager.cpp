@@ -101,7 +101,7 @@ void CHUDManager::Render_Affected()
 		
 		// Render with ZB hack :)
 		::Render->rmNear		();
-		::Render->flush_Models	();
+		::Render->flush			();
 		::Render->rmNormal		();
 		
 		Device.mProject			= Pold;
