@@ -28,11 +28,6 @@ void CSoundPlayer::Init				()
 
 void CSoundPlayer::reinit			()
 {
-	set_sound_mask					(u32(-1));
-	set_sound_mask					(0);
-	VERIFY							(m_playing_sounds.empty());
-	while (!m_sounds.empty())
-		remove						(m_sounds.begin()->first);
 }
 
 void CSoundPlayer::reload			(LPCSTR section)
@@ -40,14 +35,14 @@ void CSoundPlayer::reload			(LPCSTR section)
 	set_sound_mask					(u32(-1));
 	set_sound_mask					(0);
 	VERIFY							(m_playing_sounds.empty());
-	while (!m_sounds.empty())
-		remove						(m_sounds.begin()->first);
 }
 
 void CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name)
 {
 	xr_map<u32,CSoundCollection>::iterator	I = m_sounds.find(internal_type);
-	VERIFY							(m_sounds.end() == I);
+	if (m_sounds.end() != I)
+		return;
+
 	CSoundCollection				sound_collection;
 	sound_collection.m_priority		= priority;
 	sound_collection.m_synchro_mask	= mask;
