@@ -43,7 +43,6 @@ void CDamageManager::reload				(LPCSTR section)
 				CObject					*object = dynamic_cast<CObject*>(this);
 				VERIFY					(object);
 				int						bone = PKinematics(object->Visual())->LL_BoneID(i->first); 
-				Msg						("DAMAGE [%s][%s][%d][%f][%f]",*object->cNameSect(),*object->cNameVisual(),bone,(float)atof(_GetItem(*(*i).second,0,buffer)),(float)atof(_GetItem(*(*i).second,1,buffer)));
 				R_ASSERT2				(BI_NONE != bone, *(*i).first);
 				CBoneInstance			&bone_instance = PKinematics(object->Visual())->LL_GetBoneInstance(u16(bone));
 				bone_instance.set_param	(0,(float)atof(_GetItem(*(*i).second,0,buffer)));
