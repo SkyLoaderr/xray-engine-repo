@@ -10,22 +10,18 @@
 
 IC	CTeamHierarchyHolder::CTeamHierarchyHolder									(CSeniorityHierarchyHolder *seniority_manager)
 {
-	VERIFY						(seniority_manager);
-	m_seniority_manager			= seniority_manager;
-	m_squads.resize				(max_squad_count);
-	SQUAD_REGISTRY::iterator	I = m_squads.begin();
-	SQUAD_REGISTRY::iterator	E = m_squads.end();
-	for ( ; I != E; ++I)
-		*I						= 0;
+	VERIFY								(seniority_manager);
+	m_seniority_manager					= seniority_manager;
+	SeniorityHierarchy::assign_svector	(m_squads,max_squad_count,0);
 }
 
 IC	CSeniorityHierarchyHolder &CTeamHierarchyHolder::team						() const
 {
-	VERIFY						(m_seniority_manager);
-	return						(*m_seniority_manager);
+	VERIFY								(m_seniority_manager);
+	return								(*m_seniority_manager);
 }
 
 IC	const CTeamHierarchyHolder::SQUAD_REGISTRY &CTeamHierarchyHolder::squads	() const
 {
-	return						(m_squads);
+	return								(m_squads);
 }

@@ -10,7 +10,6 @@
 #include "seniority_hierarchy_holder.h"
 #include "team_hierarchy_holder.h"
 #include "object_broker.h"
-#include "seniority_hierarchy_space.h"
 
 CSeniorityHierarchyHolder::~CSeniorityHierarchyHolder	()
 {

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "seniority_hierarchy_space.h"
+
 class CSquadHierarchyHolder;
 class CSeniorityHierarchyHolder;
 

@@ -32,7 +32,6 @@ CAgentManager::CAgentManager		()
 
 CAgentManager::~CAgentManager		()
 {
-#pragma todo("Dima to Dima : Find out why?!")
 	VERIFY						(m_members.empty());
 	shedule_unregister			();
 }

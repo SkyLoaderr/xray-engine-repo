@@ -15,10 +15,6 @@
 
 CSquadHierarchyHolder::~CSquadHierarchyHolder		()
 {
-	VERIFY					(!m_member_count);
-	VERIFY					(!m_visible_objects);
-	VERIFY					(!m_sound_objects);
-	VERIFY					(!m_hit_objects);
 	delete_data				(m_groups);
 }
 
@@ -28,31 +24,6 @@ CGroupHierarchyHolder &CSquadHierarchyHolder::group	(u32 group_id) const
 	if (!m_groups[group_id])
 		m_groups[group_id]	= xr_new<CGroupHierarchyHolder>(const_cast<CSquadHierarchyHolder*>(this));
 	return					(*m_groups[group_id]);
-}
-
-void CSquadHierarchyHolder::dec_member_count		()
-{
-	VERIFY					(m_member_count);
-	--m_member_count;
-	if (m_member_count)
-		return;
-
-	xr_delete				(m_visible_objects);
-	xr_delete				(m_sound_objects);
-	xr_delete				(m_hit_objects);
-}
-
-void CSquadHierarchyHolder::inc_member_count		()
-{
-	VERIFY					(m_member_count != u32(-1));
-
-	if (!m_member_count) {
-		m_visible_objects	= xr_new<VISIBLE_OBJECTS>();
-		m_sound_objects		= xr_new<SOUND_OBJECTS>();
-		m_hit_objects		= xr_new<HIT_OBJECTS>();
-	}
-
-	++m_member_count;
 }
 
 void CSquadHierarchyHolder::update_leader			()
