@@ -375,8 +375,14 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Accumulator,&d_Accumulator_S);
 
 	// Create shaders
-	hlsl_VertexShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dvs_Scene2fat);
-	hlsl_PixelShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dps_Scene2fat);
+	hlsl_VertexShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dvs_Scene2fat,&dvs_Scene2fat_C);
+	hlsl_PixelShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dps_Scene2fat,&dps_Scene2fat_C);
+
+	// D3DXHANDLE			h_m_model2view	= dvs_Scene2fat_C->GetConstant		(NULL,0);
+	D3DXHANDLE			h_m_model2view	= dvs_Scene2fat_C->GetConstantByName(NULL,"$m_model2view");
+	D3DXCONSTANT_DESC	d_m_model2view;
+	UINT				count			= 1;
+	dvs_Scene2fat_C->GetConstantDesc(h_m_model2view,&d_m_model2view,&count);
 
 	/*
 	// Create shadow map texture and retrieve surface

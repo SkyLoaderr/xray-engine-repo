@@ -219,6 +219,12 @@
 		<File
 			RelativePath=".\Util.h">
 		</File>
+		<File
+			RelativePath="VS_Constants.h">
+		</File>
+		<File
+			RelativePath="r_constants.h">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
