@@ -25,6 +25,9 @@ public:
 
 	void				Initialize	();
 	void				Destroy		();
+	
+	DWORD				mem_Usage	();
+	void				mem_Compact ();
 
 	CEngine();
 	~CEngine();

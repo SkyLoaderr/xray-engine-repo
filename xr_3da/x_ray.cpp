@@ -193,6 +193,8 @@ void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
 		R_ASSERT	(pCreator->net_Server(Name));
 		_FREE		(Name);
+		Engine.mem_Compact	();
+		Msg			("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
 	} else if (E==eStartClient) {
 		Console.Hide();
 		LPSTR		Name = LPSTR(P1);
@@ -200,12 +202,16 @@ void CApplication::OnEvent(EVENT E, DWORD P1, DWORD P2)
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
 		R_ASSERT	(pCreator->net_Client(Name));
 		_FREE		(Name);
+		Engine.mem_Compact	();
+		Msg			("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
 	} else if (E==eDisconnect) {
 		if (pCreator) {
-			Console.Hide	();
+			Console.Hide			();
 			pCreator->net_Disconnect();
-			DEL_INSTANCE	(pCreator);
-			Console.Show	();
+			DEL_INSTANCE			(pCreator);
+			Console.Show			();
+			Engine.mem_Compact		();
+			Msg						("* MEMORY USAGE: %d K",Engine.mem_Usage()/1024);
 		}
 	}
 }
