@@ -361,7 +361,7 @@ CParticleEffect::~CParticleEffect()
 
 void CParticleEffect::Play()
 {
-	m_RT_Flags.zero		();
+	m_RT_Flags.set		(flRT_DefferedStop,FALSE);
 	m_RT_Flags.set		(flRT_Playing,TRUE);
 	pStartPlaying		(m_HandleActionList);
 }
@@ -627,7 +627,13 @@ void CParticleEffect::Render(float LOD)
 						FillSprite	(pv,m.pos,dir,lt,rb,r_x,r_y,m.color,m.rot.x);
 					}
 				}else{
-					FillSprite	(pv,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
+					if (m_RT_Flags.is(flRT_XFORM)){
+						Fvector p;
+						m_XFORM.transform_tiny	(p,m.pos);
+						FillSprite	(pv,p,lt,rb,r_x,r_y,m.color,m.rot.x);
+					}else{
+						FillSprite	(pv,m.pos,lt,rb,r_x,r_y,m.color,m.rot.x);
+					}
 				}
 			}
 			dwCount 			= u32(pv-pv_start);

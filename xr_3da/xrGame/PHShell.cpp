@@ -771,11 +771,10 @@ void CPHShell::SetCallbacksRecursive(u16 id,u16 element)
 
 void CPHShell::ZeroCallbacks()
 {
-	ZeroCallbacksRecursive(m_pKinematics->LL_GetBoneRoot());
+	if (m_pKinematics) ZeroCallbacksRecursive(m_pKinematics->LL_GetBoneRoot());
 }
 void CPHShell::ZeroCallbacksRecursive(u16 id)
 {
-
 	CBoneInstance& B	= m_pKinematics->LL_GetBoneInstance(u16(id));
 	CBoneData& bone_data= m_pKinematics->LL_GetData(u16(id));
 	B.set_callback(0,0);

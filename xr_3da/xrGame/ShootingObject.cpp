@@ -108,6 +108,7 @@ void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Co
 			*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
 	if(ps_name)
 	{
+/*
 		//отыграть партиклы попадания в материал
 		CParticlesObject* ps = xr_new<CParticlesObject>(ps_name, this->Sector());
 
@@ -118,6 +119,7 @@ void CShootingObject::FireShotmark (const Fvector& vDir, const Fvector &vEnd, Co
 
 		ps->UpdateParent(pos,zero_vel);
 		Level().ps_needtoplay.push_back(ps);
+*/
 	}
 }
 

@@ -196,6 +196,7 @@ BOOL CParticleGroup::Compile(CPGDef* def)
 void CParticleGroup::Play()
 {
 	m_CurrentTime   = 0;
+	m_RT_Flags.set	(flRT_DefferedStop,FALSE);
 	m_RT_Flags.set 	(flRT_Playing,TRUE);
 }
 
