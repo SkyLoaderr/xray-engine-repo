@@ -18,15 +18,6 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponAK74::CWeaponAK74() : CWeaponMagazined("AK74")
 {
-	pSounds->Create3D(sndFireLoop,		"weapons\\AK74_fire");
-	pSounds->Create3D(sndEmptyClick,	"weapons\\generic_empty");
-	pSounds->Create3D(sndReload,		"weapons\\generic_reload");
-	pSounds->Create3D(sndRicochet[0],	"weapons\\ric1");
-	pSounds->Create3D(sndRicochet[1],	"weapons\\ric2");
-	pSounds->Create3D(sndRicochet[2],	"weapons\\ric3");
-	pSounds->Create3D(sndRicochet[3],	"weapons\\ric4");
-	pSounds->Create3D(sndRicochet[4],	"weapons\\ric5");
-	
 	iFlameDiv		= 0;
 	fFlameLength	= 0;
 	fFlameSize		= 0;
@@ -35,10 +26,14 @@ CWeaponAK74::CWeaponAK74() : CWeaponMagazined("AK74")
 CWeaponAK74::~CWeaponAK74()
 {
 	// sounds
-	pSounds->Delete3D	(sndFireLoop	);
-	pSounds->Delete3D	(sndEmptyClick	);
-	pSounds->Delete3D	(sndReload		);
-	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
+	SoundDestroy		(sndFireLoop	);
+	SoundDestroy		(sndEmptyClick	);
+	SoundDestroy		(sndReload		);
+	SoundDestroy		(sndRicochet[0]	);
+	SoundDestroy		(sndRicochet[1]	);
+	SoundDestroy		(sndRicochet[2]	);
+	SoundDestroy		(sndRicochet[3]	);
+	SoundDestroy		(sndRicochet[4]	);
 }
 
 void CWeaponAK74::Load	(CInifile* ini, const char* section){
@@ -47,7 +42,18 @@ void CWeaponAK74::Load	(CInifile* ini, const char* section){
 	iFlameDiv			= ini->ReadINT	(section,"flame_div");
 	fFlameLength		= ini->ReadFLOAT(section,"flame_length");
 	fFlameSize			= ini->ReadFLOAT(section,"flame_size");
+
+	// Sounds
+	SoundCreate			(sndFireLoop,	"fire");
+	SoundCreate			(sndEmptyClick,	"empty");
+	SoundCreate			(sndReload,		"reload");
+	SoundCreate			(sndRicochet[0],"ric1");
+	SoundCreate			(sndRicochet[1],"ric2");
+	SoundCreate			(sndRicochet[2],"ric3");
+	SoundCreate			(sndRicochet[3],"ric4");
+	SoundCreate			(sndRicochet[4],"ric5");
 	
+	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 	mhud_idle			= m_pHUD->animGet("idle");
 	mhud_reload			= m_pHUD->animGet("reload");
