@@ -143,7 +143,7 @@ void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int p
 	if (V&&V->visual)			::Render->model_Render(V->visual,parent,priority,strictB2F,1.f);
     if (bSelected&&(1==priority)&&(false==strictB2F)){
         CSE_Motion* M			= dynamic_cast<CSE_Motion*>(m_Data);
-        if (M&&M->animator)		M->animator->DrawPath(EPrefs.object_flags.is(epoDrawAnimPath));
+        if (M&&M->animator)		M->animator->DrawPath();
     }
 }
 /*

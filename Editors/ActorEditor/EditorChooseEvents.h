@@ -75,7 +75,19 @@ void __fastcall SelectGameObject(SChooseItem* item, ECustomThumbnail*& thm, ref_
     }
     ::Render->model_Delete(visual);
 }
-
+//---------------------------------------------------------------------------
+void __fastcall FillGameObjectMots(ChooseItemVec& items)
+{
+    FS_QueryMap lst;
+    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".omf")){
+	    FS_QueryPairIt	it			= lst.begin();
+    	FS_QueryPairIt	_E			= lst.end();
+	    for (; it!=_E; it++)		items.push_back(SChooseItem(it->first.c_str(),""));
+    }
+}
+void __fastcall SelectGameObjectMots(SChooseItem* item, ECustomThumbnail*& thm, ref_sound& snd, PropItemVec& info_items)
+{
+}
 //---------------------------------------------------------------------------
 void __fastcall FillGameAnim(ChooseItemVec& items)
 {
@@ -158,6 +170,7 @@ void FillChooseEvents()
 	TfrmChoseItem::AppendEvents	(smGameObject,	"Select Game Object",		FillGameObject,		SelectGameObject,	false);
 	TfrmChoseItem::AppendEvents	(smGameMaterial,"Select Game Material",		FillGameMaterial,	0,false);
 	TfrmChoseItem::AppendEvents	(smGameAnim,	"Select Animation",			FillGameAnim,		0,false);
+	TfrmChoseItem::AppendEvents	(smGameSMotions,"Select Game Object Motions",FillGameObjectMots,SelectGameObjectMots,false);
 }
 //---------------------------------------------------------------------------
 #endif

@@ -271,6 +271,11 @@
       <FILE FILENAME="Edit\ESceneObjectToolsExportBreakable.cpp" FORMNAME="" UNITNAME="ESceneObjectToolsExportBreakable" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\xrHemisphere.cpp" FORMNAME="" UNITNAME="xrHemisphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="EditorChooseEvents.h" FORMNAME="" UNITNAME="EditorChooseEvents.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_broker_inline.h" FORMNAME="" UNITNAME="object_broker_inline.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\alife_interfaces.h" FORMNAME="" UNITNAME="alife_interfaces.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\alife_space.h" FORMNAME="" UNITNAME="alife_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\inventory_space.h" FORMNAME="" UNITNAME="inventory_space.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Game\object_broker.h" FORMNAME="" UNITNAME="object_broker.h" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
