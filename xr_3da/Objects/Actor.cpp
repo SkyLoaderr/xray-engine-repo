@@ -246,6 +246,8 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	Engine.Sheduler.Register	(this,TRUE);
 
 	hit_slowmo				= 0.f;
+	die_bWantRespawn		= FALSE;
+	die_bRespawned			= TRUE;
 
 	return					TRUE;
 }
