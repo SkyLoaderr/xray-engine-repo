@@ -16,9 +16,6 @@
 
 CDemoRecord * xrDemoRecord = 0;
 
-#define		g_fSpeed		5.0f
-#define		g_fAngularSpeed 1.0f
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -47,12 +44,21 @@ CDemoRecord::CDemoRecord(const char *name,float life_time) : CEffector(cefDemo,l
 
 		m_vVelocity.set	(0,0,0);
 		m_vAngularVelocity.set(0,0,0);
-		iCount = 0;
+		iCount			= 0;
 		
 		m_vT.set(0,0,0);
 		m_vR.set(0,0,0);
 		m_bMakeCubeMap		= FALSE;
 		m_bMakeScreenshot	= FALSE;
+
+		m_fSpeed0		= pSettings->r_float("demo_record","speed0");
+		m_fSpeed1		= pSettings->r_float("demo_record","speed1");
+		m_fSpeed2		= pSettings->r_float("demo_record","speed2");
+		m_fSpeed3		= pSettings->r_float("demo_record","speed3");
+		m_fAngSpeed0	= pSettings->r_float("demo_record","ang_speed0");
+		m_fAngSpeed1	= pSettings->r_float("demo_record","ang_speed1");
+		m_fAngSpeed2	= pSettings->r_float("demo_record","ang_speed2");
+		m_fAngSpeed3	= pSettings->r_float("demo_record","ang_speed3");
 	} else {
 		fLifeTime = -1;
 	}
@@ -149,12 +155,12 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 		m_vVelocity.lerp		(m_vVelocity,m_vT,0.3f);
 		m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.3f);
 
-		float acc = 1.f, acc_angle = 1.f;
-		if (Console->IR_GetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
-		else if (Console->IR_GetKeyState(DIK_LALT)) acc=4.0;
-		else if (Console->IR_GetKeyState(DIK_LCONTROL)) acc=10.0;
-		m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
-		m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc_angle);
+		float speed = m_fSpeed1, ang_speed = m_fAngSpeed1;
+		if (Console->IR_GetKeyState(DIK_LSHIFT))		{ speed=m_fSpeed0; ang_speed=m_fAngSpeed0;}
+		else if (Console->IR_GetKeyState(DIK_LALT))		{ speed=m_fSpeed2; ang_speed=m_fAngSpeed2;}
+		else if (Console->IR_GetKeyState(DIK_LCONTROL)) { speed=m_fSpeed3; ang_speed=m_fAngSpeed3;}
+		m_vT.mul				(m_vVelocity, Device.fTimeDelta * speed);
+		m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * ang_speed);
 
 		m_HPB.x -= m_vR.y;
 		m_HPB.y -= m_vR.x;

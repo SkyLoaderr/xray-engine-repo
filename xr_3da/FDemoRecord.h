@@ -29,6 +29,15 @@ private:
 	BOOL		m_bMakeCubeMap;
 	BOOL		m_bMakeScreenshot;
 
+	float		m_fSpeed0;
+	float		m_fSpeed1;
+	float		m_fSpeed2;
+	float		m_fSpeed3;
+	float		m_fAngSpeed0;
+	float		m_fAngSpeed1;
+	float		m_fAngSpeed2;
+	float		m_fAngSpeed3;
+
 	void		MakeCubeMapFace			(Fvector &D, Fvector &N);
 	void		MakeScreenshotFace		();
 	void		RecordKey				();
