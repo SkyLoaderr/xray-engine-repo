@@ -17,7 +17,7 @@ smap_res:	fixed(36.0), adaptive(36.9), minus one RT-switch(37.5)
 433/1.08Ghz:optimized spot-shadow-shaders + aref( 31.3  )
 433/1.08Ghz:agressive scissoring				( 33.8  )
 same,60.50 :all + optimized sphere				( 42.83 )
-same,			+ occlusion culling				( 56.84	)
+same,			+ occlusion culling				( 57.20	)
 ----------------------------
 BUG:	optimized sphere around cone-shape
 BUG:	scissor	- reprojection
@@ -28,7 +28,7 @@ OPT:	if scissor is inside light volume we can construct more precise/smaller vol
 OPT:	occlusion culling of light volumes
 		1. if camera inside - assume visible
 		2. employ temporal coherence
-OPT:	
+OPT:	precompute invisible list (visuals) for static lights at load time
 
 Engine/Game:
 	* refactor/rebuild collision detection infrastructure (along with Slipch)	

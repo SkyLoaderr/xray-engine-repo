@@ -243,18 +243,22 @@ void CRender::Render		()
 		light*	L_point_s	= 0;	
 		if		(!Lights.v_point_s.empty())	{
 			// generate point shadowmap
-			light*	L	= L_point_s	= Lights.v_point_s.back();	Lights.v_point_s.pop_back();
-			for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
-				phase									= PHASE_SMAP_P;
-				if (!LR.compute_xfp_1(pls_phase, L))	continue;	// frustum doesn't touch primary frustum
-				r_dsgraph_render_subspace				(L->spatial.sector, LR.P_combine, L->position, TRUE);
-				LR.compute_xfp_2						(pls_phase, L);
-				if (mapNormal[0].size() || mapMatrix[0].size())	{
-					Target.phase_smap_point				(pls_phase);
-					RCache.set_xform_world				(Fidentity);
-					RCache.set_xform_view				(LR.P_view);
-					RCache.set_xform_project			(LR.P_project);
-					r_dsgraph_render_graph				(0);
+			light*	L		= L_point_s	= Lights.v_point_s.back();	Lights.v_point_s.pop_back();
+			L->vis_update	();
+			if	(!L->vis.visible)	L_point_s = 0;
+			else	{
+				for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
+					phase									= PHASE_SMAP_P;
+					if (!LR.compute_xfp_1(pls_phase, L))	continue;	// frustum doesn't touch primary frustum
+					r_dsgraph_render_subspace				(L->spatial.sector, LR.P_combine, L->position, TRUE);
+					LR.compute_xfp_2						(pls_phase, L);
+					if (mapNormal[0].size() || mapMatrix[0].size())	{
+						Target.phase_smap_point				(pls_phase);
+						RCache.set_xform_world				(Fidentity);
+						RCache.set_xform_view				(LR.P_view);
+						RCache.set_xform_project			(LR.P_project);
+						r_dsgraph_render_graph				(0);
+					}
 				}
 			}
 		}
@@ -264,16 +268,20 @@ void CRender::Render		()
 		if		(!Lights.v_spot_s.empty())	{
 			// generate spot shadowmap
 			light*	L	= L_spot_s	= Lights.v_spot_s.back();	Lights.v_spot_s.pop_back();
-			phase									= PHASE_SMAP_S;
-			LR.compute_xfs_1						(0, L);
-			r_dsgraph_render_subspace				(L->spatial.sector, LR.S_combine, L->position, TRUE);
-			LR.compute_xfs_2						(0, L);
-			if (mapNormal[0].size() || mapMatrix[0].size())	{
-				Target.phase_smap_spot				();
-				RCache.set_xform_world				(Fidentity);
-				RCache.set_xform_view				(LR.S_view);
-				RCache.set_xform_project			(LR.S_project);
-				r_dsgraph_render_graph				(0);
+			L->vis_update	();
+			if		(!L->vis.visible)	L_spot_s = 0;
+			else	{
+				phase									= PHASE_SMAP_S;
+				LR.compute_xfs_1						(0, L);
+				r_dsgraph_render_subspace				(L->spatial.sector, LR.S_combine, L->position, TRUE);
+				LR.compute_xfs_2						(0, L);
+				if (mapNormal[0].size() || mapMatrix[0].size())	{
+					Target.phase_smap_spot				();
+					RCache.set_xform_world				(Fidentity);
+					RCache.set_xform_view				(LR.S_view);
+					RCache.set_xform_project			(LR.S_project);
+					r_dsgraph_render_graph				(0);
+				}
 			}
 		}
 
@@ -283,14 +291,18 @@ void CRender::Render		()
 
 		//		if (has_point_unshadowed)	-> 	accum point unshadowed
 		if		(!Lights.v_point.empty())	{
-				Target.accum_point			(Lights.v_point.back());
-				Lights.v_point.pop_back		();
+			light*	L	= Lights.v_point.back	();
+			Lights.v_point.pop_back		();
+			L->vis_update				();
+			if (L->vis.visible)			Target.accum_point			(L);
 		}
 
 		//		if (has_spot_unshadowed)	-> 	accum spot unshadowed
 		if		(!Lights.v_spot.empty())	{
-			Target.accum_point				(Lights.v_spot.back());
+			light*	L	= Lights.v_spot.back	();
 			Lights.v_spot.pop_back			();
+			L->vis_update				();
+			if (L->vis.visible)			Target.accum_spot			(L);
 		}
 
 		//		if (was_point_shadowed)		->	accum point shadowed
@@ -303,14 +315,20 @@ void CRender::Render		()
 	// Point lighting (unshadowed, if left)
 	if (!Lights.v_point.empty())		{
 		xr_vector<light*>&	Lvec		= Lights.v_point;
-		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_point		(Lvec[pid]);
+		for	(u32 pid=0; pid<Lvec.size(); pid++)	{
+			Lvec[pid]->vis_update		();
+			if (Lvec[pid]->vis.visible)	Target.accum_point		(Lvec[pid]);
+		}
 		Lvec.clear	();
 	}
 
 	// Spot lighting (unshadowed, if left)
 	if (!Lights.v_spot.empty())		{
 		xr_vector<light*>&	Lvec		= Lights.v_spot;
-		for	(u32 pid=0; pid<Lvec.size(); pid++)	Target.accum_spot		(Lvec[pid]);
+		for	(u32 pid=0; pid<Lvec.size(); pid++)	{
+			Lvec[pid]->vis_update		();
+			if (Lvec[pid]->vis.visible)	Target.accum_spot		(Lvec[pid]);
+		}
 		Lvec.clear	();
 	}
 

@@ -44,16 +44,22 @@ u32		R_occlusion::occq_begin		(u32&	ID		)
 	}
 	pool.pop_back	();
 	CHK_DX			(used[ID].Q->Issue	(D3DISSUE_BEGIN));
+	
+	Msg				("begin: [%2d] - %d", used[ID].order, ID);
+
 	return			used[ID].order;
 }
 void	R_occlusion::occq_end		(u32&	ID		)
 {
+	Msg				("end  : [%2d] - %d", used[ID].order, ID);
 	CHK_DX			(used[ID].Q->Issue	(D3DISSUE_END));
 }
 u32		R_occlusion::occq_get		(u32&	ID		)
 {
 	DWORD	fragments	= 0;
 	CHK_DX			(used[ID].Q->GetData(&fragments,sizeof(fragments),D3DGETDATA_FLUSH));
+
+	Msg				("get  : [%2d] - %d => %d", used[ID].order, ID, fragments);
 
 	// insert into pool (sorting in decreasing order)
 	_Q&		Q			= used[ID];
