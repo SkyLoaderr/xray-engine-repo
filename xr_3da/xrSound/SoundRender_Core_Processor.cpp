@@ -112,6 +112,16 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	}
 }
 
+void CSoundRender_Core::update_events		()
+{
+	for (u32 it=0; it<s_events.size(); it++)
+	{
+		event&	E	= s_events[it];
+		Handler		(E.first,E.second);
+	}
+	s_events.clear();
+}
+
 u32		CSoundRender_Core::stat_render	()
 {
 	u32 counter		= 0;

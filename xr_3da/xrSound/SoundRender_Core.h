@@ -20,6 +20,8 @@ private:
 		float			fDopplerFactor;
 	};
 public:
+	typedef	std::pair<ref_sound*,float>	event;
+public:
 	BOOL								bPresent;
 	BOOL								bUserEnvironment;
 	
@@ -46,6 +48,7 @@ private:
 	u32									s_targets_pu;			// parameters update
 	SoundEnvironment_LIB*				s_environment;
 	CSoundRender_Environment			s_user_environment;
+	xr_vector<event>					s_events;
 public:
 	CSoundRender_Core					();
 	~CSoundRender_Core					();
@@ -67,6 +70,7 @@ public:
 	virtual void						set_handler				( sound_event* E );
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
+	virtual void						update_events			( );
 	virtual u32							stat_render				( );
 	virtual u32							stat_simulate			( );
 

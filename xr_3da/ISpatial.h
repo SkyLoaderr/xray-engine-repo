@@ -102,10 +102,10 @@ public:
 class ENGINE_API					ISpatial_DB
 {
 private:
+	xrCriticalSection				cs;
 	poolSS<ISpatial_NODE,128>		allocator;
 	xr_vector<ISpatial_NODE*>		allocator_pool;
 	ISpatial*						rt_insert_object;
-
 public:
 	ISpatial_NODE*					m_root;
 	Fvector							m_center;

@@ -204,6 +204,7 @@ public:
 	//@}
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
+	virtual void					update_events			( )																						= 0;
 	virtual u32						stat_render				( )																						= 0;
 	virtual u32						stat_simulate			( )																						= 0;
 

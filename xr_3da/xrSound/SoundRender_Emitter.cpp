@@ -49,5 +49,5 @@ void CSoundRender_Emitter::PropagadeEvent()
 	if	(clip<0)					return;
 
 	// Inform objects
-	SoundRender.Handler				(owner,range);
+	SoundRender.s_events.push_back	(mk_pair(owner,range));
 }

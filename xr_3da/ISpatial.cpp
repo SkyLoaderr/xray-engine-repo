@@ -100,6 +100,7 @@ void			ISpatial_NODE::_init			(ISpatial_NODE* _parent)
 	parent		=	_parent;
 	children[0]	=	children[1]	=	children[2]	=	children[3]	=
 	children[4]	=	children[5]	=	children[6]	=	children[7]	=	NULL;
+	items.clear();
 }
 
 void			ISpatial_NODE::_insert			(ISpatial* S)			
@@ -151,6 +152,7 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 {
 	//*** we are assured that object lives inside our node
 	float	n_vR	= 2*n_R;
+	VERIFY	(N);
 	VERIFY	(verify_sp(rt_insert_object,n_C,n_vR));
 
 	// we have to make sure we aren't the leaf node
@@ -172,13 +174,24 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 		Fvector&	s_C					=	rt_insert_object->spatial.center;
 		u32			octant				=	_octant	(n_C,s_C);
 		Fvector		c_C;				c_C.mad	(n_C,c_spatial_offset[octant],c_R);
-		VERIFY		(octant == _octant(n_C,c_C));				// check table assosiations
+		VERIFY			(octant == _octant(n_C,c_C));				// check table assosiations
+		ISpatial_NODE*	&chield			= N->children[octant];
 
-		if (0==N->children[octant])		{
-			N->children[octant]			=	_node_create();
-			N->children[octant]->_init	(N);
+		Log				("a:",u32(chield));
+		if (0==chield)	{
+			Log				("b:",u32(chield));
+			chield			=	_node_create();
+			Log				("c:",u32(chield));
+			VERIFY			(chield);
+			Log				("d:",u32(chield));
+			chield->_init	(N);
+			Log				("e:",u32(chield));
 		}
-		_insert							(N->children[octant], c_C, c_R);
+		Log				("f:",u32(chield));
+		VERIFY			(chield);
+		Log				("g:",u32(chield));
+		_insert			(chield, c_C, c_R);
+		VERIFY			(chield);
 	}
 	else
 	{

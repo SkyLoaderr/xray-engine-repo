@@ -29,7 +29,7 @@ public:
 
 	CSoundRender_Target*		target;
 	CSoundRender_Source*		source;
-	ref_sound*						owner;
+	ref_sound*					owner;
 
 	float						smooth_volume;
 	float 						occluder_volume;		// USER
