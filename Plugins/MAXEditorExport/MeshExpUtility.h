@@ -48,6 +48,7 @@ public:
 	int			m_ObjectNoOptimize;
 
 	int			m_SkinSuppressSmoothGroup;
+	int			m_SkinProgressive;
 public:
 				MeshExpUtility	();
 	virtual		~MeshExpUtility	();

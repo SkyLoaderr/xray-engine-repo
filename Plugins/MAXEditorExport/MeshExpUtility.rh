@@ -18,6 +18,7 @@
 #define IDC_OBJECT_SUPPRESS_SMOOTH_GROUPS 1026
 #define IDC_SKIN_SUPPRESS_SMOOTH_GROUPS 1027
 #define ID_SHOK                         1028
+#define IDC_SKIN_PROGRESSIVE            1028
 #define ID_SHCANCEL                     1029
 #define IDC_SHADERLIST                  1030
 #define IDC_TEXTURE                     1032

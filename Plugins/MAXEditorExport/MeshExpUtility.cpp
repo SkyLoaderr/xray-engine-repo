@@ -85,6 +85,7 @@ MeshExpUtility::MeshExpUtility()
 	m_ObjectNoOptimize			= false;
 	m_ObjectSuppressSmoothGroup = false;
 	m_SkinSuppressSmoothGroup	= true;
+	m_SkinProgressive			= true;
 
 	m_ExportName[0] = 0;
 }
@@ -112,6 +113,7 @@ void MeshExpUtility::EndEditParams(Interface *ip,IUtil *iu)
 	m_ObjectNoOptimize			= IsDlgButtonChecked( hPanel, IDC_OBJECT_NO_OPTIMIZE );
 	m_ObjectSuppressSmoothGroup	= IsDlgButtonChecked( hPanel, IDC_OBJECT_SUPPRESS_SMOOTH_GROUPS );
 	m_SkinSuppressSmoothGroup	= IsDlgButtonChecked( hPanel, IDC_SKIN_SUPPRESS_SMOOTH_GROUPS );
+	m_SkinProgressive			= IsDlgButtonChecked( hPanel, IDC_SKIN_PROGRESSIVE );
 
 	RegSave();
 
@@ -139,6 +141,7 @@ void MeshExpUtility::Init(HWND hWnd)
 	CheckDlgButton( hPanel, IDC_OBJECT_NO_OPTIMIZE,				m_ObjectNoOptimize );
 	CheckDlgButton( hPanel, IDC_OBJECT_SUPPRESS_SMOOTH_GROUPS,	m_ObjectSuppressSmoothGroup );
 	CheckDlgButton( hPanel, IDC_SKIN_SUPPRESS_SMOOTH_GROUPS,	m_SkinSuppressSmoothGroup );
+	CheckDlgButton( hPanel, IDC_SKIN_PROGRESSIVE,				m_SkinProgressive );
 
 	RefreshExportList();
 	UpdateSelectionListBox();
@@ -299,6 +302,7 @@ const char *g_rObjFlipFacesVal	= "Object Flip Faces";
 const char *g_rObjSuppressSMVal	= "Object Suppress SM";
 const char *g_rNoOptimizeVal	= "Object No Optimize";
 const char *g_rSkinSuppressSMVal= "Skin Suppress SM";
+const char *g_rSkinProgressive	= "Skin Progressive";
 
 void MeshExpUtility::RegRead(){
 
@@ -320,6 +324,8 @@ void MeshExpUtility::RegRead(){
 		m_ObjectNoOptimize = !!atoi(keyvalue);
 		RegQueryValueEx(hk,g_rSkinSuppressSMVal,0,&keytype,(LPBYTE)keyvalue, &keysize );
 		m_SkinSuppressSmoothGroup = !!atoi(keyvalue);
+		RegQueryValueEx(hk,g_rSkinProgressive,0,&keytype,(LPBYTE)keyvalue, &keysize );
+		m_SkinProgressive = !!atoi(keyvalue);
 
 		RegCloseKey( hk );
 	}
@@ -340,6 +346,8 @@ void MeshExpUtility::RegSave(){
 		RegSetValueEx(hk,g_rNoOptimizeVal,0,REG_SZ,(LPBYTE)keyvalue, strlen(keyvalue)+1 );
 		sprintf(keyvalue,"%d",m_SkinSuppressSmoothGroup);
 		RegSetValueEx(hk,g_rSkinSuppressSMVal,0,REG_SZ,(LPBYTE)keyvalue, strlen(keyvalue)+1 );
+		sprintf(keyvalue,"%d",m_SkinProgressive);
+		RegSetValueEx(hk,g_rSkinProgressive,0,REG_SZ,(LPBYTE)keyvalue, strlen(keyvalue)+1 );
 
 		RegCloseKey( hk );
 	}
@@ -391,7 +399,7 @@ void MeshExpUtility::ExportAsSkin(){
 	}
 
 	m_SkinSuppressSmoothGroup	= IsDlgButtonChecked( hPanel, IDC_SKIN_SUPPRESS_SMOOTH_GROUPS );
-	
+	m_SkinProgressive			= IsDlgButtonChecked( hPanel, IDC_SKIN_PROGRESSIVE	 );
 
 	char m_ExportName[MAX_PATH];
 	m_ExportName[0]=0;

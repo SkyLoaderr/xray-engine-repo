@@ -12,6 +12,7 @@
 #undef RAD_TO_DEG
 #include "MgcCont3DMinBox.h"
 #include "..\MeshExpUtility.rh"
+#include "..\MeshExpUtility.h"
 
 #pragma comment(lib, "x:\\xrProgressive.lib")
 
@@ -165,7 +166,7 @@ struct st_SPLIT
 		}
 
 		// Progressive
-		I_Current=V_Minimal=0;
+		I_Current=V_Minimal=-1;
 		for (vFACE_it F=Flist.begin(); F!=Flist.end(); F++)
 		{
 			st_FACE* pF = *F;
@@ -436,7 +437,7 @@ void PARSE		(CExporter* E, Interface *pInterface, const char* fnTOSAVE){
 	Msg("VB+IB+PMesh..."); T.Start();
 	for (i=0; i<splits.size(); i++){
 		splits[i].MakeValidToRender();
-		splits[i].MakeProgressive();
+		if (U.m_SkinProgressive) splits[i].MakeProgressive();
 	}
 	T.Dump();
 
