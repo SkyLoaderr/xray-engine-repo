@@ -85,9 +85,6 @@ public:
 		P.r_begin			(dummy16		);
 		P.r_string			(s_name			);
 		P.r_string			(s_name_replace	);
-		P.r_u8				(s_team			);
-		P.r_u8				(s_squad		);
-		P.r_u8				(s_group		);
 		P.r_u8				(s_RP			);
 		P.r_vec3			(o_Position		);
 		P.r_vec3			(o_Angle		);
@@ -98,6 +95,9 @@ public:
 		u16					size;
 		P.r_u16				(size			);	// size
 		P.r_u16				(s_flags		);
+		P.r_u8				(s_team			);
+		P.r_u8				(s_squad		);
+		P.r_u8				(s_group		);
 		STATE_Read			(P,size			);
 	}
 
