@@ -26,21 +26,14 @@ function motivation_alive:__init(motivations, storage, trade_arhive) super()
 end
 function motivation_alive:evaluate(motivation_id)
     if self.motivations["normal"] == motivation_id then
-        if self.b:best_trader() == nil and self.a.Buyer == nil then
+        if self.b:best_trader() == nil then
             return 1.0
         else
             return 0.0
         end
     end
     if self.motivations["trade_init"] == motivation_id then
-        if self.b:best_trader() ~= nil and self.a.Buyer == nil then
-            return 1.0
-        else
-            return 0.0
-        end
-    end
-    if self.motivations["trade_finished"] == motivation_id then
-        if self.a.Buyer ~= nil then
+        if self.b:best_trader() ~= nil then
             return 1.0
         else
             return 0.0
@@ -82,13 +75,11 @@ function motivator_binder:reload (section)
 
     motivations["normal"]       = stalker_ids.motivation_script + 1
     motivations["trade_init"]   = stalker_ids.motivation_script + 2
-    motivations["trade_finished"]   = stalker_ids.motivation_script + 3
 
     properties["alive"]     = stalker_ids.property_alive
     properties["dead"]      = stalker_ids.property_already_dead
     properties["solved"]        = stalker_ids.property_puzzle_solved
     properties["trade_init"]    = xr_evaluators_id.final_trade_init
-    properties["trade_finished"]    = xr_evaluators_id.final_trade_processed
 
     operators["dead"]       = stalker_ids.action_dead
     operators["free"]       = stalker_ids.action_free
@@ -106,28 +97,10 @@ xr_motivator.storage[self.object:id()].state = {
 -- Хранение трейдселлера
 xr_motivator.storage[self.object:id()].tradeseller =
     {   Buyer = nil,
-            Seller = self.object,
-            trade_position = { vertex_id = nil,
-                position = vector():set(0,0,0) },
-        -- Началась торговля или нет
-        trade_begin = false,
-        -- Последнее время торговли
-        last_trade_time = { idle = 1,
-                begin = nil },
-        -- Допуск, на сколько подавец может отойти от позиции. Строго больше нуля
-        dist = 3,
+        Seller = self.object,
         -- Задается время ожидания в секундах
         begin_wait_to_see = { time = 300,
                     begin = nil },
-        -- Задается время ожидания начала торговли
-        begin_wait_to_trade = { time = 100,
-                      begin = nil },
-        -- Время торговли (сколько высвечивать экран) в секундах
-        trade_time = 180,
-        -- Расстояние, при котором мы начинаем более тесное общение
-        distance = 20,
-        -- Расситояние, при котором мы открываем огонь (если другой с оружием близко к нам)
-        shoot_distance = 10,
         -- Будет ли работать схема? если нет, то он всегда будет отказываться от торговли.
         enabled = false
     }
@@ -271,7 +244,7 @@ xr_motivator.storage[self.object:id()].robber = {
 xr_motivator.storage[self.object:id()].meet = {
         enabled = false,
         actor = nil,
-        distance = 20, -- расстояние, в пределах которого мы реагируем
+        distance = 15, -- расстояние, в пределах которого мы реагируем
         shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
     }
         if char_ini:section_exist ("meet") == true then
@@ -396,7 +369,6 @@ xr_motivator.storage[self.object:id()].reactions = {
 
     --Evaluators
     manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[self.object:id()].tradeseller))
-    manager:add_evaluator (properties["trade_finished"], xr_evaluators.evaluator_trade_finished(xr_motivator.storage[self.object:id()].tradeseller))
 
     --Motivations
     manager:remove_motivation (motivations["solve_zone_puzzle"])
@@ -413,14 +385,9 @@ xr_motivator.storage[self.object:id()].reactions = {
     goal:add_property (world_property(properties["trade_init"], true))
     manager:add_motivation (motivations["trade_init"], this.motivation_action1(goal))
 
-    goal:clear ()
-    goal:add_property (world_property(properties["trade_finished"], true))
-    manager:add_motivation (motivations["trade_finished"], this.motivation_action1(goal))
-
     -- Connections
     manager:add_connection (motivations["solve_zone_puzzle"], motivations["normal"])
     manager:add_connection (motivations["solve_zone_puzzle"], motivations["trade_init"])
-    manager:add_connection (motivations["solve_zone_puzzle"], motivations["trade_finished"])
 
     -- Bind other scripts
     self.object:disable_talk()
@@ -429,7 +396,6 @@ xr_motivator.storage[self.object:id()].reactions = {
     xr_reactions.add_to_binder(self.object)
     xr_patrol.add_to_binder (self.object)
     xr_meet.add_to_binder(self.object)
-    xr_tradeseller.add_to_binder(self.object)
     xr_kamp.add_to_binder(self.object)
     xr_commander.add_to_binder(self.object)
     xr_guard.add_to_binder(self.object)

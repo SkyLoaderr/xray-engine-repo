@@ -45,9 +45,200 @@ function evaluator_contact:evaluate()
 	return tt
 end
 
+class "evaluator_wait" (property_evaluator)
+function evaluator_wait:__init(storage) super()
+	self.a = storage
+end
+function evaluator_wait:evaluate()
+	local tt = self.a.Buyer ~= nil
+	return tt
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
+-- Инициализация торговли
+class "action_trade_init" (action_base)
+function action_trade_init:__init (npc_name,action_name,storage) super (nil, action_name)
+	self.a = storage
+end
+function action_trade_init:initialize()
+	action_base.initialize(self)
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+
+        local bt = xr_motivator.trade_arhive[self.a.Seller:id()]:best_trader()
+
+	if self.a.Seller:relation(bt) ~= game_object.enemy and
+	   self.a.enabled == true 
+	then
+		self.a.begin_wait_to_see.begin = device():time_global()/1000
+
+		xr_position.setPosition(self.a.Seller, self.a.Seller:level_vertex_id())
+
+		self.a.Buyer = bt
+		
+		--Отсылка на ПДА: мы согласны торговать.
+		self.a.Seller:send_pda_message(3, bt)
+--		level.map_add_object_icon(self.a.Seller, 0)
+	else
+		self.a.Seller:send_pda_message(5, bt)
+	end
+	xr_motivator.trade_arhive[self.a.Seller:id()]:remove(bt)
+end
+function action_trade_init:execute ()
+	action_base.execute (self)
+end
+function action_trade_init:finalize ()
+	action_base.finalize (self)
+end
+
+-- Ожидание появления покупателя
+class "action_wait_for_buyer" (action_base)
+function action_wait_for_buyer:__init (npc_name,action_name,storage) super (nil, action_name)
+	self.a = storage
+end
+function action_wait_for_buyer:initialize()
+	action_base.initialize(self)
+
+	self.object:set_node_evaluator()
+	self.object:set_path_evaluator()
+	self.object:set_desired_position()
+	self.object:set_desired_direction()    
+	
+	self.object:set_item(object.idle, self.object:best_weapon())
+
+	self.act = {type = 1,
+		     begin = nil,
+		     time = 6}
+
+	self.anim = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 5,
+   		     rnd = 100,
+		     lastanim = nil}
+			                                  
+	self.sound = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 5,
+   		     rnd = 100,
+		     lastsound = nil}
+
+	self.anim_s = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 7,
+   		     rnd = 70,
+		     lastanim = nil}
+
+	self.sound_s = {idle = 0,
+		     begin = nil,
+		     maxidle = 5, 
+		     sumidle = 2,
+   		     rnd = 100,
+		     lastsound = nil,
+		 	sounds = {      {pack = sounds["trade"], id = 2},
+					{pack = sounds["trade"], id = 3}, 
+					{pack = sounds["trade"], id = 4} 	}}
+end
+function action_wait_for_buyer:execute ()
+	action_base.execute (self)
+
+	-- Проверка, видим ли мы актора или нет
+	if self.object:see(self.a.Buyer) then
+		-- смотрим на клиента
+		local pos = self.a.Buyer:position()
+      		pos.y = pos.y + 1
+      		self.object:set_sight(look.point, pos, 0)
+
+		-- секция анимации
+		if self.object:animation_count() == 0 then
+			if (self.anim_s.begin == nil or
+			   (device():time_global()/1000 - self.anim_s.begin) > self.anim_s.idle) then
+				if math.random(100) < self.anim_s.rnd then
+					self.object:add_animation("torg_6", true)
+				end
+				self.anim_s.begin = device():time_global()/1000
+				self.anim_s.idle = math.random(self.anim_s.maxidle) + self.anim_s.sumidle
+			end
+		end
+		-- секция озвучки
+		if self.object:active_sound_count() == 0 then
+			globals.set_sound(self.object, self.sound_s, false)
+		end
+	else
+		-- секция анимации
+		-- 1: если не отыгрываем никаких анимаций - то поворачиваемся в случайную сторону
+		-- 2: выжидаем, иногда отыгрывая какую либо анимацию
+		if self.act.type == 1 then
+			if self.object:animation_count() == 0 then
+				self.act.begin = device():time_global()/1000
+				self.act.type = 2
+
+				local dir = vector():set(math.random(10)-5, 0, math.random(10)-5)
+				self.object:set_sight(look.direction, dir, 0)
+				self.object:set_body_state(move.standing)
+				self.object:set_movement_type(move.stand)
+				self.object:set_mental_state(anim.free)
+			end
+		else
+			if (device():time_global()/1000 - self.act.begin) > self.act.time then
+				self.act.type = 1
+			end
+			if self.object:animation_count() == 0 then
+				if (self.anim.begin == nil or
+				   (device():time_global()/1000 - self.anim.begin) > self.anim.idle) then
+					if math.random(100) < self.anim.rnd then
+						if self.anim.lastanim == nil then
+							r = math.random(2)
+						else
+							r = math.random(1)
+							if r >= self.anim.lastanim then
+								r = r + 1
+							end
+						end
+						self.anim.lastanim = r
+		
+						if r == 1 then
+							self.object:add_animation("stoya_ruje_ 0", true)
+						else
+							self.object:add_animation("plechi", false)
+						end
+					end
+					self.anim.begin = device():time_global()/1000
+					self.anim.idle = math.random(self.anim.maxidle) + self.anim.sumidle
+				end
+			end
+		end
+
+		-- секция озвучки
+		if self.sound.begin == nil then
+			self.sound.begin = device():time_global()/1000
+			self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+		else
+			if (device():time_global()/1000 - self.sound.begin) > self.sound.idle then
+				if math.random(100) < self.sound.rnd then
+					self.object:play_sound (sounds["trade"], 1, 0, 1, 0, 1)
+				end
+				self.sound.begin = device():time_global()/1000
+				self.sound.idle = math.random(self.sound.maxidle) + self.sound.sumidle
+			end
+		end
+	end
+
+	-- проверять условия завершения ожидания
+	if xr_motivator.storage[self.object:id()].meet.actor ~= nil then
+		self.a.Buyer = nil
+	end
+end
+function action_wait_for_buyer:finalize ()
+	action_base.finalize (self)
+end
+
 -- Обработка контакта
 class "action_contact" (action_base)
 function action_contact:__init (npc_name,action_name, storage) super (nil, action_name)
@@ -203,6 +394,7 @@ function action_contact:execute ()
 	action_base.execute (self)
 end
 function action_contact:finalize ()
+	self.object:clear_animations()
 	action_base.finalize (self)
 end
 
@@ -241,14 +433,27 @@ function add_to_binder(object)
 
 	local manager = object:motivation_action_manager()
 
+	properties["trade_init"]	= xr_evaluators_id.final_trade_init         
+	properties["event"] 		= xr_evaluators_id.stohe_reactions_base + 0
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
+	properties["wait_buyer"] 	= xr_evaluators_id.stohe_tradeseller_base + 1
 
 	operators["contact"]		= xr_actions_id.stohe_meet_base + 1
+	operators["trade_init"]		= xr_actions_id.stohe_tradeseller_base + 1
+	operators["wait_buyer"] 	= xr_actions_id.stohe_tradeseller_base + 2
 
 	-- Evaluators
 	manager:add_evaluator (properties["contact"], 		this.evaluator_contact		(xr_motivator.storage[object:id()].meet))
+	manager:add_evaluator (properties["wait_buyer"], 	this.evaluator_wait		(xr_motivator.storage[object:id()].tradeseller))
 
 	-- Actions
+	local action = this.action_trade_init (object:name(),"action_trade_init", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["trade_init"], 	false))
+	action:add_effect 		(world_property(properties["trade_init"], 	true))
+	manager:add_action (operators["trade_init"], action)
+
 	local action = this.action_contact (object:name(),"action_contact", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
@@ -256,6 +461,15 @@ function add_to_binder(object)
 	action:add_effect 		(world_property(properties["contact"], 		false))
 	manager:add_action (operators["contact"], action)
 
+	local action = this.action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["wait_buyer"], 	true))
+	action:add_precondition		(world_property(properties["event"], 		false))
+	action:add_effect 		(world_property(properties["wait_buyer"], 	false))
+	manager:add_action (operators["wait_buyer"], action)
+
 	action = manager:action (stalker_ids.action_free_no_alife)	
 	action:add_precondition		(world_property(properties["contact"],		false))
+	action:add_precondition		(world_property(properties["wait_buyer"], 	false))
 end
