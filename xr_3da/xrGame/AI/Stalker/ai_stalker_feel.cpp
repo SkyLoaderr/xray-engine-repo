@@ -450,7 +450,9 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 					SHurt tHurt;
 					tHurt.tpEntity = tpEntity;
 					tHurt.dwTime = Level().timeServer();
+#ifndef SILENCE
 					Msg("! Adding fictitious hurt");
+#endif
 					vfUpdateHurt(tHurt);
 				}
 			}
@@ -465,7 +467,9 @@ void CAI_Stalker::feel_sound_new(CObject* who, int eType, const Fvector &Positio
 			int iIndex = ifFindDynamicObject(tpEntity);
 			if ((((!tpEntity || (tpEntity->g_Team() != g_Team())) && (!who || !who->H_Parent() || !dynamic_cast<CEntity*>(who->H_Parent()) || (dynamic_cast<CEntity*>(who->H_Parent())->g_Team() != g_Team())))) && ((iIndex == -1) || (m_tpaDynamicObjects[iIndex].dwTime < m_dwCurrentUpdate))) {
 				int j;
+#ifndef SILENCE
 				Msg("* %s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+#endif
 				for ( j=0; j<(int)m_tpaDynamicSounds.size(); j++)
 					if (who == m_tpaDynamicSounds[j].tpEntity) {
 						m_tpaDynamicSounds[j].eSoundType		= ESoundTypes(eType);

@@ -101,7 +101,8 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEva
 	else
 		getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
-	if (AI_Path.Nodes.empty())
+	if (AI_Path.Nodes.empty()) {
+		Msg("! !!!! node_start %d, node_finish %d",AI_NodeID,AI_Path.DestNode);
 		if (tpNodeEvaluator) {
 			getAI().m_tpAStar->ffFindMinimalPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 			if (AI_Path.Nodes.empty())
@@ -111,6 +112,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEva
 		}
 		else
 			m_tPathState = ePathStateSearchNode;
+	}
 	else
 		m_tPathState = ePathStateBuildTravelLine;
 	
@@ -119,7 +121,7 @@ void CAI_Stalker::vfBuildPathToDestinationPoint(IBaseAI_NodeEvaluator *tpNodeEva
 
 void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 {
-	Device.Statistic.AI_Path.Begin();
+	Device.Statistic.TEST1.Begin();
 	
 	if (m_tPathType == ePathTypeCriteria) {
 		AI_Path.BuildTravelLine	(vPosition);
@@ -138,6 +140,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			AI_Path.Nodes.clear();
 			AI_Path.TravelPath.clear();
 			m_tPathState = ePathStateSearchNode;
+			Device.Statistic.TEST1.End();
 			return;
 		}
 		Fvector						tStartPosition = vPosition;
@@ -220,12 +223,12 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 			m_tPathState		= ePathStateDodgeTravelLine;
 	}
 	
-	Device.Statistic.AI_Path.End();
+	Device.Statistic.TEST1.End();
 }
 
 void CAI_Stalker::vfDodgeTravelLine()
 {
-	Device.Statistic.AI_Path.Begin();
+	Device.Statistic.TEST0.Begin();
 
 	int							N = m_tpaTempPath.size();
 	AI_Path.TravelPath.resize	(N);
@@ -290,7 +293,7 @@ void CAI_Stalker::vfDodgeTravelLine()
 	AI_Path.TravelStart			= 0;
 	m_tPathState				= ePathStateSearchNode;
 
-	Device.Statistic.AI_Path.End();
+	Device.Statistic.TEST0.End();
 }
 
 void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode)
