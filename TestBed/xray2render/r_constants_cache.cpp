@@ -10,7 +10,7 @@ void R_constants::flush_cache(IDirect3DDevice9* D)
 		{
 			u32		count		= F.r_hi()-F.r_lo();
 			if (count)			{
-				D->SetPixelShaderConstantF	(F.r_lo(), F.access(F.r_lo()),count);
+				D->SetPixelShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count);
 				F.flush			();
 			}
 		}
@@ -22,7 +22,7 @@ void R_constants::flush_cache(IDirect3DDevice9* D)
 		{
 			u32		count		= F.r_hi()-F.r_lo();
 			if (count)			{
-				D->SetVertexShaderConstantF	(F.r_lo(), F.access(F.r_lo()),count);
+				D->SetVertexShaderConstantF	(F.r_lo(), (float*)F.access(F.r_lo()),count);
 				F.flush			();
 			}
 		}

@@ -34,17 +34,17 @@ public:
 	void					set		(R_constant* C, R_constant_load& L, Fmatrix& A)
 	{
 		VERIFY		(RC_float == C->type);
-		Fvector4*	it	= c_f.access	(L->index);
-		switch		(L->cls)
+		Fvector4*	it	= c_f.access	(L.index);
+		switch		(L.cls)
 		{
 		case RC_3x4:
-			c_f.dirty			(L->index,L->index+3);
+			c_f.dirty			(L.index,L.index+3);
 			it[0].set			(A._11, A._21, A._31, A._41);
 			it[1].set			(A._12, A._22, A._32, A._42);
 			it[2].set			(A._13, A._23, A._33, A._43);
 			break;
 		case RC_4x4:
-			c_f.dirty			(L->index,L->index+4);
+			c_f.dirty			(L.index,L.index+4);
 			it[0].set			(A._11, A._21, A._31, A._41);
 			it[1].set			(A._12, A._22, A._32, A._42);
 			it[2].set			(A._13, A._23, A._33, A._43);
@@ -59,9 +59,9 @@ public:
 	void					set		(R_constant* C, R_constant_load& L, Fvector4& A)
 	{
 		VERIFY		(RC_float	== C->type);
-		VERIFY		(RC_1x4		== L->cls);
-		c_f.access	(L->index)->set	(A);
-		c_f.dirty	(L->index,L->index+1);
+		VERIFY		(RC_1x4		== L.cls);
+		c_f.access	(L.index)->set	(A);
+		c_f.dirty	(L.index,L.index+1);
 	}
 
 	void					seta	(R_constant* C, R_constant_load& L, u32 e, Fmatrix& A)
@@ -69,10 +69,10 @@ public:
 		VERIFY		(RC_float == C->type);
 		u32			base;
 		Fvector4*	it;
-		switch		(L->cls)
+		switch		(L.cls)
 		{
 		case RC_3x4:
-			base				= L->index + 3*e;
+			base				= L.index + 3*e;
 			it					= c_f.access	(base);
 			c_f.dirty			(base,base+3);
 			it[0].set			(A._11, A._21, A._31, A._41);
@@ -80,7 +80,7 @@ public:
 			it[2].set			(A._13, A._23, A._33, A._43);
 			break;
 		case RC_4x4:
-			base				= L->index + 4*e;
+			base				= L.index + 4*e;
 			it					= c_f.access	(base);
 			c_f.dirty			(base,base+4);
 			it[0].set			(A._11, A._21, A._31, A._41);
@@ -97,8 +97,8 @@ public:
 	void					seta	(R_constant* C, R_constant_load& L, u32 e, Fvector4& A)
 	{
 		VERIFY		(RC_float	== C->type);
-		VERIFY		(RC_1x4		== L->cls);
-		u32			base	= L->index + e;
+		VERIFY		(RC_1x4		== L.cls);
+		u32			base	= L.index + e;
 		c_f.access	(base)->set	(A);
 		c_f.dirty	(base,base+1);
 	}

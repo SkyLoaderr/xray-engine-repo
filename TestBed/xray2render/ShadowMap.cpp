@@ -58,7 +58,7 @@ class CMyD3DApplication : public CD3DApplication
 	FLOAT							m_fModelSize;
 
 	// xr2
-	R_constant_cache				cc;
+	R_constants						cc;
 
 	//  ************************
 	//	**** Deferred shading **
