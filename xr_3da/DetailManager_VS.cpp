@@ -168,7 +168,7 @@ void CDetailManager::VS_Render()
 					VSC.flush						(c_base,dwBatch*c_size);
 					DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 					DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-					Device.Primitive.setIndicesUC	(vOffset, VS_IB);
+					Device.Primitive.setIndices		(vOffset, VS_IB);
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 					UPDATEC							(dwCNT_verts,dwCNT_prims,2);
 					
@@ -183,7 +183,7 @@ void CDetailManager::VS_Render()
 				VSC.flush						(c_base,dwBatch*c_size);
 				DWORD dwCNT_verts				= dwBatch * Object.number_vertices;
 				DWORD dwCNT_prims				= (dwBatch * Object.number_indices)/3;
-				Device.Primitive.setIndicesUC	(vOffset, VS_IB);
+				Device.Primitive.setIndices		(vOffset, VS_IB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCNT_verts,iOffset,dwCNT_prims);
 				UPDATEC							(dwCNT_verts,dwCNT_prims,2);
 			}

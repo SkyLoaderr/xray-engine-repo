@@ -138,7 +138,7 @@ void CRenderTarget::End		()
 				// Blend COLOR
 				Device.Shader.set_Shader		(pShaderBlend);
 				Device.Primitive.setVerticesUC	(pStream->getFVF(), pStream->getStride(), pStream->getBuffer());
-				Device.Primitive.setIndicesUC	(Offset+4, Device.Streams_QuadIB);
+				Device.Primitive.setIndices		(Offset+4, Device.Streams_QuadIB);
 				Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 			}
 		} else {

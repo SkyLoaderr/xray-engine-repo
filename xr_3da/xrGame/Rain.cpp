@@ -366,7 +366,7 @@ void	CEffect_Rain::Render	()
 					DWORD	dwNumPrimitives			= iCount_Lock/3;
 					VS_Drops->Unlock				(vCount_Lock);
 					IS->Unlock						(iCount_Lock);
-					Device.Primitive.setIndicesUC	(v_offset, IS->getBuffer());
+					Device.Primitive.setIndices		(v_offset, IS->getBuffer());
 					Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,i_offset,dwNumPrimitives);
 					UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 					
@@ -387,7 +387,7 @@ void	CEffect_Rain::Render	()
 		VS_Drops->Unlock				(vCount_Lock);
 		IS->Unlock						(iCount_Lock);
 		if (pcount)	{
-			Device.Primitive.setIndicesUC	(v_offset, IS->getBuffer());
+			Device.Primitive.setIndices		(v_offset, IS->getBuffer());
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,i_offset,dwNumPrimitives);
 			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 		}

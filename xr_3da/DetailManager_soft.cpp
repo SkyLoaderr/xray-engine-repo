@@ -115,7 +115,7 @@ void CDetailManager::soft_Render	()
 			
 			// Render
 			Device.Primitive.setVertices	(soft_VS->getFVF(),soft_VS->getStride(),soft_VS->getBuffer());
-			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
+			Device.Primitive.setIndices		(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
