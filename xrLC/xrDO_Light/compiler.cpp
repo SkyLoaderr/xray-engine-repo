@@ -29,7 +29,7 @@ DEF_VECTOR		(Lights,R_Light);
 //-----------------------------------------------------------------
 
 Lights					g_lights;
-RAPID::Model			Level;
+CDB::MODEL				Level;
 Fbox					LevelBB;
 CVirtualFileStreamRW*	dtFS=0;
 DetailHeader			dtH;
@@ -65,7 +65,7 @@ void xrLoad(LPCSTR name)
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
 		Fvector*	verts	= (Fvector*)FS.Pointer();
-		RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
+		CDB::TRI*	tris	= (CDB::tri*)(verts+H.vertcount);
 		Level.BuildModel	( verts, H.vertcount, tris, H.facecount );
 		Msg("* Level CFORM: %dK",Level.MemoryUsage()/1024);
 		
@@ -210,11 +210,11 @@ const int	LIGHT_Total			=(2*LIGHT_Count+1)*(2*LIGHT_Count+1);
 
 typedef	svector<R_Light*,1024>	LSelection;
 
-IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
+IC bool RayPick(CDB::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 {
 	// 1. Check cached polygon
 	float _u,_v,range;
-	bool res = RAPID::TestRayTri(P,D,L.tri,_u,_v,range,true);
+	bool res = CDB::TestRayTri(P,D,L.tri,_u,_v,range,true);
 	if (res) {
 		if (range>0 && range<r) return true;
 	}
@@ -225,7 +225,7 @@ IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& 
 		return false;
 	} else {
 		// cache polygon
-		RAPID::raypick_info&	rpinf	= DB.RayContact[0];
+		CDB::raypick_info&	rpinf	= DB.RayContact[0];
 		L.tri[0].set	(rpinf.p[0]);
 		L.tri[1].set	(rpinf.p[1]);
 		L.tri[2].set	(rpinf.p[2]);
@@ -233,7 +233,7 @@ IC bool RayPick(RAPID::XRCollide& DB, Fvector& P, Fvector& D, float r, R_Light& 
 	}
 }
 
-float LightPoint(RAPID::XRCollide& DB, Fvector &P, Fvector &N, LSelection& SEL)
+float LightPoint(CDB::XRCollide& DB, Fvector &P, Fvector &N, LSelection& SEL)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.direct(P,N,0.05f);
@@ -284,7 +284,7 @@ public:
 	}
 	virtual void		Execute()
 	{
-		RAPID::XRCollide DB;
+		CDB::XRCollide DB;
 		DB.RayMode		(RAY_ONLYFIRST|RAY_CULL);
 
 		vector<R_Light>	Lights = g_lights;
@@ -317,7 +317,7 @@ public:
 				DB.BBoxCollide		(ident,&Level,ident,BB);
 				DWORD	triCount	= DB.GetBBoxContactCount	();
 				if (0==triCount)	continue;
-				RAPID::tri* tris	= Level.GetTris();
+				CDB::tri* tris	= Level.GetTris();
 				
 				// select lights
 				Selected.clear();
@@ -352,8 +352,8 @@ public:
 						float		r_u,r_v,r_range;
 						for (DWORD tid=0; tid<triCount; tid++)
 						{
-							RAPID::tri&	T		= tris[DB.BBoxContact[tid].id];
-							if (RAPID::TestRayTri(P,dir,T.verts,r_u,r_v,r_range,TRUE))
+							CDB::tri&	T		= tris[DB.BBoxContact[tid].id];
+							if (CDB::TestRayTri(P,dir,T.verts,r_u,r_v,r_range,TRUE))
 							{
 								if (r_range>=0)	{
 									float y_test	= P.y - r_range;
