@@ -47,14 +47,14 @@ public:
 	IDirect3DSurface9*			rt_smap_d_ZB;	//
 
 	// P-smap
-	CRTC*						rt_smap_p;
+	ref_rtc						rt_smap_p;
 	IDirect3DSurface9*			rt_smap_p_ZB;
 
 	// Textures
 	IDirect3DTexture9*			t_material_surf;
-	CTexture*					t_material;
+	ref_texture					t_material;
 	IDirect3DTexture9*			t_ds2fade_surf;
-	CTexture*					t_ds2fade;
+	ref_texture					t_ds2fade;
 private:
 	// Decompress
 	ref_shader					s_decompress;	// 0=pos,1=norm,2=color
