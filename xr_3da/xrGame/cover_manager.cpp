@@ -7,8 +7,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#include "level_graph.h"
 #include "cover_manager.h"
+#include "ai_space.h"
 #include "cover_point.h"
+#include "object_broker.h"
 
 CCoverManager::CCoverManager				()
 {
@@ -17,11 +20,57 @@ CCoverManager::CCoverManager				()
 
 CCoverManager::~CCoverManager				()
 {
+	clear					();
 	xr_delete				(m_covers);
+}
+
+IC	bool CCoverManager::edge_vertex		(u32 index)
+{
+	CLevelGraph::CVertex	*v = ai().level_graph().vertex(index);
+	return					(
+		(!ai().level_graph().valid_vertex_id(v->link(0)) && (v->cover(0) < 12)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(1)) && (v->cover(1) < 12)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(2)) && (v->cover(2) < 12)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(3)) && (v->cover(3) < 12))
+	);
+}
+
+IC	bool CCoverManager::cover			(CLevelGraph::CVertex *v, u32 index0, u32 index1)
+{
+	return					(
+		ai().level_graph().valid_vertex_id(v->link(index0)) &&
+		ai().level_graph().valid_vertex_id(ai().level_graph().vertex(v->link(index0))->link(index1)) &&
+		m_temp[ai().level_graph().vertex(v->link(index0))->link(index1)]
+	);
+}
+
+IC	bool CCoverManager::critical_point	(CLevelGraph::CVertex *v, u32 index, u32 index0, u32 index1)
+{
+	return					(
+		!ai().level_graph().valid_vertex_id(v->link(index)) &&
+		(
+			!ai().level_graph().valid_vertex_id(v->link(index0)) || 
+			!ai().level_graph().valid_vertex_id(v->link(index1)) ||
+			cover(v,index0,index) || 
+			cover(v,index1,index)
+		)
+	);
+}
+
+IC	bool CCoverManager::critical_cover	(u32 index)
+{
+	CLevelGraph::CVertex	*v = ai().level_graph().vertex(index);
+	return					(
+		critical_point(v,0,1,3) || 
+		critical_point(v,2,1,3) || 
+		critical_point(v,1,0,2) || 
+		critical_point(v,3,0,2)
+	);
 }
 
 void CCoverManager::compute_static_cover	()
 {
+	clear					();
 	xr_delete				(m_covers);
 	m_covers				= xr_new<CPointQuadTree>(ai().level_graph().header().box(),ai().level_graph().header().cell_size()*.5f,2*65536,2*65536);
 	m_temp.resize			(ai().level_graph().header().vertex_count());
@@ -39,5 +88,10 @@ void CCoverManager::compute_static_cover	()
 
 void CCoverManager::clear					()
 {
+	if (!get_covers())
+		return;
+
+	covers().all			(m_nearest);
+	delete_data				(m_nearest);
 	m_covers->clear			();
 }

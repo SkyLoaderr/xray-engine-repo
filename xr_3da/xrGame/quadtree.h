@@ -12,72 +12,71 @@ template <typename _object_type>
 class CQuadTree {
 public:
 	struct CQuadNode {
-		CQuadNode		*m_neighbours[4];
+		CQuadNode				*m_neighbours[4];
 
-		IC	CQuadNode	*&next()
+		IC	CQuadNode	*&next				()
 		{
-			return		(m_neighbours[0]);
+			return				(m_neighbours[0]);
 		}
 	};
 
 	struct CListItem {
-		_object_type	*m_object;
-		CListItem		*m_next;
+		_object_type			*m_object;
+		CListItem				*m_next;
 		
-		IC	CListItem	*&next()
+		IC	CListItem	*&next				()
 		{
-			return		(m_next);
+			return				(m_next);
 		}
 	};
 
 	template <typename T>
 	struct CFixedStorage {
-		T				*m_objects;
-		T				*m_free;
-		u32				m_max_object_count;
+		T						*m_objects;
+		T						*m_free;
+		u32						m_max_object_count;
 
 		IC			CFixedStorage			(u32 max_object_count) :
 						m_max_object_count	(max_object_count)
 		{
-			m_objects	= (T*)xr_malloc(m_max_object_count*sizeof(T));
-			
-			T			*B = 0;
-			T			*I = m_objects;
-			T			*E = m_objects + m_max_object_count;
+			m_objects			= (T*)xr_malloc(m_max_object_count*sizeof(T));
+			T					*B = 0;
+			T					*I = m_objects;
+			T					*E = m_objects + m_max_object_count;
 			for ( ; I != E; B = I, ++I)
-				I->next	()	= B;
-			m_free		= E - 1;
+				I->next	()		= B;
+			m_free				= E - 1;
 		}
 
 					~CFixedStorage			()
 		{
-			xr_free			(m_objects);
+			xr_free				(m_objects);
 		}
 
 		IC	T		*get_object				()
 		{
-			VERIFY			(m_free);
-			T				*node = m_free;
-			m_free			= m_free->next();
-			ZeroMemory		(node,sizeof(T));
-			return			(node);
+			VERIFY				(m_free);
+			T					*node = m_free;
+			m_free				= m_free->next();
+			ZeroMemory			(node,sizeof(T));
+			return				(node);
 		}
 
 		IC	void	clear					()
 		{
-			T		*B = 0;
-			T		*I = m_objects;
-			T		*E = m_objects + m_max_object_count;
-			m_free	= E - 1;
+			T					*B = 0;
+			T					*I = m_objects;
+			T					*E = m_objects + m_max_object_count;
+			m_free				= E - 1;
 			for ( ; I != E; ++I)
-				I->next	()	= B;
+				I->next()		= B;
 		}
 
 		IC	void	remove					(T *&node)
 		{
-			node->next()	= m_free;
-			m_free			= node;
-			node			= 0;
+			node->next()		= m_free;
+			m_free				= node;
+			node				= 0;
 		}
 	};
 
@@ -85,13 +84,13 @@ public:
 	typedef CFixedStorage<CListItem> CListItemStorage;
 
 protected:
-	Fvector				m_center;
-	float				m_radius;
-	int					m_max_depth;
-	CQuadNode			*m_root;
-	CQuadNodeStorage	*m_nodes;
-	CListItemStorage	*m_list_items;
-	size_t				m_leaf_count;
+	Fvector						m_center;
+	float						m_radius;
+	int							m_max_depth;
+	CQuadNode					*m_root;
+	CQuadNodeStorage			*m_nodes;
+	CListItemStorage			*m_list_items;
+	size_t						m_leaf_count;
 
 protected:
 	IC		u32					neighbour_index	(const Fvector	&position,	Fvector &center, float distance) const;
@@ -106,6 +105,7 @@ public:
 	IC		_object_type		*remove			(const _object_type *object);
 	IC		_object_type		*find			(const Fvector	&position);
 	IC		void				nearest			(const Fvector	&position,	float radius, xr_vector<_object_type*> &objects, bool clear = true) const;
+	IC		void				all				(xr_vector<_object_type*> &objects, bool clear = true) const;
 	IC		size_t				size			() const;
 };
 

@@ -40,6 +40,7 @@ CAI_Space::~CAI_Space				()
 	xr_delete				(m_ef_storage);
 	xr_delete				(m_game_graph);
 	xr_delete				(m_script_engine);
+	xr_delete				(m_cover_manager);
 }
 
 void CAI_Space::load				(LPCSTR level_name)
@@ -65,18 +66,7 @@ void CAI_Space::load				(LPCSTR level_name)
 
 	level_graph().set_level_id(current_level.id());
 
-	xr_vector<CCoverPoint*>	nearest;
-	if (m_cover_manager->get_covers()) {
-		m_cover_manager->covers().nearest(Fvector().set(0.f,0.f,0.f),100000.f,nearest);
-		
-		xr_vector<CCoverPoint*>::iterator	I = nearest.begin();
-		xr_vector<CCoverPoint*>::iterator	E = nearest.end();
-		for ( ; I != E; ++I)
-			xr_delete		(*I);
-		
-		m_cover_manager->clear	();
-	}
-	m_cover_manager->compute_static_cover();
+	m_cover_manager->compute_static_cover	();
 
 	u64						finish = CPU::GetCycleCount();
 	Msg						("* Loading ai space is successfully completed (%.3fs, %7.3f Mb)",float(finish - start)*CPU::cycles2seconds,float(Memory.mem_usage() - mem_usage)/1048576.0);

@@ -9,8 +9,6 @@
 #pragma once
 
 #include "quadtree.h"
-#include "level_graph.h"
-#include "ai_space.h"
 
 class CCoverPoint;
 

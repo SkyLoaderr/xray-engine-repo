@@ -94,10 +94,10 @@ IC	void CSQuadTree::insert		(_object_type *object)
 	CQuadNode			**node = &m_root;
 	for (int depth = 0; ; ++depth) {
 		if (depth == m_max_depth) {
-			CListItem	*list_item = m_list_items->get_object();
+			CListItem			*list_item = m_list_items->get_object();
 			list_item->m_object = object;
 			list_item->m_next	= (CListItem*)((void*)(*node));
-			*node		= (CQuadNode*)((void*)list_item);
+			*node				= (CQuadNode*)((void*)list_item);
 			++m_leaf_count;
 #ifndef AI_COMPILER
 			Device.Statistic.AI_Range.End();
@@ -276,6 +276,12 @@ IC	_object_type *CSQuadTree::remove		(const _object_type *object, CQuadNode *&no
 		return		(_object);
 	m_nodes->remove	(node);
 	return			(_object);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CSQuadTree::all		(xr_vector<_object_type*> &objects, bool clear = true) const
+{
+	nearest			(m_center,m_radius,objects,clear);
 }
 
 #undef TEMPLATE_SPECIALIZATION
