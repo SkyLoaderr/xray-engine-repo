@@ -44,12 +44,12 @@ CAI_Soldier::CAI_Soldier()
 	m_tpCurrentLegsBlend = 0;
 	m_bActionStarted = false;
 	m_bJumping = false;
-	// event handlers
-	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
-	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	m_dwPatrolPathIndex = -1;
 	m_dwCreatePathAttempts = 0;
 	tpaDynamicObjects.clear();
+	// event handlers
+	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
+	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -160,7 +160,7 @@ void CAI_Soldier::Update(DWORD DT)
 void CAI_Soldier::Exec_Movement	( float dt )
 {
 	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
-	/**
+	/**/
 	if (eCurrentState != aiSoldierJumping)
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 	else {
