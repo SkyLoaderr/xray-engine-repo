@@ -730,3 +730,12 @@ void CWeapon::OnDrawFlame	()
 	}
 }
 
+void CWeapon::OnEvent		(NET_Packet& P, u16 type)
+{
+	switch (type)
+	{
+	case GE_ADD_AMMO:
+
+		break;
+	}
+}

@@ -200,6 +200,7 @@ public:
 
 	virtual void			OnDeviceCreate		();
 	virtual void			OnDeviceDestroy		();
+	virtual void			OnEvent				(NET_Packet& P, u16 type);
 };
 
 #endif // !defined(AFX_WEAPON_H__7C42AD7C_0EBD_4AD1_90DE_2F972BF538B9__INCLUDED_)
