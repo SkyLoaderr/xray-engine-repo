@@ -54,15 +54,13 @@ CInput::CInput						( BOOL bExclusive, int deviceForInit)
 #ifdef ENGINE_BUILD
 	Device.seqAppActivate.Add		(this);
 	Device.seqAppDeactivate.Add		(this);
-	if (psDeviceFlags.is(mtInput))	Device.seqFrameMT.Add	(this, REG_PRIORITY_LOW);
-	else							Device.seqFrame.Add		(this, REG_PRIORITY_HIGH);
+	Device.seqFrame.Add				(this, REG_PRIORITY_HIGH);
 #endif
 }
 
 CInput::~CInput(void)
 {
 #ifdef ENGINE_BUILD
-	Device.seqFrameMT.Remove		(this);
 	Device.seqFrame.Remove			(this);
 	Device.seqAppDeactivate.Remove	(this);
 	Device.seqAppActivate.Remove	(this);
