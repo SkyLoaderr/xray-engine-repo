@@ -241,6 +241,7 @@ void CLightShadows::calculate	()
 			// register shadow and increment slot
 			shadows.push_back	(shadow());
 			shadows.back().slot	=	slot_id;
+			shadows.back().C	=	C.C;
 			shadows.back().M	=	mCombine;
 			shadows.back().L	=	L;
 			slot_id	++;
@@ -387,10 +388,10 @@ void CLightShadows::render	()
 			Fvector* 	v		= TT.v;
 			Fvector		T;
 
-			int	c0				= PLC_calc(v[0],TT.N,S.L,Le);	clamp(c0,S_ambient,255);
-			int	c1				= PLC_calc(v[1],TT.N,S.L,Le);	clamp(c1,S_ambient,255);
-			int	c2				= PLC_calc(v[2],TT.N,S.L,Le);	clamp(c2,S_ambient,255);
-			if ((c0>S_clip) && (c1>S_clip) && (c2>S_clip))		continue;
+			int	c0				= PLC_calc(v[0],TT.N,S.L,Le,S.C);	clamp(c0,S_ambient,255);
+			int	c1				= PLC_calc(v[1],TT.N,S.L,Le,S.C);	clamp(c1,S_ambient,255);
+			int	c2				= PLC_calc(v[2],TT.N,S.L,Le,S.C);	clamp(c2,S_ambient,255);
+			if ((c0>S_clip) && (c1>S_clip) && (c2>S_clip))			continue;
 
 			S.M.transform(T,v[0]); pv->set(v[0],CLS(c0),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
 			S.M.transform(T,v[1]); pv->set(v[1],CLS(c1),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
