@@ -2,7 +2,7 @@
 
 <xml>
 <!---------------------------BANDIT NOVICE----------------------->
-	<specific_character id="stalker_novice_default" team_default = "1">
+	<specific_character id="bandit_novice_default" team_default = "1">
 		<name>Неизвестный бандит</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -16,7 +16,7 @@
 	</specific_character>
 
 <!---------------------------BANDIT GENERAL---------------------->
-	<specific_character id="stalker__general_default" team_default = "1">
+	<specific_character id="bandit_general_default" team_default = "1">
 		<name>Неизвестный бандит</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -30,7 +30,7 @@
 	</specific_character>
 
 <!---------------------------BANDIT VETERAN---------------------->
-	<specific_character id="stalker_veteran_default" team_default = "1">
+	<specific_character id="bandit_veteran_default" team_default = "1">
 		<name>Неизвестный бандит</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
@@ -44,7 +44,7 @@
 	</specific_character>
 
 <!---------------------------BANDIT MASTER----------------------->
-	<specific_character id="stalker_master_default" team_default = "1">
+	<specific_character id="bandit_master_default" team_default = "1">
 		<name>Неизвестный бандит</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>

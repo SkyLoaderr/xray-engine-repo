@@ -609,6 +609,9 @@
 			Name="npc_profile"
 			Filter="">
 			<File
+				RelativePath=".\character_desc_bandit.xml">
+			</File>
+			<File
 				RelativePath=".\character_desc_dolg.xml">
 			</File>
 			<File
