@@ -1,6 +1,8 @@
--- Используются:
+--   Используются:
 -- m_stalker_pes
 -- wpn_pes
+-- way_attack_point
+-- way_reload_point
 
 -- Имена звуковых файлов
 local snd_davay_davay =     [[scripts\Rolik\stalker_hound\davay-davay]]
@@ -44,6 +46,7 @@ function NPC:look(whom)
 	action(self.npc,
 	       look(look.fire_point, whom),
 	       anim(anim.danger),
+	       move(move.standing, move.stand, move.line, whom),
 	       cond(cond.time_end, time_infinite)
 	)
 	self.last_action = self.action_looking
@@ -51,6 +54,38 @@ end
 
 function NPC:is_looking()
 	return self.last_action == self.action_looking and self.npc:get_script() and self.npc:action()
+end
+
+function NPC:shoot_then_reload_actions(whom)
+	for i = 1, 30 do
+		--[[
+		action(self.npc,
+		       move(move.act_run, move.line, patrol("way_attack_point")),
+                       anim(anim.danger),
+		       cond(cond.move_end, time_infinite)
+		)
+		--]]
+		action(self.npc,
+                       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, whom),
+		       object(self.wpn, object.fire1),
+		       cond(cond.time_end, 100)
+		)
+		--[[
+		action(self.npc,
+		       move(move.act_walk_bkwd, move.line, patrol("way_reload_point")),
+                       anim(anim.danger),
+		       cond(cond.move_end, time_infinite)
+		)
+		--]]
+		action(self.npc,
+		       look(look.fire_point, whom),
+		       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, whom),
+		       object(self.wpn, object.reload),
+		       cond(cond.time_end, 2000)
+		)
+	end
 end
 
 function NPC:shoot(whom)
@@ -64,13 +99,16 @@ function NPC:shoot(whom)
 		self.npc:script(true, zmey_gameplay_2.script_name())
 	end
 
+	self:shoot_then_reload_actions(whom)
+	--[[
 	action(self.npc,
 	       look(look.fire_point, whom),
 	       anim(anim.danger),
-	       --move(move.standing, move.stand, move.line, whom),
+	       move(move.standing, move.stand, move.line, whom),
 	       object(self.wpn, object.fire1),
 	       cond(cond.time_end, time_infinite)
 	)
+	--]]
 	self.last_action = self.action_shooting
 end
 
@@ -94,7 +132,7 @@ function NPC:talk(to_whom, snd, bone)
 		       look(look.fire_point, to_whom),
 		       anim(anim.danger),
 		       sound(snd, if_then_else(bone ~= nil, bone, "bip01_head"), vector():set(0,0,0), vector():set(0,0,0), false),
-		       --move(move.standing, move.stand, move.line, to_whom),
+		       move(move.standing, move.stand, move.line, to_whom),
 		       cond(cond.sound_end)
 		       --cond  (cond.time_end, 5000)
 		)
@@ -103,6 +141,7 @@ function NPC:talk(to_whom, snd, bone)
 		action(self.npc,
 		       look(look.fire_point, to_whom),
 		       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, to_whom),
 		       cond(cond.time_end, time_infinite)
 		)
 	end
@@ -123,6 +162,7 @@ function NPC:talk_dialogue(to_whom)
 		action(self.npc,
 		       look(look.fire_point, to_whom),
 		       anim(anim.danger),
+		       move(move.standing, move.stand, move.line, to_whom),
 		       cond(cond.time_end, math.random(delay[1], delay[2]))
 		)
 	end
@@ -217,9 +257,19 @@ function Camper:__init(c_npc, c_enemy, dlg_nothing_happened_yet, dlg_see_enemy, 
 	
 	-- FINITE STATE MACHINE:
 	self.state = self.nothing_happened_yet 
+
+	-- Сразу взять монстра под скрипт:
+	if not self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(true, zmey_gameplay_2.script_name())
+	end
 end
 
 function Camper:nothing_happened_yet()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
 	printf("Camper: nothing_happened_yet: %d", game.time())
 	if self.c_npc.npc:see(self.c_enemy.npc) then
 		printf("Campler: nothing_happened_yet: npc sees enemy")
@@ -239,6 +289,11 @@ function Camper:nothing_happened_yet()
 end
 
 function Camper:see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
 	printf("Camper: see_enemy: %d", game.time())
 	if not self.c_npc.npc:see(self.c_enemy.npc) then
 		-- Если стреляет - хватит, он уже потерял его из виду:
@@ -266,6 +321,11 @@ function Camper:see_enemy()
 end
 
 function Camper:not_see_enemy()
+	if not self.c_npc.npc:alive() then
+		self.state = nil
+		return
+	end
+
 	printf("Camper: not_see_enemy: %d", game.time())
 	if self.c_npc.npc:see(self.c_enemy.npc) then
 		interrupt_action(self.c_npc.npc, zmey_gameplay_2.script_name())
@@ -295,6 +355,10 @@ function Camper:heartbeat()
 	if self.state ~= nil then
 		self:state()
 		return true
+	end
+
+	if self.c_npc.npc:get_script() then
+		self.c_npc.npc:script(false, zmey_gameplay_2.script_name())
 	end
 	return false
 end
@@ -358,8 +422,6 @@ function main ()
 	while walker:heartbeat() do
 		wait()
 	end
-
-	walker:script (true, zmey_gameplay_2.script_name())
 
 	debug_log(zmey_gameplay_2.script_name(), "SCRIPT STOPPED: zmey_gameplay_2")
 end
