@@ -1,7 +1,11 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <string_table>
-	<string id="esc_trader_how_to_talk">
+	<string id="tips_esc_trader_how_to_talk">
 		<text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
+	</string>
+
+	<string id="tips_esc_trader_quest_1">
+		<text>Найдите артефакт в месте, отмеченном на карте, и принесите торговцу.</text>
 	</string>
 
 	<string id="tutorial_trader_search_corpses">

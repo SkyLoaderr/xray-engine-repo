@@ -36,7 +36,7 @@ on_info = {=talking_or_tutor} mob_remark@talking ; обрывать фразу
 dialog_enabled = true
 ;meet_dialog = escape_trader_tutorial
 anim = idle
-tip = esc_trader_how_to_talk
+tip = tips_esc_trader_how_to_talk
 on_info = {=talking_or_tutor} mob_remark@talking
 on_signal = action_end | mob_remark@second_phrase
 
@@ -195,5 +195,11 @@ on_signal = action_end | mob_remark@talking_no_dlg %+tutorial_artefact_start%
 [mob_remark@talking_no_dlg]
 dialog_enabled = false
 anim = idle
+tip = tips_esc_trader_quest_1
+on_signal = action_end | mob_remark@talking_no_dlg2
+; HACK
+[mob_remark@talking_no_dlg2]
+dialog_enabled = false
+anim = idle_non_stop
 on_info = {+tutorial_end} mob_remark@talking
 

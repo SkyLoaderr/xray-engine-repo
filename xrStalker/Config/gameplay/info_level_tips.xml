@@ -2,8 +2,11 @@
 
 <game_information_portions>
     
-    <info_portion id="tips_esc_trader_about_pda">
-    </info_portion>
+	<info_portion id="tips_esc_trader_about_pda">
+	</info_portion>
+
+	<info_portion id="tips_esc_trader_quest_1">
+	</info_portion>
 
 	<info_portion id="tutorial_trader_search_corpses">
 	</info_portion>
@@ -14,11 +17,9 @@
 	<info_portion id="tutorial_trader_give_medikit">
 	</info_portion>
 
-	<info_portion id="esc_trader_how_to_talk">
+	<info_portion id="tips_esc_trader_how_to_talk">
 	</info_portion>
 
- 	<info_portion id="esc_trader_about_anomalies">
-	</info_portion>
  	<info_portion id="tips_esc_trader_about_anomalies">
 	</info_portion>
 
