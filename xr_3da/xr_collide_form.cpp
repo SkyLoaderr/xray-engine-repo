@@ -396,7 +396,8 @@ void CCF_Shape::ComputeBounds()
 			break;
 		}
 	}
-	s_box.getsphere(Sphere.P,Sphere.R);
+	s_box.getsphere						(Sphere.P,Sphere.R);
+	Owner()->clXFORM().transform_tiny	(Sphere.P);
 }
 
 BOOL CCF_Shape::Contact		( CObject* O )

@@ -90,7 +90,7 @@ public:
 
 	clQueryCollision				q_debug;
 	vector<Fmatrix>					dbg_E;
-	vector<pair<Fsphere,u32> >	dbg_S;
+	vector<pair<Fsphere,u32> >		dbg_S;
 	vector<Fvector2>				dbg_Slot;
 
 public:
