@@ -33,6 +33,8 @@ public:
 	void 				GroupObjects			(bool bUndo=true);
 	void 				CenterToGroup			();
     void 				AlignToObject			();
+
+    virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
 };
 //---------------------------------------------------------------------------
 #endif

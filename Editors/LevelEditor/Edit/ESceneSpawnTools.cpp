@@ -8,6 +8,7 @@
 #include "PropertiesListHelper.h"
 #include "Scene.h"
 #include "ChoseForm.h"
+#include "spawnpoint.h"
 
 static HMODULE hXRSE_FACTORY = 0;
 static LPCSTR xrse_factory_library	= "xrSE_Factory.dll";
@@ -88,6 +89,14 @@ ref_shader ESceneSpawnTools::GetIcon(shared_str name)
 	ShaderPairIt it = m_Icons.find(name);
 	if (it==m_Icons.end())	return CreateIcon(name);
 	else					return it->second;
+}
+//----------------------------------------------------
+
+CCustomObject* ESceneSpawnTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CSpawnPoint>(data,name);
+    O->ParentTools		= this;
+    return O;
 }
 //----------------------------------------------------
 

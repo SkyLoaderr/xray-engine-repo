@@ -6,6 +6,7 @@
 #include "FramePortal.h"
 #include "EScenePortalControls.h"
 #include "PropertiesListHelper.h"
+#include "portal.h"
 
 /* TODO 1 -oAlexMX -cTODO: Create tools as AI Map */
 
@@ -29,4 +30,13 @@ void EScenePortalTools::FillProp(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFlag32(items, PrepareKey(pref,"Common\\Draw Simple Model"),&m_Flags,			flDrawSimpleModel);
 	inherited::FillProp	(pref, items);
 }
+//----------------------------------------------------
+
+CCustomObject* EScenePortalTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CPortal>(data,name);
+    O->ParentTools		= this;
+    return O;
+}
+//----------------------------------------------------
 

@@ -8,7 +8,7 @@ class ESceneCustomMTools;
 
 struct SBeforeAppendCallbackParams{
 	LPVOID 		data;
-    AnsiString 	name_prefix;
+    std::string name_prefix;
     SBeforeAppendCallbackParams()
     {
     	data 		= 0;

@@ -49,4 +49,13 @@ void ESceneSectorTools::FillProp(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateFlag32(items, PrepareKey(pref,"Common\\Draw Solid"),&m_Flags,			flDrawSolid);
 	inherited::FillProp	(pref, items);
 }
+//----------------------------------------------------
+
+CCustomObject* ESceneSectorTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CSector>(data,name);
+    O->ParentTools		= this;
+    return O;
+}
+//----------------------------------------------------
 

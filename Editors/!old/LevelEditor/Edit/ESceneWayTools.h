@@ -27,6 +27,8 @@ public:
     virtual void		SaveSelection      		(IWriter&);
 
     virtual void    	OnActivate  			();
+
+    virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
 };
 //---------------------------------------------------------------------------
 #endif

@@ -79,7 +79,7 @@ public:
 
     virtual CCustomObject* FindObjectByName		(LPCSTR name, CCustomObject* pass=0);
 
-    CCustomObject*		CreateObject			(LPVOID data, LPCSTR name);
+    virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name)=0;
 };
 #endif // ESceneCustomOToolsH
 

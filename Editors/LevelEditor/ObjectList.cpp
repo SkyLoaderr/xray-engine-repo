@@ -190,6 +190,12 @@ void __fastcall TfrmObjectList::ebShowSelClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmObjectList::ebShowPropertiesClick(TObject *Sender)
+{
+	ExecCommand	(COMMAND_SHOW_PROPERTIES);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmObjectList::sbRefreshListClick(TObject *Sender)
 {
     if ((Scene->ObjCount()!=obj_count)||(cur_cls!=LTools->CurrentClassID()))
@@ -251,4 +257,5 @@ void __fastcall TfrmObjectList::tvItemsAfterSelectionChange(
     UpdateSelection();
 }
 //---------------------------------------------------------------------------
+
 

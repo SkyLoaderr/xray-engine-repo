@@ -21,6 +21,8 @@ public:
     IC int				RenderPriority			(){return -1; }
 
     virtual bool   		IsNeedSave				(){return false;}
+
+    virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name){return 0;};
 };
 //---------------------------------------------------------------------------
 #endif

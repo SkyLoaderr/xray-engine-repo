@@ -4,6 +4,7 @@
 #include "ESceneGlowTools.h"
 #include "PropertiesListHelper.h"
 #include "UI_LevelTools.h"
+#include "glow.h"
 
 void ESceneGlowTools::CreateControls()
 {
@@ -24,4 +25,12 @@ void ESceneGlowTools::FillProp(LPCSTR pref, PropItemVec& items)
 	inherited::FillProp	(pref, items);
 }
 //------------------------------------------------------------------------------
+
+CCustomObject* ESceneGlowTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CGlow>(data,name);
+    O->ParentTools		= this;
+    return O;
+}
+//----------------------------------------------------
 

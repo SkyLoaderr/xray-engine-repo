@@ -5,23 +5,15 @@
 #pragma hdrstop
 
 #include "spawnpoint.h"
-#include "xr_ini.h"
-#include "clsid_game.h"
-#include "d3dutils.h"
-#include "render.h"
-#include "gamefont.h"
-#include "bottombar.h"
-#include "scene.h"
-#include "SkeletonCustom.h"
 #include "ESceneSpawnTools.h"
-#include "ObjectAnimator.h"
-#include "xrMessages.h"
+#include "eshape.h"
+#include "xrServer_Objects_Abstract.h"
 #include "ui_main.h"
 #include "SkeletonAnimated.h"
-#include "xrServer_Objects_Abstract.h"
-
-#include "eshape.h"
-#include "sceneobject.h"
+#include "ObjectAnimator.h"
+#include "xrMessages.h"
+#include "scene.h"
+#include "d3dutils.h"
 
 #define SPAWNPOINT_VERSION   			0x0014
 //----------------------------------------------------

@@ -34,6 +34,7 @@ int __cdecl _CompareByDist( const void *a, const void *b)
 
 struct st_LevelOptions{
 	shared_str	m_FNLevelPath;
+    shared_str	m_LevelPrefix;
 	shared_str 	m_BOPText;
 
     b_params	m_BuildParams;
@@ -276,6 +277,7 @@ public:
     void			ShowSummaryInfo	();
 
     std::string		LevelPath		();
+    shared_str 		LevelPrefix		(){return m_LevelOp.m_LevelPrefix; }
 };
 
 //----------------------------------------------------

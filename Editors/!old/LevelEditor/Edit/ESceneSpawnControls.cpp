@@ -18,9 +18,11 @@ bool __fastcall TUI_ControlSpawnAdd::AppendCallback(SBeforeAppendCallbackParams*
     	ELog.DlgMsg(mtInformation,"Nothing selected.");
     	return false;
     }
-	p->name_prefix 	= ref_name;
-	p->data 		= p->name_prefix.c_str();
-    return !p->name_prefix.IsEmpty();
+	p->name_prefix 	= 	Scene->LevelPrefix().c_str();
+    p->name_prefix 	+= 	"_";
+	p->name_prefix 	+= 	ref_name;
+	p->data 		= (void*)ref_name;
+    return (0!=p->name_prefix.length());
 }
 
 bool __fastcall TUI_ControlSpawnAdd::Start(TShiftState Shift)

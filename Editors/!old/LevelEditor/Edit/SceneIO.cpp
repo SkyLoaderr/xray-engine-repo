@@ -32,6 +32,7 @@
 #define CHUNK_LO_VERSION		0x7801
 #define CHUNK_LO_NAMES 			0x7802
 #define CHUNK_LO_BOP		 	0x7803
+#define CHUNK_LO_PREFIX 		0x7804
 #define CHUNK_LO_BP_VERSION		0x7849
 #define CHUNK_BUILD_PARAMS		0x7850
 
@@ -47,6 +48,10 @@ void st_LevelOptions::Save( IWriter& F ){
 	F.w_stringZ	( m_FNLevelPath.c_str() );
     F.close_chunk();
 
+    F.open_chunk( CHUNK_LO_PREFIX );
+	F.w_stringZ	( m_LevelPrefix.c_str() );
+    F.close_chunk();
+    
     F.open_chunk( CHUNK_LO_BOP );
 	F.w_stringZ	( m_BOPText.c_str() );
     F.close_chunk();
@@ -71,6 +76,9 @@ void st_LevelOptions::Read(IReader& F)
 
     R_ASSERT(F.find_chunk(CHUNK_LO_NAMES));
     F.r_stringZ 	(m_FNLevelPath);
+
+    if (F.find_chunk(CHUNK_LO_PREFIX));
+    F.r_stringZ 	(m_LevelPrefix);
 
     R_ASSERT(F.find_chunk(CHUNK_LO_BOP));
     F.r_stringZ 	(m_BOPText); 

@@ -288,6 +288,15 @@ void ESceneLightTools::RemoveControls()
 }
 //----------------------------------------------------
 
+CCustomObject* ESceneLightTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CLight>(data,name);
+    O->ParentTools		= this;
+    return O;
+}
+//----------------------------------------------------
+
+
 
 /*
 	m_D3D.direction.setHP(PRotation.y,PRotation.x);

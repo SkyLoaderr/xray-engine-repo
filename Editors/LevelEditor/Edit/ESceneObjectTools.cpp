@@ -140,3 +140,11 @@ void ESceneObjectTools::OnFrame		()
     }
 }
 
+CCustomObject* ESceneObjectTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CSceneObject>(data,name);
+    O->ParentTools		= this;
+    return O;
+}
+//----------------------------------------------------
+

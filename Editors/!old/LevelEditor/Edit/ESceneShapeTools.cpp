@@ -5,6 +5,7 @@
 #include "ESceneShapeControls.h"
 #include "ui_leveltools.h"
 #include "FrameShape.h"
+#include "EShape.h"
 
 void ESceneShapeTools::CreateControls()
 {
@@ -18,6 +19,14 @@ void ESceneShapeTools::CreateControls()
 void ESceneShapeTools::RemoveControls()
 {
 	inherited::RemoveControls();
+}
+//----------------------------------------------------
+
+CCustomObject* ESceneShapeTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CEditShape>(data,name);
+    O->ParentTools		= this;
+    return O;
 }
 //----------------------------------------------------
 

@@ -30,6 +30,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TExtBtn *sbRefreshList;
 	TExtBtn *sbClose;
+	TExtBtn *ebShowProperties;
     void __fastcall sbCloseClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
     void __fastcall ebHideSelClick(TObject *Sender);
@@ -43,6 +44,7 @@ __published:	// IDE-managed Components
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
 	void __fastcall tvItemsAfterSelectionChange(TObject *Sender);
+	void __fastcall ebShowPropertiesClick(TObject *Sender);
 private:	// User declarations
     int obj_count;
     int cur_cls;

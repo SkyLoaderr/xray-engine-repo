@@ -25,6 +25,8 @@ public:
     virtual void   		Save            		(IWriter&);
     virtual bool		LoadSelection      		(IReader&);
     virtual void		SaveSelection      		(IWriter&);
+
+    virtual CCustomObject* CreateObject			(LPVOID data, LPCSTR name);
 };
 //---------------------------------------------------------------------------
 #endif

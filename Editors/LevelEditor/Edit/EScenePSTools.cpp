@@ -5,6 +5,7 @@
 #include "ui_leveltools.h"
 #include "EScenePSControls.h"
 #include "FramePS.h"
+#include "EParticlesObject.h"
 
 void EScenePSTools::CreateControls()
 {
@@ -18,6 +19,14 @@ void EScenePSTools::CreateControls()
 void EScenePSTools::RemoveControls()
 {
 	inherited::RemoveControls();
+}
+//----------------------------------------------------
+
+CCustomObject* EScenePSTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<EParticlesObject>(data,name);
+    O->ParentTools		= this;
+    return O;
 }
 //----------------------------------------------------
 

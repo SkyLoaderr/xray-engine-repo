@@ -77,3 +77,11 @@ void ESceneGroupTools::AlignToObject()
 }
 //----------------------------------------------------
 
+CCustomObject* ESceneGroupTools::CreateObject(LPVOID data, LPCSTR name)
+{
+	CCustomObject* O	= xr_new<CGroupObject>(data,name);
+    O->ParentTools		= this;
+    return O;
+}
+//----------------------------------------------------
+

@@ -33,33 +33,32 @@
       intermediate\ESceneAIMapTools_Render.obj 
       intermediate\ESceneCustomMTools.obj 
       intermediate\ESceneCustomMToolsControls.obj 
-      intermediate\ESceneCustomOTools.obj 
-      intermediate\ESceneCustomOToolsFactory.obj 
-      intermediate\ESceneCustomOToolsIO.obj intermediate\ESceneDummyTools.obj 
-      intermediate\ESceneGlowTools.obj intermediate\ESceneGroupTools.obj 
-      intermediate\ESceneLightTools.obj intermediate\ESceneLightToolsIO.obj 
-      intermediate\ESceneObjectTools.obj intermediate\EScenePortalTools.obj 
-      intermediate\EScenePSTools.obj intermediate\ESceneSectorTools.obj 
-      intermediate\ESceneShapeTools.obj intermediate\ESceneSoundEnvTools.obj 
-      intermediate\ESceneSoundSrcTools.obj intermediate\ESceneSpawnTools.obj 
-      intermediate\ESceneWayTools.obj intermediate\EShape.obj 
-      intermediate\ESound_Environment.obj intermediate\ESound_Source.obj 
-      intermediate\FS2.obj intermediate\Glow.obj intermediate\GroupObject.obj 
-      intermediate\portal.obj intermediate\portalutils.obj 
-      intermediate\scene.obj intermediate\Scene_Tools.obj 
-      intermediate\SceneIO.obj intermediate\SceneObject.obj 
-      intermediate\SceneObjectIO.obj intermediate\ScenePick.obj 
-      intermediate\SceneRender.obj intermediate\SceneSelection.obj 
-      intermediate\SceneSnap.obj intermediate\SceneSummaryInfo.obj 
-      intermediate\SceneUndo.obj intermediate\SceneUtil.obj 
-      intermediate\sector.obj intermediate\SoundManager_LE.obj 
-      intermediate\SpawnPoint.obj intermediate\ESceneAIMapControls.obj 
-      intermediate\ESceneControlsCustom.obj 
-      intermediate\ESceneObjectControls.obj intermediate\EScenePortalControls.obj 
-      intermediate\EScenePSControls.obj intermediate\ESceneSectorControls.obj 
-      intermediate\ESceneShapeControls.obj intermediate\ESceneSpawnControls.obj 
-      intermediate\ESceneWayControls.obj intermediate\DetailModel.obj 
-      intermediate\DetailManager.obj intermediate\DetailManager_CACHE.obj 
+      intermediate\ESceneCustomOTools.obj intermediate\ESceneCustomOToolsIO.obj 
+      intermediate\ESceneDummyTools.obj intermediate\ESceneGlowTools.obj 
+      intermediate\ESceneGroupTools.obj intermediate\ESceneLightTools.obj 
+      intermediate\ESceneLightToolsIO.obj intermediate\ESceneObjectTools.obj 
+      intermediate\EScenePortalTools.obj intermediate\EScenePSTools.obj 
+      intermediate\ESceneSectorTools.obj intermediate\ESceneShapeTools.obj 
+      intermediate\ESceneSoundEnvTools.obj intermediate\ESceneSoundSrcTools.obj 
+      intermediate\ESceneSpawnTools.obj intermediate\ESceneWayTools.obj 
+      intermediate\EShape.obj intermediate\ESound_Environment.obj 
+      intermediate\ESound_Source.obj intermediate\FS2.obj intermediate\Glow.obj 
+      intermediate\GroupObject.obj intermediate\portal.obj 
+      intermediate\portalutils.obj intermediate\scene.obj 
+      intermediate\Scene_Tools.obj intermediate\SceneIO.obj 
+      intermediate\SceneObject.obj intermediate\SceneObjectIO.obj 
+      intermediate\ScenePick.obj intermediate\SceneRender.obj 
+      intermediate\SceneSelection.obj intermediate\SceneSnap.obj 
+      intermediate\SceneSummaryInfo.obj intermediate\SceneUndo.obj 
+      intermediate\SceneUtil.obj intermediate\sector.obj 
+      intermediate\SoundManager_LE.obj intermediate\SpawnPoint.obj 
+      intermediate\ESceneAIMapControls.obj intermediate\ESceneControlsCustom.obj 
+      intermediate\ESceneObjectControls.obj 
+      intermediate\EScenePortalControls.obj intermediate\EScenePSControls.obj 
+      intermediate\ESceneSectorControls.obj intermediate\ESceneShapeControls.obj 
+      intermediate\ESceneSpawnControls.obj intermediate\ESceneWayControls.obj 
+      intermediate\DetailModel.obj intermediate\DetailManager.obj 
+      intermediate\DetailManager_CACHE.obj 
       intermediate\DetailManager_Decompress.obj 
       intermediate\DetailManager_soft.obj intermediate\DetailManager_VS.obj 
       intermediate\ESceneGlowToolsIO.obj intermediate\EScenePortalToolsIO.obj 
@@ -188,7 +187,6 @@
       <FILE FILENAME="Edit\ESceneCustomMTools.cpp" FORMNAME="" UNITNAME="ESceneCustomMTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneCustomMToolsControls.cpp" FORMNAME="" UNITNAME="ESceneCustomMToolsControls.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneCustomOTools.cpp" FORMNAME="" UNITNAME="ESceneCustomOTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Edit\ESceneCustomOToolsFactory.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsFactory.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneCustomOToolsIO.cpp" FORMNAME="" UNITNAME="ESceneCustomOToolsIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneDummyTools.cpp" FORMNAME="" UNITNAME="ESceneDummyTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Edit\ESceneGlowTools.cpp" FORMNAME="" UNITNAME="ESceneGlowTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
