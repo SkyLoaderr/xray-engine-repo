@@ -288,8 +288,6 @@ function load_states(gname, type)
 	end
 	if type == "bar_evil_veterans" then        
 		return function (gulag)
-				return 0
---[[
 				for k,v in gulag.Object do
 					enemy = v:best_enemy()
 					if enemy ~= nil then
@@ -308,7 +306,6 @@ function load_states(gname, type)
 				else
 					return 2
 				end
-]]			
 		end
 	end
 end
