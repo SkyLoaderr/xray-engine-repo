@@ -44,7 +44,7 @@ private:
 	CTexture*					t_ds2fade;
 private:
 	// Accum
-	Shader*						s_accum_direct_mask;
+	Shader*						s_accum_mask;
 	Shader*						s_accum_direct;
 	Shader*						s_accum_point;
 	SGeometry*					g_accum_point;
@@ -65,42 +65,43 @@ private:
 	Shader*						s_combine_dbg_Accumulator;
 	Shader*						s_combine;
 private:
-	float				param_blur;
-	float				param_gray;
-	float				param_duality_h;
-	float				param_duality_v;
-	float				param_noise;
-	float				param_noise_scale;
-	u32					param_noise_color;
-	float				param_noise_fps;
+	float						param_blur;
+	float						param_gray;
+	float						param_duality_h;
+	float						param_duality_v;
+	float						param_noise;
+	float						param_noise_scale;
+	u32							param_noise_color;
+	float						param_noise_fps;
 public:
-	void				OnDeviceCreate			();
-	void				OnDeviceDestroy			();
-	void				accum_point_geom_create	();
-	void				accum_point_geom_destroy();
+	void						OnDeviceCreate			();
+	void						OnDeviceDestroy			();
+	void						accum_point_geom_create	();
+	void						accum_point_geom_destroy();
 
-	void				phase_scene				();
-	void				phase_smap_direct		();
-	void				phase_smap_point		(u32 pls_phase);
-	void				phase_accumulator		();
-	void				shadow_direct			(u32 dls_phase);
-	void				accum_direct			();
-	void				accum_point_shadow		(light* L);
-	void				accum_point_unshadow	(light* L);
-	void				phase_bloom				();
-	void				phase_combine			();
+	void						phase_scene				();
+	void						phase_smap_direct		();
+	void						phase_smap_point		(u32 pls_phase);
+	void						phase_accumulator		();
+	void						phase_accumulator_init	();
+	void						shadow_direct			(u32 dls_phase);
+	void						accum_direct			();
+	void						accum_point_shadow		(light* L);
+	void						accum_point_unshadow	(light* L);
+	void						phase_bloom				();
+	void						phase_combine			();
 
-	virtual void		eff_load				(LPCSTR n)		{};
+	virtual void				eff_load				(LPCSTR n)		{};
 
-	virtual void		set_blur				(float f)		{ param_blur=f;						}
-	virtual void		set_gray				(float f)		{ param_gray=f;						}
-	virtual void		set_duality_h			(float f)		{ param_duality_h=_abs(f);			}
-	virtual void		set_duality_v			(float f)		{ param_duality_v=_abs(f);			}
-	virtual void		set_noise				(float f)		{ param_noise=f;					}
-	virtual void		set_noise_scale			(float f)		{ param_noise_scale=f;				}
-	virtual void		set_noise_color			(u32 f)			{ param_noise_color=f;				}
-	virtual void		set_noise_fps			(float f)		{ param_noise_fps=_abs(f)+EPS_S;	}
+	virtual void				set_blur				(float f)		{ param_blur=f;						}
+	virtual void				set_gray				(float f)		{ param_gray=f;						}
+	virtual void				set_duality_h			(float f)		{ param_duality_h=_abs(f);			}
+	virtual void				set_duality_v			(float f)		{ param_duality_v=_abs(f);			}
+	virtual void				set_noise				(float f)		{ param_noise=f;					}
+	virtual void				set_noise_scale			(float f)		{ param_noise_scale=f;				}
+	virtual void				set_noise_color			(u32 f)			{ param_noise_color=f;				}
+	virtual void				set_noise_fps			(float f)		{ param_noise_fps=_abs(f)+EPS_S;	}
 
-	virtual u32			get_width				()				{ return dwWidth;			}
-	virtual u32			get_height				()				{ return dwHeight;			}
+	virtual u32					get_width				()				{ return dwWidth;			}
+	virtual u32					get_height				()				{ return dwHeight;			}
 };
