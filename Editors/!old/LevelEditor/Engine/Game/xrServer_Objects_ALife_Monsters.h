@@ -146,7 +146,6 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	float							m_fHitPower;
 	ALife::EHitType					m_tHitType;
 	svector<float,ALife::eHitTypeMax>	m_fpImmunityFactors;
-	ref_str							m_ini_string;
 	
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	virtual							~CSE_ALifeMonsterAbstract();

@@ -74,7 +74,7 @@
 // 55 - CSE_AlifeItemCar->CSE_ALifeCar	heritage changed
 // 56 - CSE_ALifeObjectHangingLamp		restore removed props + appended some new
 // 57 - CSE_ALifeObjectPhysic			appended with source_id
-// 58 - CSE_ALifeMonsterAbstract		appended with ini_string
+// 58 - CSE_ALifeObject					appended with ini_string
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

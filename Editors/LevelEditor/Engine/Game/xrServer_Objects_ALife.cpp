@@ -360,6 +360,7 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
 	tNetPacket.w_string			(*m_caGroupControl?*m_caGroupControl:"");
 	tNetPacket.w_u32			(m_flags.get());
+	tNetPacket.w_string			(m_ini_string);
 }
 
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
@@ -396,6 +397,8 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 49) {
 		tNetPacket.r_u32		(m_flags.flags);
 	}
+	if (m_wVersion > 57)
+		tNetPacket.r_string		(m_ini_string);
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)
@@ -420,6 +423,7 @@ void __fastcall	CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp				(pref, items);
+	PHelper::CreateRText			(pref,items,"custom data",m_ini_string);
 	PHelper.CreateFloat				(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
     RChooseValue* V;
     V=PHelper.CreateChoose			(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);

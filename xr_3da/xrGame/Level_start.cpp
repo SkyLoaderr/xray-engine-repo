@@ -20,27 +20,27 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		// Connect
 		Server					= xr_new<xrServer>();
 
+		if (!strstr(m_caServerOptions,"/alife")) {
+			string64			l_name;
+			strcpy				(l_name,m_caServerOptions);
+			// Activate level
+			if (strchr(l_name,'/'))
+				*strchr(l_name,'/')	= 0;
 
-		string64				l_name;
-		strcpy					(l_name,m_caServerOptions);
-		// Activate level
-		if (strchr(l_name,'/'))
-			*strchr(l_name,'/')	= 0;
+			int					id = pApp->Level_ID(l_name);
 
-		int						id = pApp->Level_ID(l_name);
-		
-		if (id<0) {
-			pApp->LoadEnd		();
-			Log					("Can't find level: ",l_name);
-			return				FALSE;
+			if (id<0) {
+				pApp->LoadEnd	();
+				Log				("Can't find level: ",l_name);
+				return			FALSE;
+			}
+			pApp->Level_Set		(id);
 		}
-		pApp->Level_Set			(id);
-
+		
 		Server->Connect			(m_caServerOptions);	
 		Server->SLS_Default		();
 		
 		strcpy					(m_caServerOptions,op_server);
-
 	}
 
 	//make Client Name if options doesn't have it

@@ -558,14 +558,11 @@ CSE_ALifeMonsterAbstract::~CSE_ALifeMonsterAbstract()
 void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
-	tNetPacket.w_string			(m_ini_string);
 }
 
 void CSE_ALifeMonsterAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
-	if (m_wVersion > 57)
-		tNetPacket.r_string		(m_ini_string);
 }
 
 void CSE_ALifeMonsterAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
@@ -594,7 +591,6 @@ void CSE_ALifeMonsterAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 void CSE_ALifeMonsterAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
-	PHelper::CreateRText		(pref,items,"custom data",m_ini_string);
 }
 #endif
 

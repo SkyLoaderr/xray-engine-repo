@@ -126,6 +126,8 @@ public:
 	u32								m_tNodeID;
 	ref_str							m_caGroupControl;
 	flags32							m_flags;							
+	ref_str							m_ini_string;
+
 #ifdef _EDITOR
 	void __fastcall					OnChooseGroupControl(ChooseItemVec& lst);
 #endif
