@@ -218,3 +218,23 @@ function kozel (wounded, player)
     if good < 0 then good = 0 end
     wounded:set_goodwill (good, player)
 end
+
+
+------------------------------------------------------------------------------------
+-- escape factory combat
+------------------------------------------------------------------------------------
+function dont_have_a_vodka (player, stalker)
+    return player:object ("vodka") == nil
+end
+
+function have_a_vodka (player, stalker)
+    return player:object ("vodka") ~= nil
+end
+
+function end_of_factory (player, stalker)
+    
+end
+
+function transfer_vodka (stalker, player)
+   player:transfer_item (player:object ("vodka"), stalker) 
+end
