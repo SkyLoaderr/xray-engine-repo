@@ -99,7 +99,8 @@
       intermediate\TextForm.obj intermediate\PropertiesWayPoint.obj 
       intermediate\CustomObjectLE.obj intermediate\Blender_Blur.obj 
       intermediate\Blender_Model.obj intermediate\cpuid.obj 
-      intermediate\_math.obj intermediate\xrSkin1W.obj"/>
+      intermediate\_math.obj intermediate\xrSkin1W.obj 
+      intermediate\ExportObjectOGF.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -122,7 +123,7 @@
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations"/>
+    <PATHCPP value=".;edit;edit;edit;edit;edit;edit;edit;EDIT;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;engine;engine;edit;engine;engine;engine;engine;engine;edit;edit;engine;edit;engine;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;edit;engine;edit;edit;edit;engine;engine;engine;engine;edit;engine;engine;engine;engine;lib\DX;engine;edit;edit;edit;engine;Engine;Engine;edit;Engine;Engine;Engine;Engine;Engine;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine;edit;edit;Engine;edit;Engine\Blenders;edit;edit;edit;Engine;edit;Engine\Blenders;Engine\Blenders;Engine\Blenders;Engine;Engine\Blenders;edit;Engine;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;Engine\Animations;edit;edit;edit;Engine;edit;edit;edit;Engine\Blenders;Engine\Blenders;edit;Engine\Blenders;Engine\Blenders;Engine;Engine;Engine\Animations;edit"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -374,6 +375,7 @@
       <FILE FILENAME="Engine\cpuid.cpp" FORMNAME="" UNITNAME="cpuid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\_math.cpp" FORMNAME="" UNITNAME="_math.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
