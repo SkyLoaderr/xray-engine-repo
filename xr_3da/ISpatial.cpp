@@ -28,7 +28,10 @@ ISpatial::ISpatial			(void)
 	spatial.node_ptr		= NULL;
 	spatial.sector			= NULL;
 }
-
+ISpatial::~ISpatial			(void)
+{
+	spatial_unregister		();
+}
 BOOL	ISpatial::spatial_inside()
 {
 	float	dr	= -(- spatial.node_radius + spatial.radius);
