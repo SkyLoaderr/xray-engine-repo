@@ -272,6 +272,17 @@ namespace PAPI{
 
         _METHODS;
 	};
+
+    struct PATurbulence : public ParticleAction
+    {
+		float frequency;	// Frequency
+		float octaves;		// Octaves
+		float magnitude;	// Scale for rotation around axis
+		float epsilon;		// Softening parameter
+        pDomain movement;	// Movement
+
+        _METHODS;
+    };
 };
 
 //---------------------------------------------------------------------------

@@ -8,7 +8,7 @@
       Intermediate\particle_core.obj Intermediate\particle_actions.obj 
       Intermediate\particle_effect.obj 
       Intermediate\particle_actions_collection.obj 
-      Intermediate\particle_actions_collection_io.obj"/>
+      Intermediate\particle_actions_collection_io.obj Intermediate\noise.obj"/>
     <RESFILES value=""/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -63,6 +63,7 @@
       <FILE FILENAME="particle_effect.cpp" FORMNAME="" UNITNAME="particle_effect" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="particle_actions_collection.cpp" FORMNAME="" UNITNAME="particle_actions_collection" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="particle_actions_collection_io.cpp" FORMNAME="" UNITNAME="particle_actions_collection_io" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="noise.cpp" FORMNAME="" UNITNAME="noise" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

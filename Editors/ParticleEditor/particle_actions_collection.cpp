@@ -1569,4 +1569,53 @@ void PAVortex::Transform(const Fmatrix& m)
 }
 //-------------------------------------------------------------------------------------------------
 
- 
+// Turbulence
+#include "noise.h"
+void PATurbulence::Execute(ParticleEffect *effect, float dt)
+{
+    pVector pV;
+    pVector vX;
+    pVector vY;
+    pVector vZ;
+    for(u32 i = 0; i < effect->p_count; i++)
+    {
+        Particle &m = effect->particles[i];
+
+        pV.x = m.pos.x;// + ((float)g_frame*movement.A0());
+        pV.y = m.pos.y;// + ((float)g_frame*movement.A1());
+        pV.z = m.pos.z;// + ((float)g_frame*movement.A2());
+
+        vX.x = pV.x+epsilon;
+        vX.y = pV.y;
+        vX.z = pV.z;
+
+        vY.x = pV.x;
+        vY.y = pV.y+epsilon;
+        vY.z = pV.z;
+
+        vZ.x = pV.x;
+        vZ.y = pV.y;
+        vZ.z = pV.z+epsilon;
+
+        float d  = 	fractalsum3(pV, frequency, octaves);
+        float dx = 	(fractalsum3(vX, frequency, octaves) - d)*(float)magnitude;
+        float dy = 	(fractalsum3(vY, frequency, octaves) - d)*(float)magnitude;
+        float dz = 	(fractalsum3(vZ, frequency, octaves) - d)*(float)magnitude;
+
+        float velMagOrig = _sqrt( m.vel.x*m.vel.x + m.vel.y*m.vel.y + m.vel.z*m.vel.z );
+
+        m.vel.x += dx;
+        m.vel.y += dy;
+        m.vel.z += dz;
+
+        float	velMagNow = sqrt( m.vel.x*m.vel.x + m.vel.y*m.vel.y + m.vel.z*m.vel.z );
+        float	valMagScale = velMagOrig/velMagNow;
+        m.vel.x *= valMagScale;
+        m.vel.y *= valMagScale;
+        m.vel.z *= valMagScale;
+	}
+}
+void PATurbulence::Transform(const Fmatrix& m){}
+//-------------------------------------------------------------------------------------------------
+
+  

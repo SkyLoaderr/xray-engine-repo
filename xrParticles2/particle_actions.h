@@ -9,7 +9,6 @@ namespace PAPI{
 	struct ParticleAction
 	{
 		enum{
-			ALLOW_TRANSLATE	= (1<<0),
 			ALLOW_ROTATE	= (1<<1)
 		};
 		Flags32			m_Flags;
