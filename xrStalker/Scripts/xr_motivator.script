@@ -14,6 +14,17 @@ class "action_base1" (action_base)
 function action_base1:__init(value) super(value)
 end
 
+
+----------------------------------------------------------------------------------------------------------------------
+-- Evaluators
+----------------------------------------------------------------------------------------------------------------------
+class "evaluator_script" (property_evaluator)
+function evaluator_script:__init() super()
+end
+function evaluator_script:evaluate()
+	return false
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 --Motivations
 ----------------------------------------------------------------------------------------------------------------------
@@ -421,7 +432,6 @@ xr_motivator.storage[self.object:id()].reactions = {
 		end
 	end
 
-
     --Evaluators
     manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[self.object:id()].tradeseller))
 
@@ -447,19 +457,41 @@ xr_motivator.storage[self.object:id()].reactions = {
     -- Bind other scripts
     self.object:disable_talk()
 
-    xr_state.add_to_binder(self.object)
-    xr_reactions.add_to_binder(self.object)
-    xr_patrol.add_to_binder (self.object)
-    xr_follower.add_to_binder (self.object)
-    xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
-    xr_meet.add_to_binder(self.object)
-    xr_kamp.add_to_binder(self.object)
-    xr_commander.add_to_binder(self.object)
-    xr_guard.add_to_binder(self.object)
-    xr_camper2.add_to_binder(self.object)
-    xr_sleeper.add_to_binder(self.object)
-    xr_robbers.add_to_binder(self.object)
-    xr_scout.add_to_binder(self.object)
+	-- SCRIPT ACTION PLANNER
+
+	properties["scripts"] = xr_evaluators_id.script_evaluator
+	manager:add_evaluator (properties["scripts"], 		this.evaluator_script		())		
+
+	local action_pl = planner_action(self.object, "script_action")
+	action_pl:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action_pl:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action_pl:add_precondition		(world_property(properties["scripts"],		true))
+	action_pl:add_effect 			(world_property(properties["scripts"],		false))
+	local act_pl = cast_planner_to_action(action_pl)
+	if act_pl == nil then
+		printf("ERROR: can't cast planner to action")
+	else
+		manager:add_action (xr_actions_id.action_script, act_pl)
+	end
+
+--	action = manager:action (stalker_ids.action_puzzle_solver)	
+--	action:add_precondition			(world_property(properties["scripts"],		false))
+
+
+    --xr_state.add_to_binder(self.object)
+    --xr_reactions.add_to_binder(self.object)
+    --xr_position.add_to_binder(self.object)
+--    xr_patrol.add_to_binder (self.object)
+--    xr_follower.add_to_binder (self.object)
+--    xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
+--    xr_meet.add_to_binder(self.object)
+    --xr_kamp.add_to_binder(self.object)
+--    xr_commander.add_to_binder(self.object)
+--    xr_guard.add_to_binder(self.object)
+--    xr_camper2.add_to_binder(self.object)
+--    xr_sleeper.add_to_binder(self.object)
+--    xr_robbers.add_to_binder(self.object)
+--    xr_scout.add_to_binder(self.object)
 --    xr_trivial.add_novice     (self.object)
 --    xr_trivial.add_novice2    (self.object)
 --    xr_trivial.add_novice3    (self.object)
