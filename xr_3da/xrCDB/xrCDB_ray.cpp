@@ -22,6 +22,7 @@ public:
 	{
 		dest		= CL;
 		tris		= T;
+		verts		= V;
 		rC.set		(C);
 		rD.set		(D);
 		rRange		= R;
@@ -48,13 +49,13 @@ public:
 		edge1.sub			(p1, p0);
 		edge2.sub			(p2, p0);
 		// begin calculating determinant - also used to calculate U parameter
-		pvec.crossproduct	(rD, edge2);
 		// if determinant is near zero, ray lies in plane of triangle
+		pvec.crossproduct	(rD, edge2);
 		det = edge1.dotproduct(pvec);
 		if (bCull)
 		{						
 			if (det < EPS)  return false;
-			tvec.sub(rC, p0]);						// calculate distance from vert0 to ray origin
+			tvec.sub(rC, p0);						// calculate distance from vert0 to ray origin
 			u = tvec.dotproduct(pvec);					// calculate U parameter and test bounds
 			if (u < 0.f || u > det) return false;
 			qvec.crossproduct(tvec, edge1);				// prepare to test V parameter
@@ -70,7 +71,7 @@ public:
 		{			
 			if (det > -EPS && det < EPS) return false;
 			inv_det = 1.0f / det;
-			tvec.sub(rC, p0]);						// calculate distance from vert0 to ray origin
+			tvec.sub(rC, p0);						// calculate distance from vert0 to ray origin
 			u = tvec.dotproduct(pvec)*inv_det;			// calculate U parameter and test bounds
 			if (u < 0.0f || u > 1.0f)    return false;
 			qvec.crossproduct(tvec, edge1);				// prepare to test V parameter
