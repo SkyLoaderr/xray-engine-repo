@@ -28,16 +28,15 @@ enum EAxis{
 
 class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 {
-	CEditableObject*	m_EditObject;
-    bool				m_bCustomEditObject;
     EAction 			m_Action;
 
     void				RegisterTools		();
 public:
-    TProperties*		m_Props;
+    TProperties*		m_ItemProps;
+    TProperties*		m_PreviewProps;
 
-    DEFINE_VECTOR		(ISHTools*,ToolsVec,ToolsIt);
-    ToolsVec			m_Tools;
+    DEFINE_MAP			(EToolsID,ISHTools*,ToolsMap,ToolsPairIt);
+    ToolsMap			m_Tools;
     ISHTools*			m_Current;
     ISHTools*			Current				(){return m_Current;}
 public:
@@ -60,15 +59,11 @@ public:
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
 
-    void				SelectPreviewObject	(int p);
-    void				ResetPreviewObject	();
-
     void				GetCurrentFog		(u32& fog_color, float& s_fog, float& e_fog);
     LPCSTR				GetInfo				();
+    LPCSTR				CurrentToolsName	();
 
     void				OnChangeEditor		(ISHTools* tools);
-
-    void				UpdateObjectShader	();
 
     void				OnShowHint			(AStringVec& ss);
 

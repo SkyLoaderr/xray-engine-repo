@@ -53,23 +53,21 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
 {
 	DEFINE_INI(fsStorage);
 
-    InplaceEngineEdit->Editor->Color		= TColor(0x00A0A0A0);
-    InplaceEngineEdit->Editor->BorderStyle	= bsNone;
-    InplaceCompilerEdit->Editor->Color		= TColor(0x00A0A0A0);
-    InplaceCompilerEdit->Editor->BorderStyle= bsNone;
-    frmMain->paLeftBar->Width 	= paLeftBar->Width+2;
-    frmMain->sbToolsMin->Left 	= paLeftBar->Width-frmMain->sbToolsMin->Width-3;
-    bFocusedAffected 			= true;
+    InplaceEdit->Editor->Color			= TColor(0x00A0A0A0);
+    InplaceEdit->Editor->BorderStyle	= bsNone;
+    frmMain->paLeftBar->Width 			= paLeftBar->Width+2;
+    frmMain->sbToolsMin->Left 			= paLeftBar->Width-frmMain->sbToolsMin->Width-3;
+    bFocusedAffected 					= true;
     
     // events
-    tvEngine_->OnStartDrag 		= FHelper.StartDrag;
-    tvEngine_->OnDragOver 		= FHelper.DragOver;
-    tvCompiler_->OnStartDrag 	= FHelper.StartDrag;
-    tvCompiler_->OnDragOver 	= FHelper.DragOver;
-    tvMtl_->OnStartDrag 		= FHelper.StartDrag;
-    tvMtl_->OnDragOver 			= FHelper.DragOver;
-    tvSoundEnv_->OnStartDrag	= FHelper.StartDrag;
-    tvSoundEnv_->OnDragOver 	= FHelper.DragOver;
+    tvEngine->OnStartDrag 	= FHelper.StartDrag;
+    tvEngine->OnDragOver 	= FHelper.DragOver;
+    tvCompiler->OnStartDrag = FHelper.StartDrag;
+    tvCompiler->OnDragOver 	= FHelper.DragOver;
+    tvMtl->OnStartDrag 		= FHelper.StartDrag;
+    tvMtl->OnDragOver 		= FHelper.DragOver;
+    tvSoundEnv->OnStartDrag	= FHelper.StartDrag;
+    tvSoundEnv->OnDragOver 	= FHelper.DragOver;
 }
 //---------------------------------------------------------------------------
 
@@ -137,17 +135,17 @@ void __fastcall TfraLeftBar::ebResetAnimationClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineShaderFileMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::ebCustomFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FHelper.ShowPPMenu(pmEngineShadersFile,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmCustomFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebSceneCommandsMouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::ebEngineFileMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-	FHelper.ShowPPMenu(pmPreviewObject,dynamic_cast<TExtBtn*>(Sender));
+	FHelper.ShowPPMenu(pmEngineShadersFile,dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 
@@ -158,50 +156,10 @@ void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvEngine_MouseDown(TObject *Sender,
+void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	if (Shift.Contains(ssRight)&&Tools.Current()->PopupMenu()) FHelper.ShowPPMenu(Tools.Current()->PopupMenu(),dynamic_cast<TExtBtn*>(Sender));
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
-{
-	UI.Command( COMMAND_SELECT_PREVIEW_OBJ, dynamic_cast<TMenuItem*>(Sender)->Tag );
-}
-//---------------------------------------------------------------------------
-/*
-void TfraLeftBar::InitPalette(TemplateVec& lst)
-{
-	for (TemplateIt it=lst.begin(); it!=lst.end(); it++){
-    	TMenuItem* mi= xr_new<TMenuItem>((TComponent*)0);
-		mi->Caption = (*it)->getComment();
-		mi->Tag     = int(*it);
-		mi->OnClick = TemplateClick;
-		pmTemplateList->Items->Add(mi);
-	}
-}
-*/
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebEngineShaderCreateMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	FHelper.ShowPPMenu(pmTemplateList,dynamic_cast<TExtBtn*>(Sender));
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::TemplateClick(TObject *Sender)
-{
-/*
-	TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
-    AnsiString folder;
-	FHelper.MakeName(tvEngine_->Selected,0,folder,true);
-    CBlender* B = Tools.SEngine.AppendBlender(((CBlender*)mi->Tag)->getDescription().CLS,folder.c_str(),0);
-	Tools.SEngine.ResetShaders(true);
-	Tools.SEngine.SetCurrentBlender(B);
-	Tools.SEngine.Modified();
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -257,26 +215,7 @@ void __fastcall TfraLeftBar::tvItemFocused(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::ebEngineShaderCloneClick(TObject *Sender)
-{
-//.
-/*
-    TElTreeItem* pNode = tvEngine->Selected;
-    if (pNode&&FHelper.IsObject(pNode)){
-		AnsiString full_name;
-		FHelper.MakeName(pNode,0,full_name,false);
-        CBlender* B=Tools.SEngine.CloneBlender(full_name.c_str());
-		Tools.SEngine.ResetShaders(true);
-	    Tools.SEngine.SetCurrentBlender(B);
-		Tools.SEngine.Modified();
-    }else{
-		ELog.DlgMsg(mtInformation, "At first select item.");
-    }
-*/
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::tvEngine_KeyDown(TObject *Sender, WORD &Key,
+void __fastcall TfraLeftBar::tvEngineKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
    	if (Key==VK_DELETE) ebRemoveItemClick(Sender);
@@ -292,15 +231,7 @@ void __fastcall TfraLeftBar::Rename1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::InplaceEditValidateResult(TObject *Sender, bool &InputValid)
 {
-//.
-/*
-	TElTreeInplaceAdvancedEdit* IE=0;
-    switch(Tools.Current()->ID()){
-    case aeEngine: 		IE=InplaceEngineEdit; 	break;
-    case aeCompiler: 	IE=InplaceCompilerEdit;	break;
-    case aeMtl:			IE=InplaceMaterialEdit;	break;
-    case aeSoundEnv:	IE=InplaceSoundEnvEdit;	break;
-    }
+	TElTreeInplaceAdvancedEdit* IE=InplaceEdit;
 
     AnsiString new_text	= AnsiString(IE->Editor->Text).LowerCase();
     IE->Editor->Text 	= new_text;
@@ -326,7 +257,6 @@ void __fastcall TfraLeftBar::InplaceEditValidateResult(TObject *Sender, bool &In
     }
     Tools.Current()->View()->Selected=node;
 	Tools.Current()->Modified();
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -334,60 +264,14 @@ void __fastcall TfraLeftBar::ebCreateItemClick(TObject *Sender)
 {
     AnsiString folder;
 	FHelper.MakeName(Tools.Current()->View()->Selected,0,folder,true);
-	Tools.Current()->SetCurrentItem(Tools.Current()->AppendItem(folder.c_str(),0));
-	Tools.Current()->Modified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebMaterialPairCreateClick(TObject *Sender)
-{
-//.
-/*    LPCSTR M=0;
-    int cnt = TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M,2);
-    if (2==cnt){
-    	int mtl0,mtl1;
-    	GMLib.MtlNameToMtlPair(M,mtl0,mtl1);
-		Tools.SMtl.SetCurrentItem(Tools.SMtlPair.AppendItem(mtl0,mtl1,0));
-		Tools.SMtl.Modified();
-    }else{
-    	if (1==cnt) ELog.DlgMsg(mtError,"Select 2 material.");
-    }
-*/
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::ebMaterialPairCloneClick(TObject *Sender)
-{
-//.
-/*
-    TElTreeItem* pNode = tvMaterialPair->Selected;
-    if (pNode&&FHelper.IsObject(pNode)){
-    	// find parent
-		AnsiString full_name;
-		FHelper.MakeName(pNode,0,full_name,false);
-        SGameMtlPair* parent = GMLib.GetMaterialPair(full_name.c_str());
-        // select pair
-        LPCSTR M=0;
-        int cnt = TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M,2);
-        if (2==cnt){
-            int mtl0,mtl1;
-            GMLib.MtlNameToMtlPair(M,mtl0,mtl1);
-            Tools.SMaterial.SetCurrentMaterialPair(Tools.SMaterial.AppendMaterialPair(mtl0,mtl1,parent));
-            Tools.SMaterial.Modified();
-        }else{
-            if (1==cnt) ELog.DlgMsg(mtError,"Select 2 material.");
-        }
-
-    }else{
-		ELog.DlgMsg(mtInformation, "At first select item.");
-    }
-*/
+    Tools.Current()->AppendItem(folder.c_str(),0);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::pcShadersChange(TObject *Sender)
 {
 	Tools.OnChangeEditor(Tools.FindTools(pcShaders->ActivePage));
+    InplaceEdit->Tree = Tools.Current()->View();
 }
 //---------------------------------------------------------------------------
 
@@ -407,8 +291,7 @@ void __fastcall TfraLeftBar::ebCloneItemClick(TObject *Sender)
     if (pNode&&FHelper.IsObject(pNode)){
 		AnsiString full_name;
 		FHelper.MakeName(pNode,0,full_name,false);
-		Tools.Current()->SetCurrentItem(Tools.Current()->AppendItem(0,full_name.c_str()));
-		Tools.Current()->Modified();
+        Tools.Current()->AppendItem(0,full_name.c_str());
     }else{
 		ELog.DlgMsg(mtInformation, "At first select item.");
     }
@@ -431,13 +314,15 @@ void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
 
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
-	Tools.m_Props->RestoreParams(fsStorage);
+	Tools.m_ItemProps->RestoreParams(fsStorage);
+	Tools.m_PreviewProps->RestoreParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::fsStorageSavePlacement(TObject *Sender)
 {
-	Tools.m_Props->SaveParams(fsStorage);
+	Tools.m_ItemProps->SaveParams(fsStorage);
+	Tools.m_PreviewProps->SaveParams(fsStorage);
 }
 //---------------------------------------------------------------------------
 
@@ -456,12 +341,14 @@ void __fastcall TfraLeftBar::Refresh1Click(TObject *Sender)
 void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 {
 	UI.Command( COMMAND_CHECK_TEXTURES );
-
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
+#include "SHEngineTools.h"
+void __fastcall TfraLeftBar::PreviewObjClick(TObject *Sender)
+{
+	CSHEngineTools* tools = (CSHEngineTools*)Tools.FindTools(aeEngine); R_ASSERT(tools);
+    tools->PreviewObjClick(Sender);
+}
+//---------------------------------------------------------------------------
 

@@ -9,20 +9,12 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-CSHCompilerTools::CSHCompilerTools(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props):ISHTools(id,tv,mn,sheet,props)
+CSHCompilerTools::CSHCompilerTools(ISHInit& init):ISHTools(init)
 {
 	m_Shader		= 0;
 }
 
 CSHCompilerTools::~CSHCompilerTools(){
-}
-//---------------------------------------------------------------------------
-
-void CSHCompilerTools::Modified()
-{
-	m_bModified=TRUE;
-	UI.Command(COMMAND_UPDATE_CAPTION);
-    ApplyChanges();
 }
 //---------------------------------------------------------------------------
 
@@ -42,31 +34,18 @@ void CSHCompilerTools::OnDestroy()
     m_bModified 		= FALSE;
 }
 
-bool CSHCompilerTools::IfModified()
-{
-    if (m_bModified){
-        int mr = ELog.DlgMsg(mtConfirmation, "The shaders has been modified.\nDo you want to save your changes?");
-        switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
-        case mrNo: m_bModified = FALSE; break;
-        case mrCancel: return false;
-        }
-    }
-    return true;
-}
-
-void CSHCompilerTools::ApplyChanges()
+void CSHCompilerTools::ApplyChanges(bool bForced)
 {
 }
 
 void CSHCompilerTools::FillItemList()
 {
-    tvView->IsUpdating 		= true;
+    View()->IsUpdating 		= true;
 	ViewClearItemList();
     Shader_xrLCVec& lst = m_Library.Library();
     for (Shader_xrLCIt it=lst.begin(); it!=lst.end(); it++)
         ViewAddItem(it->Name);
-    tvView->IsUpdating 		= false;
+    View()->IsUpdating 		= false;
 }
 
 void CSHCompilerTools::Reload()
@@ -100,7 +79,7 @@ void CSHCompilerTools::Save()
 {
     ApplyChanges			();
     AnsiString name;
-    FHelper.MakeFullName	(tvView->Selected,0,name);
+    FHelper.MakeFullName	(View()->Selected,0,name);
 	ResetCurrentItem		();
 	m_bLockUpdate			= TRUE;
 
@@ -143,6 +122,8 @@ LPCSTR CSHCompilerTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     Shader_xrLC* S 			= m_Library.Append(parent);
     strcpy					(S->Name,new_name);
 	ViewAddItem				(S->Name);
+	SetCurrentItem			(S->Name);
+	Modified				();
     return S->Name;
 }
 

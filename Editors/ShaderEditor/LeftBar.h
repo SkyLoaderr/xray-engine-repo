@@ -29,28 +29,18 @@ __published:	// IDE-managed Components
 	TFormStorage *fsStorage;
 	TLabel *APHeadLabel2;
 	TExtBtn *ebSceneMin;
-	TExtBtn *ebSceneCommands;
 	TExtBtn *ebPreferences;
 	TMxPopupMenu *pmEngineShadersFile;
 	TMenuItem *Save1;
 	TMenuItem *Reload1;
-	TMxPopupMenu *pmPreviewObject;
-	TMenuItem *Plane1;
 	TPanel *paEngineShaders;
 	TLabel *Label1;
-	TMenuItem *Box1;
-	TMenuItem *Ball1;
-	TMenuItem *Teapot1;
-	TMenuItem *Custom1;
-	TMenuItem *N3;
 	TMxPopupMenu *pmListCommand;
 	TMenuItem *ExpandAll1;
 	TMenuItem *CollapseAll1;
 	TMenuItem *N1;
 	TMenuItem *CreateFolder1;
-	TMxPopupMenu *pmTemplateList;
 	TMenuItem *Rename1;
-	TElTreeInplaceAdvancedEdit *InplaceEngineEdit;
 	TMenuItem *N2;
 	TMenuItem *Import1;
 	TMenuItem *Export1;
@@ -61,8 +51,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebEngineShaderRemove;
 	TExtBtn *ebEngineShaderClone;
 	TExtBtn *ebEngineShaderFile;
-	TExtBtn *ebEngineShaderCreate;
-	TElTree *tvEngine_;
+	TElTree *tvEngine;
 	TElTabSheet *tsCompiler;
 	TPanel *Panel4;
 	TExtBtn *ebCompilerShaderRemove;
@@ -70,8 +59,8 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn4;
 	TExtBtn *ebCShaderCreate;
 	TBevel *Bevel3;
-	TElTreeInplaceAdvancedEdit *InplaceCompilerEdit;
-	TElTree *tvCompiler_;
+	TElTreeInplaceAdvancedEdit *InplaceEdit;
+	TElTree *tvCompiler;
 	TPanel *paShaderProperties;
 	TLabel *Label6;
 	TExtBtn *ExtBtn5;
@@ -86,7 +75,6 @@ __published:	// IDE-managed Components
 	TMenuItem *Refresh1;
 	TMenuItem *Checknewtextures1;
 	TElTabSheet *tsMaterial;
-	TElTreeInplaceAdvancedEdit *InplaceMaterialEdit;
 	TElTabSheet *tsMaterialPair;
 	TPanel *Panel2;
 	TExtBtn *ebMaterialRemove;
@@ -94,16 +82,14 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn3;
 	TExtBtn *ebMaterialCreate;
 	TBevel *Bevel2;
-	TElTree *tvMtl_;
-	TElTree *tvMtlPair_;
+	TElTree *tvMtl;
+	TElTree *tvMtlPair;
 	TBevel *Bevel4;
 	TPanel *Panel3;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebMaterialPairClone;
 	TExtBtn *ExtBtn6;
 	TExtBtn *ebMaterialPairCreate;
-	TMenuItem *Clear1;
-	TMenuItem *N5;
 	TElTabSheet *tsSoundEnv;
 	TBevel *Bevel5;
 	TPanel *Panel5;
@@ -111,8 +97,30 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn7;
 	TExtBtn *ExtBtn8;
 	TExtBtn *ebCreateSoundEnv;
-	TElTree *tvSoundEnv_;
-	TElTreeInplaceAdvancedEdit *InplaceSoundEnvEdit;
+	TElTree *tvSoundEnv;
+	TExtBtn *ebEngineShaderCreate;
+	TMenuItem *N7;
+	TMenuItem *miEnginePreviewObject;
+	TMenuItem *Plane2;
+	TMenuItem *Box2;
+	TMenuItem *Ball2;
+	TMenuItem *Teapot2;
+	TMenuItem *N8;
+	TMenuItem *Custom2;
+	TMenuItem *N9;
+	TMenuItem *Clear2;
+	TMxPopupMenu *pmCustomFile;
+	TMenuItem *MenuItem1;
+	TMenuItem *MenuItem2;
+	TMenuItem *MenuItem3;
+	TMenuItem *MenuItem14;
+	TMenuItem *MenuItem15;
+	TPanel *paPreview;
+	TLabel *Label2;
+	TExtBtn *ExtBtn9;
+	TBevel *Bevel7;
+	TPanel *paPreviewProps;
+	TSplitter *Splitter2;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebReloadClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
@@ -120,21 +128,15 @@ __published:	// IDE-managed Components
     void __fastcall ebEditorPreferencesClick(TObject *Sender);
     void __fastcall ebRefreshTexturesClick(TObject *Sender);
 	void __fastcall ebResetAnimationClick(TObject *Sender);
-	void __fastcall ebEngineShaderFileMouseDown(TObject *Sender, TMouseButton Button,
+	void __fastcall ebCustomFileMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall ebSceneCommandsMouseDown(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall tvEngine_MouseDown(TObject *Sender, TMouseButton Button,
+	void __fastcall tvEngineMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-	void __fastcall PreviewClick(TObject *Sender);
-	void __fastcall ebEngineShaderCreateMouseDown(TObject *Sender,
-          TMouseButton Button, TShiftState Shift, int X, int Y);
 	void __fastcall CreateFolder1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall CollapseAll1Click(TObject *Sender);
 	void __fastcall tvItemFocused(TObject *Sender);
-	void __fastcall ebEngineShaderCloneClick(TObject *Sender);
-	void __fastcall tvEngine_KeyDown(TObject *Sender, WORD &Key,
+	void __fastcall tvEngineKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
 	void __fastcall Rename1Click(TObject *Sender);
 	void __fastcall InplaceEditValidateResult(TObject *Sender,
@@ -152,10 +154,10 @@ __published:	// IDE-managed Components
 	void __fastcall ImageEditor1Click(TObject *Sender);
 	void __fastcall Refresh1Click(TObject *Sender);
 	void __fastcall Checknewtextures1Click(TObject *Sender);
-	void __fastcall ebMaterialPairCreateClick(TObject *Sender);
-	void __fastcall ebMaterialPairCloneClick(TObject *Sender);
+	void __fastcall ebEngineFileMouseDown(TObject *Sender,
+          TMouseButton Button, TShiftState Shift, int X, int Y);
+	void __fastcall PreviewObjClick(TObject *Sender);
 private:	// User declarations
-	void __fastcall TemplateClick		(TObject *Sender);
 	void __fastcall RenameItem			(LPCSTR p0, LPCSTR p1);
 	BOOL __fastcall RemoveItem			(LPCSTR p0);
 	void __fastcall AfterRemoveItem		();
@@ -164,7 +166,6 @@ public:		// User declarations
         __fastcall TfraLeftBar			(TComponent* Owner);
 	void 			ChangeTarget		(int tgt);
     void 			UpdateBar			();
-//.    void 			InitPalette			(TemplateVec& lst);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfraLeftBar *fraLeftBar;

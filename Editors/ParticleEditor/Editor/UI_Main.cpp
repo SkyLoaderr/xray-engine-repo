@@ -15,6 +15,7 @@
 #include "ui_main.h"
 #include "d3dutils.h"
 #include "editorpref.h"
+#include "SoundManager.h"
 
 TUI UI;
 
@@ -512,6 +513,7 @@ void TUI::Idle()
     Sleep(1);
     if (ELog.in_use) return;
 	Device.UpdateTimer	();
+    SndLib.OnFrame();
     // tools on frame
     if (m_Flags.is(flUpdateScene)){
         Tools.UpdateProperties	();

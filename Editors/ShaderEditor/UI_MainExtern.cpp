@@ -26,19 +26,15 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 		Command		(COMMAND_SAVE);
     	break;
     case COMMAND_RELOAD:
-    	Tools.Save	();
+    	Tools.Reload();
 		Command		(COMMAND_UPDATE_CAPTION);
     	break;
 	case COMMAND_CLEAR:
         Device.m_Camera.Reset();
-        Tools.ResetPreviewObject();
         Command		(COMMAND_UPDATE_CAPTION);
 		break;
 	case COMMAND_RESET_ANIMATION:
    		break;
-    case COMMAND_SELECT_PREVIEW_OBJ:
-		Tools.SelectPreviewObject(p1);
-    	break;
     default:
 		ELog.DlgMsg( mtError, "Warning: Undefined command: %04d", _Command );
         bRes = false;
@@ -48,8 +44,8 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
 
 char* TUI::GetCaption()
 {
-	return "shaders&materials";
-}
+	return (LPSTR)Tools.CurrentToolsName();// "shaders&materials";
+}           
 
 bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {

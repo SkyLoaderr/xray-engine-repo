@@ -57,13 +57,6 @@ void CCustomObject::Lock( BOOL flag )
 	m_bLocked = flag;
 };
 
-void CCustomObject::OnShowHint(AStringVec& dest)
-{
-    dest.push_back(AnsiString("Class: ")+AnsiString(GetNameByClassID(ClassID)));
-    dest.push_back(AnsiString("Name:  ")+AnsiString(Name));
-    dest.push_back(AnsiString("-------"));
-}
-
 bool CCustomObject::Load(IReader& F)
 {
     R_ASSERT(F.find_chunk(CUSTOMOBJECT_CHUNK_PARAMS));

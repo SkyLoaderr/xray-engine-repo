@@ -15,7 +15,7 @@ class CSHGameMtlTools: public ISHTools
     virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
 public:
     SGameMtl*				m_Mtl;
-    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent_name);
+    virtual LPCSTR			AppendItem			(LPCSTR folder_name, LPCSTR parent_name=0);
     virtual void			RemoveItem			(LPCSTR name);
 	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level);
 	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
@@ -23,16 +23,15 @@ public:
 
     virtual void			FillItemList		();
 public:
-							CSHGameMtlTools 	(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props);
+							CSHGameMtlTools 	(ISHInit& init);
     virtual 				~CSHGameMtlTools	();
+
+    virtual LPCSTR			ToolsName			(){return "Game Materials";}
 
 	virtual void			Reload				();
 	virtual void			Load				();
 	virtual void			Save				();
-    virtual void			ApplyChanges		();
-
-    virtual bool			IfModified			();
-    virtual void __fastcall	Modified			();
+    virtual void			ApplyChanges		(bool bForced=false);
 
     virtual bool			OnCreate			();
     virtual void			OnDestroy			();

@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 435
+  Height = 773
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 260
-    Height = 435
+    Height = 773
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 220
+      Top = 534
       Width = 258
       Height = 2
       Cursor = crVSplit
@@ -40,11 +40,21 @@ object fraLeftBar: TfraLeftBar
       Color = clBlack
       ParentColor = False
     end
+    object Splitter2: TSplitter
+      Left = 1
+      Top = 137
+      Width = 258
+      Height = 2
+      Cursor = crVSplit
+      Align = alTop
+      Color = clBlack
+      ParentColor = False
+    end
     object paScene: TPanel
       Left = 1
       Top = 1
       Width = 258
-      Height = 68
+      Height = 51
       Hint = 'Scene commands'
       Align = alTop
       Color = 10528425
@@ -87,39 +97,9 @@ object fraLeftBar: TfraLeftBar
         ParentFont = False
         OnClick = PanelMimimizeClick
       end
-      object ebSceneCommands: TExtBtn
-        Left = 2
-        Top = 16
-        Width = 255
-        Height = 15
-        Align = alNone
-        BevelShow = False
-        HotTrack = True
-        HotColor = 15790320
-        CloseButton = False
-        Caption = 'Preview Object'
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clWindowText
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        Glyph.Data = {
-          DE000000424DDE00000000000000360000002800000007000000070000000100
-          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
-          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
-          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
-          000000000000000000000000FFFFFF0000000000000000000000000000000000
-          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-          0000}
-        Margin = 3
-        ParentFont = False
-        Spacing = 3
-        OnMouseDown = ebSceneCommandsMouseDown
-      end
       object ebPreferences: TExtBtn
         Left = 2
-        Top = 50
+        Top = 33
         Width = 255
         Height = 15
         Align = alNone
@@ -139,7 +119,7 @@ object fraLeftBar: TfraLeftBar
       end
       object ebImageCommands: TExtBtn
         Left = 2
-        Top = 33
+        Top = 16
         Width = 255
         Height = 15
         Align = alNone
@@ -171,9 +151,9 @@ object fraLeftBar: TfraLeftBar
     end
     object paEngineShaders: TPanel
       Left = 1
-      Top = 69
+      Top = 139
       Width = 258
-      Height = 151
+      Height = 395
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -195,7 +175,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 256
-        Height = 136
+        Height = 380
         ActiveTabColor = 10528425
         BorderWidth = 0
         Color = 10528425
@@ -315,7 +295,7 @@ object fraLeftBar: TfraLeftBar
               Margin = 3
               ParentFont = False
               Spacing = 3
-              OnMouseDown = ebEngineShaderFileMouseDown
+              OnMouseDown = ebEngineFileMouseDown
             end
             object ebEngineShaderCreate: TExtBtn
               Left = 1
@@ -334,27 +314,18 @@ object fraLeftBar: TfraLeftBar
               Font.Height = -11
               Font.Name = 'MS Sans Serif'
               Font.Style = []
-              Glyph.Data = {
-                DE000000424DDE00000000000000360000002800000007000000070000000100
-                180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
-                FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
-                FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
-                0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
-                000000000000000000000000FFFFFF0000000000000000000000000000000000
-                00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
-                0000}
               Kind = knMinimize
-              Margin = 3
+              Margin = 13
               ParentFont = False
               Spacing = 3
-              OnMouseDown = ebEngineShaderCreateMouseDown
+              OnClick = ebCreateItemClick
             end
           end
-          object tvEngine_: TElTree
+          object tvEngine: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 303
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -426,6 +397,9 @@ object fraLeftBar: TfraLeftBar
             ShowLines = False
             SortMode = smAddClick
             StoragePath = '\Tree'
+            StripedOddColor = clGray
+            StripedEvenColor = 8158332
+            StripedItems = True
             TabOrder = 1
             TabStop = True
             Tracking = False
@@ -438,8 +412,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngine_MouseDown
-            OnKeyDown = tvEngine_KeyDown
+            OnMouseDown = tvEngineMouseDown
+            OnKeyDown = tvEngineKeyDown
           end
         end
         object tsCompiler: TElTabSheet
@@ -536,7 +510,7 @@ object fraLeftBar: TfraLeftBar
               Margin = 3
               ParentFont = False
               Spacing = 3
-              OnMouseDown = ebEngineShaderFileMouseDown
+              OnMouseDown = ebCustomFileMouseDown
             end
             object ebCShaderCreate: TExtBtn
               Left = 1
@@ -562,11 +536,11 @@ object fraLeftBar: TfraLeftBar
               OnClick = ebCreateItemClick
             end
           end
-          object tvCompiler_: TElTree
+          object tvCompiler: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 303
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -638,6 +612,9 @@ object fraLeftBar: TfraLeftBar
             ShowLines = False
             SortMode = smAddClick
             StoragePath = '\Tree'
+            StripedOddColor = clGray
+            StripedEvenColor = 8158332
+            StripedItems = True
             TabOrder = 1
             TabStop = True
             Tracking = False
@@ -650,8 +627,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngine_MouseDown
-            OnKeyDown = tvEngine_KeyDown
+            OnMouseDown = tvEngineMouseDown
+            OnKeyDown = tvEngineKeyDown
           end
         end
         object tsMaterial: TElTabSheet
@@ -748,7 +725,7 @@ object fraLeftBar: TfraLeftBar
               Margin = 3
               ParentFont = False
               Spacing = 3
-              OnMouseDown = ebEngineShaderFileMouseDown
+              OnMouseDown = ebCustomFileMouseDown
             end
             object ebMaterialCreate: TExtBtn
               Left = 1
@@ -773,11 +750,11 @@ object fraLeftBar: TfraLeftBar
               Spacing = 3
             end
           end
-          object tvMtl_: TElTree
+          object tvMtl: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 303
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -849,6 +826,9 @@ object fraLeftBar: TfraLeftBar
             ShowLines = False
             SortMode = smAddClick
             StoragePath = '\Tree'
+            StripedOddColor = clGray
+            StripedEvenColor = 8158332
+            StripedItems = True
             TabOrder = 1
             TabStop = True
             Tracking = False
@@ -861,8 +841,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngine_MouseDown
-            OnKeyDown = tvEngine_KeyDown
+            OnMouseDown = tvEngineMouseDown
+            OnKeyDown = tvEngineKeyDown
           end
         end
         object tsMaterialPair: TElTabSheet
@@ -879,11 +859,11 @@ object fraLeftBar: TfraLeftBar
             Height = 2
             Align = alTop
           end
-          object tvMtlPair_: TElTree
+          object tvMtlPair: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 303
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -955,6 +935,9 @@ object fraLeftBar: TfraLeftBar
             ShowLines = False
             SortMode = smAddClick
             StoragePath = '\Tree'
+            StripedOddColor = clGray
+            StripedEvenColor = 8158332
+            StripedItems = True
             TabOrder = 0
             TabStop = True
             Tracking = False
@@ -967,8 +950,8 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngine_MouseDown
-            OnKeyDown = tvEngine_KeyDown
+            OnMouseDown = tvEngineMouseDown
+            OnKeyDown = tvEngineKeyDown
           end
           object Panel3: TPanel
             Left = 0
@@ -1017,7 +1000,7 @@ object fraLeftBar: TfraLeftBar
               Font.Style = []
               Margin = 13
               ParentFont = False
-              OnClick = ebMaterialPairCloneClick
+              OnClick = ebCloneItemClick
             end
             object ExtBtn6: TExtBtn
               Left = 1
@@ -1049,7 +1032,7 @@ object fraLeftBar: TfraLeftBar
               Margin = 3
               ParentFont = False
               Spacing = 3
-              OnMouseDown = ebEngineShaderFileMouseDown
+              OnMouseDown = ebCustomFileMouseDown
             end
             object ebMaterialPairCreate: TExtBtn
               Left = 1
@@ -1072,7 +1055,7 @@ object fraLeftBar: TfraLeftBar
               Margin = 13
               ParentFont = False
               Spacing = 3
-              OnClick = ebMaterialPairCreateClick
+              OnClick = ebCreateItemClick
             end
           end
         end
@@ -1169,7 +1152,7 @@ object fraLeftBar: TfraLeftBar
               Margin = 3
               ParentFont = False
               Spacing = 3
-              OnMouseDown = ebEngineShaderFileMouseDown
+              OnMouseDown = ebCustomFileMouseDown
             end
             object ebCreateSoundEnv: TExtBtn
               Left = 1
@@ -1195,11 +1178,11 @@ object fraLeftBar: TfraLeftBar
               OnClick = ebCreateItemClick
             end
           end
-          object tvSoundEnv_: TElTree
+          object tvSoundEnv: TElTree
             Left = 0
             Top = 52
             Width = 252
-            Height = 59
+            Height = 303
             Cursor = crDefault
             LeftPosition = 0
             DragCursor = crDrag
@@ -1271,6 +1254,9 @@ object fraLeftBar: TfraLeftBar
             ShowLines = False
             SortMode = smAddClick
             StoragePath = '\Tree'
+            StripedOddColor = clGray
+            StripedEvenColor = 8158332
+            StripedItems = True
             TabOrder = 1
             TabStop = True
             Tracking = False
@@ -1283,18 +1269,19 @@ object fraLeftBar: TfraLeftBar
             BkColor = clGray
             OnItemFocused = tvItemFocused
             OnDragDrop = OnDragDrop
-            OnMouseDown = tvEngine_MouseDown
-            OnKeyDown = tvEngine_KeyDown
+            OnMouseDown = tvEngineMouseDown
+            OnKeyDown = tvEngineKeyDown
           end
         end
       end
     end
     object paShaderProperties: TPanel
       Left = 1
-      Top = 222
+      Top = 536
       Width = 258
-      Height = 212
+      Height = 236
       Align = alBottom
+      Color = 10528425
       ParentShowHint = False
       ShowHint = False
       TabOrder = 2
@@ -1305,7 +1292,7 @@ object fraLeftBar: TfraLeftBar
         Height = 13
         Align = alTop
         Alignment = taCenter
-        Caption = 'Item properties'
+        Caption = 'Item Properties'
         Color = clGray
         ParentColor = False
         OnClick = PanelMaximizeClick
@@ -1346,7 +1333,72 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 15
         Width = 256
-        Height = 196
+        Height = 220
+        Align = alClient
+        BevelOuter = bvNone
+        Color = 10528425
+        TabOrder = 0
+      end
+    end
+    object paPreview: TPanel
+      Left = 1
+      Top = 52
+      Width = 258
+      Height = 85
+      Align = alTop
+      Color = 10528425
+      ParentShowHint = False
+      ShowHint = False
+      TabOrder = 3
+      object Label2: TLabel
+        Left = 1
+        Top = 1
+        Width = 256
+        Height = 13
+        Align = alTop
+        Alignment = taCenter
+        Caption = 'Preview'
+        Color = clGray
+        ParentColor = False
+        OnClick = PanelMaximizeClick
+      end
+      object ExtBtn9: TExtBtn
+        Left = 244
+        Top = 2
+        Width = 11
+        Height = 11
+        Align = alNone
+        CloseButton = False
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = []
+        Glyph.Data = {
+          DE000000424DDE00000000000000360000002800000007000000070000000100
+          180000000000A8000000120B0000120B00000000000000000000FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFF00
+          0000FFFFFFFFFFFF000000000000000000FFFFFFFFFFFF000000FFFFFF000000
+          000000000000000000000000FFFFFF0000000000000000000000000000000000
+          00000000000000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+          0000}
+        ParentFont = False
+        OnClick = PanelMimimizeClick
+      end
+      object Bevel7: TBevel
+        Left = 1
+        Top = 14
+        Width = 256
+        Height = 1
+        Align = alTop
+        Shape = bsLeftLine
+      end
+      object paPreviewProps: TPanel
+        Left = 1
+        Top = 15
+        Width = 256
+        Height = 69
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -1358,7 +1410,7 @@ object fraLeftBar: TfraLeftBar
     IniSection = 'Left Bar'
     Options = []
     RegistryRoot = prLocalMachine
-    Version = 3
+    Version = 4
     OnSavePlacement = fsStorageSavePlacement
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
@@ -1367,7 +1419,9 @@ object fraLeftBar: TfraLeftBar
       'paEngineShaders.Height'
       'pcShaders.ActivePage'
       'paShaderProperties.Tag'
-      'paShaderProperties.Height')
+      'paShaderProperties.Height'
+      'paPreview.Tag'
+      'paPreview.Height')
     StoredValues = <>
     Left = 65529
     Top = 65526
@@ -1385,7 +1439,7 @@ object fraLeftBar: TfraLeftBar
     SepLColor = 13158600
     LeftMargin = 10
     Style = msOwnerDraw
-    Left = 117
+    Left = 69
     Top = 104
     object Save1: TMenuItem
       Caption = 'Save'
@@ -1398,6 +1452,47 @@ object fraLeftBar: TfraLeftBar
     object N2: TMenuItem
       Caption = '-'
     end
+    object miEnginePreviewObject: TMenuItem
+      Caption = 'Preview Object'
+      object Plane2: TMenuItem
+        Caption = 'Plane'
+        OnClick = PreviewObjClick
+      end
+      object Box2: TMenuItem
+        Tag = 1
+        Caption = 'Box'
+        OnClick = PreviewObjClick
+      end
+      object Ball2: TMenuItem
+        Tag = 2
+        Caption = 'Ball'
+        OnClick = PreviewObjClick
+      end
+      object Teapot2: TMenuItem
+        Tag = 3
+        Caption = 'Teapot'
+        OnClick = PreviewObjClick
+      end
+      object N8: TMenuItem
+        Caption = '-'
+      end
+      object Custom2: TMenuItem
+        Tag = -1
+        Caption = 'Custom...'
+        OnClick = PreviewObjClick
+      end
+      object N9: TMenuItem
+        Caption = '-'
+      end
+      object Clear2: TMenuItem
+        Tag = -2
+        Caption = 'Clear'
+        OnClick = PreviewObjClick
+      end
+    end
+    object N7: TMenuItem
+      Caption = '-'
+    end
     object Import1: TMenuItem
       Caption = 'Import'
       Enabled = False
@@ -1405,57 +1500,6 @@ object fraLeftBar: TfraLeftBar
     object Export1: TMenuItem
       Caption = 'Export'
       Enabled = False
-    end
-  end
-  object pmPreviewObject: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    TrackButton = tbLeftButton
-    MarginStartColor = 13158600
-    MarginEndColor = 1644825
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 117
-    Top = 16
-    object Plane1: TMenuItem
-      Caption = 'Plane'
-      OnClick = PreviewClick
-    end
-    object Box1: TMenuItem
-      Tag = 1
-      Caption = 'Box'
-      OnClick = PreviewClick
-    end
-    object Ball1: TMenuItem
-      Tag = 2
-      Caption = 'Ball'
-      OnClick = PreviewClick
-    end
-    object Teapot1: TMenuItem
-      Tag = 3
-      Caption = 'Teapot'
-      OnClick = PreviewClick
-    end
-    object N5: TMenuItem
-      Caption = '-'
-    end
-    object Custom1: TMenuItem
-      Tag = -1
-      Caption = 'Custom...'
-      OnClick = PreviewClick
-    end
-    object N3: TMenuItem
-      Caption = '-'
-    end
-    object Clear1: TMenuItem
-      Tag = 4
-      Caption = 'Clear'
-      OnClick = PreviewClick
     end
   end
   object pmListCommand: TMxPopupMenu
@@ -1495,31 +1539,7 @@ object fraLeftBar: TfraLeftBar
       OnClick = CollapseAll1Click
     end
   end
-  object pmTemplateList: TMxPopupMenu
-    Alignment = paCenter
-    AutoPopup = False
-    TrackButton = tbLeftButton
-    MarginStartColor = 13158600
-    MarginEndColor = 1644825
-    BKColor = 10528425
-    SelColor = clBlack
-    SelFontColor = 10526880
-    SepHColor = 1644825
-    SepLColor = 13158600
-    LeftMargin = 10
-    Style = msOwnerDraw
-    Left = 117
-    Top = 121
-  end
-  object InplaceEngineEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvEngine_
-    Types = [sftText]
-    OnValidateResult = InplaceEditValidateResult
-    Left = 10
-    Top = 197
-  end
-  object InplaceCompilerEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvCompiler_
+  object InplaceEdit: TElTreeInplaceAdvancedEdit
     Types = [sftText]
     OnValidateResult = InplaceEditValidateResult
     Left = 10
@@ -1539,7 +1559,7 @@ object fraLeftBar: TfraLeftBar
     LeftMargin = 10
     Style = msOwnerDraw
     Left = 117
-    Top = 34
+    Top = 18
     object ImageEditor1: TMenuItem
       Caption = 'Image Editor'
       OnClick = ImageEditor1Click
@@ -1556,18 +1576,39 @@ object fraLeftBar: TfraLeftBar
       OnClick = Checknewtextures1Click
     end
   end
-  object InplaceMaterialEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvMtl_
-    Types = [sftText]
-    OnValidateResult = InplaceEditValidateResult
-    Left = 10
-    Top = 229
-  end
-  object InplaceSoundEnvEdit: TElTreeInplaceAdvancedEdit
-    Tree = tvSoundEnv_
-    Types = [sftText]
-    OnValidateResult = InplaceEditValidateResult
-    Left = 10
-    Top = 261
+  object pmCustomFile: TMxPopupMenu
+    Alignment = paCenter
+    AutoPopup = False
+    TrackButton = tbLeftButton
+    MarginStartColor = 13158600
+    MarginEndColor = 1644825
+    BKColor = 10528425
+    SelColor = clBlack
+    SelFontColor = 10526880
+    SepHColor = 1644825
+    SepLColor = 13158600
+    LeftMargin = 10
+    Style = msOwnerDraw
+    Left = 101
+    Top = 104
+    object MenuItem1: TMenuItem
+      Caption = 'Save'
+      OnClick = ebSaveClick
+    end
+    object MenuItem2: TMenuItem
+      Caption = 'Reload'
+      OnClick = ebReloadClick
+    end
+    object MenuItem3: TMenuItem
+      Caption = '-'
+    end
+    object MenuItem14: TMenuItem
+      Caption = 'Import'
+      Enabled = False
+    end
+    object MenuItem15: TMenuItem
+      Caption = 'Export'
+      Enabled = False
+    end
   end
 end

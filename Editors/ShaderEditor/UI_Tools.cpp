@@ -4,8 +4,6 @@
 #pragma hdrstop
 
 #include "UI_Tools.h"
-#include "EditObject.h"
-#include "EditMesh.h"
 #include "ChoseForm.h"
 #include "ui_main.h"
 #include "leftbar.h"
@@ -18,9 +16,8 @@ CShaderTools Tools;
 
 CShaderTools::CShaderTools()
 {
-	m_EditObject 		= 0;
-    m_bCustomEditObject	= false;
-    m_Props				= 0;
+    m_ItemProps			= 0;
+    m_PreviewProps		= 0;
 }
 //---------------------------------------------------------------------------
 
@@ -35,20 +32,21 @@ void CShaderTools::OnChangeEditor(ISHTools* tools)
 	m_Current = tools; R_ASSERT(m_Current);
 	m_Current->OnActivate();
 	Current()->UpdateProperties();
+	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
 bool CShaderTools::IfModified()
 {	
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	if (!(*it)->IfModified()) return false;
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if (!it->second->IfModified()) return false;
 	return true;
 }
 
 bool CShaderTools::IsModified()
 {
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	if ((*it)->IsModified()) return true;
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if (it->second->IsModified()) return true;
 	return false;
 }
 
@@ -60,7 +58,8 @@ void CShaderTools::Modified()
 
 bool CShaderTools::OnCreate(){
     // create props
-    m_Props = TProperties::CreateForm(fraLeftBar->paShaderProps,alClient);
+    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paShaderProps,alClient);
+    m_PreviewProps  = TProperties::CreateForm(fraLeftBar->paPreviewProps,alClient);
 	// shader test locking
 	AnsiString sh_fn;
     FS.update_path		(sh_fn,_game_data_,"shaders.xr");
@@ -83,8 +82,8 @@ bool CShaderTools::OnCreate(){
     // create tools
     RegisterTools		();
 
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	if (!(*it)->OnCreate()) return false;
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if (!it->second->OnCreate()) return false;
 
    	// lock
     EFS.LockFile(0,sh_fn.c_str());
@@ -96,40 +95,32 @@ bool CShaderTools::OnCreate(){
 void CShaderTools::OnDestroy()
 {
 	// destroy props
-	TProperties::DestroyForm(m_Props);
+	TProperties::DestroyForm(m_ItemProps);
+    TProperties::DestroyForm(m_PreviewProps);
 	// unlock
     EFS.UnlockFile(_game_data_,"shaders.xr");
     EFS.UnlockFile(_game_data_,"shaders_xrlc.xr");
     EFS.UnlockFile(_game_data_,"gamemtl.xr");
 	//
-    Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	(*it)->OnDestroy();
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	it->second->OnDestroy();
 }
 
 void CShaderTools::Render()
 {
 	Current()->OnRender();
-	if (m_EditObject) m_EditObject->RenderSingle(Fidentity);
 }
 
 void CShaderTools::OnFrame()
 {
 	Current()->OnFrame();
-	if (m_EditObject) m_EditObject->OnFrame();
 }
 
 void CShaderTools::ZoomObject(bool bOnlySel)
 {
-	if (m_EditObject){
-        Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
-    }else{
-		Fbox BB;
-        BB.set(-5,-5,-5,5,5,5);
-        Device.m_Camera.ZoomExtents(BB);
-    }
+	Current()->ZoomObject(bOnlySel);
 }
 
 void CShaderTools::OnDeviceCreate()
@@ -163,79 +154,19 @@ void CShaderTools::OnDeviceCreate()
 	Device.SetLight(4,L);
 	Device.LightEnable(4,true);
 
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	(*it)->OnDeviceCreate();
-//.    SEngine.ResetShaders();
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	it->second->OnDeviceCreate();
 }
 
 void CShaderTools::OnDeviceDestroy()
 {
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	(*it)->OnDeviceDestroy();
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	it->second->OnDeviceDestroy();
 }
 
-void CShaderTools::SelectPreviewObject(int p)
+void CShaderTools::OnShowHint(AStringVec& ss)
 {
-    LPCSTR fn;
-    m_bCustomEditObject	= false;
-    switch(p){
-        case 0: fn="editor\\ShaderTest_Plane"; 	break;
-        case 1: fn="editor\\ShaderTest_Box"; 	break;
-        case 2: fn="editor\\ShaderTest_Sphere"; break;
-        case 3: fn="editor\\ShaderTest_Teapot";	break;
-        case 4: fn=0;							break;
-        case -1: fn=m_EditObject?m_EditObject->GetName():""; if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,fn)) return; m_bCustomEditObject = true; break;
-        default: THROW2("Failed select test object.");
-    }
-    Lib.RemoveEditObject(m_EditObject);
-    if (fn){
-	    m_EditObject = Lib.CreateEditObject(fn);
-	    if (!m_EditObject)
-    	    ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
-    }
-	ZoomObject();
-    UpdateObjectShader();
-    UI.RedrawScene();
-}
-
-void CShaderTools::ResetPreviewObject()
-{
-    Lib.RemoveEditObject(m_EditObject);
-    UI.RedrawScene();
-}
-
-void CShaderTools::OnShowHint(AStringVec& ss){
-	if (m_EditObject){
-	    Fvector p;
-        float dist=UI.ZFar();
-        SRayPickInfo pinf;
-    	if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,Fidentity,&pinf)){
-        	R_ASSERT(pinf.e_mesh);
-            CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
-            ss.push_back(AnsiString("Surface: ")+AnsiString(surf->_Name()));
-            ss.push_back(AnsiString("Texture: ")+AnsiString(surf->_Texture()));
-            ss.push_back(AnsiString("Shader: ")+AnsiString(surf->_ShaderName()));
-            ss.push_back(AnsiString("LC Shader: ")+AnsiString(surf->_ShaderXRLCName()));
-            ss.push_back(AnsiString("Game Mtl: ")+AnsiString(surf->_GameMtlName()));
-            ss.push_back(AnsiString("2 Sided: ")+AnsiString(surf->m_Flags.is(CSurface::sf2Sided)?"on":"off"));
-        }
-    }
-}
-
-void CShaderTools::UpdateObjectShader()
-{
-//.
-/*    // apply this shader to non custom object
-	if (m_EditObject&&!m_bCustomEditObject){
-    	CSurface* surf = *m_EditObject->FirstSurface(); R_ASSERT(surf);
-        string512 tex; strcpy(tex,surf->_Texture());
-        for (int i=0; i<7; i++){ strcat(tex,","); strcat(tex,surf->_Texture());}
-        if (SEngine.m_CurrentBlender)	surf->SetShader(SEngine.m_CurrentBlender->getName());
-        else							surf->SetShader("editor\\wire");
-        UI.RedrawScene();
-		m_EditObject->OnDeviceDestroy();
-    }
-*/
+	Current()->OnShowHint(ss);
 }
 
 void CShaderTools::ApplyChanges()
@@ -245,7 +176,7 @@ void CShaderTools::ApplyChanges()
 
 void CShaderTools::ShowProperties()
 {
-	m_Props->ShowProperties();
+	m_ItemProps->ShowProperties();
 }
 
 void CShaderTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
@@ -255,6 +186,11 @@ void CShaderTools::GetCurrentFog(u32& fog_color, float& s_fog, float& e_fog)
 	fog_color	= DEFAULT_CLEARCOLOR;
 }
 
+LPCSTR CShaderTools::CurrentToolsName()
+{
+	return Current()?Current()->ToolsName():"";
+}
+
 LPCSTR CShaderTools::GetInfo()
 {
 	return 0;
@@ -262,22 +198,21 @@ LPCSTR CShaderTools::GetInfo()
 
 ISHTools* CShaderTools::FindTools(EToolsID id)
 {
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	if ((*it)->ID()==id) return *it;
-    return 0;
+	ToolsPairIt it = m_Tools.find(id); R_ASSERT(it!=m_Tools.end());
+    return it->second;
 }
 
 ISHTools* CShaderTools::FindTools(TElTabSheet* sheet)
 {
-	for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-    	if ((*it)->Sheet()==sheet) return *it;
+	for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+    	if (it->second->Sheet()==sheet) return it->second;
     return 0;
 }
 
 void CShaderTools::Save()
 {
-    for (ToolsIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
-        (*it)->Save();
+    for (ToolsPairIt it=m_Tools.begin(); it!=m_Tools.end(); it++)
+        it->second->Save();
 }
 
 void CShaderTools::Reload()
@@ -287,10 +222,10 @@ void CShaderTools::Reload()
         Current()->Reload();
 }
 
+#include "SHEngineTools.h"
 #include "SHGameMtlTools.h"
 #include "SHGameMtlPairTools.h"
 #include "SHCompilerTools.h"
-#include "SHEngineTools.h"
 #include "SHSoundEnvTools.h"
 
 void CShaderTools::RegisterTools()
@@ -298,14 +233,14 @@ void CShaderTools::RegisterTools()
 	for (int k=aeFirstTool; k<aeMaxTools; k++){	
     	ISHTools* tools = 0;
 		switch(k){
-//		case aeEngine:		tools = xr_new<CSHEngineTools>(tvEngine,aeEngine); break;
-    	case aeCompiler:	tools = xr_new<CSHCompilerTools>	(aeCompiler,fraLeftBar->tvCompiler_,	fraLeftBar->pmListCommand,	fraLeftBar->tsCompiler, m_Props);	break;
-    	case aeMtl:			tools = xr_new<CSHGameMtlTools>		(aeMtl,		fraLeftBar->tvMtl_,		fraLeftBar->pmListCommand,fraLeftBar->tsMaterial,m_Props);	break;
-    	case aeMtlPair:		tools = xr_new<CSHGameMtlPairTools>	(aeMtlPair,	fraLeftBar->tvMtlPair_,	fraLeftBar->pmListCommand,fraLeftBar->tsMaterialPair,m_Props);	break;
-    	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(aeSoundEnv,fraLeftBar->tvSoundEnv_,	fraLeftBar->pmListCommand,fraLeftBar->tsSoundEnv,m_Props);	break;
+		case aeEngine:		tools = xr_new<CSHEngineTools>		(ISHInit( EToolsID(k),	fraLeftBar->tvEngine,	fraLeftBar->pmListCommand,	fraLeftBar->tsEngine,	m_ItemProps,	m_PreviewProps));   break;
+    	case aeCompiler:	tools = xr_new<CSHCompilerTools>	(ISHInit( EToolsID(k),	fraLeftBar->tvCompiler,	fraLeftBar->pmListCommand,	fraLeftBar->tsCompiler, m_ItemProps,	m_PreviewProps));	break;
+    	case aeMtl:			tools = xr_new<CSHGameMtlTools>		(ISHInit( EToolsID(k),	fraLeftBar->tvMtl,		fraLeftBar->pmListCommand,	fraLeftBar->tsMaterial,	m_ItemProps,	m_PreviewProps));	break;
+    	case aeMtlPair:		tools = xr_new<CSHGameMtlPairTools>	(ISHInit( EToolsID(k),	fraLeftBar->tvMtlPair,	(TMxPopupMenu*)NULL,		fraLeftBar->tsMaterialPair,m_ItemProps,	m_PreviewProps));	break;
+    	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(ISHInit( EToolsID(k),	fraLeftBar->tvSoundEnv,	fraLeftBar->pmListCommand,	fraLeftBar->tsSoundEnv,	m_ItemProps,	m_PreviewProps));	break;
         }
-        
-		m_Tools.push_back(tools);
+        R_ASSERT(tools);
+		m_Tools.insert(make_pair(k,tools));
     }
 }
 

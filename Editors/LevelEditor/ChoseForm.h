@@ -76,7 +76,8 @@ private:	// User declarations
     static AnsiString select_item;
     const char* StartFolder;
 
-    EImageThumbnail* m_Thm;
+    EImageThumbnail* 	m_Thm;
+	sound				m_Snd;
 
     void 	InitItemsList(const char* nm=0);
 
@@ -84,6 +85,7 @@ private:	// User declarations
     int 	iMultiSelLimit;
     bool 	bIgnoreExt;
 // fill routines
+    void __fastcall FillCustom		(AStringVec* items);
     void __fastcall FillSound		();
     void __fastcall FillObject		();
     void __fastcall FillLAnim		();
@@ -99,7 +101,8 @@ private:	// User declarations
     void __fastcall AppendItem		(LPCSTR name);
 public:		// User declarations
     enum ESelectMode{
-    	smSound = 0,
+    	smCustom = 0,
+    	smSound,
         smObject,
     	smShader,
         smShaderXRLC,
@@ -117,7 +120,7 @@ protected:
     static AnsiString m_LastSelection[smMaxMode];
 public:		// User declarations
     __fastcall 					TfrmChoseItem	(TComponent* Owner);
-    static int	 	__fastcall 	SelectItem		(ESelectMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, bool bIgnoreExt=false);
+    static int	 	__fastcall 	SelectItem		(ESelectMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, bool bIgnoreExt=false, AStringVec* items=0);
     static bool 	__fastcall 	Visible			(){return !!form;}
 };
 //---------------------------------------------------------------------------

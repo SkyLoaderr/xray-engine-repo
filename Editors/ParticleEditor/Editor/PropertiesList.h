@@ -65,6 +65,8 @@ __published:	// IDE-managed Components
 	void __fastcall CollapseAll1Click(TObject *Sender);
 	void __fastcall ExpandAll1Click(TObject *Sender);
 	void __fastcall miDrawThumbnailsClick(TObject *Sender);
+	void __fastcall tvPropertiesMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
 private:	// User declarations
     void __fastcall PMItemClick		(TObject *Sender);
 	void __fastcall WaveFormClick	(TElTreeItem* item);

@@ -10,7 +10,7 @@
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-CSHGameMtlTools::CSHGameMtlTools(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props):ISHTools(id,tv,mn,sheet,props)
+CSHGameMtlTools::CSHGameMtlTools(ISHInit& init):ISHTools(init)
 {
     m_Mtl 				= 0;
     m_GameMtlPairTools	= 0;
@@ -18,13 +18,6 @@ CSHGameMtlTools::CSHGameMtlTools(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TEl
 
 CSHGameMtlTools::~CSHGameMtlTools()
 {
-}
-//---------------------------------------------------------------------------
-
-void CSHGameMtlTools::Modified()
-{
-	m_bModified=TRUE;
-	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -45,33 +38,27 @@ void CSHGameMtlTools::OnDestroy()
     m_bModified = FALSE;
 }
 
-bool CSHGameMtlTools::IfModified()
-{
-    if (m_bModified){
-        int mr = ELog.DlgMsg(mtConfirmation, "The materials has been modified.\nDo you want to save your changes?");
-        switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
-        case mrNo: m_bModified = FALSE; break;
-        case mrCancel: return false;
-        }
-    }
-    return true;
-}
-
 void CSHGameMtlTools::Reload()
 {
+	// mtl
 	ViewClearItemList();
     ResetCurrentItem();
+    // mtl pair
+	m_GameMtlPairTools->ViewClearItemList();
+    m_GameMtlPairTools->ResetCurrentItem();
+    // load
     Load();
+    // mtl pair
+	m_GameMtlPairTools->FillItemList();
 }
 
 void CSHGameMtlTools::FillItemList()
 {
-    tvView->IsUpdating = true;
+    View()->IsUpdating = true;
 	ViewClearItemList();
     for (GameMtlIt m_it=GMLib.FirstMaterial(); m_it!=GMLib.LastMaterial(); m_it++)
         ViewAddItem((*m_it)->name);
-    tvView->IsUpdating = false;
+    View()->IsUpdating = false;
 }
 
 void CSHGameMtlTools::Load()
@@ -95,7 +82,7 @@ void CSHGameMtlTools::Load()
 void CSHGameMtlTools::Save()
 {
     AnsiString name;
-    FHelper.MakeFullName(tvView->Selected,0,name);
+    FHelper.MakeFullName(View()->Selected,0,name);
 	ResetCurrentItem	();
     m_bLockUpdate		= TRUE;
 
@@ -139,6 +126,8 @@ LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     SGameMtl* S 		= GMLib.AppendMaterial(parent);
     strcpy				(S->name,new_name);
 	ViewAddItem			(S->name);
+	SetCurrentItem		(S->name);
+	Modified			();
     return S->name;
 }
 
@@ -202,14 +191,14 @@ void CSHGameMtlTools::UpdateProperties()
 		PropValue* P			= I->GetFrontValue();                               R_ASSERT(P);
     	P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,OnMaterialNameChange);
 	    I->SetEvents			(FHelper.NameDraw);
-    	I->tag					= (int)FHelper.FindObject(tvView,m_Mtl->name); 		R_ASSERT(I->tag);
+    	I->tag					= (int)FHelper.FindObject(View(),m_Mtl->name); 		R_ASSERT(I->tag);
     }
-    m_Props->AssignItems		(items,true);
-    m_Props->SetModifiedEvent	(Modified);
+    Ext.m_ItemProps->AssignItems		(items,true);
+    Ext.m_ItemProps->SetModifiedEvent	(Modified);
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMtlTools::ApplyChanges()
+void CSHGameMtlTools::ApplyChanges(bool bForced)
 {
 }
 //---------------------------------------------------------------------------

@@ -4,11 +4,9 @@
 
 #include "SHEngineTools.h"
 #include "Blender.h"
-#include "UI_Tools.h"
 #include "PropertiesList.h"
-#include "leftbar.h"
 #include "folderlib.h"
-/*
+
 #define MCSTRING_COUNT 	11
 LPCSTR MCString[MCSTRING_COUNT]={"Custom...","-","$null","$base0","$base1","$base2","$base3","$base4","$base5","$base6","$base7"};
 //---------------------------------------------------------------------------
@@ -32,7 +30,6 @@ void __fastcall CSHEngineTools::ModeOnAfterEdit(PropValue* sender, LPVOID edit_v
 //    DWORD mode=*(DWORD*)edit_val;
 //    UpdateMatrixModeProps(sender->item,M,mode);
 */
-/*
 }
 //---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::FillMatrixProps(PropItemVec& items, LPCSTR pref, LPSTR name)
@@ -90,7 +87,7 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, LPVOID edit
 
 void __fastcall CSHEngineTools::FillConstProps(PropItemVec& items, LPCSTR pref, LPSTR name)
 {
-	CConstant* C = Tools.SEngine.FindConstant(name,true);
+	CConstant* C = FindConstant(name,true);
     R_ASSERT(C);
     PHelper.CreateWave(items,PHelper.PrepareKey(pref,"R"),&C->_R);
     PHelper.CreateWave(items,PHelper.PrepareKey(pref,"G"),&C->_G);
@@ -125,7 +122,7 @@ void __fastcall CSHEngineTools::NameOnAfterEdit(PropValue* sender, LPVOID edit_v
 {
 	TextValue* V = (TextValue*)sender;
     AnsiString* new_name = (AnsiString*)edit_val;
-	if (FHelper.NameAfterEdit(fraLeftBar->tvEngine->Selected,V->GetValue(),*new_name))
+	if (FHelper.NameAfterEdit(View()->Selected,V->GetValue(),*new_name))
     	RemoteRenameBlender(V->GetValue(),new_name->c_str());
 }
 //------------------------------------------------------------------------------
@@ -205,9 +202,8 @@ void CSHEngineTools::UpdateProperties()
         }
         ApplyChanges(true);
     }
-    Tools.m_Props->AssignItems(items,true);
-    Tools.m_Props->SetModifiedEvent(Modified);
+    Ext.m_ItemProps->AssignItems(items,true);
+    Ext.m_ItemProps->SetModifiedEvent(Modified);
 }
 //------------------------------------------------------------------------------
 
- */

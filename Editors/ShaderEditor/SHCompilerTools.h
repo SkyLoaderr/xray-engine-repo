@@ -21,15 +21,14 @@ public:
 	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
 	virtual void			FillItemList		();
 public:
-							CSHCompilerTools 	(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props);
+							CSHCompilerTools 	(ISHInit& init);
     virtual 				~CSHCompilerTools	();
+
+    virtual LPCSTR			ToolsName			(){return "Compiler Shader";}
 
 	virtual void			Reload				();
 	virtual void			Load				();
 	virtual void			Save				();
-
-    virtual bool			IfModified			();
-    virtual void __fastcall	Modified			();
 
     virtual bool			OnCreate			();
     virtual void			OnDestroy			();
@@ -39,7 +38,7 @@ public:
     // misc
     virtual void			ResetCurrentItem	();
     virtual void			SetCurrentItem		(LPCSTR name);
-    virtual void			ApplyChanges		();
+    virtual void			ApplyChanges		(bool bForced=false);
 
 	virtual void 			UpdateProperties	();
 

@@ -6,6 +6,10 @@
 #include "editorpref.h"
 #include "CustomObject.h"
 
+void CCustomObject::OnShowHint(AStringVec& dest)
+{
+}
+
 void CCustomObject::FillProp(LPCSTR pref, PropItemVec& values)
 {
 }

@@ -6,7 +6,7 @@
 #define AFX_MODELPOOL_H__F4AB6697_66F2_45A2_A501_4E791B8C0A3E__INCLUDED_
 #pragma once
 
-class ENGINE_API CVisual;
+class ENGINE_API IVisual;
 
 class ENGINE_API CModelPool
 {
@@ -15,23 +15,23 @@ class ENGINE_API CModelPool
 	struct ModelDef
 	{
 		char			name[64];
-		CVisual*		model;
+		IVisual*		model;
 	};
 
 	vector<ModelDef>	Models;
 
 	void				OnDestroy			();
 public:
-	CVisual*			Instance_Create		(u32 Type);
-	CVisual*			Instance_Duplicate	(CVisual* V);
-	CVisual*			Instance_Load		(const char* N);
-	CVisual*			Instance_Load		(IReader* data);
+	IVisual*			Instance_Create		(u32 Type);
+	IVisual*			Instance_Duplicate	(IVisual* V);
+	IVisual*			Instance_Load		(const char* N);
+	IVisual*			Instance_Load		(IReader* data);
 
 	void				OnDeviceDestroy		();
 
-	CVisual*			Create				(const char* name);
-	CVisual*			Create				(IReader* data);
-	void				Delete				(CVisual* &V);
+	IVisual*			Create				(const char* name);
+	IVisual*			Create				(IReader* data);
+	void				Delete				(IVisual* &V);
 
 	CModelPool			();
 	~CModelPool			();

@@ -4,12 +4,12 @@
 
 #include "SHGameMtlPairTools.h"
 #include "UI_Tools.h"
-#include "ui_main.h"
 #include "folderlib.h"
+#include "ChoseForm.h"
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-CSHGameMtlPairTools::CSHGameMtlPairTools(EToolsID id, TElTree* tv, TMxPopupMenu* mn, TElTabSheet* sheet, TProperties* props):ISHTools(id,tv,mn,sheet,props)
+CSHGameMtlPairTools::CSHGameMtlPairTools(ISHInit& init):ISHTools(init)
 {
     m_MtlPair 			= 0;
     m_GameMtlTools		= 0;
@@ -17,13 +17,6 @@ CSHGameMtlPairTools::CSHGameMtlPairTools(EToolsID id, TElTree* tv, TMxPopupMenu*
 
 CSHGameMtlPairTools::~CSHGameMtlPairTools()
 {
-}
-//---------------------------------------------------------------------------
-
-void CSHGameMtlPairTools::Modified()
-{
-	m_bModified=TRUE;
-	UI.Command(COMMAND_UPDATE_CAPTION);
 }
 //---------------------------------------------------------------------------
 
@@ -46,36 +39,30 @@ void CSHGameMtlPairTools::OnDestroy()
 }
 //---------------------------------------------------------------------------
 
-bool CSHGameMtlPairTools::IfModified()
-{
-    if (m_bModified){
-        int mr = ELog.DlgMsg(mtConfirmation, "The materials has been modified.\nDo you want to save your changes?");
-        switch(mr){
-        case mrYes: if (!UI.Command(COMMAND_SAVE)) return false; else m_bModified = FALSE; break;
-        case mrNo: m_bModified = FALSE; break;
-        case mrCancel: return false;
-        }
-    }
-    return true;
-}
-//---------------------------------------------------------------------------
-
 void CSHGameMtlPairTools::Reload()
 {
+    Load();
+	// mtl
 	ViewClearItemList();
     ResetCurrentItem();
+    // mtl pair
+	m_GameMtlTools->ViewClearItemList();
+    m_GameMtlTools->ResetCurrentItem();
+    // load
     Load();
+    // mtl pair
+	m_GameMtlTools->FillItemList();
 }
 //---------------------------------------------------------------------------
 
 void CSHGameMtlPairTools::FillItemList()
 {
-    tvView->IsUpdating = true;
+    View()->IsUpdating = true;
 	ViewClearItemList();
     for (GameMtlPairIt p_it=GMLib.FirstMaterialPair(); p_it!=GMLib.LastMaterialPair(); p_it++)
         ViewAddItem(GMLib.MtlPairToName((*p_it)->GetMtl0(),(*p_it)->GetMtl1()));
 	m_MtlPair=0;
-    tvView->IsUpdating = false;
+    View()->IsUpdating = false;
 }
 //---------------------------------------------------------------------------
 
@@ -103,7 +90,7 @@ void CSHGameMtlPairTools::Load()
 void CSHGameMtlPairTools::Save()
 {
     AnsiString name;
-    FHelper.MakeFullName(tvView->Selected,0,name);
+    FHelper.MakeFullName(View()->Selected,0,name);
 	ResetCurrentItem	();
     m_bLockUpdate		= TRUE;
 
@@ -133,39 +120,47 @@ void CSHGameMtlPairTools::UpdateProperties()
 {
 	PropItemVec items;
     if (m_MtlPair)	m_MtlPair->FillProp(items);
-    m_Props->AssignItems		(items,true);
-    m_Props->SetModifiedEvent	(Modified);
+    Ext.m_ItemProps->AssignItems		(items,true);
+    Ext.m_ItemProps->SetModifiedEvent	(Modified);
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMtlPairTools::ApplyChanges()
+void CSHGameMtlPairTools::ApplyChanges(bool bForced)
 {
 }
 //---------------------------------------------------------------------------
 
 LPCSTR CSHGameMtlPairTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
-//.
-/*    SGameMtlPair* S = GMLib.AppendMaterialPair(m0,m1,parent);
-    fraLeftBar->AddItem(GMLib.MtlPairToName(S->GetMtl0(),S->GetMtl1()));
-    return S;              
-*/
+    LPCSTR M=0;
+    int cnt	= TfrmChoseItem::SelectItem(TfrmChoseItem::smGameMaterial,M,2);
+    if (2==cnt){
+    	int mtl0,mtl1;
+    	GMLib.MtlNameToMtlPair	(M,mtl0,mtl1);
+        SGameMtlPair* parent	= GMLib.GetMaterialPair(parent_name);
+		SGameMtlPair* S 		= GMLib.AppendMaterialPair(mtl0,mtl1,parent);
+        AnsiString nm			= GMLib.MtlPairToName(S->GetMtl0(),S->GetMtl1());
+	    ViewAddItem				(nm.c_str());
+		SetCurrentItem			(nm.c_str());
+		Modified				();
+        return nm.c_str();
+    }else{
+    	if (1==cnt) ELog.DlgMsg(mtError,"Select 2 material.");
+    }
+    return 0;              
 }
 //---------------------------------------------------------------------------
 
-void CSHGameMtlPairTools::SetCurrentItem(LPCSTR parent_name)
+void CSHGameMtlPairTools::SetCurrentItem(LPCSTR name)
 {
     if (m_bLockUpdate) return;
-	SGameMtlPair* parent=GMLib.GetMaterialPair(parent_name);
-//.
-/*
-    // load material
+	SGameMtlPair* S=GMLib.GetMaterialPair(name);
+    // set material
 	if (m_MtlPair!=S){
         m_MtlPair = S;
         UpdateProperties();
     }
-	fraLeftBar->SetCurrentItem(GMLib.MtlPairToName(S->GetMtl0(),S->GetMtl1()));
-*/
+	ViewSetCurrentItem(name);
 }
 //---------------------------------------------------------------------------
 

@@ -94,7 +94,7 @@ void CGameMtlLibrary::Load(LPCSTR name)
         OBJ->close();
     }
 
-    OBJ 				= fs.open_chunk(GAMEMTLS_CHUNK_MTLS_PAIR); R_ASSERT(OBJ);
+    OBJ 				= fs.open_chunk(GAMEMTLS_CHUNK_MTLS_PAIR);
     if (OBJ){
         IReader* O   	= OBJ->open_chunk(0);
         for (int count=1; O; count++) {

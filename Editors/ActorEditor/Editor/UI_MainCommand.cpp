@@ -19,6 +19,8 @@
 #include "Library.h"
 #include "LightAnimLibrary.h"
 
+#include "SoundManager.h"
+
 bool TUI::Command( int _Command, int p1, int p2 ){
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
 	string256 filebuffer;
@@ -37,6 +39,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
             PSLib.OnCreate	();
             Lib.OnCreate	();
             LALib.OnCreate	();
+            SndLib.OnCreate	();
 			if (!Tools.OnCreate()){
                 bRes=false;
             	break;
@@ -54,6 +57,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         LALib.OnDestroy		();
     	PSLib.OnDestroy		();
 		Tools.OnDestroy		();
+		SndLib.OnDestroy	();
 		Lib.OnDestroy		();
         UI.OnDestroy		();
 		Engine.Destroy		();

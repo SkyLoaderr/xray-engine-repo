@@ -18,6 +18,7 @@
 #include "ui_main.h"
 #include "PSLibrary.h"
 #include "GameMtlLib.h"
+#include "soundrender_source.h"
 
 #ifdef _LEVEL_EDITOR
  #include "Scene.h"
@@ -35,7 +36,7 @@ TfrmChoseItem::ESelectMode TfrmChoseItem::Mode;
 AnsiString TfrmChoseItem::select_item="";
 AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
 //---------------------------------------------------------------------------
-int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, bool bIgnoreExt)
+int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, bool bIgnoreExt, AStringVec* items)
 {
 	VERIFY(!form);
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
@@ -54,6 +55,7 @@ int __fastcall TfrmChoseItem::SelectItem(ESelectMode mode, LPCSTR& dest, int sel
 
     // fill
     switch (form->Mode){
+    case smCustom: 		form->FillCustom(items);break;
     case smSound: 		form->FillSound();		break;
     case smObject: 		form->FillObject();		break;
     case smShader: 		form->FillShader();		break;
@@ -103,6 +105,15 @@ void __fastcall TfrmChoseItem::AppendItem(LPCSTR name)
     node->ShowCheckBox 		= form->bMultiSel;
 }
 
+void __fastcall TfrmChoseItem::FillCustom(AStringVec* items)
+{
+	R_ASSERT2(items,"Invalid list pointer received.");
+    form->Caption				= "Select Item";
+    AStringIt  it				= items->begin();
+    AStringIt  _E				= items->end();
+    for (; it!=_E; it++)		AppendItem(it->c_str());
+}
+
 void __fastcall TfrmChoseItem::FillEntity()
 {
     form->Caption					= "Select Entity";
@@ -120,7 +131,7 @@ void __fastcall TfrmChoseItem::FillSound()
 {
     form->Caption					= "Select Sound";
     FS_QueryMap lst;
-    if (SoundManager.GetSounds(lst)){
+    if (SndLib.GetSounds(lst)){
 	    FS_QueryPairIt  it			= lst.begin();
     	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());
@@ -320,9 +331,10 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 {
     if (tvItems->Selected) m_LastSelection[form->Mode]=tvItems->Selected->Text;
-	xr_delete(m_Thm);
-	Action = caFree;
-    form = 0;
+	xr_delete		(m_Thm);
+	m_Snd.destroy	();
+	Action 			= caFree;
+    form 			= 0;
 }
 //---------------------------------------------------------------------------
 
@@ -439,10 +451,12 @@ void __fastcall TfrmChoseItem::ebMultiClearClick(TObject *Sender)
 
 void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 {
-	TElTreeItem* Item = tvItems->Selected;
-	xr_delete(m_Thm);
+	TElTreeItem* Item 	= tvItems->Selected;
+	xr_delete			(m_Thm);
+	m_Snd.destroy		();
 	if (Item&&FHelper.IsObject(Item)){
-        if (Mode==smTexture){
+    	switch (Mode){
+        case smTexture:{
 	        AnsiString nm;
         	FHelper.MakeName		(Item,0,nm,false);
             if (nm!=NONE_CAPTION)	m_Thm	= xr_new<EImageThumbnail>(nm.c_str(),EImageThumbnail::EITTexture);
@@ -453,7 +467,8 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
             AnsiString temp; 		
             if (m_Thm) temp.sprintf	("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Alpha()?"32b":"24b");
             lbInfo->Caption			= temp;
-        }else if (Mode==smObject){
+        }break;
+        case smObject:{
 	        AnsiString nm,fn;
         	FHelper.MakeName		(Item,0,nm,false);
             fn						= ChangeFileExt(nm,".thm");
@@ -466,7 +481,24 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+Item->Text+".object\"";
             lbInfo->Caption			= "-";
-        }else{
+        }break;
+        case smSound:{
+	        AnsiString fn;
+        	FHelper.MakeName		(Item,0,fn,false);
+            fn						= ChangeFileExt(fn,".wav");
+            const CLocatorAPI::file* file	= FS.exist(_game_sounds_,fn.c_str());
+            if (file){
+            	m_Snd.create		(0,fn.c_str());
+                m_Snd.play			(0,FALSE);
+                AnsiString temp; 		
+                CSoundRender_Source* src= (CSoundRender_Source*)m_Snd.handle;
+                if (src) temp.sprintf	("Size: %.2f Kb\nTime: %.2f sec",float(file->size)/1024.f,float(src->dwTimeTotal)/1000.f);
+                lbInfo->Caption			= temp;
+            }else						pbImage->Repaint();
+			lbItemName->Caption 	= "\""+Item->Text+"\"";
+			lbFileName->Caption		= "\""+Item->Text+".wav\"";
+        }break;
+        default:
 			lbItemName->Caption = "\""+Item->Text+"\"";
 			lbFileName->Caption	= "-";
             lbInfo->Caption		= "-";
