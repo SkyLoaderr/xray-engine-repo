@@ -290,14 +290,14 @@ void	CEffect_Rain::Render	()
 	}
 	
 	// Particles
-	Log("------------");
+	Log("------------"); int cnt=0;
 	Particle*	P	= particle_active;
 	DWORD	dwTime	= Device.dwTimeGlobal;
 	if (P)	Device.Shader.set_Shader	(P->visual->hShader);
 	while (P)	{
 		Particle*	next	= P->next;
 
-		Log("1");
+		Log("1, ",cnt);
 		// Update
 		if (dwTime>=P->dwNextUpdate)
 		{
@@ -322,5 +322,6 @@ void	CEffect_Rain::Render	()
 		}
 		
 		P = next;
+		cnt++;
 	}
 }
