@@ -636,3 +636,13 @@ BOOL CGameObject::net_SaveRelevant	()
 {
 	return						(false);
 }
+
+u32	CGameObject::ps_Size		() const
+{
+	return						((u32)PositionStack.size());
+}
+
+CGameObject::SavedPosition CGameObject::ps_Element	(u32 id) const
+{
+	return						(PositionStack[id]);
+}

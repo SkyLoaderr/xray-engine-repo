@@ -370,12 +370,12 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	Fvector				vNewPosition = Position();
 	VERIFY				(_valid(Position()));
 	// *** general stuff
+	float dt			= float(DT)/1000.f;
 
-	CMemoryManager::update				();
+	CMemoryManager::update				(dt);
 	inherited::inherited::shedule_Update(DT);
 	
 	// Queue setup
-	float dt			= float(DT)/1000.f;
 	if (dt > 3) {
 		return;
 	}

@@ -49,9 +49,9 @@ void CMemoryManager::reload			(LPCSTR section)
 	CItemManager::reload			(section);
 }
 
-void CMemoryManager::update			()
+void CMemoryManager::update			(float time_delta)
 {
-	CVisualMemoryManager::update	();
+	CVisualMemoryManager::update	(time_delta);
 	CSoundMemoryManager::update		();
 	CHitMemoryManager::update		();
 	

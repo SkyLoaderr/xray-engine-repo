@@ -170,6 +170,8 @@ public:
 	{
 		return				(m_ini_file);
 	}
+			u32				ps_Size				() const;
+			SavedPosition	ps_Element			(u32 id) const;
 protected:
 			bool			frame_check			(u32 &frame);
 	virtual	void			spawn_supplies		();

@@ -28,7 +28,7 @@ public:
 	virtual	void			Load					(LPCSTR section);
 	virtual	void			reinit					();
 	virtual	void			reload					(LPCSTR section);
-	virtual	void			update					();
+	virtual	void			update					(float time_delta);
 	IC		ALife::ERelationType get_relation		(const CEntityAlive *tpEntityAlive) const;
 	template <typename T>
 			void			update					(const xr_vector<T> &objects);

@@ -245,12 +245,12 @@ void CCustomMonster::shedule_Update	( u32 DT )
 	VERIFY				(!NET.empty());
 	while ((NET.size()>2) && (NET[1].dwTimeStamp<dwTimeCL)) NET.pop_front();
 
+	float dt			= float(DT)/1000.f;
 	// *** general stuff
-	CMemoryManager::update		();
+	CMemoryManager::update		(dt);
 	inherited::shedule_Update	(DT);
 
 	// Queue setup
-	float dt			= float(DT)/1000.f;
 	if (dt > 3) return;
 
 	m_dwCurrentTime	= Level().timeServer();

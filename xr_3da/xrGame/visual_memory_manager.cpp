@@ -63,6 +63,8 @@ void CVisualMemoryManager::Load					(LPCSTR section)
 	m_visibility_value					= pSettings->r_float(section,"visibility_value");
 	m_always_visible_distance_danger	= pSettings->r_float(section,"always_visible_distance_danger");
 	m_always_visible_distance_free		= pSettings->r_float(section,"always_visible_distance_free");
+	m_time_quant						= pSettings->r_float(section,"time_quant");
+	m_velocity_factor					= pSettings->r_float(section,"velocity_factor");
 }
 
 void CVisualMemoryManager::reinit					()
@@ -117,14 +119,38 @@ float CVisualMemoryManager::object_visible_distance(const CGameObject *game_obje
 	return								(distance);
 }
 
-float CVisualMemoryManager::get_visible_value	(float distance, float object_distance) const
+float CVisualMemoryManager::get_object_velocity	(const CGameObject *game_object) const
+{
+#pragma todo("Dima to Oles: Please make ps_Size and ps_Element functions const")
+	if (game_object->ps_Size() < 2)
+		return							(0.f);
+
+	CObject::SavedPosition	pos0 = game_object->ps_Element	(game_object->ps_Size() - 2);
+	CObject::SavedPosition	pos1 = game_object->ps_Element	(game_object->ps_Size() - 1);
+	
+	return					(
+		pos1.vPosition.distance_to(pos0.vPosition)/
+		(
+			float(pos1.dwTime)/1000.f - 
+			float(pos0.dwTime)/1000.f
+		)
+	);
+}
+
+float CVisualMemoryManager::get_visible_value	(float distance, float object_distance, float time_delta, float object_velocity) const
 {
 	float								always_visible_distance = m_always_visible_distance_free;
 	if (m_stalker->mental_state() == eMentalStateDanger)
 		always_visible_distance			= m_always_visible_distance_danger;
+
+	if (distance <= always_visible_distance + EPS_L)
+		return							(m_visibility_value);
+
 	return								(
-		(distance - object_distance)
-		/
+		time_delta / 
+		m_time_quant * 
+		(1.f + m_velocity_factor*object_velocity) *
+		(distance - object_distance) /
 		(distance - always_visible_distance)
 	);
 }
@@ -146,7 +172,7 @@ void CVisualMemoryManager::add_not_yet_visible_object	(const CNotYetVisibleObjec
 	m_not_yet_visible_objects.push_back	(not_yet_visible_object);
 }
 
-bool CVisualMemoryManager::visible				(const CGameObject *game_object)
+bool CVisualMemoryManager::visible				(const CGameObject *game_object, float time_delta)
 {
 	VERIFY						(game_object);
 	
@@ -170,32 +196,36 @@ bool CVisualMemoryManager::visible				(const CGameObject *game_object)
 	if (!object) {
 		CNotYetVisibleObject	new_object;
 		new_object.m_object		= game_object;
-		new_object.m_value		= get_visible_value(distance,object_distance);
+		new_object.m_value		= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object));
 		new_object.m_updated	= true;
 		add_not_yet_visible_object(new_object);
 #ifdef VISIBILITY_TEST
 		if ((new_object.m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))
 			Msg					("Object %s IS visible",*game_object->cName());
+		if ((new_object.m_value <= m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+			Msg					("Object %s IS NOT visible",*game_object->cName());
 #endif
 		return					(new_object.m_value >= m_visibility_value);
 	}
 	
 	object->m_updated			= true;
-	object->m_value				+= get_visible_value(distance,object_distance);
+	object->m_value				+= get_visible_value(distance,object_distance,time_delta,get_object_velocity(game_object));
 
 #ifdef VISIBILITY_TEST
 	if ((object->m_value > m_visibility_value) && dynamic_cast<const CActor*>(game_object))
 		Msg						("Object %s IS visible",*game_object->cName());
+	if ((object->m_value <= m_visibility_value) && dynamic_cast<const CActor*>(game_object))
+		Msg						("Object %s IS NOT visible",*game_object->cName());
 #endif
 
 	return						(object->m_value >= m_visibility_value);
 }
 
-void CVisualMemoryManager::add_visible_object	(const CObject *object)
+void CVisualMemoryManager::add_visible_object	(const CObject *object, float time_delta)
 {
 	const CGameObject *game_object	= dynamic_cast<const CGameObject*>(object);
 	const CGameObject *self			= dynamic_cast<const CGameObject*>(this);
-	if (!game_object || !visible(game_object))
+	if (!game_object || !visible(game_object,time_delta))
 		return;
 
 	xr_vector<CVisibleObject>::iterator	J = std::find(m_objects->begin(),m_objects->end(),object_id(game_object));
@@ -233,7 +263,7 @@ void CVisualMemoryManager::add_visible_object	(const CVisibleObject visible_obje
 			m_objects->push_back(visible_object);
 }
 	
-void CVisualMemoryManager::update				()
+void CVisualMemoryManager::update				(float time_delta)
 {
 	m_visible_objects.clear				();
 	feel_vision_get						(m_visible_objects);
@@ -256,7 +286,7 @@ void CVisualMemoryManager::update				()
 		xr_vector<CObject*>::const_iterator	I = m_visible_objects.begin();
 		xr_vector<CObject*>::const_iterator	E = m_visible_objects.end();
 		for ( ; I != E; ++I)
-			add_visible_object			(*I);
+			add_visible_object			(*I,time_delta);
 	}
 	
 	{
