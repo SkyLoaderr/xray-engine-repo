@@ -81,7 +81,6 @@ void					CRender::create					()
 	if (strstr(Core.Params,"-smap3072"))	o.smapsize	= 3072;
 	if (strstr(Core.Params,"-smap4096"))	o.smapsize	= 4096;
 
-
 	// options
 	o.sjitter			= (strstr(Core.Params,"-sjitter"))?		TRUE	:FALSE	;
 	o.depth16			= (strstr(Core.Params,"-depth16"))?		TRUE	:FALSE	;
