@@ -193,9 +193,10 @@ void CDetailManager::Render		(Fvector& EYE)
 			case fcvPartial:	// addition with TEST
 			case fcvFully:		// addition
 				{
-					for (int sp_id=0; sp_id<3; sp_id++)
+					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
+						if (sp.id==0xff)	continue;
 						CList<SlotItem>&	vis = visible	[sp.id];
 						float				R   = objects	[sp.id].radius;
 						
@@ -261,6 +262,7 @@ void CDetailManager::Render		(Fvector& EYE)
 			DWORD	item_start	= L_ID*o_per_lock;
 			DWORD	item_end	= item_start+o_per_lock;
 			if (item_end>o_total)	item_end = o_total;
+			if (item_end<=item_start)	break;
 			DWORD	item_range	= item_end-item_start;
 			DWORD	vCount_Lock	= item_range*vCount_Object;
 	
