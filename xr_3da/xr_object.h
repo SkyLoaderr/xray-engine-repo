@@ -50,6 +50,9 @@ private:
 	ObjectFlags							FLAGS;
 	u32									net_ID;
 
+	u32									chk_update_shedule;
+	u32									chk_update_cl;
+
 	// Some property variables
 	LPSTR								NameObject;
 	LPSTR								NameSection;

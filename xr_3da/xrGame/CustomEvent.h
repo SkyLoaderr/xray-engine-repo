@@ -39,7 +39,7 @@ public:
 	
 	
 	// Update
-	virtual void			Update				( u32 dt );
+	virtual void			shedule_Update		( u32 dt );
 
 	// Collision
 	virtual void			OnNear				( CObject* near   );

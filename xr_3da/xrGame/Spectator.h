@@ -36,12 +36,12 @@ public:
 							CSpectator				( );
 	virtual					~CSpectator				( );
 
-	virtual void			IR_OnMouseMove				(int x, int y);
-	virtual void			IR_OnKeyboardPress			(int dik);
-	virtual void			IR_OnKeyboardRelease		(int dik);
-	virtual void			IR_OnKeyboardHold			(int dik);
+	virtual void			IR_OnMouseMove			(int x, int y);
+	virtual void			IR_OnKeyboardPress		(int dik);
+	virtual void			IR_OnKeyboardRelease	(int dik);
+	virtual void			IR_OnKeyboardHold		(int dik);
 	//virtual	void			Hit						(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse){};
-	virtual void			Update					( u32 T ); 
+	virtual void			shedule_Update			( u32 T ); 
 	virtual void			UpdateCL				( );
 };
 

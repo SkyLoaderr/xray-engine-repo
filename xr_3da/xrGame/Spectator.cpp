@@ -68,8 +68,9 @@ void CSpectator::UpdateCL()
 	}
 }
 
-void CSpectator::Update	(u32 DT)
+void CSpectator::shedule_Update		(u32 DT)
 {
+	inherited::shedule_Update	(DT);
 	if (!getEnabled())	return;
 	if (!Ready())		return;
 }
