@@ -14,15 +14,7 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend	()
 {
-	if (!net_HasBandwidth() || !Level().Server->client_Count())	return;
-	/*
-	if (!Level().Server->client_Count())
-	{
-		return;
-		if (!net_HasBandwidth())	return;
-	};
-	*/
-
+	if (!net_HasBandwidth() || OnClient())	return;
 	NET_Packet				P;
 	P.w_begin				(M_UPDATE);
 	Objects.net_Export		(&P);
