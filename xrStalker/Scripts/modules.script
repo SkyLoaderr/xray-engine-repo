@@ -113,6 +113,7 @@ load_scheme("mob_remark",     "mob_remark",  stype_mobile)
 load_scheme("mob_walker",     "mob_walker",  stype_mobile)
 load_scheme("mob_death",      "mob_death",   stype_mobile)
 load_scheme("mob_trade",      "mob_trade",   stype_mobile)
+load_scheme("mob_kicker",     "mob_kicker",  stype_mobile) 
 
 ----------------------------------------------------------------------
 -- Загрузка модулей физических объектов:
