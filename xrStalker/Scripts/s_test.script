@@ -23,13 +23,11 @@ end
 
 function Test2:print ()
     s_test.Test1:print ()
-    printf ("Test2 value = %d", self.value)
+    printf ("Test2 value = %d", s_test.Test1.value)
 end
 
 function Test2:set_value (v)
-    self.value = v
     s_test.Test1.value = v
---    s_test.Test1:set_value (v + 10)
 end    
 
     
