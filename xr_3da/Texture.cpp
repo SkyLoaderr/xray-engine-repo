@@ -327,7 +327,7 @@ _BUMP:
 			// 
 			string256			fnameB;
 			strconcat			(fnameB,"$user$",fname,"_bumpX");
-			ref_texture			t_temp		= Device->Resources->_CreateTexture	(fnameB);
+			ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
 			t_temp->surface_set	(T_normal_2C	);
 			_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
 		}
@@ -369,7 +369,7 @@ _BUMP_from_base:
 		IDirect3DTexture9*	T_normal_1C	= TW_LoadTextureFromTexture(T_normal_1,fmt,psTextureLOD,dwWidth,dwHeight);
 
 #if RENDER==R_R2	
-		if (ps_r2_ls_flags&R2FLAG_PARALLAX)
+		if (ps_r2_ls_flags.test(R2FLAG_PARALLAX))
 		{
 			// Decompress (back)
 			fmt								= D3DFMT_A8R8G8B8;
@@ -392,7 +392,7 @@ _BUMP_from_base:
 			// 
 			string256			fnameB;
 			strconcat			(fnameB,"$user$",fname,"_bumpX");
-			ref_texture			t_temp		= Device->Resources->_CreateTexture	(fnameB);
+			ref_texture			t_temp		= Device.Resources->_CreateTexture	(fnameB);
 			t_temp->surface_set	(T_normal_2C	);
 			_RELEASE			(T_normal_2C	);	// texture should keep reference to it by itself
 		}
