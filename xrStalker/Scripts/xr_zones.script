@@ -395,8 +395,8 @@ class "zone_sound"
 local sound_types = {
 	floor_wooden = {
 		"ambient\\floor_creak1",
---		"ambient\\floor_creak2",
---		"ambient\\floor_creak3"
+		"ambient\\floor_creak2",
+		"ambient\\floor_creak3"
 	}
 }
 
