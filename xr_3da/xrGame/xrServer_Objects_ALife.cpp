@@ -328,13 +328,13 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 	if (Ini)
 		xr_delete				(Ini);
 
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location/1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location/2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location/3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
-	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location/4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\1"),				(u32*)&m_tLocations[0],			&locations[0],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\2"),				(u32*)&m_tLocations[1],			&locations[1],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
+	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
 
-	PHelper.CreateList			(items,	FHelper.PrepareKey(pref,s_name,"Connection/Level name"),	m_caConnectionLevelName,		sizeof(m_caConnectionLevelName),		&level_ids);
-	PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection/Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
+	PHelper.CreateList			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	m_caConnectionLevelName,		sizeof(m_caConnectionLevelName),		&level_ids);
+	PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
 }
 #endif
 
@@ -431,8 +431,8 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,s_name,"ALife/Probability"),	&m_fProbability,	0,100);
-	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife/Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
+	PHelper.CreateFloat			(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),	&m_fProbability,	0,100);
+	PHelper.CreateSceneItem		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	m_caGroupControl,  sizeof(m_caGroupControl), OBJCLASS_SPAWNPOINT, pSettings->r_string(s_name,"GroupControlSection"));
 }
 #endif
 
@@ -471,7 +471,7 @@ void CSE_ALifeGroupAbstract::UPDATE_Write	(NET_Packet	&tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeGroupAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
-	PHelper.CreateU16			(items,	FHelper.PrepareKey(pref, "ALife/Count"),			&m_wCount,			0,0xff);
+	PHelper.CreateU16			(items,	FHelper.PrepareKey(pref, "ALife\\Count"),			&m_wCount,			0,0xff);
 };	
 #endif
 
