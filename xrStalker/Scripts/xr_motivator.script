@@ -18,7 +18,13 @@ function motivator_binder:__init (obj) super(obj)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:extrapolate_callback()
-	printf("_bp: extrapolate_callback")
+	local cur_pt = self.object:get_current_point_index()
+	printf("_bp: extrapolate_callback: cur_pt = %d", cur_pt)
+	if patrol(self.object:patrol()):flags(cur_pt):get() == 0 then
+		printf("_bp: extrapolate_callback: true")
+		return true
+	end
+	printf("_bp: extrapolate_callback: false")
 	return false
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -26,7 +32,7 @@ function motivator_binder:reinit()
     object_binder.reinit(self)
     printf("motivator_binder:reinit(): self.object:name()='%s'", self.object:name())
     self.object:set_hear_callback(hear_callback)
-    --self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
+    self.object:set_patrol_extrapolate_callback(motivator_binder.extrapolate_callback, self)
         
     local char_ini = self.object:spawn_ini()
 
