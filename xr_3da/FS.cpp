@@ -40,10 +40,10 @@ void	CFS_Memory::SaveTo	(const char* fn, const char* sign)
         LPBYTE ptr 		= pointer();
         for (int req_size = size(); req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
 			int W = _write(H,ptr,mb_sz);
-			R_ASSERT2(W>0,"Can't write mem block to file.");
+			R_ASSERT2(W==mb_sz,"Can't write mem block to file.");
         }
         int W = _write(H,ptr,req_size);
-		R_ASSERT2(W>0,"Can't write mem block to file.");
+		R_ASSERT2(W==req_size,"Can't write mem block to file.");
 		_close(H);
 	}
 }
