@@ -42,9 +42,7 @@ void EFS_Utils::MarkFile(LPCSTR fn, bool bDeleteSource)
 	}
 }
 
-#define BACKUP_FILE_LEVEL 5
-
-void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg)
+void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg, u32 backup_level)
 {
 	R_ASSERT(initial);
 	xr_string src_name; 
@@ -60,7 +58,7 @@ void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg)
         // удалить лишние бэкап файлы
         FS_QueryMap lst;
         xr_string mask	= EFS.ChangeFileExt(fname,".*"); xr_strlwr(mask);
-		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=BACKUP_FILE_LEVEL){
+		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=backup_level){
         	do{
             	FS_QueryPairIt  min_it  = lst.begin();
                 FS_QueryPairIt  it		= lst.begin();
@@ -69,7 +67,7 @@ void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg)
                 del_name				= dst_path+min_it->first;
                 FS.file_delete			(del_name.c_str());
                 lst.erase	(min_it);
-            }while(lst.size()>=BACKUP_FILE_LEVEL);
+            }while(lst.size()>=backup_level);
         }
 
 		// copy backup

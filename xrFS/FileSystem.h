@@ -5,6 +5,8 @@
 #ifndef FileSystemH
 #define FileSystemH
 
+#define BACKUP_FILE_LEVEL 5
+
 class XRCORE_API EFS_Utils {
 	DEFINE_MAP	(xr_string,void*,HANDLEMap,HANDLEPairIt);
 
@@ -24,7 +26,7 @@ public:
 	bool 		GetSaveName		(LPCSTR initial, xr_string& buf, LPCSTR offset=0, int start_flt_ext=-1 );
 
 	void 		MarkFile		(LPCSTR fn, bool bDeleteSource);
-	void 		BackupFile		(LPCSTR initial, LPCSTR fname, bool bMsg=FALSE);
+	void 		BackupFile		(LPCSTR initial, LPCSTR fname, bool bMsg=FALSE, u32 backup_level=BACKUP_FILE_LEVEL);
 
 	BOOL		CheckLocking	(LPCSTR initial, LPCSTR fn, bool bOnlySelf, bool bMsg, shared_str* owner=0);
 	BOOL		LockFile		(LPCSTR initial, LPCSTR fn, bool bLog=true);
