@@ -199,7 +199,7 @@ int __cdecl _tmain(int argc, _TCHAR* argv[])
 	// initialize lua standard library functions 
 	luaopen_base	(luaVM); 
 	luaopen_table	(luaVM);
-	luaopen_io		(luaVM);
+//	luaopen_io		(luaVM);
 	luaopen_string	(luaVM);
 	luaopen_math	(luaVM);
 	luaopen_debug	(luaVM);
