@@ -402,6 +402,8 @@ void	CRender::Render		()
 	// Glows
 	Glows.Render			();
 
+	if (Target.Available())	Target.End		(1.f);
+	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();
 	pCreator->pHUD->Render	();
@@ -412,8 +414,6 @@ void	CRender::Render		()
 		flush_Patches	();
 	}
 
-	if (Target.Available())	Target.End		(1.f);
-	
 	Device.Statistic.RenderDUMP.End();
 }
 
