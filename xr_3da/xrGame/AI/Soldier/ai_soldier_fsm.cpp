@@ -43,14 +43,7 @@ void CAI_Soldier::AttackFire()
 	Fvector tDistance;
 	tDistance.sub(Position(),Enemy.Enemy->Position());
 
-	/**
-	if ((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring)))) {
-		eCurrentState = aiSoldierAttackRun;
-		m_dwLastRangeSearch = 0;
-		return;
-	}
-	/**/
-
+	//CHECK_IF_GO_TO_NEW_STATE((tDistance.square_magnitude() >= 25.f) && ((Group.m_dwFiring > 1) || ((Group.m_dwFiring == 1) && (!m_bFiring))),aiSoldierAttackRun)
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == 0),aiSoldierReload)
 
@@ -63,7 +56,11 @@ void CAI_Soldier::AttackFire()
 	
 	vfSetFire(true,Group);
 	
-	vfSetMovementType(m_cBodyState,0);
+	//vfSetMovementType(m_cBodyState,0);
+	if (m_cBodyState != BODY_STATE_STAND)
+		vfSetMovementType(m_cBodyState,0);
+	else
+		vfSetMovementType(BODY_STATE_CROUCH,0);
 }
 
 void CAI_Soldier::AttackRun()
@@ -430,14 +427,23 @@ void CAI_Soldier::PatrolUnderFire()
 			
 		SetLessCoverLook(AI_Node);
 		if (AI_Path.fSpeed)
-			vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+			if (_min(AI_Node->cover[0],_min(AI_Node->cover[1],_min(AI_Node->cover[2],AI_Node->cover[3]))) > MIN_COVER_MOVE)
+				vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+			else
+				vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 		else
-			vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+			if (_min(AI_Node->cover[0],_min(AI_Node->cover[1],_min(AI_Node->cover[2],AI_Node->cover[3]))) > MIN_COVER_MOVE)
+				vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+			else
+				vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 	}
 	else {
 		SetLessCoverLook(AI_Node);
 		AI_Path.TravelPath.clear();
-		vfSetMovementType(BODY_STATE_STAND,0);
+		if (_min(AI_Node->cover[0],_min(AI_Node->cover[1],_min(AI_Node->cover[2],AI_Node->cover[3]))) > MIN_COVER_MOVE)
+			vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+		else
+			vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 	}
 	
 	vfSetFire(false,Group);
@@ -802,7 +808,10 @@ void CAI_Soldier::Pursuit()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+	if (_min(AI_Node->cover[0],_min(AI_Node->cover[1],_min(AI_Node->cover[2],AI_Node->cover[3]))) > MIN_COVER_MOVE)
+		vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+	else
+		vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
 }
 
 void CAI_Soldier::Reload()

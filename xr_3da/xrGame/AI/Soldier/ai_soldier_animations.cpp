@@ -183,7 +183,6 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									break;
 														 }
 								case BODY_STATE_LIE : {
-									//Msg("Animation Selection : can't turn while lying...");
 									tpLegsAnimation = tSoldierAnimations.tLie.tLegs.tWalk.fwd;
 									break;
 								}
@@ -213,15 +212,17 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									break;
 														 }
 								case BODY_STATE_LIE : {
-									//Msg("Animation Selection : can't turn while lying...");
-									tpLegsAnimation = tSoldierAnimations.tLie.tLegs.tWalk.fwd;
+									if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
+										tpLegsAnimation = tSoldierAnimations.tLie.tLegs.tWalk.fwd;
 									break;
 								}
 							}
 						}
 					}
 					switch (eCurrentState) {
-						case aiSoldierTestMicroActionR : ;
+						#ifdef TEST_ACTIONS	
+							case aiSoldierTestMicroActionR : ;
+						#endif
 						case aiSoldierReload : {
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {

@@ -126,6 +126,7 @@ class CAI_Soldier : public CCustomMonster
 		#define MIN_PATROL_DISTANCE				1.f
 		#define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 		#define COMPUTE_DISTANCE_2D(t,p)		(sqrtf(_sqr((t).x - (p).x) + _sqr((t).z - (p).z)))
+		#define MIN_COVER_MOVE					120
 
 		////////////////////////////////////////////////////////////////////////////
 		// normal animations

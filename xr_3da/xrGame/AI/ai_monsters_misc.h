@@ -12,6 +12,18 @@
 #include "..\\ai_PathNodes.h"
 
 	// Fuzzy State Machine
+	#define WRITE_LOG
+
+	#ifdef WRITE_LOG
+		#define WRITE_TO_LOG(S) {\
+			Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
+			bStopThinking = true;\
+		}
+	#else
+		#define WRITE_TO_LOG(S) \
+			bStopThinking = true;
+	#endif
+
 	#define GO_TO_NEW_STATE(a) {\
 		eCurrentState = a;\
 		m_dwLastRangeSearch = 0;\
@@ -107,7 +119,7 @@
 	}
 
 	// Tests
-	#define TEST_ACTIONS
+	//#define TEST_ACTIONS
 
 	#ifdef TEST_ACTIONS
 		#define TEST_MICRO_ACTION(A) \
@@ -162,18 +174,6 @@
 			Leader = this;\
 		R_ASSERT (Leader);
 	
-	//#define WRITE_LOG
-
-	#ifdef WRITE_LOG
-		#define WRITE_TO_LOG(S) {\
-			Msg("%s,%s,%d,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f,%.2f",cName(),S,Level().timeServer(),vPosition.x,vPosition.y,vPosition.z,r_current.yaw,r_current.pitch,r_torso_current.yaw,r_torso_current.pitch);\
-			bStopThinking = true;\
-		}
-	#else
-		#define WRITE_TO_LOG(S) \
-			bStopThinking = true;
-	#endif
-
 	#define ADJUST_ANGLE(A) \
 		if (A >= PI_MUL_2 - EPS_L)\
 			A -= PI_MUL_2;\
