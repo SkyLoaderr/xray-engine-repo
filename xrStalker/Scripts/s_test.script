@@ -1,19 +1,16 @@
 function main ()
 
-	printf ("Number = %d", bit_and (-2147221, -2147221))
+	local n1 = get_level_object ("naparnik1")
+	local n2 = get_level_object ("naparnik2")
 
---	local eater = get_level_object ("eater")
---	local kolbasa = get_level_object ("kolbasa")
+	n1:script (true, s_test.script_name ())
+	n1:script (true, s_test.script_name ())
 
---	eater:script (true, s_test.script_name ())
-	
---	action (eater, object (kolbasa, object.take), cond (cond.time_end, 5000))
---	action (eater, object (kolbasa, object.activate), cond (cond.time_end, 5000))
---	action (eater, object (kolbasa, object.fire1), cond (cond.time_end, 5000))
---	action (eater, object (kolbasa, object.reload), cond (cond.time_end, 5000))
---	action (eater, object (kolbasa, object.deactivate), cond (cond.time_end, 5000))
+	action (n1, move (move.standing, move.walk, move.line, patrol ("boar_way")), 
+			look (look.search), anim (anim.free), cond (cond.move_end))
+	action (n2, move (move.standing, move.walk, move.line, patrol ("boar_way")), 
+			look (look.search), anim (anim.free), cond (cond.move_end))
 
---	while true do wait () end	
 
 	local stalker = get_level_object ("stalker")
 	local torch = get_level_object ("torch")
