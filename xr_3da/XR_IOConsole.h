@@ -19,7 +19,7 @@ class ENGINE_API CConsole  :
 {
 public:
 	//t-defs
-	struct str_pred : public binary_function<char*, char*, bool> 
+	struct str_pred : public std::binary_function<char*, char*, bool> 
 	{	
 		IC bool operator()(const char* x, const char* y) const
 		{	return strcmp(x,y)<0;	}

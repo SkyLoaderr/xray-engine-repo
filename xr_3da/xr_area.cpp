@@ -9,7 +9,7 @@
 
 using namespace	Collide;
 
-IC void minmax(float &mn, float &mx) { if (mn > mx) swap(mn,mx); }
+IC void minmax(float &mn, float &mx) { if (mn > mx) std::swap(mn,mx); }
 
 void __stdcall _sound_event	(sound* S, float range)
 {
@@ -95,7 +95,7 @@ IC void CObjectSpace::Object_Move			( CObject *O )
 		for (iz=r0.y1; iz<=r0.y2; iz++)
 			if (!r1.in(ix,iz))	{
 				xr_vector<CObject*>&	lst = Dynamic(ix,iz).lst;
-				lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
+				lst.erase(std::remove(lst.begin(),lst.end(),O),lst.end());
 			}
 			
 			for (ix=r1.x1;ix<=r1.x2;ix++)		// add to slots
@@ -116,7 +116,7 @@ IC void CObjectSpace::Object_Unregister		( CObject *O )
 		for (ix=r0.x1; ix<=r0.x2; ix++){
 			for (iz=r0.y1; iz<=r0.y2; iz++){
 				xr_vector<CObject*>&	lst = Dynamic(ix,iz).lst;
-				lst.erase(remove(lst.begin(),lst.end(),O),lst.end());
+				lst.erase(std::remove(lst.begin(),lst.end(),O),lst.end());
 			}
 		}
 		M->rect_last.null();

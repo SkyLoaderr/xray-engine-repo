@@ -40,7 +40,7 @@ CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 
 CObject*	CObjectList::FindObjectByCLS_ID	( CLASS_ID cls )
 {
-	OBJ_IT O=find_if(objects.begin(),objects.end(),fClassEQ(cls));
+	OBJ_IT O=std::find_if(objects.begin(),objects.end(),fClassEQ(cls));
 	if (O!=objects.end())	return *O;
 	else					return NULL;
 }

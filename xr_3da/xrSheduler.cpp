@@ -116,12 +116,12 @@ void CSheduler::EnsureOrder	(CSheduled* Before, CSheduled* After)
 void CSheduler::Push		(Item& I)
 {
 	Items.push_back	(I);
-	push_heap		(Items.begin(), Items.end());
+	std::push_heap	(Items.begin(), Items.end());
 }
 
 void CSheduler::Pop		()
 {
-	pop_heap		(Items.begin(), Items.end());
+	std::pop_heap	(Items.begin(), Items.end());
 	Items.pop_back	();
 }
 
