@@ -13,16 +13,17 @@
 // included headers
 ////////////////////////////////////////////////////////////////////////////
 
-#include "custommonster.h"
+#include "CustomMonster.h"
 
 class CBaseFunction {
-public:
+protected:
 	DWORD			m_dwLastUpdate;
 	double			m_dLastValue;
 	CCustomMonster	*m_tpLastMonster;
 	double			m_dMinResultValue;
 	double			m_dMaxResultValue;
 
+public:
 
 	virtual	void	vfLoadEF(char *caFileName, CBaseFunction **fpaBaseFunctions) {};
 	virtual double	dfGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions) = 0;
