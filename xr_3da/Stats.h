@@ -68,6 +68,7 @@ public:
 	CStatTimer	RenderDUMP_Cached;	// ...cached rendering
 	CStatTimer	RenderDUMP_HUD;		// ...hud rendering
 	CStatTimer	RenderDUMP_Glows;	// ...glows vis-testing,sorting,render
+	CStatTimer	RenderDUMP_Lights;	// ...d-lights building/rendering
 	CStatTimer	RenderDUMP_WM;		// ...walmark sorting, rendering
 	CStatTimer	RenderDUMP_DT_VIS;	// ...details visibility detection
 	CStatTimer	RenderDUMP_DT_Render;// ...details rendering

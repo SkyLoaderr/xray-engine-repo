@@ -49,6 +49,7 @@ void CStats::Show()
 		RenderDUMP_Cached.FrameEnd	();	
 		RenderDUMP_HUD.FrameEnd		();	
 		RenderDUMP_Glows.FrameEnd	();	
+		RenderDUMP_Lights.FrameEnd	();	
 		RenderDUMP_Shads.FrameEnd	();	
 		RenderDUMP_WM.FrameEnd		();	
 		RenderDUMP_DT_VIS.FrameEnd	();	
@@ -151,6 +152,7 @@ void CStats::Show()
 		RenderDUMP_Cached.FrameStart();	
 		RenderDUMP_HUD.FrameStart	();	
 		RenderDUMP_Glows.FrameStart	();	
+		RenderDUMP_Lights.FrameStart();	
 		RenderDUMP_Shads.FrameStart	();	
 		RenderDUMP_WM.FrameStart	();	
 		RenderDUMP_DT_VIS.FrameStart();	
