@@ -75,14 +75,14 @@ protected:
 	public:
 		CUIDragDropItemMP(): slotNum			(0),
 							 sectionNum			(0),
-							 bAddonsAvailable	(false),
-							 m_pGLAddon			(NULL),
-							 m_pScopeAddon		(NULL),
-							 m_pSilencerAddon	(NULL)
+							 bAddonsAvailable	(false)
 		{
 			std::strcpy(m_strAddonTypeNames[0], "Silencer");
 			std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
 			std::strcpy(m_strAddonTypeNames[2], "Scope");
+
+			for (u8 i = 0; i < NUM_OF_ADDONS; ++i)
+				m_pAddon[i] = NULL;
 		}
 		// Для слота
 		void SetSlot(u32 slot)						{ R_ASSERT(slot < 6 || slot == static_cast<u32>(-1)); slotNum = slot; }
@@ -121,12 +121,13 @@ protected:
 
 		// У каждого оружия максимум 3 аддона. Будем считать, что в массиве они идут в таком поряке:
 		// Scope, Silencer, Grenade Launcher.
+		static const u8		NUM_OF_ADDONS = 3;
 		enum  AddonIDs		{ ID_SILENCER = 0, ID_GRENADE_LAUNCHER, ID_SCOPE };
-		AddonInfo			m_AddonInfo[3];
+		AddonInfo			m_AddonInfo[NUM_OF_ADDONS];
 		// Если у вещи вообще нет аддонов, то поднимаем этот флажек, для ускорения проверок
 		bool				bAddonsAvailable;
 		// Список название типов аддонов
-		char				m_strAddonTypeNames[3][25];
+		char				m_strAddonTypeNames[NUM_OF_ADDONS][25];
 
 		// Аттачим/детачим аддоны
 		void				AttachDetachAddon(int iAddonIndex, bool bAttach);
@@ -137,9 +138,9 @@ protected:
 		virtual void		ClipperOff();
 		virtual void		Draw();
 		// реальные драг-дроп вещи для тех аддонов, которые существуют для оружия
-		CUIDragDropItemMP	*m_pScopeAddon;
-		CUIDragDropItemMP	*m_pSilencerAddon;
-		CUIDragDropItemMP	*m_pGLAddon;
+		CUIDragDropItemMP	*m_pAddon[NUM_OF_ADDONS];
+//		CUIDragDropItemMP	*m_pSilencerAddon;
+//		CUIDragDropItemMP	*m_pGLAddon;
 	};
 
 	CUIFrameWindow		UIBagWnd;
