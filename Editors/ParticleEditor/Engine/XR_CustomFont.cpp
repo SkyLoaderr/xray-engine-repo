@@ -9,13 +9,12 @@
 #define MAX_CHARS	1024
 CFontBase::CFontBase()
 {
-	Stream			= Device.Streams.Create(FVF::F_TL,MAX_CHARS*4);
-	iNumber			= 0;
-	pShader			= 0;
+	iNumber						= 0;
+	pShader						= 0;
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 
-	strings.reserve	(128);
+	strings.reserve				(128);
 }
 
 CFontBase::~CFontBase()
@@ -30,11 +29,13 @@ void CFontBase::OnDeviceCreate()
 {
 	REQ_CREATE				();
 	OnInitialize			();
+	VS						= Device.Shader._CreateVS	(FVF::F_TL);
 }
 void CFontBase::OnDeviceDestroy()
 {
 	REQ_DESTROY				();
 	Device.Shader.Delete	(pShader);
+	Device.Shader._DeleteVS	(VS);
 }
 
 #ifndef RGBA_GETALPHA

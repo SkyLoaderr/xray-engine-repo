@@ -12,15 +12,14 @@ IC void CDraw::Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives)
 	Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,0,dwNumPrimitives);
 	UPDATEC		(dwNumVerts,dwNumPrimitives,1);
 }
-*/
-IC void CDraw::Draw			(CVertexStream* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB)
+IC void CDraw::Draw			(CVS* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB)
 {
-	setVertices	(S->mFVF,S->mStride,S->pVB);
+	setVertices	(S->dwHandle,S->dwStride,Device.Streams.Vertex.getBuffer());
 	setIndices	(dwBase,IB);;
 	Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,0,dwNumPrimitives);
 	UPDATEC		(dwNumVerts,dwNumPrimitives,1);
 }
-IC void CDraw::Draw			(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase)
+IC void CDraw::Draw			(CVS* S,	DWORD dwNumPrimitives, DWORD dwBase)
 {
 	setVertices	(S->mFVF,S->mStride,S->pVB);
 	setIndices	(0,0);
@@ -34,6 +33,7 @@ IC void CDraw::Draw			(CVertexStream* S,  DWORD dwNumVerts, DWORD dwNumPrimitive
 	Render		(D3DPT_TRIANGLELIST,0,dwNumVerts,iBase,dwNumPrimitives);
 	UPDATEC		(dwNumVerts,dwNumPrimitives,1);
 }
+*/
 /*
 IC void CDraw::DrawSubset	(CPrimitive& P, DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives)
 {

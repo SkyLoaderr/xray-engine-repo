@@ -29,14 +29,14 @@ public:
 	IDirect3DVertexBuffer8*	&CurrentVB()	{ return pCurVB; }
 	
 	// Main interface
-	IC void setVertices		(DWORD FVF,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
+	IC void setVertices		(DWORD vs,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
 	{
-		if (FVF!=vCurShader)HW.pDevice->SetVertexShader(vCurShader=FVF);
+		if (vs!=vCurShader)	HW.pDevice->SetVertexShader(vCurShader=vs);
 		if (VB!=pCurVB)		HW.pDevice->SetStreamSource(0,pCurVB=VB,STRIDE);
 	}
-	IC void setVerticesUC	(DWORD FVF,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
+	IC void setVerticesUC	(DWORD vs,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
 	{
-		HW.pDevice->SetVertexShader	(vCurShader=FVF);
+		HW.pDevice->SetVertexShader	(vCurShader=vs);
 		HW.pDevice->SetStreamSource	(0,pCurVB=VB,STRIDE);
 	}
 	IC void setIndices		(DWORD BASE, IDirect3DIndexBuffer8* IB)
@@ -59,9 +59,9 @@ public:
 	// The most used wrappers --- recomendation DON'T USE AT ALL :)
 	// IC void Draw			(CPrimitive& P,		DWORD dwNumVerts, DWORD dwNumPrimitives);
 	// IC void DrawSubset		(CPrimitive& P,		DWORD dwStartVertex,DWORD dwNumVerts, DWORD dwStartIndex, DWORD dwNumPrimitives);
-	IC void Draw			(CVertexStream* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB);
-	IC void Draw			(CVertexStream* S,	DWORD dwNumPrimitives, DWORD dwBase);
-	IC void Draw			(CVertexStream* S,  DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
+	// IC void Draw			(CVS* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD dwBase, IDirect3DIndexBuffer8* IB);
+	// IC void Draw			(CVS* S,	DWORD dwNumPrimitives, DWORD dwBase);
+	// IC void Draw			(CVS* S,	DWORD dwNumVerts, DWORD dwNumPrimitives, DWORD vBase, CIndexStream* IS, DWORD iBase);
 
 	void Lines_Begin		(int count);
 	void Lines_Draw			(Fvector& P1, Fvector& P2, float width, DWORD C);

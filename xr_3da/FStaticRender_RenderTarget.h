@@ -14,7 +14,7 @@ private:
 	Shader*				pShaderGray;
 	Shader*				pShaderBlend;
 	Shader*				pShaderAdd;
-	CVertexStream*		pStream;
+	CVS*				pVS;
 	
 	BOOL				Create				();
 	

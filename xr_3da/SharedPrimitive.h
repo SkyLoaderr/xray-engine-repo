@@ -30,7 +30,7 @@ private:
 public:
 	IC IDirect3DVertexBuffer8*	getBuffer()		{ return pVB;			}
 	IC DWORD					getDiscard()	{ return mDiscardID;	}
-	IC void						Flush			( mPosition=mSize;		)
+	IC void						Flush()			{ mPosition=mSize;		}
 
 	IC void*					Lock			( DWORD Count, DWORD Stride, DWORD& vOffset )
 	{

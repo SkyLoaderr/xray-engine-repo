@@ -26,7 +26,7 @@ BOOL CRenderTarget::Create	()
 	RT_temp		= Device.Shader._CreateRT		(RTtemp,64,64);
 	
 	// Shaders and stream
-	pStream		= Device.Streams.Create			(FVF::F_TL,12);
+	pVS			= Device.Shader._CreateVS		(FVF::F_TL);
 	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend= Device.Shader.Create			("effects\\screen_blend",	RTname);
@@ -50,6 +50,7 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteRT		(RT_temp);
 	Device.Shader._DeleteRT		(RT);
+	Device.Shader._DeleteVS		(pVS);
 
 	// Device.Shader._DeletePS		(hPS);
 	// Device.Shader._DeleteTexture(hTex);
