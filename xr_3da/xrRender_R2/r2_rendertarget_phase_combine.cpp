@@ -45,6 +45,7 @@ void	CRenderTarget::phase_combine	()
 
 	// Perform blooming filter and distortion if needed
 	phase_bloom			( );
+	phase_luminance		( );
 	BOOL	bDistort	= RImplementation.b_distortion;
 	if (0==RImplementation.mapDistort.size())	bDistort	= FALSE;
 	if (bDistort)		phase_distortion		();
@@ -103,7 +104,7 @@ void	CRenderTarget::phase_combine	()
 
 		// draw light-spheres
 #ifdef DEBUG
-		for (u32 it=0; it<dbg_spheres.size(); it++)
+		if (0) for (u32 it=0; it<dbg_spheres.size(); it++)
 		{
 			Fsphere				S	= dbg_spheres[it].first;
 			Fmatrix				M;	
@@ -115,7 +116,7 @@ void	CRenderTarget::phase_combine	()
 		}
 #endif
 		// Draw quater-screen quad textured with our direct-shadow-map-image
-		if (0) //.
+		if (1) //.
 		{
 			u32							IX=0,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
@@ -136,7 +137,7 @@ void	CRenderTarget::phase_combine	()
 		}
 
 		// Draw quater-screen quad textured with our accumulator
-		if (0)
+		if (1)
 		{
 			u32							IX=1,IY=1;
 			p0.set						(.5f/_w, .5f/_h);
