@@ -6943,6 +6943,9 @@
 								RelativePath=".\CarLights.h">
 							</File>
 							<File
+								RelativePath=".\CarScript.cpp">
+							</File>
+							<File
 								RelativePath=".\CarSound.cpp">
 							</File>
 							<File
@@ -8842,10 +8845,6 @@
 						<File
 							RelativePath="PHInterpolation.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="BodyEffectors"
-						Filter="">
 						<File
 							RelativePath=".\PHItemList.h">
 						</File>
@@ -8859,10 +8858,6 @@
 						<File
 							RelativePath=".\PHBaseBodyEffector.h">
 						</File>
-					</Filter>
-					<Filter
-						Name="PHNet"
-						Filter="">
 						<File
 							RelativePath=".\PHContactBodyEffector.cpp">
 						</File>

@@ -7,15 +7,16 @@ void CPHSimpleCharacter::UpdateStaticDamage(dContact* c,SGameMtl* tri_material,b
 			dReal	mag			=	0.f;
 				if(tri_material->Flags.test(SGameMtl::flPassable))
 				{
-					mag					=	_sqrt(smag)*(1.f-tri_material->fFlotationFactor)*tri_material->fBounceDamageFactor;
+					mag					=	_sqrt(smag)*tri_material->fBounceDamageFactor;
 				}
 				else
 				{
-					mag					=	(norm_prg+plane_pgr*tri_material->fPHFriction)*tri_material->fBounceDamageFactor;
+					float				vel_prg;vel_prg=_max(plane_pgr*tri_material->fPHFriction,norm_prg);
+					mag					=	(vel_prg)*tri_material->fBounceDamageFactor;
 				}
 				if(mag>m_contact_velocity)
 				{
-					m_contact_velocity	=	mag;
+  					m_contact_velocity	=	mag;
 					m_dmc_signum		=	bo1 ? 1.f : -1.f;
 					m_dmc_type			=	ctStatic;
 					m_damege_contact	=	*c;
