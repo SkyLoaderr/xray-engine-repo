@@ -294,7 +294,7 @@ void CActor::UpdateContact		(u16 contact_id)
 }
 
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
-{
+{	
 	HUD().GetUI()->UIMainIngameWnd.AnimateContacts();
 }
 void CActor::LostPdaContact		(CInventoryOwner* pInvOwner)
