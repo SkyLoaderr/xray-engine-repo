@@ -2,7 +2,7 @@
  
 IRender_Sector* CRender::detectSector(Fvector& P)
 {
-	XRC.ray_options	(CDB::OPT_ONLYNEAREST);
+	Sectors_xrc.ray_options	(CDB::OPT_ONLYNEAREST);
 	Fvector dir; dir.set(0,-1,0);
 
 	// Portals model
@@ -10,9 +10,9 @@ IRender_Sector* CRender::detectSector(Fvector& P)
 	float	range1	= 500.f;
 	if (rmPortals)	
 	{
-		XRC.ray_query	(rmPortals,P,dir,range1);
-		if (XRC.r_count()) {
-			CDB::RESULT *RP1 = XRC.r_begin();
+		Sectors_xrc.ray_query	(rmPortals,P,dir,range1);
+		if (Sectors_xrc.r_count()) {
+			CDB::RESULT *RP1 = Sectors_xrc.r_begin();
 			id1 = RP1->id; range1 = RP1->range; 
 		}
 	}
@@ -20,9 +20,9 @@ IRender_Sector* CRender::detectSector(Fvector& P)
 	// Geometry model
 	int		id2		= -1;
 	float	range2	= range1;
-	XRC.ray_query	(g_pGameLevel->ObjectSpace.GetStaticModel(),P,dir,range2);
-	if (XRC.r_count()) {
-		CDB::RESULT *RP2 = XRC.r_begin();
+	Sectors_xrc.ray_query	(g_pGameLevel->ObjectSpace.GetStaticModel(),P,dir,range2);
+	if (Sectors_xrc.r_count()) {
+		CDB::RESULT *RP2 = Sectors_xrc.r_begin();
 		id2 = RP2->id; range2 = RP2->range;
 	}
 
