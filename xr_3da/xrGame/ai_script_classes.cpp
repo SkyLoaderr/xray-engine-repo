@@ -108,6 +108,26 @@ void CLuaGameObject::StopTalk()
 	if(!pInventoryOwner) return;
 	pInventoryOwner->StopTalk();
 }
+void CLuaGameObject::EnableTalk()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return;
+	pInventoryOwner->EnableTalk();
+}
+void CLuaGameObject::DisableTalk()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return;
+	pInventoryOwner->DisableTalk();
+}
+
+bool CLuaGameObject::IsTalkEnabled()
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return false;
+	return pInventoryOwner->IsTalkEnabled();
+}
+
 
 
 CLuaGameObject *CLuaGameObject::GetCurrentWeapon() const

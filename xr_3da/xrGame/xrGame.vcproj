@@ -6549,6 +6549,19 @@
 					RelativePath=".\weapons.ltx">
 				</File>
 			</Filter>
+			<Filter
+				Name="Game Types"
+				Filter="">
+				<File
+					RelativePath=".\artefacthunt_game.ltx">
+				</File>
+				<File
+					RelativePath=".\deathmatch_game.ltx">
+				</File>
+				<File
+					RelativePath=".\teamdeathmatch_game.ltx">
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

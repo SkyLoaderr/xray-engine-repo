@@ -34,6 +34,8 @@ void CInventoryOwner::Init					()
 	m_pTrade = NULL;
 	m_inventory					= xr_new<CInventory>();
 	m_trade_storage				= xr_new<CInventory>();
+
+	EnableTalk();
 }
 
 void CInventoryOwner::Load					(LPCSTR section)
@@ -250,6 +252,8 @@ CTrade* CInventoryOwner::GetTrade()
 //и если не враг начинаем разговор
 bool CInventoryOwner::OfferTalk(CInventoryOwner* talk_partner)
 {
+	if(!IsTalkEnabled()) return false;
+
 	//проверить отношение к собеседнику
 	CEntityAlive* pOurEntityAlive = dynamic_cast<CEntityAlive*>(this);
 	R_ASSERT(pOurEntityAlive);

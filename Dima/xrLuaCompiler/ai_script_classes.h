@@ -286,6 +286,9 @@ public:
 	
 	bool IsTalking();
 	void StopTalk();
+	void EnableTalk();	
+	void DisableTalk();
+	bool IsTalkEnabled();
 	
 	u32				GetInventoryObjectCount() const;
 

@@ -61,6 +61,11 @@ public:
 	void StartTalk(CInventoryOwner* talk_partner);
 	void StopTalk();
 	bool IsTalking();
+	
+	void EnableTalk()		{m_bAllowTalk = true;}
+	void DisableTalk()		{m_bAllowTalk = false;}
+	bool IsTalkEnabled()	{ return m_bAllowTalk;}
+
 	CInventoryOwner* GetTalkPartner() {return m_pTalkPartner;}
 	//партнер задает вопрос, если персонаж захочет отвечать,
 	//то он вернет всю информацию, что у него есть по этой теме
@@ -86,7 +91,7 @@ protected:
 	bool				m_bTalking; 
 	CInventoryOwner		*m_pTalkPartner;
 
-
+	bool				m_bAllowTalk;
 
 
 public:

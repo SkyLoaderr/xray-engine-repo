@@ -498,6 +498,10 @@ void CScriptEngine::export_object()
 
 			.def("is_talking",					&CLuaGameObject::IsTalking)
 			.def("stop_talk",					&CLuaGameObject::StopTalk)
+			.def("enable_talk",					&CLuaGameObject::EnableTalk)
+			.def("disable_talk",				&CLuaGameObject::DisableTalk)
+			.def("is_talk_enabled",				&CLuaGameObject::IsTalkEnabled)
+
 
 			.enum_("CLSIDS")
 			[
