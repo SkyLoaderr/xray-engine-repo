@@ -629,7 +629,7 @@ function stalker_novice3_action:state_actor()
     end
 
     if(self.a.curState == say_hello) then
-     if(self.object:active_sound_count() == 0 and self.object:is_body_turning() ) then
+     if(self.object:active_sound_count() == 0 and self.object:is_body_turning() == false) then
             self.phrase       = math.random(0, 3)
             xr_sounds.play_sound_rnd    (self.object, 0, 1, "trivial", 4, 2, self.phrase)
             self.a.curState    = wait_actor
