@@ -80,7 +80,7 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 	
 	float amount			=	2*float(perc)/Movement.GetMass();
 	dir.y					+=	0.1f;
-	Fvector I; I.direct		(Movement.vExternalImpulse,dir,amount/m);
+	Fvector I; I.mad		(Movement.vExternalImpulse,dir,amount/m);
 	Movement.vExternalImpulse.add(I);
 	
 	// convert impulse into local coordinate system

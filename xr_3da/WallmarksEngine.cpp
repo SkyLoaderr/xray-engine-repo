@@ -246,7 +246,7 @@ void CWallmarksEngine::Render()
 			
 			Fvector				sPOS;
 			E->clCenter			(sPOS);
-			sPOS.direct			(sPOS,sml_normal,Size);
+			sPOS.mad			(sPOS,sml_normal,Size);
 			
 			// Build 3D ortho-frustum
 			Fmatrix				mView;

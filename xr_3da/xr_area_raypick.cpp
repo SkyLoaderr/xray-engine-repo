@@ -66,7 +66,7 @@ void CObjectSpace::CaptureSlots(const Fvector& start, const Fvector& dir, float 
 	test_cnt=0;
 	nl_cnt=0;
 
-	Fvector end; end.direct(start,dir,range);
+	Fvector end; end.mad	(start,dir,range);
 	Fvector2 S,D;
 	S.set(start.x,start.z);
 	D.set(dir.x,dir.z); D.norm_safe();

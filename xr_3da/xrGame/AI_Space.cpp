@@ -163,10 +163,10 @@ void CAI_Space::Render()
 
 			// create vertices
 			Fvector		v,v1,v2,v3,v4;
-			v.set(P0.x-st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v1);	v1.direct(v1,PL.n,tt);	// minX,minZ
-			v.set(P1.x+st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.direct(v2,PL.n,tt);	// maxX,minZ
-			v.set(P1.x+st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.direct(v3,PL.n,tt);	// maxX,maxZ
-			v.set(P0.x-st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.direct(v4,PL.n,tt);	// minX,maxZ
+			v.set(P0.x-st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v1);	v1.mad(v1,PL.n,tt);	// minX,minZ
+			v.set(P1.x+st,P0.y,P0.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.mad(v2,PL.n,tt);	// maxX,minZ
+			v.set(P1.x+st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.mad(v3,PL.n,tt);	// maxX,maxZ
+			v.set(P0.x-st,P1.y,P1.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
 
 			// render quad
 			Device.Primitive.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);

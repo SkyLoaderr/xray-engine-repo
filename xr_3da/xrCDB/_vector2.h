@@ -40,7 +40,7 @@ public:
 	IC T square_magnitude(void) const		{ return x*x + y*y; }
 	IC T magnitude(void) const				{ return _sqrt(square_magnitude());	}
 
-    IC void direct(const Self &p, const Self& d, T r) {
+    IC void mad	(const Self &p, const Self& d, T r) {
         x = p.x + d.x*r;
         y = p.y + d.y*r;
     }

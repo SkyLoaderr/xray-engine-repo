@@ -9,7 +9,7 @@
 
 class ENGINE_API CHW {
 public:
-	IDirect3D8* 			pD3D;		// direct 3d
+	IDirect3D8* 			pD3D;		// D3D
 	IDirect3DDevice8*       pDevice;	// render device
 
 	IDirect3DSurface8*		pBaseRT;

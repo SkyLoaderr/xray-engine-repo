@@ -109,8 +109,8 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
     // make object near origin though, so look at one of the verticess). Don't
     // care what direction is view up vector (y).
     Fvector at,from,up;
-	at.set(vPosition);
-	from.direct(at,vL,-fRadius*2);
+	at.set	(vPosition);
+	from.mad(at,vL,-fRadius*2);
 
 	Fvector	right, y;
 	y.set(0,1,0);
@@ -147,7 +147,7 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
         // Add verts to end of VB
         for( i=0; i<dwNumHullIndices; i++ )
         {
-            pVBVertices[dwNumVertices+i].p.direct(pVBVertices[pHullIndices[i]].p,vL,40.0f);
+            pVBVertices[dwNumVertices+i].p.mad(pVBVertices[pHullIndices[i]].p,vL,40.0f);
             pVBVertices[dwNumVertices+i].c = 0x7f000000;
         }
 

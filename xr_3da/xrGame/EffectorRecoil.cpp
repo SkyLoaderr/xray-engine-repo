@@ -24,15 +24,15 @@ void CEffectorRecoil::Process(Fvector &p, Fvector &d, Fvector &n)
 {
 	fTime-=Device.fTimeDelta;
 	float dist = fPower*fTime/Recoil_TIME;
-	p.direct(p,d,-dist);
-	d.y += dist;
-	d.z += dist;
-	d.normalize();
+	p.mad		(p,d,-dist);
+	d.y			+= dist;
+	d.z			+= dist;
+	d.normalize	();
 
 	Fvector	right;
 	right.crossproduct(n,d);
 	n.crossproduct(d,right);
-	n.normalize();
+	n.normalize	();
 
 	fLifeTime-=Device.fTimeDelta;
 }

@@ -47,8 +47,8 @@ void drawPoly(sPoly &P, CPortal* Portal)
 		Device.Primitive.dbg_DrawTRI(Fidentity,P[0],P[i-1],P[i],C);
 		Center.add(P[i]);
 	}
-	Center.div(float(P.size()));
-	End.direct(Center,PL.n,.5f);
+	Center.div	(float(P.size()));
+	End.mad		(Center,PL.n,.5f);
 	Device.Primitive.dbg_DrawLINE(Fidentity,Center,End,0xffffffff);
 	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
 }

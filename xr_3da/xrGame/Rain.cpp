@@ -120,7 +120,7 @@ void	CEffect_Rain::RayTest	(Item& dest, float height)
 	{
 		dest.fTime_Life	= RQ.range/dest.fSpeed;
 		dest.fTime_Hit	= RQ.range/dest.fSpeed;
-		dest.Phit.direct(dest.P,dest.D,RQ.range);
+		dest.Phit.mad	(dest.P,dest.D,RQ.range);
 	} else {
 		dest.fTime_Life	= (height*2)/dest.fSpeed;
 		dest.fTime_Hit	= (height*3)/dest.fSpeed;
@@ -284,7 +284,7 @@ void	CEffect_Rain::Render	()
 //			Log			("len:",wlen);
 			// Perform wrapping
 			wdir.div	(wlen);
-			one.P.direct(one.P, wdir, -(wlen+b_radius));
+			one.P.mad	(one.P, wdir, -(wlen+b_radius));
 			RayTest		(one, b_height);
 		}
 

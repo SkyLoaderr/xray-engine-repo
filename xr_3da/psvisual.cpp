@@ -143,8 +143,8 @@ IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fve
 IC void FillSprite(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fvector2& lt, const Fvector2& rb, float radius, DWORD clr, const Fvector& D, float scale)
 {
 	Fvector			P1,P2;
-    P1.direct		(pos,D,-radius);
-    P2.direct		(pos,D,radius);
+    P1.mad			(pos,D,-radius);
+    P2.mad			(pos,D,radius);
 
 	FVF::TL			s1,s2;
 	s1.transform	(P1,M);

@@ -121,8 +121,8 @@ struct _fbox;		// fbox
 struct _fbox2;		// fbox
 struct Fobb;		// oriented bbox
 
-struct _3dbuffer;	// direct sound 3d buffer
-struct _3dlistener;	// direct sound listener
+struct _3dbuffer;	// Dsound 3d buffer
+struct _3dlistener;	// Dsound listener
 
 
 struct _color;		// floating point based color definition

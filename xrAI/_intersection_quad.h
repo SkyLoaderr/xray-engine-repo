@@ -15,7 +15,7 @@ public:
 		c.add(p2,p4);
 		c.div(2);
 		c.sub(p1);
-		p3.direct(p1, c, 2.f);
+		p3.mad(p1, c, 2.f);
 		// ~~~~~~~~~~~~~~~~~~~~~~~~ plane
 		quad_plane.build(v1,v2,v4);
 		// ~~~~~~~~~~~~~~~~~~~~~~~~ normals

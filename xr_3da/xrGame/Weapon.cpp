@@ -326,7 +326,7 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 
 	// ...analyze
 	Fvector end_point; 
-	end_point.direct	(P,D,RQ.range);
+	end_point.mad		(P,D,RQ.range);
 	if (bResult)
 	{
 		if (RQ.O) {

@@ -377,7 +377,7 @@ namespace
 			// update v_m to Q_m-\bar{Q}_m
 			for (i=1; i<m; ++i)
 			{
-				v[m].direct(v[m],v[i],-a[m][i]);
+				v[m].mad(v[m],v[i],-a[m][i]);
 			}
 			
 			// compute z_m
@@ -397,7 +397,7 @@ namespace
 			
 			f[m]=e/z[m];
 			
-			c[m].direct(c[m-1],v[m],f[m]);
+			c[m].mad(c[m-1],v[m],f[m]);
 			
 			sqr_r[m] = sqr_r[m-1] + e*f[m]/2;
 		}

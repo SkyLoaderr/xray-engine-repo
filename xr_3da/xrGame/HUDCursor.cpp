@@ -75,7 +75,7 @@ void CHUDCursor::Render()
 	if ( dist<NEAR_LIM) dist=NEAR_LIM;
 	
 	FVF::TL			PT;
-	p2.direct		(p1,dir,dist);
+	p2.mad			(p1,dir,dist);
 	PT.transform	(p2,Device.mFullTransform);
 	float			di_size = C_SIZE/powf(PT.p.w,.2f);
 

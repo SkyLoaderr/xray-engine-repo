@@ -28,10 +28,10 @@ void MK_Frustum(CFrustum& F, float FOV, float _FAR, float A, Fvector &P, Fvector
 	Fvector			Offset,T;
 	Offset.add		(D,COP);
 
-	sPts[0].mul(R,wR);	T.direct(Offset,U,wT);	sPts[0].add(T);
-	sPts[1].mul(R,wL);	T.direct(Offset,U,wT);	sPts[1].add(T);
-	sPts[2].mul(R,wL);	T.direct(Offset,U,wB);	sPts[2].add(T);
-	sPts[3].mul(R,wR);	T.direct(Offset,U,wB);	sPts[3].add(T);
+	sPts[0].mul(R,wR);	T.mad(Offset,U,wT);	sPts[0].add(T);
+	sPts[1].mul(R,wL);	T.mad(Offset,U,wT);	sPts[1].add(T);
+	sPts[2].mul(R,wL);	T.mad(Offset,U,wB);	sPts[2].add(T);
+	sPts[3].mul(R,wR);	T.mad(Offset,U,wB);	sPts[3].add(T);
 
 	// find projector direction vectors (from cop through silhouette pts)
 	Fvector ProjDirs[4];
@@ -41,10 +41,10 @@ void MK_Frustum(CFrustum& F, float FOV, float _FAR, float A, Fvector &P, Fvector
 	ProjDirs[3].sub(sPts[3],COP);
 
 	Fvector _F[4];
-	_F[0].direct(COP, ProjDirs[0], _FAR);
-	_F[1].direct(COP, ProjDirs[1], _FAR);
-	_F[2].direct(COP, ProjDirs[2], _FAR);
-	_F[3].direct(COP, ProjDirs[3], _FAR);
+	_F[0].mad(COP, ProjDirs[0], _FAR);
+	_F[1].mad(COP, ProjDirs[1], _FAR);
+	_F[2].mad(COP, ProjDirs[2], _FAR);
+	_F[3].mad(COP, ProjDirs[3], _FAR);
 
 	F.CreateFromPoints(_F,4,COP);
 }
@@ -75,10 +75,10 @@ void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 	Fvector			Offset,T;
 	Offset.add		(D,COP);
 
-	sPts[0].mul(R,wR);	T.direct(Offset,U,wT);	sPts[0].add(T);
-	sPts[1].mul(R,wL);	T.direct(Offset,U,wT);	sPts[1].add(T);
-	sPts[2].mul(R,wL);	T.direct(Offset,U,wB);	sPts[2].add(T);
-	sPts[3].mul(R,wR);	T.direct(Offset,U,wB);	sPts[3].add(T);
+	sPts[0].mul(R,wR);	T.mad(Offset,U,wT);	sPts[0].add(T);
+	sPts[1].mul(R,wL);	T.mad(Offset,U,wT);	sPts[1].add(T);
+	sPts[2].mul(R,wL);	T.mad(Offset,U,wB);	sPts[2].add(T);
+	sPts[3].mul(R,wR);	T.mad(Offset,U,wB);	sPts[3].add(T);
 
 	// find projector direction vectors (from cop through silhouette pts)
 	Fvector ProjDirs[4];
@@ -91,10 +91,10 @@ void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, F
 	CHK_DX(HW.pDevice->SetRenderState	(D3DRS_AMBIENT,		0xffffffff			));
 
 	Fvector _F[4];
-	_F[0].direct(COP, ProjDirs[0], _FAR);
-	_F[1].direct(COP, ProjDirs[1], _FAR);
-	_F[2].direct(COP, ProjDirs[2], _FAR);
-	_F[3].direct(COP, ProjDirs[3], _FAR);
+	_F[0].mad(COP, ProjDirs[0], _FAR);
+	_F[1].mad(COP, ProjDirs[1], _FAR);
+	_F[2].mad(COP, ProjDirs[2], _FAR);
+	_F[3].mad(COP, ProjDirs[3], _FAR);
 
 	DWORD CT	= D3DCOLOR_RGBA(255,255,255,64);
 	DWORD CL	= D3DCOLOR_RGBA(0,255,0,255);

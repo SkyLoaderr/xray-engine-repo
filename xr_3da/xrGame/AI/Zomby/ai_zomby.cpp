@@ -316,7 +316,7 @@ IC float CAI_Zomby::ffGetY(NodeCompressed &tNode, float X, float Z)
 	PL.build(P0,vNorm);
 	v.set(X,P0.y,Z);	
 	PL.intersectRayPoint(v,DUP,v1);	
-	//v1.direct(v1,PL.n,.01f);
+	//v1.mad(v1,PL.n,.01f);
 	//return(v1.y + .01f);
 	return(v1.y);
 }

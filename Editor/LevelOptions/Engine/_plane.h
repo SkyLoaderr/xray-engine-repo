@@ -36,7 +36,7 @@ public:
 	IC	void	project(Fvector &pdest, Fvector &psrc)
 	{
 		float dist = classify(psrc);
-		pdest.direct(psrc,n,-dist);
+		pdest.mad	(psrc,n,-dist);
 	}
 	IC	float	classify(const Fvector &v) const	{
 		return n.dotproduct(v)+d;
@@ -71,7 +71,7 @@ public:
 	
 		if (fabsf(denom)<EPS_S) return false; // normal is orthogonal to vector, cant intersect
 		else {
-			dest.direct(P,D,-(numer / denom));
+			dest.mad(P,D,-(numer / denom));
 			return true;
 		}
 	}
@@ -89,7 +89,7 @@ public:
 
 		dist = -(n.dotproduct(u) + d) / denom;
 		if (dist < -EPS || dist > 1+EPS) return false;
-		isect.direct(u,t,dist);
+		isect.mad(u,t,dist);
 		return true;
 	}
 
@@ -107,7 +107,7 @@ public:
 			return false;
 
 		t.sub		(v,u);
-		isect.direct(u,t,dist1/fabsf(dist1-dist2));
+		isect.mad	(u,t,dist1/fabsf(dist1-dist2));
 
 		return true;
 	}

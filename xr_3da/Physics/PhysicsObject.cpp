@@ -231,10 +231,10 @@ void CPhysicsObject::Integrate(float dt)
 
 	tgt_config.mTransform.rotation(tgt_config.qOrientation);
 	
-	tgt_config.vAngularVelocity.direct(src_config.vAngularVelocity, angularAccel, dt );	
+	tgt_config.vAngularVelocity.mad(src_config.vAngularVelocity, angularAccel, dt );	
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	tgt_config.mTransform.c.direct(src_config.mTransform.c, src_config.vLinearVelocity, dt );// + dt2 * a;
+	tgt_config.mTransform.c.mad(src_config.mTransform.c, src_config.vLinearVelocity, dt );// + dt2 * a;
 }
 
 /*

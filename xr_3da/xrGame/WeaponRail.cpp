@@ -76,7 +76,7 @@ void CWeaponRail::OnMove()
 			float	dist=pCreator->Environment.Current.Far;
 
 		//	sounds
-			Fvector r_pos; r_pos.direct(p1,d,2);
+			Fvector r_pos; r_pos.mad(p1,d,2);
 			pSounds->Play3DAtPos(sndFire,r_pos);
 
 			m_pParent->bEnabled = false;
@@ -121,8 +121,8 @@ void CWeaponRail::SetRail(Fvector &p1, Fvector &d, Collide::ray_query& R, BOOL b
 	float dist = R.range;
 	if (dist>50.f) dist=50.f;
 	Fvector vStart,vEnd;
-	vStart.direct(p1,d,.2f);
-	vEnd.direct(p1,d,dist);
+	vStart.mad(p1,d,.2f);
+	vEnd.mad(p1,d,dist);
 	_DELETE(pTrail);
 
 	if (bWallmark) AddShotmark(d,vEnd,R);

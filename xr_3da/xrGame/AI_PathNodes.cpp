@@ -20,7 +20,7 @@ IC float	ClosestPointOnSegment(Fvector& Dest, const Fvector& P, const Fvector& A
 	
 	// Return the point between ‘a’ and ‘b’
 	// set length of V to t. V is normalized so this is easy
-	Dest.direct(A,V,t);
+	Dest.mad(A,V,t);
 	return P.distance_to_sqr(Dest);
 }
 

@@ -74,7 +74,7 @@ IC void closestPointOnLine(Fvector& res, const Fvector& a, const Fvector& b, con
 	
 	// Return the point between ‘a’ and ‘b’
 	// set length of V to t. V is normalized so this is easy
-	res.direct(a,V,t);
+	res.mad(a,V,t);
 }
 IC void closestPointOnEdge(Fvector& res,						// result
 						   const Fvector& a, const Fvector& b,	// points
@@ -90,7 +90,7 @@ IC void closestPointOnEdge(Fvector& res,						// result
 	if (t >= elen)	{ res.set(b); return; }
 	
 	// Return the point between ‘a’ and ‘b’
-	res.direct(a,ED,t);
+	res.mad(a,ED,t);
 }
 
 // ----------------------------------------------------------------------
@@ -229,7 +229,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 				bInsideTri = CDB::TestRayTri2(sIPoint,T.N,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
-				pIPoint.direct(sIPoint,T.N,distToPlaneIntersection);
+				pIPoint.mad(sIPoint,T.N,distToPlaneIntersection);
 			}
 			else
 			{ 
@@ -237,7 +237,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 				bInsideTri = CDB::TestRayTri2(sIPoint,normalizedVelocity,T.p,distToPlaneIntersection);
 				
 				// calculate plane intersection point
-				pIPoint.direct(sIPoint,normalizedVelocity,distToPlaneIntersection);
+				pIPoint.mad(sIPoint,normalizedVelocity,distToPlaneIntersection);
 			}
 			
 			
@@ -258,7 +258,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 				
 				if (distToEllipsoidIntersection >= 0){
 					// calculate true sphere intersection point
-					sIPoint.direct(polyIPoint, normalizedVelocity, -distToEllipsoidIntersection);
+					sIPoint.mad(polyIPoint, normalizedVelocity, -distToEllipsoidIntersection);
 				}
 			} 
 			
@@ -295,7 +295,7 @@ void CObjectSpace::clCheckCollision(SCollisionData& cl)
 			// Was intersection
 			// Get point in Sphere2 local coords
 			Fvector IPointS2,IPointS1;
-			IPointS2.direct(Pxform,Vxform,d);
+			IPointS2.mad(Pxform,Vxform,d);
 
 			// Calc surface normal and position in S1 space
 			Fvector NS2,NS1;
@@ -354,11 +354,11 @@ void CObjectSpace::clResolveStuck(SCollisionData& cl, Fvector& position)
 			// sphere intersection point along the planes normal.
 			if (CDB::TestRayTri2(position,N_inv,T.p,dist)){
 				// calculate plane intersection point
-				polyIPoint.direct(position,N_inv,dist);
+				polyIPoint.mad(position,N_inv,dist);
 			}else{
 				// calculate plane intersection point
 				Fvector tmp;
-				tmp.direct(position,N_inv,dist);
+				tmp.mad(position,N_inv,dist);
 				closestPointOnTriangle(polyIPoint, T, tmp);	
 			}
 			if (CheckPointInSphere(polyIPoint, position, safe_R)) 
@@ -468,7 +468,7 @@ Fvector CObjectSpace::CollideWithWorld(SCollisionData& cl, Fvector position, Fve
 
 		// We can now calculate a new destination point on the sliding plane
 		Fvector newDestinationPoint;
-		newDestinationPoint.direct(destinationPoint,slidePlaneNormal,l);
+		newDestinationPoint.mad(destinationPoint,slidePlaneNormal,l);
 		
 		// Generate the slide vector, which will become our new velocity vector
 		// for the next iteration

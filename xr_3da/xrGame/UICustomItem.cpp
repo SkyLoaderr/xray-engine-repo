@@ -30,8 +30,8 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Fvector2& pos, DWORD color)
 	Fvector2 LTp,RBp;
 	Fvector2 LTt,RBt;
 	float sc		= Level().HUD()->GetScale();
-	LTp.direct		(pos,Rect.lt,sc);
-	RBp.direct		(pos,Rect.rb,sc);
+	LTp.mad			(pos,Rect.lt,sc);
+	RBp.mad			(pos,Rect.rb,sc);
 
 	LTt.set			(Rect.x1/vTexSize.x+vHalfPixel.x,Rect.y1/vTexSize.y+vHalfPixel.y);
 	RBt.set			(Rect.x2/vTexSize.x+vHalfPixel.x,Rect.y2/vTexSize.y+vHalfPixel.y);

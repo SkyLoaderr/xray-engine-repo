@@ -182,7 +182,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 					denum = P.n.dotproduct(D);
 					if (denum!=0) {
 						t = -cls[j]/denum; //VERIFY(t<=1.f && t>=0);
-						dest->last().direct((*src)[j],D,t);
+						dest->last().mad((*src)[j],D,t);
 						dest->inc();
 					}
 				}
@@ -196,7 +196,7 @@ sPoly*	CFrustum::ClipPoly(sPoly& S, sPoly& D) const
 					denum = P.n.dotproduct(D);
 					if (denum!=0) {
 						t = -cls[j]/denum; //VERIFY(t<=1.f && t>=0);
-						dest->last().direct((*src)[j],D,t);
+						dest->last().mad((*src)[j],D,t);
 						dest->inc();
 					}
 				}
