@@ -11,11 +11,12 @@
 
 CUIWindow::CUIWindow()
 {
+	m_alignment				= waNone;
 	m_pFont					= NULL;
 
-	m_pParentWnd			=  NULL;
+	m_pParentWnd			= NULL;
 	
-	m_pMouseCapturer		=  NULL;
+	m_pMouseCapturer		= NULL;
 	m_pOrignMouseCapturer	= NULL;
 	m_pMessageTarget		= NULL;
 
@@ -394,4 +395,38 @@ void CUIWindow::SetParent(CUIWindow* pNewParent)
 	VERIFY( !(m_pParentWnd && m_pParentWnd->IsChild(this)) );
 
 	m_pParentWnd = pNewParent;
+}
+
+Irect CUIWindow::GetWndRect()
+{
+	switch (m_alignment){
+		case waNone:
+			return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);
+			break;
+		case waCenter:{
+				Irect res;
+				int half_w = iFloor(float(m_iWndSize.x)/2.0f);
+				int half_h = iFloor(float(m_iWndSize.y)/2.0f);
+				res.set(m_iWndPos.x - half_w,
+						m_iWndPos.y - half_h,
+						m_iWndPos.x + half_w,
+						m_iWndPos.y + half_h);
+				return res;
+			}break;
+		default:
+			NODEFAULT;
+	};
+}
+
+void CUIWindow::SetWndRect(int x, int y, int width, int height)
+{
+	switch (m_alignment){
+		case waNone:
+		case waCenter:{
+				m_iWndPos.set(x,y); 
+				m_iWndSize.set(width,height);
+			}break;
+		default:
+			NODEFAULT;
+	};
 }

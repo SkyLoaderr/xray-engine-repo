@@ -56,7 +56,7 @@ static bool InitArtefactPanel		(CUIXml &xml_doc, const char *path, int index, CU
 	// Функция чтения алайна из xml файла и применения его к координатам.
 	// Return true если для данного окна есть выравнивание
 	static bool					InitAlignment(CUIXml &xml_doc, const char *path,
-											  int index, int &x, int &y);
+											  int index, int &x, int &y,CUIWindow* pWnd);
 
 	// Автоматическая инициализация статических элеменитов
 	// Чтобы вернуть указатели на созданые статики (нам бывает необходимо прятать их, например)

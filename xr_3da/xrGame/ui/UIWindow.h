@@ -12,12 +12,14 @@
 
 class CUIDragDropItem;
 
-//////////////////////////////////////////////////////////////////////////
-
-#define SHOW_UI_WINDOW(UI_WINDOW) (UI_WINDOW).Show(true); (UI_WINDOW).Enable(true);
-#define HIDE_UI_WINDOW(UI_WINDOW) (UI_WINDOW).Show(false); (UI_WINDOW).Enable(false);
-
-//////////////////////////////////////////////////////////////////////////
+enum EWindowAlignment{
+	waNone		=0,
+	waLeft		=1,
+	waRight		=2,
+	waTop		=4,
+	waBottom	=8,
+	waCenter	=16
+};
 
 class CUIWindow  
 {
@@ -57,12 +59,6 @@ public:
 	virtual void			BringAllToTop		();
 	
 
-	////////////////////////////////////
-	//работа с внешними сообщениями (мышь, клавиатура, другие окна)
-
-	//реакция на мышь
-//	typedef enum{LBUTTON_DOWN, RBUTTON_DOWN, LBUTTON_UP, RBUTTON_UP, MOUSE_MOVE,
-//				 LBUTTON_DB_CLICK} E_MOUSEACTION;
 
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 	virtual void OnDbClick();
@@ -107,39 +103,26 @@ public:
 	//положение и размеры окна
 
 	//относительные координаты
-	const Ivector2&			GetWndPos			() 							{return m_WndRect.lt;}
-
-	Irect					GetWndRect			()									{return m_WndRect;}
-	void					SetWndRect			(int x, int y, int width, int height) 		
-																					{m_WndRect.set(x,y,x+width,y+height); }
-
-	void					SetWndRect			(Irect r)							{m_WndRect = r;}
-
+	const Ivector2&			GetWndPos			() 									{return m_iWndPos;}
+	void					SetWndPos			(int x, int y)						{m_iWndPos.set(x, y); }
 	void					SetWndPos			(const Ivector2& pos)				{SetWndPos(pos.x, pos.y);}
-	void					SetWndPos			(int x, int y)						{int w = GetWidth();
-																					int h = GetHeight();
-																					m_WndRect.set(x,y,x+w,y+h);}
-	virtual void			MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
-	virtual void			MoveWndDelta		(int dx, int dy)					{	m_WndRect.x1+=dx;
-																						m_WndRect.x2+=dx;
-																						m_WndRect.y1+=dy;
-																						m_WndRect.y2+=dy;}
 
+	Irect					GetWndRect			()									;//	{return Irect().set(m_iWndPos.x,m_iWndPos.y,m_iWndPos.x+m_iWndSize.x,m_iWndPos.y+m_iWndSize.y);}
+	void					SetWndRect			(int x, int y, int width, int height);//{m_iWndPos.set(x,y); m_iWndSize.set(width,height); }
+	void					SetWndRect			(Irect r)							{SetWndRect(r.x1,r.y1,r.width(),r.height());}
+
+	virtual void			MoveWndDelta		(int dx, int dy)					{m_iWndPos.x+=dx;m_iWndPos.y+=dy;}
+	virtual void			MoveWndDelta		(const Ivector2& d)					{ MoveWndDelta(d.x, d.y);	};
 
 	//абсолютные координаты
-	Ivector2				GetAbsolutePos		() 							{Irect abs = GetAbsoluteRect(); 
-																						return Ivector2().set(abs.x1,abs.y1);}
 	Irect					GetAbsoluteRect		() ;
+	Ivector2				GetAbsolutePos		() 									{Irect abs = GetAbsoluteRect(); return Ivector2().set(abs.x1,abs.y1);}
 
-	virtual void			SetWidth			(int width)			{m_WndRect.right = m_WndRect.left+width;}
+	virtual void			SetWidth			(int width)			{m_iWndSize.x=width;}
+	virtual void			SetHeight			(int height)		{m_iWndSize.y=height;}
 
-	virtual void			SetHeight			(int height)		{m_WndRect.bottom = m_WndRect.top+height;}
-
-	virtual int				GetWidth			()					{return m_WndRect.width();}
-	virtual int				GetHeight			()					{return m_WndRect.height();}
-
-
-
+	virtual int				GetWidth			()					{return m_iWndSize.x;}
+	virtual int				GetHeight			()					{return m_iWndSize.y;}
 
 	////////////////////////////////////
 	//прорисовка окна
@@ -176,6 +159,7 @@ public:
 
 	void					EnableDoubleClick	(bool value)				{ m_bDoubleClickEnabled = value; }
 	bool					IsDBClickEnabled	() const					{ return m_bDoubleClickEnabled; }
+	void					SetAlignment		(EWindowAlignment al)		{m_alignment = al;}
 protected:
 	shared_str				m_windowName;
 	//список дочерних окон
@@ -201,7 +185,8 @@ protected:
 
 	//положение и размер окна, задается 
 	//относительно родительского окна
-	Irect					m_WndRect;
+	Ivector2				m_iWndPos;
+	Ivector2				m_iWndSize;
 
 	//разрешен ли ввод пользователя
 	bool					m_bIsEnabled;
@@ -227,7 +212,8 @@ protected:
 
 	// Если курсор над окном
 	bool					m_bCursorOverWindow;
-
+private:
+	EWindowAlignment		m_alignment;
 public:
 	bool					CursorOverWindow() const				{ return m_bCursorOverWindow; }
 	virtual LPCSTR			GetHint			()						{return NULL;};

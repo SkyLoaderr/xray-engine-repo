@@ -17,16 +17,18 @@
 #define RGB_ALPHA(a, r, g ,b)  ((u32) (((u8) (b) | ((u16) (g) << 8)) | (((u32) (u8) (r)) << 16)) | (((u32) (u8) (a)) << 24)) 
 
 class CUIFrameWindow;
+class CLAItem;
 
 class CUIStatic : public CUIWindow  
 {
 private:
 	typedef CUIWindow inherited;
+	CLAItem*				m_lanim;
 public:
 					CUIStatic				();
 	virtual			~CUIStatic				();
 
-
+	void			SetLightAnim			(LPCSTR lanim);
 	virtual void	Init					(LPCSTR tex_name, int x, int y, int width, int height);
 	virtual void	Init					(int x, int y, int width, int height);
 	

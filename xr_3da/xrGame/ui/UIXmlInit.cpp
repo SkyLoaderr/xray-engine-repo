@@ -69,7 +69,7 @@ bool CUIXmlInit::InitWindow(CUIXml& xml_doc, LPCSTR path,
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	pWnd->Init(x, y, width, height);
@@ -90,7 +90,7 @@ bool CUIXmlInit::InitFrameWindow(CUIXml& xml_doc, LPCSTR path,
 	int width	= xml_doc.ReadAttribInt(path, index, "width");
 	int height	= xml_doc.ReadAttribInt(path, index, "height");
 
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
 	int	r		= xml_doc.ReadAttribInt(path, index, "r", 0xff);
 	int	g		= xml_doc.ReadAttribInt(path, index, "g", 0xff);
@@ -144,7 +144,7 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
 	shared_str scale_str = xml_doc.ReadAttrib(path, index, "scale", NULL);
 	float scale = 1.f;
@@ -186,6 +186,14 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 
 	CStringTable st;
 	pWnd->SetText(*st(*text));
+
+	
+	int flag = xml_doc.ReadAttribInt(path, 0, "heading");
+	pWnd->EnableHeading( (flag)?true:false);
+
+	LPCSTR str_flag = xml_doc.ReadAttrib(path, 0, "light_anim", "");
+	if( xr_strlen(str_flag) )
+		pWnd->SetLightAnim(str_flag);
 
 	return true;
 }
@@ -231,7 +239,7 @@ bool CUIXmlInit::InitDragDropList(CUIXml& xml_doc, LPCSTR path,
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
@@ -273,7 +281,7 @@ bool CUIXmlInit::InitListWnd(CUIXml& xml_doc, LPCSTR path,
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
@@ -311,7 +319,7 @@ bool CUIXmlInit::InitProgressBar(CUIXml& xml_doc, LPCSTR path,
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
 	int width = xml_doc.ReadAttribInt(path, index, "length");
 	int height = xml_doc.ReadAttribInt(path, index, "broad");
@@ -495,7 +503,7 @@ bool CUIXmlInit::InitFrameLine(CUIXml& xml_doc, const char* path, int index, CUI
 	int x			= xml_doc.ReadAttribInt(path, index, "x");
 	int y			= xml_doc.ReadAttribInt(path, index, "y");
 
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 
 	int width		= xml_doc.ReadAttribInt(path, index, "width");
 	int height		= xml_doc.ReadAttribInt(path, index, "height");
@@ -738,8 +746,14 @@ void CUIXmlInit::ApplyAlign(int &x, int &y, u32 align)
 //////////////////////////////////////////////////////////////////////////
 
 bool CUIXmlInit::InitAlignment(CUIXml &xml_doc, const char *path,
-							   int index, int &x, int &y)
+							   int index, int &x, int &y,CUIWindow* pWnd)
 {
+	xr_string wnd_alignment = xml_doc.ReadAttrib(path, index, "alignment", "");
+	
+	if ( strchr(wnd_alignment.c_str(), 'c') )
+		pWnd->SetAlignment(waCenter);
+
+
 	// Alignment: right: "r", bottom: "b". Top, left - useless
 	shared_str	alignStr = xml_doc.ReadAttrib(path, index, "align", "");
 
@@ -800,7 +814,7 @@ bool CUIXmlInit::InitArtefactPanel(CUIXml &xml_doc, const char* path, int index,
 
 	int x = xml_doc.ReadAttribInt(path, index, "x");
 	int y = xml_doc.ReadAttribInt(path, index, "y");
-	InitAlignment(xml_doc, path, index, x, y);
+	InitAlignment(xml_doc, path, index, x, y, pWnd);
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	pWnd->Init(x, y, width, height);

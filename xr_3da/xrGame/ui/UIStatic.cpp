@@ -6,6 +6,7 @@
 #include "stdafx.h"
 #include "uistatic.h"
 #include "../HUDManager.h"
+#include "../../LightAnimLibrary.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -45,7 +46,7 @@ CUIStatic:: CUIStatic()
 	m_bCursorOverWindow		= false;
 	m_bHeading				= false;
 	m_fHeading				= 0.0f;
-
+	m_lanim					= NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,6 +56,10 @@ CUIStatic::~ CUIStatic()
 }
 
 //////////////////////////////////////////////////////////////////////////
+void CUIStatic::SetLightAnim(LPCSTR lanim)
+{
+	m_lanim	= LALib.FindItem(lanim);
+}
 
 void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
@@ -153,6 +158,13 @@ void  CUIStatic::Draw()
 void CUIStatic::Update()
 {
 	inherited::Update();
+	//update light animation if defined
+	if (m_lanim)
+	{
+		int frame;
+		u32 clr					= m_lanim->CalculateRGB(Device.fTimeGlobal,frame);
+		SetColor(clr);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -343,7 +355,6 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect,
 		parent_rect = *pClipRect;
 		
 	Irect rect = GetAbsoluteRect();
-	Irect wnd_rect = GetWndRect();
 	Irect out_rect;
 
 
@@ -492,7 +503,6 @@ void CUIStatic::SetText(LPCSTR str)
 //////////////////////////////////////////////////////////////////////////
 Irect CUIStatic::GetClipperRect()
 {
-	Irect	r;
 	if (m_bClipper)
 		return m_ClipRect;
 	else
