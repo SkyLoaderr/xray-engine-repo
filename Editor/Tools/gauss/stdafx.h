@@ -128,13 +128,10 @@ typedef unsigned __int64	CLASS_ID;
 #define _DELETE(a)      {delete(a); (a)=NULL;}
 #define _DELETEARRAY(a) {delete[](a); (a)=NULL;}
 
-#ifndef NO_MMGR
-#endif
 #include "math.h"
 #include "vector.h"
 #include "fixedvector.h"
-#ifndef NO_XRLOG
-#endif
+
 #include "Log.h"
 #include "FS.h"
 #include "FileSystem.h"
@@ -150,14 +147,6 @@ typedef unsigned __int64	CLASS_ID;
 #pragma comment( lib, "dsound.lib"		)
 #pragma comment( lib, "dinput.lib"		)
 #pragma comment( lib, "dxguid.lib"		)
-
-#define MAX_FOLDER_NAME    255
-#define MAX_OBJ_NAME       64
-#define MAX_OBJCLS_NAME    64
-#define MAX_CLASS_SCRIPT   4096
-#define MAX_LINK_NAME      64
-#define MAX_LTX_ADD        16384
-#define MAX_ADD_FILES_TEXT 1024
 
 #define	AnsiString string
 
