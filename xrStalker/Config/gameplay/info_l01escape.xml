@@ -4,7 +4,7 @@
 	
 	<info_portion id="tutorial_artefact_start">
 		<location>
-			<level>zmey_move2</level>
+			<level>zmey_selo2</level>
 			<object>002</object>
 			<text>Артефакт.</text>
 			<icon name="Артефакт" x="5" y="1" width="1" height="1" r="255" g="255" b="255" marker="1"></icon>
