@@ -120,14 +120,18 @@ function action_zoneguard_activity:execute()
 	local see_actor = self.object:see(actor)
 	if self.st.zone_guard_obj then
 		if see_actor and self.st.zone_guard_obj:active_zone_contact(actor:id()) then
-			local rel = self.object:relation(actor)
-			if rel ~= game_object.enemy and
-			   -- ОБИЖАЕМСЯ ЕСЛИ: 1) ignore_friends == false
-			   -- 		2) ignore_friends == true and rel ~= game_object.friend
-			   -- Т.Е.:
-			   (not self.st.ignore_friends or rel ~= game_object.friend) then
-			   	-- Обиделись:
-				self.object:set_relation(game_object.enemy, actor)
+			if self.st.ignore_cond and xr_logic.pick_section_from_condlist(actor, self.object,
+			     self.st.ignore_cond.condlist) ~= nil then
+				-- Игнорируем игрока
+			else
+				local rel = self.object:relation(actor)
+				-- ОБИЖАЕМСЯ ЕСЛИ: 1) ignore_friends == false
+				-- 2) ignore_friends == true and rel ~= game_object.friend
+				-- Т.Е.:
+				if not self.st.ignore_friends or rel ~= game_object.friend then
+					-- Обиделись:
+					self.object:set_relation(game_object.enemy, actor)
+				end
 			end
 		end
 	end
@@ -273,6 +277,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.snd_greet = utils.cfg_get_string(ini, section, "snd_greet", npc, false, "")
 	st.enable_dialog = utils.cfg_get_bool(ini, section, "enable_dialog", npc, false)
 	st.ignore_friends = utils.cfg_get_bool(ini, section, "ignore_friends", npc, false)
+	st.ignore_cond = xr_logic.cfg_get_condlist(ini, section, "ignore_cond", npc)
 	
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.
