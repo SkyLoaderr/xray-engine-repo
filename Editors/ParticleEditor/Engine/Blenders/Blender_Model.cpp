@@ -93,7 +93,7 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			sname				= "r1_model_def_spot";
 			sname_ps			= "r1_add_spot";
 			if (oBlend.value)	C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,	D3DBLEND_ONE,TRUE,oAREF.value);
-			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE);
+			else				C.r_Pass	(sname,sname_ps,FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE, D3DBLEND_ONE,TRUE);
 			C.r_Sampler			("s_base",	C.L_textures[0]);
 			C.r_Sampler_clf		("s_lmap",	"effects\\light");
 			C.r_Sampler_clf		("s_att",	"internal\\internal_light_attclip");
