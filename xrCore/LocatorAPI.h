@@ -156,7 +156,7 @@ public:
     LPCSTR						update_path		(LPSTR dest, LPCSTR initial, LPCSTR src);
 
 #ifdef __BORLANDC__
-	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR ext_mask=0);
+	int							file_list		(FS_QueryMap& dest, LPCSTR path, u32 flags=FS_ListFiles, LPCSTR mask=0);
 	const AnsiString&			update_path		(LPCSTR initial, AnsiString& dest);
     const AnsiString&			update_path		(AnsiString& dest, LPCSTR initial, LPCSTR src);
 	void						lock_rescan		();

@@ -157,16 +157,7 @@ public:
 
 	void			r_stringZ	(ref_str& dest);
 #ifdef _EDITOR
-	IC void			r_stringZ	(AnsiString& dest)
-	{
-    	dest 		= (char *) data;
-        Pos			+= (xr_strlen((char*)data)+1);
-/*
-		char *src = (char *) data;
-		while ((src[Pos]!=0) && (!eof())) dest += src[Pos++];
-		Pos		++;
-*/
-	};
+	void			r_stringZ	(AnsiString& dest);
 #endif
 	IC u64			r_u64		()			{	u64 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};
 	IC u32			r_u32		()			{	u32 tmp;	r(&tmp,sizeof(tmp)); return tmp;	};

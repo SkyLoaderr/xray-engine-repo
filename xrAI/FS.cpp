@@ -235,9 +235,22 @@ void	IReader::r_stringZ	(char *dest)
 }
 void 	IReader::r_stringZ	(ref_str& dest)
 {
-	dest	= (char*)data;
-    Pos		+=(xr_strlen((char*)data)+1);
+	dest		= (char*)(data+Pos);
+    Pos			+=(dest.size()+1);
 }
+#ifdef _EDITOR
+void	IReader::r_stringZ	(AnsiString& dest)
+{
+//*
+    dest 		= (char*)(data+Pos);
+    Pos			+=(dest.Length()+1);
+/*/
+    char *src = (char *) data;
+    while ((src[Pos]!=0) && (!eof())) dest += src[Pos++];
+    Pos		++;
+//*/
+};
+#endif
 void	IReader::skip_stringZ	()
 {
 	char *src = (char *) data;

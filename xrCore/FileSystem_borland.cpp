@@ -39,17 +39,37 @@ void EFS_Utils::MarkFile(const AnsiString& fn, bool bDeleteSource)
 	}
 }
 
+#define BACKUP_FILE_LEVEL 15
+
 void EFS_Utils::BackupFile(LPCSTR initial, const AnsiString& fname, bool bMsg)
 {
 	R_ASSERT(initial);
 	AnsiString src_name; 
 	FS.update_path(src_name,initial,fname.c_str());
 	if (FS.exist(src_name.c_str())){
-		AnsiString 			dst_name;
+		AnsiString 			dst_name,dst_path,del_name;
 		FS_Path* P 			= FS.get_path(initial);
 		string64			t_stemp;
 		dst_name.sprintf	("%s%s.%s_%s",P->m_Add,fname.c_str(),Core.UserName,timestamp(t_stemp));
 		FS.update_path		("$server_backup$",dst_name);
+        FS.update_path		(dst_path,"$server_backup$",P->m_Add);
+
+        // удалить лишние бэкап файлы
+        FS_QueryMap lst;
+        AnsiString mask		= ChangeFileExt(fname,".*");
+		if (FS.file_list	(lst, dst_path.c_str(), FS_ListFiles, mask.c_str())>=BACKUP_FILE_LEVEL){
+        	do{
+            	FS_QueryPairIt  min_it  = lst.begin();
+                FS_QueryPairIt  it		= lst.begin();
+                FS_QueryPairIt	_E		= lst.end();
+                for (; it!=_E; it++) if (it->second.modif<min_it->second.modif) min_it = it;
+                del_name				= dst_path+min_it->first;
+                FS.file_delete			(del_name.c_str());
+                lst.erase	(min_it);
+            }while(lst.size()>=BACKUP_FILE_LEVEL);
+        }
+
+		// copy backup
 		FS.file_copy		(src_name.c_str(),dst_name.c_str());
 		WriteAccessLog		(dst_name.c_str(),"Backup");
 	}else{
