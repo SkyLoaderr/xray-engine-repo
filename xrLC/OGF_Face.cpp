@@ -291,7 +291,7 @@ void OGF::MakeProgressive	(float metric_limit)
 	progressive_cs.Enter	();
 	VIPM_Init				();
 	for (u32 v_idx=0;  v_idx<vertices.size(); v_idx++)	VIPM_AppendVertex	(vertices[v_idx].P,	vertices[v_idx].UV[0]					);
-	for (u32 f_idx=0; f_idx<faces.size(); f_idx++)		VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
+	for (u32 f_idx=0;  f_idx<faces.size();    f_idx++)	VIPM_AppendFace		(faces[f_idx].v[0],	faces[f_idx].v[1],	faces[f_idx].v[2]	);
 
 	// Convert
 	VIPM_Result* VR			= VIPM_Convert(u32(-1),1.f,1);
