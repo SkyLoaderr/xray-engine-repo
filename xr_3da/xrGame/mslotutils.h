@@ -16,6 +16,7 @@ public:
 	inline void  Reset(){ m_len=0; m_pos=0; memset(m_buff,0,2048);};
 	inline void  SetBuffer(const char* b, int sz){Reset(); memcpy(m_buff,b,sz); m_len=sz; m_pos=0;};
 	inline void* GetBuffer(){return m_buff;};
+	inline void	 SetLen(DWORD l){m_len=l;};
 	inline DWORD GetLen()const{return m_len;};
 	
 	inline BOOL	r_string(char* dst){
@@ -69,7 +70,7 @@ inline HANDLE CreateMailSlotByName(LPSTR slotName)
         MAILSLOT_WAIT_FOREVER,         // no time-out for operations 
         (LPSECURITY_ATTRIBUTES) NULL); // no security attributes 
  
-    ASSERT (hSlot != INVALID_HANDLE_VALUE);
+    R_ASSERT (hSlot != INVALID_HANDLE_VALUE);
  
     return hSlot; 
 }
@@ -105,7 +106,7 @@ hFile = CreateFile(slotName,
     FILE_ATTRIBUTE_NORMAL, 
     (HANDLE) NULL); 
  
-    ASSERT (hFile != INVALID_HANDLE_VALUE);
+    R_ASSERT (hFile != INVALID_HANDLE_VALUE);
 
 	if (hFile == INVALID_HANDLE_VALUE) 
 		return false; 
@@ -117,9 +118,9 @@ fResult = WriteFile(hFile,
 					&cbWritten, 
 					(LPOVERLAPPED) NULL); 
  
-	ASSERT(fResult);
+	R_ASSERT(fResult);
 	fResult = CloseHandle(hFile); 
-	ASSERT(fResult);
+	R_ASSERT(fResult);
 	return fResult;
 }
 
@@ -145,7 +146,7 @@ inline BOOL CheckMailslotMessage(HANDLE hSlot, CMailSlotMsg& msg){
         &cMessage,                    // number of messages 
         (LPDWORD) NULL);              // no read time-out 
  
-	ASSERT(fResult);
+	R_ASSERT(fResult);
     if (!fResult) return false; 
  
     if (cbMessage == MAILSLOT_NO_MESSAGE) return false; 
@@ -156,8 +157,8 @@ inline BOOL CheckMailslotMessage(HANDLE hSlot, CMailSlotMsg& msg){
             cbMessage, 
             &cbRead, 
             &ov); 
- 
-		ASSERT(fResult);
+		msg.SetLen(cbRead);
+		R_ASSERT(fResult);
 
 		return fResult;
 }

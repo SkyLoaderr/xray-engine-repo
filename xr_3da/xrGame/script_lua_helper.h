@@ -25,29 +25,24 @@ public:
 	virtual ~CDbgLuaHelper					();
 
 	// debugger functions
-	BOOL		PrepareDebugger				(lua_State* l);
-	BOOL		StartDebugger				();	
-	void		StopDebugger				();
+	int			PrepareLua					(lua_State* );
+	void		PrepareLuaBind				();
+
 
 	void		DrawStackTrace				();
+	static int  OutputTop					(lua_State* );
 
-	lua_State*  GetState					(){ return L; };
-	void		SetState					(lua_State* l);
+	static void hookLua						(lua_State *, lua_Debug *);
+	static int  hookLuaBind					(lua_State *);
+
 protected:
-	void		Free						();
-	static CDbgLuaHelper*					m_pThis;
+	static		CDbgLuaHelper*				m_pThis;
 
-	static int  OutputTop					(lua_State* L);
-	static int  errormessage				(lua_State* L);
-	static int  lua_loadlib					(lua_State* L);
-	static void line_hook					(lua_State *L, lua_Debug *ar);
-	static void func_hook					(lua_State *L, lua_Debug *ar);
-	static void hook						(lua_State *L, lua_Debug *ar);
+	static int	errormessageLua				(lua_State* );
+	static void errormessageLuaBind			(lua_State* );
+	static void line_hook					(lua_State *, lua_Debug *);
+	static void func_hook					(lua_State *, lua_Debug *);
 
-	lua_State*								L;
+	static lua_State*						L;
 	lua_Debug*								m_pAr;
-/*
-	HMODULE m_hLoaded[8192];
-	int m_nLoaded;
-*/
 };

@@ -6,7 +6,20 @@
 #include "script_debugger_messages.h"
 #include "script_debugger_utils.h"
 
-#include "../../luaDbg/dbgIde/dbgIde/script_debug_ide.h"
+//#include "../../luaDbg/dbgIde/dbgIde/script_debug_ide.h"
+//#pragma comment(lib, "x:/dbgIde.lib")
+
+/*
+typedef LRESULT (*TmsgFunc)(UINT Msg,	WPARAM wParam,	LPARAM lParam);
+class CScriptDeduggerIDE 
+{
+public:
+	LRESULT		OnMessageToIDE				(UINT Msg, WPARAM wParam,	LPARAM lParam){return 0;};
+	void		SetDebuggerMsgFunc			(TmsgFunc F){};
+
+	CScriptDeduggerIDE(){};
+	~CScriptDeduggerIDE(){};
+};*/
 
 struct lua_State;
 
@@ -15,6 +28,7 @@ struct lua_State;
 #define DMOD_STEP_OVER				2
 #define DMOD_STEP_OUT				3
 #define DMOD_RUN_TO_CURSOR			4
+#define DMOD_SHOW_STACK_LEVEL		5
 
 #define DMOD_BREAK					10
 #define DMOD_STOP					11
@@ -22,29 +36,26 @@ struct lua_State;
 
 
 
-class CScriptDebugger :public xr_waitableThread 
+class CScriptDebugger
 {
 public:
-	virtual void	run_w				();//xr_waitableThread
-	void			Execute				();
 	void			Eval				(const char* strCode, char* res);
-	/*static*/ void	EndThread			();
-	BOOL			GetCalltip			(const char* szWord, char* szCalltip);
 	void			AddLocalVariable	(const char* name, const char* type, const char* value);
 	void			ClearLocalVariables	();
 	void			AddGlobalVariable	(const char* name, const char* type, const char* value);
 	void			ClearGlobalVariables();
 	void			StackLevelChanged	();
-	void			StackLevelChangedByIde();
 	void			Break				();
-	void			Stop				();
 	void			DebugBreak			(const char* szFile, int nLine);
+	void			ErrorBreak			(const char* szFile = 0, int nLine = 0);
 	void			LineHook			(const char* szFile, int nLine);
 	void			FunctionHook		(const char* szFile, int nLine, BOOL bCall);
 	void			Write				(const char* szMsg);
-	BOOL			Start				();
 
-	BOOL			Prepare				(lua_State* l);
+	int				PrepareLua			(lua_State* );
+	BOOL			PrepareLuaBind		();
+
+	int				CheckResult		(int, lua_State*);		
 	CScriptDebugger						();
 	virtual ~CScriptDebugger			();
 
@@ -59,29 +70,27 @@ public:
 	int				GetStackTraceLevel	();
 
 	static CScriptDebugger* GetDebugger	() { return m_pDebugger; };
-	lua_State*		GetLuaState			();
-//	HWND GetMainWnd() { return m_hWndMainFrame; };
-	static LRESULT	_SendMessage		(UINT message, WPARAM wParam, LPARAM lParam);
+	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
+
 protected:
 	LRESULT			DebugMessage		(UINT nMsg, WPARAM wParam, LPARAM lParam);
+	LRESULT			WaitForReply		(UINT nMsg);
+	int				TranslateIdeMessage (UINT);
 
-
-//	static UINT		StartDebugger		(LPVOID pParam );	
 	UINT			StartDebugger		();	
+	void			CreateIde			();
 
-	CScriptDeduggerIDE					m_ide_wrapper;
+//	CScriptDeduggerIDE					m_ide_wrapper;
 	CDbgLuaHelper						m_lua;
 	CScriptCallStack					m_callStack;
-//	HWND m_hWndMainFrame;
-//	CEvent m_event;
-	xr_event							m_mutex;
+	static CScriptDebugger*				m_pDebugger;
 
 	int									m_nMode;
-//	CString m_strPathName;
-	string_path							m_strPathName;
-	int									m_nLine;
-	int									m_nLevel;
-//	CWinThread* m_pThread;
 
-	static CScriptDebugger*				m_pDebugger;
+	int									m_nLevel;  //for step into/over/out
+
+	string_path							m_strPathName;	//for run_to_line_number
+	int									m_nLine;		//for run_to_line_number
+
+	HANDLE								m_mailSlot;
 };

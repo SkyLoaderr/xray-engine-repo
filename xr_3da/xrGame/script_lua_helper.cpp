@@ -1,18 +1,16 @@
 #include "stdafx.h"
 
+#include "script_space.h"
+
 #include "script_lua_helper.h"
 #include "script_debugger.h"
 #include "script_file.h"
 
-#include "lua.h"
-#include "lauxlib.h"
-
-CDbgLuaHelper* CDbgLuaHelper::m_pThis = NULL;
+CDbgLuaHelper*	CDbgLuaHelper::m_pThis	= NULL;
+lua_State*		CDbgLuaHelper::L		= NULL;
 
 CDbgLuaHelper::CDbgLuaHelper()
 {
-	L = NULL;
-//	m_nLoaded = 0;
 	m_pThis = this;
 }
 
@@ -20,7 +18,6 @@ CDbgLuaHelper::~CDbgLuaHelper()
 {
 }
 
-// function which replace fputs used in standard library
 extern "C" void PrintDebugString(const char* str)
 {
 	CScriptDebugger::GetDebugger()->Write(str);
@@ -72,28 +69,29 @@ BOOL CDbgLuaHelper::LoadDebugLines(CScriptFile* pPF)
 }
 
 
-void CDbgLuaHelper::Free()
+int CDbgLuaHelper::PrepareLua(lua_State* l)
 {
-/*	if ( L )
-	{
-		lua_close(L);
-		L = NULL;
-	}
+	// call this function immediatly before calling lua_pcall. 
+	//returns index in stack for errorFunc
+//	return 0;
 
-	if ( m_nLoaded )
-	{
-		for ( int i=m_nLoaded-1; i>=0; --i )
-			FreeLibrary(m_hLoaded[i]);
+	lua_register(l, "DEBUGGER_ERRORMESSAGE", errormessageLua );
+	lua_sethook(l, hookLua, LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 
-		m_nLoaded = 0;
-	}
-*/
+	int top = lua_gettop(l);
+	lua_getglobal(l, "DEBUGGER_ERRORMESSAGE");
+	lua_insert(l, top);
+	return top;
+
 }
 
-BOOL CDbgLuaHelper::PrepareDebugger(lua_State* l)
+
+void CDbgLuaHelper::PrepareLuaBind()
 {
-	SetState (l);
-	lua_sethook(L, hook,LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET,0);
+
+	luabind::set_pcall_callback	(hookLuaBind);
+	luabind::set_error_callback (errormessageLuaBind);
+
 /*	ASSERT(L==NULL);
 	L = lua_open();
 
@@ -115,23 +113,8 @@ BOOL CDbgLuaHelper::PrepareDebugger(lua_State* l)
 
 	return TRUE;
 */
-	return TRUE;
 }
 
-
-BOOL CDbgLuaHelper::StartDebugger()
-{
-	int top = lua_gettop(L);
-	lua_getglobal(L, "_ERRORMESSAGE");
-	lua_insert(L, top);
-	int status = lua_pcall(L, 0, LUA_MULTRET, top);
-	return TRUE;
-}
-
-void CDbgLuaHelper::StopDebugger()
-{
-	Free();
-}
 
 int CDbgLuaHelper::OutputTop(lua_State* L)
 {
@@ -143,8 +126,15 @@ int CDbgLuaHelper::OutputTop(lua_State* L)
 #define LEVELS1	12	/* size of the first part of the stack */
 #define LEVELS2	10	/* size of the second part of the stack */
 
-int CDbgLuaHelper::errormessage(lua_State *L)
+void CDbgLuaHelper::errormessageLuaBind(lua_State* l)
 {
+	L = l;
+	errormessageLua(L);
+}
+
+int CDbgLuaHelper::errormessageLua(lua_State* l)
+{
+	L = l;
 	int level = 1;  /* skip level 0 (it's this function) */
 	int firstpart = 1;  /* still before eventual `...' */
 	lua_Debug ar;
@@ -204,12 +194,16 @@ int CDbgLuaHelper::errormessage(lua_State *L)
 	lua_concat(L, lua_gettop(L));
 
 	OutputTop(L);
+	const char* szSource=NULL;
+	if ( ar.source[0] == '@' )
+		szSource=ar.source+1;
+	CScriptDebugger::GetDebugger()->ErrorBreak(szSource, ar.currentline);
 
 	return 0;
 }
 
 
-void CDbgLuaHelper::line_hook (lua_State *L, lua_Debug *ar)
+void CDbgLuaHelper::line_hook (lua_State *l, lua_Debug *ar)
 {
 	lua_getinfo(L, "lnuS", ar);
 	m_pThis->m_pAr = ar;
@@ -219,7 +213,7 @@ void CDbgLuaHelper::line_hook (lua_State *L, lua_Debug *ar)
 	}
 }
 
-void CDbgLuaHelper::func_hook (lua_State *L, lua_Debug *ar)
+void CDbgLuaHelper::func_hook (lua_State *l, lua_Debug *ar)
 {
 	lua_getinfo(L, "lnuS", ar);
 	m_pThis->m_pAr = ar;
@@ -232,17 +226,37 @@ void CDbgLuaHelper::func_hook (lua_State *L, lua_Debug *ar)
 	CScriptDebugger::GetDebugger()->FunctionHook(szSource, ar->currentline, ar->event==LUA_HOOKCALL);
 }
 
-void CDbgLuaHelper::hook (lua_State *L, lua_Debug *ar)
+int CDbgLuaHelper::hookLuaBind (lua_State *l)
 {
+	L =l;
+	lua_Debug ar;
+	lua_getstack(L,0,&ar);
+	lua_getinfo (L,"lnuS",&ar);
+	hookLua(L,&ar);
+	return 0;
+}
+
+void CDbgLuaHelper::hookLua (lua_State *l, lua_Debug *ar)
+{
+	L = l;
 	switch(ar->event)
 	{
+	case LUA_HOOKCOUNT:
+		{
+			int i = lua_gettop(L);
+		}break;
 	case LUA_HOOKTAILRET:
+		{
+			int i = lua_gettop(L);
+		}break;
 	case LUA_HOOKRET:
 		func_hook(L,ar);
 		break;
-	case LUA_HOOKCALL:func_hook(L,ar);
+	case LUA_HOOKCALL:
+		func_hook(L,ar);
 		break;
-	case LUA_HOOKLINE:line_hook(L,ar);
+	case LUA_HOOKLINE:
+		line_hook(L,ar);
 		break;
 	}
 }
@@ -384,50 +398,6 @@ BOOL CDbgLuaHelper::GetCalltip(const char *szWord, char *szCalltip)
 
 typedef int (*LuaRegister)(lua_State*, HWND hWnd);
 
-int CDbgLuaHelper::lua_loadlib(lua_State *L)
-{
-/*
-	HMODULE hMod = LoadLibrary(luaL_check_string(L, 1));
-	if ( hMod )
-	{
-		LuaRegister lua_reg = (LuaRegister)GetProcAddress(hMod, "LuaRegister");
-		if ( lua_reg )
-		{
-			lua_reg(L, CScriptDebugger::GetDebugger()->GetMainWnd());
-
-			m_pThis->m_hLoaded[m_pThis->m_nLoaded++] = hMod;
-
-			lua_pushboolean(L, TRUE);
-			return 1;
-		}
-		else
-		{
-			luaL_argerror(L, 1, "Dll has no LuaRegister entry");
-			lua_pushboolean(L, FALSE);
-			return 1;
-		}	
-	}
-	else
-	{
-		LPVOID lpMsgBuf;
-		FormatMessage( 
-			FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-			FORMAT_MESSAGE_FROM_SYSTEM | 
-			FORMAT_MESSAGE_IGNORE_INSERTS,
-			NULL,
-			GetLastError(),
-			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-			(LPTSTR) &lpMsgBuf,
-			0,
-			NULL 
-			);
-		luaL_argerror(L, 1, (LPCTSTR)lpMsgBuf);
-		LocalFree( lpMsgBuf );
-		lua_pushboolean(L, FALSE);
-		return 1;
-	}
-*/return 0;
-}
 
 
 BOOL CDbgLuaHelper::Eval(const char *szCode, char* szRet)
@@ -520,9 +490,4 @@ void CDbgLuaHelper::RestoreGlobals()
 	}
 
 	lua_pop(L, 1); // pop table of covered globals;
-}
-
-void CDbgLuaHelper::SetState(lua_State* l)
-{
-	L = l;
 }

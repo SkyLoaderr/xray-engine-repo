@@ -1,18 +1,22 @@
 #pragma once
 
-typedef struct
-{
-	const char* szDesc;
-	const char* szFile;
+struct StackTrace{
+	char szDesc[255];
+	char szFile[255];
 	int nLine;
-} StackTrace;
+	StackTrace(){szDesc[0]=0;szFile[0]=0;nLine=0;};
+} ;
 
-typedef struct
+struct Variable
 {
-	const char* szName;
-	const char* szType;
-	const char* szValue;
-} Variable;
+	char szName[255];
+	char szType[50];
+	char szValue[255];
+	Variable(){szName[0]=0;szType[0]=0;szValue[0]=0;};
+};
+
+#define DEBUGGER_MAIL_SLOT		"\\\\.\\mailslot\\script_debugger_mailslot"
+#define IDE_MAIL_SLOT			"\\\\.\\mailslot\\script_ide_mailslot"
 
 #define _DMSG_FIRST_MSG			DMSG_WRITE_DEBUG
 
