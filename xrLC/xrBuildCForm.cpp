@@ -47,7 +47,7 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 void CBuild::BuildCForm(IWriter &fs)
 {
 	// Collecting data
-	Phase	("CFORM: creating...");
+	Phase		("CFORM: creating...");
 	vecFace*	cfFaces		= xr_new<vecFace>	();
 	vecVertex*	cfVertices	= xr_new<vecVertex>	();
 	{
@@ -116,7 +116,7 @@ void CBuild::BuildCForm(IWriter &fs)
 		mu_refs[ref]->export_cform_game(CL);
 
 	// Saving
-	CMemoryWriter	MFS;
+	IWriter*		MFS	= FS.w_open	(strconcat(fn,pBuild->path,"level.cform"));
 	Status			("Saving...");
 
 	// Header
@@ -125,21 +125,20 @@ void CBuild::BuildCForm(IWriter &fs)
 	hdr.vertcount	= (u32)CL.getVS();
 	hdr.facecount	= (u32)CL.getTS();
 	hdr.aabb		= BB;
-	MFS.w			(&hdr,sizeof(hdr));
+	MFS->w			(&hdr,sizeof(hdr));
 
 	// Data
-	MFS.w			(CL.getV(),(u32)CL.getVS()*sizeof(Fvector));
-	MFS.w			(CL.getT(),(u32)CL.getTS()*sizeof(CDB::TRI));
+	MFS->w			(CL.getV(),(u32)CL.getVS()*sizeof(Fvector));
+	MFS->w			(CL.getT(),(u32)CL.getTS()*sizeof(CDB::TRI));
 
-	// Compress chunk
-	fs.w_chunk		(fsL_CFORM|CFS_CompressMark,MFS.pointer(),MFS.size());
-
-	// clear pDeflector (it is stored in the same memory space with dwMaterialGame)
+	// Clear pDeflector (it is stored in the same memory space with dwMaterialGame)
 	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++)
 	{
 		Face* F			= *I;
 		F->pDeflector	= NULL;
 	}
+
+	FS.w_close		(MFS);
 }
 
 void CBuild::BuildPortals(IWriter& fs)
