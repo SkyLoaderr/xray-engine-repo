@@ -1048,7 +1048,7 @@ void CLevelGraph::build_detail_path(
 )
 {
 	xr_vector<STravelParams>				start_set, dest_set;
-	xr_vector<Fvector>						m_tpTravelLine;
+//	xr_vector<Fvector>						m_tpTravelLine;
 	xr_vector<Fvector>						travel_line;
 	xr_vector<STravelPoint>					key_points;
 	STrajectoryPoint						s,d,t,p;
@@ -1072,6 +1072,7 @@ void CLevelGraph::build_detail_path(
 	}
 	else {
 		if (compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
+			Msg	("%d : ok, %d points",Level().timeServer(),m_tpTravelLine.size());
 			return;
 		}
 		
