@@ -114,8 +114,6 @@ void CUIListWnd::RemoveAll()
 	{
 		it = m_ItemList.begin();
 		
-		CUIListItem* ptr = *it;
-		
 		DetachChild(*it);
 		if(*it != NULL) xr_delete(*it);
 
