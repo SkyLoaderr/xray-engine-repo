@@ -4,7 +4,7 @@ function main ()
 	stalker:script (true, s_test.script_name ())
 
 	action (stalker, move (move.standing, move.stand, move.line, patrol ("way_test")),
-			anim (anim.free), look (look.point, get_actor (), "bip01_head"), cond (cond.time_end, 10000000))
+			anim (anim.free), look (look.point, get_actor (), "bip01_r_hand"), cond (cond.time_end, 10000000))
 
 	while stalker:action () do wait () end
 	
