@@ -50,13 +50,13 @@ void	CGlow::set_range		(float R)			{
 	spatial_move				();
 };
 void	CGlow::set_texture		(LPCSTR name)		{
-	shader						= Device->Resources->Create("effects\\glow",name);
+	shader.create				("effects\\glow",name);
 }
 void	CGlow::set_color		(const Fcolor& C)	{
 	color						= C;
 }
 void	CGlow::set_color		(float r, float g, float b)	{
-	color.set					(r,g,b);
+	color.set					(r,g,b,1);
 }
 void	CGlow::spatial_move		()
 {
@@ -93,7 +93,7 @@ void CGlowManager::Load		(IReader* fs)
 		fs->r				(&G->spatial.radius,1*sizeof(float));
 
 		u16 S				= fs->r_u16();
-		G->hShader			= ::RImplementation.getShader(S);
+		G->shader			= ::RImplementation.getShader(S);
 
 		G->fade				= 255.f;
 		G->dwFrame			= 0x0;
@@ -196,9 +196,9 @@ void CGlowManager::Render()
 		float		dlim2	= MAX_GlowsDist2;
 		for (;pos<Selected.size();) 
 		{
-			T		= Selected[pos]->hShader;
+			T		= Selected[pos]->shader;
 			count	= 0;
-			while	((pos+count<Selected.size()) && (Selected[pos+count]->hShader==T)) count++;
+			while	((pos+count<Selected.size()) && (Selected[pos+count]->shader==T)) count++;
 			
 			u32		vOffset;
 			u32		end		= pos+count;
