@@ -165,7 +165,7 @@ function main_menu:InitControls()
 	
     ----- CODE -------
 	
-	self.main_tab = ui_options_profiles_tab.options_profiles_tab()
+	self.main_tab = ui_main_main_tab.main_main_tab()
 	self.main_tab:InitControls(self.tab_rect.x, self.tab_rect.y)	
 	self.main_tab:Show(true)
 	self.main_frame:AttachChild(self.main_tab)
