@@ -234,7 +234,7 @@ void CCustomMonster::Exec_Physics( float dt )
 	Engine.Sheduler.Slice	();
 }
 
-void CCustomMonster::Update	( u32 DT )
+void CCustomMonster::shedule_Update	( u32 DT )
 {
 	// Queue shrink
 	u32	dwTimeCL	= Level().timeServer()-NET_Latency;
@@ -309,7 +309,7 @@ void CCustomMonster::Update	( u32 DT )
 	}
 
 	// *** general stuff
-	inherited::Update	(DT);
+	inherited::shedule_Update	(DT);
 }
 
 void CCustomMonster::net_update::lerp(CCustomMonster::net_update& A, CCustomMonster::net_update& B, float f)
@@ -413,18 +413,13 @@ void CCustomMonster::UpdateCL	()
 	}
 }
 
-static BOOL __fastcall Qualifier				(CObject* O, void* P)
+BOOL CCustomMonster::feel_visible_isRelevant (CObject* O)
 {
 	CEntityAlive* E = dynamic_cast<CEntityAlive*>		(O);
 	if (0==E)								return FALSE;
-	if (E->g_Team() == (int)(*LPDWORD(P)))	return FALSE;
+	if (E->g_Team() == g_Team())			return FALSE;
 	if (!E->IsVisibleForAI())				return FALSE;
 	return TRUE;
-}
-
-objQualifier* CCustomMonster::GetQualifier	()
-{
-	return(&Qualifier);
 }
 
 void CCustomMonster::GetVisible			(objVisible& R)
@@ -468,7 +463,7 @@ void CCustomMonster::eye_pp_s1			( )
 	mView.build_camera_dir					(eye_matrix.c,eye_matrix.k,eye_matrix.j);
 	mProject.build_projection				(deg2rad(eye_fov),1,0.1f,eye_range);
 	mFull.mul								(mProject,mView);
-	feel_vision_query						(mFull,eye_matrix.c,GetQualifier(),&id_Team);
+	feel_vision_query						(mFull,eye_matrix.c);
 	Device.Statistic.AI_Vis_Query.End		();
 }
 
@@ -481,7 +476,7 @@ void CCustomMonster::eye_pp_s2			( )
 	u32 dwTime			= Level().timeServer();
 	u32 dwDT			= dwTime-eye_pp_timestamp;
 	eye_pp_timestamp	= dwTime;
-	feel_vision_update						(eye_pp_seen,this,eye_matrix.c,float(dwDT)/1000.f);
+	feel_vision_update						(this,eye_matrix.c,float(dwDT)/1000.f);
 	Device.Statistic.AI_Vis_RayTests.End	();
 }
 

@@ -161,7 +161,7 @@ void CAI_Biting::vfSetParameters(EPathType path_type,IBaseAI_NodeEvaluator *tpNo
 			Fvector tTemp2;
 			float pitch;
 
-			clCenter(tTemp2);
+			Center		(tTemp2);
 
 			tTemp.sub	(*tpPoint,tTemp2);
 			tTemp.getHP	(r_torso_target.yaw,pitch);
@@ -262,7 +262,7 @@ void CAI_Biting::vfUpdateParameters()
 	// «рение
 
 	if (Mem.IsEnemy()) {
-		VisionElem &ve = Mem.GetNearestObject(vPosition);
+		VisionElem &ve = Mem.GetNearestObject(Position());
 
 		// определить, видит ли мен€ враг
 		I = false;
@@ -286,11 +286,11 @@ void CAI_Biting::vfUpdateParameters()
 			}
 		}
 
-		if (ve.position.distance_to(vPosition) <= fRange) {
+		if (ve.position.distance_to(Position()) <= fRange) {
 			
-			fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/ve.position.distance_to(vPosition))))/2.f);
+			fYawFov			= angle_normalize_signed((_abs(fYawFov) + _abs(atanf(1.f/ve.position.distance_to(Position()))))/2.f);
 			fPitchFov		= angle_normalize_signed(fYawFov*1.f);
-			ve.position.sub	(vPosition);
+			ve.position.sub	(Position());
 			ve.position.mul	(-1);
 			ve.position.getHP	(yaw2,pitch2);
 			yaw1			= angle_normalize_signed(yaw1);
@@ -441,8 +441,8 @@ bool CAI_Biting::IsLeftSide(const Fvector &Position)
 	Fvector iV; // i-состовл€юща€ матрицы mRotate
 	Fvector temp;
 
-	iV = mRotate.i;
-	temp = Position();
+	iV		= XFORM().i;
+	temp	= Position();
 	temp.sub(Position);
 	float f = temp.dotproduct(iV);
 

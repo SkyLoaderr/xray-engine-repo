@@ -109,7 +109,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 
 	if (!Mem.IsEnemy()) return;
 
-	VisionElem &ve = Mem.GetNearestObject(vPosition);
+	VisionElem &ve = Mem.GetNearestObject(Position());
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;
 		Fvector position_in_bone_space;
@@ -125,27 +125,22 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 }
 
 
-static BOOL __fastcall BitingQualifier(CObject* O, void* P)
+BOOL  CAI_Biting::feel_vision_isRelevant(CObject* O)
 {
-	if (O->CLS_ID!=CLSID_ENTITY)			
+	if (O->CLS_ID!=CLSID_ENTITY)	
 		return FALSE;
 	else  {
 		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
 		if (!E) return FALSE;
 		if (!E->IsVisibleForAI()) return FALSE; 
-		if ((E->g_Team() == *((int*)P)) && (E->g_Alive())) return FALSE;
+		if (E->g_Team() == g_Team()) && (E->g_Alive()) return FALSE;
 		return TRUE;
 	}
 }
 
-objQualifier* CAI_Biting::GetQualifier	()
-{
-	return(&BitingQualifier);
-}
-
 void CAI_Biting::vfAssignPitch			()
 {
-	if (getAI().bfInsideNode(AI_Node,vPosition)) {
+	if (getAI().bfInsideNode(AI_Node,Position())) {
 		Fvector l_tDirection, l_tEdgePosition, l_tEdgePosition1;
 		float fRadius;
 		u32 l_dwNodeID;
@@ -153,7 +148,7 @@ void CAI_Biting::vfAssignPitch			()
 		l_tDirection.setHP			(-r_torso_current.yaw,0);
 		l_tDirection.normalize		();
 		l_tDirection.mul			(fRadius);
-		l_tEdgePosition.add			(vPosition,l_tDirection);
+		l_tEdgePosition.add			(Position(),l_tDirection);
 		l_dwNodeID					= getAI().q_Node(AI_NodeID,l_tEdgePosition,true);
 		if (l_dwNodeID == u32(-1))
 			l_dwNodeID = AI_NodeID;
@@ -164,7 +159,7 @@ void CAI_Biting::vfAssignPitch			()
 		l_tDirection.setHP			(r_torso_current.yaw,0);
 		l_tDirection.normalize		();
 		l_tDirection.mul			(fRadius);
-		l_tEdgePosition.add			(vPosition,l_tDirection);
+		l_tEdgePosition.add			(Position(),l_tDirection);
 		l_dwNodeID					= getAI().q_Node(AI_NodeID,l_tEdgePosition,true);
 		if (l_dwNodeID == u32(-1))
 			l_dwNodeID = AI_NodeID;

@@ -139,7 +139,7 @@ void CAI_Biting::Die()
 	AI_Path.Direction(dir);
 	
 	bShowDeath = true;
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
+	SelectAnimation(XFORM().k,dir,AI_Path.fSpeed);
 
 	::Sound->play_at_pos(m_tpaSoundDie[::Random.randI(SND_DIE_COUNT)],this,eye_matrix.c);
 	

@@ -220,7 +220,7 @@ public:
 	virtual void		HitSignal				( float P,	Fvector& vLocalDir, CObject* who);
 	virtual void		g_WeaponBones			(int &L, int &R1, int &R2) {};
 	virtual void		Load					( LPCSTR	section );				
-	virtual void		Update					( u32		DT		);
+	virtual void		shedule_Update					( u32		DT		);
 	virtual void		UpdateCL				( );
 
 	// Team visibility
@@ -281,10 +281,11 @@ public:
 	IC  CGroup *getGroup() {return(&(Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]));};
 
 public:
-	virtual	float			ffGetFov			(){return eye_fov;}	
-	virtual	float			ffGetRange			(){return eye_range;}
-	virtual	void			feel_touch_new		(CObject* O);
-	virtual BOOL			IsVisibleForAI		()	{return TRUE;};
+	virtual	float			ffGetFov				(){return eye_fov;}	
+	virtual	float			ffGetRange				(){return eye_range;}
+	virtual	void			feel_touch_new			(CObject* O);
+	virtual BOOL			feel_visible_isRelevant	(CObject* O);
+	virtual BOOL			IsVisibleForAI			()	{return TRUE;};
 };
 
 namespace AI{

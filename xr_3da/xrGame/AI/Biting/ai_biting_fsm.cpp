@@ -62,13 +62,12 @@ void CAI_Biting::Panic()
 		return;
 	}
 
-	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
+	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(Position()) + m_tSelectorFreeHunting.m_fSearchRange;
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(Position()) + 3.f;
 
 	vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 	vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
-*/
 }
 
 void CAI_Biting::Scared()
@@ -79,7 +78,9 @@ void CAI_Biting::Scared()
 		m_tActionState = eActionStateWatch;
 		m_dwActionStartTime = m_dwCurrentUpdate + 1500;
 
-		Fvector ptr = vPosition;
+#pragma todo("Oles to Jim: What in hell does this means??? Position normalize???")
+
+		Fvector ptr = Position();
 		/*	Temp comment: Saved enemy...
 			ptr.sub(m_tSavedEnemy->Position());
 		*/
@@ -173,7 +174,7 @@ void CAI_Biting::ForwardStraight()
 // Choose branch
 	m_dwInertion				= 6000;
 	
-	VisionElem					&ve = Mem.GetNearestObject(vPosition);
+	VisionElem					&ve = Mem.GetNearestObject(Position());
 	EActionState				OldState;
 
 	bool						bAttackRat;
@@ -192,10 +193,10 @@ void CAI_Biting::ForwardStraight()
 		tDist2 = 2.5f;
 	}
 
-	m_tActionState = ((ve.obj->Position().distance_to(vPosition) > tDist1) ? eActionStateRun : eActionStateStand);	
+	m_tActionState = ((ve.obj->Position().distance_to(Position()) > tDist1) ? eActionStateRun : eActionStateStand);	
 	
 	if ((OldState == eActionStateStand && m_tActionState == eActionStateRun)&& 
-		(ve.obj->Position().distance_to(vPosition) < tDist2)) m_tActionState = OldState;
+		(ve.obj->Position().distance_to(Position()) < tDist2)) m_tActionState = OldState;
 
 
 // -----------------------------------------------------------------------------
@@ -441,7 +442,7 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 //	if (bCorpseFound) {
 //		AI_Path.DestNode		= m_tCorpse.Enemy->AI_NodeID;
 //		Fvector l_tCorpsePosition;
-//		m_tCorpse.Enemy->clCenter(l_tCorpsePosition);
+//		m_tCorpse.Enemy->Center(l_tCorpsePosition);
 //		tpDesiredPosition = &l_tCorpsePosition;
 //		
 //		m_tActionState = eActionStateRun;			

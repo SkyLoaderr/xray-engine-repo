@@ -58,7 +58,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 {
 	if (bShowDeath)	{
 		m_tpCurrentGlobalAnimation = m_tAnims.A[ePostureStand].A[eActionDie].A[::Random.randI((int)m_tAnims.A[ePostureStand].A[eActionDie].A.size())];
-		PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+		PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
 		bShowDeath  = false;
 		return;
 	}
@@ -66,7 +66,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 	if (g_Alive())
 		if (!m_tpCurrentGlobalAnimation && m_bActionFinished) {
 			m_tpCurrentGlobalAnimation = m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A[::Random.randI((int)m_tAnims.A[m_tPostureAnim].A[m_tActionAnim].A.size())];
-			PKinematics(pVisual)->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
+			PKinematics(Visual())->PlayCycle(m_tpCurrentGlobalAnimation,TRUE,vfPlayCallBack,this);
 		}
 
 }

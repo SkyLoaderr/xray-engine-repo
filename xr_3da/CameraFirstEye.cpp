@@ -51,7 +51,7 @@ void CCameraFirstEye::Update(Fvector& point, Fvector& noise_dangle)
 		parent->XFORM().transform_dir	(vNormal);
 	}
 
-	Position().set		(point);
+	vPosition.set	(point);
 }
 
 void CCameraFirstEye::Move( int cmd, float val )

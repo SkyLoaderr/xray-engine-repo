@@ -98,7 +98,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 {
 	// Save event
 	Fvector D;
-	svTransform.transform_dir(D,vLocalDir);
+	XFORM().transform_dir(D,vLocalDir);
 	m_dwHitTime = Level().timeServer();
 	m_tHitDir.set(D);
 	m_tHitDir.normalize();

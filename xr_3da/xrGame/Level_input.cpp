@@ -4,7 +4,7 @@
 #include "entity.h"
 
 // Обработка нажатия клавиш
-void CLevel::OnKeyboardPress(int key)
+void CLevel::IR_OnKeyboardPress(int key)
 {
 //	if (pHUD->IsUIActive())			
 	if (pHUD->GetUI()->OnKeyboardPress(key)) return;
@@ -72,7 +72,7 @@ void CLevel::OnKeyboardPress(int key)
 		Console.Execute				("quit");
 		break;
 	default:
-		if (CurrentEntity())		CurrentEntity()->OnKeyboardPress(key_binding[key]);
+		if (CurrentEntity())		CurrentEntity()->IR_OnKeyboardPress(key_binding[key]);
 		break;
 	}
 }
@@ -93,7 +93,7 @@ void CLevel::IR_OnKeyboardHold(int key)
 static int mouse_button_2_key []	=	{MOUSE_1,MOUSE_2,MOUSE_3};
 
 void CLevel::IR_OnMousePress(int btn)
-{	OnKeyboardPress(mouse_button_2_key[btn]);}
+{	IR_OnKeyboardPress(mouse_button_2_key[btn]);}
 void CLevel::IR_OnMouseRelease(int btn)
 {	IR_OnKeyboardRelease(mouse_button_2_key[btn]);}
 void CLevel::IR_OnMouseHold(int btn)
