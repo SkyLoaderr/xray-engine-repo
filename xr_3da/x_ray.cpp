@@ -39,8 +39,29 @@ ENGINE_API	CApplication*	pApp			= NULL;
 static		HWND			logoWindow		= NULL;
 
 // startup point
+
+void InitEngine()
+{
+	Engine.Initialize			( );
+	Device.Initialize			( );
+	CheckCopyProtection			( );
+}
+
+void InitSettings()
+{
+	string256					fname; 
+	FS.update_path				(fname,"$game_data$","system.ltx");
+	pSettings					= xr_new<CInifile>	(fname,TRUE);
+}
+void InitConsole()
+{
+	Console						= xr_new<CConsole>	();
+	Console->Initialize			( );
+	Engine.External.Initialize	( );
+}
 void Startup				( )
 {
+/* --andy
 	// initialization
 	Engine.Initialize			( );
 	Device.Initialize			( );
@@ -54,7 +75,7 @@ void Startup				( )
 	Console						= xr_new<CConsole>	();
 	Console->Initialize			( );
 	Engine.External.Initialize	( );
-	
+*/	
 	// Execute script
 	{
 		strcpy						(Console->ConfigFile,"user.ltx");
@@ -204,6 +225,21 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 
 	// test_rtc				();
 
+
+	InitEngine();
+	InitSettings();
+	InitConsole();
+	if (strstr(lpCmdLine,"-launcher ")) 
+	{
+		HMODULE hLauncher	= LoadLibrary	("xrLauncher.dll");
+		if (0==hLauncher)	R_CHK			(GetLastError());
+		typedef int	  launcherFunc	();
+		launcherFunc* pLauncher = (launcherFunc*)GetProcAddress(hLauncher,"RunXRLauncher");
+		Console->Execute("snd_volume_eff 0.3");
+		int res = pLauncher();
+		
+		FreeLibrary(hLauncher);
+	}
 	Startup	 				();
 	
 	Core._destroy			();

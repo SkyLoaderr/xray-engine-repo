@@ -54,7 +54,7 @@ public:
 	  value(V),
 	  mask(M)
 	{};
-
+	  const BOOL GetValue()const{ return value->test(mask); }
 	virtual void	Execute	(LPCSTR args)
 	{
 		if (EQ(args,"on"))			value->set(mask,TRUE);
@@ -128,6 +128,9 @@ public:
 	  min(_min),
 	  max(_max)
 	{};
+	  const float	GetValue	() const {return *value;};
+	  const float	GetMin		() const {return min;};
+	  const float	GetMax		() const {return max;};
 
 	virtual void	Execute	(LPCSTR args)
 	{
@@ -179,10 +182,13 @@ public:
 
 class ENGINE_API	CCC_Integer : public IConsole_Command
 {
-protected:
 	int*			value;
 	int				min,max;
 public:
+	  const int GetValue	() const {return *value;};
+	  const int GetMin		() const {return min;};
+	  const int GetMax		() const {return max;};
+
 	CCC_Integer(LPCSTR N, int* V, int _min=0, int _max=999) :
 	  IConsole_Command(N),
 	  value(V),

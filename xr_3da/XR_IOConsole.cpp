@@ -463,30 +463,61 @@ void CConsole::ExecuteScript(LPCSTR N)
 	Execute			(cmd);
 }
 
+
+BOOL CConsole::GetBool(LPCSTR cmd, BOOL& val)
+{
+	IConsole_Command::TStatus stat;
+	vecCMD_IT I = Commands.find(cmd);
+	if (I!=Commands.end()) {
+		IConsole_Command* C = I->second;
+		CCC_Mask* cf = dynamic_cast<CCC_Mask*>(C);
+		val = cf->GetValue();
+	}
+	return val;
+}
+
+float CConsole::GetFloat(LPCSTR cmd, float& val, float& min, float& max)
+{
+	IConsole_Command::TStatus stat;
+	vecCMD_IT I = Commands.find(cmd);
+	if (I!=Commands.end()) {
+		IConsole_Command* C = I->second;
+		CCC_Float* cf = dynamic_cast<CCC_Float*>(C);
+		val = cf->GetValue();
+		min = cf->GetMin();
+		max = cf->GetMax();
+		return val;
+	}
+	return val;
+}
+
+int CConsole::GetInteger(LPCSTR cmd, int& val, int& min, int& max)
+{
+	IConsole_Command::TStatus stat;
+	vecCMD_IT I = Commands.find(cmd);
+	if (I!=Commands.end()) {
+		IConsole_Command* C = I->second;
+		CCC_Integer* cf = dynamic_cast<CCC_Integer*>(C);
+		val = cf->GetValue();
+		min = cf->GetMin();
+		max = cf->GetMax();
+		return val;
+	}
+	return val;
+}
+
+
+char * CConsole::GetString(LPCSTR cmd)
+{
+	static IConsole_Command::TStatus stat;
+	vecCMD_IT I = Commands.find(cmd);
+	if (I!=Commands.end()) {
+		IConsole_Command* C = I->second;
+		C->Status(stat);
+		return stat;
+	}
+
 /*
-BOOL CConsole::GetBool(char *name)
-{
-	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
-	if (cmd!=NULL && cmd->type==cmdMASK) {
-		u32 *v  = (u32 *) cmd->ptr;
-		u32 mask= cmd->mask;
-		return BOOL(*v & mask);
-	}
-	return FALSE;
-}
-
-FLOAT CConsole::GetFloat(char *name)
-{
-	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
-	if (cmd!=NULL && cmd->type==cmdFLOAT) {
-		float *v = (float *) cmd->ptr;
-		return *v;
-	}
-	return 0.f;
-}
-
-char * CConsole::GetValue(char *name)
-{
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
 	if (cmd!=NULL && cmd->type==cmdVALUE) {
 		u32 *v = (u32 *) cmd->ptr; // pointer to value
@@ -498,11 +529,13 @@ char * CConsole::GetValue(char *name)
 			tok++;
 		}
 	}
-	return " ";
+*/
+	return NULL;
 }
-
-char * CConsole::GetNextValue(char *name)
+/*
+char * CConsole::GetNextValue(LPCSTR cmd)
 {
+
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
 	if (cmd!=NULL && cmd->type==cmdVALUE) {
 		u32 *v = (u32 *) cmd->ptr; // pointer to value
@@ -517,11 +550,13 @@ char * CConsole::GetNextValue(char *name)
 			tok++;
 		}
 	}
-	return GetValue(name);
+
+	return GetValue(cmd);
 }
 
-char * CConsole::GetPrevValue(char *name)
+char * CConsole::GetPrevValue(LPCSTR cmd)
 {
+
 	ioc_command *cmd = (ioc_command *)bsearch(name, ioc_cmd_array,ioc_num_cmd,sizeof(ioc_command),ioc_compare_search_cmd);
 	if (cmd!=NULL && cmd->type==cmdVALUE) {
 		u32 *v = (u32 *) cmd->ptr; // pointer to value
@@ -534,6 +569,8 @@ char * CConsole::GetPrevValue(char *name)
 			tok++;
 		}
 	}
-	return GetValue(name);
+
+	return GetValue(cmd);
 }
+
 */

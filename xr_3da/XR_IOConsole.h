@@ -23,7 +23,7 @@ public:
 		IC bool operator()(const char* x, const char* y) const
 		{	return xr_strcmp(x,y)<0;	}
 	};
-	typedef xr_map<LPSTR,IConsole_Command*,str_pred>	vecCMD;
+	typedef xr_map<LPCSTR,IConsole_Command*,str_pred>	vecCMD;
 	typedef vecCMD::iterator						vecCMD_IT;
 	enum			{ MAX_LEN = 256 };
 private:
@@ -57,11 +57,12 @@ public:
 	void			ExecuteCommand		();
 
 	// get
-	BOOL			GetBool				(LPCSTR cmd);
-	float			GetFloat			(LPCSTR cmd);
-	char *			GetValue			(LPCSTR cmd);
-	char *			GetNextValue		(LPCSTR cmd);
-	char *			GetPrevValue		(LPCSTR cmd);
+	BOOL			GetBool				(LPCSTR cmd, BOOL &val);
+	float			GetFloat			(LPCSTR cmd, float& val, float& min, float& max);
+	char *			GetString			(LPCSTR cmd);
+	int				GetInteger			(LPCSTR cmd, int& val, int& min, int& max);
+//	char *			GetNextValue		(LPCSTR cmd);
+//	char *			GetPrevValue		(LPCSTR cmd);
 
 	void			SelectCommand		();
 
