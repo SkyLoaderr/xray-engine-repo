@@ -131,12 +131,12 @@ void __cdecl	slowdownthread	( void* )
 }
 void CheckPrivilegySlowdown		( )
 {
-	u32		crc_dima_ai	= shared_str("dima-ai")._get()->dwCRC;	Msg("%x",crc_dima_ai);	// 0x574b9c29
-	u32		crc_dima	= shared_str("dima")._get()->dwCRC;		Msg("%x",crc_dima);		// 0x38e00bc3
-	u32		crc_shuttle	= shared_str("shuttle")._get()->dwCRC;	Msg("%x",crc_shuttle);	// 0xd64cb17b
-	u32		crc_jim		= shared_str("jim")._get()->dwCRC;		Msg("%x",crc_jim);		// 0x3d3d5aef
-	u32		crc_london	= shared_str("london")._get()->dwCRC;	Msg("%x",crc_london);	// 0x09de56e5
-	u32		crc_dandy	= shared_str("dandy")._get()->dwCRC;	Msg("%x",crc_dandy);	// 0x430b37e7
+	u32		crc_dima_ai	= 0x574b9c29;	//shared_str("dima-ai")._get()->dwCRC;	//Msg("%x",crc_dima_ai);	// 0x574b9c29
+	u32		crc_dima	= 0x38e00bc3;	//shared_str("dima")._get()->dwCRC;		//Msg("%x",crc_dima);		// 0x38e00bc3
+	u32		crc_shuttle	= 0xd64cb17b;	//shared_str("shuttle")._get()->dwCRC;	//Msg("%x",crc_shuttle);	// 0xd64cb17b
+	u32		crc_jim		= 0x3d3d5aef;	//shared_str("jim")._get()->dwCRC;		//Msg("%x",crc_jim);		// 0x3d3d5aef
+	u32		crc_london	= 0x09de56e5;	//shared_str("london")._get()->dwCRC;	//Msg("%x",crc_london);		// 0x09de56e5
+	u32		crc_dandy	= 0x430b37e7;	//shared_str("dandy")._get()->dwCRC;	//Msg("%x",crc_dandy);		// 0x430b37e7
 #ifdef DEBUG
 	BOOL	bDima	=	(shared_str(Core.CompName)._get()->dwCRC == 0x574b9c29) && (shared_str(Core.UserName)._get()->dwCRC==0x38e00bc3) ;
 	BOOL	bJim	=	(shared_str(Core.CompName)._get()->dwCRC == 0xd64cb17b) && (shared_str(Core.UserName)._get()->dwCRC==0x3d3d5aef) ;
@@ -152,10 +152,9 @@ void CheckPrivilegySlowdown		( )
 
 void Startup					( )
 {
-	execUserScript();
-	InitInput();
-	
-	InitSound();
+	execUserScript	();
+	InitInput		();
+	InitSound		();
 
 	// ...command line for auto start
 	{
@@ -180,7 +179,6 @@ void Startup					( )
 
 	// Main cycle
 	CheckCopyProtection			( );
-	CheckPrivilegySlowdown		( );
 	Device.Run					( );
 
 	// Destroy APP
@@ -338,6 +336,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 			return 0;
 	};
 	Engine.External.Initialize	( );
+	CheckPrivilegySlowdown		( );
 	Startup	 					( );
 	Core._destroy				( );
 	return						0;
