@@ -129,7 +129,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle;
 			
 			for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
-				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,FN(1),FN(2),FN(3),FN(0));
+				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,FN(0),FN(1),FN(2),FN(3));
 				if (fSquare > fMaxSquare) {
 					fMaxSquare = fSquare;
 					fBestAngle = fIncrement;
