@@ -1095,12 +1095,14 @@ void CAI_Soldier::OnPatrol()
 	
 //	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
 	
+	/**
 	for (int i=0; i<tpaDynamicSounds.size(); i++)
 		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
 			SelectSound(m_iSoundIndex);
 			AI_Path.TravelPath.clear();
 			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
 		}
+	/**/
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(m_bStateChanged,aiSoldierPatrolReturnToRoute)
 	
