@@ -118,12 +118,12 @@ void CRender::render_main	(Fmatrix&	m_ViewProjection)
 				break;	// exit loop on frustums
 			}
 		}
-		g_pGameLevel->pHUD->Render_Last						();	
+		if (phase==PHASE_NORMAL)	g_pGameLevel->pHUD->Render_Last();		// HUD
 	}
 	else
 	{
 		set_Object											(0);
-		g_pGameLevel->pHUD->Render_Last						();	
+		if (phase==PHASE_NORMAL)	g_pGameLevel->pHUD->Render_Last();		// HUD
 	}
 }
 
@@ -145,7 +145,6 @@ void CRender::Render		()
 
 	//******* Z-prefill calc - DEFERRER RENDERER
 	if (ps_r2_ls_flags.test(R2FLAG_ZFILL))		{
-		RCache.set_ColorWriteEnable					(FALSE);
 		Device.Statistic.RenderCALC.Begin			();
 		float		z_distance	= ps_r2_zfill		;
 		Fmatrix		m_zfill, m_project				;
@@ -160,7 +159,14 @@ void CRender::Render		()
 		render_main									(m_zfill)	;
 		r_pmask										(true,false);	// disable priority "1"
 		Device.Statistic.RenderCALC.End				( )			;
+
+		// flush
+		Target->phase_scene_prepare					();
+		RCache.set_ColorWriteEnable					(FALSE);
+		r_dsgraph_render_graph						(0);
 		RCache.set_ColorWriteEnable					( );
+	} else {
+		Target->phase_scene_prepare					();
 	}
 
 	//******* Main calc - DEFERRER RENDERER
@@ -178,7 +184,6 @@ void CRender::Render		()
 	//******* Main render
 	{
 		// level
-		Target->phase_scene_prepare				();
 		Target->phase_scene_begin				();
 		r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
