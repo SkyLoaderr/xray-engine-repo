@@ -14,11 +14,7 @@ end
 
 function mob_remark:reset_scheme()
 	printf("_bp: mob_remark:reset_scheme: %s", self.object:name())
-	if not self.st.dialog_enabled then
-		self.object:disable_talk()
-	else
-		self.object:enable_talk()
-	end
+	self.object:disable_talk()
 
 	xr_logic.mob_capture(self.object, not self.st.no_reset)
 
@@ -83,13 +79,7 @@ function mob_remark:reset_scheme()
 		end
 	end
 
-	if self.st.tip then
-		local actor = level.actor()
-		if actor then
-			--actor:give_game_news(self.st.tip, "ui_icons_npc", 50, 0, 50, 50)
-			news_manager.send_news(actor, self.st.tip)
-		end
-	end
+	self.tip_sent = false
 	
 	self.st.signals = {}
 	self.action_end_signalled = false
@@ -100,6 +90,36 @@ function mob_remark:update(delta)
 	--printf("__bp: mob_remark update: %d", device():time_global())
 	if not xr_logic.is_active(self.object, self.st) then
 		return
+	end
+
+	local actor = level.actor()
+	if not actor then
+		return
+	end
+
+	if xr_logic.try_switch_to_another_section(self.object, self.st) then
+		return
+	end
+
+	if self.st.dialog_cond and xr_logic.pick_section_from_condlist(actor, self.object,
+	     self.st.dialog_cond.condlist) ~= nil then
+		--printf("_bp: enable talk")
+	     	if not self.object:is_talk_enabled() then
+			self.object:enable_talk()
+		end
+	else
+		--printf("_bp: disable talk")
+		if self.object:is_talk_enabled() then
+			self.object:disable_talk()
+		end
+	end
+
+	if not self.tip_sent then
+		self.tip_sent = true
+		if self.st.tip then
+			--actor:give_game_news(self.st.tip, "ui_icons_npc", 50, 0, 50, 50)
+			news_manager.send_news(actor, self.st.tip)
+		end
 	end
 
 	--printf("_bp: mob_remark:update [%s]", self.object:name())
@@ -114,8 +134,6 @@ function mob_remark:update(delta)
 			printf("mob_remark: signalling action_end")
 		end
 	end
-
-	xr_logic.try_switch_to_another_section(self.object, self.st)
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -133,7 +151,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.dialog_enabled = utils.cfg_get_bool(ini, section, "dialog_enabled", npc, false)
+	st.dialog_cond    = xr_logic.cfg_get_condlist(ini, section, "dialog_cond", npc)
 	st.no_reset       = utils.cfg_get_bool(ini, section, "no_reset", npc, false)
 	st.anim           = utils.cfg_get_string(ini, section, "anim", npc, false, "")
 	st.anim_head      = utils.cfg_get_string(ini, section, "anim_head", npc, false, "")

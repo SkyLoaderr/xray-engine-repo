@@ -127,16 +127,20 @@ function generic_object_binder:update(delta)
 			utils.abort("NO ACTOR")
 		end
 		printf("___________m_trader___________")
-		printf("infoportion 'esc_trader_monolog_1': %s",
-			if_then_else(actor:has_info("esc_trader_monolog_1"), "YES", "NO"))
-		printf("infoportion 'esc_trader_tutorial_choice': %s",
-			if_then_else(self.object:has_info("esc_trader_tutorial_choice"), "YES", "NO"))
-		printf("infoportion 'esc_trader_tutorial_chosen': %s",
-			if_then_else(self.object:has_info("esc_trader_tutorial_chosen"), "YES", "NO"))
+		--printf("infoportion 'esc_trader_monolog_1': %s",
+		--	if_then_else(actor:has_info("esc_trader_monolog_1"), "YES", "NO"))
+		--printf("infoportion 'esc_trader_tutorial_choice': %s",
+		--	if_then_else(self.object:has_info("esc_trader_tutorial_choice"), "YES", "NO"))
+		--printf("infoportion 'esc_trader_tutorial_chosen': %s",
+		--	if_then_else(self.object:has_info("esc_trader_tutorial_chosen"), "YES", "NO"))
 		printf("infoportion 'esc_trader_newbie': %s",
 			if_then_else(actor:has_info("esc_trader_newbie"), "YES", "NO"))
 		printf("infoportion 'esc_trader_experienced': %s",
 			if_then_else(actor:has_info("esc_trader_experienced"), "YES", "NO"))
+		printf("infoportion 'tutorial_artefact_start': %s",
+			if_then_else(actor:has_info("tutorial_artefact_start"), "YES", "NO"))
+		printf("infoportion 'esc_trader_can_leave': %s",
+			if_then_else(actor:has_info("esc_trader_can_leave"), "YES", "NO"))
 	end
 	--]]
 

@@ -437,6 +437,7 @@ function pick_section_from_condlist(actor, npc, condlist)
 				end
 			end
 		end
+		--printf("_bp: infop_cond_met = %s", utils.to_str(infop_conditions_met))
 		if infop_conditions_met then
 			-- Условия выполнены. Независимо от того, задана ли секция, нужно проставить требуемые
 			-- infoportions:
@@ -471,11 +472,12 @@ end
 -- Если section == nil, остается работать старая секция.
 function switch_to_section(npc, st, section)
 	if section == nil or section == "" then
-		return
+		return false
 	end
 	xr_motivator.storage[npc:id()]["active_section"] = nil
 	xr_motivator.storage[npc:id()]["active_scheme"] = nil
 	activate_by_section(npc, st.ini, section)
+	return true
 end
 
 function try_switch_to_another_section(npc, st)
@@ -484,61 +486,62 @@ function try_switch_to_another_section(npc, st)
 
 	local actor = level.actor()
 	if not actor then
-		return
+		return false
 	end
 
 	if not l then
 		utils.abort("Can't find script switching information in storage, scheme '%s'", st.scheme)
 	end
 
+	local switched = false
 	for n, c in pairs(l) do
 		--printf("_bp: %d: %s", device():time_global(), c.name)
 		if c.name == "on_actor_dist_le" then
 			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
 			if npc:see(actor) and distance_between(actor, npc) <= c.v1 then
 				--printf("_bp: conditions met")
-				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
-				return true
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_dist_le_nvis" then
 			if distance_between(actor, npc) <= c.v1 then
-				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
-				return true
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_dist_ge" then
 			--printf("_bp: dist=%d (need <= %d), see_actor: %s", distance_between(actor, npc), c.v1, utils.to_str(npc:see(actor)))
 			if npc:see(actor) and distance_between(actor, npc) >= c.v1 then
 				--printf("_bp: conditions met")
-				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
-				return true
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_actor_dist_ge_nvis" then
 			if distance_between(actor, npc) >= c.v1 then
-				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
-				return true
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_signal" then
 			--printf("_bp: on_signal (c.v1 = %s)", c.v1)
 			if st.signals and st.signals[c.v1] then
 				--printf("_bp: signalled")
-				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
-				return true
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		elseif c.name == "on_info" or c.name == "on_info2" then
-			switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+			switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 		elseif c.name == "on_timer" then
 			--printf("_bp: on_timer: %d >= %d", device():time_global(),
 			--	xr_motivator.storage[npc_id].activation_time + c.v1)
 			if device():time_global() >= xr_motivator.storage[npc_id].activation_time + c.v1 then
-				switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
+				switched = switch_to_section(npc, st, pick_section_from_condlist(actor, npc, c.condlist))
 			end
 		else
 			printf("WARNING: object '%s': try_switch_to_another_section: unknown condition '%s' encountered",
 				npc:name(), c.name)
 		end
+
+		if switched then
+			printf("_SWITCHED")
+			break
+		end
 	end
 
-	return false
+	return switched
 end
 
 function is_active(npc, st)
