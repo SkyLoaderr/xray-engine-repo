@@ -47,7 +47,7 @@ BOOL CBloodsuckerEffector::Process(SPPInfo& pp)
 		return TRUE;
 	}
 	
-	if (fis_zero(d,EPS_L)) return TRUE;
+	if (fis_zero(max_power.noise.grain*d,EPS_L)) return TRUE;
 
 	pp.duality.h		= max_power.duality.h * d;
 	pp.duality.v		= max_power.duality.v * d;

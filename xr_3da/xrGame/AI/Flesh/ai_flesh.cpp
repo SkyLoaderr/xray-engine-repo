@@ -161,8 +161,8 @@ void CAI_Flesh::StateSelector()
 #endif
 	else						SetState(stateRest); 
 
-	if ((CurrentState == stateAttack) && m_tEnemy.obj && (m_tEnemy.time + 1500 < m_current_update) ) 
-		SetState(stateSearchEnemy);
+///	if ((CurrentState == stateAttack) && m_tEnemy.obj && (m_tEnemy.time + 1500 < m_current_update) ) 
+///		SetState(stateSearchEnemy);
 
 
 }

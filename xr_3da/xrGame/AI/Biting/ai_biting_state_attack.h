@@ -12,6 +12,7 @@ class CBitingAttack : public IState {
 		ACTION_STEAL,
 		ACTION_THREATEN,
 		ACTION_ENEMY_POSITION_APPROACH,
+		ACTION_ENEMY_WALK_AWAY,
 		ACTION_ROTATION_JUMP
 	} m_tAction,m_tPrevAction;
 
@@ -43,6 +44,8 @@ class CBitingAttack : public IState {
 	CJumping		*pJumping;
 
 	TTime			next_rot_jump_enabled;
+
+	TTime			time_start_walk_away;			// время начала состояния ACTION_ENEMY_WALK_AWAY (монстр не может добраться до жертвы)
 
 public:	
 					CBitingAttack		(CAI_Biting *p, bool bVisibility);

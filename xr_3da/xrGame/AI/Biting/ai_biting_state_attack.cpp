@@ -7,6 +7,7 @@
 #include "../../actor.h"
 #include "../ai_monster_jump.h"
 #include "../ai_monster_group.h"
+#include "../ai_monster_utils.h"
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -20,7 +21,7 @@
 #define AF_CAN_ATTACK_FROM_BACK			(1 << 5)
 #define AF_SEE_ENEMY					(1 << 6)
 
-#define AF_GOOD_MOVEMENT				(1 << 7)
+#define AF_GOOD_MOVEMENT_ON_PATH		(1 << 7)
 #define AF_NEED_REBUILD_PATH			(1 << 8)
 
 #define AF_ATTACK_RAT					(1 << 9)
@@ -32,6 +33,7 @@
 #define AF_HAS_INVISIBILITY_ABILITY		(1 << 13)
 
 #define AF_CAN_EXEC_ROTATION_JUMP		(1 << 14)
+#define AF_BAD_MOTION					(1 << 15)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingAttack implementation
@@ -76,6 +78,7 @@ void CBitingAttack::Init()
 	m_tPrevAction				= ACTION_RUN;
 
 	next_rot_jump_enabled		= 0;
+	time_start_walk_away		= 0;
 }
 
 #define TIME_WALK_PATH						5000
@@ -128,7 +131,12 @@ void CBitingAttack::Run()
 	
 	// Проверить, достижим ли противник
 	if (flags.is(AF_ENEMY_IS_NOT_REACHABLE) && !b_attack_melee) m_tAction = ACTION_ENEMY_POSITION_APPROACH;
-	
+	if ((flags.is(AF_BAD_MOTION)) && !b_attack_melee) time_start_walk_away = m_dwCurrentTime;
+	if (time_start_walk_away + 5000 > m_dwCurrentTime) {
+		m_tAction = ACTION_ENEMY_WALK_AWAY;
+	}
+
+
 	// проверить на возможность прыжка
 	if (flags.is(AF_HAS_JUMP_ABILITY)) 
 		if (pJumping->Check(pMonster->Position(),m_tEnemy.obj->Position(),m_tEnemy.obj))
@@ -260,6 +268,7 @@ void CBitingAttack::Run()
 		// **********************************
 		case ACTION_ENEMY_POSITION_APPROACH:
 		// **********************************
+			LOG_EX("ATTACK: ENEMY_POSITION_APPROACH");
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 
 			pMonster->Path_ApproachPoint(m_tEnemy.obj->Position());
@@ -270,9 +279,23 @@ void CBitingAttack::Run()
 
 			break;
 
+		// **********************************
+		case ACTION_ENEMY_WALK_AWAY:
+		// **********************************
+			LOG_EX("ATTACK: ENEMY_WALK_AWAY");
+
+			pMonster->MotionMan.m_tAction		= ACT_WALK_FWD;
+			pMonster->Path_GetAwayFromPoint		(random_position(m_tEnemy.position, 2.f), 20);
+			pMonster->SetSelectorPathParams		();
+			pMonster->set_use_dest_orientation	(false);
+			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+		
+			break;
+
 		// **********************
 		case ACTION_ROTATION_JUMP: 
 		// **********************
+
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
 			pMonster->MotionMan.SetSpecParams	(ASP_ROTATION_JUMP);
 			next_rot_jump_enabled				= m_dwCurrentTime + Random.randI(3000,4000);
@@ -489,11 +512,11 @@ void CBitingAttack::UpdateFrameFlags()
 	if (pMonster->GetEnemyNumber()==1)		
 		frame_flags.or(AF_THIS_IS_THE_ONLY_ENEMY);
 	
-	if (pMonster->ObjectNotReachable(m_tEnemy.obj))
+	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) 
 		frame_flags.or(AF_ENEMY_IS_NOT_REACHABLE);
 
 	// флаги движения по пути
-	if (pMonster->IsMovingOnPath())			frame_flags.or(AF_GOOD_MOVEMENT);
+	if (pMonster->IsMovingOnPath())			frame_flags.or(AF_GOOD_MOVEMENT_ON_PATH);
 	if (IS_NEED_REBUILD())					frame_flags.or(AF_NEED_REBUILD_PATH);
 
 	if (pMonster->GetEntityMorale() < 0.8f) frame_flags.or(AF_LOW_MORALE);
@@ -502,7 +525,12 @@ void CBitingAttack::UpdateFrameFlags()
 
 	if (m_tEnemy.time == m_dwCurrentTime)	frame_flags.or(AF_SEE_ENEMY);
 
-	if (pMonster->CanExecRotationJump() && CheckRotationJump()) frame_flags.or(AF_CAN_EXEC_ROTATION_JUMP);
+	if (pMonster->CanExecRotationJump() && CheckRotationJump()) 
+											frame_flags.or(AF_CAN_EXEC_ROTATION_JUMP);
+
+	if (!pMonster->MotionStats->is_good_motion(3))	
+											frame_flags.or(AF_BAD_MOTION);
+
 }
 
 #define MIN_ROTATION_JUMP_ANGLE 2*PI_DIV_3

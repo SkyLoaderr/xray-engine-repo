@@ -366,7 +366,9 @@ void CMotionManager::OnAnimationEnd()
 // если монстр стоит на месте и играет анимацию движения - force stand idle
 void CMotionManager::FixBadState()
 {	
-	if (!pMonster->MotionStats->is_good_motion(3)) cur_anim = eAnimStandIdle;
+	if (!pMonster->MotionStats->is_good_motion(3) || (IsMoving() && !pMonster->IsMovingOnPath())) {
+		cur_anim = eAnimStandIdle;
+	}
 }
 
 void CMotionManager::CheckReplacedAnim()
