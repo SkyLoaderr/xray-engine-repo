@@ -63,8 +63,8 @@ public:
 		for (u32 it=0; it<cpoint.size(); it++)
 		{
 			R.setup				(cpoint[it],_size);
-			if (R.max.x>=psize)	continue;
-			if (R.max.y>=psize)	continue;
+			if (R.max.x>=int(psize))	continue;
+			if (R.max.y>=int(psize))	continue;
 			BOOL	bIntersect	= false;
 			for (u32 t=0; t<stack.size(); t++)
 				if (stack[t].intersect(R))	{

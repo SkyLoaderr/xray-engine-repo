@@ -661,7 +661,7 @@ void CRender::render_sun				()
 		//  compute eta.
 		float lambda		= frustumAABB2D.maxPt.x - frustumAABB2D.minPt.x;
 		float delta_proj	= m_fTSM_Delta * lambda;	//focusPt.x - frustumAABB2D.minPt.x;
-		const float xi		= -0.6;						// - 0.6f;  // 80% line
+		const float xi		= -0.6f;					// - 0.6f;  // 80% line
 		float		eta		= (lambda*delta_proj*(1.f+xi)) / (lambda*(1.f-xi)-2.f*delta_proj);
 
 		//  compute the projection point a distance eta from the top line.  this point is on the center line, y=0
