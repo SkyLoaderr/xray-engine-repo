@@ -37,10 +37,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 #ifndef SILENCE
 			Msg("Trying to take - %s (%d)", *O->cName(),O->ID());
 #endif
-			if (32 == O->ID()) {
-				O = O;
-			}
-			if (g_Alive() && inventory().Take(dynamic_cast<CGameObject*>(O),true)) { //GetScriptControl()
+			if (inventory().Take(dynamic_cast<CGameObject*>(O),true)) { //GetScriptControl()
 				O->H_SetParent(this);
 				if (!inventory().ActiveItem() && GetScriptControl() && dynamic_cast<CShootingObject*>(O))
 					CObjectHandler::set_dest_state(eObjectActionIdle,dynamic_cast<CGameObject*>(O));
