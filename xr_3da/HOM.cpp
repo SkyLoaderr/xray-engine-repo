@@ -72,11 +72,15 @@ void CHOM::Load			()
 	{
 		CDB::TRI&	clT = CL.getT()[it];
 		occTri&		rT	= m_pTris[it];
+		Fvector&	v0	= CL.getV()[clT.IDverts()[0]];
+		Fvector&	v1	= CL.getV()[clT.IDverts()[1]];
+		Fvector&	v2	= CL.getV()[clT.IDverts()[2]];
 		rT.adjacent[0]	= (CDB::edge_open==clT.IDadj()[0])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[0]);
 		rT.adjacent[1]	= (CDB::edge_open==clT.IDadj()[1])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[1]);
 		rT.adjacent[2]	= (CDB::edge_open==clT.IDadj()[2])?((occTri*) 0xffffffff):(m_pTris+clT.IDadj()[2]);
 		rT.flags		= clT.dummy;
-		rT.area			= Area(CL.getV()[clT.IDverts()[0]],CL.getV()[clT.IDverts()[1]],CL.getV()[clT.IDverts()[2]]);
+		rT.area			= Area(v0,v1,v2);
+		rT.plane.build	(v0,v1,v2);
 	}
 
 	// Create AABB-tree
@@ -98,12 +102,33 @@ void CHOM::Render		(CFrustum& base)
 	Raster.clear		();
 
 	// Query DB
-	XRC.frustum_options	(0);
+	XRC.frustum_options	();
 	XRC.frustum_query	(m_pModel,base);
+
+	// Perfrom selection, sorting, culling
 	CDB::RESULT*	it	= XRC.r_begin();
 	CDB::RESULT*	end	= XRC.r_end();
+	Fvector			COP = Device.vCameraPosition;
+	Fmatrix			XF	= Device.mFullTransform;
 	for (; it!=end; it++)
 	{
+		occTri& T	= m_pTris	[it->id];
+
+		// Test for good occluder - should be improved :)
+		if (!(T.flags || (T.plane.classify(COP)>0)))	continue;
+
+		// Access to triangle vertices
+		CDB::TRI& t	= m_pModel->get_tris() [it->id];
+
+		// XForm
+		XF.transform	(T.raster[0],*t.verts[0]);
+		XF.transform	(T.raster[1],*t.verts[1]);
+		XF.transform	(T.raster[2],*t.verts[2]);
 		
+		// Rasterize
+		Raster.rasterize(&T);
 	}
+
+	// Propagade
+	Raster.propagade	();
 }
