@@ -230,6 +230,8 @@ void CAI_Rat::UnderFire()
 		return;
 	}
 
+//	Msg					("%6d : Rat %s, %f -> %f [%f]",Level().timeServer(),*cName(),m_body.current.pitch,m_body.target.pitch,get_custom_pitch_speed(0.f));
+
 	vfSetFire(false,Level().get_group(g_Team(),g_Squad(),g_Group()));
 
 	if (enemy()) {

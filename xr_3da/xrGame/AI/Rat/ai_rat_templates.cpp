@@ -242,11 +242,12 @@ void CAI_Rat::vfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 
 	m_tHPB.x  +=  m_fDHeading;
 
+	PitchCorrection		();
 	m_tHPB.x			= angle_normalize_signed(m_tHPB.x);
 //	m_tHPB.y			= angle_normalize_signed(m_tHPB.y);
 	m_tHPB.y			= -m_body.current.pitch;
 
-	// Build the local matrix for the pplane
+	// Build the local matrix for the plane
 	XFORM().setHPB		(m_tHPB.x,m_tHPB.y,0.f);//m_tHPB.z);
 	Position()			= tSavedPosition;
 	Position().mad		(tDirection,m_fSpeed*m_fTimeUpdateDelta);
