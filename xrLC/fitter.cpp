@@ -58,10 +58,12 @@ void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, ve
 	vector<REAL>			daGradient;
 	vector<REAL>			daDelta;
 	vector<vector<REAL> >	daEvalResults(dwTestCount);
+	
 	if (!B.size()) {
 		clMsg				("ERROR : there are no parameters to fit!");
 		return;
 	}
+	
 	u32						dwParameterCount = B[0].size();
 	C.assign				(dwParameterCount,0.0f);
 	D.assign				(dwParameterCount,0.0f);
@@ -83,9 +85,7 @@ void vfOptimizeParameters(vector<vector<REAL> > &A, vector<vector<REAL> > &B, ve
 		transform			(C.begin(),				C.end(),			daDelta.begin(),	C.begin(),			plus<REAL>());
 		transform			(D.begin(),				D.end(),			daDelta.begin(),	D.begin(),			plus<REAL>());
 		dFunctional			= dfComputeEvalResults(daEvalResults,A,B,C,D);
-
 		i++;
-		clMsg				("%6d : %17.8f (%17.8f)",i,dFunctional,dFunctional/dwTestCount);
 	}
 	while ((((dPreviousFunctional - dFunctional)/dwTestCount) > dEpsilon) && (i <= dwMaxIterationCount));
 	
