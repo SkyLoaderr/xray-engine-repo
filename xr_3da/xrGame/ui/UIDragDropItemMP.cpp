@@ -46,7 +46,6 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				GetParent()->AttachChild(m_pAddon[ID]);
 				m_pAddon[ID]->Show(false);
 				m_pAddon[ID]->m_bHasRealRepresentation = bRealRepresentationSet;
-				m_pAddon[ID]->SetColor(GetUIStaticItem().GetColor());
 				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
 
 				// Отнимаем денежку
@@ -64,7 +63,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID]->Show(true);
 				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
 				// Прибавляем денежку
-				if (m_pAddon[ID]->GetCost() <= this_inventory->GetMoneyAmount() || !m_pAddon[ID]->m_bHasRealRepresentation)
+				if (m_pAddon[ID]->GetColor() != cUnableToBuy)
 				{
 					this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + 
 						static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
@@ -74,6 +73,7 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID] = NULL;
 			}
 		}
+		this_inventory->CheckBuyAvailabilityInShop();
 	}
 
 	m_AddonInfo[ID].iAttachStatus = bAttach ? 1 : 0;

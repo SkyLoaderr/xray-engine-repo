@@ -38,6 +38,7 @@ extern const float	fRealItemSellMultiplier;
 
 class CUIBuyWeaponWnd: public CUIDialogWnd
 {
+	friend class CUIDragDropItemMP;
 private:
 	typedef CUIDialogWnd inherited;
 public:

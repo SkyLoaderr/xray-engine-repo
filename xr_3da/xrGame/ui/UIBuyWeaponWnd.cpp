@@ -68,8 +68,6 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(LPCSTR strSectionName, LPCSTR strPricesSection)
 	m_mlCurrLevel	= mlRoot;
 	m_bIgnoreMoney	= false;
 
-	SetMoneyAmount(10000);
-
 	// Инициализируем вещи
 	Init(strSectionName);
 
@@ -533,8 +531,7 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	R_ASSERT(pDDItemMP);
 	
 	// Удаляем аддоны, только в случае того, чтo вещь не имеет реального прототипа
-	if (!pDDItemMP->m_bHasRealRepresentation)
-		pDDItemMP->AttachDetachAllAddons(false);
+	pDDItemMP->AttachDetachAllAddons(false);
 	// перемещаемся на уровень ниже в меню, если мы на уровне аддонов
 //	if (CUIBuyWeaponWnd::mlAddons == this_inventory->m_mlCurrLevel)
 //	{
@@ -841,7 +838,10 @@ void CUIBuyWeaponWnd::Update()
 		pOldCurrentDragDropItem	= m_pCurrentDragDropItem;
 		if (m_pCurrentDragDropItem)
 		{
-			sprintf(str, "%i", m_pCurrentDragDropItem->GetCost());
+			int cost = m_pCurrentDragDropItem->GetCost();
+			if (m_pCurrentDragDropItem->m_bHasRealRepresentation)
+				cost = static_cast<int>(cost * fRealItemSellMultiplier);
+			sprintf(str, "%i", cost);
 			UIItemCost.SetText(str);
 		}
 		else
