@@ -145,16 +145,16 @@ void __fastcall normal_L2(FixedMAP<float,FBasicVisual*>::TNode *N)
 }
 
 extern void __fastcall render_Cached(CList<FCached*>& cache);
-void __fastcall mapNormal_Render	(mapNormalItems& N)
+void __fastcall mapNormal_Render	(SceneGraph::mapNormalItems& N)
 {
 	// *** DIRECT ***
 	{
 		// DIRECT:SORTED
-		N->val.direct.sorted.traverseLR	(normal_L2);
-		N->val.direct.sorted.clear		();
+		N.direct.sorted.traverseLR		(normal_L2);
+		N.direct.sorted.clear			();
 		
 		// DIRECT:UNSORTED
-		CList<FBasicVisual*>&	L		= N->val.direct.unsorted;
+		CList<FBasicVisual*>&	L		= N.direct.unsorted;
 		FBasicVisual **I=L.begin(), **E = L.end();
 		for (; I!=E; I++)
 		{
@@ -170,13 +170,13 @@ void __fastcall mapNormal_Render	(mapNormalItems& N)
 
 		// CACHED:SORTED
 		CList<FCached*>& CS				= ::Render.vecCached;
-		N->val.cached.sorted.getLR		(CS);
+		N.cached.sorted.getLR			(CS);
 		if (!CS.empty())				render_Cached(CS);
 		CS.clear						();
-		N->val.cached.sorted.clear		();
+		N.cached.sorted.clear			();
 
 		// CACHED:UNSORTED
-		CList<FCached*>& CU				= N->val.cached.unsorted;
+		CList<FCached*>& CU				= N.cached.unsorted;
 		if (!CU.empty())				render_Cached(CU);
 		CU.clear						();
 
@@ -196,33 +196,20 @@ void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
 
 void __fastcall matrix_L1(SceneGraph::mapMatrix_Node *N)
 {
-	Device.Shader.Set(N->key);
-	N->val.traverseLR(matrix_L2);
-	N->val.clear();
+	Device.Shader.set_Shader(N->key);
+	N->val.traverseLR		(matrix_L2);
+	N->val.clear			();
 }
 
 // ALPHA
 void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 {
 	FBasicVisual *V = N->val.pVisual;
-	Device.Shader.Set(V->hShader);
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
-	::Render.Lights.SelectDynamic(N->val.vCenter,V->bv_Radius);
-	gm_SetAmbientLevel(N->val.iLighting);
-	V->Render(calcLOD(N->key,V->bv_Radius));
-}
-
-void CRender::flush_Static()
-{
-	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
-	mapNormal[0].traverseANY	(normal_L1);
-	mapNormal[0].clear			();
-	mapNormal[1].traverseANY	(normal_L1);
-	mapNormal[1].clear			();
-	mapNormal[2].traverseANY	(normal_L1);
-	mapNormal[2].clear			();
-	mapNormal[3].traverseANY	(normal_L1);
-	mapNormal[3].clear			();
+	Device.Shader.set_Shader		(V->hShader);
+	CHK_DX(HW.pDevice->SetTransform	(D3DTS_WORLD,N->val.Matrix.d3d()));
+	::Render.Lights.SelectDynamic	(N->val.vCenter,V->bv_Radius);
+	gm_SetAmbientLevel				(N->val.iLighting);
+	V->Render						(calcLOD(N->key,V->bv_Radius));
 }
 
 void CRender::flush_Models()
