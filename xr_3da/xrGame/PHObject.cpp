@@ -99,7 +99,6 @@ void CPHObject::UnFreeze()
 CPHUpdateObject::CPHUpdateObject()
 {
 	b_activated=false;
-
 }
 
 void CPHUpdateObject::Activate()
