@@ -213,7 +213,7 @@ NetDeviceConsole::~NetDeviceConsole(){
 void NetDeviceConsole::ProgressStart(float max_val, const char* text){
 	fMaxVal=max_val;
 	fStatusProgress=0;
-	Msg(text);
+	Msg(text?text:"");
 	ProgressUpdate(0);
 }
 void NetDeviceConsole::ProgressEnd(){

@@ -195,7 +195,7 @@ VOID CExporter::CAPTURE(INode *pNode){
 
 	// process vertices
 	int	numVertices = pContext->GetNumberVertices();
-    NConsole.ProgressStart(numVertices,"Converting vertices...");
+    NConsole.ProgressStart(numVertices,"..Converting vertices");
     for (int iVertex = 0; iVertex < numVertices; iVertex++ ){
 		IPhyVertexExport *pVertexExport = (IPhyVertexExport *)pContext->GetVertexInterface(iVertex);
 		R_ASSERT(pVertexExport);
