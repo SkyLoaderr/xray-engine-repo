@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "effectornoise.h"
+#include "effectorshot.h"
 #include "..\fstaticrender.h"
 #include "..\bodyinstance.h"
 #include "..\xr_tokens.h"
@@ -148,7 +148,8 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 		switch(st_target)
 		{
 		case eIdle:
-			bFlame	= FALSE;
+			Level().Cameras.SetEffector	(0);
+			bFlame						= FALSE;
 			break;
 		case eFire:
 			pSounds->Play3DAtPos(sndFire,vLastFP,true);
@@ -218,6 +219,8 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 	if ((st_current==eFire) && bFlame) 
 	{
+		if (0==Level().Cameras.GetEffector())	Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(.2f)));
+
 		UpdateFP	(bHUDView);
 
 		// fire flash
