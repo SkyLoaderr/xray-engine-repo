@@ -54,9 +54,7 @@ public:
 	IDirect3DVolumeTexture9*	t_material_surf;
 	ref_texture					t_material;
 private:
-	// Decompress
-	ref_geom					g_decompress;
-	ref_shader					s_decompress;	// 0=pos,1=norm
+	// OCCq
 	ref_shader					s_occq;
 
 	// Accum

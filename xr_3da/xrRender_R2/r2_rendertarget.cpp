@@ -121,15 +121,6 @@ void	CRenderTarget::OnDeviceCreate	()
 	// OCCLUSION
 	s_occq.create					(b_occq,		"r2\\occq");
 
-	// DECOMPRESSION
-	g_decompress.create				(FVF::F_TL,		RCache.Vertex.Buffer(), RCache.QuadIB);
-	if (!RImplementation.b_fp16)
-	{
-		u32 _fvf					= (u32)D3DFVF_XYZRHW|D3DFVF_TEX2|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE4(1);
-		s_decompress.create			(b_decompress,	"r2\\rt32x64decode");
-		g_decompress.create			(_fvf,			RCache.Vertex.Buffer(), RCache.QuadIB);
-	}
-
 	// DIRECT (spot)
 	if (RImplementation.b_HW_smap)
 	{
