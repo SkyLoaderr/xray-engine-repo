@@ -114,10 +114,10 @@ void SetWriteDTXnFile(DXTDataTransfer UserWriteDTXnFile);
 void __cdecl WriteDTXnFile(DWORD count, void * buffer);
 void __cdecl ReadDTXnFile(DWORD count, void * buffer);
 
+/*
 #pragma message("Note: including lib: nvDXTlibMTDLL.lib") 
 #pragma comment(lib, "nvDXTlibMTDLL.lib")
 
-/*
 #ifndef EXCLUDE_LIBS
 
 //#if _DEBUG
