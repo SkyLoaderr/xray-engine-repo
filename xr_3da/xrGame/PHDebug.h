@@ -6,9 +6,15 @@
 extern Flags32 ph_dbg_draw_mask;
 extern	bool		  draw_frame;
 #ifdef DRAW_CONTACTS
-#include "Physics.h"
-struct dContact;
-DEFINE_VECTOR(dContact,CONTACT_VECTOR,CONTACT_I);
+
+struct SPHContactDBGDraw
+{
+	int geomClass;
+	Fvector norm;
+	Fvector pos;
+	float depth;
+};
+DEFINE_VECTOR(SPHContactDBGDraw,CONTACT_VECTOR,CONTACT_I);
 extern CONTACT_VECTOR Contacts0;
 extern CONTACT_VECTOR Contacts1;
 #endif

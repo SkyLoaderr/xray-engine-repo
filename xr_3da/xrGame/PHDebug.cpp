@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #ifdef DEBUG
+#include "physics.h"
+#include "MathUtils.h"
 #include "PHDebug.h"
 #include "PHObject.h"
 #include "ExtendedGeom.h"
@@ -33,16 +35,28 @@ void DBG_DrawContact(dContact& c)
 {
 #ifdef DRAW_CONTACTS
 
+	SPHContactDBGDraw dbc;
+	if(dGeomGetBody(c.geom.g1))
+	{
+		dbc.geomClass =dGeomGetClass(retrieveGeom(c.geom.g1));
+	}
+	else
+	{
+		dbc.geomClass=dGeomGetClass(retrieveGeom(c.geom.g2));
+	}
+	dbc.norm.set(cast_fv(c.geom.normal));
+	dbc.pos.set(cast_fv(c.geom.pos));
+	dbc.depth=c.geom.depth;
 	if(ph_dbg_draw_mask.test(phDbgDrawContacts))
 	{
-		if(draw_frame)Contacts0.push_back(c);
-		else		  Contacts1.push_back(c);
+		if(draw_frame)Contacts0.push_back(dbc);
+		else		  Contacts1.push_back(dbc);
 	}
 #endif
 }
 void DBG_DrawFrameStart()
 {
-draw_frame=!draw_frame;
+
 	if(draw_frame)
 	{
 		Contacts0.clear();
@@ -94,27 +108,17 @@ void PH_DBG_Render()
 
 		for(;i!=e;i++)
 		{
-
-
-			dContact& c=*i;
-			int geom_class;
-			if(dGeomGetBody(c.geom.g1))
-			{
-				geom_class=dGeomGetClass(retrieveGeom(c.geom.g1));
-			}
-			else
-			{
-				geom_class=dGeomGetClass(retrieveGeom(c.geom.g2));
-			}
-			bool is_cyl=geom_class==dCylinderClassUser;
-			RCache.dbg_DrawAABB			(*((Fvector*)c.geom.pos),.01f,.01f,.01f,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
+			SPHContactDBGDraw &c=*i;
+			bool is_cyl=c.geomClass==dCylinderClassUser;
+			RCache.dbg_DrawAABB			(c.pos,.01f,.01f,.01f,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 			Fvector dir;
-			dir.set(c.geom.normal[0],c.geom.normal[1],c.geom.normal[2]);
-			dir.mul(c.geom.depth*100.f);
-			dir.add(*((Fvector*)c.geom.pos));
-			RCache.dbg_DrawLINE(Fidentity,*((Fvector*)c.geom.pos),dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
+			dir.set(c.norm);
+			dir.mul(c.depth*100.f);
+			dir.add(c.pos);
+			RCache.dbg_DrawLINE(Fidentity,c.pos,dir,D3DCOLOR_XRGB(255*is_cyl,0,255*!is_cyl));
 		}
 	}
+	draw_frame=!draw_frame;
 #endif
 }
 #endif
