@@ -1,1 +1,31 @@
-hit_zone
+-- Разрушение баррикады
+-- Скриптовая зона - hit_zone
+-- Баррикада - barricade
+
+local barricade = get_level_object ("barricade")
+local entered = false
+
+function on_enter (zone, obj)
+
+	zone:clear_callback (true)
+    local h = hit ()
+    h.power = 1
+    h.direction = vector ():set (0, 1, 1)
+    h:bone ("root")
+    h.draftsman = obj
+    h.impulse = 1000
+    h.type  = hit.strike
+    barricade:hit (h)
+    
+    entered = true
+
+end
+
+function main ()
+
+	local z = get_level_object ("hit_zone")
+	z:set_callback (m_attack_wave22.on_enter, true)
+
+	while entered == false do wait () end
+		
+end
