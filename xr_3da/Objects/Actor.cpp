@@ -235,7 +235,6 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	patch_frame				= 0;
 	patch_position.set		(vPosition);
-	die_hide				= 1.f;
 
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this,TRUE);
@@ -313,15 +312,6 @@ void CActor::Die	( )
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
-
-	// Drop active weapon(s)
-	/*
-	if (Local())			{
-		Weapons->weapon_die	();
-	}
-	*/
-
-	die_hide				= 1.f;
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
@@ -413,6 +403,7 @@ void CActor::UpdateCL()
 	inherited::UpdateCL();
 
 	// Analyze Die-State
+	/*
 	if (!g_Alive())			
 	{
 		float dt			=	Device.fTimeDelta;
@@ -438,6 +429,7 @@ void CActor::UpdateCL()
 			}
 		}
 	}
+	*/
 }
 
 void CActor::Update	(u32 DT)
