@@ -198,6 +198,7 @@ void CBreakableObject::net_Destroy()
 		m_Shell->Deactivate();
 		xr_delete(m_Shell);
 	}
+	
 	m_pPhysicsShell=NULL;
 	inherited::net_Destroy();
 	xr_delete(collidable.model);
