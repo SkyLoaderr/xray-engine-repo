@@ -29,7 +29,7 @@ function options_profiles_tab:InitControls(x_pos, y_pos)
 					   width = 300,
 					   height = self.btn_rect.height}
 	local edit_rect = {x = 0,
-					   y = self.top_align_y,
+					   y = info_rect.y + info_rect.height + self.indent,
 					   width = 50,
 					   height = self.btn_rect.height}
 	edit_rect.x = self.main_rect.width - edit_rect.width - self.indent
