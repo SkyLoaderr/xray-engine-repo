@@ -31,7 +31,7 @@ public:
 #endif
 	CSE_ALifeDynamicObject			*m_tpBestDetector;
 
-									CSE_ALifeSchedulable	(LPCSTR caSection) : CSE_Abstract(caSection) {};
+									CSE_ALifeSchedulable	(LPCSTR caSection);
 #ifndef _EDITOR
 #ifndef AI_COMPILER
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			float &fHitPower) = 0;

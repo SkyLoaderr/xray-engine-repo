@@ -70,9 +70,9 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 		II->children.push_back(l_tpALifeItem->ID);
 	}
 	
-	CSE_ALifeMonsterAbstract			*l_tpALifeMonsterAbstract = dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject);
-	if (l_tpALifeMonsterAbstract)
-		l_tpALifeMonsterAbstract->m_tpALife = this;
+	CSE_ALifeSchedulable				*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(tpALifeDynamicObject);
+	if (l_tpALifeSchedulable)
+		l_tpALifeSchedulable->m_tpALife = this;
 }
 
 void CSE_ALifeSimulator::vfUpdateDynamicData(bool bReserveID)

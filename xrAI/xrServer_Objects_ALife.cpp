@@ -1013,3 +1013,14 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     }
 }
 #endif
+
+CSE_ALifeSchedulable::CSE_ALifeSchedulable(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	m_tpCurrentBestWeapon		= 0;
+#ifndef _EDITOR
+#ifndef AI_COMPILER
+	m_tpALife					= 0;
+#endif
+#endif
+	m_tpBestDetector			= 0;
+}
