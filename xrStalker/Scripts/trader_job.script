@@ -23,25 +23,9 @@ function give_job_box02(first_speaker, second_speaker)
 
 end
 
-function give_job_medkit(first_speaker, second_speaker)
-
-	first_speaker:give_info_portion("wounded_start2")
-
-end
-
-
 function is_trader (first_speaker, second_speaker)
 
 	if (clsid.trader == second_speaker:clsid()) then
-		return true
-    end
-	return false
-end
-
-function is_wounded (first_speaker, second_speaker)
-
-	local 	wounded = get_level_object("tradeseller_stalker_0_1")
-	if (clsid.wounded == second_speaker:clsid()) then
 		return true
     end
 	return false
