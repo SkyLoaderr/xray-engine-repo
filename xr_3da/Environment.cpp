@@ -30,16 +30,7 @@ ENGINE_API Flags32	psEnvFlags= {effSunGlare};
 
 CEnvironment::CEnvironment()
 {
-	// environment objects
-	if ((0==pSkydome) && (pCreator->pLevel->LineExists("environment","sky")))
-	{
-		LPCSTR S			= pCreator->pLevel->ReadSTRING("environment","sky");
-		pSkydome			= Render->model_Create	(S);
-	} else {
-		pSkydome			= 0;
-	}
-
-	c_Invalidate		();
+	pSkydome				= NULL;
 }
 
 CEnvironment::~CEnvironment()
@@ -51,7 +42,8 @@ CEnvironment::~CEnvironment()
 
 void CEnvironment::Load(CInifile *pIni, char *section)
 {
-	for(int env=0; env<32; env++) {
+	for(int env=0; env<32; env++) 
+	{
 		char	name[32];
 		sprintf(name,"env%d",env);
 		if (!pIni->LineExists(section,name)) break;
@@ -78,6 +70,15 @@ void CEnvironment::Load(CInifile *pIni, char *section)
 			pSun	= xr_new<CSun> (pIni, name);
 			Suns.push_back(pSun);
 		}
+	}
+
+	// environment objects
+	if ((0==pSkydome) && (pCreator->pLevel->LineExists("environment","sky")))
+	{
+		LPCSTR S			= pCreator->pLevel->ReadSTRING("environment","sky");
+		pSkydome			= Render->model_Create	(S);
+	} else {
+		pSkydome			= 0;
 	}
 
 	c_Invalidate		();
