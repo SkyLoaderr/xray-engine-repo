@@ -68,6 +68,10 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 {
 	return ::Render->blender_create	(cls);
 }
+void		CBlender::Destroy	(CBlender*& B)
+{
+	::Render->blender_destroy		(B);
+}
 #else
 
 // Editor
@@ -120,5 +124,9 @@ CBlender*	CBlender::Create	(CLASS_ID cls)
 	case B_TREE:			return xr_new<CBlender_Tree>();	
 	}
 	return 0;
+}
+void		CBlender::Destroy	(CBlender*& B)
+{
+	xr_delete	(B);
 }
 #endif

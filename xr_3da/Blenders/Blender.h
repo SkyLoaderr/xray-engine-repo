@@ -44,6 +44,7 @@ protected:
 	BOOL						c_XForm			();
 public:
 	static			CBlender*	Create			(CLASS_ID cls);
+	static			void		Destroy			(CBlender*& B);
 	static			void		CreatePalette	(vector<CBlender*> & palette);
 	
 	CBlender_DESC&				getDescription	()	{return description;}

@@ -144,8 +144,8 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// Release blenders
 	for (map_BlenderIt b=m_blenders.begin(); b!=m_blenders.end(); b++)
 	{
-		xr_free		((char*)b->first);
-		xr_delete	(b->second);
+		xr_free				((char*)b->first);
+		CBlender::Destroy	(b->second);
 	}
 	m_blenders.clear	();
 
@@ -156,7 +156,7 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 		xr_free((char*&)_t->second.T);
 		xr_free((char*&)_t->second.M);
 	}
-	m_td.clear();
+	m_td.clear			();
 
     // clear Geoms
 	for (u32 g_it=0; g_it<v_geoms.size(); g_it++)
