@@ -23,7 +23,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	
 	// computing maximum viewable distance in the specified direction
 	Fvector tCurrentWatchDirection, tTemp;
-	tCurrentWatchDirection.setHP	(r_current.yaw,r_current.pitch);
+	tCurrentWatchDirection.setHP	(-r_current.yaw,-r_current.pitch);
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
 	tTemp.normalize();
