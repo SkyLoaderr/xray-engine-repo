@@ -127,6 +127,13 @@ void CBuild::BuildCForm(CFS_Base &fs)
 
 	// Compress chunk
 	fs.write_chunk	(fsL_CFORM|CFS_CompressMark,MFS.pointer(),MFS.size());
+
+	// clear pDeflector (it is stored in the same memory space with dwMaterialGame)
+	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++)
+	{
+		Face* F			= *I;
+		F->pDeflector	= NULL;
+	}
 }
 
 void CBuild::BuildPortals(CFS_Base& fs)
