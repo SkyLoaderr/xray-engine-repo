@@ -73,7 +73,9 @@ void	CCar::Update				( DWORD T )
 
 	float dt						= float(T)/1000.f;
 	
-//	svTransform
+	//	vPosition.set	(???)
+	//  mRotate.set		(???)
+	//	svTransform		(???)
 
 	UpdateTransform					();
 	if (IsMyCamera())				cam_Update(dt);
@@ -81,8 +83,7 @@ void	CCar::Update				( DWORD T )
 
 void	CCar::UpdateCL				( )
 {
-//	clTransform
-
+	//	clTransform		(???)
 }
 
 void	CCar::OnVisible				( )
