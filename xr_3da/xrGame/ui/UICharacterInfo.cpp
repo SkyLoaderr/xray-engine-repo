@@ -237,7 +237,6 @@ void  CUICharacterInfo::InitCharacter(CCharacterInfo* pCharInfo)
 	UICommunity.SetText(str);
 
 	UIIcon.SetShader(GetCharIconsShader());
-//	UIIcon.GetUIStaticItem().SetScale(1.0/CHAR_ICON_HEIGHT); // SetScale((ICON_GRID_HEIGHT)/(CHAR_ICON_HEIGHT*ICON_GRID_HEIGHT))
 	UIIcon.GetUIStaticItem().SetOriginalRect(
 		pCharInfo->TradeIconX()*ICON_GRID_WIDTH,
 		pCharInfo->TradeIconY()*CHAR_ICON_HEIGHT,
