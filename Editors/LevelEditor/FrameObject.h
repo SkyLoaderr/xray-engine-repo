@@ -19,7 +19,7 @@ class TfraObject : public TFrame
 __published:	// IDE-managed Components
     TPanel *paSelectObject;
     TPanel *paCommands;
-	TExtBtn *ebResolve;
+	TExtBtn *ebMultiAppend;
     TLabel *Label5;
 	TExtBtn *ebSelectByRefs;
 	TExtBtn *ebDeselectByRefs;
@@ -36,6 +36,7 @@ __published:	// IDE-managed Components
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
     void __fastcall ebCurObjClick(TObject *Sender);
+	void __fastcall ebMultiAppendClick(TObject *Sender);
 private:	// User declarations
     void __fastcall SelByRefObject  ( bool flag );
     void __fastcall OutCurrentName();

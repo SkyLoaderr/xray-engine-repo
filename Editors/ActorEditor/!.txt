@@ -597,11 +597,11 @@ Level:
 + Image Library access without clear
 + Export Tex Assos
 + ImageEditor без копирования
-- ImageEditor удаление текстур
-- glow - non scale flag
-- DO - engine render 
++ ImageEditor удаление текстур
++ glow - non scale flag
++ DO - engine render 
 - осветить хемисферой лод
-- на спавнпоинтах рисовать иконки
++ на спавнпоинтах рисовать иконки
 - FindObjectByName не использовать с классом
 - Render на расстоянии боксами
 + builder LTX 	- группы!!!

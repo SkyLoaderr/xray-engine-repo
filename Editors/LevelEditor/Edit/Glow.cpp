@@ -33,6 +33,7 @@ void CGlow::Construct(LPVOID data){
     m_GShader   = 0;
     m_fRadius	= 0.5f;
     m_bDefLoad	= false;
+    m_dwFlags	= 0;
 }
 
 CGlow::~CGlow()
@@ -66,10 +67,9 @@ void CGlow::FillProp(LPCSTR pref, PropValueVec& values)
 //----------------------------------------------------
 bool CGlow::GetBox( Fbox& box )
 {
-	float k = (GetFlag(gfFixedSize))?0.01f:1.f;
 	box.set( PPosition, PPosition );
-	box.min.sub(m_fRadius*k);
-	box.max.add(m_fRadius*k);
+	box.min.sub(m_fRadius);
+	box.max.add(m_fRadius);
 	return true;
 }
 
@@ -84,14 +84,13 @@ void CGlow::Render(int priority, bool strictB2F){
         if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
 		Device.SetTransform(D3DTS_WORLD,Fidentity);
-		float k = (GetFlag(gfFixedSize))?0.01f:1.f;
-        if (::Render->ViewBase.testSphere_dirty(PPosition,m_fRadius*k)){
+        if (::Render->ViewBase.testSphere_dirty(PPosition,m_fRadius)){
         	// рендерим Glow
         	if ((fraBottomBar->miGlowTestVisibility->Checked&&!Scene.RayPick(PPosition,D,OBJCLASS_SCENEOBJECT,&pinf,true,0))||
             	!fraBottomBar->miGlowTestVisibility->Checked){
                 if (m_GShader){	Device.SetShader(m_GShader);
                 }else{			Device.SetShader(Device.m_WireShader);}
-                m_RenderSprite.Render(PPosition,m_fRadius,GetFlag(gfFixedSize));
+                m_RenderSprite.Render(PPosition,m_fRadius,IsFlag(gfFixedSize));
 			}else{
                 // рендерим bounding sphere
         		Device.SetShader(Device.m_WireShader);
@@ -109,8 +108,7 @@ void CGlow::Render(int priority, bool strictB2F){
 
 bool CGlow::FrustumPick(const CFrustum& frustum)
 {
-	float k = (GetFlag(gfFixedSize))?0.01f:1.f;
-    return (frustum.testSphere_dirty(PPosition,m_fRadius*k))?true:false;
+    return (frustum.testSphere_dirty(PPosition,m_fRadius))?true:false;
 }
 
 bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
@@ -121,8 +119,7 @@ bool CGlow::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPic
     float d = ray2.dotproduct(direction);
     if( d > 0  ){
         float d2 = ray2.magnitude();
-		float k = (GetFlag(gfFixedSize))?0.01f:1.f;
-        if( ((d2*d2-d*d) < (m_fRadius*m_fRadius*k*k)) && (d>m_fRadius*k) ){
+        if( ((d2*d2-d*d) < (m_fRadius*m_fRadius)) && (d>m_fRadius) ){
         	if (d<distance){
 	            distance = d;
     	        return true;

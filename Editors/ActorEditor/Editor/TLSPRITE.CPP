@@ -28,8 +28,8 @@ void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize)
 	P.transform		( pos, Device.mFullTransform );
     cx				= Device._x2real(P.p.x);
     cy				= Device._y2real(P.p.y);
-    if (bFixedSize) sz = 0.7071f*radius;
-    else			sz = 0.7071f*UI.GetRenderWidth()*radius/P.p.w;
+    if (bFixedSize) sz = Device._x2real(radius)-Device._x2real(0);
+    else			sz = UI.GetRenderWidth()*radius/P.p.w;
     mesh.m[0].p.x = cx-sz;	mesh.m[0].p.y = cy+sz;
     mesh.m[1].p.x = cx-sz;	mesh.m[1].p.y = cy-sz;
     mesh.m[3].p.x = cx+sz;	mesh.m[3].p.y = cy-sz;
@@ -38,7 +38,6 @@ void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize)
     mesh.setcolor	( 0xffffffff );
 
     DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
-//    Device.DP		( D3DPT_TRIANGLESTRIP, FVF::F_TL, &mesh, 4);
 }
 
 void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)

@@ -23,7 +23,7 @@ public:
     float           m_fRadius;
     DWORD			m_dwFlags;
 
-    IC bool			GetFlag			(EFlags flag)const 	{return !!(m_dwFlags&flag);}
+    IC bool			IsFlag			(EFlags flag)const 	{return !!(m_dwFlags&flag);}
     IC DWORD		GetFlags		()const 			{return m_dwFlags;}
     IC void			SetFlag			(EFlags flag, bool val)	{if (val) m_dwFlags|=val; else m_dwFlags&=~flag;}
     IC void			SetFlags		(DWORD flags)			{m_dwFlags=flags;}
