@@ -24,7 +24,7 @@ public:
 	virtual		void				OnFraglimitExceed		()								{};
 	virtual		void				OnTimelimitExceed		();
 
-	// Main
+	// Mains
 	virtual		void				Update					();
 
 	u8 AutoTeam();
