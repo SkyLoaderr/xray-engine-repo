@@ -181,7 +181,7 @@ void CAI_Stalker::Exec_Look(float dt)
 
 	// validating angles
 //#ifdef DEBUG
-	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
+//	Msg						("StalkerA (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
 	VERIFY					(_valid(r_current.yaw));
 	VERIFY					(_valid(r_current.pitch));
 	VERIFY					(_valid(r_target.yaw));
@@ -212,7 +212,7 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_current.yaw			= angle_normalize_signed	(r_current.yaw);
 	r_current.pitch			= angle_normalize_signed	(r_current.pitch);
 //#ifdef DEBUG
-	Msg						("StalkerB (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
+//	Msg						("StalkerB (%d, %s) t=%f, c=%f, tt=%f, tc=%f",Level().timeServer(),cName(),r_target.yaw,r_current.yaw,r_torso_target.yaw,r_torso_current.yaw);
 	VERIFY					(_valid(r_current.yaw));
 	VERIFY					(_valid(r_current.pitch));
 	VERIFY					(_valid(r_target.yaw));
