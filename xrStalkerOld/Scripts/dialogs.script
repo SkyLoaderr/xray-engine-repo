@@ -41,13 +41,13 @@ function transfer_medkit(first_speaker, second_speaker)
 	local obj = first_speaker:object("medkit")
 	if medkit ~= nil then
 		first_speaker:transfer_item(obj, second_speaker)
-	else
+	end
 end
 function transfer_bandage(first_speaker, second_speaker)
 	local obj = first_speaker:object("bandage")
 	if medkit ~= nil then
 		first_speaker:transfer_item(obj, second_speaker)
-	else
+	end
 end
 
 --'---------------------------------------------------------------------------------
