@@ -129,7 +129,7 @@ bool ESoundSource::Load(IReader& F)
     if (F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS2)){
 	    F.r			(&m_Params,sizeof(m_Params));
     }else{
-    	R_ASSERT(F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS2));
+    	R_ASSERT(F.find_chunk(SOUND_CHUNK_SOURCE_PARAMS));
     	F.r_fvector3			(m_Params.position);
        	m_Params.volume			= F.r_float();
         m_Params.freq			= F.r_float();
