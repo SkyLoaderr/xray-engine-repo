@@ -208,6 +208,8 @@ void	CSkeletonAnimated::LL_FadeCycle(u16 part, float falloff)
 
 void	CSkeletonAnimated::LL_CloseCycle(u16 part)
 {
+	if (BI_NONE==part) return;
+	if (part>=MAX_PARTS) return;
 	// destroy cycle(s)
 	BlendListIt	I = blend_cycles[part].begin(), E = blend_cycles[part].end();
 	for (; I!=E; I++)
@@ -229,12 +231,12 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	flo
 {
 	// validate and unroll
 	if (BI_NONE==motion)	return 0;
-	if (part>=MAX_PARTS)	return 0;
 	if (BI_NONE==part)		{
 		for (u16 i=0; i<MAX_PARTS; i++)
 			LL_PlayCycle(i,motion,bMixing,blendAccrue,blendFalloff,Speed,noloop,Callback,CallbackParam);
 		return 0;
 	}
+	if (part>=MAX_PARTS)	return 0;
 	if (0==(*partition)[part].Name)	return 0;
 
 	// Process old cycles and create _new_
