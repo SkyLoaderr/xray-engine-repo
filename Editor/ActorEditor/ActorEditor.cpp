@@ -132,6 +132,7 @@ USEUNIT("Engine\Blenders\Blender_Shadow_World.cpp");
 USEUNIT("Engine\SH_RT.cpp");
 USEUNIT("Engine\SH_VS.cpp");
 USEFORM("Editor\NumericVector.cpp", frmNumericVector);
+USEUNIT("Engine\Blenders\Blender_Blur.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
