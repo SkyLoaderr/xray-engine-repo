@@ -45,17 +45,12 @@ BOOL CPda::net_Spawn(LPVOID DC)
 	R_ASSERT			(pda);
 	m_idOriginalOwner	= pda->m_original_owner;
 	
-	//включить PDA только если оно находится у первого владельца
-	if(H_Parent() && H_Parent()->ID() == m_idOriginalOwner)
-		TurnOn				();
-	else
-		TurnOff				();
-
 	return				(TRUE);
 }
 void CPda::net_Destroy() 
 {
 	inherited::net_Destroy();
+	TurnOff				();
 }
 
 void CPda::Load(LPCSTR section) 
@@ -63,12 +58,7 @@ void CPda::Load(LPCSTR section)
 	inherited::Load(section);
 
 	m_fRadius = pSettings->r_float(section,"radius");
-
-//	m_fRadius = 200.f;
-		
 }
-
-
 
 void CPda::shedule_Update(u32 dt)	
 {
@@ -188,13 +178,9 @@ void CPda::OnH_A_Chield()
 {
 	VERIFY(IsOff());
 
-	if(0xffff == m_idOriginalOwner)
-		m_idOriginalOwner = H_Parent()->ID();
-
 	//включить PDA только если оно находится у первого владельца
 	if(H_Parent()->ID() == m_idOriginalOwner)
-		TurnOn				();
-
+		TurnOn					();
 
 	inherited::OnH_A_Chield		();
 }
