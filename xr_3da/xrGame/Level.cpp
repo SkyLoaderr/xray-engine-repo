@@ -191,7 +191,6 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		// Sync
 		pApp->LoadTitle						("CLIENT: Syncronising...");
 		while (!isCompleted_Sync())			Sleep(5);
-//		Syncronize							();
 
 		// signal OK
 		return TRUE;
