@@ -354,6 +354,9 @@
     <string id="escape_trader_done_tutorial_artefact_2">
         <text>Ну вот и ладненько. Нечего добру попусту валяться.</text>
     </string>
+    <string id="escape_trader_done_tutorial_artefact_3">
+        <text>Меченный!!! Быстро дуй к вагончику возле дороги..Там раненые…Это сталкеры из лагеря - возвращались с моего задания. Черт их дернул вертолет обстрелять…Теперь вон СОС кричат…Держи аптечку быстрей…\n</text>
+    </string>
     <string id="escape_trader_jobs_0">
         <text>Работенка для меня найдется?</text>
     </string>

@@ -58,5 +58,5 @@ function send_task(actor, news_id)
 	if snd_obj ~= nil then
 		snd_obj:play(actor, 0, sound_object.s2d)
 	end	
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 150,100,50,500, 0)
+	actor:give_game_news("general_new_task", "ui\\ui_icons_task", 150,100,50,500, 0)
 end

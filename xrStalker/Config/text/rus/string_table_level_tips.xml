@@ -3,6 +3,11 @@
 	<string id="general_help">
 		<text>Срочно нужна аптечка, помираю!!!</text>
 	</string>
+	<string id="general_new_task">
+		<text>Получены новые указания.</text>
+	</string>
+	
+	
 
 	<string id="tips_esc_trader_how_to_talk">
 		<text>Для того, чтобы поговорить с кем-либо, наведите на него прицел и нажмите 'E'.</text>
