@@ -221,7 +221,7 @@ void CRender::Render		()
 						RCache.set_xform_world				(Fidentity);			// ???
 						RCache.set_xform_view				(LR.L_view);
 						RCache.set_xform_project			(LR.L_project);
-						r_dsgraph_render_graph				();
+						r_dsgraph_render_graph				(0);
 					}
 				}
 
@@ -240,13 +240,13 @@ void CRender::Render		()
 				LR.compute_xfs_2						(0, L);
 
 				// rendering
-				if (mapNormal.size() || mapMatrix.size())
+				if (mapNormal[0].size() || mapMatrix.size())
 				{
 					Target.phase_smap_spot				();
 					RCache.set_xform_world				(Fidentity);			// ???
 					RCache.set_xform_view				(LR.L_view);
 					RCache.set_xform_project			(LR.L_project);
-					r_dsgraph_render_graph				();
+					r_dsgraph_render_graph				(0);
 				}
 
 				// Render light
