@@ -153,7 +153,10 @@ sound_panic_human	 = monsters\human\combat\ukr\ukr1_surrender,monsters\stalker\s
 sound_panic_monster	 = script_sound\help\soldier\soldier_help_
 
 ;entity condition
+immunities_sect				= stalker_immunities
+condition_sect				= stalker_condition
 
+; OBSOLETE
 satiety_v = 0.000001			;0.01			;скорость уменьшения сытости со временем
 radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
 satiety_power_v = 0.000		;0.01			;увеличение силы при уменьшении сытости 
@@ -175,6 +178,7 @@ telepatic_immunity = 1.0
 chemical_burn_immunity = 1.0
 explosion_immunity = 1.0
 fire_wound_immunity  = 0.5 ;1.0
+
 
 sleep_health = 1.0		;1.5				;коэффициенты скоростей изменения параметров во время сна
 sleep_power = 1.0		;1.5
@@ -337,7 +341,10 @@ sound_panic_monster	 = script_sound\help\soldier\soldier_help_
 
 
 ;entity condition
+immunities_sect				= stalker_immunities
+condition_sect				= stalker_condition
 
+;OBSOLETE
 satiety_v = 0.001			;0.01			;скорость уменьшения сытости со временем
 radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
 satiety_power_v = 0.001		;0.01			;увеличение силы при уменьшении сытости 
@@ -517,7 +524,10 @@ sound_panic_human	 = monsters\human\combat\ukr\ukr1_surrender,monsters\stalker\s
 sound_panic_monster	 = script_sound\help\soldier\soldier_help_
 
 ;entity condition
+immunities_sect				= stalker_immunities
+condition_sect				= stalker_condition
 
+;OBSOLETE
 satiety_v = 0.000001			;0.01			;скорость уменьшения сытости со временем
 radiation_v = 0.00001		;0.004			;скорость уменьшения радиации
 satiety_power_v = 0.000		;0.01			;увеличение силы при уменьшении сытости 
@@ -744,3 +754,77 @@ disp_vel_factor		 = 0.1
 disp_crouch_factor	 = 0.75
 disp_jump_factor	 = 3
 destroyed_vis_name	 = physics\Dead_Body\trupik_crash
+
+[stalker_damage]
+default				= 1.0, -1, 1.0
+
+bip01_pelvis 		 = 0.0, 10, 0.0
+bip01_spine 		 = 0.2, 10, 0.8
+bip01_spine1 		 = 0.2, 0, 0.8
+bip01_neck 			 = 0.5, 0, 1.0
+bip01_head 			 = 0.5, 0, 1.0
+eyelid_1 			 = 0.5, 0, 1.0
+eye_left 			 = 0.5, 0, 1.0
+eye_right 			 = 0.5, 0, 1.0
+jaw_1 		 		 = 0.5, 0, 1.0
+
+bip01_l_clavicle	 = 0.1, 4, 0.7
+bip01_l_upperarm	 = 0.05, 4, 0.6
+bip01_l_forearm	 	 = 0.05, 4, 0.5
+bip01_l_hand	 	 = 0.0, 4, 0.2
+bip01_l_finger0	 	 = 0.0, 4, 0.1
+bip01_l_finger01	 = 0.0, 4, 0.1
+bip01_l_finger02	 = 0.0, 4, 0.1
+bip01_l_finger1	 	 = 0.0, 4, 0.1
+bip01_l_finger11	 = 0.0, 4, 0.1
+bip01_l_finger12	 = 0.0, 4, 0.1
+bip01_l_finger2	 	 = 0.0, 4, 0.1
+bip01_l_finger21	 = 0.0, 4, 0.1
+bip01_l_finger22	 = 0.0, 4, 0.1
+
+bip01_r_clavicle	 = 0.1, 2, 0.7
+bip01_r_upperarm	 = 0.05, 2, 0.6
+bip01_r_forearm	 	 = 0.05, 2, 0.5
+bip01_r_hand	 	 = 0.0, 2, 0.2
+bip01_r_finger0	 	 = 0.0, 2, 0.1
+bip01_r_finger01	 = 0.0, 2, 0.1
+bip01_r_finger02	 = 0.0, 2, 0.1
+bip01_r_finger1	 	 = 0.0, 2, 0.1
+bip01_r_finger11	 = 0.0, 2, 0.1
+bip01_r_finger12	 = 0.0, 2, 0.1
+bip01_r_finger2	 	 = 0.0, 2, 0.1
+bip01_r_finger21	 = 0.0, 2, 0.1
+bip01_r_finger22	 = 0.0, 2, 0.1
+
+bip01_l_thigh	 	 = 0.1, 8, 0.5
+bip01_l_calf	 	 = 0.05, 8, 0.4
+bip01_l_foot	 	 = 0.02, 8, 0.3
+bip01_l_toe0	 	 = 0.0, 8, 0.2
+bip01_r_thigh	 	 = 0.1, 6, 0.5
+bip01_r_calf	 	 = 0.05, 6, 0.4
+bip01_r_foot	 	 = 0.02, 6, 0.3
+bip01_r_toe0	 	 = 0.0, 6, 0.2
+
+[stalker_immunities]
+burn_immunity 				= 1.0				;коэффициенты иммунитета 
+strike_immunity 			= 1.0
+shock_immunity 				= 1.0
+wound_immunity				= 1.0
+radiation_immunity 			= 1.0
+telepatic_immunity 			= 1.0
+chemical_burn_immunity 		= 1.0
+explosion_immunity 			= 1.0
+fire_wound_immunity  		= 1.0
+
+[stalker_condition]
+satiety_v					= 0.00001				;скорость уменьшения сытости со временем
+radiation_v					= 0.0001				;скорость уменьшения радиации
+satiety_power_v				= 0.0005				;увеличение силы при уменьшении сытости 
+satiety_health_v			= 0.00001				;увеличение здоровья при уменьшении сытости 
+satiety_critical			= 0.0					;критическое значения сытости (в процентах от 0..1) когда здоровье начианает уменьшаться
+radiation_health_v			= 0.001					;уменьшение здоровья при воздействии радиации
+bleeding_v					= 0.001					;потеря крови при максимальной ране
+wound_incarnation_v			= 0.000006				;скорость заживания раны (процентов в от размера раны)
+morale_v					= 0.0001				;скорость восстановления морали 						
+health_hit_part				= 1.0					;процент хита, уходящий на отнимание здоровья
+power_hit_part				= 0.3					;процент хита, уходящий на отнимание силы
