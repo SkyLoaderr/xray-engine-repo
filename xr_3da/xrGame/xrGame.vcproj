@@ -2144,6 +2144,12 @@
 								Name="VCCustomBuildTool"/>
 						</FileConfiguration>
 					</File>
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\step_effector.cpp">
+					</File>
+					<File
+						RelativePath=".\ai\Monsters\PseudoGigant\step_effector.h">
+					</File>
 				</Filter>
 				<Filter
 					Name="Abilities"

@@ -216,7 +216,7 @@ void CBurer::CheckSpecParams(u32 spec_params)
 }
 
 // speed 30 m/sec
-#define SPEED						60/1000
+#define SPEED						30/1000
 // 1 meter
 #define GRAVI_STEP					2
 
@@ -269,7 +269,10 @@ void CBurer::UpdateGraviObject()
 
 			// find object
 			for (u32 i = 0; i<visible_objects.size(); i++) {
-				if (visible_objects[i] == enemy) b_enemy_visible = true;
+				if (visible_objects[i] == enemy) {
+					b_enemy_visible = true;
+					break;
+				}
 			}
 			
 			if (b_enemy_visible) {
@@ -277,7 +280,7 @@ void CBurer::UpdateGraviObject()
 				float	hit_impulse		= 2000;
 				Fvector impulse_dir;
 
-				impulse_dir.set(0.0f,1.0f,1.0f);
+				impulse_dir.set(0.0f,0.0f,1.0f);
 				impulse_dir.normalize();
 
 				HitEntity(m_gravi_object.enemy, hit_power, hit_impulse, impulse_dir);

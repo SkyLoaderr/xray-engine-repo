@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "pseudo_gigant.h"
 #include "../../ai_monster_utils.h"
+#include "step_effector.h"
+#include "../../../actor.h"
+#include "../../../ActorEffector.h"
 
 CPseudoGigant::CPseudoGigant()
 {
@@ -95,6 +98,10 @@ void CPseudoGigant::Load(LPCSTR section)
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
+
+	step_effector.time			= pSettings->r_float(section,	"step_effector_time");
+	step_effector.amplitude		= pSettings->r_float(section,	"step_effector_amplitude");
+	step_effector.period_number	= pSettings->r_float(section,	"step_effector_period_number");
 }
 
 void CPseudoGigant::StateSelector()
@@ -140,3 +147,24 @@ void CPseudoGigant::ProcessTurn()
 	}
 }
 
+#define MAX_STEP_RADIUS 60.f
+
+void CPseudoGigant::event_on_step()
+{
+	//////////////////////////////////////////////////////////////////////////
+	// Earthquake Effector	//////////////
+	CActor* pActor =  dynamic_cast<CActor*>(Level().CurrentEntity());
+	if(pActor)
+	{
+		float dist_to_actor = pActor->Position().distance_to(Position());
+		float max_dist		= MAX_STEP_RADIUS;
+		if (dist_to_actor < max_dist) 
+			pActor->EffectorManager().AddEffector(xr_new<CPseudogigantStepEffector>(
+				step_effector.time, 
+				step_effector.amplitude, 
+				step_effector.period_number, 
+				(max_dist - dist_to_actor) / (2 * max_dist))
+			);
+	}
+	//////////////////////////////////
+}

@@ -42,6 +42,7 @@ void CBurerAttack::Init()
 	selected_random_point		= pMonster->Position();
 
 	run_around_time_started		= 0;
+	time_next_tele_available	= 0;
 }
 
 

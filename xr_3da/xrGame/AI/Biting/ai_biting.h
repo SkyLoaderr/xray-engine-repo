@@ -171,6 +171,7 @@ public:
 	virtual bool			ability_invisibility			() {return false;}
 	virtual bool			ability_can_drag				() {return false;}
 	virtual bool			ability_psi_attack				() {return false;}
+	virtual bool			ability_earthquake				() {return false;}
 
 	// ---------------------------------------------------------------------------------
 			u16				m_FootBones[eLegsMaxNumber];
@@ -179,6 +180,9 @@ public:
 			void			LoadFootBones					();
 
 	virtual u8				get_legs_number					() = 0;
+	
+	virtual void			event_on_step					() {}
+
 	// ---------------------------------------------------------------------------------
 
 	virtual float			GetEnemyDistances				(float &min_dist, float &max_dist);

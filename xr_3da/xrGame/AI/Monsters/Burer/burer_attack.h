@@ -39,6 +39,7 @@ class CBurerAttack : public IState {
 	Fvector selected_random_point;
 
 	TTime run_around_time_started;
+	TTime time_next_tele_available;
 
 public:	
 					CBurerAttack		(CBurer *p);

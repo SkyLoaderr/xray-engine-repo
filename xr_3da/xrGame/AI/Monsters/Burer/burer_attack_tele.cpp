@@ -4,7 +4,7 @@
 #include "burer.h"
 
 #define GOOD_DISTANCE_FOR_TELE	15.f
-
+#define TELE_DELAY				4000
 
 //////////////////////////////////////////////////////////////////////////
 // Проверить на активацию телекинеза
@@ -16,6 +16,8 @@ bool CBurerAttack::CheckTele()
 	if (pMonster->MotionMan.TA_IsActive()) return false;
 	bool b_normal_trans = ((m_tAction == ACTION_DEFAULT) || (m_tAction == ACTION_RUN) || (m_tAction == ACTION_MELEE));
 	if (!b_normal_trans) return false;
+	
+	if (time_next_tele_available > Level().timeServer()) return false;
 
 	// телекинез уже активен (т.е. объекты уже готовы к обработке)
 
@@ -55,6 +57,7 @@ void CBurerAttack::Execute_Tele()
 		u32 i=0;
 		while (i < pMonster->CTelekinesis::get_objects_count()) {
 			tele_object = pMonster->CTelekinesis::get_object_by_index(i);
+			
 			if ((tele_object.get_state() == TS_Keep) && (tele_object.time_keep_started + 1500 < m_dwCurrentTime)) {
 
 				object_found = true;
@@ -80,6 +83,11 @@ void CBurerAttack::Execute_Tele()
 
 		pMonster->CSoundPlayer::play(eMonsterSoundGraviAttack);
 		m_tAction = ACTION_WAIT_TRIPLE_END;
+
+		if (pMonster->CTelekinesis::get_objects_count() == 0) {
+			time_next_tele_available = Level().timeServer() + TELE_DELAY;
+		}
+
 	}
 
 

@@ -642,6 +642,7 @@ void CMotionManager::STEPS_Update(u8 legs_num)
 			}
 
 			// Play Camera FXs
+			pMonster->event_on_step();
 
 			// обновить поле handle
 			step_info.activity[i].handled	= true;
