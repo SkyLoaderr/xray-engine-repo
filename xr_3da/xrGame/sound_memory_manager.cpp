@@ -10,6 +10,7 @@
 #include "sound_memory_manager.h"
 #include "custommonster.h"
 
+#define SILENCE
 //#define SAVE_OWN_SOUNDS
 //#define SAVE_OWN_ITEM_SOUNDS
 #define SAVE_NON_ALIVE_OBJECT_SOUNDS
@@ -17,26 +18,23 @@
 #define SAVE_FRIEND_SOUNDS
 //#define SAVE_VISIBLE_OBJECT_SOUNDS
 
+#define GET_IF_EXISTS(ltx,method,section,name,default_value)\
+	(ltx->line_exist(section,name)) ? ltx->method(section,name) : default_value
+
 CSoundMemoryManager::CSoundMemoryManager		()
 {
-	init					();
+	m_max_sound_count		= 0;
 }
 
 CSoundMemoryManager::~CSoundMemoryManager		()
 {
 }
 
-void CSoundMemoryManager::init					()
-{
-	m_max_sound_count		= 0;
-}
-
 void CSoundMemoryManager::Load					(LPCSTR section)
 {
 	m_object				= smart_cast<CCustomMonster*>(this);
 	VERIFY					(m_object);
-	if (pSettings->line_exist(section,"DynamicSoundsCount"))
-		m_max_sound_count	= pSettings->r_s32(section,"DynamicSoundsCount");
+	m_max_sound_count		= GET_IF_EXISTS(pSettings,r_s32,section,"DynamicSoundsCount",0);
 }
 
 void CSoundMemoryManager::reinit				()
@@ -52,13 +50,27 @@ void CSoundMemoryManager::reload				(LPCSTR section)
 {
 	m_min_sound_threshold	= 0.05f;
 	m_self_sound_factor		= 0.f;
-	m_min_sound_threshold	= pSettings->r_float(section,"sound_threshold");
-	m_self_sound_factor		= pSettings->r_float(section,"self_sound_factor");
-	m_sound_decrease_quant	= pSettings->r_u32	(section,"self_decrease_quant");
-	m_decrease_factor		= pSettings->r_float(section,"self_decrease_factor");
+	m_min_sound_threshold	= GET_IF_EXISTS(pSettings,r_float,section,"sound_threshold",0.f);
+	m_self_sound_factor		= GET_IF_EXISTS(pSettings,r_float,section,"self_sound_factor",0.f);
+	m_sound_decrease_quant	= GET_IF_EXISTS(pSettings,r_u32,section,"self_decrease_quant",250);
+	m_decrease_factor		= GET_IF_EXISTS(pSettings,r_float,section,"self_decrease_factor",.95f);
 }
 
-#define SILENCE
+IC	void CSoundMemoryManager::update_sound_threshold			()
+{
+	VERIFY		(!fis_zero(m_decrease_factor));
+	// t = max(t*f^((tc - tl)/tq),min_threshold)
+	m_sound_threshold		= _max(
+		1*m_sound_threshold*
+		exp(
+		float(Level().timeServer() - m_last_sound_time)/
+		float(m_sound_decrease_quant)*
+		log(m_decrease_factor)
+		),
+		m_min_sound_threshold
+		);
+	VERIFY		(_valid(m_sound_threshold));
+}
 
 void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
