@@ -11,9 +11,11 @@
 #include "ui/xrXMLParser.h"
 #include "map_location.h"
 #include "PhraseScript.h"
-#include "GameTask.h"
+
 #include "xml_str_id_loader.h"
 #include "encyclopedia_article_defs.h"
+
+#include "GameTaskDefs.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -39,9 +41,9 @@ struct SInfoPortionData : CSharedResource
 	//список статей в энциклопедии, которые становятся неизвестными (на тот случай если
 	//нужно заменить одну статью другой)
 	ARTICLE_INDEX_VECTOR m_ArticlesDisable;
-	
-	//присоединенное задание
-	CGameTask*			m_pGameTask;
+    	
+	//присоединенные задания
+	TASK_INDEX_VECTOR	m_GameTasks;
 
 	//скриптовые действия, которые активируется после того как 
 	//информацию получает персонаж
@@ -81,6 +83,7 @@ public:
 	const LOCATIONS_VECTOR&							MapLocations()	const {return info_data()->m_MapLocations;}
 	const ARTICLE_INDEX_VECTOR&						Articles	()	const {return info_data()->m_Articles;}
 	const ARTICLE_INDEX_VECTOR&						ArticlesDisable	()	const {return info_data()->m_ArticlesDisable;}
+	const TASK_INDEX_VECTOR&						GameTasks	()	const {return info_data()->m_GameTasks;}
 	const SInfoPortionData::DIALOG_NAME_VECTOR&		DialogNames	()	const {return info_data()->m_DialogNames;}
 	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	const {return info_data()->m_DisableInfo;}
 	
@@ -89,8 +92,6 @@ public:
 
 	//текстовое представление информации
 	virtual LPCSTR GetText () const ;
-	//присоединенное задание, если есть
-	virtual CGameTask* GetTask () const  {return info_data()->m_pGameTask;}
 
 
 protected:

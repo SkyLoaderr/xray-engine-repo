@@ -587,8 +587,10 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	}
 
 	//-------------------------------------
+	// инициализация реестров, используемых актером
 	contacts_registry.init(ID());
 	encyclopedia_registry.init(ID());
+	game_task_registry.init(ID());
 
 
 	return					TRUE;

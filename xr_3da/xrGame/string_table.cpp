@@ -10,7 +10,7 @@
 #define STRING_TABLE_SECT "string_table"
 
 STRING_TABLE_DATA* CStringTable::pData = NULL;
-
+BOOL CStringTable::m_bWriteErrorsToLog = FALSE;
 
 CStringTable::CStringTable	()
 {
@@ -90,7 +90,7 @@ void CStringTable::Load	(LPCSTR xml_file)
 		else
 		{
 			string_text = uiXml.Read(uiXml.GetRoot(), "string:text", i,  NULL);
-			if(pData->m_sLanguage && string_text)
+			if(m_bWriteErrorsToLog && pData->m_sLanguage && string_text)
 				Msg("[string table] '%s' no translation in '%s'", string_name, pData->m_sLanguage);
 		}
 
@@ -108,7 +108,7 @@ STRING_VALUE CStringTable::operator() (const STRING_ID& str_id) const
 	//если строки с соответствующим ID нет, то возвращаем сам строковый ID
 	if(NO_STRING == index)
 	{
-		if(*str_id != NULL && xr_strlen(*str_id)>0)
+		if(m_bWriteErrorsToLog && *str_id != NULL && xr_strlen(*str_id)>0)
 			Msg("[string table] '%s' has no entry", *str_id);
 		return str_id;
 	}

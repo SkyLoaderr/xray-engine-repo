@@ -3,57 +3,10 @@
 // Класс диалога - общения при помощи фраз 2х персонажей в игре
 ///////////////////////////////////////////////////////////////
 
-/*
-	структура XML-файла диалога
-	---------------------------
-	<dialog id="unique_name_id">
-		<character_list>
-        	//список персонажей, которые, могут учавствовать
-			//в диалоге, задается отдельными именами или классами
-			//персонажей
-			<name></name>
-			<name></name>
-			....
-		</character_list>
-		<precondition>
-			- ИМЯ скриптовой функции - 
-			//предикат, который описывает, условия которые 
-			//необходимы, чтоб диалог мог быть активирован
-		</precondition>
-
-		<phrase_list>
-			<phrase></phrase>
-			<phrase></phrase>
-			....
-		</phrase_list>
-	</dialog>
-
-
-	
-	структура фразы диалога
-	 -----------------------
-	 <phrase id="уникальный в пределах диалога номер фразы">
-		<text>текстовое представление фразы</text>
-		<precondition>доп. условие для фразы, чтоб она могла стать доступной</precondition>
-		<action>имя скриптовой функции, которая выполниться при вызове фразы</action>
-		
-		<phrase_next>
-			//список фраз которые стают доступными после текущей
-			<id></id>
-			<id></id>
-			....
-		</phrase_next>
-	</phrase>
-*/
-
-
 #include "stdafx.h"
 #include "phrasedialog.h"
 #include "phrasedialogmanager.h"
 #include "gameobject.h"
-
-
-
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,6 +14,7 @@
 SPhraseDialogData::SPhraseDialogData ()
 {
 	m_PhraseGraph.clear();
+	m_eDialogType = eDialogTypeMax;
 }
 
 SPhraseDialogData::~SPhraseDialogData ()
@@ -79,7 +33,6 @@ CPhraseDialog::CPhraseDialog(void)
 	m_pSpeakerFirst		= NULL;
 	m_pSpeakerSecond	= NULL;
 
-	m_eDialogType = eDialogTypeMax;
 	m_DialogIndex = NO_DIALOG;
 }
 
@@ -238,8 +191,6 @@ void CPhraseDialog::Load(PHRASE_DIALOG_ID dialog_id)
 void CPhraseDialog::Load(PHRASE_DIALOG_INDEX dialog_index)
 {
 	m_DialogIndex = dialog_index;
-	m_eDialogType = eDialogTypeMax;
-
 	inherited_shared::load_shared(m_DialogIndex, NULL);
 }
 
@@ -259,6 +210,10 @@ void CPhraseDialog::load_shared	(LPCSTR)
 	R_ASSERT3(dialog_node, "dialog id=", *ref_str(item_data.id));
 
 	uiXml.SetLocalRoot(dialog_node);
+
+	int pda_dialog = uiXml.ReadAttribInt(dialog_node, "pda", 0);
+	if (1 == pda_dialog) 
+		data()->m_eDialogType = eDialogTypePDA;
 
 	//заголовок 
 	data()->m_sCaption = uiXml.Read(dialog_node, "caption", 0, NULL);

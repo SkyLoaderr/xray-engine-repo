@@ -31,6 +31,8 @@ public:
 	STRING_INDEX IndexById	(const STRING_ID& str_id)		const;
 	STRING_VALUE operator() (const STRING_ID& str_id)		const;
 	STRING_VALUE operator() (const STRING_INDEX str_index)	const;
+
+	static BOOL	 m_bWriteErrorsToLog;
 private:
 	virtual void Init		();
 	virtual void Load		(LPCSTR xml_file);

@@ -23,7 +23,7 @@ const u32			clTaskHeaderColor	= 0xffe1e1fa;
 //////////////////////////////////////////////////////////////////////////
 
 CUIJobsWnd::CUIJobsWnd()
-	:	filter	(eTaskStateMax)
+	:	filter	(eTaskStateDummy)
 {
 	pHeaderFnt		= HUD().pFontLetterica25;
 	pSubTasksFnt	= HUD().pFontLetterica18Russian;
@@ -62,7 +62,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	if (!task || task->ObjectivesNum() < 0)	return;
 
 	// Проверим на фильтре
-	if (filter != eTaskStateMax && task->ObjectiveState(0) != filter) return;
+	if (filter != eTaskStateDummy && task->ObjectiveState(0) != filter) return;
 
 	// Так как AddParsedItem добавляет несколько UIIconedListItem'ов, то мы запоминаем индекс первого
 	// для того чтобы только ему присвоить иконку соответсвующую состоянию задания
@@ -117,23 +117,15 @@ void CUIJobsWnd::ReloadJobs()
 
 	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 
-	if (!pActor) return;
+	if (!pActor || !pActor->game_task_registry.objects_ptr()) return;
 
-	for(KNOWN_INFO_VECTOR::const_iterator it = pActor->known_info_registry.objects().begin();
-		pActor->known_info_registry.objects().end() != it; ++it)
+	for(GAME_TASK_VECTOR::const_iterator it = pActor->game_task_registry.objects().begin();
+		pActor->game_task_registry.objects().end() != it; ++it)
 	{
-		//подгрузить кусочек информации с которым мы работаем
-		CInfoPortion info_portion;
-		info_portion.Load(it->id);
-
-		// Добавляем таск если есть
-		CGameTask *pTask = info_portion.GetTask();
-
-		if (pTask)
-		{
-			pTask->CalcState(pActor);
-			AddTask(pTask);
-		}
+		CGameTask task;
+		task.Load((*it).index);
+		task.m_ObjectiveStates = (*it).states;
+		AddTask(&task);
 	}
 }
 

@@ -133,7 +133,8 @@ void CUITalkWnd::UpdateQuestions()
 		for(u32 i=0; i< m_pOurDialogManager->AvailableDialogs().size(); i++)
 		{
 			const DIALOG_SHARED_PTR& phrase_dialog = m_pOurDialogManager->AvailableDialogs()[i];
-			AddQuestion(phrase_dialog->DialogCaption(), NULL, (int)i);
+			if(phrase_dialog->GetDialogType() != eDialogTypePDA)
+				AddQuestion(phrase_dialog->DialogCaption(), NULL, (int)i);
 		}
 	}
 	else

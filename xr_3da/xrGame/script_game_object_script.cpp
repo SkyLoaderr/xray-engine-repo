@@ -260,6 +260,9 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("has_info",					&CScriptGameObject::HasInfo)
 			.def("dont_has_info",				&CScriptGameObject::DontHasInfo)
 
+			.def("get_task_state",				&CScriptGameObject::GetGameTaskState)
+			.def("set_task_state",				&CScriptGameObject::SetGameTaskState)
+
 			.def("send_pda_message",			&CScriptGameObject::SendPdaMessage)
 
 			.def("is_talking",					&CScriptGameObject::IsTalking)

@@ -14,6 +14,7 @@
 
 enum EPdaMsg;
 enum ESoundTypes;
+enum ETaskState;
 
 namespace ALife {enum ERelationType;};
 namespace ScriptMonster {enum EActionType;};
@@ -172,7 +173,9 @@ public:
 	//предикаты наличия/отсутствия порции информации у персонажа
 			bool				HasInfo				(LPCSTR info_id);
 			bool				DontHasInfo			(LPCSTR info_id);
-
+	//работа с заданиями
+			ETaskState			GetGameTaskState	(LPCSTR task_id, int objective_num);
+			void				SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num);
 
 			bool				SendPdaMessage		(EPdaMsg pda_msg, CScriptGameObject* pForWho);
 			

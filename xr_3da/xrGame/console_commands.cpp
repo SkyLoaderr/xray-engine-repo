@@ -21,6 +21,8 @@
 #include "xrServer_Objects.h"
 #include "ui/UIMainIngameWnd.h"
 
+#include "string_table.h"
+
 
 ENGINE_API
 extern	float	psHUD_FOV;
@@ -983,5 +985,8 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer,	"center_y",				&x_m_z,	-1000,	1000);
 #endif
 
+#ifdef DEBUG
+	CMD4(CCC_Integer,	"string_table_error_msg",	&CStringTable::m_bWriteErrorsToLog,	0,	1);
+#endif
 }
 

@@ -32,6 +32,8 @@ struct SPhraseDialogData : CSharedResource
 	//список скриптовых предикатов, выполнение, которых необходимо
 	//для начала диалога
 	CPhraseScript m_PhraseScript;
+
+	EDialogType m_eDialogType;
 };
 
 DEFINE_VECTOR(CPhrase*, PHRASE_VECTOR, PHRASE_VECTOR_IT);
@@ -110,14 +112,12 @@ public:
 																							(SecondSpeaker()==dialog_manager && SecondIsSpeaking());}
 	CPhraseDialogManager* OurPartner	(CPhraseDialogManager* dialog_manager) const;
 		
-	EDialogType			GetDialogType	()	const {return m_eDialogType;}
-	void				SetDialogType	(EDialogType type)	{m_eDialogType = type;}
+	EDialogType			GetDialogType	()	const {return data()->m_eDialogType;}
+	void				SetDialogType	(EDialogType type)	{data()->m_eDialogType = type;}
 
 protected:
 	//идентификатор диалога
 	PHRASE_DIALOG_INDEX	m_DialogIndex;
-	//тип диалога
-	EDialogType m_eDialogType;
 
 	//ID последней сказанной фразы в диалоге, -1 если такой не было
 	PHRASE_ID	m_iSaidPhraseID;
@@ -133,6 +133,7 @@ protected:
 	//если фразу говорит 1й игрок - true, если 2й - false
 	bool				  m_bFirstIsSpeaking;
 
+	const SPhraseDialogData* data() const  { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 	SPhraseDialogData* data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
 
 	//загрузка диалога из XML файла

@@ -13,6 +13,7 @@
 #include "PdaMsg.h"
 #include "encyclopedia_article_defs.h"
 #include "character_info_defs.h"
+#include "gametaskdefs.h"
 
 
 #pragma warning(push)
@@ -44,5 +45,11 @@ add_to_registry_type_list(CEncyclopediaRegistry);
 #define encyclopedia_articles define_constant(CEncyclopediaRegistry) 
 #define registry_type_list save_registry_type_list(CEncyclopediaRegistry)
 
+
+//список заданий, выполняемых актером
+typedef CALifeAbstractRegistry<u16, GAME_TASK_VECTOR > CGameTaskRegistry;
+add_to_registry_type_list(CGameTaskRegistry);
+#define game_tasks define_constant(CGameTaskRegistry) 
+#define registry_type_list save_registry_type_list(CGameTaskRegistry)
 
 #pragma warning(pop)

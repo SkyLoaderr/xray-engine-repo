@@ -8,6 +8,7 @@
 #include "level.h"
 #include "gameobject.h"
 #include "encyclopedia_article.h"
+#include "gametask.h"
 
 #include "ai_space.h"
 #include "alife_simulator.h"
@@ -20,11 +21,9 @@
 SInfoPortionData::SInfoPortionData ()
 {
 	m_InfoIndex	= NO_INFO_INDEX;
-	m_pGameTask = NULL;
 }
 SInfoPortionData::~SInfoPortionData ()
 {
-	xr_delete(m_pGameTask);
 }
 
 
@@ -94,12 +93,6 @@ void CInfoPortion::load_shared	(LPCSTR)
 	info_data()->m_PhraseScript.Load(uiXml, pNode);
 
 
-	XML_NODE* pTaskNode = uiXml.NavigateToNode(pNode,"task",0);
-	if(pTaskNode) 
-	{
-		info_data()->m_pGameTask = xr_new<CGameTask>();
-		info_data()->m_pGameTask->Load(uiXml, pTaskNode);
-	}
 	//индексы статей
 	info_data()->m_Articles.clear();
 	int articles_num = uiXml.GetNodesNum(pNode, "article");
@@ -119,6 +112,16 @@ void CInfoPortion::load_shared	(LPCSTR)
 		info_data()->m_ArticlesDisable.push_back(CEncyclopediaArticle::IdToIndex(article_str_id));
 	}
 	
+	//индексы статей, которые уберутся из реестра
+	info_data()->m_GameTasks.clear();
+	int task_num = uiXml.GetNodesNum(pNode, "task");
+	for(i=0; i<task_num; ++i)
+	{
+		LPCSTR task_str_id = uiXml.Read(pNode, "task", i, NULL);
+		R_ASSERT(task_str_id);
+		info_data()->m_GameTasks.push_back(CGameTask::IdToIndex(task_str_id));
+	}
+
 
 	//загрузить позиции на карте
 	SMapLocation map_location;

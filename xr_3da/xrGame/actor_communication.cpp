@@ -76,6 +76,21 @@ void CActor::AddEncyclopediaArticle	 (const CInfoPortion* info_portion)
 	}
 }
 
+void CActor::AddGameTask			 (const CInfoPortion* info_portion)
+{
+	VERIFY(info_portion);
+
+	if(info_portion->GameTasks().empty()) return;
+
+	GAME_TASK_VECTOR& task_vector = game_task_registry.objects();
+
+	for(ARTICLE_INDEX_VECTOR::const_iterator it = info_portion->GameTasks().begin();
+		it != info_portion->GameTasks().end(); it++)
+	{
+		task_vector.push_back(TASK_DATA(*it, Level().GetGameTime()));
+	}
+}
+
 //information receive
 void CActor::OnReceiveInfo(INFO_INDEX info_index)
 {
@@ -86,8 +101,9 @@ void CActor::OnReceiveInfo(INFO_INDEX info_index)
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);
 
-	AddMapLocationsFromInfo(&info_portion);
-	AddEncyclopediaArticle(&info_portion);
+	AddMapLocationsFromInfo	(&info_portion);
+	AddEncyclopediaArticle	(&info_portion);
+	AddGameTask				(&info_portion);
 	
 	if(pGameSP->TalkMenu.IsShown())
 	{

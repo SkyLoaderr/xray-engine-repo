@@ -11,6 +11,10 @@
 #include "character_info.h"
 #include "ai_phrasedialogmanager.h"
 
+#include "gametask.h"
+#include "actor.h"
+#include "level.h"
+
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
@@ -204,4 +208,61 @@ LPCSTR CScriptGameObject::CharacterCommunity	()
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
 	return pInventoryOwner->CharacterInfo().Community();
+}
+//////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+ETaskState CScriptGameObject::GetGameTaskState	(LPCSTR task_id, int objective_num)
+{
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);
+	VERIFY(pActor);
+
+	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
+	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
+	
+	const GAME_TASK_VECTOR* tasks =  pActor->game_task_registry.objects_ptr();
+	if(!tasks) 
+		return eTaskStateDummy;
+
+	for(GAME_TASK_VECTOR::const_iterator it = tasks->begin();
+			tasks->end() != it; it++)
+	{
+		if((*it).index == task_index) 
+			break;
+	}
+	
+	if(tasks->end() == it) 
+		return eTaskStateDummy;
+
+	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
+	return (*it).states[objective_num];
+}
+
+void CScriptGameObject::SetGameTaskState	(ETaskState state, LPCSTR task_id, int objective_num)
+{
+	CActor* pActor = dynamic_cast<CActor*>(m_tpGameObject);
+	VERIFY(pActor);
+
+	TASK_INDEX task_index = CGameTask::IdToIndex(task_id);
+	R_ASSERT3(task_index != NO_TASK, "wrong task id", task_id);
+	
+	GAME_TASK_VECTOR& tasks =  pActor->game_task_registry.objects();
+
+	for(GAME_TASK_VECTOR::iterator it = tasks.begin();
+			tasks.end() != it; it++)
+	{
+		if((*it).index == task_index) 
+			break;
+	}
+
+	R_ASSERT3(tasks.end() != it, "actor does not has task", task_id);
+	R_ASSERT3((std::size_t)objective_num < (*it).states.size(), "wrong objective num", task_id);
+	(*it).states[objective_num] = state;
+
+	//если мы устанавливаем финальное состояние для основного задания, то
+	//запомнить время выполнения
+	if(0 == objective_num && eTaskStateCompleted == state || eTaskStateFail == state)
+	{
+		(*it).finish_time = Level().GetGameTime();
+	}
 }

@@ -21,7 +21,7 @@ void CScriptTask::script_register(lua_State *L)
 					value("fail",					int(eTaskStateFail)),
 					value("in_progress",			int(eTaskStateInProgress)),
 					value("completed",				int(eTaskStateCompleted)),
-					value("task_dummy",				int(eTaskStateMax))
+					value("task_dummy",				int(eTaskStateDummy))
 				]
 
 				.def		 (						constructor<>())

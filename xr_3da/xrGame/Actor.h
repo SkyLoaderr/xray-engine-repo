@@ -94,7 +94,8 @@ public:
 protected:
 	virtual void AddMapLocationsFromInfo (const CInfoPortion* info_portion);
 	virtual void AddEncyclopediaArticle	 (const CInfoPortion* info_portion);
-
+	virtual void AddGameTask			 (const CInfoPortion* info_portion);
+	
 public:
 	virtual void StartTalk			(CInventoryOwner* talk_partner);
 	virtual	void UpdateContact		(u16 contact_id);
@@ -105,6 +106,11 @@ public:
 	//реестр статей энциклопедии, о которых знает актер
 	typedef CALifeRegistryWrapper<CEncyclopediaRegistry> ENCYCLOPEDIA_REGISTRY;
 	ENCYCLOPEDIA_REGISTRY		encyclopedia_registry;
+
+	//реестр статей энциклопедии, о которых знает актер
+	typedef CALifeRegistryWrapper<CGameTaskRegistry> GAME_TASK_REGISTRY;
+	GAME_TASK_REGISTRY		game_task_registry;
+
 
 	//игровое имя 
 	virtual LPCSTR	Name        () const {return CInventoryOwner::Name();}
