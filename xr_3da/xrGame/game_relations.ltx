@@ -109,6 +109,12 @@ friend_attack_reputation		= 0
 neutral_attack_reputation		= 0
 enemy_attack_reputation			= 0
 
+;(с) мин. время через которое снова будет зарегистрировано 
+;сообщение об атаке на персонажа, и соответственно вычтеся attack_goodwill и attack_reputation
+;(работает аналогично и при помощи другим персонажам в бою)
+min_attack_delta_time = 1		
+
+
 friend_kill_goodwill			= 0
 neutral_kill_goodwill			= 0
 enemy_kill_goodwill				= 0
@@ -129,6 +135,7 @@ enemy_kill_reputation			= 0
 ;порог величины хита, который нанес актер атакующему,
 ;после которого регистрируется помощь актера персонажу которого атаковали
 help_hit_threshold = 10
+
 
 fight_remember_time = 10		;(c) время которое про драку будет помнить реестр
 
