@@ -28,6 +28,9 @@ public:
 
 	u32								m_dwObjectsBeingProcessed;
 	u64								m_qwMaxProcessTime;
+	u64								m_qwGameTime;
+	u32								m_dwLastUpdate;
+	float							m_fTimeFactor;
 	bool							m_bLoaded;
 	
 	SSpawnHeader					m_tSpawnHeader;
@@ -55,7 +58,18 @@ public:
 	CALifeEventRegistry				m_tEventRegistry;		// карта событий
 	CALifeTaskRegistry				m_tTaskRegistry;		// карта заданий
 
-	// objects
+	IC void vfSetTimeFactor(float fTimeFactor)
+	{
+		m_fTimeFactor = fTimeFactor;
+	}
+
+	IC u64  qwfGetGameTime()
+	{
+		u32 dwTime = Level().timeServer(), dwTimeDifference = u32(dwTime - m_dwLastUpdate);
+		m_dwLastUpdate = dwTime;
+		return(m_qwGameTime += iFloor(m_fTimeFactor*float(dwTimeDifference)));
+	}
+
 	IC void vfRemoveObjectFromGraphPoint(CALifeDynamicObject *tpALifeDynamicObject, _GRAPH_ID tGraphID)
 	{
 		DYNAMIC_OBJECT_P_IT				I = m_tpGraphObjects[tGraphID].tpObjects.begin();

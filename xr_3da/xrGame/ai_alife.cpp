@@ -357,6 +357,8 @@ void CAI_ALife::Load()
 	
 	m_tALifeHeader.dwVersion	=	ALIFE_VERSION;
 	m_tALifeHeader.tTimeID		=	0;
+	m_dwLastUpdate				=	Level().timeServer();
+	m_fTimeFactor				=   1.0f;
 
 	// checking if graph is loaded
 	if (!Level().AI.m_tpaGraph)
@@ -413,6 +415,8 @@ void CAI_ALife::Load()
 	
 	R_ASSERT(tpStream->FindChunk(TASK_CHUNK_DATA));
 	m_tTaskRegistry.Load(*tpStream);
+
+	tpStream->Read(&m_qwGameTime,sizeof(m_qwGameTime));
 	
 	vfUpdateDynamicData();
 
@@ -439,6 +443,10 @@ void CAI_ALife::Save()
 	
 	tStream.open_chunk	(TASK_CHUNK_DATA);
 	m_tTaskRegistry.Save(tStream);
+	tStream.close_chunk	();
+	
+	tStream.open_chunk	(ALIFE_CHUNK_DATA);
+	tStream.write		(&m_qwGameTime,sizeof(m_qwGameTime));
 	tStream.close_chunk	();
 	
 	tStream.SaveTo		("game.alife",0);
@@ -471,4 +479,5 @@ void CAI_ALife::Generate()
 
 	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
 	m_tALifeHeader.tTimeID		= 0;
+	m_qwGameTime				= u64(Level().timeServer());
 }
