@@ -81,7 +81,7 @@ void CAI_Space::Load()
 	q_mark_bit.assign		(m_header.count,false);
 	q_mark_bit_x.assign		(m_header.count,false);
 	m_baNodeMarks.assign	(m_header.count,false);
-#pragma todo("This is a very big memory assumption, it must be reduced to a reasonable value")
+#pragma todo("Dima to Dima : This is a very big memory assumption, it must be reduced to a reasonable value")
 	q_stack.reserve			(m_header.count);
 	m_dwaNodeStackM.reserve	(m_header.count);
 	m_dwaNodeStackS.reserve	(m_header.count);

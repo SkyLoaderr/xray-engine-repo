@@ -227,7 +227,7 @@ void CAI_Stalker::vfCheckForItems()
 	for (u32 i=0, n=m_tpaVisibleObjects.size(); i<n; i++) {
 		CInventoryItem	*tpInventoryItem	= dynamic_cast<CInventoryItem*>	(m_tpaVisibleObjects[i]);
 		CBolt			*tpBolt				= dynamic_cast<CBolt*>			(m_tpaVisibleObjects[i]);
-#pragma todo("Check if rukzak is not full!!")
+#pragma todo("Dima to Dima : Check if rukzak is not full!!")
 		if (tpInventoryItem && !tpBolt)
 			m_tpItemsToTake.push_back(tpInventoryItem);
 	}

@@ -448,7 +448,7 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
 		getAI().ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,fRange,getAI().m_dwaNodeStackM,&getAI().m_baNodeMarks);
 		Device.Statistic.TEST2.End	();
 		Device.Statistic.AI_Think.End	();
-#pragma todo("Instead of slice implement time-delay computations")
+#pragma todo("Dima to Dima : Instead of slice implement time-delay computations")
 		Engine.Sheduler.Slice		();
 		Device.Statistic.AI_Think.Begin	();
 		Device.Statistic.TEST2.Begin();
@@ -578,7 +578,7 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 		}
 		if (bStop)
 			break;
-#pragma todo("Instead of slice implement time-delay computations")
+#pragma todo("Dima to Dima : Instead of slice implement time-delay computations")
 		Device.Statistic.TEST3.End	();
 		Device.Statistic.AI_Think.End	();
 		Engine.Sheduler.Slice			();

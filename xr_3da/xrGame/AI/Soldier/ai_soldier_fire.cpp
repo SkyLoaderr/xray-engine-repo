@@ -477,7 +477,7 @@ u32 CAI_Soldier::tfGetAloneFightType()
 		}
 	}
 
-#pragma todo("Leadership changed")
+#pragma todo("Oles to Dima : Leadership changed")
 	INIT_SQUAD_AND_LEADER
 	CGroup &Group = Squad.Groups[g_Group()];
 	for ( i=0; i<(int)Group.Members.size() + 1; i++) {
@@ -719,7 +719,7 @@ u32 CAI_Soldier::tfGetGroupFightType()
 		}
 	}
 
-#pragma todo("Leadership changed")
+#pragma todo("Oles to Dima : Leadership changed")
 	INIT_SQUAD_AND_LEADER
 	CGroup &Group = Squad.Groups[g_Group()];
 	for ( i=0; i<(int)Group.Members.size() + 1; i++) {

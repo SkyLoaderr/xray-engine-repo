@@ -562,7 +562,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		float	yaw, pitch;
 		D.getHP(yaw,pitch);
 		CKinematics *tpKinematics = PKinematics(Visual());
-#pragma todo("forward-back bone impulse direction has been determined incorrectly!")
+#pragma todo("Dima to Dima : forward-back bone impulse direction has been determined incorrectly!")
 		CMotionDef *tpMotionDef = m_anims.m_normal.m_damage[iFloor(tpKinematics->LL_GetInstance(element).get_param(1) + (getAI().bfTooSmallAngle(r_model_yaw + r_model_yaw_delta,yaw,PI_DIV_2) ? 0 : 1))];
 		float power_factor = perc/100.f; clamp(power_factor,0.f,1.f);
 		tpKinematics->PlayFX(tpMotionDef,power_factor);
