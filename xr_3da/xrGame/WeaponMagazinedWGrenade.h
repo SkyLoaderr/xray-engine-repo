@@ -91,7 +91,6 @@ public:
 	int						iMagazineSize2;
 	xr_stack<CCartridge>	m_magazine2;
 	bool					m_bGrenadeMode;
-	Fvector*				m_pGrenadePoint;
 
 	CCartridge				m_DefaultCartridge2;
 

@@ -50,16 +50,15 @@ public:
 
 
 	//serialization
-	virtual void	save				(NET_Packet &output_packet);
-	virtual void	load				(IReader &input_packet);
-	virtual BOOL	net_SaveRelevant	()								{return inherited::net_SaveRelevant();}
+	virtual void			save				(NET_Packet &output_packet);
+	virtual void			load				(IReader &input_packet);
+	virtual BOOL			net_SaveRelevant	()								{return inherited::net_SaveRelevant();}
 
 	virtual void			UpdateCL			();
 	virtual void			shedule_Update		(u32 dt);
 
 
-	virtual const Fmatrix&	ParticlesXFORM() const;
-	virtual IRender_Sector*	Sector();
+	virtual IRender_Sector*	Sector				();	//.
 
 	virtual void			renderable_Render	();
 
@@ -85,8 +84,8 @@ public:
 	virtual bool			Activate			();
 
 	//инициализация если вещь в активном слоте или спрятана на OnH_B_Chield
-	virtual void	OnActiveItem		();
-	virtual void	OnHiddenItem		();
+	virtual void			OnActiveItem		();
+	virtual void			OnHiddenItem		();
 
 //////////////////////////////////////////////////////////////////////////
 //  Network
@@ -292,28 +291,48 @@ protected:
 	// 0-используется без участия рук, 1-одна рука, 2-две руки
 	EHandDependence			eHandDependence;
 	bool					m_bIsSingleHanded;
-	//направление для партиклов огня и дыма
-	Fmatrix					m_FireParticlesXForm;
-
-	//текущее положение и напрвление для партиклов
-	Fvector					vLastFP, vLastFP2; //огня
-	Fvector					vLastFD;
-	Fvector					vLastSP, vLastSD;  //гильз	
 
 	//загружаемые параметры
-	Fvector					vLoadedFirePoint;
-	Fvector					vLoadedFirePoint2;
+	Fvector					vLoadedFirePoint	;
+	Fvector					vLoadedFirePoint2	;
 
+private:
+	//текущее положение и напрвление для партиклов
+	struct					_firedeps
+	{
+		Fmatrix				m_FireParticlesXForm;	//направление для партиклов огня и дыма
+		Fvector				vLastFP, vLastFP2	;	//огня
+		Fvector				vLastFD				;	// direction
+		Fvector				vLastSP, vLastSD	;	//гильз	
+
+		_firedeps()			{
+			m_FireParticlesXForm.identity();
+			vLastFP.set			(0,0,0);
+			vLastFP2.set		(0,0,0);
+			vLastFD.set			(0,0,0);
+			vLastSP.set			(0,0,0);
+			vLastSD.set			(0,0,0);
+		}
+	}						m_firedeps			;
 protected:
-	virtual void			UpdatePosition		(const Fmatrix& transform);
-	virtual void			UpdateFP			();
-	virtual void			UpdateXForm			();
-	virtual void			UpdateHudAdditonal	(Fmatrix&);
+	virtual void			UpdateFireDependencies_internal	();
+	virtual void			UpdatePosition			(const Fmatrix& transform);	//.
+	virtual void			UpdateXForm				();
+	virtual void			UpdateHudAdditonal		(Fmatrix&);
+	IC		void			UpdateFireDependencies	()			{ if (dwFP_Frame==Device.dwFrame) return; UpdateFireDependencies_internal(); };
+	
+	IC		const Fvector&	get_LastFP				()			{ UpdateFireDependencies(); return m_firedeps.vLastFP;	}
+	IC		const Fvector&	get_LastFP2				()			{ UpdateFireDependencies(); return m_firedeps.vLastFP2;	}
+	IC		const Fvector&	get_LastFD				()			{ UpdateFireDependencies(); return m_firedeps.vLastFD;	}
+	IC		const Fvector&	get_LastSP				()			{ UpdateFireDependencies(); return m_firedeps.vLastSP;	}
+	IC		const Fvector&	get_LastSD				()			{ UpdateFireDependencies(); return m_firedeps.vLastSD;	}
 
-	virtual const Fvector&	CurrentFirePoint	() {return vLastFP;}
-//////////////////////////////////////////////////////////////////////////
-// Weapon fire
-//////////////////////////////////////////////////////////////////////////
+	virtual const Fvector&	get_CurrentFirePoint	()			{ return get_LastFP();				}
+	virtual const Fmatrix&	get_ParticlesXFORM		()			{ UpdateFireDependencies(); return m_firedeps.m_FireParticlesXForm;	}
+
+	//////////////////////////////////////////////////////////////////////////
+	// Weapon fire
+	//////////////////////////////////////////////////////////////////////////
 protected:
 	virtual void			SetDefaults			();
 

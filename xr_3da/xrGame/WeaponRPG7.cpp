@@ -14,7 +14,6 @@ CWeaponRPG7::CWeaponRPG7(void) : CWeaponCustomPistol("RPG7")
 {
 	m_weight = 5.f;
 	m_slot = 2;
-	m_pGrenadePoint = &vLastFP;
 }
 
 CWeaponRPG7::~CWeaponRPG7(void) 
@@ -52,8 +51,6 @@ void CWeaponRPG7::UpdateGrenadeVisibility(bool visibility)
 
 BOOL CWeaponRPG7::net_Spawn(CSE_Abstract* DC) 
 {
-	m_pGrenadePoint = &vLastFP;
-
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
@@ -98,8 +95,8 @@ void CWeaponRPG7::switch2_Fire	()
 	if(STATE == eIdle	&& getRocketCount()/*m_pRocket*/) 
 	{
 		Fvector p1, d; 
-		p1.set(vLastFP); 
-		d.set(vLastFD);
+		p1.set(get_LastFP()); 
+		d.set(get_LastFD());
 
 		CEntity* E = smart_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams (this, p1,d);

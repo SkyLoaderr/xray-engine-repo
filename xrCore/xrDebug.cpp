@@ -98,7 +98,7 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 		else				RaiseException	(0, 0, 0, NULL);
 		break;
 	case IDC_DEBUG:
-		DEBUG_INVOKE;
+ 		DEBUG_INVOKE;
 		break;
 	}
 

@@ -22,8 +22,8 @@ void CWeaponRG6::FireStart ()
 		inheritedSG::FireStart ();
 	
 		Fvector p1, d; 
-		p1.set(vLastFP); 
-		d.set(vLastFD);
+		p1.set(get_LastFP()); 
+		d.set(get_LastFD());
 
 		CEntity* E = smart_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams (this, p1,d);

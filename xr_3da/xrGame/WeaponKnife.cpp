@@ -106,11 +106,6 @@ void CWeaponKnife::UpdateCL	()
 		//state_Attacking	(dt);
 		break;
 	}
-
-	// setVisible			(TRUE);
-
-	// ref_sound fire loop
-	///UpdateFP					();
 }
 
 void CWeaponKnife::Hide	()
@@ -167,8 +162,8 @@ void CWeaponKnife::OnAnimationEnd()
 				m_attackStart = false;
 				m_pHUD->animPlay(mhud_attack_e[Random.randI(mhud_attack_e.size())], TRUE, this);
 				Fvector	p1, d; 
-				p1.set(vLastFP); 
-				d.set(vLastFD);
+				p1.set(get_LastFP()); 
+				d.set(get_LastFD());
 
 				if(H_Parent()) 
 					smart_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
@@ -187,8 +182,8 @@ void CWeaponKnife::OnAnimationEnd()
 				m_pHUD->animPlay(mhud_attack2_e[Random.randI(mhud_attack2_e.size())], TRUE, this);
 				
 				Fvector	p1, d; 
-				p1.set(vLastFP); 
-				d.set(vLastFD);
+				p1.set(get_LastFP()); 
+				d.set(get_LastFD());
 				
 				if(H_Parent()) 
 					smart_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);

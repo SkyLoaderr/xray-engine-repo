@@ -90,7 +90,7 @@ void CWeapon::StopShooting		()
 
 void CWeapon::StartFlameParticles2	()
 {
-	CShootingObject::StartParticles (m_pFlameParticles2, *m_sFlameParticles2, vLastFP2);
+	CShootingObject::StartParticles (m_pFlameParticles2, *m_sFlameParticles2, get_LastFP2());
 }
 void CWeapon::StopFlameParticles2	()
 {
@@ -98,5 +98,5 @@ void CWeapon::StopFlameParticles2	()
 }
 void CWeapon::UpdateFlameParticles2	()
 {
-	CShootingObject::UpdateParticles (m_pFlameParticles2, vLastFP2);
+	CShootingObject::UpdateParticles (m_pFlameParticles2, get_LastFP2());
 }

@@ -111,7 +111,6 @@ void CWeaponMagazinedWGrenade::net_Destroy()
 
 BOOL CWeaponMagazinedWGrenade::net_Spawn(CSE_Abstract* DC) 
 {
-	m_pGrenadePoint = &vLastFP2;
 	BOOL l_res = inherited::net_Spawn(DC);
 	 
 	UpdateGrenadeVisibility(!!iAmmoElapsed);
@@ -128,8 +127,7 @@ void CWeaponMagazinedWGrenade::switch2_Reload()
 {
 	if(m_bGrenadeMode) 
 	{
-		UpdateFP();
-		PlaySound(sndReloadG,vLastFP2);
+		PlaySound(sndReloadG,get_LastFP2());
 
 		m_pHUD->animPlay(mhud_reload_g[Random.randI(mhud_reload_g.size())],FALSE,this);
 		m_bPending = true;
@@ -142,8 +140,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 {
 	if(m_bGrenadeMode)
 	{
-		UpdateFP();
-		PlaySound(sndShotG, vLastFP2);
+		PlaySound(sndShotG, get_LastFP2());
 		
 		AddShotEffector		();
 		
@@ -172,8 +169,7 @@ void CWeaponMagazinedWGrenade::SwitchMode()
 
 	PerformSwitch();
 	
-	UpdateFP	();
-	PlaySound	(sndSwitch,vLastFP);
+	PlaySound	(sndSwitch,get_LastFP());
 
 	PlayAnimModeSwitch();
 
@@ -243,11 +239,10 @@ void CWeaponMagazinedWGrenade::state_Fire(float dt)
 	//режим стрельбы подствольника
 	if(m_bGrenadeMode)
 	{
-		UpdateFP				();
 		fTime					-=dt;
 		Fvector					p1, d; 
-		p1.set(vLastFP2); 
-		d.set(vLastFD);
+		p1.set	(get_LastFP2()); 
+		d.set	(get_LastFD());
 		
 		if(H_Parent()) 
 			smart_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
@@ -286,16 +281,11 @@ void CWeaponMagazinedWGrenade::SwitchState(u32 S)
 	if(m_bGrenadeMode && STATE == eIdle && S == eFire && getRocketCount()/*m_pRocket*/) 
 	{
 		Fvector						p1, d; 
-		p1.set(vLastFP2);
-		d.set(vLastFD);
-
+		p1.set						(get_LastFP2());
+		d.set						(get_LastFD());
 		CEntity*					E = smart_cast<CEntity*>(H_Parent());
-				
-		if (E)
-			E->g_fireParams		(this, p1,d);
-
-		p1.set(*m_pGrenadePoint);
-
+		if (E)						E->g_fireParams		(this, p1,d);
+		p1.set						(get_LastFP2());
 		
 		Fmatrix launch_matrix;
 		launch_matrix.identity();
@@ -588,21 +578,11 @@ void  CWeaponMagazinedWGrenade::PlayAnimModeSwitch()
 
 void CWeaponMagazinedWGrenade::UpdateSounds	()
 {
-	inherited::UpdateSounds();
-#pragma todo("Andy to Andy: fix it")
-// ref_sound positions
-/*	if (sndShotG.snd.feedback || 
-		sndReloadG.snd.feedback || 
-		sndSwitch.snd.feedback)
-*/
-	if(true)
-	{
-		UpdateFP					();
+	inherited::UpdateSounds			();
 
-		if (true/*sndShotG.snd.feedback*/)		sndShotG.set_position		(vLastFP);
-		if (true/*sndReloadG.snd.feedback*/)	sndReloadG.set_position		(vLastFP);
-		if (true/*sndSwitch.snd.feedback*/)		sndSwitch.set_position		(vLastFP);
-	}
+	if (sndShotG.playing			())	sndShotG.set_position		(get_LastFP());
+	if (sndReloadG.playing			())	sndReloadG.set_position		(get_LastFP());
+	if (sndSwitch.playing			())	sndSwitch.set_position		(get_LastFP());
 }
 
 void CWeaponMagazinedWGrenade::UpdateGrenadeVisibility(bool visibility)

@@ -60,10 +60,7 @@ void CWeaponShotgun::Load	(LPCSTR section)
 void CWeaponShotgun::OnShot () 
 {
 	std::swap(m_pHUD->FirePoint(), m_pHUD->FirePoint2());
-	std::swap(vFirePoint, vFirePoint2);
-	//std::swap(m_pFlameParticles, m_pFlameParticles2);
-
-	///UpdateFP();
+	std::swap(vLoadedFirePoint, vLoadedFirePoint2);
 	inherited::OnShot();
 }
 
@@ -115,8 +112,7 @@ void CWeaponShotgun::OnShotBoth()
 	}
 
 	//звук выстрела дуплетом
-	//UpdateFP();
-	PlaySound(sndShotBoth,vLastFP);
+	PlaySound			(sndShotBoth,get_LastFP());
 	
 	// Camera
 	AddShotEffector		();
@@ -127,7 +123,7 @@ void CWeaponShotgun::OnShotBoth()
 	// Shell Drop
 	Fvector vel; 
 	PHGetLinearVell		(vel);
-	OnShellDrop			(vLastSP, vel);
+	OnShellDrop			(get_LastSP(), vel);
 
 	//огонь из 2х стволов
 	StartFlameParticles			();
@@ -135,9 +131,9 @@ void CWeaponShotgun::OnShotBoth()
 
 	//дым из 2х стволов
 	CParticlesObject* pSmokeParticles = NULL;
-	CShootingObject::StartParticles(pSmokeParticles, *m_sSmokeParticlesCurrent, vLastFP,  zero_vel, true);
+	CShootingObject::StartParticles(pSmokeParticles, *m_sSmokeParticlesCurrent, get_LastFP(),  zero_vel, true);
 	pSmokeParticles = NULL;
-	CShootingObject::StartParticles(pSmokeParticles, *m_sSmokeParticlesCurrent, vLastFP2, zero_vel, true);
+	CShootingObject::StartParticles(pSmokeParticles, *m_sSmokeParticlesCurrent, get_LastFP2(), zero_vel, true);
 
 }
 
@@ -145,25 +141,6 @@ void CWeaponShotgun::switch2_Fire	()
 {
 	inherited::switch2_Fire	();
 	bWorking = false;
-/*	if (fTime<=0)
-	{
-		UpdateFP					();
-
-		// Fire
-		Fvector						p1, d; 
-		p1.set(vLastFP); 
-		d.set(vLastFD);
-
-		CEntity*					E = smart_cast<CEntity*>(H_Parent());
-		if (E) E->g_fireParams		(p1,d);
-		OnShot						();
-		FireTrace					(p1,vLastFP,d);
-		fTime						+= fTimeToFire;
-
-		// Patch for "previous frame position" :)))
-		dwFP_Frame					= 0xffffffff;
-		dwXF_Frame					= 0xffffffff;
-	}*/
 }
 
 void CWeaponShotgun::switch2_Fire2	()
@@ -172,12 +149,10 @@ void CWeaponShotgun::switch2_Fire2	()
 
 	if (fTime<=0)
 	{
-		//UpdateFP					();
-
 		// Fire
 		Fvector						p1, d; 
-		p1.set(vLastFP); 
-		d.set(vLastFD);
+		p1.set	(get_LastFP()); 
+		d.set	(get_LastFD());
 
 		CEntity*					E = smart_cast<CEntity*>(H_Parent());
 		if (E) E->g_fireParams		(this, p1,d);
@@ -195,19 +170,15 @@ void CWeaponShotgun::switch2_Fire2	()
 	}
 }
 
-void CWeaponShotgun::UpdateSounds()
+void CWeaponShotgun::UpdateSounds	()
 {
 	inherited::UpdateSounds();
-
-	//UpdateFP();
-	if (true/*sndShotBoth.snd.feedback*/)		sndShotBoth.set_position		(vLastFP);
+	if (sndShotBoth.playing())		sndShotBoth.set_position		(get_LastFP());
 }
 
-
-bool CWeaponShotgun::Action(s32 cmd, u32 flags) 
+bool CWeaponShotgun::Action			(s32 cmd, u32 flags) 
 {
 	if(inherited::Action(cmd, flags)) return true;
-
 
 	if(	m_bTriStateReload && STATE==eReload &&
 		cmd==kWPN_FIRE && flags&CMD_START &&
@@ -304,15 +275,14 @@ void CWeaponShotgun::OnStateSwitch	(u32 S)
 
 void CWeaponShotgun::switch2_StartReload()
 {
-	PlaySound	(m_sndOpen,vLastFP);
-	
-	PlayAnimOpenWeapon();
+	PlaySound			(m_sndOpen,get_LastFP());
+	PlayAnimOpenWeapon	();
 	m_bPending = true;
 }
 
 void CWeaponShotgun::switch2_AddCartgidge	()
 {
-	PlaySound	(m_sndAddCartridge,vLastFP);
+	PlaySound	(m_sndAddCartridge,get_LastFP());
 	PlayAnimAddOneCartridgeWeapon();
 	m_bPending = true;
 }
@@ -320,8 +290,8 @@ void CWeaponShotgun::switch2_AddCartgidge	()
 void CWeaponShotgun::switch2_EndReload	()
 {
 	m_bPending = false;
-	PlaySound	(m_sndClose,vLastFP);
-	PlayAnimCloseWeapon();
+	PlaySound			(m_sndClose,get_LastFP());
+	PlayAnimCloseWeapon	();
 }
 
 void CWeaponShotgun::PlayAnimOpenWeapon()

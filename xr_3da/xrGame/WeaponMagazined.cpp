@@ -439,37 +439,21 @@ void CWeaponMagazined::UpdateSounds	()
 	
 	dwUpdateSounds_Frame = Device.dwFrame;
 
-/*	// ref_sound positions
-	if (sndShow.snd.feedback || 
-		sndHide.snd.feedback || 
-		sndShot.snd.feedback || 
-		sndReload.snd.feedback || 
-		sndEmptyClick.snd.feedback)
-*/
-	if(true)
-	{
-		UpdateFP					();
-
-		if (true/*sndShow.snd.feedback*/)		sndShow.set_position		(vLastFP);
-		if (true/*sndHide.snd.feedback*/)		sndHide.set_position		(vLastFP);
-		if (true/*sndShot.snd.feedback*/)		sndShot.set_position		(vLastFP);
-		if (true/*sndReload.snd.feedback*/)		sndReload.set_position		(vLastFP);
-		if (true/*sndEmptyClick.snd.feedback*/)	sndEmptyClick.set_position	(vLastFP);
-	}
+	// ref_sound positions
+	if (sndShow.playing			())	sndShow.set_position		(get_LastFP());
+	if (sndHide.playing			())	sndHide.set_position		(get_LastFP());
+	if (sndShot.playing			()) sndShot.set_position		(get_LastFP());
+	if (sndReload.playing		()) sndReload.set_position		(get_LastFP());
+	if (sndEmptyClick.playing	())	sndEmptyClick.set_position	(get_LastFP());
 }
 
 void CWeaponMagazined::state_Fire	(float dt)
 {
 	VERIFY(fTimeToFire>0.f);
 
-//	fTime					-=dt;
-
-	UpdateFP				();
-
-
 	Fvector					p1, d; 
-	p1.set(vLastFP);
-	d.set(vLastFD);
+	p1.set(get_LastFP());
+	d.set(get_LastFD());
 
 	if(H_Parent()) 
 		smart_cast<CEntity*>	(H_Parent())->g_fireParams	(this, p1,d);
@@ -498,11 +482,10 @@ void CWeaponMagazined::state_Fire	(float dt)
 
 void CWeaponMagazined::state_Misfire	(float /**dt/**/)
 {
-	UpdateFP				();
 	OnEmptyClick			();
 	SwitchState				(eIdle);
 	
-	bMisfire = true;
+	bMisfire				= true;
 
 	UpdateSounds			();
 }
@@ -538,8 +521,7 @@ void CWeaponMagazined::Show		()
 void CWeaponMagazined::OnShot		()
 {
 	// Sound
-	UpdateFP			();
-	PlaySound			(*m_pSndShotCurrent,vLastFP);
+	PlaySound			(*m_pSndShotCurrent,get_LastFP());
 
 	// Camera
 	AddShotEffector		();
@@ -550,20 +532,19 @@ void CWeaponMagazined::OnShot		()
 	// Shell Drop
 	Fvector vel; 
 	PHGetLinearVell(vel);
-	OnShellDrop					(vLastSP, vel);
+	OnShellDrop					(get_LastSP(), vel);
 	
 	// ќгонь из ствола
 	StartFlameParticles	();
 
 	//дым из ствола
-	StartSmokeParticles			(vLastFP, vel);
+	StartSmokeParticles			(get_LastFP(), vel);
 }
 
 
 void CWeaponMagazined::OnEmptyClick	()
 {
-	UpdateFP	();
-	PlaySound	(sndEmptyClick,vLastFP);
+	PlaySound	(sndEmptyClick,get_LastFP());
 }
 void CWeaponMagazined::OnAnimationEnd() 
 {
@@ -613,24 +594,21 @@ void CWeaponMagazined::switch2_Empty()
 }
 void CWeaponMagazined::PlayReloadSound()
 {
-	PlaySound	(sndReload,vLastFP);
+	PlaySound	(sndReload,get_LastFP());
 }
 
 void CWeaponMagazined::switch2_Reload()
 {
-	UpdateFP	();
-	PlayReloadSound();
-	PlaySound	(sndReload,vLastFP);
-	
-	PlayAnimReload();
+	PlayReloadSound	();
+	PlaySound		(sndReload,get_LastFP());
+	PlayAnimReload	();
 	m_bPending = true;
 }
 void CWeaponMagazined::switch2_Hiding()
 {
 	CWeapon::FireEnd();
 	
-	UpdateFP	();
-	PlaySound	(sndHide,vLastFP);
+	PlaySound	(sndHide,get_LastFP());
 
 	PlayAnimHide();
 	m_bPending = true;
@@ -643,8 +621,7 @@ void CWeaponMagazined::switch2_Hidden()
 }
 void CWeaponMagazined::switch2_Showing()
 {
-	UpdateFP	();
-	PlaySound	(sndShow,vLastFP);
+	PlaySound	(sndShow,get_LastFP());
 
 	m_bPending = true;
 	PlayAnimShow();
@@ -923,7 +900,7 @@ void CWeaponMagazined::SwitchMode			()
 	else
 		m_iQueueSize = 1;
 	
-	PlaySound	(sndEmptyClick, vLastFP);
+	PlaySound	(sndEmptyClick, get_LastFP());
 }
  
 void CWeaponMagazined::StartIdleAnim			()

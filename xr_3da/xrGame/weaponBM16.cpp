@@ -25,10 +25,8 @@ void CWeaponBM16::Load	(LPCSTR section)
 
 void CWeaponBM16::PlayReloadSound()
 {
-	if(m_magazine.size()==1)
-		PlaySound	(m_sndReload1,vLastFP);
-	else
-		PlaySound	(sndReload,vLastFP);
+	if(m_magazine.size()==1)	PlaySound	(m_sndReload1,get_LastFP());
+	else						PlaySound	(sndReload,get_LastFP());
 }
 
 void CWeaponBM16::PlayAnimShoot()

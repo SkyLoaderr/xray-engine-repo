@@ -87,9 +87,8 @@ void CWeaponPistol::PlayAnimHide()
 {
 	if(m_opened) 
 	{
-		UpdateFP	();
-		PlaySound	(sndClose,vLastFP);
-		m_pHUD->animPlay (mhud_close[Random.randI(mhud_close.size())],TRUE,this);
+		PlaySound			(sndClose,get_LastFP());
+		m_pHUD->animPlay	(mhud_close[Random.randI(mhud_close.size())],TRUE,this);
 	} 
 	else 
 		inherited::PlayAnimHide();
@@ -135,8 +134,7 @@ void CWeaponPistol::OnAnimationEnd()
 void CWeaponPistol::OnShot		()
 {
 	// Sound
-	UpdateFP		();
-	PlaySound		(*m_pSndShotCurrent,vLastFP);
+	PlaySound		(*m_pSndShotCurrent,get_LastFP());
 
 	AddShotEffector	();
 	
@@ -145,7 +143,7 @@ void CWeaponPistol::OnShot		()
 	// Shell Drop
 	Fvector vel; 
 	PHGetLinearVell(vel);
-	OnShellDrop					(vLastSP,  vel);
+	OnShellDrop					(get_LastSP(),  vel);
 
 	// ќгонь из ствола
 	
@@ -154,13 +152,12 @@ void CWeaponPistol::OnShot		()
 			  "can't set looped particles system for shoting with pistol");
 	
 	//дым из ствола
-	StartSmokeParticles	(vLastFP, vel);
+	StartSmokeParticles	(get_LastFP(), vel);
 }
 
 void CWeaponPistol::UpdateSounds()
 {
 	inherited::UpdateSounds();
 
-	UpdateFP();
-	if (true/*sndClose.snd.feedback*/) sndClose.set_position(vLastFP);
+	if (sndClose.playing()) sndClose.set_position	(get_LastFP());
 }

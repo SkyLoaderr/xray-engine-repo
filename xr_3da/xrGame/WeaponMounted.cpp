@@ -295,7 +295,7 @@ void CWeaponMounted::OnShot		()
 {
 	VERIFY(Owner());
 
-	FireBullet(CurrentFirePoint(),fire_dir, 
+	FireBullet(get_CurrentFirePoint(),fire_dir, 
 		fireDispersionBase,
 		m_CurrentAmmo, Owner()->ID(),ID(), SendHitAllowed(Owner()));
 
@@ -335,12 +335,12 @@ void CWeaponMounted::UpdateFire()
 
 }
 
-const Fmatrix&	 CWeaponMounted::ParticlesXFORM() const	
+const Fmatrix&	 CWeaponMounted::get_ParticlesXFORM	()
 {
 	return fire_bone_xform;
 }
 
-void CWeaponMounted::AddShotEffector		()
+void CWeaponMounted::AddShotEffector				()
 {
 	if(Owner())
 	{

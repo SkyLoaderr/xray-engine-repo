@@ -35,15 +35,13 @@ public:
 	virtual					~CWeaponMounted		();
 
 	// for shooting object
-	virtual const Fmatrix&	ParticlesXFORM() const;
 	virtual IRender_Sector*	Sector()				{return CGameObject::Sector();}
-	virtual const Fvector&	CurrentFirePoint()		{return fire_pos;}
-
+	virtual const Fvector&	get_CurrentFirePoint()	{return fire_pos;}
+	virtual const Fmatrix&	get_ParticlesXFORM()	;
 
 	//////////////////////////////////////////////////
 	// непосредственно обработка стрельбы
 	//////////////////////////////////////////////////
-
 protected:
 	virtual	void			FireStart	();
 	virtual	void			FireEnd		();

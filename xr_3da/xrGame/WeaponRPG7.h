@@ -26,8 +26,6 @@ public:
 
 	virtual void net_Import			( NET_Packet& P);				// import from server
 protected:
-	Fvector *	m_pGrenadePoint;
-
 	shared_str	m_sGrenadeBoneName;
 	shared_str	m_sHudGrenadeBoneName;
 
