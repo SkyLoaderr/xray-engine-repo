@@ -113,8 +113,8 @@ public:
 		if (l_tpALifeItemWeapon && ((*m_tpWeaponVector)[l_tpALifeItemWeapon->m_dwSlot] == l_tpALifeItemWeapon))
 			return					(true);
 		else
-			if ((m_dwCurCount < m_dwMaxCount) && (tpALifeInventoryItem->m_iVolume == 1)) {
-				m_dwCurCount++;
+			if ((m_dwCurCount < m_dwMaxCount) && (1 == tpALifeInventoryItem->m_iVolume)) {
+				++m_dwCurCount;
 				return				(true);
 			}
 		return						(false);
@@ -134,7 +134,7 @@ public:
 
 	IC bool							operator()							(const _OBJECT_ID tObjectID)
 	{
-		return						(m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent == 0xffff);
+		return						(0xffff == m_tpALifeObjectRegistry->tpfGetObjectByID(tObjectID)->ID_Parent);
 	};
 };
 

@@ -14,7 +14,7 @@
 #ifdef AI_COMPILER
 	#include "xrLevel.h"
 #else
-	#include "..\\xrLevel.h"
+	#include "../xrLevel.h"
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ void CSE_ALifeSpawnHeader::Load	(IReader	&tFileStream)
 {
 	R_ASSERT2					(tFileStream.find_chunk(SPAWN_POINT_CHUNK_VERSION),"Can't find chunk SPAWN_POINT_CHUNK_VERSION!");
 	m_tSpawnVersion				= tFileStream.r_u32();
-	R_ASSERT2					(m_tSpawnVersion == XRAI_CURRENT_VERSION,"'game.spawn' version mismatch!");
+	R_ASSERT2					(XRAI_CURRENT_VERSION == m_tSpawnVersion,"'game.spawn' version mismatch!");
 	m_dwSpawnCount				= tFileStream.r_u32();
 	m_dwLevelCount				= tFileStream.r_u32();
 }
@@ -54,14 +54,14 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 		m_tpArtefactDemand.resize(_GetItemCount(S)/5);
 		DEMAND_P_IT				B = m_tpArtefactDemand.begin(), I = B;
 		DEMAND_P_IT				E = m_tpArtefactDemand.end();
-		for ( ; I != E; I++)
+		for ( ; I != E; ++I)
 			*I = xr_new<CSE_ALifeArtefactDemand>(_GetItem(S,5*int(I - B) + 0,S1),atoi(_GetItem(S,5*int(I - B) + 1,S1)),atoi(_GetItem(S,5*int(I - B) + 2,S1)),atoi(_GetItem(S,5*int(I - B) + 3,S1)),atoi(_GetItem(S,5*int(I - B) + 4,S1)));
 	}
 	{
 		S						= pSettings->r_string	(caSection,"artefacts");
 		R_ASSERT2				(!(_GetItemCount(S) % 3),"Invalid argument count in the discovery object section!");
 		u32						l_dwCount = _GetItemCount(S)/3;
-		for (u32 i=0; i<l_dwCount; i++) {
+		for (u32 i=0; i<l_dwCount; ++i) {
 			SArtefactOrder		l_tArtefactOrder;
 			_GetItem			(S,3*i + 0,l_tArtefactOrder.m_caSection);
 			l_tArtefactOrder.m_dwCount = atoi(_GetItem(S,3*i + 1,S1));
@@ -74,7 +74,7 @@ CSE_ALifeDiscovery::CSE_ALifeDiscovery(LPCSTR caSection)
 		m_tpDependency.resize	(_GetItemCount(S));
 		LPSTR_IT				B = m_tpDependency.begin(), I = B;
 		LPSTR_IT				E = m_tpDependency.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			_GetItem			(S,int(I - B),S1);
 			*I					= (char*)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
 			strcpy				((char*)(*I),S1);
@@ -114,7 +114,7 @@ CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
 	m_tpPossibleDiscoveries.resize(_GetItemCount(S));
 	LPSTR_IT					B = m_tpPossibleDiscoveries.begin(), I = B;
 	LPSTR_IT					E = m_tpPossibleDiscoveries.end();
-	for ( ; I != E; I++) {
+	for ( ; I != E; ++I) {
 		_GetItem				(S,int(I - B),S1);
 		*I						= (char*)xr_malloc((xr_strlen(S1) + 1)*sizeof(char));
 		strcpy					((char*)(*I),S1);
@@ -141,7 +141,7 @@ void CSE_ALifeOrganization::Save(IWriter &tMemoryStream)
 		tMemoryStream.w_u32		(m_tpOrderedArtefacts.size());
 		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
 		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			tMemoryStream.w_string((*I).m_caSection);
 			tMemoryStream.w_u32	((*I).m_dwCount);
 			tMemoryStream.w_u32	((*I).m_dwPrice);
@@ -151,7 +151,7 @@ void CSE_ALifeOrganization::Save(IWriter &tMemoryStream)
 		tMemoryStream.w_u32		(m_tpPurchasedArtefacts.size());
 		ITEM_COUNT_PAIR_IT		I = m_tpPurchasedArtefacts.begin();
 		ITEM_COUNT_PAIR_IT		E = m_tpPurchasedArtefacts.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			tMemoryStream.w_string((*I).first);
 			tMemoryStream.w		(&((*I).second),sizeof((*I).second));
 		}
@@ -167,7 +167,7 @@ void CSE_ALifeOrganization::Load(IReader &tFileStream)
 		m_tpOrderedArtefacts.resize	(tFileStream.r_u32());
 		ARTEFACT_ORDER_IT		I = m_tpOrderedArtefacts.begin();
 		ARTEFACT_ORDER_IT		E = m_tpOrderedArtefacts.end();
-		for ( ; I != E; I++) {
+		for ( ; I != E; ++I) {
 			tFileStream.r_string((*I).m_caSection);
 			(*I).m_dwCount		= tFileStream.r_u32();
 			(*I).m_dwPrice		= tFileStream.r_u32();
@@ -175,7 +175,7 @@ void CSE_ALifeOrganization::Load(IReader &tFileStream)
 	}
 	{
 		u32						l_dwCount = tFileStream.r_u32();
-		for (u32 i=0; i<l_dwCount; i++) {
+		for (u32 i=0; i<l_dwCount; ++i) {
 			string32			S;
 			tFileStream.r_string(S);
 			LPSTR				l_caArtefactSection = (char*)xr_malloc(32*sizeof(char));

@@ -86,7 +86,7 @@ public:
 	{
 		R_ASSERT2					(tFileStream.find_chunk(ALIFE_CHUNK_DATA),"Can't find chunk ALIFE_CHUNK_DATA");
 		tFileStream.r				(&m_tALifeVersion,	sizeof(m_tALifeVersion));
-		R_ASSERT2					(m_tALifeVersion == ALIFE_VERSION,"ALife version mismatch!");
+		R_ASSERT2					(ALIFE_VERSION == m_tALifeVersion,"ALife version mismatch!");
 		tFileStream.r				(&m_tZoneState,		sizeof(m_tZoneState));
 	};
 };
