@@ -3,9 +3,11 @@ class "const_evaluator"		(property_evaluator)
 
 function const_evaluator:__init(value) super()
 	self.value				= value
+	printf					("evaluator is constructed!")
 end
 
 function const_evaluator:evaluate()
+	printf					("evaluator is asked for the value!")
 	return					self.value
 end
 
@@ -15,11 +17,39 @@ class "custom_action"		(action_base)
 function custom_action:__init(weight,object,name) super(object,name)
 	self.m_weight			= weight
 	self.name				= name
+	printf					("action %s is constructed!",self.name)
 end
 
---function custom_action:weight(world_state0,world_state1)
---	return					self.m_weight
---end
+function custom_action:weight(world_state0,world_state1)
+	printf					("action %s is asked for the weight!",self.name)
+	return					self.m_weight
+end
+
+function custom_action:initialize()
+	action_base.initialize	(self)
+	printf					("action %s is initialized!",self.name)
+end
+
+function custom_action:execute()
+	action_base.execute		(self)
+	printf					("action %s is executed!",self.name)
+end
+
+function custom_action:finalize()
+	action_base.finalize	(self)
+	printf					("action %s is finalized!",self.name)
+end
+
+class "custom_planner" 		(action_planner)
+
+function custom_planner:__init	() super()
+	printf					("planner %s is constructed!")
+end
+
+function custom_planner:reinit	(obj, clear_all)
+	action_planner.reinit	(self, obj, clear_all)
+	printf					("planner %s is reinitialized!")
+end
 
 function main()
 	-- define world properties
@@ -60,7 +90,7 @@ function main()
 	action3:add_effect		(world_property(property_id3,true))
 	
 	-- define planner
-	local planner			= action_planner()
+	local planner			= stalker_test.custom_planner()
 	planner:reinit			(get_actor(),false)
 	
 	-- add evaluators
