@@ -99,6 +99,8 @@ BOOL	CCar::net_Spawn				(LPVOID DC)
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 
+	m_fSaveMaxRPM					= m_max_rpm;
+
 	return R;
 }
 
@@ -1066,3 +1068,12 @@ void CCar::OnEvent(NET_Packet& P, u16 type)
 	inherited::OnEvent		(P,type);
 }
 
+void CCar::ResetScriptData(void	*P)
+{
+	CScriptMonster::ResetScriptData(P);
+	CEntityAction	*l_tpEntityAction = xr_new<CEntityAction>();
+	l_tpEntityAction->m_tMovementAction.SetInputKeys(CMovementAction::eInputKeyNone);
+	bfAssignMovement(l_tpEntityAction);
+	m_max_rpm		= m_fSaveMaxRPM;
+
+}

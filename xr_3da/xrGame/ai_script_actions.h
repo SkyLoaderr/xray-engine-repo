@@ -153,9 +153,10 @@ public:
 		m_tGoalType			= eGoalTypeNoPathPosition;
 	}
 
-							CMovementAction		(const EInputKeys tInputKeys)
+							CMovementAction		(const EInputKeys tInputKeys, float fSpeed = 0.f)
 	{
 		SetInputKeys		(tInputKeys);
+		SetSpeed			(fSpeed);
 	}
 
 			void			SetBodyState		(const MonsterSpace::EBodyState tBodyState)

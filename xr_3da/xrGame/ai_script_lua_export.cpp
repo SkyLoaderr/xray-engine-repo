@@ -351,6 +351,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			]
 			.def(								constructor<>())
 			.def(								constructor<const CMovementAction::EInputKeys>())
+			.def(								constructor<const CMovementAction::EInputKeys, float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,CLuaGameObject*,float>())
 			.def(								constructor<MonsterSpace::EBodyState,MonsterSpace::EMovementType,MonsterSpace::EPathType,const CPatrolPathParams &>())

@@ -29,7 +29,7 @@
 #define CAST_OBJECT(Z,A,B)\
 		B				*l_tpEntity = dynamic_cast<B*>(Z);\
 		if (!l_tpEntity) {\
-			Log		("* [LUA] #B : cannot access class member #A!");
+			Msg		("* [LUA] %s : cannot access class member %s!",#B,#A);
 
 #define CAST_OBJECT0(Z,A,B)\
 		CAST_OBJECT(Z,A,B)\

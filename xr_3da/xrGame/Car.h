@@ -264,6 +264,7 @@ private:
 
 	float					m_axle_friction;
 
+	float					m_fSaveMaxRPM;
 	float					m_max_rpm;
 	float					m_min_rpm;
 	float					m_power_rpm;//max power
@@ -388,6 +389,7 @@ public:
 	virtual void			IR_OnKeyboardHold		(int dik);
 	virtual void			vfProcessInputKey		(int iCommand, bool bPressed);
 	virtual void			OnEvent					( NET_Packet& P, u16 type);
+	virtual void			ResetScriptData			(void *P=0);
 
 	// Hits
 	virtual void			HitSignal			(float HitAmount,	Fvector& local_dir, CObject* who, s16 element)	{};
