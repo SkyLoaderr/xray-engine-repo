@@ -94,13 +94,12 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 5000)
 			)
-				wait()
+                	break		
 			action(
 				stalker1,
 				sound	("scripts\\prover","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				cond	(cond.time_end, 3000)
 			)
-				wait()
                 	break		
 		end
 		wait()
