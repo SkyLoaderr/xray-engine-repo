@@ -65,6 +65,9 @@ void CSoundMemoryManager::reload				(LPCSTR section)
 
 void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
+	if (!m_sounds)
+		return;
+
 	CObject					*self = dynamic_cast<CObject*>(this);
 	VERIFY					(self);
 #ifndef SILENCE

@@ -64,12 +64,7 @@ void CEntity::OnEvent		(NET_Packet& P, u16 type)
 void CEntity::Die() 
 {
 	fEntityHealth = -1.f;
-	CSquadHierarchyHolder	&squad = Level().seniority_holder().team(g_Team()).squad(g_Squad());
-	CGroupHierarchyHolder	&group = squad.group(g_Group());
-	if (group.leader()->ID() == ID())
-        group.update_leader	();
-	if (squad.leader()->ID() == ID())
-		squad.update_leader	();
+	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
 }
 
 //обновление состояния
@@ -231,8 +226,10 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	fArmor					= 0;
 
 	// Register
-	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
-	++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
+	if (g_Alive()) {
+		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
+		++Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).m_dwAliveCount;
+	}
 	
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);
@@ -242,7 +239,8 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 
 void CEntity::net_Destroy	()
 {
-	Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
+	if (g_Alive())
+		Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).unregister_member(this);
 	inherited::net_Destroy	();
 }
 
