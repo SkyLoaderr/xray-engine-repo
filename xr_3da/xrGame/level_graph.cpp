@@ -41,9 +41,6 @@ CLevelGraph::CLevelGraph					(LPCSTR filename)
 	m_reader->advance			(m_palette_size*sizeof(Cover));
 	m_nodes						= (CVertex*)m_reader->pointer();
 	m_ref_counts.assign			(header().vertex_count(),0);
-#ifdef AI_COMPILER
-	q_mark_bit.resize			(header().vertex_count());
-#endif
 
 	for (u32 i=0; i<header().vertex_count(); ++i) {
 		const_iterator			I, E;

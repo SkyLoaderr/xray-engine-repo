@@ -253,7 +253,7 @@ public:
 		m_tpLevelPoints.clear	();
 		xr_vector<u32>			l_tpaStack;
 		l_tpaStack.reserve		(1024);
-		m_tpAI_Map->q_mark_bit.assign(m_tpAI_Map->q_mark_bit.size(),false);
+		m_tpAI_Map->q_mark_bit.assign(m_tpAI_Map->header().vertex_count(),false);
 		ALIFE_OBJECT_P_IT		B = m_tpSpawnPoints.begin(), I = B;
 		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
 		for ( ; I != E; I++) {

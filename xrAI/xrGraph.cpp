@@ -115,6 +115,7 @@ bool bfCheckForGraphConnectivity(CLevelGraph *tpAI_Map)
 	while (dwaStack.size())
 		dwaStack.pop		();
 	dwaStack.push			(0);
+	tpAI_Map->q_mark_bit.assign(tpAI_Map->header().vertex_count(),false);
 	tpAI_Map->q_mark_bit[0] = true;
 	while (!dwaStack.empty()) {
 		u32					dwCurrentVertex = dwaStack.top();
@@ -183,8 +184,7 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 
 void vfOptimizeGraph(u32 dwEdgeCount, CLevelGraph *tpAI_Map)
 {
-	tpAI_Map->q_mark_bit.resize(dwEdgeCount);
-	tpAI_Map->q_mark_bit.assign(dwEdgeCount,false);
+	tpAI_Map->q_mark_bit.assign(_max(dwEdgeCount,tpAI_Map->header().vertex_count()),false);
 	Progress(0.0f);
 	for (int i=dwEdgeCount - 1; i>=0; Progress((float(dwEdgeCount) - (i--))/dwEdgeCount)) {
 		if (tpAI_Map->q_mark_bit[dwaSortOrder[i]])
