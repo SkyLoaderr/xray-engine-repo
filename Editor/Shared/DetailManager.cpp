@@ -528,7 +528,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.P.set	(rx + r_jitter.randFs(jitter), D.BB.max.y, rz + r_jitter.randFs(jitter));
 
 				// Position (Y)
-				float y		= D.BB.min.y-1;
+				float y		= D.BB.min.y-5;
 				Fvector	dir; dir.set(0,-1,0);
 
 				float		r_u,r_v,r_range;
