@@ -41,8 +41,10 @@ void  CWound::save	(NET_Packet &output_packet)
 void  CWound::load	(IReader &input_packet)
 {
 	m_iBoneNum = (u8)input_packet.r_u8();
-	for(int i=0; i<ALife::eHitTypeMax; i++)
-			m_Wounds[i] = input_packet.r_float_q8 (0.f, WOUND_MAX);
+	for(int i=0; i<ALife::eHitTypeMax; i++){
+		m_Wounds[i] = input_packet.r_float_q8 (0.f, WOUND_MAX);
+		VERIFY(m_Wounds[i]>=0.0f && m_Wounds[i]<=WOUND_MAX);	
+	}
 }
 
 
@@ -72,6 +74,7 @@ float CWound::BloodSize	()
 void CWound::AddHit(float hit_power, ALife::EHitType hit_type)
 {
 	m_Wounds[hit_type] += hit_power;
+	clamp(m_Wounds[hit_type],0.0f,WOUND_MAX);
 }
 
 
