@@ -7,8 +7,8 @@ local time_walk 	= 100000
 local time_rest 	= 15000         --Сколько анимаций сидения сидим
 local novice_speak  = 10000     --Через какое время примерно новичок произносит фразы
 
---local time_to_speak = 15000     --Через какое время примерно зомби произносит фразы
-local time_to_speak = 1000     --Через какое время примерно зомби произносит фразы
+local time_to_speak = 15000     --Через какое время примерно зомби произносит фразы
+--local time_to_speak = 1000     --Через какое время примерно зомби произносит фразы
 
 local time_walk2    = 15000     --Время ходьбы для навичка номер2
 
@@ -55,9 +55,14 @@ function can_attack_enemy_evaluator:evaluate()
         return false
     end
 
+    if(level.object(self.a.enemy):alive() == false) then
+		--Если враги мерты, то вся схема отрубается
+		self.a.enabled = false
+        return false
+    end
+
     return true
 end
-
 ---------------------------------------------------------------------------------------------------------------------
 -- Actions
 ---------------------------------------------------------------------------------------------------------------------
@@ -112,8 +117,7 @@ function stalker_zombe_action:speak()
         self.object:set_movement_type ( move.stand )
         self.object:add_animation( "prisluh_9_0", true )
         self.object:add_animation( "prisluh_9_2", true )
---        xr_sounds.play_sound_rnd(self.object, 1000, 3000, "trivial", 1)
-        xr_sounds.play_sound(self.object, 0, "trivial", 1)
+        xr_sounds.play_sound_rnd(self.object, 1000, 3000, "trivial", 1)
         self.a.stand = true
     end
 
@@ -215,6 +219,7 @@ function stalker_novice_action:execute ()
 		self:state_walk()
         if( device():time_global() > self.a.time + time_walk ) then
 			self:state_sit_down( "init" )            	--Init state sit down
+            xr_sounds.play_sound (self.object, 0, "trivial", 2, 1)
         end
     else
         self:state_sit_down()
@@ -262,7 +267,7 @@ function stalker_novice_action:state_walk( param )
 
 	if( device():time_global() > self.speak_time ) then
     --Произносим фразу
-        self.object:play_sound( walk_speak + math.random( 0, 1 ), 1, 0, 1, 0, 0  )
+		xr_sounds.play_sound(self.object, 0, "trivial", 2, 2)
         self.speak_time = device():time_global() + (math.random()+0.5) * novice_speak      --Когда произнесу следующую фразу
 	end
 end
@@ -308,9 +313,6 @@ function add_novice(obj)
 
     local operators     = {}
     local properties    = {}
-
-    obj:add_sound( "script_replics\\stalker_1\\newbie\\newbie_replic_2_1", 20, snd_type.talk, 2, 1, walk_speak )
---    obj:add_sound ( "script_replics\\stalker_1\\newbie\\newbie_no_luck_2", 20, snd_type.talk, 2, 1, walk_speak + 1 )
 
     properties["state_end"]     	  = xr_evaluators_id.state_change
     properties[ "work" ]              = xr_evaluators_id.jon_stalker_novice
@@ -412,7 +414,8 @@ function stalker_novice2_action:action( param )
 
     	printf( "Play sound" )
         if( math.random() < 0.5 ) then
-        	self.object:play_sound      ( walk_speak2, 5000, 2000, 1, 0, math.random( 0, 5 ) )
+			xr_sounds.play_sound_rnd    (self.object, 2000, 5000, "trivial", 3,1)
+--        	self.object:play_sound      ( walk_speak2, 5000, 2000, 1, 0, math.random( 0, 5 ) )
 	        self.object:add_animation   ( "prisluh_2_idle_0", true )
             self.object:add_animation   ( "prisluh_2_idle_3", true )
             self.object:add_animation   ( "prisluh_2_idle_6", true )
@@ -420,7 +423,8 @@ function stalker_novice2_action:action( param )
         	self.time   = device():time_global() + 8000--+ math.random(6000, 10000)
             self.state  = 8
         else
-        	self.object:play_sound      ( walk_speak2, 3000, 2000, 1, 0, math.random( 0, 5 ) )
+            xr_sounds.play_sound_rnd    (self.object, 2000, 3000, "trivial", 3,1)
+--        	self.object:play_sound      ( walk_speak2, 3000, 2000, 1, 0, math.random( 0, 5 ) )
             self.object:add_animation   ( "prisluh_9_0", true )
 	        self.object:add_animation   ( "prisluh_9_2", true )
         	self.time   = device():time_global() + 5000--+ math.random(6000, 10000)
@@ -560,7 +564,8 @@ function stalker_novice3_action:state_walk( param )
 
     if( device():time_global() > self.b.speak_time ) then
     --Произносим фразу
-       	self.object:play_sound( walk_speak + math.random( 0, 1 ), 1, 0, 1, 0, 0  )
+--       	self.object:play_sound( walk_speak + math.random( 0, 1 ), 1, 0, 1, 0, 0  )
+        xr_sounds.play_sound    (self.object, 0, "trivial", 4,1)
         self.b.speak_time = device():time_global() + (math.random()+0.5) * novice_speak      --Когда произнесу следующую фразу
     end
 
@@ -628,7 +633,8 @@ function stalker_novice3_action:state_actor()
     if(self.a.curState == say_hello) then
 		--Зовем актера
     	if(device():time_global() > self.a.time and self.object:is_body_turning() == false) then
-            self.object:play_sound( phrase_help, 1200, 1000, 1, 0, 0 )
+            xr_sounds.play_sound_rnd    (self.object, 1000, 1200, "trivial", 4,2)
+--            self.object:play_sound( phrase_help, 1200, 1000, 1, 0, 0 )
             self.a.curState    = wait_actor
             self.a.time		   = device():time_global()
         end
@@ -641,7 +647,7 @@ function stalker_novice3_action:state_actor()
 		return
     end
 
-    if(device():time_global() > self.a.time + 10000) then
+    if(device():time_global() > self.a.time + 20000) then
     	self:init_state_walk()
         self.b.time_actor = device():time_global()
     	return
@@ -675,7 +681,7 @@ function novice3_attack:initialize ()
     self.object:set_relation		 (game_object.enemy, enemy)
     self.object:set_desired_direction()
     self.object:set_detail_path_type ( move.line )
-    self.object:set_movement_type    ( move.run )
+    self.object:set_movement_type    ( move.walk )
     self.object:set_body_state       ( move.standing )
     self.object:set_mental_state     ( anim.danger )
     self.object:set_dest_level_vertex_id(enemy:level_vertex_id())
@@ -684,6 +690,7 @@ function novice3_attack:initialize ()
     self.object:set_item             ( object.idle, self.object:best_weapon() )
     self.a.time             = device():time_global() + 5000                     --Через сколько обновляем точку, куда идти
 
+    xr_sounds.play_sound (self.object, 0, "trivial", 4, 3)
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:execute ()
@@ -700,7 +707,6 @@ function novice3_attack:execute ()
     if(level.object(self.a.enemy):alive() == false) then
         self.a.enabled = false
     end
-
 end
 ---------------------------------------------------------------------------------------------------------------------
 function novice3_attack:finalize ()
