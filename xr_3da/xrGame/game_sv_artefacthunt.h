@@ -1,6 +1,6 @@
 #pragma once
 
-#include "game_sv_deathmatch.h"
+#include "game_sv_teamdeathmatch.h"
 
 class	game_sv_ArtefactHunt			: public game_sv_TeamDeathmatch
 {
