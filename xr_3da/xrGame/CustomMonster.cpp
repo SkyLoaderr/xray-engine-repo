@@ -76,25 +76,15 @@ void CCustomMonster::Load		(LPCSTR section)
 	eye_range				= pSettings->ReadFLOAT(section,"eye_range");
 
 	// movement
-	m_fWalkAccel			= pSettings->ReadFLOAT(section,"walk_accel");	
 	m_fJumpSpeed			= pSettings->ReadFLOAT(section,"jump_speed");
-	m_fRunCoef				= pSettings->ReadFLOAT(section,"run_coef");
 	//
 	m_fMinSpeed				= pSettings->ReadFLOAT(section,"min_speed");
 	m_fMaxSpeed				= pSettings->ReadFLOAT(section,"max_speed");
 	m_fCurSpeed				= m_fMaxSpeed;
-	m_fCrouchCoefficient	= pSettings->ReadFLOAT(section,"crouch_coef");
 
 	// Motions
 	CKinematics* V			= PKinematics(pVisual);
 	m_current				= 0;
-	/**
-	m_idle					= V->ID_Cycle("norm_idle");
-	m_death					= V->ID_Cycle("norm_death");
-	m_walk.Create			(V,"norm_walk");
-	m_run.Create			(V,"norm_run");
-	PKinematics(pVisual)->PlayCycle(m_idle);
-	/**/
 
 	// weapons
 	if (pSettings->ReadINT(section,"weapon_usage")) {
@@ -102,7 +92,6 @@ void CCustomMonster::Load		(LPCSTR section)
 		LPCSTR S1 = pSettings->ReadSTRING(section,"bone_torso_weapon"),S2 = pSettings->ReadSTRING(section,"bone_head_weapon");
 		Weapons->Init			(S1,S2);
 		Weapons->TakeItem		(CLSID_OBJECT_W_AK74, 0);
-		//Weapons->TakeItem		(CLSID_OBJECT_W_M134, 0);
 	}
 
 	// take index spine bone

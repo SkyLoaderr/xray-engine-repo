@@ -94,7 +94,6 @@ public:
 	float				m_fMinSpeed;
 	float				m_fMaxSpeed;
 	float				m_fCurSpeed;
-	float				m_fCrouchCoefficient;
 
 	DWORD				m_dwSoundUpdate;
 	float				m_fSoundPower;
@@ -130,9 +129,7 @@ public:
 	//float				m_fTorsoAngle;
 
 	// movement
-	float				m_fWalkAccel;
 	float				m_fJumpSpeed;
-	float				m_fRunCoef;
 
 	// network
 //------------------------------
