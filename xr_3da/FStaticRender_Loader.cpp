@@ -111,7 +111,37 @@ void CRender::LoadBuffers	(CStream *base_fs)
 	u32	dwUsage				= D3DUSAGE_WRITEONLY | (HW.Caps.vertex.bSoftware?D3DUSAGE_SOFTWAREPROCESSING:0);
 
 	// Vertex buffers
+	if (base_fs->FindChunk(fsL_VBUFFERS_DX9))
 	{
+		// Use DX9-style declarators
+		destructor<CStream>		fs	(base_fs->OpenChunk(fsL_VBUFFERS_DX9));
+		u32 count				= fs().Rdword();
+		DCL.resize				(count);
+		VB.resize				(count);
+		for (u32 i=0; i<count; i++)
+		{
+			// decl
+			D3DVERTEXELEMENT9*	dcl		= (D3DVERTEXELEMENT9*) fs().Pointer();
+			u32 dcl_len			= D3DXGetDeclLength		(dcl)+1;
+			DCL[i].resize		(dcl_len);
+			fs().Read			(&DCL[i],dcl_len*D3DVERTEXELEMENT9);
+
+			// count, size
+			u32 vCount			= fs().Rdword	();
+			u32 vSize			= D3DXGetDeclVertexSize	(dcl);
+			Msg	("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
+
+			// Create and fill
+			BYTE*	pData		= 0;
+			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
+			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
+			Memory.mem_copy		(pData,fs().Pointer(),vCount*vSize);
+			VB[i]->Unlock		();
+
+			fs().Advance		(vCount*vSize);
+		}
+	} else {
+		// Use DX7-style FVFs
 		destructor<CStream>		fs	(base_fs->OpenChunk(fsL_VBUFFERS));
 		u32 count				= fs().Rdword();
 		DCL.resize				(count);
@@ -128,7 +158,7 @@ void CRender::LoadBuffers	(CStream *base_fs)
 
 			// Create and fill
 			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,vFVF,D3DPOOL_MANAGED,&VB[i],0));
+			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
 			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
 			Memory.mem_copy		(pData,fs().Pointer(),vCount*vSize);
 			VB[i]->Unlock		();
