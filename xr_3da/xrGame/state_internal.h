@@ -65,7 +65,7 @@ private:
 public:
 						CStateInternal			();
 	virtual				~CStateInternal			();
-			void		Init					();
+			void		init					();
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(_Object *object);
 	virtual	void		reload					(LPCSTR section);

@@ -37,7 +37,7 @@ protected:
 public:
 							CStateBase			(LPCSTR state_name);
 	virtual					~CStateBase			();
-			void			Init				(LPCSTR state_name);
+			void			init				(LPCSTR state_name);
 	virtual	void			Load				(LPCSTR section);
 	virtual	void			reinit				(_Object *object);
 	virtual	void			reload				(LPCSTR section);

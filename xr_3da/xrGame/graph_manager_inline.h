@@ -127,5 +127,19 @@ IC	void CAbstractGraphManager::go_path()
 		m_current_vertex_id	= m_path.front();
 }
 
+TEMPLATE_SPECIALIZATION
+IC	const typename CAbstractGraphManager::CSGraphAbstract &CAbstractGraphManager::graph	() const
+{
+	VERIFY			(m_graph);
+	return			(*m_graph);
+}
+
+TEMPLATE_SPECIALIZATION
+IC	typename CAbstractGraphManager::CSGraphAbstract &CAbstractGraphManager::graph		()
+{
+	VERIFY			(m_graph);
+	return			(*m_graph);
+}
+
 #undef TEMPLATE_SPECIALIZATION
 #undef CAbstractGraphManager

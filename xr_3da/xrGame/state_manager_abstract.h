@@ -59,15 +59,12 @@ protected:
 	IC		T			&dest_state				();
 	IC		void		set_dest_state			(const u32 dest_state_id);
 	IC		void		set_current_state		(const u32 current_state_id);
-	IC		const CState &internal_state		(u32 state_id) const
-	{
-		return			(graph().vertex(state_id)->data());
-	}
+	IC		const CState &internal_state		(u32 state_id) const;
 
 public:
 						CStateManagerAbstract	();
 	virtual				~CStateManagerAbstract	();
-			void		Init					();
+			void		init					();
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(bool clear_all = false);
 	virtual	void		reload					(LPCSTR section);

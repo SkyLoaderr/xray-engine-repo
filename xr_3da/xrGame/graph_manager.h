@@ -34,6 +34,7 @@ private:
 
 protected:
 	IC		void		set_current_vertex_id	(const _vertex_id_type dest_vertex_id);
+	IC		CSGraphAbstract	&graph				();
 
 public:
 	IC					CGraphManagerAbstract	();
@@ -47,18 +48,8 @@ public:
 	IC		const xr_vector<_vertex_id_type> &path() const;
 	IC		xr_vector<_vertex_id_type> &path	();
 	virtual	void		update					(u32 time_delta);
-	IC		const CSGraphAbstract &graph		() const
-	{
-		VERIFY			(m_graph);
-		return			(*m_graph);
-	}
+	IC		const CSGraphAbstract &graph		() const;
 	IC		void		go_path					();
-protected:
-	IC		CSGraphAbstract	&graph				()
-	{
-		VERIFY			(m_graph);
-		return			(*m_graph);
-	}
 };
 
 #include "graph_manager_inline.h"

@@ -29,7 +29,7 @@ protected:
 public:
 						CStateManagerState		(LPCSTR state_name);
 	virtual				~CStateManagerState		();
-			void		Init					();
+			void		init					();
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(_Object *object, bool clear_all = false);
 	virtual	void		reload					(LPCSTR section);
@@ -39,13 +39,7 @@ public:
 	virtual	void		update					(u32 time_delta);
 	virtual	bool		completed				() const;
 	IC		const xr_vector<u32> &sequence		() const;
-
-	IC		void		add_state				(CSStateBase *state, u32 state_id, u32 priority)
-	{
-		CSStateManagerAbstract::add_state(state,state_id,priority);
-		if (m_object)
-			state->reinit(m_object);
-	}
+	IC		void		add_state				(CSStateBase *state, u32 state_id, u32 priority);
 };
 
 #include "state_manager_state_inline.h"

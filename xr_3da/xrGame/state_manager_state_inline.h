@@ -17,7 +17,7 @@
 TEMPLATE_SPECIALIZATION
 CStateManagerAbstract::CStateManagerState	(LPCSTR state_name) : CSStateBase(state_name)
 {
-	Init					();
+	init					();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -26,7 +26,7 @@ CStateManagerAbstract::~CStateManagerState	()
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateManagerAbstract::Init			()
+void CStateManagerAbstract::init			()
 {
 }
 
@@ -134,6 +134,14 @@ TEMPLATE_SPECIALIZATION
 IC	const xr_vector<u32> &CStateManagerAbstract::sequence() const
 {
 	return					(path());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	void CStateManagerAbstract::add_state	(CSStateBase *state, u32 state_id, u32 priority)
+{
+	CSStateManagerAbstract::add_state(state,state_id,priority);
+	if (m_object)
+		state->reinit(m_object);
 }
 
 #undef TEMPLATE_SPECIALIZATION

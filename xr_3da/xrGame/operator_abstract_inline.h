@@ -22,8 +22,7 @@ IC	CAbstractOperator::COperatorAbstract	()
 }
 
 TEMPLATE_SPECIALIZATION
-IC	CAbstractOperator::COperatorAbstract	(u32 priority, const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects) :
-	m_priority			(priority)
+IC	CAbstractOperator::COperatorAbstract	(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects)
 {
 	m_conditions		= conditions;
 	m_effects			= effects;
@@ -32,33 +31,6 @@ IC	CAbstractOperator::COperatorAbstract	(u32 priority, const xr_vector<COperator
 TEMPLATE_SPECIALIZATION
 CAbstractOperator::~COperatorAbstract	()
 {
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::initialize	()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::execute		()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::finalize	()
-{
-}
-
-TEMPLATE_SPECIALIZATION
-IC	bool CAbstractOperator::completed	() const
-{
-	return					(true);
-}
-
-TEMPLATE_SPECIALIZATION
-IC	u32	CAbstractOperator::priority			() const
-{
-	return				(m_priority);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -131,28 +103,28 @@ IC	const typename CAbstractOperator::CSConditionState &CAbstractOperator::apply	
 	xr_vector<COperatorCondition>::const_iterator	E = condition.conditions().end();
 	for ( ; (I != E) && (i != e); )
 		if ((*I).condition() < (*i).condition()) {
-			result.add_condition(*I);
+			result.add_condition_back(*I);
 			++I;
 		}
 		else
 			if ((*I).condition() > (*i).condition()) {
-				result.add_condition(*i);
+				result.add_condition_back(*i);
 				++i;
 			}
 			else {
 				VERIFY			((*I).condition() == (*i).condition());
-				result.add_condition(*i);
+				result.add_condition_back(*i);
 				++I;
 				++i;
 			}
 
 	if (i == e) {
 		for ( ; I != E; ++I)
-			result.add_condition(*I);
+			result.add_condition_back(*I);
 	}
 	else {
 		for ( ; i != e; ++i)
-			result.add_condition(*i);
+			result.add_condition_back(*i);
 	}
 
 	return					(result);
@@ -179,18 +151,18 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 				++J;
 			}
 			else
-				result.add_condition(*I);
+				result.add_condition_back(*I);
 			++I;
 		}
 		else
 			if ((*I).condition() > (*i).condition()) {
-				result.add_condition(*i);
+				result.add_condition_back(*i);
 				++i;
 			}
 			else {
 				if ((*I).value() != (*i).value())
 					changed	= true;
-				result.add_condition(*i);
+				result.add_condition_back(*i);
 				++I;
 				++i;
 			}
@@ -199,7 +171,7 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 		if (!changed)
 			return			(false);
 		for ( ; (i != e); ++i)
-			result.add_condition(*i);
+			result.add_condition_back(*i);
 		return				(true);
 	}
 
@@ -208,7 +180,7 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 			++J;
 		else
 			if ((*J).condition() > (*I).condition()) {
-				result.add_condition(*I);
+				result.add_condition_back(*I);
 				++I;
 			}
 			else {
@@ -223,7 +195,7 @@ IC	bool CAbstractOperator::apply_reverse	(const CSConditionState &condition, con
 
 	if ((J == EE) && (I != E))
 		for ( ; (I != E); ++I)
-			result.add_condition(*I);
+			result.add_condition_back(*I);
 
 	return					(true);
 }

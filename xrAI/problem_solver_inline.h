@@ -22,6 +22,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CProblemSolverAbstract::CProblemSolver				()
 {
+	init					();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -34,12 +35,54 @@ CProblemSolverAbstract::~CProblemSolver					()
 		remove_evaluator	((*m_evaluators.begin()).first);
 }
 
+TEMPLATE_SPECIALIZATION
+void CProblemSolverAbstract::init						()
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CProblemSolverAbstract::Load						(LPCSTR section)
+{
+}
+
+TEMPLATE_SPECIALIZATION
+void CProblemSolverAbstract::reinit						(bool clear_all)
+{
+	m_target_state.clear	();
+	m_current_state.clear	();
+	m_temp.clear			();
+	m_solution.clear		();
+	m_applied				= false;
+	m_current_operator		= _operator_id_type(-1);
+
+	if (!clear_all)
+		return;
+
+	while (!m_operators.empty())
+		remove_operator		(m_operators.back().m_operator_id);
+
+	while (!m_evaluators.empty())
+		remove_evaluator	((*m_evaluators.begin()).first);
+}
+
+TEMPLATE_SPECIALIZATION
+void CProblemSolverAbstract::reload						(LPCSTR section)
+{
+}
+
+TEMPLATE_SPECIALIZATION
+IC	bool CProblemSolverAbstract::actual			() const
+{
+	return				(m_actuality);
+}
+
 // operators
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::add_operator			(COperator *_operator, const _edge_type &operator_id)
 {
 	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
 	VERIFY					((I == m_operators.end()) || ((*I).m_operator_id != operator_id));
+	m_actuality				= false;
 	m_operators.insert		(I,SOperator(operator_id,_operator));
 }
 
@@ -49,6 +92,7 @@ IC	void CProblemSolverAbstract::remove_operator		(const _edge_type &operator_id)
 	OPERATOR_VECTOR::iterator	I = std::lower_bound(m_operators.begin(), m_operators.end(),operator_id);
 	VERIFY					(m_operators.end() != I);
 	xr_delete				((*I).m_operator);
+	m_actuality				= false;
 	m_operators.erase		(I);
 }
 
@@ -68,6 +112,7 @@ IC	const typename CProblemSolverAbstract::OPERATOR_VECTOR &CProblemSolverAbstrac
 TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::set_target_state		(const CState &state)
 {
+	m_actuality				= m_actuality && (m_target_state == state);
 	m_target_state			= state;
 }
 
@@ -97,6 +142,7 @@ IC	void CProblemSolverAbstract::remove_evaluator			(const _condition_type &condi
 	VERIFY						(I != m_evaluators.end());
 	xr_delete					((*I).second);
 	m_evaluators.erase			(I);
+	m_actuality					= false;
 }
 
 TEMPLATE_SPECIALIZATION
@@ -186,9 +232,10 @@ TEMPLATE_SPECIALIZATION
 IC	void CProblemSolverAbstract::solve			()
 {
 #ifndef AI_COMPILER
-	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CBaseParameters());
-	if (!successful)
+	if (m_actuality)
 		return;
+	bool						successful = ai().graph_engine().search(*this,target_state(),CState(),&m_solution,CBaseParameters());
+	m_actuality					= successful;
 #endif
 }
 

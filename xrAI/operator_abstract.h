@@ -23,22 +23,16 @@ protected:
 
 protected:
 	xr_vector<COperatorCondition>				m_effects;
-	u32											m_priority;
 
 public:
 	IC											COperatorAbstract	();
-	IC											COperatorAbstract	(u32 priority, const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects);
+	IC											COperatorAbstract	(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects);
 	virtual										~COperatorAbstract	();
-	IC		u32									priority			() const;
 	IC		const xr_vector<COperatorCondition>	&effects			() const;
 	IC		void								add_effect			(const COperatorCondition &effect);
 	virtual bool								applicable			(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const;
 	virtual const CSConditionState				&apply				(const CSConditionState &condition, const xr_vector<COperatorCondition> &self_condition, CSConditionState &result) const;
 	virtual bool								apply_reverse		(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const;
-	virtual void								initialize			();
-	virtual void								execute				();
-	virtual void								finalize			();
-	virtual bool								completed			() const;
 	virtual _edge_value_type					weight				() const;
 };
 

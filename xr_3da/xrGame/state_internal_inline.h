@@ -19,7 +19,7 @@
 TEMPLATE_SPECIALIZATION
 CStateInternalAbstract::CStateInternal		()
 {
-	Init				();
+	init				();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -28,7 +28,7 @@ CStateInternalAbstract::~CStateInternal		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateInternalAbstract::Init			()
+void CStateInternalAbstract::init			()
 {
 }
 

@@ -17,7 +17,7 @@
 TEMPLATE_SPECIALIZATION
 CStateBaseAbstract::CStateBase			(LPCSTR state_name)
 {
-	Init				(state_name);
+	init				(state_name);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -26,7 +26,7 @@ CStateBaseAbstract::~CStateBase			()
 }
 
 TEMPLATE_SPECIALIZATION
-void CStateBaseAbstract::Init			(LPCSTR state_name)
+void CStateBaseAbstract::init			(LPCSTR state_name)
 {
 	m_object			= 0;
 #ifdef LOG_STATE

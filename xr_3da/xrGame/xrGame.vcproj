@@ -287,9 +287,6 @@
 						Name="ActionBase"
 						Filter="">
 						<File
-							RelativePath=".\action_base.cpp">
-						</File>
-						<File
 							RelativePath=".\action_base.h">
 						</File>
 						<File

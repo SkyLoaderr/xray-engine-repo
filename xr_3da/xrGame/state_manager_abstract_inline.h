@@ -17,7 +17,7 @@
 TEMPLATE_SPECIALIZATION
 CAbstractStateManager::CStateManagerAbstract		()
 {
-	Init					();
+	init					();
 }
 
 TEMPLATE_SPECIALIZATION
@@ -26,7 +26,7 @@ CAbstractStateManager::~CStateManagerAbstract		()
 }
 
 TEMPLATE_SPECIALIZATION
-void CAbstractStateManager::Init			()
+void CAbstractStateManager::init			()
 {
 }
 
@@ -149,6 +149,12 @@ TEMPLATE_SPECIALIZATION
 IC	const u32 &CAbstractStateManager::dest_state_id		() const
 {
 	return					(dest_vertex_id());
+}
+
+TEMPLATE_SPECIALIZATION
+IC	const typename CAbstractStateManager::CState &CAbstractStateManager::internal_state	(u32 state_id) const
+{
+	return			(graph().vertex(state_id)->data());
 }
 
 #undef TEMPLATE_SPECIALIZATION
