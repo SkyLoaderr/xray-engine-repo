@@ -53,6 +53,7 @@ function action_patrol:initialize()
 	action					(
 		self.object,
 		move				(move.standing,move.walk,move.line,patrol(self.patrol_path)),
+		look				(look.path_dir),
 		anim				(anim.free),
 		cond				(cond.move_end)
 	)
