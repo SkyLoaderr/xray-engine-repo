@@ -3,58 +3,58 @@
 Чугай Саша
 ------------------------------------------------------------------------------------------------------------------------]]
 
-local   active = false
-local   enemy  = nil
+local active = false
+local enemy
 
 function activate()
-    active = true
+	active = true
 end
 
 function deactivate()
-    active = false
+	active = false
 end
 
 function set_enemy( obj )
-    enemy = obj
+	enemy = obj
 end
 
 function main()
---    active = true
-    while not active do
-        wait()
-    end
+--	active = true
+	while not active do
+		wait()
+	end
 
-    local path = patrol( "way_raid_heli" )
-    local heli = get_level_object( "heli" )
-    local max_num = path:count() * 0.5 - 1
-    local pnt = 0
+	local path = patrol( "way_raid_heli" )
+	local heli = get_level_object( "heli" )
+	local max_num = path:count() * 0.5 - 1
+	local pnt = 0
     
---    enemy = get_actor()
+--	enemy = get_actor()
 
-    while active do
-        heli:heli_go_to_point( path:point( pnt ), path:point( pnt + 1 ), 1 )
-        wait( 1000 ) -- чтобы update сработал у вертолёта
-        local t = heli:heli_last_point_time() * 1000
-        
-        printf( "%d", pnt )
-        while t > device():time_global() and active and not enemy do
-            wait()
-        end
+	while active do
+		heli:heli_go_to_point( path:point( pnt ), path:point( pnt + 1 ), 1 )
+		wait( 1000 ) -- чтобы update сработал у вертолёта
+		local t = heli:heli_last_point_time() * 1000
 
-        if enemy then
-            printf( "AIR ATTACK!" )
-            heli:air_attack( enemy )
-            wait( 1000 )
-            while heli:air_attack_active() and active do
-                wait()
-            end
-            printf( "FIN AIR ATTACK!" )
-            enemy = nil
-        else
-            pnt = pnt + 2
-            if pnt >= path:count() then
-                pnt = 0
-            end
-        end
-    end
+		printf( "%d", pnt )
+		while t > device():time_global() and active and not enemy do
+			wait()
+		end
+
+		if enemy then
+			printf( "AIR ATTACK!" )
+			heli:air_attack( enemy )
+			wait( 1000 )
+			while heli:air_attack_active() and active do
+				wait()
+			end
+			printf( "FIN AIR ATTACK!" )
+			enemy = nil
+		else
+			pnt = pnt + 2
+			if pnt >= path:count() then
+				pnt = 0
+			end
+		end
+	end
 end

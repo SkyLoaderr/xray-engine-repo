@@ -133,18 +133,18 @@ function main()
         )
     end
 
-    local heli = get_level_object( "helicopter_factory_combat" )
+--    local heli = get_level_object( "helicopter_factory_combat" )
     --local heli_target = get_level_object( "factory_corpse_3" )
-    local heli_prepos   = way:point( way:index( "helicopter_prepos" ) )
-    local heli_pos      = way:point( way:index( "helicopter_pos" ) )
+--    local heli_prepos   = way:point( way:index( "helicopter_prepos" ) )
+--    local heli_pos      = way:point( way:index( "helicopter_pos" ) )
 
     local t = 0
 
     while idle do
-        if t < device():time_global() then
-            t = device():time_global() + 60000
-            heli:heli_go_to_point( heli_pos, heli_prepos, 60 )
-        end
+--        if t < device():time_global() then
+--            t = device():time_global() + 60000
+--            heli:heli_go_to_point( heli_pos, heli_prepos, 60 )
+--        end
 
         wait( 500 )
     end
@@ -155,7 +155,7 @@ function main()
     local snd = sound_object( "ambient\\gunfire" )
     snd:play_at_pos( npcs[1], npcs[1]:position() )
 
-    heli:heli_go_to_point( heli_pos, heli_prepos, combat_duration * 0.001 )
+--    heli:heli_go_to_point( heli_pos, heli_prepos, combat_duration * 0.001 )
 
     zone:clear_callback( true )
 
@@ -206,7 +206,7 @@ function main()
         end
     end
 
-    heli:heli_goto_stay_point( time_infinite )
+--    heli:heli_goto_stay_point( time_infinite )
 
     for i = 1, table.getn( shoot_points ) do
         npcs[i]:script( false, script_name() )
