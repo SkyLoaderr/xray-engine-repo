@@ -30,6 +30,10 @@ typedef unsigned int MxFaceID;
 #  define MX_COLOR_RGBA
 #endif
 
+#if !defined(HAVE_RINT)
+inline double rint(double x) { return floor(x + 0.5); }
+#endif
+
 class MxColor
 {
 private:
@@ -138,7 +142,7 @@ public:
     inline void set(const double *v)
 	{ dir[0]=_dtos(v[0]);  dir[1]=_dtos(v[1]);  dir[2]=_dtos(v[2]); }
 
-    float operator[](unsigned int i) const { AssertBound(i<3); return _stof(dir[i]); }
+    float operator[](unsigned int i) const { VERIFY(i<3); return _stof(dir[i]); }
     short raw(unsigned int i) const { return dir[i]; }
     const short* raw() const { return dir; }
 };
@@ -148,14 +152,14 @@ class MxEdge
 public:
     MxVertexID v1, v2;
 
-    MxEdge() { v1=v2=MXID_NIL; }
+    MxEdge() { v1=v2=0xFFFFFFFFU; }
     MxEdge(MxVertexID a, MxVertexID b) { v1=a; v2=b; }
     MxEdge(const MxEdge& e) { v1=e.v1;  v2=e.v2; }
 
     MxVertexID opposite_vertex(MxVertexID v)
 	{
 	    if( v==v1 ) return v2;
-	    else { SanityCheck(v==v2); return v1; }
+	    else { VERIFY(v==v2); return v1; }
 	}
 };
 
@@ -193,21 +197,21 @@ public:
 	{
 	    if( v[0]==i ) return 0;
 	    else if( v[1]==i ) return 1;
-	    else { SanityCheck(v[2]==i); return 2; }
+	    else { VERIFY(v[2]==i); return 2; }
 	}
 
     MxVertexID opposite_vertex(MxVertexID v0, MxVertexID v1)
 	{
 	    if( v[0]!=v0 && v[0]!=v1 ) return v[0];
 	    else if( v[1]!=v0 && v[1]!=v1 ) return v[1];
-	    else { SanityCheck( v[2]!=v0 && v[2]!=v1 ); return v[2]; }
+	    else { VERIFY( v[2]!=v0 && v[2]!=v1 ); return v[2]; }
 	}
 
     bool is_inorder(MxVertexID v0, MxVertexID v1)
 	{
 	    if( v[0]==v0 ) return v[1]==v1;
 	    else if( v[1]==v0 ) return v[2]==v1;
-	    else { SanityCheck(v[2]==v0); return v[0]==v1; }
+	    else { VERIFY(v[2]==v0); return v[0]==v1; }
 	}
 };
 
