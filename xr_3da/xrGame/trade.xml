@@ -1,4 +1,4 @@
-﻿<?xml version='1.0' encoding="UTF-8"?>
+<?xml version='1.0' encoding="UTF-8"?>
 <window x="0" y="0" w="640" h="480" r="227" g="121" b="222" texture="1">
 	<!-- ICONS OF TRADING CHARACTERS -->	
 	<static_icon x="27" y="22" width="256" height="256">
@@ -10,38 +10,36 @@
 
 
 	<!-- BUTTONS -->
-	<button x="345" y="690" width="138" height="30">
-		<texture>ui\ui_button_04</texture>
-		<text>Perform trade</text>
+	<button x="330" y="705" width="138" height="30">
+		<text font="graffiti22" r="238" g="153" b="26">Trade</text>
 	</button>
-	<button x="545" y="690" width="138" height="30">
-		<texture>ui\ui_button_04</texture>
-		<text>To talk</text>
+	<button x="560" y="705" width="138" height="30">
+		<text font="graffiti22" r="238" g="153" b="26">Leave</text>
 	</button>
 
+	<!-- Background for this buttons -->
+	<auto_static x="345" y="700" width="290" height="450">
+		<texture>ui\ui_bt_trade</texture>
+	</auto_static>
 
 	<!-- OUR BAG -->
-	<frame_window x="20" y="270" width="290" height="450">
-		<base_texture>ui\ui_frame</base_texture>
-		<left_top_texture x="15" y="20">ui\ui_inv_info_over_lt</left_top_texture>
-		<left_bottom_texture x="19" y="155">ui\ui_frame_over_lb</left_bottom_texture>
-		<title x="10" y="-12" width="240" height="60"><text font="letterica18" r="255" g="255" b="255"></text></title>
-	</frame_window>
+	<our_bag_static x="20" y="270" width="290" height="450">
+		<texture>ui\ui_dg_inventory_exchange_trade</texture>
+		<text x="30" y="8" font="graffiti22" r="255" g="255" b="255">Items List</text>
+	</our_bag_static>
 
-	<dragdrop_list x="27" y="33" width="240" height="450"
+	<dragdrop_list x="30" y="40" width="240" height="450"
 			cell_width = "40" cell_height="40"
 			rows_num="18" cols_num="6" rows_num_view="10"></dragdrop_list>
 
 
 	<!-- OTHERS BAG -->
-	<frame_window x="705" y="270" width="290" height="450">
-		<base_texture>ui\ui_frame</base_texture>
-		<left_top_texture x="15" y="20">ui\ui_inv_info_over_lt</left_top_texture>
-		<left_bottom_texture x="19" y="155">ui\ui_frame_over_lb</left_bottom_texture>
-		<title x="10" y="-12" width="240" height="60"><text font="letterica18" r="255" g="255" b="255"></text></title>
-	</frame_window>
+	<others_bag_static x="705" y="270" width="290" height="450">
+		<texture>ui\ui_dg_inventory_exchange_trade</texture>
+		<text x="30" y="8" font="graffiti22" r="255" g="255" b="255">Items List</text>
+	</others_bag_static>
 
-	<dragdrop_list x="27" y="33" width="240" height="400"
+	<dragdrop_list x="30" y="40" width="240" height="400"
 			cell_width = "40" cell_height="40"
 			rows_num="18" cols_num="6" rows_num_view="10"></dragdrop_list>
 
@@ -52,15 +50,8 @@
 	</static>
 
 	<dragdrop_list x="30" y="35" width="280" height="160"
-			cell_width = "40" cell_height="40"
+			cell_width = "42" cell_height="42"
 			rows_num="18" cols_num="7" rows_num_view="4"></dragdrop_list>
-	
-	<price_mt_static x="0" y="0" width="347" height="40">
-		<phrase x="0" y="20" font="graffiti22" r="238" g="153" b="26">Your item's</phrase>
-		<phrase x="195" y="20" font="graffiti22" r="220" g="185" b="140">Price:</phrase>
-		<phrase x="250" y="20" font="graffiti22" r="240" g="215" b="185"></phrase>
-	</price_mt_static>
-
 
 
 	<!-- OTHERS TRADE -->
@@ -73,11 +64,17 @@
 			cell_width = "40" cell_height="40"
 			rows_num="18" cols_num="7" rows_num_view="4"></dragdrop_list>
 
+
 	<!-- DESCRIPTION WINDOW -->
 	<desc_frame_window x="350" y="22" width="320" height="256">
 		<base_texture>ui\ui_frame_03</base_texture>
 	</desc_frame_window>
 
+	<price_mt_static x="35" y="10" width="347" height="40">
+		<phrase x="0" y="0" font="graffiti22" r="238" g="153" b="26">Your items</phrase>
+		<phrase x="175" y="0" font="graffiti22" r="220" g="185" b="140">Price:</phrase>
+		<phrase x="230" y="0" font="graffiti22" r="240" g="215" b="185"></phrase>
+	</price_mt_static>
 
 </window>
 
