@@ -43,6 +43,11 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 		// If we get here - test static model
 		if (cache) 
 		{
+			// 0. similar query???
+			if (cache->similar(start,dir,range))	{
+				return cache->result;
+			}
+
 			// 1. Check cached polygon
 			float _u,_v,_range;
 			if (CDB::TestRayTri(start,dir,cache->verts,_u,_v,_range,false)) 
@@ -53,9 +58,11 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 			// 2. Polygon doesn't pick - real database query
 			xrc.ray_query	(&Static,start,dir,range);
 			if (0==xrc.r_count()) {
+				cache->set		(start,dir,range,FALSE);
 				return FALSE;
 			} else {
 				// cache polygon
+				cache->set		(start,dir,range,TRUE);
 				CDB::RESULT*	R	= xrc.r_begin();
 				CDB::TRI&		T	= Static.get_tris() [ R->id ];
 				Fvector*		V	= Static.get_verts();

@@ -17,12 +17,37 @@ namespace Collide
 	};
 	struct			ray_cache
 	{
+		// previous state
+		Fvector				start;
+		Fvector				dir;
+		float				range;
+		BOOL				result;
+
+		// cached vertices
 		Fvector				verts[3];
 		ray_cache() 
 		{
+			start.set	(0,0,0);
+			dir.set		(0,0,0);
+			range		= 0;
+			result		= FALSE;
 			verts[0].set(0,0,0);
 			verts[1].set(0,0,0);
 			verts[2].set(0,0,0);
+		}
+		void				set		(Fvector& _start, Fvector& _dir, float _range, BOOL _result)
+		{
+			start	= _start;
+			dir		= _dir;
+			range	= _range;
+			result	= _result;
+		}
+		BOOL				similar	(Fvector& _start, Fvector& _dir, float _range)
+		{
+			if (!_start.similar(start))					return FALSE;
+			if (!fsimilar(1.f,dir.dotproduct(_dir)))	return FALSE;
+			if (!fsimilar(_range,range))				return FALSE;
+			return			TRUE;
 		}
 	};
 	enum rq_target{

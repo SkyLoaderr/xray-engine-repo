@@ -284,6 +284,7 @@ void	COLLIDER::ray_query	(const MODEL *m_def, const Fvector& r_start,  const Fve
 				RC._init(this,m_def->verts,m_def->tris,r_start,r_dir,r_range);
 				RC._stab(N);
 			} else {
+				//__asm int 3;
 				ray_collider<false,false,false>	RC;
 				RC._init(this,m_def->verts,m_def->tris,r_start,r_dir,r_range);
 				RC._stab(N);

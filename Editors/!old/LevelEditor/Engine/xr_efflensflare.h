@@ -82,6 +82,8 @@ protected:
     };
     LFState				m_State;
     float				m_StateBlend;
+
+	Collide::ray_cache	m_ray_cache;
 public:
 						CLensFlare		();
 	virtual				~CLensFlare		();
