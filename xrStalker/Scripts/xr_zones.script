@@ -78,6 +78,9 @@ function zone_binder:reinit()
 end
 
 function zone_binder:net_spawn( server_object )
+end
+
+function test()
 	r = object_binder.net_spawn( self, server_object )
 	self.object:set_callback( self, "on_enter", true )
 	self.object:set_callback( self, "on_leave", false )
