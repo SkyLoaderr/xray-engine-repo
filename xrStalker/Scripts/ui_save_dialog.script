@@ -113,6 +113,7 @@ function save_dialog:InitControls()
     list_wnd:Init(list_rect.x, list_rect.y, list_rect.width, list_rect.height)
     list_wnd:SetItemHeight(25)
     list_wnd:EnableScrollBar(true)
+	self:Register(list_wnd)
     main_frame:AttachChild(list_wnd)
 
 --------------------------------------- 
@@ -153,12 +154,20 @@ function save_dialog:InitControls()
 end
 
 function save_dialog:InitCallBacks()
-	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED,             self,"OnButton_ok_clicked")
-	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED,             self,"OnButton_cancel_clicked")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_OK_CLICKED,     self,"OnMsgOk")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_CANCEL_CLICKED, self,"OnMsgCancel")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_YES_CLICKED,    self,"OnMsgYes")
-	self:AddCallback("message_box",   ui_events.MESSAGE_BOX_NO_CLICKED,     self,"OnMsgNo")
+    // main frame buttons
+	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED, self, "OnButton_ok_clicked")
+	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED, self, "OnButton_cancel_clicked")
+	// message box buttons
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_OK_CLICKED,     self, "OnMsgOk")
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_CANCEL_CLICKED, self, "OnMsgCancel")
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_YES_CLICKED,    self, "OnMsgYes")
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_NO_CLICKED,     self, "OnMsgNo")
+	// list box click
+	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, self, "OnListItemClicked")
+end
+
+function save_dialog:OnListItemClicked()
+	local list_box = self:GetListBox("list_window")
 end
 
 function save_dialog:OnMsgOk()
