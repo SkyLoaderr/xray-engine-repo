@@ -195,6 +195,9 @@
 					RelativePath=".\Config\gameplay\character_desc_bar.xml">
 				</File>
 				<File
+					RelativePath=".\Config\gameplay\character_desc_dar.xml">
+				</File>
+				<File
 					RelativePath=".\Config\gameplay\character_desc_dolg.xml">
 				</File>
 				<File
@@ -1614,6 +1617,9 @@
 							RelativePath=".\scripts\xr_meet.script">
 						</File>
 						<File
+							RelativePath=".\scripts\xr_punch.script">
+						</File>
+						<File
 							RelativePath=".\scripts\xr_reactions.script">
 						</File>
 						<File
@@ -1624,9 +1630,6 @@
 						</File>
 						<File
 							RelativePath=".\scripts\xr_wounded.script">
-						</File>
-						<File
-							RelativePath=".\scripts\xr_punch.script">
 						</File>
 					</Filter>
 					<Filter
