@@ -351,32 +351,37 @@ VOID CDeflector::Light()
 	
 	// Build span-buffer
 	lm_spans	= (span*)malloc(s_y*sizeof(span));
-	for (DWORD y=0; y<s_y; y++)
+	try {
+		for (DWORD y=0; y<s_y; y++)
+		{
+			span	spOne;
+			int		x;
+			
+			// left
+			for (x=0; x<int(s_x); x++)
+			{
+				DWORD pixel	= lm.pSurface	[y*s_x+x];
+				if (RGBA_GETALPHA(pixel)>=(254-BORDER))	{
+					spOne.first	= WORD(x);
+					break;
+				}
+			}
+			
+			// right
+			for (x=int(s_x-1); x>=0; x++)
+			{
+				DWORD pixel	= lm.pSurface	[y*s_x+x];
+				if (RGBA_GETALPHA(pixel)>=(254-BORDER))	{
+					spOne.second= WORD(x);
+					break;
+				}
+			}
+			
+			lm_spans[y] = spOne;
+		}
+	} catch (...)
 	{
-		span	spOne;
-		int		x;
-
-		// left
-		for (x=0; x<int(s_x); x++)
-		{
-			DWORD pixel	= lm.pSurface	[y*s_x+x];
-			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	{
-				spOne.first	= WORD(x);
-				break;
-			}
-		}
-
-		// right
-		for (x=int(s_x-1); x>=0; x++)
-		{
-			DWORD pixel	= lm.pSurface	[y*s_x+x];
-			if (RGBA_GETALPHA(pixel)>=(254-BORDER))	{
-				spOne.second= WORD(x);
-				break;
-			}
-		}
-
-		lm_spans[y] = spOne;
+		Msg("FUCK!!!, sp:%X, lm:%X",lm_spans,lm.pSurface);
 	}
 }
 
