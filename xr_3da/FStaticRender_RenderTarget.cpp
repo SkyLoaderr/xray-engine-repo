@@ -17,6 +17,7 @@ CRenderTarget::CRenderTarget()
 	param_blur		= 0.f;
 	param_gray		= 0.f;
 	param_noise		= 0.f;
+	param_duality	= 0.5f;
 	param_noise_fps	= 25.f;
 
 	im_noise_time	= 1/100;
@@ -49,10 +50,14 @@ BOOL CRenderTarget::Create	()
 	}
 	
 	// Shaders and stream
+	string64	_rt_2_name;
+	strconcat					(_rt_2_name,RTname,",",RTname);
 	pVS							= Device.Shader._CreateVS		(FVF::F_TL);
+	pVS							= Device.Shader._CreateVS		(FVF::F_TL2uv);
 	pShaderSet					= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray					= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend				= Device.Shader.Create			("effects\\screen_blend",	RTname);
+	pShaderDuality				= Device.Shader.Create			("effects\\blur",			_rt_2_name);
 	pShaderNoise				= Device.Shader.Create			("effects\\screen_noise",	"fx\\fx_noise2");
 	return	RT->Valid	();
 }
@@ -67,20 +72,24 @@ void CRenderTarget::OnDeviceDestroy	()
 {
 	_RELEASE					(ZB);
 	Device.Shader.Delete		(pShaderNoise);
+	Device.Shader.Delete		(pShaderDuality);
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
 	Device.Shader._DeleteRT		(RT);
 	Device.Shader._DeleteVS		(pVS);
+	Device.Shader._DeleteVS		(pVS2);
 }
 
 void CRenderTarget::eff_load	(LPCSTR n)
 {
+	/*
 	param_blur					= pSettings->ReadFLOAT	(n,"blur");
 	param_gray					= pSettings->ReadFLOAT	(n,"gray");
 	param_noise					= pSettings->ReadFLOAT	(n,"noise");
 	param_noise_scale			= pSettings->ReadFLOAT	(n,"noise_scale");
 	param_noise_color			= pSettings->ReadCOLOR	(n,"noise_color");
+	*/
 }
 
 void CRenderTarget::e_render_noise	()
@@ -135,6 +144,35 @@ void CRenderTarget::e_render_noise	()
 	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
 }
 
+void CRenderTarget::e_render_duality()
+{
+	Device.Shader.set_Shader		(pShaderDuality);
+
+	float		shift				= param_duality*.5f;
+
+	Fvector2	r0,r1,l0,l1;
+	r0.set(0,0);		r1.set(1-shift,1);
+	l0.set(0+shift,0);	l1.set(1,1);
+
+	u32			_w					= Device.dwWidth;
+	u32			_h					= Device.dwHeight;
+	u32			C					= 0xffffffff;
+
+	// 
+	u32			Offset;
+	FVF::TL2uv* pv					= (FVF::TL2uv*) Device.Streams.Vertex.Lock	(4,pVS2->dwStride,Offset);
+	pv->set(0,			float(_h),	.0001f,.9999f, C, r0.x, r1.y, l0.x, l1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, C, r0.x, r0.y, l0.x, l0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, r1.x, r1.y, l1.x, l1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, C, r1.x, r0.y, l1.x, l0.y);	pv++;
+	Device.Streams.Vertex.Unlock	(4,pVS2->dwStride);
+
+	// Draw Noise
+	Device.Primitive.setVertices	(pVS2->dwHandle, pVS2->dwStride, Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices		(Offset+0,Device.Streams.QuadIB);
+	Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,4,0,2);
+}
+
 BOOL CRenderTarget::Perform		()
 {
 	return Available() && ( NeedPostProcess() || (psSupersample>1));
@@ -163,7 +201,8 @@ void CRenderTarget::End		()
 	curWidth					= Device.dwWidth;
 	curHeight					= Device.dwHeight;
 	
-	if (!Perform())		return;
+	if (!Perform())							return;
+	if (!psDeviceFlags.test(rsPostprocess))	return;
 	
 	// Draw full-screen quad textured with our scene image
 	u32	Offset;
@@ -206,27 +245,12 @@ void CRenderTarget::End		()
 	Device.Streams.Vertex.Unlock	(12,pVS->dwStride);
 
 	// Actual rendering
-	if (FALSE)
+	if (param_duality>0.001f)
 	{
-		/*
-		// Render to temporary buffer (PS)
-		Device.Shader.set_RT				(RT_temp->pRT,HW.pTempZB);
-		Device.Shader.set_Shader			(pShaderSet);
-		HW.pDevice->SetPixelShader			(hPS->dwHandle);
-		Device.Primitive.Draw				(pStream,4,2,Offset+8,Device.Streams_QuadIB);
-		HW.pDevice->SetPixelShader			(0);
-
-		// Render to screen
-		Device.Shader.set_RT				(HW.pBaseRT,HW.pBaseZB);
-		Device.Shader.set_Shader			(pShaderSet);
-		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
-
-		// Add to screen
-		Device.Shader.set_Shader			(pShaderAdd);
-		Device.Primitive.Draw				(pStream,4,2,Offset+4,Device.Streams_QuadIB);
-		*/
-	} else {
-		if (psDeviceFlags.test(rsPostprocess) && (param_gray>0.001f)) 
+		e_render_duality	();
+	} else 
+	{
+		if (param_gray>0.001f) 
 		{
 			// Draw GRAY
 			Device.Shader.set_Shader		(pShaderGray);
@@ -250,5 +274,5 @@ void CRenderTarget::End		()
 		}
 	}
 
-	if (psDeviceFlags.test(rsPostprocess) && (param_noise>0.01f))	e_render_noise	();
+	if (param_noise>0.01f)	e_render_noise	();
 }
