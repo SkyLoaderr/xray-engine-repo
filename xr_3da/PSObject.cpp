@@ -20,7 +20,6 @@ CPSObject::CPSObject(LPCSTR ps_name, CSector* S, BOOL bAutoRemove)
 	if (S) m_pCurSector->tempobjAdd(this);
 }
 //----------------------------------------------------
-
 CPSObject::~CPSObject()
 {
 }
@@ -30,7 +29,7 @@ void CPSObject::UpdateSector(CSector* sect)
 {
 	if (m_pCurSector) m_pCurSector->tempobjRemove(this);
 	m_pCurSector	= sect;
-	m_pCurSector->tempobjAdd(this);
+	if (m_pCurSector) m_pCurSector->tempobjAdd(this);
 }
 
 void CPSObject::Update(DWORD dt)
