@@ -566,6 +566,10 @@ SOURCE=.\xrShaderLib.h
 # End Group
 # Begin Source File
 
+SOURCE=.\SH_Constant.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\SH_Constant.h
 # End Source File
 # Begin Source File

@@ -2,6 +2,8 @@
 
 #include "WaveForm.h"
 
+class	ENGINE_API	CStream;
+
 class	ENGINE_API	CConstant
 {
 public:
@@ -51,11 +53,5 @@ public:
 		if (!_A.Similar(C._A))	return FALSE;
 		return TRUE;
 	}
-	IC void			Load		(CStream* fs)
-	{
-		fs->read	(&_R,sizeof(WaveForm));
-		fs->read	(&_G,sizeof(WaveForm));
-		fs->read	(&_B,sizeof(WaveForm));
-		fs->read	(&_A,sizeof(WaveForm));
-	}
+	void			Load		(CStream* fs);
 };
