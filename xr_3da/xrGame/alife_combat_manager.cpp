@@ -148,11 +148,8 @@ bool CALifeCombatManager::bfCheckObjectDetection(CSE_ALifeSchedulable *tpALifeSc
 			return										(randF(100) < (int)ai().ef_storage().m_pfAnomalyDetectProbability->ffGetValue());
 		}
 		case eCombatTypeSmartTerrain : {
-			CSE_ALifeSmartZone							*smart_zone = smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable2);
-			if (!smart_zone)
-				smart_zone								= smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable1);
-			VERIFY										(smart_zone);
-			return										(randF(100) < 100.f*smart_zone->detect_probability());
+			CSE_ALifeSmartZone							*smart_zone	= smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable1);
+			return										(!smart_zone ? false : randF(100) < 100.f*smart_zone->detect_probability());
 		}
 		default :										NODEFAULT;
 	}
@@ -171,19 +168,23 @@ bool CALifeCombatManager::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSch
 		if (!l_tpALifeMonsterAbstract2)
 			return(false);
 		else {
-			CSE_ALifeSpaceRestrictor*l_tpALifeSpaceRestrictor = smart_cast<CSE_ALifeSpaceRestrictor*>(tpALifeSchedulable2);
+			CSE_ALifeCustomZone		*l_tpALifeSpaceRestrictor = smart_cast<CSE_ALifeCustomZone*>(tpALifeSchedulable2);
 			R_ASSERT2				(l_tpALifeSpaceRestrictor,"Unknown schedulable object class");
 			m_combat_type			= eCombatTypeAnomalyMonster;
 		}
 	}
 	else {
 		if (!l_tpALifeMonsterAbstract2) {
-			CSE_ALifeSpaceRestrictor*l_tpALifeSpaceRestrictor = smart_cast<CSE_ALifeSpaceRestrictor*>(tpALifeSchedulable2);
-			R_ASSERT2				(l_tpALifeSpaceRestrictor,"Unknown schedulable object class");
-			m_combat_type			= eCombatTypeMonsterAnomaly;
-			CSE_ALifeSmartZone		*smart_zone = smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable2);
-			if (smart_zone)
-				m_combat_type		= eCombatTypeSmartTerrain;
+			CSE_ALifeCustomZone			*l_tpALifeSpaceRestrictor = smart_cast<CSE_ALifeCustomZone*>(tpALifeSchedulable2);
+			if (!l_tpALifeSpaceRestrictor) {
+				CSE_ALifeSmartZone		*smart_zone = smart_cast<CSE_ALifeSmartZone*>(tpALifeSchedulable2);
+				if (smart_zone)
+					m_combat_type		= eCombatTypeSmartTerrain;
+				else
+					R_ASSERT2			(false,"Unknown schedulable object class");
+			}
+			else
+				m_combat_type			= eCombatTypeMonsterAnomaly;
 		}
 		else {
 			m_combat_type			= eCombatTypeMonsterMonster;
