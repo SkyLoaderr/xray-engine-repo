@@ -26,20 +26,16 @@ void CLight_DB::Load			(IReader *fs)
 		for (u32 i=0; i<count; i++) 
 		{
 			Flight		Ldata;
-			light*		L				= xr_new<light>		();
-			L->flags.type				= IRender_Light::POINT;
+			light*		L				= Create	();
 			L->flags.bStatic			= true;
-			L->flags.bShadow			= false;
-			L->flags.bActive			= true;
-			L->direction.set			(-.5f,-1,0);L->direction.normalize	();
-			L->cone						= deg2rad	(75.f);
-			F->r						(&L->controller,4);
+			L->set_type					(IRender_Light::POINT);
+			L->set_shadow				(false);
 			F->r						(&Ldata,sizeof(Flight));
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
 			{
 				// directional
 				v_static.push_back	(NULL);
-				xr_delete			(L);
+				Destroy				(L);
 				sun_dir.set			(Ldata.direction);
 				sun_dir.y			+= -1.f;
 				sun_dir.normalize	();
@@ -53,6 +49,7 @@ void CLight_DB::Load			(IReader *fs)
 				L->set_range		(Ldata.range);
 				L->set_color		(Ldata.diffuse);
 			}
+			L->set_active				(true);
 		}
 
 		F->close			();
@@ -62,7 +59,7 @@ void CLight_DB::Load			(IReader *fs)
 
 void			CLight_DB::Unload	()
 {
-	for	(u32 it=0; it<v_static.size(); it++)	xr_delete(v_static[it]);
+	for	(u32 it=0; it<v_static.size(); it++)	Destroy(v_static[it]);
 	v_static.clear			();
 }
 
