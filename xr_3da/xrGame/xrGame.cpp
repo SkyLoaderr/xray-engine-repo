@@ -680,6 +680,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "f1.h"
 #include "rgd5.h"
 #include "Spectator.h"
+#include "artifact.h"
 
 #include "customzone.h"
 #include "mosquitobald.h"
@@ -713,6 +714,7 @@ extern "C" {
 
 		// Artifacts
 		case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
+		case CLSID_ARTIFACT:			P = xr_new<CArtifact>();			break;
 
 		// Targets
 		case CLSID_TARGET_ASSAULT:		P = xr_new<CTargetAssault>();		break;

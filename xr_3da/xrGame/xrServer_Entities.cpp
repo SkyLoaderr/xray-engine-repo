@@ -1647,6 +1647,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR caSection)
 
 	// Artifacts
 	case CLSID_AF_MERCURY_BALL:		return xr_new<xrSE_MercuryBall>		(caSection);
+	case CLSID_ARTIFACT:			return xr_new<CALifeItem>			(caSection);
 
 	// Zones
 	case CLSID_ZONE:				return xr_new<xrSE_Zone>			(caSection);

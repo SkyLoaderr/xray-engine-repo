@@ -1186,6 +1186,12 @@
 					<Filter
 						Name="Artifacts"
 						Filter="">
+						<File
+							RelativePath="Artifact.cpp">
+						</File>
+						<File
+							RelativePath="Artifact.h">
+						</File>
 						<Filter
 							Name="Mercury Ball"
 							Filter="">
