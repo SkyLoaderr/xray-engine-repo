@@ -485,12 +485,12 @@ public:
 	IC	void	getHPB	(T& h, T& p, T& b){
         T cy = _sqrt(j.y*j.y + i.y*i.y);
         if (cy > 16.0f*FLT_EPSILON) {
-            h = -atan2(k.x, k.z);
-            p = -atan2(-k.y, cy);
-            b = -atan2(i.y, j.y);
+            h = (T) -atan2(k.x, k.z);
+            p = (T) -atan2(-k.y, cy);
+            b = (T) -atan2(i.y, j.y);
         } else {
-            h = -atan2(-i.z, i.x);
-            p = -atan2(-k.y, cy);
+            h = (T) -atan2(-i.z, i.x);
+            p = (T) -atan2(-k.y, cy);
             b = 0;
         }
     }
