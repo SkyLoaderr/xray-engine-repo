@@ -56,8 +56,8 @@ void CBitingAttack::Init()
 		m_fDistMin = 0.7f;				// todo: make as ltx parameters
 		m_fDistMax = 2.8f;				// todo: make as ltx parameters
 	} else {
-		m_fDistMin = pMonster->m_fMinAttackDist;
-		m_fDistMax = pMonster->m_fMaxAttackDist;
+		m_fDistMin = pMonster->_sd->m_fMinAttackDist;
+		m_fDistMax = pMonster->_sd->m_fMaxAttackDist;
 	}
 
 	pMonster->SetMemoryTimeDef();
@@ -82,7 +82,7 @@ void CBitingAttack::Run()
 	// for attack stops needed
 	if (!m_bAttackRat) {
 		m_fDistMin = pMonster->m_fCurMinAttackDist;
-		m_fDistMax = pMonster->m_fMaxAttackDist - (pMonster->m_fMinAttackDist - pMonster->m_fCurMinAttackDist);
+		m_fDistMax = pMonster->_sd->m_fMaxAttackDist - (pMonster->_sd->m_fMinAttackDist - pMonster->m_fCurMinAttackDist);
 	}
 
 	// Выбор состояния
@@ -197,7 +197,7 @@ void CBitingAttack::Run()
 //			break;
 	}
 
-	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay);
+	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
 }
 
 void CBitingAttack::Done()

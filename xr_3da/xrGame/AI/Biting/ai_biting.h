@@ -14,6 +14,7 @@
 #include "ai_biting_state.h"
 #include "..\\ai_monster_mem.h"
 #include "..\\ai_monster_sound.h"
+#include "..\\ai_monster_share.h"
 
 
 // flags
@@ -31,7 +32,6 @@
 #define FLAG_ENEMY_DOESNT_SEE_ME		( 1 << 11 )
 
 #define SOUND_ATTACK_HIT_MIN_DELAY 1000
-
 #define MORALE_NORMAL	0.5f
 
 // logging
@@ -64,13 +64,88 @@ extern u32		mem_used;
 #define STOP_LOAD_SHARED() {MotionMan.NotifyShareLoaded();}
 
 
+class _biting_shared : public CSharedResource {
+public:
+	// float speed factors
+	float					m_fsTurnNormalAngular;
+	float					m_fsWalkFwdNormal;
+	float					m_fsWalkBkwdNormal;
+	float					m_fsWalkTurn;
+	float 					m_fsWalkAngular;
+	float 					m_fsWalkTurnAngular;
+	float 					m_fsRunFwdNormal;
+	float 					m_fsRunTurn;
+	float 					m_fsRunTurnAngular;
+	float 					m_fsRunAngular;
+	float					m_fsDrag;
+	float					m_fsSteal;
+
+	TTime					m_timeLieIdleMin;
+	TTime					m_timeLieIdleMax;
+	TTime					m_timeStandIdleMin;
+	TTime					m_timeStandIdleMax;
+	TTime					m_timeFreeWalkMin;
+	TTime					m_timeFreeWalkMax;
+	TTime					m_timeSleepMin;
+	TTime					m_timeSleepMax;
+
+	u32						m_dwProbRestWalkFree;
+	u32						m_dwProbRestStandIdle;
+	u32						m_dwProbRestLieIdle;
+	u32						m_dwProbRestTurnLeft;
+
+	float					m_fImpulseMin;
+	float					m_fImpulseMax;
+
+	float					m_fDistToCorpse;
+	float					m_fMinAttackDist;
+	float					m_fMaxAttackDist;
+
+	float					m_fDamagedThreshold;		// порог здоровья, ниже которого устанавливается флаг m_bDamaged
+
+	// -------------------------------------------------------
+
+	TTime					m_dwIdleSndDelay;
+	TTime					m_dwEatSndDelay;
+	TTime					m_dwAttackSndDelay;
+
+	// -------------------------------------------------------
+
+	// Мораль 
+	float					m_fMoraleSuccessAttackQuant;		// увеличение морали при успешной атаке
+	float					m_fMoraleDeathQuant;				// уменьшение морали при смерти монстра из одной команды
+	float					m_fMoraleFearQuant;					// уменьшение морали в панике
+	float					m_fMoraleRestoreQuant;				// квант восстановления морали ? 
+	float					m_fMoraleBroadcastDistance;			// мораль уменьшается, если в данном радиусе умер монстр из команды
+
+	// ----------------------------------------------------------- 
+
+	u32						m_dwDayTimeBegin;
+	u32						m_dwDayTimeEnd;
+	float					m_fMinSatiety;
+	float					m_fMaxSatiety;
+
+	// Other fields
+	float					m_fSoundThreshold;
+	float					m_fHitPower;
+
+};
+
+#define SHARE_ON_LOAD(pmt) {							\
+		pmt::Prepare(SUB_CLS_ID);						\
+		if (!pmt::IsLoaded()) LoadShared(section);		\
+		pmt::Finish();									\
+}
+
 class CAI_Biting : public CCustomMonster, 
 				   public CMonsterMemory,
-				   public CMonsterSound
-{
+				   public CMonsterSound,
+				   public CSharedClass<_biting_shared> {
+
+	typedef	CCustomMonster	inherited;
+	typedef CSharedClass<_biting_shared> _sd_biting;
 
 public:
-	typedef	CCustomMonster	inherited;
 	
 	// friend definitions
 	friend	class			CBitingMotion;
@@ -155,6 +230,7 @@ public:
 	// Morale
 			void			MoraleBroadcast					(float fValue);
 
+			void			LoadShared						(LPCSTR section);
 // members
 public:
 
@@ -181,11 +257,8 @@ public:
 	EBitingPathState		m_tPathState;
 	u32						m_dwPathBuiltLastTime;
 	
-	// Other fields
 	float					m_fGoingSpeed;			// speed over the path
 	u32						m_dwHealth;				
-	float					m_fSoundThreshold;
-	float					m_fHitPower;
 
 	// FSM 
 	IState					*CurrentState;
@@ -209,45 +282,9 @@ public:
 	bool					bStanding;
 	TTime					time_start_stand;			
 
-	// External Values
-	// float speed factors
-	float					m_fsTurnNormalAngular;
-	float					m_fsWalkFwdNormal;
-	float					m_fsWalkBkwdNormal;
-	float					m_fsWalkTurn;
-	float 					m_fsWalkAngular;
-	float 					m_fsWalkTurnAngular;
-	float 					m_fsRunFwdNormal;
-	float 					m_fsRunTurn;
-	float 					m_fsRunTurnAngular;
-	float 					m_fsRunAngular;
-	float					m_fsDrag;
-	float					m_fsSteal;
-
-	TTime					m_timeLieIdleMin;
-	TTime					m_timeLieIdleMax;
-	TTime					m_timeStandIdleMin;
-	TTime					m_timeStandIdleMax;
-	TTime					m_timeFreeWalkMin;
-	TTime					m_timeFreeWalkMax;
-	TTime					m_timeSleepMin;
-	TTime					m_timeSleepMax;
-
-	u32						m_dwProbRestWalkFree;
-	u32						m_dwProbRestStandIdle;
-	u32						m_dwProbRestLieIdle;
-	u32						m_dwProbRestTurnLeft;
-
-	float					m_fImpulseMin;
-	float					m_fImpulseMax;
-
-	float					m_fDistToCorpse;
-	float					m_fMinAttackDist;
-	float					m_fMaxAttackDist;
 
 	float					m_fCurMinAttackDist;		// according to attack stops
 
-	float					m_fDamagedThreshold;		// порог здоровья, ниже которого устанавливается флаг m_bDamaged
 
 	// Biting-specific states
 	CBitingRest				*stateRest;
@@ -275,10 +312,6 @@ public:
 
 	CMotionManager			MotionMan; 
 
-	u32						m_dwDayTimeBegin;
-	u32						m_dwDayTimeEnd;
-	float					m_fMinSatiety;
-	float					m_fMaxSatiety;
 
 	// -------------------------------------------------------
 	// attack stops
@@ -289,25 +322,6 @@ public:
 		bool	prev_prev_hit;
 		bool	prev_hit;
 	} _as;
-
-	// -------------------------------------------------------
-
-	TTime			m_dwIdleSndDelay;
-	TTime			m_dwEatSndDelay;
-	TTime			m_dwAttackSndDelay;
-
-	// -------------------------------------------------------
-
-	// Мораль 
-	float			m_fMoraleSuccessAttackQuant;		// увеличение морали при успешной атаке
-	float			m_fMoraleDeathQuant;				// уменьшение морали при смерти монстра из одной команды
-	float			m_fMoraleFearQuant;					// уменьшение морали в панике
-	float			m_fMoraleRestoreQuant;				// квант восстановления морали ? 
-	float			m_fMoraleBroadcastDistance;			// мораль уменьшается, если в данном радиусе умер монстр из команды
-
-	// ----------------------------------------------------------- 
-
-
 
 };
 
@@ -332,7 +346,7 @@ IC void CAI_Biting::AS_Start() {
 }
 IC void CAI_Biting::AS_Stop() {
 	_as.active				= false;
-	m_fCurMinAttackDist		= m_fMinAttackDist;
+	m_fCurMinAttackDist		= _sd->m_fMinAttackDist;
 }
 IC void CAI_Biting::AS_Check(bool hit_success) {
 	if (!_as.active) return;
@@ -342,7 +356,7 @@ IC void CAI_Biting::AS_Check(bool hit_success) {
 
 	if ((!_as.prev_prev_hit && !_as.prev_prev_hit) && ((m_fCurMinAttackDist >= _as.min_dist) && (m_fCurMinAttackDist >= _as.min_dist + _as.step))) {
 			m_fCurMinAttackDist -= _as.step;
-	} else if (_as.prev_prev_hit && _as.prev_prev_hit && (m_fCurMinAttackDist < m_fMinAttackDist - _as.step)) {
+	} else if (_as.prev_prev_hit && _as.prev_prev_hit && (m_fCurMinAttackDist < _sd->m_fMinAttackDist - _as.step)) {
 			m_fCurMinAttackDist += _as.step;
 	}
 }

@@ -52,16 +52,16 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	START_LOAD_SHARED();
 
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_idle_ls_",		-1, 0,						m_fsTurnNormalAngular,		PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_idle_rs_",		-1, 0,						m_fsTurnNormalAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_idle_ls_",		-1, 0,						_sd->m_fsTurnNormalAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_idle_rs_",		-1, 0,						_sd->m_fsTurnNormalAngular,	PS_STAND);
 	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, m_fsWalkFwdNormal,		m_fsWalkAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, m_fsWalkBkwdNormal,		m_fsWalkAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	m_fsRunFwdNormal,		m_fsRunAngular,				PS_STAND);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, _sd->m_fsWalkFwdNormal,		_sd->m_fsWalkAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, _sd->m_fsWalkBkwdNormal,		_sd->m_fsWalkAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	_sd->m_fsRunFwdNormal,		_sd->m_fsRunAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, 0,						0,							PS_SIT);
 	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,						0,							PS_STAND);
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_fsRunAngular,				PS_STAND);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						_sd->m_fsRunAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, 0,						0,							PS_SIT);
 	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,						0,							PS_SIT);
@@ -95,9 +95,9 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		1.3f, m_fHitPower, -PI_DIV_6,	PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		1.3f, m_fHitPower, 0.f,			PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, m_fHitPower, PI_DIV_3,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		1.3f, _sd->m_fHitPower, -PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	700,	center,		1.3f, _sd->m_fHitPower, 0.f,			PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, _sd->m_fHitPower, PI_DIV_3,	PI_DIV_6);
 
 	// Hit fx's
 //	MotionMan.AddHitFX("hit_high_0"); 

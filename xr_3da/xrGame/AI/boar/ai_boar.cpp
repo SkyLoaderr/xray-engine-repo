@@ -47,17 +47,17 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimLieIdle,			"lie_sleep_",			-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, m_fsWalkFwdNormal,		m_fsWalkAngular,			PS_STAND);
-	MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	m_fsRunFwdNormal,		m_fsRunAngular,				PS_STAND);
+	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, _sd->m_fsWalkFwdNormal,	_sd->m_fsWalkAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	_sd->m_fsRunFwdNormal,	_sd->m_fsRunAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, 0,						0,							PS_STAND);
-	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						m_fsRunAngular,				PS_STAND);
+	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,						_sd->m_fsRunAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimStandLieDown,	"stand_lie_down_",		-1, 0,						0,							PS_STAND);
 	MotionMan.AddAnim(eAnimLieStandUp,		"lie_stand_up_",		-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1, 0,						0,							PS_LIE);
-	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, m_fsDrag,				m_fsWalkAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, _sd->m_fsDrag,			_sd->m_fsWalkAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			 2, 0,						0,							PS_STAND);
-	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, m_fsSteal,				m_fsWalkAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, _sd->m_fsSteal,			_sd->m_fsWalkAngular,		PS_STAND);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
@@ -84,9 +84,9 @@ void CAI_Boar::Load(LPCSTR section)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		2.3f, m_fHitPower, PI_DIV_6,	PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	center,		2.3f, m_fHitPower, -PI_DIV_6,	PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		3.0f, m_fHitPower, 0,			PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		2.3f, _sd->m_fHitPower, PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	center,		2.3f, _sd->m_fHitPower, -PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		3.0f, _sd->m_fHitPower, 0,			PI_DIV_6);
 
 	STOP_LOAD_SHARED();
 }

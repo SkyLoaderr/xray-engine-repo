@@ -29,7 +29,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
 		power = 1.f;//expf(.1f*log(power));
 
-	if (power >= m_fSoundThreshold) {
+	if (power >= _sd->m_fSoundThreshold) {
 		if (this != who) {
 			HearSound(who,eType,Position,power,m_dwCurrentUpdate);
 		}
@@ -57,7 +57,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity, float fDamage, float yaw, float pitc
 			p += pitch;
 			dir.setHP(y,p);
 		}
-		float impulse = ::Random.randF(m_fImpulseMin,m_fImpulseMax);
+		float impulse = ::Random.randF(_sd->m_fImpulseMin,_sd->m_fImpulseMax);
 		pEntity->Hit(fDamage,dir,this,0,position_in_bone_space,impulse);
 	}
 }

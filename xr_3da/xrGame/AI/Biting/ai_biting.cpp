@@ -17,15 +17,21 @@ CAI_Biting::CAI_Biting()
 {
 	Movement.AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
 	m_pPhysics_support=xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etBitting,this);
+	
+	_sd_biting::OnCreate();
 }
 
 CAI_Biting::~CAI_Biting()
 {
 	xr_delete(m_pPhysics_support);
+
+	_sd_biting::OnDestroy();
 }
 
 void CAI_Biting::Init()
 {
+	inherited::Init();
+
 	// initializing class members
 	m_tCurGP						= _GRAPH_ID(-1);
 	m_tNextGP						= _GRAPH_ID(-1);
@@ -93,9 +99,11 @@ void CAI_Biting::Load(LPCSTR section)
 		m_tpaTerrain.push_back		(tTerrainPlace);
 	}
 
-	// Загрузка параметров из LTX
+	AS_Load							(section);
+
+	m_pPhysics_support				->in_Load(section);
 	
-	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
+	LoadSounds						(section);
 
 	m_tSelectorFreeHunting.Load		(section,"selector_free_hunting");
 	m_tSelectorCover.Load			(section,"selector_cover");
@@ -104,80 +112,85 @@ void CAI_Biting::Load(LPCSTR section)
 	m_tSelectorApproach.Load		(section,"selector_approach");
 
 	m_tSelectorHearSnd.Load			(section,"selector_hear_sound");	 // like _free hunting
-
+	
 	eye_fov							= pSettings->r_float(section,"EyeFov");
 	eye_range						= pSettings->r_float(section,"eye_range");
-	m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
-
-	m_dwHealth						= pSettings->r_u32   (section,"Health");
-	m_fHitPower						= pSettings->r_float (section,"hit_power");
-	
-	fEntityHealth					= (float)m_dwHealth;
 
 	// prefetching
 	cNameVisual_set					(pSettings->r_string(section,"visual"));
-
-	m_fImpulseMin					= pSettings->r_float(section,"ImpulseMin");
-	m_fImpulseMax					= pSettings->r_float(section,"ImpulseMax");
-
-	m_fsTurnNormalAngular			= pSettings->r_float(section,"TurnNormalAngular");
-	m_fsWalkFwdNormal				= pSettings->r_float(section,"WalkFwdNormal");
-	m_fsWalkBkwdNormal				= pSettings->r_float(section,"WalkBkwdNormal");
-	m_fsWalkTurn					= pSettings->r_float(section,"WalkTurn");
-	m_fsWalkAngular					= pSettings->r_float(section,"WalkAngular");
-	m_fsWalkTurnAngular				= pSettings->r_float(section,"WalkTurnAngular");
-	m_fsRunFwdNormal				= pSettings->r_float(section,"RunFwdNormal");
-	m_fsRunTurn						= pSettings->r_float(section,"RunTurn");
-	m_fsRunTurnAngular				= pSettings->r_float(section,"RunTurnAngular");
-	m_fsRunAngular					= pSettings->r_float(section,"RunAngular");
-	m_fsDrag						= pSettings->r_float(section,"Drag");
-	m_fsSteal						= pSettings->r_float(section,"Steal");
-
-	m_timeLieIdleMin				= pSettings->r_u32   (section,"LieIdleTimeMin");
-	m_timeLieIdleMax				= pSettings->r_u32   (section,"LieIdleTimeMax");
-	m_timeStandIdleMin				= pSettings->r_u32   (section,"StandIdleTimeMin");
-	m_timeStandIdleMax				= pSettings->r_u32   (section,"StandIdleTimeMax");
-	m_timeFreeWalkMin				= pSettings->r_u32   (section,"FreeWalkTimeMin");
-	m_timeFreeWalkMax				= pSettings->r_u32   (section,"FreeWalkTimeMax");
-	m_timeSleepMin					= pSettings->r_u32   (section,"SleepTimeMin");
-	m_timeSleepMax					= pSettings->r_u32   (section,"SleepTimeMax");
 	
-	m_dwProbRestWalkFree			= pSettings->r_u32   (section,"ProbRestWalkFree");
-	m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
-	m_dwProbRestLieIdle				= pSettings->r_u32   (section,"ProbRestLieIdle");
-	m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
+	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
+	m_dwHealth						= pSettings->r_u32		(section,"Health");
 
-	m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
-	m_dwDayTimeEnd					= pSettings->r_u32	(section,"DayTime_End");		
-	m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
-	m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
+	fEntityHealth					= (float)m_dwHealth;
 
-	m_fDistToCorpse					= pSettings->r_float(section,"distance_to_corpse");
-	m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
-	m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
+	
+	// Load shared data
+	SHARE_ON_LOAD(_sd_biting);
 
-	m_fDamagedThreshold				= pSettings->r_float(section,"DamagedThreshold");
-	m_fCurMinAttackDist				= m_fMinAttackDist;
-
-
-
-	m_dwIdleSndDelay				= pSettings->r_u32(section,"idle_sound_delay");
-	m_dwEatSndDelay					= pSettings->r_u32(section,"eat_sound_delay");
-	m_dwAttackSndDelay				= pSettings->r_u32(section,"attack_sound_delay");
-
-	m_fMoraleSuccessAttackQuant		= pSettings->r_float(section,"MoraleSuccessAttackQuant");
-	m_fMoraleDeathQuant				= pSettings->r_float(section,"MoraleDeathQuant");
-	m_fMoraleFearQuant				= pSettings->r_float(section,"MoraleFearQuant");
-	m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
-	m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
-
-	AS_Load							(section);
-
-	m_pPhysics_support				->in_Load(section);
-	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
-
-	LoadSounds						(section);
+	m_fCurMinAttackDist				= _sd->m_fMinAttackDist;
 }
+
+void CAI_Biting::LoadShared(LPCSTR section)
+{
+	// Загрузка параметров из LTX
+	_sd->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
+	_sd->m_fHitPower					= pSettings->r_float (section,"hit_power");
+
+	_sd->m_fImpulseMin					= pSettings->r_float(section,"ImpulseMin");
+	_sd->m_fImpulseMax					= pSettings->r_float(section,"ImpulseMax");
+
+	_sd->m_fsTurnNormalAngular			= pSettings->r_float(section,"TurnNormalAngular");
+	_sd->m_fsWalkFwdNormal				= pSettings->r_float(section,"WalkFwdNormal");
+	_sd->m_fsWalkBkwdNormal				= pSettings->r_float(section,"WalkBkwdNormal");
+	_sd->m_fsWalkTurn					= pSettings->r_float(section,"WalkTurn");
+	_sd->m_fsWalkAngular				= pSettings->r_float(section,"WalkAngular");
+	_sd->m_fsWalkTurnAngular			= pSettings->r_float(section,"WalkTurnAngular");
+	_sd->m_fsRunFwdNormal				= pSettings->r_float(section,"RunFwdNormal");
+	_sd->m_fsRunTurn					= pSettings->r_float(section,"RunTurn");
+	_sd->m_fsRunTurnAngular				= pSettings->r_float(section,"RunTurnAngular");
+	_sd->m_fsRunAngular					= pSettings->r_float(section,"RunAngular");
+	_sd->m_fsDrag						= pSettings->r_float(section,"Drag");
+	_sd->m_fsSteal						= pSettings->r_float(section,"Steal");
+
+	_sd->m_timeLieIdleMin				= pSettings->r_u32   (section,"LieIdleTimeMin");
+	_sd->m_timeLieIdleMax				= pSettings->r_u32   (section,"LieIdleTimeMax");
+	_sd->m_timeStandIdleMin				= pSettings->r_u32   (section,"StandIdleTimeMin");
+	_sd->m_timeStandIdleMax				= pSettings->r_u32   (section,"StandIdleTimeMax");
+	_sd->m_timeFreeWalkMin				= pSettings->r_u32   (section,"FreeWalkTimeMin");
+	_sd->m_timeFreeWalkMax				= pSettings->r_u32   (section,"FreeWalkTimeMax");
+	_sd->m_timeSleepMin					= pSettings->r_u32   (section,"SleepTimeMin");
+	_sd->m_timeSleepMax					= pSettings->r_u32   (section,"SleepTimeMax");
+
+	_sd->m_dwProbRestWalkFree			= pSettings->r_u32   (section,"ProbRestWalkFree");
+	_sd->m_dwProbRestStandIdle			= pSettings->r_u32   (section,"ProbRestStandIdle");
+	_sd->m_dwProbRestLieIdle			= pSettings->r_u32   (section,"ProbRestLieIdle");
+	_sd->m_dwProbRestTurnLeft			= pSettings->r_u32   (section,"ProbRestTurnLeft");
+
+	_sd->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
+	_sd->m_dwDayTimeEnd					= pSettings->r_u32	(section,"DayTime_End");		
+	_sd->m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
+	_sd->m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
+
+	_sd->m_fDistToCorpse				= pSettings->r_float(section,"distance_to_corpse");
+	_sd->m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
+	_sd->m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
+
+	_sd->m_fDamagedThreshold			= pSettings->r_float(section,"DamagedThreshold");
+	
+	_sd->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");
+	_sd->m_dwEatSndDelay				= pSettings->r_u32	(section,"eat_sound_delay");
+	_sd->m_dwAttackSndDelay				= pSettings->r_u32	(section,"attack_sound_delay");
+
+	_sd->m_fMoraleSuccessAttackQuant	= pSettings->r_float(section,"MoraleSuccessAttackQuant");
+	_sd->m_fMoraleDeathQuant			= pSettings->r_float(section,"MoraleDeathQuant");
+	_sd->m_fMoraleFearQuant				= pSettings->r_float(section,"MoraleFearQuant");
+	_sd->m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
+	_sd->m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
+
+	R_ASSERT2 ((_sd->m_dwProbRestWalkFree + _sd->m_dwProbRestStandIdle + _sd->m_dwProbRestLieIdle + _sd->m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
+}
+
 
 BOOL CAI_Biting::net_Spawn (LPVOID DC) 
 {
@@ -323,6 +336,6 @@ void CAI_Biting::MoraleBroadcast(float fValue)
 		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(Group.Members[i]);
 		if (!pE) continue;
 		
-		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
+		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < _sd->m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
 	}
 }

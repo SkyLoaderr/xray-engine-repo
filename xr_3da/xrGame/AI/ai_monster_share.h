@@ -94,4 +94,25 @@ public:
 };
 
 
+template<class shared_struc> class CSharedClass {
+public:
+	shared_struc				*_sd;
+	CSharedObj<shared_struc>	*pSharedObj;
+
+			void	OnCreate	()	{pSharedObj	= CSharedObj<shared_struc>::Instance();}
+			void	OnDestroy	()	{pSharedObj->FreeInst();}
+
+			bool	IsLoaded	() {return _sd->IsLoaded();}
+			void	Prepare		(CLASS_ID cls_id)	{_sd = pSharedObj->get_shared(cls_id);}
+			void	Finish		()	{_sd->SetLoad();}
+
+			//			void	OnLoad		(CLASS_ID cls_id, LPCSTR section)	{Prepare(cls_id); LoadShared(section); Finish();}
+			//			bool	Load		(LPCSTR section) {if (_sd->IsLoaded()) return true; else return false;}
+};
+
+
+//#define SHARE_ON_CONSTRUCTION(shared_struc) {pSharedObj	= CSharedObj<shared_struc>::Instance();}
+//#define SHARE_ON_DESTROY()					{pSharedObj->FreeInst();}
+//#define SHARE_PREPARE(cls_id)				{_sd = pSharedObj->get_shared(cls_id);}
+//#define SHARE_FINISH()						{_sd->SetLoad();}
 

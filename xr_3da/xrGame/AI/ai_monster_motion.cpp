@@ -282,34 +282,36 @@ void CMotionManager::ProcessAction()
 		// установить target.yaw
 		if (!pMonster->AI_Path.TravelPath.empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
-		// проверить необходимость установки анимации поворота
-		float &cur_yaw		= pMonster->r_torso_current.yaw;
-		float &target_yaw	= pMonster->r_torso_target.yaw;
-		if (MI.is_turn_params) {
-			if (!getAI().bfTooSmallAngle(cur_yaw, target_yaw, MI.turn.min_angle)) {
-				// необходим поворот влево или вправо
-				if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
-				else													cur_anim = MI.turn.anim_left; 	// влево
-
-				Seq_Add(cur_anim);
-				Seq_Switch();
-			}
-		}	
-
-		pMonster->ProcessTurn();
-
 		// если новая анимация не совпадает с предыдущей, проверить переход
 		if (prev_anim != cur_anim) CheckTransition(prev_anim, cur_anim);
-
+		
 		if (!seq_playing) {
+			// проверить необходимость установки анимации поворота
+			float &cur_yaw		= pMonster->r_torso_current.yaw;
+			float &target_yaw	= pMonster->r_torso_target.yaw;
+			if (MI.is_turn_params) {
+				if (!getAI().bfTooSmallAngle(cur_yaw, target_yaw, MI.turn.min_angle)) {
+					// необходим поворот влево или вправо
+					if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
+					else													cur_anim = MI.turn.anim_left; 	// влево
+
+					Seq_Add(cur_anim);
+					Seq_Switch();
+				}
+			}	
+
+			pMonster->ProcessTurn();
+		
 			// Проверить ASP и доп. параметры анимации (kinda damaged)
 			pMonster->CheckSpecParams(spec_params); 
 
-			// проверить подмну анимаций
-			CheckReplacedAnim();
+			if (!seq_playing) {
+				// проверить подмну анимаций
+				CheckReplacedAnim();
 
-			// если монстр стоит на месте и играет анимацию движения, принять stand_idle
-			FixBadState();
+				// если монстр стоит на месте и играет анимацию движения, принять stand_idle
+				FixBadState();
+			}
 		}
 	} 
 

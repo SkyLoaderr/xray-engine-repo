@@ -44,14 +44,14 @@ void CBitingRest::Replanning()
 	u32		dwMinRand, dwMaxRand;
 	u8		day_time = Level().GetDayTime();
 
-	if ((day_time >= pMonster->m_dwDayTimeBegin) && (day_time <= pMonster->m_dwDayTimeEnd)) {  // день?
+	if ((day_time >= pMonster->_sd->m_dwDayTimeBegin) && (day_time <= pMonster->_sd->m_dwDayTimeEnd)) {  // день?
 
-		bool bNormalSatiety = (pMonster->GetSatiety() > pMonster->m_fMinSatiety) && (pMonster->GetSatiety() < pMonster->m_fMaxSatiety); 
+		bool bNormalSatiety = (pMonster->GetSatiety() > pMonster->_sd->m_fMinSatiety) && (pMonster->GetSatiety() < pMonster->_sd->m_fMaxSatiety); 
 		if (bNormalSatiety) {		// отдых
 			WRITE_TO_LOG("ACTION_SATIETY_GOOD");
 			m_tAction = ACTION_SATIETY_GOOD;
 
-			dwMinRand = pMonster->m_timeLieIdleMin;	 dwMaxRand = pMonster->m_timeLieIdleMax;
+			dwMinRand = pMonster->_sd->m_timeLieIdleMin;	 dwMaxRand = pMonster->_sd->m_timeLieIdleMax;
 
 		} else {					// бродит, ищет еду
 			WRITE_TO_LOG("ACTION_WALK");
@@ -62,7 +62,7 @@ void CBitingRest::Replanning()
 			pMonster->vfUpdateDetourPoint();	
 			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
 
-			dwMinRand = pMonster->m_timeFreeWalkMin;  dwMaxRand = pMonster->m_timeFreeWalkMax;
+			dwMinRand = pMonster->_sd->m_timeFreeWalkMin;  dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
 	} else { // ночь
 
@@ -73,7 +73,7 @@ void CBitingRest::Replanning()
 			WRITE_TO_LOG("ACTION_SLEEP");
 			m_tAction = ACTION_SLEEP;
 
-			dwMinRand = pMonster->m_timeSleepMin; dwMaxRand = pMonster->m_timeSleepMax; 
+			dwMinRand = pMonster->_sd->m_timeSleepMin; dwMaxRand = pMonster->_sd->m_timeSleepMax; 
 
 		} else {
 			// бродить (настороженно), часто осматриваться по сторонам
@@ -85,7 +85,7 @@ void CBitingRest::Replanning()
 			pMonster->vfUpdateDetourPoint();	
 			pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
 
-			dwMinRand = pMonster->m_timeFreeWalkMin; dwMaxRand = pMonster->m_timeFreeWalkMax;
+			dwMinRand = pMonster->_sd->m_timeFreeWalkMin; dwMaxRand = pMonster->_sd->m_timeFreeWalkMax;
 		}
 	}
 
@@ -128,7 +128,7 @@ void CBitingRest::Run()
 			break;
 	}
 
-	pMonster->SetSound(SND_TYPE_IDLE, pMonster->m_dwIdleSndDelay);
+	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
 }
 
 

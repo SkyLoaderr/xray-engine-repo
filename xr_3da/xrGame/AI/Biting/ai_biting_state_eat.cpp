@@ -40,7 +40,7 @@ void CBitingEat::Init()
 	pCorpse = ve.obj;
 
 	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
-	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->m_fDistToCorpse); 
+	m_fDistToCorpse = ((bEatRat)? 1.0f : pMonster->_sd->m_fDistToCorpse); 
 
 	SavedPos			= pCorpse->Position();		// сохранить позицию трупа
 	m_fDistToDrag		= 20.f;
@@ -191,7 +191,7 @@ void CBitingEat::Run()
 			// съесть часть
 			DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, m_dwEatInterval);
 				pMonster->ChangeSatiety(0.05f);
-				pCorpse->m_fFood -= pMonster->m_fHitPower/5.f;
+				pCorpse->m_fFood -= pMonster->_sd->m_fHitPower/5.f;
 			DO_IN_TIME_INTERVAL_END();
 
 			break;
@@ -215,7 +215,7 @@ void CBitingEat::Run()
 			break;
 	}
 
-	pMonster->SetSound(SND_TYPE_EAT, pMonster->m_dwEatSndDelay);
+	pMonster->SetSound(SND_TYPE_EAT, pMonster->_sd->m_dwEatSndDelay);
 }
 
 void CBitingEat::Done()
