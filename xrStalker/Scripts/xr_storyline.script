@@ -1,10 +1,10 @@
 function set_storyline(object, char_ini)
     local actor = level.actor()
 
-	-- подключение всей энциклопедии
+	-- ╟руЁєчър эрўры№э√ї ярЁрьхЄЁют
 	if actor ~= nil then
 	       actor:give_info_portion("encyclopedy")
-	       actor:give_info_portion("actor_start_dialogs")
+	       actor:give_info_portion("storyline_actor_start")
 	end
 
         -- Реакция на бобика

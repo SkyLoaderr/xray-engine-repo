@@ -62,7 +62,8 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
     object_binder.reinit(self)
-    self.object:set_pda_callback(this.pda_call_back)
+    
+    --self.object:set_pda_callback(this.pda_call_back)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
