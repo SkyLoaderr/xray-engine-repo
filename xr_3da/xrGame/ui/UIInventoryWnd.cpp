@@ -254,7 +254,8 @@ void CUIInventoryWnd::Update()
 			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i]->GetData();
 			if(pItem && !pItem->Useful())
 			{
-				m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
+				if( m_vDragDropItems[i]->GetParent() )
+					m_vDragDropItems[i]->GetParent()->DetachChild(m_vDragDropItems[i]);
 				m_vDragDropItems[i]->SetData(NULL);
 				m_vDragDropItems[i]->SetCustomDraw(NULL);
 				
