@@ -49,12 +49,20 @@ function test_avi_dlg:InitControls()
 end
 
 
-function _main()
-end
 
 function main()
+
+	if _G.g_start_avi==nil then
+		_G.g_start_avi=false
+	end
+
+	while _G.g_start_avi ~= true do
+		wait()
+	end
+
+
 	local dlg = test_avi_dlg()
---[[	
+	
 	local snd = sound_object(
 		"characters_voice\\human_01\\scenario\\gunslinger\\start_dream_l",
 		sound_object.s2d
@@ -75,7 +83,6 @@ function main()
 	wait(16000)
 	level.remove_dialog_to_render(dlg)
 	level.show_indicators()
-	]]
---	wait(10000)
+
 end
 
