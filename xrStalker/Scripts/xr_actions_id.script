@@ -10,12 +10,13 @@ global_actions = stalker_ids.action_script
 -- Стохе
 stohe_actions = stalker_ids.action_script + 100
 
-stohe_tradeseller_init    = stohe_actions + 1
+stohe_tradeseller_init    	= stohe_actions + 1
 
-stohe_tradeseller_base     = stohe_actions + 10
-stohe_kamp_base      = stohe_actions + 20
-stohe_meet_base      = stohe_actions + 30
-stohe_reactions_base = stohe_actions + 40
+stohe_tradeseller_base     	= stohe_actions + 10
+stohe_kamp_base      		= stohe_actions + 20
+stohe_meet_base      		= stohe_actions + 30
+stohe_reactions_base 		= stohe_actions + 40
+stohe_state_base		= stohe_actions + 50
 
 --Sidorovich
 sidor_actions = stohe_actions + 1024
