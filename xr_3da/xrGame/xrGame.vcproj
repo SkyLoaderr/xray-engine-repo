@@ -785,6 +785,30 @@
 					</Filter>
 				</Filter>
 				<Filter
+					Name="MotivationManagement"
+					Filter="">
+					<Filter
+						Name="Motivation"
+						Filter="">
+						<File
+							RelativePath=".\motivation.h">
+						</File>
+						<File
+							RelativePath=".\motivation_inline.h">
+						</File>
+					</Filter>
+					<Filter
+						Name="MotivationManager"
+						Filter="">
+						<File
+							RelativePath=".\motivation_manager.h">
+						</File>
+						<File
+							RelativePath=".\motivation_manager_inline.h">
+						</File>
+					</Filter>
+				</Filter>
+				<Filter
 					Name="MovementManager"
 					Filter="">
 					<File
