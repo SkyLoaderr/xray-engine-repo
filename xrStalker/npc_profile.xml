@@ -10,13 +10,14 @@
 		-->
 	</character>
 	
-	<character name_id="novice" id="default">
-		<name>Undefined Character</name>
+	<character id="default">
+		<!--<name>Undefined Character</name>
 		<icon x="0" y="0"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<rank>none</rank>
 		<team>none</team>
 		<start_dialog></start_dialog>
+		-->
 	</character>
 	
 	
