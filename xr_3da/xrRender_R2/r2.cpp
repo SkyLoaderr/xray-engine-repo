@@ -227,14 +227,15 @@ void	CRender::Statistics	(CGameFont* _F)
 }
 
 /////////
-#pragma comment(lib,"d3dx_r2")
+#pragma comment(lib,"d3dx9.lib")
 
+/*
 extern "C"
 {
 	LPCSTR WINAPI	D3DXGetPixelShaderProfile	(LPDIRECT3DDEVICE9  pDevice);
 	LPCSTR WINAPI	D3DXGetVertexShaderProfile	(LPDIRECT3DDEVICE9	pDevice);
 };
-
+*/
 HRESULT	CRender::CompileShader			(
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
@@ -281,10 +282,11 @@ HRESULT	CRender::CompileShader			(
 	// 
 	if ('v'==pTarget[0])			pTarget = D3DXGetVertexShaderProfile	(HW.pDevice);	// vertex
 	else							pTarget = D3DXGetPixelShaderProfile		(HW.pDevice);	// pixel
+	Log								("target:",pTarget);
 
 	LPD3DXINCLUDE                   pInclude		= (LPD3DXINCLUDE)		_pInclude;
     LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
     LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
     LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
-	return D3DXCompileShader		(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,9,ppShader,ppErrorMsgs,ppConstantTable);
+	return D3DXCompileShader		(pSrcData,SrcDataLen,defines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
 }

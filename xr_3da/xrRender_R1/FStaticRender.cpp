@@ -435,7 +435,8 @@ void	CRender::ApplyBlur4		(FVF::TL4uv* pv, u32 w, u32 h, float k)
 	pv->p.set(float(_w+EPS),EPS,			EPS,1.f); pv->color=_c; pv->uv[0].set(p1.x-kw,p0.y-kh);pv->uv[1].set(p1.x+kw,p0.y+kh);pv->uv[2].set(p1.x+kw,p0.y-kh);pv->uv[3].set(p1.x-kw,p0.y+kh);pv++;
 }
 
-#pragma comment(lib,"d3dx_r1")
+#pragma comment(lib,"d3dx9.lib")
+
 HRESULT	CRender::CompileShader			(
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
@@ -453,5 +454,5 @@ HRESULT	CRender::CompileShader			(
         LPD3DXBUFFER*                   ppShader		= (LPD3DXBUFFER*)		_ppShader;
         LPD3DXBUFFER*                   ppErrorMsgs		= (LPD3DXBUFFER*)		_ppErrorMsgs;
         LPD3DXCONSTANTTABLE*            ppConstantTable	= (LPD3DXCONSTANTTABLE*)_ppConstantTable;
-		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,17,ppShader,ppErrorMsgs,ppConstantTable);
+		return D3DXCompileShader		(pSrcData,SrcDataLen,pDefines,pInclude,pFunctionName,pTarget,Flags,ppShader,ppErrorMsgs,ppConstantTable);
 }
