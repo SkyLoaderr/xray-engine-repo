@@ -199,5 +199,28 @@ void CAI_ALife::vfTaskInfo(_TASK_ID &tTaskID)
 void CAI_ALife::vfSpawnPointInfo(_SPAWN_ID &tSpawnID)
 {
 	SSpawnPoint &tSpawnPoint = m_tpSpawnPoints[tSpawnID];
+	Msg("%s->Spawn-point information :",cName());
+	Msg("* Model                   : %s",tSpawnPoint.caModel);
+	Msg("* Team                    : %d",tSpawnPoint.ucTeam);
+	Msg("* Squad                   : %d",tSpawnPoint.ucSquad);
+	Msg("* Group                   : %d",tSpawnPoint.ucGroup);
+	Msg("* Group ID	               : %d",tSpawnPoint.wGroupID);
+	Msg("* Count	               : %d",tSpawnPoint.wCount);
+	Msg("* BirthRadius	           : %6.2f",tSpawnPoint.fBirthRadius);
+	Msg("* BirthProbability	       : %6.2f",tSpawnPoint.fBirthProbability);
+	Msg("* IncreaseCoefficient     : %6.2f",tSpawnPoint.fIncreaseCoefficient);
+	Msg("* AnomalyDeathProbability : %6.2f",tSpawnPoint.fAnomalyDeathProbability);
+	
+	GRAPH_IT	it = tSpawnPoint.tpRouteGraphPoints.begin();
+	GRAPH_IT	E  = tSpawnPoint.tpRouteGraphPoints.end();
+	string4096		S;
+	string16		S1;
+	S[0] = 0;
+	for (int j=0; it != E; it++, j++) {
+		if (j)
+			strcat(S,",");
+		strcat(S,itoa(*it,S1,10));
+	}
+	Msg("* RouteGraphPoints[%2d]    : %s",tSpawnPoint.ucRoutePointCount,S);
 }
 #endif

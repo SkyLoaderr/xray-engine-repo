@@ -39,7 +39,7 @@ void CAI_ALife::vfInitLocationOwners()
 		_SPAWN_ID	tSpawnID	= (*it).second->m_tSpawnID;
 		_OBJECT_ID	tObjectID	= (*it).second->m_tObjectID;
 		for (int j=0, iCount = (int)m_tpSpawnPoints[tSpawnID].ucRoutePointCount; j<iCount; j++)
-			m_tpLocationOwners[m_tpSpawnPoints[tSpawnID].wpRouteGraphPoints[j]].push_back(tObjectID);
+			m_tpLocationOwners[m_tpSpawnPoints[tSpawnID].tpRouteGraphPoints[j]].push_back(tObjectID);
 	}
 }
 
@@ -112,13 +112,13 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 		m_tpSpawnPoints[i].fBirthProbability			= 1.0f;
 		m_tpSpawnPoints[i].fIncreaseCoefficient		= 1.01f;
 		m_tpSpawnPoints[i].fAnomalyDeathProbability	= 0.0f;
-		m_tpSpawnPoints[i].wpRouteGraphPoints.push_back(m_tpSpawnPoints[i].tNearestGraphPointID);
+		m_tpSpawnPoints[i].tpRouteGraphPoints.push_back(m_tpSpawnPoints[i].tNearestGraphPointID);
 		u16				wPoint = m_tpSpawnPoints[i].tNearestGraphPointID;
 		int				wCount = tpaGraph[wPoint].dwNeighbourCount;
 		AI::SGraphEdge	*tpaEdges = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint].dwEdgeOffset);
 		for ( j=0; j<(int)wCount; j++) {
 			if (!tpMarks[tpaEdges[j].dwVertexNumber]) {
-				m_tpSpawnPoints[i].wpRouteGraphPoints.push_back((u16)tpaEdges[j].dwVertexNumber);
+				m_tpSpawnPoints[i].tpRouteGraphPoints.push_back((u16)tpaEdges[j].dwVertexNumber);
 				tpMarks[tpaEdges[j].dwVertexNumber] = true;
 			}
 			u32				wPoint1 = tpaEdges[j].dwVertexNumber;
@@ -126,13 +126,13 @@ void CAI_ALife::vfGenerateSpawnPoints(u32 dwSpawnCount)
 			AI::SGraphEdge	*tpaEdges1 = (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[wPoint1].dwEdgeOffset);
 			for (int k=0; k<wCount1; k++)
 				if (!tpMarks[tpaEdges1[k].dwVertexNumber]) {
-					m_tpSpawnPoints[i].wpRouteGraphPoints.push_back((u16)tpaEdges1[k].dwVertexNumber);
+					m_tpSpawnPoints[i].tpRouteGraphPoints.push_back((u16)tpaEdges1[k].dwVertexNumber);
 					tpMarks[tpaEdges1[k].dwVertexNumber] = true;
 				}
 		}
-		m_tpSpawnPoints[i].ucRoutePointCount			= (u8)m_tpSpawnPoints[i].wpRouteGraphPoints.size();
+		m_tpSpawnPoints[i].ucRoutePointCount			= (u8)m_tpSpawnPoints[i].tpRouteGraphPoints.size();
 		for ( j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
-			tpMarks[m_tpSpawnPoints[i].wpRouteGraphPoints[j]] = false;
+			tpMarks[m_tpSpawnPoints[i].tpRouteGraphPoints[j]] = false;
 	}
 	sort(m_tpSpawnPoints.begin(),m_tpSpawnPoints.end(),bfSpawnPointPredicate);
 }
@@ -158,7 +158,7 @@ void CAI_ALife::vfSaveSpawnPoints()
 		tStream.Wfloat	(m_tpSpawnPoints[i].fAnomalyDeathProbability);
 		tStream.Wbyte	(m_tpSpawnPoints[i].ucRoutePointCount);
 		for (int j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
-			tStream.Wword(m_tpSpawnPoints[i].wpRouteGraphPoints[j]);
+			tStream.Wword(m_tpSpawnPoints[i].tpRouteGraphPoints[j]);
 	}
 	tStream.close_chunk	();
 	tStream.SaveTo		("game.spawn",0);
@@ -185,9 +185,9 @@ void CAI_ALife::vfLoadSpawnPoints(CStream *tpStream)
 		m_tpSpawnPoints[i].fIncreaseCoefficient		= tpStream->Rfloat();
 		m_tpSpawnPoints[i].fAnomalyDeathProbability	= tpStream->Rfloat();
 		m_tpSpawnPoints[i].ucRoutePointCount		= tpStream->Rbyte();
-		m_tpSpawnPoints[i].wpRouteGraphPoints.resize(m_tpSpawnPoints[i].ucRoutePointCount);
+		m_tpSpawnPoints[i].tpRouteGraphPoints.resize(m_tpSpawnPoints[i].ucRoutePointCount);
 		for (int j=0; j<(int)m_tpSpawnPoints[i].ucRoutePointCount; j++)
-			m_tpSpawnPoints[i].wpRouteGraphPoints[j] = tpStream->Rword();
+			m_tpSpawnPoints[i].tpRouteGraphPoints[j] = tpStream->Rword();
 	}
 }
 
@@ -381,7 +381,7 @@ void CAI_ALife::vfChooseNextRoutePoint(CALifeMonster	*tpALifeMonster)
 		u16					wNeighbourCount = (u16)tpaGraph[tGraphID].dwNeighbourCount;
 		AI::SGraphEdge		*tpaEdges		= (AI::SGraphEdge *)((BYTE *)tpaGraph + tpaGraph[tGraphID].dwEdgeOffset);
 		int					iPointCount		= (int)m_tpSpawnPoints[tpALifeMonster->m_tSpawnID].ucRoutePointCount;
-		GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonster->m_tSpawnID].wpRouteGraphPoints;
+		GRAPH_VECTOR		&wpaVertexes	= m_tpSpawnPoints[tpALifeMonster->m_tSpawnID].tpRouteGraphPoints;
 		int					iBranches		= 0;
 		bool bOk = false;
 		for (int i=0; i<wNeighbourCount; i++)

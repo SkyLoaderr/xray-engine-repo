@@ -134,7 +134,7 @@ namespace ALife {
 		float						fIncreaseCoefficient;
 		float						fAnomalyDeathProbability;
 		u8							ucRoutePointCount;
-		GRAPH_VECTOR				wpRouteGraphPoints;
+		GRAPH_VECTOR				tpRouteGraphPoints;
 	} SSpawnPoint;
 
 	typedef struct tagSGraphPoint {

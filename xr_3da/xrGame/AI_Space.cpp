@@ -172,7 +172,7 @@ void CAI_Space::Render()
 			if (tpGame->m_tALife.m_bLoaded) {
 				for ( i=0; i<(int)tpGame->m_tALife.m_tpScheduledObjects.size(); i++)
 					for (int j=0; j<(int)tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].ucRoutePointCount; j++) {
-						Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].wpRouteGraphPoints[j]].tPoint;
+						Fvector t2 = m_tpaGraph[tpGame->m_tALife.m_tpSpawnPoints[tpGame->m_tALife.m_tpScheduledObjects[i]->m_tSpawnID].tpRouteGraphPoints[j]].tPoint;
 						t2.y += .6f;
 						NORMALIZE_VECTOR(t2);
 						Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,255,0));

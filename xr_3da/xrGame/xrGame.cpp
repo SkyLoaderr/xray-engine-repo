@@ -220,7 +220,7 @@ public:
 				tpGame->m_tALife.vfListEvents();
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -237,7 +237,7 @@ public:
 				tpGame->m_tALife.vfListTasks();
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -254,7 +254,7 @@ public:
 				tpGame->m_tALife.vfListLocations();
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -271,7 +271,7 @@ public:
 				tpGame->m_tALife.vfListTerrain();
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -288,7 +288,7 @@ public:
 				tpGame->m_tALife.vfListSpawnPoints();
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -310,7 +310,7 @@ public:
 					tpGame->m_tALife.vfObjectInfo(id1);
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -326,13 +326,13 @@ public:
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				ALife::_EVENT_ID id1 = ALife::_EVENT_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tObjectRegistry.m_tObjectID)
+				if (id1 >= tpGame->m_tALife.m_tEventRegistry.m_tEventID)
 					Msg("Invalid event ID! (%d)",id1);
 				else
 					tpGame->m_tALife.vfEventInfo(id1);
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -348,13 +348,13 @@ public:
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
 				ALife::_TASK_ID id1 = ALife::_TASK_ID(-1);
 				sscanf(args ,"%d",&id1);
-				if (id1 >= tpGame->m_tALife.m_tObjectRegistry.m_tObjectID)
+				if (id1 >= tpGame->m_tALife.m_tTaskRegistry.m_tTaskID)
 					Msg("Invalid task ID! (%d)",id1);
 				else
 					tpGame->m_tALife.vfTaskInfo(id1);
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
@@ -368,20 +368,23 @@ public:
 		if (Level().game.type == GAME_SINGLE) {
 			game_sv_Single *tpGame = dynamic_cast<game_sv_Single *>(Level().Server->game);
 			if (tpGame && tpGame->m_tALife.m_bLoaded) {
-				ALife::_SPAWN_ID id1 = ALife::_SPAWN_ID(-1);
+				u32 id1 = u32(-1);
 				sscanf(args ,"%d",&id1);
 				if (id1 >= tpGame->m_tALife.m_tpSpawnPoints.size())
-					Msg("Invalid spawn-point ID! (%d)",id1);
-				else
-					tpGame->m_tALife.vfSpawnPointInfo(id1);
+					Msg("Invalid task ID! (%d)",id1);
+				else {
+					ALife::_SPAWN_ID id = ALife::_SPAWN_ID(id1);
+					tpGame->m_tALife.vfSpawnPointInfo(id);
+				}
 			}
 			else
-				Log("!ALife simulation cannot be saved!");
+				Log("!ALife parameters are not loaded!");
 		}
 		else
 			Log("!Not a single player game!");
 	}
 };
+
 #endif
 //-----------------------------------------------------------------------
 class CCC_DemoRecord : public CConsoleCommand
