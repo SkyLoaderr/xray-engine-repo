@@ -91,6 +91,18 @@ public:
 		}
 	}
 
+	IC	BOOL		Similar		(CMatrix& M)		// comare by modes and params
+	{
+		if (dwMode!=M.dwMode)				return FALSE;
+		if (tcm!=M.tcm)						return FALSE;
+		if (!scaleU.Similar(M.scaleU))		return FALSE;
+		if (!scaleV.Similar(M.scaleV))		return FALSE;
+		if (!rotate.Similar(M.rotate))		return FALSE;
+		if (!scrollU.Similar(M.scrollU))	return FALSE;
+		if (!scrollV.Similar(M.scrollV))	return FALSE;
+		return TRUE;
+	}
+
 	void			Load		(CStream* fs);
 	void			Save		(CFS_Base* fs);
 };
