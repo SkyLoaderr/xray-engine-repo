@@ -21,7 +21,7 @@ void*	xrMemory::mem_alloc		(size_t size)
 {
 	stat_calls++;
 
-	if (size>14310800 && size<14310860)	__asm int 3;
+	// if (size>14310800 && size<14310860)	__asm int 3;
 
 	//
 	void* _ptr					= 0;

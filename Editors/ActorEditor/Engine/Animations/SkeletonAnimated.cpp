@@ -591,6 +591,9 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 
 	// Init blend pool
 	IBlend_Startup	();
+
+	if (m_cycle->size()<2)			
+		Msg("! WARNING: model '%s' has only one motion. Candidate for SkeletonRigid???",N);
 }
 
 //------------------------------------------------------------------------------
