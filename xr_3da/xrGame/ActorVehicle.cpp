@@ -61,24 +61,24 @@ void CActor::detach_Vehicle()
 	//mstate_wishful &=~mcAnyMove;
 }
 
-bool CActor::use_Vehicle(CGameObject* object,int element)
+bool CActor::use_Vehicle(CGameObject* object)
 {
 	
 	CCar* vehicle=dynamic_cast<CCar*>(object);
 	Fvector center;
 	Center(center);
 	if(m_vehicle){
-		if(!vehicle&& m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center)) detach_Vehicle();
+		if(!vehicle&& m_vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center)) detach_Vehicle();
 		else
 		{
 			if(m_vehicle==vehicle)
-				if(m_vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();
+				if(m_vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center))detach_Vehicle();
 		}
 		return true;
 	}else{
 		if(vehicle)
 		{
-			if( vehicle->Use(element,Device.vCameraPosition, Device.vCameraDirection,center))
+			if( vehicle->Use(Device.vCameraPosition, Device.vCameraDirection,center))
 			{
 				if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
 
@@ -89,7 +89,7 @@ bool CActor::use_Vehicle(CGameObject* object,int element)
 		return false;
 	}
 }
-CGameObject* CActor::pick_Object(int& element)
+CGameObject* CActor::pick_Object(u16& element)
 {
 
 	setEnabled(false);
@@ -97,7 +97,7 @@ CGameObject* CActor::pick_Object(int& element)
 	l_rq.O=NULL;
 	g_pGameLevel->ObjectSpace.RayPick(Device.vCameraPosition, Device.vCameraDirection, 15.f, l_rq);
 	setEnabled(true);
-	element=l_rq.element;
+	element=u16(l_rq.element);
 	return dynamic_cast<CGameObject*>(l_rq.O);
 
 }

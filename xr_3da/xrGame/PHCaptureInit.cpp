@@ -80,7 +80,7 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,int a_taget_element)
+CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u16 a_taget_element)
 {
 #pragma todo("-- OLES to SLIPCH: a_taget_element should be u16, not int. BTW, -1 = BI_NONE :)")
 
@@ -134,7 +134,7 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,i
 		return;
 	}
 
-	if(a_taget_element==-1)
+	if(a_taget_element==BI_NONE)
 	{
 		m_taget_object=NULL;
 		b_failed=true;
@@ -171,7 +171,7 @@ CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,i
 		return;
 	}
 
-	CBoneInstance& tag_bone=K->LL_GetInstance(u16(a_taget_element));
+	CBoneInstance& tag_bone=K->LL_GetInstance(a_taget_element);
 
 	if(!tag_bone.Callback_Param)
 	{

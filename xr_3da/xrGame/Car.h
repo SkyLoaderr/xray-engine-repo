@@ -362,7 +362,7 @@ public:
 	bool					is_Door				(u32 id,xr_map<u32,SDoor>::iterator& i);
 	bool					Enter				(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	bool					Exit				(const Fvector& pos,const Fvector& dir);
-	bool					Use					(u32 id,const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
+	bool					Use					(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos);
 	// Core events
 	virtual void			Load				( LPCSTR section );
 	virtual BOOL			net_Spawn			( LPVOID DC );

@@ -182,9 +182,9 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 
 void CActor::ActorUse()
 {
-	int element=-1;
+	u16 element=BI_NONE;
 	CGameObject* object =pick_Object(element);	
-	if(use_Vehicle(object,element)) return;
+	if(use_Vehicle(object)) return;
 	if(!Movement.PHCapture())
 		Movement.PHCaptureObject(object,element);
 	else

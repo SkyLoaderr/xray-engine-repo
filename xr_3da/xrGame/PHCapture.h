@@ -6,7 +6,7 @@ class CPHCapture : public CPHObject
 {
 public:
 					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object);
-					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object,int a_taget_elemrnt);
+					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object,u16 a_taget_elemrnt);
 virtual				~CPHCapture							();
 
 

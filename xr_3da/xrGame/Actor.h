@@ -268,8 +268,8 @@ private:
 	void					create_Skeleton			();
 	void					create_Skeleton1		();
 	void					attach_Vehicle			(CCar* vehicle);
-	bool					use_Vehicle				(CGameObject* object,int element);
-	CGameObject*			pick_Object				(int& element);
+	bool					use_Vehicle				(CGameObject* object);
+	CGameObject*			pick_Object				(u16& element);
 	void					ActorUse				();
 
 
