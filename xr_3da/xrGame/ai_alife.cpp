@@ -315,6 +315,7 @@ void CSE_ALifeSimulator::vfInitAI_ALifeMembers()
 	ai().ef_storage().m_tpCurrentMember	= 0;
 	ai().ef_storage().m_tpCurrentEnemy	= 0;
 	ai().ef_storage().m_tpGameObject	= 0;
+	ai().ef_storage().m_tpALife			= this;
 }
 
 bool CSE_ALifeSimulator::change_level	(NET_Packet &net_packet)

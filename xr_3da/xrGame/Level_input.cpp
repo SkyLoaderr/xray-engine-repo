@@ -133,27 +133,26 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 	}
 
-
-	CObject			*obj		= Level().Objects.FindObjectByName("chimera");
-	CAI_Chimera		*monster	= dynamic_cast<CAI_Chimera *>(obj);
-
-	Fvector pos;
-	pos = Level().CurrentEntity()->Position();
-	pos.y+=3.f;
-
-	if (monster) {
-		switch (key) {
-		case DIK_1:
-			monster->TTelekinesis::Activate();
-			break;
-		case DIK_2:
-			monster->TTelekinesis::Deactivate();
-			break;
-		case DIK_3:
-			monster->TTelekinesis::Throw(pos);						
-			break;
-		}
-	}
+//	CObject			*obj		= Level().Objects.FindObjectByName("chimera");
+//	CAI_Chimera		*monster	= dynamic_cast<CAI_Chimera *>(obj);
+//
+//	Fvector pos;
+//	pos = Level().CurrentEntity()->Position();
+//	pos.y+=3.f;
+//
+//	if (monster) {
+//		switch (key) {
+//		case DIK_1:
+//			monster->TTelekinesis::Activate();
+//			break;
+//		case DIK_2:
+//			monster->TTelekinesis::Deactivate();
+//			break;
+//		case DIK_3:
+//			monster->TTelekinesis::Throw(pos);						
+//			break;
+//		}
+//	}
 
 
 
