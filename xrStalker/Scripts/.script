@@ -18,6 +18,7 @@ module ("xr_state")
 module ("xr_position")
 
 module ("xr_gulag")
+module ("xr_bandit")
 module ("xr_meet")
 module ("xr_kamp")
 module ("xr_guard")
