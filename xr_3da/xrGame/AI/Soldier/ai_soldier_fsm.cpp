@@ -701,6 +701,80 @@ void CAI_Soldier::OnTurnOver()
 	q_look.o_look_speed = PI_DIV_2/1;
 }
 
+void CAI_Soldier::OnRecharge()
+{
+	
+	WRITE_TO_LOG("Recharging...");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()))
+	
+	//CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())),aiSoldierNoWeapon)
+	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())))
+	
+	SelectEnemy(Enemy);
+
+	//CHECK_IF_GO_TO_PREV_STATE(!Enemy.Enemy)
+	
+	DWORD dwCurTime = Level().timeServer();
+	
+	INIT_SQUAD_AND_LEADER;
+
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+	vfInitSelector(SelectorReload,Squad,Leader);
+
+	if (Enemy.Enemy) {
+		if (AI_Path.bNeedRebuild)
+			vfBuildPathToDestinationPoint(0);
+		else
+			vfSearchForBetterPosition(SelectorReload,Squad,Leader);
+	}
+	
+	SetDirectionLook();
+	
+	vfSetFire(false,Group);
+	
+	if (Weapons->ActiveWeapon())
+		Weapons->ActiveWeapon()->Reload();
+
+	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+	//vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+}
+
+void CAI_Soldier::OnLookingOver()
+{
+	WRITE_TO_LOG("Looking over...");
+
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	SelectEnemy(Enemy);
+
+//	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
+	
+	DWORD dwCurTime = Level().timeServer();
+
+//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	
+	INIT_SQUAD_AND_LEADER;
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+	
+//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
+	
+	for (int i=0; i<tpaDynamicSounds.size(); i++)
+		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
+			SelectSound(m_iSoundIndex);
+			AI_Path.TravelPath.clear();
+			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
+		}
+
+	AI_Path.TravelPath.clear();
+	
+	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,0)
+}
+
 void CAI_Soldier::OnPatrolReturn()
 {
 	WRITE_TO_LOG("Patrol return to route...");
@@ -1133,7 +1207,6 @@ void CAI_Soldier::OnSenseSomethingAlone()
 	}
 
 	vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
-
 }
 
 void CAI_Soldier::OnAttackFireAlone()
@@ -1171,89 +1244,19 @@ void CAI_Soldier::OnAttackFireAlone()
 	
 	vfSaveEnemy();
 
-	//if (!m_bFiring)
-	vfAimAtEnemy();
+	if (!m_bFiring)
+		vfAimAtEnemy();
 	
 	vfSetFire(true,Group);
 	
 	//vfSetMovementType(m_cBodyState,0);
+	/**
 	if (m_cBodyState != BODY_STATE_STAND)
 		vfSetMovementType(m_cBodyState,0);
 	else
 		vfSetMovementType(BODY_STATE_CROUCH,0);
-}
-
-void CAI_Soldier::OnLookingOver()
-{
-	WRITE_TO_LOG("Looking over...");
-
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-	
-	SelectEnemy(Enemy);
-
-//	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierAttackFire)
-	
-	DWORD dwCurTime = Level().timeServer();
-
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
-	
-	INIT_SQUAD_AND_LEADER;
-	
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-//	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime),aiSoldierPatrolUnderFire)
-	
-	for (int i=0; i<tpaDynamicSounds.size(); i++)
-		if (tpaDynamicSounds[i].dwTime > m_dwLastUpdate) {
-			SelectSound(m_iSoundIndex);
-			AI_Path.TravelPath.clear();
-			SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
-		}
-
-	AI_Path.TravelPath.clear();
-	
-	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,0)
-}
-
-void CAI_Soldier::OnRecharge()
-{
-	
-	WRITE_TO_LOG("Recharging...");
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-
-	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (Weapons->ActiveWeapon()->GetAmmoElapsed() == Weapons->ActiveWeapon()->GetAmmoMagSize()))
-	
-	//CHECK_IF_SWITCH_TO_NEW_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())),aiSoldierNoWeapon)
-	CHECK_IF_GO_TO_PREV_STATE((Weapons->ActiveWeapon()) && (!(Weapons->ActiveWeapon()->GetAmmoCurrent())))
-	
-	SelectEnemy(Enemy);
-
-	//CHECK_IF_GO_TO_PREV_STATE(!Enemy.Enemy)
-	
-	DWORD dwCurTime = Level().timeServer();
-	
-	INIT_SQUAD_AND_LEADER;
-
-	CGroup &Group = Squad.Groups[g_Group()];
-	
-	vfInitSelector(SelectorReload,Squad,Leader);
-
-	if (Enemy.Enemy) {
-		if (AI_Path.bNeedRebuild)
-			vfBuildPathToDestinationPoint(0);
-		else
-			vfSearchForBetterPosition(SelectorReload,Squad,Leader);
-	}
-	
-	SetDirectionLook();
-	
-	vfSetFire(false,Group);
-	
-	if (Weapons->ActiveWeapon())
-		Weapons->ActiveWeapon()->Reload();
-
-	vfSetMovementType(m_cBodyState,m_fMinSpeed);
+	/**/
+	vfSetMovementType(BODY_STATE_STAND,0);
 }
 
 void CAI_Soldier::Think()

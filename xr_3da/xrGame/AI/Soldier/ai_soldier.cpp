@@ -49,6 +49,7 @@ CAI_Soldier::CAI_Soldier()
 	m_dwLastUpdate = 0;
 	m_fSensetivity = 0.f;
 	m_iSoundIndex = -1;
+	m_cGestureState = GESTURE_STATE_NONE;
 }
 
 CAI_Soldier::~CAI_Soldier()

@@ -65,7 +65,7 @@ void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 		SRotation sRotation;
 		mk_rotation(fire_dir,sRotation);
 		sRotation.yaw += 29*PI/180;
-		fire_dir.setHP(-sRotation.yaw,-sRotation.pitch);
+		fire_dir.setHP(-sRotation.yaw,-sRotation.pitch*0);
 	}
 }
 

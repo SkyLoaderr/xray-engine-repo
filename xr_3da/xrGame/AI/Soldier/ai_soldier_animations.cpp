@@ -447,7 +447,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									break;
 								}
 								case BODY_STATE_CROUCH : {
-									tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAttack;
+									tpGlobalAnimation = tSoldierAnimations.tCrouch.tTorso.tpAttack;
 									break;
 								}
 								case BODY_STATE_LIE : {
