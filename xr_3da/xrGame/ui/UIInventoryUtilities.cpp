@@ -24,11 +24,10 @@
 #define MAP_ICONS		"ui\\ui_icons_map"
 #define MP_CHAR_ICONS	"ui\\ui_models_multiplayer"
 
-LPCSTR relationsLtxSection	= "game_relations";
-LPCSTR ratingField			= "rating_names";
-LPCSTR reputationgField		= "reputation_names";
-LPCSTR goodwillField		= "goodwill_names";
-
+const LPCSTR relationsLtxSection	= "game_relations";
+const LPCSTR ratingField			= "rating_names";
+const LPCSTR reputationgField		= "reputation_names";
+const LPCSTR goodwillField		= "goodwill_names";
 
 
 static ref_shader	g_EquipmentIconsShader	= NULL;
@@ -391,6 +390,7 @@ void LoadStrings(CharInfoStrings *container, LPCSTR section, LPCSTR field)
 
 	LPCSTR				cfgRecord	= pSettings->r_string(section, field);
 	u32					count		= _GetItemCount(cfgRecord);
+	R_ASSERT3			(count%2, "there're must be an odd number of elements", field);
 	string32			singleThreshold;
 	ZeroMemory			(singleThreshold, sizeof(singleThreshold));
 	int					upBoundThreshold	= 0;
@@ -442,7 +442,7 @@ void InitCharacterInfoStrings()
 	{
 		// Create string->Id DB
 		charInfoGoodwillStrings			= xr_new<CharInfoStrings>();
-		// Ranks
+		// Goodwills
 		LoadStrings(charInfoGoodwillStrings, relationsLtxSection, goodwillField);
 	}
 
