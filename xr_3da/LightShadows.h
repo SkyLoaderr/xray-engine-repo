@@ -30,12 +30,19 @@ private:
 		Fmatrix				M;
 		xrLIGHT*			L;
 	};
+	struct	tess_tri
+	{
+		Fvector				v[3];
+		BOOL				render;
+	};
 private:
 	CObject*				current;
 	vector<caster>			casters;
 	vector<shadow>			shadows;
 	vector<int>				id;
 	vector<xrLIGHT*>		lights;
+	vector<tess_tri>		tess;
+
 	CRT*					RT;
 	CRT*					RT_temp;
 	Shader*					sh_Texture;
