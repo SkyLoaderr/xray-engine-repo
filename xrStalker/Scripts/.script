@@ -477,7 +477,7 @@ function set_current_time (hour, min, sec)
 --  	local current_time_factor = level.get_time_factor ()
 
 	local current_time = game.time ()
-	local c_day = current_time / 86400000
+	local c_day = math.floor (current_time / 86400000)
 	printf ("Current day %s", c_day)
 --	local c_hour = current_time - c_day * 86400000
 
