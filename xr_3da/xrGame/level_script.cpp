@@ -33,7 +33,14 @@ CScriptGameObject *get_object_by_name(LPCSTR caObjectName)
 	else
 		return		(0);
 }
+CScriptGameObject *get_object_by_id(u32 id)
+{
+	CGameObject* pGameObject = dynamic_cast<CGameObject*>(Level().Objects.net_Find(id));
+	if(!pGameObject)
+		return NULL;
 
+	return pGameObject->lua_game_object();
+}
 //CScriptGameObject *get_object_by_id(ALife::_OBJECT_ID id)
 //{
 //	CGameObject		*l_tpGameObject	= dynamic_cast<CGameObject*>(Level().Objects.FindObjectByID(id));
@@ -120,7 +127,7 @@ void CLevel::script_register(lua_State *L)
 	[
 		// declarations
 		def("object",							get_object_by_name),
-//		def("object",							get_object_by_id),
+		def("object_by_id",						get_object_by_id),
 		def("actor",							tpfGetActor),
 		//def("set_artifact_merge",				SetArtefactMergeFunctor),
 		def("get_weather",						get_weather),
