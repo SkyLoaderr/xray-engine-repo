@@ -33,6 +33,7 @@ void	game_sv_CS::Create			(LPCSTR options)
 
 void game_sv_CS::SavePlayerWeapon(u32 it, CFS_Memory &store) {
 	xrServer *l_pServer = Level().Server;
+	game_PlayerState *l_pPS = get_it(it);
 	u32 l_chunk = 0;
 	NET_Packet l_packet;
 	CFS_Memory &l_mem = store;
@@ -48,7 +49,7 @@ void game_sv_CS::SavePlayerWeapon(u32 it, CFS_Memory &store) {
 		l_pWeapon->Spawn_Write(l_packet, true);
 		l_pWeapon->ID = id_save;				// restore wpn entity ID 
 		l_pWeapon->state = 4;
-		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?(l_pCilds->size() - 1):l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
+		l_mem.open_chunk((l_pActor->weapon==l_pWeapon->get_slot())?(l_pCilds->size()-(l_pPS->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT?2:1)):l_chunk++); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 	}
 }
 
@@ -197,9 +198,7 @@ void game_sv_CS::OnRoundStart() {
 	random_shuffle(rp1.begin(), rp1.end());
 	vector<RPoint> &rp2 = rpoints[0];
 	random_shuffle(rp2.begin(), rp2.end());
-	for(u32 i = 0; i < l_cnt; i++) {
-		SpawnPlayer(i, l_memAr[i]);
-	}
+	for(u32 i = 0; i < l_cnt; i++) SpawnPlayer(i, l_memAr[i]);
 }
 
 
@@ -359,6 +358,7 @@ void game_sv_CS::OnRoundStart() {
 void	game_sv_CS::OnRoundEnd		(LPCSTR reason)
 {
 	__super::OnRoundEnd(reason);
+//	u32 cnt = get_count(); for(u32 it=0; it<cnt; it++) get_it(it)->flags &= (GAME_PLAYER_FLAG_CS_SPECTATOR|GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 }
 
 void	game_sv_CS::OnDelayedRoundEnd		(LPCSTR reason)
