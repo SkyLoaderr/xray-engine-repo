@@ -282,6 +282,9 @@
 						RelativePath=".\Config\gameplay\dialogs_garbage.xml">
 					</File>
 					<File
+						RelativePath=".\config\gameplay\dialogs_labx18.xml">
+					</File>
+					<File
 						RelativePath=".\config\gameplay\dialogs_military.xml">
 					</File>
 					<File

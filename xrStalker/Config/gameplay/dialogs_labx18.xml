@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_dialogs>
+
+    <dialog id="dar_explorer_dialog">
+        <phrase_list>
+            <phrase id="0">
+                <text>Темно здесь - нифига не видно. Бюреры кругом... Чувак, ты как сюда попал?</text>
+                <next>1</next>
+                <next>2</next>
+            </phrase>
+            <phrase id="1">
+                <text>Дела у меня тут. Ищу кое-что.</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="2">
+                <text>Сам не знаю как сюда занесло, убраться бы отсюда поскорее. </text>
+                <next>4</next>
+            </phrase>
+            <phrase id="3">
+                <text>Что же ты ищешь?.. я слыхал здесь много интересного можно найти...</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="4">
+                <text>Вали отсюда пока жив. Это место не для таких как ты...</text>
+                <next>5</next>
+            </phrase>
+            <phrase id="5">
+	            <text>Удачи</text>
+                <next>6</next>
+            </phrase>
+            <phrase id="6">
+                <action>dialogs.break_dialog</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
+</game_dialogs>
+
