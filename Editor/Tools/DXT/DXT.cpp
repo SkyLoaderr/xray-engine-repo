@@ -56,7 +56,7 @@ HRESULT WriteCompressedData(void* data, int miplevel, DWORD size){
 	return 0;
 }
   
-ENGINE_API DWORD* Build32MipLevel(DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPixelSrc)
+ENGINE_API DWORD* Build32MipLevel(DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPixelSrc, STextureParams* fmt, float blend)
 {
 	R_ASSERT(pdwPixelSrc);
 	R_ASSERT((_w%2)==0	);
@@ -68,6 +68,12 @@ ENGINE_API DWORD* Build32MipLevel(DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPix
 	BYTE*	pDest		= (BYTE *)pNewData;
 	BYTE*	pSrc		= (BYTE *)pdwPixelSrc;
 
+	float	mixed_a = (float) BYTE(fmt->fade_color >> 24);
+	float	mixed_r = (float) BYTE(fmt->fade_color >> 16);
+	float	mixed_g = (float) BYTE(fmt->fade_color >> 8);
+	float	mixed_b = (float) BYTE(fmt->fade_color >> 0);
+
+	float	inv_blend	= 1.f-blend;
 	for (DWORD y = 0; y < _h; y += 2){
 		BYTE* pScanline = pSrc + y*_p;
 		for (DWORD x = 0; x < _w; x += 2){
@@ -75,16 +81,25 @@ ENGINE_API DWORD* Build32MipLevel(DWORD &_w, DWORD &_h, DWORD &_p, DWORD *pdwPix
 			BYTE*	p2	= p1+4;
 			BYTE*	p3	= p1+_p;
 			BYTE*	p4	= p2+_p;
-			DWORD	c1	= DWORD(p1[0])+DWORD(p2[0])+DWORD(p3[0])+DWORD(p4[0]);
-			DWORD	c2	= DWORD(p1[1])+DWORD(p2[1])+DWORD(p3[1])+DWORD(p4[1]);
-			DWORD	c3	= DWORD(p1[2])+DWORD(p2[2])+DWORD(p3[2])+DWORD(p4[2]);
-			DWORD	c4	= DWORD(p1[3])+DWORD(p2[3])+DWORD(p3[3])+DWORD(p4[3]);
+			float	c_r	= float(DWORD(p1[0])+DWORD(p2[0])+DWORD(p3[0])+DWORD(p4[0])) / 4.f;
+			float	c_g	= float(DWORD(p1[1])+DWORD(p2[1])+DWORD(p3[1])+DWORD(p4[1])) / 4.f;
+			float	c_b	= float(DWORD(p1[2])+DWORD(p2[2])+DWORD(p3[2])+DWORD(p4[2])) / 4.f;
+			float	c_a	= float(DWORD(p1[3])+DWORD(p2[3])+DWORD(p3[3])+DWORD(p4[3])) / 4.f;
+			
+			if (fmt->flag.bFadeToColor){
+				c_r		= c_r*inv_blend + mixed_r*blend;
+				c_g		= c_g*inv_blend + mixed_g*blend;
+				c_b		= c_b*inv_blend + mixed_b*blend;
+			}
+			if (fmt->flag.bFadeToAlpha){
+				c_a		= c_a*inv_blend + mixed_a*blend;
+			}
 
-			DWORD	A	= (c4+c4/8)/4; clamp(A,0ul,255ul);
-			*pDest++	= BYTE(c1/4);
-			*pDest++	= BYTE(c2/4);
-			*pDest++	= BYTE(c3/4);
-			*pDest++	= BYTE(A);
+			float	A	= (c_a+c_a/8.f); 
+			int _r = int(c_r);	clamp(_r,0,255);	*pDest++	= BYTE(_r);
+			int _g = int(c_g);	clamp(_g,0,255);	*pDest++	= BYTE(_g);
+			int _b = int(c_b);	clamp(_b,0,255);	*pDest++	= BYTE(_b);
+			int _a = int(A);	clamp(_a,0,255);	*pDest++	= BYTE(_a);
 		}
 	}
 	_w/=2; _h/=2; _p=_w*4;
@@ -136,9 +151,9 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
     nvOpt.bBorder			= fmt->flag.bColorBorder;
     nvOpt.BorderColor.u		= fmt->border_color;
     nvOpt.bFade				= fmt->flag.bFadeToColor;
-    nvOpt.bFadeAlpha		= fmt->flag.bFadeToAlpha;
-    nvOpt.FadeToColor.u		= fmt->fade_color;
-    nvOpt.FadeAmount		= fmt->fade_amount;
+    nvOpt.bFadeAlpha		= FALSE;//fmt->flag.bFadeToAlpha;
+    nvOpt.FadeToColor.u		= 0;//fmt->fade_color;
+    nvOpt.FadeAmount		= 0;//fmt->fade_amount;
     nvOpt.bDitherColor		= fmt->flag.bDitherColor;
     nvOpt.bDitherEachMIPLevel=fmt->flag.bDitherEachMIPLevel;
     nvOpt.bGreyScale		= fmt->flag.bGreyScale;
@@ -164,7 +179,7 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 	}
 //-------------------
 
-	if (fmt->flag.bGenerateMipMaps&&(STextureParams::dMIPFilterAdvanced==fmt->mip_filter)){
+	if (fmt->flag.bGenerateMipMaps&&((STextureParams::dMIPFilterAdvanced==fmt->mip_filter)||fmt->flag.bFadeToColor||fmt->flag.bFadeToAlpha)){
 		nvOpt.MipMapType=dUseExistingMipMaps;
 
 		LPBYTE pImagePixels=0;
@@ -180,8 +195,15 @@ bool DXTCompress(LPCSTR out_name, BYTE* raw_data, DWORD w, DWORD h, DWORD pitch,
 		FillRect(pImagePixels,(LPBYTE)pLastMip,w_offs,pitch,dwH,line_pitch);
 		w_offs+=dwP;
 
+		float	blend = 0;
+		float	d = (float(fmt->fade_amount)/100.f)*numMipmaps-1;
+		if (d<1.f) d=1.f;
 		for (int i=1; i<numMipmaps; i++){
-			DWORD* pNewMip = Build32MipLevel(dwW,dwH,dwP,pLastMip);
+			if (fmt->flag.bFadeToColor||fmt->flag.bFadeToAlpha){
+				blend = i/d;
+				if (blend>1.f) blend=1.f;
+			}
+			DWORD* pNewMip = Build32MipLevel(dwW,dwH,dwP,pLastMip,fmt,blend);
 			FillRect(pImagePixels,(LPBYTE)pNewMip,w_offs,dwP,dwH,line_pitch);
 			_FREE(pLastMip); pLastMip=pNewMip; pNewMip=0;
 			w_offs+=dwP;
