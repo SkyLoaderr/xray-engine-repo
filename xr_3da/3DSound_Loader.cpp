@@ -71,19 +71,19 @@ void *ConvertWave(WAVEFORMATEX &wfx_dest, LPWAVEFORMATEX &wfx, void *data, DWORD
     acmhdr.cbDstLength=dwNewLen;
 
 	if (FAILED(acmStreamPrepareHeader(hc,&acmhdr,0))) {
-		acmStreamClose	(hc,0);
-		free			(dest);
+		acmStreamClose			(hc,0);
+		free					(dest);
 		return			NULL;
 	}
 	if (FAILED(acmStreamConvert(hc,&acmhdr,ACM_STREAMCONVERTF_START|ACM_STREAMCONVERTF_END))) {
 		acmStreamUnprepareHeader(hc,&acmhdr,0);
-		acmStreamClose	(hc,0);
-		free			(dest);
+		acmStreamClose			(hc,0);
+		free					(dest);
 		return			NULL;
 	}
 	dwLen = acmhdr.cbDstLengthUsed;
-	acmStreamUnprepareHeader(hc,&acmhdr,0);
-	acmStreamClose(hc,0);
+	acmStreamUnprepareHeader	(hc,&acmhdr,0);
+	acmStreamClose				(hc,0);
 	return dest;
 }
 
@@ -109,7 +109,6 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 	void*					converted;
 
 	//	2411252 - Andy
-
 	pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
 	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
 		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
@@ -133,8 +132,8 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs2D	(LPCSTR pName, BOOL bCtrlFreq)
 		// Wave has PCM format - so only one conversion
 		// Freq as in PrimaryBuf, Channels = ???, Bits as in source data if possible
 		if (pFormat->wFormatTag==1)	wfxdest.wBitsPerSample	= pFormat->wBitsPerSample;
-		wfxdest.nBlockAlign		= wfxdest.nChannels * wfxdest.wBitsPerSample / 8;
-		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec * wfxdest.nBlockAlign;
+		wfxdest.nBlockAlign		= wfxdest.nChannels			* wfxdest.wBitsPerSample / 8;
+		wfxdest.nAvgBytesPerSec = wfxdest.nSamplesPerSec	* wfxdest.nBlockAlign;
 		converted				= ConvertWave(wfxdest, pFormat, wavedata, dwLen);
 	}
 	if (!converted)				{ _FREE(pFormat); return NULL; }
@@ -205,7 +204,11 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	WAVEFORMATEX			wfxdest;
 	void*					converted;
 
-	pSounds->pBuffer->GetFormat(&wfxdest,sizeof(wfxdest),0);
+	pSounds->pBuffer->GetFormat	(&wfxdest,sizeof(wfxdest),0);
+	if ((pFormat->wFormatTag!=1)||(pFormat->nChannels!=1)||(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec))
+	{
+		Msg("! WARNING: Invalid wave format (must be 22KHz,16bit,mono), file: %s",pName);
+	}
 	if ((pFormat->wFormatTag!=1)&&(pFormat->nSamplesPerSec!=wfxdest.nSamplesPerSec)) {
 		// Firstly convert to PCM with SRC freq and Channels; BPS = as Dest
 		wfxdest.nChannels		= pFormat->nChannels;
@@ -235,9 +238,8 @@ LPDIRECTSOUNDBUFFER CSound::LoadWaveAs3D(LPCSTR pName, BOOL bCtrlFreq)
 	}
 	if (!converted)				{_FREE(pFormat); return NULL; }
 
-	dsBD.dwBufferBytes	= dwLen;
-	dsBD.lpwfxFormat	= &wfxdest;
-
+	dsBD.dwBufferBytes			= dwLen;
+	dsBD.lpwfxFormat			= &wfxdest;
 	dwFreq = dwFreqBase			= wfxdest.nSamplesPerSec;
 
 	// Creating buffer and fill it with data
