@@ -933,7 +933,9 @@ void CSE_ALifeObjectHangingLamp::STATE_Read	(NET_Packet	&tNetPacket, u16 size)
 
 	if (m_wVersion > 55)
 	{
-		tNetPacket.r_float		(m_visible_size);
+		tNetPacket.r_float			(m_visible_size);
+	    tNetPacket.r_float			(m_point_radius);
+    	tNetPacket.r_float			(m_point_power);
 	}
 }
 
@@ -950,6 +952,8 @@ void CSE_ALifeObjectHangingLamp::STATE_Write(NET_Packet	&tNetPacket)
     tNetPacket.w_string			(fixed_bones);
 	tNetPacket.w_float			(m_health);
 	tNetPacket.w_float			(m_visible_size);
+    tNetPacket.w_float			(m_point_radius);
+    tNetPacket.w_float			(m_point_power);
 }
 
 void CSE_ALifeObjectHangingLamp::UPDATE_Read(NET_Packet	&tNetPacket)
@@ -963,6 +967,7 @@ void CSE_ALifeObjectHangingLamp::UPDATE_Write(NET_Packet	&tNetPacket)
 }
 
 #ifdef _EDITOR
+#include "ui_main.h"
 void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 {
 	PlayAnimation				(*startup_animation);
@@ -985,24 +990,33 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseBone(PropValue* sender, AStr
     _E							= ll_bones->end();
     for (; _I!=_E; ++_I) 		lst.push_back(*_I->first);
 }
-
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeFlag(PropValue* sender)
+{
+	UI->Command					(COMMAND_UPDATE_PROPERTIES);
+}
 
 void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
 {
 	inherited::FillProp			(pref,values);
 
+    PropValue* P				= 0;
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Physic"),		&flags,			flPhysic);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Cast shadow"),	&flags,			flCastShadow);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R1"),		&flags,			flR1);
 	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow R2"),		&flags,			flR2);
-	PHelper.CreateFlag<Flags16>	(values, FHelper.PrepareKey(pref,s_name,"Flags\\Allow Point"),	&flags,			flPoint);
+	P=PHelper.CreateFlag<Flags16>(values,FHelper.PrepareKey(pref,s_name,"Flags\\Allow Point"),	&flags,			flPoint);
+    P->OnChangeEvent			= OnChangeFlag;
 
-	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			&color);
-    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		&brightness,		0.1f, 5.f);
-	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	&color_animator, 	smLAnim);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			&m_health,			0.f, 100.f);
-	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Visible size"),	&m_visible_size,	0.f, 100.f);
+	PHelper.CreateColor			(values, FHelper.PrepareKey(pref,s_name,"Color"),			    &color);
+    PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Brightness"),		    &brightness,		0.1f, 5.f);
+	PHelper.CreateChoose		(values, FHelper.PrepareKey(pref,s_name,"Color animator"),	    &color_animator, 	smLAnim);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Range"),			    &spot_range,		0.1f, 1000.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Health"),			    &m_health,			0.f, 100.f);
+	PHelper.CreateFloat			(values, FHelper.PrepareKey(pref,s_name,"Visible size"),	    &m_visible_size,	0.f, 100.f);
+    if (flags.is(flPoint)){
+        PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Point\\Radius"),		&m_point_radius,	0.f, 100.f);
+        PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Point\\Power"),		&m_point_power);
+    }
 	
 
 	// motions

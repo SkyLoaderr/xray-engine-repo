@@ -255,6 +255,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
     void __fastcall					OnChangeAnim	(PropValue* sender);
     void __fastcall					OnChooseAnim	(PropValue* sender, AStringVec& lst);
     void __fastcall					OnChooseBone	(PropValue* sender, AStringVec& lst);
+    void __fastcall					OnChangeFlag	(PropValue* sender);
 #endif
     enum{
         flPhysic					= (1<<0),
@@ -273,7 +274,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVis
     ref_str							fixed_bones;
     float							m_health;
 	float							m_visible_size;
-
+    float							m_point_radius;
+    float							m_point_power;
+	
                                     CSE_ALifeObjectHangingLamp	(LPCSTR caSection);
     virtual							~CSE_ALifeObjectHangingLamp	();
 	virtual bool					used_ai_locations	() const;
