@@ -25,9 +25,10 @@ CLightPPA::~CLightPPA()
 
 }
 
-IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& C, float r2)
+IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
 {
 	D.P.set	(P);
+	D.N.set	(P);
 	D.u0	= (P.x-C.x)/r2+.5f; 
 	D.v0	= (P.z-C.z)/r2+.5f;
 	D.u1	= (P.y-C.y)/r2+.5f;
@@ -71,11 +72,10 @@ void CLightPPA::Render	(CVertexStream* VS)
 		if (Poly.classify(sphere.P)<0)	continue;
 		if (Poly.classify(cam)<0)		continue;
 
-		// Triangulation
-		CLightPPA_Vertex vert1,vert2,vert3;
-		vert1.N.set		(Poly.n);	mk_vertex(vert1,V1,sphere.P,r2);	vlist.push_back	(vert1);
-		vert2.N.set		(Poly.n);	mk_vertex(vert2,V2,sphere.P,r2);	vlist.push_back	(vert2);
-		vert3.N.set		(Poly.n);	mk_vertex(vert3,V3,sphere.P,r2);	vlist.push_back	(vert3);
+		// Triangulation and UV0/UV1
+		mk_vertex(*VB,V1,Poly.n,sphere.P,r2);	VB++;
+		mk_vertex(*VB,V2,Poly.n,sphere.P,r2);	VB++;
+		mk_vertex(*VB,V3,Poly.n,sphere.P,r2);	VB++;
 		actual++;
 	}
 
