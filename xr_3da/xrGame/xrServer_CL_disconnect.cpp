@@ -6,9 +6,6 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	csPlayers.Enter			();
 	Level().HUD()->outMessage(0xffffffff,"SERVER","Player '%s' disconnected",CL->Name);
 
-	NET_Packet			P;
-	u32				mode			= net_flags(TRUE,TRUE);
-
 	// Game config (all, info excludes deleted player)
 	game->OnPlayerDisconnect(CL->ID);
 	game->signal_Syncronize	();

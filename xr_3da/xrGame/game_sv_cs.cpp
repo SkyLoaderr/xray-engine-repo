@@ -254,8 +254,10 @@ void	game_sv_CS::OnPlayerDisconnect	(u32 id_who)
 {
 	__super::OnPlayerDisconnect			(id_who);
 
+	xrServer*	S					=	Level().Server;
+
 	// Drop everything
-	vector<u16>*	C				=	get_children(id_killed);
+	vector<u16>*	C				=	get_children(id_who);
 	if (0==C)						return;
 	while(C->size())
 	{
