@@ -9,7 +9,7 @@
 #include "ftimer.h"
 #include "Etextureparams.h"
 
-#define NUM_THREADS		1
+#define NUM_THREADS		3
 
 float	color_intensity	(Fcolor& c)
 {
@@ -322,7 +322,7 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
 			Shader_xrLC& SH	= *g_shaders_xrlc.Get		(M.shader_xrlc);
 			if (!SH.flags.bLIGHT_CastShadow)			continue;
 
-			if (T.bHasAlpha)		
+			if (!T.bHasAlpha)		
 			{
 				// Opaque poly - cache it
 				L.tri[0].set	(*clT.verts[0]);
