@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-void	CRenderTarget::phase_smap_spot_clear(light* L)
+void	CRenderTarget::phase_smap_spot_clear()
 {
 	if (RImplementation.b_HW_smap)		u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_depth->pRT);
 	else								u_setrt	(rt_smap_d_surf, NULL, NULL, rt_smap_d_ZB);
