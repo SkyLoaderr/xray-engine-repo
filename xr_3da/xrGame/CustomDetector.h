@@ -17,9 +17,14 @@ struct ZONE_TYPE
 //описание зоны, обнаруженной детектором
 struct ZONE_INFO
 {
-	u32 snd_time;
+	u32								snd_time;
 	//текущая частота работы датчика
-	float cur_freq;
+	float							cur_freq;
+	//particle for night-vision mode
+	CParticlesObject*				pParticle;
+
+	ZONE_INFO	();
+	~ZONE_INFO	();
 };
 
 class CInventoryOwner;
@@ -59,6 +64,7 @@ protected:
 	void StopAllSounds				();
 	void UpdateMapLocations			();
 	void AddRemoveMapSpot			(CCustomZone* pZone, bool bAdd);
+	void UpdateNightVisionMode		();
 
 	bool m_bWorking;
 
@@ -79,6 +85,9 @@ protected:
 	
 	//звуки
 	ref_sound m_noise, m_buzzer;
+
+	shared_str						m_nightvision_particle;
+
 #ifdef DEBUG
 	virtual void		OnRender	();
 #endif

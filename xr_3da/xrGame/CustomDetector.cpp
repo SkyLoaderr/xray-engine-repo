@@ -5,6 +5,19 @@
 #include "inventory.h"
 #include "level.h"
 #include "map_manager.h"
+#include "night_vision_effector.h"
+
+
+ZONE_INFO::ZONE_INFO	()
+{
+	pParticle=NULL;
+}
+
+ZONE_INFO::~ZONE_INFO	()
+{
+	xr_delete(pParticle);
+}
+
 CCustomDetector::CCustomDetector(void) 
 {
 	TurnOff();
@@ -19,6 +32,8 @@ CCustomDetector::~CCustomDetector(void)
 	ZONE_TYPE_MAP_IT it;
 	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it)
 		it->second.detect_snd.destroy();
+
+	m_ZoneInfoMap.clear();
 }
 
 BOOL CCustomDetector::net_Spawn(CSE_Abstract* DC) 
@@ -38,11 +53,14 @@ void CCustomDetector::Load(LPCSTR section)
 
 	inherited::Load(section);
 
-	m_fRadius			= pSettings->r_float(section,"radius");
-	m_fBuzzerRadius		= pSettings->r_float(section,"buzzer_radius");
+	m_fRadius				= pSettings->r_float(section,"radius");
+	m_fBuzzerRadius			= pSettings->r_float(section,"buzzer_radius");
 
-	m_noise.create		(TRUE,pSettings->r_string(section,"noise"));
-	m_buzzer.create		(TRUE,pSettings->r_string(section,"buzzer"));
+	m_noise.create			(TRUE,pSettings->r_string(section,"noise"));
+	m_buzzer.create			(TRUE,pSettings->r_string(section,"buzzer"));
+	
+	if( pSettings->line_exist(section,"night_vision_particle") )
+		m_nightvision_particle	= pSettings->r_string(section,"night_vision_particle");
 
 	u32 i = 1;
 	string256 temp;
@@ -97,53 +115,7 @@ void CCustomDetector::shedule_Update(u32 dt)
 	P.set					(H_Parent()->Position());
 	feel_touch_update		(P,m_fRadius);
 
-	
-/*	if(l_buzzer) 
-	{
-		if(!m_buzzer.feedback) m_buzzer.play_at_pos(this, P, true);
-		if(m_buzzer.feedback) m_buzzer.set_position(P);
-	} 
-	else 
-	{
-		m_buzzer.stop();
-	}
-
-	
-	if(fMaxPow > 0) 
-	{
-		if(!m_noise.feedback) Sound->play_at_pos(m_noise, this, P, true);
-		if(m_noise.feedback) 
-		{
-			//l_maxPow = _max(logf(l_maxPow) / 10.f + 1.f, .0f);
-			m_noise.set_volume	(fMaxPow);
-			m_noise.set_position(P);
-		}
-	} 
-	else if(m_noise.feedback) 
-		m_noise.stop();
-*/	
-	//////////////////////////////////
-	//Звуки обнаружения артефактов
-	//////////////////////////////////
-/*	
-	xr_set<CArtefact*>::iterator l_it2;
-	for(l_it2 = CArtefact::m_all.begin(); CArtefact::m_all.end() != l_it2; ++l_it2) 
-	{
-		CArtefact &l_af = **l_it2;
-		float l_dst = P.distance_to(l_af.Position());
-		if(!l_af.H_Parent() && l_dst < l_af.m_detectorDist) 
-		{
-			if(!l_af.m_detectorSound.feedback)
-				Sound->play_at_pos(l_af.m_detectorSound, this, P, true);
-			if(l_af.m_detectorSound.feedback) 
-			{
-				//l_af.m_detectorSound.set_volume(_max(logf((l_af.m_detectorDist-l_dst)/l_af.m_detectorDist) / 10.f + 1.f, .0f));
-				l_af.m_detectorSound.set_volume((l_af.m_detectorDist-l_dst)/l_af.m_detectorDist);
-				l_af.m_detectorSound.set_position(P);
-			}
-		} else if(l_af.m_detectorSound.feedback) l_af.m_detectorSound.stop();
-	}
-*/
+	UpdateNightVisionMode();
 }
 
 void CCustomDetector::StopAllSounds()
@@ -308,12 +280,14 @@ void CCustomDetector::TurnOn()
 {
 	m_bWorking = true;
 	UpdateMapLocations();
+	UpdateNightVisionMode();
 }
 
 void CCustomDetector::TurnOff() 
 {
 	m_bWorking = false;
 	UpdateMapLocations();
+	UpdateNightVisionMode();
 }
 
 void CCustomDetector::AddRemoveMapSpot(CCustomZone* pZone, bool bAdd)
@@ -337,4 +311,34 @@ void CCustomDetector::UpdateMapLocations() // called on turn on/off only
 	ZONE_INFO_MAP_IT it;
 	for(it = m_ZoneInfoMap.begin(); it != m_ZoneInfoMap.end(); ++it)
 		AddRemoveMapSpot(it->first,IsWorking());
+}
+
+void CCustomDetector::UpdateNightVisionMode()
+{
+	bool bNightVision = ( Level().Cameras.GetEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID))!=NULL );
+	bool bOn = bNightVision && m_pCurrentActor && IsWorking() && xr_strlen(*m_nightvision_particle)!=0;
+
+	ZONE_INFO_MAP_IT it;
+	for(it = m_ZoneInfoMap.begin(); m_ZoneInfoMap.end() != it; ++it) 
+	{
+		CCustomZone *pZone = it->first;
+		ZONE_INFO& zone_info = it->second;
+
+		if(bOn){
+			Fvector zero_vector;
+			zero_vector.set(0.f,0.f,0.f);
+
+			if(!zone_info.pParticle)
+				zone_info.pParticle = xr_new<CParticlesObject>(*m_nightvision_particle,false);
+			
+			zone_info.pParticle->UpdateParent(pZone->XFORM(),zero_vector);
+			if(!zone_info.pParticle->IsPlaying())
+				zone_info.pParticle->Play();
+		}else{
+			if(zone_info.pParticle){
+				zone_info.pParticle->Stop();
+				xr_delete(zone_info.pParticle);
+			}
+		}
+	}
 }
