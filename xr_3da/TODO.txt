@@ -45,6 +45,7 @@
 		*	NEW:		4tap shadow filter
 		*	OPT:		fast pixel correct projection 
 		*	NEW:		4tap projection filter
+		*	NEW:		2tap duality filter
 
 ***[OLES]*** In progress:
 -------------------------
