@@ -198,16 +198,6 @@ void CUIBag::UpdateBuyPossibility(){
 		flag = !(pDDItem->GetCost() > money);
 		EnableDDItem(pDDItem, flag);		
 	}
-
-	//xr_list<CUIDragDropItemMP*>::iterator it;
-
-	//for (it = m_allItems.begin(); it != m_allItems.end(); ++it)
-	//	if (IsItemInBag(*it))
-	//	{
-	//		pNewDDItem = (CUIDragDropItemMP*)(*it);
-	//		flag = !(pNewDDItem->GetCost() > money);
-	//		EnableDDItem(pNewDDItem, flag);
-	//	}
 }
 
 CUIDragDropItemMP* CUIBag::GetItemBySectoin(const char *sectionName){
@@ -297,18 +287,6 @@ CUIDragDropItemMP * CUIBag::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDrag
 				return *it;
 			}
 		}
-	//for (int i = 0; i < m_iUsedItems; ++i)
-	//{
-	//	for (int j = 0; j < CUIDragDropItemMP::NUM_OF_ADDONS; ++j)
-	//	{
-	//		CUIDragDropItemMP::AddonIDs AID = static_cast<CUIDragDropItemMP::AddonIDs>(j);
-	//		if (pAddonOwner->m_AddonInfo[j].strAddonName == m_vDragDropItems[i].GetSectionName() &&
-	//			AID == ID)
-	//		{
-	//			return &m_vDragDropItems[i];
-	//		}
-	//	}
-	//}
 
 	return NULL;
 }
@@ -382,16 +360,8 @@ void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	case DRAG_DROP_ITEM_RBUTTON_CLICK:
 		OnItemClick(pDDItem); break;
 
-	case DRAG_DROP_ITEM_DRAG: // == LBUTTON_CLICK
+	case DRAG_DROP_ITEM_DRAG:
 		OnItemClick(pDDItem); break;
-
-	//case DRAG_DROP_ITEM_RBUTTON_CLICK:
-	//	break;
-
-	//case DRAG_DROP_REFRESH_ACTIVE_ITEM:
-	//	if (this->m_pCurrentDDItem)
-	//		this->m_pCurrentDDItem->Highlight(true);
-	//	break;
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
@@ -438,13 +408,9 @@ void CUIBag::InitBoxes(){
 		pNewDDItem->SetSectionName(*m_boxesDefs[i].filterString);
 
 		m_groups[GROUP_BOXES].AttachChild(pNewDDItem);
-		//pNewDDItem->SetAutoDelete(false);
 
-		// —охран€ем указатель на лист "хоз€ин" вещи
 		pNewDDItem->SetOwner(&m_groups[GROUP_BOXES]);
 		pNewDDItem->SetMessageTarget(this);
-		// «адаем специальную дополнительную функцию отрисовки, дл€
-		// отображени€ номера оружи€ в углу его иконки
 		pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 	}
 }
@@ -515,10 +481,6 @@ bool CUIBag::OnKeyboard(int dik, EUIMessages keyboard_action){
 	}
 
 	return false;
-}
-
-void CUIBag::BuyReaction(){
-
 }
 
 CUIDragDropList* CUIBag::GetCurrentGroup(){
@@ -652,8 +614,6 @@ void CUIBag::FillUpGroups()
 		FillUpGroup(static_cast<u32>(i));
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIBag::FillUpGroup(const u32 group)
 {
 	for (WPN_SECT_NAMES::size_type j = 0; j < m_wpnSectStorage[group].size(); ++j)
@@ -703,13 +663,6 @@ void CUIBag::FillUpItem(CUIDragDropItemMP* pDDItem, int group, int j){
 					m_wpnSectStorage[group][j].c_str(), *m_StrSectionName, *m_StrPricesSection);
 			R_ASSERT2(false, buf);
 		}
-
-		//// ≈сли на оружие не хватает денег, то запрещаем его перемещение и помечаем цветом, 
-		//// что оно недоступно
-		//if (pDDItem->GetCost() > GetMoneyAmount())
-		//{
-		//	pDDItem->SetColor(cUnableToBuy);
-		//}
 
 		// ƒл€ арморов читаем дополнительно координаты на текстуре с иконками персонажей дл€ арморов
 		if (OUTFIT_SLOT == slot)
@@ -770,7 +723,6 @@ CUIDragDropItemMP* CUIBag::CreateCopy(CUIDragDropItemMP *pDDItem){
 
 void CUIBag::DeleteCopy(CUIDragDropItemMP* pDDItem){
 	shared_str section = pDDItem->GetSectionName();
-	//unsigned int group = pDDItem->GetSectionGroupID();
 
 	DRAG_DROP_LIST ddList = pDDItem->GetOwner()->GetDragDropItemsList();
 	DRAG_DROP_LIST_it it;
@@ -887,4 +839,3 @@ void CUIBag::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectio
 		}
 	}
 }
-
