@@ -6857,6 +6857,9 @@
 						Name="objects"
 						Filter="">
 						<File
+							RelativePath=".\script_value_container.h">
+						</File>
+						<File
 							RelativePath=".\xrServer_Object_Base.cpp">
 						</File>
 						<File
