@@ -64,7 +64,7 @@ void CMosquitoBald::UpdateCL() {
 		m_ready = true;
 	}
 	if(m_pLocalActor && m_pLocalActor->g_Alive()) {
-		CRender_target*		T	= ::Render->getTarget();
+		IRender_target*		T	= ::Render->getTarget();
 		f32 l_h = m_pp_time < g_pp_fade ? m_pp.duality_h * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_h;
 		f32 l_v = m_pp_time < g_pp_fade ? m_pp.duality_v * ((f32)m_pp_time / g_pp_fade) : m_pp.duality_v;
 		T->set_duality_h		(l_h*sinf(1.f*Device.fTimeGlobal));
