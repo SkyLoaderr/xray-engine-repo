@@ -93,12 +93,12 @@ public:
 	CSector*		detectSector(Fvector& P);
 
 	// Main 
-	IC void	set_Frustum				(CFrustum* O)			{ VERIFY(O); View = O; }
-	IC void	set_Transform			(Fmatrix* pM)			{ VERIFY(pM); pTransform = pM; }
-	IC void set_Object				(CObject* O)			{ L_Shadows.set_object(O); }
-	IC void set_LightLevel			(int L)					{ iLightLevel = L; }
-	IC void add_Lights				(vector<WORD> &V)		{ Lights.add_sector_lights(V);	}
-	IC void add_Glows				(vector<WORD> &V)		{ Glows.add(V);		}
+	IC void	set_Frustum				(CFrustum* O)			{ VERIFY(O); View = O;			}
+	IC void	set_Transform			(Fmatrix* pM)			{ VERIFY(pM); pTransform = pM;	}
+	IC void set_Object				(CObject* O)			{ L_Shadows.set_object(O);		}
+	IC void set_LightLevel			(int L)					{ iLightLevel = L;				}
+	IC void add_Lights				(vector<WORD> &V)		{ L_DB.add_sector_lights(V);	}
+	IC void add_Glows				(vector<WORD> &V)		{ Glows.add(V);					}
 
 	void	Calculate				();
 
