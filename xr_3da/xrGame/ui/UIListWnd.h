@@ -135,6 +135,10 @@ public:
 	void	SetRightIndention	(int value)		{ m_iRightIndention = value; }
 	int		GetRightIndention	() const		{ return m_iRightIndention; }
 
+	/* new_code_here
+	CUIListItem* GetClickedItem();
+	*/
+
 protected:
 
 	//полоса прокрутки
@@ -184,6 +188,9 @@ protected:
 
 	// Отступ справа от края листа до текста
 	int		m_iRightIndention;
+	/* new_code_here
+	CUIListItem* m_pClickedListItem;
+	*/
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 

@@ -32,6 +32,9 @@ CUIListWnd::CUIListWnd()
 	m_iLastUniqueID				= 0;
 	m_bNewRenderMethod			= false;
 	m_iRightIndention			= 0;
+	/* new_code_here
+	m_pClickedListItem          = NULL;
+	*/
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,6 +200,12 @@ void CUIListWnd::RemoveAll()
 	UpdateScrollBar();
 }
 
+/* new_code_here
+CUIListItem* CUIListWnd::GetClickedItem(){
+	return m_pClickedListItem;
+}
+*/
+
 //////////////////////////////////////////////////////////////////////////
 
 void CUIListWnd::UpdateList()
@@ -269,6 +278,9 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 			if(BUTTON_CLICKED == msg)
 			{
+				/* new_code_here
+                m_pClickedListItem = pListItem;
+				*/
 				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 			}
 			else if(STATIC_FOCUS_RECEIVED == msg)
