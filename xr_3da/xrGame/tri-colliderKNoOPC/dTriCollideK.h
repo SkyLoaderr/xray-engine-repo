@@ -138,33 +138,30 @@ dFabs(BxPR[2]-PtR[2])<BxEx[2]/2;
 }
 
 inline dReal FragmentonSphereTest(const dReal* center, const dReal radius,
-						   const dReal* pt1, const dReal* pt2,dVector3 norm)
+						   const dReal* pt1, const dReal* pt2,dReal* norm)
 {
 	dVector3 direction={pt2[0]-pt1[0],pt2[1]-pt1[1],pt2[2]-pt1[2]};
-	dMatrix3 R;
-	dVector3 centerR,pt1R,pt2R;
-	if(!(direction[1]==0.f && direction[2]==0.f))
-		dRFrom2Axes(R,direction[0],direction[1],direction[2],0,-direction[2],direction[1]);
-	else
-		dRFrom2Axes(R,direction[0],direction[1],direction[2],direction[2],0,-direction[0]);
+	dNormalize3(direction);
+	dReal center_prg=dDOT(center,direction);
+	dReal pt1_prg=dDOT(pt1,direction);
+	dReal pt2_prg=dDOT(pt2,direction);
+	dReal from1_dist=center_prg-pt1_prg;
+	if(center_prg<pt1_prg||center_prg>pt2_prg) return -1;
+	dVector3 line_to_center={
+		-pt1[0]-direction[0]*from1_dist+center[0],
+		-pt1[1]-direction[1]*from1_dist+center[1],
+		-pt1[2]-direction[2]*from1_dist+center[2]
+	};
+	norm[0]=line_to_center[0];
+	norm[1]=line_to_center[1];
+	norm[2]=line_to_center[2];
 
-	dMULTIPLY1_331 (centerR,R,center);
-	dMULTIPLY1_331 (pt1R,R,pt1);
-	dMULTIPLY1_331 (pt2R,R,pt2);
-
-	if((centerR[0]-pt1R[0])*(centerR[0]-pt2R[0])>0.f) return -1;
-
-	dReal depth=-_sqrt(
-				 (pt1R[1]-centerR[1])*(pt1R[1]-centerR[1])+
-				 (pt1R[2]-centerR[2])*(pt1R[2]-centerR[2])
-				 )
-				+
-				radius;
-	if(depth<0.f) return -1;
+	dNormalize3(norm);
 
 	
-	dVector3 normR={0,centerR[1]-pt1R[1],centerR[2]-pt1R[2]};
-	dMULTIPLY0_331(norm,R,normR);
+	dReal depth=radius-dDOT(line_to_center,norm);
+	if(depth<0.f) return -1.f;
+
 	return depth;
 	
 	
@@ -173,7 +170,7 @@ inline dReal FragmentonSphereTest(const dReal* center, const dReal radius,
 
 
 inline dReal PointSphereTest(const dReal* center, const dReal radius,
-						   const dReal* pt, dVector3 norm)
+						   const dReal* pt,dReal* norm)
 {
 
 	dReal depth=-_sqrt(
