@@ -24,6 +24,7 @@ class CAI_ALife :
 	public CALifeGraphRegistry,
 	public CALifeOwnerRegistry,
 	public CALifeTraderRegistry,
+	public CALifeScheduleRegistry,
 	public CSheduled,
 	public CRandom 
 {
@@ -40,20 +41,13 @@ public:
 	GRAPH_VECTOR_SVECTOR			m_tpTerrain;			// массив списков: по идетнификатору 
 															//	местности получить список точек 
 															//  графа
-	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
 	
 	IC void vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
 	{
-		CALifeGraphRegistry::Update(tpALifeDynamicObject);
-		CALifeTraderRegistry::Update(tpALifeDynamicObject);
-		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
-		if (tpALifeMonsterAbstract) {
-			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
-			GRAPH_IT			I = m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints.begin(); 
-			GRAPH_IT			E = m_tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints.end(); 
-			for ( ; I != E; I++)
-				CALifeOwnerRegistry::Update(*I,tpALifeMonsterAbstract);
-		}
+		CALifeGraphRegistry::Update		(tpALifeDynamicObject);
+		CALifeTraderRegistry::Update	(tpALifeDynamicObject);
+		CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
+		CALifeOwnerRegistry::Update		(tpALifeDynamicObject,m_tpSpawnPoints);
 	};
 	
 	IC void vfUpdateDynamicData()
@@ -61,8 +55,8 @@ public:
 		// initialize
 		CALifeOwnerRegistry::Init	();
 		CALifeGraphRegistry::Init	();
-		CALifeGraphRegistry::Init	();
-		m_tpScheduledObjects.clear	();
+		CALifeTraderRegistry::Init	();
+		CALifeScheduleRegistry::Init();
 		// update objects
 		{
 			OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();

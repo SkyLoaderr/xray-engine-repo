@@ -20,12 +20,12 @@ public:
 	virtual void					Save(CFS_Memory	&tMemoryStream) = 0;
 };
 
-class IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
-};
-
 class IPureALifeIObject {
 public:
 	virtual void					Init(_SPAWN_ID	tSpawnID, SPAWN_P_VECTOR &tpSpawnPoints) = 0;
+};
+
+class IPureALifeLSObject : public IPureALifeLObject, public IPureALifeSObject {
 };
 
 class IPureALifeLSIObject : public IPureALifeLSObject, public IPureALifeIObject {

@@ -375,10 +375,16 @@ public:
 		}
 	};
 	
-	IC void							Update(_GRAPH_ID tGraphID, CALifeMonsterAbstract *tpALifeMonsterAbstract)
+	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject, SPAWN_P_VECTOR &tpSpawnPoints)
 	{
-		m_tpLocationOwners[tGraphID].push_back(tpALifeMonsterAbstract);
-	}
+		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
+		if (tpALifeMonsterAbstract) {
+			GRAPH_IT			I = tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints.begin(); 
+			GRAPH_IT			E = tpSpawnPoints[tpALifeMonsterAbstract->m_tSpawnID]->m_tpRouteGraphPoints.end(); 
+			for ( ; I != E; I++)
+				m_tpLocationOwners[*I].push_back(tpALifeMonsterAbstract);
+		}
+	};	
 };
 
 class CALifeTraderRegistry {
@@ -417,4 +423,21 @@ public:
 		}
 		return(tpBestTrader);
 	};
+};
+
+class CALifeScheduleRegistry {
+public:
+	ALIFE_MONSTER_P_VECTOR			m_tpScheduledObjects;	// массив обновляемых объектов
+
+	void							Init()
+	{
+		m_tpScheduledObjects.clear	();
+	};
+
+	IC void							Update(CALifeDynamicObject *tpALifeDynamicObject)
+	{
+		CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>(tpALifeDynamicObject);
+		if (tpALifeMonsterAbstract)
+			m_tpScheduledObjects.push_back	(tpALifeMonsterAbstract);
+	};	
 };
