@@ -93,6 +93,10 @@ void CBuild::xrPhase_MergeLM()
 		// Merge this layer
 		while (Layer.size()) 
 		{
+			string256	phase_name;
+			sprintf		(phase_name,"Building lightmap %d...",g_lightmaps.size());
+			Phase		(phase_name);
+
 			// Sort layer by similarity (state changes)
 			std::sort	(Layer.begin(),Layer.end(),compare1_defl);
 
