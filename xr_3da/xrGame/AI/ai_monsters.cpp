@@ -13,6 +13,11 @@
 #define DEST_POSITIONS
 #define ATTACK_HIT_REACTION_TIME	30000
 
+IC float ffGetDistance(Fvector P1, Fvector P2)
+{
+	return(float(sqrt(float(SQR(P2.x - P1.x) + SQR(P2.z - P1.z) + SQR(P2.y - P1.y)))));
+}
+
 IC void vfNormalizeSafe(Fvector& Vector)
 {
 	float fMagnitude = Vector.magnitude(); 

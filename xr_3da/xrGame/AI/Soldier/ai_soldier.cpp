@@ -240,7 +240,7 @@ float CAI_Soldier::EnemyHeuristics(CEntity* E)
 
 #define MOVEMENT_SPEED_WEIGHT		20.f
 #define DISTANCE_WEIGHT				20.f
-//#define SPEED_WEIGHT				10.f
+#define SPEED_WEIGHT				-2.f
 //#define LIGHTNESS_WEIGHT			40.f
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
@@ -253,7 +253,8 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	tCurrentWatchDirection.normalize();
 	tTemp.sub(tpEntity->Position(),vPosition);
 	tTemp.normalize();
-	float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+	//float fAlpha = tCurrentWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
+	float fAlpha = tWatchDirection.dotproduct(tTemp), fEyeFov = eye_fov*PI/180.f;
 	clamp(fAlpha,-.99999f,+.99999f);
 	fAlpha = acosf(fAlpha);
 	float fMaxViewableDistanceInDirection = eye_range*(1 - fAlpha/(fEyeFov/2.f));
@@ -273,7 +274,6 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	}
 
 	// computing lightness weight
-	//fResult += LIGHTNESS_WEIGHT*float(tpEntity->AI_Node->light)/255.f;
 	fResult *= float(tpEntity->AI_Node->light)/255.f;
 	
 	// computing enemy state
@@ -292,7 +292,8 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	}
 
 	// computing my ability to view the enemy
-	//fResult *= m_fCurSpeed < MAX_VIEWABLE_SPEED ? SPEED_WEIGHT*(1.f - m_fCurSpeed/MAX_VIEWABLE_SPEED) : .1f;
+	//if ()
+	//fResult += m_fCurSpeed < MAX_VIEWABLE_SPEED ? SPEED_WEIGHT*(1.f - m_fCurSpeed/MAX_VIEWABLE_SPEED) : SPEED_WEIGHT;
 
 	return(fResult >= 6.f);
 }
