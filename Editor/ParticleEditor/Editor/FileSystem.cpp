@@ -440,8 +440,8 @@ void CFileSystem::VerifyPath(LPCSTR path)
 LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 {
     if (_GetItemCount(tex_name,'_')>1){
-        string256 _fn[_MAX_FNAME];
-        string256 fld[_MAX_FNAME];
+        string256 _fn;
+        string256 fld;
         _GetItem(tex_name,0,fld,'_');
         sprintf(_fn,"%s\\%s",fld,tex_name);
 		strcpy(tex_name,_fn);
