@@ -78,7 +78,7 @@ void CAI_PseudoDog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimHowling,			"stand_howling_",		-1,	0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimJumpGlide,		"jump_glide_",			-1, 0,									0,										PS_STAND);
 	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,									0,									PS_STAND);
+	MotionMan.AddAnim(eAnimDie,				"stand_die_",			-1, 0,									0,									PS_STAND);
 
 	MotionMan.AddAnim(eAnimSitLieDown,		"sit_lie_down_",		-1, 0,									0,										PS_SIT);
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,									0,										PS_STAND);	
