@@ -90,15 +90,12 @@ void CAI_ALife::Load()
 		THROW;
 	
 	tpStream = Engine.FS.Open	(caFileName);
-	
 	CALifeHeader::Load			(*tpStream);
 	CALifeGameTime::Load		(*tpStream);
 	CALifeObjectRegistry::Load	(*tpStream);
 	CALifeEventRegistry::Load	(*tpStream);
 	CALifeTaskRegistry::Load	(*tpStream);
-	
 	vfUpdateDynamicData			();
-
 	Engine.FS.Close				(tpStream);
 
 	m_bLoaded					= true;
