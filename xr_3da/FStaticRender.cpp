@@ -195,7 +195,7 @@ void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
 	FBasicVisual *V = N->val.pVisual;
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
 	::Render.Lights.SelectDynamic(N->val.vCenter,V->bv_Radius);
-	gm_SetLevel(N->val.iLighting);
+	gm_SetAmbient(N->val.iLighting);
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
 
@@ -213,7 +213,7 @@ void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 	Device.Shader.Set(V->hShader);
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
 	::Render.Lights.SelectDynamic(N->val.vCenter,V->bv_Radius);
-	gm_SetLevel(N->val.iLighting);
+	gm_SetAmbient(N->val.iLighting);
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
 
