@@ -19,18 +19,21 @@ public:
 };
 
 //--------------------------------------------------------------------------
-CWeaponList::CWeaponList	(CEntity* p){
+CWeaponList::CWeaponList	(CEntity* p)
+{
 	m_pParent		= p;
 	R_ASSERT(m_pParent->Visual()->Type==MT_SKELETON);
 
-	m_iActiveWeapon	= -1;
-	m_iHUDboneL		= -1;
-	m_iHUDboneR		= -1;
-	m_iACTboneL		= -1;
-	m_iACTboneR		= -1;
+	m_iActiveWeapon		= -1;
+	m_iSelectedWeapon	= -1;
+	m_iHUDboneL			= -1;
+	m_iHUDboneR			= -1;
+	m_iACTboneL			= -1;
+	m_iACTboneR			= -1;
 }
 
-CWeaponList::~CWeaponList	( ){
+CWeaponList::~CWeaponList	( )
+{
 	for (WeaponIt w_it=m_Weapons.begin(); w_it!=m_Weapons.end(); w_it++)
 		_DELETE(*w_it);
 	m_Weapons.clear();
@@ -76,13 +79,10 @@ bool CWeaponList::WeaponChange(int idx)
 	if ((idx<0) || (idx>=int(m_Weapons.size())) || (0==m_Weapons[idx]))	return false;
 
 	// Stop current weapon
-	int old		= m_iActiveWeapon;
-	if (old>=0)	{
-		FireEnd	();
-	}
+	if (m_iActiveWeapon>=0)	m_Weapons[m_iActiveWeapon]->Hide	();
 
 	// Select new
-	m_iActiveWeapon	= idx;
+	m_iSelectedWeapon	= idx;
 	return true;
 }
 
@@ -183,7 +183,8 @@ bool CWeaponList::TakeItem(CLASS_ID cls, int iAmmoCount){
 	return false;
 }
 
-void CWeaponList::LeaveWeapon(CLASS_ID cls){
+void CWeaponList::LeaveWeapon(CLASS_ID cls)
+{
 /*	int idx = FindWeapon(cls);
 	if (idx>=0){ 
 		if (m_iActiveWeapon==idx) ActivateWeaponNext();
@@ -196,9 +197,23 @@ void CWeaponList::LeaveWeapon(CLASS_ID cls){
 
 void CWeaponList::Update(float dt, bool bHUDView)
 {
+	// Update all needed weapons
+	for (DWORD it=0; it<m_Weapons.size(); it++)
+		if (m_Weapons[it]->IsUpdating())	m_Weapons[it]->Update(dt,bHUDView);
 	if (m_iActiveWeapon==-1) return;
-	m_Weapons[m_iActiveWeapon]->Update(dt, bHUDView);
+
+	// Change weapon if needed and can be done
+	if (m_iSelectedWeapon>=0)	
+	{
+		if (!m_Weapons[m_iActiveWeapon]->IsVisible())	{
+			m_iActiveWeapon		= m_iSelectedWeapon;
+			m_iSelectedWeapon	= -1;
+
+			m_Weapons[m_iActiveWeapon]->Show	();
+		}
+	}
 }
+
 void CWeaponList::OnRender(bool bHUDView)
 {
 	if (m_iActiveWeapon==-1) return;

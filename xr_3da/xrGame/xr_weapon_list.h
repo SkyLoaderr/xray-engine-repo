@@ -17,7 +17,8 @@ private:
 	CEntity*		m_pParent;
 
 	WeaponVec		m_Weapons;
-	int				m_iActiveWeapon;
+	int				m_iActiveWeapon;	// Current active weapon
+	int				m_iSelectedWeapon;	// Candidate for change to
 	
 	CWeapon*		LoadOne				(CLASS_ID cls);
 	int				FindWeapon			(CLASS_ID cls);
