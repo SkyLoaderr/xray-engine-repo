@@ -33,8 +33,20 @@ function is_trader (first_speaker, second_speaker)
 	if (clsid.trader == second_speaker:clsid()) then
 		return true
     end
+
 	return false
 end
+
+function is_wounded (first_speaker, second_speaker)
+
+	if (second_speaker:name() == "wounded_stalker_0_1") then
+		return true
+	end
+
+	return false
+end
+
+
 
 function if_not_a_trader (first_speaker, second_speaker)
 
