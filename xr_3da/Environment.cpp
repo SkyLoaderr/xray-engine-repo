@@ -117,7 +117,7 @@ void CEnvDescriptor::load	(LPCSTR S)
 	lmap_color				= pSettings->r_fvector3	(S,"lmap_color");		
 	hemi_color				= pSettings->r_fvector3	(S,"hemi_color");		hemi_color.mul	(.5f);
 	sun_color				= pSettings->r_fvector3	(S,"sun_color");		sun_color.mul	(.5f);
-	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");	sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
+	Fvector2 sund			= pSettings->r_fvector2	(S,"sun_dir");			sun_dir.setHP	(deg2rad(sund.y),deg2rad(sund.x));
 }
 void CEnvDescriptor::unload	()
 {
