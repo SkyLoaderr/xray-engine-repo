@@ -35,7 +35,7 @@ var _x	= var(x);
 */
 
 //-----------------------------------------------------------------------
-void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* MDL, xr_vector<R_Light>& Lights_src, BOOL bDisableFaces)
+void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* MDL, base_lighting& lights, u32 flags)
 {
 	// trans-map
 	typedef	xr_multimap<float,v_vertices>	mapVert;
@@ -57,10 +57,9 @@ void xrMU_Model::calc_lighting	(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MO
 	// Perform lighting
 	CDB::COLLIDER				DB;
 	DB.ray_options				(0);
-	xr_vector<R_Light>& Lights	= Lights_src;
-	R_ASSERT					(!Lights.empty());
 
 	// Disable faces if needed
+	BOOL bDisableFaces			= flags&LP_UseFaceDisable;
 	if	(bDisableFaces)
 		for (I=0; I<m_faces.size(); I++)	m_faces[I]->bDisableShadowCast	= TRUE;
 

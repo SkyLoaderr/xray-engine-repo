@@ -78,13 +78,13 @@ public:
 		virtual ~_face()	{ };
 	};
 public:
-	string128			m_name;
-	u16					m_lod_ID;
-	v_vertices			m_vertices;
-	v_faces				m_faces;
-	v_subdivs			m_subdivs;
+	string128				m_name;
+	u16						m_lod_ID;
+	v_vertices				m_vertices;
+	v_faces					m_faces;
+	v_subdivs				m_subdivs;
 
-	xr_vector<Fcolor>		color;
+	xr_vector<base_color>	color;
 private:
 	_face*				load_create_face	(Fvector& P1, Fvector& P2, Fvector& P3, b_face& F);
 	_vertex*			load_create_vertex	(Fvector& P);
@@ -93,7 +93,7 @@ public:
 	void				calc_normals		();
 	void				calc_materials		();
 	void				calc_faceopacity	();
-	void				calc_lighting		(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, xr_vector<R_Light>& Lights_src, BOOL bDisableFaces);
+	void				calc_lighting		(xr_vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL* M, base_lighting& lights, u32 flags);
 	void				calc_lighting		();
 	void				calc_ogf			();
 	void				export_geometry		();
