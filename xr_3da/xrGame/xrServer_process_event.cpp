@@ -63,7 +63,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		{
 			CSE_Abstract*		E			= game->get_entity_from_eid	(destination);
 			if (E) {
-				xrClientData*		C			= E->owner;
+				xrClientData*	C			= E->owner;
 				if (C && (C->owner == E))
 				{
 					game->OnPlayerReady		(C->ID);

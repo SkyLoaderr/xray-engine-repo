@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "playerlist.h"
-
+excluded from build 
 game_GameState::game_GameState()
 {
 	round	= -1;
