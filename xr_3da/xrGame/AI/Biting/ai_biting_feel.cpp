@@ -20,11 +20,6 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	CEntityAlive* E = dynamic_cast<CEntityAlive*> (who);
 	if (E && (E->g_Team() == g_Team())) return;
 	
-	if (who)
-		LOG_EX2("%s Hear: %s type = %x", *"*/ cName(), who->cName(), eType /*"*);
-	else 
-		LOG_EX2("%s Hear: WORLD type = %x", *"*/ cName(), eType /*"*);
-
 	// ignore unknown sounds
 	if (eType == 0xffffffff) return;
 

@@ -31,6 +31,7 @@ enum ELeaderState {
 
 struct SEntityState {
 	CEntity *pEnemy;
+	Fvector	pEnemyPos;		// для определения актуальности состояния
 	Fvector target_pos;
 };
 
@@ -92,9 +93,9 @@ public:
 	
 	// Децентрализованное управление
 	void		UpdateMonsterData	(CEntity *pE, CEntity *pEnemy);
-	void		UpdateDecentalized	();
+	void		UpdateDecentralized	();
 	Fvector		GetTargetPoint		(CEntity *pE);
-
+	bool		IsActual			(CEntity *pE, CEntity *pEnemy);
 	// -----------------------------------------------------------------
 
 	// Получить задачу для NPC
@@ -124,6 +125,9 @@ private:
 
 	CEntity		*GetNearestEnemy	(CEntity *t, ENTITY_VEC *ev);
 	
+	// decentralized
+	void		SetupMemeberPositions(ENTITY_STATE_MAP &cur_map, CEntity *enemy);
+
 };
 
 
