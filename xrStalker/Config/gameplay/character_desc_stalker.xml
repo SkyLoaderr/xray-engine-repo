@@ -52,7 +52,9 @@
 			fox_flash \n
 		</supplies>
 					
-		<start_dialog>escape_lager_volk_hello</start_dialog>
+		<start_dialog>escape_fox_hello_dialog</start_dialog>
+		<actor_dialog>escape_fox_flash_dialog</actor_dialog>
+		<actor_dialog>escape_fox_flame_dialog</actor_dialog>
 	</specific_character>
 
 	<specific_character id="stalker_esc_bariga" team_default = "1">
