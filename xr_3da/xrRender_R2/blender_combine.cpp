@@ -5,7 +5,7 @@
 
 CBlender_combine::CBlender_combine	()	{	description.CLS		= 0;	}
 CBlender_combine::~CBlender_combine	()	{	}
-
+ 
 void	CBlender_combine::Compile(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
