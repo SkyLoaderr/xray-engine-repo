@@ -183,7 +183,7 @@ void CWallmarksEngine::Render()
 					{
 						// Flush stream
 						VS->Unlock				(w_count);
-						Device.Shader.Set		(w_S);
+						Device.Shader.set_Shader(w_S);
 						Device.Primitive.Draw	(VS,w_count/3,w_offset);
 
 						// Restart (re-lock/re-calc)
@@ -202,7 +202,7 @@ void CWallmarksEngine::Render()
 		DWORD w_count			= w_verts-w_start;
 		VS->Unlock				(w_count);
 		if (w_count)			{
-			Device.Shader.Set		(w_S);
+			Device.Shader.set_Shader(w_S);
 			Device.Primitive.Draw	(VS,w_count/3,w_offset);
 		}
 
@@ -322,7 +322,7 @@ void CWallmarksEngine::Render()
 				DWORD vCount = VB-B;
 				VS->Unlock	(vCount);
 				if (vCount) {
-					Device.Shader.Set		(Shader);
+					Device.Shader.set_Shader(Shader);
 					Device.Primitive.Draw	(VS,vCount/3,vOffset);
 				}
 			}

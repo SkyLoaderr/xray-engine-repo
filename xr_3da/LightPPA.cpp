@@ -118,7 +118,7 @@ void CLightPPA_Manager::Render()
 	Device.mProject._43 -= 0.001f; 
 	CHK_DX(HW.pDevice->SetTransform	 ( D3DTS_PROJECTION,	Device.mProject.d3d() ));
 
-	Device.Shader.Set		(SH);
+	Device.Shader.set_Shader	(SH);
 	for (DWORD L=0; L<container.size(); L++)
 	{
 		CLightPPA&	PPL = *container[L];

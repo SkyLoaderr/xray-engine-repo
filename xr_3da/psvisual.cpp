@@ -214,10 +214,7 @@ void CPSVisual::Render(float LOD)
 	DWORD dwNumVerts = pv-pv_start;
 	m_Stream->Unlock(dwNumVerts);
 	if (dwNumVerts)
-	{
-		Device.Shader.Set		(hShader);
 		Device.Primitive.Draw	(m_Stream,dwNumVerts,dwNumVerts/2,vOffset,Device.Streams_QuadIB);
-	}
 }
 
 //----------------------------------------------------

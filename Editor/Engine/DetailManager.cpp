@@ -294,8 +294,7 @@ void CDetailManager::Render		(Fvector& EYE)
 		if  (o_total > (o_per_lock*lock_count))	o_per_lock++;
 
 		// Fill VB (and flush it as nesessary)
-		Device.Shader.Set				(Object.shader);
-		Device.Shader.SetupPass			(0);
+		Device.Shader.set_Shader		(Object.shader);
 		Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 
 		Fmatrix		mXform,mRotXZ;

@@ -187,7 +187,7 @@ void CGlowManager::Render()
 			int verts				= pv-pvs;
 			Stream->Unlock			(verts);
 			if (verts) {
-				Device.Shader.Set		(T);
+				Device.Shader.set_Shader(T);
 				Device.Primitive.Draw	(Stream,verts,verts/2,vOffset,Device.Streams_QuadIB);
 			}
 		}
