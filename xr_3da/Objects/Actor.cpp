@@ -758,11 +758,11 @@ void CActor::g_cl_Orientate	(DWORD mstate_rl, float dt)
 
 	// если хоть что-то нажато - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
-		r_model_yaw		= normalize_angle(r_torso.yaw);
+		r_model_yaw		= angle_normalize(r_torso.yaw);
 		mstate_real		&=~mcTurn;
 	} else {
 		// if camera rotated more than 45 degrees - align model with it
-		float ty = normalize_angle(r_torso.yaw);
+		float ty = angle_normalize(r_torso.yaw);
 		if (_abs(r_model_yaw-ty)>PI_DIV_4)	{
 			r_model_yaw_dest = ty;
 			// 
