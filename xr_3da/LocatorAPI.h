@@ -42,6 +42,7 @@ private:
 	typedef vector<archive>			vec_archives;
 	typedef vec_archives::iterator	vec_archives_it;
 
+	BOOL						bNoRecurse;
 	set_files					files;
 	vec_archives				archives;
 

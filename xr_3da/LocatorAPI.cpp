@@ -102,14 +102,15 @@ void CLocatorAPI::ProcessOne	(const char* path, LPVOID _F)
 	if (F.attrib&_A_HIDDEN)			return;
 
 	if (F.attrib&_A_SUBDIR) {
+		if (bNoRecurse)				return;
 		if (0==strcmp(F.name,"."))	return;
 		if (0==strcmp(F.name,"..")) return;
 		strcat		(N,"\\");
 		Register	(N,0xffffffff,0,0,0);
 		Recurse		(N);
 	} else {
-		if (strext(N) && 0==strcmp(strext(N),".xrp"))	ProcessArchive	(N);
-		else											Register		(N,0xffffffff,0,0,0);
+		if (strext(N) && 0==strcmp(strext(N),".xrp") && !bNoRecurse)	ProcessArchive	(N);
+		else															Register		(N,0xffffffff,0,0,0);
 	}
 }
 
@@ -134,9 +135,13 @@ void CLocatorAPI::Recurse		(const char* path)
 void CLocatorAPI::Initialize	()
 {
 	Log		("Initializing File System...");
-	Recurse	("");
-	Recurse	(Path.GameData);
-	Msg		("FS: %d files cached",files.size());
+	DWORD	M1		= Engine.mem_Usage();
+	bNoRecurse		= TRUE;
+	Recurse			("");
+	bNoRecurse		= FALSE;
+	Recurse			(Path.GameData);
+	DWORD	M2		= Engine.mem_Usage();
+	Msg		("FS: %d files cached, %dKb memory used.",files.size(),(M2-M1)/1024);
 }
 void CLocatorAPI::Destroy		()
 {
