@@ -9,13 +9,13 @@
 function main()
 	local dlg = ui_main_menu.main_menu()
 	level.start_stop_menu(dlg,true)
-		while true do
+	while true do
 		wait(3000)
 	end
 end
 
 
-class "main_menu" (ui_base_dialog.base_dialog)
+class "main_menu" (CUIScriptWnd)
 
 function main_menu:__init() super()
    self:SetFont(GetFontMedium()) --set base font for dialog.
