@@ -26,7 +26,9 @@ ENGINE_API
 extern	float	psHUD_FOV;
 extern	float	psSqueezeVelocity;
 extern	float	g_cl_lvInterp;
-extern	float	g_fMaxDesyncLen;
+extern	int		g_cl_InterpolationType; //0 - Linear, 1 - BSpline, 2 - HSpline
+extern	u32		g_cl_InterpolationMaxPoints;
+
 extern	float	g_fMinReconDist;
 extern	float	g_fMaxReconDist;
 extern	float	g_fMinReconSpeed;
@@ -34,13 +36,12 @@ extern	float	g_fMaxReconSpeed;
 extern	u32		g_dwMaxCorpses;
 extern	int		x_m_x;
 extern	int		x_m_z;
+extern	BOOL	net_cl_inputguaranteed		;
+extern	int		g_dwInputUpdateDelta		;
 
-		BOOL	g_bCheckTime			= TRUE;
-		int		g_dwEventDelay			= 0;
-		BOOL	net_cl_inputguaranteed	= TRUE;
-		int		net_cl_inputupdaterate	= 100;
-
-		int		g_dwInputUpdateDelta	= 10;
+		BOOL	g_bCheckTime			= FALSE;
+		int		g_dwEventDelay			= 0	;
+		int		net_cl_inputupdaterate	= 50;
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -906,7 +907,9 @@ void CCC_RegisterCommands()
 	// Mad Max
 	// Net Interpolation
 	CMD4(CCC_Float,					"net_cl_interpolation",		&g_cl_lvInterp,				-1,1);
-	CMD4(CCC_Float,					"net_cl_maxdesync",			&g_fMaxDesyncLen,		0, 10);
+	CMD4(CCC_Integer,				"net_cl_icurvetype",		&g_cl_InterpolationType,	0, 2)	;
+	CMD4(CCC_Integer,				"net_cl_icurvesize",		(int*)&g_cl_InterpolationMaxPoints,	0, 2000)	;
+	
 	CMD1(CCC_Net_CL_Resync,			"net_cl_resync" );
 	CMD1(CCC_Net_CL_ClearStats,		"net_cl_clearstats" );
 	CMD1(CCC_Net_SV_ClearStats,		"net_sv_clearstats" );
