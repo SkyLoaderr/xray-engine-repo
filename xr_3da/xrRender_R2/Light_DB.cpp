@@ -163,6 +163,12 @@ void			CLight_DB::add_sector_lights(vector<WORD> &L)
 
 void			CLight_DB::Update()
 {
+	// Clear selection
+	v_selected_shadowed.clear	();
+	v_selected_unshadowed.clear	();
+
+	// Select dynamic lights
+
 	// Light direction
 	u32 t					= Device.TimerAsync();
 	if (t>sun_tm_next) 

@@ -25,7 +25,7 @@ private:
 	vector<light*>			v_static;
 	set<light*>				v_dynamic_active;
 	set<light*>				v_dynamic_inactive;
-
+public:
 	vector<light*>			v_selected_shadowed;
 	vector<light*>			v_selected_unshadowed;
 public:
