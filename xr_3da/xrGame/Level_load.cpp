@@ -161,7 +161,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 			tSearch.m_fSearchRange = 4*fHalfSubnodeSize;
 			tSearch.m_dwStartNode = tpaNodes[k];
 			tSearch.m_tStartPosition = tpaVector0[i];
-			tSearch.vfShallowGraphSearch(getAI().q_mark_bit_x);
+			tSearch.vfShallowGraphSearch(getAI().q_mark_bit);
 //			getAI().q_Range_Bit_X(tpaNodes[k],tpaVector0[i],4*fHalfSubnodeSize,&tNodePosition,dwBestNode,fBestCost);
 			tpaVector1[j].y = getAI().ffGetY(*(getAI().Node(tSearch.m_dwBestNode)),tpaVector1[j].x,tpaVector1[j].z);
 		}

@@ -399,18 +399,41 @@ void CAI_Stalker::SearchEnemy()
 	
 	m_dwInertion				= 60000;
 
-	//if (!Group.m_tpaSuspiciousNodes.size()) 
-	{
-		//vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,_min(20.f,_min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,60.f)),Group);
-		//vfClasterizeSuspiciousNodes(Group);
-		m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) - 3.f;
-		m_tSelectorFreeHunting.m_fMinEnemyDistance = max(m_tSelectorFreeHunting.m_fMaxEnemyDistance - m_tSelectorFreeHunting.m_fSearchRange,0.f);
-		m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMinEnemyDistance;
-		vfSetParameters				(&m_tSelectorFreeHunting,&m_tSavedEnemyPosition,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tSavedEnemyPosition);
+	INIT_SQUAD_AND_LEADER;
+	CGroup &Group = *getGroup();
+	if (Group.m_tpaSuspiciousNodes.empty())
+		if (m_iCurrentSuspiciousNodeIndex != -2) {
+			if (m_iCurrentSuspiciousNodeIndex == -1) {
+				vfFindAllSuspiciousNodes(m_dwSavedEnemyNodeID,m_tSavedEnemyPosition,m_tSavedEnemyPosition,40.f,Group);
+				if (Group.m_tpaSuspiciousNodes.empty())
+					m_iCurrentSuspiciousNodeIndex = -2;
+				else
+					m_iCurrentSuspiciousNodeIndex = 0;
+			}
+			Msg("Last enemy position");
+			AI_Path.DestNode			= m_dwSavedEnemyNodeID;
+			vfSetParameters				(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tSavedEnemyPosition);
+		}
+		else {
+			Msg("Predicting by selector");
+			m_tSelectorRetreat.m_tEnemyPosition = m_tMySavedPosition;
+			m_tSelectorRetreat.m_tpEnemyNode	= getAI().Node(m_dwMyNodeID);
+			m_tSelectorRetreat.m_tMyPosition	= m_tSavedEnemyPosition;
+			m_tSelectorRetreat.m_tpMyNode		= getAI().Node(m_dwSavedEnemyNodeID);
+			vfSetParameters				(&m_tSelectorRetreat,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeDanger);
+		}
+	else {
+		Msg("The higher-level prediction");
+		if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) {
+			m_iCurrentSuspiciousNodeIndex++;
+			if (Group.m_tpaSuspiciousNodes.size() <= m_iCurrentSuspiciousNodeIndex) {
+				Group.m_tpaSuspiciousNodes.clear();
+				m_iCurrentSuspiciousNodeIndex = -2;
+			}
+		}
+		AI_Path.DestNode = Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
+		vfSetParameters				(0,0,true,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID));
 	}
-//	else {
-//		vfChooseSuspiciousNode(m_tSelectorFreeHunting);
-//	}
 }
 
 void CAI_Stalker::ExploreDNE()
@@ -836,26 +859,36 @@ void CAI_Stalker::Think()
 		ExploreDNE();
 	} else
 	if (A && !K && H && !L) {
-		ExploreDE();
+//		ExploreDE();
+		SearchEnemy();
 	} else
 	if (A && !K && !H && L) {
 		ExploreDNE();
 	} else
 	if (A && !K && H && L) {
-		ExploreDE();
+//		ExploreDE();
+		SearchEnemy();
 	} else
 	
 	if (B && !K && !H && !L) {
-		ExploreNDNE();
+//		ExploreNDNE();
+		m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+		m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+		m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
+		m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+		SearchEnemy();
 	} else
 	if (B && !K && H && !L) {
-		ExploreNDE();
+//		ExploreNDE();
+		SearchEnemy();
 	} else
 	if (B && !K && !H && L) {
-		ExploreNDNE();
+//		ExploreNDNE();
+		SearchEnemy();
 	} else
 	if (B && !K && H && L) {
-		ExploreNDE();
+		//ExploreNDE();
+		SearchEnemy();
 	} else
 	if (M) {
 		TakeItems();

@@ -133,7 +133,6 @@ private:
 	int						m_iCurrentSuspiciousNodeIndex;
 	SuspiciousPoints		m_tpaSuspiciousPoints;
 	SuspiciousForces		m_tpaSuspiciousForces;
-	vector<u32>				m_tpaNodeStack;
 	bool					m_bActionStarted;
 	u32						m_dwSoundTime;
 

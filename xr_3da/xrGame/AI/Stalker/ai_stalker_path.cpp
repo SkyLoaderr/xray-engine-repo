@@ -401,7 +401,11 @@ void CAI_Stalker::vfMarkVisibleNodes(CEntity *tpEntity)
 	
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
 		tDirection.setHP(fIncrement,0.f);
-		getAI().ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,fRange,m_tpaNodeStack,&getAI().q_mark_bit);
+		getAI().ffMarkNodesInDirection(tpCustomMonster->AI_NodeID,tpCustomMonster->Position(),tDirection,fRange,getAI().m_dwaNodeStackM,&getAI().m_baNodeMarks);
+		Device.Statistic.TEST2.End	();
+#pragma todo("Instead of slice implement time-delay computations")
+		Engine.Sheduler.Slice		();
+		Device.Statistic.TEST2.Begin();
 	}
 }
 
@@ -417,9 +421,10 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 	NodePosition QueryPos;
 	AI.PackPosition(QueryPos,BasePos);
 
-	AI.q_stack.clear();
-	AI.q_stack.push_back(StartNode);
-	AI.q_mark_bit[StartNode] = true;
+	AI.m_dwaNodeStackM.clear();
+	AI.m_dwaNodeStackS.clear();
+	AI.m_dwaNodeStackS.push_back(StartNode);
+	AI.m_baNodeMarks[StartNode] = true;
 	
 	float range_sqr		= Range*Range;
 	float fEyeFov;
@@ -432,13 +437,15 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 
 	INIT_SQUAD_AND_LEADER;
 	
-	m_tpaNodeStack.clear();
-	
+	Device.Statistic.TEST3.End	();
+	Device.Statistic.TEST2.Begin	();
 	for (int i=0; i<(int)Group.Members.size(); i++)
 		vfMarkVisibleNodes(Group.Members[i]);
+	Device.Statistic.TEST2.End	();
+	Device.Statistic.TEST3.Begin	();
 
-	for (u32 it=0; it<AI.q_stack.size(); it++) {
-		u32 ID = AI.q_stack[it];
+	for (u32 it=0; it<AI.m_dwaNodeStackS.size(); it++) {
+		u32 ID = AI.m_dwaNodeStackS[it];
 
 		NodeCompressed*	N = AI.Node(ID);
 		u32 L_count	= u32(N->links);
@@ -450,7 +457,7 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 				break;
 			// test node
 			u32 Test = AI.UnpackLink(*L_it);
-			if (AI.q_mark_bit[Test])
+			if (AI.m_baNodeMarks[Test])
 				continue;
 
 			NodeCompressed*	T = AI.Node(Test);
@@ -460,8 +467,8 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 				continue;
 
 			// register
-			AI.q_mark_bit[Test]		= true;
-			AI.q_stack.push_back	(Test);
+			AI.m_baNodeMarks[Test]		= true;
+			AI.m_dwaNodeStackS.push_back(Test);
 
 			// estimate
 			SSearchPlace tSearchPlace;
@@ -523,18 +530,22 @@ void CAI_Stalker::vfFindAllSuspiciousNodes(u32 StartNode, Fvector tPointPosition
 		}
 		if (bStop)
 			break;
+#pragma todo("Instead of slice implement time-delay computations")
+		Device.Statistic.TEST3.End	();
+		Engine.Sheduler.Slice			();
+		Device.Statistic.TEST3.Begin	();
 	}
 
 	{
-		vector<u32>::iterator it	= AI.q_stack.begin();
-		vector<u32>::iterator end	= AI.q_stack.end();
+		vector<u32>::iterator it	= AI.m_dwaNodeStackS.begin();
+		vector<u32>::iterator end	= AI.m_dwaNodeStackS.end();
 		for ( ; it!=end; it++)	
-			AI.q_mark_bit[*it] = false;
+			AI.m_baNodeMarks[*it] = false;
 		
-		it	= m_tpaNodeStack.begin();
-		end	= m_tpaNodeStack.end();
+		it	= getAI().m_dwaNodeStackM.begin();
+		end	= getAI().m_dwaNodeStackM.end();
 		for ( ; it!=end; it++)	
-			AI.q_mark_bit[*it] = false;
+			AI.m_baNodeMarks[*it] = false;
 	}
 	Device.Statistic.TEST3.End();
 }

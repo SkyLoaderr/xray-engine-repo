@@ -93,10 +93,15 @@ void CAI_Space::Load()
 
 	
 	// special query tables
-	q_stack.reserve			(m_header.count);
 	q_mark.assign			(m_header.count,0);
 	q_mark_bit.assign		(m_header.count,false);
 	q_mark_bit_x.assign		(m_header.count,false);
+	m_baNodeMarks.assign	(m_header.count,false);
+	
+#pragma todo("This is very big memory suppose, try to tune it to a reasonable value")
+	q_stack.reserve			(m_header.count);
+	m_dwaNodeStackM.reserve	(m_header.count);
+	m_dwaNodeStackS.reserve	(m_header.count);
 
 	// a*
 	m_fSize2				= _sqr(m_header.size)/4;

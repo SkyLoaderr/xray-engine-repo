@@ -57,9 +57,12 @@ private:
 public:
 	// Query
 	vector<bool>		q_mark_bit;		// temporal usage mark for queries
-	vector<bool>		q_mark_bit_x;		// temporal usage mark for queries
+	vector<bool>		q_mark_bit_x;	// temporal usage mark for queries
+	vector<bool>		m_baNodeMarks;	// temporal usage mark for search enemy queries
 	vector<BYTE>		q_mark;			// temporal usage mark for queries
-	vector<u32>			q_stack;
+	vector<u32>			q_stack;		// temporal usage stack for search enemy queries
+	vector<u32>			m_dwaNodeStackM;// temporal usage stack for queries
+	vector<u32>			m_dwaNodeStackS;// temporal usage stack for queries
 	
 						CAI_Space		();
 	virtual				~CAI_Space		();

@@ -1888,9 +1888,6 @@
 						RelativePath="a_star.h">
 					</File>
 					<File
-						RelativePath="a_star_interfaces.cpp">
-					</File>
-					<File
 						RelativePath="a_star_interfaces.h">
 					</File>
 					<File
