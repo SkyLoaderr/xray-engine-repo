@@ -73,11 +73,11 @@ void CHUDManager::OnMove()
 //--------------------------------------------------------------------
 
 ENGINE_API extern float psHUD_FOV;
-void CHUDManager::Render()
+void CHUDManager::Render_Affected()
 {
 	if (psHUD_Flags&HUD_DRAW)
 	{
-		if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw(this);
+		if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw	(this);
 		// HUD model
 		if (psHUD_Flags&HUD_WEAPON) {
 			Fmatrix Pold			= Device.mProject;
@@ -122,8 +122,12 @@ void CHUDManager::Render()
 		pHUDFont->OnRender		();
 	}
 }
-//--------------------------------------------------------------------
+void CHUDManager::Render_Direct	()
+{
 
+}
+
+//--------------------------------------------------------------------
 void CHUDManager::OnEvent(EVENT E, DWORD P1, DWORD P2)
 {
 }
