@@ -12,17 +12,29 @@ function save_dialog:__finilize()
 end
 
 function save_dialog:InitControls()
-	local indent       = 50
-	local screen       = {width = 1024,height = 768}	
-	local main_rect    = {x = 0,      y = 0,      width = 800, height = 600}	
+	local indent          = 50
+	local screen          = {width = 1024,height = 768}	
+	local main_rect       = {x = 0,      y = 0,      width = 800, height = 600}	
 	main_rect.x = (screen.width - main_rect.width)/2
 	main_rect.y = (screen.height - main_rect.height)/2
-	local caption_rect = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
-	local edit_rect    = {x = indent, 
-						  y = caption_rect.y + caption_rect.height,
-						  width = 500, 
-						  height = 60}
-	local list_rect    = {x = 0,      y = 0,      width = 500,             height = 400}
+	local caption_rect    = {x = 0,      y = 0,      width = main_rect.width, height = indent*2}
+	local edit_rect       = {x = indent, 
+						     y = caption_rect.y + caption_rect.height + indent,
+						     width = 500, 
+						     height = 60}
+	local btn_ok_rect     = {x = indent,
+							 y = 0,
+							 height = 40,
+							 width  = 135}
+	btn_ok_rect.y = btn_ok_rect.height + indent
+	local btn_cancel_rect = {x = ,
+							 y = ,
+							 height = btn_ok_rect.height,
+							 width  = btn_ok_rect.width}
+	local list_rect       = {x = indent,
+						     y = edit_rect.y + edit_rect.height + indent,
+						     width = 500,
+						     height = 400}
 	
 	-- init self position and size
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
