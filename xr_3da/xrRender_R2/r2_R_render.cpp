@@ -19,12 +19,12 @@ void CRender::Render	()
 		// Calculate sector(s) and their objects
 		set_Object								(0);
 		if (0!=pLastSector) pLastSector->Render	(ViewBase);
-		pCreator->pHUD->Render_Calculate		();
+		pCreator->pHUD->Render_Last				();
 	}
-	Device.Statistic.RenderCALC.End			();
+	Device.Statistic.RenderCALC.End				();
 
 	//******* Main render
-	Device.Statistic.RenderDUMP.Begin		();
+	Device.Statistic.RenderDUMP.Begin			();
 	{
 		Target.phase_scene						();
 
