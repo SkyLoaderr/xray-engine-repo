@@ -250,6 +250,7 @@ void CRender::Calculate()
 	}
 
 	// Calculate sector(s) and their objects
+	marker++;
 	calc_DetailTexturing					();
 	set_Object								(0);
 	if (0!=pLastSector) pLastSector->Render	(ViewBase);
@@ -716,6 +717,8 @@ void CRender::OnDeviceCreate	()
 
 	matDetailTexturing			= Device.Shader._CreateMatrix("$user$detail");
 	matFogPass					= Device.Shader._CreateMatrix("$user$fog");
+
+	marker						= 0;
 }
 
 void CRender::OnDeviceDestroy	()
