@@ -5,6 +5,8 @@
 
 XRCORE_API	extern		str_container*	g_pStringContainer	= NULL;
 
+#define		HEADER		6
+
 str_value*	str_container::dock		(str_c value)
 {
 	if ((0==value) || (0==value[0]))	return 0;
@@ -14,13 +16,15 @@ str_value*	str_container::dock		(str_c value)
 	str_value*	result			= 0;
 
 	// calc len
-	size_t	s_len_with_zero		= strlen(value)+1;
-	VERIFY	(4+s_len_with_zero < 4096);
+	size_t	s_len				= strlen(value);
+	size_t	s_len_with_zero		= s_len_with_zero+1;
+	VERIFY	(HEADER+s_len_with_zero < 4096);
 
 	// setup find structure
 	string4096	tempstorage;
 	str_value*	sv				= (str_value*)tempstorage;
 	sv->dwReference				= 0;
+	sv->dwStrLen				= (u16)s_len;
 	Memory.mem_copy				(sv->value,value,s_len_with_zero);
 	
 	// search
@@ -28,8 +32,8 @@ str_value*	str_container::dock		(str_c value)
 	if (I!=container.end())		result	= *I;
 	else {
 		// Insert string
-		result					= (str_value*)xr_malloc(4+s_len_with_zero);
-		Memory.mem_copy			(result,sv,4+s_len_with_zero);
+		result					= (str_value*)xr_malloc(HEADER+s_len_with_zero);
+		Memory.mem_copy			(result,sv,HEADER+s_len_with_zero);
 		container.insert		(result);
 	}
 	cs.Leave					();

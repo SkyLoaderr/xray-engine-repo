@@ -21,6 +21,8 @@ void*	xrMemory::mem_alloc		(size_t size)
 {
 	stat_calls++;
 
+	// if (size>1100 && size<1200)	__asm int 3;
+
 	//
 	void* _ptr					= 0;
 	if (!mem_initialized || debug_mode)		

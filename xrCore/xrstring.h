@@ -11,6 +11,7 @@ typedef const char*		str_c;
 struct		XRCORE_API	str_value
 {
 	u32					dwReference		;
+	u16					dwStrLen		;
 	char				value		[]	;
 };
 struct		XRCORE_API	str_value_cmp
@@ -60,10 +61,10 @@ public:
 	bool				operator!	() const						{	return p_ == 0;									}
 	char				operator[]	(size_t id)						{	return p_->value[id];							}
 
-	// fast swapping
+	// misc func
+	u32					length		()								{	if (0==p_) return 0; else return p_->dwStrLen;	}
 	void				swap		(ref_str & rhs)					{	str_value* tmp = p_; p_ = rhs.p_; rhs.p_ = tmp;	}
-	bool				equal		(ref_str & rhs)					
-	{
+	bool				equal		(ref_str & rhs)					{
 		if (p_ == rhs.p_)	return true;
 		return	0==strcmp	(p_->value,rhs.p_->value);
 	}
