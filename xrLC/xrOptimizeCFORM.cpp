@@ -17,7 +17,7 @@ void OptimizeCFORM(CDB::CollectorPacked& CL)
 	for (int it = 0; it<int(CL.getTS()); it++)
 	{
 		TRI* T = CL.getT()+it;
-		WORD S = T->sector;
+		u16 S = T->sector;
 		if (S>=sector_faces.size())	sector_faces.resize(S+1);
 		sector_faces[S].tris.push_back	(T);
 	}

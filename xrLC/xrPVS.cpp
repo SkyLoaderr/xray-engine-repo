@@ -5,7 +5,7 @@
 #pragma comment(lib,"x:\\xrOcclusion.lib")
 #pragma comment(lib,"winmm.lib")
 
-typedef xr_vector<WORD>	vecW;
+typedef xr_vector<u16>	vecW;
 typedef vecW::iterator	vecW_IT;
 
 typedef xr_vector<BOOL>	vecB;
@@ -36,7 +36,7 @@ int	CompressSelected()
 
 	// Search placeholder
 	u32 sz					= g_selected.size();
-	u32 sz_bytes				= sz*sizeof(WORD);
+	u32 sz_bytes				= sz*sizeof(u16);
 	treeCompressPair	Range	= g_compress_tree.equal_range(sz);
 
 	for (treeCompressIt it=Range.first; it!=Range.second; it++)

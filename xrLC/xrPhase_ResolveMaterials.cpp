@@ -7,7 +7,7 @@ extern void		Detach		(vecFace* S);
 
 struct _counter
 {
-	WORD	dwMaterial;
+	u16	dwMaterial;
 	u32	dwCount;
 };
 

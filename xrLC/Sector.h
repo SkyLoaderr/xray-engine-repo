@@ -8,15 +8,15 @@
 
 class CSector  
 {
-	u32				SelfID;
+	u32					SelfID;
 	OGF_Base *			TreeRoot;
-	xr_vector<WORD>		Portals;
-	xr_vector<WORD>		Glows;
-	xr_vector<WORD>		Lights;
+	xr_vector<u16>		Portals;
+	xr_vector<u16>		Glows;
+	xr_vector<u16>		Lights;
 public: 
-	void add_portal		(WORD P)		{ Portals.push_back(P);		}
-	void add_glow		(WORD G)		{ Glows.push_back(G);		}
-	void add_light		(WORD L)		{ Lights.push_back(L);		}
+	void add_portal		(u16 P)		{ Portals.push_back(P);		}
+	void add_glow		(u16 G)		{ Glows.push_back(G);		}
+	void add_light		(u16 L)		{ Lights.push_back(L);		}
 
 	void BuildHierrarhy	();
 	void Validate		();

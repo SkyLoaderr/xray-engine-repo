@@ -218,7 +218,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	// Faces
 	fs.open_chunk	(OGF_INDICES);
 	fs.w_u32		((u32)faces.size()*3);
-	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.w(&*F,3*sizeof(WORD));
+	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.w(&*F,3*sizeof(u16));
 	fs.close_chunk	();
 }
 
@@ -306,14 +306,14 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 		{
 			fs.open_chunk	(0x3);
 			fs.w_u32		((u32)pmap_faces.size());
-			fs.w			(&*pmap_faces.begin(),(u32)pmap_faces.size()*sizeof(WORD));
+			fs.w			(&*pmap_faces.begin(),(u32)pmap_faces.size()*sizeof(u16));
 			fs.close_chunk	();
 		}
 		fs.close_chunk();
 	}
 }
 
-extern	void xrStripify(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength);
+extern	void xrStripify(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSize, int iMinStripLength);
 
 void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 {
@@ -348,7 +348,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 	{
 		// Init
 		u32						V_Current,V_Minimal,FIX_Current;
-		WORD*					faces_affected	= (WORD*)&*pmap_faces.begin();
+		u16*					faces_affected	= (u16*)&*pmap_faces.begin();
 		Vsplit*					vsplit			= (Vsplit*)&*pmap_vsplit.begin();
 		V_Current				= V_Minimal		= dwMinVerts;
 		FIX_Current				= 0;
@@ -361,7 +361,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 			if (dwSample==u32(samples-1))	dwCount = (u32)vertices.size	();
 			
 			if (V_Current!=dwCount) {
-				WORD* Indices	= (WORD*)&*faces.begin();
+				u16* Indices	= (u16*)&*faces.begin();
 				
 				// First cycle - try to improve quality
 				while (V_Current<dwCount) {
@@ -369,7 +369,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 					
 					// fixup faces
 					u32	dwEnd = u32(S.numFixFaces)+FIX_Current;
-					WORD	V_Cur = WORD(V_Current);
+					u16	V_Cur = u16(V_Current);
 					for (u32 I=FIX_Current; I<dwEnd; I++) {
 						R_ASSERT(Indices[faces_affected[I]]==S.vsplitVert);
 						Indices[faces_affected[I]]=V_Cur;
@@ -388,7 +388,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 					Vsplit&	S	=	vsplit[V_Current-V_Minimal];
 					
 					// fixup faces
-					WORD V_New		= WORD(S.vsplitVert);
+					u16 V_New		= u16(S.vsplitVert);
 					u32 dwEnd		= FIX_Current;
 					u32 dwStart	= dwEnd-S.numFixFaces;
 					for (u32 I=dwStart; I<dwEnd; I++) {
@@ -403,11 +403,11 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 			}
 
 			// ***** Stripify resulting mesh
-			xr_vector<WORD>	strip_indices, strip_permute;
+			xr_vector<u16>	strip_indices, strip_permute;
 			vecOGF_V		strip_verts;
 			try {
 				// Stripify
-				WORD* strip_F			= (WORD*)&*faces.begin(); 
+				u16* strip_F			= (u16*)&*faces.begin(); 
 				strip_indices.assign	(strip_F, strip_F+I_Current);
 				strip_permute.resize	(V_Current);
 				xrStripify				(strip_indices,strip_permute,c_vCacheSize,0);
@@ -446,7 +446,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 					// Faces
 					fs.open_chunk	(OGF_INDICES);
 					fs.w_u32		((u32)strip_indices.size());
-					fs.w			(&*strip_indices.begin(),(u32)strip_indices.size()*sizeof(WORD));
+					fs.w			(&*strip_indices.begin(),(u32)strip_indices.size()*sizeof(u16));
 					fs.close_chunk	();
 				}
 				fs.close_chunk		();

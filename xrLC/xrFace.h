@@ -76,8 +76,8 @@ public:
 	Fvector					basis_tangent		[3];
 	Fvector					basis_binormal		[3];
 
-	WORD					dwMaterial;			// index of material
-	WORD					dwMaterialGame;		// unique-id of game material (must persist up to game-CForm saving)
+	u16					dwMaterial;			// index of material
+	u16					dwMaterialGame;		// unique-id of game material (must persist up to game-CForm saving)
 
 	struct					{
 		u8					bSplitted			:		1;

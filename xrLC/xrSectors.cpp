@@ -40,8 +40,8 @@ void CBuild::BuildSectors()
 		b_portal &P = portals[I];
 		R_ASSERT(u32(P.sector_front)<g_sectors.size());
 		R_ASSERT(u32(P.sector_back) <g_sectors.size());
-		g_sectors[u32(P.sector_front)]->add_portal	(WORD(I));
-		g_sectors[u32(P.sector_back)]->add_portal		(WORD(I));
+		g_sectors[u32(P.sector_front)]->add_portal	(u16(I));
+		g_sectors[u32(P.sector_back)]->add_portal		(u16(I));
 	}
 	// glows
 	for (u32 I=0; I<glows.size(); I++)
@@ -49,7 +49,7 @@ void CBuild::BuildSectors()
 		b_glow		&G = glows[I];
 		b_material	&M = materials[G.dwMaterial];
 		R_ASSERT(M.sector<g_sectors.size());
-		g_sectors[M.sector]->add_glow			(WORD(I));
+		g_sectors[M.sector]->add_glow			(u16(I));
 	}
 	// lights
 	for (u32 I=0; I<L_dynamic.size(); I++)
@@ -60,14 +60,14 @@ void CBuild::BuildSectors()
 			for (u32 j=0; j<g_sectors.size(); j++)
 			{
 				R_ASSERT(g_sectors[j]);
-				g_sectors[j]->add_light(WORD(I));
+				g_sectors[j]->add_light(u16(I));
 			}
 		} else {
 			if	(L.sectors.size()) {
 				for (u32 j=0; j<L.sectors.size(); j++)
 				{
 					R_ASSERT	(L.sectors[j]<g_sectors.size());
-					g_sectors	[L.sectors[j]]->add_light(WORD(I));
+					g_sectors	[L.sectors[j]]->add_light(u16(I));
 				}
 			} else {
 				clMsg("Fuck!!! Light at position %f,%f,%f non associated!!!",

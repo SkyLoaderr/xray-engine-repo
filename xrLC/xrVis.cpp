@@ -4,7 +4,7 @@
 #include "ffileops.h"
 
 // from xrPVS
-typedef xr_vector<WORD>	vecW;
+typedef xr_vector<u16>	vecW;
 typedef vecW::iterator	vecW_IT;
 
 extern xr_vector<vecW>		g_pvs;
@@ -31,7 +31,7 @@ u32 PlaceData(xr_vector<vecW> &C, vecW &P)
 	{
 		u32 S = it->size();
 		if (S!=sz) { pos+=S+1; continue; }
-		if (0!=memcmp(it->begin(),P.begin(),S*sizeof(WORD))) { pos+=S+1; continue; }
+		if (0!=memcmp(it->begin(),P.begin(),S*sizeof(u16))) { pos+=S+1; continue; }
 
 		// Ok-Ob :)
 		goto exit;
@@ -42,7 +42,7 @@ u32 PlaceData(xr_vector<vecW> &C, vecW &P)
 
 exit:
 	P.clear();
-	return pos*sizeof(WORD);
+	return pos*sizeof(u16);
 }
 
 void SaveDATA(IWriter &fs, xr_vector<vecW> &C)
@@ -50,7 +50,7 @@ void SaveDATA(IWriter &fs, xr_vector<vecW> &C)
 	for (xr_vector<vecW>::iterator it=C.begin(); it!=C.end(); it++)
 	{
 		fs.Wword(it->size());
-		fs.write(it->begin(),it->size()*sizeof(WORD));
+		fs.write(it->begin(),it->size()*sizeof(u16));
 	}
 }
 

@@ -4,21 +4,21 @@
 IC bool cmp_defl(CDeflector *p1, CDeflector *p2)
 {
 	Fvector &C = Deflector->Sphere.P;
-	WORD M1 = p1->GetBaseMaterial();
-	WORD M2 = p2->GetBaseMaterial();
+	u16 M1 = p1->GetBaseMaterial();
+	u16 M2 = p2->GetBaseMaterial();
 	if (M1<M2) return true;
 	if (M1>M2) return false;
 	return C.distance_to_sqr(p1->Sphere.P) < C.distance_to_sqr(p1->Sphere.P);
 }
 
 typedef xr_vector<_rect>	vecR;
-typedef vecR::iterator	vecRIT;
+typedef vecR::iterator		vecRIT;
 
 typedef xr_vector<_point>	vecP;
-typedef vecP::iterator	vecPIT;
+typedef vecP::iterator		vecPIT;
 
 typedef xr_vector<int>		vecI;
-typedef vecI::iterator	vecIIT;
+typedef vecI::iterator		vecIIT;
 
 // Data in
 static	vecR	rects;

@@ -36,12 +36,12 @@ BOOL OGF_Vertex::similar(OGF* ogf, OGF_Vertex& V)
 	return TRUE;
 }
 
-WORD OGF::_BuildVertex	(OGF_Vertex& V1)
+u16 OGF::_BuildVertex	(OGF_Vertex& V1)
 {
 	try {
 		for (itOGF_V it=vertices.begin(); it!=vertices.end(); it++)
 		{
-			if (it->similar(this,V1)) return WORD(it-vertices.begin());
+			if (it->similar(this,V1)) return u16(it-vertices.begin());
 		}
 	} catch (...) { clMsg("* ERROR: OGF::_BuildVertex");	}
 
@@ -113,7 +113,7 @@ void OGF::Optimize()
 /*
 void OGF::CreateOccluder()
 {
-	ORM_Vertex* pV = ORM_Begin(vertices.size(),faces.size()*3,(WORD*)faces.begin());
+	ORM_Vertex* pV = ORM_Begin(vertices.size(),faces.size()*3,(u16*)faces.begin());
 	for (u32 i=0; i<vertices.size(); i++)
 	{
 		OGF_Vertex& V = vertices[i];
@@ -152,7 +152,7 @@ void OGF::MakeProgressive()
 
 		// Convert
 		PM_Result R;
-		I_Current	= PM_Convert((WORD*)&*faces.begin(),(u32)faces.size()*3,&R);
+		I_Current	= PM_Convert((u16*)&*faces.begin(),(u32)faces.size()*3,&R);
 
 		if (I_Current>=0) 
 		{
@@ -168,7 +168,7 @@ void OGF::MakeProgressive()
 			CopyMemory(&*pmap_vsplit.begin(),R.splitPTR,R.splitSIZE*sizeof(Vsplit));
 
 			pmap_faces.resize(R.facefixSIZE);
-			CopyMemory(&*pmap_faces.begin(),R.facefixPTR,R.facefixSIZE*sizeof(WORD));
+			CopyMemory(&*pmap_faces.begin(),R.facefixPTR,R.facefixSIZE*sizeof(u16));
 
 			dwMinVerts = R.minVertices;
 		}

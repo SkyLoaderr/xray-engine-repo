@@ -51,7 +51,7 @@ void xrMU_Model::Load	(IReader& F)
 xrMU_Model::_face* xrMU_Model::load_create_face(Fvector& P1, Fvector& P2, Fvector& P3, b_face& B)
 {
 	_face*	_F			= mu_faces.create();
-	_F->dwMaterial		= WORD(B.dwMaterial);
+	_F->dwMaterial		= u16(B.dwMaterial);
 	_F->dwMaterialGame	= B.dwMaterialGame;
 	R_ASSERT			(B.dwMaterialGame<65536);
 

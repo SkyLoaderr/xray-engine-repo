@@ -5,7 +5,7 @@
 #include "NV_Library\NvTriStrip.h"
 #include "NV_Library\VertexCache.h"
 
-int xrSimulate (xr_vector<WORD> &indices, int iCacheSize )
+int xrSimulate (xr_vector<u16> &indices, int iCacheSize )
 {
 	VertexCache C(iCacheSize);
 
@@ -20,7 +20,7 @@ int xrSimulate (xr_vector<WORD> &indices, int iCacheSize )
 	return count;
 }
 
-void xrStripify		(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCacheSize, int iMinStripLength)
+void xrStripify		(xr_vector<u16> &indices, xr_vector<u16> &perturb, int iCacheSize, int iMinStripLength)
 {
 	SetCacheSize	(iCacheSize);
 	SetMinStripSize	(iMinStripLength);
@@ -50,7 +50,7 @@ void xrStripify		(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCache
 	}
 
 	// Copy indices
-	Memory.mem_copy	(&*indices.begin(),xPGROUP[0].indices,(u32)indices.size()*sizeof(WORD));
+	Memory.mem_copy	(&*indices.begin(),xPGROUP[0].indices,(u32)indices.size()*sizeof(u16));
 
 	// Release memory
 	xPGROUP.clear	();
@@ -63,16 +63,16 @@ void OGF::Stripify()
 
 //	set_status("Stripifying",treeID,faces.size(),vertices.size());
 	try {
-		xr_vector<WORD>	indices,permute;
+		xr_vector<u16>	indices,permute;
 		
 		// Stripify
-		WORD* F			= (WORD*)&*faces.begin(); 
+		u16* F			= (u16*)&*faces.begin(); 
 		indices.assign	(F,F+(faces.size()*3));
 		permute.resize	(vertices.size());
 		xrStripify		(indices,permute,c_vCacheSize,0);
 		
 		// Copy faces
-		CopyMemory		(&*faces.begin(),&*indices.begin(),(u32)indices.size()*sizeof(WORD));
+		CopyMemory		(&*faces.begin(),&*indices.begin(),(u32)indices.size()*sizeof(u16));
 		
 		// Permute vertices
 		vecOGF_V temp_list = vertices;

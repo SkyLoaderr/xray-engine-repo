@@ -66,7 +66,7 @@ void CBuild::xrPhase_TangentBasis()
 	// ************************************* Build vectors + expand TC if nessesary
 	Status						("Building inputs...");
 	std::sort					(g_vertices.begin(),g_vertices.end());
-	xr_vector<xr_vector<u32> >		remap;
+	xr_vector<xr_vector<u32> >	remap;
 	remap.resize				(g_vertices.size());
 	for (u32 f=0; f<g_faces.size(); f++)
 	{
@@ -132,7 +132,7 @@ void CBuild::xrPhase_TangentBasis()
 	xr_vector<float>&	o_tc		= output[0].floatVector_;	R_ASSERT(output[0].Name_=="tex0");
 	xr_vector<float>&	o_tangent	= output[1].floatVector_;	R_ASSERT(output[1].Name_=="tangent");
 	xr_vector<float>&	o_binormal	= output[2].floatVector_;	R_ASSERT(output[2].Name_=="binormal");
-	xr_vector<int>&	o_indices	= output[3].intVector_;		R_ASSERT(output[3].Name_=="indices");
+	xr_vector<int>&		o_indices	= output[3].intVector_;		R_ASSERT(output[3].Name_=="indices");
 
 	// verify
 	R_ASSERT		(3*g_faces.size()	== o_indices.size());

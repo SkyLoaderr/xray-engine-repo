@@ -66,7 +66,7 @@ void CSector::BuildHierrarhy	()
 			if (g_tree[I]->bConnected)		 continue;
 			if (g_tree[I]->Sector != SelfID) continue;
 
-			OGF_Node* pNode					= xr_new<OGF_Node>(iLevel,WORD(SelfID));
+			OGF_Node* pNode					= xr_new<OGF_Node>(iLevel,u16(SelfID));
 			pNode->AddChield				(I);
 
 			// Find best object to connect with
@@ -143,5 +143,5 @@ void CSector::Save(IWriter &fs)
 	fs.w_chunk(fsP_Root,&ID,sizeof(u32));
 
 	// Portals
-	fs.w_chunk(fsP_Portals,&*Portals.begin(),Portals.size()*sizeof(WORD));
+	fs.w_chunk(fsP_Portals,&*Portals.begin(),Portals.size()*sizeof(u16));
 }

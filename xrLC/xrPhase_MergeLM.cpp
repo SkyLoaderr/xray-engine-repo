@@ -10,8 +10,8 @@ extern BOOL _rect_place		(L_rect &r, lm_layer*		D);
 IC int	compare_defl		(CDeflector* D1, CDeflector* D2)
 {
 	// First  - by material
-	WORD M1		= D1->GetBaseMaterial();
-	WORD M2		= D2->GetBaseMaterial();
+	u16 M1		= D1->GetBaseMaterial();
+	u16 M2		= D2->GetBaseMaterial();
 	if (M1<M2)	return	1;  // less
 	if (M1>M2)	return	0;	// more
 	return				2;	// equal
@@ -22,8 +22,8 @@ IC int	compare_defl		(CDeflector* D1, CDeflector* D2)
 IC int	sort_defl_analyze	(CDeflector* D1, CDeflector* D2)
 {
 	// first  - get material index
-	WORD M1		= D1->GetBaseMaterial();
-	WORD M2		= D2->GetBaseMaterial();
+	u16 M1		= D1->GetBaseMaterial();
+	u16 M2		= D2->GetBaseMaterial();
 
 	// 1. material area
 	u32	 A1		= pBuild->materials[M1].internal_max_area;

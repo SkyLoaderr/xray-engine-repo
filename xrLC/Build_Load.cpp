@@ -102,7 +102,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				F->r				(&B,sizeof(B));
 				R_ASSERT			(B.dwMaterialGame<65536);
 
-				_F->dwMaterial		= WORD(B.dwMaterial);
+				_F->dwMaterial		= u16(B.dwMaterial);
 				_F->dwMaterialGame	= B.dwMaterialGame;
 
 				// Vertices and adjacement info
@@ -336,7 +336,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 		if (65535==M.shader_xrlc)	{
 			// No compiler shader
-			M.reserved	= WORD(-1);
+			M.reserved	= u16(-1);
 			// clMsg	(" *  %20s",shader_render[M.shader].name);
 		} else {
 			// clMsg	(" *  %20s / %-20s",shader_render[M.shader].name, shader_compile[M.shader_xrlc].name);
@@ -345,7 +345,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 				clMsg	("ERROR: Shader '%s' not found in library",shader_compile[M.shader].name);
 				R_ASSERT(id>=0);
 			}
-			M.reserved = WORD(id);
+			M.reserved = u16(id);
 		}
 	}
 	Progress(p_total+=p_cost);
