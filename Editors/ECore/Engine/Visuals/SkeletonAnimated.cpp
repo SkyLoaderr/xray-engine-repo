@@ -696,7 +696,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
                     Q2.z		= float(K2r->z)*KEY_QuantI;
                     Q2.w		= float(K2r->w)*KEY_QuantI;
 
-                    D->Q.slerp	(Q1,Q2,delta);
+                    D->Q.slerp	(Q1,Q2,clampr(delta,0.f,1.f));
                 }
 
                 // translate
