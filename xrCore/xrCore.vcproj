@@ -257,7 +257,8 @@
 					Name="Mixed|Win32">
 					<Tool
 						Name="VCCLCompilerTool"
-						UsePrecompiledHeader="1"/>
+						UsePrecompiledHeader="1"
+						ShowIncludes="TRUE"/>
 				</FileConfiguration>
 			</File>
 			<File
@@ -265,12 +266,6 @@
 			</File>
 			<File
 				RelativePath="xrCore.cpp">
-				<FileConfiguration
-					Name="Mixed|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						ShowIncludes="TRUE"/>
-				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="xrCore.h">

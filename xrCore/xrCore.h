@@ -127,6 +127,8 @@
 #endif
 
 // stl
+#pragma warning (push)
+#pragma warning (disable:4702)
 #include <algorithm>
 #include <limits>
 #include <vector>
@@ -135,6 +137,7 @@
 #include <set>
 #include <map>
 #include <string>
+#pragma warning (pop)
 #pragma warning (disable : 4100 )		// unreferenced formal parameter
 
 // Our headers
