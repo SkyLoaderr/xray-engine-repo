@@ -292,7 +292,7 @@ u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const F
 			if (box.pick_exact(start,dir)) {
 				if (/**box.contains(dest) && /**/inside(next_vertex_id,dest)) {
 					TIMER_STOP(CheckPositionInDirection)
-					return	(next_vertex_id);
+					return	(is_accessible(next_vertex_id) ? next_vertex_id : u32(-1));
 				}
 				Fvector2		temp;
 				temp.add		(box.min,box.max);
@@ -348,7 +348,7 @@ bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fve
 			if (box.pick_exact(start,dir)) {
 				if (next_vertex_id == finish_vertex_id) {
 					TIMER_STOP(CheckVertexInDirection)
-					return		(true);
+					return		(is_accessible(next_vertex_id));
 				}
 				Fvector2		temp;
 				temp.add		(box.min,box.max);

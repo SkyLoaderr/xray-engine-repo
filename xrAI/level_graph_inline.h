@@ -389,8 +389,6 @@ IC	u32	CLevelGraph::value(const u32 vertex_id, const_iterator &i) const
 
 IC	bool CLevelGraph::is_accessible		(const u32 vertex_id) const
 {
-//	VERIFY				(valid_vertex_id(vertex_id));
-//	return				(!m_ref_counts[vertex_id]);
 	return				(valid_vertex_id(vertex_id) && m_access_mask[vertex_id]);
 }
 
