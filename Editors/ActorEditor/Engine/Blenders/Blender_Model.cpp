@@ -55,16 +55,9 @@ void	CBlender_Model::Compile	(CBlender_Compile& C)
 			C.r_End				();
 			break;
 		case 1:	// Lowest LOD
-			C.PassBegin			();
-			C.PassSET_ZB		(TRUE,TRUE);
-			C.PassSET_Blend_SET	();
-			C.PassSET_LightFog	(TRUE,TRUE);
-			C.StageBegin		();
-			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
-			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.StageSET_TMC		(oT_Name, "$null", "$null", 0			);
-			C.StageEnd			();
-			C.PassEnd			();
+			C.r_Pass			("r1_model_def_lq","r1_model_def_lq",TRUE);
+			C.r_Sampler			("s_base",	C.L_textures[0]);
+			C.r_End				();
 			break;
 		}
 	}

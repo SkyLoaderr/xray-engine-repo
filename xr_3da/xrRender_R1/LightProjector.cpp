@@ -8,13 +8,13 @@
 #include "lighttrack.h"
 
 const	int			P_rt_size	= 512;
-const	int			P_o_size	= 56;
+const	int			P_o_size	= 51;
 const	int			P_o_line	= P_rt_size/P_o_size;
 const	int			P_o_count	= P_o_line*P_o_line;
 const	float		P_distance	= 48;
 const	float		P_distance2	= P_distance*P_distance;
 const	float		P_cam_dist	= 200;
-const	float		P_cam_range = 5.f;
+const	float		P_cam_range = 7.f;
 const	D3DFORMAT	P_rtf		= D3DFMT_A8R8G8B8;
 
 //////////////////////////////////////////////////////////////////////
