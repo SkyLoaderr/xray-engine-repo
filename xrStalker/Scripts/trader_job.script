@@ -143,7 +143,7 @@ function artefacts_task_text(original_text, first_speaker, second_speaker)
 	local result_text = string.format("%s\\n", original_text)
 	for K,V in task_list do
 		printf("- %s", K.name)
-		result_text = string.format("%s\\n-%s", result_text, K.name)
+		result_text = string.format("%s\\n-%s", result_text, K:name())
 	end
     
 	return result_text
