@@ -359,7 +359,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 	// Create overlay VB
 	{
-		const float	 w	= 512,	h = 512;
+		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
 		const float _w	= w-1, _h = h-1;
 		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
 		m_pQuadVB->Lock						(0, 0, (void**)&pDstT, 0);
