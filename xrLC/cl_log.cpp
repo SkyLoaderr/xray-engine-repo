@@ -115,7 +115,7 @@ void Phase			(const char *phase_name)
 }
 
 HWND logWindow=0;
-void __cdecl logThread(void *dummy)
+void logThread(void *dummy)
 {
 	SetProcessPriorityBoost	(GetCurrentProcess(),TRUE);
 

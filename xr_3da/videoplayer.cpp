@@ -5,7 +5,7 @@ extern BOOL	g_bIntroFinished;
 // AVI-support
 #include <MMSystem.h>
 #include <mciavi.h>
-void __cdecl	Intro	( void* fn )
+void Intro	( void* fn )
 {
 	char *filename		= (char*)fn;
 	MCIERROR			me;
@@ -46,7 +46,7 @@ void __cdecl	Intro	( void* fn )
 
 #include <dshow.h> 
 #pragma comment(lib,"strmiids.lib")
-void  __cdecl	Intro_DSHOW	( void* fn )
+void  Intro_DSHOW	( void* fn )
 { 
 	char *	filename		=	(char*)fn	;
 	WCHAR	filename_UNICODE	[4096]		;

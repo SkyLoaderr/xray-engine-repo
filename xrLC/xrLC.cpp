@@ -17,7 +17,7 @@
 
 CBuild*	pBuild		= NULL;
 
-extern void __cdecl logThread(void *dummy);
+extern void logThread(void *dummy);
 extern volatile BOOL bClose;
 
 static const char* h_str = 

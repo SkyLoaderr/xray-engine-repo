@@ -21,9 +21,9 @@
 #include "CopyProtection.h"
 
 //---------------------------------------------------------------------
-BOOL	g_bIntroFinished		= FALSE;
-extern	void	__cdecl	Intro		( void* fn );
-extern	void	__cdecl	Intro_DSHOW	( void* fn );
+BOOL	g_bIntroFinished			= FALSE;
+extern	void	Intro				( void* fn );
+extern	void	Intro_DSHOW			( void* fn );
 extern	int PASCAL IntroDSHOW_wnd	(HINSTANCE hInstC, HINSTANCE hInstP, LPSTR lpCmdLine, int nCmdShow);
 //---------------------------------------------------------------------
 // 2446363
