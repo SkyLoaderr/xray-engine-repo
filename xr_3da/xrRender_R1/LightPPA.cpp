@@ -4,6 +4,11 @@
 
 #include "stdafx.h"
 #include "LightPPA.h"
+#include "..\igame_persistent.h"
+#include "..\environment.h"
+#include "..\fbasicvisual.h"
+#include "..\fcached.h"
+#include "..\CustomHUD.h"
 
 const u32	MAX_POLYGONS			=	1024*8;
 const float MAX_DISTANCE			=	50.f;
@@ -182,8 +187,16 @@ void CLightR_Manager::render_point	()
 			TRUE
 			);
 
+		//		4. Analyze if HUD intersects light volume
+		BOOL				bHUD	= FALSE;
+		CFrustum			F;
+		F.CreateFromMatrix	(L_combine,FRUSTUM_P_ALL);
+		bHUD				= F.testSphere_dirty	(Device.vCameraPosition,1.f);
+
 		//		4. Dump sorting tree
-		RImplementation.r_dsgraph_render_graph		(0);
+		if (bHUD)			g_pGameLevel->pHUD->Render_Last		();	
+		RImplementation.r_dsgraph_render_graph					(0);
+		if (bHUD)			RImplementation.r_dsgraph_render_hud();	
 	}
 	//		??? grass ???
 }
