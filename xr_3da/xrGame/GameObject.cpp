@@ -268,9 +268,11 @@ void CGameObject::renderable_Render	()
 
 float CGameObject::renderable_Ambient	()
 {
-	#pragma todo("by Dandy: temporary change, to prevent error")
-//	return AI_Node?float(AI_Node->light):255;
-	return 255;
+//	#pragma todo("by Dandy: temporary change, to prevent error")
+	return (AI_Node && (int(AI_NodeID) > 0) && 
+						(int(AI_NodeID) <getAI().Header().count))?
+						 float(AI_Node->light):255;
+//	return 255;
 
 }
 
