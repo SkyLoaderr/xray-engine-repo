@@ -57,7 +57,7 @@ public:
 	BOOL						update_culling			();
 	void						update_environment		();
 	void						rewind					();
-	void						stop					();
+	virtual void				stop					();
 
 	CSoundRender_Emitter		();
 	~CSoundRender_Emitter		();

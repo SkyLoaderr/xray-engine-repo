@@ -229,7 +229,7 @@ void	CEffect_Rain::Render	()
 		snd_Ambient_volume	+= snd_fade*Device.fTimeDelta;
 		snd_Ambient.feedback->set_volume		(snd_Ambient_volume);
 		sndP.mad							(Device.vCameraPosition,Device.vCameraDirection,.1f);
-		snd_Ambient.feedback->SetPosition	(sndP);
+		snd_Ambient.feedback->set_position	(sndP);
 		if (snd_Ambient_volume > 1)	state=stWorking;
 		bBornNewItems	= TRUE;
 		break;
@@ -240,7 +240,7 @@ void	CEffect_Rain::Render	()
 		snd_Ambient_volume	-= snd_fade*Device.fTimeDelta;
 		snd_Ambient.feedback->set_volume	(snd_Ambient_volume);
 		if (snd_Ambient_volume < 0)	{
-			snd_Ambient.feedback->Stop	();
+			snd_Ambient.feedback->stop	();
 			state=stIdle;
 		}
 		bBornNewItems	= FALSE;

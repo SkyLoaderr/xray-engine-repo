@@ -56,6 +56,7 @@ struct	ENGINE_API	sound
 	IC void	play_unlimited			( CObject* O,						BOOL bLoop=false);
 	IC void	play_at_pos				( CObject* O,	const Fvector &pos,	BOOL bLoop=false);
 	IC void	play_at_pos_unlimited	( CObject* O,	const Fvector &pos,	BOOL bLoop=false);
+	IC void	stop 					( );
 
 	IC void	set_position			( const Fvector &pos);
 	IC void	set_frequency			( float freq);
@@ -77,6 +78,7 @@ public:
 	virtual void					set_frequency			(float freq)												= 0;
 	virtual void					set_range				(float min, float max)										= 0;
 	virtual void					set_volume				(float vol)													= 0;
+	virtual void					stop					()															= 0;
 };
 
 class ENGINE_API	CSound_stream_interface
@@ -123,6 +125,7 @@ IC void	sound::set_position			( const Fvector &pos)									{	if (feedback)	feed
 IC void	sound::set_frequency		( float freq)											{	if (feedback)	feedback->set_frequency(freq);			}
 IC void	sound::set_range			( float min, float max )								{	if (feedback)	feedback->set_range(min,max);			}
 IC void	sound::set_volume			( float vol )											{	if (feedback)	feedback->set_volume(vol);				}
+IC void	sound::stop					( )														{	if (feedback)	feedback->stop(vol);					}
 IC void	sound::clone				( const sound& from, bool leave_type)		
 {
 	feedback	= 0;
