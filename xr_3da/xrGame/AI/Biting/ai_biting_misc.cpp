@@ -19,7 +19,7 @@ const float tempRunFactor = 5.0f;
 const float tempRunFreeFactor = 5.0f;
 const float tempPanicFactor = 5.0f;
 
-const float min_angle = PI_DIV_6;
+const float min_angle = PI_DIV_6 / 6;
 
 // исправление несоответствия позиции узлу 
 void CAI_Biting::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
@@ -148,7 +148,7 @@ void CAI_Biting::vfSetParameters(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector
 			r_torso_speed	= PI;
 			m_fCurSpeed		= PI;
 
-			if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, 5*min_angle))
+			if (getAI().bfTooSmallAngle(angle_normalize_signed(r_torso_current.yaw + min_angle), r_torso_target.yaw, PI))
 				// right
 				vfSetMotionActionParams(m_tBodyState, eMovementTypeRun, eMovementDirectionRight, m_tStateType, eActionTypeTurn);
 			else 
@@ -212,7 +212,7 @@ void CAI_Biting::vfUpdateParameters()
 	// victory probability
 	C = D = E = F = G	= false;
 	objVisible			&VisibleEnemies = Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	if (VisibleEnemies.size()) {
+	if (bfIsAnyAlive(VisibleEnemies)) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
 				C = true;

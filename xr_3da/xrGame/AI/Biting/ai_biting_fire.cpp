@@ -162,7 +162,7 @@ void CAI_Biting::SelectCorp(SEnemySelected& S)
 {
 	// Initiate process
 	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy					= 0;
+	S.Enemy				= 0;
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
 	

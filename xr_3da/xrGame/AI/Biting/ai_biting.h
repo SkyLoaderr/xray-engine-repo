@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_biting.h
 //	Created 	: 21.05.2003
 //  Modified 	: 21.05.2003
@@ -37,6 +37,7 @@ public:
 	virtual void			net_Destroy		();
 	virtual void			net_Export		(NET_Packet& P);
 	virtual void			net_Import		(NET_Packet& P);
+	virtual void			Exec_Movement	(float dt);
 
 	virtual void			Think			();
 
@@ -85,10 +86,13 @@ private:
 			void			SelectCorp						(SEnemySelected& S);
 			float			CorpHeuristics					(CEntity* E);
 
+			
+
 // members
 public:
 
 	virtual void			feel_sound_new					(CObject* who, int eType, const Fvector &Position, float power);
+	virtual objQualifier*	GetQualifier					();
 private:
 	SOUND_VECTOR			m_tpSoundDie;
 	SOUND_VECTOR			m_tpSoundHit;
@@ -207,4 +211,6 @@ private:
 	BOOL					m_bCannibalism;
 	BOOL					m_bEatMemberCorpses;
 	u32						m_dwEatCorpseInterval;
+	// saved corpse
+	SEnemySelected			m_tCorpse;
 };

@@ -551,6 +551,16 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 	return(j >= J);
 }
 
+bool bfIsAnyAlive(objVisible &VisibleEnemies)
+{
+	for (int i=0; i<VisibleEnemies.size(); i++) {
+		CEntityAlive *tpEntityAlive = dynamic_cast<CEntityAlive*>(VisibleEnemies[i].key);
+		if (tpEntityAlive && tpEntityAlive->g_Alive())
+			return(true);
+	}
+	return(false);
+}
+
 u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity, float fGroupDistance)
 {
 	CGroup		&Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
@@ -567,8 +577,8 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 	}
 
 	objVisible	&VisibleEnemies = Level().Teams[dwTeam].Squads[dwSquad].KnownEnemys;
-	
-	if (!VisibleEnemies.size())
+
+	if (!bfIsAnyAlive(VisibleEnemies))
 		switch (Group.m_dwLastAction) {
 			case 0: return(a0);
 			case 1: return(a1);

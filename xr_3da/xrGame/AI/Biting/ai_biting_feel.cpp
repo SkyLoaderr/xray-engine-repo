@@ -80,3 +80,20 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	}
 }
 
+static BOOL __fastcall BitingQualifier(CObject* O, void* P)
+{
+	if (O->CLS_ID!=CLSID_ENTITY)			
+		return FALSE;
+	else  {
+		CEntityAlive* E = dynamic_cast<CEntityAlive*> (O);
+		if (!E) return FALSE;
+		if (!E->IsVisibleForAI()) return FALSE; 
+		if ((E->g_Team() == *((int*)P)) && (E->g_Alive())) return FALSE;
+		return TRUE;
+	}
+}
+
+objQualifier* CAI_Biting::GetQualifier	()
+{
+	return(&BitingQualifier);
+}

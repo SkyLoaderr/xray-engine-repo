@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////
+
 //	Module 		: ai_monsters_misc.cpp
 //	Created 	: 23.07.2002
 //  Modified 	: 23.07.2002
@@ -246,6 +246,7 @@ extern float		ffGetCoverInDirection			(float fAngle, u32 dwNodeID);
 extern SRotation	tfGetOrientation				(CEntity *tpEntity);
 extern int			ifFindNearestPatrolPoint		(xr_vector<Fvector> &tpaVector, const Fvector &tPosition);
 extern bool			bfGetActionSuccessProbability	(EntityVec &Members, objVisible &VisibleEnemies, float fMinProbability, CBaseFunction &fSuccessProbabilityFunction);
+extern bool			bfIsAnyAlive					(objVisible &VisibleEnemies);
 extern u32			dwfChooseAction					(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, CEntity *tpEntity=0, float fGroupDistance = 100.f);
 extern Fvector		tfGetNextCollisionPosition		(CCustomMonster *tpCustomMonster, Fvector &tFuturePosition);
 

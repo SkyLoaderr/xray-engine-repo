@@ -74,6 +74,7 @@ void CAI_Biting::Init()
 
 	m_dwLastSoundNodeID				= 0;
 
+	ZeroMemory						(&m_tCorpse, sizeof(SEnemySelected));
 }
 
 void CAI_Biting::Die()
@@ -116,6 +117,7 @@ void CAI_Biting::Load(LPCSTR section)
 	m_bEatMemberCorpses				= pSettings->r_bool  (section,"EatMemberCorpses");
 	m_dwEatCorpseInterval			= pSettings->r_s32   (section,"EatCorpseInterval");
 
+	m_dwHealth						= pSettings->r_u32   (section,"Health");
 	// loading sounds
 //	g_vfLoadSounds		(m_tpSoundDie,pSettings->r_string(section,"sound_death"),100);
 //	g_vfLoadSounds		(m_tpSoundHit,pSettings->r_string(section,"sound_hit"),100);
@@ -235,6 +237,11 @@ void CAI_Biting::net_Import(NET_Packet& P)
 
 	setVisible				(TRUE);
 	setEnabled				(TRUE);
+}
+
+void CAI_Biting::Exec_Movement		(float dt)
+{
+	AI_Path.Calculate				(this,vPosition,vPosition,m_fCurSpeed,dt);
 }
 
 

@@ -160,22 +160,30 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 
 	// проверка на видимость трупов
 	SelectCorp(m_tEnemy);
+	
+	Fvector *tpDesiredPosition = 0;
+	if (m_tEnemy.Enemy) m_tCorpse = m_tEnemy;
 
-	if (m_tEnemy.Enemy) {
-		AI_Path.DestNode		= m_tEnemy.Enemy->AI_NodeID;
-		vfSetParameters(0, 0, false, 0);
+	if (m_tCorpse.Enemy) {
+		AI_Path.DestNode		= m_tCorpse.Enemy->AI_NodeID;
+		Fvector l_tCorpsePosition;
+		m_tCorpse.Enemy->clCenter(l_tCorpsePosition);
+		tpDesiredPosition = &l_tCorpsePosition;
+		
 		m_tActionState = eActionStateRun;			
 		m_dwActionStartTime = 0;
 
 	} else {
+		m_tActionState	= eActionStateStand;
 
 		if (m_bStateChanged || m_dwActionStartTime < m_dwCurrentUpdate) {
 			
 			if (!AI_Path.TravelPath.empty()) {
 				m_tActionState	= eActionStateStand;
-			} else 	(::Random.randI(2)) ? m_tActionState = eActionStateStand : 
-										m_tActionState = eActionStateWatchGo; // walking
-
+//			} else 	(::Random.randI(10)) ? m_tActionState = eActionStateStand : 
+//										m_tActionState = eActionStateWatchGo; // walking
+				m_tActionState = eActionStateStand;
+			}
 
 			AI_Path.TravelPath.clear();
 			AI_Path.DestNode = AI_NodeID;
@@ -206,15 +214,15 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 					break;
 
 		case eActionStateRun:   // бежать к трупу
-			if (m_tEnemy.Enemy->Position().distance_to(vPosition) > 1.f)
+			if (m_tCorpse.Enemy->Position().distance_to(vPosition) > 1.5f)
 				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
 					eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
 			else 
-				vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+				vfSetMotionActionParams(eBodyStateLie, eMovementTypeStand, 
 				eMovementDirectionNone, eStateTypeNormal, eActionTypeEat);
 			break;
 	}
-	vfSetParameters(0, 0, false, 0);
+	vfSetParameters(0, tpDesiredPosition, false, 0);	
 }
 
 

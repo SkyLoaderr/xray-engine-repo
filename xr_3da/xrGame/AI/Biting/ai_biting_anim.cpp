@@ -82,11 +82,16 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		default : NODEFAULT;
 	}
 
+	if (PostureAnim_old == ePostureLie && m_tPostureAnim != ePostureLie) {
+		m_tPostureAnim = m_tPostureAnim;
+	}
+
 	if ( m_tMovementType == eMovementTypeStand &&  
 		m_tStateType == eStateTypeNormal &&  
 		m_tMovementDir == eMovementDirectionNone &&
 		m_tActionType == eActionTypeStand)
 
+		//if (fHealth < 30) 
 		m_tActionAnim = eActionIdle;				// на месте / отдыхаем
 
 	else if ( m_tMovementType == eMovementTypeStand &&  
@@ -97,7 +102,7 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tActionAnim = eActionIdleTurnLeft;		// поворот влево на месте
 
 	else if (m_tMovementType == eMovementTypeWalk && 
-		m_tStateType == eStateTypeNormal &&  
+	//	m_tStateType == eStateTypeNormal &&  
 		m_tMovementDir == eMovementDirectionForward && 
 		m_tActionType == eActionTypeWalk) 
 
@@ -130,7 +135,7 @@ void CAI_Biting::vfSetAnimation(bool bForceChange)
 		m_tMovementDir == eMovementDirectionLeft &&
 		m_tActionType == eActionTypeTurn ) 
 
-		m_tActionAnim = eActionRunTurnLeft;			// поворот на бегу вправо
+		m_tActionAnim = eActionRunTurnLeft;			// поворот на бегу влево
 
 	else if (m_tMovementType == eMovementTypeRun &&   
 		m_tMovementDir == eMovementDirectionRight &&
