@@ -8762,6 +8762,9 @@
 				RelativePath=".\string_table_items.xml">
 			</File>
 			<File
+				RelativePath=".\string_table_ui.xml">
+			</File>
+			<File
 				RelativePath=".\talk.xml">
 			</File>
 			<File
