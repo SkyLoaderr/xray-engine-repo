@@ -58,6 +58,7 @@ snd_files = {
 	
 	patrol_radio_1                 = "characters_voice\\human_01\\scenario\\radio\\talk_1\\radio_",
 	stalker_talk_kampfire          = [[characters_voice\human_01\scenario\camp\stalkers_talking_campfire]],
+	stalker_talk_military          = [[characters_voice\human_01\scenario\military_stalker\military_stalker]],
 	
 	silent_voice                   = "characters_voice\\human_01\\reactions\\hear_something\\stalker\\hear_5",
 	soldier_radio1                 = "characters_voice\\human_01\\scenario\\radio\\radio_voice_1",
@@ -236,6 +237,7 @@ function load_sound(obj)
 	-- ONLY for rolik !!!
 	theme["silent_voice"] = load_theme("silent_voice")
 	theme["stalker_talk_kampfire"] = load_theme("stalker_talk_kampfire")
+	theme["stalker_talk_military"] = load_theme("stalker_talk_military")
 	theme["soldier_radio1"] = load_theme("soldier_radio1")
 	theme["soldier_radio2"] = load_theme("soldier_radio2")
 	theme["soldier_radio3"] = load_theme("soldier_radio3")
