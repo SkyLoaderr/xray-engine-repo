@@ -119,6 +119,8 @@ struct CCF_OBB
 	Fbox		B;
 	// Ready to use OBB
 	Fobb		OBB;
+	u16			bone_id;
+	CCF_OBB(){bone_id=u16(-1);}
 };
 
 class ENGINE_API	CCF_Skeleton : public ICollisionForm

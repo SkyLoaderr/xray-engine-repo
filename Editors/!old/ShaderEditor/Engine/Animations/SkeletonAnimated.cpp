@@ -330,7 +330,7 @@ void CSkeletonAnimated::Update ()
 				if (B.stop_at_end && (B.timeCurrent > (B.timeTotal-SAMPLE_SPF) )) {
 					B.timeCurrent	= B.timeTotal-SAMPLE_SPF;
 					B.playing		= FALSE;
-					if (B.Callback)	B.Callback(&B);
+					if (B.playing&&B.Callback)	B.Callback(&B);
 				}
 				break;
 			case CBlend::eAccrue:	

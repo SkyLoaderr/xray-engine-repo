@@ -151,7 +151,6 @@ IC BOOL RAYvsOBB(CCF_OBB &B, const Fvector &S, const Fvector &D, float &R, BOOL 
 CCF_Skeleton::CCF_Skeleton(CObject* O) : ICollisionForm(O)
 {
 	CKinematics* K	= PKinematics(O->Visual());
-	models.resize	(K->LL_BoneCount());
 	base_box.set	(K->vis.box);
 	bv_box.set		(K->vis.box);
 	bv_box.getsphere(bv_sphere.P,bv_sphere.R);
@@ -163,7 +162,7 @@ void CCF_Skeleton::BuildState()
 	CKinematics* K	= PKinematics(owner->Visual());
 	K->Calculate	();
 	
-	if (K->LL_BoneCount() != models.size())
+	if (K->LL_VisibleBoneCount() != models.size())
 	{
 		models.resize	(K->LL_BoneCount());
 		base_box.set	(K->vis.box);
@@ -173,9 +172,10 @@ void CCF_Skeleton::BuildState()
 
 	const Fmatrix &L2W	= owner->XFORM();
 	Fmatrix Mbox,T,TW;
-	for (u16 i=0; i<models.size(); i++)
+	for (u16 i=0; i<K->LL_BoneCount(); i++)
 	{
 		if (!K->LL_GetBoneVisible(i)) continue;
+		VERIFY				(i<models.size());
 		if (K->LL_GetData(i).shape.flags.is(SBoneShape::sfNoPickable)) continue;
 		Fobb& B				=	K->LL_GetBox(i);
 		Fmatrix& Mbone		=	K->LL_GetTransform(i);
@@ -188,6 +188,7 @@ void CCF_Skeleton::BuildState()
 			-B.m_halfsize.x,-B.m_halfsize.y,-B.m_halfsize.z,
 			B.m_halfsize.x,B.m_halfsize.y,B.m_halfsize.z
 			);
+		models[i].bone_id	=	i;
 	}
 }
 
@@ -220,12 +221,10 @@ BOOL CCF_Skeleton::_RayQuery( const Collide::ray_defs& Q, Collide::rq_results& R
 
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
-	CKinematics* K							= PKinematics(owner->Visual());
-
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=models.begin(); I!=models.end(); I++) 
 	{
-		if	(!K->LL_GetBoneVisible(u16(I-models.begin()))) continue;
+		if (I->bone_id==u16(-1))	continue;
 		float range		= Q.range;
 		if (RAYvsOBB(*I,Q.start,Q.dir,range,Q.flags&CDB::OPT_CULL)) 
 		{
