@@ -6,7 +6,7 @@
 #define AFX_LIGHTPRJ_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_
 #pragma once
 
-#include "scenegraph.h"
+#include "fstaticrender_scenegraph.h"
 
 class ENGINE_API	CObject;
 

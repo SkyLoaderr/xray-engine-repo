@@ -9,7 +9,7 @@
 #include "render.h"
 
 #include "FLightsController.h"
-#include "scenegraph.h"
+#include "fstaticrender_scenegraph.h"
 #include "glowmanager.h"
 #include "wallmarksengine.h"
 #include "portal.h"

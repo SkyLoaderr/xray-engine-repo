@@ -53,7 +53,11 @@ namespace SceneGraph
 	{
 		float								ssa;
 	};
-	struct mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalMatrices>
+	struct mapNormalVS			: public	FixedMAP<IDirect3DVertexShader9*, mapNormalMatrices>
+	{
+		float								ssa;
+	};
+	struct mapNormalTextures	: public	FixedMAP<STextureList*,mapNormalVS>
 	{
 		float								ssa;
 	};
