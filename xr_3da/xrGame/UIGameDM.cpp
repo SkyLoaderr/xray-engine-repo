@@ -203,6 +203,14 @@ void CUIGameDM::OnFrame()
 				m_iCurrentPlayersMoney = P->money_for_round;
 			};
 			//-----------------------------------------------------------
+			if (Level().CurrentControlEntity() && Level().CurrentControlEntity()->SUB_CLS_ID == CLSID_SPECTATOR)
+			{
+				if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
+				{
+					HUD().pFontDI->SetColor		(0xffffffff);
+					HUD().pFontDI->Out			(0.f,0.0f,"SPECTATOR : Free-fly camera");
+				};
+			};
 		}break;
 	}
 
