@@ -163,6 +163,8 @@ M_UPDATE
 		angle8		t_pitch;	// torso's pitch
 		direction	accel;
 		float		accel_magnitude;
+		f_q16[-1k,1k] health;
+		f_q16[-1k,1k] armor;
 	}
 
 	enemy
