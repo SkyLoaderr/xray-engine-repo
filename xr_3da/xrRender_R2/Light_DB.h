@@ -4,6 +4,7 @@
 
 class CLight_DB
 {
+	vector<xrLIGHT_control>	v_static_controls;
 	vector<light*>			v_static;
 	set<light*>				v_dynamic_active_shadow;
 	set<light*>				v_dynamic_active_noshadow;
