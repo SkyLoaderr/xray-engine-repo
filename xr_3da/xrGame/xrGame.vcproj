@@ -2608,6 +2608,12 @@
 							<File
 								RelativePath=".\EntityCondition.h">
 							</File>
+							<File
+								RelativePath=".\Wound.cpp">
+							</File>
+							<File
+								RelativePath=".\Wound.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="GameObject"
