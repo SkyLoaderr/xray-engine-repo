@@ -12,7 +12,6 @@
 #include "alife_interfaces.h"
 #include "xrServer_Space.h"
 #include "xrCDB.h"
-#include "Sound.h"
 #include "xrEProps.h"
 #include "PropertiesListHelper.h"
 
