@@ -20,7 +20,9 @@ CObjectSpace::CObjectSpace( ){
 }
 //----------------------------------------------------------------------
 
-CObjectSpace::~CObjectSpace( ){
+CObjectSpace::~CObjectSpace( )
+{
+	pSounds->SetGeometry( NULL );
 }
 //----------------------------------------------------------------------
 IC void CObjectSpace::Object_Register		( CObject *O )
