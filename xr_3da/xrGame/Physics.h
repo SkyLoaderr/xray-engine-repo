@@ -7,6 +7,7 @@
 #include "PHObject.h"
 #include "PHInterpolation.h"
 #include "_cylinder.h"
+#include "BlockAllocator.h"
 //#define ODE_SLOW_SOLVER
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -132,7 +133,7 @@ public:
 
 extern dWorldID phWorld;
 /////////////////////////////////
-static dJointGroupID ContactGroup;
+extern class BlockAllocator<dJointFeedback,128> ContactFeedBacks;
 
 class CPHElement;
 class CPHShell;

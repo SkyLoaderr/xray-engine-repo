@@ -49,6 +49,7 @@ class CPHJoint: public CPhysicsJoint{
 	void SetVelocityActive					(const int axis_num);
 	void CalcAxis							(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix);
 	void CalcAxis							(int ax_num,Fvector& axis,float& lo,float& hi,const Fmatrix& first_matrix,const Fmatrix& second_matrix,const Fmatrix& rotate);
+
 	virtual void SetAxisSDfactors			(float spring_factor,float damping_factor,int axis_num);
 	virtual void SetJointSDfactors			(float spring_factor,float damping_factor);
 	virtual void SetAxis					(const SPHAxis& axis,const int axis_num);
@@ -87,6 +88,7 @@ public:
 	virtual void GetAnchorDynamic			(Fvector& anchor);
 	virtual void Deactivate();
 			void ReattachFirstElement		(CPHElement* new_element);
+CPHJointDestroyInfo*	JointDestroyInfo	(){return m_destroy_info;}
 				 CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual		 ~CPHJoint();
 	void SetShell					(CPHShell* p)			 {pShell=p;}

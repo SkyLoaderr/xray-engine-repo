@@ -3034,6 +3034,9 @@
 				Name="Base"
 				Filter="">
 				<File
+					RelativePath=".\BlockAllocator.h">
+				</File>
+				<File
 					RelativePath="ExtendedGeom.h">
 				</File>
 				<File

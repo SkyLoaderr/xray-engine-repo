@@ -6,6 +6,7 @@
 CPHShellSplitterHolder::CPHShellSplitterHolder()
 {
 	m_has_breaks=false;
+	bActive=false;
 }
 //the simpliest case - a joint to be destroied 
 CPhysicsShell* CPHShellSplitterHolder::SplitJoint(u16 aspl)
@@ -23,23 +24,25 @@ m_pShell->PassEndJoints(start_joint+1,new_shell_desc);
 m_pShell->DeleteJoint(start_joint);
 m_splitters.erase(splitter);
 //aslp points to the next splitter after this was allready delleted
-PassEndSplitters(aspl,new_shell_desc->m_spliter_holder,0,start_element+1,start_joint+1);
+PassEndSplitters(aspl,new_shell_desc,0,start_element+1,start_joint+1);
 
 //start_element+1 the number of elements leaved in source shell
 //start_joint+1 the number of joints leaved in source shell and the destroyed joint
 return new_shell;
 }
 
-void CPHShellSplitterHolder::PassEndSplitters(u16 from,CPHShellSplitterHolder* dest,u16 position,u16 shift_elements,u16 shift_joints)
+void CPHShellSplitterHolder::PassEndSplitters(u16 from,CPHShell* dest,u16 position,u16 shift_elements,u16 shift_joints)
 {
 	SPLITTER_I i_from=m_splitters.begin()+from,e=m_splitters.end();
+	CPHShellSplitterHolder*	&dest_holder=dest->m_spliter_holder;
+	if(!dest_holder)dest_holder=xr_new<CPHShellSplitterHolder>();
 
 	for(SPLITTER_I i=i_from;i!=e;i++)
 	{
 		i->m_element	= i->m_element	- shift_elements;
 		i->m_joint		= i->m_joint	- shift_joints;
 	}
-	dest->m_splitters.insert(dest->m_splitters.begin()+position,i_from,e);
+	dest_holder->m_splitters.insert(dest_holder->m_splitters.begin()+position,i_from,e);
 	m_splitters.erase(i_from,e);
 }
 
@@ -71,11 +74,11 @@ void CPHShellSplitterHolder::SplitElement(u16 aspl,PHSHELL_VECTOR &out_shels)
 	{
 		new_shell_last_desc->m_spliter_holder->m_splitters.push_back(CPHShellSplitter(CPHShellSplitter::splElement,0,0));//
 		//pass splitters taking into account that one was olready added
-		PassEndSplitters(aspl,new_shell_last_desc->m_spliter_holder,1,splitter.m_element,splitter.m_joint);
+		PassEndSplitters(aspl,new_shell_last_desc,1,splitter.m_element,splitter.m_joint);
 	}
 	else
 	{
-		PassEndSplitters(aspl,new_shell_last_desc->m_spliter_holder,0,splitter.m_element,splitter.m_joint);
+		PassEndSplitters(aspl,new_shell_last_desc,0,splitter.m_element,splitter.m_joint);
 	}
 
 	//splitter.m_element the num of els leaved in old shell minus one new element added
@@ -121,15 +124,31 @@ void CPHShellSplitterHolder::InitNewShell(CPHShell* shell)
 {
 shell->PresetActive();
 }
-CPHShellSplitter::CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
-{
-	m_type=type;
-	m_element=element;
-	m_joint=joint;
-}
+
 void CPHShellSplitterHolder::PhTune(dReal step)
 {
 }
 void CPHShellSplitterHolder::PhDataUpdate(dReal step)
 {
+}
+void CPHShellSplitterHolder::Activate()
+{
+	CPHObject::Activate();
+	bActive=true;
+}
+
+void CPHShellSplitterHolder::Deactivate()
+{
+	CPHObject::Deactivate();
+	bActive=false;
+}
+void CPHShellSplitterHolder::AddSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
+{
+	m_splitters.push_back(CPHShellSplitter(type,element,joint));
+}
+CPHShellSplitter::CPHShellSplitter(CPHShellSplitter::EType type,u16 element,u16 joint)
+{
+	m_type=type;
+	m_element=element;
+	m_joint=joint;
 }

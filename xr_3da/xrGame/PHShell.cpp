@@ -4,7 +4,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-
+#include "PHShellSplitter.h"
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
 //#include "..\ode\src\collision_kernel.h"
@@ -835,4 +835,19 @@ void CPHShell::DeleteJoint(u16 joint)
 	joints[joint]->Deactivate();
 	xr_delete(joints[joint]);
 	joints.erase(joints.begin()+joint);
+}
+
+void CPHShell::setEndElementSplitter()
+{
+	if(!m_spliter_holder)	m_spliter_holder=xr_new<CPHShellSplitterHolder>();
+
+	if(!elements.back()->FracturesHolder())//adding fracture for element supposed before adding splitter. Need only one splitter for an element
+					m_spliter_holder->AddSplitter(CPHShellSplitter::splElement,u16(elements.size()-1),u16(joints.size()-1));
+}
+void CPHShell::setEndJointSplitter()
+{
+	if(!m_spliter_holder)m_spliter_holder=xr_new<CPHShellSplitterHolder>();
+
+	if(!joints.back()->JointDestroyInfo())//setting joint breacable supposed before adding splitter. Need only one splitter for a joint
+				m_spliter_holder->AddSplitter(CPHShellSplitter::splJoint,u16(elements.size()-1),u16(joints.size()-1));
 }

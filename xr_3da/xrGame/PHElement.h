@@ -159,8 +159,10 @@ public:
 	virtual void			setMassMC				(float M,const Fvector& mass_center);
 	virtual void			setDensityMC			(float M,const Fvector& mass_center);
 	virtual void			setInertia				(const Fmatrix& M)																					{}
+	virtual void			setEndGeomFracturable	(const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
 	dGeomID					dSpacedGeometry			();
 			void			PassEndGeoms			(u16 from,CPHElement* dest);
+
 			void			CreateSimulBase			();//create body & cpace
 			void			ReInitDynamics			();//set body & geom positions
 			void			SplitProcess			(ELEMENT_STORAGE &new_elements);

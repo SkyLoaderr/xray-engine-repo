@@ -107,6 +107,7 @@ public:
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
 	virtual void			setMassMC				(float M,const Fvector& mass_center)			= 0;
 	virtual void			setDensityMC			(float M,const Fvector& mass_center)			= 0;
+	virtual void			setEndGeomFracturable	(const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)=0;
 	virtual	dBodyID			get_body				()												= 0;
 	virtual const Fvector&	mass_Center				()												= 0;
 	virtual float			getRadius				()												= 0;
@@ -206,6 +207,8 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				set_JointResistance		(float force)										= 0;
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
+	virtual void				setEndElementSplitter	  ()												= 0;
+	virtual void				setEndJointSplitter		  ()												= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
 	virtual BoneCallbackFun*	GetBonesCallback1		()													= 0;

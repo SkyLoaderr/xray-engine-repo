@@ -33,9 +33,10 @@ u16 		CheckFractured	();										//returns first breaked fracture
 
 CPHElement* SplitFromEnd	(CPHElement* element,u16 geom_num);
 void		InitNewElement	(CPHElement* element);
-void		PassEndFractures(u16 from,CPHFracturesHolder* dest,u16 shift_geoms);
+void		PassEndFractures(u16 from,CPHElement* dest,u16 shift_geoms);
 public:
 void		SplitProcess	(CPHElement* element,ELEMENT_STORAGE &new_elements);
+void		AddFracture		(u16 geom_num,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
 };
 
 class CPHFracture
@@ -45,8 +46,9 @@ bool			m_breaked;
 u16				m_geom_num;
 Fvector			m_position;							//vs body//when fractured is additional linear vel for seccond body
 Fvector			m_direction;						//norm to fracture plane vs body//when fractured is additional angular vel for seccond body
-float			m_fracture_force;
-float			m_fracture_torque;
+float			m_break_force;
+float			m_break_torque;
+				CPHFracture(u16 geom_num,const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque);
 public:
 bool			Update(PH_IMPACT_STORAGE& impacts,dBodyID body);
 IC bool			Breaked(){return m_breaked;}

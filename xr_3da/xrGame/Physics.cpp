@@ -2,6 +2,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
+
 ///////////////////////////////////////////////////////////////
 #pragma warning(disable:4995)
 #pragma warning(disable:4267)
@@ -34,6 +35,8 @@ int			phIterations	= 18;
 
 dWorldID	phWorld;
 /////////////////////////////////////
+static dJointGroupID ContactGroup;
+BlockAllocator<dJointFeedback,128> ContactFeedBacks;
 static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 
 void CPHWorld::Render()
@@ -202,7 +205,7 @@ void CPHWorld::Step(dReal step)
 
 		for(iter=m_objects.begin();iter!=m_objects.end();iter++)
 				(*iter)->PhDataUpdate(fixed_step);
-		dJointGroupEmpty(ContactGroup);
+		dJointGroupEmpty(ContactGroup);//this is to be called after PhDataUpdate!!!-the order is critical!!!
 
 
 

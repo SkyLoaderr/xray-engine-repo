@@ -116,6 +116,8 @@ virtual ~CPHShell				()
 	virtual void				set_ObjectContactCallback (ObjectContactCallbackFun* callback);
 	virtual void				set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
 	virtual void				set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
+	virtual void				setEndElementSplitter	  ();
+	virtual void				setEndJointSplitter		  ();
 	virtual void				get_LinearVel			  (Fvector& velocity);
 	virtual void				get_AngularVel			  (Fvector& velocity);
 	virtual void				SetMaterial				  (u32 m);

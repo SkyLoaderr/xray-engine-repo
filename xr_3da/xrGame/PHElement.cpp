@@ -1290,3 +1290,9 @@ void CPHElement::PresetActive()
 	RunSimulation();
 	
 }
+
+void	CPHElement::setEndGeomFracturable(const Fvector& position,const Fvector& direction,const float& break_force,const float& break_torque)
+{
+	if(!m_fratures_holder) m_fratures_holder=xr_new<CPHFracturesHolder>();
+	m_fratures_holder->AddFracture(u16(m_geoms.size()-1),position,direction,break_force,break_torque);
+}
