@@ -93,6 +93,9 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tNormal.tGlobal.tpaLieDown[1] = tpVisualObject->ID_Cycle("norm_lie_down_1");
 	tSoldierAnimations.tNormal.tGlobal.tpaLieDown[2] = tpVisualObject->ID_Cycle("norm_lie_down_2");
 
+	tSoldierAnimations.tNormal.tGlobal.tpaIdle[0] = tpVisualObject->ID_Cycle("norm_idle");
+	tSoldierAnimations.tNormal.tGlobal.tpaIdle[1] = tpVisualObject->ID_Cycle("norm_idle_1");
+
 	tSoldierAnimations.tNormal.tGlobal.tpWalkLeft = tpVisualObject->ID_Cycle("norm_walk_ls");
 	tSoldierAnimations.tNormal.tGlobal.tpWalkRight = tpVisualObject->ID_Cycle("norm_walk_rs");
 	
@@ -100,7 +103,6 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tNormal.tGlobal.tpTurnRight = tpVisualObject->ID_Cycle("norm_turn_rs");
 	
 	tSoldierAnimations.tNormal.tGlobal.tpPointSign = tpVisualObject->ID_Cycle("norm_sign_2");
-	tSoldierAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
 
 	tSoldierAnimations.tNormal.tGlobal.tpAim = tpVisualObject->ID_Cycle("norm_aim");
 	tSoldierAnimations.tNormal.tGlobal.tpAttack = tpVisualObject->ID_Cycle("norm_attack");
@@ -194,7 +196,7 @@ void CAI_Soldier::vfLoadAnimations()
 	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_LEFT] = tSoldierAnimations.tLie.tGlobal.tpWalkLeft;
 	m_tpaMovementAnimations[BODY_STATE_LIE][WALK_RIGHT] = tSoldierAnimations.tLie.tGlobal.tpWalkRight;
 
-	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpIdle);
+	m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaIdle[1]);
 }
 
 static void __stdcall vfPlayCallBack(CBlend* B)
@@ -468,7 +470,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 									else {
 										switch (m_cBodyState) {
 											case BODY_STATE_STAND : {
-												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpIdle;
+												tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
 												break;
 											}
 											case BODY_STATE_CROUCH : {
@@ -537,7 +539,7 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							else {
 								switch (m_cBodyState) {
 									case BODY_STATE_STAND : {
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpIdle;
+										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaIdle[1];
 										break;
 									}
 									case BODY_STATE_CROUCH : {

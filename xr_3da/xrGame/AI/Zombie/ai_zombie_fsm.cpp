@@ -62,6 +62,7 @@ void CAI_Zombie::Jumping()
 
 void CAI_Zombie::FreeHunting()
 {
+/**
 	WRITE_TO_LOG("Free hunting");
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
@@ -146,7 +147,6 @@ void CAI_Zombie::FreeHunting()
 			}
 		else
 			tSavedEnemyPosition = vPosition;
-	/**/
 
 	if (ps_Size() > 1)
 		if ((m_bStateChanged) || (ps_Element(ps_Size() - 1).dwTime - ps_Element(ps_Size() - 2).dwTime < 500))
@@ -155,12 +155,10 @@ void CAI_Zombie::FreeHunting()
 			//Fvector tDistance;
 			//tDistance.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
 			tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
-			/**
-			if (tDistance.magnitude() < .05f)
-				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
-			else
-				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
-			/**/
+//			if (tDistance.magnitude() < .05f)
+//				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 2).vPosition,ps_Element(ps_Size() - 1).vPosition);
+//			else
+//				tSavedEnemyPosition.sub(ps_Element(ps_Size() - 1).vPosition,ps_Element(ps_Size() - 2).vPosition);
 			//tSavedEnemyPosition.set(::Random.randF(0,1),0,::Random.randF(0,1));
 		}
 	else
@@ -217,6 +215,7 @@ void CAI_Zombie::FreeHunting()
 //	}
 
 	vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+/**/
 }
 
 void CAI_Zombie::AttackFire()
@@ -427,6 +426,7 @@ void CAI_Zombie::Think()
 	bStopThinking = false;
 	do {
 		m_ePreviousState = eCurrentState;
+		/**
 		switch(eCurrentState) {
 			case aiZombieAttackFire : {
 				AttackFire();
@@ -462,6 +462,8 @@ void CAI_Zombie::Think()
 			}
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
+		/**/
+		break;
 	}
 	while (!bStopThinking);
 }

@@ -62,7 +62,7 @@ void CAI_Soldier::Test()
 		else if (Level().iGetKeyState(DIK_F))
 			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpTurnRight);
 		else if (Level().iGetKeyState(DIK_G))
-			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpIdle);
+			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaIdle[1]);
 		else if (Level().iGetKeyState(DIK_H))
 			m_tpCurrentGlobalBlend = tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0]);
 		else if (Level().iGetKeyState(DIK_J))
@@ -2143,7 +2143,7 @@ void CAI_Soldier::Think()
 				Jumping();
 				break;
 			}
-			/**
+			/**/
 			case aiSoldierDie : {
 				Die();
 				break;
@@ -2229,7 +2229,7 @@ void CAI_Soldier::Think()
 				break;
 			}
 			/**/
-			default : Test();
+			//default : Test();
 		}
 		m_bStateChanged = m_ePreviousState != eCurrentState;
 	}
