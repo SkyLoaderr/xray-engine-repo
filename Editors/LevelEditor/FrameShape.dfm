@@ -157,7 +157,7 @@ object fraShape: TfraShape
       HotColor = 15790320
       CloseButton = False
       GroupIndex = 1
-      Caption = 'Attach...'
+      Caption = 'Attach Shape...'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11

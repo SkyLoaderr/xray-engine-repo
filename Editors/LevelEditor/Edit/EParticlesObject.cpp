@@ -210,10 +210,11 @@ bool EParticlesObject::Compile(LPCSTR ref_name)
 	xr_delete				(m_Particles);
     if (ref_name){
 		m_Particles 		= (IParticleCustom*)::Render->model_CreateParticles(ref_name);
-        R_ASSERT			(m_Particles);
-		UpdateTransform		();
-	    m_RefName			= ref_name;
-        return true;
+        if (m_Particles){
+			UpdateTransform	();
+		    m_RefName		= ref_name;
+            return true;
+        }
     }
     m_RefName				= "";
     return false;
