@@ -1828,7 +1828,10 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 			if (!pDDItemMP->m_bHasRealRepresentation)
 			{
 				if (pDDItemMP->GetCost() <= GetMoneyAmount())
+				{
+					pDDItemMP->SetColor(cAbleToBuy);
 					SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+				}
 				else
 				{
 					pDDItemMP->SetColor(cUnableToBuy);
