@@ -72,7 +72,7 @@ public:
 
 	// Constructor/destructor
 	CRender_interface();
-	virtual ~CRender_interface()								= 0;
+	virtual ~CRender_interface();
 };
 
 extern ENGINE_API CRender_interface*	Render;
