@@ -323,18 +323,18 @@ void CStalkerActionKillEnemy::initialize		()
 	inherited::initialize				();
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
-	object().movement().set_desired_direction		(0);
-	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
-	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position		();
 	object().movement().set_body_state			(eBodyStateCrouch);
-	object().movement().set_movement_type			(eMovementTypeStand);
-	object().movement().set_mental_state			(eMentalStateDanger);
-	m_storage->set_property				(eWorldPropertyLookedOut,false);
-	m_storage->set_property				(eWorldPropertyPositionHolded,false);
-	m_storage->set_property				(eWorldPropertyEnemyDetoured,false);
+	object().movement().set_movement_type		(eMovementTypeStand);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	m_storage->set_property						(eWorldPropertyLookedOut,false);
+	m_storage->set_property						(eWorldPropertyPositionHolded,false);
+	m_storage->set_property						(eWorldPropertyEnemyDetoured,false);
 	if (object().memory().enemy().selected()->human_being())
-		object().sound().play					(eStalkerSoundAttack);
+		object().sound().play					(eStalkerSoundAttack,0,0,6000,4000);
 	object().brain().affect_cover		(true);
 }
 
@@ -400,11 +400,11 @@ void CStalkerActionTakeCover::initialize		()
 	if (object().memory().enemy().selected()->human_being()) {
 		if (object().memory().visual().visible_now(object().memory().enemy().selected()) && object().agent_manager().member().group_behaviour())
 //			if (::Random.randI(2))
-				object().sound().play				(eStalkerSoundBackup);
+				object().sound().play				(eStalkerSoundBackup,0,0,6000,4000);
 //			else
 //				object().sound().play				(eStalkerSoundAttack);
 		else
-			object().sound().play					(eStalkerSoundAttack);
+			object().sound().play					(eStalkerSoundAttack,0,0,6000,4000);
 	}
 }
 
@@ -536,18 +536,18 @@ void CStalkerActionHoldPosition::initialize		()
 	inherited::initialize				();
 	object().movement().set_node_evaluator		(0);
 	object().movement().set_path_evaluator		(0);
-	object().movement().set_desired_direction		(0);
-	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
-	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_desired_direction	(0);
+	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
 	object().movement().set_nearest_accessible_position		();
 	object().movement().set_body_state			(eBodyStateCrouch);
-	object().movement().set_movement_type			(eMovementTypeStand);
-	object().movement().set_mental_state			(eMentalStateDanger);
-	object().CObjectHandler::set_goal	(eObjectActionAimReady1,object().best_weapon());
+	object().movement().set_movement_type		(eMovementTypeStand);
+	object().movement().set_mental_state		(eMentalStateDanger);
+	object().CObjectHandler::set_goal			(eObjectActionAimReady1,object().best_weapon());
 	if (object().agent_manager().member().group_behaviour())
 		object().sound().play					(eStalkerSoundDetour,5000);
-	set_inertia_time					(5000 + ::Random32.random(5000));
-	object().brain().affect_cover		(true);
+	set_inertia_time							(5000 + ::Random32.random(5000));
+	object().brain().affect_cover				(true);
 }
 
 void CStalkerActionHoldPosition::finalize		()
