@@ -150,8 +150,7 @@ void CLightR_Manager::render_spot	()
 
 		//		2. Calculate matrix for TC-gen
 		float			fTexelOffs			= (.5f / SSM_tex_size);
-		u32				uRange				= 1; 
-		float			fRange				= float(uRange);
+		float			fRange				= 1.f  / L->range;
 		float			fBias				= 0.f;
 		Fmatrix			m_TexelAdjust		= 
 		{
