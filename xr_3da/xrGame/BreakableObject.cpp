@@ -73,8 +73,6 @@ void CBreakableObject::renderable_Render()
 void CBreakableObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
 					   Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
-	
-
 	CheckHitBreak(P,hit_type);
 	if(m_pPhysicsShell)
 	{
@@ -83,11 +81,11 @@ void CBreakableObject::Hit(float P,Fvector &dir, CObject* who,s16 element,
 			ApplyExplosion(dir,impulse);
 		}
 		else
-			m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
-
-
+		{
+			//. hack: slipch ???
+			if (0xffff!=element)	m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
+		}
 	}
-
 }
 
 void CBreakableObject::net_Export(NET_Packet& P)
