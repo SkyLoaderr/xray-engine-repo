@@ -240,7 +240,7 @@ void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float ac
 		// clamp by PI_DIV_2
 		Fvector last;	last.normalize_safe(m_last_dir);
 		float dot		= last.dotproduct(xform.k);
-		if (dot<0.f){
+		if (dot<EPS){
 			Fvector v0;
 			v0.crossproduct			(m_last_dir,xform.k);
 			m_last_dir.crossproduct	(xform.k,v0);
@@ -256,14 +256,15 @@ void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float ac
 		origin.mad		(xform_orig.k,	-pitch * PITCH_OFFSET_D);
 		origin.mad		(xform_orig.i,	-pitch * PITCH_OFFSET_R);
 		origin.mad		(xform_orig.j,	-pitch * PITCH_OFFSET_N);
-		/*
+/*
 		// calc moving lag
-		static Fvector m_last_pos;
-		Fvector diff_pos;
+		static Fvector	m_last_pos;
+		Fvector			diff_pos;
 		diff_pos.sub	(xform.c, m_last_pos);
 		m_last_pos.mad	(diff_pos,10.f*Device.fTimeDelta);
 		//	m_vecLastFacing.normalize();
-		origin.mad		(diff_pos,ORIGIN_OFFSET);*/
+		origin.mad		(diff_pos,ORIGIN_OFFSET);
+*/
 	}
 /*
 	static u32 sl = 0;
