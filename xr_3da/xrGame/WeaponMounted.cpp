@@ -12,7 +12,7 @@ void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 	CWeaponMounted	*P = dynamic_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
 
 	if (P->Owner()){
-		CKinematics* K	= PKinematics	(P->Visual());
+//		CKinematics* K	= PKinematics	(P->Visual());
 		Fmatrix rX;		rX.rotateX		(P->camera->pitch);
 		B->mTransform.mulB(rX);
 	}
@@ -22,7 +22,7 @@ void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 	CWeaponMounted	*P = dynamic_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
 
 	if (P->Owner()){
-		CKinematics* K	= PKinematics	(P->Visual());
+//		CKinematics* K	= PKinematics	(P->Visual());
 		Fmatrix rY;		rY.rotateY		(P->camera->yaw);
 		B->mTransform.mulB(rY);
 	}
@@ -156,9 +156,9 @@ void	CWeaponMounted::OnKeyboardHold		(int dik)
 {
 	if (Remote())							return;
 
-	switch(dik)
-	{
-	}
+//	switch(dik)
+//	{
+//	}
 }
 
 void	CWeaponMounted::cam_Update			(float dt)
