@@ -5,8 +5,8 @@ void __cdecl CThread::startup(void* P)
 {
 	CThread* T = (CThread*)P;
 
-	Msg("* THREAD #%d: Started.",T->ID);
+	Msg("* THREAD #%d: Started.",T->thID);
 	T->Execute		();
-	T->bCompleted	= TRUE;
-	Msg("* THREAD #%d: Task Completed.",T->ID);
+	T->thCompleted	= TRUE;
+	Msg("* THREAD #%d: Task Completed.",T->thID);
 }

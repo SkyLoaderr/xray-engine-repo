@@ -192,18 +192,17 @@ static hash2D <Face*,384,384>	ImplicitHash;
 
 class ImplicitThread : public CThread
 {
+public:
 	ImplicitDeflector*	DATA;			// Data for this thread
 	DWORD				y_start,y_end;
 
-	ImplicitThread		(DWORD ID, ImplicitDeflector* _DATA, DWORD _y_start, DWORD _y_end)
+	ImplicitThread		(DWORD ID, ImplicitDeflector* _DATA, DWORD _y_start, DWORD _y_end) : CThread (ID)
 	{
 		DATA			= _DATA;
 		y_start			= _y_start;
 		y_end			= _y_end;
-
-		CThread			(ID);
 	}
-	virtual void		Exectute()
+	virtual void		Execute	()
 	{
 		R_ASSERT				(DATA);
 		ImplicitDeflector& defl = *DATA;
@@ -264,7 +263,7 @@ class ImplicitThread : public CThread
 					} 
 				} catch (...)
 				{
-					Msg("* THREAD #%d: Access violation. Possibly recovered.",THP->ID);
+					Msg("* THREAD #%d: Access violation. Possibly recovered.",thID);
 				}
 				
 				FPU::m24r	();
@@ -287,7 +286,7 @@ class ImplicitThread : public CThread
 					defl.Lumel	(U,V).marker=0;
 				}
 			}
-			fProgress	= float(V - y_start) / float(y_end-y_start);
+			thProgress	= float(V - y_start) / float(y_end-y_start);
 		}
 	}
 };
@@ -359,8 +358,8 @@ void CBuild::ImplicitLighting()
 			DWORD	sumComplete=0;
 			for (DWORD ID=0; ID<NUM_THREADS; ID++)
 			{
-				sumProgress += THP[ID]->fProgress;
-				sumComplete	+= THP[ID]->bCompleted?1:0;
+				sumProgress += THP[ID]->thProgress;
+				sumComplete	+= THP[ID]->thCompleted?1:0;
 			}
 
 			Progress(sumProgress/float(NUM_THREADS));

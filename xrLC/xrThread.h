@@ -4,18 +4,19 @@ class ENGINE_API CThread
 {
 	static void __cdecl startup(void* P);
 public:
-	DWORD		ID;
-	float		fProgress;
-	BOOL		bCompleted;
+	DWORD		thID;
+	float		thProgress;
+	BOOL		thCompleted;
 
-	CThread		(DWORD _ID)	
+	CThread				(DWORD _ID)	
 	{
-		ID			= _ID;
-		fProgress	= 0;
-		bCompleted	= FALSE;
-		
+		thID			= _ID;
+		thProgress		= 0;
+		thCompleted		= FALSE;
+	}
+	void				Start	()
+	{
 		_beginthread(startup,0,this);
 	}
-
-	virtual		void	Execute()	= 0;
+	virtual		void	Execute	()	= 0;
 };
