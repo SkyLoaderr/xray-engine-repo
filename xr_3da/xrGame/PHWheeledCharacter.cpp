@@ -2,13 +2,13 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "ExtendedGeom.h"
-#include "..\cl_intersect.h"
+#include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 #include "GameObject.h"
 #include "phwheeledcharacter.h"
 
 
-void CPHWheeledCharacter::Create(dVector3 sizes){
+void CPHWheeledCharacter::Create(dVector3 /**sizes/**/){
 
 	//chRCylinder=dCreateBox(0,0.8f,2.f,0.8f);
 	//m_radius=_min(sizes[0],sizes[2])/2.f;
@@ -157,7 +157,7 @@ void CPHWheeledCharacter::Destroy(){
 	*/
 }
 
-void CPHWheeledCharacter::SetMas(dReal mass){
+void CPHWheeledCharacter::SetMas(dReal /**mass/**/){
 	/*
 	dMass m;
 	dMassSetBox(&m,1,1000000.f,1000000.f,1000000.f);

@@ -82,7 +82,7 @@ public:
 	virtual		void		PhDataUpdate						(dReal step)		;
 	virtual		void		PhTune								(dReal step)		;
 	//virtual		void		InitContact							(dContact* c)		;
-	virtual		void		StepFrameUpdate						(dReal step)		{};
+	virtual		void		StepFrameUpdate						(dReal /**step/**/)		{};
 	/////////////////CPHCharacter////////////////////////////////////////////
 public:
 	//update

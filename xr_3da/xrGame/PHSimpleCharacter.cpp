@@ -4,7 +4,7 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "ExtendedGeom.h"
-#include "..\cl_intersect.h"
+#include "../cl_intersect.h"
 #include "tri-colliderKNoOPC\__aabb_tri.h"
 #include "PHSimpleCharacter.h"
 
@@ -297,10 +297,10 @@ void		CPHSimpleCharacter::ApplyForce(const Fvector& dir,float force)
 	ApplyForce(dir.x*force,dir.y*force,dir.z*force);
 }
 
-void CPHSimpleCharacter::PhDataUpdate(dReal step){
+void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 	///////////////////
 	if( !dBodyIsEnabled(m_body)) {
-		if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
+		if(dInfinity!=previous_p[0]) previous_p[0]=dInfinity;
 		return;
 	}
 	if(is_contact&&!is_control)
@@ -362,7 +362,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 	m_body_interpolation.UpdatePositions();
 }
 
-void CPHSimpleCharacter::PhTune(dReal step){
+void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	if(!dBodyIsEnabled(m_body)) return;
 
 	if(m_acceleration.magnitude()>0.f) is_control=true;
@@ -578,7 +578,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	R_begin                         = XRC.r_begin();
 	R_end                           = XRC.r_end();
 	T_array                         = Level().ObjectSpace.GetStaticTris();
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
@@ -605,7 +605,7 @@ bool CPHSimpleCharacter::ValidateWalkOn()
 	R_begin                         = XRC.r_begin();
 	R_end                           = XRC.r_end();
 	T_array                         = Level().ObjectSpace.GetStaticTris();
-	for (CDB::RESULT* Res=R_begin; Res!=R_end; Res++)
+	for (CDB::RESULT* Res=R_begin; Res!=R_end; ++Res)
 	{
 		CDB::TRI* T = T_array + Res->id;
 		Point vertices[3]={Point((dReal*)T->verts[0]),Point((dReal*)T->verts[1]),Point((dReal*)T->verts[2])};
@@ -631,7 +631,7 @@ void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 	if(!b_exist) return;
 
 	if(!dBodyIsEnabled(m_body))
-		if(accel.magnitude()!=0.f)
+		if(!fsimilar(0.f,accel.magnitude()))
 			dBodyEnable(m_body);
 	m_acceleration=accel;
 }
@@ -896,7 +896,7 @@ void	CPHSimpleCharacter::Disabling(){
 
 
 	if(ph_world->disable_count==dis_frames){	
-		if(previous_p[0]!=dInfinity){
+		if(dInfinity!=previous_p[0]){
 			const dReal* current_p=dBodyGetPosition(m_body);
 			dVector3 velocity={current_p[0]-previous_p[0],
 				current_p[1]-previous_p[1],
@@ -911,7 +911,7 @@ void	CPHSimpleCharacter::Disabling(){
 			if(previous_v>mag_v)
 
 			{
-				dis_count_f++;
+				++dis_count_f;
 				previous_v=mag_v;
 				//return;
 			}
@@ -933,7 +933,7 @@ void	CPHSimpleCharacter::Disabling(){
 				mag_v/=dis_count_f;
 
 				if(mag_v<0.04* dis_frames )
-					dis_count_f1++;
+					++dis_count_f1;
 				else{
 					Memory.mem_copy(previous_p1,current_p,sizeof(dVector3));
 				}
@@ -999,7 +999,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 		ICollisionForm::RayPickResult::Result* R = result.r_begin();
 		contact_bone=(u16)R->element;
 		//int y=result.r_count();
-		//for (int k=0; k<y; k++)
+		//for (int k=0; k<y; ++k)
 		//{
 		//	ICollisionForm::RayPickResult::Result* R = result.r_begin()+k;
 		//	if(is_Door(R->element,i)) 
@@ -1025,7 +1025,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 		object_form.transpose();
 		object_form.transform_dir(pos_in_object); //project pos_in_object on object axes now it is position of contact in object frame
 		float sq_dist=dInfinity;
-		for(u16 i=0;i<count;i++)
+		for(u16 i=0;i<count;++i)
 		{
 			Fvector c_to_bone;
 			c_to_bone.sub(bone_instances[i].mTransform.c,pos_in_object);
@@ -1036,7 +1036,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 				contact_bone=i;
 			}
 		}
-		VERIFY(sq_dist!=dInfinity);
+		VERIFY(dInfinity!=sq_dist);
 	}
 	return contact_bone;
 }
