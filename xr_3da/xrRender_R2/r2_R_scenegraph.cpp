@@ -177,72 +177,72 @@ void CRender::render_scenegraph	()
 	// Sorting by SSA and changes minimizations
 	{
 		mapNormalVS&	vs				= mapNormal;
-		vs.getANY_P						(lstVS);
-		std::sort						(lstVS.begin(), lstVS.end(), cmp_vs);
-		for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
+		vs.getANY_P						(nrmVS);
+		std::sort						(nrmVS.begin(), nrmVS.end(), cmp_vs);
+		for (u32 vs_id=0; vs_id<nrmVS.size(); vs_id++)
 		{
-			mapNormalVS::TNode*	Nvs			= lstVS[vs_id];
+			mapNormalVS::TNode*	Nvs			= nrmVS[vs_id];
 			RCache.set_VS					(Nvs->key);	
 
 			mapNormalPS&		ps			= Nvs->val;		ps.ssa	= 0;
-			ps.getANY_P						(lstPS);
-			std::sort						(lstPS.begin(), lstPS.end(), cmp_ps);
-			for (u32 ps_id=0; ps_id<lstPS.size(); ps_id++)
+			ps.getANY_P						(nrmPS);
+			std::sort						(nrmPS.begin(), nrmPS.end(), cmp_ps);
+			for (u32 ps_id=0; ps_id<nrmPS.size(); ps_id++)
 			{
-				mapNormalPS::TNode*	Nps			= lstPS[ps_id];
+				mapNormalPS::TNode*	Nps			= nrmPS[ps_id];
 				RCache.set_PS					(Nps->key);	
 
 				mapNormalCS&		cs			= Nps->val;		cs.ssa	= 0;
-				cs.getANY_P						(lstCS);
-				std::sort						(lstCS.begin(), lstCS.end(), cmp_cs);
-				for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
+				cs.getANY_P						(nrmCS);
+				std::sort						(nrmCS.begin(), nrmCS.end(), cmp_cs);
+				for (u32 cs_id=0; cs_id<nrmCS.size(); cs_id++)
 				{
-					mapNormalCS::TNode*	Ncs			= lstCS[cs_id];
+					mapNormalCS::TNode*	Ncs			= nrmCS[cs_id];
 					RCache.set_Constants			(Ncs->key);
 
 					mapNormalStates&	states		= Ncs->val;		states.ssa	= 0;
-					states.getANY_P					(lstStates);
-					std::sort						(lstStates.begin(), lstStates.end(), cmp_states);
-					for (u32 state_id=0; state_id<lstStates.size(); state_id++)
+					states.getANY_P					(nrmStates);
+					std::sort						(nrmStates.begin(), nrmStates.end(), cmp_states);
+					for (u32 state_id=0; state_id<nrmStates.size(); state_id++)
 					{
-						mapNormalStates::TNode*	Nstate		= lstStates[state_id];
+						mapNormalStates::TNode*	Nstate		= nrmStates[state_id];
 						RCache.set_States					(Nstate->key);
 
 						mapNormalTextures&		tex			= Nstate->val;	tex.ssa =	0;
-						sort_tlist							(lstTextures,lstTexturesTemp,tex,true);
-						for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
+						sort_tlist							(nrmTextures,nrmTexturesTemp,tex,true);
+						for (u32 tex_id=0; tex_id<nrmTextures.size(); tex_id++)
 						{
-							mapNormalTextures::TNode*	Ntex		= lstTextures[tex_id];
+							mapNormalTextures::TNode*	Ntex		= nrmTextures[tex_id];
 							RCache.set_Textures						(Ntex->key);
 
 							mapNormalVB&				vb			= Ntex->val;	vb.ssa	=	0;
-							vb.getANY_P								(lstVB);
-							std::sort								(lstVB.begin(), lstVB.end(), cmp_vb);
-							for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+							vb.getANY_P								(nrmVB);
+							std::sort								(nrmVB.begin(), nrmVB.end(), cmp_vb);
+							for (u32 vb_id=0; vb_id<nrmVB.size(); vb_id++)
 							{
-								mapNormalVB::TNode*			Nvb		= lstVB[vb_id];
+								mapNormalVB::TNode*			Nvb		= nrmVB[vb_id];
 								// no need to setup that shit - visual defined
 
 								mapNormalItems&				items	= Nvb->val;		items.ssa	= 0;
 								mapNormal_Render					(items);
 							}
-							lstVB.clear				();
+							nrmVB.clear				();
 							vb.clear				();
 						}
-						lstTextures.clear		();
-						lstTexturesTemp.clear	();
+						nrmTextures.clear		();
+						nrmTexturesTemp.clear	();
 						tex.clear				();
 					}
-					lstStates.clear			();
+					nrmStates.clear			();
 					states.clear			();
 				}
-				lstCS.clear				();
+				nrmCS.clear				();
 				cs.clear				();
 			}
-			lstPS.clear				();
+			nrmPS.clear				();
 			ps.clear				();
 		}
-		lstVS.clear				();
+		nrmVS.clear				();
 		vs.clear				();
 	}
 
@@ -251,72 +251,72 @@ void CRender::render_scenegraph	()
 	// Sorting by SSA and changes minimizations
 	{
 		mapMatrixVS&	vs				= mapMatrix;
-		vs.getANY_P						(lstVS);
-		std::sort						(lstVS.begin(), lstVS.end(), cmp_vs);
-		for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
+		vs.getANY_P						(matVS);
+		std::sort						(matVS.begin(), matVS.end(), cmp_vs);
+		for (u32 vs_id=0; vs_id<matVS.size(); vs_id++)
 		{
-			mapMatrixVS::TNode*	Nvs			= lstVS[vs_id];
+			mapMatrixVS::TNode*	Nvs			= matVS[vs_id];
 			RCache.set_VS					(Nvs->key);	
 
 			mapMatrixPS&		ps			= Nvs->val;		ps.ssa	= 0;
-			ps.getANY_P						(lstPS);
-			std::sort						(lstPS.begin(), lstPS.end(), cmp_ps);
-			for (u32 ps_id=0; ps_id<lstPS.size(); ps_id++)
+			ps.getANY_P						(matPS);
+			std::sort						(matPS.begin(), matPS.end(), cmp_ps);
+			for (u32 ps_id=0; ps_id<matPS.size(); ps_id++)
 			{
-				mapMatrixPS::TNode*	Nps			= lstPS[ps_id];
+				mapMatrixPS::TNode*	Nps			= matPS[ps_id];
 				RCache.set_PS					(Nps->key);	
 
 				mapMatrixCS&		cs			= Nps->val;		cs.ssa	= 0;
-				cs.getANY_P						(lstCS);
-				std::sort						(lstCS.begin(), lstCS.end(), cmp_cs);
-				for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
+				cs.getANY_P						(matCS);
+				std::sort						(matCS.begin(), matCS.end(), cmp_cs);
+				for (u32 cs_id=0; cs_id<matCS.size(); cs_id++)
 				{
-					mapMatrixCS::TNode*	Ncs			= lstCS[cs_id];
+					mapMatrixCS::TNode*	Ncs			= matCS[cs_id];
 					RCache.set_Constants			(Ncs->key);
 
 					mapMatrixStates&	states		= Ncs->val;		states.ssa	= 0;
-					states.getANY_P					(lstStates);
-					std::sort						(lstStates.begin(), lstStates.end(), cmp_states);
-					for (u32 state_id=0; state_id<lstStates.size(); state_id++)
+					states.getANY_P					(matStates);
+					std::sort						(matStates.begin(), matStates.end(), cmp_states);
+					for (u32 state_id=0; state_id<matStates.size(); state_id++)
 					{
-						mapMatrixStates::TNode*	Nstate		= lstStates[state_id];
+						mapMatrixStates::TNode*	Nstate		= matStates[state_id];
 						RCache.set_States					(Nstate->key);
 
 						mapMatrixTextures&		tex			= Nstate->val;	tex.ssa =	0;
-						sort_tlist							(lstTextures,lstTexturesTemp,tex,true);
-						for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
+						sort_tlist							(matTextures,matTexturesTemp,tex,true);
+						for (u32 tex_id=0; tex_id<matTextures.size(); tex_id++)
 						{
-							mapMatrixTextures::TNode*	Ntex		= lstTextures[tex_id];
+							mapMatrixTextures::TNode*	Ntex		= matTextures[tex_id];
 							RCache.set_Textures						(Ntex->key);
 
 							mapMatrixVB&				vb			= Ntex->val;	vb.ssa	=	0;
-							vb.getANY_P								(lstVB);
-							std::sort								(lstVB.begin(), lstVB.end(), cmp_vb);
-							for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
+							vb.getANY_P								(matVB);
+							std::sort								(matVB.begin(), matVB.end(), cmp_vb);
+							for (u32 vb_id=0; vb_id<matVB.size(); vb_id++)
 							{
-								mapMatrixVB::TNode*			Nvb		= lstVB[vb_id];
+								mapMatrixVB::TNode*			Nvb		= matVB[vb_id];
 								// no need to setup that shit - visual defined
 
 								mapMatrixItems&				items	= Nvb->val;		items.ssa	= 0;
 								mapMatrix_Render					(items);
 							}
-							lstVB.clear				();
+							matVB.clear				();
 							vb.clear				();
 						}
-						lstTextures.clear		();
-						lstTexturesTemp.clear	();
+						matTextures.clear		();
+						matTexturesTemp.clear	();
 						tex.clear				();
 					}
-					lstStates.clear			();
+					matStates.clear			();
 					states.clear			();
 				}
-				lstCS.clear				();
+				matCS.clear				();
 				cs.clear				();
 			}
-			lstPS.clear				();
+			matPS.clear				();
 			ps.clear				();
 		}
-		lstVS.clear				();
+		matVS.clear				();
 		vs.clear				();
 	}
 }
