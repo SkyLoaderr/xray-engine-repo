@@ -147,7 +147,7 @@ void CBuild::mem_Compact()
 	bytes				= mem_Usage(&blocks_used,&blocks_free);
 	Msg					("***MEMORY*** %d MB, %d Bused, %d Bfree", bytes/(1024*1024),blocks_used,blocks_free);
 }
-DWORD CBuild::mem_Usage	(LPDWORD pBlocksUsed=0, LPDWORD pBlocksFree=0)
+DWORD CBuild::mem_Usage	(LPDWORD pBlocksUsed, LPDWORD pBlocksFree)
 {
 	_HEAPINFO			hinfo;
 	int					heapstatus;
