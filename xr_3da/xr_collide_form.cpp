@@ -332,14 +332,60 @@ void CCF_Shape::add_box		(Fmatrix& B )
 	shapes.back().data.box.set(B);
 }
 
-BOOL CCF_Shape::Contact( CObject* O )
+BOOL CCF_Shape::Contact		( CObject* O )
 {
-	FBasicVisual*	V = O->Visual();
-	Fvector&		P = V->bv_Position;
-	float			R = V->bv_Radius;
+	// Build object-sphere
+	Fsphere			S;
+	FBasicVisual* V = O->Visual();
+	Fvector& P		= V->bv_Position;
+	S.R				= V->bv_Radius;
+	O->svTransform.transform_tiny	(S.P,P);
 	
-	Fvector			PT;
-	O->svTransform.transform_tiny	(PT,P);
+	// Get our matrix
+	Fmatrix& XF		= Owner()->svTransform;
+	
+	// Iterate
+	for (int el=0; el<shapes.size(); el++)
+	{
+		switch (shapes[el].type)
+		{
+		case 0: // sphere
+			{
+				Fsphere		Q;
+				Fsphere&	T		= shapes[el].data.sphere;
+				XF.transform_tiny	(Q.P,T.P);
+				Q.R					= T.R;
+				
+				if (S.intersect(Q))	return TRUE;
+			}
+			break;
+		case 1:	// box
+			{
+				Fmatrix		Q;
+				Fplane		P;
+				Fvector		A[8],B[8];
+				Fmatrix&	T		= shapes[el].data.box;
+				Q.mul_43			(XF,T);
 
-	
+				// Build points
+				A[0].set( -.5f, -.5f, -.5f); Q.transform_tiny	(B[0],A[0]);
+				A[1].set( -.5f, -.5f, +.5f); Q.transform_tiny	(B[1],A[1]);
+				A[2].set( -.5f, +.5f, +.5f); Q.transform_tiny	(B[2],A[2]);
+				A[3].set( -.5f, +.5f, -.5f); Q.transform_tiny	(B[3],A[3]);
+				A[4].set( +.5f, +.5f, +.5f); Q.transform_tiny	(B[4],A[4]);
+				A[5].set( +.5f, +.5f, -.5f); Q.transform_tiny	(B[5],A[5]);
+				A[6].set( +.5f, -.5f, +.5f); Q.transform_tiny	(B[6],A[6]);
+				A[7].set( +.5f, -.5f, -.5f); Q.transform_tiny	(B[7],A[7]);
+
+				P.build(B[0],B[3],B[5]);	if (P.classify(S.P)<S.R) break;
+				P.build(B[1],B[2],B[3]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[6],B[5],B[4]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[4],B[2],B[1]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[3],B[2],B[4]);	if (P.classify(S.P)>S.R) break;
+				P.build(B[1],B[0],B[6]);	if (P.classify(S.P)>S.R) break;
+				return TRUE;
+			}
+			break;
+		}
+	}
 }
