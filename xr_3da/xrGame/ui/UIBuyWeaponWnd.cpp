@@ -523,7 +523,7 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// У нас не может быть обычная вещь в этом диалоге.
 	R_ASSERT(pDDItemMP);
 	
-	// Удаляем аддоны, только в случае того, чт вещь не имеет реального прототипа
+	// Удаляем аддоны, только в случае того, чтo вещь не имеет реального прототипа
 	if (!pDDItemMP->m_bHasRealRepresentation)
 		pDDItemMP->AttachDetachAllAddons(false);
 	// перемещаемся на уровень ниже в меню, если мы на уровне аддонов
@@ -538,15 +538,7 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
 
 	// Применяем скейл
-	pDDItemMP->SetTextureScale(pDDItemMP->GetOwner()->GetItemsScale());
-	int newW	= static_cast<int>(pDDItemMP->GetGridWidth() * pDDItemMP->GetOwner()->GetItemsScale() * INV_GRID_WIDTH);
-	int newH	= static_cast<int>(pDDItemMP->GetGridHeight() * pDDItemMP->GetOwner()->GetItemsScale() * INV_GRID_HEIGHT);
-	int deltaW	= (pDDItemMP->GetWndRect().right - pDDItemMP->GetWndRect().left - newW) / 2;
-	int deltaH	= (pDDItemMP->GetWndRect().bottom - pDDItemMP->GetWndRect().top - newH) / 2;
-
-	pDDItemMP->SetWidth(newW);
-	pDDItemMP->SetHeight(newH);
-	pDDItemMP->MoveWindow(pDDItemMP->GetWndRect().left + deltaW, pDDItemMP->GetWndRect().top + deltaH);
+	pDDItemMP->Rescale(pDDItemMP->GetOwner()->GetItemsScale());
 
 	// И прибавляем к деньгам стоимость вещи.
 	if (pDDItemMP->m_bAlreadyPaid)
@@ -1801,8 +1793,13 @@ void CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 				if (pDDItemMP->GetCost() < GetMoneyAmount())
 					SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
 				else
-					pDDItemMP->SetColor(cPartRed);
+				{
+					pDDItemMP->SetColor(cRed);
+					pDDItemMP->m_bAlreadyPaid = false;
+				}
 			}
+			else
+				pDDItemMP->SetColor(cPartWhite);
 		}
 	}
 
