@@ -200,7 +200,6 @@ void CRenderTarget::Begin		()
 		RCache.set_RT			(RT->pRT,ZB);
 		curWidth				= rtWidth;
 		curHeight				= rtHeight;
-		Log						("sss");
 	}
 	Device.Clear				();
 }
@@ -227,6 +226,9 @@ void CRenderTarget::End		()
 	u32	xH				= 64;
 	
 	// UV
+	if (rtHeight!=Device.dwHeight)	param_blur = 1.f;
+
+
 	Fvector2			shift,p0,p1;
 	shift.set			(.5f/tw, .5f/th);
 	shift.mul			(param_blur);
