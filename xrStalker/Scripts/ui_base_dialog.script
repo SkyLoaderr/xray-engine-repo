@@ -48,8 +48,8 @@ function base_dialog:InitControls(caption)
 	-- button template
 	self.btn_rect  = {x = 0, 
 					  y = 0, 
-					  width = 256, 
-					  height = 33 }
+					  width = 135, 
+					  height = 40 }
 	self.btn_rect.x = (self.main_rect.width - self.btn_rect.width)/2
 	--------------------------------------------------
 	-- special button aling
