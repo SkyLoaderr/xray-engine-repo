@@ -7,7 +7,7 @@
 void CObjectList::Load()
 {
 	R_ASSERT	(map_POOL.empty() && map_NETID.empty() && objects.empty() && destroy_queue.empty());
-	
+
 	u32	mem_0			= Memory.mem_usage();
 	CTimer T;			T.Start		();
 
@@ -33,8 +33,11 @@ void CObjectList::Load()
 
 	float	p_time		= 1000.f*T.Get();
 	u32		p_mem		= Memory.mem_usage() - mem_0;
-	Msg					("* [Object-prefetch] objects: %d",		p_count);
-	Msg					("* [Object-prefetch] time:    %d ms",	iFloor(p_time));
-	Msg					("* [Object-prefetch] memory:  %dKb",	p_mem/1024);
-	Msg					("* [Object-prefetch] average: %f ms, %d bytes", p_time/p_count, p_mem/p_count);
+	if (p_count)
+	{
+		Msg					("* [Object-prefetch] objects: %d",		p_count);
+		Msg					("* [Object-prefetch] time:    %d ms",	iFloor(p_time));
+		Msg					("* [Object-prefetch] memory:  %dKb",	p_mem/1024);
+		Msg					("* [Object-prefetch] average: %f ms, %d bytes", p_time/p_count, p_mem/p_count);
+	}
 }

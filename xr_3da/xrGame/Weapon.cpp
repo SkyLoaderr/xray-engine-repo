@@ -383,6 +383,7 @@ void CWeapon::net_Destroy	()
 	inherited::net_Destroy	();
 
 	if (m_pPhysicsShell)	m_pPhysicsShell->Deactivate	();
+	xr_delete				(m_pPhysicsShell);
 
 	ShaderDestroy			(hUIIcon);
 	Device.Shader.Delete	(hWallmark);
