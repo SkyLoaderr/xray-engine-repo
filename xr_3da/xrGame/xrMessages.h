@@ -13,8 +13,7 @@ enum {
 	M_CHAT,
 
 	M_SV_CONFIG,
-	M_CL_SPAWN,
-	M_SV_SPAWN,
+	M_SPAWN,
 	M_SV_CONFIG_FINISHED,
 
 	MSG_FORCEDWORD		= DWORD(-1)
@@ -22,9 +21,15 @@ enum {
 
 enum 
 {
-	MF_FIREPARAMS		= (1<<0),
+	MF_FIREPARAMS				= (1<<0),
 
-	MF_FORCEDWORD		= DWORD(-1)
+	MF_FORCEDWORD				= DWORD(-1)
+};
+enum
+{
+	M_SPAWN_OBJECT_ACTIVE		= (1<<0),
+
+	M_SPAWN_OBJECT_FORCEDWORD	= DWORD(-1)
 };
 
 /*
@@ -77,7 +82,7 @@ M_SPAWN
 	}
 	object
 	{
-		u8		bActive;
+		u16		flags;
 	}
 
 	zone
