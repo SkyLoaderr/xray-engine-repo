@@ -39,7 +39,7 @@ end
 
 -- запуск бесконечного цикла FSM
 function FSM:run()
-	while true
+	while true do
 		local transition_vector = self.transition_matrix[self.current_state]
 		transition_vector.foreach(transition_vector, 
 								  self.check_condition)
