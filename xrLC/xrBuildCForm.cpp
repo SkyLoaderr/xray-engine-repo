@@ -140,7 +140,7 @@ void CBuild::BuildCForm	()
 		mu_refs[ref]->export_cform_game(CL);
 
 	// Simplification
-	SimplifyCFORM	(CL);
+	// SimplifyCFORM	(CL);
 
 	// Saving
 	string512		fn;

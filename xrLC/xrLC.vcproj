@@ -711,6 +711,24 @@
 			</File>
 			<File
 				RelativePath=".\xrOptimizeCFORM.cpp">
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Mixed|Win32"
+					ExcludedFromBuild="TRUE">
+					<Tool
+						Name="VCCLCompilerTool"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\xrPhase_AdaptiveHT.cpp">
@@ -1576,10 +1594,10 @@
 					RelativePath=".\OpenMesh\Tools\Decimater\CollapseInfoT.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
 				</File>
 				<File
-					RelativePath=".\OpenMesh\Tools\Utils\Config.hh">
+					RelativePath=".\OpenMesh\Tools\Geometry\Config.hh">
 				</File>
 				<File
 					RelativePath=".\OpenMesh\Tools\Utils\conio.cc">
