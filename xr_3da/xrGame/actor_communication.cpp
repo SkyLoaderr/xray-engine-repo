@@ -115,11 +115,11 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	{
 		const CALifeNews* pNewsItem  = ai().alife().news().news(news_data.news_id); VERIFY(pNewsItem);
 		//добавляем в архив только новости
-		if(ALife::eNewsTypeKill == pNewsItem->m_news_type)
+		if(ALife::eNewsTypeKill == pNewsItem->m_news_type || ALife::eNewsTypeRetreat == pNewsItem->m_news_type)
 		{
 			CSE_Abstract* E = Level().Server->game->get_entity_from_eid(pNewsItem->m_object_id[1]);
 			CSE_ALifeTraderAbstract	 *pTA	= smart_cast<CSE_ALifeTraderAbstract*>(E); 
-			if(!pTA) return;
+//			if(!pTA) return;
 		}
 		else return;
 	}

@@ -50,6 +50,8 @@ void CHudItem::Load(LPCSTR section)
 		//если hud не задан, но задан слот, то ошибка
 		R_ASSERT2(m_slot == NO_ACTIVE_SLOT, "active slot is set, but hud for food item is not available");
 	}
+
+	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
 }
 
 void CHudItem::net_Destroy()

@@ -99,4 +99,9 @@ protected:
 	//кадры момента пересчета XFORM и FirePos
 	u32						dwFP_Frame;
 	u32						dwXF_Frame;
+
+protected:
+	u32				m_animation_slot;
+public:
+	IC		u32		animation_slot			()	{	return m_animation_slot;}
 };

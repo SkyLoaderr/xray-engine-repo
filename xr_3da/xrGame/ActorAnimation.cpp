@@ -71,12 +71,14 @@ void __stdcall CActor::VehicleHeadCallback(CBoneInstance* B)
 void ACTOR_DEFS::SActorMotions::SActorState::STorsoWpn::Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
-	aim				= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_0"));
+	aim				= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_2"));
+	aim_zoom		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_aim_0"));
 	holster			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_holster_0"));
 	draw			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_draw_0"));
 	reload			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_reload_0"));
 	drop			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_drop_0"));
-	attack			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_0"));
+	attack			= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_1"));
+	attack_zoom		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_0"));
 	fire_idle		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_1"));
 	fire_end		= K->ID_Cycle_Safe(strconcat(buf,base0,"_torso",base1,"_attack_2"));
 }
@@ -249,10 +251,11 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		
 		if(!M_torso)
 		{
+			CHudItem	*H = smart_cast<CHudItem*>(inventory().ActiveItem());
 			CWeapon		*W = smart_cast<CWeapon*>(inventory().ActiveItem());
 			CMissile	*M = smart_cast<CMissile*>(inventory().ActiveItem());
-			if (W || M) {
-				SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[(W ? W->HandDependence() : M->animation_slot()) - 1];
+			if (H) {
+				SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[H->animation_slot() - 1];
 				if (!b_DropActivated&&!fis_zero(f_DropPower)){
 					M_torso					= TW->drop;
 					m_bAnimTorsoPlayed		= TRUE;
@@ -260,14 +263,14 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 					if (!m_bAnimTorsoPlayed) {
 						if (W) {
 							switch (W->STATE){
-								case CWeapon::eIdle:	M_torso	= TW->aim;		break;
-								case CWeapon::eFire:	M_torso	= TW->attack;	break;
+								case CWeapon::eIdle:	M_torso	= W->IsZoomed()?TW->aim_zoom:TW->aim;		break;
+								case CWeapon::eFire:	M_torso	= W->IsZoomed()?TW->attack_zoom:TW->attack;	break;
 								case CWeapon::eReload:	M_torso	= TW->reload;	break;
 								case CWeapon::eShowing:	M_torso	= TW->draw;		break;
 								case CWeapon::eHiding:	M_torso	= TW->holster;	break;
 							}
 						}
-						else {
+						else if (M) {
 							switch (M->State()){
 								case MS_SHOWING	 :		M_torso	= TW->draw;		break;
 								case MS_HIDING	 :		M_torso	= TW->holster;	break;

@@ -74,11 +74,13 @@ struct					SActorMotions
 		};
 		struct			STorsoWpn{
 			CMotionDef*	aim;
+			CMotionDef*	aim_zoom;
 			CMotionDef*	holster;
 			CMotionDef*	draw;
 			CMotionDef*	drop;
 			CMotionDef*	reload;
 			CMotionDef*	attack;
+			CMotionDef*	attack_zoom;
 			CMotionDef*	fire_idle;
 			CMotionDef*	fire_end;
 			void		Create(CSkeletonAnimated* K, LPCSTR base0, LPCSTR base1);

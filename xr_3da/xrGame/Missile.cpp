@@ -71,8 +71,6 @@ void CMissile::Load(LPCSTR section)
 
 	if(pSettings->line_exist(section,"snd_playing"))
 		HUD_SOUND::LoadSound(section,"snd_playing",sndPlaying,TRUE);
-
-	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
 }
 
 BOOL CMissile::net_Spawn(LPVOID DC) 

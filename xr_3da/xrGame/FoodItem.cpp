@@ -37,8 +37,6 @@ void CFoodItem::Load(LPCSTR section)
 	inherited::Load(section);
 	CEatableItem::Load(section);
 
-	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
-
 	if(m_pHUD)
 	{
 		m_sAnimIdle		= pSettings->r_string(*hud_sect, "anim_idle");
