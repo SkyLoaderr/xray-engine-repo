@@ -11,6 +11,8 @@
 #include "portal.h"
 #include "detailmanager.h"
 
+#include "light_db.h"
+
 // definition
 class CRender	:	public IRender_interface
 {
@@ -35,6 +37,7 @@ public:
 	CModelPool												Models;
 
 	CRenderTarget											Target;			// Render-target
+	CLight_DB												Lights;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(IReader	*fs);

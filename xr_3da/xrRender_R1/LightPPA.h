@@ -21,8 +21,8 @@ public:
 	Fsphere			sphere;
 	Fcolor			color;
 public:
-	CLightPPA		();
-	~CLightPPA		();
+	CLightPPA			();
+	virtual ~CLightPPA	();
 
 	virtual void	set_mode		(mode M);
 	virtual void	set_position	(const Fvector& P)				{ sphere.P.set(P);	}

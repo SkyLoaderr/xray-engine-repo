@@ -246,6 +246,18 @@
 		<Filter
 			Name="Lights"
 			Filter="">
+			<File
+				RelativePath="Light_DB.cpp">
+			</File>
+			<File
+				RelativePath="Light_DB.h">
+			</File>
+			<File
+				RelativePath="light.cpp">
+			</File>
+			<File
+				RelativePath="light.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Glows"

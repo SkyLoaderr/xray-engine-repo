@@ -46,8 +46,8 @@ IDirect3DVertexBuffer9*	CRender::getVB					(int id)			{ VERIFY(id<int(VB.size())
 IDirect3DIndexBuffer9*	CRender::getIB					(int id)			{ VERIFY(id<int(IB.size()));		return IB[id];		}
 IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 
-IRender_Light*			CRender::light_create			()					{ return L_Dynamic.Create();							}
-void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { L_Dynamic.Destroy((CLightPPA*)L); L=0; }		}
+IRender_Light*			CRender::light_create			()					{ return Lights.Create();								}
+void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { Lights.Destroy((light*)L); L=0; }			}
 void					CRender::L_select				(Fvector &pos, float fRadius, vector<xrLIGHT*>& dest)
 {	
 	Msg		("! NotImplemented: CRender::L_select");
@@ -61,9 +61,12 @@ BOOL					CRender::occ_visible			(Fbox& P)			{ return HOM.visible(P);							}
 
 void					CRender::add_Visual				(IVisual*		V )	{ add_leafs_Dynamic(V);								}
 void					CRender::add_Geometry			(IVisual*		V )	{ add_Static(V,View->getMask());					}
-void					CRender::add_Lights				(vector<WORD> &	V )	{ L_DB.add_sector_lights(V);						}
-void					CRender::add_Glows				(vector<WORD> &	V )	
+void					CRender::add_Lights				(vector<WORD> &	V )	
 { 
+	Lights.add_sector_lights(V);						
+}
+void					CRender::add_Glows				(vector<WORD> &	V )	
+{
 	Msg		("! NotImplemented: CRender::add_Glows");
 }
 void					CRender::add_Patch				(Shader* S, const Fvector& P1, float s, float a, BOOL bNearer)
