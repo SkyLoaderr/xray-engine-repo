@@ -116,6 +116,10 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 
 	//*******
 	Status	("Models");
+	{
+		F = FS.OpenChunk		(EB_MU_models);
+		R_ASSERT				(F);
+	}
 
 	//*******
 	Status	("Other transfer...");
