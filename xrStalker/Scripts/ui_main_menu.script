@@ -104,11 +104,11 @@ function main_menu:InitControls()
 	self.background:Init("ui\\ui_static_main_menu_background",self.screen.x, self.screen.y, self.screen.width, self.screen.height)
 	self:AttachChild(self.background)
 	
-	-- MAIN FRAME WINDOW
+	-- MAIN WINDOW
 	self.main_frame = CUIStatic()
 	self.main_frame:SetAutoDelete(true)
 	self.main_frame:SetWindowName("main_frame")
-	self.main_frame:Init("ui\\ui_satic_main_menu", self.main_rect.x, 
+	self.main_frame:Init("ui\\ui_static_main_menu", self.main_rect.x, 
 												   self.main_rect.y, 
 												   self.main_rect.width, 
 												   self.main_rect.height)
