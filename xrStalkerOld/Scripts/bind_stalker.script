@@ -39,7 +39,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:info_callback(npc, info_id)
 	printf("*INFO*: npc='%s' id='%s'", npc:name(), info_id)
-	this.process_task_changing(self.object, info_id)
+	this.process_task_changing(info_id)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:update(delta)
@@ -131,7 +131,8 @@ function object_info_callback(obj)
 	end
 end
 
-function process_task_changing(actor, info)
+function process_task_changing(info)
+	local actor = db.actor
 	--' Новое задание
 	if (info == "tutorial_artefact_start" and
 	   actor:dont_has_info("tutorial_artefact_gain") and
