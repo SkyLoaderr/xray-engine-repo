@@ -104,7 +104,7 @@ void CHUDCursor::Render()
 
 			if (E && (E->g_Health()>0))
 			{
-				if (Game().type == GAME_SINGLE)
+				if (GameID() == GAME_SINGLE)
 				{
 					if (fuzzyShowInfo>0.5f)
 					{
@@ -118,7 +118,7 @@ void CHUDCursor::Render()
 					CEntityAlive*	pCurEnt = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
 					if (pCurEnt)
 					{					
-						if (Game().type == GAME_DEATHMATCH)
+						if (GameID() == GAME_DEATHMATCH)
 							C = C_ON_ENEMY;
 						else
 						{

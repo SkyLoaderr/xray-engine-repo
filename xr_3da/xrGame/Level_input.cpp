@@ -28,11 +28,11 @@ void CLevel::IR_OnKeyboardPress(int key)
 	switch (key) {
 #ifdef DEBUG
 	case DIK_RETURN:
-		if (Game().type == GAME_SINGLE)
+		if (GameID() == GAME_SINGLE)
 			bDebug	= !bDebug;
 		return;
 	case DIK_BACK:
-		if (Game().type == GAME_SINGLE)
+		if (GameID() == GAME_SINGLE)
 			HW.Caps.SceneMode			= (HW.Caps.SceneMode+1)%3;
 		return;
 #endif
@@ -40,7 +40,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		Render->Screenshot			();
 		return;
 	case DIK_F6: {
-		if (Game().type != GAME_SINGLE) return;
+		if (GameID() != GAME_SINGLE) return;
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_SAVE_GAME);
 		net_packet.w_stringZ		("quick_save");
@@ -48,7 +48,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	}
 	case DIK_F7: {
-		if (Game().type != GAME_SINGLE) return;
+		if (GameID() != GAME_SINGLE) return;
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_RELOAD_GAME);
 		Send						(net_packet,net_flags(TRUE));
@@ -56,7 +56,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	}
 #ifdef DEBUG
 	case DIK_F4: {
-		if (Game().type != GAME_SINGLE) return;
+		if (GameID() != GAME_SINGLE) return;
 		xr_vector<CObject*>::iterator I = Objects.objects.begin(), B = I, J;
 		xr_vector<CObject*>::iterator E = Objects.objects.end();
 		bool bOk = false;
@@ -109,7 +109,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 
 	case DIK_NUMPAD5: 
 		{
-			if (Game().type != GAME_SINGLE) 
+			if (GameID() != GAME_SINGLE) 
 			{
 				Msg("For this game type Demo Record is disabled.");
 				return;

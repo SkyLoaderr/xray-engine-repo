@@ -537,7 +537,7 @@ bool CGameObject::frame_check(u32 &frame)
 
 bool CGameObject::NeedToDestroyObject()	const
 {
-	if (Game().type == GAME_SINGLE) return false;
+	if (GameID() == GAME_SINGLE) return false;
 	return false;
 }
 

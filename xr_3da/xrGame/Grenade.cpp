@@ -341,7 +341,7 @@ void CGrenade::create_physic_shell		()
 
 bool CGrenade::NeedToDestroyObject()	const
 {
-	if (Game().type == GAME_SINGLE) return false;
+	if (GameID() == GAME_SINGLE) return false;
 	if (Remote()) return false;
 	if (TimePassedAfterIndependant() > m_dwGrenadeRemoveTime)
 		return true;

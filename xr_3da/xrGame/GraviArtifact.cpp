@@ -74,7 +74,7 @@ void CGraviArtifact::UpdateCL()
 		{
 			XFORM().set(H_Parent()->XFORM());
 			
-			if (Game().type == GAME_ARTEFACTHUNT && m_CarringBoneID != u16(-1))
+			if (GameID() == GAME_ARTEFACTHUNT && m_CarringBoneID != u16(-1))
 			{
 				CKinematics* K	= PKinematics(H_Parent()->Visual());
 				if (K)

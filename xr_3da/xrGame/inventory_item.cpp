@@ -315,7 +315,7 @@ BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 
 	//!!!
 	m_fCondition = pSE_InventoryItem->m_fCondition;
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 		processing_activate();
 	}

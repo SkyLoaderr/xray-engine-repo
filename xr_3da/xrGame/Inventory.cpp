@@ -83,7 +83,7 @@ void CInventory::Clear()
 	m_dwModifyFrame = Device.dwFrame;
 
 	//for multiplayer modes
-	if (Game().type != GAME_SINGLE) m_iMaxBelt+=2;
+	if (GameID() != GAME_SINGLE) m_iMaxBelt+=2;
 	
 	m_all.clear();
 	m_ruck.clear();
@@ -314,7 +314,7 @@ bool CInventory::Slot(PIItem pIItem, bool bNotActivate)
 {
 	VERIFY(pIItem);
 	//Msg("put item %s in inventory slot %d", *pIItem->cName(), pIItem->GetSlot());
-	if (Game().type != GAME_SINGLE)
+	if (GameID() != GAME_SINGLE)
 	{
 ///		bNotActivate = true;
 	}
