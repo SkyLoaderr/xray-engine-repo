@@ -13,10 +13,6 @@ class ENGINE_API CSoundManager : public pureFrame
 	
 	BOOL					bPresent;
 	
-	// saves for restoring
-	float					fSaveMasterVol;
-	float					fSaveWaveVol;
-	
 	// saves
 	float					fMasterVolume;
 	float					fMusicVolume;
@@ -29,9 +25,9 @@ class ENGINE_API CSoundManager : public pureFrame
 	C2DSoundRender*			p2DSounds;
 	CMusicStream*			pMusicStreams;
 	
-	// effect sounds
-    LPDIRECTSOUND		    pDirectSound;
-    LPDIRECTSOUNDBUFFER		pPrimaryBuf;
+	// DirectSound interface
+    LPDIRECTSOUND		    pDevice;				// The device itself
+    LPDIRECTSOUNDBUFFER		pBuffer;				// The primary buffer (mixer destination)
 private:
 	BOOL					CreatePrimaryBuffer		( );
 	void					Initialize				( );
