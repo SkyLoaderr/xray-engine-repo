@@ -233,7 +233,7 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 // sync_list - реально сохраненные файлы (после использования освободить)
 //------------------------------------------------------------------------------
 void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bForceGame, FS_QueryMap* source_list, AStringVec* sync_list, FS_QueryMap* modif_map)
-{        
+{   
 	FS_QueryMap M_BASE;
 	FS_QueryMap M_THUM;
     FS_QueryMap M_GAME;
@@ -244,6 +244,8 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     if (sync_thm) 	FS.file_list(M_THUM,_textures_,FS_ListFiles|FS_ClampExt,".thm");
     if (sync_game) 	FS.file_list(M_GAME,_game_textures_,FS_ListFiles|FS_ClampExt,".dds");
 
+    bool bProgress = M_BASE.size()>1;
+    
     // lock rescanning
     FS.lock_rescan	();
     
@@ -252,7 +254,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     FS.update_path(ltx_nm,_game_textures_,"textures.ltx");
 	CInifile* ltx_ini = xr_new<CInifile>(ltx_nm.c_str(), FALSE, TRUE, TRUE);
     
-    UI.ProgressStart(M_BASE.size(),"Synchronize textures...");
+    if (bProgress) UI.ProgressStart(M_BASE.size(),"Synchronize textures...");
     FS_QueryPairIt it=M_BASE.begin();
 	FS_QueryPairIt _E = M_BASE.end();
 	for (; it!=_E; it++){
@@ -260,7 +262,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
     	u32 w, h, a;
 
         string256 base_name; strcpy(base_name,it->first.c_str()); strlwr(base_name);
-        UI.ProgressInc(base_name);
+        if (bProgress) UI.ProgressInc(base_name);
         AnsiString fn;
         FS.update_path			(fn,_textures_,it->first.c_str());
         if (strext(base_name)) *strext(base_name)=0;
@@ -310,7 +312,7 @@ void CImageManager::SynchronizeTextures(bool sync_thm, bool sync_game, bool bFor
 
     xr_delete(ltx_ini);
     
-    UI.ProgressEnd();
+    if (bProgress) UI.ProgressEnd();
     // lock rescanning
     FS.unlock_rescan	();
 }
@@ -681,14 +683,14 @@ EImageThumbnail* CImageManager::CreateThumbnail(LPCSTR src_name, ECustomThumbnai
 //------------------------------------------------------------------------------
 void CImageManager::RefreshTextures(AStringVec* modif)
 {
-	UI.SetStatus("Refresh textures...");
     if (modif) Device.Resources->ED_UpdateTextures(modif);
 	else{
+		UI.SetStatus("Refresh textures...");
     	AStringVec modif_files;
     	ImageLib.SynchronizeTextures(true,true,false,0,&modif_files);
         Device.Resources->ED_UpdateTextures(&modif_files);
+		UI.SetStatus("");
     }
-	UI.SetStatus("");
 }
 
 

@@ -33,7 +33,7 @@ class EObjectThumbnail;
 class TfrmEditLibrary : public TForm
 {
 __published:	// IDE-managed Components
-    TPanel *Panel1;
+	TPanel *paCommands;
 	TExtBtn *ebMakeThm;
 	TFormStorage *fsStorage;
 	TExtBtn *ebProperties;
@@ -46,7 +46,7 @@ __published:	// IDE-managed Components
 	TLabel *lbVertices;
 	TBevel *Bevel4;
 	TPanel *paItems;
-	TPanel *Panel2;
+	TPanel *paControl;
 	TExtBtn *ebImport;
 	TExtBtn *ebMakeLWO;
 	TExtBtn *ebSave;
@@ -91,6 +91,10 @@ private:	// User declarations
 
     TItemList*				m_Items;
 	void __fastcall 		OnItemFocused	(TElTreeItem* item);
+	bool 					GenerateLOD		(TElTreeItem* node);
+    bool 					bFormLocked;
+    void 					LockForm		()	{ bFormLocked = true;	paCommands->Enabled = false; 	paItems->Enabled = false; 	}
+    void 					UnlockForm		()	{ bFormLocked = false;	paCommands->Enabled = true; 	paItems->Enabled = true;	}
 public:		// User declarations
     void __fastcall 		OnModified		();
     __fastcall 				TfrmEditLibrary	(TComponent* Owner);

@@ -156,9 +156,13 @@ void TfrmSoundLib::InitItemsList()
 void __fastcall TfrmSoundLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-    if (Key==VK_ESCAPE){
-		if (bFormLocked)UI.Command(COMMAND_BREAK_LAST_OPERATION);
-        Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
+    if (Shift.Contains(ssCtrl)){
+    	if (Key==VK_CANCEL)		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+    }else{
+        if (Key==VK_ESCAPE){
+            if (bFormLocked)	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+            Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
+        }
     }
 }
 //---------------------------------------------------------------------------

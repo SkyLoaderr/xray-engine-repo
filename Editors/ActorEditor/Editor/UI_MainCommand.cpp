@@ -147,7 +147,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_UPDATE_CAPTION:
     	frmMain->UpdateCaption();
     	break;
-	case COMMAND_BREAK_LAST_OPERATION:                                          	
+	case COMMAND_BREAK_LAST_OPERATION:
         if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to break current action?")){
             NeedBreak	();
             ELog.Msg	(mtInformation,"Execution canceled.");
@@ -209,6 +209,7 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
     if (Key==VK_ESCAPE)   			COMMAND1(COMMAND_CHANGE_ACTION, eaSelect)
     if (Shift.Contains(ssCtrl)){
+    	if (Key==VK_CANCEL)			COMMAND0(COMMAND_BREAK_LAST_OPERATION);
     }else{
         if (Shift.Contains(ssAlt)){
         }else{

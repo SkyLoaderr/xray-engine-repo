@@ -25,7 +25,7 @@ object frmEditLibrary: TfrmEditLibrary
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
-  object Panel1: TPanel
+  object paCommands: TPanel
     Left = 192
     Top = 0
     Width = 132
@@ -72,7 +72,7 @@ object frmEditLibrary: TfrmEditLibrary
       BevelShow = False
       BtnColor = 10528425
       CloseButton = False
-      Caption = 'Make LOD'
+      Caption = 'Make MU-Object LOD'
       Enabled = False
       Transparent = False
       FlatAlwaysEdge = True
@@ -157,7 +157,7 @@ object frmEditLibrary: TfrmEditLibrary
         ParentFont = False
       end
     end
-    object Panel2: TPanel
+    object paControl: TPanel
       Left = 0
       Top = 326
       Width = 132

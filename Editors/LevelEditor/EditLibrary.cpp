@@ -50,7 +50,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     DEFINE_INI(fsStorage);
 	m_pEditObject 	= xr_new<CSceneObject>((LPVOID)0,(LPSTR)0);
     m_Props 		= TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
-    m_Items			= TItemList::CreateForm("",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
+    m_Items			= TItemList::CreateForm("Objects",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
     m_Items->OnItemFocused 	= OnItemFocused;
     m_Items->OnItemRemove 	= Lib.RemoveObject;
     m_Items->OnItemRename 	= Lib.RenameObject;
@@ -241,7 +241,7 @@ void __fastcall TfrmEditLibrary::OnItemFocused(TElTreeItem* item)
     UpdateObjectProperties();
     UI.RedrawScene();
     ebMakeThm->Enabled	= mt;
-    ebMakeLOD->Enabled	= mt;
+    ebMakeLOD->Enabled	= cbPreview->Checked;
 }
 //---------------------------------------------------------------------------
 
@@ -256,7 +256,7 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
         mt = true;
     }
 	ebMakeThm->Enabled = mt;
-    ebMakeLOD->Enabled = mt;
+    ebMakeLOD->Enabled = cbPreview->Checked;
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
@@ -277,7 +277,15 @@ void TfrmEditLibrary::InitObjects()
 void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
-    if (Key==VK_ESCAPE) 	ebCancel->Click();
+    if (Shift.Contains(ssCtrl)){
+    	if (Key==VK_CANCEL)		UI.Command(COMMAND_BREAK_LAST_OPERATION);
+    }else{
+        if (Key==VK_ESCAPE){
+            if (bFormLocked)	UI.Command(COMMAND_BREAK_LAST_OPERATION);
+            else				ebCancel->Click();
+            Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
+        }
+    }
 }
 //---------------------------------------------------------------------------
 
@@ -339,28 +347,58 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
+bool TfrmEditLibrary::GenerateLOD(TElTreeItem* node)
 {
-	TElTreeItem* node = m_Items->GetSelected();
 	if (node&&FHelper.IsObject(node)){
-    	AnsiString name; FHelper.MakeName(node,0,name,false);
+        ListItem* prop 	= (ListItem*)node->Tag; VERIFY(prop);
+        AnsiString nm	= prop->Key();
+        ChangeReference	(nm.c_str());
         CEditableObject* O = m_pEditObject->GetReference();
-    	if (O&&cbPreview->Checked){
-        	BOOL bLod = O->m_Flags.is(CEditableObject::eoUsingLOD);
-        	O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
+        if (O&&O->IsMUStatic()){
+            BOOL bLod = O->m_Flags.is(CEditableObject::eoUsingLOD);
+            O->m_Flags.set(CEditableObject::eoUsingLOD,FALSE);
             AnsiString tex_name;
-            tex_name = ChangeFileExt(name,".tga");
+            tex_name = ChangeFileExt(nm,".tga");
             string256 nm; strcpy(nm,tex_name.c_str()); _ChangeSymbol(nm,'\\','_');
             tex_name = "lod_"+AnsiString(nm);
             tex_name = ImageLib.UpdateFileName(tex_name);
             ImageLib.CreateLODTexture(O->GetBox(), tex_name.c_str(),LOD_IMAGE_SIZE,LOD_IMAGE_SIZE,LOD_SAMPLE_COUNT,O->m_Version);
-            m_pEditObject->GetReference()->OnDeviceDestroy();
-//.        	tvItemsItemFocused(Sender);
-        	O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
-		    ELog.DlgMsg(mtInformation,"LOD successfully created.");
-	    }else{
-            ELog.DlgMsg(mtError,"Can't create LOD texture. Set preview mode.");
+            O->OnDeviceDestroy();
+            O->m_Flags.set(CEditableObject::eoUsingLOD,bLod);
+			ELog.Msg(mtInformation,"LOD for object '%s' successfully created.",O->GetName());
+            return true;
+        }else{
+            ELog.Msg(mtError,"Can't create LOD texture from non 'Multiple Usage' object.");
         }
+    }
+    return false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmEditLibrary::ebMakeLODClick(TObject *Sender)
+{
+	TElTreeItem* node = m_Items->GetSelected();
+	if (node&&cbPreview->Checked){
+        LockForm();
+		AnsiString m_LastSelection;
+        FHelper.MakeFullName(node,0,m_LastSelection);
+    	if (FHelper.IsObject(node)){
+        	GenerateLOD	(node);
+    	} if (FHelper.IsFolder(node)){
+	        if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to generate LOD for all object in this folder?")){
+                int iLODcnt = 0;
+                UI.ProgressStart(node->ChildrenCount,"Making LOD");
+                for (TElTreeItem* item=node->GetFirstChild(); item; item=node->GetNextChild(item)){
+                    UI.ProgressInc();
+		        	if (GenerateLOD(item)) iLODcnt++;
+					if (UI.NeedAbort()) break;
+                }
+                UI.ProgressEnd();
+                Msg ("'%d' LOD's succesfully created.",iLODcnt);
+            }
+        }
+        UnlockForm();
+        m_Items->SelectItem	(m_LastSelection,true,false,true);
     }
 }
 //---------------------------------------------------------------------------
@@ -449,7 +487,6 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
     	AStringVec lst;
         _SequenceToList(lst,open_nm.c_str());
 		bool bNeedUpdate=false;
-		bool bNeedBreak=false;
         // folder name
         AnsiString folder;
         TElTreeItem* item = m_Items->GetSelected(); 
@@ -472,14 +509,12 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                 
                 O->SaveObject	(save_nm.c_str());
                 EFS.MarkFile	(*it,true);
-                bNeedUpdate		= true;
                 EFS.BackupFile	(_objects_,folder+ChangeFileExt(nm,".object"));
                 EFS.WriteAccessLog(save_nm.c_str(),"Import");
             }else{
             	ELog.DlgMsg(mtError,"Can't load file '%s'.",it->c_str());
             }
             xr_delete(O);
-            if (bNeedBreak) break;
 
             LPCSTR p = FS.get_path(_objects_)->m_Path;
             if (folder.Pos(p)>0) m_LastSelection = AnsiString(AnsiString(folder.c_str()+strlen(p))+nm).LowerCase();

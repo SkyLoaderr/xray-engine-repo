@@ -372,7 +372,7 @@ void TUI::SetStatus(LPSTR s, bool bOutLog)
 	VERIFY(m_bReady);
     if (fraBottomBar->paStatus->Caption!=s){
 	    fraBottomBar->paStatus->Caption=s; fraBottomBar->paStatus->Repaint();
-    	if (bOutLog) ELog.Msg(mtInformation,s);
+    	if (bOutLog&&s&&s[0]) ELog.Msg(mtInformation,s);
     }
 }
 void TUI::ProgressInfo(LPCSTR text)
