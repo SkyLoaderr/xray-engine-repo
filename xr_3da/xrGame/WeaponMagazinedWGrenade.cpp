@@ -589,7 +589,7 @@ void CWeaponMagazinedWGrenade::OnShot		()
 		pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
 		Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
 #pragma todo("Oles to Vitya: 'ps_Element(0).dwTime' in game time, not in global time")
-		Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
+		Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-Game().start_time-ps_Element(0).dwTime)/1000.f);
 		pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	} else inherited::OnShot();
 	//// Sound

@@ -8,6 +8,7 @@ CArtifact::CArtifact(void) {
 	shedule.t_min = 20;
 	shedule.t_max = 50;
 	m_jumpHeight = 0;
+	m_energy = 1.f;
 }
 
 CArtifact::~CArtifact(void) {
@@ -35,6 +36,7 @@ void CArtifact::Load(LPCSTR section) {
 	SoundCreate(m_detectorSound, m_detectorSoundName);
 
 	if(pSettings->line_exist(section, "jump_height")) m_jumpHeight = pSettings->r_float(section,"jump_height");
+	m_energy = pSettings->r_float(section,"energy");
 }
 
 BOOL CArtifact::net_Spawn(LPVOID DC) {

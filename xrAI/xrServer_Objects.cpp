@@ -540,14 +540,17 @@ void CSE_Target_CS::FillProp				(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 CSE_Temporary::CSE_Temporary				(LPCSTR caSection) : CSE_Abstract(caSection)
 {
+	m_tNodeID					= u32(-1);
 };
 
 void CSE_Temporary::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
 {
+	tNetPacket.r_u32			(m_tNodeID);
 };
 
 void CSE_Temporary::STATE_Write				(NET_Packet	&tNetPacket)
 {
+	tNetPacket.w_u32			(m_tNodeID);
 };
 
 void CSE_Temporary::UPDATE_Read				(NET_Packet	&tNetPacket)

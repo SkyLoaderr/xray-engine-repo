@@ -101,16 +101,18 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	// AI-DB connectivity
 	CTimer		T; T.Start		();
 	CSE_ALifeObject*		a_obj	= dynamic_cast<CSE_ALifeObject*>(E);
+	CSE_Temporary			*l_tpTemporary = dynamic_cast<CSE_Temporary*>(E);
+	u32						l_dwDesiredNodeID = a_obj ? a_obj->m_tNodeID : (l_tpTemporary ? l_tpTemporary->m_tNodeID : u32(-1));
 	
-	if (a_obj->ID_Parent == 0xffff) {
-		if (a_obj) {
+	if (E->ID_Parent == 0xffff) {
+		if (l_dwDesiredNodeID != u32(-1)) {
 			CAI_Space&	AI		= getAI();
 			R_ASSERT			(AI.bfCheckIfGraphLoaded());
 			//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
 			//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
 			//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
-			if (a_obj->m_tNodeID < getAI().Header().count)
-				AI_NodeID			=	AI.q_Node	(a_obj->m_tNodeID,Position());
+			if (l_dwDesiredNodeID < getAI().Header().count)
+				AI_NodeID			=	AI.q_Node	(l_dwDesiredNodeID,Position());
 			else
 				AI_NodeID			=	AI.q_LoadSearch(Position());
 
@@ -120,8 +122,8 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 				AI_Node				= NULL;
 			}
 			else {
-				AI_Node				=	AI.Node		(AI_NodeID);
-//				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+				AI_Node				= AI.Node(AI_NodeID);
+				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 				getAI().ref_add		(AI_NodeID);
 			}
 		}
@@ -136,14 +138,13 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 			} else {
 				AI_NodeID			= u32(node);
 				AI_Node				= getAI().Node(AI_NodeID);
-//				Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
 				getAI().ref_add		(AI_NodeID);
 			}
 		}
 	}
 
 #pragma todo("Incorrect spawning")
-	if ((a_obj->ID_Parent != 0xffff) && !Parent) {
+	if ((E->ID_Parent != 0xffff) && !Parent) {
 		Parent						= this;
 		inherited::net_Spawn		(DC);
 		Parent						= 0;

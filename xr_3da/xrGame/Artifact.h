@@ -24,7 +24,7 @@ public:
 	float m_detectorDist;
 	LPCSTR m_detectorSoundName;
 	ref_sound m_detectorSound;
-	float m_jumpHeight;
+	float m_jumpHeight, m_energy;
 
 	static xr_set<CArtifact*> m_all;
 };

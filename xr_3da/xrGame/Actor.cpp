@@ -1300,8 +1300,9 @@ void CActor::OnHUDDraw	(CCustomHUD* hud)
 	//if (W)				W->renderable_Render		();
 	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->renderable_Render();
 
-	if(m_inventory.ActiveItem()&&!m_vehicle)
+	if(m_inventory.ActiveItem()&&!m_vehicle) {
 		m_inventory.ActiveItem()->renderable_Render();
+	}
 
 
 #ifdef _DEBUG

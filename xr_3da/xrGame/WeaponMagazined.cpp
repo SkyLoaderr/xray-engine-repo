@@ -309,13 +309,14 @@ void CWeaponMagazined::renderable_Render	()
 {
 	inherited::renderable_Render	();
 	UpdateXForm				();
-	if (hud_mode && m_pHUD)
+	CActor *l_pA = dynamic_cast<CActor*>(H_Parent());
+	if (l_pA && l_pA->HUDview() && m_pHUD)
 	{ 
 		// HUD render
 		::Render->set_Transform		(&m_pHUD->Transform());
 		::Render->add_Visual		(m_pHUD->Visual());
 	}
-	else
+	else if(!l_pA || !l_pA->HUDview())
 	{
 		// Actor render
 		::Render->set_Transform		(&XFORM());
@@ -413,7 +414,8 @@ void CWeaponMagazined::OnShot		()
 	pStaticPG = xr_new<CPGObject>("weapons\\generic_shoot",Sector());
 	Fmatrix l_pos; l_pos.set(XFORM()); l_pos.c.set(vLastFP);
 #pragma todo("Oles to Vitya: 'ps_Element(0).dwTime' in game time, not in global time")
-	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-ps_Element(0).dwTime)/1000.f);
+#pragma todo("Vitya to Oles: Is this correct?")
+	Fvector l_vel; l_vel.sub(Position(),ps_Element(0).vPosition); l_vel.div((Device.dwTimeGlobal-Game().start_time-ps_Element(0).dwTime)/1000.f);
 	pStaticPG->UpdateParent(l_pos, l_vel); pStaticPG->Play();
 	//pStaticPG->SetTransform(l_pos); pStaticPG->Play();
 }
