@@ -2,9 +2,11 @@
 #pragma hdrstop
 
 #include "IGame_Persistent.h"
-#include "IGame_Level.h"
 #include "environment.h"
-#include "XR_IOConsole.h"
+#ifndef _EDITOR
+#	include "IGame_Level.h"
+#	include "XR_IOConsole.h"
+#endif
 
 ENGINE_API	IGame_Persistent*		g_pGamePersistent	= NULL;
 
@@ -44,8 +46,10 @@ void IGame_Persistent::OnAppEnd		()
 void IGame_Persistent::OnFrame		()
 {
 	Environment.OnFrame				();
+#ifndef _EDITOR
 	if(Device.dwFrame ==50){
 		if(!g_pGameLevel)
 			Console->Execute("main_menu on");
 	}
+#endif
 }

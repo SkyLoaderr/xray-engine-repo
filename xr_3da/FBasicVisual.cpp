@@ -55,8 +55,8 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 	// Shader
 	if (data->find_chunk(OGF_TEXTURE)) {
 		string256		fnT,fnS;
-		data->r_stringZ	(fnT);
-		data->r_stringZ	(fnS);
+		data->r_stringZ	(fnT,sizeof(fnT));
+		data->r_stringZ	(fnS,sizeof(fnS));
 		hShader.create	(fnS,fnT);
 	}
 

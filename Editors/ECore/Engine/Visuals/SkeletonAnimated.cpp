@@ -462,7 +462,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	// Load animation
     if (data->find_chunk(OGF_S_MOTION_REFS)){
     	string_path	fn,nm;
-        data->r_stringZ	(nm);
+        data->r_stringZ	(nm,sizeof(fn));
 		strcat			(nm,".omf");
         if (!FS.exist(fn, "$level$", nm)){
             if (!FS.exist(fn, "$game_meshes$", nm)){

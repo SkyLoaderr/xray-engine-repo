@@ -105,7 +105,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     }
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_MESHNAME));
-	F.r_stringZ		(m_Name);
+	F.r_stringZ		(m_Name,sizeof(m_Name));
 
     R_ASSERT(F.r_chunk(EMESH_CHUNK_BBOX,&m_Box));
     R_ASSERT(F.r_chunk(EMESH_CHUNK_FLAGS,&m_Flags));
@@ -135,7 +135,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
 	F.r					(&*m_Faces.begin(), m_Faces.size()*sizeof(st_Face));
 
 	m_SGs.resize		(m_Faces.size(),m_Flags.is(flSGMask)?0:-1);
-	int sg_chunk_size	= F.find_chunk(EMESH_CHUNK_SG);
+	u32 sg_chunk_size	= F.find_chunk(EMESH_CHUNK_SG);
 	if (sg_chunk_size){
 		VERIFY			(m_SGs.size()*sizeof(u32)==sg_chunk_size);
 		F.r				(&*m_SGs.begin(), m_SGs.size()*sizeof(u32));
@@ -153,7 +153,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     string128 surf_name;
     u32 sface_cnt		= F.r_u16(); // surface-face count
     for (u32 sp_i=0; sp_i<sface_cnt; sp_i++){
-        F.r_stringZ		(surf_name);
+        F.r_stringZ		(surf_name,sizeof(surf_name));
         int surf_id;
         CSurface* surf	= m_Parent->FindSurfaceByName(surf_name, &surf_id); VERIFY(surf);
         IntVec&			face_lst = m_SurfFaces[surf];

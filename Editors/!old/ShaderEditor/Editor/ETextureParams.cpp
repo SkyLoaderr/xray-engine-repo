@@ -231,10 +231,10 @@ u32 STextureParams::MemoryUsage(LPCSTR base_name)
     if (FS.exist(fn.c_str())){
         string128		buffer;
         IReader* F		= FS.r_open(0,fn.c_str());
-        F->r_string		(buffer);
+        F->r_string		(buffer,sizeof(buffer));
         int cnt = 0;
         while (!F->eof()){
-            F->r_string(buffer);
+            F->r_string(buffer,sizeof(buffer));
             cnt++;
         }
         FS.r_close		(F);

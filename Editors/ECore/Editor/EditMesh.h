@@ -72,17 +72,18 @@ struct ECORE_API st_VMapPt{
 class ECORE_API st_VMap{
     FloatVec    	vm;			// u,v - координаты или weight
 public:
-	string128		name;		// vertex uv map name
+	shared_str		name;		// vertex uv map name
     u8				dim;
     EVMType			type;
 	BOOL			polymap;
 	IntVec			vindices;
 	IntVec			pindices;
 public:
-	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, BOOL pm=false){
-		type=t;
-		polymap=pm;
-		if(nm) strcpy(name,nm); else name[0]=0;
+	st_VMap			(LPCSTR nm=0, EVMType t=vmtUV, BOOL pm=false)
+    {
+		type		= t;
+		polymap		= pm;
+		name		= nm;
 		if (t==vmtUV) dim=2; else dim=1;
 	}
     IC Fvector2&	getUV		(int idx)				{VERIFY(type==vmtUV);		return (Fvector2&)vm[idx*dim];}

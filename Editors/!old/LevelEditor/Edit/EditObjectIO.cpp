@@ -181,7 +181,7 @@ bool CEditableObject::Load(IReader& F)
 	do{
 		u32 version = 0;
         shared_str buf;
-		char sh_name[255];
+		shared_str sh_name;
 		R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
 		if (version!=EOBJ_CURRENT_VERSION){
 			ELog.DlgMsg( mtError, "CEditableObject: unsupported file version. Object can't load.");
@@ -248,7 +248,7 @@ bool CEditableObject::Load(IReader& F)
 				R_ASSERT(1<=cnt);
 				F.r_stringZ			(buf); (*s_it)->SetTexture(buf.c_str());
 				F.r_stringZ			(buf); (*s_it)->SetVMap(buf.c_str());
-				(*s_it)->SetShader		(sh_name);
+				(*s_it)->SetShader		(sh_name.c_str());
 				(*s_it)->SetShaderXRLC	("default");
 			}
 

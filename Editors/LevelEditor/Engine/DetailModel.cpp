@@ -75,8 +75,8 @@ void CDetail::Load		(IReader* S)
 {
 	// Shader
 	string256		fnT,fnS;
-	S->r_stringZ	(fnS);
-	S->r_stringZ	(fnT);
+	S->r_stringZ	(fnS,sizeof(fnS));
+	S->r_stringZ	(fnT,sizeof(fnT));
 	shader.create	(fnS,	fnT);
 
 	// Params

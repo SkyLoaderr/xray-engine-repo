@@ -178,9 +178,9 @@ bool EDetail::Load(IReader& F)
     }
 
 	// references
-	char buf[255];
+	string256 buf;
     R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_REFERENCE));
-    F.r_stringZ			(buf);
+    F.r_stringZ			(buf,sizeof(buf));
 
     // scale
     R_ASSERT			(F.find_chunk(DETOBJ_CHUNK_SCALE_LIMITS));

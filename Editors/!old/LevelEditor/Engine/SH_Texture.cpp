@@ -168,22 +168,22 @@ void CTexture::Load		()
 	} else
     if (FS.exist(fn,"$game_textures$",*cName,".seq")){
 		// Sequence
-		char buffer[256];
+		string256 buffer;
 		destructor<IReader>	fs(FS.r_open(fn));
 
 		flags.seqCycles	= FALSE;
-		fs().r_string	(buffer);
+		fs().r_string	(buffer,sizeof(buffer));
 		if (0==stricmp	(buffer,"cycled"))
 		{
 			flags.seqCycles	= TRUE;
-			fs().r_string	(buffer);
+			fs().r_string	(buffer,sizeof(buffer));
 		}
 		u32 fps	= atoi(buffer);
 		seqMSPF		= 1000/fps;
 
 		while (!fs().eof())
 		{
-			fs().r_string(buffer);
+			fs().r_string(buffer,sizeof(buffer));
 			_Trim		(buffer);
 			if (buffer[0])	{
 				// Load another texture

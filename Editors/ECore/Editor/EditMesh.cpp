@@ -206,7 +206,7 @@ void CEditableMesh::GenerateSVertices()
             for (VMapPtIt vmpt_it=vmpt_lst.begin(); vmpt_it!=vmpt_lst.end(); vmpt_it++){
                 st_VMap& VM = *m_VMaps[vmpt_it->vmap_index];
                 if (VM.type==vmtWeight){
-                    wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name),VM.getW(vmpt_it->index)));
+                    wb.push_back(st_WB(m_Parent->GetBoneIndexByWMap(VM.name.c_str()),VM.getW(vmpt_it->index)));
                     if (wb.back().bone<=-1){
                         ELog.DlgMsg(mtError,"Can't find bone assigned to weight map %s",VM.name);
                         m_SVertices.clear();
@@ -330,9 +330,10 @@ void CEditableMesh::DumpAdjacency(){
 }
 //----------------------------------------------------------------------------
 
-int CEditableMesh::FindVMapByName(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap){
+int CEditableMesh::FindVMapByName(VMapVec& vmaps, const char* name, EVMType t, BOOL polymap)
+{
 	for (VMapIt vm_it=vmaps.begin(); vm_it!=vmaps.end(); vm_it++){
-		if (((*vm_it)->type==t)&&(stricmp((*vm_it)->name,name)==0)&&(polymap==(*vm_it)->polymap)) return vm_it-vmaps.begin();
+		if (((*vm_it)->type==t)&&(stricmp((*vm_it)->name.c_str(),name)==0)&&(polymap==(*vm_it)->polymap)) return vm_it-vmaps.begin();
 	}
 	return -1;
 }

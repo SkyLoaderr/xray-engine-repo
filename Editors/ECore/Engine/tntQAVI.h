@@ -1,7 +1,5 @@
-// tntQAVI.h
-
-#ifndef __tntQAVI_H__
-#define __tntQAVI_H__
+#ifndef tntQAVIH
+#define tntQAVIH
 
 #include <math.h>
 
@@ -101,4 +99,4 @@ public:
 	BOOL				NeedUpdate			( ) { return CalcFrame( ) != m_dwFrameCurrent; }
 	INT					SetSpeed			( INT nPercent );
 };
-#endif __tntQAVI_H__
+#endif

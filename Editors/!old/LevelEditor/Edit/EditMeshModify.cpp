@@ -62,9 +62,9 @@ void CEditableMesh::RebuildVMaps()
 					int& pm=m_PointVMap[F.pv[k].pindex];
 					if (-1==pm){ // point map
 						pm=F.pv[k].vmref;
-						int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,false);
+						int vm_idx=FindVMapByName(nVMaps,vmap->name.c_str(),vmap->type,false);
 						if (-1==vm_idx){
-							nVMaps.push_back(xr_new<st_VMap>(vmap->name,vmap->type,false));
+							nVMaps.push_back(xr_new<st_VMap>(vmap->name.c_str(),vmap->type,false));
 							vm_idx=nVMaps.size()-1;
 						}
 						st_VMap* nVMap=nVMaps[vm_idx];
@@ -82,9 +82,9 @@ void CEditableMesh::RebuildVMaps()
 						n_pt_it->vmap_index=vm_idx;
 					}
 					else{ // poly map
-						int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,true);
+						int vm_idx=FindVMapByName(nVMaps,vmap->name.c_str(),vmap->type,true);
 						if (-1==vm_idx){
-							nVMaps.push_back(xr_new<st_VMap>(vmap->name,vmap->type,true));
+							nVMaps.push_back(xr_new<st_VMap>(vmap->name.c_str(),vmap->type,true));
 							vm_idx=nVMaps.size()-1;
 						}
 						st_VMap* nVMapPM=nVMaps[vm_idx];
@@ -106,9 +106,9 @@ void CEditableMesh::RebuildVMaps()
 					}
 				}break;
 				case vmtWeight:{
-					int vm_idx=FindVMapByName(nVMaps,vmap->name,vmap->type,false);
+					int vm_idx=FindVMapByName(nVMaps,vmap->name.c_str(),vmap->type,false);
 					if (-1==vm_idx){
-						nVMaps.push_back(xr_new<st_VMap>(vmap->name,vmap->type,false));
+						nVMaps.push_back(xr_new<st_VMap>(vmap->name.c_str(),vmap->type,false));
 						vm_idx=nVMaps.size()-1;
 					}
 					st_VMap* nWMap=nVMaps[vm_idx];

@@ -35,12 +35,12 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 		part_count 				= MP->r_u16();
 		for (u16 part_i=0; part_i<part_count; part_i++){
 			CPartDef&	PART	= m_partition[part_i];
-			MP->r_stringZ		(buf);
+			MP->r_stringZ		(buf,sizeof(buf));
 			PART.Name			= _strlwr(buf);
 			PART.bones.resize	(MP->r_u16());
 //			Log					("Part:",buf);
 			for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
-				MP->r_stringZ	(buf);
+				MP->r_stringZ	(buf,sizeof(buf));
 				u16 m_idx 		= u16			(MP->r_u32());
 				*b_it			= find_bone_id	(bones,buf); 
 //				VERIFY(*b_it==m_idx);
@@ -70,7 +70,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 			// motion defs (cycle&fx)
 			u16 mot_count			= MP->r_u16();
 			for (u16 mot_i=0; mot_i<mot_count; mot_i++){
-				MP->r_stringZ		(buf);
+				MP->r_stringZ		(buf,sizeof(buf));
 				shared_str nm		= _strlwr		(buf);
 				u32 dwFlags			= MP->r_u32		();
 				CMotionDef	D;		D.Load			(MP,dwFlags);
@@ -99,7 +99,7 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 	for (u32 m_idx=0; m_idx<dwCNT; m_idx++){
 		string128			mname;
 		R_ASSERT			(MS->find_chunk(m_idx+1));             
-		MS->r_stringZ		(mname);
+		MS->r_stringZ		(mname,sizeof(mname));
 
 		shared_str	m_key	= shared_str(strlwr(mname));
 		m_motion_map.insert	(mk_pair(m_key,m_idx));

@@ -74,7 +74,7 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 	{
 		IReader*	fs		= F->open_chunk	(0);
 		while (fs && !fs->eof())	{
-			fs->r_stringZ	(name);
+			fs->r_stringZ	(name,sizeof(name));
 			CConstant*	C	= _CreateConstant	(name);
 			C->Load			(fs);
 		}
@@ -85,7 +85,7 @@ void	CResourceManager::OnDeviceCreate	(IReader* F)
 	{
 		IReader*	fs		= F->open_chunk(1);
 		while (fs&&!fs->eof())	{
-			fs->r_stringZ	(name);
+			fs->r_stringZ	(name,sizeof(name));
 			CMatrix*	M	= _CreateMatrix	(name);
 			M->Load			(fs);
 		}

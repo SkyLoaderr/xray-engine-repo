@@ -1,5 +1,5 @@
-// tntQAVI.cpp
 #include "stdafx.h"
+#pragma hdrstop
 
 //#include <crtdbg.h>
 
