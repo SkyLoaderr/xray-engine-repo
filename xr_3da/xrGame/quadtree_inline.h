@@ -167,7 +167,7 @@ IC	void CSQuadTree::nearest	(const Fvector &position, float radius, xr_vector<_o
 		float		radius_sqr = _sqr(radius);
 		CListItem	*leaf = ((CListItem*)((void*)(node)));
 		for ( ; leaf; leaf = leaf->m_next)
-			if (leaf->m_object->position().distance_to_sqr(position) <= radius_sqr)
+			if (leaf->m_object->position().distance_to_xz_sqr(position) <= radius_sqr)
 				objects.push_back	(leaf->m_object);
 		return;
 	}
@@ -279,9 +279,30 @@ IC	_object_type *CSQuadTree::remove		(const _object_type *object, CQuadNode *&no
 }
 
 TEMPLATE_SPECIALIZATION
+IC	void CSQuadTree::all		(xr_vector<_object_type*> &objects, CQuadNode *node, int depth) const
+{
+	if (!node)
+		return;
+
+	if (depth == m_max_depth) {
+		CListItem				*leaf = ((CListItem*)((void*)(node)));
+		for ( ; leaf; leaf = leaf->m_next)
+			objects.push_back	(leaf->m_object);
+		return;
+	}
+
+	all							(objects,node->m_neighbours[0],depth + 1);
+	all							(objects,node->m_neighbours[1],depth + 1);
+	all							(objects,node->m_neighbours[2],depth + 1);
+	all							(objects,node->m_neighbours[3],depth + 1);
+}
+
+TEMPLATE_SPECIALIZATION
 IC	void CSQuadTree::all		(xr_vector<_object_type*> &objects, bool clear = true) const
 {
-	nearest			(m_center,m_radius,objects,clear);
+	if (clear)
+		objects.clear			();
+	all							(objects,m_root,0);
 }
 
 #undef TEMPLATE_SPECIALIZATION

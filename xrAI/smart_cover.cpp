@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "quadtree.h"
 #include "level_graph.h"
+#include "object_broker.h"
 
 class CCoverPoint {
 public:
@@ -176,8 +177,8 @@ void smart_cover(LPCSTR project_name)
 //	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
 	Sleep					(1);
 
-	u64						s,f;
-	s						= CPU::GetCycleCount();
+//	u64						s,f;
+//	s						= CPU::GetCycleCount();
 
 	u32						n = graph->header().vertex_count();
 	xr_vector<bool>			covers;
@@ -190,22 +191,25 @@ void smart_cover(LPCSTR project_name)
 		if (covers[i] && critical_cover(graph,i,covers))
 			tree->insert	(xr_new<CCoverPoint>(graph->vertex_position(graph->vertex(i)),i));
 
-	f						= CPU::GetCycleCount();
-	Msg						("Total build time %f (%d tests : %f)",CPU::cycles2seconds*float(f - s),n,CPU::cycles2microsec*float(f - s)/float(n));
-	Msg						("Total cover points %d",tree->size());
+//	f						= CPU::GetCycleCount();
+//	Msg						("Total build time %f (%d tests : %f)",CPU::cycles2seconds*float(f - s),n,CPU::cycles2microsec*float(f - s)/float(n));
+//	Msg						("Total cover points %d",tree->size());
 
 	xr_vector<CCoverPoint*>	nearest;
-	nearest.reserve			(tree->size());
-	tree->nearest			(graph->vertex_position(graph->vertex(u32(0))),10000.f,nearest);
-	xr_vector<CCoverPoint*>::iterator I = nearest.begin();
-	xr_vector<CCoverPoint*>::iterator E = nearest.end();
-	for ( ; I != E; ++I) {
-		show				(graph,*I,covers);
-		xr_delete			(*I);
-	}
+//	nearest.reserve			(tree->size());
+//	tree->nearest			(graph->vertex_position(graph->vertex(u32(0))),10000.f,nearest);
+//	xr_vector<CCoverPoint*>::iterator I = nearest.begin();
+//	xr_vector<CCoverPoint*>::iterator E = nearest.end();
+//	for ( ; I != E; ++I) {
+//		show				(graph,*I,covers);
+//		xr_delete			(*I);
+//	}
 
-	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
-	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+//	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
+//	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
 
+	tree->all				(nearest);
+	delete_data				(nearest);
 	xr_delete				(tree);
+	xr_delete				(graph);
 }
