@@ -324,7 +324,7 @@ void occRasterizer::rasterize	(occTri* T)
 
 	// Rasterize (and Y-connect) edges
 	int ax			= iFloor(currentA[0]);
-	int ay			= iFloor(currentA[1]);
+	int ay			= iCeil (currentA[1]);
 	int bx			= iFloor(currentB[0]);
 	int by			= iFloor(currentB[1]);
 	int cx			= iFloor(currentC[0]);
