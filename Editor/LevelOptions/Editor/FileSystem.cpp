@@ -65,6 +65,12 @@ CFileSystem::~CFileSystem(){
 }
 
 void CFileSystem::OnCreate(){
+	// names
+	DWORD		comp_sz = sizeof(m_CompName);
+	GetComputerName(m_CompName,&comp_sz);
+	DWORD		user_sz = sizeof(m_UserName);
+	GetUserName	(m_UserName,&user_sz);
+
 //	VERIFY( _ExeName );
 //	_splitpath( _ExeName, m_Root, 0, 0, 0 );
 //	_splitpath( _ExeName, 0, m_Root+strlen(m_Root), 0, 0 );
@@ -115,6 +121,12 @@ LPCSTR MakeFilter(string1024& dest, LPCSTR info, LPCSTR ext){
 	ZeroMemory(dest,sizeof(dest));
 	int icnt=_GetItemCount(ext,';');
 	LPSTR dst=dest;
+    if (icnt>1){
+		strconcat(dst,info," (",ext,")");
+		dst+=(strlen(dst)+1);
+		strcpy(dst,ext);
+		dst+=(strlen(ext)+1);
+    }
 	for (int i=0; i<icnt; i++){
 		string64 buf;
 		_GetItem(ext,i,buf,';');
@@ -429,27 +441,14 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPSTR tex_name)
 	return tex_name;
 }
 
-void CFileSystem::GetCompAndUser(string64& computer, string64& user)
-{
-	// names
-	DWORD		comp_sz = sizeof(computer);
-	GetComputerName(computer,&comp_sz);
-	DWORD		user_sz = sizeof(user);
-	GetUserName	(user,&user_sz);
-}
-
 void CFileSystem::RegisterAccess(LPSTR fn)
 {
-	string64 computer;
-    string64 user;
-	GetCompAndUser(computer, user);
-
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
-	ini->WriteString("last_access",fn,computer);
+	ini->WriteString("last_access",fn,m_CompName);
     CInifile::Destroy(ini);
 
 	string128 dt_buf, tm_buf;
-	m_AccessLog->Msg(mtInformation,"Lock:   '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,_strdate(dt_buf),_strtime(tm_buf));
+	m_AccessLog->Msg(mtInformation,"Lock:   '%s' from computer: '%s' by user: '%s' at %s %s",fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
 }
 
 BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)
@@ -493,10 +492,8 @@ BOOL CFileSystem::UnlockFile(FSPath *initial, LPSTR fname, bool bLog)
 	if (it!=m_LockFiles.end()){
 		m_LockFiles.erase(it);
         if (bLog){
-			string64 computer; string64 user;
-			GetCompAndUser(computer, user);
 			string128 dt_buf, tm_buf;
-    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,_strdate(dt_buf),_strtime(tm_buf));
+    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
         }
     	return CloseHandle(it->second);
     }

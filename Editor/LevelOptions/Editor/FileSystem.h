@@ -38,6 +38,9 @@ class CFileSystem {
     CLog*		m_AccessLog;
     void		RegisterAccess(LPSTR fn);
 public:
+    string128 	m_UserName;
+    string128 	m_CompName;
+public:
 	string256	m_Local;
 	string256	m_Server;
 	FSPath 		m_ServerRoot;
@@ -104,8 +107,6 @@ public:
     BOOL		LockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
     BOOL		UnlockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
     LPCSTR		GetLockOwner	(FSPath *initial, LPSTR fn);
-
-    void		GetCompAndUser	(string64& computer, string64& user);
 };
 #endif /*_INCDEF_FileSystem_H_*/
 

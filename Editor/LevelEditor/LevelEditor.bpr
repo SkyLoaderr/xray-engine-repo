@@ -95,8 +95,8 @@
       intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
       intermediate\SkeletonX.obj intermediate\xrBoneLerp.obj 
       intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
-      intermediate\Engine.obj intermediate\ModelPool.obj intermediate\cpuid.obj 
-      intermediate\_math.obj"/>
+      intermediate\Engine.obj intermediate\ModelPool.obj Intermediate\_math.obj 
+      Intermediate\cpuid.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -119,8 +119,8 @@
     <LIBRARIES value="elpackB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
-      TeeDB50.bpi dclusr50.bpi"/>
-    <PATHCPP value=".;edit;engine;lib\DX;Engine\Blenders;Engine\Animations"/>
+      TeeDB50.bpi dclusr50.bpi NMFast50.bpi"/>
+    <PATHCPP value=".;edit;engine;lib\DX;Engine\Blenders;Engine\Animations;Intermediate"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -165,7 +165,7 @@ AutoIncBuild=1
 MajorVer=1
 MinorVer=0
 Release=1
-Build=407
+Build=408
 Debug=1
 PreRelease=0
 Special=0
@@ -177,7 +177,7 @@ CodePage=1252
 [Version Info Keys]
 CompanyName=
 FileDescription=
-FileVersion=1.0.1.407
+FileVersion=1.0.1.408
 InternalName=
 LegalCopyright=
 LegalTrademarks=
