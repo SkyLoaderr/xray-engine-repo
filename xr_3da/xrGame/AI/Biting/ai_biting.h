@@ -76,13 +76,9 @@ public:
 	float					m_fsWalkFwdNormal;
 	float					m_fsWalkFwdDamaged;
 	float					m_fsWalkBkwdNormal;
-	float					m_fsWalkTurn;
 	float 					m_fsWalkAngular;
-	float 					m_fsWalkTurnAngular;
 	float 					m_fsRunFwdNormal;
 	float 					m_fsRunFwdDamaged;
-	float 					m_fsRunTurn;
-	float 					m_fsRunTurnAngular;
 	float 					m_fsRunAngular;
 	float					m_fsDrag;
 	float					m_fsSteal;
