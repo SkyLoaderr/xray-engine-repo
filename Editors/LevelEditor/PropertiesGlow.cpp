@@ -54,13 +54,14 @@ void __fastcall TfrmPropertiesGlow::OnItemFocused(TElTreeItem* item)
 	if (item&&item->Tag){
     	EPropType type		= TProperties::GetItemType(item);
     	switch (type){
-        	case PROP_A_TEXTURE:
-            	if (TProperties::GetItemColumn(item,0)){
-	                m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
+        	case PROP_A_TEXTURE:{
+            	LPCSTR nm = TProperties::GetItemColumn(item,0);
+            	if (nm&&nm[0]){
+	                m_Thumbnail = new EImageThumbnail(nm,EImageThumbnail::EITTexture);
     	            if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
         	        pbImagePaint(item);
                 }
-            break;
+            }break;
         }
     }
     if (!m_Thumbnail){
@@ -127,6 +128,7 @@ void __fastcall TfrmPropertiesGlow::pbImagePaint(TObject *Sender)
 
 void __fastcall TfrmPropertiesGlow::OnModified()
 {
+	ebOk->Enabled = true;
 }
 //---------------------------------------------------------------------------
 

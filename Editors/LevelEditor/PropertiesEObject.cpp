@@ -156,8 +156,10 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 	if (item&&item->Tag){
     	EPropType type		= TProperties::GetItemType(item);
     	switch (type){
-        	case PROP_A_TEXTURE:
-            	if (TProperties::GetItemColumn(item,0)){
+        	case PROP_A_TEXTURE:{
+            	LPCSTR nm = TProperties::GetItemColumn(item,0);
+            	if (nm&&nm[0]){
+	                m_Thumbnail = new EImageThumbnail(nm,EImageThumbnail::EITTexture);
                     m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
                     lbWidth->Caption 	= m_Thumbnail->_Width();
                     lbHeight->Caption 	= m_Thumbnail->_Height();
@@ -165,7 +167,7 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
                     if (m_Thumbnail->_Width()!=m_Thumbnail->_Height()) paImage->Repaint();
                     pbImagePaint(item);
                 }
-            break;
+            }break;
         }
     }
     if (!m_Thumbnail){
