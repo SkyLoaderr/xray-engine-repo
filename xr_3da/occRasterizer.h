@@ -25,7 +25,6 @@ public:
 
 class occRasterizer  
 {
-	enum			Sections	{BOTTOM, TOP};
 private:
 	occTri*			bufFrame	[occ_dim0][occ_dim0];
 	float			bufDepth0	[occ_dim0][occ_dim0];
@@ -34,15 +33,15 @@ private:
 	float			bufDepth3	[occ_dim3][occ_dim3];
 private:
 	void			i_order		(float* a, float* b, float* c);
-	void			i_scan		(int curY, float startX, float endX, float startZ, float endZ, occTri* T);
-	void			i_section	(float* a, float* b, float* c, occTri* T, int id);
+	// void			i_scan		(int curY, float startX, float endX, float startZ, float endZ, occTri* T);
+	// void			i_section	(float* a, float* b, float* c, occTri* T, int id);
 public:
 	void			clear		();
 	void			propagade	();
 	void			rasterize	(occTri* T);
 	
-	float*			dbg_depth	()	{ return &(bufDepth0[0][0]);	}
-	occTri**		dbg_frame	()	{ return &(bufFrame[0][0]);		}
+	float*			get_depth	()	{ return &(bufDepth0[0][0]);	}
+	occTri**		get_frame	()	{ return &(bufFrame[0][0]);		}
 
 	occRasterizer	();
 	~occRasterizer	();

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "occRasterizer.h"
 
+enum			Sections	{BOTTOM, TOP};
+
 void occRasterizer::i_order	(float* A, float* B, float* C)
 {
 	float *min, *max, *mid;
@@ -79,10 +81,10 @@ float maxPixel(float v)
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
 */
-void occRasterizer::i_scan(int curY, float startX, float endX, float startZ, float endZ, occTri* T)
+void i_scan(occRasterizer* OCC, int curY, float startX, float endX, float startZ, float endZ, occTri* T)
 {
-	occTri**	pFrame	= &(bufFrame[0][0]);
-	float*		pDepth	= &(bufDepth0[0][0]);
+	occTri**	pFrame	= OCC->get_frame();
+	float*		pDepth	= OCC->get_depth();
 
 	// guard-banding and clipping
 	float minX	= minPixel(startX), maxX = maxPixel(endX);
@@ -124,7 +126,8 @@ float maxp(float a, float b)
 float minp(float a, float b)
 {	return a<b ? a:b;		}
 
-void occRasterizer::i_section	(float *A, float *B, float *C, occTri* T, int Sect)
+template <int Sect>
+void i_section		(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	float startY, endY, *startp1, *startp2;
@@ -195,8 +198,22 @@ void occRasterizer::i_section	(float *A, float *B, float *C, occTri* T, int Sect
 	float rhx = right_dX/2;	rightX	+= rhx;	// half pixel
 	for (; startY<=endY; startY++) 
 	{
-		i_scan	(int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ, T);
+		i_scan	(OCC,int(startY), maxp(leftX-lhx,leftX+lhx), minp(rightX-rhx,rightX+rhx), leftZ, rightZ, T);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}
+}
+
+void occRasterizer::rasterize	(occTri* T)
+{
+	// Create local copy of the vertices
+	// Since I am reordering the vertices, changing A,B,C screws up the model
+	float a[3],  b[3],  c[3];
+	a[0] = T->raster[0].x; a[1] = T->raster[0].y; a[2] = T->raster[0].z;
+	b[0] = T->raster[1].x; b[1] = T->raster[1].y; b[2] = T->raster[1].z;
+	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
+	
+	i_order				(a, b, c);			// Order the vertices by Y
+	i_section<BOTTOM>	(this,a, b, c, T);	// Rasterise First Section
+	i_section<TOP>		(this,a, b, c, T);	// Rasterise Second Section
 }
