@@ -72,11 +72,11 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 	}
 
 	i++; // omit used fracture;
-
+	//these to be passed
 	for(;i!=e;i++)//itterate antil a fracture where geom num > end geom num
 	{
 		u16 &cur_end_geom	=i->m_end_geom_num;
-		u16 &cur_geom		=i->m_end_geom_num;
+		u16 &cur_geom		=i->m_start_geom_num;
 		if(cur_geom>end_geom) break;
 		cur_end_geom=cur_end_geom-leaved_geoms;
 		cur_geom=cur_geom-leaved_geoms;
@@ -85,9 +85,9 @@ void CPHFracturesHolder::PassEndFractures(u16 from,CPHElement* dest)
 	for(;i!=e;i++)//correct data in the rest leaved fractures
 	{
 		u16 &cur_end_geom	=i->m_end_geom_num;
-		u16 &cur_geom		=i->m_end_geom_num;
+		u16 &cur_geom		=i->m_start_geom_num;
 		cur_end_geom		=cur_end_geom-passed_geoms;
-		cur_geom			=cur_end_geom-passed_geoms;
+		cur_geom			=cur_geom-passed_geoms;
 	}
 
 	if(i_from+1!=i_to)//insure it!!
@@ -261,12 +261,13 @@ bool CPHFracture::Update(CPHElement* element)
 	second_part_torque.set(0.f,0.f,0.f);
 	first_part_torque.set(0.f,0.f,0.f);
 
-	const Fvector& body_local_pos=element->mass_Center();
+	const Fvector& body_local_pos=element->local_mass_Center();
+	const Fvector& body_global_pos=*(const Fvector*)dBodyGetPosition(body);
 	Fvector body_to_first, body_to_second;
 	body_to_first.sub(*((const Fvector*)m_firstM.c),body_local_pos);
 	body_to_second.sub(*((const Fvector*)m_secondM.c),body_local_pos);
-	float body_to_first_smag=body_to_first.square_magnitude();
-	float body_to_second_smag=body_to_second.square_magnitude();
+	//float body_to_first_smag=body_to_first.square_magnitude();
+	//float body_to_second_smag=body_to_second.square_magnitude();
 	int num=dBodyGetNumJoints(body);
 	for(int i=0;i<num;i++)
 	{
@@ -277,11 +278,13 @@ bool CPHFracture::Update(CPHElement* element)
 		R_ASSERT2(feedback,"Feedback was not set!!!");
 		dxJoint* b_joint=(dxJoint*) joint;
 		bool b_body_second=(b_joint->node[1].body==body);
+		Fvector joint_position;
 		if(dJointGetType(joint)==dJointTypeContact)
 		{
 			dxJointContact* c_joint=(dxJointContact*)joint;
 			dGeomID first_geom=c_joint->contact.geom.g1;
 			dGeomID second_geom=c_joint->contact.geom.g2;
+			joint_position.set(*(Fvector*)c_joint->contact.geom.pos);
 			if(dGeomGetClass(first_geom)==dGeomTransformClass)
 			{
 				first_geom=dGeomTransformGetGeom(first_geom);
@@ -317,50 +320,66 @@ bool CPHFracture::Update(CPHElement* element)
 		else
 		{
 			CPHJoint* J	= (CPHJoint*) dJointGetData(joint);
+			J->PSecondElement()->InterpolateGlobalPosition(&joint_position);
 			u16 el_position=J->RootGeom()->element_position();
-			if(element==J->PSecond_element()&&
+			if(element==J->PFirst_element()&&
 				el_position<element->numberOfGeoms()&&
 				el_position>=m_start_geom_num&&
 				el_position<m_end_geom_num
 				) applied_to_second=true;
 		}
 //accomulate forces applied by joints to first and second parts
+		Fvector body_to_joint;
+		body_to_joint.sub(joint_position,body_global_pos);
 		if(applied_to_second)
 		{
+			Fvector shoulder;
+			shoulder.sub(body_to_joint,body_to_second);
 			if(b_body_second)
 			{
-				Fvector force;
-				force.crossproduct(body_to_second,*(const Fvector*)feedback->t2);
-				force.mul(1.f/body_to_second_smag);
-				second_part_force.add(force);
-				second_part_force.add(*(const Fvector*)feedback->f2);
+				
+				Fvector joint_force;
+				joint_force.set(*(const Fvector*)feedback->f2);
+				second_part_force.add(joint_force);
+				Fvector torque;
+				torque.crossproduct(shoulder,joint_force);
+				second_part_torque.add(torque);
+
 			}
 			else
 			{
-				Fvector force;
-				force.crossproduct(body_to_second,*(const Fvector*)feedback->t1);
-				force.mul(1.f/body_to_second_smag);
-				second_part_force.add(force);
-				second_part_force.add(*(const Fvector*)feedback->f1);
+
+				Fvector joint_force;
+				joint_force.set(*(const Fvector*)feedback->f1);
+				second_part_force.add(joint_force);
+
+				Fvector torque;
+				torque.crossproduct(shoulder,joint_force);
+				second_part_torque.add(torque);
 			}
 		}
 		else
 		{
+			Fvector shoulder;
+			shoulder.sub(body_to_joint,body_to_first);
 			if(b_body_second)
 			{
-				Fvector force;
-				force.crossproduct(body_to_first,*(const Fvector*)feedback->t2);
-				force.mul(1.f/body_to_first_smag);
-				first_part_force.add(force);
-				first_part_force.add(*(const Fvector*)feedback->f2);
+				
+				Fvector joint_force;
+				joint_force.set(*(const Fvector*)feedback->f2);
+				first_part_force.add(joint_force);
+				Fvector torque;
+				torque.crossproduct(shoulder,joint_force);
+				first_part_torque.add(torque);
 			}
 			else
 			{
-				Fvector force;
-				force.crossproduct(body_to_first,*(const Fvector*)feedback->t1);
-				force.mul(1.f/body_to_first_smag);
-				first_part_force.add(force);
-				first_part_force.add(*(const Fvector*)feedback->f1);
+				Fvector joint_force;
+				joint_force.set(*(const Fvector*)feedback->f1);
+				first_part_force.add(joint_force);
+				Fvector torque;
+				torque.crossproduct(shoulder,joint_force);
+				first_part_torque.add(torque);
 			}
 		}
 
@@ -419,17 +438,19 @@ bool CPHFracture::Update(CPHElement* element)
 	dMULTIPLY0_331 ((float*)&vtemp,glI1,(float*)&vtemp);
 	break_torque.sub(vtemp);
 
-	Fvector first_in_bone,second_in_bone;
-	first_in_bone.sub(*((const Fvector*)m_firstM.c),pos_in_element);
-	second_in_bone.sub(*((const Fvector*)m_secondM.c),pos_in_element);
+	//Fvector first_in_bone,second_in_bone;
+	//first_in_bone.sub(*((const Fvector*)m_firstM.c),pos_in_element);
+	//second_in_bone.sub(*((const Fvector*)m_secondM.c),pos_in_element);
 
-	vtemp.crossproduct(second_in_bone,second_part_force);
-	break_torque.add(vtemp);
-	vtemp.crossproduct(first_in_bone,first_part_force);
-	break_torque.sub(vtemp);
+	//vtemp.crossproduct(second_in_bone,second_part_force);
+	//break_torque.add(vtemp);
+	//vtemp.crossproduct(first_in_bone,first_part_force);
+	//break_torque.sub(vtemp);
+		
 
-	if(break_torque.magnitude()>m_break_torque)
+	if(break_torque.magnitude()/100000.f>m_break_torque)
 	{
+
 		m_breaked=true;
 		return m_breaked;
 	}
@@ -442,13 +463,13 @@ bool CPHFracture::Update(CPHElement* element)
 	break_force.sub(vtemp);
 	break_force.mul(1.f/body->mass.mass);
 	
-	vtemp.crossproduct(second_in_bone,second_part_torque);
-	break_force.add(vtemp);
-	vtemp.crossproduct(first_in_bone,first_part_torque);
-	break_force.sub(vtemp);
+	//vtemp.crossproduct(second_in_bone,second_part_torque);
+	//break_force.add(vtemp);
+	//vtemp.crossproduct(first_in_bone,first_part_torque);
+	//break_force.sub(vtemp);
 	if(m_break_force<break_force.magnitude())
 	{
-		m_breaked=true;
+		///m_breaked=true;
 		return m_breaked;
 	}
 	return false;

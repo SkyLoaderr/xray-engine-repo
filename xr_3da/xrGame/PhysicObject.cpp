@@ -261,8 +261,10 @@ void CPhysicObject::SpawnCopy()
 }
 void CPhysicObject::PHSplit()
 {
+	u16 sponed=u16(m_unsplited_shels.size());
 	m_pPhysicsShell->SplitProcess(m_unsplited_shels);
-	u16 i=u16(m_unsplited_shels.size());
+	u16 i=u16(m_unsplited_shels.size())-sponed;
+//	Msg("%o,spawned,%d",this,i);
 	for(;i;i--) SpawnCopy();
 }
 
@@ -283,6 +285,7 @@ void __stdcall PushOutCallback2(bool& do_colide,dContact& c);
 
 void CPhysicObject::UnsplitSingle(CGameObject* O)
 {
+	//Msg("%o,received has %d,",this,m_unsplited_shels.size());
 	R_ASSERT2(m_unsplited_shels.size(),"NO_SHELLS !!");
 	R_ASSERT2(!O->m_pPhysicsShell,"this has shell already!!!");
 	CPhysicsShell* newPhysicsShell=m_unsplited_shels.back().first;
@@ -295,6 +298,7 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	pKinematics->LL_SetBoneVisible(m_unsplited_shels.back().second,FALSE,TRUE);
 
 	mask0.set(pKinematics->LL_GetBonesVisible());//first part mask
+	Msg("mask0- %x",mask0.flags);
 	mask0.invert();
 	mask1.and(mask0.flags);//second part mask
 	
@@ -304,7 +308,7 @@ void CPhysicObject::UnsplitSingle(CGameObject* O)
 	newPhysicsShell->ObjectInRoot().identity();
 	newKinematics->LL_SetBoneRoot		(m_unsplited_shels.back().second);
 	newKinematics->LL_SetBonesVisible	(mask1.flags);
-	
+	Msg("mask1- %x",mask1.flags);
 	newPhysicsShell->set_PushOut(5000,PushOutCallback2);
 	m_unsplited_shels.erase(m_unsplited_shels.end()-1);
 

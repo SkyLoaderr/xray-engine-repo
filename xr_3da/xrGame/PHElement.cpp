@@ -1277,8 +1277,8 @@ void CPHElement::PassEndGeoms(u16 from,u16 to,CPHElement* dest)
 		u16& element_pos=(*i)->element_position();
 		element_pos=element_pos-shift;
 	}
-	e=m_geoms.end();
-	for(;i!=e;i++)
+	GEOM_I last=m_geoms.end();
+	for(;i!=last;i++)
 	{
 		u16& element_pos=(*i)->element_position();
 		element_pos=element_pos-shift;
