@@ -12,6 +12,10 @@
 
 xrServer::xrServer()
 {
+	for (u32 id=0; id<=0xffff; id++)
+	{
+		id_free.push_back	(id);
+	}
 }
 
 xrServer::~xrServer()
@@ -187,7 +191,7 @@ xrServerEntity*	xrServer::entity_Create		(LPCSTR name)
 void			xrServer::entity_Destroy	(xrServerEntity* P)
 {
 	R_ASSERT			(P);
-	ids_used			[P->ID]	= false;
+	id_free.push_back	(P->ID);
 	F_entity_Destroy	(P);
 }
 

@@ -35,6 +35,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			P.r_u16				(id_entity);
 			xrServerEntity*		e_parent	= ID_to_entity	(id_parent);
 			xrServerEntity*		e_entity	= ID_to_entity	(id_entity);
+			if (0==e_entity)	break;
 			xrClientData*		c_parent	= e_parent->owner;
 			xrClientData*		c_entity	= e_entity->owner;
 			xrClientData*		c_from		= ID_to_client	(sender);

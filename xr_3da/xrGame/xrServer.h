@@ -42,7 +42,7 @@ class xrServer	: public IPureServer
 {
 private:
 	xrS_entities			entities;
-	vector<bool>			ids_used;
+	deque<u16>				id_free;
 	multiset<svs_respawn>	q_respawn;
 
 	BOOL					PerformRP				(xrServerEntity* E);
