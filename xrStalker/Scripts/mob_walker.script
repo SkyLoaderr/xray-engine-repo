@@ -73,10 +73,7 @@ function mob_walker:update(delta)
 	--	return
 	--end
 
-	local actor = level.actor()
-	if not actor then
-		return
-	end
+	local actor = db.actor
 
 	if mob_alife_mgr.alife_control(self.object, actor, self.st.alife_mode) then
 		return

@@ -66,7 +66,7 @@ end
 
 function generic_object_binder:waypoint_callback(obj, action_type, index)
 	if self.st.active_section ~= nil then
-		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "waypoint_callback", action_type, index)
+		xr_logic.issue_event(self.object, self.st[self.st.active_scheme], "waypoint_callback", obj, action_type, index)
 	end
 end
 
