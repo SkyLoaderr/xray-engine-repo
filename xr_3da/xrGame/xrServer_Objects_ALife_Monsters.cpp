@@ -71,6 +71,7 @@ CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVi
 	
 	m_tpOrderedArtefacts.clear	();
 	m_tpSupplies.clear			();
+	m_tOrgID					= 1;
 }
 
 CSE_ALifeTrader::~CSE_ALifeTrader			()
@@ -171,6 +172,8 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 {
 	inherited1::FillProp		(_pref,items);
 	inherited2::FillProp		(_pref,items);
+	PHelper.CreateU32			(items, FHelper.PrepareKey(_pref,s_name,"Organization ID"), 	&m_tOrgID,	0, 255);
+
 	AnsiString					S;
     AnsiString 					pref = FHelper.PrepareKey(_pref,s_name,"ALife\\Supplies");
 
@@ -703,7 +706,7 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_baVisitedVertices.clear	();
 	m_tpTasks.clear				();
 	m_dwCurTask					= u32(-1);
-	m_tTaskState				= eTaskStateNoTask;
+	m_tTaskState				= eTaskStateChooseTask;
 	m_dwCurTaskLocation			= u32(-1);
 	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
 	m_dwCurNode					= u32(-1);

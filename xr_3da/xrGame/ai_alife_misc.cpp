@@ -79,7 +79,7 @@ void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALif
 			else {
 #pragma todo("Dima to Dima : Add stalker search state code here")
 				CSE_ALifeHumanAbstract *l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
-				if (l_tpALifeHumanAbstract && (l_tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching)) {
+				if (l_tpALifeHumanAbstract && (l_tpALifeHumanAbstract->m_tTaskState == eTaskStateAccomplishing)) {
 					
 				}
 			}

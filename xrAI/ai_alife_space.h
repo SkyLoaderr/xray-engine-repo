@@ -200,11 +200,9 @@ namespace ALife {
 	};
 
 	enum ETaskState {
-		eTaskStateNoTask = u32(0),
-		eTaskStateGoToTrader,
-		eTaskStateChooseTask,
+		eTaskStateChooseTask = u32(0),
 		eTaskStateGoing,
-		eTaskStateSearching,
+		eTaskStateAccomplishing,
 		eTaskStateDummy = u32(-1),
 	};
 
