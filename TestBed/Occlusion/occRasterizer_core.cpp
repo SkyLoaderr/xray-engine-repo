@@ -42,8 +42,8 @@ void i_order	(float* A, float* B, float* C)
 			}
 	}
 	
-	currentA[0]	= min[0]+1;	currentB[0]	= mid[0]+1;	currentC[0]	= max[0]+1;
-	currentA[1]	= min[1]+1;	currentB[1]	= mid[1]+1;	currentC[1]	= max[1]+1;
+	currentA[0]	= min[0]+2;	currentB[0]	= mid[0]+2;	currentC[0]	= max[0]+2;
+	currentA[1]	= min[1]+2;	currentB[1]	= mid[1]+2;	currentC[1]	= max[1]+2;
 	currentA[2]	= min[2];	currentB[2]	= mid[2];	currentC[2]	= max[2];
 }
 

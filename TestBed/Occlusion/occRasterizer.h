@@ -10,7 +10,7 @@ const int	occ_dim_0			= 48;
 const int	occ_dim_1			= occ_dim_0/2;
 const int	occ_dim_2			= occ_dim_1/2;
 const int	occ_dim_3			= occ_dim_2/2;
-const int	occ_dim				= occ_dim_0+2;	// 1 pixel border around frame
+const int	occ_dim				= occ_dim_0+4;	// 2 pixel border around frame
 
 class ENGINE_API	occTri
 {
