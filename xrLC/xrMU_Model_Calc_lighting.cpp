@@ -99,8 +99,8 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 		}
 		vC.scale				(n_samples);
 		vC._tmp_				=	v_trans;
-		if (flags&LP_dont_hemi) ;
-		else					vC.hemi	+=	v_amb;
+		//if (flags&LP_dont_hemi) ;
+		//else					vC.hemi	+=	v_amb;
 		V->C					=	vC;
 
 		// Search
