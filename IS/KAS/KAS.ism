@@ -74,6 +74,7 @@
 		<col def="V0">Data</col>
 		<col def="S255">ISBuildSourcePath</col>
 		<row><td>NewBinary1</td><td/><td>&lt;ISProductFolder&gt;Script\Dialogs\BitmapId_103.bmp</td></row>
+		<row><td>NewBinary2</td><td/><td>&lt;ISProjectDataFolder&gt;\BitmapId_103.bmp</td></row>
 	</table>
 
 	<table name="CheckBox">
@@ -143,7 +144,7 @@
 		<row><td>DialogId_10203</td><td>ControlId_301</td><td>RadioButtonGroup</td><td>19</td><td>81</td><td>109</td><td>102</td><td>3</td><td>________2</td><td/><td>ControlId_210</td><td/><td>131072</td><td>301</td><td/><td/></row>
 		<row><td>DialogId_10203</td><td>ControlId_50</td><td>Text</td><td>12</td><td>4</td><td>248</td><td>10</td><td>65539</td><td/><td>##IDS__DialogId_10203_ControlId_50##</td><td>ControlId_51</td><td/><td>131072</td><td>50</td><td/><td/></row>
 		<row><td>DialogId_10203</td><td>ControlId_51</td><td>Text</td><td>19</td><td>19</td><td>269</td><td>24</td><td>65539</td><td/><td>##IDS__DialogId_10203_ControlId_51##</td><td>ControlId_1301</td><td/><td>131072</td><td>51</td><td/><td/></row>
-		<row><td>DialogId_10203</td><td>ControlId_52</td><td>Text</td><td>0</td><td>0</td><td>374</td><td>44</td><td>3</td><td/><td/><td>ControlId_1200</td><td/><td>131072</td><td>52</td><td/><td/></row>
+		<row><td>DialogId_10203</td><td>ControlId_52</td><td>Text</td><td>0</td><td>0</td><td>374</td><td>44</td><td>3</td><td/><td/><td/><td/><td>131072</td><td>52</td><td/><td/></row>
 		<row><td>DialogId_10203</td><td>ControlId_7</td><td>Text</td><td>3</td><td>222</td><td>45</td><td>13</td><td>2</td><td/><td/><td>ControlId_50</td><td/><td>131072</td><td>7</td><td/><td/></row>
 		<row><td>DialogId_10203</td><td>ControlId_9</td><td>PushButton</td><td>305</td><td>239</td><td>57</td><td>17</td><td>3</td><td/><td>##IDS__DialogId_10203_ControlId_9##</td><td>ControlId_1300</td><td/><td>0</td><td>9</td><td/><td/></row>
 	</table>
@@ -355,7 +356,7 @@
 		<col def="S255">Password</col>
 		<col def="S50">CDRomFolder</col>
 		<col def="S50">Moniker</col>
-		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>MSDE_2000_Installed</td><td>MSDE_2000_UnInstalling</td><td>MSDE_2000_UnInstalled</td><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
+		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>MSDE_2000_Installed</td><td/><td>MSDE_2000_UnInstalled</td><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td/><td>NewMSDE2000Object1_Installed</td><td>MSDE_2000_Object_UnInstalling</td><td>MSDE_2000_Object_UnInstalled</td><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:1ADF3B18-18D7-4FB7-BDE9-D42DEDDF1A06</td></row>
 		<row><td>{9A67CF33-FC2A-494D-9F38-61A7180084F5}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:ED4FF843-0DE2-4F5F-936C-29845A706E45</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
@@ -832,6 +833,42 @@ EgRLBDEENQRABDgEQgQ1BCAAMgQ4BDQEIABDBEEEQgQwBD0EPgQyBDoEOAQuAA==
 HgRCBDwENQQ9BDAE
 			</td><td>0</td><td/><td>1981329227</td></row>
 		<row><td>IDS__DialogId_10203_ControlId_9</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>1981329227</td></row>
+		<row><td>IDS__DialogId_12031</td><td>1033</td><td>InstallShield Wizard</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031</td><td>1049</td><td>InstallShield Wizard</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_1</td><td>1033</td><td dt:dt="bin.base64" md5="833efd1b2cf63acdda70dcf7c8b75998">
+EwQ+BEIEPgQyBD4E
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_1</td><td>1049</td><td>$P0^!$($/@0R!#X$</td><td>6</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_12</td><td>1033</td><td dt:dt="bin.base64" md5="10398ab6ef726bcf407dcefb89ca738b">
+PAAgACYAHQQwBDcEMAQ0BA==
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_12</td><td>1049</td><td>/``@`"8`'00P!#&lt;$,`0T!```</td><td>8</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_1200</td><td>1033</td><td>@10553,10553;1;0;;0,128,128   </td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_1200</td><td>1049</td><td>@10553,10553;1;0;;0,128,128   </td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_50</td><td>1033</td><td dt:dt="bin.base64" md5="84703041ee627863d8c86c0a0c2cb973">
+HwRABD4EMwRABDAEPAQ8BDAEIABJAG4AcwB0AGEAbABsAFMAaABpAGUAbABkACAAVwBpAHoAYQByAGQAIAA3BDAEMgQ1BEAESAQ1BD0EMAQ=
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_50</td><td>1049</td><td>'P1`!#X$,P1`!#`$/`0\!#`$(`!)`&amp;X`&lt;P!T`&amp;$`;`!L`%,`:`!I`&amp;4`;`!D`"``5P!I`'H`80!R`&amp;0`(``W!#`$,@0U!$`$2`0U!#T$,`0`</td><td>40</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_502_1</td><td>1033</td><td dt:dt="bin.base64" md5="23a49153b002578b88c50fa525962672">
+FAQwBCwAIAA/BDUEQAQ1BDcEMAQzBEAEQwQ3BDgEQgRMBCAAOgQ+BDwEPwRMBE4EQgQ1BEAEIABBBDUEOQRHBDAEQQQuAA==
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_502_1</td><td>1049</td><td>%`0P!"P`(``_!#4$0`0U!#&lt;$,`0S!$`$0P0W!#@$0@1,!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!!!#4$.01'!#`$000N````</td><td>35</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_502_2</td><td>1033</td><td dt:dt="bin.base64" md5="727c01f799a98903b9689f90e643573f">
+HQQ1BEIELAAgAD8ENQRABDUENwQwBDMEQARDBDcEOARCBEwEIAA6BD4EPAQ/BEwETgRCBDUEQAQgAD8EPgQ3BDYENQQuAA==
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_502_2</td><td>1049</td><td>'00U!$($+``@`#\$-01`!#4$-P0P!#,$0`1#!#&lt;$.`1"!$P$(``Z!#X$/`0_!$P$3@1"!#4$0`0@`#\$/@0W!#8$-00N````</td><td>35</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_711</td><td>1033</td><td dt:dt="bin.base64" md5="0715be2dc5bb17b872380b2c2f9d41ce">
+HwRABD4EMwRABDAEPAQ8BDAEIABJAG4AcwB0AGEAbABsAFMAaABpAGUAbABkACAAVwBpAHoAYQByAGQAIABDBEEEPwQ1BEgEPQQ+BCAAQwRBBEIEMAQ9BD4EMgQ4BDsEMAQgACUAUAAuACAAIAAfBDUEQAQ1BDQEIAA4BEEEPwQ+BDsETAQ3BD4EMgQwBD0EOAQ1BDwEIABNBEIEPgQ5BCAAPwRABD4EMwRABDAEPAQ8BEsEIAA9BDUEPgQxBEUEPgQ0BDgEPAQ+BCAAPwQ1BEAENQQ3BDAEMwRABEMENwQ4BEIETAQgADoEPgQ8BD8ETAROBEIENQRABC4A
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_711</td><td>1049</td><td>'P1`!#X$,P1`!#`$/`0\!#`$(`!)`&amp;X`&lt;P!T`&amp;$`;`!L`%,`:`!I`&amp;4`;`!D`"``5P!I`'H`80!R`&amp;0`(`!#!$$$/P0U!$@$/00^!"``0P1!!$($,`0]!#X$,@0X!#L$,`0@`"4`4``N`"``(``?!#4$0`0U!#0$(``X!$$$/P0^!#L$3`0W!#X$,@0P!#T$.`0U!#P$(`!-!$($/@0Y!"``/P1`!#X$,P1`!#`$/`0\!$L$(``]!#4$/@0Q!$4$/@0T!#@$/`0^!"``/P0U!$`$-00W!#`$,P1`!$,$-P0X!$($3`0@`#H$/@0\!#\$3`1.!$($-01`!"X`</td><td>126</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_712</td><td>1033</td><td dt:dt="bin.base64" md5="28759cb518b5c7273fd122e43e59f112">
+HQQ1BD4EMQRFBD4ENAQ4BDwEPgQgADgENwQyBDsENQRHBEwEIAA0BDgEQQQ6BDgEIAA4BDcEIAA0BDgEQQQ6BD4EMgQ+BDQEPgQyBCwAIAAwBCAANwQwBEIENQQ8BCAAPQQwBDYEMARCBEwEIAA6BD0EPgQ/BDoEQwQgACcAEwQ+BEIEPgQyBD4EJwAgADQEOwRPBCAANwQwBDIENQRABEgENQQ9BDgETwQgAEMEQQRCBDAEPQQ+BDIEOgQ4BC4A
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_712</td><td>1049</td><td>'00U!#X$,01%!#X$-`0X!#P$/@0@`#@$-P0R!#L$-01'!$P$(``T!#@$000Z!#@$(``X!#&lt;$(``T!#@$000Z!#X$,@0^!#0$/@0R!"P`(``P!"``-P0P!$($-00\!"``/00P!#8$,`1"!$P$(``Z!#T$/@0_!#H$0P0@`"&lt;`$P0^!$($/@0R!#X$)P`@`#0$.P1/!"``-P0P!#($-01`!$@$-00]!#@$3P0@`$,$001"!#`$/00^!#($.@0X!"X`</td><td>96</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_9</td><td>1033</td><td dt:dt="bin.base64" md5="ffba6b042cf96ec8407bace115c7c5be">
+HgRCBDwENQQ9BDAE
+			</td><td>0</td><td/><td>-1105706836</td></row>
+		<row><td>IDS__DialogId_12031_ControlId_9</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>-1105706836</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>1981287670</td></row>
 		<row><td>ID_STRING1</td><td>1049</td><td>NewFeature1</td><td>0</td><td/><td>1981287670</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>NewShortcut1</td><td>0</td><td/><td>1981284439</td></row>
@@ -1037,6 +1074,9 @@ JgAeBDEESwRHBD0EMARPBA==
 		<row><td>________2</td><td dt:dt="bin.base64" md5="9e55db1cd9f9e06a449e699d23b6af1c">
 JgAeBDEESwRHBD0EMARPBA==
 			</td><td/></row>
+		<row><td>__________________________________.</td><td dt:dt="bin.base64" md5="23a49153b002578b88c50fa525962672">
+FAQwBCwAIAA/BDUEQAQ1BDcEMAQzBEAEQwQ3BDgEQgRMBCAAOgQ+BDwEPwRMBE4EQgQ1BEAEIABBBDUEOQRHBDAEQQQuAA==
+			</td><td/></row>
 	</table>
 
 	<table name="RadioButton">
@@ -1077,6 +1117,12 @@ JgAhBD4EOgRABDAESQQ1BD0EPQQwBE8E
 		<row><td>________2</td><td>3</td><td dt:dt="bin.base64" md5="7cbece47031451a725b444d3fc0b13e9">
 JgASBEsEMQQ+BEAEPgRHBD0EMARPBA==
 			</td><td>0</td><td>88</td><td>109</td><td>14</td><td>##ID_ST_SERVER_NAME##</td><td/><td>303</td></row>
+		<row><td>__________________________________.</td><td>1</td><td dt:dt="bin.base64" md5="23a49153b002578b88c50fa525962672">
+FAQwBCwAIAA/BDUEQAQ1BDcEMAQzBEAEQwQ3BDgEQgRMBCAAOgQ+BDwEPwRMBE4EQgQ1BEAEIABBBDUEOQRHBDAEQQQuAA==
+			</td><td>0</td><td>0</td><td>223</td><td>15</td><td>##IDS__DialogId_12031_ControlId_502_1##</td><td/><td>502</td></row>
+		<row><td>__________________________________.</td><td>2</td><td dt:dt="bin.base64" md5="727c01f799a98903b9689f90e643573f">
+HQQ1BEIELAAgAD8ENQRABDUENwQwBDMEQARDBDcEOARCBEwEIAA6BD4EPAQ/BEwETgRCBDUEQAQgAD8EPgQ3BDYENQQuAA==
+			</td><td>0</td><td>26</td><td>223</td><td>15</td><td>##IDS__DialogId_12031_ControlId_502_2##</td><td/><td>503</td></row>
 	</table>
 
 	<table name="Registry">

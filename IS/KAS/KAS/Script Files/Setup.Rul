@@ -302,24 +302,16 @@ Dlg_SdStartCopy:
 		goto Dlg_SdAskDestPath2;    
 	endif; 
                            
-	// clear target folders
+	// clear target folders 
+	StopServer	();
     ClearFolder	(TARGETDIR);
     ClearFolder	(MSDE_INSTANCE_FOLDER);
+
+	// set reboot flag 
+	BATCH_INSTALL	= TRUE;
         
     return 0;
 end;
-//---------------------------------------------------------------------------
-// OnMaintUIBefore
-//
-// Maintenance UI Sequence - Before Move Data
-//
-// The OnMaintUIBefore event is called by OnShowUI when the setup is
-// running in maintenance mode. By default this event displays UI that
-// allows the end user to add or remove features, repair currently
-// installed features or uninstall the application.
-//
-// Note: This event will not be called automatically in a
-// program...endprogram style setup.
 //---------------------------------------------------------------------------
 function OnMaintUIBefore()
     number	nResult, nType, nMediaFlags;
@@ -398,6 +390,7 @@ Dlg_ObjDialogs:
 
     endswitch;
 end;
+//---------------------------------------------------------------------------
 function MSDE_2000_Installed()
 	number 	nResult,nRootKey;
 	BOOL 	bRes;
@@ -537,7 +530,7 @@ begin
 		
 		    SetStatusWindow (95, "Добавление данных в реестр.");
 			// insert registry keys
-			nRootKey 			= HKEY_LOCAL_MACHINE;
+			nRootKey 				= HKEY_LOCAL_MACHINE;
 			RegDBSetDefaultRoot		(nRootKey);
 			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "VersionDB", REGDB_STRING, sVersion,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
@@ -545,6 +538,16 @@ begin
 			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "Main_ServerName", REGDB_STRING, sServerName,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
+//.
+			nRootKey 				= HKEY_CURRENT_USER;
+			RegDBSetDefaultRoot		(nRootKey);
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "VersionDB", REGDB_STRING, sVersion,-1) < 0) then
+			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+			endif;
+			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", "Main_ServerName", REGDB_STRING, sServerName,-1) < 0) then
+			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+			endif;
+//.
 		else
 	        MessageBox ("Ошибка соединения с сервером.", SEVERE);
 	        bRes	= FALSE;
@@ -569,83 +572,34 @@ label_end:
 	    if (bRes=FALSE) then abort; endif;
 	endif;
 end;
-function MSDE_2000_UnInstalling()
-BOOL 	bRes; 
-NUMBER	nResult; 
-begin     
-	//. 
-	return 0;
-
-	bRes = CheckMSDEStatus();
-	if (TRUE=bRes) then
-	    nResult 	= UseDLL (DLL_FILE);
-	    if (nResult != 0) then
-	        MessageBox ("Невозможно загрузить: "+DLL_FILE, SEVERE);
-	        return 0;
-	    endif;                  
-	    
-	    // Enable the progress bar.
-	    Enable			(STATUS);
-    
-	    // Set the limit of the progress bar to 99% completion.
-	    StatusUpdate 	(ON, 99);
-    
-	    // Display a message; do not change the progress bar.
-	    SetStatusWindow (-1, "Удаление настроек сервера.");
-
-	    SQL_CONFIG.initLibrary();
-	    
-	    SetStatusWindow (10, "Запуск сервера.");
-	    StartServer();
-
-		bRes = SQL_CONFIG.testConnection(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_);
-	    SetStatusWindow (20, "Проверка соединения.");
-
-		if (bRes = 0) then 
-		    SetStatusWindow (30, "Отключение базы 'KAS'.");
-		    bRes = SQL_CONFIG.detachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"KAS");
-		    if(bRes != 0) then
-		        MessageBox ("Ошибка при отключении базы 'KAS'.", SEVERE);
-		    endif;
-
-		    SetStatusWindow (40, "Отключение базы 'client_repl'.");
-		    bRes = SQL_CONFIG.detachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"client_repl");
-		    if(bRes != 0) then
-		        MessageBox ("Ошибка при отключении базы 'client_repl'.", SEVERE);
-		    endif;
-		
-		    SetStatusWindow (50, "Отключение базы 'searchdb'.");
-		    bRes = SQL_CONFIG.detachDatabase(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,"searchdb");
-		    if(bRes != 0) then
-		        MessageBox ("Ошибка при отключении базы 'searchdb'.", SEVERE);
-		    endif;
-
-		 	// copy stored proc dll  
-			// register it in DB
-		    SetStatusWindow (60, "Отключение хранимой процедуры 'xp_check'.");
-		    SQL_CONFIG.runSQLString			(SQL_SERVER_HOST_,SQL_USER_NAME_,SQL_USER_PASS_,
-		    								"master",
-		    								"EXEC sp_dropextendedproc ");
-		else
-	        MessageBox ("Ошибка соединения с сервером.", SEVERE);
-		endif;
-	 	
-	    SetStatusWindow (70, "Отключение сервера.");
-	    SQL_CONFIG.deInitLibrary();
-	                 
-	    SetStatusWindow (70, "Остановка сервера.");
-
-	    StopServer	();
-
-	    SetStatusWindow (100, "Удаление настроек завершено.");
-
-		// free dll
-	    UnUseDLL 	(DLL_FILE);
-	endif;
-end;
+//---------------------------------------------------------------------------
 function MSDE_2000_UnInstalled()
 begin
     StopServer	();
     ClearFolder	(MSDE_INSTANCE_FOLDER);
 //	ClearFolder	(TARGETDIR);
+end;
+//---------------------------------------------------------------------------
+// OnEnd
+//
+// The OnEnd event is called at the end of the setup. This event is not
+// called if the setup is aborted.
+//---------------------------------------------------------------------------
+function OnEnd()
+    STRING sTitle, sMsg1, sMsg2;
+    NUMBER nDefOption, nReserved;
+begin                                 
+    // Set up variables to pass as parameters to SdFinishReboot.
+    sTitle   	= "";
+    sMsg1    	= ""; 
+    
+    // nDefOption - Specifies a default radio button option selection.
+    // SYS_BOOTMACHINE - Reboot the computer when the setup is finished.
+    // 0 - Do not reboot the computer. 
+    nDefOption  = SYS_BOOTMACHINE;
+    sMsg2    	= "";
+    nReserved 	= 0;
+
+    // Display the SdFinishReboot dialog.
+    SdFinishReboot (sTitle, sMsg1, nDefOption, sMsg2, nReserved);
 end;
