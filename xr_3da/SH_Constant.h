@@ -1,3 +1,5 @@
+#ifndef SH_CONSTANT_H
+#define SH_CONSTANT_H
 #pragma once
 
 #include "WaveForm.h"
@@ -55,3 +57,4 @@ public:
 	}
 	void			Load		(CStream* fs);
 };
+#endif

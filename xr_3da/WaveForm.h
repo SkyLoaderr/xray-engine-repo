@@ -1,3 +1,5 @@
+#ifndef WAVEFORM_H
+#define WAVEFORM_H
 #pragma once
 
 #pragma pack(push,4)
@@ -59,3 +61,4 @@ public:
 };
 
 #pragma pack(pop)
+#endif

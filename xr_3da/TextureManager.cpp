@@ -1,9 +1,10 @@
-// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 18:46:35 , by user : Oles , from computer : OLES
 // TextureManager.cpp: implementation of the CShaderManager class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "TextureManager.h"
 #include "tss.h"
 #include "blender.h"

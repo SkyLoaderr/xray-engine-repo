@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "tss_def.h"
 
 DWORD	SimulatorStates::record	()

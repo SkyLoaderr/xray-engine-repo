@@ -1,5 +1,6 @@
-// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 18:46:47 , by user : Oles , from computer : OLES
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "fs.h"
 #include "blender.h"
 

@@ -1,3 +1,6 @@
+#ifndef TSS_DEF_H
+#define TSS_DEF_H
+
 #pragma once
 
 class	ENGINE_API SimulatorStates
@@ -51,3 +54,4 @@ public:
 
 	DWORD			record	();
 };
+#endif

@@ -1,3 +1,5 @@
+#ifndef SH_MATRIX_H
+#define SH_MATRIX_H
 #pragma once
 
 #include "WaveForm.h"
@@ -90,3 +92,4 @@ public:
 
 	void Load(CStream* fs);
 };
+#endif

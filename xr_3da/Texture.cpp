@@ -3,6 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "image.h"
 #include "xr_func.h"
 #include "xr_creator.h"

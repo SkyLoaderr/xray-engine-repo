@@ -1,3 +1,5 @@
+#ifndef SH_TEXTURE_H
+#define SH_TEXTURE_H
 #pragma once
 
 class ENGINE_API CAviPlayerCustom;
@@ -24,3 +26,4 @@ public:
 	CTexture					();
 	~CTexture					();
 };
+#endif

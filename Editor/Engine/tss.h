@@ -1,3 +1,5 @@
+#ifndef TSS_H
+#define TSS_H
 #pragma once
 
 #include "tss_def.h"
@@ -88,3 +90,4 @@ public:
 	IC SimulatorStates&	GetContainer()							{ return container; }
 };
 
+#endif

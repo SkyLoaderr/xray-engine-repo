@@ -1,4 +1,5 @@
-// exxZERO Time Stamp AddIn. Document modified at : Monday, March 11, 2002 12:03:27 , by user : Oles , from computer : OLES
+#ifndef SHADER_XRLC_H
+#define SHADER_XRLC_H
 #pragma once
 
 struct Shader_xrLC
@@ -74,3 +75,4 @@ public:
 		return &library[id];
 	}
 };
+#endif

@@ -1,4 +1,5 @@
-// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 12:21:28 , by user : Oles , from computer : OLES
+#ifndef TEXTUREMANAGER_RUNTIME_H
+#define TEXTUREMANAGER_RUNTIME_H
 #pragma once
 
 #include "sh_texture.h"
@@ -71,3 +72,4 @@ IC void CShaderManager::set_Constants	(SConstantList* C, BOOL bPS)
 		}
 	}
 }
+#endif

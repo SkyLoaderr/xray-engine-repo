@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#pragma hdrstop
 
 void CMatrix::Load(	CStream* fs )
 {

@@ -1,4 +1,6 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "sh_texture.h"
 #include "texture.h"
 #include "xr_avi.h"
