@@ -35,7 +35,7 @@
 	<info_portion id="mil_max_talk2"></info_portion>
 	<info_portion id="mil_max_job"><task>mil_mad_job</task></info_portion>
 	<info_portion id="mil_max_lukash_call"></info_portion>
-	<info_portion id="mil_max_flash_get"></info_portion>
+	<info_portion id="mil_max_flash_get"><article>mil_crazy_flash_info</article></info_portion>
 	<info_portion id="mil_max_job_complete"></info_portion>
 	<info_portion id="mil_max_job_failed"></info_portion>
 	
@@ -54,5 +54,8 @@
 	<info_portion id="mil_freedom_attack"></info_portion>
 	<info_portion id="mil_freedom_attack_complete"></info_portion>
 	
+	<info_portion id="mil_ugrum_flash_get"><article>mil_flash_ugrumy</article></info_portion>
+	<info_portion id="mil_bandit_flash_get"><article>mil_flash_bandit</article></info_portion>
+	<info_portion id="mil_max_owner_flash_get"><article>mil_flash_max</article></info_portion>
 	
 </game_information_portions>
