@@ -109,12 +109,13 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 		{
 			// read spawn information
 			char	s_name[128];
-			BYTE	s_team,	s_squad, s_group;
+			BYTE	s_team,	s_squad, s_group, s_rp;
 
 			P.r_string(s_name);
 			s_team	= P.r_u8();
 			s_squad	= P.r_u8();
 			s_group	= P.r_u8();
+			s_rp	= P.r_u8();
 
 			// generate/find new ID for entity
 			BYTE ID = 0;
@@ -160,7 +161,7 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			E->s_team			= s_team;
 			E->s_squad			= s_squad;
 			E->s_group			= s_group;
-			E->Spawn			(entities);
+			E->Spawn			(s_rp,entities);
 			entities.push_back	(E);
 
 			// log

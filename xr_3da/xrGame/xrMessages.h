@@ -34,6 +34,7 @@ CL_SPAWN
 	BYTE	team;
 	BYTE	squad;
 	BYTE	group;
+	BYTE	respawn_point; // 0xff = AutoSelect
 };
 
 SV_SPAWN

@@ -45,7 +45,7 @@ public:
 	virtual void			Read			(NET_Packet& P)		= 0;
 	virtual void			Write			(NET_Packet& P)		= 0;
 	virtual BOOL			RelevantTo		(xrServerEntity* E)	= 0;
-	virtual BOOL			Spawn			(xrS_entities& ent)	= 0;
+	virtual BOOL			Spawn			(BYTE rp, xrS_entities& ent)	= 0;
 	virtual void			GetPlacement	(Fvector4& dest)	= 0;
 
 	// utils

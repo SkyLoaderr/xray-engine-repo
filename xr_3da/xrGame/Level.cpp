@@ -397,12 +397,9 @@ void CLevel::OnRender()
 
 void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
 {
-	if (E==eChangeRP && P1) {
-		/*
-		int pid = atoi((char*)P1);
-		pCurrentEntity->ForcePosition(RespawnPoints[pid%RespawnPoints.size()]);
-		Environment.Flash();
-		*/
+	if (E==eEntitySpawn)	{
+		
+	} else if (E==eChangeRP && P1) {
 	} else if (E==eDemoPlay && P1) {
 		char* name = (char*)P1;
 		char RealName [256];
@@ -412,19 +409,7 @@ void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
 	} else if (E==eChangeTrack && P1) {
 		int id = atoi((char*)P1);
 		Environment.Music_Play(id);
-/*	} else if (E==eDoorOpen && P1){
-		CCustomDoor* O = (CCustomDoor*)Objects.FindObjectByName((char*)P1);
-		O->Open();
-	} else if (E==eDoorClose && P1){
-		CCustomDoor* O = (CCustomDoor*)Objects.FindObjectByName((char*)P1);
-		O->Close();
-	} else if (E==eDA_PlayMotion && P1){
-		CDemoActor* O = (CDemoActor*)Objects.FindObjectByName((char*)P1);
-		O->PlayDemo((char*)P2);
-	} else if (E==eDA_StopMotion && P1){
-		CDemoActor* O = (CDemoActor*)Objects.FindObjectByName((char*)P1);
-		O->StopDemo();
-*/	} else if (E==eEnvironment) {
+	} else if (E==eEnvironment) {
 		int id=0; float s=1;
 		sscanf((char*)P1,"%d,%f",&id,&s);
 		Environment.set_EnvMode(id,s);
