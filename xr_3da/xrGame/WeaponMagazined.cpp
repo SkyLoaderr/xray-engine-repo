@@ -133,8 +133,8 @@ void CWeaponMagazined::FireEnd			()
 
 void CWeaponMagazined::OnMagazineEmpty	()
 {
-	st_target	=	eMagEmpty;
-	fTime		=	fTimeToEmptyClick;
+	st_target			=	eMagEmpty;
+	fTime				=	fTimeToEmptyClick;
 }
 
 void CWeaponMagazined::Update(float dt, BOOL bHUDView)
