@@ -205,9 +205,10 @@ CActor::~CActor()
 
 	// sounds 2D
 	m_HeavyBreathSnd.destroy();
+
 	// sounds 3D
-	for (i=0; i<SND_HIT_COUNT; ++i) ::Sound->destroy(sndHit[i]);
-	for (i=0; i<SND_DIE_COUNT; ++i) ::Sound->destroy(sndDie[i]);
+	// for (i=0; i<SND_HIT_COUNT; ++i) ::Sound->destroy(sndHit[i]);
+	// for (i=0; i<SND_DIE_COUNT; ++i) ::Sound->destroy(sndDie[i]);
 
 	xr_delete(m_pActorEffector);
 
