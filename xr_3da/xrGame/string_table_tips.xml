@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding="windows-1251"?>
+<!-- таблица строк-подсказок -->
+<string_table>
+	<string id="Local Ma111p">
+		<text>To Local Map</text>
+		<text ln="rus">Локальная карта</text>
+	</string>
+	<string id="Global Map22221">
+		<text>To Global Map</text>
+		<text ln="rus">Глобальная карта</text>
+	</string>
+</string_table>
+
