@@ -25,6 +25,7 @@ void dumpMotion(CHelicopterMotion* m)
 
 CHelicopterMovManager::CHelicopterMovManager()
 {
+	m_need_to_del_path = false;
 	m_heli = NULL;
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
@@ -36,6 +37,12 @@ CHelicopterMovManager::~CHelicopterMovManager	()
 #ifdef DEBUG
 	Device.seqRender.Remove(this);
 #endif
+
+	if(m_need_to_del_path&&m_currPatrolPath){
+		CPatrolPath* tmp = const_cast<CPatrolPath*>(m_currPatrolPath);
+		xr_delete( tmp );
+	}
+
 }
 
 void	CHelicopterMovManager::load(LPCSTR		section)
@@ -743,7 +750,13 @@ float CHelicopterMovManager::EndTime()
 
 void CHelicopterMovManager::GoBySpecifiedPatrolPath()
 {
+	if(m_need_to_del_path&&m_currPatrolPath){
+		CPatrolPath* tmp = const_cast<CPatrolPath*>(m_currPatrolPath);
+		xr_delete( tmp );
+	}
+
 	m_currPatrolPath = Level().patrol_paths().path(m_heli->m_data.m_patrol_path_name);
+	m_need_to_del_path = false;
 	m_currPatrolVertex =  m_currPatrolPath->vertex(m_heli->m_data.m_patrol_begin_idx);
 
 	m_heli->m_data.m_desiredP = m_currPatrolVertex->data().position();
@@ -776,8 +789,13 @@ void CHelicopterMovManager::UpdatePatrolPath()
 
 void CHelicopterMovManager::GoByRoundPatrolPath()
 {
-	CPatrolPath* pp = xr_new<CPatrolPath>();
+	if(m_need_to_del_path&&m_currPatrolPath){
+		CPatrolPath* tmp = const_cast<CPatrolPath*>(m_currPatrolPath);
+		xr_delete( tmp );
+	}
 
+	CPatrolPath* pp = xr_new<CPatrolPath>();
+	m_need_to_del_path = true;
 	xr_vector<Fvector> pts;
 	//fill new path points
 	Fvector p,center,dir,dir_norm;

@@ -3,6 +3,7 @@
 
 #include "HelicopterMotion.h"
 #include "patrol_path.h"
+#include "intrusive_ptr.h"
 
 class CHelicopter;
 
@@ -18,7 +19,7 @@ public:
 
 private:
 	CHelicopter*					m_heli;
-
+	bool							m_need_to_del_path;
 //	Fmatrix							m_XFORM;
 	
 	
