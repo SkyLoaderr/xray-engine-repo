@@ -1361,6 +1361,9 @@
 						RelativePath=".\scripts\level_tips.script">
 					</File>
 					<File
+						RelativePath=".\Scripts\mob_alife_mgr.script">
+					</File>
+					<File
 						RelativePath=".\scripts\mob_sound.script">
 					</File>
 					<File
