@@ -101,6 +101,9 @@
 // Detectors
 #define CLSID_DETECTOR_SIMPLE		MK_CLSID('D','_','S','I','M','D','E','T')
 
+// Devices
+#define CLSID_DEVICE_TORCH		MK_CLSID('D','_','T','O','R','C','H',' ')
+
 // Inventory items
 #define CLSID_IITEM_BOLT			MK_CLSID('I','I','_','B','O','L','T',' ')
 

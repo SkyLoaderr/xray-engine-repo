@@ -657,6 +657,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 #include "weaponwalther.h"
 #include "weaponusp45.h"
 #include "bolt.h"
+#include "torch.h"
 #include "f1.h"
 #include "rgd5.h"
 #include "Spectator.h"
@@ -732,6 +733,9 @@ extern "C" {
 
 		// Detectors
 		case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;
+
+		// Devices
+		case CLSID_DEVICE_TORCH:		P = xr_new<CTorch>();				break;
 
 		// entity
 		case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
