@@ -210,7 +210,8 @@ function bandit:clearAllJob(npc)
 		   k == "follower" or
 		   k == "patrol" or
 		   k == "guard" or
-		   k == "kamp"
+		   k == "kamp" or
+		   k == "ambush"
 		then
 			v.enabled = false
 		end
