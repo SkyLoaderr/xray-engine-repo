@@ -4,7 +4,6 @@
 
 Сделать:
     - уразнообразить анимации
-    - говорят по очереди. пауза 2-10 с
     - ходят туда-сюда
 --------------------------------------------------------------------------------------------------------------------]]
 
@@ -74,6 +73,19 @@ function evaluator_in_pos:evaluate()
 --    printf( sb )
 --    printf( "p2" )
     return b
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Эвалуатор свойства "перехвачено ли уже событие смерти бандюгана?"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_dead_hook" ( property_evaluator )
+
+function evaluator_dead_hook:__init( name, storage ) super()
+    self.a = storage
+end
+
+function evaluator_dead_hook:evaluate()
+    return self.a.dead_hook
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -206,6 +218,31 @@ function action_stand:finalize()
     this.check_enemy( self.object )
 end
 
+---------------------------------------------------------------------------------------------------------------------
+-- Действие для перехвата смерти
+---------------------------------------------------------------------------------------------------------------------
+class "action_dead_hook" ( action_base )
+
+function action_dead_hook:__init( name, storage ) super( nil, name )
+    self.a = storage
+end
+
+function action_dead_hook:initialize()
+    action_base.initialize( self )
+
+    self.a.dead_hook = true
+
+    printf( "-- INFO PORTION --" )
+end
+
+function action_dead_hook:execute()
+    action_base.execute( self )
+end
+
+function action_dead_hook:finalize()
+    action_base.finalize( self )
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 -- Настройка скрипта и GOAP
 ----------------------------------------------------------------------------------------------------------------------
@@ -215,6 +252,8 @@ function add_to_binder( obj )
     if not a.enabled then
         return
     end
+
+    a.dead_hook = false
 
     local name = obj:name()
     local num  = string.sub( name, string.len( name ) )
@@ -257,11 +296,13 @@ function add_to_binder( obj )
     local base_id = xr_evaluators_id.chugai_escape_factory_bandits_base
     properties["escape_factory_bandit"] = base_id + 0
     properties["in_pos"]                = base_id + 1
+    properties["dead_hook"]             = base_id + 2
     properties["reaction"]              = xr_evaluators_id.reaction
 
     base_id = xr_actions_id.chugai_escape_factory_bandits_base
     operators["go_to_pos"] = base_id + 0
     operators["stand"]     = base_id + 1
+    operators["dead_hook"] = base_id + 2
 
     local eva_pos = this.evaluator_in_pos( "property_in_pos", obj )
     eva_pos.dest_vert_id = positions[1]
@@ -269,6 +310,7 @@ function add_to_binder( obj )
     local manager = obj:motivation_action_manager()
     manager:add_evaluator( properties["in_pos"], eva_pos )
     manager:add_evaluator( properties["escape_factory_bandit"], this.evaluator_factory_bandit( "property_escape_factory_bandit", a ) )
+    manager:add_evaluator( properties["dead_hook"], this.evaluator_dead_hook( "property_dead_hook", a ) )
 
     local action = this.action_go_to_pos( "action_go_to_pos", way_name )
     action:add_precondition( world_property( stalker_ids.property_alive, true  ) )
@@ -287,4 +329,11 @@ function add_to_binder( obj )
 
     action = manager:action( stalker_ids.action_puzzle_solver )
     action:add_precondition( world_property (properties["escape_factory_bandit"], false ) )
+
+    action = this.action_dead_hook( "action_dead_hook", a )
+    action:add_effect( world_property( properties["dead_hook"], true ) )
+    manager:add_action( operators["dead_hook"], action )
+
+    action = manager:action( stalker_ids.action_death_planner )
+    action:add_precondition( world_property( properties["dead_hook"], true ) )
 end
