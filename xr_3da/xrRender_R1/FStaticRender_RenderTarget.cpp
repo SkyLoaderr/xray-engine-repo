@@ -138,8 +138,26 @@ BOOL CRenderTarget::Perform		()
 	return Available() && ( NeedPostProcess() || (ps_r__Supersample>1) || (frame_distort==(Device.dwFrame-1)));
 }
 
+#define SHOW(a)	Log(#a,a);
 void CRenderTarget::Begin		()
 {
+	//.
+	if (g_pGameLevel->IR_GetKeyState(DIK_LSHIFT))	
+	{
+		Msg					("[%5d]------------------------",Device.dwFrame);
+		SHOW				(param_blur)
+		SHOW				(param_gray)
+		SHOW				(param_duality_h)
+		SHOW				(param_duality_v)
+		SHOW				(param_noise)
+		SHOW				(param_noise_scale)
+		SHOW				(param_noise_fps)
+
+		SHOW				(param_color_base)
+		SHOW				(param_color_gray)
+		SHOW				(param_color_add)
+	}
+
 	if (!Perform())	
 	{
 		// Base RT
