@@ -690,6 +690,7 @@ void CDetailPathManager::build_smooth_path		(
 )
 {
 	Device.Statistic.AI_Range.Begin		();
+	
 	m_failed							= true;
 	
 	if (level_path.size() == 1) {
