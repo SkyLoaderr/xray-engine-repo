@@ -11,7 +11,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 
 	// create server entity
 	xrClientData* CL	= ID_to_client	(sender);
-	xrServerEntity*	E	= entity_Create	(s_name); R_ASSERT(E);
+	xrServerEntity*	E	= entity_Create	(s_name); R_ASSERT2(E,"Can't create entity.");
 	E->Spawn_Read		(P);
 	if (!((game->type==E->s_gameid)||(GAME_ANY==E->s_gameid)))
 	{

@@ -13,9 +13,9 @@
 CHUDManager::CHUDManager()
 { 
 	Level().pHUD	= this;
-	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_01",128);
-	pHUDFont2		= new CGameFont("font","ui\\ui_font_hud_02",256);
-	pGameFont		= new CGameFont("font","ui\\ui_font_hud_02",256,16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pHUDFont		= new CGameFont("font","ui\\ui_font_hud_01");
+	pHUDFont2		= new CGameFont("font","ui\\ui_font_hud_02");
+	pGameFont		= new CGameFont("font","ui\\ui_font_hud_02",16,CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	pUI				= 0;
 	Device.seqDevCreate.Add	(this);
 	Device.seqDevDestroy.Add(this);

@@ -48,6 +48,12 @@ BOOL CLevel::net_Start	( LPCSTR options, BOOL server )
 		case GAME_SINGLE:
 			// Already spawned actor on server
 			break;
+		case GAME_CS:
+			// Spawn at ANY r-point
+			{
+				g_cl_Spawn("actor",0xFF,spawn_flags);
+			}
+			break;
 		case GAME_DEATHMATCH:
 			// Spawn at ANY r-point
 			{

@@ -65,6 +65,7 @@ CObject::CObject		( )
 
 	cfModel						= NULL;
 	pVisual						= NULL;
+	pLights						= NULL;
 
 	FLAGS.storage				= 0;
 
@@ -138,7 +139,8 @@ void CObject::OnDeviceCreate	()
 {
 	// visual and shadow
 	REQ_CREATE					();
-	pVisual						= Render->model_Create	(cNameVisual());
+	LPCSTR visual_name			= cNameVisual();
+ 	if (visual_name&&visual_name[0]) pVisual	= Render->model_Create	(visual_name);
 	pLights						= new CLightTrack;
 	Sector_Detect				();
 
