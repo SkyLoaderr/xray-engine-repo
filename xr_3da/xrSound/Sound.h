@@ -48,7 +48,7 @@ enum {
 };
 
 // definition (Sound Structure + control)
-struct	XRSOUND_API	sound
+struct	/*XRSOUND_API*/	sound
 {
 	CSound_source*					handle;
 	CSound_interface*				feedback;
