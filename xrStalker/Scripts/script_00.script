@@ -53,6 +53,21 @@ function main()
 	local rainbow_ti_chto_gluhoy = sound_object("scripts\\stalker_rainbow\\rainbow_ti_chto_gluhoy")
 	local rainbow_tupih_hvataet = sound_object("scripts\\stalker_rainbow\\rainbow_tupih_hvataet")
 
+	local prof_chert = sound_object("scripts\\stalker_prof_replics\\prof_chert")
+	local prof_chebi_pojrat = sound_object("scripts\\stalker_prof_replics\\prof_chebi_pojrat")
+	local prof_chto_za_chert = sound_object("scripts\\stalker_prof_replics\\prof_chto_za_chert")
+	local prof_dermo = sound_object("scripts\\stalker_prof_replics\\prof_dermo")
+	local prof_gde_j_ti_pryacheshsya = sound_object("scripts\\stalker_prof_replics\\prof_gde_j_ti_pryacheshsya")
+	local prof_dermo = sound_object("scripts\\stalker_prof_replics\\prof_dermo")
+	local prof_habara_naberu = sound_object("scripts\\stalker_prof_replics\\prof_habara_naberu")
+	local prof_hmm2 = sound_object("scripts\\stalker_prof_replics\\prof_hmm2")
+	local prof_ne_hami = sound_object("scripts\\stalker_prof_replics\\prof_ne_hami")
+	local prof_opyat_ti = sound_object("scripts\\stalker_prof_replics\\prof_opyat_ti")
+	local prof_suchiya_zona = sound_object("scripts\\stalker_prof_replics\\prof_suchiya_zona")
+	local prof_ti_dostal = sound_object("scripts\\stalker_prof_replics\\prof_ti_dostal")
+
+	local rainbow_chto_za_chert = sound_object("scripts\\stalker_prof_replics\\rainbow_chto_za_chert")
+
 			wait(1000)			
 
 			stalker1:script	(true,  this.script_name())
@@ -160,6 +175,14 @@ function main()
 	end
 
 	while true do
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then		
+			prof_chert:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)			
+		end
+		break
+	end
+
+	while true do
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_blin_tochno:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(3000)			
@@ -227,6 +250,14 @@ function main()
 		if stalker1:see(actor) == false and stalker2:see(actor) == false then
 			prof_valim_otsuda:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(10000)			
+		end
+		break
+	end
+
+	while true do
+		if stalker1:see(actor) == false and stalker2:see(actor) == false then
+			prof_chto_za_chert:play_at_pos	(stalker1,stalker1:position(),0);
+			wait(4000)			
 		end
 		break
 	end
@@ -300,8 +331,12 @@ function main()
 			wait(4000)			
 
 			rainbow_tak_i_znal_ktoto_pryatalsya2:play_at_pos		(stalker2,stalker2:position(),0);
-			wait(5000)			
+			wait(4000)			
 
+			prof_chert:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(2000)		
+			prof_dermo:play_at_pos				(stalker1,stalker1:position(),0);
+			wait(3000)		
 			prof_siviy_che_delat_budem:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(3000)			
 
@@ -330,10 +365,6 @@ function main()
 		end
 		wait()			
 		break
-	end
-
-	while stalker1:action() and stalker2:action() do
-	    wait	()
 	end
 
 	stalker1:script	(false, this.script_name())
