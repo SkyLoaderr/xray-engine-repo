@@ -1014,8 +1014,70 @@ CInternalStorage *get_internals()
 	return					(&storage);
 }
 
+struct CSomeClass {
+	int	some_function(int x)
+	{
+		printf		("%d\n",x);
+		return		(x);
+	}
+};
+
+struct CMemCallbackHolder {
+	boost::function1<int, int>	OnSomeEvent;
+};
+
+#define _CLOSURE_THIS(A)	std::bind1st(std::mem_fun(&A),this)
+#define _CLOSURE(A,B)		std::bind1st(std::mem_fun(&A),B)
+
+//template <class T, class U>
+//struct Typelist
+//{
+//	typedef T Head;
+//	typedef U Tail;
+//};
+//
+//struct _A1{
+//	virtual ~_A1(){}
+//};
+//declare1(_A1) // typedef Typelist<_A1,Typelist<CEmptyClass,CEmptyClass> > TypeList__A1;
+//#undef final
+//#define final declare2(_A1) // #define final TypeList__A1
+//
+//struct _A2{
+//	virtual ~_A2(){}
+//};
+//declare1(_A2) // typedef Typelist<_A2,Typelist<_A1,Typelist<CEmptyClass,CEmptyClass> > TypeList__A2;
+//#undef final
+//#define final declare2(_A2) // #define final TypeList__A2
+//
+//Typelist<_A2,Typelist<_A1,Typelist<CEmptyClass,CEmptyClass> > >
+
+extern void script_test();
+
 void test1()
 {
+	script_test();
+//	printf	("%s\n",typeid(final::Head).name());
+//	printf	("%s\n",typeid(final::Tail::Head).name());
+//	printf("%s",test_string);
+//	boost::function2<int, CSomeClass*, int>	f;
+	CSomeClass					instance;
+	CMemCallbackHolder			holder;
+//	f							= std::bind1st(
+//		std::mem_fun(&CSomeClass::some_function),
+//		&instance
+//	);
+	holder.OnSomeEvent			= _CLOSURE(CSomeClass::some_function,&instance);//std::bind1st(std::mem_fun(&CSomeClass::some_function),&instance);
+//	f							= ;
+//	f							(&instance,5);
+//	if (holder.OnSomeEvent.empty())
+	holder.OnSomeEvent.clear	();
+	if (!holder.OnSomeEvent)
+		printf					("TRUE\n");
+	else
+		printf					("FALSE\n");
+	holder.OnSomeEvent			(5);
+	
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
