@@ -17,7 +17,7 @@ void CBuild::Flex2OGF()
 		R_ASSERT( ! it->empty() );
 
 		DWORD MODEL_ID = it-g_XSplit.begin();
-		set_status	("Converting",MODEL_ID,it->size(),0);
+//		set_status	("Converting",MODEL_ID,it->size(),0);
 
 		OGF*		pOGF	= new OGF;
 		Face*		F		= *(it->begin());				// first face

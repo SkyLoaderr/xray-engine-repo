@@ -71,7 +71,7 @@ void OGF::Save(CFS_Base &fs)
 
 void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
 {
-	Log				("- saving: cached");
+//	Log				("- saving: cached");
 	fs.open_chunk	(OGF_VERTICES);
 	fs.Wdword		(FVF);
 	fs.Wdword		(vertices.size());
@@ -94,7 +94,7 @@ void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BO
 
 void	OGF::Save_Normal_PM		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
 {
-	Log				("- saving: normal or clod");
+//	Log				("- saving: normal or clod");
 
 	DWORD ID,Start;
 	g_VB.Begin(FVF);
@@ -149,7 +149,7 @@ extern	void xrStripify(std::vector<WORD> &indices, std::vector<WORD> &perturb, i
 
 void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bLighting)
 {
-	Log				("- saving: progressive");
+//	Log				("- saving: progressive");
 
 	// Determining the number of samples
 	R_ASSERT				(I_Current>=0);
@@ -165,7 +165,7 @@ void	OGF::Save_Progressive	(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors
 	}
 	if (samples<=1)			{
 		// Degrading to normal visual
-		Log					("- saving: *degrading*");
+//		Log					("- saving: *degrading*");
 		H.type				= MT_NORMAL;
 		I_Current			= -1;
 		vertices			= vertices_saved;

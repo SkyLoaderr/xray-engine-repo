@@ -42,7 +42,7 @@ WORD OGF::_BuildVertex	(OGF_Vertex& V1)
 void OGF::Optimize()
 {
 	// Real optimization
-	set_status("Optimizing UV",treeID,faces.size(),vertices.size());
+//	set_status("Optimizing UV",treeID,faces.size(),vertices.size());
 
 	// Detect relevant number of UV pairs
 	R_ASSERT			(vertices.size());
@@ -102,7 +102,7 @@ void OGF::MakeProgressive()
 {
 	if (faces.size()>DWORD(g_params.m_SS_DedicateCached)) 
 	{
-		set_status("CLODing",treeID,faces.size(),vertices.size());
+//		set_status("CLODing",treeID,faces.size(),vertices.size());
 		vertices_saved	= vertices;
 		faces_saved		= faces;
 

@@ -63,7 +63,7 @@ void OGF::Stripify()
 	if (I_Current>=0)			return;	// Mesh already progressive - don't stripify it
 	if (!g_params.m_bStripify)	return; // user forced no strippification at all
 
-	set_status("Stripifying",treeID,faces.size(),vertices.size());
+//	set_status("Stripifying",treeID,faces.size(),vertices.size());
 	try {
 		vector<WORD>	indices,permute;
 		
