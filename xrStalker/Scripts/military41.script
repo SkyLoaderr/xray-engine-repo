@@ -19,7 +19,7 @@ function main ()
 
   	while entered == false do wait () end
 
-  	reset_action (hero, s_test.script_name ())
+  	reset_action (hero, military41.script_name ())
 
     action (hero, anim ("mashina_1"), cond (cond.anim_end))
     action (hero, move (pos, 1.0), anim ("mashina_2"), cond (cond.anim_end))
@@ -30,6 +30,6 @@ function main ()
 
     while hero:action () do wait () end
 
-    hero:script (false, s_test.script_name ())
+    hero:script (false, military41.script_name ())
 
  end
