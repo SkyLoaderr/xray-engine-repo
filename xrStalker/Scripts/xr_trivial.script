@@ -25,19 +25,6 @@ local phrase_help   = xr_sounds_id.novice_speak
 ---------------------------------------------------------------------------------------------------------------------
 -- Evaluator
 ---------------------------------------------------------------------------------------------------------------------
-class "enabled_evaluator" (property_evaluator)
-
-function enabled_evaluator:__init (name, storage) super ()
-    self.a = storage
-end
-
-function enabled_evaluator:evaluate()
-
-    return  self.a.enabled
-end
----------------------------------------------------------------------------------------------------------------------
--- Evaluator
----------------------------------------------------------------------------------------------------------------------
 --ѕока нет донной информации, работаем, только получили, перестаем выполн€тс€
 class "info_portion_evaluator" (property_evaluator)
 function info_portion_evaluator:__init (name, info_portion) super ()
@@ -329,7 +316,7 @@ function add_novice(obj)
     operators [ "stalker_novice" ]    = xr_actions_id.jon_stalker_novice
 
     local manager  = obj:motivation_action_manager ()
-    manager:add_evaluator ( properties[ "work" ], this.enabled_evaluator("Enabled evaluator", xr_motivator.storage[obj:id()].novice ) )
+    manager:add_evaluator ( properties[ "work" ], enabled_evaluator("Enabled evaluator", xr_motivator.storage[obj:id()].novice ) )
 
     local action = this.stalker_novice_action ( "stalker_novice_action", xr_motivator.storage[obj:id()].novice )
 
@@ -844,6 +831,71 @@ end
 --============================================================================--
 --------------------------=====================---------------------------------
 
+---------------------------------------------------------------------------------------------------------------------
+-- Actions
+---------------------------------------------------------------------------------------------------------------------
+class "action_security_stand" (action_base)
+function action_security_stand:__init (name, storage) super (nil, name)
+    self.a = storage
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:initialize ()
+    action_base.initialize (self)
+
+--    self.object:set_detail_path_type( move.line )
+
+    self.object:set_body_state      ( move.standing )
+    self.object:set_mental_state  ( anim.free )
+
+    self.object:set_path_type    ( game_object.patrol_path )
+    self.object:set_sight           (look.path_dir, nil, 0)
+--    self.object:set_item          (object.idle, self.object:best_weapon () )
+    self.object:set_movement_type (move.walk)
+    self.object:set_patrol_path   (self.a.path, patrol.nearest, patrol.continue, true)
+
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:execute ()
+    action_base.execute (self)
+end
+---------------------------------------------------------------------------------------------------------------------
+function action_security_stand:finalize ()
+    action_base.finalize (self)
+
+    --self.object:clear_animations ()
+end
+
+
+----------------------------------------------------------------------------------------------------------------------
+--scientist binder
+----------------------------------------------------------------------------------------------------------------------
+function add_security(obj)
+
+    local operators     = {}
+    local properties    = {}
+
+    properties["enabled"]            = xr_evaluators_id.jon_security
+
+    operators["security"]            = xr_actions_id.jon_security
+
+    local manager  = obj:motivation_action_manager ()
+    manager:add_evaluator (properties["enabled"], enabled_evaluator("enabled_evaluator", xr_motivator.storage[obj:id()].security))
+
+    local action = this.action_security_stand ("action_security_stand", xr_motivator.storage[obj:id()].security)
+
+    action:add_precondition         (world_property (stalker_ids.property_alive,  true))
+    action:add_precondition         (world_property (stalker_ids.property_enemy,  false))
+    action:add_precondition         (world_property (properties["enabled"],        true))
+    action:add_effect               (world_property (properties["enabled"],        false))
+    manager:add_action              (operators["security"], action)
+
+    action = manager:action         (stalker_ids.action_puzzle_solver)
+    action:add_precondition         (world_property (properties["enabled"],  false))
+end
+
+-----------------------===========================------------------------------
+--============================================================================--
+--------------------------=====================---------------------------------
 
 function bind_object( obj, name )
     if( name == "zombie" ) then

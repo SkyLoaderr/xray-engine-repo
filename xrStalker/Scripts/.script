@@ -41,6 +41,9 @@ module ("escape")
 
 module ("escape_factory_bandits")
 
+--For Dark Laboratory
+module ("xr_scientist")
+
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
 end
@@ -584,7 +587,16 @@ function wait_evaluator:evaluate ()
     if t > self.wait_time then return true end
     return false
 end
+--------------------------------------------------------------------------------
+class "enabled_evaluator" (property_evaluator)
 
+function enabled_evaluator:__init (name, storage) super ()
+    self.a = storage
+end
+
+function enabled_evaluator:evaluate()
+    return  self.a.enabled
+end
 
 
 function str_split (str)
