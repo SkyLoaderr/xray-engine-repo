@@ -21,6 +21,7 @@ CAI_Biting::CAI_Biting()
 	m_tSelectorApproach				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 	m_tSelectorGetAway				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 	m_tSelectorWalkAround			= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
+	m_tSelectorCommon				= xr_new<PathManagers::CVertexEvaluator<aiSearchRange | aiEnemyDistance>  >();
 }
 
 CAI_Biting::~CAI_Biting()
@@ -29,6 +30,7 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(m_tSelectorApproach);
 	xr_delete(m_tSelectorGetAway);
 	xr_delete(m_tSelectorWalkAround);
+	xr_delete(m_tSelectorCommon);
 }
 
 void CAI_Biting::Init()

@@ -22,6 +22,7 @@ void CAI_Biting::Think()
 	enable_movement(true);
 	CLevelLocationSelector::set_evaluator(0);
 
+	// fix off-line displacement
 	if ((flagsEnemy & FLAG_ENEMY_GO_OFFLINE) == FLAG_ENEMY_GO_OFFLINE) {
 		CurrentState->Reset();
 		SetState(stateRest);

@@ -79,6 +79,7 @@ void CBitingAttack::Init()
 
 	once_flag_1 = once_flag_1 = false;
 
+	ThreatenTimes = 0;
 	// Test
 	LOG_EX("_ Attack Init _");
 }
@@ -130,6 +131,14 @@ void CBitingAttack::Run()
 	// ѕроверить, достижим ли противник
 	if (pMonster->ObjectNotReachable(m_tEnemy.obj)) {
 		m_tAction = ACTION_WALK_ANGRY_AROUND;
+		Msg("Bad Story");
+
+		// Log out Node Pos and My Pos
+		Fvector vf = ai().level_graph().vertex_position(m_tEnemy.obj->level_vertex_id());
+		float dist = vf.distance_to(m_tEnemy.obj->Position());
+
+		LOG_EX2("VPos = [%f,%f,%f], Pos= [%f,%f,%f] D = [%f]", *"*/ VPUSH(vf), VPUSH(m_tEnemy.obj->Position()), dist /*"*);
+		pMonster->ObjectNotReachable(m_tEnemy.obj);	
 	}
 
 	// ¬ыполнение состо€ни€
@@ -137,10 +146,8 @@ void CBitingAttack::Run()
 		case ACTION_RUN:		 // бежать на врага
 			pMonster->MoveToTarget(m_tEnemy.obj);
 			pMonster->MotionMan.m_tAction = ACT_RUN;
-
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
-			
 			pMonster->enable_movement(false);			
 			bCanThreaten			= false;
 
@@ -247,6 +254,9 @@ bool CBitingAttack::CheckThreaten()
 		return false;
 	}
 
+	ThreatenTimes++;
+	if (ThreatenTimes > 2) return false;
+
 	return true;
 }
 
@@ -263,37 +273,7 @@ Fvector CBitingAttack::RandomPos(Fvector pos, float R)
 
 void CBitingAttack::WalkAngrySubState()
 {
-	switch (m_tAction) {
-	case ACTION_WALK_AWAY:	
-		DO_ONCE_BEGIN(once_flag_2);
-			time_start_walk_away = m_dwCurrentTime;
-		DO_ONCE_END();
-
-		pMonster->Path_WalkAroundObj(m_tEnemy.obj, m_tEnemy.obj->Position());
-		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-		
-		if (TIME_OUT(time_start_walk_away, 5000) || pMonster->IsMoveAlongPathFinished()) 
-			m_tAction = ACTION_FACE_ENEMY;
+	// workout this state
 	
-		break;
-	case ACTION_FACE_ENEMY:
-		pMonster->enable_movement(false);
-
-		DO_ONCE_BEGIN(once_flag_1);
-			pMonster->FaceTarget(m_tEnemy.obj);
-		DO_ONCE_END();
-
-		if (angle_difference(pMonster->m_body.target.yaw,pMonster->m_body.current.yaw) < PI_DIV_6/6)
-			m_tAction = ACTION_THREATEN2;
-
-		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-
-		break;
-	case ACTION_THREATEN2:	
-		pMonster->enable_movement(false);	
-		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-		pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
-		break;
-	}
 }
 

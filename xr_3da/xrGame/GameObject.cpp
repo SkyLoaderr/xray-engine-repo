@@ -206,11 +206,8 @@ void CGameObject::spatial_move	()
 	if (H_Parent())
 		setup_parent_ai_locations	();
 	else
-		if (Visual()) {
-			Fvector					Pos	= Visual()->vis.sphere.P;		  
-			Pos.add					(Position());
+		if (Visual())
 			validate_ai_locations	();
-		}
 
 	inherited::spatial_move			();
 }

@@ -257,6 +257,11 @@ void CAI_Bloodsucker::StateSelector()
 		SetState(stateEat);	
 	else						SetState(stateRest);
 
+	// Check Seq
+
+	EMotionAnim anim = MotionMan.Seq_CurAnim();
+	if ((anim == eAnimCheckCorpse) && K) MotionMan.Seq_Finish();
+	
 //	///////////////////////////////////////////////////////////////////////////////////////////
 //	// Process Squad AI
 //

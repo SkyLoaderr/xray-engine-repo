@@ -245,6 +245,8 @@ public:
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorHearSnd;
 	PathManagers::CAbstractVertexEvaluator	*m_tSelectorWalkAround;
 	
+	PathManagers::CAbstractVertexEvaluator	*m_tSelectorCommon;
+
 
 	EBitingPathState		m_tPathState;
 	u32						m_dwPathBuiltLastTime;
@@ -336,6 +338,9 @@ public:
 	bool IsMoveAlongPathFinished();
 	bool IsMovingOnPath			();
 	bool ObjectNotReachable		(CEntity *entity);
+
+	void InitSelectorCommon		(float dist_opt, float weight_opt, float dist_min, float weight_min, float dist_max, float weight_max);
+	void Path_CommonSelector	(CEntity *pE, Fvector position);
 
 };
 

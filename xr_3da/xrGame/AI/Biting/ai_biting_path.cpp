@@ -204,7 +204,7 @@ bool CAI_Biting::IsMoveAlongPathFinished()
 
 bool CAI_Biting::IsMovingOnPath	()
 {
-	return !IsMoveAlongPathFinished() && CMovementManager::enabled();
+	return (!IsMoveAlongPathFinished() && CMovementManager::enabled());
 }
 
 
@@ -215,3 +215,28 @@ bool CAI_Biting::ObjectNotReachable(CEntity *entity)
 
 	return false;
 }
+
+void CAI_Biting::InitSelectorCommon(float dist_opt, float weight_opt, float dist_min, float weight_min, float dist_max, float weight_max)
+{
+	m_tSelectorCommon->m_fMinEnemyDistance			= dist_min;
+	m_tSelectorCommon->m_fMaxEnemyDistance			= dist_max;
+	m_tSelectorCommon->m_fOptEnemyDistance			= dist_opt;
+
+	m_tSelectorCommon->m_fMinEnemyDistanceWeight	= weight_min;
+	m_tSelectorCommon->m_fMaxEnemyDistanceWeight	= weight_max;
+	m_tSelectorCommon->m_fOptEnemyDistanceWeight	= weight_opt;
+}
+
+void CAI_Biting::Path_CommonSelector(CEntity *pE, Fvector position)
+{
+	if (pE) {
+		m_tEnemy.Set(pE,0); 									// forse enemy selection
+		vfInitSelector(*m_tSelectorCommon, false);
+	} else {
+		vfInitSelector(*m_tSelectorCommon, true);
+		m_tSelectorCommon->m_tEnemyPosition = position;
+	}
+	
+	CLevelLocationSelector::set_evaluator(m_tSelectorCommon);
+}
+

@@ -322,6 +322,9 @@ public:
 	// работа с последовательностями
 	void		Seq_Add					(EMotionAnim a);
 	void		Seq_Switch				();					// Перейти в следующее состояние, если такового не имеется - завершить
+	void		Seq_Finish				();
+	EMotionAnim	Seq_CurAnim				() {return ((seq_playing) ? *seq_it : eAnimStandIdle );}
+
 
 	// работа с анимациями атак
 	void		AA_PushAttackAnim		(SAttackAnimation AttackAnim);
@@ -349,7 +352,6 @@ private:
 
 	// работа с последовательностями
 	void		Seq_Init				();
-	void		Seq_Finish				();
 
 	// работа с анимациями атак
 	void		AA_Clear				(); 
