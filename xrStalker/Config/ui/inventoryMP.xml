@@ -5,7 +5,7 @@
 
 	<!-- BAG WINDOW -->
 	<bag_background_static x="10" y="234" width="350" height="440">
-		<text x="50" y="10" font="normal" r="255" g="255" b="255" a="180" align="c">ui_inv_items_list</text>
+		<text x="50" y="10" font="graffiti22" r="231" g="153" b="22" align="c">ui_inv_items_list</text>
 	</bag_background_static>
 	
 	<!-- BACK BUTTON FOR BAG -->
@@ -18,19 +18,19 @@
 	<!-- DESCRIPTION WINDOW -->
 	<desc_static x="340" y="235" width="420" height="400">
 		<!--texture>ui\ui_dg_info_multiplayer</texture-->
-		<text x="20" y="195" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_description</text>
+		<text x="20" y="195" font="graffiti22" r="231" g="153" b="22">ui_inv_description</text>
 	</desc_static>
 
 	<!-- CHARACTER WINDOW -->
 	<personal_static x="790" y="234" width="200" height="400">
 		<!--texture>ui\ui_dg_personal_multiplayer</texture-->
-		<text x="60" y="7" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_personal</text>
+		<text x="60" y="7" font="graffiti22" r="231" g="153" b="22">ui_inv_personal</text>
 	</personal_static>
 
 	<!-- BELT STATIC BACKGROUND-->
 	<static x="15" y="126" width="1024" height="128">
 		<!--texture>ui\ui_inv_belt</texture-->
-		<text x="25" y="6" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_belt</text>
+		<text x="25" y="6" font="graffiti22" r="231" g="153" b="22">ui_inv_belt</text>
 	</static>
 
 	<!-- SLOTS BACKGROUND -->
@@ -90,7 +90,7 @@
 	</item_cost_header_static>
 
 	<item_cost_static x="518" y="394" width="200" height="50">
-		<text font="graffiti32" r="240" g="217" b="182"></text>
+		<text font="letterica25" r="240" g="217" b="182"></text>
 	</item_cost_static>
 
 	<!-- CHARACTER ICON -->
@@ -110,11 +110,11 @@
 				<e r="181" g="170" b="148"/>
 				<d r="181" g="170" b="148"/>
 				<t r="181" g="170" b="148"/>				
-				<h r="255" g="187" b="51"/>
+				<h r="231" g="153" b="22"/>
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="graffiti32" x="13" y="-6" align="c">1</text>
+				<text font="letterica25" x="13" y="-3" align="c">1</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -139,7 +139,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="graffiti32" x="13" y="-6" align="c">2</text>
+				<text font="letterica25" x="13" y="-2" align="c">2</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -162,8 +162,8 @@
 				<h r="255" g="187" b="51"/>
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
-						<hint x="15" y="-26" width="29" height="29">
-				<text font="graffiti32" x="13" y="-6" align="c">3</text>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="letterica25" x="13" y="-1" align="c">3</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -187,7 +187,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="graffiti32" x="13" y="-6" align="c">4</text>
+				<text font="letterica25" x="13" y="0" align="c">4</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -211,7 +211,7 @@
 			</text_color>
 			<sound_t>weapons\generic_close</sound_t>
 			<hint x="15" y="-26" width="29" height="29">
-				<text font="graffiti32" x="13" y="-6" align="c">5</text>
+				<text font="letterica25" x="13" y="-6" align="c">5</text>
 				<text_color>
 					<e a="255" r="255" g="255" b="0"/>
 					<d a="255" r="87" g="87" b="72"/>					
@@ -234,7 +234,16 @@
 				<t r="255" g="187" b="51"/>
 			</text_color>			
 			<sound_h>weapons\gen_empty</sound_h>
-			<sound_t>weapons\generic_close</sound_t>			
+			<sound_t>weapons\generic_close</sound_t>	
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="letterica25" x="13" y="-6" align="c">1</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>		
 	</btn_bag_shotgun>	
 	<btn_bag_assault x="5" y="120" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
@@ -249,6 +258,15 @@
 			</text_color>
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="letterica25" x="13" y="-6" align="c">2</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>
 	</btn_bag_assault>
 	<btn_bag_sniper x="5" y="210" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
@@ -263,6 +281,15 @@
 			</text_color>
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="letterica25" x="13" y="-6" align="c">3</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>
 	</btn_bag_sniper>
 	<btn_bag_heavy x="5" y="300" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
@@ -277,6 +304,15 @@
 			</text_color>
 			<sound_h>weapons\gen_empty</sound_h>
 			<sound_t>weapons\generic_close</sound_t>
+			<hint x="15" y="-26" width="29" height="29">
+				<text font="letterica25" x="13" y="-6" align="c">4</text>
+				<text_color>
+					<e a="255" r="255" g="255" b="0"/>
+					<d a="255" r="87" g="87" b="72"/>					
+					<h a="255" r="255" g="226" b="79"/>
+					<t a="0" r="0" g="0" b="0"/>
+				</text_color>
+			</hint>
 	</btn_bag_heavy>
 
 	<!-- OK DIALOG BUTTON -->
@@ -285,7 +321,7 @@
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
 		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="normal" align="c">Ok</text>
+		<text font="graffiti22" align="c">Ok</text>
 		<text_color>
 			<e r="156" g="122" b="46"/>
 			<h r="255" g="255" b="255"/>
@@ -299,7 +335,7 @@
 		<texture_e>ui\ui_mp_buy_ok_e</texture_e>
 		<texture_t>ui\ui_mp_buy_ok_h</texture_t>
 		<texture_h>ui\ui_mp_buy_ok_h</texture_h>
-		<text font="normal" align="c">Cancel</text>		
+		<text font="graffiti22" align="c">Cancel</text>		
 		<text_color>
 			<e r="156" g="122" b="46"/>
 			<h r="255" g="255" b="255"/>
@@ -310,7 +346,7 @@
 	<autobuy_button x="840" y="557" width="145" height="48">
 		<texture_offset x="-42" y="0"/>
 		<texture>ui\ui_btn_mp_avto</texture>
-		<text font="normal" align="c">Autobuy</text>
+		<text font="graffiti22" align="c">Autobuy</text>
 		<text_color>
 			<e r="156" g="122" b="46"/>
 			<h r="255" g="255" b="255"/>
@@ -318,7 +354,7 @@
 		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
 		<hint x="-42" y="12" width="29" height="29">
-			<text font="graffiti32" x="13" y="-3" align="c">A</text>
+			<text font="letterica25" x="13" y="-3" align="c">A</text>
 			<text_color>
 				<e a="255" r="255" g="255" b="0"/>
 				<d a="255" r="87" g="87" b="72"/>					
@@ -333,7 +369,7 @@
 		<texture_e>ui\ui_btn_mp_avto_e</texture_e>
 		<texture_t>ui\ui_btn_mp_avto_t</texture_t>
 		<texture_h>ui\ui_btn_mp_avto_h</texture_h>
-		<text font="normal" align="c">Clear</text>
+		<text font="graffiti22" align="c">Clear</text>
 		<text_color>
 			<e r="156" g="122" b="46"/>
 			<h r="255" g="255" b="255"/>
@@ -341,7 +377,7 @@
 		</text_color>
 		<sound_t>weapons\generic_close</sound_t>
 		<hint x="-42" y="12" width="29" height="29">
-			<text font="graffiti32" x="13" y="-3" align="c">C</text>
+			<text font="letterica25" x="13" y="-3" align="c">C</text>
 			<text_color>
 				<e a="255" r="255" g="255" b="0"/>
 				<d a="255" r="87" g="87" b="72"/>					
