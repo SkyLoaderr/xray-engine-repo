@@ -3,8 +3,6 @@ hrom_prishli_rebyat = 0
 
 function main()
 
-	attack_guards = 0
-
 	actor   	= get_actor()
 
 	guard01	= get_level_object("guard01")
@@ -109,7 +107,7 @@ function main()
 
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 30 and attack_guards ~= 1 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 30  then
 			prof_oba:play_at_pos						(guard01,guard01:position(),0);
 			wait(1000)			
 			prof_hmm_kto_eto:play_at_pos						(guard01,guard01:position(),0);
@@ -121,56 +119,28 @@ function main()
 	end
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and attack_guards ~= 1 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 30 then
 			printf("see = true2!")
 			flush()
 			wait(2000)		
-			prof_eto_territoriya_svobodi:play_at_pos			(guard01,guard01:position(),0);
-			wait(2000)		
-			guard_see_actor = 2
-		break
-		end
-	    wait	()
-	end
-
-
-	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 2 and attack_guards ~= 1 then
-			wait(1000)			
 			prof_stoyat_pristrelu:play_at_pos			(guard01,guard01:position(),0);
 			wait(3000)			
-			guard_see_actor = 3
+			prof_eto_territoriya_svobodi:play_at_pos			(guard01,guard01:position(),0);
+			wait(2000)		
 		break
 		end
 	    wait	()
 	end
 
 	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 3 and attack_guards ~= 1 then
-			rainbow_ti_chto_gluhoy:play_at_pos			(guard02,guard02:position(),0);
-			wait(2000)			
-			guard_see_actor = 4
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 4 and attack_guards ~= 1 then
-			prof_sam_naprosilsya:play_at_pos			(guard01,guard01:position(),0);
-			wait(2000)			
-			guard_see_actor = 5
-		break
-		end
-	    wait	()
-	end
-
-	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 and guard_see_actor == 5 and attack_guards ~= 1 then
+		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 then
 			prof_chert:play_at_pos			(guard01,guard01:position(),0);
 			wait(1000)			
+			prof_sam_naprosilsya:play_at_pos			(guard01,guard01:position(),0);
+			wait(2000)			
 			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
 			wait(500)			
+			guard_see_actor = 5
 			guard01:script	(false,script_guards_pr02.script_name())
 			guard02:script	(false,script_guards_pr02.script_name())
 		break
@@ -194,37 +164,10 @@ function main()
 
 	while guard01:action() and guard02:action() do
 		if guard01.health <= 0 or guard02.health <= 0 then
-		attack_guards = 1
-		break
-		end
-		wait()			
-	end
-
-	while guard01:action() and guard02:action() do
-		if guard01.health <= 0 and guard02.health > 0 then
 			wait(2000)			
 			prof_ti_ubil_sivogo:play_at_pos		(guard02,guard02:position(),0);
 			guard02:script						(false,  script_guards_pr02.script_name())
 			wait(3000)			
-			final_guard04:script	(false,script_guards_pr02.script_name())
-			final_guard05:script	(false,script_guards_pr02.script_name())
-			siren:play_at_pos		(actor,actor:position(),0);
-			wait(1000)			
-			nemedlenno:play_at_pos		(actor,actor:position(),0);
-			wait(2000)			
-		break
-		end
-		wait()			
-	end
-
-	while guard01:action() and guard02:action() do
-		if guard02.health <= 0 and guard01.health > 0 then
-		wait(2000)			
-			rainbow_suka_ti_cherta_ubil:play_at_pos		(guard01,guard01:position(),0);
-			guard01:script						(false,  script_guards_pr02.script_name())
-			wait(3000)			
-			rainbow_hrom_u_nas_problema:play_at_pos		(guard01,guard01:position(),0);
-			wait(2000)			
 			final_guard04:script	(false,script_guards_pr02.script_name())
 			final_guard05:script	(false,script_guards_pr02.script_name())
 			siren:play_at_pos		(actor,actor:position(),0);
