@@ -53,7 +53,7 @@ void CLightPPA::Render	(CVertexStream* VS)
 
 	// Lock
 	DWORD	vOffset;
-	CLightPPA_Vertex* VB	= VS->Lock(triCount*3,vOffset);
+	CLightPPA_Vertex* VB = (CLightPPA_Vertex*)VS->Lock(triCount*3,vOffset);
 
 	// Cull and triangulate polygons
 	Fvector	cam		= Device.vCameraPosition;
@@ -106,6 +106,7 @@ void CLightPPA_Manager::Render()
 	// D3D.position.set		(sphere.P);
 	// D3D.range			= sphere.R;
 
+	Device.Shader.Set		(SH);
 	for (DWORD L=0; L<container.size(); L++)
 	{
 		CLightPPA&	PPL = *container[L];
@@ -115,19 +116,8 @@ void CLightPPA_Manager::Render()
 		if (alpha>=1)	continue;
 		if (!::Render.ViewBase.testSphereDirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
-		// Calculations
-		PPL.Render	(storage);
-
-		// Lock and copy
-		DWORD	vOffset;
-		DWORD	vCount	= storage.size	();
-		void*	VB		= VS->Lock		(vCount,vOffset);
-		CopyMemory	(VB,storage.begin(),vCount*sizeof(PPA_Vertex));
-		VS->Unlock	(vCount);
-
-		// Rendering
-		Device.Shader.Set		(SH);
-		Device.Primitive.Draw	(VS,vCount/3,vOffset);
+		// Calculations and rendering
+		PPL.Render	(VS);
 	}
 	container.clear	();
 
