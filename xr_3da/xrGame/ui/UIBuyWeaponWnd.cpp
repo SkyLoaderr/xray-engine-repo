@@ -2399,7 +2399,7 @@ void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 		{
 			CUIString str;
 			str.SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
-			CUIStatic::PreprocessText(str.m_str, UIItemInfo.UIDesc.GetItemWidth() - 5, UIItemInfo.UIDesc.GetFont());
+//			CUIStatic::PreprocessText(str.m_str, UIItemInfo.UIDesc.GetItemWidth() - 5, UIItemInfo.UIDesc.GetFont());
 			UIItemInfo.UIDesc.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
 		}
 	}

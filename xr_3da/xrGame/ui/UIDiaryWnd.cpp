@@ -272,7 +272,7 @@ void CUIDiaryWnd::SetContractTrader()
 			{
 				CUIString str;
 				str.SetText(artefact_list);
-				CUIStatic::PreprocessText(str.m_str, UIContractsWnd.UIListWnd.GetItemWidth() - 5, UIContractsWnd.UIListWnd.GetFont());
+//				CUIStatic::PreprocessText(str.m_str, UIContractsWnd.UIListWnd.GetItemWidth() - 5, UIContractsWnd.UIListWnd.GetFont());
 				UIContractsWnd.UIListWnd.AddParsedItem<CUIListItem>(&str.m_str.front(), 0, UIContractsWnd.UIListWnd.GetTextColor());
 			}
 		}

@@ -102,8 +102,11 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 
 		if (wrapWord || !nextWord)
 		{	
-			tmpC = text[i - 1];
-			text[i - 1] = 0;
+			if (nextWord && i != 0)
+			{
+				tmpC = text[i - 1];
+				text[i - 1] = 0;
+			}
 			//			buf.insert(buf.begin(), text.begin()+last_pos, text.begin()+i);
 			//			buf.push_back(0);
 			ReturnStatus &= AddItem<Element>(&text[last_pos], shift, pData, value, insertBeforeIdx);
@@ -111,7 +114,10 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 			pLocalItem->SetGroupID(GroupID);
 			pLocalItem->SetTextColor(MsgColor);
 			pLocalItem->SetFont(pFont);
-			text[i - 1]		= tmpC;
+			if (nextWord && i != 0)
+			{
+				text[i - 1]		= tmpC;
+			}
 			i				+= symbolsToSkip;
 			symbolsToSkip	= 0;
 			last_pos		= i;
@@ -124,18 +130,18 @@ bool CUIListWnd::AddParsedItem(const CUIString &str, const int shift,
 			i		= static_cast<int>(text.size());
 	}
 
-	if(last_pos<text.size())
-	{
-		buf.clear();
-		buf.insert(buf.begin(), text.begin()+last_pos, text.end());
-		buf.push_back(0);
-		AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
-		GetItem(GetSize() - 1)->SetGroupID(GroupID);
-		Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
-		pLocalItem->SetGroupID(GroupID);
-		pLocalItem->SetTextColor(MsgColor);
-		pLocalItem->SetFont(pFont);
-	}
+//	if(last_pos<text.size())
+//	{
+//		buf.clear();
+//		buf.insert(buf.begin(), text.begin()+last_pos, text.end());
+//		buf.push_back(0);
+//		AddItem<Element>(&buf.front(), shift, pData, value, insertBeforeIdx);
+//		GetItem(GetSize() - 1)->SetGroupID(GroupID);
+//		Element *pLocalItem = smart_cast<Element*>(GetItem(GetSize() - 1));
+//		pLocalItem->SetGroupID(GroupID);
+//		pLocalItem->SetTextColor(MsgColor);
+//		pLocalItem->SetFont(pFont);
+//	}
 
 	return ReturnStatus;
 }

@@ -129,7 +129,7 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 	// Description
 	CUIString str;
 	str.SetText(*stbl(task->ObjectiveDesc(0)));
-	CUIStatic::PreprocessText(str.m_str, UIList.GetItemWidth() - 10, pSubTasksFnt);
+//	CUIStatic::PreprocessText(str.m_str, UIList.GetItemWidth() - 10, pSubTasksFnt);
 	UIList.AddParsedItem<CUIListItem>(str, 0, clTaskSubItemColor, pSubTasksFnt);
     
 	// Теперь пробегаемся по остальным таскам и заносим их как задания

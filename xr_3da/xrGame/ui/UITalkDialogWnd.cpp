@@ -68,6 +68,7 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	xml_init.InitListWnd(uiXml, "list", 1, &UIAnswersList);
 	UIAnswersList.EnableScrollBar(true);
 	UIAnswersList.ActivateList(false);
+	UIAnswersList.SetRightIndention(10);
 
 	//Вопросы
 	//UIDialogFrame.AttachChild(&UIQuestionsList);
@@ -78,6 +79,8 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	UIQuestionsList.EnableActiveBackground(false);
 	UIQuestionsList.EnableScrollBar(true);
 	UIQuestionsList.SetMessageTarget(this);
+	UIQuestionsList.SetRightIndention(10);
+
 
 	//кнопка перехода в режим торговли
 	AttachChild(&UIToTradeButton);

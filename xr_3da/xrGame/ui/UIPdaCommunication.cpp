@@ -355,8 +355,8 @@ const int MessageShift = 30;
 // Функции добавления строк в листы вопросов и ответов
 void CUIPdaCommunication::AddQuestion(CUIString str, void* pData, int value)
 {
-	CUIStatic::PreprocessText(str.m_str, UIPdaDialogWnd.UIPhrasesListWnd.GetWidth() - MessageShift - 25, 
-		UIPdaDialogWnd.UIPhrasesListWnd.GetFont());
+//	CUIStatic::PreprocessText(str.m_str, UIPdaDialogWnd.UIPhrasesListWnd.GetWidth() - MessageShift - 25, 
+//		UIPdaDialogWnd.UIPhrasesListWnd.GetFont());
 	UIPdaDialogWnd.UIPhrasesListWnd.AddParsedItem<CUIListItem>(str, 0, 
 		UIPdaDialogWnd.UIPhrasesListWnd.GetTextColor(), 
 		UIPdaDialogWnd.UIPhrasesListWnd.GetFont(), pData, value);
@@ -368,8 +368,8 @@ void CUIPdaCommunication::AddAnswer(CUIString str, const CUIString &SpeakerName)
 	if(xr_strlen((LPCSTR)str) == 0) return;
 
 	// Делаем препроцессинг строки
-	CUIStatic::PreprocessText(str.m_str, UIPdaDialogWnd.UILogListWnd.GetWidth() - MessageShift - 25, // 20 means approximate scrollbar width value
-							  UIPdaDialogWnd.UILogListWnd.GetFont());
+//	CUIStatic::PreprocessText(str.m_str, UIPdaDialogWnd.UILogListWnd.GetWidth() - MessageShift - 25, // 20 means approximate scrollbar width value
+//							  UIPdaDialogWnd.UILogListWnd.GetFont());
 
 	u32 cl = UIPdaDialogWnd.UILogListWnd.GetTextColor();
 	if (0 == xr_strcmp(SpeakerName.GetBuf(), m_pOurInvOwner->CharacterInfo().Name())) 
