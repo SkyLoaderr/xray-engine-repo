@@ -4915,6 +4915,37 @@
 								RelativePath=".\CarWheels.cpp">
 							</File>
 						</Filter>
+						<Filter
+							Name="heli"
+							Filter="">
+							<File
+								RelativePath=".\Helicopter.cpp">
+							</File>
+							<File
+								RelativePath=".\helicopter.h">
+							</File>
+							<File
+								RelativePath=".\HelicopterMovementManager.cpp">
+							</File>
+							<File
+								RelativePath=".\HelicopterMovementManager.h">
+							</File>
+							<File
+								RelativePath=".\HelicopterMovementManager_inl.h">
+							</File>
+							<File
+								RelativePath=".\helicopterMovMngrComputePath.cpp">
+							</File>
+							<File
+								RelativePath=".\HelicopterMovMngrHuntPath.cpp">
+							</File>
+							<File
+								RelativePath=".\HelicopterMovMngrPatrolTrajectory.cpp">
+							</File>
+							<File
+								RelativePath=".\HelicopterWeapon.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Zones"
