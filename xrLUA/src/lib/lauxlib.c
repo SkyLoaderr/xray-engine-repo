@@ -10,6 +10,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include "..\\src\\xr_print.h"
 
 
 /* This file uses only the official API of Lua.
@@ -557,7 +558,7 @@ static void callalert (lua_State *L, int status) {
       lua_call(L, 1, 0);
     }
     else {  /* no _ALERT function; print it on stderr */
-      fprintf(stderr, "%s\n", lua_tostring(L, -2));
+      xr_printf(stderr, "%s\n", lua_tostring(L, -2));
       lua_pop(L, 2);  /* remove error message and _ALERT */
     }
   }

@@ -27,6 +27,7 @@
 #include "lstring.h"
 #include "ltable.h"
 #include "lualib.h"
+#include "xr_print.h"
 
 
 
@@ -825,7 +826,7 @@ static void fim (void) {
 
 static int l_panic (lua_State *L) {
   UNUSED(L);
-  fprintf(stderr, "unable to recover; exiting\n");
+  xr_printf(stderr, "unable to recover; exiting\n");
   return 0;
 }
 

@@ -30,6 +30,7 @@
 #include "lundump.h"
 #include "lvm.h"
 #include "lzio.h"
+#include "xr_print.h"
 
 
 
@@ -358,7 +359,7 @@ static void callalert (lua_State *L, int status) {
 			lua_call(L, 1, 0);
 		}
 		else {  /* no _ALERT function; print it on stderr */
-			fprintf(stderr, "%s\n", lua_tostring(L, -2));
+			xr_printf(stderr, "%s\n", lua_tostring(L, -2));
 			lua_pop(L, 2);  /* remove error message and _ALERT */
 		}
 	}

@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "..\\src\\xr_print.h"
 
 #define liolib_c
 

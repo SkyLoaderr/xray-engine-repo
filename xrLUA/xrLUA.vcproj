@@ -290,6 +290,16 @@
 				RelativePath=".\etc\lua+lib.def">
 			</File>
 		</Filter>
+		<Filter
+			Name="XRay"
+			Filter="">
+			<File
+				RelativePath=".\src\xr_print.c">
+			</File>
+			<File
+				RelativePath=".\src\xr_print.h">
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
