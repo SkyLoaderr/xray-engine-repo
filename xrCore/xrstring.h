@@ -31,6 +31,7 @@ public:
 	str_value*			dock			(str_c value);
 	void				clean			();
 	void				dump			();
+	u32					stat_economy	();
 						~str_container	();
 };
 XRCORE_API	extern		str_container*	g_pStringContainer;

@@ -16,15 +16,15 @@ str_value*	str_container::dock		(str_c value)
 	str_value*	result			= 0;
 
 	// calc len
-	size_t	s_len				= xr_strlen(value);
-	size_t	s_len_with_zero		= s_len+1;
+	u32		s_len				= xr_strlen(value);
+	u32		s_len_with_zero		= (u32)s_len+1;
 	VERIFY	(HEADER+s_len_with_zero < 4096);
 
 	// setup find structure
 	string4096	tempstorage;
 	str_value*	sv				= (str_value*)tempstorage;
 	sv->dwReference				= 0;
-	sv->dwStrLen				= s_len;
+	sv->dwLength				= s_len;
 	Memory.mem_copy				(sv->value,value,s_len_with_zero);
 	
 	// search
@@ -70,6 +70,20 @@ void		str_container::dump	()
 	for (; it!=end; it++)
 		Msg	("%4d : %s",(*it)->dwReference,(*it)->value);
 	cs.Leave	();
+}
+u32			str_container::stat_economy		()
+{
+	cs.Enter	();
+	cdb::iterator	it		= container.begin	();
+	cdb::iterator	end		= container.end		();
+	s32				counter	= 0;
+	for (; it!=end; it++)	{
+		counter		+=		(*it)->dwReference * (*it)->dwLength;
+		counter		-=		(*it)->dwLength;
+	}
+	cs.Leave	();
+
+	return		u32(counter);
 }
 str_container::~str_container		()
 {

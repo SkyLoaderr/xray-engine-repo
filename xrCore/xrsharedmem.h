@@ -1,5 +1,5 @@
-#ifndef xrstringH
-#define xrstringH
+#ifndef xrsharedmemH	
+#define xrsharedmemH
 #pragma once
 
 #pragma pack(push,4)
@@ -48,7 +48,8 @@ public:
 	smem_value*			dock			(u32 dwCRC, u32 dwLength, void* ptr);
 	void				clean			();
 	void				dump			();
-	~smem_container	();
+	u32					stat_economy	();
+	~smem_container		();
 };
 XRCORE_API	extern		smem_container*	g_pSharedMemoryContainer;
 
@@ -62,7 +63,6 @@ protected:
 	// ref-counting
 	void				_dec		()								{	if (0==p_) return;	p_->dwReference--; 	if (0==p_->dwReference)	p_=0;						}
 public:
-	void				_set		(str_c rhs) 					{	smem_value* v = g_pStringContainer->dock(rhs); if (0!=v) v->dwReference++; _dec(); p_ = v;	}
 	void				_set		(ref_smem const &rhs)			{	smem_value* v = rhs.p_; if (0!=v) v->dwReference++; _dec(); p_ = v;							}
 	const smem_value*	_get		()	const						{	return p_;																					}
 public:
@@ -70,6 +70,12 @@ public:
 	ref_smem			()											{	p_ = 0;														}
 	ref_smem			(ref_smem<T> const &rhs)					{	p_ = 0;	_set(rhs);											}
 	~ref_smem			()											{	_dec();														}
+
+	void				create		(u32 dwCRC, u32 dwLength, void* ptr)
+	{
+		smem_value* v	= g_pSharedMemoryContainer->dock(dwCRC,dwLength,ptr); 
+		if (0!=v)		v->dwReference++; _dec(); p_ = v;	
+	}
 
 	// assignment & accessors
 	ref_smem<T>&		operator=	(ref_smem<T> const &rhs)		{	_set(rhs);	return (ref_smem<T>&)*this;						}
@@ -91,12 +97,17 @@ public:
 // ptr != const res_ptr
 // res_ptr < res_ptr
 // res_ptr > res_ptr
+template<class T>
 IC bool operator	==	(ref_smem<T> const & a, ref_smem<T> const & b)	{ return a._get() == b._get();	}
+template<class T>
 IC bool operator	!=	(ref_smem<T> const & a, ref_smem<T> const & b)	{ return a._get() != b._get();	}
+template<class T>
 IC bool operator	<	(ref_smem<T> const & a, ref_smem<T> const & b)	{ return a._get() <  b._get();	}
+template<class T>
 IC bool operator	>	(ref_smem<T> const & a, ref_smem<T> const & b)	{ return a._get() >  b._get();	}
 
 // externally visible standart functionality
+template<class T>
 IC void swap			(ref_smem<T> & lhs, ref_smem<T> & rhs)			{ lhs.swap(rhs);				}
 
 #pragma pack(pop)

@@ -1,6 +1,8 @@
 #include "StdAfx.h"
 #pragma hdrstop
 
+#include	"xrsharedmem.h"
+
 #include	<malloc.h>
 
 xrMemory	Memory;
@@ -62,11 +64,12 @@ void	xrMemory::_destroy()
 
 void	xrMemory::mem_compact	()
 {
-	RegFlushKey			( HKEY_CLASSES_ROOT );
-	RegFlushKey			( HKEY_CURRENT_USER );
-	_heapmin			();
-	HeapCompact			(GetProcessHeap(),0);
-	if (g_pStringContainer)	g_pStringContainer->clean	();
+	RegFlushKey						( HKEY_CLASSES_ROOT );
+	RegFlushKey						( HKEY_CURRENT_USER );
+	_heapmin						();
+	HeapCompact						(GetProcessHeap(),0);
+	if (g_pStringContainer)			g_pStringContainer->clean		();
+	if (g_pSharedMemoryContainer)	g_pSharedMemoryContainer->clean	();
 }
 
 u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
@@ -113,6 +116,9 @@ void	xrMemory::mem_statistic	()
 	mem_compact				();
 	LPCSTR					fn	= "$memstat$.tmp";
 	xr_map<u32,u32>			stats;
+
+	if (g_pStringContainer)			Msg	("memstat: shared_str: economy: %d bytes",g_pStringContainer->stat_economy());
+	if (g_pSharedMemoryContainer)	Msg	("memstat: shared_mem: economy: %d bytes",g_pSharedMemoryContainer->stat_economy());
 
 	// Dump memory stats into file to avoid reallocation while traversing
 	{
