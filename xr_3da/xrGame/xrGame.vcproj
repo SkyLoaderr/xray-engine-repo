@@ -1614,25 +1614,6 @@
 				Name="ARoute"
 				Filter="">
 				<Filter
-					Name="AStar"
-					Filter="">
-					<File
-						RelativePath="a_star.cpp">
-					</File>
-					<File
-						RelativePath="a_star.h">
-					</File>
-					<File
-						RelativePath="a_star_interfaces.cpp">
-					</File>
-					<File
-						RelativePath="a_star_interfaces.h">
-					</File>
-					<File
-						RelativePath="a_star_template.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="ASpace"
 					Filter="">
 					<File
@@ -1667,6 +1648,25 @@
 					</File>
 					<File
 						RelativePath="ai_misc.cpp">
+					</File>
+				</Filter>
+				<Filter
+					Name="AStar"
+					Filter="">
+					<File
+						RelativePath="a_star.cpp">
+					</File>
+					<File
+						RelativePath="a_star.h">
+					</File>
+					<File
+						RelativePath="a_star_interfaces.cpp">
+					</File>
+					<File
+						RelativePath="a_star_interfaces.h">
+					</File>
+					<File
+						RelativePath="a_star_template.h">
 					</File>
 				</Filter>
 			</Filter>
