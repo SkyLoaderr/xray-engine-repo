@@ -5,7 +5,7 @@
 //---------------------------------------------------------------------------
 #include <Classes.hpp>
 #include <Controls.hpp>
-#include <StdCtrls.hpp>
+#include <StdCtrls.hpp>         
 #include <Forms.hpp>
 #include <ExtCtrls.hpp>
 #include <Buttons.hpp>
@@ -18,7 +18,7 @@
 //---------------------------------------------------------------------------
 // refs
 
-class TfrmMain : public TForm
+class ECORE_API TfrmMain : public TForm
 {
 __published:	// IDE-managed Components
         TPanel *paLeftBar;
@@ -61,7 +61,6 @@ __published:	// IDE-managed Components
           TShiftState Shift, int X, int Y);
 	void __fastcall D3DWindowMouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
-	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall ebAllMinClick(TObject *Sender);
 	void __fastcall ebAllMaxClick(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
@@ -78,6 +77,6 @@ public:		// User declarations
     bool            IsFocused(){return D3DWindow->Focused();}
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TfrmMain *frmMain;
+extern ECORE_API PACKAGE TfrmMain *frmMain;
 //---------------------------------------------------------------------------
 #endif
