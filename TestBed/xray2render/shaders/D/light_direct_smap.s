@@ -27,6 +27,7 @@ uniform sampler2D 	s_diffuse;
 uniform sampler1D 	s_power;
 uniform float4 		light_direction;
 uniform float4 		light_color;
+uniform float4x4	light_xform;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 // Vertex
