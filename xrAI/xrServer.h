@@ -96,8 +96,8 @@ public:
 	void					Update				();
 	void					SLS_Default			();
 	void					SLS_Clear			();
-	void					SLS_Save			(IWriter& FS);
-	void					SLS_Load			(IReader&  FS);
+	void					SLS_Save			(IWriter&	fs);
+	void					SLS_Load			(IReader&	fs);
 };
 
 #endif // !defined(AFX_XRSERVER_H__65728A25_16FC_4A7B_8CCE_D798CA5EC64E__INCLUDED_)

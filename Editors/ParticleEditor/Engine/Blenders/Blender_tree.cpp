@@ -28,10 +28,10 @@ void	CBlender_Tree::Save		(IWriter& fs )
 	xrPWRITE_PROP		(fs,"Alpha-blend",	xrPID_BOOL,		oBlend);
 }
 
-void	CBlender_Tree::Load		(IReader& FS, WORD version )
+void	CBlender_Tree::Load		(IReader& fs, WORD version )
 {
-	CBlender::Load		(FS,version);
-	xrPREAD_PROP		(FS,xrPID_BOOL,		oBlend);
+	CBlender::Load		(fs,version);
+	xrPREAD_PROP		(fs,xrPID_BOOL,		oBlend);
 }
 
 #if RENDER==R_R1
