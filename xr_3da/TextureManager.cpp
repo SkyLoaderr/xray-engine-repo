@@ -325,7 +325,9 @@ void	CShaderManager::OnDeviceDestroy(void)
 	{
 		Shader& S = *(shaders[it]);
 		if (0!=S.dwReference)	{
-			Device.Fatal		("Shader still referenced. Texture: %s",DBG_GetTextureName(P.T->));
+			STextureList*		T = S.Passes.front().T;
+			if (T)	Device.Fatal	("Shader still referenced. Texture: %s",DBG_GetTextureName(T->front()));
+			else	Device.Fatal	("Shader still referenced.");
 		}
 		for (DWORD p=0; p<S.Passes.size(); p++)
 		{
