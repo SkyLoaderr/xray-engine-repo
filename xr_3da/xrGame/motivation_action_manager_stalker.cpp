@@ -19,6 +19,8 @@
 extern EStalkerBehaviour	g_stalker_behaviour;
 #endif
 
+//#define GOAP_DEBUG
+
 using namespace StalkerDecisionSpace;
 
 CMotivationActionManagerStalker::CMotivationActionManagerStalker	()
@@ -134,47 +136,49 @@ void CMotivationActionManagerStalker::update			(u32 time_delta)
 #endif
 	inherited::update		();
 	
-//	if (m_failed) {
-//		{
-//			Msg			("%d",evaluators().size());
-//			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
-//			EVALUATOR_MAP::const_iterator	E = evaluators().end();
-//			for ( ; I != E; ++I)
-//				if ((*I).first != 5023)
-//					Msg		("%d,%d",(*I).first,(*I).second->evaluate() ? 1 : 0);
-//				else
-//					Msg		("%d,%d",(*I).first,0);
-//		}
-//		{
-//			Msg			("%d",target_state().conditions().size());
-//			xr_vector<COperatorCondition>::const_iterator	I = target_state().conditions().begin();
-//			xr_vector<COperatorCondition>::const_iterator	E = target_state().conditions().end();
-//			for ( ; I != E; ++I)
-//				Msg		("%d,%d",(*I).condition(),(*I).value() ? 1 : 0);
-//		}
-//		{
-//			Msg			("%d",operators().size());
-//			const_iterator	I = operators().begin();
-//			const_iterator	E = operators().end();
-//			for ( ; I != E; ++I) {
-//				Msg		("%d,%d",(*I).m_operator_id,(*I).m_operator->weight(target_state(),target_state()));
-//				{
-//					Msg		("%d",(*I).m_operator->conditions().conditions().size());
-//					xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->conditions().conditions().begin();
-//					xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->conditions().conditions().end();
-//					for ( ; i != e; ++i)
-//						Msg		("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
-//				}
-//				{
-//					Msg		("%d",(*I).m_operator->effects().conditions().size());
-//					xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->effects().conditions().begin();
-//					xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->effects().conditions().end();
-//					for ( ; i != e; ++i)
-//						Msg		("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
-//				}
-//			}
-//		}
-//	}
+#ifdef GOAP_DEBUG
+	if (m_failed) {
+		{
+			Msg			("%d",evaluators().size());
+			EVALUATOR_MAP::const_iterator	I = evaluators().begin();
+			EVALUATOR_MAP::const_iterator	E = evaluators().end();
+			for ( ; I != E; ++I)
+				if ((*I).first != 5023)
+					Msg		("%d,%d",(*I).first,(*I).second->evaluate() ? 1 : 0);
+				else
+					Msg		("%d,%d",(*I).first,0);
+		}
+		{
+			Msg			("%d",target_state().conditions().size());
+			xr_vector<COperatorCondition>::const_iterator	I = target_state().conditions().begin();
+			xr_vector<COperatorCondition>::const_iterator	E = target_state().conditions().end();
+			for ( ; I != E; ++I)
+				Msg		("%d,%d",(*I).condition(),(*I).value() ? 1 : 0);
+		}
+		{
+			Msg			("%d",operators().size());
+			const_iterator	I = operators().begin();
+			const_iterator	E = operators().end();
+			for ( ; I != E; ++I) {
+				Msg		("%d,%d",(*I).m_operator_id,(*I).m_operator->weight(target_state(),target_state()));
+				{
+					Msg		("%d",(*I).m_operator->conditions().conditions().size());
+					xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->conditions().conditions().begin();
+					xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->conditions().conditions().end();
+					for ( ; i != e; ++i)
+						Msg		("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
+				}
+				{
+					Msg		("%d",(*I).m_operator->effects().conditions().size());
+					xr_vector<COperatorCondition>::const_iterator	i = (*I).m_operator->effects().conditions().begin();
+					xr_vector<COperatorCondition>::const_iterator	e = (*I).m_operator->effects().conditions().end();
+					for ( ; i != e; ++i)
+						Msg		("%d,%d",(*i).condition(),(*i).value() ? 1 : 0);
+				}
+			}
+		}
+	}
+#endif
 
 #ifdef DEBUG
 	m_stalker_behaviour		= g_stalker_behaviour;
