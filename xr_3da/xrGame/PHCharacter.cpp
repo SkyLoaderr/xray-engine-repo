@@ -12,6 +12,7 @@ const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 CPHCharacter::CPHCharacter(void)
 {
 b_climb=false;
+b_pure_climb=true;
 m_friction_factor=1.f;
 m_body=NULL;
 m_wheel_body=NULL;
@@ -269,12 +270,15 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 	b_valide_ground_contact=false;
 	b_valide_wall_contact=false;
 	b_climb=false;
+	b_pure_climb=true;
 	
 	m_contact_count=0;
 	//limit velocity
 	dReal l_limit;
-	if(is_control&&!b_lose_control) l_limit = m_max_velocity;
-	else l_limit=10.f/fixed_step;
+	if(is_control&&!b_lose_control) 
+					l_limit = m_max_velocity;
+	else			
+					l_limit=10.f/fixed_step;
 
 		dReal mag;
 		const dReal* vel = dBodyGetLinearVel(m_body);
@@ -313,21 +317,24 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 void CPHSimpleCharacter::PhTune(dReal step){
 	if(b_climb ) {
 																		
-																				  b_clamb_jump=true;
-																				  b_side_contact=false;
-																				  m_friction_factor=1.f;
-		}
+					// b_clamb_jump=true;
+					 b_side_contact=false;
+					 m_friction_factor=1.f;
+					 if(b_pure_climb) m_max_velocity=0.2f;
+				}
 
 	b_depart=was_contact&&(!is_contact);
 	b_meet=(!was_contact)&&(is_contact);
 	if(b_lose_control&&is_contact)b_meet_control=true;
 	b_on_ground=is_contact||(b_meet&&(!b_depart));
+
 //save depart position
 	if(b_depart) 
 		memcpy(m_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 
 	if(is_contact) b_lose_control=false;
 	if(b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2) b_jumping=false;
+
 //deside if control lost
 	if(!b_on_ground){
 		const dReal* current_pos=dBodyGetPosition(m_body);
@@ -356,8 +363,9 @@ void CPHSimpleCharacter::PhTune(dReal step){
 													//	dBodySetLinearVel(m_body,0.f,0.f,0.f);
 			}
 	}
+
 //decide to clamb
-	if(b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
+	if(!b_climb&&b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
 	{
 	//if( dDOT(m_wall_contact_normal,m_ground_contact_normal)<.999999f)
 	//dVector3 diff={m_wall_contact_normal[0]-m_ground_contact_normal[0],m_wall_contact_normal[1]-m_ground_contact_normal[1],m_wall_contact_normal[2]-m_ground_contact_normal[2]};
@@ -369,14 +377,14 @@ void CPHSimpleCharacter::PhTune(dReal step){
 	
 	
 	}
+
 if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 			if(
 			dFabs((m_wall_contact_position[0]-m_ground_contact_position[0])+		//*m_control_force[0]
 		   (m_wall_contact_position[2]-m_ground_contact_position[2]))>0.0f &&//0.01f//*m_control_force[2]
 		    m_wall_contact_position[1]-m_ground_contact_position[1]>0.0f)
 									memcpy(m_clamb_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
-//jump
-	
+//jump	
 	if(b_jump){
 				b_lose_control=true;
 				const dReal* vel=dBodyGetLinearVel(m_body);
@@ -422,9 +430,10 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 			//		dBodyAddForce(m_body,-chVel[0]*500.f,-chVel[1]*500.f,-chVel[2]*500.f);
 		//		}
 			}
-			if(b_jumping){
 
-			dReal proj=m_jump_accel.x*chVel[0]+m_jump_accel.z*chVel[2];
+		if(b_jumping){
+
+		dReal proj=m_jump_accel.x*chVel[0]+m_jump_accel.z*chVel[2];
 
 					const dReal* current_pos=dBodyGetPosition(m_body);
 		dVector3 dif={current_pos[0]-m_jump_depart_position[0],
@@ -481,7 +490,8 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 
 		
 
-		b_climb=b_climb||(((DWORD)c->surface.mode)& SGameMtl::flClimbable);
+		b_climb=b_climb || (((DWORD)c->surface.mode)& SGameMtl::flClimbable);
+		b_pure_climb=b_pure_climb && (((DWORD)c->surface.mode)& SGameMtl::flClimbable);
 
 		if((c->surface.mode&SGameMtl::flWalkOn))
 									b_clamb_jump=true;
@@ -596,7 +606,7 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		//c->surface.soft_erp=0.2f;
 		c->surface.soft_cfm*=spring_rate;//0.01f;
 		c->surface.soft_erp*=dumping_rate;//10.f;
-		c->surface.mu *= 1.f+b_clamb_jump*3.f;
+		c->surface.mu *= (1.f+b_clamb_jump*3.f+b_climb*20.f);
 
 		}
 	
@@ -695,7 +705,7 @@ m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_con
 //M->m_Flags.is(GameMtl::flClimbable);
 if(b_climb){
 //m_control_force[0]*=4.f;
-	m_control_force[1]+=m.mass*120.f;
+	m_control_force[1]+=m.mass*140.f;
 //m_control_force[2]*=4.f;
 }
 

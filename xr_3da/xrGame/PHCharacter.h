@@ -68,6 +68,7 @@ bool b_valide_wall_contact;
 bool b_saved_contact_velocity;
 bool b_jumping;
 bool b_climb;
+bool b_pure_climb;
 UINT m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;
@@ -85,7 +86,7 @@ public:
 bool b_exist;
 float m_update_time;
 public:
-void		SetMaximumVelocity						(dReal vel){m_max_velocity=vel;}
+void		SetMaximumVelocity						(dReal vel){m_max_velocity=vel; }
 void		SetJupmUpVelocity								(dReal velocity){jump_up_velocity=velocity;}
 const Fvector&	Position									() {return m_position;}
 const Fvector&	Velocity									() {return m_velocity;}
