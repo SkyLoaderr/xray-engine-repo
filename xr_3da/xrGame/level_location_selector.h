@@ -27,7 +27,7 @@ class
 		_vertex_id_type
 	>
 {
-	typedef CGameGraph _Graph;
+	typedef CLevelGraph _Graph;
 	typedef CAbstractLocationSelector <
 		_Graph,
 		_VertexEvaluator,
