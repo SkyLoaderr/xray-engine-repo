@@ -237,13 +237,13 @@ void TUI::OnMouseMove(int x, int y){
 
 void TUI::OnAppActivate()
 {
-	pInput->OnAppActivate();
+	if (pInput) pInput->OnAppActivate();
 }
 //---------------------------------------------------------------------------
 
 void TUI::OnAppDeactivate()
 {
-	pInput->OnAppDeactivate();
+	if (pInput) pInput->OnAppDeactivate();
 }
 //---------------------------------------------------------------------------
 
