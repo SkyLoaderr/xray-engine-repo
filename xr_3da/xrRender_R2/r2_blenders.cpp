@@ -13,6 +13,7 @@
 #include "blender_detail_still.h"
 #include "blender_particle.h"
 #include "Blender_Model_EbB.h"
+#include "blender_Lm(EbB).h"
 
 IBlender*	CRender::blender_create	(CLASS_ID cls)
 {	
@@ -29,7 +30,7 @@ IBlender*	CRender::blender_create	(CLASS_ID cls)
 	case B_LIGHT:			return 0;
 	case B_LmBmmD:			return xr_new<CBlender_BmmD>			();	
 	case B_LaEmB:			return 0;
-	case B_LmEbB:			return 0;
+	case B_LmEbB:			return xr_new<CBlender_LmEbB>			();
 	case B_B:				return 0;
 	case B_BmmD:			return xr_new<CBlender_BmmD>			();	
 	case B_SHADOW_TEX:		return 0;
