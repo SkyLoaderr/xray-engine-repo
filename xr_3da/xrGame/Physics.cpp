@@ -1967,7 +1967,7 @@ void	CPHElement::Disabling(){
 					deviation/=dis_count_f;
 					if(mag_v<0.005f* dis_frames && deviation<0.00005f*dis_frames)
 						Disable();//dBodyDisable(m_body);//
-					if((!(previous_dev<deviation+0.00003f)&&!(previous_v<mag_v+0.003f))//
+					if((!(previous_dev<deviation)&&!(previous_v<mag_v))//
 					  ) 
 					{
 					dis_count_f++;
@@ -2789,7 +2789,12 @@ if(!(body1&&body2))
 	
 	dJointAttach(m_joint,body1,body2);
 
+#ifndef ODE_SLOW_SOLVER
 	dJointSetHingeAnchor(m_joint,pos.x-1.f,pos.y,pos.z);
+#else
+	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
+#endif
+
 	dJointSetHingeAxis(m_joint,0.f,0.f,1.f);
 	dJointSetHingeParam(m_joint,dParamLoStop ,0.00f);
 	dJointSetHingeParam(m_joint,dParamHiStop ,0.00f);
@@ -2799,7 +2804,7 @@ if(!(body1&&body2))
 	dJointSetHingeParam(m_joint,dParamStopCFM,world_cfm);
 
 
-
+#ifndef ODE_SLOW_SOLVER
 
 	m_joint1=dJointCreateHinge(phWorld,0);
 
@@ -2814,6 +2819,8 @@ if(!(body1&&body2))
 	dJointSetHingeParam(m_joint1,dParamCFM,world_cfm);
 	dJointSetHingeParam(m_joint1,dParamStopERP,world_erp);
 	dJointSetHingeParam(m_joint1,dParamStopCFM,world_cfm);
+#endif
+
 	return;
 }
 

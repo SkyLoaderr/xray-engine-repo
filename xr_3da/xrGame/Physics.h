@@ -19,8 +19,14 @@ const int dis_frames=11;
 
 //const dReal world_spring=24000000.f;//2400000.f;//550000.f;///1000000.f;;
 //const dReal world_damping=400000.f;//erp/cfm1.1363636e-006f,0.54545456f
+#ifndef  ODE_SLOW_SOLVER
 const dReal world_cfm=1.1363636e-008f;
 const dReal world_erp=0.74545456f;
+#else
+const dReal world_cfm=1.1363636e-006f;
+const dReal world_erp=0.54545456f;
+#endif
+
 const dReal world_spring=SPRING(world_cfm,world_erp);
 const dReal world_damping=DAMPING(world_cfm,world_erp);
 

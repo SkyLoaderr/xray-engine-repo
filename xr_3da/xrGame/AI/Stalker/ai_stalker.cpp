@@ -850,7 +850,7 @@ void CAI_Stalker::CreateSkeleton()
 	m_pPhysicsShell->mXFORM.set(m);
 	m_pPhysicsShell->SetAirResistance(0.002f*skel_airr_lin_factor,
 								   0.3f*skel_airr_ang_factor);
-	
+	m_pPhysicsShell->SmoothElementsInertia(0.2f);
 
 }
 
@@ -1062,12 +1062,12 @@ void CAI_Stalker::Update	( u32 DT )
 		//m_pPhysicsShell->SetAirResistance()
 		
 		}
-		if(skel_ddelay==-10)
-		{
-			m_pPhysicsShell->set_JointResistance(0.f);//5.f*hinge_force_factor1
+		//if(skel_ddelay==-10)
+		//{
+		//	m_pPhysicsShell->set_JointResistance(0.f);//5.f*hinge_force_factor1
 			//m_pPhysicsShell->SetAirResistance()
 
-		}
+		//}
 
 		skel_ddelay--;
 		
