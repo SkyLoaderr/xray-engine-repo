@@ -252,6 +252,7 @@ public:
     IC SurfaceIt	FirstSurface			()	{return m_Surfaces.begin();}
     IC SurfaceIt	LastSurface				()	{return m_Surfaces.end();}
     IC int			SurfaceCount			()	{return m_Surfaces.size();}
+    IC int 			Version 				() 	{return m_Version;}
 
     // LOD
 	std::string		GetLODTextureName		();

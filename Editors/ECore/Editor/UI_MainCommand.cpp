@@ -30,6 +30,29 @@ void 	EnableReceiveCommands()
 {
 	bAllowReceiveCommand = TRUE;
 }
+SECommand::SESubCommand* FindCommandByShortcut(const xr_shortcut& val)
+{
+    ECommandVec& cmds		= GetEditorCommands();
+    for (u32 cmd_idx=0; cmd_idx<cmds.size(); cmd_idx++){
+    	SECommand*& CMD		= cmds[cmd_idx];
+        if (CMD&&CMD->editable){
+        	VERIFY(!CMD->sub_commands.empty());
+		    for (u32 sub_cmd_idx=0; sub_cmd_idx<CMD->sub_commands.size(); sub_cmd_idx++){
+            	SECommand::SESubCommand*& SUB_CMD = CMD->sub_commands[sub_cmd_idx];
+                if (SUB_CMD->shortcut.similar(val)) return SUB_CMD;
+            }
+        }
+    }
+    return 0;
+}
+u32 	ExecCommand		(const xr_shortcut& val)
+{
+	SECommand::SESubCommand* CMD = FindCommandByShortcut(val);
+    u32 res 			= false;
+    if (CMD)
+	    CMD->parent->command(CMD->index,0,res);
+    return res;
+}
 u32 	ExecCommand		(u32 cmd, u32 p1, u32 p2)
 {
 	if (!bAllowReceiveCommand)	return 0;
@@ -517,6 +540,13 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
     if (ApplyGlobalShortCut(Key,Shift))	return true;
 
+    xr_shortcut SC; 
+    SC.key							= Key;
+    SC.ext.assign					(Shift.Contains(ssShift)?xr_shortcut::flShift:0|
+    								 Shift.Contains(ssCtrl) ?xr_shortcut::flCtrl:0|
+                                     Shift.Contains(ssAlt)  ?xr_shortcut::flAlt:0);
+    if (ExecCommand(SC))			return true;
+    
 	bool bExec = false;
 
     if (Key==VK_ESCAPE)   			COMMAND1(COMMAND_CHANGE_ACTION, etaSelect)

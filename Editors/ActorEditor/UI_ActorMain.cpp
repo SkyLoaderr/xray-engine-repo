@@ -215,6 +215,10 @@ void CActorTools::CommandOptimizeMotions(u32 p1, u32 p2, u32& res)
 {
     OptimizeMotions();
 }
+void CActorTools::CommandMakeThumbnail(u32 p1, u32 p2, u32& res)
+{
+	MakeThumbnail();
+}
 
 //---------------------------------------------------------------------------
 // Common command
@@ -289,6 +293,7 @@ void CActorMain::RegisterCommands()
 	RegisterCommand(COMMAND_UNDO,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandUndo)));
 	RegisterCommand(COMMAND_REDO,               xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandRedo)));
     RegisterCommand(COMMAND_OPTIMIZE_MOTIONS,   xr_new<SECommand>("","",false,BIND_CMD_EVENT_C(ATools,CActorTools::CommandOptimizeMotions)));
+    RegisterCommand(COMMAND_MAKE_THUMBNAIL, 	xr_new<SECommand>("Make Thumbnail","",true,BIND_CMD_EVENT_C(ATools,CActorTools::CommandMakeThumbnail)));
     // ui
     RegisterCommand(COMMAND_SHOW_CLIPMAKER,  	xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandShowClipMaker)));
     RegisterCommand(COMMAND_MAKE_PREVIEW,       xr_new<SECommand>("","",false,BIND_CMD_EVENT_S(CommandMakePreview)));

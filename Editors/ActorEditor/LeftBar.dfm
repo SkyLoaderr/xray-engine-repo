@@ -454,7 +454,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 147
       Width = 298
-      Height = 133
+      Height = 115
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -484,7 +484,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 15
         Width = 296
-        Height = 117
+        Height = 99
         Align = alClient
         BevelOuter = bvNone
         Color = 10528425
@@ -618,6 +618,13 @@ object fraLeftBar: TfraLeftBar
     object SaevAs1: TMenuItem
       Caption = 'Save As...'
       OnClick = SaevAs1Click
+    end
+    object N10: TMenuItem
+      Caption = '-'
+    end
+    object MakeThumbnail1: TMenuItem
+      Caption = 'Make Thumbnail'
+      OnClick = MakeThumbnail1Click
     end
     object N5: TMenuItem
       Caption = '-'

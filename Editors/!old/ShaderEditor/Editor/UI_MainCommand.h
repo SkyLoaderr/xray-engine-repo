@@ -68,9 +68,11 @@ struct ECORE_API SECommand{
 	bool			editable;
     LPSTR			caption;
     struct SESubCommand{
+    	u32			index;
+    	SECommand* 	parent;
     	LPSTR		caption;
 		xr_shortcut	shortcut;
-        SESubCommand(LPCSTR capt){caption=xr_strdup(capt);}
+        SESubCommand(LPCSTR capt, SECommand* p, u32 idx){caption=xr_strdup(capt);parent=p;index=idx;}
         ~SESubCommand(){xr_free(caption);}
 	    IC LPCSTR	Caption			(){return caption&&caption[0]?caption:"";}
     };
@@ -82,11 +84,11 @@ struct ECORE_API SECommand{
                     	caption		= xr_strdup(capt);
                         u32 i_cnt 	= _GetItemCount(sub_capt);
                         if (0==i_cnt){
-                            sub_commands.push_back(xr_new<SESubCommand>(""));
+                            sub_commands.push_back(xr_new<SESubCommand>("",this,0));
                     	}else{
                             string256 	tmp;
                             for (u32 i_idx=0; i_idx<i_cnt; i_idx++)
-                                sub_commands.push_back(xr_new<SESubCommand>(_GetItem(sub_capt,i_idx,tmp,',')));
+                                sub_commands.push_back(xr_new<SESubCommand>(_GetItem(sub_capt,i_idx,tmp,','),this,i_idx));
                         }
                     }
 					~SECommand		(){xr_free(caption);}
@@ -95,10 +97,12 @@ struct ECORE_API SECommand{
 };
 DEFINE_VECTOR(SECommand*,ECommandVec,ECommandVecIt);
 
-ECORE_API u32 					ExecCommand				(u32 cmd, u32 p1=0, u32 p2=0);
-ECORE_API void					RegisterCommand 		(u32 cmd_type, SECommand* cmd_impl);
-ECORE_API void					EnableReceiveCommands	();
-ECORE_API ECommandVec&  		GetEditorCommands		();
+ECORE_API u32 					    ExecCommand				(u32 cmd, u32 p1=0, u32 p2=0);
+ECORE_API u32 					    ExecCommand				(const xr_shortcut& val);
+ECORE_API void					    RegisterCommand 		(u32 cmd_type, SECommand* cmd_impl);
+ECORE_API void					    EnableReceiveCommands	();
+ECORE_API ECommandVec&  		    GetEditorCommands		();
+ECORE_API SECommand::SESubCommand* 	FindCommandByShortcut	(const xr_shortcut& val);
 
 #define BIND_CMD_EVENT_S(a) 	TECommandEvent().bind(a)
 #define BIND_CMD_EVENT_C(a,b)	TECommandEvent().bind(a,&b)

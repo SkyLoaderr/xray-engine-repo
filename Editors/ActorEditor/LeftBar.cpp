@@ -242,6 +242,12 @@ void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::MakeThumbnail1Click(TObject *Sender)
+{
+	ExecCommand(COMMAND_MAKE_THUMBNAIL);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::ebBonePartClick(TObject *Sender)
 {
 	frmBonePart->Run(ATools->CurrentObject());
@@ -350,5 +356,4 @@ void __fastcall TfraLeftBar::OptimizeMotions1Click(TObject *Sender)
 	ExecCommand( COMMAND_OPTIMIZE_MOTIONS );
 }
 //---------------------------------------------------------------------------
-
 

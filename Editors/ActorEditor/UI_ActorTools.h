@@ -261,6 +261,7 @@ public:
     bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
 
     void				OptimizeMotions		();
+    void				MakeThumbnail		();
 
     // commands
 	void 				CommandClear		(u32 p1, u32 p2, u32& res);
@@ -276,6 +277,7 @@ public:
 	void 				CommandUndo			(u32 p1, u32 p2, u32& res);
 	void 				CommandRedo			(u32 p1, u32 p2, u32& res);
 	void 				CommandOptimizeMotions(u32 p1, u32 p2, u32& res);
+    void 				CommandMakeThumbnail(u32 p1, u32 p2, u32& res);
 };
 
 extern CActorTools*&	ATools;

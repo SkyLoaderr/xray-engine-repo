@@ -19,6 +19,7 @@
 #include "folderlib.h"
 #include "SkeletonAnimated.h"
 #include "ItemList.h"
+#include "ImageManager.h"
 
 CActorTools*&	ATools=(CActorTools*)Tools;
 //------------------------------------------------------------------------------
@@ -728,5 +729,23 @@ void CActorTools::OptimizeMotions()
 		m_pEditObject->OptimizeSMotions	();
 	 	Modified						();
 	    UndoSave						();
+    }
+}
+
+void CActorTools::MakeThumbnail()
+{
+    if (CurrentObject()){
+   	    CEditableObject* obj = CurrentObject();
+        AnsiString tex_name,obj_name;
+        tex_name = ChangeFileExt(obj->GetName(),".thm");
+        obj_name = ChangeFileExt(obj->GetName(),".object");
+        const CLocatorAPI::file* F = FS.exist(_objects_,obj_name.c_str()); VERIFY(F);
+        if (ImageLib.CreateOBJThumbnail(tex_name.c_str(),obj,F->modif)){
+            ELog.Msg(mtInformation,"Thumbnail successfully created.");
+        }else{
+            ELog.Msg(mtError,"Making thumbnail failed.");
+        }
+    }else{
+        ELog.DlgMsg(mtError,"Can't create thumbnail. Empty scene.");
     }
 }
