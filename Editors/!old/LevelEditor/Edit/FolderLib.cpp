@@ -630,14 +630,16 @@ bool CFolderHelper::DrawThumbnail(HDC hdc, const Irect &r, u32* data, u32 w, u32
 }
 //---------------------------------------------------------------------------
 
-AnsiString CFolderHelper::GenerateName(LPCSTR pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name)
+AnsiString CFolderHelper::GenerateName(LPCSTR _pref, int dgt_cnt, TFindObjectByName cb, bool allow_pref_name)
 {
 	VERIFY		(!cb.empty());
 	AnsiString result;
     int counter 		= 0;
    // test exist name
-    if (allow_pref_name&&pref&&pref[0]){
-        result	= pref;
+    std::string pref	= _pref;
+    xr_strlwr			(pref);
+    if (allow_pref_name&&pref.size()){
+        result	= pref.c_str();
         bool 	res;
         cb		(result.c_str(),res);
         if (!res)return result;
@@ -646,8 +648,8 @@ AnsiString CFolderHelper::GenerateName(LPCSTR pref, int dgt_cnt, TFindObjectByNa
     string256 	prefix	= {"name"};
     string32	mask;
     sprintf		(mask,"%%s%%0%dd",dgt_cnt);
-    if (pref&&pref[0]){
-    	strcpy			(prefix, pref);
+    if (pref.size()){
+    	strcpy			(prefix, pref.c_str());
         int i			= strlen(prefix)-1;
         for (; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
     }
