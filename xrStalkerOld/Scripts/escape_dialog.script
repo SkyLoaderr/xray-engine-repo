@@ -1,41 +1,13 @@
 --------------------------------------------------------------------------------------------------------
 -- Dialog & InfoPortions Function
 --------------------------------------------------------------------------------------------------------
-function give_kalash_to_loser(first_speaker, second_speaker)
-	local weap = first_speaker:object("wpn_ak74")
-	first_speaker:transfer_item (weap, second_speaker)
-end
-function give_toz_to_loser(first_speaker, second_speaker)
-	local weap = first_speaker:object("wpn_toz34")
-	first_speaker:transfer_item (weap, second_speaker)
-end
-function haveAK(first_speaker, second_speaker)
-	return( first_speaker:object("wpn_ak74") ~= nil )
-end
-function haveTOZ(first_speaker, second_speaker)
-	return( first_speaker:object("wpn_toz34") ~= nil )
-end
-
-function novice_gane_job(first_speaker, second_speaker)
-	local actor = level.actor()
-	return actor:dont_has_info("escape_novice_has_weapon") and
-		   actor:dont_has_info("escape_novice_need_weapon")	
-end
-
-function bandits_dead(first_speaker, second_speaker)
-    return(first_speaker:has_info("escape_factory_bandits_dead"))
-end
-
-function set_dialog_thank(first_speaker, second_speaker)
-	first_speaker:set_start_dialog("escape_novice_thank_actor")
-end
 
 --------------------------------------------------------------------------------------------------------
 -- Trader
 --------------------------------------------------------------------------------------------------------
 function trader_alredy_give_job(first_speaker, second_speaker)
 	local actor = level.actor()
-       	if actor ~= nil and
+    if actor ~= nil and
 	   actor:has_info("escape_trader_need_artefact") and
 	   actor:dont_has_info("escape_trader_have_artefact")	   
 	then
@@ -45,14 +17,8 @@ function trader_alredy_give_job(first_speaker, second_speaker)
 end
 
 function trader_dont_has_job(first_speaker, second_speaker)
-	local actor = level.actor()
-    if actor ~= nil and
-	   (actor:has_info("escape_trader_need_artefact") or
-	   actor:has_info("escape_trader_find_artefact") or
-	   actor:has_info("escape_trader_have_artefact")) and
-   	   (actor:has_info("escape_need_blockpost_case") or
-   	   actor:has_info("escape_take_blockpost_case") or
-	   actor:has_info("escape_have_blockpost_case")) and
+    if trader_need_blockpost_box(first_speaker, second_speaker) == false and
+	   trader_need_artefact(first_speaker, second_speaker) == false and
 	   trader_need_military_document(first_speaker, second_speaker) == false
 	then
 		return true
@@ -67,9 +33,10 @@ end
 function trader_need_blockpost_box(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
-	   actor:dont_has_info("escape_need_blockpost_case") and
-	   actor:dont_has_info("escape_take_blockpost_case") and
-	   actor:dont_has_info("escape_have_blockpost_case")
+	   actor:has_info("escape_stalker_done") and
+	   actor:dont_has_info("escape_blockpost_case") and
+	   actor:dont_has_info("escape_blockpost_case_have") and
+	   actor:dont_has_info("escape_blockpost_case_done")
 	then
 		return true
 	end
@@ -90,7 +57,16 @@ end
 function give_artefact_nightstar(first_speaker, second_speaker)
 end
 function trader_need_artefact(first_speaker, second_speaker)
-	return true
+	local actor = level.actor()
+    if actor ~= nil and
+	   actor:has_info("tutorial_end") and
+	   actor:dont_has_info("escape_artefact_start") and
+	   actor:dont_has_info("escape_artefact_gain") and
+	   actor:dont_has_info("escape_artefact_done")
+	then
+		return true
+	end
+	return false
 end
 
 --' Escape dynamite for Wolf
@@ -109,10 +85,10 @@ end
 function trader_need_military_document(first_speaker, second_speaker)
 	local actor = level.actor()
     if actor ~= nil and
-	   actor:has_info("escape_trader_have_artefact") and
-	   actor:dont_has_info("escape_need_agroprom_documents") and
-	   actor:dont_has_info("agroprom_take_agroprom_documents") and
-	   actor:dont_has_info("bar_have_agroprom_documents")
+	   actor:has_info("escape_blockpost_case_done") and
+	   actor:dont_has_info("agroprom_military_case") and
+	   actor:dont_has_info("agroprom_military_have") and
+	   actor:dont_has_info("agroprom_military_done")
 	then
 		return true
 	end
