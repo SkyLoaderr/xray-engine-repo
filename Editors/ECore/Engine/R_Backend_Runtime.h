@@ -246,7 +246,13 @@ IC void CBackend::set_Stencil			(u32 _enable, u32 _func, u32 _ref, u32 _mask, u3
 }
 IC void	CBackend::set_ColorWriteEnable	(u32 _mask )
 {
-	if (colorwrite_mask		!= _mask)		{ colorwrite_mask=_mask;		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	_mask				));	}
+	if (colorwrite_mask		!= _mask)		{ 
+		colorwrite_mask=_mask;		
+		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	_mask	));	
+		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE1,	_mask	));	
+		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE2,	_mask	));	
+		CHK_DX(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE3,	_mask	));	
+	}
 }
 IC void	CBackend::set_CullMode			(u32 _mode)
 {
