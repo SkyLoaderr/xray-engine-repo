@@ -664,6 +664,12 @@ void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	IReader*	MS		= data->open_chunk(OGF_MOTIONS);
 	u32			dwCNT	= 0;
 	MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
+
+	// reserve memory for bone-motions
+	for (u32 BR=0; BR<bones->size(); BR++)
+		(*bones)[BR]->Motions.reserve	(dwCNT);
+
+	// load motions
 	for (u32 M=0; M<dwCNT; M++)
 	{
 		string128			mname;
