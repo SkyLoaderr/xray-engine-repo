@@ -21,6 +21,7 @@
 #include "script_engine.h"
 #include <typelist.h>
 #include <hierarchygenerators.h>
+#include "xrServer_Object_Base.h"
 
 template <typename _1, typename _2>
 struct heritage {
@@ -246,6 +247,48 @@ public:
 	virtual void			OnH_A_Chield		();
 	virtual void			OnH_A_Independent	();
 /**/
+};
+
+
+typedef DLL_PureWrapper<CGameObject,luabind::wrap_base> CGameObjectDLL_Pure;
+typedef ISpatialWrapper<CGameObjectDLL_Pure>				CGameObjectISpatial;
+typedef ISheduledWrapper<CGameObjectISpatial>				CGameObjectISheduled;
+typedef IRenderableWrapper<CGameObjectISheduled>			CGameObjectIRenderable;
+
+class CGameObjectWrapper : public CGameObjectIRenderable {
+public:
+	IC						CGameObjectWrapper	() {};
+	virtual					~CGameObjectWrapper	() {};
+
+	virtual void			net_Import			(NET_Packet &packet)
+	{
+		call<void>("net_Import",&packet);
+	}
+
+	static	void			net_Import_static	(CGameObject *self, NET_Packet *packet)
+	{
+		self->CGameObject::net_Import(*packet);
+	}
+
+	virtual void			net_Export			(NET_Packet &packet)
+	{
+		call<void>("net_Export",&packet);
+	}
+
+	static	void			net_Export_static	(CGameObject *self, NET_Packet *packet)
+	{
+		self->CGameObject::net_Export(*packet);
+	}
+
+	virtual BOOL			net_Spawn			(CSE_Abstract* data)
+	{
+		return			(luabind::call_member<bool>(this,"net_Spawn",data));
+	}
+
+	static	bool			net_Spawn_static	(CGameObject *self, CSE_Abstract *abstract)
+	{
+		return			(!!self->CGameObject::net_Spawn(abstract));
+	}
 };
 
 class CEntityWrapper : public CEntity, public luabind::wrap_base {

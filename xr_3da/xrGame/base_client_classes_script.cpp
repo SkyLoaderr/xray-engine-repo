@@ -98,11 +98,35 @@ void CObjectScript::script_register		(lua_State *L)
 			.def("renderable_ShadowGenerate",&CObject::renderable_ShadowGenerate,&CObjectWrapper::renderable_ShadowGenerate_static)
 			.def("renderable_ShadowReceive",&CObject::renderable_ShadowReceive,&CObjectWrapper::renderable_ShadowReceive_static)
 
-		,class_<CGameObject,CObject>("CGameObject")
+		,class_<CGameObjectEx,CObject,CGameObjectWrapper>("CGameObject")
 			.def(constructor<>())
+			.def("_construct",			&CGameObjectEx::_construct,&CGameObjectWrapper::_construct_static)
 
-		,class_<CPhysicsShellHolder,CGameObject>("CPhysicsShellHolder")
-			.def(constructor<>())
+			.def("spatial_register",	&CGameObjectEx::spatial_register,	&CGameObjectWrapper::spatial_register_static)
+			.def("spatial_unregister",	&CGameObjectEx::spatial_unregister,	&CGameObjectWrapper::spatial_unregister_static)
+			.def("spatial_move",		&CGameObjectEx::spatial_move,		&CGameObjectWrapper::spatial_move_static)
+			.def("spatial_sector_point",&CGameObjectEx::spatial_sector_point,&CGameObjectWrapper::spatial_sector_point_static)
+			.def("dcast_FeelSound",		&CGameObjectEx::dcast_FeelSound,		&CGameObjectWrapper::dcast_FeelSound_static)
+			.def("dcast_Light",			&CGameObjectEx::dcast_Light,			&CGameObjectWrapper::dcast_Light_static)
+
+			.def("shedule_Scale",		&CGameObjectEx::shedule_Scale,		&CGameObjectWrapper::shedule_Scale_static)
+			.def("shedule_Update",		&CGameObjectEx::shedule_Update,		&CGameObjectWrapper::shedule_Update_static)
+
+			.def("renderable_Render"		,&CGameObjectEx::renderable_Render,&CGameObjectWrapper::renderable_Render_static)
+			.def("renderable_ShadowGenerate",&CGameObjectEx::renderable_ShadowGenerate,&CGameObjectWrapper::renderable_ShadowGenerate_static)
+			.def("renderable_ShadowReceive",&CGameObjectEx::renderable_ShadowReceive,&CGameObjectWrapper::renderable_ShadowReceive_static)
+
+			.def("net_Export",			&CGameObjectEx::net_Export,		&CGameObjectWrapper::net_Export_static)
+			.def("net_Import",			&CGameObjectEx::net_Import,		&CGameObjectWrapper::net_Import_static)
+			.def("net_Spawn",			&CGameObjectEx::net_SpawnEx,	&CGameObjectWrapper::net_SpawnEx_static)
+
+			.def("setVisible",			&CGameObjectEx::setVisible)
+			.def("getVisible",			&CGameObjectEx::getVisible)
+			.def("getEnabled",			&CGameObjectEx::getEnabled)
+			.def("setEnabled",			&CGameObjectEx::setEnabled)
+
+//		,class_<CPhysicsShellHolder,CGameObject>("CPhysicsShellHolder")
+//			.def(constructor<>())
 
 //		,class_<CEntity,CPhysicsShellHolder,CEntityWrapper>("CEntity")
 //			.def(constructor<>())

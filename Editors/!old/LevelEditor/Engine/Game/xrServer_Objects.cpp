@@ -546,6 +546,10 @@ void CSE_AbstractVisual::UPDATE_Read	(NET_Packet	&tNetPacket)
 void CSE_AbstractVisual::UPDATE_Write	(NET_Packet	&tNetPacket)
 {
 }
+LPCSTR	CSE_AbstractVisual::getStartupAnimation		()
+{
+	return *startup_animation;
+}
 
 CSE_Visual* CSE_AbstractVisual::visual					()
 {

@@ -14,6 +14,7 @@ void CSE_AbstractVisual::script_register(lua_State *L)
 			CSE_Visual,
 			CSE_Abstract
 			)
+		.def	("getStartupAnimation",		&CSE_AbstractVisual::getStartupAnimation)
 	];
 }
 /*

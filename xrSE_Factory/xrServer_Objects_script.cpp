@@ -47,18 +47,71 @@ CScriptIniFile *get_spawn_ini(CSE_Abstract *abstract)
 	return	((CScriptIniFile*)&abstract->spawn_ini());
 }
 
+
+template <typename T>
+struct CWrapperBase : public T, public luabind::wrap_base {
+	typedef T inherited;
+	typedef CWrapperBase<T>	self_type;
+
+	virtual void STATE_Read(NET_Packet& p1)
+		{
+			call<void>("STATE_Read",&p1);
+		}
+		static  void STATE_Read_static(inherited* ptr, NET_Packet* p1)
+		{
+			Log("Attempt to call pure virtual method STATE_Read in CSE_Abstract");
+			//ptr->self_type::inherited::STATE_Read(*p1);
+		}
+		virtual void STATE_Write(NET_Packet& p1)
+		{
+			call<void>("STATE_Write",&p1);
+		}
+		static  void STATE_Write_static(inherited* ptr, NET_Packet* p1)
+		{
+			Log("Attempt to call pure virtual method STATE_Write in CSE_Abstract");
+			//ptr->self_type::inherited::STATE_Write(*p1);
+		}
+
+		virtual void UPDATE_Read(NET_Packet& p1)
+		{
+			call<void>("UPDATE_Read",&p1);
+		}
+		static  void UPDATE_Read_static(inherited* ptr, NET_Packet* p1)
+		{
+			Log("Attempt to call pure virtual method UPDATE_Read in CSE_Abstract");
+			//ptr->self_type::inherited::UPDATE_Read(*p1);
+		}
+		virtual void UPDATE_Write(NET_Packet& p1)
+		{
+			call<void>("UPDATE_Write",&p1);
+		}
+		static  void UPDATE_Write_static(inherited* ptr, NET_Packet* p1)
+		{
+			Log("Attempt to call pure virtual method UPDATE_Write in CSE_Abstract");
+			//ptr->self_type::inherited::UPDATE_Write(*p1);
+		}
+
+};
+
+
+
 void CSE_Abstract::script_register(lua_State *L)
 {
+	typedef CWrapperBase<CSE_Abstract> WrapType;
+	typedef CSE_Abstract BaseType;
 	module(L)[
-		class_<CSE_Abstract,CPureServerObject>
-			("cse_abstract")
-			.def_readonly	("id",				&CSE_Abstract::ID)
-			.def_readonly	("parent_id",		&CSE_Abstract::ID_Parent)
-			.def_readwrite	("position",		&CSE_Abstract::o_Position)
+		class_<CSE_Abstract,WrapType,CPureServerObject>	("cse_abstract")
+			.def_readonly	("id",				&BaseType::ID)
+			.def_readonly	("parent_id",		&BaseType::ID_Parent)
+			.def_readwrite	("position",		&BaseType::o_Position)
 			.def			("section_name",	&get_section_name)
 			.def			("name",			&get_name)
-			.def			("clsid",			&CSE_Abstract::script_clsid)
+			.def			("clsid",			&BaseType::script_clsid)
 			.def			("spawn_ini",		&get_spawn_ini)
+			.def			("STATE_Read",		&BaseType::STATE_Read, &WrapType::STATE_Read_static)
+			.def			("STATE_Write",		&BaseType::STATE_Write, &WrapType::STATE_Write_static)
+			.def			("UPDATE_Read",		&BaseType::UPDATE_Read, &WrapType::UPDATE_Read_static)
+			.def			("UPDATE_Write",		&BaseType::UPDATE_Write, &WrapType::UPDATE_Write_static)
 //			.def(		constructor<LPCSTR>())
 	];
 }
