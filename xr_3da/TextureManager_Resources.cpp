@@ -49,7 +49,7 @@ SPass*		CShaderManager::_CreatePass			(ref_state& _state, ref_ps& _ps, ref_vs& _
 		if (v_passes[it]->equal(_state,_ps,_vs,_ctable,_T,_M,_C))
 			return v_passes[it];
 
-	SPass*	P					= xr_new<SPass>(P);
+	SPass*	P					= xr_new<SPass>();
 	P->state					= _state;
 	P->ps						= _ps;
 	P->vs						= _vs;
