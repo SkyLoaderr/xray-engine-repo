@@ -1298,32 +1298,6 @@ public:
 	{
 		VERIFY					(!is_opened_empty());
 		u32						node_bucket_id = compute_bucket_id(node);
-//		if (node_bucket_id == node.bucket_id) {
-//			if ((buckets[node.bucket_id] == &node) || (node.prev->f() <= node.f()))
-//				return;
-//			if (node.next) {
-//				node.prev->next = node.next;
-//				node.next->prev = node.prev;
-//			}
-//			else
-//				node.prev->next = 0;
-//			if (buckets[node.bucket_id]->f() >= node.f()) {
-//				node.next		= buckets[node.bucket_id];
-//				node.prev		= 0;
-//				buckets[node.bucket_id]->prev = &node;
-//				buckets[node.bucket_id] = &node;
-//				return;
-//			}
-//			for (CGraphNode *i = node.prev->prev; ; i = i->prev)
-//				if (i->f() <= node.f()) {
-//					i->next->prev = &node;
-//					node.next	= i->next;
-//					node.prev	= i;
-//					i->next		= &node;
-//					return;
-//				}
-//			NODEFAULT;
-//		}
 		if (node.prev)
 			node.prev->next		= node.next;
 		else {
