@@ -478,6 +478,18 @@
 				<Filter
 					Name="path_test"
 					Filter="">
+					<File
+						RelativePath=".\path_test.cpp">
+					</File>
+					<File
+						RelativePath=".\path_test.h">
+					</File>
+					<File
+						RelativePath=".\path_test_old.cpp">
+					</File>
+					<File
+						RelativePath=".\path_test_old.h">
+					</File>
 					<Filter
 						Name="algorithms"
 						Filter="">
@@ -502,6 +514,13 @@
 						</File>
 					</Filter>
 					<Filter
+						Name="graphs"
+						Filter="">
+						<File
+							RelativePath=".\test_table.h">
+						</File>
+					</Filter>
+					<Filter
 						Name="path_machines"
 						Filter="">
 						<File
@@ -516,29 +535,6 @@
 						</File>
 						<File
 							RelativePath=".\path_manager_base.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="path_tests"
-						Filter="">
-						<File
-							RelativePath=".\path_test.cpp">
-						</File>
-						<File
-							RelativePath=".\path_test.h">
-						</File>
-						<File
-							RelativePath=".\path_test_old.cpp">
-						</File>
-						<File
-							RelativePath=".\path_test_old.h">
-						</File>
-					</Filter>
-					<Filter
-						Name="graphs"
-						Filter="">
-						<File
-							RelativePath=".\test_table.h">
 						</File>
 					</Filter>
 				</Filter>

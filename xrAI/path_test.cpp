@@ -74,7 +74,7 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	xr_delete				(path_manager);
 	xr_delete				(a_star);
 
-	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2microsec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_DataStorage).name());
+	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2milisec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_DataStorage).name());
 }
 
 template <
@@ -112,7 +112,6 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 			(*I).y
 			);
 		a_star->find		(*data_storage,*path_manager,*graph);
-		break;
 	}
 
 	finish					= CPU::GetCycleCount();
@@ -124,7 +123,7 @@ void test					(_Graph *graph, const xr_vector<SPathParams> &path_params, _dist_t
 	xr_delete				(path_manager);
 	xr_delete				(a_star);
 
-	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2microsec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_DataStorage).name());
+	Msg						("%12.6f (%14.6f) : %s",float(s64(finish - start))*CPU::cycles2milisec/_min((int)path_params.size(),test_count),float(s64(finish - start))*CPU::cycles2microsec,typeid(_DataStorage).name());
 }
 
 template <
@@ -254,5 +253,5 @@ void path_test				(LPCSTR caLevelName)
 	test_all<CSE_ALifeGraph>			(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
 	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
-//	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
+	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
 }
