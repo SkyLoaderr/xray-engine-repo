@@ -177,12 +177,13 @@ public:
 	{
 		u32 dwSize = m_dwEnd - m_dwStart + 1;
 		float fDistance;
+
 		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
 		u32 a = M*m_dwStart - m_dwStart*(m_dwStart + 1)/2, b = M*m_dwEnd - m_dwEnd*(m_dwEnd + 1)/2, c = b - a;
 		thProgress = 0.0f;
-		for (int i=(int)m_dwStart*1 + 0*194; i<(int)m_dwEnd; i++) {
+		for (int i=(int)m_dwStart*0 + 1*195; i<(int)m_dwEnd; i++) {
 			SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
-			for (int j = (i + 1)*1 + 0*208; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
+			for (int j = (i + 1)*0 + 1*315; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
 				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
 					//Msg("{%3d,%3d}",i,j);
