@@ -91,6 +91,7 @@ xrSE_DECLARE_END
 //***** WeaponAmmo
 xrSE_DECLARE_BEGIN(xrSE_WeaponAmmo,CALifeObject)
 	xrSE_WeaponAmmo();
+	virtual void					Init(LPCSTR caSection);
 	u16 a_elapsed, m_boxSize;
 xrSE_DECLARE_END
 

@@ -98,6 +98,10 @@ void	xrSE_Weapon::FillProp		(LPCSTR pref, PropItemVec& items)
 //***** WeaponAmmo
 xrSE_WeaponAmmo::xrSE_WeaponAmmo() {
 }
+void xrSE_WeaponAmmo::Init(LPCSTR caSection) {
+	inherited::Init				(caSection);
+	m_boxSize = pSettings->r_s32(caSection, "box_size");
+}
 void xrSE_WeaponAmmo::STATE_Read(NET_Packet& P, u16 size) {inherited::STATE_Read(P,size); P.r_u16(a_elapsed); };
 void xrSE_WeaponAmmo::STATE_Write(NET_Packet& P) {inherited::STATE_Write(P); P.w_u16(a_elapsed); };
 void xrSE_WeaponAmmo::UPDATE_Read(NET_Packet& P) {inherited::UPDATE_Read(P); P.r_u16(a_elapsed); };
@@ -105,7 +109,6 @@ void xrSE_WeaponAmmo::UPDATE_Write(NET_Packet& P) {inherited::UPDATE_Write(P); P
 #ifdef _EDITOR
 void xrSE_WeaponAmmo::FillProp(LPCSTR pref, PropItemVec& values) {
   	inherited::FillProp(pref,values);
-	m_boxSize = pSettings->r_s32(s_name, "box_size");
 	PHelper.CreateU16(values, PHelper.PrepareKey(pref, s_name, "Ammo: left"), &a_elapsed, 0, m_boxSize, m_boxSize);
 }
 #endif
@@ -1270,6 +1273,7 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	case CLSID_OBJECT_W_SHOTGUN:	return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_W_SVD:		return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_W_SVU:		return xr_new<xrSE_Weapon>			();
+	case CLSID_OBJECT_W_RPG7:		return xr_new<xrSE_Weapon>			();
 	case CLSID_OBJECT_HEALTH:		return xr_new<xrSE_Health>			();
 	case CLSID_TARGET_ASSAULT:		return xr_new<xrSE_Target_Assault>	();
 	case CLSID_TARGET_CS_BASE:		return xr_new<xrSE_Target_CSBase>	();
