@@ -3,6 +3,7 @@
 #include "actor.h"
 #include "hudmanager.h"
 #include "..\xr_ioconsole.h"
+#include "..\PGObject.h"
 
 CCustomZone::CCustomZone(void) {
 	m_maxPower = 100.f;
@@ -41,6 +42,17 @@ BOOL CCustomZone::net_Spawn(LPVOID DC) {
 
 //		setVisible(true);
 		setEnabled(true);
+
+		CPGObject* pStaticPG; s32 l_c = m_effects.size();
+		Fmatrix l_m; l_m.set(svTransform);//l_m.j.set(normal); GetBasis(normal, l_m.k, l_m.i);
+		for(s32 i = 0; i < l_c; i++) {
+			Fvector c; c.set(l_m.c.x,l_m.c.y+EPS,l_m.c.z);
+			IRender_Sector *l_pRS = ::Render->detectSector(c);
+			pStaticPG = xr_new<CPGObject>(m_effects[i],l_pRS,false);
+			pStaticPG->UpdateParent(l_m);
+			pStaticPG->Play();
+			m_effectsPSs.push_back(pStaticPG);
+		}
 	}
 
 	return res;
@@ -58,6 +70,18 @@ void CCustomZone::Load(LPCSTR section) {
 	SoundCreate(m_ambient, l_PSnd);
 
 
+	strcpy(m_effectsSTR, pSettings->r_string(section,"effects"));
+	char* l_effectsSTR = m_effectsSTR; R_ASSERT(l_effectsSTR);
+	m_effects.clear(); m_effects.push_back(l_effectsSTR);
+	while(*l_effectsSTR) {
+		if(*l_effectsSTR == ',') {
+			*l_effectsSTR = 0; l_effectsSTR++;
+			while(*l_effectsSTR == ' ' || *l_effectsSTR == '\t') l_effectsSTR++;
+			m_effects.push_back(l_effectsSTR);
+		}
+		l_effectsSTR++;
+	}
+
 // @@@ WT: !!!!!бпелеммн!!!!!
 	//CRender_target*		T	= ::Render->getTarget();
 	//T->set_duality_h		(0);
@@ -70,6 +94,7 @@ void CCustomZone::Load(LPCSTR section) {
 void CCustomZone::net_Destroy() {
 	inherited::net_Destroy();
 	SoundDestroy(m_ambient);
+	while(m_effectsPSs.size()) { xr_delete(*(m_effectsPSs.begin())); m_effectsPSs.pop_front(); }
 }
 
 //void CCustomZone::Update(u32 dt) {
