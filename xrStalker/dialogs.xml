@@ -143,7 +143,7 @@
 	</dialog>
 
 	<dialog id="trader_talk_about">
-	    <dont_has_info>actor_start</dont_has_info>
+	    <dont_has_info>actor_start11</dont_has_info>
 		<phrase_list>
 			<phrase id="0">
 				<text>Расскажи мне о...</text>
