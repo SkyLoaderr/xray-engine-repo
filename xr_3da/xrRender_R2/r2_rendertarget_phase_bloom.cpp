@@ -87,11 +87,13 @@ void CRenderTarget::phase_bloom	()
 
 	RCache.Vertex.Unlock		(4,g_bloom_build->vb_stride);
 
-	// Perform combine
-	float dr					= ps_r2_ls_dynamic_range;
+	// Perform combine (all scalers must account for 4 samples + final diffuse multiply);
+	float lscale				= .3f;
+	float ldr					= .25f*ps_r2_ls_dynamic_range;	ldr *= lscale;
+	float lh					= .25f*.5f;						lh	*= lscale;
 	RCache.set_Element			(s_bloom->E[0]);
-	RCache.set_c				("light_dynamic_range",	dr,dr,dr,dr);
-	RCache.set_c				("light_hemi",			.5f,.5f,.5f,0.f);
+	RCache.set_c				("light_dynamic_range",	ldr,ldr,ldr,ldr);
+	RCache.set_c				("light_hemi",			lh,lh,lh,0.f);
 	RCache.set_Geometry			(g_bloom_build);
 	RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 }
