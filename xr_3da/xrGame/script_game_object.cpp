@@ -303,6 +303,17 @@ void CScriptGameObject::set_start_point	(int point_index)
 		movement_manager->patrol_path_manager().set_start_point(point_index);
 }
 
+u32 CScriptGameObject::get_current_patrol_point_index()
+{
+	CMovementManager *movement_manager = smart_cast<CMovementManager*>(object());	
+	if (!movement_manager) {
+		ai().script_engine().script_log		(ScriptStorage::eLuaMessageTypeError,"CGameObject : cannot call [get_current_patrol_point_index()]!");
+		return u32(-1);
+	} else 
+		return movement_manager->patrol_path_manager().get_current_point_index();
+}
+
+
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////

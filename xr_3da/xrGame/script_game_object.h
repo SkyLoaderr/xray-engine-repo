@@ -179,7 +179,6 @@ public:
 			void				set_manual_invisibility (bool val);
 			bool				get_manual_invisibility ();
 
-
 			template <typename T>
 			IC		T	*motivation_action_manager();
 
@@ -381,6 +380,7 @@ public:
 			CScriptBinderObject	*binded_object			();
 			void				set_previous_point		(int point_index);
 			void				set_start_point			(int point_index);
+			u32					get_current_patrol_point_index();
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);
 			int					active_sound_count		();
 			int					active_sound_count		(bool only_playing);
@@ -434,6 +434,7 @@ public:
 			bool				is_body_turning			() const;
 			CPhysicsShell*		get_physics_shell		() const;
 			bool				weapon_strapped			() const;
+
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)

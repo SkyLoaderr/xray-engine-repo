@@ -571,4 +571,5 @@ bool CScriptGameObject::weapon_strapped	() const
 		return		(true);
 
 	return			(weapon->strapped_mode());
+
 }
