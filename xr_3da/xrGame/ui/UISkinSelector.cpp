@@ -49,7 +49,7 @@ CUISkinSelectorWnd::~CUISkinSelectorWnd()
 void CUISkinSelectorWnd::Init(const char *strSectionName)
 {
 	R_ASSERT(xr_strcmp(strSectionName, ""));
-	std::strcpy(m_strSection, strSectionName);
+	m_strSection = strSectionName;
 
 	CUIXml xml_doc;
 	bool xml_result = xml_doc.Init("$game_data$", SKIN_SELECTOR_XML);

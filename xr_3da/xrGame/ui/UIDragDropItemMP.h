@@ -58,7 +58,7 @@ public:
 	u32	 GetSectionGroupID()					{ return sectionNum; }
 	// Функции для запоминания/возвращения имени секции в .ltx файле, этой вещи
 	void SetSectionName(const char *pData)		{ strName = pData; }
-	const char * GetSectionName() const			{ return strName; }
+	const char * GetSectionName() const			{ return strName.c_str(); }
 	// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
 	// вещь
 	void SetOwner(CUIDragDropList *pOwner)		{ R_ASSERT(pOwner); m_pOwner = pOwner; }

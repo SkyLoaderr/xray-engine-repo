@@ -43,7 +43,8 @@ CALifeDiscovery::CALifeDiscovery	(LPCSTR section)
 		u32						count = _GetItemCount(S)/3;
 		for (u32 i=0; i<count; ++i) {
 			SArtefactOrder		order;
-			_GetItem			(S,3*i + 0,order.m_section);
+			string256			temp_sect;			
+			_GetItem			(S,3*i + 0,temp_sect);	order.m_section=temp_sect;
 			order.m_count		= atoi(_GetItem(S,3*i + 1,S1));
 			order.m_price		= atoi(_GetItem(S,3*i + 2,S1));
 			m_query.push_back	(order);
