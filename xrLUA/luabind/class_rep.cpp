@@ -1275,9 +1275,10 @@ int luabind::detail::class_rep::lua_class_gettable(lua_State* L)
 	// a method that is not present in this class (but in a subclass)
 
 	// BUG: This might catch members called "__ok\0foobar"
-	const char* key = lua_tostring(L, 2);
+	const char* key		= lua_tostring(L, 2);
+	const char* _ok_	= "__ok";
 
-	if (key && !std::strcmp(key, "__ok"))
+	if (key && ( *((unsigned*)key) != *((unsigned*)_ok_)   )
 	{
 		class_rep* crep = obj->crep();
 
