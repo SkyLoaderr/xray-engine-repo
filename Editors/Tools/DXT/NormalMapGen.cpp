@@ -756,8 +756,8 @@ int DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u8* T_normal_map, u32 w
 			//tga_save		("x:\\4-normal_1D.tga",w,h,T_normal_1D,true);
 
 			// Rescale by virtual height
-			float	h_scale	= _sqrt(fmt->bump_virtual_height/0.05f);	// move towards 1.0f
-			if		(h_scale>1.f) h_scale = 1.f;
+			float	h_scale	= powf(fmt->bump_virtual_height/0.05f, 0.75f);	// move towards 1.0f
+			if		(h_scale>1.f) h_scale = _sqrt(h_scale);
 			{
 				for (u32 y=0; y<h; y++)
 				{
