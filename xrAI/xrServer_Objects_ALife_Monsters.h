@@ -247,7 +247,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(_TASK_ID				&tTaskID);
 			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			OBJECT_VECTOR	&tpObjectVector);
-			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector);
+			u16						get_available_ammo_count(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector,		OBJECT_VECTOR	*tpObjectVector = 0);
 			void					attach_available_ammo	(CSE_ALifeItemWeapon	*tpALifeItemWeapon,			ITEM_P_VECTOR	&tpItemVector,		OBJECT_VECTOR	*tpObjectVector = 0);
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,					float			&fHitPower);
 	virtual bool					bfPerformAttack			();
