@@ -183,10 +183,16 @@ BOOL	CResourceManager::_lua_HasShader	(LPCSTR s_shader)
 #endif
 }
 
-Shader*	CResourceManager::_lua_Create		(LPCSTR s_shader, LPCSTR s_textures)
+Shader*	CResourceManager::_lua_Create		(LPCSTR d_shader, LPCSTR s_textures)
 {
 	CBlender_Compile	C;
 	Shader				S;
+
+	// undecorate
+	string256	undercorated;
+	for (int i=0, l=xr_strlen(d_shader)+1; i<l; i++)
+		undercorated[i]=('\\'==d_shader[i])?'_':d_shader[i];
+	LPCSTR		s_shader = undercorated;
 
 	// Access to template
 	C.BT				= NULL;
