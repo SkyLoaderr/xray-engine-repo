@@ -5,11 +5,13 @@
 class CLight_DB
 {
 public:
-	void					Load			(IReader* fs);
-	void					Unload			(void);
+	void					add_sector_lights	(vector<WORD> &L);
 
-	light*					Create			();
-	void					Destroy			(light*);
+	void					Load				(IReader* fs);
+	void					Unload				(void);
+
+	light*					Create				();
+	void					Destroy				(light*);
 
 	CLight_DB				();
 	~CLight_DB				();
