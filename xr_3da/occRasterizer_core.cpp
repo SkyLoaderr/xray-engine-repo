@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "occRasterizer.h"
 
+static occTri*	currentTri=0;
+
 const int BOTTOM = 0, TOP = 1;
 
 void i_order	(float* A, float* B, float* C)
@@ -69,7 +71,7 @@ BOOL shared(occTri* T1, occTri* T2)
 
 /* Rasterize a scan line between given X point values, corresponding Z values and current color
 */
-void i_scan		(occTri* T, int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
+void i_scan		(int curY, float startT, float endT, float startX, float endX, float startR, float endR, float startZ, float endZ)
 {
 	occTri**	pFrame	= Raster.get_frame();
 	float*		pDepth	= Raster.get_depth();
@@ -99,24 +101,25 @@ void i_scan		(occTri* T, int curY, float startT, float endT, float startX, float
 	// left connector
 	for (; X<limLeft; X++, i++, Z+=dZ)
 	{
-		if (shared(T,pFrame[i-1])) {
+		if (shared(currentTri,pFrame[i-1])) 
+		{
 			float ZR = (Z+pDepth[i-1])/2;
-			if (ZR<pDepth[i])	{ pFrame[i]	= T; pDepth[i]	= ZR; }
+			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
 		}
 	}
 
 	// compute the scanline + Y connectors
 	for (; X<maxX; X++, i++, Z+=dZ) 
 	{
-		if (Z < pDepth[i])	{ pFrame[i]	= T; pDepth[i] = Z; }
+		if (Z < pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i] = Z; }
 	}
 	
 	// right connector
 	for (X=maxT-1, Z=Zend-dZ, i=curY*occ_dim0+X; X>=limRight; X--, i--, Z-=dZ)
 	{
-		if (shared(T,pFrame[i+1])) {
+		if (shared(currentTri,pFrame[i+1])) {
 			float ZR = (Z+pDepth[i+1])/2;
-			if (ZR<pDepth[i])	{ pFrame[i]	= T; pDepth[i]	= ZR; }
+			if (ZR<pDepth[i])	{ pFrame[i]	= currentTri; pDepth[i]	= ZR; }
 		}
 	}
 }
@@ -201,7 +204,7 @@ IC float maxp(float a, float b)
 IC float minp(float a, float b)
 {	return a<b ? a:b;		}
 
-IC void i_section	(float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
+IC void i_section	(float *A, float *B, float *C, int Sect, BOOL bMiddle)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
@@ -283,20 +286,20 @@ IC void i_section	(float *A, float *B, float *C, occTri* T, int Sect, BOOL bMidd
 		float	maxT	= maxp(rightX-rhx,rightX+rhx);
 		float	minX	= maxp(leftX-lhx,leftX+lhx);
 		float	maxX	= minp(rightX-rhx,rightX+rhx);
-		i_scan	(T, startY, minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
+		i_scan	(startY, minT,maxT,minX,maxX, leftX-lhx, rightX-rhx, leftZ, rightZ);
 		leftX	+= left_dX; rightX += right_dX;
 		leftZ	+= left_dZ; rightZ += right_dZ;
 	}
 }
 
-void __stdcall i_section_b0	(float *A, float *B, float *C, occTri* T)
-{	i_section	(A,B,C,T,BOTTOM,0);	}
-void __stdcall i_section_b1	(float *A, float *B, float *C, occTri* T)
-{	i_section	(A,B,C,T,BOTTOM,1);	}
-void __stdcall i_section_t0	(float *A, float *B, float *C, occTri* T)
-{	i_section	(A,B,C,T,TOP,0);	}
-void __stdcall i_section_t1	(float *A, float *B, float *C, occTri* T)
-{	i_section	(A,B,C,T,TOP,1);	}
+void __stdcall i_section_b0	(float *A, float *B, float *C)
+{	i_section	(A,B,C,BOTTOM,0);	}
+void __stdcall i_section_b1	(float *A, float *B, float *C)
+{	i_section	(A,B,C,BOTTOM,1);	}
+void __stdcall i_section_t0	(float *A, float *B, float *C)
+{	i_section	(A,B,C,TOP,0);	}
+void __stdcall i_section_t1	(float *A, float *B, float *C)
+{	i_section	(A,B,C,TOP,1);	}
 
 void occRasterizer::rasterize	(occTri* T)
 {
@@ -307,14 +310,15 @@ void occRasterizer::rasterize	(occTri* T)
 	b[0] = T->raster[1].x; b[1] = T->raster[1].y; b[2] = T->raster[1].z;
 	c[0] = T->raster[2].x; c[1] = T->raster[2].y; c[2] = T->raster[2].z;
 	
+	currentTri		= T;
 	i_order				(a, b, c);		// Order the vertices by Y
 	if (b[1]-iFloor(b[1])>0.5f)	
 	{
-		i_section_b1	(a, b, c, T);	// Rasterise First Section
-		i_section_t0	(a, b, c, T);	// Rasterise Second Section
+		i_section_b1	(a, b, c);	// Rasterise First Section
+		i_section_t0	(a, b, c);	// Rasterise Second Section
 	} else {
-		i_section_b0	(a, b, c, T);	// Rasterise First Section
-		i_section_t1	(a, b, c, T);	// Rasterise Second Section
+		i_section_b0	(a, b, c);	// Rasterise First Section
+		i_section_t1	(a, b, c);	// Rasterise Second Section
 	}
 
 	// Rasterize (and Y-connect) edges
