@@ -433,10 +433,6 @@ SOURCE=.\xrShaderTypes.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\xrSyncronize.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\xrThread.cpp
 # End Source File
 # Begin Source File
