@@ -152,7 +152,7 @@ void CLightmap::Save()
 		DWORD	pitch			= w*4;
 
 		STextureParams fmt;
-		fmt.fmt					=		STextureParams::tfDXT5;
+		fmt.fmt					=		STextureParams::tf565;
 		fmt.flag				&=		~STextureParams::flDitherColor;
 		fmt.flag				&=		~STextureParams::flGenerateMipMaps;
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
