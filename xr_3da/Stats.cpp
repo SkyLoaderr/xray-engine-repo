@@ -113,11 +113,13 @@ void CStats::Show()
 		F.OutNext	("DCL/VB/IB:   %d/%d/%d",   RCache.stat.decl,RCache.stat.vb,RCache.stat.ib);
 		F.OutNext	("xforms:      %d",			RCache.stat.xforms);
 		F.OutSkip	();
+
+#define PPP(a) (100.f*float(a)/float(EngineTOTAL.result))
 		F.OutNext	("*** ENGINE:  %2.2fms",EngineTOTAL.result);	
 		F.OutNext	("Memory:      %2.2fa",fMem_calls);
-		F.OutNext	("uSheduled:   %2.2fms",Sheduler.result);
-		F.OutNext	("uClients:    %2.2fms",UpdateClient.result);
-		F.OutNext	("Physics:     %2.2fms, %d",Physics.result,Physics.count);	
+		F.OutNext	("uSheduled:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
+		F.OutNext	("uClients:    %2.2fms, %2.1f%%",UpdateClient.result,	PPP(UpdateClient.result));
+		F.OutNext	("Physics:     %2.2fms, %2.1f%%",Physics.result,		PPP(Physics.result));	
 		F.OutNext	("  collider:  %2.2fms", ph_collision.result);	
 		F.OutNext	("  solver:    %2.2fms", ph_core.result);	
 		F.OutNext	("aiThink:     %2.2fms, %d",AI_Think.result,AI_Think.count);	
@@ -128,11 +130,14 @@ void CStats::Show()
 		F.OutNext	("  Query:     %2.2fms",	AI_Vis_Query.result);
 		F.OutNext	("  RayCast:   %2.2fms",	AI_Vis_RayTests.result);
 		F.OutSkip	();
+
+#undef  PPP
+#define PPP(a) (100.f*float(a)/float(RenderTOTAL.result))
 		F.OutNext	("*** RENDER:  %2.2fms",RenderTOTAL.result);
-		F.OutNext	("R_CALC:      %2.2fms",RenderCALC.result);	
-		F.OutNext	("  HOM:       %2.2fms, %d",RenderCALC_HOM.result,RenderCALC_HOM.count);
-		F.OutNext	("  Skeletons: %2.2fms, %d",Animation.result,Animation.count);
-		F.OutNext	("R_DUMP:      %2.2fms",RenderDUMP.result);	
+		F.OutNext	("R_CALC:      %2.2fms, %2.1f%%",RenderCALC.result,	PPP(RenderCALC.result));	
+		F.OutNext	("  HOM:       %2.2fms, %d",RenderCALC_HOM.result,	RenderCALC_HOM.count);
+		F.OutNext	("  Skeletons: %2.2fms, %d",Animation.result,		Animation.count);
+		F.OutNext	("R_DUMP:      %2.2fms, %2.1f%%",RenderDUMP.result,	PPP(RenderDUMP.result));	
 		F.OutNext	("  Skinning:  %2.2fms",RenderDUMP_SKIN.result);	
 		F.OutNext	("  Cached:	   %2.2fms",RenderDUMP_Cached.result);	
 		F.OutNext	("  DT_Vis:    %2.2fms",RenderDUMP_DT_VIS.result);	
