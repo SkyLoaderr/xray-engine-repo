@@ -163,8 +163,8 @@ void CActor::reinit	()
 	CDamageManager::reinit	();
 	CMaterialManager::reinit();
 	m_r_hand				= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
-	m_r_finger1				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
-	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger1");
+	m_r_finger1				= PKinematics(Visual())->LL_BoneID("bip01_r_finger1");
+	m_r_finger2				= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
 }
 
 void CActor::reload	(LPCSTR section)
