@@ -99,7 +99,7 @@ void CAI_Stalker::Init()
 
 	m_fTimeToStep					= 0;
 	
-	m_wMyMaterialID				= GMLib.GetMaterialIdx("creatures\\human");
+	m_wMyMaterialID					= GMLib.GetMaterialIdx("creatures\\human");
 	m_wLastMaterialID				= GMLib.GetMaterialIdx("default");
 
 	m_dwLookChangedTime				= 0;
