@@ -61,11 +61,6 @@ void CCustomMonster::Init()
 CCustomMonster::CCustomMonster()
 {
 	Init				();
-	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
-	if (self)		{
-		self->spatial.type	|= STYPE_VISIBLEFORAI;
-		self->spatial.type	|= STYPE_REACTTOSOUND;
-	}
 }
 
 CCustomMonster::~CCustomMonster	()
@@ -75,7 +70,15 @@ CCustomMonster::~CCustomMonster	()
 
 void CCustomMonster::Load		(LPCSTR section)
 {
+//////////////////////////////////////////////////////////////////////////
 	inherited::Load		(section);
+	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
+	if (self)		{
+		self->spatial.type	|= STYPE_VISIBLEFORAI;
+		self->spatial.type	|= STYPE_REACTTOSOUND;
+	}
+//////////////////////////////////////////////////////////////////////////
+
 	///////////
 	// Movement: General
 	Movement.SetParent		(this);

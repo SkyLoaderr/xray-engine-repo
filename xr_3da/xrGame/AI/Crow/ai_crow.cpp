@@ -80,10 +80,6 @@ CAI_Crow::CAI_Crow()
 	vVarGoal.set		(10.f,10.f,100.f);
 	fIdleSoundDelta		= 10.f;
 	fIdleSoundTime		= fIdleSoundDelta;
-	ISpatial*			self = dynamic_cast<ISpatial*> (this);
-	if (self) {
-		self->spatial.type &=~STYPE_VISIBLEFORAI;
-	}
 }
 
 CAI_Crow::~CAI_Crow()
@@ -97,6 +93,13 @@ CAI_Crow::~CAI_Crow()
 void CAI_Crow::Load( LPCSTR section )
 {
 	inherited::Load				(section);
+	//////////////////////////////////////////////////////////////////////////
+	ISpatial*			self = dynamic_cast<ISpatial*> (this);
+	if (self) {
+		self->spatial.type &=~STYPE_VISIBLEFORAI;
+		self->spatial.type &=~STYPE_REACTTOSOUND;
+	}
+	//////////////////////////////////////////////////////////////////////////
 
 	// sounds
 	m_Sounds.m_idle.Load		("monsters\\crow\\idle");

@@ -60,41 +60,19 @@ void	CBlender_Tree::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		if (C.iElement==2)	
+		if (2==C.iElement)	
 		{
-			C.PassBegin		();
-			{
-				C.PassSET_ZB		(TRUE,TRUE	);
-				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
-				else				C.PassSET_Blend_SET		(TRUE, 200);
-				C.PassSET_LightFog	(FALSE,FALSE);
-				C.PassSET_VS		("r1_tree_wave");
-				
-				// Stage1 - Base texture
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		(oT_Name,"$null","$null",0);
-				C.StageEnd			();
-			}
-			C.PassEnd			();
+			// Lighting only
+			C.r_Pass		("r1_tree_wave","r1_vert_l",FALSE);
+			C.r_Sampler		("s_base",C.L_textures[0]);
+			C.r_End			();
 		} else {
-			C.PassBegin		();
-			{
-				C.PassSET_ZB		(TRUE,TRUE);
-				if (oBlend.value)	C.PassSET_Blend_BLEND	(TRUE, 200);
-				else				C.PassSET_Blend_SET		(TRUE, 200);
-				C.PassSET_LightFog	(FALSE,TRUE);
-				C.PassSET_VS		("r1_tree_wave");
-
-				// Stage1 - Base texture
-				C.StageBegin		();
-				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
-				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-				C.StageSET_TMC		(oT_Name,"$null","$null",0);
-				C.StageEnd			();
-			}
-			C.PassEnd			();
+			// Level view
+			if (oBlend.value)	C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_SRCALPHA,	D3DBLEND_INVSRCALPHA,	TRUE,oAREF.value);
+			else				C.r_Pass	("r1_tree_wave","r1_vert",TRUE,TRUE,TRUE,TRUE,D3DBLEND_ONE,			D3DBLEND_ZERO,			TRUE,oAREF.value);
+			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler		("s_detail",C.detail_texture);
+			C.r_End			();
 		}
 	}
 }

@@ -21,14 +21,6 @@ CGameObject::CGameObject		()
 	AI_NodeID		= u32(-1);
 	AI_Node			= 0;
 	m_pPhysicsShell = NULL;
-	//////////////////////////////////////
-	// С Олеся - ПИВО!!!! (2-я бутылка опять же Диме :-))))
-	// Почему CGameObject не был VISIBLEFORAI ???
-	//////////////////////////////////////
-	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
-	if (self)
-		self->spatial.type	|= STYPE_VISIBLEFORAI;
-	//////////////////////////////////////
 
 	/******* Oles
 #ifdef DEBUG
@@ -45,6 +37,21 @@ CGameObject::~CGameObject		()
 	Device.seqRender.Remove	(this);
 #endif
 	*/
+}
+
+void CGameObject::Load(LPCSTR section)
+{
+	inherited::Load			(section);
+	//////////////////////////////////////
+	// С Олеся - ПИВО!!!! (2-я бутылка опять же Диме :-))))
+	// Почему CGameObject не был VISIBLEFORAI ???
+	//////////////////////////////////////
+	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
+	if (self)	{
+		self->spatial.type	|=	STYPE_VISIBLEFORAI;
+		self->spatial.type	&= ~STYPE_REACTTOSOUND;
+	}
+	//////////////////////////////////////
 }
 
 void CGameObject::net_Destroy	()

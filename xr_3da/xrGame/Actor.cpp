@@ -110,9 +110,6 @@ CActor::CActor() : CEntityAlive()
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
 
-	ISpatial*		self			=	dynamic_cast<ISpatial*> (this);
-	if (self)	self->spatial.type	|=	STYPE_VISIBLEFORAI;
-
 	InitTrade();
 
 	//разрешить использование пояса в inventory
@@ -153,6 +150,13 @@ void CActor::Load		(LPCSTR section )
 	Msg("Loading actor: %s",section);
 	inherited::Load		(section);
 
+	//////////////////////////////////////////////////////////////////////////
+	ISpatial*		self			=	dynamic_cast<ISpatial*> (this);
+	if (self)	{
+		self->spatial.type	|=	STYPE_VISIBLEFORAI;
+		self->spatial.type	&= ~STYPE_REACTTOSOUND;
+	}
+	//////////////////////////////////////////////////////////////////////////
 
 	// Movement: General
 	//Movement.SetParent		(this);

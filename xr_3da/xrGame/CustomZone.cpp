@@ -12,10 +12,6 @@ CCustomZone::CCustomZone(void)
 	m_period = 1100;
 	m_ready = false;
 	m_pLocalActor = NULL;
-#pragma todo("AlexMX to Oles : Can't dynamic cast ICollidable to ISpatial!!!")
-#pragma todo("AlexMX : Remove next line after Oles fix bug.")
-	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
-	if (self)		self->spatial.type	|=	STYPE_COLLIDEABLE;
 }
 
 CCustomZone::~CCustomZone(void) 
@@ -78,6 +74,10 @@ void CCustomZone::Load(LPCSTR section)
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
 	inherited::Load(section);
+//////////////////////////////////////////////////////////////////////////
+	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
+	if (self)		self->spatial.type	|=	STYPE_COLLIDEABLE;
+//////////////////////////////////////////////////////////////////////////
 
 	LPCSTR l_PSnd = pSettings->r_string(section,"sound");
 	SoundCreate(m_ambient, l_PSnd);
