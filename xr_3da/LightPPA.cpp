@@ -19,7 +19,7 @@ CLightPPA::~CLightPPA()
 
 }
 
-void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
+void CLightPPA::Render(Flight& D3D, CList<PPA_Vertex>&	vlist)
 {
 	VERIFY	(pCreator);
 	vlist.clear();
@@ -112,4 +112,9 @@ void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 			vert2.P.set		(vert3.P);
 		}
 	}
+	
+	// Create D3D unattenuated light
+	D3D.diffuse.set		(color);
+	D3D.position.set	(sphere.P);
+	D3D.range			= sphere.R;
 }
