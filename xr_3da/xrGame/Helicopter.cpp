@@ -320,7 +320,7 @@ CHelicopter::shedule_Update(u32	time_delta)
 			{
 				CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
 				VERIFY(pGrenade);
-				pGrenade->SetCurrentParentID(H_Parent()->ID());
+				pGrenade->SetCurrentParentID(this->ID());
 				LaunchRocket(ParticlesXFORM(),  m_fire_dir, m_fire_dir);
 			}
 		}
