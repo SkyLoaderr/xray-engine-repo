@@ -46,8 +46,6 @@ CAI_Soldier::CAI_Soldier()
 	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
-	m_dwPatrolPathIndex = -1;
-	m_dwCreatePathAttempts = 0;
 	m_dwLastUpdate = 0;
 	m_fSensetivity = .0f;
 	m_iSoundIndex = -1;
@@ -65,6 +63,8 @@ CAI_Soldier::CAI_Soldier()
 	m_dwCurrentUpdate = Level().timeServer();
 	m_dwUpdateCount = 0;
 	m_iCurrentSuspiciousNodeIndex = -1;
+	m_tpPath = 0;
+	m_dwLoopCount = 0;
 //	if (!bStarted) {
 //		bStarted = true;
 //		u64 uTime = 0;
@@ -281,18 +281,9 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 					}
 				}
 				
-				vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
-				for (int i=0; i<tpaPatrolPaths.size(); i++)
-					if (!strcmp(buf2,tpaPatrolPaths[i].sName)) {
-						m_dwStartPatrolNode = tpaPatrolPaths[i].dwStartNode;
-						m_dwPatrolPathIndex = i;
-						vfCreatePointSequence(tpaPatrolPaths[i],m_tpaPatrolPoints,m_bLooped);
-						m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
-						m_dwLoopCount = 0;
-						AI_Path.bNeedRebuild = FALSE;
-						return;
-					}
-				m_tpaPatrolPoints.clear();
+				INIT_SQUAD_AND_LEADER
+				
+				m_tpPath = &(Level().m_PatrolPaths[buf2]);
 			}
 		}
 }

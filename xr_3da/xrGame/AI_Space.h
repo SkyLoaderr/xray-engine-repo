@@ -131,6 +131,32 @@ public:
 				((P.z>=N.p0.z)&&(P.z<=N.p1.z));		// Z inside
 	}
 	
+	IC bool bfInsideNode(NodeCompressed *tpNode, Fvector &tCurrentPosition, float fHalfSubNodeSize)
+	{
+		Fvector tP0, tP1;
+		UnpackPosition(tP0,tpNode->p0);
+		UnpackPosition(tP1,tpNode->p1);
+		return(
+			(tCurrentPosition.x >= tP0.x - fHalfSubNodeSize - EPS) &&
+			(tCurrentPosition.z >= tP0.z - fHalfSubNodeSize - EPS) &&
+			(tCurrentPosition.x <= tP1.x + fHalfSubNodeSize + EPS) &&
+			(tCurrentPosition.z <= tP1.z + fHalfSubNodeSize + EPS)
+		);
+	}
+
+	IC float ffGetY(NodeCompressed &tNode, float X, float Z)
+	{
+		Fvector	DUP, vNorm, v, v1, P0;
+		DUP.set(0,1,0);
+		pvDecompress(vNorm,tNode.plane);
+		Fplane PL; 
+		UnpackPosition(P0,tNode.p0);
+		PL.build(P0,vNorm);
+		v.set(X,P0.y,Z);	
+		PL.intersectRayPoint(v,DUP,v1);	
+		return(v1.y);
+	}
+
 	Fvector	tfGetNodeCenter(DWORD dwNodeID);
 	Fvector	tfGetNodeCenter(NodeCompressed *tpNode);
 	
@@ -138,6 +164,7 @@ public:
 	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, DWORD dwNodeID1);
 	float ffGetDistanceBetweenNodeCenters(DWORD dwNodeID0, NodeCompressed *tpNode1);
 	float ffGetDistanceBetweenNodeCenters(NodeCompressed *tpNode0, NodeCompressed *tpNode1);
+	void  vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<Fvector> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 1.5f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = .35f, float fSegmentSizeMax = 1.4f);
 
 	// Device dependance
 	virtual void	OnDeviceCreate	();

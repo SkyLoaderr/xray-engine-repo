@@ -50,13 +50,6 @@ CLevel::~CLevel()
 	Engine.Event.Handler_Detach(eDemoPlay,		this);
 	Engine.Event.Handler_Detach(eChangeRP,		this);
 
-	/**/
-	for (int i=0; i<tpaPatrolPaths.size(); i++) {
-		tpaPatrolPaths[i].tpaWayPoints.clear();
-		tpaPatrolPaths[i].tpaWayLinks.clear();
-	}
-	//tpaPatrolPaths.clear();
-	/**/
 	if (ph_world)	ph_world->Destroy		();
 	_DELETE			(ph_world);
 }

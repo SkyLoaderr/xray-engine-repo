@@ -63,6 +63,7 @@ public:
 	DWORD						m_dwLastViewChange;
 	SuspiciousNodes				m_tpaSuspiciousNodes;
 	SuspiciousGroups			m_tpaSuspiciousGroups;
+	vector<DWORD>				m_tpaPatrolPath;
 
 	// Constructor
 								CGroup				();

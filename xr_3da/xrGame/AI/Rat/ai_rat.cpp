@@ -36,7 +36,6 @@ CAI_Rat::CAI_Rat()
 	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
-	m_dwPatrolPathIndex = -1;
 	m_bFiring = false;
 	tpaDynamicSounds.clear();
 	m_fSensetivity = 0.f;
@@ -49,6 +48,7 @@ CAI_Rat::CAI_Rat()
 	// start of Banan - padla!!!
 	m_fBananPadlaCorrection = PI_DIV_2;
 	// end of Banan - padla!!!
+	m_tpPath = 0;
 }
 
 CAI_Rat::~CAI_Rat()
@@ -257,18 +257,7 @@ void CAI_Rat::OnEvent(EVENT E, DWORD P1, DWORD P2)
 					}
 				}
 				
-				vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
-				for (int i=0; i<tpaPatrolPaths.size(); i++)
-					if (!strcmp(buf2,tpaPatrolPaths[i].sName)) {
-						m_dwStartPatrolNode = tpaPatrolPaths[i].dwStartNode;
-						m_dwPatrolPathIndex = i;
-						vfCreatePointSequence(tpaPatrolPaths[i],m_tpaPatrolPoints,m_bLooped);
-						m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
-						m_dwLoopCount = 0;
-						AI_Path.bNeedRebuild = FALSE;
-						return;
-					}
-				m_tpaPatrolPoints.clear();
+				m_tpPath = &(Level().m_PatrolPaths[buf2]);
 			}
 		}
 }

@@ -38,8 +38,6 @@ CAI_Zombie::CAI_Zombie()
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;
 	m_bJumping = false;
-	m_dwPatrolPathIndex = -1;
-	m_dwCreatePathAttempts = 0;
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
 	AI_Path.fSpeed = 0.f;
@@ -241,19 +239,7 @@ void CAI_Zombie::OnEvent(EVENT E, DWORD P1, DWORD P2)
 								komas++;
 					}
 				}
-				
-				vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
-				for (int i=0; i<tpaPatrolPaths.size(); i++)
-					if (!strcmp(buf2,tpaPatrolPaths[i].sName)) {
-						m_dwStartPatrolNode = tpaPatrolPaths[i].dwStartNode;
-						m_dwPatrolPathIndex = i;
-						vfCreatePointSequence(tpaPatrolPaths[i],m_tpaPatrolPoints,m_bLooped);
-						m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
-						m_dwLoopCount = 0;
-						AI_Path.bNeedRebuild = FALSE;
-						return;
-					}
-				m_tpaPatrolPoints.clear();
+				m_tpPath = &(Level().m_PatrolPaths[buf2]);
 			}
 		}
 }

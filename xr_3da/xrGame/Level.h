@@ -71,24 +71,35 @@ public:
 	typedef struct tagSWayPoint{
 		Fvector	tWayPoint;
 		DWORD	dwFlags;
+		DWORD	dwNodeID;
 	} SWayPoint;
 	
 	typedef struct tagSWayLink{
 		WORD	wFrom;
 		WORD	wTo;
 	} SWayLink;
+
+	typedef vector<Fvector>			SPointVector;
+
+	typedef struct tagSPath {
+		DWORD						dwType;
+		vector<SWayPoint>			tpaWayPoints;
+		vector<SWayLink>			tpaWayLinks;
+		vector<DWORD>				tpaWayPointIndexes;
+		svector<SPointVector,3>		tpaVectors;
+	} SPath;
+
+	enum EPathTypes {
+		PATH_LOOPED			= DWORD(1),
+		PATH_BIDIRECTIONAL	= DWORD(2),
+	};
 	
-	typedef struct tagSPatrolPath{
-		string64			sName;
-		DWORD				dwType;
-		DWORD				dwStartNode;
-		vector<SWayPoint>	tpaWayPoints;
-		vector<SWayLink>	tpaWayLinks;
-	} SPatrolPath;
-	
-	vector<SPatrolPath>			tpaPatrolPaths;
+	DEFINE_MAP(string,SPath,SPathMap,SPathPairIt);
+
+	SPathMap					m_PatrolPaths;
 
 	// Starting/Loading
+	void						vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath);
 	virtual BOOL				net_Server				( LPCSTR name_of_level	);
 	virtual BOOL				net_Client				( LPCSTR name_of_server );
 	virtual void				net_Disconnect			( );

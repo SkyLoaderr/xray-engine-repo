@@ -1122,6 +1122,9 @@
 			<File
 				RelativePath=".\ai_a_star.h">
 			</File>
+			<File
+				RelativePath="ai_misc.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Spawn Process"

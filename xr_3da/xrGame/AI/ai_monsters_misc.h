@@ -215,29 +215,6 @@
 		return(v1.y);
 	}
 
-	IC bool bfInsideContour(Fvector &tPoint, PContour &tContour)
-	{
-		return((tContour.v1.x - EPS_L <= tPoint.x) && (tContour.v1.z - EPS_L <= tPoint.z) && (tContour.v3.x + EPS_L >= tPoint.x) && (tContour.v3.z + EPS_L >= tPoint.z));
-	}
-
-	IC bool bfSimilar(Fvector &tPoint0, Fvector &tPoint1)
-	{
-		return((fabsf(tPoint0.x - tPoint1.x) < EPS_L) && (fabsf(tPoint0.z - tPoint1.z) < EPS_L));
-	}
-
-	IC bool bfInsideNode(CAI_Space &AI, NodeCompressed *tpNode, Fvector &tCurrentPosition, float fHalfSubNodeSize)
-	{
-		Fvector tP0, tP1;
-		AI.UnpackPosition(tP0,tpNode->p0);
-		AI.UnpackPosition(tP1,tpNode->p1);
-		return(
-			(tCurrentPosition.x >= tP0.x - fHalfSubNodeSize - EPS) &&
-			(tCurrentPosition.z >= tP0.z - fHalfSubNodeSize - EPS) &&
-			(tCurrentPosition.x <= tP1.x + fHalfSubNodeSize + EPS) &&
-			(tCurrentPosition.z <= tP1.z + fHalfSubNodeSize + EPS)
-		);
-	}
-
 	typedef struct tagSSubNode {
 		Fvector tLeftDown;
 		Fvector tRightUp;
@@ -245,17 +222,11 @@
 	} SSubNode;
 
 	extern void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector tStartPoint, Fvector tFinishPoint);
-	//extern void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 3.0f, float fRadiusMin = 1.5f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f);
-	extern void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, vector<DWORD> &dwaNodes, bool bLooped, bool bUseDeviations = false, float fRoundedDistanceMin = 1.5f, float fRoundedDistanceMax = 1.5f, float fRadiusMin = 3.0f, float fRadiusMax = 3.0f, float fSuitableAngle = PI_DIV_8*.375f, float fSegmentSizeMin = Level().AI.GetHeader().size*.5f, float fSegmentSizeMax = Level().AI.GetHeader().size*2.f);
-	extern void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints, bool &bLooped);
-	
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float _b2, float _b3);
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, NodeCompressed *tpNode);
 	extern float ffCalcSquare(float fAngle, float fAngleOfView, DWORD dwNodeID);
 	extern float ffGetCoverInDirection(float fAngle, float b0, float b1, float b2, float b3);
 	extern float ffGetCoverInDirection(float fAngle, NodeCompressed *tpNode);
 	extern float ffGetCoverInDirection(float fAngle, DWORD dwNodeID);
-	
 	extern SRotation tfGetOrientation(CEntity *tpEntity);
-	extern void vfTestNode(int iTestNode);
 #endif

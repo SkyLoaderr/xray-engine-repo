@@ -15,6 +15,7 @@
 #include "..\\..\\group.h"
 #include "..\\..\\xr_weapon_list.h"
 #include "..\\..\\actor.h"
+#include "..\\..\\level.h"
 
 class CAI_Soldier : public CCustomMonster
 {
@@ -424,17 +425,11 @@ class CAI_Soldier : public CCustomMonster
 		float			m_fMaxMissFactor;
 
 		// patrol structures
-		vector<Fvector>			m_tpaPatrolPoints;
-		vector<Fvector>			m_tpaPointDeviations;
-		vector<DWORD>			m_dwaNodes;
-		DWORD					m_dwStartPatrolNode;
-		bool					m_bLooped;
-		DWORD					m_dwPatrolPathIndex;
+		CLevel::SPath			*m_tpPath;
+		bool					m_bLessCoverLook;
 		DWORD					m_dwLoopCount;
-		DWORD					m_dwCreatePathAttempts;
 		float					m_fMinPatrolDistance;
 		float					m_fMaxPatrolDistance;
-		bool					m_bLessCoverLook;
 
 		// finite state machine
 		stack<ESoldierStates>	tStateStack;

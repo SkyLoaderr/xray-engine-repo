@@ -20,6 +20,7 @@ CGroup::CGroup()
 	m_dwFiring = 0;
 	m_bEnemyNoticed = false;
 	m_bLessCoverLook = false;
+	m_tpaPatrolPath.clear();
 }
 
 const Fvector& CGroup::GetCentroid()
