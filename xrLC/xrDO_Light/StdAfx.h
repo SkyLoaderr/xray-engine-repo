@@ -29,7 +29,6 @@
 #include <sys/stat.h>
 #include <io.h>
 #include <stdio.h>
-#include "random32.h"
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}
