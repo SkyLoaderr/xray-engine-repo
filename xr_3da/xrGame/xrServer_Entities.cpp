@@ -67,6 +67,9 @@ public:
 	}
 	virtual void			STATE_Write			(NET_Packet& P)
 	{
+		P.w_u8				(s_team	);
+		P.w_u8				(s_squad);
+		P.w_u8				(s_group);
 	}
 
 	virtual BOOL			RelevantTo			(xrServerEntity* E)

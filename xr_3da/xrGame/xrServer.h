@@ -73,7 +73,6 @@ public:
 	}
 	void					Spawn_Read		(NET_Packet& P)
 	{
-		u8					dummy8;
 		u16					dummy16;
 		// generic
 		P.r_begin			(dummy16		);
