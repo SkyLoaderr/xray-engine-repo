@@ -82,6 +82,7 @@ private:
 	CGraphEngine::CBaseParameters			*m_base_game_selector;
 	CGraphEngine::CBaseParameters			*m_base_level_selector;
 	float									m_speed;
+	float									m_desirable_speed;
 
 	IC		void	time_start				();
 	IC		bool	time_over				() const;
@@ -107,11 +108,13 @@ public:
 	IC		ALife::_GRAPH_ID game_dest_vertex_id	() const;
 	IC		u32		level_dest_vertex_id	() const;
 	IC		bool	enabled					() const;
+	IC		bool	path_completed			() const;
+	IC		float	desirable_speed			() const;
+	IC		void	set_desirable_speed		(float speed);
 
 			void	update_path				();
 			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;
-	IC		bool	path_completed			() const;
 };
 
 #include "movement_manager_inline.h"

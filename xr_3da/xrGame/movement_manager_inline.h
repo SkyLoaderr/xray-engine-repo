@@ -30,8 +30,8 @@ IC	void CMovementManager::time_start()
 
 IC	bool CMovementManager::time_over() const
 {
-	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
-//	return					(false);
+//	return					(CPU::GetCycleCount() - m_start_time >= m_time_work);
+	return					(false);
 }
 
 IC	void CMovementManager::enable_movement(bool enabled)
@@ -68,4 +68,14 @@ IC	ALife::_GRAPH_ID CMovementManager::game_dest_vertex_id() const
 IC	u32	 CMovementManager::level_dest_vertex_id() const
 {
 	return					(CLevelPathManager::dest_vertex_id());
+}
+
+IC	float CMovementManager::desirable_speed		() const
+{
+	return					(m_desirable_speed);
+}
+
+IC	void CMovementManager::set_desirable_speed	(float speed)
+{
+	m_desirable_speed		= speed;
 }

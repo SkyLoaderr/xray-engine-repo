@@ -47,7 +47,7 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 	if (time_delta < EPS)
 		return;
 #pragma todo("Dima to Kostia : Please change this piece of code to support paths with multiple desired velocities")
-	float				speed		=	2.15f;//CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed
+	float				speed		=	m_desirable_speed;//CDetailPathManager::path()[CDetailPathManager::curr_travel_point_index()].m_linear_speed
 	float				dist		=	speed*time_delta;
 	float				dist_save	=	dist;
 

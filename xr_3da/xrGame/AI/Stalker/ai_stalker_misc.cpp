@@ -222,6 +222,8 @@ void CAI_Stalker::vfSetParameters(
 		if (angle_difference(m_body.target.yaw,m_head.target.yaw) > 2*PI_DIV_6)
 			m_body.target.yaw = m_head.target.yaw;
 	
+	set_desirable_speed	(m_fCurSpeed);
+
 	if (!GetScriptControl())
 		vfSetWeaponState(tWeaponState);
 }

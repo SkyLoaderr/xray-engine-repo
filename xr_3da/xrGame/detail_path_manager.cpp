@@ -85,7 +85,7 @@ void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path, 
 
 	// start point
 	m_path.clear			();
-	current.m_linear_speed	= 2.15f;//(*m_movement_params.begin()).second.m_linear_speed;
+	current.m_linear_speed	= 0.f;//(*m_movement_params.begin()).second.m_linear_speed;
 	current.m_angular_speed	= 0.f;//(*m_movement_params.begin()).second.m_angular_speed;
 	current.m_position		= m_start_position;
 	m_path.push_back		(current);
