@@ -151,7 +151,12 @@ function reset_actions_event(st)
 end
 
 function non_goap_update_actions_event(st)
-	printf("DEBUG: non_goap_update_actions_event [%s]", st.active_section)
+	if st.active_section ~= nil then
+		printf("DEBUG: non_goap_update_actions_event [%s]", st.active_section)
+	else
+		printf("DEBUG: non_goap_update_actions_event [nil]")
+	end
+	
 	if not st.actions then
 		printf("WARNING: reset_actions: scheme '%s', section '%s': at least one action in a scheme must be " ..
 			"subscribed for events", utils.get_scheme_by_section(st.active_section), st.active_section)
