@@ -14,28 +14,26 @@
 CHUDManager::CHUDManager()
 { 
 #pragma todo("Yura, what is this and why? Oles.")
-	Level().pHUD	= this;
-	pFontSmall		= xr_new<CGameFont> ("hud_font_small");
-	pFontMedium		= xr_new<CGameFont> ("hud_font_medium");
-	pFontDI			= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
-	pFontBigDigit	= xr_new<CGameFont> ("hud_font_big_digit");
+	// Level().pHUD	= this;
+	pFontSmall				= xr_new<CGameFont> ("hud_font_small");
+	pFontMedium				= xr_new<CGameFont> ("hud_font_medium");
+	pFontDI					= xr_new<CGameFont> ("hud_font_di",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFontBigDigit			= xr_new<CGameFont> ("hud_font_big_digit");
 
-	pFontHeaderEurope = xr_new<CGameFont> ("ui_font_header_europe");
-	pFontHeaderRussian = xr_new<CGameFont> ("ui_font_header_russian");
+	pFontHeaderEurope		= xr_new<CGameFont> ("ui_font_header_europe");
+	pFontHeaderRussian		= xr_new<CGameFont> ("ui_font_header_russian");
 
-	pArialN21Russian = xr_new<CGameFont> ("ui_font_arial_n_21_russian");
-	pFontGraffiti19Russian = xr_new<CGameFont> ("ui_font_graffiti19_russian");
-	pFontGraffiti22Russian = xr_new<CGameFont> ("ui_font_graffiti22_russian");
+	pArialN21Russian		= xr_new<CGameFont> ("ui_font_arial_n_21_russian");
+	pFontGraffiti19Russian	= xr_new<CGameFont> ("ui_font_graffiti19_russian");
+	pFontGraffiti22Russian	= xr_new<CGameFont> ("ui_font_graffiti22_russian");
 	pFontLetterica16Russian = xr_new<CGameFont> ("ui_font_letterica16_russian");
 	pFontLetterica18Russian = xr_new<CGameFont> ("ui_font_letterica18_russian");
 	
-
-	pUI				= 0;
+	pUI						= 0;
 	Device.seqDevCreate.Add	(this);
 	if (Device.bReady) OnDeviceCreate();
 }
 //--------------------------------------------------------------------
-
 CHUDManager::~CHUDManager()
 {
 	Device.seqDevCreate.Remove(this);
