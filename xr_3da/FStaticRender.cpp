@@ -512,6 +512,8 @@ void	CRender::Render		()
 	// Target.set_gray					(.5f+sinf(Device.fTimeGlobal)/2.f);
 	Target.Begin					();
 
+	if (psDeviceFlags&rsWarmHZB)	HOM.Render_ZB	();
+
 	// HUD render
 	{
 		extern float psHUD_FOV;

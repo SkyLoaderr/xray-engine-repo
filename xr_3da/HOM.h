@@ -13,6 +13,9 @@ class ENGINE_API CHOM
 private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
+	vector<occTri*>			m_ZB;
+
+	CVS*					m_VS;
 
 //	IDirect3DTexture8*		m_pDBG;
 //	CTexture*				pTexture;
@@ -24,6 +27,7 @@ public:
 	void					Load		();
 	void					Unload		();
 	void					Render		(CFrustum& base);
+	void					Render_ZB	();
 	void					Debug		();
 
 	BOOL					visible		(Fbox& B);

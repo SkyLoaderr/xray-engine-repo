@@ -90,6 +90,9 @@ void CHOM::Load			()
 	// Create AABB-tree
 	m_pModel			= new CDB::MODEL();
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	m_ZB.clear			();
+
+	m_VS				= Device.Shader._CreateVS(FVF::L);
 	
 	// Debug
 /*
@@ -105,6 +108,7 @@ void CHOM::Load			()
 
 void CHOM::Unload		()
 {
+	Device.Shader._DeleteVS	(m_VS);
 //	_RELEASE	(m_pDBG);
 	_DELETE		(m_pModel);
 	_FREE		(m_pTris);
@@ -186,6 +190,7 @@ void CHOM::Render_DB	(CFrustum& base)
 		{
 			// Control skipping
 			occTri& T		= m_pTris	[it->id];
+
 			if (T.skip)		{ T.skip--; continue; }
 			DWORD	next	= ::Random.randI(7,30);
 
@@ -200,8 +205,7 @@ void CHOM::Render_DB	(CFrustum& base)
 			src.push_back	(*t.verts[1]);
 			src.push_back	(*t.verts[2]);
 			sPoly* P =		clip.ClipPoly	(src,dst);
-			if (0==P)		
-			{ T.skip=next; continue; }
+			if (0==P)		{ T.skip=next; continue; }
 
 			// XForm and Rasterize
 			DWORD	pixels	= 0;
@@ -224,10 +228,29 @@ void CHOM::Render		(CFrustum& base)
 	if (0==m_pModel)	return;
 	
 	Device.Statistic.RenderCALC_HOM.Begin	();
+	m_ZB.clear			();
 	Raster.clear		();
 	Render_DB			(base);
 	Raster.propagade	();
 	Device.Statistic.RenderCALC_HOM.End		();
+}
+
+
+void CHOM::Render_ZB	()
+{
+	if (m_ZB.empty())	return;
+
+	// Fill VB
+	DWORD							vCount	= m_ZB.size()*3;
+	DWORD							vOffset;
+	FVF::L*		V					= (FVF::L*) Device.Streams.Vertex.Lock	(vCount,m_VS->dwStride, vOffset);
+
+	vector<occTri*>::iterator	I	= m_ZB.begin	();
+	vector<occTri*>::iterator	E	= m_ZB.end		();
+
+	Device.Streams.Vertex.Unlock	(vCount,m_VS->dwStride);
+
+	// 
 }
 
 void CHOM::Debug		()
