@@ -1,479 +1,326 @@
-[actor_dialogs]
-id = bar_dolg_base_guard_acces
+;-------------------------------------------------------------------------------------------------
+;-- GARBAGE BANDITS
+;-------------------------------------------------------------------------------------------------
+[logic@gar_bandits_walker1]
+active = walker1@gar_bandits
 
-[logic1@bar_dolg_general_guard_left]
-active = zoneguard1@bar_dolg_general_guard_left
-actor_dialogs = actor_dialogs
-
-[zoneguard1@bar_dolg_general_guard_left]
-path_walk = guard_left_walk
-path_look = guard_left_look
-team = bar_dolg_general_guard_team1
-zone_guard = kill_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard11@bar_dolg_general_guard_left_friend
-snd_greet = bar_dolg_base_guard_no_talk
-
-[zoneguard11@bar_dolg_general_guard_left_friend]
-path_walk = guard_left_walk
-path_look = guard_left_look
-team = bar_dolg_general_guard_team1
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-anim = guard
+[walker1@gar_bandits]
+meet_enabled = true
+path_walk = walk_1
+path_look = look_1
 
 
-[logic2@bar_dolg_general_guard_right]
-active = zoneguard2@bar_dolg_general_guard_right
-actor_dialogs = actor_dialogs
+[logic@gar_bandits_walker2]
+active = walker2@gar_bandits
 
-[zoneguard2@bar_dolg_general_guard_right]
-path_walk = guard_right_walk
-path_look = guard_right_look
-team = bar_dolg_general_guard_team2
-zone_guard = kill_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard12@bar_dolg_general_guard_right_friend
-snd_greet = bar_dolg_base_guard_no_talk
-
-[zoneguard12@bar_dolg_general_guard_right_friend]
-path_walk = guard_right_walk
-path_look = guard_right_look
-team = bar_dolg_general_guard_team2
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-anim = guard
+[walker2@gar_bandits]
+meet_enabled = true
+path_walk = walk_2
+path_look = look_2
 
 
+[logic@gar_bandits_walker3]
+active = walker3@gar_bandits
 
-[logic3@bar_dolg_general_guard_center]
-active = zoneguard3@bar_dolg_general_guard_center
-actor_dialogs = actor_dialogs
-
-[zoneguard3@bar_dolg_general_guard_center]
-path_walk = guard_center_walk
-path_look = guard_center_look
-team = bar_dolg_general_guard_team3
-zone_guard = kill_zone
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-on_info = {+bar_dolg_base_pass} zoneguard13@bar_dolg_general_guard_center
-snd_greet = bar_dolg_base_guard_backoff
-
-[zoneguard13@bar_dolg_general_guard_center]
-path_walk = guard_center_walk
-path_look = guard_center_look
-team = bar_dolg_general_guard_team3
-zone_warn = warn_zone
-no_move = true
-meet_talk_enabled = true
-meet_dialog = bar_dolg_base_guard_start
-anim = guard
+[walker3@gar_bandits]
+meet_enabled = true
+path_walk = walk_3
+path_look = look_3
 
 
+[logic@gar_bandits_kamp1]
+active = kamp1@gar_bandits
 
-[logic4@bar_dolg_general_kamp]
-active = kamp1@bar_dolg_general_kamp
+[kamp1@gar_bandits]
+meet_enabled = true
+center_point = camp1
 
-[kamp1@bar_dolg_general_kamp]
+
+[logic@gar_bandits_attack_walker1]
+active = walker1@gar_bandits_attack
+
+[walker1@gar_bandits_attack]
+path_walk = shooting_walk_1
+path_look = shooting_look_1
+
+
+[logic@gar_bandits_attack_walker2]
+active = walker2@gar_bandits_attack
+
+[walker2@gar_bandits_attack]
+path_walk = shooting_walk_2
+path_look = shooting_look_2
+
+
+[logic@gar_bandits_attack_walker3]
+active = walker3@gar_bandits_attack
+
+[walker3@gar_bandits_attack]
+path_walk = shooting_walk_3
+path_look = shooting_look_3
+
+
+[logic@gar_bandits_attack_walker4]
+active = walker4@gar_bandits_attack
+
+[walker4@gar_bandits_attack]
+path_walk = shooting_walk_4
+path_look = shooting_look_4
+
+
+[logic@gar_bandits_attack_walker5]
+active = walker5@gar_bandits_attack
+
+[walker5@gar_bandits_attack]
+path_walk = shooting_walk_5
+path_look = shooting_look_5
+
+;-------------------------------------------------------------------------------------------------
+;-- GARBAGE STALKERS
+;-------------------------------------------------------------------------------------------------
+[logic@gar_stalkers_walker1]
+active = walker1@gar_stalkers
+
+[walker1@gar_stalkers]
+path_walk = walk_1
+path_look = look_1
+
+
+[logic@gar_stalkers_walker2]
+active = walker2@gar_stalkers
+
+[walker2@gar_stalkers]
+path_walk = walk_2
+path_look = look_2
+
+
+[logic@gar_stalkers_walker3]
+active = walker3@gar_stalkers
+
+[walker3@gar_stalkers]
+path_walk = walk_3
+path_look = look_3
+
+
+[logic@gar_stalkers_kamp1]
+active = walker1@gar_stalkers
+
+[kamp1@gar_stalkers]
+center_point = camp1
+
+
+[logic@gar_stalkers_attack_walker1]
+active = walker1@gar_stalkers_attack
+
+[walker1@gar_stalkers_attack]
+path_walk = shooting_walk_1
+path_look = shooting_look_1
+
+
+[logic@gar_stalkers_attack_walker2]
+active = walker2@gar_stalkers_attack
+
+[walker2@gar_stalkers_attack]
+path_walk = shooting_walk_2
+path_look = shooting_look_2
+
+
+[logic@gar_stalkers_attack_walker3]
+active = walker3@gar_stalkers_attack
+
+[walker3@gar_stalkers_attack]
+path_walk = shooting_walk_3
+path_look = shooting_look_3
+
+
+[logic@gar_stalkers_attack_walker4]
+active = walker4@gar_stalkers_attack
+
+[walker4@gar_stalkers_attack]
+path_walk = shooting_walk_4
+path_look = shooting_look_4
+
+
+[logic@gar_stalkers_attack_walker5]
+active = walker5@gar_stalkers_attack
+
+[walker5@gar_stalkers_attack]
+path_walk = shooting_walk_5
+path_look = shooting_look_5
+
+;-------------------------------------------------------------------------------------------------
+;-- GARBAGE MANIAC
+;-------------------------------------------------------------------------------------------------
+[logic@gar_maniac_camper]
+active = camper@gar_maniac
+
+[camper@gar_maniac]
+path_walk = walk1
+path_look = look1
+
+
+[logic@gar_maniac_sleeper]
+active = sleeper@gar_maniac
+
+[sleeper@gar_maniac]
+path_main = sleep
+wakeable = true
+
+;-------------------------------------------------------------------------------------
+;-- GARBAGE DOLG
+;-------------------------------------------------------------------------------------
+[dolg@gar_dolg_kamp_actor_dialogs]
+id = gar_dolg_acces
+
+
+[logic@gar_dolg_kamp1]
+active = kamp1@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
+
+[kamp1@gar_dolg]
 center_point = kamp_center
-
-
-[logic5@bar_dolg_general_patrol1]
-active = walker4@bar_dolg_general_patrol1
-
-[walker4@bar_dolg_general_patrol1]
-path_walk = patrol_1_walk
-path_look = patrol_1_look
-
-[logic6@bar_dolg_general_patrol2]
-active = walker5@bar_dolg_general_patrol2
-
-[walker5@bar_dolg_general_patrol2]
-path_walk = patrol_2_walk
-path_look = patrol_2_look
-
-
-[logic6@bar_dolg_general_camper]
-active = camper1@bar_dolg_general_camper
-
-[camper1@bar_dolg_general_camper]
-path_walk = camper_1_walk
-path_look = camper_1_look
-def_state_moving = assault
-def_state_moving_fire = assault_fire
-def_state_campering = hide
-def_state_campering_fire = hide_fire
-
-
-[logic7@bar_dolg_general_camper]
-active = camper2@bar_dolg_general_camper
-
-[camper2@bar_dolg_general_camper]
-path_walk = camper_2_walk
-path_look = camper_2_look
-def_state_moving = assault
-def_state_moving_fire = assault_fire
-def_state_campering = hide
-def_state_campering_fire = hide_fire
-
-
-[logic8@bar_dolg_general_camper]
-active = camper3@bar_dolg_general_camper
-
-[camper3@bar_dolg_general_camper]
-path_walk = camper_3_walk
-path_look = camper_3_look
-def_state_moving = assault
-def_state_moving_fire = assault_fire
-def_state_campering = hide
-def_state_campering_fire = hide_fire
-
-
-[logic9@bar_dolg_general_camper]
-active = camper4@bar_dolg_general_camper
-
-[camper4@bar_dolg_general_camper]
-path_walk = camper_4_walk
-path_look = camper_4_look
-def_state_moving = assault
-def_state_moving_fire = assault_fire
-def_state_campering = hide
-def_state_campering_fire = hide_fire
-
-
-[logic10@bar_dolg_general_camper]
-active = camper5@bar_dolg_general_camper
-
-[camper5@bar_dolg_general_camper]
-path_walk = camper_5_walk
-path_look = camper_5_look
-def_state_moving = assault
-def_state_moving_fire = assault_fire
-def_state_campering = hide
-def_state_campering_fire = hide_fire
-
-
-; ¬≈“≈–¿Õ€ ƒŒÀ√¿
-
-[logic1@bar_dolg_veterans_guard_bunker1]
-active = zoneguard4@bar_dolg_veterans_guard_bunker1
-actor_dialogs = actor_dialogs
-
-[zoneguard4@bar_dolg_veterans_guard_bunker1]
-path_walk = guard_bunker_1_walk
-path_look = guard_bunker_1_look
-team = bar_dolg_guard_bunker_team
-zone_guard = bunker_kill_zone
-zone_warn = bunker_warn_zone
-no_move = true
+meet_dialog = gar_dolg_start
 meet_talk_enabled = true
-meet_dialog = bar_dolg_guard_bunker_start 
-on_info = {+bar_dolg_bunker_pass} zoneguard44@bar_dolg_veterans_guard_bunker1_friend
-snd_greet = bar_dolg_base_guard_backoff
 
-[zoneguard44@bar_dolg_veterans_guard_bunker1_friend]
-path_walk = guard_bunker_1_walk
-path_look = guard_bunker_1_look
-team = bar_dolg_guard_bunker_team
-zone_warn = bunker_warn_zone
-no_move = true
+
+[logic@gar_dolg_kamp2]
+active = kamp2@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
+
+[kamp2@gar_dolg]
+center_point = kamp_center
+patrol_path = kamp_walk1
+path_look = kamp_look1
+meet_dialog = gar_dolg_start
 meet_talk_enabled = true
-meet_dialog = bar_dolg_guard_bunker_start 
-anim = guard
 
 
-[logic2@bar_dolg_veterans_guard_bunker2]
-active = zoneguard5@bar_dolg_veterans_guard_bunker2
-actor_dialogs = actor_dialogs
+[logic@gar_dolg_kamp3]
+active = kamp3@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
-[zoneguard5@bar_dolg_veterans_guard_bunker2]
-path_walk = guard_bunker_2_walk
-path_look = guard_bunker_2_look
-team = bar_dolg_guard_bunker_team1
-zone_guard = bunker_kill_zone
-zone_warn = bunker_warn_zone
-no_move = true
+[kamp3@gar_dolg]
+center_point = kamp_center
+patrol_path = kamp_walk2
+path_look = kamp_look2
+meet_dialog = gar_dolg_start
 meet_talk_enabled = true
-meet_dialog = bar_dolg_guard_bunker_start
-on_info = {+bar_dolg_bunker_pass} zoneguard55@bar_dolg_veterans_guard_bunker2_friend
-snd_greet = bar_dolg_base_guard_no_talk
 
-[zoneguard55@bar_dolg_veterans_guard_bunker2_friend]
-path_walk = guard_bunker_2_walk
-path_look = guard_bunker_2_look
-team = bar_dolg_guard_bunker_team1
-zone_warn = bunker_warn_zone
-no_move = true
+
+[logic@gar_dolg_patrol1]
+active = walker@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
+
+[walker@gar_dolg]
+path_walk = patrol_path
+path_look = patrol_look
+meet_dialog = gar_dolg_start
+meet_enabled = true
+
+
+[logic@gar_dolg_follower1]
+active = follower1@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
+
+[follower1@gar_dolg]
+escape_path = patrol_look
+meet_dialog = gar_dolg_start
+meet_enabled = true
+
+
+[logic@gar_dolg_zoneguard1]
+active = zoneguard1@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
+
+[zoneguard1@gar_dolg]
+path_walk = guard_way1
+path_look = guard_look1
+team = team_0
+zone_warn = zone_warn
+zone_guard = zone_kill
+no_move = false
+ignore_cond = {+gar_dolg_access_rostok}
+meet_dialog = gar_dolg_guard_start
 meet_talk_enabled = true
-meet_dialog = bar_dolg_guard_bunker_start 
-anim = guard
 
 
-[logic7@bar_dolg_veterans_bunker]
-active = walker1@bar_dolg_veterans_bunker
+[logic@gar_dolg_zoneguard2]
+active = zoneguard2@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
-[walker1@bar_dolg_veterans_bunker]
-path_walk = guard_bunker
-path_look = look_bunker
-
-
-[logic3@bar_dolg_veterans_gates1]
-active = walker2@bar_dolg_veterans_gates1
-
-[walker2@bar_dolg_veterans_gates1]
-path_walk = guard_gates_walk1
-path_look = guard_gates_look1
-
-
-[logic4@bar_dolg_veterans_gates2]
-active = walker3@bar_dolg_veterans_gates2
-
-[walker3@bar_dolg_veterans_gates2]
-path_walk = guard_gates_walk2
-path_look = guard_gates_look2
+[zoneguard2@gar_dolg]
+path_walk = guard_way2
+path_look = guard_look2
+team = team_0
+zone_warn = zone_warn
+zone_guard = zone_kill
+no_move = false
+ignore_cond = {+gar_dolg_access_rostok}
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
 
 
-[logic5@bar_dolg_veterans_gates_alarm1]
-active = walker6@bar_dolg_veterans_gates_alarm1
+[logic@gar_dolg_zoneguard3]
+active = zoneguard3@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
-[walker6@bar_dolg_veterans_gates_alarm1]
-path_walk = guard_gates_walk1
-path_look = guard1_alarm
+[zoneguard3@gar_dolg]
+path_walk = guard_way3
+path_look = guard_look3
+team = team_0
+zone_warn = zone_warn
+zone_guard = zone_kill
+no_move = false
+ignore_cond = {+gar_dolg_access_rostok}
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
 
 
-[logic6@bar_dolg_veterans_gates_alarm2]
-active = walker7@bar_dolg_veterans_gates_alarm2
+[logic@gar_dolg_camper1]
+active = camper1@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
-[walker7@bar_dolg_veterans_gates_alarm2]
-path_walk = guard_gates_walk2
-path_look = guard2_alarm
-
-
-[logic8@bar_dolg_veterans_bunker_camper]
-active = camper1@bar_dolg_veterans_bunker_camper
-
-[camper1@bar_dolg_veterans_bunker_camper]
-path_walk = guard_bunker
+[camper1@gar_dolg]
+path_walk = camper_path1
 path_look = camper_look1
-radius = 4
+radius = 5
 
 
+[logic@gar_dolg_camper2]
+active = camper2@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
-; ¡”Õ ≈– ƒŒÀ√¿
+[camper2@gar_dolg]
+path_walk = camper_path2
+path_look = camper_look2
+radius = 5
 
-[logic1@bar_dolg_bunker]
-active = walker1@bar_dolg_bunker
 
-[walker1@bar_dolg_bunker]
-path_walk = guard_1_walk
-path_look = guard_1_look
+[logic@gar_dolg_camper3]
+active = camper3@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
+[camper3@gar_dolg]
+path_walk = camper_path3
+path_look = camper_look3
+radius = 5
 
-[logic2@bar_dolg_bunker]
-active = walker2@bar_dolg_bunker
 
-[walker2@bar_dolg_bunker]
-path_walk = guard_2_walk
-path_look = guard_2_look
+[logic@gar_dolg_camper4]
+active = camper4@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
+[camper4@gar_dolg]
+path_walk = camper_path4
+path_look = camper_look4
+radius = 5
 
-[logic3@bar_dolg_bunker]
-active = walker3@bar_dolg_bunker
 
-[walker3@bar_dolg_bunker]
-path_walk = rest_2_walk
-path_look = rest_2_look
+[logic@gar_dolg_camper5]
+active = camper5@gar_dolg
+actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
 
-
-[logic4@bar_dolg_bunker]
-active = walker4@bar_dolg_bunker
-
-[walker4@bar_dolg_bunker]
-path_walk = rest_1_walk
-path_look = rest_1_look
-
-
-[logic5@bar_dolg_bunker]
-active = sleeper1@bar_dolg_bunker
-
-[sleeper1@bar_dolg_bunker]
-path_main = sleeper_1
-
-
-; Õ≈’Œ–Œÿ»≈ —“¿À ≈–€ ¬≈“≈–¿Õ€
-
-[logic@bar_evil_veterans_walker1]
-active = walker@bar_evil_veterans_walker1
-
-[walker@bar_evil_veterans_walker1]
-path_walk = guard_1_walk
-
-
-[logic@bar_evil_veterans_walker2]
-active = walker@bar_evil_veterans_walker2
-
-[walker@bar_evil_veterans_walker2]
-path_walk = guard_2_walk
-
-
-[logic@bar_evil_veterans_walker3]
-active = walker@bar_evil_veterans_walker3
-
-[walker@bar_evil_veterans_walker3]
-path_walk = guard_3_walk
-
-
-[logic@bar_evil_veterans_kamp1]
-active = kamp@bar_evil_veterans_kamp1
-
-[kamp@bar_evil_veterans_kamp1]
-center_point = sit_point1
-
-
-[logic@bar_evil_veterans_kamp2]
-active = kamp@bar_evil_veterans_kamp2
-
-[kamp@bar_evil_veterans_kamp2]
-center_point = sit_point1
-
-
-[logic@bar_evil_veterans_kamp3]
-active = kamp@bar_evil_veterans_kamp3
-
-[kamp@bar_evil_veterans_kamp3]
-center_point = sit_point1
-
-
-[logic@bar_evil_veterans_alarm1]
-active = walker@bar_evil_veterans_alarm1
-
-[walker@bar_evil_veterans_alarm1]
-path_walk = alarm_1_walk
-path_look = alarm_1_look
-
-
-[logic@bar_evil_veterans_alarm2]
-active = walker@bar_evil_veterans_alarm2
-
-[walker@bar_evil_veterans_alarm2]
-path_walk = alarm_2_walk
-path_look = alarm_2_look
-
-
-[logic@bar_evil_veterans_alarm3]
-active = walker@bar_evil_veterans_alarm3
-
-[walker@bar_evil_veterans_alarm3]
-path_walk = alarm_3_walk
-path_look = alarm_3_look
-
-
-
-
-;*******************************************************************
-; —‚Ó·Ó‰‡, ‡Ú‡ÍÛ˛˘‡ˇ Û˜ÂÌÌ˚ı
-;*******************************************************************
-
-[logic@bar_freedom_attack_sniper_1]
-active = camper@bar_freedom_attack_sniper_1
-
-[camper@bar_freedom_attack_sniper_1]
-path_walk = camper_1_walk
-path_look = camper_1_look
-
-[logic@bar_freedom_attack_sniper_2]
-active = camper@bar_freedom_attack_sniper_2
-
-[camper@bar_freedom_attack_sniper_2]
-path_walk = camper_2_walk
-path_look = camper_2_look
-
-[logic@bar_freedom_attack_sniper_3]
-active = camper@bar_freedom_attack_sniper_3
-
-[camper@bar_freedom_attack_sniper_3]
-path_walk = camper_3_walk
-path_look = camper_3_look
-
-[logic@bar_freedom_attack_sniper_4]
-active = camper@bar_freedom_attack_sniper_4
-
-[camper@bar_freedom_attack_sniper_4]
-path_walk = camper_4_walk
-path_look = camper_4_look
-
-
-[logic@bar_freedom_attack_guard_1]
-active = camper@bar_freedom_attack_guard_1
-
-[camper@bar_freedom_attack_guard_1]
-path_walk = guard_1_walk
-path_look = guard_1_look
-
-[logic@bar_freedom_attack_guard_2]
-active = camper@bar_freedom_attack_guard_2
-
-[camper@bar_freedom_attack_guard_2]
-path_walk = guard_2_walk
-path_look = guard_2_look
-
-
-;*******************************************************************
-; ”˜ÂÌÌ˚Â
-;*******************************************************************
-
-[logic@bar_ecolog_crush_sniper_1]
-active = camper@bar_ecolog_crush_sniper_1
-
-[camper@bar_ecolog_crush_sniper_1]
-path_walk = sniper_1_walk
-path_look = sniper_1_look
-
-[logic@bar_ecolog_crush_sniper_2]
-active = camper@bar_ecolog_crush_sniper_2
-
-[camper@bar_ecolog_crush_sniper_2]
-path_walk = sniper_2_walk
-path_look = sniper_2_look
-
-[logic@bar_ecolog_crush_sniper_3]
-active = camper@bar_ecolog_crush_sniper_3
-
-[camper@bar_ecolog_crush_sniper_3]
-path_walk = sniper_3_walk
-path_look = sniper_3_look
-
-[logic@bar_ecolog_crush_sniper_4]
-active = camper@bar_ecolog_crush_sniper_4
-
-[camper@bar_ecolog_crush_sniper_4]
-path_walk = sniper_4_walk
-path_look = sniper_4_look
-
-[logic@bar_ecolog_crush_sniper_5]
-active = camper@bar_ecolog_crush_sniper_5
-
-[camper@bar_ecolog_crush_sniper_5]
-path_walk = sniper_5_walk
-path_look = sniper_5_look
-
-[logic@bar_ecolog_crush_sniper_6]
-active = camper@bar_ecolog_crush_sniper_6
-
-[camper@bar_ecolog_crush_sniper_6]
-path_walk = sniper_6_walk
-path_look = sniper_6_look
-
+[camper5@gar_dolg]
+path_walk = camper_path5
+path_look = camper_look5
+radius = 5

@@ -421,6 +421,9 @@
 					RelativePath=".\Config\misc\gulag_dark_valley.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\gulag_garbage.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\gulag_tasks.ltx">
 				</File>
 				<File
@@ -1700,6 +1703,9 @@
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_dark_valley.script">
+						</File>
+						<File
+							RelativePath=".\scripts\gulag_garbage.script">
 						</File>
 						<File
 							RelativePath=".\Scripts\gulag_military.script">

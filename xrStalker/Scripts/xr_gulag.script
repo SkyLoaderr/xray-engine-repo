@@ -373,22 +373,6 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community == "military"
 	end
 	
-	if gulag_type == "gar_bandits" then
-		return npc_community == "stalker"
-	end
-
-	if gulag_type == "gar_stalkers" then
-		return npc_community == "bandit"
-	end
-	
-	if gulag_type == "gar_dolg" then
-	   return npc_community == "dolg"
-	end    
-
-	if gulag_type == "bar_evil_veterans" then
-	   return npc_community == "stalker"
-	end    
-
 	if gulag_type == "val_lager_bandits" then
 	   return npc_community == "bandit"
 	end    
@@ -417,16 +401,16 @@ function checkStalker(npc_community, gulag_type)
 		return npc_community ~= "military"
 	end
 
-	if gulag_type == "gar_maniac" then
-		return npc_community == "killer"
-	end
-
 	if gulag_type == "agr_nii" or gulag_type == "agr_factory" then
 		return npc_community == "military"
 	end
 
 	if gulag_type == "rad_antena" then
 		return npc_community == "monolith"
+	end
+
+	if gulag_garbage.checkStalker(npc_community, gulag_type) then
+		return true
 	end
 
 	if gulag_bar.checkStalker(npc_community, gulag_type) then
