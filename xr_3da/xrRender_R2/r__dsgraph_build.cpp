@@ -32,10 +32,15 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 {
 	CRender&	RI			=	RImplementation;
 
-	if (pVisual->vis.marker	==	RI.marker)	return;
-	pVisual->vis.marker		=	RI.marker;
+	if (pVisual->vis.marker	==	RI.marker)	return	;
+	pVisual->vis.marker		=	RI.marker			;
 
-	float distSQ;
+#if RENDER==R_R1
+	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
+	vis.accept_frame		=	Device.dwFrame		;
+#endif
+
+	float distSQ			;
 	float SSA				=	CalcSSA		(distSQ,Center,pVisual);
 	if (SSA<=r_ssaDISCARD)		return;
 
@@ -139,8 +144,13 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 
 void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 {
-	if (pVisual->vis.marker		==	RImplementation.marker)	return;
-	pVisual->vis.marker			=	RImplementation.marker;
+	if (pVisual->vis.marker		==	RImplementation.marker)	return	;
+	pVisual->vis.marker			=	RImplementation.marker			;
+
+#if RENDER==R_R1
+	if (RI.o.vis_intersect &&	(pVisual->vis.accept_frame!=Device.dwFrame))	return;
+	vis.accept_frame			=	Device.dwFrame					;
+#endif
 
 	float distSQ;
 	float SSA					= CalcSSA	(distSQ,pVisual->vis.sphere.P,pVisual);

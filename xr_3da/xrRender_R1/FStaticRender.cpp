@@ -421,17 +421,19 @@ void	CRender::Render		()
 	Device.Statistic.RenderDUMP.Begin();
 
 	// Begin
-	Target->Begin					();
-
-	phase										= PHASE_NORMAL;
+	Target->Begin								();
+	o.vis_intersect								= FALSE			;
+	phase										= PHASE_NORMAL	;
 	r_dsgraph_render_hud						();				// hud
 	r_dsgraph_render_graph						(0);			// normal level
 	Details->Render								();				// grass / details
 	g_pGamePersistent->Environment.RenderFirst	();				// sky / sun
 	r_pmask										(true,false);	// disable priority "1"
+	o.vis_intersect								= TRUE			;
 	L_Dynamic->render							();				// addititional light sources
 	Wallmarks->Render							();				// wallmarks has priority as normal geometry
-	phase										= PHASE_NORMAL;
+	o.vis_intersect								= FALSE			;
+	phase										= PHASE_NORMAL	;
 	r_pmask										(true,true);	// enable priority "0" and "1"
 	L_Shadows->render							();				// ... and shadows
 	r_dsgraph_render_lods						();				// lods
@@ -446,7 +448,7 @@ void	CRender::Render		()
 	L_Projector->finalize			();
 
 	// HUD
-	Device.Statistic.RenderDUMP.End();
+	Device.Statistic.RenderDUMP.End	();
 }
 
 void	CRender::ApplyBlur4		(FVF::TL4uv* pv, u32 w, u32 h, float k)

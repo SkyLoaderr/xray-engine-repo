@@ -26,6 +26,8 @@ public:
 		PHASE_SPOT
 	};
 	struct		_options	{
+		u32		vis_intersect		: 1;	// config
+
 		u32		distortion			: 1;	// run-time modified
 		u32		disasm				: 1;	// config
 	}			o;

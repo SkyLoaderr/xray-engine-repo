@@ -228,7 +228,6 @@ BOOL CHOM::visible		(Fbox2& B, float depth)
 
 BOOL CHOM::visible		(vis_data& vis)
 {
-	vis.hom_accept_frame				= Device.dwFrame;
 	if (Device.dwFrame<vis.hom_frame)	return TRUE;				// not at this time :)
 	if (!bEnabled)						return TRUE;				// return - everything visible
 	
