@@ -65,26 +65,44 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 		}
 		C.PassEnd			();
 	} else {
-		C.PassBegin		();
+		if (C.bLighting)	
 		{
-			C.PassSET_ZB		(TRUE,TRUE);
-			C.PassSET_Blend_SET	();
-			C.PassSET_LightFog	(FALSE,TRUE);
-			
-			// Stage1 - Base texture
-			C.StageBegin		();
-			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-			C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
-			C.StageEnd			();
-			
-			// Stage2 - Second texture
-			C.StageBegin		();
-			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
-			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
-			C.StageSET_TMC		(oT2_Name,oT2_xform,"$null",0);
-			C.StageEnd			();
+			C.PassBegin		();
+			{
+				C.PassSET_ZB		(TRUE,TRUE);
+				C.PassSET_Blend_SET	();
+				C.PassSET_LightFog	(FALSE,TRUE);
+				
+				// Stage1 - Base texture
+				C.StageBegin		();
+				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
+				C.StageEnd			();
+			}
+			C.PassEnd			();
+		} else {
+			C.PassBegin		();
+			{
+				C.PassSET_ZB		(TRUE,TRUE);
+				C.PassSET_Blend_SET	();
+				C.PassSET_LightFog	(FALSE,TRUE);
+				
+				// Stage1 - Base texture
+				C.StageBegin		();
+				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
+				C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
+				C.StageEnd			();
+				
+				// Stage2 - Second texture
+				C.StageBegin		();
+				C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
+				C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
+				C.StageSET_TMC		(oT2_Name,oT2_xform,"$null",0);
+				C.StageEnd			();
+			}
+			C.PassEnd			();
 		}
-		C.PassEnd			();
 	}
 }
