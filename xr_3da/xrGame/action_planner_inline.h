@@ -105,7 +105,7 @@ void CPlanner::update				()
 				char			temp = '?';
 				if ((J != target_state().conditions().end()) && ((*J).condition() == (*I).first)) {
 					temp		= (*J).value() ? '+' : '-';
-					Msg			("%5c : [%d]%s",temp,(*I).first,property2string((*I).first));
+					Msg			("%5c : [%d][%s]",temp,(*I).first,property2string((*I).first));
 				}
 			}
 		}
