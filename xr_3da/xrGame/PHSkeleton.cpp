@@ -156,8 +156,8 @@ void CPHSkeleton::LoadNetState(NET_Packet& P)
 }
 void CPHSkeleton::RestoreNetState(CSE_ALifePHSkeletonObject* po)
 {
-	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 	if(!po->flags.test(CSE_ALifePHSkeletonObject::flSavedData))return;
+	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 	PHNETSTATE_VECTOR& saved_bones=po->saved_bones.bones;
 	PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
 	for(u16 bone=0;e!=i;i++,bone++)

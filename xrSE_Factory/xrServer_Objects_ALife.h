@@ -225,7 +225,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisu
 	virtual bool					used_ai_locations		() const;
 	virtual	void					load					(NET_Packet &tNetPacket);
 protected:
-	void							data_load				(NET_Packet &tNetPacket);
+	virtual void					data_load				(NET_Packet &tNetPacket);
+	virtual void					data_save				(NET_Packet &tNetPacket);
 public:
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifePHSkeletonObject)
@@ -346,9 +347,13 @@ add_to_type_list(CSE_ALifeHelicopter)
 #define script_type_list save_type_list(CSE_ALifeHelicopter)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeCar,CSE_ALifePHSkeletonObject)
+	xr_vector<u8>					door_states;
 									CSE_ALifeCar		(LPCSTR caSection);
 	virtual							~CSE_ALifeCar		();
 	virtual bool					used_ai_locations	() const;
+protected:
+	virtual void					data_load				(NET_Packet &tNetPacket);
+	virtual void					data_save				(NET_Packet &tNetPacket);
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeCar)
 #define script_type_list save_type_list(CSE_ALifeCar)

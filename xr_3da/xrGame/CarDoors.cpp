@@ -145,7 +145,7 @@ void CCar::SDoor::Init()
 	shoulder.sub(door_transform.c,joint->PSecond_element()->mass_Center());
 	torque=shoulder.magnitude()*joint->PSecond_element()->getMass()*2.f*10.f;
 	state=opened;
-	Close();
+//	Close();
 }
 void CCar::SDoor::Open()
 {
@@ -342,7 +342,7 @@ void CCar::SDoor::ClosingToClosed()
 
 float CCar::SDoor::GetAngle()
 {
-	if(!joint->bActive) return 0.f;
+	if(!joint||!joint->bActive) return 0.f;
 	return dJointGetHingeAngle(joint->GetDJoint());
 }
 
@@ -490,4 +490,20 @@ bool CCar::SDoor::CanEnter(const Fvector& pos,const Fvector& dir,const Fvector& 
 {
 	if(!joint) return true;//temp for fake doors
 	return state==opened && TestPass(foot_pos,dir)&& IsInArea(pos);//
+}
+
+void CCar::SDoor::SaveNetState(NET_Packet& P)
+{
+	P.w_u8(u8(state));
+}
+
+void CCar::SDoor::RestoreNetState(u8 a_state)
+{
+	eState lstate=eState(a_state);
+	if(lstate==closed)	ClosingToClosed();
+}
+
+void CCar::SDoor::SetDefaultNetState()
+{
+	ClosingToClosed();
 }

@@ -180,6 +180,9 @@ public:
 		void ClosedToOpening();
 		void PlaceInUpdate();
 		void RemoveFromUpdate();
+		void SaveNetState(NET_Packet& P);
+		void RestoreNetState(u8 a_state);
+		void SetDefaultNetState();
 		enum eState
 		{
 			opening,
@@ -419,9 +422,12 @@ public:
 	// Inventory for the car
 	CInventory*				GetInventory		(){return inventory;}
 protected:
-	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}								;
+	virtual CPhysicsShellHolder*	PPhysicsShellHolder	()	{return PhysicsShellHolder();}												;
 	virtual void					net_Save			(NET_Packet& P)																	;
-//	virtual	BOOL					net_SaveRelevant	()																				;
+	virtual	BOOL					net_SaveRelevant	()																				;
+			void					SaveNetState		(NET_Packet& P)																	;
+			void					RestoreNetState		(CSE_ALifePHSkeletonObject* po)													;
+			void					SetDefaultNetState	(CSE_ALifePHSkeletonObject* po)																				;
 public:
 	CCar(void);
 	virtual ~CCar(void);

@@ -503,8 +503,7 @@ void CSE_ALifePHSkeletonObject::STATE_Write		(NET_Packet	&tNetPacket)
 	////////////////////////saving///////////////////////////////////////
 	if(flags.test(flSavedData))
 	{
-		saved_bones.net_Save(tNetPacket);
-		flags.set(flSavedData,FALSE);
+		data_save(tNetPacket);
 	}
 }
 
@@ -513,6 +512,13 @@ void CSE_ALifePHSkeletonObject::data_load(NET_Packet &tNetPacket)
 	saved_bones.net_Load(tNetPacket);
 	flags.set(flSavedData,TRUE);
 }
+
+void CSE_ALifePHSkeletonObject::data_save(NET_Packet &tNetPacket)
+{
+	saved_bones.net_Save(tNetPacket);
+	flags.set(flSavedData,FALSE);
+}
+
 void CSE_ALifePHSkeletonObject::load(NET_Packet &tNetPacket)
 {
 	inherited::load				(tNetPacket);
@@ -1223,6 +1229,7 @@ bool CSE_ALifeHelicopter::used_ai_locations	() const
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifePHSkeletonObject(caSection)
 {
+
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
 	m_flags.set					(flUseSwitches,FALSE);
@@ -1261,6 +1268,27 @@ bool CSE_ALifeCar::used_ai_locations() const
 	return						(false);
 }
 
+
+void CSE_ALifeCar::data_load(NET_Packet	&tNetPacket)
+{
+	inherited::data_load(tNetPacket);
+	VERIFY(door_states.empty());
+	u16 doors_number=tNetPacket.r_u16();
+	for(u16 i=0;i<doors_number;++i)
+		door_states.push_back(tNetPacket.r_u8());
+}
+void CSE_ALifeCar::data_save(NET_Packet &tNetPacket)
+{
+	inherited::data_save(tNetPacket);
+	
+	tNetPacket.w_u16(u16(door_states.size()));
+	xr_vector<u8>::iterator i=door_states.begin(),e=door_states.end();
+	for(;e!=i;++i)
+	{
+		tNetPacket.w_u8(*i);
+	}
+	door_states.clear();
+}	
 #ifdef _EDITOR
 void CSE_ALifeCar::FillProp				(LPCSTR pref, PropItemVec& values)
 {
