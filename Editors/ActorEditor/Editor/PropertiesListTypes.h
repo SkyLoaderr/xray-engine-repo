@@ -52,6 +52,7 @@ typedef void 	__fastcall (__closure *TBeforeEdit)		(PropValue* sender, LPVOID ed
 typedef void 	__fastcall (__closure *TAfterEdit)		(PropValue* sender, LPVOID edit_val);
 typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnChange)		(PropValue* sender);
+typedef void 	__fastcall (__closure *TOnCloseEvent)	(void);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);
 typedef void 	__fastcall (__closure *TOnItemFocused)	(TElTreeItem* item);
 //------------------------------------------------------------------------------

@@ -140,17 +140,18 @@ __fastcall TProperties::TProperties(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused)
+TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent on_close)
 {
-	TProperties* props = new TProperties(parent);
-    props->OnModifiedEvent 	= modif;
-    props->OnItemFocused    = focused;
+	TProperties* props 			= new TProperties(parent);
+    props->OnModifiedEvent 		= modif;
+    props->OnItemFocused    	= focused;
+    props->OnCloseEvent			= on_close;
     if (parent){
-		props->Parent = parent;
-    	props->Align = align;
-	    props->BorderStyle = bsNone;
-        props->ShowProperties();
-        props->fsStorage->Active = false;
+		props->Parent 			= parent;
+    	props->Align 			= align;
+	    props->BorderStyle 		= bsNone;
+        props->ShowProperties	();
+        props->fsStorage->Active= false;
     }
 	return props;
 }
@@ -180,6 +181,7 @@ void __fastcall TProperties::HideProperties(){
 void __fastcall TProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+    if (OnCloseEvent) OnCloseEvent();
     _DELETE(m_BMCheck);
     _DELETE(m_BMDot);
     _DELETE(m_BMEllipsis);

@@ -11,6 +11,7 @@
 #include "customobject.h"
 #include "ui_main.h"
 #include "d3dutils.h"
+#include "ui_tools.h"
 
 #define SCENEOBJECT_CHUNK_PARAMS 		0xF900
 #define SCENEOBJECT_CHUNK_LOCK	 		0xF902
@@ -42,8 +43,9 @@ void CCustomObject::Select( int flag )
     if (m_bVisible){
         m_bSelected = (flag==-1)?(m_bSelected?false:true):flag;
         UI.RedrawScene();
+        Tools.UpdateProperties();
     }
-};
+}
 
 void CCustomObject::Show( BOOL flag )
 {

@@ -131,13 +131,13 @@ void EScene::OnDestroy(){
     _DELETE(m_SkyDome);
 }
 
-void EScene::AddObject( CCustomObject* object, bool bManual ){
+void EScene::AddObject( CCustomObject* object, bool bUndo ){
 	VERIFY( object );
 	VERIFY( m_Valid );
     ObjectList& lst = ListObj(object->ClassID);
     lst.push_back( object );
     UI.UpdateScene();
-	if (bManual){
+	if (bUndo){
 	    object->Select(true);
     	UndoSave();
     }

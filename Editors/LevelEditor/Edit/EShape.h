@@ -49,7 +49,7 @@ public:
 	virtual bool 	GetBox		(Fbox& box);
 
     // change position/orientation methods
-	virtual void 	Scale		(Fvector& amount){;}
+//	virtual void 	Scale		(Fvector& amount){;}
 
     // file system function
   	virtual bool 	Load		(CStream&);
@@ -61,7 +61,8 @@ public:
 	virtual void 	OnFrame		();
 
     // tools
-    void			Merge		(CEditShape* from);
+    void			Attach		(CEditShape* from);
+    void			Dettach		();
     
     // events
     virtual void    OnShowHint  (AStringVec& dest);

@@ -77,7 +77,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
             return 0;
         }
         // after callback
-    	if (after&&!after(obj)){
+    	if (after&&!after(Shift, obj)){
         	_DELETE(obj);
             return 0;
         } 

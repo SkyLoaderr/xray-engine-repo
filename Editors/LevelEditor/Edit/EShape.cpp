@@ -6,6 +6,7 @@
 #include "D3DUtils.h"
 #include "render.h"
 #include "du_box.h"
+#include "Scene.h"
 
 #define SHAPE_COLOR_TRANSP		0x1800FF00
 #define SHAPE_COLOR_EDGE		0xFF202020
@@ -67,6 +68,26 @@ void CEditShape::ComputeBounds()
 
 void CEditShape::ScaleShapes(const Fvector& val)
 {
+	Fmatrix M;
+    M.scale(val);
+	for (ShapeIt it=m_Shapes.begin(); it!=m_Shapes.end(); it++){
+		switch (it->type){
+		case stSphere:{
+            Fsphere&	T	= it->data.sphere;
+        	if (!fis_zero(val.x))		T.R *= val.x;
+        	else if (!fis_zero(val.y))	T.R *= val.y;
+        	else if (!fis_zero(val.z))	T.R *= val.z;
+            M.transform_tiny(T.P);
+		}break;
+		case stBox:{
+            Fmatrix& B		= it->data.box;
+            B.mulA			(M);
+		}break;
+        default: THROW;
+		}
+    }
+    
+	ComputeBounds();
 }
 
 void CEditShape::add_sphere(const Fsphere& S)
@@ -87,9 +108,72 @@ void CEditShape::add_box(const Fmatrix& B)
 	ComputeBounds();
 }
 
-void CEditShape::Merge(CEditShape* from)
+void CEditShape::Attach(CEditShape* from)
 {
+	// transfer data
+	Fmatrix M = from->_Transform();
+    M.mulA(_ITransform());
+	for (ShapeIt it=from->m_Shapes.begin(); it!=from->m_Shapes.end(); it++){
+		switch (it->type){
+		case stSphere:{
+            Fsphere&	T	= it->data.sphere;
+            M.transform_tiny(T.P);
+            add_sphere		(T);
+		}break;
+		case stBox:{
+            Fmatrix B		= it->data.box;
+            B.mulA			(M);
+            add_box			(B);
+		}break;
+        default: THROW;
+		}
+    }
+    // common 
+    Scene.RemoveObject(from,true);
+    _DELETE		(from);
+    
 	ComputeBounds();
+}
+
+void CEditShape::Dettach()
+{
+	if (m_Shapes.size()>1){
+    	Select			(true);
+        // create scene shapes
+        const Fmatrix& M = _Transform();
+        ShapeIt it=m_Shapes.begin(); it++;
+        for (; it!=m_Shapes.end(); it++){
+            string256 namebuffer;
+            Scene.GenObjectName	(OBJCLASS_SHAPE, namebuffer, Name);
+            CEditShape* shape 	= (CEditShape*)NewObjectFromClassID(OBJCLASS_SHAPE, 0, namebuffer);
+            switch (it->type){
+            case stSphere:{
+                Fsphere	T		= it->data.sphere;
+                M.transform_tiny(T.P);
+                shape->PPosition= T.P;
+                T.P.set			(0,0,0);
+                shape->add_sphere(T);
+            }break;
+            case stBox:{
+                Fmatrix B		= it->data.box;
+                B.mulA			(M);
+                shape->PPosition= B.c;
+                B.c.set			(0,0,0);
+                shape->add_box	(B);
+            }break;
+            default: THROW;
+            }
+            Scene.AddObject		(shape,false);
+	    	shape->Select		(true);
+        }
+        // erase shapes in base object 
+        it=m_Shapes.begin(); it++;
+        m_Shapes.erase(it,m_Shapes.end());
+    
+        ComputeBounds();
+
+        Scene.UndoSave();
+    }
 }
 
 bool CEditShape::RayPick(float& distance, Fvector& start, Fvector& direction, SRayPickInfo* pinf)
@@ -146,7 +230,7 @@ bool CEditShape::FrustumPick(const CFrustum& frustum)
             Fmatrix B		= it->data.box;
             B.mulA	 		(_Transform());
             box.xform		(B);
-			BYTE mask	= 0xff;
+			u32 mask		= 0xff;
             if (frustum.testAABB(box.min,box.max,mask)) return true;
 		}break;
 		}
@@ -197,6 +281,7 @@ void CEditShape::Save(CFS_Base& F)
 
 void CEditShape::FillProp(LPCSTR pref, PropValueVec& values)
 {
+	inherited::FillProp(pref,values);
 }
 
 void CEditShape::Render(int priority, bool strictB2F)
@@ -230,12 +315,11 @@ void CEditShape::Render(int priority, bool strictB2F)
                 }
 				Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
             }else{   
-                if( Selected() ){
-                    Fbox bb; GetBox(bb);
+                if( Selected()&&m_Box.is_valid() ){
                     DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-	                Device.SetTransform	(D3DTS_WORLD,Fidentity);
+	                Device.SetTransform	(D3DTS_WORLD,_Transform());
                     Device.SetShader(Device.m_WireShader);
-                    DU::DrawSelectionBox(bb,&clr);
+                    DU::DrawSelectionBox(m_Box,&clr);
                 }
             }
         }

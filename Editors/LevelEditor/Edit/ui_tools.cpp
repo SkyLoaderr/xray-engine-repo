@@ -20,10 +20,12 @@ TShiftState ssRBOnly;
 //---------------------------------------------------------------------------
 TUI_Tools::TUI_Tools()
 {
+	m_Props = TProperties::CreateForm(0,alClient,OnPropsModified,0,OnPropsClose);
 }
 //---------------------------------------------------------------------------
 TUI_Tools::~TUI_Tools()
 {
+	TProperties::DestroyForm(m_Props);
     for (DWORD i=0; i<etMaxTarget; i++) _DELETE(m_pTools[i]);
 }
 //---------------------------------------------------------------------------
@@ -72,7 +74,7 @@ bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift){
     return false;
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::Update(){
+void __fastcall TUI_Tools::OnFrame(){
 	if(!UI.IsMouseCaptured()){
         // если нужно изменить target выполняем после того как мышь освободится
         if(bNeedChangeTarget){
@@ -177,10 +179,6 @@ void __fastcall TUI_Tools::ChangeTarget(int tgt){
     	SetTarget(tgt);
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::ShowProperties(){
-	if (pCurTools) pCurTools->ShowProperties();
-}
-//---------------------------------------------------------------------------
 void __fastcall	TUI_Tools::SetNumPosition(CCustomObject* O){
 	if (pCurTools) pCurTools->SetNumPosition(O);
 }
@@ -242,4 +240,84 @@ bool TUI_Tools::Pick()
     }
     return false;
 }
+//---------------------------------------------------------------------------
+
+#include "PropertiesSceneObject.h"
+#include "PropertiesGroup.h"
+#include "PropertiesLight.h"
+#include "PropertiesSound.h"
+#include "PropertiesGlow.h"
+#include "PropertiesSector.h"
+#include "PropertiesPortal.h"
+#include "PropertiesEvent.h"
+#include "PropertiesPS.h"
+#include "PropertiesRPoint.h"
+#include "PropertiesWayPoint.h"
+
+void TUI_Tools::ShowProperties()
+{
+	UpdateProperties();
+	m_Props->ShowProperties			();
+}
+//---------------------------------------------------------------------------
+
+void TUI_Tools::HideProperties()
+{
+	m_Props->HideProperties			();
+}
+//---------------------------------------------------------------------------
+
+void TUI_Tools::UpdateProperties()
+{
+    ObjectList lst;
+    EObjClass cls_id				= CurrentClassID();
+    if (Scene.GetQueryObjects(lst,cls_id)){
+		PropValueVec values;
+        for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
+        	LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
+        	(*it)->FillProp	 		(pref,values);
+        }
+		m_Props->AssignValues		(values,true,"Object Inspector");
+		Scene.UndoSave();
+//        	switch((*it)->ClassID){
+//            case OBJCLASS_SHAPE:		 break;
+//	        case OBJCLASS_SPAWNPOINT:   TfrmPropertiesSpawnPoint::Run(&lst,bChange);break;
+/*    	
+        
+        bool bChange				= false;
+        switch(cls_id){
+        case OBJCLASS_GROUP:		TfrmPropertiesGroup::Run(&lst,bChange);    	break;
+        case OBJCLASS_SCENEOBJECT:	TfrmPropertiesSceneObject::Run(&lst,bChange);break;
+        case OBJCLASS_LIGHT:    	frmPropertiesLightRun(&lst,bChange);	   	break;
+        case :{
+        }break;
+        case OBJCLASS_SOUND:    	frmPropertiesSoundRun(&lst,bChange); 		break;
+        case OBJCLASS_GLOW:     	frmPropertiesGlowRun(&lst,bChange);			break;
+        case OBJCLASS_SECTOR:   	frmPropertiesSectorRun(&lst,bChange); 		break;
+        case OBJCLASS_EVENT:   		frmPropertiesEventRun(&lst,bChange);		break;
+        case OBJCLASS_SPAWNPOINT:   TfrmPropertiesSpawnPoint::Run(&lst,bChange);break;
+        case OBJCLASS_WAY:   		TfrmPropertiesWayPoint::Run(&lst,bChange);	break;
+        case OBJCLASS_PS:			TfrmPropertiesPS::Run(&lst,bChange);		break;
+        default:{ ELog.Msg(mtInformation, "Can't find properties form.");}
+        }
+        if (bChange) Scene.UndoSave();
+        UI.RedrawScene();
+*/
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TUI_Tools::OnPropsClose()
+{
+	Scene.UndoSave();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TUI_Tools::OnPropsModified()
+{
+	Scene.Modified();
+//	Scene.UndoSave();
+}
+//---------------------------------------------------------------------------
+
 

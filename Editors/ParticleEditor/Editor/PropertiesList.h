@@ -78,6 +78,7 @@ private:	// User declarations
     PropValueVec 		m_Values;
     TOnModifiedEvent 	OnModifiedEvent;
     TOnItemFocused      OnItemFocused;
+    TOnCloseEvent		OnCloseEvent;
     void 				Modified		(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
     void 				ClearParams(TElTreeItem* node=0);
     void 				ApplyEditControl();
@@ -85,7 +86,7 @@ private:	// User declarations
 
 public:		// User declarations
 	__fastcall TProperties		        	(TComponent* Owner);
-	static TProperties* CreateForm			(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0);
+	static TProperties* CreateForm			(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0);
 	static void 	DestroyForm				(TProperties*& props);
     void __fastcall ShowPropertiesModal		();
     void __fastcall ShowProperties			();

@@ -232,7 +232,7 @@ void TUI::Idle()
             Render->Render		();
         	Redraw();
         }
-		Tools.Update();
+		Tools.OnFrame();
         if (est==esEditLightAnim) TfrmEditLightAnim::OnIdle();
     }
         // show hint

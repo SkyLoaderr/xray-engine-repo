@@ -212,7 +212,7 @@ void TUI::MouseRelease(TShiftState Shift, int X, int Y)
         }
     }
     // update tools (change action)
-    Tools.Update();
+    Tools.OnFrame();
     RedrawScene();
 }
 //----------------------------------------------------

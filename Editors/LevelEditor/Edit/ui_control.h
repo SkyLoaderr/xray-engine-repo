@@ -13,7 +13,7 @@ struct SBeforeAppendCallbackParams{
     }
 };
 typedef bool __fastcall (__closure *TBeforeAppendCallback)(SBeforeAppendCallbackParams* p);
-typedef bool __fastcall (__closure *TAfterAppendCallback)(CCustomObject* obj);
+typedef bool __fastcall (__closure *TAfterAppendCallback)(TShiftState _Shift, CCustomObject* obj);
 
 class TUI_CustomControl{
 protected:

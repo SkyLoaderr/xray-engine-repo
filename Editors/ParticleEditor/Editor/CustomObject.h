@@ -87,10 +87,13 @@ public:
     virtual bool 	SpherePick		(const Fvector& center, float radius){ return false; };
 
     void			ResetTransform	(){
-    					FScale.set	(1,1,1);
-    					FRotation.set	(0,0,0);
-    					FPosition.set(0,0,0);
-						FTransform.identity();
+    					FScale.set				(1,1,1);
+    					FRotation.set			(0,0,0);
+    					FPosition.set			(0,0,0);
+						FTransform.identity		();
+	    				FTransformRP.identity	();
+                        FITransform.identity	();
+	    				FITransformRP.identity	();
 					}
     virtual void 	ResetAnimation	(bool upd_t=true){;}
     virtual void 	UpdateTransform	(bool bForced=false){m_bUpdateTransform=TRUE;if(bForced)OnUpdateTransform();}

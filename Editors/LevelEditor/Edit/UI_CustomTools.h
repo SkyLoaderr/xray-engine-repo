@@ -40,8 +40,6 @@ public:
     virtual void    OnDeactivate	();
     virtual void    OnObjectsUpdate	(){;}
 
-    virtual void	ShowProperties	();
-
     virtual void 	SetNumPosition	(CCustomObject* O);
     virtual void 	SetNumRotation	(CCustomObject* O);
     virtual void 	SetNumScale		(CCustomObject* O);

@@ -4,6 +4,7 @@
 // refs
 class TUI_CustomTools;
 class TUI_Control;
+class TProperties;
 
 #include "SceneClassList.h"
 
@@ -62,6 +63,9 @@ class TUI_Tools{
     void __fastcall SetAction   	(int act);
     void __fastcall SetTarget   	(int tgt,bool bForced=false);
 
+    TProperties* 	m_Props;
+    void __fastcall OnPropsModified	();
+    void __fastcall OnPropsClose	();
 public:
                     TUI_Tools		();
     virtual         ~TUI_Tools		();
@@ -81,9 +85,8 @@ public:
 
     void __fastcall ChangeTarget	(int tgt);
     void __fastcall ChangeAction	(int act);
-    void __fastcall Update			();
+    void __fastcall OnFrame			();
     void __fastcall OnObjectsUpdate	();
-    void __fastcall ShowProperties	();
 
     void __fastcall	SetNumPosition	(CCustomObject* O);
     void __fastcall	SetNumRotation	(CCustomObject* O);
@@ -101,6 +104,10 @@ public:
     EObjClass 		CurrentClassID();
 
     bool			Pick			();
+
+    void			ShowProperties	();
+    void			HideProperties	();
+    void			UpdateProperties();
 };
 extern TUI_Tools Tools;
 extern void ResetActionToSelect();
