@@ -34,6 +34,11 @@ IC const ALife::_TASK_ID			tfChooseTaskKeyPredicate			(const CSE_ALifeTask *T)
 	return							(T->m_tTaskID);
 };
 
+IC const ALife::_TASK_ID			tfChoosePersonalTaskKeyPredicate	(const CSE_ALifePersonalTask *T)
+{
+	return							(T->m_tTaskID);
+};
+
 class CCompareTraderRanksPredicate {
 public:
 	bool							operator()							(const CSE_ALifeTrader *tpALifeTrader1, const CSE_ALifeTrader *tpALifeTrader2) const

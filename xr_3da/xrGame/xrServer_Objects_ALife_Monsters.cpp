@@ -15,6 +15,7 @@
 
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "ai_alife_templates.h"
+#include "ai_alife_predicates.h"
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTraderAbstract
@@ -737,7 +738,7 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 	if (m_wVersion > 19) {
 		load_data				(m_tpaVertices,tNetPacket);
 		load_data				(m_baVisitedVertices,tNetPacket);
-		load_data				(m_tpTasks,tNetPacket);
+		load_data				(m_tpTasks,tNetPacket,tfChoosePersonalTaskKeyPredicate);
 		if (m_wVersion > 35) {
 			tNetPacket.r_string	(m_caKnownCustomers);
 			load_data			(m_tpKnownCustomers,tNetPacket);
