@@ -79,7 +79,7 @@ void	CSoundRender_Cache::initialize	(u32 _total_kb_approx, u32 bytes_per_line)
 {
 	// calc
 	_line		= bytes_per_line;
-	_count		= 3; // ((_total_kb_approx*1024)/bytes_per_line + 1);
+	_count		= ((_total_kb_approx*1024)/bytes_per_line + 1);
 	_total		= _count*_line;
 	R_ASSERT	(_count<CAT_FREE);
 
