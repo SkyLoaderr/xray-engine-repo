@@ -6,12 +6,6 @@
 
 void	CResourceManager::reset_begin			()
 {
-	// destroy DStreams
-	RCache.old_QuadIB			= RCache.QuadIB;
-	_RELEASE					(RCache.QuadIB);
-	RCache.Index.reset_begin	();
-	RCache.Vertex.reset_begin	();
-
 	// destroy state-blocks
 	for (u32 _it=0; _it<v_states.size(); _it++)
 		_RELEASE(v_states[_it]->state);
@@ -24,6 +18,12 @@ void	CResourceManager::reset_begin			()
 
 	// destroy everything, renderer may use
 	::Render->reset_begin		();
+
+	// destroy DStreams
+	RCache.old_QuadIB			= RCache.QuadIB;
+	_RELEASE					(RCache.QuadIB);
+	RCache.Index.reset_begin	();
+	RCache.Vertex.reset_begin	();
 }
 
 bool	cmp_rt	(const CRT* A,const CRT* B)		{ return A->_order < B->_order; }
@@ -31,7 +31,12 @@ bool	cmp_rtc	(const CRTC* A,const CRTC* B)	{ return A->_order < B->_order; }
 
 void	CResourceManager::reset_end				()
 {
-	// destroy everything, renderer may use
+	// create RDStreams
+	RCache.Vertex.reset_end		();
+	RCache.Index.reset_end		();
+	RCache.CreateQuadIB			();
+
+	// create everything, renderer may use
 	::Render->reset_end			();
 
 	// create RTs in the same order as them was first created
@@ -66,9 +71,4 @@ void	CResourceManager::reset_end				()
 			if			(_G->ib == RCache.old_QuadIB)		_G->ib = RCache.QuadIB;
 		}
 	}
-
-	// create RDStreams
-	RCache.Vertex.reset_end		();
-	RCache.Index.reset_end		();
-	RCache.CreateQuadIB			();
 }

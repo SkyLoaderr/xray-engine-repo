@@ -21,6 +21,8 @@ CRT::~CRT			()
 
 void CRT::create	(LPCSTR Name, u32 w, u32 h,	D3DFORMAT f)
 {
+	if (pSurface)	return;
+
 	R_ASSERT	(HW.pDevice && Name && Name[0] && w && h);
 	_order		= Device.GetTimerGlobal()->GetElapsed_clk();
 
@@ -101,6 +103,8 @@ void resptrcode_crt::create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f)
 //////////////////////////////////////////////////////////////////////////
 CRTC::CRTC			()
 {
+	if (pSurface)	return;
+
 	pSurface									= NULL;
 	pRT[0]=pRT[1]=pRT[2]=pRT[3]=pRT[4]=pRT[5]	= NULL;
 	dwSize										= 0;

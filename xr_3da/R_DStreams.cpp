@@ -90,7 +90,7 @@ void	_VertexStream::reset_begin	()
 void	_VertexStream::reset_end	()
 {
 	Create				();
-	old_pVB				= NULL;
+	//old_pVB				= NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -157,5 +157,5 @@ void	_IndexStream::reset_begin	()
 void	_IndexStream::reset_end	()
 {
 	Create				();
-	old_pIB				= NULL;
+	//old_pIB				= NULL;
 }
