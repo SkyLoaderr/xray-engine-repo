@@ -130,16 +130,15 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 
 void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 {
-
 	switch	(type)
 	{	
 	case GAME_EVENT_PLAYER_KILLED:  //playerKillPlayer
 		{
-			ClientID cl1, cl2;
-			P.r_clientID(cl1);
-			P.r_clientID(cl2);
-			OnPlayerKillPlayer( cl1, cl2 );
-
+//			ClientID cl1, cl2;
+//			P.r_clientID(cl1);
+//			P.r_clientID(cl2);
+//			OnPlayerKillPlayer( cl1, cl2 );
+			OnPlayerKilled(P);
 		}break;
 
 	case GAME_EVENT_PLAYER_READY:// cs & dm 
@@ -170,31 +169,6 @@ void	game_sv_mp::OnEvent (NET_Packet &P, u16 type, u32 time, ClientID sender )
 	};//switch
 
 }
-
-void	game_sv_mp::SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed)
-{
-	game_PlayerState*	ps_killer	=	get_id	(id_killer);
-	game_PlayerState*	ps_killed	=	get_id	(id_killed);
-	if (!ps_killed || !ps_killer) return;
-
-	NET_Packet			P;
-//	P.w_begin			(M_GAMEMESSAGE);
-	GenerateGameMessage (P);
-	P.w_u32				(GAME_EVENT_PLAYER_KILLED);
-	P.w_u16				(ps_killed->GameID);
-	if (ps_killer->GameID == ps_killed->lasthitter)
-	{
-		P.w_u16				(ps_killer->GameID);
-		P.w_u16				(ps_killed->lasthitweapon);
-	}
-	else
-	{
-		P.w_u16				(ps_killer->GameID);
-		P.w_u16				(0);
-	};
-
-	u_EventSend(P);
-};
 
 void game_sv_mp::Create (shared_str &options)
 {
@@ -730,4 +704,35 @@ void	game_sv_mp::ClearPlayerState		(game_PlayerState* ps)
 	ps->lasthitweapon		= 0;
 
 	ClearPlayerItems		(ps);
+};
+
+void	game_sv_mp::OnPlayerKilled			(NET_Packet P)
+{
+	u16 KilledID = P.r_u16();
+	u8 KillType = P.r_u8();
+	u16 KillerID = P.r_u16();
+	u16	WeaponID = P.r_u16();
+	bool HeadShot = !!P.r_u8();
+
+	game_PlayerState* ps_killer = get_eid(KillerID);
+	game_PlayerState* ps_killed = get_eid(KilledID);
+	OnPlayerKillPlayer(ps_killer, ps_killed);
+
+	//---------------------------------------------------
+	SendPlayerKilledMessage(KilledID, KillType, KillerID, WeaponID, HeadShot);
+};
+	
+void	game_sv_mp::SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, bool HeadShot)
+{
+	NET_Packet			P;
+	GenerateGameMessage (P);
+	P.w_u32				(GAME_EVENT_PLAYER_KILLED);
+
+	P.w_u8	(KillType);
+	P.w_u16	(KilledID);
+	P.w_u16	(KillerID);
+	P.w_u16	(WeaponID);
+	P.w_u8	(u8(HeadShot));
+
+	u_EventSend(P);
 };

@@ -60,7 +60,7 @@ public:
 	// Events	
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				OnRoundStart			();							// старт раунда
-	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed);
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed);
 	virtual		void				OnPlayerReady			(ClientID id_who);
 
 	virtual		void				OnTimelimitExceed		();

@@ -184,46 +184,21 @@ bool	game_cl_mp::OnKeyboardRelease		(int key)
 	return inherited::OnKeyboardRelease(key);
 }
 
+char	Color_Weapon[]	= "%c255,1,1";
+LPSTR	Color_Teams[3]	= {"%c255,255,255", "%c64,255,64", "%c64,64,255"};
+char	Color_Main[]	= "%c192,192,192";
+char	Color_Radiation[]	= "%c0,255,255";
+char	Color_Neutral[]	= "%c255,0,255";
+
 void game_cl_mp::TranslateGameMessage	(u32 msg, NET_Packet& P)
 {
 	string512 Text;
-	char	Color_Weapon[]	= "%c255,0,0";
-	LPSTR	Color_Teams[3]	= {"%c255,255,255", "%c64,255,64", "%c64,64,255"};
-	char	Color_Main[]	= "%c192,192,192";
 
 	switch(msg)	{
 	
 	case GAME_EVENT_PLAYER_KILLED: //dm
 		{
-			u16 PlayerID, KillerID, WeaponID;
-			P.r_u16 (PlayerID);
-			P.r_u16 (KillerID);
-			P.r_u16 (WeaponID);
-
-			game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
-			game_PlayerState* pKiller = GetPlayerByGameID(KillerID);
-			CObject* pWeapon = Level().Objects.net_Find(WeaponID);
-			if (!pPlayer || !pKiller) break;
-			
-			if (pKiller && pWeapon && WeaponID != 0)
-				sprintf(Text, "%s%s %skilled from %s%s %sby %s%s", 
-								Color_Teams[pPlayer->team], 
-								pPlayer->name, 
-								Color_Main,
-								Color_Weapon,
-								*(pWeapon->cName()), 
-								Color_Main,
-								Color_Teams[pKiller->team], 
-								pKiller->name);
-			else
-				sprintf(Text, "%s%s %skilled by %s%s",
-								Color_Teams[pPlayer->team],
-								pPlayer->name, 
-								Color_Main,
-								Color_Teams[pKiller->team],
-								pKiller->name);
-
-			CommonMessageOut(Text);
+			OnPlayerKilled(P);
 		}break;
 	case GAME_EVENT_VOTE_START:
 		{
@@ -409,3 +384,110 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 		}break;
 	}
 }
+
+void game_cl_mp::OnPlayerKilled			(NET_Packet& P)
+{
+	//-----------------------------------------------------------
+	u8 KillType = P.r_u8();
+	u16 KilledID = P.r_u16();
+	u16 KillerID = P.r_u16();
+	u16	WeaponID = P.r_u16();
+	bool HeadShot = !!P.r_u8();
+	//-----------------------------------------------------------
+//	CObject* pKilled = Level().Objects.net_Find(KilledID);
+	CObject* pOKiller = Level().Objects.net_Find(KillerID);
+	CObject* pWeapon = Level().Objects.net_Find(WeaponID);
+
+	game_PlayerState* pPlayer = GetPlayerByGameID(KilledID);
+	game_PlayerState* pKiller = GetPlayerByGameID(KillerID);
+	//-----------------------------------------------------------
+	string512 PlayerText = "";
+	string512 Text = "";
+	sprintf(PlayerText, "%s%s ", Color_Teams[pPlayer->team], pPlayer->name);
+
+	switch (KillType)
+	{
+	case 0:			//from hit
+		{
+			if (pWeapon)
+				sprintf (Text, "%skilled from %s%s ",
+						Color_Main,
+						Color_Weapon,
+						*(pWeapon->cName()));
+			else
+				sprintf (Text, "%skilled ",
+						Color_Main);
+
+			if (pKiller || pOKiller)
+			{
+				string512 KillerText;
+				
+				sprintf (KillerText, "%sby %s%s ",
+						Color_Main,
+						pKiller ? Color_Teams[pKiller->team] : Color_Neutral,
+						pKiller ? pKiller->name : *(pOKiller->cName()));
+				std::strcat(Text, KillerText);
+			};
+			if (HeadShot)
+			{
+				string512 HeadShotText;
+				sprintf(HeadShotText, "%swith %sHEADSHOT!",
+						Color_Main,
+						Color_Weapon);
+				std::strcat(Text, HeadShotText);
+			}
+
+		}break;
+	case 1:			//from bleeding
+		{
+			sprintf(Text, "%shas %sbleed out %s, thanks to %s%s",
+				Color_Main,
+				Color_Weapon,
+				Color_Main,
+				pKiller ? Color_Teams[pKiller->team] : Color_Neutral,
+				pKiller ? pKiller->name : *(pOKiller->cName()));
+		}break;
+	case 2:			//from radiation
+		{			
+			sprintf(Text, "%shas died from %sradiation",
+				Color_Main,
+				Color_Radiation);
+		}break;
+	default:
+		break;
+	}
+	std::strcat(PlayerText, Text);
+	CommonMessageOut(PlayerText);
+//---------------------------------------------------------------
+	/*
+	u16 PlayerID, KillerID, WeaponID;
+	P.r_u16 (PlayerID);
+	P.r_u16 (KillerID);
+	P.r_u16 (WeaponID);
+
+	game_PlayerState* pPlayer = GetPlayerByGameID(PlayerID);
+	game_PlayerState* pKiller = GetPlayerByGameID(KillerID);
+	CObject* pWeapon = Level().Objects.net_Find(WeaponID);
+	if (!pPlayer || !pKiller) break;
+
+	if (pKiller && pWeapon && WeaponID != 0)
+		sprintf(Text, "%s%s %skilled from %s%s %sby %s%s", 
+		Color_Teams[pPlayer->team], 
+		pPlayer->name, 
+		Color_Main,
+		Color_Weapon,
+		*(pWeapon->cName()), 
+		Color_Main,
+		Color_Teams[pKiller->team], 
+		pKiller->name);
+	else
+		sprintf(Text, "%s%s %skilled by %s%s",
+		Color_Teams[pPlayer->team],
+		pPlayer->name, 
+		Color_Main,
+		Color_Teams[pKiller->team],
+		pKiller->name);
+
+	CommonMessageOut(Text);
+	*/
+};

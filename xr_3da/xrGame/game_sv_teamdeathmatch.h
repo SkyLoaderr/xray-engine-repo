@@ -25,7 +25,7 @@ public:
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 
 	virtual		void				OnPlayerChangeTeam		(ClientID id_who, s16 team);
-	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed);
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed);
 
 	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P);
 

@@ -152,7 +152,8 @@ void CGameObject::OnEvent		(NET_Packet& P, u16 type)
 			CObject*	Hitter = Level().Objects.net_Find(id);
 			CObject*	Weapon = Level().Objects.net_Find(weapon_id);
 
-			SetHitInfo(Hitter, Weapon);
+			if (power>0)
+				SetHitInfo(Hitter, Weapon, element);
 			Hit				(power,dir,Hitter,element,
 							position_in_bone_space, impulse, (ALife::EHitType)hit_type);
 		}

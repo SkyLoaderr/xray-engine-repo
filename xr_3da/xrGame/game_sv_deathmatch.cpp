@@ -122,11 +122,8 @@ void	game_sv_Deathmatch::OnRoundEnd				(LPCSTR reason)
 	inherited::OnRoundEnd(reason);
 };
 
-void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed)
+void	game_sv_Deathmatch::OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed)
 {
-	game_PlayerState*	ps_killer	=	get_id	(id_killer);
-	game_PlayerState*	ps_killed	=	get_id	(id_killed);
-
 	if(ps_killed){
 		ps_killed->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
 		ps_killed->deaths				+=	1;
@@ -162,10 +159,10 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_ki
 	}
 
 	// Send Message About Player Killed
-	SendPlayerKilledMessage(id_killer, id_killed);
+//	SendPlayerKilledMessage(id_killer, id_killed);
 
-	ps_killed->lasthitter			= 0;
-	ps_killed->lasthitweapon		= 0;
+//	ps_killed->lasthitter			= 0;
+//	ps_killed->lasthitweapon		= 0;
 }
 
 game_PlayerState*	game_sv_Deathmatch::GetWinningPlayer		()

@@ -768,6 +768,10 @@ BOOL CActor::net_Spawn		(CSE_Abstract* DC)
 	if (GameID() == GAME_SINGLE)
 		Level().MapManager().AddMapLocation("actor_location",ID());
 
+	//-------------------------------------------------------------
+	m_pLastHitter = NULL;
+	m_pLastHittingWeapon = NULL;
+	m_s16LastHittedElement = -1;
 	return					TRUE;
 }
 
@@ -1707,26 +1711,86 @@ void	CActor::Check_for_AutoPickUp()
 	setEnabled(Enabled);
 }
 
-void				CActor::SetHitInfo				(CObject* who, CObject* weapon)
+void				CActor::SetHitInfo				(CObject* who, CObject* weapon, s16 element)
 {
 	m_pLastHitter = who;
 	m_pLastHittingWeapon = weapon;
+	m_s16LastHittedElement = element;
 };
 
-void				CActor::OnHitKill						()
+void				CActor::OnCriticalHitHealthLoss			()
 {
+	if (GameID() == GAME_SINGLE || !OnServer()) return;
+
 	Msg("%s killed by hit from %s %s", 
 		*cName(),
 		(m_pLastHitter ? *(m_pLastHitter->cName()) : ""), 
 		((m_pLastHittingWeapon && m_pLastHittingWeapon != m_pLastHitter) ? *(m_pLastHittingWeapon->cName()) : ""));
+	//-------------------------------------------------------------------
+	bool HeadShot = false;
+	if (m_s16LastHittedElement > 0)
+	{
+		if (m_s16LastHittedElement == m_head)
+		{
+			HeadShot = true;
+		}
+		else
+		{
+			CKinematics* pKinematics		= smart_cast<CKinematics*>(Visual());
+			VERIFY				(pKinematics);
+			u16 ParentBone = u16(m_s16LastHittedElement);
+			while (ParentBone)
+			{
+				ParentBone = pKinematics->LL_GetData(ParentBone).GetParentID();
+				if (ParentBone && ParentBone == m_head)
+				{
+					HeadShot = true;
+					break;
+				};
+			}
+		};
+	};
+	//-------------------------------
+	NET_Packet P;
+	u_EventGen		(P,GE_GAME_EVENT,ID());
+	P.w_u16(GAME_EVENT_PLAYER_KILLED);
+	P.w_u16(u16(ID()&0xffff));
+	P.w_u8	(0);
+	P.w_u16 ((m_pLastHitter) ? u16(m_pLastHitter->ID()&0xffff) : 0);
+	P.w_u16 ((m_pLastHittingWeapon && m_pLastHitter != m_pLastHittingWeapon) ? u16(m_pLastHittingWeapon->ID()&0xffff) : 0);
+	P.w_u8	(u8(HeadShot));
+	u_EventSend(P);
 };
 
 void				CActor::OnCriticalWoundHealthLoss		() 
 {
+	if (GameID() == GAME_SINGLE || !OnServer()) return;
+
 	Msg("%s is bleed out, thanks to %s", *cName(), (m_pLastHitter ? *(m_pLastHitter->cName()) : ""));
+	//-------------------------------
+	NET_Packet P;
+	u_EventGen		(P,GE_GAME_EVENT,ID());
+	P.w_u16(GAME_EVENT_PLAYER_KILLED);
+	P.w_u16(u16(ID()&0xffff));
+	P.w_u8	(1);
+	P.w_u16 ((m_pLastHitter) ? u16(m_pLastHitter->ID()&0xffff) : 0);
+	P.w_u16	(0);
+	P.w_u8	(0);
+	u_EventSend(P);
 };
 
 void				CActor::OnCriticalRadiationHealthLoss	() 
 {
-	Msg("%s killed by radiation", *cName());
+	if (GameID() == GAME_SINGLE || !OnServer()) return;
+	//-------------------------------
+//	Msg("%s killed by radiation", *cName());
+	NET_Packet P;
+	u_EventGen		(P,GE_GAME_EVENT,ID());
+	P.w_u16(GAME_EVENT_PLAYER_KILLED);
+	P.w_u16(u16(ID()&0xffff));
+	P.w_u8	(2);
+	P.w_u16	(0);
+	P.w_u16	(0);
+	P.w_u8	(0);
+	u_EventSend(P);
 };

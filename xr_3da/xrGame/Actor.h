@@ -639,10 +639,11 @@ public:
 protected:
 	CObject*					m_pLastHitter;
 	CObject*					m_pLastHittingWeapon;
+	s16							m_s16LastHittedElement;
 public:
-	virtual void				SetHitInfo				(CObject* who, CObject* weapon);
+	virtual void			SetHitInfo				(CObject* who, CObject* weapon, s16 element);
 
-	virtual void				OnHitKill						();
+	virtual	void				OnCriticalHitHealthLoss			();
 	virtual	void				OnCriticalWoundHealthLoss		();
 	virtual void				OnCriticalRadiationHealthLoss	();
 };

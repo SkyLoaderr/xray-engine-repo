@@ -96,7 +96,7 @@ public:
 	virtual		void				OnPlayerConnect			(ClientID id_who);
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		void				OnPlayerReady			(ClientID id_who);
-	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed);
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed);
 				void				OnPlayerChangeSkin		(ClientID id_who, u8 skin);
 	
 	virtual		void				OnFraglimitExceed		();

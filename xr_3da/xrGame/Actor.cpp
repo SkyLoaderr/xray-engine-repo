@@ -432,14 +432,14 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 		break;
 	default:
 		{
-			BOOL WasAlive = g_Alive();
+//			BOOL WasAlive = g_Alive();
 			float hit_power	= HitArtefactsOnBelt(iLost, hit_type);
 			inherited::Hit	(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
-			if (WasAlive && !g_Alive())
+/*			if (WasAlive && !g_Alive())
 			{
 				OnHitKill();
 			};
-		}		
+*/		}		
 		break;
 	}
 
@@ -673,6 +673,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			if (!fis_zero(m_PhysicMovementControl->gcontact_HealthLost))	{
 				const ICollisionDamageInfo* di=m_PhysicMovementControl->CollisionDamageInfo();
 				Fvector hdir;di->HitDir(hdir);
+				SetHitInfo(this, NULL, 0);
 				Hit	(m_PhysicMovementControl->gcontact_HealthLost,hdir,di->DamageInitiator(),m_PhysicMovementControl->ContactBone(),di->HitPos(),0.f,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
 				if(!g_Alive())
 					m_PhysicMovementControl->GetDeathPosition(Position());

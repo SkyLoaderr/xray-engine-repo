@@ -41,6 +41,8 @@ protected:
 
 	virtual void			UpdateMapLocations		() {};
 
+	virtual void			OnPlayerKilled			(NET_Packet& P);
+
 public:
 public :
 									game_cl_mp();

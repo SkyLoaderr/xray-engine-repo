@@ -20,7 +20,7 @@ protected:
 	shared_str		m_pVoteCommand;
 protected:
 
-	virtual		void				SendPlayerKilledMessage	(ClientID id_killer, ClientID id_killed);
+	virtual		void				SendPlayerKilledMessage	(u16 KilledID, u8 KillType, u16 KillerID, u16 WeaponID, bool HeadShot);
 	virtual		void				RespawnPlayer			(ClientID id_who, bool NoSpectator);
 				void				SpawnPlayer				(ClientID id, LPCSTR N);
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
@@ -36,7 +36,8 @@ public:
 	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_target){return true;};			// TRUE=allow ownership, FALSE=denied
-	virtual		void				OnPlayerKillPlayer		(ClientID id_killer, ClientID id_killed){SendPlayerKilledMessage(id_killer, id_killed);};
+	virtual		void				OnPlayerKillPlayer		(game_PlayerState* ps_killer, game_PlayerState* ps_killed){};
+	virtual		void				OnPlayerKilled			(NET_Packet P);
 	virtual		void				OnPlayerEnteredGame		(ClientID id_who);
 
 	virtual		void				OnDestroyObject			(u16 eid_who);			
