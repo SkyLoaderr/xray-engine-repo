@@ -110,10 +110,6 @@ public:
 
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);//	{};
 
-	virtual		void				ClearPlayerState		(game_PlayerState* ps);
-	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
-	virtual		void				SetPlayersDefItems		(game_PlayerState* ps);
-
 	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
 
 	

@@ -124,6 +124,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	ClientID clientID;clientID.setBroadcast();
 	u_EventSend(P);
 	
+	SetPlayersDefItems		(xrCData->ps);
 	signal_Syncronize();
 };
 
@@ -695,4 +696,40 @@ void		game_sv_mp::OnPlayerEnteredGame		(ClientID id_who)
 	P.w_u32				(GAME_EVENT_PLAYER_ENTERED_GAME);
 	P.w_stringZ			(get_option_s(*xrCData->Name,"name",*xrCData->Name));
 	u_EventSend(P);
+};
+
+void	game_sv_mp::ClearPlayerItems		(game_PlayerState* ps)
+{
+	ps->pItemList.clear();
+	ps->LastBuyAcount = 0;
+};
+
+void	game_sv_mp::SetPlayersDefItems		(game_PlayerState* ps)
+{
+	ps->pItemList.clear();
+	ps->LastBuyAcount = 0;
+	//-------------------------------------------
+
+	//fill player with default items
+	if (ps->team < s16(TeamList.size()))
+	{
+		DEF_ITEMS_LIST	aDefItems = TeamList[ps->team].aDefaultItems;
+
+		for (u16 i=0; i<aDefItems.size(); i++)
+		{
+			ps->pItemList.push_back(aDefItems[i]);
+		}
+	};
+};
+
+void	game_sv_mp::ClearPlayerState		(game_PlayerState* ps)
+{
+	if (!ps) return;
+
+	ps->kills				= 0;
+	ps->deaths				= 0;
+	ps->lasthitter		= 0;
+	ps->lasthitweapon		= 0;
+
+	ClearPlayerItems		(ps);
 };

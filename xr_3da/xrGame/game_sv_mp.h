@@ -60,6 +60,11 @@ public:
 	virtual		void				Update					();
 				void				KillPlayer				(ClientID id_who, u16 GameID);
 	virtual		BOOL				CanHaveFriendlyFire		()	{return TRUE;};
+	
+	virtual		void				ClearPlayerState		(game_PlayerState* ps);
+	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
+	virtual		void				SetPlayersDefItems		(game_PlayerState* ps);
+
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

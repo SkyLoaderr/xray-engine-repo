@@ -331,6 +331,7 @@ void CWeaponShotgun::PlayAnimCloseWeapon()
 
 bool CWeaponShotgun::HaveCartridgeInInventory		()
 {
+	if (psActorFlags.test(AF_UNLIMITEDAMMO)) return true;
 	m_pAmmo = NULL;
 	if(m_pInventory) 
 	{
@@ -366,20 +367,24 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 
-	CCartridge l_cartridge;
-	while(cnt && m_pAmmo->Get(l_cartridge)) 
+	CCartridge l_cartridge = m_DefaultCartridge;
+	while(cnt)// && m_pAmmo->Get(l_cartridge)) 
 	{
+		if (!psActorFlags.test(AF_UNLIMITEDAMMO))
+		{
+			if (!m_pAmmo->Get(l_cartridge)) break;
+		}
 		--cnt;
 		++iAmmoElapsed;
 		m_magazine.push(l_cartridge);
 		m_fCurrentCartirdgeDisp = l_cartridge.m_kDisp;
 	}
-	m_ammoName = m_pAmmo->m_nameShort;
+	m_ammoName = (m_pAmmo) ? m_pAmmo->m_nameShort : NULL;
 
 	VERIFY((u32)iAmmoElapsed == m_magazine.size());
 
 	//выкинуть коробку патронов, если она пустая
-	if(!m_pAmmo->m_boxCurr && OnServer()) m_pAmmo->Drop();
+	if(m_pAmmo && !m_pAmmo->m_boxCurr && OnServer()) m_pAmmo->Drop();
 
 	return cnt;
 }

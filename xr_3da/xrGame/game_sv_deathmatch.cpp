@@ -753,42 +753,6 @@ void	game_sv_Deathmatch::OnPlayerBuyFinished		(ClientID id_who, NET_Packet& P)
 	SpawnWeaponsForActor(e_Actor, ps);
 };
 
-void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
-{
-	if (!ps) return;
-
-	ps->kills				= 0;
-	ps->deaths				= 0;
-	ps->lasthitter		= 0;
-	ps->lasthitweapon		= 0;
-
-	ClearPlayerItems		(ps);
-};
-
-void	game_sv_Deathmatch::ClearPlayerItems		(game_PlayerState* ps)
-{
-	ps->pItemList.clear();
-	ps->LastBuyAcount = 0;
-};
-
-void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
-{
-	ps->pItemList.clear();
-	ps->LastBuyAcount = 0;
-	//-------------------------------------------
-
-	//fill player with default items
-	if (ps->team < s16(TeamList.size()))
-	{
-		DEF_ITEMS_LIST	aDefItems = TeamList[ps->team].aDefaultItems;
-
-		for (u16 i=0; i<aDefItems.size(); i++)
-		{
-			ps->pItemList.push_back(aDefItems[i]);
-		}
-	};
-};
-
 //void	game_sv_Deathmatch::SpawnWeapon4Actor		(u32 actorId,  LPCSTR N, u8 Addons)
 //{
 //	if (!N) return;
