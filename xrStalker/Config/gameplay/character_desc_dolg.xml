@@ -482,7 +482,7 @@
 			[spawn] \n
 			wpn_colt1911 \n
 			ammo_11.43x23_hydro = 1 \n
-			wpn_vintorez \n
+			wpn_val \n
 			ammo_9x39_sp5 = 1 \n
 		</supplies>		
 			
