@@ -16,11 +16,25 @@ const float TRACER_SIZE = 0.2f;
 
 CTracer::CTracer()
 {
-	sh_Tracer	= Device.Shader.Create	("effects\\bullet_tracer","effects\\bullet_tracer");
-	VS			= Device.Streams.Create	(FVF::F_V, MAX_TRACERS*4);
+	Device.seqDevCreate.Add(this);
+	Device.seqDevDestroy.Add(this);
+	OnDeviceCreate();
 }
 
 CTracer::~CTracer()
+{
+	Device.seqDevCreate.Remove	(this);
+	Device.seqDevDestroy.Remove	(this);
+	OnDeviceDestroy();
+}
+
+void	CTracer::OnDeviceCreate()
+{
+	REQ_CREATE	();
+	sh_Tracer	= Device.Shader.Create	("effects\\bullet_tracer","effects\\bullet_tracer");
+	VS			= Device.Streams.Create	(FVF::F_V, MAX_TRACERS*4);
+}
+void	CTracer::OnDeviceDestroy()
 {
 	Device.Shader.Delete	(sh_Tracer);
 }
