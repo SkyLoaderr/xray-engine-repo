@@ -128,7 +128,6 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 			NODEFAULT;
 		}
 
-
 		if (0 != obj->icon_texture_name.size())
 			pJobItem->SetPicture			(*obj->icon_texture_name, r, color);
 
