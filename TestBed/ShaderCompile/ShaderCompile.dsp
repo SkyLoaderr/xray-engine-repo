@@ -82,11 +82,11 @@ LINK32=link.exe
 # Name "ShaderCompile - Win32 Debug"
 # Begin Source File
 
-SOURCE=.\BaseShader.cpp
+SOURCE=.\Blender.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\BaseShader.h
+SOURCE=.\Blender.h
 # End Source File
 # Begin Source File
 
