@@ -304,6 +304,7 @@ VOID CDeflector::Light()
 		
 		// Test for equality
 		DWORD	bCompress	= TRUE;
+		const DWORD rms		= 3;
 		{
 			for (DWORD y=0; y<s_y; y++)
 			{
@@ -311,11 +312,11 @@ VOID CDeflector::Light()
 				{
 					DWORD pixel	= lm.pSurface	[y*s_x+x];
 					DWORD r		= RGBA_GETRED	(pixel);
-					if (_abs(s32(r)-s32(_r))>2)	{ bCompress=FALSE; break; }
+					if (_abs(s32(r)-s32(_r))>rms)	{ bCompress=FALSE; break; }
 					DWORD g		= RGBA_GETGREEN	(pixel);
-					if (_abs(s32(g)-s32(_g))>2)	{ bCompress=FALSE; break; }
+					if (_abs(s32(g)-s32(_g))>rms)	{ bCompress=FALSE; break; }
 					DWORD b		= RGBA_GETBLUE	(pixel);
-					if (_abs(s32(b)-s32(_b))>2)	{ bCompress=FALSE; break; }
+					if (_abs(s32(b)-s32(_b))>rms)	{ bCompress=FALSE; break; }
 				}
 				if (!bCompress) break;
 			}
@@ -533,7 +534,7 @@ void CDeflector::Save()
 			for (DWORD x=0; x<lm.dwWidth; x++)
 			{
 				DWORD C = lm.pSurface[y*lm.dwWidth+x];
-				if (RGBA_GETALPHA(C)!=255)	C=0;
+//				if (RGBA_GETALPHA(C)!=255)	C=0;
 				pixel(x*3+0,y*3+0,&temp,C); pixel(x*3+1,y*3+0,&temp,C); pixel(x*3+2,y*3+0,&temp,C);
 				pixel(x*3+0,y*3+1,&temp,C); pixel(x*3+1,y*3+1,&temp,C); pixel(x*3+2,y*3+1,&temp,C);
 				pixel(x*3+0,y*3+2,&temp,C); pixel(x*3+1,y*3+2,&temp,C); pixel(x*3+2,y*3+2,&temp,C);
