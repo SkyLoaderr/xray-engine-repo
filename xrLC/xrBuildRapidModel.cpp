@@ -94,6 +94,13 @@ void CBuild::BuildRapid()
 	Status					("Saving...");
 	CFS_File		MFS		((pBuild->path+"build.cform").c_str());
 
+	// Prepare faces
+	for (int k=0; k<CL.getTS(); k++){
+		CDB::TRI* T			= CL.getT()+k;
+		base_Face* F		= (base_Face*)T->dummy;
+		T->dummy			= F->dwMaterial;
+	}
+
 	// Header
 	hdrCFORM hdr;
 	hdr.version				= CFORM_CURRENT_VERSION;
