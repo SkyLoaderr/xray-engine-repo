@@ -38,11 +38,12 @@ public:
 public:
 	struct		_stats
 	{
-		u32		l_shadowed, l_unshadowed;
-		u32		l_point_s,	l_point;
-		u32		l_spot_s,	l_spot;
-		u32		o_queries,	o_queries_invisible, o_queries_visible;
-	};
+		u32		l_total;
+		u32		l_shadowed,				l_unshadowed;
+		u32		l_point_s,				l_point;
+		u32		l_spot_s,				l_spot;
+		u32		o_queries,				o_culled;
+	}			stats;
 public:
 	// Sector detection and visibility
 	CSector*													pLastSector;
@@ -123,6 +124,7 @@ public:
 		void*							ppConstantTable);
 
 	// Information
+	virtual void					Statistics					(CGameFont* F);
 	virtual LPCSTR					getShaderPath				()									{ return "xr2_r3xx\\";	}
 	virtual ref_shader				getShader					(int id);
 	virtual IRender_Sector*			getSector					(int id);

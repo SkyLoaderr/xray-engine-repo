@@ -188,6 +188,10 @@ CRender::~CRender()
 {
 }
 
+void	CRender::Statistics	(CGameFont* F)
+{
+}
+
 /////////
 #pragma comment(lib,"d3dx_r2")
 

@@ -165,6 +165,15 @@ void CRender::Render		()
 		std::stable_sort	(Lights.v_spot.begin(),		Lights.v_spot.end(),	pred_light_cmp);
 	}
 
+	// stats
+	stats.l_shadowed	= Lights.v_point_s.size() + Lights.v_spot_s.size();
+	stats.l_unshadowed	= Lights.v_point.size() + Lights.v_spot.size();
+	stats.l_total		= stats.l_shadowed + stats.l_unshadowed;
+	stats.l_point_s		= Lights.v_point_s.size	();
+	stats.l_point		= Lights.v_point.size	();
+	stats.l_spot_s		= Lights.v_spot_s.size	();
+	stats.l_spot		= Lights.v_spot.size	();
+
 	//******* Decompression on some HW :)
 	Target.phase_decompress						();
 
@@ -245,7 +254,7 @@ void CRender::Render		()
 			// generate point shadowmap
 			light*	L		= L_point_s	= Lights.v_point_s.back();	Lights.v_point_s.pop_back();
 			L->vis_update	();
-			if	(!L->vis.visible)	L_point_s = 0;
+			if		(!L->vis.visible)	L_point_s = 0;
 			else	{
 				for (u32 pls_phase=0; pls_phase<6; pls_phase++)		{
 					phase									= PHASE_SMAP_P;
