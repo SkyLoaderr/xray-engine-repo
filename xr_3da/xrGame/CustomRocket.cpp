@@ -340,16 +340,12 @@ void CCustomRocket::StartLights()
 	m_pTrailLight->set_range(m_fTrailLightRange);
 	m_pTrailLight->set_position(Position()); 
 	m_pTrailLight->set_active(true);
-
-	Msg("start trail light %x", this);
 }
 
 void CCustomRocket::StopLights()
 {
 	if(!m_bLightsEnabled) return;
 	m_pTrailLight->set_active(false);
-
-	Msg("stop trail light %x", this);
 }
 
 void CCustomRocket::UpdateLights()

@@ -119,6 +119,7 @@ void CExplosive::Explode()
 	VERIFY(m_bReadyToExplode);
 
 	m_bExploding = true;
+	processing_activate();
 
 	Fvector& pos = m_vExplodePos;
 	Fvector& dir = m_vExplodeDir;
@@ -287,10 +288,16 @@ void CExplosive::feel_touch_new(CObject* O)
 
 void CExplosive::UpdateCL() 
 {
+	//VERIFY(!this->getDestroy());
+
+	if(!m_bExploding) return; 
+
 	//время вышло, убираем объект взрывчатки
-	if(m_fExplodeDuration < 0.f && m_bExploding) 
+	if(m_fExplodeDuration < 0.f) 
 	{
 		m_bExploding = false;
+		processing_deactivate();
+
 		StopLight();
 		
 		//ликвидировать сам объект 
@@ -299,7 +306,7 @@ void CExplosive::UpdateCL()
 //		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		if (Local()) u_EventSend			(P);
 	} 
-	else if(m_bExploding)
+	else
 	{
 		m_fExplodeDuration -= Device.fTimeDelta;
 
@@ -397,13 +404,10 @@ void CExplosive::StartLight	()
 		m_pLight->set_range(m_fLightRange);
 		m_pLight->set_position(m_vExplodePos); 
 		m_pLight->set_active(true);
-
-		Msg("explosive light start %x", this);
 	}
 }
 void CExplosive::StopLight	()
 {
 	VERIFY(m_pLight);
 	m_pLight->set_active(false);
-	Msg("explosive light stop %x", this);
 }
