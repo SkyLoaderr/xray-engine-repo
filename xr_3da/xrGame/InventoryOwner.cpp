@@ -205,7 +205,7 @@ void CInventoryOwner::ReceivePdaMessage(u16 who, EPdaMsg msg, int info_index)
 	CGameObject* pWhoGameObject = dynamic_cast<CGameObject*>(Level().Objects.net_Find(who));
 	VERIFY(pWhoGameObject);
 
-	SCRIPT_CALLBACK_EXECUTE_3(m_pPdaCallback, pThisGameObject->lua_game_object(), pWhoGameObject->lua_game_object(), (int)msg, info_index);
+	SCRIPT_CALLBACK_EXECUTE_4(m_pPdaCallback, pThisGameObject->lua_game_object(), pWhoGameObject->lua_game_object(), (int)msg, info_index);
 }
 
 
