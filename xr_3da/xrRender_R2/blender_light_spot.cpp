@@ -14,11 +14,8 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 	switch (C.iElement)
 	{
 	case SE_SPOT_FILL:			// masking
-		C.r_Pass			("accum_mask",		"dumb",						false,	TRUE,FALSE);
-		C.r_Sampler_rtf		("s_position",		r2_RT_P);
-		C.r_Sampler_rtf		("s_normal",		r2_RT_N);
-		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_d_depth);
-		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_d_surf	);
+		C.r_Pass			("null", 			"dumb_tcopy",				false,	TRUE,FALSE);
+		C.r_Sampler_rtf		("s_base",			C.L_textures[0]);
 		C.r_End				();
 		break;
 	case SE_SPOT_UNSHADOWED:	// unshadowed
