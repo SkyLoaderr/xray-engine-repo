@@ -19,11 +19,15 @@ public:
 
 class	R_constant_array
 {
-private:
+public:
+	typedef		R_constant_cache<Fvector4,256>	t_f;
+	typedef		R_constant_cache<Ivector4,16>	t_i;
+	typedef		R_constant_cache<BOOL,16>		t_b;
+public:
 	BOOL							b_dirty;
-	R_constant_cache<Fvector4,256>	c_f;
-	R_constant_cache<Ivector4,16>	c_i;
-	R_constant_cache<BOOL,16>		c_b;
+	t_f								c_f;
+	t_i								c_i;
+	t_b								c_b;
 public:
 	void					fatal	();
 
@@ -142,6 +146,14 @@ public:
 			if (a_pixel.b_dirty)
 			{
 				// fp
+				R_constant_array::t_f&	F	= a_pixel.c_f;
+				{
+					u32		count		= F.r_hi()-F.r_lo();
+					if (count)			{
+						D->SetPixelShaderConstantF	(F.r_lo(), F.access(F.r_lo()),count);
+						F.flush			();
+					}
+				}
 			}
 			if (a_vertex.b_dirty)
 			{
