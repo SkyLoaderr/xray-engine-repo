@@ -115,15 +115,15 @@ public:
 			
 			//
 			if ((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY)) {
-				CSE_ALifeObject	*tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
+				CSE_ALifeObject	*tpALifeObject = smart_cast<CSE_ALifeObject*>(E);
 				if (tpALifeObject) {
 					m_tpSpawnPoints.push_back(tpALifeObject);
-					CSE_ALifeDynamicObject	*object = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeObject);
+					CSE_ALifeDynamicObject	*object = smart_cast<CSE_ALifeDynamicObject*>(tpALifeObject);
 					if (object)
 						add_story_object	(object->m_story_id,object,m_tLevel.name());
 					if (!xr_strlen(tpALifeObject->m_caGroupControl)) {
 						tpALifeObject->m_dwSpawnGroup = ++*dwGroupOffset;
-						CSE_ALifeLevelChanger	*level_changer = dynamic_cast<CSE_ALifeLevelChanger*>(tpALifeObject);
+						CSE_ALifeLevelChanger	*level_changer = smart_cast<CSE_ALifeLevelChanger*>(tpALifeObject);
 						if (level_changer)
 							m_level_changers->push_back(level_changer);
 					}
@@ -140,13 +140,13 @@ public:
 					}
 				}
 				else {
-					CSE_SpawnGroup *l_tpSpawnGroup = dynamic_cast<CSE_SpawnGroup*>(E);
+					CSE_SpawnGroup *l_tpSpawnGroup = smart_cast<CSE_SpawnGroup*>(E);
 					if (l_tpSpawnGroup) {
 						l_tpSpawnGroup->m_dwSpawnGroup = ++*dwGroupOffset;
 						l_tpSpawnGroupControlsMap.insert(mk_pair(l_tpSpawnGroup->s_name_replace,l_tpSpawnGroup));
 					}
 					else {
-						CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
+						CSE_ALifeGraphPoint	*graph_point = smart_cast<CSE_ALifeGraphPoint*>(E);
 						if (!graph_point)
 							F_entity_Destroy(E);
 						else
@@ -155,7 +155,7 @@ public:
 				}
 			}
 			else {
-				CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
+				CSE_ALifeGraphPoint	*graph_point = smart_cast<CSE_ALifeGraphPoint*>(E);
 				if (!graph_point)
 					F_entity_Destroy(E);
 				else
@@ -190,7 +190,7 @@ public:
 				for ( ; i != e; i++) {
 					(*i)->m_fProbability /= fSum;
 					(*i)->m_dwSpawnGroup = (*J).second->m_dwSpawnGroup;
-					CSE_ALifeAnomalousZone *l_tpAnomalousZone =dynamic_cast<CSE_ALifeAnomalousZone*>(*i);
+					CSE_ALifeAnomalousZone *l_tpAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(*i);
 					if (l_tpAnomalousZone) {
 						float l_fSum = 0.f;
 						for (int ii=0; ii<l_tpAnomalousZone->m_wItemCount; ii++)
@@ -337,7 +337,7 @@ public:
 		ALIFE_OBJECT_P_IT		B = m_tpSpawnPoints.begin(), I = B;
 		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*I);
+			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(*I);
 			if (!l_tpALifeAnomalousZone)
 				continue;
 
@@ -378,12 +378,12 @@ public:
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
 			CSE_Abstract		*E = m_tpSpawnPoints[i];
-			CSE_ALifeObject		*l_tpALifeObject = dynamic_cast<CSE_ALifeObject*>(E);
+			CSE_ALifeObject		*l_tpALifeObject = smart_cast<CSE_ALifeObject*>(E);
 			R_ASSERT3			(l_tpALifeObject->m_tNodeID && (l_tpALifeObject->m_tNodeID < m_tpAI_Map->header().vertex_count()),"Invalid node for object ",l_tpALifeObject->s_name_replace);
 			R_ASSERT2			(l_tpALifeObject,"Non-ALife object!");
 			VERIFY				(tpGraph->vertex(l_tpALifeObject->m_tGraphID)->level_id() == m_dwLevelID);
 			l_tpALifeObject->m_caGroupControl = "";
-			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
+			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = smart_cast<CSE_ALifeAnomalousZone*>(E);
 			if (l_tpALifeAnomalousZone) {
 				u32									l_dwStartIndex = tpLevelPoints.size();
 				tpLevelPoints.resize				(l_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
@@ -422,7 +422,7 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 		ALIFE_OBJECT_P_IT	I = tpLevels[i]->m_tpSpawnPoints.begin();
 		ALIFE_OBJECT_P_IT	E = tpLevels[i]->m_tpSpawnPoints.end();
 		for ( ; I != E; I++) {
-			CSE_ALifeCreatureActor	*actor = dynamic_cast<CSE_ALifeCreatureActor*>(*I);
+			CSE_ALifeCreatureActor	*actor = smart_cast<CSE_ALifeCreatureActor*>(*I);
 			if (!actor)
 				continue;
 			Msg				("Actor is on the level %s",tpGraph->header().levels().find(tpGraph->vertex(actor->m_tGraphID)->level_id())->second.name());

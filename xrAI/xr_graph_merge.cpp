@@ -173,7 +173,7 @@ public:
 				CSE_Abstract						*E = F_entity_Create(fName);
 				R_ASSERT2							(E,"Can't create entity.");
 				E->Spawn_Read						(P);
-				CSE_ALifeGraphPoint					*tpGraphPoint = dynamic_cast<CSE_ALifeGraphPoint*>(E);
+				CSE_ALifeGraphPoint					*tpGraphPoint = smart_cast<CSE_ALifeGraphPoint*>(E);
 				if (tpGraphPoint) {
 					Fvector							tVector;
 					tVector							= tpGraphPoint->o_Position;

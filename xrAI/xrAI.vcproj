@@ -1438,6 +1438,12 @@
 					<File
 						RelativePath="clsid_game.h">
 					</File>
+					<File
+						RelativePath=".\smart_cast.cpp">
+					</File>
+					<File
+						RelativePath=".\smart_cast.h">
+					</File>
 				</Filter>
 			</Filter>
 			<Filter
