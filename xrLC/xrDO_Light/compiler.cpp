@@ -82,20 +82,20 @@ struct b_BuildTexture : public b_texture
 };
 
 //-----------------------------------------------------------------
-Lights					g_lights;
-CDB::MODEL				RCAST_Model;
-Fbox					LevelBB;
-CVirtualFileRW*			dtFS=0;
-DetailHeader			dtH;
-DetailSlot*				dtS;
+Lights						g_lights;
+CDB::MODEL					RCAST_Model;
+Fbox						LevelBB;
+CVirtualFileRW*				dtFS=0;
+DetailHeader				dtH;
+DetailSlot*					dtS;
 
-Shader_xrLC_LIB			g_shaders_xrlc;
+Shader_xrLC_LIB				g_shaders_xrlc;
 
-b_params				g_params;
+b_params					g_params;
 
 xr_vector<b_material>		g_materials;
-xr_vector<b_shader>		g_shader_render;
-xr_vector<b_shader>		g_shader_compile;
+xr_vector<b_shader>			g_shader_render;
+xr_vector<b_shader>			g_shader_compile;
 xr_vector<b_BuildTexture>	g_textures;
 xr_vector<b_rc_face>		g_rc_faces;
 
@@ -141,7 +141,7 @@ void xrLoad(LPCSTR name)
 
 		g_rc_faces.resize	(H.facecount);
 		R_ASSERT(fs->find_chunk(1));
-		fs->r				(g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
+		fs->r				(&*g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
 
 		LevelBB.set			(H.aabb);
 	}
