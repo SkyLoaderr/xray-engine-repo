@@ -5,7 +5,17 @@ end
 class "test_callback"
 
 function test_callback:__init()
-	self.a = 0
+end
+
+function object_idle(name,...)
+	local				act = action(nil,...)
+	while true do
+		local			obj	= get_level_object(name)
+		obj:set_command	(action);
+		while			(level.object(name) ~= nil) do
+			wait		()
+		end
+	end
 end
 
 function test_callback:callback(obj,action_type,index)
@@ -13,6 +23,8 @@ function test_callback:callback(obj,action_type,index)
 end
 
 function main ()
+    stalker_test.object_idle	("script_object0000",anim("norm_walk_fwd"))
+    
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
     
