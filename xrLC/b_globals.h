@@ -9,7 +9,7 @@ const	int						lmap_size	= 1024;
 #include "OGF_Face.h"
 #include "xr_list.h"
 
-typedef CList<vecFace>			vec2Face;
+typedef vector<vecFace>			vec2Face;
 typedef vec2Face::iterator		splitIt;
 
 typedef vector<CDeflector*>		vecDefl;
