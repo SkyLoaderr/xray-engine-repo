@@ -121,23 +121,30 @@ IC DWORD	xrPREAD			(CStream& FS)
 }
 IC void		xrPREAD_MARKER	(CStream& FS)
 {
-	R_ASSERT(xrPID_MARKER==xrPREAD(FS));	
+	R_ASSERT(xrPID_MARKER==xrPREAD(FS));
 }
 
-IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, string64& data)
-{
-	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(string64));
-}
-
+/*
 template <class T>
 IC void		xrPREAD_PROP	(CStream& FS, DWORD ID, T& data)
 {
-	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(T));
-	switch (ID) 
+	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data));
+	switch (ID)
 	{
 	case xrPID_TOKEN:	FS.Advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break;
 	case xrPID_CLSID:	FS.Advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break;
 	};
+}
+*/
+
+#define xrPREAD_PROP(FS,ID,data) \
+{ \
+	R_ASSERT(ID==xrPREAD(FS)); FS.Read(&data,sizeof(data)); \
+	switch (ID) \
+	{ \
+	case xrPID_TOKEN:	FS.Advance(((xrP_TOKEN*)&data)->Count * sizeof(xrP_TOKEN::Item));	break; \
+	case xrPID_CLSID:	FS.Advance(((xrP_CLSID*)&data)->Count * sizeof(CLASS_ID));			break; \
+	}; \
 }
 
 #pragma pack(pop)
