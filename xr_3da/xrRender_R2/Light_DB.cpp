@@ -61,7 +61,7 @@ void CLight_DB::Load			(IReader *fs)
 				sun_dir.y			+= -1.f;
 				sun_dir.normalize	();
 				sun_color.set		(Ldata.diffuse.r,Ldata.diffuse.g,Ldata.diffuse.b);
-
+				/*
 				sun_tm_next			=	0;
 				sun_dir_base		=	sun_dir;
 				sun_dir_0			=	sun_dir;
@@ -70,6 +70,7 @@ void CLight_DB::Load			(IReader *fs)
 				sun_color_base		=	sun_color;
 				sun_color_0			=	sun_color;
 				sun_color_1			=	sun_color;
+				*/
 			}
 			else
 			{
@@ -190,6 +191,7 @@ void			CLight_DB::Update()
 	}
 
 	// Light direction
+	/*
 	u32 t					= Device.TimerAsync();
 	if (t>sun_tm_next) 
 	{
@@ -217,6 +219,7 @@ void			CLight_DB::Update()
 
 	sun_color.lerp			(sun_color_0,sun_color_1,f);
 //	sun_color.lerp			(sun_color,sun_color_base,.5f);
+	*/
 
 	// move point/spot lights
 	{
