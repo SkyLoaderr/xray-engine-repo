@@ -1059,6 +1059,9 @@
 						<File
 							RelativePath=".\graph_engine_inline.h">
 						</File>
+						<File
+							RelativePath=".\graph_engine_space.h">
+						</File>
 					</Filter>
 					<Filter
 						Name="path_managers"
