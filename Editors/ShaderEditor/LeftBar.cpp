@@ -37,6 +37,8 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     bFocusedAffected 					= true;
     
     // events
+/*
+//!    
     tvEngine->OnStartDrag 	= FHelper.StartDrag;
     tvEngine->OnDragOver 	= FHelper.DragOver;
     tvCompiler->OnStartDrag = FHelper.StartDrag;
@@ -45,6 +47,7 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     tvMtl->OnDragOver 		= FHelper.DragOver;
     tvSoundEnv->OnStartDrag	= FHelper.StartDrag;
     tvSoundEnv->OnDragOver 	= FHelper.DragOver;
+*/
 }
 //---------------------------------------------------------------------------
 
@@ -153,13 +156,6 @@ void __fastcall TfraLeftBar::ebImageCommandsMouseDown(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	if (Shift.Contains(ssRight)&&STools->Current()->PopupMenu()) FHelper.ShowPPMenu(STools->Current()->PopupMenu(),dynamic_cast<TExtBtn*>(Sender));
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::CreateFolder1Click(TObject *Sender)
 {
     AnsiString 	folder;
@@ -196,22 +192,6 @@ void TfraLeftBar::AfterRemoveItem()
 {
 	STools->Current()->ResetCurrentItem();
 	STools->Current()->Modified();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::tvItemFocused(TObject *Sender)
-{
-	if (!bFocusedAffected) return;
-   	AnsiString name;
-   	FHelper.MakeName(STools->Current()->View()->Selected, 0, name, false);
-	STools->Current()->SetCurrentItem(name.c_str());
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfraLeftBar::tvEngineKeyDown(TObject *Sender, WORD &Key,
-      TShiftState Shift)
-{
-   	if (Key==VK_DELETE) ebRemoveItemClick(Sender);
 }
 //---------------------------------------------------------------------------
 
@@ -298,13 +278,6 @@ void __fastcall TfraLeftBar::RenameItem(LPCSTR p0, LPCSTR p1, EItemType type)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
-      TObject *Source, int X, int Y)
-{
-	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfraLeftBar::fsStorageRestorePlacement(TObject *Sender)
 {
 	STools->m_ItemProps->RestoreParams(fsStorage);
@@ -358,6 +331,41 @@ void __fastcall TfraLeftBar::MenuItem5Click(TObject *Sender)
 void __fastcall TfraLeftBar::MenuItem7Click(TObject *Sender)
 {
 	UI->Command( COMMAND_SYNC_SOUNDS );
+}
+//---------------------------------------------------------------------------
+
+
+
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+void __fastcall TfraLeftBar::OnDragDrop(TObject *Sender,
+      TObject *Source, int X, int Y)
+{
+	FHelper.DragDrop(Sender,Source,X,Y,RenameItem);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::tvItemFocused(TObject *Sender)
+{
+	if (!bFocusedAffected) return;
+   	AnsiString name;
+   	FHelper.MakeName(STools->Current()->View()->Selected, 0, name, false);
+	STools->Current()->SetCurrentItem(name.c_str());
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::tvEngineKeyDown(TObject *Sender, WORD &Key,
+      TShiftState Shift)
+{
+   	if (Key==VK_DELETE) ebRemoveItemClick(Sender);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraLeftBar::tvEngineMouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+	if (Shift.Contains(ssRight)&&STools->Current()->PopupMenu()) FHelper.ShowPPMenu(STools->Current()->PopupMenu(),dynamic_cast<TExtBtn*>(Sender));
 }
 //---------------------------------------------------------------------------
 

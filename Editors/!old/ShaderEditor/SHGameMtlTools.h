@@ -20,6 +20,7 @@ public:
 	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR ren_part, int level);
 	virtual void			RenameItem			(LPCSTR old_full_name, LPCSTR new_full_name);
 	void __fastcall 		OnMaterialNameChange(PropValue* sender);
+	void __fastcall 		FillChooseMtlType	(ChooseItemVec& items);
 
     virtual void			FillItemList		();
 public:

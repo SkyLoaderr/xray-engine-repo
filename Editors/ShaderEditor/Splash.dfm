@@ -2,7 +2,7 @@ object frmSplash: TfrmSplash
   Left = 422
   Top = 369
   BorderStyle = bsNone
-  Caption = 'frmSplash'
+  Caption = 'Shader Editor'
   ClientHeight = 285
   ClientWidth = 499
   Color = clBlack

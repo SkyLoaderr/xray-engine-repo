@@ -461,17 +461,20 @@ LPCSTR CSHEngineTools::GenerateConstantName(LPSTR name){
     return name;
 }
 
+void __fastcall CSHEngineTools::FillChooseTemplate(ChooseItemVec& items)
+{
+    for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
+        items.push_back(SChooseItem((*it)->getComment(),""));
+}
+        
 LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
 	IBlender* parent 	= FindItem(parent_name);
 	CLASS_ID cls_id;
     if (!parent){
         LPCSTR M=0;
-        ChooseItemVec lst;
+        if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,FillChooseTemplate)||!M) return 0;
         for (TemplateIt it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
-        	lst.push_back(SChooseItem((*it)->getComment(),""));
-        if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,&lst)||!M) return 0;
-        for (it=m_TemplatePalette.begin(); it!=m_TemplatePalette.end(); it++) 
         	if (0==strcmp((*it)->getComment(),M)){ 
             	cls_id = (*it)->getDescription().CLS;
                 break;

@@ -34,6 +34,17 @@ struct XRCORE_API xr_token2
 	int 	id;
 };
 
+#ifdef __BORLANDC__
+struct XRCORE_API xr_a_token{
+    AnsiString		name;
+    int				id;
+                    xr_a_token	(LPCSTR _nm, int _id){name=_nm;id=_id;}
+public:
+    void			rename		(LPCSTR _nm)		{name=_nm;}
+    bool			equal		(LPCSTR _nm)		{return (name==_nm);}
+};
+#endif
+
 // generic
 template <class T>	IC T		_min	(T a, T b)	{ return a<b?a:b;	}
 template <class T>	IC T		_max	(T a, T b)	{ return a>b?a:b;	}

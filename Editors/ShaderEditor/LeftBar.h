@@ -45,7 +45,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebEngineShaderRemove;
 	TExtBtn *ebEngineShaderClone;
 	TExtBtn *ebEngineShaderFile;
-	TElTree *tvEngine;
 	TElTabSheet *tsCompiler;
 	TPanel *Panel4;
 	TExtBtn *ebCompilerShaderRemove;
@@ -54,7 +53,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCShaderCreate;
 	TBevel *Bevel3;
 	TElTreeInplaceAdvancedEdit *InplaceEdit;
-	TElTree *tvCompiler;
 	TPanel *paShaderProperties;
 	TLabel *Label6;
 	TExtBtn *ExtBtn5;
@@ -76,8 +74,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn3;
 	TExtBtn *ebMaterialCreate;
 	TBevel *Bevel2;
-	TElTree *tvMtl;
-	TElTree *tvMtlPair;
 	TBevel *Bevel4;
 	TPanel *Panel3;
 	TExtBtn *ExtBtn1;
@@ -91,7 +87,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn7;
 	TExtBtn *ExtBtn8;
 	TExtBtn *ebCreateSoundEnv;
-	TElTree *tvSoundEnv;
 	TExtBtn *ebEngineShaderCreate;
 	TMxPopupMenu *pmCustomFile;
 	TMenuItem *MenuItem1;

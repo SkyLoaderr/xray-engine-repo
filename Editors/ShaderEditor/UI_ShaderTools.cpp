@@ -240,11 +240,11 @@ void CShaderTools::RegisterTools()
 	for (int k=aeFirstTool; k<aeMaxTools; k++){	
     	ISHTools* tools = 0;
 		switch(k){
-		case aeEngine:		tools = xr_new<CSHEngineTools>		(ISHInit( EToolsID(k),	fraLeftBar->tvEngine,	fraLeftBar->pmListCommand,	fraLeftBar->tsEngine,	m_ItemProps,	m_PreviewProps));   break;
-    	case aeCompiler:	tools = xr_new<CSHCompilerTools>	(ISHInit( EToolsID(k),	fraLeftBar->tvCompiler,	fraLeftBar->pmListCommand,	fraLeftBar->tsCompiler, m_ItemProps,	m_PreviewProps));	break;
-    	case aeMtl:			tools = xr_new<CSHGameMtlTools>		(ISHInit( EToolsID(k),	fraLeftBar->tvMtl,		fraLeftBar->pmListCommand,	fraLeftBar->tsMaterial,	m_ItemProps,	m_PreviewProps));	break;
-    	case aeMtlPair:		tools = xr_new<CSHGameMtlPairTools>	(ISHInit( EToolsID(k),	fraLeftBar->tvMtlPair,	(TMxPopupMenu*)NULL,		fraLeftBar->tsMaterialPair,m_ItemProps,	m_PreviewProps));	break;
-    	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(ISHInit( EToolsID(k),	fraLeftBar->tvSoundEnv,	fraLeftBar->pmListCommand,	fraLeftBar->tsSoundEnv,	m_ItemProps,	m_PreviewProps));	break;
+		case aeEngine:		tools = xr_new<CSHEngineTools>		(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsEngine,	m_ItemProps,	m_PreviewProps));   break; // fraLeftBar->tvEngine,
+    	case aeCompiler:	tools = xr_new<CSHCompilerTools>	(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsCompiler, m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvCompiler,
+    	case aeMtl:			tools = xr_new<CSHGameMtlTools>		(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsMaterial,	m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvMtl,	
+    	case aeMtlPair:		tools = xr_new<CSHGameMtlPairTools>	(ISHInit( EToolsID(k),	0,	(TMxPopupMenu*)NULL,		fraLeftBar->tsMaterialPair,m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvMtlPair,
+    	case aeSoundEnv:	tools = xr_new<CSHSoundEnvTools>	(ISHInit( EToolsID(k),	0,	fraLeftBar->pmListCommand,	fraLeftBar->tsSoundEnv,	m_ItemProps,	m_PreviewProps));	break; // fraLeftBar->tvSoundEnv,
         }
         R_ASSERT(tools);
 		m_Tools.insert(mk_pair(k,tools));

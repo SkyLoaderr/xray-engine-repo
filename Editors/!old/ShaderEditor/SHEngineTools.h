@@ -83,6 +83,8 @@ friend class TfrmShaderProperties;
     void 					Save				(CMemoryWriter& F);
     void 					PrepareRender		();
 
+    // template
+	void __fastcall 		FillChooseTemplate	(ChooseItemVec& items);
     // matrix props
 	void __fastcall 		MatrixOnAfterEdit	(PropItem* sender, LPVOID edit_val);
 	void __fastcall 		FillMatrixProps		(PropItemVec& items, LPCSTR pref, LPSTR name);

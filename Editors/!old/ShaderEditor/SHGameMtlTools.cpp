@@ -116,13 +116,16 @@ LPCSTR CSHGameMtlTools::GenerateItemName(LPSTR name, LPCSTR pref, LPCSTR source)
 	return name;
 }
 
+void __fastcall CSHGameMtlTools::FillChooseMtlType(ChooseItemVec& items)
+{
+    items.push_back(SChooseItem("Dynamic material",""));
+    items.push_back(SChooseItem("Static material",""));
+}
+
 LPCSTR CSHGameMtlTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
     LPCSTR M=0;
-    ChooseItemVec lst;
-    lst.push_back(SChooseItem("Dynamic material",""));
-    lst.push_back(SChooseItem("Static material",""));
-    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,&lst)||!M) return 0;
+    if (!TfrmChoseItem::SelectItem(smCustom,M,1,0,FillChooseMtlType)||!M) return 0;
 	SGameMtl* parent 	= FindItem(parent_name);
     string64 new_name;
     GenerateItemName	(new_name,folder_name,parent_name);

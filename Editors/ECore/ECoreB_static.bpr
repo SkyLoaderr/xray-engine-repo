@@ -66,19 +66,17 @@
       intermediate\ExportSkeleton.obj intermediate\ImageEditor.obj 
       intermediate\ImageManager.obj intermediate\Library.obj 
       intermediate\LightAnimLibrary.obj intermediate\LogForm.obj 
-      intermediate\render.obj intermediate\ShaderFunction.obj 
-      intermediate\SoundEditor.obj intermediate\SoundManager.obj 
-      intermediate\TLSPRITE.obj intermediate\UI_Camera.obj 
-      intermediate\UI_MainCommand.obj intermediate\UI_Main.obj 
-      intermediate\stdafx.obj intermediate\UI_ToolsCustom.obj 
-      intermediate\ItemDialog.obj intermediate\ImageManagerDO.obj 
+      intermediate\render.obj intermediate\SoundEditor.obj 
+      intermediate\SoundManager.obj intermediate\TLSPRITE.obj 
+      intermediate\UI_Camera.obj intermediate\UI_MainCommand.obj 
+      intermediate\UI_Main.obj intermediate\stdafx.obj 
+      intermediate\UI_ToolsCustom.obj intermediate\ImageManagerDO.obj 
       intermediate\ParticleEffectDef.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) Editor\ImageEditor.dfm Editor\LogForm.dfm 
-      Editor\ShaderFunction.dfm Editor\SoundEditor.dfm Editor\ItemDialog.dfm"/>
+    <RESDEPEN value="$(RESFILES) Editor\ImageEditor.dfm Editor\LogForm.dfm Editor\SoundEditor.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value=""/>
     <PACKAGES value=""/>
@@ -244,7 +242,6 @@
       <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\render.cpp" FORMNAME="" UNITNAME="render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundEditor.cpp" FORMNAME="frmSoundLib" UNITNAME="SoundEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\TLSPRITE.CPP" FORMNAME="" UNITNAME="TLSPRITE.CPP" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -258,7 +255,6 @@
       <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\UI_ToolsCustom.cpp" FORMNAME="" UNITNAME="UI_ToolsCustom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ItemDialog.cpp" FORMNAME="frmItemDialog" UNITNAME="ItemDialog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleEffectDef.cpp" FORMNAME="" UNITNAME="ParticleEffectDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>

@@ -152,6 +152,19 @@ BOOL SGameMtlPair::SetParent(int parent)
     return TRUE;
 }
 
+void __fastcall SGameMtlPair::FillChooseMtl(ChooseItemVec& items)
+{
+    for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
+        SGameMtl* M0 		= *m0_it;
+        for (GameMtlIt m1_it=m_Owner->FirstMaterial(); m1_it!=m_Owner->LastMaterial(); m1_it++){
+            SGameMtl* M1 	= *m1_it;
+            GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
+            if (p_it!=GMLib.LastMaterialPair())
+                items.push_back	(SChooseItem(GMLib.MtlPairToName(M0->GetID(),M1->GetID()),""));
+        }
+    }
+}
+
 void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
     bModif = false;
@@ -159,19 +172,9 @@ void __fastcall SGameMtlPair::OnParentClick(PropValue* sender, bool& bModif, boo
     switch (V->btn_num){
     case 0:{
         LPCSTR MP=0;
-	    ChooseItemVec items;
-        for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
-            SGameMtl* M0 		= *m0_it;
-            for (GameMtlIt m1_it=m_Owner->FirstMaterial(); m1_it!=m_Owner->LastMaterial(); m1_it++){
-                SGameMtl* M1 	= *m1_it;
-                GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
-                if (p_it!=GMLib.LastMaterialPair())
-		        	items.push_back	(SChooseItem(GMLib.MtlPairToName(M0->GetID(),M1->GetID()),""));
-            }
-        }
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),&items)){
+        if (TfrmChoseItem::SelectItem(smCustom,MP,1,(nm==NONE_CAPTION)?0:nm.c_str(),FillChooseMtl)){
         	if (MP){
                 int m0, m1;
                 m_Owner->NameToMtlPair	(MP,m0,m1);
@@ -199,19 +202,9 @@ void __fastcall SGameMtlPair::OnCommandClick(PropValue* sender, bool& bModif, bo
     switch (V->btn_num){
     case 0:{
         LPCSTR MP=0;
-	    ChooseItemVec items;
-        for (GameMtlIt m0_it=m_Owner->FirstMaterial(); m0_it!=m_Owner->LastMaterial(); m0_it++){
-            SGameMtl* M0 		= *m0_it;
-            for (GameMtlIt m1_it=m_Owner->FirstMaterial(); m1_it!=m_Owner->LastMaterial(); m1_it++){
-                SGameMtl* M1 	= *m1_it;
-                GameMtlPairIt p_it = GMLib.GetMaterialPairIt(M0->GetID(),M1->GetID());
-                if (p_it!=GMLib.LastMaterialPair())
-		        	items.push_back	(SChooseItem(GMLib.MtlPairToName(M0->GetID(),M1->GetID()),""));
-            }
-        }
 	    SGameMtlPair* P	= m_Owner->GetMaterialPair(ID_parent);
         AnsiString nm	= P?m_Owner->MtlPairToName(P->GetMtl0(),P->GetMtl1()):NONE_CAPTION;
-        if (TfrmChoseItem::SelectItem(smCustom,MP,128,0,&items)){
+        if (TfrmChoseItem::SelectItem(smCustom,MP,128,0,FillChooseMtl)){
         	if (MP){
                 AStringVec lst;
                 _SequenceToList(lst,MP);

@@ -161,6 +161,7 @@ public:
     void __fastcall 	OnFlagChange	(PropValue* sender);
 	void __fastcall 	OnParentClick	(PropValue* sender, bool& bModif, bool& bSafe);
 	void __fastcall 	OnCommandClick	(PropValue* sender, bool& bModif, bool& bSafe);
+    void __fastcall 	FillChooseMtl	(ChooseItemVec& items);
 #endif
 public:
 	SGameMtlPair		(CGameMtlLibrary* owner)
