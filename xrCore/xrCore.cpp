@@ -49,7 +49,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_p
 
 	// Mathematics & PSI detection
 	InitMath				();
-
+	rtc_initialize			();
 	Debug._initialize		();
 	Memory._initialize		();
 	xr_FS					= xr_new<CLocatorAPI>	();
