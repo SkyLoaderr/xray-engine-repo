@@ -1,1 +1,8 @@
 <?xml version='1.0' encoding="windows-1251"?>
+
+<game_information_portions>
+  <!-- Драм-момент -->
+  <info_portion id="gar_novice_asked_for_help"></info_portion>
+  <info_portion id="gar_bandit_warned_plr"></info_portion>
+  
+</game_information_portions>
