@@ -89,6 +89,6 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	yaw = angle_normalize(yaw);
 	bool is_front = ( ((PI_DIV_2 <= yaw) && (yaw <= 3*PI_DIV_2))? false: true );
 
-	MotionMan.FX_Play(u16(element), is_front);
+	MotionMan.FX_Play(u16(element), is_front, amount / 4);	
 }
 

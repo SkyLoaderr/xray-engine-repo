@@ -49,10 +49,16 @@ void CAI_Boar::Load(LPCSTR section)
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 	
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,									0,									PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, 0,									inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, 0,									inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
+
 	MotionMan.AddAnim(eAnimLieIdle,			"lie_sleep_",			-1, 0,									0,									PS_LIE);
 	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,									0,									PS_LIE);
 	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, inherited::_sd->m_fsWalkFwdNormal,	inherited::_sd->m_fsWalkAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, inherited::_sd->m_fsWalkFwdDamaged,	inherited::_sd->m_fsWalkAngular,	PS_STAND);
 	MotionMan.AddAnim(eAnimRun,				"stand_run_fwd_",		-1,	inherited::_sd->m_fsRunFwdNormal,	inherited::_sd->m_fsRunAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	inherited::_sd->m_fsRunFwdDamaged,	inherited::_sd->m_fsRunAngular,		PS_STAND);
+
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,									0,									PS_STAND);
 	MotionMan.AddAnim(eAnimEat,				"stand_eat_",			-1, 0,									0,									PS_STAND);
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		-1, 0,									inherited::_sd->m_fsRunAngular,		PS_STAND);
@@ -61,20 +67,19 @@ void CAI_Boar::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1, 0,									0,									PS_LIE);
 	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, inherited::_sd->m_fsDrag,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
 	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			 2, 0,									0,									PS_STAND);
-	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,			inherited::_sd->m_fsWalkAngular,	PS_STAND);
 
 	// define transitions
-	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
 	MotionMan.AddTransition(eAnimStandLieDown,	eAnimSleep,		eAnimLieToSleep,		false);
 	MotionMan.AddTransition(PS_STAND,			eAnimSleep,		eAnimStandLieDown,		true);
 	MotionMan.AddTransition(PS_STAND,			PS_LIE,			eAnimStandLieDown,		false);
 	MotionMan.AddTransition(PS_LIE,				PS_STAND,		eAnimLieStandUp,		false);
 
 	// define links from Action to animations
-	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimWalkFwd, eAnimWalkFwd, PI_DIV_6);
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
-	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd, eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimDragCorpse);
 	MotionMan.LinkAction(ACT_RUN,			eAnimRun);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
@@ -121,8 +126,7 @@ void CAI_Boar::StateSelector()
 	else if (A && !K && H)		SetState(stateExploreNDE);  //SetState(stateExploreDNE);	//SetState(stateExploreDE);	// слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)		
 	else if (B && !K && !H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
 	else if (B && !K && H)		SetState(stateExploreNDE);	// слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-	//else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
-	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1))	
+	else if (GetCorpse(ve) && (ve.obj->m_fFood > 1) && ((GetSatiety() < 0.85f) || flagEatNow))	
 								SetState(stateEat);
 	else						SetState(stateRest); 
 }

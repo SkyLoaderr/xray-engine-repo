@@ -36,6 +36,8 @@ void CMotionManager::Init (CAI_Biting	*pM)
 
 	b_end_transition		= false;
 	saved_anim				= cur_anim;
+
+	fx_time_last_play		= 0;
 }
 
 // «агрузка параметров анимации. ¬ызывать необходимо на Monster::Load
@@ -223,6 +225,8 @@ bool CMotionManager::PrepareAnimation()
 
 	// установить анимацию	
 	m_tpCurAnim = anim_it->second.pMotionVect[index];
+	
+	LOG_EX2("ANIM: Name = [%s], Time =[%u]", *"*/ *anim_it->second.target_name, pMonster->m_dwCurrentTime /*"*);
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
@@ -555,19 +559,12 @@ void CMotionManager::UpdateVisual()
 // название боны -> индекс1, индекс2
 void CMotionManager::FX_LoadMap(LPCSTR section)
 {
-	Msg("FX:: 1. Try to load fx map from ltx, first attempt - try to load shared data");
-	
 	CHECK_SHARED_LOADED();
-
-	Msg("FX:: 2. Try to load fx map from ltx, second attempt - shared data loaded");
-	
 
 	string32 sect;
 	strconcat(sect,section,"_fx");
 
 	if (!pSettings->section_exist(sect)) return;
-
-	Msg("FX:: 3. Section exists = [%s]", sect);
 
 	_sd->default_fx_indexes.front	= -1;
 	_sd->default_fx_indexes.back	= -1;
@@ -584,13 +581,11 @@ void CMotionManager::FX_LoadMap(LPCSTR section)
 		if (strcmp(bone_name, "default") == 0) {
 			_sd->default_fx_indexes.front	= s8(atoi(first));
 			_sd->default_fx_indexes.back	= s8(atoi(second));
-			Msg("FX:: 4. Load default params (front = [%i], back = [%i])", _sd->default_fx_indexes.front, _sd->default_fx_indexes.back);
 		} else {
 			index.front	=	s8(atoi(first));
 			index.back	=	s8(atoi(second));
 
 			_sd->fx_map_string.insert(mk_pair(bone_name, index));
-			Msg("FX:: 4. Load bone (name = [%s] front = [%i], back = [%i])", bone_name, index.front, index.back);
 		}
 	}
 
@@ -600,35 +595,27 @@ void CMotionManager::FX_LoadMap(LPCSTR section)
 // Call on NetSpawn
 void CMotionManager::FX_ConvertMap()
 {
-	Msg("FX:: 5. Try to convert name to boneid, first attempt - shared data loaded?");
 	if (_sd->map_converted) return;
 	_sd->map_converted = true;
-	Msg("FX:: 6. Try to convert name to boneid, second attempt - shared data loaded!");
 
 	// ѕреобразовать названи€ бон в их u16-индексы
 	for (FX_MAP_STRING_IT item_it = _sd->fx_map_string.begin(); item_it != _sd->fx_map_string.end(); item_it++) {
 		u16 bone_id = PKinematics(pVisual)->LL_BoneID(*item_it->first);
 		_sd->fx_map_u16.insert(mk_pair(bone_id,item_it->second)); 
-
-		Msg("FX:: 7. Converting... ");
 	}
 }
 
-void CMotionManager::FX_Play(u16 bone, bool is_front) 
+#define FX_CAN_PLAY_MIN_INTERVAL	500
+
+void CMotionManager::FX_Play(u16 bone, bool is_front, float amount) 
 {
 	if (_sd->fx_map_u16.empty()) return;
+	if (fx_time_last_play + FX_CAN_PLAY_MIN_INTERVAL > pMonster->m_dwCurrentTime) return;
 
-	
-	Msg("FX:: Play: Try to find bone_id = [%u]", bone);
 	FX_MAP_U16_IT	fx_it = _sd->fx_map_u16.find(bone);
 	
-	t_fx_index cur_fx;
-
-	if (fx_it != _sd->fx_map_u16.end()) {
-		cur_fx = fx_it->second;
-		Msg("FX:: Play: Bone Found!!! ");
-	}else {
-		Msg("FX:: Play: Bone not found, try to find appropriate bone which is closest!");
+	t_fx_index cur_fx = cur_fx = fx_it->second;
+	if (fx_it == _sd->fx_map_u16.end()) {
 		
 		// Ќайти минимальное рассто€ние до боны на которой есть fx
 		CBoneInstance *target_bone = &PKinematics(pVisual)->LL_GetBoneInstance(bone);
@@ -639,40 +626,33 @@ void CMotionManager::FX_Play(u16 bone, bool is_front)
 			CBoneInstance *cur_bone = &PKinematics(pVisual)->LL_GetBoneInstance(it->first);
 			
 			float cur_dist = target_bone->mTransform.c.distance_to(cur_bone->mTransform.c);
-			Msg("FX:: Play: looking up... cur_dist, = [%f] best_dist = [%f]",cur_dist, best_dist);
 			if (best_dist > cur_dist) {
 				best_dist = cur_dist;
 				cur_fx = it->second;
 			}
 		}
-
-		Msg("FX:: Play: Bone found with fx params = [%i][%i]",cur_fx.front,cur_fx.back);
 	}
 
-	Msg("FX:: Play: front shot? [%i]", is_front);
 	s8 fx_index;
-	fx_index = ((is_front)? fx_it->second.front : fx_it->second.back);
+	fx_index = ((is_front)? cur_fx.front : cur_fx.back);
 	
 	// ≈сли нет соответстующего fx'a - загрузить default
 	if (fx_index < 0) {
-		Msg("FX:: Play: load default... ");
 		fx_index = ((is_front)? _sd->default_fx_indexes.front :  _sd->default_fx_indexes.back);
+
+		if (fx_index < 0) return;
 	}
 
-	if (fx_index < 0) {
-		Msg("FX:: Play: load default... Everything bad!");
-		return;
-	}
-	
 	string16 temp;
 	itoa(fx_index,temp,10);
 
 	string32 fx_name;
 	strconcat(fx_name,"fx_damage_",temp);
 	
-	
-	Msg("FX:: Playing...  Name = [%s]", fx_name);
-	PSkeletonAnimated(pVisual)->PlayFX(fx_name, 1.0f);
+	clamp(amount,0.f,1.f);
+	PSkeletonAnimated(pVisual)->PlayFX(fx_name, amount);
+
+	fx_time_last_play = pMonster->m_dwCurrentTime;
 }
 
 

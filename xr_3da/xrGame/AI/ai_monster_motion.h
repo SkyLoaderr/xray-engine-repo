@@ -256,6 +256,8 @@ class CMotionManager : public CSharedClass<_motion_shared> {
 	bool					b_end_transition;		// запомнить анимацию конца перехода
 	EMotionAnim				saved_anim;
 
+	TTime					fx_time_last_play;
+
 public:
 	
 	EAction					m_tAction;
@@ -323,7 +325,7 @@ public:
 	// FX's
 	void		FX_LoadMap				(LPCSTR section);
 	void		FX_ConvertMap			();
-	void		FX_Play					(u16 bone, bool is_front);
+	void		FX_Play					(u16 bone, bool is_front, float amount);
 
 		// ќбновить tpKinematics
 	void		UpdateVisual			();

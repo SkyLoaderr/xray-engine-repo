@@ -46,10 +46,6 @@ bool CAI_Biting::AA_CheckHit()
 		Collide::ray_query	l_rq;
 
 		Fvector dir = Direction();
-//		Fvector center;
-//		obj->Center(center);
-//		dir.sub(center,trace_from);
-//		dir.normalize_safe();
 
 		if (Level().ObjectSpace.RayPick(trace_from, dir, apt_anim.dist, l_rq)) {
 			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {

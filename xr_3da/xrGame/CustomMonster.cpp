@@ -15,6 +15,8 @@
 #include "ai_script_actions.h"
 #include "ai\\rat\\ai_rat.h"
 
+#include "ai\\biting\\ai_biting.h"
+
 using namespace AI;
 
 Flags32		psAI_Flags	= {0};
@@ -632,6 +634,18 @@ void CCustomMonster::OnRender()
 		Movement.dbg_Draw();
 	}
 //	if (bDebug) PKinematics(Visual())->DebugRender(XFORM());
+
+	// TEMP
+	CAI_Biting *pM = dynamic_cast<CAI_Biting *>(this);
+	if (!pM) return;
+
+	if (!pM->dbg_info.active) return;
+	RCache.dbg_DrawAABB(pM->dbg_info.pos,0.15f,0.15f,0.15f,D3DCOLOR_XRGB(255,0,128));
+
+	Fvector up_vect;
+	up_vect = pM->dbg_info.pos;
+	up_vect.y += 1.5f;
+	RCache.dbg_DrawLINE(Fidentity,pM->dbg_info.pos,up_vect,D3DCOLOR_XRGB(255,0,128));
 }
 #endif
 
@@ -790,7 +804,6 @@ bool CCustomMonster::bfScriptAnimation()
 	if (
 		GetScriptControl() && 
 		GetCurrentAction() && 
-		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
 		!GetCurrentAction()->m_tAnimationAction.m_bCompleted && 
 		xr_strlen(GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay)) {
 

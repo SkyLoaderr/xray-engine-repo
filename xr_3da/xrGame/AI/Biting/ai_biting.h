@@ -315,6 +315,16 @@ public:
 		bool	prev_hit;
 	} _as;
 
+
+// TEMP
+	struct s_dbg{
+		bool	active;
+		Fvector pos;
+
+		s_dbg() {active = false;}
+		void set(const Fvector &f) {pos = f; active = true;}
+	} dbg_info;
+
 };
 
 

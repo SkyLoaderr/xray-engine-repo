@@ -49,15 +49,20 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
 	m_fEffectDist		= pSettings->r_float(section,"EffectDistance");	
 
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+	
 	BEGIN_LOAD_SHARED_MOTION_DATA();
 
 	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0,										0,										PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_idle_ls_",		-1, 0,										inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
-	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_idle_rs_",		-1, 0,										inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnLeft,	"stand_turn_ls_",		-1, 0,										inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
+	MotionMan.AddAnim(eAnimStandTurnRight,	"stand_turn_rs_",		-1, 0,										inherited::_sd->m_fsTurnNormalAngular,	PS_STAND);
 	MotionMan.AddAnim(eAnimSleep,			"lie_sleep_",			-1, 0,										0,										PS_LIE);
 	MotionMan.AddAnim(eAnimWalkFwd,			"stand_walk_fwd_",		-1, inherited::_sd->m_fsWalkFwdNormal,		inherited::_sd->m_fsWalkAngular,		PS_STAND);
+	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_fwd_dmg_",	-1, inherited::_sd->m_fsWalkFwdDamaged,		inherited::_sd->m_fsWalkAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimWalkBkwd,		"stand_walk_bkwd_",		-1, inherited::_sd->m_fsWalkBkwdNormal,		inherited::_sd->m_fsWalkAngular,		PS_STAND);
 	MotionMan.AddAnim(eAnimRun,				"stand_run_",			-1,	inherited::_sd->m_fsRunFwdNormal,		inherited::_sd->m_fsRunAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1,	inherited::_sd->m_fsRunFwdDamaged,		inherited::_sd->m_fsRunAngular,			PS_STAND);
 	MotionMan.AddAnim(eAnimCheckCorpse,		"stand_check_corpse_",	-1,	0,										0,										PS_STAND);
 	MotionMan.AddAnim(eAnimEat,				"sit_eat_",				-1, 0,										0,										PS_SIT);
 	MotionMan.AddAnim(eAnimDie,				"stand_idle_",			-1, 0,										0,										PS_STAND);
@@ -65,17 +70,17 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimLookAround,		"stand_look_around_",	-1, 0,										0,										PS_STAND);
 	MotionMan.AddAnim(eAnimSitIdle,			"sit_idle_",			-1, 0,										0,										PS_SIT);
 	MotionMan.AddAnim(eAnimSitStandUp,		"sit_stand_up_",		-1, 0,										0,										PS_SIT);
-	MotionMan.AddAnim(eAnimSitToSleep,		"sit_to_sleep_",		-1, 0,										0,										PS_SIT);
+	MotionMan.AddAnim(eAnimSitToSleep,		"sit_sleep_down_",		-1, 0,										0,										PS_SIT);
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,										0,										PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_steal_",			-1, inherited::_sd->m_fsSteal,				inherited::_sd->m_fsWalkAngular,		PS_STAND);
 
 	// define transitions
-	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
 	MotionMan.AddTransition(eAnimStandSitDown,	eAnimSleep,	eAnimSitToSleep,	false);
 	MotionMan.AddTransition(PS_STAND,			eAnimSleep,	eAnimStandSitDown,	true);
-	MotionMan.AddTransition(PS_STAND,			PS_SIT,		eAnimStandSitDown,		false);
-	MotionMan.AddTransition(PS_STAND,			PS_LIE,		eAnimStandSitDown,		false);
-	MotionMan.AddTransition(PS_SIT,				PS_STAND,	eAnimSitStandUp,		false);
-	MotionMan.AddTransition(PS_LIE,				PS_STAND,	eAnimSitStandUp,		false);
+	MotionMan.AddTransition(PS_STAND,			PS_SIT,		eAnimStandSitDown,	false);
+	MotionMan.AddTransition(PS_STAND,			PS_LIE,		eAnimStandSitDown,	false);
+	MotionMan.AddTransition(PS_SIT,				PS_STAND,	eAnimSitStandUp,	false);
+	MotionMan.AddTransition(PS_LIE,				PS_STAND,	eAnimSitStandUp,	false);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle,	eAnimStandTurnLeft, eAnimStandTurnRight, PI_DIV_6);
@@ -89,7 +94,7 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_REST,			eAnimSitIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimWalkBkwd);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack,	eAnimRun,			eAnimRun,			PI_DIV_6);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround); 
 
 	Fvector center;
@@ -100,7 +105,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		1.4f, inherited::_sd->m_fHitPower, PI_DIV_3,	PI_DIV_6);
 
 	MotionMan.FX_LoadMap(section); 
-
 
 	END_LOAD_SHARED_MOTION_DATA();
 }

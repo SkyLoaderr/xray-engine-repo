@@ -714,9 +714,20 @@ Fvector CPHMovementControl::PHCaptureGetNearestElemPos(CGameObject* object)
 
 	Fvector v;
 	ph_elem->GetGlobalPositionDynamic(&v);	
-
+	
 	return v;
 }
+
+Fmatrix CPHMovementControl::PHCaptureGetNearestElemTransform(CGameObject* object)
+{
+	CPhysicsElement *ph_elem =  object->m_pPhysicsShell->NearestToPoint(vPosition);
+
+	Fmatrix m;
+	ph_elem->GetGlobalTransformDynamic(&m);
+
+	return m;
+}
+
 
 void CPHMovementControl::PHReleaseObject()
 {

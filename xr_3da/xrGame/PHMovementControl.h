@@ -19,6 +19,7 @@ void				PHCaptureObject(CGameObject* object,u16 element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
 Fvector				PHCaptureGetNearestElemPos(CGameObject* object);
+Fmatrix				PHCaptureGetNearestElemTransform(CGameObject* object);
 
 enum				JumpType 
 {

@@ -7,7 +7,8 @@
 #include "..\\..\\PhysicsShell.h"
 #include "..\\..\\phcapture.h"
 
-#define  REST_AFTER_LUNCH_TIME 5000
+#define		REST_AFTER_LUNCH_TIME			5000
+#define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingEat class
@@ -65,6 +66,7 @@ void CBitingEat::Init()
 	LOG_EX("_ Eat Init _");
 }
 
+
 void CBitingEat::Run()
 {
 	// Если новый труп, снова инициализировать состояние 
@@ -72,151 +74,145 @@ void CBitingEat::Run()
 	if (!pMonster->GetCorpse(ve)) {Done(); return;}
 	if (pCorpse != ve.obj) Init();
 
-	float saved_dist	= SavedPos.distance_to(pMonster->Position()); // расстояние, на которое уже оттащен труп
-	float cur_dist		= pCorpse->Position().distance_to(pMonster->Position());
+	// Определить позицию ближайшей боны у трупа
+	Fvector nearest_bone_pos = pMonster->Movement.PHCaptureGetNearestElemPos(pCorpse);
+	float cur_dist = nearest_bone_pos.distance_to(pMonster->Position());
 
-	if (bEating && (cur_dist > m_fDistToCorpse)) m_tAction = ACTION_WALK;
+	// temp show out
+	pMonster->dbg_info.set(nearest_bone_pos);
 
 	if (bHideAfterLunch) m_tAction = ACTION_GET_HIDE;
 	else if (bRestAfterLunch) m_tAction = ACTION_LITTLE_REST;
+	else if (bEating && (cur_dist > m_fDistToCorpse)) m_tAction = ACTION_WALK;
 
-	Fvector corpse_pos = pMonster->Movement.PHCaptureGetNearestElemPos(pCorpse);
+	LOG_EX2("My pos[%f,%f,%f],c.pos[%f,%f,%f], dist[%f], r[%f]", *"*/ VPUSH(pMonster->Position()), VPUSH(nearest_bone_pos), cur_dist, m_fDistToCorpse  /*"*);
+	
+	float saved_dist	= SavedPos.distance_to(pMonster->Position()); // расстояние, на которое уже оттащен труп
 
-	// Выполнение состояния
 	switch (m_tAction) {
-		case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
-			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
+	case ACTION_CORPSE_APPROACH_RUN:	// бежать к трупу
+		pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
 
-			pMonster->MotionMan.m_tAction = ACT_RUN;
+		pMonster->MotionMan.m_tAction = ACT_RUN;
 
-			if (cur_dist < 6.f) m_tAction = ACTION_CORPSE_APPROACH_WALK;
+		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
+		break;
+	case ACTION_CORPSE_APPROACH_WALK:
 
-			break;
-		case ACTION_CORPSE_APPROACH_WALK:
+		pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0);
 
-			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&corpse_pos, true, 0);
-
-			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		
+		if (cur_dist < m_fDistToCorpse) {
 			
-			if (cur_dist < m_fDistToCorpse) {
-				
-				// если монстр подбежал к трупу, необходимо отыграть проверку трупа
-				pMonster->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
-				
-				//if (!tasty_corpse) { pMonster->AddIgnoreObject(pCorpse); m_tAction = ACTION_LOOK_AROUND; } 
-				
-				m_tAction = ACTION_PREPARE_DRAG;
-				m_dwPrepareDrag	= m_dwCurrentTime;
-			}
-			break;
-
-		case ACTION_PREPARE_DRAG:
-			if (m_dwPrepareDrag + 1000 < m_dwCurrentTime) {
-				// Если труп крысы || если не получилось взять
-				bDragging = false;
-				m_tAction = ACTION_EAT;
-
-				if (!bEatRat && bCanDrag) {	// Если не труп крысы и может тащить
-					// пытаться взять труп
-					pMonster->Movement.PHCaptureObject(pCorpse);
-
-					if (!pMonster->Movement.PHCapture()->Failed()) {
-						// тащить труп
-						bDragging = true;
-						m_tAction = ACTION_DRAG;
-					}
-				} 
-			}
-	
-			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-			break;
-
-		case ACTION_DRAG:
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 500);
-
-			// Установить параметры движения
-			pMonster->MotionMan.m_tAction = ACT_DRAG; 
-			pMonster->MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
-
-			// если не может тащить
-			if (pMonster->Movement.PHCapture() == 0) m_tAction = ACTION_WALK_LITTLE_AWAY; 
-
-			if (saved_dist > m_fDistToDrag) {
-				// бросить труп
-				pMonster->Movement.PHReleaseObject();
-
-				bDragging = false; 
-				m_tAction = ((::Random.randI(3)) ? ACTION_LOOK_AROUND : ACTION_EAT);
-			}
-
-			break;
-		case ACTION_WALK_LITTLE_AWAY:
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 4.f, 500);
-			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
-
-			if (cur_dist > 3.f) m_tAction = ACTION_LOOK_AROUND;
-			break;
-
-		case ACTION_LOOK_AROUND:  // постоять 2 сек
-			DO_ONCE_BEGIN(flag_once_1);
-				m_dwStandStart = m_dwCurrentTime;
-			DO_ONCE_END();
+			// если монстр подбежал к трупу, необходимо отыграть проверку трупа
+			pMonster->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
 			
-			if (m_dwStandStart + 2000 < m_dwCurrentTime) {
-				pMonster->AI_Path.TravelPath.clear();
-				m_tAction = ACTION_WALK;
-			}
+			m_tAction = ( (bCanDrag) ?   ACTION_PREPARE_DRAG : ACTION_EAT );
+			//m_tAction =  ACTION_EAT;
+			m_dwPrepareDrag	= m_dwCurrentTime;
+		}
+		break;
+	case ACTION_EAT:
+		pMonster->MotionMan.m_tAction = ACT_EAT;
+		
+		bEating = true;
+		if (pMonster->GetSatiety() >= 1.0f) bHideAfterLunch = true;
 
-			// Look around
-			pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND; 
+		// съесть часть
+		DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, m_dwEatInterval);
+			pMonster->ChangeSatiety(0.02f);
+			pCorpse->m_fFood -= pMonster->_sd->m_fHitPower/5.f;
 
-			break;
-		case ACTION_WALK:
-
-			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,500);
+			//Fmatrix M = pMonster->Movement.PHCaptureGetNearestElemTransform(pCorpse);
+//			Fvector fv;
+//			fv.set(0.f,0.f,0.f);
+//			Fvector dir;
+//
+//			dir = pCorpse->Position();
+//			dir.sub(pMonster->Position());
+//
+//			pCorpse->m_pPhysicsShell->applyImpulseTrace(fv,dir,1000.f,0);
+		DO_IN_TIME_INTERVAL_END();
+		break;
 	
-			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
+	case ACTION_GET_HIDE:
+		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10.f, 300);
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
 
-			if (cur_dist  + 0.2f  < m_fDistToCorpse) {
-				m_tAction = ACTION_EAT;
-			}
+		if (cur_dist > 10.f) {
+			m_tAction = ACTION_LITTLE_REST;
+			bHideAfterLunch = false;
+			bRestAfterLunch	= true;
+			m_dwTimeStartRest = m_dwCurrentTime;
+		}
 
-			break;
-		case ACTION_EAT:
-			pMonster->MotionMan.m_tAction = ACT_EAT; 
-			bEating = true;
-			if (pMonster->GetSatiety() >= 1.0f) bHideAfterLunch = true;
+		LOG_EX("EAT:: action_get_hide activated");
 
-			// съесть часть
-			DO_IN_TIME_INTERVAL_BEGIN(m_dwLastTimeEat, m_dwEatInterval);
-				pMonster->ChangeSatiety(0.05f);
-				pCorpse->m_fFood -= pMonster->_sd->m_fHitPower/5.f;
-			DO_IN_TIME_INTERVAL_END();
+		break;
+	case ACTION_LITTLE_REST:
+		pMonster->MotionMan.m_tAction = ACT_REST; 
+		if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
+			pMonster->flagEatNow	= false;
+			bRestAfterLunch			= false; 
+		}
+		
+		LOG_EX("EAT:: action_little_rest activated");
 
-			break;
-		case ACTION_GET_HIDE:
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10.f, 300);
-			pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
+		break;
 
-			if (cur_dist > 5.f) {
-				m_tAction = ACTION_LITTLE_REST;
-				bHideAfterLunch = false;
-				bRestAfterLunch	= true;
-				m_dwTimeStartRest = m_dwCurrentTime;
-			}
-			break;
-		case ACTION_LITTLE_REST:
-			pMonster->MotionMan.m_tAction = ACT_REST; 
-			if (m_dwTimeStartRest + REST_AFTER_LUNCH_TIME < m_dwCurrentTime) {
-				pMonster->flagEatNow	= false;
-				bRestAfterLunch			= false; 
-			}
-			break;
+	case ACTION_WALK:
+
+		pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
+		pMonster->vfChoosePointAndBuildPath(0,&nearest_bone_pos, true, 0,500);
+
+		pMonster->MotionMan.m_tAction = ACT_WALK_FWD; 
+
+		if (cur_dist  + 0.2f  < m_fDistToCorpse) m_tAction = ACTION_EAT;
+		break;
+	case ACTION_PREPARE_DRAG:
+		if (m_dwPrepareDrag + 1000 < m_dwCurrentTime) {
+			// Если труп крысы || если не получилось взять
+			bDragging = false;
+			m_tAction = ACTION_EAT;
+
+			if (!bEatRat && bCanDrag) {	// Если не труп крысы и может тащить
+				// пытаться взять труп
+				pMonster->Movement.PHCaptureObject(pCorpse);
+
+				if (!pMonster->Movement.PHCapture()->Failed()) {
+					// тащить труп
+					bDragging = true;
+					m_tAction = ACTION_DRAG;
+				}
+			} 
+		}
+
+		pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+		break;
+
+	case ACTION_DRAG:
+		pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 500);
+
+		// Установить параметры движения
+		pMonster->MotionMan.m_tAction = ACT_DRAG; 
+		pMonster->MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
+
+		// если не может тащить
+		if (pMonster->Movement.PHCapture() == 0) m_tAction = ACTION_EAT; 
+
+		if (saved_dist > m_fDistToDrag) {
+			// бросить труп
+			pMonster->Movement.PHReleaseObject();
+
+			bDragging = false; 
+			m_tAction = ACTION_EAT;
+		}
+		break;
 	}
-
+	
 	pMonster->SetSound(SND_TYPE_EAT, pMonster->_sd->m_dwEatSndDelay);
 }
 
