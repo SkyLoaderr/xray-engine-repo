@@ -141,7 +141,7 @@ void CAI_Rat::feel_sound_new(CObject* who, int eType, Fvector& Position, float p
 
 //	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
 	if (power >= 0.1) {
-		if (this != who) {
+		if ((this != who) && ((m_tLastSound.dwTime <= m_dwLastUpdateTime) || (m_tLastSound.fPower <= power))) {
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			m_tLastSound.eSoundType		= ESoundTypes(eType);
 			m_tLastSound.dwTime			= Level().timeServer();

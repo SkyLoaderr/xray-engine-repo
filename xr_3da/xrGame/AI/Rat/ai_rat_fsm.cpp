@@ -205,9 +205,10 @@ void CAI_Rat::FreeHunting()
 		SWITCH_TO_NEW_STATE(aiRatAttackFire)
 	}
 
-	if (Level().timeServer() - m_tLastSound.dwTime <= DWORD(iFloor(m_fTimeUpdateDelta*1000) + 100)) {
+	if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
 		tSavedEnemy = m_tLastSound.tpEntity;
-		SWITCH_TO_NEW_STATE(aiRatAttackFire);
+		m_dwLostEnemyTime = Level().timeServer();
+		SWITCH_TO_NEW_STATE(aiRatAttackRun);
 	}
 
 	m_tSpawnPosition.set(m_tSafeSpawnPosition);

@@ -152,7 +152,7 @@ public:
 	DWORD				m_dwLoopCount;
 	int					m_iCurrentPatrolIndex;
 	bool				m_bPatrolPathInverted;
-
+	DWORD				m_dwLastUpdateTime;
 
 	// movement
 	float				m_fJumpSpeed;

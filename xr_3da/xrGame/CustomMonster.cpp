@@ -62,6 +62,7 @@ CCustomMonster::CCustomMonster()
 	eye_pp_stage		= 0;
 	m_tpPath			= 0;
 	vfResetPatrolData	();
+	m_dwLastUpdateTime	= 0;
 }
 
 CCustomMonster::~CCustomMonster	()
@@ -288,6 +289,7 @@ void CCustomMonster::Update	( DWORD DT )
 		m_fTimeUpdateDelta				= dt;
 		Device.Statistic.AI_Think.Begin	();
 		Think							();
+		m_dwLastUpdateTime = Level().timeServer();
 		Device.Statistic.AI_Think.End	();
 //		if (m_fCurSpeed < EPS_L) {
 //			AI_Path.TravelPath.clear();
