@@ -153,7 +153,7 @@ silencer_light_var_color	= 0.05
 silencer_light_var_range	= 0.5
 silencer_light_time 		= 0.2
 
-
+/*
 ;-----------------------------------------------------------------------------
 ;-- HUD DESCRIPTION
 ;-----------------------------------------------------------------------------
@@ -194,5 +194,89 @@ zoom_rotate_x		= -0.001000
 zoom_rotate_y		= 0.017000
 
 ;zoom_hide_crosshair	= true						;to hide crosshair in zoom 
+*/
+
+
+
+
+
+
+
+;-----------------------------------------------------------------------------
+;-- HUD DESCRIPTION
+;-----------------------------------------------------------------------------
+ 
+[wpn_ak74_hud]
+
+
+;similar to corresponding params in weapon section but for 1st person view
+
+shell_point     	   	 	= 0.15, 0.0, -0.05
+shell_dir			     	= 0.0, 1.0, 0.0
+
+fire_point               	= 0.09,0.020,-0.06
+fire_point2              	= 0.30, 0.00, 0.05
+fire_bone               	= wpn_body
+
+orientation             	= 0, 0, 0		
+position                	= 0, 0, 0
+visual                  	= weapons\ak74\wpn_ak74_hud.ogf
+
+grenade_bone            	= wpn_grenade	; name of the bone in the model for grenade launcher
+
+; animation names
+
+anim_idle					= idle
+anim_idle_aim				= idle_aim
+anim_reload					= reload
+anim_draw					= draw_wo_gl
+anim_holster				= holster_wo_gl
+anim_shoot					= shoot
+			
+; animation names
+; attached grenade launcher [GRENADE fire mode]
+anim_idle_g					= idle_grenade
+anim_idle_g_aim				= idle_g_aim
+anim_reload_g				= reload_grenade
+anim_shoot_g				= shoot_grenade
+anim_switch_grenade_on		= switch_grenade
+anim_switch_grenade_off		= switch_grenade_off
+anim_draw_g					= draw_grenade_mode
+anim_holster_g				= holster_grenade_mode
+
+; attached grenade launcher [NORMAL fire mode]
+anim_idle_gl				= idle_w_gl
+anim_idle_gl_aim			= idle_w_gl_aim
+anim_reload_gl				= reload_w_gl
+anim_draw_gl				= draw_w_gl
+anim_holster_gl				= holster_w_gl
+anim_shoot_gl				= shoot_w_gl
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;HUD offset in zoom mode (to all)
+;(use CONSOLE: hud_adjust_mode 0,1,2, then keys WSADQE and P to show current value in console)
+
+zoom_offset			= -0.112500,0.013500,0.000000
+zoom_rotate_x		= -0.001000
+zoom_rotate_y		= 0.017000
+
+zoom_hide_crosshair	= true						;to hide crosshair in zoom 
+
+
+; same as above, but for attached grenade launcher for
+; in NORMAL shoot mode
+
+grenade_normal_zoom_offset			= -0.112500,0.014000,0.000000
+grenade_normal_zoom_rotate_x		= -0.000900
+grenade_normal_zoom_rotate_y		= 0.017200
+
+; same as above, but for attached grenade launcher for
+; in GRENADE mode
+
+grenade_zoom_offset			= -0.082600,-0.055100,0.000000
+grenade_zoom_rotate_x		= -0.093700
+grenade_zoom_rotate_y		= 0.017200
+
+
 
 
