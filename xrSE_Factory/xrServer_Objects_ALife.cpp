@@ -26,6 +26,19 @@
 #	include "..\render.h"
 #endif
 
+
+bool SortTokensByAlphabetPred (const xr_rtoken& token1, const xr_rtoken& token2)
+{
+	R_ASSERT(xr_strlen(*token1.name)>0);
+	R_ASSERT(xr_strlen(*token2.name)>0);
+
+	if((*token1.name)[0] < (*token2.name)[0])
+		return true;
+	else
+		return false;
+};
+
+
 struct SFillPropData{
     RTokenVec 	locations[4];
     RStringVec	level_ids;
@@ -79,6 +92,8 @@ struct SFillPropData{
 		{
 			character_profile_indxs.push_back(xr_rtoken(*CCharacterInfo::IndexToId(i),i));
 		}
+
+		std::sort(character_profile_indxs.begin(), character_profile_indxs.end(), SortTokensByAlphabetPred);
 #endif
 		
         // destroy ini
