@@ -216,7 +216,7 @@ void CConsole::OnPressKey(int dik, BOOL bHold)
 	case DIK_SPACE:		strcat(editor," "); break;
 	case DIK_BACKSLASH:
 		if (bShift) strcat(editor,"|");  
-		else		strcat(editor,"\");
+		else		strcat(editor,"\\");
 		break;
 	case DIK_LBRACKET:
 		if (bShift) strcat(editor,"{");  
