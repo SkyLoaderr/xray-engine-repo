@@ -20,7 +20,7 @@ module("ui_options_base_tab")
 module("ui_options_sound_tab")
 module("ui_options_game_tab")
 module("ui_options_controls_tab")
-module("ui_options_profile_tab")
+module("ui_options_profiles_tab")
 
 function main()
 	local dlg = ui_main_menu.main_menu()
