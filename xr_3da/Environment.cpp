@@ -140,7 +140,7 @@ void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 	sun_dir.lerp			(A.sun_dir,B.sun_dir,f).normalize();
 }
 
-void CEnvironment::Load		(CInifile *pIni, char *section)
+void CEnvironment::load		()
 {
 	for(int env=0; env<24; env++) 
 	{
@@ -152,7 +152,8 @@ void CEnvironment::Load		(CInifile *pIni, char *section)
 		D.load				(pSettings->r_string(sect,name));
 		Palette.push_back	(D);
 	}
-	
+
+	/*
 	if (pIni->line_exist(section,"suns"))
 	{
 		LPCSTR		S;
@@ -167,6 +168,7 @@ void CEnvironment::Load		(CInifile *pIni, char *section)
 		}
 		R_ASSERT2	(Suns.size(), "Should be at least one 'sun' source in level");
 	}
+	*/
 
 	// update suns
 	for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
