@@ -42,7 +42,8 @@ extern ECORE_API float			ps_r2_ssaHZBvsTEX;
 
 // R2-specific
 extern ECORE_API Flags32		ps_r2_ls_flags;				// r2-only
-extern ECORE_API float			ps_r2_df_parallaxh;			// r2-only
+extern ECORE_API float			ps_r2_df_parallax_h;		// r2-only
+extern ECORE_API float			ps_r2_df_parallax_range;	// r2-only
 extern ECORE_API float			ps_r2_gmaterial;			// r2-only
 extern ECORE_API float			ps_r2_tonemap_middlegray;	// r2-only
 extern ECORE_API float			ps_r2_tonemap_adaptation;	// r2-only
