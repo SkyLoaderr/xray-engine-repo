@@ -14,6 +14,7 @@
 #include "ItemList.h"
 #include "xr_trims.h"
 #include "library.h"
+#include "Render.h"
 
 #include "TextForm.h"
 #include "d3dutils.h"
@@ -46,10 +47,7 @@ bool CParticleTools::OnCreate()
 	// shader test locking
 	AnsiString fn; 
     FS.update_path(fn,_game_data_,"particles2.xr");
-	if (EFS.CheckLocking(0,fn.c_str(),false,true)){
-    	ELog.DlgMsg(mtInformation,"Particle Editor locked.");
-    	return false;
-    }
+	if (EFS.CheckLocking(0,fn.c_str(),false,true)) return false;
 
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
@@ -74,11 +72,11 @@ bool CParticleTools::OnCreate()
     FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL);
 	LocalFree( lpMsgBuf );
 */
-    m_EditPE 		= Device.Models.CreatePE(0);
-    m_EditPG		= Device.Models.CreatePG(0);
-    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paItemProps,alClient,OnItemModified);
+    m_EditPE 		= (PS::CParticleEffect*)::Render->Models->CreatePE(0);
+    m_EditPG		= (PS::CParticleGroup*)::Render->Models->CreatePG(0);
+    m_ItemProps 	= TProperties::CreateForm("",fraLeftBar->paItemProps,alClient,OnItemModified);
     // item list
-    m_PList			= TItemList::CreateForm(fraLeftBar->paItemList,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
+    m_PList			= TItemList::CreateForm("",fraLeftBar->paItemList,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
     m_PList->OnItemsFocused	= OnParticleItemFocused;
 	m_PList->OnItemRename	= OnParticleItemRename;
     m_PList->OnItemRemove	= OnParticleItemRemove;
@@ -142,8 +140,8 @@ void CParticleTools::Render()
 	// Draw the particles.
 	RCache.set_xform_world		(Fidentity);
     switch(m_EditMode){
-    case emEffect:	Device.Models.RenderSingle(m_EditPE,Fidentity,1.f);	break;
-    case emGroup:	Device.Models.RenderSingle(m_EditPG,Fidentity,1.f);	break;
+    case emEffect:	::Render->Models->RenderSingle(m_EditPE,Fidentity,1.f);	break;
+    case emGroup:	::Render->Models->RenderSingle(m_EditPG,Fidentity,1.f);	break;
     default: THROW;
     }
 }

@@ -12,6 +12,8 @@
 using namespace PAPI;
 using namespace PS;
 
+static int action_list_handle=-1;
+
 //------------------------------------------------------------------------------
 // class CParticleEffectDef
 //------------------------------------------------------------------------------
@@ -293,8 +295,8 @@ void CParticleEffect::OnDeviceCreate()
 {
 	if (m_Def){
         if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-            hGeom.create		(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
-            if (m_Def)	hShader	= m_Def->m_CachedShader;
+            hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
+            if (m_Def) hShader = m_Def->m_CachedShader;
         }
     }
 }
@@ -346,6 +348,9 @@ void CParticleEffect::UpdateParent(const Fmatrix& m, const Fvector& velocity)
 
 static const u32	uDT_STEP = 33;
 static const float	fDT_STEP = float(uDT_STEP)/1000.f;
+
+static u32 mb_dt = 500;
+
 void CParticleEffect::OnFrame(u32 frame_dt)
 {
 	if (m_Def && m_RT_Flags.is(flRT_Playing)){
@@ -367,6 +372,10 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 
 			// execute action list
 			pCallActionList		(m_HandleActionList);
+
+			if (action_list_handle>-1) 
+            	pCallActionList	(action_list_handle);
+            
 			ParticleEffect *pg 	= _GetEffectPtr(m_HandleEffect);
 			// our actions
 			if (m_Def->m_Flags.is(CPEDef::dfFramed))    		  		m_Def->pFrameInitExecute(pg);
@@ -384,6 +393,18 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 					if (m.flags.is(Particle::BIRTH))m.flags.set(Particle::BIRTH,FALSE);
 					vis.box.modify((Fvector&)m.pos);
 					if (m.size.x>p_size) p_size = m.size.x;
+                    // ---
+		            if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
+                    	u32 a0 = iFloor((m.age-fDT_STEP)*1000.f)/mb_dt;
+                    	u32 a1 = iFloor(m.age*1000.f)/mb_dt;
+                    	if (a0!=a1){
+	                        Msg("%3.2f, %3.2f, %3.2f, %3.2f",m.pos.y,m.p[0].y,m.p[1].y,m.p[2].y);
+                            m.p[3] = m.p[2];
+                            m.p[2] = m.p[1];
+                            m.p[1] = m.p[0];
+                            m.p[0] = m.pos;
+                        }
+                    }
 				}
 				vis.box.grow		(p_size);
 				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
@@ -497,65 +518,115 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 	pv->set			(s1.p.x-l1*R.x,	s1.p.y-l1*R.y,	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
 	pv->set			(s2.p.x-l2*R.x,	s2.p.y-l2*R.y,	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
 }
-
-u32 CParticleEffect::RenderTO	(FVF::TL* dest)
+/*
+IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& p0, const Fvector& p1, const Fvector2& lt, const Fvector2& rb, float radius, u32 clr, const Fvector& D, float scale, float factor, float w_2, float h_2)
 {
-	// Get a pointer to the particles in gp memory
-	PAPI::ParticleEffect *pe = PAPI::_GetEffectPtr(m_HandleEffect);
+	Fvector			P1,P2;
 
-	if(pe == NULL)		return 0; // ERROR
-	if(pe->p_count < 1)	return 0;
+	P1.mad			(p0,D,-radius*factor);
+	P2.mad			(p1,D,radius*factor);
 
-	// build transform matrix
-	Fmatrix mSpriteTransform	= Device.mFullTransform;
+	FVF::TL			s1,s2;
+	s1.transform	(P1,M);
+	s2.transform	(P2,M);
 
-	float	w_2			= float(::Render->getTarget()->get_width()) / 2;
-	float	h_2			= float(::Render->getTarget()->get_height()) / 2;
-	float	fov_rate	= (Device.fFOV/90.f);
-	float	fov_scale_w	= float(::Render->getTarget()->get_width()) / fov_rate;
-	float 	factor_r	= (0.2952f*fov_rate*fov_rate - 0.0972f*fov_rate + 0.8007f) * (1.41421356f/Device.fASPECT); // в первых скобках шаманский коеффициент
+	if ((s1.p.w<=0)||(s2.p.w<=0)) return;
 
-	FVF::TL* pv_start	= dest;
-	FVF::TL* pv			= pv_start;
+    float l1,l2		= 0.7071f*scale*radius; l1 = l2;
+	l1				/= s1.p.w;
+	l2				/= s2.p.w;
 
-	for(int i = 0; i < pe->p_count; i++){
-		PAPI::Particle &m = pe->list[i];
-
-		Fcolor c; c.set(m.color.x,m.color.y,m.color.z,m.alpha);
-		u32 C 			= c.get();
-		Fvector2 lt,rb;
-		lt.set			(0.f,0.f);
-		rb.set			(1.f,1.f);
-		if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(m.frame),lt,rb);
-		if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
-        	Fvector 	dir;
-            dir.sub		(m.pos,m.posB);
-            dir.y		+= EPS_S;
-            dir.normalize_safe();
-			FillSprite	(pv,mSpriteTransform,(Fvector&)m.pos,lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
-        }else{
-			FillSprite	(pv,mSpriteTransform,(Fvector&)m.pos,lt,rb,m.size.x*.5f,C,m.rot.x,fov_scale_w,w_2,h_2);
-        }
-	}
-	return pv-pv_start;
+	Fvector2		dir,R;
+	R.cross			(dir.set(s2.p.x-s1.p.x,s2.p.y-s1.p.y).norm());
+	s1.p.x = (s1.p.x+1)*w_2; s1.p.y	= (s1.p.y+1)*h_2;
+	s2.p.x = (s2.p.x+1)*w_2; s2.p.y	= (s2.p.y+1)*h_2;
+	pv->set			(s1.p.x+l1*R.x,	s1.p.y+l1*R.y,	s2.p.z, s2.p.w, clr, lt.x,rb.y);	pv++;
+	pv->set			(s2.p.x+l2*R.x,	s2.p.y+l2*R.y,	s2.p.z, s2.p.w, clr, lt.x,lt.y);	pv++;
+	pv->set			(s1.p.x-l1*R.x,	s1.p.y-l1*R.y,	s2.p.z, s2.p.w, clr, rb.x,rb.y);	pv++;
+	pv->set			(s2.p.x-l2*R.x,	s2.p.y-l2*R.y,	s2.p.z, s2.p.w, clr, rb.x,lt.y);	pv++;
 }
-
+*/
 void CParticleEffect::Render(float LOD)
 {
-	u32			vOffset;
+	u32			dwOffset,dwCount;
+    // Get a pointer to the particles in gp memory
 	ParticleEffect *pe 		= _GetEffectPtr(m_HandleEffect);
-    if (pe&&pe->p_count){
-    	if (m_Def->m_Flags.is(CPEDef::dfSprite)){
-            FVF::TL*	pv			= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4,hGeom->vb_stride,vOffset);
-            u32			dwCount		= RenderTO(pv);
-            RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
-            if (dwCount)    {
-                RCache.set_Geometry	(hGeom);
-                RCache.Render	   	(D3DPT_TRIANGLELIST,vOffset,0,dwCount,0,dwCount/2);
+    if(pe == NULL)		return;
+    if(pe->p_count < 1)	return;
+
+    if (m_Def->m_Flags.is(CPEDef::dfSprite)){
+        // build transform matrix
+        Fmatrix mSpriteTransform	= Device.mFullTransform;
+
+        float	w_2			= float(::Render->getTarget()->get_width()) / 2;
+        float	h_2			= float(::Render->getTarget()->get_height()) / 2;
+        float	fov_rate	= (Device.fFOV/90.f);
+        float	fov_scale_w	= float(::Render->getTarget()->get_width()) / fov_rate;
+        float 	factor_r	= (0.2952f*fov_rate*fov_rate - 0.0972f*fov_rate + 0.8007f) * (1.41421356f/Device.fASPECT); // в первых скобках шаманский коеффициент
+
+        FVF::TL* pv_start	= (FVF::TL*)RCache.Vertex.Lock(pe->p_count*4*4,hGeom->vb_stride,dwOffset);
+        FVF::TL* pv			= pv_start;
+
+        for(int i = 0; i < pe->p_count; i++){
+            PAPI::Particle &m = pe->list[i];
+
+            Fcolor c; c.set(m.color.x,m.color.y,m.color.z,m.alpha);
+            u32 C 			= c.get();
+            Fvector2 lt,rb;
+            lt.set			(0.f,0.f);
+            rb.set			(1.f,1.f);
+            if (m_Def->m_Flags.is(CPEDef::dfFramed)) m_Def->m_Frame.CalculateTC(iFloor(m.frame),lt,rb);
+            if (m_Def->m_Flags.is(CPEDef::dfAlignToPath)){
+                Fvector 	dir;
+                dir.sub		(m.pos,m.posB);
+                float dist 	= dir.magnitude();
+                if (dist>=EPS_S)dir.div(dist);
+                else			dir.set(0,1,0);
+                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
+                dir.sub		(m.p[0],m.p[1]);
+                dist 		= dir.magnitude();
+                if (dist>=EPS_S)dir.div(dist);
+                else			dir.set(0,1,0);
+                FillSprite	(pv,mSpriteTransform,m.p[1],lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
+				dir.sub		(m.p[1],m.p[2]);
+                dist 		= dir.magnitude();
+                if (dist>=EPS_S)dir.div(dist);
+                else			dir.set(0,1,0);
+                FillSprite	(pv,mSpriteTransform,m.p[2],lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
+                dir.sub		(m.p[2],m.p[3]);
+                dist 		= dir.magnitude();
+                if (dist>=EPS_S)dir.div(dist);
+                else			dir.set(0,1,0);
+                FillSprite	(pv,mSpriteTransform,m.p[3],lt,rb,m.size.x*.5f,C,dir,fov_scale_w,factor_r,w_2,h_2);
+
+            }else{
+                FillSprite	(pv,mSpriteTransform,m.pos,lt,rb,m.size.x*.5f,C,m.rot.x,fov_scale_w,w_2,h_2);
             }
+        }
+        dwCount 			= pv-pv_start;
+        RCache.Vertex.Unlock(dwCount,hGeom->vb_stride);
+        if (dwCount)    {
+            RCache.set_Geometry	(hGeom);
+            RCache.Render	   	(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
         }
     }
 }
+
+void CParticleEffect::ApplyExplosion()
+{
+/*
+//    pExplosion			(0,0,0, 1, 1, 0.1f, EPS_L, 1);
+	pExplosion			(0,0,0, 1, 8, 3, 0.1, 1.0f);
+*/
+    pCurrentEffect		(m_HandleEffect);
+
+    action_list_handle	= pGenActionLists();
+	pNewActionList		(action_list_handle);
+	pExplosion			(0,0,0, 1, 8, 3, 0.1, 1.0f);
+	pEndActionList		();
+}
+
+
 
 /*
 ::Load

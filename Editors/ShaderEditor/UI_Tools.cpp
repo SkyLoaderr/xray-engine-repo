@@ -61,8 +61,8 @@ void CShaderTools::Modified()
 bool CShaderTools::OnCreate()
 {
     // create props
-    m_ItemProps 	= TProperties::CreateForm(fraLeftBar->paShaderProps,alClient);
-    m_PreviewProps  = TProperties::CreateForm(fraLeftBar->paPreviewProps,alClient);
+    m_ItemProps 	= TProperties::CreateForm("",fraLeftBar->paShaderProps,alClient);
+    m_PreviewProps  = TProperties::CreateForm("",fraLeftBar->paPreviewProps,alClient);
 
 	// shader test locking
 	AnsiString sh_fn;

@@ -159,7 +159,7 @@ bool CEditableObject::Load(IReader& F)
 	bool bRes = true;
 	do{
 		u32 version = 0;
-		AnsiString buf;
+        AnsiString buf;
 		char sh_name[255];
 		R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
 		if (version!=EOBJ_CURRENT_VERSION){
@@ -234,7 +234,7 @@ bool CEditableObject::Load(IReader& F)
 			// surfaces xrlc part
 			if(F.find_chunk(EOBJ_CHUNK_SURFACES_XRLC))
 				for (s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
-					F.r_stringZ(buf.c_str()); (*s_it)->SetShaderXRLC(buf.c_str());
+					F.r_stringZ(buf); (*s_it)->SetShaderXRLC(buf.c_str());
 				}
 		}
 
@@ -248,7 +248,7 @@ bool CEditableObject::Load(IReader& F)
 					m_Meshes.push_back(mesh);
 				else{
 					xr_delete(mesh);
-					ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh!", mesh->m_Name );
+					ELog.DlgMsg( mtError, "CEditableObject: Can't load mesh '%s'!", mesh->m_Name );
 					bRes = false;
 				}
 				M->close();
@@ -304,7 +304,7 @@ bool CEditableObject::Load(IReader& F)
 			if (!m_BoneParts.empty()&&!VerifyBoneParts())
 	        	ELog.Msg	(mtError,"Invalid bone parts. Found duplicate bones in object '%s'.",GetName());
 		}
-        
+
 		if (F.find_chunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
 			F.r_fvector3	(a_vPosition);
 			F.r_fvector3	(a_vRotate);

@@ -68,13 +68,11 @@ TUI::~TUI()
 void TUI::OnDeviceCreate()
 {
 	DU.OnDeviceCreate();
-    ::Render->PSLibrary.OnDeviceCreate();
 }
 
 void TUI::OnDeviceDestroy()
 {
 	DU.OnDeviceDestroy();
-    ::Render->PSLibrary.OnDeviceDestroy();
 }
 
 bool TUI::OnCreate()
@@ -459,7 +457,8 @@ void TUI::CheckWindowPos(TForm* form)
 void TUI::Redraw(){
 	VERIFY(m_bReady);
 	if (m_Flags.is(flResize)){ 
-    	Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
+    	Device.Resize	(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
+        Command			(COMMAND_UPDATE_PROPERTIES);
         return;
     }
 // set render state

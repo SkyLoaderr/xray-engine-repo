@@ -292,12 +292,8 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 			strconcat			(caSection,SECTION_HEADER,itoa(i,T,10));
 			R_ASSERT			(Ini->section_exist(caSection));
 			LPCSTR				N,V;
-			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); k++) {
-				locations[i].push_back	(TokenValue4::Item());
-				TokenValue4::Item		&val = locations[i].back();
-				val.str					= V;
-				val.ID					= atoi(N);
-			}
+			for (u32 k = 0; Ini->r_line(caSection,k,&N,&V); k++)
+				locations[i].push_back	(TokenValue4::Item(atoi(N),V));
 		}
 
 	if(level_ids.empty()) {

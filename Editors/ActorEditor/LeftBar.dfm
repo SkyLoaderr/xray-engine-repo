@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 550
+  Height = 277
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 550
+    Height = 277
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -34,14 +34,14 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 1
       Width = 298
-      Height = 548
+      Height = 275
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
       TabOrder = 0
       object Splitter1: TSplitter
         Left = 0
-        Top = 307
+        Top = 34
         Width = 298
         Height = 2
         Cursor = crVSplit
@@ -449,7 +449,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paCurrentMotion: TPanel
         Left = 0
-        Top = 309
+        Top = 36
         Width = 298
         Height = 239
         Align = alBottom
@@ -574,7 +574,6 @@ object fraLeftBar: TfraLeftBar
     end
     object SaevAs1: TMenuItem
       Caption = 'Save As...'
-      Enabled = False
       OnClick = SaevAs1Click
     end
     object N5: TMenuItem

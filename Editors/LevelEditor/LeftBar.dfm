@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 902
   HorzScrollBar.ButtonSize = 1
   HorzScrollBar.ParentColor = False
   HorzScrollBar.Visible = False

@@ -173,7 +173,7 @@ namespace PS
 
 		void	 			OnFrame				(u32 dt);
 
-		u32					RenderTO			(FVF::TL* V);
+		u32					RenderTO			();
 		virtual void		Render				(float LOD);
 		virtual void		Copy				(IRender_Visual* pFrom);
 
@@ -196,6 +196,8 @@ namespace PS
 
         void				SetDestroyCB		(DestroyCallback 	destroy_cb)		{m_DestroyCallback 	= destroy_cb;}
         void				SetCollisionCB		(CollisionCallback	collision_cb)	{m_CollisionCallback= collision_cb;}
+
+        void				ApplyExplosion		();
 	};
 	DEFINE_VECTOR			(PS::CPEDef*,PEDVec,PEDIt);
 }

@@ -27,13 +27,12 @@
       intermediate\xrLoadSurface.obj intermediate\xrRender_console.obj 
       intermediate\xrSkin2W.obj intermediate\FBasicVisual.obj 
       intermediate\FHierrarhyVisual.obj intermediate\FProgressiveFixedVisual.obj 
-      intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
-      intermediate\SkeletonX.obj intermediate\xrSkin1W.obj 
-      intermediate\BlenderDefault.obj intermediate\Blender.obj 
-      intermediate\Blender_B.obj intermediate\Blender_Blur.obj 
-      intermediate\Blender_BmmD.obj intermediate\Blender_default_aref.obj 
-      intermediate\Blender_detail_still.obj 
-      intermediate\Blender_Editor_Selection.obj 
+      intermediate\FVisual.obj intermediate\SkeletonX.obj 
+      intermediate\xrSkin1W.obj intermediate\BlenderDefault.obj 
+      intermediate\Blender.obj intermediate\Blender_B.obj 
+      intermediate\Blender_Blur.obj intermediate\Blender_BmmD.obj 
+      intermediate\Blender_default_aref.obj 
+      intermediate\Blender_detail_still.obj intermediate\Blender_Editor_Selection.obj 
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_LaEmB.obj 
       intermediate\blender_light.obj intermediate\Blender_Lm(EbB).obj 
       intermediate\Blender_LmBmmD.obj intermediate\Blender_Model.obj 
@@ -243,7 +242,6 @@
       <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\BlenderDefault.cpp" FORMNAME="" UNITNAME="BlenderDefault.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>

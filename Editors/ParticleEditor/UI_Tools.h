@@ -36,6 +36,8 @@ enum EEditMode{
 
 class CParticleTools: public pureDeviceCreate, public pureDeviceDestroy
 {
+	friend class TfraLeftBar;
+
 	CEditableObject*	m_EditObject;
     bool				m_bModified;
     bool				m_bReady;

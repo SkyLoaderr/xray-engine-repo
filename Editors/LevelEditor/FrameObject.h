@@ -23,17 +23,7 @@ class ESceneObjectTools;
 class TfraObject : public TForm
 {
 __published:	// IDE-managed Components
-    TPanel *paCommands;
-	TExtBtn *ebMultiAppend;
-	TPanel *paCurrentObject;
-	TLabel *APHeadLabel1;
-	TExtBtn *ExtBtn2;
-	TLabel *APHeadLabel2;
 	TFormStorage *fsStorage;
-	TBevel *Bevel2;
-	TPanel *paItems;
-	TPanel *Panel1;
-	TExtBtn *ExtBtn4;
 	TLabel *Label5;
 	TExtBtn *ebSelectByRefs;
 	TExtBtn *ebDeselectByRefs;
@@ -55,9 +45,19 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn7;
 	TLabel *Label6;
 	TMultiObjSpinEdit *MultiObjSpinEdit1;
+	TPanel *paCommands;
+	TExtBtn *ebMultiAppend;
+	TLabel *APHeadLabel1;
+	TExtBtn *ExtBtn2;
 	TBevel *Bevel4;
 	TExtBtn *ebRandomAppendMode;
 	TExtBtn *ExtBtn8;
+	TPanel *paCurrentObject;
+	TLabel *APHeadLabel2;
+	TBevel *Bevel2;
+	TPanel *paItems;
+	TPanel *Panel1;
+	TExtBtn *ExtBtn4;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);

@@ -237,17 +237,9 @@ void CSE_Visual::PlayAnimation		(LPCSTR name)
     if (PSkeletonAnimated(visual)){ 
 	    play_animation			= name;
         CMotionDef				*M = PSkeletonAnimated(visual)->ID_Cycle_Safe(play_animation.c_str());
-        if (M)
-			PSkeletonAnimated(visual)->PlayCycle(M); 
-        PSkeletonAnimated(visual)->Calculate();
-/*
-        PSkeletonAnimated(visual)->LL_SetBonesVisible(0);
-        PSkeletonAnimated(visual)->LL_SetBoneVisible(1,TRUE,TRUE);
-        PSkeletonAnimated(visual)->LL_SetBoneRoot(1);
-//        PSkeletonAnimated(visual)->LL_SetBonesVisible((1<<1)|(1<<2)|(1<<3)|(1<<4)|(1<<5)|(1<<6)|(1<<7)|(1<<8)|(1<<9));
-//        PSkeletonAnimated(visual)->LL_SetBoneRoot(1);
-*/
+        if (M)					PSkeletonAnimated(visual)->PlayCycle(M); 
     }
+    PKinematics(visual)->Calculate();
 }
 
 void __fastcall	CSE_Visual::OnChangeVisual	(PropValue* sender)

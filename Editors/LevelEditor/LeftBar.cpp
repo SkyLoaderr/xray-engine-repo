@@ -67,7 +67,12 @@ void GetHeight(int& h, TForm* f)
 }
 //---------------------------------------------------------------------------
 
-void TfraLeftBar::UpdateBar()
+void TfraLeftBar::OnTimer()
+{
+	RefreshBar();
+}
+
+void TfraLeftBar::RefreshBar()
 {
     int i, j, h=0;
     for (i=0; i<fraLeftBar->ComponentCount; i++){
@@ -92,12 +97,23 @@ void TfraLeftBar::UpdateBar()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraLeftBar::splEmptyMoved(TObject *Sender)
+void TfraLeftBar::UpdateBar()
 {
-	UpdateBar();
-//
+    for (int i=0; i<paFrames->ControlCount; i++){
+        TForm* f = dynamic_cast<TForm*>(paFrames->Controls[i]);
+        if (f){
+            for (int j=0; j<f->ControlCount; j++){
+                TPanel* pa = dynamic_cast<TPanel*>(f->Controls[j]);
+                if (pa){
+                    if (pa->Align==alClient){
+                        paFrames->Height-=(pa->Height-pa->Constraints->MinHeight);
+                    }
+                }
+            }
+        }
+    }
+    RefreshBar();
 }
-//---------------------------------------------------------------------------
 
 void TfraLeftBar::MinimizeAllFrames()
 {

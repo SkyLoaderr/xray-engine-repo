@@ -23,10 +23,9 @@
       Intermediate\xr_avi.obj Intermediate\Xr_input.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\xrLoadSurface.obj 
       Intermediate\xrParticlesLib.obj Intermediate\xrRender_console.obj 
-      Intermediate\xrSkin2W.obj Intermediate\BodyInstance.obj 
-      Intermediate\FBasicVisual.obj Intermediate\FHierrarhyVisual.obj 
-      Intermediate\FProgressiveFixedVisual.obj Intermediate\FVisual.obj 
-      Intermediate\SkeletonCalculate.obj Intermediate\SkeletonX.obj 
+      Intermediate\xrSkin2W.obj Intermediate\FBasicVisual.obj 
+      Intermediate\FHierrarhyVisual.obj Intermediate\FProgressiveFixedVisual.obj 
+      Intermediate\FVisual.obj Intermediate\SkeletonX.obj 
       Intermediate\xrSkin1W.obj Intermediate\BlenderDefault.obj 
       Intermediate\Blender.obj Intermediate\Blender_B.obj 
       Intermediate\Blender_Blur.obj Intermediate\Blender_BmmD.obj 
@@ -83,7 +82,8 @@
       Intermediate\IGame_Persistent.obj Intermediate\Environment.obj 
       Intermediate\Rain.obj Intermediate\xr_efflensflare.obj 
       Intermediate\DetailModel.obj Intermediate\ModelPool.obj 
-      Intermediate\thunderbolt.obj"/>
+      Intermediate\thunderbolt.obj Intermediate\SkeletonRigid.obj 
+      Intermediate\SkeletonAnimated.obj Intermediate\SkeletonCustom.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -177,12 +177,10 @@
       <FILE FILENAME="Engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrRender_console.cpp" FORMNAME="" UNITNAME="xrRender_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\BodyInstance.cpp" FORMNAME="" UNITNAME="BodyInstance.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\BlenderDefault.cpp" FORMNAME="" UNITNAME="BlenderDefault.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -295,6 +293,9 @@
       <FILE FILENAME="ShaderEditor.todo" FORMNAME="" UNITNAME="ShaderEditor.todo" CONTAINERID="ToDo" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\thunderbolt.cpp" FORMNAME="" UNITNAME="thunderbolt" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonRigid.cpp" FORMNAME="" UNITNAME="SkeletonRigid.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

@@ -21,6 +21,44 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     case COMMAND_MAKE_PREVIEW:  
     	Tools.MakePreview();
     	break;
+    case COMMAND_LOAD:{
+        AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
+        if(!p1){
+        	LPCSTR new_val;
+            if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,new_val)) return false;
+            temp_fn = AnsiString(new_val)+".object";
+        }
+        if( !temp_fn.IsEmpty() ){
+            if (!Tools.IfModified()){
+                bRes=false;
+                break;
+            }
+            if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
+                bRes=false;
+                break;
+            }
+            if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
+                EFS.UnlockFile(_objects_,temp_fn.c_str());
+            }
+            Command( COMMAND_CLEAR );
+            CTimer T;
+            T.Start();                
+            if (!Tools.Load(_objects_,temp_fn.c_str())){
+                bRes=false;
+                break;
+            }
+            m_LastFileName = temp_fn;
+            ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
+            AppendRecentFile(m_LastFileName.c_str());
+//.		    fraLeftBar->UpdateMotionList();
+            Command	(COMMAND_UPDATE_CAPTION);
+            Command	(COMMAND_UPDATE_PROPERTIES);
+            // lock
+            EFS.LockFile(_objects_,m_LastFileName.c_str());
+            Tools.UndoClear();
+            Tools.UndoSave();
+        }
+    	}break;
     case COMMAND_SAVE_BACKUP:{
     	AnsiString fn = AnsiString(Core.UserName)+"_backup.object";
         FS.update_path("$objects$",fn);
@@ -102,44 +140,6 @@ bool TUI::CommandExt(int _Command, int p1, int p2)
     	if (EFS.GetSaveName("$game_meshes$",fn))
             if (Tools.ExportOGF(fn.c_str()))	ELog.DlgMsg(mtInformation,"Export complete.");
             else		        		    	ELog.DlgMsg(mtError,"Export failed.");
-    	}break;
-    case COMMAND_LOAD:{
-        AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
-        if(!p1){
-        	LPCSTR new_val;
-            if (!TfrmChoseItem::SelectItem(TfrmChoseItem::smObject,new_val)) return false;
-            temp_fn = AnsiString(new_val)+".object";
-        }
-        if( !temp_fn.IsEmpty() ){
-            if (!Tools.IfModified()){
-                bRes=false;
-                break;
-            }
-            if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),false,true)){
-                bRes=false;
-                break;
-            }
-            if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_objects_,temp_fn.c_str(),true,false)){
-                EFS.UnlockFile(_objects_,temp_fn.c_str());
-            }
-            Command( COMMAND_CLEAR );
-            CTimer T;
-            T.Start();                
-            if (!Tools.Load(_objects_,temp_fn.c_str())){
-                bRes=false;
-                break;
-            }
-            m_LastFileName = temp_fn;
-            ELog.Msg(mtInformation,"Object '%s' successfully loaded. Loading time - %3.2f(s).",m_LastFileName,T.GetElapsed_sec());
-            AppendRecentFile(m_LastFileName.c_str());
-//.		    fraLeftBar->UpdateMotionList();
-            Command	(COMMAND_UPDATE_CAPTION);
-            Command	(COMMAND_UPDATE_PROPERTIES);
-            // lock
-            EFS.LockFile(_objects_,m_LastFileName.c_str());
-            Tools.UndoClear();
-            Tools.UndoSave();
-        }
     	}break;
 	case COMMAND_CLEAR:
 		{

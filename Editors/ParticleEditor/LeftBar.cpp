@@ -137,28 +137,12 @@ void __fastcall TfraLeftBar::PreviewClick(TObject *Sender)
 void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 {
 	Tools.RemoveCurrent();
-//.	FHelper.RemoveItem(tvParticles,tvParticles->Selected,RemoveItem);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 {
 	Tools.CloneCurrent();
-/*
-    TElTreeItem* pNode = tvParticles->Selected;
-    if (pNode&&FHelper.IsObject(pNode)){
-		AnsiString full_name;
-		FHelper.MakeName(pNode,0,full_name,false);
-        PS::SDef* P = Tools.FindPS(full_name.c_str());
-        if (P){
-	        PS::SDef* C = Tools.ClonePS(full_name.c_str());
-			Tools.SetCurrentPS(C);        
-			Tools.Modified();
-        }
-    }else{                                    
-		ELog.DlgMsg(mtInformation, "At first select item.");
-    }
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -196,7 +180,8 @@ void __fastcall TfraLeftBar::Checknewtextures1Click(TObject *Sender)
 
 void __fastcall TfraLeftBar::ExtBtn3Click(TObject *Sender)
 {
-	Tools.ResetState();
+//	Tools.ResetState();
+	Tools.m_EditPE->ApplyExplosion();
 }
 //---------------------------------------------------------------------------
 

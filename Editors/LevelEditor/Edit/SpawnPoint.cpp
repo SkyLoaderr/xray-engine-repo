@@ -13,7 +13,7 @@
 #include "bottombar.h"
 #include "scene.h"
 #include "xrServer_Objects_ALife_All.h"
-#include "SkeletonAnimated.h"
+#include "SkeletonCustom.h"
 #include "ESceneSpawnTools.h"
 
 #include "eshape.h"
@@ -139,7 +139,7 @@ void CSpawnPoint::SSpawnData::Render(const Fmatrix& parent,int priority, bool st
 void CSpawnPoint::SSpawnData::OnFrame()
 {
     CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
-	if (V&&V->visual&&PSkeletonAnimated(V->visual)) PSkeletonAnimated(V->visual)->Calculate();
+	if (V&&V->visual&&PKinematics(V->visual)) PKinematics(V->visual)->Calculate();
 }
 void CSpawnPoint::SSpawnData::OnDeviceCreate()
 {

@@ -148,7 +148,7 @@ void __fastcall TfrmMain::tmRefreshTimer(TObject *Sender)
         if (dynamic_cast<TExtBtn *>(temp) != NULL)
             ((TExtBtn*)temp)->UpdateMouseInControl();
     }
-    fraLeftBar->UpdateBar();
+    fraLeftBar->OnTimer();
     fraTopBar->OnTimer();
 }
 //---------------------------------------------------------------------------
