@@ -68,6 +68,7 @@ void CDemoPlay::stat_Start	()
 	stat_StartFrame			= Device.dwFrame	;
 	stat_Timer_frame.Start	()					;
 	stat_Timer_total.Start	()					;
+	stat_table.reserve		(1024)				;
 }
 
 void CDemoPlay::stat_Stop	()
@@ -99,7 +100,7 @@ void CDemoPlay::stat_Stop	()
 
 	if(g_bBenchmark)		{
 		string_path			fname;
-		pcstr	* param		= strstr(Core.Params,"-benchmark ");
+		pcstr	param		= strstr(Core.Params,"-benchmark ");
 		if (0==param)		strcpy	(fname,"benchmark.result");
 		else				sscanf	(param+xr_strlen("-benchmark "),"%s",fname);
 		CInifile			res		(fname,FALSE,FALSE,TRUE);
@@ -144,7 +145,7 @@ void spline1( float t, Fvector *p, Fvector *ret )
 BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& fFar, float& fAspect)
 {
 	// skeep a few frames before counting
-	if (Device.dwPrecacheFrame)	return	;
+	if (Device.dwPrecacheFrame)	return	TRUE;
 	stat_Start					()		;
 
 	// Per-frame statistics
@@ -159,10 +160,10 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 	{
 		Fvector R;
 		Fmatrix mRotate;
-		m_pMotion->_Evaluate	(m_MParam.Frame(),P,R);
-		m_MParam.Update			(Device.fTimeDelta,1.f,true);
+		m_pMotion->_Evaluate	(m_MParam->Frame(),P,R);
+		m_MParam->Update		(Device.fTimeDelta,1.f,true);
 		fLifeTime				-= Device.fTimeDelta;
-		if (m_MParam.bWrapped)	{ stat_Stop(); stat_Start(); }
+		if (m_MParam->bWrapped)	{ stat_Stop(); stat_Start(); }
 		mRotate.setXYZi			(R.x,R.y,R.z);
 		D.set					(mRotate.k);
 		N.set					(mRotate.j);
