@@ -27,6 +27,7 @@ function send_news(actor, news_id, timeout)
 	actor:give_game_news(news_id, "ui\\ui_icons_task", 0,100,50,50 ,timeout*1000)
 	actor:set_news_show_time(news_id, 5000)
 end
+
 function send_tip(actor, news_id, timeout)
 	if actor == nil or news_id == nil then return false end
 	
@@ -47,6 +48,7 @@ function send_tip(actor, news_id, timeout)
 	actor:give_game_news(news_id, "ui\\ui_icons_task", 50,100,50,50, timeout*1000)
 	actor:set_news_show_time(news_id, 5000)	
 end
+
 function send_help(actor)
 	if actor == nil then return false end
 	--' Играем дефолтный звук
@@ -56,6 +58,7 @@ function send_help(actor)
 	end
 	actor:give_game_news("general_help", "ui\\ui_icons_task", 100,100,50,500, 0)
 end
+
 function send_task(actor, news_id)
 	if actor == nil or news_id == nil then return false end
 	--' Играем дефолтный звук
