@@ -380,6 +380,12 @@ void CLevel::OnFrame	()
 	}
 }
 
+void CLevel::OnRender()
+{
+	inherited::OnRender	();
+	Tracers.Render		();
+}
+
 void CLevel::OnEvent(EVENT E, DWORD P1, DWORD P2)
 {
 	if (E==eChangeRP && P1) {

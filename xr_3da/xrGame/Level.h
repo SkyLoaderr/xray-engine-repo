@@ -8,6 +8,7 @@
 
 #include "xrServer.h"
 #include "group.h"
+#include "tracer.h"
 #include "..\fixedset.h"
 
 class CHUDManager;
@@ -55,6 +56,7 @@ public:
 	xrServer*					Server;
 
 	vector<CTeam>				Teams;
+	CTracer						Tracers;
 
 	// Starting/Loading
 	virtual BOOL				net_Server				( LPCSTR name_of_level	);
@@ -67,6 +69,7 @@ public:
 	// Events
 	virtual void				OnEvent					( EVENT E, DWORD P1, DWORD P2 );
 	virtual void				OnFrame					( void );
+	virtual void				OnRender				( );
 
 	// Input
 	virtual	void				OnKeyboardPress			( int btn );
