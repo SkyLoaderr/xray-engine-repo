@@ -44,15 +44,25 @@ void CHitImmunity::InitImmunities(LPCSTR imm_sect,CInifile* ini)
 		m_HitTypeK[ALife::eHitTypeExplosion]	= ini->r_float(imm_sect,"explosion_immunity");
 }
 
-void CHitImmunity::LoadImmunities(LPCSTR section)
+void CHitImmunity::LoadImmunities (LPCSTR section, LPCSTR line)
 {
 	LPCSTR imm_sect = section;
-	
-	if(pSettings->line_exist(section, "immunities_sect"))
+
+	if(pSettings->line_exist(section, line))
 	{
-		imm_sect = pSettings->r_string(section, "immunities_sect");
+		imm_sect = pSettings->r_string(section, line);
 	}
 
 	InitImmunities (imm_sect,pSettings);
 }
 
+void CHitImmunity::LoadImmunities(LPCSTR section)
+{
+	LoadImmunities(section, "immunities_sect");
+}
+
+
+float CHitImmunity::AffectHit (float power, ALife::EHitType hit_type)
+{
+	return power*m_HitTypeK[hit_type];
+}

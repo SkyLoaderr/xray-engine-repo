@@ -93,6 +93,10 @@ void CInventoryItem::Load(LPCSTR section)
 	// Description
 	if (pSettings->line_exist(section, "description"))
 		m_Description = CStringTable()(pSettings->r_string(section, "description"));
+
+	if(pSettings->line_exist(section, "belt"))
+		m_belt = !!pSettings->r_bool(section, "belt");
+
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)

@@ -1,5 +1,6 @@
 #pragma once
 #include "inventory_item.h"
+#include "hit_immunity.h"
 
 class CArtefact : public CInventoryItem
 {
@@ -28,6 +29,9 @@ public:
 
 	virtual void create_physic_shell();
 
+	//for smart_cast
+	virtual CArtefact*		cast_artefact		()		{return this;}
+
 protected:
 	//расстояние обнаружения артифакта детектором
 	float			m_fDetectionDist;
@@ -55,4 +59,16 @@ protected:
 	virtual void	StartLights();
 	virtual void	StopLights();
 	virtual void	UpdateLights();
+	
+public:
+	//////////////////////////////////////////////////////////////////////////
+	// свойства артефакта, когда он висит на поясе у актера
+	//////////////////////////////////////////////////////////////////////////
+	bool  m_bActorPropertiesEnabled;
+	float m_fHealthRestoreSpeed;
+	float m_fRadiationRestoreSpeed;
+	float m_fSatietyRestoreSpeed;
+	float m_fPowerRestoreSpeed;
+	float m_fBleedingRestoreSpeed;
+	CHitImmunity m_ArtefactHitImmunities;
 };

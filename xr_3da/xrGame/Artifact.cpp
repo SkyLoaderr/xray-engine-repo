@@ -26,6 +26,8 @@ CArtefact::CArtefact(void)
 	m_sParticlesName = NULL;
 
 	m_pTrailLight = NULL;
+
+	m_bActorPropertiesEnabled = false;
 }
 
 
@@ -55,6 +57,21 @@ void CArtefact::Load(LPCSTR section)
 		sscanf(pSettings->r_string(section,"trail_light_color"), "%f,%f,%f", 
 			&m_TrailLightColor.r, &m_TrailLightColor.g, &m_TrailLightColor.b);
 		m_fTrailLightRange	= pSettings->r_float(section,"trail_light_range");
+	}
+
+
+	//////////////////////////////////////////////////////////////////////////
+	m_bActorPropertiesEnabled	= !!pSettings->r_bool(section, "actor_properties");
+	
+	if(m_bActorPropertiesEnabled)
+	{
+		m_fHealthRestoreSpeed = pSettings->r_float(section,"health_restore_speed");
+		m_fRadiationRestoreSpeed = pSettings->r_float(section,"radiation_restore_speed");
+		m_fSatietyRestoreSpeed = pSettings->r_float(section,"satiety_restore_speed");
+		m_fPowerRestoreSpeed = pSettings->r_float(section,"power_restore_speed");
+		m_fBleedingRestoreSpeed = pSettings->r_float(section,"bleeding_restore_speed");
+		if(pSettings->line_exist(*cNameSect(), pSettings->r_string(section,"hit_absorbation_sect")))
+			m_ArtefactHitImmunities.LoadImmunities(*cNameSect(), pSettings->r_string(section,"hit_absorbation_sect"));
 	}
 }
 

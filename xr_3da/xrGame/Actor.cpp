@@ -64,6 +64,9 @@
 #include "alife_registry_wrappers.h"
 #include "../skeletonanimated.h"
 
+#include "artifact.h"
+
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -390,14 +393,14 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	{
 	case GAME_SINGLE:		
 		{
+			float hit_power	= HitArtefactsOnBelt(iLost, hit_type);
+
 			if (psActorFlags.test(AF_GODMODE))
 			{
-				//by Dandy for debug reasons
-				//fEntityHealth += iLost;
 				inherited::Hit(0.f,dir,who,element,position_in_bone_space, 0.f, hit_type);
 				return;
 			}
-			else inherited::Hit		(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
+			else inherited::Hit		(hit_power,dir,who,element,position_in_bone_space, impulse, hit_type);
 		}
 		break;
 	default:
@@ -966,6 +969,9 @@ void CActor::shedule_Update	(u32 DT)
 
 	//для режима сна
 	UpdateSleep();
+
+	//для свойст артефактов, находящихся на поясе
+	UpdateArtefactsOnBelt();
 }
 
 void CActor::renderable_Render	()
@@ -1414,4 +1420,52 @@ void CActor::UpdateMotionIcon(u32 mstate_rl)
 		motion_icon.ShowState(CUIMotionIcon::stClimb);
 	else
 		motion_icon.ShowState(CUIMotionIcon::stNormal);
+}
+
+
+#define ARTEFACTS_UPDATE_TIME 1000
+
+void CActor::UpdateArtefactsOnBelt()
+{
+	static u64 update_time = 0;
+	
+	float f_update_time = 0;
+
+	if(update_time<ARTEFACTS_UPDATE_TIME)
+	{
+		update_time += CActorCondition::m_iDeltaTime;
+		return;
+	}
+	else
+	{
+		f_update_time = static_cast<float>(update_time)/1000.f;
+		update_time = 0;
+	}
+
+	for(PPIItem it = inventory().m_belt.begin(); 
+		inventory().m_belt.end() != it; ++it) 
+	{
+		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
+		if(artefact && artefact->m_bActorPropertiesEnabled)
+		{
+			ChangeBleeding(artefact->m_fBleedingRestoreSpeed*f_update_time);
+			ChangeHealth(artefact->m_fHealthRestoreSpeed*f_update_time);
+			ChangePower(artefact->m_fPowerRestoreSpeed*f_update_time);
+			ChangeSatiety(artefact->m_fSatietyRestoreSpeed*f_update_time);
+			ChangeRadiation(artefact->m_fRadiationRestoreSpeed*f_update_time);
+		}
+	}
+}
+
+float	CActor::HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type)
+{
+	for(PPIItem it = inventory().m_belt.begin(); 
+		inventory().m_belt.end() != it; ++it) 
+	{
+		CArtefact*	artefact = smart_cast<CArtefact*>(*it);
+		if(artefact && artefact->m_bActorPropertiesEnabled)
+			hit_power *= artefact->m_ArtefactHitImmunities.AffectHit(hit_power, hit_type);
+	}
+
+	return hit_power;
 }

@@ -155,6 +155,11 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CParticlesPlayer,	CGameObject)
 
+		DECLARE_SPECIALIZATION	(CArtefact,	CGameObject,	cast_artefact);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CArtefact,	CGameObject)
+
+
 #	endif
 	
 	DECLARE_SPECIALIZATION	(CSE_ALifeGroupAbstract, CSE_ALifeDynamicObject,	cast_group_abstract);

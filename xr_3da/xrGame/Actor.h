@@ -170,7 +170,10 @@ public:
 			void		UpdateSleep();
 
 	virtual void		LoadCondition(LPCSTR section) {CActorCondition::LoadCondition(section);}
-
+	
+	//свойства артефактов
+	virtual void		UpdateArtefactsOnBelt	();
+	virtual float		HitArtefactsOnBelt		(float hit_power, ALife::EHitType hit_type);
 protected:
 	//хромание
 	virtual bool		IsLimping() const {return CActorCondition::IsLimping();	}

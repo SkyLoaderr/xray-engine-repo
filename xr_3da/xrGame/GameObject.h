@@ -29,6 +29,7 @@ class CPhysicsShellHolder;
 class CParticlesPlayer;
 class CCustomZone;
 class IInputReceiver;
+class CArtefact;
 
 class CGameObject : 
 	public CObject, 
@@ -65,6 +66,7 @@ public:
 	virtual CPhysicsShellHolder*		cast_physics_shell_holder	()						{return NULL;}
 	virtual IInputReceiver*				cast_input_receiver			()						{return NULL;}
 	virtual CParticlesPlayer*			cast_particles_player		()						{return NULL;}
+	virtual CArtefact*					cast_artefact				()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)				{return TRUE;}
