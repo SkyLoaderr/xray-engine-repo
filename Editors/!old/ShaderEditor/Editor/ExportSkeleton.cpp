@@ -172,7 +172,7 @@ void CExportSkeleton::SSplit::Save(IWriter& F)
 
     // PMap
     if (m_SWR.size()) {
-        F.open_chunk(OGF_P_LODS);
+        F.open_chunk(OGF_SWIDATA);
         F.w_u32			(0);			// reserved space 16 bytes
         F.w_u32			(0);
         F.w_u32			(0);

@@ -1,12 +1,15 @@
 // FVisual.h: interface for the FVisual class.
 //
 //////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_FVISUAL_H__9ACFCFC1_8091_11D3_83D8_00C02610C34E__INCLUDED_)
-#define AFX_FVISUAL_H__9ACFCFC1_8091_11D3_83D8_00C02610C34E__INCLUDED_
+#ifndef FVisualH
+#define FVisualH
 #pragma once
 
-#include "../fbasicvisual.h"
+#ifdef _EDITOR
+#	include "fbasicvisual.h"
+#else
+#	include "../fbasicvisual.h"
+#endif
 
 class	Fvisual					: public		IRender_Visual, public IRender_Mesh
 {
@@ -22,4 +25,4 @@ public:
 	virtual ~Fvisual();
 };
 
-#endif // !defined(AFX_FVISUAL_H__9ACFCFC1_8091_11D3_83D8_00C02610C34E__INCLUDED_)
+#endif 

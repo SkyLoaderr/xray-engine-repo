@@ -42,24 +42,23 @@
       Intermediate\Blender_Shadow_World.obj Intermediate\Blender_tree.obj 
       Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
       Intermediate\xrSkin2W.obj Intermediate\FBasicVisual.obj 
-      Intermediate\FHierrarhyVisual.obj Intermediate\FProgressiveFixedVisual.obj 
-      Intermediate\FVisual.obj Intermediate\SkeletonAnimated.obj 
-      Intermediate\SkeletonCustom.obj Intermediate\SkeletonRigid.obj 
-      Intermediate\skeletonX.obj Intermediate\xrSkin1W.obj 
-      Intermediate\UI_MainMail.obj Intermediate\BoneEditor.obj 
-      Intermediate\c_dinput.obj Intermediate\ColorPicker.obj 
-      Intermediate\CustomObject.obj Intermediate\CustomObjectAnimation.obj 
-      Intermediate\D3DUtils.obj Intermediate\Device.obj Intermediate\du_box.obj 
-      Intermediate\du_cone.obj Intermediate\du_cylinder.obj 
-      Intermediate\du_sphere.obj Intermediate\EDetailModel.obj 
-      Intermediate\EditMesh.obj Intermediate\EditMeshIO.obj 
-      Intermediate\EditMeshModify.obj Intermediate\EditMeshPick.obj 
-      Intermediate\EditMeshRender.obj Intermediate\EditObject.obj 
-      Intermediate\EditObjectEditor.obj Intermediate\EditObjectImport.obj 
-      Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
-      Intermediate\EditObjectProps.obj Intermediate\EditObjectSkin.obj 
-      Intermediate\EditorPreferences.obj Intermediate\ELog.obj 
-      Intermediate\Engine.obj Intermediate\EStats.obj 
+      Intermediate\FHierrarhyVisual.obj Intermediate\FVisual.obj 
+      Intermediate\SkeletonAnimated.obj Intermediate\SkeletonCustom.obj 
+      Intermediate\SkeletonRigid.obj Intermediate\skeletonX.obj 
+      Intermediate\xrSkin1W.obj Intermediate\UI_MainMail.obj 
+      Intermediate\BoneEditor.obj Intermediate\c_dinput.obj 
+      Intermediate\ColorPicker.obj Intermediate\CustomObject.obj 
+      Intermediate\CustomObjectAnimation.obj Intermediate\D3DUtils.obj 
+      Intermediate\Device.obj Intermediate\du_box.obj Intermediate\du_cone.obj 
+      Intermediate\du_cylinder.obj Intermediate\du_sphere.obj 
+      Intermediate\EDetailModel.obj Intermediate\EditMesh.obj 
+      Intermediate\EditMeshIO.obj Intermediate\EditMeshModify.obj 
+      Intermediate\EditMeshPick.obj Intermediate\EditMeshRender.obj 
+      Intermediate\EditObject.obj Intermediate\EditObjectEditor.obj 
+      Intermediate\EditObjectImport.obj Intermediate\EditObjectIO.obj 
+      Intermediate\EditObjectMotions.obj Intermediate\EditObjectProps.obj 
+      Intermediate\EditObjectSkin.obj Intermediate\EditorPreferences.obj 
+      Intermediate\ELog.obj Intermediate\Engine.obj Intermediate\EStats.obj 
       Intermediate\ExportObjectOGF.obj Intermediate\ExportSkeleton.obj 
       Intermediate\ImageEditor.obj Intermediate\ImageManager.obj 
       Intermediate\library.obj Intermediate\LightAnimLibrary.obj 
@@ -86,7 +85,7 @@
       Intermediate\WmlEigen.obj Intermediate\RAPIDMinBox.obj 
       Intermediate\SkeletonMotions.obj Intermediate\tntQAVI.obj 
       Intermediate\ImageManagerLOD.obj Intermediate\xrHemisphere.obj 
-      Intermediate\DeviceScreenshot.obj"/>
+      Intermediate\DeviceScreenshot.obj Intermediate\FSkinned.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -214,7 +213,6 @@
       <FILE FILENAME="Engine\Visuals\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Visuals\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\FVisual.cpp" FORMNAME="" UNITNAME="FVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\SkeletonAnimated.cpp" FORMNAME="" UNITNAME="SkeletonAnimated.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Visuals\SkeletonCustom.cpp" FORMNAME="" UNITNAME="SkeletonCustom.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -315,6 +313,7 @@
       <FILE FILENAME="Editor\ImageManagerLOD.cpp" FORMNAME="" UNITNAME="ImageManagerLOD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\xrHemisphere.cpp" FORMNAME="" UNITNAME="xrHemisphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\DeviceScreenshot.cpp" FORMNAME="" UNITNAME="DeviceScreenshot" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Visuals\FSkinned.cpp" FORMNAME="" UNITNAME="FSkinned" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

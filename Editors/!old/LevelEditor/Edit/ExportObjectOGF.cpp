@@ -168,7 +168,7 @@ void CExportObjectOGF::SSplit::Save(IWriter& F, int& chunk_id)
 
             // PMap
             if (part->m_SWR.size()) {
-                F.open_chunk(OGF_P_LODS);
+                F.open_chunk(OGF_SWIDATA);
                 F.w_u32			(0);			// reserved space 16 bytes
                 F.w_u32			(0);
                 F.w_u32			(0);

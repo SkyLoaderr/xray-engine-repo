@@ -23,9 +23,8 @@
     #include "fmesh.h"
     #include "fvisual.h"
     #include "fprogressive.h"
-    #include "fprogressivefixedvisual.h"
     #include "ParticleGroup.h"
-    #include "skeletonX.h"
+	#include "fskinned.h"
     #include "fhierrarhyvisual.h"
     #include "SkeletonAnimated.h"
     #include "SkeletonRigid.h"
@@ -405,8 +404,8 @@ IC bool	_IsBoxVisible(IRender_Visual* visual, const Fmatrix& transform)
 }
 IC bool	_IsValidShader(IRender_Visual* visual, u32 priority, bool strictB2F)
 {
-	if (visual->hShader)
-        return (priority==visual->hShader->E[0]->flags.iPriority)&&(strictB2F==visual->hShader->E[0]->flags.bStrictB2F);
+	if (visual->shader)
+        return (priority==visual->shader->E[0]->flags.iPriority)&&(strictB2F==visual->shader->E[0]->flags.bStrictB2F);
     return false;
 }
 
@@ -424,7 +423,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
             E = pV->children.end		();
             for (; I!=E; I++){
 		        if (_IsValidShader(*I,priority,strictB2F)){
-	                RCache.set_Shader		((*I)->hShader?(*I)->hShader:Device.m_WireShader);
+	                RCache.set_Shader		((*I)->shader?(*I)->shader:Device.m_WireShader);
     	            RCache.set_xform_world	(mTransform);
         	        (*I)->Render		 	(m_fLOD);
                 }
@@ -446,7 +445,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     case MT_PARTICLE_EFFECT:{
         if (_IsBoxVisible(m_pVisual,mTransform)){
             if (_IsValidShader(m_pVisual,priority,strictB2F)){
-                RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+                RCache.set_Shader			(m_pVisual->shader?m_pVisual->shader:Device.m_WireShader);
                 RCache.set_xform_world		(mTransform);
                 m_pVisual->Render		 	(m_fLOD);
             }
@@ -455,7 +454,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
     default:
         if (_IsBoxVisible(m_pVisual,mTransform)){
             if (_IsValidShader(m_pVisual,priority,strictB2F)){
-                RCache.set_Shader			(m_pVisual->hShader?m_pVisual->hShader:Device.m_WireShader);
+                RCache.set_Shader			(m_pVisual->shader?m_pVisual->shader:Device.m_WireShader);
                 RCache.set_xform_world		(mTransform);
                 m_pVisual->Render		 	(m_fLOD);
             }

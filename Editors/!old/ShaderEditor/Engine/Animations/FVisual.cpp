@@ -38,9 +38,10 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	D3DVERTEXELEMENT9	dcl		[MAX_FVF_DECL_SIZE];
 	D3DVERTEXELEMENT9*	vFormat	= 0;
 	dwPrimitives				= 0;
-	BOOL				loaded_v=false,loaded_f=false;
+	BOOL				loaded_v=false;
 
 	if (data->find_chunk(OGF_GCONTAINER)) {
+#ifndef _EDITOR
 		// verts
 		u32 ID				= data->r_u32					();
 		vBase				= data->r_u32					();
@@ -57,8 +58,7 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 		dwPrimitives		= iCount/3;
 		pIndices			= RImplementation.getIB		(ID);
 		pIndices->AddRef	();
-		loaded_f			= true;
-
+#endif
 #if RENDER==R_R2
 		// check for fast-vertices
 		if (data->find_chunk(OGF_FASTPATH))		{

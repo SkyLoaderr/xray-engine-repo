@@ -2,13 +2,17 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#ifndef		SkeletonXH_R
-#define		SkeletonXH_R
+#ifndef		FSkinnedH
+#define		FSkinnedH
 #pragma		once
 
 #include	"FVisual.h"
 #include	"FProgressive.h"
-#include	"..\SkeletonX.h"
+#ifdef _EDITOR
+#	include	"SkeletonX.h"
+#else
+#	include	"..\SkeletonX.h"
+#endif
 
 class		CSkeletonX_ext	: public CSkeletonX	// shared code for SkeletonX derivates
 {
@@ -55,4 +59,4 @@ public:
 	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id);
 };
 
-#endif // SkeletonXH
+#endif // FSkinnedH
