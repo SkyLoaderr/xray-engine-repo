@@ -1,7 +1,7 @@
 #pragma once
 
 // r3xx code-path (MRT)
-#define	r2_RT_depth			"$user$position"		// MRT
+#define	r2_RT_depth			"$user$depth"			// MRT
 #define	r2_RT_P				"$user$position"		// MRT
 #define	r2_RT_N_H			"$user$normal_hemi"		// MRT
 #define	r2_RT_D_G			"$user$color_gloss"		// MRT
