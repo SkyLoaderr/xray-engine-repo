@@ -47,6 +47,7 @@ protected:
 	u32						net_Time_LastUpdate;
 	s32						net_TimeDelta;
 	s32						net_TimeDelta_Calculated;
+	s32						net_TimeDelta_User;
 	
 	void					Sync_Thread		();
 	void					Sync_Average	();
@@ -73,8 +74,9 @@ public:
 	BOOL					net_HasBandwidth		();
 	
 	// time management
-	IC u32					timeServer				()	{ return TimeGlobal(device_timer) + net_TimeDelta; }
-	IC u32					timeServer_Async		()	{ return TimerAsync(device_timer) + net_TimeDelta; }
+	IC u32					timeServer				()	{ return TimeGlobal(device_timer) + net_TimeDelta + net_TimeDelta_User; }
+	IC u32					timeServer_Async		()	{ return TimerAsync(device_timer) + net_TimeDelta + net_TimeDelta_User; }
 	IC u32					timeServer_Delta		()	{ return net_TimeDelta; }
+	IC void					timeServer_UserDelta	(s32 d)						{ net_TimeDelta_User=d;	}
 	IC void					timeServer_Correct		(u32 sv_time, u32 cl_time);
 };

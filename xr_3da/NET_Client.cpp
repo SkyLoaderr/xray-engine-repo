@@ -107,6 +107,7 @@ static HRESULT WINAPI Handler (PVOID pvUserContext, DWORD dwMessageType, PVOID p
 IPureClient::IPureClient	(CTimer* timer): net_Statistic(timer)
 {
 	device_timer			= timer;
+	net_TimeDelta_User		= 0;
 }
 
 IPureClient::~IPureClient	()
