@@ -446,7 +446,7 @@ void CKinematics::Release()
 
 	// xr_free partition
 	for (DWORD i=0; i<MAX_PARTS; i++)
-		_FREE((*partition)[i].Name);
+		xr_free((*partition)[i].Name);
 	
 	// xr_free bones
 	for (i=0; i<bones->size(); i++)
@@ -589,7 +589,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 
 	// Free parents
 	for (DWORD aaa=0; aaa<L_parents.size(); aaa++)
-		_FREE(L_parents[aaa]);
+		xr_free(L_parents[aaa]);
 
 	// Load animation
 	CStream* MS = data->OpenChunk(OGF_MOTIONS);
@@ -630,7 +630,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
         for (WORD part_i=0; part_i<part_count; part_i++){
             CPartDef&	PART	= (*partition)[part_i];
             MP->RstringZ(buf);
-            PART.Name			= _strlwr(strdup(buf));
+            PART.Name			= _strlwr(xr_strdup(buf));
             PART.bones.resize	(MP->Rword());
             MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
         }
@@ -644,8 +644,8 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
             MP->RstringZ(buf);
 	        DWORD dwFlags		= MP->Rdword();
             CMotionDef	D;		D.Load(this,MP,dwFlags);
-            if (dwFlags&esmFX)	m_fx->insert(make_pair(_strlwr(strdup(buf)),D));
-            else				m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
+            if (dwFlags&esmFX)	m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
+            else				m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
         }
         MP->Close();
     }else{
@@ -658,7 +658,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
             for (WORD part_i=0; part_i<part_count; part_i++){
                 CPartDef&	PART	= (*partition)[part_i];
                 MP->RstringZ(buf);
-                PART.Name			= _strlwr(strdup(buf));
+                PART.Name			= _strlwr(xr_strdup(buf));
                 PART.bones.resize	(MP->Rword());
                 MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
             }
@@ -672,8 +672,8 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
                 MP->RstringZ(buf);
                 BYTE bCycle			= MP->Rbyte();
                 CMotionDef	D;		D.Load(this,MP,bCycle);
-                if (bCycle)			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
-                else				m_fx->insert(make_pair(_strlwr(strdup(buf)),D));
+                if (bCycle)			m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
+                else				m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
             }
             MP->Close();
         }else{
@@ -698,7 +698,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
             {
                 if (pid>=MAX_PARTS)	Device.Fatal("Too many partitions in motion description '%s'",def_N);
                 CPartDef&	PART		= (*partition)[pid];
-                LPSTR	N				= _strlwr(strdup(I->first));
+                LPSTR	N				= _strlwr(xr_strdup(I->first));
                 PART.Name				= N;
                 CInifile::Sect&		P	= DEF.ReadSection(N);
                 CInifile::SectIt	B	= P.begin();
@@ -717,7 +717,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
                 {
                     CMotionDef	D;
                     D.Load(this,&DEF,I->first, true);
-                    m_cycle->insert(make_pair(_strlwr(strdup(I->first)),D));
+                    m_cycle->insert(make_pair(_strlwr(xr_strdup(I->first)),D));
                 }
             }
 
@@ -728,7 +728,7 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
                 {
                     CMotionDef	D;
                     D.Load(this,&DEF,I->first, false);
-                    m_fx->insert(make_pair(_strlwr(strdup(I->first)),D));
+                    m_fx->insert(make_pair(_strlwr(xr_strdup(I->first)),D));
                 }
             }
         }
