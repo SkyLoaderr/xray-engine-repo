@@ -2209,8 +2209,6 @@ SOURCE=.\SkeletonCalculate.cpp
 
 !IF  "$(CFG)" == "XR_3DA - Win32 Release"
 
-# ADD CPP /D "_USE_NON_INTEL_COMPILER"
-
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Debug"
 
 !ELSEIF  "$(CFG)" == "XR_3DA - Win32 Mixed"
