@@ -48,8 +48,8 @@ CanvasValue*   	CPropHelper::CreateCanvas	(PropItemVec& items, ref_str key, ref_
 {	return	   	(CanvasValue*)	AppendValue	(items,key,xr_new<CanvasValue>(val,height),PROP_CANVAS);  			}
 ButtonValue*   	CPropHelper::CreateButton	(PropItemVec& items, ref_str key, ref_str val, u32 flags)
 {	return	   	(ButtonValue*)	AppendValue	(items,key,xr_new<ButtonValue>(val,flags),PROP_BUTTON);				}
-ChooseValue*	CPropHelper::CreateChoose	(PropItemVec& items, ref_str key, ref_str* val, u32 mode, LPCSTR path, void* fill_param)
-{	return	   	(ChooseValue*)	AppendValue	(items,key,xr_new<ChooseValue>(val,mode,path,fill_param),PROP_CHOOSE,((mode==smTexture)||(mode==smObject))?PropItem::flDrawThumbnail:0);	}       //.
+ChooseValue*	CPropHelper::CreateChoose	(PropItemVec& items, ref_str key, ref_str* val, u32 mode, LPCSTR path, void* fill_param, u32 sub_item_count)
+{	return	   	(ChooseValue*)	AppendValue	(items,key,xr_new<ChooseValue>(val,mode,path,fill_param,sub_item_count),PROP_CHOOSE,((mode==smTexture)||(mode==smObject))?PropItem::flDrawThumbnail:0);	}       //.
 S8Value* 		CPropHelper::CreateS8		(PropItemVec& items, ref_str key, s8* val, s8 mn, s8 mx, s8 inc)
 {	return	   	(S8Value*)		AppendValue	(items,key,xr_new<S8Value>(val,mn,mx,inc,0),PROP_NUMERIC);			}
 S16Value* 		CPropHelper::CreateS16		(PropItemVec& items, ref_str key, s16* val, s16 mn, s16 mx, s16 inc)

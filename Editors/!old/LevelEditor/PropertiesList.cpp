@@ -988,7 +988,7 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             LPCSTR new_val 		 	= 0;
             bool bRes				= true;
         	if (mi->Tag==0){
-            	bRes				= TfrmChoseItem::SelectItem(smTexture,new_val,prop->subitem,edit_val.c_str());
+            	bRes				= TfrmChoseItem::SelectItem(smTexture,new_val,8,edit_val.c_str());
             }else if (mi->Tag>=2){
             	new_val			 	= TEXTUREString[mi->Tag];
             }
@@ -1107,7 +1107,7 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
     }    
     //
     LPCSTR new_val			= 0;
-    if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,prop->subitem,edit_val.c_str(),0,V->m_FillParam,0,m_Items.size()?&m_Items:0)){
+    if (TfrmChoseItem::SelectItem(V->m_ChooseID,new_val,V->subitem,edit_val.c_str(),0,V->m_FillParam,0,m_Items.size()?&m_Items:0)){
         edit_val			= new_val;
         if (prop->AfterEdit<ChooseValue,ref_str>(edit_val))
             if (prop->ApplyValue<ChooseValue,ref_str>(edit_val)){

@@ -66,7 +66,6 @@ public:
     virtual void		ResetValue		()=0;
     virtual bool		Equal			(PropValue* prop)=0;
     IC PropItem*		Owner			(){return m_Owner;}
-	void __stdcall		SetSubItemCount	(u32 cnt);
 };
 //------------------------------------------------------------------------------
 
@@ -134,7 +133,6 @@ public:
 	u32					prop_color;
 	u32					val_color;
     Irect				draw_rect;
-    int					subitem;		// multiple selection for each item (SelectTexture for example)
 public:
     enum{
     	flDisabled		= (1<<0),
@@ -146,7 +144,7 @@ public:
     };
     Flags32				m_Flags;
 public:
-						PropItem		(EPropType _type):type(_type),prop_color(0),val_color(0),item(0),key(0),subitem(1),OnClickEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
+						PropItem		(EPropType _type):type(_type),prop_color(0),val_color(0),item(0),key(0),OnClickEvent(0),OnDrawTextEvent(0),OnItemFocused(0){m_Flags.zero();}
 	virtual 			~PropItem		()
     {
     	for (PropValueIt it=values.begin(); values.end() != it; ++it)
@@ -362,6 +360,7 @@ public:
 
 class ChooseValue: public RTextValue{
 public:
+    int					subitem;		
 	u32					m_ChooseID;
     ref_str				m_StartPath;
     ChooseItemVec*		m_Items;
@@ -371,7 +370,7 @@ public:
 // utils
     void				AppendChooseItem	(LPCSTR name, LPCSTR hint){VERIFY(m_Items); m_Items->push_back(SChooseItem(name,hint));}
 public:
-						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, void* param):RTextValue(val),m_ChooseID(cid),m_StartPath(path),m_Items(0),m_FillParam(param),OnChooseFillEvent(0){}
+						ChooseValue			(ref_str* val, u32 cid, LPCSTR path, void* param, u32 sub_item_counr):RTextValue(val),m_ChooseID(cid),m_StartPath(path),subitem(sub_item_counr),m_Items(0),m_FillParam(param),OnChooseFillEvent(0){}
 };
 
 typedef CustomValue<BOOL>		BOOLValue;
