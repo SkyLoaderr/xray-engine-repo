@@ -90,25 +90,73 @@ void CAI_Stalker::ForwardCover()
 
 	float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) - 3.f;
 	
-	if (m_tSelectorCover.m_fOptEnemyDistance < fDistance)
-		m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
-	else {
-		m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
-		m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-	}	
-	
-	Fvector						tPoint;
-	m_tEnemy.Enemy->svCenter	(tPoint);
-	tPoint.y					-= .5f;
-	vfSetParameters				(
-		m_tSelectorCover,
-		0,
-		eWeaponStatePrimaryFire,
-		ePathTypeCriteria,
-		eBodyStateStand,
-		eMovementTypeRun,
-		eLookTypeFirePoint,
-		tPoint);
+	if (Level().timeServer() >= m_dwActionEndTime) {
+		m_dwActionStartTime = Level().timeServer();
+		switch (m_tActionState) {
+			case eActionStateRun : {
+				m_tActionState		= eActionStateStand;
+				m_dwActionEndTime	= m_dwActionStartTime + ::Random.randI(2000,3000);
+				break;
+			}
+			case eActionStateStand : {
+				m_tActionState		= eActionStateRun;
+				m_dwActionEndTime	= m_dwActionStartTime + ::Random.randI(4000,5000);
+				break;
+			}
+		}
+	}
+	switch (m_tActionState) {
+		case eActionStateRun : {
+			if (m_tSelectorCover.m_fOptEnemyDistance < fDistance)
+				m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
+			else {
+				m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
+				m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+			}	
+			
+			Fvector						tPoint;
+			m_tEnemy.Enemy->svCenter	(tPoint);
+			tPoint.y					-= .5f;
+			vfSetParameters				(
+				m_tSelectorCover,
+				0,
+				eWeaponStatePrimaryFire,
+				ePathTypeCriteria,
+				eBodyStateStand,
+				eMovementTypeRun,
+				eLookTypeFirePoint,
+				tPoint);
+			break;
+		}
+		case eActionStateStand : {
+			if (m_tSelectorCover.m_fOptEnemyDistance < fDistance)
+				m_tSelectorCover.m_fMaxEnemyDistance = fDistance;
+			else {
+				m_tSelectorCover.m_fMaxEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance + 3.f;
+				m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+			}	
+			
+			Fvector						tPoint;
+			m_tEnemy.Enemy->svCenter	(tPoint);
+			tPoint.y					-= .5f;
+			vfSetParameters				(
+				m_tSelectorCover,
+				0,
+				eWeaponStatePrimaryFire,
+				ePathTypeCriteria,
+				eBodyStateCrouch,
+				eMovementTypeStand,
+				eLookTypeFirePoint,
+				tPoint);
+			if (m_inventory.ActiveItem() && dynamic_cast<CWeapon*>(m_inventory.ActiveItem()) && (dynamic_cast<CWeapon*>(m_inventory.ActiveItem())->STATE == CWeapon::eReload)) {
+				m_dwActionStartTime = Level().timeServer();
+				m_tActionState		= eActionStateRun;
+				m_dwActionEndTime	= m_dwActionStartTime + ::Random.randI(2000,3000);
+			}
+			break;
+		}
+		default : NODEFAULT;
+	}
 }
 
 void CAI_Stalker::Think()

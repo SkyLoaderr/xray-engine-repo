@@ -47,9 +47,8 @@ CAI_Stalker::CAI_Stalker			()
 	m_tPathType						= ePathTypeDodge;
 
 	m_tActionState					= eActionStateStand;
-	u32						m_dwActionStartTime;
-	u32						m_dwActionEndTime;
-
+	m_dwActionStartTime				= 0;
+	m_dwActionEndTime				= 0;
 
 	AI_Path.TravelStart				= 0;
 	AI_Path.DestNode				= u32(-1);
