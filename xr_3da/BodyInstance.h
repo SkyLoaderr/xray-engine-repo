@@ -32,8 +32,9 @@ class   ENGINE_API CBlend;
 typedef xr_vector<CBoneData*>	vecBones;
 typedef vecBones::iterator		vecBonesIt;
 
-typedef void (__stdcall * BoneCallback) (CBoneInstance* B);
-typedef void (__stdcall * PlayCallback)	(CBlend*		B);
+typedef void (__stdcall * BoneCallback)		(CBoneInstance* P);
+typedef void (__stdcall * PlayCallback)		(CBlend*		P);
+typedef void (__stdcall * UpdateCallback)	(CKinematics*	P);
 
 //*** Key frame definition ************************************************************************
 #pragma pack(push,2)
@@ -41,8 +42,8 @@ const float KEY_Quant		= 32767.f;
 const float KEY_QuantI		= 1.f/KEY_Quant;
 struct ENGINE_API CKey
 {
-	Fquaternion	Q;	// rotation
-	Fvector		T;	// translation
+	Fquaternion	Q;			// rotation
+	Fvector		T;			// translation
 };
 struct ENGINE_API CKeyQ
 {
@@ -188,18 +189,16 @@ public:
 };
 
 //*** The visual itself ***************************************************************************
-class ENGINE_API CKinematics	: public FHierrarhyVisual
+class ENGINE_API	CKinematics	: public FHierrarhyVisual
 {
+	typedef FHierrarhyVisual					inherited;
 	friend class								CBoneData;
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
 private:
 	struct str_pred : public std::binary_function<ref_str, ref_str, bool>	{	
-		IC bool operator()(const ref_str& x, const ref_str& y) const
-		{	return strcmp(*x,*y)<0;	}
+		IC bool operator()(const ref_str& x, const ref_str& y) const	{	return strcmp(*x,*y)<0;	}
 	};
-
-	typedef FHierrarhyVisual					inherited;
 public:
 	typedef xr_map<ref_str,u16,str_pred>		accel;
 	typedef xr_map<ref_str,CMotionDef,str_pred>	mdef;
@@ -228,12 +227,18 @@ private:
 	u32											Update_LastTime;
 	u32											Update_Frame;
 
+public:
+	UpdateCallback								Update_Callback;
+	void*										Update_Callback_Param;
+
+protected:
 	// internal functions
 	void						IBoneInstances_Create	();
 	void						IBoneInstances_Destroy	();
 
 	void						IBlend_Startup			();
 	CBlend*						IBlend_Create			();
+
 public:
 	// Low level interface
 	u16							LL_BoneID		(LPCSTR B);
@@ -256,8 +261,9 @@ public:
 	void						LL_CloseCycle	(u16 partition);
 	
 	// Main functionality
-	void						Update			();						// Update motions
-	void						Calculate		(BOOL bLight=FALSE);	// Recalculate skeleton (Light mode can be used to avoid interpolation)
+	void						Update			();								// Update motions
+	void						Calculate		(BOOL bLight=FALSE);			// Recalculate skeleton (Light mode can be used to avoid interpolation)
+	void						Callback		(UpdateCallback C, void* Param)	{	Update_Callback	= C; Update_Callback_Param	= Param;	}
 
 	// cycles
 	CMotionDef*					ID_Cycle		(LPCSTR  N);

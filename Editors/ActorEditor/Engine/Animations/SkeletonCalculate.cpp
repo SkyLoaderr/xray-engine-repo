@@ -126,24 +126,6 @@ void CKinematics::Calculate(BOOL bLight)
 
 	// Calculate bones
 	Device.Statistic.Animation.Begin();
-/*
-#ifndef _EDITOR
-	if (CPU::ID.feature&_CPU_FEATURE_3DNOW) {
-		CBoneInstance*	I	= bone_instances;
-		CBoneInstance*	E	= bone_instances+bones->size();
-		__asm {
-			mov			eax,[I];
-			mov			ecx,[E];
-repeat:
-			prefetch	[eax];
-			prefetch	[eax+64];
-			add			eax,TYPE CBoneInstance;
-			cmp			eax,ecx;
-			jnz			repeat;
-		};
-	}
-#endif    
-*/
 	(*bones)[iRoot]->Calculate		(this,&Fidentity);
 	Device.Statistic.Animation.End	();
 
@@ -180,4 +162,7 @@ repeat:
 		vis.box.max.average	(Box.max);
 		vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 	}
+
+	//
+	if (Update_Callback)	Update_Callback(this);
 }
