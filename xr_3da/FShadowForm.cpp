@@ -95,7 +95,6 @@ void FShadowForm::MakeShadowVolume( Fvector& vLDir, Fmatrix &matWorld )
 
 
 	// Transform LightDir into Local Coordinates
-//	D3DXMatrixInverse((D3DXMATRIX*)mInvWorld.d3d(), 0, (D3DXMATRIX*)matWorld.d3d());
 	mInvWorld.invert(matWorld);
 	vL.transform_dir(vLDir,mInvWorld);
 	vL.normalize();

@@ -88,31 +88,6 @@ void CLightProjector::set_object	(CObject* O)
 		}
 	}
 }
-/*
-class mat_tex2d : public D3DXMATRIX
-{
-public:
-	mat_tex2d(const D3DMATRIX &rhs)
-		: D3DXMATRIX(rhs._11, rhs._12, rhs._14, 0,
-		rhs._21, rhs._22, rhs._24, 0,
-		rhs._41, rhs._42, rhs._44, 0,
-		0, 0, 0, 1)
-	{}
-	~mat_tex2d() {}
-};
-
-class mat_tex1d : public D3DXMATRIX
-{
-public:
-	mat_tex1d(const D3DXMATRIX &rhs)
-		: D3DXMATRIX(rhs._11, rhs._14, 0, 0,
-		rhs._41, rhs._44, 0, 0,
-		0, 0, 1, 0,
-		0, 0, 0, 1)
-	{}
-	~mat_tex1d() {}
-};
-*/
 
 // 
 void CLightProjector::setup		(int id)
