@@ -787,6 +787,7 @@ void CObjectHandler::show_graph()
 
 void CObjectHandler::OnItemTake			(CInventoryItem *inventory_item)
 {
+	CInventoryOwner::OnItemTake	(inventory_item);
 //	Msg						("Adding item %s (%d)",*inventory_item->cName(),inventory_item->ID());
 	add_item				(inventory_item);
 #ifdef DEBUG
@@ -796,6 +797,7 @@ void CObjectHandler::OnItemTake			(CInventoryItem *inventory_item)
 
 void CObjectHandler::OnItemDrop			(CInventoryItem *inventory_item)
 {
+	CInventoryOwner::OnItemDrop	(inventory_item);
 //	Msg						("Removing item %s (%d)",*inventory_item->cName(),inventory_item->ID());
 	if (object_state(current_state_id(),inventory_item)) {
 		set_current_state	(eObjectActionNoItems);

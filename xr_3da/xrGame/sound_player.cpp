@@ -125,14 +125,14 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	if (!check_sound_legacy(internal_type))
 		return;
 	
+	CObject						*object = dynamic_cast<CObject*>(this);
+	VERIFY						(object);
+
 	xr_map<u32,CSoundCollection>::const_iterator	I = m_sounds.find(internal_type);
 	VERIFY						(m_sounds.end() != I);
 	const CSoundCollection		&sound = (*I).second;
 
 	remove_inappropriate_sounds	(sound.m_synchro_mask);
-
-	CObject						*object = dynamic_cast<CObject*>(this);
-	VERIFY						(object);
 
 	CSoundSingle				sound_single;
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
