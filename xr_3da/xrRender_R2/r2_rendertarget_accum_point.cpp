@@ -86,7 +86,8 @@ void CRenderTarget::accum_point_shadow	(light* L)
 		0.0f,				0.0f,				1.0f,			0.0f,
 		0.5f + o_w,			0.5f + o_h,			0.0f,			1.0f
 	};
-
+	Fmatrix			m_TexGen;
+	m_TexGen.mul	(m_TexelAdjust,Device.mFullTransform);
 
 	// Constants
 	RCache.set_c					("light_position",	L_pos.x,L_pos.y,L_pos.z,1/L_R);
