@@ -115,6 +115,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 
 		path_count /= 3;
 		m_tpaPatrolPoints.resize(path_count);
+		m_tpaPointDeviations.resize(path_count);
 
 		for (int i=0; i<path_count; i++) {
 			sscanf(buf2,"%f,%f,%f",&(m_tpaPatrolPoints[i].x),&(m_tpaPatrolPoints[i].y),&(m_tpaPatrolPoints[i].z));
@@ -124,9 +125,7 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 		}
 
 		m_dwStartPatrolNode = Level().AI.q_LoadSearch(m_tpaPatrolPoints[0]);
-		m_iCurrentPoint = 0;
 		AI_Path.bNeedRebuild = TRUE;
-		//vfCreateRealisticPath(tpaPatrolPoints, dwaPatrolNodes, tpaPatrolPath,3);
 	}
 }
 
