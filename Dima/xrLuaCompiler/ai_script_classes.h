@@ -346,6 +346,35 @@ public:
 			return			(false);
 		}
 	}
+
+	IC	const char* WhoHitName()
+	{
+		CEntityCondition *pEntityCondition = 
+						  dynamic_cast<CEntityCondotion*>(m_tpGameObject);
+		
+		if (pEntityCondition)
+			return			(pEntityCondition->GetWhoHitLastTime()->cName());
+		else 
+		{
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
+			return			NULL;
+		}
+	}
+
+	IC	const char* WhoHitSectionName()
+	{
+		CEntityCondition *pEntityCondition = 
+						  dynamic_cast<CEntityCondotion*>(m_tpGameObject);
+		
+		if (pEntityCondition)
+			return			(pEntityCondition->GetWhoHitLastTime()->cNameSect());
+		else 
+		{
+			LuaOut			(Lua::eLuaMessageTypeError,"CLuaGameObject : cannot access class member  WhoHitName()");
+			return			NULL;
+		}
+	}
+
 	// CAI_Stalker
 //	BIND_FUNCTION01	(m_tpGameObject,	UseObject,			CAI_Stalker,	UseObject,			const CLuaGameObject*,				CObject*);
 	IC		void			UseObject(const CLuaGameObject *tpLuaGameObject)

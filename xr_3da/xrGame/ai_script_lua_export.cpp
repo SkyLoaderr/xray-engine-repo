@@ -683,6 +683,10 @@ void Script::vfExportObject(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("get_script_name",				&CLuaGameObject::GetScriptControlName)
 			.def("see",							&CLuaGameObject::CheckObjectVisibility)
 			.def("see",							&CLuaGameObject::CheckTypeVisibility)
+
+			.def("who_hit_name",				&CLuaGameObject::WhoHitName)
+			.def("who_hit_section_name",		&CLuaGameObject::WhoHitNameSection)
+			
 			.def("use",							&CLuaGameObject::UseObject)				// time
 			.def("rank",						&CLuaGameObject::GetRank)
 			.def("get_ammo",					&CLuaGameObject::GetWeaponAmmo)
