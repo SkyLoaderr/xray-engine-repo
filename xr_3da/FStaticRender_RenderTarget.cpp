@@ -93,8 +93,8 @@ void CRenderTarget::End		(float blur)
 	
 	// Draw full-screen quad textured with our scene image
 	DWORD	Offset;
-	// DWORD	C		= D3DCOLOR_RGBA	(120,120,120,0);
-	DWORD	C		= 0xffffffff;
+	DWORD	C		= D3DCOLOR_RGBA	(120,120,120,0);
+	// DWORD	C		= 0xffffffff;
 	float	tw		= float(Device.dwWidth);
 	float	th		= float(Device.dwHeight);
 	DWORD	_w		= Device.dwWidth-1;
@@ -118,6 +118,6 @@ void CRenderTarget::End		(float blur)
 	pStream->Unlock			(4);
 
 	// Actual rendering
-	Device.Shader.set_Shader(pShaderSet);
+	Device.Shader.set_Shader(pShaderGray);
 	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }
