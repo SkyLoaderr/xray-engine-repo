@@ -207,16 +207,30 @@ int __cdecl main	(int argc, char* argv[])
 		string256		fname;
 		strconcat		(fname,argv[1],".xrp");
 		unlink			(fname);
+
+		// collect folders
+		xr_vector<char*>*	fl_list	= FS.file_list_open	("$target_folder$",FS_ListFolders);
+		R_ASSERT2			(fl_list,	"Unable to open folder!!!");
+		for (u32 it=0; it<fl_list->size(); it++){
+			fs_desc.w_stringZ	((*fl_list)[it]);
+			fs_desc.w_u32		(0		);
+			fs_desc.w_u32		(0		);
+			fs_desc.w_u32		(0		);
+		}
+		FS.file_list_close	(fl_list);
+
 		fs				= FS.w_open	(fname);
 		fs->open_chunk	(0);
 		//***main process***: BEGIN
 		c_heap			= xr_alloc<u8> (LZO1X_999_MEM_COMPRESS);
-		for (u32 it=0; it<list->size(); it++)
-			Compress((*list)[it],argv[1]);
+		for (u32 it=0; it<list->size(); it++){
+			Compress	((*list)[it],argv[1]);
+		}
 		xr_free			(c_heap);
-
-		//***main process***: END
 		fs->close_chunk	();
+		//***main process***: END
+
+		// save list
 		bytesDST		= fs->tell	();
 		fs->w_chunk		(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		FS.w_close		(fs);
