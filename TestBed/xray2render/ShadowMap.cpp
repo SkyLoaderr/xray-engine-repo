@@ -366,10 +366,10 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 		// Specify the requested output
 		// Tangents
 		NVMeshMender::VertexAttribute tangentAtt;
-		tangentAtt.Name_ = "tangent";
+		tangentAtt.Name_	= "tangent";
 		// Binormals
 		NVMeshMender::VertexAttribute binormalAtt;
-		binormalAtt.Name_ = "binormal";
+		binormalAtt.Name_	= "binormal";
 		// Normals
 		NVMeshMender::VertexAttribute normalAtt;
 		normalAtt.Name_		= "normal";
