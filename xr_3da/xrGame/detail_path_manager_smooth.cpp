@@ -701,7 +701,7 @@ void CDetailPathManager::build_smooth_path		(
 		return;
 	}
 
-	xr_vector<STravelParamsIndex>		finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
+	xr_vector<STravelParamsIndex>		&finish_params = m_use_dest_orientation ? m_start_params : m_dest_params;
 
 #ifdef OLD_BEHAVIOUR
 	if (compute_path(start,dest,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
@@ -802,7 +802,7 @@ void CDetailPathManager::build_path_via_key_points2(
 {
 	STrajectoryPoint					s,d,p;
 	s 									= start;
-	m_dest_params						= m_start_params;
+	xr_vector<STravelParamsIndex>		&dest_params = m_start_params;
 	xr_vector<STravelPoint>::const_iterator	I = m_key_points.begin(), B = I;
 	xr_vector<STravelPoint>::const_iterator	E = m_key_points.end();
 	for (B != E ? ++I : I; I != E; ++I) {
@@ -817,10 +817,10 @@ void CDetailPathManager::build_path_via_key_points2(
 		}
 		else {
 			d							= dest;
-			m_dest_params				= finish_params;
+			dest_params					= finish_params;
 		}
 
-		bool							succeed = compute_path(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
+		bool							succeed = compute_path(s,d,&m_path,m_start_params,dest_params,straight_line_index,straight_line_index_negative);
 		if (!succeed) {
 			m_path.clear();
 			return;
