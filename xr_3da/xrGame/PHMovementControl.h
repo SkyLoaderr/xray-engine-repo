@@ -14,6 +14,7 @@ class CPHSynchronize;
 class CPHMovementControl 
 {
 static const path_few_point=10;
+
 public:
 void				PHCaptureObject(CPhysicsShellHolder* object);
 void				PHCaptureObject(CPhysicsShellHolder* object,u16 element);
@@ -23,6 +24,7 @@ Fvector				PHCaptureGetNearestElemPos(const CPhysicsShellHolder* object);
 Fmatrix				PHCaptureGetNearestElemTransform(CPhysicsShellHolder* object);
 void				SetMaterial(u16 material);
 void				SetAirControlParam(float param){fAirControlParam=param;}
+void				SetActorRestrictorRadius(float r);
 enum				JumpType 
 {
 					jtStrait, //end point before uppermost point
@@ -77,7 +79,7 @@ private:
 	//float				fWallFriction;
 	//float				fGroundFriction;
 	//float				fFriction;				// Current friction
-
+static	float			fActorRestrictorRadius;
 	float				fMass;
 	float				fMinCrashSpeed;
 	float				fMaxCrashSpeed;

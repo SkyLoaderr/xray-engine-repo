@@ -8,6 +8,7 @@ class CPHActorCharacter :
 	typedef CPHSimpleCharacter	inherited;
 	dGeomID				m_restrictor;
 	dGeomID				m_restrictor_transform;
+	float				m_restrictor_radius;
 static void __stdcall RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl* material_1,SGameMtl* material_2);
 public:
 	virtual	void		SetObjectContactCallback			(ObjectContactCallbackFun* callback);
@@ -19,6 +20,6 @@ public:
 	virtual	void		Disable								();
 	virtual	void		Jump								(const Fvector& jump_velocity);
 	virtual void		InitContact							(dContact* c,bool &do_collide,SGameMtl *material_1 ,SGameMtl * material_2);
-						CPHActorCharacter					(void);
+						CPHActorCharacter					(float restrictor_radius);
 	virtual				~CPHActorCharacter					(void);
 };

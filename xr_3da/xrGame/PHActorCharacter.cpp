@@ -10,9 +10,10 @@
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 
-CPHActorCharacter::CPHActorCharacter(void)
+CPHActorCharacter::CPHActorCharacter(float restictor_radius)
 {
 	m_restrictor=NULL;
+	m_restrictor_radius=restictor_radius;
 }
 
 CPHActorCharacter::~CPHActorCharacter(void)
@@ -22,7 +23,7 @@ CPHActorCharacter::~CPHActorCharacter(void)
 void CPHActorCharacter::Create(dVector3 sizes)
 {
 	if(b_exist) return;
-	m_restrictor=dCreateCylinder(0,sizes[1]/2.f,sizes[1]);
+	m_restrictor=dCreateCylinder(0,m_restrictor_radius,sizes[1]);
 	dGeomSetPosition(m_restrictor,0.f,sizes[1]/2.f,0.f);
 	m_restrictor_transform=dCreateGeomTransform(0);
 	dGeomTransformSetCleanup(m_restrictor_transform,0);

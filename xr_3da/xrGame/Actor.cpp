@@ -281,12 +281,10 @@ void CActor::Load	(LPCSTR section )
 	float	mass		= pSettings->r_float	(section,"ph_mass"				);
 	m_PhysicMovementControl->SetCrashSpeeds	(cs_min,cs_max);
 	m_PhysicMovementControl->SetMass		(mass);
-
-
-	// BOX activate
-///	m_PhysicMovementControl->ActivateBox	(0);
-
+	if(pSettings->line_exist(section,"restrictor_radius"))
+		m_PhysicMovementControl->SetActorRestrictorRadius(pSettings->r_float(section,"restrictor_radius"));
 	m_PhysicMovementControl->Load(section);
+
 	m_PhysicMovementControl->SetParent(this);
 
 	m_fWalkAccel				= pSettings->r_float(section,"walk_accel");	

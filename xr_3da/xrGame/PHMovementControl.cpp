@@ -20,6 +20,8 @@
 #define def_Y_SIZE_2	0.8f
 #define def_Z_SIZE_2	0.35f
 
+float CPHMovementControl::fActorRestrictorRadius=0.9f;
+
 CPHMovementControl::CPHMovementControl(void)
 {
 	//m_character->Create();
@@ -52,7 +54,6 @@ CPHMovementControl::CPHMovementControl(void)
 	fContactSpeed		= 0.f;
 	fAirControlParam	= 0.f;
 	m_character=NULL;
-
 	m_dwCurBox = 0xffffffff;
 }
 
@@ -619,6 +620,10 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<DetailPathManager::STravel
 	dir.add(tangent,to_path_point);
 	dir.normalize_safe();
 }
+void CPHMovementControl::SetActorRestrictorRadius(float r)
+{
+	fActorRestrictorRadius=r;
+}
 void CPHMovementControl::Load					(LPCSTR section){
 
 	//capture
@@ -703,8 +708,8 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 {
 	switch(type)
 	{
-	case actor:			m_character = xr_new<CPHActorCharacter>	();break;
-	case ai:	m_character = xr_new<CPHAICharacter>	();break;
+	case actor:			m_character = xr_new<CPHActorCharacter>	(fActorRestrictorRadius);	break;
+	case ai:	m_character = xr_new<CPHAICharacter>	()							;	break;
 	}
 	m_character->SetMas(fMass);
 	m_character->SetPosition(vPosition);
