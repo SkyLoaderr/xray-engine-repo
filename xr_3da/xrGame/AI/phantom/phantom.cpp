@@ -2,6 +2,7 @@
 #include "phantom.h"
 #include "../../NET_utils.h"
 #include "../../level.h"
+#include "../../xrServer_Objects_ALife_Monsters.h"
 
 CPhantom::CPhantom()
 {
@@ -23,19 +24,38 @@ CPhantom::~CPhantom()
 //---------------------------------------------------------------------
 void CPhantom::Load( LPCSTR section )
 {
-	inherited::Load				(section);
+	inherited::Load		(section);
 	//////////////////////////////////////////////////////////////////////////
-	ISpatial*			self = smart_cast<ISpatial*> (this);
+	ISpatial* self		= smart_cast<ISpatial*> (this);
 	if (self) {
 		self->spatial.type &=~STYPE_VISIBLEFORAI;
 		self->spatial.type &=~STYPE_REACTTOSOUND;
 	}
 	//////////////////////////////////////////////////////////////////////////
 
-	m_particles	 = pSettings->r_string(section,"particles");
+	LPCSTR snd_name			= 0;
+	m_state_data[stBirth].particles	= pSettings->r_string(section,"particles_birth");
+	snd_name						= pSettings->r_string(section,"sound_birth");
+	if (snd_name&&snd_name[0])		m_state_data[stBirth].sound.create(TRUE,snd_name);
+
+	m_state_data[stFly].particles	= pSettings->r_string(section,"particles_fly");
+	snd_name						= pSettings->r_string(section,"sound_fly");
+	if (snd_name&&snd_name[0])		m_state_data[stFly].sound.create(TRUE,snd_name);
+
+	m_state_data[stDeath].particles	= pSettings->r_string(section,"particles_death");
+	snd_name						= pSettings->r_string(section,"sound_death");
+	if (snd_name&&snd_name[0])		m_state_data[stDeath].sound.create(TRUE,snd_name);
 }
-BOOL CPhantom::net_Spawn		(CSE_Abstract* DC)
+BOOL CPhantom::net_Spawn(CSE_Abstract* DC)
 {
+	CSE_ALifeCreaturePhantom*	OBJ	= smart_cast<CSE_ALifeCreaturePhantom*>(DC); VERIFY(OBJ);
+	
+	// select visual at first
+	LPCSTR visuals	= pSettings->r_string(cNameSect(),"visuals");
+	u32 cnt			= _GetItemCount(visuals);
+	string256 tmp;
+	OBJ->set_visual	(_GetItem(visuals,Random.randI(cnt),tmp));
+
 	if (!inherited::net_Spawn(DC)) return FALSE;
 	
 	setVisible		(TRUE);
@@ -44,8 +64,9 @@ BOOL CPhantom::net_Spawn		(CSE_Abstract* DC)
 	m_enemy			= Level().CurrentEntity();
 	VERIFY			(m_enemy);
 
+	m_State			= stIdle;
+	m_fly_particles	= 0;
 	fEntityHealth	= 0.001f;
-//	PlayParticles	();
 
 	XFORM().k.sub	(m_enemy->Position(),Position()).normalize();
 	XFORM().j.set	(0,1,0);
@@ -53,16 +74,77 @@ BOOL CPhantom::net_Spawn		(CSE_Abstract* DC)
 
 	XFORM().getHPB	(vHPB);
 
+	SwitchToState	(stBirth);
+
+//. temp
+	// set animation
+	CSkeletonAnimated *skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
+	skeleton_animated->PlayCycle("fly_0");
+
 	return	TRUE;
 }
 void CPhantom::net_Destroy	()
 {
 	inherited::net_Destroy	();
 
-//	PlayParticles			();
 }
-
 //---------------------------------------------------------------------
+void CPhantom::SwitchToState(EState new_state)
+{
+	if (new_state!=m_State){
+		if (m_fly_particles)CParticlesObject::Destroy(m_fly_particles);
+		switch (new_state){
+		case stBirth:	
+			UpdateEvent.bind(this,&CPhantom::OnBirthState);	
+			PlayParticles	(m_state_data[stBirth].particles.c_str(),TRUE);
+		break;
+		case stFly:		
+			UpdateEvent.bind(this,&CPhantom::OnFlyState);	
+			m_fly_particles	= PlayParticles(m_state_data[stFly].particles.c_str(),FALSE);
+		break;
+		case stDeath:	
+			UpdateEvent.bind(this,&CPhantom::OnDeathState);	
+			PlayParticles	(m_state_data[stDeath].particles.c_str(),TRUE);
+		break;
+		}
+		m_State				= new_state;
+	}
+}
+void CPhantom::OnBirthState	()
+{
+	SwitchToState			(stFly);
+}
+void CPhantom::OnFlyState()
+{
+	if (g_Alive()){
+		Fvector vE,vP;
+		m_enemy->Center		(vE);
+		Center				(vP);
+		if (vP.distance_to_sqr(vE)<_sqr(Radius())){
+			// hit enemy
+			PsyHit			(m_enemy,1);
+			// destroy
+			Hit				(1000.f,Fvector().set(0,0,1),this,u16(-1),Fvector().set(0,0,0),0.f,ALife::eHitTypeFireWound);
+		}else{
+			UpdatePosition	(m_enemy->Position());
+			// update particles
+			if (m_fly_particles){		
+				Fvector		vel;
+				vel.sub		(m_enemy->Position(),Position()).normalize_safe().mul(fSpeed);
+				Fmatrix	xform		= XFORM_center();
+				m_fly_particles->UpdateParent(xform,vel);
+			}
+		}
+	}
+}
+void CPhantom::OnDeathState()
+{
+	DestroyObject	();
+	SwitchToState	(stIdle);
+}
+//---------------------------------------------------------------------
+
+
 void CPhantom::shedule_Update(u32 DT)
 {
 	spatial.type &=~STYPE_VISIBLEFORAI;
@@ -74,29 +156,73 @@ void CPhantom::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	// назначить глобальную анимацию
-	if (!m_motion) {
-		// выбор анимации
-		CSkeletonAnimated *skeleton_animated = smart_cast<CSkeletonAnimated*>(Visual());
-		
-		m_motion = skeleton_animated->ID_Cycle	("fly_0");
-		skeleton_animated->PlayCycle			(m_motion);
-	}
-
-	if (g_Alive()){
-		Fvector vE,vP;
-		m_enemy->Center		(vE);
-		Center				(vP);
-		if (vP.distance_to_sqr(vE)<_sqr(Radius())){
-			// hit enemy
-			PsyHit			(m_enemy,1);
-			// destroy
-			Hit				(1000.f,Fvector().set(0,0,1),this,u16(-1),Fvector().set(0,0,0),0.f,ALife::eHitTypeFireWound);
-		}else{
-			UpdatePosition	(m_enemy->Position());//vE);
-		}
-	}
+	if (!UpdateEvent.empty()) UpdateEvent();
 }
+//---------------------------------------------------------------------
+void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+{
+	fEntityHealth	= -1.f;
+	inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
+}
+//---------------------------------------------------------------------
+void CPhantom::Die	(CObject* who)
+{
+	inherited::Die	(who);
+	SwitchToState	(stDeath);
+};
+
+Fmatrix	CPhantom::XFORM_center()
+{
+	Fvector			center;
+	Center			(center);
+	Fmatrix	xform	= XFORM();
+	return			xform.translate_over(center);
+}
+
+CParticlesObject* CPhantom::PlayParticles(const shared_str& name, BOOL bAutoRemove)
+{
+	CParticlesObject* ps = xr_new<CParticlesObject>(name.c_str(),bAutoRemove);
+	Fmatrix	xform		= XFORM_center();
+	ps->UpdateParent	(xform, zero_vel);
+	ps->Play			();
+	return bAutoRemove?0:ps;
+}
+
+//---------------------------------------------------------------------
+void CPhantom::UpdatePosition(const Fvector& tgt_pos) 
+{
+	Fvector& vDirection	= XFORM().k;
+	float			tgt_h,tgt_p;
+	Fvector			tgt_dir,cur_dir;
+	tgt_dir.sub		(tgt_pos,Position());
+	tgt_dir.getHP	(tgt_h,tgt_p);
+
+	angle_lerp		(vHPB.x,tgt_h,fASpeed,Device.fTimeDelta);
+	angle_lerp		(vHPB.y,tgt_p,fASpeed,Device.fTimeDelta);
+
+	cur_dir.setHP	(vHPB.x,vHPB.y);
+
+	Fvector prev_pos=Position();
+	XFORM().setHPB	(vHPB.x,0,0);
+	Position().mad	(prev_pos,cur_dir,fSpeed*Device.fTimeDelta);
+}
+
+void CPhantom::PsyHit(const CObject *object, float value) 
+{
+	NET_Packet		P;
+
+	u_EventGen		(P,GE_HIT, object->ID());				// 
+	P.w_u16			(ID());									// own
+	P.w_u16			(ID());									// own
+	P.w_dir			(Fvector().set(0.f,1.f,0.f));			// direction
+	P.w_float		(value);								// hit value	
+	P.w_s16			(BI_NONE);								// bone
+	P.w_vec3		(Fvector().set(0.f,0.f,0.f));			
+	P.w_float		(0.f);									
+	P.w_u16			(u16(ALife::eHitTypeTelepatic));
+	u_EventSend		(P);
+}
+
 //---------------------------------------------------------------------
 // Core events
 void CPhantom::net_Export	(NET_Packet& P)					// export to server
@@ -159,83 +285,3 @@ void CPhantom::net_Import	(NET_Packet& P)
 	XFORM().setHPB		(yaw,pitch,bank);
 }
 
-//---------------------------------------------------------------------
-void CPhantom::HitImpulse	(float	/**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
-{
-}
-//---------------------------------------------------------------------
-void CPhantom::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)
-{
-}
-//---------------------------------------------------------------------
-void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
-{
-	fEntityHealth	= -1.f;
-	inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
-}
-//---------------------------------------------------------------------
-void CPhantom::Die	(CObject* who)
-{
-	inherited::Die	(who);
-	DestroyObject	();
-};
-
-void CPhantom::PlayParticles()
-{
-	Fvector				my_center, enemy_center, dir;
-
-	Center				(my_center);
-	m_enemy->Center		(enemy_center);
-	
-	dir.sub				(enemy_center, my_center);
-	dir.normalize_safe	();
-
-	CParticlesObject* ps = xr_new<CParticlesObject>(m_particles);
-
-	// вычислить позицию и направленность партикла
-	Fmatrix				pos;
-	
-	pos.identity		();
-	pos.k.set			(dir);
-	Fvector::generate_orthonormal_basis_normalized(pos.k,pos.j,pos.i);
-	// установить позицию
-	pos.translate_over	(my_center);
-
-	ps->UpdateParent(pos, zero_vel);
-	ps->Play();
-}
-
-//---------------------------------------------------------------------
-void CPhantom::UpdatePosition(const Fvector& tgt_pos) 
-{
-	Fvector& vDirection	= XFORM().k;
-	float			tgt_h,tgt_p;
-	Fvector			tgt_dir,cur_dir;
-	tgt_dir.sub		(tgt_pos,Position());
-	tgt_dir.getHP	(tgt_h,tgt_p);
-
-	angle_lerp		(vHPB.x,tgt_h,fASpeed,Device.fTimeDelta);
-	angle_lerp		(vHPB.y,tgt_p,fASpeed,Device.fTimeDelta);
-
-	cur_dir.setHP	(vHPB.x,vHPB.y);
-
-	Fvector prev_pos=Position();
-	XFORM().setHPB	(vHPB.x,0,0);
-	Position().mad	(prev_pos,cur_dir,fSpeed*Device.fTimeDelta);
-}
-
-void CPhantom::PsyHit(const CObject *object, float value) 
-{
-	NET_Packet		P;
-
-	u_EventGen		(P,GE_HIT, object->ID());				// 
-	P.w_u16			(ID());									// own
-	P.w_u16			(ID());									// own
-	P.w_dir			(Fvector().set(0.f,1.f,0.f));			// direction
-	P.w_float		(value);								// hit value	
-	P.w_s16			(BI_NONE);								// bone
-	P.w_vec3		(Fvector().set(0.f,0.f,0.f));			
-	P.w_float		(0.f);									
-	P.w_u16			(u16(ALife::eHitTypeTelepatic));
-	u_EventSend		(P);
-}
