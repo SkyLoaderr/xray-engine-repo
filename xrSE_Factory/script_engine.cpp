@@ -371,7 +371,6 @@ void CScriptEngine::script_export		()
 #endif
 		luabind::set_error_callback		(CScriptEngine::lua_error);
 
-
 	luabind::set_cast_failed_callback	(lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 	
