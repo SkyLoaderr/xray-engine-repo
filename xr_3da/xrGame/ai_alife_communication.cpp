@@ -512,6 +512,8 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	tpALifeHumanAbstract2->vfDetachAll();
 
 	for (int j=0, k=0; j<8; j++) {
+		if (m_tpItemVector.empty() || !(tpALifeHumanAbstract1->m_dwTotalMoney + tpALifeHumanAbstract2->m_dwTotalMoney))
+			break;
 		int				l_iItemCount1 = 0, l_iItemCount2 = 0;
 		switch (k) {
 			case 0 : {
@@ -599,11 +601,6 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 			j--;
 		}
 	}
-
-#ifdef ALIFE_LOG
-	vfPrintItems		(tpALifeHumanAbstract1);
-	vfPrintItems		(tpALifeHumanAbstract2);
-#endif
 
 	int					l_iItemCount1 = tpALifeHumanAbstract1->children.size();
 	int					l_iItemCount2 = tpALifeHumanAbstract2->children.size();
