@@ -319,7 +319,7 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 	const_iterator			I,E;
 	int						saved_index, iPrevIndex = -1, iNextNode;
 	Fvector					temp_point = start_point;
-	float					fDistance = start_point.distance_to(finish_point), fCurDistance = 0.f;
+	float					fDistance = start_point.distance_to_xz(finish_point), fCurDistance = 0.f;
 	u32						dwCurNode = start_vertex_id;
 
 	if (bClearPath) {

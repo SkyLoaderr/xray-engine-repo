@@ -706,10 +706,11 @@ IC	bool build_circle_trajectory(
 			curr_vertex_id = ai().level_graph().check_position_in_direction(curr_vertex_id,curr_pos,t);
 		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
 			return		(false);
-		t.y				= ai().level_graph().vertex_plane_y(curr_vertex_id,t.x,t.z);
-		curr_pos		= t;
-		if (path)
+		if (path) {
+			t.y			= ai().level_graph().vertex_plane_y(curr_vertex_id,t.x,t.z);
 			path->push_back(t);
+		}
+		curr_pos		= t;
 	}
 	return				(true);
 }
@@ -729,13 +730,13 @@ IC	bool build_line_trajectory(
 	u32					vertex_id = ai().level_graph().check_position_in_direction(start.vertex_id,start.position,start.point);
 	if (!ai().level_graph().valid_vertex_id(vertex_id))
 		return			(false);
-	return				(path ? ai().level_graph().create_straight_PTN_path(vertex_id,start.point,dest.point,path,node_path,false,false) : true);
+	return				(path ? ai().level_graph().create_straight_PTN_path(vertex_id,start.point,dest.point,*path,node_path,false,false) : ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(vertex_id,start.point,dest.point)));
 }
 
 IC	bool build_trajectory(
 	const CLevelGraph::STrajectoryPoint	&start, 
 	const CLevelGraph::STrajectoryPoint	&dest, 
-	xr_vector<Fvector>		&path
+	xr_vector<Fvector>					*path
 )
 {
 	if (!build_circle_trajectory(start,path,true)) {
@@ -790,7 +791,7 @@ IC	bool build_trajectory(
 	std::sort	(dist,dist + tangent_count);
 
 	{
-		for (u32 i=0, j = path.size(); i<tangent_count; ++i) {
+		for (u32 i=0, j = path ? path->size() : 0; i<tangent_count; ++i) {
 			(CLevelGraph::SCirclePoint&)(start) = tangents[dist[i].index][0];
 			(CLevelGraph::SCirclePoint&)(dest)	= tangents[dist[i].index][1];
 			if (build_trajectory(start,dest,path)) {
@@ -845,7 +846,7 @@ bool CLevelGraph::compute_path(
 {
 	xr_vector<Fvector>		travel_line;
 	float					min_time = flt_max, time;
-	u32						size = m_tpTravelLine.size();
+	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
 	xr_vector<CLevelGraph::STravelParams>::const_iterator I = start_set.begin(), B = I;
 	xr_vector<CLevelGraph::STravelParams>::const_iterator E = start_set.end();
 	for ( ; I != E; ++I) {
@@ -855,7 +856,7 @@ bool CLevelGraph::compute_path(
 		for ( ; i != e; ++i) {
 			(CLevelGraph::STravelParams&)dest	= *i;
 			travel_line.clear				();
-			if (compute_trajectory(start,dest,6.f,m_tpTravelLine ? travel_line : 0,time)) {
+			if (compute_trajectory(start,dest,6.f,m_tpTravelLine ? &travel_line : 0,time)) {
 				Msg		("[L=%f][A=%f][L=%f][A=%f] : %f",
 					start.linear_velocity,
 					start.angular_velocity,
@@ -866,8 +867,8 @@ bool CLevelGraph::compute_path(
 				if (time < min_time) {
 					min_time = time;
 					if (m_tpTravelLine) {
-						m_tpTravelLine.resize(size);
-						m_tpTravelLine.insert(m_tpTravelLine.end(),travel_line.begin(),travel_line.end());
+						m_tpTravelLine->resize(size);
+						m_tpTravelLine->insert(m_tpTravelLine->end(),travel_line.begin(),travel_line.end());
 					}
 					else
 						return(true);
@@ -892,51 +893,58 @@ void fill_params(
 	xr_vector<CLevelGraph::STravelParams>	&dest_set
 )
 {
-	start.angular_velocity	= 0.01f;//PI_DIV_2;
-	start.linear_velocity	= 0.0001f;
-	start_set.push_back		(start);
-
-	start.angular_velocity	= PI;
-	start.linear_velocity	= 2.15f;
-	start_set.push_back		(start);
-
 	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 4.5f;
+	start.linear_velocity	= 0.f;//0.0001f;
 	start_set.push_back		(start);
 
-	start.angular_velocity	= PI_DIV_4;
-	start.linear_velocity	= 6.f;
-	start_set.push_back		(start);
+//	start.angular_velocity	= PI;
+//	start.linear_velocity	= 2.15f;
+//	start_set.push_back		(start);
 
-	dest.angular_velocity	= 0.01f;//PI_DIV_2;
-	dest.linear_velocity	= 0.0001f;
-	dest_set.push_back		(dest);
+//	start.angular_velocity	= PI_DIV_2;
+//	start.linear_velocity	= 4.5f;
+//	start_set.push_back		(start);
 
-	dest.angular_velocity	= PI;
-	dest.linear_velocity	= 2.15f;
-	dest_set.push_back		(dest);
+//	start.angular_velocity	= PI_DIV_4;
+//	start.linear_velocity	= 6.f;
+//	start_set.push_back		(start);
 
 	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 4.5f;
+	dest.linear_velocity	= 0.f;
 	dest_set.push_back		(dest);
 
-	dest.angular_velocity	= PI_DIV_4;
-	dest.linear_velocity	= 6.f;
-	dest_set.push_back		(dest);
+//	dest.angular_velocity	= PI;
+//	dest.linear_velocity	= 2.15f;
+//	dest_set.push_back		(dest);
+
+//	dest.angular_velocity	= PI_DIV_2;
+//	dest.linear_velocity	= 4.5f;
+//	dest_set.push_back		(dest);
+
+//	dest.angular_velocity	= PI_DIV_4;
+//	dest.linear_velocity	= 6.f;
+//	dest_set.push_back		(dest);
+	
+	start.position.set		(-30.799995f,-0.000439f,-15.400002f);
+	start.direction.set		(35.700005f,-0.021492f,0.000000);
+	dest.position.set		(5.010808f,-0.000005f,3.826570f);
+	dest.direction.set		(-0.012606f,0.000000f,-0.999921f);
 }
 
 void CLevelGraph::build_detail_path()
 {
 	xr_vector<CLevelGraph::STravelParams>	start_set, dest_set;
-	xr_vector<Fvector>						travel_line, saved;
+	xr_vector<Fvector>						travel_line;
 	xr_vector<CLevelGraph::STravelPoint>	key_points;
-	CLevelGraph::STrajectoryPoint			s,d,t;
+	CLevelGraph::STrajectoryPoint			s,d,t,p;
 
 	Device.Statistic.TEST0.Begin			();
 	
+	write_trajectory_point					(start, "start");
+	write_trajectory_point					(dest,  "dest");
+
 	fill_params								(start,dest,start_set,dest_set);
 	m_tpTravelLine.clear					();
-	saved.clear								();
 
 	if (!ai().graph_engine().search(ai().level_graph(),start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters())) {
 		Device.Statistic.TEST0.End			();
@@ -947,11 +955,14 @@ void CLevelGraph::build_detail_path()
 
 	VERIFY									(!m_tpaNodes.empty());
 	if (m_tpaNodes.size() == 1) {
-		if (!compute_path(start,dest,start_set,dest_set,m_tpTravelLine))
+		if (!compute_path(start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			m_tpTravelLine.clear			();
+			Device.Statistic.TEST1.End		();
+			return;
+		}
 	}
 	else {
-		if (compute_path(start,dest,start_set,dest_set,m_tpTravelLine)) {
+		if (compute_path(start,dest,start_set,dest_set,&m_tpTravelLine)) {
 			Device.Statistic.TEST1.End		();
 			return;
 		}
@@ -962,46 +973,36 @@ void CLevelGraph::build_detail_path()
 		start_point.vertex_id				= m_tpaNodes.front();
 		start_point.position				= start.position;
 
-		for (int _i=0, i=0, n=(int)m_tpaNodes.size() - 1, j = n, k; _i < n; ) {
-			k								= (i + j)/2;
+		for (int _i=0, i=0, n=(int)m_tpaNodes.size() - 1, j = n, m=j; _i < n; ) {
 			if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,m_tpaNodes[j])) {
-				j							= k;
-				if (i >= j - 1)
-					return;
+				m							= j;
+				j							= (i + j)/2;
 			}
 			else {
-				_i							= i = j;
+				i							= j;
+				j							= (i + m)/2;
+			}
+			if (i >= m - 1) {
+				if (i <= _i)
+					return;
+				_i							= i;
 				key_points.push_back		(start_point);
-				start_point.vertex_id		= m_tpaNodes[j];
+				if (i == n) {
+					if (ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
+						key_points.push_back(dest);
+						break;
+					}
+					else
+						return;
+				}
+				start_point.vertex_id		= m_tpaNodes[_i];
 				start_point.position		= ai().level_graph().vertex_position(start_point.vertex_id);
-				j							= n;
+				j = m						= n;
 			}
 		}
-//		{
-//			xr_vector<u32>::const_iterator	I = m_tpaNodes.begin(), P = I;
-//			xr_vector<u32>::const_iterator	E = m_tpaNodes.end();
-//			for ( ; I != E; ++I) {
-//				if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,*I)) {
-//					VERIFY					(I != P);
-//					key_points.push_back	(start_point);
-//					P						= I - 1;
-//					start_point.vertex_id	= *P;
-//					start_point.position	= ai().level_graph().vertex_position(*P);
-//				}
-//			}
-//		}
-//		key_points.push_back				(start_point);
-//		if (!ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
-//			start_point.vertex_id			= m_tpaNodes.back();
-//			start_point.position			= ai().level_graph().vertex_position(start_point.vertex_id);
-//			key_points.push_back			(start_point);
-//		}
-//		start_point.vertex_id				= m_tpaNodes.back();
-//		start_point.position				= dest.position;
-//		key_points.push_back				(start_point);
 
 		s = t								= start;
-		xr_vector<CLevelGraph::STravelPoint>::const_iterator	I = key_points.begin();
+		xr_vector<CLevelGraph::STravelPoint>::const_iterator	I = key_points.begin(), P = I;
 		xr_vector<CLevelGraph::STravelPoint>::const_iterator	E = key_points.end();
 		for ( ; I != E; ++I) {
 			// setting up destination
@@ -1013,69 +1014,39 @@ void CLevelGraph::build_detail_path()
 			else
 				d							= dest;
 
-			if (!compute_path(s,d,start_set,dest_set,travel_line)) {
-				if (saved.empty()) {
+			if (!compute_path(s,d,start_set,dest_set,0)) {
+				if (I == P) {
 					m_tpTravelLine.clear	();
 					Device.Statistic.TEST1.End();
 					return;
 				}
-				m_tpTravelLine.insert		(m_tpTravelLine.end(),saved.begin(),saved.end());
-				saved.clear					();
+				
+				p							= d;
+				(CLevelGraph::STravelPoint&)d = *(I - 1);
+				d.direction.sub				((*I).position,d.position);
+				VERIFY						(!fis_zero(d.direction.magnitude()));
+				if (!compute_path(s,d,start_set,dest_set,&m_tpTravelLine)) {
+					VERIFY					(false);
+				}
+				P							= I - 1;
+				d							= p;
 				s							= t;
 				VERIFY						(!fis_zero(s.direction.magnitude()));
-				if (!compute_path(s,d,start_set,dest_set,travel_line)) {
+				if (!compute_path(s,d,start_set,dest_set,0)) {
 					m_tpTravelLine.clear	();
 					Device.Statistic.TEST1.End();
 					return;
 				}
-				else {
-					saved					= travel_line;
-					travel_line.clear		();
-				}
-			}
-			else {
-				saved						= travel_line;
-				travel_line.clear			();
 			}
 			t								= d;
 		}
-		if (!saved.empty())
-			m_tpTravelLine.insert			(m_tpTravelLine.end(),saved.begin(),saved.end());
-
-//		s = t								= start;
-//		xr_vector<u32>::const_iterator		I = m_tpaNodes.begin();
-//		xr_vector<u32>::const_iterator		E = m_tpaNodes.end();
-//		for ( ; I != E; ) {
-//			// setting up destination
-//			if ((I + 1) != E) {
-//				d.vertex_id					= *I;
-//				d.position					= ai().level_graph().vertex_position(*I);
-//				d.direction.sub				(ai().level_graph().vertex_position(*(I + 1)),d.position);
-//				VERIFY						(!fis_zero(d.direction.magnitude()));
-//			}
-//			else
-//				d							= dest;
-//
-//			if (!compute_path(s,d,start_set,dest_set,travel_line)) {
-//				if (saved.empty()) {
-//					m_tpTravelLine.clear	();
-//					Device.Statistic.TEST1.End();
-//					return;
-//				}
-//				m_tpTravelLine.insert		(m_tpTravelLine.end(),saved.begin(),saved.end());
-//				saved.clear					();
-//				s							= t;
-//				VERIFY						(!fis_zero(s.direction.magnitude()));
-//			}
-//			else {
-//				saved						= travel_line;
-//				travel_line.clear			();
-//				++I;
-//			}
-//			t								= d;
-//		}
-//		if (!saved.empty())
-//			m_tpTravelLine.insert			(m_tpTravelLine.end(),saved.begin(),saved.end());
+		if (!compute_path(s,d,start_set,dest_set,&m_tpTravelLine)) {
+			if (compute_path(s,d,start_set,dest_set,0)) {
+				compute_path(s,d,start_set,dest_set,&m_tpTravelLine);
+				t=t;
+			}
+			VERIFY							(false);
+		}
 	}
 	
 	Device.Statistic.TEST1.End				();
