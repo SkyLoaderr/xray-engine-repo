@@ -21,22 +21,30 @@ struct CProfilePortion : public CProfileResultPortion {
 
 struct CProfileStats {
 	float			m_time;
+	ref_str			m_name;
 };
 
 class CProfiler {
+private:
+	struct pred_rstr {
+		IC	bool operator()	(const ref_str &_1, const ref_str &_2) const
+		{
+			return	(xr_strcmp(*_1,*_2) < 0);
+		}
+	};
 protected:
 	typedef xr_vector<CProfileResultPortion>		PORTIONS;
-	typedef xr_map<LPCSTR,CProfileStats,pred_str>	TIMERS;
+	typedef xr_map<ref_str,CProfileStats,pred_rstr>	TIMERS;
 
 protected:
 	PORTIONS		m_portions;
 	TIMERS			m_timers;
-	u32				m_max_string_size;
 	bool			m_actual;
+	string256		m_temp;
 
 protected:
 			void	setup_timer			(LPCSTR timer_id, u64 timer_time);
-	IC		ref_str convert_string		(LPCSTR str);
+	IC		void	convert_string		(LPCSTR str, ref_str &out, u32 max_string_size);
 
 public:
 					CProfiler			();
