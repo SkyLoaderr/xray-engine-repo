@@ -222,6 +222,7 @@ void CRender::Calculate()
 	}
 
 	// Calculate sector(s) and their objects
+	calc_DetailTexturing					();
 	set_Object								(0);
 	if (0!=pLastSector) pLastSector->Render	(ViewBase);
 	pCreator->pHUD->Render_Calcualte		();	
@@ -665,10 +666,16 @@ void CRender::OnDeviceCreate	()
 
 	gm_Nearer					= FALSE;
 	rmNormal					();
+
+	matDetailTexturing			= Device.Shader._CreateMatrix("$user$detail");
+	matFogPass					= Device.Shader._CreateMatrix("$user$fog");
 }
 
 void CRender::OnDeviceDestroy	()
 {
+	Device.Shader._DeleteMatrix	(matFogPass);
+	Device.Shader._DeleteMatrix	(matDetailTexturing);
+
 	Wallmarks.OnDeviceDestroy	();
 	Glows.OnDeviceDestroy		();
 	L_Dynamic.Destroy			();
