@@ -235,7 +235,25 @@ namespace ALife {
 								return(eHitTypeTelepatic);
 							else
 								R_ASSERT2(false,"Unsupported hit type!");
+#ifndef _EDITOR
 		__assume(0);
+#endif
+	}
+
+	IC LPCSTR g_cafHitType2String(EHitType tHitType)
+	{
+		switch (tHitType) {
+			case eHitTypeBurn		: return("burn");
+			case eHitTypeShock		: return("shock");
+			case eHitTypeStrike		: return("strike");
+			case eHitTypeWound		: return("wound");
+			case eHitTypeRadiation	: return("radiation");
+			case eHitTypeTelepatic	: return("telepatic");
+			default					: NODEFAULT;
+		}
+#ifndef _EDITOR
+		__assume(0);
+#endif
 	}
 
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
