@@ -22,13 +22,6 @@ void*	xrMemory::mem_alloc		(size_t size)
 	stat_calls++;
 
 	//
-	/*
-	u32		_break				= 645842;
-	u32		_xt					= 32;
-	if (size<_break+_xt && size>_break-_xt)	__asm int 3;
-	*/
-
-	//
 	void* _ptr					= 0;
 	if (!mem_initialized)		
 	{
