@@ -13,9 +13,10 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////
 class CPHJeep {
 	dGeomID GeomsGroup;
-	static const	UINT NofGeoms=7;
+	static const	UINT NofGeoms=8;
 	static const	UINT NofBodies=5;
 	static const	UINT NofJoints=4;
+	dReal MassShift;
 	dBodyID Bodies[NofBodies];
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];

@@ -20,7 +20,9 @@ Fmatrix BoneTransform;
 private:
 dBodyID body;
 dGeomID geom;
+dGeomID transform;
 PHDynamicData* Childs;
+
 unsigned int numOfChilds;
 Fmatrix ZeroTransform;
 public:
@@ -32,33 +34,34 @@ public:
 	bool SetChild(unsigned int ChildNum,unsigned int numOfchilds,dBodyID body);
 	void SetAsZero();
 	void SetAsZeroRecursive();
+	void SetZeroTransform(Fmatrix& aTransform);
 	PHDynamicData(unsigned int numOfchilds,dBodyID body);
 	PHDynamicData();
 	virtual ~PHDynamicData();
-	void GetWorldMX(Fmatrix& transform){
+	void GetWorldMX(Fmatrix& aTransform){
 			dMatrix3 R;
 			dQtoR(dBodyGetQuaternion(body),R);
-			DMXPStoFMX(R,dBodyGetPosition(body),transform);
+			DMXPStoFMX(R,dBodyGetPosition(body),aTransform);
 			}
-	void GetTGeomWorldMX(Fmatrix& transform){
-			if(!geom) return;
+	void GetTGeomWorldMX(Fmatrix& aTransform){
+			if(!transform) return;
 			Fmatrix NormTransform,Transform;
 			dVector3 P0={0,0,0,-1};
 			Fvector Translate,Translate1;
 			//compute_final_tx(geom);
 			//dQtoR(dBodyGetQuaternion(body),R);
 			DMXPStoFMX(dBodyGetRotation(body),P0,NormTransform);
-			DMXPStoFMX(dGeomGetRotation(dGeomTransformGetGeom(geom)),P0,Transform);
+			DMXPStoFMX(dGeomGetRotation(dGeomTransformGetGeom(transform)),P0,Transform);
 	
 
-			memcpy(&Translate,dGeomGetPosition(dGeomTransformGetGeom(geom)),sizeof(Fvector));
+			memcpy(&Translate,dGeomGetPosition(dGeomTransformGetGeom(transform)),sizeof(Fvector));
 			memcpy(&Translate1,dBodyGetPosition(body),sizeof(Fvector));
 
-			transform.identity();
-			transform.translate_over(Translate);
-			transform.mulA(NormTransform);
-			Transform.translate_over(Translate1);
-			transform.mulA(Transform);
+			aTransform.identity();
+			aTransform.translate_over(Translate);
+			aTransform.mulA(NormTransform);
+			aTransform.translate_over(Translate1);
+			aTransform.mulA(Transform);
 			
 		//	Translate.add(Translate1);	
 			//transform.translate_over(Translate1);
@@ -70,20 +73,21 @@ public:
 			//meshTransform.PreTranslate(oVector3(dGeomGetPosition(dGeomTransformGetGeom(geom))));
 			//meshTransform.PostTranslate(oVector3(dBodyGetPosition(body)));
 			}
-	static inline DMXPStoFMX(const dReal* R,const dReal* pos,Fmatrix& transform){
+	static inline DMXPStoFMX(const dReal* R,const dReal* pos,Fmatrix& aTransform){
 
-			memcpy(&transform,R,sizeof(Fmatrix));
-			transform.transpose();
-			memcpy(&transform.c,pos,sizeof(Fvector));
-			transform._14=0.f;
-			transform._24=0.f;
-			transform._34=0.f;
-			transform._44=1.f;
+			memcpy(&aTransform,R,sizeof(Fmatrix));
+			aTransform.transpose();
+			memcpy(&aTransform.c,pos,sizeof(Fvector));
+			aTransform._14=0.f;
+			aTransform._24=0.f;
+			aTransform._34=0.f;
+			aTransform._44=1.f;
 		};
 private:
 	void CalculateR_N_PosOfChilds(dBodyID parent);
 public:
 	bool SetGeom(dGeomID ageom);
+	bool SetTransform(dGeomID ageom);
 };
 
 #endif // !defined(AFX_PHDynamicData_H__ACC01646_B581_4639_B78C_30311432021B__INCLUDED_)

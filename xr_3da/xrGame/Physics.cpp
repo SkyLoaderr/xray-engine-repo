@@ -4,7 +4,7 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "dRay/include/dRay.h"
-
+//void _stdcall dGeomTransformSetInfo (dGeomID g, int mode);
 /////////////////////////////////////////
 static dContact bulletContact;
 static bool isShooting;
@@ -198,7 +198,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	Breaks=false;
 	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
 	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
-
+	MassShift=1.f;
 	dMass m;
 
 	// car body
@@ -208,22 +208,23 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dMassTranslate(&m,0.f,-1.f,0.f);
 	Bodies[0] = dBodyCreate(world);
 	dBodySetMass(Bodies[0], &m);
-	dBodySetPosition(Bodies[0], startPosition[0], startPosition[1], startPosition[2]); // x,y,z
-
+	dBodySetPosition(Bodies[0], startPosition[0], startPosition[1]-MassShift, startPosition[2]); // x,y,z
+	
 	Geoms[0] = dCreateBox(0, jeepBox[0], jeepBox[1], jeepBox[2]); // lx,ly,lz
 	Geoms[6] = dCreateBox(0, cabinBox[0], cabinBox[1], cabinBox[2]); // lx,ly,lz
 
 	//dGeomSetBody(Geoms[5], Bodies[5]);
-	Geoms[5]=dCreateGeomTransform(space);
-	//Geoms[7]=dCreateGeomTransform(0);
-	dGeomSetPosition(Geoms[6], -jeepBox[0]/2+cabinBox[0]/2+0.55, cabinBox[1]/2+jeepBox[1]/2, 0); // x,y,z
+	Geoms[5]=dCreateGeomTransform(0);
+	Geoms[7]=dCreateGeomTransform(0);
+	dGeomSetPosition(Geoms[0], 0.f, MassShift, 0.f); // x,y,z
+	dGeomSetPosition(Geoms[6], -jeepBox[0]/2+cabinBox[0]/2+0.55, cabinBox[1]/2+jeepBox[1]/2+MassShift, 0); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
 	dGeomTransformSetGeom(Geoms[5],Geoms[6]);
-	//dGeomTransformSetGeom(Geoms[7],Geoms[0]);
-
-
+	dGeomTransformSetGeom(Geoms[7],Geoms[0]);
+	dGeomTransformSetInfo(Geoms[5],1);
+	dGeomTransformSetInfo(Geoms[7],1);
 	dGeomSetBody(Geoms[5], Bodies[0]);
-	dGeomSetBody(Geoms[0], Bodies[0]);
+	dGeomSetBody(Geoms[7], Bodies[0]);
 
 
 
@@ -282,9 +283,9 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	}
 
 	GeomsGroup = dCreateGeomGroup(space);  
-	for(i = 0; i < NofGeoms-1; ++i)
+	for(i = 1; i < NofGeoms-1; ++i)
 		dGeomGroupAdd(GeomsGroup, Geoms[i]);
-
+	dGeomGroupAdd(GeomsGroup, Geoms[7]);
 
 
 	//dynamic data
@@ -293,13 +294,14 @@ CreateDynamicData();
 }
 ////////////////////////////////////////////////////////////////
 void CPHJeep::JointTune(dReal step){
+const	dReal k_p=30000.f;
+const	dReal k_d=1000.f;
 	for(UINT i = 0; i < 4; ++i)
 	{
-		dReal k_p=20000.f;
-		dReal k_d=1000.f;
-		dReal h=0.02222f;
-		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, h*k_p / (h*k_p + k_d));
-		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (h*k_p + k_d));
+
+		
+		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, step*k_p / (step*k_p + k_d));
+		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 1.f / (step*k_p + k_d));
 
 	}
 }
@@ -375,9 +377,15 @@ DynamicData.SetChild(0,0,Bodies[1]);
 DynamicData.SetChild(1,0,Bodies[2]);
 DynamicData.SetChild(2,0,Bodies[3]);
 DynamicData.SetChild(3,0,Bodies[4]);
-DynamicData.SetGeom(Geoms[5]);
+DynamicData.SetTransform(Geoms[5]);
+DynamicData.SetGeom(Geoms[0]);
+Fmatrix Translate;
+
 DynamicData.CalculateData();
 DynamicData.SetAsZeroRecursive();
+
+Translate.translate(0,MassShift,0);
+DynamicData.SetZeroTransform(Translate);
 
 }
 
@@ -561,7 +569,7 @@ void CPHWorld::Step(dReal step){
 				
 			dWorldStep(phWorld, step);
 			Jeep.DynamicData.CalculateData();
-	
+			
 			dJointGroupEmpty(ContactGroup);
 	
 			//isShooting=false;
@@ -638,8 +646,8 @@ static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 		n=N;
 	ULONG i;
 
-if(dGeomGetClass(o1)==2/*dGeomTransformClass*/){
-	for(i = 0; i < n; ++i)
+//if(dGeomGetClass(o1)==2/*dGeomTransformClass*/){
+/*	for(i = 0; i < n; ++i)
 	{
 
         contacts[i].surface.mode = dContactBounce;
@@ -651,8 +659,9 @@ if(dGeomGetClass(o1)==2/*dGeomTransformClass*/){
 		}
 
 	}
-else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
-		for(i = 0; i < n; ++i)
+	*/
+//else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
+/*		for(i = 0; i < n; ++i)
 		{
 
         contacts[i].surface.mode = dContactBounce;
@@ -665,6 +674,7 @@ else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
 	}
 
 else
+*/
 	for(i = 0; i < n; ++i)
 	{
 
