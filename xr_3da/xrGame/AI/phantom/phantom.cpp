@@ -14,7 +14,6 @@ CPhantom::CPhantom()
 	vGoalDir.set		(0,0,0);
 	vVarGoal.set		(0,0,0);
 	vCurrentDir.set		(0,0,1);
-	bAlive				= false;
 }
 
 CPhantom::~CPhantom()
@@ -45,9 +44,8 @@ BOOL CPhantom::net_Spawn		(CSE_Abstract* DC)
 	m_enemy			= Level().CurrentEntity();
 	VERIFY			(m_enemy);
 
+	fEntityHealth	= 0.001f;
 //	PlayParticles	();
-
-	bAlive			= true;
 
 	XFORM().k.sub	(m_enemy->Position(),Position()).normalize();
 	XFORM().j.set	(0,1,0);
@@ -85,17 +83,18 @@ void CPhantom::UpdateCL()
 		skeleton_animated->PlayCycle			(m_motion);
 	}
 
-	Fvector vE,vP;
-	float rE,rP;
-	m_enemy->Center		(vE);
-	Center				(vP);
-	if (vP.distance_to_sqr(vE)<_sqr(Radius())){
-		// hit enemy
-		PsyHit			(m_enemy,1);
-		// destroy
-		SendDestroyMsg	();
-	}else{
-		UpdatePosition	(m_enemy->Position());//vE);
+	if (g_Alive()){
+		Fvector vE,vP;
+		m_enemy->Center		(vE);
+		Center				(vP);
+		if (vP.distance_to_sqr(vE)<_sqr(Radius())){
+			// hit enemy
+			PsyHit			(m_enemy,1);
+			// destroy
+			Hit				(1000.f,Fvector().set(0,0,1),this,u16(-1),Fvector().set(0,0,0),0.f,ALife::eHitTypeFireWound);
+		}else{
+			UpdatePosition	(m_enemy->Position());//vE);
+		}
 	}
 }
 //---------------------------------------------------------------------
@@ -135,7 +134,7 @@ void CPhantom::net_Import	(NET_Packet& P)
 
 	float health;
 	P.r_float_q16		(health,-500,1000);
-	fEntityHealth = health;
+	fEntityHealth		= health;
 
 	float fDummy;
 	u32 dwDummy;
@@ -160,22 +159,26 @@ void CPhantom::net_Import	(NET_Packet& P)
 	XFORM().setHPB		(yaw,pitch,bank);
 }
 
-void CPhantom::SendDestroyMsg()
+//---------------------------------------------------------------------
+void CPhantom::HitImpulse	(float	/**amount/**/,		Fvector& /**vWorldDir/**/, Fvector& /**vLocalDir/**/)
 {
-	if (bAlive){
-		NET_Packet		P;
-		u_EventGen		(P,GE_DESTROY,ID());
-		u_EventSend		(P);
-		bAlive			= false;
-	}
 }
-
 //---------------------------------------------------------------------
 void CPhantom::HitSignal	(float /**HitAmount/**/, Fvector& /**local_dir/**/, CObject* who, s16 /**element/**/)
 {
-	SendDestroyMsg		();
 }
 //---------------------------------------------------------------------
+void CPhantom::Hit	(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
+{
+	fEntityHealth	= -1.f;
+	inherited::Hit	(P,dir,who,element,p_in_object_space,impulse/100.f, hit_type);
+}
+//---------------------------------------------------------------------
+void CPhantom::Die	(CObject* who)
+{
+	inherited::Die	(who);
+	DestroyObject	();
+};
 
 void CPhantom::PlayParticles()
 {
@@ -219,62 +222,6 @@ void CPhantom::UpdatePosition(const Fvector& tgt_pos)
 	Fvector prev_pos=Position();
 	XFORM().setHPB	(vHPB.x,0,0);
 	Position().mad	(prev_pos,cur_dir,fSpeed*Device.fTimeDelta);
-/*
-	if(fGoalChangeTime<=0)	{
-		fGoalChangeTime += fGoalChangeDelta+fGoalChangeDelta*Random.randF(-0.5f,0.5f);
-		vGoalDir.x		= goal_pos.x+vVarGoal.x*Random.randF(-0.5f,0.5f); 
-		vGoalDir.y		= goal_pos.y+vVarGoal.y*Random.randF(-0.5f,0.5f);
-		vGoalDir.z		= goal_pos.z+vVarGoal.z*Random.randF(-0.5f,0.5f);
-	}
-	fGoalChangeTime		-= Device.fTimeDelta;
-	
-	// Update position and orientation of the planes
-	float fAT			= fASpeed * Device.fTimeDelta;
-
-	Fvector& vDirection = XFORM().k;
-
-	// Tweak orientation based on last position and goal
-	Fvector vOffset;
-	vOffset.sub(vGoalDir,Position());
-
-	// First, tweak the pitch
-	if( vOffset.y > 1.0){			// We're too low
-		vHPB.y += fAT;
-		if( vHPB.y > 0.8f )	vHPB.y = 0.8f;
-	}else if( vOffset.y < -1.0){	// We're too high
-		vHPB.y -= fAT;
-		if( vHPB.y < -0.8f )vHPB.y = -0.8f;
-	}else							// Add damping
-		vHPB.y *= 0.95f;
-
-	// Now figure out yaw changes
-	vOffset.y           = 0.0f;
-	vDirection.y		= 0.0f;
-
-	vDirection.normalize();
-	vOffset.normalize	();
-
-	float fDot = vDirection.dotproduct(vOffset);
-	fDot = (1.0f-fDot)/2.0f * fAT * 10.0f;
-
-	vOffset.crossproduct(vOffset,vDirection);
-
-	if( vOffset.y > 0.01f )		fDHeading = ( fDHeading * 9.0f + fDot ) * 0.1f;
-	else if( vOffset.y < 0.01f )fDHeading = ( fDHeading * 9.0f - fDot ) * 0.1f;
-
-	vHPB.x  +=  fDHeading;
-	vHPB.z  = -fDHeading * 9.0f;
-
-	vHPB.y  = 0;
-	vHPB.z  = 0;
-	// Update position
-
-	Fvector vOldPosition;
-	vOldPosition.set(Position());
-
-	XFORM().setHPB	(vHPB.x,vHPB.y,vHPB.z);
-	Position().mad	(vOldPosition,vDirection,fSpeed*Device.fTimeDelta);
-*/
 }
 
 void CPhantom::PsyHit(const CObject *object, float value) 

@@ -27,10 +27,6 @@ class CPhantom : public CEntity {
 	float			fGoalChangeTime;
 	float			fGoalChangeDelta;
 
-	bool			bAlive;
-
-	void			SendDestroyMsg				();
-
 	void			PlayParticles				();
 	void			UpdatePosition				(const Fvector& tgt_pos);
 
@@ -50,9 +46,9 @@ public:
 	virtual void	UpdateCL					();
 
 	virtual void	HitSignal					(float	HitAmount,	Fvector& local_dir, CObject* who, s16 element);
-	virtual void	HitImpulse					(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir) {}
-	
-	virtual void	Die							(CObject* who){inherited::Die(who);};
+	virtual void	HitImpulse					(float	amount,		Fvector& vWorldDir, Fvector& vLocalDir);
+	virtual void	Hit							(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type);
+	virtual void	Die							(CObject* who);
 
 	virtual BOOL	IsVisibleForHUD				() {return false;}
 	virtual bool	IsVisibleForZones			() {return false;}
