@@ -92,10 +92,10 @@ public:
 			R_ASSERT2(E,"Can't create entity.");
 			E->Spawn_Read		(P);
 			//
-			if (E->s_gameid == GAME_SINGLE) {
-				xrALifeEntity	*tpALifeEntity;
-				R_ASSERT(tpALifeEntity = dynamic_cast<xrALifeEntity*>(E));
-				m_tpSpawnPoints.push_back(tpALifeEntity);
+			if ((E->s_gameid == GAME_SINGLE) || (E->s_gameid == GAME_ANY)) {
+				xrALifeEntity	*tpALifeEntity = dynamic_cast<xrALifeEntity*>(E);
+				if (tpALifeEntity)
+					m_tpSpawnPoints.push_back(tpALifeEntity);
 			}
 			else
 				xr_delete(E);
@@ -190,6 +190,7 @@ public:
 					dwBest = I - BB;
 				}
 			}
+			R_ASSERT(dwBest != -1);
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 			thProgress						= 1.0f;
