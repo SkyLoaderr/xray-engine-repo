@@ -290,6 +290,7 @@ void CAI_ALife::vfSaveSpawnPoints()
 	tStream.SaveTo		("game.spawn",0);
 }
 
+#ifdef DEBUG
 void CAI_ALife::vfRandomizeGraphTerrain()
 {
 	SGraphVertex *tpaGraph = (SGraphVertex *)xr_malloc(Level().AI.m_tpGraphVFS->Length());
@@ -317,6 +318,7 @@ void CAI_ALife::vfRandomizeGraphTerrain()
 	fclose(F);
 	_FREE(tpaGraph);
 }
+#endif
 
 // end of temporary
 void CAI_ALife::vfLoadSpawnPoints(CStream *tpStream)
