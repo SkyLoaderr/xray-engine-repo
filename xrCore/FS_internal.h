@@ -37,10 +37,10 @@ public:
 			static const u32 mb_sz = 0x1000000;
 			LPBYTE ptr 		= (LPBYTE)_ptr;
 			for (int req_size = count; req_size>mb_sz; req_size-=mb_sz, ptr+=mb_sz){
-				int W = fwrite(ptr,mb_sz,1,hf);
+				size_t W = fwrite(ptr,mb_sz,1,hf);
 				R_ASSERT2(W==1,"Can't write mem block to file.");
 			}
-			int W 			= fwrite(ptr,req_size,1,hf); 
+			size_t W = fwrite(ptr,req_size,1,hf); 
 			R_ASSERT2(W==1,"Can't write mem block to file.");
 		}
     };

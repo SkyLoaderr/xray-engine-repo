@@ -14,7 +14,7 @@ str_value*	str_container::dock		(str_c value)
 	str_value*	result			= 0;
 
 	// calc len
-	u32		s_len_with_zero		= strlen(value)+1;
+	size_t	s_len_with_zero		= strlen(value)+1;
 	VERIFY	(4+s_len_with_zero < 4096);
 
 	// setup find structure
