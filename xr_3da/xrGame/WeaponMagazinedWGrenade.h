@@ -3,9 +3,7 @@
 #include "..\feel_touch.h"
 
 
-class CWeaponFakeGrenade :
-	public CGameObject,
-	public Feel::Touch
+class CWeaponFakeGrenade :	public CGameObject, public Feel::Touch
 {
 	typedef CGameObject inherited;
 public:
@@ -69,15 +67,15 @@ public:
 	virtual ~CWeaponMagazinedWGrenade(void);
 
 	virtual void	Load			(LPCSTR section);
-	virtual BOOL net_Spawn(LPVOID DC);
-	virtual void OnStateSwitch(u32 S);
+	virtual BOOL	net_Spawn		(LPVOID DC);
+	virtual void	OnStateSwitch	(u32 S);
 	virtual void	switch2_Idle	();
 	virtual void	switch2_Reload	();
 	virtual void	state_Fire		(float dt);
 	virtual void	OnShot			();
-	virtual void			SwitchState			(u32 S);
-	virtual void OnEvent(NET_Packet& P, u16 type);
-	virtual void ReloadMagazine();
+	virtual void	SwitchState		(u32 S);
+	virtual void	OnEvent			(NET_Packet& P, u16 type);
+	virtual void	ReloadMagazine	();
 
 	virtual bool Action(s32 cmd, u32 flags);
 
@@ -85,22 +83,24 @@ public:
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
-	bool m_grenadeMode;
 	ref_sound			sndShotG;
 	ref_sound			sndReloadG;
-	MotionSVec		mhud_idle_g;
-	MotionSVec		mhud_reload_g;
-	MotionSVec		mhud_shots_g;
-	MotionSVec		mhud_switch_g, mhud_switch;
+	MotionSVec			mhud_idle_g;
+	MotionSVec			mhud_reload_g;
+	MotionSVec			mhud_shots_g;
+	MotionSVec			mhud_switch_g, mhud_switch;
 
-	CWeaponAmmo *m_pAmmo2;
+	CWeaponAmmo* m_pAmmo2;
 	char m_ammoSect2[255];
 	xr_vector<ref_str> m_ammoTypes2;
 	u32 m_ammoType2;
 	ref_str m_ammoName2;
 	int iMagazineSize2;
 	xr_stack<CCartridge> m_magazine2;
-	CWeaponFakeGrenade *m_pGrenade;
-	bool m_hideGrenade;
-	Fvector *m_pGrenadePoint;
+	
+	bool m_bHideGrenade;
+	bool m_bGrenadeMode;
+	Fvector* m_pGrenadePoint;
+	CWeaponFakeGrenade* m_pGrenade;
+
 };

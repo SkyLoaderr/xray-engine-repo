@@ -259,7 +259,7 @@ void CWeapon::UpdateFP		()
 
 		UpdateXForm		();
 
-		if (hud_mode && (0!=H_Parent()) && Local())	
+		if (hud_mode && (0!=H_Parent()) && Local())
 		{
 			// 1st person view - skeletoned
 			CKinematics* V			= PKinematics(m_pHUD->Visual());
@@ -874,6 +874,7 @@ void CWeapon::Light_Render	(Fvector& P)
 	light_render->set_range		(light_build_range*light_scale);
 }
 
+//нарисовать вспышку пламени из оружия
 void CWeapon::OnDrawFlame	()
 {
 	if (fFlameTime>0)	
@@ -894,6 +895,16 @@ void CWeapon::OnDrawFlame	()
 			P.add(D);
 		}
 		*/
+		CParticlesObject* pStaticPG;
+		pStaticPG = xr_new<CParticlesObject>("weapons\\generic_flame",Sector());
+		Fmatrix pos; 
+		pos.set(XFORM()); 
+		pos.c.set(vLastFP);
+		Fvector vel; 
+		vel.sub(Position(),ps_Element(0).vPosition); 
+		vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
+		pStaticPG->UpdateParent(pos, vel); 
+		pStaticPG->Play();
 
 		fFlameTime -= Device.fTimeDelta;
 	}

@@ -28,16 +28,13 @@ public:
 	virtual void Load(LPCSTR section);
 	virtual BOOL net_Spawn(LPVOID DC);
 	virtual void net_Destroy();
-	//virtual void net_Export(NET_Packet& P);
-	//virtual void net_Import(NET_Packet& P);
-	//virtual void Update(u32 dt);
+
 	virtual void UpdateCL();
 	virtual void renderable_Render();
+
 	virtual void OnH_B_Chield();
 	virtual void OnH_B_Independent();
 	virtual void OnAnimationEnd();
-	//virtual void OnDeviceCreate();
-	//virtual void OnDeviceDestroy();
 
 	virtual void Show();
 	virtual void Hide();
