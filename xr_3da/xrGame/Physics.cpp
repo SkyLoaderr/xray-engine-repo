@@ -821,7 +821,8 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 		contacts[i].surface.bounce_vel =1.5f;//0.005f;
 
 
-		if(pushing_neg) contacts[i].surface.mu=dInfinity;
+		if(pushing_neg) 
+			contacts[i].surface.mu=dInfinity;
 
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
