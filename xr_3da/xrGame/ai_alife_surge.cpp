@@ -205,6 +205,7 @@ void CSE_ALifeSimulator::vfGenerateAnomalyMap()
 
 void CSE_ALifeSimulator::vfBallanceCreatures()
 {
+#pragma todo("Dima to Dima : Respawn the objects in the spawn groups only")
 	// filling array of the survived creatures
 	{
 		D_OBJECT_PAIR_IT				I = m_tObjectRegistry.begin();

@@ -161,7 +161,7 @@ void CSE_ALifeSimulator::Load	(LPCSTR caSaveName)
 	m_fOnlineDistance			= pSettings->r_float("alife","online_distance");
 	m_dwSwitchDelay				= pSettings->r_s32	("alife","switch_delay");
 	m_fTimeFactor				= pSettings->r_float("alife","time_factor");
-	m_dwMaxCombatIterationCount	= pSettings->r_u32	("alife","max_Combat_iteration_count");
+	m_dwMaxCombatIterationCount	= pSettings->r_u32	("alife","max_combat_iteration_count");
 
 	string256					caFileName;
 	IReader						*tpStream;
