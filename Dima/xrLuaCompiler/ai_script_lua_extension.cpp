@@ -94,7 +94,7 @@ void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
 	LPCSTR			caScriptString = l_tpIniFile->r_string("common","script");
 
 	u32				caNamespaceName = _GetItemCount(caScriptString);
-	string16		I;
+	string256		I;
 	for (u32 i=0; i<caNamespaceName; i++) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
 		bfLoadFile	(tpLuaVirtualMachine,S,true);

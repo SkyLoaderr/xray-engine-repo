@@ -38,15 +38,15 @@ CScriptProcessor::CScriptProcessor(LPCSTR caCaption, LPCSTR caScriptString)
 	luaopen_math	(m_tpLuaVirtualMachine);
 #ifdef DEBUG
 	luaopen_debug	(m_tpLuaVirtualMachine);
-	lua_pop			(m_tpLuaVirtualMachine,5);
+//	lua_pop			(m_tpLuaVirtualMachine,5);
 #else
-	lua_pop			(m_tpLuaVirtualMachine,4);
+//	lua_pop			(m_tpLuaVirtualMachine,4);
 #endif
 
 	Script::vfExportToLua(m_tpLuaVirtualMachine);
 
 	u32				N = _GetItemCount(caScriptString);
-	string16		I;
+	string256		I;
 	string256		S,S1;
 	for (u32 i=0; i<N; i++) {
 		FS.update_path(S,"$game_scripts$",strconcat(S1,_GetItem(caScriptString,i,I),".script"));
