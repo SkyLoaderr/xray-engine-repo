@@ -9,5 +9,5 @@ function main()
 		printf("file[%d]=%s",it,file)
    end
 	
-
+	flist:Free()
 end
