@@ -37,7 +37,7 @@ bool xrServer::Process_event_reject	(NET_Packet& P, ClientID sender, u32 time, u
 	e_entity->ID_Parent	= 0xffff;
 	xr_vector<u16>& C	= e_parent->children;
 	xr_vector<u16>::iterator c	= std::find	(C.begin(),C.end(),id_entity);
-	VERIFY				(C.end()!=c);
+	VERIFY3				(C.end()!=c,e_entity->name_replace(),e_parent->name_replace());
 	C.erase				(c);
 
 	// Signal to everyone (including sender)
