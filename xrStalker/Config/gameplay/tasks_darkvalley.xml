@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding="windows-1251"?>
+
+<game_tasks_data>
+	<game_task id="mil_kill_sniper">
+		<title>mil_quest_kill_sniper</title>
+		<objective>
+			<text>mil_quest_kill_sniper</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_quest_kill_sniper</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>mil_quest_report_dolg</text>
+			<icon x="100" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+</game_tasks_data>
