@@ -9,7 +9,7 @@
  */
 
 #include "object.h"
-
+/*
 // Call this to reorder the tris in this trilist to get good vertex-cache coherency.
 // *pwList is modified (but obviously not changed in size or memory location).
 void OptimiseVertexCoherencyTriList ( WORD *pwList, int iHowManyTris );
@@ -47,38 +47,10 @@ class OMSlidingWindow : public OptimisedMesh
 public:
 	OMSlidingWindow ( Object *pObject );
 	virtual ~OMSlidingWindow ( void );
-	virtual OptimisedMeshInstance *CreateInstance ( ObjectInstance *pObjectInstance );
 	virtual void Check ( void );
 	virtual void Update ( void );
 	virtual void AboutToChangeDevice ( void );
 };
-
-
-class OMISlidingWindow : public OptimisedMeshInstance
-{
-	friend class OMSlidingWindow;
-
-	ObjectInstance *pObjInst;
-	OMSlidingWindow *pOptMesh;
-
-	SlidingWindowRecord *pswrLast;		// For the Info* functions.
-
-	// No per-instance VIPM data. Hooray!
-
-
-public:
-
-	OMISlidingWindow ( ObjectInstance *pObjectInstance, OMSlidingWindow *pOptimisedMesh );
-	virtual ~OMISlidingWindow ( void );
-	virtual void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iLoD );
-	virtual BOOL bNeedsUpdate ( void );
-	virtual void Update ( void );
-	virtual void Check ( void );
-	virtual void AboutToChangeDevice ( void );
-	virtual const void InfoGetGlobal ( DWORD *pdwMemoryUsed, DWORD *pdwOfWhichAGP );
-	virtual const void InfoGetInstance ( DWORD *pdwMemoryUsed, DWORD *pdwOfWhichAGP, DWORD *pdwVerticesLoaded, DWORD *pdwRealTrisDrawn, DWORD *pdwTotalVertices );
-};
-
 
 
 
@@ -108,14 +80,6 @@ void OMSlidingWindow::AboutToChangeDevice ( void )
 
 	MarkAsDirty ( g_bShowVIPMInfo );
 	bOptimised = FALSE;
-}
-
-
-// Create an instance of this optimised mesh, and returns the pointer to it.
-// Pass in the object instance you wish to associate it with.
-OptimisedMeshInstance *OMSlidingWindow::CreateInstance ( ObjectInstance *pObjectInstance )
-{
-	return new OMISlidingWindow ( pObjectInstance, this );
 }
 
 
@@ -497,15 +461,13 @@ void OMSlidingWindow::Update ( void )
 
 
 	DWORD dwFlags = 0;
-#if !EXTRA_DEBUGGING
+
 // If doing extra debugging, we're always going to do reads from the IB.
 	if ( !bWillGetInfo )
 	{
 		// We don't need to do reads from the IB to get vertex-cache info.
 		dwFlags |= D3DUSAGE_WRITEONLY;
 	}
-#endif
-
 
 	// Create the index buffer.
 	iSizeOfIB = wIndices.Size();
@@ -530,235 +492,11 @@ void OMSlidingWindow::Update ( void )
 
 }
 
-
-
-
-
-
-
-
-OMISlidingWindow::OMISlidingWindow ( ObjectInstance *pObjectInstance, OMSlidingWindow *pOptimisedMesh )
-{
-	pObjInst = pObjectInstance;
-	pOptMesh = pOptimisedMesh;
-}
-
-OMISlidingWindow::~OMISlidingWindow ( void )
-{
-	pObjInst = NULL;
-	pOptMesh = NULL;
-}
-
-void OMISlidingWindow::AboutToChangeDevice ( void )
-{
-	ASSERT ( pObjInst != NULL );
-	pOptMesh->AboutToChangeDevice();
-}
-
-const void OMISlidingWindow::InfoGetGlobal ( DWORD *pdwMemoryUsed, DWORD *pdwOfWhichAGP )
-{
-	ASSERT ( pOptMesh != NULL );
-	ASSERT ( pOptMesh->bWillGetInfo );
-
-	DWORD dwMemoryUsed = 0;
-	DWORD dwOfWhichAGP = 0;
-
-	// The thing itself.
-	dwMemoryUsed += sizeof ( OMSlidingWindow );
-	// Collapse list.
-	dwMemoryUsed += pOptMesh->swrRecords.Size() * sizeof ( SlidingWindowRecord );
-	// The size of the IB.
-	dwOfWhichAGP += pOptMesh->iSizeOfIB * sizeof ( WORD );
-	// And the size of the VB.
-	dwOfWhichAGP += pOptMesh->iNumVerts * sizeof ( STDVERTEX );
-
-	// Add the AGP memory in.
-	dwMemoryUsed += dwOfWhichAGP;
-
-
-	if ( pdwMemoryUsed != NULL )
-	{
-		*pdwMemoryUsed = dwMemoryUsed;
-	}
-	if ( pdwOfWhichAGP != NULL )
-	{
-		*pdwOfWhichAGP = dwOfWhichAGP;
-	}
-
-}
-
-const void OMISlidingWindow::InfoGetInstance ( DWORD *pdwMemoryUsed, DWORD *pdwOfWhichAGP, DWORD *pdwVerticesLoaded, DWORD *pdwRealTrisDrawn, DWORD *pdwTotalVertices )
-{
-	ASSERT ( pOptMesh != NULL );
-	ASSERT ( pOptMesh->bWillGetInfo );
-
-	DWORD dwMemoryUsed = 0;
-	DWORD dwOfWhichAGP = 0;
-
-
-	// The thing itself.
-	dwMemoryUsed += sizeof ( OMISlidingWindow );
-	// And that's it per-instance!
-
-
-	// Add the AGP memory in.
-	dwMemoryUsed += dwOfWhichAGP;
-
-	if ( pdwMemoryUsed != NULL )
-	{
-		*pdwMemoryUsed = dwMemoryUsed;
-	}
-	if ( pdwOfWhichAGP != NULL )
-	{
-		*pdwOfWhichAGP = dwOfWhichAGP;
-	}
-
-
-	if ( pdwVerticesLoaded != NULL )
-	{
-		ASSERT ( pswrLast != NULL );
-
-
-		// Find the vertex-cache info for the current render.
-		WORD *pwIndices;
-		HRESULT hres = pOptMesh->pIB->Lock ( 0,
-							pOptMesh->iSizeOfIB * sizeof ( WORD ),
-							(BYTE**)&pwIndices,
-							D3DLOCK_READONLY );
-		ASSERT ( SUCCEEDED ( hres ) );
-
-		float fVertexScore = GetNumVerticesLoadedTriList ( pwIndices + pswrLast->dwFirstIndexOffset, pswrLast->wNumTris );
-		*pdwVerticesLoaded = (DWORD)(fVertexScore + 0.4999f);
-
-		hres = pOptMesh->pIB->Unlock();
-		ASSERT ( SUCCEEDED ( hres ) );
-	}
-
-	if ( pdwRealTrisDrawn != NULL )
-	{
-		ASSERT ( pswrLast != NULL );
-
-		// We don't get degenerate tris in Sliding Window.
-		*pdwRealTrisDrawn = pswrLast->wNumTris;
-	}
-
-	if ( pdwTotalVertices != NULL )
-	{
-		*pdwTotalVertices = pswrLast->wNumVerts;
-	}
-
-}
-
-
-
-// Renders the given material of the object with the given level of detail.
-void OMISlidingWindow::RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iLoD )
-{
-	// Do an update if necessary.
-	if ( bNeedsUpdate() )
-	{
-		Update();
-	}
-
-
-	// Find the record.
-	if ( iLoD < 0 )
-	{
-		iLoD = 0;
-	}
-	else if ( iLoD > pOptMesh->iNumCollapses )
-	{
-		iLoD = pOptMesh->iNumCollapses;
-	}
-	SlidingWindowRecord *pswr = pOptMesh->swrRecords.Item ( iLoD );
-
-	// Store it for the Info* calls.
-	pswrLast = pswr;
-
-
-	// And draw the object.
-	HRESULT hres;
-	
-	hres = pd3ddev->SetVertexShader ( STDVERTEX_FVF );
-	ASSERT ( SUCCEEDED ( hres ) );
-
-	ASSERT ( pOptMesh->pIB != NULL );
-	hres = pd3ddev->SetIndices ( pOptMesh->pIB, 0 );
-	ASSERT ( SUCCEEDED ( hres ) );
-
-	ASSERT ( pOptMesh->pVB != NULL );
-	hres = pd3ddev->SetStreamSource ( 0, pOptMesh->pVB, sizeof ( STDVERTEX ) );
-	ASSERT ( SUCCEEDED ( hres ) );
-
-	if ( g_iMaxNumTrisDrawn > 0 )
-	{
-		// Limit the number of tris.
-		int iNumTris = g_iMaxNumTrisDrawn;
-		if ( pswr->wNumTris < iNumTris )
-		{
-			iNumTris = pswr->wNumTris;
-		}
-		hres = pd3ddev->DrawIndexedPrimitive ( D3DPT_TRIANGLELIST,
-												0,
-												pswr->wNumVerts,
-												pswr->dwFirstIndexOffset,
-												iNumTris );
-		ASSERT ( SUCCEEDED ( hres ) );
-	}
-	else
-	{
-		hres = pd3ddev->DrawIndexedPrimitive ( D3DPT_TRIANGLELIST,
-												0,
-												pswr->wNumVerts,
-												pswr->dwFirstIndexOffset,
-												pswr->wNumTris );
-		ASSERT ( SUCCEEDED ( hres ) );
-	}
-}
-
-BOOL OMISlidingWindow::bNeedsUpdate ( void )
-{
-	ASSERT ( pOptMesh != NULL );
-	if ( pOptMesh->bOptimised != g_bOptimiseVertexOrder )
-	{
-		return TRUE;
-	}
-	if ( iVersion != pOptMesh->iVersion )
-	{
-		return TRUE;
-	}
-	return FALSE;
-}
-
-
-void OMISlidingWindow::Update ( void )
-{
-	ASSERT ( pOptMesh != NULL );
-	pOptMesh->Update();
-
-	if ( bNeedsUpdate() )
-	{
-		// Not much to do really :-)
-		iVersion = pOptMesh->iVersion;
-	}
-
-	Check();
-}
-
-
-void OMISlidingWindow::Check ( void )
-{
-	// Check my global data is the same type as me!
-	ASSERT ( pOptMesh != NULL );
-	pOptMesh->Check();
-}
-
-
 ////////////////////////// Utility functions /////////////////////
 // Creates the given type of optimised mesh, and returns the pointer to it.
-/*static*/ OptimisedMesh *OptimisedMesh::Create ( Object *pObject )
+OptimisedMesh *OptimisedMesh::Create ( Object *pObject )
 {
 	return new OMSlidingWindow ( pObject );
 }
-
+*/
 
