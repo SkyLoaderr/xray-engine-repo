@@ -64,58 +64,28 @@ struct CLoader {
 
 	struct CHelper3 {
 		template <template <typename _1> class T1, typename T2>
-		IC	static void load_data(T1<T2> &data, M &stream, const P &p)
+		IC	static void add(T1<T2> &data, typename T1<T2>::value_type &value)
 		{
-			if (p.can_clear())
-				data.clear();
-			u32								count = stream.r_u32();
-			for (u32 i=0; i<count; ++i) {
-				T1<T2>::value_type			temp;
-				CLoader<M,P>::load_data		(temp,stream,p);
-				if (p(data,temp))
-					data.push_back			(temp);
-			}
+			data.push_back	(value);
 		}
 
-		template <template <typename _1, typename _2> class T1, typename T2, typename T3>
-		IC	static void load_data(T1<T2,T3> &data, M &stream, const P &p)
+		template <typename T1, typename T2>
+		IC	static void add(T1 &data, typename T2 &value)
 		{
-			if (p.can_clear())
-				data.clear();
-			u32								count = stream.r_u32();
-			for (u32 i=0; i<count; ++i) {
-				T1<T2,T3>::value_type		temp;
-				CLoader<M,P>::load_data		(temp,stream,p);
-				if (p(data,temp))
-					data.insert				(temp);
-			}
-		}
-		
-		template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
-		IC	static void load_data(T1<T2,T3,T4> &data, M &stream, const P &p)
-		{
-			if (p.can_clear())
-				data.clear();
-			u32								count = stream.r_u32();
-			for (u32 i=0; i<count; ++i) {
-				T1<T2,T3,T4>::value_type	temp;
-				CLoader<M,P>::load_data		(temp,stream,p);
-				if (p(data,temp))
-					data.insert				(temp);
-			}
+			data.insert		(value);
 		}
 
-		template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
-		IC	static void load_data(T1<T2,T3,T4,T5> &data, M &stream, const P &p)
+		template <typename T>
+		IC	static void load_data(T &data, M &stream, const P &p)
 		{
 			if (p.can_clear())
 				data.clear();
 			u32								count = stream.r_u32();
 			for (u32 i=0; i<count; ++i) {
-				T1<T2,T3,T4,T5>::value_type	temp;
+				T::value_type				temp;
 				CLoader<M,P>::load_data		(temp,stream,p);
 				if (p(data,temp))
-					data.insert				(temp);
+					add						(data,temp);
 			}
 		}
 	};

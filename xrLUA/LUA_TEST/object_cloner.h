@@ -130,54 +130,27 @@ struct CCloner {
 
 	struct CHelper3 {
 		template <template <typename _1> class T1, typename T2>
-		IC	static void clone(const T1<T2> &_1, T1<T2> &_2)
+		IC	static void add(T1<T2> &data, typename T1<T2>::value_type &value)
 		{
-			_2.clear						();
-			T1<T2>::const_iterator			I = _1.begin();
-			T1<T2>::const_iterator			E = _1.end();
-			for ( ; I != E; ++I) {
-				T1<T2>::value_type			t;
-				CCloner::clone				(*I,t);
-				_2.push_back				(t);
-			}
+			data.push_back		(value);
 		}
 
-		template <template <typename _1, typename _2> class T1, typename T2, typename T3>
-		IC	static void clone(const T1<T2,T3> &_1, T1<T2,T3> &_2)
+		template <typename T1, typename T2>
+		IC	static void add(T1 &data, typename T2 &value)
 		{
-			_2.clear						();
-			T1<T2,T3>::const_iterator		I = _1.begin();
-			T1<T2,T3>::const_iterator		E = _1.end();
-			for ( ; I != E; ++I) {
-				T1<T2>::value_type			t;
-				CCloner::clone				(*I,t);
-				_2.insert					(t);
-			}
+			data.insert			(value);
 		}
 
-		template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
-		IC	static void clone(const T1<T2,T3,T4> &_1, T1<T2,T3,T4> &_2)
+		template <typename T>
+		IC	static void clone(const T &_1, T &_2)
 		{
-			_2.clear						();
-			T1<T2,T3,T4>::const_iterator	I = _1.begin();
-			T1<T2,T3,T4>::const_iterator	E = _1.end();
+			_2.clear			();
+			T::const_iterator	I = _1.begin();
+			T::const_iterator	E = _1.end();
 			for ( ; I != E; ++I) {
-				T1<T2,T3,T4>::value_type	t;
-				CCloner::clone				(*I,t);
-				_2.insert					(t);
-			}
-		}
-
-		template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
-		IC	static void clone(const T1<T2,T3,T4,T5> &_1, T1<T2,T3,T4,T5> &_2)
-		{
-			_2.clear						();
-			T1<T2,T3,T4,T5>::const_iterator	I = _1.begin();
-			T1<T2,T3,T4,T5>::const_iterator	E = _1.end();
-			for ( ; I != E; ++I) {
-				T1<T2,T3,T4,T5>::value_type	t;
-				CCloner::clone				(*I,t);
-				_2.insert					(t);
+				T::value_type	t;
+				CCloner::clone	(*I,t);
+				add				(_2,t);
 			}
 		}
 	};

@@ -64,45 +64,12 @@ struct CSaver {
 	};
 
 	struct CHelper3 {
-		template <template <typename _1> class T1, typename T2>
-		IC	static void save_data(const T1<T2> &data, M &stream, const P &p)
+		template <typename T>
+		IC	static void save_data(const T &data, M &stream, const P &p)
 		{
 			stream.w_u32					((u32)data.size());
-			T1<T2>::const_iterator			I = data.begin();
-			T1<T2>::const_iterator			E = data.end();
-			for ( ; I != E; ++I)
-				if (p(data,*I))
-					CSaver<M,P>::save_data	(*I,stream,p);
-		}
-
-		template <template <typename _1, typename _2> class T1, typename T2, typename T3>
-		IC	static void save_data(const T1<T2,T3> &data, M &stream, const P &p)
-		{
-			stream.w_u32					((u32)data.size());
-			T1<T2,T3>::const_iterator		I = data.begin();
-			T1<T2,T3>::const_iterator		E = data.end();
-			for ( ; I != E; ++I)
-				if (p(data,*I))
-					CSaver<M,P>::save_data	(*I,stream,p);
-		}
-		
-		template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
-		IC	static void save_data(const T1<T2,T3,T4> &data, M &stream, const P &p)
-		{
-			stream.w_u32					((u32)data.size());
-			T1<T2,T3,T4>::const_iterator	I = data.begin();
-			T1<T2,T3,T4>::const_iterator	E = data.end();
-			for ( ; I != E; ++I)
-				if (p(data,*I))
-					CSaver<M,P>::save_data	(*I,stream,p);
-		}
-
-		template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
-		IC	static void save_data(const T1<T2,T3,T4,T5> &data, M &stream, const P &p)
-		{
-			stream.w_u32					((u32)data.size());
-			T1<T2,T3,T4,T5>::const_iterator	I = data.begin();
-			T1<T2,T3,T4,T5>::const_iterator	E = data.end();
+			T::const_iterator				I = data.begin();
+			T::const_iterator				E = data.end();
 			for ( ; I != E; ++I)
 				if (p(data,*I))
 					CSaver<M,P>::save_data	(*I,stream,p);

@@ -123,60 +123,18 @@ struct CComparer {
 	}
 
 	struct CHelper3 {
-		template <template <typename _1> class T1, typename T2>
-		IC	static bool compare(const T1<T2> &_1, const T1<T2> &_2, const P &p)
+		template <typename T>
+		IC	static bool compare(const T &_1, const T &_2, const P &p)
 		{
 			if (_1.size() != _2.size())
-				return						(p());
+				return					(p());
 
-			T1<T2>::const_iterator			I = _1.begin(), J = _2.begin();
-			T1<T2>::const_iterator			E = _1.end();
+			T::const_iterator			I = _1.begin(), J = _2.begin();
+			T::const_iterator			E = _1.end();
 			for ( ; I != E; ++I, ++J)
 				if (!CComparer::compare(*I,*J,p))
-					return					(false);
-			return							(true);
-		}
-
-		template <template <typename _1, typename _2> class T1, typename T2, typename T3>
-		IC	static bool compare(const T1<T2,T3> &_1, const T1<T2,T3> &_2, const P &p)
-		{
-			if (_1.size() != _2.size())
-				return						(p());
-
-			T1<T2,T3>::const_iterator			I = _1.begin(), J = _2.begin();
-			T1<T2,T3>::const_iterator			E = _1.end();
-			for ( ; I != E; ++I, ++J)
-				if (!CComparer::compare(*I,*J,p))
-					return					(false);
-			return							(true);
-		}
-
-		template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
-		IC	static bool compare(const T1<T2,T3,T4> &_1, const T1<T2,T3,T4> &_2, const P &p)
-		{
-			if (_1.size() != _2.size())
-				return						(p());
-
-			T1<T2,T3,T4>::const_iterator		I = _1.begin(), J = _2.begin();
-			T1<T2,T3,T4>::const_iterator		E = _1.end();
-			for ( ; I != E; ++I, ++J)
-				if (!CComparer::compare(*I,*J,p))
-					return					(false);
-			return							(true);
-		}
-
-		template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
-		IC	static bool compare(const T1<T2,T3,T4,T5> &_1, const T1<T2,T3,T4,T5> &_2, const P &p)
-		{
-			if (_1.size() != _2.size())
-				return						(p());
-
-			T1<T2,T3,T4,T5>::const_iterator	I = _1.begin(), J = _2.begin();
-			T1<T2,T3,T4,T5>::const_iterator	E = _1.end();
-			for ( ; I != E; ++I, ++J)
-				if (!CComparer::compare(*I,*J,p))
-					return					(false);
-			return							(true);
+					return				(false);
+			return						(true);
 		}
 	};
 

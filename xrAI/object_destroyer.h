@@ -88,44 +88,11 @@ struct CDestroyer {
 	};
 
 	struct CHelper3 {
-	#pragma warning(push)
-	#pragma warning(disable:4239)
-		template <template <typename _1> class T1, typename T2>
-		IC	static void delete_data(T1<T2> &data)
+		template <typename T>
+		IC	static void delete_data(T &data)
 		{
-			T1<T2>::iterator			I = data.begin();
-			T1<T2>::iterator			E = data.end();
-			for ( ; I != E; ++I)
-				CDestroyer::delete_data	(*I);
-			data.clear					();
-		}
-	#pragma warning(pop)
-
-		template <template <typename _1, typename _2> class T1, typename T2, typename T3>
-		IC	static void delete_data(T1<T2,T3> &data)
-		{
-			T1<T2,T3>::iterator			I = data.begin();
-			T1<T2,T3>::iterator			E = data.end();
-			for ( ; I != E; ++I)
-				CDestroyer::delete_data	(*I);
-			data.clear					();
-		}
-
-		template <template <typename _1, typename _2, typename _3> class T1, typename T2, typename T3, typename T4>
-		IC	static void delete_data(T1<T2,T3,T4> &data)
-		{
-			T1<T2,T3,T4>::iterator		I = data.begin();
-			T1<T2,T3,T4>::iterator		E = data.end();
-			for ( ; I != E; ++I)
-				CDestroyer::delete_data	(*I);
-			data.clear					();
-		}
-
-		template <template <typename _1, typename _2, typename _3, typename _4> class T1, typename T2, typename T3, typename T4, typename T5>
-		IC	static void delete_data(T1<T2,T3,T4,T5> &data)
-		{
-			T1<T2,T3,T4,T5>::iterator	I = data.begin();
-			T1<T2,T3,T4,T5>::iterator	E = data.end();
+			T::iterator					I = data.begin();
+			T::iterator					E = data.end();
 			for ( ; I != E; ++I)
 				CDestroyer::delete_data	(*I);
 			data.clear					();
