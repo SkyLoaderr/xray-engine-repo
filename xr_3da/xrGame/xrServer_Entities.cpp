@@ -222,6 +222,10 @@ void	xrSE_Dummy::FillProp			(LPCSTR pref, PropValueVec& values)
 #endif
 
 //***** MercuryBall
+xrSE_MercuryBall::xrSE_MercuryBall()
+{
+	s_Model[0]	=	0;
+}
 void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{}
 void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{}
 void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{}

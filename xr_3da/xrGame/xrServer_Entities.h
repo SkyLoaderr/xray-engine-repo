@@ -160,6 +160,7 @@ xrSE_DECLARE_END
 //***** MercuryBall
 xrSE_DECLARE_BEGIN(xrSE_MercuryBall,xrServerEntity)
 	string64				s_Model;
+    xrSE_MercuryBall		();
 xrSE_DECLARE_END
 
 //***** Car
