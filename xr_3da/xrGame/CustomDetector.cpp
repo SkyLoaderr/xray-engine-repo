@@ -88,8 +88,8 @@ void CCustomDetector::shedule_Update(u32 dt)
 	P.set					(H_Parent()->Position());
 	feel_touch_update		(P,m_fRadius);
 
-	float fMaxPow = 0;
-	BOOL l_buzzer = false;
+//	float fMaxPow = 0;
+//	BOOL l_buzzer = false;
 	ZONE_INFO_MAP_IT it;
 		
 	///////////////////////////////////
