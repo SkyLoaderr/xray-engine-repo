@@ -17,7 +17,7 @@ static xr_map<u32, char> gs_DIK2CHR;
 
 CUIEditBox::CUIEditBox(void)
 {
-	for(char l_c = 'a'; l_c <= 'z'; l_c++) gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
+	for(char l_c = 'a'; l_c <= 'z'; ++l_c) gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
 
 	m_bShift = false;
 	m_bInputFocus = false;
@@ -104,12 +104,12 @@ bool CUIEditBox::KeyPressed(int dik)
 	//перемещение курсора
 	case DIK_LEFT:
 	case DIKEYBOARD_LEFT:
-		if(m_iCursorPos > 0) m_iCursorPos--;
+		if(m_iCursorPos > 0) --m_iCursorPos;
 		return true;
 		break;
 	case DIK_RIGHT:
 	case DIKEYBOARD_RIGHT:
-		if(m_iCursorPos < m_sEdit.size()-1) m_iCursorPos++;
+		if(m_iCursorPos < m_sEdit.size()-1) ++m_iCursorPos;
 		return true;
 		break;
 	case DIK_LSHIFT:
@@ -127,7 +127,7 @@ bool CUIEditBox::KeyPressed(int dik)
 	case DIK_BACKSPACE:
 		if(m_iCursorPos > 0)
 		{
-			m_iCursorPos--;
+			--m_iCursorPos;
 			m_sEdit.erase(&m_sEdit[m_iCursorPos]);
 		}
 		str_updated = true; 
@@ -149,7 +149,7 @@ bool CUIEditBox::KeyPressed(int dik)
 		it = gs_DIK2CHR.find(dik);
 			
 		//нажата клавиша с буквой 
-		if(it != gs_DIK2CHR.end())
+		if(gs_DIK2CHR.end() != it)
 		{
 			AddLetter(gs_DIK2CHR[dik]);
 			str_updated = true; 
@@ -195,7 +195,7 @@ void CUIEditBox::AddChar(char c)
 	if(text_length>GetWidth()) return;
 	
 	m_sEdit.insert(&m_sEdit[m_iCursorPos], c);
-	m_iCursorPos++;
+	++m_iCursorPos;
 
 	/*if(!m_sEdit.empty()) m_sEdit.pop_back();
 	m_sEdit.push_back(c);

@@ -6,8 +6,8 @@
 #include "stdafx.h"
 #include "uidialogwnd.h"
 
-#include "..\\hudmanager.h"
-#include "..\\..\\xr_ioconsole.h"
+#include "../hudmanager.h"
+#include "../../xr_ioconsole.h"
 
 
 CUIDialogWnd:: CUIDialogWnd()

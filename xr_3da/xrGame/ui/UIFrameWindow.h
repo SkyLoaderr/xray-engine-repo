@@ -8,8 +8,8 @@
 
 #include "uiwindow.h"
 
-#include "..\uiframerect.h"
-#include "..\uistaticitem.h"
+#include "../uiframerect.h"
+#include "../uistaticitem.h"
 
 
 

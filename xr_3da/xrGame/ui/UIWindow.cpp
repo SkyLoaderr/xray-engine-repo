@@ -70,7 +70,7 @@ void CUIWindow::Init(RECT* pRect)
 void CUIWindow::Draw()
 {
 	//перерисовать дочерние окна
-	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 	{
 		if((*it)->IsShown())
 			(*it)->Draw();
@@ -84,7 +84,7 @@ void CUIWindow::Draw()
 void CUIWindow::Update()
 {
 	//перерисовать дочерние окна
-	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		if((*it)->IsShown())
 			(*it)->Update();
@@ -186,7 +186,7 @@ void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 	//если есть дочернее окно,захватившее мышь, то
 	//сообщение направляем ему сразу
-	if(m_pMouseCapturer!=NULL)
+	if(NULL!=m_pMouseCapturer)
 	{
 		m_pMouseCapturer->OnMouse(cursor_pos.x - 
 								m_pMouseCapturer->GetWndRect().left, 
@@ -201,7 +201,7 @@ void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	//(последние в списке имеют высший приоритет)
 	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
 
-	for(u16 i=0; i<m_ChildWndList.size(); i++, it++)
+	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
 	{
 		RECT l_tRect = (*it)->GetWndRect();
 		if (PtInRect(&l_tRect, cursor_pos))
@@ -223,7 +223,7 @@ void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 //ему в независимости от того где мышь
 void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 {
-	if(GetParent() != NULL)
+	if(NULL != GetParent())
 	{
 		if(m_pOrignMouseCapturer == NULL || m_pOrignMouseCapturer == pChildWindow)
 			GetParent()->SetCapture(this, capture_status);
@@ -232,7 +232,7 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 	if(capture_status)
 	{
 		//оповестить дочернее окно о потере фокуса мыши
-		if(m_pMouseCapturer!=NULL)
+		if(NULL!=m_pMouseCapturer)
 			m_pMouseCapturer->SendMessage(this, MOUSE_CAPTURE_LOST);
 
 		m_pMouseCapturer = pChildWindow;
@@ -252,7 +252,7 @@ bool CUIWindow::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 	//если есть дочернее окно,захватившее клавиатуру, то
 	//сообщение направляем ему сразу
-	if(m_pKeyboardCapturer!=NULL)
+	if(NULL!=m_pKeyboardCapturer)
 	{
 		result = m_pKeyboardCapturer->OnKeyboard(dik, keyboard_action);
 		
@@ -261,7 +261,7 @@ bool CUIWindow::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
 
-	for(u16 i=0; i<m_ChildWndList.size(); i++, it++)
+	for(u16 i=0; i<m_ChildWndList.size(); ++i, ++it)
 	{
 		if((*it)->IsEnabled())
 		{
@@ -277,13 +277,13 @@ bool CUIWindow::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 
 void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 {
-	if(GetParent() != NULL)
+	if(NULL != GetParent())
 		GetParent()->SetCapture(this, capture_status);
 
 	if(capture_status)
 	{
 		//оповестить дочернее окно о потере фокуса клавиатуры
-		if(m_pKeyboardCapturer!=NULL)
+		if(NULL!=m_pKeyboardCapturer)
 			m_pKeyboardCapturer->SendMessage(this, KEYBOARD_CAPTURE_LOST);
 			
 		m_pKeyboardCapturer = pChildWindow;
@@ -297,7 +297,7 @@ void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
 void CUIWindow::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
 	//оповестить дочерние окна
-	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		if((*it)->IsEnabled())
 			(*it)->SendMessage(pWnd,msg,pData);
@@ -342,7 +342,7 @@ void CUIWindow::Reset()
 }
 void CUIWindow::ResetAll()
 {
-	for(WINDOW_LIST_it it=m_ChildWndList.begin(); it!=m_ChildWndList.end(); it++)
+	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end()!=it; ++it)
 	{
 		(*it)->Reset();
 	}
@@ -352,13 +352,13 @@ void CUIWindow::ResetAll()
 /*
 void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 {
-	if(GetParent() != NULL)
+	if(NULL != GetParent())
 	{
 		if(capture_status)
 		{
 			//запомнить то окно, которое изначально 
 			//захватило ввод
-			if(GetParent()->GetMouseCapturer() != this)
+			if(this != GetParent()->GetMouseCapturer())
 				m_pOrignMouseCapturer = pChildWindow;
 
 			GetParent()->SetCapture(this, true);
@@ -379,7 +379,7 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 	if(capture_status)
 	{
 		//оповестить дочернее окно о потере фокуса мыши
-		if(m_pMouseCapturer!=NULL)
+		if(NULL != m_pMouseCapturer)
 			m_pMouseCapturer->SendMessage(this, MOUSE_CAPTURE_LOST);
 	
 		if(m_pOrignMouseCapturer == pChildWindow)
