@@ -78,5 +78,6 @@ public:
 
 			void					ShowFragList			(bool bShow);
 			void					ShowPlayersList			(bool bShow);
+	virtual void					ReInitInventoryWnd		(); 
 };
 #endif // __XR_UIGAMEDM_H__

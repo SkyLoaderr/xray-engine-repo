@@ -50,6 +50,7 @@ public:
 	void				RemoveDialogToRender	(CUIWindow* pDialog);
 	
 	CUIDialogWnd*		MainInputReceiver		();
+	virtual void		ReInitInventoryWnd		() = 0;
 
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

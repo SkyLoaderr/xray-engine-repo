@@ -31,6 +31,7 @@ public:
 	void				StartTalk				();
 	void				StartCarBody			(CInventory* pOurInv,    CGameObject* pOurObject,
 												 CInventory* pOthersInv, CGameObject* pOthersObject);
+	virtual void		ReInitInventoryWnd		() { if (InventoryMenu.IsShown()) InventoryMenu.InitInventory(); };
 
 	CUIInventoryWnd		InventoryMenu;
 	CUITradeWnd			TradeMenu;

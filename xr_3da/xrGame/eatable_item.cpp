@@ -75,13 +75,14 @@ bool CEatableItem::Useful() const
 
 void CEatableItem::OnH_A_Independent() 
 {
+	inherited::OnH_A_Independent();
 	if(!Useful()) {
 		NET_Packet		P;
 		object().u_EventGen		(P,GE_DESTROY,object().ID());
 		
 		//Msg				("ge_destroy: [%d] - %s",ID(),*cName());
 		if (object().Local() && OnServer())	object().u_EventSend	(P);
-	}
+	}	
 }
 
 void CEatableItem::OnH_B_Independent()

@@ -13,12 +13,14 @@
 #include "xrserver_objects_alife.h"
 #include "xrserver_objects_alife_items.h"
 #include "entity_alive.h"
-#include "level.h"
+#include "Level.h"
 #include "game_cl_base.h"
 #include "Actor.h"
 #include "string_table.h"
 #include "../skeletoncustom.h"
 #include "ai_object_location.h"
+#include "HUDManager.h"
+#include "UIGameCustom.h"
 
 CInventoryItem::CInventoryItem() 
 {
@@ -204,11 +206,15 @@ bool CInventoryItem::Merge(PIItem /**pIItem/**/)
 void CInventoryItem::OnH_B_Independent	()
 {
 	m_eItemPlace = eItemPlaceUndefined ;
+	if (HUD().GetUI() && object().H_Parent() == Level().CurrentViewEntity())
+	{
+		HUD().GetUI()->UIGame()->ReInitInventoryWnd();
+	};
 }
 
 void CInventoryItem::OnH_A_Independent	()
 {
-	m_eItemPlace = eItemPlaceUndefined;
+	m_eItemPlace = eItemPlaceUndefined;	
 }
 
 void CInventoryItem::OnH_B_Chield		()
@@ -217,6 +223,10 @@ void CInventoryItem::OnH_B_Chield		()
 
 void CInventoryItem::OnH_A_Chield		()
 {
+	if (HUD().GetUI() && object().H_Parent() == Level().CurrentViewEntity())
+	{
+		HUD().GetUI()->UIGame()->ReInitInventoryWnd();
+	};
 }
 
 void CInventoryItem::UpdateCL()

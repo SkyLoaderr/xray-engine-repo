@@ -172,7 +172,7 @@ void CUIInventoryWnd::DropItem()
 
 	DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
 	VERIFY(it != m_vDragDropItems.end());
-	m_vDragDropItems.erase(it);
+//	m_vDragDropItems.erase(it);
 
 	//-----------------------------------------------------------------------
 	SendEvent_ItemDrop(m_pCurrentItem);
@@ -198,7 +198,7 @@ void CUIInventoryWnd::EatItem()
 
 		DD_ITEMS_VECTOR_IT it = std::find(m_vDragDropItems.begin(), m_vDragDropItems.end(),m_pCurrentDragDropItem);
 		VERIFY(it != m_vDragDropItems.end());
-		m_vDragDropItems.erase(it);
+//		m_vDragDropItems.erase(it);
 		//-----------------------------------------------------------------------
 		//SendEvent_ItemDrop(m_pCurrentItem);
 		//-----------------------------------------------------------------------

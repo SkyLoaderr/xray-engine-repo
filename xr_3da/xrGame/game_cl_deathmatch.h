@@ -28,6 +28,7 @@ public :
 	virtual		CUIGameCustom*		createGameUI			();
 	virtual		void				net_import_state	(NET_Packet& P);
 	virtual		void				Init					();
+	virtual		CUIInventoryWnd*	GetInventoryWnd			() {return pInventoryMenu;};
 
 // from UIGameDM
 protected:

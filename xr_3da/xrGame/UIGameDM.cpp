@@ -104,6 +104,14 @@ CUIGameDM::~CUIGameDM()
 	xr_delete(m_pFragLists);
 	xr_delete(m_pPlayerLists);
 }
+
+void	CUIGameDM::ReInitInventoryWnd		() 
+{
+	if (m_game && m_game->GetInventoryWnd() && m_game->GetInventoryWnd()->IsShown())
+	{	
+		m_game->GetInventoryWnd()->InitInventory();
+	};
+};
 //--------------------------------------------------------------------
 
 void CUIGameDM::SetTimeMsgCaption		(LPCSTR str)
