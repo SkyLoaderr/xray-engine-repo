@@ -129,9 +129,9 @@ void CEditableObject::Save(IWriter& F)
         F.close_chunk	();
     }
     // skeleton motions refs
-    if (!m_SMotionRefs.IsEmpty()){
+    if (m_SMotionRefs.size()){
         F.open_chunk	(EOBJ_CHUNK_SMOTIONS2);
-        F.w_stringZ		(m_SMotionRefs.c_str());
+        F.w_stringZ		(m_SMotionRefs);
         F.close_chunk	();
     }
 //    Log("5: ",F.tell());
