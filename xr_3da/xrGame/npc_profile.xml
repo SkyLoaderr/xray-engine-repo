@@ -90,6 +90,22 @@
 		<team>Monolit_master</team>
 	</character>
 
+	<!-- Killer -->
+	<character id="killer">
+		<team>Killer</team>
+	</character>
+	<character id="killer_novice">
+		<team>Killer_novice</team>
+	</character>
+	<character id="killer_general">
+		<team>Killer_general</team>
+	</character>
+	<character id="killer_veteran">
+		<team>Killer_veteran</team>
+	</character>
+	<character id="killer_master">
+		<team>Killer_master</team>
+	</character>
 	
 	<character id="escape_trader">
 		<team>Trader</team>
