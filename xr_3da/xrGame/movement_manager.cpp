@@ -32,8 +32,8 @@ void CMovementManager::Init			()
 	enable_movement					(true);
 	CGameLocationSelector::Init		(&ai().game_graph());
 	CGamePathManager::Init			(&ai().game_graph());
-	CLevelLocationSelector::Init	(&ai().level_graph());
-	CLevelPathManager::Init			(&ai().level_graph());
+	CLevelLocationSelector::Init	(ai().get_level_graph() ? &ai().level_graph() : 0);
+	CLevelPathManager::Init			(ai().get_level_graph() ? &ai().level_graph() : 0);
 	CDetailPathManager::Init		();
 	CEnemyLocationPredictor::Init	();
 
