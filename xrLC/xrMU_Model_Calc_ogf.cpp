@@ -19,7 +19,7 @@ void xrMU_Model::calc_ogf()
 
 			// Collect textures
 			OGF_Texture			T;
-			TRY					(strcpy(T.name,pBuild->textures[M->surfidx].name));
+			TRY					(T.name		= pBuild->textures[M->surfidx].name);
 			TRY					(T.pSurface = &(pBuild->textures[M->surfidx]));
 			TRY					(pOGF->textures.push_back(T));
 

@@ -35,7 +35,7 @@ void CBuild::Flex2OGF()
 			//pOGF->shader		= M->shader;
 			//pOGF->shader_xrlc	= &F->Shader();
 			
-			TRY(T.name		= textures[M->surfidx].name));
+			TRY(T.name		= textures[M->surfidx].name);
 			TRY(T.pSurface	= &(textures[M->surfidx]));
 			TRY(pOGF->textures.push_back(T));
 			
@@ -43,9 +43,9 @@ void CBuild::Flex2OGF()
 				if (F->hasImplicitLighting())
 				{
 					// specific lmap
-					string512	tn;
-					strconcat		(tn,T.name,"_lm.dds");
-					strcpy			(T.name, tn);
+					string512		tn;
+					strconcat		(tn,*T.name,"_lm.dds");
+					T.name			= tn;
 					T.pSurface		= T.pSurface;	// Leave surface intact
 					R_ASSERT		(pOGF);
 					pOGF->textures.push_back(T);

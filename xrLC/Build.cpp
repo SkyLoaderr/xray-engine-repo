@@ -170,7 +170,7 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Resolving materials...");
 	mem_Compact					();
 	xrPhase_ResolveMaterials	();
-	IsolateVertices				();
+	IsolateVertices				(TRUE);
 
 	//****************************************** UV mapping
 	if (!b_R2)	//****************************** R1 only
@@ -179,7 +179,7 @@ void CBuild::Run	(LPCSTR P)
 		Phase						("Build UV mapping...");
 		mem_Compact					();
 		xrPhase_UVmap				();
-		IsolateVertices				();
+		IsolateVertices				(TRUE);
 	}
 
 	//****************************************** Subdivide geometry
@@ -187,7 +187,7 @@ void CBuild::Run	(LPCSTR P)
 	Phase						("Subdividing geometry...");
 	mem_Compact					();
 	xrPhase_Subdivide			();
-	IsolateVertices				();
+	IsolateVertices				(TRUE);
 
 	//****************************************** All lighting + lmaps building and saving
 	if (b_R2)					Light_R2		();

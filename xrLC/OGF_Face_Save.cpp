@@ -106,7 +106,7 @@ void OGF::Save			(IWriter &fs)
 		string256		t;
 		strcpy			(t,*textures[i].name);
 		if (strchr(t,'.')) *strchr(t,'.')=0;
-		Tname			+= fname;
+		Tname			+= t;
 	}
 	string1024			sid;
 	strconcat			(sid,
@@ -153,9 +153,10 @@ void OGF_Reference::Save	(IWriter &fs)
 	for (u32 i=0; i<textures.size(); i++)
 	{
 		if (!Tname.empty()) Tname += ',';
-		char *fname = textures[i].name;
-		if (strchr(fname,'.')) *strchr(fname,'.')=0;
-		Tname += fname;
+		string256		t;
+		strcpy			(t,*textures[i].name);
+		if (strchr(t,'.')) *strchr(t,'.')=0;
+		Tname			+= t;
 	}
 	string1024			sid;
 	strconcat			(sid,
