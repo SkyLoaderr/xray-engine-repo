@@ -48,7 +48,7 @@ void CTargetCSCask::OnEvent(NET_Packet& P, u16 type)
 			if(l_pBall) {
 				// R_ASSERT(BE(Local(),l_pBall->Local()));	// remote can't eject local
 				l_pBall->H_SetParent(0);
-				m_targets.pop_front();
+				m_targets.erase(find(m_targets.begin(), m_targets.end(), l_pBall));
 				return;
 			}
 		} break;
