@@ -150,7 +150,11 @@ void		CActor::net_Import_Base				( NET_Packet& P)
 	//------------------------------------------------
 	{
 		if (ActiveSlot == 0xff) inventory().SetActiveSlot(NO_ACTIVE_SLOT);
-		else inventory().Activate(u32(ActiveSlot));
+		else 
+		{
+			if (inventory().GetActiveSlot() != u32(ActiveSlot))
+				inventory().Activate(u32(ActiveSlot));
+		};
 	}
 	//----------- for E3 -----------------------------
 	if (Local() && OnClient()) return;

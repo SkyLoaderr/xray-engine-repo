@@ -232,7 +232,7 @@ void	game_sv_Deathmatch::OnPlayerReady			(u32 id)
 					//		pObject->u_EventSend		(P);
 					Level().Send(P,net_flags(TRUE,TRUE));
 					//------------------------------------------------------------
-					SpawnActor(id, "actor");
+					SpawnActor(id, "mp_actor");
 					//------------------------------------------------------------
 					SpawnWeaponsForActor(xrCData->owner, ps);
 					//------------------------------------------------------------
