@@ -63,6 +63,7 @@ public:
 	vector<u32>			q_stack;		// temporal usage stack for search enemy queries
 	vector<u32>			m_dwaNodeStackM;// temporal usage stack for queries
 	vector<u32>			m_dwaNodeStackS;// temporal usage stack for queries
+	u32					m_dwCurrentLevelID;
 	
 						CAI_Space		();
 	virtual				~CAI_Space		();

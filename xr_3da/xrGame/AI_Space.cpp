@@ -123,6 +123,8 @@ void CAI_Space::Load()
 			break;
 		}
 
+	m_dwCurrentLevelID = I;
+
 	if (!bOk){
 		Msg("! !!!!!!!!There is no graph for the level %s",Level().net_SessionName());
 		return;
