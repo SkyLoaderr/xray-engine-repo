@@ -13,4 +13,5 @@ void	CRenderTarget::phase_smap_point	(light* L, u32 pls_phase)
 
 	// Misc		- draw only front faces
 	RCache.set_CullMode					( CULL_CCW );
+	RCache.set_ColorWriteEnable			();	//. should depend on HW-smap implementation
 }
