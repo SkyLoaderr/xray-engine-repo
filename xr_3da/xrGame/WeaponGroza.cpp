@@ -178,7 +178,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 				bFlame			= TRUE;
 				fTime			+=fTimeToFire;
 
-				if (bHUDView)	(
+				if (bHUDView)	{
 					CEffectorShot*	S = (CEffectorShot*)Level().Cameras.GetEffector();
 					if (S)			S->Shot();
 				}
@@ -224,7 +224,7 @@ void CWeaponGroza::Render(BOOL bHUDView)
 	}
 	if ((st_current==eFire) && bFlame) 
 	{
-		if (bHUDView &&	(0==Level().Cameras.GetEffector()))	Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(.2f)));
+		if (bHUDView &&	(0==Level().Cameras.GetEffector()))	Level().Cameras.SetEffector(new CEffectorShot(.05f,deg2rad(1.6f)));
 
 		UpdateFP	(bHUDView);
 

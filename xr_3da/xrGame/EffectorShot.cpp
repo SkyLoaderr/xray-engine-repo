@@ -27,7 +27,7 @@ void CEffectorShot::Shot		()
 	Fvector	axis; axis.set		(0,0,1);
 	vDirectionDiff.random_dir	();
 	fTimeCurrent				= fTimeTotal;
-	fAngleCurrent				= ::Random.randF(fAngleTotal/2,fAngleTotal);
+	fAngleCurrent				= fAngleTotal; //::Random.randF(fAngleTotal/2,fAngleTotal);
 }
 
 void CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n)
