@@ -10,9 +10,11 @@
 
 #include "../../GameObject.h"
 #include "../../ai_script_callback.h"
+#include "../../ai_sounds.h"
 
 class CEntityAction;
 class CEntity;
+class CLuaGameObject;
 
 class CScriptMonster : virtual public CGameObject {
 public:
@@ -24,6 +26,27 @@ public:
 		eActionTypeParticle,
 		eActionTypeObject,
 		eActionTypeCount
+	};
+
+public:
+	struct CSavedSound {
+		CLuaGameObject	*m_lua_game_object;
+		int				m_sound_type;
+		Fvector			m_position;
+		float			m_sound_power;
+
+		IC				CSavedSound(
+							CLuaGameObject	*lua_game_object,
+							int				sound_type,
+							const Fvector	&position,
+							float			sound_power
+						) :
+						m_lua_game_object(lua_game_object),
+						m_sound_type(sound_type),
+						m_position(position),
+						m_sound_power(sound_power)
+		{
+		}
 	};
 protected:
 	typedef CGameObject inherited;
@@ -39,6 +62,8 @@ protected:
 	CScriptCallback				m_tSoundCallback;
 	CScriptCallback				m_tHitCallback;
 	ref_sound					*m_current_sound;
+	xr_vector<CSavedSound>		m_saved_sounds;
+
 public:
 								CScriptMonster			();
 	virtual						~CScriptMonster			();
@@ -100,6 +125,7 @@ public:
 	virtual int					get_enemy_strength		();
 
 	virtual void				set_visible				(bool vis);
+			void				process_sound_callbacks	();
 private:
 			void				FreeAll					();
 };

@@ -669,12 +669,16 @@ void CScriptMonster::sound_callback	(const CObject *object, int sound_type, cons
 	if (!dynamic_cast<const CGameObject*>(object))
 		return;
 
-	SCRIPT_CALLBACK_EXECUTE_5(m_tSoundCallback, 
-		lua_game_object(),
-		dynamic_cast<const CGameObject*>(object)->lua_game_object(),
-		sound_type,
-		position,
-		sound_power
+	if (!m_tSoundCallback.assigned())
+		return;
+
+	m_saved_sounds.push_back		(
+		CSavedSound(
+			dynamic_cast<const CGameObject*>(object)->lua_game_object(),
+			sound_type,
+			position,
+			sound_power
+		)
 	);
 }
 
@@ -708,4 +712,27 @@ int CScriptMonster::get_enemy_strength()
 
 void CScriptMonster::set_visible(bool vis)
 {
+}
+
+void CScriptMonster::process_sound_callbacks()
+{
+	if (!m_tSoundCallback.assigned()) {
+		m_saved_sounds.clear				();
+		return;
+	}
+
+	xr_vector<CSavedSound>::const_iterator	I = m_saved_sounds.begin();
+	xr_vector<CSavedSound>::const_iterator	E = m_saved_sounds.end();
+	for ( ; I != E; ++I) {
+		SCRIPT_CALLBACK_EXECUTE_5(
+			m_tSoundCallback, 
+			lua_game_object(),
+			(*I).m_lua_game_object,
+			(*I).m_sound_type,
+			(*I).m_position,
+			(*I).m_sound_power
+		);
+	}
+
+	m_saved_sounds.clear					();
 }

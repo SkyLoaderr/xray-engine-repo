@@ -328,9 +328,9 @@ void CCustomMonster::UpdateCL	()
 { 
 	inherited::UpdateCL					();
 	
+	CScriptMonster::process_sound_callbacks();
 	CEventMemoryManager::update			();
 	CSoundPlayer::update				(Device.fTimeDelta);
-
 	if	(NET.empty())	return;
 	
 	m_dwCurrentTime	= Level().timeServer();

@@ -50,6 +50,11 @@ public:
 		if (m_lua_object)	luabind::call_member<void>(*m_lua_object,*m_method_name);
 	}
 
+	IC		bool		assigned	() const
+	{
+		return				(m_lua_function || m_lua_object);
+	}
+
 };
 
 #define SCRIPT_CALLBACK_EXECUTE_0(callback_class) {																							\
