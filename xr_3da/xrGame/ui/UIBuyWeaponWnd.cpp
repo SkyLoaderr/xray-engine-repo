@@ -585,7 +585,7 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				ToSlot();
 				break;
 			case TO_BELT_ACTION:	
-				ToBelt();
+///				ToBelt();
 				break;
 			case TO_BAG_ACTION:	
 				ToBag();
