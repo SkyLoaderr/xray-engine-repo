@@ -1,0 +1,79 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "oggenc", "oggenc.vcproj", "{44ED6280-9FFD-4F72-A5DF-E9F0EE243FFE}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "oggenc_dynamic", "oggenc_dynamic.vcproj", "{16531FE4-040F-4206-BFF7-5402F087512C}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogginfo", "ogginfo.vcproj", "{05D18067-84D8-4E80-BADB-12A10661A9B1}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tools", "tools.vcproj", "{07153BD1-42F4-4B3E-B05C-EB9C450D922C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{37196900-095E-4D06-8BBF-2603314D5B15} = {37196900-095E-4D06-8BBF-2603314D5B15}
+		{8E57A618-1459-4911-806D-2C6F0650CB36} = {8E57A618-1459-4911-806D-2C6F0650CB36}
+		{05D18067-84D8-4E80-BADB-12A10661A9B1} = {05D18067-84D8-4E80-BADB-12A10661A9B1}
+		{44ED6280-9FFD-4F72-A5DF-E9F0EE243FFE} = {44ED6280-9FFD-4F72-A5DF-E9F0EE243FFE}
+		{16531FE4-040F-4206-BFF7-5402F087512C} = {16531FE4-040F-4206-BFF7-5402F087512C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vcut", "vcut.vcproj", "{8E57A618-1459-4911-806D-2C6F0650CB36}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vorbiscomment", "vorbiscomment.vcproj", "{37196900-095E-4D06-8BBF-2603314D5B15}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SourceCodeControl) = preSolution
+		SccNumberOfProjects = 2
+		SccProjectName0 = \u0022$/External\u0020Library/OGG/vorbis-tools\u0022,\u0020MOTAAAAA
+		SccLocalPath0 = ..
+		SccProvider0 = MSSCCI:Microsoft\u0020Visual\u0020SourceSafe
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection0 = win32\\
+		SolutionUniqueID = {9E72FEBD-C96A-4F46-90BA-653ACC72F5CE}
+		SccProjectUniqueName1 = oggenc_dynamic.vcproj
+		SccLocalPath1 = ..
+		CanCheckoutShared = true
+		SccProjectFilePathRelativizedFromConnection1 = win32\\
+	EndGlobalSection
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{44ED6280-9FFD-4F72-A5DF-E9F0EE243FFE}.Debug.ActiveCfg = Debug|Win32
+		{44ED6280-9FFD-4F72-A5DF-E9F0EE243FFE}.Debug.Build.0 = Debug|Win32
+		{44ED6280-9FFD-4F72-A5DF-E9F0EE243FFE}.Release.ActiveCfg = Release|Win32
+		{44ED6280-9FFD-4F72-A5DF-E9F0EE243FFE}.Release.Build.0 = Release|Win32
+		{16531FE4-040F-4206-BFF7-5402F087512C}.Debug.ActiveCfg = Debug|Win32
+		{16531FE4-040F-4206-BFF7-5402F087512C}.Debug.Build.0 = Debug|Win32
+		{16531FE4-040F-4206-BFF7-5402F087512C}.Release.ActiveCfg = Release|Win32
+		{16531FE4-040F-4206-BFF7-5402F087512C}.Release.Build.0 = Release|Win32
+		{05D18067-84D8-4E80-BADB-12A10661A9B1}.Debug.ActiveCfg = Debug|Win32
+		{05D18067-84D8-4E80-BADB-12A10661A9B1}.Debug.Build.0 = Debug|Win32
+		{05D18067-84D8-4E80-BADB-12A10661A9B1}.Release.ActiveCfg = Release|Win32
+		{05D18067-84D8-4E80-BADB-12A10661A9B1}.Release.Build.0 = Release|Win32
+		{07153BD1-42F4-4B3E-B05C-EB9C450D922C}.Debug.ActiveCfg = Debug|Win32
+		{07153BD1-42F4-4B3E-B05C-EB9C450D922C}.Debug.Build.0 = Debug|Win32
+		{07153BD1-42F4-4B3E-B05C-EB9C450D922C}.Release.ActiveCfg = Release|Win32
+		{07153BD1-42F4-4B3E-B05C-EB9C450D922C}.Release.Build.0 = Release|Win32
+		{8E57A618-1459-4911-806D-2C6F0650CB36}.Debug.ActiveCfg = Debug|Win32
+		{8E57A618-1459-4911-806D-2C6F0650CB36}.Debug.Build.0 = Debug|Win32
+		{8E57A618-1459-4911-806D-2C6F0650CB36}.Release.ActiveCfg = Release|Win32
+		{8E57A618-1459-4911-806D-2C6F0650CB36}.Release.Build.0 = Release|Win32
+		{37196900-095E-4D06-8BBF-2603314D5B15}.Debug.ActiveCfg = Debug|Win32
+		{37196900-095E-4D06-8BBF-2603314D5B15}.Debug.Build.0 = Debug|Win32
+		{37196900-095E-4D06-8BBF-2603314D5B15}.Release.ActiveCfg = Release|Win32
+		{37196900-095E-4D06-8BBF-2603314D5B15}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,8 @@
+;
+; vorbisfile.def
+;
+; last modified: $Id: vorbisfile.def,v 1.6 2003/10/01 22:27:26 giles Exp $
+;
+LIBRARY
+EXPORTS
+ogg_enc
