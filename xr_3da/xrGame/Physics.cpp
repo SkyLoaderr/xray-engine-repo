@@ -558,7 +558,7 @@ void CPHWorld::Destroy(){
 
 //////////////////////////////////////////////////////////////////////////////
 static dReal rest=0.f;
-const int dis_frames=6;
+const int dis_frames=5;
 void CPHWorld::Step(dReal step)
 {
 			// compute contact joints and forces
@@ -1002,7 +1002,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2){
 	previous_p[0]=dInfinity;
 	previous_r[0]=0.f;
 	dis_count_f=0;
-	previous_f[0]=dInfinity;
+	//previous_f[0]=dInfinity;
 }
 
 void CPHShell::Deactivate(){
@@ -1016,9 +1016,9 @@ bActive=false;
 }
 
 void CPHShell::PhDataUpdate(dReal step){
-		//////////////////////////////////////////////////////////////////////
-		/////limit velocity of the main body/////////////////////////////////
-		/////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
+////limit velocity of the main body/////////////////////////////////
+/////////////////////////////////////////////////////////////////////
 	if( !dBodyIsEnabled(m_body)) {
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
@@ -1042,27 +1042,20 @@ void CPHShell::PhDataUpdate(dReal step){
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
 				}
 
-//////////////////////////////////////////////////////////////////////////////////////////
-////////disabling main body///////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+////////disabling main body//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
 				if(previous_p[0]==dInfinity&&ph_world->disable_count==0){
 					const dReal* position=dBodyGetPosition(m_body);
-					previous_p[0]=position[0];
-					previous_p[1]=position[1];
-					previous_p[2]=position[2];
+					memcpy(previous_p,position,sizeof(dVector3));
+					memcpy(previous_p1,position,sizeof(dVector3));
 					const dReal* rotation=dBodyGetRotation(m_body);
-					previous_r[0]=rotation[0];
-					previous_r[1]=rotation[1];
-					previous_r[2]=rotation[2];
-					previous_r[4]=rotation[4];
-					previous_r[5]=rotation[5];
-					previous_r[6]=rotation[6];
-					previous_r[8]=rotation[8];
-					previous_r[9]=rotation[9];
-					previous_r[10]=rotation[10];
+					memcpy(previous_r,rotation,sizeof(dMatrix3));
+					memcpy(previous_r1,rotation,sizeof(dMatrix3));
 					previous_dev=0;
 					previous_v=0;
 					dis_count_f=1;
+					dis_count_f1=0;
 				}
 
 			
@@ -1077,7 +1070,6 @@ void CPHShell::PhDataUpdate(dReal step){
 						  velocity[1]*velocity[1]+
 						  velocity[2]*velocity[2]);
 					mag_v/=dis_count_f;
-					//mag_v/=dis_count_f;
 					const dReal* current_r=dBodyGetRotation(m_body);
 					dMatrix3 rotation_m;
 					
@@ -1093,42 +1085,63 @@ void CPHShell::PhDataUpdate(dReal step){
 										   deviation_v[2]*deviation_v[2]);
 
 					deviation/=dis_count_f;
-					//deviation/=dis_count_f;
 					if(mag_v<0.004* dis_frames && deviation<0.0001*dis_frames)
 						dBodyDisable(m_body);
 					if((previous_dev>deviation&&previous_v>mag_v)
-						//||
-					   //(mag_v<0.4* dis_frames && deviation<0.1*dis_frames)
 					  ) 
 					{
-					dis_count_f*=4;
+					dis_count_f++;
 					previous_dev=deviation;
 					previous_v=mag_v;
-					return;
+					//return;
 					}
+					else{
 					previous_dev=0;
 					previous_v=0;
 					dis_count_f=1;
-					const dReal* position=dBodyGetPosition(m_body);
-					previous_p[0]=position[0];
-					previous_p[1]=position[1];
-					previous_p[2]=position[2];
-					const dReal* rotation=dBodyGetRotation(m_body);
-					previous_r[0]=rotation[0];
-					previous_r[1]=rotation[1];
-					previous_r[2]=rotation[2];
-					previous_r[4]=rotation[4];
-					previous_r[5]=rotation[5];
-					previous_r[6]=rotation[6];
-					previous_r[8]=rotation[8];
-					previous_r[9]=rotation[9];
-					previous_r[10]=rotation[10];
+					memcpy(previous_p,current_p,sizeof(dVector3));
+					memcpy(previous_r,current_r,sizeof(dMatrix3));
+					}
+
+					{
+					//const dReal* current_p=dBodyGetPosition(m_body);
+					dVector3 velocity={current_p[0]-previous_p1[0],
+									   current_p[1]-previous_p1[1],
+									   current_p[2]-previous_p1[2]};
+					dReal mag_v=sqrtf(
+						  velocity[0]*velocity[0]+
+						  velocity[1]*velocity[1]+
+						  velocity[2]*velocity[2]);
+					//mag_v/=dis_count_f;
+					//const dReal* current_r=dBodyGetRotation(m_body);
+					dMatrix3 rotation_m;
+					dMULTIPLYOP1_333(rotation_m,=,previous_r1,current_r);
+			
+					dVector3 deviation_v={rotation_m[0]-1.f,
+										  rotation_m[5]-1.f,
+										  rotation_m[10]-1.f
+					};
+
+					dReal deviation =sqrtf(deviation_v[0]*deviation_v[0]+
+										   deviation_v[1]*deviation_v[1]+
+										   deviation_v[2]*deviation_v[2]);
+
+					//deviation/=dis_count_f;
+					if(mag_v<0.04* dis_frames && deviation<0.01*dis_frames)
+						dis_count_f1++;
+					else{
+						memcpy(previous_p1,current_p,sizeof(dVector3));
+						memcpy(previous_r1,current_r,sizeof(dMatrix3));
+					}
+					if(dis_count_f1>4) dis_count_f*=10;
+					}
+
 
 					}
+					
 				
 				}
-
-			/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
 	
 				
 
