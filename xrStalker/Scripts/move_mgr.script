@@ -253,6 +253,17 @@ function move_mgr:sync_ok()
 	return true
 end
 
+function move_mgr:no_need_to_rotate()
+	if not self.patrol_look then
+		return false
+	end
+
+	local wayp_pos = self.patrol_look:point(self.last_look_index)
+	local y = yaw(self.object:direction(), utils.vector_copy_by_val(wayp_pos):sub(self.object:position()))
+
+	return y < 0.3
+end
+
 function move_mgr:update(no_dialog_mgr_update)
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 
@@ -283,8 +294,9 @@ function move_mgr:update(no_dialog_mgr_update)
 	end
 
 	if self.state == state_standing_before_anim and
-	   self.expiration_time and device():time_global() >= self.expiration_time and
-	   not self.object:is_body_turning() then
+	   (  (self.expiration_time and device():time_global() >= self.expiration_time and not self.object:is_body_turning())
+	      or self:no_need_to_rotate()   ) then
+
 		if self.retval_after_rotation then
 			if not self.move_cb_func then
 				utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
@@ -662,6 +674,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 		self.state = state_standing_before_anim
 		self.object:set_movement_type(move.stand)
+		self:update_standing_state()
 
 		-- Сразу же стартовать update, не ждать execute. Тогда, если мы уже смотрим
 		-- в нужную сторону - не будет паузы в несколько миллисекунд на поворот.
