@@ -50,7 +50,7 @@ void Startup(LPSTR     lpCmdLine)
 	strcpy(cmd,lpCmdLine);
 	strlwr(cmd);
 	if (strstr(cmd,"-?") || strstr(cmd,"-h"))			{ Help(); return; }
-	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-c")==0)&& (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0))	{ Help(); return; }
+	if ((strstr(cmd,"-f")==0) && (strstr(cmd,"-g")==0) && (strstr(cmd,"-m")==0) && (strstr(cmd,"-s")==0))	{ Help(); return; }
 	if (strstr(cmd,"-o"))								bModifyOptions = TRUE;
 
 	// Give a LOG-thread a chance to startup
