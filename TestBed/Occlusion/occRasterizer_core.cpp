@@ -83,7 +83,7 @@ void i_scan		(int curY, float leftX, float lhx, float rightX, float rhx, float s
 	if (end_c<endR)			{endT	= endR;		endX	= end_c;	}
 	
 	// guard-banding and clipping
-	int minT		= iFloor(startT-1), maxT = iCeil(endT+1);
+	int minT		= iFloor(startT)-1, maxT = iCeil(endT)+1;
 	Vclamp			(minT,1,occ_dim-1);
 	Vclamp			(maxT,1,occ_dim-1);
 	if (minT >= maxT)		return;
