@@ -116,16 +116,19 @@ void CBuild::xrPhase_Subdivide()
 		DWORD M1			= mem_Usage();
 		g_bUnregister		= false;
 		DWORD verts_old		= g_vertices.size();
-		for (int it=g_vertices.size()-1; it>=0; it--)
+		for (int it=0; it<int(g_vertices.size()); it++)
 		{
 			Progress(1.f - float(it)/float(g_vertices.size()));
 			
 			Vertex* V = g_vertices[it];
 			if (V->adjacent.empty())	{
 				_DELETE			(V);
-				g_vertices.erase(g_vertices.begin()+it);
+				it --;
 			}
 		}
+		vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),0);
+		g_vertices.erase	(_end,g_vertices.end());
+
 		g_bUnregister		= true;
 		DWORD M2			= mem_Usage();
 		Msg("Compact: %d / %d (%d), %d verts removed",M1,M2,M1-M2,verts_old-g_vertices.size());

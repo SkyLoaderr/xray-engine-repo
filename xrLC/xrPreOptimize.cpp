@@ -89,10 +89,10 @@ void CBuild::PreOptimize()
 				goto once_more;
 			}
 		}
-
+		
 		// If we get here - there is no similar vertices - register in hash tables
 		H.push_back	(pTest);
-
+		
 		DWORD ixE,iyE,izE;
 		ixE = iFloor((V.x+VMeps.x-VMmin.x)*scale.x);
 		iyE = iFloor((V.y+VMeps.y-VMmin.y)*scale.y);
@@ -107,7 +107,7 @@ void CBuild::PreOptimize()
 		if ((iyE!=iy)&&(izE!=iz))				HASH[ix][iyE][izE]->push_back		(pTest);
 		if ((ixE!=ix)&&(iyE!=iy)&&(izE!=iz))	HASH[ixE][iyE][izE]->push_back		(pTest);
 	}
-
+	
 	Status("Removing degenerated/duplicated faces...");
 	g_bUnregister = true;
 	for (it=0; it<(int)g_faces.size(); it++)
@@ -120,21 +120,24 @@ void CBuild::PreOptimize()
 		}
 		Progress(float(it)/float(g_faces.size()));
 	}
-
+	
 	Status("Removing isolated vertices...");
 	g_bUnregister = true;
-	for (it = 0; it<(int)g_vertices.size(); it++)
+	for (it = 0; it<int(g_vertices.size()); it++)
 	{
 		Status("%d",it);
 		R_ASSERT(it>=0 && it<(int)g_vertices.size());
 		if (g_vertices[it]->adjacent.empty()) {
 			// isolated
-			delete g_vertices[it];
+			_DELETE(g_vertices[it]);
 			it--;
 		}
 	}
-	g_bUnregister = true;
+	vecVertexIt	_end	= std::remove	(g_vertices.begin(),g_vertices.end(),0);
+	g_vertices.erase	(_end,g_vertices.end());
+	g_bUnregister		= true;
 
+	Status("Freeing memory...");
 	DWORD M1 = mem_Usage();
 	{
 		for (int ix=0; ix<HDIM_X+1; ix++)
