@@ -171,8 +171,7 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	float	_h						= float(Device.dwHeight);
 	float	o_w						= (.5f / _w);
 	float	o_h						= (.5f / _h);
-	Fmatrix			m_TexelAdjust		= 
-	{
+	Fmatrix			m_TexelAdjust	= {
 		0.5f,				0.0f,				0.0f,			0.0f,
 		0.0f,				-0.5f,				0.0f,			0.0f,
 		0.0f,				0.0f,				1.0f,			0.0f,
