@@ -20,21 +20,21 @@ function add_member (obj)
     end
     
     if ini:line_exist ("zone_spawner", "id") == false then
-       printf ("Object %s can't attach to zone spawner - ID number not found", obj:name ()) 
+       --printf ("Object %s can't attach to zone spawner - ID number not found", obj:name ()) 
        return
     end       
     
     local zone_id = ini:r_u32 ("zone_spawner", "id")
     for a = 1, table.getn (zones), 1 do
         if zones[a].id == zone_id then
-           printf ("Object %s attached to zone with id %d", obj:name (), zones[a].id)
+           --printf ("Object %s attached to zone with id %d", obj:name (), zones[a].id)
            zones[a]:add_member (obj)
            return
         end
     end 
     
     local t = {id = obj.id, id_spawner = zone_id}
-    printf ("Object %s include to temporary store", obj:name ())
+    --printf ("Object %s include to temporary store", obj:name ())
     table.insert (temporary_store, t)
     this.switch_offline (t.id)
     
@@ -62,7 +62,7 @@ function zone_spawner:__init (zone, ini)
     self.activated = false
     self.infoportions = {}
     if ini:line_exist ("zone_spawner", "id") == false then
-       printf ("Zone spawner without ID. Set defualt ID = 0") 
+       --printf ("Zone spawner without ID. Set defualt ID = 0") 
        self.id = 0
     else
        self.id = ini:r_u32 ("zone_spawner", "id")
@@ -71,13 +71,13 @@ function zone_spawner:__init (zone, ini)
     if ini:line_exist ("zone_spawner", "infoportion") == true then
        local infos = ini:r_string ("zone_spawner", "infoportion")
        if infos ~= nil then 
-          printf ("Zone has infoportions - %s", infos)
+          --printf ("Zone has infoportions - %s", infos)
           self.infoportions = utils.parse_params (infos)
        end
     end   
     
     table.insert (zones, self)
-    printf ("Zone %s is added to binder", zone:name ())
+    --printf ("Zone %s is added to binder", zone:name ())
     self.members = {}
     for a = 1, table.getn (temporary_store), 1 do
         if temporary_store[a].id_spawner == self.id then
@@ -97,13 +97,12 @@ function zone_spawner:on_enter (obj)
     local founded = false
     local size = table.getn (self.infoportions)
     if size ~= 0 then
-       printf ("test 1") 
        for a = 1, size, 1 do
           if actor:has_info (self.infoportions[a]) == true then
-             printf ("Actor have a infoportion %s", self.infoportions[a]) 
+             --printf ("Actor have a infoportion %s", self.infoportions[a]) 
              founded = true
-          else
-             printf ("Actor don't have a infoportion %s", self.infoportions[a])    
+          --else
+             --printf ("Actor don't have a infoportion %s", self.infoportions[a])    
           end
        end
     else 
