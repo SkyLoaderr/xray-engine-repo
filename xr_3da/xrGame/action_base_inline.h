@@ -186,7 +186,7 @@ TEMPLATE_SPECIALIZATION
 IC	const typename CBaseAction::_value_type	&CBaseAction::property	(const _condition_type &condition_id) const
 {
 	VERIFY					(m_storage);
-	return					(m_storage->property(condition_id))
+	return					(m_storage->property(condition_id));
 }
 
 TEMPLATE_SPECIALIZATION

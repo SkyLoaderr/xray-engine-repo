@@ -66,6 +66,8 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::finalize				()
 {
 	inherited_action::finalize	();
+	current_action().finalize	();
+	m_initialized				= false;
 }
 
 TEMPLATE_SPECIALIZATION
