@@ -112,7 +112,8 @@ VOID CDeflector::OA_Export()
 	dim.set		(float(lm.dwWidth), float(lm.dwHeight));
 	half.set	(.5f/512.f,.5f/512.f);
 	scale.set	(dim.u-1,dim.v-1);
-	scale.dist	(dim);
+	scale.u		/= dim.u;
+	scale.v		/= dim.v;
 
 	// *** Addressing 
 	// also calculate center & radius in 3D space
@@ -184,9 +185,9 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 			UVtri	P;
 			Face	*F = T->owner;
 			
-			P.uv[0].set(T->uv[0]); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); // P.uv[0].add(half);
-			P.uv[1].set(T->uv[1]); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); // P.uv[1].add(half);
-			P.uv[2].set(T->uv[2]); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); // P.uv[2].add(half); 
+			P.uv[0].set(T->uv[0]); P.uv[0].sub(half); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); // P.uv[0].add(half);
+			P.uv[1].set(T->uv[1]); P.uv[1].sub(half); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); // P.uv[1].add(half);
+			P.uv[2].set(T->uv[2]); P.uv[2].sub(half); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); // P.uv[2].add(half); 
 			
 			P.owner			= F;
 			F->pDeflector	= this;
@@ -205,9 +206,9 @@ VOID CDeflector::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BO
 			UVtri	P;
 			Face	*F = T->owner;
 			
-			P.uv[0].set(T->uv[0]); swap(P.uv[0].u,P.uv[0].v); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); // P.uv[0].add(half);
-			P.uv[1].set(T->uv[1]); swap(P.uv[1].u,P.uv[1].v); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); // P.uv[1].add(half);
-			P.uv[2].set(T->uv[2]); swap(P.uv[2].u,P.uv[2].v); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); // P.uv[2].add(half); 
+			P.uv[0].set(T->uv[0]); P.uv[0].sub(half); swap(P.uv[0].u,P.uv[0].v); P.uv[0].mul(scale); P.uv[0].add(base); P.uv[0].add(guard); // P.uv[0].add(half);
+			P.uv[1].set(T->uv[1]); P.uv[1].sub(half); swap(P.uv[1].u,P.uv[1].v); P.uv[1].mul(scale); P.uv[1].add(base); P.uv[1].add(guard); // P.uv[1].add(half);
+			P.uv[2].set(T->uv[2]); P.uv[2].sub(half); swap(P.uv[2].u,P.uv[2].v); P.uv[2].mul(scale); P.uv[2].add(base); P.uv[2].add(guard); // P.uv[2].add(half); 
 			
 			P.owner			= F;
 			F->pDeflector	= this;

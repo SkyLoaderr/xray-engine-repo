@@ -283,7 +283,7 @@ VOID CDeflector::Light()
 	for (DWORD ref=254; ref>0; ref--) if (!ApplyBorders(lm,ref)) break;
 	lm.dwWidth	= o_x;	lm.dwHeight	= o_y;
 	
-	// Try to shrink lightmap in U & V direction to ONE pixel
+	// Try to shrink lightmap in U & V direction to Zero-pixel LM (only border)
 	{
 		// Calculate average color
 		DWORD _r=0;	DWORD _g=0;	DWORD _b=0;
@@ -315,13 +315,6 @@ VOID CDeflector::Light()
 					DWORD g		= RGBA_GETGREEN	(pixel);
 					DWORD b		= RGBA_GETBLUE	(pixel);
 
-					/*
-					float f_r	= float(r)-float(_r);
-					float f_g	= float(g)-float(_g);
-					float f_b	= float(b)-float(_b);
-					float dist	= sqrtf(f_r*f_r + f_g*f_g + f_b*f_b);
-					*/
-
 					if (_abs(s32(r)-s32(_r))>rms)	{ bCompress=FALSE; break; }
 					if (_abs(s32(g)-s32(_g))>rms)	{ bCompress=FALSE; break; }
 					if (_abs(s32(b)-s32(_b))>rms)	{ bCompress=FALSE; break; }
@@ -346,6 +339,11 @@ VOID CDeflector::Light()
 			lm.pSurface			= compressed;
 			lm.dwHeight			= 0;
 			lm.dwWidth			= 0;
+		} else {
+			// *** Try to bilinearly filter lightmap down and up
+			DWORD	filtered	[512*512];
+			
+			
 		}
 	}
 }
