@@ -19,26 +19,27 @@ protected:
 	Fvector2				vHalfPixel;
 	Fvector2				vUVSize;	
 
-	u32					dwCurrentColor;
+	u32						dwCurrentColor;
 	float					fCurrentSize;
 	float					fCurrentX, fCurrentY;
 	Fvector2				vInterval;
 
 	int						CharMap[256];
-	float					WFMap[256];
+	Fvector					WFMap[256];
 	int						iNumber;
 	vector<String>			strings;
 
 	Shader*					pShader;
 	CVS*					VS;
 
-	u32					dwFlags;
+	u32						dwFlags;
 	float					fScale;
 public:
 	enum{
 		fsGradient			= (1<<0),
 		fsDeviceIndependent	= (1<<1),
 		fsVariableWidth		= (1<<2),
+		fsPreloadedTC		= (1<<3),
 		fsForceDWORD		= (-1)
 	};
 protected:
@@ -62,7 +63,7 @@ public:
 			float	X			= 0;
 			if (len) {
 				for (int j=0; j<len; j++) {
-					float cw	= WFMap		[s[j]];
+					float cw	= WFMap[s[j]].z;
 					X			+=cw;
 				}
 			}

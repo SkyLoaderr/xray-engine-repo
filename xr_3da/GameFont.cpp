@@ -20,7 +20,7 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, u32 fla
 	Device.seqDevCreate.Add		(this);
 	Device.seqDevDestroy.Add	(this);
 	vUVSize.set					(1.f/float(iNumber),1.f/float(iNumber));
-	for (int i=0; i<256; i++){	CharMap[i] = i; WFMap[i] = 1.f;}
+	for (int i=0; i<256; i++){	CharMap[i] = i; WFMap[i].set(1.f,1.f,1.f);}
 	strings.reserve				(128);
 
 	Size						(float(tsize)/float(iCPL));
@@ -29,16 +29,26 @@ CGameFont::CGameFont(LPCSTR shader, LPCSTR texture, int tsize, int iCPL, u32 fla
 	strcpy(buf,texture); if (strext(buf)) *strext(buf)=0;
 #ifdef M_BORLAND
 	if (!Engine.FS.Exist(fn,Engine.FS.m_GameTextures.m_Path,buf,	".ini")){
-		ELog.Msg(mtError,"Can't find font ini file '%s'",fname);
 #else
 	if (Engine.FS.Exist(fn,Path.Textures,buf,".ini")){
 #endif
-		CInifile* ini			= CInifile::Create(fn);
-		for (int i=0; i<256; i++)
-			WFMap[i]			= ini->ReadFLOAT("Char Widths",itoa(i,buf,10))/fCurrentSize;
-		CInifile::Destroy		(ini);
-		vInterval.set			(1.f,1.f);
-		dwFlags					|= fsVariableWidth;
+		CInifile* ini		= CInifile::Create(fn);
+		if (ini->SectionExists("char widths")){
+			for (int i=0; i<256; i++)
+				WFMap[i].z	= ini->ReadFLOAT("char widths",itoa(i,buf,10))/fCurrentSize;
+			vInterval.set	(1.f,1.f);
+			dwFlags			|= fsVariableWidth;
+		}else if (ini->SectionExists("symbol_coords")){
+			for (int i=0; i<256; i++){
+				sprintf		(buf,"%3s",i);
+				Fvector4 v	= ini->ReadVECTOR4("symbol_coords",buf);
+				WFMap[i].z	= (v[2]-v[0])/fCurrentSize;
+				dwFlags		|= fsPreloadedTC|fsVariableWidth;
+			}
+			vInterval.set	(1.f,1.f);
+			dwFlags			|= fsVariableWidth;
+		}else THROW;
+		CInifile::Destroy	(ini);
 	}else{
 		if (dwFlags&fsDeviceIndependent)	vInterval.set	(0.65f,1.f);
 		else								vInterval.set	(0.75f,1.f);
@@ -128,15 +138,15 @@ void CGameFont::OnRender()
 				float	tu,tv;
 				for (int j=0; j<len; j++) {
 					int c		= CharMap	[PS.string[j]];
-					float cw	= WFMap		[PS.string[j]];
-					float scw	= S*cw;
+					Fvector& l	= WFMap		[PS.string[j]];
+					float scw	= S*l.z;
 					if (c>=0){
 						tu		= (c%iNumber)*vUVSize.x+vHalfPixel.x;
 						tv		= (c/iNumber)*vUVSize.y+vHalfPixel.y;
 						v->set(X,		Y2,	clr2,tu,				tv+vUVSize.y);	v++;
 						v->set(X,		Y,	clr, tu,				tv);			v++;
-						v->set(X+scw,	Y2,	clr2,tu+vUVSize.x*cw,	tv+vUVSize.y);	v++;
-						v->set(X+scw,	Y,	clr, tu+vUVSize.x*cw,	tv);			v++;
+						v->set(X+scw,	Y2,	clr2,tu+vUVSize.x*l.z,	tv+vUVSize.y);	v++;
+						v->set(X+scw,	Y,	clr, tu+vUVSize.x*l.z,	tv);			v++;
 					}
 					X			+=scw*vInterval.x;
 				}
