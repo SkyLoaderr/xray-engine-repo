@@ -530,7 +530,7 @@ end
 --Constant evaluator
 class "const_evaluator" (property_evaluator)
 
-function const_evaluator:__init (value) super ()
+function const_evaluator:__init (name, value) super (nil, name)
     self.value = value
 end
 
