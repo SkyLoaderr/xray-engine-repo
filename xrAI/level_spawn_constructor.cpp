@@ -18,6 +18,8 @@
 #include "game_base_space.h"
 #include "game_spawn_constructor.h"
 
+const float y_shift_correction = .15f;
+
 CLevelSpawnConstructor::~CLevelSpawnConstructor					()
 {
 	GRAPH_POINT_STORAGE::iterator	I = m_graph_points.begin();
@@ -222,7 +224,7 @@ IC	void CLevelSpawnConstructor::free_group_objects					()
 	SPAWN_GRPOUP_OBJECTS::iterator	I = m_spawn_objects.begin();
 	SPAWN_GRPOUP_OBJECTS::iterator	E = m_spawn_objects.end();
 	for ( ; I != E; I++)
-		xr_delete		((*I).second);
+		xr_delete					((*I).second);
 }
 
 void CLevelSpawnConstructor::fill_spawn_groups					()
@@ -286,14 +288,16 @@ void CLevelSpawnConstructor::correct_objects					()
 			m_spawns[i]->m_tNodeID = game_graph().vertex(m_level_graph_vertex_id)->level_vertex_id();
 			continue;
 		}
-		m_spawns[i]->m_tNodeID = level_graph().vertex(u32(-1),m_spawns[i]->o_Position);
+		Fvector				position = m_spawns[i]->o_Position;
+		position.y			+= y_shift_correction;
+		m_spawns[i]->m_tNodeID = level_graph().vertex(u32(-1),position);
 		VERIFY				(level_graph().valid_vertex_id(m_spawns[i]->m_tNodeID));
-		if (m_spawns[i]->used_ai_locations() && !level_graph().inside(level_graph().vertex(m_spawns[i]->m_tNodeID),m_spawns[i]->o_Position)) {
+		if (m_spawns[i]->used_ai_locations() && !level_graph().inside(level_graph().vertex(m_spawns[i]->m_tNodeID),position)) {
 			Fvector			new_position = level_graph().vertex_position(m_spawns[i]->m_tNodeID);
-			clMsg			("[%s][%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_level.name(),*m_spawns[i]->s_name,m_spawns[i]->name_replace(),VPUSH(m_spawns[i]->o_Position),VPUSH(new_position));
+			clMsg			("[%s][%s][%s] : position changed from [%f][%f][%f] -> [%f][%f][%f]",m_level.name(),*m_spawns[i]->s_name,m_spawns[i]->name_replace(),VPUSH(position),VPUSH(new_position));
 			m_spawns[i]->o_Position	= new_position;
 		}
-		u32 dwBest = cross_table().vertex(m_spawns[i]->m_tNodeID).game_vertex_id();
+		u32					dwBest = cross_table().vertex(m_spawns[i]->m_tNodeID).game_vertex_id();
 		VERIFY				(game_graph().vertex(dwBest)->level_id() == m_level.id());
 		float fCurrentBestDistance = cross_table().vertex(m_spawns[i]->m_tNodeID).distance();
 		if (dwBest == u32(-1)) {
