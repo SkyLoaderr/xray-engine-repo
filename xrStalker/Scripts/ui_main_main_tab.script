@@ -18,7 +18,7 @@ function main_main_tab:__finalize()
 end
 
 function main_main_tab:InitControls()
-	ui_main_base_tab.InitControls(self)
+	ui_main_base_tab..main_base_tab.InitControls(self)
 	
 	local btn_new_rect    = {x = self.btn.x,
 							 y = self.btn.y,

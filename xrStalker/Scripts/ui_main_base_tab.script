@@ -7,15 +7,15 @@
 -- Copyright 2004 GSC Game World
 --
 
-class "ui_main_base_tab" (CUIScriptWnd)
+class "main_base_tab" (CUIScriptWnd)
 
-function ui_main_base_tab:__init() super()
+function main_base_tab:__init() super()
 end
 
-function ui_main_base_tab:__finalize()
+function main_base_tab:__finalize()
 end
 
-function ui_main_base_tab:InitControls()
+function main_base_tab:InitControls()
 	self.main_rect = {x = 0, y = 0, width = 257, height = 270}
 	// huge btn struct with all common parameters
 	self.btn = {}
