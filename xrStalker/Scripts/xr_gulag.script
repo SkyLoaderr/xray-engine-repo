@@ -200,6 +200,8 @@ function fract:clearAllJob(npc)
 			v.object = nil
 		end
 	end
+
+	xr_logic.gulag_activate(npc, gulag_tasks_ltx, "nil")
 end
 function fract:stalkerExist(npc)
 	if self.Object[npc:id()] ~= nil then
