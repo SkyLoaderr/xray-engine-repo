@@ -33,7 +33,7 @@ public:
 
 	virtual void		SetState		(EItemState e);
 	virtual void		OnMove			();
-	virtual void		Load			(CInifile *pIni, const char *section);
+	virtual void		Load			(LPCSTR section);
 	virtual void		OnNear			(CObject* O);
 };
 

@@ -40,7 +40,7 @@ CWeaponProtecta::~CWeaponProtecta()
 	_DELETE			(m_pShootPS);
 }
 
-void CWeaponProtecta::Load(CInifile* ini, const char* section){
+void CWeaponProtecta::Load(LPCSTR section){
 	inherited::Load(ini, section);
 	R_ASSERT(m_pHUD);
 	

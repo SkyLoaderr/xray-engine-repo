@@ -22,7 +22,7 @@ private:
 	static void __stdcall	cb_WheelBR			(CBoneInstance* B);
 public:
 	// Core events
-	virtual void			Load				( CInifile* ini, const char *section );
+	virtual void			Load				( LPCSTR section );
 	virtual BOOL			Spawn				( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 	virtual void			Update				( DWORD T ); 
 	virtual void			UpdateCL			( ); 

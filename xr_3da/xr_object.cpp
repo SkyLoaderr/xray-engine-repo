@@ -103,7 +103,7 @@ void CObject::UpdateTransform( )
 	svTransform.mulB_43		(mScale);
 }
 
-void CObject::Load				( CInifile* ini, const char *section )
+void CObject::Load				(LPCSTR section )
 {
 	// Name
 	R_ASSERT					(section);
@@ -119,20 +119,20 @@ void CObject::Load				( CInifile* ini, const char *section )
 	R_ASSERT					( pCreator );
 
 	// Visual
-	pVisualName					= strdup(ini->ReadSTRING(section,"visual"));
+	pVisualName					= strdup(pSettings->ReadSTRING(section,"visual"));
 	OnDeviceCreate				();
 	
 	// Collision model
 	cfModel						= NULL;
-	if (ini->LineExists(section,"cform")) {
-		LPCSTR cf				= ini->ReadSTRING(section, "cform");
+	if (pSettings->LineExists(section,"cform")) {
+		LPCSTR cf				= pSettings->ReadSTRING(section, "cform");
 		
 		if (strcmp(cf,"skeleton")==0) cfModel	= new CCF_Skeleton(this);
 		else {
 			cfModel					= new CCF_Polygonal(this);
-			((CCF_Polygonal*)(cfModel))->LoadModel(ini, section);
+			((CCF_Polygonal*)(cfModel))->LoadModel(pSettings, section);
 		}
-		pCreator->ObjectSpace.Object_Register(this);
+		pCreator->ObjectSpace.Object_Register	(this);
 		cfModel->OnMove();
 	}
 

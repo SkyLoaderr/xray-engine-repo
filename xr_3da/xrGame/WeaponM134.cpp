@@ -89,32 +89,32 @@ CWeaponM134::~CWeaponM134()
 	for (int i=0; i<SND_RIC_COUNT; i++) pSounds->Delete(sndRicochet[i]);
 }
 
-void CWeaponM134::Load(CInifile* ini, const char* section)
+void CWeaponM134::Load	(LPCSTR section)
 {
-	inherited::Load(ini, section);
+	inherited::Load		(section);
 	R_ASSERT(m_pHUD);
 	
-	LPCSTR rot_bone = ini->ReadSTRING	(section,"rot_bone");
+	LPCSTR rot_bone = pSettings->ReadSTRING	(section,"rot_bone");
 	
 	iWpnRotBone		= PKinematics(Visual())->LL_BoneID(rot_bone);
 	iHUDRotBone		= PKinematics(m_pHUD->Visual())->LL_BoneID(rot_bone);
 	
-	fRotateMaxSpeed		= ini->ReadFLOAT	(section,"rot_max_speed");
-	fRotateSpinupAccel	= ini->ReadFLOAT	(section,"rot_spinup_accel");
-	fRotateBreakAccel	= ini->ReadFLOAT	(section,"rot_break_accel");
+	fRotateMaxSpeed		= pSettings->ReadFLOAT	(section,"rot_max_speed");
+	fRotateSpinupAccel	= pSettings->ReadFLOAT	(section,"rot_spinup_accel");
+	fRotateBreakAccel	= pSettings->ReadFLOAT	(section,"rot_break_accel");
 	
-	LPCSTR fire_bone= ini->ReadSTRING	(section,"fire_bone");
+	LPCSTR fire_bone= pSettings->ReadSTRING	(section,"fire_bone");
 	iFireBone		= PKinematics(Visual())->LL_BoneID(fire_bone);
 	
-	bRotAxisHUD		= ini->ReadTOKEN(section,"rot_axis_hud",axis_token);
-	bRotAxisWpn		= ini->ReadTOKEN(section,"rot_axis_wpn",axis_token);
+	bRotAxisHUD		= pSettings->ReadTOKEN(section,"rot_axis_hud",axis_token);
+	bRotAxisWpn		= pSettings->ReadTOKEN(section,"rot_axis_wpn",axis_token);
 	
-	iFlameDiv		= ini->ReadINT	(section,"flame_div");
-	fFlameLength	= ini->ReadFLOAT(section,"flame_length");
-	fFlameSize		= ini->ReadFLOAT(section,"flame_size");
+	iFlameDiv		= pSettings->ReadINT	(section,"flame_div");
+	fFlameLength	= pSettings->ReadFLOAT(section,"flame_length");
+	fFlameSize		= pSettings->ReadFLOAT(section,"flame_size");
 	
-	dwServoMaxFreq	= ini->ReadINT(section,"servo_max_freq");
-	dwServoMinFreq	= ini->ReadINT(section,"servo_min_freq");
+	dwServoMaxFreq	= pSettings->ReadINT(section,"servo_max_freq");
+	dwServoMinFreq	= pSettings->ReadINT(section,"servo_min_freq");
 	
 	// PKinematics(pVisual)->PlayCycle("idle");
 	PKinematics(pVisual)->LL_GetInstance(iWpnRotBone).set_callback			(RotateCallback_norm,this);

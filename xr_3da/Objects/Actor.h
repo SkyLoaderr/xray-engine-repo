@@ -176,7 +176,7 @@ public:
 		return IsFocused()&&(cam_active==eacFirstEye); 
 	}
 
-	virtual void			Load				( CInifile* ini, const char *section );
+	virtual void			Load				( LPCSTR section );
 	virtual BOOL			Spawn				( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags );
 	
 	virtual void			Die					( );

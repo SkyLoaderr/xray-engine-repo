@@ -387,7 +387,7 @@ class CAI_Soldier : public CCustomMonster
 		bool bfCheckForEntityVisibility(CEntity *tpEntity);
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
-		void vfLoadSelectors(CInifile *ini, const char *section);
+		void vfLoadSelectors(LPCSTR section);
 		void vfAssignBones(CInifile *ini, const char *section);
 		void vfLoadAnimations();
 		bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
@@ -415,7 +415,7 @@ class CAI_Soldier : public CCustomMonster
 		virtual void  Update(DWORD DT);
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  Death();
-		virtual void  Load( CInifile* ini, const char* section );
+		virtual void  Load( LPCSTR section );
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);

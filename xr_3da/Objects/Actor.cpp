@@ -160,16 +160,16 @@ CActor::~CActor()
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
 }
 
-void CActor::Load(CInifile* ini, const char* section )
+void CActor::Load		(LPCSTR section )
 {
 	Msg("Loading actor: %s",section);
 
-	inherited::Load		(ini,section);
+	inherited::Load		(section);
 
-	m_fWalkAccel		= ini->ReadFLOAT(section,"walk_accel");	
-	m_fJumpSpeed		= ini->ReadFLOAT(section,"jump_speed");
-	m_fRunFactor		= ini->ReadFLOAT(section,"run_coef");
-	m_fCrouchFactor		= ini->ReadFLOAT(section,"crouch_coef");
+	m_fWalkAccel		= pSettings->ReadFLOAT(section,"walk_accel");	
+	m_fJumpSpeed		= pSettings->ReadFLOAT(section,"jump_speed");
+	m_fRunFactor		= pSettings->ReadFLOAT(section,"run_coef");
+	m_fCrouchFactor		= pSettings->ReadFLOAT(section,"crouch_coef");
 
 	R_ASSERT			(pVisual->Type==MT_SKELETON);
 

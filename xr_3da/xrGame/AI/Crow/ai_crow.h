@@ -80,7 +80,7 @@ class CAI_Crow : public CCustomMonster
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  Death();
-		virtual void  Load( CInifile* ini, const char* section );
+		virtual void  Load( LPCSTR section );
 		virtual void  Think();
 		virtual void  SelectAnimation( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  net_Export(NET_Packet* P);

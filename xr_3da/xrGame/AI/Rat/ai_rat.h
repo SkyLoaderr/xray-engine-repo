@@ -192,7 +192,7 @@ class CAI_Rat : public CCustomMonster
 	IC  CGroup getGroup() {return Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];};
 		bool bfCheckForVisibility(CEntity* tpEntity);
 		void vfLoadSounds();
-		void vfLoadSelectors(CInifile *ini, const char *section);
+		void vfLoadSelectors(LPCSTR section);
 		void vfLoadAnimations();
 		void vfAssignBones(CInifile *ini, const char *section);
 		bool bfCheckPath(AI::Path &Path);
@@ -228,7 +228,7 @@ class CAI_Rat : public CCustomMonster
 		virtual void  HitSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  SenseSignal(int amount, Fvector& vLocalDir, CEntity* who);
 		virtual void  Death();
-		virtual void  Load( CInifile* ini, const char* section );
+		virtual void  Load( LPCSTR section );
 		virtual void  Think();
 		virtual float EnemyHeuristics(CEntity* E);
 		virtual void  SelectEnemy(SEnemySelected& S);

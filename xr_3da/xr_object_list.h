@@ -23,23 +23,23 @@ public:
 								CObjectList			( );
 								~CObjectList		( );
 
-	CObject*					FindObjectByName	( char* name );
-	CObject*					FindObjectByCLS_ID	( CLASS_ID cls );
+	CObject*					FindObjectByName	( LPCSTR	name	);
+	CObject*					FindObjectByCLS_ID	( CLASS_ID	cls		);
 
-	VOID						Unload				( );
+	void						Unload				( );
 
-	CObject*					LoadOne				( CInifile *ini, const char* name);
+	CObject*					LoadOne				( LPCSTR	name	);
 
-	VOID						DestroyObject		( CObject* object );
+	void						DestroyObject		( CObject*	O		);
 
-	VOID						OnMove				( );
+	void						OnMove				( );
 
-	VOID						net_Register		(CObject* O);
-	VOID						net_Unregister		(CObject* O);
+	void						net_Register		(CObject*	O		);
+	void						net_Unregister		(CObject*	O		);
 
-	VOID						net_Export			(NET_Packet* P);
-	VOID						net_Import			(NET_Packet* P);
-	CObject*					net_Find			(u32 ID);
+	void						net_Export			(NET_Packet* P		);
+	void						net_Import			(NET_Packet* P		);
+	CObject*					net_Find			(u32 ID				);
 };
 
 #endif //__XR_OBJECT_LIST_H__

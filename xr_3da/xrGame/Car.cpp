@@ -46,9 +46,9 @@ void	CCar::cam_Update			(float dt)
 }
 
 // Core events
-void	CCar::Load					( CInifile* ini, const char *section )
+void	CCar::Load					( LPCSTR section )
 {
-	inherited::Load					(ini,section);
+	inherited::Load					(section);
 
 	CKinematics*	M				= PKinematics(pVisual);
 	R_ASSERT						(M);

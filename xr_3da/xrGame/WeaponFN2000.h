@@ -14,7 +14,7 @@ public:
 	virtual			~CWeaponFN2000	();
 	virtual	BOOL	HasOpticalAim	()	{ return TRUE; }
 	virtual float	GetZoomFactor	()	{ return fMaxZoomFactor; }
-	virtual void	Load			(CInifile* ini, const char* section);
+	virtual void	Load			(LPCSTR section);
 };
 
 #endif //__XR_WEAPON_FN2000_H__

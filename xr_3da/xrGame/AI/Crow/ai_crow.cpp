@@ -32,10 +32,10 @@ CAI_Crow::~CAI_Crow()
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
 }
 
-void CAI_Crow::Load(CInifile* ini, const char* section)
+void CAI_Crow::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
-	inherited::Load	(ini,section);
+	inherited::Load	(section);
 	
 	Fvector			P = vPosition;
 	P.x				+= ::Random.randF();

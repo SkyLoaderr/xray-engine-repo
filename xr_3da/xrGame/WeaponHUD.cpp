@@ -31,28 +31,28 @@ CWeaponHUD::~CWeaponHUD()
 	::Render->model_Delete		(pVisual);
 }
 
-void CWeaponHUD::Load(CInifile* ini, const char* section)
+void CWeaponHUD::Load			(LPCSTR section)
 {
 	// Geometry and transform
 	Fvector						pos,ypr;
-	pos							= ini->ReadVECTOR(section,"position");
-	ypr							= ini->ReadVECTOR(section,"orientation");
+	pos							= pSettings->ReadVECTOR(section,"position");
+	ypr							= pSettings->ReadVECTOR(section,"orientation");
 	ypr.mul						(PI/180.f);
 
 	m_Offset.setHPB				(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over		(pos);
 
 	// Visual
-	pVisualName					= strdup(ini->ReadSTRING(section, "visual"));
+	pVisualName					= strdup(pSettings->ReadSTRING(section, "visual"));
 	pVisual						= ::Render->model_Create(pVisualName);
 	R_ASSERT					(pVisual->Type==MT_SKELETON);
 
 	// fire bone	
-	LPCSTR fire_bone			= ini->ReadSTRING					(section,"fire_bone");
+	LPCSTR fire_bone			= pSettings->ReadSTRING					(section,"fire_bone");
 	iFireBone					= PKinematics(Visual())->LL_BoneID	(fire_bone);
 	if (iFireBone<0)			Device.Fatal("There is no 'fire_bone' for weapon '%s'.",section);
-	vFirePoint					= ini->ReadVECTOR					(section,"fire_point");
-	vShellPoint					= ini->ReadVECTOR					(section,"shell_point");
+	vFirePoint					= pSettings->ReadVECTOR					(section,"fire_point");
+	vShellPoint					= pSettings->ReadVECTOR					(section,"shell_point");
 
 	// play default animation
 	// PKinematics				(pVisual)->PlayCycle("idle");

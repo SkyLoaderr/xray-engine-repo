@@ -23,40 +23,40 @@ CWeaponBinoculars::~CWeaponBinoculars()
 	SoundDestroy		(sndZoomOut		);
 }
 
-void CWeaponBinoculars::Load(CInifile* ini, const char* section)
+void CWeaponBinoculars::Load	(LPCSTR section)
 {
 	// verify class
 	LPCSTR Class		= pSettings->ReadSTRING(section,"class");
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	CObject::Load		(ini,section);
+	CObject::Load		(section);
 
 	SectorMode			= EPM_AT_LOAD;
 	if (pSector)		pSector->objectRemove	(this);
 
 	Fvector				pos,ypr;
-	pos					= ini->ReadVECTOR(section,"position");
-	ypr					= ini->ReadVECTOR(section,"orientation");
+	pos					= pSettings->ReadVECTOR(section,"position");
+	ypr					= pSettings->ReadVECTOR(section,"orientation");
 	ypr.mul				(PI/180.f);
 
-	fMaxZoomFactor		= ini->ReadFLOAT	(section,"max_zoom_factor");
+	fMaxZoomFactor		= pSettings->ReadFLOAT	(section,"max_zoom_factor");
 
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
 
 	ShaderCreate		(hUIIcon,"hud\\default","");
 
-	LPCSTR hud_sect		= ini->ReadSTRING	(section,"hud");
-	m_pHUD->Load		(ini,hud_sect);
+	LPCSTR hud_sect		= pSettings->ReadSTRING	(section,"hud");
+	m_pHUD->Load		(hud_sect);
 
-	camMaxAngle			= ini->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
-	camRelaxSpeed		= ini->ReadFLOAT	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
-	camDispersion		= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+	camMaxAngle			= pSettings->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
+	camRelaxSpeed		= pSettings->ReadFLOAT	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
+	camDispersion		= pSettings->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
-	dispVelFactor		= ini->ReadFLOAT	(section,"disp_vel_factor"	);
-	dispJumpFactor		= ini->ReadFLOAT	(section,"disp_jump_factor"	);
-	dispCrouchFactor	= ini->ReadFLOAT	(section,"disp_crouch_factor");
+	dispVelFactor		= pSettings->ReadFLOAT	(section,"disp_vel_factor"	);
+	dispJumpFactor		= pSettings->ReadFLOAT	(section,"disp_jump_factor"	);
+	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
 
 	bVisible			= FALSE;
 

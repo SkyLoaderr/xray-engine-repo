@@ -23,7 +23,7 @@ CCustomEvent::~CCustomEvent		()
 	Actions.clear();
 }
 
-void CCustomEvent::Load			(CInifile* ini, const char * section)
+void CCustomEvent::Load			(LPCSTR section)
 {
 	// Name
 	R_ASSERT					(section);

@@ -95,7 +95,7 @@ public:
 	virtual ~CEntity		();
 
 	// Core events
-	virtual void			Load				(CInifile* ini, LPCSTR section);
+	virtual void			Load				(LPCSTR section);
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void			Update				(DWORD dt);	
 	virtual void			OnVisible			();
@@ -137,13 +137,14 @@ public:
 	// movement
 	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
+	bool					m_bMobility;
 public:
 	// General
 	CEntityAlive			();
 	virtual ~CEntityAlive	();
 
 	// Core events
-	virtual void			Load				(CInifile* ini, LPCSTR section);
+	virtual void			Load				(LPCSTR section);
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
 	virtual void			HitImpulse			(Fvector& vWorldDir, Fvector& vLocalDir, float amount);
 

@@ -61,7 +61,7 @@ CFlyer::~CFlyer()
 	for (int i=0; i<efcMaxCam; i++) _DELETE(cameras[i]);
 }
 
-void CFlyer::Load(CInifile* ini, const char * section)
+void CFlyer::Load(LPCSTR section)
 {
 	Msg("Loading flyer: %s",section);
 	inherited::Load(ini,section);

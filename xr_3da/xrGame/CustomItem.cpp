@@ -56,14 +56,14 @@ void	CCustomItem::SetState(EItemState e)
 	}
 }
 
-void	CCustomItem::Load(CInifile *pIni, const char *section)
+void	CCustomItem::Load	(LPCSTR section)
 {
-	CObject::Load	(pIni,section);
+	CObject::Load	(section);
 	
-	clsid_target	= TEXT2CLSID(pIni->ReadSTRING(section, "target"));
-	iValue			= pIni->ReadINT(section, "value");
+	clsid_target	= TEXT2CLSID(pSettings->ReadSTRING(section, "target"));
+	iValue			= pSettings->ReadINT(section, "value");
 	start_pos.set	(vPosition);
-	pSounds->Create	(sndTake, TRUE, pIni->ReadSTRING(section, "snd_take"));
+	pSounds->Create	(sndTake, TRUE, pSettings->ReadSTRING(section, "snd_take"));
 }
 
 void	CCustomItem::OnMove()

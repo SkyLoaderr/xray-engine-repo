@@ -6,12 +6,14 @@
 #define AFX_DUMMYOBJECT_H__3A3BE489_045B_4229_AD0F_83CACEA62145__INCLUDED_
 #pragma once
 
-// refs
-class CObjectAnimator;
+#include "gameobject.h"
 
-class CDummyObject		: public CObject
+// refs
+class ENGINE_API CObjectAnimator;
+
+class CDummyObject		: public CGameObject
 {
-	typedef	CObject		inherited;
+	typedef	CGameObject		inherited;
 
 private:
 	enum SStyle{
@@ -27,11 +29,10 @@ private:
 	sound								sndDummy;
 
 public:
-	virtual void						Load			( CInifile* ini, LPCSTR section);
+	virtual void						Load			( LPCSTR section);
 	virtual BOOL						Spawn			( BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);
-	virtual void						OnVisible		(void);								// returns lighting level
-	virtual void						Update			(DWORD dt);							// Called by sheduler
-	virtual void						UpdateCL		();									// Called each frame, so no need for dt
+	virtual void						Update			( DWORD dt);							// Called by sheduler
+	virtual void						UpdateCL		( );									// Called each frame, so no need for dt
 
 	void				PlayDemo		( LPCSTR N );
 

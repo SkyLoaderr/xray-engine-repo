@@ -18,7 +18,7 @@ public:
 					CCustomDoor	();
 	virtual			~CCustomDoor();
 
-	virtual void	Load		(CInifile* ini, const char * section);
+	virtual void	Load		(LPCSTR section);
 
 	// Update
 	virtual void	OnMove		();

@@ -118,7 +118,7 @@ class CAISelectorBase : public AI::NodeEstimator
 		float			m_fResult;
 		float			m_fFireDispersionAngle;
 
-		virtual	void Load(CInifile* ini, const char* section);
+		virtual	void Load	(LPCSTR section);
 		void vfAddCoverFromEnemyCost();
 		void vfAddCoverFromLeaderCost();
 		void vfAddCoverFromMemberCost();

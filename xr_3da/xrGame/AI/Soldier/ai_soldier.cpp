@@ -79,28 +79,28 @@ void CAI_Soldier::Death()
 	pSounds->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
-void CAI_Soldier::vfLoadSelectors(CInifile *ini, const char *section)
+void CAI_Soldier::vfLoadSelectors(LPCSTR section)
 {
-	SelectorAttack.Load(ini,section);
-	SelectorDefend.Load(ini,section);
-	SelectorFindEnemy.Load(ini,section);
-	SelectorFollowLeader.Load(ini,section);
-	SelectorFreeHunting.Load(ini,section);
-	SelectorMoreDeadThanAlive.Load(ini,section);
-	SelectorNoWeapon.Load(ini,section);
-	SelectorPatrol.Load(ini,section);
-	SelectorPursuit.Load(ini,section);
-	SelectorReload.Load(ini,section);
-	SelectorRetreat.Load(ini,section);
-	SelectorSenseSomething.Load(ini,section);
-	SelectorUnderFireCover.Load(ini,section);
-	SelectorUnderFireLine.Load(ini,section);
+	SelectorAttack.Load(section);
+	SelectorDefend.Load(section);
+	SelectorFindEnemy.Load(section);
+	SelectorFollowLeader.Load(section);
+	SelectorFreeHunting.Load(section);
+	SelectorMoreDeadThanAlive.Load(section);
+	SelectorNoWeapon.Load(section);
+	SelectorPatrol.Load(section);
+	SelectorPursuit.Load(section);
+	SelectorReload.Load(section);
+	SelectorRetreat.Load(section);
+	SelectorSenseSomething.Load(section);
+	SelectorUnderFireCover.Load(section);
+	SelectorUnderFireLine.Load(section);
 }
 
-void CAI_Soldier::Load(CInifile* ini, const char* section)
+void CAI_Soldier::Load	(LPCSTR section)
 { 
 	// load parameters from ".ini" file
-	inherited::Load	(ini,section);
+	inherited::Load		(section);
 	
 	// initialize start position
 	Fvector			P = vPosition;
@@ -109,37 +109,37 @@ void CAI_Soldier::Load(CInifile* ini, const char* section)
 	
 	vfLoadSounds();
 	vfLoadAnimations();
-	vfLoadSelectors(ini,section);
-	vfAssignBones(ini,section);
+	vfLoadSelectors(section);
+	vfAssignBones(pSettings,section);
 	
 	// visibility
-	m_dwMovementIdleTime = ini->ReadINT(section,"MovementIdleTime");
-	m_fMaxInvisibleSpeed = ini->ReadFLOAT(section,"MaxInvisibleSpeed");
-	m_fMaxViewableSpeed = ini->ReadFLOAT(section,"MaxViewableSpeed");
-	m_fMovementSpeedWeight = ini->ReadFLOAT(section,"MovementSpeedWeight");
-	m_fDistanceWeight = ini->ReadFLOAT(section,"DistanceWeight");
-	m_fSpeedWeight = ini->ReadFLOAT(section,"SpeedWeight");
-	m_fCrouchVisibilityMultiplier = ini->ReadFLOAT(section,"CrouchVisibilityMultiplier");
-	m_fLieVisibilityMultiplier = ini->ReadFLOAT(section,"LieVisibilityMultiplier");
-	m_fVisibilityThreshold = ini->ReadFLOAT(section,"VisibilityThreshold");
-	m_fLateralMutliplier = ini->ReadFLOAT(section,"LateralMultiplier");
+	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");
+	m_fMaxInvisibleSpeed = pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
+	m_fMaxViewableSpeed = pSettings->ReadFLOAT(section,"MaxViewableSpeed");
+	m_fMovementSpeedWeight = pSettings->ReadFLOAT(section,"MovementSpeedWeight");
+	m_fDistanceWeight = pSettings->ReadFLOAT(section,"DistanceWeight");
+	m_fSpeedWeight = pSettings->ReadFLOAT(section,"SpeedWeight");
+	m_fCrouchVisibilityMultiplier = pSettings->ReadFLOAT(section,"CrouchVisibilityMultiplier");
+	m_fLieVisibilityMultiplier = pSettings->ReadFLOAT(section,"LieVisibilityMultiplier");
+	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
+	m_fLateralMutliplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
 	
 	//fire
-	m_dwFireRandomMin = ini->ReadINT(section,"FireRandomMin");
-	m_dwFireRandomMax = ini->ReadINT(section,"FireRandomMax");
-	m_dwNoFireTimeMin = ini->ReadINT(section,"NoFireTimeMin");
-	m_dwNoFireTimeMax = ini->ReadINT(section,"NoFireTimeMax");
+	m_dwFireRandomMin = pSettings->ReadINT(section,"FireRandomMin");
+	m_dwFireRandomMax = pSettings->ReadINT(section,"FireRandomMax");
+	m_dwNoFireTimeMin = pSettings->ReadINT(section,"NoFireTimeMin");
+	m_dwNoFireTimeMax = pSettings->ReadINT(section,"NoFireTimeMax");
 	
 	// patrol under fire
-	m_dwPatrolShock = ini->ReadINT(section,"PatrolShock");
-	m_dwUnderFireShock = ini->ReadINT(section,"UnderFireShock");
-	m_dwUnderFireReturn = ini->ReadINT(section,"UnderFireReturn");
+	m_dwPatrolShock = pSettings->ReadINT(section,"PatrolShock");
+	m_dwUnderFireShock = pSettings->ReadINT(section,"UnderFireShock");
+	m_dwUnderFireReturn = pSettings->ReadINT(section,"UnderFireReturn");
 
-	m_dwMaxDynamicObjectsCount = ini->ReadINT(section,"DynamicObjectsCount");
-	m_dwMaxDynamicSoundsCount = ini->ReadINT(section,"DynamicSoundsCount");
+	m_dwMaxDynamicObjectsCount = pSettings->ReadINT(section,"DynamicObjectsCount");
+	m_dwMaxDynamicSoundsCount = pSettings->ReadINT(section,"DynamicSoundsCount");
 
-	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(ini->ReadSTRING(section,"TestAnimation"));
-	//m_fAddAngle = ini->ReadFLOAT(section,"AddAngle");
+	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
+	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");
 }
 
 BOOL CAI_Soldier::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)

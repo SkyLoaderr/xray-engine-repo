@@ -17,10 +17,10 @@ CCustomLift::~CCustomLift()
 {	
 }
 
-void CCustomLift::Load(CInifile* ini, const char * section)
+void CCustomLift::Load(LPCSTR section)
 {
-	inherited::Load	(ini,section);
-	floor_count		= ini->ReadINT(section,"floor_count");
+	inherited::Load	(section);
+	floor_count		= pSettings->ReadINT(section,"floor_count");
 }
 
 void CCustomLift::OnMove()

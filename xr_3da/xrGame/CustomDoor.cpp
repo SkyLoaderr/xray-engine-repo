@@ -14,16 +14,16 @@ CCustomDoor::~CCustomDoor()
 	pSounds->Delete(sndOpenClose);
 }
 
-void CCustomDoor::Load(CInifile* ini, const char * section)
+void CCustomDoor::Load			(LPCSTR section)
 {
-	inherited::Load				(ini,section);
+	inherited::Load				(section);
 
 	R_ASSERT	(pVisual->Type==MT_SKELETON);
 	PKinematics(pVisual)->PlayCycle("close");
 
-	if (ini->LineExists(section,"sound"))
+	if (pSettings->LineExists(section,"sound"))
 	{
-		LPCSTR N	= ini->ReadSTRING(section,"sound");
+		LPCSTR N	= pSettings->ReadSTRING(section,"sound");
 		pSounds->Create(sndOpenClose,TRUE,N);
 	}
 }

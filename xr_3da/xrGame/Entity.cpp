@@ -113,18 +113,18 @@ BOOL CEntity::Hit(int perc, Fvector &dir, CEntity* who)
 	}
 }
 
-void CEntity::Load(CInifile* ini, const char* section)
+void CEntity::Load		(LPCSTR section)
 {
-	CGameObject::Load(ini,section);
+	inherited::Load		(section);
 
-	bVisible		= FALSE;
-	CLS_ID			= CLSID_ENTITY;
-	iHealth			= iArmor = 100;
+	bVisible			= FALSE;
+	CLS_ID				= CLSID_ENTITY;
+	iHealth				= iArmor = 100;
 
 	// Team params
-	id_Team = -1; if (ini->LineExists(section,"team"))	id_Team		= ini->ReadINT	(section,"team");
-	id_Squad= -1; if (ini->LineExists(section,"squad"))	id_Squad	= ini->ReadINT	(section,"squad");
-	id_Group= -1; if (ini->LineExists(section,"group"))	id_Group	= ini->ReadINT	(section,"group");
+	id_Team = -1; if (pSettings->LineExists(section,"team"))	id_Team		= pSettings->ReadINT	(section,"team");
+	id_Squad= -1; if (pSettings->LineExists(section,"squad"))	id_Squad	= pSettings->ReadINT	(section,"squad");
+	id_Group= -1; if (pSettings->LineExists(section,"group"))	id_Group	= pSettings->ReadINT	(section,"group");
 }
 
 BOOL CEntity::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
@@ -177,44 +177,44 @@ void CEntity::Update	(DWORD dt)
 	}
 }
 
-void CEntityAlive::Load	(CInifile* ini, LPCSTR section)
+void CEntityAlive::Load		(LPCSTR section)
 {
-	inherited::Load			(ini,section);
+	inherited::Load			(section);
 
 	// Movement: General
 	Movement.SetParent		(this);
 	Fbox	bb;
 
 	// Movement: BOX
-	Fvector	vBOX0_center= ini->ReadVECTOR	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= ini->ReadVECTOR	(section,"ph_box0_size"		);
+	Fvector	vBOX0_center= pSettings->ReadVECTOR	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= pSettings->ReadVECTOR	(section,"ph_box0_size"		);
 	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
 	Movement.SetBox		(0,bb);
 
 	// Movement: BOX
-	Fvector	vBOX1_center= ini->ReadVECTOR	(section,"ph_box1_center"	);
-	Fvector	vBOX1_size	= ini->ReadVECTOR	(section,"ph_box1_size"		);
+	Fvector	vBOX1_center= pSettings->ReadVECTOR	(section,"ph_box1_center"	);
+	Fvector	vBOX1_size	= pSettings->ReadVECTOR	(section,"ph_box1_size"		);
 	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
 	Movement.SetBox		(1,bb);
 
 	// Movement: Foots
-	Fvector	vFOOT_center= ini->ReadVECTOR	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= ini->ReadVECTOR	(section,"ph_foot_size"		);
+	Fvector	vFOOT_center= pSettings->ReadVECTOR	(section,"ph_foot_center"	);
+	Fvector	vFOOT_size	= pSettings->ReadVECTOR	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
 	Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
 	// Movement: Crash speed and mass
-	float	cs_min		= ini->ReadFLOAT	(section,"ph_crash_speed_min"	);
-	float	cs_max		= ini->ReadFLOAT	(section,"ph_crash_speed_max"	);
-	float	mass		= ini->ReadFLOAT	(section,"ph_mass"				);
+	float	cs_min		= pSettings->ReadFLOAT	(section,"ph_crash_speed_min"	);
+	float	cs_max		= pSettings->ReadFLOAT	(section,"ph_crash_speed_max"	);
+	float	mass		= pSettings->ReadFLOAT	(section,"ph_mass"				);
 	Movement.SetCrashSpeeds	(cs_min,cs_max);
 	Movement.SetMass		(mass);
 
 	// Movement: Frictions
 	float af, gf, wf;
-	af					= ini->ReadFLOAT	(section,"ph_friction_air"	);
-	gf					= ini->ReadFLOAT	(section,"ph_friction_ground");
-	wf					= ini->ReadFLOAT	(section,"ph_friction_wall"	);
+	af					= pSettings->ReadFLOAT	(section,"ph_friction_air"	);
+	gf					= pSettings->ReadFLOAT	(section,"ph_friction_ground");
+	wf					= pSettings->ReadFLOAT	(section,"ph_friction_wall"	);
 	Movement.SetFriction	(af,wf,gf);
 
 	// BOX activate

@@ -51,7 +51,7 @@ public:
 					CWeaponBinoculars(); 
 	virtual			~CWeaponBinoculars();
 	virtual BOOL	HasOpticalAim	()		{ return TRUE; }
-	void			Load			(CInifile* ini, const char* section);
+	void			Load			(LPCSTR section);
 
 	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView);

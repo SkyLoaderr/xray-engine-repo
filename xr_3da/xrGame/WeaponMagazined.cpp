@@ -41,10 +41,10 @@ CWeaponMagazined::~CWeaponMagazined()
 	MediaUNLOAD		();
 }
 
-void CWeaponMagazined::Load(CInifile* ini, const char* section)
+void CWeaponMagazined::Load	(LPCSTR section)
 {
-	inherited::Load	(ini, section);
-	bFlame			= FALSE;
+	inherited::Load		(section);
+	bFlame				= FALSE;
 	// Sounds
 	SoundCreate			(sndShow,		"draw"    ,m_eSoundShow);
 	SoundCreate			(sndHide,		"holster" ,m_eSoundHide);

@@ -9,9 +9,9 @@
 #include "net_utils.h"
 
 class fNameEQ {
-	char*	name;
+	LPCSTR	name;
 public:
-	fNameEQ(char *N) : name(N) {};
+	fNameEQ(LPCSTR N) : name(N) {};
 	IC bool operator() (CObject* O) { return strcmp(O->cName(),name)==0; }
 };
 class fClassEQ {
@@ -38,16 +38,16 @@ void CObjectList::Unload( ){
 	objects.clear();
 }
 
-CObject* CObjectList::LoadOne( CInifile *ini, const char* Name )
+CObject* CObjectList::LoadOne( LPCSTR Name )
 {
-	CLASS_ID CLS		= ini->ReadCLSID(Name,"class");
-	CObject* pObject	= (CObject*)NEW_INSTANCE(CLS);
-	pObject->Load		(ini,Name);
+	CLASS_ID CLS		= pSettings->ReadCLSID(Name,"class");
+	CObject* pObject	= (CObject*) NEW_INSTANCE(CLS);
+	pObject->Load		(Name);
 	objects.push_back	(pObject);
-	return pObject;
+	return				pObject;
 }
 
-CObject*	CObjectList::FindObjectByName	( LPSTR name )
+CObject*	CObjectList::FindObjectByName	( LPCSTR name )
 {
 	OBJ_IT O=find_if(objects.begin(),objects.end(),fNameEQ(name));
 	if (O!=objects.end())	return *O;

@@ -26,9 +26,9 @@ public:
 	virtual				~CWeaponHUD		();
 
 	// misc
-	virtual void		Load			(CInifile* ini, const char* section);
+	virtual void		Load			(LPCSTR section);
 
-	IC CVisual*	Visual			()	{ return pVisual; }
+	IC CVisual*			Visual			()	{ return pVisual; }
 	IC Fmatrix&			Transform		()	{ return mTransform; }
 
 	// Animations

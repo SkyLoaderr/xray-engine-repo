@@ -118,7 +118,7 @@ public:
 	virtual			~CWeapon		();
 
 	// misc
-	virtual void	Load			(CInifile* ini, const char* section);
+	virtual void	Load			(LPCSTR section);
 
 	// logic & effects
 	virtual void	SetParent		(CEntity* parent, CWeaponList* container);

@@ -25,22 +25,22 @@ CDemoActor::~CDemoActor()
 	_FREE			(attached);
 }
 
-void CDemoActor::Load(CInifile* ini, const char * section)
+void CDemoActor::Load	(LPCSTR section)
 {
-	inherited::Load	(ini,section);
+	inherited::Load		(section);
 	
-	animator		= new CObjectAnimator();
-	animator->Load	(ini, section);
-	if (ini->LineExists(section,"track"))
+	animator			= new CObjectAnimator();
+	animator->Load		(pSettings, section);
+	if (pSettings->LineExists(section,"track"))
 	{
-		LPCSTR N		= ini->ReadSTRING(section,"track");
+		LPCSTR N		= pSettings->ReadSTRING(section,"track");
 		music			= pSounds->CreateStream(N);
 	}
-	if (ini->LineExists(section,"attached"))
+	if (pSettings->LineExists(section,"attached"))
 	{
-		attached		= strdup(ini->ReadSTRING(section,"attached"));
+		attached		= strdup(pSettings->ReadSTRING(section,"attached"));
 	}
-	time2start_ltx	= ini->ReadFLOAT(section,"time2start");
+	time2start_ltx	= pSettings->ReadFLOAT(section,"time2start");
 	time2start		= time2start_ltx;
 	start_position.set(vPosition);
 	bVisible		= false;

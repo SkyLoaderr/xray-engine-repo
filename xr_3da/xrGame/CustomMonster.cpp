@@ -48,42 +48,42 @@ CCustomMonster::CCustomMonster()
 	m_dwSoundUpdate = 0;
 }
 
-CCustomMonster::~CCustomMonster()
+CCustomMonster::~CCustomMonster	()
 {
 	_DELETE		(Weapons);
 
 	Device.seqRender.Remove	(this);
 }
 
-void CCustomMonster::Load(CInifile* ini, const char* section)
+void CCustomMonster::Load		(LPCSTR section)
 {
 	Msg("Loading AI entity: %s",section);
 	
-	inherited::Load(ini,section);
+	inherited::Load				(section);
 
 	vPosition.y += EPS_L;
 	
-	R_ASSERT	(pVisual->Type==MT_SKELETON);
+	R_ASSERT					(pVisual->Type==MT_SKELETON);
 	
-	Movement.SetPosition	(vPosition);
+	Movement.SetPosition		(vPosition);
 	
 	// Health & Armor
 	iArmor					= 0;
 	
 	// Eyes
-	eye_bone				= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_head"));
-	eye_fov					= ini->ReadFLOAT(section,"eye_fov");
-	eye_range				= ini->ReadFLOAT(section,"eye_range");
+	eye_bone				= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(section,"bone_head"));
+	eye_fov					= pSettings->ReadFLOAT(section,"eye_fov");
+	eye_range				= pSettings->ReadFLOAT(section,"eye_range");
 
 	// movement
-	m_fWalkAccel			= ini->ReadFLOAT(section,"walk_accel");	
-	m_fJumpSpeed			= ini->ReadFLOAT(section,"jump_speed");
-	m_fRunCoef				= ini->ReadFLOAT(section,"run_coef");
+	m_fWalkAccel			= pSettings->ReadFLOAT(section,"walk_accel");	
+	m_fJumpSpeed			= pSettings->ReadFLOAT(section,"jump_speed");
+	m_fRunCoef				= pSettings->ReadFLOAT(section,"run_coef");
 	//
-	m_fMinSpeed				= ini->ReadFLOAT(section,"min_speed");
-	m_fMaxSpeed				= ini->ReadFLOAT(section,"max_speed");
+	m_fMinSpeed				= pSettings->ReadFLOAT(section,"min_speed");
+	m_fMaxSpeed				= pSettings->ReadFLOAT(section,"max_speed");
 	m_fCurSpeed				= m_fMaxSpeed;
-	m_fCrouchCoefficient	= ini->ReadFLOAT(section,"crouch_coef");
+	m_fCrouchCoefficient	= pSettings->ReadFLOAT(section,"crouch_coef");
 
 	// Motions
 	CKinematics* V			= PKinematics(pVisual);
@@ -97,9 +97,9 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 	/**/
 
 	// weapons
-	if (ini->ReadINT(section,"weapon_usage")) {
+	if (pSettings->ReadINT(section,"weapon_usage")) {
 		Weapons					= new CWeaponList(this);
-		LPCSTR S1 = ini->ReadSTRING(section,"bone_torso_weapon"),S2 = ini->ReadSTRING(section,"bone_head_weapon");
+		LPCSTR S1 = pSettings->ReadSTRING(section,"bone_torso_weapon"),S2 = pSettings->ReadSTRING(section,"bone_head_weapon");
 		Weapons->Init			(S1,S2);
 		Weapons->TakeItem		(CLSID_OBJECT_W_AK74, 0);
 		//Weapons->TakeItem		(CLSID_OBJECT_W_M134, 0);
@@ -107,11 +107,11 @@ void CCustomMonster::Load(CInifile* ini, const char* section)
 
 	// take index spine bone
 	//"torso1"
-	int torso_bone			= PKinematics(pVisual)->LL_BoneID(ini->ReadSTRING(section,"bone_torso"));
+	int torso_bone			= PKinematics(pVisual)->LL_BoneID(pSettings->ReadSTRING(section,"bone_torso"));
 	PKinematics(pVisual)->LL_GetInstance(torso_bone).set_callback(TorsoSpinCallback,this);
 
 	//
-	m_iHealth = ini->ReadINT(section,"health");
+	m_iHealth = pSettings->ReadINT(section,"health");
 
 	// Sheduler
 	dwMinUpdate	= 25;

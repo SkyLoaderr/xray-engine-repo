@@ -35,10 +35,10 @@ CAI_Hen::~CAI_Hen()
 	for (i=0; i<SND_DIE_COUNT; i++) pSounds->Delete(sndDie[i]);
 }
 
-void CAI_Hen::Load(CInifile* ini, const char* section)
+void CAI_Hen::Load	(LPCSTR section)
 { 
-	// load parameters from ".ini" file
-	inherited::Load	(ini,section);
+	// load parameters from ".ltx" file
+	inherited::Load	(section);
 	
 	Fvector			P = vPosition;
 	P.x				+= ::Random.randF();
@@ -58,11 +58,11 @@ void CAI_Hen::Load(CInifile* ini, const char* section)
 	pSounds->Create(sndDie[2],TRUE,	"actor\\die2");
 	pSounds->Create(sndDie[3],TRUE,	"actor\\die3");
 
-	SelectorAttack.Load(ini,section);
-	SelectorFollow.Load(ini,section);
-	SelectorFreeHunting.Load(ini,section);
-	SelectorPursuit.Load(ini,section);
-	SelectorUnderFire.Load(ini,section);
+	SelectorAttack.Load(section);
+	SelectorFollow.Load(section);
+	SelectorFreeHunting.Load(section);
+	SelectorPursuit.Load(section);
+	SelectorUnderFire.Load(section);
 }
 
 // when someone hit hen

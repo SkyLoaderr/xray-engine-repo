@@ -49,7 +49,7 @@ public:
 	virtual			~CWeaponProtecta();
 
 	// misc
-	virtual void	Load			(CInifile* ini, const char* section);
+	virtual void	Load			(LPCSTR section);
 
 	virtual void	SetDefaults		();
 	virtual void	FireStart		();

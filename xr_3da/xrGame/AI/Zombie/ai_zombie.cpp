@@ -67,15 +67,15 @@ void CAI_Zombie::Death()
 	pSounds->PlayAtPos(sndDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
 }
 
-void CAI_Zombie::vfLoadSelectors(CInifile *ini, const char *section)
+void CAI_Zombie::vfLoadSelectors(LPCSTR section)
 {
-	SelectorFreeHunting.Load(ini,section);
+	SelectorFreeHunting.Load(section);
 }
 
-void CAI_Zombie::Load(CInifile* ini, const char* section)
+void CAI_Zombie::Load(LPCSTR section)
 { 
 	// load parameters from ".ini" file
-	inherited::Load	(ini,section);
+	inherited::Load	(section);
 	
 	// initialize start position
 	Fvector			P = vPosition;
@@ -84,24 +84,24 @@ void CAI_Zombie::Load(CInifile* ini, const char* section)
 	
 	vfLoadSounds();
 	vfLoadAnimations();
-	vfLoadSelectors(ini,section);
-	vfAssignBones(ini,section);
+	vfLoadSelectors(section);
+	vfAssignBones(pSettings,section);
 	
 	// visibility
-	m_dwMovementIdleTime = ini->ReadINT(section,"MovementIdleTime");
-	m_fMaxInvisibleSpeed = ini->ReadFLOAT(section,"MaxInvisibleSpeed");
-	m_fMaxViewableSpeed = ini->ReadFLOAT(section,"MaxViewableSpeed");
-	m_fMovementSpeedWeight = ini->ReadFLOAT(section,"MovementSpeedWeight");
-	m_fDistanceWeight = ini->ReadFLOAT(section,"DistanceWeight");
-	m_fSpeedWeight = ini->ReadFLOAT(section,"SpeedWeight");
-	m_fCrouchVisibilityMultiplier = ini->ReadFLOAT(section,"CrouchVisibilityMultiplier");
-	m_fLieVisibilityMultiplier = ini->ReadFLOAT(section,"LieVisibilityMultiplier");
-	m_fVisibilityThreshold = ini->ReadFLOAT(section,"VisibilityThreshold");
-	m_fLateralMutliplier = ini->ReadFLOAT(section,"LateralMultiplier");
+	m_dwMovementIdleTime = pSettings->ReadINT(section,"MovementIdleTime");
+	m_fMaxInvisibleSpeed = pSettings->ReadFLOAT(section,"MaxInvisibleSpeed");
+	m_fMaxViewableSpeed = pSettings->ReadFLOAT(section,"MaxViewableSpeed");
+	m_fMovementSpeedWeight = pSettings->ReadFLOAT(section,"MovementSpeedWeight");
+	m_fDistanceWeight = pSettings->ReadFLOAT(section,"DistanceWeight");
+	m_fSpeedWeight = pSettings->ReadFLOAT(section,"SpeedWeight");
+	m_fCrouchVisibilityMultiplier = pSettings->ReadFLOAT(section,"CrouchVisibilityMultiplier");
+	m_fLieVisibilityMultiplier = pSettings->ReadFLOAT(section,"LieVisibilityMultiplier");
+	m_fVisibilityThreshold = pSettings->ReadFLOAT(section,"VisibilityThreshold");
+	m_fLateralMutliplier = pSettings->ReadFLOAT(section,"LateralMultiplier");
 	
 	//fire
-	m_fHitPower       = ini->ReadINT(section,"HitPower");
-	m_dwHitInterval   = ini->ReadINT(section,"HitInterval");
+	m_fHitPower       = pSettings->ReadINT(section,"HitPower");
+	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");
 }
 
 BOOL CAI_Zombie::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)

@@ -196,7 +196,7 @@ CWeapon* CWeaponList::LoadOne( CLASS_ID cls )
 	// load weapon
 	R_ASSERT			(pWeapon);
 	pWeapon->SUB_CLS_ID = cls;
-	pWeapon->Load		(pSettings,sect_name);
+	pWeapon->Load		(sect_name);
 	pWeapon->SetParent	(m_pParent,this);
 	m_Weapons.push_back	(pWeapon);
 	return pWeapon;

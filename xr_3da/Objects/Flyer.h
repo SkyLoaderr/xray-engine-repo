@@ -67,7 +67,7 @@ public:
 						CFlyer				();
 	virtual				~CFlyer				();
 
-	virtual void		Load				(CInifile* ini, const char* section);
+	virtual void		Load				(LPCSTR section);
 
 	// Fire control
 	virtual void		g_fireParams		(Fvector& P, Fvector& D) {};

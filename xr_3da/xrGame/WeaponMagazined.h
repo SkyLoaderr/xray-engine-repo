@@ -83,7 +83,7 @@ public:
 					CWeaponMagazined	(LPCSTR name,ESoundTypes eSoundType);
 	virtual			~CWeaponMagazined	();
 
-	virtual void	Load			(CInifile* ini, const char* section);
+	virtual void	Load			(LPCSTR section);
 
 	virtual void	SetDefaults		();
 	virtual void	FireStart		();

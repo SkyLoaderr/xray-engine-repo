@@ -28,7 +28,7 @@ public:
 						CDemoActor		();
 	virtual				~CDemoActor		();
 
-	virtual void		Load			(CInifile* ini, const char * section);
+	virtual void		Load			(LPCSTR section);
 
 	void				PlayDemo		(const char* name);
 	void				StopDemo		();

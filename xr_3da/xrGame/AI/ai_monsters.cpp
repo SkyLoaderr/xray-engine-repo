@@ -33,9 +33,9 @@ IC void vfNormalizeSafe(Fvector& Vector)
 	}
 }
 
-void CAISelectorBase::Load(CInifile* ini, const char* section)
+void CAISelectorBase::Load	(LPCSTR section)
 {
-	sscanf(ini->ReadSTRING(section,Name),
+	sscanf(pSettings->ReadSTRING(section,Name),
 		"%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
 		&fSearchRange,
 		&fEnemySurround,

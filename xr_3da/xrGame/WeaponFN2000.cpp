@@ -14,8 +14,8 @@ CWeaponFN2000::~CWeaponFN2000()
 {
 }
 
-void CWeaponFN2000::Load(CInifile* ini, const char* section)
+void CWeaponFN2000::Load	(LPCSTR section)
 {
-	inherited::Load(ini,section);
-	fMaxZoomFactor		= ini->ReadFLOAT	(section,"max_zoom_factor");
+	inherited::Load			(section);
+	fMaxZoomFactor			= pSettings->ReadFLOAT	(section,"max_zoom_factor");
 }

@@ -9,10 +9,9 @@
 class CGameObject : public CObject  
 {
 public:
-	bool								m_bMobility;
 	// AI connection
-	DWORD								AI_NodeID;
-	NodeCompressed*						AI_Node;
+	DWORD										AI_NodeID;
+	NodeCompressed*								AI_Node;
 	
 	// Methods
 	virtual BOOL			Spawn				(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags);

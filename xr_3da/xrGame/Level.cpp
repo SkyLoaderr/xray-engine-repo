@@ -111,7 +111,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 	P.r_u16		(s_data_size);
 
 	// Real spawn
-	CObject*	O = Objects.LoadOne	(pSettings,s_name);
+	CObject*	O = Objects.LoadOne	(s_name);
 	if (O)	
 	{
 		O->cName_set		(s_name);

@@ -158,83 +158,83 @@ void CWeapon::SetParent	(CEntity* parent, CWeaponList* container)
 	R_ASSERT(container);	m_pContainer	= container;
 }
 
-void CWeapon::Load		(CInifile* ini, const char* section)
+void CWeapon::Load		(LPCSTR section)
 {
 	// verify class
 	LPCSTR Class		= pSettings->ReadSTRING(section,"class");
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
-	R_ASSERT(load_cls==SUB_CLS_ID);
+	R_ASSERT			(load_cls==SUB_CLS_ID);
 
-	CObject::Load		(ini,section);
+	CObject::Load		(section);
 
 	SectorMode			= EPM_AT_LOAD;
 	if (pSector)		pSector->objectRemove	(this);
 
 	Fvector				pos,ypr;
-	pos					= ini->ReadVECTOR(section,"position");
-	ypr					= ini->ReadVECTOR(section,"orientation");
+	pos					= pSettings->ReadVECTOR(section,"position");
+	ypr					= pSettings->ReadVECTOR(section,"orientation");
 	ypr.mul				(PI/180.f);
 
 	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
 
-	fTimeToFire			= ini->ReadFLOAT	(section,"rpm");
+	fTimeToFire			= pSettings->ReadFLOAT	(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
 	ShaderCreate		(hUIIcon,"hud\\default","");
 	
-	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");
+	LPCSTR	name		= pSettings->ReadSTRING	(section,"wm_name");
 	pstrWallmark		= strdup(name);
 	if (0==pstrWallmark)hWallmark = 0; 
 	else				hWallmark = Device.Shader.Create("effects\\wallmark",pstrWallmark);
-	fWallmarkSize		= ini->ReadFLOAT	(section,"wm_size");
+	fWallmarkSize		= pSettings->ReadFLOAT	(section,"wm_size");
 
-	LPCSTR hud_sect		= ini->ReadSTRING	(section,"hud");
-	m_pHUD->Load		(ini,hud_sect);
+	LPCSTR hud_sect		= pSettings->ReadSTRING	(section,"hud");
+	m_pHUD->Load		(hud_sect);
 
-	iAmmoLimit			= ini->ReadINT		(section,"ammo_limit"		);
-	iAmmoCurrent		= ini->ReadINT		(section,"ammo_current"		);
-	iAmmoElapsed		= ini->ReadINT		(section,"ammo_elapsed"		);
-	iMagazineSize		= ini->ReadINT		(section,"ammo_mag_size"	);
+	iAmmoLimit			= pSettings->ReadINT		(section,"ammo_limit"		);
+	iAmmoCurrent		= pSettings->ReadINT		(section,"ammo_current"		);
+	iAmmoElapsed		= pSettings->ReadINT		(section,"ammo_elapsed"		);
+	iMagazineSize		= pSettings->ReadINT		(section,"ammo_mag_size"	);
 	
-	fireDistance		= ini->ReadFLOAT	(section,"fire_distance"	);
-	fireDispersionBase	= ini->ReadFLOAT	(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
-	fireDispersion		= ini->ReadFLOAT	(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
-	fireDispersion_Inc	= ini->ReadFLOAT	(section,"fire_dispersion_add"); 
-	fireDispersion_Dec	= ini->ReadFLOAT	(section,"fire_dispersion_relax"); 
+	fireDistance		= pSettings->ReadFLOAT	(section,"fire_distance"	);
+	fireDispersionBase	= pSettings->ReadFLOAT	(section,"fire_dispersion_base"	);	fireDispersionBase	= deg2rad(fireDispersionBase);
+	fireDispersion		= pSettings->ReadFLOAT	(section,"fire_dispersion"	);		fireDispersion		= deg2rad(fireDispersion);
+	fireDispersion_Inc	= pSettings->ReadFLOAT	(section,"fire_dispersion_add"); 
+	fireDispersion_Dec	= pSettings->ReadFLOAT	(section,"fire_dispersion_relax"); 
 	fireDispersion_Current	= 0;
 
-	camMaxAngle			= ini->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
-	camRelaxSpeed		= ini->ReadFLOAT	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
-	camDispersion		= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+	camMaxAngle			= pSettings->ReadFLOAT	(section,"cam_max_angle"	); camMaxAngle = deg2rad(camMaxAngle);
+	camRelaxSpeed		= pSettings->ReadFLOAT	(section,"cam_relax_speed"	); camRelaxSpeed = deg2rad(camRelaxSpeed);
+	camDispersion		= pSettings->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
-	dispVelFactor		= ini->ReadFLOAT	(section,"disp_vel_factor"	);
-	dispJumpFactor		= ini->ReadFLOAT	(section,"disp_jump_factor"	);
-	dispCrouchFactor	= ini->ReadFLOAT	(section,"disp_crouch_factor");
+	dispVelFactor		= pSettings->ReadFLOAT	(section,"disp_vel_factor"	);
+	dispJumpFactor		= pSettings->ReadFLOAT	(section,"disp_jump_factor"	);
+	dispCrouchFactor	= pSettings->ReadFLOAT	(section,"disp_crouch_factor");
 
 	// tracer
-	tracerHeadSpeed		= ini->ReadFLOAT	(section,"tracer_head_speed"	);
-	tracerTrailCoeff	= ini->ReadFLOAT	(section,"tracer_trail_scale"	);
-	tracerStartLength	= ini->ReadFLOAT	(section,"tracer_start_length"	);
-	tracerWidth			= ini->ReadFLOAT	(section,"tracer_width"			);
+	tracerHeadSpeed		= pSettings->ReadFLOAT	(section,"tracer_head_speed"	);
+	tracerTrailCoeff	= pSettings->ReadFLOAT	(section,"tracer_trail_scale"	);
+	tracerStartLength	= pSettings->ReadFLOAT	(section,"tracer_start_length"	);
+	tracerWidth			= pSettings->ReadFLOAT	(section,"tracer_width"			);
 
 	// light
-	Fvector clr			= ini->ReadVECTOR	(section,"light_color"		);
+	Fvector clr			= pSettings->ReadVECTOR	(section,"light_color"		);
 	light_base.SetColor	(clr.x,clr.y,clr.z);
-	light_base.SetRange	(ini->ReadFLOAT		(section,"light_range"		));
-	light_var_color		= ini->ReadFLOAT	(section,"light_var_color"	);
-	light_var_range		= ini->ReadFLOAT	(section,"light_var_range"	);
-	light_lifetime		= ini->ReadFLOAT	(section,"light_time"		);
+	light_base.SetRange	(pSettings->ReadFLOAT		(section,"light_range"		));
+	light_var_color		= pSettings->ReadFLOAT	(section,"light_var_color"	);
+	light_var_range		= pSettings->ReadFLOAT	(section,"light_var_range"	);
+	light_lifetime		= pSettings->ReadFLOAT	(section,"light_time"		);
 	light_time			= -1.f;
-	iHitPower			= ini->ReadINT		(section,"hit_power"		);
+	iHitPower			= pSettings->ReadINT		(section,"hit_power"		);
 
-	vFirePoint			= ini->ReadVECTOR	(section,"fire_point"		);
-	vShellPoint			= ini->ReadVECTOR	(section,"shell_point"		);
+	vFirePoint			= pSettings->ReadVECTOR	(section,"fire_point"		);
+	vShellPoint			= pSettings->ReadVECTOR	(section,"shell_point"		);
 
 	// flames
-	iFlameDiv			= ini->ReadINT		(section,"flame_div"		);
-	fFlameLength		= ini->ReadFLOAT	(section,"flame_length"		);
-	fFlameSize			= ini->ReadFLOAT	(section,"flame_size"		);
+	iFlameDiv			= pSettings->ReadINT		(section,"flame_div"		);
+	fFlameLength		= pSettings->ReadFLOAT	(section,"flame_length"		);
+	fFlameSize			= pSettings->ReadFLOAT	(section,"flame_size"		);
 
 	bVisible			= FALSE;
 }

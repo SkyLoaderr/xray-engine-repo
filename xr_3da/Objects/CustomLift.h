@@ -17,7 +17,7 @@ public:
 					CCustomLift	();
 	virtual			~CCustomLift();
 
-	virtual void	Load		(CInifile* ini, const char * section);
+	virtual void	Load		(LPCSTR section);
 
 	// Update
 	virtual void	OnMove		();
