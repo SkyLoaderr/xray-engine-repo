@@ -144,7 +144,14 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 	VERIFY(phrase_dialog->IsInit());
 
 	phrase_dialog->m_iSaidPhraseID = phrase_id;
-	
+
+	bool first_is_speaking = phrase_dialog->FirstIsSpeaking();
+	phrase_dialog->m_bFirstIsSpeaking = !phrase_dialog->m_bFirstIsSpeaking;
+
+	const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(phrase_dialog->FirstSpeaker());	VERIFY(pSpeakerGO1);
+	const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(phrase_dialog->SecondSpeaker());	VERIFY(pSpeakerGO2);
+	if(!first_is_speaking) std::swap(pSpeakerGO1, pSpeakerGO2);
+
 	CPhraseGraph::CVertex* phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(phrase_dialog->m_iSaidPhraseID);
 	VERIFY(phrase_vertex);
 
@@ -166,15 +173,18 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 			const CPhraseGraph::CEdge& edge = *it;
 			CPhraseGraph::CVertex* next_phrase_vertex = phrase_dialog->dialog_data()->m_PhraseGraph.vertex(edge.vertex_id());
 			VERIFY(next_phrase_vertex);
-			phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
+
+			if(next_phrase_vertex->data()->IsPhraseAvailable(pSpeakerGO1, pSpeakerGO2))
+				phrase_dialog->m_PhraseVector.push_back(next_phrase_vertex->data());
 		}
+
+		R_ASSERT3(!phrase_dialog->m_PhraseVector.empty(), "No available phrase to say.", *phrase_dialog->m_sDialogID);
+
 		//упорядочить списко по убыванию благосклонности
 		std::sort(phrase_dialog->m_PhraseVector.begin(),
 				 phrase_dialog->m_PhraseVector.end(), PhraseGoodwillPred);
 	}
 
-	bool first_is_speaking = phrase_dialog->FirstIsSpeaking();
-	phrase_dialog->m_bFirstIsSpeaking = !phrase_dialog->m_bFirstIsSpeaking;
 
 	//вызвать скриптовую присоединенную функцию 
 	//активируется после сказанной фразы
@@ -184,13 +194,7 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 		luabind::functor<void>	lua_function;
 		bool functor_exists = ai().script_engine().functor(*last_phrase->ScriptActions()[i] ,lua_function);
 		R_ASSERT3(functor_exists, "Cannot find phrase dialog script function", *last_phrase->ScriptActions()[i]);
-		const CGameObject*	pSpeakerGO1 = dynamic_cast<const CGameObject*>(phrase_dialog->FirstSpeaker());	VERIFY(pSpeakerGO1);
-		const CGameObject*	pSpeakerGO2 = dynamic_cast<const CGameObject*>(phrase_dialog->SecondSpeaker());	VERIFY(pSpeakerGO2);
-		
-		if(first_is_speaking)
-			lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
-		else
-			lua_function		(pSpeakerGO2->lua_game_object(), pSpeakerGO1->lua_game_object());
+		lua_function		(pSpeakerGO1->lua_game_object(), pSpeakerGO2->lua_game_object());
 	}
 
 
@@ -204,7 +208,6 @@ bool CPhraseDialog::SayPhrase (DIALOG_SHARED_PTR& phrase_dialog, PHRASE_ID phras
 
 	return !phrase_dialog->m_bFinished;
 }
-
 
 LPCSTR CPhraseDialog::GetPhraseText	(PHRASE_ID phrase_id)
 {
@@ -270,7 +273,16 @@ void CPhraseDialog::AddPhrase	(XML_NODE* phrase_node, PHRASE_ID phrase_id)
 	phrase->SetText(uiXml.Read(phrase_node, "text", 0, ""));
 	//уровень благосклонности
 	phrase->m_iGoodwillLevel = uiXml.ReadInt(phrase_node, "goodwill", 0, 0);
-		
+	
+
+	int preconditions_num = uiXml.GetNodesNum(phrase_node, "precondition");
+	for(int i=0; i<preconditions_num; i++)
+	{
+		ref_str precondition_name = uiXml.Read(phrase_node, "precondition", i, NULL);
+		phrase->m_Preconditions.push_back(precondition_name);
+	}
+
+
 	int script_actions_num = uiXml.GetNodesNum(phrase_node, "action");
 	for(int i=0; i<script_actions_num; i++)
 	{
