@@ -184,6 +184,10 @@ void CStats::Show()
 		F.OutNext	("TEST 1:      %2.2fms, %d",TEST1.result,TEST1.count);
 		F.OutNext	("TEST 2:      %2.2fms, %d",TEST2.result,TEST2.count);
 		F.OutNext	("TEST 3:      %2.2fms, %d",TEST3.result,TEST3.count);
+#ifdef	DEBUG
+		F.OutSkip	();
+		F.OutNext	("dbg_strcmp:  %d",			Memory.stat_strcmp);
+#endif
 
 		//////////////////////////////////////////////////////////////////////////
 		// Renderer specific
@@ -197,9 +201,9 @@ void CStats::Show()
 
 		//////////////////////////////////////////////////////////////////////////
 		// PERF ALERT
-		F.SetColor						(color_rgba(255,0,0,255));
+		F.SetColor						(color_rgba(255,16,16,255));
 		F.OutSet						(300,300);
-		F.SetSize						(f_base_size*3);
+		F.SetSize						(f_base_size*2);
 		if (fFPS<30)					F.OutNext	("FPS       < 30:   %3.1f",	fFPS);
 		if (RCache.stat.verts>500000)	F.OutNext	("Verts     > 500k: %d",	RCache.stat.verts);
 		if (RCache.stat.polys>500000)	F.OutNext	("Polys     > 500k: %d",	RCache.stat.polys);
@@ -211,7 +215,7 @@ void CStats::Show()
 		if (RCache.stat.ib>100)			F.OutNext	("IB_change > 100:  %d",	RCache.stat.ib);
 		if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 1000: %d",	RenderDUMP_DT_Count);
 		F.OutSkip						();
-		if (fMem_calls>100)				F.OutNext	("MMGR calls > 100: %3.1f",	fMem_calls);
+		if (fMem_calls>500)				F.OutNext	("MMGR calls > 500: %3.1f",	fMem_calls);
 		if (Sheduler.result>3.f)		F.OutNext	("Update     > 3ms:	%3.1f",	Sheduler.result);
 		if (UpdateClient.result>3.f)	F.OutNext	("UpdateCL   > 3ms: %3.1f",	UpdateClient.result);
 		if (Physics.result>5.f)			F.OutNext	("Physics    > 5ms: %3.1f",	Physics.result);	
