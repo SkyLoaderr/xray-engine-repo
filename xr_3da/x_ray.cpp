@@ -12,7 +12,6 @@
 #include "x_ray.h"
 #include "std_classes.h"
 #include "GameFont.h"
-#include <crtdbg.h>
 #include "resource.h"
 #include "LightAnimLibrary.h"
    
@@ -23,7 +22,7 @@ ENGINE_API	CCreator*		pCreator		= NULL;
 static		HWND			logoWindow		= NULL;
 
 // externs
-extern BOOL					StartGame			(u32 num);
+extern BOOL					StartGame		(u32 num);
 
 // startup point
 void Startup				()
@@ -110,6 +109,45 @@ static BOOL CALLBACK logDlgProc( HWND hw, UINT msg, WPARAM wp, LPARAM lp )
 	return TRUE;
 }
 
+void	test_rtc	()
+{
+	CStatTimer		tC,tD;
+	u32				bytes=0;
+	tC.FrameStart	();
+	tD.FrameStart	();
+	for		(u32 test=0; test<1000; test++)
+	{
+		u32			in_size			= ::Random.randI(1024,16*1024);
+		u32			out_size_max	= rtc_csize		(in_size);
+		u8*			p_in			= xr_alloc<u8>	(in_size);
+		u8*			p_in_tst		= xr_alloc<u8>	(in_size);
+		u8*			p_out			= xr_alloc<u8>	(out_size_max);
+		for (u32 git=0; git<in_size; git++)			p_in[git] = (u8)::Random.randI	(16);	// garbage
+
+		bytes		+= in_size;
+
+		tC.Begin	();
+		u32			out_size		= rtc_compress	(p_out,out_size_max,p_in,in_size);
+		tC.End		();
+
+		tD.Begin	();
+		u32			in_size_tst		= rtc_decompress(p_in_tst,in_size,p_out,out_size);
+		tD.End		();
+
+		// sanity check
+		R_ASSERT	(in_size == in_size_tst);
+		for (u32 tit=0; tit<in_size; tit++)			R_ASSERT(p_in[tit] == p_in_tst[tit]);	// garbage
+
+		xr_free		(p_out);
+		xr_free		(p_in_tst);
+		xr_free		(p_in);
+	}
+	tC.FrameEnd		();
+	tD.FrameEnd		();
+	Msg	("* compression:   %f K/ms",(float(bytes)/tC.result)/1024.f);
+	Msg	("* decompression: %f K/ms",(float(bytes)/tD.result)/1024.f);
+}
+
 int APIENTRY WinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      char *    lpCmdLine,
@@ -121,10 +159,10 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 		MAKEINTRESOURCE(IDD_STARTUP),
 		0, logDlgProc );
 
-    // Init COM so we can use CoCreateInstance
-    CoInitializeEx			(NULL, COINIT_MULTITHREADED);
 	Core._initialize		("xray",NULL);
 	FPU::m24r				();
+
+	test_rtc				();
 
 	Startup					();
 	

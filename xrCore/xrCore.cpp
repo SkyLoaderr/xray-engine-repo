@@ -3,6 +3,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#include <objbase.h>
 #include "xrCore.h"
 
 #include <string>
@@ -33,12 +34,11 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb, LPCSTR root_p
 
 	if (bInitialized)		return;
 
-	strcpy					(ApplicationName,_ApplicationName);
-//.	R_ASSERT2				(!bInitialized, "xrCore already initialized.");
+	// Init COM so we can use CoCreateInstance
+	CoInitializeEx			(NULL, COINIT_MULTITHREADED);
 
-	// Parameters
-	strcpy					(Params,GetCommandLine());
-	strlwr					(Params);
+	strcpy					(ApplicationName,_ApplicationName);
+	strlwr					(strcpy(Params,GetCommandLine()));
 
 	// User/Comp Name
 	DWORD	sz_user			= sizeof(UserName);
