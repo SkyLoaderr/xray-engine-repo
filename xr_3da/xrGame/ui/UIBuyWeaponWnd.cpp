@@ -1685,7 +1685,7 @@ void CUIBuyWeaponWnd::CheckBuyAvailability()
 
 //////////////////////////////////////////////////////////////////////////
 
-void CUIBuyWeaponWnd::SetDefaultSuit( u8 Skin )
+void CUIBuyWeaponWnd::SetDefaultSuit( )
 {
 	UIOutfitIcon.Show(false);
 }
