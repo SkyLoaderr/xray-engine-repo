@@ -29,7 +29,7 @@ class CMULight : public CThread
 	u32			low;
 	u32			high;
 public:
-	CMUThread	(u32 ID, u32 _low, u32 _high) : CThread(ID)	{	thMessages	= FALSE; low=_low; high=_high;	}
+	CMULight	(u32 ID, u32 _low, u32 _high) : CThread(ID)	{	thMessages	= FALSE; low=_low; high=_high;	}
 
 	virtual void	Execute	()
 	{
@@ -38,10 +38,10 @@ public:
 		Sleep				(0);
 
 		// Light references
-		for (m=low; m<high; m++)
+		for (u32 m=low; m<high; m++)
 		{
 			pBuild->mu_refs[m]->calc_lighting	();
-			thProgress							= (float(M-low)/float(high-low));
+			thProgress							= (float(m-low)/float(high-low));
 		}
 	}
 };
