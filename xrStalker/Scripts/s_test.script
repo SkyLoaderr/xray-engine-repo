@@ -202,7 +202,7 @@ function setup(obj_name0,obj_name1,patrol_path)
 	return					planner
 end
 
-function main ()//
+function main ()
 	planner0				= s_test.setup	("m_stalker_e0000","m_stalker_e0001","way0000")
 	if (planner0.meet == true) then
 		printf				("0 : true")
