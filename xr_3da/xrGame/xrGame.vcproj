@@ -1193,6 +1193,9 @@
 			Name="Physics"
 			Filter="">
 			<File
+				RelativePath="ExtendedGeom.h">
+			</File>
+			<File
 				RelativePath="PHDynamicData.cpp">
 			</File>
 			<File

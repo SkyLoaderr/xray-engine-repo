@@ -1146,7 +1146,7 @@ int dCollideCylPlane
   contact->g2 = const_cast<dxGeom*> (o2);
   dxCylinder *cylinder = (dxCylinder*) CLASSDATA(o1);
   dxPlane *plane = (dxPlane*) CLASSDATA(o2);
-  int ret = 0;
+  unsigned int ret = 0;
 
  const dReal radius=cylinder->radius;
  const dReal hlz=cylinder->lz/2.f;

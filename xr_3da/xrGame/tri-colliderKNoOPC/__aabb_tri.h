@@ -177,21 +177,9 @@ IC bool planeBoxOverlap(const Point& normal, const float d, const Point& maxbox)
 	if(min>rad || max<-rad) return false;
 	
 
-/*
-template <bool bClass3, bool bFirst>
-class box_collider
-{
-public:
-	COLLIDER*		dest;
-	TRI*			tris;
-	
-	Fvector			b_min, b_max;
-	Point			center, extents;
 
-	Point			mLeafVerts	[3];
-*/	
 
-	bool		__aabb_tri		(Point center,Point extents,Point* mLeafVerts)
+IC	bool		__aabb_tri		(Point center,Point extents,Point* mLeafVerts)
 	{
 		// move everything so that the boxcenter is in (0,0,0) 
 		Point v0, v1, v2;
@@ -267,4 +255,4 @@ public:
 		return true;
 	}
 	
-//};
+

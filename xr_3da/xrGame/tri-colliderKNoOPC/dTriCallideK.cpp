@@ -58,7 +58,7 @@ code=0;
 
 if(depth<0.f) return 0;
 
-int i;
+unsigned int i;
 
 dVector3 axis,outAx;
 if(dist<0.f) goto toch;
@@ -571,7 +571,7 @@ TEST(2,7)
 #undef CMP
 #undef TEST
 
-int i;
+unsigned int i;
 
 dVector3 axis,outAx;
 
