@@ -401,7 +401,7 @@ function anims:update_idle()
 	end	
 end                            
 function anims:remove_idle()
-	self.a.lastanim = nil
+	self.anim.lastanim = nil
 	self.npc:clear_animations()
 end
 
