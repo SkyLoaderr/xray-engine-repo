@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "fstaticrender.h"
-#include "fs.h"
-#include "tga.h"
-#include "xr_creator.h"
-#include "xrImage_Resampler.h"
+#include "..\tga.h"
+#include "..\xrImage_Resampler.h"
 
 #define RGBA_GETALPHA(rgb)      u32((rgb) >> 24)
 #define RGBA_GETRED(rgb)        u32(((rgb) >> 16) & 0xff)

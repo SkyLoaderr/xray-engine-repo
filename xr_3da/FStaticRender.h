@@ -13,11 +13,11 @@
 #include "..\portal.h"
 #include "..\modelpool.h"
 #include "..\hom.h"
-#include "..\lightShadows.h"
-#include "..\lightProjector.h"
 #include "..\lightPPA.h"
 #include "..\PSLibrary.h"
 
+#include "lightShadows.h"
+#include "lightProjector.h"
 #include "detailmanager.h"
 #include "fstaticrender_types.h"
 #include "fstaticrender_scenegraph.h"

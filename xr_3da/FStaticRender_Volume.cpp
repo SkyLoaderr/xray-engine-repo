@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "fstaticrender.h"
-#include "fhierrarhyvisual.h"
-#include "bodyinstance.h"
-#include "fmesh.h"
+#include "..\fhierrarhyvisual.h"
+#include "..\bodyinstance.h"
+#include "..\fmesh.h"
 
 void CRender::RenderBox			(CSector* S, Fbox& BB, int sh)
 {

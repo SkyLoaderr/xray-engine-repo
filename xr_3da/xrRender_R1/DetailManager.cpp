@@ -6,7 +6,6 @@
 #pragma hdrstop
 
 #include "DetailManager.h"
-#include "render.h"
 #include "cl_intersect.h"
 
 #ifdef _EDITOR

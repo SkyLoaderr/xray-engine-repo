@@ -4,12 +4,10 @@
 
 #include "stdafx.h"
 #include "LightShadows.h"
-#include "xr_object.h"
-#include "render.h"
-#include "flightscontroller.h"
-#include "xr_creator.h"
-#include "fbasicvisual.h"
-#include "lighttrack.h"
+#include "..\xr_object.h"
+#include "..\flightscontroller.h"
+#include "..\fbasicvisual.h"
+#include "..\lighttrack.h"
 
 int		psSH_Blur			= 1;
 
