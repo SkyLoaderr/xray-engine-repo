@@ -111,11 +111,6 @@ void CActor::OnReceiveInfo(INFO_INDEX info_index)
 	{
 		pGameSP->TalkMenu.UpdateQuestions();
 	}
-	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
-	{
-		pGameSP->PdaMenu.UIPdaCommunication.UpdateDisplay();
-	}
-
 
 	CInventoryOwner::OnReceiveInfo(info_index);
 }
@@ -176,6 +171,11 @@ void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 	{
 		pGameSP->TalkMenu.UpdateQuestions();
 	}
+	else if(pGameSP->PdaMenu.UIPdaCommunication.IsShown())
+	{
+		pGameSP->PdaMenu.UIPdaCommunication.UpdateDisplay();
+	}
+
 
 	CPhraseDialogManager::ReceivePhrase(phrase_dialog);
 }

@@ -103,12 +103,14 @@ void CUIPdaCommunication::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 	}
 	else if(pWnd == &UIPdaDialogWnd)
 	{
-		if(msg == CUIPdaDialogWnd::BACK_BUTTON_CLICKED)
+		/*if(msg == CUIPdaDialogWnd::BACK_BUTTON_CLICKED)
 		{
 			UIPdaContactsWnd.Show(true);
 			UIPdaDialogWnd.Show(false);
 		}
-		else if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
+		else 
+		*/
+		if(msg == CUIPdaDialogWnd::MESSAGE_BUTTON_CLICKED)
 		{
 			EPdaMsg pda_msg = ePdaMsgDialog;
 			u32 id_pda_contact = m_pContactPda->ID();
