@@ -11,6 +11,7 @@ CSoundRender_TargetA::CSoundRender_TargetA():CSoundRender_Target()
 {
     cache_gain			= 0.f;
     cache_pitch			= 1.f;
+    pSource				= 0;
 }
 
 CSoundRender_TargetA::~CSoundRender_TargetA()
@@ -23,6 +24,7 @@ BOOL	CSoundRender_TargetA::_initialize		()
     // initialize buffer
 	A_CHK(alGenBuffers	(sdef_target_count, pBuffers));	
     alGenSources		(1, &pSource);
+    Log("-- -- ",pSource);
     ALenum error		= alGetError();
     if (AL_NO_ERROR==error){
         A_CHK(alSourcei	(pSource, AL_LOOPING, AL_FALSE));
@@ -40,8 +42,8 @@ BOOL	CSoundRender_TargetA::_initialize		()
 void	CSoundRender_TargetA::_destroy		()
 {
 	// clean up target
-	A_CHK(alDeleteSources	(1, &pSource));
-	A_CHK(alDeleteBuffers	(sdef_target_count, pBuffers));
+	alDeleteSources	(1, &pSource);
+	alDeleteBuffers	(sdef_target_count, pBuffers);
 }
 
 void	CSoundRender_TargetA::start			(CSoundRender_Emitter* E)
@@ -49,7 +51,7 @@ void	CSoundRender_TargetA::start			(CSoundRender_Emitter* E)
     inherited::start(E);
 
 	// Calc storage
-	buf_block			= sdef_target_block*wfx.nAvgBytesPerSec/1000;
+	buf_block		= sdef_target_block*wfx.nAvgBytesPerSec/1000;
     buf_temp_data.resize(buf_block);
 }
 
