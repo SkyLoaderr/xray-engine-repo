@@ -159,7 +159,7 @@ public:
 		u16				val;
 		r_u16			(val);
 		A				= (float(val)/65535.f)*(max-min) + min;
-		VERIFY			((A >= min - EPS_S) && (A <= max + EPS_S));
+		VERIFY			((A >= min - EPS) && (A <= max + EPS));
 		if (h_error)	A += ((max-min)/65535.f)/2.f;
 	}
 	IC void		r_float_q8		(float& A, float min, float max, BOOL h_error=FALSE)
@@ -167,7 +167,7 @@ public:
 		u8				val;
 		r_u8			(val);
 		A				= (float(val)/255.f)*(max-min) + min;
-		VERIFY			((A >= min - EPS_S) && (A <= max + EPS_S));
+		VERIFY			((A >= min - EPS) && (A <= max + EPS));
 		if (h_error)	A += ((max-min)/255.f)/2.f;
 	}
 	IC void		r_angle16		(float& A)		{ r_float_q16	(A,0,PI_MUL_2);	}
