@@ -15,8 +15,8 @@ public:
 	u32									dbg_update_shedule;
 #endif
 
-	ISheduled				();
-
+				ISheduled				();
+	virtual ~	ISheduled				();
 
 	void								shedule_register	();
 	void								shedule_unregister	();

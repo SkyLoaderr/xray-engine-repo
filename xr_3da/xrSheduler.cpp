@@ -5,6 +5,7 @@
 float			psShedulerCurrent		= 10.f	;
 float			psShedulerTarget		= 10.f	;
 const	float	psShedulerReaction		= 0.1f	;
+BOOL			g_bSheduleInProgress	= FALSE	;
 
 //-------------------------------------------------------------------------------------
 void CSheduler::Initialize		()
@@ -270,6 +271,7 @@ void CSheduler::Update				()
 	cycles_start					= CPU::GetCycleCount			();
 	cycles_limit					= CPU::cycles_per_milisec * u64	(iCeil(psShedulerCurrent)) + cycles_start;
 	internal_Registration			();
+	g_bSheduleInProgress			= TRUE;
 
 	// Realtime priority
 	u32	dwTime						= Device.dwTimeGlobal;
@@ -291,6 +293,7 @@ void CSheduler::Update				()
 	Device.Statistic.fShedulerLoad	= psShedulerCurrent;
 
 	// Finalize
+	g_bSheduleInProgress			= FALSE;
 	internal_Registration			();
 	Device.Statistic.Sheduler.End	();
 }
