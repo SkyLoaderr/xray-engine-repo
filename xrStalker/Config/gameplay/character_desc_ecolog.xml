@@ -13,7 +13,7 @@
 		<class>ecolog_general</class>
 		<community>ecolog</community>
 		
-		<rank>80</rank>
+		<rank>50</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>
@@ -41,7 +41,7 @@
 		<class>ecolog_general</class>
 		<community>ecolog</community>
 		
-		<rank>80</rank>
+		<rank>50</rank>
 		<reputation>50</reputation>
 
 		<visual>actors\ecolog\stalker_ecolog</visual>

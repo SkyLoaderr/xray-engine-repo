@@ -11,7 +11,7 @@
 		<community>freedom</community>
 		
 		<rank>90</rank>
-		<reputation>50</reputation>
+		<reputation>-30</reputation>
 
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
 		<supplies>
@@ -39,8 +39,8 @@
 		<class>Svoboda_regular</class>
 		<community>freedom</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_9</visual>
 		<supplies>
@@ -67,8 +67,8 @@
 		<class>Svoboda_regular</class>
 		<community>freedom</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
@@ -95,8 +95,8 @@
 		<class>Svoboda_regular</class>
 		<community>freedom</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_2</visual>
 		<supplies>
@@ -123,8 +123,8 @@
 		<class>Svoboda_regular</class>
 		<community>freedom</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_rukzak_3</visual>
 		<supplies>
@@ -153,7 +153,7 @@
 		<community>freedom</community>
 
 		<rank>50</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_balon_1</visual>
 		<supplies>
@@ -181,7 +181,7 @@
 		<community>freedom</community>
 
 		<rank>50</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_91</visual>
 		<supplies>
@@ -210,7 +210,7 @@
 		<community>freedom</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_balon_10</visual>
 		<supplies>
@@ -239,7 +239,7 @@
 		<community>freedom</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_hood_9</visual>
 		<supplies>
@@ -267,7 +267,7 @@
 		<community>freedom</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -297,7 +297,7 @@
 		<community>freedom</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -326,7 +326,7 @@
 		<community>freedom</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -357,7 +357,7 @@
 
 		
 		<rank>90</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_exoskeleton</visual>
 		<supplies>
@@ -387,7 +387,7 @@
 
 		
 		<rank>90</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\svoboda\stalker_sv_nauchniy</visual>
 		<supplies>

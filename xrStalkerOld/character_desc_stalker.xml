@@ -13,8 +13,8 @@
 		<class>Stalker_novice</class>
 		<community>stalker</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>20</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_1</visual>
 		<supplies>
@@ -41,8 +41,8 @@
 		<class>Stalker_novice</class>
 		<community>stalker</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>20</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_2</visual>
 		<supplies>
@@ -69,8 +69,8 @@
 		<class>Stalker_novice</class>
 		<community>stalker</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>20</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_3</visual>
 		<supplies>
@@ -97,8 +97,8 @@
 		<class>Stalker_novice</class>
 		<community>stalker</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>20</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_4</visual>
 		<supplies>
@@ -125,8 +125,8 @@
 		<class>Stalker_novice</class>
 		<community>stalker</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>20</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\novice\green_stalker_5</visual>
 		<supplies>
@@ -154,8 +154,8 @@
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<supplies>
@@ -182,8 +182,8 @@
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_balon_8</visual>
 		<supplies>
@@ -210,8 +210,8 @@
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_rukzak_2</visual>
 		<supplies>
@@ -238,8 +238,8 @@
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_2</visual>
 		<supplies>
@@ -266,8 +266,8 @@
 		<class>Stalker_general</class>
 		<community>stalker</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<supplies>
@@ -296,7 +296,7 @@
 		<community>stalker</community>
 			
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_9</visual>
 		<supplies>
@@ -324,7 +324,7 @@
 		<community>stalker</community>
 			
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_hood_8</visual>
 		<supplies>
@@ -352,7 +352,7 @@
 		<community>stalker</community>
 		
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
@@ -380,7 +380,7 @@
 		<community>stalker</community>
 	
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
@@ -408,7 +408,7 @@
 		<community>stalker</community>
 			
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
@@ -437,8 +437,8 @@
 		<class>Stalker_master</class>
 		<community>stalker</community>
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<supplies>
@@ -466,8 +466,8 @@
 		<class>Stalker_master</class>
 		<community>stalker</community>
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<supplies>
@@ -495,8 +495,8 @@
 		<class>Stalker_master</class>
 		<community>stalker</community>
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_nauchniy</visual>
 		<supplies>
@@ -524,8 +524,8 @@
 		<class>Stalker_master</class>
 		<community>stalker</community>
 				
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>
@@ -554,8 +554,8 @@
 		<community>stalker</community>
 		
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\neytral\stalker_neytral_exoskeleton</visual>
 		<supplies>

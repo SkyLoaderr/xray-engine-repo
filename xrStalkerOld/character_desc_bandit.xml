@@ -13,8 +13,8 @@
 		<class>Bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>0</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -37,8 +37,8 @@
 		<class>Bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>0</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -61,8 +61,8 @@
 		<class>Bandit_novice</class>
 		<community>bandit</community>
 		
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>0</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<supplies>
@@ -86,8 +86,8 @@
 		<class>Bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -110,8 +110,8 @@
 		<class>Bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -134,8 +134,8 @@
 		<class>Bandit_general</class>
 		<community>bandit</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>0</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<supplies>
@@ -160,7 +160,7 @@
 		<community>bandit</community>
 		
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -184,7 +184,7 @@
 		<community>bandit</community>
 		
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -208,7 +208,7 @@
 		<community>bandit</community>
 		
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>-20</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<supplies>
@@ -232,8 +232,8 @@
 		<class>Bandit_master</class>
 		<community>bandit</community>
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>-50</reputation>
 
 		<visual>actors\bandit\stalker_bandit_3</visual>
 		<supplies>
@@ -256,8 +256,8 @@
 		<class>Bandit_master</class>
 		<community>bandit</community>
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>-50</reputation>
 
 		<visual>actors\bandit\stalker_bandit_4</visual>
 		<supplies>
@@ -280,8 +280,8 @@
 		<class>Bandit_master</class>
 		<community>bandit</community>
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>-50</reputation>
 
 		<visual>actors\bandit\stalker_bandit_8</visual>
 		<supplies>

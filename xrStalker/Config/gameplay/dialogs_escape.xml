@@ -27,9 +27,9 @@
 		<phrase id="4">
 			<text>escape_trader_jobs__4</text>
 			<next>12</next>
+			<next>5</next>						
 			<next>51</next>
 			<next>52</next>			
-			<next>5</next>						
 		</phrase>
 
 		<phrase id="5">
@@ -303,7 +303,6 @@
                 <next>1</next>
                 <next>2</next>
                 <next>3</next>
-                <next>6</next>
             </phrase>
             <phrase id="1">
 				<precondition>escape_dialog.novice_gane_job</precondition>
@@ -319,13 +318,6 @@
                 <text>loser_hello_dialog__3</text>
                 <next>4</next>
                 <action>escape_dialog.give_kalash_to_loser</action>
-                <give_info>escape_novice_has_weapon</give_info>
-            </phrase>
-            <phrase id="6">
-                <precondition>escape_dialog.haveTOZ</precondition>
-                <text>loser_hello_dialog__6</text>
-                <next>4</next>
-                <action>escape_dialog.give_toz_to_loser</action>
                 <give_info>escape_novice_has_weapon</give_info>
             </phrase>
             <phrase id="4">

@@ -11,17 +11,17 @@ goodwill_names      = enemy, -1000, hostile, -500, indifferent, 500, companionab
 
 
 ;пороговые значения для отношения персонажей
-attitude_neutal_threshold = -1000		;когда attitude меньше значения, то выставляется ALife::eRelationEnemy
-attitude_friend_threshold =  1000		;когда attitude меньше значения, то выставляется ALife::eRelationNeutral, иначе ALife::eRelationFriend
+attitude_neutal_threshold = -400		;когда attitude меньше значения, то выставляется ALife::eRelationEnemy
+attitude_friend_threshold =  500		;когда attitude меньше значения, то выставляется ALife::eRelationNeutral, иначе ALife::eRelationFriend
 
 ;константы, которые присвоят скриптовые функции set_relation для personal goodwill
-goodwill_enemy  = -100
+goodwill_enemy  = -1000
 goodwill_neutal = 0 
-goodwill_friend = 100
+goodwill_friend = 1000
 
 
 ;названия группировок
-communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 5, dolg, 6, freedom, 7, bandit, 8, zombied, 23
+communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 5, dolg, 1, freedom, 7, bandit, 1, trader, 10, zombied, 23
 
 
 ;	отношения персонажа к актеру (или другому NPC) вычисляется по формуле
@@ -32,17 +32,18 @@ communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 5, dolg,
 ;			   rank_goodwill					//отношение ранга персонажа к рангу актера из [rank_relations]
 
 [communities_relations]
-;				stalker monolith military killer  ecolog   dolg  svoboda  bandit zombied
+;				stalker monolith military killer  ecolog   dolg  svoboda  bandit trader zombied
 ;============================================================================================
-stalker		=		  0,  -5000,   -500,  -5000,    500,	  0,	  0,   -200,  -5000
-monolith	=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,   5000
-military	=		  0,  -5000,   5000,  -5000,    250,	100,  -5000,  -5000,  -5000
-killer		=	  -5000,  -5000,  -5000,   5000,	  0,  -5000,	  0,	  0,  -5000
-ecolog		=	      0,  -5000,   1000,	  0,   5000,   1000,	  0,   -500,  -5000
-dolg		=		  0,  -5000,   -500,  -5000,   5000,   5000,  -5000,  -5000,  -5000
-freedom		=		  0,  -5000,  -5000,	  0,  -1500,  -5000,   5000,	  0,  -5000
-bandit		=	      0,  -5000,   -500,	  0,	  0,	  0,	  0,	  0,  -5000
-zombied		=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,   5000
+stalker		=		  0,  -5000,	  0,  -5000,      0,	  0,	  0,  -5000,    0,	-5000
+monolith	=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,    0,	 5000
+military	=	  -5000,  -5000,   5000,  -5000,      0,  -5000,  -5000,  -5000,	0,	-5000
+killer		=	  -5000,  -5000,  -5000,   5000,	  0,  -5000,  -5000,	  0,	0,	-5000
+ecolog		=	    500,  -5000,   1000,	  0,   5000,    500,	  0,   -500,	0,	-5000
+dolg		=		  0,  -5000,   -500,  -5000,   5000,    600,  -5000,  -5000,    0,	-5000
+freedom		=		  0,  -5000,  -5000,	  0,  -1500,  -5000,    600,	  0,	0,	-5000
+bandit		=	      0,  -5000,   -500,	  0,	  0,	  0,	  0,	  0,	0,	-5000
+trader		=		  0,	  0,	  0,	  0,	  0,	  0,	  0,	  0,	0,	    0
+zombied		=	  -5000,   5000,  -5000,  -5000,  -5000,  -5000,  -5000,  -5000,    0,	 5000
 
 
 [rank_relations]
@@ -76,15 +77,16 @@ excellent		= -1000,  -600,  -300,	  300,	  500,	  800,	 1000
 ;goodwill его распространится на остальных членов группировки
 ;с определенным коэффициентом
 [communities_sympathy]
-stalker		=         0.1
+stalker		=         0.0
 monolith	=         0.0
-military	=         0.1
-killer		=         0.1
-ecolog		=         0.1
-dolg		=         0.1
-freedom		=         0.1
+military	=         0.0
+killer		=         0.01
+ecolog		=         0.01
+dolg		=         0.01
+freedom		=         0.01
 bandit		=         0.0
 zombied		=         0.0
+trader		=	  0.0
 
 ;
 ;очки рейтинга, получаемые за убийство персонажа
@@ -99,8 +101,8 @@ master			=        0
 ;в зависимости от совершенного действия
 [action_points]
 
-friend_attack_goodwill			= -1000
-neutral_attack_goodwill			= -500
+friend_attack_goodwill			= -500
+neutral_attack_goodwill			= -300
 enemy_attack_goodwill			= -100
 
 ; Имхо репутация не должна меняться при атаке, только при убийстве.
@@ -121,12 +123,11 @@ enemy_kill_goodwill				= 0
 
 ;убийство члена группировки отражается на отношении
 ;группировки (умножается на communities_sympathy)
-community_member_kill_goodwill  = -10
+community_member_kill_goodwill  = -10000
 
-friend_kill_reputation			= -20
-neutral_kill_reputation			= -10
+friend_kill_reputation			= -50
+neutral_kill_reputation			= -30
 enemy_kill_reputation			= 0
-
 
 ;
 ; помощь актера персонажу во время боя
@@ -134,18 +135,17 @@ enemy_kill_reputation			= 0
 
 ;порог величины хита, который нанес актер атакующему,
 ;после которого регистрируется помощь актера персонажу которого атаковали
-help_hit_threshold = 10
-
+help_hit_threshold = 30
 
 fight_remember_time = 10		;(c) время которое про драку будет помнить реестр
 
-friend_fight_help_goodwill   = 1000
-neutral_fight_help_goodwill	 = 1000 
-enemy_fight_help_goodwill    = 1000
+friend_fight_help_goodwill   = 30
+neutral_fight_help_goodwill	 = 30 
+enemy_fight_help_goodwill    = 0
 
-friend_fight_help_reputation  = 10
-neutral_fight_help_reputation = 10
-enemy_fight_help_reputation	  = 10
+friend_fight_help_reputation  = 2
+neutral_fight_help_reputation = 2
+enemy_fight_help_reputation	  = 0
 
 ;свойства, которые изменяются у сталкеров в 
 ;зависимости от их ранга 

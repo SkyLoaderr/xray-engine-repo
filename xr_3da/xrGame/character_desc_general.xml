@@ -14,10 +14,10 @@
 		<team>Trader</team>
 		
 		<class>trader</class>
-		<community>stalker</community>
+		<community>trader</community>
 				
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>70</rank>
+		<reputation>65</reputation>
 		
 		<start_dialog>escape_trader_start_dialog</start_dialog>
 		<actor_dialog>escape_trader_talk_level</actor_dialog>
@@ -36,9 +36,9 @@
 		<team>Barman</team>
 		
 		<class>trader</class>
-		<community>stalker</community>
+		<community>trader</community>
 		
-		<rank>50</rank>
+		<rank>70</rank>
 		<reputation>50</reputation>
 		<visual>actors\barman\barman</visual>
 	</specific_character>
@@ -52,10 +52,10 @@
 		<team>Izgoy</team>
 		
 		<class>Izgoy</class>
-		<community>stalker</community>
+		<community>trader</community>
 		
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>80</rank>
+		<reputation>0</reputation>
 		<visual>actors\izgoy\izgoy</visual>
 	</specific_character>
 	
@@ -74,8 +74,8 @@
 		<class>actor</class>
 		<community>stalker</community>
 	
-		<rank>50</rank>
-		<reputation>50</reputation>
+		<rank>0</rank>
+		<reputation>0</reputation>
 		<visual>actors\hero\stalker_novice</visual>
 	</specific_character>
 

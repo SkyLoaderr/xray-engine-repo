@@ -10,8 +10,8 @@
 		<team>Killer_leader</team>				
 		<community>killer</community>
 		
-		<rank>90</rank>
-		<reputation>50</reputation>
+		<rank>95</rank>
+		<reputation>-70</reputation>
 
 		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<supplies>
@@ -35,8 +35,8 @@
 		<class>Killer_regular</class>
 		<community>killer</community>
 					
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>-30</reputation>
 
 		<visual>actors\killer\stalker_ki_head_3</visual>
 		<supplies>
@@ -59,8 +59,8 @@
 		<class>Killer_regular</class>
 		<community>killer</community>
 					
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>-30</reputation>
 
 		<visual>actors\killer\stalker_ki_head_4</visual>
 		<supplies>
@@ -83,8 +83,8 @@
 		<class>Killer_regular</class>
 		<community>killer</community>
 					
-		<rank>30</rank>
-		<reputation>50</reputation>
+		<rank>40</rank>
+		<reputation>-30</reputation>
 
 		<visual>actors\killer\stalker_ki_head_5</visual>
 		<supplies>
@@ -109,7 +109,7 @@
 		<community>killer</community>
 
 		<rank>50</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_mask</visual>
 		<supplies>
@@ -133,7 +133,7 @@
 		<community>killer</community>
 
 		<rank>50</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_head_6</visual>
 		<supplies>
@@ -157,7 +157,7 @@
 		<community>killer</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_antigas</visual>
 		<supplies>
@@ -181,7 +181,7 @@
 		<community>killer</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_antigas</visual>
 		<supplies>
@@ -206,7 +206,7 @@
 		<community>killer</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
@@ -230,7 +230,7 @@
 		<community>killer</community>
 
 		<rank>70</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
@@ -257,7 +257,7 @@
 
 		
 		<rank>90</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_exoskeleton</visual>
 		<supplies>
@@ -283,7 +283,7 @@
 
 		
 		<rank>90</rank>
-		<reputation>50</reputation>
+		<reputation>-50</reputation>
 
 		<visual>actors\killer\stalker_ki_nauchniy</visual>
 		<supplies>

@@ -14,7 +14,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_beret</visual>		
 		<supplies>
@@ -38,7 +38,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_beret_1</visual>		
 		<supplies>
@@ -62,7 +62,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_beret_2</visual>		
 		<supplies>
@@ -86,7 +86,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_beret_3</visual>		
 		<supplies>
@@ -110,7 +110,7 @@
 		<community>military</community>
 		
 		<rank>30</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_beret_4</visual>		
 		<supplies>
@@ -135,7 +135,7 @@
 		<community>military</community>
 		
 		<rank>60</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_obichniy</visual>		
 		<supplies>
@@ -159,7 +159,7 @@
 		<community>military</community>
 	
 		<rank>60</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana</visual>		
 		<supplies>
@@ -183,7 +183,7 @@
 		<community>military</community>
 		
 		<rank>60</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_bandana_6</visual>		
 		<supplies>
@@ -208,7 +208,7 @@
 		<community>military</community>
 		
 		<rank>80</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
@@ -232,7 +232,7 @@
 		<community>military</community>
 		
 		<rank>80</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
@@ -256,7 +256,7 @@
 		<community>military</community>
 		
 		<rank>80</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\soldier\soldier_spetsnaz</visual>		
 		<supplies>
@@ -283,7 +283,7 @@
 		<community>military</community>
 		
 		<rank>90</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\militari\stalker_militari_1</visual>		
 		<supplies>
@@ -308,7 +308,7 @@
 		<community>military</community>
 		
 		<rank>90</rank>
-		<reputation>50</reputation>
+		<reputation>0</reputation>
 
 		<visual>actors\militari\stalker_militari_1</visual>		
 		<supplies>
