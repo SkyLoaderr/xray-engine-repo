@@ -92,15 +92,19 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	u16 PlayerID = (xrCData != 0) ? xrCData->ps->GameID : GameID;
 	// Kill Player on all clients
 	NET_Packet			P;
+	/*
 	P.w_begin			(M_EVENT);
 	P.w_u32				(Level().timeServer());
 	P.w_u16				(GE_DIE);
 	P.w_u16				(PlayerID);
+	*/
+	u_EventGen(P, GE_DIE, PlayerID);
 	P.w_u16				(PlayerID);
 	P.w_clientID		(id_who);
 	ClientID clientID;clientID.setBroadcast();
 ///	m_server->SendBroadcast	(clientID,P,net_flags(TRUE, TRUE, TRUE));
-	Level().Send(P,net_flags(TRUE,TRUE));
+///	Level().Send(P,net_flags(TRUE,TRUE));
+	u_EventSend(P);
 //	AllowDeadBodyRemove(id_who, GameID);
 	signal_Syncronize();
 };
