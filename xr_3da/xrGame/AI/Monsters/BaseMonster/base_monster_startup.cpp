@@ -38,7 +38,6 @@ void CBaseMonster::reload	(LPCSTR section)
 void CBaseMonster::reinit()
 {
 	inherited::reinit					();
-	movement().reinit					();
 
 	MotionMan.reinit					();
 
