@@ -460,6 +460,12 @@
 				Name="AI_Monsters"
 				Filter="">
 				<File
+					RelativePath="ai_funcs.cpp">
+				</File>
+				<File
+					RelativePath="ai_funcs.h">
+				</File>
+				<File
 					RelativePath=".\AI\ai_monsters.cpp">
 				</File>
 				<File
