@@ -265,8 +265,10 @@ void CAI_Soldier::OnFindAloneFire()
 
 	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfActionOrFightTypeChanged());
 
-	if (m_bStateChanged)
+	if (m_bStateChanged) {
 		m_bActionStarted = false;
+		AI_Path.TravelPath.clear();
+	}
 
 	vfStopFire();
 	
@@ -280,7 +282,7 @@ void CAI_Soldier::OnFindAloneFire()
  		if (!m_bActionStarted) {
 			if (m_bStateChanged) {
 				if (!Group.m_tpaSuspiciousNodes.size()) {
-					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,max(20.f,min(2*6.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,40.f)),Group);
+					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,max(20.f,min(1*8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,40.f)),Group);
 					vfClasterizeSuspiciousNodes(Group);
 				}
 			}
@@ -298,10 +300,10 @@ void CAI_Soldier::OnFindAloneFire()
 	if (m_bActionStarted || (this != Leader)) {
 		int iIndex = ifFindDynamicObject(tSavedEnemy);
 		if (iIndex != -1) {
-			if (AI_Path.fSpeed < EPS_L) {
+			if ((AI_Path.fSpeed < EPS_L) || (!m_bActionStarted)) {
 				if ((m_iCurrentSuspiciousNodeIndex != -1) && (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID == AI_NodeID))
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 2;
-				else
+				if ((m_iCurrentSuspiciousNodeIndex == -1) || (Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID == AI_NodeID))
 					m_iCurrentSuspiciousNodeIndex = ifGetSuspiciousAvailableNode(m_iCurrentSuspiciousNodeIndex,Group);
 				if (m_iCurrentSuspiciousNodeIndex != -1) {
 					Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwSearched = 1;

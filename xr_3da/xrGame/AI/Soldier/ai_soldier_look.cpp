@@ -597,7 +597,10 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	SRotation tRotation;
 	mk_rotation(tDirection,tRotation);
 	float fResult = ffGetCoverInDirection(tRotation.yaw,tpNode);
-	float fResult1 = ffGetCoverInDirection(-tRotation.yaw,AI_Node);
+	tDirection.sub(tNodePosition,vPosition);
+	tDirection.normalize_safe();
+	mk_rotation(tDirection,tRotation);
+	float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_Node);
 
 	if (tMyRotation.yaw >= tRotation.yaw) {
 		if (tMyRotation.yaw - tRotation.yaw > PI)
@@ -637,7 +640,10 @@ bool CAI_Soldier::bfCheckForNodeVisibility(DWORD dwNodeID)
 	tDirection.normalize_safe();
 	mk_rotation(tDirection,tRotation);
 	float fResult0 = ffGetCoverInDirection(tRotation.yaw,tpNode);
-	float fResult1 = ffGetCoverInDirection(-tRotation.yaw,AI_NodeID);
+	tDirection.sub(tPosition,vPosition);
+	tDirection.normalize_safe();
+	mk_rotation(tDirection,tRotation);
+	float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_NodeID);
 
 	return(min(fResult0,fResult1) > .9f);
 }

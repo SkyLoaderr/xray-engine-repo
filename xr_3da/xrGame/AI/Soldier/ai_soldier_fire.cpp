@@ -1118,49 +1118,35 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 
 void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 {
-	DWORD N = Group.m_tpaSuspiciousNodes.size();
-	m_tpaSuspiciousPoints.resize(N);
-	m_tpaSuspiciousForces.resize(N);
-	for (int i=0; i<N; i++) {
-		m_tpaSuspiciousPoints[i] = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
-		m_tpaSuspiciousForces[i].set(0,0,0);
-	}
-	float fK = .05f;
-	for (int k=0; k<3; k++) {
-		for (int i=0; i<N; i++) {
-			for (int j=0; j<N; j++)
-				if (j != i) {
-					Fvector tDummy;
-					tDummy.sub(m_tpaSuspiciousPoints[j],m_tpaSuspiciousPoints[i]);
-					tDummy.mul(tDummy.magnitude()*fK);
-					m_tpaSuspiciousForces[i].add(tDummy);
-				}
-		}
-		for (int i=0; i<m_tpaSuspiciousPoints.size(); i++) {
-			m_tpaSuspiciousForces[i].div(N);
-			m_tpaSuspiciousPoints[i].add(m_tpaSuspiciousForces[i]);
-			m_tpaSuspiciousForces[i].set(0,0,0);
-		}
-	}
-	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
-		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
-			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
-		for (int j=0; j<N; j++)
-			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (m_tpaSuspiciousPoints[j].distance_to(m_tpaSuspiciousPoints[i]) < GROUP_RADIUS))
-				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
-	}
-	for ( i=0; i<N; i++)
-		Group.m_tpaSuspiciousNodes[i].dwGroup--;
-	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
-	for ( i=0; i<iGroupCounter; i++)
-		Group.m_tpaSuspiciousGroups[i] = 0;
-
-// 	DWORD N = Group.m_tpaSuspiciousNodes.size();
+//	DWORD N = Group.m_tpaSuspiciousNodes.size();
+//	m_tpaSuspiciousPoints.resize(N);
+//	m_tpaSuspiciousForces.resize(N);
+//	for (int i=0; i<N; i++) {
+//		m_tpaSuspiciousPoints[i] = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+//		m_tpaSuspiciousForces[i].set(0,0,0);
+//	}
+//	float fK = .05f;
+//	for (int k=0; k<3; k++) {
+//		for (int i=0; i<N; i++) {
+//			for (int j=0; j<N; j++)
+//				if (j != i) {
+//					Fvector tDummy;
+//					tDummy.sub(m_tpaSuspiciousPoints[j],m_tpaSuspiciousPoints[i]);
+//					tDummy.mul(tDummy.magnitude()*fK);
+//					m_tpaSuspiciousForces[i].add(tDummy);
+//				}
+//		}
+//		for (int i=0; i<m_tpaSuspiciousPoints.size(); i++) {
+//			m_tpaSuspiciousForces[i].div(N);
+//			m_tpaSuspiciousPoints[i].add(m_tpaSuspiciousForces[i]);
+//			m_tpaSuspiciousForces[i].set(0,0,0);
+//		}
+//	}
 //	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
 //		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
 //			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
 //		for (int j=0; j<N; j++)
-//			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
+//			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (m_tpaSuspiciousPoints[j].distance_to(m_tpaSuspiciousPoints[i]) < GROUP_RADIUS))
 //				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
 //	}
 //	for ( i=0; i<N; i++)
@@ -1168,6 +1154,20 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 //	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
 //	for ( i=0; i<iGroupCounter; i++)
 //		Group.m_tpaSuspiciousGroups[i] = 0;
+
+ 	DWORD N = Group.m_tpaSuspiciousNodes.size();
+	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
+		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
+			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
+		for (int j=0; j<N; j++)
+			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
+				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
+	}
+	for ( i=0; i<N; i++)
+		Group.m_tpaSuspiciousNodes[i].dwGroup--;
+	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
+	for ( i=0; i<iGroupCounter; i++)
+		Group.m_tpaSuspiciousGroups[i] = 0;
 }
 
 int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
