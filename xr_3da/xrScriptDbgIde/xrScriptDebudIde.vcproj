@@ -61,7 +61,11 @@
 				TypeLibraryName=".\..\..\executable\Release/ide2.tlb"
 				HeaderFileName=""/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="echo copying files to e:\exchange2\debugger
+copy $(TargetDir)$(TargetPath) e:\exchange2\debugger
+copy $(TargetDir)Scilexer.dll e:\exchange2\debugger
+copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool
@@ -128,7 +132,13 @@
 				TypeLibraryName=".\..\..\executable\Debug/ide2.tlb"
 				HeaderFileName=""/>
 			<Tool
-				Name="VCPostBuildEventTool"/>
+				Name="VCPostBuildEventTool"
+				CommandLine="echo copying $(TargetPath) to e:\exchange2\debugger
+copy $(TargetPath) e:\exchange2\debugger
+echo copying Scilexer.dll to e:\exchange2\debugger
+copy $(TargetDir)Scilexer.dll e:\exchange2\debugger
+echo copying CJ60Lib.dll to e:\exchange2\debugger
+copy $(TargetDir)CJ60Lib.dll e:\exchange2\debugger"/>
 			<Tool
 				Name="VCPreBuildEventTool"/>
 			<Tool

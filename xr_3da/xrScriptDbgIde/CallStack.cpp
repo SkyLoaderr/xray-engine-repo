@@ -1,7 +1,3 @@
-// CallStack.cpp: implementation of the CCallStack class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "ide2.h"
 #include "CallStack.h"
