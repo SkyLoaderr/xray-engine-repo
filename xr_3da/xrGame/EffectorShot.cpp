@@ -36,5 +36,7 @@ void CEffectorShot::Process		(Fvector &p, Fvector &d, Fvector &n)
 	if (fTimeCurrent<0)		return;
 
 	float	angle	= fAngleCurrent*(fTimeCurrent/fTimeTotal);
-	d.direct		(d,vDirectionDiff,tanf(angle));
+	d.mad			(vDirectionDiff,tanf(angle));
+
+	fLifeTime-=Device.fTimeDelta;
 }

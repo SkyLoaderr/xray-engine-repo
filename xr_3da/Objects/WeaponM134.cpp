@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "effectornoise.h"
+#include "effectorshot.h"
 #include "..\fstaticrender.h"
 #include "..\bodyinstance.h"
 #include "..\xr_tokens.h"
@@ -250,7 +250,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 				pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
-			Level().Cameras.SetEffector(new CEffectorNoise(.1f,1000));
+			Level().Cameras.SetEffector(new CEffectorShot(.5f,PI_DIV_6));
 			break;
 		}
 		st_current=st_target;
