@@ -4,6 +4,7 @@
 
 #pragma once
 #include "UIStatic.h"
+#include "../script_export_space.h"
 
 class CUIEditBox : public CUIStatic
 {
@@ -35,4 +36,9 @@ protected:
 
 	//положение текущее курсора при наборе текста
 	u32 m_iCursorPos;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUIEditBox)
+#undef script_type_list
+#define script_type_list save_type_list(CUIEditBox)

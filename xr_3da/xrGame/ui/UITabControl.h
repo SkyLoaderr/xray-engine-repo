@@ -9,6 +9,7 @@
 
 #include "uiwindow.h"
 #include "UIButton.h"
+#include "../script_export_space.h"
 
 DEF_VECTOR (TABS_VECTOR, CUIButton*)
 
@@ -84,6 +85,11 @@ protected:
 	// –азрешаем/запрещаем клавиатурные акселераторы
 	bool			m_bAcceleratorsEnable;
 	bool			m_bChangeColors;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUITabControl)
+#undef script_type_list
+#define script_type_list save_type_list(CUITabControl)
 
 #endif

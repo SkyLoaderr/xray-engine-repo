@@ -14,8 +14,6 @@ void UIRegistrator::script_register(lua_State *L)
 	module(L)
 	[
 
-		class_<CUIDialogWnd, CUIWindow>("CUIDialogWnd"),
-
 		class_<CUIStatsWnd, CUIDialogWnd>("CUIStatsWnd")
 		.def("GetFrameRect",  &CUIStatsWnd::GetFrameRect),
 

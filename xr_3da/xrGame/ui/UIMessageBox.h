@@ -9,6 +9,7 @@
 #include "uiframewindow.h"
 #include "uibutton.h"
 
+#include "../script_export_space.h"
 
 class CUIMessageBox: public CUIFrameWindow
 {
@@ -28,7 +29,8 @@ public:
 	//инициализация
 	virtual void Init(LPCSTR base_name, int x, int y, int width, int height);
 	virtual void SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle);
-	virtual void SetText(LPSTR str);
+			void SetStyle_script(u32 messageBoxStyle);
+	virtual void SetText(LPCSTR str);
 
 	virtual void Show();
 	virtual void Hide();
@@ -52,4 +54,9 @@ protected:
 	CUIStatic m_UIStatic;
 	 
 	E_MESSAGEBOX_STYLE m_eMessageBoxStyle;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUIMessageBox)
+#undef script_type_list
+#define script_type_list save_type_list(CUIMessageBox)

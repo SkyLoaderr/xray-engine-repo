@@ -188,7 +188,7 @@ void CUIMessageBox::SetStyle(E_MESSAGEBOX_STYLE messageBoxStyle)
 	}
 }
 
-void CUIMessageBox::SetText(LPSTR str)
+void CUIMessageBox::SetText(LPCSTR str)
 {
 	CGameFont *pFont = m_UIStatic.GetFont();
 	if (pFont)

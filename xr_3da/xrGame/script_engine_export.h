@@ -67,6 +67,12 @@
 #	include "UI/UIScriptWnd.h"
 #	include "UI/UIStatic.h"
 #	include "UI/UIButton.h"
+#	include "UI/UIProgressBar.h"
+#	include "UI/UIEditBox.h"
+#	include "UI/UIMessageBox.h"
+#	include "UI/UIPropertiesBox.h"
+#	include "UI/UITabControl.h"
+
 
 #	include "script_ui_registrator.h"
 #	include "key_binding_registrator.h"

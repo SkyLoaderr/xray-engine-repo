@@ -10,6 +10,7 @@
 #include "uiframewindow.h"
 #include "uilistwnd.h"
 
+#include "../script_export_space.h"
 
 class CUIPropertiesBox: public CUIFrameWindow
 {
@@ -34,6 +35,7 @@ public:
 	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 	bool AddItem(const char*  str, void* pData = NULL, int value = 0);
+	bool AddItem_script(const char*  str){return AddItem(str);};
 	void RemoveItem(int index);
 	void RemoveAll();
 
@@ -57,4 +59,9 @@ protected:
 	CUIListWnd m_UIListWnd;
 
 	int m_iClickedElement;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CUIPropertiesBox)
+#undef script_type_list
+#define script_type_list save_type_list(CUIPropertiesBox)

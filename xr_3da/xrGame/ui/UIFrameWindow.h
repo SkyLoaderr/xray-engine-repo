@@ -15,7 +15,6 @@
 
 
 
-
 class CUIFrameWindow: public CUIWindow
 {
 private:
@@ -47,6 +46,7 @@ public:
 	
 	//текст заголовка
 	CUIStatic UITitleText;
+	CUIStatic*	GetTitleStatic(){return &UITitleText;};
 
 	bool		GetClipper()							{ return m_bClipper; }
 	void		SetClipper(bool value, RECT clipRect)	{ m_bClipper = value; m_ClipRect = clipRect; }
@@ -82,4 +82,6 @@ protected:
 
 private:
 	inline void ClampMax_Zero(Irect &r);
+
 };
+	

@@ -1,5 +1,9 @@
 #include "stdafx.h"
 #include "UIWindow.h"
+#include "UIFrameWindow.h"
+#include "UIFrameLineWnd.h"
+#include "UIDialogWnd.h"
+
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>
 
@@ -36,11 +40,33 @@ void CUIWindow::script_register(lua_State *L)
 		.def("Show",					&CUIWindow::Show)
 		.def("IsShown",					&CUIWindow::IsShown)
 
-		.def("WindowName",				&CUIWindow::WindowName_script)
+		.def("WindowName",				&CUIWindow::WindowName_script),
 
 /*		.def("",						&CUIWindow::)
 		.def("",						&CUIWindow::)
 */		
 		
+		class_<CUIDialogWnd, CUIWindow>("CUIDialogWnd"),
+
+		class_<CUIFrameWindow, CUIWindow>("UIFrameWindow")
+		.def(					constructor<>())
+		.def("SetWidth",				&CUIFrameWindow::SetWidth)
+		.def("SetHeight",				&CUIFrameWindow::SetHeight)
+		.def("SetColor",				&CUIFrameWindow::SetColor)
+		.def("GetTitleStatic",			&CUIFrameWindow::GetTitleStatic),
+//		.def("",						&CUIFrameWindow::)
+
+		class_<CUIFrameLineWnd, CUIWindow>("UIFrameLineWnd")
+		.def(					constructor<>())
+
+		.def("SetWidth",						&CUIFrameLineWnd::SetWidth)
+		.def("SetHeight",						&CUIFrameLineWnd::SetHeight)
+		.def("SetOrientation",					&CUIFrameLineWnd::SetOrientation)
+		.def("SetColor",						&CUIFrameLineWnd::SetColor)
+		.def("GetTitleStatic",					&CUIFrameLineWnd::GetTitleStatic)
+//		.def("",						&CUIFrameLineWnd::)
+//		.def("",						&CUIFrameLineWnd::)
+//		.def("",						&CUIFrameLineWnd::)
+
 	];
 }

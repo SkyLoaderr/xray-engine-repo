@@ -8275,6 +8275,9 @@
 					<File
 						RelativePath=".\ui\UIMessageBox.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIMessageBox_script.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="PropertiesBox"
@@ -8284,6 +8287,9 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIPropertiesBox.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIPropertiesBox_script.cpp">
 					</File>
 				</Filter>
 				<Filter
@@ -8417,6 +8423,9 @@
 					<File
 						RelativePath=".\ui\UIEditBox.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIEditBox_script.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="Windows"
@@ -8458,6 +8467,9 @@
 					<File
 						RelativePath=".\ui\UIProgressBar.h">
 					</File>
+					<File
+						RelativePath=".\ui\UIProgressBar_script.cpp">
+					</File>
 				</Filter>
 				<Filter
 					Name="String"
@@ -8477,6 +8489,9 @@
 					</File>
 					<File
 						RelativePath=".\ui\UITabControl.h">
+					</File>
+					<File
+						RelativePath=".\ui\UITabControl_script.cpp">
 					</File>
 				</Filter>
 				<Filter

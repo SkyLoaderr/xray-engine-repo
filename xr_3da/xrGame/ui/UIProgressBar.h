@@ -9,6 +9,7 @@
 
 #include "uiwindow.h"
 #include "uibutton.h"
+#include "../script_export_space.h"
 
 
 class CUIProgressBar :
@@ -30,6 +31,8 @@ public:
 						UpdateProgressBar();}
 	void GetRange(s16& iMin, s16& iMax) {iMin = m_iMinPos;  iMax = m_iMaxPos;}
 
+	s16 GetRange_min() {return  m_iMinPos;}
+	s16 GetRange_max() {return  m_iMaxPos;}
 
 	void SetProgressPos(s16 iPos) { m_iProgressPos = iPos; 
 						UpdateProgressBar();}
@@ -79,7 +82,11 @@ protected:
 	bool m_bBackgroundPresent;
 	int m_iBackgroundLeftOffset;
 	int m_iBackgroundUpOffset;
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
+add_to_type_list(CUIProgressBar)
+#undef script_type_list
+#define script_type_list save_type_list(CUIProgressBar)
 
 #endif //_UI_PROGRESSBAR_H_
