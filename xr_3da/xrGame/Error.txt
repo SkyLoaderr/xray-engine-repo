@@ -79,6 +79,7 @@ To Dima:
 		if (tpALifeAbstractGroup) {
 			if (tpALifeAbstractGroup->m_tpMembers.empty())
 - - ƒ»— –≈“Ќќ—“№ ƒ¬»∆≈Ќ»я ѕ≈–—ќЌј∆≈… вдали!!!!!!
+-Y	на уровне "occ_part_dandy/single" два AI сталкера-врага начинают съедать FPS со временем
 
 
 To OLES
