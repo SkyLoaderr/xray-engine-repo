@@ -385,6 +385,8 @@ public:
 
 						// light point
 						t_n.normalize	();
+						t_n.y			+= 1.f;
+						t_n.normalize	();
 						amount	[pid]	+= LightPoint(DB,P,t_n,Selected);
 						count	[pid]	+= 1;
 					}
