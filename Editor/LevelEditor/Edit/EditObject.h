@@ -71,6 +71,7 @@ public:
 #ifdef _LW_IMPORT
 	LWSurfaceID		surf_id;
 #endif 
+	DWORD			tag;
 };
 
 DEFINE_VECTOR	(CSurface*,SurfaceVec,SurfaceIt);
@@ -323,7 +324,7 @@ public:
 #endif
 #ifdef _LW_IMPORT
 	bool			Export_LW				(LWObjectImport *local);
-	bool			ExportLWO				();
+	bool			ExportLWO				(LPCSTR fname);
 #endif
 };
 //----------------------------------------------------

@@ -34,6 +34,7 @@ public:
 #define DEFINE_VECTOR(T,N,I)		typedef std::vector<T> N;	typedef N::iterator I;
 #define DEFINE_MAP_PRED(K,T,N,I,P)	typedef std::map<K,T,P> N;	typedef N::iterator I;
 #define DEFINE_SVECTOR(T,C,N,I)		typedef svector<T,C> N;		typedef N::iterator I;
+#define DEFINE_SET(T,N,I)			typedef std::set<T> N;		typedef N::iterator I;
 
 #include "FixedVector.h"
 

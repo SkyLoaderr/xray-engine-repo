@@ -34,9 +34,12 @@ public:
 	string128		name;		// vertex uv map name
     BYTE			dim;
     EVMType			type;
+	BOOL			polymap;
+//	INTVec			vindices;
+//	INTVec			pindices;
 public:
-				    st_VMap		()						{ name[0]=0; type=vmtUV; dim=2; }
-				    st_VMap		(EVMType t)				{ name[0]=0; type=t; if (t==vmtUV) dim=2; else dim=1;}
+				    st_VMap		(bool pm=true)			{ name[0]=0; type=vmtUV; dim=2; polymap=pm;}
+					st_VMap		(EVMType t,bool pm=true){ name[0]=0; type=t; polymap=pm; if (t==vmtUV) dim=2; else dim=1;}
     IC Fvector2&	getUV		(int idx)				{VERIFY(type==vmtUV);		return (Fvector2&)vm[idx*dim];}
     IC float&		getW		(int idx)				{VERIFY(type==vmtWeight);	return vm[idx];}
     IC FloatVec&	getvm		()						{return vm;}

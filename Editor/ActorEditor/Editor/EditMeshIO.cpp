@@ -143,6 +143,8 @@ bool CEditableMesh::LoadMesh(CStream& F){
 			vm_it->type	= EVMType(F.Rbyte());
 			vm_it->resize(F.Rdword());
             F.Read		(vm_it->getdata(), vm_it->datasize() );
+//			vm_it->vindices.resize(vm_it->size());
+//			if (vm_it->polymap) vm_it->pindices.resize(vm_it->size());
         }
     }else{
 	    R_ASSERT(F.FindChunk(EMESH_CHUNK_VMAPS_0));
@@ -153,9 +155,25 @@ bool CEditableMesh::LoadMesh(CStream& F){
 			vm_it->type	= vmtUV;
 			vm_it->resize(F.Rdword());
             F.Read		(vm_it->getdata(), vm_it->datasize() );
+//			vm_it->vindices.resize(vm_it->size());
+//			if (vm_it->polymap) vm_it->pindices.resize(vm_it->size());
         }
     }
-
+/*	
+	// update vmaps
+	for (FaceIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+		st_Face& F=*f_it;
+		for (int k=0; k<3; k++){
+			VMapPtSVec& pts=m_VMRefs[F.pv[k].vmref];
+			for (VMapPtIt pt_it=pts.begin(); pt_it!=pts.end(); pt_it++){
+				st_VMap& vmap=m_VMaps[pt_it->vmap_index];
+				vmap.vindices[pt_it->index]=F.pv[k].pindex;
+				if (vmap.type==vmtUV)
+					vmap.pindices[pt_it->index]=f_it-m_Faces.begin();
+			}
+		}
+	}
+*/
 	return true;
 }
 //----------------------------------------------------
