@@ -8,9 +8,9 @@ function kickass(first_speaker, second_speaker)
 end
 
 function helper_init(first_speaker, second_speaker)
-	if xr_motivator.storage[second_speaker:id()].sos.npc == nil and 
-	   second_speaker:relation (first_speaker) ~= game_object.enemy then
-		xr_motivator.storage[second_speaker:id()].sos.npc = first_speaker
+	if xr_motivator.storage[first_speaker:id()].sos.npc == nil and 
+	   first_speaker:relation (second_speaker) ~= game_object.enemy then
+	   xr_motivator.storage[first_speaker:id()].sos.npc = second_speaker
 	end
 end
 
