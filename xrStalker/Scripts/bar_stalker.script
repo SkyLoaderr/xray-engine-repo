@@ -396,7 +396,7 @@ function add_to_binder (npc, ini)
     action:add_precondition         (world_property (property["meat"],              true))
     action:add_effect               (world_property (property["complete"],          true))
     manager:add_action              (operators["meat"], action)
-
+  
     local action = this.action_bar_single ("action_bar_single", st)
     action:add_precondition         (world_property (stalker_ids.property_alive,    true))
     action:add_precondition         (world_property (property["complete"],          false))
