@@ -150,6 +150,4 @@ function set_storyline(object, char_ini)
     if char_ini:section_exist("barman") then
         barman.add_to_binder(object)
     end
-
-     xr_sniper.add_to_binder(object)
 end
