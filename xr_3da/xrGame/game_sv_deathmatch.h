@@ -22,31 +22,26 @@ protected:
 		};
 	};
 
-	// массив в котором хратнятся названия секций для оружия 
-	DEF_VECTOR(WPN_SECT_NAMES, std::string);
-	// Вектор массивов с именами секций для оружия
-	DEF_VECTOR(WPN_LISTS, WPN_SECT_NAMES);
-	// Вектор массивов оборудования для комманд
-	DEF_VECTOR(TEAM_LISTS, WPN_LISTS);
-
-	TEAM_LISTS	wpnTeamsSectStorage;
+	// массив в котором хратнятся названия секций для оружия  в слоте
+	DEF_VECTOR(WPN_SLOT_NAMES, std::string);
+	// Вектор массивов с именами оружия в слотах
+	DEF_VECTOR(TEAM_WPN_LIST, WPN_SLOT_NAMES);	
 
 	// Вектор имен скинов комманды
-	DEF_VECTOR(SKINS_NAMES, std::string);
-	// Структура скинов
+	DEF_VECTOR(TEAM_SKINS_NAMES, std::string);	
 
-	struct		SkinsStruct
+	//структура данных по команде
+	struct		TeamStruct
 	{
-		string256		caSection;
-		SKINS_NAMES		Skins;
+		string256			Team_Section;		// имя секции комманды
+		TEAM_SKINS_NAMES	TeamSkins;			// список скинов для команды
+		TEAM_WPN_LIST		TeamsWeapons;		// список оружия для команды
 	};
 
-	// Вектор скинов комманд
-	DEF_DEQUE(SKINS_LISTS, SkinsStruct);
+	//массив данных по командам
+	DEF_DEQUE(TEAM_DATA_LIST, TeamStruct);
 
-	SKINS_LISTS	SkinsTeamSectStorage;
-
-	
+	TEAM_DATA_LIST		TeamList;
 
 protected:
 	void							AllowDeadBodyRemove		(u32 id);
@@ -89,15 +84,17 @@ public:
 	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);//	{};
 
 	virtual		void				ClearPlayerState		(game_PlayerState* ps);
+	virtual		void				ClearPlayerItems		(game_PlayerState* ps);
+	virtual		void				FillPlayerItemsDef		(game_PlayerState* ps);
+
 	virtual		void				SpawnWeaponsForActor	(CSE_Abstract* pE, game_PlayerState*	ps);
 	virtual		const char * 		GetItemForSlot			(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
 	virtual		u8 					GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps);
 
-	virtual		void				LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection);
-	virtual		void				LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSection);
-
-	virtual		void				LoadWeapons				();
-	virtual		void				LoadSkins				();
+	virtual		void				LoadTeams				();
+	virtual		void				LoadTeamData			(char* caSection);
+	virtual		void				LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList);
+	virtual		void				LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins);
 
 	virtual		void				SendPlayerKilledMessage	(u32 id_killer, u32 id_killed);
 };

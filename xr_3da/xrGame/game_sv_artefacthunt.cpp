@@ -68,32 +68,9 @@ u32		game_sv_ArtefactHunt::RP_2_Use				(CSE_Abstract* E)
 	return u32(pA->g_team());
 };
 
-void	game_sv_ArtefactHunt::LoadWeapons				()
+void	game_sv_ArtefactHunt::LoadTeams			()
 {
-	/////////////////////////////////////////////////////////////////////////
-	//Loading Weapons List
-	WPN_LISTS		DefaultTeam, Team1, Team2;
-
-	LoadWeaponsForTeam				(&Team1, "artefacthunt_team1");
-	LoadWeaponsForTeam				(&Team2, "artefacthunt_team2");
-
-	wpnTeamsSectStorage.push_back(DefaultTeam);
-	wpnTeamsSectStorage.push_back(Team1);
-	wpnTeamsSectStorage.push_back(Team2);
-	/////////////////////////////////////////////////////////////////////////
-};
-
-void	game_sv_ArtefactHunt::LoadSkins				()
-{
-	/////////////////////////////////////////////////////////////////////////
-	//Loading Skins List
-	SkinsStruct		DefaultTeam, Team1, Team2;
-
-	LoadSkinsForTeam				(&Team1, "artefacthunt_team1");
-	LoadSkinsForTeam				(&Team2, "artefacthunt_team2");
-
-	SkinsTeamSectStorage.push_back(DefaultTeam);
-	SkinsTeamSectStorage.push_back(Team1);
-	SkinsTeamSectStorage.push_back(Team2);
-	/////////////////////////////////////////////////////////////////////////
+	LoadTeamData("artefacthunt_team0");
+	LoadTeamData("artefacthunt_team1");
+	LoadTeamData("artefacthunt_team2");
 };

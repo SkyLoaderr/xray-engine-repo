@@ -13,9 +13,7 @@ void	game_sv_Deathmatch::Create					(LPSTR &options)
 	timelimit	= get_option_i		(options,"timelimit",0)*60000;	// in (ms)
 
 	/////////////////////////////////////////////////////////////////////////
-	LoadWeapons						();
-	/////////////////////////////////////////////////////////////////////////
-	LoadSkins						();
+	LoadTeams();
 	/////////////////////////////////////////////////////////////////////////
 
 //	switch_Phase(GAME_PHASE_PENDING);
@@ -527,7 +525,18 @@ void	game_sv_Deathmatch::ClearPlayerState		(game_PlayerState* ps)
 	ps->m_lasthitter		= 0;
 	ps->m_lasthitweapon		= 0;
 
+	ClearPlayerItems		(ps);
+};
+
+void	game_sv_Deathmatch::ClearPlayerItems		(game_PlayerState* ps)
+{
 	Memory.mem_fill(ps->Slots, 0xff, sizeof(ps->Slots));
+
+	ps->BeltItems.clear();
+};
+
+void	game_sv_Deathmatch::FillPlayerItemsDef		(game_PlayerState* ps)
+{
 };
 
 const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
@@ -539,19 +548,19 @@ const char* game_sv_Deathmatch::GetItemForSlot		(u8 SlotNum, u8 ItemID, game_Pla
 	
 	if (0xff == ps->Slots[SlotNum]) return NULL;
 
-	if (!(ps->team < s16(wpnTeamsSectStorage.size()))) return NULL;
+	if (!(ps->team < s16(TeamList.size()))) return NULL;
     
-	WPN_LISTS	WpnList = wpnTeamsSectStorage[ps->team];
+	TEAM_WPN_LIST	WpnList = TeamList[ps->team].TeamsWeapons;
 
 	if (!(SlotNum<WpnList.size())) return NULL;
 
-	WPN_SECT_NAMES WpnSectNames = WpnList[SlotNum];
+	WPN_SLOT_NAMES WpnSectNames = WpnList[SlotNum];
 
 	if (!((Item & 0x1f) < u8(WpnSectNames.size()))) return NULL;
 
 	std::string Wpn = WpnSectNames[Item & 0x1f];
 
-	return wpnTeamsSectStorage[ps->team][SlotNum][Item & 0x1f].c_str();
+	return TeamList[ps->team].TeamsWeapons[SlotNum][Item & 0x1f].c_str();
 };
 
 u8 		game_sv_Deathmatch::GetItemAddonsForSlot	(u8 SlotNum, u8 ItemID, game_PlayerState* ps)
@@ -626,14 +635,16 @@ void	game_sv_Deathmatch::SpawnWeaponsForActor(CSE_Abstract* pE, game_PlayerState
 		SpawnItem4Actor(pA->ID, GetItemForSlot(ps->BeltItems[i].SlotID, ps->BeltItems[i].ItemID,  ps));
 	};
 };
-void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSection)
+void	game_sv_Deathmatch::LoadWeaponsForTeam		(char* caSection, TEAM_WPN_LIST *pTeamWpnList)
 {
-	WPN_SECT_NAMES		wpnOneType;
+	WPN_SLOT_NAMES		wpnOneType;
 	string16			wpnSection;	
 	string256			wpnNames, wpnSingleName;
 
 	// Поле strSectionName должно содержать имя секции
 	R_ASSERT(xr_strcmp(caSection,""));
+
+	pTeamWpnList->clear();
 
 	for (int i = 1; i < 20; ++i)
 	{
@@ -644,7 +655,7 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSect
 		sprintf(wpnSection, "slot%i", i);
 		if (!pSettings->line_exist(caSection, wpnSection)) 
 		{
-			pTeamList->push_back(wpnOneType);
+			pTeamWpnList->push_back(wpnOneType);
 			continue;
 		}
 
@@ -659,20 +670,11 @@ void	game_sv_Deathmatch::LoadWeaponsForTeam		(WPN_LISTS *pTeamList, char* caSect
 		}
 
 //		if (!wpnOneType.empty())
-		pTeamList->push_back(wpnOneType);
+		pTeamWpnList->push_back(wpnOneType);
 	}
 };
 
-void	game_sv_Deathmatch::LoadWeapons				()
-{
-	//Loading Weapons List
-	WPN_LISTS		DefaultTeam;
-	LoadWeaponsForTeam				(&DefaultTeam, "deathmatch_team0");
-
-	wpnTeamsSectStorage.push_back(DefaultTeam);
-};
-
-void	game_sv_Deathmatch::LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSection)
+void	game_sv_Deathmatch::LoadSkinsForTeam		(char* caSection, TEAM_SKINS_NAMES* pTeamSkins)
 {
 	string256			SkinSingleName;
 	string4096			Skins;
@@ -680,8 +682,7 @@ void	game_sv_Deathmatch::LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSect
 	// Поле strSectionName должно содержать имя секции
 	R_ASSERT(xr_strcmp(caSection,""));
 
-	std::strcpy(pTeamList->caSection, caSection);
-	pTeamList->Skins.clear();
+	pTeamSkins->clear();
 
 	// Имя поля
 	if (!pSettings->line_exist(caSection, "skins")) return;
@@ -693,17 +694,8 @@ void	game_sv_Deathmatch::LoadSkinsForTeam		(SkinsStruct *pTeamList, char* caSect
 	for (u32 i = 0; i < count; ++i)
 	{
 		_GetItem(Skins, i, SkinSingleName);
-		pTeamList->Skins.push_back(SkinSingleName);
+		pTeamSkins->push_back(SkinSingleName);
 	};
-};
-
-void	game_sv_Deathmatch::LoadSkins				()
-{
-	//Loading Skins List
-	SkinsStruct		DefaultTeam;
-	LoadSkinsForTeam				(&DefaultTeam, "deathmatch_team0");
-
-	SkinsTeamSectStorage.push_back(DefaultTeam);
 };
 
 void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
@@ -717,17 +709,20 @@ void	game_sv_Deathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
 	//загружены ли скины для этой комманды
 	if (SkinID != -1) ID = u16(SkinID);
 
-	if (!SkinsTeamSectStorage.empty() && 
-		SkinsTeamSectStorage.size() > Team && 
-		!SkinsTeamSectStorage[Team].Skins.empty())
+//	if (!SkinsTeamSectStorage.empty() && 
+//		SkinsTeamSectStorage.size() > Team && 
+//		!SkinsTeamSectStorage[Team].Skins.empty())
+	if (!TeamList.empty()	&&
+		TeamList.size() > Team	&&
+		!TeamList[Team].TeamSkins.empty())
 	{
 		//загружено ли достаточно скинов для этой комманды
-		if (SkinsTeamSectStorage[Team].Skins.size() > ID)
+		if (TeamList[Team].TeamSkins.size() > ID)
 		{
-			std::strcat(SkinName, SkinsTeamSectStorage[Team].Skins[ID].c_str());
+			std::strcat(SkinName, TeamList[Team].TeamSkins[ID].c_str());
 		}
 		else
-			std::strcat(SkinName, SkinsTeamSectStorage[Team].Skins[0].c_str());
+			std::strcat(SkinName, TeamList[Team].TeamSkins[0].c_str());
 	}
 	else
 	{
@@ -822,4 +817,21 @@ void	game_sv_Deathmatch::SendPlayerKilledMessage	(u32 id_killer, u32 id_killed)
 	};
 
 	u_EventSend(P);
+};
+
+void	game_sv_Deathmatch::LoadTeams			()
+{
+	LoadTeamData("deathmatch_team0");
+};
+
+void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
+{
+	TeamStruct	NewTeam;
+
+	std::strcpy(NewTeam.Team_Section, caSection);
+
+	LoadWeaponsForTeam	(caSection, &NewTeam.TeamsWeapons);
+	LoadSkinsForTeam	(caSection, &NewTeam.TeamSkins);
+
+	TeamList.push_back(NewTeam);
 };

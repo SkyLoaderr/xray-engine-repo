@@ -18,8 +18,5 @@ public:
 
 	virtual		u32					RP_2_Use				(CSE_Abstract* E);
 
-//	virtual		void				SetSkin					(CSE_Abstract* E, u16 Team, u16 ID);
-	virtual		void				LoadWeapons				();
-	virtual		void				LoadSkins				();
-
+	virtual		void				LoadTeams				();
 };
