@@ -17,6 +17,7 @@ void CBuild::xrPhase_AdaptiveHT	()
 	CDB::COLLIDER	DB;
 	DB.ray_options	(0);
 
+	// Tesselate + calculate
 	{
 		// Build model
 		FPU::m64r					();
