@@ -23,7 +23,7 @@ string4096			g_ca_stdout;
 CScriptProcess::CScriptProcess	(ref_str name, ref_str scripts) :
 	m_name						(name)
 {
-	Msg				("* Initializing %s script process",name);
+	Msg				("* Initializing %s script process",*m_name);
 	
 	string256		I;
 	for (u32 i=0, n = _GetItemCount(*scripts); i<n; ++i)
