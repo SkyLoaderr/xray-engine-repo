@@ -28,10 +28,10 @@ CROS_impl::CROS_impl	()
 	result_iterator		= 0;
 	result_frame		= u32(-1);
 	result_sun			= 0;
-	hemi_value			= 0;
-	hemi_smooth			= 0;
-	sun_value			= 0;
-	sun_smooth			= 0;
+	hemi_value			= 0.2f;
+	hemi_smooth			= 0.2f;
+	sun_value			= 0.2f;
+	sun_smooth			= 0.2f;
 
 #if RENDER==R_R1
 	MODE				= IRender_ObjectSpecific::TRACE_ALL		;
