@@ -41,9 +41,9 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 	ogf_header	hdr;
 	if (data->r_chunk_safe(OGF_HEADER,&hdr,sizeof(hdr)))
 	{
-		R_ASSERT(hdr.format_version==xrOGF_FormatVersion);
-		Type	= hdr.type;
-		hShader	= ::Render->getShader(hdr.shader_id);
+		R_ASSERT			(hdr.format_version==xrOGF_FormatVersion);
+		Type				= hdr.type;
+		if (hdr.shader_id)	hShader	= ::Render->getShader(hdr.shader_id);
 	} else {
 		Debug.fatal	("Invalid visual");
 	}
