@@ -134,6 +134,7 @@ void CheckPrivilegySlowdown		( )
 		Log			("! slowdown enabled for your pleasure :)");
 		_beginthread(slowdownthread,0,0);
 		_beginthread(slowdownthread,0,0);
+		_beginthread(slowdownthread,0,0);
 	}
 #endif
 }
