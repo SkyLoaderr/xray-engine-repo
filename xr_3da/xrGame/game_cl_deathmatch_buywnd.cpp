@@ -7,12 +7,12 @@
 #include "xrServer_Objects_ALife_Items.h"
 
 static	u16 SlotsToCheck [] = {
-		KNIFE_SLOT		,			// 0
-		PISTOL_SLOT		,		// 1
-		RIFLE_SLOT		,		// 2
-		GRENADE_SLOT	,		// 3
 		APPARATUS_SLOT	,		// 4
 		OUTFIT_SLOT		,		// 5
+		KNIFE_SLOT		,		// 0
+		GRENADE_SLOT	,		// 3
+		PISTOL_SLOT		,		// 1
+		RIFLE_SLOT		,		// 2
 };
 
 s16	game_cl_Deathmatch::GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID)
@@ -45,8 +45,6 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
 		if (ItemID == 0xff) continue;
 		u16 SlotID = SlotsToCheck[s];
-//		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
-//		s16	ID = (s16(SlotID) << 0x08) | s16(ItemID);
 		s16 ID = GetBuyMenuItemIndex(u8(SlotID), ItemID);
 		pCurPresetItems->push_back(ID);
 	}

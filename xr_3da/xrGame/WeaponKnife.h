@@ -50,6 +50,8 @@ public:
 	virtual			~CWeaponKnife();
 
 	void			Load				(LPCSTR section);
+
+	virtual BOOL	net_Spawn			(LPVOID DC);
 	virtual	void	UpdateCL			();
 	virtual	void	renderable_Render	();
 

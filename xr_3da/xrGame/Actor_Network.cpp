@@ -705,6 +705,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 
 	//--------------------------------------------------------------
 	m_iCurWeaponHideState = 0;
+	inventory().SetPrevActiveSlot(NO_ACTIVE_SLOT);
 	//--------------------------------------------------------------
 	//добавить отметки на карте, которые актер помнит в info_portions
 	if(m_known_info_registry->registry().objects_ptr())
@@ -1505,16 +1506,22 @@ void	CActor::OnRender_Network()
 
 void		CActor::HideCurrentWeapon		(u32 Msg)//, bool only2handed)
 {
+	if (g_Alive() || this == Level().CurrentControlEntity())
+	{
 		NET_Packet	P;
 		u_EventGen(P, Msg/*GEG_PLAYER_DEACTIVATE_CURRENT_SLOT*/, ID());
 		u_EventSend(P);
+	};
 };
 
 void		CActor::RestoreHidedWeapon		(u32 Msg)
 {
+	if (g_Alive() || this == Level().CurrentControlEntity())
+	{
 		NET_Packet	P;
 		u_EventGen(P, Msg/*GEG_PLAYER_RESTORE_CURRENT_SLOT*/, ID());
 		u_EventSend(P);
+	};
 }
 
 void		CActor::Check_Weapon_ShowHideState	()

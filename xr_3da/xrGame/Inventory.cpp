@@ -70,6 +70,7 @@ CInventory::CInventory()
 	m_fTotalWeight = -1.f;
 
 	m_dwModifyFrame = 0;
+	m_iPrevActiveSlot = NO_ACTIVE_SLOT;
 }
 
 
