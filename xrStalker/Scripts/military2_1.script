@@ -132,6 +132,7 @@ function main ()
     action (stalker1, move (move.standing, move.stand, move.line, testway), object (stalker1:best_weapon (), object.activate), 
             anim (anim.danger), look (look.fire_point, fire1:point (0)), cond (cond.time_end, time_infinite))
     action (stalker2, move (move.standing, move.stand, move.line, testway), object (stalker2:best_weapon (), object.activate), 
+            sound ("scripts\\rolik\\incoming", "bip01_head", vector ():set (0, 0, 0), vector ():set (0, 0, 0), false),
             anim (anim.danger), look (look.fire_point, fire2:point (0)), cond (cond.time_end, time_infinite))
             
     wait (1000)            
