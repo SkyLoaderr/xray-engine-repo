@@ -108,14 +108,14 @@ public:
 	{
 		LPCSTR	c_name		= Console.ConfigFile;
 		SetFileAttributes	(c_name,FILE_ATTRIBUTE_NORMAL);
-		FILE *F = fopen		(c_name,"wt");
+		IWriter* F			= FS.w_open(c_name);
 		R_ASSERT			(F);
 
 		CConsole::vecCMD_IT it;
 		for (it=Console.Commands.begin(); it!=Console.Commands.end(); it++)
 			it->second->Save(F);
 
-		fclose(F);
+		FS.w_close			(F);
 	}
 };
 class CCC_LoadCFG : public CConsoleCommand
@@ -131,12 +131,13 @@ public:
 		if (strext(str))	*strext(str) = 0;
 		strcat	(str,".ltx");
 		
-		FILE *f = fopen(str,"rt");
-		if (f!=NULL) {
-			while (fgets(str,1024,f)) {
-				Console.Execute(str);
+		IReader* F = FS.r_open(str);
+		if (F!=NULL) {
+			while (!F->eof()) {
+				F->r_string		(str);
+				Console.Execute	(str);
 			}
-			fclose(f);
+			FS.r_close(F)
 		} else {
 			Log("! Cannot open script file.");
 		}

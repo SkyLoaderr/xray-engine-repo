@@ -155,15 +155,16 @@ public:
 			Log("! Syntax error. See 'list_actions'.");
 		}
 	}
-	virtual void Save(FILE *F) {
-		fprintf(F,"unbindall\n");
+	virtual void Save(IWriter* F) 
+	{
+		F->w_printf("unbindall\n");
 		for (int i=0; i<2048; i++) {
 			if (key_binding[i]) {
 				for (int j=0; keybind[j].name; j++) {
 					if (keybind[j].DIK==key_binding[i]) {
 						for (int k=0; keynames[k].name; k++) {
 							if (keynames[k].DIK==i) {
-								fprintf(F, "bind %s %s\n", keybind[j].name, keynames[k].name);
+								F->w_printf("bind %s %s\n", keybind[j].name, keynames[k].name);
 							}
 						}
 					}
