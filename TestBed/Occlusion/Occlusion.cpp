@@ -78,9 +78,9 @@ int __cdecl main	(int argc, char* argv[])
 
 	for (int test=0; test<36; test++)
 	{
-		float		a0	= rad(test*10.f);
-		float		a1	= rad(test*10.f + 60.f);
-		float		a2	= rad(test*10.f + 100.f);
+		float		a0	= rad(test*5.f);
+		float		a1	= rad(test*5.f + 60.f);
+		float		a2	= rad(test*5.f + 100.f);
 		
 		// setup tri
 		occTri	T;
