@@ -92,4 +92,13 @@ IC float	to_mag_and_dir(Fvector &in_out_v)
 	return mag;
 }
 
+IC void		prg_pos_on_axis(const Fvector	&in_ax_p,const Fvector &in_ax_d,Fvector &in_out_pos)
+{
+	in_out_pos.sub(in_ax_p);
+	float prg=in_out_pos.dotproduct(in_ax_d);
+	in_out_pos.set(in_ax_d);in_out_pos.normalize();
+	in_out_pos.mul(prg);
+	in_out_pos.add(in_ax_p);
+}
+
 #endif

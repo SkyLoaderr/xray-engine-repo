@@ -251,7 +251,7 @@ void NearCallback(CPHObject* obj1,CPHObject* obj2, dGeomID o1, dGeomID o2)
 {	
 	CPHIsland* island1=obj1->DActiveIsland();
 	CPHIsland* island2=obj2->DActiveIsland();
-	obj1->near_callback(obj2);
+	obj2->near_callback(obj1);
 	int MAX_CONTACTS=-1;
 	if(!island1->CanMerge(island2,MAX_CONTACTS)) return;
 	if(CollideIntoGroup(o1,o2,ContactGroup,island1,MAX_CONTACTS)!=0)

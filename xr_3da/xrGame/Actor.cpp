@@ -329,36 +329,18 @@ void CActor::Load	(LPCSTR section )
 		m_DefaultVisualOutfit = NULL;
 }
 
+void CActor::PHHit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type /* = ALife::eHitTypeWound */)
+{
 
+	if(m_pPhysicsShell) 
+		m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
+	else m_PhysicMovementControl->ApplyImpulse(dir,impulse);
+}
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
-	if (g_Alive() && (hit_type == ALife::eHitTypeWound||hit_type == ALife::eHitTypeFireWound || hit_type == ALife::eHitTypeStrike))
-	{
-		m_PhysicMovementControl->ApplyImpulse(dir,impulse);
-		m_saved_dir.set(dir);
-		m_saved_position.set(position_in_bone_space);
-		m_saved_impulse=impulse*skel_fatal_impulse_factor;
-		m_saved_element=element;
-		m_saved_hit_type=hit_type;
-	}
-	else if(m_pPhysicsShell) 
-		m_pPhysicsShell->applyHit(position_in_bone_space,dir,impulse,element,hit_type);
-	//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
-	else
-	{
-		m_saved_dir.set(dir);
-		m_saved_impulse=impulse*skel_fatal_impulse_factor;
-		m_saved_element=element;
-		m_saved_position.set(position_in_bone_space);
-		m_saved_hit_type=hit_type;
-	}
 
 
-	if (!g_Alive())
-	{
-		inherited::Hit(iLost,dir,who,element,position_in_bone_space,impulse,hit_type);
-		return;
-	}
+	BOOL was_alive=g_Alive();
 
 #ifndef _DEBUG
 	if(Level().CurrentEntity() == this) {
@@ -394,6 +376,16 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	default:
 		inherited::Hit	(iLost,dir,who,element,position_in_bone_space, impulse, hit_type);
 		break;
+	}
+
+	if (was_alive&&!g_Alive() && !(hit_type == ALife::eHitTypeWound||hit_type == ALife::eHitTypeFireWound || hit_type == ALife::eHitTypeStrike))
+	{
+
+		m_saved_dir.set(dir);
+		m_saved_position.set(position_in_bone_space);
+		m_saved_impulse=impulse*skel_fatal_impulse_factor;
+		m_saved_element=element;
+		m_saved_hit_type=hit_type;
 	}
 }
 

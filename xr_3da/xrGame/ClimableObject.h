@@ -28,6 +28,8 @@ public:
 	float			DDLoverP			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to lover point
 	float			DDApperP			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to upper point
 	float			DDToAxis			(CPHCharacter	*actor,Fvector &out_dir);//returns distance and dir to ladder axis
+	void			POnAxis				(CPHCharacter	*actor,Fvector	&P);
+
 	void			LoverPoint			(Fvector	&P);
 	void			UpperPoint			(Fvector	&P);
 	void			DefineClimbState	(CPHCharacter	*actor);

@@ -123,9 +123,17 @@ void		CClimableObject::	DefineClimbState	(CPHCharacter	*actor)
 
 float		CClimableObject::	DDToAxis			(CPHCharacter	*actor,Fvector &out_dir)
 {
-	return 0.f;	
+	POnAxis(actor,out_dir);
+	Fvector pos;actor->GetPosition(pos);
+	out_dir.sub(pos);
+	return to_mag_and_dir(out_dir);
 }
 
+void	CClimableObject::	POnAxis	(CPHCharacter	*actor,Fvector	&P)
+{
+	actor->GetPosition(P);
+	prg_pos_on_axis(Position(),m_axis,P);
+}
 void		CClimableObject::	LoverPoint			(Fvector &P)
 {
 	P.sub(XFORM().c,m_axis);
