@@ -225,6 +225,14 @@ void CStats::Show()
 		g_pGamePersistent->Statistics	(&F);
 
 		//////////////////////////////////////////////////////////////////////////
+		// process PURE STATS
+		F.SetSize			(f_base_size);
+		seqStats.Process	(rp_Stats);
+		pFont->OnRender		();
+	}
+
+	{
+		//////////////////////////////////////////////////////////////////////////
 		// PERF ALERT
 		F.SetColor						(color_rgba(255,16,16,255));
 		F.OutSet						(300,300);
@@ -232,20 +240,17 @@ void CStats::Show()
 		if (fFPS<30)					F.OutNext	("FPS       < 30:   %3.1f",	fFPS);
 		if (RCache.stat.verts>500000)	F.OutNext	("Verts     > 500k: %d",	RCache.stat.verts);
 		if (RCache.stat.polys>500000)	F.OutNext	("Polys     > 500k: %d",	RCache.stat.polys);
-		if (RCache.stat.calls>1000)		F.OutNext	("DIP/DP    > 1k:   %d",	RCache.stat.calls);
-		if (RCache.stat.textures>1000)	F.OutNext	("T_change  > 500:  %d",	RCache.stat.textures);
-		if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 1000: %d",	RenderDUMP_DT_Count);
-		F.OutSkip						();
-		if (fMem_calls>1500)			F.OutNext	("MMGR calls > 1500:%3.1f",	fMem_calls);
-		if (Sheduler.result>3.f)		F.OutNext	("Update     > 3ms:	%3.1f",	Sheduler.result);
-		if (UpdateClient.result>3.f)	F.OutNext	("UpdateCL   > 3ms: %3.1f",	UpdateClient.result);
-		if (Physics.result>5.f)			F.OutNext	("Physics    > 5ms: %3.1f",	Physics.result);	
-
-		//////////////////////////////////////////////////////////////////////////
-		// process PURE STATS
-		F.SetSize			(f_base_size);
-		seqStats.Process	(rp_Stats);
-		pFont->OnRender		();
+		if (psDeviceFlags.test(rsStatistic))
+		{
+			if (RCache.stat.calls>1000)		F.OutNext	("DIP/DP    > 1k:   %d",	RCache.stat.calls);
+			if (RCache.stat.textures>1000)	F.OutNext	("T_change  > 500:  %d",	RCache.stat.textures);
+			if (RenderDUMP_DT_Count>1000)	F.OutNext	("DT_count  > 1000: %d",	RenderDUMP_DT_Count);
+			F.OutSkip						();
+			if (fMem_calls>1500)			F.OutNext	("MMGR calls > 1500:%3.1f",	fMem_calls);
+			if (Sheduler.result>3.f)		F.OutNext	("Update     > 3ms:	%3.1f",	Sheduler.result);
+			if (UpdateClient.result>3.f)	F.OutNext	("UpdateCL   > 3ms: %3.1f",	UpdateClient.result);
+			if (Physics.result>5.f)			F.OutNext	("Physics    > 5ms: %3.1f",	Physics.result);	
+		}
 	}
 
 	// Show errors
