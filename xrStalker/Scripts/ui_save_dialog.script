@@ -62,8 +62,8 @@ function save_dialog:InitControls()
 	local wnd_caption = CUIFrameWindow()
 	wnd_caption:SetAutoDelete(true)
 	wnd_caption:SetWindowName("wnd_caption")
---	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
-	--main_frame:AttachChild(wnd_caption)
+	wnd_caption:Init("ui\\ui_pop_up",caption_rect.x, caption_rect.y, caption_rect.width, caption_rect.height)
+	main_frame:AttachChild(wnd_caption)
 	
 	local txt_caption = CUIStatic()
 	txt_caption:SetAutoDelete(true)
@@ -71,6 +71,7 @@ function save_dialog:InitControls()
 	txt_caption:SetText("SAVE DIALOG")
 	txt_caption:SetTextAlign(CGameFont.alCenter)
 	txt_caption:Init(captiontxt_rect.x, captiontxt_rect.y, caption_rect.width, caption_rect.height)
+	main_frame:AttachChild(txt_caption)
 
 
 	------------LIST-----------------
