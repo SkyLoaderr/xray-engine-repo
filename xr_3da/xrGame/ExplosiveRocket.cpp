@@ -62,7 +62,10 @@ void CExplosiveRocket::OnH_B_Independent()
 void CExplosiveRocket::UpdateCL() 
 {
 	if(eCollide == m_eState)
+	{
 		CExplosive::UpdateCL();
+		inherited::UpdateCL();
+	}
 	else
 		inherited::UpdateCL();
 }
