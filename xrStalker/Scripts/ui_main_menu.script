@@ -95,6 +95,8 @@ function main_menu:InitControls()
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
 	btn:SetTextColor(GetARGB(255, 255, 0, 0))
+	btn:SetDisabledTextColor(GetARGB(255, 255, 100, 100))	
+	btn:Enable(false)
 
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
