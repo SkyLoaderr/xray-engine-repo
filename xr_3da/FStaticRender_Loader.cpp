@@ -231,7 +231,9 @@ void CRender::LoadSectors(IReader* fs)
 	u32 size = fs->find_chunk(fsL_PORTALS); 
 	R_ASSERT(0==size%sizeof(b_portal));
 	u32 count = size/sizeof(b_portal);
-	Portals.resize(count);
+	Portals.resize	(count);
+	for (u32 c=0; c<count; c++)
+		Portals[c]	= xr_new<CPortal> ();
 
 	// load sectors
 	IReader* S = fs->open_chunk(fsL_SECTORS);
@@ -252,12 +254,13 @@ void CRender::LoadSectors(IReader* fs)
 	if (count) 
 	{
 		CDB::Collector	CL;
-		fs->find_chunk(fsL_PORTALS);
+		fs->find_chunk	(fsL_PORTALS);
 		for (i=0; i<count; i++)
 		{
 			b_portal	P;
 			fs->r		(&P,sizeof(P));
-			Portals[i].Setup(P.vertices.begin(),P.vertices.size(),
+			CPortal*	__P	= (CPortal*)Portals[i];
+			__P->Setup	(P.vertices.begin(),P.vertices.size(),
 				getSector(P.sector_front),
 				getSector(P.sector_back));
 			for (u32 j=2; j<P.vertices.size(); j++)
