@@ -33,7 +33,7 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		pApp->Level_Set		(level_id);
 
 		// Load level
-		R_ASSERT(Load						(level_id));
+		R_ASSERT2(Load						(level_id),"Loading failed.");
 		ph_world							= xr_new<CPHWorld>();
 		ph_world->Create					();
 

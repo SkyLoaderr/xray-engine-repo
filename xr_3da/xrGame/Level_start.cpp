@@ -19,6 +19,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		if (id<0)	
 		{
 			pApp->LoadEnd			();
+			Log						("Can't find level: ",l_name);
 			return FALSE;
 		}
 		pApp->Level_Set				(id);
