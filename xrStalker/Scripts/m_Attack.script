@@ -140,8 +140,7 @@ end
 
 class "stateAttackArtful" ( stateAttack )
 function stateAttackArtful:__init( script_name, mem, way_o ) super( script_name, mem, way_o )
-    printf( "111111111111111  name = %s", way_o )
-    self.way        = patrol(way_o)
+    self.way        = patrol(way_o, patrol.start, patrol.stop)
     self.time       = 0
     self.attack_actor = false
     self.angry        = false
