@@ -92,8 +92,7 @@ public:
 
 	// Main interface
 	void					Render			(CFrustum& F);
-	void					Render_smap_d	(CFrustum& F);
-	void					Render_smap_p	(CFrustum& F);
+	void					Render_objects	(CFrustum& F);
 	void					Load			(IReader& fs);
 	void					DebugDump		();
 	IVisual*				Root			()	{ return pRoot; }

@@ -100,7 +100,28 @@ CSector::~CSector()
 //
 extern float r_ssaDISCARD;
 
-void CSector::Render(CFrustum &F)
+void CSector::Render_objects	(CFrustum& F)
+{
+	// Persistant models
+	Fvector	Tpos;
+	vector<CObject*>::iterator I=Objects.begin(), E=Objects.end();
+	for (; I!=E; I++) {
+		CObject* O = *I;
+		if (O->getVisible()) 
+		{
+			vis_data&	vis				= O->Visual	()->vis;
+			O->clXFORM().transform_tiny	(Tpos, vis.sphere.P);
+			if (F.testSphere_dirty(Tpos,vis.sphere.R))	
+			{
+				RImplementation.set_Object	(O);
+				O->OnVisible				();
+				RImplementation.set_Object	(0);
+			}
+		}
+	}
+}
+
+void CSector::Render			(CFrustum &F)
 {
 	// Render everything
 	{
