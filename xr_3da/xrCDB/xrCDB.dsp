@@ -269,6 +269,15 @@ SOURCE=.\xrCDB.h
 # Begin Source File
 
 SOURCE=.\xrCDB_ray.cpp
+
+!IF  "$(CFG)" == "xrCDB - Win32 Release"
+
+# ADD CPP /FAs
+
+!ELSEIF  "$(CFG)" == "xrCDB - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # End Group
 # Begin Group "Opcode"
