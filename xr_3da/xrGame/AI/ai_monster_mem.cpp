@@ -167,20 +167,21 @@ void CVisionMemory::UpdateVision(TTime dt)
 	}
 	// удалить старых врагов и тех, расстояние до которых > 30м
 	for (i = 0; i<Enemies.size(); i++){
-		if ((Enemies[i].time < CurrentTime - MemoryTime) || (!Enemies[i].obj->g_Alive()) || 
+		if ((Enemies[i].time + MemoryTime < CurrentTime) || (!Enemies[i].obj->g_Alive()) || 
 			((Enemies[i].obj->Position().distance_to(pMonster->Position()) > 30) && (Enemies[i].time != CurrentTime))){
 			Enemies[i] = Enemies.back();
 			Enemies.pop_back();
 		}
 	}
 
+	// удаление объектов, перешедших в оффлайн
+	CheckValidObjects();
+
 	// обновить Selected
 	if (IsEnemy()) SelectEnemy();
 	else if (IsObject()) SelectCorpse();
 	else Selected.obj = 0;
 	
-	// удаление объектов, перешедших в оффлайн
-	CheckValidObjects();
 }
  
 
