@@ -49,9 +49,6 @@ void Startup				()
 	Console.ExecuteScript		(Console.ConfigFile);
 
 	BOOL bCaptureInput			= !strstr(Core.Params,"-i");
-#ifdef DEBUG
-	bCaptureInput				= !bCaptureInput;
-#endif
 
 	pInput						= xr_new<CInput>		(bCaptureInput);
 	Sound->_initialize			(u32(Device.m_hWnd));
