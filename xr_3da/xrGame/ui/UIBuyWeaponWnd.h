@@ -88,7 +88,6 @@ protected:
 	CUIStatic			UITotalMoney;
 	CUIStatic			UIItemCostHeader;
 	CUIStatic			UIItemCost;
-	CUIListWnd			UIWeaponDescription;
 
 	//слоты для оружия
 	CUIDragDropList		UITopList[MP_SLOTS_NUM]; 

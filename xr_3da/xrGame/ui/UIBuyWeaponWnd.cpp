@@ -34,7 +34,7 @@ const u32			cAbleToBuyOwned				= 0xff8080ff;
 const u8			uIndicatorWidth				= 17;
 const u8			uIndicatorHeight			= 27;
 const float			SECTION_ICON_SCALE			= 4.0f/5.0f;
-const char * const	BUY_WND_XML_NAME			= "inventoryMP_new2.xml";
+const char * const	BUY_WND_XML_NAME			= "inventoryMP.xml";
 const float			fRealItemSellMultiplier		= 0.5f;
 const char * const	weaponFilterName			= "weapon_class";
 const char * const	BUY_MP_ITEM_XML				= "buy_mp_item.xml";
@@ -250,11 +250,6 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 	UIDescWnd.AttachChild(&UIItemInfo);
 	UIItemInfo.Init(0, 0, UIDescWnd.GetWidth(), UIDescWnd.GetHeight(), BUY_MP_ITEM_XML);
-
-	UIDescWnd.AttachChild(&UIWeaponDescription);
-	xml_init.InitListWnd(uiXml, "wpn_descr_list", 0, &UIWeaponDescription);
-	UIWeaponDescription.EnableScrollBar(true);
-	UIWeaponDescription.ActivateList(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -946,17 +941,24 @@ void CUIBuyWeaponWnd::Update()
 	if (pOldCurrentDragDropItem != m_pCurrentDragDropItem)
 	{
 		pOldCurrentDragDropItem	= m_pCurrentDragDropItem;
+		pOldCurrentDragDropItem->Highlight(false);
+
+		UIItemCost.SetText("");
+		FillItemInfo(NULL);
+
 		if (m_pCurrentDragDropItem)
 		{
-			int cost = m_pCurrentDragDropItem->GetCost();
-			if (m_pCurrentDragDropItem->m_bHasRealRepresentation)
-				cost = static_cast<int>(cost * fRealItemSellMultiplier);
-			sprintf(str, "%i", cost);
-			UIItemCost.SetText(str);
-			FillItemInfo(m_pCurrentDragDropItem);
+			if (m_pCurrentDragDropItem->GetSlot() != WEAPON_BOXES_SLOT)
+			{
+				int cost = m_pCurrentDragDropItem->GetCost();
+				if (m_pCurrentDragDropItem->m_bHasRealRepresentation)
+					cost = static_cast<int>(cost * fRealItemSellMultiplier);
+				sprintf(str, "%i", cost);
+				UIItemCost.SetText(str);
+				FillItemInfo(m_pCurrentDragDropItem);
+			}
+			m_pCurrentDragDropItem->Highlight(true);
 		}
-		else
-			UIItemCost.SetText("");
 	}
 
 	// Если деньги иземниличь то обновить и их
@@ -2326,37 +2328,73 @@ void CUIBuyWeaponWnd::RemoveWeapon(CUIDragDropList *shop, CUIDragDropItem *item)
 
 void CUIBuyWeaponWnd::FillItemInfo(CUIDragDropItemMP *pDDItemMP)
 {
-	R_ASSERT(pDDItemMP);
-	CStringTable stbl;
-	if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_name"))
-	{
-		UIItemInfo.UIName.SetText(*stbl(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));
-//		UIItemInfo.AlignRight(UIItemInfo.UIName)
-	}
-	else
-		UIItemInfo.UIName.SetText("");
-
-
-	string128 buf;
-	if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_weight"))
-	{
-		strconcat(buf, fieldsCaptionColor, *stbl("weight"), "%cdefault ", pSettings->r_string(pDDItemMP->GetSectionName(), "inv_weight"));
-		UIItemInfo.UIWeight.SetText(buf);
-	}
-	else
-		UIItemInfo.UIWeight.SetText("");
-
-	sprintf(buf, "%s%s %s%i", fieldsCaptionColor, *stbl("weight"), "%default", pDDItemMP->GetCost());
-	UIItemInfo.UICost.SetText(buf);
-
+	UIItemInfo.UIName.SetText("");
+	UIItemInfo.UIWeight.SetText("");
+	UIItemInfo.UIItemImage.TextureOff();
 	UIItemInfo.UIDesc.RemoveAll();
-	if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
+
+	if (pDDItemMP)
 	{
- 		CUIString str;
-		str.SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
-		CUIStatic::PreprocessText(str.m_str, UIItemInfo.UIDesc.GetItemWidth() - 5, UIItemInfo.UIDesc.GetFont());
-		UIItemInfo.UIDesc.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
+
+		CStringTable stbl;
+		if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_name"))
+		{
+			UIItemInfo.UIName.SetText(*stbl(pSettings->r_string(pDDItemMP->GetSectionName(), "inv_name")));
+			//		UIItemInfo.AlignRight(UIItemInfo.UIName)
+		}
+
+		UIItemInfo.UIItemImage.SetShader(pDDItemMP->GetUIStaticItem().GetShader());
+		Irect r = pDDItemMP->GetUIStaticItem().GetOriginalRect();
+		UIItemInfo.UIItemImage.GetUIStaticItem().SetOriginalRect(r.x1, r.y1, r.width(), r.height());
+		UIItemInfo.UIItemImage.TextureOn();
+
+		// Центрируем или скейлим текстуру в зависимости от ее размера
+		RECT r2 = UIItemInfo.UIItemImage.GetWndRect();
+
+		if ((r2.right - r2.left >= r.width()) && (r2.bottom - r2.top >= r.height()))
+		{
+			UIItemInfo.UIItemImage.SetTextureOffset((r2.right - r2.left - r.width()) / 2, (r2.bottom - r2.top - r.height()) / 2);
+			UIItemInfo.UIItemImage.SetTextureScale(1.0f);
+		}
+		else
+		{
+			float xFactor = (r2.right - r2.left) / static_cast<float>(r.width()) ;
+			float yFactor = (r2.bottom - r2.top) / static_cast<float>(r.height());
+			float scale = std::min(xFactor, yFactor);
+	
+			int xOffset = 0, yOffset = 0;
+
+			if (xFactor > yFactor)
+			{
+				xOffset = (r2.right - r2.left - r.width()) / 2;
+			}
+			else
+			{
+				yOffset = (r2.bottom - r2.top - r.height()) / 2;
+			}
+
+			UIItemInfo.UIItemImage.SetTextureOffset(xOffset, yOffset);
+			UIItemInfo.UIItemImage.SetTextureScale(scale);
+		}
+
+		//	string128 buf;
+		//	if (pSettings->line_exist(pDDItemMP->GetSectionName(), "inv_weight"))
+		//	{
+		//		strconcat(buf, fieldsCaptionColor, *stbl("weight"), " %cdefault", pSettings->r_string(pDDItemMP->GetSectionName(), "inv_weight"));
+		//		UIItemInfo.UIWeight.SetText(buf);
+		//	}
+		//	else
+		//		UIItemInfo.UIWeight.SetText("");
+
+		//	sprintf(buf, "%s%s %s%i", fieldsCaptionColor, *stbl("cost"), " %cdefault", pDDItemMP->GetCost());
+		//	UIItemInfo.UICost.SetText(buf);
+
+		if (pSettings->line_exist(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD))
+		{
+			CUIString str;
+			str.SetText(*CStringTable()(pSettings->r_string(pDDItemMP->GetSectionName(), WEAPON_DESCRIPTION_FIELD)));
+			CUIStatic::PreprocessText(str.m_str, UIItemInfo.UIDesc.GetItemWidth() - 5, UIItemInfo.UIDesc.GetFont());
+			UIItemInfo.UIDesc.AddParsedItem<CUIListItem>(str, 0, UIItemInfo.UIDesc.GetTextColor());
+		}
 	}
-	else
-		UIItemInfo.UIWeight.SetText("");
 }
