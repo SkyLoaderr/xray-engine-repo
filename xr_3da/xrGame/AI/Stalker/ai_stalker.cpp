@@ -898,16 +898,16 @@ void CAI_Stalker::Update	( u32 DT )
 		if (m_tMovementType != eMovementTypeStand) {
 			if(m_fTimeToStep < 0) {
 				m_bStep				= !m_bStep;
-				float k				= (m_tBodyState == eBodyStateCrouch) ? 0.75f : 1.f;
-				float tm			= (m_tMovementType == eMovementTypeRun)?(PI/(k*10.f)):(PI/(k*7.f));
+				float k				= (m_tBodyState == eBodyStateCrouch)?0.75f:1.f;
+				float tm			= (m_tMovementType == eMovementTypeRun) ? (PI/(k*10.f)) : (PI/(k*7.f));
 				m_fTimeToStep		= tm;
 				m_tpSoundStep[m_bStep].clone		(mtl_pair->StepSounds[m_bStep]);
 				m_tpSoundStep[m_bStep].play_at_pos	(this,Position());
 			}
 			m_fTimeToStep -= dt;
 		}
-		float	s_k			=	(m_tBodyState == eBodyStateCrouch)?0.85f:1.f;
-		float	s_vol		=	s_k * ((m_tMovementType == eMovementTypeRun)?1.f:.85f);
+		float	s_k			= ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((m_tBodyState == eBodyStateCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
+		float	s_vol		= s_k*((m_tMovementType == eMovementTypeRun) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		if (m_tpSoundStep[0].feedback)		{
 			m_tpSoundStep[0].set_position	(vPosition);
 			m_tpSoundStep[0].set_volume	(s_vol);

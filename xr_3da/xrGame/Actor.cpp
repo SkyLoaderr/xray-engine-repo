@@ -24,6 +24,8 @@
 #include "targetassault.h"
 #include "targetcs.h"
 
+#include "ai_sounds.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -889,8 +891,9 @@ void CActor::Update	(u32 DT)
 	}
 
 	// sounds update
-	float	s_k			=	(mstate_real&mcCrouch)?0.85f:1.f;
-	float	s_vol		=	s_k * (isAccelerated(mstate_real)?1.f:.85f);
+	// Дима. Было 1.0(начальная громкость) и 0.85(если сидя), стало 0.2 и 0.5 соответственно
+	float	s_k			=	ffGetStartVolume(SOUND_TYPE_MONSTER_WALKING)*((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
+	float	s_vol		=	s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
 	Fvector	s_pos		=	Position	();
 	s_pos.y				+=	.15f;
 	if (sndStep[0].feedback)		{

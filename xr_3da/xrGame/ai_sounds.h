@@ -73,6 +73,9 @@ enum ESoundTypes {
 //	SOUND_TYPE_WORLD_GRENADE_FALLING,
 };
 
+#define CROUCH_SOUND_FACTOR					.5f
+#define ACCELERATED_SOUND_FACTOR			.5f
+
 extern float ffGetStartVolume(ESoundTypes eType);
 
 #endif
