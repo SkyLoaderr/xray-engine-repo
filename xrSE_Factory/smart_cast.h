@@ -33,40 +33,28 @@
 #		endif
 
 		DECLARE_SPECIALIZATION	(CEntity,			CGameObject,		cast_entity);
-#		ifndef DO_NOT_DECLARE_TYPE_LIST
-#			undef cast_type_list
-#			define cast_type_list save_cast_list	(CEntity,			CGameObject)
-#		endif
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CEntity,			CGameObject)
 
 		DECLARE_SPECIALIZATION	(CEntityAlive,		CGameObject,		cast_entity_alive);
-#		ifndef DO_NOT_DECLARE_TYPE_LIST
-#			undef cast_type_list
-#			define cast_type_list save_cast_list	(CEntityAlive,		CGameObject)
-#		endif
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CEntityAlive,		CGameObject)
 
 		DECLARE_SPECIALIZATION	(CInventoryItem,	CGameObject,		cast_inventory_item);
-#		ifndef DO_NOT_DECLARE_TYPE_LIST
-#			undef cast_type_list
-#			define cast_type_list save_cast_list	(CInventoryItem,	CGameObject)
-#		endif
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CInventoryItem,	CGameObject)
 
 		DECLARE_SPECIALIZATION	(CInventoryOwner,	CGameObject,		cast_inventory_owner);
-#		ifndef DO_NOT_DECLARE_TYPE_LIST
-#			undef cast_type_list
-#			define cast_type_list save_cast_list	(CInventoryOwner,	CGameObject)
-#		endif
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CInventoryOwner,	CGameObject)
 
 		DECLARE_SPECIALIZATION	(CActor,			CGameObject,		cast_actor);
-#		ifndef DO_NOT_DECLARE_TYPE_LIST
-#			undef cast_type_list
-#			define cast_type_list save_cast_list	(CActor,			CGameObject)
-#		endif
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CActor,			CGameObject)
 
 		DECLARE_SPECIALIZATION	(CGameObject,		CInventoryOwner,	cast_game_object);
-#		ifndef DO_NOT_DECLARE_TYPE_LIST
-#			undef cast_type_list
-#			define cast_type_list save_cast_list	(CGameObject,		CInventoryOwner)
-#		endif
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CGameObject,		CInventoryOwner)
 
 #	endif
 	
