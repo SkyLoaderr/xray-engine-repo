@@ -114,20 +114,14 @@
     <string id="rad_find_stalkers_dialog_1_0">
         <text>Кто ты?</text>
     </string>
+    <string id="rad_find_stalkers_dialog_1_10">
+        <text>Леха-Челюсть звать меня! А эти бродяги, моя бригада!</text>
+    </string>
     <string id="rad_find_stalkers_dialog_1_100">
-        <text>Я Леха-Челюсть! \nА ты сам кто?</text>
+        <text>Что ты и твои люди здесь делаете?</text>
     </string>
-    <string id="rad_find_stalkers_dialog_1_1000">
-        <text>Здарова Леха! Я Меченый!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_1_1001">
-        <text>Я тоже иду на Припять! Согласен!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_1_1002">
-        <text>Нет я дейсвую один!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_1_101">
-        <text>Наслышан о тебе! Я иду на Припять! Хочешь присоединться?</text>
+    <string id="rad_find_stalkers_dialog_1_20">
+        <text>Я и мои ребята отдыхаем тут! Как отдохнем, пойдем на Припять! </text>
     </string>
     <string id="rad_find_stalkers_dialog_20">
         <text>Спасибо брателло я найду для тебя Бревно и Лома!</text>
@@ -148,46 +142,16 @@
         <text>Нет это все денги которые на мне!</text>
     </string>
     <string id="rad_find_stalkers_dialog_2_0">
-        <text>Что ты и твои ребята тут делаете?</text>
+        <text>Что тебе известно о Припяти?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_2_10">
+        <text>Знаю что это старый заброшенный город эпохи коммунизма! Это из истории! \nДумаю сейчас он кишит монстрами и толпами Монолитовцев! Те кто туда отправился до меня не вернулись! \n</text>
     </string>
     <string id="rad_find_stalkers_dialog_2_100">
-        <text>Мы ждем!</text>
+        <text>Думаешь там очень опасно? </text>
     </string>
-    <string id="rad_find_stalkers_dialog_2_1001">
-        <text>Ждете? Что вы ждете?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_1002">
-        <text>Разведичков?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_1003">
-        <text>Да вроде все нормально со слухом, давно вы их тут ждете?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_1004">
-        <text>Как раз это я и хотел узнать!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_1005">
-        <text>Я как раз туда иду! Что там на Припяти?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_1006">
-        <text>Если я их встречу то передам что ты их ищешь?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_101">
-        <text>Ждем разведчиков!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_102">
-        <text>Да я же сказал что жду развдечиков, у тебя со слухом все впорядке?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_103">
-        <text>Сутки! И ты наверно хочешь узнать куда они пошли?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_104">
-        <text>На Припять!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_105">
-        <text>Незнаю, небыл там! Но как я догадываюсь опсано, мои лучшие ребята Лом и Бревно до сих пор не появились.</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_2_106">
-        <text>Спсибо! Я этого не забуду!</text>
+    <string id="rad_find_stalkers_dialog_2_20">
+        <text>Нет соменений, так как покачто те кто туда отпавился, обратно не вернулись.</text>
     </string>
     <string id="rad_find_stalkers_dialog_30">
         <text>Нет, у меня мало времени, есть ли другой вариант?</text>
@@ -196,73 +160,58 @@
         <text>Нет, я не буду бегать как твой ручной пес за потерянными сучками, ищи их сам, у меня есть дела по важнее.</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_0">
-        <text>Может у тебя есть задание?</text>
+        <text>Ты военных видел поблизости?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_3_10">
+        <text>Не военных я не видел, давно они мне не попадались.</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_100">
-        <text>У меня действительно есть для тебя здание! \nНайди моих пропавших ребят или принеси доказательство и я тебя вознагрожу или если хочешь можешь присоеденится к моей групе! Что думаешь?</text>
+        <text>Может военных сталкеров встречал?</text>
     </string>
-    <string id="rad_find_stalkers_dialog_3_1000">
-        <text>Хорошо, сколько денег даешь если я их найду?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1001">
-        <text>Хорошо я найду их, если ты примишь меня в свою групу?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1002">
-        <text>Нет меня это не интересует.</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_101">
-        <text>Я дам тебе за это задание 1500 рублей! Согласен?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1012">
-        <text>Нет я передумал!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_102">
-        <text>Я возму тебя в группу если ты найдешь моих ребят! Тебе это подходит?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1020">
-        <text>Да меня это устраивает! А теперь расскажи подробней где их искать?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_103">
-        <text>Смотри сам сталкер, если вдруг передумаешь, скажи мне!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1030">
-        <text>Договорились!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_104">
-        <text>text in default</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_110">
-        <text>Я отправил своих лучших ребят, Лом и Бревно, на Припять разведать там обстановку, так как я слышал там очень опасно. Перед моей группой еще несколько груп прошли, но они все пропали. Ну как готов идти или уже передумал?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1100">
-        <text>Нет я не испугался, найду для тебя твоих ребят! Но а если они погибли что мне делать?</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1101">
-        <text>Опасно говоришь? Думаю за 2500 рублей я рискну их поискать!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1102">
-        <text>Опасно? Пожалуй я откажусь! Извини брателло, ищи их сам!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1110">
-        <text>Договорились, я так и сделаю!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1111">
-        <text>Жаль тогда мне это не подходит!</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_1112">
-        <text>Угу.</text>
-    </string>
-    <string id="rad_find_stalkers_dialog_3_112">
-        <text>Смотри сам сталкер, если вдруг передумаешь, скажи мне!</text>
+    <string id="rad_find_stalkers_dialog_3_20">
+        <text>По слухам они где то на самом Радаре появились, ну там где антенны! Как они отключились, много кто пошел к Радару и дальше на Припять! Как мы тут появились, сутки как мы здесь торчим, никто не появился. Наверно кто-то дорогу перекрыл сюда.</text>
     </string>
     <string id="rad_find_stalkers_dialog_3_200">
-        <text>Если они погибли то принеси мне их оружие!</text>
+        <text>Думаешь путь на Радар перекрыли военные? </text>
     </string>
-    <string id="rad_find_stalkers_dialog_3_201">
-        <text>Нет у меня нет такой суммы.</text>
+    <string id="rad_find_stalkers_dialog_3_30">
+        <text>Не думаю, что военные, давно я их не видел, но вот военные сталкеры точно могли! Они не шутят, уж очень они жесткие парни, и действуют быстро и слаженно, странно что сюда не дорогу они раньше не прекрыли! </text>
     </string>
-    <string id="rad_find_stalkers_dialog_3_202">
-        <text>Понимаю! Смотри сам если наберешься храбрости знаешь где меня найти!</text>
+    <string id="rad_find_stalkers_dialog_3_300">
+        <text>Почему они на Припять не пошли или не перекрыли дорогу на нее?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_3_40">
+        <text>Незнаю, может боятся или готовьтся к чемуто, остается догадываться что у них на уме.</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_0">
+        <text>Может у тебя есть задание?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_10">
+        <text>Ну, есть одно, но оно очень не простое, возмешься?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_100">
+        <text>Да, меня не испугать такой формулировкой!</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_101">
+        <text>Нет, ну его, некогда мне!</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_11">
+        <text>Понимаю, я сам боюсь, предпочитаю денег потратить и послать вместо себя или своих людей кого то!</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_20">
+        <text>Ну вот и хорошо! \nЗадание такое, найди моих разведчиков, Лома и Бревно! Они отправились на Припять, я решил не идти как остальные сломя голову в пасть тигра, а послал своих лучших ребят! \nНайди их живыми и приведи сюда, ну а если они погибли принеси мне их оружие! \nВыполнишь задание получишь 2000 деревянными!!!</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_200">
+        <text>Хорошо по рукам!</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_201">
+        <text>Мало денег даешь, давай 4000 деревянных и по рукам, идет?</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_21">
+        <text>Это все что я тебе могу предложить. за это задание!</text>
+    </string>
+    <string id="rad_find_stalkers_dialog_4_30">
+        <text>Отлично, жду тебя здесь!</text>
     </string>
     <string id="rad_found_stalkers_dialog_0">
         <text>Я нашёл твоих ребят</text>
