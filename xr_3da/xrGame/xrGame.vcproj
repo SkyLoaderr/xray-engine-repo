@@ -357,6 +357,9 @@
 					RelativePath=".\Level.h">
 				</File>
 				<File
+					RelativePath="LevelGameDef.cpp">
+				</File>
+				<File
 					RelativePath="LevelGameDef.h">
 				</File>
 				<File
