@@ -20,6 +20,7 @@ CHangingLamp::CHangingLamp	()
 
 CHangingLamp::~CHangingLamp	()
 {
+	xr_delete				(body);
 	::Render->light_destroy	(light_render);
 }
 
@@ -45,6 +46,7 @@ BOOL CHangingLamp::net_Spawn(LPVOID DC)
 
 	R_ASSERT				(pVisual&&PKinematics(pVisual));
 	PKinematics(pVisual)->PlayCycle("idle");
+	PKinematics(pVisual)->Calculate();
 	lanim					= LALib.FindItem(lamp->animator);
 
 	CreateBody				();
@@ -63,6 +65,13 @@ void CHangingLamp::Update	(u32 dt)
 void CHangingLamp::UpdateCL	()
 {
 	inherited::UpdateCL		();
+	if(body){
+		mRotate.i.set(body->mXFORM.i);
+		mRotate.j.set(body->mXFORM.j);
+		mRotate.k.set(body->mXFORM.k);
+		vPosition.set(body->mXFORM.c);
+		UpdateTransform();
+	}
 }
 
 void CHangingLamp::OnVisible()
@@ -85,7 +94,39 @@ void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector 
 	light_render->set_active(false);
 }
 
+void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
+{
+	CKinematics* K		= PKinematics(pVisual);
+
+	CPhysicsElement* E	= P_create_Element();
+	CBoneInstance& B	= K->LL_GetInstance(id);
+	E->mXFORM.set		(K->LL_GetTransform(id));
+	Fobb& bb			= K->LL_GetBox(id);
+	bb.m_halfsize.add	(0.05f);
+	E->add_Box			(bb);
+	E->setDensity		(1000.f);
+	E->set_ParentElement(root_e);
+	B.set_callback		(body->GetBonesCallback(),E);
+	body->add_Element	(E);
+
+	if (root_e){
+		CPhysicsJoint* J= P_create_Joint(CPhysicsJoint::full_control,root_e,E);
+		J->SetAnchorVsSecondElement	(0,0,0);
+		J->SetAxisVsSecondElement	(1,0,0,0);
+		J->SetAxisVsSecondElement	(0,1,0,2);
+		body->add_Joint	(J);
+	}
+
+	CBoneData& BD		= K->LL_GetData(id);
+	for (vecBonesIt it=BD.children.begin(); it!=BD.children.end(); it++){
+		AddElement		(E,(*it)->SelfID);
+	}
+}
+
 void CHangingLamp::CreateBody()
 {
-//	body					= PCreateShell xr_new<CPhysicsShell>();
+	body				= P_create_Shell();
+	body->set_Kinematics(PKinematics(pVisual));
+	AddElement			(0,PKinematics(pVisual)->LL_BoneRoot());
+	body->mXFORM.set(svTransform);
 }

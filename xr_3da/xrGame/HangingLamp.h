@@ -19,6 +19,7 @@ private:
 	IRender_Light*	light_render;
 	CLAItem*		lanim;
 	CPhysicsShell*	body;
+	void			AddElement		(CPhysicsElement* root_e, int id);
 	void			CreateBody		();
 public:
 					CHangingLamp	();
