@@ -71,6 +71,11 @@ void CAI_Zomby::Load(CInifile* ini, const char* section)
 	m_fHitPower = ini->ReadFLOAT(section,"hit_power");
 	m_dwHitInterval = ini->ReadINT(section,"hit_interval");
 
+	m_idle = PKinematics(pVisual)->ID_Cycle("norm_idle");
+	m_death	= PKinematics(pVisual)->ID_Cycle("norm_death");
+	m_walk.Create(PKinematics(pVisual),"norm_walk");
+	m_run.Create(PKinematics(pVisual),"norm_run");
+
 	m_tpaDeathAnimations[0] = m_death;
 	m_tpaDeathAnimations[1] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_1");
 	m_tpaDeathAnimations[2] = PKinematics(pVisual)->ID_Cycle_Safe("norm_death_2");

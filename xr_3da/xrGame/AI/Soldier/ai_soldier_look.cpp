@@ -204,7 +204,7 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 	r_target.yaw = r_torso_target.yaw;
 	ASSIGN_SPINE_BONE;
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	r_target.pitch *= -1;
+	//r_target.pitch *= -1;
 	q_look.o_look_speed=8*_FB_look_speed;
 	/**
 	}
