@@ -600,8 +600,7 @@ BOOL CScriptMonster::UsedAI_Locations()
 
 void CScriptMonster::shedule_Update	(u32 DT)
 {
-#pragma todo("Oles to Dima : Why there is no inherited::shedule_Update?")
-	// 
+	inherited::shedule_Update		(DT);
 	ProcessScripts					();
 }
 
