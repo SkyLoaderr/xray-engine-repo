@@ -228,8 +228,8 @@ xrSE_MercuryBall::xrSE_MercuryBall()
 }
 void	xrSE_MercuryBall::UPDATE_Read	(NET_Packet& P)				{}
 void	xrSE_MercuryBall::UPDATE_Write	(NET_Packet& P)				{}
-void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{}
-void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{}
+void	xrSE_MercuryBall::STATE_Read	(NET_Packet& P, u16 size)	{ P.r_string(s_Model); }
+void	xrSE_MercuryBall::STATE_Write	(NET_Packet& P)				{ P.w_string(s_Model); }
 
 #ifdef _EDITOR
 void	xrSE_MercuryBall::FillProp	(LPCSTR pref, PropValueVec& values)
