@@ -212,7 +212,7 @@ void C3DSoundRender::Reload()
 			sounds[i][0]->Load(LPSTR(0));
 			sounds[i][0]->bNeedUpdate = true;
 			if (sounds[i][0]->isPlaying()) {
-				sounds[i][0]->Play(sounds[i][0]->owner,sounds[i][0]->bMustLoop, sounds[i][0]->iLoopCountRested);
+				sounds[i][0]->Play(sounds[i][0]->owner,sounds[i][0]->bMustLoop, sounds[i][0]->iLoopCount);
 			}
 
 			// Clones
@@ -225,7 +225,7 @@ void C3DSoundRender::Reload()
 				sounds[i][j]->pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&sounds[i][j]->pBuffer3D));
 				sounds[i][j]->bNeedUpdate = true;
 				if (sounds[i][j]->isPlaying()) {
-					sounds[i][j]->Play(sounds[i][j]->owner,sounds[i][j]->bMustLoop, sounds[i][j]->iLoopCountRested);
+					sounds[i][j]->Play(sounds[i][j]->owner,sounds[i][j]->bMustLoop, sounds[i][j]->iLoopCount);
 				}
 			}
 		}

@@ -229,7 +229,6 @@ void C3DSound::Load		(const C3DSound *pOriginal)
 	dwFreq				= pOriginal->dwFreq;
 	fVolume				= 1.0f;
 	fRealVolume			= 1.0f;
-	dwStatus			= 0;
 	pSounds->pDevice->DuplicateSoundBuffer(pOriginal->pBuffer,&pBuffer);
 	VERIFY				(pBuffer);
 	pBuffer->QueryInterface(IID_IDirectSound3DBuffer,(void **)(&pBuffer3D));

@@ -69,7 +69,7 @@ BOOL C3DSound::Update_Volume()
 	return volume > psSoundCull;
 }
 
-void C3DSound::state_Process	()
+void C3DSound::OnMove		()
 {
 	DWORD	dwTime			= Device.TimerAsync	();
 

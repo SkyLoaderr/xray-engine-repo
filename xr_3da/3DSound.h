@@ -69,9 +69,7 @@ public:
 	void					SetMinMax				(float min, float max);
 	void					SetVolume				(float vol)			{ fVolume = vol; bNeedUpdate = true; }
 
-	void					state_Process			(void);
-	void					state_Set				(DWORD state);
-	
+	void					OnMove					(void);
 	void					Update					(void);
 	BOOL					Update_Volume			(void);			// returns TRUE if not "silent"
 
