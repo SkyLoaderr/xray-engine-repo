@@ -67,7 +67,6 @@ void CRenderDevice::_Create	(LPCSTR shName)
 	Gamma.Update				();
 	Resources->OnDeviceCreate	(shName);
 	::Render->create			();
-	seqDevCreate.Process		(rp_DeviceCreate);
 	Statistic.OnDeviceCreate	();
 	dwFrame						= 0;
 }

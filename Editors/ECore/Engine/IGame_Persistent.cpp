@@ -11,14 +11,10 @@ IGame_Persistent::IGame_Persistent	()
 	Device.seqAppCycleStart.Add		(this);
 	Device.seqAppCycleEnd.Add		(this);
 	Device.seqFrame.Add				(this,REG_PRIORITY_HIGH+1);
-	Device.seqDevCreate.Add			(this);
-	Device.seqDevDestroy.Add		(this);
 }
 
 IGame_Persistent::~IGame_Persistent	()
 {
-	Device.seqDevCreate.Remove		(this);
-	Device.seqDevDestroy.Remove		(this);
 	Device.seqFrame.Remove			(this);
 	Device.seqAppCycleStart.Remove	(this);
 	Device.seqAppCycleEnd.Remove	(this);
@@ -46,14 +42,3 @@ void IGame_Persistent::OnFrame		()
 {
 	Environment.OnFrame				();
 }
-
-void IGame_Persistent::OnDeviceCreate()
-{
-	Environment.OnDeviceCreate		();
-}
-
-void IGame_Persistent::OnDeviceDestroy()
-{
-	Environment.OnDeviceDestroy		();
-}
-

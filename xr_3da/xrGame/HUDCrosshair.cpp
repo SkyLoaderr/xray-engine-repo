@@ -6,14 +6,10 @@
 
 #include "HUDCrosshair.h"
 
-
-
-CHUDCrosshair::CHUDCrosshair()
+CHUDCrosshair::CHUDCrosshair	()
 {
-	Device.seqDevCreate.Add		(this);
-	Device.seqDevDestroy.Add	(this);
-
-	OnDeviceCreate();
+	hGeomLine.create			(FVF::F_TL0uv,RCache.Vertex.Buffer(),0);
+	hShader.create				("hud\\cursor","ui\\cursor");
 
 	//вычислить и запомнить центр экрана
 	center.set(int(Device.dwWidth)/2,int(Device.dwHeight)/2);
@@ -21,28 +17,13 @@ CHUDCrosshair::CHUDCrosshair()
 }
 
 
-CHUDCrosshair::~CHUDCrosshair()
+CHUDCrosshair::~CHUDCrosshair	()
 {
-	Device.seqDevCreate.Remove	(this);
-	Device.seqDevDestroy.Remove	(this);
-
-
-	OnDeviceDestroy();
+	hGeomLine.destroy			();
+	hShader.destroy				();
 }
 
-void CHUDCrosshair::OnDeviceCreate()
-{
-	hGeomLine.create			(FVF::F_TL0uv,RCache.Vertex.Buffer(),0);
-	hShader.create				("hud\\cursor","ui\\cursor");
-}
-
-void CHUDCrosshair::OnDeviceDestroy()
-{
-	hGeomLine.destroy				();
-	hShader.destroy					();
-}
-
-void CHUDCrosshair::Load ()
+void CHUDCrosshair::Load		()
 {
 	//все размеры в процентах от длины экрана
 	//длина крестика 
@@ -64,10 +45,8 @@ void CHUDCrosshair::Load ()
 		radius_speed = 1;
 }
 
-
-
 //выставляет radius от min_radius до max_radius
-void CHUDCrosshair::SetDispersion(float disp)
+void CHUDCrosshair::SetDispersion	(float disp)
 { 
 	Fvector E={0,0,0};
 	Fvector D={0,0,1}, R={1,0,0};
@@ -90,11 +69,10 @@ void CHUDCrosshair::OnRender ()
 	FVF::TL0uv* pv_start				= (FVF::TL0uv*)RCache.Vertex.Lock(8,hGeomLine->vb_stride,dwOffset);
 	FVF::TL0uv* pv						= pv_start;
 	
+	u32 color = cross_color.get			();
 
-	u32 color = cross_color.get();
-
-	int x_min = min_radius + radius;
-	int x_max = x_min + cross_length;
+	int x_min = min_radius + radius		;
+	int x_max = x_min + cross_length	;
 
 	int y_min = x_min;
 	int y_max = x_max;

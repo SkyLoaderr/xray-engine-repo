@@ -13,8 +13,6 @@ typedef void __fastcall RP_FUNC	(void *obj);
 
 DECLARE_MESSAGE(Frame);
 DECLARE_MESSAGE(Render);
-DECLARE_MESSAGE(DeviceDestroy);
-DECLARE_MESSAGE(DeviceCreate);
 DECLARE_MESSAGE(AppActivate);
 DECLARE_MESSAGE(AppDeactivate);
 DECLARE_MESSAGE(AppCycleStart);

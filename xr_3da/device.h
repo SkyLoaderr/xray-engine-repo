@@ -49,8 +49,6 @@ public:
 	BOOL									bActive;
 public:
 	// Registrators
-	CRegistrator	<pureDeviceDestroy	 >	seqDevDestroy;
-	CRegistrator	<pureDeviceCreate	 >	seqDevCreate;
 	CRegistrator	<pureFrame			 >	seqFrame;
 	CRegistrator	<pureFrame			 >	seqFrameMT;
 	CRegistrator	<pureRender			 >	seqRender;

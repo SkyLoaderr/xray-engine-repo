@@ -137,7 +137,7 @@ public:
 	void					RenderLast			();
 
     void					SetWeather			(shared_str name);
-    shared_str					GetWeather			()					{ return CurrentWeatherName;}
+    shared_str				GetWeather			()					{ return CurrentWeatherName;}
 	void					SetGameTime			(float game_time, float time_factor)	{ fGameTime = game_time;  fTimeFactor=time_factor;	}
 
 	void					OnDeviceCreate		();

@@ -2,7 +2,8 @@
 #ifndef StatGraphH
 #define StatGraphH
 //---------------------------------------------------------------------------
-class CStatGraph	: public pureRender, public pureDeviceCreate, public pureDeviceDestroy{
+class CStatGraph	: public pureRender
+{
 public:
 	enum EStyle{
     	stBar,
@@ -59,8 +60,8 @@ public:
   					CStatGraph	();
 					~CStatGraph	();
     virtual void 	OnRender	();
-    virtual void 	OnDeviceCreate	();
-    virtual void 	OnDeviceDestroy	();	
+			void 	OnDeviceCreate	();
+			void 	OnDeviceDestroy	();	
 
     IC 	void		SetStyle	(EStyle s, u32 SubGraphID = 0)
     {

@@ -7,7 +7,7 @@
 #define HUD_CURSOR_SECTION "hud_cursor"
 
 
-class CHUDCrosshair:public pureDeviceCreate, public pureDeviceDestroy
+class CHUDCrosshair	
 {
 private:
 	int				cross_length;
@@ -29,9 +29,6 @@ public:
 					~CHUDCrosshair	();
 
 			void	OnRender		();
-	virtual void 	OnDeviceCreate	();
-	virtual void 	OnDeviceDestroy	();
-
 			void	SetDispersion	(float disp);
 
 			void	Load			();

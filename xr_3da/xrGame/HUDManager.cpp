@@ -37,7 +37,6 @@ CHUDManager::CHUDManager()
 	Device.seqDevCreate.Add	(this);
 	if (Device.bReady) OnDeviceCreate();
 
-
 	m_pHUDCursor			= xr_new<CHUDCursor>();
 }
 //--------------------------------------------------------------------

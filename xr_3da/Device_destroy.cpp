@@ -8,7 +8,6 @@ void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 	// before destroy
 	bReady						= FALSE;
 	Statistic.OnDeviceDestroy	();
-	seqDevDestroy.Process		(rp_DeviceDestroy);
 	::Render->destroy			();
 	Resources->OnDeviceDestroy	(bKeepTextures);
 	RCache.OnDeviceDestroy		();
