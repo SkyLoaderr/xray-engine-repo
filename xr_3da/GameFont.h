@@ -51,9 +51,8 @@ public:
 
 		fsForceDWORD		= u32(-1)
 	};
+
 protected:
-	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
-	IC float				ConvertSize		(int sz)	{return (uFlags&fsDeviceIndependent)?(float)sz/Device.dwWidth:(float)sz;}
 	IC int					GetCharRM		(u8 c)		{return CharMap[c];}
 	IC const Fvector&		GetCharTC		(u8 c)		{return TCMap[c];}
 
@@ -63,6 +62,8 @@ public:
 							CGameFont		(LPCSTR shader, LPCSTR texture, u32 flags=0);
 							~CGameFont		();
 
+	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
+	IC float				ConvertSize		(int sz)	{return (uFlags&fsDeviceIndependent)?(float)sz/Device.dwWidth:(float)sz;}
 	IC void					SetColor		(u32 C)		{dwCurrentColor=C;};
 	IC void					SetSize			(float S)	{fCurrentSize=S;};
 	IC float				GetSize			()			{return fCurrentSize;};
