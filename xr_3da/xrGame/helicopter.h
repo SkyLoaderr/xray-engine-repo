@@ -8,6 +8,7 @@
 #include "hit_immunity.h"
 #include "script_export_space.h"
 #include "memory_manager.h"
+#include "HudSound.h"
 
 class CScriptGameObject;
 class CLAItem;
@@ -135,7 +136,7 @@ protected:
 //////////////////////////////////////////////////
 	EHeliState						m_curState;
 
-
+	HUD_SOUND						m_sndShot;
 	ref_sound						m_engineSound;
 	ref_sound						m_explodeSound;
 	IRender_Light*					m_light_render;

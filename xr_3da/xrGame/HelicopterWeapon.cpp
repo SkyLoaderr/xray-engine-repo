@@ -76,6 +76,8 @@ void CHelicopter::OnShot		()
 	StartSmokeParticles(m_fire_pos, zero_vel);
 	OnShellDrop(m_fire_pos, zero_vel);
 
+	HUD_SOUND::PlaySound(m_sndShot, m_fire_pos, this, false);
+
 }
 
 void CHelicopter::MGunFireStart()

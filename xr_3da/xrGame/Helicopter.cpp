@@ -145,6 +145,7 @@ void CHelicopter::Load(LPCSTR section)
 {
 	inherited::Load						(section);
 	CShootingObject::Load				(section);
+	HUD_SOUND::LoadSound				(section,"snd_shoot", m_sndShot, TRUE, SOUND_TYPE_WEAPON_SHOOTING);
 	CRocketLauncher::Load				(section);
 
 ////////////////////////////////////
