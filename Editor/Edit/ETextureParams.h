@@ -4,6 +4,7 @@
 #ifndef _INCDEF_TextureParam_H_
 #define _INCDEF_TextureParam_H_
 
+
 #pragma pack(push,1)
 struct STextureParams{
 	enum ETFormat{
@@ -25,6 +26,17 @@ struct STextureParams{
         dMIPFilterKaiser			= 3,
         dMIPFilterLinearLightKaiser	= 4,
 		dMIPFilterAdvanced			= 5
+	};
+	enum{
+		flGenerateMipMaps	= (1<<0),
+		flBinaryAlpha		= (1<<1),
+		flNormalMap			= (1<<2),
+		flDuDvMap			= (1<<3),
+		flAlphaBorder		= (1<<4),
+		flColorBorder		= (1<<5),
+		flFadeToColor		= (1<<6),
+		flFadeToAlpha		= (1<<7),
+		flDitherColor		= (1<<8)
 	};
 	struct Flags{
 		DWORD bGenerateMipMaps	: 1;
