@@ -12,7 +12,7 @@
 
 	<!-- MSG TEXT -->
 	<text_static x="70" y="15" width="400" height="60">
-		<text x="0" y="0" font="letterica16" r="245" g="118" b="54"></text>
+		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
 	</text_static>
 </window>
 
