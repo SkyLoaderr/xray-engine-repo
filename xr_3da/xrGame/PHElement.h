@@ -118,6 +118,8 @@ public:
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);
 	virtual void			get_LinearVel					(Fvector& velocity);
 	virtual void			get_AngularVel					(Fvector& velocity);
+	virtual void			set_LinearVel					(const Fvector& velocity);
+	virtual void			set_AngularVel					(const Fvector& velocity);
 	virtual	void			set_BoxMass						(const Fobb& box, float mass);
 	virtual void			add_Mass						(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass);
 	virtual float			getRadius						();

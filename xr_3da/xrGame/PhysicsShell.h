@@ -12,7 +12,7 @@ void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
 
 
 #include "PhysicsRefObject.h"
-
+#include "PHDefs.h"
 extern const dReal fixed_step;
 IC float Erp(float k_p,float k_d)		{return ((fixed_step*(k_p)) / (((fixed_step)*(k_p)) + (k_d)));}
 IC float Cfm(float k_p,float k_d)		{return (1.f / (((fixed_step)*(k_p)) + (k_d)));}
@@ -79,6 +79,8 @@ public:
 	virtual void			set_PhysicsRefObject	(CPhysicsRefObject* ref_object)							= 0;
 	virtual void			get_LinearVel			(Fvector& velocity)										= 0;
 	virtual void			get_AngularVel			(Fvector& velocity)										= 0;
+	virtual void			set_LinearVel			(const Fvector& velocity)								= 0;
+	virtual void			set_AngularVel			(const Fvector& velocity)								= 0;
 	virtual void			set_PushOut				(u32 time,PushOutCallbackFun* push_out=PushOutCallback)	= 0;
 	virtual void			SetMaterial				(u32 m)													= 0;
 	virtual void			SetMaterial				(LPCSTR m)												= 0;
@@ -207,8 +209,11 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				set_JointResistance		(float force)										= 0;
 	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
-	virtual void				setEndElementSplitter	  ()												= 0;
-	virtual void				setEndJointSplitter		  ()												= 0;
+	virtual void				setEndElementSplitter	()													= 0;
+	virtual void				setEndJointSplitter		()													= 0;
+	virtual bool				isBreakable				()													= 0;
+	virtual bool				isFractured				()													= 0;
+	virtual void				SplitProcess			(PHSHELL_VECTOR &out_shels)							= 0;
 	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
 	virtual BoneCallbackFun*	GetBonesCallback1		()													= 0;

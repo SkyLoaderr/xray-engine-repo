@@ -991,7 +991,16 @@ void CPHElement::get_AngularVel	(Fvector& velocity)
 	Memory.mem_copy(&velocity,dBodyGetAngularVel(m_body),sizeof(Fvector));
 }
 
-
+void CPHElement::set_LinearVel			  (const Fvector& velocity)
+{
+	if(!bActive) return;
+	dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
+}
+void CPHElement::set_AngularVel			  (const Fvector& velocity)
+{
+	if(!bActive) return;
+	dBodySetAngularVel(m_body,velocity.x,velocity.y,velocity.z);
+}
 
 void CPHElement::set_PushOut(u32 time,PushOutCallbackFun* push_out)
 {
@@ -1080,6 +1089,8 @@ void CPHElement::add_Shape(const SBoneShape& shape)
 	default: NODEFAULT;
 	}
 }
+
+#pragma todo(remake it using Geometry functions)
 
 void CPHElement::add_Mass(const SBoneShape& shape,const Fmatrix& offset,const Fvector& mass_center,float mass)
 {

@@ -130,6 +130,6 @@ m_breaked=false;
 }
 bool CPHFracture::Update(PH_IMPACT_STORAGE& impacts,dBodyID body)
 {
-	
+	//itterate through impacts & calculate 
 	return false;
 }

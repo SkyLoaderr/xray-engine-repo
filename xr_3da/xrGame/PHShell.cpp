@@ -338,6 +338,15 @@ void CPHShell::get_AngularVel(Fvector& velocity)
 	(*elements.begin())->get_AngularVel(velocity);
 }
 
+void	CPHShell::set_LinearVel(const Fvector& velocity)
+{
+	(*elements.begin())->set_AngularVel(velocity);
+}
+void	CPHShell::set_AngularVel(const Fvector& velocity)
+{
+	(*elements.begin())->set_AngularVel(velocity);
+}
+
 void CPHShell::set_PushOut(u32 time,PushOutCallbackFun* push_out)
 {
 	ELEMENT_I i;
@@ -854,4 +863,20 @@ void CPHShell::setEndJointSplitter()
 
 	if(!joints.back()->JointDestroyInfo())//setting joint breacable supposed before adding splitter. Need only one splitter for a joint
 				m_spliter_holder->AddSplitter(CPHShellSplitter::splJoint,u16(elements.size()-1),u16(joints.size()-1));
+}
+
+bool CPHShell::isBreakable()
+{
+return !!m_spliter_holder;
+}
+
+bool CPHShell::isFractured()
+{
+return(m_spliter_holder&&m_spliter_holder->Breaked());
+}
+
+void CPHShell::SplitProcess(PHSHELL_VECTOR &out_shels)
+{
+if(! m_spliter_holder) return;
+m_spliter_holder->SplitProcess(out_shels);
 }

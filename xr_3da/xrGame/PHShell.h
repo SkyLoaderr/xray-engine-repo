@@ -112,14 +112,22 @@ virtual ~CPHShell				()
 	}
 	virtual void				set_DynamicLimits		  (float l_limit=default_l_limit,float w_limit=default_w_limit);
 	virtual void				set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale);
-	virtual void				set_ContactCallback		  (ContactCallbackFun* callback)				;
+	virtual void				set_ContactCallback		  (ContactCallbackFun* callback);
 	virtual void				set_ObjectContactCallback (ObjectContactCallbackFun* callback);
 	virtual void				set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
 	virtual void				set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
+	//breakable
 	virtual void				setEndElementSplitter	  ();
 	virtual void				setEndJointSplitter		  ();
+	//breabable interface
+	virtual bool				isBreakable				  ();
+	virtual bool				isFractured				  ();
+	virtual void				SplitProcess			  (PHSHELL_VECTOR &out_shels);
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	virtual void				get_LinearVel			  (Fvector& velocity);
 	virtual void				get_AngularVel			  (Fvector& velocity);
+	virtual void				set_LinearVel			  (const Fvector& velocity);
+	virtual void				set_AngularVel			  (const Fvector& velocity);
 	virtual void				SetMaterial				  (u32 m);
 	virtual void				SetMaterial				  (LPCSTR m);
 	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
