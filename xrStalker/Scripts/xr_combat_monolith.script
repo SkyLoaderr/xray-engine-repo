@@ -19,6 +19,17 @@ local act_fight_far   = base + 1
 local act_look_around = base + 2
 local act_go_to_pos   = base + 3
 
+function send_to_nearest_accessible_vertex( npc, v_id )
+	if not npc:accessible( v_id ) then
+		local vtemp = vector()
+		v_id, vtemp = npc:accessible_nearest( level.vertex_position( v_id ), vtemp )
+	end
+
+	npc:set_dest_level_vertex_id( v_id )
+
+	return v_id
+end
+
 --------------------------------------------------------------------------------------------------------------
 class "evaluator_combat_monolith" ( property_evaluator )
 
@@ -106,7 +117,9 @@ function action_fight_far:initialize()
 	self.object:set_node_evaluator      ()
 	self.object:set_path_evaluator      ()
 	self.object:set_desired_direction   ()
+	self.object:set_desired_position    ()
 	self.object:set_detail_path_type    ( move.line )
+	self.object:set_path_type           ( game_object.level_path )
 
 	state_mgr.set_state( self.object, "assault_fire", nil, nil, { look_object = be } )
 end
@@ -114,11 +127,7 @@ end
 function action_fight_far:execute()
 	action_base.execute( self )
 
-	local be = self.object:best_enemy()
-
-	self.object:set_path_type           ( game_object.level_path )
-	self.object:set_dest_level_vertex_id( be:level_vertex_id() )
-	self.object:set_desired_position    ( be:position() )
+	send_to_nearest_accessible_vertex( self.object, self.object:best_enemy():level_vertex_id() )
 end
 
 function action_fight_far:finalize()
@@ -184,7 +193,8 @@ function action_go_to_pos:initialize()
 	self.object:set_desired_position    ()
 	self.object:set_detail_path_type    ( move.line )
 	self.object:set_path_type           ( game_object.level_path )
-	self.object:set_dest_level_vertex_id( self.st.last_seen_vert_id )
+
+	self.st.last_seen_vert_id = send_to_nearest_accessible_vertex( self.object, self.st.last_seen_vert_id )
 
 	state_mgr.set_state( self.object, "assault" )
 end
