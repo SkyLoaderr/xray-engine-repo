@@ -35,6 +35,7 @@ class CWeaponList;
 class CEffectorBobbing;
 class CTargetCS;
 class CHolderCustom;
+class CUsableScriptObject;
 
 struct SShootingEffector;
 struct SSleepEffector;
@@ -321,16 +322,17 @@ public:
 
 	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
 	CInventoryOwner*		PersonWeLookingAt			() {return m_pPersonWeLookingAt;}
-	EActorAction			GetDefaultActionForObject	() {return m_eDefaultObjAction;}
+	LPCSTR					GetDefaultActionForObject	() {return *m_sDefaultObjAction;}
 protected:
 
+	CUsableScriptObject*	m_pUsableObject;
 	// Person we're looking at
 	CInventoryOwner*		m_pPersonWeLookingAt;
 	// Vehicle or lorry we're looking at
 	CHolderCustom*			m_pVehicleWeLookingAt;
 	CGameObject*			m_pObjectWeLookingAt;
-	// Default action for object we're looking at
-	EActorAction			m_eDefaultObjAction;
+	// Tip for action for object we're looking at
+	ref_str					m_sDefaultObjAction;
 
 	//режим подбирания предметов
 	bool					m_bPickupMode;

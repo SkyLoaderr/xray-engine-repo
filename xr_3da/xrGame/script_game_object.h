@@ -221,6 +221,10 @@ public:
 			void				SetUseCallback		(const luabind::functor<void> &tpUseCallback);
 			void				SetUseCallback		(const luabind::object &object, LPCSTR method);
 			void				ClearUseCallback	();
+			void				SetTipText			(LPCSTR tip_text);
+			void				SetTipTextDefault	();
+			void				SetNonscriptUsable	(bool nonscript_usable);
+
 //////////////////////////////////////////////////////////////////////////
 
 			LPCSTR				GetPatrolPathName	();

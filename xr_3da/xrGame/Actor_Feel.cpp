@@ -11,6 +11,7 @@
 #include "character_info.h"
 #include "level.h"
 #include "xr_level_controller.h"
+#include "UsableScriptObject.h"
 
 #define PICKUP_INFO_COLOR 0xFFAAAAAA
 
@@ -48,9 +49,14 @@ void CActor::PickupModeUpdate()
 {
 	if(!m_bPickupMode) return;
 
-	if(inventory().m_pTarget)
+	//подбирание объекта
+	if(inventory().m_pTarget && inventory().m_pTarget->Useful() &&
+		m_pUsableObject && m_pUsableObject->nonscript_usable())
 	{
-		inventory().Action(kUSE, CMD_START);
+		NET_Packet P;
+		u_EventGen(P,GE_OWNERSHIP_TAKE, ID());
+		P.w_u16(inventory().m_pTarget->ID());
+		u_EventSend(P);
 	}
 
 	// ????? GetNearest ?????

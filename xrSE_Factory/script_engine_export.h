@@ -64,4 +64,5 @@
 #	include "game_sv_Deathmatch.h"
 #	include	"PhysicsShell.h"
 #	include "script_task.h"
+#	include "script_string_table.h"
 #endif

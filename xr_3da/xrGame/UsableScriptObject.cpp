@@ -2,11 +2,15 @@
 #include "UsableScriptObject.h"
 #include "script_space.h"
 #include "script_callback.h"
+#include "GameObject.h"
+
 using namespace luabind;
 
 CUsableScriptObject::CUsableScriptObject()
 {
-	callback=NULL;
+	callback = NULL;
+	m_bNonscriptUsable = true;
+	set_tip_text_default();
 }
 
 CUsableScriptObject::~CUsableScriptObject()
@@ -35,9 +39,34 @@ void CUsableScriptObject::clear_callback()
 		xr_delete					(callback)	;
 	}
 }
-bool CUsableScriptObject::use()
+bool CUsableScriptObject::use(CGameObject* who_use)
 {
+	VERIFY(who_use);
+	CGameObject* pThis = dynamic_cast<CGameObject*>(this); VERIFY(pThis);
+
 	if(!callback)	return false;
-	SCRIPT_CALLBACK_EXECUTE_0(*callback);
+	SCRIPT_CALLBACK_EXECUTE_2(*callback, pThis->lua_game_object(),who_use->lua_game_object());
 	return true;
+}
+
+LPCSTR CUsableScriptObject::tip_text	()
+{
+	return *m_sTipText;
+}
+void CUsableScriptObject::set_tip_text	(LPCSTR new_text) 
+{
+	m_sTipText = new_text;
+}
+void CUsableScriptObject::set_tip_text_default () 
+{
+	m_sTipText = NULL;
+}
+
+bool CUsableScriptObject::nonscript_usable		()
+{
+	return m_bNonscriptUsable;
+}
+void CUsableScriptObject::set_nonscript_usable	(bool usable)
+{
+	m_bNonscriptUsable = usable;
 }

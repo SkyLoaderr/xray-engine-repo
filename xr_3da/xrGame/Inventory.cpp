@@ -552,48 +552,10 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			}
 		} 
 		break;
-	case kUSE: 
-		{
-			if(flags&CMD_START && m_pTarget && m_pTarget->Useful()) 
-			{
-				// Generate event
-				if(pActor) 
-				{
-					NET_Packet P;
-					pActor->u_EventGen(P,GE_OWNERSHIP_TAKE,pActor->ID());
-					P.w_u16(u16(m_pTarget->ID()));
-					pActor->u_EventSend(P);
-				}
-			}
-		} break;
 	}
 	return false;
 }
 
-/*
-bool RemoveInvItem(PIItem pItem)
-{
-	if(pIItem->m_drop)
-	{
-		pIItem->m_drop = false;
-		if(pIItem->H_Parent())
-		{
-			NET_Packet P;
-			pIItem->u_EventGen(P, GE_OWNERSHIP_REJECT, 
-				pIItem->H_Parent()->ID());
-			P.w_u16(u16(pIItem->ID()));
-			pIItem->u_EventSend(P);
-			return false;
-		}
-		else 
-		{
-			drop_count = Drop(pIItem) ? drop_count + 1 : drop_count;
-			return true;
-		}
-	}
-	return false;
-}
-*/
 
 void CInventory::Update() 
 {

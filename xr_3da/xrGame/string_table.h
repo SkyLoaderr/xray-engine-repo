@@ -4,25 +4,33 @@
 
 #pragma once
 
-DEFINE_MAP(ref_str, ref_str, STRING_TABLE_MAP, STRING_TABLE_IT);
+#include "string_table_defs.h"
+
+DEFINE_MAP		(STRING_ID, STRING_INDEX, STRING_TABLE_MAP, STRING_TABLE_MAP_IT);
+DEFINE_VECTOR	(STRING_VALUE, STRING_TABLE_VECTOR, STRING_TABLE_VECTOR_IT);
 
 
 struct STRING_TABLE_DATA
 {
 	LPCSTR				m_sLanguage;
+	//соответствие ID <--> Index
 	STRING_TABLE_MAP	m_StringTable;
+	//вектор - хранилище строк
+	STRING_TABLE_VECTOR m_Strings;
 };
 
 
-
-class CStringTable
+class CStringTable 
 {
 public:
 	CStringTable			();
 	virtual ~CStringTable	();
 
 	static void Destroy		();
-	ref_str operator() (const ref_str& str_name) const;
+	
+	STRING_INDEX IndexById	(const STRING_ID& str_id)		const;
+	STRING_VALUE operator() (const STRING_ID& str_id)		const;
+	STRING_VALUE operator() (const STRING_INDEX str_index)	const;
 private:
 	virtual void Init		();
 	virtual void Load		(LPCSTR xml_file);

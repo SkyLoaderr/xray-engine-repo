@@ -12,6 +12,7 @@
 #include "ParticlesPlayer.h"
 #include "xrServer_Space.h"
 #include "alife_space.h"
+#include "UsableScriptObject.h"
 
 class CPhysicsShell;
 class CSE_Abstract;
@@ -22,8 +23,8 @@ class CGameObject :
 	public CObject, 
 	virtual public CAI_ObjectLocation,
 	public CPrefetchManager,
-	public CParticlesPlayer
-
+	public CParticlesPlayer,
+	public CUsableScriptObject
 {
 	typedef CObject inherited;
 	u32						m_dwFrameLoad;

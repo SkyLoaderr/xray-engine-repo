@@ -858,11 +858,11 @@ void CUIMainIngameWnd::RenderQuickInfos()
 
 	UIStaticQuickHelp.SetTextColor(0x00000000);
 	
-	ACTOR_DEFS::EActorAction actor_action = m_pActor->GetDefaultActionForObject();
-	if (pObject && eaaNoAction!=actor_action)
+	LPCSTR actor_action = m_pActor->GetDefaultActionForObject();
+	if (pObject && actor_action)
 	{
 		LPCSTR object_name = *pObject->cName();
-		if(eaaTalk == actor_action)
+/*		if(eaaTalk == actor_action)
 		{
 			object_name = m_pActor->PersonWeLookingAt()->CharacterInfo().Name();
 		} 
@@ -872,12 +872,12 @@ void CUIMainIngameWnd::RenderQuickInfos()
 			VERIFY(item);
 			object_name =item->Name();
 		}
-
+*/
 		if (fuzzyShowInfo>0.5f)
 		{
 			UIStaticQuickHelp.SetTextColor(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
 			strconcat(text, object_name, ": ");
-			strconcat(text, text, *m_strTips[m_pActor->GetDefaultActionForObject()]);
+			strconcat(text, text, m_pActor->GetDefaultActionForObject());
 			UIStaticQuickHelp.SetText(text);
 		}
 		fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;

@@ -91,27 +91,40 @@ void CStringTable::Load	(LPCSTR xml_file)
 		{
 			string_text = uiXml.Read(uiXml.GetRoot(), "string:text", i,  NULL);
 			if(pData->m_sLanguage && string_text)
-				Msg("[strign table] '%s' no translation in '%s'", string_name, pData->m_sLanguage);
+				Msg("[string table] '%s' no translation in '%s'", string_name, pData->m_sLanguage);
 		}
 
 		R_ASSERT3(string_text, "string table entry does not has a text", string_name);
 
-		pData->m_StringTable.insert(mk_pair(ref_str(string_name), ref_str(string_text)));
+		pData->m_Strings.push_back(STRING_VALUE(string_text));
+		pData->m_StringTable.insert(mk_pair(STRING_ID(string_name), STRING_INDEX(pData->m_Strings.size()-1)));
 	}
 }
 
-ref_str  CStringTable::operator() (const ref_str& str_name) const
+STRING_VALUE CStringTable::operator() (const STRING_ID& str_id) const
 {
 	VERIFY(pData);
-
-	STRING_TABLE_IT it =  pData->m_StringTable.find(str_name);
-	
-	//не была найдена запись в таблице, возвращаем индекс
-	if(pData->m_StringTable.end() == it)
+	STRING_INDEX index = IndexById(str_id);
+	//если строки с соответствующим ID нет, то возвращаем сам строковый ID
+	if(NO_STRING == index)
 	{
-		Msg("[strign table] '%s' has no entry", *str_name);
-		return str_name;
+		Msg("[string table] '%s' has no entry", *str_id);
+		return str_id;
 	}
+	return pData->m_Strings[index];
+}
 
+STRING_VALUE CStringTable::operator() (const STRING_INDEX str_index) const
+{
+	VERIFY(pData);
+	return pData->m_Strings[str_index];
+}
+
+
+STRING_INDEX CStringTable::IndexById	(const STRING_ID& str_id)		const
+{
+	VERIFY(pData);
+	STRING_TABLE_MAP_IT it =  pData->m_StringTable.find(str_id);
+	if(pData->m_StringTable.end() == it) return NO_STRING;
 	return (*it).second;
 }

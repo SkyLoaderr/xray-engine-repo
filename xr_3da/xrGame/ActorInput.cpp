@@ -34,42 +34,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 	if (!g_Alive()) return;
 
-	if (cmd == kUSE) 
-	{
-		PickupModeOn();
-
-		if(m_pPersonWeLookingAt)
-		{
-			CEntityAlive* pEntityAliveWeLookingAt = 
-							dynamic_cast<CEntityAlive*>(m_pPersonWeLookingAt);
-			
-			VERIFY(pEntityAliveWeLookingAt);
-
-			if(pEntityAliveWeLookingAt->g_Alive())
-			{
-				TryToTalk();
-			}
-			//обыск трупа
-			else if(Level().IR_GetKeyState(DIK_LSHIFT))
-			{
-				//только если находимся в режиме single
-				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-				if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
-												 &m_pPersonWeLookingAt->inventory(),
-												 dynamic_cast<CGameObject*>(m_pPersonWeLookingAt));
-			}
-		}
-		else if(m_pVehicleWeLookingAt && Level().IR_GetKeyState(DIK_LSHIFT))
-		{
-			//только если находимся в режиме single
-			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
-			if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
-											 m_pVehicleWeLookingAt->GetInventory(),
-											 dynamic_cast<CGameObject*>(m_pVehicleWeLookingAt));
-
-		}
-	}
-
 	if(m_holder && kUSE != cmd)
 	{
 		m_holder->OnKeyboardPress(cmd);
@@ -217,36 +181,78 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 
 void CActor::ActorUse()
 {
-	if(Level().IR_GetKeyState(DIK_LSHIFT)) return;
+	PickupModeOn();
 
-	Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-	CPhysicsShellHolder* object = dynamic_cast<CPhysicsShellHolder*>(RQ.O);
-	u16 element = BI_NONE;
-	if(object) 
-		element = (u16)RQ.element;
+	if(!m_pUsableObject) return;
 
-	if (object){
-		CUsableScriptObject* so=dynamic_cast<CUsableScriptObject*>(object);
-		if(so) so->use();
+	m_pUsableObject->use(this);
 
-		switch (object->SUB_CLS_ID){
-		case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
-		case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
-		}
-	}else{
-		if (m_holder){
-			CGameObject* holder			= dynamic_cast<CGameObject*>(m_holder);
-			switch (holder->SUB_CLS_ID){
-			case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
-			case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
+	if(m_pUsableObject->nonscript_usable())
+	{
+		if(m_pPersonWeLookingAt)
+		{
+			CEntityAlive* pEntityAliveWeLookingAt = 
+				dynamic_cast<CEntityAlive*>(m_pPersonWeLookingAt);
+
+			VERIFY(pEntityAliveWeLookingAt);
+
+			if(pEntityAliveWeLookingAt->g_Alive())
+			{
+				TryToTalk();
+			}
+			//обыск трупа
+			else if(Level().IR_GetKeyState(DIK_LSHIFT))
+			{
+				//только если находимся в режиме single
+				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+				if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
+					&m_pPersonWeLookingAt->inventory(),
+					dynamic_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
 		}
+		else if(m_pVehicleWeLookingAt && Level().IR_GetKeyState(DIK_LSHIFT))
+		{
+			//только если находимся в режиме single
+			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
+			if(pGameSP)pGameSP->StartCarBody(&inventory(), this,
+				m_pVehicleWeLookingAt->GetInventory(),
+				dynamic_cast<CGameObject*>(m_pVehicleWeLookingAt));
+
+		}
+
+		if(Level().IR_GetKeyState(DIK_LSHIFT)) return;
+
+		Collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+		CPhysicsShellHolder* object = dynamic_cast<CPhysicsShellHolder*>(RQ.O);
+		u16 element = BI_NONE;
+		if(object) 
+			element = (u16)RQ.element;
+
+		if (object)
+		{
+			switch (object->SUB_CLS_ID)
+			{
+			case CLSID_CAR:					if(use_Vehicle(object))			return;	break;
+			case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
+			}
+		}
+		else
+		{
+			if (m_holder)
+			{
+				CGameObject* holder			= dynamic_cast<CGameObject*>(m_holder);
+				switch (holder->SUB_CLS_ID)
+				{
+				case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
+				case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
+				}
+			}
+		}
+
+		if(!m_PhysicMovementControl->PHCapture())
+			m_PhysicMovementControl->PHCaptureObject(object,element);
+		else
+			m_PhysicMovementControl->PHReleaseObject();
 	}
-	
-	if(!m_PhysicMovementControl->PHCapture())
-		m_PhysicMovementControl->PHCaptureObject(object,element);
-	else
-		m_PhysicMovementControl->PHReleaseObject();
-	
 }
 //void CActor::IR_OnMousePress(int btn)

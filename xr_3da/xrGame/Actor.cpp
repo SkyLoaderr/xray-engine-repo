@@ -56,6 +56,9 @@
 #include "game_cl_base.h"
 #include "xrmessages.h"
 
+#include "string_table.h"
+#include "usablescriptobject.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -148,7 +151,7 @@ CActor::CActor() : CEntityAlive()
 
 	m_bZoomAimingMode = false;
 
-	m_eDefaultObjAction = eaaNoAction;
+	m_sDefaultObjAction = NULL;
 
 	m_bHeavyBreathSndPlaying = false;
 
@@ -883,36 +886,46 @@ void CActor::shedule_Update	(u32 DT)
 
 	if(RQ.O &&  RQ.range<inventory().GetTakeDist()) 
 	{
+		m_pUsableObject					= dynamic_cast<CUsableScriptObject*>(RQ.O);
 		inventory().m_pTarget			= dynamic_cast<PIItem>(RQ.O);
 		m_pPersonWeLookingAt			= dynamic_cast<CInventoryOwner*>(RQ.O);
 		m_pVehicleWeLookingAt			= dynamic_cast<CHolderCustom*>(RQ.O);
 		CEntityAlive* pEntityAlive		= dynamic_cast<CEntityAlive*>(RQ.O);
 		
-		if (GameID() == GAME_SINGLE)
+		if (GameID() == GAME_SINGLE )
 		{
+			CStringTable string_table;
 			// Анализируем какой объект мы видим, и назначаем соответсвующее
 			// действие по умолчанию, которое будет определять всплывающую 
 			// подсказку
-			if (m_pPersonWeLookingAt && pEntityAlive->g_Alive())
-				m_eDefaultObjAction = eaaTalk;
+			if (m_pUsableObject && m_pUsableObject->tip_text())
+			{
+				m_sDefaultObjAction = m_pUsableObject->tip_text();
+			}
+			else
+			{
+				if (m_pPersonWeLookingAt && pEntityAlive->g_Alive())
+					m_sDefaultObjAction = string_table("character_use");
 
-			else if (pEntityAlive && !pEntityAlive->g_Alive())
-				m_eDefaultObjAction = eaaSearchCorpse;
+				else if (pEntityAlive && !pEntityAlive->g_Alive())
+					m_sDefaultObjAction = string_table("dead_character_use");
 
-			else if (m_pVehicleWeLookingAt)
-				m_eDefaultObjAction = eaaOpenDoor;
+				else if (m_pVehicleWeLookingAt)
+					m_sDefaultObjAction = string_table("car_character_use");
 
-			else if (inventory().m_pTarget)
-				m_eDefaultObjAction = eaaPickup;
-			else 
-				m_eDefaultObjAction = eaaNoAction;
-		};
+				else if (inventory().m_pTarget)
+					m_sDefaultObjAction = string_table("inventory_item_use");
+				else 
+					m_sDefaultObjAction = NULL;
+			}
+		}
 	}
 	else 
 	{
 		inventory().m_pTarget	= NULL;
 		m_pPersonWeLookingAt	= NULL;
-		m_eDefaultObjAction		= eaaNoAction;
+		m_sDefaultObjAction		= NULL;
+		m_pUsableObject			= NULL;
 	}
 
 

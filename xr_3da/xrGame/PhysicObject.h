@@ -5,14 +5,12 @@
 
 #include "physicsskeletonobject.h"
 #include "PHSkeleton.h"
-#include "UsableScriptObject.h"
 class CSE_ALifeObjectPhysic;
 
 class CPhysicsElement;
 class CPhysicObject : 
 	public CPhysicsShellHolder,
-	public CPHSkeleton,
-	public CUsableScriptObject
+	public CPHSkeleton
 {
 	typedef CPhysicsShellHolder inherited;
 	EPOType				m_type;
