@@ -271,10 +271,10 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 
 		dReal mag;
 		const dReal* vel = dBodyGetLinearVel(m_body);
-		mag=sqrtf(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);
+		mag=sqrtf(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);//
 		if(mag>l_limit){
 						dReal f=mag/l_limit;
-						dBodySetLinearVel(m_body,vel[0]/f,vel[1]/f,vel[2]/f);
+						dBodySetLinearVel(m_body,vel[0]/f,vel[1]/f,vel[2]/f);///f
 						}
 		else if(!(mag>-dInfinity)||!(mag<dInfinity))
 			dBodySetLinearVel(m_body,0.f,0.f,0.f);
@@ -633,9 +633,9 @@ else{
 
 
 if(b_clamb_jump){//&&m_wall_contact_normal[1]<M_SQRT1_2
-m_control_force[0]*=3.f;
-m_control_force[1]*=3.f;
-m_control_force[2]*=3.f;
+m_control_force[0]*=4.f;
+m_control_force[1]*=8.f;
+m_control_force[2]*=4.f;
 m_control_force[1]=dFabs(m_control_force[1]);
 m_control_force[0]=m_control_force[0]*accel[0]>0.f ? m_control_force[0] : -m_control_force[0];
 m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_control_force[2];
