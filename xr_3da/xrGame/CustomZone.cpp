@@ -546,7 +546,8 @@ void CCustomZone::shedule_Update(u32 dt)
 
 void CCustomZone::feel_touch_new(CObject* O) 
 {
-	if (smart_cast<CCustomZone*>(O)) return;
+	if (smart_cast<CCustomZone*>(O))	return;
+	if (0==PKinematics(O->Visual()))	return;
 	
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	m_inZone.insert(O);
