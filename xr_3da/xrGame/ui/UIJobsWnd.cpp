@@ -114,7 +114,9 @@ void CUIJobsWnd::AddTask(CGameTask * const task)
 		if (0 != obj->icon_texture_name.size())
 			pJobItem->SetPicture			(*obj->icon_texture_name, r, color);
 //		pJobItem->SetPicture				("ui\\ui_icon_equipment", r);
-		pJobItem->SetCaption				(*stbl(task->ObjectiveTitle()));
+		
+		if(i == 0)
+			pJobItem->SetCaption				(*stbl(task->ObjectiveTitle()));
 		pJobItem->SetDescription			(*stbl(task->ObjectiveDesc(i)));
 		if (task->ObjectiveArticle(i) != NO_ARTICLE)
 		{
