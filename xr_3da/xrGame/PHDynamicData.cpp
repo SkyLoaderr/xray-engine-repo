@@ -11,20 +11,21 @@
 PHDynamicData::PHDynamicData()
 {
 numOfChilds=0;
-Childs=NULL;
+//Childs=NULL;
 p_parent_body_interpolation=NULL;
 }
 
 PHDynamicData::~PHDynamicData()
 {
-	if(Childs){
+	if(numOfChilds){
 		//for(unsigned int i=0;i<numOfChilds;i++)
 		//	delete
 		for(unsigned int i=0;i<numOfChilds;i++){
 			Childs[i].Destroy();
 		}
-		delete[] Childs;
-		Childs=NULL;
+		//delete[] Childs;
+		Childs.clear();
+		//Childs=NULL;
 		numOfChilds=0;
 		}
 }
@@ -35,7 +36,8 @@ numOfChilds=numOfchilds;
 body=Body;
 geom=NULL;
 transform=NULL;
-Childs=new PHDynamicData[numOfChilds];
+//Childs=new PHDynamicData[numOfChilds];
+Childs.resize(numOfChilds);
 ZeroTransform.identity();
 }
 
@@ -52,9 +54,11 @@ bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBod
 		Childs[childNum].body_interpolation.SetBody(body);
 
 		if(numOfchilds>0)
-			Childs[childNum].Childs=new PHDynamicData[numOfchilds];
+			//Childs[childNum].Childs=new PHDynamicData[numOfchilds];
+			Childs[childNum].Childs.resize(numOfchilds);
 		else   
-			Childs[childNum].Childs=NULL;
+			//Childs[childNum].Childs=NULL;
+			Childs[childNum].numOfChilds=0;
 
 	Childs[childNum].geom=NULL;
 	Childs[childNum].transform=NULL;
@@ -150,18 +154,20 @@ ZeroTransform.identity();
 numOfChilds=numOfchilds;
 body=Body;
 geom=NULL;
-Childs=new PHDynamicData[numOfChilds];
+//Childs=new PHDynamicData[numOfChilds];
+Childs.resize(numOfChilds);
 body_interpolation.SetBody(Body);
 }
 
 void PHDynamicData::Destroy()
 {
-	if(Childs){
+	if(numOfChilds){
 				for(unsigned int i=0;i<numOfChilds;i++)
 										Childs[i].Destroy();
 		
-		delete[] Childs;
-		Childs=NULL;
+		//delete[] Childs;
+		Childs.clear();
+		//Childs=NULL;
 		numOfChilds=0;
 		}
 }

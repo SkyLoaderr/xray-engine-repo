@@ -124,7 +124,7 @@ int dAABBTestTL(dxGeom* TriList, dxGeom* Object, dReal AABB[6]) throw()
 
 void dDestroyTriList(dGeomID g){
 
-	//External Creating & Destroing!!!!!!!!
+	xr_delete(((dxTriList*)dGeomGetClassData(g))->Collider);
 }
 
 
@@ -208,7 +208,7 @@ dxGeom* dCreateTriList(dSpaceID space, dTriCallback* Callback, dTriArrayCallback
 
 	Data->ArrayCallback = ArrayCallback;
 
-	Data->Collider = new dcTriListCollider(g);
+	Data->Collider = xr_new<dcTriListCollider>(g);
 
 
 

@@ -53,7 +53,7 @@ struct dxGeomUserData
 IC void dGeomCreateUserData(dxGeom* geom)
 {
 	if(!geom) return;
-	dGeomSetData(geom,new dxGeomUserData());
+	dGeomSetData(geom,xr_new<dxGeomUserData>());
 	((dxGeomUserData*)dGeomGetData(geom))->pushing_neg=false;
 	((dxGeomUserData*)dGeomGetData(geom))->pushing_b_neg=false;
 	((dxGeomUserData*)dGeomGetData(geom))->last_pos[0]=-dInfinity;
@@ -72,7 +72,7 @@ IC void dGeomCreateUserData(dxGeom* geom)
 IC void dGeomDestroyUserData(dxGeom* geom)
 {
 	if(!geom) return;
-	if(dGeomGetData(geom)) delete dGeomGetData(geom);
+	if(dGeomGetData(geom)) xr_delete(dGeomGetData(geom));
 	dGeomSetData(geom,0);
 }
 
