@@ -294,7 +294,7 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		}
 	}
 
-	CUIWindow::SendMessage(pWnd, msg, pData);
+//	CUIWindow::SendMessage(pWnd, msg, pData);
 }
 
 
