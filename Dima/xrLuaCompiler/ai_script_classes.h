@@ -573,6 +573,15 @@ public:
 		else
 			l_tpScriptMonster->set_callback(lua_object,method,tActionType);
 	}
+
+	void SetCallback(const luabind::functor<void> &lua_function, const CScriptMonster::EActionType tActionType)
+	{
+		CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut			(Lua::eLuaMessageTypeError,"CScriptMonster : cannot access class member set_callback!");
+		else
+			l_tpScriptMonster->set_callback(lua_function,tActionType);
+	}
 	
 	void ClearCallback(const CScriptMonster::EActionType tActionType)
 	{
