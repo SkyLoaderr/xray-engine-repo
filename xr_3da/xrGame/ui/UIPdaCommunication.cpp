@@ -73,19 +73,11 @@ void CUIPdaCommunication::Init()
 void CUIPdaCommunication::InitPDA()
 {
 	m_pInvOwner = dynamic_cast<CInventoryOwner*>(Level().CurrentEntity());
-	if(!m_pInvOwner) 
-	{
-		Show();
-		return;
-	}
+	if(!m_pInvOwner) return;
 
 	m_pPda = m_pInvOwner->GetPDA();
 
-	if(!m_pPda)
-	{
-		Show();
-		return;
-	}
+	if(!m_pPda)	return;
 
 	InitPdaContacts();
 

@@ -404,8 +404,9 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 				R_ASSERT										(l_tpALifeMonsterAbstract->children.empty());
 				CSE_ALifeScheduleRegistry::remove				(l_tpALifeMonsterAbstract);
 				if (l_tpALifeMonsterAbstract->m_tGraphID != l_tGraphID1) {
-					vfRemoveObjectFromGraphPoint				(l_tpALifeMonsterAbstract,l_tGraphID1);
-					vfAddObjectToGraphPoint						(l_tpALifeMonsterAbstract,l_tpALifeMonsterAbstract->m_tGraphID);
+					vfChangeObjectGraphPoint					(l_tpALifeMonsterAbstract,l_tGraphID1,l_tpALifeMonsterAbstract->m_tGraphID);
+//					vfRemoveObjectFromGraphPoint				(l_tpALifeMonsterAbstract,l_tGraphID1);
+//					vfAddObjectToGraphPoint						(l_tpALifeMonsterAbstract,l_tpALifeMonsterAbstract->m_tGraphID);
 				}
 				CSE_ALifeInventoryItem *l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeMonsterAbstract);
 				if (l_tpALifeInventoryItem)
