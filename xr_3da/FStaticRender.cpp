@@ -89,7 +89,7 @@ IC		void		gm_SetAmbient		(DWORD C)
 {
 	if (C!=gm_Ambient)	{
 		gm_Ambient	= C;
-		CHK_DX(HW.pDevice->SetRenderState(D3DRS_AMBIENT, C));
+		CHK_DX(HW.pDevice->SetRenderState(D3DRS_AMBIENT, D3DCOLOR_XRGB(C,C,C)));
 	}
 }
 

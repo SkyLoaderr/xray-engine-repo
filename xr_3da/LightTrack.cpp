@@ -62,7 +62,7 @@ void	CLightDB_Static::Track	(CObject* O)
 	float	l_f			= dt*lt_smooth;
 	float	l_i			= 1.f-l_f;
 	dest.ambient		= l_i*dest.ambient + l_f*O->Ambient();
-	clamp				(dest.ambient,0.f,1.f);
+	clamp				(dest.ambient,0.f,255.f);
 	
 	// Process selected lights
 	for (vecI_it it=Selected.begin(); it!=Selected.end(); it++)
