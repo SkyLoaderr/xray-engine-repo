@@ -256,4 +256,5 @@ protected:
 
 	virtual bool EnableEffector() {return false;}
 
+	virtual bool IsVisibleForZones() { return false;}
 };

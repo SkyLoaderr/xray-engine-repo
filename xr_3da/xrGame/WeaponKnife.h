@@ -39,6 +39,8 @@ protected:
 
 	void			state_Attacking	(float dt);
 
+	virtual void	KnifeStrike		(const Fvector& pos, const Fvector& dir);
+
 	float			fWallmarkSize;
 public:
 	CWeaponKnife(); 

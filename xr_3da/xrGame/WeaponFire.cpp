@@ -18,7 +18,7 @@
 #define FLAME_TIME 0.05f
 
 
-void CWeapon::FireTrace		(const Fvector& P, Fvector& D)
+void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 {
 	R_ASSERT(m_magazine.size());
 

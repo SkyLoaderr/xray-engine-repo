@@ -35,6 +35,7 @@ public:
 			void	set_callback		(const luabind::object &lua_object, LPCSTR method, bool bOnEnter);
 			void	set_callback		(const luabind::functor<void> &lua_function, bool bOnEnter);
 			void	clear_callback		(bool bOnEnter);
+	virtual bool	IsVisibleForZones() { return false;		}
 #ifdef DEBUG
 	virtual	void	OnRender			();
 #endif

@@ -11,6 +11,7 @@ CCartridge::CCartridge()
 	m_ammoSect = NULL;
 	m_kDist = m_kDisp = m_kHit = m_kImpulse = m_kPierce = 1.f;
 	m_tracer = true;
+	m_ricochet = true;
 	m_buckShot = 1;
 	m_impair = 1.f;
 }
@@ -27,6 +28,8 @@ void CCartridge::Load(LPCSTR section)
 	m_buckShot = pSettings->r_s32(section, "buck_shot");
 	m_impair = pSettings->r_float(section, "impair");
 	fWallmarkSize = pSettings->r_float(section, "wm_size");
+	m_ricochet = true;
+
 	R_ASSERT(fWallmarkSize>0);
 }
 

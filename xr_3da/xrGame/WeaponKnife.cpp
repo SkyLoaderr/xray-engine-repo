@@ -115,6 +115,24 @@ void CWeaponKnife::Show	()
 	}
 }
 
+void CWeaponKnife::KnifeStrike(const Fvector& pos, const Fvector& dir)
+{
+	CCartridge cartridge; 
+	cartridge.m_buckShot = 1;				
+	cartridge.m_impair = 1;
+	cartridge.m_kDisp = 1;
+	cartridge.m_kHit = 1;
+	cartridge.m_kImpulse = 1;
+	cartridge.m_kPierce = 1;
+	cartridge.m_tracer = false;
+	cartridge.m_ricochet = false;
+	cartridge.fWallmarkSize = fWallmarkSize;
+
+	while(m_magazine.size() < 2) m_magazine.push(cartridge);
+	iAmmoElapsed = m_magazine.size();
+	FireTrace(pos,dir);
+}
+
 void CWeaponKnife::OnAnimationEnd()
 {
 	switch (STATE)
@@ -133,19 +151,8 @@ void CWeaponKnife::OnAnimationEnd()
 				if(H_Parent()) 
 					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
 				else break;
-				
-				CCartridge cartridge; 
-				cartridge.m_buckShot = 1;				
-				cartridge.m_impair = 1;
-				cartridge.m_kDisp = 1;
-				cartridge.m_kHit = 1;
-				cartridge.m_kImpulse = 1;
-				cartridge.m_kPierce = 1;
-				cartridge.m_tracer = 0;
-				cartridge.fWallmarkSize = fWallmarkSize;
 
-				while(m_magazine.size() < 2) m_magazine.push(cartridge);
-				FireTrace(p1,d);
+				KnifeStrike(p1,d);
 			} 
 			else 
 				SwitchState(eIdle);
@@ -165,18 +172,7 @@ void CWeaponKnife::OnAnimationEnd()
 					dynamic_cast<CEntity*>(H_Parent())->g_fireParams(this, p1,d);
 				else break;
 			
-				CCartridge cartridge; 
-				cartridge.m_buckShot = 1;				
-				cartridge.m_impair = 1;
-				cartridge.m_kDisp = 1;
-				cartridge.m_kHit = 1;
-				cartridge.m_kImpulse = 1;
-				cartridge.m_kPierce = 1;
-				cartridge.m_tracer = 0;
-				cartridge.fWallmarkSize = fWallmarkSize;
-
-				while(m_magazine.size() < 2) m_magazine.push(cartridge);
-				FireTrace(p1,d);
+				KnifeStrike(p1,d);
 			} else 
 				SwitchState(eIdle);
 		} break;

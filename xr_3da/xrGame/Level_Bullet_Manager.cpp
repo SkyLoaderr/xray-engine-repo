@@ -63,7 +63,7 @@ void SBullet::Init(const Fvector& position,
 	tracer_max_length = tracer_length;
 
 	flags.set(TRACER_FLAG, cartridge.m_tracer);
-	flags.set(RICOCHET_ENABLED_FLAG);
+	flags.set(RICOCHET_ENABLED_FLAG, cartridge.m_ricochet);
 }
 
 
@@ -248,6 +248,8 @@ void CBulletManager::Render	()
 
 	for(BulletVecIt it = m_Bullets.begin(); it!=m_Bullets.end(); it++){
 		SBullet* bullet = &(*it);
+
+		if(!bullet->flags.is(SBullet::TRACER_FLAG)) return;
 
 		Fvector dist;
 		dist.sub(bullet->prev_pos,bullet->pos);

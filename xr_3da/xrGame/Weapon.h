@@ -273,7 +273,7 @@ protected:
 	virtual void			SetDefaults			();
 
 	//трассирование полета пули
-	virtual void			FireTrace			(const Fvector& P, Fvector& D);
+	virtual void			FireTrace			(const Fvector& P, const Fvector& D);
 
 	virtual void			FireStart			() {CShootingObject::FireStart();}
 	virtual void			FireEnd				() {CShootingObject::FireEnd();}
