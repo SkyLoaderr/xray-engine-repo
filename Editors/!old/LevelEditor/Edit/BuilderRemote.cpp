@@ -50,6 +50,7 @@ public:
         bb_min.set			(bb.min);
         max_svert			= 0;
         svertices.resize	(bb_sx*bb_sz,0);
+        max_muvert			= 0;
         muvertices.resize	(bb_sx*bb_sz,0);
     }
     void add_svert(const Fvector& p)
@@ -80,8 +81,8 @@ public:
         u32 total_muvert=0;
         for (ix=0; ix<bb_sx; ix++){
 	        for (iz=0; iz<bb_sz; iz++){
-            	total_svert			= svertex(ix,iz);
-            	total_muvert		= muvertex(ix,iz);
+            	total_svert			+= svertex(ix,iz);
+            	total_muvert		+= muvertex(ix,iz);
                 u8 v_s 				= iFloor(float(svertex(ix,iz))/float(max_svert)*255.f+0.5f);
                 u8 v_mu 			= iFloor(float(muvertex(ix,iz))/float(max_muvert)*255.f+0.5f);
                 data[iz*bb_sx+ix] 	= color_rgba(v_s,v_mu,0,0);
