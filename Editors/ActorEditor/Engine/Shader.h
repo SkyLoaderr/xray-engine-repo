@@ -19,6 +19,8 @@ class	ENGINE_API	CConstant;
 class	ENGINE_API	CRT;
 class	ENGINE_API	CRTC;
 
+#pragma pack(push,4)
+
 struct	ENGINE_API	STextureList	: public svector<CTexture*,8>
 {
 	u32	dwReference;
@@ -120,21 +122,31 @@ struct ENGINE_API		ref_shader
 	Shader*				_object;
 
 	ref_shader()	: _object(NULL)	{}
-	~ref_shader();
+	~ref_shader()					{ destroy(); }
 
-	IC void			operator	=	(Shader* _o)	{ _object=_o;		}
-	IC Shader*		operator	()	()				{ return _object;	}
+	void			create			(LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	void			create			(IBlender*	B,	LPCSTR s_shader=0, LPCSTR s_textures=0, LPCSTR s_constants=0, LPCSTR s_matrices=0);
+	void			destroy			();
+
+	IC void			operator	=	(Shader* _o)	{ destroy();	_object=_o;		}
+	IC Shader*		operator	()	()				{ return _object;				}
 };
 
 struct ENGINE_API		ref_geom
 {
 	SGeometry*			_object;
 
-	ref_geom()		: _object(NULL)		{}
-	~ref_geom();
+	ref_geom()		: _object(NULL)	{}
+	~ref_geom()						{ destroy(); }
 
-	IC void			operator	=	(SGeometry* _o)	{ _object=_o;		}
-	IC SGeometry*	operator	()	()				{ return _object;	}
+	void 			create			(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
+	void			create			(u32 FVF				, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib);
+	void			destroy			();
+
+	void			operator	=	(SGeometry* _o)	{ destroy();	_object=_o;		}
+	SGeometry*		operator	()	()				{ return _object;				}
 };
+
+#pragma pack(pop)
 
 #endif // !defined(AFX_SHADER_H__9CBD70DD_E147_446B_B4EE_5DA321EB726F__INCLUDED_)
