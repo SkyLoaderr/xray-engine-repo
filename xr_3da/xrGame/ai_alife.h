@@ -9,6 +9,7 @@
 #pragma once
 
 #include "ai_alife_registries.h"
+#include "xrServer_Objects_ALife.h"
 
 /// #pragma todo("Dima to Dima : Be attentive with this speed optimization - it doesn't suit to the OOP paradigm!")
 #define FAST_OWNERSHIP
@@ -172,6 +173,7 @@ public:
 			bool					change_level				(NET_Packet &net_packet);
 			void					vfNewGame					(LPCSTR						caSaveName);
 			void					vfReleaseObject				(CSE_Abstract				*tpSE_Abstract,				bool					bALifeRequest = true);
+			void					vfCreateItem				(CSE_ALifeObject			*object);
 	// miscellanious
 			void					vfCheckForInteraction		(CSE_ALifeSchedulable		*tpALifeSchedulable);
 			void					vfAppendItemVector			(ALife::OBJECT_VECTOR		&tObjectVector,				ALife::ITEM_P_VECTOR	&tItemList);

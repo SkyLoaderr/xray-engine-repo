@@ -30,6 +30,7 @@ public:
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	;//{};
 
+	virtual		void				OnCreate				(u16 id_who);
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);
 

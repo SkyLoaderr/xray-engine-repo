@@ -22,7 +22,6 @@ using namespace ALife;
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeObjectRegistry::CSE_ALifeObjectRegistry()
 {
-	m_tObjectRegistry.clear		();
 }
 
 CSE_ALifeObjectRegistry::~CSE_ALifeObjectRegistry()
@@ -112,7 +111,6 @@ void CSE_ALifeObjectRegistry::Add(CSE_ALifeDynamicObject *tpALifeDynamicObject)
 CSE_ALifeEventRegistry::CSE_ALifeEventRegistry()
 {
 	m_tEventID					= 0;
-	m_tEventRegistry.clear		();
 }
 
 CSE_ALifeEventRegistry::~CSE_ALifeEventRegistry()
@@ -150,8 +148,6 @@ void CSE_ALifeEventRegistry::Add(CSE_ALifeEvent	*tpEvent)
 CSE_ALifeTaskRegistry::CSE_ALifeTaskRegistry()
 {
 	m_tTaskID					= 0;
-	m_tTaskRegistry.clear		();
-	m_tTaskCrossMap.clear		();
 }
 
 CSE_ALifeTaskRegistry::~CSE_ALifeTaskRegistry()
@@ -567,9 +563,6 @@ void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObje
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeSpawnRegistry::CSE_ALifeSpawnRegistry()
 {
-	m_tpSpawnPoints.clear		();
-	m_tpArtefactSpawnPositions.clear();
-	m_baAliveSpawnObjects.clear ();
 }
 
 CSE_ALifeSpawnRegistry::~CSE_ALifeSpawnRegistry()
@@ -661,7 +654,6 @@ void CSE_ALifeSpawnRegistry::Load(IReader	&tFileStream)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeAnomalyRegistry::CSE_ALifeAnomalyRegistry()
 {
-	m_tpAnomalies.clear			();
 	m_tpCrossAnomalies.resize	(eAnomalousZoneTypeDummy);
 }
 
@@ -688,9 +680,6 @@ void CSE_ALifeAnomalyRegistry::Load(IReader &tFileStream)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeOrganizationRegistry::CSE_ALifeOrganizationRegistry()
 {
-	m_tOrganizationRegistry.clear();
-	m_tDiscoveryRegistry.clear	();
-
 	R_ASSERT2					(pSettings->section_exist("organizations"),"There is no section 'organizations' in the 'system.ltx'!");
 	LPCSTR						N,V;
 	for (u32 k = 0; pSettings->r_line("organizations",k,&N,&V); ++k)

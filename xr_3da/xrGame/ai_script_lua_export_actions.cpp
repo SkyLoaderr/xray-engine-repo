@@ -197,6 +197,7 @@ void CScriptEngine::export_motivation_management()
 				value("property_found_ammo",		StalkerDecisionSpace::eWorldPropertyFoundAmmo),
 				value("property_ready_to_kill",		StalkerDecisionSpace::eWorldPropertyReadyToKill),
 				value("property_kill_distance",		StalkerDecisionSpace::eWorldPropertyKillDistance),
+				value("property_enemy_aimed",		StalkerDecisionSpace::eWorldPropertyEnemyAimed),
 				value("property_script",			StalkerDecisionSpace::eWorldPropertyScript)
 			]
 			

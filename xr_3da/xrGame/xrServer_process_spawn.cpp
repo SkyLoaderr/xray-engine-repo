@@ -20,10 +20,12 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 			F_entity_Destroy(E);
 			return;
 		}
-		E->m_bALifeControl = false;
+//		E->m_bALifeControl = false;
 	}
-	else
-		E->m_bALifeControl = true;
+	else {
+		VERIFY				(E->m_bALifeControl);
+//		E->m_bALifeControl = true;
+	}
 
 	// check if we can assign entity to some client
 	if (0==CL && !net_Players.empty())
@@ -84,10 +86,18 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender, BOOL bSpawnWithClients
 	E->s_RP					= 0xFE;	// Use supplied
 
 	// Parent-Connect
-	if (!E->m_bALifeControl && (0xffff != E->ID_Parent)) {
-		CSE_Abstract*		e_parent	= ID_to_entity(E->ID_Parent);
-		R_ASSERT						(e_parent);
-		e_parent->children.push_back	(E->ID);
+	if (!tpExistedEntity) {
+		game->OnCreate		(E->ID);
+		
+		if (0xffff != E->ID_Parent) {
+			CSE_Abstract					*e_parent = ID_to_entity(E->ID_Parent);
+			R_ASSERT						(e_parent);
+			
+			if (!tpExistedEntity)
+				game->OnTouch				(E->ID_Parent,E->ID);
+
+			e_parent->children.push_back	(E->ID);
+		}
 	}
 
 	// create packet and broadcast packet to everybody

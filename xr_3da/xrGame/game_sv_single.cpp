@@ -38,6 +38,32 @@ CSE_Abstract*		game_sv_Single::get_entity_from_eid		(u16 id)
 		return(inherited::get_entity_from_eid(id));
 }
 
+void	game_sv_Single::OnCreate		(u16 id_who)
+{
+	if (!m_tpALife)
+		return;
+
+	CSE_Abstract			*e_who			= get_entity_from_eid(id_who);
+	VERIFY					(e_who);
+	if (!e_who->m_bALifeControl)
+		return;
+
+	CSE_ALifeObject			*alife_object	= dynamic_cast<CSE_ALifeObject*>(e_who);
+	if (!alife_object)
+		return;
+
+	if (alife_object->ID_Parent != 0xffff) {
+		CSE_ALifeDynamicObject			*parent = m_tpALife->tpfGetObjectByID(alife_object->ID_Parent,true);
+		if (parent) {
+			CSE_ALifeTraderAbstract		*trader = dynamic_cast<CSE_ALifeTraderAbstract*>(parent);
+			if (trader)
+				m_tpALife->vfCreateItem	(alife_object);
+		}
+	}
+	else
+		m_tpALife->vfCreateItem			(alife_object);
+}
+
 BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 {
 	CSE_Abstract*		e_who	= get_entity_from_eid(eid_who);		VERIFY(e_who	);
@@ -92,12 +118,25 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 		
 		if ((m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tpCurrentLevel->find(l_tpALifeInventoryItem->ID) == m_tpALife->m_tpCurrentLevel->end()) && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(e_what->ID) != m_tpALife->m_tObjectRegistry.end()))
 			m_tpALife->vfDetachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
-#ifdef DEBUG
-		else
-			if (psAI_Flags.test(aiALife)) {
-				Msg			("Cannot detach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+		else {
+			if (m_tpALife->m_tObjectRegistry.find(e_what->ID) == m_tpALife->m_tObjectRegistry.end()) {
+				u16				id = l_tpALifeInventoryItem->ID_Parent;
+				l_tpALifeInventoryItem->ID_Parent	= 0xffff;
+				
+				CSE_ALifeDynamicObject *dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(e_what);
+				VERIFY			(dynamic_object);
+				dynamic_object->m_tNodeID	= l_tpDynamicObject->m_tNodeID;
+				dynamic_object->m_tGraphID	= l_tpDynamicObject->m_tGraphID;
+				m_tpALife->vfCreateItem	(dynamic_object);
+				l_tpALifeInventoryItem->ID_Parent	= id;
 			}
+#ifdef DEBUG
+			else
+				if (psAI_Flags.test(aiALife)) {
+					Msg			("Cannot detach object [%s][%s][%d] from object [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->s_name,l_tpDynamicObject->ID);
+				}
 #endif
+		}
 	}
 	return					(TRUE);
 }

@@ -347,3 +347,30 @@ bool CSE_ALifeSimulator::change_level	(NET_Packet &net_packet)
 
 	return						(true);
 }
+
+void CSE_ALifeSimulator::vfCreateItem	(CSE_ALifeObject *object)
+{
+	CSE_ALifeDynamicObject		*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(object);
+	if (!dynamic_object)
+		return;
+	
+	if (0xffff != dynamic_object->ID_Parent) {
+		u16							id = dynamic_object->ID_Parent;
+		CSE_ALifeDynamicObject		*parent = tpfGetObjectByID(id);
+		VERIFY						(parent);
+		dynamic_object->m_tGraphID	= parent->m_tGraphID;
+		dynamic_object->o_Position	= parent->o_Position;
+		dynamic_object->m_tNodeID	= parent->m_tNodeID;
+		dynamic_object->ID_Parent	= 0xffff;
+		CSE_ALifeObjectRegistry::Add(dynamic_object);
+		vfUpdateDynamicData			(dynamic_object);
+		vfRemoveObjectFromGraphPoint(dynamic_object,parent->m_tGraphID,false);
+		dynamic_object->ID_Parent	= id;
+	}
+	else {
+		CSE_ALifeObjectRegistry::Add(dynamic_object);
+		vfUpdateDynamicData			(dynamic_object);
+	}
+	
+	dynamic_object->m_bOnline		= true;
+}
