@@ -219,6 +219,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->SetStatus("Loading...");
 
 // startup create
+		Application->Title = "Level Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst(hInst);

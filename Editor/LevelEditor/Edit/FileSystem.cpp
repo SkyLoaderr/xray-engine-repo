@@ -480,7 +480,7 @@ void CFileSystem::RegisterAccess(LPSTR fn)
     m_AccessLog->Msg(mtInformation,"Lock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,computer,user,DateToStr(Now()),TimeToStr(Time()));
 }
 
-BOOL CFileSystem::IsFileLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, LPSTR last_locker)
+BOOL CFileSystem::CheckLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, bool bMsg)
 {
 	string256 fn; strcpy(fn,fname);
 	if (initial) initial->Update(fn);
@@ -488,7 +488,8 @@ BOOL CFileSystem::IsFileLocking(FSPath *initial, LPSTR fname, bool bOnlySelf, LP
 	if (bOnlySelf) return (m_LockFiles.find(fn)!=m_LockFiles.end());
 	HANDLE handle=CreateFile(fn,GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,OPEN_EXISTING,FILE_ATTRIBUTE_NORMAL,0);
     CloseHandle(handle);
-    if (last_locker&&(INVALID_HANDLE_VALUE==handle)) strcpy(last_locker,GetLockOwner(0,fn));
+    if (bMsg&&(INVALID_HANDLE_VALUE==handle))
+		ELog.DlgMsg(mtError,"Access denied.\nFile: '%s'\ncurrently locked by user: '%s'.",fn,GetLockOwner(0,fn));
     return (INVALID_HANDLE_VALUE==handle);
 }
 

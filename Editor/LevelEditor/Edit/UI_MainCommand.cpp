@@ -130,7 +130,17 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         	if (p1)	strcpy( filebuffer, (char*)p1 );
             else	strcpy( filebuffer, m_LastFileName );
 			if( p1 || FS.GetOpenName( &FS.m_Maps, filebuffer ) ){
-                if (!Scene.IfModified()) return false;
+                if (!Scene.IfModified()){
+                	bRes=false;
+                    break;
+                }
+                if ((0!=stricmp(filebuffer,m_LastFileName))&&FS.CheckLocking(0,filebuffer,false,true)){
+                	bRes=false;
+                    break;
+                }
+                if ((0==stricmp(filebuffer,m_LastFileName))&&FS.CheckLocking(0,filebuffer,true,false)){
+	                FS.UnlockFile(0,filebuffer);
+                }
                 SetStatus("Level loading...");
             	Command( COMMAND_CLEAR );
 	            BeginEState(esSceneLocked);
@@ -143,6 +153,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
                 Scene.m_Modified = false;
 			    Command(COMMAND_UPDATE_CAPTION);
                 Command(COMMAND_CHANGE_ACTION,eaSelect);
+                // lock
+                FS.LockFile(0,filebuffer);
 			}
 		} else {
 			ELog.DlgMsg( mtError, "Scene sharing violation" );
@@ -186,6 +198,9 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 				Scene.Save( filebuffer, false );
                 SetStatus("");
                 Scene.m_Modified = false;
+				// unlock
+    	        FS.UnlockFile(0,m_LastFileName);
+                // set new name
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
 	            EndEState();
@@ -201,6 +216,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 		if( !Scene.locked() ){
             if (!Scene.IfModified()) return false;
             BeginEState(esSceneLocked);
+			// unlock
+			FS.UnlockFile(0,m_LastFileName);
 //            m_pTexturizer->Reset();
 			Device.m_Camera.Reset();
 			Scene.Unload();

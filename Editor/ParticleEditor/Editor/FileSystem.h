@@ -94,7 +94,7 @@ public:
     void		VerifyPath		(LPCSTR path);
 	LPSTR		UpdateTextureNameWithFolder(LPSTR tex_name);
 
-    BOOL		IsFileLocking	(FSPath *initial, LPSTR fn, bool bOnlySelf, LPSTR last_locker);
+    BOOL		CheckLocking	(FSPath *initial, LPSTR fn, bool bOnlySelf, bool bMsg);
     BOOL		LockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
     BOOL		UnlockFile		(FSPath *initial, LPSTR fn, bool bLog=true);
     LPCSTR		GetLockOwner	(FSPath *initial, LPSTR fn);
