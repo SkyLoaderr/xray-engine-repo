@@ -82,7 +82,7 @@ void CHOM::Load			()
 		rT.flags		= clT.dummy;
 		rT.area			= Area(v0,v1,v2);
 		rT.plane.build	(v0,v1,v2);
-		rT.dwFrame		= 0;
+		rT.skip			= 0;
 	}
 
 	// Create AABB-tree
@@ -132,6 +132,7 @@ void CHOM::Render_DB	(CFrustum& base)
 	CDB::RESULT*	end	= XRC.r_end();
 	Fvector			COP = Device.vCameraPosition;
 	Fmatrix			XF	= Device.mFullTransform;
+	DWORD			frame=Device.dwFrame;
 	float			dim = occ_dim_0/2;
 
 	// Build frustum with near plane only
@@ -143,6 +144,7 @@ void CHOM::Render_DB	(CFrustum& base)
 	for (; it!=end; it++)
 	{
 		occTri& T	= m_pTris	[it->id];
+		if (T.skip)	{ T.skip--; continue; }
 		
 		// Test for good occluder - should be improved :)
 		if (!(T.flags || (T.plane.classify(COP)>0)))	continue;
