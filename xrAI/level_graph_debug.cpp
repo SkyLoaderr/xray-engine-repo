@@ -25,6 +25,7 @@
 #include "cover_point.h"
 #include "cover_manager.h"
 #include "cover_evaluators.h"
+#include "team_base_zone.h"
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
@@ -377,6 +378,11 @@ void CLevelGraph::render()
 		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
 		for ( ; I != E; ++I) {
+			CTeamBaseZone	*team_base_zone = dynamic_cast<CTeamBaseZone*>(*I);
+			if (team_base_zone) {
+				team_base_zone->OnRender();
+				continue;
+			}
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster*>(*I);
 			if (tpCustomMonster) {
 				tpCustomMonster->OnRender();

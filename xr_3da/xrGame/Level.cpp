@@ -26,6 +26,7 @@
 
 #include "ai_script_processor.h"
 #include "script_engine.h"
+#include "team_base_zone.h"
 
 CPHWorld*	ph_world = 0;
 
@@ -256,7 +257,16 @@ void CLevel::OnRender()
 #ifdef DEBUG
 	if (ai().get_level_graph() && (bDebug || psAI_Flags.test(aiMotion)))
 		ai().level_graph().render();
+
 	if (bDebug)	{
+		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
+		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
+		for ( ; I != E; ++I) {
+			CTeamBaseZone	*team_base_zone = dynamic_cast<CTeamBaseZone*>(*I);
+			if (team_base_zone)
+				team_base_zone->OnRender();
+		}
+
 		ObjectSpace.dbgRender	();
 
 		//---------------------------------------------------------------------
