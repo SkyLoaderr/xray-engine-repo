@@ -222,38 +222,43 @@ void CRender::LoadSectors(CStream* fs)
 	S->Close();
 
 	// load portals
-	CDB::Collector	CL;
-	fs->FindChunk(fsL_PORTALS);
-	for (i=0; i<count; i++)
+	if (count) 
 	{
-		b_portal	P;
-		fs->Read(&P,sizeof(P));
-		Portals[i].Setup(P.vertices.begin(),P.vertices.size(),
-			getSector(P.sector_front),
-			getSector(P.sector_back));
-		for (DWORD j=2; j<P.vertices.size(); j++)
-			CL.add_face_packed(
+		CDB::Collector	CL;
+		fs->FindChunk(fsL_PORTALS);
+		for (i=0; i<count; i++)
+		{
+			b_portal	P;
+			fs->Read(&P,sizeof(P));
+			Portals[i].Setup(P.vertices.begin(),P.vertices.size(),
+				getSector(P.sector_front),
+				getSector(P.sector_back));
+			for (DWORD j=2; j<P.vertices.size(); j++)
+				CL.add_face_packed(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
 				CDB::edge_open,CDB::edge_open,CDB::edge_open,
 				0,0,DWORD(&Portals[i])
-			);
-	}
-	if (CL.getTS()<2)
-	{
-		Fvector		v1,v2,v3;
-		v1.set		(-20000.f,-20000.f,-20000.f);
-		v2.set		(-20001.f,-20001.f,-20001.f);
-		v3.set		(-20002.f,-20002.f,-20002.f);
-		CL.add_face_packed(
-			v1,v2,v3,
-			CDB::edge_open,CDB::edge_open,CDB::edge_open,
-			0,0,0
-			);
-	}
+				);
+		}
+		if (CL.getTS()<2)
+		{
+			Fvector		v1,v2,v3;
+			v1.set		(-20000.f,-20000.f,-20000.f);
+			v2.set		(-20001.f,-20001.f,-20001.f);
+			v3.set		(-20002.f,-20002.f,-20002.f);
+			CL.add_face_packed(
+				v1,v2,v3,
+				CDB::edge_open,CDB::edge_open,CDB::edge_open,
+				0,0,0
+				);
+		}
 
-	// build portal model
-	rmPortals = new CDB::MODEL;
-	rmPortals->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+		// build portal model
+		rmPortals = new CDB::MODEL;
+		rmPortals->build	(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	} else {
+		rmPortals = 0;
+	}
 
 	// debug
 	//	for (int d=0; d<Sectors.size(); d++)

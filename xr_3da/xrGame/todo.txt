@@ -26,7 +26,7 @@
 	. TODO: NET: Demo Record/Replay
     + TODO: Merge shadows from weapon and entity
 	. TODO: NET: Actor camera
-	. TODO: HUD rendering
+	+ TODO: HUD rendering
 	
 	. TODO: Detail texturing
 
