@@ -263,10 +263,24 @@ IC	void CLevelNavigationGraph::build_edges		()
 #ifdef DEBUG
 IC	void CLevelNavigationGraph::check_edges		()
 {
+	u32									count = 0;
 	CSectorGraph::const_vertex_iterator	I = sectors().vertices().begin();
 	CSectorGraph::const_vertex_iterator	E = sectors().vertices().end();
 	for ( ; I != E; ++I) {
-		VERIFY							(!(*I).second->edges().empty());
+//		VERIFY							(!(*I).second->edges().empty());
+		if (!(*I).second->edges().empty())
+			continue;
+
+		if ((*I).second->data().min_vertex_id == (*I).second->data().max_vertex_id)
+			Msg							("! Node %d is not connected to the graph!",(*I).second->data().min_vertex_id);
+		else
+			Msg							("! Sector [%d][%d] is not connected to the graph!",(*I).second->data().min_vertex_id,(*I).second->data().max_vertex_id);
+	}
+	if (count) {
+		if (count == 1)
+			Msg							("! There is single not connected island");
+		else
+			Msg							("! There are %d not connected islands",count);
 	}
 }
 #endif
