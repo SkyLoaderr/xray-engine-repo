@@ -103,7 +103,7 @@ public:
 	IC		bool	get_enabled				() const;
 
 			void	build_path				();
-			void	move_along_path			(CPHMovementControl *movement_control, float time_delta);
+			void	move_along_path			(CPHMovementControl *movement_control, Fvector &dest_position, float time_delta);
 			float	speed					() const;
 };
 
