@@ -92,7 +92,7 @@ IRender_Target*			CRender::getTarget				()					{ return &Target;										}
 IRender_Light*			CRender::light_create			()					{ return Lights.Create();								}
 void					CRender::light_destroy			(IRender_Light* &L)	{ if (L) { Lights.Destroy((light*)L); L=0; }			}
 
-void					CRender::flush					()					{ flush_Models();									}
+void					CRender::flush					()					{ r_dsgraph_render_graph	(0);						}
 
 BOOL					CRender::occ_visible			(vis_data& P)		{ return HOM.visible(P);							}
 BOOL					CRender::occ_visible			(sPoly& P)			{ return HOM.visible(P);							}
