@@ -18,7 +18,7 @@
 //////////////////////////////////////////////////////////////////////
 CWeaponGroza::CWeaponGroza() : CWeapon("GROZA")
 {
-	pSounds->Create3D(sndFire,		 "weapons\\Groza_fire");
+	pSounds->Create3D(sndFireLoop,	 "weapons\\Groza_fire");
 	pSounds->Create3D(sndRicochet[0],"weapons\\ric1");
 	pSounds->Create3D(sndRicochet[1],"weapons\\ric2");
 	pSounds->Create3D(sndRicochet[2],"weapons\\ric3");
@@ -41,7 +41,7 @@ CWeaponGroza::~CWeaponGroza()
 		Device.Shader.Delete(hFlames[i]);
 
 	// sounds
-	pSounds->Delete3D(sndFire);
+	pSounds->Delete3D(sndFireLoop);
 	for (i=0; i<SND_RIC_COUNT; i++) pSounds->Delete3D(sndRicochet[i]);
 }
 
@@ -159,11 +159,12 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 		switch(st_target)
 		{
 		case eIdle:
+			if (sndFireLoop.feedback) sndFireLoop.feedback->Stop();
 			if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 			bFlame			= FALSE;
 			break;
 		case eFire:
-			pSounds->Play3DAtPos(sndFire,vLastFP,true);
+			pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 			break;
 		}
 		st_current=st_target;
@@ -202,7 +203,7 @@ void CWeaponGroza::Update(float dt, BOOL bHUDView)
 			}
 
 			// sound fire loop
-			if (sndFire.feedback) sndFire.feedback->SetPosition(vLastFP);
+			if (sndFireLoop.feedback) sndFireLoop.feedback->SetPosition(vLastFP);
 		}
 		break;
 	}

@@ -23,7 +23,7 @@ private:
 	float			fTime;
 	BOOL			bFlame;
 
-	sound3D			sndFire;
+	sound3D			sndFireLoop;
 	sound3D			sndRicochet[SND_RIC_COUNT];
 
 	vector<Shader*>	hFlames;

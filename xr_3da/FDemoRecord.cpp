@@ -74,11 +74,11 @@ void CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N)
 	m_vVelocity.lerp		(m_vVelocity,m_vT,0.1f);
 	m_vAngularVelocity.lerp	(m_vAngularVelocity,m_vR,0.1f);
 
-	float acc;
-	if (Console.iGetKeyState(DIK_LSHIFT)) acc=.025f;
-	else if (Console.iGetKeyState(DIK_LALT)) acc=4.0; else acc=1.f;
+	float acc = 1.f, acc_angle = 1.f;
+	if (Console.iGetKeyState(DIK_LSHIFT)){ acc=.025f; acc_angle=.025f;}
+	else if (Console.iGetKeyState(DIK_LALT)) acc=4.0;
     m_vT.mul				(m_vVelocity, Device.fTimeDelta * g_fSpeed * acc);
-    m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc);
+    m_vR.mul				(m_vAngularVelocity, Device.fTimeDelta * g_fAngularSpeed * acc_angle);
 
 	m_HPB.x -= m_vR.y;
 	m_HPB.y -= m_vR.x;
