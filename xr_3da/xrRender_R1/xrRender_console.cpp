@@ -19,6 +19,8 @@ float		ps_r__Tree_w_speed			= 1.00f	;
 float		ps_r__Tree_w_amp			= 0.01f	;
 Fvector		ps_r__Tree_Wave				= {.1f, .01f, .11f};
 
+float		ps_r__WallmarkTTL			= 90.f;
+
 // R1
 float		ps_r1_ssaDISCARD			= 4.f;
 float		ps_r1_ssaDONTSORT			= 32.f;
@@ -158,6 +160,7 @@ void		xrRender_initconsole	()
 	CMD1(CCC_ModelPoolStat,"stat_models"		);
 
 	Fvector	tw_min,tw_max;
+	CMD4(CCC_Float,		"r__wallmark_ttl",		&ps_r__WallmarkTTL,			1.0f,	3.f*60.f);
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);
