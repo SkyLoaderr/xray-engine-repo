@@ -12,14 +12,14 @@
 
 void CSE_ALifeAnomalousZone::Update()
 {
-	m_maxPower					= m_fStartPower*(m_tpALife->m_tNextSurgeTime - m_tTimeID)/(m_tpALife->m_tNextSurgeTime - m_tpALife->m_tLastSurgeTime);
-	m_tpALife->vfCheckForInteraction(this);
-	m_tTimeID					= m_tpALife->tfGetGameTime();
-	m_maxPower					= m_fStartPower*(m_tpALife->m_tNextSurgeTime - m_tTimeID)/(m_tpALife->m_tNextSurgeTime - m_tpALife->m_tLastSurgeTime);
+//	m_maxPower					= m_fStartPower*(m_tpALife->m_tNextSurgeTime - m_tTimeID)/(m_tpALife->m_tNextSurgeTime - m_tpALife->m_tLastSurgeTime);
+//	m_tpALife->vfCheckForInteraction(this);
 }
 
 CSE_ALifeItemWeapon	*CSE_ALifeAnomalousZone::tpfGetBestWeapon(EHitType &tHitType, float &fHitPower)
 {
+	m_tTimeID					= m_tpALife->tfGetGameTime();
+	m_maxPower					= m_fStartPower*(m_tpALife->m_tNextSurgeTime - m_tTimeID)/(m_tpALife->m_tNextSurgeTime - m_tpALife->m_tLastSurgeTime);
 	fHitPower					= m_maxPower;
 	tHitType					= m_tHitType;
 	return						(0);

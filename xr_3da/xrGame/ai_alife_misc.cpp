@@ -82,7 +82,7 @@ void CSE_ALifeSimulator::vfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 
 					l_iGroupIndex		^= 1;
 
-					if (!m_tpaCombatObjects[l_iGroupIndex]->bfActive()) {
+					if (m_tpaCombatGroups[l_iGroupIndex].empty()) {
 #ifdef OFFLINE_LOG
 						Msg("[LSS] %s is dead",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace);
 #endif

@@ -236,7 +236,7 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 				// check if victim became dead
 				if (l_tpALifeMonsterAbstract->fHealth <= 0) {
 					m_tpaCombatGroups[iCombatGroupIndex ^ 1].erase(m_tpaCombatGroups[iCombatGroupIndex ^ 1].begin() + l_iIndex);
-					if (!m_tpaCombatObjects[iCombatGroupIndex ^ 1]->bfActive())
+					if (m_tpaCombatGroups[iCombatGroupIndex ^ 1].empty())
 						return;
 				}
 			}
