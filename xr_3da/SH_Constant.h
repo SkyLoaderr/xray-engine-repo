@@ -23,6 +23,7 @@ public:
 	WaveForm		_B;
 	WaveForm		_A;
 
+	CConstant		(){	ZeroMemory(this,sizeof(CConstant));}
 	IC void			set_float	(float r, float g, float b, float a)
 	{
 		const_float.set	(r,g,b,a);
