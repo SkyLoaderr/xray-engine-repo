@@ -13,7 +13,7 @@ void CRenderTarget::accum_point_shadow	(light* L)
 	float		L_R					= L->range;
 	Fvector		L_clr;				L_clr.set(L->color.r,L->color.g,L->color.b);
 	L_clr.div						(ps_r2_ls_dynamic_range);
-	L_spec							= L_clr.magnitude()/_sqrt(3.f);
+	L_spec							= 2*L_clr.magnitude()/_sqrt(3.f);
 	Device.mView.transform_tiny		(L_pos,L->position);
 
 	// Xforms
@@ -113,7 +113,7 @@ void CRenderTarget::accum_point_unshadow(light* L)
 	float		L_R					= L->range;
 	Fvector		L_clr;				L_clr.set(L->color.r,L->color.g,L->color.b);
 	L_clr.div						(ps_r2_ls_dynamic_range);
-	L_spec							= L_clr.magnitude()/_sqrt(3.f);
+	L_spec							= 2*L_clr.magnitude()/_sqrt(3.f);
 	Device.mView.transform_tiny		(L_pos,L->position);
 
 	// Xforms
