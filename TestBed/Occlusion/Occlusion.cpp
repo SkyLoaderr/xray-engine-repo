@@ -69,63 +69,75 @@ void line	( int x1, int y1, int x2, int y2 )
     }
 }
 
+float rad(float a) { return a*3.14159265358f / 180.f; }
+const float p_c = 32.f;
+const float p_r = 30.f;
 int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
 
-	// setup tri
-	occTri	T;
-	T.raster[0].x	= 0.1f;
-	T.raster[0].y	= 1.5f;
-	T.raster[0].z	= 0.01f;
-	
-	T.raster[1].x	= 60.5f;
-	T.raster[1].y	= 1.5f;
-	T.raster[1].z	= 0.1f;
-	
-	T.raster[2].x	= 60.5f;
-	T.raster[2].y	= 50.3f;
-	T.raster[2].z	= 0.99f;
-
-	// draw tri
-	occ.clear		();
-	occ.rasterize	(&T);
-	occ.propagade	();
-
-	// copy into surface
-	for (int y=0; y<occ_dim0; y++)
+	for (int test=0; test<36; test++)
 	{
-		for (int x=0; x<occ_dim0; x++)
+		float		a0	= rad(test*10.f);
+		float		a1	= rad(test*10.f + 60.f);
+		float		a2	= rad(test*10.f + 100.f);
+		
+		// setup tri
+		occTri	T;
+		T.raster[0].x	= p_c + p_r*cosf(a0);
+		T.raster[0].y	= p_c + p_r*sinf(a0);
+		T.raster[0].z	= 0.01f;
+		
+		T.raster[1].x	= p_c + p_r*cosf(a1);
+		T.raster[1].y	= p_c + p_r*sinf(a1);
+		T.raster[1].z	= 0.1f;
+		
+		T.raster[2].x	= p_c + p_r*cosf(a2);
+		T.raster[2].y	= p_c + p_r*sinf(a2);
+		T.raster[2].z	= 0.99f;
+		
+		// draw tri
+		occ.clear		();
+		occ.rasterize	(&T);
+		occ.propagade	();
+		
+		// copy into surface
+		for (int y=0; y<occ_dim0; y++)
 		{
-			float	A	= *(occ.dbg_depth() + y*occ_dim0 + x);
-			DWORD  gray	= int(A*255.f);
-			DWORD  mask	= (*(occ.dbg_frame() + y*occ_dim0 + x)) ? 255 : 0;
-			DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
-
-			for (int by=0; by<scale; by++)
-				for (int bx=0; bx<scale; bx++)
-				{
-					DWORD _C = C;
-					if (by==0 && bx==0) _C = 255<<8;
-					buf[(y*scale+by)*size + x*scale+bx]	= _C;
-				}
+			for (int x=0; x<occ_dim0; x++)
+			{
+				float	A	= *(occ.dbg_depth() + y*occ_dim0 + x);
+				DWORD  gray	= int(A*255.f);
+				DWORD  mask	= (*(occ.dbg_frame() + y*occ_dim0 + x)) ? 255 : 0;
+				DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
+				
+				for (int by=0; by<scale; by++)
+					for (int bx=0; bx<scale; bx++)
+					{
+						DWORD _C = C;
+						if (by==0 && bx==0) _C = 255<<8;
+						buf[(y*scale+by)*size + x*scale+bx]	= _C;
+					}
+			}
 		}
+		
+		// draw edges
+		line			(int(T.raster[0].x*scale),int(T.raster[0].y*scale),int(T.raster[1].x*scale),int(T.raster[1].y*scale));
+		line			(int(T.raster[1].x*scale),int(T.raster[1].y*scale),int(T.raster[2].x*scale),int(T.raster[2].y*scale));
+		line			(int(T.raster[2].x*scale),int(T.raster[2].y*scale),int(T.raster[0].x*scale),int(T.raster[0].y*scale));
+		
+		// save
+		char name[256];
+		sprintf(name,"c:\\occ%2d.tga",test);
+		TGAdesc	desc;
+		desc.format		= IMG_32B;
+		desc.scanlenght	= size*4;
+		desc.width		= size;
+		desc.height		= size;
+		desc.data		= buf;
+		desc.maketga	(name);
 	}
-
-	// draw edges
-	line			(int(T.raster[0].x*scale),int(T.raster[0].y*scale),int(T.raster[1].x*scale),int(T.raster[1].y*scale));
-	line			(int(T.raster[1].x*scale),int(T.raster[1].y*scale),int(T.raster[2].x*scale),int(T.raster[2].y*scale));
-	line			(int(T.raster[2].x*scale),int(T.raster[2].y*scale),int(T.raster[0].x*scale),int(T.raster[0].y*scale));
 	
-	// save
-	TGAdesc	desc;
-	desc.format		= IMG_32B;
-	desc.scanlenght	= size*4;
-	desc.width		= size;
-	desc.height		= size;
-	desc.data		= buf;
-	desc.maketga	("c:\\occ.tga");
-
 	return 0;
 }
 
