@@ -20,7 +20,7 @@ public:
 	u32					dwFrame;
 
 	Fvector				position;
-	float				range;
+	float				radius;
 	Fcolor				color;
 
 	// Ray-testing cache
@@ -32,7 +32,7 @@ public:
 	virtual void					set_active			(bool);
 	virtual bool					get_active			();
 	virtual void					set_position		(const Fvector& P);
-	virtual void					set_range			(float R);
+	virtual void					set_radius			(float R);
 	virtual void					set_texture			(LPCSTR name);
 	virtual void					set_color			(const Fcolor& C);
 	virtual void					set_color			(float r, float g, float b);

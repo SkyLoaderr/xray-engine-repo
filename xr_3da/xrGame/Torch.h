@@ -13,6 +13,7 @@ typedef	CInventoryItem	inherited;
 public:
 	Fvector			m_pos;
 	IRender_Light*	light_render;
+	IRender_Glow*	glow_render;
 	Fvector			m_focus;
 public:
 					CTorch				(void);

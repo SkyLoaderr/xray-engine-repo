@@ -142,6 +142,8 @@ CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSec
 	spot_cone_angle				= PI_DIV_3;
 	color						= 0xffffffff;
     spot_brightness				= 1.f;
+	glow_texture[0]				= 0;
+	glow_radius					= 0.1f;
 	set_visual					("lights\\lights_torch");
 }
 
@@ -160,6 +162,11 @@ void CSE_ALifeItemTorch::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
 	tNetPacket.r_float			(spot_range);
 	tNetPacket.r_angle8			(spot_cone_angle);
 	tNetPacket.r_float			(spot_brightness);
+
+	if (m_wVersion > 40){
+		tNetPacket.r_string		(glow_texture);
+		tNetPacket.r_float		(glow_radius);
+	}
 }
 
 void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
@@ -171,6 +178,8 @@ void CSE_ALifeItemTorch::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(spot_range);
 	tNetPacket.w_angle8			(spot_cone_angle);
 	tNetPacket.w_float			(spot_brightness);
+	tNetPacket.w_string			(glow_texture);
+	tNetPacket.w_float			(glow_radius);
 }
 
 void CSE_ALifeItemTorch::UPDATE_Read		(NET_Packet	&tNetPacket)

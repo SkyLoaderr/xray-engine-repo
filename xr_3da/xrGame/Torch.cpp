@@ -12,6 +12,7 @@ CTorch::CTorch(void)
 	light_render			= ::Render->light_create();
 	light_render->set_type	(IRender_Light::SPOT);
 	light_render->set_shadow(true);
+	glow_render				= ::Render->glow_create();
 	lanim					= 0;
 	time2hide				= 0;
 }
@@ -19,17 +20,20 @@ CTorch::CTorch(void)
 CTorch::~CTorch(void) 
 {
 	::Render->light_destroy	(light_render);
+	::Render->glow_destroy	(glow_render);
 }
 
 void CTorch::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-	m_pos = pSettings->r_fvector3(section,"position");
+	m_pos		= pSettings->r_fvector3(section,"position");
 }
 
 void CTorch::Switch()
 {
-	light_render->set_active(!light_render->get_active());
+	bool bActive			= !light_render->get_active();
+	light_render->set_active(bActive);
+	glow_render->set_active	(bActive);
 }
 
 BOOL CTorch::net_Spawn(LPVOID DC) 
@@ -53,6 +57,10 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	light_render->set_color	(clr);
 	light_render->set_cone	(torch->spot_cone_angle);
 	light_render->set_texture(torch->spot_texture[0]?torch->spot_texture:0);
+
+	glow_render->set_texture(torch->glow_texture[0]?torch->glow_texture:0);
+	glow_render->set_color	(clr);
+	glow_render->set_radius	(torch->glow_radius);
 
 	R_ASSERT				(Visual());
 	lanim					= LALib.FindItem(torch->animator);
@@ -129,8 +137,12 @@ void CTorch::UpdateCL()
 		if (light_render->get_active()){
 			light_render->set_direction	(XFORM().k);
 			light_render->set_position	(XFORM().c);
+			glow_render->set_position	(XFORM().c);
 			time2hide			-= Device.fTimeDelta;
-			if (time2hide<0)	light_render->set_active(false);
+			if (time2hide<0){
+				light_render->set_active(false);
+				glow_render->set_active(false);
+			}
 		}
 	} else if(H_Parent()) {
 		Collide::rq_result RQ;
@@ -154,6 +166,7 @@ void CTorch::UpdateCL()
 		H_Parent()->setEnabled		(true);
 		light_render->set_direction	(_D);	//XFORM().k); // l_d
 		light_render->set_position	(_P);	//XFORM().c); // l_p
+		glow_render->set_position	(_P);
 	}
 	// update light source
 	if (light_render->get_active()){
@@ -165,6 +178,7 @@ void CTorch::UpdateCL()
 			fclr.set		((float)color_get_B(clr),(float)color_get_G(clr),(float)color_get_R(clr),1.f);
 			fclr.mul_rgb	(fBrightness/255.f);
 			light_render->set_color(fclr);
+			glow_render->set_color(fclr);
 		}
 	}
 }
@@ -177,5 +191,6 @@ void CTorch::renderable_Render()
 	} else {
 		light_render->set_direction	(XFORM().k);
 		light_render->set_position	(XFORM().c);
+		glow_render->set_position	(XFORM().c);
 	}
 }

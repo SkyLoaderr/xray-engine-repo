@@ -18,7 +18,7 @@
 CGlow::CGlow()				{
 	flags.bActive	= false;
 	position.set	(0,0,0);
-	range			= 0.1f;
+	radius			= 0.1f;
 	color.set		(1,1,1,1);
 }
 
@@ -44,9 +44,9 @@ void	CGlow::set_position		(const Fvector& P)	{
 	position.set				(P);
 	spatial_move				();
 };
-void	CGlow::set_range		(float R)			{
-	if (fsimilar(range,R))		return;
-	range						= R;
+void	CGlow::set_radius		(float R)			{
+	if (fsimilar(radius,R))		return;
+	radius						= R;
 	spatial_move				();
 };
 void	CGlow::set_texture		(LPCSTR name)		{
@@ -61,7 +61,7 @@ void	CGlow::set_color		(float r, float g, float b)	{
 void	CGlow::spatial_move		()
 {
 	spatial.center				= position;
-	spatial.radius				= range;
+	spatial.radius				= radius;
 	ISpatial::spatial_move		();
 }
 //////////////////////////////////////////////////////////////////////

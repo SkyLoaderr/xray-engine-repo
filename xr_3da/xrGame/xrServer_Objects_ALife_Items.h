@@ -47,9 +47,11 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
 	float							spot_range;
 	float							spot_cone_angle;
     float							spot_brightness;
+	string64						glow_texture;
+	float							glow_radius;
 
 									CSE_ALifeItemTorch	(LPCSTR caSection);
-    virtual							~CSE_ALifeItemTorch();
+    virtual							~CSE_ALifeItemTorch	();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemAmmo,CSE_ALifeItem)
