@@ -3,6 +3,12 @@
 Чугай Саша
 
 Сделать:
+    - проходя мимо ящика всегда смотреть на ящик
+    - проверить наличие зоны на уровне
+    + плавает после way_outside при рации
+    + короче потягиваться
+    + на ящик смотреть по расстоянию
+
     - оттестить звуки во сне
     - водка (Дима)
     - при сне и водке смотреть не на точку, а в направлении
@@ -92,6 +98,12 @@ function action_commander:initialize()
 
     self.object:set_callback( self, "move_callback", game_object.movement )
 
+    if not self.zone then 
+        self.zone = level.object( self.a.zone_name )
+    end
+
+    self.zone:set_callback( self, "zone_callback", true )
+
 --    printf( "action_commander initialized" )
 end
 
@@ -99,6 +111,8 @@ function action_commander:finalize()
     action_base.finalize( self )
 
     self.object:clear_callback( game_object.movement )
+
+    self.zone:clear_callback( true )
 
     self.object:set_sound_mask( -1 )
     self.object:set_sound_mask( 0 )
@@ -294,7 +308,8 @@ function action_commander:exec_walk_inside()
             self.last_inside_point = i
             self:walk_to_pos( self.a.way_inside, i )
 
-            self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 ) and not self.box_alarm
+--            self.look_at_box = not self.looked_at_box and self.a.way_inside:flag( i, 0 ) and not self.box_alarm
+            self.look_at_box = false
 
             local rnd = math.random( 100 )
 
@@ -336,7 +351,10 @@ function action_commander:exec_look_box()
                 else
                     printf( "[commander] : Ящик на месте" )
                     self:add_inside_animations( 1 )
-                    self.act = walk_inside
+                    --self.act = walk_inside
+                    self.act = self.act_before_box
+                    self.pos     = nil
+                    self.sub_act = nil
                 end
 
                 self.look_at_box   = false
@@ -345,6 +363,7 @@ function action_commander:exec_look_box()
                 self.time_end = nil
             end
         else
+            self:stop()
             self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
             --self.object:set_sight( look.direction, vector():set( 1, 0, 0 ), 0 )
             self.object:set_mental_state( anim.free )
@@ -805,6 +824,13 @@ function action_commander:move_callback( obj, action_type, index )
     end
 end
 
+function action_commander:zone_callback( zone, obj )
+    if obj:id() == self.object:id() then
+        self.act_before_box = self.act
+        self.act = look_box
+    end
+end
+
 ----------------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc )
@@ -874,6 +900,11 @@ function init_commander( npc, a )
         if char_ini:line_exist("commander", "soldiers") then
             local soldiers = char_ini:r_string( "commander", "soldiers" )
             a.soldiers = parse_names( soldiers )
+        end
+
+        -- зона для оглядывания на ящик
+        if char_ini:line_exist("commander", "zone_look_after") then
+            a.zone_name = char_ini:r_string( "commander", "zone_look_after" )
         end
     else
         --printf( "no section" )
