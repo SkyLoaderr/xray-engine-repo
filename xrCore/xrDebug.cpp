@@ -315,8 +315,8 @@ namespace std{
     {
         _set_new_mode					(1);					// gen exception if can't allocate memory
         _set_new_handler				(_out_of_memory	);		// exception-handler for 'out of memory' condition
-		set_terminate					(_terminate);
-		set_unexpected					(_terminate);
+		std::set_terminate				(_terminate);
+		std::set_unexpected				(_terminate);
         ::SetUnhandledExceptionFilter	( UnhandledFilter );	// exception handler to all "unhandled" exceptions
     }
 #endif
