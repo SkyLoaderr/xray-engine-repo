@@ -128,7 +128,7 @@ void CActor::Awoke()
 	
 }
 
-#include "date_time.h"
+//#include "date_time.h"
 
 void CActor::UpdateSleep()
 {
@@ -138,9 +138,9 @@ void CActor::UpdateSleep()
 	VERIFY(this == dynamic_cast<CActor*>(Level().CurrentEntity()));
 	VERIFY(m_pSleepEffectorPP);
 
-	u32 y,m,d,h,mi,s,ms;
-	split_time(Level().GetGameTime(),y,m,d,h,mi,s,ms);
-	Msg	("Sleep time : %d.%d.%d %d:%d:%d.%d",y,m,d,h,mi,s,ms);
+//	u32 y,m,d,h,mi,s,ms;
+//	split_time(Level().GetGameTime(),y,m,d,h,mi,s,ms);
+//	Msg	("Sleep time : %d.%d.%d %d:%d:%d.%d",y,m,d,h,mi,s,ms);
 
 	if(CSleepEffectorPP::BEFORE_SLEEPING == m_pSleepEffectorPP->m_eSleepState)
 	{
