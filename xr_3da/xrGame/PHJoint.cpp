@@ -485,6 +485,7 @@ void CPHJoint::SetLimits(const float low, const float high, const int axis_num)
 CPHJoint::CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second)
 {
 
+	pShell=NULL;
 	m_bone_id=u16(-1);
 	m_back_ref	=NULL;
 	m_destroy_info=NULL;
@@ -618,6 +619,7 @@ void CPHJoint::ReattachFirstElement(CPHElement* new_element)
 }
 void CPHJoint::SetForceAndVelocity		(const float force,const float velocity,const int axis_num)
 {
+if(pShell&&pShell->bActive)pShell->Enable();
 SetForce(force,axis_num);
 SetVelocity(velocity,axis_num);
 }
