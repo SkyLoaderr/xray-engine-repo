@@ -292,12 +292,6 @@
 				<File
 					RelativePath="cl_log.h">
 				</File>
-				<File
-					RelativePath=".\log.cpp">
-				</File>
-				<File
-					RelativePath=".\log.h">
-				</File>
 			</Filter>
 			<Filter
 				Name="Generic"
