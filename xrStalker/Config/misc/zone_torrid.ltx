@@ -74,22 +74,22 @@ artefact_spawn_height		= 2		;(м) высота на центром зоны где будет рожден артефак
 
 
 [fireball_zone]
-GroupControlSection		= spawn_group_zone
-$spawn					= "zones\fireball"
-;$prefetch 				= 8
-class					= Z_TORRID
-hit_impulse_scale	=   0
-effective_radius	= 2.75 ;размер радиуса в процентах от оригинального, где действует зона
-postprocess		= postprocess_flame
+GroupControlSection			= spawn_group_zone
+$spawn						= "zones\fireball"
+;$prefetch 					= 8
+class						= Z_TORRID
+hit_impulse_scale			=   0
+effective_radius			= 2.75 ;размер радиуса в процентах от оригинального, где действует зона
+postprocess					= postprocess_flame
 
-ef_anomaly_type			= 1
-ef_weapon_type			= 13
+ef_anomaly_type				= 1
+ef_weapon_type				= 13
 
 artefacts		= 
 BirthProbability = 0.9
 
-idle_particles		= anomaly2\heat_02
-blowout_particles	= anomaly2\heat_03
+idle_particles				= anomaly2\heat_02
+blowout_particles			= anomaly2\heat_03
 
 hit_small_particles	    	= damage_fx\burn_creatures
 hit_big_particles			= damage_fx\burn_creatures00
@@ -98,12 +98,12 @@ idle_big_particles			= damage_fx\burn_creatures00
 entrance_small_particles	= damage_fx\burn_creatures
 entrance_big_particles		= damage_fx\burn_creatures00 ;
 
-idle_sound			= anomaly\fireball_idle						;постоянный звук
-blowout_sound		= anomaly\fireball_blow	   	;во время выброса(удара) в центре аномалии	
-hit_sound			= ambient\fire2								;на персонаже, когда тот получает хит
-entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
+idle_sound					= anomaly\fireball_idle		;постоянный звук
+blowout_sound				= anomaly\fireball_blow	   	;во время выброса(удара) в центре аномалии	
+hit_sound					= ambient\fire2				;на персонаже, когда тот получает хит
+entrance_sound				= ambient\fire2				;при попадании объекта в аномалию
 
-hit_type		= burn
+hit_type					= burn
 
 disable_time		= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= 0	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
