@@ -93,7 +93,6 @@ public:
 			_max_range,
 			_max_iteration_count
 		);
-		Msg						("%d, %d : %f",_start_node_index,_goal_node_index,graph->get_edge_weight(_start_node_index,_goal_node_index));
 		square_size_xz			= graph->m_fSize2;
 		square_size_y			= graph->m_fYSize2;
 	}
