@@ -148,7 +148,7 @@ public:
 					else {
 						CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 						if (!graph_point)
-							destroy_entity(E);
+							F_entity_Destroy(E);
 						else
                             m_graph_points.push_back	(graph_point);
 					}
@@ -157,7 +157,7 @@ public:
 			else {
 				CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
 				if (!graph_point)
-					destroy_entity(E);
+					F_entity_Destroy(E);
 				else
                     m_graph_points.push_back	(graph_point);
 			}

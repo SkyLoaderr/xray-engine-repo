@@ -81,7 +81,7 @@ void vfLoadGraphPoints(LPCSTR name)
 			tpaGraph.push_back					(tDynamicGraphVertex);
 			i++;
 		}
-		destroy_entity						(E);
+		F_entity_Destroy					(E);
 		if (i % 100 == 0)
 			Status							("Vertices read : %d",i);
 	}

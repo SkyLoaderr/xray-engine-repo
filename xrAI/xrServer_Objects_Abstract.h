@@ -27,7 +27,7 @@ struct ISE_Abstract {
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket) = 0;
     virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items) = 0;
 	virtual LPSTR		__stdcall	name			() = 0;
-	virtual LPSTR		__stdcall	replace_name	() = 0;
+	virtual LPSTR		__stdcall	name_replace	() = 0;
 	virtual Fvector&	__stdcall	position		() = 0;
 	virtual Fvector&	__stdcall	angle			() = 0;
 	virtual Flags16&	__stdcall	flags			() = 0;

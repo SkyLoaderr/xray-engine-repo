@@ -217,7 +217,7 @@ public:
 						}
 					}
 				}
-				destroy_entity						(E);
+				F_entity_Destroy					(E);
 			}
 			if (i != m_tpGraph->header().vertex_count())
 				Msg									("Graph for the level %s doesn't correspond to the graph points from Level Editor! (%d : %d)",m_tLevel.name(),i,m_tpGraph->header().vertex_count());

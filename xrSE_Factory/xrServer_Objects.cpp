@@ -157,7 +157,7 @@ LPSTR		CSE_Abstract::name			()
 	return	(s_name);
 }
 
-LPSTR		CSE_Abstract::replace_name	()
+LPSTR		CSE_Abstract::name_replace	()
 {
 	return	(s_name_replace);
 }
