@@ -1,20 +1,41 @@
+class "Test1"
+
+function Test1:__init ()
+
+    self.value = 0
+    
+end
+
+
+function Test1:set_value (v)
+
+    self.value = v
+    printf ("Test1 value = %d", v)
+end
+
+
+class "Test2" (Test1)
+
+function Test2:__init () super ("Test1")
+
+end
+
+function Test2:set_value (v)
+    
+    self.value = v
+    printf ("Test2 value = %d", v)
+    Test1.set_value (v)
+end    
+
+    
+
+
 function main ()
 
-
-  local anims = classes.AnimationSet (1)
-  anims:add_animation ("stoya_ruje_ 0", true)
-  anims:add_animation ("vishka_1", true)
-  anims:add_animation ("vishka_2", true)
-  anims:add_animation ("vishka_3", true)
-
-
-  local guard1 = classes.Guardian (get_level_object ("stalker"), s_test.script_name (), "way0000", anims)
-
-  while true do
-      guard1:process ()
-      wait ()
-      end
-
-  guard1:finish ()
-
+    local cl = s_test.Test1 ()
+    cl:set_value (10)
+    
+    local cl2 = s_test.Test2 ()
+    cl2:set_value (20)
+    
 end
