@@ -91,6 +91,8 @@ public:
 	virtual float Power(float dist);
 
 
+
+
 protected:
 	//список объетков, находящихся в зоне
 	xr_set<CObject*> m_inZone;
@@ -209,6 +211,7 @@ protected:
 	IRender_Light*		m_pIdleLight;
 	Fcolor				m_IdleLightColor;
 	float				m_fIdleLightRange;
+	float				m_fIdleLightHeight;
 	float				m_fIdleLightRangeDelta;
 	CLAItem*			m_pIdleLAnim;
 
@@ -224,6 +227,9 @@ protected:
 	Fcolor				m_LightColor;
 	u32					m_dwLightTime;
 	u32					m_dwLightTimeLeft;
+	float				m_fLightHeight;
+
+
 
 	virtual	void		StartBlowoutLight	();
 	virtual	void		UpdateBlowoutLight	();
@@ -257,4 +263,10 @@ protected:
 	virtual bool EnableEffector() {return false;}
 
 	virtual bool IsVisibleForZones() { return false;}
+
+	//видимость зоны детектором
+public:
+	virtual bool VisibleByDetector	() {return m_bVisibleByDetector;}
+protected:
+	bool	m_bVisibleByDetector;
 };

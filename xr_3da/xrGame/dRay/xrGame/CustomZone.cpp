@@ -79,6 +79,9 @@ void CCustomZone::Load(LPCSTR section)
 	m_bIgnoreNonAlive = !!pSettings->r_bool(section, "ignore_nonalive");
 	m_bIgnoreSmall	  = !!pSettings->r_bool(section, "ignore_small");
 
+
+	m_bVisibleByDetector = !!pSettings->r_bool(section, "visible_by_detector");
+
 	//загрузить времена для зоны
 	m_StateTime[eZoneStateIdle]			= -1;
 	m_StateTime[eZoneStateAwaking]		= pSettings->r_s32(section, "awaking_time");
@@ -174,6 +177,8 @@ void CCustomZone::Load(LPCSTR section)
 		m_dwLightTime			= iFloor(pSettings->r_float(section,"light_time")*1000.f);
 		m_dwLightTimeLeft		= 0;
 
+		m_fLightHeight		= pSettings->r_float(section,"light_height");
+
 		m_pLight = ::Render->light_create();
 		m_pLight->set_shadow(true);
 	}
@@ -194,6 +199,7 @@ void CCustomZone::Load(LPCSTR section)
 		m_fIdleLightRangeDelta = pSettings->r_float(section,"idle_light_range_delta");
 		LPCSTR light_anim = pSettings->r_string(section,"idle_light_anim");
 		m_pIdleLAnim	 = LALib.FindItem(light_anim);
+		m_fIdleLightHeight = pSettings->r_float(section,"idle_light_height");
 	}
 	else
 	{
@@ -551,7 +557,7 @@ void  CCustomZone::StartIdleLight	()
 	{
 		m_pIdleLight->set_range(m_fIdleLightRange);
 		Fvector pos = Position();
-		pos.y += 0.5f;
+		pos.y += m_fIdleLightHeight;
 		m_pIdleLight->set_position(pos);
 		m_pIdleLight->set_active(true);
 	}
@@ -637,6 +643,9 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 		particle_str = m_sEntranceParticlesBig;
 	}
 
+	Fvector vel;
+	pObject->PHGetLinearVell(vel);
+	
 	//выбрать случайную косточку на объекте
 	CParticlesPlayer* PP = dynamic_cast<CParticlesPlayer*>(pObject);
 	if (PP){
@@ -644,8 +653,18 @@ void CCustomZone::PlayEntranceParticles(CGameObject* pObject)
 		if (play_bone!=BI_NONE){
 			CParticlesObject* pParticles = CParticlesObject::Create(*particle_str);
 			Fmatrix xform;
-			PP->MakeXFORM			(pObject,play_bone,Fvector().set(0,1,0),Fvector().set(0,0,0),xform);
-			pParticles->UpdateParent(xform,zero_vel);
+
+			Fvector dir;
+			if(fis_zero(vel.magnitude()))
+				dir.set(0,1,0);
+			else
+			{
+				dir.set(vel);
+				dir.normalize();
+			}
+
+			PP->MakeXFORM			(pObject,play_bone,dir,Fvector().set(0,0,0),xform);
+			pParticles->UpdateParent(xform, vel);
 			pParticles->Play		();
 		}
 	}
@@ -742,7 +761,7 @@ void CCustomZone::StartBlowoutLight		()
 	m_pLight->set_range(m_fLightRange);
 	
 	Fvector pos = Position();
-	pos.y += 0.5f;
+	pos.y += m_fLightHeight;
 	m_pLight->set_position(pos);
 	m_pLight->set_active(true);
 }

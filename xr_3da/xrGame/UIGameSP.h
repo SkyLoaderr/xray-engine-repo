@@ -9,9 +9,9 @@
 #include "ui/UITalkWnd.h"
 #include "ui/UICarBodyWnd.h"
 
-#include "ui/UIBuyWeaponWnd.h"
-#include "ui/UISpawnWnd.h"
-#include "ui/UIStatsWnd.h"
+//#include "ui/UIBuyWeaponWnd.h"
+//#include "ui/UISpawnWnd.h"
+//#include "ui/UIStatsWnd.h"
 
 
 
@@ -39,7 +39,7 @@ public:
 	CUICarBodyWnd		UICarBodyMenu;
 	
 	//!!! temporary
-	CUIBuyWeaponWnd*	pUIBuyWeaponWnd;
-	CUISpawnWnd			UISpawnWnd;
-	CUIStatsWnd			UIStatsWnd;
+//	CUIBuyWeaponWnd*	pUIBuyWeaponWnd;
+//	CUISpawnWnd			UISpawnWnd;
+//	CUIStatsWnd			UIStatsWnd;
 };

@@ -12,6 +12,11 @@ CCustomDetector::CCustomDetector(void)
 
 CCustomDetector::~CCustomDetector(void) 
 {
+	SoundDestroy(m_noise);
+
+	ZONE_TYPE_MAP_IT it;
+	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it) 
+		SoundDestroy(*it->second.detect_snd);
 }
 
 BOOL CCustomDetector::net_Spawn(LPVOID DC) 
@@ -74,11 +79,6 @@ void CCustomDetector::Load(LPCSTR section)
 void CCustomDetector::net_Destroy() 
 {
 	inherited::net_Destroy();
-	SoundDestroy(m_noise);
-	
-	ZONE_TYPE_MAP_IT it;
-	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it) 
-		SoundDestroy(*it->second.detect_snd);
 }
 
 void CCustomDetector::shedule_Update(u32 dt) 
@@ -167,7 +167,8 @@ void CCustomDetector::UpdateCL()
 
 		
 		//такой тип зон не обнаруживается
-		if(m_ZoneTypeMap.find(pZone->SUB_CLS_ID) == m_ZoneTypeMap.end())
+		if(m_ZoneTypeMap.find(pZone->SUB_CLS_ID) == m_ZoneTypeMap.end() ||
+			!pZone->VisibleByDetector())
 			return;
 		ZONE_TYPE& zone_type = m_ZoneTypeMap[pZone->SUB_CLS_ID];
 

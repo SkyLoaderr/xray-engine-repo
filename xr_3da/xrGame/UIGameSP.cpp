@@ -6,13 +6,12 @@
 CUIGameSP::CUIGameSP(CUI* parent) : CUIGameCustom(parent) 
 {
 	m_pUserMenu = NULL;
-
-	pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch_team0");
+	//pUIBuyWeaponWnd = xr_new<CUIBuyWeaponWnd>	((char*)"deathmatch_team0");
 }
 
 CUIGameSP::~CUIGameSP(void) 
 {
-	xr_delete(pUIBuyWeaponWnd);
+	//xr_delete(pUIBuyWeaponWnd);
 }
 
 
@@ -31,7 +30,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 		StartStopMenu(&PdaMenu);
 		return true;
 		break;
-	case DIK_M:
+/*	case DIK_M:
 		StartStopMenu(&UISpawnWnd);
 		return true;
 		break;
@@ -39,7 +38,7 @@ bool CUIGameSP::IR_OnKeyboardPress(int dik)
 ///		StartStopMenu(&UIStatsWnd);
 		StartStopMenu(pUIBuyWeaponWnd);
 		return true;
-		break;
+		break;*/
 	case DIK_ESCAPE:
 		if(m_pUserMenu)
 		{
