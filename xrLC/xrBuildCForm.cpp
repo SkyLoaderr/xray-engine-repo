@@ -44,13 +44,8 @@ int getTriByEdge(Vertex *V1, Vertex *V2, Face* parent, vecFace &ids)
 	}
 }
 
-void SimplifyCFORM		(CDB::CollectorPacked& CL)
-{
-	Phase		("CFORM: simplification...");
-	Status		("Building base mesh");
-}
-
-void CBuild::BuildCForm()
+void SimplifyCFORM		(CDB::CollectorPacked& CL);
+void CBuild::BuildCForm	()
 {
 	// Collecting data
 	Phase		("CFORM: creating...");
