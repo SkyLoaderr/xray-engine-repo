@@ -404,7 +404,7 @@ int CAI_Zombie::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPositi
 	}
 	if (iCount < MAX_NEIGHBOUR_COUNT) {
 		NodeLink *taLinks = (NodeLink *)((u8 *)tpStartNode + sizeof(NodeCompressed));
-		int iLinkCount = tpStartNode->link_count;
+		int iLinkCount = tpStartNode->links;
 		for (int k=0; k<iLinkCount; k++) {
 			NodeCompressed *tpCurrentNode = AI.Node(AI.UnpackLink(taLinks[k]));
 			AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);

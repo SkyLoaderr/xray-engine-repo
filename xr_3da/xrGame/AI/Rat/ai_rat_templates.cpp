@@ -391,7 +391,7 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 	}
 	if (iCount < MAX_NEIGHBOUR_COUNT) {
 		NodeLink *taLinks = (NodeLink *)((u8 *)tpStartNode + sizeof(NodeCompressed));
-		int iLinkCount = tpStartNode->link_count;
+		int iLinkCount = tpStartNode->links;
 		for (int k=0; k<iLinkCount; k++) {
 			NodeCompressed *tpCurrentNode = AI.Node(AI.UnpackLink(taLinks[k]));
 			AI.UnpackPosition(tLeftDown,tpCurrentNode->p0);

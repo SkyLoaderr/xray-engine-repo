@@ -72,7 +72,7 @@ void CAI_Space::Load(LPCSTR name)
 		NodeCompressed	C;
 		vfs->Read		(&C,sizeof(C));
 
-		DWORD			L = C.link_count;
+		DWORD			L = C.links;
 		vfs->Advance	(L*sizeof(NodeLink));
 	}
 
@@ -111,7 +111,7 @@ void CAI_Space::Render()
 	svector<DWORD,128>	linked;
 	{
 		NodeCompressed*	N	=	m_nodes_ptr[ID];
-		DWORD	count		=	DWORD(N->link_count);
+		DWORD	count		=	DWORD(N->links);
 		BYTE* pData			=	(BYTE*)N;
 		pData				+=	sizeof(NodeCompressed);
 		NodeLink* it		=	(NodeLink*)pData;

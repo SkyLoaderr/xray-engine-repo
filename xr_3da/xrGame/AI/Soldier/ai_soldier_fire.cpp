@@ -889,7 +889,7 @@ bool CAI_Soldier::bfCheckForDangerPlace()
 	
 	bool bOk = false;
 	NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
-	int iCount = AI_Node->link_count;
+	int iCount = AI_Node->links;
 	for (int i=0; i<iCount; i++) {
 		tpNextNode = Level().AI.Node(Level().AI.UnpackLink(taLinks[i]));
  		if (bfInsideNode(Level().AI,tpNextNode,AI_Path.TravelPath[AI_Path.TravelStart + 1].P,.35f)) {

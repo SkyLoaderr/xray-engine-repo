@@ -193,7 +193,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		}
 		
 		NodeLink *taLinks = (NodeLink *)((uchar *)mNode(tpBestNode->iIndex) + sizeof(NodeCompressed));
-		int iCount = iCount = mNode(tpBestNode->iIndex)->link_count, iNodeIndex;
+		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			tpTemp = tpaIndexes[iNodeIndex];
@@ -369,7 +369,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		}
 		
 		NodeLink *taLinks = (NodeLink *)((uchar *)mNode(tpBestNode->iIndex) + sizeof(NodeCompressed));
-		int iCount = iCount = mNode(tpBestNode->iIndex)->link_count, iNodeIndex;
+		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			tpTemp = tpaIndexes[iNodeIndex];
@@ -544,7 +544,7 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 		}
 		
 		NodeLink *taLinks = (NodeLink *)((uchar *)mNode(tpBestNode->iIndex) + sizeof(NodeCompressed));
-		int iCount = iCount = mNode(tpBestNode->iIndex)->link_count, iNodeIndex;
+		int iCount = iCount = mNode(tpBestNode->iIndex)->links, iNodeIndex;
 		if (iCount) {
 			iNodeIndex = this->UnpackLink(taLinks[0]);
 			tpTemp = tpaIndexes[iNodeIndex];

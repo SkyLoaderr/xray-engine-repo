@@ -369,7 +369,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 				while (j < tpaPath.size()) {
 					tpNode = AI.Node(dwCurNode);
 					taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-					iCount = tpNode->link_count;
+					iCount = tpNode->links;
 					for ( i=0; i < iCount; i++) {
 						iNodeIndex = AI.UnpackLink(taLinks[i]);
 						if (bfInsideNode(AI,tpNode = AI.Node(iNodeIndex),tpaPath[j].P, fHalfSubNodeSize)) {
@@ -390,7 +390,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 						UnpackContour(tCurContour,dwCurNode);
 						tpNode = AI.Node(dwCurNode);
 						taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-						iCount = tpNode->link_count;
+						iCount = tpNode->links;
 						for ( i=0; i < iCount; i++) {
 							iNodeIndex = AI.UnpackLink(taLinks[i]);
 							UnpackContour(tNextContour,iNodeIndex);
@@ -440,7 +440,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 					UnpackContour(tCurContour,dwCurNode);
 					tpNode = AI.Node(dwCurNode);
 					taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-					iCount = tpNode->link_count;
+					iCount = tpNode->links;
 					iSavedIndex = -1;
 					tTempPoint = tStartPoint;
 					for ( i=0; i < iCount; i++) {
@@ -527,7 +527,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 				UnpackContour(tCurContour,dwCurNode);
 				tpNode = AI.Node(dwCurNode);
 				taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-				iCount = tpNode->link_count;
+				iCount = tpNode->links;
 				iSavedIndex = -1;
 				tTempPoint = tStartPoint;
 				for ( i=0; i < iCount; i++) {
@@ -959,7 +959,7 @@ void vfGoToPointViaNodes(vector<CTravelNode> &tpaPath, DWORD dwCurNode, Fvector 
 	UnpackContour(tCurContour,dwCurNode);
 	tpNode = AI.Node(dwCurNode);
 	taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-	iCount = tpNode->link_count;
+	iCount = tpNode->links;
 	iSavedIndex = -1;
 	tTempPoint = tStartPoint;
 	for ( i=0; i < iCount; i++) {

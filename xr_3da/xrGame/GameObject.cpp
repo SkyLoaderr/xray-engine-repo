@@ -60,20 +60,12 @@ void CGameObject::Sector_Detect	()
 	}
 	
 	// Perform sector detection
-	if (0==AI_Node) {
-		CObject::Sector_Detect();	// undefined sector
-	} else {
-		if (AI_Node->sector == 255)	CObject::Sector_Detect();	// undefined sector
-		else	{
-			CSector*	P = ::Render->getSector(AI_Node->sector);
-			Sector_Move	(P);
-		}
-	}
+	CObject::Sector_Detect	();
 }
 
 void CGameObject::OnVisible	()
 {
-	CObject::OnVisible		();
+	CObject::OnVisible			();
 	::Render->set_Transform		(&clTransform);
 	::Render->add_Visual		(Visual());
 }

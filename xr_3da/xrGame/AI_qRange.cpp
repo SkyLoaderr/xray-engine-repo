@@ -26,8 +26,8 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	for (DWORD it=0; it<q_stack.size(); it++) {
 		DWORD ID = q_stack[it];
 		NodeCompressed*	N = m_nodes_ptr	[ID];
-		DWORD L_count = DWORD(N->link_count);
-		NodeLink* L_it = (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
+		DWORD L_count	= DWORD(N->links);
+		NodeLink* L_it	= (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 		NodeLink* L_end	= L_it+L_count;
 		for( ; L_it!=L_end; L_it++) {
 			if (bStop)			
@@ -96,7 +96,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	for (DWORD it=0; it<q_stack.size(); it++) {
 		DWORD ID = q_stack[it];
 		NodeCompressed*	N = m_nodes_ptr	[ID];
-		DWORD L_count = DWORD(N->link_count);
+		DWORD L_count = DWORD(N->links);
 		NodeLink* L_it = (NodeLink*)(LPBYTE(N)+sizeof(NodeCompressed));
 		NodeLink* L_end	= L_it+L_count;
 		for( ; L_it!=L_end; L_it++) {
