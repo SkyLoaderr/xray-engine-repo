@@ -14,7 +14,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 extern xrSkin1W			xrSkin1W_x86;
 extern xrSkin1W			xrSkin1W_3DNow;
-extern xrSkin1W			xrSkin1W_SSE;
+// extern xrSkin1W			xrSkin1W_SSE;
 extern xrSkin2W			xrSkin2W_x86;
 extern xrBoneLerp		xrBoneLerp_x86;
 extern xrBoneLerp		xrBoneLerp_3DNow;
