@@ -235,7 +235,6 @@ public:
 			FS.open_chunk		(dwID);
 
 			// Spawn
-			P.w_begin			(M_SPAWN);
 			E->Spawn_Write		(P,TRUE);
 			FS.Wword			(u16(P.B.count));
 			FS.write			(P.B.data,P.B.count);
