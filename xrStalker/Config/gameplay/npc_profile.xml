@@ -195,4 +195,9 @@
 		<class>stalker_esc_bariga</class>
 		<specific_character>stalker_esc_bariga</specific_character>
 	</character>					
+	
+	<!-- Soldier  -->
+	<character id="soldier_commander">
+		<class>Soldier_commander</class>
+	</character>	
 </xml>

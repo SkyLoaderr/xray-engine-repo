@@ -1,11 +1,96 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
+
+<!---------------------------SOLDIER COMMANDER----------------------->
+	<specific_character id="soldier_commander1" team_default = "1">
+		<name>Командир</name>
+		<icon x="6" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Детальная информация отсутствует.</bio>
+
+		<class>Soldier_commander</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_beret_1</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_pbp = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_ap = 1 \n
+			device_torch \n
+		</supplies>	
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="soldier_commander2" team_default = "1">
+		<name>Командир</name>
+		<icon x="6" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Детальная информация отсутствует.</bio>
+
+		<class>Soldier_commander</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_beret_2</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_pbp = 1 \n
+			wpn_ak74u \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
+	<specific_character id="soldier_commander3" team_default = "1">
+		<name>Командир</name>
+		<icon x="6" y="2"></icon>
+		<map_icon x="2" y="0"></map_icon>
+		<bio>Детальная информация отсутствует.</bio>
+
+		<team>Soldier_regular</team>
+		
+		<class>Soldier_regular</class>
+		<community>military</community>
+		
+		<rank>60</rank>
+		<reputation>0</reputation>
+
+		<visual>actors\soldier\soldier_beret_3</visual>		
+		<supplies>
+			[spawn] \n
+			wpn_pm \n
+			ammo_9x18_pbp = 1 \n
+			wpn_ak74 \n
+			ammo_5.45x39_fmj = 1 \n
+			device_torch \n
+		</supplies>
+					
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>escape_talk_about_escape</actor_dialog>
+	</specific_character>
+
 <!---------------------------SOLDIER PRIVATE----------------------->
 	<specific_character id="soldier_regular_default1" team_default = "1">
 		<name>Рядовой солдат</name>
-		<icon x="12" y="4"></icon>
-		<map_icon x="0" y="2"></map_icon>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<team>Soldier_regular</team>
@@ -16,7 +101,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_beret</visual>		
+		<visual>actors\soldier\soldier_bandana</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -33,8 +118,8 @@
 
 	<specific_character id="soldier_regular_default2" team_default = "1">
 		<name>Рядовой солдат</name>
-		<icon x="12" y="4"></icon>
-		<map_icon x="0" y="2"></map_icon>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<team>Soldier_regular</team>
@@ -45,7 +130,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_beret_1</visual>		
+		<visual>actors\soldier\soldier_bandana_1</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -62,8 +147,8 @@
 
 	<specific_character id="soldier_regular_default3" team_default = "1">
 		<name>Рядовой солдат</name>
-		<icon x="12" y="4"></icon>
-		<map_icon x="0" y="2"></map_icon>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<team>Soldier_regular</team>
@@ -74,7 +159,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_beret_2</visual>		
+		<visual>actors\soldier\soldier_bandana_2</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -91,8 +176,8 @@
 
 	<specific_character id="soldier_regular_default4" team_default = "1">
 		<name>Рядовой солдат</name>
-		<icon x="12" y="4"></icon>
-		<map_icon x="0" y="2"></map_icon>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует..</bio>
 
 		<team>Soldier_regular</team>
@@ -103,7 +188,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_beret_3</visual>		
+		<visual>actors\soldier\soldier_bandana_3</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
@@ -120,8 +205,8 @@
 
 	<specific_character id="soldier_regular_default5" team_default = "1">
 		<name>Рядовой солдат</name>
-		<icon x="12" y="4"></icon>
-		<map_icon x="0" y="2"></map_icon>
+		<icon x="12" y="2"></icon>
+		<map_icon x="1" y="2"></map_icon>
 		<bio>Рядовой солдат. Детальная информация отсутствует.</bio>
 
 		<team>Soldier_regular</team>
@@ -132,7 +217,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\soldier\soldier_beret_4</visual>		
+		<visual>actors\soldier\soldier_bandana_4</visual>		
 		<supplies>
 			[spawn] \n
 			wpn_pm \n
