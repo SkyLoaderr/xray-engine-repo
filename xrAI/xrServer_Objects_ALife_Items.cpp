@@ -29,7 +29,7 @@
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeInventoryItem
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(caSection)
+CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection)
 {
 	//текущее состояние вещи
 	m_fCondition				= 1.0f;
@@ -57,8 +57,15 @@ CSE_ALifeInventoryItem::CSE_ALifeInventoryItem(LPCSTR caSection) : CSE_Abstract(
 		m_qwGridBitMask			|= ((u64(1) << m_iGridWidth) - 1) << (i*RUCK_WIDTH);
 
 	m_tPreviousParentID			= 0xffff;
-	m_can_switch_offline		= true;
 	m_eItemPlace				= eItemPlaceUndefined;
+}
+
+CSE_Abstract *CSE_ALifeInventoryItem::init	()
+{
+	m_self						= dynamic_cast<CSE_ALifeObject*>(this);
+	R_ASSERT					(m_self);
+	m_self->m_flags.set			(CSE_ALifeObject::flSwitchOffline,TRUE);
+	return						(base());
 }
 
 CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
@@ -68,15 +75,16 @@ CSE_ALifeInventoryItem::~CSE_ALifeInventoryItem	()
 void CSE_ALifeInventoryItem::STATE_Write	(NET_Packet &tNetPacket)
 {
 	tNetPacket.w_float			(m_fCondition);
-	State.position				= o_Position;
+	State.position				= base()->o_Position;
 }
 
 void CSE_ALifeInventoryItem::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 {
+	u16 m_wVersion = base()->m_wVersion;
 	if (m_wVersion > 52)
 		tNetPacket.r_float		(m_fCondition);
 
-	State.position				= o_Position;
+	State.position				= base()->o_Position;
 }
 
 void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
@@ -89,7 +97,7 @@ void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 
 	if (m_u16NumItems != FLAG_NO_POSITION) {
 		tNetPacket.w_vec3			( State.position );
-		o_Position					= State.position;
+		base()->o_Position			= State.position;
 	}
 
 	if (!m_u16NumItems || (m_u16NumItems == FLAG_NO_POSITION))
@@ -121,10 +129,11 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_u16				(m_u16NumItems);
 	if (m_u16NumItems != FLAG_NO_POSITION) {
 		tNetPacket.r_vec3			( State.position );
-		o_Position					= State.position;
+		base()->o_Position			= State.position;
 	}
 
-	m_can_switch_offline			= true;
+	VERIFY							(m_self);
+	m_self->m_flags.set				(CSE_ALifeObject::flSwitchOffline,TRUE);
 
 	if (!m_u16NumItems || (m_u16NumItems == FLAG_NO_POSITION))
 		return;
@@ -143,11 +152,6 @@ void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r_float				( State.quaternion.w );	
 };
 
-bool CSE_ALifeInventoryItem::can_switch_offline	() const
-{
-	return							(m_can_switch_offline);
-}
-
 #ifdef _EDITOR
 void CSE_ALifeInventoryItem::FillProp		(LPCSTR pref, PropItemVec& values)
 {
@@ -164,12 +168,29 @@ bool CSE_ALifeInventoryItem::bfUseful		()
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItem
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItem::CSE_ALifeItem				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItem::CSE_ALifeItem				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeInventoryItem(caSection)
 {
 }
 
 CSE_ALifeItem::~CSE_ALifeItem				()
 {
+}
+
+CSE_Abstract *CSE_ALifeItem::init			()
+{
+	inherited1::init			();
+	inherited2::init			();
+	return						(base());
+}
+
+CSE_Abstract *CSE_ALifeItem::base			()
+{
+	return						(inherited1::base());
+}
+
+const CSE_Abstract *CSE_ALifeItem::base		() const
+{
+	return						(inherited1::base());
 }
 
 void CSE_ALifeItem::STATE_Write				(NET_Packet &tNetPacket)
@@ -201,11 +222,6 @@ void CSE_ALifeItem::UPDATE_Read				(NET_Packet &tNetPacket)
 	inherited2::UPDATE_Read		(tNetPacket);
 };
 
-bool CSE_ALifeItem::can_switch_offline	() const
-{
-	return						(inherited1::can_switch_offline() && inherited2::can_switch_offline());
-}
-
 #ifdef _EDITOR
 void CSE_ALifeItem::FillProp				(LPCSTR pref, PropItemVec& values)
 {
@@ -217,7 +233,7 @@ void CSE_ALifeItem::FillProp				(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemTorch
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemTorch::CSE_ALifeItemTorch		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 /*	strcpy						(spot_texture,"");
 	strcpy						(animator,"");
@@ -314,7 +330,7 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemWeapon
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 	a_current					= 90;
 	a_elapsed					= 0;
@@ -447,7 +463,7 @@ void CSE_ALifeItemWeapon::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemAmmo
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemAmmo::CSE_ALifeItemAmmo		(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemAmmo::CSE_ALifeItemAmmo		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 	a_elapsed					= m_boxSize = (u16)pSettings->r_s32(caSection, "box_size");
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
@@ -494,7 +510,7 @@ void CSE_ALifeItemAmmo::FillProp			(LPCSTR pref, PropItemVec& values) {
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemDetector::CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemDetector::CSE_ALifeItemDetector(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 }
 
@@ -533,7 +549,7 @@ void CSE_ALifeItemDetector::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDetector
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemArtefact::CSE_ALifeItemArtefact(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemArtefact::CSE_ALifeItemArtefact(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 	m_fAnomalyValue				= 100.f;
 }
@@ -573,7 +589,7 @@ void CSE_ALifeItemArtefact::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemPDA
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemPDA::CSE_ALifeItemPDA		(LPCSTR caSection) : CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemPDA::CSE_ALifeItemPDA		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 	m_original_owner = 0xffff;
 }
@@ -616,7 +632,7 @@ void CSE_ALifeItemPDA::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemDocument
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemDocument::CSE_ALifeItemDocument(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemDocument::CSE_ALifeItemDocument(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
 	m_wDocIndex					= 0;
 }
@@ -658,7 +674,7 @@ void CSE_ALifeItemDocument::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemGrenade
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemGrenade::CSE_ALifeItemGrenade	(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemGrenade::CSE_ALifeItemGrenade	(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
 	m_dwTimeStamp = 0;
 }
@@ -697,7 +713,7 @@ void CSE_ALifeItemGrenade::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemExplosive
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemExplosive::CSE_ALifeItemExplosive	(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemExplosive::CSE_ALifeItemExplosive	(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
 }
 
@@ -736,7 +752,7 @@ void CSE_ALifeItemExplosive::FillProp			(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemBolt
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemBolt::CSE_ALifeItemBolt		(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemBolt::CSE_ALifeItemBolt		(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
 }
 
@@ -746,33 +762,23 @@ CSE_ALifeItemBolt::~CSE_ALifeItemBolt		()
 
 void CSE_ALifeItemBolt::STATE_Write			(NET_Packet &tNetPacket)
 {
-	inherited1::STATE_Write		(tNetPacket);
-	inherited2::STATE_Write		(tNetPacket);
+	inherited::STATE_Write		(tNetPacket);
 }
 
 void CSE_ALifeItemBolt::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
-	inherited1::STATE_Read		(tNetPacket, size);
-	if (m_wVersion > 50)
-		inherited2::STATE_Read	(tNetPacket, size);
+	inherited::STATE_Read		(tNetPacket, size);
 }
 
 void CSE_ALifeItemBolt::UPDATE_Write		(NET_Packet &tNetPacket)
 {
-	inherited1::UPDATE_Write	(tNetPacket);
-	inherited2::UPDATE_Write	(tNetPacket);
+	inherited::UPDATE_Write	(tNetPacket);
 };
 
 void CSE_ALifeItemBolt::UPDATE_Read			(NET_Packet &tNetPacket)
 {
-	inherited1::UPDATE_Read		(tNetPacket);
-	inherited2::UPDATE_Read		(tNetPacket);
+	inherited::UPDATE_Read		(tNetPacket);
 };
-
-bool CSE_ALifeItemBolt::can_switch_offline	() const
-{
-	return						(inherited1::can_switch_offline() && inherited2::can_switch_offline());
-}
 
 bool CSE_ALifeItemBolt::can_save			() const
 {
@@ -782,15 +788,14 @@ bool CSE_ALifeItemBolt::can_save			() const
 #ifdef _EDITOR
 void CSE_ALifeItemBolt::FillProp			(LPCSTR pref, PropItemVec& values)
 {
-	inherited1::FillProp		(pref,	 values);
-	inherited2::FillProp		(pref,	 values);
+	inherited::FillProp			(pref,	 values);
 }
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemCustomOutfit
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeItemCustomOutfit::CSE_ALifeItemCustomOutfit	(LPCSTR caSection): CSE_ALifeItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeItemCustomOutfit::CSE_ALifeItemCustomOutfit	(LPCSTR caSection): CSE_ALifeItem(caSection)
 {
 	m_dwTimeStamp = 0;
 }

@@ -53,14 +53,14 @@ public:
 		if (tpALifeInventoryItem1->m_dwCost == tpALifeInventoryItem2->m_dwCost)
 			if (tpALifeInventoryItem1->m_tPreviousParentID == m_tParentID)
 				if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
-					return				(tpALifeInventoryItem1->ID < tpALifeInventoryItem2->ID);
+					return				(tpALifeInventoryItem1->base()->ID < tpALifeInventoryItem2->base()->ID);
 				else
 					return				(true);
 			else
 				if (tpALifeInventoryItem2->m_tPreviousParentID == m_tParentID)
 					return				(false);
 				else
-					return				(tpALifeInventoryItem1->ID < tpALifeInventoryItem2->ID);
+					return				(tpALifeInventoryItem1->base()->ID < tpALifeInventoryItem2->base()->ID);
 		else
 			return						(tpALifeInventoryItem1->m_dwCost > tpALifeInventoryItem2->m_dwCost);
 	}
@@ -90,7 +90,7 @@ void CALifeCommunicationManager::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHum
 	ITEM_P_IT			I = tpItemVector.begin();
 	ITEM_P_IT			E = tpItemVector.end();
 	for ( ; I != E; ++I)
-		Msg				(" %s",(*I)->s_name_replace);
+		Msg				(" %s",(*I)->base()->s_name_replace);
 }
 
 void CALifeCommunicationManager::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract)
@@ -182,7 +182,7 @@ int  CALifeCommunicationManager::ifComputeBalance(CSE_ALifeHumanAbstract *tpALif
 	ITEM_P_IT		I = tpItemVector.begin();
 	ITEM_P_IT		E = tpItemVector.end();
 	for ( ; I != E; ++I)
-		if (std::find(l_tpChildren.begin(),l_tpChildren.end(),(*I)->ID) != l_tpChildren.end())
+		if (std::find(l_tpChildren.begin(),l_tpChildren.end(),(*I)->base()->ID) != l_tpChildren.end())
 			l_iDebt	-= (*I)->m_dwCost;
 	return(l_iDebt);
 }
@@ -203,7 +203,7 @@ void CALifeCommunicationManager::vfRestoreItems(CSE_ALifeHumanAbstract *tpALifeH
 			(*I)->ID_Parent = 0xffff;
 			attach(*tpALifeHumanAbstract,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 #else
-			*i = (*I)->ID;
+			*i = (*I)->base()->ID;
 			++i;
 #endif
 		}
@@ -217,8 +217,8 @@ void CALifeCommunicationManager::vfAttachGatheredItems(CSE_ALifeTraderAbstract *
 #endif
 {
 	tpObjectVector.clear();
-	tpObjectVector.insert(tpObjectVector.end(),tpALifeTraderAbstract1->children.begin(),tpALifeTraderAbstract1->children.end());
-	tpALifeTraderAbstract1->children.clear();
+	tpObjectVector.insert(tpObjectVector.end(),tpALifeTraderAbstract1->base()->children.begin(),tpALifeTraderAbstract1->base()->children.end());
+	tpALifeTraderAbstract1->base()->children.clear();
 	tpALifeTraderAbstract1->vfInitInventory();
 	OBJECT_IT			I = tpObjectVector.begin();
 	OBJECT_IT			E = tpObjectVector.end();
@@ -229,8 +229,8 @@ void CALifeCommunicationManager::vfAttachGatheredItems(CSE_ALifeTraderAbstract *
 		attach	(*tpALifeTraderAbstract1,dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject),l_tpALifeDynamicObject->m_tGraphID);
 #else
 		CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(objects().object(*I));
-		if (l_tpALifeInventoryItem->m_tPreviousParentID != tpALifeTraderAbstract1->ID) {
-			R_ASSERT									(l_tpALifeInventoryItem->m_tPreviousParentID == tpALifeTraderAbstract2->ID);
+		if (l_tpALifeInventoryItem->m_tPreviousParentID != tpALifeTraderAbstract1->base()->ID) {
+			R_ASSERT							(l_tpALifeInventoryItem->m_tPreviousParentID == tpALifeTraderAbstract2->base()->ID);
 			tpALifeTraderAbstract2->detach		(l_tpALifeInventoryItem,0,false);
 		}
 		tpALifeTraderAbstract1->attach			(l_tpALifeInventoryItem,true);
@@ -329,16 +329,16 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 		INT_IT				I = tpIndexes2.begin();
 		INT_IT				E = tpIndexes2.end();
 		for ( ; I != E; ++I) {
-			tpALifeHumanAbstract1->children.push_back(tpTrader2[*I]->ID);
-			tpALifeHumanAbstract2->children.erase(std::find(tpALifeHumanAbstract2->children.begin(),tpALifeHumanAbstract2->children.end(),tpTrader2[*I]->ID));
+			tpALifeHumanAbstract1->children.push_back(tpTrader2[*I]->base()->ID);
+			tpALifeHumanAbstract2->children.erase(std::find(tpALifeHumanAbstract2->children.begin(),tpALifeHumanAbstract2->children.end(),tpTrader2[*I]->base()->ID));
 		}
 	}
 	{
 		INT_IT				I = tpIndexes1.begin();
 		INT_IT				E = tpIndexes1.end();
 		for ( ; I != E; ++I) {
-			tpALifeHumanAbstract2->children.push_back(tpTrader1[*I]->ID);
-			tpALifeHumanAbstract1->children.erase(std::find(tpALifeHumanAbstract1->children.begin(),tpALifeHumanAbstract1->children.end(),tpTrader1[*I]->ID));
+			tpALifeHumanAbstract2->children.push_back(tpTrader1[*I]->base()->ID);
+			tpALifeHumanAbstract1->children.erase(std::find(tpALifeHumanAbstract1->children.begin(),tpALifeHumanAbstract1->children.end(),tpTrader1[*I]->base()->ID));
 		}
 	}
 
@@ -349,13 +349,13 @@ bool CALifeCommunicationManager::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstr
 			INT_IT				I = tpIndexes1.begin();
 			INT_IT				E = tpIndexes1.end();
 			for ( ; I != E; ++I)
-				tpALifeHumanAbstract1->children.push_back(tpTrader1[*I]->ID);
+				tpALifeHumanAbstract1->children.push_back(tpTrader1[*I]->base()->ID);
 		}
 		{
 			INT_IT				I = tpIndexes2.begin();
 			INT_IT				E = tpIndexes2.end();
 			for ( ; I != E; ++I)
-				tpALifeHumanAbstract2->children.push_back(tpTrader2[*I]->ID);
+				tpALifeHumanAbstract2->children.push_back(tpTrader2[*I]->base()->ID);
 		}
 		return				(false);
 	}
@@ -771,7 +771,7 @@ void CALifeCommunicationManager::vfPerformCommunication()
 		SCHEDULE_P_IT	i = m_tpaCombatGroups[1].begin();
 		SCHEDULE_P_IT	e = m_tpaCombatGroups[1].end();
 		for ( ; i != e; ++i) {
-			if (!(*I)->children.empty() || !(*i)->children.empty())
+			if (!(*I)->base()->children.empty() || !(*i)->base()->children.empty())
 				vfPerformTrading(dynamic_cast<CSE_ALifeHumanAbstract*>(*I),dynamic_cast<CSE_ALifeHumanAbstract*>(*i));
 			// update events
 #pragma todo("Dima to Dima: Update events")
@@ -836,8 +836,8 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 			for ( ; I != E; ++I) {
 				if (!(*I)->attached())
 					continue;
-				OBJECT_IT					J = std::lower_bound(tpALifeTrader->children.begin(),tpALifeTrader->children.end(),(*I)->ID);
-				R_ASSERT					((tpALifeTrader->children.end() != J) && (*J == (*I)->ID) && (((J+1) == tpALifeTrader->children.end()) || (*(J + 1) != (*I)->ID)));
+				OBJECT_IT					J = std::lower_bound(tpALifeTrader->children.begin(),tpALifeTrader->children.end(),(*I)->base()->ID);
+				R_ASSERT					((tpALifeTrader->children.end() != J) && (*J == (*I)->base()->ID) && (((J+1) == tpALifeTrader->children.end()) || (*(J + 1) != (*I)->base()->ID)));
 				tpALifeTrader->children.erase(J);
 			}
 			I								= remove_if(m_temp_item_vector.begin(),m_temp_item_vector.end(),CRemoveAttachedItemsPredicate());

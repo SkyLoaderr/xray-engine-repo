@@ -93,7 +93,7 @@ IC	luabind::functor<_result_type> CScriptEngine::create_object_creator	(LPCSTR c
 	string1024				function_body, function_name, _class_name;
 	strcpy					(_class_name,class_name);
 	LPSTR					I;
-	while (!!(I = strchr(_class_name,'.')))
+	while (0==(I = strchr(_class_name,'.')))
 		*I					= '_';
 	
 	sprintf					(function_name,"create_%s",_class_name);

@@ -136,6 +136,21 @@ BOOL CSE_Abstract::Spawn_Read				(NET_Packet	&tNetPacket)
 	return						TRUE;
 }
 
+CSE_Abstract *CSE_Abstract::base	()
+{
+	return						(this);
+}
+
+const CSE_Abstract *CSE_Abstract::base	() const
+{
+	return						(this);
+}
+
+CSE_Abstract *CSE_Abstract::init	()
+{
+	return						(this);
+}
+
 #ifdef _EDITOR
 xr_token game_types[]={
 	{ "Any game",		GAME_ANY		},

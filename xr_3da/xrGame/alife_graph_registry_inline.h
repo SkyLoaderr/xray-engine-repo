@@ -97,7 +97,7 @@ IC	void CALifeGraphRegistry::attach	(CSE_Abstract &object, CSE_ALifeInventoryIte
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Attaching item [%s][%d] to [%s][%d]",item->s_name_replace,item->ID,object.s_name_replace,object.ID);
+		Msg						("[LSS] Attaching item [%s][%d] to [%s][%d]",item->base()->s_name_replace,item->base()->ID,object.s_name_replace,object.ID);
 	}
 #endif
 	if (alife_query)
@@ -117,7 +117,7 @@ IC	void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryIte
 {
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Detaching item [%s][%d] from [%s][%d]",item->s_name_replace,item->ID,object.s_name_replace,object.ID);
+		Msg						("[LSS] Detaching item [%s][%d] from [%s][%d]",item->base()->s_name_replace,item->base()->ID,object.s_name_replace,object.ID);
 	}
 #endif
 	if (alife_query)
@@ -137,7 +137,7 @@ IC	void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryIte
 	if (trader)
 		trader->detach			(item,0,alife_query);
 	else
-		R_ASSERT2				(std::find(object.children.begin(),object.children.end(),item->ID) != object.children.end(),"Can't detach an item which is not on my own");
+		R_ASSERT2				(std::find(object.children.begin(),object.children.end(),item->base()->ID) != object.children.end(),"Can't detach an item which is not on my own");
 }
 
 IC	void CALifeGraphRegistry::assign	(CSE_ALifeMonsterAbstract *monster)

@@ -101,17 +101,8 @@ void game_sv_CS::SaveDefaultWeapon(CMemoryWriter &store) {		//@@@ WT: Ёто надо п
 			W_pistol->Spawn_Write(l_packet, true);
 			l_mem.open_chunk(l_chunk); l_mem.w(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 		}
-		//////////////////////////////////////////////////////////////////////////
-		// это полный јЅ«ј÷!!! я не знаю, почему не работает закомментированный код :-(
-		//////////////////////////////////////////////////////////////////////////
-		// if(W_prim) F_entity_Destroy(W_prim);
-		// if(W_pistol) F_entity_Destroy(W_pistol);
-		//////////////////////////////////////////////////////////////////////////
-		// конец полного јЅ«ј÷ј (ƒима)
-		//////////////////////////////////////////////////////////////////////////
-		CSE_Abstract *A;
-		if(W_prim) F_entity_Destroy(/*A = */*(CSE_Abstract**)&W_prim);
-		if(W_pistol) F_entity_Destroy(A = W_pistol);
+		if(W_prim) F_entity_Destroy(W_prim);
+		if(W_pistol) F_entity_Destroy(W_pistol);
 	}
 }
 

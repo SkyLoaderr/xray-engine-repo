@@ -125,21 +125,6 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 #endif
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeGroupAbstract
-////////////////////////////////////////////////////////////////////////////
-CSE_ALifeGroupAbstract::CSE_ALifeGroupAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
-{
-	m_tpMembers.clear			();
-	m_bCreateSpawnPositions		= true;
-	m_wCount					= 1;
-	m_tNextBirthTime			= 0;
-}
-
-CSE_ALifeGroupAbstract::~CSE_ALifeGroupAbstract()
-{
-}
-
-////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObject
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeObject::CSE_ALifeObject			(LPCSTR caSection) : CSE_Abstract(caSection)
@@ -340,8 +325,26 @@ void CSE_ALifeObject::interactive			(bool value)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeGroupAbstract
 ////////////////////////////////////////////////////////////////////////////
+CSE_ALifeGroupAbstract::CSE_ALifeGroupAbstract(LPCSTR caSection)
+{
+	m_tpMembers.clear			();
+	m_bCreateSpawnPositions		= true;
+	m_wCount					= 1;
+	m_tNextBirthTime			= 0;
+}
+
+CSE_Abstract *CSE_ALifeGroupAbstract::init	()
+{
+	return						(base());
+}
+
+CSE_ALifeGroupAbstract::~CSE_ALifeGroupAbstract()
+{
+}
+
 void CSE_ALifeGroupAbstract::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
+	u16 m_wVersion = base()->m_wVersion;
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
 	m_bCreateSpawnPositions		= !!dwDummy;
@@ -380,7 +383,7 @@ void CSE_ALifeGroupAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 // CSE_ALifeDynamicObject
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeDynamicObject::CSE_ALifeDynamicObject(LPCSTR caSection) : CSE_ALifeObject(caSection), CSE_Abstract(caSection)
+CSE_ALifeDynamicObject::CSE_ALifeDynamicObject(LPCSTR caSection) : CSE_ALifeObject(caSection)
 {
 	m_tTimeID					= 0;
 	m_switch_counter			= u64(-1);
@@ -419,7 +422,7 @@ void CSE_ALifeDynamicObject::FillProp	(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeDynamicObjectVisual
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeDynamicObjectVisual::CSE_ALifeDynamicObjectVisual(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Visual(), CSE_Abstract(caSection)
+CSE_ALifeDynamicObjectVisual::CSE_ALifeDynamicObjectVisual(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Visual()
 {
 	if (pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
@@ -463,7 +466,7 @@ void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifePHSkeletonObject
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifePHSkeletonObject::CSE_ALifePHSkeletonObject(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifePHSkeletonObject::CSE_ALifePHSkeletonObject(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
 {
 	source_id					= u16(-1);
 	flags.zero					();
@@ -528,7 +531,7 @@ void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeScriptZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeScriptZone::CSE_ALifeScriptZone(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
+CSE_ALifeScriptZone::CSE_ALifeScriptZone(LPCSTR caSection) : CSE_ALifeDynamicObject(caSection)
 {
 }
 
@@ -568,7 +571,7 @@ void CSE_ALifeScriptZone::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeLevelChanger
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScriptZone(caSection), CSE_Abstract(caSection)
+CSE_ALifeLevelChanger::CSE_ALifeLevelChanger(LPCSTR caSection) : CSE_ALifeScriptZone(caSection)
 {
 	m_tNextGraphID				= ALife::_GRAPH_ID(-1);
 	m_dwNextNodeID				= u32(-1);
@@ -656,7 +659,7 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectPhysic
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifePHSkeletonObject(caSection), CSE_Abstract(caSection)
+CSE_ALifeObjectPhysic::CSE_ALifeObjectPhysic(LPCSTR caSection) : CSE_ALifePHSkeletonObject(caSection)
 {
 	type 						= epotBox;
 	mass 						= 10.f;
@@ -813,7 +816,7 @@ bool CSE_ALifeObjectPhysic::can_save			() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectHangingLamp
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeObjectHangingLamp::CSE_ALifeObjectHangingLamp(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
 {
 	flags.set					(flPhysic,FALSE);
 	flags.set					(flCastShadow,FALSE);
@@ -1041,7 +1044,7 @@ bool CSE_ALifeObjectHangingLamp::used_ai_locations	() const
 // CSE_ALifeObjectSearchlight
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeObjectProjector::CSE_ALifeObjectProjector(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeObjectProjector::CSE_ALifeObjectProjector(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
 {
 	m_flags.set					(flUseSwitches,FALSE);
 	m_flags.set					(flSwitchOffline,FALSE);
@@ -1087,7 +1090,7 @@ bool CSE_ALifeObjectProjector::used_ai_locations() const
 // CSE_ALifeSchedulable
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeSchedulable::CSE_ALifeSchedulable	(LPCSTR caSection) : CSE_Abstract(caSection)
+CSE_ALifeSchedulable::CSE_ALifeSchedulable	(LPCSTR caSection)
 {
 	m_tpCurrentBestWeapon		= 0;
 	m_tpBestDetector			= 0;
@@ -1103,11 +1106,16 @@ bool CSE_ALifeSchedulable::need_update		(CSE_ALifeDynamicObject *object)
 	return						(!object || (object->m_bDirectControl && object->interactive() && object->used_ai_locations() && !object->m_bOnline));
 }
 
+CSE_Abstract *CSE_ALifeSchedulable::init	()
+{
+	return						(base());
+}
+
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHelicopter
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection), CSE_Motion()
+CSE_ALifeHelicopter::CSE_ALifeHelicopter	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Motion()
 {
 	m_flags.set					(flUseSwitches,		FALSE);
 	m_flags.set					(flSwitchOffline,	FALSE);
@@ -1194,7 +1202,7 @@ bool CSE_ALifeHelicopter::used_ai_locations	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCar
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeCar::CSE_ALifeCar				(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
     	set_visual				(pSettings->r_string(caSection,"visual"));
@@ -1243,7 +1251,7 @@ void CSE_ALifeCar::FillProp				(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectBreakable
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectBreakable::CSE_ALifeObjectBreakable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeObjectBreakable::CSE_ALifeObjectBreakable	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
 {
 	m_health					= 100.f;
 }
@@ -1295,7 +1303,7 @@ bool CSE_ALifeObjectBreakable::can_switch_offline	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMountedWeapon
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMountedWeapon::CSE_ALifeMountedWeapon	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeMountedWeapon::CSE_ALifeMountedWeapon	(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection)
 {             
 }
 
@@ -1333,7 +1341,7 @@ void CSE_ALifeMountedWeapon::FillProp			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTeamBaseZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeTeamBaseZone::CSE_ALifeTeamBaseZone(LPCSTR caSection) : CSE_ALifeScriptZone(caSection), CSE_Abstract(caSection)
+CSE_ALifeTeamBaseZone::CSE_ALifeTeamBaseZone(LPCSTR caSection) : CSE_ALifeScriptZone(caSection)
 {
 	m_team						= 0;
 }

@@ -24,7 +24,7 @@ float CDistanceFunction::ffGetValue()
 	if (ai().ef_storage().m_tpCurrentMember)
 		return(m_fLastValue = ai().ef_storage().m_tpCurrentMember->Position().distance_to(ai().ef_storage().m_tpCurrentEnemy->Position()));
 	else
-		return(m_fLastValue = ai().ef_storage().m_tpCurrentALifeMember->Position().distance_to(ai().ef_storage().m_tpCurrentALifeEnemy->Position()));
+		return(m_fLastValue = ai().ef_storage().m_tpCurrentALifeMember->base()->Position().distance_to(ai().ef_storage().m_tpCurrentALifeEnemy->base()->Position()));
 }
 
 float CPersonalHealthFunction::ffGetValue()

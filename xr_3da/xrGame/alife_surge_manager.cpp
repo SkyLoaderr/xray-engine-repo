@@ -400,9 +400,9 @@ void CALifeSurgeManager::buy_supplies(CSE_ALifeTrader &tTrader)
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(objects().object(*i));
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory object has a parent?!");
 			// adding item to the temporary item map
-			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeInventoryItem->s_name);
+			ITEM_COUNT_PAIR_IT		k = m_tpTraderItems.find(l_tpALifeInventoryItem->base()->s_name);
 			if (m_tpTraderItems.end() == k)
-				m_tpTraderItems.insert(mk_pair(l_tpALifeInventoryItem->s_name,1));
+				m_tpTraderItems.insert(mk_pair(l_tpALifeInventoryItem->base()->s_name,1));
 			else
 				++((*k).second);
 		}

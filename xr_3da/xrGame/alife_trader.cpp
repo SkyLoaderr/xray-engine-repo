@@ -49,9 +49,9 @@ void CSE_ALifeTraderAbstract::spawn_supplies	()
 {
 	CSE_ALifeDynamicObject		*dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(this);
 	VERIFY						(dynamic_object);
-	CSE_Abstract				*abstract = dynamic_object->alife().spawn_item("device_pda",o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,ID);
+	CSE_Abstract				*abstract = dynamic_object->alife().spawn_item("device_pda",base()->o_Position,dynamic_object->m_tNodeID,dynamic_object->m_tGraphID,base()->ID);
 	CSE_ALifeItemPDA			*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
-	pda->m_original_owner		= ID;
+	pda->m_original_owner		= base()->ID;
 }
 
 void CSE_ALifeTraderAbstract::vfInitInventory()
@@ -66,23 +66,23 @@ void CSE_ALifeTraderAbstract::attach	(CSE_ALifeInventoryItem *tpALifeInventoryIt
 		if (bAddChildren) {
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg						("[LSS] Adding item [%s][%d] to the [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
+				Msg						("[LSS] Adding item [%s][%d] to the [%s] children list",tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,base()->s_name_replace);
 			}
 #endif
 
-			R_ASSERT2					(std::find(children.begin(),children.end(),tpALifeInventoryItem->ID) == children.end(),"Item is already inside the inventory");
-			children.push_back			(tpALifeInventoryItem->ID);
+			R_ASSERT2					(std::find(base()->children.begin(),base()->children.end(),tpALifeInventoryItem->base()->ID) == base()->children.end(),"Item is already inside the inventory");
+			base()->children.push_back	(tpALifeInventoryItem->base()->ID);
 		}
 #ifdef DEBUG
 		if (psAI_Flags.test(aiALife)) {
-			Msg							("[LSS] Assigning parent [%s] to item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+			Msg							("[LSS] Assigning parent [%s] to item [%s][%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID);
 		}
 #endif
-		tpALifeInventoryItem->ID_Parent	= ID;
+		tpALifeInventoryItem->base()->ID_Parent	= base()->ID;
 	}
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg								("[LSS] Updating [%s] inventory with attached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+		Msg								("[LSS] Updating [%s] inventory with attached item [%s][%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID);
 	}
 #endif
 	m_fCumulativeItemMass				+= tpALifeInventoryItem->m_fMass;
@@ -94,25 +94,25 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 	if (bALifeRequest) {
 		if (!I) {
 			if (bRemoveChildren) {
-				OBJECT_IT				I = std::find	(children.begin(),children.end(),tpALifeInventoryItem->ID);
-				R_ASSERT2						(children.end() != I,"Can't detach an item which is not on my own");
+				OBJECT_IT						I = std::find	(base()->children.begin(),base()->children.end(),tpALifeInventoryItem->base()->ID);
+				R_ASSERT2						(base()->children.end() != I,"Can't detach an item which is not on my own");
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					Msg							("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
+					Msg							("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,base()->s_name_replace);
 				}
 #endif
-				children.erase					(I);
+				base()->children.erase			(I);
 			}
 		}
 		else {
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg								("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,s_name_replace);
+				Msg								("[LSS] Removinng item [%s][%d] from [%s] children list",tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,base()->s_name_replace);
 			}
 #endif
-			children.erase						(*I);
+			base()->children.erase				(*I);
 		}
-		tpALifeInventoryItem->ID_Parent			= 0xffff;
+		tpALifeInventoryItem->base()->ID_Parent	= 0xffff;
 	}
 	
 	CSE_ALifeDynamicObject					*l_tpALifeDynamicObject1 = dynamic_cast<CSE_ALifeDynamicObject*>(tpALifeInventoryItem);
@@ -120,7 +120,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 	R_ASSERT2								(l_tpALifeDynamicObject1 && l_tpALifeDynamicObject2,"Invalid parent or children objects");
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg									("[LSS] Removing parent [%s] from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
+		Msg									("[LSS] Removing parent [%s] from the item [%s][%d] and updating its position and graph point [%f][%f][%f] : [%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID,VPUSH(l_tpALifeDynamicObject2->o_Position),l_tpALifeDynamicObject2->m_tGraphID);
 	}
 #endif
 	l_tpALifeDynamicObject1->o_Position		= l_tpALifeDynamicObject2->o_Position;
@@ -131,7 +131,7 @@ void CSE_ALifeTraderAbstract::detach(CSE_ALifeInventoryItem *tpALifeInventoryIte
 
 #ifdef DEBUG
 	if (psAI_Flags.test(aiALife)) {
-		Msg						("[LSS] Updating [%s] inventory with detached item [%s][%d]",s_name_replace,tpALifeInventoryItem->s_name_replace,tpALifeInventoryItem->ID);
+		Msg						("[LSS] Updating [%s] inventory with detached item [%s][%d]",base()->s_name_replace,tpALifeInventoryItem->base()->s_name_replace,tpALifeInventoryItem->base()->ID);
 	}
 #endif
 	m_fCumulativeItemMass		-= tpALifeInventoryItem->m_fMass;
@@ -155,7 +155,7 @@ u32	CSE_ALifeTrader::dwfGetItemCost(CSE_ALifeInventoryItem *tpALifeInventoryItem
 				++l_dwPurchasedCount;
 	}
 
-	ARTEFACT_TRADER_ORDER_PAIR_IT	J = m_tpOrderedArtefacts.find(tpALifeInventoryItem->s_name);
+	ARTEFACT_TRADER_ORDER_PAIR_IT	J = m_tpOrderedArtefacts.find(tpALifeInventoryItem->base()->s_name);
 	if ((m_tpOrderedArtefacts.end() != J) && (l_dwPurchasedCount < (*J).second->m_dwTotalCount)) {
 		ARTEFACT_ORDER_IT		I = (*J).second->m_tpOrders.begin();
 		ARTEFACT_ORDER_IT		E = (*J).second->m_tpOrders.end();

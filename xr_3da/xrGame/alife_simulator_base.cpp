@@ -135,7 +135,7 @@ CSE_Abstract *CALifeSimulatorBase::spawn_item	(LPCSTR section, const Fvector &po
 CSE_Abstract *CALifeSimulatorBase::create(CSE_ALifeGroupAbstract *tpALifeGroupAbstract, CSE_ALifeDynamicObject *j)
 {
 	NET_Packet					tNetPacket;
-	LPCSTR						S = pSettings->r_string(tpALifeGroupAbstract->s_name,"monster_section");
+	LPCSTR						S = pSettings->r_string(tpALifeGroupAbstract->base()->s_name,"monster_section");
 	CSE_Abstract				*l_tpAbstract = F_entity_Create(S);
 	R_ASSERT2					(l_tpAbstract,"Can't create entity.");
 	CSE_ALifeDynamicObject		*k = dynamic_cast<CSE_ALifeDynamicObject*>(l_tpAbstract);
@@ -239,7 +239,7 @@ void CALifeSimulatorBase::unregister_object	(CSE_ALifeDynamicObject *object, boo
 {
 	CSE_ALifeInventoryItem			*item = dynamic_cast<CSE_ALifeInventoryItem*>(object);
 	if (item && item->attached()) {
-		graph().detach				(*objects().object(item->ID_Parent),item,objects().object(item->ID_Parent)->m_tGraphID,alife_query);
+		graph().detach				(*objects().object(item->base()->ID_Parent),item,objects().object(item->base()->ID_Parent)->m_tGraphID,alife_query);
 		if (object->m_bOnline)
 			graph().level().remove	(object);
 	}
@@ -288,16 +288,16 @@ void CALifeSimulatorBase::register_object	(CSE_ALifeDynamicObject *object, bool 
 	
 	CSE_ALifeInventoryItem				*item = dynamic_cast<CSE_ALifeInventoryItem*>(object);
 	if (item && item->attached()) {
-		CSE_ALifeDynamicObject			*II = objects().object(item->ID_Parent);
+		CSE_ALifeDynamicObject			*II = objects().object(item->base()->ID_Parent);
 #ifdef DEBUG
-		if (std::find(II->children.begin(),II->children.end(),item->ID) != II->children.end()) {
+		if (std::find(II->children.begin(),II->children.end(),item->base()->ID) != II->children.end()) {
 			if (psAI_Flags.test(aiALife)) {
-				Msg						("[LSS] Specified item [%s][%d] is already attached to the specified object [%s][%d]",item->s_name_replace,item->ID,II->s_name_replace,II->ID);
+				Msg						("[LSS] Specified item [%s][%d] is already attached to the specified object [%s][%d]",item->base()->s_name_replace,item->base()->ID,II->s_name_replace,II->ID);
 			}
 			Debug.fatal					("[LSS] Cannot recover from the previous error!");
 		}
 #endif
-		II->children.push_back			(item->ID);
+		II->children.push_back			(item->base()->ID);
 	}
 }
 

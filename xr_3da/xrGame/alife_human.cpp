@@ -447,14 +447,14 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 				alife().m_temp_item_vector.push_back(l_tpALifeInventoryItem);
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					Msg		("[LSS] %s detected item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+					Msg		("[LSS] %s detected item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->base()->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
 				}
 #endif
 			}
 			else {
 #ifdef DEBUG
 				if (psAI_Flags.test(aiALife)) {
-					Msg		("[LSS] %s didn't detect item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+					Msg		("[LSS] %s didn't detect item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->base()->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
 				}
 #endif
 			}
@@ -623,7 +623,7 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 		if ((I != J) || bfCanGetItem(*I)) {
 			m_fCumulativeItemMass	+= (*I)->m_fMass;
 			m_iCumulativeItemVolume	+= (*I)->m_iVolume;
-			children.push_back		((*I)->ID);
+			children.push_back		((*I)->base()->ID);
 		}
 		else {
 			l_bOk = false;
@@ -663,7 +663,7 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 		// evaluating item
 		float					l_fCurrentValue = ai().ef_storage().m_pfEquipmentType->ffGetValue();
 		// choosing the best item
-		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
+		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->base()->ID) == tpObjectVector->end()))) {
 			l_fItemBestValue	= l_fCurrentValue;
 			l_tpALifeItemBest	= *I;
 			X					= I;
@@ -675,7 +675,7 @@ int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 			alife().m_temp_item_vector.erase(X);
 		}
 		else
-			children.push_back	(l_tpALifeItemBest->ID);
+			children.push_back	(l_tpALifeItemBest->base()->ID);
 		return					(1);
 	}
 	return						(0);
@@ -727,7 +727,7 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 			default : NODEFAULT;
 		}
 		// choosing the best item
-		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
+		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->base()->ID) == tpObjectVector->end()))) {
 			l_fItemBestValue = l_fCurrentValue;
 			l_tpALifeItemBest = *I;
 		}
@@ -739,7 +739,7 @@ int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityT
 		if (!tpObjectVector)
 			alife().graph().attach	(*this,l_tpALifeItemBest,dynamic_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
 		else
-			children.push_back	(l_tpALifeItemBest->ID);
+			children.push_back	(l_tpALifeItemBest->base()->ID);
 		
 		m_dwTotalMoney			-= l_tpALifeItemBest->m_dwCost;
 		attach_available_ammo	(dynamic_cast<CSE_ALifeItemWeapon*>(l_tpALifeItemBest),alife().m_temp_item_vector,tpObjectVector);
@@ -767,12 +767,12 @@ int  CSE_ALifeHumanAbstract::ifChooseFood(OBJECT_VECTOR *tpObjectVector)
 			continue;
 		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
-		if (bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
+		if (bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->base()->ID) == tpObjectVector->end()))) {
 			m_dwTotalMoney		-= (*I)->m_dwCost;
 			if (!tpObjectVector)
 				alife().graph().attach	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 			else {
-				children.push_back((*I)->ID);
+				children.push_back((*I)->base()->ID);
 			}
 			++l_dwCount;
 			if (l_dwCount >= MAX_ITEM_FOOD_COUNT)
@@ -800,12 +800,12 @@ int  CSE_ALifeHumanAbstract::ifChooseMedikit(OBJECT_VECTOR *tpObjectVector)
 			continue;
 		if (m_dwTotalMoney < (*I)->m_dwCost)
 			continue;
-		if (bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->ID) == tpObjectVector->end()))) {
+		if (bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->base()->ID) == tpObjectVector->end()))) {
 			m_dwTotalMoney	-= (*I)->m_dwCost;
 			if (!tpObjectVector)
 				alife().graph().attach	(*this,*I,dynamic_cast<CSE_ALifeDynamicObject*>(*I)->m_tGraphID);
 			else
-				children.push_back((*I)->ID);
+				children.push_back((*I)->base()->ID);
 			++l_dwCount;
 			if (l_dwCount >= MAX_ITEM_MEDIKIT_COUNT)
 				break;
@@ -852,7 +852,7 @@ int  CSE_ALifeHumanAbstract::ifChooseDetector(OBJECT_VECTOR *tpObjectVector)
 			alife().m_temp_item_vector.erase(X);
 		}
 		else
-			children.push_back(l_tpALifeItemBest->ID);
+			children.push_back(l_tpALifeItemBest->base()->ID);
 		return					(1);
 	}
 	return						(0);

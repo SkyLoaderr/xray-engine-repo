@@ -27,7 +27,7 @@ using namespace ALife;
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeTraderAbstract
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstract(caSection)
+CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection)
 {
 	m_fCumulativeItemMass		= 0.f;
 	m_iCumulativeItemVolume		= 0;
@@ -37,10 +37,14 @@ CSE_ALifeTraderAbstract::CSE_ALifeTraderAbstract(LPCSTR caSection) : CSE_Abstrac
 	m_tRank						= ALife::EStalkerRank(pSettings->r_u32(caSection, "rank"));
 	m_fMaxItemMass				= pSettings->r_float(caSection, "max_item_mass");
 	m_tpEvents.clear			();
+}
 
+CSE_Abstract *CSE_ALifeTraderAbstract::init	()
+{
 	string4096					S;
-	sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*m_ini_string ? "" : *m_ini_string);
-	m_ini_string				= S;
+	sprintf						(S,"%s\r\n[game_info]\r\nname_id = default\r\n",!*base()->m_ini_string ? "" : *base()->m_ini_string);
+	base()->m_ini_string		= S;
+	return						(base());
 }
 
 CSE_ALifeTraderAbstract::~CSE_ALifeTraderAbstract()
@@ -56,6 +60,7 @@ void CSE_ALifeTraderAbstract::STATE_Write	(NET_Packet &tNetPacket)
 
 void CSE_ALifeTraderAbstract::STATE_Read	(NET_Packet &tNetPacket, u16 size)
 {
+	u16 m_wVersion = base()->m_wVersion;
 	if (m_wVersion > 19) {
 		load_data				(m_tpEvents,tNetPacket);
 		ALife::TASK_VECTOR		l_tpTaskIDs;
@@ -95,7 +100,7 @@ void CSE_ALifeTraderAbstract::FillProp	(LPCSTR pref, PropItemVec& items)
 // CSE_ALifeTrader
 ////////////////////////////////////////////////////////////////////////////
 
-CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVisual(caSection), CSE_ALifeTraderAbstract(caSection)
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
@@ -108,6 +113,23 @@ CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVi
 CSE_ALifeTrader::~CSE_ALifeTrader			()
 {
 	delete_data					(m_tpOrderedArtefacts);
+}
+
+CSE_Abstract *CSE_ALifeTrader::init			()
+{
+	inherited1::init			();
+	inherited2::init			();
+	return						(base());
+}
+
+CSE_Abstract *CSE_ALifeTrader::base			()
+{
+	return						(inherited1::base());
+}
+
+const CSE_Abstract *CSE_ALifeTrader::base	() const
+{
+	return						(inherited1::base());
 }
 
 void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
@@ -223,7 +245,7 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeAnomalousZone
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeDynamicObject(caSection), CSE_Abstract(caSection)
+CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSchedulable(caSection), CSE_ALifeDynamicObject(caSection)
 {
 	m_maxPower					= 100.f;
 	m_attn						= 1.f;
@@ -252,6 +274,24 @@ CSE_ALifeAnomalousZone::CSE_ALifeAnomalousZone(LPCSTR caSection) : CSE_ALifeSche
 	else
 		m_tHitType				= ALife::eHitTypeMax;
 }
+
+CSE_Abstract *CSE_ALifeAnomalousZone::init			()
+{
+	inherited1::init			();
+	inherited2::init			();
+	return						(base());
+}
+
+CSE_Abstract *CSE_ALifeAnomalousZone::base			()
+{
+	return						(inherited1::base());
+}
+
+const CSE_Abstract *CSE_ALifeAnomalousZone::base	() const
+{
+	return						(inherited1::base());
+}
+
 
 CSE_ALifeAnomalousZone::~CSE_ALifeAnomalousZone()
 {
@@ -405,7 +445,7 @@ bool CSE_ALifeAnomalousZone::need_update	(CSE_ALifeDynamicObject *object)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureAbstract
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALifeDynamicObjectVisual(caSection), CSE_Abstract(caSection)
+CSE_ALifeCreatureAbstract::CSE_ALifeCreatureAbstract(LPCSTR caSection)	: CSE_ALifeDynamicObjectVisual(caSection)
 {
 	s_team = s_squad = s_group	= 0;
 	fHealth						= 100;
@@ -513,7 +553,7 @@ bool CSE_ALifeCreatureAbstract::can_switch_offline	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterAbstract
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_ALifeSchedulable(caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALifeCreatureAbstract(caSection), CSE_ALifeSchedulable(caSection)
 {
 	m_tNextGraphID				= m_tGraphID;
 	m_tPrevGraphID				= m_tGraphID;
@@ -568,6 +608,23 @@ CSE_ALifeMonsterAbstract::~CSE_ALifeMonsterAbstract()
 {
 }
 
+CSE_Abstract *CSE_ALifeMonsterAbstract::init			()
+{
+	inherited1::init			();
+	inherited2::init			();
+	return						(base());
+}
+
+CSE_Abstract *CSE_ALifeMonsterAbstract::base			()
+{
+	return						(inherited1::base());
+}
+
+const CSE_Abstract *CSE_ALifeMonsterAbstract::base	() const
+{
+	return						(inherited1::base());
+}
+
 void CSE_ALifeMonsterAbstract::STATE_Write	(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
@@ -615,7 +672,7 @@ bool CSE_ALifeMonsterAbstract::need_update	(CSE_ALifeDynamicObject *object)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureActor
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_ALifeTraderAbstract(caSection)
 {
 	set_visual					("actors\\Different_stalkers\\stalker_hood_multiplayer.ogf");
 	m_u16NumItems				= 0;
@@ -623,6 +680,23 @@ CSE_ALifeCreatureActor::CSE_ALifeCreatureActor	(LPCSTR caSection) : CSE_ALifeCre
 
 CSE_ALifeCreatureActor::~CSE_ALifeCreatureActor()
 {
+}
+
+CSE_Abstract *CSE_ALifeCreatureActor::init			()
+{
+	inherited1::init			();
+	inherited2::init			();
+	return						(inherited1::base());
+}
+
+CSE_Abstract *CSE_ALifeCreatureActor::base			()
+{
+	return						(inherited1::base());
+}
+
+const CSE_Abstract *CSE_ALifeCreatureActor::base	() const
+{
+	return						(inherited1::base());
 }
 
 void CSE_ALifeCreatureActor::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
@@ -728,7 +802,7 @@ void CSE_ALifeCreatureActor::FillProp		(LPCSTR pref, PropItemVec& items)
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeCreatureCrow
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeCreatureCrow::CSE_ALifeCreatureCrow(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeCreatureCrow::CSE_ALifeCreatureCrow(LPCSTR caSection) : CSE_ALifeCreatureAbstract(caSection)
 {
 	if (pSettings->section_exist(caSection) && pSettings->line_exist(caSection,"visual"))
 		set_visual				(pSettings->r_string(caSection,"visual"));
@@ -779,7 +853,7 @@ bool CSE_ALifeCreatureCrow::used_ai_locations	() const
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterRat
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_ALifeInventoryItem(caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterRat::CSE_ALifeMonsterRat	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_ALifeInventoryItem(caSection)
 {
 	set_visual					("monsters\\rat\\rat_1");
 	// personal charactersitics
@@ -882,9 +956,21 @@ void CSE_ALifeMonsterRat::UPDATE_Write		(NET_Packet	&tNetPacket)
 	inherited2::UPDATE_Write	(tNetPacket);
 }
 
-bool CSE_ALifeMonsterRat::can_switch_offline	() const
+CSE_Abstract *CSE_ALifeMonsterRat::init			()
 {
-	return						(inherited1::can_switch_offline() && inherited2::can_switch_offline());
+	inherited1::init			();
+	inherited2::init			();
+	return						(base());
+}
+
+CSE_Abstract *CSE_ALifeMonsterRat::base			()
+{
+	return						(inherited1::base());
+}
+
+const CSE_Abstract *CSE_ALifeMonsterRat::base	() const
+{
+	return						(inherited1::base());
 }
 
 #ifdef _EDITOR
@@ -927,7 +1013,7 @@ bool CSE_ALifeMonsterRat::bfUseful		()
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterZombie
 ////////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterZombie::CSE_ALifeMonsterZombie	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterZombie::CSE_ALifeMonsterZombie	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection)
 {
 	set_visual					("monsters\\zombie\\zombie_1");
 	// personal charactersitics
@@ -1023,7 +1109,7 @@ void CSE_ALifeMonsterZombie::FillProp		(LPCSTR pref, PropItemVec& items)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeMonsterBiting
 //////////////////////////////////////////////////////////////////////////
-CSE_ALifeMonsterBiting::CSE_ALifeMonsterBiting	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeMonsterBiting::CSE_ALifeMonsterBiting	(LPCSTR caSection) : CSE_ALifeMonsterAbstract(caSection)
 {
     set_visual					(pSettings->r_string(caSection,"visual"));
 }
@@ -1062,7 +1148,7 @@ void CSE_ALifeMonsterBiting::FillProp	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanAbstract
 //////////////////////////////////////////////////////////////////////////
-CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection)
 {
 	m_tpPath.clear				();
 	m_baVisitedVertices.clear	();
@@ -1094,6 +1180,23 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
+}
+
+CSE_Abstract *CSE_ALifeHumanAbstract::init			()
+{
+	inherited1::init			();
+	inherited2::init			();
+	return						(base());
+}
+
+CSE_Abstract *CSE_ALifeHumanAbstract::base			()
+{
+	return						(inherited2::base());
+}
+
+const CSE_Abstract *CSE_ALifeHumanAbstract::base	() const
+{
+	return						(inherited2::base());
 }
 
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
@@ -1161,7 +1264,7 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanStalker
 //////////////////////////////////////////////////////////////////////////
-CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeHumanStalker::CSE_ALifeHumanStalker(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection)
 {
 	m_dwTotalMoney				= 0;
 }
@@ -1200,7 +1303,7 @@ void CSE_ALifeHumanStalker::FillProp		(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeObjectIdol
 //////////////////////////////////////////////////////////////////////////
-CSE_ALifeObjectIdol::CSE_ALifeObjectIdol	(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection), CSE_Abstract(caSection)
+CSE_ALifeObjectIdol::CSE_ALifeObjectIdol	(LPCSTR caSection) : CSE_ALifeHumanAbstract(caSection)
 {
 	m_dwAniPlayType				= 0;
 	m_caAnimations[0]			= 0;

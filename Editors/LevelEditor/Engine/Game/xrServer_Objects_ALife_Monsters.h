@@ -12,7 +12,7 @@
 #include "xrServer_Objects_ALife.h"
 #include "xrServer_Objects_ALife_Items.h"
 
-class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
+class CSE_ALifeTraderAbstract {
 public:
 	float							m_fCumulativeItemMass;
 	int								m_iCumulativeItemVolume;
@@ -23,6 +23,11 @@ public:
 	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();
+	// we need this to prevent virtual inheritance :-(
+	virtual CSE_Abstract			*base					() = 0;
+	virtual const CSE_Abstract		*base					() const = 0;
+	virtual CSE_Abstract			*init					();
+	// end of the virtual inheritance dependant code
 #ifdef XRGAME_EXPORTS
 			void					attach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
 			void					detach					(CSE_ALifeInventoryItem *tpALifeInventoryItem,	ALife::OBJECT_IT	*I = 0,	bool bALifeRequest = true,	bool bRemoveChildren = true);
@@ -40,6 +45,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 									CSE_ALifeTrader			(LPCSTR caSection);
 	virtual							~CSE_ALifeTrader		();
 	virtual	bool					interactive				() const;
+	virtual CSE_Abstract			*init					();
+	virtual CSE_Abstract			*base					();
+	virtual const CSE_Abstract		*base					() const;
 #ifdef _EDITOR
 	int 							supplies_count;
     void __fastcall   				OnSuppliesCountChange	(PropValue* sender);
@@ -67,6 +75,9 @@ SERVER_ENTITY_DECLARE_BEGIN3(CSE_ALifeAnomalousZone,CSE_ALifeDynamicObject,CSE_A
 
 									CSE_ALifeAnomalousZone	(LPCSTR caSection);
 	virtual							~CSE_ALifeAnomalousZone	();
+	virtual CSE_Abstract			*init					();
+	virtual CSE_Abstract			*base					();
+	virtual const CSE_Abstract		*base					() const;
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
@@ -140,6 +151,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 									CSE_ALifeMonsterAbstract(LPCSTR					caSection);
 	virtual							~CSE_ALifeMonsterAbstract();
 	IC		float					g_MaxHealth				()	const									{ return m_fMaxHealthValue;	}
+	virtual CSE_Abstract			*init					();
+	virtual CSE_Abstract			*base					();
+	virtual const CSE_Abstract		*base					() const;
 #ifndef XRGAME_EXPORTS
 	virtual	void					update					()	{};
 #else
@@ -168,6 +182,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeCreatureActor,CSE_ALifeCreatureAbstract,CS
 	///////////////////////////////////////////
 									CSE_ALifeCreatureActor	(LPCSTR caSection);
 	virtual							~CSE_ALifeCreatureActor	();
+	virtual CSE_Abstract			*base					();
+	virtual const CSE_Abstract		*base					() const;
+	virtual CSE_Abstract			*init					();
 
 #ifdef XRGAME_EXPORTS
 	virtual void					spawn_supplies			();
@@ -208,7 +225,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterRat,CSE_ALifeMonsterAbstract,CSE_AL
 									CSE_ALifeMonsterRat	(LPCSTR caSection);				// constructor for variable initialization
 	virtual							~CSE_ALifeMonsterRat();
 	virtual bool					bfUseful();
-	virtual bool					can_switch_offline	() const;
+	virtual CSE_Abstract			*init				();
+	virtual CSE_Abstract			*base				();
+	virtual const CSE_Abstract		*base				() const;
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMonsterZombie,CSE_ALifeMonsterAbstract)
@@ -256,6 +275,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 
 									CSE_ALifeHumanAbstract	(LPCSTR					caSection);
 	virtual							~CSE_ALifeHumanAbstract	();
+	virtual CSE_Abstract			*init					();
+	virtual CSE_Abstract			*base					();
+	virtual const CSE_Abstract		*base					() const;
 #ifdef XRGAME_EXPORTS
 	virtual	void					update					();
 			// FSM

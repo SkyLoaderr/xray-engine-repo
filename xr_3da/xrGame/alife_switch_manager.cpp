@@ -51,20 +51,20 @@ void CALifeSwitchManager::add_online(CSE_ALifeDynamicObject *object, bool update
 			CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = objects().object(*I);
 			CSE_ALifeInventoryItem	*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
 			R_ASSERT2				(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
-			l_tpALifeInventoryItem->s_flags.or(M_SPAWN_UPDATE);
+			l_tpALifeInventoryItem->base()->s_flags.or(M_SPAWN_UPDATE);
 			CSE_Abstract			*l_tpAbstract = dynamic_cast<CSE_Abstract*>(l_tpALifeInventoryItem);
 			server().entity_Destroy(l_tpAbstract);
 
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Spawning item [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeDynamicObject->ID);
+				Msg					("[LSS] Spawning item [%s][%s][%d]",l_tpALifeInventoryItem->base()->s_name_replace,l_tpALifeInventoryItem->base()->s_name,l_tpALifeDynamicObject->ID);
 			}
 #endif
 
 //			R_ASSERT3								(ai().level_graph().valid_vertex_id(l_tpALifeDynamicObject->m_tNodeID),"Invalid vertex for object ",l_tpALifeInventoryItem->s_name_replace);
 			l_tpALifeDynamicObject->o_Position		= object->o_Position;
 			l_tpALifeDynamicObject->m_tNodeID		= object->m_tNodeID;
-			server().Process_spawn				(tNetPacket,0,FALSE,l_tpALifeInventoryItem);
+			server().Process_spawn					(tNetPacket,0,FALSE,l_tpALifeInventoryItem->base());
 			l_tpALifeDynamicObject->s_flags.and		(u16(-1) ^ M_SPAWN_UPDATE);
 			l_tpALifeDynamicObject->m_bOnline		= true;
 		}
@@ -106,12 +106,12 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 			VERIFY2					(l_tpALifeInventoryItem,"Non inventory item object has parent?!");
 #ifdef DEBUG
 			if (psAI_Flags.test(aiALife)) {
-				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeInventoryItem->ID);
+				Msg					("[LSS] Destroying item [%s][%s][%d]",l_tpALifeInventoryItem->base()->s_name_replace,l_tpALifeInventoryItem->base()->s_name,l_tpALifeInventoryItem->base()->ID);
 			}
 #endif
-			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->ID;
-			l_tpALifeInventoryItem->ID	= server().PerformIDgen(l_tpALifeInventoryItem->ID);
-			VERIFY2					(l_tpALifeInventoryItem->ID == l_tObjectID,"Object ID has changed during ID generation!");
+			_OBJECT_ID				l_tObjectID = l_tpALifeInventoryItem->base()->ID;
+			l_tpALifeInventoryItem->base()->ID	= server().PerformIDgen(l_tpALifeInventoryItem->base()->ID);
+			VERIFY2					(l_tpALifeInventoryItem->base()->ID == l_tObjectID,"Object ID has changed during ID generation!");
 			dynamic_object->m_bOnline = false;
 
 			if (!dynamic_object->can_save()) {
@@ -405,7 +405,7 @@ void CALifeSwitchManager::switch_object	(CSE_ALifeDynamicObject	*I)
 			CSE_ALifeGroupAbstract *tpALifeGroupAbstract = dynamic_cast<CSE_ALifeGroupAbstract*>(I);
 			if (tpALifeGroupAbstract && tpALifeGroupAbstract->m_tpMembers.empty()) {
 				// release empty group of objects
-				release(tpALifeGroupAbstract);
+				release(I);
 				return;
 			}
 			else {

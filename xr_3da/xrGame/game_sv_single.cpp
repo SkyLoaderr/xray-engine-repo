@@ -80,7 +80,7 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 				l_tpTraderParams && 
 				l_tpALifeInventoryItem && 
 				l_tpDynamicObject && 
-				ai().alife().graph().level().object(l_tpALifeInventoryItem->ID,true) &&
+				ai().alife().graph().level().object(l_tpALifeInventoryItem->base()->ID,true) &&
 				ai().alife().objects().object(e_who->ID,true) &&
 				ai().alife().objects().object(e_what->ID,true)
 			)
@@ -111,14 +111,14 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 		
 		if	(
 				ai().alife().objects().object(e_who->ID,true) && 
-				!ai().alife().graph().level().object(l_tpALifeInventoryItem->ID,true) && 
+				!ai().alife().graph().level().object(l_tpALifeInventoryItem->base()->ID,true) && 
 				ai().alife().objects().object(e_what->ID,true)
 			)
 			alife().graph().detach(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
 		else {
 			if (!ai().alife().objects().object(e_what->ID,true)) {
-				u16				id = l_tpALifeInventoryItem->ID_Parent;
-				l_tpALifeInventoryItem->ID_Parent	= 0xffff;
+				u16				id = l_tpALifeInventoryItem->base()->ID_Parent;
+				l_tpALifeInventoryItem->base()->ID_Parent	= 0xffff;
 				
 				CSE_ALifeDynamicObject *dynamic_object = dynamic_cast<CSE_ALifeDynamicObject*>(e_what);
 				VERIFY			(dynamic_object);
@@ -127,12 +127,12 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 				dynamic_object->m_bALifeControl	= true;
 				dynamic_object->m_bOnline		= true;
 				alife().create	(dynamic_object);
-				l_tpALifeInventoryItem->ID_Parent	= id;
+				l_tpALifeInventoryItem->base()->ID_Parent	= id;
 			}
 #ifdef DEBUG
 			else
 				if (psAI_Flags.test(aiALife)) {
-					Msg			("Cannot detach object [%s][%s][%d] from object [%s][%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->s_name,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->s_name,l_tpDynamicObject->ID);
+					Msg			("Cannot detach object [%s][%s][%d] from object [%s][%s][%d]",l_tpALifeInventoryItem->base()->s_name_replace,l_tpALifeInventoryItem->base()->s_name,l_tpALifeInventoryItem->base()->ID,l_tpDynamicObject->base()->s_name_replace,l_tpDynamicObject->base()->s_name,l_tpDynamicObject->ID);
 				}
 #endif
 		}

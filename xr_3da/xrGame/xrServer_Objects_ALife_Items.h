@@ -13,7 +13,7 @@
 #include "PHSynchronize.h"
 #include "inventory_space.h"
 
-class CSE_ALifeInventoryItem : virtual public CSE_Abstract {
+class CSE_ALifeInventoryItem {
 public:
 	typedef CSE_Abstract inherited;
 	enum EFlags {
@@ -32,7 +32,7 @@ public:
 	int								m_iGridHeight;
 	u64								m_qwGridBitMask;
 	ALife::_OBJECT_ID				m_tPreviousParentID;
-	bool							m_can_switch_offline;
+	CSE_ALifeObject					*m_self;
 
 	//положение вещи в инвенторе (используется актером 
 	//при переходе в offline и обратно)
@@ -40,12 +40,17 @@ public:
 
 									CSE_ALifeInventoryItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeInventoryItem	();
+	// we need this to prevent virtual inheritance :-(
+	virtual CSE_Abstract			*base					() = 0;
+	virtual const CSE_Abstract		*base					() const = 0;
+	virtual CSE_Abstract			*init					();
+	// end of the virtual inheritance dependant code
+
 	IC		bool					attached	() const
 	{
-		return						(ID_Parent < 0xffff);
+		return						(base()->ID_Parent < 0xffff);
 	}
 	virtual bool					bfUseful();
-	virtual bool					can_switch_offline	() const;
 
 	/////////// network ///////////////
 	u32								m_dwTimeStamp;
@@ -57,7 +62,9 @@ SERVER_ENTITY_DECLARE_END
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem)
 									CSE_ALifeItem	(LPCSTR caSection);
 	virtual							~CSE_ALifeItem	();
-	virtual bool					can_switch_offline	() const;
+	virtual CSE_Abstract			*base			();
+	virtual const CSE_Abstract		*base			() const;
+	virtual CSE_Abstract			*init					();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
@@ -163,10 +170,9 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemExplosive,CSE_ALifeItem)
 	virtual							~CSE_ALifeItemExplosive();
 SERVER_ENTITY_DECLARE_END
 
-SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeItemBolt,CSE_ALifeDynamicObject,CSE_ALifeInventoryItem)
+SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemBolt,CSE_ALifeItem)
 									CSE_ALifeItemBolt(LPCSTR caSection);
 	virtual							~CSE_ALifeItemBolt();
-	virtual bool					can_switch_offline	() const;
 	virtual bool					can_save			() const;
 SERVER_ENTITY_DECLARE_END
 

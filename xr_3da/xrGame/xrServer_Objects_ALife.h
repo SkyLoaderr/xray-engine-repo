@@ -23,7 +23,7 @@
 
 class CSE_ALifeDynamicObject;
 
-class CSE_ALifeSchedulable : public IPureSchedulableObject, virtual public CSE_Abstract {
+class CSE_ALifeSchedulable : public IPureSchedulableObject {
 public:
 	CSE_ALifeItemWeapon				*m_tpCurrentBestWeapon;
 	CSE_ALifeDynamicObject			*m_tpBestDetector;
@@ -31,6 +31,11 @@ public:
 
 									CSE_ALifeSchedulable	(LPCSTR caSection);
 	virtual							~CSE_ALifeSchedulable	();
+	// we need this to prevent virtual inheritance :-(
+	virtual CSE_Abstract			*base					() = 0;
+	virtual const CSE_Abstract		*base					() const = 0;
+	virtual CSE_Abstract			*init					();
+	// end of the virtual inheritance dependant code
 	virtual bool					need_update				(CSE_ALifeDynamicObject *object);
 #ifdef XRGAME_EXPORTS
 	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(ALife::EHitType		&tHitType,			float		&fHitPower) = 0;
@@ -59,7 +64,7 @@ public:
 	virtual							~CSE_ALifeGraphPoint();
 SERVER_ENTITY_DECLARE_END
 
-class CSE_ALifeObject : virtual public CSE_Abstract, public CRandom {
+class CSE_ALifeObject : public CSE_Abstract, public CRandom {
 public:
 	enum {
 		flUseSwitches	= u32(1) << 0,
@@ -105,22 +110,25 @@ public:
 #endif
 SERVER_ENTITY_DECLARE_END
 
-class CSE_ALifeGroupAbstract : virtual public CSE_Abstract {
+class CSE_ALifeGroupAbstract {
 public:
 	ALife::OBJECT_VECTOR			m_tpMembers;
 	bool							m_bCreateSpawnPositions;
 	u16								m_wCount;
 	ALife::_TIME_ID					m_tNextBirthTime;
 
-									CSE_ALifeGroupAbstract(LPCSTR caSection);
-	virtual							~CSE_ALifeGroupAbstract();
+									CSE_ALifeGroupAbstract	(LPCSTR caSection);
+	virtual							~CSE_ALifeGroupAbstract	();
+	virtual	CSE_Abstract			*init					();
+	virtual CSE_Abstract			*base					() = 0;
+	virtual const CSE_Abstract		*base					() const = 0;
 SERVER_ENTITY_DECLARE_END
 
 template<class __A> class CSE_ALifeGroupTemplate : public __A, public CSE_ALifeGroupAbstract {
 	typedef __A					inherited1;
 	typedef CSE_ALifeGroupAbstract inherited2;
 public:
-									CSE_ALifeGroupTemplate(LPCSTR caSection) : __A(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_ALifeGroupAbstract(caSection), CSE_Abstract(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection)
+									CSE_ALifeGroupTemplate(LPCSTR caSection) : __A(pSettings->line_exist(caSection,"monster_section") ? pSettings->r_string(caSection,"monster_section") : caSection), CSE_ALifeGroupAbstract(caSection)
 	{
 	};
 	
@@ -151,6 +159,23 @@ public:
 		inherited1::UPDATE_Write	(tNetPacket);
 		inherited2::UPDATE_Write	(tNetPacket);
 	};
+
+	virtual CSE_Abstract *init		()
+	{
+		inherited1::init			();
+		inherited2::init			();
+		return						(base());
+	}
+
+	virtual CSE_Abstract *base		()
+	{
+		return						(inherited1::base());
+	}
+
+	virtual const CSE_Abstract *base() const
+	{
+		return						(inherited1::base());
+	}
 
 	#ifdef _EDITOR
 	virtual void FillProp			(LPCSTR pref, PropItemVec& items)

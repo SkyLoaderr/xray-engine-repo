@@ -58,6 +58,11 @@ public:
 	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
 	BOOL							Spawn_Read		(NET_Packet &tNetPacket);
 	IC		const Fvector			&Position		() const					{return o_Position;};
+	// we need this to prevent virtual inheritance :-(
+	virtual CSE_Abstract			*base			();
+	virtual const CSE_Abstract		*base			() const;
+	virtual CSE_Abstract			*init			();
+	// end of the virtual inheritance dependant code
 	// editor integration
 #ifdef _EDITOR
     virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
