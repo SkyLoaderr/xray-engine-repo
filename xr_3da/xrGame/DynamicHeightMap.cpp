@@ -113,6 +113,7 @@ void CHM_Static::Update	()
 						}
 					}
 				}
+				S->data[z][x] = ry;
 			}
 		}
 	}
