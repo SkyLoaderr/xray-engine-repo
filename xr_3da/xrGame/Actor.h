@@ -52,6 +52,7 @@ public:
 		mcFall		= (1ul<<8ul),
 		mcLanding	= (1ul<<9ul),
 		mcLanding2	= (1ul<<10ul),
+		mcClimb		= (1ul<<11ul),
 
 		mcAnyMove	= (mcFwd|mcBack|mcLStrafe|mcRStrafe)
 	};
@@ -122,6 +123,7 @@ public:
 	CMotionDef*				m_current_torso;
 	SActorState				m_normal;
 	SActorState				m_crouch;
+	SActorState				m_climb;
 protected:
 	// Rotation
 	SRotation				r_torso;

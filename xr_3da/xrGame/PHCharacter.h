@@ -69,6 +69,7 @@ bool b_saved_contact_velocity;
 bool b_jumping;
 bool b_climb;
 bool b_pure_climb;
+bool b_at_wall;
 UINT m_contact_count;
 dReal m_radius;
 dReal m_cyl_hight;

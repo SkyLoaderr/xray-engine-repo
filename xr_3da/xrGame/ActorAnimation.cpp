@@ -96,7 +96,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		SActorState* ST = 0;
 		SActorState::SAnimState*		AS = 0;
 		
-		if (mstate_rl&mcCrouch)			ST = &m_crouch;
+		if		(mstate_rl&mcCrouch)	ST = &m_crouch;
+		else if	(mstate_rl&mcClimb)		ST = &m_climb;
 		else							ST = &m_normal;
 
 		if (isAccelerated(mstate_rl))	AS = &ST->m_run;

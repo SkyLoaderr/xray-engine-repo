@@ -263,7 +263,8 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
 				}
-	if(is_contact&&!is_control)Disable();
+	if(is_contact&&!is_control)
+							Disable();
 ///////////////////////
 	was_contact=is_contact;
 	is_contact=false;
@@ -271,6 +272,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal step){
 	b_any_contacts=false;
 	b_valide_ground_contact=false;
 	b_valide_wall_contact=false;
+	if(!dBodyIsEnabled(m_body)) return;
 	b_climb=false;
 	b_pure_climb=true;
 	
@@ -322,9 +324,10 @@ void CPHSimpleCharacter::PhTune(dReal step){
 					// b_clamb_jump=true;
 					 b_side_contact=false;
 					 m_friction_factor=1.f;
-					 if(b_pure_climb) m_max_velocity=0.2f;
+					 if(b_pure_climb) m_max_velocity=0.3f;
 				}
-
+	if(b_climb) b_at_wall=true;
+	if(b_lose_control || (!b_climb&&is_contact)) b_at_wall=false;
 	b_depart=was_contact&&(!is_contact);
 	b_meet=(!was_contact)&&(is_contact);
 	if(b_lose_control&&is_contact)b_meet_control=true;
@@ -632,7 +635,8 @@ void CPHSimpleCharacter::SetAcceleration(Fvector accel){
 		if(accel.magnitude()!=0.f)
 					dBodyEnable(m_body);
 m_acceleration=accel;
-if( m_acceleration.y>0.f&&!b_lose_control && m_ground_contact_normal[1]>0.5f) b_jump=true;
+if( m_acceleration.y>0.f&&!b_lose_control && (m_ground_contact_normal[1]>0.5f||b_at_wall)) 
+																							b_jump=true;
 	
 }
 
@@ -802,7 +806,10 @@ EEnvironment	 CPHSimpleCharacter::CheckInvironment(){
 	if(b_lose_control)
 											return	peInAir;	
 		//else									 return peAtWall;
-	else									return peOnGround;	 								
+	else if(b_at_wall) 
+					 return peAtWall;
+
+					 return peOnGround;	 								
 
 }
 

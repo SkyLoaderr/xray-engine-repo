@@ -339,7 +339,7 @@ void CActor::HitSignal(float perc, Fvector& vLocalDir, CObject* who, s16 element
 		}
 
 		// stop-motion
-		if (Movement.Environment()==CMovementControl::peOnGround)
+		if (Movement.Environment()==CMovementControl::peOnGround || Movement.Environment()==CMovementControl::peAtWall)
 		{
 			Fvector zeroV;
 			zeroV.set			(0,0,0);
@@ -754,7 +754,7 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 	{
 		mstate_real				&=~ mcAnyMove;
 	}
-	if (Movement.Environment()==CMovementControl::peOnGround)
+	if (Movement.Environment()==CMovementControl::peOnGround || Movement.Environment()==CMovementControl::peAtWall)
 	{
 		// если на земле гарантированно снимать флажок Jump
 		if (((s_fJumpTime-m_fJumpTime)>s_fJumpGroundTime)&&(mstate_real&mcJump))
@@ -763,6 +763,12 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			m_fJumpTime			= s_fJumpTime;
 		}
 	}
+	if(Movement.Environment()==CMovementControl::peAtWall)
+
+		mstate_real				|=mcClimb;
+
+	else
+		mstate_real				&=~mcClimb;
 }
 
 void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Jump, float dt)
@@ -780,7 +786,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		}
 	}
 
-	if (Movement.Environment()==CMovementControl::peOnGround)
+	if (Movement.Environment()==CMovementControl::peOnGround || Movement.Environment()==CMovementControl::peAtWall )
 	{
 		// jump
 		m_fJumpTime				-=	dt;
@@ -1071,7 +1077,7 @@ void CActor::OnDeviceCreate()
 
 	m_normal.Create		(V,"norm");
 	m_crouch.Create		(V,"cr");
-
+	m_climb.Create		(V,"cr");
 	//
 	Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
