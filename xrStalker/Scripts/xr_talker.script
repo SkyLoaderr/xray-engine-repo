@@ -184,6 +184,7 @@ function action_talker_activity:initialize()
 
 	self.object:set_mental_state(anim.free)
 	self.object:set_sight(look.search, nil, 0)
+	--self.object:set_sight(look.path_dir, nil, 0)
 	--self.object:set_sight(look.danger, nil, 0)
 
 	--xr_reactions.add_rule(self.object, "ignore")
