@@ -61,7 +61,28 @@ void OGF::Stripify	()
 {
 	if (m_SWI.count||(I_Current>=0))	return;	// Mesh already progressive - don't stripify it
 
-//	set_status("Stripifying",treeID,faces.size(),vertices.size());
+	// fast verts
+	try {
+		xr_vector<u16>	indices,permute;
+
+		// Stripify
+		u16* F			= (u16*)&*x_faces.begin(); 
+		indices.assign	(F,F+(faces.size()*3)	);
+		permute.resize	(x_vertices.size()		);
+		xrStripify		(indices,permute,c_vCacheSize,0);
+
+		// Copy faces
+		CopyMemory		(&*x_faces.begin(),&*indices.begin(),(u32)indices.size()*sizeof(u16));
+
+		// Permute vertices
+		vecOGF_V temp_list = x_vertices;
+		for(u32 i=0; i<temp_list.size(); i++)
+			x_vertices[i]=temp_list[permute[i]];
+	} catch (...) {
+		clMsg("ERROR: [fast-vert] Stripifying failed. Dump below.");
+	}
+
+	// normal verts
 	try {
 		xr_vector<u16>	indices,permute;
 		
@@ -79,7 +100,7 @@ void OGF::Stripify	()
 		for(u32 i=0; i<temp_list.size(); i++)
 			vertices[i]=temp_list[permute[i]];
 	} catch (...) {
-		clMsg("ERROR: Stripifying failed. Dump below.");
+		clMsg("ERROR: [slow-vert] Stripifying failed. Dump below.");
 		DumpFaces();
 	}
 }
