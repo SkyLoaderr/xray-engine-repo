@@ -12,6 +12,7 @@ function HeliManager:Init()
    self.m_heliObject = self.m_heli:get_helicopter()
    self.m_heli:AddEventCallback(CHelicopter.on_point,self,"HeliOnPoint")
    self.m_heli:AddEventCallback(CHelicopter.on_hit,self,"HeliOnHit")
+   
 end
 
 function HeliManager:HeliOnHit(p)
@@ -54,7 +55,7 @@ function HeliManager:HeliOnPoint(p)
 
    if self.m_heliObject:GetState() == CHelicopter.eMovingByAttackTraj then
       self.m_heliObject:GoPatrolByPatrolPath("heli_way_1",0)  --0==from_idx
---      self.m_heliObject:SetCurrVelocity(35)  -- m/sec (max)
+      self.m_heliObject:SetCurrVelocity(35)  -- m/sec (max)
    end
 
 end
@@ -62,6 +63,8 @@ end
 function HeliManager:Start()
       self.m_b_exploded             = false
       self.m_b_prepered_to_die   = false
+      self.m_start_lighting = 0
+
 	while true do
    local state = self.m_heliObject:GetState()
    if state == CHelicopter.eIdleState then
@@ -87,9 +90,16 @@ function HeliManager:Start()
       self.m_b_exploded = true
          printf("------------EXPLODE----------------------")
          self.m_heliObject:Explode()
+         self.m_heliObject:TurnLighting(true)
+         self.m_start_lighting = device():time_global()
       end
    end
-		
+
+   if (self.m_b_exploded==true) and (self.m_start_lighting~=0) and (device():time_global()-self.m_start_lighting>15000)  then		
+         self.m_heliObject:TurnLighting(false)
+         self.m_start_lighting = 0
+   end
+
    wait()
    end
 end

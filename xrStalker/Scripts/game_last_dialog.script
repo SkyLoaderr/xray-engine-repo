@@ -50,7 +50,7 @@ function uiDialog:InitControls()
 --------------------------------------
    local rg   = CUIRadioGroup()
    rg:SetAutoDelete(true)
-   rg:SetWindowName("static_1")
+   rg:SetWindowName("rg_1")
    rg:Init(20,10,220,110)
    txt_main:AttachChild(rg)
 --------------------------------------
@@ -92,14 +92,24 @@ function uiDialog:InitControls()
    edt:SetWindowName("edit_1")
    
    edt:Init("ui\\ui_inv_info_over_b",20,140,220,31) 
-   edt:SetText("some text")
+--   edt:SetText("some text")
    edt:ClipperOn()
 --   edt:SetTextAlign(CGameFont.alCenter) --horizontal align
 --   edt:SetTextY(15) --vertical align(pixel)
    self:Register(edt)
    txt_main:AttachChild(edt)
-
+-----------------------------------------
+   btn   = CUICheckButton()
+   btn:SetAutoDelete(true)
+   btn:SetWindowName("check_button_1")
    
+   btn:Init(10,180,171,21) 
+   btn:SetText("check-1")
+   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
+   btn:SetTextY(10) --vertical align(pixel)
+   self:Register(btn)
+   rg:AttachChild(btn)
+------------------------------------------   
 end
 
 function uiDialog:InitCallBacks()
@@ -108,20 +118,31 @@ function uiDialog:InitCallBacks()
    self:AddCallback("radio_button_1",ui_events.BUTTON_CLICKED,self,"OnButton_radio1_clicked")
    self:AddCallback("radio_button_2",ui_events.BUTTON_CLICKED,self,"OnButton_radio2_clicked")
    self:AddCallback("radio_button_3",ui_events.BUTTON_CLICKED,self,"OnButton_radio3_clicked")
+
+   self:AddCallback("check_button_1",ui_events.CHECK_BUTTON_RESET,self,"OnButton_check_reset")
+   self:AddCallback("check_button_1",ui_events.CHECK_BUTTON_RESET,self,"OnButton_check_set")
 end
 
 function uiDialog:OnButton_ok_clicked()
    printf("test_dialog:OnButton_ok_clicked()")
-   local s0 = self:GetEditBox("edit_1")
-   local text = s0:GetText()
-   printf(text)
+
+   local edt = self:GetEditBox("edit_1")
+   local t = edt:GetText()
+   printf("text is =%s",t)
+
+   local r0 = self:GetRadioGroup("rg_1")
+   local idx = r0:GetCheckedPos()
+   printf("active idx=%d",idx)
+
+   r0:SetCheckedPos(2)
+   idx = r0:GetCheckedPos()
+   printf("active idx=%d",idx)
 
 end
 
 function uiDialog:OnButton_cancel_clicked()
    printf("test_dialog:OnButton_cancel_clicked()")
---   local s0 = self:GetStatic("static_0")
---   s0:InitTexture("ui\\ui_map_escape")
+ --   s0:InitTexture("ui\\ui_map_escape")
 end
 
 function uiDialog:OnButton_radio1_clicked()
@@ -142,6 +163,28 @@ function uiDialog:OnButton_radio3_clicked()
 --   s0:InitTexture("ui\\ui_map_escape")
 end
 
+function uiDialog:OnButton_check_reset()
+   printf("test_dialog:OnButton_check_1_reset()")
+
+end
+
+function uiDialog:OnButton_check_set()
+   printf("test_dialog:OnButton_check_1_set()")
+
+end
+
 function uiDialog:OnKeyboard(dik, keyboard_action)  --virtual function
    CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+   local bind = dik_to_bind(dik)
+   if keyboard_action ==ui_events.WINDOW_KEY_PRESSED then
+      printf("pressed dik=%d bind=%d",dik,bind)
+   elseif keyboard_action ==ui_events.WINDOW_KEY_RELEASED then
+      printf("released dik=%d bind=%d",dik,bind)
+   end
+
+   if bind == key_bindings.kQUIT then
+      self.m_game_cl:StopMenu(self)
+   end
+   return true
 end
+

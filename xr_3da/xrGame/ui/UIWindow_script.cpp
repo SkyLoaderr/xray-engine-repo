@@ -44,7 +44,7 @@ CGameFont* GetFontLetterica25()
 {return HUD().pFontLetterica25;}
 
 
-u32 GetARGB(u16 a, u16 r, u16 g, u16 b)
+int GetARGB(u16 a, u16 r, u16 g, u16 b)
 {return color_argb(a,r,g,b);}
 
 using namespace luabind;

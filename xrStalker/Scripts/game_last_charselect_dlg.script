@@ -1,1 +1,156 @@
-sdfasdf
+class "char_dialog" (CUIScriptWnd)
+
+function char_dialog:__init() super()
+   self:SetFont(GetFontMedium())
+   self:InitControls()
+   self:InitCallBacks()
+end
+
+function char_dialog:__finalize  ()
+end
+
+function char_dialog:SetClGame  (game_cl)
+   self.m_game_cl = game_cl
+end
+function char_dialog:InitControls()
+   
+    local left_pos  = 100
+    local top_pos  = 100
+    local width     = 512
+    local height     = 512
+   self:Init(left_pos,top_pos,width,height) --init position 
+
+   local txt_base   = CUIStatic()
+   txt_base:SetAutoDelete(true)              --always
+   txt_base:SetWindowName("txt_base")
+   txt_base:Init("andy\\andy_charselectdlg",0,0,width,height) --init texture and position relatively parent
+   txt_base:ClipperOn()
+   self:AttachChild(txt_base)
+---------------------------------------
+---------ASSAULT SECTION-----------------
+   local txt   = CUIStatic()
+   txt:SetAutoDelete(true)
+   txt:SetWindowName("char_1_static")
+   txt:Init("andy\\andy_assault",30,95,136,304)
+--   txt:Init("andy\\andy_char_fake",30,95,128,304)
+   txt:ClipperOn()
+   txt_base:AttachChild(txt)
+
+   local btn   = CUIButton()
+   btn:SetAutoDelete(true) 
+   btn:SetWindowName("btn_char_1")
+   btn:Init(0,0,136,394)
+   btn:SetText("Assault")
+   btn:SetTextAlign(CGameFont.alCenter) --horizontal align
+   btn:SetTextY(285) --vertical align(pixel)
+   self:Register(btn)
+   txt:AttachChild(btn)
+---------SNIPER SECTION-----------------
+   txt   = CUIStatic()
+   txt:SetAutoDelete(true)
+   txt:SetWindowName("char_2_static")
+   txt:Init("andy\\andy_sniper",176,95,136,304)
+--   txt:Init("andy\\andy_char_fake",176,95,128,304)
+   txt:ClipperOn()
+   txt_base:AttachChild(txt)
+
+   btn   = CUIButton()
+   btn:SetAutoDelete(true) 
+   btn:SetWindowName("btn_char_2")
+   btn:Init(0,0,136,304)
+   btn:SetText("Sniper")
+   btn:SetTextAlign(CGameFont.alCenter)
+   btn:SetTextY(285)
+   self:Register(btn)
+   txt:AttachChild(btn)
+---------TECHNICIAN SECTION-----------------
+   txt   = CUIStatic()
+   txt:SetAutoDelete(true)
+   txt:SetWindowName("char_3_static")
+   txt:Init("andy\\andy_technician",332,95,136,304)
+--   txt:Init("andy\\andy_char_fake",332,95,128,304)
+   txt:ClipperOn()
+   txt_base:AttachChild(txt)
+
+   btn   = CUIButton()
+   btn:SetAutoDelete(true) 
+   btn:SetWindowName("btn_char_3")
+   btn:Init(0,0,136,304)
+   btn:SetText("Technician")
+   btn:SetTextAlign(CGameFont.alCenter)
+   btn:SetTextY(285)
+   self:Register(btn)
+   txt:AttachChild(btn)
+end
+
+function char_dialog:InitCallBacks()
+   self:AddCallback("btn_char_1",ui_events.BUTTON_CLICKED,self,"On_char_1_selected")
+   self:AddCallback("btn_char_2",ui_events.BUTTON_CLICKED,self,"On_char_2_selected")
+   self:AddCallback("btn_char_3",ui_events.BUTTON_CLICKED,self,"On_char_3_selected")
+
+   self:AddCallback("btn_char_1",ui_events.BUTTON_FOCUS_RECEIVED,self,"On_char_1_focused")
+   self:AddCallback("btn_char_2",ui_events.BUTTON_FOCUS_RECEIVED,self,"On_char_2_focused")
+   self:AddCallback("btn_char_3",ui_events.BUTTON_FOCUS_RECEIVED,self,"On_char_3_focused")
+end
+
+function char_dialog:highlightItem(itm)
+    local s = self:GetStatic(itm)
+    s:SetColor(GetARGB(255,255,255,255) ) 
+end
+
+function char_dialog:unHighlightItem(itm) -- :))
+    local s = self:GetStatic(itm)
+    s:SetColor(GetARGB(255,128,128,128) )
+end
+
+function char_dialog:On_char_1_focused()
+    local s = self:GetStatic("char_1_static")
+    local clr = s:GetColor()
+
+    self:highlightItem("char_1_static")
+
+    local s1 = self:GetStatic("char_1_static")
+    local clr1 = s1:GetColor()
+
+    self:unHighlightItem("char_2_static")
+  
+    local s2 = self:GetStatic("char_2_static")
+    local clr2 = s2:GetColor()
+
+    self:unHighlightItem("char_3_static")
+end
+
+function char_dialog:On_char_2_focused()
+    self:highlightItem("char_2_static")
+    self:unHighlightItem("char_1_static")
+    self:unHighlightItem("char_3_static")
+end
+
+function char_dialog:On_char_3_focused()
+    self:highlightItem("char_3_static")
+    self:unHighlightItem("char_1_static")
+    self:unHighlightItem("char_2_static")
+end
+
+function char_dialog:On_char_1_selected()
+    printf("Assault selected")
+end
+
+function char_dialog:On_char_2_selected()
+    printf("Sniper selected")
+end
+
+function char_dialog:On_char_3_selected()
+    printf("Tecnician selected")
+end
+
+function char_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
+   CUIScriptWnd.OnKeyboard(self,dik,keyboard_action)
+
+   local bind = dik_to_bind(dik)
+   if bind == key_bindings.kQUIT then
+      self.m_game_cl:StopMenu(self)
+   end
+   return true
+end
+
