@@ -9,6 +9,9 @@
 #include "stdafx.h"
 #include "agent_manager.h"
 #include "ai/stalker/ai_stalker.h"
+#include "agent_manager_actions.h"
+#include "agent_manager_motivations.h"
+#include "agent_manager_properties.h"
 
 #define SECTION "squad_manager"
 
@@ -34,7 +37,7 @@ float CAgentManager::shedule_Scale	()
 
 void CAgentManager::shedule_Update	(u32 time_delta)
 {
-	inherited::shedule_Update	(time_delta);
+	ISheduled::shedule_Update	(time_delta);
 	update						(time_delta);
 }
 
@@ -48,6 +51,7 @@ void CAgentManager::add				(CEntity *member)
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
 	if (!stalker)
 		return;
+
 	iterator					I = std::find(m_members.begin(),m_members.end(), stalker);
 	VERIFY						(I == m_members.end());
 	m_members.push_back			(stalker);
@@ -58,6 +62,7 @@ void CAgentManager::remove			(CEntity *member)
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
 	if (!stalker)
 		return;
+
 	iterator					I = std::find(m_members.begin(),m_members.end(), stalker);
 	VERIFY						(I != m_members.end());
 	m_members.erase				(I);
@@ -65,4 +70,5 @@ void CAgentManager::remove			(CEntity *member)
 
 void CAgentManager::update			(u32 time_delta)
 {
+//	inherited::update			(time_delta);
 }

@@ -18,10 +18,10 @@ class CAgentManager :
 	public ISheduled
 {
 protected:
-	typedef ISheduled						inherited;
-	typedef xr_vector<CAI_Stalker*>			MEMBER_STORAGE;
-	typedef MEMBER_STORAGE::iterator		iterator;
-	typedef MEMBER_STORAGE::const_iterator	const_iterator;
+	typedef CMotivationActionManager<CAgentManager>	inherited;
+	typedef xr_vector<CAI_Stalker*>					MEMBER_STORAGE;
+	typedef MEMBER_STORAGE::iterator				iterator;
+	typedef MEMBER_STORAGE::const_iterator			const_iterator;
 
 protected:
 	MEMBER_STORAGE			m_members;

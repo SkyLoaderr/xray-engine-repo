@@ -162,6 +162,11 @@ void CScriptEngine::export_effector()
 	];
 }
 
+bool patrol_path_exists(LPCSTR patrol_path)
+{
+	return		(Level().m_PatrolPaths.find(patrol_path) != Level().m_PatrolPaths.end());
+}
+
 void CScriptEngine::export_level()
 {
 	module(lua(),"level")
@@ -177,6 +182,7 @@ void CScriptEngine::export_level()
 		def("cover_in_direction",				cover_in_direction),
 		def("vertex_in_direction",				vertex_in_direction),
 		def("rain_factor",						rain_factor),
+		def("patrol_path_exists",				patrol_path_exists),
 		
 		def("map_add_object_icon",				map_add_object_icon),
 		def("map_remove_object_icon",			map_remove_object_icon)
