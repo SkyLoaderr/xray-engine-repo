@@ -57,5 +57,6 @@ void CStateManagerBoar::update()
 		clamp(m_object->_target_delta, -PI_DIV_4, PI_DIV_4);
 	}
 
-	set_state(state);
+	set_state	(state);
+	execute		();
 }

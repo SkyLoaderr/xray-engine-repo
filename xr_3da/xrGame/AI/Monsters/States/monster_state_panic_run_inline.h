@@ -47,5 +47,6 @@ bool CStateMonsterPanicRunAbstract::check_completion()
 }
 
 #undef DIST_TO_PATH_END
+#undef MIN_DIST_TO_ENEMY
 #undef TEMPLATE_SPECIALIZATION
 #undef CStateMonsterPanicRunAbstract

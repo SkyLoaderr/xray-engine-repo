@@ -2911,12 +2911,34 @@
 						<File
 							RelativePath=".\ai\Monsters\Chimera\chimera_state_manager.h">
 						</File>
-						<File
-							RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten.h">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_inline.h">
-						</File>
+						<Filter
+							Name="state threaten"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_roar.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_roar_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_steal.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_steal_inline.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_walk.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_state_threaten_walk_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="PseudoGigant"

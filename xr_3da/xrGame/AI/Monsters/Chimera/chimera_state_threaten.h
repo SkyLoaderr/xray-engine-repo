@@ -14,13 +14,7 @@ protected:
 		eStateSteal
 	};
 
-	enum {
-		eActionThreatenFirst,
-		eActionSteal,
-		eActionWalk,
-		eActionThreatenSecond,
-		eActionNone
-	} m_action;
+	u32					m_last_time_threaten;
 
 public:
 						CStateChimeraThreaten	(_Object *obj);
@@ -30,11 +24,9 @@ public:
 
 	virtual bool 		check_start_conditions	();
 	virtual	void		reselect_state			();
-	virtual	void		setup_substates			();
 	virtual void 		finalize				();
 	virtual void 		critical_finalize		();
-
-			void		select_action			();
+	//virtual void 		critical_finalize		();
 };
 
 #include "chimera_state_threaten_inline.h"

@@ -24,6 +24,8 @@ template<typename _Object>
 class CStateMonsterMoveToPointEx : public CState<_Object> {
 	typedef CState<_Object> inherited;
 
+protected:
+	
 	SStateDataMoveToPointEx data;
 
 public:
