@@ -26,7 +26,7 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEf
 	m_MParam			= 0;
 	char		nm[255],fn[255];
 	strcpy		(nm,name);	if (strext(nm))	strcpy(strext(nm),".anm");
-	if ( FS.exist(fn,"$level$",nm) || FS.exist(fn,"$anims$",nm) )
+	if ( FS.exist(fn,"$level$",nm) || FS.exist(fn,"$game_anims$",nm) )
 	{
 		m_pMotion				= xr_new<COMotion>		();
 		m_pMotion->LoadMotion	(fn);
