@@ -88,7 +88,7 @@ function zone_binder:net_spawn( server_object )
 	end
 
 	if ini:section_exist( "tips" ) then
-		utils.abort( "script zone %s: You must use restrictor instead of sctript zone for level tips", self.object:name() )
+		utils.abort( "script zone '%s': You must use restrictor instead of sctript zone for level tips", self.object:name() )
 	end
 
 	return true
