@@ -545,6 +545,17 @@ function loadJob(sj, gname, type, squad, groups)
 			prior = 0, state = {0},
 			in_rest = "", out_rest = "gar_golg"
 		}
+		t = { section = "kamp2@gar_dolg",
+			idle = 15*60*1000,
+			prior = 2, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp3@gar_dolg",
+			idle = 15*60*1000,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
 		table.insert(sj, t)				
 		t = { section = "kamp1@gar_dolg",
 			idle = 0,
