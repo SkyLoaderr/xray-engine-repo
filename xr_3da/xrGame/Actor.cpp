@@ -1122,6 +1122,7 @@ float CActor::HitScale	(int element)
 }
 
 void CActor::create_Skeleton(){
+	//PKinematics	(pVisual)->PlayCycle(ST->death_init);
 	//create shell
 	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
 	m_phSkeleton		= P_create_Shell();
