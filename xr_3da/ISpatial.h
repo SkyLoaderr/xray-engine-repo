@@ -114,7 +114,7 @@ public:
 	ISpatial_NODE*					m_root;
 	Fvector							m_center;
 	float							m_bounds;
-	xr_vector<ISpatial*>			q_result;
+	xr_vector<ISpatial*>*			q_result;
 	u32								stat_nodes;
 	u32								stat_objects;
 	CStatTimer						stat_insert;
@@ -156,10 +156,10 @@ public:
 	};
 
 	// query
-	void							q_ray			(u32 _o, u32 _mask, const Fvector&	_start,  const Fvector&	_dir, float _range);
-	void							q_box			(u32 _o, u32 _mask, const Fvector&	_center, const Fvector& _size);
-	void							q_sphere		(u32 _o, u32 _mask, const Fvector&	_center, const float _radius);
-	void							q_frustum		(u32 _o, u32 _mask, const CFrustum&	_frustum);
+	void							q_ray			(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const Fvector&		_start,  const Fvector&	_dir, float _range);
+	void							q_box			(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const Fvector&		_center, const Fvector& _size);
+	void							q_sphere		(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const Fvector&		_center, const float _radius);
+	void							q_frustum		(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const CFrustum&	_frustum);
 };
 
 ENGINE_API extern ISpatial_DB*		g_SpatialSpace;

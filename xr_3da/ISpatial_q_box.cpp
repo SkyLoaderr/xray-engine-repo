@@ -55,7 +55,7 @@ public:
 	}
 };
 
-void	ISpatial_DB::q_box			(u32 _o, u32 _mask, const Fvector& _center, const Fvector& _size)
+void	ISpatial_DB::q_box			(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const Fvector& _center, const Fvector& _size)
 {
 	cs.Enter			();
 	q_result.clear		();
@@ -64,7 +64,7 @@ void	ISpatial_DB::q_box			(u32 _o, u32 _mask, const Fvector& _center, const Fvec
 	cs.Leave			();
 }
 
-void	ISpatial_DB::q_sphere		(u32 _o, u32 _mask, const Fvector& _center, const float _radius)
+void	ISpatial_DB::q_sphere		(xr_vector<ISpatial*>* R, u32 _o, u32 _mask, const Fvector& _center, const float _radius)
 {
 	Fvector			_size			= {_radius,_radius,_radius};
 	q_box							(_o,_mask,_center,_size);
