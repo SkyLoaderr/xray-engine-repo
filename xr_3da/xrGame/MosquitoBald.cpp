@@ -77,7 +77,7 @@ void CMosquitoBald::Affect(CObject* O)
 			l_P.w_u16	(ID());
 			l_P.w_dir	(hit_dir);
 			l_P.w_float	(power);
-			l_P.w_s16	((s16)BI_NONE);
+			l_P.w_s16	(/*(s16)BI_NONE*/0);
 			l_P.w_vec3	(position_in_bone_space);
 			l_P.w_float	(impulse);
 			l_P.w_u16	((u16)m_eHitTypeBlowout);

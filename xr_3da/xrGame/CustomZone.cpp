@@ -161,22 +161,34 @@ void CCustomZone::Load(LPCSTR section)
 
 
 	if(pSettings->line_exist(section,"blowout_particles_time")) 
+	{
 		m_dwBlowoutParticlesTime = pSettings->r_u32(section,"blowout_particles_time");
+    	R_ASSERT((s32)m_dwBlowoutParticlesTime<=m_StateTime[eZoneStateBlowout]);
+	}
 	else
 		m_dwBlowoutParticlesTime = 0;
 
 	if(pSettings->line_exist(section,"blowout_light_time")) 
+	{
 		m_dwBlowoutLightTime = pSettings->r_u32(section,"blowout_light_time");
+		R_ASSERT((s32)m_dwBlowoutLightTime<=m_StateTime[eZoneStateBlowout]);
+	}
 	else
 		m_dwBlowoutLightTime = 0;
 
 	if(pSettings->line_exist(section,"blowout_sound_time")) 
+	{
 		m_dwBlowoutSoundTime = pSettings->r_u32(section,"blowout_sound_time");
+    	R_ASSERT((s32)m_dwBlowoutSoundTime<=m_StateTime[eZoneStateBlowout]);
+	}
 	else
 		m_dwBlowoutSoundTime = 0;
 
 	if(pSettings->line_exist(section,"blowout_explosion_time")) 
-		m_dwBlowoutExplosionTime = pSettings->r_u32(section,"blowout_explosion_time");
+	{
+		m_dwBlowoutExplosionTime = pSettings->r_u32(section,"blowout_explosion_time"); 
+		R_ASSERT((s32)m_dwBlowoutExplosionTime<=m_StateTime[eZoneStateBlowout]);
+	}
 	else
 		m_dwBlowoutExplosionTime = 0;
 

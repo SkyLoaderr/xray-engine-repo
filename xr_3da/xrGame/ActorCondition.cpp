@@ -6,6 +6,8 @@ CActorCondition::CActorCondition(void)
 {
 	m_fAccelPower = 0.0006f;
 	m_fJumpPower = 0.05f;
+
+	m_bLimping  = false;
 }
 
 CActorCondition::~CActorCondition(void)
@@ -20,8 +22,13 @@ void CActorCondition::Load(LPCSTR section)
 	m_fJumpPower = pSettings->r_float(section,"jump_power_v");
 
 	//порог силы и здоровья меньше которого актер начинает хромать
-	m_fLimpingHealth	= pSettings->r_float(section,	"limping_health");
-	m_fLimpingPower		= pSettings->r_float(section,	"limping_power");
+	m_fLimpingHealthBegin	= pSettings->r_float(section,	"limping_health_begin");
+	m_fLimpingHealthEnd		= pSettings->r_float(section,	"limping_health_end");
+	R_ASSERT(m_fLimpingHealthBegin<m_fLimpingHealthEnd);
+
+	m_fLimpingPowerBegin	= pSettings->r_float(section,	"limping_power_begin");
+	m_fLimpingPowerEnd		= pSettings->r_float(section,	"limping_power_end");
+	R_ASSERT(m_fLimpingPowerBegin<m_fLimpingPowerEnd);
 }
 
 
@@ -52,8 +59,14 @@ void CActorCondition::ConditionAccel(float weight)
 
 bool CActorCondition::IsLimping() const
 {
-	if(m_fLimpingPower > m_fPower || m_fLimpingHealth > m_fHealth)
-		return true;
-	else
-		return false;
+	if(m_fPower< m_fLimpingPowerBegin || m_fHealth < m_fLimpingHealthBegin)
+	{
+		m_bLimping = true;
+	}
+	else if(m_fPower > m_fLimpingPowerEnd && m_fHealth > m_fLimpingHealthEnd)
+	{
+		m_bLimping = false;
+	}
+
+	return m_bLimping;
 }

@@ -295,7 +295,7 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 //	Msg			("[%s] Current weapon slot   : %d",*cName(),dwCurrentAniSlot);
 //	Msg			("[%s] Current movement type : %d",*cName(),m_object->movement_type());
 
-	EBodyState l_tBodyState = (eBodyStateStand == m_object->body_state()) && m_object->IsLimping() ? eBodyStateStandDamaged : m_object->body_state();
+	EBodyState l_tBodyState = ((eBodyStateStand == m_object->body_state()) && m_object->IsLimping()) ? eBodyStateStandDamaged : m_object->body_state();
 	if (m_object->inventory().ActiveItem()) {
 		if (tpWeapon) {
 			switch (tpWeapon->STATE) {
@@ -458,7 +458,7 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 
 void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
-	EBodyState				l_tBodyState = (eBodyStateStand == m_object->body_state()) && m_object->IsLimping() ? eBodyStateStandDamaged : m_object->body_state();
+	EBodyState				l_tBodyState = ((eBodyStateStand == m_object->body_state()) && m_object->IsLimping()) ? eBodyStateStandDamaged : m_object->body_state();
 	
 	// moving
 	float					yaw, pitch;

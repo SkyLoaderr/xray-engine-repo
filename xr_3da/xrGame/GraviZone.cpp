@@ -75,7 +75,7 @@ bool  CGraviZone::BlowoutState()
 {
 	bool result = inherited::BlowoutState();
 
-	if(!result)
+//	if(!result)
 	{
 		UpdateBlowout();
 		AffectObjects();

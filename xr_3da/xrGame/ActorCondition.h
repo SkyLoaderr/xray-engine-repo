@@ -37,9 +37,12 @@ protected:
 	//хромание при потере сил и здоровья
 	virtual bool IsLimping() const;
 
+	mutable bool m_bLimping;
 	//порог силы и здоровья меньше которого актер начинает хромать
-	float m_fLimpingPower;
-	float m_fLimpingHealth;
+	float m_fLimpingPowerBegin;
+	float m_fLimpingPowerEnd;
+	float m_fLimpingHealthBegin;
+	float m_fLimpingHealthEnd;
 };
 
 #endif //_ACTOR_CONDITION_H_

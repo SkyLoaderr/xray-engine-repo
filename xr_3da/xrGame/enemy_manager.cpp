@@ -13,6 +13,10 @@
 #include "ef_storage.h"
 #include "hit_memory_manager.h"
 
+#include "level.h"
+#include "actor.h"
+
+
 bool CEnemyManager::useful					(const CEntityAlive *entity_alive) const
 {
 	if (!entity_alive->g_Alive())
@@ -79,4 +83,45 @@ void CEnemyManager::reload					(LPCSTR section)
 		m_ignore_monster_threshold	= pSettings->r_float(section,"ignore_monster_threshold");
 	if (pSettings->line_exist(section,"max_ignore_distance"))
 		m_max_ignore_distance		= pSettings->r_float(section,"max_ignore_distance");
+}
+
+
+CEnemyManager::CEnemyManager		()
+{
+	m_actor_enemy = NULL;
+}
+
+void CEnemyManager::update					()
+{
+	inherited::update			();
+
+	CGameObject* pThis = dynamic_cast<CGameObject*>(this); VERIFY(pThis);
+	
+	if(selected())
+	{
+		if(m_actor_enemy && selected()->ID() != m_actor_enemy->ID())
+		{
+			Level().RemoveMapLocationByID(pThis->ID());
+		}
+		else
+		{
+			m_actor_enemy = dynamic_cast<const CActor*>(selected());
+			if(m_actor_enemy)
+			{
+				SMapLocation map_location;
+				map_location.attached_to_object = true;
+				map_location.object_id = pThis->ID();
+				map_location.icon_width = map_location.icon_height = 0;	
+				map_location.icon_color = 0xFFFF0000;
+
+				map_location.icon_x = map_location.icon_y = 0;
+				map_location.text = "";
+				Level().AddMapLocation(map_location);
+			}
+		}
+	}
+	else if(!m_actor_enemy)
+	{
+		Level().RemoveMapLocationByID(pThis->ID());
+	}
 }

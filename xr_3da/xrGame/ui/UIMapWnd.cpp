@@ -216,8 +216,8 @@ void CUIMapWnd::InitLocalMap()
 
 		map_spot->SetShader(GetMapIconsShader());
 		map_spot->MoveWindow(P.x + left, P.y + top);
-		map_spot->SetWidth(MAP_ICON_WIDTH);
-		map_spot->SetHeight(MAP_ICON_HEIGHT);
+		map_spot->SetWidth(MAP_ICON_WIDTH*map_location.icon_width);
+		map_spot->SetHeight(MAP_ICON_HEIGHT*map_location.icon_height);
 		map_spot->GetUIStaticItem().SetOriginalRect(
 			map_location.icon_x*MAP_ICON_GRID_WIDTH,
 			map_location.icon_y*MAP_ICON_GRID_HEIGHT,
