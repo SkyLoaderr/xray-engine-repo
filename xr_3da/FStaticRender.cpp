@@ -188,7 +188,7 @@ void __fastcall matrix_L2(SceneGraph::mapMatrixItem::TNode *N)
 {
 	FBasicVisual *V = N->val.pVisual;
 	CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,(D3DMATRIX*)N->val.Matrix.d3d()));
-	::Render.Lights.SelectDynamic(N->val.vCenter,V->bv_Radius);
+	::Render.Lights.Select(N->val.vCenter,V->bv_Radius);
 	gm_SetAmbientLevel(N->val.iLighting);
 	V->Render(calcLOD(N->key,V->bv_Radius));
 }
@@ -206,7 +206,7 @@ void __fastcall sorted_L1(SceneGraph::mapSorted_Node *N)
 	FBasicVisual *V = N->val.pVisual;
 	Device.Shader.set_Shader		(V->hShader);
 	CHK_DX(HW.pDevice->SetTransform	(D3DTS_WORLD,N->val.Matrix.d3d()));
-	::Render.Lights.SelectDynamic	(N->val.vCenter,V->bv_Radius);
+	::Render.Lights.Select			(N->val.vCenter,V->bv_Radius);
 	gm_SetAmbientLevel				(N->val.iLighting);
 	V->Render						(calcLOD(N->key,V->bv_Radius));
 }
@@ -389,7 +389,6 @@ void	CRender::Render		()
 			// NORMAL-matrix		*** actors and dyn. objects
 			mapMatrix.traverseANY	(matrix_L1);
 			mapMatrix.clear			();
-			Lights.BeginStatic		();
 
 			CHK_DX(HW.pDevice->SetTransform(D3DTS_WORLD,precalc_identity.d3d()));
 			Wallmarks.Render		();		// Wallmarks has priority as normal geometry
@@ -403,7 +402,6 @@ void	CRender::Render		()
 	}
 	
 	// Sorted (back to front)
-	Lights.BeginStatic		();
 	mapSorted.traverseRL	(sorted_L1);
 	mapSorted.clear			();
 
