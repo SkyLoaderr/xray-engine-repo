@@ -32,11 +32,11 @@
 
 #define ROWS	300
 #define COLUMNS 300
-typedef u32		_dist_type;
+typedef float		_dist_type;
 
-//typedef CAI_Map																CGraph;
+typedef CAI_Map																CGraph;
 //typedef CSE_ALifeGraph														CGraph;
-typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
+//typedef CTestTable<_dist_type,ROWS,COLUMNS>									CGraph;	
 
 //typedef CDataStorageMultiBinaryHeap<4,_dist_type,u32,u32,true,24,8>			CDataStorage;
 //typedef CDataStorageBinaryHeap<_dist_type,u32,u32,true,24,8>					CDataStorage;
@@ -65,13 +65,14 @@ void path_test(LPCSTR caLevelName)
 
 #ifdef TIME_TEST
 	xr_vector<u32>			a;
-	a.resize				(ROWS*COLUMNS);
-	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
-		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
 
-//	a.resize				(graph->get_node_count());
-//	for (int i=0, n = (int)a.size(); i<n; ++i)
-//		a[i] = i;
+//	a.resize				(ROWS*COLUMNS);
+//	for (int i=0, n = ROWS*COLUMNS; i<n; ++i)
+//		a[i] = (i/COLUMNS + 1)*(COLUMNS + 2) + i%COLUMNS + 1;
+
+	a.resize				(graph->get_node_count());
+	for (int i=0, n = (int)a.size(); i<n; ++i)
+		a[i] = i;
 	
 	std::random_shuffle		(a.begin(),a.end());
 	Msg						("%d times",_min((int)a.size(),TEST_COUNT));
