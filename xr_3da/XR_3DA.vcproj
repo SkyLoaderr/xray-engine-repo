@@ -529,6 +529,9 @@
 					RelativePath=".\VirtualVector.h">
 				</File>
 				<File
+					RelativePath="xrPool.h">
+				</File>
+				<File
 					RelativePath=".\xr_list.h">
 				</File>
 				<File

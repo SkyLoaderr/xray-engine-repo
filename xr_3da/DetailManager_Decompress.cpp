@@ -106,8 +106,9 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			if (selected.size()==1)	index = selected[0];
 			else					index = selected[r_selection.randI(selected.size())]; 
 
-			CDetail*	Dobj = objects[DS.items[index].id];
-			SlotItem	Item;
+			CDetail*	Dobj	= objects[DS.items[index].id];
+			SlotItem*	ItemP	= poolSI.create();
+			SlotItem&	Item	= *ItemP;
 
 			// Position (XZ)
 			float		rx = (float(x)/float(d_size))*dm_slot_size + D.BB.min.x;
@@ -190,7 +191,7 @@ void		CDetailManager::cache_Decompress(Slot* S)
 			}
 
 			// Save it
-			D.G[index].items.push_back(Item);
+			D.G[index].items.push_back(ItemP);
 		}
 	}
 

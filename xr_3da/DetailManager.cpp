@@ -190,15 +190,15 @@ void CDetailManager::Render		(Fvector& vecEYE)
 						if (sp.id==0xff)	continue;
 						float				R   = objects	[sp.id]->bv_sphere.R;
 						
-						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
+						SlotItem			**siIT=sp.items.begin(), **siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
 						{
-							SlotItem& Item	= *siIT;
+							SlotItem& Item	= *(*siIT);
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 							
-							if (::Render->ViewBase.testSphere_dirty(siIT->P,R*Item.scale))	
+							if (::Render->ViewBase.testSphere_dirty(Item.P,R*Item.scale))	
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
@@ -210,7 +210,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 								if (ssa < r_ssaCHEAP)	vis_id=0;
 								
 								Item.scale_calculated = scale;			//alpha;
-								visible[vis_id][sp.id].push_back	(siIT);
+								visible[vis_id][sp.id].push_back	(*siIT);
 							}
 						}
 					}
@@ -225,10 +225,10 @@ void CDetailManager::Render		(Fvector& vecEYE)
 						if (sp.id==0xff)	continue;
 						float				R   = objects	[sp.id]->bv_sphere.R;
 						
-						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
+						SlotItem			**siIT=sp.items.begin(), **siEND=sp.items.end();
 						for (; siIT!=siEND; siIT++) 
 						{
-							SlotItem& Item	= *siIT;
+							SlotItem& Item	= *(*siIT);
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
@@ -243,7 +243,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 							if (ssa < r_ssaCHEAP)	vis_id=0;
 
 							Item.scale_calculated = scale;			//alpha;
-							visible[vis_id][sp.id].push_back	(siIT);
+							visible[vis_id][sp.id].push_back	(*siIT);
 						}
 					}
 				}

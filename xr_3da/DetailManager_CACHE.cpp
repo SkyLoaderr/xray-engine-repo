@@ -44,6 +44,8 @@ void 	CDetailManager::cache_Task		(int gx, int gz, Slot* D)
 	for (int i=0; i<dm_obj_in_slot; i++)
 	{
 		D->G[i].id			= DS.items[i].id;
+		for (int clr=0; clr<D->G[i].items.size(); clr++)
+			poolSI.destroy(D->G[i].items[clr]);
 		D->G[i].items.clear	();
 	}
 

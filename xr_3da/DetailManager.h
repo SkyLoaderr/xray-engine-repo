@@ -7,6 +7,7 @@
 #pragma once
 
 #include "xr_list.h"
+#include "xrpool.h"
 #include "detailformat.h"
 #include "detailmodel.h"
 
@@ -57,6 +58,7 @@ public:
 	typedef		vector <vector<SlotItem*> >			vis_list;
 	typedef		svector<CDetail*,dm_max_objects>	DetailVec;
 	typedef		DetailVec::iterator					DetailIt;
+	typedef		poolSS<SlotItem,4096>				PSS;
 public:	
 	int								dither			[16][16];
 public:
@@ -75,7 +77,9 @@ public:
 	int								cache_cx;
 	int								cache_cz;
 
+	PSS								poolSI;
 public:
+
 #ifdef _EDITOR
 	virtual ObjectList*				GetSnapObjects	()=0;
 #endif
