@@ -265,12 +265,8 @@ void CWeapon::Load		(LPCSTR section)
 	fTimeToFire			= pSettings->ReadFLOAT	(section,"rpm");
 	fTimeToFire			= 60 / fTimeToFire;
 
-	ShaderCreate		(hUIIcon,"hud\\default","");
-	
 	LPCSTR	name		= pSettings->ReadSTRING	(section,"wm_name");
 	pstrWallmark		= xr_strdup(name);
-	if (0==pstrWallmark)hWallmark = 0; 
-	else				hWallmark = Device.Shader.Create("effects\\wallmark",pstrWallmark);
 	fWallmarkSize		= pSettings->ReadFLOAT		(section,"wm_size");
 
 	LPCSTR hud_sect		= pSettings->ReadSTRING		(section,"hud");
