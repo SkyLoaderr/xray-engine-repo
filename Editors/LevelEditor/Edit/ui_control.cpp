@@ -110,18 +110,18 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift){
 	EObjClass cls = Tools.CurrentClassID();
 
     if (Shift==ssRBOnly){ UI.Command(COMMAND_SHOWCONTEXTMENU,parent_tool->objclass); return false;}
-    if (!Shift.Contains(ssCtrl)) Scene.SelectObjects( false, cls);
+    if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene.SelectObjects( false, cls);
 
     CCustomObject *obj = Scene.RayPick( UI.m_CurrentRStart,UI.m_CurrentRNorm, cls, 0, true, 0);
-    bBoxSelection    = (obj && Shift.Contains(ssCtrl)) || !obj;
+    bBoxSelection    = (obj && (Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) || !obj;
 
     if( bBoxSelection ){
         UI.EnableSelectionRect( true );
         UI.UpdateSelectionRect(UI.m_StartCp,UI.m_CurrentCp);
-        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
+        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
         return true;
     } else {
-        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
+        if(obj) obj->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,UI.m_CurrentRStart,UI.m_CurrentRNorm);
     }
     return false;
 }
@@ -135,7 +135,7 @@ bool __fastcall TUI_CustomControl::SelectEnd(TShiftState _Shift)
     if (bBoxSelection){
         UI.EnableSelectionRect( false );
         bBoxSelection = false;
-        Scene.FrustumSelect(_Shift.Contains(ssCtrl)?-1:1,Tools.CurrentClassID());
+        Scene.FrustumSelect(_Shift.Contains(ssAlt)?0:1,Tools.CurrentClassID());
     }
     return true;
 }

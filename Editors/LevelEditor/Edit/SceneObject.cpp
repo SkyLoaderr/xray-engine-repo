@@ -122,7 +122,7 @@ void CSceneObject::Render(int priority, bool strictB2F){
                 Device.SetShader(Device.m_WireShader);
                 RCache.set_xform_world(_Transform());
                 u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                DU::DrawSelectionBox(m_pReference->GetBox(),&clr);
+                DU.DrawSelectionBox(m_pReference->GetBox(),&clr);
             }else{
                 if (m_iBlinkTime>(int)Device.dwTimeGlobal){
     	            RenderSelection(D3DCOLOR_ARGB(iFloor(sqrtf(float(m_iBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255));
@@ -156,7 +156,7 @@ void CSceneObject::RenderAnimation(){
 
         Device.SetShader		(Device.m_WireShader);
         RCache.set_xform_world	(Fidentity);
-        DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
+        DU.DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
     }
 }
 
@@ -176,14 +176,16 @@ void CSceneObject::RenderSelection(u32 color){
 	m_pReference->RenderSelection(_Transform(),0,color);
 }
 
-bool CSceneObject::FrustumPick(const CFrustum& frustum){
+bool CSceneObject::FrustumPick(const CFrustum& frustum)
+{
 	if (!m_pReference) return false;
     if (::Render->occ_visible(m_TBBox))
 		return m_pReference->FrustumPick(frustum, _Transform());
     return false;
 }
 
-bool CSceneObject::SpherePick(const Fvector& center, float radius){
+bool CSceneObject::SpherePick(const Fvector& center, float radius)
+{
 	if (!m_pReference) return false;
     float fR; Fvector vC;
 	m_TBBox.getsphere(vC,fR);
@@ -193,14 +195,27 @@ bool CSceneObject::SpherePick(const Fvector& center, float radius){
     return false;
 }
 
-bool CSceneObject::RayPick(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf){
+bool CSceneObject::RayPick(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf)
+{
 	if (!m_pReference) return false;
     if (::Render->occ_visible(m_TBBox))
-		if (m_pReference&&m_pReference->RayPick(dist, S, D, _ITransform(), pinf)){
+		if (m_pReference->RayPick(dist, S, D, _ITransform(), pinf)){
         	if (pinf) pinf->s_obj = this;
             return true;
         }
 	return false;
+}
+
+void CSceneObject::RayQuery(SPickQuery& pinf)
+{
+	if (!m_pReference) return;
+    m_pReference->RayQuery(_Transform(), _ITransform(), pinf);
+}
+
+void CSceneObject::BoxQuery(SPickQuery& pinf)
+{
+	if (!m_pReference) return;
+    m_pReference->BoxQuery(_Transform(), pinf);
 }
 
 bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf)

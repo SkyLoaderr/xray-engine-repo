@@ -63,13 +63,13 @@ TUI::~TUI()
 
 void TUI::OnDeviceCreate()
 {
-	DU::OnDeviceCreate();
+	DU.OnDeviceCreate();
     PSLib.OnDeviceCreate();
 }
 
 void TUI::OnDeviceDestroy()
 {
-	DU::OnDeviceDestroy();
+	DU.OnDeviceDestroy();
     PSLib.OnDeviceDestroy();
 }
 
@@ -481,17 +481,17 @@ void TUI::Redraw(){
 
     	// draw grid
     	if (psDeviceFlags.is(rsDrawGrid)){
-	        DU::DrawGrid		();
-    	    DU::DrawPivot		(m_Pivot);
+	        DU.DrawGrid		();
+    	    DU.DrawPivot		(m_Pivot);
         }
 
 		Tools.Render			();
 
     	// draw selection rect
-		if(m_SelectionRect) 	DU::DrawSelectionRect(m_SelStart,m_SelEnd);
+		if(m_SelectionRect) 	DU.DrawSelectionRect(m_SelStart,m_SelEnd);
 
     	// draw axis
-        DU::DrawAxis(Device.m_Camera.GetTransform());
+        DU.DrawAxis(Device.m_Camera.GetTransform());
     	// end draw
         Device.End();
     	Device.Statistic.RenderDUMP_RT.End();

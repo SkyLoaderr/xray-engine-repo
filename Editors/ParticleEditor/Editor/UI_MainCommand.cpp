@@ -140,9 +140,11 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     case COMMAND_UPDATE_CAPTION:
     	frmMain->UpdateCaption();
     	break;
-	case COMMAND_BREAK_LAST_OPERATION:
-    	NeedBreak();
-		ELog.DlgMsg(mtInformation,"Execution canceled.");
+	case COMMAND_BREAK_LAST_OPERATION:                                          	
+        if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to break current action?")){
+            NeedBreak	();
+            ELog.Msg	(mtInformation,"Execution canceled.");
+        }
     	break;
 	case COMMAND_UPDATE_TOOLBAR:
     	fraLeftBar->UpdateBar();
@@ -155,7 +157,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
     	break;
 	case COMMAND_UPDATE_GRID:
-    	DU::UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
+    	DU.UpdateGrid(frmEditorPreferences->seGridNumberOfCells->Value,frmEditorPreferences->seGridSquareSize->Value);
 	    OutGridSize();
     	break;
     case COMMAND_GRID_NUMBER_OF_SLOTS:
@@ -189,6 +191,9 @@ char* TUI::GetTitle()
 }
 
 //---------------------------------------------------------------------------
+#define COMMAND0(cmd)		{Command(cmd);bExec=true;}
+#define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
+//---------------------------------------------------------------------------
 bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 {
 	VERIFY(m_bReady);
@@ -198,24 +203,26 @@ bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)
 
 	bool bExec = false;
 
-    if (Key==VK_ESCAPE)   		{Command(COMMAND_CHANGE_ACTION, eaSelect);					bExec=true;}
+    if (Key==VK_ESCAPE)   			COMMAND1(COMMAND_CHANGE_ACTION, eaSelect)
     if (Shift.Contains(ssCtrl)){
     }else{
         if (Shift.Contains(ssAlt)){
         }else{
             // simple press
-        	if (Key=='S')		{Command(COMMAND_CHANGE_ACTION, eaSelect);					bExec=true;}
-        	else if (Key=='A')	{Command(COMMAND_CHANGE_ACTION, eaAdd);                     bExec=true;}
-        	else if (Key=='T')	{Command(COMMAND_CHANGE_ACTION, eaMove);					bExec=true;}
-        	else if (Key=='Y')	{Command(COMMAND_CHANGE_ACTION, eaRotate);                  bExec=true;}
-        	else if (Key=='H')	{Command(COMMAND_CHANGE_ACTION, eaScale);                   bExec=true;}
-        	else if (Key=='Z')	{Command(COMMAND_CHANGE_AXIS,   eAxisX);                    bExec=true;}
-        	else if (Key=='X')	{Command(COMMAND_CHANGE_AXIS,   eAxisY);                    bExec=true;}
-        	else if (Key=='C')	{Command(COMMAND_CHANGE_AXIS,   eAxisZ);                    bExec=true;}
-        	else if (Key=='V')	{Command(COMMAND_CHANGE_AXIS,   eAxisZX);                   bExec=true;}
-        	else if (Key=='O')	{Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebOSnap);   bExec=true;}
-        	else if (Key=='G')	{Command(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebGSnap);   bExec=true;}
-        	else if (Key=='P')	{Command(COMMAND_EDITOR_PREF);                              bExec=true;}
+        	if (Key=='S')			COMMAND1(COMMAND_CHANGE_ACTION, eaSelect)
+        	else if (Key=='A')		COMMAND1(COMMAND_CHANGE_ACTION, eaAdd)
+        	else if (Key=='T')		COMMAND1(COMMAND_CHANGE_ACTION, eaMove)
+        	else if (Key=='Y')		COMMAND1(COMMAND_CHANGE_ACTION, eaRotate)
+        	else if (Key=='H')		COMMAND1(COMMAND_CHANGE_ACTION, eaScale)
+        	else if (Key=='Z')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisX)
+        	else if (Key=='X')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisY)
+        	else if (Key=='C')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisZ)
+        	else if (Key=='V')		COMMAND1(COMMAND_CHANGE_AXIS,   eAxisZX)
+        	else if (Key=='O')		COMMAND1(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebOSnap)
+        	else if (Key=='G')		COMMAND1(COMMAND_CHANGE_SNAP,   (int)fraTopBar->ebGSnap)
+        	else if (Key=='P')		COMMAND0(COMMAND_EDITOR_PREF)
+            else if (Key==VK_OEM_4)	COMMAND1(COMMAND_GRID_SLOT_SIZE,false)
+            else if (Key==VK_OEM_6)	COMMAND1(COMMAND_GRID_SLOT_SIZE,true)
         }
     }
     return bExec;
@@ -229,15 +236,15 @@ bool TUI::ApplyGlobalShortCut(WORD Key, TShiftState Shift)
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
         if (Key=='S'){
-            if (Shift.Contains(ssAlt))  {Command(COMMAND_SAVEAS);               bExec=true;}
-            else                        {Command(COMMAND_SAVE);                 bExec=true;}
+            if (Shift.Contains(ssAlt))  COMMAND0(COMMAND_SAVEAS)
+            else                        COMMAND0(COMMAND_SAVE)
         }
-        else if (Key=='O')   			{Command(COMMAND_LOAD);                 bExec=true;}
-        else if (Key=='N')   			{Command(COMMAND_CLEAR);                bExec=true;}
-        else if (Key=='G')   			{Command(COMMAND_TOGGLE_GRID);          bExec=true;}
-        else if (Key=='F')				{Command(COMMAND_TOGGLE_SAFE_RECT);     bExec=true;}
+        else if (Key=='O')   			COMMAND0(COMMAND_LOAD)
+        else if (Key=='N')   			COMMAND0(COMMAND_CLEAR)
+        else if (Key=='G')   			COMMAND0(COMMAND_TOGGLE_GRID)
+        else if (Key=='F')				COMMAND0(COMMAND_TOGGLE_SAFE_RECT)
     }
-    if (Key==VK_OEM_3)					{Command(COMMAND_RENDER_FOCUS);        bExec=true;}
+    if (Key==VK_OEM_3)					COMMAND0(COMMAND_RENDER_FOCUS)
     return bExec;
 }
 //---------------------------------------------------------------------------

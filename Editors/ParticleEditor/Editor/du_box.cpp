@@ -40,3 +40,9 @@ WORD du_box_faces[DU_BOX_NUMFACES*3] = {
     1, 4, 6,   1, 6, 2
 };
 
+WORD du_box_lines[DU_BOX_NUMLINES*2] = {
+	0, 1,	1, 2,	2, 3,	3, 0,
+	4, 5,	5, 7,	6, 7,	6, 4,
+	0, 5,	1, 4,	2, 6,	3, 7
+};
+

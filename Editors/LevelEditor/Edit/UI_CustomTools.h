@@ -7,33 +7,33 @@ class TUI_Control;
 
 #include "UI_Tools.h"
 
-DEFINE_MAP(EAction,TUI_CustomControl*,ControlsMap,ControlsPairIt);
+DEFINE_VECTOR(TUI_CustomControl*,ControlsVec,ControlsIt);
 
 //---------------------------------------------------------------------------
 class TUI_CustomTools{
     friend class    TUI_Tools;
     friend class    TUI_CustomControl;
 
-    ControlsMap 	m_Controls;
+    ControlsVec 	m_Controls;
     TUI_CustomControl* pCurControl;
     int             action;
-    vector<int>     sub_target_stack;
+    int				sub_target;
 
     EObjClass		objclass;
 
     TUI_CustomControl* FindControl	(int subtarget, int action);
     void            UpdateControl	();
+    void			CreateDefaultControls();
 protected:
     void            AddControlCB	(TUI_CustomControl* c);
 public:
     TFrame*			pFrame;
 public:
-                    TUI_CustomTools (EObjClass cls);
+                    TUI_CustomTools (EObjClass cls, bool bCreateDefaultControls);
     virtual         ~TUI_CustomTools();
 
     void            SetAction   	(int action);
     void            SetSubTarget	(int target);
-    void            UnsetSubTarget	(int target);
     void            ResetSubTarget	();
 
     virtual void    OnActivate  	();

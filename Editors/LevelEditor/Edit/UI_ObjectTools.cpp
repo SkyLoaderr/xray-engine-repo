@@ -13,8 +13,8 @@
 #include "ui_main.h"
 
 //----------------------------------------------------------------------
-TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT){
-    AddControlCB(xr_new<TUI_ControlObjectAdd >(estSelf,eaAdd,		this));
+TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT,true){
+    AddControlCB(xr_new<TUI_ControlObjectAdd >(estDefault,eaAdd,		this));
 }
 
 void TUI_ObjectTools::OnActivate  ()

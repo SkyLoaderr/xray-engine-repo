@@ -25,6 +25,7 @@ enum ETarget{
     etPortal,
     etPS,
     etDO,
+    etAIMap,
     etMaxTarget
 };
 
@@ -43,11 +44,12 @@ enum EAxis{
     eAxisZ,
     eAxisZX
 };
-#define estSelf 0
+#define estDefault 0
 #define CHECK_SNAP(R,A,C){ R+=A; if(fabsf(R)>=C){ A=snapto(R,C); R=0; }else{A=0;}}
 
 class TUI_Tools{
     TPanel*         paParent;
+    int             sub_target;
     int             target;
     int             action;
 
@@ -101,11 +103,12 @@ public:
     IC int          GetTarget   	(){return target;}
     IC EObjClass    GetTargetClassID(){return ClassIDFromTargetID(target);}
     IC int          GetAction   	(){return action;}
+    IC int          GetSubTarget   	(){return sub_target;}
 
     TFrame*			GetFrame		();
 
+    void __fastcall ResetSubTarget	();
     void __fastcall SetSubTarget	(int tgt);
-    void __fastcall UnsetSubTarget	(int tgt);
 
     void __fastcall ChangeTarget	(int tgt, bool forced=false);
     void __fastcall ChangeAction	(int act, bool forced=false);

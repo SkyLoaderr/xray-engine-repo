@@ -29,7 +29,6 @@ BOOL SceneBuilder::BuildGame()
 	CMemoryWriter GAME;
     GAME.w_chunk(WAY_PATROLPATH_CHUNK,	F.patrolpath.stream.pointer(),	F.patrolpath.stream.size());
     GAME.w_chunk(RPOINT_CHUNK,			F.rpoint.stream.pointer(),		F.rpoint.stream.size());
-    GAME.w_chunk(AIPOINT_CHUNK,			F.aipoint.stream.pointer(),		F.aipoint.stream.size());
 
     AnsiString lev_game	= m_LevelPath+"level.game";
     EFS.MarkFile	(lev_game,true);

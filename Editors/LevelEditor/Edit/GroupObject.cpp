@@ -253,7 +253,7 @@ void CGroupObject::Render(int priority, bool strictB2F)
             Device.SetShader(Device.m_WireShader);
             RCache.set_xform_world(FTransform);
             u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-            DU::DrawSelectionBox(m_BBox,&clr);
+            DU.DrawSelectionBox(m_BBox,&clr);
         }
     }
 }

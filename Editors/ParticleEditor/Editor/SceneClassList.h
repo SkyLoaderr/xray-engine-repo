@@ -12,6 +12,64 @@ class CSceneObject;
 class TUI_CustomTools;
 
 #ifdef _EDITOR
+	struct SPickQuery{
+        Fvector				m_Start;
+        Fvector				m_Direction;
+        float				m_Dist;
+        Fbox 				m_BB; 
+    	Flags32				m_Flags;
+    	struct SResult{
+        	CDB::TRI		T;
+            float			range;
+            SResult			(CDB::TRI& t):T(t){;}
+        };
+		DEFINE_VECTOR(SResult,ResultVec,ResultIt);
+    public:
+    	ResultVec			results;
+        IC void	prepare_rq	(const Fvector& start, const Fvector& dir, float dist, u32 flags)
+        {
+            m_Start.set		(start);
+            m_Direction.set	(dir);
+            m_Dist			= dist;
+            m_Flags.set		(flags);
+        	results.clear	();
+        }
+        IC void	prepare_bq	(const Fbox& bbox, u32 flags)
+        {
+        	m_BB.set		(bbox);
+            m_Flags.set		(flags);
+        	results.clear	();
+        }
+		IC void append		(const Fmatrix& parent, CDB::MODEL* M, CDB::RESULT* R)
+        {
+        	CDB::TRI* T		= M->get_tris()+R->id;
+            SResult	D		(*T);
+            D.range			= R->range;
+            parent.transform_tiny(*D.T.verts[0],*T->verts[0]);
+            parent.transform_tiny(*D.T.verts[1],*T->verts[1]);
+            parent.transform_tiny(*D.T.verts[2],*T->verts[2]);
+            if (m_Flags.is(CDB::OPT_ONLYNEAREST)&&!results.empty()){
+	            SResult& S	= results.back();
+                if (D.range<S.range) S = D;
+            }else			results.push_back	(D);
+        }
+        IC int r_count		()
+        {
+        	results.size	();
+        }
+        IC SResult* r_begin	()
+        {
+        	return results.begin();
+        }
+        IC SResult* r_end	()
+        {
+        	return results.end();
+        }
+        IC void r_clear		()
+        {
+        	results.clear	();
+        }
+    };
 	struct SRayPickInfo{
 		CDB::RESULT 		inf;
 		CSceneObject*		s_obj;
@@ -53,6 +111,7 @@ enum EObjClass{
     OBJCLASS_SOUND_ENV 	= 10,
     OBJCLASS_PS		   	= 11,
     OBJCLASS_DO			= 12,
+    OBJCLASS_AIMAP		= 13,
     OBJCLASS_COUNT,
     OBJCLASS_force_dword = -1
 };

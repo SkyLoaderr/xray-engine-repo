@@ -139,7 +139,7 @@ void EDetailManager::Render(int priority, bool strictB2F)
 								bbox.min.set(c.x-DETAIL_SLOT_SIZE_2, slot->y_min, c.z-DETAIL_SLOT_SIZE_2);
                             	bbox.max.set(c.x+DETAIL_SLOT_SIZE_2, slot->y_max, c.z+DETAIL_SLOT_SIZE_2);
                             	bbox.shrink	(0.05f);
-								DU::DrawSelectionBox(bbox,bSel?&selected:&inactive);
+								DU.DrawSelectionBox(bbox,bSel?&selected:&inactive);
 							}
                         }
                     }

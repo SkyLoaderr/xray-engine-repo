@@ -5,7 +5,7 @@
 #include "ui_tools.h"
 
 //---------------------------------------------------------------------------
-TUI_GlowTools::TUI_GlowTools():TUI_CustomTools(OBJCLASS_GLOW){
+TUI_GlowTools::TUI_GlowTools():TUI_CustomTools(OBJCLASS_GLOW,true){
 }
 //---------------------------------------------------------------------------
 

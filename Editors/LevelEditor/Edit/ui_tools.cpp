@@ -42,6 +42,7 @@ bool TUI_Tools::OnCreate()
 {
     target          = -1;
     action          = -1;
+    sub_target		= -1;
     ZeroMemory      (m_pTools,sizeof(TUI_CustomTools*)*etMaxTarget);
     pCurTools       = 0;
     ssRBOnly << ssRight;
@@ -70,46 +71,55 @@ void TUI_Tools::OnDestroy()
     pCurTools->OnDeactivate();
 }
 //---------------------------------------------------------------------------
-void TUI_Tools::Reset(){
+void TUI_Tools::Reset()
+{
 	SetTarget(GetTarget(),true);
 }
 //---------------------------------------------------------------------------
 
-bool __fastcall TUI_Tools::MouseStart(TShiftState Shift){
+bool __fastcall TUI_Tools::MouseStart(TShiftState Shift)
+{
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->Start(Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::MouseMove(TShiftState Shift){
+void __fastcall TUI_Tools::MouseMove(TShiftState Shift)
+{
     if(pCurTools&&pCurTools->pCurControl) pCurTools->pCurControl->Move(Shift);
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift){
+bool __fastcall TUI_Tools::MouseEnd(TShiftState Shift)
+{
     if(pCurTools&&pCurTools->pCurControl)	return pCurTools->pCurControl->End(Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::OnObjectsUpdate(){
+void __fastcall TUI_Tools::OnObjectsUpdate()
+{
 	UpdateProperties();
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->OnObjectsUpdate();
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::HiddenMode(){
+bool __fastcall TUI_Tools::HiddenMode()
+{
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->HiddenMode();
     return false;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::KeyDown   (WORD Key, TShiftState Shift){
+bool __fastcall TUI_Tools::KeyDown   (WORD Key, TShiftState Shift)
+{
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyDown(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::KeyUp     (WORD Key, TShiftState Shift){
+bool __fastcall TUI_Tools::KeyUp     (WORD Key, TShiftState Shift)
+{
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyUp(Key,Shift);
     return false;
 }
 //---------------------------------------------------------------------------
-bool __fastcall TUI_Tools::KeyPress  (WORD Key, TShiftState Shift){
+bool __fastcall TUI_Tools::KeyPress  (WORD Key, TShiftState Shift)
+{
     if(pCurTools&&pCurTools->pCurControl) return pCurTools->pCurControl->KeyPress(Key,Shift);
     return false;
 }
@@ -146,15 +156,17 @@ void __fastcall TUI_Tools::ChangeAction(int act, bool forced){
 void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
 {
     if(bForced||(target!=tgt)){
-        target = tgt;
+        target 					= tgt;
+        sub_target 				= estDefault;
         if (pCurTools){
             DETACH_FRAME(pCurTools->pFrame);
             pCurTools->OnDeactivate();
         }
         pCurTools=m_pTools[tgt]; VERIFY(pCurTools);
-        pCurTools->OnActivate();
-        pCurTools->SetAction(action);
-        pCurTools->ResetSubTarget();
+        pCurTools->OnActivate	();
+        
+        pCurTools->SetSubTarget	(sub_target);
+        pCurTools->SetAction	(action);
         ATTACH_FRAME(pCurTools->pFrame, paParent);
     }
     UI.RedrawScene();
@@ -163,17 +175,21 @@ void __fastcall TUI_Tools::SetTarget   (int tgt,bool bForced)
     m_Flags.set(flChangeTarget,FALSE);
 }
 //---------------------------------------------------------------------------
+void __fastcall TUI_Tools::ResetSubTarget()
+{
+	VERIFY(pCurTools);
+	pCurTools->ResetSubTarget();
+}
+//---------------------------------------------------------------------------
 void __fastcall TUI_Tools::SetSubTarget(int tgt)
 {
-    pCurTools->SetSubTarget(tgt);
+	VERIFY(pCurTools);
+	sub_target 				= tgt;
+    pCurTools->SetSubTarget	(tgt);
 }
 //---------------------------------------------------------------------------
-void __fastcall TUI_Tools::UnsetSubTarget(int tgt)
+void __fastcall TUI_Tools::ChangeTarget(int tgt, bool forced)
 {
-    pCurTools->UnsetSubTarget(tgt);
-}
-//---------------------------------------------------------------------------
-void __fastcall TUI_Tools::ChangeTarget(int tgt, bool forced){
 	// если мышь захвачена - изменим target после того как она освободится
 	if (UI.IsMouseCaptured()||UI.IsMouseInUse()||!forced){
 	    m_Flags.set(flChangeTarget,TRUE);
@@ -275,19 +291,6 @@ void TUI_Tools::HideProperties()
 	m_Props->HideProperties			();
 }
 //---------------------------------------------------------------------------
-/*
-static s8 		_s8=0;
-static u32 		_u32=0;
-static float	_float0=0.f;
-static float	_float1=1.f;
-static BOOL		_BOOL=0.f;
-static Flags16	_flag16={0};
-static Fcolor 	_fcolor={0,0,0,0};
-static Fvector 	_fvector={0,0,0};
-static string32 _text={0};
-static AnsiString _atext="";
-static WaveForm	_wave;
-*/
 void TUI_Tools::RealUpdateProperties()
 {
 	if (m_Props->Visible){
@@ -295,41 +298,6 @@ void TUI_Tools::RealUpdateProperties()
         ObjectList lst;
         EObjClass cls_id				= CurrentClassID();
         PropItemVec items;
-/*
-    	PHelper.CreateCaption	(items,	"Caption",	"Caption2");
-    	PHelper.CreateS8		(items,	"S8", 		&_s8);
-    	PHelper.CreateU32		(items,	"U32", 		&_u32);
-    	PHelper.CreateFloat		(items,	"Float",	&_float0);
-    	PHelper.CreateFloat		(items,	"Float",	&_float1);
-    	PHelper.CreateBOOL		(items,	"BOOL",		&_BOOL);
-    	PHelper.CreateFlag16	(items, "Flag16",	&_flag16,0x01);
-	    PHelper.CreateVector	(items, "Vector",	&_fvector);
-        PHelper.CreateText		(items, "Text", 	_text, sizeof(_text));
-		PHelper.CreateAText		(items, "AText", 	&_atext);
-        PHelper.CreateWave		(items, "Wave",		&_wave);
-	IC TokenValue2*   	CreateToken2	(PropItemVec& items, LPCSTR key, u32* val, AStringVec* lst)
-	IC TokenValue3*   	CreateToken3	(PropItemVec& items, LPCSTR key, u32* val, u32 cnt, const TokenValue3::Item* lst)
-	IC ListValue* 	 	CreateList		(PropItemVec& items, LPCSTR key, LPSTR val, AStringVec* lst)
-	IC ListValue* 	 	CreateListA		(PropItemVec& items, LPCSTR key, LPSTR val, u32 cnt, LPCSTR* lst)
-	IC TextValue* 	 	CreateEShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC TextValue* 	   	CreateCShader	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC TextValue* 	   	CreateTexture	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC TextValue* 	  	CreateTexture2	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC ATextValue* 		CreateAEShader	(PropItemVec& items, LPCSTR key, AnsiString* val)
-	IC ATextValue* 		CreateACShader	(PropItemVec& items, LPCSTR key, AnsiString* val)
-    IC ATextValue*	   	CreateAGameMtl	(PropItemVec& items, LPCSTR key, AnsiString* val)
-	IC ATextValue* 		CreateATexture	(PropItemVec& items, LPCSTR key, AnsiString* val)
-	IC TextValue*	 	CreateLightAnim	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC TextValue* 	 	CreateLibObject	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-	IC ATextValue* 		CreateALibObject(PropItemVec& items, LPCSTR key, AnsiString* val)
-	IC TextValue* 	 	CreateGameObject(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-    IC TextValue*		CreateLibSound	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-    IC ATextValue*	  	CreateALibSound	(PropItemVec& items, LPCSTR key, AnsiString* val)
-    IC TextValue*	 	CreateLibPS		(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-    IC ATextValue*	 	CreateALibPS	(PropItemVec& items, LPCSTR key, AnsiString* val)
-	IC TextValue* 		CreateEntity	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-    IC TextValue* 		CreateGameMtl	(PropItemVec& items, LPCSTR key, LPSTR val, int lim)
-*/
         if (Scene.GetQueryObjects(lst,cls_id)){
             for (ObjectIt it=lst.begin(); it!=lst.end(); it++){
                 LPCSTR pref				= GetClassNameByClassID((*it)->ClassID);
@@ -367,7 +335,7 @@ bool TUI_Tools::IfModified()
     case esEditScene:		return Scene.IfModified();
     default: THROW;
     }
-//    return false;
+    return false;
 }
 //---------------------------------------------------------------------------
 

@@ -39,12 +39,25 @@ bool CEditableObject::Reload()
     return Load(m_LoadName.c_str());
 }
 
-bool CEditableObject::RayPick(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& inv_parent, SRayPickInfo* pinf){
+bool CEditableObject::RayPick(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& inv_parent, SRayPickInfo* pinf)
+{
 	bool picked = false;
     for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
         if( (*m)->RayPick( dist, S, D, inv_parent, pinf ) )
             picked = true;
 	return picked;
+}
+
+void CEditableObject::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
+{
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+        (*m)->RayQuery(parent, inv_parent, pinf);
+}
+
+void CEditableObject::BoxQuery(const Fmatrix& parent, SPickQuery& pinf)
+{
+    for(EditMeshIt m = m_Meshes.begin();m!=m_Meshes.end();m++)
+        (*m)->BoxQuery(parent, pinf);
 }
 
 #ifdef _LEVEL_EDITOR
@@ -137,8 +150,8 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
             Fvector p2,d; 	d.set	(0,0,1);
             M.transform_dir	(d);
             p2.mad			(p1,d,(*b_it)->Length());
-            DU::DrawLine	(p1,p2,c);
-            DU::DrawRomboid	(p1,0.025,c);
+            DU.DrawLine	(p1,p2,c);
+            DU.DrawRomboid	(p1,0.025,c);
         }
     }
 }
@@ -233,7 +246,7 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
         for (int i=0; i<4; i++){ LOD[i].p.set(p[i]); LOD[i].t.set(t[i]); }
     	RCache.set_xform_world(parent);
         Device.SetShader		(m_LODShader?m_LODShader:Device.m_WireShader);
-    	DU::DrawPrimitiveLIT	(D3DPT_TRIANGLEFAN, 2, LOD, 4, true, false);
+    	DU.DrawPrimitiveLIT	(D3DPT_TRIANGLEFAN, 2, LOD, 4, true, false);
     }
 }
 

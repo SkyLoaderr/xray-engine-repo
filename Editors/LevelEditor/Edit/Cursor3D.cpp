@@ -91,7 +91,7 @@ void C3DCursor::Render(){
 //                UI.D3D_RenderNearer(0.0001);
                 RCache.set_xform_world(Fidentity);
 				Device.SetShader(Device.m_WireShader);
-                DU::DrawPrimitiveL(D3DPT_LINESTRIP,m_RenderBuffer.size(),m_RenderBuffer.begin(),m_RenderBuffer.size(),dwColor,true,true);
+                DU.DrawPrimitiveL(D3DPT_LINESTRIP,m_RenderBuffer.size(),m_RenderBuffer.begin(),m_RenderBuffer.size(),dwColor,true,true);
 //                UI.D3D_ResetNearer();
             }break;
             case csPoint:{
@@ -107,7 +107,7 @@ void C3DCursor::Render(){
                 Device.RenderNearer(0.001);
                 RCache.set_xform_world(Fidentity);
 				Device.SetShader(Device.m_WireShader);
-                DU::DrawPrimitiveTL(D3DPT_POINTLIST,5,pt,5,true,true);
+                DU.DrawPrimitiveTL(D3DPT_POINTLIST,5,pt,5,true,true);
                 Device.ResetNearer();
             }break;
             }

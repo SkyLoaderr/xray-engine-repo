@@ -76,11 +76,11 @@ void EParticlesObject::Render(int priority, bool strictB2F)
             if (false==strictB2F){
                 // draw emitter
                 u32 C = 0xFFFFEBAA;
-                DU::DrawLineSphere(PPosition, PSOBJECT_SIZE/10, C, true);
+                DU.DrawLineSphere(PPosition, PSOBJECT_SIZE/10, C, true);
                 if( Selected() ){
                     Fbox bb; GetBox(bb);
                     u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                    DU::DrawSelectionBox(bb,&clr);
+                    DU.DrawSelectionBox(bb,&clr);
                 }
             }else{
             	PS::CParticleGroup::Render(1.f);

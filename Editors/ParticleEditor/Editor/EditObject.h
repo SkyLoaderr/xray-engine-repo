@@ -85,8 +85,8 @@ public:
 #ifdef _EDITOR
 					~CSurface		(){R_ASSERT(!m_Shader);}
 	IC void			CopyFrom		(CSurface* surf){*this = *surf; m_Shader=0;}
-    IC int			_Priority		()const {return m_Shader?m_Shader->lod0->Flags.iPriority:1;}
-    IC bool			_StrictB2F		()const {return m_Shader?m_Shader->lod0->Flags.bStrictB2F:false;}
+    IC int			_Priority		()const {return m_Shader?m_Shader->E[0]->Flags.iPriority:1;}
+    IC bool			_StrictB2F		()const {return m_Shader?m_Shader->E[0]->Flags.bStrictB2F:false;}
 #endif
     IC LPCSTR		_Name			()const {return m_Name.c_str();}
     IC Shader*		_Shader			()const {return m_Shader;}
@@ -309,6 +309,8 @@ public:
 
     // pick methods
 	bool 			RayPick					(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& inv_parent, SRayPickInfo* pinf=0);
+	void 			RayQuery				(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf);
+	void 			BoxQuery				(const Fmatrix& parent, SPickQuery& pinf);
 #ifdef _LEVEL_EDITOR
     bool 			BoxPick					(CSceneObject* obj, const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);

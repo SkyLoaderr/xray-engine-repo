@@ -21,6 +21,7 @@
 #include "PropertiesList.h"
 #include "SoundManager.h"
 #include "EParticlesObject.h"
+#include "ESceneAIMapTools.h"
 //----------------------------------------------------
 EScene Scene;
 //----------------------------------------------------
@@ -114,6 +115,7 @@ void EScene::OnCreate()
 	Device.seqDevCreate.Add	(this,REG_PRIORITY_NORMAL);
 	Device.seqDevDestroy.Add(this,REG_PRIORITY_NORMAL);
     m_DetailObjects			= xr_new<EDetailManager>();
+    m_AIMap					= xr_new<ESceneAIMapTools>();
 	m_LastAvailObject 		= 0;
     m_LevelOp.Reset			();
 	ELog.Msg				( mtInformation, "Scene: initialized" );
@@ -134,6 +136,7 @@ void EScene::OnDestroy()
 	m_LastAvailObject 		= 0;
 	m_Valid 				= false;
     xr_delete				(m_DetailObjects);
+    xr_delete				(m_AIMap);
     xr_delete				(m_SkyDome);
 }
 
@@ -156,8 +159,9 @@ void EScene::RemoveObject( CCustomObject* object, bool bUndo ){
     // remove object from Snap List if exists
     if ((object->ClassID==OBJCLASS_SCENEOBJECT)&&!m_SnapObjects.empty()){
     	m_SnapObjects.remove(object);
-		if (m_DetailObjects) m_DetailObjects->RemoveFromSnapList(object);
-		UpdateSnapList();
+		m_DetailObjects->RemoveFromSnapList	(object);
+		m_AIMap->RemoveFromSnapList			(object);
+		UpdateSnapList						();
         // signal everyone "I'm deleting"
 	    for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
     	    ObjectList& lst = (*it).second;
@@ -191,9 +195,9 @@ int EScene::FrustumSelect( int flag, EObjClass classfilter ){
 	CFrustum frustum;
 	int count = 0;
     if (!UI.SelectionFrustum(frustum)) return 0;
-
-	if (classfilter==OBJCLASS_DO) return m_DetailObjects->FrustumSelect(flag);
-	if (classfilter==OBJCLASS_DUMMY) count+=m_DetailObjects->FrustumSelect(flag);
+                                                                              
+	if (classfilter==OBJCLASS_DO) 		return m_DetailObjects->FrustumSelect(flag);
+	if (classfilter==OBJCLASS_AIMAP)	return m_AIMap->FrustumSelect(flag);
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -235,8 +239,9 @@ int EScene::SpherePick( const Fvector& center, float radius, EObjClass classfilt
 
 int EScene::SelectObjects( bool flag, EObjClass classfilter ){
 	int count = 0;
-	if (classfilter==OBJCLASS_DO) return m_DetailObjects->SelectObjects(flag);
-    if (classfilter==OBJCLASS_DUMMY) count+=m_DetailObjects->SelectObjects(flag);
+	if (classfilter==OBJCLASS_DO) 		return m_DetailObjects->SelectObjects(flag);
+	if (classfilter==OBJCLASS_AIMAP) 	return m_AIMap->SelectObjects(flag);
+
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -293,8 +298,9 @@ int EScene::ShowObjects( bool flag, EObjClass classfilter, bool bAllowSelectionF
 
 int EScene::InvertSelection( EObjClass classfilter ){
 	int count = 0;
-    if (classfilter==OBJCLASS_DO)	return m_DetailObjects->InvertSelection();
-    if (classfilter==OBJCLASS_DUMMY)count+=m_DetailObjects->InvertSelection();
+    if (classfilter==OBJCLASS_DO)		return m_DetailObjects->InvertSelection	();
+    if (classfilter==OBJCLASS_AIMAP)	return m_AIMap->InvertSelection			();
+
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -309,8 +315,11 @@ int EScene::InvertSelection( EObjClass classfilter ){
 	return count;
 }
 
-int EScene::RemoveSelection( EObjClass classfilter ){
+int EScene::RemoveSelection( EObjClass classfilter )
+{
 	int count = 0;
+    if (OBJCLASS_AIMAP==classfilter) return m_AIMap->RemoveSelection();
+    
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
@@ -342,7 +351,28 @@ int EScene::RemoveSelection( EObjClass classfilter ){
 	return count;
 }
 
-CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list){
+int EScene::RayQuery(SPickQuery& PQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list)
+{
+    VERIFY			(snap_list);
+    PQ.prepare_rq	(start,dir,dist,flags);
+	XRC.ray_options	(flags);
+    for(ObjectIt _F=snap_list->begin();_F!=snap_list->end();_F++)
+        ((CSceneObject*)(*_F))->RayQuery(PQ);
+	return PQ.r_count();
+}
+
+int EScene::BoxQuery(SPickQuery& PQ, const Fbox& bb, u32 flags, ObjectList* snap_list)
+{
+    VERIFY			(snap_list);
+    PQ.prepare_bq	(bb,flags);
+	XRC.box_options	(flags);
+    for(ObjectIt _F=snap_list->begin();_F!=snap_list->end();_F++)
+        ((CSceneObject*)(*_F))->BoxQuery(PQ);
+	return PQ.r_count();
+}
+
+CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list)
+{
 	if( !valid() )
 		return 0;
 
@@ -357,6 +387,8 @@ CCustomObject *EScene::RayPick(const Fvector& start, const Fvector& direction, E
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first)){
             if (classfilter==OBJCLASS_DO){
                 m_DetailObjects->RaySelect(true,nearest_dist,start,direction);
+            }else if (classfilter==OBJCLASS_AIMAP){
+                m_AIMap->RaySelect(true,nearest_dist,start,direction);
             }else{
                 for(ObjectIt _F=lst->begin();_F!=lst->end();_F++){
                     if((*_F)->Visible()){
@@ -381,8 +413,8 @@ int EScene::RaySelect(int flag, EObjClass classfilter, bool bOnlyNearest){
 	Fvector& start		= UI.m_CurrentRStart;
     Fvector& direction	= UI.m_CurrentRNorm;
 
-	if (classfilter==OBJCLASS_DO) return m_DetailObjects->RaySelect(flag,nearest_dist,start,direction);
-	if (classfilter==OBJCLASS_DUMMY) count+=m_DetailObjects->RaySelect(flag,nearest_dist,start,direction);
+	if (classfilter==OBJCLASS_DO) 		return m_DetailObjects->RaySelect(flag,nearest_dist,start,direction);
+	if (classfilter==OBJCLASS_AIMAP) 	return m_AIMap->RaySelect(flag,nearest_dist,start,direction);
 
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
@@ -407,8 +439,9 @@ int EScene::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_lis
 
 int EScene::SelectionCount(bool testflag, EObjClass classfilter){
 	int count = 0;
-    if (classfilter==OBJCLASS_DO)	return m_DetailObjects->SelectionCount(testflag);
-    if (classfilter==OBJCLASS_DUMMY)count+=m_DetailObjects->SelectionCount(testflag);
+    if (classfilter==OBJCLASS_DO)		return m_DetailObjects->SelectionCount(testflag);
+    if (classfilter==OBJCLASS_AIMAP)	return m_AIMap->SelectionCount(testflag);
+
     for(ObjectPairIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         ObjectList& lst = (*it).second;
         if ((classfilter==OBJCLASS_DUMMY)||(classfilter==(*it).first))
@@ -485,7 +518,6 @@ void EScene::Render( const Fmatrix& camera )
     // render normal objects
     mapRenderObjects.traverseLR		(object_Normal_0);
     mapRenderObjects.traverseRL		(object_StrictB2F_0);
-    mapRenderObjects.traverseLR		(object_Normal_1);
 	RENDER_CLASS			(0,OBJCLASS_GROUP,		false);
 
     // draw detail objects (normal)
@@ -493,6 +525,7 @@ void EScene::Render( const Fmatrix& camera )
 	RENDER_CLASS			(0,OBJCLASS_GROUP,		true);
 
 // priority #1
+    mapRenderObjects.traverseLR		(object_Normal_1);
 	// draw lights, sounds, respawn points, pclipper, sector, event
     RENDER_CLASS_NORMAL		(1,OBJCLASS_LIGHT);
     RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	false);
@@ -500,29 +533,31 @@ void EScene::Render( const Fmatrix& camera )
     RENDER_CLASS_NORMAL		(1,OBJCLASS_SPAWNPOINT);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_WAY);
     RENDER_CLASS			(1,OBJCLASS_SHAPE,		false);
-    RENDER_CLASS_NORMAL		(1,OBJCLASS_SECTOR);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_PS);
 	RENDER_CLASS_NORMAL		(1,OBJCLASS_PORTAL);
 	RENDER_CLASS			(1,OBJCLASS_GROUP,		false);
+    m_DetailObjects->Render	(1,false);
+    m_AIMap->OnRender		(1,false);
 
     mapRenderObjects.traverseRL(object_StrictB2F_1);
-    m_DetailObjects->Render	(1,false);
     m_DetailObjects->Render	(1,true);
+    m_AIMap->OnRender		(1,true);
 	// draw clip planes, glows, event, sectors, portals
     RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	true);
     RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	true);
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_GLOW);
     RENDER_CLASS			(1,OBJCLASS_SHAPE,		true);
-	RENDER_CLASS_ALPHA		(1,OBJCLASS_SECTOR);
 	RENDER_CLASS			(1,OBJCLASS_GROUP,		true);
     RENDER_CLASS			(1,OBJCLASS_SPAWNPOINT,	true);
 
 // priority #2
     mapRenderObjects.traverseLR(object_Normal_2);
     m_DetailObjects->Render	(2,						false);
+    RENDER_CLASS_NORMAL		(2,OBJCLASS_SECTOR);
 	RENDER_CLASS			(2,OBJCLASS_GROUP,		false);
     mapRenderObjects.traverseRL(object_StrictB2F_2);
     m_DetailObjects->Render	(2,						true);
+	RENDER_CLASS_ALPHA		(2,OBJCLASS_SECTOR);
 	RENDER_CLASS			(2,OBJCLASS_GROUP,		true);
 
 // priority #3
@@ -559,15 +594,15 @@ void EScene::Render( const Fmatrix& camera )
         int cnt=0;
         for (ERR::VertIt vit=m_CompilerErrors.m_TJVerts.begin(); vit!=m_CompilerErrors.m_TJVerts.end(); vit++){
         	temp.sprintf		("TJ: %d",cnt++);
-        	DU::dbgDrawVert(vit->p[0],						0xff0000ff,	temp.c_str());
+        	DU.dbgDrawVert(vit->p[0],						0xff0000ff,	temp.c_str());
         }
         for (ERR::EdgeIt eit=m_CompilerErrors.m_MultiEdges.begin(); eit!=m_CompilerErrors.m_MultiEdges.end(); eit++){
         	temp.sprintf		("ME: %d",cnt++);
-        	DU::dbgDrawEdge(eit->p[0],eit->p[1],			0xff00ff00,	temp.c_str());
+        	DU.dbgDrawEdge(eit->p[0],eit->p[1],			0xff00ff00,	temp.c_str());
         }
         for (ERR::FaceIt fit=m_CompilerErrors.m_InvalidFaces.begin(); fit!=m_CompilerErrors.m_InvalidFaces.end(); fit++){
         	temp.sprintf		("IF: %d",cnt++);
-        	DU::dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	0xffff0000,	temp.c_str());
+        	DU.dbgDrawFace(fit->p[0],fit->p[1],fit->p[2],	0xffff0000,	temp.c_str());
         }
 	    Device.SetRS			(D3DRS_CULLMODE,D3DCULL_CCW);
 	}
@@ -608,10 +643,12 @@ void EScene::ClearObjects(bool bDestroy){
             for(ObjectIt _F = lst.begin();_F!=lst.end();_F++) delete (*_F);
         lst.clear();
     }
-    m_DetailObjects->Clear();
-    xr_delete(m_SkyDome);
-    ClearSnapList();
-    m_CompilerErrors.Clear();
+    m_DetailObjects->Clear	();
+    m_AIMap->Clear			();
+
+    xr_delete				(m_SkyDome);
+    ClearSnapList			();
+    m_CompilerErrors.Clear	();
 }
 //----------------------------------------------------
 
@@ -647,6 +684,10 @@ bool EScene::IsModified()
 
 bool EScene::IfModified()
 {
+	if (locked()){ 
+        ELog.DlgMsg( mtError, "Scene sharing violation" );
+        return false;
+    }
     if (m_Modified && (ObjCount()||UI.GetEditFileName()[0])){
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
@@ -742,20 +783,26 @@ void EScene::OnObjectsUpdate(){
 	}
 }
 
-void EScene::OnDeviceCreate(){
+void EScene::OnDeviceCreate()
+{
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceCreate();
 	}
+    m_AIMap->OnDeviceCreate();
+    m_DetailObjects->OnDeviceCreate();
 }
 
-void EScene::OnDeviceDestroy(){
+void EScene::OnDeviceDestroy()
+{
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceDestroy();
 	}
+    m_AIMap->OnDeviceDestroy();
+    m_DetailObjects->OnDeviceDestroy();
 }
 
 int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel, int iVis, int iLock){
@@ -852,12 +899,14 @@ void EScene::UpdateSnapList(){
 }
 //--------------------------------------------------------------------------------------------------
 
-void EScene::SynchronizeObjects(){
+void EScene::SynchronizeObjects()
+{
     for(ObjectPairIt it=FirstClass(); it!=LastClass(); it++){
         ObjectList& lst = (*it).second;
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
             (*_F)->OnSynchronize();
 	}
+	m_AIMap->OnSynchronize();
 }
 //--------------------------------------------------------------------------------------------------
 

@@ -71,11 +71,28 @@ void CEditableMesh::GenerateCFModel()
     UI.ProgressEnd();
 }
 
-bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector& direction, const Fmatrix& inv_parent, SRayPickInfo* pinf){
+void CEditableMesh::RayQuery(const Fmatrix& parent, const Fmatrix& inv_parent, SPickQuery& pinf)
+{
+    if (!m_CFModel) GenerateCFModel();
+    XRC.ray_query	(inv_parent, m_CFModel, pinf.m_Start, pinf.m_Direction, pinf.m_Dist);
+    for (int r=0; r<XRC.r_count(); r++)
+        pinf.append(parent,m_CFModel,XRC.r_begin()+r);
+}
+
+void CEditableMesh::BoxQuery(const Fmatrix& parent, SPickQuery& pinf)
+{
+    if (!m_CFModel) GenerateCFModel();
+    XRC.box_query(parent, m_CFModel, pinf.m_BB);
+    for (int r=0; r<XRC.r_count(); r++)
+        pinf.append(parent,m_CFModel,XRC.r_begin()+r);
+}
+
+bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector& direction, const Fmatrix& inv_parent, SRayPickInfo* pinf)
+{
 	if (!m_Visible) return false;
 
     if (!m_CFModel) GenerateCFModel();
-    float m_r = pinf?pinf->inf.range+EPS_L:UI.ZFar();// (bugs: не всегда выбирает) //S ????
+    float m_r 		= pinf?pinf->inf.range+EPS_L:UI.ZFar();// (bugs: не всегда выбирает) //S ????
 
 	XRC.ray_options	(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL);
     XRC.ray_query	(inv_parent, m_CFModel, start, direction, m_r);
@@ -153,7 +170,8 @@ void CEditableMesh::GetTiesFaces(int start_id, U32Vec& fl, float fSoftAngle, boo
 }
 //----------------------------------------------------
 
-bool CEditableMesh::BoxPick(const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf){
+bool CEditableMesh::BoxPick(const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf)
+{
     if (!m_CFModel) GenerateCFModel();
 
     XRC.box_query(parent, m_CFModel, box);

@@ -109,7 +109,7 @@ void CCustomObject::Render(int priority, bool strictB2F)
 {
 	if (fraBottomBar->miDrawObjectsPivot->Checked&&(1==priority)&&(false==strictB2F)&&(Selected())){
     	Device.SetShader(Device.m_WireShader);
-    	DU::DrawObjectAxis(FTransformRP);
+    	DU.DrawObjectAxis(FTransformRP);
     }
 }
 

@@ -9,8 +9,8 @@
 #include "SpawnPoint.h"
 //---------------------------------------------------------------------------
 
-TUI_SpawnPointTools::TUI_SpawnPointTools():TUI_CustomTools(OBJCLASS_SPAWNPOINT){
-    AddControlCB(xr_new<TUI_ControlSpawnPointAdd>(estSelf,eaAdd,	this));
+TUI_SpawnPointTools::TUI_SpawnPointTools():TUI_CustomTools(OBJCLASS_SPAWNPOINT,true){
+    AddControlCB(xr_new<TUI_ControlSpawnPointAdd>(estDefault,eaAdd,	this));
 }
 void TUI_SpawnPointTools::OnActivate  (){
     pFrame = xr_new<TfraSpawnPoint>((TComponent*)0);

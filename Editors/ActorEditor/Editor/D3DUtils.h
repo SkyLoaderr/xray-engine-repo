@@ -6,7 +6,73 @@
 #define D3DUtilsH
 //----------------------------------------------------
 
-namespace DU{
+struct SPrimitiveBuffer{
+    SGeometry*				pGeom;
+    u32						v_cnt;
+    u32						i_cnt;
+    D3DPRIMITIVETYPE 		p_type;
+    u32						p_cnt;
+    typedef void (__closure *TOnRender)();
+    TOnRender				OnRender;
+    void					RenderDIP()	{Device.DIP	(p_type,pGeom,0,0,v_cnt,0,p_cnt);}
+    void					RenderDP()	{Device.DP	(p_type,pGeom,0,p_cnt);}
+public:
+                            SPrimitiveBuffer():OnRender(0),pGeom(0){;}
+    void					CreateFromData(D3DPRIMITIVETYPE _pt, u32 _p_cnt, u32 FVF, LPVOID vertices, u32 _v_cnt, u16* indices=0, u32 _i_cnt=0)
+    {
+	    IDirect3DVertexBuffer9*	pVB=0;
+    	IDirect3DIndexBuffer9*	pIB=0;
+        p_cnt				= _p_cnt;
+        p_type				= _pt;
+        v_cnt				= _v_cnt;
+        i_cnt				= _i_cnt;
+        u32 stride			= D3DXGetFVFVertexSize(FVF);
+        R_CHK(HW.pDevice->CreateVertexBuffer(v_cnt*stride, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &pVB, 0));
+        u8* 				bytes;
+        R_CHK				(pVB->Lock(0,0,(LPVOID*)&bytes,0));
+        Memory.mem_copy		(bytes,vertices,v_cnt*stride);
+        R_CHK				(pVB->Unlock());
+        if (i_cnt){ 
+            R_CHK(HW.pDevice->CreateIndexBuffer(i_cnt*sizeof(u16),D3DUSAGE_WRITEONLY,D3DFMT_INDEX16,D3DPOOL_DEFAULT,&pIB,NULL));
+            R_CHK			(pIB->Lock(0,0,(LPVOID*)&bytes,0));
+            Memory.mem_copy	(bytes,indices,i_cnt*sizeof(u16));
+            R_CHK			(pIB->Unlock());
+            OnRender		= RenderDIP;
+        }else{
+            OnRender		= RenderDP;
+        }
+        pGeom				= Device.Shader.CreateGeom(FVF,pVB,pIB);
+    }
+    void					Destroy()
+    {                       
+    	if (pGeom){
+	        _RELEASE		(pGeom->vb);
+    	    _RELEASE		(pGeom->ib);
+        	Device.Shader.DeleteGeom(pGeom);
+        }
+    }
+    void					Render(){OnRender();}
+};
+
+//----------------------------------------------------
+// Utilities
+//----------------------------------------------------
+class CDrawUtilities{
+    SPrimitiveBuffer			m_Sphere;
+    SPrimitiveBuffer			m_SolidBox;
+    SPrimitiveBuffer			m_WireBox;
+public:
+	SGeometry* 	vs_L;
+	SGeometry* 	vs_TL;
+	SGeometry* 	vs_LIT;
+public:
+	CDrawUtilities()
+    {
+        vs_L	= 0;
+        vs_TL	= 0;
+        vs_LIT	= 0;
+    }
+    
     void OnDeviceCreate	();
     void OnDeviceDestroy();
 
@@ -26,7 +92,7 @@ namespace DU{
 
     void DrawSound(const Fvector& p, float radius, u32 clr);
     void DrawLineSphere(const Fvector& p, float radius, u32 clr, bool bCross);
-    void DrawSphere(const Fvector& p, float radius, u32 clr);
+    void DrawIdentSphere(u32 clr);
 
 	void dbgDrawPlacement(const Fvector& p, int sz, u32 clr, LPCSTR caption=0, u32 clr_font=0xffffffff);
     void dbgDrawVert(const Fvector& p0, u32 clr, LPCSTR caption=0);
@@ -51,8 +117,8 @@ namespace DU{
         DrawSelectionBox(C,S,c);
     }
     void DrawIdentBox(bool bSolid, bool bWire, u32 clr);
-    void DrawBox    (const Fvector& offs, const Fvector& Size, bool bWire, u32 c);
-    void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 c, bool bCull, bool bBorder, u32 cb);
+    void DrawBox	(const Fvector& offs, const Fvector& Size, bool bWire, u32 c);
+    void DrawPlane	(const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 c, bool bCull, bool bBorder, u32 cb);
 
     void DrawSafeRect();
     void DrawGrid	();
@@ -65,6 +131,7 @@ namespace DU{
     void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, u32 pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle);
     void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, u32 pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle);
 };
+extern CDrawUtilities DU;
 //----------------------------------------------------
 #endif /*_INCDEF_D3DUtils_H_*/
 

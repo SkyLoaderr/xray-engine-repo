@@ -32,6 +32,7 @@
 #include "UI_PSTools.h"
 #include "UI_DOTools.h"
 #include "UI_GroupTools.h"
+#include "UI_AIMapTools.h"
 //----------------------------------------------------
 
 TUI_CustomTools* NewToolFromTarget(int _tgt)
@@ -51,6 +52,7 @@ TUI_CustomTools* NewToolFromTarget(int _tgt)
     case etWay:			return xr_new<TUI_WayPointTools>	();
     case etPS:			return xr_new<TUI_PSTools>			();
     case etDO:			return xr_new<TUI_DOTools>			();
+    case etAIMap:		return xr_new<TUI_AIMapTools>		();
     default: THROW2("Can't find specify tools.");
     }
     return 0;
@@ -144,6 +146,7 @@ EObjClass ClassIDFromTargetID( int cls_id ){
     case etPortal:		return OBJCLASS_PORTAL;
     case etPS:			return OBJCLASS_PS;
 	case etDO: 			return OBJCLASS_DO;
+    case etAIMap:		return OBJCLASS_AIMAP;
     default: throw -1;
 	}
 }

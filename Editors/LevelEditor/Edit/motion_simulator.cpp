@@ -1,7 +1,9 @@
 #include "stdafx.h"
+#pragma hdrstop
+
 #include "cl_intersect.h"
 #include "motion_simulator.h"
-#include "compiler.h"
+#include "scene.h"
 
 struct cl_tri 
 {
@@ -447,7 +449,7 @@ IC void create_bb(Fbox& B, Fvector& P, float r, float h)
 {
 	B.set(P.x-r, P.y, P.z-r, P.x+r, P.y+h, P.z+r);
 }
-void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _radius, float _height)
+void msimulator_Simulate(Fvector& result, Fvector& start, Fvector& end, float _radius, float _height, ObjectList* snap_list)
 {
 	SCollisionData	cl_data;
 	float			half_height	= _height/2;
@@ -462,8 +464,8 @@ void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _
 	// Collision query
 	Fvector			bbC,bbD;
 	bb.get_CD		(bbC,bbD);
-	XRC.box_options	(0);
-	XRC.box_query	(&Level,bbC,bbD);
+    static SPickQuery PQ;
+    Scene.BoxQuery	(PQ,bb,0,snap_list);
 	
 	// XForm everything to ellipsoid space
 	Fvector			xf;
@@ -486,14 +488,14 @@ void msimulator_Simulate( Fvector& result, Fvector& start, Fvector& end, float _
 	cl_data.vLastSafePosition.set	(Lposition);
 
 	// Get the data for the triangles in question and scale to ellipsoid space
-	int tri_count			= XRC.r_count();
+	int tri_count			= PQ.r_count();
 	clContactedT.resize		(tri_count);
 	if (tri_count) {
 		Fvector vel_dir;
 		vel_dir.normalize_safe	(Lvelocity);
 		for (int i_t=0; i_t<tri_count; i_t++){
 			cl_tri& T			= clContactedT[i_t];
-			CDB::TRI&	O		= *(Level.get_tris()+XRC.r_begin()[i_t].id);
+			CDB::TRI&	O		= (PQ.r_begin()+i_t)->T;
 
 			T.p[0].mul			(*O.verts[0],xf);
 			T.p[1].mul			(*O.verts[1],xf);

@@ -10,9 +10,9 @@
 #include "ui_main.h"
 
 //----------------------------------------------------------------------
-TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS)
+TUI_PSTools::TUI_PSTools():TUI_CustomTools(OBJCLASS_PS,true)
 {
-    AddControlCB(xr_new<TUI_ControlPSAdd>(estSelf,eaAdd,		this));
+    AddControlCB(xr_new<TUI_ControlPSAdd>(estDefault,eaAdd,		this));
 }
 void TUI_PSTools::OnActivate  ()
 {

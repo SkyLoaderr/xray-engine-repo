@@ -147,9 +147,7 @@ void CSpawnPoint::Construct(LPVOID data){
     	if (!m_SpawnData.Valid()){
     		if (strcmp(LPSTR(data),RPOINT_CHOOSE_NAME)==0){
 	        	m_Type = ptRPoint;
-    	    }else if (strcmp(LPSTR(data),AIPOINT_CHOOSE_NAME)==0){
-            	m_Type = ptAIPoint;
-            }else{
+    	    }else{
         		SetValid(false);
 	        }
         }
@@ -254,14 +252,14 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                 if (m_SpawnData.Valid()){
                     // render icon
 				    Shader* s 			= GetIcon(m_SpawnData.m_Data->s_name);
-				    DU::DrawEntity		(0xffffffff,s);
+				    DU.DrawEntity		(0xffffffff,s);
                 }else{
                 	float k = 1.f/(float(m_dwTeamID+1)/float(MAX_TEAM));
                     int r = m_dwTeamID%MAX_TEAM;
                     Fcolor c;
                     c.set(RP_COLORS[r]);
                     c.mul_rgb(k*0.9f+0.1f);
-                    DU::DrawEntity(c.get(),Device.m_WireShader);
+                    DU.DrawEntity(c.get(),Device.m_WireShader);
                 }
             }else{
                 if (fraBottomBar->miSpawnPointDrawText->Checked)
@@ -272,7 +270,6 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     }else{
                         switch (m_Type){
                         case ptRPoint: 	s_name.sprintf("RPoint T:%d",m_dwTeamID); break;
-                        case ptAIPoint: s_name.sprintf("AIPoint"); break;
                         default: THROW2("CSpawnPoint:: Unknown Type");
                         }
                     }
@@ -288,7 +285,7 @@ void CSpawnPoint::Render( int priority, bool strictB2F )
                     Fbox bb; GetBox(bb);
                     u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                     Device.SetShader(Device.m_WireShader);
-                    DU::DrawSelectionBox(bb,&clr);
+                    DU.DrawSelectionBox(bb,&clr);
                 }
             }
         }
@@ -352,6 +349,10 @@ bool CSpawnPoint::Load(IReader& F){
         SetValid	(true);
     }else{
 	    if (F.find_chunk(SPAWNPOINT_CHUNK_TYPE))     m_Type 		= (EPointType)F.r_u32();
+        if (m_Type==ptReserved){
+            ELog.Msg( mtError, "SPAWNPOINT: Unsupported spawn element.");
+            return false;
+        }
         if (m_Type>=ptMaxType){
             ELog.Msg( mtError, "SPAWNPOINT: Unsupported spawn version.");
             return false;
@@ -359,8 +360,6 @@ bool CSpawnPoint::Load(IReader& F){
     	switch (m_Type){
         case ptRPoint:
 		    if (F.find_chunk(SPAWNPOINT_CHUNK_TEAMID)) 	m_dwTeamID	= F.r_u32();
-        break;
-        case ptAIPoint:
         break;
         default: THROW;
         }
@@ -395,8 +394,6 @@ void CSpawnPoint::Save(IWriter& F){
         case ptRPoint:
 	        F.w_chunk	(SPAWNPOINT_CHUNK_TEAMID,	&m_dwTeamID,sizeof(u32));
         break;
-        case ptAIPoint:
-        break;
         default: THROW;
         }
     }
@@ -417,14 +414,10 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
             F.rpoint.stream.w_fvector3		(PRotation);
             F.rpoint.stream.w_u32		(m_dwTeamID);
 			F.rpoint.stream.close_chunk	();
-        case ptAIPoint:
         break;
         default: THROW;
         }
     }
-    F.aipoint.stream.open_chunk		(F.aipoint.chunk++);
-    F.aipoint.stream.w_fvector3		(PPosition);
-    F.aipoint.stream.close_chunk	();
     return true;
 }
 //----------------------------------------------------
@@ -440,9 +433,6 @@ void CSpawnPoint::FillProp(LPCSTR pref, PropItemVec& items)
         case ptRPoint:{
 			PHelper.CreateU32(items, PHelper.PrepareKey(pref,"Respawn Point","Team"), &m_dwTeamID, 0,64,1);
         }break;
-        case ptAIPoint:
-        	PHelper.CreateCaption(items,PHelper.PrepareKey(pref,"AI Point","Reserved"),"-");
-        break;
         default: THROW;
         }
     }

@@ -485,47 +485,51 @@ char* TUI::GetCaption()
 	return GetEditFileName()[0]?GetEditFileName():"noname";
 }
 
+#define COMMAND0(cmd)		{Command(cmd);bExec=true;}
+#define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
+
 bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
         if (Shift.Contains(ssShift)){
-            if (Key==VK_F5)    		{Command(COMMAND_MAKE_GAME);                    bExec=true;}
+            if (Key==VK_F5)    			COMMAND0(COMMAND_MAKE_GAME)
         }else{
-            if (Key==VK_F5)    				{Command(COMMAND_BUILD);                		bExec=true;}
-            else if (Key==VK_F7)    		{Command(COMMAND_OPTIONS);                      bExec=true;}
-            else if (Key=='A')    			{Command(COMMAND_SELECT_ALL);                   bExec=true;}
-            else if (Key=='I')    			{Command(COMMAND_INVERT_SELECTION_ALL);         bExec=true;}
-            else if (Key=='1') 	 			{Command(COMMAND_CHANGE_TARGET, etGroup);       bExec=true;}
-            else if (Key=='2')				{Command(COMMAND_CHANGE_TARGET, etPS);          bExec=true;}
-            else if (Key=='3')				{Command(COMMAND_CHANGE_TARGET, etShape);       bExec=true;}
+            if (Key==VK_F5)    			COMMAND0(COMMAND_BUILD)                		
+            else if (Key==VK_F7)   		COMMAND0(COMMAND_OPTIONS)                      
+            else if (Key=='A')    		COMMAND0(COMMAND_SELECT_ALL)                   
+            else if (Key=='I')    		COMMAND0(COMMAND_INVERT_SELECTION_ALL)         
+            else if (Key=='1') 	 		COMMAND1(COMMAND_CHANGE_TARGET, etGroup)
+            else if (Key=='2')			COMMAND1(COMMAND_CHANGE_TARGET, etPS)          
+            else if (Key=='3')			COMMAND1(COMMAND_CHANGE_TARGET, etShape)       
+            else if (Key=='4')			COMMAND1(COMMAND_CHANGE_TARGET,	etAIMap)		
         }
     }else{
         if (Shift.Contains(ssAlt)){
-        	if (Key=='F')   			{Command(COMMAND_FILE_MENU);                    bExec=true;}
+        	if (Key=='F')   			COMMAND0(COMMAND_FILE_MENU)                    
         }else{
-            if (Key=='1')     			{Command(COMMAND_CHANGE_TARGET, etObject);      bExec=true;}
-            else if (Key=='2')  		{Command(COMMAND_CHANGE_TARGET, etLight);       bExec=true;}
-            else if (Key=='3')  		{Command(COMMAND_CHANGE_TARGET, etSoundSrc);    bExec=true;}
-            else if (Key=='4')  		{Command(COMMAND_CHANGE_TARGET, etSoundEnv);    bExec=true;}
-            else if (Key=='5')  		{Command(COMMAND_CHANGE_TARGET, etGlow);        bExec=true;}
-            else if (Key=='6')  		{Command(COMMAND_CHANGE_TARGET, etDO);          bExec=true;}
-            else if (Key=='7')  		{Command(COMMAND_CHANGE_TARGET, etSpawnPoint);  bExec=true;}
-            else if (Key=='8')  		{Command(COMMAND_CHANGE_TARGET, etWay);         bExec=true;}
-            else if (Key=='9')  		{Command(COMMAND_CHANGE_TARGET, etSector);      bExec=true;}
-            else if (Key=='0')  		{Command(COMMAND_CHANGE_TARGET, etPortal);      bExec=true;}
+            if (Key=='1')     			COMMAND1(COMMAND_CHANGE_TARGET, etObject)      
+            else if (Key=='2')  		COMMAND1(COMMAND_CHANGE_TARGET, etLight)       
+            else if (Key=='3')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundSrc)    
+            else if (Key=='4')  		COMMAND1(COMMAND_CHANGE_TARGET, etSoundEnv)    
+            else if (Key=='5')  		COMMAND1(COMMAND_CHANGE_TARGET, etGlow)        
+            else if (Key=='6')  		COMMAND1(COMMAND_CHANGE_TARGET, etDO)          
+            else if (Key=='7')  		COMMAND1(COMMAND_CHANGE_TARGET, etSpawnPoint)  
+            else if (Key=='8')  		COMMAND1(COMMAND_CHANGE_TARGET, etWay)         
+            else if (Key=='9')  		COMMAND1(COMMAND_CHANGE_TARGET, etSector)      
+            else if (Key=='0')  		COMMAND1(COMMAND_CHANGE_TARGET, etPortal)      
             // simple press
-            else if (Key=='W')			{Command(COMMAND_SHOW_OBJECTLIST);              bExec=true;}
-            else if (Key==VK_DELETE)	{Command(COMMAND_DELETE_SELECTION);             bExec=true;}
-            else if (Key==VK_RETURN)	{Command(COMMAND_SHOW_PROPERTIES);              bExec=true;}
-            else if (Key==VK_OEM_MINUS)	{Command(COMMAND_HIDE_SEL, FALSE);              bExec=true;}
-            else if (Key==VK_OEM_PLUS)	{Command(COMMAND_HIDE_UNSEL, FALSE);            bExec=true;}
-            else if (Key==VK_OEM_5)		{Command(COMMAND_HIDE_ALL, TRUE);               bExec=true;}
+            else if (Key=='W')			COMMAND0(COMMAND_SHOW_OBJECTLIST)              
+            else if (Key==VK_DELETE)	COMMAND0(COMMAND_DELETE_SELECTION)             
+            else if (Key==VK_RETURN)	COMMAND0(COMMAND_SHOW_PROPERTIES)              
+            else if (Key==VK_OEM_MINUS)	COMMAND1(COMMAND_HIDE_SEL, FALSE)              
+            else if (Key==VK_OEM_PLUS)	COMMAND1(COMMAND_HIDE_UNSEL, FALSE)            
+            else if (Key==VK_OEM_5)		COMMAND1(COMMAND_HIDE_ALL, TRUE)               
             else if (Key=='N'){
                 switch (Tools.GetAction()){
-                case eaMove: 			{Command(COMMAND_SET_NUMERIC_POSITION); bExec=true;} 	break;
-                case eaRotate: 			{Command(COMMAND_SET_NUMERIC_ROTATION); bExec=true;} 	break;
-                case eaScale: 			{Command(COMMAND_SET_NUMERIC_SCALE);    bExec=true;}	break;
+                case eaMove: 			COMMAND0(COMMAND_SET_NUMERIC_POSITION); break;
+                case eaRotate: 			COMMAND0(COMMAND_SET_NUMERIC_ROTATION); break;
+                case eaScale: 			COMMAND0(COMMAND_SET_NUMERIC_SCALE);	break;
                 }
             }
         }
@@ -538,12 +542,12 @@ bool __fastcall TUI::ApplyGlobalShortCutExt(WORD Key, TShiftState Shift)
 {
 	bool bExec = false;
     if (Shift.Contains(ssCtrl)){
-        if (Key=='V')    				{Command(COMMAND_PASTE);                bExec=true;}
-        else if (Key=='C')    			{Command(COMMAND_COPY);                 bExec=true;}
-        else if (Key=='X')    			{Command(COMMAND_CUT);                  bExec=true;}
-        else if (Key=='Z')    			{Command(COMMAND_UNDO);                 bExec=true;}
-        else if (Key=='Y')    			{Command(COMMAND_REDO);                 bExec=true;}
-		else if (Key=='R')				{Command(COMMAND_LOAD_FIRSTRECENT);     bExec=true;}
+        if (Key=='V')    				COMMAND0(COMMAND_PASTE)
+        else if (Key=='C')    			COMMAND0(COMMAND_COPY)
+        else if (Key=='X')    			COMMAND0(COMMAND_CUT)
+        else if (Key=='Z')    			COMMAND0(COMMAND_UNDO)
+        else if (Key=='Y')    			COMMAND0(COMMAND_REDO)
+		else if (Key=='R')				COMMAND0(COMMAND_LOAD_FIRSTRECENT)
     }
     return bExec;
 }

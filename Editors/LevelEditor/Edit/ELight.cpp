@@ -106,16 +106,16 @@ void CLight::Render(int priority, bool strictB2F){
         clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.is(flAffectDynamic)?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
-            if (Selected()) DU::DrawLineSphere( m_D3D.position, m_D3D.range, clr, true );
-            DU::DrawPointLight(m_D3D.position,VIS_RADIUS, clr);
+            if (Selected()) DU.DrawLineSphere( m_D3D.position, m_D3D.range, clr, true );
+            DU.DrawPointLight(m_D3D.position,VIS_RADIUS, clr);
         break;
         case D3DLIGHT_DIRECTIONAL:
-            if (Selected()) DU::DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_SELRANGE, clr );
-            else			DU::DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_RANGE, clr );
+            if (Selected()) DU.DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_SELRANGE, clr );
+            else			DU.DrawDirectionalLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, DIR_RANGE, clr );
         break;
         case D3DLIGHT_SPOT:
-        	if (Selected())	DU::DrawSpotLight( m_D3D.position, m_D3D.direction, m_D3D.range, m_D3D.phi, clr );
-            else			DU::DrawSpotLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, m_D3D.phi, clr );
+        	if (Selected())	DU.DrawSpotLight( m_D3D.position, m_D3D.direction, m_D3D.range, m_D3D.phi, clr );
+            else			DU.DrawSpotLight( m_D3D.position, m_D3D.direction, VIS_RADIUS, m_D3D.phi, clr );
         break;
         default: THROW;
         }

@@ -199,12 +199,12 @@ void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, U32
         st_Face& face = m_Faces[*dw_it];
         for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[face.pv[k].pindex]);
 		if (RB_cnt==MAX_VERT_COUNT){
-        	DU::DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
+        	DU.DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
 			RB_cnt = 0;
         }
     }
 
-	if (RB_cnt)	DU::DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
+	if (RB_cnt)	DU.DrawPrimitiveL(D3DPT_TRIANGLELIST,RB_cnt/3,RB,RB_cnt,color,true,false);
     if (bEdge)  Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
 	Device.ResetNearer();
 }

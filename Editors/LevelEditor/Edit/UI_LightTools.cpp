@@ -5,7 +5,7 @@
 #include "ui_tools.h"
 #include "FrameLight.h"
 //---------------------------------------------------------------------------
-TUI_LightTools::TUI_LightTools():TUI_CustomTools(OBJCLASS_LIGHT){
+TUI_LightTools::TUI_LightTools():TUI_CustomTools(OBJCLASS_LIGHT,true){
 }
 
 void TUI_LightTools::OnActivate  (){

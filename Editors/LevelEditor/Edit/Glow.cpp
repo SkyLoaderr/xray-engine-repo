@@ -90,13 +90,13 @@ void CGlow::Render(int priority, bool strictB2F){
 			}else{
                 // рендерим bounding sphere
         		Device.SetShader(Device.m_WireShader);
-                DU::DrawRomboid(PPosition, VIS_RADIUS, 0x00FF8507);
+                DU.DrawRomboid(PPosition, VIS_RADIUS, 0x00FF8507);
 			}
             if( Selected() ){
             	Fbox bb; GetBox(bb);
                 u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
                 Device.SetShader(Device.m_WireShader);
-                DU::DrawSelectionBox(bb,&clr);
+                DU.DrawSelectionBox(bb,&clr);
             }
         }
     }

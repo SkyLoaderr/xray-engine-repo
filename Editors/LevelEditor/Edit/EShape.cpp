@@ -321,21 +321,25 @@ void CEditShape::Render(int priority, bool strictB2F)
                 for (ShapeIt it=shapes.begin(); it!=shapes.end(); it++){
 					switch(it->type){
                     case cfSphere:{
-		                RCache.set_xform_world(_Transform());
                     	Fsphere& S			= it->data.sphere;
+                    	Fmatrix B;
+                        B.scale				(S.R,S.R,S.R);
+                        B.translate_over	(S.P);
+                        B.mulA				(_Transform());
+		                RCache.set_xform_world(B);
 		                Device.SetShader	(Device.m_WireShader);
-                        DU::DrawLineSphere	(S.P,S.R,m_DrawEdgeColor,true);
+                        DU.DrawLineSphere	(S.P,S.R,m_DrawEdgeColor,true);
 		                Device.SetShader	(Device.m_SelectionShader);
-                        DU::DrawSphere		(S.P,S.R,clr);
+                        DU.DrawIdentSphere	(clr);
                     }break;
                     case cfBox:
                     	Fmatrix B			= it->data.box;
                         B.mulA				(_Transform());
 		                RCache.set_xform_world(B);
 		                Device.SetShader	(Device.m_SelectionShader);
-				        DU::DrawIdentBox	(true,false,clr);
+				        DU.DrawIdentBox		(true,false,clr);
 		                Device.SetShader	(Device.m_WireShader);
-				        DU::DrawIdentBox	(false,true,m_DrawEdgeColor);
+				        DU.DrawIdentBox		(false,true,m_DrawEdgeColor);
                     break;
 				    }
                 }
@@ -345,7 +349,7 @@ void CEditShape::Render(int priority, bool strictB2F)
                     u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
 	                RCache.set_xform_world(_Transform());
                     Device.SetShader(Device.m_WireShader);
-                    DU::DrawSelectionBox(m_Box,&clr);
+                    DU.DrawSelectionBox(m_Box,&clr);
                 }
             }
         }

@@ -22,6 +22,7 @@ struct UndoItem {
 class CLight;
 class CSceneObject;
 class EDetailManager;
+class ESceneAIMapTools;
 class CInifile;
 class TProperties;
 /*
@@ -81,10 +82,11 @@ class EScene:
 {
 public:
 	// addition objects
-    EDetailManager*	m_DetailObjects;
-    CSceneObject*	m_SkyDome;
+    EDetailManager*		m_DetailObjects;
+    ESceneAIMapTools*	m_AIMap;
+    CSceneObject*		m_SkyDome;
 
-    ObjectList		m_SnapObjects;
+    ObjectList			m_SnapObjects;
 
 	typedef	FixedMAP<float,CSceneObject*>   mapObject_D;
 	typedef mapObject_D::TNode	 	    mapObject_Node;
@@ -202,6 +204,8 @@ public:
 	ObjectList* GetSnapList			();
 	CCustomObject *RayPick   		(const Fvector& start, const Fvector& dir, EObjClass classfilter, SRayPickInfo* pinf, bool bDynamicTest, ObjectList* snap_list);
 	int BoxPick						(const Fbox& box, SBoxPickInfoVec& pinf, ObjectList* snap_list=0);
+    int RayQuery					(SPickQuery& RQ, const Fvector& start, const Fvector& dir, float dist, u32 flags, ObjectList* snap_list);
+    int BoxQuery					(SPickQuery& RQ, const Fbox& bb, u32 flags, ObjectList* snap_list);
 
 	int RaySelect               	(int flag, EObjClass classfilter=OBJCLASS_DUMMY, bool bOnlyNearest=true); // flag=0,1,-1 (-1 invert)
 	int FrustumSelect               (int flag, EObjClass classfilter=OBJCLASS_DUMMY);

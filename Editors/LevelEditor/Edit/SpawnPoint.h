@@ -16,7 +16,7 @@ class CSpawnPoint : public CCustomObject {
 	typedef CCustomObject inherited;
 
     friend class    SceneBuilder;
-public:
+public:                           
 	struct SSpawnData{
 		CLASS_ID		m_ClassID;
 		xrServerEntity*	m_Data;

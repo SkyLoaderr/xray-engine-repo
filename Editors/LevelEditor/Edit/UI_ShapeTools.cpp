@@ -9,9 +9,9 @@
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 
-TUI_ShapeTools::TUI_ShapeTools():TUI_CustomTools(OBJCLASS_SHAPE)
+TUI_ShapeTools::TUI_ShapeTools():TUI_CustomTools(OBJCLASS_SHAPE,true)
 {
-    AddControlCB(xr_new<TUI_ControlShapeAdd>(estSelf,eaAdd,	this));
+    AddControlCB(xr_new<TUI_ControlShapeAdd>(estDefault,eaAdd,	this));
 }
 void TUI_ShapeTools::OnActivate  ()
 {

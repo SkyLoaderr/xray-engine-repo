@@ -123,6 +123,8 @@ public:
     // pick methods
     bool 			BoxPick					(const Fbox& box, SBoxPickInfoVec& pinf);
 	virtual bool 	RayPick					(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf=0);
+	virtual void 	RayQuery				(SPickQuery& pinf);
+	virtual void 	BoxQuery				(SPickQuery& pinf);
 	virtual bool 	FrustumPick				(const CFrustum& frustum);
     virtual bool 	SpherePick				(const Fvector& center, float radius);
 

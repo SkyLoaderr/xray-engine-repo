@@ -3,12 +3,11 @@
 #define LevelGameDefH
 
 #define RPOINT_CHOOSE_NAME 		"$rpoint"
-#define AIPOINT_CHOOSE_NAME		"$aipoint"
 #define NPCPOINT_CHOOSE_NAME 	"$npcpoint"
 
 enum EPointType{
     ptRPoint=0,
-    ptAIPoint,
+    ptReserved,
     ptSpawnPoint,
     ptMaxType,
     pt_force_dword=u32(-1)
@@ -26,7 +25,6 @@ enum EWayType{
 
 // POINT chunks
 #define RPOINT_CHUNK				POINT_BASE+ptRPoint
-#define AIPOINT_CHUNK				POINT_BASE+ptAIPoint
 
 // WAY chunks
 #define WAY_PATROLPATH_CHUNK		WAY_BASE+wtPatrolPath
@@ -51,12 +49,6 @@ enum EWayType{
         vector	(PPosition);
         vector	(PRotation);
         dword	(m_dwTeamId);
-    ...
-    - chunk #n
-
-- chunk AIPOINT_CHUNK
-	- chunk #0
-        vector	(PPosition);
     ...
     - chunk #n
 

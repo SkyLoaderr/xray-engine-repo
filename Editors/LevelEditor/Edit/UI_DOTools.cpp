@@ -8,8 +8,8 @@
 #include "scene.h"
 //---------------------------------------------------------------------------
 
-TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO){
-    AddControlCB(xr_new<TUI_ControlDOAdd>(estSelf,eaAdd,		this));
+TUI_DOTools::TUI_DOTools():TUI_CustomTools(OBJCLASS_DO,false){
+    AddControlCB(xr_new<TUI_ControlDOAdd>(estDefault,eaAdd,		this));
 }
 
 void TUI_DOTools::OnActivate(){

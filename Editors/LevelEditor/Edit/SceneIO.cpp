@@ -7,6 +7,7 @@
 
 #include "scene.h"
 #include "DetailObjects.h"
+#include "ESceneAIMapTools.h"
 #include "ui_main.h"
 
 // file: SceneChunks.h
@@ -25,6 +26,7 @@
 #define CHUNK_LEVELOP       0x7711
 #define CHUNK_OBJECT_COUNT  0x7712
 #define CHUNK_DETAILOBJECTS 0x7713
+#define CHUNK_AIMAP			0x7714
 
 // level options
 #define CHUNK_LO_VERSION		0x7801
@@ -164,6 +166,10 @@ void EScene::Save(char *_FileName, bool bUndo){
     	m_DetailObjects->Save(F);
 		F.close_chunk	();
     }
+
+    F.open_chunk	(CHUNK_AIMAP);
+    m_AIMap->Save	(F);
+    F.close_chunk	();
 
 //	Msg("4: %d",F.tell());
     if (!bUndo){
@@ -339,9 +345,15 @@ bool EScene::Load(char *_FileName)
             DO->close();
         }
 
+	    IReader* AIM = F->open_chunk(CHUNK_AIMAP);
+		if (AIM){
+	    	m_AIMap->Load(*AIM);
+            AIM->close();
+        }
+
         ELog.Msg( mtInformation, "EScene: %d objects loaded", ObjCount() );
 
-        UI.UpdateScene();
+        UI.UpdateScene(true);
 
 		FS.r_close(F);
 
@@ -349,7 +361,7 @@ bool EScene::Load(char *_FileName)
 
 		return true;
     }else{
-    	ELog.Msg(mtError,"Can't fibd file: ",_FileName);
+    	ELog.Msg(mtError,"Can't find file: ",_FileName);
     }
 	return false;
 }

@@ -13,9 +13,9 @@
 #include "ui_main.h"
 
 //---------------------------------------------------------------------------
-TUI_SectorTools::TUI_SectorTools():TUI_CustomTools(OBJCLASS_SECTOR){
-    AddControlCB(xr_new<TUI_ControlSectorSelect>(estSelf,eaSelect,	this));
-    AddControlCB(xr_new<TUI_ControlSectorAdd>(estSelf,eaAdd,		this));
+TUI_SectorTools::TUI_SectorTools():TUI_CustomTools(OBJCLASS_SECTOR,true){
+    AddControlCB(xr_new<TUI_ControlSectorSelect>(estDefault,eaSelect,	this));
+    AddControlCB(xr_new<TUI_ControlSectorAdd>(estDefault,eaAdd,		this));
 }
 void TUI_SectorTools::OnObjectsUpdate(){
     TfraSector* fraSector = (TfraSector*)pFrame; VERIFY(fraSector);

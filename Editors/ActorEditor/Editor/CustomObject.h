@@ -26,7 +26,6 @@ struct SExportStreams{
 	SExportStreamItem	spawn;
 	SExportStreamItem	patrolpath;
 	SExportStreamItem	rpoint;
-	SExportStreamItem	aipoint;
 	SExportStreamItem	sound_static;
 	SExportStreamItem	sound_env_geom;
 	SExportStreamItem	pg_static;

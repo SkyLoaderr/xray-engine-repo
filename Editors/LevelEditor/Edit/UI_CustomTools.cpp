@@ -9,69 +9,82 @@
 
 #include "NumericVector.h"
 
-TUI_CustomTools::TUI_CustomTools(EObjClass cls){
+TUI_CustomTools::TUI_CustomTools(EObjClass cls, bool bCreateDefaultControls)
+{
 	objclass = cls;
-    ResetSubTarget();
+    sub_target	= 0;
     pCurControl = 0;
     pFrame		= 0;
-    for (int a=0; a<eaMaxActions; a++)
-        m_Controls[EAction(a)]= xr_new<TUI_CustomControl>(estSelf,a,this);
+    if (bCreateDefaultControls) CreateDefaultControls();
 }
 
-TUI_CustomTools::~TUI_CustomTools(){
-	for (ControlsPairIt it=m_Controls.begin(); it!=m_Controls.end(); it++) xr_delete(it->second);
+TUI_CustomTools::~TUI_CustomTools()
+{
+	for (ControlsIt it=m_Controls.begin(); it!=m_Controls.end(); it++) 
+    	xr_delete(*it);
     m_Controls.clear();
 }
 
-void TUI_CustomTools::AddControlCB(TUI_CustomControl* c){
-    VERIFY(c);
-	ControlsPairIt it=m_Controls.find(EAction(c->action));
-    VERIFY(it!=m_Controls.end());
-    xr_delete(it->second);
-    it->second = c;
+void TUI_CustomTools::CreateDefaultControls()
+{
+    for (int a=0; a<eaMaxActions; a++)
+    	AddControlCB(xr_new<TUI_CustomControl>(estDefault,a,this));
 }
 
-TUI_CustomControl* TUI_CustomTools::FindControl(int subtarget, int action){
+void TUI_CustomTools::AddControlCB(TUI_CustomControl* c)
+{
+    R_ASSERT(c);
+	for (ControlsIt it=m_Controls.begin(); it!=m_Controls.end(); it++){
+    	if (((*it)->sub_target==c->sub_target)&&((*it)->action==c->action)){ 
+			xr_delete(*it);
+            m_Controls.erase(it);
+        	break;
+        }
+    }
+    m_Controls.push_back(c);
+}
+
+TUI_CustomControl* TUI_CustomTools::FindControl(int subtarget, int action)
+{
 	if (action==-1) return 0;
-	ControlsPairIt it=m_Controls.find(EAction(action));
-    VERIFY(it!=m_Controls.end());
-	return it->second;
+	for (ControlsIt it=m_Controls.begin(); it!=m_Controls.end(); it++)
+    	if (((*it)->sub_target==subtarget)&&((*it)->action==action)) return *it;
+    return 0;
 }
 
-void TUI_CustomTools::UpdateControl(){
+void TUI_CustomTools::UpdateControl()
+{
     if (pCurControl) pCurControl->OnExit();
-    VERIFY(!sub_target_stack.empty());
-    pCurControl=FindControl(sub_target_stack.back(),action);
+    pCurControl=FindControl(sub_target,action);
     if (pCurControl) pCurControl->OnEnter();
 }
 
-void TUI_CustomTools::OnActivate  (){
+void TUI_CustomTools::OnActivate  ()
+{
+	ResetSubTarget();
     if (pCurControl) pCurControl->OnEnter();
 }
-void TUI_CustomTools::OnDeactivate(){
+void TUI_CustomTools::OnDeactivate()
+{
     if (pCurControl) pCurControl->OnExit();
 }
-void TUI_CustomTools::SetAction   (int act){
+void TUI_CustomTools::SetAction   (int act)
+{
     action=act;
     UpdateControl();
 }
-void TUI_CustomTools::SetSubTarget(int tgt){
-    sub_target_stack.push_back(tgt);
+void TUI_CustomTools::SetSubTarget(int tgt)
+{
+	sub_target=tgt;
     UpdateControl();
 }
-void TUI_CustomTools::UnsetSubTarget(int tgt){
-    if (!sub_target_stack.empty()){
-        vector<int>::iterator it = find(sub_target_stack.begin(),sub_target_stack.end(),tgt);
-        sub_target_stack.erase(it,sub_target_stack.end());
-    }
-    UpdateControl();
-}
-void TUI_CustomTools::ResetSubTarget(){
-    sub_target_stack.clear();
-    sub_target_stack.push_back(estSelf);
+void TUI_CustomTools::ResetSubTarget()
+{
+	SetSubTarget(estDefault);
 }
 
-void TUI_CustomTools::SetNumPosition(CCustomObject* O){
+void TUI_CustomTools::SetNumPosition(CCustomObject* O)
+{
 	ObjectList objset;
     if(O)objset.push_back(O);
     else Scene.GetQueryObjects(objset,objclass);
@@ -89,7 +102,8 @@ void TUI_CustomTools::SetNumPosition(CCustomObject* O){
     }
 }
 
-void TUI_CustomTools::SetNumRotation(CCustomObject* O){
+void TUI_CustomTools::SetNumRotation(CCustomObject* O)
+{
 	ObjectList objset;
     if(O)objset.push_back(O);
     else Scene.GetQueryObjects(objset,objclass);
@@ -111,7 +125,8 @@ void TUI_CustomTools::SetNumRotation(CCustomObject* O){
     }
 }
 
-void TUI_CustomTools::SetNumScale(CCustomObject* O){
+void TUI_CustomTools::SetNumScale(CCustomObject* O)
+{
 	ObjectList objset;
     if(O)objset.push_back(O);
     else Scene.GetQueryObjects(objset,objclass);

@@ -39,19 +39,19 @@ void CWayPoint::Render(bool bParentSelect)
 {
 	Fvector pos;
     pos.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
-    DU::DrawCross(pos,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.85f,WAYPOINT_RADIUS,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.15f,WAYPOINT_RADIUS,0x0000ff00);
+    DU.DrawCross(pos,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.85f,WAYPOINT_RADIUS,WAYPOINT_RADIUS,WAYPOINT_SIZE*0.15f,WAYPOINT_RADIUS,0x0000ff00);
 	// draw links
 	Fvector p1,p2;
     p1.set	(m_vPosition.x,m_vPosition.y+WAYPOINT_SIZE*0.85f,m_vPosition.z);
     for (WPIt it=m_Links.begin(); it!=m_Links.end(); it++){
     	CWayPoint* O = (CWayPoint*)(*it);
 	    p2.set	(O->m_vPosition.x,O->m_vPosition.y+WAYPOINT_SIZE*0.85f,O->m_vPosition.z);
-    	DU::DrawLink(p1,p2,0.25f,0xffffff00);
+    	DU.DrawLink(p1,p2,0.25f,0xffffff00);
     }
 	if (bParentSelect&&m_bSelected){
     	Fbox bb; GetBox(bb);
         u32 clr = 0xffffffff;
-		DU::DrawSelectionBox(bb,&clr);
+		DU.DrawSelectionBox(bb,&clr);
 	}
 }
 bool CWayPoint::RayPick(float& distance, const Fvector& S, const Fvector& D)
@@ -370,7 +370,7 @@ void CWayObject::Render(int priority, bool strictB2F)
 			for (WPIt it=m_WayPoints.begin(); it!=m_WayPoints.end(); it++) (*it)->Render(Selected());
             if( Selected() ){
                 u32 clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-                DU::DrawSelectionBox(bb,&clr);
+                DU.DrawSelectionBox(bb,&clr);
             }
         }
     }

@@ -9,8 +9,8 @@
 #include "ui_main.h"
 //---------------------------------------------------------------------------
 
-TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAY){
-    AddControlCB(xr_new<TUI_ControlWayPointAdd>(estSelf,eaAdd,		this));
+TUI_WayPointTools::TUI_WayPointTools():TUI_CustomTools(OBJCLASS_WAY,true){
+    AddControlCB(xr_new<TUI_ControlWayPointAdd>(estDefault,eaAdd,		this));
 }
 
 void TUI_WayPointTools::OnActivate(){

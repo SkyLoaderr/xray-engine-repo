@@ -6,8 +6,8 @@
 #include "FrameGroup.h"
 
 //----------------------------------------------------------------------
-TUI_GroupTools::TUI_GroupTools():TUI_CustomTools(OBJCLASS_GROUP){
-    AddControlCB(xr_new<TUI_ControlGroupAdd>(estSelf,eaAdd,		this));
+TUI_GroupTools::TUI_GroupTools():TUI_CustomTools(OBJCLASS_GROUP,true){
+    AddControlCB(xr_new<TUI_ControlGroupAdd>(estDefault,eaAdd,		this));
 }
 
 void TUI_GroupTools::OnActivate  (){

@@ -72,7 +72,7 @@ void CPortal::Render(int priority, bool strictB2F){
 			col.set			(m_SectorFront->sector_color);
 	        if (!Selected())col.mul_rgb(0.7f);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
-    	    DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
+    	    DU.DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
         // back
@@ -80,7 +80,7 @@ void CPortal::Render(int priority, bool strictB2F){
 			col.set			(m_SectorBack->sector_color);
 	        if (!Selected())col.mul_rgb(0.7f);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CW);
-    	    DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
+    	    DU.DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), col.get(), true, false);
 		    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
         }
 		col.set				(1.f,1.f,1.f,1.f);
@@ -89,14 +89,14 @@ void CPortal::Render(int priority, bool strictB2F){
     	// render portal edges
         FvectorVec& src_ln 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         Device.SetShader	(Device.m_WireShader);
-        DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src_ln.size(), src_ln.begin(), src_ln.size(), col.get(), true, true);
+        DU.DrawPrimitiveL	(D3DPT_LINESTRIP, src_ln.size(), src_ln.begin(), src_ln.size(), col.get(), true, true);
         Device.ResetNearer	();
-        DU::DrawFaceNormal	(m_Center,m_Normal,1,0xFFFFFFFF);
-        DU::DrawFaceNormal	(m_Center,m_Normal,1,0x00000000);
+        DU.DrawFaceNormal	(m_Center,m_Normal,1,0xFFFFFFFF);
+        DU.DrawFaceNormal	(m_Center,m_Normal,1,0x00000000);
 /*		for (int k=0; k<1000; k++){
         	Fvector dir;
             dir.random_dir(m_Normal,deg2rad(45.f));
-	        DU::DrawFaceNormal	(m_Center,dir,1,0x00FF0000);
+	        DU.DrawFaceNormal	(m_Center,dir,1,0x00FF0000);
     	}
 */
    	}

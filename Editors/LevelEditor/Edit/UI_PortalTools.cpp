@@ -9,8 +9,8 @@
 #include "ui_tools.h"
 #include "ui_main.h"
 //---------------------------------------------------------------------------
-TUI_PortalTools::TUI_PortalTools():TUI_CustomTools(OBJCLASS_PORTAL){
-    AddControlCB(xr_new<TUI_ControlPortalAdd>(estSelf,eaAdd,		this));
+TUI_PortalTools::TUI_PortalTools():TUI_CustomTools(OBJCLASS_PORTAL,true){
+    AddControlCB(xr_new<TUI_ControlPortalAdd>(estDefault,eaAdd,		this));
 }
 void TUI_PortalTools::OnObjectsUpdate(){
     TfraPortal* fraPortal = (TfraPortal*)pFrame; VERIFY(fraPortal);

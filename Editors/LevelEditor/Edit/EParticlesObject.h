@@ -44,8 +44,8 @@ public:
     bool				Compile				(LPCSTR ref_name);
     
     // device dependent routine
-	void 				OnDeviceCreate 		();
-	void 				OnDeviceDestroy		();
+	virtual void 		OnDeviceCreate 		();
+	virtual void 		OnDeviceDestroy		();
 
 	virtual void		FillProp			(LPCSTR pref, PropItemVec& items);
 	virtual bool 		GetSummaryInfo		(SSceneSummary* inf);
