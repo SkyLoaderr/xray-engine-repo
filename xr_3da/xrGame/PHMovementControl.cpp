@@ -385,10 +385,10 @@ void CPHMovementControl::PathNearestPointFindUp(const xr_vector<DetailPathManage
 		float from_first_dir=from_first.dotproduct(dir);
 		float from_second_dir=from_second.dotproduct(dir);
 
-		if(from_first_dir<0.f)//befor this line
+		if(from_first_dir<0.f)//before this line
 		{
 			temp=from_first.magnitude();
-			if(after_line)//after previous line && befor this line = near first point
+			if(after_line)//after previous line && before this line = near first point
 			{
 				if(temp<m_path_distance)
 				{
