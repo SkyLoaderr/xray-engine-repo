@@ -53,7 +53,7 @@ BOOL	CreateNode(Fvector& vAt, vertex& N)
 	for (u32 i=0; i<dwCount; i++)
 	{
 		tri&		D = tris.last();
-		CDB::RESULT	rp = XRC.r_begin()[i];
+		CDB::RESULT	&rp = XRC.r_begin()[i];
 		CDB::TRI&	T = *(Level.get_tris()+rp.id);
 
 		D.v[0].set	(rp.verts[0]);
