@@ -71,7 +71,9 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	// draw self
 	ConvertToLocal	(LM,Actor->Position(),P);
 	entity.Out		(P.x,P.y,COLOR_SELF,alLeft|alTop);
+
 	// render enemy
+	/*
 	for (DWORD i=0; i<Team.KnownEnemys.size(); i++){
 		CEntity* E = dynamic_cast<CEntity*>(Team.KnownEnemys[i].key);
 		if (E->IsVisibleForHUD()){
@@ -79,17 +81,30 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 			entity.Out	(P.x,P.y,COLOR_ENEMY,alLeft|alTop);
 		}
 	}
-	// render friend
-	for (i=0; i<Team.Squads.size(); i++){
-		CSquad& S = Team.Squads[i];
-		for (DWORD j=0; j<S.Groups.size(); j++){
-			CGroup& G = S.Groups[j];
-			for (DWORD k=0; k<G.Members.size(); k++)
-			{
+	*/
 
-				if (G.Members[k]->IsVisibleForHUD()){
-					ConvertToLocal(LM,G.Members[k]->Position(),P);
-					entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
+	// render friend
+	BOOL	bRender = FALSE;
+	switch (GAME)
+	{
+	case GAME_SINGLE:		bRender = TRUE; break;
+	case GAME_DEATHMATCH:	break;
+	case GAME_ASSAULT:		bRender = TRUE;	break;
+	case GAME_CTF:			bRender = TRUE;	break;
+	}
+	if (bRender)
+	{
+		for (u32 i=0; i<Team.Squads.size(); i++){
+			CSquad& S = Team.Squads[i];
+			for (DWORD j=0; j<S.Groups.size(); j++){
+				CGroup& G = S.Groups[j];
+				for (DWORD k=0; k<G.Members.size(); k++)
+				{
+
+					if (G.Members[k]->IsVisibleForHUD()){
+						ConvertToLocal(LM,G.Members[k]->Position(),P);
+						entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
+					}
 				}
 			}
 		}
