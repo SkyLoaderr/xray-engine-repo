@@ -4,33 +4,23 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "Log.h"
-#include "PSObject.h"
-#include "ParticleSystem.h"
-#include "PSLibrary.h"
-#include "tlsprite.h"
-#include "d3dutils.h"
-#include "ui_main.h"
-#include "render.h"
-// export spawn
-#include "net_utils.h"
-#include "xrMessages.h"
-
-#define CPSOBJECT_VERSION  				0x0010
+#define CPSOBJECT_VERSION  				0x0011
 //----------------------------------------------------
-#define CPSOBJECT_CHUNK_VERSION			0xE110
-#define CPSOBJECT_CHUNK_EMITTER			0xE111
-#define CPSOBJECT_CHUNK_REFERENCE		0xE112
+#define CPSOBJECT_CHUNK_VERSION			0x0001
+#define CPSOBJECT_CHUNK_EMITTER			0x0002
+#define CPSOBJECT_CHUNK_REFERENCE		0x0003
 //----------------------------------------------------
 
 //using namespace PS;
 
-CPSObject::CPSObject(LPVOID data, LPCSTR name):CCustomObject(data,name){
+CPSObject::CPSObject(LPVOID data, LPCSTR name):CCustomObject(data,name)
+{
 	Construct(data);
 }
 //----------------------------------------------------
 
-void CPSObject::Construct(LPVOID data){
+void CPSObject::Construct(LPVOID data)
+{
 	ClassID   	= OBJCLASS_PS;
 	m_Emitter.Reset();
     m_Emitter.m_ConeDirection.set(0.f,1.f,0.f);
