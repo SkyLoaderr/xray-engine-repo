@@ -30,6 +30,7 @@ void	CCustomItem::SetState(EItemState e)
 {
 	const float SC=.0001f;
 	const float SM=1.f;
+	Fvector		vScale;
 	if (e==state) return;
 	state = e;
 	switch(state){

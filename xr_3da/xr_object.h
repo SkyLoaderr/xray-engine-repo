@@ -56,7 +56,6 @@ private:
 protected:
 	// Geometric (transformation)
 	Fvector								vPosition;
-	Fvector								vScale;
 	Fmatrix								mRotate;
 	CCFModel*							cfModel;
 	svector<SavedPosition,4>			PositionStack;

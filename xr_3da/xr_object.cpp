@@ -61,7 +61,6 @@ CObject::CObject		( )
 {
 	// Transform
 	vPosition.set				(0,0,0);
-	vScale.set					(1,1,1);
 	mRotate.identity			();
 	svTransform.identity		();
 	clTransform.identity		();
@@ -94,12 +93,8 @@ CObject::~CObject( )
 
 void CObject::UpdateTransform( )
 {
-	Fmatrix	mScale,mTranslate;
-
-	mScale.scale			(vScale);
-	mTranslate.translate	(vPosition);
-	svTransform.mul_43		(mTranslate,mRotate);
-	svTransform.mulB_43		(mScale);
+	svTransform.set				(mRotate);
+	svTransform.translate_over	(vPosition);
 }
 
 void CObject::Load				(LPCSTR section )

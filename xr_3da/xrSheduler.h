@@ -3,12 +3,12 @@
 class	ENGINE_API	CSheduled
 {
 public:
-	u32									shedule_Min;		// minimal bound of update time (sample: 20ms)
-	u32									shedule_Max;		// maximal bound of update time (sample: 200ms)
-	u32									shedule_TimeStamp;	// last update global device time
-	float								shedule_PMON;		// performance monitor (microseconds)
-	BOOL								shedule_RT;
-	BOOL								shedule_Locked;
+	struct {
+		u32		t_min		:	14;		// minimal bound of update time (sample: 20ms)
+		u32		t_max		:	14;		// maximal bound of update time (sample: 200ms)
+		u32		b_RT		:	1;
+		u32		b_locked	:	1;
+	}	shedule;
 
 	CSheduled			();
 	virtual ~CSheduled	();

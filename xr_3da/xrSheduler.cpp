@@ -10,8 +10,6 @@ CSheduled::CSheduled	()
 {
 	shedule_Min			= 20;
 	shedule_Max			= 1000;
-	shedule_TimeStamp	= 0;
-	shedule_PMON		= 0;
 	shedule_Locked		= FALSE;
 	shedule_Register	();
 }
