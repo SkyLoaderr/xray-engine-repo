@@ -42,18 +42,18 @@ protected:
 public:
 	void sort_by_bone(WBVec& wb)
 	{
-		std::sort(wb.begin(),wb.end(),compare_by_weight);
+		std::sort(wb.begin(),wb.end(),compare_by_bone);
 	}
 	void sort_by_weight(WBVec& wb)
 	{
-		std::sort(wb.begin(),wb.end(),compare_by_bone);
+		std::sort(wb.begin(),wb.end(),compare_by_weight);
 	}
 	void normalize_weights(WBVec& wb, int max_influence)
 	{
 		if ((int)wb.size()>max_influence){	
 			WBIt it;
-			wb.erase		(wb.begin()+2,wb.end()); // delete >2 weight
 			sort_by_weight	(wb);
+			wb.erase		(wb.begin()+2,wb.end()); // delete >2 weight
 			float sum_weight=0;
 			for (it=wb.begin(); it!=wb.end(); it++) sum_weight+=it->weight;
 			for (it=wb.begin(); it!=wb.end(); it++) it->weight/=sum_weight;

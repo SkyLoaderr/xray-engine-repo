@@ -182,7 +182,7 @@ void CEditableMesh::GenerateSVertices()
                             }
                         }
                     }
-                    std::sort(wb.begin(),wb.end());
+                    WB_NormalizeWeights(wb,2);
                     int cnt = wb.size();
 					CBone* B=0;
                     switch (cnt){
@@ -197,7 +197,7 @@ void CEditableMesh::GenerateSVertices()
 	                        CBone* B 	= m_Parent->m_Bones[SV.bone0];
     	                    B->LITransform().transform_tiny(SV.offs0,P);
                         }break;
-                        default:{
+                        case 2:{
 		                    bRes 		= true;
                             SV.bone0 	= wb[0].bone;
                             SV.bone1 	= wb[1].bone;
@@ -207,6 +207,8 @@ void CEditableMesh::GenerateSVertices()
 	                        B		 	= m_Parent->m_Bones[SV.bone1];
     	                    B->LITransform().transform_tiny(SV.offs1,P);
                         }break;
+                        default:
+                        	THROW2("More than 2 weight per vertex found!");
                     }
                     break;
                 }
