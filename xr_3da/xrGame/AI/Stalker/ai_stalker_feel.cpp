@@ -575,15 +575,15 @@ void CAI_Stalker::vfUpdateVisibilityBySensitivity()
 				m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
 				m_dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
 				m_dwLastEnemySearch		= 0;
-				int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
-				if (iIndex != -1) {
-					m_tpaDynamicObjects[iIndex].tSavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-					m_tpaDynamicObjects[iIndex].dwNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-					m_tpaDynamicObjects[iIndex].tMySavedPosition	= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
-					m_tpaDynamicObjects[iIndex].dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
-					m_tpaDynamicObjects[iIndex].tMyOrientation		= m_tpaDynamicSounds[m_iSoundIndex].tMyOrientation;
-					m_tpaDynamicObjects[iIndex].dwTime				= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
-				}
+//				int						iIndex = ifFindDynamicObject(m_tSavedEnemy);
+//				if (iIndex != -1) {
+//					m_tpaDynamicObjects[iIndex].tSavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+//					m_tpaDynamicObjects[iIndex].dwNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+//					m_tpaDynamicObjects[iIndex].tMySavedPosition	= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
+//					m_tpaDynamicObjects[iIndex].dwMyNodeID			= m_tpaDynamicSounds[m_iSoundIndex].dwMyNodeID;
+//					m_tpaDynamicObjects[iIndex].tMyOrientation		= m_tpaDynamicSounds[m_iSoundIndex].tMyOrientation;
+//					m_tpaDynamicObjects[iIndex].dwTime				= m_tpaDynamicSounds[m_iSoundIndex].dwTime;
+//				}
 				vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
 			}
 			break;
