@@ -484,8 +484,8 @@ function set_current_time (hour, min, sec)
 	if c_time > n_time then c_day = c_day + 1 end
 	n_time = n_time + c_day * 86400000
 
-	level.set_time_factor (current_time - n_time)
-	printf ("Set time factor %d", current_time - n_time)
+	level.set_time_factor (n_time - current_time)
+	printf ("Set time factor %d", n_time - current_time)
 	wait ()
 
 	printf ("Set current time factor %d", current_time_factor)
