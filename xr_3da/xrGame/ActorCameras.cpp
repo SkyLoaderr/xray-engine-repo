@@ -78,7 +78,7 @@ void CActor::cam_Update(float dt, BOOL bZoom)
 		break;
 	}
 	CCameraBase* C				= cameras	[cam_active];
-	C->f_fov					= bZoom?15.f:DEFAULT_FOV;
+//	C->f_fov					= bZoom?15.f:DEFAULT_FOV;
 	C->Update					(point,dangle);
 	pCreator->Cameras.Update	(C);
 	// ::Render.Target.set_gray	(cam_gray);

@@ -82,6 +82,7 @@ public:
 	Fmatrix									mProject;
 	Fmatrix									mFullTransform;
 	float									fFOV;
+	float									fASPECT;
 	IC void									set_xform			(DWORD ID, const Fmatrix& M);
 	IC void									set_xform_world		(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
 	IC void									set_xform_view		(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}

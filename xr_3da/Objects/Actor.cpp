@@ -370,11 +370,17 @@ void CActor::Update	(DWORD DT)
 
 	// zone test
 	Fvector z_P			= {1.803f, -0.012f, -22.089f};
-	float	z_R			= 10.f;
+	float	z_R			= 15.f;
 
-	float	z_amount	= Position().distance_to(z_P)/z_R;
+	float	z_amount	= 1-(Position().distance_to(z_P)/z_R);
 	clamp	(z_amount,0.f,1.f);
+
+	// Gray
 	::Render->getTarget()->set_gray	(z_amount);
+
+	// Fov
+	CCameraBase* C		= cameras	[cam_active];
+	C->f_fov			= 90.f+z_amount*90.f;
 
 	// 
 	clamp			(DT,0ul,100ul);

@@ -62,7 +62,7 @@ void CCameraManager::RemoveEffector(EEffectorType type){
 void CCameraManager::Update(const CCameraBase* C)
 {	Update(C->vPosition,C->vDirection,C->vNormal, C->f_fov, pCreator->Environment.Current.Far); }
 
-void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fFAR_Dest)
+void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N, float fFOV_Dest, float fASPECT_Dest, float fFAR_Dest)
 {
 	// camera
 	vPosition.inertion		(P,	psCamInert);
@@ -131,10 +131,12 @@ void CCameraManager::Update(const Fvector& P, const Fvector& D, const Fvector& N
 	float aspect				= Device.fHeight_2/Device.fWidth_2;
 	float src					= 10*Device.fTimeDelta;	clamp(src,0.f,1.f);
 	float dst					= 1-src;
-	fFov						= fFov*dst + fFOV_Dest*src;
-	fFar						= fFar*dst + fFAR_Dest*src;
+	fFov						= fFov*dst		+ fFOV_Dest*src;
+	fFar						= fFar*dst		+ fFAR_Dest*src;
+	fAspect						= fAspect*dst	+ (fASPECT_Dest*aspect)*src;
 	Device.fFOV					= fFov;
-	Device.mProject.build_projection(deg2rad(fFov*aspect), aspect, VIEWPORT_NEAR, fFar);
+	Device.fASPECT				= fAspect;
+	Device.mProject.build_projection(deg2rad(fFov*fAspect), fAspect, VIEWPORT_NEAR, fFar);
 }
 
 void CCameraManager::Dump()
