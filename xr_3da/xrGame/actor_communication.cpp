@@ -180,7 +180,7 @@ void  CActor::AddGameNews			 (GAME_NEWS_DATA& news_data)
 	news_vector.push_back(news_data);
 
 	if(HUD().GetUI())
-		HUD().GetUI()->UIMainIngameWnd.OnNewsReceived(news_data);
+		HUD().GetUI()->UIMainIngameWnd->OnNewsReceived(news_data);
 
 	if( HUD().GetUI() ){
 		CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -285,7 +285,7 @@ void CActor::ReceivePdaMessage(u16 who, EPdaMsg msg, INFO_ID info_id)
 	VERIFY(pPdaObject);
 	CPda* pPda = smart_cast<CPda*>(pPdaObject);
 	VERIFY(pPda);
-	HUD().GetUI()->UIMainIngameWnd.ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_id);
+	HUD().GetUI()->UIMainIngameWnd->ReceivePdaMessage(pPda->GetOriginalOwner(), msg, info_id);
 
 
 	SPdaMessage last_pda_message;
@@ -417,7 +417,7 @@ void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
 	CGameObject* GO = smart_cast<CGameObject*>(pInvOwner);
 
-	HUD().GetUI()->UIMainIngameWnd.AnimateContacts();
+	HUD().GetUI()->UIMainIngameWnd->AnimateContacts();
 
 	ALife::ERelationType relation = ALife::eRelationTypeDummy;
 	if(Game().Type() == GAME_SINGLE)

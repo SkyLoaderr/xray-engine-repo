@@ -26,6 +26,7 @@
 #include "../../../entitycondition.h"
 #include "../../../sound_player.h"
 #include "../../../level.h"
+#include "../../../ui/UIMainIngameWnd.h"
 
 CBaseMonster::CBaseMonster()
 {
@@ -366,7 +367,7 @@ void CBaseMonster::on_kill_enemy(const CEntity *obj)
 void CBaseMonster::on_first_update()
 {
 	// HUD уже загружен, подгрузить дополнительные данные
-	HUD().GetUI()->UIMainIngameWnd.AddMonsterClawsEffect ("monster", "controller\\controller_blood_01");
+	HUD().GetUI()->UIMainIngameWnd->AddMonsterClawsEffect ("monster", "controller\\controller_blood_01");
 }
 
 CMovementManager *CBaseMonster::create_movement_manager	()

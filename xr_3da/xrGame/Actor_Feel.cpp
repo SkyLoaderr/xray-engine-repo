@@ -10,6 +10,7 @@
 #include "customzone.h"
 #include "level.h"
 #include "GameMtlLib.h"
+#include "ui/UIMainIngameWnd.h"
 
 #define PICKUP_INFO_COLOR 0xFFDDDDDD
 //AAAAAA
@@ -134,7 +135,7 @@ void	CActor::PickupModeUpdate_COD	()
 {
 	if (!g_b_COD_PickUpMode || eacFirstEye != cam_active || Level().CurrentViewEntity() != this || !g_Alive()) 
 	{
-		HUD().GetUI()->UIMainIngameWnd.SetPickUpItem(NULL);
+		HUD().GetUI()->UIMainIngameWnd->SetPickUpItem(NULL);
 		return;
 	};
 
@@ -173,7 +174,7 @@ void	CActor::PickupModeUpdate_COD	()
 			pNearestItem = pIItem;
 		};
 	}
-	HUD().GetUI()->UIMainIngameWnd.SetPickUpItem(pNearestItem);
+	HUD().GetUI()->UIMainIngameWnd->SetPickUpItem(pNearestItem);
 
 	if (pNearestItem && m_bPickupMode)
 	{

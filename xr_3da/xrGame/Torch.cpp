@@ -13,7 +13,7 @@
 #include "../camerabase.h"
 #include "inventory.h"
 
-
+#include "ui/UIMainIngameWnd.h"
 
 const float TIME_2_HIDE		= 5.f;
 
@@ -145,7 +145,7 @@ void CTorch::UpdateSwitchNightVision   ()
 	if(m_NightVisionEffector.IsActive())
 	{
 		if(m_NightVisionTexture.GetShader())
-			HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_NightVisionTexture, 0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
+			HUD().GetUI()->UIMainIngameWnd->AddStaticItem(&m_NightVisionTexture, 0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	}
 }
 

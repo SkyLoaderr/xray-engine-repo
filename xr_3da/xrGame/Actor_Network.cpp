@@ -29,6 +29,7 @@
 
 #include "map_manager.h"
 #include "HUDManager.h"
+#include "ui/UIMainIngameWnd.h"
 
 int			g_cl_InterpolationType = 0;
 u32			g_cl_InterpolationMaxPoints = 0;
@@ -823,7 +824,7 @@ void CActor::net_Destroy	()
 	
 	m_ArtefactsOnBelt.clear();
 	if (Level().CurrentViewEntity() == this)
-		HUD().GetUI()->UIMainIngameWnd.m_artefactPanel.InitIcons(m_ArtefactsOnBelt);	
+		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel.InitIcons(m_ArtefactsOnBelt);	
 
 	SetDefaultVisualOutfit(NULL);
 }

@@ -10,7 +10,7 @@
 #include "patrol_path_storage.h"
 #include "../x_ray.h"
 #include "gamemtllib.h"
-#include "physics_common.h"
+#include "PhysicsCommon.h"
 
 BOOL CLevel::Load_GameSpecific_Before()
 {

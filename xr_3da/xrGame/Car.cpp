@@ -13,6 +13,7 @@
 #include "xrserver_objects_alife_items.h"
 #include "../skeletonanimated.h"
 #include "level.h"
+#include "ui/UIMainIngameWnd.h"
 
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
@@ -329,8 +330,8 @@ void	CCar::UpdateCL				( )
 		}
 		if(Owner()->IsMyCamera()) 
 			cam_Update	(Device.fTimeDelta);
-		HUD().GetUI()->UIMainIngameWnd->CarPanel()->SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
-		HUD().GetUI()->UIMainIngameWnd->CarPanel()->SetRPM(m_current_rpm/m_max_rpm/2.f);
+		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetSpeed(lin_vel.magnitude()/1000.f*3600.f/100.f);
+		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetRPM(m_current_rpm/m_max_rpm/2.f);
 	}
 
 	UpdateExhausts	();
@@ -384,13 +385,12 @@ void CCar::Hit(float P,Fvector &dir,CObject * who,s16 element,Fvector p_in_objec
 	if(fEntityHealth<=0.f)CExplosive::SetInitiator(who->ID());
 	HitEffect();
 	if(Owner()&&Owner()->ID()==Level().CurrentEntity()->ID())
-		HUD().GetUI()->UIMainIngameWnd.CarPanel().SetCarHealth(fEntityHealth/100.f);
+		HUD().GetUI()->UIMainIngameWnd->CarPanel().SetCarHealth(fEntityHealth/100.f);
 }
 void CCar::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
 {
 	if(m_bone_steer==element) return;
 	if(m_pPhysicsShell)		m_pPhysicsShell->applyHit(p_in_object_space,dir,impulse,element,hit_type);
-
 }
 
 

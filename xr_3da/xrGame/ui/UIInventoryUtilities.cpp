@@ -22,6 +22,7 @@
 #include "../game_base_space.h"
 #include "../actor.h"
 
+#include "UIMainIngameWnd.h"
 //////////////////////////////////////////////////////////////////////////
 
 #define EQUIPMENT_ICONS "ui\\ui_icon_equipment"

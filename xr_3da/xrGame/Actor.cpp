@@ -1249,7 +1249,7 @@ void CActor::MoveArtefactBelt(const CArtefact* artefact, bool on_belt)
 		m_ArtefactsOnBelt.erase(it);
 	}
 	if (Level().CurrentViewEntity() == this)
-		HUD().GetUI()->UIMainIngameWnd.m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
+		HUD().GetUI()->UIMainIngameWnd->m_artefactPanel.InitIcons(m_ArtefactsOnBelt);
 }
 #define ARTEFACTS_UPDATE_TIME 1000
 
@@ -1383,7 +1383,7 @@ void CActor::AnimTorsoPlayCallBack(CBlend* B)
 
 void CActor::UpdateMotionIcon(u32 mstate_rl)
 {
-	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd.MotionIcon();
+	CUIMotionIcon		&motion_icon=HUD().GetUI()->UIMainIngameWnd->MotionIcon();
 	if(mstate_rl&mcClimb)
 	{
 		motion_icon.ShowState(CUIMotionIcon::stClimb);
