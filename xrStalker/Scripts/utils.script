@@ -428,7 +428,7 @@ function parse_params(params)
 end
 
 function is_day()
-	return level.get_time_hours() >= 9 and level.get_time_hours() < 21
+	return level.get_time_hours() >= 4 and level.get_time_hours() < 24
 end
 
 function no_need_to_rotate(npc, target_pos)

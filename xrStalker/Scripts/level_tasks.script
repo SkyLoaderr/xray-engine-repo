@@ -70,7 +70,7 @@ function proceed(actor)
 	if actor:has_info("tutorial_flesh_die")
 	then
 		news_manager.send_tip(actor, "tutorial_flash_anomaly_alarm")
---		actor:disable_info_portion("tutorial_flesh_die")
+		actor:disable_info_portion("tutorial_flesh_die")
 	end
 
 

@@ -2,7 +2,7 @@
 news = {
 	tips_esc_trader_about_pda = [[characters_voice\human_01\scenario\trader\trader_tutorial_contacts_1]],
 	escape_stalker_killed	  = [[characters_voice\human_01\scenario\trader\trader_tutorial_end_2]],
-	tutorial_flash_anomaly_alarm = [[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_2]]
+	tutorial_flash_anomaly_alarm = [[characters_voice\human_01\scenario\trader\trader_tutorial_anomalies_1]]
 }
 
 
