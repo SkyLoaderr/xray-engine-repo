@@ -534,7 +534,6 @@ void CHelicopter::goToPoint(Fvector* to, Fvector* via, float time)
 
 	if(time>61.0f)	{
 		m_movMngr.m_wait_in_point = 60.0f;
-		Msg("---CHelicopter::too big <time> value(%f) for <goToPoint> function. max is 60",time);
 	};
 
 	setState(CHelicopter::eInitiateGoToPoint);
@@ -543,5 +542,10 @@ void CHelicopter::goToPoint(Fvector* to, Fvector* via, float time)
 float CHelicopter::getLastPointTime	()
 {
 	return m_movMngr.EndTime();
+
+}
+
+void CHelicopter::goPatrolByPatrolPath (LPCSTR path_name)
+{
 
 }

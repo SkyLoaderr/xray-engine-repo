@@ -6292,21 +6292,6 @@
 								RelativePath=".\HelicopterMovementManager.h">
 							</File>
 							<File
-								RelativePath=".\HelicopterMovementManager_.cpp">
-							</File>
-							<File
-								RelativePath=".\HelicopterMovementManager_.h">
-							</File>
-							<File
-								RelativePath=".\HelicopterMovementManager_inl.h">
-							</File>
-							<File
-								RelativePath=".\helicopterMovMngrComputePath.cpp">
-							</File>
-							<File
-								RelativePath=".\HelicopterMovMngrHuntPath.cpp">
-							</File>
-							<File
 								RelativePath=".\HelicopterMovMngrPatrolTrajectory.cpp">
 							</File>
 							<File

@@ -162,4 +162,6 @@ public:
 	void					goPatrol			(float time=0.0f);
 	void					goToPoint			(Fvector* to, Fvector* via, float time);
 	float					getLastPointTime	();
+
+	void					goPatrolByPatrolPath (LPCSTR path_name);
 };

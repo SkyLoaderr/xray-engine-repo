@@ -11,7 +11,6 @@
 #endif
 
 
-#include "HelicopterMovementManager_.h"
 #include "HelicopterMotion.h"
 
 class CHelicopter;
