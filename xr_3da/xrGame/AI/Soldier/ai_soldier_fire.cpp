@@ -73,7 +73,7 @@ void CAI_Soldier::g_fireParams(Fvector &fire_pos, Fvector &fire_dir)
 			//fire_dir.set(eye_matrix.k);
 			//fire_dir.set(tWatchDirection);
 		/**/
-		fire_dir.setHP(-r_torso_current.yaw,-r_torso_current.pitch);
+		fire_dir.setHP(r_torso_current.yaw,r_torso_current.pitch);
 		/**/
 	}
 }

@@ -539,6 +539,10 @@ BOOL CCustomMonster::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector&
 	AI_Path.DestNode		= AI_NodeID;
 
 	eye_matrix.identity	();
+
+	r_torso_current.yaw = r_torso_target.yaw = o_angle.y;
+	r_torso_current.pitch = r_torso_target.pitch = 0;
+
 	if (Local())	
 	{
 		net_update		N;

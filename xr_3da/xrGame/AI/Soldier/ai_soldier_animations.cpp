@@ -614,13 +614,13 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 							switch (m_cBodyState) {
 								case BODY_STATE_STAND : {
 									/**/
-									for (int i=4; i<5; i++)
+									for (int i=2; i<3; i++)
 										if (tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[i] == m_tpCurrentGlobalAnimation) {
 											tpGlobalAnimation = m_tpCurrentGlobalAnimation;
 											break;
 										}
 									if (!tpGlobalAnimation)
-										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(4,5)];
+										tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[::Random.randI(2,3)];
 									/**/
 									break;
 								}

@@ -353,6 +353,7 @@ class CAI_Soldier : public CCustomMonster
 		void OnJumping();
 		void OnLyingDown();
 		/**/
+		void Test();
 		void Die();
 		void OnPatrol();
 		void OnPatrolReturn();
