@@ -107,7 +107,7 @@ void CStalkerActionGetItemToKill::execute	()
 	m_object->set_desired_direction	(0);
 	m_object->set_path_type			(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
+	m_object->set_body_state		(m_object->body_state() == eBodyStateCrouch ? eBodyStateCrouch : eBodyStateStand);
 	m_object->set_movement_type		(eMovementTypeWalk);
 	m_object->set_mental_state		(eMentalStateDanger);
 	m_object->set_goal				(eObjectActionIdle);
@@ -203,7 +203,7 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	m_object->set_path_type				(MovementManager::ePathTypeLevelPath);
 	m_object->set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
 	m_object->set_body_state			(eBodyStateStand);
-	m_object->set_mental_state			(eMentalStateDanger);
+	m_object->set_mental_state			(eMentalStatePanic);
 
 	m_object->m_ce_far->setup			(mem_object.m_object_params.m_position,0.f,300.f);
 	CCoverPoint							*point = ai().cover_manager().best_cover(m_object->Position(),30.f,*m_object->m_ce_far,CMovementRestrictor(m_object,false));
@@ -218,6 +218,7 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	}
 	else {
 		if (m_object->visible_now(m_object->enemy())) {
+			m_object->set_mental_state			(eMentalStateDanger);
 			m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 			m_object->setup						(CSightAction(m_object->enemy(),true));
 		}
