@@ -212,8 +212,8 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			size			= dwVertCount*sizeof(vertBoned2W);
 			vertBoned2W* VO = (vertBoned2W*)data->pointer();
 			for (it=0; it<dwVertCount; it++)	{
-				if (VO[it].matrix0>sw_bones)	sw_bones = Vertices2W[it].matrix0;
-				if (VO[it].matrix1>sw_bones)	sw_bones = Vertices2W[it].matrix1;
+				if (VO[it].matrix0>sw_bones)	sw_bones = VO[it].matrix0;
+				if (VO[it].matrix1>sw_bones)	sw_bones = VO[it].matrix1;
 			}
 			if (sw_bones<=hw_bones) {
 				// HW- two weights
