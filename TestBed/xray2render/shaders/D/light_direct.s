@@ -56,7 +56,7 @@ p2f 	p_main	( v2p_in IN )
   float3 L 	= -float3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  float D 	= dot(L, N);
+  float D 	= dot		(L, N);
 
   // Half-angle vector:
   float3 H 	= normalize	(L + V);
