@@ -189,7 +189,7 @@ bool CPortal::Update(bool bLoadMode){
         int a = A[m_SectorFront]+A[m_SectorBack];
         int b = B[m_SectorFront]+B[m_SectorBack];
         if (a>b);
-        else if (a<b) InvertOrientation();
+        else if (a<b) InvertOrientation(false);
         else ELog.Msg(mtError, "Check portal orientation: '%s'",Name);
     }
 
@@ -197,13 +197,13 @@ bool CPortal::Update(bool bLoadMode){
 }
 //------------------------------------------------------------------------------
 
-void CPortal::InvertOrientation()
+void CPortal::InvertOrientation(bool bUndo)
 {
     std::reverse(m_Vertices.begin(),m_Vertices.end());
     std::reverse(m_SimplifyVertices.begin(),m_SimplifyVertices.end());
     m_Normal.invert();
     UI.RedrawScene();
-    Scene.UndoSave();
+    if (bUndo) Scene.UndoSave();
 }
 //------------------------------------------------------------------------------
 

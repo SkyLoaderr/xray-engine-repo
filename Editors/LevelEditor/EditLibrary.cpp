@@ -511,6 +511,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
                 EFS.MarkFile	(*it,true);
                 EFS.BackupFile	(_objects_,folder+ChangeFileExt(nm,".object"));
                 EFS.WriteAccessLog(save_nm.c_str(),"Import");
+                bNeedUpdate		= true;
             }else{
             	ELog.DlgMsg(mtError,"Can't load file '%s'.",it->c_str());
             }

@@ -73,7 +73,8 @@ void CSoundManager::MuteSounds(BOOL bVal)
 BOOL CSoundManager::RemoveSound(LPCSTR fname, EItemType type)
 {
 	if (TYPE_FOLDER==type){
-    	FS.dir_delete			(fname,FALSE);
+    	FS.dir_delete			(_sounds_,fname,FALSE);
+    	FS.dir_delete			(_game_sounds_,fname,FALSE);
 		return TRUE;
     }else if (TYPE_OBJECT==type){
         AnsiString src_name;

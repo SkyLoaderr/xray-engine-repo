@@ -491,7 +491,7 @@ public:
                 _O->SetSectors(p_it->s[0],p_it->s[1]);
                 _O->Update();
                 if (_O->Valid()){
-	 	            Scene.AppendObject(_O);
+	 	            Scene.AppendObject(_O,false);
                 }else{
                 	xr_delete(_O);
 				    ELog.Msg(mtError,"Can't simplify Portal :(\nPlease check geometry.\n'%s'<->'%s'",p_it->s[0]->Name,p_it->s[1]->Name);

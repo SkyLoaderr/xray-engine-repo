@@ -33,7 +33,7 @@ public:
 	virtual bool 	GetBox		(Fbox& box);
     void			Simplify	();
     bool			Update		(bool bLoadMode=false);
-    void 			InvertOrientation();
+    void 			InvertOrientation(bool bUndo);
 
     FvectorVec&		Vertices()	{return m_Vertices;}
     void			SetSectors	(CSector* sf, CSector* sb){m_SectorFront=sf; m_SectorBack=sb;}
