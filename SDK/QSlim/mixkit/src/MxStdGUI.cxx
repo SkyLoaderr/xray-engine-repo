@@ -281,6 +281,8 @@ void MxStdGUI::begin_redraw()
 	else
 		m->binding_mask &= (~MX_COLOR_MASK);
 
+	glEnable(GL_CULL_FACE);
+
 	CAREFUL(mxgl_check_errors("at end of MxGUI::begin_redraw"));
 }
 

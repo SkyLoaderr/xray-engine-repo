@@ -19,12 +19,12 @@ int slim_mode = 0; // 0 - edge, 1 - face, 2 - prop
 
 extern float slim_max_error=1.f;
 unsigned int face_target = 0;
-int placement_policy = MX_PLACE_OPTIMAL;
 double boundary_weight = 1000.0;
-int weighting_policy = MX_WEIGHT_AREA;
+double compactness_ratio = 0.5;
+double meshing_penalty = 1000.0;
+int placement_policy = MX_PLACE_ENDORMID;
+int weighting_policy = MX_WEIGHT_AREA_AVG;
 bool will_record_history = false;
-double compactness_ratio = 0.0;
-double meshing_penalty = 1.0;
 bool will_join_only = false;
 bool be_quiet = false;
 OutputFormat output_format = SMF;
