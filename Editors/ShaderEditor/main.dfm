@@ -73,7 +73,7 @@ object frmMain: TfrmMain
         OnClick = sbToolsMinClick
       end
       object ebAllMin: TExtBtn
-        Left = 172
+        Left = 3
         Top = 2
         Width = 11
         Height = 11
@@ -89,7 +89,7 @@ object frmMain: TfrmMain
         OnClick = ebAllMinClick
       end
       object ebAllMax: TExtBtn
-        Left = 184
+        Left = 15
         Top = 2
         Width = 11
         Height = 11

@@ -7,6 +7,7 @@
 #include "BonePart.h"
 #include "Bone.h"
 #include "UI_Tools.h"
+#include "UI_Main.h"
 #include "FolderLib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -44,6 +45,8 @@ __fastcall TfrmBonePart::TfrmBonePart(TComponent* Owner)
 void __fastcall TfrmBonePart::FormShow(TObject *Sender)
 {
 	FillBoneParts();
+	// check window position
+	UI.CheckWindowPos(this);
 }
 //---------------------------------------------------------------------------
 
