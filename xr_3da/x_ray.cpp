@@ -35,7 +35,7 @@ void Startup()
 
 	// Creation
 	string256 fname; strconcat	(fname,Path.GameData,"system.ltx");
-	pSettings					= new CInifile		(fname,TRUE);
+	pSettings					= xr_new<CInifile>	(fname,TRUE);
 
 	Console.Initialize			( );
 	Engine.External.Initialize	( );
@@ -54,9 +54,9 @@ void Startup()
 	bCaptureInput				= !bCaptureInput;
 #endif
 
-	pInput						= new CInput		(bCaptureInput);
+	pInput						= xr_new<CInput>		(bCaptureInput);
 	Sound->Initialize			();
-	pApp						= new CApplication	( );
+	pApp						= xr_new<CApplication>	();
 
 	// ...command line for auto start
 	LPCSTR	pStartup			= strstr		(Engine.Params,"-start ");
@@ -142,7 +142,7 @@ CApplication::CApplication()
 	Level_Scan					( );
 
 	// Font
-	pFontSystem					= new CGameFont	("startup_font",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
+	pFontSystem					= xr_new<CGameFont>	("startup_font",CGameFont::fsGradient|CGameFont::fsDeviceIndependent);
 	Device.seqRender.Add		( pFontSystem, REG_PRIORITY_LOW-1000 );
 
 	// Register us

@@ -78,7 +78,7 @@ CObject::CObject		( )
 CObject::~CObject( )
 {
 	OnDeviceDestroy				();
-	_DELETE						( cfModel		);
+	xr_delete					( cfModel		);
 	xr_free						( NameObject	);
 	xr_free						( NameSection	);
 	xr_free						( NameVisual	);
@@ -127,7 +127,7 @@ void CObject::net_Destroy		()
 void CObject::OnDeviceDestroy	()
 {
 	if (pVisual)								Render->model_Delete	(pVisual);
-	_DELETE										(pLights);
+	xr_delete										(pLights);
 	Sector_Move									(0);
 }
 
