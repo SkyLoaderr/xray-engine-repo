@@ -43,7 +43,7 @@ void CStalkerActionGetOutOfAnomaly::initialize	()
 	m_object->set_movement_type			(eMovementTypeWalk);
 	m_object->set_mental_state			(eMentalStateDanger);
 	m_object->CSightManager::setup		(SightManager::eSightTypeCurrentDirection);
-	if (enemy())
+	if (m_object->enemy())
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
 	else
 		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
