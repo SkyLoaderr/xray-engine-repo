@@ -174,7 +174,10 @@ void CCustomZone::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"blowout_particles_time")) 
 	{
 		m_dwBlowoutParticlesTime = pSettings->r_u32(section,"blowout_particles_time");
-    	R_ASSERT((s32)m_dwBlowoutParticlesTime<=m_StateTime[eZoneStateBlowout]);
+		if (m_dwBlowoutParticlesTime>m_StateTime[eZoneStateBlowout])	{
+			m_dwBlowoutParticlesTime=m_StateTime[eZoneStateBlowout];
+			Msg("! ERROR: invalid 'blowout_particles_time' in '%s'",section);
+		}
 	}
 	else
 		m_dwBlowoutParticlesTime = 0;
@@ -182,7 +185,10 @@ void CCustomZone::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"blowout_light_time")) 
 	{
 		m_dwBlowoutLightTime = pSettings->r_u32(section,"blowout_light_time");
-		R_ASSERT((s32)m_dwBlowoutLightTime<=m_StateTime[eZoneStateBlowout]);
+		if (m_dwBlowoutLightTime>m_StateTime[eZoneStateBlowout])	{
+			m_dwBlowoutLightTime=m_StateTime[eZoneStateBlowout];
+			Msg("! ERROR: invalid 'blowout_light_time' in '%s'",section);
+		}
 	}
 	else
 		m_dwBlowoutLightTime = 0;
@@ -190,7 +196,10 @@ void CCustomZone::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"blowout_sound_time")) 
 	{
 		m_dwBlowoutSoundTime = pSettings->r_u32(section,"blowout_sound_time");
-    	R_ASSERT((s32)m_dwBlowoutSoundTime<=m_StateTime[eZoneStateBlowout]);
+		if (m_dwBlowoutSoundTime>m_StateTime[eZoneStateBlowout])	{
+			m_dwBlowoutSoundTime=m_StateTime[eZoneStateBlowout];
+			Msg("! ERROR: invalid 'blowout_sound_time' in '%s'",section);
+		}
 	}
 	else
 		m_dwBlowoutSoundTime = 0;
@@ -198,7 +207,10 @@ void CCustomZone::Load(LPCSTR section)
 	if(pSettings->line_exist(section,"blowout_explosion_time")) 
 	{
 		m_dwBlowoutExplosionTime = pSettings->r_u32(section,"blowout_explosion_time"); 
-		R_ASSERT((s32)m_dwBlowoutExplosionTime<=m_StateTime[eZoneStateBlowout]);
+		if (m_dwBlowoutExplosionTime>m_StateTime[eZoneStateBlowout])	{
+			m_dwBlowoutExplosionTime=m_StateTime[eZoneStateBlowout];
+			Msg("! ERROR: invalid 'blowout_explosion_time' in '%s'",section);
+		}
 	}
 	else
 		m_dwBlowoutExplosionTime = 0;
