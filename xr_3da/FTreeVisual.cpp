@@ -149,7 +149,9 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_l_color,	tvs.l_color);				// L-color
 
 	// render
+#if RENDER==R_R1
 	RCache.set_xform_world	(xform);
+#endif
 	RCache.set_Geometry		(hGeom);
 	RCache.Render			(D3DPT_TRIANGLELIST,vBase,0,vCount,iBase,dwPrimitives);
 }
