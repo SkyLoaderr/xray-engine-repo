@@ -99,8 +99,8 @@ void OGF::Optimize()
 	// 2. Recalc UV mapping
 	for (i=0; i<vertices.size(); i++)
 	{
-		svector<Fvector2,4>& UV = vertices[i].UV;
-		for (int j=0; j<4; j++)
+		svector<Fvector2,2>& UV = vertices[i].UV;
+		for (int j=0; j<2; j++)
 		{
 			if (dwRelevantUVMASK&(1<<j))	UV[j].sub(Tdelta[j]);
 			// else							UV[j].set(0,0 );
