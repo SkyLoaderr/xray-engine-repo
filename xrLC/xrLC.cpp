@@ -53,7 +53,7 @@ void Startup(LPSTR     lpCmdLine)
 	
 
 	// Give a LOG-thread a chance to startup
-	_set_sbh_threshold	(1920);
+	//_set_sbh_threshold(1920);
 	InitCommonControls	();
 	_beginthread		(logThread,	0,0);
 	Sleep				(150);
