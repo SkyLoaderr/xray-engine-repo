@@ -2,6 +2,9 @@
 #include "HelicopterMovementManager.h"
 #include "Helicopter.h"
 
+#define MAX_ANGULAR_VELOCITY PI
+#define MIN_ANGULAR_VELOCITY 0.0f
+
 bool time_lesser (const CHelicopterMovementManager::STravelPathPoint& el1, 
 				  const CHelicopterMovementManager::STravelPathPoint& el2)
 {
@@ -26,7 +29,6 @@ CHelicopterMovementManager::OnRender()
 	RCache.OnFrameEnd	();
 
 	float traj_box_size = .505f;
-	float key_box_size = .105f;
 	float path_box_size = .205f;
 
 	for(u32 i=0;i<m_path.size();++i)
@@ -66,7 +68,8 @@ CHelicopterMovementManager::init(CHelicopter* heli)
 #ifdef DEBUG
 	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
 #endif
-	
+//	m_velocity = 33.0f;//120km4
+	m_velocity = 20.0f;//120km4
 	m_curState = eIdleState;
 }
 
@@ -80,26 +83,28 @@ CHelicopterMovementManager::deInit()
 }
 
 void		
-CHelicopterMovementManager::onFrame(Fmatrix& xform)
+CHelicopterMovementManager::onFrame(Fmatrix& xform, float fTimeDelta)
 {
 	if(Device.dwFrame == 1000)
 	{
+		float h = 17.0f;
 		xr_vector<Fvector> t;
 		Fvector pos;
-		pos.set(-74.7f, 11.3f, -44.4f);
+		pos.set(-74.7f, h, -44.4f);
 		t.push_back(pos);
-		pos.set(-57.5f, 11.3f, 5.4f);
+		pos.set(-57.5f, h, 5.4f);
 		t.push_back(pos);
-		pos.set(-25.8f, 11.3f, 39.7f);
+		pos.set(-25.8f, h, 39.7f);
 		t.push_back(pos);
-		pos.set(2.4f, 11.3f, 27.2f);
+		pos.set(2.4f, h, 27.2f);
 		t.push_back(pos);
-		pos.set(35.5f, 11.3f, -2.5f);
+		pos.set(35.5f, h, -2.5f);
 		t.push_back(pos);
-		pos.set(26.7f, 11.3f, -35.8f);
+		pos.set(26.7f, h, -35.8f);
 		t.push_back(pos);
-		pos.set(-32.6f, 11.3f, -57.4f);
+		pos.set(-32.6f, h, -57.4f);
 		t.push_back(pos);
+		std::reverse( t.begin(), t.end() );
 		setTrajectory(t, true, true);
 	}
 
@@ -118,21 +123,21 @@ CHelicopterMovementManager::onFrame(Fmatrix& xform)
 		{
 			Fvector pos,w;
 			pos.set(0.0f,0.0f,0.0f);
-			if( getPosition(Level().timeServer(), pos, w) )
+			w.set(0.0f,0.0f,0.0f);
+			if( getPosition(Level().timeServer(),fTimeDelta, xform.c, pos, w) )
 			{
+/*
 				Fvector dir;
-//				Fvector norm;
-
-//				norm.set(0.0f,1.0f,0.0f);
 
 				float d = dir.sub(pos, xform.c).magnitude();
 				if(d>EPS)
 				{
 					float h,p;
 					dir.getHP(h,p);
-					xform.setHPB(h,0.0f,0.0f);
-				}
-				xform.c = pos;
+					xform.setHPB(h, m_velocity*PITCH_K, 1.0f);
+*/
+					xform.setXYZ(w);
+					xform.c = pos;
 			}
 		}
 	}//switch
@@ -147,12 +152,16 @@ CHelicopterMovementManager::stayIdle()
 }
 
 bool	
-CHelicopterMovementManager::getPosition(u32 time, Fvector& pos, Fvector& dir)
+CHelicopterMovementManager::getPosition(u32 timeCurr, 
+										float fTimeDelta, 
+										const Fvector& src, 
+										Fvector& pos, 
+										Fvector& xyz)
 {
 	pathIt b,e;
 	
 	STravelPathPoint _p;
-	_p.time = time;
+	_p.time = timeCurr;
 
 	b = std::lower_bound(m_path.begin(),m_path.end(),_p,time_lesser);
 	e = std::upper_bound(m_path.begin(),m_path.end(),_p,time_lesser);
@@ -163,15 +172,51 @@ CHelicopterMovementManager::getPosition(u32 time, Fvector& pos, Fvector& dir)
 	u32 bt = (*b).time;
 	u32 et = (*e).time;
 	
-	float t = (float)(time-bt)/(float)(et-bt);
+	Fvector& bp = (*b).position;
+	Fvector& ep = (*e).position;
+
+	Fvector& bxyz = (*b).xyz;
+	Fvector& exyz = (*e).xyz;
+
+	float t = (float)(timeCurr-bt)/(float)(et-bt);
 	
-	Fvector bp = (*b).position;
-	Fvector ep = (*e).position;
 
-	pos.x = (1.0f-t)*bp.x + ep.x*t;
-	pos.y = (1.0f-t)*bp.y + ep.y*t;
-	pos.z = (1.0f-t)*bp.z + ep.z*t;
+	pos.lerp(bp,ep,t);
+//	xyz.lerp(bxyz, exyz, t);
+	xyz.x = angle_lerp(bxyz.x, exyz.x, t);
+	xyz.y = angle_lerp(bxyz.y, exyz.y, t);
+	xyz.z = angle_lerp(bxyz.z, exyz.z, t);
+//	(xyz.y<0.0f)?xyz.z*=-1.0f:xyz.z*=1.0f;
 
+//	xyz.z = 0.0f;
+
+
+//	Fvector cp;
+//	cp.crossproduct(bp,ep);
+	//get direction(left/right) from cp.y
+	
+//	float timeLast = timeCurr-fTimeDelta;
+//	float ft = (float)(timeCurr-timeLast)/(float)(et-timeLast);
+
+//	m_destXYZ.z = computeB( (*e).angularVelocity );
+//	xyz.z = _lerp(m_lastXYZ.z, m_destXYZ.z, ft);
+/*
+	Fvector dir;
+	float d = dir.sub(pos, src).magnitude();
+	if(d>EPS)
+	{
+		float h,p;
+		dir.getHP(h,p);
+		xyz.y = h;
+//		xyz.x = m_velocity*PITCH_K;
+		xyz.z = 0.0f;
+		
+//		m_destXYZ.y = h;
+//		xyz.y = _lerp(m_lastXYZ.y, m_destXYZ.y, ft);
+	}
+*/
+
+//	m_lastXYZ = xyz;
 	return true;
 }
 
@@ -196,6 +241,7 @@ CHelicopterMovementManager::setTrajectory(xr_vector<Fvector>& t, bool bGo, bool 
 		dir.sub( (*B).position, (*B_).position ).normalize();
 		(*B_).direction = dir;
 	}
+
 	//last ???
 	m_keyTrajectory.back().direction = (*B_).direction;
 
@@ -229,4 +275,12 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 				m_path.erase( m_path.begin(), b);
 		}
 	}
+}
+
+float	
+CHelicopterMovementManager::computeB(float angVel)
+{
+//	float dv = 1-(angVel-MIN_ANGULAR_VELOCITY);
+//	float res = MIN_ANGULAR_VELOCITY*dv + MAX_ANGULAR_VELOCITY*angVel;
+	return angVel/3.0f;
 }

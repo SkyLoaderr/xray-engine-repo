@@ -6,6 +6,11 @@ CHelicopterMovementManager::check_mask					(u32 mask, u32 test) const
 	return					((mask & test) == test);
 }
 */
+IC float 
+CHelicopterMovementManager::_lerp(float src, float dst, float t)
+{
+	return src*(1.f-t) + dst*t;
+}
 
 IC	void 
 CHelicopterMovementManager::compute_circles(

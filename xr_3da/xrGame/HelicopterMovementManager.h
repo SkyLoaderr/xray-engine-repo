@@ -29,13 +29,12 @@ public:
 
 	struct STravelPathPoint {
 		Fvector				position;
+		Fvector				xyz;
 		u32					velocity;
+		float				angularVelocity;
 		u32					time;
-//		Fvector				direction;
-
-		IC	void set_position(const Fvector &pos) {position = pos;}
-		IC	Fvector &get_position() {return	(position);	}
 	};
+
 	struct STravelPoint {
 		Fvector2		position;
 		u32				vertex_id;
@@ -75,32 +74,24 @@ public:
 		eIdleState		= u32(0),
 		eMovingByPath	= u32(1)
 	};
+
+private:
 	EMovementState					m_curState;
-	u32								m_curPathIdx;
-//	u32		m_time_begin;
-//	u32		m_time_end;
-
-//	Fvector							m_start_position;
-//	Fvector							m_start_direction;
-//	Fvector							m_dest_position;
-//	Fvector							m_dest_direction;
-
 
 	xr_vector<STravelPathPoint>		m_path;
-	xr_vector<STravelParamsIndex>	m_start_params;
-	xr_vector<STravelParamsIndex>	m_dest_params;
+	xr_vector<STravelParamsIndex>	m_startParams;
+	xr_vector<STravelParamsIndex>	m_destParams;
 
-	xr_vector<STravelPathPoint>		m_temp_path;
+	xr_vector<STravelPathPoint>		m_tempPath;
 
 	bool							m_failed;
-	bool							m_use_dest_orientation;
-	bool							m_cycle_path;
-//	u32								m_current_travel_point;
-	bool							m_try_min_time;
+	bool							m_useDestOrientation;
+	bool							m_cyclePath;
+	bool							m_tryMinTime;
 
 	typedef xr_vector<STravelPathPoint>::iterator pathIt;
 	typedef xr_vector<SWayPoint>::iterator trajIt;
-private:
+
 	enum EDirectionType {
 		eDirectionTypeFP = u32(0),
 		eDirectionTypeFN = u32(1),
@@ -116,11 +107,16 @@ private:
 
 	Fvector2 v2d(const Fvector &vector3d) const
 	{return			(Fvector2().set(vector3d.x,vector3d.z));}
-
+	IC float _lerp(float src, float dst, float t);
 protected:
-	xr_map<u32,STravelParams>		m_movement_params;
+	float							m_velocity;
+	xr_map<u32,STravelParams>		m_movementParams;
 	xr_vector<SWayPoint>			m_keyTrajectory;
 	int								m_currKeyIdx;
+
+//	Fvector							m_lastPos;
+//	Fvector							m_lastXYZ;
+//	Fvector							m_destXYZ;
 
 	CHelicopter*					m_pHelicopter;
 	//smooth path
@@ -137,17 +133,17 @@ protected:
 	bool	build_circle_trajectory	(const STrajectoryPoint &position, xr_vector<STravelPathPoint>	*path, const u32 velocity, STravelPathPoint& lastAddedPoint, bool fromCenter);
 	bool	build_line_trajectory	(const STravelPathPoint &start, const STrajectoryPoint &dest, xr_vector<STravelPathPoint> *path, const u32 velocity, STravelPathPoint& lastAddedPoint);
 	//end smooth path
-	
-	bool	getPosition(u32 time, Fvector& pos, Fvector& dir);
+	float	computeB(float angVel);
+	bool	getPosition(u32 time, float fTimeDelta, const Fvector& src, Fvector& pos, Fvector& dir);
 
 public:
 	CHelicopterMovementManager();
 	virtual ~CHelicopterMovementManager();
 	void		init(CHelicopter* heli);
 	void		deInit();
-	void		shedule_Update(u32 time_delta);
+	void		shedule_Update(u32 timeDelta);
 	void		build_smooth_path(int startKeyIdx, bool bClearOld);
-	void		onFrame(Fmatrix& xform);
+	void		onFrame(Fmatrix& xform, float fTimeDelta);
 #ifdef DEBUG
 	virtual void OnRender();
 #endif
