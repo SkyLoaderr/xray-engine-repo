@@ -151,9 +151,6 @@
 						UsePrecompiledHeader="3"/>
 				</FileConfiguration>
 			</File>
-			<File
-				RelativePath=".\xrD3D9-Null_OutProc.h">
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -164,6 +161,9 @@
 			</File>
 			<File
 				RelativePath=".\xrD3D9-Null.h">
+			</File>
+			<File
+				RelativePath=".\xrD3D9-Null_OutProc.h">
 			</File>
 		</Filter>
 		<Filter
@@ -232,6 +232,16 @@
 			</File>
 			<File
 				RelativePath=".\IDirect3DVertexBuffer9.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="IDirect3DTexture9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DTexture9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DTexture9.h">
 			</File>
 		</Filter>
 		<File

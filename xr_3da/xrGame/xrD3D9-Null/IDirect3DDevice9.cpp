@@ -5,6 +5,7 @@
 #include "IDirect3DSurface9.h"
 #include "IDirect3DIndexBuffer9.h"
 #include "IDirect3DVertexBuffer9.h"
+#include "IDirect3DTexture9.h"
 
 #include "xrD3D9-Null_OutProc.h"
 
@@ -156,8 +157,18 @@ void		xrIDirect3DDevice9::SetGammaRamp( UINT iSwapChain,DWORD Flags,CONST D3DGAM
 {	 APIDEBUG("xrIDirect3DDevice9::SetGammaRamp"); VOID_proc(); };
 void		xrIDirect3DDevice9::GetGammaRamp( UINT iSwapChain,D3DGAMMARAMP* pRamp) 
 {	 APIDEBUG("xrIDirect3DDevice9::GetGammaRamp"); VOID_proc(); };
+
 HRESULT		xrIDirect3DDevice9::CreateTexture( UINT Width,UINT Height,UINT Levels,DWORD Usage,D3DFORMAT Format,D3DPOOL Pool,IDirect3DTexture9** ppTexture,HANDLE* pSharedHandle) 
-{ APIDEBUG("xrIDirect3DDevice9::CreateTexture");  return HRESULT_Proc(S_OK); };
+{
+	APIDEBUG("xrIDirect3DDevice9::CreateTexture");  
+
+	*ppTexture = NULL;
+	xrIDirect3DTexture9* I = new xrIDirect3DTexture9(this, Width,Height,Levels,Usage,Format,Pool);
+	*ppTexture = I;
+	
+	return HRESULT_Proc(S_OK); 
+};
+
 HRESULT		xrIDirect3DDevice9::CreateVolumeTexture( UINT Width,UINT Height,UINT Depth,UINT Levels,DWORD Usage,D3DFORMAT Format,D3DPOOL Pool,IDirect3DVolumeTexture9** ppVolumeTexture,HANDLE* pSharedHandle) 
 { APIDEBUG("xrIDirect3DDevice9::CreateVolumeTexture");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateCubeTexture( UINT EdgeLength,UINT Levels,DWORD Usage,D3DFORMAT Format,D3DPOOL Pool,IDirect3DCubeTexture9** ppCubeTexture,HANDLE* pSharedHandle) 
@@ -209,8 +220,9 @@ HRESULT		xrIDirect3DDevice9::SetDepthStencilSurface( IDirect3DSurface9* pNewZSte
 HRESULT		xrIDirect3DDevice9::GetDepthStencilSurface( IDirect3DSurface9** ppZStencilSurface) 
 { 
 	APIDEBUG("xrIDirect3DDevice9::GetDepthStencilSurface");  
+
 	*ppZStencilSurface = NULL;
-	xrIDirect3DSurface9* I = new xrIDirect3DSurface9(this);
+	xrIDirect3DSurface9* I = new xrIDirect3DSurface9(this, 0, 0, D3DFORMAT(0), D3DMULTISAMPLE_TYPE(0),0);
 	*ppZStencilSurface = I;
 
 	return HRESULT_Proc(S_OK); 
