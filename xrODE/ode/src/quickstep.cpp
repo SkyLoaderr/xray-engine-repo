@@ -104,7 +104,7 @@ static void compute_invM_JT (int m, dRealMutablePtr J, dRealMutablePtr iMJ, int 
 
 
 // compute out = inv(M)*J'*in.
-
+/*
 static void multiply_invM_JT (int m, int nb, dRealMutablePtr iMJ, int *jb,
 	dRealMutablePtr in, dRealMutablePtr out)
 {
@@ -124,7 +124,7 @@ static void multiply_invM_JT (int m, int nb, dRealMutablePtr iMJ, int *jb,
 		iMJ_ptr += 6;
 	}
 }
-
+*/
 
 // compute out = J*in.
 
@@ -152,7 +152,7 @@ static void multiply_J (int m, dRealMutablePtr J, int *jb,
 
 // compute out = (J*inv(M)*J' + cfm)*in.
 // use z as an nb*6 temporary.
-
+/*
 static void multiply_J_invM_JT (int m, int nb, dRealMutablePtr J, dRealMutablePtr iMJ, int *jb,
 	dRealPtr cfm, dRealMutablePtr z, dRealMutablePtr in, dRealMutablePtr out)
 {
@@ -162,6 +162,7 @@ static void multiply_J_invM_JT (int m, int nb, dRealMutablePtr J, dRealMutablePt
 	// add cfm
 	for (int i=0; i<m; i++) out[i] += cfm[i] * in[i];
 }
+*/
 
 //***************************************************************************
 // conjugate gradient method with jacobi preconditioner
