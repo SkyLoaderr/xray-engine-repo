@@ -241,11 +241,11 @@ BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 	if ((w<=1) || (h<=1))	return FALSE;
 
 	// scale down(lanczos3) and up (bilinear, as video board)
-	LPDWORD	pScaled		= LPDWORD(xr_malloc(w*h*4));
-	LPDWORD	pRestored	= LPDWORD(xr_malloc(lm.dwWidth*lm.dwHeight*4));
+	u32*	pScaled		= (u32*)(xr_malloc(w*h*4));
+	u32*	pRestored	= (u32*)(xr_malloc(lm.dwWidth*lm.dwHeight*4));
 	try {
-		imf_Process	(pScaled,	w,h,lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3	);
-		imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter		);
+		imf_Process	(pScaled,	w,h,(u32*)lm.pSurface,lm.dwWidth,lm.dwHeight,imf_lanczos3	);
+		imf_Process	(pRestored,	lm.dwWidth,lm.dwHeight,pScaled,w,h,imf_filter				);
 	} catch (...)
 	{
 		Msg		("* ERROR: imf_Process");
@@ -260,7 +260,7 @@ BOOL	__stdcall rms_test	(b_texture& lm, DWORD w, DWORD h, DWORD rms)
 	for (DWORD y=0; y<lm.dwHeight; y++)
 	{
 		LPDWORD	scan_lmap	= lm.pSurface+y*lm.dwWidth;
-		LPDWORD	scan_rest	= pRestored+y*lm.dwWidth;
+		LPDWORD	scan_rest	= LPDWORD(pRestored)+y*lm.dwWidth;
 		for (DWORD x=0; x<lm.dwWidth; x++)
 		{
 			DWORD pixel	= scan_lmap[x];
