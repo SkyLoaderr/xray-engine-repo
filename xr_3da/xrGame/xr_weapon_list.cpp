@@ -104,17 +104,6 @@ int	CWeaponList::FindWeapon(CLASS_ID cls)
 	return -1;
 }
 
-BOOL CWeaponList::ActivateWeapon(CLASS_ID cls)
-{
-	if (!m_Weapons.empty()){
-		int idx = FindWeapon(cls);
-		if (idx>=0){
-			return WeaponChange(idx);
-		}
-	}
-	return false;
-}
-
 BOOL CWeaponList::ActivateWeaponID(int id)
 {
 	return WeaponChange(id);

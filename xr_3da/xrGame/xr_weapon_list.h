@@ -36,7 +36,6 @@ public:
 
 	BOOL			ActivateWeaponPrev	(BOOL ignore_empty_weapon=true);
 	BOOL			ActivateWeaponNext	(BOOL ignore_empty_weapon=true);
-	BOOL			ActivateWeapon		(CLASS_ID cls);
 	BOOL			ActivateWeaponID	(int id);
 	void			Zoom				(BOOL bZoom);
 	void			Reload				();

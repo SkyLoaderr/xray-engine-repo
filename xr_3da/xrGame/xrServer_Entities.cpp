@@ -75,8 +75,8 @@ public:
 public:
 	xrSE_Weapon()
 	{
-		a_current			= 30;
-		a_elapsed			= 90;
+		a_current			= 90;
+		a_elapsed			= 30;
 	}
 
 	virtual void			UPDATE_Read		(NET_Packet& P)
