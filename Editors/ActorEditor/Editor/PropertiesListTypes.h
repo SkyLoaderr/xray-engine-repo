@@ -289,7 +289,7 @@ public:
     int					btn_num;
     TOnBtnClick			OnBtnClickEvent;
     enum{
-    	flFrontOnly		= (1<<0)
+    	flFirstOnly		= (1<<0)
     };
     Flags8				m_Flags;
 public:

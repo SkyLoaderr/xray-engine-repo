@@ -5,10 +5,10 @@
 #include "SHToolsInterface.h"
 #include "PropertiesList.h"
 
-DEFINE_VECTOR(CBlender*,TemplateVec,TemplateIt);
+DEFINE_VECTOR(IBlender*,TemplateVec,TemplateIt);
 DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
 DEFINE_MAP_PRED(LPSTR,CMatrix*,MatrixMap,MatrixPairIt,str_pred);
-DEFINE_MAP_PRED(LPSTR,CBlender*,BlenderMap,BlenderPairIt,str_pred);
+DEFINE_MAP_PRED(LPSTR,IBlender*,BlenderMap,BlenderPairIt,str_pred);
 
 // refs
 class CSHEngineTools;
@@ -37,7 +37,7 @@ class CSHEngineTools: public ISHTools
 	MatrixMap				m_Matrices;
 	BlenderMap				m_Blenders;
 
-	CBlender*				FindItem			(LPCSTR name);
+	IBlender*				FindItem			(LPCSTR name);
     virtual LPCSTR			GenerateItemName	(LPSTR name, LPCSTR pref, LPCSTR source);
 
 	void 					AddMatrixRef		(LPSTR name);
@@ -63,7 +63,7 @@ friend class TfrmShaderProperties;
     void					UpdateConstantRefs	(LPSTR name);
     void					UpdateRefCounters	();
 
-    void 					ParseBlender		(CBlender* B, CParseBlender& P);
+    void 					ParseBlender		(IBlender* B, CParseBlender& P);
 
 	CMemoryWriter			m_BlenderStream;	// пользоваться функциями обновления стрима для синхронизации
     bool 					m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
@@ -94,7 +94,7 @@ friend class TfrmShaderProperties;
 public:
 	CMemoryWriter			m_RenderShaders;
 
-    CBlender*				m_CurrentBlender;
+    IBlender*				m_CurrentBlender;
 	void					RemoteRenameBlender	(LPCSTR old_full_name, LPCSTR new_full_name){m_RemoteRenBlender=TRUE;m_RenBlenderOldName=old_full_name;m_RenBlenderNewName=new_full_name;}
 
     Shader_xrLC*			m_Shader;

@@ -7,7 +7,7 @@
 // refs
 class CEditableObject;
 class CLibObject;
-class CBlender;
+class IBlender;
 class TProperties;
 
 enum EAction{

@@ -67,7 +67,7 @@ public:
         flSkidmark		= 1<<3,
         flBloodmark		= 1<<4,
         flClimbable		= 1<<5,
-        flWalkOn		= 1<<6,
+        flWalkOn		= 1<<6, // obsolette
     };
 public:
 	string64			name;

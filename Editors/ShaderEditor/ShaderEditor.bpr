@@ -4,89 +4,92 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="x:\ShaderEditor.exe"/>
-    <OBJFILES value="Intermediate\ShaderEditor.obj Intermediate\stdafx.obj 
-      Intermediate\D3DUtils.obj Intermediate\EditMesh.obj 
-      Intermediate\EditObjectImport.obj Intermediate\EditMeshIO.obj 
-      Intermediate\EditMeshModify.obj Intermediate\device.obj 
-      Intermediate\EditMeshRender.obj Intermediate\BottomBar.obj 
-      Intermediate\EditorPref.obj Intermediate\Splash.obj Intermediate\main.obj 
-      Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
-      Intermediate\interp.obj Intermediate\Envelope.obj Intermediate\motion.obj 
-      Intermediate\bone.obj Intermediate\ColorPicker.obj 
-      Intermediate\UI_Camera.obj Intermediate\HWCaps.obj 
-      Intermediate\EditObject.obj Intermediate\Xr_input.obj 
-      Intermediate\fcontroller.obj Intermediate\pure.obj 
-      Intermediate\xrImage_Resampler.obj Intermediate\LeftBar.obj 
-      Intermediate\LogForm.obj Intermediate\Library.obj 
-      Intermediate\ChoseForm.obj Intermediate\xr_avi.obj 
+    <OBJFILES value="Intermediate\ShaderEditor.obj Intermediate\xrXRC.obj Intermediate\bone.obj 
+      Intermediate\cl_collector.obj Intermediate\defines.obj 
+      Intermediate\Envelope.obj Intermediate\Frustum.obj 
+      Intermediate\GameFont.obj Intermediate\GameMtlLib.obj Intermediate\HW.obj 
+      Intermediate\HWCaps.obj Intermediate\IInputReceiver.obj 
+      Intermediate\Image.obj Intermediate\interp.obj Intermediate\motion.obj 
+      Intermediate\ParticleEffect.obj Intermediate\ParticleGroup.obj 
+      Intermediate\pure.obj Intermediate\R_Backend.obj 
+      Intermediate\R_Backend_DBG.obj Intermediate\R_Backend_Runtime.obj 
+      Intermediate\R_Backend_xform.obj Intermediate\r_constants.obj 
+      Intermediate\r_constants_cache.obj Intermediate\R_DStreams.obj 
+      Intermediate\ResourceManager.obj Intermediate\ResourceManager_Loader.obj 
+      Intermediate\ResourceManager_Resources.obj Intermediate\SH_Atomic.obj 
       Intermediate\SH_Constant.obj Intermediate\SH_Matrix.obj 
-      Intermediate\SH_Texture.obj Intermediate\Shader.obj 
-      Intermediate\Texture.obj Intermediate\TextureManager.obj 
-      Intermediate\TextureManager_Loader.obj Intermediate\tss_def.obj 
-      Intermediate\Image.obj Intermediate\tga.obj 
-      Intermediate\ShaderFunction.obj Intermediate\BlenderDefault.obj 
+      Intermediate\SH_RT.obj Intermediate\SH_Texture.obj Intermediate\Shader.obj 
+      Intermediate\Texture.obj Intermediate\tga.obj Intermediate\tss_def.obj 
+      Intermediate\xr_avi.obj Intermediate\Xr_input.obj 
+      Intermediate\xrImage_Resampler.obj Intermediate\xrLoadSurface.obj 
+      Intermediate\xrParticlesLib.obj Intermediate\xrRender_console.obj 
+      Intermediate\xrSkin2W.obj Intermediate\BodyInstance.obj 
+      Intermediate\FBasicVisual.obj Intermediate\FHierrarhyVisual.obj 
+      Intermediate\FProgressiveFixedVisual.obj Intermediate\FVisual.obj 
+      Intermediate\SkeletonCalculate.obj Intermediate\SkeletonX.obj 
+      Intermediate\xrSkin1W.obj Intermediate\BlenderDefault.obj 
+      Intermediate\Blender.obj Intermediate\Blender_B.obj 
+      Intermediate\Blender_Blur.obj Intermediate\Blender_BmmD.obj 
       Intermediate\Blender_default_aref.obj 
-      Intermediate\Blender_Editor_Selection.obj 
-      Intermediate\Blender_Editor_Wire.obj Intermediate\Blender_Recorder.obj 
+      Intermediate\Blender_detail_still.obj Intermediate\Blender_Editor_Selection.obj 
+      Intermediate\Blender_Editor_Wire.obj Intermediate\Blender_LaEmB.obj 
+      Intermediate\blender_light.obj Intermediate\Blender_Lm(EbB).obj 
+      Intermediate\Blender_LmBmmD.obj Intermediate\Blender_Model.obj 
+      Intermediate\Blender_Model_EbB.obj Intermediate\Blender_Palette.obj 
+      Intermediate\Blender_Recorder.obj Intermediate\Blender_Recorder_R2.obj 
       Intermediate\Blender_Screen_GRAY.obj Intermediate\Blender_Screen_SET.obj 
-      Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
-      Intermediate\Blender.obj Intermediate\SHEngineTools.obj 
-      Intermediate\SHCompilerTools.obj Intermediate\blender_light.obj 
-      Intermediate\FolderLib.obj Intermediate\EStats.obj 
-      Intermediate\xrLoadSurface.obj Intermediate\UI_Main.obj 
-      Intermediate\UI_Tools.obj Intermediate\UI_MainExtern.obj 
-      Intermediate\ImageThumbnail.obj Intermediate\ImageManager.obj 
-      Intermediate\UI_MainShader.obj Intermediate\EditMeshPick.obj 
-      Intermediate\TopBar.obj Intermediate\EditObjectEditor.obj 
-      Intermediate\Blender_LaEmB.obj Intermediate\Blender_LmBmmD.obj 
-      Intermediate\Blender_Lm(EbB).obj Intermediate\Blender_BmmD.obj 
-      Intermediate\ModelPool.obj Intermediate\FBasicVisual.obj 
-      Intermediate\FHierrarhyVisual.obj Intermediate\FProgressiveFixedVisual.obj 
-      Intermediate\FVisual.obj Intermediate\SkeletonCalculate.obj 
-      Intermediate\SkeletonX.obj Intermediate\BodyInstance.obj 
-      Intermediate\xrXRC.obj Intermediate\Engine.obj 
-      Intermediate\PropertiesList.obj Intermediate\SHEngineToolsProperties.obj 
-      Intermediate\SHCompilerToolsProperties.obj 
       Intermediate\Blender_Shadow_Texture.obj 
-      Intermediate\Blender_Shadow_World.obj Intermediate\NumericVector.obj 
-      Intermediate\SH_RT.obj Intermediate\Blender_Blur.obj 
-      Intermediate\Blender_Model.obj Intermediate\xrSkin1W.obj 
-      Intermediate\TextForm.obj Intermediate\ImageEditor.obj 
-      Intermediate\ETextureParams.obj Intermediate\PropertiesListTypes.obj 
-      Intermediate\LightAnimLibrary.obj Intermediate\Frustum.obj 
-      Intermediate\render.obj Intermediate\SoundManager.obj 
-      Intermediate\UI_MainMail.obj Intermediate\xrSkin2W.obj Intermediate\HW.obj 
-      Intermediate\defines.obj Intermediate\GameFont.obj 
-      Intermediate\GameMtlLib.obj Intermediate\PSLibrary.obj 
-      Intermediate\xrParticlesLib.obj Intermediate\Blender_Model_EbB.obj 
-      Intermediate\GameMtlLib_Editor.obj Intermediate\Blender_B.obj 
-      Intermediate\PropertiesListHelper.obj Intermediate\c_dinput.obj 
-      Intermediate\UI_MainCommand.obj Intermediate\ParticleGroup.obj 
-      Intermediate\R_Backend.obj Intermediate\R_Backend_Runtime.obj 
-      Intermediate\R_DStreams.obj Intermediate\r_constants_cache.obj 
-      Intermediate\R_Backend_DBG.obj Intermediate\r_constants.obj 
-      Intermediate\Blender_detail_still.obj Intermediate\Blender_tree.obj 
-      Intermediate\ELog.obj Intermediate\SHSoundEnvTools.obj 
-      Intermediate\SHToolsInterface.obj Intermediate\SHGameMtlTools.obj 
-      Intermediate\SHGameMtlPairTools.obj Intermediate\CustomObject.obj 
-      Intermediate\CustomObjectMisc.obj Intermediate\du_box.obj 
-      Intermediate\du_sphere.obj Intermediate\Blender_Palette.obj 
-      Intermediate\ESound_Source.obj Intermediate\R_Backend_xform.obj 
-      Intermediate\Blender_Recorder_R2.obj Intermediate\du_cone.obj 
-      Intermediate\du_cylinder.obj"/>
+      Intermediate\Blender_Shadow_World.obj Intermediate\Blender_tree.obj 
+      Intermediate\Blender_Vertex.obj Intermediate\Blender_Vertex_aref.obj 
+      Intermediate\UI_MainMail.obj Intermediate\BoneEditor.obj 
+      Intermediate\c_dinput.obj Intermediate\ChoseForm.obj 
+      Intermediate\ColorPicker.obj Intermediate\CustomObject.obj 
+      Intermediate\CustomObjectMisc.obj Intermediate\D3DUtils.obj 
+      Intermediate\device.obj Intermediate\du_box.obj Intermediate\du_cone.obj 
+      Intermediate\du_cylinder.obj Intermediate\du_sphere.obj 
+      Intermediate\EditMesh.obj Intermediate\EditMeshIO.obj 
+      Intermediate\EditMeshModify.obj Intermediate\EditMeshPick.obj 
+      Intermediate\EditMeshRender.obj Intermediate\EditObject.obj 
+      Intermediate\EditObjectEditor.obj Intermediate\EditObjectImport.obj 
+      Intermediate\EditObjectIO.obj Intermediate\EditObjectMotions.obj 
+      Intermediate\ELog.obj Intermediate\Engine.obj 
+      Intermediate\ESound_Source.obj Intermediate\EStats.obj 
+      Intermediate\ETextureParams.obj Intermediate\ExportObjectOGF.obj 
+      Intermediate\ExportSkeleton.obj Intermediate\FolderLib.obj 
+      Intermediate\ImageEditor.obj Intermediate\ImageManager.obj 
+      Intermediate\ImageThumbnail.obj Intermediate\ItemList.obj 
+      Intermediate\ItemListHelper.obj Intermediate\ItemListTypes.obj 
+      Intermediate\Library.obj Intermediate\LightAnimLibrary.obj 
+      Intermediate\ModelPool.obj Intermediate\NumericVector.obj 
+      Intermediate\PropertiesList.obj Intermediate\PropertiesListHelper.obj 
+      Intermediate\PropertiesListTypes.obj Intermediate\PSLibrary.obj 
+      Intermediate\render.obj Intermediate\ShaderFunction.obj 
+      Intermediate\SoundManager.obj Intermediate\TextForm.obj 
+      Intermediate\TopBar.obj Intermediate\UI_Camera.obj 
+      Intermediate\UI_Main.obj Intermediate\UI_MainCommand.obj 
+      Intermediate\UI_Tools.obj Intermediate\BottomBar.obj 
+      Intermediate\EditorPref.obj Intermediate\GameMtlLib_Editor.obj 
+      Intermediate\LeftBar.obj Intermediate\LogForm.obj Intermediate\main.obj 
+      Intermediate\SHCompilerTools.obj 
+      Intermediate\SHCompilerToolsProperties.obj Intermediate\SHEngineTools.obj 
+      Intermediate\SHEngineToolsProperties.obj 
+      Intermediate\SHGameMtlPairTools.obj Intermediate\SHGameMtlTools.obj 
+      Intermediate\SHSoundEnvTools.obj Intermediate\SHToolsInterface.obj 
+      Intermediate\Splash.obj Intermediate\stdafx.obj 
+      Intermediate\UI_MainExtern.obj Intermediate\UI_MainShader.obj"/>
     <RESFILES value="ShaderEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
-    <RESDEPEN value="$(RESFILES) BottomBar.dfm EditorPref.dfm Splash.dfm main.dfm LeftBar.dfm 
-      LogForm.dfm Editor\ChoseForm.dfm Editor\ShaderFunction.dfm 
-      Editor\TopBar.dfm Editor\PropertiesList.dfm Editor\NumericVector.dfm 
-      Editor\TextForm.dfm Editor\ImageEditor.dfm"/>
+    <RESDEPEN value="$(RESFILES) Editor\ChoseForm.dfm Editor\ImageEditor.dfm 
+      Editor\ItemList.dfm Editor\NumericVector.dfm Editor\PropertiesList.dfm 
+      Editor\ShaderFunction.dfm Editor\TextForm.dfm Editor\TopBar.dfm 
+      BottomBar.dfm EditorPref.dfm LeftBar.dfm LogForm.dfm main.dfm Splash.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib vclx.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
     <PACKAGES value="rtl.bpi vcl.bpi"/>
-    <PATHCPP value=".;editor;engine;Engine\BLENDERS;Engine\Animations"/>
+    <PATHCPP value=".;Engine;Engine\Animations;Engine\Blenders;Editor"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -96,15 +99,15 @@
     <USERDEFINES value="_EDITOR;_SHADER_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="ShaderEditor.cpp"/>
-    <INCLUDEPATH value="Engine\Sound;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore;P:\xrSound"/>
-    <LIBPATH value="Engine\Sound;lib;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;..\lib\DX;..\lib;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code;&quot;x:\&quot;"/>
+    <INCLUDEPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore;P:\xrSound"/>
+    <LIBPATH value="C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;..\lib\DX;..\lib;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code;x:\"/>
     <WARNINGS value="-w-par -w-8027"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-IEngine\Sound -IC:\Rad\Borland\CBuilder6\Projects -IEngine\Animations 
-      -IEngine\BLENDERS -Ir:\borland\components6\alexmx -Ieditor 
-      -IR:\SDK\DirectX9.0\include -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
+    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IEngine\Animations -IEngine\BLENDERS 
+      -Ir:\borland\components6\alexmx -Ieditor -IR:\SDK\DirectX9.0\include 
+      -I$(BCB)\include -I$(BCB)\include\vcl -Iengine 
       -IP:\MagicFM_Borland\Sdk\Include -IR:\Borland\Components6\Elpack\Code 
       -IR:\Borland\Components6\Elpack\Code\Source -IP:\xrCore -IP:\xrSound 
       -src_suffix cpp -D_EDITOR -D_SHADER_EDITOR -D_DEBUG -no_tie -boa"/>
@@ -124,156 +127,163 @@
   </LINKER>
   <FILELIST>
       <FILE FILENAME="ShaderEditor.cpp" FORMNAME="" UNITNAME="ShaderEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="ShaderEditor.res" FORMNAME="" UNITNAME="ShaderEditor" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="!.txt" FORMNAME="" UNITNAME="!" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\D3DUtils.cpp" FORMNAME="" UNITNAME="D3DUtils" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\Fmesh.h" FORMNAME="" UNITNAME="Fmesh" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\std_classes.h" FORMNAME="" UNITNAME="std_classes" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditMesh.cpp" FORMNAME="" UNITNAME="EditMesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditObjectImport.cpp" FORMNAME="" UNITNAME="EditObjectImport" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditMeshIO.cpp" FORMNAME="" UNITNAME="EditMeshIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditMeshModify.cpp" FORMNAME="" UNITNAME="EditMeshModify" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\device.cpp" FORMNAME="" UNITNAME="Device" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditMeshRender.cpp" FORMNAME="" UNITNAME="EditMeshRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditorPreferences" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditObjectIO.cpp" FORMNAME="" UNITNAME="EditObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditObjectMotions.cpp" FORMNAME="" UNITNAME="EditObjectMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\nvdxt_options.h" FORMNAME="" UNITNAME="nvdxt_options" CONTAINERID="" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\interp.cpp" FORMNAME="" UNITNAME="interp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\motion.cpp" FORMNAME="" UNITNAME="motion" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\bone.cpp" FORMNAME="" UNITNAME="bone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\EditObject.cpp" FORMNAME="" UNITNAME="EditObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\fcontroller.cpp" FORMNAME="" UNITNAME="fcontroller" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\pure.cpp" FORMNAME="" UNITNAME="pure" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="engine\xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrXRC.cpp" FORMNAME="" UNITNAME="xrXRC.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\bone.cpp" FORMNAME="" UNITNAME="bone.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\cl_collector.cpp" FORMNAME="" UNITNAME="cl_collector.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Envelope.cpp" FORMNAME="" UNITNAME="Envelope.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Frustum.cpp" FORMNAME="" UNITNAME="Frustum.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\HWCaps.cpp" FORMNAME="" UNITNAME="HWCaps.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\IInputReceiver.cpp" FORMNAME="" UNITNAME="IInputReceiver.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Image.cpp" FORMNAME="" UNITNAME="Image.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\interp.cpp" FORMNAME="" UNITNAME="interp.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\motion.cpp" FORMNAME="" UNITNAME="motion.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleEffect.cpp" FORMNAME="" UNITNAME="ParticleEffect.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\pure.cpp" FORMNAME="" UNITNAME="pure.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\R_Backend.cpp" FORMNAME="" UNITNAME="R_Backend.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\R_Backend_DBG.cpp" FORMNAME="" UNITNAME="R_Backend_DBG.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\R_Backend_Runtime.cpp" FORMNAME="" UNITNAME="R_Backend_Runtime.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\r_constants_cache.cpp" FORMNAME="" UNITNAME="r_constants_cache.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\R_DStreams.cpp" FORMNAME="" UNITNAME="R_DStreams.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ResourceManager.cpp" FORMNAME="" UNITNAME="ResourceManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ResourceManager_Loader.cpp" FORMNAME="" UNITNAME="ResourceManager_Loader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ResourceManager_Resources.cpp" FORMNAME="" UNITNAME="ResourceManager_Resources.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Atomic.cpp" FORMNAME="" UNITNAME="SH_Atomic.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Constant.cpp" FORMNAME="" UNITNAME="SH_Constant.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Matrix.cpp" FORMNAME="" UNITNAME="SH_Matrix.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_RT.cpp" FORMNAME="" UNITNAME="SH_RT.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\SH_Texture.cpp" FORMNAME="" UNITNAME="SH_Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Shader.cpp" FORMNAME="" UNITNAME="Shader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Texture.cpp" FORMNAME="" UNITNAME="Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\tga.cpp" FORMNAME="" UNITNAME="tga.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\tss_def.cpp" FORMNAME="" UNITNAME="tss_def.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xr_avi.cpp" FORMNAME="" UNITNAME="xr_avi.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Xr_input.cpp" FORMNAME="" UNITNAME="Xr_input.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrImage_Resampler.cpp" FORMNAME="" UNITNAME="xrImage_Resampler.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrLoadSurface.cpp" FORMNAME="" UNITNAME="xrLoadSurface.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrRender_console.cpp" FORMNAME="" UNITNAME="xrRender_console.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\BodyInstance.cpp" FORMNAME="" UNITNAME="BodyInstance.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\BlenderDefault.cpp" FORMNAME="" UNITNAME="BlenderDefault.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender.cpp" FORMNAME="" UNITNAME="Blender.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Blur.cpp" FORMNAME="" UNITNAME="Blender_Blur.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_BmmD.cpp" FORMNAME="" UNITNAME="Blender_BmmD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_default_aref.cpp" FORMNAME="" UNITNAME="Blender_default_aref.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_detail_still.cpp" FORMNAME="" UNITNAME="Blender_detail_still.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Editor_Selection.cpp" FORMNAME="" UNITNAME="Blender_Editor_Selection.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Editor_Wire.cpp" FORMNAME="" UNITNAME="Blender_Editor_Wire.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_LaEmB.cpp" FORMNAME="" UNITNAME="Blender_LaEmB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\blender_light.cpp" FORMNAME="" UNITNAME="blender_light.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Lm(EbB).cpp" FORMNAME="" UNITNAME="Blender_Lm(EbB).cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_LmBmmD.cpp" FORMNAME="" UNITNAME="Blender_LmBmmD.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Model.cpp" FORMNAME="" UNITNAME="Blender_Model.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Recorder.cpp" FORMNAME="" UNITNAME="Blender_Recorder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Screen_GRAY.cpp" FORMNAME="" UNITNAME="Blender_Screen_GRAY.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Screen_SET.cpp" FORMNAME="" UNITNAME="Blender_Screen_SET.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Shadow_Texture.cpp" FORMNAME="" UNITNAME="Blender_Shadow_Texture.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Shadow_World.cpp" FORMNAME="" UNITNAME="Blender_Shadow_World.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Vertex.cpp" FORMNAME="" UNITNAME="Blender_Vertex.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Vertex_aref.cpp" FORMNAME="" UNITNAME="Blender_Vertex_aref.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\BoneEditor.cpp" FORMNAME="" UNITNAME="BoneEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ChoseForm.cpp" FORMNAME="frmChoseItem" UNITNAME="ChoseForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ColorPicker.cpp" FORMNAME="" UNITNAME="ColorPicker.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\CustomObjectMisc.cpp" FORMNAME="" UNITNAME="CustomObjectMisc.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\D3DUtils.cpp" FORMNAME="" UNITNAME="D3DUtils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\device.cpp" FORMNAME="" UNITNAME="device.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_box.cpp" FORMNAME="" UNITNAME="du_box.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_cone.cpp" FORMNAME="" UNITNAME="du_cone.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_cylinder.cpp" FORMNAME="" UNITNAME="du_cylinder.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditMesh.cpp" FORMNAME="" UNITNAME="EditMesh.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditMeshIO.cpp" FORMNAME="" UNITNAME="EditMeshIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditMeshModify.cpp" FORMNAME="" UNITNAME="EditMeshModify.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditMeshPick.cpp" FORMNAME="" UNITNAME="EditMeshPick.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditMeshRender.cpp" FORMNAME="" UNITNAME="EditMeshRender.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditObject.cpp" FORMNAME="" UNITNAME="EditObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditObjectEditor.cpp" FORMNAME="" UNITNAME="EditObjectEditor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditObjectImport.cpp" FORMNAME="" UNITNAME="EditObjectImport.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditObjectIO.cpp" FORMNAME="" UNITNAME="EditObjectIO.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EditObjectMotions.cpp" FORMNAME="" UNITNAME="EditObjectMotions.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ELog.cpp" FORMNAME="" UNITNAME="ELog.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\Engine.cpp" FORMNAME="" UNITNAME="Engine.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\EStats.cpp" FORMNAME="" UNITNAME="EStats.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ExportObjectOGF.cpp" FORMNAME="" UNITNAME="ExportObjectOGF.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemList.cpp" FORMNAME="ItemList" UNITNAME="ItemList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemListHelper.cpp" FORMNAME="" UNITNAME="ItemListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ItemListTypes.cpp" FORMNAME="" UNITNAME="ItemListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\Library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PropertiesList.cpp" FORMNAME="Properties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\render.cpp" FORMNAME="" UNITNAME="render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\UI_Camera.cpp" FORMNAME="" UNITNAME="UI_Camera.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UI_Tools.cpp" FORMNAME="" UNITNAME="UI_Tools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
+      <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditPrefs" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="GameMtlLib_Editor.cpp" FORMNAME="" UNITNAME="GameMtlLib_Editor.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\Library.cpp" FORMNAME="" UNITNAME="Library" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ChoseForm.cpp" FORMNAME="frmChoseItem" UNITNAME="ChoseForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xr_avi.cpp" FORMNAME="" UNITNAME="xr_avi" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_Constant.cpp" FORMNAME="" UNITNAME="SH_Constant" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_Matrix.cpp" FORMNAME="" UNITNAME="SH_Matrix" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_Texture.cpp" FORMNAME="" UNITNAME="SH_Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Shader.cpp" FORMNAME="" UNITNAME="Shader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Texture.cpp" FORMNAME="" UNITNAME="Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\TextureManager.cpp" FORMNAME="" UNITNAME="TextureManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\TextureManager_Loader.cpp" FORMNAME="" UNITNAME="TextureManager_Loader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\tss_def.cpp" FORMNAME="" UNITNAME="tss_def" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Image.cpp" FORMNAME="" UNITNAME="Image" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\tga.cpp" FORMNAME="" UNITNAME="tga" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ShaderFunction.cpp" FORMNAME="frmShaderFunction" UNITNAME="ShaderFunction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\BlenderDefault.cpp" FORMNAME="" UNITNAME="BlenderDefault" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_default_aref.cpp" FORMNAME="" UNITNAME="Blender_default_aref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Editor_Selection.cpp" FORMNAME="" UNITNAME="Blender_Editor_Selection" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Editor_Wire.cpp" FORMNAME="" UNITNAME="Blender_Editor_Wire" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Recorder.cpp" FORMNAME="" UNITNAME="Blender_Recorder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Screen_GRAY.cpp" FORMNAME="" UNITNAME="Blender_Screen_GRAY" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Screen_SET.cpp" FORMNAME="" UNITNAME="Blender_Screen_SET" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Vertex.cpp" FORMNAME="" UNITNAME="Blender_Vertex" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Vertex_aref.cpp" FORMNAME="" UNITNAME="Blender_Vertex_aref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender.cpp" FORMNAME="" UNITNAME="Blender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SHEngineTools.cpp" FORMNAME="" UNITNAME="SHEngineTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SHCompilerTools.cpp" FORMNAME="" UNITNAME="SHCompilerTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\blender_light.cpp" FORMNAME="" UNITNAME="blender_light" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\FolderLib.cpp" FORMNAME="" UNITNAME="FolderLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\EStats.cpp" FORMNAME="" UNITNAME="EStats" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrLoadSurface.cpp" FORMNAME="" UNITNAME="xrLoadSurface" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="UI_Tools.cpp" FORMNAME="" UNITNAME="UI_Tools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ImageThumbnail.cpp" FORMNAME="" UNITNAME="ImageThumbnail" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="UI_MainShader.cpp" FORMNAME="" UNITNAME="UI_MainShader" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\EditMeshPick.cpp" FORMNAME="" UNITNAME="EditMeshPick" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\EditObjectEditor.cpp" FORMNAME="" UNITNAME="EditObjectEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_LaEmB.cpp" FORMNAME="" UNITNAME="Blender_LaEmB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_LmBmmD.cpp" FORMNAME="" UNITNAME="Blender_LmBmmD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Lm(EbB).cpp" FORMNAME="" UNITNAME="Blender_Lm(EbB)" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_BmmD.cpp" FORMNAME="" UNITNAME="Blender_BmmD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ModelPool.cpp" FORMNAME="" UNITNAME="ModelPool" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FProgressiveFixedVisual.cpp" FORMNAME="" UNITNAME="FProgressiveFixedVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\FVisual.cpp" FORMNAME="" UNITNAME="FVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonCalculate.cpp" FORMNAME="" UNITNAME="SkeletonCalculate" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\SkeletonX.cpp" FORMNAME="" UNITNAME="SkeletonX" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\BodyInstance.cpp" FORMNAME="" UNITNAME="BodyInstance" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrXRC.cpp" FORMNAME="" UNITNAME="xrXRC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\Engine.cpp" FORMNAME="" UNITNAME="Engine" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PropertiesList.cpp" FORMNAME="frmProperties" UNITNAME="PropertiesList" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SHEngineToolsProperties.cpp" FORMNAME="" UNITNAME="SHEngineToolsProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SHCompilerToolsProperties.cpp" FORMNAME="" UNITNAME="SHCompilerToolsProperties" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Shadow_Texture.cpp" FORMNAME="" UNITNAME="Blender_Shadow_Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Shadow_World.cpp" FORMNAME="" UNITNAME="Blender_Shadow_World" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\NumericVector.cpp" FORMNAME="frmNumericVector" UNITNAME="NumericVector" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\SH_RT.cpp" FORMNAME="" UNITNAME="SH_RT" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Blur.cpp" FORMNAME="" UNITNAME="Blender_Blur" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\BLENDERS\Blender_Model.cpp" FORMNAME="" UNITNAME="Blender_Model" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\xrSkin1W.cpp" FORMNAME="" UNITNAME="xrSkin1W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ETextureParams.cpp" FORMNAME="" UNITNAME="ETextureParams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PropertiesListTypes.cpp" FORMNAME="" UNITNAME="PropertiesListTypes" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Frustum.cpp" FORMNAME="" UNITNAME="Frustum" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\render.cpp" FORMNAME="" UNITNAME="render" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\SoundManager.cpp" FORMNAME="" UNITNAME="SoundManager" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\UI_MainMail.cpp" FORMNAME="" UNITNAME="UI_MainMail" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Animations\xrSkin2W.cpp" FORMNAME="" UNITNAME="xrSkin2W" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\GameFont.cpp" FORMNAME="" UNITNAME="GameFont" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\GameMtlLib.cpp" FORMNAME="" UNITNAME="GameMtlLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PSLibrary.cpp" FORMNAME="" UNITNAME="PSLibrary" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\xrParticlesLib.cpp" FORMNAME="" UNITNAME="xrParticlesLib" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="GameMtlLib_Editor.cpp" FORMNAME="" UNITNAME="GameMtlLib_Editor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_B.cpp" FORMNAME="" UNITNAME="Blender_B" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\c_dinput.cpp" FORMNAME="" UNITNAME="c_dinput" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\UI_MainCommand.cpp" FORMNAME="" UNITNAME="UI_MainCommand" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\ParticleGroup.cpp" FORMNAME="" UNITNAME="ParticleGroup" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend.cpp" FORMNAME="" UNITNAME="R_Backend" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend_Runtime.cpp" FORMNAME="" UNITNAME="R_Backend_Runtime" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_DStreams.cpp" FORMNAME="" UNITNAME="R_DStreams" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\r_constants_cache.cpp" FORMNAME="" UNITNAME="r_constants_cache" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend_DBG.cpp" FORMNAME="" UNITNAME="R_Backend_DBG" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\r_constants.cpp" FORMNAME="" UNITNAME="r_constants" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_detail_still.cpp" FORMNAME="" UNITNAME="Blender_detail_still" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ELog.cpp" FORMNAME="" UNITNAME="ELog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SHSoundEnvTools.cpp" FORMNAME="" UNITNAME="SHSoundEnvTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SHToolsInterface.cpp" FORMNAME="" UNITNAME="SHToolsInterface" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="SHGameMtlTools.cpp" FORMNAME="" UNITNAME="SHGameMtlTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHCompilerTools.cpp" FORMNAME="" UNITNAME="SHCompilerTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHCompilerToolsProperties.cpp" FORMNAME="" UNITNAME="SHCompilerToolsProperties.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHEngineTools.cpp" FORMNAME="" UNITNAME="SHEngineTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHEngineToolsProperties.cpp" FORMNAME="" UNITNAME="SHEngineToolsProperties.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="SHGameMtlPairTools.cpp" FORMNAME="" UNITNAME="SHGameMtlPairTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\CustomObject.cpp" FORMNAME="" UNITNAME="CustomObject" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\CustomObjectMisc.cpp" FORMNAME="" UNITNAME="CustomObjectMisc" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="editor\du_box.cpp" FORMNAME="" UNITNAME="du_box" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\R_Backend_xform.cpp" FORMNAME="" UNITNAME="R_Backend_xform.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Engine\Blenders\Blender_Recorder_R2.cpp" FORMNAME="" UNITNAME="Blender_Recorder_R2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\du_cone.cpp" FORMNAME="" UNITNAME="du_cone" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\du_cylinder.cpp" FORMNAME="" UNITNAME="du_cylinder" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHGameMtlTools.cpp" FORMNAME="" UNITNAME="SHGameMtlTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHSoundEnvTools.cpp" FORMNAME="" UNITNAME="SHSoundEnvTools.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="SHToolsInterface.cpp" FORMNAME="" UNITNAME="SHToolsInterface.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="stdafx.cpp" FORMNAME="" UNITNAME="stdafx.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UI_MainExtern.cpp" FORMNAME="" UNITNAME="UI_MainExtern.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="UI_MainShader.cpp" FORMNAME="" UNITNAME="UI_MainShader.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="ShaderEditor.res" FORMNAME="" UNITNAME="ShaderEditor.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="resource.res" FORMNAME="" UNITNAME="resource.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
 
   <IDEOPTIONS>
 [Version Info]
-IncludeVerInfo=1
+IncludeVerInfo=0
 AutoIncBuild=1
 MajorVer=1
 MinorVer=0
@@ -300,70 +310,12 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=30
-Item0=Engine\Sound;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore;P:\xrSound
-Item1=Engine\Sound;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore
-Item2=C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore
-Item3=lib;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore
-Item4=lib;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;R:\SDK\xrCore
-Item5=C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;R:\SDK\xrCore
-Item6=C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source
-Item7=Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source
-Item8=Engine\Animations;Engine\BLENDERS;r:\borland\components\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include;c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components\Eldos\Code;R:\Borland\Components\Eldos\Code\Source
-Item9=Engine\Animations;Engine\BLENDERS;r:\borland\components\alexmx\;editor;lib;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components\Eldos\Code\;R:\Borland\Components\Eldos\Code\Source\
-Item10=Engine\BLENDERS;r:\borland\components\alexmx\;editor;lib;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components\Eldos\Code\;R:\Borland\Components\Eldos\Code\Source\
-Item11=r:\borland\components\alexmx\;editor;lib;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components\Eldos\Code\;R:\Borland\Components\Eldos\Code\Source\
-Item12=r:\borland\components\alexmx;editor;lib;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;R:\Borland\Components\Eldos\Code;R:\Borland\Components\Eldos\Code\Source
-Item13=r:\borland\components\alexmx;editor;lib;lib\X;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item14=lib;lib\X;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item15=lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item16=engine;engin;eng;en\;e\;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item17=R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item18=R:\DirectX8.1\include;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item19=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item20=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item21=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item22=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\;R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\
-Item23=R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;shared;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item24=R:\STLport-4.5\stlport\BC50\;R:\STLport-4.5\stlport\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item25=R:\STLport-4.5\stlport\BC50;R:\STLport-4.5\stlport;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item26=c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item27=R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item28=R:\STLport-4.5\stlport\;R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item29=R:\STLport-4.5\stlport;R:\STLport-4.5\stlport\BC50\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;shared;$(BCB)\include\vcl;edit;edit\Shader;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
+Count=1
+Item0=C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;r:\borland\components6\alexmx;editor;R:\SDK\DirectX9.0\include;$(BCB)\include;$(BCB)\include\vcl;engine;P:\MagicFM_Borland\Sdk\Include;R:\Borland\Components6\Elpack\Code;R:\Borland\Components6\Elpack\Code\Source;P:\xrCore;P:\xrSound
 
 [HistoryLists\hlLibraryPath]
-Count=30
-Item0=Engine\Sound;lib;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;..\lib\DX;..\lib;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code;x:\
-Item1=Engine\Sound;lib;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;..\lib\DX;..\lib;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code
-Item2=lib;C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;..\lib\DX;..\lib;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code
-Item3=C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;..\lib\DX;..\lib;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code
-Item4=C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code
-Item5=Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code
-Item6=Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx;R:\Borland\Components\Eldos\Code\Source;R:\Borland\Components\Eldos\Code
-Item7=Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item8=Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item9=c:\rad\borland\CBuilder5\Projects\;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item10=c:\rad\borland\CBuilder5\Projects;lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx\;R:\Borland\Components\Eldos\Code\Source\;R:\Borland\Components\Eldos\Code\
-Item11=lib;lib\DX;engine;editor;shared;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components\alexmx;R:\Borland\Components\Eldos\Code\Source;R:\Borland\Components\Eldos\Code
-Item12=r:\borland\components\alexmx;editor;lib;lib\X;engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item13=lib;lib\X;engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item14=engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item15=engine;engin;eng;en\;e\;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item16=c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item17=c:\rad\Borland\CBuilder5\Bin;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item18=c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item19=c:\rad\borland\CBuilder5\Projects;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item20=shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item21=edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item22=edit\Shader;Import\LWO;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item23=c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item24=QHull;c:\rad\borland\components\gradient\;c:\rad\borland\components\temp\;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item25=c:\rad\borland\components\gradient;c:\rad\borland\components\temp;c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item26=c:\rad\borland\CBuilder5\Projects\;c:\rad\borland\components\renderwindow\;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item27=c:\rad\borland\CBuilder5\Projects;c:\rad\borland\components\renderwindow;edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item28=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;C:\RAD\borland\Components\ElTree\Code\Source\
-Item29=edit;Collide;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\extbtn;c:\rad\borland\components\multi;C:\RAD\borland\Components\RX\Units;C:\RAD\borland\Components\ElTree\Code\Source
+Count=1
+Item0=C:\Rad\Borland\CBuilder6\Projects;Engine\Animations;Engine\BLENDERS;c:\rad\borland\CBuilder5\Projects;..\lib\DX;..\lib;engine;editor;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;r:\borland\components6\alexmx;R:\Borland\Components6\Elpack\Code\Source;R:\Borland\Components6\Elpack\Code;x:\
 
 [HistoryLists\hlDebugSourcePath]
 Count=3

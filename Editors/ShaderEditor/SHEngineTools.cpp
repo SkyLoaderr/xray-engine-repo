@@ -14,6 +14,8 @@
 #include "Library.h"
 #include "ChoseForm.h"
 
+#include "Blender.h"
+
 //------------------------------------------------------------------------------
 class CCollapseBlender: public CParseBlender{
 public:
@@ -67,7 +69,7 @@ CSHEngineTools::~CSHEngineTools(){
 
 bool CSHEngineTools::OnCreate()
 {
-	CBlender::CreatePalette(m_TemplatePalette);
+	IBlender::CreatePalette(m_TemplatePalette);
     Load();
     return true;
 }
@@ -236,7 +238,7 @@ void CSHEngineTools::Load()
             {
                 CBlender_DESC	desc;
                 chunk->r		(&desc,sizeof(desc));
-                CBlender*		B = CBlender::Create(desc.CLS);
+                IBlender*		B = IBlender::Create(desc.CLS);
 				if	(B->getDescription().version != desc.version)
 				{
 					Msg			("! Version conflict in shader '%s'",desc.cName);
@@ -341,7 +343,7 @@ void CSHEngineTools::PrepareRender()
     Save(m_RenderShaders);
 }
 
-CBlender* CSHEngineTools::FindItem(LPCSTR name){
+IBlender* CSHEngineTools::FindItem(LPCSTR name){
 	if (name && name[0]){
 		LPSTR N = LPSTR(name);
 		BlenderPairIt I = m_Blenders.find	(N);
@@ -405,7 +407,7 @@ LPCSTR CSHEngineTools::GenerateConstantName(LPSTR name){
 
 LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
 {
-	CBlender* parent 	= FindItem(parent_name);
+	IBlender* parent 	= FindItem(parent_name);
 	CLASS_ID cls_id;
     if (!parent){
         LPCSTR M=0;
@@ -422,7 +424,7 @@ LPCSTR CSHEngineTools::AppendItem(LPCSTR folder_name, LPCSTR parent_name)
     }
     R_ASSERT2			(cls_id,"Invalid CLASS_ID.");
 	// append blender
-    CBlender* B 		= CBlender::Create(cls_id);
+    IBlender* B 		= IBlender::Create(cls_id);
     // append matrix& constant
     CMemoryWriter M;
     if (parent) parent->Save(M); else B->Save(M);
@@ -486,7 +488,7 @@ void CSHEngineTools::RenameItem(LPCSTR old_full_name, LPCSTR new_full_name)
 	BlenderPairIt I = m_Blenders.find	(N);
     R_ASSERT(I!=m_Blenders.end());
     xr_free			((LPSTR)I->first);
-    CBlender* B 	= I->second;
+    IBlender* B 	= I->second;
 	m_Blenders.erase(I);
 	// rename
     B->getDescription().Setup(new_full_name);
@@ -546,7 +548,7 @@ LPCSTR CSHEngineTools::AppendMatrix(CMatrix* src, CMatrix** dest)
 void CSHEngineTools::RemoveItem(LPCSTR name)
 {
 	R_ASSERT(name && name[0]);
-	CBlender* B = FindItem(name);
+	IBlender* B = FindItem(name);
     R_ASSERT(B);
     // remove refs
 	ParseBlender(B,ST_RemoveBlender);
@@ -607,7 +609,7 @@ void CSHEngineTools::SetCurrentItem(LPCSTR name)
 {
     if (m_bLockUpdate) return;
 
-	CBlender* B = FindItem(name);
+	IBlender* B = FindItem(name);
 	if (m_CurrentBlender!=B){
         m_CurrentBlender = B;
         UpdateStreamFromObject();
@@ -674,7 +676,7 @@ void CSHEngineTools::UpdateConstantRefs(LPSTR name){
 	C->dwReference++;
 }
 
-void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P)
+void CSHEngineTools::ParseBlender(IBlender* B, CParseBlender& P)
 {
     CMemoryWriter M;
     B->Save(M);

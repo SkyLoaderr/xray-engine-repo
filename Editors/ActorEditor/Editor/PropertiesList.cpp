@@ -815,7 +815,7 @@ void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
                     ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
                     bRes 					|= V->OnBtnClick();
                     V->btn_num				= -1;
-                    if (V->m_Flags.is(ButtonValue::flFrontOnly)) break;
+                    if (V->m_Flags.is(ButtonValue::flFirstOnly)) break;
                 }
                 if (bRes){
                     Modified			();

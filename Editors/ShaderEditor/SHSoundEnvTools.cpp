@@ -233,13 +233,13 @@ void CSHSoundEnvTools::UpdateProperties()
         PHelper.CreateFloat		(items, "Environment\\Reverb\\Mix",				&S.R_Mix,		-96,	0, 		0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Reverb\\Time",			&S.R_Time,		0.01f,	3000, 	0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Reverb\\HF Ratio",		&S.R_HFRatio,	0.001f,	0.999f, 0.01f,	3);
-        B=PHelper.CreateButton	(items, "Environment\\Reverb\\Set",				"Default,Identity");
+        B=PHelper.CreateButton	(items, "Environment\\Reverb\\Set",				"Default,Identity",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent 		= OnRevResetClick;
 
         PHelper.CreateFloat		(items, "Environment\\Echo\\Wet Dry",			&S.E_WetDry,	0,		100,	0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Echo\\Feedback",			&S.E_FeedBack,	0,		100,	0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Echo\\Delay",				&S.E_Delay,		1,		2000,	0.01f,	3);
-        B=PHelper.CreateButton	(items, "Environment\\Echo\\Set",				"Default,Identity");
+        B=PHelper.CreateButton	(items, "Environment\\Echo\\Set",				"Default,Identity",ButtonValue::flFirstOnly);
         B->OnBtnClickEvent 		= OnEchoResetClick;
     }
     Ext.m_ItemProps->AssignItems		(items,true);

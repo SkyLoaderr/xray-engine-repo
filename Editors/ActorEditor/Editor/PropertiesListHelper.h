@@ -25,6 +25,7 @@ class CPropHelper{
         item->AppendValue(val);
         return val;
     }
+public:
     IC PropItem* 		FindItem		(PropItemVec& items, const AnsiString& key, EPropType type)
     {
     	for (PropItemIt it=items.begin(); it!=items.end(); it++)
