@@ -17,11 +17,11 @@ private:
 
 private:
 	struct CStats {
-		shared_str	m_from;
-		shared_str	m_to;
+		LPCSTR		m_from;
+		LPCSTR		m_to;
 		u32			m_count;
 
-		IC		 CStats		(shared_str from, shared_str to, u32 count) :
+		IC		 CStats		(LPCSTR from, LPCSTR to, u32 count) :
 			m_from	(from),
 			m_to	(to),
 			m_count	(count)
@@ -77,7 +77,7 @@ IC	CSmartCastStats	&stats						()
 	return						(*CSmartCastStats::instance());
 }
 
-IC	void CSmartCastStats::add					(shared_str from, shared_str to)
+IC	void CSmartCastStats::add					(LPCSTR from, LPCSTR to)
 {
 	CStats					temp(from,to,1);
 	STATS::iterator			I = m_stats.find(temp);
@@ -119,7 +119,7 @@ IC	void CSmartCastStats::show					()
 void add_smart_cast_stats		(LPCSTR from, LPCSTR to)
 {
 #ifdef SMART_CAST_STATS
-	stats().add					(shared_str(from),shared_str(to));
+	stats().add					(from,to);
 #endif
 }
 
