@@ -53,7 +53,7 @@ private:
 	float				fLastUpdateTime;
 	Fvector				vLastUpdatePosition;
 public:
-	void				DBG_Render			(){m_character->OnRender();}
+	//void				DBG_Render			(){m_character->OnRender();}
 	Fvector				vExternalImpulse;
 	BOOL				bSleep;
 
