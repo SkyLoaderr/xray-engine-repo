@@ -18,6 +18,8 @@ CAI_Trader::CAI_Trader()
 	m_bPlaying						= false;
 
 	InitTrade();
+
+	Init();
 } 
 
 CAI_Trader::~CAI_Trader()
@@ -39,6 +41,38 @@ void CAI_Trader::Load(LPCSTR section)
 	
 	m_trade_storage.SetMaxWeight(max_weight);
 	m_trade_storage.SetMaxRuck(m_inventory.GetMaxRuck());
+}
+
+void CAI_Trader::Init()
+{
+	inherited::Init();
+}
+
+void __stdcall CAI_Trader::BoneCallback(CBoneInstance *B)
+{
+	CAI_Trader*	this_class = dynamic_cast<CAI_Trader*> (static_cast<CObject*>(B->Callback_Param));
+
+	this_class->LookAtActor(B);
+}
+
+void CAI_Trader::LookAtActor(CBoneInstance *B)
+{
+	Fvector dir;
+	dir.sub(Level().CurrentEntity()->Position(),Position());
+
+	float yaw,pitch;
+	dir.getHP(yaw, pitch);
+
+	float h,p,b;
+	XFORM().getHPB(h,p,b);
+	float cur_yaw	= h;
+	float dy		= _abs(angle_normalize_signed(yaw - cur_yaw));
+
+	if (angle_normalize_signed(yaw - cur_yaw) > 0) dy *= -1.f;
+
+	Fmatrix M;
+	M.setXYZi (dy, 0.f, 0.f);
+	B->mTransform.mulB(M);
 }
 
 BOOL CAI_Trader::net_Spawn			(LPVOID DC)
@@ -66,6 +100,10 @@ BOOL CAI_Trader::net_Spawn			(LPVOID DC)
 
 	m_dwMoney						= l_tpTrader->m_dwMoney;
 	m_tRank							= l_tpTrader->m_tRank;
+
+	// Установка callback на кости
+	CBoneInstance *bone_head =	&PKinematics(Visual())->LL_GetBoneInstance(PKinematics(Visual())->LL_BoneID("bip01_head"));
+	bone_head->set_callback(BoneCallback,this);
 
 	return	TRUE;
 }
@@ -230,7 +268,7 @@ void TraderScriptCallBack(CBlend* B)
 {
 	CScriptMonster	*l_tpScriptMonster = dynamic_cast<CScriptMonster*> (static_cast<CObject*>(B->CallbackParam));
 	R_ASSERT		(l_tpScriptMonster);
-	if (l_tpScriptMonster->GetCurrentAction())
+	if (l_tpScriptMonster->GetCurrentAction()) 
 		l_tpScriptMonster->GetCurrentAction()->m_tAnimationAction.m_bCompleted = true;
 }
 
@@ -241,6 +279,7 @@ bool CAI_Trader::bfScriptAnimation()
 		CMotionDef			*l_tpMotionDef = tVisualObject.ID_Cycle_Safe(*GetCurrentAction()->m_tAnimationAction.m_caAnimationToPlay);
 		if (m_tpScriptAnimation != l_tpMotionDef)
 			tVisualObject.PlayCycle(m_tpScriptAnimation = l_tpMotionDef,TRUE,TraderScriptCallBack,this);
+
 		return		(true);
 	}
 	else {

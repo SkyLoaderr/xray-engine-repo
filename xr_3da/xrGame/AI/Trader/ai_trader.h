@@ -12,6 +12,7 @@
 #include "../../inventory.h"
 #include "../../ai_space.h"
 #include "../script/ai_script_monster.h"
+#include "../ai_monster_bones.h"
 
 class CAI_Trader : public CEntityAlive, public CInventoryOwner, public CScriptMonster 
 {
@@ -24,6 +25,7 @@ public:
 
 						CAI_Trader		();
 	virtual				~CAI_Trader		();
+	virtual	void		Init			();
 	virtual void		Load			( LPCSTR section );
 	virtual BOOL		net_Spawn		( LPVOID DC );
 	virtual void		net_Export		(NET_Packet& P);
@@ -65,4 +67,8 @@ public:
 	virtual void				PHUnFreeze				()			{return inherited ::PHUnFreeze();}
 	virtual void				PHFreeze				()			{return inherited ::PHFreeze();}
 	///////////////////////////////////////////////////////////////////////
+
+	static	void __stdcall	BoneCallback			(CBoneInstance *B);
+	void					LookAtActor				(CBoneInstance *B);
+
 };

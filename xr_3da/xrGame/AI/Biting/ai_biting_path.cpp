@@ -40,6 +40,8 @@ void CAI_Biting::vfInitSelector(PathManagers::CAbstractVertexEvaluator &S, bool 
 	S.m_taMembers		= &(Squad.Groups[g_Group()].Members);
 	S.m_dwStartNode		= level_vertex_id();		// текущий узел
 	S.m_tStartPosition	= Position();
+
+
 }
 
 // high level 
@@ -157,8 +159,6 @@ void CAI_Biting::MoveToTarget(CEntity *entity, u32 vel_mask, u32 des_mask)
 		CMovementManager::ePathTypeLevelPath, 
 		entity->level_vertex_id(),
 		GetValidPosition(entity, entity->Position())
-//		vel_mask,
-//		des_mask
 	);
 
 }
@@ -220,8 +220,12 @@ bool CAI_Biting::IsMovingOnPath()
 
 bool CAI_Biting::NeedRebuildPath(u32 n_points)
 {
-	if (CDetailPathManager::path().empty() || !IsMovingOnPath() || (curr_travel_point_index() + n_points >= CDetailPathManager::path().size()))
+	if (CDetailPathManager::path().empty() || !IsMovingOnPath() || (curr_travel_point_index() + n_points >= CDetailPathManager::path().size())) {
+		if (IsMovingOnPath() && (curr_travel_point_index() + n_points >= CDetailPathManager::path().size())) LOG_EX("u32(-1) Works!");		
+		else LOG_EX("u32 MoveEnd Works!");
+	
 		return true;
+	}
 	return false;
 }
 
@@ -234,7 +238,12 @@ bool CAI_Biting::NeedRebuildPath(float dist_to_end)
 		cur_dist_to_end += CDetailPathManager::path()[i].position.distance_to(CDetailPathManager::path()[i+1].position);
 	}
 
-	if (!IsMovingOnPath() || (cur_dist_to_end < dist_to_end)) return true;
+	if (!IsMovingOnPath() || (cur_dist_to_end < dist_to_end)) {
+		if (IsMovingOnPath() && (cur_dist_to_end < dist_to_end)) LOG_EX("float(-1) Works!");		
+		else LOG_EX("float MoveEnd Works!");
+
+		return true;
+	}
 	return false;
 }
 bool CAI_Biting::NeedRebuildPath(u32 n_points, float dist_to_end)
@@ -243,6 +252,7 @@ bool CAI_Biting::NeedRebuildPath(u32 n_points, float dist_to_end)
 }
 
 //-------------------------------------------------------------------------------------------
+
 
 bool CAI_Biting::ObjectNotReachable(CEntity *entity) 
 {
@@ -379,6 +389,4 @@ u32 CAI_Biting::GetNextGameVertex(float R)
 	if (level_nodes.empty()) return ai().game_graph().vertex(nearest_game_vertex)->level_vertex_id();
 	else return ai().game_graph().vertex(level_nodes[::Random.randI(level_nodes.size())])->level_vertex_id();
 }
-
-
 

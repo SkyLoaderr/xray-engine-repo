@@ -23,7 +23,6 @@ void CBitingRest::Reset()
 	m_tAction			= ACTION_WALK;
 
 	pMonster->SetMemoryTimeDef();
-
 }
 
 void CBitingRest::Init()
@@ -31,7 +30,7 @@ void CBitingRest::Init()
 	LOG_EX2("%s: rest init", *"*/ pMonster->cName() /*"*);
 	IState::Init();
 
-	// если есть путь - дойти до конца (последстви€ преследовани€ врага)
+	// если есть путь - дойти до конца (последстви€ преследовани€ врага) FIXME
 	if (pMonster->IsMovingOnPath()) m_bFollowPath = true;
 	else m_bFollowPath = false;
 }
@@ -92,26 +91,21 @@ void CBitingRest::Run()
 		DO_IN_TIME_INTERVAL_END();
 	}
 
-	// FSM 2-го уровн€
 	switch (m_tAction) {
 		case ACTION_WALK:						// обход точек графа
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
-			if (!pMonster->IsMovingOnPath()) {
-			
-				// ходить по точкам графа
+			// ходить по точкам графа
+			if (IS_NEED_REBUILD()) {
 				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
-
+				
 				pMonster->SetPathParams(
 					CMovementManager::ePathTypeLevelPath, 
 					vertex_id, 
 					ai().level_graph().vertex_position(vertex_id)
-//					pMonster->eVelocityParamsWalk,
-//					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
 				);
 			}
 
-			
 			break;
 		case ACTION_SATIETY_GOOD:				// сто€ть, ничего не делать
 			pMonster->enable_movement(false);
@@ -124,19 +118,16 @@ void CBitingRest::Run()
 		case ACTION_WALK_CIRCUMSPECTION:		// повернутьс€ на 90 град.
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
-			if (!pMonster->IsMovingOnPath()) {
-				// ходить по точкам графа
+			// ходить по точкам графа
+			if (IS_NEED_REBUILD()) {
 				u32 vertex_id = pMonster->GetNextGameVertex(40.f);
-
+				
 				pMonster->SetPathParams(
 					CMovementManager::ePathTypeLevelPath, 
 					vertex_id, 
 					ai().level_graph().vertex_position(vertex_id)
-//					pMonster->eVelocityParamsWalk,
-//					pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand
-					);
+				);
 			}
-
 			break;
 		case ACTION_WALK_PATH_END:
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;

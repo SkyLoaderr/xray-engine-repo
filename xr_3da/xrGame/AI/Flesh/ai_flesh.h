@@ -24,6 +24,8 @@ public:
 
 	CBitingSearchEnemy	*stateSearchEnemy;
 
+			void	Testing					();
+
 private:
 	bool	ConeSphereIntersection	(Fvector ConeVertex, float ConeAngle, Fvector ConeDir, 
 									Fvector SphereCenter, float SphereRadius);

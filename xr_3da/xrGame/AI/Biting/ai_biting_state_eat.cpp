@@ -10,8 +10,7 @@
 #define		REST_AFTER_LUNCH_TIME			5000
 #define		DIST_SLOW_APPROACH_TO_CORPSE	5.0f
 
-
-///#define		EAT_WITHOUT_DRAG
+#define		EAT_WITHOUT_DRAG
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingEat class
@@ -97,6 +96,8 @@ void CBitingEat::Run()
 		LOG_EX2("RUN_APP_TO_CORPSE: TIME = [%u]", *"*/ m_dwCurrentTime /*"*);
 		pMonster->HDebug->M_Add(0,"APP_RUN",D3DCOLOR_XRGB(255,0,128));
 
+		pMonster->MotionMan.m_tAction = ACT_RUN;
+
 		approach_vertex_id = ai().level_graph().check_position_in_direction(pCorpse->level_vertex_id(), pCorpse->Position(), nearest_bone_pos);
 		if (approach_vertex_id == -1) {
 			approach_vertex_id	= pCorpse->level_vertex_id();
@@ -130,12 +131,9 @@ void CBitingEat::Run()
 				LOG_EX2("[%u] Node ID=%u, NodePos = [%f,%f,%f] ", *"*/ i, pMonster->CDetailPathManager::path()[i].vertex_id,  VPUSH(pMonster->CDetailPathManager::path()[i].position)/*"*);
 			}
 
-
 		}
 
-
 		pMonster->HDebug->L_Add(approach_pos,D3DCOLOR_XRGB(255,0,128));
-		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 
 		if (cur_dist < DIST_SLOW_APPROACH_TO_CORPSE) m_tAction = ACTION_CORPSE_APPROACH_WALK;
 		break;
@@ -143,8 +141,8 @@ void CBitingEat::Run()
 		LOG_EX2("WALK_APP_TO_CORPSE: TIME = [%u]", *"*/ m_dwCurrentTime /*"*);
 		pMonster->HDebug->M_Add(0,"APP_WALK",D3DCOLOR_XRGB(255,0,128));
 
-		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id(),pMonster->eVelocityParamsWalk,pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id(),pMonster->eVelocityParamsWalk,pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
 		
 		if (cur_dist < m_fDistToCorpse) {
 			
@@ -228,8 +226,8 @@ void CBitingEat::Run()
 		LOG_EX2("EAT_WALK: TIME = [%u]", *"*/ m_dwCurrentTime /*"*);
 		pMonster->HDebug->M_Add(0,"APP_WALK",D3DCOLOR_XRGB(255,0,128));
 
-		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id(),pMonster->eVelocityParamsWalk,pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		pMonster->MoveToTarget(nearest_bone_pos,pCorpse->level_vertex_id(),pMonster->eVelocityParamsWalk,pMonster->eVelocityParameterWalkNormal | pMonster->eVelocityParameterStand);
 
 		if (cur_dist < m_fDistToCorpse) m_tAction = ACTION_EAT;
 		break;
@@ -264,26 +262,19 @@ void CBitingEat::Run()
 		LOG_EX2("DRAG: TIME = [%u]", *"*/ m_dwCurrentTime /*"*);
 		pMonster->HDebug->M_Add(0,"DRAG",D3DCOLOR_XRGB(255,0,128));		
 
-		DO_IN_TIME_INTERVAL_BEGIN(rebuild_path, 1000);
-			pMonster->SetPathParams(
-				CMovementManager::ePathTypeLevelPath, 
-				pMonster->level_vertex_id(), 
-				pMonster->Position()
-//				pMonster->eVelocityParameterDrag | pMonster->eVelocityParameterStand,
-//				pMonster->eVelocityParameterDrag
-			); 
-
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist);
-		DO_IN_TIME_INTERVAL_END();
-
 		// Установить параметры движения
 		pMonster->MotionMan.m_tAction = ACT_DRAG; 
 		pMonster->MotionMan.SetSpecParams(ASP_MOVE_BKWD);
+		
+		if (IS_NEED_REBUILD()) {
+			pMonster->SetPathParams(CMovementManager::ePathTypeLevelPath,pMonster->level_vertex_id(),pMonster->Position()); 
+			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), 10);
+		}	
 
 		// если не может тащить
 		if (0 == pMonster->m_PhysicMovementControl.PHCapture()) m_tAction = ACTION_EAT; 
 
-		if (saved_dist > m_fDistToDrag) {
+		if ((saved_dist > m_fDistToDrag)) {
 			// бросить труп
 			pMonster->m_PhysicMovementControl.PHReleaseObject();
 

@@ -67,7 +67,7 @@ void CMovementManager::process_patrol_path()
 					m_path_state	= ePathStateBuildLevelPath;
 				else
 				if (!CDetailPathManager::actual())
-					m_path_state	= ePathStateBuildDetailPath;
+					m_path_state	= ePathStateBuildLevelPath;
 				else
 					if (CDetailPathManager::completed(Position(),false)) {
 						m_path_state	= ePathStateContinueLevelPath;

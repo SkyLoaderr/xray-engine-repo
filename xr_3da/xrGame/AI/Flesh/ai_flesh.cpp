@@ -304,9 +304,18 @@ bool CAI_Flesh::ConeSphereIntersection(Fvector ConeVertex, float ConeAngle, Fvec
 	return false;
 }
 
+#ifdef DEBUG
 void CAI_Flesh::OnRender()
 {
 	inherited::OnRender();
 	
 }
+#endif
+
+void CAI_Flesh::Testing() 
+{
+	
+		
+}
+
 
