@@ -51,10 +51,6 @@ private:
 	ObjectFlags							FLAGS;
 	u16									net_ID;
 
-#ifdef DEBUG
-	u32									dbg_update_cl;
-#endif
-
 	// Some property variables
 	ref_str								NameObject;
 	ref_str								NameSection;
@@ -69,6 +65,9 @@ protected:
 	// Information and status
 	void								StatusBegin			();
 public:
+#ifdef DEBUG
+	u32									dbg_update_cl;
+#endif
 	u32									dwFrame_UpdateCL;
 
 	// Network
