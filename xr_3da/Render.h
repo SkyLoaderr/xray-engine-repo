@@ -19,6 +19,35 @@ const	float						fLightSmoothFactor = 4.f;
 typedef svector<CObject*,256>		objSET;
 typedef BOOL	__fastcall			objQualifier(CObject* O, void* P);
 
+// definition (Detail Model)
+class	ENGINE_API	IRender_DetailModel
+{
+public:
+	struct fvfVertexIn	{
+		Fvector P;
+		float	u,v;
+	};
+	struct fvfVertexOut	{
+		Fvector P;
+		u32		C;
+		float	u,v;
+	};
+public:
+	Fsphere		bv_sphere;
+	Fbox		bv_bb;
+	u32			flags;
+	float		s_min;
+	float		s_max;
+
+	Shader*		shader;
+	fvfVertexIn	*vertices;
+	u32			number_vertices;
+	u16			*indices;
+	u32			number_indices;
+public:
+	virtual ~IRender_DetailModel()	{};
+};
+
 // definition (Portal)
 class	ENGINE_API	IRender_Portal
 {
@@ -103,10 +132,12 @@ public:
 
 	// Models
 	virtual CVisual*				model_CreatePS			(LPCSTR name, PS::SEmitter* E)			= 0;
+	virtual IRender_DetailModel*	model_CreateDM			(IReader*	F)							= 0;
 	virtual CVisual*				model_Create			(LPCSTR name)							= 0;
 	virtual CVisual*				model_Create			(LPCSTR name, IReader* data)			= 0;
-	virtual CVisual*				model_Duplicate			(CVisual* V)							= 0;
-	virtual void					model_Delete			(CVisual* &V)							= 0;
+	virtual CVisual*				model_Duplicate			(CVisual*	V)							= 0;
+	virtual void					model_Delete			(CVisual* &	V)							= 0;
+	virtual void 					model_Delete			(IRender_DetailModel* F)				= 0;
 
 	// Occlusion culling
 	virtual BOOL					occ_visible				(vis_data&	V)							= 0;
