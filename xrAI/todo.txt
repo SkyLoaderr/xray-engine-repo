@@ -5,3 +5,4 @@
 	+ TODO:	Compress nodes
 	+ TODO:	Save nodes
 	+ TODO: Read emitters
+	- TODO: Build graph
