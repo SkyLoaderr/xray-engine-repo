@@ -14,6 +14,7 @@ void CBackend::OnFrameEnd	()
 
 void CBackend::OnFrameBegin	()
 {
+	PGO					(Msg("PGO:*****frame[%d]*****",Device.dwFrame));
 	Memory.mem_fill		(&stat,0,sizeof(stat));
 	Vertex.Flush		();
 	Index.Flush			();

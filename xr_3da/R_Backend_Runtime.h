@@ -190,7 +190,7 @@ IC void CBackend::set_Indices			(IDirect3DIndexBuffer9* _ib)
 {
 	if (ib!=_ib)
 	{
-		PGO				(Msg("PGO:IB:%x",_vb));
+		PGO				(Msg("PGO:IB:%x",_ib));
 		stat.ib			++;
 		ib				= _ib;
 		CHK_DX			(HW.pDevice->SetIndices(ib));
