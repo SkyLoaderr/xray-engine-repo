@@ -186,6 +186,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		if	(1==bids.size())	{
 			RenderMode						= RM_SINGLE;
 			RMS_boneid						= *bids.begin();
+			Render->shader_option_skinning	(0);
 		} else if (sw_bones<=hw_bones) {
 			RenderMode						= RM_SKINNING_1B;
 			Render->shader_option_skinning	(1);
