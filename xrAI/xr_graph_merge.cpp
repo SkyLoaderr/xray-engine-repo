@@ -498,8 +498,8 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 					VERIFY3						((*M).second.tGraphID < (*K).second->m_tpVertices.size(),"Rebuild graph for the level",(*K).second->m_tLevel.name());
 					tGraphEdge.fPathDistance	= (*I).second->m_tpVertices[tConnectionVertex.tGraphID].tGlobalPoint.distance_to((*K).second->m_tpVertices[(*M).second.tGraphID].tGlobalPoint);
 					(*I).second->vfAddEdge		((*i).second.tGraphID,tGraphEdge);
-					tGraphEdge.dwVertexNumber	= (*i).second.tGraphID + (*I).second->m_dwOffset;
-					(*K).second->vfAddEdge		((*M).second.tGraphID,tGraphEdge);
+//					tGraphEdge.dwVertexNumber	= (*i).second.tGraphID + (*I).second->m_dwOffset;
+//					(*K).second->vfAddEdge		((*M).second.tGraphID,tGraphEdge);
 				}
 		}
 	}
