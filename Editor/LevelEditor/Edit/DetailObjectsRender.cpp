@@ -247,7 +247,6 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 
 		// Fill VB (and flush it as nesessary)
 		Device.Shader.set_Shader		(Object.m_pShader,0);
-		Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 
 		Fmatrix		mXform,mRotXZ;
 		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
@@ -328,7 +327,8 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 			VS->Unlock	(vCount_Lock);
 			IS->Unlock	(iCount_Lock);
 
-			// Render
+			// Render          
+			Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
 			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
  			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);

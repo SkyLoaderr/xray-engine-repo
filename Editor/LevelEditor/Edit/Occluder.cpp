@@ -147,7 +147,7 @@ bool COccluder::GetBox( Fbox& box ){
 void COccluder::Render(int priority, bool strictB2F){
 	Device.SetRS(D3DRS_FILLMODE,D3DFILL_SOLID);
 	if ((1==priority)&&(true==strictB2F)){
-		DWORD C=D3DCOLOR_RGBA( 128, 255, 128, Selected()?BYTE(255*0.3f):BYTE(255*0.15f) );
+		DWORD C=D3DCOLOR_RGBA( 128, 255, 128, Selected()?48:24 );
         // draw plane
         DU::DrawPlane(m_vCenter,m_vPlaneSize,m_vRotate,D3DCOLOR_RGBA(128,255,128,Selected()?BYTE(255*0.15f):BYTE(255*0.07f)),false,false,0);
         UpdatePoints3D();
@@ -164,7 +164,7 @@ void COccluder::Render(int priority, bool strictB2F){
         }
         UpdatePoints3D();
         DWORD CP=D3DCOLOR_RGBA( 255, 0,   0, 255 );
-        DWORD CB=D3DCOLOR_RGBA( 0,   196, 0, Selected()?BYTE(255*1.0f):BYTE(255*0.6f) );
+        DWORD CB=D3DCOLOR_RGBA( 0,   196, 0, Selected()?255:150 );
         // edges
         DU::DrawPrimitiveL(D3DPT_LINESTRIP,m_3DPoints.m_Points.size(),m_3DPoints.m_Points.begin(),m_3DPoints.m_Points.size(),CB,false,true);
         // points

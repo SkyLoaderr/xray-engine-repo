@@ -366,7 +366,7 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWOR
 //	if (!m_CurrentShader) return;
 	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
     DWORD dwRequired	= S->Passes.size();
-	Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
+	Primitive.setVerticesUC(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.set_Shader(S,dwPass);
 		Primitive.Render(pt,vBase,pc);
@@ -378,8 +378,8 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVertexStream* vs, DWORD vBase, DWO
 //	if (!m_CurrentShader) return;
 	::Shader* S 		= m_CurrentShader?m_CurrentShader:m_WireShader;
     DWORD dwRequired	= S->Passes.size();
-    Primitive.setIndicesUC(vBase, is->getBuffer());
-    Primitive.setVertices(vs->getFVF(),vs->getStride(),vs->getBuffer());
+    Primitive.setIndicesUC	(vBase, is->getBuffer());
+    Primitive.setVerticesUC	(vs->getFVF(),vs->getStride(),vs->getBuffer());
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
         Shader.set_Shader(S,dwPass);
 		Primitive.Render(pt,vBase,vc,iBase,pc);

@@ -544,7 +544,7 @@ bool CDetailManager::UpdateSlotObjects(int x, int z){
         for (int v=R.y1; v<=R.y2; v++){
             for (int u=R.x1; u<=R.x2; u++){
                 DWORD clr;
-                if (GetColor(clr,u,v)){
+                if (GetColor(clr,u,v)){    
                     Fcolor C;
                     C.set(clr);
                     FindClosestIndex(C,best);

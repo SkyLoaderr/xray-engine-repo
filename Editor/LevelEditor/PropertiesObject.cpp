@@ -27,11 +27,12 @@ void TfrmPropertiesObject::SetCurrent(CEditableObject* object){
 	    form->ApplyObjectsInfo();
 	    m_LibObject 	= object;
     	form->GetObjectsInfo();
+	    GetSurfacesFromObject();
 		form->pcObjects->ActivePage->OnShow(0);
     }else{
 	    m_LibObject = object;
+	    GetSurfacesFromObject();
     }
-    GetSurfacesFromObject();
 }
 
 void __fastcall TfrmPropertiesObject::ShowProperties(){
@@ -245,18 +246,22 @@ void __fastcall TfrmPropertiesObject::tsSurfacesShow(TObject *Sender)
     tvSurfaces->Items->Clear();
 
     // create root tree node (object name)
+    TElTreeItem* first_node=0;
     for (SurfInstIt e_it=m_EditSurfaces.begin(); e_it!=m_EditSurfaces.end(); e_it++){
         TElTreeItem* pNode = tvSurfaces->Items->AddChildObject(0,e_it->_Name(),(TObject*)(e_it));
+        if (!first_node) first_node=pNode;
 		tvSurfaces->Items->AddChild(pNode,e_it->_Texture());
     }
     tvSurfaces->Sort(true);
     tvSurfaces->FullExpand();
     tvSurfaces->IsUpdating = false;
+	tvSurfaces->Selected=first_node;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesObject::ebSelectShaderClick(TObject *Sender)
 {
 	VERIFY(tvSurfaces->Selected->Level==0);
+    if (!tvSurfaces->Selected) return;
 	CSurface* surf = (CSurface*)tvSurfaces->Selected->Data;
 	if (!surf) return;
     LPCSTR src = surf->_ShaderName();
@@ -272,6 +277,7 @@ void __fastcall TfrmPropertiesObject::ebSelectShaderXRLCClick(
       TObject *Sender)
 {
 	VERIFY(tvSurfaces->Selected->Level==0);
+    if (!tvSurfaces->Selected) return;
 	CSurface* surf = (CSurface*)tvSurfaces->Selected->Data;
 	if (!surf) return;
 	LPCSTR S = TfrmChoseItem::SelectShaderXRLC(surf->_ShaderXRLCName()?surf->_ShaderXRLCName():0);
@@ -285,6 +291,7 @@ void __fastcall TfrmPropertiesObject::ebSelectShaderXRLCClick(
 void __fastcall TfrmPropertiesObject::ebSelectTextureClick(TObject *Sender)
 {
 	VERIFY(tvSurfaces->Selected->Level==0);
+    if (!tvSurfaces->Selected) return;
 	CSurface* surf = (CSurface*)tvSurfaces->Selected->Data;
 	if (!surf) return;
     AnsiString temp = surf->_Texture();

@@ -45,10 +45,7 @@ void CEditableObject::SaveObject(const char* fname){
 	if (IsModified()){
         // update transform matrix
         Fmatrix	mTransform,mScale,mTranslate,mRotate;
-        bool a = !fsimilar(t_vRotate.magnitude(),0);
-        bool b = !fsimilar(t_vScale.magnitude(),1.73205f);
-        bool c = !fsimilar(t_vPosition.magnitude(),0);
-        if (!fsimilar(t_vRotate.magnitude(),0)||!fsimilar(t_vScale.magnitude(),1.f)||!fsimilar(t_vPosition.magnitude(),0)){
+        if (!fsimilar(t_vRotate.magnitude(),0)||!fsimilar(t_vScale.magnitude(),1.73205f)||!fsimilar(t_vPosition.magnitude(),0)){
             mRotate.setHPB			(t_vRotate.y, t_vRotate.x, t_vRotate.z);
             mScale.scale			(t_vScale);
             mTranslate.translate	(t_vPosition);

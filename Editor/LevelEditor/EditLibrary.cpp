@@ -256,7 +256,7 @@ void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
 void __fastcall TfrmEditLibrary::ebPropertiesClick(TObject *Sender)
 {
 	TElTreeItem* node = tvObjects->Selected;
-    if (FOLDER::IsObject(node)){
+    if (node&&FOLDER::IsObject(node)){
 	    AnsiString name;
     	FOLDER::MakeName(node,0,name,false);
 		Lib.RemoveEditObject(m_SelectedObject);

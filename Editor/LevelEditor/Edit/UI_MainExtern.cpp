@@ -174,6 +174,7 @@ void TUI::Redraw(){
         Device.End();
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
+
     if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
 	fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())));
 }

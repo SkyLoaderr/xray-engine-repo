@@ -70,12 +70,12 @@ void CEvent::RenderBox(bool bAlpha ){
 	FLvertexVec V;
 	DWORD C;
 	if (bAlpha){
-        C=D3DCOLOR_RGBA( 0, 255, 0, 96 );
-//		Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
+        C=D3DCOLOR_RGBA( 0, 255, 0, Selected()?48:24 );
+		Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
         Device.SetTransform(D3DTS_WORLD,mTransform);
 	    Device.SetShader(Device.m_SelectionShader);
         DU::DrawIdentBox(true,false,&C);
-//		Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
+		Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
     }else{
         C=D3DCOLOR_RGBA( 32, 32, 32, 255 );
         Device.RenderNearer(0.0003);

@@ -176,15 +176,16 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
 {
 	if (bMultiSel){
         select_item = "";
+        AnsiString nm;
 	    for ( TElTreeItem* node = tvMulti->Items->GetFirstNode(); node; node = node->GetNext()){
-            select_item += node->Text;
-            select_item += ",";
+    	    FOLDER::MakeName(node,0,nm,false);
+            select_item += nm+AnsiString(",");
         }
         select_item.Delete(select_item.Length()-1,2);
 
         if (select_item.IsEmpty()){
             if (tvItems->Selected&&FOLDER::IsObject(tvItems->Selected)){
-                select_item = tvItems->Selected->Text;
+	    	    FOLDER::MakeName(tvItems->Selected,0,select_item,false);
                 Close();
                 ModalResult = mrOk;
             }else{

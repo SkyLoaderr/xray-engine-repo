@@ -47,9 +47,9 @@ public:
 		HW.pDevice->SetIndices		(pCurIB=IB,BASE);
 	}
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD CV, DWORD SI, DWORD PC)
-	{	HW.pDevice->DrawIndexedPrimitive(T,SV,CV,SI,PC);	}
+	{	CHK_DX(HW.pDevice->DrawIndexedPrimitive(T,SV,CV,SI,PC));	}
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD PC)
-	{	HW.pDevice->DrawPrimitive(T,	SV, PC);			}
+	{	CHK_DX(HW.pDevice->DrawPrimitive(T,	SV, PC));			}
 	IC void Reset			()
 	{
 		vCurShader = 0;

@@ -12,38 +12,49 @@ namespace DU{
 static Fvector circledef1[LINE_DIVISION];
 static Fvector circledef2[LINE_DIVISION];
 static Fvector circledef3[LINE_DIVISION];
-static const WORD circleindices[LINE_DIVISION*2] = { 0, 1,   1, 2,  2, 3,  3, 4,  4, 5,  5, 6,  6, 7,  7, 8,
-													 8, 9,   9,10, 10,11, 11,12, 12,13, 13,14, 14,15, 15,16,
-                                                     16,17, 17,18, 18,19, 19,20, 20,21, 21,22, 22,23, 23,24,
-                                                     24,25, 25,26, 26,27, 27,28, 28,29, 29,30, 30,31, 31,0};
 
 const DWORD boxcolor = D3DCOLOR_RGBA(255,255,255,0);
-static const int boxvertcount = 32;
+static const int boxvertcount = 48;
 static Fvector boxvert[boxvertcount];
-static const int boxindexcount = 48;
-static const WORD boxindices[boxindexcount] = {
-	0,  1,  0,  2,  0,  3,
-	4,  5,  4,  6,  4,  7,
-	8,  9,  8,  10, 8,  11,
-	12, 13, 12, 14, 12, 15,
-	16, 17, 16, 18, 16, 19,
-	20, 21, 20, 22, 20, 23,
-	24, 25, 24, 26, 24, 27,
-	28, 29, 28, 30, 28, 31
-};
+
 // identity box
 const DWORD identboxcolor = D3DCOLOR_RGBA(255,255,255,0);
-static const int identboxvertcount = 8;
-static Fvector identboxvert[identboxvertcount] = {
-	-0.5f, -0.5f, -0.5f,
-	-0.5f, +0.5f, -0.5f,
-	+0.5f, +0.5f, -0.5f,
-	+0.5f, -0.5f, -0.5f,
-	-0.5f, +0.5f, +0.5f,
-	-0.5f, -0.5f, +0.5f,
-	+0.5f, +0.5f, +0.5f,
-	+0.5f, -0.5f, +0.5f,
+static const int identboxtricount = 36;
+static Fvector identboxtri[identboxtricount] = {
+	-0.5f, -0.5f, -0.5f,	-0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,
+    +0.5f, +0.5f, -0.5f,	+0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,
+    +0.5f, -0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, +0.5f,
+    +0.5f, +0.5f, +0.5f,	+0.5f, -0.5f, +0.5f,	+0.5f, -0.5f, -0.5f,
+    +0.5f, +0.5f, +0.5f,	-0.5f, +0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,
+    +0.5f, +0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,	+0.5f, -0.5f, +0.5f,
+    -0.5f, +0.5f, +0.5f,	-0.5f, +0.5f, -0.5f,	-0.5f, -0.5f, +0.5f,
+    -0.5f, +0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, +0.5f,
+    +0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, +0.5f,	-0.5f, -0.5f, -0.5f,
+    +0.5f, -0.5f, -0.5f,	+0.5f, -0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,
+    -0.5f, +0.5f, -0.5f,	-0.5f, +0.5f, +0.5f,	+0.5f, +0.5f, +0.5f,
+    -0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, +0.5f,	+0.5f, +0.5f, -0.5f
+/*
+0	-0.5f, -0.5f, -0.5f,
+1   -0.5f, +0.5f, -0.5f,
+2	+0.5f, +0.5f, -0.5f,
+3	+0.5f, -0.5f, -0.5f,
+4	-0.5f, +0.5f, +0.5f,
+5	-0.5f, -0.5f, +0.5f,
+6	+0.5f, +0.5f, +0.5f,
+7	+0.5f, -0.5f, +0.5f,
+*/
 };
+static const int identboxwirecount = 24;
+static Fvector identboxwire[identboxwirecount] = {
+	-0.5f, -0.5f, -0.5f,	-0.5f, +0.5f, -0.5f,    	-0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,
+    +0.5f, +0.5f, -0.5f,	+0.5f, -0.5f, -0.5f,		+0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, -0.5f,
+    -0.5f, +0.5f, +0.5f,	+0.5f, +0.5f, +0.5f,		+0.5f, +0.5f, +0.5f,	+0.5f, -0.5f, +0.5f,
+    +0.5f, -0.5f, +0.5f,	-0.5f, -0.5f, +0.5f,    	-0.5f, -0.5f, +0.5f,	-0.5f, +0.5f, +0.5f,
+    -0.5f, +0.5f, -0.5f,	-0.5f, +0.5f, +0.5f,		+0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, +0.5f,
+    +0.5f, -0.5f, -0.5f,	+0.5f, -0.5f, +0.5f,		-0.5f, -0.5f, -0.5f,	-0.5f, -0.5f, +0.5f
+};
+
+/*
 static const int identboxindexcount = 36;
 static const WORD identboxindices[identboxindexcount] = {
 	0, 1, 2,   2, 3, 0,
@@ -60,6 +71,7 @@ static const WORD identboxindiceswire[identboxindexwirecount] = {
     7, 5, 	5, 4,
     1, 4, 	2, 6,
     3, 7, 	0, 5};
+*/
 
 #define SIGN(x) ((x<0)?-1:1)
 
@@ -142,10 +154,12 @@ void InitUtilLibrary(){
     	Fvector p;
         bb.getpoint(i,p);
         S.set(SIGN(p.x),SIGN(p.y),SIGN(p.z));
-    	boxvert[i*4+0].set(p);
-    	boxvert[i*4+1].set(p.x-S.x*0.25f,p.y,p.z);
-    	boxvert[i*4+2].set(p.x,p.y-S.y*0.25f,p.z);
-    	boxvert[i*4+3].set(p.x,p.y,p.z-S.z*0.25f);
+    	boxvert[i*6+0].set(p);
+    	boxvert[i*6+1].set(p.x-S.x*0.25f,p.y,p.z);
+    	boxvert[i*6+2].set(p);
+    	boxvert[i*6+3].set(p.x,p.y-S.y*0.25f,p.z);
+    	boxvert[i*6+4].set(p);
+    	boxvert[i*6+5].set(p.x,p.y,p.z-S.z*0.25f);
     }
     // create render stream
 	LStream 	= Device.Streams.Create(FVF::F_L,65535);
@@ -325,15 +339,9 @@ void DrawSelectionBox(const Fvector& C, const Fvector& S, DWORD* c){
     }
 	LStream->Unlock	(boxvertcount);
 
-	// fill IB
-    CIndexStream* is= Device.Streams.Get_IB();
-	WORD* I 		= is->Lock(boxindexcount,iBase);
-    CopyMemory		(I,boxindices,sizeof(WORD)*boxindexcount);
-    is->Unlock		(boxindexcount);
-
 	// and Render it as triangle list
 	Device.SetRS	(D3DRS_FILLMODE,D3DFILL_SOLID);
-    Device.DIP		(D3DPT_LINELIST,LStream,vBase,boxvertcount,is,iBase,boxindexcount/2);
+    Device.DP		(D3DPT_LINELIST,LStream,vBase,boxvertcount/2);
     Device.SetRS	(D3DRS_FILLMODE,Device.dwFillMode);
 }
 
@@ -341,60 +349,49 @@ void DrawIdentBox(bool bSolid, bool bWire, DWORD* c){
     DWORD cc=(c)?*c:identboxcolor;
 
 	// fill VB
-	DWORD			vBase,iBase;
-	FVF::L*	pv	 	= (FVF::L*)LStream->Lock(identboxvertcount,vBase);
-    for (int i=0; i<identboxvertcount; i++,pv++)
-    	pv->set		(identboxvert[i],cc);
-	LStream->Unlock	(identboxvertcount);
-
     if (bWire){
-        // fill IB
-        CIndexStream* is= Device.Streams.Get_IB();
-        WORD* I 		= is->Lock(boxindexcount,iBase);
-        CopyMemory		(I,identboxindiceswire,sizeof(WORD)*identboxindexwirecount);
-        is->Unlock		(identboxindexwirecount);
-
-	    Device.DIP		(D3DPT_LINELIST,LStream,vBase,identboxvertcount,is,iBase,identboxindexwirecount/2);
+        DWORD			vBase;
+        FVF::L*	pv	 	= (FVF::L*)LStream->Lock(identboxwirecount,vBase);
+        for (int i=0; i<identboxwirecount; i++,pv++)
+            pv->set		(identboxwire[i],cc);
+        LStream->Unlock	(identboxwirecount);
+	    Device.DP		(D3DPT_LINELIST,LStream,vBase,identboxwirecount/2);
     }
     if (bSolid){
-        // fill IB
-        CIndexStream* is= Device.Streams.Get_IB();
-        WORD* I 		= is->Lock(identboxindexcount,iBase);
-        CopyMemory		(I,identboxindices,sizeof(WORD)*identboxindexcount);
-        is->Unlock		(identboxindexcount);
-
-	    Device.DIP		(D3DPT_TRIANGLELIST,LStream,vBase,identboxvertcount,is,iBase,identboxindexcount/3);
+        DWORD			vBase;
+        FVF::L*	pv	 	= (FVF::L*)LStream->Lock(identboxtricount,vBase);
+        for (int i=0; i<identboxtricount; i++,pv++)
+            pv->set		(identboxtri[i],cc);
+        LStream->Unlock	(identboxtricount);
+	    Device.DP		(D3DPT_TRIANGLELIST,LStream,vBase,identboxtricount/3);
     }
 }
 
 void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c){
-	// fill VB
-	DWORD			vBase,iBase;
-	FVF::L*	pv	 	= (FVF::L*)LStream->Lock(identboxvertcount,vBase);
-    for (int i=0; i<identboxvertcount; i++, pv++){
-    	pv->p.mul	(identboxvert[i],Size);
-    	pv->p.mul	(2);
-    	pv->p.add	(offs);
-        pv->color	= c;
-    }
-	LStream->Unlock	(identboxvertcount);
-
     if (bWire){
-        // fill IB
-        CIndexStream* is= Device.Streams.Get_IB();
-        WORD* I 		= is->Lock(boxindexcount,iBase);
-        CopyMemory		(I,identboxindiceswire,sizeof(WORD)*identboxindexwirecount);
-        is->Unlock		(identboxindexwirecount);
+        DWORD			vBase;
+        FVF::L*	pv	 	= (FVF::L*)LStream->Lock(identboxwirecount,vBase);
+        for (int i=0; i<identboxwirecount; i++, pv++){
+            pv->p.mul	(identboxwire[i],Size);
+            pv->p.mul	(2);
+            pv->p.add	(offs);
+            pv->color	= c;
+        }
+        LStream->Unlock	(identboxwirecount);
 
-	    Device.DIP		(D3DPT_LINELIST,LStream,vBase,identboxvertcount,is,iBase,identboxindexwirecount/2);
+	    Device.DP		(D3DPT_LINELIST,LStream,vBase,identboxwirecount/2);
     }else{
-        // fill IB
-        CIndexStream* is= Device.Streams.Get_IB();
-        WORD* I 		= is->Lock(identboxindexcount,iBase);
-        CopyMemory		(I,identboxindices,sizeof(WORD)*identboxindexcount);
-        is->Unlock		(identboxindexcount);
+        DWORD			vBase;
+        FVF::L*	pv	 	= (FVF::L*)LStream->Lock(identboxtricount,vBase);
+        for (int i=0; i<identboxtricount; i++, pv++){
+            pv->p.mul	(identboxtri[i],Size);
+            pv->p.mul	(2);
+            pv->p.add	(offs);
+            pv->color	= c;
+        }
+        LStream->Unlock	(identboxtricount);
 
-	    Device.DIP		(D3DPT_TRIANGLELIST,LStream,vBase,identboxvertcount,is,iBase,identboxindexcount/3);
+	    Device.DP		(D3DPT_TRIANGLELIST,LStream,vBase,identboxtricount/3);
     }
 }
 //----------------------------------------------------
