@@ -196,12 +196,12 @@ p2.y >= p1.y, p1, p2 are start/end vertices
 E1 E2 are the triangle edge differences of the 2 bounding edges for this section
 */
 
-float maxp(float a, float b)
+IC float maxp(float a, float b)
 {	return a>b ? a:b;		}
-float minp(float a, float b)
+IC float minp(float a, float b)
 {	return a<b ? a:b;		}
 
-__forceinline void i_section	(float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
+IC void i_section	(float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
