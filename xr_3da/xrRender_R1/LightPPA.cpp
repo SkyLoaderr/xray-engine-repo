@@ -153,7 +153,7 @@ void CLightR_Manager::render_point	()
 		float	_camrange			= 300.f;
 		L_pos.set					(L->position);			L_pos.y	+=	_camrange;
 		L_view.build_camera_dir		(L_pos,L_dir,L_up);
-		L_project.build_projection	(deg2rad(1.f),1.f,_camrange-L->range,_camrange+L->range);
+		L_project.build_projection	(deg2rad(2.f),1.f,_camrange-L->range,_camrange+L->range);
 		L_combine.mul				(L_project,L_view);
 
 		//		2. Calculate matrix for TC-gen
