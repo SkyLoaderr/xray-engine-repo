@@ -177,7 +177,7 @@ void CEffect_Thunderbolt::OnFrame(BOOL enabled, float period, float duration)
             // play sound
             float dist = next_tm.pos.distance_to(Device.vCameraPosition);
 			current->snd.play_at_pos_unlimited(0,next_tm.pos,FALSE);
-			current->snd.set_range	(dist/10,dist*2.f);
+			current->snd.set_range	(dist/2,dist*2.f);
             sound_times.pop_front	();
         }
     }
