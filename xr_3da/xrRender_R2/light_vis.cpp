@@ -31,7 +31,7 @@ void	light::vis_prepare			()
 	}
 	//Msg	("sc[%f,%f,%f]/c[%f,%f,%f] - sr[%f]/r[%f]",VPUSH(spatial.center),VPUSH(position),spatial.radius,range);
 	//Msg	("dist:%f, sa:%f",Device.vCameraPosition.distance_to(spatial.center),safe_area);
-	if (Device.vCameraPosition.distance_to(spatial.center)<=(spatial.radius+safe_area))	{	// small error
+	if (Device.vCameraPosition.distance_to(spatial.center)<=(spatial.radius*1.01f+safe_area))	{	// small error
 		vis.visible		=	true;
 		vis.pending		=	false;
 		vis.frame2test	=	frame	+ ::Random.randI(delay_small_min,delay_small_max);
