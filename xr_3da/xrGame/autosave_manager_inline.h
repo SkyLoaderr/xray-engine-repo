@@ -46,5 +46,5 @@ IC	void CAutosaveManager::dec_not_ready		()
 
 IC	bool CAutosaveManager::ready_for_autosave	()
 {
-	return						(true);//!m_not_ready_count);
+	return						(!m_not_ready_count);
 }

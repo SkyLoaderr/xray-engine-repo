@@ -637,10 +637,10 @@ public:
 	CCC_ALifeSave(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR args) {
 		
-		if (!Level().autosave_manager().ready_for_autosave()) {
-			Msg		("! Cannot save the game right now!");
-			return;
-		}
+//		if (!Level().autosave_manager().ready_for_autosave()) {
+//			Msg		("! Cannot save the game right now!");
+//			return;
+//		}
 
 		string256	S;
 		S[0]		= 0;
