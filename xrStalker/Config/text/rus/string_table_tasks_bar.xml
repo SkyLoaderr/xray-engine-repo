@@ -16,5 +16,18 @@
         <text>Передать их бармену в баре сталкеров.</text>
     </string>
 
+	<string id="bar_hunter_rifle">
+		<text>Ружье охотника</text>
+	</string>
+	<string id="bar_bring_hunter_rifle">
+		<text>Вернуть охотнику фамильное ружье</text>
+	</string>
+	<string id="bar_hunter_find_rifle">
+		<text>Найти ружье, утерянное у домика кровососов</text>
+	</string>
+	<string id="bar_hunter_return_rifle">
+		<text>Вернуть ружье охотнику</text>
+	</string>
+
 
 </string_table>
