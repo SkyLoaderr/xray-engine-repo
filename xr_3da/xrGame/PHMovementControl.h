@@ -141,18 +141,7 @@ public:
 
 	void				CalcMaximumVelocity	(Fvector& /**dest/**/, Fvector& /**accel/**/, float /**friction/**/){};
 	void				CalcMaximumVelocity	(float& /**dest/**/, float /**accel/**/, float /**friction/**/){};
-
-	void				ActivateBox		(DWORD id, BOOL Check = false)	{ 
-														if (Check && (m_dwCurBox == id)) return;
-														m_dwCurBox = id;
-														aabb.set(boxes[id]);
-														if(!m_character) return;
-													    if(!m_character->b_exist) return;
-														m_character->Destroy();
-														CreateCharacter();	
-														m_character->SetPosition(vPosition);	
-													}
-
+	void				ActivateBox		(DWORD id, BOOL Check = false);
 	EEnvironment		Environment		( )			{ return eEnvironment; }
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
