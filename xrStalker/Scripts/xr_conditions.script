@@ -72,6 +72,12 @@ function mob_has_enemy (actor, npc)
     return npc:get_enemy () ~= nil
 end    
 
+function mob_actor_nearest (actor, npc)
+    if npc == nil then return false end
+    printf ("Distance to actor : %d", distance_between (actor, npc))
+    return distance_between (actor, npc) < 20
+end    
+
 function actor_enemy(actor, npc)
 	return db.storage[npc:id()].enemy:id() == actor:id()
 end
