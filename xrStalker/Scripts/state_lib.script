@@ -137,6 +137,14 @@ states = {
 				animstate = "stand",
 				animation = "prisluh"
 			},
+	choosing = {	weapon = "strapped",
+				movement = move.stand,
+				mental = anim.free,
+				bodystate = move.standing,
+				animstate = "stand",
+				animation = "choosing"
+			},
+
 
 	-- Сидячие состояния
 	sit = {		weapon = "strapped",

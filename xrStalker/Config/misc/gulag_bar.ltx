@@ -106,7 +106,6 @@ def_state_campering_fire = hide_fire
 
 ; ÂÅÒÅĞÀÍÛ ÄÎËÃÀ
 
-
 [logic1@bar_dolg_veterans_bunker]
 active = walker1@bar_dolg_veterans_bunker
 
@@ -186,6 +185,48 @@ active = camper2@bar_dolg_veterans_enter_camper
 path_walk = main_enter
 path_look = camper_look2
 radius = 4
+
+
+; ÁÓÍÊÅĞ ÄÎËÃÀ
+
+[logic1@bar_dolg_bunker]
+active = walker1@bar_dolg_bunker
+
+[walker1@bar_dolg_bunker]
+path_walk = guard_1_walk
+path_look = guard_1_look
+
+
+[logic2@bar_dolg_bunker]
+active = walker2@bar_dolg_bunker
+
+[walker2@bar_dolg_bunker]
+path_walk = guard_2_walk
+path_look = guard_2_look
+
+
+[logic3@bar_dolg_bunker]
+active = walker3@bar_dolg_bunker
+
+[walker3@bar_dolg_bunker]
+path_walk = rest_2_walk
+path_look = rest_2_look
+
+
+[logic4@bar_dolg_bunker]
+active = walker4@bar_dolg_bunker
+
+[walker4@bar_dolg_bunker]
+path_walk = rest_1_walk
+path_look = rest_1_look
+
+
+[logic5@bar_dolg_bunker]
+active = sleeper1@bar_dolg_bunker
+
+[sleeper1@bar_dolg_bunker]
+path_main = sleeper_1
+
 
 ; ÍÅÕÎĞÎØÈÅ ÑÒÀËÊÅĞÛ ÂÅÒÅĞÀÍÛ
 

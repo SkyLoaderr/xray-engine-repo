@@ -339,7 +339,9 @@ function animation:update()
 	else
 		--' переход закончилс€, можно играть анимашки.
 		-- ѕервым делом инициализируем коллбек, если он нужен
-		if self.mgr.callback then
+		if self.mgr.callback ~= nil and
+		   self.mgr.callback.func ~= nil
+		then
 			if self.mgr.callback.begin == nil then
 				self.mgr.callback.begin = device():time_global()
 --				printf("Callback initialized %s", device():time_global())

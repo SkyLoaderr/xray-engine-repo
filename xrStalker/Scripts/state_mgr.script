@@ -61,7 +61,7 @@ function eva_state_mgr_locked:evaluate()
 	--printf("direction locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["direction_turning"]):evaluate()))
 	--printf("animstate locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate()))
 	--printf("animation locked: %s", utils.to_str(self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate()))
-	
+
 	return self.st.planner:evaluator(self.st.properties["weapon_locked"]):evaluate() or
 		   self.st.planner:evaluator(self.st.properties["animstate_locked"]):evaluate() or
 		   self.st.planner:evaluator(self.st.properties["animation_locked"]):evaluate() or
@@ -530,7 +530,9 @@ function state_manager:set_state(state_name, callback, timeout, target)
 		self.timeout = timeout
 	else
 		self.timeout = nil
-		self.callback = nil
+		if self.callback ~= nil then
+			self.callback.func = nil
+		end
 	end
 end
 function state_manager:update()

@@ -25,7 +25,6 @@ function eva_state_mgr_direction:evaluate()
 	if self.target_position == nil then
 		-- если текущая позиция нулевая
 		if self.st.current_direction == nil then
-			self:callback()
 			return true
 		else
 			return false
@@ -40,18 +39,24 @@ function eva_state_mgr_direction:evaluate()
 			self.st.planner:action(self.st.operators["direction_turn"]).target_position = self.target_position
 			return false
 		else
-			self:callback()	
+			self:callback()
 			return true
 		end
 	end	
 	return true
 end
 function eva_state_mgr_direction:callback()
+	printf("direction try to call callback")
+	printf("self.st.callback %s", utils.to_str(self.st.callback ~= nil))
+	printf("self.st.callback.turn_end_func %s", utils.to_str(self.st.callback.turn_end_func ~= nil))
 	if self.st.callback ~= nil and
 	   self.st.callback.turn_end_func ~= nil 
 	then
+		printf("direction callback called")
 		self.st.callback.turn_end_func(self.st.callback.obj)
-		self.st.callback.turn_end_func = nil		
+		if self.st.callback ~= nil	then
+			self.st.callback.turn_end_func = nil
+		end
 	end
 end
 
