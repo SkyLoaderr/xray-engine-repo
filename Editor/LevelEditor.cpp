@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
-USERES("ed.res");
+USERES("LevelEditor.res");
+USERES("resource.res");
 USE("!.txt", File);
 USEUNIT("edit\Library.cpp");
 USEUNIT("edit\Scene.cpp");
@@ -188,7 +189,6 @@ USEUNIT("Engine\TextureManager.cpp");
 USEFORM("PropertiesList.cpp", frmProperties);
 USELIB("lib\FreeImage.lib");
 USEUNIT("edit\ETextureParams.cpp");
-USERES("resource.res");
 USEUNIT("Engine\Blenders\blender_light.cpp");
 USEUNIT("edit\FolderLib.cpp");
 USEUNIT("edit\EStats.cpp");

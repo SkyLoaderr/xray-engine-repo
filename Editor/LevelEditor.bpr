@@ -93,7 +93,7 @@
       intermediate\UI_MainExtern.obj intermediate\PropertiesListExtern.obj 
       intermediate\xr_efflensflare.obj intermediate\PropertiesSceneObject.obj 
       intermediate\EditObjectEditor.obj"/>
-    <RESFILES value="ed.res resource.res"/>
+    <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
