@@ -1,3 +1,33 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="mil_dolg_jod_0">
+        <text>Сталкер, ты именно тот, кто нам нужен.</text>
+    </string>
+    <string id="mil_dolg_jod_01">
+        <text>О чем это ты?</text>
+    </string>
+    <string id="mil_dolg_jod_011">
+        <text>У тебя есть замечательная возможность послужить делу Долга, а Долг хорошо платит за услуги оказанные ему. Ты заинтересован?</text>
+    </string>
+    <string id="mil_dolg_jod_012">
+        <text>Да, сколько?</text>
+    </string>
+    <string id="mil_dolg_jod_0121">
+        <text>Люблю деловой подход. Твоя задача состоит в том чтобы убрать двух снайперов с вышек. Как только ты закончишь - мы атакуем. Платим 3000.</text>
+    </string>
+    <string id="mil_dolg_jod_0122">
+        <text>Почему вы сами не решите эту проблему?</text>
+    </string>
+    <string id="mil_dolg_jod_0123">
+        <text>Хорошо.</text>
+    </string>
+    <string id="mil_dolg_jod_0124">
+        <text>У нас нет подходящего снайперского оружия, а мы не идиоты лезть на открытую местность. А ты сможешь подойти намного ближе.Так что?</text>
+    </string>
+    <string id="mil_dolg_jod_0125">
+        <text>Я подумаю.</text>
+    </string>
+    <string id="mil_dolg_jod_013">
+        <text>Нет</text>
+    </string>
 </string_table>
