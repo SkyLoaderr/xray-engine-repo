@@ -113,6 +113,7 @@ void CWeaponAutoRifle::switch2_Reload(BOOL bHUDView)
 }
 void CWeaponAutoRifle::switch2_Hiding(BOOL bHUDView)
 {
+	switch2_Idle				(bHUDView);
 	m_pHUD->animPlay			(mhud_hide,TRUE,this);
 }
 void CWeaponAutoRifle::switch2_Showing(BOOL bHUDView)
