@@ -75,7 +75,8 @@ void CHUDManager::OnMove()
 ENGINE_API extern float psHUD_FOV;
 void CHUDManager::Render()
 {
-	if (psHUD_Flags&HUD_DRAW){
+	if (psHUD_Flags&HUD_DRAW)
+	{
 		if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw(this);
 		// HUD model
 		if (psHUD_Flags&HUD_WEAPON) {
