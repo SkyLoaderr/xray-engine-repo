@@ -5,7 +5,6 @@
 
 class ENGINE_API CSoundManager : public pureFrame
 {
-	friend class			CSound;
 	friend class			CSoundStream;
 	friend class			C3DSoundRender;
 	friend class			C3DSound;
@@ -31,15 +30,8 @@ class ENGINE_API CSoundManager : public pureFrame
 	CMusicStream*			pMusicStreams;
 	
 	// effect sounds
-    LPDIRECTSOUND		    lpDirectSound;
-    LPDIRECTSOUNDBUFFER		lpPrimaryBuf;
-	
-	// volumes
-	HMIXER							hMixer;
-	MIXERCONTROLDETAILS				master_detail;
-    MIXERCONTROLDETAILS_UNSIGNED	master_volume;
-	BOOL							bVolume;
-	
+    LPDIRECTSOUND		    pDirectSound;
+    LPDIRECTSOUNDBUFFER		pPrimaryBuf;
 private:
 	BOOL					CreatePrimaryBuffer		( );
 	void					Initialize				( );
