@@ -43,7 +43,7 @@ BOOL CLevel::Load_GameSpecific_After()
 		Fmatrix			transform;
 		Fvector			zero_vel={0.f,0.f,0.f};
 		for (IReader *OBJ = F->open_chunk(chunk++); OBJ; OBJ = F->open_chunk(chunk++)){
-			OBJ->r_stringZ				(ref_name);
+			OBJ->r_stringZ				(ref_name,sizeof(ref_name));
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
 			S							= ::Render->detectSector	(transform.c);
 			pStaticParticles			= xr_new<CParticlesObject>	(ref_name,S,false);
@@ -64,7 +64,7 @@ BOOL CLevel::Load_GameSpecific_After()
 			static_Sounds.push_back	(xr_new<ref_sound>());
 			ref_sound* S			= static_Sounds.back();
 
-			OBJ->r_stringZ		(wav_name);
+			OBJ->r_stringZ		(wav_name,sizeof(wav_name));
 			S->create			(TRUE,wav_name);
 			OBJ->r_fvector3		(params.position);
 			params.volume		= OBJ->r_float();

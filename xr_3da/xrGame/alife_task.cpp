@@ -22,12 +22,12 @@ void CALifeTask::load		(IReader &stream)
 	stream.r				(&m_tTaskType,	sizeof(m_tTaskType));
 	switch (m_tTaskType) {
 		case ALife::eTaskTypeSearchForItemCL : {
-			stream.r_stringZ(m_caSection);
+			stream.r_stringZ(m_caSection,sizeof(m_caSection));
 			stream.r		(&m_tLocationID,sizeof(m_tLocationID));
 			break;
 		}
 		case ALife::eTaskTypeSearchForItemCG : {
-			stream.r_stringZ(m_caSection);
+			stream.r_stringZ(m_caSection,sizeof(m_caSection));
 			stream.r		(&m_tGraphID,	sizeof(m_tGraphID));
 			break;
 		}

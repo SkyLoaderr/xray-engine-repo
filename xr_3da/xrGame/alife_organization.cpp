@@ -67,7 +67,7 @@ void CALifeOrganization::load			(IReader &file_stream)
 {
 	file_stream.r				(&m_research_state,	sizeof(m_research_state));
 	file_stream.r				(&m_finish_time,	sizeof(m_finish_time));
-	file_stream.r_stringZ		(m_discovery_to_investigate);
+	file_stream.r_stringZ		(m_discovery_to_investigate,sizeof(m_discovery_to_investigate));
 	{
 		m_ordered_artefacts.resize	(file_stream.r_u32());
 		ARTEFACT_ORDER_IT		I = m_ordered_artefacts.begin();

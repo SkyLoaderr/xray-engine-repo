@@ -125,7 +125,7 @@ struct CLoader {
 	IC	static void load_data(LPSTR &data, M &stream, const P &p)
 	{
 		string256						S;
-		stream.r_stringZ				(S);
+		stream.r_stringZ				(S,sizeof(S));
 		VERIFY							(xr_strlen(S) < 255);
 		data							= xr_strdup(S);
 	}

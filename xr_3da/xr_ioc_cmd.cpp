@@ -142,7 +142,7 @@ public:
 	CCC_LoadCFG(LPCSTR N) : IConsole_Command(N) {};
 	virtual void Execute(LPCSTR args) {
 		Msg("Executing config-script \"%s\"...",args);
-		char str[1024];
+		string1024 str;
 
 		//RecordCommands	= false;
 		strcpy	(str,args);
@@ -152,7 +152,7 @@ public:
 		IReader* F = FS.r_open(str);
 		if (F!=NULL) {
 			while (!F->eof()) {
-				F->r_string		(str);
+				F->r_string			(str,sizeof(str));
 				Console->Execute	(str);
 			}
 			FS.r_close(F);
