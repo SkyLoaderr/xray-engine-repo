@@ -6,6 +6,10 @@
 ----------------------------------------------------------------------------------------------------------------------
 -- EVALUATORS
 ----------------------------------------------------------------------------------------------------------------------
+	function id(npc)
+		return npc:id()
+	end
+
 --' Условие завершения скрипта
 class "evaluator_end" (property_evaluator)
 function evaluator_end:__init(name, storage) super (nil, name)
@@ -120,9 +124,6 @@ end
 class "action_kill" (action_base)
 function action_kill:__init (npc_name,action_name,storage) super (nil,action_name)
     self.a = storage
-    self.idle = 10*60*1000
-    self.timer = 0
-    self.enemy = nil
 end
 function action_kill:initialize ()
     action_base.initialize(self)    
@@ -130,38 +131,41 @@ function action_kill:initialize ()
 end
 function action_kill:execute ()
 	action_base.execute(self)
-	function id(npc)
-		return npc:id()
-	end
-
-	if self.enemy ~= nil and self.object:memory(self.enemy) ~= true then
-		self.enemy = nil
+	if self.a.enemy ~= nil then		
+		if self.object:memory(self.a.enemy) == nil then
+			self.a.enemy = nil
+		else
+			self.a.mem_enemy = self.object:memory(self.a.enemy)
+		end
 	end
 	
-	if self.enemy == nil or
-	  self.enemy:id() ~= id(self.object:best_enemy()) then
-		self.enemy = self.object:best_enemy()
-		self.timer = game.time()
+	if self.a.enemy == nil or
+	  self.a.enemy:id() ~= id(self.object:best_enemy()) 
+	then
+		self.a.enemy = self.object:best_enemy()
+	end
+		
+	if self.a.mem_enemy ~= nil then
+		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
+		if device():time_global()- self.a.mem_enemy.level_time > self.a.idle then
+			self.object:enable_memory_object(self.a.enemy, false)
+			self.a.enemy = nil
+		end
 	end
 
-	if game.time() - self.timer > self.idle then
-		self.object:enable_memory_object(self.enemy, false)
-		self.enemy = nil
-	end
-
-	if self.enemy ~= nil then 
-		if self.object:see(self.enemy) == true then
+	if self.a.enemy ~= nil then 
+		if self.object:see(self.a.enemy) == true then
 			if self.a.suggested_state.campering_fire then
-				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.enemy})
+				state_mgr.set_state(self.object, self.a.suggested_state.campering_fire, nil, nil, {look_object = self.a.enemy})
 			else
-				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.enemy})
+				state_mgr.set_state(self.object, "hide_fire", nil, nil, {look_object = self.a.enemy})
 			end
-			self.enemy_position = self.enemy:position()
+			self.enemy_position = self.a.enemy:position()
 		else
 			if self.a.suggested_state.campering then
 				state_mgr.set_state(self.object, self.a.suggested_state.campering, nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
 			else
-				state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.enemy, look_position = self.enemy_position})
+				state_mgr.set_state(self.object, "hide", nil, nil, {look_object = self.a.enemy, look_position = self.enemy_position})
 			end
 		end
 	end
@@ -177,8 +181,7 @@ function action_retreat:__init(npc_name,action_name,storage) super(nil,action_na
 end
 function action_retreat:initialize()
     action_base.initialize(self)
-    
-    
+       
     local path_walk = patrol(self.a.path_walk)
     if path_walk then
 		local point = utils.get_nearest_waypoint(self.object, self.a.path_walk, path_walk, path_walk:count())
@@ -196,18 +199,40 @@ end
 function action_retreat:execute()
 	action_base.execute(self)
 
-	if self.object:best_enemy() then
-		if self.object:see(self.object:best_enemy()) == true then
+	if self.a.enemy ~= nil then		
+		if self.object:memory(self.a.enemy) == nil then
+			self.a.enemy = nil
+		else
+			self.a.mem_enemy = self.object:memory(self.a.enemy)
+		end
+	end
+	
+	if self.a.enemy == nil or
+	  self.a.enemy:id() ~= id(self.object:best_enemy()) 
+	then
+		self.a.enemy = self.object:best_enemy()
+	end
+		
+	if self.a.mem_enemy ~= nil then
+		printf("%s - %s > %s", utils.to_str(device():time_global()), utils.to_str(self.a.mem_enemy.level_time), utils.to_str(self.a.idle))
+		if device():time_global()- self.a.mem_enemy.level_time > self.a.idle then
+			self.object:enable_memory_object(self.a.enemy, false)
+			self.a.enemy = nil
+		end
+	end
+
+	if self.a.enemy then
+		if self.object:see(self.a.enemy) == true then
 			if self.a.suggested_state.moving_fire then
-				state_mgr.set_state(self.object, self.a.suggested_state.moving_fire, nil, nil, {look_object = self.object:best_enemy()})
+				state_mgr.set_state(self.object, self.a.suggested_state.moving_fire, nil, nil, {look_object = self.a.enemy})
 			else
-				state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = self.object:best_enemy()})
+				state_mgr.set_state(self.object, "sneak_fire", nil, nil, {look_object = self.a.enemy})
 			end
 		else
 			if self.a.suggested_state.moving then
-				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = self.object:best_enemy()})
+				state_mgr.set_state(self.object, self.a.suggested_state.moving, nil, nil, {look_object = self.a.enemy})
 			else
-				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.object:best_enemy()})
+				state_mgr.set_state(self.object, "sneak", nil, nil, {look_object = self.a.enemy})
 			end			
 		end
 	end
@@ -280,7 +305,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.suggested_state.moving_fire = utils.cfg_get_string(ini, section, "def_state_moving_fire", npc, false, "")
 	st.suggested_state.campering = utils.cfg_get_string(ini, section, "def_state_campering", npc, false, "")
 	st.suggested_state.campering_fire = utils.cfg_get_string(ini, section, "def_state_campering_fire", npc, false, "")
-
+	st.idle = 2*60*1000
 
 	
 	if st.radius == nil then
