@@ -83,135 +83,154 @@ function loadJob(sj, gname, type, squad, groups)
 	if type == "blockpost" then
 		t = { section = "patrol1@esc_blockpost",
 			idle = 4 * 1000 * 60 * 60,
-			prior = 8, state = {0,1,2}, squad = squad, group = groups[1],
+			prior = 8, state = {0,1,2}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = ""
 		}
 		table.insert(sj, t)		
 		t = { section = "follower1@esc_blockpost",
 			idle = 4 * 1000 * 60 * 60,
-			prior = 7, state = {0,1,2}, squad = squad, group = groups[1],
+			prior = 7, state = {0,1,2}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
 			leader = "patrol1@esc_blockpost"
 		}
 		table.insert(sj, t)		
 		t = { section = "follower2@esc_blockpost",
 			idle = 4 * 1000 * 60 * 60,
-			prior = 7, state = {0,1,2}, squad = squad, group = groups[1],
+			prior = 7, state = {0,1,2}, squad = squad, group = groups[2],
 			in_rest = "", out_rest = "",
 			leader = "patrol1@esc_blockpost"
 		}
 		table.insert(sj, t)
 		t = { section = "camper1@esc_blockpost",
 			idle = 0,
-			prior = 10, state = {0,1,2}, squad = squad, group = groups[2],
+			prior = 10, state = {0,1,2}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "walker2@esc_blockpost",
 			idle = 0,
-			prior = 9, state = {0}, squad = squad, group = groups[2],
+			prior = 9, state = {0}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "walker3@esc_blockpost",
 			idle = 0,
-			prior = 9, state = {0}, squad = squad, group = groups[2],
+			prior = 9, state = {0}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "kamp1@esc_blockpost",
 			idle = 0,
-			prior = 5, state = {0,1},  squad = squad, group = groups[0],
+			prior = 5, state = {0,1},  squad = squad, group = groups[1],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "kamp1@esc_blockpost",
 			idle = 0,
-			prior = 5, state = {0,1}, squad = squad, group = groups[0],
+			prior = 5, state = {0,1}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "kamp1@esc_blockpost",
 			idle = 0,
-			prior = 5, state = {0,1}, squad = squad, group = groups[0],
+			prior = 5, state = {0,1}, squad = squad, group = groups[1],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper1@esc_blockpost",
 			idle = 0,
-			prior = 0, state = {0,1,2}, squad = squad, group = groups[3],
+			prior = 0, state = {0,1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper2@esc_blockpost",
 			idle = 0,
-			prior = 0, state = {0,1,2}, squad = squad, group = groups[3],
+			prior = 0, state = {0,1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper3@esc_blockpost",
 			idle = 0,
-			prior = 0, state = {0,1,2}, squad = squad, group = groups[3],
+			prior = 0, state = {0,1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper4@esc_blockpost",
 			idle = 0,
-			prior = 0, state = {0,1,2}, squad = squad, group = groups[3],
+			prior = 0, state = {0,1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper5@esc_blockpost",
 			idle = 0,
-			prior = 0, state = {0,1,2}, squad = squad, group = groups[3],
+			prior = 0, state = {0,1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "sleeper6@esc_blockpost",
 			idle = 0,
-			prior = 0, state = {0,1,2}, squad = squad, group = groups[3],
+			prior = 0, state = {0,1,2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		--' alarm
 		t = { section = "walker1@esc_blockpost_alarm",
 			idle = 0,
-			prior = 9, state = {2}, squad = squad, group = groups[3],
+			prior = 9, state = {2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "walker2@esc_blockpost_alarm",
 			idle = 0,
-			prior = 9, state = {2}, squad = squad, group = groups[3],
+			prior = 9, state = {2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "walker3@esc_blockpost_alarm",
 			idle = 0,
-			prior = 9, state = {2}, squad = squad, group = groups[3],
+			prior = 9, state = {2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "walker4@esc_blockpost_alarm",
 			idle = 0,
-			prior = 9, state = {2}, squad = squad, group = groups[3],
+			prior = 9, state = {2}, squad = squad, group = groups[4],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "walker5@esc_blockpost_alarm",
 			idle = 0,
-			prior = 8, state = {2}, squad = squad, group = groups[2],
+			prior = 8, state = {2}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
 		t = { section = "walker6@esc_blockpost_alarm",
 			idle = 0,
-			prior = 8, state = {2}, squad = squad, group = groups[2],
+			prior = 8, state = {2}, squad = squad, group = groups[3],
 			in_rest = "", out_rest = "escape_blockpost_zone"
 		}
 		table.insert(sj, t)
+		--' командир
+		t = { section = "walker@esc_blockpost_commander_day",
+			idle = 0,
+			prior = 100, state = {0,2}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = "escape_blockpost_zone",
+			predicate = function(obj) 
+			            	return obj:profile_name() == "soldier_commander"
+			            end
+		}
+		table.insert(sj, t)
+		t = { section = "sleeper@esc_blockpost_commander_night",
+			idle = 0,
+			prior = 100, state = {1}, squad = squad, group = groups[1],
+			in_rest = "", out_rest = "escape_blockpost_zone",
+			predicate = function(obj)
+			            	return obj:profile_name() == "soldier_commander"
+			            end
+		}
+		table.insert(sj, t)
 	end
-	
+
 	--' Лагерь новичков на Escape
 	if type == "esc_lager" then
 		-- охранники
