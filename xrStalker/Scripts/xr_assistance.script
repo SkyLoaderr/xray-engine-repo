@@ -44,7 +44,7 @@ function action_assistance:execute()
 	--'1. Если мы находимся за большим радиусом - необходимо выбрать новую точку
 	if self.a.assist_point == nil or
 	   (self.object:position():distance_to(self.a.actor:position()) >= self.a.desired_distance and
-	   level.vertex_position(self.a.assist_point):distance_to(self.a.actor:position()) >= self.a.desired_distance)
+	   level.vertex_position(self.a.assist_point):distance_to(self.object:position()) >= self.a.desired_distance)
 	then
 		self.a.assist_point = select_position(self.object, self.a)
 	end
@@ -55,19 +55,19 @@ function action_assistance:execute()
 			self.object:set_sight(look.path_dir, nil, 0)
 			self.object:set_desired_direction()
 	end
-	
-	if level.vertex_position(self.a.assist_point):distance_to(self.object:position()) >= 10 and
-		self.move_type == move.stand or self.move_type == move.walk
-	then
-		self.move_type = move.run		
+
+	if level.vertex_position(self.a.assist_point):distance_to(self.object:position()) < 1 then
+		self.move_type = move.stand
 	end
-	if level.vertex_position(self.a.assist_point):distance_to(self.object:position()) >= 2 and
+	if level.vertex_position(self.a.assist_point):distance_to(self.object:position()) >= 1 and
 		self.move_type == move.stand
 	then
 		self.move_type = move.walk
 	end
-	if level.vertex_position(self.a.assist_point):distance_to(self.object:position()) < 1 then
-		self.move_type = move.stand
+	if level.vertex_position(self.a.assist_point):distance_to(self.object:position()) >= 10 and
+		self.move_type == move.stand or self.move_type == move.walk
+	then
+		self.move_type = move.run		
 	end
 	self.object:set_movement_type(self.move_type)	
 	
@@ -152,7 +152,7 @@ function add_to_binder(npc, char_ini)
 	
 	xr_motivator.storage[npc:id()].assistance = {
 			actor = nil,
-			desired_distance = 5,
+			desired_distance = 5,			
 			assist_point = nil
 	}	
 	

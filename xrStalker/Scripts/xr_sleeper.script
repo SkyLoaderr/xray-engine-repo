@@ -9,7 +9,7 @@ function evaluator_need_sleeper:__init(storage) super ()
   self.a = storage
 end
 function evaluator_need_sleeper:evaluate ()
-      return self.a.enabled == true
+      return xr_logic.is_active(self.object, self.a)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -38,6 +38,7 @@ function action_sleeper_activity:initialize()
 end
 function action_sleeper_activity:execute()
 	action_base.execute(self)
+	
 	self.object:set_item(object.deactivate, self.object:best_weapon())	
 	if xr_state.finish_state(self.object) ~= true then	
 		return
@@ -78,7 +79,7 @@ function action_sleeper_activity:execute()
 		self.state = 2		
 	end
 
-	if self.state == 3 then	--' спим
+	if self.state == 3 then	--' спим	
         if table.getn(self.points) > 0 then
 			local point = self.ptr:level_vertex_id(self.points[math.random(table.getn(self.points))])
 			local pt = level.vertex_position(point)
@@ -91,7 +92,7 @@ function action_sleeper_activity:execute()
 			self.timer.begin = device():time_global()/1000
 			self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
 		end
-
+		
 		if device():time_global()/1000 - self.timer.begin > self.timer.idle then
 			self.timer.begin = device():time_global()/1000
 			self.timer.idle = math.random(self.timer.maxidle) + self.timer.sumidle
@@ -109,6 +110,7 @@ function action_sleeper_activity:execute()
 		if self.object:active_sound_count() == 0 then
 			self.object:play_sound (sounds["sleep"] , 1, 0, 1, 0, 0)
 		end
+		xr_logic.try_switch_to_another_section(self.object, self.a)		
 	end
 end
 function action_sleeper_activity:finalize()
@@ -117,9 +119,9 @@ function action_sleeper_activity:finalize()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
---Guard binder
+--Sleeper binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc)
+function add_to_binder(npc, ini, scheme, section, storage)
   	local operators    = {}
   	local properties  = {}
 
@@ -148,38 +150,10 @@ function add_to_binder(npc)
   	action = manager:action(stalker_ids.action_puzzle_solver)
   	action:add_precondition(world_property(properties["need_sleeper"], false))
 end
-function set_sleeper(section, object, enable, point)
-	-- enable - будет ли работать схема в принципе
-	-- point - точка где спать
+function set_scheme(npc, ini, scheme, section, gulag_name)
 
-	local char_ini = object:spawn_ini()
-    xr_motivator.storage[object:id()].sleeper = {
-		enabled = false,
-		path_main = nil
-	}
-	local st = xr_motivator.storage[object:id()].sleeper
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)		
+	st.path_main = utils.cfg_get_string(ini, section, "path_main", npc, true,  gulag_name)
 		
-	if enable == nil then
-       		if char_ini:section_exist (section) == true and char_ini:line_exist(section, "enabled") == true then
-               		st.enabled = char_ini:r_bool(section, "enabled")
-		else
-			st.enabled = false
-	        end
-	else
-		st.enabled = enable		
-	end	
-	if st.enabled == true then
-		if point == nil then
-        		if char_ini:section_exist (section) == true and char_ini:line_exist(section, "path_main") == true then
-	        	        st.path_main = char_ini:r_string(section, "path_main")
-        		else
-	        	    	st.enabled = false
-		        end
-		else
-			st.path_main = point
-		end
-	end
-	if st.enabled then
-		xr_sleeper.add_to_binder(object)
-	end
 end
