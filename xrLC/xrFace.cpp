@@ -112,10 +112,17 @@ void	Face::Failure		()
 
 void	Face::Verify		()
 {
-	// 1st area
+	// 1st :: area
 	if	(CalcArea()<EPS)	{ Failure(); return; }
 
-	// 2nd possibility to calc normal
+	// 2nd :: TC0
+	Fvector2*	tc			= getTC0();
+	float	eps				= 1.0f / 4096.f;		// one pixel from 4096 texture (0.000244140625f)
+	float	e0				= tc[0].distance_to(tc[1]);	if (e0<eps)	{ Failure(); return; }
+	float	e1				= tc[1].distance_to(tc[2]);	if (e1<eps)	{ Failure(); return; }
+	float	e2				= tc[2].distance_to(tc[0]);	if (e2<eps)	{ Failure(); return; }
+
+	// 3rd :: possibility to calc normal
 	CalcNormal				();
 }
 
