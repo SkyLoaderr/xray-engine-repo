@@ -322,12 +322,12 @@ bool AABBNoLeafTree::Build(AABBTree* tree)
 	Point EMax(flt_min, flt_min, flt_min);												\
 	for(udword i=0;i<mNbNodes;i++)																\
 	{																							\
-		if(fabsf(Nodes[i].mAABB.mCenter.x)>CMax.x)	CMax.x = fabsf(Nodes[i].mAABB.mCenter.x);	\
-		if(fabsf(Nodes[i].mAABB.mCenter.y)>CMax.y)	CMax.y = fabsf(Nodes[i].mAABB.mCenter.y);	\
-		if(fabsf(Nodes[i].mAABB.mCenter.z)>CMax.z)	CMax.z = fabsf(Nodes[i].mAABB.mCenter.z);	\
-		if(fabsf(Nodes[i].mAABB.mExtents.x)>EMax.x)	EMax.x = fabsf(Nodes[i].mAABB.mExtents.x);	\
-		if(fabsf(Nodes[i].mAABB.mExtents.y)>EMax.y)	EMax.y = fabsf(Nodes[i].mAABB.mExtents.y);	\
-		if(fabsf(Nodes[i].mAABB.mExtents.z)>EMax.z)	EMax.z = fabsf(Nodes[i].mAABB.mExtents.z);	\
+		if(_abs(Nodes[i].mAABB.mCenter.x)>CMax.x)	CMax.x = _abs(Nodes[i].mAABB.mCenter.x);	\
+		if(_abs(Nodes[i].mAABB.mCenter.y)>CMax.y)	CMax.y = _abs(Nodes[i].mAABB.mCenter.y);	\
+		if(_abs(Nodes[i].mAABB.mCenter.z)>CMax.z)	CMax.z = _abs(Nodes[i].mAABB.mCenter.z);	\
+		if(_abs(Nodes[i].mAABB.mExtents.x)>EMax.x)	EMax.x = _abs(Nodes[i].mAABB.mExtents.x);	\
+		if(_abs(Nodes[i].mAABB.mExtents.y)>EMax.y)	EMax.y = _abs(Nodes[i].mAABB.mExtents.y);	\
+		if(_abs(Nodes[i].mAABB.mExtents.z)>EMax.z)	EMax.z = _abs(Nodes[i].mAABB.mExtents.z);	\
 	}
 
 #define INIT_QUANTIZATION							\
