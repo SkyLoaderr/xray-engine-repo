@@ -29,8 +29,8 @@ function main()
 
 	local fsm_stalker = FSM(this.script_name(), stalker00)
 
-	fsm_stalker:set_transition(0, 1, fsm.if_see_actor)
-	fsm_stalker:set_transition(1, 0, fsm.dont_see_actor)
+	fsm_stalker:set_transition(0, 1, this.if_see_actor)
+	fsm_stalker:set_transition(1, 0, this.dont_see_actor)
 
 	fsm_stalker:run_loop()
 
