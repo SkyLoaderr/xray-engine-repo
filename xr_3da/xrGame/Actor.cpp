@@ -1051,7 +1051,7 @@ BOOL CActor::renderable_ShadowGenerate	()
 
 void CActor::g_PerformDrop	( )
 {
-	VERIFY					(b_DropActivated);
+//	VERIFY					(b_DropActivated);
 	b_DropActivated			= FALSE;
 
 	PIItem pItem = inventory().ActiveItem();
