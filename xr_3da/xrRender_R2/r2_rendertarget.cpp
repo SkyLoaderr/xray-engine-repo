@@ -16,8 +16,8 @@ void	CRenderTarget::u_setrt			(const ref_rt& _1, const ref_rt& _2, const ref_rt&
 	dwHeight								= _1->dwHeight;
 	if (RImplementation.b_nv3x)
 	{
-		VERIFY								(0==_2);
-		VERIFY								(0==_3);
+		VERIFY								(!_2);
+		VERIFY								(!_3);
 
 		// Use only one RT + ZB
 		RCache.set_RT						(_1->pRT,	0);
