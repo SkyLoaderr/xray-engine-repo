@@ -809,8 +809,8 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 				VERIFY						(!original_pda);
 				original_pda				= pda;
 			}
-			tpALifeHumanAbstract->detach(l_tpALifeInventoryItem,0,true,false);
-			tpALifeTrader->attach		(l_tpALifeInventoryItem,true);
+			tpALifeHumanAbstract->detach	(l_tpALifeInventoryItem,0,true,false);
+			tpALifeTrader->attach			(l_tpALifeInventoryItem,true);
 			u32								l_dwItemCost = tpALifeTrader->dwfGetItemCost(l_tpALifeInventoryItem);
 			tpALifeHumanAbstract->m_dwTotalMoney += l_dwItemCost;
 			tpALifeTrader->m_dwMoney		-= l_dwItemCost;
@@ -822,7 +822,7 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 
 	tpALifeHumanAbstract->m_dwMoney			= tpALifeHumanAbstract->m_dwTotalMoney;
 	
-	m_temp_item_vector.clear					();
+	m_temp_item_vector.clear				();
 	append_item_vector						(tpALifeTrader->children,m_temp_item_vector);
 
 	m_tpBlockedItems1.clear					();
@@ -841,7 +841,7 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 				tpALifeTrader->children.erase(J);
 			}
 			I								= remove_if(m_temp_item_vector.begin(),m_temp_item_vector.end(),CRemoveAttachedItemsPredicate());
-			m_temp_item_vector.erase			(I,m_temp_item_vector.end());
+			m_temp_item_vector.erase		(I,m_temp_item_vector.end());
 		}
 	}
 
@@ -863,8 +863,8 @@ void CALifeCommunicationManager::communicate_with_customer(CSE_ALifeHumanAbstrac
 	{
 		OBJECT_IT							I = std::find(tpALifeTrader->children.begin(),tpALifeTrader->children.end(),original_pda->ID);
 		VERIFY								(I != tpALifeTrader->children.end());
-		tpALifeTrader->detach			(original_pda);
-		tpALifeHumanAbstract->attach	(original_pda,true);
+		tpALifeTrader->detach				(original_pda);
+		tpALifeHumanAbstract->attach		(original_pda,true);
 	}
 
 	// update events

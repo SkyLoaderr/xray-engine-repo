@@ -19,13 +19,10 @@
 #include "alife_communication_space.h"
 #include "alife_event_personal.h"
 #include "clsid_game.h"
+#include "alife_human.h"
 
 using namespace ALife;
 using namespace ALifeCommunication;
-
-#define MAX_ITEM_FOOD_COUNT		3
-#define MAX_ITEM_MEDIKIT_COUNT	3
-#define MAX_AMMO_ATTACH_COUNT	10
 
 struct CRemovePersonalEventPredicate {
 	IC bool							operator()							(const CALifeEventPersonal *tPersonalEvent)  const
@@ -83,13 +80,13 @@ void CSE_ALifeCreatureActor::spawn_supplies	()
 	inherited2::spawn_supplies	();
 }
 
-bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
+bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(ALife::_TASK_ID task_id, OBJECT_IT &I)
 {
-	if (int(m_dwCurTaskID) < 0)
+	if (!ai().alife().tasks().task(task_id,true))
 		return		(false);
 	I				= children.begin();
 	OBJECT_IT E = children.end();
-	const CALifeTask	&tTask = *ai().alife().tasks().task(m_dwCurTaskID);
+	const CALifeTask	&tTask = *ai().alife().tasks().task(task_id);
 	for ( ; I != E; ++I) {
 		switch (tTask.m_tTaskType) {
 			case eTaskTypeSearchForItemCL :
@@ -109,10 +106,21 @@ bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
 	return			(false);
 }
 
+bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(OBJECT_IT &I)
+{
+	return					(bfCheckIfTaskCompleted(m_dwCurTaskID,I));
+}
+
+bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted(ALife::_TASK_ID task_id)
+{
+	OBJECT_IT			I;
+	return				(bfCheckIfTaskCompleted(task_id,I));
+}
+
 bool CSE_ALifeHumanAbstract::bfCheckIfTaskCompleted()
 {
 	OBJECT_IT			I;
-	return						(bfCheckIfTaskCompleted(I));
+	return				(bfCheckIfTaskCompleted(I));
 }
 
 void CSE_ALifeHumanAbstract::vfSetCurrentTask(_TASK_ID &tTaskID)
@@ -156,8 +164,31 @@ void CSE_ALifeHumanAbstract::vfCheckForDeletedEvents()
 	m_tpEvents.erase	(I,m_tpEvents.end());
 }
 
+bool CSE_ALifeHumanAbstract::similar_task				(const CALifeTask *prev_task, const CALifeTask *new_task)
+{
+	if (!prev_task)
+		return			(false);
+
+	if (prev_task->m_tTaskType != new_task->m_tTaskType)
+		return			(false);
+
+	switch (prev_task->m_tTaskType) {
+		case ALife::eTaskTypeSearchForItemOG :
+		case ALife::eTaskTypeSearchForItemCG : {
+			return		(prev_task->m_tGraphID == new_task->m_tGraphID);
+											   }
+		case ALife::eTaskTypeSearchForItemOL :
+		case ALife::eTaskTypeSearchForItemCL : {
+			return		(prev_task->m_tLocationID == new_task->m_tLocationID);
+											   }
+	}
+	return				(false);
+}
+
 void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 {
+	CALifeTask			*previous_task = ai().alife().tasks().task(m_dwCurTaskID,true);
+	
 	OBJECT_IT			I = m_tpKnownCustomers.begin();
 	OBJECT_IT			E = m_tpKnownCustomers.end();
 	for ( ; I != E; ++I) {
@@ -170,6 +201,10 @@ void CSE_ALifeHumanAbstract::vfChooseHumanTask()
 		TASK_SET::const_iterator	e = (*J).second.end();
 		for ( ; i != e; ++i) {
 			CALifeTask		*l_tpTask = ai().alife().tasks().task(*i);
+
+			if (similar_task(previous_task,l_tpTask) && !bfCheckIfTaskCompleted(*i))
+				continue;
+
 			if (!l_tpTask->m_dwTryCount) {
 				l_tBestTaskID = l_tpTask->m_tTaskID;
 				break;
@@ -653,39 +688,41 @@ bool CSE_ALifeHumanAbstract::bfChooseFast()
 
 int CSE_ALifeHumanAbstract::ifChooseEquipment(OBJECT_VECTOR *tpObjectVector)
 {
-	// choosing equipment
-	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
-	float							l_fItemBestValue	= -1.f;
-	ai().ef_storage().m_tpCurrentALifeMember	= this;
-
-	ITEM_P_IT					I = alife().m_temp_item_vector.begin(), X;
-	ITEM_P_IT					E = alife().m_temp_item_vector.end();
-	for ( ; I != E; ++I) {
-		// checking if it is an equipment item
-		ai().ef_storage().m_tpCurrentALifeObject = smart_cast<CSE_ALifeObject*>(*I);
-		if (ai().ef_storage().m_pfEquipmentType->ffGetValue() > ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue())
-			continue;
-		if (m_dwTotalMoney < (*I)->m_dwCost)
-			continue;
-		// evaluating item
-		float					l_fCurrentValue = ai().ef_storage().m_pfEquipmentType->ffGetValue();
-		// choosing the best item
-		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->base()->ID) == tpObjectVector->end()))) {
-			l_fItemBestValue	= l_fCurrentValue;
-			l_tpALifeItemBest	= *I;
-			X					= I;
-		}
-	}
-	if (l_tpALifeItemBest) {
-		if (!tpObjectVector) {
-			alife().graph().attach	(*this,l_tpALifeItemBest,smart_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
-			alife().m_temp_item_vector.erase(X);
-		}
-		else
-			children.push_back	(l_tpALifeItemBest->base()->ID);
-		return					(1);
-	}
+	// stalkers cannot change their equipment due to the game design :-((
 	return						(0);
+//	// choosing equipment
+//	CSE_ALifeInventoryItem			*l_tpALifeItemBest	= 0;
+//	float							l_fItemBestValue	= -1.f;
+//	ai().ef_storage().m_tpCurrentALifeMember	= this;
+//
+//	ITEM_P_IT					I = alife().m_temp_item_vector.begin(), X;
+//	ITEM_P_IT					E = alife().m_temp_item_vector.end();
+//	for ( ; I != E; ++I) {
+//		// checking if it is an equipment item
+//		ai().ef_storage().m_tpCurrentALifeObject = smart_cast<CSE_ALifeObject*>(*I);
+//		if (ai().ef_storage().m_pfEquipmentType->ffGetValue() > ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue())
+//			continue;
+//		if (m_dwTotalMoney < (*I)->m_dwCost)
+//			continue;
+//		// evaluating item
+//		float					l_fCurrentValue = ai().ef_storage().m_pfEquipmentType->ffGetValue();
+//		// choosing the best item
+//		if ((l_fCurrentValue > l_fItemBestValue) && bfCanGetItem(*I) && (!tpObjectVector || (std::find(tpObjectVector->begin(),tpObjectVector->end(),(*I)->base()->ID) == tpObjectVector->end()))) {
+//			l_fItemBestValue	= l_fCurrentValue;
+//			l_tpALifeItemBest	= *I;
+//			X					= I;
+//		}
+//	}
+//	if (l_tpALifeItemBest) {
+//		if (!tpObjectVector) {
+//			alife().graph().attach	(*this,l_tpALifeItemBest,smart_cast<CSE_ALifeDynamicObject*>(l_tpALifeItemBest)->m_tGraphID);
+//			alife().m_temp_item_vector.erase(X);
+//		}
+//		else
+//			children.push_back	(l_tpALifeItemBest->base()->ID);
+//		return					(1);
+//	}
+//	return						(0);
 }
 
 int  CSE_ALifeHumanAbstract::ifChooseWeapon(EWeaponPriorityType tWeaponPriorityType, OBJECT_VECTOR *tpObjectVector)

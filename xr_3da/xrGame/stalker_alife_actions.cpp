@@ -12,10 +12,13 @@
 #include "inventory_item.h"
 #include "script_game_object.h"
 #include "inventory.h"
-#include "alife_task.h"
 
 #ifdef _DEBUG
 //#	define STALKER_DEBUG_MODE
+#endif
+
+#ifdef STALKER_DEBUG_MODE
+#	include "attachable_item.h"
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -66,15 +69,15 @@ void CStalkerActionGatherItems::execute		()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionFreeNoALife
+// CStalkerActionNoALife
 //////////////////////////////////////////////////////////////////////////
 
-CStalkerActionFreeNoALife::CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCSTR action_name) :
+CStalkerActionNoALife::CStalkerActionNoALife	(CAI_Stalker *object, LPCSTR action_name) :
 	inherited				(object,action_name)
 {
 }
 
-void CStalkerActionFreeNoALife::initialize	()
+void CStalkerActionNoALife::initialize	()
 {
 	inherited::initialize			();
 #ifndef STALKER_DEBUG_MODE
@@ -124,7 +127,7 @@ void CStalkerActionFreeNoALife::initialize	()
 #endif
 }
 
-void CStalkerActionFreeNoALife::finalize	()
+void CStalkerActionNoALife::finalize	()
 {
 	inherited::finalize				();
 
@@ -135,7 +138,7 @@ void CStalkerActionFreeNoALife::finalize	()
 	m_object->set_sound_mask		(0);
 }
 
-void CStalkerActionFreeNoALife::execute		()
+void CStalkerActionNoALife::execute		()
 {
 	inherited::execute				();
 #ifndef STALKER_DEBUG_MODE
@@ -166,171 +169,3 @@ void CStalkerActionFreeNoALife::execute		()
 #endif
 }
 
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionFreeALife
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerActionFreeALife::CStalkerActionFreeALife	(CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(object,action_name)
-{
-}
-
-void CStalkerActionFreeALife::initialize	()
-{
-	inherited::initialize			();
-	m_stop_weapon_handling_time		= Level().timeServer();
-
-	if (m_object->inventory().ActiveItem() && m_object->best_weapon() && (m_object->inventory().ActiveItem()->ID() == m_object->best_weapon()->ID()))
-		m_stop_weapon_handling_time	+= ::Random.randI(120000,180000);
-
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(0);
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateFree);
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
-}
-
-void CStalkerActionFreeALife::finalize	()
-{
-	inherited::finalize				();
-
-	if (!m_object->g_Alive())
-		return;
-
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
-	m_object->set_sound_mask		(0);
-}
-
-void CStalkerActionFreeALife::execute		()
-{
-	inherited::execute				();
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionReachTaskLocation
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerActionReachTaskLocation::CStalkerActionReachTaskLocation	(CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(object,action_name)
-{
-}
-
-void CStalkerActionReachTaskLocation::initialize	()
-{
-	inherited::initialize			();
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(0);
-	m_object->set_desired_direction	(0);
-	m_object->set_selection_type	(eSelectionTypeMask);
-	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateFree);
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
-}
-
-void CStalkerActionReachTaskLocation::finalize	()
-{
-	inherited::finalize				();
-
-	m_object->set_selection_type	(eSelectionTypeRandomBranching);
-
-	if (!m_object->g_Alive())
-		return;
-
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
-	m_object->set_sound_mask		(0);
-}
-
-void CStalkerActionReachTaskLocation::execute		()
-{
-	inherited::execute				();
-	m_object->set_game_dest_vertex	(m_object->current_alife_task().m_tGraphID);
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionAccomplishTask
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerActionAccomplishTask::CStalkerActionAccomplishTask	(CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(object,action_name)
-{
-}
-
-void CStalkerActionAccomplishTask::initialize	()
-{
-	inherited::initialize			();
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(0);
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateFree);
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
-}
-
-void CStalkerActionAccomplishTask::finalize	()
-{
-	inherited::finalize				();
-
-	if (!m_object->g_Alive())
-		return;
-
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
-	m_object->set_sound_mask		(0);
-}
-
-void CStalkerActionAccomplishTask::execute		()
-{
-	inherited::execute				();
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionFollowCustomer
-//////////////////////////////////////////////////////////////////////////
-
-CStalkerActionFollowCustomer::CStalkerActionFollowCustomer	(CAI_Stalker *object, LPCSTR action_name) :
-	inherited				(object,action_name)
-{
-}
-
-void CStalkerActionFollowCustomer::initialize	()
-{
-	inherited::initialize			();
-	m_object->set_node_evaluator	(0);
-	m_object->set_path_evaluator	(0);
-	m_object->set_desired_position	(0);
-	m_object->set_desired_direction	(0);
-	m_object->set_path_type			(MovementManager::ePathTypeGamePath);
-	m_object->set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	m_object->set_body_state		(eBodyStateStand);
-	m_object->set_movement_type		(eMovementTypeWalk);
-	m_object->set_mental_state		(eMentalStateFree);
-	m_object->CSightManager::setup	(CSightAction(SightManager::eSightTypeCover,false,true));
-}
-
-void CStalkerActionFollowCustomer::finalize	()
-{
-	inherited::finalize				();
-
-	if (!m_object->g_Alive())
-		return;
-
-	m_object->set_sound_mask		(u32(eStalkerSoundMaskNoHumming));
-	m_object->set_sound_mask		(0);
-}
-
-void CStalkerActionFollowCustomer::execute		()
-{
-	inherited::execute				();
-}

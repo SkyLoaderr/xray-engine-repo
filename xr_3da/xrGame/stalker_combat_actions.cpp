@@ -547,20 +547,19 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 		m_storage->set_property	(eWorldPropertyEnemyAimed,false);
 	}
 
+	Fvector						desired_position = mem_object.m_object_params.m_position;
+	u32							level_vertex_id = mem_object.m_object_params.m_level_vertex_id;
 	if (m_object->enemy()) {
 		if (Level().timeServer() >= m_start_standing_time + 10000) {
-			if (m_object->accessible(mem_object.m_object_params.m_position)) {
-				m_object->set_level_dest_vertex	(mem_object.m_object_params.m_level_vertex_id);
-				m_object->set_desired_position	(&mem_object.m_object_params.m_position);
-			}
-			else {
-				Fvector desired_position;
-				u32	level_vertex_id = m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
-				m_object->set_level_dest_vertex	(level_vertex_id);
-				m_object->set_desired_position	(&desired_position);
-			}
-			if (m_object->Position().distance_to(mem_object.m_object_params.m_position) >= 2.f) {
-				if (m_object->Position().distance_to(mem_object.m_object_params.m_position) >= 10.f) {
+
+			if (!m_object->accessible(mem_object.m_object_params.m_position))
+				level_vertex_id = m_object->accessible_nearest(mem_object.m_object_params.m_position,desired_position);
+
+			m_object->set_level_dest_vertex	(level_vertex_id);
+			m_object->set_desired_position	(&desired_position);
+
+			if (m_object->Position().distance_to(desired_position) >= 2.f) {
+				if (m_object->Position().distance_to(desired_position) >= 10.f) {
 					m_object->set_body_state	(eBodyStateStand);
 					m_object->set_movement_type	(eMovementTypeRun);
 				}
@@ -573,7 +572,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 				m_object->set_body_state	(eBodyStateCrouch);
 				m_object->set_movement_type	(eMovementTypeRun);
 			}
-			if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <= .1f)
+			if (m_object->Position().distance_to_xz(desired_position) <= .1f)
 				m_object->CMemoryManager::enable(m_object->enemy(),false);
 		}
 		else {
@@ -618,13 +617,13 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 
 	m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
-	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
-		if (m_object->Position().distance_to_xz(mem_object.m_object_params.m_position) <=.5f)
+	if (ai().level_graph().inside(level_vertex_id,desired_position)) {
+		if (m_object->Position().distance_to_xz(desired_position) <=.5f)
 			m_object->CMemoryManager::enable	(m_object->enemy(),false);
 	}
 	else
-		if ((mem_object.m_object_params.m_level_vertex_id == m_object->level_vertex_id()) || 
-			 (m_object->Position().distance_to_xz(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id)) < ai().level_graph().header().cell_size() * 1.5f))
+		if ((level_vertex_id == m_object->level_vertex_id()) || 
+			 (m_object->Position().distance_to_xz(ai().level_graph().vertex_position(level_vertex_id)) < ai().level_graph().header().cell_size() * 1.5f))
 				m_object->CMemoryManager::enable	(m_object->enemy(),false);
 }
 

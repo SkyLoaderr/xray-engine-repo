@@ -629,12 +629,12 @@
 						<File
 							RelativePath=".\motivation_action_manager_inline.h">
 						</File>
-						<File
-							RelativePath=".\motivation_action_manager_script.cpp">
-						</File>
 						<Filter
 							Name="MotivationActionManagerScript"
 							Filter="">
+							<File
+								RelativePath=".\motivation_action_manager_script.cpp">
+							</File>
 							<File
 								RelativePath=".\motivation_action_manager_script.h">
 							</File>
@@ -1414,6 +1414,9 @@
 						</File>
 						<File
 							RelativePath=".\alife_human.cpp">
+						</File>
+						<File
+							RelativePath=".\alife_human.h">
 						</File>
 						<File
 							RelativePath=".\alife_human_behaviour.cpp">
@@ -3163,6 +3166,16 @@
 										</File>
 										<File
 											RelativePath=".\stalker_alife_actions.h">
+										</File>
+									</Filter>
+									<Filter
+										Name="task_actions"
+										Filter="">
+										<File
+											RelativePath=".\stalker_alife_task_actions.cpp">
+										</File>
+										<File
+											RelativePath=".\stalker_alife_task_actions.h">
 										</File>
 									</Filter>
 								</Filter>

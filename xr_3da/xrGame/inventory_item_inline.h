@@ -25,5 +25,5 @@ IC	int	CInventoryItem::GetWidth				() const
 
 IC	bool CInventoryItem::useful_for_NPC			() const
 {
-	return				(m_useful_for_NPC);
+	return				(Useful() && m_useful_for_NPC);
 }

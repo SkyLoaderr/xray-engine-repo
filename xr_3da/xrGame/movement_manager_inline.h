@@ -52,7 +52,7 @@ IC	void CMovementManager::set_path_type(EPathType path_type)
 
 IC	void CMovementManager::set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id)
 {
-	VERIFY					(!CDetailPathManager::m_restricted_object || CDetailPathManager::m_restricted_object->accessible(ai().game_graph().vertex(game_vertex_id)->level_point()));
+//	VERIFY					(!CDetailPathManager::m_restricted_object || CDetailPathManager::m_restricted_object->accessible(ai().game_graph().vertex(game_vertex_id)->level_point()));
 	CGamePathManager::set_dest_vertex(game_vertex_id);
 	m_path_actuality		= m_path_actuality && CGamePathManager::actual();
 }
@@ -170,4 +170,15 @@ template <typename T>
 IC	bool CMovementManager::accessible			(T position_or_vertex_id, float radius) const
 {
 	return				(CRestrictedObject::accessible(position_or_vertex_id,radius));
+}
+
+IC	void CMovementManager::extrapolate_path		(bool value)
+{
+	m_path_actuality		= m_path_actuality && (value == m_extrapolate_path);
+	m_extrapolate_path		= value;
+}
+
+IC	bool CMovementManager::extrapolate_path		() const
+{
+	return					(m_extrapolate_path);
 }

@@ -22,6 +22,7 @@ CMovementManager::CMovementManager	()
 	m_dwFrameReload					= u32(-1);
 	m_dwFrameNetSpawn				= u32(-1);
 	m_dwFrameNetDestroy				= u32(-1);
+	extrapolate_path				(false);
 	init							();
 }
 

@@ -11,9 +11,12 @@
 #include "alife_simulator.h"
 #include "alife_graph_registry.h"
 #include "alife_level_registry.h"
+#include "profiler.h"
 
 void CMovementManager::process_game_path()
 {
+	START_PROFILE("AI/Build Path/Process Game Path");
+
 	EPathState	prev_state	= m_path_state;
 	for (;;) {
 		switch (m_path_state) {
@@ -22,27 +25,20 @@ void CMovementManager::process_game_path()
 
 				if (CGameLocationSelector::failed())
 					break;
+
 				m_path_state	= ePathStateBuildGamePath;
+
 				if (time_over())
 					break;
 			}
 			case ePathStateBuildGamePath : {
-				Device.Statistic.TEST0.Begin();
-				
-				Msg							("GAME PATH : %d -> %d",game_vertex_id(),game_dest_vertex_id());
-				Msg							("GAME PATH LEVEL : %d -> %d",ai().game_graph().vertex(game_vertex_id())->level_id(),ai().game_graph().vertex(game_dest_vertex_id())->level_id());
-				
 				CGamePathManager::build_path(game_vertex_id(),game_dest_vertex_id());
 
-				if (CGamePathManager::failed()) {
-					Device.Statistic.TEST0.End();
+				if (CGamePathManager::failed())
 					break;
-				}
-				
-				Msg							("GAME PATH : %d -> %d",game_vertex_id(),CGamePathManager::path().back());
 				
 				m_path_state	= ePathStateContinueGamePath;
-				Device.Statistic.TEST0.End();
+				
 				if (time_over())
 					break;
 			}
@@ -55,38 +51,47 @@ void CMovementManager::process_game_path()
 					teleport		(CGamePathManager::intermediate_vertex_id());
 					break;
 				}
-				m_path_state	= ePathStateBuildLevelPath;
+				
+				m_path_state		= ePathStateBuildLevelPath;
+				
 				if (time_over())
 					break;
 			}
 			case ePathStateBuildLevelPath : {
-//				Device.Statistic.TEST1.Begin();
+				u32	dest_level_vertex_id = ai().game_graph().vertex(
+						CGamePathManager::intermediate_vertex_id()
+				)->level_vertex_id();
+
+				if (!accessible(dest_level_vertex_id)) {
+					Fvector					dest_pos;
+					dest_level_vertex_id	= accessible_nearest(
+						ai().level_graph().vertex_position(dest_level_vertex_id),
+						dest_pos
+					);
+				}
 
 				CLevelPathManager::build_path(
 					level_vertex_id(),
-					ai().game_graph().vertex(
-						CGamePathManager::intermediate_vertex_id()
-					)->level_vertex_id()
+					dest_level_vertex_id
 				);
 
-				if (CLevelPathManager::failed()) {
-//					Device.Statistic.TEST1.End();
+				if (CLevelPathManager::failed())
 					break;
-				}
+				
 				m_path_state		= ePathStateContinueLevelPath;
-//				Device.Statistic.TEST1.End();
+				
 				if (time_over())
 					break;
 			}
 			case ePathStateContinueLevelPath : {
 				CLevelPathManager::select_intermediate_vertex();
+				
 				m_path_state		= ePathStateBuildDetailPath;
+				
 				if (time_over())
 					break;
 			}
 			case ePathStateBuildDetailPath : {
-//				Device.Statistic.TEST2.Begin();
-
 				CDetailPathManager::set_state_patrol_path(true);
 				CDetailPathManager::set_start_position(Position());
 				CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
@@ -95,18 +100,19 @@ void CMovementManager::process_game_path()
 						CLevelPathManager::intermediate_vertex_id()
 					)
 				);
+				
 				CDetailPathManager::build_path(
 					CLevelPathManager::path(),
 					CLevelPathManager::intermediate_index()
 				);
 				
-//				Device.Statistic.TEST2.End();
-				
 				if (CDetailPathManager::failed()) {
 					m_path_state	= ePathStateBuildLevelPath;
 					break;
 				}
+
 				m_path_state		= ePathStatePathVerification;
+				
 				break;
 			}
 			case ePathStatePathVerification : {
@@ -142,9 +148,12 @@ void CMovementManager::process_game_path()
 			}
 			default : NODEFAULT;
 		}
+
 		if (time_over() || (m_path_state == prev_state))
 			break;
+
 		prev_state		= m_path_state;
 	}
+	
+	STOP_PROFILE
 }
-

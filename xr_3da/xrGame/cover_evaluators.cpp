@@ -11,6 +11,8 @@
 #include "cover_point.h"
 #include "ai_space.h"
 #include "level_graph.h"
+#include "game_graph.h"
+#include "game_level_cross_table.h"
 
 //////////////////////////////////////////////////////////////////////////
 // CCoverEvaluatorCloseToEnemy
@@ -171,3 +173,32 @@ void CCoverEvaluatorSafe::evaluate			(CCoverPoint *cover_point)
 	m_best_value			= cover_value;
 }
 
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorRandomGame
+//////////////////////////////////////////////////////////////////////////
+
+void CCoverEvaluatorRandomGame::setup		(ALife::_GRAPH_ID game_vertex_id, float max_distance)
+{
+	inherited::setup		();
+	m_game_vertex_id		= game_vertex_id;
+	m_start_position		= ai().game_graph().vertex(game_vertex_id)->level_point();
+	m_max_distance_sqr		= _sqr(max_distance);
+	m_covers.clear			();
+}
+
+void CCoverEvaluatorRandomGame::evaluate	(CCoverPoint *cover_point)
+{
+	if (m_start_position.distance_to_sqr(cover_point->position()) >= m_max_distance_sqr)
+		if (ai().cross_table().vertex(cover_point->level_vertex_id()).game_vertex_id() != m_game_vertex_id)
+			return;
+
+	m_covers.push_back		(cover_point);
+}
+
+void CCoverEvaluatorRandomGame::finalize	()
+{
+	if (m_covers.empty())
+		return;
+
+	m_selected				= m_covers[::Random.randI((int)m_covers.size())];
+}

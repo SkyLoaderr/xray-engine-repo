@@ -147,9 +147,9 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 	case DIK_F9:{
-		if (!ai().get_alife())
-			break;
-		const_cast<CALifeSimulatorHeader&>(ai().alife().header()).set_state(ALife::eZoneStateSurge);
+//		if (!ai().get_alife())
+//			break;
+//		const_cast<CALifeSimulatorHeader&>(ai().alife().header()).set_state(ALife::eZoneStateSurge);
 		break;
 	}
 		return;

@@ -40,6 +40,9 @@ class CMovementManager :
 	public CRestrictedObject,
 	virtual public CPhysicsShellHolder
 {
+	friend class CScriptMonster;
+	friend class CGroup;
+
 protected:
 	typedef CBaseLocationSelector	<CGameGraph,SVertexType<float,u32,u32>,u32>			CGameLocationSelector;
 	typedef CBasePathManager		<CGameGraph,SBaseParameters<float,u32,u32>,u32,u32>	CGamePathManager;
@@ -73,6 +76,12 @@ private:
 		ePathStateDummy = u32(-1),
 	};
 
+protected:
+	float									m_speed;
+
+public:
+	MonsterSpace::SBoneRotation				m_body;
+
 private:
 	EPathState								m_path_state;
 	EPathType								m_path_type;
@@ -91,14 +100,9 @@ private:
 	u32										m_dwFrameNetDestroy;
 	u32										m_refresh_rate;
 	u32										m_last_update;
-
-protected:
-	float									m_speed;
-public:
-	MonsterSpace::SBoneRotation				m_body;
+	bool									m_extrapolate_path;
 
 private:
-
 	IC		void	time_start				();
 	IC		bool	time_over				() const;
 			void	process_game_path		();
@@ -106,9 +110,6 @@ private:
 			void	process_enemy_search	();
 			void	process_patrol_path		();
 			void	verify_detail_path		();
-
-	friend class CScriptMonster;
-	friend class CGroup;
 
 protected:
 	virtual void	teleport				(u32 game_vertex_id);
@@ -156,6 +157,9 @@ public:
 	IC		bool	accessible				(T position_or_vertex_id, float radius = EPS_L) const;
 
 	virtual void	UpdateCL				();
+
+	IC		void	extrapolate_path		(bool value);
+	IC		bool	extrapolate_path		() const;
 };
 
 #include "movement_manager_inline.h"

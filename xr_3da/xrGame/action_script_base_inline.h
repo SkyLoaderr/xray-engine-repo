@@ -34,7 +34,6 @@ TEMPLATE_SPECIALIZATION
 void CScriptBaseAction::reinit		(_object_type *object, CPropertyStorage *storage, bool clear_all)
 {
 	VERIFY				(object);
-	inherited::reinit	(object->lua_game_object(),storage,clear_all);
 	m_object			= object;
 }
 
@@ -43,8 +42,7 @@ void CScriptBaseAction::reinit		(CScriptGameObject *object, CPropertyStorage *st
 {
 	VERIFY				(object);
 	inherited::reinit	(object,storage,clear_all);
-	m_object			= smart_cast<_object_type*>(object->object());
-	VERIFY				(m_object);
+	reinit				(smart_cast<_object_type*>(object->object()),storage,clear_all);
 }
 
 #undef TEMPLATE_SPECIALIZATION

@@ -35,6 +35,8 @@ private:
 	CScriptCallback		m_OnStopCallback;
 	CScriptCallback		m_OnTradeCallback;
 
+	bool				m_busy_now;
+
 	struct SAnimInfo {
 		shared_str		name;			// "talk_"
 		u8			count;			// количество анимаций данного типа
@@ -141,11 +143,17 @@ private:
 	//генерируемые задания
 public:
 	//проверяет список артефактов в заказах
-	virtual	u32				ArtefactPrice				(CArtefact* pArtefact);
+	virtual	u32				ArtefactPrice			(CArtefact* pArtefact);
 	//продажа артефакта, с последуещим изменением списка заказов  (true - если артефакт был в списке)
 	virtual	bool			BuyArtefact				(CArtefact* pArtefact);
 	//синхронизация заданий артефактов для сервера
 	virtual	void			SyncArtefactsWithServer	();
 public:
 	ALife::ARTEFACT_TRADER_ORDER_MAP	m_tpOrderedArtefacts;
+
+public:
+	IC		bool			busy_now				() const
+	{
+		return				(m_busy_now);
+	}
 };

@@ -18,6 +18,32 @@
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "clsid_game.h"
 
+IC	CLASS_ID clsid_object()
+{
+	CLASS_ID					result;
+	if (ai().ef_storage().m_tpGameObject)
+		result					= ai().ef_storage().m_tpGameObject->SUB_CLS_ID;
+	else {
+		VERIFY2					(ai().ef_storage().m_tpCurrentALifeObject,"No object specified for evaluation function");
+		result					= ai().ef_storage().m_tpCurrentALifeObject->m_tClassID;
+	}
+	return						(result);
+}
+
+IC	CLASS_ID clsid_member()
+{
+	CLASS_ID							result;
+	if (ai().ef_storage().m_tpCurrentMember)
+		result							= ai().ef_storage().m_tpCurrentMember->SUB_CLS_ID;
+	else {
+		VERIFY2							(ai().ef_storage().m_tpCurrentALifeMember,"No object specified for evaluation function");
+		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeMember);
+		VERIFY2							(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function");
+		result							= l_tpALifeDynamicObject->m_tClassID;
+	}
+	return								(result);
+}
+
 float CDistanceFunction::ffGetValue()
 {
 	if (bfCheckForCachedResult())
@@ -62,16 +88,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	
-	CLASS_ID	l_tClassID;
-	if (ai().ef_storage().m_tpCurrentMember) {
-		l_tClassID = ai().ef_storage().m_tpCurrentMember->SUB_CLS_ID;
-	}
-	else {
-		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeMember);
-		VERIFY3							(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
-		l_tClassID = l_tpALifeDynamicObject->m_tClassID;
-	}
-	switch (l_tClassID) {
+	switch (clsid_member()) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
@@ -168,9 +185,7 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 
 u32 CPersonalWeaponTypeFunction::dwfGetWeaponType()
 {
-	VERIFY2		(ai().ef_storage().m_tpGameObject || ai().ef_storage().m_tpCurrentALifeObject,"No weapon passed to the PersonalWeaponType evaluation function");
-	CLASS_ID	l_tClassID = ai().ef_storage().m_tpGameObject ? ai().ef_storage().m_tpGameObject->SUB_CLS_ID : ai().ef_storage().m_tpCurrentALifeObject->m_tClassID;
-	switch (l_tClassID) {
+	switch (clsid_object()) {
 		case CLSID_OBJECT_W_RPG7:
 		case CLSID_OBJECT_W_M134:
 			return(9);
@@ -240,16 +255,7 @@ float CPersonalWeaponTypeFunction::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	
-	CLASS_ID	l_tClassID;
-	if (ai().ef_storage().m_tpCurrentMember) {
-		l_tClassID = ai().ef_storage().m_tpCurrentMember->SUB_CLS_ID;
-	}
-	else {
-		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeMember);
-		VERIFY3							(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
-		l_tClassID = l_tpALifeDynamicObject->m_tClassID;
-	}
-	switch (l_tClassID) {
+	switch (clsid_member()) {
 		case CLSID_AI_RAT				: {
 			m_fLastValue =  1;
 			break;
@@ -632,40 +638,33 @@ float CEquipmentType::ffGetValue()
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
 	
-	if (ai().ef_storage().m_tpGameObject) {
-#pragma todo("Dima to Dima : Append EquipmentType with non-ALife branch")
-		return					(m_fLastValue);
-	}
-	else {
-		VERIFY2					(ai().ef_storage().m_tpCurrentALifeObject,"No object specified for EquipmentType evaluation function");
-		switch (ai().ef_storage().m_tpCurrentALifeObject->m_tClassID) {
-			case CLSID_EQUIPMENT_SIMPLE		: {
-				m_fLastValue = 1;
-				break;
-			}
-			case CLSID_EQUIPMENT_SCIENTIFIC	: {
-				m_fLastValue = 2;
-				break;
-			}
-			case CLSID_EQUIPMENT_STALKER	: {	
-				m_fLastValue = 3;
-				break;
-			}
-			case CLSID_EQUIPMENT_MILITARY	: {
-				m_fLastValue = 4;
-				break;
-			}
-			case CLSID_EQUIPMENT_EXO		: {	
-				m_fLastValue = 5;
-				break;
-			}
-			default							: {
-				m_fLastValue = 6;
-				break;
-			}
+	switch (clsid_object()) {
+		case CLSID_EQUIPMENT_SIMPLE		: {
+			m_fLastValue = 1;
+			break;
 		}
-		return					(m_fLastValue);
+		case CLSID_EQUIPMENT_SCIENTIFIC	: {
+			m_fLastValue = 2;
+			break;
+		}
+		case CLSID_EQUIPMENT_STALKER	: {	
+			m_fLastValue = 3;
+			break;
+		}
+		case CLSID_EQUIPMENT_MILITARY	: {
+			m_fLastValue = 4;
+			break;
+		}
+		case CLSID_EQUIPMENT_EXO		: {	
+			m_fLastValue = 5;
+			break;
+		}
+		default							: {
+			m_fLastValue = 6;
+			break;
+		}
 	}
+	return					(m_fLastValue);
 }
 
 float CItemDeterioration::ffGetValue()
@@ -702,43 +701,37 @@ float CMainWeaponType::ffGetValue()
 {
 	if (bfCheckForCachedResult())
 		return(m_fLastValue);
-	if (ai().ef_storage().m_tpCurrentMember) {
-#pragma todo("Dima to Dima : Append MainWeaponType with non-ALife branch")
-		return					(m_fLastValue);
-	}
-	else {
-		R_ASSERT2				(ai().ef_storage().m_tpCurrentALifeObject,"No object specified for MainWeaponType evaluation function");
-		switch (ai().ef_storage().m_tpCurrentALifeObject->m_tClassID) {
-			case CLSID_OBJECT_W_SHOTGUN: {
-				m_fLastValue	= 1;
-				break;
-			}
-			case CLSID_OBJECT_W_AK74:
-			case CLSID_OBJECT_W_VAL:
-			case CLSID_OBJECT_W_LR300: {
-			case CLSID_OBJECT_W_GROZA:
-				m_fLastValue	= 2.f;
-				break;
-			}
-			case CLSID_OBJECT_W_FN2000:
-			case CLSID_OBJECT_W_SVD:
-			case CLSID_OBJECT_W_SVU:
-			case CLSID_OBJECT_W_VINTOREZ: {
-				m_fLastValue	= 3.f;
-				break;
-			}
-			case CLSID_OBJECT_W_RPG7:
-			case CLSID_OBJECT_W_M134: {
-				m_fLastValue	= 4;
-				break;
-			}
-			default				: {
-				m_fLastValue	= 5;
-				break;
-			}
+	
+	switch (clsid_object()) {
+		case CLSID_OBJECT_W_SHOTGUN: {
+			m_fLastValue	= 1;
+			break;
 		}
-		return					(m_fLastValue);
+		case CLSID_OBJECT_W_AK74:
+		case CLSID_OBJECT_W_VAL:
+		case CLSID_OBJECT_W_LR300: {
+		case CLSID_OBJECT_W_GROZA:
+			m_fLastValue	= 2.f;
+			break;
+		}
+		case CLSID_OBJECT_W_FN2000:
+		case CLSID_OBJECT_W_SVD:
+		case CLSID_OBJECT_W_SVU:
+		case CLSID_OBJECT_W_VINTOREZ: {
+			m_fLastValue	= 3.f;
+			break;
+		}
+		case CLSID_OBJECT_W_RPG7:
+		case CLSID_OBJECT_W_M134: {
+			m_fLastValue	= 4;
+			break;
+		}
+		default				: {
+			m_fLastValue	= 5;
+			break;
+		}
 	}
+	return					(m_fLastValue);
 }
 
 float CMainWeaponPreference::ffGetValue()
@@ -814,15 +807,7 @@ float CEnemyAnomalyType::ffGetValue()
 	if (bfCheckForCachedResult())
 		return					(m_fLastValue);
 
-	CLASS_ID					l_tClassID;
-	if (ai().ef_storage().m_tpCurrentMember)
-		l_tClassID				= ai().ef_storage().m_tpCurrentMember->SUB_CLS_ID;
-	else {
-		CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeEnemy);
-		R_ASSERT3				(l_tpALifeDynamicObject,"Invalid object passed to the evaluation function ",m_caName);
-		l_tClassID				= l_tpALifeDynamicObject->m_tClassID;
-	}
-	switch (l_tClassID) {
+	switch (clsid_member()) {
 		case CLSID_Z_MBALD : {
 			m_fLastValue		=  1;
 			break;
@@ -865,22 +850,7 @@ float CDetectorType::ffGetValue()
 	if (bfCheckForCachedResult())
 		return					(m_fLastValue);
 
-	CLASS_ID					l_tClassID;
-	if (ai().ef_storage().m_tpCurrentMember)
-		if (!ai().ef_storage().m_tpGameObject)
-			return				(m_fLastValue = 0);
-		else
-			l_tClassID			= ai().ef_storage().m_tpGameObject->SUB_CLS_ID;
-	else {
-		const CSE_ALifeDynamicObject	*l_tpALifeDynamicObject = smart_cast<const CSE_ALifeDynamicObject*>(ai().ef_storage().m_tpCurrentALifeObject);
-		if (!l_tpALifeDynamicObject)
-			return				(m_fLastValue = 0);
-		else
-			l_tClassID			= l_tpALifeDynamicObject->m_tClassID;
-	}
-	
-	switch (l_tClassID) {
-		
+	switch (clsid_object()) {
 		case CLSID_AI_RAT				: 
 		case CLSID_AI_RAT_WOLF			: 
 		case CLSID_AI_ZOMBIE			: 

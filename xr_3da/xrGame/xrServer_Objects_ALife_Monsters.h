@@ -393,8 +393,11 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 			bool					bfDistanceToTraderIsDanger();
 			bool					bfEnoughMoneyToEquip	();
 			// miscellanious
+			bool					bfCheckIfTaskCompleted	(ALife::_TASK_ID		task_id, ALife::OBJECT_IT &I);
+			bool					bfCheckIfTaskCompleted	(ALife::_TASK_ID		task_id);
 			bool					bfCheckIfTaskCompleted	(ALife::OBJECT_IT		&I);
 			bool					bfCheckIfTaskCompleted	();
+			bool					similar_task			(const CALifeTask		*prev_task, const CALifeTask *new_task);
 			void					vfCheckForDeletedEvents	();
 			bool					bfChooseNextRoutePoint	();
 			void					vfSetCurrentTask		(ALife::_TASK_ID		&tTaskID);

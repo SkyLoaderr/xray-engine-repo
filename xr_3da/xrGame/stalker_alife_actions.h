@@ -26,10 +26,10 @@ public:
 };
 
 //////////////////////////////////////////////////////////////////////////
-// CStalkerActionFreeNoALife
+// CStalkerActionNoALife
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerActionFreeNoALife : public CStalkerActionBase {
+class CStalkerActionNoALife : public CStalkerActionBase {
 protected:
 	typedef CStalkerActionBase inherited;
 
@@ -37,71 +37,9 @@ protected:
 	u32					m_stop_weapon_handling_time;
 
 public:
-						CStalkerActionFreeNoALife	(CAI_Stalker *object, LPCSTR action_name = "");
+						CStalkerActionNoALife	(CAI_Stalker *object, LPCSTR action_name = "");
 	virtual void		initialize					();
 	virtual void		execute						();
 	virtual void		finalize					();
 };
 
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionFreeALife
-//////////////////////////////////////////////////////////////////////////
-
-class CStalkerActionFreeALife : public CStalkerActionBase {
-protected:
-	typedef CStalkerActionBase inherited;
-
-protected:
-	u32					m_stop_weapon_handling_time;
-
-public:
-						CStalkerActionFreeALife		(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual void		initialize					();
-	virtual void		execute						();
-	virtual void		finalize					();
-};
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionReachTaskLocation
-//////////////////////////////////////////////////////////////////////////
-
-class CStalkerActionReachTaskLocation : public CStalkerActionBase {
-protected:
-	typedef CStalkerActionBase inherited;
-
-public:
-						CStalkerActionReachTaskLocation	(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual void		initialize					();
-	virtual void		execute						();
-	virtual void		finalize					();
-};
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionAccomplishTask
-//////////////////////////////////////////////////////////////////////////
-
-class CStalkerActionAccomplishTask : public CStalkerActionBase {
-protected:
-	typedef CStalkerActionBase inherited;
-
-public:
-						CStalkerActionAccomplishTask(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual void		initialize					();
-	virtual void		execute						();
-	virtual void		finalize					();
-};
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerActionFollowCustomer
-//////////////////////////////////////////////////////////////////////////
-
-class CStalkerActionFollowCustomer : public CStalkerActionBase {
-protected:
-	typedef CStalkerActionBase inherited;
-
-public:
-						CStalkerActionFollowCustomer(CAI_Stalker *object, LPCSTR action_name = "");
-	virtual void		initialize					();
-	virtual void		execute						();
-	virtual void		finalize					();
-};

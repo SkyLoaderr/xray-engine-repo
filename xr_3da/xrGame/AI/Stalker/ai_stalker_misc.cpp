@@ -18,7 +18,7 @@ bool CAI_Stalker::useful		(const CGameObject *object) const
 		return			(false);
 
 	const CInventoryItem *inventory_item = smart_cast<const CInventoryItem*>(object);
-	if (!inventory_item || !inventory_item->Useful())
+	if (!inventory_item || !inventory_item->useful_for_NPC())
 		return			(false);
 
 	const CBolt			*bolt = smart_cast<const CBolt*>(object);

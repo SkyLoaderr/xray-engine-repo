@@ -204,7 +204,6 @@ protected:
 	void			CalculateInterpolationParams();
 
 private:
-	u64				m_inventory_mask;
 	u32				m_dwFrameLoad;
 	u32				m_dwFrameReload;
 	u32				m_dwFrameReinit;

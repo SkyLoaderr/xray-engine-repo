@@ -37,8 +37,6 @@ CInventoryItem::CInventoryItem()
 	m_iXPos = 0;
 	m_iYPos = 0;
 	////////////////////////////////////	
-	m_inventory_mask = u64(-1);
-
 	m_name = m_nameShort = NULL;
 
 	m_dwFrameLoad		= u32(-1);

@@ -30,6 +30,7 @@ namespace StalkerDecisionSpace {
 		eWorldPropertyPuzzleSolved,
 		eWorldPropertyReachedTaskLocation,
 		eWorldPropertyTaskCompleted,
+		eWorldPropertyReachedCustomerLocation,
 		eWorldPropertyCustomerSatisfied,
 
 		eWorldPropertyItems,
@@ -64,7 +65,8 @@ namespace StalkerDecisionSpace {
 		eWorldOperatorFreeALife,
 		eWorldOperatorReachTaskLocation,
 		eWorldOperatorAccomplishTask,
-		eWorldOperatorFollowCustomer,
+		eWorldOperatorReachCustomerLocation,
+		eWorldOperatorCommunicateWithCustomer,
 		
 		eWorldOperatorGatherItems,
 		eWorldOperatorGetKillDistance,

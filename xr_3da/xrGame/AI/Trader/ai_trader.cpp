@@ -62,6 +62,7 @@ void CAI_Trader::reinit	()
 	m_tpHeadDef				= 0;
 	m_tpGlobalDef			= 0;
 	m_cur_head_anim_type	= MonsterSpace::eHeadAnimNone;
+	m_busy_now				= false;
 }
 
 void CAI_Trader::reload	(LPCSTR section)
@@ -431,11 +432,13 @@ void CAI_Trader::clear_callback(bool bOnStart)
 
 void CAI_Trader::OnStartTrade()
 {
+	m_busy_now			= true;
 	m_OnStartCallback.callback();
 }
 
 void CAI_Trader::OnStopTrade()
 {
+	m_busy_now			= false;
 	m_OnStopCallback.callback();
 }
 

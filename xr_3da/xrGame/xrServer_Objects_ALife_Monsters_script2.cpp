@@ -15,7 +15,6 @@ using namespace luabind;
 
 void CSE_ALifeMonsterRat::script_register(lua_State *L)
 {
-#pragma todo("Dima to Dima : export rat as an inventory item too!")
 	module(L)[
 		luabind_class_monster2(
 			CSE_ALifeMonsterRat,

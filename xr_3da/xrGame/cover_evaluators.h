@@ -35,7 +35,7 @@ public:
 	IC		void		setup				();
 	IC		void		set_inertia			(u32 inertia_time);
 	IC		void		initialize			(const Fvector &start_position);
-	IC		void		finalize			();
+	virtual void		finalize			();
 	IC		bool		accessible			(const Fvector &position);
 };
 
@@ -127,6 +127,27 @@ public:
 	IC					CCoverEvaluatorSafe	(CRestrictedObject *object);
 	IC		void		setup				(float min_distance);
 			void		evaluate			(CCoverPoint *cover_point);
+};
+
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorRandomGame
+//////////////////////////////////////////////////////////////////////////
+
+class CCoverEvaluatorRandomGame : public CCoverEvaluatorBase {
+protected:
+	typedef CCoverEvaluatorBase inherited;
+
+protected:
+	ALife::_GRAPH_ID		m_game_vertex_id;
+	Fvector					m_start_position;
+	float					m_max_distance_sqr;
+	xr_vector<CCoverPoint*>	m_covers;
+
+public:
+	IC					CCoverEvaluatorRandomGame	(CRestrictedObject *object);
+			void		setup						(ALife::_GRAPH_ID game_vertex_id, float max_distance);
+			void		evaluate					(CCoverPoint *cover_point);
+	virtual	void		finalize					();
 };
 
 #include "cover_evaluators_inline.h"

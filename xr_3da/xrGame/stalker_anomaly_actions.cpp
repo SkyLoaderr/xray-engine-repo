@@ -110,7 +110,8 @@ void CStalkerActionDetectAnomaly::finalize	()
 	if (!m_object->g_Alive())
 		return;
 
-	m_object->set_sound_mask		(0);
+	m_object->CObjectHandler::set_goal	(eObjectActionIdle);
+	m_object->set_sound_mask			(0);
 }
 
 void CStalkerActionDetectAnomaly::execute	()

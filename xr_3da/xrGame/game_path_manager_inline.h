@@ -51,7 +51,13 @@ TEMPLATE_SPECIALIZATION
 IC	void CGameManagerTemplate::select_intermediate_vertex	()
 {
 	VERIFY				(!path().empty());
-	++m_intermediate_index;
+	if (m_intermediate_index != _index_type(-1))
+		++m_intermediate_index;
+	else
+		if (path().size() < 2)
+			m_intermediate_index = 0;
+		else
+			m_intermediate_index = 1;
 }
 
 #undef TEMPLATE_SPECIALIZATION

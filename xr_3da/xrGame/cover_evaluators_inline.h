@@ -124,3 +124,11 @@ IC	void CCoverEvaluatorSafe::setup		(float min_distance)
 	inherited::setup		();
 	m_min_distance			= min_distance;
 }
+
+//////////////////////////////////////////////////////////////////////////
+// CCoverEvaluatorRandomGame
+//////////////////////////////////////////////////////////////////////////
+
+IC	CCoverEvaluatorRandomGame::CCoverEvaluatorRandomGame	(CRestrictedObject *object) : inherited(object)
+{
+}

@@ -34,6 +34,7 @@ class CCoverEvaluatorFarFromEnemy;
 class CCoverEvaluatorBest;
 class CCoverEvaluatorAngle;
 class CCoverEvaluatorSafe;
+class CCoverEvaluatorRandomGame;
 class CAgentManager;
 class CALifeTask;
 class CMotionDef;
@@ -62,7 +63,7 @@ private:
 private:
 	ALife::OBJECT_VECTOR		m_tpKnownCustomers;
 	CALifeTask					*m_current_alife_task;
-	
+
 	// bones
 private:
 	int							m_r_hand;
@@ -94,6 +95,7 @@ public:
 	CCoverEvaluatorBest			*m_ce_best;
 	CCoverEvaluatorAngle		*m_ce_angle;
 	CCoverEvaluatorSafe			*m_ce_safe;
+	CCoverEvaluatorRandomGame	*m_ce_random_game;
 
 	// physics support
 public:
@@ -233,9 +235,56 @@ public:
 	virtual BOOL						feel_touch_on_contact	(CObject* O);
 
 	// ALife
+private:
+	struct CTradeItem {
+		CInventoryItem					*m_item;
+		ALife::_OBJECT_ID				m_owner_id;
+		ALife::_OBJECT_ID				m_new_owner_id;
+
+		IC					CTradeItem	(
+			CInventoryItem		*item,
+			ALife::_OBJECT_ID	owner_id,
+			ALife::_OBJECT_ID	new_owner_id
+		)
+		{
+			m_item			= item;
+			m_owner_id		= owner_id;
+			m_new_owner_id	= new_owner_id;
+		}
+
+		IC	bool			operator<	(const CTradeItem &trade_item) const;
+	};
+
+private:
+	CGameObject							*m_trader_game_object;
+	CInventoryOwner						*m_current_trader;
+	xr_vector<CTradeItem>				m_temp_items;
+	u32									m_total_money;
+
+protected:
+			bool						task_completed					(const CALifeTask *_task);
+			bool						similar_task					(const CALifeTask *prev_task, const CALifeTask *new_task);
+			void						select_alife_task				();
+			u32							fill_items						(CInventory &inventory, CGameObject *old_owner, ALife::_OBJECT_ID new_owner_id);
+			void						collect_items					();
+			
+	IC		void						buy_item_virtual				(CTradeItem &item);
+			void						attach_available_ammo			(CWeapon *weapon);
+			void						choose_food						();
+			void						choose_weapon					(ALife::EWeaponPriorityType weapon_priority_type);
+			void						choose_medikit					();
+			void						choose_detector					();
+			void						choose_equipment				();
+
+			void						select_items					();
+			void						process_items					();
+			void						transfer_item					(CInventoryItem *item, CGameObject *old_owner, CGameObject *new_owner);
+
 public:
-			void						select_alife_task		();
-			CALifeTask					&current_alife_task		();
+			CALifeTask					&current_alife_task				();
+			void						failed_to_complete_alife_task	();
+			bool						alife_task_completed			();
+			void						communicate						(CInventoryOwner *trader);
 };
 
 #include "ai_stalker_inline.h"

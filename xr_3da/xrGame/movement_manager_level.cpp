@@ -42,7 +42,7 @@ void CMovementManager::process_level_path()
 			if (time_over()) break;
 		}
 		case ePathStateBuildDetailPath : {
-			CDetailPathManager::set_state_patrol_path(false);
+			CDetailPathManager::set_state_patrol_path(extrapolate_path());
 			CDetailPathManager::set_start_position(Position());
 			CDetailPathManager::set_start_direction(Fvector().setHP(-m_body.current.yaw,0));
 			
@@ -71,7 +71,7 @@ void CMovementManager::process_level_path()
 					if (!CDetailPathManager::actual())
 						m_path_state	= ePathStateBuildLevelPath;
 					else
-						if (CDetailPathManager::completed(Position())) {
+						if (CDetailPathManager::completed(Position(),!extrapolate_path())) {
 							m_path_state	= ePathStateContinueLevelPath;
 							if (CLevelPathManager::completed()) {
 								if (CLevelLocationSelector::used())

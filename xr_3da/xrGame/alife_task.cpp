@@ -41,10 +41,9 @@ void CALifeTask::load		(IReader &stream)
 			stream.r		(&m_tGraphID,	sizeof(m_tGraphID));
 			break;
 		}
-		default : {
-			break;
-		}
+		default : NODEFAULT;
 	};
+	stream.r				(&m_dwTryCount,sizeof(m_dwTryCount));
 }
 
 void CALifeTask::save		(IWriter &stream)
@@ -75,8 +74,7 @@ void CALifeTask::save		(IWriter &stream)
 			stream.w		(&m_tGraphID,		sizeof(m_tGraphID));
 			break;
 		}
-		default : {
-			break;
-		}
+		default : NODEFAULT;
 	}
+	stream.w				(&m_dwTryCount,sizeof(m_dwTryCount));
 }

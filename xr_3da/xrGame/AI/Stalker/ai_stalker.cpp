@@ -74,11 +74,13 @@ void CAI_Stalker::reinit			()
 	m_ce_best						= xr_new<CCoverEvaluatorBest>(this);
 	m_ce_angle						= xr_new<CCoverEvaluatorAngle>(this);
 	m_ce_safe						= xr_new<CCoverEvaluatorSafe>(this);
+	m_ce_random_game				= xr_new<CCoverEvaluatorRandomGame>(this);
 	m_ce_close->set_inertia			(3000);
 	m_ce_far->set_inertia			(3000);
 	m_ce_best->set_inertia			(1000);
 	m_ce_angle->set_inertia			(5000);
 	m_ce_safe->set_inertia			(1000);
+	m_ce_random_game->set_inertia	(3000);
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
@@ -488,7 +490,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 //				if(pArtefact)
 //					pArtefact->Drop();
 //
-//				//if ((*l_it)->Useful())
+//				//if ((*l_it)->useful_for_NPC())
 //					//(*l_it)->Drop();
 //			}
 		}
@@ -504,7 +506,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 			
 			/*TIItemList &l_list = inventory().m_ruck;
 			for(PPIItem l_it = l_list.begin(); l_list.end() != l_it; ++l_it)
-				if ((*l_it)->Useful())
+				if ((*l_it)->useful_for_NPC())
 					(**l_it).Drop();*/
 		}
 	}

@@ -29,6 +29,7 @@ public:
 	};
 
 public:
+	IC							CALifeTask		();
 	virtual						~CALifeTask		();
 	virtual void				load			(IReader &stream);
 	virtual void				save			(IWriter &stream);

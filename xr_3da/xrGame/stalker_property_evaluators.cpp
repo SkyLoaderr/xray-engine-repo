@@ -12,10 +12,13 @@
 #include "stalker_decision_space.h"
 #include "script_game_object.h"
 #include "ai/ai_monsters_misc.h"
+#include "inventory.h"
+#include "alife_simulator.h"
+#include "alife_object_registry.h"
 
 using namespace StalkerDecisionSpace;
 
-#define NO_ALIFE_ACTIONS
+//#define NO_ALIFE_ACTIONS
 
 typedef CStalkerPropertyEvaluator::_value_type _value_type;
 
@@ -183,31 +186,4 @@ _value_type CStalkerPropertyEvaluatorPanic::evaluate	()
 {
 	u32					result = dwfChooseAction(2000,.8f,.6f,.4f,.2f,m_object->g_Team(),m_object->g_Squad(),m_object->g_Group(),0,1,2,3,4,m_object,30.f);
 	return				(result > 3);
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerPropertyEvaluatorReachedTaskLocation
-//////////////////////////////////////////////////////////////////////////
-
-_value_type CStalkerPropertyEvaluatorReachedTaskLocation::evaluate	()
-{
-	return				(m_object->inside_anomaly());
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerPropertyEvaluatorTaskAccomplished
-//////////////////////////////////////////////////////////////////////////
-
-_value_type CStalkerPropertyEvaluatorTaskAccomplished::evaluate	()
-{
-	return				(m_object->inside_anomaly());
-}
-
-//////////////////////////////////////////////////////////////////////////
-// CStalkerPropertyEvaluatorCustomerSatisfied
-//////////////////////////////////////////////////////////////////////////
-
-_value_type CStalkerPropertyEvaluatorCustomerSatisfied::evaluate	()
-{
-	return				(m_object->inside_anomaly());
 }
