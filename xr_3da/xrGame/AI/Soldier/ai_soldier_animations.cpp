@@ -34,7 +34,7 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tNormal.tTorso.tpDamageLeft = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_left");
 	tSoldierAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_Cycle_Safe("norm_torso_damage_right");
 	tSoldierAnimations.tNormal.tTorso.tpReload = tpVisualObject->ID_Cycle_Safe("norm_torso_reload");
-
+	
 	// loading crouch animations
 	tSoldierAnimations.tCrouch.tGlobal.tpDeath = tpVisualObject->ID_Cycle_Safe("cr_death");
 	tSoldierAnimations.tCrouch.tGlobal.tpJumpBegin = tpVisualObject->ID_Cycle_Safe("cr_jump_begin");
@@ -46,6 +46,15 @@ void CAI_Soldier::vfLoadAnimations()
 	tSoldierAnimations.tCrouch.tLegs.tpTurn = tpVisualObject->ID_Cycle_Safe("cr_turn");
 	
 	tSoldierAnimations.tCrouch.tTorso.tpAim = tpVisualObject->ID_Cycle_Safe("cr_torso_aim");
+	
+	tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tTorso.tpaIdle[0]);
+	tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tLegs.tpIdle);
+	
+	// loading lie animations
+	tSoldierAnimations.tCrouch.tGlobal.tpDeath = tpVisualObject->ID_Cycle_Safe("lie_death");
+	
+	tSoldierAnimations.tCrouch.tLegs.tWalk.Create(tpVisualObject, "lie_walk");
+	tSoldierAnimations.tCrouch.tLegs.tpIdle = tpVisualObject->ID_Cycle_Safe("cr_idle");
 	
 	tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tTorso.tpaIdle[0]);
 	tpVisualObject->PlayCycle(tSoldierAnimations.tNormal.tLegs.tpIdle);
@@ -66,8 +75,8 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 	CMotionDef*	tpGlobalAnimation=0;
 
 	if (iHealth <= 0) {
-		switch (m_cCrouched) {
-			case 0 : {
+		switch (m_cBodyState) {
+			case BODY_STATE_STAND : {
 				for (int i=0 ;i<2; i++)
 					if (tSoldierAnimations.tNormal.tGlobal.tpaDeath[i] == m_tpCurrentGlobalAnimation) {
 						tpGlobalAnimation = m_tpCurrentGlobalAnimation;
@@ -77,16 +86,20 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 					tpGlobalAnimation = tSoldierAnimations.tNormal.tGlobal.tpaDeath[::Random.randI(0,2)];
 				break;
 			}
-			case 1 : {
+			case BODY_STATE_CROUCH : {
 				tpGlobalAnimation = tSoldierAnimations.tCrouch.tGlobal.tpDeath;
+				break;
+									 }
+			case BODY_STATE_LIE : {
+				tpGlobalAnimation = tSoldierAnimations.tLie.tGlobal.tpDeath;
 				break;
 			}
 		}
 	}
 	else {
 		if (speed<0.2f) {
-			switch (m_cCrouched) {
-				case 0 : {
+			switch (m_cBodyState) {
+				case BODY_STATE_STAND : {
 					if ((!(AI_Path.TravelPath.size()) || (eCurrentState != aiSoldierPatrolRoute))) {
 						if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
 							tpLegsAnimation = tSoldierAnimations.tNormal.tLegs.tpTurn;
@@ -98,22 +111,40 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 					
 					break;
 				}
-				case 1 : {
+				case BODY_STATE_CROUCH : {
 					if (r_torso_target.yaw - r_torso_current.yaw > PI/30.f)
 						tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpTurn;
 					else
 						tpLegsAnimation = tSoldierAnimations.tCrouch.tLegs.tpIdle;
 					break;
+										 }
+				case BODY_STATE_LIE : {
+					Msg("Animation Selection : can't turn while lying...");
+					break;
 				}
 			}
 			switch (eCurrentState) {
 				case aiSoldierReload : {
-					tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+							break;
+						}
+						case BODY_STATE_CROUCH : {
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+							break;
+						}
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+							break;
+						}
+					}
 					break;
 				}
 				case aiSoldierAttackFire : {
-					switch (m_cCrouched) {
-						case 0 : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
+							/**
 							for (int i=0 ;i<2; i++)
 								if (tSoldierAnimations.tNormal.tTorso.tpaAttack[i] == m_tpCurrentTorsoAnimation) {
 									tpTorsoAnimation = m_tpCurrentTorsoAnimation;
@@ -121,19 +152,25 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								}
 							
 							if (!tpTorsoAnimation)
-								tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[::Random.randI(0,2)];
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[::Random.randI(0,2)];
+							/**/
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[1];
 							break;
 						}
-						case 1 : {
+						case BODY_STATE_CROUCH : {
 							tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
 							break;
-						}
+												 }
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tLie.tTorso.tpIdle;
+							break;
+											  }
 					}
 					break;
 				}
 				case aiSoldierAttackRun : {
-					switch (m_cCrouched) {
-						case 0 : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
 							for (int i=0 ;i<2; i++)
 								if (tSoldierAnimations.tNormal.tTorso.tpaAim[i] == m_tpCurrentTorsoAnimation) {
 									tpTorsoAnimation = m_tpCurrentTorsoAnimation;
@@ -144,16 +181,20 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAim[::Random.randI(0,2)];
 							break;
 						}
-						case 1 : {
+						case BODY_STATE_CROUCH : {
 							tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
+							break;
+						}
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tLie.tTorso.tpIdle;
 							break;
 						}
 					}
 					break;
 				}
 				default : {
-					switch (m_cCrouched) {
-						case 0 : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
 							for (int i=0 ;i<2; i++)
 								if (tSoldierAnimations.tNormal.tTorso.tpaIdle[i] == m_tpCurrentTorsoAnimation) {
 									tpTorsoAnimation = m_tpCurrentTorsoAnimation;
@@ -164,8 +205,12 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaIdle[::Random.randI(0,2)];
 							break;
 						}
-						case 1 : {
+						case BODY_STATE_CROUCH : {
 							tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
+							break;
+						}
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tLie.tTorso.tpIdle;
 							break;
 						}
 					}
@@ -180,26 +225,33 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 			float	dot  = view.dotproduct(move);
 			
 			SAnimState* AState = 0;
-			switch (m_cCrouched) {
-				case 0 : {
+			switch (m_cBodyState) {
+				case BODY_STATE_STAND : {
 					AState = &tSoldierAnimations.tNormal.tLegs.tWalk;
 					break;
 				}
-				case 1 : {
+				case BODY_STATE_CROUCH : {
 					AState = &tSoldierAnimations.tCrouch.tLegs.tWalk;
+					break;
+				}
+				case BODY_STATE_LIE : {
+					AState = &tSoldierAnimations.tLie.tLegs.tWalk;
 					break;
 				}
 			}
 			
-			switch (m_cCrouched) {
-				case 0 : {
+			switch (m_cBodyState) {
+				case BODY_STATE_STAND : {
 					if (speed >= m_fMaxSpeed - EPS_L)
 						AState = &tSoldierAnimations.tNormal.tLegs.tRun;
 					break;
 				}
-				case 1 : {
+				case BODY_STATE_CROUCH : {
 					if (speed >= m_fMaxSpeed*m_fCrouchCoefficient)
 						AState = &tSoldierAnimations.tCrouch.tLegs.tRun;
+					break;
+				}
+				case BODY_STATE_LIE : {
 					break;
 				}
 			}
@@ -220,12 +272,26 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 
 			switch (eCurrentState) {
 				case aiSoldierReload : {
-					tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+							break;
+						}
+						case BODY_STATE_CROUCH : {
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+							break;
+												 }
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpReload;
+							break;
+						}
+					}
 					break;
 				}
 				case aiSoldierAttackFire : {
-					switch (m_cCrouched) {
-						case 0 : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
+							/**
 							for (int i=0 ;i<2; i++)
 								if (tSoldierAnimations.tNormal.tTorso.tpaAttack[i] == m_tpCurrentTorsoAnimation) {
 									tpTorsoAnimation = m_tpCurrentTorsoAnimation;
@@ -233,19 +299,25 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								}
 							
 							if (!tpTorsoAnimation)
-								tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[::Random.randI(0,2)];
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[::Random.randI(0,2)];
+							/**/
+							tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAttack[1];
 							break;
 						}
-						case 1 : {
+						case BODY_STATE_CROUCH : {
 							tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
 							break;
-						}
+												 }
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tLie.tTorso.tpIdle;
+							break;
+											  }
 					}
 					break;
 				}
 				case aiSoldierAttackRun : {
-					switch (m_cCrouched) {
-						case 0 : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
 							for (int i=0 ;i<2; i++)
 								if (tSoldierAnimations.tNormal.tTorso.tpaAim[i] == m_tpCurrentTorsoAnimation) {
 									tpTorsoAnimation = m_tpCurrentTorsoAnimation;
@@ -256,16 +328,20 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaAim[::Random.randI(0,2)];
 							break;
 						}
-						case 1 : {
+						case BODY_STATE_CROUCH : {
 							tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
+							break;
+						}
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tLie.tTorso.tpIdle;
 							break;
 						}
 					}
 					break;
 				}
 				default : {
-					switch (m_cCrouched) {
-						case 0 : {
+					switch (m_cBodyState) {
+						case BODY_STATE_STAND : {
 							for (int i=0 ;i<2; i++)
 								if (tSoldierAnimations.tNormal.tTorso.tpaIdle[i] == m_tpCurrentTorsoAnimation) {
 									tpTorsoAnimation = m_tpCurrentTorsoAnimation;
@@ -276,8 +352,12 @@ void CAI_Soldier::SelectAnimation(const Fvector& _view, const Fvector& _move, fl
 								tpTorsoAnimation = tSoldierAnimations.tNormal.tTorso.tpaIdle[::Random.randI(0,2)];
 							break;
 						}
-						case 1 : {
+						case BODY_STATE_CROUCH : {
 							tpTorsoAnimation = tSoldierAnimations.tCrouch.tTorso.tpAim;
+							break;
+						}
+						case BODY_STATE_LIE : {
+							tpTorsoAnimation = tSoldierAnimations.tLie.tTorso.tpIdle;
 							break;
 						}
 					}

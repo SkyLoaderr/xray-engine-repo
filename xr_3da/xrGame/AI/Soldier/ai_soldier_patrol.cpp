@@ -45,7 +45,7 @@
 	\
 	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {\
 		tStateStack.push(eCurrentState);\
-		eCurrentState = aiSoldierUnderFire;\
+		eCurrentState = aiSoldierPatrolUnderFire;\
 		m_dwLastRangeSearch = 0;\
 		bStopThinking = true;\
 		return;\
@@ -67,7 +67,7 @@
 		tHitDir = Group.m_tLastHitDirection;\
 		dwHitTime = Group.m_dwLastHitTime;\
 		tStateStack.push(eCurrentState);\
-		eCurrentState = aiSoldierUnderFire;\
+		eCurrentState = aiSoldierPatrolUnderFire;\
 		m_dwLastRangeSearch = 0;\
 		bStopThinking = true;\
 		return;\
@@ -808,7 +808,7 @@ void CAI_Soldier::PatrolUnderFire()
 	/**/
 
 	/**/
-	if (dwCurTime - dwHitTime >= 0*1000) {
+	if (dwCurTime - dwHitTime >= 1*1000) {
 		//mk_rotation(Group.m_tLastHitDirection,r_torso_target);
 		//r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
 		//r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
@@ -819,7 +819,7 @@ void CAI_Soldier::PatrolUnderFire()
 	}
 	/**/
 	
-	vfSetFire(dwCurTime - dwHitTime < 1000,Group);
+	vfSetFire(dwCurTime - dwHitTime < 0*1000,Group);
 
 	vfSetMovementType(false,m_fMaxSpeed);
 	// stop processing more rules
@@ -851,6 +851,7 @@ void CAI_Soldier::PatrolHurt()
 
 	AI_Path.TravelPath.clear();
 
+	/**
 	tWatchDirection.sub(tHitPosition,eye_matrix.c);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
@@ -863,7 +864,7 @@ void CAI_Soldier::PatrolHurt()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(true,m_fMinSpeed);
+	vfSetMovementType(true,0);
 	// stop processing more rules
 	bStopThinking = true;
 }

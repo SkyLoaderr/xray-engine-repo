@@ -6,7 +6,7 @@
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 #include "..\xr_hudfont.h"
-#include "..\render.h"
+//#include "..\render.h"
 #include "ai_console.h"
 #include "CustomMonster.h"
 #include "xr_weapon_list.h"
@@ -51,7 +51,7 @@ CCustomMonster::CCustomMonster()
 
 	Weapons				= 0;
 	tWatchDirection = Direction();
-	m_cCrouched = 0;
+	m_cBodyState = BODY_STATE_STAND;
 	r_torso_speed = PI;
 }
 

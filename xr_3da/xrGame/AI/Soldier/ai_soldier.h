@@ -51,7 +51,7 @@ class CAI_Soldier : public CCustomMonster
 	protected:
 		
 		// macroses
-		#define WRITE_LOG
+//		#define WRITE_LOG
 		#define MIN_RANGE_SEARCH_TIME_INTERVAL	15000.f
 		#define MAX_TIME_RANGE_SEARCH			150000.f
 		#define	FIRE_ANGLE						PI/10
@@ -165,27 +165,18 @@ typedef struct tagSCrouchAnimations{
 
 // global animations
 typedef struct tagSLieGlobalAnimations{
-	CMotionDef* tpaDeath[2];
-	CMotionDef* tpJumpBegin;
-	CMotionDef* tpJumpIdle;
+	CMotionDef* tpDeath;
 }SLieGlobalAnimations;
 
 // torso animations
 typedef struct tagSLieTorsoAnimations{
-	CMotionDef* tpaIdle[2];
-	CMotionDef* tpaAim[2];
-	CMotionDef* tpaAttack[2];
-	CMotionDef* tpDamageLeft;
-	CMotionDef* tpDamageRight;
+	CMotionDef* tpIdle;
 	CMotionDef* tpReload;
 }SLieTorsoAnimations;
 
 // legs animations
 typedef struct tagSLieLegsAnimations{
-	SAnimState  tRun;
 	SAnimState  tWalk;
-	CMotionDef* tpTurn;
-	CMotionDef*	tpIdle;
 }SLieLegsAnimations;
 
 // hands animations

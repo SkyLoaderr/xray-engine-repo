@@ -42,6 +42,9 @@ protected:
 	};
 	static void	__stdcall TorsoSpinCallback(CBoneInstance*);
 public:
+	#define BODY_STATE_STAND	0
+	#define BODY_STATE_CROUCH	1
+	#define BODY_STATE_LIE		2
 	// Lighting and effects
 //	CLightPPA			TEST;
 
@@ -88,7 +91,7 @@ public:
 	SAnimState 			m_crouch_walk;
 	SAnimState 			m_crouch_run;
 
-	char				m_cCrouched; 
+	char				m_cBodyState;
 	
 	float				m_fTimeUpdateDelta;
 	//float				m_fTorsoAngle;
@@ -168,8 +171,9 @@ public:
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);
 	virtual bool		bfExecMovement			(){return(false);};
- IC			void		Squat(){if (m_cCrouched == 0) m_cCrouched=1;};
- IC			void		StandUp(){if (m_cCrouched == 1) m_cCrouched=0;};
+	IC			void		StandUp(){m_cBodyState=BODY_STATE_STAND;};
+	IC			void		Squat(){m_cBodyState=BODY_STATE_CROUCH;};
+	IC			void		Lie(){m_cBodyState=BODY_STATE_LIE;};
 	
 public:
 	//typedef BOOL (*QualifierFunction)(CObject*, void*);

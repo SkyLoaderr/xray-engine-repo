@@ -216,17 +216,12 @@ void CAI_Soldier::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	if (Random.randI(2))	return;
 	pSounds->Play3DAtPos(S,vPosition);
 	
-	if (iHealth > 0)
-		if (!m_cCrouched)
-			if (::Random.randI(0,2))
-				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
-			else
-				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
+	if (iHealth > 0) {
+		if (::Random.randI(0,2))
+			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
 		else
-			if (::Random.randI(0,2))
-				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageLeft);
-			else
-				PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
+			PKinematics(pVisual)->PlayFX(tSoldierAnimations.tNormal.tTorso.tpDamageRight);
+	}
 }
 
 // when someone hit soldier
@@ -325,15 +320,15 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	fResult *= float(0 + tpEntity->AI_Node->light)/(0 + 255.f);
 	
 	// computing enemy state
-	switch (m_cCrouched) {
-		case 0: {
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
 			break;
 		}
-		case 1: {
+		case BODY_STATE_CROUCH : {
 			fResult *= .85f;
 			break;
 		}
-		case 2: {
+		case BODY_STATE_LIE : {
 			fResult *= .66f;
 			break;
 		}
@@ -343,7 +338,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	//if ()
 	//fResult += m_fCurSpeed < MAX_VIEWABLE_SPEED ? SPEED_WEIGHT*(1.f - m_fCurSpeed/MAX_VIEWABLE_SPEED) : SPEED_WEIGHT;
 
-	return(fResult >= 6.f);
+	return(fResult >= 3.f);
 }
 
 void CAI_Soldier::SelectEnemy(SEnemySelected& S)
@@ -1353,7 +1348,7 @@ void CAI_Soldier::Pursuit()
 
 	vfSetFire(false,Group);
 
-	vfSetMovementType(false,m_fMaxSpeed);
+	vfSetMovementType(false,m_fMinSpeed);
 	
 	bStopThinking = true;
 }
