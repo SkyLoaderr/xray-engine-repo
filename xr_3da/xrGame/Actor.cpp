@@ -1461,3 +1461,36 @@ DLL_Pure *CActor::_construct		()
 	CInventoryOwner::_construct		();
 	return							(this);
 }
+
+
+
+//----------------------
+ICF static BOOL grenade_hit_callback(collide::rq_result& result, LPVOID params)
+{
+	float& shoot_factor	= *(float*)params;
+	u16 mtl_idx			= GAMEMTL_NONE_IDX;
+	if(result.O){	
+		CKinematics* V  = 0;
+		if (0!=(V=smart_cast<CKinematics*>(result.O->Visual()))){
+			CBoneData& B= V->LL_GetData((u16)result.element);
+			mtl_idx		= B.game_mtl_idx;
+		}
+	}else{
+		//получить треугольник и узнать его материал
+		CDB::TRI* T		= Level().ObjectSpace.GetStaticTris()+result.element;
+		mtl_idx			= T->material;
+	}	
+	SGameMtl* mtl		= GMLib.GetMaterialByIdx(mtl_idx);
+	shoot_factor		*=mtl->fShootFactor;
+	return				(shoot_factor>0.01f);
+}
+
+void aaa()
+{
+	Fvector start,dir;
+	float range;
+	collide::ray_defs RD		(start,dir,range,0,collide::rqtBoth);
+	float	shoot_factor		= 1.f;
+	if (g_pGameLevel->ObjectSpace.RayQuery(RD,grenade_hit_callback,&shoot_factor)){
+	}
+}
