@@ -169,26 +169,15 @@ IC bool CAI_Rat::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 	tMemberDirection.sub(tMyPoint,tMemberPoint);
 	vfNormalizeSafe(tMemberDirection);
 	float fAlpha = acosf(tFireVector.dotproduct(tMemberDirection));
-	return(fAlpha < PI/10);
+	return(fAlpha < PI/20);
 	//return(false);
 }
 
-bool CAI_Rat::bfCheckPath(AI::Path &Path,MemberNodes &taMembers) {
-	for (int i=0; i<Path.Nodes.size(); i++) 
-		for (int j=0; j<taMembers.size(); j++)
-			if (Path.Nodes[i] == taMembers[j])
-				return(false);
-	return(true);
-}
-
-bool CAI_Rat::bfCheckPath(AI::Path &Path,MemberNodes &taMembers, DWORD dwLeader) {
-	for (int i=0; i<Path.Nodes.size(); i++) {
-		for (int j=0; j<taMembers.size(); j++)
-			if (Path.Nodes[i] == taMembers[j])
-				return(false);
-		if (Path.Nodes[i] == dwLeader)
+bool CAI_Rat::bfCheckPath(AI::Path &Path) {
+	vector<BYTE> q_mark = Level().AI.tpfGetNodeMarks();
+	for (int i=1; i<Path.Nodes.size(); i++) 
+		if (q_mark[Path.Nodes[i]])
 			return(false);
-	}
 	return(true);
 }
 
@@ -339,7 +328,7 @@ void CAI_Rat::Attack()
 					float fOldCost;
 					Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 					// if search has found new best node then 
-					if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes))) && (S.BestCost < (fOldCost - S.fLaziness))){
+					if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 						AI_Path.DestNode		= S.BestNode;
 						AI_Path.bNeedRebuild	= TRUE;
 					} 
@@ -593,15 +582,16 @@ void CAI_Rat::FollowMe()
 							float fOldCost;
 							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S, fOldCost);
 							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))) {
 								// if old cost minus new cost is a little then rat is too lazy
 								// to move there
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
 							}
-							else 
+							else { 
 								// search hasn't found a better node we have to look around
 								bWatch = true;
+							}
 							
 							if (AI_Path.TravelPath.size() < 2)
 								AI_Path.bNeedRebuild	= TRUE;
@@ -719,7 +709,7 @@ void CAI_Rat::FreeHunting()
 						float fOldCost;
 						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 							AI_Path.DestNode		= S.BestNode;
 							AI_Path.bNeedRebuild	= TRUE;
 						} 
@@ -862,7 +852,7 @@ void CAI_Rat::Pursuit()
 							float fOldCost;
 							Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 							// if search has found new best node then 
-							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+							if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 								AI_Path.DestNode		= S.BestNode;
 								AI_Path.bNeedRebuild	= TRUE;
 							} 
@@ -1025,7 +1015,7 @@ void CAI_Rat::UnderFire()
 						float fOldCost;
 						Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 						// if search has found new best node then 
-						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path,S.taMemberNodes,S.m_tLeaderNode))) && (S.BestCost < (fOldCost - S.fLaziness))){
+						if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 							AI_Path.DestNode		= S.BestNode;
 							AI_Path.bNeedRebuild	= TRUE;
 						}

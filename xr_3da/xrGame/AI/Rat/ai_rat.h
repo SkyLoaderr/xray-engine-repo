@@ -20,7 +20,7 @@ class CAI_Rat : public CCustomMonster
 		SND_DIE_COUNT=4
 	};
 
-	enum EHenStates 	{
+	enum ERatStates 	{
 		aiRatDie = 0,
 		aiRatUnderFire,
 		aiRatSenseSomething,
@@ -45,7 +45,7 @@ class CAI_Rat : public CCustomMonster
 		sound3D			sndHit[SND_HIT_COUNT];
 		sound3D			sndDie[SND_DIE_COUNT];
 		// ai
-		EHenStates		eCurrentState;
+		ERatStates		eCurrentState;
 		bool			bStopThinking;
 		// hit data
 		DWORD			dwHitTime;
@@ -61,7 +61,7 @@ class CAI_Rat : public CCustomMonster
 		DWORD			dwSavedEnemyNodeID;
 		bool			bBuildPathToLostEnemy;
 		// finite state machine
-		stack<EHenStates>	tStateStack;
+		stack<ERatStates>	tStateStack;
 		void Die();
 		void UnderFire();
 		void SenseSomething();
@@ -78,8 +78,7 @@ class CAI_Rat : public CCustomMonster
 		void Retreat();
 		void Cover();
 		IC bool bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvector &tMemberPoint);
-		bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers);
-		bool bfCheckPath(AI::Path &Path,MemberNodes &taMembers, DWORD dwLeader);
+		bool bfCheckPath(AI::Path &Path);
 	
 		CRatSelectorAttack		SelectorAttack;
 		CRatSelectorFreeHunting SelectorFreeHunting;

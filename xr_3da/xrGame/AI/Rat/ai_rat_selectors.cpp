@@ -38,15 +38,14 @@ float CRatSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	if (m_tLeader)
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
-					if (taMembers[m_iCurrentMember]->g_Health() > 0) {
-						vfAssignMemberPositionAndNode();
-						vfComputeMemberDirection();
-						vfAddDistanceToMemberCost();
-						vfComputeSurroundEnemy();
-						vfAddCoverFromMemberCost();
-						vfAddDeviationFromMemberViewCost();
-					}
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+					vfAssignMemberPositionAndNode();
+					vfComputeMemberDirection();
+					vfAddDistanceToMemberCost();
+					vfComputeSurroundEnemy();
+					vfAddCoverFromMemberCost();
+					vfAddDeviationFromMemberViewCost();
+				}
 				vfAddSurroundEnemyCost();
 			}
 		}
@@ -81,13 +80,12 @@ float CRatSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 		CHECK_RESULT;
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
-					if (taMembers[m_iCurrentMember]->g_Health() > 0) {
-						vfAssignMemberPositionAndNode();
-						vfComputeMemberDirection();
-						vfAddDistanceToMemberCost();
-						vfAddCoverFromMemberCost();
-					}
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+					vfAssignMemberPositionAndNode();
+					vfComputeMemberDirection();
+					vfAddDistanceToMemberCost();
+					vfAddCoverFromMemberCost();
+				}
 			}
 		}
 	}
@@ -122,13 +120,12 @@ float CRatSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 		CHECK_RESULT;
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
-					if (taMembers[m_iCurrentMember]->g_Health() > 0) {
-						vfAssignMemberPositionAndNode();
-						vfComputeMemberDirection();
-						vfAddDistanceToMemberCost();
-						vfAddCoverFromMemberCost();
-					}
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+					vfAssignMemberPositionAndNode();
+					vfComputeMemberDirection();
+					vfAddDistanceToMemberCost();
+					vfAddCoverFromMemberCost();
+				}
 			}
 		}
 	}
@@ -163,14 +160,13 @@ float CRatSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL
 	if (m_tLeader) {
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
-					if (taMembers[m_iCurrentMember]->g_Health() > 0) {
-						vfAssignMemberPositionAndNode();
-						vfComputeMemberDirection();
-						vfAddDistanceToMemberCost();
-						vfComputeSurroundEnemy();
-						vfAddCoverFromMemberCost();
-					}
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+					vfAssignMemberPositionAndNode();
+					vfComputeMemberDirection();
+					vfAddDistanceToMemberCost();
+					vfComputeSurroundEnemy();
+					vfAddCoverFromMemberCost();
+				}
 				vfAddSurroundEnemyCost();
 			}
 		}
@@ -207,13 +203,12 @@ float CRatSelectorUnderFire::Estimate(NodeCompressed* tNode, float fDistance, BO
 		CHECK_RESULT;
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) 
-					if (taMembers[m_iCurrentMember]->g_Health() > 0) {
-						vfAssignMemberPositionAndNode();
-						vfComputeMemberDirection();
-						vfAddDistanceToMemberCost();
-						vfAddCoverFromMemberCost();
-					}
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+					vfAssignMemberPositionAndNode();
+					vfComputeMemberDirection();
+					vfAddDistanceToMemberCost();
+					vfAddCoverFromMemberCost();
+				}
 			}
 		}
 	}
