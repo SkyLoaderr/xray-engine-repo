@@ -10,6 +10,9 @@
 
 #ifdef __BORLANDC__
 	#define XRSOUND_EDITOR_API XRSOUND_API
+
+	// editor only refs
+	class SoundEnvironment_LIB;
 #else
 	#define XRSOUND_EDITOR_API
 #endif
@@ -193,12 +196,19 @@ public:
 	virtual void					play_unlimited			( sound& S, CObject* O,								BOOL bLoop=false)					= 0;
 	virtual void					play_at_pos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
 	virtual void					play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false)					= 0;
-	virtual void					set_geometry			( CDB::MODEL* M )																		= 0;
+
+	virtual void					set_geometry_env		( IReader* I )																			= 0;
+	virtual void					set_geometry_occ		( CDB::MODEL* M )																		= 0;
 	virtual void					set_handler				( sound_event* E )																		= 0;
-	virtual void					set_user_environment	( CSound_environment* E)																= 0;
 	//@}
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
+
+#ifdef __BORLANDC__
+	virtual SoundEnvironment_LIB*	get_env_library			()																						= 0;
+	virtual void					refresh_env_library		()																						= 0;
+	virtual void					set_user_env			( CSound_environment* E)																= 0;
+#endif
 };
 extern XRSOUND_API CSound_manager_interface*		Sound;
 

@@ -103,6 +103,23 @@ void CSoundRender_Core::_initialize	(u32 window)
 	Listener.fRolloffFactor		= DS3D_DEFAULTROLLOFFFACTOR;
 	Listener.fDopplerFactor		= DS3D_DEFAULTDOPPLERFACTOR;
 
+	env_load					();
+
+	bPresent					= TRUE;
+}
+
+void CSoundRender_Core::_destroy	()
+{
+	env_unload					();
+
+	_RELEASE		( pExtensions	);
+	_RELEASE		( pListener		);
+	_RELEASE		( pBuffer		);
+	_RELEASE		( pDevice		);
+}
+
+void CSoundRender_Core::env_load	()
+{
 	// Load environment
 	string256					fn;
 	if (FS.exist(fn,"$game_data$",SNDENV_FILENAME))
@@ -111,21 +128,26 @@ void CSoundRender_Core::_initialize	(u32 window)
 		s_environment->Load			(fn);
 	}
 
-	bPresent					= TRUE;
+	// Load geometry
+
+	// Assosiate geometry
 }
 
-void CSoundRender_Core::_destroy	()
+void CSoundRender_Core::env_unload	()
 {
-	_RELEASE		( pExtensions	);
-	_RELEASE		( pListener		);
-	_RELEASE		( pBuffer		);
-	_RELEASE		( pDevice		);
+	// Unload 
+	R_ASSERT					(s_environment);
+	s_environment->Unload		();
+	xr_delete					(s_environment);
+
+	// Unload geometry
 }
-void CSoundRender_Core::_restart	()
+
+void CSoundRender_Core::_restart		()
 {
 }
 
-void CSoundRender_Core::set_geometry(CDB::MODEL* M)
+void CSoundRender_Core::set_geometry_occ(CDB::MODEL* M)
 {
 	geom_MODEL		= M;
 }
@@ -133,6 +155,45 @@ void CSoundRender_Core::set_geometry(CDB::MODEL* M)
 void CSoundRender_Core::set_handler(sound_event* E)
 {
 	Handler			= E;
+}
+
+void CSoundRender_Core::set_geometry_env(IReader* I)
+{
+	xr_delete				(geom_ENV);
+	if (0==I)				return;
+	if (0==s_environment)	return;
+
+	// Assosiate names
+	vector<u16>			ids;
+	IReader*			names	= I->open_chunk(0);
+	while (!names->eof())
+	{
+		string256			n;
+		names->r_stringZ	(n);
+		int id				= s_environment->GetID(n);
+		R_ASSERT			(id>=0);
+		ids.push_back		(u16(id));
+	}
+	names->close		();
+
+	// Load geometry
+	IReader*			geom	= I->open_chunk(1);
+	hdrCFORM			H;
+	geom->r				(&H,sizeof(hdrCFORM));
+	Fvector*	verts	= (Fvector*)F->pointer();
+	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
+	for (u32 it=0; it<H.facecount; it++)
+	{
+		CDB::TRI*	T		= tris+it;
+		u16		id_front	= (T->dummy&0x0000ffff)>>0;		//	front face
+		u16		id_back		= (T->dummy&0xffff0000)>>16;	//	back face
+		R_ASSERT			(id_front<ids.size());
+		R_ASSERT			(id_back<ids.size());
+		T->dummy			= u32(ids[id_back]<<16) | u32(ids[id_front]);
+	}
+	geom_ENV			= xr_new<CDB::MODEL> ();
+	geom_ENV->build		(verts, H.vertcount, tris, H.facecount );
+	geom->close			();
 }
 
 void	CSoundRender_Core::create				( sound& S, BOOL _3D, const char* fName, int type )
@@ -213,7 +274,8 @@ CSoundRender_Environment*	CSoundRender_Core::get_environment			( Fvector& P )
 	}
 }
 
-void						CSoundRender_Core::set_user_environment		( CSound_environment* E)
+#ifdef __BORLANDC__
+void						CSoundRender_Core::set_user_env		( CSound_environment* E)
 {
 	if (0==E && !bUserEnvironment)	return;
 
@@ -236,3 +298,19 @@ void						CSoundRender_Core::set_user_environment		( CSound_environment* E)
 		pEmitter->set_position	(pParams->position);
 	}
 }
+
+void						CSoundRender_Core::refresh_env_library()
+{
+	env_unload			();
+	env_load			();
+
+	// Force all sounds to change their environment
+	// (set their positions to signal changes in environment)
+	for (u32 it=0; it<s_emitters.size(); it++)
+	{
+		CSoundRender_Emitter*	pEmitter	= s_emitters[it];
+		const CSound_params*	pParams		= pEmitter->get_params	();
+		pEmitter->set_position	(pParams->position);
+	}
+}
+#endif

@@ -60,11 +60,17 @@ public:
 	virtual void						play_unlimited			( sound& S, CObject* O,								BOOL bLoop=false);
 	virtual void						play_at_pos				( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
 	virtual void						play_at_pos_unlimited	( sound& S, CObject* O,		const Fvector &pos,		BOOL bLoop=false);
-	virtual void						set_geometry			( CDB::MODEL* M );
+	virtual void						set_geometry_env		( IReader* I );
+	virtual void						set_geometry_occ		( CDB::MODEL* M );
 	virtual void						set_handler				( sound_event* E );
-	virtual void						set_user_environment	( CSound_environment* E);
 
 	virtual void						update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt );
+
+#ifdef __BORLANDC__
+	virtual SoundEnvironment_LIB*		get_env_library			()																{ return s_environment; }
+	virtual void						refresh_env_library		();
+	virtual void						set_user_env			( CSound_environment* E);
+#endif
 public:
 	CSoundRender_Source*				i_create_source			( LPCSTR name, BOOL _3D		);
 	void								i_destroy_source		( CSoundRender_Source*  S	);
@@ -75,6 +81,9 @@ public:
 
 	BOOL								get_occlusion			( Fvector& P, float R, Fvector* occ );
 	CSoundRender_Environment*			get_environment			( Fvector& P );
+
+	void								env_load				();
+	void								env_unload				();
 };
 
 extern CSoundRender_Core	SoundRender;

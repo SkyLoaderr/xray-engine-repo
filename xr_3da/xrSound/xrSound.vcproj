@@ -256,6 +256,9 @@
 			<File
 				RelativePath="xrCDB.h">
 			</File>
+			<File
+				RelativePath="xrLevel.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Core"
