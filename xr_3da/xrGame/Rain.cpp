@@ -50,23 +50,33 @@ CEffect_Rain::~CEffect_Rain()
 	Device.seqDevCreate.Remove	(this);
 	Device.seqDevDestroy.Remove	(this);
 
+	// Cleanup
 	OnDeviceDestroy		();
-	Device.Shader.Delete(SH);
+	Device.Shader.Delete(SH_Rain);
 	p_destroy			();
+	DM_Drop.Unload		();
 }
 
 void	CEffect_Rain::OnDeviceDestroy	()
 {
 	REQ_DESTROY			();
-	Device.Shader.Delete(SH);
+	Device.Shader.Delete(SH_Rain);
 	p_destroy			();
+	DM_Drop.Unload		();
 }
 
 void	CEffect_Rain::OnDeviceCreate	()
 {
 	REQ_CREATE			();
-	SH					= Device.Shader.Create	("effects\\rain","effects\\rain");
-	VS					= Device.Streams.Create	(FVF::F_LIT,desired_items*4);
+
+	char name[256];
+	strconcat			(name,Path.Meshes,"dm\\rain.dm");
+	CFileStream	 fs		(name);
+	DM_Drop.Load		(&fs);
+
+	SH_Rain				= Device.Shader.Create	("effects\\rain","effects\\rain");
+	VS_Rain				= Device.Streams.Create	(FVF::F_LIT,desired_items*4);
+	VS_Drops			= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1, particles_cache*DM_Drop.number_vertices );
 	p_create			();
 }
 
@@ -110,7 +120,6 @@ void CEffect_Rain::p_create		()
 		Particle&	P	= particle_pool[it];
 		P.prev			= it?(&particle_pool[it-1]):0;
 		P.next			= (it<(particle_pool.size()-1))?(&particle_pool[it+1]):0;
-		P.visual		= (CPSVisual*) ::Render.Models.CreatePS("effects\\rain",&P.emitter);
 	}
 	
 	// active and idle lists
@@ -126,12 +135,6 @@ void CEffect_Rain::p_destroy	()
 	particle_idle	= 0;
 	
 	// pool
-	for (DWORD it=0; it<particle_pool.size(); it++)
-	{
-		Particle&	P	= particle_pool[it];
-		FBasicVisual* V = (FBasicVisual*)P.visual;
-		::Render.Models.Delete	(V);
-	}
 	particle_pool.clear	();
 }
 
@@ -299,7 +302,7 @@ void	CEffect_Rain::Render	()
 	{
 		float	dt					= Device.fTimeDelta;
 		CIndexStream* IS			= Device.Streams.Get_IB();
-		Device.Shader.set_Shader	(DM_Drop->shader);
+		Device.Shader.set_Shader	(DM_Drop.shader);
 		
 		Fmatrix		mXform;
 		Fvector		Center;
