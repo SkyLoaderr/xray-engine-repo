@@ -15,6 +15,48 @@ CTimer					t_compress;
 u64						t_compress_total;
 u8*						c_heap	= NULL;
 
+struct file_comparer{
+	char* m_c;
+	CLocatorAPI* m_fs;
+	IReader*	 m_freader;
+	u32			m_crc32;
+	u32			m_file_age;
+	file_comparer(char* c, CLocatorAPI* fs=0 ){m_c=c;m_fs=fs;m_freader=0;m_crc32=0;m_file_age=0;}
+
+/*
+	IReader*		src				=	FS.r_open	(fn);
+	bytesSRC						+=	src->length	();
+	u32			c_crc32				=	crc32		(src->pointer(),src->length());
+*/
+	bool operator ()(char* o){
+		int eq = stricmp(m_c,o);
+		if(0!=eq)
+			return false;
+
+		if(m_fs){
+			if(!m_file_age/*!m_crc32*/){
+				string_path pth;
+				m_fs->update_path(pth,"$target_folder$",m_c);
+				m_file_age = m_fs->get_file_age(pth);
+				/*
+				m_freader	= m_fs->r_open(pth);
+				m_crc32		= crc32	(m_freader->pointer(),m_freader->length());
+				m_fs->r_close(m_freader);*/
+			}
+			string_path pth_;
+			FS.update_path(pth_,"$target_folder$",o);
+			u32 file_age = FS.get_file_age(pth_);
+			/*
+			IReader* r	= FS.r_open(pth_);
+			u32 crc32_	=  crc32	(r->pointer(),r->length());
+			FS.r_close(r);
+			return (m_crc32==crc32_);*/
+			return (file_age == m_file_age);
+		}else
+			return true;
+	}
+};
+
 struct	ALIAS
 {
 	LPCSTR			path;
@@ -189,12 +231,33 @@ void	Compress			(LPCSTR path, LPCSTR base)
 	FS.r_close	(src);
 }
 
+CLocatorAPI* FS_orig = NULL;//				= xr_new<CLocatorAPI>	();
+
 int __cdecl main	(int argc, char* argv[])
 {
 	Core._initialize("xrCompress",0,FALSE);
 	printf			("\n\n");
 
-	if (argc!=2)	{
+	LPCSTR params = GetCommandLine();
+	xr_vector<char*>*	list_orig = NULL;
+	xr_vector<char*>*	fl_list_orig = NULL;
+	bool	bDiff = false;
+	if(strstr(params,"-diff")){
+		bDiff = true;
+		string64				c_orig;
+		int cnt = sscanf					(strstr(params,"-diff ")+6,"%[^ ] ",c_orig);
+		if(1!=cnt){
+			printf("ERROR: u must pass folder name as parameter near [-diff].\n");
+			return 3;
+		}
+		FS_orig = xr_new<CLocatorAPI>	();
+		FS_orig->_initialize(CLocatorAPI::flTargetFolderOnly,c_orig);
+		list_orig	= FS_orig->file_list_open	("$target_folder$",FS_ListFiles);
+		fl_list_orig	= FS_orig->file_list_open	("$target_folder$",FS_ListFolders);
+	}
+
+	
+	if (argc<2)	{
 		printf("ERROR: u must pass folder name as parameter.\n");
 		return 3;
 	}
@@ -208,6 +271,16 @@ int __cdecl main	(int argc, char* argv[])
 
 	xr_vector<char*>*	list	= FS.file_list_open	("$target_folder$",FS_ListFiles);
 	R_ASSERT2			(list,	"Unable to open folder!!!");
+
+	if(bDiff){
+		for(u32 i=0; i<list_orig->size();++i){
+			file_comparer fc(list_orig->at(i),FS_orig);
+			xr_vector<char*>::iterator it = std::find_if(list->begin(),list->end(),fc);
+			if(it != list->end())
+				list->erase(it);
+		}
+	};
+
 	if (!list->empty())
 	{
 		u32				dwTimeStart	= timeGetTime();
@@ -218,6 +291,17 @@ int __cdecl main	(int argc, char* argv[])
 		// collect folders
 		xr_vector<char*>*	fl_list	= FS.file_list_open	("$target_folder$",FS_ListFolders);
 		R_ASSERT2			(fl_list,	"Unable to open folder!!!");
+
+
+	if(bDiff){
+		for(u32 i=0; i<fl_list_orig->size();++i){
+			file_comparer fc(fl_list_orig->at(i));
+			xr_vector<char*>::iterator it = std::find_if(fl_list->begin(),fl_list->end(),fc);
+			if(it != fl_list->end())
+				fl_list->erase(it);
+		}
+	};
+
 		for (u32 it=0; it<fl_list->size(); it++){
 			fs_desc.w_stringZ	((*fl_list)[it]);
 			fs_desc.w_u32		(0		);
@@ -254,7 +338,11 @@ int __cdecl main	(int argc, char* argv[])
 		printf("ERROR: folder not found.\n");
 	}
 	FS.file_list_close	(list);
-
+	if(bDiff){
+		FS_orig->file_list_close(list_orig);
+		FS_orig->file_list_close(fl_list_orig);
+		xr_delete(FS_orig);
+	}
 	Core._destroy		();
 	return 0;
 }
