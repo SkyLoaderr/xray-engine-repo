@@ -3372,18 +3372,6 @@
                 <text>bar_bar_barmen_start_211</text>
                 <next>2111</next>
             </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_start_2</text>
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>bar_barman_stay_room</dont_has_info>
-                <dont_has_info>agroprom_military_case_done</dont_has_info>
-                <has_info>agroprom_military_case_have</has_info>
-                <next>2</next>
-            </phrase>
             <phrase id="1131">
                 <text>bar_bar_barmen_start_1131</text>
             </phrase>
@@ -3391,6 +3379,18 @@
                 <text></text>
                 <dont_has_info>agroprom_military_case</dont_has_info>
                 <next>1131</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <dont_has_info>bar_barman_stay_room</dont_has_info>
+                <dont_has_info>agroprom_military_case_done</dont_has_info>
+                <has_info>agroprom_military_case</has_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_start_2</text>
+                <next>21</next>
+                <next>22</next>
             </phrase>
         </phrase_list>
     </dialog>
