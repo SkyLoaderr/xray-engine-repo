@@ -31,7 +31,7 @@ void CObjectList::Load()
 		}
 	}
 
-	float	p_time		= 1000.f*T.GetAsync();
+	float	p_time		= 1000.f*T.GetElapsed_sec();
 	u32		p_mem		= Memory.mem_usage() - mem_0;
 	if (p_count)
 	{

@@ -185,11 +185,11 @@ void CRenderDevice::FrameMove()
 	dwFrame++;
 
 	// Timer
-	float fPreviousFrameTime = Timer.GetAsync(); Timer.Start();	// previous frame
+	float fPreviousFrameTime = Timer.GetElapsed_sec(); Timer.Start();	// previous frame
 	fTimeDelta = 0.1f * fTimeDelta + 0.9f*fPreviousFrameTime;	// smooth random system activity - worst case ~7% error
 	if (fTimeDelta>.06666f) fTimeDelta=.06666f;					// limit to 15fps minimum
 
-	u64	qTime		= TimerGlobal.GetElapsed();
+	u64	qTime		= TimerGlobal.GetElapsed_clk();
 	fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
 
 	dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second);
