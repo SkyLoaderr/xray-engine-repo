@@ -20,6 +20,7 @@ CWeaponList::CWeaponList	(CEntity* p)
 	m_iACTboneL			= -1;
 	m_iACTboneR			= -1;
 	m_bZoomed			= FALSE;
+	m_Weapons.resize	(8);
 }
 
 CWeaponList::~CWeaponList	( )
