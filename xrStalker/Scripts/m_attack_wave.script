@@ -155,12 +155,13 @@ function main ()
 		         if flags[nz] == true then nz = 0 end
 		         pass = pass + 1
 		   end      
+		   printf ("Number : %d", nz)
 		   if nz == 0 then
 		      for i = 1, max, 1 do
 		          if flags[i] == false then nz = a break end
 		      end
 		   end
-		   
+		   printf ("Number : %d", nz)
 		   if nz ~= 0 then
 		      printf ("Monster %s, sound %s", t[nz]:name (), snds[nz])
 		      update_action (t[nz], m_attack_wave.script_name (), 
