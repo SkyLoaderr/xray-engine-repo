@@ -193,7 +193,7 @@ function se_smart_terrain:STATE_Write( packet )
 --	log( "se_smart_terrain::STATE_Write called!" )
 	cse_alife_smart_zone.STATE_Write( self, packet )
 
-	self:print()
+--	self:print()
 
 	packet:w_u8  ( self.gulagN or 0 )
 
