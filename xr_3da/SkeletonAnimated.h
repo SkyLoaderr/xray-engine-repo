@@ -179,9 +179,9 @@ public:
 	virtual	CSkeletonAnimated*	dcast_PSkeletonAnimated	()				{ return this;	}
 	virtual						~CSkeletonAnimated	();
 
-	virtual u32					mem_usage			()
+	virtual u32					mem_usage		(bool bInstance)
 	{
-		u32 sz					= CKinematics::mem_usage()+sizeof(*this)+blend_instances?blend_instances->mem_usage():0;
+		u32 sz					= CKinematics::mem_usage(bInstance)+sizeof(*this)+(bInstance&&blend_instances?blend_instances->mem_usage():0);
 		return sz;
 	}
 };

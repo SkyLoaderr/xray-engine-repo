@@ -30,9 +30,9 @@ public:
 	// Main functionality
 	virtual void				CalculateBones			(BOOL bForced=FALSE);
 	virtual	CSkeletonRigid*		dcast_PSkeletonRigid	()				{ return this;	}
-	virtual u32					mem_usage			()
+	virtual u32					mem_usage			(bool bInstance)
 	{
-		u32 sz					= CKinematics::mem_usage()+sizeof(*this);
+		u32 sz					= CKinematics::mem_usage(bInstance)+sizeof(*this);
 		return sz;
 	}
 };
