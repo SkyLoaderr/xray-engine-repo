@@ -51,7 +51,6 @@ CEditableObject::~CEditableObject(){
 }
 //----------------------------------------------------
 
-#ifdef _EDITOR
 LPCSTR CEditableObject::GetName(){
 	return m_LibParent->GetName();
 }
@@ -61,7 +60,6 @@ void CEditableObject::SetName(LPCSTR name){
 	m_LibParent->SetName(name);
 }
 //----------------------------------------------------
-#endif
 
 void CEditableObject::VerifyMeshNames(){
 	int idx=0;
