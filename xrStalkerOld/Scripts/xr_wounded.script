@@ -513,7 +513,6 @@ function add_to_binder (object, ini, scheme, section, st)
     action:add_precondition (world_property (properties["medikit"],         false))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["cover"],           false))
-	action:add_precondition (world_property(properties["contact"],	        false))
     action:add_effect       (world_property (properties["cover"],           true))
    	manager:add_action      (operators["cover"], action)
    
