@@ -157,8 +157,8 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_fMaxRadioIinterval = pSettings->ReadFLOAT(section,"MaxRadioIinterval");
 	m_fRadioRefreshRate	 = pSettings->ReadFLOAT(section,"RadioRefreshRate");
 	
-	m_dwMaxDynamicObjectsCount = pSettings->ReadINT(section,"DynamicObjectsCount");
-	m_dwMaxDynamicSoundsCount = pSettings->ReadINT(section,"DynamicSoundsCount");
+	m_dwMaxDynamicObjectsCount = min(pSettings->ReadINT(section,"DynamicObjectsCount"),MAX_DYNAMIC_OBJECTS);
+	m_dwMaxDynamicSoundsCount = min(pSettings->ReadINT(section,"DynamicSoundsCount"),MAX_DYNAMIC_SOUNDS);
 
 	//tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[0] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[1] = tSoldierAnimations.tNormal.tGlobal.tpaWalkForward[2] = PKinematics(pVisual)->ID_Cycle(pSettings->ReadSTRING(section,"TestAnimation"));
 	//m_fAddAngle = pSettings->ReadFLOAT(section,"AddAngle");

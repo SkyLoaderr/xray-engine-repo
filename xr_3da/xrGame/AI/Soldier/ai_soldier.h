@@ -149,11 +149,19 @@ class CAI_Soldier : public CCustomMonster
 	};
 
 	#define MAX_STATE_LIST_SIZE 256
+	#define MAX_DYNAMIC_OBJECTS 32
+	#define MAX_DYNAMIC_SOUNDS  32
+	#define MAX_HURT_COUNT		32
 
 	typedef struct tagSSoldierStates {
 		ESoldierStates	eState;
 		DWORD			dwTime;
 	}SSoldierStates;
+
+	typedef struct tagSHurt {
+		CEntity *tpEntity;
+		DWORD	dwTime;
+	}SHurt;
 
 	DWORD m_tActionType;
 	DWORD m_tFightType;
@@ -162,8 +170,9 @@ class CAI_Soldier : public CCustomMonster
 
 	protected:
 		
-		vector<SDynamicObject>	tpaDynamicObjects;
-		vector<SDynamicSound>	tpaDynamicSounds;
+		svector<SDynamicObject,	MAX_DYNAMIC_OBJECTS>	tpaDynamicObjects;
+		svector<SDynamicSound,	MAX_DYNAMIC_SOUNDS>	tpaDynamicSounds;
+		svector<SHurt,			MAX_HURT_COUNT>		tpaHurts;
 		DWORD					m_dwMaxDynamicObjectsCount;
 		DWORD					m_dwMaxDynamicSoundsCount;
 		float					m_fSensetivity;
@@ -633,6 +642,19 @@ class CAI_Soldier : public CCustomMonster
 			tSoldierStates.dwTime = m_dwCurrentUpdate;
 			tSoldierStates.eState = eState;
 			tStateList.push_back(tSoldierStates);
+		}
+	IC	void vfAddHurtToList(CEntity *tpEntity)
+		{
+			if ((tpaHurts.size()) && (tpaHurts[tpaHurts.size() - 1].tpEntity == tpEntity)) {
+				tpaHurts[tpaHurts.size() - 1].dwTime = m_dwCurrentUpdate;
+				return;
+			}
+			if (tpaHurts.size() >= MAX_STATE_LIST_SIZE)
+				tpaHurts.erase(DWORD(0));
+			SHurt tHurt;
+			tHurt.dwTime = m_dwCurrentUpdate;
+			tHurt.tpEntity = tpEntity;
+			tpaHurts.push_back(tHurt);
 		}
 	IC	bool bfCheckStateHistory(ESoldierStates eState, DWORD dwTimeInterval)
 		{
