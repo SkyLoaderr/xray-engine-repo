@@ -15,6 +15,7 @@ const float CLAMB_DISTANCE=0.5f;
 const float JUMP_UP_VELOCITY=6.0f;//5.6f;
 const float JUMP_INCREASE_VELOCITY_RATE=1.2f;
 static u32 lastMaterial;
+static float object_demage_factor=12.f;
 void dBodyAngAccelFromTorqu(const dBodyID body, dReal* ang_accel, const dReal* torque){
       dMass m;
       dMatrix3 invI;
@@ -559,25 +560,34 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 		const dReal* vel=dBodyGetLinearVel(m_body);
 		dReal c_vel;
 	//	if(bo1)
-		{
+	///	{
 			dBodyID b=dGeomGetBody(c->geom.g2);
 			dMass m;
 			dBodyGetMass(b,&m);
 			const dReal* obj_vel=dBodyGetLinearVel(b);
-			dVector3 obj_impuls={obj_vel[0]*m.mass,obj_vel[1]*m.mass,obj_vel[2]*m.mass};
+			dVector3 obj_vel_effective={obj_vel[0]*object_demage_factor,obj_vel[1]*object_demage_factor,obj_vel[2]*object_demage_factor};
+			dVector3 obj_impuls={obj_vel_effective[0]*m.mass,obj_vel_effective[1]*m.mass,obj_vel_effective[2]*m.mass};
 			dVector3 impuls={vel[0]*m_mass,vel[1]*m_mass,vel[2]*m_mass};
 			dVector3 c_mas_impuls={obj_impuls[0]+impuls[0],obj_impuls[1]+impuls[1],obj_impuls[2]+impuls[2]};
 			dReal cmass=m_mass+m.mass;
 			dVector3 c_mass_vel={c_mas_impuls[0]/cmass,c_mas_impuls[1]/cmass,c_mas_impuls[2]/cmass};
 			//dVector3 rel_impuls={obj_impuls[0]-impuls[0],obj_impuls[1]-impuls[1],obj_impuls[2]-impuls[2]};
 			//c_vel=dFabs(dDOT(obj_vel,c->geom.normal)*_sqrt(m.mass/m_mass));
-			dReal kin_energy_start=dDOT(vel,vel)*m_mass/2.f+dDOT(obj_vel,obj_vel)*m.mass/2.f;
-			dReal kin_energy_end=dDOT(c_mass_vel,c_mass_vel)*cmass/2.f;
+			dReal vel_prg=dDOT(vel,c->geom.normal);
+			dReal obj_vel_prg=dDOT(obj_vel_effective,c->geom.normal);
+			dReal c_mass_vel_prg=dDOT(c_mass_vel,c->geom.normal);
+
+			//dReal kin_energy_start=dDOT(vel,vel)*m_mass/2.f+dDOT(obj_vel,obj_vel)*m.mass/2.f*object_demage_factor;
+			//dReal kin_energy_end=dDOT(c_mass_vel,c_mass_vel)*cmass/2.f;
+
+			dReal kin_energy_start=vel_prg*vel_prg*m_mass/2.f+obj_vel_prg*obj_vel_prg*m.mass/2.f;
+			dReal kin_energy_end=c_mass_vel_prg*c_mass_vel_prg*cmass/2.f;
+
 			dReal accepted_energy=(kin_energy_start-kin_energy_end);
 			if(accepted_energy>0.f)
 				c_vel=dSqrt(accepted_energy/m_mass*2.f);
 			else c_vel=0.f;
-		}
+	//	}
 	//	else
 	//	{
 	//		dBodyID b=dGeomGetBody(c->geom.g1);
