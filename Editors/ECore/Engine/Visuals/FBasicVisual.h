@@ -13,9 +13,9 @@
 #define VLOAD_FORCESOFTWARE		(1<<2)
 
 // The class itself
-class	ENGINE_API			CSkeletonAnimated;
-class	ENGINE_API			CSkeletonRigid;
-class	ENGINE_API			CKinematics;
+class	ENGINE_API				CSkeletonAnimated;
+class	ENGINE_API				CSkeletonRigid;
+class	ENGINE_API				CKinematics;
 
 // The class itself
 class	ENGINE_API				IRender_Visual

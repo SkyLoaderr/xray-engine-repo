@@ -26,7 +26,7 @@ void	IGame_Level::SoundEvent	( ref_sound* S, float range )
 	xr_vector<ISpatial*>::iterator	end	= snd_ER.end	();
 	for (; it!=end; it++)
 	{
-		Feel::Sound* L		= dynamic_cast<Feel::Sound*>(*it);
+		Feel::Sound* L		= (*it)->dcast_FeelSound	();
 		if (0==L)			continue;
 
 		// Energy and signal
@@ -77,7 +77,7 @@ IC int	CObjectSpace::GetNearest ( const Fvector &point, float range )
 	xr_vector<ISpatial*>::iterator	it	= r_spatial.begin	();
 	xr_vector<ISpatial*>::iterator	end	= r_spatial.end		();
 	for (; it!=end; it++)		{
-		CObject* O				= dynamic_cast<CObject*>(*it);
+		CObject* O				= (*it)->dcast_CObject		();
 		if (0==O)				continue;
 		Fsphere mS				= { O->spatial.center, O->spatial.radius	};
 		if (Q.intersect(mS))	q_nearest.push_back(O);

@@ -84,6 +84,8 @@ public:
 	virtual	void	spatial_move			();
 	virtual	Fvector	spatial_sector_point	();
 
+	virtual IRender_Light*	dcast_Light		()	{ return this; }
+
 #if RENDER==R_R2
 	void			gi_generate				();
 	void			xform_calc				();

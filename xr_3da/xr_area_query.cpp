@@ -40,7 +40,7 @@ void CObjectSpace::BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 		for (u32 o_it=0; o_it<r_spatial.size(); o_it++)
 		{
 			ISpatial*	spatial						= r_spatial[o_it];
-			CObject*	collidable					= dynamic_cast<CObject*>	(spatial);
+			CObject*	collidable					= spatial->dcast_CObject	();
 			if			(0==collidable)				continue;
 			collidable->collidable.model->_BoxQuery	(B,M,flags);
 		}

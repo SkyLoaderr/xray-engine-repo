@@ -53,7 +53,7 @@ namespace Feel {
 		for (u32 o_it=0; o_it<g_pGameLevel->ObjectSpace.r_spatial.size(); o_it++)
 		{
 			ISpatial*	spatial								= g_pGameLevel->ObjectSpace.r_spatial[o_it];
-			CObject*	object								= dynamic_cast<CObject*>(spatial);
+			CObject*	object								= spatial->dcast_CObject	();
 			if (object && feel_vision_isRelevant(object))	seen.push_back(object);
 		}
 		if (seen.size()>1) 

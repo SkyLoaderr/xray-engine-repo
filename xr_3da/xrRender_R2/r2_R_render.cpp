@@ -84,7 +84,7 @@ void CRender::Render		()
 					if (spatial->spatial.type & STYPE_RENDERABLE)
 					{
 						// renderable
-						IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+						IRenderable*	renderable		= spatial->dcast_Renderable	();
 						VERIFY							(renderable);
 
 						// Occlusion
@@ -106,7 +106,7 @@ void CRender::Render		()
 					{
 						VERIFY							(spatial->spatial.type & STYPE_LIGHTSOURCE);
 						// lightsource
-						light*			L				= dynamic_cast<light*>		(spatial);
+						light*			L				= (light*)	(spatial->dcast_Light());
 						VERIFY							(L);
 						Lights.add_light				(L);
 					}

@@ -23,9 +23,10 @@ public:
 
 	void				PSI_destroy		();
 
-	virtual void		Play			()=0;
+	virtual void			Play			()	=0;
 
-	virtual void		shedule_Update	(u32 dt);
+	virtual void			shedule_Update		(u32 dt);
+	virtual	IRenderable*	dcast_Renderable	()	{ return 0;	}
 };
 
 #endif

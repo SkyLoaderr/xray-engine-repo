@@ -312,9 +312,8 @@ void CRender::Calculate				()
 				if (spatial->spatial.type & STYPE_RENDERABLE)
 				{
 					// renderable
-					IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-					if (0==renderable)	
-					{
+					IRenderable*	renderable		= spatial->dcast_Renderable	();
+					if (0==renderable)	{
 						// It may be an glow
 						CGlow*		glow				= dynamic_cast<CGlow*>(spatial);
 						VERIFY							(glow);
@@ -338,7 +337,7 @@ void CRender::Calculate				()
 				} else {
 					VERIFY								(spatial->spatial.type & STYPE_LIGHTSOURCE);
 					// lightsource
-					light*			L					= dynamic_cast<light*>		(spatial);
+					light*			L					= (light*)	spatial->dcast_Light	();
 					VERIFY								(L);
 					L_DB->add_light						(L);
 				}

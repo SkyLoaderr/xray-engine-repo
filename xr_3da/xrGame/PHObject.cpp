@@ -48,9 +48,7 @@ void CPHObject::Collide()
 	g_SpatialSpace->q_box(ph_world->r_spatial,0,STYPE_PHYSIC,spatial.center,AABB);
 	qResultVec& result=ph_world->r_spatial;
 	qResultIt i=result.begin(),e=result.end();
-	for(;i!=e;++i)
-	{
-		
+	for(;i!=e;++i)	{
 		CPHObject* obj2=static_cast<CPHObject*>(*i);
 		if(obj2==this || !obj2->b_dirty)		continue;
 		NearCallback(this,obj2,dSpacedGeom(),obj2->dSpacedGeom());

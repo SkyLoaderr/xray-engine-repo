@@ -114,9 +114,11 @@ public:
 	virtual void						SLS_Save			(IWriter& fs)		{};
 	virtual void						SLS_Load			(IReader& fs)		{};
 	
-	// Accessors
+	// Accessors and converters
 	IC IRender_Visual*					Visual				()					{ return renderable.visual;			}
 	IC ICollisionForm*					CFORM				() const			{ return collidable.model;			}
+	virtual		CObject*				dcast_CObject		()					{ return this;						}
+	virtual		IRenderable*			dcast_Renderable	()					{ return this;						}
 
 	// Name management
 	IC ref_str							cName				()			const	{ return *NameObject;				}

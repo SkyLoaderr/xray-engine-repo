@@ -59,7 +59,8 @@ void CGameObject::Load(LPCSTR section)
 	//////////////////////////////////////
 	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
 	if (self)	{
-		self->spatial.type	|=	STYPE_VISIBLEFORAI;
+		#pragma todo("to Dima: All objects are visible for AI ???")
+		// self->spatial.type	|=	STYPE_VISIBLEFORAI;	
 		self->spatial.type	&= ~STYPE_REACTTOSOUND;
 	}
 }

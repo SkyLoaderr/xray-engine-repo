@@ -49,6 +49,13 @@ class ENGINE_API				ISpatial_NODE;
 class ENGINE_API				ISpatial_DB;
 
 //////////////////////////////////////////////////////////////////////////
+// Fast type conversion
+class ENGINE_API				CObject;
+class ENGINE_API				IRenderable;
+class ENGINE_API				IRender_Light;
+namespace Feel { class ENGINE_API Sound; }
+
+//////////////////////////////////////////////////////////////////////////
 class ENGINE_API				ISpatial
 {
 public:
@@ -71,6 +78,11 @@ public:
 	virtual		void			spatial_unregister	();
 	virtual		void			spatial_move		();
 	virtual		Fvector			spatial_sector_point()	{ return spatial.center; }
+
+	virtual		CObject*		dcast_CObject		()	{ return 0;	}
+	virtual		Feel::Sound*	dcast_FeelSound		()	{ return 0;	}
+	virtual		IRenderable*	dcast_Renderable	()	{ return 0;	}
+	virtual		IRender_Light*	dcast_Light			()	{ return 0; }
 
 				ISpatial		();
 	virtual		~ISpatial		();

@@ -28,7 +28,7 @@ void	CRender::render_smap_direct		(Fmatrix& mCombined)
 	for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 	{
 		ISpatial*		spatial			= lstRenderables[o_it];
-		IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
+		IRenderable*	renderable		= spatial->dcast_Renderable();
 		VERIFY							(renderable);
 		renderable->renderable_Render	();
 	}

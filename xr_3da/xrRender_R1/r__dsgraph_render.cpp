@@ -504,8 +504,8 @@ void	R_dsgraph_structure::r_dsgraph_render_subspace	(IRender_Sector* _sector, Fm
 				if (!view.testSphere_dirty(spatial->spatial.center,spatial->spatial.radius))	continue;
 
 				// renderable
-				IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-				if (0==renderable)				continue;		// unknown, but renderable object (r1_glow???)
+				IRenderable*	renderable		= spatial->dcast_Renderable	();
+				if (0==renderable)				continue;					// unknown, but renderable object (r1_glow???)
 
 				renderable->renderable_Render	();
 			}

@@ -83,7 +83,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 	for (u32 o_it=0; o_it<RImplementation.lstSpatial.size(); o_it++)
 	{
 		ISpatial*	spatial		= RImplementation.lstSpatial[o_it];
-		light*		source		= dynamic_cast<light*>	(spatial);
+		light*		source		= (light*)	(spatial->dcast_Light());
 		if (0==source)			continue;
 		float	R				= fRadius+source->range;
 		if (pos.distance_to(source->position) < R)	add		(source);
