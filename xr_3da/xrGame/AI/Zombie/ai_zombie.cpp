@@ -172,6 +172,11 @@ void CAI_Zombie::net_Import(NET_Packet* P)
 
 void CAI_Zombie::Exec_Movement	( float dt )
 {
+	if (fabsf(vPosition.x) > 10000.f) {
+		if (ps_Size() > 1)
+			vPosition = ps_Element(ps_Size() - 2).vPosition;
+		Msg("%s",cName());
+	}
 	AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);
 //	if (eCurrentState != aiZombieJumping)
 //		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,dt);

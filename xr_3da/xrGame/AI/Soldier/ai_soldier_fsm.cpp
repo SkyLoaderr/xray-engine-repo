@@ -905,6 +905,9 @@ void CAI_Soldier::OnLookingOver()
 	
 	CGroup &Group = Squad.Groups[g_Group()];
 	
+	AI_Path.TravelPath.clear();
+	AI_Path.TravelStart = 0;
+
 	if ((dwCurTime - Group.m_dwLastHitTime < HIT_JUMP_TIME) && (Group.m_dwLastHitTime)) {
 		tHitDir = Group.m_tLastHitDirection;
 		dwHitTime = Group.m_dwLastHitTime;
