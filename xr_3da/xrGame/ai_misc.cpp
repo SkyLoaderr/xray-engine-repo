@@ -1597,8 +1597,25 @@ void CAI_Space::vfFindGraphPointNodeInDirection(u32 dwStartNode, Fvector tStartP
 }
 
 #ifdef DEBUG
+#include "_fbox.h"
 void CAI_Space::DrawTravelLine()
 {
+	Level().CurrentEntity()->setEnabled(false);
+	Level().ObjectSpace.GetNearest		(m_tStartPoint,100.f); 
+	xr_vector<CObject*>			&tpNearestList = Level().ObjectSpace.q_nearest; 
+	Level().CurrentEntity()->setEnabled(true);
+
+	xr_vector<CObject*>::iterator		I = tpNearestList.begin();
+	xr_vector<CObject*>::iterator		E = tpNearestList.end();
+	for ( ; I != E; ++I) {
+		Fvector							c, d, C2;
+		(*I)->Visual()->vis.box.get_CD	(c,d);
+		Fmatrix							M = (*I)->XFORM();
+		M.transform_tiny				(C2,c);
+		M.c								= C2;
+		RCache.dbg_DrawOBB				(M,d,color_rgba(0,255,0,255));
+	}
+
 	if (!m_tpTravelLine.empty()) {
 		Fvector							P = m_tpTravelLine[0];
 		P.y								+= .1f;
@@ -1648,6 +1665,12 @@ void CAI_Space::ComputeTravelLine(AI::NodePath &AI_Path, u32 dwStartNodeID, u32 
 		m_tpTravelLine.clear	();
 		return;
 	}
+	
+//	Level().CurrentEntity()->setEnabled(false);
+//	Level().ObjectSpace.GetNearest		(p_dest,1.f); 
+//	xr_vector<CObject*>			&tpNearestList = Level().ObjectSpace.q_nearest; 
+//	Level().CurrentEntity()->setEnabled(true);
+
 	Fvector						tStartPosition = m_tStartPoint;
 	u32							dwCurNode = dwStartNodeID;
 	m_tpaPoints.push_back		(tStartPosition);
