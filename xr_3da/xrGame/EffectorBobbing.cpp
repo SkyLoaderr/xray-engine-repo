@@ -51,13 +51,13 @@ BOOL CEffectorBobbing::Process		(Fvector &p, Fvector &d, Fvector &n, float& fFov
 		float A		= (CActor::isAccelerated(dwMState)?AMPLITUDE_RUN:AMPLITUDE_WALK)*k;
 		float ST	= ((CActor::isAccelerated(dwMState)?SPEED_RUN:SPEED_WALK)*fTime)*k;
 	
-		float _sin	= _abs(_sin(ST)*A)*fReminderFactor;
-		float _cos	= _cos(ST)*A*fReminderFactor;
+		float _sinA	= _abs(_sin(ST)*A)*fReminderFactor;
+		float _cosA	= _cos(ST)*A*fReminderFactor;
 
-		p.y			+=	_sin;
-		dangle.x	=	_cos;
-		dangle.z	=	_cos;
-		dangle.y	=	_sin;
+		p.y			+=	_sinA;
+		dangle.x	=	_cosA;
+		dangle.z	=	_cosA;
+		dangle.y	=	_sinA;
 
 		Fmatrix		R;
 		R.setHPB	(dangle.x,dangle.y,dangle.z);
