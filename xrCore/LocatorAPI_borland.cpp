@@ -39,8 +39,6 @@ int CLocatorAPI::file_list(FS_QueryMap& dest, LPCSTR initial, u32 flags, LPCSTR 
 			// file
 			if ((flags&FS_ListFiles) == 0)	continue;
 			LPCSTR entry_begin 		= entry.name+base_len;
-            LPCSTR a = strstr(entry_begin,"\\");
-            bool b = flags&FS_RootOnly;
 			if ((flags&FS_RootOnly)&&strstr(entry_begin,"\\"))	continue;	// folder in folder
 			// check extension
 			if (ext_mask){
@@ -181,5 +179,17 @@ void CLocatorAPI::ClearEventNotification()
         xr_delete(FThread);
     }
 	DeleteCriticalSection(&CS);
+}
+
+void CLocatorAPI::lock_rescan()
+{
+	m_Flags.set(flLockRescan,TRUE);
+}
+
+void CLocatorAPI::unlock_rescan()
+{
+	m_Flags.set(flLockRescan,FALSE);
+	if (m_Flags.is(flNeedRescan)) 
+    	rescan_pathes();
 }
 
