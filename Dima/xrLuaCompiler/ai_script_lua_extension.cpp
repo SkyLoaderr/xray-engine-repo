@@ -6,14 +6,18 @@
 //	Description : XRay Script extensions
 ////////////////////////////////////////////////////////////////////////////
 
-#include <stdarg.h>
 #include "stdafx.h"
-#include "ai_script_space.h"
 #include "ai_script_lua_extension.h"
-#include "ai_space.h"
+
+#ifndef ENGINE_BUILD
+	#include <stdarg.h>
+	#include "ai_script_space.h"
+	#include "ai_space.h"
+#endif
 
 using namespace Script;
 
+#ifndef ENGINE_BUILD
 int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
 	if (!psAI_Flags.test(aiLua))
@@ -128,6 +132,7 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);
 }
+#endif
 
 bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
 {
