@@ -88,7 +88,7 @@
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</right_auto_static>
    	<!-- TOP BOTTOM LINE -->
-	<right_auto_static x="14" y="188" width="249" height="2" stretch="1">
+	<right_auto_static x="14" y="189" width="249" height="2" stretch="1">
 		<texture>ui\ui_pda_horizontal_line</texture>
 	</right_auto_static>
 	
