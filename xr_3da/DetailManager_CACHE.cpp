@@ -130,28 +130,35 @@ void	CDetailManager::cache_Update	(int v_x, int v_z, Fvector& view, int limit)
 	}
 
 	// Task performer
-	if (cache_task.size() == dm_cache_size)	limit = dm_cache_size;
+	BOOL	bFullUnpack		= FALSE;
+	if (cache_task.size() == dm_cache_size)	{ limit = dm_cache_size; bFullUnpack=TRUE; }
+
 	for (int iteration=0; cache_task.size() && (iteration<limit); iteration++)
 	{
-		u32	best_id		= 0;
+		u32		best_id		= 0;
 		float	best_dist	= flt_max;
 
-		for (u32 entry=0; entry<cache_task.size(); entry++)
+		if (bFullUnpack)
 		{
-			// Gain access to data
-			Slot*		S	= cache_task[entry];
-			VERIFY		(stPending == S->type);
-
-			// Estimate
-			Fvector		C;
-			S->BB.getcenter	(C);
-			float		D	= view.distance_to_sqr	(C);
-
-			// Select 
-			if (D<best_dist)
+			best_id			= cache_task.size()-1;
+		} else {
+			for (u32 entry=0; entry<cache_task.size(); entry++)
 			{
-				best_dist	= D;
-				best_id		= entry;
+				// Gain access to data
+				Slot*		S	= cache_task[entry];
+				VERIFY		(stPending == S->type);
+
+				// Estimate
+				Fvector		C;
+				S->BB.getcenter	(C);
+				float		D	= view.distance_to_sqr	(C);
+
+				// Select 
+				if (D<best_dist)
+				{
+					best_dist	= D;
+					best_id		= entry;
+				}
 			}
 		}
 
