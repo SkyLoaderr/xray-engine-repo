@@ -89,7 +89,8 @@ function Trader:__init( npc_o, zone_o, scr_name_o )
                         enter_time    = device():time_global(),
                         time          = device():time_global()-8000,   //'Использутеся для различных целей
                         need_reset    = false,
-                        need_reselect = true
+                        need_reselect = true,
+                        play_sound	  = false
                         }
 	self.curState    = nil
 
@@ -199,18 +200,20 @@ function Trader:animation()
 
         if( self.mem.anim_snd == nil ) then                 //'Проигруем анимацию без звука
             action( self.npc, anim( self.mem.last_anim ), cond( cond.anim_end ) )
+			self.mem.play_sound = false						//'Звук не проигруем
 //'            printf( "Anim   %s", self.mem.last_anim )
             self.mem.repeats = self.mem.repeats - 1
         else                                           //'Проигруем анимацию со звуком
 	        if( self.mem.all_anim ) then                        //'Анимация, где двигается все тело
     	        action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head"),
         		                                                    cond( cond.sound_end ) )
-            	self.mem.all_anim = false
+            	self.mem.all_anim   = false
             else
 	            action( self.npc, anim( self.mem.last_anim ), sound( self.mem.anim_snd, "bip01_head", MonsterSpace.head_anim_normal ),
     	                                                            cond( cond.sound_end ) )
      		end
 
+            self.mem.play_sound = true						//'На данный момент проигруем звук
             self.mem.anim_snd = nil
             self.mem.repeats = 0                           //'После звука выбираем новую анимацию, старую не повторяем
 //'            printf( "Play anim with sound. Phrase %s", self.mem.anim_snd )
@@ -233,6 +236,8 @@ function Trader:animation()
             action( self.npc, anim( "chitaet_idle" ), cond( cond.anim_end ) )
             self.mem.state = idle
         end
+        
+        self.mem.play_sound = false							//'Звук не проигруем
     end
 
 end
@@ -297,7 +302,7 @@ function t_OnStart:sound()
         end
     end
 
-    if( self.curState == telling ) then
+    if( self.curState == telling and self.mem.play_sound == false) then					//Пришло время говорить фразу, 
 //'        printf( "Tell" )
         self.mem.anim_snd  = Story1
         self.curState      = waiting
