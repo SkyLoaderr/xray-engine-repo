@@ -209,6 +209,9 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 	dMatrix3 R;
 	PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetRotation(m_body,R);
+	dVectorSet(m_safe_position,dBodyGetPosition(m_body));
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+	dQuaternionSet(m_safe_quaternion,dBodyGetQuaternion(m_body));
 }
 
 void CPHElement::getQuaternion(Fquaternion& quaternion)
@@ -389,9 +392,9 @@ void CPHElement::PhDataUpdate(dReal step){
 
 	if(!dV_valid(linear_velocity))
 	{
-		dBodySetLinearVel(m_body,0.f,0.f,0.f);
-		linear_velocity_smag=0.f;
-		linear_velocity_mag =0.f;
+		dBodySetLinearVel(m_body,m_safe_velocity[0],m_safe_velocity[1],m_safe_velocity[2]);
+		linear_velocity_smag=dDOT(m_safe_velocity,m_safe_velocity);
+		linear_velocity_mag =dSqrt(linear_velocity_smag);
 	}
 	else if(linear_velocity_mag>m_l_limit)
 	{
@@ -404,6 +407,7 @@ void CPHElement::PhDataUpdate(dReal step){
 			linear_velocity[1]/f,
 			linear_velocity[2]/f
 			);
+		dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 	}
 
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
@@ -420,7 +424,7 @@ void CPHElement::PhDataUpdate(dReal step){
 	else
 	{
 		dVectorSet(m_safe_position,position);
-		dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
+
 		
 	}
 
@@ -858,6 +862,7 @@ void CPHElement::set_LinearVel			  (const Fvector& velocity)
 {
 	if(!bActive) return;
 	dBodySetLinearVel(m_body,velocity.x,velocity.y,velocity.z);
+	dVectorSet(m_safe_velocity,dBodyGetLinearVel(m_body));
 }
 void CPHElement::set_AngularVel			  (const Fvector& velocity)
 {
