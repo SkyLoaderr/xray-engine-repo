@@ -78,7 +78,7 @@ struct NodeCompressed
 			case 3 :	return link3;
 			default :	NODEFAULT;
 		}
-		return		(-1);
+		return		(u32(-1));
 	}
 };									// 2+5+1+11 = 19b
 #pragma pack	(pop)
