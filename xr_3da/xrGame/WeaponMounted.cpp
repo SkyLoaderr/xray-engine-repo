@@ -238,7 +238,6 @@ void	CWeaponMounted::detach_Actor		()
 	//закончить стрельбу
 	FireEnd();
 }
-}
 
 Fvector	CWeaponMounted::ExitPosition		()
 {
