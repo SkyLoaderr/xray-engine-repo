@@ -33,15 +33,15 @@ private:
 		}
 	}
 public:
-	void	add_sector_lights(vector<WORD> &L);
+	void	add_sector_lights	(vector<WORD> &L);
 
-	void	UnselectAll		(void);			// Disables all lights
+	void	UnselectAll			(void);			// Disables all lights
 
-	void	Select			(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
-	void	Select			(Fvector &pos, float fRadius);
-	void	Track			(CObject* O);
+	void	Select				(Fvector &pos, float fRadius, vector<xrLIGHT*>&	dest);
+	void	Select				(Fvector &pos, float fRadius);
+	void	Track				(CObject* O);
 
-	void	Load			(IReader* fs);
-	void	Unload			(void);
-	void	Render			(void);
+	void	Load				(IReader* fs);
+	void	Unload				(void);
+	void	Render				(void);
 };
