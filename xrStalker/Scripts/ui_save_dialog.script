@@ -19,7 +19,7 @@ function save_dialog:__init() super()
 	
 	self:InitControls()
 	self:InitCallBacks()
-	self:GetList()
+	self:FillList()
 end
 
 function save_dialog:__finalize()
