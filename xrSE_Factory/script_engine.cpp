@@ -128,7 +128,9 @@ void CScriptEngine::export()
 			lua_sethook					(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
 #endif
 
+#ifdef XRGAME_EXPORTS
 	load_common_scripts					();
+#endif
 	m_stack_level						= lua_gettop(lua());
 }
 
