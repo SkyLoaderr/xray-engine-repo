@@ -2,6 +2,8 @@
 #include "GameFont.h"
 #pragma hdrstop
 
+#include "ISpatial.h"
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -71,6 +73,9 @@ void CStats::Show()
 		TEST1.FrameEnd				();
 		TEST2.FrameEnd				();
 		TEST3.FrameEnd				();
+
+		g_SpatialSpace.stat_insert.FrameEnd();
+		g_SpatialSpace.stat_remove.FrameEnd();
 	}
 
 	// calc FPS & TPS
@@ -119,6 +124,8 @@ void CStats::Show()
 		F.OutNext	("Memory:      %2.2fa",fMem_calls);
 		F.OutNext	("uSheduled:   %2.2fms, %2.1f%%",Sheduler.result,		PPP(Sheduler.result));
 		F.OutNext	("uClients:    %2.2fms, %2.1f%%",UpdateClient.result,	PPP(UpdateClient.result));
+		F.OutNext	("spInsert:    %2.2fms, %2.1f%%",g_SpatialSpace.stat_insert.result, PPP(g_SpatialSpace.stat_insert.result));
+		F.OutNext	("spRemove:    %2.2fms, %2.1f%%",g_SpatialSpace.stat_remove.result, PPP(g_SpatialSpace.stat_remove.result));
 		F.OutNext	("Physics:     %2.2fms, %2.1f%%",Physics.result,		PPP(Physics.result));	
 		F.OutNext	("  collider:  %2.2fms", ph_collision.result);	
 		F.OutNext	("  solver:    %2.2fms", ph_core.result);	
@@ -217,6 +224,9 @@ void CStats::Show()
 		TEST1.FrameStart			();
 		TEST2.FrameStart			();
 		TEST3.FrameStart			();
+
+		g_SpatialSpace.stat_insert.FrameStart();
+		g_SpatialSpace.stat_remove.FrameStart();
 	}
 	dwSND_Played = dwSND_Allocated = 0;
 }
