@@ -6,10 +6,9 @@ class VertexCache
 {
 
 public:
-
-  VertexCache(int size);
-  VertexCache();
-  ~VertexCache();
+  VertexCache	(int size);
+  VertexCache	();
+  ~VertexCache	();
 
   bool			InCache	(int entry);
   int			AddEntry(int entry);
@@ -20,10 +19,7 @@ public:
   void			Set		(int index, int value);
 
 private:
-
-  int *entries;
-  int numEntries;
-
+	vector<int>	entries;
 };
 
 inline bool VertexCache::InCache(int entry)

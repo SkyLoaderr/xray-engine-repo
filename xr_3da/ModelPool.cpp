@@ -22,31 +22,31 @@ CVisual*	CModelPool::Instance_Create(u32 type)
 	// Check types
 	switch (type) {
 	case MT_NORMAL:				// our base visual
-		V	= new Fvisual;
+		V	= xr_new<Fvisual>	();
 		break;
 	case MT_HIERRARHY:
-		V	= new FHierrarhyVisual;
+		V	= xr_new<FHierrarhyVisual> ();
 		break;
 	case MT_PROGRESSIVE:		// dynamic-resolution visual
-		V	= new FProgressiveFixedVisual;
+		V	= xr_new<FProgressiveFixedVisual> ();
 		break;
 	case MT_SKELETON:
-		V	= new CKinematics;
+		V	= xr_new<CKinematics> ();
 		break;
 	case MT_SKELETON_PART:
-		V	= new CSkeletonX_PM;
+		V	= xr_new<CSkeletonX_PM> ();
 		break;
 	case MT_SKELETON_PART_STRIPPED:
-		V	= new CSkeletonX_ST;
+		V	= xr_new<CSkeletonX_ST> ();
 		break;
 	case MT_PARTICLE_SYSTEM:
-		V	= new CPSVisual;
+		V	= xr_new<CPSVisual> ();
 		break;
 	case MT_CACHED:
-		V	= new FCached;
+		V	= xr_new<FCached> ();
 		break;
 	case MT_LOD:
-		V	= new FLOD;
+		V	= xr_new<FLOD> ();
 		break;
 	default:
 		R_ASSERT2(0,"Unknown visual type");

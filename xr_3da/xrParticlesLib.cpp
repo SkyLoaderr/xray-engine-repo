@@ -24,7 +24,7 @@ BOOL psLibrary_Load(const char *Name, PS::PSVec &LIB)
 	if (0==strncmp(id,ID,8))	
 	{
 		Engine.FS.Close			(F);
-		F						= new CCompressedStream(Name,ID);
+		F						= xr_new<CCompressedStream> (Name,ID);
 	}
 	CStream&				FS	= *F;
 	

@@ -31,10 +31,10 @@ void CSoundManager::Initialize		()
 	if (bPresent) 
 	{
 		// 3D Sounds
-		pSoundRender	= new CSoundRender	( );
+		pSoundRender	= xr_new<CSoundRender>	( );
 
 		// Streams Sounds
-		pMusicStreams	= new CMusicStream	( );
+		pMusicStreams	= xr_new<CMusicStream>	( );
 	}
 	Restart			();
 }
@@ -56,7 +56,7 @@ void CSoundManager::Restart				()
 	Device.seqFrameMT.Remove	(this);
 
 	if (bPresent) {
-		// create new ones based on values
+		// create _new_ ones based on values
 		if (psDeviceFlags.test(mtSound))	Device.seqFrameMT.Add	(this,REG_PRIORITY_HIGH);
 		else								Device.seqFrame.Add		(this,REG_PRIORITY_LOW);
 	}

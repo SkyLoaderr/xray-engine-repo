@@ -34,7 +34,7 @@ int CMusicStream::FindEmptySlot()
 CSoundStream* CMusicStream::CreateSound	(CInifile *pIni, LPCSTR section)
 {
 	int slot;
-	CSoundStream *pSnd = new CSoundStream;
+	CSoundStream *pSnd = xr_new<CSoundStream> ();
 	pSnd->Load(pIni, section);
 
 	if ((slot=FindEmptySlot())>=0){
@@ -49,7 +49,7 @@ CSoundStream* CMusicStream::CreateSound	(CInifile *pIni, LPCSTR section)
 CSoundStream* CMusicStream::CreateSound	(LPCSTR name	)
 {
 	int slot;
-	CSoundStream *pSnd = new CSoundStream;
+	CSoundStream *pSnd = xr_new<CSoundStream> ();
 	pSnd->Load(name);
 
 	if ((slot=FindEmptySlot())>=0){

@@ -105,7 +105,7 @@ void CDetailManager::Load		()
 	CStream* m_fs	= dtFS->OpenChunk(1);
 	for (u32 m_id = 0; m_id < m_count; m_id++)
 	{
-		CDetail*		dt	= new CDetail;
+		CDetail*		dt	= xr_new<CDetail> ();
 		CStream* S			= m_fs->OpenChunk(m_id);
 		dt->Load			(S);
 		objects.push_back	(dt);

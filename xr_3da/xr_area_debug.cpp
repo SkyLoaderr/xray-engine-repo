@@ -137,7 +137,7 @@ void CObjectSpace::_render()
 	FLvertex* a;
 
 	int cnt = tris_list.count;
-	a = new FLvertex[cnt*3];
+	a = xr_new FLvertex[cnt*3];
 	for ( int i = 0; i<cnt; i++ ){
 		a[i*3+0].x = tris_list[i].p1[0];	a[i*3+0].y = tris_list[i].p1[1];	a[i*3+0].z = tris_list[i].p1[2];
 		a[i*3+1].x = tris_list[i].p2[0];	a[i*3+1].y = tris_list[i].p2[1];	a[i*3+1].z = tris_list[i].p2[2];
