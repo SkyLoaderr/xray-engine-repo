@@ -29,10 +29,9 @@
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
 #include "object_factory.h"
-
 #include "script_debugger.h"
-
 #include "ai/ai_monster_group.h"
+#include "xrMessages.h"
 
 #pragma comment(lib,"ode.lib" )
 

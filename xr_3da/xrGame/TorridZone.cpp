@@ -22,6 +22,7 @@ BOOL CTorridZone::net_Spawn(LPVOID DC)
 	m_animator->Load	(zone->get_motion());
 	m_animator->Play	(true);
 
+	return				(TRUE);
 }
 
 void CTorridZone::UpdateCL()
