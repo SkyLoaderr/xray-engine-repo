@@ -58,6 +58,8 @@ CUIBuyWeaponWnd::CUIBuyWeaponWnd(char *strSectionName)
 	Init(strSectionName);
 
 	SetFont(HUD().pFontMedium);
+
+	m_mlCurrLevel = mlRoot;
 }
 
 CUIBuyWeaponWnd::~CUIBuyWeaponWnd()
@@ -270,12 +272,6 @@ void CUIBuyWeaponWnd::InitInventory()
 	m_pMouseCapturer = NULL;
 }  
 
-
-//при вызове проверки необходимо помнить 
-//иерархию окон, чтоб знать какой именно из
-//родителей является CUIBuyWeaponWnd и 
-//содержит свойство GetInventory()
-
 //проверка на помещение инвентаря в слоты
 bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 {
@@ -406,7 +402,8 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
 	{
-		m_pCurrentDragDropItem = (CUIDragDropItemMP*)pWnd;
+		m_pCurrentDragDropItem = dynamic_cast<CUIDragDropItemMP*>(pWnd);
+		R_ASSERT(m_pCurrentDragDropItem);
 
 		// "Поднять" вещь для освобождения занимаемого места
 		SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
@@ -446,13 +443,13 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				UIBagWnd.SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DROP, NULL);
 				break;
 			case ATTACH_SCOPE_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true);
 				break;
 			case ATTACH_SILENCER_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true);
 				break;
 			case ATTACH_GRENADE_LAUNCHER_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true);
 				break;
 			case DETACH_SCOPE_ADDON:
 				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, false);
@@ -617,35 +614,6 @@ void CUIBuyWeaponWnd::Draw()
 
 void CUIBuyWeaponWnd::Update()
 {
-//	//CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-//	CEntityAlive *pEntityAlive = dynamic_cast<CEntityAlive*>(Level().CurrentEntity());
-//
-//	if(pEntityAlive) 
-//	{
-//		UIProgressBarHealth.SetProgressPos(s16(pEntityAlive->GetHealth()*1000));
-//		UIProgressBarSatiety.SetProgressPos(s16(pEntityAlive->GetSatiety()*1000));
-//		UIProgressBarPower.SetProgressPos(s16(pEntityAlive->GetPower()*1000));
-//		UIProgressBarRadiation.SetProgressPos(s16(pEntityAlive->GetRadiation()*1000));
-//
-//		//убрать объект drag&drop для уже использованной вещи
-//		for(int i = 0; i <m_iUsedItems; i++) 
-//		{
-//			CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
-//			if(pItem && !pItem->Useful())
-//			{
-//				m_vDragDropItems[i].GetParent()->DetachChild(&m_vDragDropItems[i]);
-//				m_vDragDropItems[i].SetData(NULL);
-//				m_vDragDropItems[i].SetCustomUpdate(NULL);
-//
-//				if(m_pCurrentItem == pItem)
-//				{	
-//					SetCurrentItem(NULL);
-//					m_pCurrentDragDropItem = NULL;
-//				}
-//			}
-//		}
-//	}
-
 	if (wpnSectStorage[GRENADE_SLOT].size() != m_WeaponSubBags[GRENADE_SLOT]->GetDragDropItemsList().size())
 	{
 		ClearWpnSubBag(GRENADE_SLOT);
@@ -668,73 +636,14 @@ void CUIBuyWeaponWnd::DropItem()
 	m_pCurrentDragDropItem = NULL;
 }
 
-/*
-void CUIBuyWeaponWnd::EatItem()
-{
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(!pActor) return;
-
-	pActor->inventory().Eat(m_pCurrentItem);
-
-	if(!m_pCurrentItem->Useful())
-	{
-		(dynamic_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent()))->
-			DetachChild(m_pCurrentDragDropItem);
-		SetCurrentItem(NULL);
-		m_pCurrentDragDropItem = NULL;
-	}
-
-	/ *m_pCurrentItem->Drop();
-
-	NET_Packet P;
-	pActor->u_EventGen(P,GE_DESTROY,m_pCurrentItem->ID());
-	P.w_u16(u16(m_pCurrentItem->ID()));
-	pActor->u_EventSend(P);* /
-}
-*/
-
-
 void CUIBuyWeaponWnd::Show() 
 { 
-	/*	//спрятать вещь из активного слота в инвентарь на время вызова менюшки
-	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-	if(pActor)
-	{
-	m_iCurrentActiveSlot = pActor->inventory().GetActiveSlot();
-
-	if(pActor->inventory().ActiveItem())
-	{
-	CWeapon* pWeapon = dynamic_cast<CWeapon*>(pActor->inventory().ActiveItem());
-	if(pWeapon) pWeapon->ResetPending();
-	}
-	pActor->inventory().Activate(NO_ACTIVE_SLOT);
-	}
-
-
-	*/
 	InitInventory();
 	inherited::Show();
 }
 
 void CUIBuyWeaponWnd::Hide()
 {
-	//достать вещь в активный слот
-//	CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
-//	if(pActor && m_iCurrentActiveSlot != NO_ACTIVE_SLOT && 
-//		pActor->inventory().m_slots[m_iCurrentActiveSlot].m_pIItem)
-//	{
-//		pActor->inventory().Activate(m_iCurrentActiveSlot);
-//		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
-//	}
-
-	// For test purposes
-//	u8 nn;
-//	const u8 a = GetItemIndex(KNIFE_SLOT, 0, nn);
-//	const u8 b = GetItemIndex(RIFLE_SLOT, 0, nn);
-//	const u8 c = GetItemIndex(BELT_SLOT, 3, nn);
-//	nn++;
-//	GetWeaponIndexInBelt(nn, nn, nn);
-
 	inherited::Hide();
 }
 
@@ -1018,6 +927,8 @@ void CUIBuyWeaponWnd::InitWpnSectStorage()
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIBuyWeaponWnd::FillWpnSubBags()
 {
 	for (WPN_LISTS::size_type i = 0; i < wpnSectStorage.size(); ++i)
@@ -1025,6 +936,8 @@ void CUIBuyWeaponWnd::FillWpnSubBags()
 		FillWpnSubBag(static_cast<u32>(i));
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 {
@@ -1053,6 +966,7 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 
 		UIDragDropItem.SetSlot(m_slot);
 		UIDragDropItem.SetSection(slotNum);
+		UIDragDropItem.SetPosInSection(static_cast<u32>(j));
 
 		UIDragDropItem.SetGridHeight(m_iGridHeight);
 		UIDragDropItem.SetGridWidth(m_iGridWidth);
@@ -1068,12 +982,17 @@ void CUIBuyWeaponWnd::FillWpnSubBag(const u32 slotNum)
 		m_WeaponSubBags[slotNum]->AttachChild(&UIDragDropItem);
 		UIDragDropItem.SetAutoDelete(false);
 
-		// Сохраняем указатель на лист - "хозяин" веши
+		// Сохраняем указатель на лист "хозяин" вещи
 		UIDragDropItem.SetOwner(m_WeaponSubBags[slotNum]);
+		// Задаем специальную дополнительную функцию отрисовки, для
+		// отображения номера оружия в углу его иконки
+		UIDragDropItem.SetCustomUpdate(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
 
 		UIDragDropItem.SetSectionName(wpnSectStorage[slotNum][j].c_str());
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::string &sectioName)
 {
@@ -1155,6 +1074,8 @@ void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::str
 	}
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 void CUIBuyWeaponWnd::ClearWpnSubBags()
 {
 	for (WEAPON_TYPES::size_type i = 0; i < m_WeaponSubBags.size(); ++i)
@@ -1162,6 +1083,8 @@ void CUIBuyWeaponWnd::ClearWpnSubBags()
 		ClearWpnSubBag(static_cast<u32>(i));
 	}
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 void CUIBuyWeaponWnd::ClearWpnSubBag(const u32 slotNum)
 {
@@ -1175,6 +1098,8 @@ void CUIBuyWeaponWnd::ClearWpnSubBag(const u32 slotNum)
 	}
 	m_WeaponSubBags[slotNum]->DropAll();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 {
@@ -1194,10 +1119,14 @@ bool CUIBuyWeaponWnd::SlotToSection(const u32 SlotNum)
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIBuyWeaponWnd::CanPutInSlot(CUIDragDropItemMP *pDDItemMP, const u32 slotNum)
 {
 	return slotNum == pDDItemMP->GetSlot();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 const char * CUIBuyWeaponWnd::GetWeaponName(u32 slotNum)
 {
@@ -1207,6 +1136,8 @@ const char * CUIBuyWeaponWnd::GetWeaponName(u32 slotNum)
 	return NULL;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 const char * CUIBuyWeaponWnd::GetWeaponNameInBelt(u32 indexInBelt)
 {
 	CUIDragDropItemMP *pDDItemMP = GetWeapon(BELT_SLOT, indexInBelt);
@@ -1214,6 +1145,8 @@ const char * CUIBuyWeaponWnd::GetWeaponNameInBelt(u32 indexInBelt)
 		return pDDItemMP->GetSectionName();
 	return NULL;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 const u8 CUIBuyWeaponWnd::GetItemIndex(u32 slotNum, u32 idxInArr, u8 &sectionNum)
 {
@@ -1255,17 +1188,23 @@ const u8 CUIBuyWeaponWnd::GetItemIndex(u32 slotNum, u32 idxInArr, u8 &sectionNum
 	return returnID;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 const u8 CUIBuyWeaponWnd::GetWeaponIndex(u32 slotNum)
 {
 	u8 tmp;
 	return GetItemIndex(slotNum, 0, tmp);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 const u8 CUIBuyWeaponWnd::GetWeaponIndexInBelt(u32 indexInBelt, u8 &sectionId, u8 &itemId)
 {
 	itemId = GetItemIndex(BELT_SLOT, indexInBelt, sectionId);
 	return itemId;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
 {
@@ -1275,6 +1214,8 @@ const char * CUIBuyWeaponWnd::GetWeaponNameByIndex(u32 slotNum, u8 idx)
 	if (wpnSectStorage.size() <= slotNum || idx > wpnSectStorage[slotNum].size()) return NULL;
 	return wpnSectStorage[slotNum][idx].c_str();
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::GetWeapon(u32 slotNum, u32 idx)
 {
@@ -1288,15 +1229,21 @@ CUIBuyWeaponWnd::CUIDragDropItemMP * CUIBuyWeaponWnd::GetWeapon(u32 slotNum, u32
 	return dynamic_cast<CUIDragDropItemMP*>(*it);
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 const u8 GetWeaponAddonInfoByIndex(u8 idx)
 {
 	return (idx & 0xe0) >> 5;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 bool CUIBuyWeaponWnd::CanPutInBelt(CUIDragDropItemMP *pDDItemMP)
 {
 	return pDDItemMP->GetSlot() == GRENADE_SLOT;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 bool CUIBuyWeaponWnd::BeltToSection(CUIDragDropItemMP *pDDItemMP)
 {
@@ -1309,6 +1256,8 @@ bool CUIBuyWeaponWnd::BeltToSection(CUIDragDropItemMP *pDDItemMP)
 	m_WeaponSubBags[pDDItemMP->GetSection()]->SendMessage(pDDItemMP, CUIDragDropItem::ITEM_DROP, NULL);
 	return true;
 }
+
+//////////////////////////////////////////////////////////////////////////
 
 int CUIBuyWeaponWnd::GetFirstFreeIndex()
 {
@@ -1323,9 +1272,138 @@ int CUIBuyWeaponWnd::GetFirstFreeIndex()
 	return m_iUsedItems++;
 }
 
+//////////////////////////////////////////////////////////////////////////
+
 const u8 CUIBuyWeaponWnd::GetBeltSize()
 {
 	return static_cast<u8>(UITopList[BELT_SLOT].GetDragDropItemsList().size());
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIBuyWeaponWnd::MenuLevelJump(MENU_LEVELS lvl)
+{
+	if (lvl < mlRoot || lvl > mlAddons) return false;
+	// Если уровень назначения не тот на котором мы сейчас
+	if (m_mlCurrLevel != lvl)
+	{
+		switch (lvl)
+		{
+		case mlRoot:
+			UIWeaponsTabControl.Show(true);
+			break;
+		case mlWpnSubType:
+			UIWeaponsTabControl.Show(false);
+			break;
+		}
+
+		m_mlCurrLevel = lvl;
+	}
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIBuyWeaponWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+{
+	if (KEY_RELEASED == keyboard_action) return false;
+
+	switch (m_mlCurrLevel)
+	{
+	case mlRoot:
+		if (UIWeaponsTabControl.OnKeyboard(dik, keyboard_action))
+		{
+			MenuLevelUp();
+		}
+		break;
+	case mlWpnSubType:
+		// Быстрая проверка на возможность дальнейшего плодотворного сотрудничетва
+		if (dik < DIK_0)
+		{
+			// Глубокий (более медленный и точный) поиск
+			if (m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->GetDragDropItemsList().size() >= static_cast<u32>(dik - 2))
+			{
+				DRAG_DROP_LIST_it it = m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->GetDragDropItemsList().begin();
+				CUIDragDropItemMP *pDDItemMP;
+				// Пробегаемся ао всем вещам и ищем, нет ли вещи с нужным номером
+				for (; it != m_WeaponSubBags[UIWeaponsTabControl.GetActiveIndex()]->GetDragDropItemsList().end(); ++it)
+				{
+					pDDItemMP = static_cast<CUIDragDropItemMP*>(*it);
+					// Опа! Нашли.
+					if (pDDItemMP->GetPosInSection() == static_cast<u32>(dik - 2))
+					{
+						// Муваем ее в слот
+						SendMessage(pDDItemMP, CUIDragDropItem::ITEM_DB_CLICK, NULL);
+						// и если есть аддоны то заполняем лист с аддонами
+//						if (pDDItemMP->bAddonsAvailable)
+//							MenuLevelUp();
+						break;
+					}
+				}
+			}
+		}
+		break;
+	case mlAddons:
+		break;
+	}
+
+	if (DIK_0 == dik)
+	{
+		MenuLevelDown();
+		return true;
+	}
+
+	if (static_cast<u32>(dik) == UIBtnOK.GetAccelerator())
+	{
+		SendMessage(&UIBtnOK, CUIButton::BUTTON_CLICKED, NULL);
+		return true;
+	}
+
+	if (static_cast<u32>(dik) == UIBtnCancel.GetAccelerator())
+	{
+		SendMessage(&UIBtnCancel, CUIButton::BUTTON_CLICKED, NULL);
+		return true;
+	}
+
+	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void WpnDrawIndex(CUIDragDropItem *pDDItem)
+{
+	CUIBuyWeaponWnd::CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIBuyWeaponWnd::CUIDragDropItemMP*>(pDDItem);
+	R_ASSERT(pDDItemMP);
+	if (!pDDItemMP) return;
+
+	RECT rect = pDDItemMP->GetAbsoluteRect();
+
+	pDDItem->GetFont()->Out(float(rect.left), 
+		float(rect.bottom - pDDItemMP->GetFont()->CurrentHeight()- 2),
+		"%d", pDDItemMP->GetPosInSection() + 1);
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::RemoveItemByPos(const u32 sectionNum, CUIDragDropList *pDDList)
+{
+/*
+	DRAG_DROP_LIST_it it = pDDList->GetDragDropItemsList().begin();
+	for (; it != pDDList->GetDragDropItemsList().end(); ++it)
+	{
+		CUIDragDropItemMP *pDDItemMP = (*it);
+		if (pDDItemMP->GetPosInSeciton() == sectionNum)
+		{
+			pDDList->DetachChild(pDDItemMP);
+			for (int i = 0; i < m_iUsedItems; ++i)
+			{
+				if (&m_vDragDropItems[i] == (*it))
+					m_iEmptyIndexes.insert(i);
+			}
+			break;
+		}
+	}
+*/
 }
 
 //-----------------------------------------------------------------------------/
@@ -1337,6 +1415,14 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool
 	R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 4);
 	if (m_AddonInfo[iAddonIndex].iAttachStatus != -1)
 		m_AddonInfo[iAddonIndex].iAttachStatus = bAttach ? 1 : 0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetchAllAddons(bool bAttach)
+{
+	for (int i = 0; i < 3; ++i)
+		AttachDetachAddon(i, bAttach);
 }
 
 void CUIBuyWeaponWnd::CUIDragDropItemMP::ClipperOff()

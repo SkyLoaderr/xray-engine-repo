@@ -151,12 +151,14 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, const char* path,
 	int y = xml_doc.ReadAttribInt(path, index, "y");
 	int width = xml_doc.ReadAttribInt(path, index, "width");
 	int height = xml_doc.ReadAttribInt(path, index, "height");
+	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
 	
 	char* texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
 
 	if(!texture) return false;
 	
 	pWnd->Init(texture, x, y, width, height);
+	pWnd->SetAccelerator(accel);
 	
 	char* text = xml_doc.Read(strconcat(buf,path,":text"), index, NULL);
 	pWnd->SetText(text);

@@ -53,12 +53,6 @@ public:
 	virtual void Show();
 	virtual void Hide();
 
-	//для работы с сочетателем артефактом извне
-//	bool IsArtifactMergeShown() {return UIArtifactMergerWnd.IsShown();}
-//	void AddArtifactToMerger(CArtifact* pArtifact);
-	//для добавления новых предметов во время работы с интерфейсом (например 
-	//отсоединенных аддонов)
-//	void AddItemToBag(PIItem pItem);
 protected:
 
 	//-----------------------------------------------------------------------------/
@@ -72,6 +66,8 @@ protected:
 		u32 slotNum;
 		// хранение номера секции оружия
 		u32 sectionNum;
+		// xранение порядкового номера оружия в секции
+		u32 posInSection;
 		// Имя секции оружия
 		string128 strName;
 		// Запоминаем адрес "хозяина"
@@ -84,18 +80,21 @@ protected:
 			std::strcpy(m_strAddonTypeNames[2], "Scope");
 		}
 		// Для слота
-		void SetSlot(u32 slot) { R_ASSERT(slot < 6); slotNum = slot; }
-		u32	 GetSlot() { return slotNum; }
+		void SetSlot(u32 slot)					{ R_ASSERT(slot < 6); slotNum = slot; }
+		u32	 GetSlot()							{ return slotNum; }
 		// Для секций
-		void SetSection(u32 section) { sectionNum = section; }
-		u32	 GetSection() { return sectionNum; }
+		void SetSection(u32 section)			{ sectionNum = section; }
+		u32	 GetSection()						{ return sectionNum; }
 		// Функции для запоминания/возвращения имени секции в .ltx файле, этой вещи
-		void SetSectionName(const char *pData) { std::strcpy(strName, pData); }
-		const char *GetSectionName() const { return strName; }
+		void SetSectionName(const char *pData)	{ std::strcpy(strName, pData); }
+		const char *GetSectionName() const		{ return strName; }
 		// Запоминаем/возвращеаем указатель на CUIDragDropList которому изначально пренадлежит
 		// вещь
-		void SetOwner(CUIDragDropList *pOwner) { R_ASSERT(pOwner); m_pOwner = pOwner; }
-		CUIDragDropList * GetOwner() { return m_pOwner; }
+		void SetOwner(CUIDragDropList *pOwner)	{ R_ASSERT(pOwner); m_pOwner = pOwner; }
+		CUIDragDropList * GetOwner()			{ return m_pOwner; }
+		// Номер элемента в секции
+		void SetPosInSection(const u32 pos)		{ posInSection = pos; }
+		u32 GetPosInSection() const 			{ return posInSection; }
 
 		//-----------------------------------------------------------------------------/
 		//  Работа с аддонами. Средствами переопределения CWeapon нужную функциональность
@@ -123,8 +122,10 @@ protected:
 		bool		bAddonsAvailable;
 		// Список название типов аддонов
 		char		m_strAddonTypeNames[3][25];
-		
-		void AttachDetachAddon(int iAddonIndex, bool bAttach = true);
+
+		// Аттачим/детачим аддоны
+		void AttachDetachAddon(int iAddonIndex, bool bAttach);
+		void AttachDetchAllAddons(bool bAttach);
 		// Переопределяем некоторые функции, которые нам нужны для коректной отрисовки оружия с аддонами
 		virtual void ClipperOn();
 		virtual void ClipperOff();
@@ -170,7 +171,7 @@ protected:
 	#define BELT_SLOT			5
 //	#define OUTFIT_SLOT			6
 //	#define PDA_SLOT			7 
-	#define MP_SLOTS_NUM 8
+	#define MP_SLOTS_NUM		8
 	//слоты для оружия
 	CUIDragDropList		UITopList[MP_SLOTS_NUM]; 
 	//отдельный слот для костюмов
@@ -313,7 +314,28 @@ protected:
 	CUIDragDropItemMP * GetWeapon(u32 slotNum, u32 idx = 0);
 	const u8 GetItemIndex(u32 slotNum, u32 idxInArr, u8 &sectionNum);
 
+	// Поддержка клавиатурного режима покупки оружия
+
+	// Есть 3 уровня глубины вложенности меню:
+	// 0) root			- меню уровня табконтрола
+	// 1) wpnsubtype	- меню уровня выбора оружия
+	// 2) addons		- меню уровня выбора аддонов, если оружие позволяет
+	enum MENU_LEVELS { mlRoot = 0, mlWpnSubType, mlAddons };
+	// Текущий уровень
+	MENU_LEVELS m_mlCurrLevel;
+	// Переход на любой уровень меню непосредственно
+	bool MenuLevelJump(MENU_LEVELS lvl);
+	// Переход на уровень выше/ниже. Возвращаем true, если переход удачен, и 
+	// false если мы уже находимся на высшем/низшем уровне меню
+	bool MenuLevelUp()		{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel + 1)); }
+	bool MenuLevelDown()	{ return MenuLevelJump(static_cast<MENU_LEVELS>(m_mlCurrLevel - 1)); }
+	// callback функция для отрисовки цифровых подписей к оружию
+	friend void WpnDrawIndex(CUIDragDropItem *pDDItem);
+	// Удалить элемент из листа по его позиции в списке секций.
+	void RemoveItemByPos(const u32 sectionNum, CUIDragDropList *pDDList);
 public:
+	// Обработчик нажатий на кнопки клавы
+	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе
 	const char *GetWeaponName(u32 slotNum);
 	const char *GetWeaponNameInBelt(u32 indexInBelt);

@@ -77,6 +77,12 @@ public:
 	// Поведение кнопки как переключателя реализовано пока только в режиме NORMAL_PRESS
 	void SetButtonAsSwitch(bool bAsSwitch) { m_bIsSwitch = bAsSwitch; }
 
+	// Работа с акселератором
+	// Код акселератора берется из файла dinput.h, из DirectX SDK.
+	// Например: кнопка A - код 0x1E(DIK_A)
+	void		SetAccelerator(u32 uAccel)	{ m_uAccelerator = uAccel; }
+	const u32	GetAccelerator() const		{ return m_uAccelerator; }
+
 protected:
 	
 	E_BUTTON_STATE m_eButtonState;
@@ -98,6 +104,9 @@ protected:
 
 	// Цвет подсветки
 	u32 m_HighlightColor;
+
+	// код акселератора
+	u32 m_uAccelerator;
 };
 
 #endif // _UI_BUTTON_H_

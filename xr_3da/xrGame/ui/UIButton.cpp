@@ -32,7 +32,8 @@ CUIButton:: CUIButton()
 
 	SetTextAlign(CGameFont::alCenter);
 
-	m_HighlightColor = 0xFF999999;
+	m_HighlightColor	= 0xFF999999;
+	m_uAccelerator		= static_cast<u32>(-1);
 }
 
  CUIButton::~ CUIButton()

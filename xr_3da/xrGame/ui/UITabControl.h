@@ -14,6 +14,8 @@ DEF_VECTOR (TABS_VECTOR, CUIButton*)
 
 class CUITabControl: public CUIWindow
 {
+protected:
+
 public:
 	// Ctor and Dtor
 	CUITabControl();
@@ -21,6 +23,8 @@ public:
 
 	// Инициализация  из XML
 	virtual void Init(int x, int y, int width, int height);
+	// обработка нажатий клавиш
+	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 
 	// Сообщение отправляемое родительскому окну, когда произошла смена активной раскладки
 	typedef enum{TAB_CHANGED} E_MESSAGE;
@@ -39,23 +43,30 @@ public:
 	int GetActiveIndex() { return m_iPushedIndex; }
 
 	// Общее количество закладок
-	const int GetTabsCount() const { return m_TabsArr.size(); }
+	const int GetTabsCount() const			{ return m_TabsArr.size(); }
 
 	// Сделать новую такущую активную закладку
 	void SetNewActiveTab(const int iNewTab);
+	
+	// Режим клавилатурных акселераторов (вкл/выкл)
+	bool GetAcceleratorsMode() const			{ return m_bAcceleratorsEnable; }
+	void SetAcceleratorsMode(bool bEnable)		{ m_bAcceleratorsEnable = bEnable; }
 
 protected:
 	// Список кнопок - переключателей закладок
-	TABS_VECTOR m_TabsArr;
+	TABS_VECTOR		m_TabsArr;
 
 	// Текущая нажатая кнопка. -1 - ни одна, 0 - первая, 1 - вторая, и т.д.
-	int m_iPushedIndex;
+	int				m_iPushedIndex;
 
 	// Цвет надписи на неактивных элементах
-	u32 m_cGlobalColor;
+	u32				m_cGlobalColor;
 
 	// Цвет надписи на активном элементе
-	u32 m_cActiveColor;
+	u32				m_cActiveColor;
+
+	// Разрешаем/запрещаем клавиатурные акселераторы
+	bool			m_bAcceleratorsEnable;
 };
 
 #endif

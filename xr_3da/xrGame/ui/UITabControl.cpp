@@ -4,9 +4,10 @@
 #include "UITabControl.h"
 
 CUITabControl::CUITabControl()
-	: m_iPushedIndex(0),
-	  m_cGlobalColor(0xFFFFFFFF),
-	  m_cActiveColor(0xFFFFFFFF)
+	: m_iPushedIndex		(0),
+	  m_cGlobalColor		(0xFFFFFFFF),
+	  m_cActiveColor		(0xFFFFFFFF),
+	  m_bAcceleratorsEnable	(true)
 {
 
 }
@@ -108,4 +109,20 @@ void CUITabControl::SetNewActiveTab(const int iNewTab)
 	R_ASSERT(iNewTab > 0 || iNewTab < GetTabsCount());
 	m_TabsArr[iNewTab]->OnMouse(1, 1, LBUTTON_DOWN);
 	SendMessage(m_TabsArr[iNewTab], CUIButton::BUTTON_CLICKED, NULL);
+}
+
+bool CUITabControl::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+{
+	if (m_bAcceleratorsEnable && KEY_PRESSED == keyboard_action)
+	{
+		for (u32 i = 0; i < m_TabsArr.size(); ++i)
+		{
+			if (m_TabsArr[i]->GetAccelerator() == static_cast<u32>(dik))
+			{
+				SetNewActiveTab(i);
+				return true;
+			}
+		}
+	}
+	return false;
 }
