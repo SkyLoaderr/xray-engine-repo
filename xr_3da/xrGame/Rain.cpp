@@ -153,7 +153,7 @@ void CEffect_Rain::p_destroy	()
 	particle_pool.clear	();
 }
 
-// delete node from list
+// _delete_ node from list
 void CEffect_Rain::p_remove	(Particle* P, Particle* &LST)
 {
 	VERIFY		(P);

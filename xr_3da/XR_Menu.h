@@ -36,7 +36,7 @@ class CXR_Menu  :
 	char					cEditor[64];
 
 	char					cHint[64];
-	Fpoint					ptHint;
+	Fvector2				ptHint;
 
 	int						cur_btn;
 	int						cur_p;

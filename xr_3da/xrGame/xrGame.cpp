@@ -605,7 +605,7 @@ extern "C" {
 	}
 	DLL_API void		__cdecl	xrFactory_Destroy		(DLL_Pure* O)
 	{
-		delete O;
+		xr_delete(O);
 	}
 };
 

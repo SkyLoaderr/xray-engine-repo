@@ -13,8 +13,6 @@ enum Material
 	matrerial_default
 };
 
-
-
 struct Triangle 
 {
 	//dReal* v0;
@@ -33,11 +31,11 @@ struct Triangle
 
 struct dxGeomUserData
 {
-	dVector3 last_pos;
-	bool pushing_neg,pushing_b_neg;
-	Triangle neg_tri,b_neg_tri;
-	CPHObject* ph_object;
-	u32		material;
+	dVector3	last_pos;
+	bool		pushing_neg,pushing_b_neg;
+	Triangle	neg_tri,b_neg_tri;
+	CPHObject*	ph_object;
+	u32			material;
 //	struct ContactsParameters
 //	{
 //	dReal damping;
