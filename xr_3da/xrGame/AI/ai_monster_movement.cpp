@@ -32,7 +32,7 @@ void CMonsterMovement::reinit()
 	b_use_dest_orient				= false;
 
 	m_velocity_linear.set			(0.f,0.f);
-	m_velocity_angular.set			(0.f,0.f);
+	m_velocity_angular				= 0.f;
 }
 
 void CMonsterMovement::InitExternal(CAI_Biting *pM)
@@ -253,11 +253,21 @@ void CMonsterMovement::WalkNextGraphPoint()
 
 void CMonsterMovement::update_velocity()
 {
+	// Обновить линейную скорость движения
 	float t_accel = ((m_velocity_linear.target < m_velocity_linear.current) ? 
 										pMonster->MotionMan.accel_get(eAV_Braking) :
 										pMonster->MotionMan.accel_get(eAV_Accel));
 		
-	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, t_accel, Device.fTimeDelta);
+	velocity_lerp		(m_velocity_linear.current, m_velocity_linear.target, t_accel, Device.fTimeDelta);
+	
+	// установить линейную скорость движения
+	set_desirable_speed	(pMonster->m_fCurSpeed = m_velocity_linear.current);
+
+	// установить угловую скорость движения
+	if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
+		m_body.speed	= m_velocity_angular * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
+	else 
+		m_body.speed	= m_velocity_angular;
 }
 
 void CMonsterMovement::set_dest_direction(const Fvector &dir)

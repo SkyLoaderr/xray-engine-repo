@@ -66,6 +66,11 @@ void CFracture::Load(LPCSTR section)
 
 		MotionMan.finish_load_shared();
 	}
+
+#ifdef DEBUG	
+	MotionMan.accel_chain_test		();
+#endif
+
 }
 
 bool CFracture::UpdateStateManager()

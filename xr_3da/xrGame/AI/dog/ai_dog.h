@@ -32,8 +32,6 @@ public:
 	virtual bool	CanJump				() {return true;}
 	virtual bool	CanExecRotationJump	() {return true;}
 
-	virtual void	ProcessTurn			();
-
 	virtual bool	ability_can_drag	() {return true;}
 	virtual bool	ability_can_jump	() {return true;}
 

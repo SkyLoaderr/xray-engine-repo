@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include "ai_biting.h"
 #include "../../PhysicsShell.h"
@@ -6,11 +5,11 @@
 #include "../../game_level_cross_table.h"
 #include "../../game_graph.h"
 #include "../../phmovementcontrol.h"
+#include "../ai_monster_squad_manager.h"
 #include "../../xrserver_objects_alife_monsters.h"
 #include "../ai_monster_jump.h"
 #include "../ai_monster_utils.h"
 #include "../ai_monster_debug.h"
-#include "../ai_monster_squad_manager.h"
 #include "../corpse_cover.h"
 #include "../../cover_evaluators.h"
 #include "../../seniority_hierarchy_holder.h"
@@ -76,277 +75,6 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(m_cover_evaluator_close_point);
 }
 
-void CAI_Biting::reinit()
-{
-	if (!frame_check(m_dwFrameReinit))
-		return;
-	
-	
-	inherited::reinit					();
-	CMonsterMovement::reinit			();
-	
-	MotionMan.reinit					();
-	
-	EnemyMemory.clear					();
-	SoundMemory.clear					();
-	CorpseMemory.clear					();
-	HitMemory.clear						();
-
-	EnemyMan.reinit						();
-	CorpseMan.reinit					();
-
-	flagEatNow						= false;
-	m_bDamaged						= false;
-	m_bAngry						= false;
-	m_bAggressive					= false;
-
-	state_invisible					= false;
-
-	bone_part						= PSkeletonAnimated(Visual())->LL_PartID("default");
-
-	b_velocity_reset				= false;
-
-#ifdef 	DEEP_TEST_SPEED	
-	time_next_update				= 0;
-#endif
-
-	prev_size						= 0;
-	force_real_speed				= false;
-	script_processing_active		= false;
-}
-
-void CAI_Biting::Load(LPCSTR section)
-{
-	if (!frame_check(m_dwFrameLoad))
-		return;
-
-	// load parameters from ".ltx" file
-	inherited::Load					(section);
-	CMonsterMovement::Load			(section);
-	
-	AS_Load							(section);
-
-	m_pPhysics_support				->in_Load(section);
-	
-	m_tSelectorApproach->Load		(section,"selector_approach");
-
-	m_fGoingSpeed					= pSettings->r_float	(section, "going_speed");
-	m_dwHealth						= pSettings->r_u32		(section,"Health");
-
-	fEntityHealth					= (float)m_dwHealth;
-
-	inherited_shared::load_shared	(SUB_CLS_ID, section);
-
-	m_fCurMinAttackDist				= get_sd()->m_fMinAttackDist;
-}
-
-void CAI_Biting::load_shared(LPCSTR section)
-{
-	// «агрузка параметров из LTX
-	get_sd()->m_fSoundThreshold				= pSettings->r_float (section,"SoundThreshold");
-
-	get_sd()->m_fsVelocityStandTurn.Load		(section,"Velocity_Stand");
-	get_sd()->m_fsVelocityWalkFwdNormal.Load (section,"Velocity_WalkFwdNormal");
-	get_sd()->m_fsVelocityWalkFwdDamaged.Load(section,"Velocity_WalkFwdDamaged");
-	get_sd()->m_fsVelocityRunFwdNormal.Load	(section,"Velocity_RunFwdNormal");
-	get_sd()->m_fsVelocityRunFwdDamaged.Load (section,"Velocity_RunFwdDamaged");
-	get_sd()->m_fsVelocityDrag.Load			(section,"Velocity_Drag");
-	get_sd()->m_fsVelocitySteal.Load			(section,"Velocity_Steal");
-
-	get_sd()->m_dwDayTimeBegin				= pSettings->r_u32	(section,"DayTime_Begin");
-	get_sd()->m_dwDayTimeEnd					= pSettings->r_u32	(section,"DayTime_End");		
-	get_sd()->m_fMinSatiety					= pSettings->r_float(section,"Min_Satiety");
-	get_sd()->m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
-
-	get_sd()->m_fDistToCorpse				= pSettings->r_float(section,"distance_to_corpse");
-	get_sd()->m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
-	get_sd()->m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
-
-	get_sd()->m_fDamagedThreshold			= pSettings->r_float(section,"DamagedThreshold");
-
-	get_sd()->m_dwIdleSndDelay				= pSettings->r_u32	(section,"idle_sound_delay");
-	get_sd()->m_dwEatSndDelay				= pSettings->r_u32	(section,"eat_sound_delay");
-	get_sd()->m_dwAttackSndDelay				= pSettings->r_u32	(section,"attack_sound_delay");
-
-	get_sd()->m_fMoraleSuccessAttackQuant	= pSettings->r_float(section,"MoraleSuccessAttackQuant");
-	get_sd()->m_fMoraleDeathQuant			= pSettings->r_float(section,"MoraleDeathQuant");
-	get_sd()->m_fMoraleFearQuant				= pSettings->r_float(section,"MoraleFearQuant");
-	get_sd()->m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
-	get_sd()->m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
-
-	get_sd()->m_fEatFreq						= pSettings->r_float(section,"eat_freq");
-	get_sd()->m_fEatSlice					= pSettings->r_float(section,"eat_slice");
-	get_sd()->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
-
-	get_sd()->m_legs_number					= pSettings->r_u8(section, "LegsCount");
-	get_sd()->m_max_hear_dist				= pSettings->r_float(section, "max_hear_dist");
-
-	// Load attack postprocess --------------------------------------------------------
-	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");
-	get_sd()->m_attack_effector.ppi.duality.h		= pSettings->r_float(ppi_section,"duality_h");
-	get_sd()->m_attack_effector.ppi.duality.v		= pSettings->r_float(ppi_section,"duality_v");
-	get_sd()->m_attack_effector.ppi.gray				= pSettings->r_float(ppi_section,"gray");
-	get_sd()->m_attack_effector.ppi.blur				= pSettings->r_float(ppi_section,"blur");
-	get_sd()->m_attack_effector.ppi.noise.intensity	= pSettings->r_float(ppi_section,"noise_intensity");
-	get_sd()->m_attack_effector.ppi.noise.grain		= pSettings->r_float(ppi_section,"noise_grain");
-	get_sd()->m_attack_effector.ppi.noise.fps		= pSettings->r_float(ppi_section,"noise_fps");
-
-	sscanf(pSettings->r_string(ppi_section,"color_base"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_base.r, &get_sd()->m_attack_effector.ppi.color_base.g, &get_sd()->m_attack_effector.ppi.color_base.b);
-	sscanf(pSettings->r_string(ppi_section,"color_gray"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_gray.r, &get_sd()->m_attack_effector.ppi.color_gray.g, &get_sd()->m_attack_effector.ppi.color_gray.b);
-	sscanf(pSettings->r_string(ppi_section,"color_add"),	"%f,%f,%f", &get_sd()->m_attack_effector.ppi.color_add.r,	&get_sd()->m_attack_effector.ppi.color_add.g,&get_sd()->m_attack_effector.ppi.color_add.b);
-
-	get_sd()->m_attack_effector.time			= pSettings->r_float(ppi_section,"time");
-	get_sd()->m_attack_effector.time_attack	= pSettings->r_float(ppi_section,"time_attack");
-	get_sd()->m_attack_effector.time_release	= pSettings->r_float(ppi_section,"time_release");
-
-	get_sd()->m_attack_effector.ce_time			= pSettings->r_float(ppi_section,"ce_time");
-	get_sd()->m_attack_effector.ce_amplitude		= pSettings->r_float(ppi_section,"ce_amplitude");
-	get_sd()->m_attack_effector.ce_period_number	= pSettings->r_float(ppi_section,"ce_period_number");
-	get_sd()->m_attack_effector.ce_power			= pSettings->r_float(ppi_section,"ce_power");
-
-	// --------------------------------------------------------------------------------
-
-}
-
-
-BOOL CAI_Biting::net_Spawn (LPVOID DC) 
-{
-	if (!frame_check(m_dwFrameSpawn))
-		return	(TRUE);
-	
-	if (!inherited::net_Spawn(DC))
-		return(FALSE);
-
-	CSE_Abstract						*e	= (CSE_Abstract*)(DC);
-	m_pPhysics_support->in_NetSpawn		(e);
-
-
-//	CSE_ALifeMonsterBiting			*l_tpSE_Biting	= dynamic_cast<CSE_ALifeMonsterBiting*>(e);
-//	m_body.current.yaw = m_body.target.yaw	= angle_normalize_signed(-l_tpSE_Biting->o_Angle.y);
-	
-	R_ASSERT2						(ai().get_level_graph() && ai().get_cross_table() && (ai().level_graph().level_id() != u32(-1)),"There is no AI-Map, level graph, cross table, or graph is not compiled into the game graph!");
-	
-	m_PhysicMovementControl->SetPosition	(Position());
-	m_PhysicMovementControl->SetVelocity	(0,0,0);
-
-	m_movement_params.insert(std::make_pair(eVelocityParameterStand,		STravelParams(get_sd()->m_fsVelocityStandTurn.velocity.linear,		get_sd()->m_fsVelocityStandTurn.velocity.angular_path,		get_sd()->m_fsVelocityStandTurn.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkNormal,	STravelParams(get_sd()->m_fsVelocityWalkFwdNormal.velocity.linear,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdNormal.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunNormal,	STravelParams(get_sd()->m_fsVelocityRunFwdNormal.velocity.linear,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdNormal.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterWalkDamaged,	STravelParams(get_sd()->m_fsVelocityWalkFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityWalkFwdDamaged.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterRunDamaged,	STravelParams(get_sd()->m_fsVelocityRunFwdDamaged.velocity.linear,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_path,	get_sd()->m_fsVelocityRunFwdDamaged.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterSteal,		STravelParams(get_sd()->m_fsVelocitySteal.velocity.linear,			get_sd()->m_fsVelocitySteal.velocity.angular_path,			get_sd()->m_fsVelocitySteal.velocity.angular_real)));
-	m_movement_params.insert(std::make_pair(eVelocityParameterDrag,			STravelParams(-get_sd()->m_fsVelocityDrag.velocity.linear,			get_sd()->m_fsVelocityDrag.velocity.angular_path,			get_sd()->m_fsVelocityDrag.velocity.angular_real)));
-
-	monster_squad().register_member((u8)g_Team(),(u8)g_Squad(), this);
-
-	return(TRUE);
-}
-
-void CAI_Biting::net_Destroy()
-{
-	if (!frame_check(m_dwFrameDestroy))
-		return;
-
-	inherited::net_Destroy();
-	m_pPhysics_support->in_NetDestroy();
-
-	monster_squad().remove_member((u8)g_Team(),(u8)g_Squad(), this);
-}
-
-void CAI_Biting::net_Save			(NET_Packet& P)
-{
-	inherited::net_Save(P);
-	m_pPhysics_support->in_NetSave(P);
-}
-BOOL CAI_Biting::net_SaveRelevant	()
-{
-	return BOOL(PPhysicsShell()!=NULL);
-}
-void CAI_Biting::net_Export(NET_Packet& P) 
-{
-	R_ASSERT				(Local());
-
-	// export last known packet
-	R_ASSERT				(!NET.empty());
-	net_update& N			= NET.back();
-	P.w_float_q16			(fEntityHealth,-500,1000);
-	P.w_u32					(N.dwTimeStamp);
-	P.w_u8					(0);
-	P.w_vec3				(N.p_pos);
-	P.w_angle8				(N.o_model);
-	P.w_angle8				(N.o_torso.yaw);
-	P.w_angle8				(N.o_torso.pitch);
-	P.w_u8					(u8(g_Team()));
-	P.w_u8					(u8(g_Squad()));
-	P.w_u8					(u8(g_Group()));
-
-	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
-	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
-	P.w						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
-	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	P.w						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	float					f1 = 0;
-	if (ai().game_graph().valid_vertex_id(l_game_vertex_id)) {
-		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
-		P.w					(&f1,						sizeof(f1));
-		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
-		P.w					(&f1,						sizeof(f1));
-	}
-	else {
-		P.w					(&f1,						sizeof(f1));
-		P.w					(&f1,						sizeof(f1));
-	}
-
-}
-
-void CAI_Biting::net_Import(NET_Packet& P)
-{
-	R_ASSERT				(Remote());
-	net_update				N;
-
-	u8 flags;
-
-	float health;
-	P.r_float_q16		(health,-500,1000);
-	fEntityHealth = health;
-
-	P.r_u32					(N.dwTimeStamp);
-	P.r_u8					(flags);
-	P.r_vec3				(N.p_pos);
-	P.r_angle8				(N.o_model);
-	P.r_angle8				(N.o_torso.yaw);
-	P.r_angle8				(N.o_torso.pitch);
-	id_Team					= P.r_u8();
-	id_Squad				= P.r_u8();
-	id_Group				= P.r_u8();
-
-	ALife::_GRAPH_ID		l_game_vertex_id = game_vertex_id();
-	P.r						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
-	P.r						(&l_game_vertex_id,			sizeof(l_game_vertex_id));
-
-	if (NET.empty() || (NET.back().dwTimeStamp<N.dwTimeStamp))	{
-		NET.push_back			(N);
-		NET_WasInterpolating	= TRUE;
-	}
-
-	P.r						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	P.r						(&m_fGoingSpeed,			sizeof(m_fGoingSpeed));
-	float					f1 = 0;
-	if (ai().game_graph().valid_vertex_id(l_game_vertex_id)) {
-		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
-		P.r					(&f1,						sizeof(f1));
-		f1					= Position().distance_to	(ai().game_graph().vertex(l_game_vertex_id)->level_point());
-		P.r					(&f1,						sizeof(f1));
-	}
-	else {
-		P.r					(&f1,						sizeof(f1));
-		P.r					(&f1,						sizeof(f1));
-	}
-
-
-	setVisible				(TRUE);
-	setEnabled				(TRUE);
-}
 
 void CAI_Biting::UpdateCL()
 {
@@ -355,34 +83,23 @@ void CAI_Biting::UpdateCL()
 
 	inherited::UpdateCL();
 	
+	
 	if (g_Alive()) {
-		
-		MotionMan.FrameUpdate();
+		// обновить анимации и установить параметры скорости
+		MotionMan.FrameUpdate				();
 
 		// ѕроверка состо€ни€ анимации (атака)
-		AA_CheckHit();
-		MotionMan.STEPS_Update(get_legs_number());
+		AA_CheckHit							();
+		MotionMan.STEPS_Update				(get_legs_number());
 
 		// ѕоправка Pitch
-		bool b_need_pitch_correction = true;
-		if (ability_can_jump()) {
-			CJumping *pJumping = dynamic_cast<CJumping *>(this);
-			if (pJumping && pJumping->IsActive()) b_need_pitch_correction = false;
-		}
-		if (b_need_pitch_correction) PitchCorrection();
+		PitchCorrection						();
 
 		// ќбновить угловую и линейную скорости движени€
-		CMonsterMovement::update_velocity();
-		m_fCurSpeed		= m_velocity_linear.current;
-		set_desirable_speed(m_fCurSpeed);
+		CMonsterMovement::update_velocity	();
 
-		if (!fis_zero(m_velocity_linear.current) && !fis_zero(m_velocity_linear.target))
-			m_body.speed	= m_velocity_angular.target * m_velocity_linear.current / (m_velocity_linear.target + EPS_L);
-		else 
-			m_body.speed	= m_velocity_angular.target;
+		Exec_Look							(Device.fTimeDelta);
 	}
-
-	Exec_Look			(Device.fTimeDelta);
 
 	m_pPhysics_support->in_UpdateCL();
 
@@ -497,9 +214,6 @@ float CAI_Biting::GetRealDistToEnemy(const CEntity *pE)
 
 bool CAI_Biting::useful(const CGameObject *object) const
 {
-	//if (!CItemManager::useful(object))
-	//	return			(false);
-
 	const CEntityAlive *pCorpse = dynamic_cast<const CEntityAlive *>(object); 
 	if (!pCorpse) return false;
 	
@@ -510,32 +224,6 @@ bool CAI_Biting::useful(const CGameObject *object) const
 float CAI_Biting::evaluate(const CGameObject *object) const
 {
 	return (0.f);
-}
-
-
-
-
-void CAI_Biting::reload	(LPCSTR section)
-{
-	if (!frame_check(m_dwFrameReload))
-		return;
-
-	CCustomMonster::reload		(section);
-	CMonsterMovement::reload	(section);
-
-	LoadFootBones();
-
-	CSoundPlayer::add(pSettings->r_string(section,"sound_idle"),		16,		SOUND_TYPE_MONSTER_TALKING,		7,	u32(1 << 31) | 3,	MonsterSpace::eMonsterSoundIdle, 		"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_eat"),			16,		SOUND_TYPE_MONSTER_TALKING,		6,	u32(1 << 31) | 2,	MonsterSpace::eMonsterSoundEat,			"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_attack"),		16,		SOUND_TYPE_MONSTER_ATTACKING,	5,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundAttack,		"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_attack_hit"),	16,		SOUND_TYPE_MONSTER_ATTACKING,	2,	u32(-1),			MonsterSpace::eMonsterSoundAttackHit,	"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_take_damage"),	16,		SOUND_TYPE_MONSTER_INJURING,	1,	u32(-1),			MonsterSpace::eMonsterSoundTakeDamage,	"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_die"),			16,		SOUND_TYPE_MONSTER_DYING,		0,	u32(-1),			MonsterSpace::eMonsterSoundDie,			"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_threaten"),	16,		SOUND_TYPE_MONSTER_ATTACKING,	3,	u32(1 << 31) | 0,	MonsterSpace::eMonsterSoundThreaten,	"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_landing"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 1,	MonsterSpace::eMonsterSoundLanding,		"bip01_head");
-	CSoundPlayer::add(pSettings->r_string(section,"sound_steal"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 5,	MonsterSpace::eMonsterSoundSteal,		"bip01_head");	
-	CSoundPlayer::add(pSettings->r_string(section,"sound_panic"),		16,		SOUND_TYPE_MONSTER_STEP,		4,	u32(1 << 31) | 6,	MonsterSpace::eMonsterSoundPanic,		"bip01_head");	
-	CSoundPlayer::add(pSettings->r_string(section,"sound_growling"),	16,		SOUND_TYPE_MONSTER_STEP,		5,	u32(1 << 31) | 7,	MonsterSpace::eMonsterSoundGrowling,	"bip01_head");	
 }
 
 float CAI_Biting::get_custom_pitch_speed(float def_speed)
@@ -636,6 +324,10 @@ void CAI_Biting::ProcessTurn()
 		case eAnimStandIdle: 
 			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
 			return;
+		case eAnimJumpLeft:
+		case eAnimJumpRight:
+			MotionMan.SetCurAnim(anim);
+			return;
 		default:
 			if (delta_yaw > deg(30)) {
 				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
@@ -653,9 +345,9 @@ bool CAI_Biting::IsVisibleObject(const CGameObject *object)
 
 void CAI_Biting::Exec_Look		( float dt )
 {
-	m_body.current.yaw		= angle_normalize_signed	(m_body.current.yaw);
+	m_body.current.yaw		= angle_normalize			(m_body.current.yaw);
+	m_body.target.yaw		= angle_normalize			(m_body.target.yaw);
 	m_body.current.pitch	= angle_normalize_signed	(m_body.current.pitch);
-	m_body.target.yaw		= angle_normalize_signed	(m_body.target.yaw);
 	m_body.target.pitch		= angle_normalize_signed	(m_body.target.pitch);
 
 	float pitch_speed		= get_custom_pitch_speed(m_body.speed);
@@ -665,6 +357,16 @@ void CAI_Biting::Exec_Look		( float dt )
 	Fvector P				= Position();
 	XFORM().setHPB			(-m_body.current.yaw,-m_body.current.pitch,0);
 	Position()				= P;
+
 }
 
-
+void CAI_Biting::PitchCorrection()
+{
+	bool b_need_pitch_correction = true;
+	
+	if (ability_can_jump()) {
+		CJumping *pJumping = dynamic_cast<CJumping *>(this);
+		if (pJumping && pJumping->IsActive()) b_need_pitch_correction = false;
+	}
+	if (b_need_pitch_correction) inherited::PitchCorrection();
+}

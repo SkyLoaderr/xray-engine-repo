@@ -23,9 +23,10 @@ class CMonsterMovement : virtual public CMovementManager {
 
 	u32					m_dwFrameReinit;
 
-public :
+public:
 
-	SVelocity			m_velocity_linear, m_velocity_angular;
+	SVelocity			m_velocity_linear;
+	float				m_velocity_angular;
 
 public:
 
@@ -63,6 +64,9 @@ public:
 
 
 		void	stop_now				();
+	IC	void	stop_linear				() {m_velocity_linear.set		(0.f,0.f);}	// set current && target to zero
+	IC	void	stop_linear_accel		() {m_velocity_linear.target	= 0.f;}		// set target only to zero
+	IC	void	stop_angular			() {m_velocity_angular			= 0.f;}		// set to zero	
 
 public:
 						CMonsterMovement	();

@@ -62,7 +62,7 @@ void CStateMonsterSquadRestAbstract::setup_substates()
 		SStateDataMoveToPoint data;
 		CMonsterSquad	*squad = monster_squad().get_squad(object);
 		
-		if (!object->GetNodeInRadius(squad->GetLeader()->level_vertex_id(), 8.f, LEADER_RADIUS, FIND_POINT_ATTEMPTS, data.vertex)) {
+		if (object->GetNodeInRadius(squad->GetLeader()->level_vertex_id(), 8.f, LEADER_RADIUS, FIND_POINT_ATTEMPTS, data.vertex)) {
 			data.point			= ai().level_graph().vertex_position(data.vertex);
 		} else {
 			

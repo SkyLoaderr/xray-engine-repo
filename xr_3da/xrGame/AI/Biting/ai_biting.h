@@ -179,6 +179,8 @@ public:
 	virtual bool			CanExecRotationJump				() {return false;}
 
 	virtual void			on_travel_point_change			();
+
+	virtual	void			PitchCorrection					();
 		
 	// ---------------------------------------------------------------------------------
 	// Abilities
@@ -348,10 +350,6 @@ public:
 #ifdef DEBUG
 	CMonsterDebug	*HDebug;
 	virtual void	OnRender();
-#endif
-
-#ifdef 	DEEP_TEST_SPEED
-	TTime	time_next_update;
 #endif
 
 };

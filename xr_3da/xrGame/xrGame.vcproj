@@ -2085,6 +2085,9 @@
 								<File
 									RelativePath=".\ai\ai_monster_motion_load.cpp">
 								</File>
+								<File
+									RelativePath=".\ai\ai_monster_motion_update.cpp">
+								</File>
 							</Filter>
 							<Filter
 								Name="Properties"
@@ -2277,10 +2280,16 @@
 							RelativePath="AI\Biting\ai_biting_misc.cpp">
 						</File>
 						<File
+							RelativePath=".\ai\biting\ai_biting_net.cpp">
+						</File>
+						<File
 							RelativePath="AI\Biting\ai_biting_path.cpp">
 						</File>
 						<File
 							RelativePath=".\ai\biting\ai_biting_script.cpp">
+						</File>
+						<File
+							RelativePath=".\ai\biting\ai_biting_startup.cpp">
 						</File>
 						<Filter
 							Name="States"

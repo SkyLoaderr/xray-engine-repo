@@ -27,21 +27,6 @@ typedef u32 TTime;
 
 #endif
 
-///////////////////////////////////////////////
-// Updates per second
-//#define DEEP_TEST_SPEED
-#ifdef DEEP_TEST_SPEED
-	#define UPS					1000
-#endif
-
-
-#ifndef _DEBUG
-	#undef DEEP_TEST_SPEED
-#endif
-
-///////////////////////////////////////////////
-
-
 // специальные параметры анимаций (animation spec params)
 #define ASP_MOVE_BKWD			(1 << 0) 
 #define ASP_DRAG_CORPSE			(1 << 1) 

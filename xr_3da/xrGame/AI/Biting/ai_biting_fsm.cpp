@@ -21,11 +21,6 @@ void CAI_Biting::Think()
 	if (!g_Alive())		return;
 	if (getDestroy())	return;
 
-#ifdef DEEP_TEST_SPEED	
-	if (time_next_update > Level().timeServer()) return;
-	time_next_update = Level().timeServer() + 1000 / UPS;
-#endif
-
 	m_current_update						= Level().timeServer();
 
 	InitThink								();
@@ -51,7 +46,9 @@ void CAI_Biting::Think()
 			StateSelector					();
 			CurrentState->Execute			(m_current_update);
 		}
-	} else disable_path();
+	} else {
+		disable_path();
+	}
 	STOP_PROFILE;
 
 
