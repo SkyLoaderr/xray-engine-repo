@@ -42,6 +42,7 @@ end
 --------------
 function evaluator_leader_present:evaluate ()
     if self.a.leader == nil then
+       if self.a.leader_name == nil then return false end 
        self.a.leader = level.object (self.a.leader_name)
        if self.a.leader == nil then 
           return false 
@@ -292,9 +293,10 @@ function action_follow:update_stage_2 ()
     if self.a.leader_command == leader_move then
        self.stage = 0
        self.object:clear_animations ()
-    else   
-       self.object:set_movement_type (move.stand)
     end   
+    self.object:set_movement_type (move.stand)
+    if self.a.look_dir.x == 0 and self.a.look_dir.y == 0 and self.a.look_dir.z == 0 then return end
+    self.object:set_sight (look.direction, self.a.look_dir, 0)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function action_follow:set_animation ()
