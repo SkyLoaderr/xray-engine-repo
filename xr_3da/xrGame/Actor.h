@@ -417,6 +417,7 @@ public:
 
 	virtual void reinit	();
 	virtual void reload	(LPCSTR section);
+	virtual bool		use_bolts				() const;
 };
 
 #endif // !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)

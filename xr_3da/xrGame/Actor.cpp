@@ -1617,3 +1617,9 @@ void CActor::NetUpdate_Apply(net_update &NetUpdate, float dt)
 
 	mstate_real	= NET_Last.mstate;
 };
+
+bool		CActor::use_bolts				() const
+{
+	if (Game().type != GAME_SINGLE) return false;
+	return CInventoryOwner::use_bolts();
+};
