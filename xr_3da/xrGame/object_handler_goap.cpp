@@ -487,7 +487,7 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 		condition_id		= eWorldPropertyNoItemsIdle;
 
 #ifdef LOG_ACTION
-	Msg						("%6d : Goal world state %s",Level().timeServer(),action2string(condition_id));
+	Msg						("%6d : Goal %s",Level().timeServer(),property2string(condition_id));
 #endif
 	CState					condition;
 	condition.add_condition	(CWorldProperty(condition_id,true));
