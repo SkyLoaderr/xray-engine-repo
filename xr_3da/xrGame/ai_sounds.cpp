@@ -24,13 +24,13 @@ float ffGetStartVolume(ESoundTypes eType)
 			else if (eType & SOUND_TYPE_MONSTER_INJURING)
 				return(.15f);
 			else if (eType & SOUND_TYPE_MONSTER_WALKING)
-				return(.1f);
+				return(.05f);
 			else if (eType & SOUND_TYPE_MONSTER_JUMPING)
-				return(.2f);
+				return(.06f);
 			else if (eType & SOUND_TYPE_MONSTER_FALLING)
-				return(.25f);
+				return(.06f);
 			else if (eType & SOUND_TYPE_MONSTER_TALKING)
-				return(.2f);
+				return(.10f);
 		}
 		else
 			if (eType & SOUND_TYPE_WORLD) {

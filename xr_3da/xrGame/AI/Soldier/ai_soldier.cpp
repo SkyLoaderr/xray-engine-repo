@@ -47,7 +47,7 @@ CAI_Soldier::CAI_Soldier()
 	m_dwPatrolPathIndex = -1;
 	m_dwCreatePathAttempts = 0;
 	m_dwLastUpdate = 0;
-	m_fSensetivity = 0.f;
+	m_fSensetivity = .0f;
 	m_iSoundIndex = -1;
 	m_cGestureState = GESTURE_STATE_NONE;
 	m_dwLastRadioTalk = 0;

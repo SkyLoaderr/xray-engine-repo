@@ -16,6 +16,7 @@
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define WEAPON_DISTANCE					(.35f)
 #define SQUARE_WEAPON_DISTANCE			(WEAPON_DISTANCE*WEAPON_DISTANCE)
+#define MIN_SOUND_VOLUME				.03f
 
 bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 {
@@ -85,8 +86,8 @@ void CAI_Soldier::SetDirectionLook()
 //			while (r_torso_target.yaw > PI_MUL_2)
 //				r_torso_target.yaw -= PI_MUL_2;
 			r_target.yaw = r_torso_target.yaw;
-			ASSIGN_SPINE_BONE;
-			q_look.o_look_speed=PI_DIV_4;
+			//ASSIGN_SPINE_BONE;
+			//q_look.o_look_speed=PI_DIV_4;
 		}
 	}
 	//r_target.pitch = 0;
@@ -101,8 +102,8 @@ void CAI_Soldier::SetLook(Fvector tPosition)
 		tWatchDirection.normalize();
 		mk_rotation(tWatchDirection,r_torso_target);
 		r_target.yaw = r_torso_target.yaw;
-		ASSIGN_SPINE_BONE;
-		q_look.o_look_speed=PI_DIV_4;
+		//ASSIGN_SPINE_BONE;
+		//q_look.o_look_speed=PI_DIV_4;
 	}
 }
 
@@ -130,68 +131,13 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			if (bSpine) {
 				ASSIGN_SPINE_BONE;
 			}
-			q_look.o_look_speed = PI_DIV_4;
+			//q_look.o_look_speed = PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
 			//r_target.yaw += PI_DIV_6;
 		}
 	}
 	//r_target.pitch = 0;
 	//r_torso_target.pitch = 0;
-}
-
-void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
-{
-	Fvector tLeft;
-	Fvector tRight;
-	Fvector tFront;
-	Fvector tBack;
-	tLeft.set(-1,0,0);
-	tRight.set(1,0,0);
-	tFront.set(0,0,1);
-	tBack.set(0,0,-1);
-
-	tEnemyDirection.normalize();
-	
-	/**
-	float fCover = 0;
-	if ((tEnemyDirection.x < 0) && (tEnemyDirection.z > 0)) {
-		float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-		fCover = cosf(fAlpha)*tNode->cover[0] + sinf(fAlpha)*tNode->cover[1];
-	}
-	else 
-		if ((tEnemyDirection.x > 0) && (tEnemyDirection.z > 0)) {
-			float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-			fCover = cosf(fAlpha)*tNode->cover[1] + sinf(fAlpha)*tNode->cover[2];
-		}
-		else 
-			if ((tEnemyDirection.x > 0) && (tEnemyDirection.z < 0)) {
-				float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
-				fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[2];
-			}
-			else 
-				if ((tEnemyDirection.x < 0) && (tEnemyDirection.z < 0)) {
-					float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
-					fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[0];
-				}
-				
-				
-				//Msg("%8.2f",fCover);
-	if (fCover > -1.0f*255.f) {
-					/**/
-	//q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
-	mk_rotation(tEnemyDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
-	ASSIGN_SPINE_BONE;
-	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	//r_target.pitch *= -1;
-	q_look.o_look_speed=8*_FB_look_speed;
-	/**
-	}
-	else {
-	SetLessCoverLook(tNode);
-	q_look.o_look_speed=8*_FB_look_speed;
-	}
-	/**/
 }
 
 static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
@@ -293,7 +239,7 @@ void CAI_Soldier::vfUpdateSounds(DWORD dwTimeDelta)
 void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float power)
 {
 	#ifdef WRITE_LOG
-		Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+		//Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
 	#endif
 
 	if (g_Health() <= 0) {
@@ -301,41 +247,22 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 		return;
 	}
 	
-	if (Level().timeServer() < 15000)
-		return;
+	//if (Level().timeServer() < 17000)
+	//	return;
 
 	power *= ffGetStartVolume(ESoundTypes(eType));
-	power = expf(.1f*log(power));
-
-	/**
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_RECHARGING		,0.15f);
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_SHOOTING		,1.00f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_TAKING			,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_HIDING			,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_CHANGING		,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_EMPTY_CLICKING	,0.10f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_WEAPON_BULLET_RICOCHET	,0.50f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_DYING			,0.50f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_INJURING		,0.50f);
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_NORMAL ,0.15f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_CROUCH	,0.05f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_WALKING_LIE	,0.10f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_NORMAL	,1.00f);//.25f 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_CROUCH	,1.00f);//.20f 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_RUNNING_LIE	,0.20f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_JUMPING_NORMAL	,0.20f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_JUMPING_CROUCH	,0.15f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_FALLING		,0.20f); 
-	ASSIGN_PROPORTIONAL_POWER(SOUND_TYPE_MONSTER_TALKING		,0.25f); 
-	/**/
+	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
+		power = expf(.1f*log(power));
 
 	DWORD dwTime = Level().timeServer();
 	
-	if ((power >= m_fSensetivity*m_fSoundPower) && ((eType & SOUND_TYPE_MONSTER) != SOUND_TYPE_MONSTER)) {
+	if ((power >= m_fSensetivity*m_fSoundPower) && (power >= MIN_SOUND_VOLUME)) {
 		if (this != who) {
-			int j = tpaDynamicObjects.size();
+			Msg("%s - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",cName(),eType,who ? who->cName() : "world",Level().timeServer(),Position.x,Position.y,Position.z,power);
+			int j;
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
-			if (!tpEntity || !bfCheckForVisibility(tpEntity)) {
+			//if (!tpEntity) 
+			{
 				for ( j=0; j<tpaDynamicSounds.size(); j++)
 					if (who == tpaDynamicSounds[j].tpEntity) {
 						tpaDynamicSounds[j].eSoundType = ESoundTypes(eType);
@@ -474,7 +401,6 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	mk_rotation(tWatchDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
 	
 	m_fAddWeaponAngle = 0;
 	// turning model a bit more for precise weapon shooting
@@ -504,5 +430,7 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 	}
 	
 	r_torso_target.yaw -= m_fAddWeaponAngle;
+	r_target.yaw = r_torso_target.yaw;
+
 	ASSIGN_SPINE_BONE;
 }

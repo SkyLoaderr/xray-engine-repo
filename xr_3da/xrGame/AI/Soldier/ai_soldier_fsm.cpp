@@ -749,6 +749,9 @@ void CAI_Soldier::Die()
 {
 	WRITE_TO_LOG("Dying...");
 
+	if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+		m_tpSoundBeingPlayed->feedback->Stop();
+
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
 	AI_Path.TravelPath.clear();
@@ -1223,13 +1226,19 @@ void CAI_Soldier::OnPatrol()
 	SelectEnemy(Enemy);
 
 	if (Enemy.Enemy) {
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->Stop();
 		CHECK_IF_SWITCH_TO_NEW_STATE(!bfCheckForEntityVisibility(Enemy.Enemy) && (vPosition.distance_to(Enemy.Enemy->Position()) > 5.f),aiSoldierSteal);
 		SWITCH_TO_NEW_STATE(aiSoldierDefendFireAlone);
 	}
 
 	DWORD dwCurTime = Level().timeServer();
 
-	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
+	if ((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime)) {
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->Stop();
+		SWITCH_TO_NEW_STATE(aiSoldierPatrolHurt)
+	}
 	
 	INIT_SQUAD_AND_LEADER;
 	
@@ -1241,6 +1250,8 @@ void CAI_Soldier::OnPatrol()
 	SelectSound(m_iSoundIndex);
 	if (m_iSoundIndex >= 0) {
 		AI_Path.TravelPath.clear();
+		if (m_tpSoundBeingPlayed && m_tpSoundBeingPlayed->feedback)
+			m_tpSoundBeingPlayed->feedback->Stop();
 		SWITCH_TO_NEW_STATE(aiSoldierSenseSomethingAlone);
 	}
 	/**/
@@ -1625,11 +1636,17 @@ void CAI_Soldier::OnSenseSomethingAlone()
 			}
 		}
 		else {
+			tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+			dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+			m_dwLastRangeSearch = dwCurTime;
 			m_bStateChanged = false;
 			GO_TO_NEW_STATE(aiSoldierPatrolDanger);
 		}
 	}
 	else {
+		tHitPosition = tpaDynamicSounds[iSoundIndex].tSavedPosition;
+		dwHitTime = tpaDynamicSounds[iSoundIndex].dwTime;
+		m_dwLastRangeSearch = dwCurTime;
 		m_bStateChanged = false;
 		GO_TO_PREV_STATE;
 	}
@@ -1863,10 +1880,10 @@ void CAI_Soldier::OnDangerAlone()
 //		vfSearchForBetterPositionWTime(SelectorPatrol,Squad,Leader);
 		vfSearchForBetterPosition(SelectorPatrol,Squad,Leader);
 		
-	if (AI_Path.fSpeed > EPS_L)
+	//if (AI_Path.fSpeed > EPS_L)
 		SetDirectionLook();
-	else
-		vfAimAtEnemy();
+	//else
+	//	vfAimAtEnemy();
 
 	Squat();
 	vfSetMovementType(WALK_FORWARD_0);
