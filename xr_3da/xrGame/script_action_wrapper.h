@@ -26,7 +26,7 @@ public:
 	static	void				execute_static		(CScriptAction *action);
 	virtual void				finalize			();
 	static	void				finalize_static		(CScriptAction *action);
-	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1);
+//	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1);
 	virtual _edge_value_type	weight				(const CSConditionState &condition0, const CSConditionState &condition1) const;
 	static	_edge_value_type	weight_static		(CScriptAction *action, const CSConditionState &condition0, const CSConditionState &condition1);
 };

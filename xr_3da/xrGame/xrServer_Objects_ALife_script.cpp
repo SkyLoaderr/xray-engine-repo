@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "xrServer_Objects_ALife.h"
 #include "script_space.h"
+#include "xrServer_script_macroses.h"
 
 using namespace luabind;
 
@@ -28,21 +29,22 @@ void CSE_ALifeSchedulable::script_register(lua_State *L)
 void CSE_ALifeGraphPoint::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeGraphPoint,CSE_Abstract>
-			("cse_alife_graph_point")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_ALifeGraphPoint,
+			"cse_alife_graph_point",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_ALifeObject::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeObject,CSE_Abstract>
-			("cse_alife_object")
-			.def(							constructor<LPCSTR>())
-			.def("can_switch_online",		(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::can_switch_online))
-			.def("can_switch_offline",		(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::can_switch_offline))
-			.def("interactive",				(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::interactive))
+		luabind_class_alife1(
+			CSE_ALifeObject,
+			"cse_alife_object",
+			CSE_Abstract
+		)
 	];
 }
 
@@ -58,116 +60,102 @@ void CSE_ALifeGroupAbstract::script_register(lua_State *L)
 void CSE_ALifeDynamicObject::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeDynamicObject,CSE_ALifeObject>
-			("cse_alife_dynamic_object")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife1(
+			CSE_ALifeDynamicObject,
+			"cse_alife_dynamic_object",
+			CSE_ALifeObject
+		)
 	];
 }
 
 void CSE_ALifeDynamicObjectVisual::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeDynamicObjectVisual,CSE_ALifeDynamicObject,CSE_Visual>
-			("cse_alife_dynamic_object_visual")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife2(
+			CSE_ALifeDynamicObjectVisual,
+			"cse_alife_dynamic_object_visual",
+			CSE_ALifeDynamicObject,
+			CSE_Visual
+		)
 	];
 }
 
 void CSE_ALifePHSkeletonObject::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisual>
-			("cse_alife_ph_skeleton_object")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife1(
+			CSE_ALifePHSkeletonObject,
+			"cse_alife_ph_skeleton_object",
+			CSE_ALifeDynamicObjectVisual
+		)
 	];
 }
 
 void CSE_ALifeScriptZone::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeScriptZone,CSE_ALifeDynamicObject,CSE_Shape>
-			("cse_alife_script_zone")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife2(
+			CSE_ALifeScriptZone,
+			"cse_alife_script_zone",
+			CSE_ALifeDynamicObject,
+			CSE_Shape
+		)
 	];
 }
 
 void CSE_ALifeLevelChanger::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeLevelChanger,CSE_ALifeScriptZone>
-			("cse_alife_level_changer")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife2(
+			CSE_ALifeLevelChanger,
+			"cse_alife_level_changer",
+			CSE_ALifeScriptZone,
+			CSE_Shape
+		)
 	];
 }
 
 void CSE_ALifeObjectPhysic::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeObjectPhysic,CSE_ALifePHSkeletonObject>
-			("cse_alife_object_physic")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife1(
+			CSE_ALifeObjectPhysic,
+			"cse_alife_object_physic",
+			CSE_ALifePHSkeletonObject
+		)
 	];
 }
 
 void CSE_ALifeObjectHangingLamp::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual>
-			("cse_alife_object_hanging_lamp")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife1(
+			CSE_ALifeObjectHangingLamp,
+			"cse_alife_object_hanging_lamp",
+			CSE_ALifeDynamicObjectVisual
+		)
 	];
 }
 
 void CSE_ALifeObjectProjector::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisual>
-			("cse_alife_object_projector")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife1(
+			CSE_ALifeObjectProjector,
+			"cse_alife_object_projector",
+			CSE_ALifeDynamicObjectVisual
+		)
 	];
 }
 
 void CSE_ALifeHelicopter::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion>
-			("cse_alife_helicopter")
-			.def(		constructor<LPCSTR>())
-	];
-}
-
-void CSE_ALifeCar::script_register(lua_State *L)
-{
-	module(L)[
-		class_<CSE_ALifeCar,CSE_ALifeDynamicObjectVisual>
-			("cse_alife_car")
-			.def(		constructor<LPCSTR>())
-	];
-}
-
-void CSE_ALifeObjectBreakable::script_register(lua_State *L)
-{
-	module(L)[
-		class_<CSE_ALifeObjectBreakable,CSE_ALifeDynamicObjectVisual>
-			("cse_alife_object_breakable")
-			.def(		constructor<LPCSTR>())
-	];
-}
-
-void CSE_ALifeMountedWeapon::script_register(lua_State *L)
-{
-	module(L)[
-		class_<CSE_ALifeMountedWeapon,CSE_ALifeDynamicObjectVisual>
-			("cse_alife_mounted_weapon")
-			.def(		constructor<LPCSTR>())
-	];
-}
-
-void CSE_ALifeTeamBaseZone::script_register(lua_State *L)
-{
-	module(L)[
-		class_<CSE_ALifeTeamBaseZone,CSE_ALifeScriptZone>
-			("cse_alife_team_base_zone")
-			.def(		constructor<LPCSTR>())
+		luabind_class_alife2(
+			CSE_ALifeHelicopter,
+			"cse_alife_helicopter",
+			CSE_ALifeDynamicObjectVisual,
+			CSE_Motion
+		)
 	];
 }

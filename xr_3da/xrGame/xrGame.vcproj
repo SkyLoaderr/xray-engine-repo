@@ -4460,6 +4460,12 @@
 								RelativePath=".\PHSkeleton.h">
 							</File>
 							<File
+								RelativePath=".\PHSkeleton.cpp">
+							</File>
+							<File
+								RelativePath=".\PHSkeleton.h">
+							</File>
+							<File
 								RelativePath="PhysicObject.cpp">
 							</File>
 							<File
@@ -6142,6 +6148,9 @@
 					<File
 						RelativePath="xrServer_Objects_ALife_All.h">
 					</File>
+					<File
+						RelativePath=".\xrServer_script_macroses.h">
+					</File>
 					<Filter
 						Name="objects"
 						Filter="">
@@ -6167,6 +6176,9 @@
 						<File
 							RelativePath=".\xrServer_Objects_ALife_script.cpp">
 						</File>
+						<File
+							RelativePath=".\xrServer_Objects_ALife_script2.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="objects_alife_items"
@@ -6180,6 +6192,9 @@
 						<File
 							RelativePath=".\xrServer_Objects_ALife_Items_script.cpp">
 						</File>
+						<File
+							RelativePath=".\xrServer_Objects_ALife_Items_script2.cpp">
+						</File>
 					</Filter>
 					<Filter
 						Name="objects_alife_monsters"
@@ -6192,6 +6207,9 @@
 						</File>
 						<File
 							RelativePath=".\xrServer_Objects_ALife_Monsters_script.cpp">
+						</File>
+						<File
+							RelativePath=".\xrServer_Objects_ALife_Monsters_script2.cpp">
 						</File>
 					</Filter>
 				</Filter>

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "xrServer_Objects.h"
 #include "script_space.h"
+#include "xrServer_script_macroses.h"
 
 using namespace luabind;
 
@@ -72,81 +73,99 @@ void CSE_Motion::script_register(lua_State *L)
 void CSE_Spectator::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_Spectator,CSE_Abstract>
-			("cse_spectator")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_Spectator,
+			"cse_spectator",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_Target::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_Target,CSE_Abstract>
-			("cse_target")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_Target,
+			"cse_target",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_TargetAssault::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_TargetAssault,CSE_Abstract>
-			("cse_target_assault")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_TargetAssault,
+			"cse_target_assault",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_Target_CS_Base::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_Target_CS_Base,CSE_Abstract>
-			("cse_target_cs_base")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_Target_CS_Base,
+			"cse_target_cs_base",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_Target_CS_Cask::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_Target_CS_Cask,CSE_Abstract>
-			("cse_target_cs_cask")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_Target_CS_Cask,
+			"cse_target_cs_cask",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_Target_CS::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_Target_CS,CSE_Abstract>
-			("cse_target_cs")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_Target_CS,
+			"cse_target_cs",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_Temporary::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_Temporary,CSE_Abstract>
-			("cse_temporary")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_Temporary,
+			"cse_temporary",
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_Event::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_Event,CSE_Shape,CSE_Abstract>
-			("cse_event")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract2(
+			CSE_Event,
+			"cse_event",
+			CSE_Shape,
+			CSE_Abstract
+		)
 	];
 }
 
 void CSE_SpawnGroup::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_SpawnGroup,CSE_Abstract>
-			("cse_spawn_group")
-			.def(		constructor<LPCSTR>())
+		luabind_class_abstract1(
+			CSE_SpawnGroup,
+			"cse_event",
+			CSE_Abstract
+		)
 	];
 }
-

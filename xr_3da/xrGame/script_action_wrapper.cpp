@@ -50,17 +50,18 @@ void CScriptActionWrapper::finalize_static		(CScriptAction *action)
 	action->CScriptAction::finalize		();
 }
 
-CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1)
-{
-	return								(call_member<_edge_value_type>("weight",condition0,condition1));
-}
+//CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1)
+//{
+//	return								(call_member<_edge_value_type>("weight",condition0,condition1));
+//}
 
 CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
 {
-	return								(const_cast<CScriptActionWrapper*>(this)->weight(condition0,condition1));
+//	return								(const_cast<CScriptActionWrapper*>(this)->weight(condition0,condition1));
+	return								(const_cast<CScriptActionWrapper*>(this)->call_member<_edge_value_type>("weight",condition0,condition1));
 }
 
 CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight_static	(CScriptAction *action, const CSConditionState &condition0, const CSConditionState &condition1)
 {
-	return								(action->CScriptAction::weight(condition0,condition1));
+	return								(((const CScriptActionWrapper*)action)->CScriptAction::weight(condition0,condition1));
 }

@@ -1,0 +1,58 @@
+////////////////////////////////////////////////////////////////////////////
+//	Module 		: xrServer_Objects_ALife_script2.cpp
+//	Created 	: 19.09.2002
+//  Modified 	: 04.06.2003
+//	Author		: Dmitriy Iassenev
+//	Description : Server objects for ALife simulator, script export, the second part
+////////////////////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "xrServer_Objects_ALife.h"
+#include "script_space.h"
+#include "xrServer_script_macroses.h"
+
+using namespace luabind;
+
+void CSE_ALifeCar::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife1(
+			CSE_ALifeCar,
+			"cse_alife_car",
+			CSE_ALifeDynamicObjectVisual
+		)
+	];
+}
+
+void CSE_ALifeObjectBreakable::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife1(
+			CSE_ALifeObjectBreakable,
+			"cse_alife_object_breakable",
+			CSE_ALifeDynamicObjectVisual
+		)
+	];
+}
+
+void CSE_ALifeMountedWeapon::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife1(
+			CSE_ALifeMountedWeapon,
+			"cse_alife_mounted_weapon",
+			CSE_ALifeDynamicObjectVisual
+		)
+	];
+}
+
+void CSE_ALifeTeamBaseZone::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_alife1(
+			CSE_ALifeTeamBaseZone,
+			"cse_alife_team_base_zone",
+			CSE_ALifeScriptZone
+		)
+	];
+}

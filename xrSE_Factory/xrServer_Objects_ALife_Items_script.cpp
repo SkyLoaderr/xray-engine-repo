@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "xrServer_Objects_ALife_Items.h"
 #include "script_space.h"
+#include "xrServer_script_macroses.h"
 
 using namespace luabind;
 
@@ -24,107 +25,110 @@ void CSE_ALifeInventoryItem::script_register(lua_State *L)
 void CSE_ALifeItem::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItem,CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem>
-			("cse_alife_item")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item2(
+			CSE_ALifeItem,
+			"cse_alife_item",
+			CSE_ALifeDynamicObjectVisual,
+			CSE_ALifeInventoryItem
+		)
 	];
 }
 
 void CSE_ALifeItemTorch::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemTorch,CSE_ALifeItem>
-			("cse_alife_item_torch")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemTorch,
+			"cse_alife_item_torch",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemAmmo::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemAmmo,CSE_ALifeItem>
-			("cse_alife_item_torch")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemAmmo,
+			"cse_alife_item_ammo",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemWeapon::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemWeapon,CSE_ALifeItem>
-			("cse_alife_item_weapon")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemWeapon,
+			"cse_alife_item_weapon",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemDetector::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemDetector,CSE_ALifeItem>
-			("cse_alife_item_detector")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemDetector,
+			"cse_alife_item_detector",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemArtefact::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemArtefact,CSE_ALifeItem>
-			("cse_alife_item_artefact")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemArtefact,
+			"cse_alife_item_artefact",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemPDA::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemPDA,CSE_ALifeItem>
-			("cse_alife_item_pda")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemPDA,
+			"cse_alife_item_pda",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemDocument::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemDocument,CSE_ALifeItem>
-			("cse_alife_item_document")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemDocument,
+			"cse_alife_item_document",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemGrenade::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemGrenade,CSE_ALifeItem>
-			("cse_alife_item_grenade")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemGrenade,
+			"cse_alife_item_grenade",
+			CSE_ALifeItem
+		)
 	];
 }
 
 void CSE_ALifeItemExplosive::script_register(lua_State *L)
 {
 	module(L)[
-		class_<CSE_ALifeItemExplosive,CSE_ALifeItem>
-			("cse_alife_item_explosive")
-			.def(		constructor<LPCSTR>())
-	];
-}
-
-void CSE_ALifeItemBolt::script_register(lua_State *L)
-{
-	module(L)[
-		class_<CSE_ALifeItemBolt,CSE_ALifeItem>
-			("cse_alife_item_bolt")
-			.def(		constructor<LPCSTR>())
-	];
-}
-
-void CSE_ALifeItemCustomOutfit::script_register(lua_State *L)
-{
-	module(L)[
-		class_<CSE_ALifeItemCustomOutfit,CSE_ALifeItem>
-			("cse_alife_item_custom_outfit")
-			.def(		constructor<LPCSTR>())
+		luabind_class_item1(
+			CSE_ALifeItemExplosive,
+			"cse_alife_item_explosive",
+			CSE_ALifeItem
+		)
 	];
 }
