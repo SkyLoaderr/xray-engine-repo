@@ -23,7 +23,7 @@ function eva_state_mgr_direction:evaluate()
 	end
 
 	if self.target_position == nil then
-		self.object:set_sight(look.search, nil, true)
+		self.object:set_sight(look.search, nil, 0)
 		return true
 	end
 	
