@@ -11,7 +11,7 @@
 
 void CScriptActionWrapper::reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
-	luabind::call_member<void>			(m_lua_instance,"reinit",object,storage,clear_all);
+	call_member<void>			("reinit",object,storage,clear_all);
 }
 
 void CScriptActionWrapper::reinit_static		(CScriptAction *action, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
@@ -21,7 +21,7 @@ void CScriptActionWrapper::reinit_static		(CScriptAction *action, CLuaGameObject
 
 void CScriptActionWrapper::initialize			()
 {
-	luabind::call_member<void>			(m_lua_instance,"initialize");
+	call_member<void>			("initialize");
 }
 
 void CScriptActionWrapper::initialize_static	(CScriptAction *action)
@@ -31,7 +31,7 @@ void CScriptActionWrapper::initialize_static	(CScriptAction *action)
 
 void CScriptActionWrapper::execute				()
 {
-	luabind::call_member<void>			(m_lua_instance,"execute");
+	call_member<void>			("execute");
 }
 
 void CScriptActionWrapper::execute_static		(CScriptAction *action)
@@ -41,7 +41,7 @@ void CScriptActionWrapper::execute_static		(CScriptAction *action)
 
 void CScriptActionWrapper::finalize				()
 {
-	luabind::call_member<void>			(m_lua_instance,"finalize");
+	call_member<void>			("finalize");
 }
 
 void CScriptActionWrapper::finalize_static		(CScriptAction *action)
@@ -51,7 +51,7 @@ void CScriptActionWrapper::finalize_static		(CScriptAction *action)
 
 CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1)
 {
-	return								(luabind::call_member<_edge_value_type>(m_lua_instance,"weight",condition0,condition1));
+	return								(call_member<_edge_value_type>("weight",condition0,condition1));
 }
 
 CScriptActionWrapper::_edge_value_type CScriptActionWrapper::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const

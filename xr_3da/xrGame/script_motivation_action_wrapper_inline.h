@@ -8,8 +8,7 @@
 
 #pragma once
 
-IC	CScriptMotivationActionWrapper::CScriptMotivationActionWrapper	(luabind::weak_ref lua_instance, const CGraphEngine::CWorldState &goal) :
-	inherited						(goal),
-	m_lua_instance					(lua_instance)
+IC	CScriptMotivationActionWrapper::CScriptMotivationActionWrapper	(const CGraphEngine::CWorldState &goal) :
+	inherited						(goal)
 {
 }

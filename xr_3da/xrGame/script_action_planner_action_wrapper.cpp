@@ -11,7 +11,7 @@
 
 void CScriptActionPlannerActionWrapper::reinit		(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)
 {
-	luabind::call_member<void>				(m_lua_instance,"reinit",object,storage,clear_all);
+	call_member<void>				("reinit",object,storage,clear_all);
 }
 
 void CScriptActionPlannerActionWrapper::reinit_static	(CScriptActionPlannerAction *planner, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all)

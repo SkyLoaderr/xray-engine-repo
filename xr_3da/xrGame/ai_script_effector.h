@@ -43,17 +43,15 @@ public:
 	}
 };
 
-class CLuaEffectorWrapper : public CLuaEffector {
+class CLuaEffectorWrapper : public CLuaEffector, public luabind::wrap_base {
 public:
-	luabind::weak_ref		m_tLuaBindObject;
-
-					CLuaEffectorWrapper	(luabind::weak_ref tLuaBindObject, int iType, float fTime) : CLuaEffector(iType, fTime), m_tLuaBindObject(tLuaBindObject)
+					CLuaEffectorWrapper	(int iType, float fTime) : CLuaEffector(iType, fTime)
 	{
 	}
 
 	virtual BOOL	Process				(SPPInfo &pp)
 	{
-		BOOL	l_bResult = !!luabind::call_member<bool>(m_tLuaBindObject,"process",pp);
+		BOOL	l_bResult = !!call_member<bool>("process",pp);
 		pp		= m_tInfo;
 		return	(l_bResult);
 	}

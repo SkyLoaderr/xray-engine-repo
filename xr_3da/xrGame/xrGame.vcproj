@@ -2888,7 +2888,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -2911,7 +2912,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -2934,7 +2936,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -2957,7 +2960,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -2980,7 +2984,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3003,7 +3008,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3026,7 +3032,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3049,7 +3056,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3072,7 +3080,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3095,7 +3104,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3118,7 +3128,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3141,7 +3152,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3164,7 +3176,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3187,7 +3200,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3210,7 +3224,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3220,22 +3235,21 @@
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								PrecompiledHeaderThrough=""
-								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Mixed|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
 								UsePrecompiledHeader="0"
-								PrecompiledHeaderThrough=""
-								ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 						<FileConfiguration
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3258,7 +3272,8 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 					<File
@@ -3281,7 +3296,32 @@
 							Name="Release|Win32">
 							<Tool
 								Name="VCCLCompilerTool"
-								UsePrecompiledHeader="0"/>
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
+						</FileConfiguration>
+					</File>
+					<File
+						RelativePath=".\luabind\wrapper_base.cpp">
+						<FileConfiguration
+							Name="Debug|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Mixed|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
+						</FileConfiguration>
+						<FileConfiguration
+							Name="Release|Win32">
+							<Tool
+								Name="VCCLCompilerTool"
+								UsePrecompiledHeader="0"
+								PrecompiledHeaderThrough=""/>
 						</FileConfiguration>
 					</File>
 				</Filter>
@@ -3546,6 +3586,9 @@
 					Name="ScriptExport"
 					Filter="">
 					<File
+						RelativePath=".\ai_script_export_old_actions.cpp">
+					</File>
+					<File
 						RelativePath=".\ai_script_lua_export.cpp">
 					</File>
 					<File
@@ -3553,6 +3596,9 @@
 					</File>
 					<File
 						RelativePath=".\ai_script_lua_export_extension.cpp">
+					</File>
+					<File
+						RelativePath=".\ai_script_lua_export_object.cpp">
 					</File>
 				</Filter>
 				<Filter

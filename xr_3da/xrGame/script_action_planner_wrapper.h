@@ -13,12 +13,8 @@
 
 typedef CActionPlanner<CLuaGameObject> CScriptActionPlanner;
 
-class CScriptActionPlannerWrapper : public CScriptActionPlanner {
+class CScriptActionPlannerWrapper : public CScriptActionPlanner, public luabind::wrap_base {
 public:
-	luabind::weak_ref	m_lua_instance;
-
-public:
-	IC					CScriptActionPlannerWrapper	(luabind::weak_ref lua_instance);
 	virtual void		reinit						(CLuaGameObject *object, bool clear_all);
 	static	void		reinit_static				(CScriptActionPlanner *planner, CLuaGameObject *object, bool clear_all);
 	virtual void		update						(u32 time_delta);

@@ -11,12 +11,9 @@
 #include "script_binder_object.h"
 #include "ai_script_classes.h"
 
-class CScriptBinderObjectWrapper : public CScriptBinderObject {
-protected:
-	luabind::weak_ref	m_lua_instance;
-
+class CScriptBinderObjectWrapper : public CScriptBinderObject, public luabind::wrap_base {
 public:
-						CScriptBinderObjectWrapper	(luabind::weak_ref lua_instance, CLuaGameObject *object);
+						CScriptBinderObjectWrapper	(CLuaGameObject *object);
 	virtual				~CScriptBinderObjectWrapper	();
 	virtual void		reinit						();
 	static  void		reinit_static				(CScriptBinderObject *script_binder_object);

@@ -8,9 +8,8 @@
 
 #pragma once
 
-IC	CScriptActionWrapper::CScriptActionWrapper	(luabind::weak_ref lua_instance, CLuaGameObject *object, LPCSTR action_name) : 
-	CScriptAction					(object,action_name),
-	m_lua_instance					(lua_instance)
+IC	CScriptActionWrapper::CScriptActionWrapper	(CLuaGameObject *object, LPCSTR action_name) : 
+	CScriptAction					(object,action_name)
 {
 }
 

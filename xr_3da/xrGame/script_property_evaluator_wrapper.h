@@ -13,11 +13,9 @@
 
 typedef CPropertyEvaluator<CLuaGameObject> CScriptPropertyEvaluator;
 
-class CPropertyEvaluatorWrapper : public CScriptPropertyEvaluator {
+class CPropertyEvaluatorWrapper : public CScriptPropertyEvaluator, public luabind::wrap_base {
 public:
-	luabind::weak_ref	m_lua_instance;
-
-	IC					CPropertyEvaluatorWrapper	(luabind::weak_ref lua_instance, CLuaGameObject *object = 0);
+	IC					CPropertyEvaluatorWrapper	(CLuaGameObject *object = 0);
 	virtual void		reinit						(CLuaGameObject *object, CPropertyStorage *storage);
 	static	void		reinit_static				(CScriptPropertyEvaluator *evaluator, CLuaGameObject *object, CPropertyStorage *storage);
 	virtual bool		evaluate					();

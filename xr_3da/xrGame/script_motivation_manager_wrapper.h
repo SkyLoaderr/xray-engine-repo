@@ -13,16 +13,12 @@
 
 typedef CMotivationManager<CLuaGameObject> CScriptMotivationManager;
 
-class CScriptMotivationManagerWrapper : public CScriptMotivationManager {
+class CScriptMotivationManagerWrapper : public CScriptMotivationManager, public luabind::wrap_base {
 protected:
 	typedef CLuaGameObject				_object_type;
 	typedef	CScriptMotivationManager	inherited;
 
 public:
-	luabind::weak_ref		m_lua_instance;
-
-public:
-	IC						CScriptMotivationManagerWrapper	(luabind::weak_ref lua_instance);
 	virtual					~CScriptMotivationManagerWrapper();
 	virtual void			reinit							(_object_type *object, bool clear_all = false);
 	static	void			reinit_static					(CScriptMotivationManager *manager, CLuaGameObject *object, bool clear_all = false);

@@ -11,7 +11,7 @@
 
 void CScriptActionPlannerWrapper::reinit		(CLuaGameObject *object, bool clear_all)
 {
-	luabind::call_member<void>				(m_lua_instance,"reinit",object,clear_all);
+	call_member<void>				("reinit",object,clear_all);
 }
 
 void CScriptActionPlannerWrapper::reinit_static	(CScriptActionPlanner *planner, CLuaGameObject *object, bool clear_all)
@@ -21,7 +21,7 @@ void CScriptActionPlannerWrapper::reinit_static	(CScriptActionPlanner *planner, 
 
 void CScriptActionPlannerWrapper::update		(u32 time_delta)
 {
-	luabind::call_member<void>				(m_lua_instance,"update",time_delta);
+	call_member<void>				("update",time_delta);
 }
 
 void CScriptActionPlannerWrapper::update_static	(CScriptActionPlanner *planner, u32 time_delta)

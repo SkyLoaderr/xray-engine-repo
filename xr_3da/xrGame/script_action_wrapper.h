@@ -13,12 +13,9 @@
 
 typedef CActionBase<CLuaGameObject> CScriptAction;
 
-class CScriptActionWrapper : public CScriptAction {
+class CScriptActionWrapper : public CScriptAction, public luabind::wrap_base {
 public:
-	luabind::weak_ref 			m_lua_instance;
-
-public:
-	IC							CScriptActionWrapper(luabind::weak_ref lua_instance, CLuaGameObject *object = 0, LPCSTR action_name = "");
+	IC							CScriptActionWrapper(CLuaGameObject *object = 0, LPCSTR action_name = "");
 	virtual void				reinit				(CLuaGameObject *object, CPropertyStorage *storage, bool clear_all);
 	static	void				reinit_static		(CScriptAction *action, CLuaGameObject *object, CPropertyStorage *storage, bool clear_all);
 	virtual void				initialize			();

@@ -15,7 +15,7 @@ CScriptMotivationActionManagerWrapper::~CScriptMotivationActionManagerWrapper	()
 
 void CScriptMotivationActionManagerWrapper::reinit			(_object_type *object, bool clear_all)
 {
-	luabind::call_member<void>				(m_lua_instance,"reinit",object,clear_all);
+	call_member<void>				("reinit",object,clear_all);
 }
 
 void CScriptMotivationActionManagerWrapper::reinit_static	(CScriptMotivationActionManager *manager, CLuaGameObject *object, bool clear_all)
@@ -25,7 +25,7 @@ void CScriptMotivationActionManagerWrapper::reinit_static	(CScriptMotivationActi
 
 void CScriptMotivationActionManagerWrapper::Load			(LPCSTR section)
 {
-	luabind::call_member<void>				(m_lua_instance,"load",section);
+	call_member<void>				("load",section);
 }
 
 void CScriptMotivationActionManagerWrapper::Load_static		(CScriptMotivationActionManager *manager, LPCSTR section)
@@ -35,7 +35,7 @@ void CScriptMotivationActionManagerWrapper::Load_static		(CScriptMotivationActio
 
 void CScriptMotivationActionManagerWrapper::reload			(LPCSTR section)
 {
-	luabind::call_member<void>				(m_lua_instance,"reload",section);
+	call_member<void>				("reload",section);
 }
 
 void CScriptMotivationActionManagerWrapper::reload_static	(CScriptMotivationActionManager *manager, LPCSTR section)
@@ -45,7 +45,7 @@ void CScriptMotivationActionManagerWrapper::reload_static	(CScriptMotivationActi
 
 void CScriptMotivationActionManagerWrapper::update			(u32 time_delta)
 {
-	luabind::call_member<void>		(m_lua_instance,"update",time_delta);
+	call_member<void>		("update",time_delta);
 }
 
 void CScriptMotivationActionManagerWrapper::update_static	(CScriptMotivationActionManager *manager, u32 time_delta)

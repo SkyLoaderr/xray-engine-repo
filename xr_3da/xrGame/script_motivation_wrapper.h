@@ -13,7 +13,7 @@
 
 typedef CMotivation<CLuaGameObject> CScriptMotivation;
 
-class CScriptMotivationWrapper : public CScriptMotivation {
+class CScriptMotivationWrapper : public CScriptMotivation, public luabind::wrap_base {
 public:
 	typedef	CScriptMotivation	inherited;
 
@@ -21,10 +21,6 @@ protected:
 	typedef CLuaGameObject		_object_type;
 
 public:
-	luabind::weak_ref		m_lua_instance;
-
-public:
-	IC						CScriptMotivationWrapper	(luabind::weak_ref lua_instance);
 	virtual					~CScriptMotivationWrapper	();
 	virtual void			reinit						(_object_type *object);
 	static	void			reinit_static				(inherited *motivation, CLuaGameObject *object);

@@ -7,9 +7,3 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
-
-IC	CScriptActionPlannerWrapper::CScriptActionPlannerWrapper	(luabind::weak_ref lua_instance) :
-	m_lua_instance		(lua_instance)
-{
-}
-

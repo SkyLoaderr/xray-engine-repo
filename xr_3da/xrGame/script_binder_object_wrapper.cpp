@@ -9,9 +9,8 @@
 #include "stdafx.h"
 #include "script_binder_object_wrapper.h"
 
-CScriptBinderObjectWrapper::CScriptBinderObjectWrapper	(luabind::weak_ref lua_instance, CLuaGameObject *object) :
-	CScriptBinderObject	(object),
-	m_lua_instance		(lua_instance)
+CScriptBinderObjectWrapper::CScriptBinderObjectWrapper	(CLuaGameObject *object) :
+	CScriptBinderObject	(object)
 {
 }
 
@@ -21,7 +20,7 @@ CScriptBinderObjectWrapper::~CScriptBinderObjectWrapper ()
 
 void CScriptBinderObjectWrapper::reinit					()
 {
-	luabind::call_member<void>		(m_lua_instance,"reinit");
+	call_member<void>		("reinit");
 }
 
 void CScriptBinderObjectWrapper::reinit_static			(CScriptBinderObject *script_binder_object)
@@ -31,7 +30,7 @@ void CScriptBinderObjectWrapper::reinit_static			(CScriptBinderObject *script_bi
 
 void CScriptBinderObjectWrapper::reload					(LPCSTR section)
 {
-	luabind::call_member<void>		(m_lua_instance,"reload",section);
+	call_member<void>		("reload",section);
 }
 
 void CScriptBinderObjectWrapper::reload_static			(CScriptBinderObject *script_binder_object, LPCSTR section)
@@ -41,7 +40,7 @@ void CScriptBinderObjectWrapper::reload_static			(CScriptBinderObject *script_bi
 
 bool CScriptBinderObjectWrapper::net_Spawn				(SpawnType DC)
 {
-	return			(luabind::call_member<bool>(m_lua_instance,"net_spawn",DC));
+	return			(call_member<bool>("net_spawn",DC));
 }
 
 bool CScriptBinderObjectWrapper::net_Spawn_static		(CScriptBinderObject *script_binder_object, SpawnType DC)
@@ -51,7 +50,7 @@ bool CScriptBinderObjectWrapper::net_Spawn_static		(CScriptBinderObject *script_
 
 void CScriptBinderObjectWrapper::net_Destroy			()
 {
-	luabind::call_member<void>		(m_lua_instance,"net_destroy");
+	call_member<void>		("net_destroy");
 }
 
 void CScriptBinderObjectWrapper::net_Destroy_static		(CScriptBinderObject *script_binder_object)
@@ -61,7 +60,7 @@ void CScriptBinderObjectWrapper::net_Destroy_static		(CScriptBinderObject *scrip
 
 void CScriptBinderObjectWrapper::net_Import				(NetPacket *net_packet)
 {
-	luabind::call_member<void>		(m_lua_instance,"net_import",net_packet);
+	call_member<void>		("net_import",net_packet);
 }
 
 void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script_binder_object, NetPacket *net_packet)
@@ -71,7 +70,7 @@ void CScriptBinderObjectWrapper::net_Import_static		(CScriptBinderObject *script
 
 void CScriptBinderObjectWrapper::net_Export				(NetPacket *net_packet)
 {
-	luabind::call_member<void>		(m_lua_instance,"net_export",net_packet);
+	call_member<void>		("net_export",net_packet);
 }
 
 void CScriptBinderObjectWrapper::net_Export_static		(CScriptBinderObject *script_binder_object, NetPacket *net_packet)
