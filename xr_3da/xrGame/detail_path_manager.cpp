@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "detail_path_manager.h"
+#include "ai_space.h"
 
 CDetailPathManager::CDetailPathManager	()
 {
@@ -84,74 +85,66 @@ void CDetailPathManager::build_dodge_path		(const xr_vector<u32> &level_path)
 
 void CDetailPathManager::build_criteria_path	(const xr_vector<u32> &level_path)
 {
-//	R_ASSERT				(!level_path.empty());
-//	Fvector					current,next;
-//
-//	// start point
-//	m_detail_path.clear		();
-//	current.set				(Position());
-//	m_detail_path.push_back	(current);
-//
-//	// end point
-//	CLevelGraph&	AI			= ai();
-//	Fvector		Last		= AI.level_graph().vertex_position(Nodes.back());
-//
-//	// segmentation
-//	SContour				Ccur,Cnext;
-//	UnpackContour			(Ccur,Nodes[0]);
-//	Segments.clear			();
-//	for (u32 I=1; I<Nodes.size(); I++)
-//	{
-//		SSegment				S;
-//		UnpackContour		(Cnext,Nodes[I]);
-//		vfIntersectContours	(S,Ccur,Cnext);
-//		Segments.push_back	(S);
-//		Ccur				= Cnext;
-//	}
-//
-//	// path building
-//	for (I=0; I<Segments.size(); I++)
-//	{
-//		// build probe point
-//		SSegment& S = Segments[I];
-//		ClosestPointOnSegment(next.P,current.P,S.v1,S.v2);
-//
-//		// select far point
-//		Fvector fp	= Last;
-//		if ((I+1)<Segments.size())	{
-//			SSegment& F = Segments[I+1];
-//			ClosestPointOnSegment(fp,current.P,F.v1,F.v2);
-//		}
-//
-//		// try to cast a line from 'current.P' to 'fp'
-//		Fvector	ip;
-//		if (SegmentsIntersect(ip,S.v1,S.v2,current.P,fp)) {
-//			next.P.set(ip);
-//		} else {
-//			// find nearest point to segment 'current.P' to 'fp'
-//			float d1 = S.v1.distance_to(fp)+S.v1.distance_to(current.P);
-//			float d2 = S.v2.distance_to(fp)+S.v2.distance_to(current.P);
-//			if (d1<d2)	next.P.set(S.v1);
-//			else		next.P.set(S.v2);
-//		}
-//
-//		// record _new point
-//		if (!next.P.similar(TravelPath.back().P))	TravelPath.push_back(next);
-//		current				= next;
-//	}
-//	next.P.set			(Last);
-//	if (!next.P.similar(TravelPath.back().P))	TravelPath.push_back(next);
-//
-//	// setup variables
-//	TravelStart				= 0;
-//	/**
-//	// checking for Y-s
-//	for (int i=1; i<TravelPath.size(); i++)
-//	if (TravelPath[i].P.y - TravelPath[i - 1].P.y > .5f) {
-//	Msg("AI_BuildTravelLine : suspicious Y-point found");
-//	}
-//	/**/
-//	//Engine.Sheduler.Slice	();
+	R_ASSERT				(!level_path.empty());
+	STravelPoint			current,next;
+
+	// start point
+	m_detail_path.clear		();
+	current.m_linear_speed	= (*m_movement_params.begin()).second.m_linear_speed;
+	current.m_angular_speed	= (*m_movement_params.begin()).second.m_angular_speed;
+	current.m_position		= m_detail_start_position;
+	m_detail_path.push_back	(current);
+
+	// end point
+	Fvector					Last = ai().level_graph().vertex_position(level_path.back());
+
+	// segmentation
+	CLevelGraph::SContour	Ccur,Cnext;
+	ai().level_graph().contour(Ccur,level_path[0]);
+	m_segments.clear			();
+	for (u32 I=1; I<level_path.size(); I++) {
+		CLevelGraph::SSegment		S;
+		ai().level_graph().contour	(Cnext,level_path[I]);
+		ai().level_graph().intersect(S,Ccur,Cnext);
+		m_segments.push_back		(S);
+		Ccur						= Cnext;
+	}
+
+	// path building
+	for (I=0; I<m_segments.size(); I++)
+	{
+		// build probe point
+		CLevelGraph::SSegment		&S = m_segments[I];
+		ai().level_graph().nearest(next.m_position,current.m_position,S.v1,S.v2);
+
+		// select far point
+		Fvector fp	= Last;
+		if ((I+1)<m_segments.size())	{
+			CLevelGraph::SSegment	&F = m_segments[I+1];
+			ai().level_graph().nearest(fp,current.m_position,F.v1,F.v2);
+		}
+
+		// try to cast a line from 'current.m_position' to 'fp'
+		Fvector	ip;
+		if (ai().level_graph().intersect(ip,S.v1,S.v2,current.m_position,fp)) {
+			next.m_position.set(ip);
+		} else {
+			// find nearest point to segment 'current.m_position' to 'fp'
+			float d1 = S.v1.distance_to(fp)+S.v1.distance_to(current.m_position);
+			float d2 = S.v2.distance_to(fp)+S.v2.distance_to(current.m_position);
+			if (d1<d2)	next.m_position.set(S.v1);
+			else		next.m_position.set(S.v2);
+		}
+
+		// record _new point
+		if (!next.m_position.similar(m_detail_path.back().m_position))	m_detail_path.push_back(next);
+		current				= next;
+	}
+	next.m_position.set			(Last);
+	if (!next.m_position.similar(m_detail_path.back().m_position))	m_detail_path.push_back(next);
+
+	// setup variables
+	m_detail_cur_point_index	= 0;
 }
 
 float CDetailPathManager::speed	()

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "level_graph.h"
+
 class CDetailPathManager {
 			bool	valid					() const;
 			bool	valid					(const Fvector &position) const;
@@ -45,6 +47,7 @@ public:
 	bool									m_collision;
 
 	xr_vector<STravelPoint>					m_detail_path;
+	xr_vector<CLevelGraph::SSegment>		m_segments;
 	Fvector									m_detail_start_position;
 	Fvector									m_detail_dest_position;
 	EDetailPathType							m_detail_path_type;
