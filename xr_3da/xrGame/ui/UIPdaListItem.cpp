@@ -73,7 +73,7 @@ void CUIPdaListItem::Init(int x, int y, int width, int height)
 void CUIPdaListItem::InitCharacter(CInventoryOwner* pInvOwner)
 {
 	VERIFY(pInvOwner);
-	UIInfo.InitCharacter(pInvOwner);
+	UIInfo.InitCharacter(pInvOwner);	
 	UIName.SetText(UIInfo.UIName.GetText());
 }
 
