@@ -7,6 +7,8 @@ local time_walk 	= 100000
 local time_rest 	= 30000         --Сколько времени сидим
 local novice_speak  = 15000     --Через какое время примерно новичок произносит фразы
 
+local novice_speak3 = 12000
+
 local time_to_speak = 12000     --Через какое время примерно зомби произносит фразы
 
 local time_walk2    = 10000     --Время ходьбы для навичка номер2
@@ -518,7 +520,7 @@ function stalker_novice3_action:initialize ()
 
     action_base.initialize          ( self )
 	if(level.actor()) then
-        if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 10 ) then
+        if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 40 ) then
         	self:init_state_actor()
             return
         end
@@ -535,13 +537,13 @@ function stalker_novice3_action:execute ()
     if( self.a.curState == walk ) then
         --Видим актера, запускается состояние state_acotor в котором смотрим на актера и ждем, пока он даст нам оружме
         if(level.actor()) then
-	        if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 10) then
-				printf( "time  %d   last_time  %d", device():time_global(), self.b.speak_time)
-            	if(device():time_global() > self.b.time_actor + 30000) then
+	        if( self.object:see(level.actor()) or distance_between(self.object, level.actor()) < 40) then
+--				printf( "time  %d   last_time  %d", device():time_global(), self.b.speak_time)
+--            	if(device():time_global() > self.b.time_actor + 30000) then
 				--Если актер рядом или мы его видим и с ним давно не разговаривали, реагируем на него
 	            	self:init_state_actor()
-	            	return
-                end
+--	            	return
+--                end
 	        end
 	    end
         self:state_walk()
@@ -561,7 +563,7 @@ function stalker_novice3_action:state_walk( param )
     if( device():time_global() > self.b.speak_time ) then
     --Произносим фразу
         xr_sounds.play_sound    (self.object, 0, "trivial", 4,1)
-        self.b.speak_time = device():time_global() + (math.random()+0.5) * novice_speak      --Когда произнесу следующую фразу
+        self.b.speak_time = device():time_global() + novice_speak3      --Когда произнесу следующую фразу
     end
 
     if(device():time_global() > self.b.time_stand and self.object:active_sound_count() == 0) then
@@ -623,7 +625,7 @@ function stalker_novice3_action:state_actor()
     	self:init_state_walk()
         return
     end
-    if(distance_between(self.object, level.actor()) > 13 and
+    if(distance_between(self.object, level.actor()) > 45 and
        self.object:see(level.actor()) == false) then
         self:init_state_walk()
         return
@@ -637,7 +639,7 @@ function stalker_novice3_action:state_actor()
     	if(device():time_global() > self.a.time and self.object:is_body_turning() ) then
             xr_sounds.play_sound_rnd    (self.object, 1000, 1200, "trivial", 4,2)
             self.a.curState    = wait_actor
-            self.a.time		   = device():time_global() + 10000
+            self.a.time		   = device():time_global() + 5000
         end
     end
 
@@ -646,23 +648,23 @@ function stalker_novice3_action:state_actor()
         if(device():time_global() > self.a.time and distance_between(self.object, level.actor()) > 4) then
             xr_sounds.play_sound_rnd    (self.object, 1000, 1200, "trivial", 4, 2)
             self.a.curState    = wait_actor
-            self.a.time        = device():time_global() + 10000
+            self.a.time        = device():time_global() + 5000
 		end
     end
 
-	if(self.b.talk and self.object:is_talking() == false) then
-    	--Если закончили говорить
-    	self:init_state_walk()
-        self.b.time_actor = device():time_global()
-        self.b.talk = false
-		return
-    end
+--	if(self.b.talk and self.object:is_talking() == false) then
+--    	--Если закончили говорить
+--    	self:init_state_walk()
+--        self.b.time_actor = device():time_global()
+--        self.b.talk = false
+--		return
+--    end
 
-    if(device():time_global() > self.a.time + 60000) then
-    	self:init_state_walk()
-        self.b.time_actor = device():time_global()
-    	return
-    end
+--    if(device():time_global() > self.a.time + 60000) then
+--    	self:init_state_walk()
+--        self.b.time_actor = device():time_global()
+--    	return
+--    end
 
     local pos = level.actor():position()
     pos.y  = pos.y + 1.6
