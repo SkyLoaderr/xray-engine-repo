@@ -105,6 +105,14 @@ using namespace std;
 #define xr_realloc realloc
 #define xr_strdup strdup
 
+#ifndef	NDEBUG
+#define X_TRY 
+#define X_CATCH if (0)
+#else
+#define X_TRY try
+#define X_CATCH catch(...)
+#endif
+
 
 #include "clsid.h"
 #include "debugkernel.h"

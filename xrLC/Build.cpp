@@ -232,8 +232,11 @@ CBuild::CBuild	(b_params& Params, CStream& FS)
 			M.reserved = WORD(id);
 		}
 	}
-
 	Progress(p_total+=p_cost);
+
+	// Opacity
+	Status("Caching faces opacity...");
+	for (vecFaceIt I=g_faces.begin(); I!=g_faces.end(); I++) (*I)->CacheOpacity();
 	 
 	// Parameter block
 	CopyMemory(&g_params,&Params,sizeof(b_params));

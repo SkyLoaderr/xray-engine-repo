@@ -111,7 +111,8 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 	float	scale		= 1.f;
 	Fvector B;
 
-	try {
+	X_TRY 
+	{
 		for (DWORD I=0; I<tris_count; I++)
 		{
 			CDB::RESULT& rpinf = DB->r_begin()[I];
@@ -156,7 +157,8 @@ float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L, Face* skip)
 			float opac		= 1.f - float(pixel_a)/255.f;
 			scale			*= opac;
 		}
-	} catch (...)
+	} 
+	X_CATCH
 	{
 		Msg("* ERROR: getLastRP_Scale");
 	}
