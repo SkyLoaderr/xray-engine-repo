@@ -241,12 +241,12 @@ void CActor::ActorUse()
 	if(m_PhysicMovementControl->PHCapture())
 		m_PhysicMovementControl->PHReleaseObject();
 
-	if(!m_pUsableObject) return;
-
-	m_pUsableObject->use(this);
 	
 
-	if(m_pUsableObject->nonscript_usable())
+	if(m_pUsableObject)m_pUsableObject->use(this);
+	
+
+	if(!m_pUsableObject||m_pUsableObject->nonscript_usable())
 	{
 		if(m_pPersonWeLookingAt)
 		{

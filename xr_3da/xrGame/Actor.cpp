@@ -173,6 +173,7 @@ CActor::CActor() : CEntityAlive()
 	hFriendlyIndicator.create				(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
 	hIndicatorShader.create("friendly_indicator","ui\\ui_blueteam");
 //	hIndicatorShader.create("font","ui\\ui_font_header_europe");
+	m_pUsableObject=NULL;
 }
 
 
@@ -214,6 +215,7 @@ void CActor::reinit	()
 	CEntityAlive::reinit	();
 	CInventoryOwner::reinit	();
 	CMaterialManager::reinit();
+	m_pUsableObject=NULL;
 }
 
 void CActor::reload	(LPCSTR section)
