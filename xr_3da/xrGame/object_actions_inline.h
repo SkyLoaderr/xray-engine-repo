@@ -33,8 +33,8 @@ template <typename _item_type>
 void CObjectActionBase<_item_type>::initialize	()
 {
 	inherited::initialize	();
-	set_property			(CObjectHandlerGOAP::eWorldPropertyAimed1,false);
-	set_property			(CObjectHandlerGOAP::eWorldPropertyAimed2,false);
+	set_property			(ObjectHandlerSpace::eWorldPropertyAimed1,false);
+	set_property			(ObjectHandlerSpace::eWorldPropertyAimed2,false);
 }
 
 //////////////////////////////////////////////////////////////////////////

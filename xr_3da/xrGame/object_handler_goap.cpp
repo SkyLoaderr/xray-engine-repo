@@ -18,20 +18,22 @@
 #include "object_actions.h"
 #include "torch.h"
 
-CObjectHandlerGOAP::CObjectHandlerGOAP	()
+using namespace ObjectHandlerSpace;
+
+CObjectHandler::CObjectHandler	()
 {
 	init						();
 }
 
-CObjectHandlerGOAP::~CObjectHandlerGOAP	()
+CObjectHandler::~CObjectHandler	()
 {
 }
 
-void CObjectHandlerGOAP::init	()
+void CObjectHandler::init	()
 {
 }
 
-void CObjectHandlerGOAP::Load			(LPCSTR section)
+void CObjectHandler::Load			(LPCSTR section)
 {
 	inherited::Load				(section);
 	CInventoryOwner::Load		(section);
@@ -49,7 +51,7 @@ void CObjectHandlerGOAP::Load			(LPCSTR section)
 	m_dwStartFireTime			= 0;
 }
 
-void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
+void CObjectHandler::reinit			(CAI_Stalker *object)
 {
 	inherited::reinit				(object,true);
 	CInventoryOwner::reinit			();
@@ -72,13 +74,13 @@ void CObjectHandlerGOAP::reinit			(CAI_Stalker *object)
 #endif
 }
 
-void CObjectHandlerGOAP::reload			(LPCSTR section)
+void CObjectHandler::reload			(LPCSTR section)
 {
 	inherited::reload			(section);
 	CInventoryOwner::reload		(section);
 }
 
-void CObjectHandlerGOAP::OnItemTake		(CInventoryItem *inventory_item)
+void CObjectHandler::OnItemTake		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemTake	(inventory_item);
 	Msg							("Adding item %s (%d)",*inventory_item->cName(),inventory_item->ID());
@@ -89,7 +91,7 @@ void CObjectHandlerGOAP::OnItemTake		(CInventoryItem *inventory_item)
 		torch->Switch			(true);
 }
 
-void CObjectHandlerGOAP::OnItemDrop		(CInventoryItem *inventory_item)
+void CObjectHandler::OnItemDrop		(CInventoryItem *inventory_item)
 {
 	CInventoryOwner::OnItemDrop	(inventory_item);
 	Msg							("Removing item %s (%d)",*inventory_item->cName(),inventory_item->ID());
@@ -100,12 +102,12 @@ void CObjectHandlerGOAP::OnItemDrop		(CInventoryItem *inventory_item)
 		torch->Switch			(false);
 }
 
-void CObjectHandlerGOAP::OnItemDropUpdate	()
+void CObjectHandler::OnItemDropUpdate	()
 {
 	CInventoryOwner::OnItemDropUpdate	();
 }
 
-CInventoryItem *CObjectHandlerGOAP::best_weapon() const
+CInventoryItem *CObjectHandler::best_weapon() const
 {
 	CInventoryItem	*best_weapon = 0;
 	u32				best_weapon_type = 0;
@@ -140,7 +142,7 @@ CInventoryItem *CObjectHandlerGOAP::best_weapon() const
 	return			(best_weapon);
 }
 
-u32 CObjectHandlerGOAP::weapon_state(const CWeapon *weapon) const
+u32 CObjectHandler::weapon_state(const CWeapon *weapon) const
 {
 	if (!weapon)
 		return		(u32(-1));
@@ -169,7 +171,7 @@ u32 CObjectHandlerGOAP::weapon_state(const CWeapon *weapon) const
 	}
 }
 
-void CObjectHandlerGOAP::add_item			(CInventoryItem *inventory_item)
+void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 {
 	CWeapon						*weapon		= dynamic_cast<CWeapon*>		(inventory_item);
 	CMissile					*missile	= dynamic_cast<CMissile*>		(inventory_item);
@@ -191,13 +193,13 @@ void CObjectHandlerGOAP::add_item			(CInventoryItem *inventory_item)
 			}
 }
 
-void CObjectHandlerGOAP::remove_item		(CInventoryItem *inventory_item)
+void CObjectHandler::remove_item		(CInventoryItem *inventory_item)
 {
 	remove_evaluators		(inventory_item);
 	remove_operators		(inventory_item);
 }
 
-void CObjectHandlerGOAP::remove_evaluators	(CObject *object)
+void CObjectHandler::remove_evaluators	(CObject *object)
 {
 #pragma todo("Dima to Dima : safe, but not optimal!")
 	for (;;) {
@@ -208,7 +210,7 @@ void CObjectHandlerGOAP::remove_evaluators	(CObject *object)
 	}
 }
 
-void CObjectHandlerGOAP::remove_operators	(CObject *object)
+void CObjectHandler::remove_operators	(CObject *object)
 {
 #pragma todo("Dima to Dima : safe, but not optimal!")
 	for (;;) {
@@ -220,7 +222,7 @@ void CObjectHandlerGOAP::remove_operators	(CObject *object)
 }
 
 #ifdef LOG_ACTION
-LPCSTR CObjectHandlerGOAP::action2string(const _action_id_type &id)
+LPCSTR CObjectHandler::action2string(const _action_id_type &id)
 {
 	LPSTR S = m_temp_string;
 	if (action_object_id(id) != 0xffff)
@@ -232,35 +234,35 @@ LPCSTR CObjectHandlerGOAP::action2string(const _action_id_type &id)
 		strcpy	(S,"no_items");
 	strcat		(S,":");
 	switch (action_state_id(id)) {
-		case CObjectHandlerGOAP::eWorldOperatorShow			: {strcat(S,"Show");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorHide			: {strcat(S,"Hide");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorDrop			: {strcat(S,"Drop");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorStrapping	: {strcat(S,"Strapping");	break;}
-		case CObjectHandlerGOAP::eWorldOperatorStrapped		: {strcat(S,"StrappedIdle");break;}
-		case CObjectHandlerGOAP::eWorldOperatorUnstrapping	: {strcat(S,"Unstrapping"); break;}
-		case CObjectHandlerGOAP::eWorldOperatorIdle			: {strcat(S,"Idle");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorAim1			: {strcat(S,"Aim1");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorAim2			: {strcat(S,"Aim2");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorReload1		: {strcat(S,"Reload1");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorReload2		: {strcat(S,"Reload2");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorFire1		: {strcat(S,"Fire1");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorFire2		: {strcat(S,"Fire2");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorAimingReady1	: {strcat(S,"AimingReady1");break;}
-		case CObjectHandlerGOAP::eWorldOperatorAimingReady2	: {strcat(S,"AimingReady2");break;}
-		case CObjectHandlerGOAP::eWorldOperatorSwitch1		: {strcat(S,"Switch1");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorSwitch2		: {strcat(S,"Switch2");		break;}
-		case CObjectHandlerGOAP::eWorldOperatorQueueWait1	: {strcat(S,"QueueWait1");	break;}
-		case CObjectHandlerGOAP::eWorldOperatorQueueWait2	: {strcat(S,"QueueWait1");	break;}
-		case CObjectHandlerGOAP::eWorldOperatorThrowStart	: {strcat(S,"ThrowStart");	break;}
-		case CObjectHandlerGOAP::eWorldOperatorThrowIdle	: {strcat(S,"ThrowIdle");	break;}
-		case CObjectHandlerGOAP::eWorldOperatorThrow		: {strcat(S,"Throwing");	break;}
-		case CObjectHandlerGOAP::eWorldOperatorThreaten		: {strcat(S,"Threaten");	break;}
+		case ObjectHandlerSpace::eWorldOperatorShow			: {strcat(S,"Show");		break;}
+		case ObjectHandlerSpace::eWorldOperatorHide			: {strcat(S,"Hide");		break;}
+		case ObjectHandlerSpace::eWorldOperatorDrop			: {strcat(S,"Drop");		break;}
+		case ObjectHandlerSpace::eWorldOperatorStrapping	: {strcat(S,"Strapping");	break;}
+		case ObjectHandlerSpace::eWorldOperatorStrapped		: {strcat(S,"StrappedIdle");break;}
+		case ObjectHandlerSpace::eWorldOperatorUnstrapping	: {strcat(S,"Unstrapping"); break;}
+		case ObjectHandlerSpace::eWorldOperatorIdle			: {strcat(S,"Idle");		break;}
+		case ObjectHandlerSpace::eWorldOperatorAim1			: {strcat(S,"Aim1");		break;}
+		case ObjectHandlerSpace::eWorldOperatorAim2			: {strcat(S,"Aim2");		break;}
+		case ObjectHandlerSpace::eWorldOperatorReload1		: {strcat(S,"Reload1");		break;}
+		case ObjectHandlerSpace::eWorldOperatorReload2		: {strcat(S,"Reload2");		break;}
+		case ObjectHandlerSpace::eWorldOperatorFire1		: {strcat(S,"Fire1");		break;}
+		case ObjectHandlerSpace::eWorldOperatorFire2		: {strcat(S,"Fire2");		break;}
+		case ObjectHandlerSpace::eWorldOperatorAimingReady1	: {strcat(S,"AimingReady1");break;}
+		case ObjectHandlerSpace::eWorldOperatorAimingReady2	: {strcat(S,"AimingReady2");break;}
+		case ObjectHandlerSpace::eWorldOperatorSwitch1		: {strcat(S,"Switch1");		break;}
+		case ObjectHandlerSpace::eWorldOperatorSwitch2		: {strcat(S,"Switch2");		break;}
+		case ObjectHandlerSpace::eWorldOperatorQueueWait1	: {strcat(S,"QueueWait1");	break;}
+		case ObjectHandlerSpace::eWorldOperatorQueueWait2	: {strcat(S,"QueueWait1");	break;}
+		case ObjectHandlerSpace::eWorldOperatorThrowStart	: {strcat(S,"ThrowStart");	break;}
+		case ObjectHandlerSpace::eWorldOperatorThrowIdle	: {strcat(S,"ThrowIdle");	break;}
+		case ObjectHandlerSpace::eWorldOperatorThrow		: {strcat(S,"Throwing");	break;}
+		case ObjectHandlerSpace::eWorldOperatorThreaten		: {strcat(S,"Threaten");	break;}
 		default												: NODEFAULT;
 	}
 	return		(S);
 }
 
-LPCSTR CObjectHandlerGOAP::property2string(const _condition_type &id)
+LPCSTR CObjectHandler::property2string(const _condition_type &id)
 {
 	LPSTR S = m_temp_string;
 	if (action_object_id(id) != 0xffff)
@@ -272,43 +274,43 @@ LPCSTR CObjectHandlerGOAP::property2string(const _condition_type &id)
 		strcpy	(S,"no_items");
 	strcat		(S,":");
 	switch (action_state_id(id)) {
-		case CObjectHandlerGOAP::eWorldPropertyHidden		: {strcat(S,"Hidden");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyStrapping	: {strcat(S,"Strapping");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyStrapped		: {strcat(S,"Strapped");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyUnstrapping	: {strcat(S,"Unstrapping");	break;}
-		case CObjectHandlerGOAP::eWorldPropertySwitch1		: {strcat(S,"Switch1");		break;}
-		case CObjectHandlerGOAP::eWorldPropertySwitch2		: {strcat(S,"Switch2");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyAimed1		: {strcat(S,"Aimed1");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyAimed2		: {strcat(S,"Aimed2");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyAiming1		: {strcat(S,"Aiming1");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyAiming2		: {strcat(S,"Aiming2");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyEmpty1		: {strcat(S,"Empty1");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyEmpty2		: {strcat(S,"Empty2");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyReady1		: {strcat(S,"Ready1");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyReady2		: {strcat(S,"Ready2");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyFiring1		: {strcat(S,"Firing1");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyFiring2		: {strcat(S,"Firing2");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyAimingReady1	: {strcat(S,"AimingReady1");break;}
-		case CObjectHandlerGOAP::eWorldPropertyAimingReady2	: {strcat(S,"AimingReady2");break;}
-		case CObjectHandlerGOAP::eWorldPropertyAmmo1		: {strcat(S,"Ammo1");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyAmmo2		: {strcat(S,"Ammo2");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyIdle			: {strcat(S,"Idle");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyIdleStrap	: {strcat(S,"IdleStrap");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
-		case CObjectHandlerGOAP::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyThrowStarted	: {strcat(S,"ThrowStarted");break;}
-		case CObjectHandlerGOAP::eWorldPropertyThrowIdle	: {strcat(S,"ThrowIdle");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyThrow		: {strcat(S,"Throwing");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyThreaten		: {strcat(S,"Threaten");	break;}
-		case CObjectHandlerGOAP::eWorldPropertyItemID		: {S[xr_strlen(S) - 1] = 0;	break;}
+		case ObjectHandlerSpace::eWorldPropertyHidden		: {strcat(S,"Hidden");		break;}
+		case ObjectHandlerSpace::eWorldPropertyStrapping	: {strcat(S,"Strapping");	break;}
+		case ObjectHandlerSpace::eWorldPropertyStrapped		: {strcat(S,"Strapped");	break;}
+		case ObjectHandlerSpace::eWorldPropertyUnstrapping	: {strcat(S,"Unstrapping");	break;}
+		case ObjectHandlerSpace::eWorldPropertySwitch1		: {strcat(S,"Switch1");		break;}
+		case ObjectHandlerSpace::eWorldPropertySwitch2		: {strcat(S,"Switch2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAimed1		: {strcat(S,"Aimed1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAimed2		: {strcat(S,"Aimed2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAiming1		: {strcat(S,"Aiming1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAiming2		: {strcat(S,"Aiming2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyEmpty1		: {strcat(S,"Empty1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyEmpty2		: {strcat(S,"Empty2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyReady1		: {strcat(S,"Ready1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyReady2		: {strcat(S,"Ready2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyFiring1		: {strcat(S,"Firing1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyFiring2		: {strcat(S,"Firing2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAimingReady1	: {strcat(S,"AimingReady1");break;}
+		case ObjectHandlerSpace::eWorldPropertyAimingReady2	: {strcat(S,"AimingReady2");break;}
+		case ObjectHandlerSpace::eWorldPropertyAmmo1		: {strcat(S,"Ammo1");		break;}
+		case ObjectHandlerSpace::eWorldPropertyAmmo2		: {strcat(S,"Ammo2");		break;}
+		case ObjectHandlerSpace::eWorldPropertyIdle			: {strcat(S,"Idle");		break;}
+		case ObjectHandlerSpace::eWorldPropertyIdleStrap	: {strcat(S,"IdleStrap");	break;}
+		case ObjectHandlerSpace::eWorldPropertyDropped		: {strcat(S,"Dropped");		break;}
+		case ObjectHandlerSpace::eWorldPropertyQueueWait1	: {strcat(S,"QueueWait1");	break;}
+		case ObjectHandlerSpace::eWorldPropertyQueueWait2	: {strcat(S,"QueueWait2");	break;}
+		case ObjectHandlerSpace::eWorldPropertyThrowStarted	: {strcat(S,"ThrowStarted");break;}
+		case ObjectHandlerSpace::eWorldPropertyThrowIdle	: {strcat(S,"ThrowIdle");	break;}
+		case ObjectHandlerSpace::eWorldPropertyThrow		: {strcat(S,"Throwing");	break;}
+		case ObjectHandlerSpace::eWorldPropertyThreaten		: {strcat(S,"Threaten");	break;}
+		case ObjectHandlerSpace::eWorldPropertyItemID		: {S[xr_strlen(S) - 1] = 0;	break;}
 		default												: NODEFAULT;
 	}
 	return		(S);
 }
 #endif
 
-void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
+void CObjectHandler::add_evaluators		(CWeapon *weapon)
 {
 	u16					id = weapon->ID();
 	// dynamic state properties
@@ -343,7 +345,7 @@ void CObjectHandlerGOAP::add_evaluators		(CWeapon *weapon)
 	add_evaluator		(uid(id,eWorldPropertyAimingReady2)	,xr_new<CObjectPropertyEvaluatorConst>(false));
 }
 
-void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
+void CObjectHandler::add_operators		(CWeapon *weapon)
 {
 	u16					id = weapon->ID(), ff = 0xffff;
 	CActionBase<CAI_Stalker>	*action;
@@ -529,7 +531,7 @@ void CObjectHandlerGOAP::add_operators		(CWeapon *weapon)
 	this->action(uid(id,eWorldOperatorAimingReady2)).set_inertia_time(1000);
 }
 
-void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
+void CObjectHandler::add_evaluators		(CMissile *missile)
 {
 	u16					id = missile->ID();
 	// dynamic state properties
@@ -544,7 +546,7 @@ void CObjectHandlerGOAP::add_evaluators		(CMissile *missile)
 	add_evaluator		(uid(id,eWorldPropertyIdle)			,xr_new<CObjectPropertyEvaluatorConst>(false));
 }
 
-void CObjectHandlerGOAP::add_operators		(CMissile *missile)
+void CObjectHandler::add_operators		(CMissile *missile)
 {
 	u16					id = missile->ID(), ff = u16(-1);
 	CActionBase<CAI_Stalker>	*action;
@@ -612,15 +614,15 @@ void CObjectHandlerGOAP::add_operators		(CMissile *missile)
 	this->action(uid(id,eWorldOperatorThrowIdle)).set_inertia_time	(2000);
 }
 
-void CObjectHandlerGOAP::add_evaluators		(CEatableItem *eatable_item)
+void CObjectHandler::add_evaluators		(CEatableItem *eatable_item)
 {
 }
 
-void CObjectHandlerGOAP::add_operators		(CEatableItem *eatable_item)
+void CObjectHandler::add_operators		(CEatableItem *eatable_item)
 {
 }
 
-void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
+void CObjectHandler::set_goal	(MonsterSpace::EObjectAction object_action, CGameObject *game_object)
 {
 	EWorldProperties		goal = object_property(object_action);
 	u32						condition_id = goal;
@@ -641,7 +643,7 @@ void CObjectHandlerGOAP::set_goal	(MonsterSpace::EObjectAction object_action, CG
 	set_target_state		(condition);
 }
 
-void CObjectHandlerGOAP::update(u32 time_delta)
+void CObjectHandler::update(u32 time_delta)
 {
 	if (initialized()) {
 		CInventoryItem			*item = m_object->inventory().get_object_by_id((ALife::_OBJECT_ID)current_action_object_id());

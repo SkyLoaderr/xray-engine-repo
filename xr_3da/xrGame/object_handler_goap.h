@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include "object_handler_space.h"
 #include "ai_monster_space.h"
 #include "inventoryowner.h"
 #include "action_planner.h"
@@ -25,80 +26,11 @@ class CWeapon;
 class CMissile;
 class CEatableItem;
 
-class CObjectHandlerGOAP : 
+class CObjectHandler : 
 	public CActionPlanner<CAI_Stalker>,
 	public CInventoryOwner
 
 {
-public:
-	enum EWorldProperties {
-		eWorldPropertyItemID		= u32(0),
-		eWorldPropertyHidden,
-		eWorldPropertyStrapping,
-		eWorldPropertyStrapped,
-		eWorldPropertyUnstrapping,
-		eWorldPropertySwitch1,
-		eWorldPropertySwitch2,
-		eWorldPropertyAimed1,
-		eWorldPropertyAimed2,
-		eWorldPropertyAiming1,
-		eWorldPropertyAiming2,
-		eWorldPropertyEmpty1,
-		eWorldPropertyEmpty2,
-		eWorldPropertyReady1, // (magazine1 is full of ammo1) && !missfire1
-		eWorldPropertyReady2, // (magazine2 is full of ammo2) && !missfire2
-		eWorldPropertyFiring1,
-		eWorldPropertyFiring2,
-		eWorldPropertyAmmo1,
-		eWorldPropertyAmmo2,
-		eWorldPropertyIdle,
-		eWorldPropertyIdleStrap,
-		eWorldPropertyDropped,
-		eWorldPropertyQueueWait1,
-		eWorldPropertyQueueWait2,
-		eWorldPropertyAimingReady1,
-		eWorldPropertyAimingReady2,
-		
-		eWorldPropertyThrowStarted,
-		eWorldPropertyThrowIdle,
-		eWorldPropertyThrow,
-		eWorldPropertyThreaten,
-
-		eWorldPropertyNoItems				= u32((u16(-1) << 16) | eWorldPropertyItemID),
-		eWorldPropertyNoItemsIdle			= u32((u16(-1) << 16) | eWorldPropertyIdle),
-		eWorldPropertyDummy					= u32(-1),
-	};
-
-	enum EWorldOperators {
-		eWorldOperatorShow			= u32(0),
-		eWorldOperatorHide,
-		eWorldOperatorDrop,
-		eWorldOperatorStrapping,
-		eWorldOperatorStrapped,
-		eWorldOperatorUnstrapping,
-		eWorldOperatorIdle,
-		eWorldOperatorAim1,
-		eWorldOperatorAim2,
-		eWorldOperatorReload1,
-		eWorldOperatorReload2,
-		eWorldOperatorFire1,
-		eWorldOperatorFire2,
-		eWorldOperatorSwitch1,
-		eWorldOperatorSwitch2,
-		eWorldOperatorQueueWait1,
-		eWorldOperatorQueueWait2,
-		eWorldOperatorAimingReady1,
-		eWorldOperatorAimingReady2,
-
-		eWorldOperatorThrowStart,
-		eWorldOperatorThrowIdle,
-		eWorldOperatorThrow,
-		eWorldOperatorThreaten,
-
-		eWorldOperatorNoItemsIdle	= u32((u16(-1) << 16) | eWorldOperatorIdle),
-		eWorldOperatorDummy			= u32(-1),
-	};
-
 protected:
 	typedef CActionPlanner<CAI_Stalker>				inherited;
 	typedef CGraphEngine::_solver_value_type		_value_type;
@@ -134,15 +66,15 @@ protected:
 			void			add_operators			(CEatableItem	*eatable_item);
 			void			remove_evaluators		(CObject		*object);
 			void			remove_operators		(CObject		*object);
-	IC		EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;
+	IC		ObjectHandlerSpace::EWorldProperties object_property		(MonsterSpace::EObjectAction object_action) const;
 #ifdef LOG_ACTION
 	virtual LPCSTR			action2string			(const _action_id_type &action_id);
 	virtual LPCSTR			property2string			(const _condition_type &property_id);
 #endif
 
 public:
-							CObjectHandlerGOAP		();
-	virtual					~CObjectHandlerGOAP		();
+							CObjectHandler		();
+	virtual					~CObjectHandler		();
 			void			init					();
 	virtual	void			Load					(LPCSTR section);
 	virtual	void			reinit					(CAI_Stalker *object);
@@ -164,8 +96,8 @@ public:
 			void			add_item				(CInventoryItem *inventory_item);
 			void			remove_item				(CInventoryItem *inventory_item);
 			void			set_goal				(MonsterSpace::EObjectAction object_action, CGameObject *game_object = 0);
-	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value);
-	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, EWorldProperties property, _value_type value);
+	IC		void			add_condition			(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
+	IC		void			add_effect				(CActionBase<CAI_Stalker> *action, u16 id, ObjectHandlerSpace::EWorldProperties property, _value_type value);
 };
 
 #include "object_handler_goap_inline.h"

@@ -87,22 +87,14 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 
 void CAI_Stalker::OnItemTake			(CInventoryItem *inventory_item)
 {
-#ifdef OLD_OBJECT_HANDLER
-	CObjectHandler::OnItemTake		(inventory_item);
-#else
-	CObjectHandlerGOAP::OnItemTake	(inventory_item);
-#endif
+	CObjectHandler::OnItemTake	(inventory_item);
 	m_last_best_item_frame		= 0;
 	m_item_actuality			= false;
 }
 
 void CAI_Stalker::OnItemDrop			(CInventoryItem *inventory_item)
 {
-#ifdef OLD_OBJECT_HANDLER
-	CObjectHandler::OnItemDrop		(inventory_item);
-#else
-	CObjectHandlerGOAP::OnItemDrop	(inventory_item);
-#endif
+	CObjectHandler::OnItemDrop	(inventory_item);
 	m_last_best_item_frame		= 0;
 	m_item_actuality			= false;
 }

@@ -40,11 +40,7 @@ void CAI_Stalker::OnEvent		(NET_Packet& P, u16 type)
 			if (inventory().Take(dynamic_cast<CGameObject*>(O),true)) { //GetScriptControl()
 				O->H_SetParent(this);
 				if (!inventory().ActiveItem() && GetScriptControl() && dynamic_cast<CShootingObject*>(O))
-#ifdef OLD_OBJECT_HANDLER
-					CObjectHandler::set_dest_state	(eObjectActionIdle,dynamic_cast<CGameObject*>(O));
-#else
-					CObjectHandlerGOAP::set_goal	(eObjectActionIdle,dynamic_cast<CGameObject*>(O));
-#endif
+					CObjectHandler::set_goal	(eObjectActionIdle,dynamic_cast<CGameObject*>(O));
 
 #ifndef SILENCE
 				Msg("TAKE - %s (%d)", *O->cName(),O->ID());

@@ -504,7 +504,7 @@ void CLuaGameObject::play_sound		(u32 internal_type, u32 max_start_time, u32 min
 
 void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action)
 {
-	CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
+	CObjectHandler			*object_handler = dynamic_cast<CObjectHandler*>(m_tpGameObject);
 	if (!object_handler)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
 	else
@@ -513,7 +513,7 @@ void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action)
 
 void CLuaGameObject::set_item		(MonsterSpace::EObjectAction object_action, CLuaGameObject *lua_game_object)
 {
-	CObjectHandlerGOAP			*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
+	CObjectHandler			*object_handler = dynamic_cast<CObjectHandler*>(m_tpGameObject);
 	if (!object_handler)
 		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CObjectHandler : cannot access class member set_item!");
 	else

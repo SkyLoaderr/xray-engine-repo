@@ -49,11 +49,7 @@ void CAI_Stalker::reinit			()
 {
 	m_pPhysics_support->in_NetSpawn	();
 	CCustomMonster::reinit			();
-#ifdef OLD_OBJECT_HANDLER
-	CObjectHandler::reinit			(this);
-#else
-	CObjectHandlerGOAP::reinit		(this);
-#endif
+	CObjectHandler::reinit		(this);
 	CSightManager::reinit			(this);
 	CStalkerAnimations::reinit		();
 	CStalkerMovementManager::reinit	();
@@ -93,9 +89,7 @@ void CAI_Stalker::reload			(LPCSTR section)
 {
 	CCustomMonster::reload			(section);
 	CInventoryOwner::reload			(section);
-#ifndef OLD_OBJECT_HANDLER
-	CObjectHandlerGOAP::reload		(section);
-#endif
+	CObjectHandler::reload		(section);
 //	CSightManager::reload			(section);
 //	CStalkerAnimations::reload		(section);
 	CStalkerMovementManager::reload	(section);
@@ -131,11 +125,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	setEnabled						(false);
 	
 	CCustomMonster::Load			(section);
-#ifdef OLD_OBJECT_HANDLER
-	CObjectHandler::Load			(section);
-#else
-	CObjectHandlerGOAP::Load		(section);
-#endif
+	CObjectHandler::Load		(section);
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
 #ifdef OLD_DECISION_BLOCK
@@ -343,11 +333,7 @@ void CAI_Stalker::UpdateCL(){
 	m_pPhysics_support->in_UpdateCL();
 
 	if (g_Alive()) {
-#ifdef OLD_OBJECT_HANDLER
-		CObjectHandler::update			(Level().timeServer() - m_dwLastUpdateTime);
-#else
-		CObjectHandlerGOAP::update		(Level().timeServer() - m_dwLastUpdateTime);
-#endif
+		CObjectHandler::update		(Level().timeServer() - m_dwLastUpdateTime);
 		float							s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
 		float							s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		float							step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
@@ -512,10 +498,6 @@ bool CAI_Stalker::use_model_pitch	() const
 
 void CAI_Stalker::spawn_supplies	()
 {
-	inherited::spawn_supplies		();
-#ifdef OLD_OBJECT_HANDLER
+	inherited::spawn_supplies			();
 	CObjectHandler::spawn_supplies	();
-#else
-	CObjectHandlerGOAP::spawn_supplies	();
-#endif
 }

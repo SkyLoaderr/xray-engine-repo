@@ -23,12 +23,7 @@
 #include "missile.h"
 #include "script_binder.h"
 #include "motivation_action_manager.h"
-#ifdef OLD_OBJECT_HANDLER
-	#include "object_handler.h"
-#else
-	#include "object_handler_goap.h"
-#endif
-
+#include "object_handler_goap.h"
 #include "ai_script_snd_info.h"
 
 class CInventoryItem;
@@ -579,11 +574,7 @@ public:
 
 	CLuaGameObject *best_weapon()
 	{
-#ifdef OLD_OBJECT_HANDLER
-		CObjectHandler		*object_handler = dynamic_cast<CObjectHandler*>(m_tpGameObject);
-#else
-		CObjectHandlerGOAP	*object_handler = dynamic_cast<CObjectHandlerGOAP*>(m_tpGameObject);
-#endif
+		CObjectHandler	*object_handler = dynamic_cast<CObjectHandler*>(m_tpGameObject);
 		if (!object_handler) {
 			ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CScriptMonster : cannot access class member best_weapon!");
 			return			(0);

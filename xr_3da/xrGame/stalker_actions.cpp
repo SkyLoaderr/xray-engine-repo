@@ -95,14 +95,10 @@ void CStalkerActionFreeNoALife::execute		()
 	m_object->set_mental_state		(eMentalStateFree);
 
 	m_object->CSightManager::setup				(CSightAction(SightManager::eSightTypeCover,false,true));
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
 	if (Level().timeServer() >= m_stop_weapon_handling_time)
-		m_object->CObjectHandlerGOAP::set_goal	(eObjectActionIdle);
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle);
 	else
-		m_object->CObjectHandlerGOAP::set_goal	(eObjectActionIdle,m_object->best_weapon());
-#endif
+		m_object->CObjectHandler::set_goal	(eObjectActionIdle,m_object->best_weapon());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -145,11 +141,7 @@ void CStalkerActionGatherItems::execute		()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypePosition,&m_object->item()->Position());
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
-#endif
+	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -189,11 +181,7 @@ void CStalkerActionGetKillDistance::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
-#endif
+	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -234,11 +222,7 @@ void CStalkerActionGetEnemy::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
-#endif
+	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -292,11 +276,7 @@ void CStalkerActionGetEnemySeen::execute	()
 	m_object->setup					(SightManager::eSightTypeFirePosition,&mem_object.m_object_params.m_position);
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
-#ifdef OLD_OBJECT_HANDLER
-		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
-#endif
+		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
 		if (m_object->Position().similar(mem_object.m_object_params.m_position,.5f))
@@ -366,11 +346,7 @@ void CStalkerActionGetItemToKill::execute	()
 
 //	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_item_to_kill->Position());
 	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
-#ifdef OLD_OBJECT_HANDLER
-	m_object->set_dest_state		(eObjectActionNoItems);
-#else
 	m_object->set_goal				(eObjectActionIdle);
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -410,11 +386,7 @@ void CStalkerActionFindItemToKill::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
-#endif
+	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -465,11 +437,7 @@ void CStalkerActionMakeItemKilling::execute	()
 
 //	m_object->CSightManager::action(eSightActionTypeWatchItem).set_vector3d(m_object->m_best_found_ammo->Position());
 	m_object->CSightManager::action(eSightActionTypeWatchEnemy).set_vector3d(m_object->enemy()->Position());
-#ifdef OLD_OBJECT_HANDLER
-	m_object->set_dest_state		(eObjectActionNoItems);
-#else
 	m_object->set_goal				(eObjectActionIdle);
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -510,11 +478,7 @@ void CStalkerActionFindAmmo::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-	m_object->CObjectHandlerGOAP::set_goal		(eObjectActionIdle);
-#endif
+	m_object->CObjectHandler::set_goal		(eObjectActionIdle);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -577,11 +541,7 @@ void CStalkerActionGetReadyToKillVeryAggressive::execute	()
 	}
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
-#ifdef OLD_OBJECT_HANDLER
-		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
-#endif
+		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillVeryAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -647,11 +607,7 @@ void CStalkerActionKillEnemyVeryAggressive::execute		()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionKillEnemyVeryAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -731,11 +687,7 @@ void CStalkerActionGetReadyToKillAggressive::execute	()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
-#ifdef OLD_OBJECT_HANDLER
-		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
-#endif
+		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -819,11 +771,7 @@ void CStalkerActionKillEnemyAggressive::execute		()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionKillEnemyAggressive::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -921,11 +869,7 @@ void CStalkerActionAimEnemy::execute		()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionAim1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionAim1,m_object->best_weapon());
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -985,11 +929,7 @@ void CStalkerActionGetReadyToKillAvoid::execute	()
 
 	m_object->CSightManager::setup				(SightManager::eSightTypeCurrentDirection);
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
-#ifdef OLD_OBJECT_HANDLER
-		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
-#endif
+		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillAvoid::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1057,11 +997,7 @@ void CStalkerActionKillEnemyAvoid::execute		()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionKillEnemyAvoid::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1129,11 +1065,7 @@ void CStalkerActionRetreatFromEnemy::execute		()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionRetreatFromEnemy::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1205,11 +1137,7 @@ void CStalkerActionCamp::execute	()
 	m_object->set_detail_path_type		(CMovementManager::eDetailPathTypeSmooth);
 	m_object->set_mental_state			(eMentalStateDanger);
 
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionAim1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionAim1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionAim1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionCamp::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1277,11 +1205,7 @@ void CStalkerActionGetReadyToKillModerate::execute	()
 
 	m_object->CSightManager::setup					(SightManager::eSightTypeCurrentDirection); // PathDirection
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
-#ifdef OLD_OBJECT_HANDLER
-		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
-#endif
+		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionGetReadyToKillModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1377,11 +1301,7 @@ void CStalkerActionKillEnemyModerate::execute		()
 	m_object->set_mental_state		(eMentalStateDanger);
 
 	m_object->setup					(SightManager::eSightTypeFirePosition,&position);
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionKillEnemyModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1497,11 +1417,7 @@ void CStalkerActionGetEnemySeenModerate::execute	()
 	m_object->setup					(SightManager::eSightTypeFirePosition,&mem_object.m_object_params.m_position);
 
 	if (!dynamic_cast<CMissile*>(m_object->best_weapon()))
-#ifdef OLD_OBJECT_HANDLER
-		m_object->CObjectHandler::set_dest_state	(eObjectActionNoItems);
-#else
-		m_object->CObjectHandlerGOAP::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
-#endif
+		m_object->CObjectHandler::set_goal		(eObjectActionAimReady1,m_object->best_weapon());
 
 	if (ai().level_graph().inside(mem_object.m_object_params.m_level_vertex_id,mem_object.m_object_params.m_position)) {
 		if (m_object->Position().similar(mem_object.m_object_params.m_position,.5f))
@@ -1593,11 +1509,7 @@ void CStalkerActionKillEnemyLostModerate::execute		()
 	m_object->set_body_state		(eBodyStateStand);
 	m_object->set_mental_state		(eMentalStateDanger);
 
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionFire1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionFire1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionFire1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionKillEnemyLostModerate::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const
@@ -1671,11 +1583,7 @@ void CStalkerActionTakeCover::execute	()
 	else
 		m_object->set_movement_type	(eMovementTypeWalk);
 
-#ifdef OLD_OBJECT_HANDLER
-	m_object->CObjectHandler::set_dest_state(eObjectActionAimReady1,m_object->best_weapon());
-#else
-	m_object->CObjectHandlerGOAP::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
-#endif
+	m_object->CObjectHandler::set_goal	(eObjectActionAimReady1,m_object->best_weapon());
 }
 
 _edge_value_type CStalkerActionTakeCover::weight	(const CSConditionState &condition0, const CSConditionState &condition1) const

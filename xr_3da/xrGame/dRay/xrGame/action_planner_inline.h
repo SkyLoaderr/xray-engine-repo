@@ -257,13 +257,13 @@ LPCSTR CPlanner::property2string	(const _condition_type &property_id)
 {
 	return			(itoa(property_id,m_temp_string,10));
 }
-#endif
 
 TEMPLATE_SPECIALIZATION
 LPCSTR CPlanner::object_name		() const
 {
 	return			("");
 }
+#endif
 
 #undef TEMPLATE_SPECIALIZATION
 #undef CPlanner

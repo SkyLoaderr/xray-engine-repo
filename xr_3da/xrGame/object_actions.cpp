@@ -266,10 +266,8 @@ CObjectActionThreaten::CObjectActionThreaten	(CAI_Stalker *item, CAI_Stalker *ow
 void CObjectActionThreaten::execute			()
 {
 	inherited::execute		();
-#ifndef OLD_OBJECT_HANDLER
 	if (completed())
 		m_object->inventory().Action(kWPN_FIRE,	CMD_STOP);
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
