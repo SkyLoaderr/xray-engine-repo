@@ -169,9 +169,10 @@ class CMotionManager {
 	DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
 
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
-	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
 	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
-	
+	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
+
+
 	CAI_Biting				*pMonster;
 	CKinematics				*tpKinematics;
 
@@ -273,7 +274,9 @@ public:
 
 private:
 
+	// дополнительные функции
 	EPState		GetState				(EMotionAnim a);
+
 };
 
 

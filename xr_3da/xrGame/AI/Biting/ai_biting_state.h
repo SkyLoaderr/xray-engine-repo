@@ -12,13 +12,6 @@
 
 class CAI_Biting;
 
-
-#define DO_ONCE_BEGIN(flag)	if (!flag) {flag = true;  
-#define DO_ONCE_END()		}
-
-#define DO_IN_TIME_INTERVAL_BEGIN(varLastTime, varTimeInterval)	if (varLastTime + varTimeInterval < m_dwCurrentTime) { varLastTime = m_dwCurrentTime;
-#define DO_IN_TIME_INTERVAL_END()								}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -277,6 +270,7 @@ class CBitingExploreNDE : public IState {
 	enum {
 		ACTION_LOOK_DESTINATION,
 		ACTION_GOTO_SOUND_SOURCE,
+		ACTION_LOOK_AROUND
 	} m_tAction;
 
 	bool			flag_once_1;

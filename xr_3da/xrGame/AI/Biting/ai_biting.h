@@ -128,6 +128,8 @@ public:
 
 	virtual	bool			bfAssignMovement				(CEntityAction	*tpEntityAction);
 
+
+			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
 // members
 public:
 
@@ -173,23 +175,25 @@ public:
 	// Enemy
 	SEnemy					m_tEnemy;				// Current frame enemy 
 	SEnemy					m_tEnemyPrevFrame;		// Previous frame enemy 
+	
+	// local standing params
+	Fvector					cur_pos, prev_pos;
+	bool					bStanding;
+	TTime					time_start_stand;			
 
 	// External Values
-	// float motion factors
-	float					m_ftrStandTurnRSpeed;
-	float					m_ftrWalkSpeed;
-	float					m_ftrWalkTurningSpeed;
-	float 					m_ftrWalkRSpeed;
-	float 					m_ftrWalkTurnRSpeed;
-	float 					m_ftrWalkMinAngle;
-	float 					m_ftrRunAttackSpeed;
-	float 					m_ftrRunAttackTurnSpeed;
-	float 					m_ftrRunAttackTurnRSpeed;
-	float 					m_ftrRunRSpeed;
-	float 					m_ftrRunAttackMinAngle;
-	float 					m_ftrAttackFastRSpeed;
-	float 					m_ftrAttackFastRSpeed2;
-	float 					m_ftrScaredRSpeed;	
+	// float speed factors
+	float					m_fsTurnNormalAngular;
+	float					m_fsWalkFwdNormal;
+	float					m_fsWalkBkwdNormal;
+	float					m_fsWalkTurn;
+	float 					m_fsWalkAngular;
+	float 					m_fsWalkTurnAngular;
+	float 					m_fsRunFwdNormal;
+	float 					m_fsRunTurn;
+	float 					m_fsRunTurnAngular;
+	float 					m_fsRunAngular;
+	float					m_fsDrag;
 
 	TTime					m_timeLieIdleMin;
 	TTime					m_timeLieIdleMax;

@@ -111,20 +111,17 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fImpulseMin					= pSettings->r_float(section,"ImpulseMin");
 	m_fImpulseMax					= pSettings->r_float(section,"ImpulseMax");
 
-	m_ftrStandTurnRSpeed			= pSettings->r_float(section,"StandTurnRSpeed");
-	m_ftrWalkSpeed					= pSettings->r_float(section,"WalkSpeed");
-	m_ftrWalkTurningSpeed			= pSettings->r_float(section,"WalkTurningSpeed");
-	m_ftrWalkRSpeed					= pSettings->r_float(section,"WalkRSpeed");
-	m_ftrWalkTurnRSpeed				= pSettings->r_float(section,"WalkTurnRSpeed");
-	m_ftrWalkMinAngle				= pSettings->r_float(section,"WalkMinAngle");
-	m_ftrRunAttackSpeed				= pSettings->r_float(section,"RunAttackSpeed");
-	m_ftrRunAttackTurnSpeed			= pSettings->r_float(section,"RunAttackTurnSpeed");
-	m_ftrRunAttackTurnRSpeed		= pSettings->r_float(section,"RunAttackTurnRSpeed");
-	m_ftrRunRSpeed					= pSettings->r_float(section,"RunRSpeed");
-	m_ftrRunAttackMinAngle			= pSettings->r_float(section,"RunAttackMinAngle");
-	m_ftrAttackFastRSpeed			= pSettings->r_float(section,"AttackFastRSpeed");
-	m_ftrAttackFastRSpeed2			= pSettings->r_float(section,"AttackFastRSpeed2");
-	m_ftrScaredRSpeed				= pSettings->r_float(section,"ScaredRSpeed");
+	m_fsTurnNormalAngular			= pSettings->r_float(section,"TurnNormalAngular");
+	m_fsWalkFwdNormal				= pSettings->r_float(section,"WalkFwdNormal");
+	m_fsWalkBkwdNormal				= pSettings->r_float(section,"WalkBkwdNormal");
+	m_fsWalkTurn					= pSettings->r_float(section,"WalkTurn");
+	m_fsWalkAngular					= pSettings->r_float(section,"WalkAngular");
+	m_fsWalkTurnAngular				= pSettings->r_float(section,"WalkTurnAngular");
+	m_fsRunFwdNormal				= pSettings->r_float(section,"RunFwdNormal");
+	m_fsRunTurn						= pSettings->r_float(section,"RunTurn");
+	m_fsRunTurnAngular				= pSettings->r_float(section,"RunTurnAngular");
+	m_fsRunAngular					= pSettings->r_float(section,"RunAngular");
+	m_fsDrag						= pSettings->r_float(section,"Drag");
 
 	m_timeLieIdleMin				= pSettings->r_u32   (section,"LieIdleTimeMin");
 	m_timeLieIdleMax				= pSettings->r_u32   (section,"LieIdleTimeMax");

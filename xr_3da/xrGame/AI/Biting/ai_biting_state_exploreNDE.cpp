@@ -47,14 +47,17 @@ void CBitingExploreNDE::Run()
 		if (m_dwStateStartedTime + 3000 < m_dwCurrentTime) m_tAction = ACTION_GOTO_SOUND_SOURCE;
 		break;
 	case ACTION_GOTO_SOUND_SOURCE:			// идти к источнику
- 
-		DO_ONCE_BEGIN(flag_once_2);
-			pMonster->vfInitSelector(pMonster->m_tSelectorHearSnd, true);
-			pMonster->m_tSelectorHearSnd.m_tEnemyPosition		= m_tSound.position;
-		DO_ONCE_END();
+		pMonster->Path_ApproachPoint(0, m_tSound.position, 2000);
 
-		pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorHearSnd,0, true, 0, 300);
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
+		
+		// если монстр дошел до конца пути, перейти к следующему заданию
+		if ( !pMonster->AI_Path.TravelPath.empty() && 
+			((pMonster->AI_Path.TravelPath.size() - 1 ) <= pMonster->AI_Path.TravelStart)) m_tAction = ACTION_LOOK_AROUND; 
+
+		break;
+	case ACTION_LOOK_AROUND:
+		pMonster->MotionMan.m_tAction = ACT_LOOK_AROUND;
 		break;
 	}
 }

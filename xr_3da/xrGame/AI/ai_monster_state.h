@@ -10,6 +10,12 @@
 
 #include "ai_monster_mem.h"
 
+#define DO_ONCE_BEGIN(flag)	if (!flag) {flag = true;  
+#define DO_ONCE_END()		}
+
+#define DO_IN_TIME_INTERVAL_BEGIN(varLastTime, varTimeInterval)	if (varLastTime + varTimeInterval < m_dwCurrentTime) { varLastTime = m_dwCurrentTime;
+#define DO_IN_TIME_INTERVAL_END()								}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IState class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

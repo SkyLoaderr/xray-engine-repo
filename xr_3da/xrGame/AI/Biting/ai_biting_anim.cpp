@@ -240,6 +240,7 @@ bool CMotionManager::PrepareAnimation()
 	return true;
 }
 
+// проверить существует ли переход из анимации from в to
 void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
 	// поиск соответствующего перехода
@@ -250,7 +251,6 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 
 	TRANSITION_ANIM_VECTOR_IT I = m_tTransitions.begin();
 	bool bVectEmpty = m_tTransitions.empty();
-
 	
 	while (!bVectEmpty) {		// вход в цикл, если вектор переходов не пустой
 		
@@ -267,6 +267,7 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 				cur_from	= I->anim_transition;
 				state_from	= GetState(cur_from);
 				I = m_tTransitions.begin();			// начать сначала
+				continue;
 			} else break;
 		}
 		if ((++I) == m_tTransitions.end()) break;

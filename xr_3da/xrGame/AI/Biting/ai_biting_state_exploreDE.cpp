@@ -44,7 +44,7 @@ void CBitingExploreDE::Init()
 	dir.getHP(yaw,pitch);
 
 	pMonster->r_torso_target.yaw = yaw;
-	m_dwTimeToTurn = (TTime)(_abs(angle_normalize_signed(yaw - pMonster->r_torso_current.yaw)) / pMonster->m_ftrStandTurnRSpeed * 1000);
+	m_dwTimeToTurn = (TTime)(_abs(angle_normalize_signed(yaw - pMonster->r_torso_current.yaw)) / pMonster->m_fsTurnNormalAngular * 1000);
 
 	SetInertia(20000);
 	pMonster->SetMemoryTime(20000);
