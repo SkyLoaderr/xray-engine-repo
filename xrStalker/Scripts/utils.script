@@ -214,7 +214,7 @@ end
 --При попытке поюзать незапертую дверь она просто силой открывается до максимально допустимого состояния.
 
 function parse_waypoint_data(pathname, wpname)
-	if string.find(waypoint_name, "|", at, true) == nil then
+	if string.find(wpname, "|", at, true) == nil then
 		return {}
 	end
 
