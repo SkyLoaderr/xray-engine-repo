@@ -209,6 +209,8 @@ void CExplosive::Explode()
 		cartridge.m_kImpulse = 1.f;
 		cartridge.m_kPierce = 1.f;
 		cartridge.fWallmarkSize = m_fCurrentWallmarkSize;
+#pragma todo("oles to yura: zdes' tozge nebilo materiala, ya ne znayu kakoy nado")
+		cartridge.bullet_material_idx = GMLib.GetMaterialIdx(WEAPON_MATERIAL_NAME);	//. hack???
 
 		Level().BulletManager().AddBullet(	m_vCurrentShootPos, m_vCurrentShootDir, tracerHeadSpeed,
 											m_fCurrentHitPower, m_fCurrentHitImpulse, m_iCurrentParentID,

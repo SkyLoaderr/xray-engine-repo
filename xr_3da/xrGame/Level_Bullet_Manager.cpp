@@ -127,6 +127,7 @@ void CBulletManager::AddBullet(const Fvector& position,
 							   bool SendHit,
 							   float tracer_length)
 {
+	VERIFY		(u16(-1)!=cartridge.bullet_material_idx);
 //	u32 CurID = Level().CurrentControlEntity()->ID();
 //	u32 OwnerID = sender_id;
 	m_Bullets.push_back(SBullet());
