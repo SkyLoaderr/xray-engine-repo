@@ -47,16 +47,16 @@ public:
 
 	IC	void	getsize		(Fvector& R )	const 	{ R.sub( max, min ); };
 	IC	void	getradius	(Fvector& R )	const 	{ getsize(R); R.mul(0.5f); };
-	IC	float	getradius	( )				const 	{ Fvector R; getsize(R); R.mul(0.5f); return R.magnitude(); };
-
+	IC	float	getradius	( )				const 	{ Fvector R; getradius(R); return R.magnitude();	};
+	IC	float	getvolume	()				const	{ Fvector sz; getsize(sz); return sz.x*sz.y*sz.z;	};
 	IC	void	getcenter	(Fvector& C )	const 	{
 		C.x = (min.x + max.x) * 0.5f;
 		C.y = (min.y + max.y) * 0.5f;
 		C.z = (min.z + max.z) * 0.5f;
 	};
 	IC	void	getsphere	(Fvector &C, float &R) const {
-		getcenter(C);
-		R = C.distance_to(max);
+		getcenter			(C);
+		R = C.distance_to	(max);
 	};
 
 	// Detects if this box intersect other
