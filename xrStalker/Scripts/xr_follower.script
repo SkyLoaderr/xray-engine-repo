@@ -15,6 +15,18 @@ local anim_pris = {
                   {anim = "prisluh_1", flag = false},
                   {anim = "prisluh_2", flag = false}
                   }
+                  
+local anim_raid = {
+                  {anim = "spetsnaz_0", flag = false},
+                  {anim = "spetsnaz_1", flag = false},
+                  {anim = "spetsnaz_2", flag = false},
+                  {anim = "spetsnaz_3", flag = false},
+                  {anim = "spetsnaz_4", flag = false},
+                  {anim = "spetsnaz_5", flag = false},
+                  {anim = "spetsnaz_6", flag = false},
+                  {anim = "spetsnaz_7", flag = false}
+                  }
+                                     
 
 local commander_snd                     = xr_sounds_id.sound_patrol_base
 local soldiers_idle_snd                 = commander_snd + 1
@@ -137,6 +149,7 @@ function action_follow:__init (name, storage) super (nil, name)
     self.current_animation = math.random (1, table.getn (animations))
     self.current_phrase = math.random (0, num_phrases)
     self.mental_state = anim.free
+    self.time = 0
 end
 --------------
 function action_follow:initialize ()
@@ -182,14 +195,18 @@ function action_follow:execute ()
     self.object:set_item                (object.idle, self.object:best_weapon ())
         
     if self.stage == 0 then 
-       self:check_path                     ()
-       self:update_stage_0 ()
+       if self:check_path () == false then
+          self:update_stage_0 ()
+       end   
     elseif self.stage == 1 then        
        self:check_path                     ()
        self:update_stage_1 ()
     elseif self.stage == 2 then
        self:update_stage_2 ()
     elseif self.stage == 3 then
+       --
+    elseif self.stage == 4 then
+       self:update_stage_4 ()         
     end       
     --printf ("CURRENT STAGE = %d", self.stage)
 end    
@@ -213,14 +230,14 @@ function action_follow:check_path ()
     if self.a.leader:alive () == false or self.a.leader_command == leader_return then 
        if self.a.escape_path == nil then 
           self.a.enabled = false
-          return
+          return false
        end         
        self.object:set_path_type (game_object.patrol_path)
        self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, false)
        self.object:set_mental_state (anim.danger)
        self.object:set_movement_type (move.run)
        self.stage = 3 
-       return
+       return false
     end   
     
     self.object:set_mental_state        (self.a.mental_state)
@@ -228,13 +245,18 @@ function action_follow:check_path ()
     if self.last_time > 0 then return end
     self.last_time = 5000
 
-    if self.object:level_vertex_id () ~= self.current_vertex_id and self.current_vertex_id ~= -1 then return end
+    if self.object:level_vertex_id () ~= self.current_vertex_id and self.current_vertex_id ~= -1 then return false end
     
     if self.a.leader_command == leader_stop then
        self.object:set_movement_type (move.stand)
-       self:set_animation ()
-       self.stage = 2
-       return
+       if self.a.look_dir.x == 0 and self.a.look_dir.y == 0 and self.a.look_dir.z == 0 then 
+          self.stage = 2  
+          return false
+       end
+       self.object:set_sight (look.direction, self.a.look_dir, 0)
+       self.stage = 4
+       self.time = device ():time_global ()        
+       return true
     end   
     
     local cv_id = level.vertex_in_direction (self.a.leader:level_vertex_id (), self.a.direction, self.a.distance)
@@ -243,6 +265,7 @@ function action_follow:check_path ()
     self.object:set_desired_direction (self.a.leader:direction ())
     self.object:set_dest_level_vertex_id  (self.current_vertex_id)
     self.object:set_sight (look.path_dir, nil, 0)
+    return false
 end
 --------------
 function action_follow:update_stage_0 ()
@@ -294,13 +317,19 @@ function action_follow:update_stage_2 ()
     if self.a.leader_command == leader_move then
        self.stage = 0
        self.object:clear_animations ()
+       return
     end 
-    if self.object:animation_count () == 1 then
+    if self.object:animation_count () <= 1 then
        self:set_animation ()
     end    
     self.object:set_movement_type (move.stand)
-    if self.a.look_dir.x == 0 and self.a.look_dir.y == 0 and self.a.look_dir.z == 0 then return end
-    self.object:set_sight (look.direction, self.a.look_dir, 0)
+end
+----------------------------------------------------------------------------------------------------------------------
+function action_follow:update_stage_4 ()
+    if device ():time_global () - self.time > 1500 then
+       self.stage = 2
+       return
+    end    
 end
 ----------------------------------------------------------------------------------------------------------------------
 function action_follow:set_animation ()
@@ -322,6 +351,10 @@ class "action_raid" (action_base)
 function action_raid:__init (name, storage) super (nil, name)
 	self.a = storage
     self.current_animation = 0
+    self.move_type = move.walk
+    self.body_state = move.standing
+    self.mental_state = anim.free
+    self.stage = 0
 end
 --------------
 function action_raid:initialize ()
@@ -332,18 +365,28 @@ function action_raid:initialize ()
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
+    self.object:set_desired_direction     ()
     self.object:set_item                  (object.idle, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
-    self.object:set_body_state            (move.standing)
-    self.object:set_movement_type         (move.walk)
+    self.object:set_body_state            (self.body_state)
+    self.object:set_movement_type         (self.move_type)
     self.object:set_path_type             (game_object.patrol_path)
     self.object:set_patrol_path           (self.a.raid_path, patrol.nearest, patrol.continue, true)
-    self.object:set_mental_state          (anim.free)
+    self.object:set_mental_state          (self.mental_state)
     self.object:set_sight                 (look.path_dir, nil, 0)
 end
 --------------
 function action_raid:execute ()
     action_base.execute                 (self)
+    if self.stage == 1 then
+       if self.object:animation_count () == 0 then
+          self.object:set_body_state            (self.body_state)
+          self.object:set_movement_type         (self.move_type)
+          self.object:set_mental_state          (self.mental_state)
+          self.stage = 0
+       end
+    end      
+           
 end
 --------------
 function action_raid:finalize ()
@@ -364,9 +407,58 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function action_raid:move_callback (obj, action_type, index)
     if index == -1 then return end
-    if patrol (self.object:patrol ()):flag (index, 4) then
+    
+    local ptr = patrol (self.object:patrol ())
+    if ptr:flag (index, 4) == true then
        self.a.raid_enabled = false
+       return
     end   
+    
+    if ptr:flag (index, 8) == true then
+       self.object:set_movement_type (move.stand)
+       self.move_type = move.walk
+       self.body_state = move.standing
+       self.mental_state = anim.free
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.walk)
+       self.object:set_mental_state          (anim.free)
+       return
+    end
+
+    if ptr:flag (index, 9) == true then
+       self.object:set_movement_type (move.stand)
+       self.body_state = move.standing
+       self.move_type = move.run
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.standing)
+       self.object:set_movement_type         (move.run)
+       self.object:set_mental_state          (anim.danger)
+       return
+    end
+    
+    if ptr:flag (index, 10) == true then
+       self.object:set_movement_type (move.stand)
+       self.move_type = move.run
+       self.body_state = move.crouch
+       self.mental_state = anim.danger
+       self.object:set_body_state            (move.crouch)
+       self.object:set_movement_type         (move.run)
+       self.object:set_mental_state          (anim.danger)
+       return
+    end
+        
+    if ptr:flag (index, 11) == true then
+       self.object:set_movement_type (move.stand)
+       self.object:set_mental_state (anim.free)
+       local num
+       if self.body_state == move.crouch then     
+          num = math.random (1, 4)  
+       else
+          num = math.random (5, 8)
+       end
+       self.object:add_animation (anim_raid[num].anim, anim_raid[num].flag)
+       self.stage = 1
+    end          
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -422,4 +514,7 @@ function  add_to_binder(obj)
     
     action = manager:action     (stalker_ids.action_free_no_alife)
     action:add_precondition     (world_property (properties["follow"],  true))
+
+    --xr_report.AddScheme (obj)
+    
 end

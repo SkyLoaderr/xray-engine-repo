@@ -28,7 +28,9 @@ local radio_noise                       = commander_snd + 5
 local radio_voice                       = commander_snd + 6
 local radio_on                          = commander_snd + 7
 local radio_off                         = commander_snd + 8
-local radio_commander                   = commander_snd + 9  
+local radio_commander_start             = commander_snd + 9  
+local radio_commander_next              = commander_snd + 10
+local radio_commander_end               = commander_snd + 11 
 
 local leader_no_command					= 0
 local leader_move                       = 1
@@ -249,11 +251,11 @@ function action_single_patrol:radio ()
     self.current_phrase = 1
     
     table.insert (self.phrases, {namespace = radio_on, phrase = 0})
-    table.insert (self.phrases, {namespace = radio_commander, phrase = math.random (0, 10)})
+    table.insert (self.phrases, {namespace = radio_commander_start, phrase = math.random (0, 1)})
     table.insert (self.phrases, {namespace = radio_voice, phrase = math.random (0, 2)})
-    table.insert (self.phrases, {namespace = radio_commander, phrase = math.random (0, 10)})
+    table.insert (self.phrases, {namespace = radio_commander_next, phrase = math.random (0, 1)})
     table.insert (self.phrases, {namespace = radio_voice, phrase = math.random (0, 2)})
-    table.insert (self.phrases, {namespace = radio_commander, phrase = math.random (0, 10)})
+    table.insert (self.phrases, {namespace = radio_commander_end, phrase = math.random (0, 2)})
     table.insert (self.phrases, {namespace = radio_off, phrase = 0})
 
     self.object:set_sound_mask (2147483647)
@@ -305,7 +307,6 @@ function action_single_patrol:move_callback (obj, action_type, index)
     if ptr:flag (index, 0) == true then
        self.object:set_movement_type (move.stand)
        self:set_animation ()
-       --self:radio ()
        self:set_look_dir ()
        self:set_command (leader_stop)
        self.stage = 1
@@ -335,15 +336,19 @@ function action_single_patrol:set_look_dir ()
     local size = table.getn (xr_motivator.storage[self.object:id()].followers)
     if size == 0 then return end
     
+--    for a = 1, size, 1 do
+--        xr_motivator.storage[self.object:id()].followers[a].look_dir = xr_motivator.storage[self.object:id()].followers[a].direction
+--    end    
+    
     local side = false
     
     for a = 1, size, 1 do
         if side == true then 
-           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), 45.0)
-           side = false
-        else
            xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), -45.0)
            side = false
+        else
+           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), 45.0)
+           side = true
         end   
     end
 end
@@ -387,7 +392,9 @@ function add_to_binder(obj)
     obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
     obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
     obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_commander_", 30, snd_type.talk, 2, 1, radio_commander)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_start_", 30, snd_type.talk, 2, 1, radio_commander_start)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_reply_", 30, snd_type.talk, 2, 1, radio_commander_next)
+    obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, radio_commander_end)
     obj:add_sound ("script_replics\\radio\\message\\radio_noise_", 30, snd_type.talk, 2, 1, radio_noise)
     obj:add_sound ("script_replics\\radio\\message\\radio_voice_", 30, snd_type.talk, 2, 1, radio_voice)
     obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_", 30, snd_type.talk, 2, 1, radio_on)
@@ -413,4 +420,7 @@ function add_to_binder(obj)
 
    	action = manager:action (stalker_ids.action_free_no_alife)
    	action:add_precondition     	(world_property (properties["complete"],  true))
+   	
+    --xr_report.AddScheme (obj, properties["complete"])
+   	
 end
