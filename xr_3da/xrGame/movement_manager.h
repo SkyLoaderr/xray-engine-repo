@@ -117,6 +117,7 @@ public:
 	virtual void	reinit					();
 	virtual void	reload					(LPCSTR caSection);
 	IC		bool	actual					() const;
+	IC		bool	actual_all				() const;
 	IC		void	set_path_type			(EPathType path_type);
 	IC		void	set_game_dest_vertex	(const ALife::_GRAPH_ID game_vertex_id);
 	IC		void	set_level_dest_vertex	(const u32 level_vertex_id);

@@ -539,6 +539,7 @@ void CSE_ALifeScheduleRegistry::vfRemoveObjectFromScheduled(CSE_ALifeDynamicObje
 			Msg							("[LSS] Changing next schedulable object (%d)",m_tNextFirstProcessObjectID);
 		}
 #endif
+		VERIFY					(!m_tpScheduledObjects.empty());
 		if (m_tpScheduledObjects.end() == ++J)
 			J = m_tpScheduledObjects.begin();
 		if ((m_tpScheduledObjects.end() != J) && ((*J).second->ID != m_tNextFirstProcessObjectID))

@@ -494,7 +494,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 		}
 	}
 
-	if (l_tpMovementManager->actual() && l_tpMovementManager->path_completed())
+	if (l_tpMovementManager->actual_all() && l_tpMovementManager->path_completed())
 		l_tMovementAction.m_bCompleted = true;
 
 	return		(!l_tMovementAction.m_bCompleted);
