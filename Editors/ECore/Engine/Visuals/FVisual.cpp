@@ -67,9 +67,9 @@ void Fvisual::Load		(const char* N, IReader *data, u32 dwFlags)
 			u32 ID				= data->r_u32				();
 			vBase				= data->r_u32				();
 			vCount				= data->r_u32				();
-			pVertices			= ::Render->getVB			(ID);
+			pVertices			= RImplementation.getVB			(ID);
 			pVertices->AddRef	();
-			vFormat				= ::Render->getVB_Format	(ID);
+			vFormat				= RImplementation.getVB_Format	(ID);
 #endif
 		} else {
 			R_ASSERT			(data->find_chunk(OGF_VERTICES));
