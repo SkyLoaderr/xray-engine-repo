@@ -14,6 +14,7 @@
 #include "bottombar.h"
 #include "motion.h"
 #include "bone.h"
+#include "Library.h"
 
 //----------------------------------------------------
 ERenderPriority	st_Surface::RenderPriority(){
