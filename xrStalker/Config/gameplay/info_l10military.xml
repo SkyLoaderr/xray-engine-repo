@@ -12,4 +12,7 @@
 	<!-- Атака Свободы -->
 	<info_portion id="mil_freedom_attack"></info_portion>
 	
+	<!-- База Свободы под атакой-->
+	<info_portion id="mil_freedom_under_attack"></info_portion>
+	
 </game_information_portions>
