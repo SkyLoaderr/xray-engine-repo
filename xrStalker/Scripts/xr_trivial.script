@@ -65,7 +65,7 @@ function stalker_zombe_action:speak()
     	self.object:play_sound( walk_speak, 1, 0, 1, 0, math.random( 0, 8 ) )
     else
         self.object:set_movement_type ( move.stand )
-        self.object:add_animation( "norm_torso_0_idle_1", true )
+        self.object:add_animation( "prisluh_9_1", true )
 		self.object:play_sound( stand_speak, 1, 0, 1, 0, math.random( 0, 4 ) )
         self.a.stand = true
     end
