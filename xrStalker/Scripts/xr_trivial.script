@@ -528,7 +528,7 @@ function stalker_novice3_action:initialize ()
     self.object:enable_talk()
     self:init_state_walk()
     self.b.time_speak = device():time_global() - 60000
-    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
+--    self.object:set_item             ( object.deactivate, self.object:best_weapon() )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_novice3_action:execute ()
@@ -698,7 +698,7 @@ function novice3_attack:initialize ()
     self.object:set_relation     (game_object.enemy, enemy)
     self.object:set_desired_direction()
     self.object:set_detail_path_type ( move.line )
-    self.object:set_movement_type    ( move.walk )
+    self.object:set_movement_type    ( move.stand )
     self.object:set_body_state       ( move.standing )
     self.object:set_mental_state     ( anim.free )
     self.object:set_path_type        ( game_object.level_path )
@@ -706,7 +706,7 @@ function novice3_attack:initialize ()
     self.object:set_item             ( object.activate, self.object:best_weapon() )
     self.object:set_dest_level_vertex_id(patrol(self.a.enemy_path):level_vertex_id(0) )
 
-    self.walk_time   = device():time_global() + 2000
+    self.walk_time   = device():time_global() + 4000
 
     if(self.a.say_kill == false) then
       --ќдин раз говорит, что убем бандитов и больше токого не говорим
@@ -720,7 +720,7 @@ function novice3_attack:execute ()
     self.object:set_item             ( object.activate, self.object:best_weapon() )
 --  self.object:set_item             ( object.idle, self.object:best_weapon() )
 
---    if( device():time_global() > self.walk_time ) then return  end
+    if( device():time_global() > self.walk_time ) then return  end
     --¬ начале идем
 
   if(self.object:active_sound_count() ~= 0)then
