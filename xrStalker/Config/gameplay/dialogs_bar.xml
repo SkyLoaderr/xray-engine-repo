@@ -71,21 +71,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_zastava_dolg_start">
-        <phrase_list>
-            <phrase id="0">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_zastava_dolg_start_2</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="bar_bar_barmen_job_radar">
         <phrase_list>
             <phrase id="0">
@@ -121,63 +106,6 @@
             </phrase>
             <phrase id="21111">
                 <text>bar_bar_barmen_job_documents_to_scientists_21111</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="bar_bar_barmen_start">
-        <phrase_list>
-            <phrase id="3">
-                <text>bar_bar_barmen_start_3</text>
-            </phrase>
-            <phrase id="4">
-                <text>bar_bar_barmen_start_4</text>
-            </phrase>
-            <phrase id="211">
-                <text>bar_bar_barmen_start_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="21111">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="22">
-                <text>bar_bar_barmen_start_22</text>
-                <next>221</next>
-            </phrase>
-            <phrase id="221">
-                <text>bar_bar_barmen_start_221</text>
-                <next>2211</next>
-            </phrase>
-            <phrase id="22111">
-                <text />
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text />
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-            </phrase>
-            <phrase id="21">
-                <text>bar_bar_barmen_start_21</text>
-                <next>211</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_barmen_start_2111</text>
-                <next>21111</next>
-            </phrase>
-            <phrase id="2211">
-                <text>bar_bar_barmen_start_2211</text>
-                <next>22111</next>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_start_2</text>
-                <next>21</next>
-                <next>22</next>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
             </phrase>
         </phrase_list>
     </dialog>
@@ -280,18 +208,18 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="bar_security_dialog">
+    <dialog id="bar_zastava_dolg_start">
         <phrase_list>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
             <phrase id="1">
                 <text />
                 <next>2</next>
             </phrase>
             <phrase id="2">
-                <action>dialogs.break_dialog</action>
-            </phrase>
-            <phrase id="0">
-                <text />
-                <next>1</next>
+                <text>bar_zastava_dolg_start_2</text>
             </phrase>
         </phrase_list>
     </dialog>
@@ -333,10 +261,6 @@
                 <text>bar_zastava_dolg_acces_3121</text>
                 <next>11</next>
             </phrase>
-            <phrase id="2">
-                <text>bar_zastava_dolg_acces_2</text>
-                <next>21</next>
-            </phrase>
             <phrase id="1">
                 <text>bar_zastava_dolg_acces_1</text>
                 <next>11</next>
@@ -351,28 +275,104 @@
                 <text>bar_zastava_dolg_acces_0</text>
                 <next>1</next>
             </phrase>
+            <phrase id="2">
+                <text>bar_zastava_dolg_acces_2</text>
+                <next>21</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_barmen_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_barmen_start_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="21111">
+                <text />
+                <next>1</next>
+            </phrase>
+            <phrase id="22111">
+                <text />
+                <next>1</next>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_barmen_start_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="2211">
+                <text>bar_bar_barmen_start_2211</text>
+                <next>22111</next>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_barmen_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_start_2</text>
+                <next>21</next>
+                <next>22</next>
+            </phrase>
+            <phrase id="22">
+                <text>bar_bar_barmen_start_22</text>
+                <next>221</next>
+            </phrase>
+            <phrase id="221">
+                <text>bar_bar_barmen_start_221</text>
+                <next>2211</next>
+            </phrase>
+            <phrase id="3">
+                <text>bar_bar_barmen_start_3</text>
+            </phrase>
+            <phrase id="4">
+                <text>bar_bar_barmen_start_4</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_security_dialog">
+        <phrase_list>
+            <phrase id="1">
+                <text />
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <action>dialogs.break_dialog</action>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_veteran_start">
+        <phrase_list>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_dolg_veteran_start_2</text>
+            </phrase>
         </phrase_list>
     </dialog>
     <dialog id="bar_bar_barmen_job_darkvalley">
         <phrase_list>
-            <phrase id="211">
-                <text>bar_bar_barmen_job_darkvalley_211</text>
-                <next>2111</next>
-            </phrase>
-            <phrase id="211111">
-                <text>bar_bar_barmen_job_darkvalley_211111</text>
-            </phrase>
-            <phrase id="2">
-                <text>bar_bar_barmen_job_darkvalley_2</text>
-                <next>21</next>
-            </phrase>
             <phrase id="21">
                 <text>bar_bar_barmen_job_darkvalley_21</text>
                 <next>211</next>
-            </phrase>
-            <phrase id="2111">
-                <text>bar_bar_barmen_job_darkvalley_2111</text>
-                <next>21111</next>
             </phrase>
             <phrase id="21111">
                 <text>bar_bar_barmen_job_darkvalley_21111</text>
@@ -381,6 +381,21 @@
             <phrase id="1">
                 <text></text>
                 <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_bar_barmen_job_darkvalley_2</text>
+                <next>21</next>
+            </phrase>
+            <phrase id="211">
+                <text>bar_bar_barmen_job_darkvalley_211</text>
+                <next>2111</next>
+            </phrase>
+            <phrase id="2111">
+                <text>bar_bar_barmen_job_darkvalley_2111</text>
+                <next>21111</next>
+            </phrase>
+            <phrase id="211111">
+                <text>bar_bar_barmen_job_darkvalley_211111</text>
             </phrase>
             <phrase id="0">
                 <text></text>
@@ -414,57 +429,14 @@
                 <text>bar_bar_visitors_1_start_61</text>
                 <next>611</next>
             </phrase>
-            <phrase id="711">
-                <text>bar_bar_visitors_1_start_711</text>
-            </phrase>
-            <phrase id="71">
-                <text>bar_bar_visitors_1_start_71</text>
-                <next>711</next>
-            </phrase>
-            <phrase id="311">
-                <text>bar_bar_visitors_1_start_311</text>
-            </phrase>
-            <phrase id="31">
-                <text>bar_bar_visitors_1_start_31</text>
-                <next>311</next>
-            </phrase>
             <phrase id="41">
                 <text>bar_bar_visitors_1_start_41</text>
                 <next>411</next>
-            </phrase>
-            <phrase id="0">
-                <next>1</next>
-                <next>2</next>
-                <next>3</next>
-                <next>4</next>
-                <next>5</next>
-                <next>6</next>
-                <next>7</next>
-            </phrase>
-            <phrase id="11">
-                <text>bar_bar_visitors_1_start_11</text>
-                <next>111</next>
-            </phrase>
-            <phrase id="111">
-                <text>bar_bar_visitors_1_start_111</text>
             </phrase>
             <phrase id="1">
                 <give_info>bar_bar_kill_borov_done</give_info>
                 <has_info>bar_bar_kill_borov_start</has_info>
                 <next>11</next>
-            </phrase>
-            <phrase id="2">
-                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
-                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
-                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
-                <next>21</next>
-            </phrase>
-            <phrase id="3">
-                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
-                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
-                <give_info>bar_bar_kill_bloodsucker_done</give_info>
-                <has_info>bar_bar_kill_bloodsucker_start</has_info>
-                <next>31</next>
             </phrase>
             <phrase id="4">
                 <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
@@ -483,6 +455,43 @@
                 <has_info>bar_bar_kill_veterans_start</has_info>
                 <next>51</next>
             </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
             <phrase id="7">
                 <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
                 <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
@@ -491,6 +500,76 @@
                 <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
                 <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
                 <next>71</next>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_1_start_71</text>
+                <next>711</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_1_start_711</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_10_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
             </phrase>
             <phrase id="6">
                 <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
@@ -501,6 +580,1493 @@
                 <give_info>bar_bar_yantar_off_done</give_info>
                 <has_info>bar_bar_yantar_off_start</has_info>
                 <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_10_start_711</text>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_10_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_11_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_11_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_11_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_12_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_12_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_12_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_13_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_13_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_13_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_14_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_14_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_14_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_2_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_2_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_2_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_3_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_3_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_3_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_4_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_4_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_4_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_5_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_5_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_5_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_6_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_6_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_6_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_7_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_7_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_7_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_8_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_8_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_8_start_71</text>
+                <next>711</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_dolg_novice_start">
+        <phrase_list>
+            <phrase id="6">
+                <text>bar_dolg_novice_start_6</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_dolg_novice_start_51</text>
+            </phrase>
+            <phrase id="5">
+                <text>bar_dolg_novice_start_5</text>
+                <next>51</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_dolg_novice_start_41</text>
+            </phrase>
+            <phrase id="4">
+                <text>bar_dolg_novice_start_4</text>
+                <next>41</next>
+            </phrase>
+            <phrase id="31">
+                <text>bar_dolg_novice_start_31</text>
+            </phrase>
+            <phrase id="3">
+                <text>bar_dolg_novice_start_3</text>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <text>bar_dolg_novice_start_2</text>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+            </phrase>
+            <phrase id="1">
+                <text></text>
+                <next>2</next>
+            </phrase>
+            <phrase id="0">
+                <text></text>
+                <next>1</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="bar_bar_visitors_9_start">
+        <phrase_list>
+            <phrase id="211">
+                <text>bar_bar_visitors_1_start_211</text>
+            </phrase>
+            <phrase id="21">
+                <text>bar_bar_visitors_1_start_21</text>
+                <next>211</next>
+            </phrase>
+            <phrase id="411">
+                <text>bar_bar_visitors_1_start_411</text>
+            </phrase>
+            <phrase id="51">
+                <text>bar_bar_visitors_1_start_51</text>
+                <next>511</next>
+            </phrase>
+            <phrase id="511">
+                <text>bar_bar_visitors_1_start_511</text>
+            </phrase>
+            <phrase id="611">
+                <text>bar_bar_visitors_1_start_611</text>
+            </phrase>
+            <phrase id="61">
+                <text>bar_bar_visitors_1_start_61</text>
+                <next>611</next>
+            </phrase>
+            <phrase id="41">
+                <text>bar_bar_visitors_1_start_41</text>
+                <next>411</next>
+            </phrase>
+            <phrase id="1">
+                <give_info>bar_bar_kill_borov_done</give_info>
+                <has_info>bar_bar_kill_borov_start</has_info>
+                <next>11</next>
+            </phrase>
+            <phrase id="4">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_leader_done</give_info>
+                <has_info>bar_bar_kill_svoboda_leader_start</has_info>
+                <next>41</next>
+            </phrase>
+            <phrase id="5">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <give_info>bar_bar_kill_veterans_done</give_info>
+                <has_info>bar_bar_kill_veterans_start</has_info>
+                <next>51</next>
+            </phrase>
+            <phrase id="6">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <give_info>bar_bar_yantar_off_done</give_info>
+                <has_info>bar_bar_yantar_off_start</has_info>
+                <next>61</next>
+            </phrase>
+            <phrase id="3">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <give_info>bar_bar_kill_bloodsucker_done</give_info>
+                <has_info>bar_bar_kill_bloodsucker_start</has_info>
+                <next>31</next>
+            </phrase>
+            <phrase id="2">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <give_info>bar_bar_kill_svoboda_ambush_done</give_info>
+                <has_info>bar_bar_kill_svoboda_ambush_start</has_info>
+                <next>21</next>
+            </phrase>
+            <phrase id="11">
+                <text>bar_bar_visitors_1_start_11</text>
+                <next>111</next>
+            </phrase>
+            <phrase id="111">
+                <text>bar_bar_visitors_1_start_111</text>
+            </phrase>
+            <phrase id="311">
+                <text>bar_bar_visitors_1_start_311</text>
+            </phrase>
+            <phrase id="31">
+                <text>bar_bar_visitors_1_start_31</text>
+                <next>311</next>
+            </phrase>
+            <phrase id="7">
+                <dont_has_info>bar_bar_kill_borov_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_ambush_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_bloodsucker_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_svoboda_leader_start</dont_has_info>
+                <dont_has_info>bar_bar_kill_veterans_start</dont_has_info>
+                <dont_has_info>bar_bar_yantar_off_start</dont_has_info>
+                <next>71</next>
+            </phrase>
+            <phrase id="71">
+                <text>bar_bar_visitors_9_start_71</text>
+                <next>711</next>
+            </phrase>
+            <phrase id="711">
+                <text>bar_bar_visitors_9_start_711</text>
+            </phrase>
+            <phrase id="0">
+                <next>1</next>
+                <next>2</next>
+                <next>3</next>
+                <next>4</next>
+                <next>5</next>
+                <next>6</next>
+                <next>7</next>
             </phrase>
         </phrase_list>
     </dialog>
