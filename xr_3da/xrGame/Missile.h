@@ -1,6 +1,8 @@
 #pragma once
 #include "inventory.h"
 
+#include "HudItem.h"
+
 class CWeaponHUD;
 
 #define MS_HIDDEN	0
@@ -14,8 +16,7 @@ class CWeaponHUD;
 #define MS_HIDING	8
 #define MS_PLAYING	9
 
-class CMissile :
-	virtual public CInventoryItem
+class CMissile : public CHudItem
 {
 	typedef CInventoryItem inherited;
 public:
@@ -44,9 +45,6 @@ public:
 	virtual bool IsHidden() {return MS_HIDDEN == m_state;}
 	virtual bool IsPending() {return m_bPending;}
 
-	IC void	SetHUDmode	(BOOL H)	{hud_mode = H;	}
-	IC BOOL	GetHUDmode	()			{return hud_mode;}
-
 	virtual void Throw();
 	virtual void Destroy();
 
@@ -62,19 +60,12 @@ protected:
 	void spawn_fake_missile	();
 
 protected:
-	CWeaponHUD* m_pHUD;
-	bool m_bPending;
-	BOOL hud_mode;
 
 	u32 m_state;
 	bool m_throw;
 	u32 m_destroyTime, m_stateTime;
 
-	u32						dwXF_Frame;
 	Fmatrix					m_offset;
-
-	u32						dwFP_Frame;
-
 
 	Fvector					m_throw_direction;
 	Fvector					m_throw_point;

@@ -61,6 +61,7 @@ void CExplosive::Load(LPCSTR section)
 	tracerTrailCoeff	= pSettings->r_float		(section,"tracer_trail_scale"	);
 	tracerStartLength	= pSettings->r_float		(section,"tracer_start_length"	);
 	tracerWidth			= pSettings->r_float		(section,"tracer_width"			);
+	tracerDist			= pSettings->r_float		(section,"tracer_distance"		);
 
 
 	ref_str snd_name = pSettings->r_string(section,"snd_explode");
@@ -103,9 +104,9 @@ void CExplosive::Explode()
 		frag_dir.normalize();
 			
 		// ...and trace line
-		m_vEndPoint.mad(Position(), frag_dir, m_fFragsRadius);
+		m_vEndPoint.set(0,0,0);
 
-		
+
 		m_fCurrentFireDist = m_fFragsRadius;
 		m_fCurrentHitPower = m_fFragHit;
 		m_fCurrentHitImpulse = m_fFragHit;
@@ -116,6 +117,12 @@ void CExplosive::Explode()
 		Collide::ray_defs RD(Position(), frag_dir, m_fFragsRadius, 0,Collide::rqtBoth);
 		Level().ObjectSpace.RayQuery(RD, firetrace_callback, dynamic_cast<CShootingObject*>(this));
 
+		//сделать так чтоб трассы разлетались только на фиксированное расстояние
+		Fvector v;
+		v.sub(Position(), m_vEndPoint);
+		if(v.magnitude()> tracerDist) 
+			m_vEndPoint.mad(Position(), frag_dir, tracerDist);
+		
 		// добавить трассеры для полета осколков
 		Level().Tracers.Add	(m_vCurrentShootPos,m_vEndPoint,tracerHeadSpeed,
 							 tracerTrailCoeff,tracerStartLength,tracerWidth);

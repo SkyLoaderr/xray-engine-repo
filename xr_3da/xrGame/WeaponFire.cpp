@@ -110,8 +110,11 @@ void CWeapon::FireStart	()
 }
 void CWeapon::FireEnd	()				
 { 
+	//принудительно останавливать зацикленные партиклы
+	if(m_pFlameParticles && m_pFlameParticles->IsLooped()) 
+		StopFlameParticles	();
+
 	bWorking=false;	
-	StopFlameParticles	();
 }
 void CWeapon::Fire2Start()				
 { 
@@ -119,8 +122,11 @@ void CWeapon::Fire2Start()
 }
 void CWeapon::Fire2End	()
 { 
+	//принудительно останавливать зацикленные партиклы
+	if(m_pFlameParticles2 && m_pFlameParticles2->IsLooped()) 
+		StopFlameParticles2	();
+
 	bWorking2=false;
-	StopFlameParticles	();
 }
 
 
@@ -128,14 +134,21 @@ void CWeapon::StartFlameParticles	()
 {
 	if(!m_sFlameParticles) return;
 
-	if(m_pFlameParticles != NULL) 
+	//если партиклы циклические
+	if(m_pFlameParticles && m_pFlameParticles->IsLooped() && 
+	   m_pFlameParticles->IsPlaying()) 
 	{
 		UpdateFlameParticles();
 		return;
 	}
 
-	m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParticles,Sector(),false);
+	//StopFlameParticles();
+	m_pFlameParticles = m_pFlameParticlesCache[m_iNextParticle];
+	if(m_pFlameParticles->IsLooped()) m_iNextParticle++;
+	if(m_iNextParticle>=PARTICLES_CACHE_SIZE) m_iNextParticle = 0;
 
+	//m_pFlameParticles = xr_new<CParticlesObject>(m_sFlameParticles,Sector(),false);
+	
 	UpdateFlameParticles();
 	m_pFlameParticles->Play();
 }
@@ -143,30 +156,37 @@ void CWeapon::StopFlameParticles	()
 {
 	if(!m_sFlameParticles) return;
 	if(m_pFlameParticles == NULL) return;
-	//имеет смысл принудительно останавливать только 
-	//зацикленные партиклы
-	//if(!m_pFlameParticles->IsLooped()) return;
 
 	m_pFlameParticles->Stop();
-	m_pFlameParticles->PSI_destroy();
-	m_pFlameParticles = NULL;
+	//m_pFlameParticles->PSI_destroy();
+	//m_pFlameParticles = NULL;
 }
 
 void CWeapon::UpdateFlameParticles	()
 {
 	if(!m_sFlameParticles) return;
+	//if(!m_pFlameParticles) return;
 
 	Fmatrix pos; 
 	pos.set(XFORM()); 
 	pos.c.set(vLastFP);
-	m_pFlameParticles->SetXFORM(pos);
-
 	
-	if(!m_pFlameParticles->IsLooped() && !m_pFlameParticles->PSI_alive())
+
+	for(int i=0; i<PARTICLES_CACHE_SIZE;i++)
 	{
-		m_pFlameParticles->Stop();
-		m_pFlameParticles->PSI_destroy();
-		m_pFlameParticles = NULL;
+		if(m_pFlameParticlesCache[i])
+		{
+			m_pFlameParticlesCache[i]->SetXFORM(pos);
+			
+			/*if(!m_pFlameParticlesCache[i]->IsLooped() && 
+				m_pFlameParticlesCache[i]->IsPlaying() &&
+			   !m_pFlameParticlesCache[i]->PSI_alive())
+			{
+				m_pFlameParticlesCache[i]->Stop();
+				//m_pFlameParticles->PSI_destroy();
+				//m_pFlameParticles = NULL;
+			}*/
+		}
 	}
 }
 
@@ -246,4 +266,17 @@ void CWeapon::UpdateParticles (CParticlesObject*& pParticles,
 		pParticles->PSI_destroy();
 		pParticles = NULL;
 	}
+}
+
+void CWeapon::StartFlameParticles2	()
+{
+	StartParticles (m_pFlameParticles2, m_sFlameParticles2, vLastFP2);
+}
+void CWeapon::StopFlameParticles2	()
+{
+	StopParticles (m_pFlameParticles2);
+}
+void CWeapon::UpdateFlameParticles2	()
+{
+	UpdateParticles (m_pFlameParticles2, vLastFP2);
 }

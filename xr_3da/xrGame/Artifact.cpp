@@ -172,18 +172,6 @@ void CArtifact::shedule_Update	(u32 dt)
 
 void CArtifact::renderable_Render() 
 {
-	//if(m_pHUD && H_Parent() && dynamic_cast<CActor*>(H_Parent())) {
-	//	Fmatrix trans;
-	//	Level().Cameras.affected_Matrix(trans);
-	//	m_pHUD->UpdatePosition(trans);
-
-	//	PKinematics(m_pHUD->Visual())->Update();
-	//	if(m_showHUD) {
-	//		::Render->set_Transform		(&m_pHUD->Transform());
-	//		::Render->add_Visual		(m_pHUD->Visual());
-	//	} else {
-	//	}
-	//}
 	if(getVisible() && !H_Parent()) 
 	{
 		::Render->set_Transform		(&XFORM());

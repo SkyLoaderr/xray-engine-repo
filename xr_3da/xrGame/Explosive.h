@@ -71,6 +71,7 @@ protected:
 	float					tracerTrailCoeff;
 	float					tracerStartLength;
 	float					tracerWidth;
+	float					tracerDist;
 
 	//звуки
 	ref_sound	sndExplode;

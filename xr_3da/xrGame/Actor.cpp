@@ -23,7 +23,8 @@
 //
 #include "Actor.h"
 #include "ActorAnimation.h"
-#include "weapon.h"
+
+#include "HudItem.h"
 
 #include "targetassault.h"
 #include "targetcs.h"
@@ -1065,14 +1066,9 @@ void CActor::shedule_Update	(u32 DT)
 	setVisible				(!HUDview	());
 
 	//установить режим показа HUD для текущего активного слота
-	if(m_inventory.ActiveItem()) 
-		m_inventory.ActiveItem()->m_showHUD = !!HUDview();
-
-	//если это оружие
-	CWeapon *pWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-	if(pWeapon) pWeapon->SetHUDmode(HUDview());
-
-
+	CHudItem* pHudItem = dynamic_cast<CHudItem*>(m_inventory.ActiveItem());
+	if(pHudItem) pHudItem->SetHUDmode(HUDview());
+	
 //	R_ASSERT(GAMEMTL_NONE!=last_material_id());
 //	SGameMtlPair* mtl_pair		= GMLib.GetMaterialPair(self_material_id(),last_material_id());
 //

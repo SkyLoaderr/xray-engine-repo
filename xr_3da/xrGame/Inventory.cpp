@@ -17,7 +17,6 @@ CInventoryItem::CInventoryItem()
 	m_weight = 100.f;
 	m_slot = NO_ACTIVE_SLOT;
 	m_belt = false;
-	m_showHUD = true;
 	m_pInventory = NULL;
 	m_drop = false;
 	m_ruck = true;
@@ -67,6 +66,11 @@ void CInventoryItem::Load(LPCSTR section)
 
 	m_iXPos = pSettings->r_u32(section, "inv_grid_x");
 	m_iYPos = pSettings->r_u32(section, "inv_grid_y");
+
+	if(pSettings->line_exist(section, "slot"))
+		m_slot = pSettings->r_u32(section, "slot");
+	else
+		m_slot = NO_ACTIVE_SLOT;
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)

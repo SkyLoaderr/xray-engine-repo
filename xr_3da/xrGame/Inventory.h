@@ -88,7 +88,6 @@ public:
 	CInventory *m_pInventory;								// Указатель на инвентарь. Всегда полезно знать где находишься :)
 	const char *m_name, *m_nameShort;
 	char m_nameComplex[255];
-	bool m_showHUD;
 	bool m_drop;
 
 	virtual int GetGridWidth() {return m_iGridWidth;}

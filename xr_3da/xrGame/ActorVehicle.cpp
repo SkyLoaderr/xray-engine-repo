@@ -32,7 +32,6 @@ void CActor::attach_Vehicle(CCar* vehicle)
 
 	m_PhysicMovementControl.DestroyCharacter();
 	//PIItem iitem=m_inventory.ActiveItem();
-	//if(iitem)iitem->m_showHUD=false;
 	setVisible(true);
 	//clear actor movement states 
 	mstate_wishful=0;

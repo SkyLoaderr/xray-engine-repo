@@ -263,8 +263,7 @@ void CMissile::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	if(m_pHUD && m_showHUD) {}
-	
+
 	m_stateTime += Device.dwTimeDelta;
 	if(State() == MS_IDLE && m_stateTime > 10000) State(MS_PLAYING);
 	if(State() == MS_READY) 
@@ -424,7 +423,7 @@ void CMissile::renderable_Render()
 		m_pHUD->UpdatePosition(trans);
 
 		PSkeletonAnimated(m_pHUD->Visual())->Update();
-		if(m_showHUD) 
+		if(hud_mode) 
 		{
 			if(!m_pHUD->IsHidden())
 			{
