@@ -214,11 +214,9 @@ void CSE_ALifeItemTorch::FillProp			(LPCSTR pref, PropItemVec& values)
     // bones
     if (visual && PKinematics(visual))
     {
-    	CKinematics::accel		*ll_bones	= PKinematics(visual)->LL_Bones();
-        CKinematics::accel::iterator _I, _E;
         AStringVec				vec;
-        for (_I	= ll_bones->begin(); _I!=ll_bones->end(); ++_I)	vec.push_back(*_I->first);
-        if (guid_bone>(u16)ll_bones->size()) guid_bone = BI_NONE;
+        u16 cnt					= PKinematics(visual)->LL_Bones()->size();
+        for (u16 k=0; k<cnt; k++) vec.push_back(PKinematics(visual)->LL_BoneName(k));
 		PHelper.CreateToken2<u16>(values, FHelper.PrepareKey(pref,s_name,"Guide bone"),		&guid_bone,	&vec);
     }
 }
