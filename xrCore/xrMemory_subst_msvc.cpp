@@ -18,26 +18,29 @@ u32		get_pool				(size_t size)
 void*	xrMemory::mem_alloc		(size_t size)
 {
 	stat_calls++;
+	cs.Enter					();
 	u32	pool					= get_pool	(size);
+	void* _ptr					= 0;
 	if (mem_generic==pool)		
 	{
 		// generic
 		void*	_real			= xr_aligned_offset_malloc	(size,16,0x1);
-		void*	_ptr			= (void*)(((u8*)_real)+1);
+		_ptr					= (void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		= mem_generic;
-		return	_ptr;
 	} else {
 		// pooled
 		void*	_real			= mem_pools[pool].create();
-		void*	_ptr			= (void*)(((u8*)_real)+1);
+		_ptr					= (void*)(((u8*)_real)+1);
 		*acc_header(_ptr)		= (u8)pool;
-		return	_ptr;
 	}
+	cs.Leave					();
+	return	_ptr;
 }
 
 void	xrMemory::mem_free		(void* P)
 {
 	stat_calls++;
+	cs.Enter					();
 	u32	pool					= get_header(P);
 	void* _real					= (void*)(((u8*)P)-1);
 	if (mem_generic==pool)		
@@ -49,6 +52,7 @@ void	xrMemory::mem_free		(void* P)
 		R_ASSERT2					(pool<mem_pools_count,"Memory corruption");
 		mem_pools[pool].destroy		(_real);
 	}
+	cs.Leave					();
 }
 
 void*	xrMemory::mem_realloc	(void* P, size_t size)
@@ -56,14 +60,15 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 	if (0==P)					return mem_alloc(size);
 
 	stat_calls++;
+	cs.Enter					();
 	u32		p_current			= get_header(P);
 	void*	_real				= (void*)(((u8*)P)-1);
+	void*	_ptr				= NULL;
 	if (mem_generic==p_current)
 	{
 		void*	_real2			= xr_aligned_offset_realloc(_real,size,16,0x1);
-		void*	_ptr			= (void*)(((u8*)_real2)+1);
+		_ptr					= (void*)(((u8*)_real2)+1);
 		*acc_header(_ptr)		= mem_generic;
-		return	_ptr;
 	} else {
 		R_ASSERT2				(p_current<mem_pools_count,"Memory corruption");
 		u32		s_current		= mem_pools[p_current].get_element();
@@ -72,8 +77,10 @@ void*	xrMemory::mem_realloc	(void* P, size_t size)
 		void*	p_new			= mem_alloc(size);
 		mem_copy				(p_new,p_old,_min(s_current,s_dest));
 		mem_free				(p_old);
-		return					p_new;
+		_ptr					= p_new;
 	}
+	cs.Leave					();
+	return	_ptr;
 }
 
 #endif

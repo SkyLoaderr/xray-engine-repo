@@ -41,14 +41,17 @@ void	xrMemory::_initialize	()
 
 void	xrMemory::mem_compact	()
 {
+	cs.Enter			();
 	RegFlushKey			( HKEY_CLASSES_ROOT );
 	RegFlushKey			( HKEY_CURRENT_USER );
 	_heapmin			();
 	HeapCompact			(GetProcessHeap(),0);
+	cs.Leave			();
 }
 
 u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 {
+	cs.Enter			();
 	_HEAPINFO		hinfo;
 	int				heapstatus;
 	hinfo._pentry	= NULL;
@@ -83,6 +86,7 @@ u32		xrMemory::mem_usage		(u32* pBlocksUsed, u32* pBlocksFree)
 		Debug.fatal		( "bad node in heap"		);
 		break;
 	}
+	cs.Leave			();
 	return (u32) total;
 }
 
@@ -93,6 +97,7 @@ void	xrMemory::mem_statistic	()
 	map<u32,u32>			stats;
 
 	// Dump memory stats into file to avoid reallocation while traversing
+	cs.Enter				();
 	{
 		IWriter*	F		= FS.w_open(fn);
 		F->w_u32			(0);
@@ -103,6 +108,7 @@ void	xrMemory::mem_statistic	()
 			if (hinfo._useflag == _USEDENTRY)	F->w_u32	(hinfo._size);
 		FS.w_close			(F);
 	}
+	cs.Leave				();
 
 	// Read back and perform sorting
 	{

@@ -7,23 +7,25 @@
 
 class XRCORE_API	xrMemory
 {
+private:
+	xrCriticalSection	cs;
 public:
-	void			_initialize	();
-	void			_destroy	();
+	void				_initialize	();
+	void				_destroy	();
 
-	u32				stat_calls;
+	u32					stat_calls;
 public:
-	u32				mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
-	void			mem_compact		();
-	void			mem_statistic	();
+	u32					mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
+	void				mem_compact		();
+	void				mem_statistic	();
 
-	void*			mem_alloc	(size_t	size							);
-	void			mem_free	(void*	p								);
-	void*			mem_realloc	(void*	p, size_t size					);
+	void*				mem_alloc	(size_t	size							);
+	void				mem_free	(void*	p								);
+	void*				mem_realloc	(void*	p, size_t size					);
 
-	pso_MemCopy*	mem_copy;
-	pso_MemFill*	mem_fill;
-	pso_MemFill32*	mem_fill32;
+	pso_MemCopy*		mem_copy;
+	pso_MemFill*		mem_fill;
+	pso_MemFill32*		mem_fill32;
 };
 extern XRCORE_API	xrMemory	Memory;
 
