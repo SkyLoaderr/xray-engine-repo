@@ -468,7 +468,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		}
 
 		//decide to clamb
-		if(!m_elevator_state.ClimbingState()&&b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
+		if(!m_elevator_state.Active() &&b_valide_wall_contact && (m_contact_count>1)&&(m_wall_contact_normal[1]<M_SQRT1_2 )&& !b_side_contact ) //&& dDOT(m_wall_contact_normal,m_ground_contact_normal)<.9f
 		{
 			//if( dDOT(m_wall_contact_normal,m_ground_contact_normal)<.999999f)
 			//dVector3 diff={m_wall_contact_normal[0]-m_ground_contact_normal[0],m_wall_contact_normal[1]-m_ground_contact_normal[1],m_wall_contact_normal[2]-m_ground_contact_normal[2]};

@@ -3,11 +3,14 @@
 #include "ClimableObject.h"
 #include "PHCharacter.h"
 #include "MathUtils.h"
-static const float getting_on_dist		=0.6f;
-static const float getting_out_dist		=0.8f;
+static const float getting_on_dist		=0.3f;
+static const float getting_out_dist		=0.4f;
 static const float start_climbing_dist	=0.f;
 static const float stop_climbing_dist	=0.1f;
 static const float out_dist				=1.5f;
+
+static const float look_angle_cosine	=0.9238795f;//22.5
+static const float lookup_angle_sine	=0.34202014f;//20
 	CElevatorState::CElevatorState()
 {
 	m_state=clbNone;
@@ -20,7 +23,7 @@ float CElevatorState::ClimbDirection()
 	Fvector d;
 	m_ladder->DToPlain(m_character,d);
 	float dir=m_character->ControlAccel().dotproduct(d);
-	if(dir>0.f)dir*=m_character->CamDir().y;
+	if(dir>EPS_L)dir*=(m_character->CamDir().y+lookup_angle_sine);
 	return dir;
 }
 
@@ -88,10 +91,10 @@ void CElevatorState::SwitchState(Estate new_state)
 void CElevatorState::UpdateStNone()
 {
 
-	if(m_ladder->InTouch(m_character))
+	if(m_ladder->BeforeLadder(m_character)&&m_ladder->InTouch(m_character))
 	{
 		Fvector d;m_ladder->DToPlain(m_character,d);
-		if(m_character->ControlAccel().dotproduct(d)>0.f)
+		if(ClimbDirection()>0.f)
 		{
 			SwitchState(clbClimbingUp);
 		}
@@ -209,10 +212,13 @@ void CElevatorState::GetControlDir(Fvector& dir)
 	case	clbDepart		: 
 	case	clbNone			: 		break;			
 	case 	clbNearUp		:		dist= m_ladder->DDUpperP(m_character,d);
-									if(!fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
+									if(	dXZDot(d,m_character->CamDir())>look_angle_cosine&&
+										!fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
 									break;						
-	case 	clbNearDown		:		dist=m_ladder->DDLowerP(m_character,d);
-									if(!fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
+	case 	clbNearDown		:		
+									dist=m_ladder->DDLowerP(m_character,d);
+									if(dXZDot(d,m_character->CamDir())>look_angle_cosine&&
+									   !fis_zero(dist,EPS_L)&&m_character->ControlAccel().dotproduct(d)>0.f) dir.set(d);
 									break;					
 	case 	clbClimbingUp	:		m_ladder->DDAxis(dir);
 									m_ladder->DDToAxis(m_character,d);

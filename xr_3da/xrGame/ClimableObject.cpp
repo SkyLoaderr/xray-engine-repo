@@ -5,7 +5,8 @@
 #include "PHCharacter.h"
 #include "MathUtils.h"
 
-
+static const float down_leader_extension_tolerance=0.2f;
+static const float up_leader_extension_tolerance=0.0f;
 
 IC void OrientToNorm(const Fvector& normal,Fmatrix& form,Fobb& box)
 {
@@ -265,7 +266,7 @@ float CClimableObject::AxDistToLowerP(CPHCharacter *actor)const
 }
 bool CClimableObject::InRange(CPHCharacter *actor)const
 {
-	return AxDistToLowerP(actor)>0.f && AxDistToUpperP(actor)+actor->FootRadius()>0.f;
+	return AxDistToLowerP(actor)>-down_leader_extension_tolerance && AxDistToUpperP(actor)+actor->FootRadius()>-up_leader_extension_tolerance;
 }
 
 
@@ -274,8 +275,8 @@ bool CClimableObject::BeforeLadder(CPHCharacter *actor)const
 	Fvector d;
 	DToAxis(actor,d);
 	Fvector n;n.set(Norm());
-	to_mag_and_dir(n);
-	return d.dotproduct(n)<-actor->FootRadius()/2.f;
+	float width=to_mag_and_dir(n);
+	return d.dotproduct(n)<-(width+actor->FootRadius()/2.f);
 }
 
 BOOL CClimableObject::UsedAI_Locations()

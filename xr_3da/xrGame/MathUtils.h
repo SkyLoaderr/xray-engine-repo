@@ -24,7 +24,10 @@ IC	float	dXZDot(const float* v0,const float* v1)
 {
 	return v0[0]*v1[0]+v0[2]*v1[2];
 }
-
+IC	float	dXZDot(const Fvector& v0,const Fvector& v1)
+{
+	return v0.x*v1.x+v0.z*v1.z;
+}
 IC	void	dVectorSet(dReal* vd,const dReal* vs)
 {
 	vd[0]=vs[0];vd[1]=vs[1];vd[2]=vs[2];
