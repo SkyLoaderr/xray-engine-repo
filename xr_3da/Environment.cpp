@@ -88,7 +88,7 @@ void CEnvDescriptor::load	(LPCSTR S)
 }
 void CEnvDescriptor::lerp	(CEnvDescriptor& A, CEnvDescriptor& B, float f)
 {
-	float	fi	= 1-f;
+	float	fi				= 1-f;
 	sky_r_textures.clear	();
 	sky_r_textures.push_back(A.sky_texture);
 	sky_r_textures.push_back(B.sky_texture);
