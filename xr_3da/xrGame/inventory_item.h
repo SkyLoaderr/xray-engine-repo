@@ -172,6 +172,10 @@ protected:
 	// Тектс описания вещи
 	shared_str			m_Description;
 
+	ALife::_TIME_ID			m_dwItemRemoveTime;
+	ALife::_TIME_ID			m_dwItemIndependencyTime;
+
+
 	////////// network //////////////////////////////////////////////////
 public:
 	virtual void	make_Interpolation	();
@@ -186,6 +190,10 @@ public:
 	virtual void	net_Export			(NET_Packet& P);					// export to server
 
 	virtual void	activate_physic_shell	();
+
+	virtual bool			NeedToDestroyObject	() const;
+	virtual ALife::_TIME_ID	TimePassedAfterIndependant() const;
+
 protected:
 	virtual void	UpdateXForm	();
 

@@ -22,6 +22,8 @@
 #include "HUDManager.h"
 #include "UIGameCustom.h"
 
+#define ITEM_REMOVE_TIME		30000
+
 CInventoryItem::CInventoryItem() 
 {
 	m_weight = 100.f;
@@ -107,6 +109,14 @@ void CInventoryItem::Load(LPCSTR section)
 
 	if(pSettings->line_exist(section, "default_to_ruck"))
 		m_bRuckDefault = !!pSettings->r_bool(section, "default_to_ruck");
+
+	//////////////////////////////////////
+	//время убирания объекта с уровня
+	if(pSettings->line_exist(section,"item_remove_time"))
+		m_dwItemRemoveTime = pSettings->r_u32(section,"item_remove_time");
+	else
+		m_dwItemRemoveTime = ITEM_REMOVE_TIME;
+	//////////////////////////////////////
 }
 
 void  CInventoryItem::ChangeCondition(float fDeltaCondition)
@@ -214,6 +224,7 @@ void CInventoryItem::OnH_B_Independent	()
 
 void CInventoryItem::OnH_A_Independent	()
 {
+	m_dwItemIndependencyTime = Level().timeServer();
 	m_eItemPlace = eItemPlaceUndefined;	
 }
 
@@ -327,6 +338,8 @@ BOOL CInventoryItem::net_Spawn			(CSE_Abstract* DC)
 	{
 		object().processing_activate();
 	}
+
+	m_dwItemIndependencyTime = 0;
 
 	return		TRUE;
 }
@@ -926,4 +939,22 @@ void CInventoryItem::modify_holder_params	(float &range, float &fov) const
 {
 	range		*= m_holder_range_modifier;
 	fov			*= m_holder_fov_modifier;
+}
+
+bool CInventoryItem::NeedToDestroyObject()	const
+{
+	if (GameID() == GAME_SINGLE) return false;
+	if (object().Remote()) return false;
+	if (TimePassedAfterIndependant() > m_dwItemRemoveTime)
+		return true;
+
+	return false;
+}
+
+ALife::_TIME_ID	 CInventoryItem::TimePassedAfterIndependant()	const
+{
+	if(!object().H_Parent() && m_dwItemIndependencyTime != 0)
+		return Level().timeServer() - m_dwItemIndependencyTime;
+	else
+		return 0;
 }

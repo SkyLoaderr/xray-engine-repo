@@ -189,3 +189,8 @@ void CEatableItemObject::OnRender			()
 	CEatableItem::OnRender			();
 }
 #endif
+
+bool CEatableItemObject::NeedToDestroyObject		() const
+{
+	return CInventoryItem::NeedToDestroyObject();
+}

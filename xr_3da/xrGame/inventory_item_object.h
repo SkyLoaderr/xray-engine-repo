@@ -67,6 +67,7 @@ public:
 	virtual void	PH_Ch_CrPr				(); // 
 #endif
 	virtual void	PH_A_CrPr				(); // actions & operations after phisic correction-prediction steps
+	virtual bool	NeedToDestroyObject		() const;
 
 protected:
 #ifdef DEBUG
