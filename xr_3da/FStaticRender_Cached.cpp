@@ -117,8 +117,6 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 			Device.Shader.SetupPass		(dwPass);
 			Device.Primitive.Render		(D3DPT_TRIANGLELIST,0,v_count,iBase,dwNumPrimitives);
 		}
-		UPDATEC(v_count,dwNumPrimitives,dwPassesRequired);
-
-		Start = End;
+		UPDATEC(V.vCount,dwNumPrimitives,dwPassesRequired);
 	}
 }
