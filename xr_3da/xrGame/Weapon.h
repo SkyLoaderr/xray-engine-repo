@@ -211,6 +211,8 @@ protected:
 	bool			m_bZoomEnabled;
 	//текущий фактор приближения
 	float			m_fZoomFactor;
+	//время приближения
+	float			m_fZoomRotateTime;
 	//текстура для снайперского прицела, в режиме приближения
 	CUIStaticItem	m_UIScope;
 	//коэффициент увеличения прицела

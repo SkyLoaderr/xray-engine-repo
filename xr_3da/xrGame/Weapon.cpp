@@ -21,6 +21,7 @@
 #include "game_cl_base.h"
 
 #define WEAPON_REMOVE_TIME		30000
+#define ROTATION_TIME			0.25f
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -296,7 +297,7 @@ void CWeapon::Load		(LPCSTR section)
 	m_eGrenadeLauncherStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section,"grenade_launcher_status");
 
 	m_bZoomEnabled = !!pSettings->r_bool(section,"zoom_enabled");
-
+	m_fZoomRotateTime = ROTATION_TIME;
 	if(m_bZoomEnabled && m_pHUD) LoadZoomOffset(*hud_sect, "");
 
 	if(m_eScopeStatus == ALife::eAddonAttachable)
@@ -350,6 +351,9 @@ void CWeapon::LoadZoomOffset (LPCSTR section, LPCSTR prefix)
 	m_pHUD->SetZoomOffset(pSettings->r_fvector3	(hud_sect, strconcat(full_name, prefix, "zoom_offset")));
 	m_pHUD->SetZoomRotateX(pSettings->r_float	(hud_sect, strconcat(full_name, prefix, "zoom_rotate_x")));
 	m_pHUD->SetZoomRotateY(pSettings->r_float	(hud_sect, strconcat(full_name, prefix, "zoom_rotate_y")));
+
+	if(pSettings->line_exist(hud_sect, "zoom_rotate_time"))
+		m_fZoomRotateTime = pSettings->r_float(hud_sect,"zoom_rotate_time");
 }
 
 void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
@@ -1055,7 +1059,6 @@ bool CWeapon::ready_to_kill	() const
 }
 
 
-#define ROTATION_TIME 0.4f
 
 //Модификация функции для CWeapon
 //отличается от оригинала в CHUDItem,тем что
@@ -1089,9 +1092,9 @@ void CWeapon::UpdateHudPosition	()
 				trans.mulB(hud_rotation);
 
 				if(pActor->IsZoomAimingMode())
-					m_fZoomRotationFactor += Device.fTimeDelta/ROTATION_TIME;
+					m_fZoomRotationFactor += Device.fTimeDelta/m_fZoomRotateTime;
 				else
-					m_fZoomRotationFactor -= Device.fTimeDelta/ROTATION_TIME;
+					m_fZoomRotationFactor -= Device.fTimeDelta/m_fZoomRotateTime;
 				clamp(m_fZoomRotationFactor, 0.f, 1.f);
 			}
 
