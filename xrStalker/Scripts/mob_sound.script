@@ -24,6 +24,10 @@ local snd = {
 		[[characters_voice\human_01\scenario\trader\trader_script1b_5.ogg]]
 	},
 
+	trader_map_quest_1 = {
+		[[characters_voice\human_01\scenario\trader\trader_tutorial_map_quest_1.ogg]]
+	},
+
 	hello = {
 			[[characters_voice\human_01\scenario\trader\trader_script1a_1]],
 			[[characters_voice\human_01\scenario\trader\trader_script1a_2]],
