@@ -96,7 +96,7 @@ void vfLoafAIMap(LPCSTR name)
 	q_mark_bit.assign	(m_header.count,false);
 	Progress(1.0f);
 
-	vfLoadSearch();
+//	vfLoadSearch();
 }
 
 void vfLoadAIPoints(LPCSTR name)
