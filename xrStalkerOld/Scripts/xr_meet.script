@@ -193,6 +193,7 @@ function evaluator_state_talk:evaluate()
 	if overrides and overrides.meet_state == "nil" then
 		return false
 	end
+	--printf("state talk %s [%s] [%s]", self.object:name(), utils.to_str(self.object:is_talking()), utils.to_str(self.a.state_talkable))
 	return self.object:is_talking() and self.a.state_talkable == true
 end
 
@@ -434,7 +435,7 @@ function set_meet(object, ini, scheme, section)
     st.noweap = utils.cfg_get_bool(ini, section, "meet_notreat", object, false)
 	st.distance = 15   
 	st.shoot_distance = 5
-	
+	st.state_talkable = true
     st.enabled = true -- added by Zmey
 end
 function disable_scheme(npc, scheme)
