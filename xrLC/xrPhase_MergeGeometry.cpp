@@ -5,12 +5,10 @@ extern void Detach		(vecFace* S);
 
 IC BOOL	FaceEqual		(Face* F1, Face* F2)
 {
-	if (F1->dwMaterial  != F2->dwMaterial)					return FALSE;
-	if (F1->tc.size()	!= F2->tc.size())					return FALSE;
-	if (F1->lmap_layers.size() != F2->lmap_layers.size())	return FALSE;
-	for (u32 it=0; it<F1->lmap_layers.size(); it++)		
-		if (F1->lmap_layers[it] != F2->lmap_layers[it])		return FALSE;
-		return TRUE;
+	if (F1->dwMaterial  != F2->dwMaterial)		return FALSE;
+	if (F1->tc.size()	!= F2->tc.size())		return FALSE;
+	if (F1->lmap_layer  != F2->lmap_layer)		return FALSE;
+	return TRUE;
 }
 
 BOOL	NeedMerge		(vecFace& subdiv, Fbox& bb_base)

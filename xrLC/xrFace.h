@@ -120,7 +120,7 @@ public:
 	svector<_TCF,2>			tc;				// TC
 
 	void*					pDeflector;		// does the face has LM-UV map?
-	svector<CLightmap*,1>	lmap_layers;
+	CLightmap*				lmap_layer;
 
 	virtual Fvector2*		getTC0			( ) { return tc[0].uv; }
 

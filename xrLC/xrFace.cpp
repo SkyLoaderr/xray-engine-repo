@@ -258,7 +258,7 @@ float Face::CalcMaxEdge()
 BOOL	Face::RenderEqualTo	(Face *F)
 {
 	if (F->dwMaterial	!= dwMaterial		)	return FALSE;
-	if (F->tc.size()	!= F->tc.size()		)	return FALSE;	// redundant???
+	//if (F->tc.size()	!= F->tc.size()		)	return FALSE;	// redundant???
 	return TRUE;
 }
 

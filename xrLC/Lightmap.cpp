@@ -38,10 +38,10 @@ void CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	// Capture faces and setup their coords
 	for (UVIt T=tris.begin(); T!=tris.end(); T++)
 	{
-		UVtri&	P		= *T;
-		Face	*F		= P.owner;
-		F->lmap_layers.push_back	(this);
-		F->AddChannel				(P.uv[0], P.uv[1], P.uv[2]);
+		UVtri&	P			= *T;
+		Face	*F			= P.owner;
+		F->lmap_layer		= this;
+		F->AddChannel		(P.uv[0], P.uv[1], P.uv[2]);
 	}
 	
 	// Perform BLIT
