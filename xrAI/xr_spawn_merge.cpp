@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "xrAI.h"
 #include "xrLevel.h"
+#include "xrServer.h"
 
 #include "xrGraph.h"
 #include "ai_nodes.h"
@@ -25,11 +26,13 @@ public:
 	BYTE*						m_nodes;		// virtual nodes DATA array
 	NodeCompressed**			m_nodes_ptr;	// pointers to node's data
 	vector<xrServerEntity *>	m_tpSpawnPoints;
+	u32							m_dwLevelID;
 
-								CSpawn(SLevel &tLevel)
+								CSpawn(SLevel &tLevel, u32 dwLevelID)
 	{
 		// loading AI map
 		m_tLevel				= tLevel;
+		m_dwLevelID				= dwLevelID;
 		string256				fName;
 		strconcat				(fName,"gamedata\\levels\\",m_tLevel.caLevelName);
 		strconcat				(fName,fName,"\\level.ai");
@@ -55,12 +58,41 @@ public:
 			vfs->Advance		(L*sizeof(NodeLink));
 		}
 		// loading spawn points
-		
+		fName[0]				= 0;
+		strconcat				(fName,"gamedata\\levels\\",m_tLevel.caLevelName);
+		strconcat				(fName,fName,"\\level.spawn");
+		CVirtualFileStream		*SP = xr_new<CVirtualFileStream>(fName);
+		CStream					*S = 0;
+		NET_Packet				P;
+		int						S_id	= 0;
+		while (0!=(S = SP->OpenChunk(S_id)))
+		{
+			P.B.count			= S->Length();
+			S->Read				(P.B.data,P.B.count);
+			S->Close			();
+			u16					ID;
+			P.r_begin			(ID);
+			R_ASSERT			(M_SPAWN==ID);
+			//Process_spawn	(P,0);
+			string64			s_name;
+			P.r_string			(s_name);
+			// create server entity
+			xrServerEntity*	E	= F_entity_Create	(s_name);
+			R_ASSERT2(E,"Can't create entity.");
+			E->Spawn_Read		(P);
+			//
+			m_tpSpawnPoints.push_back(E);
+			S_id++;
+		}
 	};
 							~CSpawn()
 	{
 		xr_delete(vfs);
 	};
+
+	void					vfAssignCorrespondingVertices()
+	{
+	}
 	
 };
 
@@ -102,7 +134,8 @@ void xrMergeSpawns()
 	for (dwLevelID = 0; pIni->LineExists("game_levels",itoa(dwLevelID,S1,10)); dwLevelID++) {
 		sscanf(pIni->ReadSTRING("game_levels",itoa(dwLevelID,S1,10)),"%f,%f,%f,%s",&fDummy,&fDummy,&fDummy,S1);
 		Memory.mem_copy(tLevel.caLevelName,S1,strlen(S1) + 1);
-		tpLevels.push_back(xr_new<CSpawn>(tLevel));
+		tpLevels.push_back(xr_new<CSpawn>(tLevel,dwLevelID));
 	}
 	R_ASSERT(tpLevels.size());
+
 }
