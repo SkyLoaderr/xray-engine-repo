@@ -376,6 +376,41 @@ void __fastcall TfrmEditLibrary::ebExportDOClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmEditLibrary::ebExportSkelClick(TObject *Sender)
+{
+    TElTreeItem* node = tvObjects->Selected;
+    if (node&&FOLDER::IsObject(node)){
+    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+        int age;
+   	    CEditableObject* obj = Lib.CreateEditObject(name.c_str(),&age);
+    	if (obj){
+            if (!obj->IsDynamic()){
+                ELog.DlgMsg(mtInformation, "Export only dynamic object!");
+				Lib.RemoveEditObject(obj);
+                return;
+            }
+		    AnsiString save_nm;
+        	if (FS.GetSaveName(FS.m_GameMeshes,save_nm)){
+                if (!Builder.SaveObjectSkeletonOGF(save_nm.c_str(),obj)){
+                    ELog.DlgMsg(mtInformation, "Can't save object '%s'.", obj->GetName());
+                }else{
+                    save_nm = ChangeFileExt(save_nm,".ltx");
+                    Builder.SaveObjectSkeletonLTX(save_nm.c_str(),obj);
+                    ELog.DlgMsg(mtInformation, "Object '%s' export successfully.", obj->GetName());
+                }
+            }else{
+	            ELog.DlgMsg(mtError,"Export canceled.");
+            }
+	    }else{
+            ELog.DlgMsg(mtError,"Can't load object.");
+        }
+		Lib.RemoveEditObject(obj);
+    }else{
+        ELog.DlgMsg(mtInformation, "Select object to export.");
+    }
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 {
     AnsiString open_nm, save_nm, nm;
@@ -416,4 +451,5 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
+
 

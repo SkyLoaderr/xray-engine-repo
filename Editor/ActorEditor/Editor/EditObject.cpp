@@ -7,6 +7,10 @@
 
 #include "EditObject.h"
 #include "EditMesh.h"
+#ifdef _EDITOR
+	#include "motion.h"
+	#include "bone.h"
+#endif
 
 // mimimal bounding box size
 float g_MinBoxSize 	= 0.05f;
@@ -91,7 +95,7 @@ void CEditableObject::ClearGeometry (){
     for(BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end();b_it++)_DELETE(*b_it);
     m_Bones.clear();
     // skeletal motions
-    for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++)_DELETE(*s_it);
+    for(SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end();s_it++) _DELETE(*s_it);
     m_SMotions.clear();
     // object motions
     for(OMotionIt o_it=m_OMotions.begin(); o_it!=m_OMotions.end();o_it++)_DELETE(*o_it);

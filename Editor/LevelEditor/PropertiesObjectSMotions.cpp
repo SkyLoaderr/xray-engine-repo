@@ -50,7 +50,7 @@ void __fastcall TfrmPropertiesObject::tsSAnimationShow(TObject *Sender)
     cbSBonePart->Items->Clear();
     cbSBonePart->Items->Add("--none--");
 
-    gbSMotionCommand->Enabled = true;
+//    gbSMotionCommand->Enabled = true;
 
     tvSMotions->Sort(true);
 
@@ -179,18 +179,17 @@ void __fastcall TfrmPropertiesObject::tvSMotionsItemChange(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesObject::tvSMotionsItemSelectedChange(
-      TObject *Sender, TElTreeItem *Item)
+void __fastcall TfrmPropertiesObject::tvSMotionsItemFocused(
+      TObject *Sender)
 {
-	if (Item==tvSMotions->Selected) return;
+	TElTreeItem* node=tvSMotions->Selected;
 	// save previous motion data
     selected_smotion = 0;
-    if (Item->Level==0){
+    if (node->Level==0){
     	gbSMotion->Hide();
     }else{
     	// select new motion
-
-        CSMotion* M					= (CSMotion*)Item->Data;//m_LibObject->FindMotionByName(Item->Text.c_str());
+        CSMotion* M					= (CSMotion*)node->Data;//m_LibObject->FindMotionByName(Item->Text.c_str());
         VERIFY(M);
         lbSMotionName->Caption 		= M->Name();
         lbSMotionFrames->Caption	= AnsiString(M->FrameStart())+AnsiString(" .. ")+AnsiString(M->FrameEnd());

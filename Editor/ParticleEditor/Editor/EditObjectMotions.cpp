@@ -45,8 +45,9 @@ void st_AnimParam::Update(float dt){
 
 void CEditableObject::RTL_Update( float dT ){
     if (IsOMotionActive()){
+/*
 ///    	ELog.DlgMsg(mtError,"TODO: CEditableObject::RTL_Update");
-/*        Fvector R,T,r;
+        Fvector R,T,r;
         m_ActiveOMotion->Evaluate(m_OMParam.Frame(),T,r);
         R.set(r.y,r.x,r.z);
         T.add(vPosition);

@@ -217,8 +217,6 @@ __published:	// IDE-managed Components
 	void __fastcall ebSRenameMotionClick(TObject *Sender);
 	void __fastcall tvSMotionsItemChange(TObject *Sender, TElTreeItem *Item,
           TItemChangeMode ItemChangeMode);
-	void __fastcall tvSMotionsItemSelectedChange(TObject *Sender,
-          TElTreeItem *Item);
 	void __fastcall seSMotionChange(TObject *Sender);
 	void __fastcall ebSMotionClearClick(TObject *Sender);
 	void __fastcall ebSMotionSaveClick(TObject *Sender);
@@ -237,6 +235,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebSelectShaderXRLCClick(TObject *Sender);
 	void __fastcall tvMeshesItemFocused(TObject *Sender);
 	void __fastcall tvSurfacesItemFocused(TObject *Sender);
+	void __fastcall tvSMotionsItemFocused(TObject *Sender);
 private:	// User declarations
     CSMotion* 				selected_smotion;
     COMotion* 				selected_omotion;

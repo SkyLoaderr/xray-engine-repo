@@ -41,6 +41,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSave;
 	TExtBtn *ebExportDO;
 	TExtBtn *ebImport;
+	TExtBtn *ebExportSkel;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -59,6 +60,7 @@ __published:	// IDE-managed Components
 	void __fastcall pbImagePaint(TObject *Sender);
 	void __fastcall ebExportDOClick(TObject *Sender);
 	void __fastcall ebImportClick(TObject *Sender);
+	void __fastcall ebExportSkelClick(TObject *Sender);
 private:	// User declarations
     void InitObjects();
     EImageThumbnail* m_Thm;

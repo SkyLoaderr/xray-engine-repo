@@ -186,7 +186,6 @@ USEUNIT("edit\ImageManager.cpp");
 USEUNIT("edit\ImageThumbnail.cpp");
 USEUNIT("Engine\TextureManager.cpp");
 USEFORM("PropertiesList.cpp", frmProperties);
-USELIB("lib\FreeImage.lib");
 USEUNIT("edit\ETextureParams.cpp");
 USEUNIT("Engine\Blenders\blender_light.cpp");
 USEUNIT("edit\FolderLib.cpp");
@@ -201,6 +200,7 @@ USEUNIT("Engine\Blenders\Blender_Lm(EbB).cpp");
 USEUNIT("Engine\Blenders\Blender_LmBmmD.cpp");
 USEUNIT("Engine\fmesh.cpp");
 USEUNIT("Engine\Blenders\Blender_BmmD.cpp");
+USELIB("lib\FreeImage.lib");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
