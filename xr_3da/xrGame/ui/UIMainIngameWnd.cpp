@@ -215,14 +215,22 @@ void CUIMainIngameWnd::Draw()
 
 	}
 
+
+	bool zoom_mode = false;
+	bool scope_mode = false;
+
 	//отрендерить текстуру объектива снайперского прицела или бинокля
 	if(m_pActor->HUDview() && m_pWeapon && m_pWeapon->IsZoomed() && 
-		!m_pWeapon->IsRotatingToZoom() && m_pWeapon->ZoomHideCrosshair())
+		m_pWeapon->ZoomHideCrosshair())
 	{
-		if(m_pWeapon->ZoomTexture())
+		zoom_mode = true;
+
+		if(m_pWeapon->ZoomTexture() && !m_pWeapon->IsRotatingToZoom())
 		{
 			m_pWeapon->ZoomTexture()->SetPos(0,0);
 			m_pWeapon->ZoomTexture()->Render(0,0, Device.dwWidth, Device.dwHeight);
+
+			scope_mode = true;
 		}
 
 		if(psHUD_Flags.test(HUD_CROSSHAIR))
@@ -230,8 +238,11 @@ void CUIMainIngameWnd::Draw()
 			psHUD_Flags.set(HUD_CROSSHAIR, FALSE);
 			m_bShowHudCrosshair = true;
 		}
+
+		zoom_mode = true;
 	}
-	else 
+	
+	if(!scope_mode)
 	{
 		if(m_bShowHudInfo)
 		{
@@ -239,7 +250,7 @@ void CUIMainIngameWnd::Draw()
 			CUIWindow::Draw();
 			UIZoneMap.Render();
 		}
-		if (m_bShowHudCrosshair)
+		if (m_bShowHudCrosshair && !zoom_mode)
 		{
 			m_bShowHudCrosshair = false;
 			psHUD_Flags.set(HUD_CROSSHAIR, TRUE);

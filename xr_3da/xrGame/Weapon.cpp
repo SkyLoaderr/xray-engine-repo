@@ -311,7 +311,7 @@ void CWeapon::Load		(LPCSTR section)
 	//////////////////////////////////////
 
 
-	m_bHideCrosshairInZoom = false;
+	m_bHideCrosshairInZoom = true;
 	if(pSettings->line_exist(hud_sect, "zoom_hide_crosshair"))
 		m_bHideCrosshairInZoom = !!pSettings->r_bool(hud_sect, "zoom_hide_crosshair");
 }
