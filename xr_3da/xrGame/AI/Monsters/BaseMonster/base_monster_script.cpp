@@ -227,10 +227,6 @@ void CBaseMonster::ProcessScripts()
 	
 	TranslateActionToPathParams					();
 
-	//if (xr_strcmp(cName(), "m_flesh_e0008") == 0) {
-	//	int a = 0;
-	//}
-	
 	// обновить путь
 	CMonsterMovement::Update_Execute			();
 
