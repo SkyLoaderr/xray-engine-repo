@@ -12,14 +12,14 @@ private:
 	u32					s_offset;		// header size
 	u8*					list;
 private:
-	void**				access			(void* P)	{ return (void**) ((void*)(P));	}
+	ICF void**			access			(void* P)	{ return (void**) ((void*)(P));	}
 	void				block_create	();
 public:
 	void				_initialize		(u32 _element, u32 _sector, u32 _header);
 	
-	IC u32				get_element		()	{ return s_element; }
+	ICF u32				get_element		()	{ return s_element; }
 
-	IC void*			create			()
+	ICF void*			create			()
 	{
 		cs.Enter		();
 		if (0==list)	block_create();
@@ -29,7 +29,7 @@ public:
 		cs.Leave		();
 		return			E;
 	}
-	IC void				destroy			(void* &P)
+	ICF void			destroy			(void* &P)
 	{
 		cs.Enter		();
 		*access(P)		= list;

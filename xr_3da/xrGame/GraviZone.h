@@ -19,9 +19,9 @@ class CBaseGraviZone : public CCustomZone
 private:
 	typedef		CCustomZone					inherited;
 	//typedef		CTelekinesis				TTelekinesis;
-	
+
 public:
-					CBaseGraviZone(void);
+	CBaseGraviZone(void);
 	virtual			~CBaseGraviZone(void);
 
 	virtual void	Load (LPCSTR section);
@@ -53,14 +53,14 @@ protected:
 	float			m_fThrowInAtten;
 	//радиус действия выброса (в процентах от всего)
 	float			m_fBlowoutRadiusPercent;
-	
+
 
 	//параметры телекинеза	
 	float			m_fTeleHeight;
 	u32				m_dwTimeToTele;
 	u32				m_dwTelePause;
 	u32				m_dwTeleTime;
-	
+
 	//имя партиклов телекинеза
 	void			PlayTeleParticles(CGameObject* pObject);
 	void			StopTeleParticles(CGameObject* pObject);
@@ -76,6 +76,6 @@ class CGraviZone	: public CBaseGraviZone
 protected:
 	virtual CTelekinesis& Telekinesis()						{return m_telekinesis;}
 public:
-							CGraviZone		(void)			{}
-				virtual		~CGraviZone		(void)			{}
+	CGraviZone		(void)			{}
+	virtual		~CGraviZone		(void)			{}
 };

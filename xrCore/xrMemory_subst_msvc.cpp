@@ -16,9 +16,9 @@ XRCORE_API void*	g_globalCheckAddr = NULL;
 MEMPOOL		mem_pools			[mem_pools_count];
 
 // MSVC
-u8*		acc_header				(void* P)	{	u8*		_P		= (u8*)P;	return	_P-1;	}
-u32		get_header				(void* P)	{	return	(u32)*acc_header(P);				}
-u32		get_pool				(size_t size)
+ICF	u8*		acc_header			(void* P)	{	u8*		_P		= (u8*)P;	return	_P-1;	}
+ICF	u32		get_header			(void* P)	{	return	(u32)*acc_header(P);				}
+ICF	u32		get_pool			(size_t size)
 {
 	u32		pid					= u32(size/mem_pools_ebase);
 	if (pid>=mem_pools_count)	return mem_generic;

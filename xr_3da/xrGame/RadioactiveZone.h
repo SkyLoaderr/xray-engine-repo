@@ -4,7 +4,7 @@
 class CRadioactiveZone : public CCustomZone
 {
 private:
-    typedef	CCustomZone	inherited;
+	typedef	CCustomZone	inherited;
 public:
 	CRadioactiveZone(void);
 	virtual ~CRadioactiveZone(void);

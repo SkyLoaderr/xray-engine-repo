@@ -1,8 +1,8 @@
 #pragma once
 
 class CAmebaZone :
-public CVisualZone,
-public CPHUpdateObject
+	public CVisualZone,
+	public CPHUpdateObject
 {
 typedef				CVisualZone		inherited;	
 float m_fVelocityLimit;

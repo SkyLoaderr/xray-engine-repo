@@ -28,22 +28,20 @@ BOOL CTorridZone::net_Spawn(CSE_Abstract* DC)
 	return				(TRUE);
 }
 
-void CTorridZone::UpdateCL()
+void CTorridZone::UpdateWorkload(u32 dt)
 {
-	inherited::UpdateCL();
-	m_animator->OnFrame	();
-	XFORM().set	(m_animator->XFORM());
-	OnMove	();
+	inherited::UpdateWorkload	(dt);
+	m_animator->OnFrame			();
+	XFORM().set					(m_animator->XFORM());
+	OnMove						();
 }
-
 
 void CTorridZone::shedule_Update(u32 dt)
 {
 	inherited::shedule_Update(dt);
 
-	if(m_idle_sound.feedback)		m_idle_sound.set_position(XFORM().c);
-	if(m_blowout_sound.feedback)	m_blowout_sound.set_position(XFORM().c);
-	if(m_hit_sound.feedback)		m_hit_sound.set_position(XFORM().c);
-	if(m_entrance_sound.feedback)	m_entrance_sound.set_position(XFORM().c);
-
+	if(m_idle_sound.feedback)		m_idle_sound.set_position		(XFORM().c);
+	if(m_blowout_sound.feedback)	m_blowout_sound.set_position	(XFORM().c);
+	if(m_hit_sound.feedback)		m_hit_sound.set_position		(XFORM().c);
+	if(m_entrance_sound.feedback)	m_entrance_sound.set_position	(XFORM().c);
 }

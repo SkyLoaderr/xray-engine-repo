@@ -4,11 +4,11 @@
 class CMosquitoBald : public CCustomZone
 {
 private:
-    typedef	CCustomZone	inherited;
+	typedef	CCustomZone	inherited;
 public:
 	CMosquitoBald(void);
 	virtual ~CMosquitoBald(void);
-	
+
 	virtual void Load(LPCSTR section);
 	virtual void Postprocess(f32 val);
 	virtual bool EnableEffector() {return true;}

@@ -6,7 +6,7 @@ class CFryupZone : public CScriptObject {
 	typedef	CScriptObject	inherited;
 
 public:
-					CFryupZone	();
+	CFryupZone	();
 	virtual			~CFryupZone	();
 
 #ifdef DEBUG

@@ -14,10 +14,9 @@
 #include "../skeletoncustom.h"
 
 //////////////////////////////////////////////////////////////////////////
-//количество предварительно проспавненых артефактов
-#define PREFETCHED_ARTEFACTS_NUM 4
-//расстояние до актера, когда появляется ветер 
-#define WIND_RADIUS (4*Radius())
+#define PREFETCHED_ARTEFACTS_NUM 4	//количество предварительно проспавненых артефактов
+#define WIND_RADIUS (4*Radius())	//расстояние до актера, когда появляется ветер 
+#define FASTMODE_DISTANCE (50.f)	//distance to camera from sphere, when zone switches to fast update sequence
 
 CCustomZone::CCustomZone(void) 
 {
@@ -352,7 +351,7 @@ BOOL CCustomZone::net_Spawn(CSE_Abstract* DC)
 	m_fDistanceToCurEntity		= flt_max;
 	m_bBlowoutWindActive		= false;
 
-
+	o_fastmode					= TRUE;		// start initially with fast-mode enabled
 	return						(TRUE);
 }
 
@@ -414,23 +413,18 @@ bool CCustomZone::AccumulateState()
 	return false;
 }
 
-
-void CCustomZone::UpdateCL() 
+void CCustomZone::UpdateWorkload	(u32 dt)
 {
-	inherited::UpdateCL();
-
-
-	if (!IsEnabled()) 
-	{
+	if (!IsEnabled())		{
 		if (EnableEffector())
 			m_effector.Stop();
 		return;
 	};
 
-	UpdateIdleLight		();
+	UpdateIdleLight			();
 
 	m_iPreviousStateTime	= m_iStateTime;
-	m_iStateTime			+= (int)Device.dwTimeDelta;
+	m_iStateTime			+= (int)dt;
 	switch(m_eZoneState)
 	{
 	case eZoneStateIdle:
@@ -450,17 +444,13 @@ void CCustomZone::UpdateCL()
 	default: NODEFAULT;
 	}
 
-
 	//вычислить время срабатывания зоны
-	if(m_bZoneActive)
-		m_dwDeltaTime += Device.dwTimeDelta;
-	else
-		m_dwDeltaTime = 0;
+	if(m_bZoneActive)	m_dwDeltaTime	+=	dt;
+	else				m_dwDeltaTime	=	0;
 
-	if(m_dwDeltaTime > m_dwPeriod) 
-	{
-		m_dwDeltaTime = m_dwPeriod;
-		m_bZoneReady = true;
+	if(m_dwDeltaTime > m_dwPeriod)		{
+		m_dwDeltaTime	= m_dwPeriod;
+		m_bZoneReady	= true;
 	}
 
 	if (Level().CurrentEntity()) {
@@ -474,15 +464,24 @@ void CCustomZone::UpdateCL()
 		UpdateBlowoutLight	();
 }
 
+// called only in "fast-mode"
+void CCustomZone::UpdateCL		() 
+{
+	VERIFY						(o_fastmode);
+	inherited::UpdateCL			();
+	UpdateWorkload				(Device.dwTimeDelta);	
+}
+
+// called as usual
 void CCustomZone::shedule_Update(u32 dt)
 {
 	m_bZoneActive			= false;
-
 	const Fsphere& s		= CFORM()->getSphere();
 	Fvector					P;
 	XFORM().transform_tiny	(P,s.P);
-	feel_touch_update		(P,s.R);
 
+	// update
+	feel_touch_update		(P,s.R);
 	if (IsEnabled())
 	{
 		//пройтись по всем объектам в зоне
@@ -518,24 +517,30 @@ void CCustomZone::shedule_Update(u32 dt)
 	//в зону попал объект, разбудить ее
 	if(m_bZoneActive && eZoneStateIdle ==  m_eZoneState)
 		SwitchZoneState(eZoneStateAwaking);
-	
 	inherited::shedule_Update(dt);
+
+	//////////////////////////////////////////////////////////////////////////
+	// check "fast-mode" border
+	float	cam_distance	= Device.vCameraPosition.distance_to(P)-s.R;
+	if (cam_distance > FASTMODE_DISTANCE)	o_switch_2_slow	();
+	else									o_switch_2_fast	();
+	if (!o_fastmode)		UpdateWorkload	(dt);
 }
 
-void CCustomZone::feel_touch_new(CObject* O) 
+void CCustomZone::feel_touch_new	(CObject* O) 
 {
 //	if (smart_cast<CCustomZone*>(O))				return;
 //	if (0==smart_cast<CKinematics*>(O->Visual()))	return;
 	
 	if(bDebug) HUD().outMessage(0xffffffff,O->cName(),"entering a zone.");
 	if(smart_cast<CActor*>(O) && O == Level().CurrentEntity())
-					m_pLocalActor = smart_cast<CActor*>(O);
+					m_pLocalActor	= smart_cast<CActor*>(O);
 
 	CGameObject*	pGameObject		= smart_cast<CGameObject*>(O);
 	CEntityAlive*	pEntityAlive	= smart_cast<CEntityAlive*>(pGameObject);
 	CArtefact*		pArtefact		= smart_cast<CArtefact*>(pGameObject);
 	
-	SZoneObjectInfo object_info;
+	SZoneObjectInfo object_info		;
 	object_info.object = pGameObject;
 
 	if(pEntityAlive && pEntityAlive->g_Alive())
@@ -557,7 +562,6 @@ void CCustomZone::feel_touch_new(CObject* O)
 
 	m_ObjectInfoMap.push_back(object_info);
 	
-
 	if (IsEnabled())
 	{
 		PlayEntranceParticles(pGameObject);

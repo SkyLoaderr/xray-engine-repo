@@ -59,13 +59,14 @@ public:
 	virtual		void	net_Destroy						();
 
 	virtual		void	UpdateCL						();
-	virtual		void	shedule_Update					(u32 dt);
+	virtual		void	UpdateWorkload					(u32	dt	);				// related to fast-mode optimizations
+	virtual		void	shedule_Update					(u32	dt	);
 
-	virtual		void	feel_touch_new					(CObject* O);
-	virtual		void	feel_touch_delete				(CObject* O);
-	virtual		BOOL	feel_touch_contact				(CObject* O);
+	virtual		void	feel_touch_new					(CObject* O	);
+	virtual		void	feel_touch_delete				(CObject* O	);
+	virtual		BOOL	feel_touch_contact				(CObject* O	);
 	virtual		float	effective_radius				();
-	virtual		float	distance_to_center				(CObject* O);			
+	virtual		float	distance_to_center				(CObject* O	);			
 	virtual		void	Postprocess						(float val)					{}
 
 	virtual		void	OnEvent							(NET_Packet& P, u16 type);
@@ -344,4 +345,18 @@ protected:
 public:
 	virtual u32				ef_anomaly_type				() const;
 	virtual u32				ef_weapon_type				() const;
+
+	// optimization FAST/SLOW mode
+public:						
+	BOOL					o_fastmode;		
+	IC void					o_switch_2_fast				()	{
+		if (o_fastmode)		return	;
+		o_fastmode			= TRUE	;
+		processing_activate			();
+	}
+	IC void					o_switch_2_slow				()	{
+		if (!o_fastmode)	return	;
+		o_fastmode			= FALSE	;
+		processing_deactivate		();
+	}
 };

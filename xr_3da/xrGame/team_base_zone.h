@@ -17,7 +17,7 @@ protected:
 public:
 	typedef	CGameObject	inherited;
 
-					CTeamBaseZone		();
+	CTeamBaseZone		();
 	virtual			~CTeamBaseZone		();
 	virtual void	reinit				();
 	virtual BOOL	net_Spawn			(CSE_Abstract* DC);

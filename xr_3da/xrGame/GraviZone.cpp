@@ -127,9 +127,9 @@ bool CBaseGraviZone ::IdleState()
 	else
 		Telekinesis().deactivate();
 
-
 	return result;
 }
+
 bool CBaseGraviZone::CheckAffectField(CPhysicsShellHolder* /*GO*/,float dist_to_radius)
 {
 	return dist_to_radius>m_fBlowoutRadiusPercent;
