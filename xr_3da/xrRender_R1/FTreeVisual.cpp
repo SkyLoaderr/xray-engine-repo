@@ -100,7 +100,7 @@ struct	FTreeVisual_setup
 		scale					= 1.f/float(FTreeVisual_quant);
 
 		// D-Light
-		CSun&	sun				= *(g_pGamePersistant->Environment.Suns.front());
+		CSun&	sun				= *(g_pGamePersistent->Environment.Suns.front());
 
 		// setup constants
 		wave.set				(ps_r__Tree_Wave.x,	ps_r__Tree_Wave.y,	ps_r__Tree_Wave.z,	Device.fTimeGlobal*ps_r__Tree_w_speed);			// wave
