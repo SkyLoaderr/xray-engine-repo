@@ -84,6 +84,7 @@ end
 
 class "handing_lamp_binding"(object_binder)
 function handing_lamp_binding:__init(obj) super(obj)
+	printf("Binding lamp")
 	self.type		= "low"
 	self.time		= 0
 	self.rnd		= 0
