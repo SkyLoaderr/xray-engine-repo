@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "LightProjector.h"
 #include "..\xr_object.h"
-#include "..\lighttrack.h"
+#include "lighttrack.h"
 
 const	int		P_rt_size	= 512;
 const	int		P_o_size	= 61;

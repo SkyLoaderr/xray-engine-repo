@@ -5,9 +5,7 @@
 #include "stdafx.h"
 #include "LightShadows.h"
 #include "..\xr_object.h"
-#include "..\flightscontroller.h"
 #include "..\fbasicvisual.h"
-#include "..\lighttrack.h"
 
 const	float	S_distance	= 48;
 const	float	S_distance2	= S_distance*S_distance;

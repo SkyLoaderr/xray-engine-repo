@@ -8,7 +8,7 @@
 #include "..\fcached.h"
 #include "..\xr_object.h"
 #include "..\CustomHUD.h"
-#include "..\lighttrack.h"
+#include "lighttrack.h"
 
 CRender										RImplementation;
 
