@@ -45,7 +45,9 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 	R_ASSERT				(po);
 
 	m_flags					= po->_flags;
-	m_startup_anim			= D->startup_animation;
+	CSE_Visual				*visual = dynamic_cast<CSE_Visual*>(D);
+	R_ASSERT				(visual);
+	m_startup_anim			= visual->startup_animation;
 	
 
 
