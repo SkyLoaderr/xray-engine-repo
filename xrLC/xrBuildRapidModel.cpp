@@ -105,6 +105,7 @@ void CBuild::BuildRapid()
 	}
 
 	MFS->open_chunk			(0);
+
 	// Header
 	hdrCFORM hdr;
 	hdr.version				= CFORM_CURRENT_VERSION;

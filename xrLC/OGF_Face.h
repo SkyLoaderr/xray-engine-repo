@@ -91,20 +91,20 @@ extern xr_vector<OGF_Base *>		g_tree;
 
 struct OGF : public OGF_Base
 {
-	u32				material;
+	u32					material;
 	vecOGF_T			textures;
 	vecOGF_V			vertices, vertices_saved;
 	vecOGF_F			faces,    faces_saved;
 
 	// Progressive
-	xr_vector<Vsplit>		pmap_vsplit;
+	xr_vector<Vsplit>	pmap_vsplit;
 	xr_vector<WORD>		pmap_faces;
-	u32				dwMinVerts;
+	u32					dwMinVerts;
 	int					I_Current;
 
 	// for build only
-	u32				dwRelevantUV;
-	u32				dwRelevantUVMASK;
+	u32					dwRelevantUV;
+	u32					dwRelevantUVMASK;
 
 	OGF() : OGF_Base(0) {
 		dwRelevantUV		= 0;
@@ -139,7 +139,7 @@ struct OGF_Reference : public OGF_Base
 {
 	OGF*				model;
 
-	u32				material;
+	u32					material;
 	vecOGF_T			textures;
 
 	u32					vb_id;

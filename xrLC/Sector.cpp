@@ -37,17 +37,24 @@ IC BOOL	ValidateMerge	(Fbox& bb_base, Fbox& bb, float& volume, float SLimit)
 	return TRUE;
 }
 
-void CSector::BuildHierrarhy()
+void CSector::BuildHierrarhy	()
 {
 	Fvector		scene_size;
 	float		delimiter;
-	BOOL		bAnyNode = FALSE;
+	BOOL		bAnyNode		= FALSE;
 
-	pBuild->scene_bb.getsize(scene_size);
-	delimiter = _max(scene_size.x,_max(scene_size.y,scene_size.z));
-	delimiter *= 2;
+	// calc scene BB
+	Fbox&		scene_bb		= pBuild->scene_bb;
+	scene_bb.invalidate			();
+	for (int I=0; I<g_tree.size(); I++)
+		scene_bb.merge			(g_tree[I]->bbox);
 
-	int		iLevel = 2;
+	// 
+	scene_bb.getsize(scene_size);
+	delimiter		=	_max(scene_size.x,_max(scene_size.y,scene_size.z));
+	delimiter		*=	2;
+
+	int		iLevel	=	2;
 	float	SizeLimit = g_params.m_SS_maxsize/4.f;
 	if		(SizeLimit<4.f) SizeLimit=4.f;
 	for (; SizeLimit<=delimiter; SizeLimit*=2)
