@@ -129,9 +129,9 @@ void CDeflector::L_Direct	(HASH& H)
 
 	// *** Render Edges
 	float texel_size = (1.f/float(_max(lm.dwWidth,lm.dwHeight)))/8.f;
-	for (DWORD t=0; t<tris.size(); t++)
+	for (DWORD t=0; t<UVpolys.size(); t++)
 	{
-		UVtri&		T	= tris[t];
+		UVtri&		T	= UVpolys[t];
 		Face*		F	= T.owner;
 		R_ASSERT	(F);
 		L_Direct_Edge	(T.uv[0], T.uv[1], F->v[0]->P, F->v[1]->P, F->N, texel_size);

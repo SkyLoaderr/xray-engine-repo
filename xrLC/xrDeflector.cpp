@@ -61,14 +61,14 @@ CDeflector::~CDeflector()
 
 VOID CDeflector::OA_Export()
 {
-	if (tris.empty()) return;
+	if (UVpolys.empty()) return;
 
 	// Correct normal
 	//  (semi-proportional to pixel density)
 	N.set			(0,0,0);
 	float density	= 0;
 	float fcount	= 0;
-	for (UVIt it = tris.begin(); it!=tris.end(); it++)
+	for (UVIt it = UVpolys.begin(); it!=UVpolys.end(); it++)
 	{
 		Face	*F = it->owner;
 		Fvector	SN;
@@ -94,7 +94,7 @@ VOID CDeflector::OA_Export()
 	mView.build_camera(from,at,up);
 
 	Fbox bb; bb.invalidate();
-	for (it = tris.begin(); it!=tris.end(); it++)
+	for (it = UVpolys.begin(); it!=UVpolys.end(); it++)
 	{
 		UVtri	*T = it;
 		Face	*F = T->owner;
@@ -123,32 +123,32 @@ BOOL CDeflector::OA_Place	(Face *owner)
 	float cosa = N.dotproduct(owner->N);
 	if (cosa<cosf(deg2rad(g_params.m_lm_split_angle))) return FALSE;
 
-	UVtri T;
-	T.owner = owner;
-	tris.push_back(T);
-	owner->pDeflector = this;
+	UVtri				T;
+	T.owner				= owner;
+	owner->pDeflector	= this;
+	UVpolys.push_back	(T);
 	return TRUE;
 }
 
 void CDeflector::OA_Place	(vecFace& lst)
 {
-	tris.clear	();
+	UVpolys.clear	();
 	for (DWORD I=0; I<lst.size(); I++)
 	{
 		UVtri T;
 		Face* F			= lst[I];
 		T.owner			= F;
-		tris.push_back	(T);
 		F->pDeflector	= this;
+		UVpolys.push_back(T);
 	}
 }
 
 VOID CDeflector::GetRect	(UVpoint &min, UVpoint &max)
 {
 	// Calculate bounds
-	vector<UVtri>::iterator it=tris.begin();
+	vector<UVtri>::iterator it=UVpolys.begin();
 	min = max = it->uv[0];
-	for (;it != tris.end(); it++)
+	for (;it != UVpolys.end(); it++)
 	{
 		for (int i=0; i<3; i++) {
 			min.min(it->uv[i]);
@@ -160,7 +160,7 @@ VOID CDeflector::GetRect	(UVpoint &min, UVpoint &max)
 void CDeflector::RemapUV	(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v, DWORD lm_u, DWORD lm_v, BOOL bRotate)
 {
 	dest.clear	();
-	dest.reserve(tris.size());
+	dest.reserve(UVpolys.size());
 	
 	// UV rect (actual)
 	UVpoint		a_min,a_max,a_size;
@@ -181,9 +181,10 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD
 	UVpoint		tc;
 	UVtri		tnew;
 	if (bRotate)	{
-		for (UVIt it = tris.begin(); it!=tris.end(); it++)
+		for (UVIt it = UVpolys.begin(); it!=UVpolys.end(); it++)
 		{
-			UVtri&	T  = *it;
+			UVtri&	T	= *it;
+			tnew.owner	= T.owner;
 			for (int i=0; i<3; i++) 
 			{
 				tc.u = ((T.uv[i].v-a_min.v)/a_size.v)*d_size.u + d_min.u;
@@ -193,9 +194,10 @@ void CDeflector::RemapUV	(vector<UVtri>& dest, DWORD base_u, DWORD base_v, DWORD
 			dest.push_back	(tnew);
 		}
 	} else {
-		for (UVIt it = tris.begin(); it!=tris.end(); it++)
+		for (UVIt it = UVpolys.begin(); it!=UVpolys.end(); it++)
 		{
-			UVtri&	T  = *it;
+			UVtri&	T	= *it;
+			tnew.owner	= T.owner;
 			for (int i=0; i<3; i++) 
 			{
 				tc.u = ((T.uv[i].u-a_min.u)/a_size.u)*d_size.u + d_min.u;
@@ -211,7 +213,7 @@ void CDeflector::RemapUV(DWORD base_u, DWORD base_v, DWORD size_u, DWORD size_v,
 {
 	vector<UVtri>	tris_new;
 	RemapUV			(tris_new,base_u,base_v,size_u,size_v,lm_u,lm_v,bRotate);
-	tris			= tris_new;
+	UVpolys			= tris_new;
 }
 
 CDeflector::Layer* CDeflector::GetLayer(b_light* base)

@@ -43,7 +43,7 @@ typedef hash2D<UVtri*,128,128>	HASH;
 class CDeflector
 {
 public:
-	vector<UVtri>		tris;
+	vector<UVtri>		UVpolys;
 	Fvector				N;
 	struct Layer
 	{
@@ -75,18 +75,18 @@ public:
 		
 	void	GetRect				(UVpoint &min, UVpoint &max);
 	Layer*	GetLayer			(b_light* base);
-	DWORD	GetFaceCount()		{ return tris.size();	};
+	DWORD	GetFaceCount()		{ return UVpolys.size();	};
 
 	VOID	Light				(HASH& H);
 	VOID	L_Direct			(HASH& H);
 	VOID	L_Direct_Edge		(UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
 	VOID	L_Calculate			(HASH& H);
 
-	WORD	GetBaseMaterial		() { return tris.front().owner->dwMaterial;	}
+	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
 
 	void	Bounds				(DWORD ID, Fbox2& dest)
 	{
-		UVtri& TC		= tris[ID];
+		UVtri& TC		= UVpolys[ID];
 		dest.min.set	(TC.uv[0].conv());
 		dest.max.set	(TC.uv[0].conv());
 		dest.modify		(TC.uv[1].conv());
@@ -95,7 +95,7 @@ public:
 	void	Bounds_Summary		(Fbox2& bounds)
 	{
 		bounds.invalidate();
-		for (DWORD I=0; I<tris.size(); I++)
+		for (DWORD I=0; I<UVpolys.size(); I++)
 		{
 			Fbox2	B;
 			Bounds	(I,B);

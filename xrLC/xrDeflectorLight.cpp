@@ -382,9 +382,9 @@ VOID CDeflector::L_Calculate(HASH& H)
 	Fbox2			bounds;
 	Bounds_Summary	(bounds);
 	H.initialize	(bounds);
-	for (DWORD fid=0; fid<tris.size(); fid++)
+	for (DWORD fid=0; fid<UVpolys.size(); fid++)
 	{
-		UVtri* T	= &(tris[fid]);
+		UVtri* T	= &(UVpolys[fid]);
 		Bounds		(fid,bounds);
 		H.add		(bounds,T);
 	}
@@ -402,9 +402,9 @@ VOID CDeflector::Light(HASH& H)
 {
 	// Geometrical bounds
 	Fbox bb;		bb.invalidate	();
-	for (DWORD fid=0; fid<tris.size(); fid++)
+	for (DWORD fid=0; fid<UVpolys.size(); fid++)
 	{
-		Face*	F		= tris[fid].owner;
+		Face*	F		= UVpolys[fid].owner;
 		for (int i=0; i<3; i++)	bb.modify(F->v[i]->P);
 	}
 	bb.getsphere(Sphere.P,Sphere.R);
