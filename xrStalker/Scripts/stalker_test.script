@@ -8,7 +8,15 @@ function main()
 		stalker,
 		look			(look.fire_point,actor),
 		anim			(anim.danger),
-		move			(move.standing,move.walk,move.line,patrol("way0001")),
+		move			(move.standing,move.walk,move.line,actor),
+		cond			(cond.time_end,10000)
+    )
+    
+    action				(
+		stalker,
+		look			(look.fire_point,actor),
+		anim			(anim.danger),
+		move			(move.standing,move.walk,move.line,patrol("way0000")),
 		cond			(cond.move_end)
     )
     
