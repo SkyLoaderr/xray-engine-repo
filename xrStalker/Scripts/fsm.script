@@ -86,10 +86,13 @@ function main()
 
 	local a = {[0]={}}
 	a[0] = {1,2,3}
+
+	local tbl = a[0]
+		
 	a[1] = 2
 	a[2] = 3
 	a[4] = 5
-	table.foreach(a[0], print)
+	table.foreach(tbl, print)
 
 --	fsm_stalker:add_transition(0, 1, fsm.if_see_actor)
 
