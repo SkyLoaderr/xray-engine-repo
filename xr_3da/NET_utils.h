@@ -30,6 +30,7 @@ public:
 	IC void	w		( const void* p, u32 count )
 	{
 		VERIFY		(p && count);
+		VERIFY		(B.count + count < NET_PacketSizeLimit);
 		Memory.mem_copy(&B.data[B.count],p,count);
 		B.count		+= count;
 		VERIFY		(B.count<NET_PacketSizeLimit);
