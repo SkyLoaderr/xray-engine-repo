@@ -52,7 +52,7 @@ public:
 	SGeometry*												hGeomPatches;
 
 	// Sector detection and visibility
-	IRender_Sector*											pLastSector;
+	CSector*												pLastSector;
 	Fvector													vLastCameraPos;
 	vector<IRender_Portal*>									Portals;
 	vector<IRender_Sector*>									Sectors;

@@ -207,7 +207,7 @@ void CRender::Calculate()
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
 	{
-		IRender_Sector* pSector = detectSector(Device.vCameraPosition);
+		CSector* pSector		= (CSector*)detectSector(Device.vCameraPosition);
 		if (0==pSector) pSector = pLastSector;
 		pLastSector = pSector;
 		vLastCameraPos.set(Device.vCameraPosition);
@@ -380,21 +380,21 @@ void CRender::flush_Patches	()
 void	CRender::rmNear		()
 {
 #pragma todo("***R2-temp***")
-	CRender_target* T	=	getTarget	();
+	IRender_target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,600,600/*T->get_width(),T->get_height()*/,0,0.02f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmFar		()
 {
 #pragma todo("***R2-temp***")
-	CRender_target* T	=	getTarget	();
+	IRender_target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		=	{0,0,600,600/*T->get_width(),T->get_height()*/,0.99999f,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
 void	CRender::rmNormal	()
 {
 #pragma todo("***R2-temp***")
-	CRender_target* T	=	getTarget	();
+	IRender_target* T	=	getTarget	();
 	D3DVIEWPORT9 VP		= {0,0,600,600/*T->get_width(),T->get_height()*/,0,1.f };
 	CHK_DX				(HW.pDevice->SetViewport(&VP));
 }
