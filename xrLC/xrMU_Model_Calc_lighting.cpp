@@ -57,7 +57,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 	// Perform lighting
 	CDB::COLLIDER			DB;
 	DB.ray_options			(0);
-	vector<R_Light>	Lights = Lights_src;
+	vector<R_Light>& Lights = Lights_src;
 	if (Lights.empty())		return;
 
 	// Disable faces if needed
