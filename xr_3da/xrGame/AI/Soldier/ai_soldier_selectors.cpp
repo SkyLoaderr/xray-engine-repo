@@ -39,7 +39,7 @@ float CSoldierSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, B
 	CHECK_RESULT;
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
-			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 				vfAssignMemberPositionAndNode();
 				vfComputeMemberDirection();
 				vfAddDistanceToMemberCost();
@@ -135,7 +135,7 @@ float CSoldierSelectorFollowLeader::Estimate(NodeCompressed* tNode, float fDista
 		CHECK_RESULT;
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 					vfAssignMemberPositionAndNode();
 					vfComputeMemberDirection();
 					vfAddDistanceToMemberCost();
@@ -175,7 +175,7 @@ float CSoldierSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistan
 		CHECK_RESULT;
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 					vfAssignMemberPositionAndNode();
 					vfComputeMemberDirection();
 					vfAddDistanceToMemberCost();
@@ -290,7 +290,7 @@ float CSoldierSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, 
 	CHECK_RESULT;
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
-			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 				vfAssignMemberPositionAndNode();
 				vfComputeMemberDirection();
 				vfAddDistanceToMemberCost();

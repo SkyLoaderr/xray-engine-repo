@@ -46,7 +46,7 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	if (tpEntity->ps_Size() > 1) {
 		DWORD dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
 		if (dwTime < m_dwMovementIdleTime) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Size() - 1);
+			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
 			float fSpeed = tTemp.magnitude()/dwTime;
 			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
 		}
@@ -125,7 +125,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
 			
-			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle;
+			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_target.yaw;
 			
 			for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
 				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tNode);
@@ -166,7 +166,7 @@ void CAI_Soldier::SetLessCoverLook()
 	else {
 		SetDirectionLook();
 		
-		NodeCompressed *tpNextNode;
+		NodeCompressed *tpNextNode = 0;
 		bool bOk = false;
 		NodeLink *taLinks = (NodeLink *)((BYTE *)AI_Node + sizeof(NodeCompressed));
 		int iCount = AI_Node->links;
@@ -230,14 +230,14 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 {
 	ai_Track.o_get(tpaVisibleObjects);
 	DWORD dwTime = m_dwCurrentUpdate;
-	for (int i=0; i<tpaVisibleObjects.size(); i++) {
+	for (int i=0; i<(int)tpaVisibleObjects.size(); i++) {
 		
 		CEntity *tpEntity = dynamic_cast<CEntity *>(tpaVisibleObjects[i]);
 		
 		if (!tpEntity || !bfCheckForVisibility(tpEntity))
 			continue;
 		
-		for (int j=0; j<tpaDynamicObjects.size(); j++)
+		for (int j=0; j<(int)tpaDynamicObjects.size(); j++)
 			if (tpEntity == tpaDynamicObjects[j].tpEntity) {
 				tpaDynamicObjects[j].dwTime = dwTime;
 				tpaDynamicObjects[j].dwUpdateCount++;
@@ -251,10 +251,10 @@ void CAI_Soldier::vfUpdateDynamicObjects()
 				break;
 			}
 		
-		if (j >= tpaDynamicObjects.size()) {
-			if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
+		if (j >= (int)tpaDynamicObjects.size()) {
+			if ((int)tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
 				DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
-				for (int j=0; j<tpaDynamicObjects.size(); j++)
+				for (int j=0; j<(int)tpaDynamicObjects.size(); j++)
 					if (tpaDynamicObjects[j].dwTime < dwBest) {
 						dwIndex = i;
 						dwBest = tpaDynamicObjects[j].dwTime;
@@ -333,7 +333,7 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			//if (!tpEntity) 
 			{
-				for ( j=0; j<tpaDynamicSounds.size(); j++)
+				for ( j=0; j<(int)tpaDynamicSounds.size(); j++)
 					if (who == tpaDynamicSounds[j].tpEntity) {
 						tpaDynamicSounds[j].eSoundType = ESoundTypes(eType);
 						tpaDynamicSounds[j].dwTime = dwTime;
@@ -345,15 +345,15 @@ void CAI_Soldier::soundEvent(CObject* who, int eType, Fvector& Position, float p
 						tpaDynamicSounds[j].tMyOrientation = r_torso_current;
 						tpaDynamicSounds[j].tpEntity = tpEntity;
 					}
-				if (j >= tpaDynamicSounds.size()) {
-					if (tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
+				if (j >= (int)tpaDynamicSounds.size()) {
+					if ((int)tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
 						DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
-						for (int j=0; j<tpaDynamicSounds.size(); j++)
+						for (int j=0; j<(int)tpaDynamicSounds.size(); j++)
 							if (tpaDynamicSounds[j].dwTime < dwBest) {
 								dwIndex = j;
 								dwBest = tpaDynamicSounds[j].dwTime;
 							}
-						if (dwIndex < tpaDynamicSounds.size()) {
+						if (dwIndex < (int)tpaDynamicSounds.size()) {
 							tpaDynamicSounds[dwIndex].eSoundType = ESoundTypes(eType);
 							tpaDynamicSounds[dwIndex].dwTime = dwTime;
 							tpaDynamicSounds[dwIndex].fPower = power;
@@ -393,7 +393,7 @@ void CAI_Soldier::SelectSound(int &iIndex)
 {
 	iIndex = -1;
 	float fMaxPower = 0.f;
-	for (int i=0; i<tpaDynamicSounds.size(); i++)
+	for (int i=0; i<(int)tpaDynamicSounds.size(); i++)
 		if ((!tpaDynamicSounds[i].tpEntity) || (tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
 			if ((tpaDynamicSounds[i].dwTime > m_dwCurrentUpdate) && (tpaDynamicSounds[i].fPower > fMaxPower)) {
 				fMaxPower = tpaDynamicSounds[i].fPower;
@@ -425,6 +425,10 @@ bool CAI_Soldier::bfCheckForEntityVisibility(CEntity *tpEntity)
 	if (tpEntityAlive) {
 		fEyeRange = tpEntityAlive->ffGetRange();
 		fEyeFov = tpEntityAlive->ffGetFov() + 20.f;
+	}
+	else {
+		fEyeRange = ffGetRange();
+		fEyeFov = ffGetFov() + 20.f;
 	}
 	
 	tDirection.sub(vPosition,tpEntity->Position());
@@ -510,7 +514,7 @@ void CAI_Soldier::vfAimAtEnemy(bool bInaccuracy)
 
 int	 CAI_Soldier::ifFindDynamicObject(CEntity *tpEntity)
 {
-	for (int i=0; i<tpaDynamicObjects.size(); i++)
+	for (int i=0; i<(int)tpaDynamicObjects.size(); i++)
 		if (tpaDynamicObjects[i].tpEntity == tpEntity)
 			return(i);
 	return(-1);
@@ -518,11 +522,11 @@ int	 CAI_Soldier::ifFindDynamicObject(CEntity *tpEntity)
 
 bool CAI_Soldier::bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier)
 {
-	for (int i=0; i<tpSoldier->tpaDynamicObjects.size(); i++) {
+	for (int i=0; i<(int)tpSoldier->tpaDynamicObjects.size(); i++) {
 		if (tpSoldier->tpaDynamicObjects[i].tpEntity == tSavedEnemy) {
 			DWORD dwTime = m_dwCurrentUpdate;
 			CEntity *tpEntity = tSavedEnemy;
-			for (int j=0; j<tpaDynamicObjects.size(); j++)
+			for (int j=0; j<(int)tpaDynamicObjects.size(); j++)
 				if (tSavedEnemy == tpaDynamicObjects[j].tpEntity) {
 					tpaDynamicObjects[j].dwTime = tpSoldier->tpaDynamicObjects[i].dwTime;
 					tpaDynamicObjects[j].dwUpdateCount++;
@@ -538,7 +542,7 @@ bool CAI_Soldier::bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier)
 			
 			if (tpaDynamicObjects.size() >= m_dwMaxDynamicObjectsCount)	{
 				DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
-				for (int j=0; j<tpaDynamicObjects.size(); j++)
+				for (int j=0; j<(int)tpaDynamicObjects.size(); j++)
 					if (tpaDynamicObjects[j].dwTime < dwBest) {
 						dwIndex = i;
 						dwBest = tpaDynamicObjects[j].dwTime;
@@ -611,7 +615,7 @@ bool CAI_Soldier::bfCheckForVisibility(int iTestNode, SRotation tMyRotation, boo
 	tDirection.sub(tNodePosition,vPosition);
 	tDirection.normalize_safe();
 	mk_rotation(tDirection,tRotation);
-	float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_Node);
+//	float fResult1 = ffGetCoverInDirection(tRotation.yaw,AI_Node);
 
 	if (tMyRotation.yaw >= tRotation.yaw) {
 		while (tMyRotation.yaw - tRotation.yaw > PI)

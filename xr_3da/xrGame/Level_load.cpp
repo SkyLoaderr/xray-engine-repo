@@ -11,7 +11,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	vector<DWORD>		tpaNodes;
 
 	int i;
-	bool bStop			= false;
+//	bool bStop			= false;
 	int iStartPoint = -1, iFinishPoint = -1, iCurPoint = 0, iPrevPoint = -1;
 	DWORD N = tpPatrolPath.tpaWayPoints.size(), dwOneZero = 0, dwZeroOne = 0, dwOneCount = 0, dwTwoCount = 0;
 
@@ -21,16 +21,16 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	tpPatrolPath.dwType = PATH_LOOPED | PATH_BIDIRECTIONAL;
 	
 	// computing from-to arrays
-	for ( i=0; i<N; i++)
+	for ( i=0; i<(int)N; i++)
 		tpaTo[i] = tpaFrom[i] = 0;
 	
-	for ( i=0; i<N; i++) {
+	for ( i=0; i<(int)N; i++) {
 		tpaTo[tpPatrolPath.tpaWayLinks[i].wTo]++;
 		tpaFrom[tpPatrolPath.tpaWayLinks[i].wFrom]++;
 	}
 	
 	// counting types of points
-	for ( i=0; i<N; i++) {
+	for ( i=0; i<(int)N; i++) {
 		if (tpaTo[i] > 2) {
 			Msg("Patrol path %s : invalid count of incoming links (%d) for point %d [%.2f,%.2f,%.2f]",sName,tpaTo[i],i,tpPatrolPath.tpaWayPoints[i].tWayPoint.x,tpPatrolPath.tpaWayPoints[i].tWayPoint.y,tpPatrolPath.tpaWayPoints[i].tWayPoint.z);
 			THROW;
@@ -97,9 +97,9 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 
 	// building point sequencies and path
 	tpPatrolPath.tpaWayPointIndexes.resize(N);
-	for ( i=0; i<N; i++) {			
+	for ( i=0; i<(int)N; i++) {			
 		tpPatrolPath.tpaWayPointIndexes[i] = iCurPoint;
-		for (int j=0; j<tpPatrolPath.tpaWayLinks.size(); j++)
+		for (int j=0; j<(int)tpPatrolPath.tpaWayLinks.size(); j++)
 			if ((tpPatrolPath.tpaWayLinks[j].wFrom == iCurPoint) && (tpPatrolPath.tpaWayLinks[j].wTo != iPrevPoint)) {
 				iPrevPoint = iCurPoint;
 				iCurPoint = tpPatrolPath.tpaWayLinks[j].wTo;
@@ -110,7 +110,7 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 	// creating realistic path
 	tpaDeviations.resize(N);
 	tpaPoints.resize(N);
-	for (int i=0; i<N; i++)
+	for (int i=0; i<(int)N; i++)
 		tpaPoints[i] = tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[i]].tWayPoint;
 
 	AI.vfCreateFastRealisticPath(tpaPoints,tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayPointIndexes[0]].dwNodeID,tpaDeviations,tpPatrolPath.tpaVectors[0],tpaNodes,tpPatrolPath.dwType & PATH_LOOPED);
@@ -126,17 +126,17 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 
 	for (int I=1; I<3; I++) {
 		vector<Fvector> &tpaVector1 = ((I == 1) ? tpPatrolPath.tpaVectors[1] : tpPatrolPath.tpaVectors[2]);
-		for (int i=0, j=0, k=0; i<M; i++, j++) {
+		for (int i=0, j=0, k=0; i<(int)M; i++, j++) {
 			
 			tpaVector1[j] = tpaVector0[i];
 
 			Fvector tTemp;
 			
 			if (tpPatrolPath.dwType & PATH_LOOPED)
-				tTemp.sub(tpaVector0[i < M - 1 ? i + 1 : 0], tpaVector0[i]);
+				tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
 			else
-				if (i < M - 1)
-					tTemp.sub(tpaVector0[i < M - 1 ? i + 1 : 0], tpaVector0[i]);
+				if (i < (int)M - 1)
+					tTemp.sub(tpaVector0[i < (int)M - 1 ? i + 1 : 0], tpaVector0[i]);
 				else
 					tTemp.sub(tpaVector0[i], tpaVector0[i - 1]);
 
@@ -173,9 +173,9 @@ void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 //				}
 //			}
 			
-			for (int m=k; (k < tpaNodes.size()) && (!AI.bfInsideNode(AI.Node(tpaNodes[k]),tpaVector0[i],fHalfSubnodeSize)); k++) ;
+			for (int m=k; (k < (int)tpaNodes.size()) && (!AI.bfInsideNode(AI.Node(tpaNodes[k]),tpaVector0[i],fHalfSubnodeSize)); k++) ;
 
-			if (k >= tpaNodes.size()) {
+			if (k >= (int)tpaNodes.size()) {
 				k = m;
 				tpaVector1.erase(tpaVector1.begin() + j);
 				j--;
@@ -246,7 +246,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_POINTS));
 				DWORD dwCount = OBJ->Rword();
 				tPatrolPath.tpaWayPoints.resize(dwCount);
-				for (int i=0; i<dwCount; i++){
+				for (int i=0; i<(int)dwCount; i++){
 					OBJ->Rvector(tPatrolPath.tpaWayPoints[i].tWayPoint);
 					tPatrolPath.tpaWayPoints[i].dwFlags = OBJ->Rdword();
 					tPatrolPath.tpaWayPoints[i].dwNodeID = AI.q_LoadSearch(tPatrolPath.tpaWayPoints[i].tWayPoint);
@@ -255,7 +255,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 				R_ASSERT(OBJ->FindChunk(WAYOBJECT_CHUNK_LINKS));
 				DWORD dwCountL = OBJ->Rword();
 				tPatrolPath.tpaWayLinks.resize(dwCountL);
-				for ( i=0; i<dwCountL; i++){
+				for ( i=0; i<(int)dwCountL; i++){
 					tPatrolPath.tpaWayLinks[i].wFrom = OBJ->Rword();
 					tPatrolPath.tpaWayLinks[i].wTo = OBJ->Rword();
 				}
@@ -268,7 +268,7 @@ BOOL CLevel::Load_GameSpecific_Before()
 						bool bOk;
 						do {
 							bOk = true;
-							for ( i=1; i<dwCountL; i++)
+							for ( i=1; i<(int)dwCountL; i++)
 								if ((tPatrolPath.tpaWayLinks[i - 1].wFrom > tPatrolPath.tpaWayLinks[i].wFrom) || ((tPatrolPath.tpaWayLinks[i - 1].wFrom == tPatrolPath.tpaWayLinks[i].wFrom) && (tPatrolPath.tpaWayLinks[i - 1].wTo > tPatrolPath.tpaWayLinks[i].wTo))) {
 									WORD wTemp = tPatrolPath.tpaWayLinks[i - 1].wFrom;
 									tPatrolPath.tpaWayLinks[i - 1].wFrom = tPatrolPath.tpaWayLinks[i].wFrom;

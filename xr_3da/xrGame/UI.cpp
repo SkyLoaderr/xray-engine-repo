@@ -175,11 +175,11 @@ bool CUI::OnKeyboardRelease(int dik)
 bool CUI::OnMouseMove	(int dx, int dy)
 {
 	return false;
-	float scale		= psMouseSens * psMouseSensScale/50.f;
-	UICursor.vPos.x+=float(dx)*scale;
-	UICursor.vPos.y+=float(dy)*scale*(3.f/4.f);
-	clamp(UICursor.vPos.x,-1.f,1.f);
-	clamp(UICursor.vPos.y,-1.f,1.f);
+//	float scale		= psMouseSens * psMouseSensScale/50.f;
+//	UICursor.vPos.x+=float(dx)*scale;
+//	UICursor.vPos.y+=float(dy)*scale*(3.f/4.f);
+//	clamp(UICursor.vPos.x,-1.f,1.f);
+//	clamp(UICursor.vPos.y,-1.f,1.f);
 }
 //--------------------------------------------------------------------
 

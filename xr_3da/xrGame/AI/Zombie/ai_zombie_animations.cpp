@@ -67,7 +67,7 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 {
 	CKinematics* tpVisualObject = PKinematics(pVisual);
 	
-	CMotionDef*	tpLegsAnimation=0;
+//	CMotionDef*	tpLegsAnimation=0;
 	CMotionDef*	tpGlobalAnimation=0;
 
 	//tpGlobalAnimation = tZombieAnimations.tNormal.tGlobal.tpaDeath[2];

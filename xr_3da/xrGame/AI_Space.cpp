@@ -277,7 +277,7 @@ void CAI_Space::Render()
 	// temporary
 	for (int i=0; i<3; i++) {
 		vector<Fvector> &tpaVector = Level().m_PatrolPaths["path01"].tpaVectors[i];
-		for (int j=0; j<tpaVector.size(); j++) {
+		for (int j=0; j<(int)tpaVector.size(); j++) {
 			Fvector tP1 = tpaVector[j];
 			tP1.y += .11f;
 			Device.Primitive.dbg_DrawAABB(tP1,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
@@ -427,7 +427,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 			PL.intersectRayPoint(v,DUP,v1);
 			int dist = int((v1.y - pos.y)*(v1.y - pos.y));
 			if (dist < min_dist) {
-				min_dist = dist;
+				min_dist = (short)dist;
 				selected = I;
 			}
 			/**/

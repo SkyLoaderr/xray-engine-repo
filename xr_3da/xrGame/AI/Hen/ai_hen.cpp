@@ -22,7 +22,7 @@ CAI_Hen::CAI_Hen()
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	tpSavedEnemyNode = 0;
-	dwSavedEnemyNodeID = -1;
+	dwSavedEnemyNodeID = DWORD(-1);
 	dwLostEnemyTime = 0;
 	eCurrentState = aiHenFollowMe;
 }
@@ -176,7 +176,7 @@ IC bool CAI_Hen::bfCheckForMember(Fvector &tFireVector, Fvector &tMyPoint, Fvect
 
 bool CAI_Hen::bfCheckPath(AI::Path &Path) {
 	CAI_Space &AI = Level().AI;
-	for (int i=1; i<Path.Nodes.size(); i++) 
+	for (int i=1; i<(int)Path.Nodes.size(); i++) 
 		if (AI.q_mark[Path.Nodes[i]])
 			return(false);
 	return(true);
@@ -287,7 +287,7 @@ void CAI_Hen::Attack()
 					S.m_tLeader = 0;
 					S.m_tLeaderPosition.set(0,0,0);
 					S.m_tpLeaderNode = NULL;
-					S.m_tLeaderNode = -1;
+					S.m_tLeaderNode = DWORD(-1);
 				}
 				S.m_tHitDir			= tHitDir;
 				S.m_dwHitTime		= dwHitTime;
@@ -357,7 +357,7 @@ void CAI_Hen::Attack()
 					if ((Leader->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,Leader->Position())))
 						bCanKillMember = true;
 				if (!bCanKillMember)
-					for (int i=0; i<S.taMemberPositions.size(); i++)
+					for (int i=0; i<(int)S.taMemberPositions.size(); i++)
 						if (((*S.taMembers)[i]->g_Health() > 0) && (bfCheckForMember(tFireVector,tMyPosition,S.taMemberPositions[i]))) {
 							bCanKillMember = true;
 							break;
@@ -394,7 +394,7 @@ void CAI_Hen::Attack()
 					if (Leader->g_Health() <= 0)
 						Leader = this;
 					// setting watch mode to false
-					bool bWatch = false;
+//					bool bWatch = false;
 					// get pointer to the class of node estimator 
 					// for finding the best node in the area
 					CHenSelectorAttack S = SelectorAttack;
@@ -411,7 +411,7 @@ void CAI_Hen::Attack()
 						S.m_tLeader = 0;
 						S.m_tLeaderPosition.set(0,0,0);
 						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
+						S.m_tLeaderNode = DWORD(-1);
 					}
 					/**/
 					S.m_tHitDir			= tHitDir;
@@ -549,7 +549,7 @@ void CAI_Hen::FollowMe()
 							S.m_tLeader = 0;
 							S.m_tLeaderPosition.set(0,0,0);
 							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
+							S.m_tLeaderNode = DWORD(-1);
 						}
 						S.m_tHitDir			= tHitDir;
 						S.m_dwHitTime		= dwHitTime;
@@ -679,7 +679,7 @@ void CAI_Hen::FreeHunting()
 						S.m_tLeader = 0;
 						S.m_tLeaderPosition.set(0,0,0);
 						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
+						S.m_tLeaderNode = DWORD(-1);
 					}
 					S.m_tHitDir			= tHitDir;
 					S.m_dwHitTime		= dwHitTime;
@@ -818,7 +818,7 @@ void CAI_Hen::Pursuit()
 							S.m_tLeader = 0;
 							S.m_tLeaderPosition.set(0,0,0);
 							S.m_tpLeaderNode = NULL;
-							S.m_tLeaderNode = -1;
+							S.m_tLeaderNode = DWORD(-1);
 						}
 						S.m_tHitDir			= tHitDir;
 						S.m_dwHitTime		= dwHitTime;
@@ -988,7 +988,7 @@ void CAI_Hen::UnderFire()
 						S.m_tLeader = 0;
 						S.m_tLeaderPosition.set(0,0,0);
 						S.m_tpLeaderNode = NULL;
-						S.m_tLeaderNode = -1;
+						S.m_tLeaderNode = DWORD(-1);
 					}
 					S.m_tHitDir			= tHitDir;
 					S.m_dwHitTime		= dwHitTime;
@@ -1049,7 +1049,7 @@ void CAI_Hen::UnderFire()
 							if ((Leader->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,Leader->Position())))
 								bCanKillMember = true;
 						if (!bCanKillMember)
-							for (int i=0; i<S.taMemberPositions.size(); i++)
+							for (int i=0; i<(int)S.taMemberPositions.size(); i++)
 								if (((*S.taMembers)[i]->g_Health() > 0) && (bfCheckForMember(tHitDir,S.m_tMyPosition,S.taMemberPositions[i]))) {
 									bCanKillMember = true;
 									break;

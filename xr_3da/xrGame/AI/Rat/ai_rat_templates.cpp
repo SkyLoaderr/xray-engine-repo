@@ -26,7 +26,7 @@
 
 bool CAI_Rat::bfCheckPath(AI::Path &Path) {
 	CAI_Space &AI = Level().AI;
-	for (int i=1; i<Path.Nodes.size(); i++) 
+	for (int i=1; i<(int)Path.Nodes.size(); i++) 
 		if (AI.q_mark[Path.Nodes[i]])
 			return(false);
 		return(true);
@@ -64,7 +64,7 @@ void CAI_Rat::vfCheckForSavedEnemy()
 		tSavedEnemy = 0;
 		tSavedEnemyPosition.set(0,0,0);
 		tpSavedEnemyNode = 0;
-		dwSavedEnemyNodeID = -1;
+		dwSavedEnemyNodeID = DWORD(-1);
 	}
 }
 
@@ -74,7 +74,7 @@ void CAI_Rat::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader
 	if (Leader->g_Health() <= 0)
 		Leader = this;
 	// setting watch mode to false
-	bool bWatch = false;
+//	bool bWatch = false;
 	// if i am not a leader then assign leader
 	if (Leader != this) {
 		S.m_tLeader = Leader;
@@ -87,7 +87,7 @@ void CAI_Rat::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader
 		S.m_tLeader = 0;
 		S.m_tLeaderPosition.set(0,0,0);
 		S.m_tpLeaderNode = NULL;
-		S.m_tLeaderNode = -1;
+		S.m_tLeaderNode = DWORD(-1);
 	}
 	S.m_tHitDir			= tHitDir;
 	S.m_dwHitTime		= dwHitTime;
@@ -161,7 +161,7 @@ void CAI_Rat::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, CEnti
 
 void CAI_Rat::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
-	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+//	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 	m_dwLastRangeSearch = S.m_dwCurTime;
 	Device.Statistic.AI_Node.Begin();
 	Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
@@ -351,8 +351,8 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 	float z = tCurrentPosition.z - (tLeftDown.z - fSubNodeSize/2.f);
 	//iResult = floor(x/fSubNodeSize)*(floor((tRightUp.z - tLeftDown.z)/fSubNodeSize) + 1) + floor(z/fSubNodeSize);
 	SSubNode tMySubNode;
-	tMySubNode.tLeftDown.x = tLeftDown.x - fSubNodeSize/2.f + fSubNodeSize*floor(x/fSubNodeSize);
-	tMySubNode.tLeftDown.z = tLeftDown.z - fSubNodeSize/2.f + fSubNodeSize*floor(z/fSubNodeSize);
+	tMySubNode.tLeftDown.x = tLeftDown.x - fSubNodeSize/2.f + fSubNodeSize*(float)floor(x/fSubNodeSize);
+	tMySubNode.tLeftDown.z = tLeftDown.z - fSubNodeSize/2.f + fSubNodeSize*(float)floor(z/fSubNodeSize);
 	tMySubNode.tRightUp.x = tMySubNode.tLeftDown.x + fSubNodeSize;
 	tMySubNode.tRightUp.z = tMySubNode.tLeftDown.z + fSubNodeSize;
 	for (float i=tLeftDown.x - fSubNodeSize/2.f; i < tRightUp.x; i+=fSubNodeSize) {
@@ -512,7 +512,7 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 				tpCurrentObject->clCenter(tCenter);
 				
 				//bool bFront=0,bBack=0,bLeft=0,bRight=0;
-				for (int j=0; j<tpSubNodes.size(); j++)
+				for (int j=0; j<(int)tpSubNodes.size(); j++)
 					if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
 						tpSubNodes[j].bEmpty = false;
 						//if (&(tpSubNodes[j]) == tpFrontSubNode)
@@ -528,9 +528,9 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 				CAI_Rat *tMember = dynamic_cast<CAI_Rat*>(tpCurrentObject);
 				if (tMember)
 					if (tMember->AI_Path.TravelPath.size() > tMember->AI_Path.TravelStart + 2) {
-						CAI_Space &AI = Level().AI;
+//						CAI_Space &AI = Level().AI;
 						tCenter = tMember->AI_Path.TravelPath[tMember->AI_Path.TravelStart + 1].P;
-						for (int j=0; j<tpSubNodes.size(); j++)
+						for (int j=0; j<(int)tpSubNodes.size(); j++)
 							if (bfInsideSubNode(tCenter,fRadius,tpSubNodes[j])) {
 								tpSubNodes[j].bEmpty = false;
 								//if (&(tpSubNodes[j]) == tpFrontSubNode)
@@ -560,7 +560,7 @@ void CAI_Rat::GoToPointViaSubnodes(Fvector &tLeaderPosition)
 		int iBestI = -1;
 		float fBestCost = _sqr(tLeaderPosition.x - tCurrentPosition.x) + 0*_sqr(tLeaderPosition.y - tCurrentPosition.y) + _sqr(tLeaderPosition.z - tCurrentPosition.z);
 		bool bMobility = false;
-		for ( i=0; i<tpSubNodes.size(); i++)
+		for ( i=0; i<(int)tpSubNodes.size(); i++)
 			if ((i != iMySubNode) && (tpSubNodes[i].bEmpty)) {
 				bMobility = true;
 				float fCurCost = ffComputeCost(tLeaderPosition,tpSubNodes[i]);

@@ -214,7 +214,7 @@ void CAI_Zombie::AttackFire()
 	
 	SelectEnemy(Enemy);
 	
-	DWORD dwCurTime = Level().timeServer();
+//	DWORD dwCurTime = Level().timeServer();
 	
 	if (!(Enemy.Enemy)) {
 		tHitDir.sub(vPosition,tSavedEnemyPosition);
@@ -259,7 +259,7 @@ void CAI_Zombie::AttackRun()
 	
 	SelectEnemy(Enemy);
 	
-	DWORD dwCurTime = Level().timeServer();
+//	DWORD dwCurTime = Level().timeServer();
 	
 	if (!(Enemy.Enemy)) {
 		tHitDir.sub(vPosition,tSavedEnemyPosition);
@@ -305,7 +305,7 @@ void CAI_Zombie::TurnOver()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiZombieDie)
 		
-	DWORD dwCurTime = Level().timeServer();
+//	DWORD dwCurTime = Level().timeServer();
 	
 	INIT_SQUAD_AND_LEADER;
 
@@ -350,7 +350,7 @@ void CAI_Zombie::UnderFire()
 	vfSetMovementType(m_cBodyState,0);
 
 	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiZombieAttackFire)
-	DWORD dwCurTime = Level().timeServer();
+//	DWORD dwCurTime = Level().timeServer();
 	
 	mk_rotation(tHitDir,r_torso_target);
 

@@ -154,7 +154,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 	Estimator.BestNode	= StartNode;
 	Estimator.BestCost = MAX_NODE_ESTIMATION_COST;
 	Estimator.BestCost = Estimator.Estimate(Base,u_SqrDistance2Node(BasePos,Base),bStop);
-	Estimator.BestCost += dwTimeDifference*COEFFICIENT;
+	Estimator.BestCost += (float)(dwTimeDifference*COEFFICIENT);
 	fOldCost = Estimator.BestCost;
 	float range_sqr		= Range*Range;
 
@@ -185,7 +185,7 @@ void CAI_Space::q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI
 
 			// estimate
 			float cost = Estimator.Estimate(T,distance_sqr,bStop);
-			cost += dwTimeDifference*1/sqrtf(distance_sqr)*COEFFICIENT;
+			cost += (float)(dwTimeDifference*1/sqrtf(distance_sqr)*COEFFICIENT);
 			
 			if (cost<Estimator.BestCost) {
 				Estimator.BestCost	= cost;

@@ -61,7 +61,7 @@ float CRatSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	CHECK_RESULT;
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
-			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 				vfAssignMemberPositionAndNode();
 				vfComputeMemberDirection();
 				vfAddDistanceToMemberCost();

@@ -20,7 +20,7 @@
 
 bool CAI_Soldier::bfCheckPath(AI::Path &Path) {
 	CAI_Space &AI = Level().AI;
-	for (int i=1; i<Path.Nodes.size(); i++) 
+	for (int i=1; i<(int)Path.Nodes.size(); i++) 
 		if (AI.q_mark[Path.Nodes[i]])
 			return(false);
 		return(true);
@@ -58,7 +58,7 @@ void CAI_Soldier::vfCheckForSavedEnemy()
 		tSavedEnemy = 0;
 		tSavedEnemyPosition.set(0,0,0);
 		tpSavedEnemyNode = 0;
-		dwSavedEnemyNodeID = -1;
+		dwSavedEnemyNodeID = DWORD(-1);
 	}
 }
 
@@ -68,7 +68,7 @@ void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 	if (Leader->g_Health() <= 0)
 		Leader = this;
 	// setting watch mode to false
-	bool bWatch = false;
+//	bool bWatch = false;
 	// if i am not a leader then assign leader
 	if (Leader != this) {
 		S.m_tLeader = Leader;
@@ -81,7 +81,7 @@ void CAI_Soldier::vfInitSelector(CAISelectorBase &S, CSquad &Squad, CEntity* &Le
 		S.m_tLeader = 0;
 		S.m_tLeaderPosition.set(0,0,0);
 		S.m_tpLeaderNode = NULL;
-		S.m_tLeaderNode = -1;
+		S.m_tLeaderNode = DWORD(-1);
 	}
 	S.m_tHitDir			= tHitDir;
 	S.m_dwHitTime		= dwHitTime;
@@ -128,8 +128,8 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 {
 	if ((!m_dwLastRangeSearch) || (AI_Path.fSpeed < EPS_L) || ((S.m_dwCurTime - m_dwLastRangeSearch > MIN_RANGE_SEARCH_TIME_INTERVAL) && (::Random.randF(0,1) < float(S.m_dwCurTime - m_dwLastRangeSearch)/MAX_TIME_RANGE_SEARCH))) {
 		
-		bool bLastSearch = m_dwLastRangeSearch != 0;
-		DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+//		bool bLastSearch = m_dwLastRangeSearch != 0;
+//		DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 		m_dwLastRangeSearch = S.m_dwCurTime;
 		Device.Statistic.AI_Node.Begin();
 		Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
@@ -161,7 +161,7 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 
 void CAI_Soldier::vfSearchForBetterPositionWTime(CAISelectorBase &S, CSquad &Squad, CEntity* &Leader)
 {
-	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
+//	DWORD dwTimeDifference = S.m_dwCurTime - m_dwLastSuccessfullSearch;
 	m_dwLastRangeSearch = S.m_dwCurTime;
 	Device.Statistic.AI_Node.Begin();
 	Squad.Groups[g_Group()].GetAliveMemberInfoWithLeader(S.taMemberPositions, S.taMemberNodes, S.taDestMemberPositions, S.taDestMemberNodes, this,Leader);
@@ -194,7 +194,7 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 
 	if (bFire)
 		if (m_bFiring)
-			if (m_dwStartFireAmmo - Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
+			if ((int)m_dwStartFireAmmo - (int)Weapons->ActiveWeapon()->GetAmmoElapsed() > ::Random.randI(m_dwFireRandomMin,m_dwFireRandomMax + 1)) {
 				q_action.setup(AI::AIC_Action::FireEnd);
 				m_bFiring = false;
 				m_dwNoFireTime = m_dwCurrentUpdate;
@@ -217,7 +217,7 @@ void CAI_Soldier::vfSetFire(bool bFire, CGroup &Group)
 					}
 			}
 			else {
-				if (m_dwCurrentUpdate - m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
+				if ((int)m_dwCurrentUpdate - (int)m_dwNoFireTime > ::Random.randI(m_dwNoFireTimeMin,m_dwNoFireTimeMax + 1))
 					if (bfCheckIfCanKillEnemy())
 						if (!bfCheckIfCanKillMember()) {
 							m_dwStartFireAmmo = Weapons->ActiveWeapon()->GetAmmoElapsed();
@@ -259,7 +259,7 @@ void CAI_Soldier::vfStopFire()
 	m_bFiring = false;
 }
 
-void CAI_Soldier::vfSetMovementType(char cMovementType,float fMultplier)
+void CAI_Soldier::vfSetMovementType(EMovementTypes cMovementType,float fMultplier)
 {
 	/**/
 	m_fDistanceWent += m_fTimeUpdateDelta*AI_Path.fSpeed;

@@ -39,7 +39,7 @@ void CUIWeapon::Render()
 
 void CUIWeapon::Out(CWeapon* W){
 	if (W){
-		float sc	= Level().HUD()->GetScale();
+//		float sc	= Level().HUD()->GetScale();
 		CFontHUD* H	= Level().HUD()->pHUDFont;
 		H->Color	(0xffffffff);
 		H->Out		(position.x+6,	position.y+15,"%s",W->GetName());

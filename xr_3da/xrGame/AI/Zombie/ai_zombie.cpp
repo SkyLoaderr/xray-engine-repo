@@ -23,7 +23,7 @@ CAI_Zombie::CAI_Zombie()
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	tpSavedEnemyNode = 0;
-	dwSavedEnemyNodeID = -1;
+	dwSavedEnemyNodeID = DWORD(-1);
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
 	m_dwLastRangeSearch = 0;
@@ -65,7 +65,7 @@ CAI_Zombie::~CAI_Zombie()
 void CAI_Zombie::Death()
 {
 	inherited::Death( );
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	eCurrentState = aiZombieDie;
 	
 	Fvector	dir;
@@ -113,7 +113,7 @@ void CAI_Zombie::Load(LPCSTR section)
 	m_fMaxVoiceIinterval = pSettings->ReadFLOAT(section,"MaxVoiceIinterval");
 	m_fVoiceRefreshRate	 = pSettings->ReadFLOAT(section,"VoiceRefreshRate");
 	//fire
-	m_fHitPower       = pSettings->ReadINT(section,"HitPower");
+	m_fHitPower       = (float)(pSettings->ReadINT(section,"HitPower"));
 	m_dwHitInterval   = pSettings->ReadINT(section,"HitInterval");
 }
 
@@ -231,7 +231,7 @@ void CAI_Zombie::OnEvent(EVENT E, DWORD P1, DWORD P2)
 					if (!(strlen(monster_name))) {
 						sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
 						
-						if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
+						if (((int)team != g_Team()) || ((int)squad != g_Squad()) || ((int)group != g_Group()))
 							return;
 						
 						for (int komas=0; komas<3; buf2++)

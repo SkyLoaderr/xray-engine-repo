@@ -37,7 +37,7 @@ float CHenSelectorAttack::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 	CHECK_RESULT;
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
-			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 				vfAssignMemberPositionAndNode();
 				vfComputeMemberDirection();
 				vfAddDistanceToMemberCost();
@@ -65,36 +65,36 @@ float CHenSelectorFreeHunting::Estimate(NodeCompressed* tNode, float fDistance, 
 	return(0);
 	
 	// initialization
-	m_tpCurrentNode = tNode;
-	m_fDistance = fDistance;
-	vfInit();
-	// computations
-	vfAddTravelCost();
-	CHECK_RESULT;
-	vfAddLightCost();
-	CHECK_RESULT;
-	vfAddTotalCoverCost();
-	CHECK_RESULT;
-	if (m_tLeader) {
-		vfAddDistanceToLeaderCost();
-		CHECK_RESULT;
-		vfAddCoverFromLeaderCost();
-		CHECK_RESULT;
-		if (taMemberPositions.size()) {
-			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
-					vfAssignMemberPositionAndNode();
-					vfComputeMemberDirection();
-					vfAddDistanceToMemberCost();
-					vfAddCoverFromMemberCost();
-				}
-			}
-		}
-	}
-	// checking for epsilon
-	vfCheckForEpsilon(bStop);
-	// returning a value
-	return(m_fResult);
+//	m_tpCurrentNode = tNode;
+//	m_fDistance = fDistance;
+//	vfInit();
+//	// computations
+//	vfAddTravelCost();
+//	CHECK_RESULT;
+//	vfAddLightCost();
+//	CHECK_RESULT;
+//	vfAddTotalCoverCost();
+//	CHECK_RESULT;
+//	if (m_tLeader) {
+//		vfAddDistanceToLeaderCost();
+//		CHECK_RESULT;
+//		vfAddCoverFromLeaderCost();
+//		CHECK_RESULT;
+//		if (taMemberPositions.size()) {
+//			if (m_iAliveMemberCount) {
+//				for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
+//					vfAssignMemberPositionAndNode();
+//					vfComputeMemberDirection();
+//					vfAddDistanceToMemberCost();
+//					vfAddCoverFromMemberCost();
+//				}
+//			}
+//		}
+//	}
+//	// checking for epsilon
+//	vfCheckForEpsilon(bStop);
+//	// returning a value
+//	return(m_fResult);
 }
 
 CHenSelectorFollow::CHenSelectorFollow()
@@ -122,7 +122,7 @@ float CHenSelectorFollow::Estimate(NodeCompressed* tNode, float fDistance, BOOL&
 		CHECK_RESULT;
 		if (taMemberPositions.size()) {
 			if (m_iAliveMemberCount) {
-				for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+				for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 					vfAssignMemberPositionAndNode();
 					vfComputeMemberDirection();
 					vfAddDistanceToMemberCost();
@@ -161,7 +161,7 @@ float CHenSelectorPursuit::Estimate(NodeCompressed* tNode, float fDistance, BOOL
 	CHECK_RESULT;
 	if (taMemberPositions.size()) {
 		if (m_iAliveMemberCount) {
-			for ( m_iCurrentMember=0 ; m_iCurrentMember<taMemberPositions.size(); m_iCurrentMember++) {
+			for ( m_iCurrentMember=0 ; m_iCurrentMember<(int)taMemberPositions.size(); m_iCurrentMember++) {
 				vfAssignMemberPositionAndNode();
 				vfComputeMemberDirection();
 				vfAddDistanceToMemberCost();

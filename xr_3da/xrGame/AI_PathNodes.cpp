@@ -426,7 +426,7 @@ void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, 
 	}
 
 	// move last quantity
-	Fvector				motion,final;
+	Fvector				motion;//,final;
 	motion.mul			(mdir,dist/mdist);
 
 	// resolve stucking

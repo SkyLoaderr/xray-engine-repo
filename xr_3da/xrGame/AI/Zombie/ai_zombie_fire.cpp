@@ -30,7 +30,7 @@ void CAI_Zombie::Exec_Action(float dt)
 				
 				if ((this->Local()) && (tSavedEnemy) && (tSavedEnemy->CLS_ID == CLSID_ENTITY))
 					if (tSavedEnemy->g_Health() > 0)
-						tSavedEnemy->Hit(m_fHitPower,tDirection,this);
+						tSavedEnemy->Hit((int)m_fHitPower,tDirection,this);
 					else
 						m_bActionStarted = false;
 			}

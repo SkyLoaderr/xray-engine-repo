@@ -51,7 +51,7 @@ bool CAI_Soldier::bfCheckIfCanKillMember()
 	
 	bool bCanKillMember = false;
 	
-	for (int i=0, iTeam = g_Team(), iSquad = g_Squad(), iGroup = g_Group(); i<tpaVisibleObjects.size(); i++) {
+	for (int i=0, iTeam = (int)g_Team()/**, iSquad = (int)g_Squad(), iGroup = (int)g_Group()/**/; i<(int)tpaVisibleObjects.size(); i++) {
 		CCustomMonster* CustomMonster = dynamic_cast<CCustomMonster*>(tpaVisibleObjects[i]);
 		//if ((CustomMonster) && (CustomMonster->g_Team() == iTeam) && (CustomMonster->g_Squad() == iSquad) && (CustomMonster->g_Group() == iGroup))
 		if ((CustomMonster) && (CustomMonster->g_Team() == iTeam))
@@ -241,12 +241,12 @@ void CAI_Soldier::SelectEnemy(SEnemySelected& S)
 
 bool CAI_Soldier::bfCheckForDanger()
 {
-	DWORD dwCurTime = m_dwCurrentUpdate;
+//	DWORD dwCurTime = m_dwCurrentUpdate;
 
 	if (bfAmIHurt())
 		return(true);
 	
-	CGroup *Group = getGroup();
+//	CGroup *Group = getGroup();
 	
 	if (bfIsMemberHurt())
 		return(true);
@@ -276,7 +276,7 @@ DWORD CAI_Soldier::tfGetActionType()
 	CGroup &Group = Squad.Groups[g_Group()];
 
 	DWORD dwMemberCount = this == Leader ? 0 : 1;
-	for (int i=0; i<Group.Members.size(); i++)
+	for (int i=0; i<(int)Group.Members.size(); i++)
 		if (Group.Members[i]->g_Health() > 0)
 			dwMemberCount++;
 
@@ -358,7 +358,7 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 		else
 			return(FIGHT_TYPE_NONE);
 
-	for (int i=0; i<KnownEnemies.size(); i++) {
+	for (int i=0; i<(int)KnownEnemies.size(); i++) {
 		tpCustomMonster = dynamic_cast<CCustomMonster *>(KnownEnemies[i].key);
 		if (tpCustomMonster) {
 			switch (tpCustomMonster->SUB_CLS_ID) {
@@ -370,8 +370,8 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 					fTempCoefficient = SOLDIER_ENEMY*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
 						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
-						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
-						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+//						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
+						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
@@ -440,8 +440,8 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 			fTempCoefficient = STALKER_ENEMY*tpActor->g_Health()/100.f;
 			for (int j=0; j<tpActor->tpfGetWeapons()->WeaponCount(); j++) {
 				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->getWeaponByIndex(j);
-				int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
-				int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+//				int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
+				int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 				switch (tpWeapon->SUB_CLS_ID) {
 					case CLSID_OBJECT_W_M134		: {
 						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
@@ -499,15 +499,16 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 
 	INIT_SQUAD_AND_LEADER
 	CGroup &Group = Squad.Groups[g_Group()];
-	for ( i=0; i<Group.Members.size() + 1; i++) {
+	for ( i=0; i<(int)Group.Members.size() + 1; i++) {
 		
-		if (i<Group.Members.size())
+		if (i<(int)Group.Members.size())
 			tpCustomMonster = dynamic_cast<CCustomMonster*>(Group.Members[i]);
 		else
 			tpCustomMonster = dynamic_cast<CCustomMonster*>(Squad.Leader);
 		
 //		if ((tpCustomMonster) && (tpCustomMonster != this)) {
 		if (tpCustomMonster) {
+			fTempCoefficient = 0.f;
 			switch (tpCustomMonster->SUB_CLS_ID) {
 				case CLSID_AI_RAT		: {
 					fFightCoefficient += RAT_FRIEND*tpCustomMonster->g_Health()/100.f;
@@ -517,8 +518,8 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 					fTempCoefficient = SOLDIER_FRIEND*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
 						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
-						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
-						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+//						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
+						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
@@ -598,7 +599,7 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 	float fFightCoefficient = 0.f, fTempCoefficient;
 	CCustomMonster *tpCustomMonster = 0;
 
-	for (int i=0; i<KnownEnemies.size(); i++) {
+	for (int i=0; i<(int)KnownEnemies.size(); i++) {
 		tpCustomMonster = dynamic_cast<CCustomMonster *>(KnownEnemies[i].key);
 		if (tpCustomMonster) {
 			switch (tpCustomMonster->SUB_CLS_ID) {
@@ -610,8 +611,8 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 					fTempCoefficient = SOLDIER_ENEMY*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
 						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
-						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
-						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+//						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
+						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
@@ -680,8 +681,8 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 			fTempCoefficient = STALKER_ENEMY*tpActor->g_Health()/100.f;
 			for (int j=0; j<tpActor->tpfGetWeapons()->WeaponCount(); j++) {
 				CWeapon *tpWeapon = tpActor->tpfGetWeapons()->getWeaponByIndex(j);
-				int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
-				int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+//				int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
+				int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 				switch (tpWeapon->SUB_CLS_ID) {
 					case CLSID_OBJECT_W_M134		: {
 						if (j == tpActor->tpfGetWeapons()->ActiveWeaponID())
@@ -739,15 +740,16 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 
 	INIT_SQUAD_AND_LEADER
 	CGroup &Group = Squad.Groups[g_Group()];
-	for ( i=0; i<Group.Members.size() + 1; i++) {
+	for ( i=0; i<(int)Group.Members.size() + 1; i++) {
 		
-		if (i<Group.Members.size())
+		if (i<(int)Group.Members.size())
 			tpCustomMonster = dynamic_cast<CCustomMonster*>(Group.Members[i]);
 		else
 			tpCustomMonster = dynamic_cast<CCustomMonster*>(Squad.Leader);
 		
 //		if ((tpCustomMonster) && (tpCustomMonster != this)) {
 		if (tpCustomMonster) {
+			fTempCoefficient = 0.f;
 			switch (tpCustomMonster->SUB_CLS_ID) {
 				case CLSID_AI_RAT		: {
 					fFightCoefficient += RAT_FRIEND*tpCustomMonster->g_Health()/100.f;
@@ -757,8 +759,8 @@ DWORD CAI_Soldier::tfGetGroupFightType()
 					fTempCoefficient = SOLDIER_FRIEND*tpCustomMonster->g_Health()/100.f;
 					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
 						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(j);
-						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
-						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+//						int iAmmoCurrent = (int)tpWeapon->GetAmmoCurrent();
+						int iAmmoElapsed = (int)tpWeapon->GetAmmoElapsed();
 						switch (tpWeapon->SUB_CLS_ID) {
 							case CLSID_OBJECT_W_M134		: {
 								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
@@ -943,7 +945,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	AI.q_stack.push_back(StartNode);
 	AI.q_mark_bit[StartNode] = true;
 	
-	NodeCompressed*	Base = AI.Node(StartNode);
+//	NodeCompressed*	Base = AI.Node(StartNode);
 	
 	float range_sqr		= Range*Range;
 	float fEyeFov;
@@ -974,7 +976,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	INIT_SQUAD_AND_LEADER;
 	m_tpaNodeStack.clear();
 	vfMarkVisibleNodes(Leader);
-	for (int i=0; i<getGroup()->Members.size(); i++)
+	for (int i=0; i<(int)getGroup()->Members.size(); i++)
 		vfMarkVisibleNodes(getGroup()->Members[i]);
 
 	Msg("Nodes being checked for suspicious :");
@@ -1019,7 +1021,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			if (fCost < .35f) {
 				bool bOk = false;
 				float fMax = 0.f;
-				for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+				for (int i=0, iIndex = -1; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
 					Fvector tP0 = AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
 					float fDistance = tP0.distance_to(tNodePosition);
 					if (fDistance < 10.f) {
@@ -1082,7 +1084,7 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 	//AI.q_mark_bit.assign(AI.GetHeader().count,false);
 	
 	Msg("Suspicious nodes :");
-	for (int k=0; k<Group.m_tpaSuspiciousNodes.size(); k++)
+	for (int k=0; k<(int)Group.m_tpaSuspiciousNodes.size(); k++)
 		Msg("%d",Group.m_tpaSuspiciousNodes[k].dwNodeID);
 
 	Device.Statistic.AI_Range.End();
@@ -1130,14 +1132,14 @@ void CAI_Soldier::vfClasterizeSuspiciousNodes(CGroup &Group)
 //		Group.m_tpaSuspiciousGroups[i] = 0;
 
  	DWORD N = Group.m_tpaSuspiciousNodes.size();
-	for (int i=0, iGroupCounter = 1; i<N; i++, iGroupCounter++) {
+	for (int i=0, iGroupCounter = 1; i<(int)N; i++, iGroupCounter++) {
 		if (!Group.m_tpaSuspiciousNodes[i].dwGroup) 
 			Group.m_tpaSuspiciousNodes[i].dwGroup = iGroupCounter;
-		for (int j=0; j<N; j++)
+		for (int j=0; j<(int)N; j++)
 			if (!Group.m_tpaSuspiciousNodes[j].dwGroup && (Level().AI.ffGetDistanceBetweenNodeCenters(Group.m_tpaSuspiciousNodes[j].dwNodeID,Group.m_tpaSuspiciousNodes[i].dwNodeID) < GROUP_RADIUS))
 				Group.m_tpaSuspiciousNodes[j].dwGroup = iGroupCounter;
 	}
-	for ( i=0; i<N; i++)
+	for ( i=0; i<(int)N; i++)
 		Group.m_tpaSuspiciousNodes[i].dwGroup--;
 	Group.m_tpaSuspiciousGroups.resize(--iGroupCounter);
 	for ( i=0; i<iGroupCounter; i++)
@@ -1152,8 +1154,8 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 	if (iLastIndex >= 0) {
 		dwNodeID = Group.m_tpaSuspiciousNodes[iLastIndex].dwNodeID;
 		int iLastGroup = Group.m_tpaSuspiciousNodes[iLastIndex].dwGroup;
-		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-			if ((Group.m_tpaSuspiciousNodes[i].dwGroup != iLastGroup) || Group.m_tpaSuspiciousNodes[i].dwSearched)
+		for (int i=0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
+			if (((int)Group.m_tpaSuspiciousNodes[i].dwGroup != iLastGroup) || Group.m_tpaSuspiciousNodes[i].dwSearched)
 				continue;
 //			if (Group.m_tpaSuspiciousNodes[i].dwSearched)
 //				continue;
@@ -1171,7 +1173,7 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 	if (Index >= 0)
 		return(Index);
 
-	for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+	for (int i=0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
 //		if (Group.m_tpaSuspiciousGroups[Group.m_tpaSuspiciousNodes[i].dwGroup])
 //			continue;
 		if (Group.m_tpaSuspiciousNodes[i].dwSearched)
@@ -1187,7 +1189,7 @@ int CAI_Soldier::ifGetSuspiciousAvailableNode(int iLastIndex, CGroup &Group)
 	}
 
 	if (Index == -1) {
-		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+		for (int i=0; i<(int)Group.m_tpaSuspiciousNodes.size(); i++) {
 			if (Group.m_tpaSuspiciousNodes[i].dwSearched)
 				continue;
 			if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
@@ -1215,7 +1217,7 @@ float CAI_Soldier::ffGetDistanceToNearestMember()
 	CGroup &Group = Squad.Groups[g_Group()];
 	if (Leader != this)
 		fDistance = min(fDistance,vPosition.distance_to(Leader->Position()));
-	for (int i=0; i<Group.Members.size(); i++)
+	for (int i=0; i<(int)Group.Members.size(); i++)
 		if (Group.Members[i] != this) {
 			CCustomMonster *tpCustomMonster = dynamic_cast<CCustomMonster *>(Group.Members[i]);
 			if (!tpCustomMonster || (tpCustomMonster->AI_Path.fSpeed < EPS_L))
@@ -1232,7 +1234,7 @@ void CAI_Soldier::vfMarkVisibleNodes(CEntity *tpEntity)
 
 	CAI_Space &AI = Level().AI;
 	Fvector tDirection;
-	float fFov = tpCustomMonster->ffGetFov()*PI/180.f, fRange = tpCustomMonster->ffGetRange();
+	float /**fFov = tpCustomMonster->ffGetFov()*PI/180.f, /**/fRange = tpCustomMonster->ffGetRange();
 	
 	for (float fIncrement = 0; fIncrement < PI_MUL_2; fIncrement += PI/10.f) {
 		tDirection.setHP(fIncrement,0.f);

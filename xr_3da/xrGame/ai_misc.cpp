@@ -237,7 +237,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 
 	// init deviation points
 	tpaDeviations[0].set(0,0,0);
-	for ( i=1; i<tpaDeviations.size(); i++) {
+	for ( i=1; i<(int)tpaDeviations.size(); i++) {
 		fRadius = ::Random.randF(fRadiusMin,fRadiusMax);
 		fAlpha = ::Random.randF(0.f,PI_MUL_2);
 		_sincos(fAlpha,fAlpha0,fTemp);
@@ -275,7 +275,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 				return;
 			}
 			if (((tPrevPoint.distance_to_xz(tFinishPoint) - fRoundedDistance < EPS_L))) {
-				if ((!bLooped) && (iCurrentPatrolPoint == tpaPoints.size() - 1)) {
+				if ((!bLooped) && (iCurrentPatrolPoint == (int)tpaPoints.size() - 1)) {
 					bStop = true;
 					break;
 				}
@@ -291,10 +291,10 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 				tTravelNode = tCurrentPosition;
 				tpaPath[iStartI] = tTravelNode;
 				tPrevPoint = tCurrentPosition;
-				vfComputeCircle(tCurrentPosition,tFinishPoint,tpaPoints[iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0],fRadius,tCircleCentre,tFinalPosition,fAlpha0);
+				vfComputeCircle(tCurrentPosition,tFinishPoint,tpaPoints[iCurrentPatrolPoint < (int)tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0],fRadius,tCircleCentre,tFinalPosition,fAlpha0);
 				// build circle points
 				fSegmentSize = 2*fRadius*fRadius*(1 - fSuitAngleCosinus);
-				if ((fRadius < 50.f) && (fSuitableAngle < fAlpha0) && (fSegmentSize < tPrevPoint.distance_to(tpaPoints[iCurrentPatrolPoint])) && (fSegmentSize < .5f*tpaPoints[iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0].distance_to(tpaPoints[iCurrentPatrolPoint]))) {
+				if ((fRadius < 50.f) && (fSuitableAngle < fAlpha0) && (fSegmentSize < tPrevPoint.distance_to(tpaPoints[iCurrentPatrolPoint])) && (fSegmentSize < .5f*tpaPoints[iCurrentPatrolPoint < (int)tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0].distance_to(tpaPoints[iCurrentPatrolPoint]))) {
 					fAlpha0 = fSuitableAngle;
 					do {
 						tCurrentPosition.sub(tCircleCentre);
@@ -358,10 +358,10 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						tpaPath[j].y = ffGetY(*(Node(iNodeIndex)),tpaPath[j].x,tpaPath[j].z);
 						j++;
 					}
-					while ((j<tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j], fHalfSubNodeSize)));
+					while ((j<(int)tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j], fHalfSubNodeSize)));
 					dwCurNode = iNodeIndex;
 				}
-				while (j < tpaPath.size()) {
+				while (j < (int)tpaPath.size()) {
 					tpNode = Node(dwCurNode);
 					taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 					iCount = tpNode->links;
@@ -373,7 +373,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 								tPrevPoint = tpaPath[j - 1];
 								j++;
 							}
-							while ((j<tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j], fHalfSubNodeSize)));
+							while ((j<(int)tpaPath.size()) && (bfInsideNode(tpNode,tpaPath[j], fHalfSubNodeSize)));
 							dwCurNode = iNodeIndex;
 							dwaNodes.push_back(iNodeIndex);
 							break;
@@ -423,7 +423,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 				// finding the node
 				iCurrentPatrolPoint = iCurrentPatrolPoint > 0 ? iCurrentPatrolPoint - 1 : tpaPoints.size() - 1;
 				tStartPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
-				iCurrentPatrolPoint = iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0;
+				iCurrentPatrolPoint = iCurrentPatrolPoint < (int)tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0;
 				tFinishPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 				fDistance = tStartPoint.distance_to_xz(tFinishPoint);
 				dwCurNode = dwPrevNode;
@@ -446,7 +446,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						if (dwIntersect == LI_INTERSECT) {
 							if (
 								(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
-								(iNodeIndex != dwPrevNode)
+								(iNodeIndex != (int)dwPrevNode)
 								) {
 								tTravelNode.y = ffGetY(*(tpNode),tTravelNode.x,tTravelNode.z);
 								tTempPoint = tTravelNode;
@@ -498,7 +498,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 				/**/
 
 				tStartPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
-				iCurrentPatrolPoint = iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0;
+				iCurrentPatrolPoint = iCurrentPatrolPoint < (int)tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0;
 				tFinishPoint.add(tpaPoints[iCurrentPatrolPoint],tpaDeviations[iCurrentPatrolPoint]);
 				fDistance = tStartPoint.distance_to_xz(tFinishPoint);
 				tTempPoint = tTravelNode = tPrevPoint = tStartPoint;
@@ -509,7 +509,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 				if (bLooped)
 					fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
 				else
-					if (iCurrentPatrolPoint != tpaPoints.size() - 1)
+					if (iCurrentPatrolPoint != (int)tpaPoints.size() - 1)
 						fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
 					else
 						fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
@@ -533,7 +533,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 					if (dwIntersect == LI_INTERSECT) {
 						if (
 							(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
-							(iNodeIndex != dwPrevNode)
+							(iNodeIndex != (int)dwPrevNode)
 							) {
 							tTravelNode.y = ffGetY(*(tpNode),tTravelNode.x,tTravelNode.z);
 							tTempPoint = tTravelNode;
@@ -596,7 +596,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 						bOk = false;
 						for ( i=0; i < iCount; i++) {
 							iNodeIndex = UnpackLink(taLinks[i]);
-							if (dwPrevNode == iNodeIndex)
+							if ((int)dwPrevNode == iNodeIndex)
 								continue;
 							UnpackContour(tNextContour,iNodeIndex);
 							for ( j=0; j<4; j++) {
@@ -621,6 +621,10 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 										tSegment.v2 = tNextContour.v1;
 										break;
 									}
+									default: {
+										tSegment.v1 = tNextContour.v4;
+										tSegment.v2 = tNextContour.v1;
+									};
 								}
 								DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
 								if (dwIntersect == LI_INTERSECT) {
@@ -693,10 +697,10 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 
 	/**/
 	// check path for y-values - this is because of the bug I didn't fix
-	for ( i=0, j=0; i<tpaPath.size(); i++) {
+	for ( i=0, j=0; i<(int)tpaPath.size(); i++) {
 		int k=j;
-		for ( ; (j < dwaNodes.size()) && (!bfInsideNode(Node(dwaNodes[j]),tpaPath[i],fHalfSubNodeSize)); j++) ;
-		if (j >= dwaNodes.size()) {
+		for ( ; (j < (int)dwaNodes.size()) && (!bfInsideNode(Node(dwaNodes[j]),tpaPath[i],fHalfSubNodeSize)); j++) ;
+		if (j >= (int)dwaNodes.size()) {
 			j=k;
 			tpaPath.erase(tpaPath.begin() + i);
 			i--;
@@ -726,7 +730,7 @@ void CAI_Space::vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwSt
 		}
 	}
 	/**/
-	for ( i=2; i<tpaPath.size(); i++) {
+	for ( i=2; i<(int)tpaPath.size(); i++) {
 		if (tpaPath[i].distance_to_xz(tpaPath[i-2]) <= fHalfSubNodeSize + tpaPath[i-1].distance_to_xz(tpaPath[i-2])) {
 			Fvector tPrevious = tpaPath[i-2];
 			Fvector tCurrent = tpaPath[i-1];
@@ -759,7 +763,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 	NodeLink *taLinks;
 	PContour tCurContour, tNextContour;
 	PSegment tSegment;
-	int i, j, iNodeIndex, iCount, iSavedIndex;
+	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f, fHalfSubNodeSize = m_header.size*.5f;
 	DWORD dwCurNode, dwPrevNode = DWORD(-1);
@@ -791,7 +795,7 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 				if (dwIntersect == LI_INTERSECT) {
 					if (
 						(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
-						(iNodeIndex != dwPrevNode)
+						(iNodeIndex != (int)dwPrevNode)
 						) {
 						tTempPoint = tTravelNode;
 						iSavedIndex = iNodeIndex;
@@ -837,87 +841,87 @@ float CAI_Space::ffMarkNodesInDirection(DWORD dwStartNode, Fvector tStartPositio
 					// nodes for the closest to the current node intersection with the 
 					// line Start -> Finish
 					return(fCurDistance);
-					tTempPoint = tPrevPoint;
-					bool bOk = false;
-					for ( i=0; i < iCount; i++) {
-						iNodeIndex = UnpackLink(taLinks[i]);
-						if (dwPrevNode == iNodeIndex)
-							continue;
-						UnpackContour(tNextContour,iNodeIndex);
-						for ( j=0; j<4; j++) {
-							switch(j) {
-								case 0: {
-									tSegment.v1 = tNextContour.v1;
-									tSegment.v2 = tNextContour.v2;
-									break;
-								}
-								case 1: {
-									tSegment.v1 = tNextContour.v2;
-									tSegment.v2 = tNextContour.v3;
-									break;
-								}
-								case 2: {
-									tSegment.v1 = tNextContour.v3;
-									tSegment.v2 = tNextContour.v4;
-									break;
-								}
-								case 3: {
-									tSegment.v1 = tNextContour.v4;
-									tSegment.v2 = tNextContour.v1;
-									break;
-								}
-							}
-							DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
-							if (dwIntersect == LI_INTERSECT) {
-								if (tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
-									if (bOk)
-										break;
-									tTempPoint = tTravelNode;
-									iSavedIndex = iNodeIndex;
-									bOk = true;
-								}
-								else 
-									if (bOk) {
-										tTempPoint = tTravelNode;
-										iSavedIndex = iNodeIndex;
-										break;
-									}
-								
-							}
-							else
-								if (dwIntersect == LI_EQUAL) {
-									if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tTempPoint))
-										if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tSegment.v2)) {
-											tTempPoint = tSegment.v1;
-											iSavedIndex = iNodeIndex;
-										}
-										else {
-											tTempPoint = tSegment.v2;
-											iSavedIndex = iNodeIndex;
-										}
-									else
-										if (tStartPoint.distance_to_xz(tSegment.v2) > tStartPoint.distance_to_xz(tTempPoint)) {
-											tTempPoint = tSegment.v2;
-											iSavedIndex = iNodeIndex;
-										}
-
-								}
-						}
-						if (bOk)
-							break;
-					}
-					if (iSavedIndex > -1) {
-						tpaMarks[iSavedIndex] = true;
-						tpaStack.push_back(iSavedIndex);
-						fCurDistance = tStartPoint.distance_to_xz(tTempPoint);
-						tTravelNode = tTempPoint;
-						tPrevPoint = tTravelNode;
-						dwPrevNode = dwCurNode;
-						dwCurNode = iSavedIndex;
-					}
-					else {
-						return(fCurDistance);
-					}
+//					tTempPoint = tPrevPoint;
+//					bool bOk = false;
+//					for ( i=0; i < iCount; i++) {
+//						iNodeIndex = UnpackLink(taLinks[i]);
+//						if ((int)dwPrevNode == iNodeIndex)
+//							continue;
+//						UnpackContour(tNextContour,iNodeIndex);
+//						for ( j=0; j<4; j++) {
+//							switch(j) {
+//								case 0: {
+//									tSegment.v1 = tNextContour.v1;
+//									tSegment.v2 = tNextContour.v2;
+//									break;
+//								}
+//								case 1: {
+//									tSegment.v1 = tNextContour.v2;
+//									tSegment.v2 = tNextContour.v3;
+//									break;
+//								}
+//								case 2: {
+//									tSegment.v1 = tNextContour.v3;
+//									tSegment.v2 = tNextContour.v4;
+//									break;
+//								}
+//								case 3: {
+//									tSegment.v1 = tNextContour.v4;
+//									tSegment.v2 = tNextContour.v1;
+//									break;
+//								}
+//							}
+//							DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+//							if (dwIntersect == LI_INTERSECT) {
+//								if (tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
+//									if (bOk)
+//										break;
+//									tTempPoint = tTravelNode;
+//									iSavedIndex = iNodeIndex;
+//									bOk = true;
+//								}
+//								else 
+//									if (bOk) {
+//										tTempPoint = tTravelNode;
+//										iSavedIndex = iNodeIndex;
+//										break;
+//									}
+//								
+//							}
+//							else
+//								if (dwIntersect == LI_EQUAL) {
+//									if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tTempPoint))
+//										if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tSegment.v2)) {
+//											tTempPoint = tSegment.v1;
+//											iSavedIndex = iNodeIndex;
+//										}
+//										else {
+//											tTempPoint = tSegment.v2;
+//											iSavedIndex = iNodeIndex;
+//										}
+//									else
+//										if (tStartPoint.distance_to_xz(tSegment.v2) > tStartPoint.distance_to_xz(tTempPoint)) {
+//											tTempPoint = tSegment.v2;
+//											iSavedIndex = iNodeIndex;
+//										}
+//
+//								}
+//						}
+//						if (bOk)
+//							break;
+//					}
+//					if (iSavedIndex > -1) {
+//						tpaMarks[iSavedIndex] = true;
+//						tpaStack.push_back(iSavedIndex);
+//						fCurDistance = tStartPoint.distance_to_xz(tTempPoint);
+//						tTravelNode = tTempPoint;
+//						tPrevPoint = tTravelNode;
+//						dwPrevNode = dwCurNode;
+//						dwCurNode = iSavedIndex;
+//					}
+//					else {
+//						return(fCurDistance);
+//					}
 				}
 		}
 		while (true);
@@ -931,7 +935,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 	NodeLink *taLinks;
 	PContour tCurContour, tNextContour;
 	PSegment tSegment;
-	int i, j, iNodeIndex, iCount, iSavedIndex;
+	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tTempPoint, tStartPoint, tFinishPoint, tTravelNode;
 	float fCurDistance = 0.f, fHalfSubNodeSize = m_header.size*.5f, fDistance = ffGetDistanceBetweenNodeCenters(dwStartNode,dwFinishNode);
 	DWORD dwCurNode, dwPrevNode = DWORD(-1);
@@ -957,7 +961,7 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 			if (dwIntersect == LI_INTERSECT) {
 				if (
 					(tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) &&
-					(iNodeIndex != dwPrevNode)
+					(iNodeIndex != (int)dwPrevNode)
 					) {
 					tTempPoint = tTravelNode;
 					iSavedIndex = iNodeIndex;
@@ -1001,85 +1005,85 @@ bool CAI_Space::bfCheckNodeInDirection(DWORD dwStartNode, Fvector tStartPosition
 				// nodes for the closest to the current node intersection with the 
 				// line Start -> Finish
 				return(false);
-				tTempPoint = tPrevPoint;
-				bool bOk = false;
-				for ( i=0; i < iCount; i++) {
-					iNodeIndex = UnpackLink(taLinks[i]);
-					if (dwPrevNode == iNodeIndex)
-						continue;
-					UnpackContour(tNextContour,iNodeIndex);
-					for ( j=0; j<4; j++) {
-						switch(j) {
-							case 0: {
-								tSegment.v1 = tNextContour.v1;
-								tSegment.v2 = tNextContour.v2;
-								break;
-							}
-							case 1: {
-								tSegment.v1 = tNextContour.v2;
-								tSegment.v2 = tNextContour.v3;
-								break;
-							}
-							case 2: {
-								tSegment.v1 = tNextContour.v3;
-								tSegment.v2 = tNextContour.v4;
-								break;
-							}
-							case 3: {
-								tSegment.v1 = tNextContour.v4;
-								tSegment.v2 = tNextContour.v1;
-								break;
-							}
-						}
-						DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
-						if (dwIntersect == LI_INTERSECT) {
-							if (tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
-								if (bOk)
-									break;
-								tTempPoint = tTravelNode;
-								iSavedIndex = iNodeIndex;
-								bOk = true;
-							}
-							else 
-								if (bOk) {
-									tTempPoint = tTravelNode;
-									iSavedIndex = iNodeIndex;
-									break;
-								}
-							
-						}
-						else
-							if (dwIntersect == LI_EQUAL) {
-								if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tTempPoint))
-									if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tSegment.v2)) {
-										tTempPoint = tSegment.v1;
-										iSavedIndex = iNodeIndex;
-									}
-									else {
-										tTempPoint = tSegment.v2;
-										iSavedIndex = iNodeIndex;
-									}
-								else
-									if (tStartPoint.distance_to_xz(tSegment.v2) > tStartPoint.distance_to_xz(tTempPoint)) {
-										tTempPoint = tSegment.v2;
-										iSavedIndex = iNodeIndex;
-									}
-
-							}
-					}
-					if (bOk)
-						break;
-				}
-				if (iSavedIndex > -1) {
-					fCurDistance = tStartPoint.distance_to_xz(tTempPoint);
-					tTravelNode = tTempPoint;
-					tPrevPoint = tTravelNode;
-					dwPrevNode = dwCurNode;
-					dwCurNode = iSavedIndex;
-				}
-				else {
-					return(false);
-				}
+//				tTempPoint = tPrevPoint;
+//				bool bOk = false;
+//				for ( i=0; i < iCount; i++) {
+//					iNodeIndex = UnpackLink(taLinks[i]);
+//					if ((int)dwPrevNode == iNodeIndex)
+//						continue;
+//					UnpackContour(tNextContour,iNodeIndex);
+//					for ( j=0; j<4; j++) {
+//						switch(j) {
+//							case 0: {
+//								tSegment.v1 = tNextContour.v1;
+//								tSegment.v2 = tNextContour.v2;
+//								break;
+//							}
+//							case 1: {
+//								tSegment.v1 = tNextContour.v2;
+//								tSegment.v2 = tNextContour.v3;
+//								break;
+//							}
+//							case 2: {
+//								tSegment.v1 = tNextContour.v3;
+//								tSegment.v2 = tNextContour.v4;
+//								break;
+//							}
+//							case 3: {
+//								tSegment.v1 = tNextContour.v4;
+//								tSegment.v2 = tNextContour.v1;
+//								break;
+//							}
+//						}
+//						DWORD dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.x,&tTravelNode.z);
+//						if (dwIntersect == LI_INTERSECT) {
+//							if (tFinishPoint.distance_to_xz(tTravelNode) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
+//								if (bOk)
+//									break;
+//								tTempPoint = tTravelNode;
+//								iSavedIndex = iNodeIndex;
+//								bOk = true;
+//							}
+//							else 
+//								if (bOk) {
+//									tTempPoint = tTravelNode;
+//									iSavedIndex = iNodeIndex;
+//									break;
+//								}
+//							
+//						}
+//						else
+//							if (dwIntersect == LI_EQUAL) {
+//								if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tTempPoint))
+//									if (tStartPoint.distance_to_xz(tSegment.v1) > tStartPoint.distance_to_xz(tSegment.v2)) {
+//										tTempPoint = tSegment.v1;
+//										iSavedIndex = iNodeIndex;
+//									}
+//									else {
+//										tTempPoint = tSegment.v2;
+//										iSavedIndex = iNodeIndex;
+//									}
+//								else
+//									if (tStartPoint.distance_to_xz(tSegment.v2) > tStartPoint.distance_to_xz(tTempPoint)) {
+//										tTempPoint = tSegment.v2;
+//										iSavedIndex = iNodeIndex;
+//									}
+//
+//							}
+//					}
+//					if (bOk)
+//						break;
+//				}
+//				if (iSavedIndex > -1) {
+//					fCurDistance = tStartPoint.distance_to_xz(tTempPoint);
+//					tTravelNode = tTempPoint;
+//					tPrevPoint = tTravelNode;
+//					dwPrevNode = dwCurNode;
+//					dwCurNode = iSavedIndex;
+//				}
+//				else {
+//					return(false);
+//				}
 			}
 	}
 	return(dwCurNode == dwFinishNode);

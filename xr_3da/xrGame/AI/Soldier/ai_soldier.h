@@ -329,7 +329,7 @@ class CAI_Soldier : public CCustomMonster
 		char				m_cGestureState;
 		//float				m_fAddAngle;
 		DWORD				m_dwTimeBeingWaited;
-		char				m_cMovementType;
+		EMovementTypes		m_cMovementType;
 		CMotionDef*			m_tpaMovementAnimations[3][WALK_NO];
 		sound*				m_tpSoundBeingPlayed;
 		DWORD				m_dwLastSoundRefresh;
@@ -580,8 +580,8 @@ class CAI_Soldier : public CCustomMonster
 		void vfCheckForSavedEnemy();
 		void vfUpdateDynamicObjects();
 		void SetLook(Fvector tPosition);
-		void vfSetMovementType(char cMovementType, float fMultiplier = 1.0f);
-	IC	void vfSetLookAndFireMovement(bool a, DWORD c, float d, CGroup &Group, DWORD dwCurTime)
+		void vfSetMovementType(EMovementTypes cMovementType, float fMultiplier = 1.0f);
+	IC	void vfSetLookAndFireMovement(bool a, EMovementTypes c, float d, CGroup &Group, DWORD dwCurTime)
 		{
 			if (!(Group.m_bLessCoverLook)) {
 				Group.m_bLessCoverLook = m_bLessCoverLook = true;

@@ -37,7 +37,7 @@ bool CAI_Zombie::bfCheckForVisibility(CEntity* tpEntity)
 	if (tpEntity->ps_Size() > 1) {
 		DWORD dwTime = tpEntity->ps_Element(tpEntity->ps_Size() - 1).dwTime;
 		if (dwTime < m_dwMovementIdleTime) {
-			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Size() - 1);
+			tTemp.sub(tpEntity->ps_Element(tpEntity->ps_Size() - 2).vPosition,tpEntity->ps_Element(tpEntity->ps_Size() - 1).vPosition);
 			float fSpeed = tTemp.magnitude()/dwTime;
 			fResult += fSpeed < m_fMaxInvisibleSpeed ? m_fMovementSpeedWeight*fSpeed/m_fMaxInvisibleSpeed : m_fMovementSpeedWeight;
 		}
@@ -95,7 +95,7 @@ void CAI_Zombie::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
 			tWatchDirection.normalize();
 			mk_rotation(tWatchDirection,r_torso_target);
 			
-			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle;
+			float fAngleOfView = eye_fov/180.f*PI, fMaxSquare = -1.f, fBestAngle = r_target.yaw;
 			
 			for (float fIncrement = r_torso_current.yaw - MAX_HEAD_TURN_ANGLE; fIncrement <= r_torso_current.yaw + MAX_HEAD_TURN_ANGLE; fIncrement += 2*MAX_HEAD_TURN_ANGLE/60.f) {
 				float fSquare = ffCalcSquare(fIncrement,fAngleOfView,tNode);
@@ -180,7 +180,7 @@ void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float po
 			CEntity *tpEntity = dynamic_cast<CEntity *>(who);
 			if (tpEntity && (tpEntity->g_Team() != g_Team())) 
 			{
-				for ( j=0; j<tpaDynamicSounds.size(); j++)
+				for ( j=0; j<(int)tpaDynamicSounds.size(); j++)
 					if (who == tpaDynamicSounds[j].tpEntity) {
 						tpaDynamicSounds[j].eSoundType = ESoundTypes(eType);
 						tpaDynamicSounds[j].dwTime = dwTime;
@@ -192,10 +192,10 @@ void CAI_Zombie::soundEvent(CObject* who, int eType, Fvector& Position, float po
 						tpaDynamicSounds[j].tMyOrientation = r_torso_current;
 						tpaDynamicSounds[j].tpEntity = tpEntity;
 					}
-				if (j >= tpaDynamicSounds.size()) {
+				if (j >= (int)tpaDynamicSounds.size()) {
 					if (tpaDynamicSounds.size() >= m_dwMaxDynamicSoundsCount)	{
 						DWORD dwBest = dwTime + 1, dwIndex = DWORD(-1);
-						for (int j=0; j<tpaDynamicSounds.size(); j++)
+						for (int j=0; j<(int)tpaDynamicSounds.size(); j++)
 							if (tpaDynamicSounds[j].dwTime < dwBest) {
 								dwIndex = j;
 								dwBest = tpaDynamicSounds[j].dwTime;
@@ -241,7 +241,7 @@ void CAI_Zombie::SelectSound(int &iIndex)
 	iIndex = -1;
 	//return;
 	float fMaxPower = 0.f;
-	for (int i=0; i<tpaDynamicSounds.size(); i++)
+	for (int i=0; i<(int)tpaDynamicSounds.size(); i++)
 		if ((!tpaDynamicSounds[i].tpEntity) || (tpaDynamicSounds[i].tpEntity->g_Team() != g_Team()))
 			if ((tpaDynamicSounds[i].dwTime > m_dwLastUpdate) && (tpaDynamicSounds[i].fPower > fMaxPower)) {
 				fMaxPower = tpaDynamicSounds[i].fPower;

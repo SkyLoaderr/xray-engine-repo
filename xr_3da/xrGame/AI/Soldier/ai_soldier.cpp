@@ -23,7 +23,7 @@ CAI_Soldier::CAI_Soldier()
 	tSavedEnemy = 0;
 	tSavedEnemyPosition.set(0,0,0);
 	tpSavedEnemyNode = 0;
-	dwSavedEnemyNodeID = -1;
+	dwSavedEnemyNodeID = DWORD(-1);
 	dwLostEnemyTime = 0;
 	bBuildPathToLostEnemy = false;
 	m_dwLastRangeSearch = 0;
@@ -98,7 +98,7 @@ CAI_Soldier::~CAI_Soldier()
 	Engine.Event.Handler_Detach (m_tpEventSay,this);
 	Engine.Event.Handler_Detach (m_tpEventAssignPath,this);
 	Msg("FSM report for %s :",cName());
-	for (int i=0; i<tStateList.size(); i++)
+	for (int i=0; i<(int)tStateList.size(); i++)
 		Msg("%3d %6d",tStateList[i].eState,tStateList[i].dwTime);
 	Msg("Total updates : %d",m_dwUpdateCount);
 }
@@ -174,10 +174,10 @@ void CAI_Soldier::Load	(LPCSTR section)
 	m_dwFireRandomMax  = pSettings->ReadINT(section,"FireRandomMax");
 	m_dwNoFireTimeMin  = pSettings->ReadINT(section,"NoFireTimeMin");
 	m_dwNoFireTimeMax  = pSettings->ReadINT(section,"NoFireTimeMax");
-	m_fMinMissDistance = pSettings->ReadINT(section,"MinMissDistance");
-	m_fMinMissFactor   = pSettings->ReadINT(section,"MinMissFactor");
-	m_fMaxMissDistance = pSettings->ReadINT(section,"MaxMissDistance");
-	m_fMaxMissFactor   = pSettings->ReadINT(section,"MaxMissFactor");
+	m_fMinMissDistance = pSettings->ReadFLOAT(section,"MinMissDistance");
+	m_fMinMissFactor   = pSettings->ReadFLOAT(section,"MinMissFactor");
+	m_fMaxMissDistance = pSettings->ReadFLOAT(section,"MaxMissDistance");
+	m_fMaxMissFactor   = pSettings->ReadFLOAT(section,"MaxMissFactor");
 
 	m_fMinRadioIinterval = pSettings->ReadFLOAT(section,"MinRadioIinterval");
 	m_fMaxRadioIinterval = pSettings->ReadFLOAT(section,"MaxRadioIinterval");
@@ -273,7 +273,7 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 					if (!(strlen(monster_name))) {
 						sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
 						
-						if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
+						if (((int)team != g_Team()) || ((int)squad != g_Squad()) || ((int)group != g_Group()))
 							return;
 						
 						for (int komas=0; komas<3; buf2++)

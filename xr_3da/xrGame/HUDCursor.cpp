@@ -59,7 +59,7 @@ void CHUDCursor::Render()
 	CEntity*	E = dynamic_cast<CEntity*>(O);
 	if (0==E)	return;
 
-	int			cur_team = E->g_Team();
+//	int			cur_team = E->g_Team();
 
 	p1	= Device.vCameraPosition;
 	dir = Device.vCameraDirection;

@@ -207,7 +207,7 @@ void CAI_Rat::AttackFire()
 	
 	SelectEnemy(Enemy);
 	
-	DWORD dwCurTime = Level().timeServer();
+//	DWORD dwCurTime = Level().timeServer();
 	
 	/**
 	if (!(Enemy.Enemy)) {
@@ -255,7 +255,7 @@ void CAI_Rat::AttackRun()
 	
 	SelectEnemy(Enemy);
 	
-	DWORD dwCurTime = Level().timeServer();
+//	DWORD dwCurTime = Level().timeServer();
 	
 	//CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiRatLyingDown)
 	
