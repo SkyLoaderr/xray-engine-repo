@@ -1912,13 +1912,7 @@
 			RelativePath=".\TODO.txt">
 		</File>
 		<File
-			RelativePath="X:\engine.log">
-		</File>
-		<File
 			RelativePath=".\features.txt">
-		</File>
-		<File
-			RelativePath=".\plan_last_month.txt">
 		</File>
 	</Files>
 	<Globals>
