@@ -99,10 +99,7 @@ void * __stdcall xr_aligned_offset_malloc(
 		return NULL;
 	}
 	if ( offset >= size && offset != 0)
-	{
-		errno = EINVAL;
-		return NULL;
-	}
+		size	= offset+1;
 
 	align = (align > PTR_SZ ? align : PTR_SZ) -1;
 
