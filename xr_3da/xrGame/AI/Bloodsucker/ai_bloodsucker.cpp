@@ -14,7 +14,7 @@ CAI_Bloodsucker::CAI_Bloodsucker()
 	stateExploreDNE		= xr_new<CBitingRunAway>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>		(this);
 
-	invisible_vel.set				(0.1f, 0.1f);
+	invisible_vel.set	(0.1f, 0.1f);
 }
 
 CAI_Bloodsucker::~CAI_Bloodsucker()
@@ -37,8 +37,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	MotionMan.accel_load			(section);
 	MotionMan.accel_chain_add		(eAnimWalkFwd,		eAnimRun);
 	MotionMan.accel_chain_add		(eAnimWalkDamaged,	eAnimRunDamaged);
-
-	LoadEffector(pSettings->r_string(section,"postprocess_new"));
 
 	invisible_vel.set(pSettings->r_float(section,"Velocity_Invisible_Linear"),pSettings->r_float(section,"Velocity_Invisible_Angular"));
 	m_movement_params.insert(std::make_pair(eVelocityParameterInvisible,STravelParams(invisible_vel.linear, invisible_vel.angular)));
@@ -323,6 +321,7 @@ void CAI_Bloodsucker::on_activate()
 	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());		
 	state_invisible = true;
+
 }
 
 void CAI_Bloodsucker::on_deactivate()
@@ -331,6 +330,7 @@ void CAI_Bloodsucker::on_deactivate()
 	
 	CParticlesPlayer::StartParticles(invisible_particle_name,Fvector().set(0.0f,0.1f,0.0f),ID());
 	state_invisible = false;
+	
 }
 
 void CAI_Bloodsucker::net_Destroy()
