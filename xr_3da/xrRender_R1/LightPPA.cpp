@@ -8,6 +8,7 @@
 const u32	MAX_POLYGONS			=	1024*8;
 const float MAX_DISTANCE			=	50.f;
 const float	SSM_near_plane			=	.1f;
+const float	SSM_tex_size 			=	32.f;
 
 IC void mk_vertex					(CLightR_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
 {
@@ -126,7 +127,23 @@ void CLightR_Manager::render_spot	()
 		L_project.build_projection	(L->cone,1.f,SSM_near_plane,L->range+EPS_S);
 		L_combine.mul				(L_project,L_view);
 
-		//		2. Calculate visibility for light + build soring tree
+		//		2. Calculate matrix for TC-gen
+		float			fTexelOffs			= (.5f / SSM_tex_size);
+		u32				uRange				= 1; 
+		float			fRange				= float(uRange);
+		float			fBias				= 0.f;
+		Fmatrix			m_TexelAdjust		= 
+		{
+			0.5f,				0.0f,				0.0f,			0.0f,
+			0.0f,				-0.5f,				0.0f,			0.0f,
+			0.0f,				0.0f,				fRange,			0.0f,
+			0.5f + fTexelOffs,	0.5f + fTexelOffs,	fBias,			1.0f
+		};
+		Fmatrix		L_texgen;		L_texgen.mul	(m_TexelAdjust,L_combine);
+
+		//		2. Set global light-params to be used by shading
+
+		//		3. Calculate visibility for light + build soring tree
 		RImplementation.r_pmask						(true,false);
 		RImplementation.r_dsgraph_render_subspace	(
 			L->spatial.sector,
@@ -135,9 +152,9 @@ void CLightR_Manager::render_spot	()
 			TRUE
 			);
 
-		//		3. Set global light-params to be used by shading
+		//		4. Dump sorting tree
+		RImplementation.r_dsgraph_render_graph		(0);
 	}
-	//		4. Dump sorting tree
 	//		??? grass ???
 }
 

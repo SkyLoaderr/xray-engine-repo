@@ -34,7 +34,9 @@
 -------------------------
 		*	conditional shading 					(#define :)
 		*	detail textures on characters
-				
+		*	per-character ambient
+		*	dynamic-glow
+
 		bugs/features:
 		*	освещение монстров вдали (загасить проекцию)
 		*	проверить transluency на деревьях (test_light) 
