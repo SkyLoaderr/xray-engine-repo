@@ -177,19 +177,12 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 		VERIFY			(octant == _octant(n_C,c_C));				// check table assosiations
 		ISpatial_NODE*	&chield			= N->children[octant];
 
-		Log				("a:",u32(chield));
 		if (0==chield)	{
-			Log				("b:",u32(chield));
 			chield			=	_node_create();
-			Log				("c:",u32(chield));
 			VERIFY			(chield);
-			Log				("d:",u32(chield));
 			chield->_init	(N);
-			Log				("e:",u32(chield));
 		}
-		Log				("f:",u32(chield));
 		VERIFY			(chield);
-		Log				("g:",u32(chield));
 		_insert			(chield, c_C, c_R);
 		VERIFY			(chield);
 	}
