@@ -94,6 +94,10 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 			m_tpaHurts[iIndex].dwTime = tHurt.dwTime;
 	}
 	
+	
+	bool bForward = true;
+	
+	PKinematics(pVisual)->PlayFX(m_tAnims.A[m_tBodyState].m_tGlobal.A[PKinematics(pVisual)->LL_GetInstance(element).get_param(1) + (bForward ? 0 : 1)],1.f);
 	// Play hit-sound
 	sound& S = m_tpSoundHit[::Random.randI(STALKER_SND_HIT_COUNT)];
 	if (!S.feedback && g_Alive())

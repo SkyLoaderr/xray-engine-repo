@@ -336,10 +336,10 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 				H = true;
 	}
 	H = true;
-	if (K) {
-		C = true;
-		D = E = F = G = false;
-	}
+//	if (K) {
+//		C = true;
+//		D = E = F = G = false;
+//	}
 	
 	// is there any items to pick up?
 	L = false;
