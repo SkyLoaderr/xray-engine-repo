@@ -61,9 +61,6 @@ private:
 	void							add_Static				(IRender_Visual	*pVisual, u32 planes);
 	void							add_leafs_Dynamic		(IRender_Visual	*pVisual);					// if detected node's full visibility
 	void							add_leafs_Static		(IRender_Visual	*pVisual);					// if detected node's full visibility
-
-	void							calc_DetailTexturing	();
-	void							calc_FogPass			();
 public:
 	IRender_Portal*					getPortal				(int id);
 	IRender_Sector*					getSectorActive			();

@@ -298,7 +298,6 @@ void CRender::Calculate				()
 		g_pGameLevel->pHUD->Render_Last						();	
 
 		// Calculate miscelaneous stuff
-		calc_DetailTexturing								();
 		L_Shadows->calculate								();
 		L_Projector->calculate								();
 	}
