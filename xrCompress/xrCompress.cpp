@@ -201,7 +201,7 @@ void Recurse		(const char* path)
 
 int __cdecl main	(int argc, char* argv[])
 {
-	InitMath		();
+	Core._initialize("xrCompress");
 	printf			("\n\n");
 
 	if (argc!=2)	{
@@ -237,6 +237,6 @@ int __cdecl main	(int argc, char* argv[])
 		return 3;
 	}
 
+	Core._destroy		();
 	return 0;
 }
-

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding = "windows-1251"?>
+<?xml version="1.0" encoding="windows-1251"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="7.00"
+	Version="7.10"
 	Name="xrCompress"
 	SccProjectName="&quot;$/xrCompress&quot;, CIFAAAAA"
 	SccAuxPath=""
@@ -72,7 +72,13 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 		<Configuration
 			Name="Debug|Win32"
@@ -126,149 +132,24 @@
 			<Tool
 				Name="VCWebServiceProxyGeneratorTool"/>
 			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
 				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
 		</Configuration>
 	</Configurations>
+	<References>
+	</References>
 	<Files>
-		<Filter
-			Name="Kernel"
-			Filter="">
-			<File
-				RelativePath=".\FS.cpp">
-			</File>
-			<File
-				RelativePath=".\FS.h">
-			</File>
-			<File
-				RelativePath=".\FTimer.h">
-			</File>
-			<File
-				RelativePath=".\FixedVector.h">
-			</File>
-			<File
-				RelativePath=".\LzHuf.cpp">
-			</File>
-			<File
-				RelativePath=".\_Faabb.h">
-			</File>
-			<File
-				RelativePath=".\_bitwise.h">
-			</File>
-			<File
-				RelativePath=".\_color.h">
-			</File>
-			<File
-				RelativePath=".\_compressed_normal.cpp">
-			</File>
-			<File
-				RelativePath=".\_compressed_normal.h">
-			</File>
-			<File
-				RelativePath=".\_d3d_extensions.h">
-			</File>
-			<File
-				RelativePath=".\_fbox.h">
-			</File>
-			<File
-				RelativePath=".\_fbox2.h">
-			</File>
-			<File
-				RelativePath=".\_fpoint.h">
-			</File>
-			<File
-				RelativePath=".\_frect.h">
-			</File>
-			<File
-				RelativePath=".\_intersection_quad.h">
-			</File>
-			<File
-				RelativePath=".\_ipoint.h">
-			</File>
-			<File
-				RelativePath=".\_irect.h">
-			</File>
-			<File
-				RelativePath=".\_l_vertex.h">
-			</File>
-			<File
-				RelativePath=".\_lit_vertex.h">
-			</File>
-			<File
-				RelativePath=".\_math.cpp">
-			</File>
-			<File
-				RelativePath=".\_math.h">
-			</File>
-			<File
-				RelativePath=".\_matrix.h">
-			</File>
-			<File
-				RelativePath=".\_matrix33.h">
-			</File>
-			<File
-				RelativePath=".\_obb.h">
-			</File>
-			<File
-				RelativePath=".\_plane.h">
-			</File>
-			<File
-				RelativePath=".\_quaternion.cpp">
-			</File>
-			<File
-				RelativePath=".\_quaternion.h">
-			</File>
-			<File
-				RelativePath=".\_random.h">
-			</File>
-			<File
-				RelativePath="_rect.h">
-			</File>
-			<File
-				RelativePath=".\_sphere.cpp">
-			</File>
-			<File
-				RelativePath=".\_sphere.h">
-			</File>
-			<File
-				RelativePath=".\_std_extensions.h">
-			</File>
-			<File
-				RelativePath=".\_stl_extensions.h">
-			</File>
-			<File
-				RelativePath=".\_tl_vertex.h">
-			</File>
-			<File
-				RelativePath=".\_types.h">
-			</File>
-			<File
-				RelativePath=".\_vector2.h">
-			</File>
-			<File
-				RelativePath=".\_vector3d.h">
-			</File>
-			<File
-				RelativePath=".\_vector4.h">
-			</File>
-			<File
-				RelativePath=".\_vertex.h">
-			</File>
-			<File
-				RelativePath=".\cpuid.cpp">
-			</File>
-			<File
-				RelativePath=".\cpuid.h">
-			</File>
-			<File
-				RelativePath=".\lzhuf.h">
-			</File>
-			<File
-				RelativePath=".\vector.h">
-			</File>
-		</Filter>
 		<Filter
 			Name="Main"
 			Filter="">
+			<File
+				RelativePath="crc32.cpp">
+			</File>
 			<File
 				RelativePath=".\StdAfx.cpp">
 				<FileConfiguration
@@ -286,9 +167,6 @@
 			</File>
 			<File
 				RelativePath=".\StdAfx.h">
-			</File>
-			<File
-				RelativePath="crc32.cpp">
 			</File>
 			<File
 				RelativePath=".\xrCompress.cpp">
