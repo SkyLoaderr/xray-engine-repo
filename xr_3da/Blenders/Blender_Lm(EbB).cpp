@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "blender_LmEbB.h"
+#include "blender_Lm(EbB).h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
