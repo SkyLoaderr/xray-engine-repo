@@ -340,6 +340,11 @@ void CExportSkeleton::SSplit::CalculateTB()
     Tdelta.x 	= floorf((Tmax.x-Tmin.x)/2+Tmin.x);
     Tdelta.y 	= floorf((Tmax.y-Tmin.y)/2+Tmin.y);
 
+    Fvector2	Tsize;
+    Tsize.sub	(Tmax,Tmin);
+    if ((Tsize.x>32)||(Tsize.y>32))
+    	Msg		("#!Surface [T:'%s', S:'%s'] has UV tiled more than 32 times.",m_Texture.c_str(),m_Shader.c_str());
+    
     // 2. Recalc UV mapping
     for (v_idx=0; v_idx!=v_cnt; v_idx++){
         SSkelVert	&iV = m_Verts[v_idx];
