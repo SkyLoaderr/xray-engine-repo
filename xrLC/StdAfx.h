@@ -8,13 +8,17 @@
 
 #pragma once
 
-#include "xrCore.h"
+#include <xrCore.h>
+
+#include <d3dx8.h>
+#include <io.h>
+#include <fcntl.h>
+#include <sys\stat.h>
 
 #define RGBA_GETALPHA(rgb)      ((rgb) >> 24)
 #define RGBA_GETRED(rgb)        (((rgb) >> 16) & 0xff)
 #define RGBA_GETGREEN(rgb)      (((rgb) >> 8) & 0xff)
 #define RGBA_GETBLUE(rgb)       ((rgb) & 0xff)
-#define ENGINE_BUILD
 
 #ifndef	NDEBUG
 #define X_TRY 
@@ -24,11 +28,13 @@
 #define X_CATCH catch(...)
 #endif
 
+#define ENGINE_API				// fake, to enable sharing with engine
 #include "clsid.h"
 #include "defines.h"
 #include "log.h"
 #include "fs.h"
 
+#include "_d3d_extensions.h"
 #include "communicate.h"
 extern b_params	g_params;
 

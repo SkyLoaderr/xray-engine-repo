@@ -170,6 +170,9 @@
 				RelativePath=".\StdAfx.h">
 			</File>
 			<File
+				RelativePath="_d3d_extensions.h">
+			</File>
+			<File
 				RelativePath=".\clsid.cpp">
 			</File>
 			<File
