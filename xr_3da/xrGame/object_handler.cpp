@@ -27,6 +27,7 @@
 #include "ef_storage.h"
 #include "ai/stalker/ai_stalker.h"
 #include "inventory.h"
+#include "fooditem.h"
 
 CObjectHandler::CObjectHandler		() : inherited("")
 {
@@ -611,6 +612,19 @@ u32 CObjectHandler::object_state() const
 //		}
 	}
 
+	CFoodItem		*food_item = dynamic_cast<CFoodItem*>(inventory().ActiveItem());
+	if (food_item) {
+		switch (food_item->STATE) {
+			case FOOD_HIDDEN : return(eObjectActionNoItems);
+			case FOOD_SHOWING: return(uid(eObjectActionShow,food_item->ID()));
+			case FOOD_HIDING : return(uid(eObjectActionHide,food_item->ID()));
+			case FOOD_IDLE	 : return(uid(eObjectActionIdle,food_item->ID()));
+			case FOOD_PREPARE: return(uid(eObjectActionSwitch1,food_item->ID()));
+			case FOOD_EATING : return(uid(eObjectActionFire1,food_item->ID()));
+			default			 : NODEFAULT;
+		}
+	}
+
 #ifdef DEBUG
 	return			(u32(eObjectActionDummy));
 #endif
@@ -623,6 +637,7 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 	
 	CWeapon				*weapon = dynamic_cast<CWeapon*>(inventory_item);
 	CMissile			*missile = dynamic_cast<CMissile*>(inventory_item);
+	CEatableItem		*eatable = dynamic_cast<CEatableItem*>(inventory_item);
 
 	if (weapon) {
 		add_state		(xr_new<CObjectStateBase>(inventory_item,CWeapon::eIdle,true),	uid(eObjectActionIdle,id),		0);
@@ -692,8 +707,22 @@ void CObjectHandler::add_item			(CInventoryItem *inventory_item)
 		state(uid(eObjectActionSwitch1,id)).set_inertia_time(100);
 		state(uid(eObjectActionFire1,id)).set_inertia_time(1000);
 	}
+	else if (eatable) {
+		add_state		(xr_new<CObjectStateIdle>(inventory_item,FOOD_IDLE,true),		uid(eObjectActionIdle,id),		0);
+		add_state		(xr_new<CObjectStateShow>(inventory_item,FOOD_IDLE),			uid(eObjectActionShow,id),		0);
+		add_state		(xr_new<CObjectStateHide>(inventory_item,FOOD_HIDING),			uid(eObjectActionHide,id),		0);
+		add_state		(xr_new<CObjectStateSwitch>(inventory_item,FOOD_PREPARE,true),	uid(eObjectActionSwitch1,id),	0);
+		add_state		(xr_new<CObjectStateBase>(inventory_item,FOOD_EATING),			uid(eObjectActionFire1,id),		0);
 
-	// нож, (еда, питьё), приборы
+		add_transition	(uid(eObjectActionShow,id),			uid(eObjectActionIdle,id),		1,		1);
+		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionHide,id),		1,		1);
+		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionDrop,id),		1);
+		add_transition	(uid(eObjectActionIdle,id),			uid(eObjectActionSwitch1,id),	1,		1);
+		add_transition	(uid(eObjectActionSwitch1,id),		uid(eObjectActionFire1,id),		1);
+		add_transition	(uid(eObjectActionFire1,id),		u32(eObjectActionNoItems),		1);
+	}
+
+	// нож, приборы
 
 	//
 	if (graph().vertex(uid(eObjectActionHide,inventory_item->ID())))
