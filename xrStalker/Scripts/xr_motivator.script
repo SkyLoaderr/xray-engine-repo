@@ -105,7 +105,7 @@ xr_motivator.storage[self.object:id()].tradeseller =
         -- Началась торговля или нет
         trade_begin = false,
         -- Последнее время торговли
-        last_trade_time = { idle = 60,
+        last_trade_time = { idle = 1,
                 begin = nil },
         -- Допуск, на сколько подавец может отойти от позиции. Строго больше нуля
         dist = 3,
