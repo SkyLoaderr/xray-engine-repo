@@ -1,0 +1,48 @@
+----------------------------------------------------------------------------------------------------
+-- Physics hit checker
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+class "ph_on_hit"
+
+function ph_on_hit:__init(obj, storage)
+	self.object = obj
+	self.st = storage
+end
+
+function ph_on_hit:reset_scheme()
+end
+
+function ph_on_hit:update(delta)
+end
+
+function ph_on_hit:hit_callback(obj, amount, local_direction, who, bone_index)
+	printf("_bp: motivator_binder:hit_callback: obj='%s', amount=%d, who='%s'", obj:name(), amount,
+		if_then_else(who ~= nil, who:name(), "nil"))
+	if db.storage[self.object:id()].active_scheme then
+		if xr_logic.try_switch_to_another_section(obj, self.st, db.actor) then
+			return
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+
+ 	local action = ph_on_hit(npc, storage)
+	storage.action = action
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+	npc:set_callback(callback.hit, st.action.hit_callback, st.action)
+end
+
+function disable_scheme(npc, scheme)
+	npc:set_callback(callback.hit, nil)
+end
+
+
