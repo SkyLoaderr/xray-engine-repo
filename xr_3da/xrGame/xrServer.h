@@ -8,6 +8,8 @@
 
 #include "xrMessages.h"
 
+const u32	NET_Latency		= 150;		// time in (ms)
+
 // refs
 class xrServerEntity;
 

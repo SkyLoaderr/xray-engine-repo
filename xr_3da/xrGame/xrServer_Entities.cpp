@@ -178,9 +178,23 @@ public:	// actions
 		u64		cls;
 		LPCSTR	event;
 	};
-	vector<tAction>	Actions;
+	vector<tAction>			Actions;
 public:	
-	
+	virtual void			UPDATE_Read			(NET_Packet& P)
+	{
+	}
+	virtual void			UPDATE_Write		(NET_Packet& P)
+	{
+	}
+	virtual void			STATE_Read			(NET_Packet& P, u16 size)
+	{
+		cform_read			(P);
+
+	}
+	virtual void			STATE_Write			(NET_Packet& P)
+	{
+		cform_write			(P);
+	}
 };
 
 //--------------------------------------------------------------------
