@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "UIArtifactMergerWnd.h"
 
-#include "..\\Artifact.h"
+#include "../Artifact.h"
 
 CUIArtifactMerger::CUIArtifactMerger()
 {
@@ -83,7 +83,7 @@ void CUIArtifactMerger::Update()
 	inherited::Update();
 }
 
-bool CUIArtifactMerger::ArtifactProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
+bool CUIArtifactMerger::ArtifactProc(CUIDragDropItem* pItem, CUIDragDropList* /**pList/**/)
 {
 	PIItem pInvItem = (PIItem)pItem->GetData();
 
@@ -96,8 +96,8 @@ bool CUIArtifactMerger::ArtifactProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 void CUIArtifactMerger::PerformArtifactMerger()
 {
 	for(DRAG_DROP_LIST_it it = UIArtifactList.GetDragDropItemsList().begin(); 
- 						  it!= UIArtifactList.GetDragDropItemsList().end();
-						  it++)
+ 						  UIArtifactList.GetDragDropItemsList().end() != it;
+						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		PIItem pItem = (PIItem)pDragDropItem->GetData();
@@ -115,13 +115,13 @@ void CUIArtifactMerger::PerformArtifactMerger()
 	if(!m_pArtifactMerger->m_ArtifactDeletedList.empty())
 	{
 		for(ARTIFACT_LIST_it it = m_pArtifactMerger->m_ArtifactDeletedList.begin();
-							 it!= m_pArtifactMerger->m_ArtifactDeletedList.end(); 
-							 it++)
+							 m_pArtifactMerger->m_ArtifactDeletedList.end() != it; 
+							 ++it)
 		{
 		
 			for(DRAG_DROP_LIST_it it1 = UIArtifactList.GetDragDropItemsList().begin(); 
- 								  it1!= UIArtifactList.GetDragDropItemsList().end();
-								  it1++)
+ 								  UIArtifactList.GetDragDropItemsList().end() != it1;
+								  ++it1)
 			{
 				if((*it1)->GetData() == *it)
 				{

@@ -28,7 +28,7 @@ public:
 	virtual bool		IR_OnKeyboardRelease	(int dik)=0;
 
 	//by Dandy 4.07.03
-	virtual bool		IR_OnMouseMove			(int dx, int dy) {return false;}
+	virtual bool		IR_OnMouseMove			(int /**dx/**/, int /**dy/**/) {return false;}
 };
 
 //by Dandy

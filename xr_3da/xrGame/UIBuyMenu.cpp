@@ -28,11 +28,11 @@ void CUIBuyMenu::OnFrame()
 			F->OutSet	(menu_offs_col[0],menu_offs_row);
 			F->OutNext	(menu_active->title);
 		}
-		for (int col=0; col<2; col++){
+		for (int col=0; col<2; ++col){
 			F->OutSet	(menu_offs_col[col],menu_offs_row);
 			F->OutSkip	(1.5f);
 			int k=1;
-			for (MIIt it=menu_active->FirstItem(); it!=menu_active->LastItem(); it++,k++)
+			for (MIIt it=menu_active->FirstItem(); menu_active->LastItem() != it; ++it,++k)
 				(*it)->DrawItem(F,k,col);
 			if (0==col){
 				F->OutSkip(0.5f);

@@ -27,7 +27,7 @@ void CUICSFragList::OnFrame()
 
 	// create temporary (sort by kills)
 	items.clear			();
-	for (;I!=E;I++)		items.push_back(&I->second);
+	for (;I!=E;++I)		items.push_back(&I->second);
 	std::sort			(items.begin(),items.end(),pred_player);
 
 	// out info
@@ -45,10 +45,10 @@ void CUICSFragList::OnFrame()
 	H->Out				(x0,y,"Team 1: %d %d", Game().teams[0].num_targets, Game().teams[0].score);
 	H->Out				(x0,y,"__________________________________________________________");
 	y+=1*h;
-	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
+	for (ItemIt mI=items.begin(); items.end() != mI; ++mI){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
 		if(P->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;
-		if(P->team != 0) continue;
+		if(0 != P->team) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
 		H->Out			(x0,y,"%3d.",		k++);
@@ -64,10 +64,10 @@ void CUICSFragList::OnFrame()
 	H->Out				(x0,y,"__________________________________________________________");
 	y+=1*h;
 	k=1;
-	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
+	for (ItemIt mI=items.begin(); items.end() != mI; ++mI){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
 		if(P->flags&GAME_PLAYER_FLAG_CS_SPECTATOR) continue;
-		if(P->team != 1) continue;
+		if(1 != P->team) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);
 		else									H->SetColor(0xb0a0a0a0);
 		H->Out			(x0,y,"%3d.",		k++);
@@ -83,7 +83,7 @@ void CUICSFragList::OnFrame()
 	H->Out				(x0,y,"__________________________________________________________");
 	y+=1*h;
 	k=1;
-	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
+	for (ItemIt mI=items.begin(); items.end() != mI; ++mI){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
 		if(!(P->flags&GAME_PLAYER_FLAG_CS_SPECTATOR)) continue;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	H->SetColor(0xf0a0ffa0);

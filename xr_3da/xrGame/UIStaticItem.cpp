@@ -68,22 +68,22 @@ void CUIStaticItem::Render		(const ref_shader& sh)
 	
 	
 	int				x,y;
-	for (x=0; x<iTileX; x++){
-		for (y=0; y<iTileY; y++){
+	for (x=0; x<iTileX; ++x){
+		for (y=0; y<iTileY; ++y){
 			pos.set					(bp.x+x*fw,bp.y+y*fh);
 			inherited::Render		(pv,pos,dwColor);
 			v_cnt	+=4;
 		}
 	}
 	if (iRemX){
-		for (y=0; y<iTileY; y++){
+		for (y=0; y<iTileY; ++y){
 			pos.set					(bp.x+iTileX*fw,bp.y+y*fh);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iRemX,iVisRect.y2);	
 			v_cnt	+=4;
 		}
 	}
 	if (iRemY){
-		for (x=0; x<iTileX; x++){
+		for (x=0; x<iTileX; ++x){
 			pos.set					(bp.x+x*fw,bp.y+iTileY*fh);
 			inherited::Render		(pv,pos,dwColor,iVisRect.x1,iVisRect.y1,iVisRect.x2,iRemY);	
 			v_cnt	+=4;

@@ -16,8 +16,8 @@ public:
 	virtual void		OnFrame				();
 
 	virtual bool		IR_OnKeyboardPress		(int dik);
-	virtual bool		IR_OnKeyboardRelease	(int dik){return false;}
-	virtual bool		IR_OnMouseMove			(int dx, int dy){return false;}
+	virtual bool		IR_OnKeyboardRelease	(int /**dik/**/){return false;}
+	virtual bool		IR_OnMouseMove			(int /**dx/**/, int /**dy/**/){return false;}
 };
 
 #endif // __XR_UIBUYMENU_H__

@@ -33,7 +33,7 @@ void CUIDynamicItem::Out(int left, int top, u32 color)
 	}
 	HUD().ClientToScreenScaled(D->pos,left,top,uAlign);
 	D->color = color;
-	item_cnt++;
+	++item_cnt;
 }
 
 
@@ -49,7 +49,7 @@ void CUIDynamicItem::Render	()
 	FVF::TL*		pv	= (FVF::TL*) RCache.Vertex.Lock(item_cnt*4,hGeom.stride(),vOffset);
 	
 	DIDIt it		= data.begin();
-	for (u32 i=0; i<item_cnt; i++,it++)
+	for (u32 i=0; i<item_cnt; ++i,++it)
 		inherited::Render(pv,it->pos,it->color);
 
 	// unlock VB and Render it as triangle LIST
@@ -69,7 +69,7 @@ void CUIDynamicItem::Render(float angle)
 	FVF::TL*		pv	= (FVF::TL*) RCache.Vertex.Lock(item_cnt*4,hGeom.stride(),vOffset);
 	
 	DIDIt it		= data.begin();
-	for (u32 i=0; i<item_cnt; i++,it++)
+	for (u32 i=0; i<item_cnt; ++i,++it)
 		inherited::Render(pv,it->pos,it->color,angle);	
 
 	// unlock VB and Render it as triangle LIST

@@ -27,7 +27,7 @@ void CUIDMFragList::OnFrame()
 
 	// create temporary map (sort by kills)
 	items.clear			();
-	for (;I!=E;I++)		items.push_back(&I->second);
+	for (;I!=E;++I)		items.push_back(&I->second);
 	std::sort			(items.begin(),items.end(),pred_player);
 
 	// out info
@@ -40,7 +40,7 @@ void CUIDMFragList::OnFrame()
 	else					H->OutNext	("Time remain: unlimited");
 	H->OutSkip			(1.5f);
 	int k=1;
-	for (ItemIt mI=items.begin(); mI!=items.end(); mI++){
+	for (ItemIt mI=items.begin(); items.end() != mI; ++mI){
 		game_cl_GameState::Player* P = (game_cl_GameState::Player*)*mI;
 		u32	color = 0;
 		if (P->flags&GAME_PLAYER_FLAG_LOCAL)	color = 0xf0a0ffa0; //H->SetColor(0xf0a0ffa0);

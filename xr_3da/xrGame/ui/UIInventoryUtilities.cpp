@@ -6,8 +6,8 @@
 
 #include "stdafx.h"
 #include "UIInventoryUtilities.h"
-#include "..\\WeaponAmmo.h"
-#include "..\\UIStaticItem.h"
+#include "../WeaponAmmo.h"
+#include "../UIStaticItem.h"
 #include "UIDragDropItem.h"
 #include "UIStatic.h"
 
@@ -18,8 +18,6 @@ static TIItemList ruck_list;
 
 static ref_shader g_EquipmentIconsShader = NULL;
 static CUIStatic*	GetUIStatic();
-
-
 
 //для надписей на иконках с оружием
 void InventoryUtilities::AmmoUpdateProc(CUIDragDropItem* pItem)
@@ -75,8 +73,8 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 	bool can_place;
 
 
-	for(i=0; i<height; i++)
-		for(j=0; j<width; j++)
+	for(i=0; i<height; ++i)
+		for(j=0; j<width; ++j)
 			ruck_room[i*width + j] = false;
 
 
@@ -91,7 +89,7 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 	
 	found_place = true;
 
-	for(PPIItem it = ruck_list.begin(); (it != ruck_list.end()) && found_place; it++) 
+	for(PPIItem it = ruck_list.begin(); (ruck_list.end() != it) && found_place; ++it) 
 	{
 		PIItem pItem = *it;
 
@@ -99,15 +97,15 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 		//проверяем последовательно каждую клеточку
 		found_place = false;
 	
-		for(i=0; (i<height - pItem->GetGridHeight() +1) && !found_place; i++)
+		for(i=0; (i<height - pItem->GetGridHeight() +1) && !found_place; ++i)
 		{
-			for(j=0; (j<width - pItem->GetGridWidth() +1) && !found_place; j++)
+			for(j=0; (j<width - pItem->GetGridWidth() +1) && !found_place; ++j)
 			{
 				can_place = true;
 
-				for(k=0; (k<pItem->GetGridHeight()) && can_place; k++)
+				for(k=0; (k<pItem->GetGridHeight()) && can_place; ++k)
 				{
-					for(m=0; (m<pItem->GetGridWidth()) && can_place; m++)
+					for(m=0; (m<pItem->GetGridWidth()) && can_place; ++m)
 					{
 						if(ruck_room[(i+k)*width + (j+m)])
 								can_place =  false;
@@ -127,9 +125,9 @@ bool InventoryUtilities::FreeRoom(TIItemList item_list, int width, int height)
 		//разместить элемент на найденном месте
 		if(found_place)
 		{
-			for(k=0; k<pItem->GetGridHeight(); k++)
+			for(k=0; k<pItem->GetGridHeight(); ++k)
 			{
-				for(m=0; m<pItem->GetGridWidth(); m++)
+				for(m=0; m<pItem->GetGridWidth(); ++m)
 				{
 					ruck_room[(place_row+k)*width + place_col+m] = true;
 				}

@@ -2,7 +2,7 @@
 #include "stdafx.h"
 #include "uicursor.h"
 
-#include "..\CustomHUD.h"
+#include "../CustomHUD.h"
 
 #define C_DEFAULT	D3DCOLOR_XRGB(0xff,0xff,0xff)
 
@@ -40,10 +40,10 @@ void CUICursor::Render	()
 	
 	u32 C						= C_DEFAULT;
 
-	pv->set(cx, cy+size,		.0001f,.9999f, C, 0, 1); pv++;
-	pv->set(cx, cy,				.0001f,.9999f, C, 0, 0); pv++;
-	pv->set(cx+size, cy+size,	.0001f,.9999f, C, 1, 1); pv++;
-	pv->set(cx+size, cy,		.0001f,.9999f, C, 1, 0); pv++;
+	pv->set(cx, cy+size,		.0001f,.9999f, C, 0, 1); ++pv;
+	pv->set(cx, cy,				.0001f,.9999f, C, 0, 0); ++pv;
+	pv->set(cx+size, cy+size,	.0001f,.9999f, C, 1, 1); ++pv;
+	pv->set(cx+size, cy,		.0001f,.9999f, C, 1, 0); ++pv;
 	
 	// unlock VB and Render it as triangle LIST
 	Stream->Unlock			(4,hGeom.stride());

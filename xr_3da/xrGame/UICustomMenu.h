@@ -32,14 +32,13 @@ public:
 		OnExecute		= exec;
 		OnItemDraw		= draw;
 	}
-#pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
 	~CUICustomMenuItem	()
 	{
 		xr_free			(value0);
 		xr_free			(value1);
 		xr_free			(caption);
 		xr_free			(title);
-		for (MIIt it=items.begin(); it!=items.end(); it++)
+		for (MIIt it=items.begin(); items.end() != it; ++it)
 			xr_delete		(*it);
 	}
 	IC CUICustomMenu*	Owner				(){return m_Owner;}
@@ -71,7 +70,7 @@ public:
 	IC u32					ItemCount			()			{return (u32)items.size();}
 	IC CUICustomMenuItem*	GetItem				(int id)	
 	{
-		id--;
+		--id;
 		if (-1==id) return m_Parent;
 		if (id<(int)(items.size())) return items[id];
 		return 0;

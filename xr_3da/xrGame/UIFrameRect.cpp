@@ -73,7 +73,7 @@ void CUIFrameRect::Render()
 {
 	if (!(uFlags&flValidSize)) UpdateSize();
 	back.Render		();
-	for (int k=0; k<fmMax; k++) 
+	for (int k=0; k<fmMax; ++k) 
 		frame[k].Render	();
 }
 //--------------------------------------------------------------------

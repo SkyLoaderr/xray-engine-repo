@@ -48,7 +48,7 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 	list_top.Render		();
 	int item_cnt=0;
 	float Y = GROUP_FIRST_ITEM;
-	for (int i=0; i<G.Size(); i++,Y+=GROUP_ITEM_SIZE){
+	for (int i=0; i<G.Size(); ++i,Y+=GROUP_ITEM_SIZE){
 		CEntity* E = G.Members[i];
 		if (E->IsVisibleForHUD())
 		{
@@ -67,7 +67,7 @@ void CUIGroup::Render(CGroup& G, int idx, int grp_index, bool bSelected)
 			list_item_ammo.Render		();
 			// out name
 			HUD().pFontSmall->Out		(float(offset+11),Y,"%6.6s",E->cName());
-			item_cnt++;
+			++item_cnt;
 		}
 	}
 	list_bottom.SetPos(iFloor(sc_offset+3*sc),iFloor(Y*sc));
@@ -88,9 +88,9 @@ void CUISquad::Init(){
 CUISquad::~CUISquad(){
 }
 
-void CUISquad::Render(CSquad& S, bool* bSel, bool bActive){
+void CUISquad::Render(CSquad& S, bool* bSel, bool /**bActive/**/){
 	int idx=0;
-	for (u32 i=0; i<S.Groups.size(); i++,idx){
+	for (u32 i=0; i<S.Groups.size(); ++i,idx){
 		CGroup& G		= S.Groups[i];
 		if (!G.Empty())	group.Render(G,idx++,i,bSel[i]);
 /*		if (!G.Empty()){

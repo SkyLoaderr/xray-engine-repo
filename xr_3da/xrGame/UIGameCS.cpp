@@ -57,7 +57,7 @@ LPCSTR make_time(string16 buf, DWORD sec)
 {
 	sprintf(buf,"%2.0d:%2.0d",(sec%3600)/60,sec%60);
 	int len = (int)xr_strlen(buf);
-	for (int i=0; i<len; i++) if (buf[i]==' ') buf[i]='0';
+	for (int i=0; i<len; ++i) if (buf[i]==' ') buf[i]='0';
 	return buf;
 }
 

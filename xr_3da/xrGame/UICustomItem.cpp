@@ -90,10 +90,10 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color,
 					  float(iTextureRect.height())+hp.y);*/
 
 
-	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); Pointer++;
-	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
-	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); Pointer++;
-	Pointer->set	(RBp.x,	LTp.y,	color, RBt.x, LTt.y); Pointer++;
+	Pointer->set	(LTp.x,	RBp.y,	color, LTt.x, RBt.y); ++Pointer;
+	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); ++Pointer;
+	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); ++Pointer;
+	Pointer->set	(RBp.x,	LTp.y,	color, RBt.x, LTt.y); ++Pointer;
 }
 //--------------------------------------------------------------------
 
@@ -137,10 +137,10 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	iVisRect.getcenter(RS); 
 	C.set			(RS.x*sc+pos.x,RS.y*sc+pos.y);
 
-	Pointer->set	(C.x+_sin1*sz,	C.y+_cos1*sz,	color, LTt.x, RBt.y); Pointer++;
-	Pointer->set	(C.x-_sin2*sz,	C.y-_cos2*sz,	color, LTt.x, LTt.y); Pointer++;
-	Pointer->set	(C.x+_sin2*sz,	C.y+_cos2*sz,	color, RBt.x, RBt.y); Pointer++;
-	Pointer->set	(C.x-_sin1*sz,	C.y-_cos1*sz,	color, RBt.x, LTt.y); Pointer++;
+	Pointer->set	(C.x+_sin1*sz,	C.y+_cos1*sz,	color, LTt.x, RBt.y); ++Pointer;
+	Pointer->set	(C.x-_sin2*sz,	C.y-_cos2*sz,	color, LTt.x, LTt.y); ++Pointer;
+	Pointer->set	(C.x+_sin2*sz,	C.y+_cos2*sz,	color, RBt.x, RBt.y); ++Pointer;
+	Pointer->set	(C.x-_sin1*sz,	C.y-_cos1*sz,	color, RBt.x, LTt.y); ++Pointer;
 }
 //--------------------------------------------------------------------
 //render in a rect a specified part of texture
@@ -168,10 +168,10 @@ void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 co
 	RBt.set(x3 + hp.x, y3 + hp.y);
 	RTt.set(x4 + hp.x, y4 + hp.y);
 
-	Pointer->set	(LTp.x,	RBp.y,	color, LBt.x, LBt.y); Pointer++;
-	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
-	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); Pointer++;
-	Pointer->set	(RBp.x,	LTp.y,	color, RTt.x, RTt.y); Pointer++;
+	Pointer->set	(LTp.x,	RBp.y,	color, LBt.x, LBt.y); ++Pointer;
+	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); ++Pointer;
+	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); ++Pointer;
+	Pointer->set	(RBp.x,	LTp.y,	color, RTt.x, RTt.y); ++Pointer;
 }
 
 Irect CUICustomItem::GetOriginalRectScaled()

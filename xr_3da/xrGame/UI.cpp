@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "UI.h"
-#include "..\xr_IOConsole.h"
+#include "../xr_IOConsole.h"
 #include "Entity.h"
 #include "HUDManager.h"
 #include "Group.h"
-#include "xr_weapon_list.h"
 #include "UIGameSP.h"
 #include "UIGameCS.h"
 #include "UIGameDM.h"
@@ -38,7 +37,7 @@ CUI::CUI(CHUDManager* p)
 
 CUI::~CUI()
 {
-	for (UIMsgIt it=messages.begin(); it!=messages.end(); it++)
+	for (UIMsgIt it=messages.begin(); messages.end() != it; ++it)
 		xr_delete(*it);
 	xr_delete(pUIGame);
 }
@@ -114,13 +113,13 @@ void CUI::OnFrame()
 #ifdef DEBUG
 	if (!messages.empty()){
 		m_Parent->pFontSmall->OutSet(0,msgs_offs);
-		for (int i=messages.size()-1; i>=0; i--){
+		for (int i=messages.size()-1; i>=0; --i){
 			SUIMessage* M = messages[i];
 			M->life_time-=Device.dwTimeDelta;
 			if (M->life_time<0){
 				xr_delete(messages[i]);
 				messages.erase(i);
-				i--;
+				--i;
 				continue;
 			}
 			u32 color = messages[i]->color;

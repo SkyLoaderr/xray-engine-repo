@@ -29,7 +29,7 @@ void CUIChangeTeamMenu::OnFrame()
 		F->OutSet	(menu_offs_col,menu_offs_row);
 		F->OutSkip	(1.5f);
 		int k=1;
-		for (MIIt it=menu_active->FirstItem(); it!=menu_active->LastItem(); it++,k++)
+		for (MIIt it=menu_active->FirstItem(); menu_active->LastItem() != it; ++it,++k)
 			(*it)->DrawItem(F,k,0);
 		F->OutSkip(0.5f);
 		F->OutNext("%-2d %-20s",0,"Exit");

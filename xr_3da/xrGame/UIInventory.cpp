@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "..\xr_ioconsole.h"
+#include "../xr_ioconsole.h"
 
 #include "uiinventory.h"
 #include "inventory.h"
@@ -29,7 +29,7 @@ CUIInventory::CUIInventory(void) {
 	m_colOffs[0] = (float)l_pHUD->ClientToScreenX(INV_OFFS_COL1, alLeft|alTop);
 	m_colOffs[1] = (float)l_pHUD->ClientToScreenX(INV_OFFS_COL2, alLeft|alTop);
 	m_colOffs[2] = (float)l_pHUD->ClientToScreenX(INV_OFFS_COL3, alLeft|alTop);
-	for(char l_c = 'a'; l_c <= 'z'; l_c++) gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
+	for(char l_c = 'a'; l_c <= 'z'; ++l_c) gs_DIK2CHR[DILetters[l_c-'a']] = l_c;
 
 
 
@@ -53,7 +53,7 @@ void CUIInventory::OnFrame() {
 			CGameFont* l_pF = HUD().pFontMedium;
 			l_pF->SetColor(0xffffffff);
 			CInventory &l_inv = l_pA->m_inventory;
-			for(u32 i = 0; i < l_inv.m_slots.size(); i++) {
+			for(u32 i = 0; i < l_inv.m_slots.size(); ++i) {
 				l_pF->OutSet(m_colOffs[1], m_rowOffs + m_rowSkip * i);
 				l_pF->OutNext("%d. %s", i+1, l_inv.m_slots[i].m_name);
 				if(l_inv.m_slots[i].m_pIItem) {
@@ -65,15 +65,15 @@ void CUIInventory::OnFrame() {
 			char l_l = 'a';
 			char l_name[4][255];
 			TIItemList l_tmpSet; l_tmpSet.insert(l_tmpSet.end(), l_inv.m_belt.begin(), l_inv.m_belt.end());
-			for(PPIItem l_it = l_tmpSet.begin(); l_it != l_tmpSet.end();) {
-				for(u32 i = 0; i < 4; i++) l_name[i][0] = 0;
-				for(u32 i = 0; i < 4; i++) {
+			for(PPIItem l_it = l_tmpSet.begin(); l_tmpSet.end() != l_it;) {
+				for(u32 i = 0; i < 4; ++i) l_name[i][0] = 0;
+				for(u32 i = 0; i < 4; ++i) {
 					PIItem l_pItem = *l_it;
 					l_name[i][0] = l_l++; l_name[i][1] = '.'; l_name[i][2] = ' '; strcpy(&l_name[i][3], l_pItem->Name());
 					u32 l_cnt = 1;
 					for(PPIItem l_it2 = l_it; true;) {
-						PPIItem l_it3 = l_it2; l_it2++; if(l_it2 == l_tmpSet.end()) break;
-						if(!strcmp((*l_it2)->Name(), &l_name[i][3])) { l_cnt++; l_tmpSet.erase(l_it2); l_it2 = l_it3; }
+						PPIItem l_it3 = l_it2; ++l_it2; if(l_it2 == l_tmpSet.end()) break;
+						if(!strcmp((*l_it2)->Name(), &l_name[i][3])) { ++l_cnt; l_tmpSet.erase(l_it2); l_it2 = l_it3; }
 					}
 					if(l_cnt>1) {
 						u32 l_len = (u32)xr_strlen(l_name[i]);
@@ -81,7 +81,7 @@ void CUIInventory::OnFrame() {
 						if(l_cnt>=10) { l_name[i][l_len+2] = '0'+u8(l_cnt/10); l_name[i][l_len+3] = '0'+u8(l_cnt%10); l_name[i][l_len+4] = 0; }
 						else { l_name[i][l_len+2] = '0'+u8(l_cnt%10); l_name[i][l_len+3] = 0; }
 					}
-					l_it++; if(l_it == l_tmpSet.end()) break;
+					++l_it; if(l_it == l_tmpSet.end()) break;
 				}
 				l_pF->OutNext("          %-30s %-30s %-30s %-30s", l_name[0], l_name[1], l_name[2], l_name[3]);
 			}
@@ -89,15 +89,15 @@ void CUIInventory::OnFrame() {
 			l_pF->OutNext("______________________________________________________________________________________");
 			l_pF->OutNext("Bag: %d/%d  %.1fkg/%.0fkg", l_inv.m_ruck.size(), l_inv.m_maxRuck ,l_inv.TotalWeight(), l_inv.m_maxWeight);
 			l_l = 'a'; l_tmpSet.clear(); l_tmpSet.insert(l_tmpSet.end(), l_inv.m_ruck.begin(), l_inv.m_ruck.end());
-			for(PPIItem l_it = l_tmpSet.begin(); l_it != l_tmpSet.end();) {
-				for(u32 i = 0; i < 4; i++) l_name[i][0] = 0;
-				for(u32 i = 0; i < 4; i++) {
+			for(PPIItem l_it = l_tmpSet.begin(); l_tmpSet.end() != l_it;) {
+				for(u32 i = 0; i < 4; ++i) l_name[i][0] = 0;
+				for(u32 i = 0; i < 4; ++i) {
 					PIItem l_pItem = *l_it;
 					l_name[i][0] = l_l++; l_name[i][1] = '.'; l_name[i][2] = ' '; strcpy(&l_name[i][3], l_pItem->NameComplex());
 					u32 l_cnt = 1;
 					for(PPIItem l_it2 = l_it; true;) {
-						PPIItem l_it3 = l_it2; l_it2++; if(l_it2 == l_tmpSet.end()) break;
-						if(!strcmp((*l_it2)->NameComplex(), &l_name[i][3])) { l_cnt++; l_tmpSet.erase(l_it2); l_it2 = l_it3; }
+						PPIItem l_it3 = l_it2; ++l_it2; if(l_it2 == l_tmpSet.end()) break;
+						if(!strcmp((*l_it2)->NameComplex(), &l_name[i][3])) { ++l_cnt; l_tmpSet.erase(l_it2); l_it2 = l_it3; }
 					}
 					if(l_cnt>1) {
 						u32 l_len = (u32)xr_strlen(l_name[i]);
@@ -105,7 +105,7 @@ void CUIInventory::OnFrame() {
 						if(l_cnt>=10) { l_name[i][l_len+2] = '0'+u8(l_cnt/10); l_name[i][l_len+3] = '0'+u8(l_cnt%10); l_name[i][l_len+4] = 0; }
 						else { l_name[i][l_len+2] = '0'+u8(l_cnt%10); l_name[i][l_len+3] = 0; }
 					}
-					l_it++; if(l_it == l_tmpSet.end()) break;
+					++l_it; if(l_it == l_tmpSet.end()) break;
 				}
 				l_pF->OutNext("          %-30s %-30s %-30s %-30s", l_name[0], l_name[1], l_name[2], l_name[3]);
 			}
@@ -151,7 +151,7 @@ bool CUIInventory::IR_OnKeyboardPress(int dik)
 			char l_c = 'a'; TIItemList l_tmpSet;
 			if(m_shift) l_tmpSet.insert(l_tmpSet.end(), l_inv.m_belt.begin(), l_inv.m_belt.end());
 			else l_tmpSet.insert(l_tmpSet.end(), l_inv.m_ruck.begin(), l_inv.m_ruck.end());
-			for(PPIItem l_it = l_tmpSet.begin(); l_it != l_tmpSet.end(); l_it++, l_c++) {
+			for(PPIItem l_it = l_tmpSet.begin(); l_tmpSet.end() != l_it; ++l_it, ++l_c) {
 				PIItem l_pItem = *l_it;
 				if(gs_DIK2CHR[dik] == l_c) {
 					if(m_deleteNext) {
@@ -172,7 +172,7 @@ bool CUIInventory::IR_OnKeyboardPress(int dik)
 					return true;
 				}
 				for(PPIItem l_it2 = l_it; true;) {
-					PPIItem l_it3 = l_it2; l_it2++; if(l_it2 == l_tmpSet.end()) break;
+					PPIItem l_it3 = l_it2; ++l_it2; if(l_it2 == l_tmpSet.end()) break;
 					if(!strcmp((*l_it2)->NameComplex(), l_pItem->NameComplex())) { l_tmpSet.erase(l_it2); l_it2 = l_it3; }
 				}
 			}

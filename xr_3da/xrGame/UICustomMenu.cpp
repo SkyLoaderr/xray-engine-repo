@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "UICustomMenu.h"
 #include "HUDManager.h"
-#include "..\xr_ioconsole.h"
+#include "../xr_ioconsole.h"
 
 void CUICustomMenuItem::Execute()			
 {
@@ -19,7 +19,7 @@ CUICustomMenuItem* UIParseMenu	(CUICustomMenu* owner, CInifile* ini, CUICustomMe
 	if (ln_cnt){
 		if (!root)	root		= xr_new<CUICustomMenuItem> (owner,(CUICustomMenuItem *)NULL,"root",(LPCSTR)NULL,(LPCSTR)NULL,(OnExecuteEvent)NULL,(OnItemDrawEvent)NULL);
 		if (ini->line_exist(sect,"title"))	root->SetTitle(ini->r_string(sect,"title"));
-		for (int i=1; i<=ln_cnt; i++){
+		for (int i=1; i<=ln_cnt; ++i){
 			// append if exist menu item
 			sprintf(buf,"menu_%d",i);
 			if (ini->line_exist(sect,buf)){

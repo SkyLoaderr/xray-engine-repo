@@ -6,7 +6,7 @@
 #include "uiframewindow.h"
 #include "uidragdroplist.h"
 #include "uibutton.h"
-#include "..\\ArtifactMerger.h"
+#include "../ArtifactMerger.h"
 
 class CUIArtifactMerger: public CUIFrameWindow
 {

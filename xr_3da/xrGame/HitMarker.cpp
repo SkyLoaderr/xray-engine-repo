@@ -40,15 +40,15 @@ void CHitMarker::Render()
 		u32			dwOffset;
 		FVF::TL* D		= (FVF::TL*)RCache.Vertex.Lock(12,hGeom.stride(),dwOffset);
 		FVF::TL* Start	= D;
-		for (int i=0; i<4; i++){
+		for (int i=0; i<4; ++i){
 			if (fHitMarks[i]>0){
 				u32 Alpha = iFloor((fHitMarks[i]/float(fShowTime))*255.f);
 				u32 Color = color_rgba(255,255,255,Alpha);
 				const u32* idx = as_id+i*3;
 				
-				const Fvector2& P1 = as_PC[idx[0]]; const Fvector2& T1 = as_TC[idx[0]]; D->set((P1.x+1)*w_2,(P1.y+1)*h_2,.0001f,.9999f, Color, T1.x, T1.y); D++;
-				const Fvector2& P2 = as_PC[idx[1]]; const Fvector2& T2 = as_TC[idx[1]]; D->set((P2.x+1)*w_2,(P2.y+1)*h_2,.0001f,.9999f, Color, T2.x, T2.y); D++;
-				const Fvector2& P3 = as_PC[idx[2]]; const Fvector2& T3 = as_TC[idx[2]]; D->set((P3.x+1)*w_2,(P3.y+1)*h_2,.0001f,.9999f, Color, T3.x, T3.y); D++;
+				const Fvector2& P1 = as_PC[idx[0]]; const Fvector2& T1 = as_TC[idx[0]]; D->set((P1.x+1)*w_2,(P1.y+1)*h_2,.0001f,.9999f, Color, T1.x, T1.y); ++D;
+				const Fvector2& P2 = as_PC[idx[1]]; const Fvector2& T2 = as_TC[idx[1]]; D->set((P2.x+1)*w_2,(P2.y+1)*h_2,.0001f,.9999f, Color, T2.x, T2.y); ++D;
+				const Fvector2& P3 = as_PC[idx[2]]; const Fvector2& T3 = as_TC[idx[2]]; D->set((P3.x+1)*w_2,(P3.y+1)*h_2,.0001f,.9999f, Color, T3.x, T3.y); ++D;
 				fHitMarks[i] -= Device.fTimeDelta;
 			}
 		}
