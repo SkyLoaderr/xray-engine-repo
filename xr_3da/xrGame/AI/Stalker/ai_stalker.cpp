@@ -61,8 +61,8 @@ void CAI_Stalker::reinit			()
 	m_tTaskState					= ALife::eTaskStateChooseTask;
 
 	m_r_hand						= PKinematics(Visual())->LL_BoneID("bip01_r_hand");
-	m_r_finger1						= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
-	m_r_finger2						= PKinematics(Visual())->LL_BoneID("bip01_r_finger1");
+	m_r_finger1						= PKinematics(Visual())->LL_BoneID("bip01_r_finger1");
+	m_r_finger2						= PKinematics(Visual())->LL_BoneID("bip01_r_finger2");
 }
 
 void CAI_Stalker::reload			(LPCSTR section)
