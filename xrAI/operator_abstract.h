@@ -24,24 +24,24 @@ protected:
 	typedef _world_property						COperatorCondition;
 
 protected:
-	CConditionState<_world_property>			m_conditions;
-	CConditionState<_world_property>			m_effects;
+	CSConditionState				m_conditions;
+	CSConditionState				m_effects;
 
 public:
-	IC											COperatorAbstract	();
-	IC											COperatorAbstract	(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects);
-	virtual										~COperatorAbstract	();
-	virtual	void								Load				(LPCSTR section);
-	virtual void								reinit				(bool clear_all);
-	virtual void								reload				(LPCSTR section);
-	IC		const xr_vector<COperatorCondition>	&conditions			() const;
-	IC		void								add_condition		(const COperatorCondition &condition);
-	IC		const xr_vector<COperatorCondition>	&effects			() const;
-	IC		void								add_effect			(const COperatorCondition &effect);
-	virtual bool								applicable			(const xr_vector<COperatorCondition> &condition, const xr_vector<COperatorCondition> &start, const xr_vector<COperatorCondition> &self_condition) const;
-	virtual const CSConditionState				&apply				(const CSConditionState &condition, const xr_vector<COperatorCondition> &self_condition, CSConditionState &result) const;
-	virtual bool								apply_reverse		(const CSConditionState &condition, const xr_vector<COperatorCondition> &start, CSConditionState &result, const xr_vector<COperatorCondition> &self_condition) const;
-	virtual _edge_value_type					weight				() const;
+	IC								COperatorAbstract	();
+	IC								COperatorAbstract	(const CSConditionState &conditions, const CSConditionState &effects);
+	virtual							~COperatorAbstract	();
+	virtual	void					Load				(LPCSTR section);
+	virtual void					reinit				(bool clear_all);
+	virtual void					reload				(LPCSTR section);
+	IC		const CSConditionState	&conditions			() const;
+	IC		void					add_condition		(const COperatorCondition &condition);
+	IC		const CSConditionState	&effects			() const;
+	IC		void					add_effect			(const COperatorCondition &effect);
+	virtual bool					applicable			(const CSConditionState &condition, const CSConditionState &start, const CSConditionState &self_condition) const;
+	virtual const CSConditionState	&apply				(const CSConditionState &condition, const CSConditionState &self_condition, CSConditionState &result) const;
+	virtual bool					apply_reverse		(const CSConditionState &condition, const CSConditionState &start, CSConditionState &result, const CSConditionState &self_condition) const;
+	virtual _edge_value_type		weight				() const;
 };
 
 #include "operator_abstract_inline.h"
