@@ -56,7 +56,6 @@ struct	hdrNODES
 };
 #pragma pack(pop)
 #pragma pack(push,1)
-#pragma warning(disable:4200)
 typedef BYTE		NodeLink[3];
 struct NodePosition
 {
@@ -76,7 +75,6 @@ struct NodeCompressed
 	u8				flag0	: 1;	// .
 	u8				flag1	: 1;	// .
 };									// 2+6+6+1+4+1 = 20b + links
-#pragma warning	(default:4200)
 #pragma pack	(pop)
 
 const u32 XRCL_CURRENT_VERSION		=	14;
