@@ -606,3 +606,8 @@ void	IPureClient::net_Syncronize	()
 	net_DeltaArray.clear();
 	_beginthread		(sync_thread,0,this);
 }
+
+void	IPureClient::ClearStatistic()
+{
+	net_Statistic.Clear();
+}

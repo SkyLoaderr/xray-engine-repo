@@ -23,7 +23,7 @@ void IClientStatistic::Update(DPN_CONNECTION_INFO& CI)
 		mps_send		= cur_msend - mps_send_base;
 		mps_send_base	= cur_msend;
 
-		dwBytesPerSec = dwBytesSended;
+		dwBytesPerSec = (dwBytesPerSec*9 + dwBytesSended)/10;
 		dwBytesSended = 0;
 	}
 	ci_last	= CI;
@@ -314,6 +314,18 @@ void	IPureServer::SendTo_LL(DPNID ID, void* data, u32 size, u32 dwFlags, u32 dwT
 	desc.dwBufferSize	= size;
 	desc.pBufferData	= LPBYTE(data);
 
+#ifdef _DEBUG
+	u32 time_global		= TimeGlobal(device_timer);
+	if (time_global - stats.dwSendTime >= 999)
+	{
+		stats.dwBytesPerSec = (stats.dwBytesPerSec*9 + stats.dwBytesSended)/10;
+		stats.dwBytesSended = 0;
+		stats.dwSendTime = time_global;
+	};
+	if (ID)
+		stats.dwBytesSended += size;
+#endif
+
 	// verify
 	VERIFY		(desc.dwBufferSize);
 	VERIFY		(desc.pBufferData);
@@ -337,16 +349,6 @@ void	IPureServer::SendTo		(DPNID ID, NET_Packet& P, u32 dwFlags, u32 dwTimeout)
 	NET_Packet	Compressed;
 	pCompress	(Compressed,P);
 
-#ifdef _DEBUG
-	u32 time_global		= TimeGlobal(device_timer);
-	if (time_global - stats.dwSendTime > 999)
-	{
-		stats.dwBytesPerSec = stats.dwBytesSended;
-		stats.dwBytesSended = 0;
-		stats.dwSendTime = time_global;
-	};
-	stats.dwBytesSended += Compressed.B.count;
-#endif
 	SendTo_LL(ID,Compressed.B.data,Compressed.B.count,dwFlags,dwTimeout);
 }
 
@@ -443,3 +445,10 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 	return FALSE;
 }
 
+void	IPureServer::ClearStatistic	()
+{
+	for (u32 I=0; I<net_Players.size(); I++)
+	{
+		net_Players[I].stats.Clear();
+	}
+};

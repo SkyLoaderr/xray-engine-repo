@@ -73,6 +73,7 @@ public:
 	virtual	void			Send					(NET_Packet& P, u32 dwFlags=DPNSEND_GUARANTEED, u32 dwTimeout=0);
 	virtual void			OnMessage				(void* data, u32 size);
 	BOOL					net_HasBandwidth		();
+	void					ClearStatistic			();
 	
 	// time management
 	IC u32					timeServer				()	{ return TimeGlobal(device_timer) + net_TimeDelta + net_TimeDelta_User; }

@@ -51,6 +51,8 @@ public:
 	IC u32	getMPS_Receive		()  { return mps_recive;	}
 	IC u32	getMPS_Send			()	{ return mps_send;		}
 
+	IC void	Clear				()	{ CTimer* pTimer = timer; ZeroMemory(this,sizeof(*this)); device_timer=timer; dwBaseTime=TimeGlobal(device_timer); }
+
 	//-----------------------------------------------------------------------
 	u32		dwTimesBlocked;
 	u32		dwBytesSended;

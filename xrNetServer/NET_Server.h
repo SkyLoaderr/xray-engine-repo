@@ -91,6 +91,7 @@ public:
 
 	// statistic
 	const IServerStatistic*	GetStatistic		() { return &stats; }
+	void					ClearStatistic		();
 
 	// extended functionality
 	virtual u32				OnMessage			(NET_Packet& P, DPNID sender);	// Non-Zero means broadcasting with "flags" as returned
