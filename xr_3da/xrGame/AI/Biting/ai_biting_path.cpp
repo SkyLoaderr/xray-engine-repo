@@ -92,14 +92,24 @@ void CAI_Biting::SetupVelocityMasks(bool force_real_speed)
 		break;
 	
 	case ACT_WALK_FWD:
-		vel_mask = eVelocityParamsWalk;
-		des_mask = eVelocityParameterWalkNormal;
+		if (m_bDamaged) {
+			vel_mask = eVelocityParamsWalkDamaged;
+			des_mask = eVelocityParameterWalkDamaged;
+		} else {
+			vel_mask = eVelocityParamsWalk;
+			des_mask = eVelocityParameterWalkNormal;
+		}
 		break;
 	case ACT_WALK_BKWD:
 		break;
 	case ACT_RUN:
-		vel_mask = eVelocityParamsRun;
-		des_mask = eVelocityParameterRunNormal;
+		if (m_bDamaged) {
+			vel_mask = eVelocityParamsRunDamaged;
+			des_mask = eVelocityParameterRunDamaged;
+		} else {
+			vel_mask = eVelocityParamsRun;
+			des_mask = eVelocityParameterRunNormal;
+		}
 		break;
 	case ACT_DRAG:
 		vel_mask = eVelocityParameterDrag;
