@@ -123,7 +123,7 @@ void STextureParams::Save(IWriter& F)
     F.close_chunk	();
 
     F.open_chunk	(THM_CHUNK_BUMP);
-	F.w_float		(0.f);			// obsolette bump_virtual_height
+	F.w_float		(bump_virtual_height);
     F.w_u32			(bump_mode);
     F.w_stringZ		(bump_name);
     F.close_chunk	();
