@@ -232,7 +232,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 
 	st.logic     = xr_logic.cfg_get_switch_conditions(ini, section, npc)
 
-	st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false)
+	st.closed    = utils.cfg_get_bool(ini, section, "closed", npc, false, true)
 	st.locked    = utils.cfg_get_bool(ini, section, "locked", npc, false)
 	if not st.locked then
 		st.tip_open  = utils.cfg_get_string(ini, section, "tip_open", npc, false, "", "tip_door_open")
