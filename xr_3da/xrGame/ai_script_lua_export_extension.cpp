@@ -57,7 +57,7 @@ CLuaGameObject *get_object_by_name(LPCSTR caObjectName)
 //
 LPCSTR get_weather	()
 {
-	return			(g_pGamePersistent->Environment.GetWeather());
+	return			(*g_pGamePersistent->Environment.GetWeather());
 }
 
 void set_weather	(LPCSTR weather_name)

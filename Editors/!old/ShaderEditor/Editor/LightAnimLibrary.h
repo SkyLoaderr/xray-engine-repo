@@ -7,7 +7,7 @@
 	#include "FolderLib.h"              
 #endif
 
-class ECORE_API CLAItem{
+class ENGINE_API CLAItem{
 public:
     ref_str		cName;
     float   	fFPS;
@@ -34,7 +34,7 @@ public:
 };
 DEFINE_VECTOR(CLAItem*,LAItemVec,LAItemIt);
 
-class ECORE_API ELightAnimLibrary{
+class ENGINE_API ELightAnimLibrary{
     LPCSTR			GenerateName		(LPSTR name, LPCSTR source);
 public:
     LAItemVec       Items;
@@ -58,6 +58,6 @@ public:
     LAItemVec&		Objects				(){return Items;}
 };
 
-extern ECORE_API ELightAnimLibrary LALib;
+extern ENGINE_API ELightAnimLibrary LALib;
 
 #endif
