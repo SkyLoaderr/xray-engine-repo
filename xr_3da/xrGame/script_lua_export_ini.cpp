@@ -21,6 +21,7 @@ void CScriptEngine::export_ini()
 	module(lua())
 	[
 		class_<xr_token>("token")
+			.def(					constructor<>())
 			.def_readwrite("name",	&xr_token::name)
 			.def_readwrite("id",	&xr_token::id),
 
