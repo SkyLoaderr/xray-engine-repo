@@ -75,7 +75,7 @@ protected:
 	typedef CVertexManagerHashFixed<
 				u32,
 				_solver_index_type,
-				256,
+				1024,
 				4096
 			>												CSolverVertexManager;
 #endif

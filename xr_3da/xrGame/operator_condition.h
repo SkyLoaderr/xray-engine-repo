@@ -8,7 +8,7 @@
 
 #pragma once
 
-//#define USE_HASH
+#define USE_HASH
 
 #ifdef USE_HASH
 class CRandom32 {

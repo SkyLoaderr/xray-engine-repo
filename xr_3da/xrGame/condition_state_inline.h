@@ -18,7 +18,7 @@
 TEMPLATE_SPECIALIZATION
 IC	CConditionStateAbstract::CConditionState	()
 {
-	m_conditions.reserve	(8);
+	m_conditions.reserve	(32);
 #ifdef USE_HASH
 	m_hash					= 0;
 #endif
