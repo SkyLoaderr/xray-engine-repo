@@ -145,6 +145,11 @@ function switch_online (a, b)
        printf ("ALIFE SIMULATOR FOUNDED") 
        sim:set_switch_offline (patrols[a][b].id, false)
        sim:set_switch_online  (patrols[a][b].id, true) 
+       if b == 1 then 
+          xr_patrol.set_patrol (get_level_object (patrols[a][b].name), true)  
+       else   
+          xr_follower.set_follower (get_level_object (patrols[a][b].name), true)  
+       end   
     else
        if b == 1 then 
           xr_motivator.storage[patrols[a][b].id].patrol.enabled = true
