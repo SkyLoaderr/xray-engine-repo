@@ -57,6 +57,15 @@ public:
 		strcpy(I,"restart game"); 
 	}
 };
+class CCC_Path : public CConsoleCommand {
+public:
+	CCC_Path(LPCSTR N) : CConsoleCommand(N)  { };
+	virtual void Execute(LPCSTR args) {
+		int id1, id2;
+		sscanf(args ,"%d,%d",id1,id2);
+		Level().AI.vfFindMinimalPath(id1,id2,Level().AI.m_tpaNodes);
+	}
+};
 //-----------------------------------------------------------------------
 class CCC_DemoRecord : public CConsoleCommand
 {
@@ -95,6 +104,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,		"g_god",				&psActorFlags,	AF_GODMODE	);
 		CMD1(CCC_Spawn,		"g_spawn"				);
 		CMD1(CCC_Restart,	"g_restart"				);
+		CMD1(CCC_Path,		"path"					);
 
 		// hud
 		CMD3(CCC_Mask,		"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
@@ -164,7 +174,7 @@ extern "C" {
 		case CLSID_HUDMANAGER:			P = new CHUDManager();			break;
 		case CLSID_OBJECT_ACTOR:		P = new CActor();				break;
 		case CLSID_TARGET:				P = new CCustomTarget();		break;
-		case CLSID_SPECTATOR:			P = new CSpectator();			break;
+//		case CLSID_SPECTATOR:			P = new CSpectator();			break;
 
 		case CLSID_AI_RAT:				P = new CAI_Rat();				break;
 		case CLSID_AI_SOLDIER:			P =	new CAI_Soldier();			break;
