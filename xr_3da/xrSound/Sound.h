@@ -74,18 +74,31 @@ enum {
 	This class infact just hides internals and redirect calls to 
 	specific sub-systems
 */
+
+
+class CExtraSoundInfoVisitor;
+
+class CExtraSoundInfo : public xr_resource{
+public:
+	virtual							~CExtraSoundInfo(){}
+	virtual void					accept(CExtraSoundInfoVisitor*)=0;
+};
+
 struct	ref_sound
 {
+	typedef resptr_core<CExtraSoundInfo,resptr_base<CExtraSoundInfo> >	CExtraSoundInfoPtr;
+
 	CSound_source*					handle;			//!< Pointer to wave-source interface
 	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
 	int								g_type;			//!< Sound type, usually for AI
 	CObject*						g_object;		//!< Game object that emitts ref_sound
+	CExtraSoundInfoPtr				g_userdata;
 
     //! A constructor
     /*!
 		\sa ~ref_sound()
 	*/
-	ref_sound()							{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; }
+	ref_sound()							{ handle = 0; feedback=0; g_type=st_SourceType; g_object=0; g_userdata=0;}
 	~ref_sound()						{ destroy(); }
 
 	//! Loader/initializer

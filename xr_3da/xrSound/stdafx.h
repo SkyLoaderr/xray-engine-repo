@@ -31,6 +31,10 @@
 #include "xrCDB.h"
 #include "sound.h"
 
+#define ENGINE_API
+
+#include "xr_resource.h"
+
 // TODO: reference additional headers your program requires here
 #endif
 

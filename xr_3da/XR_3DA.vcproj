@@ -1076,9 +1076,6 @@
 				<File
 					RelativePath=".\Stats.h">
 				</File>
-				<File
-					RelativePath=".\xr_resource.h">
-				</File>
 				<Filter
 					Name="HW"
 					Filter="">

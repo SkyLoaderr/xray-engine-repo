@@ -36,7 +36,7 @@ void	IGame_Level::SoundEvent	( ref_sound* S, float range )
 		float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
 		clamp				(A,0.f,1.f);
 		float Power			= A*p->volume;
-		if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,p->position,Power);
+		if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,/*S->g_userdata,*/p->position,Power);
 	}
 }
 
