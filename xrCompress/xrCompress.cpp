@@ -209,8 +209,9 @@ int __cdecl main	(int argc, char* argv[])
 		fs->write_chunk	(1|CFS_CompressMark, fs_desc.pointer(),fs_desc.size());
 		delete fs;
 		u32			dwTimeEnd	= timeGetTime();
-		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral ratio: %3.1f%%\nElapsed time: %d:%d\n",
+		printf			("\n\nFiles total/skipped/VFS/aliased: %d/%d/%d/%d\nOveral: %dK/%dK, %3.1f%%\nElapsed time: %d:%d\n",
 			filesTOTAL,filesSKIP,filesVFS,filesALIAS,
+			bytesDST/1024,bytesSRC/1024,
 			100.f*float(bytesDST)/float(bytesSRC),
 			((dwTimeEnd-dwTimeStart)/1000)/60,
 			((dwTimeEnd-dwTimeStart)/1000)%60
