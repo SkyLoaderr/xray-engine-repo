@@ -31,9 +31,9 @@ namespace Collide
 		float		range;			// range to intersection
 		int			element;		// номер кости/номер треугольника
 	};
-	class			RayQuery
+	class			ray_query
 	{
-	public:
+	protected:
 		Fvector		start;
 		Fvector		dir;
 		float		range;
@@ -42,14 +42,18 @@ namespace Collide
 		DEFINE_VECTOR(rq_result,rqVec,rqIt);
 		rqVec		results;
 	public:
-		RayQuery	(const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
+		ray_query	(const Fvector& _start, const Fvector& _dir, float _range, u32 _flags)
 		{
 			start	=_start;
 			dir		= _dir;
 			range	= _range;
 			flags	= _flags;
 		}
-		IC BOOL		AppendResult	(CObject* _who, float _range, int _element)
+		IC const Fvector&	_start			()	{return start;}
+		IC const Fvector&	_dir			()	{return dir;	}
+		IC float			_range			()	{return range;}
+		IC u32				_flags			()	{return flags;}
+		IC BOOL				append_result	(CObject* _who, float _range, int _element)
 		{
 			if ((flags&CDB::OPT_ONLYNEAREST)&&!results.empty()){
 				rq_result& R		= results.back();
@@ -66,7 +70,7 @@ namespace Collide
 			rq.O		=_who;
 			return TRUE;
 		}
-		IC int			r_count			()	{return results.size();}
-		IC rq_result*	r_begin			()	{return &*results.begin();}
+		IC int				r_count			()	{return results.size();}
+		IC rq_result*		r_begin			()	{return &*results.begin();}
 	};
 };

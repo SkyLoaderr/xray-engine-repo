@@ -17,7 +17,7 @@ BOOL CObjectSpace::RayTest	( const Fvector &start, const Fvector &dir, float ran
 	VERIFY					(_abs(dir.magnitude()-1)<EPS);
 
 	xrc.ray_options			(CDB::OPT_ONLYFIRST);
-	Collide::RayQuery Q		(start,dir,range,CDB::OPT_ONLYFIRST);
+	Collide::ray_query Q	(start,dir,range,CDB::OPT_ONLYFIRST);
 	if (bDynamic) 
 	{
 		// Traverse object database
@@ -88,7 +88,7 @@ BOOL CObjectSpace::RayPick	( const Fvector &start, const Fvector &dir, float ran
 		CObject*	collidable		= dynamic_cast<CObject*>	(spatial);
 		if			(0==collidable)	continue;
 		u32		C	= D3DCOLOR_XRGB	(64,64,64);
-		Collide::RayQuery Q			(start,dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL);
+		Collide::ray_query Q		(start,dir,R.range,CDB::OPT_ONLYNEAREST|CDB::OPT_CULL);
 		if (collidable->collidable.model->_RayTest(Q))	
 		{
 			Collide::rq_result* res = Q.r_begin(); 

@@ -990,7 +990,7 @@ u16 CPHSimpleCharacter::RetriveContactBone()
 {
 	Fvector dir;
 	dir.set(m_damege_contact.geom.normal[0]*m_dmc_signum,m_damege_contact.geom.normal[1]*m_dmc_signum,m_damege_contact.geom.normal[2]*m_dmc_signum);
-	Collide::RayQuery Q(*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
+	Collide::ray_query Q(*(((Fvector*)(m_damege_contact.geom.pos))), dir, m_radius, CDB::OPT_ONLYNEAREST);  // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	u16 contact_bone=0;
 	CObject* object=dynamic_cast<CObject*>(m_phys_ref_object);
 	if (object->collidable.model->_RayPick	(Q)){

@@ -901,7 +901,7 @@ bool CCar::Use(const Fvector& pos,const Fvector& dir,const Fvector& foot_pos)
 		if(Enter(pos,dir,foot_pos)) return true;
 	}
 
-	Collide::RayQuery Q(pos, dir, 3.f, 0);
+	Collide::ray_query Q(pos, dir, 3.f, 0);
 	if (collidable.model->_RayPick	(Q)) // CDB::OPT_ONLYFIRST CDB::OPT_ONLYNEAREST
 	{
 		int y=Q.r_count();

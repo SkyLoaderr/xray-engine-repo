@@ -60,48 +60,48 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	return				TRUE;
 }
 
-BOOL CCF_Polygonal::_RayTest( Collide::RayQuery& Q)
+BOOL CCF_Polygonal::_RayTest( Collide::ray_query& Q)
 {
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
+	temp.transform_tiny	(dS,Q._start());
+	temp.transform_dir	(dD,Q._dir());
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
 	// Query
-	XRC.ray_query		(&model,dS,dD,Q.range);
+	XRC.ray_query		(&model,dS,dD,Q._range());
 	if (XRC.r_count()) 	{
 		CDB::RESULT* R	= XRC.r_begin();
-		if (Q.AppendResult(owner,R->range,R->id)) return TRUE;
+		if (Q.append_result(owner,R->range,R->id)) return TRUE;
 	}
 	return FALSE;
 }
 
-BOOL CCF_Polygonal::_RayPick( Collide::RayQuery& Q)
+BOOL CCF_Polygonal::_RayPick( Collide::ray_query& Q)
 {
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
+	temp.transform_tiny	(dS,Q._start());
+	temp.transform_dir	(dD,Q._dir());
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
 	// Query
 	BOOL bHIT = FALSE;
-	XRC.ray_query		(&model,dS,dD,Q.range);
+	XRC.ray_query		(&model,dS,dD,Q._range());
 	if (XRC.r_count()) 	{
 		for (int k=0; k<XRC.r_count(); k++){
 			bHIT		= TRUE;
 			CDB::RESULT* R	= XRC.r_begin()+k;
-			Q.AppendResult(owner,R->range,R->id);
-			if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
+			Q.append_result(owner,R->range,R->id);
+			if (Q._flags()&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
 	return bHIT;
@@ -215,7 +215,7 @@ void CCF_Skeleton::BuildTopLevel()
 	bv_sphere.R			*= 0.5f;
 }
 
-BOOL CCF_Skeleton::_RayTest( Collide::RayQuery& Q)
+BOOL CCF_Skeleton::_RayTest( Collide::ray_query& Q)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
@@ -223,8 +223,8 @@ BOOL CCF_Skeleton::_RayTest( Collide::RayQuery& Q)
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
+	temp.transform_tiny	(dS,Q._start());
+	temp.transform_dir	(dD,Q._dir());
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))		return FALSE;
@@ -237,17 +237,17 @@ BOOL CCF_Skeleton::_RayTest( Collide::RayQuery& Q)
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
 		if	(!K->LL_GetBoneVisible(u16(I-model.begin())))	continue;
-		float range = Q.range;
-		if	(RAYvsOBB(*I,Q.start,Q.dir,range)) 
+		float range = Q._range();
+		if	(RAYvsOBB(*I,Q._start(),Q._dir(),range)) 
 		{
 			bHIT		= TRUE;
-			Q.AppendResult(owner,range,int(I-model.begin()));
+			Q.append_result(owner,range,int(I-model.begin()));
 		}
 	}
 	return bHIT;
 }
 
-BOOL CCF_Skeleton::_RayPick( Collide::RayQuery& Q)
+BOOL CCF_Skeleton::_RayPick( Collide::ray_query& Q)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
@@ -255,8 +255,8 @@ BOOL CCF_Skeleton::_RayPick( Collide::RayQuery& Q)
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
+	temp.transform_tiny	(dS,Q._start());
+	temp.transform_dir	(dD,Q._dir());
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
@@ -269,12 +269,12 @@ BOOL CCF_Skeleton::_RayPick( Collide::RayQuery& Q)
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
 		if	(!K->LL_GetBoneVisible(u16(I-model.begin()))) continue;
-		float range		= Q.range;
-		if (RAYvsOBB(*I,Q.start,Q.dir,range)) 
+		float range		= Q._range();
+		if (RAYvsOBB(*I,Q._start(),Q._dir(),range)) 
 		{
 			bHIT		= TRUE;
-			Q.AppendResult(owner,range,int(I-model.begin()));
-			if (Q.flags&CDB::OPT_ONLYFIRST) return TRUE;
+			Q.append_result(owner,range,int(I-model.begin()));
+			if (Q._flags()&CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
 	return bHIT;
@@ -371,7 +371,7 @@ void CCF_Rigid::BuildTopLevel()
 	bv_sphere.R			*= 0.5f;
 }
 
-BOOL CCF_Rigid::_RayTest( Collide::RayQuery& Q)
+BOOL CCF_Rigid::_RayTest( Collide::ray_query& Q)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
@@ -379,8 +379,8 @@ BOOL CCF_Rigid::_RayTest( Collide::RayQuery& Q)
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
+	temp.transform_tiny	(dS,Q._start());
+	temp.transform_dir	(dD,Q._dir());
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))		return FALSE;
@@ -389,16 +389,16 @@ BOOL CCF_Rigid::_RayTest( Collide::RayQuery& Q)
 
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++){
-		float range = Q.range;
-		if (RAYvsOBB(*I,Q.start,Q.dir,range)){
+		float range = Q._range();
+		if (RAYvsOBB(*I,Q._start(),Q._dir(),range)){
 			bHIT		= TRUE;
-			Q.AppendResult(owner,range,int(I-model.begin()));
+			Q.append_result(owner,range,int(I-model.begin()));
 		}
 	}
 	return bHIT;
 }
 
-BOOL CCF_Rigid::_RayPick( Collide::RayQuery& Q)
+BOOL CCF_Rigid::_RayPick( Collide::ray_query& Q)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
 
@@ -406,8 +406,8 @@ BOOL CCF_Rigid::_RayPick( Collide::RayQuery& Q)
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->XFORM());
-	temp.transform_tiny	(dS,Q.start);
-	temp.transform_dir	(dD,Q.dir);
+	temp.transform_tiny	(dS,Q._start());
+	temp.transform_dir	(dD,Q._dir());
 
 	// 
 	if (!bv_sphere.intersect(dS,dD))	return FALSE;
@@ -417,11 +417,11 @@ BOOL CCF_Rigid::_RayPick( Collide::RayQuery& Q)
 	BOOL bHIT = FALSE;
 	for (xr_vector<CCF_OBB>::iterator I=model.begin(); I!=model.end(); I++) 
 	{
-		float range		= Q.range;
-		if (RAYvsOBB(*I,Q.start,Q.dir,range)) 
+		float range		= Q._range();
+		if (RAYvsOBB(*I,Q._start(),Q._dir(),range)) 
 		{
 			bHIT		= TRUE;
-			Q.AppendResult(owner,range,int(I-model.begin()));
+			Q.append_result(owner,range,int(I-model.begin()));
 			if (CDB::OPT_ONLYFIRST) return TRUE;
 		}
 	}
@@ -497,9 +497,9 @@ BOOL CCF_EventBox::Contact(CObject* O)
 	}
 	return TRUE;
 }
-BOOL CCF_EventBox::_RayTest(Collide::RayQuery& Q)
+BOOL CCF_EventBox::_RayTest(Collide::ray_query& Q)
 {	return FALSE; }
-BOOL CCF_EventBox::_RayPick( Collide::RayQuery& Q)
+BOOL CCF_EventBox::_RayPick( Collide::ray_query& Q)
 {	return FALSE; }
 void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
@@ -509,9 +509,9 @@ void CCF_EventBox::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 CCF_Shape::CCF_Shape(CObject* _owner) : ICollisionForm(_owner)
 {
 }
-BOOL CCF_Shape::_RayTest(Collide::RayQuery& Q)
+BOOL CCF_Shape::_RayTest(Collide::ray_query& Q)
 {	return FALSE; }
-BOOL CCF_Shape::_RayPick( Collide::RayQuery& Q)
+BOOL CCF_Shape::_RayPick( Collide::ray_query& Q)
 {	return FALSE; }
 void CCF_Shape::_BoxQuery(const Fbox& B, const Fmatrix& M, u32 flags)
 {   return; }
