@@ -824,6 +824,12 @@
 				Name="Model"
 				Filter="">
 				<File
+					RelativePath="fitter.cpp">
+				</File>
+				<File
+					RelativePath="fitter.h">
+				</File>
+				<File
 					RelativePath="xrMU_Model.cpp">
 				</File>
 				<File

@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "fitter.h"
 
 union var
 {
@@ -210,5 +211,39 @@ void xrMU_Model::calc_lighting		()
 
 void xrMU_Reference::calc_lighting	()
 {
-	model->calc_lighting(color,xform,RCAST_Model,0);
+	model->calc_lighting	(color,xform,RCAST_Model,0);
+
+	// A*C + D = B
+	vector<vector<REAL> >	A;
+	vector<vector<REAL> >	B;
+	vector<REAL>			C;
+	vector<REAL>			D;
+
+	// build data
+	A.resize				(color.size());
+	B.resize				(color.size());
+	for (u32 it=0; it<color.size(); it++)
+	{
+		Fcolor&		__A		= model->color	[it];
+		A[it].push_back		(__A.r);
+		A[it].push_back		(__A.g);
+		A[it].push_back		(__A.b);
+
+		Fcolor&		__B		= color			[it];
+		B[it].push_back		(__B.r);
+		B[it].push_back		(__B.g);
+		B[it].push_back		(__B.b);
+	}
+	vfOptimizeParameters	(A,B,C,D);
+
+	// 
+	c_scale.x			= C[0];
+	c_scale.y			= C[1];
+	c_scale.z			= C[2];
+	c_scale.w			= 0;
+
+	c_bias.x			= D[0];
+	c_bias.y			= D[1];
+	c_bias.z			= D[2];
+	c_bias.w			= 1;
 }
