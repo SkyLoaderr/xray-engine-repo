@@ -60,12 +60,16 @@ protected:
 	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c);
 
 public:
-	virtual void			net_Import			(NET_Packet& P);					// import from server
-	virtual void			net_Export			(NET_Packet& P);					// export to server
-	virtual void			make_Interpolation	();
-	virtual void			PH_B_CrPr			(); // actions & operations before physic correction-prediction steps
-	virtual void			PH_I_CrPr			(); // actions & operations after correction before prediction steps
-	virtual void			PH_A_CrPr			(); // actions & operations after phisic correction-prediction steps
-	virtual void			OnH_A_Chield		();
+	virtual void			net_Import				(NET_Packet& P);					// import from server
+	virtual void			net_Export				(NET_Packet& P);					// export to server
+	virtual void			make_Interpolation		();
+	virtual void			PH_B_CrPr				(); // actions & operations before physic correction-prediction steps
+	virtual void			PH_I_CrPr				(); // actions & operations after correction before prediction steps
+	virtual void			PH_A_CrPr				(); // actions & operations after phisic correction-prediction steps
+	virtual void			OnH_A_Chield			();
+	virtual	void			reinit					();
+	virtual	void			reload					(LPCSTR section);
+	virtual void			activate_physic_shell	();
+	virtual void			setup_physic_shell		();
+	virtual void			create_physic_shell		();
 };
-

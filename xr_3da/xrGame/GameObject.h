@@ -84,7 +84,7 @@ public:
 	// Position stack
 	virtual	SavedPosition	ps_Element			(u32 ID);
 
-			void			setup_parent_ai_locations();
+			void			setup_parent_ai_locations(bool assign_position = true);
 			void			validate_ai_locations(bool decrement_reference = true);
 
 	// Game-specific events
@@ -135,6 +135,7 @@ public:
 	{
 		return				(m_visual_callback);
 	}
+	virtual void			create_physic_shell	();
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

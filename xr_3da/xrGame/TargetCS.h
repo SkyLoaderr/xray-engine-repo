@@ -1,18 +1,29 @@
 #pragma once
 #include "customtarget.h"
-#include "PhysicsShell.h"
+#include "physic_item.h"
 
-class CTargetCS :
-	public CCustomTarget
+class CTargetCS : 
+	public CCustomTarget,
+	public CPhysicItem
 {
-typedef	CGameObject	inherited;
+	typedef	CPhysicItem	inherited;
 public:
-	CTargetCS(void);
-	virtual ~CTargetCS(void);
+							CTargetCS			();
+	virtual					~CTargetCS			();
 
-	virtual void OnH_A_Chield();
-	virtual void OnH_B_Independent();
-
+	virtual void			OnH_A_Chield		();
+	virtual void			OnH_B_Independent	();
+	
+	virtual void			Load				(LPCSTR section);
+	
+	virtual void			reload				(LPCSTR section);
+	virtual void			reinit				();
+	virtual void			OnH_B_Chield		();
+	
+	virtual void			net_Export			(NET_Packet& P);	// export to server
+	virtual void			net_Import			(NET_Packet& P);	// import from server
+	virtual void			shedule_Update		(u32 dt);
+	
 	virtual BOOL			net_Spawn			(LPVOID DC);
 	virtual void			net_Destroy			();
 	virtual void			UpdateCL			();					// Called each frame, so no need for dt
@@ -25,4 +36,6 @@ public:
 
 	//CPhysicsShell*			m_pPhysicsShell;
 	Fmatrix					m_pos;
+
+	virtual void			create_physic_shell	();
 };

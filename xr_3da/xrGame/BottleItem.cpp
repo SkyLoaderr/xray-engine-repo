@@ -57,7 +57,6 @@ void CBottleItem::OnH_A_Chield()
 void CBottleItem::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
-
 }
 
 void CBottleItem::OnEvent(NET_Packet& P, u16 type) 

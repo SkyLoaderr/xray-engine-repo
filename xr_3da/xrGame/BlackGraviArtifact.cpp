@@ -65,16 +65,13 @@ void CBlackGraviArtifact::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	if(getVisible() && m_pPhysicsShell) 
-	{
-		if(m_bStrike)
-		{
+	if (getVisible() && m_pPhysicsShell) {
+		if (m_bStrike) {
 			Fvector	P; 
 			P.set(Position());
 			feel_touch_update(P,m_fRadius);
 
 			GraviStrike();
-
 
 			CParticlesObject* pStaticPG;
 			pStaticPG = xr_new<CParticlesObject>(*m_sParticleName,Sector());

@@ -17,14 +17,6 @@
 
 
 
-#define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
-	if(x>y)\
-		if(x>z){inst_x;}\
-		else{inst_z;}\
-	else\
-		if(y>z){inst_y;}\
-		else{inst_z;}
-
 CWeaponFakeGrenade::CWeaponFakeGrenade() 
 {
 	m_state = stInactive;
@@ -37,7 +29,6 @@ CWeaponFakeGrenade::CWeaponFakeGrenade()
 
 CWeaponFakeGrenade::~CWeaponFakeGrenade	()
 {
-	xr_delete(m_pPhysicsShell);
 }
 
 void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContact& c) 
@@ -85,7 +76,6 @@ void __stdcall CWeaponFakeGrenade::ObjectContactCallback(bool& do_colide,dContac
 void CWeaponFakeGrenade::Load(LPCSTR section) 
 {
 	inherited::Load(section);
-
 	CExplosive::Load(section);
 
 	m_mass = pSettings->r_float(section,"ph_mass");
@@ -121,67 +111,20 @@ void CWeaponFakeGrenade::Explode(const Fvector &pos, const Fvector &/**normal/**
 
 BOOL CWeaponFakeGrenade::net_Spawn(LPVOID DC) 
 {
-	BOOL result = inherited::net_Spawn(DC);
+	BOOL result = CInventoryItem::net_Spawn(DC);
 	
 	m_state = stInactive;
 	m_pos.set(0, 0, 0); m_vel.set(0, 0, 0);
 	m_pOwner = NULL;
 	m_explodeTime = m_dwEngineTime = m_flashTime = 0;
-
-	CSkeletonRigid* V = PSkeletonRigid(Visual());
-	R_ASSERT(V);
-
-	if (0==m_pPhysicsShell)
-	{
-		// Physics (Box)
-		Fobb								obb;
-		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		//obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.035f, .035f, .07f);
-		obb.m_translate.set(0, 0, 0); obb.m_halfsize.set(.07f, .07f, .35f);
-		obb.m_rotate.identity				();
-
-		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		
-		Fvector ax;
-		float	radius;
-		CHOOSE_MAX(	obb.m_halfsize.x,ax.set(obb.m_rotate.i) ; ax.mul(obb.m_halfsize.x); radius=_min(obb.m_halfsize.y,obb.m_halfsize.z) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.z/=2.f,
-					obb.m_halfsize.y,ax.set(obb.m_rotate.j) ; ax.mul(obb.m_halfsize.y); radius=_min(obb.m_halfsize.x,obb.m_halfsize.z) ;obb.m_halfsize.x/=2.f;obb.m_halfsize.z/=2.f,
-					obb.m_halfsize.z,ax.set(obb.m_rotate.k) ; ax.mul(obb.m_halfsize.z); radius=_min(obb.m_halfsize.y,obb.m_halfsize.x) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.x/=2.f
-					)
-		Fsphere sphere1,sphere2;
-		sphere1.P.add						(obb.m_translate,ax);
-		sphere1.R							=radius*1.4142f;
-
-		sphere2.P.sub						(obb.m_translate,ax);
-		sphere2.R							=radius/2.f;
-
-		E->add_Box							(obb);
-		E->add_Sphere						(sphere1);
-		E->add_Sphere						(sphere2);
-	
-		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setMass			(m_mass);
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
-		m_pPhysicsShell->SetAirResistance(.000f, 0.f);
-	}
 	return result;
 }
 
 
 void CWeaponFakeGrenade::net_Destroy() 
 {
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-	xr_delete(m_pPhysicsShell);
-	
-	 inherited::net_Destroy();
+	 CInventoryItem::net_Destroy();
 }
-
 
 void CWeaponFakeGrenade::Destroy() 
 {
@@ -196,58 +139,25 @@ void CWeaponFakeGrenade::Destroy()
 
 void CWeaponFakeGrenade::OnH_B_Independent() 
 {
-	inherited::OnH_B_Independent();
-	
-	setVisible		(true);
-	setEnabled		(true);
-	
-	CObject*	 E = dynamic_cast<CObject*>(H_Parent());
-	R_ASSERT	(E);
-	XFORM().set(E->XFORM());
-	
-	if(m_pPhysicsShell) 
-	{
-		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
-		CWeaponMagazinedWGrenade *l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(E);
-		Fmatrix l_p1, l_r; 
-		l_r.rotateY(M_PI*2.f); 
-		l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
-		l_p1.c.set(*l_pW->m_pGrenadePoint);
-		
-		Fvector a_vel; 
-		a_vel.set(0, 0, 0);
-		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
-		XFORM().set(m_pPhysicsShell->mXFORM);
-		Position().set(m_pPhysicsShell->mXFORM.c);
-		m_pPhysicsShell->set_PhysicsRefObject(this);
-		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
-		m_pPhysicsShell->set_ContactCallback(NULL);
-
-		m_state			= stEngine;
-		m_dwEngineTime	= ENGINE_TIME;
-	}
+	CExplosive::OnH_B_Independent();
 }
 
 void CWeaponFakeGrenade::UpdateCL() 
 {
-	inherited::UpdateCL();
 	
 	switch (m_state)
 	{
 	case stInactive:
+		CInventoryItem::UpdateCL();
 		break;
 	case stExplode: 
 		CExplosive::UpdateCL();
 		break;
 	case stEngine:
+		CInventoryItem::UpdateCL();
 		if(getVisible() && m_pPhysicsShell) 
 		{
-			m_pPhysicsShell->Update	();
-			XFORM().set	(m_pPhysicsShell->mXFORM);
-			Position().set	(m_pPhysicsShell->mXFORM.c);
-			if(m_dwEngineTime <= 0) 
-			{
+			if (m_dwEngineTime <= 0) {
 				m_state		= stFlying;
 			}
 			else
@@ -267,12 +177,7 @@ void CWeaponFakeGrenade::UpdateCL()
 		}
 		break;
 	case stFlying:
-		if(getVisible() && m_pPhysicsShell) 
-		{
-			m_pPhysicsShell->Update	();
-			XFORM().set	(m_pPhysicsShell->mXFORM);
-			Position().set	(m_pPhysicsShell->mXFORM.c);
-		}
+		CInventoryItem::UpdateCL();
 		break;
 	}
 }
@@ -302,5 +207,51 @@ void CWeaponFakeGrenade::PH_A_CrPr			()
 
 void CWeaponFakeGrenade::OnH_A_Chield		()
 {
-	inherited::OnH_A_Chield		();
+	CExplosive::OnH_A_Chield		();
+}
+
+void CWeaponFakeGrenade::activate_physic_shell	()
+{
+	CObject		*E = dynamic_cast<CObject*>(H_Parent());
+	R_ASSERT	(E);
+	Fmatrix trans;
+	Level().Cameras.unaffected_Matrix(trans);
+	CWeaponMagazinedWGrenade *l_pW = dynamic_cast<CWeaponMagazinedWGrenade*>(E);
+	Fmatrix l_p1, l_r; 
+	l_r.rotateY(M_PI*2.f); 
+	l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
+	l_p1.c.set(*l_pW->m_pGrenadePoint);
+
+	Fvector a_vel; 
+	a_vel.set(0, 0, 0);
+	m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
+	m_pPhysicsShell->Update	();
+	XFORM().set(m_pPhysicsShell->mXFORM);
+	Position().set(m_pPhysicsShell->mXFORM.c);
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
+	m_pPhysicsShell->set_ContactCallback(NULL);
+
+	m_state			= stEngine;
+	m_dwEngineTime	= ENGINE_TIME;
+}
+
+void CWeaponFakeGrenade::create_physic_shell	()
+{
+	create_box2sphere_physic_shell();
+}
+
+void CWeaponFakeGrenade::setup_physic_shell		()
+{
+	CExplosive::setup_physic_shell		();
+}
+
+void CWeaponFakeGrenade::reinit			()
+{
+	CExplosive::reinit			();
+}
+
+void CWeaponFakeGrenade::reload			(LPCSTR section)
+{
+	CExplosive::reload			(section);
 }

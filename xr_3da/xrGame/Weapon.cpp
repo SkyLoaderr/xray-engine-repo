@@ -65,8 +65,6 @@ CWeapon::CWeapon(LPCSTR name)
 	m_ammoType			= 0;
 	m_ammoName			= NULL;
 
-	m_pPhysicsShell		= 0;
-	
 	eHandDependence		= hdNone;
 
 	fZoomFactor			= DEFAULT_FOV;
@@ -87,7 +85,6 @@ CWeapon::~CWeapon		()
 {
 	::Render->light_destroy	(light_render);
 
-	xr_delete			(m_pPhysicsShell);
 	hUIIcon.destroy		();
 }
 
@@ -454,7 +451,7 @@ void CWeapon::animGet	(MotionSVec& lst, LPCSTR prefix)
 
 BOOL CWeapon::net_Spawn		(LPVOID DC)
 {
-	BOOL bResult					= inherited::net_Spawn	(DC);
+	BOOL bResult					= inherited::net_Spawn(DC);
 	CSE_Abstract					*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeItemWeapon			    *E	= dynamic_cast<CSE_ALifeItemWeapon*>(e);
 
@@ -475,15 +472,7 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 	//if(Local()) OnStateSwitch					(E->state);
 	//STATE = NEXT_STATE = E->state;
 
-	setVisible						(true);
-	setEnabled						(true);
-
 	ShaderCreate				(hUIIcon,"hud\\default","");
-
-	VERIFY						(m_pPhysicsShell);
-	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
-	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-
 
 	UpdateAddonsVisibility();
 	InitAddons();
@@ -505,9 +494,6 @@ BOOL CWeapon::net_Spawn		(LPVOID DC)
 void CWeapon::net_Destroy	()
 {
 	inherited::net_Destroy	();
-
-	if (m_pPhysicsShell)	m_pPhysicsShell->Deactivate	();
-	xr_delete				(m_pPhysicsShell);
 
 	hUIIcon.destroy			();
 
@@ -569,10 +555,8 @@ void CWeapon::OnH_B_Independent	()
 {
 	inherited::OnH_B_Independent();
 
-	if(m_pHUD)					m_pHUD->Hide();
-
-	setVisible					(true);
-	setEnabled					(true);
+	if (m_pHUD)
+		m_pHUD->Hide			();
 
 	//завершить принудительно все процессы что шли
 	FireEnd();
@@ -582,16 +566,8 @@ void CWeapon::OnH_B_Independent	()
 	hud_mode					= FALSE;
 	UpdateXForm					();
 
-	if(m_pPhysicsShell) 
-	{
-		Fvector l_fw; l_fw.set(XFORM().k); l_fw.mul(2.f);
-		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
-		Fmatrix l_p1, l_p2;
-		l_p1.set(XFORM());
-		l_p2.set(XFORM()); l_fw.mul(2.f); l_p2.c.add(l_fw);
-		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		XFORM().set(l_p1);
-	}
+//	if (m_pPhysicsShell)
+//		activate_physic_shell	();
 }
 
 
@@ -604,18 +580,12 @@ void CWeapon::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
 
-	setVisible					(false);
-	setEnabled					(false);
+	if (m_pHUD)
+		m_pHUD->Hide			();
 
-	if(m_pHUD)					m_pHUD->Hide();
-
-	STATE = NEXT_STATE = eHidden;
+	STATE = NEXT_STATE			= eHidden;
 	
-	OnZoomOut();
-
-	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
-
-
+	OnZoomOut					();
 }
 
 
@@ -631,11 +601,6 @@ void CWeapon::UpdateCL		()
 		light_time -= dt;
 		if (light_time<=0)
 			light_render->set_active(false);
-	}
-
-	if (0==H_Parent() && m_pPhysicsShell)		
-	{
-			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 	}
 
 	//нарисовать партиклы
@@ -1029,4 +994,19 @@ void CWeapon::PH_I_CrPr			()
 void CWeapon::PH_A_CrPr			()
 {
 	inherited::PH_A_CrPr		();
+}
+
+void CWeapon::reinit			()
+{
+	CShootingObject::reinit		();
+}
+
+void CWeapon::reload			(LPCSTR section)
+{
+	CShootingObject::reload		(section);
+}
+
+void CWeapon::create_physic_shell()
+{
+	CGameObject::create_physic_shell();
 }

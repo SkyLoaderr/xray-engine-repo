@@ -49,13 +49,8 @@ void CGraviArtifact::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	if(getVisible() && m_pPhysicsShell) 
-	{
-		m_pPhysicsShell->Update	();
-		XFORM().set(m_pPhysicsShell->mXFORM);
-		Position().set(m_pPhysicsShell->mXFORM.c);
-		if(m_fJumpHeight) 
-		{
+	if (getVisible() && m_pPhysicsShell) {
+		if (m_fJumpHeight) {
 			Fvector dir; 
 			dir.set(0, -1.f, 0);
 			Collide::rq_result RQ;

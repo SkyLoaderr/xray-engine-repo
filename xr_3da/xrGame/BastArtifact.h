@@ -73,4 +73,7 @@ protected:
 	CEntityAlive* m_pHitedEntity; 
 	//то что атакуем
 	CEntityAlive* m_AttakingEntity;
+
+public:
+	virtual	void setup_physic_shell	();
 };

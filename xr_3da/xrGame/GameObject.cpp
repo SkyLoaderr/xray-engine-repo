@@ -203,17 +203,17 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 		}
  		inherited::net_Spawn	(DC);
 	}
-	IPhysicShellCreator* shell_creator=dynamic_cast<IPhysicShellCreator*>(this);
-	if(shell_creator)shell_creator->CreatePhysicsShell();
+
+	create_physic_shell			();
 	return						(TRUE);
 }
 
-void CGameObject::setup_parent_ai_locations()
+void CGameObject::setup_parent_ai_locations(bool assign_position)
 {
 	CGameObject				*l_tpGameObject	= dynamic_cast<CGameObject*>(H_Root());
 	VERIFY					(l_tpGameObject);
 	// get parent's position
-	if (use_parent_ai_locations())
+	if (assign_position && use_parent_ai_locations())
 		Position().set		(l_tpGameObject->Position());
 
 	// setup its ai locations
@@ -386,7 +386,7 @@ void CGameObject::OnH_B_Chield()
 void CGameObject::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
-	setup_parent_ai_locations	();
+	setup_parent_ai_locations	(false);
 	validate_ai_locations		(false);
 }
 
@@ -395,7 +395,6 @@ void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
 	if(m_pPhysicsShell)
 		m_pPhysicsShell->set_PushOut(time,PushOutCallback1);
 }
-
 
 f32 CGameObject::GetMass()
 {
@@ -470,3 +469,9 @@ void __stdcall VisualCallback(CKinematics *tpKinematics)
 		(*I)						(tpKinematics);
 }
 
+void CGameObject::create_physic_shell	()
+{
+	IPhysicShellCreator *shell_creator = dynamic_cast<IPhysicShellCreator*>(this);
+	if (shell_creator)
+		shell_creator->CreatePhysicsShell();
+}

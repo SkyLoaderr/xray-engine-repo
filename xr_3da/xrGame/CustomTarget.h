@@ -1,7 +1,7 @@
 #pragma once
 #include "gameobject.h"
 
-class CCustomTarget : public CGameObject
+class CCustomTarget : virtual public CGameObject
 {
 	typedef CGameObject inherited;
 public:

@@ -46,4 +46,3 @@ bool CEatableItem::Useful()
 
 	return true;
 }
-

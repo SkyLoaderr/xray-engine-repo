@@ -8,30 +8,29 @@ const float TIME_2_HIDE		= 5.f;
 
 CTorch::CTorch(void) 
 {
-	m_weight				= .5f;
-	m_belt					= true;
-	light_render			= ::Render->light_create();
-	light_render->set_type	(IRender_Light::SPOT);
-	light_render->set_shadow(true);
-	glow_render				= ::Render->glow_create();
-	lanim					= 0;
-	time2hide				= 0;
-	fBrightness				= 1.f;
+	m_weight					= .5f;
+	m_belt						= true;
+	light_render				= ::Render->light_create();
+	light_render->set_type		(IRender_Light::SPOT);
+	light_render->set_shadow	(true);
+	glow_render					= ::Render->glow_create();
+	lanim						= 0;
+	time2hide					= 0;
+	fBrightness					= 1.f;
 }
 
 CTorch::~CTorch(void) 
 {
 	::Render->light_destroy	(light_render);
 	::Render->glow_destroy	(glow_render);
+	xr_delete				(collidable.model);
 }
 
 void CTorch::Load(LPCSTR section) 
 {
-	inherited::Load(section);
-
-	m_pos = pSettings->r_fvector3(section,"position");
-	
-	light_trace_bone = pSettings->r_string(section,"light_trace_bone");
+	inherited::Load			(section);
+	m_pos					= pSettings->r_fvector3(section,"position");
+	light_trace_bone		= pSettings->r_string(section,"light_trace_bone");
 }
 
 void CTorch::Switch()
@@ -65,12 +64,14 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	CSE_ALifeItemTorch		*torch	= dynamic_cast<CSE_ALifeItemTorch*>(e);
 	R_ASSERT				(torch);
 	cNameVisual_set			(torch->get_visual());
-	inherited::net_Spawn	(DC);
 
 	R_ASSERT				(!CFORM());
 	R_ASSERT				(PKinematics(Visual()));
 	collidable.model		= xr_new<CCF_Skeleton>	(this);
 
+	if (!inherited::net_Spawn(DC))
+		return				(FALSE);
+	
 	CKinematics* K			= PKinematics(Visual());
 	CInifile* pUserData		= K->LL_UserData(); 
 	R_ASSERT3				(pUserData,"Empty Torch user data!",torch->get_visual());
@@ -87,57 +88,28 @@ BOOL CTorch::net_Spawn(LPVOID DC)
 	glow_render->set_color	(clr);
 	glow_render->set_radius	(pUserData->r_float					("torch_definition","glow_radius"));
 
-	VERIFY (m_pPhysicsShell);
-	CSE_Abstract *l_pE = (CSE_Abstract*)DC;
-	if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-
-	setVisible(true);
-	setEnabled(true);
-
 	//выключить фонарик
-	Switch	(false);
-
-	return TRUE;
+	Switch					(false);
+	return					(TRUE);
 }
 
 void CTorch::net_Destroy() 
 {
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 }
 
 void CTorch::OnH_A_Chield() 
 {
-	inherited::OnH_A_Chield	();
-	H_Root()->Center		(Position());
-	XFORM().c.set			(Position());
-	m_focus.set				(Position());
-	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
-	const CInventoryOwner	*inventory_owner = dynamic_cast<const CInventoryOwner*>(H_Parent());
-	VERIFY					(inventory_owner);
-	if (inventory_owner->use_torch())
-		setVisible			(true);
-
-	Switch					(false);
+	inherited::OnH_A_Chield			();
+	H_Root()->Center				(Position());
+	XFORM().c.set					(Position());
+	m_focus.set						(Position());
+	Switch							(false);
 }
 
 void CTorch::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
-	const CObject* E = dynamic_cast<const CObject*>(H_Parent()); R_ASSERT(E);
-	XFORM().set(E->XFORM());
-	if(m_pPhysicsShell) {
-		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
-		Fvector l_fw; l_fw.set(trans.k);
-		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
-		Fmatrix l_p1, l_p2;
-		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); 
-		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
-		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		XFORM().set(l_p1);
-	}
 	time2hide				= TIME_2_HIDE;
 }
 
@@ -148,33 +120,30 @@ void CTorch::UpdateCL()
 	CBoneInstance& BI = PKinematics(Visual())->LL_GetBoneInstance(guid_bone);
 	Fmatrix M;
 
-	if (H_Parent()) 
-	{
-		M.mul(XFORM(),BI.mTransform);
+	if (H_Parent()) {
+		M.mul						(XFORM(),BI.mTransform);
 		light_render->set_direction	(M.k);
 		light_render->set_position	(M.c);
 		glow_render->set_position	(M.c);
 		glow_render->set_direction	(M.k);
 	}
-	else if(getVisible() && m_pPhysicsShell) 
-	{
-		m_pPhysicsShell->Update	();
-		XFORM().set				(m_pPhysicsShell->mXFORM);
-		M.mul(XFORM(),BI.mTransform);
+	else
+		if(getVisible() && m_pPhysicsShell) {
+			M.mul					(XFORM(),BI.mTransform);
 
-		if (light_render->get_active()){
-			light_render->set_direction	(M.k);
-			light_render->set_position	(M.c);
-			glow_render->set_position	(M.c);
-			glow_render->set_direction	(M.k);
-			
-			time2hide			-= Device.fTimeDelta;
-			if (time2hide<0){
-				light_render->set_active(false);
-				glow_render->set_active(false);
+			if (light_render->get_active()){
+				light_render->set_direction	(M.k);
+				light_render->set_position	(M.c);
+				glow_render->set_position	(M.c);
+				glow_render->set_direction	(M.k);
+				
+				time2hide			-= Device.fTimeDelta;
+				if (time2hide<0){
+					light_render->set_active(false);
+					glow_render->set_active(false);
+				}
 			}
-		}
-	} 
+		} 
 	
 	// update light source
 	if (light_render->get_active()){
@@ -193,20 +162,25 @@ void CTorch::UpdateCL()
 	}
 }
 
-void CTorch::renderable_Render() 
+void CTorch::renderable_Render	() 
 {
-	if(getVisible())
-	{
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-/*	 
-		if(H_Parent()) 
-		{
-			light_render->set_direction	(M.k);
-			light_render->set_position	(XFORM().c);
-			glow_render->set_position	(XFORM().c);
-			glow_render->set_direction	(M.k);
-		}
-*/
+	if (getVisible()) {
+		::Render->set_Transform	(&XFORM());
+		::Render->add_Visual	(Visual());
 	}
+}
+
+void CTorch::reinit				()
+{
+	inherited::reinit			();
+}
+
+void CTorch::reload				(LPCSTR section)
+{
+	inherited::reload			(section);
+}
+
+void CTorch::create_physic_shell()
+{
+	CGameObject::create_physic_shell();
 }

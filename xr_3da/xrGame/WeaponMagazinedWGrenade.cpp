@@ -328,12 +328,11 @@ void CWeaponMagazinedWGrenade::OnH_B_Independent()
 {
 	inherited::OnH_B_Independent();
 
-	m_bPending = false;
-	if(m_bGrenadeMode)
-	{
-		STATE = eIdle;
-		SwitchMode();
-		m_bPending = false;
+	m_bPending		= false;
+	if (m_bGrenadeMode) {
+		STATE		= eIdle;
+		SwitchMode	();
+		m_bPending	= false;
 	}
 }
 

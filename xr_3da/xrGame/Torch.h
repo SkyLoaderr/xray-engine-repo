@@ -1,15 +1,11 @@
 #pragma once
-#include "inventory_item.h"
-#include "PHShellCreator.h"
+#include "attachable_item.h"
 
 class CLAItem;
 
-class CTorch :
-	public CInventoryItem,
-	public CPHShellSimpleCreator
-{
+class CTorch : public CAttachableItem {
 private:
-    typedef	CInventoryItem	inherited;
+    typedef	CAttachableItem	inherited;
 protected:
 	float			fBrightness;
 	CLAItem*		lanim;
@@ -27,6 +23,8 @@ public:
 	virtual			~CTorch				(void);
 
 	virtual void	Load				(LPCSTR section);
+	virtual void	reinit				();
+	virtual void	reload				(LPCSTR section);
 	virtual BOOL	net_Spawn			(LPVOID DC);
 	virtual void	net_Destroy			();
 
@@ -43,4 +41,5 @@ public:
 	{
 		return				(!H_Parent());
 	}
+	virtual void	create_physic_shell	();
 };

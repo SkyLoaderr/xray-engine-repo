@@ -46,4 +46,6 @@ protected:
 	IRender_Light*	m_pTrailLight;
 	Fcolor			m_TrailLightColor;
 	float			m_fTrailLightRange;
+public:
+	virtual void activate_physic_shell	();
 };

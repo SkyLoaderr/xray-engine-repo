@@ -24,7 +24,6 @@ CAI_Rat::~CAI_Rat()
 	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
 	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
 	DELETE_SOUNDS			(SND_VOICE_COUNT,	m_tpaSoundVoice);
-	xr_delete				(m_pPhysicsShell);
 }
 
 void CAI_Rat::Init()
@@ -54,7 +53,6 @@ void CAI_Rat::Init()
 	m_bActive				= false;
 	m_dwStartAttackTime		= 0;
 //	q_look.o_look_speed		= PI;
-	m_pPhysicsShell			= NULL;
 	m_saved_impulse			= 0.f;
 	m_bMoving				= false;
 	m_bCanAdjustSpeed		= false;
@@ -231,8 +229,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 void CAI_Rat::net_Destroy()
 {
 	inherited::net_Destroy();
-	if (m_pPhysicsShell) 
-		m_pPhysicsShell->Deactivate();
+	CEatableItem::net_Destroy();
 }
 
 void CAI_Rat::net_Export(NET_Packet& P)
@@ -323,6 +320,7 @@ void CAI_Rat::CreateSkeleton(){
 	m_pPhysicsShell=P_create_Shell();
 	m_pPhysicsShell->add_Element(element);
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
+	m_pPhysicsShell->Update();
 	if(!fsimilar(0.f,m_saved_impulse)){
 
 		m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse);
@@ -359,28 +357,16 @@ void CAI_Rat::CreateSkeleton(){
 
 void CAI_Rat::shedule_Update(u32 dt)
 {
-//	Fmatrix	l_tSavedTransform = XFORM();
 	inherited::shedule_Update	(dt);
-
-	if(m_pPhysicsShell) {
-		m_pPhysicsShell->Update	();
-		XFORM().set				(m_pPhysicsShell->mXFORM);
-	}
-//	else
-//		XFORM()					= l_tSavedTransform;
+	CEatableItem::shedule_Update(dt);
 }
 
 void CAI_Rat::UpdateCL(){
 
-	inherited::UpdateCL();
-	if(m_pPhysicsShell){
-		m_pPhysicsShell->Update();
-		XFORM().set(m_pPhysicsShell->mXFORM);
-
-	}
-	else
-		if (fEntityHealth <= 0)
-			CreateSkeleton();
+	inherited::UpdateCL	();
+	CEatableItem::UpdateCL();
+	if(!m_pPhysicsShell && (fEntityHealth <= 0))
+		CreateSkeleton	();
 }
 
 void CAI_Rat::Hit(float P, Fvector &dir, CObject *who,s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type){
@@ -402,31 +388,15 @@ void CAI_Rat::feel_touch_new(CObject* /**O/**/)
 void CAI_Rat::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
-	setVisible					(false);
-	setEnabled					(false);
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+	CEatableItem::OnH_B_Chield	();
 }
+
 void CAI_Rat::OnH_B_Independent	()
 {
 	inherited::OnH_B_Independent	();
-
-
-	setVisible(true);
-	setEnabled(true);
-	CObject* E = dynamic_cast<CObject*>(H_Parent()); R_ASSERT(E);
-	XFORM().set(E->XFORM());
-	if(m_pPhysicsShell) {
-		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
-		Fvector l_fw; l_fw.set(trans.k);
-		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
-		Fmatrix l_p1, l_p2;
-		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); 
-		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
-		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		XFORM().set(l_p1);
-	}
+	CEatableItem::OnH_B_Independent	();
 }
+
 bool CAI_Rat::Useful()
 {
 	//if(!g_Alive()) return true;
@@ -450,25 +420,34 @@ BOOL CAI_Rat::UsedAI_Locations()
 void CAI_Rat::make_Interpolation ()
 {
 	inherited::make_Interpolation();
+	CEatableItem::make_Interpolation();
 }
 
 void CAI_Rat::PH_B_CrPr			()
 {
 	inherited::PH_B_CrPr		();
+	CEatableItem::PH_B_CrPr		();
 }
 
 void CAI_Rat::PH_I_CrPr			()
 {
 	inherited::PH_I_CrPr		();
+	CEatableItem::PH_I_CrPr		();
 }
 
 void CAI_Rat::PH_A_CrPr			()
 {
 	inherited::PH_A_CrPr		();
+	CEatableItem::PH_A_CrPr		();
 }
 
 void CAI_Rat::OnH_A_Chield		()
 {
 	inherited::OnH_A_Chield		();
 	CEatableItem::OnH_A_Chield	();
+}
+
+void CAI_Rat::create_physic_shell()
+{
+	// do not delete!!!
 }

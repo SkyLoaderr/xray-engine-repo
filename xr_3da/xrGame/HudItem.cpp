@@ -127,12 +127,9 @@ void CHudItem::renderable_Render()
 		::Render->add_Visual		(m_pHUD->Visual());
 	}
 	//else if(!pActor || !hud_mode)
-	else if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden() && !IsHidden()))
-	{
-		// normal render
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
+	else
+		if(!H_Parent() || (!hud_mode && !m_pHUD->IsHidden() && !IsHidden()))
+			inherited::renderable_Render();
 
 	if(m_pHUD)
 		PSkeletonAnimated(m_pHUD->Visual())->Update	();

@@ -2244,6 +2244,19 @@
 								RelativePath="trade.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="PhysicItem"
+							Filter="">
+							<File
+								RelativePath=".\physic_item.cpp">
+							</File>
+							<File
+								RelativePath=".\physic_item.h">
+							</File>
+							<File
+								RelativePath=".\physic_item_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="_item"
@@ -2962,6 +2975,19 @@
 							</File>
 							<File
 								RelativePath=".\HudItem.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="AttachableItem"
+							Filter="">
+							<File
+								RelativePath=".\attachable_item.cpp">
+							</File>
+							<File
+								RelativePath=".\attachable_item.h">
+							</File>
+							<File
+								RelativePath=".\attachable_item_inline.h">
 							</File>
 						</Filter>
 					</Filter>

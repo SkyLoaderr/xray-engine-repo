@@ -117,6 +117,7 @@ public:
 	virtual BOOL	IsVisibleForHUD	()	{ return FALSE;		}
 	virtual bool	IsVisibleForZones() { return false;		}
 	virtual BOOL	UsedAI_Locations();
+	virtual void	create_physic_shell	();
 };
 
 #endif

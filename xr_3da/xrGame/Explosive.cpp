@@ -308,3 +308,18 @@ void CExplosive::OnH_A_Chield		()
 {
 	inherited::OnH_A_Chield		();
 }
+
+void CExplosive::reinit				()
+{
+	inherited::reinit			();
+}
+
+void CExplosive::reload				(LPCSTR section)
+{
+	inherited::reload			(section);
+}
+
+void CExplosive::create_physic_shell	()
+{
+	CInventoryItem::create_physic_shell();
+}

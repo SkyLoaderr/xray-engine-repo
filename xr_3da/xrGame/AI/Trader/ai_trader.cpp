@@ -353,7 +353,7 @@ void CAI_Trader::OnTradeAction(CGameObject *O, bool bSell)
 	if (m_tpOnTrade) (*m_tpOnTrade)(xr_new<CLuaGameObject>(O),bSell);
 }
 
-bool CAI_Trader::use_torch				() const
+bool CAI_Trader::attach_item			(const CInventoryItem *inventory_item) const
 {
 	return				(false);
 }

@@ -73,14 +73,6 @@ void CMissile::Load(LPCSTR section)
 	m_animation_slot	= pSettings->r_u32(section,"animation_slot");
 }
 
-#define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
-	if(x>y)\
-		if(x>z){inst_x;}\
-		else{inst_z;}\
-	else\
-		if(y>z){inst_y;}\
-		else{inst_z;}
-
 BOOL CMissile::net_Spawn(LPVOID DC) 
 {
 #pragma todo("Dima to Yura : find out why m_pInventory != NULL on net_spawn after net_destroy")
@@ -88,82 +80,34 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 	m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
 
-	CSkeletonRigid* V = PSkeletonRigid(Visual());
-	R_ASSERT(V);
-
+	CSE_Abstract						*abstract = (CSE_Abstract*)DC;
+	if (abstract->ID_Parent==0xffff) {
+		m_pPhysicsShell->Activate	(XFORM(),0,XFORM(),true);
+		m_pPhysicsShell->Update		();
+	}
 
 	dwXF_Frame					= 0xffffffff;
 
-	setVisible					(true);
-	setEnabled					(true);
-
-	if (0==m_pPhysicsShell)
-	{
-		// Physics (Box)
-		Fobb								obb;
-		Visual()->vis.box.get_CD			(obb.m_translate,obb.m_halfsize);
-		obb.m_rotate.identity				();
-
-		// Physics (Elements)
-		CPhysicsElement* E					= P_create_Element	();
-		R_ASSERT							(E);
-		
-		Fvector ax;
-		float	radius;
-		CHOOSE_MAX(	obb.m_halfsize.x,ax.set(obb.m_rotate.i) ; ax.mul(obb.m_halfsize.x); radius=_min(obb.m_halfsize.y,obb.m_halfsize.z) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.z/=2.f,
-					obb.m_halfsize.y,ax.set(obb.m_rotate.j) ; ax.mul(obb.m_halfsize.y); radius=_min(obb.m_halfsize.x,obb.m_halfsize.z) ;obb.m_halfsize.x/=2.f;obb.m_halfsize.z/=2.f,
-					obb.m_halfsize.z,ax.set(obb.m_rotate.k) ; ax.mul(obb.m_halfsize.z); radius=_min(obb.m_halfsize.y,obb.m_halfsize.x) ;obb.m_halfsize.y/=2.f;obb.m_halfsize.x/=2.f
-					)
-		//radius*=1.4142f;
-		Fsphere sphere1,sphere2;
-		sphere1.P.add						(obb.m_translate,ax);
-		sphere1.R							=radius*1.4142f;
-
-		sphere2.P.sub						(obb.m_translate,ax);
-		sphere2.R							=radius/2.f;
-
-		E->add_Box							(obb);
-		E->add_Sphere						(sphere1);
-		E->add_Sphere						(sphere2);
-	
-		// Physics (Shell)
-		m_pPhysicsShell						= P_create_Shell	();
-		R_ASSERT							(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setDensity			(2000.f);
-		CSE_Abstract *l_pE = (CSE_Abstract*)DC;
-		if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate			(XFORM(),0,XFORM(),true);
-		m_pPhysicsShell->mDesired.identity	();
-		m_pPhysicsShell->fDesiredStrength	= 0.f;
-		m_pPhysicsShell->SetAirResistance();
-	}
 	return l_res;
 }
 
 void CMissile::net_Destroy() 
 {
 	//R_ASSERT(!m_pInventory);
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 	m_pInventory = 0;
-
 	DestroySound(sndPlaying);
 }
+
 void CMissile::OnH_B_Chield() 
 {
 	inherited::OnH_B_Chield		();
-	
-	setVisible					(false);
-	setEnabled					(false);
-
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
 void CMissile::spawn_fake_missile()
 {
 #ifdef _DEBUG
-//	Msg					("Spawning fake missile for object %s",cName());
+	//Msg					("%6d : Spawning fake missile for object %s",Level().timeServer(),*cName());
 #endif
 	CSE_Abstract		*D	= F_entity_Create(*cNameSect());
 	R_ASSERT			(D);
@@ -209,154 +153,6 @@ void CMissile::OnH_B_Independent()
 		u_EventSend			(P);
 		return;
 	}
-	
-	//xr_delete(m_pHUD);
-	setVisible					(true);
-	setEnabled					(true);
-	//CObject*	E		= dynamic_cast<CObject*>(H_Parent());
-	//R_ASSERT(E);
-	//XFORM().set(E->XFORM());
-	
-	if(m_pPhysicsShell) 
-	{
-		/*Fvector		D;
-		D			= m_throw_direction;
-		D.normalize	();
-
-		Fvector		l_fw; 
-		Fvector		l_up; 
-
-		l_fw.set	(D);
-
-		l_up.set	(XFORM().j); l_up.mul(2.f);
-		
-		Fmatrix		l_p1, l_p2;
-		l_p1.set	(XFORM()); 
-		l_p1.c.add(l_up); 
-		l_up.mul(1.2f);
-		l_p2.set	(XFORM()); 
-		l_p2.c.add(l_up); 
-		l_fw.mul(1.f+m_fThrowForce); 
-		l_p2.c.add(l_fw);
-		
-		Fvector		l_vel,a_vel;
-		float		fi,teta,r;
-		l_vel.add	(l_up,l_fw);
-		fi			= ::Random.randF(0.f,2.f*M_PI);
-		teta		= ::Random.randF(0.f,M_PI);
-		r			= ::Random.randF(2.f*M_PI,3.f*M_PI);
-		float		rxy = r*_sin(teta);
-		a_vel.set	(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
-
-		m_pPhysicsShell->Activate(l_p1, l_vel, a_vel);
-		
-		XFORM().set	(l_p1);
-				
-
-//		}
-//		else {
-//			Fvector						linear_velocity = m_throw_direction;
-//			VERIFY						(linear_velocity.square_magnitude() > EPS_L);
-//			linear_velocity.normalize	();
-//			linear_velocity.mul			(m_fThrowForce);
-//			m_pPhysicsShell->Activate	(H_Parent()->XFORM(), linear_velocity, zero_vel);
-//			XFORM().set					(m_pPhysicsShell->mXFORM);
-//		}
-*/
-
-//		Fvector vel;
-//		vel.set(m_throw_direction);
-//		vel.normalize();
-//		vel.mul(m_fThrowForce);
-//		XFORM().c.set(m_throw_point);
-//		m_pPhysicsShell->Activate(XFORM(), vel, zero_vel);
-
-/*		if (hud_mode)
-		{
-			Fmatrix trans;
-			Level().Cameras.unaffected_Matrix(trans);
-			m_throw_direction.set(trans.k);
-		
-			m_throw_point =	m_vHudThrowPoint;
-			parent.transform_tiny(m_throw_point);
-		} 
-		else 
-		{
-			// 3rd person
-			Fmatrix& parent			= H_Parent()->XFORM();
-			Fvector& fp				= m_vThrowPoint;
-
-			parent.transform_tiny	(m_throw_point,fp);
-			
-			//m_throw_direction.set	(0.f,0.f,1.f);
-			m_throw_direction.set	(m_vThrowDir);
-			parent.transform_dir	(m_throw_direction);
-		}*/
-
-		
-			/*if(hud_mode)
-		{
-			Fmatrix trans;
-			Level().Cameras.unaffected_Matrix(trans);
-			l_fw.set(trans.k);
-		}
-		else
-		{
-			l_fw.set(H_Root()->XFORM().k);
-		}*/
-
-	
-/*		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
-		l_fw.set(trans.k);
-		
-		Fvector l_up;
-		l_up.set(XFORM().j);
-		l_up.mul(2.f);
-		
-		Fmatrix l_p1;
-		l_p1.set(XFORM());
-		l_p1.c.add(l_up);
-		l_up.mul(1.2f);
-
-		l_fw.mul(m_fThrowForce);
-*/
-/*		CActor* pActor = dynamic_cast<CActor*>(H_Root());
-		if(pActor && pActor->HUDview())
-		{
-			Fmatrix trans;
-			Level().Cameras.unaffected_Matrix(trans);
-			m_throw_direction.set(trans.k);
-		}
-		else
-		{
-			m_throw_direction.set(H_Root()->XFORM().k);
-		}
-
-
-		Fmatrix xform;
-		xform.set(H_Root()->XFORM());
-		xform.c.add(Fvector().set(0,2.f,0));
-
-		XFORM().set(xform);*/
-
-		Fvector l_vel;
-		l_vel.set(m_throw_direction);
-		l_vel.normalize();
-		l_vel.mul(m_fThrowForce);
-
-
-		Fvector a_vel;
-		float fi,teta,r;
-		fi=	 ::Random.randF(0.f,2.f*M_PI);
-		teta=::Random.randF(0.f,M_PI);
-		r=	 ::Random.randF(2.f*M_PI,3.f*M_PI);
-		float rxy=r*_sin(teta);
-		a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
-
-		XFORM().set(m_throw_matrix);
-		m_pPhysicsShell->Activate(XFORM(), l_vel, zero_vel);
-	}
 }
 
 void CMissile::UpdateCL() 
@@ -391,15 +187,11 @@ void CMissile::UpdateCL()
 			Destroy();
 			return;
 		}
-		if(m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
-		m_pPhysicsShell->Update	();
-		XFORM().set	(m_pPhysicsShell->mXFORM);
-		Position().set(m_pPhysicsShell->mXFORM.c);
+		if (m_dwDestroyTime < 0xffffffff) m_dwDestroyTime -= Device.dwTimeDelta;
 	} 
 	else
 		if (H_Parent())
 			UpdateXForm();
-			//XFORM().set(H_Parent()->XFORM());
 }
 
 u32 CMissile::State() 
@@ -568,13 +360,8 @@ void CMissile::Hide()
 	SwitchState(MS_HIDDEN);
 }
 
-void CMissile::Throw() 
+void CMissile::setup_throw_params()
 {
-	CEntity								*entity = dynamic_cast<CEntity*>(H_Parent());
-	VERIFY								(entity);
-	
-	//Fvector								throw_point, throw_direction;
-	//entity->g_fireParams				(throw_point,throw_direction);
 	CActor* pActor = dynamic_cast<CActor*>(H_Parent());
 	if(pActor && pActor->HUDview())
 	{
@@ -582,8 +369,8 @@ void CMissile::Throw()
 		Fmatrix trans;
 		Level().Cameras.unaffected_Matrix(trans);
 		m_throw_direction.set(trans.k);
-		
-//		m_throw_matrix.set(m_pHUD->Transform());
+
+		//		m_throw_matrix.set(m_pHUD->Transform());
 		m_throw_matrix.identity();
 		m_throw_matrix.c.set(m_vHudThrowPoint);
 		m_throw_matrix.mulA(m_pHUD->Transform());
@@ -593,8 +380,16 @@ void CMissile::Throw()
 		m_throw_direction.set	(H_Parent()->XFORM().k);
 		m_throw_matrix			= XFORM();
 	}
+}
 
+void CMissile::Throw() 
+{
+	CEntity								*entity = dynamic_cast<CEntity*>(H_Parent());
+	VERIFY								(entity);
 	
+	//Fvector								throw_point, throw_direction;
+	//entity->g_fireParams				(throw_point,throw_direction);
+	setup_throw_params					();
 	
 	m_fake_missile->m_throw_point		= m_throw_point;
 	m_fake_missile->m_throw_direction	= m_throw_direction;
@@ -706,4 +501,34 @@ void  CMissile::UpdateFP()
 			parent.transform_dir	(m_throw_direction);
 		}
 	}
+}
+
+void CMissile::activate_physic_shell()
+{
+	Fvector l_vel;
+	l_vel.set(m_throw_direction);
+	l_vel.normalize();
+	l_vel.mul(m_fThrowForce);
+
+	Fvector a_vel;
+	float fi,teta,r;
+	fi=	 ::Random.randF(0.f,2.f*M_PI);
+	teta=::Random.randF(0.f,M_PI);
+	r=	 ::Random.randF(2.f*M_PI,3.f*M_PI);
+	float rxy=r*_sin(teta);
+	a_vel.set(rxy*_cos(fi),rxy*_sin(fi),r*_cos(teta));
+
+	XFORM().set(m_throw_matrix);
+	m_pPhysicsShell->Activate	(XFORM(), l_vel, zero_vel);
+	m_pPhysicsShell->Update		();
+}
+
+void CMissile::create_physic_shell	()
+{
+	create_box2sphere_physic_shell();
+}
+
+void CMissile::setup_physic_shell	()
+{
+	// do not delete!!!
 }

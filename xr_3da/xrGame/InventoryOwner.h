@@ -11,6 +11,7 @@ class CInventory;
 class CInventoryItem;
 class CTrade;
 class CPda;
+class CAttachableItem;
 
 class CInventoryOwner {							
 public:
@@ -80,21 +81,19 @@ protected:
 	bool				m_bTalking; 
 	CInventoryOwner		*m_pTalkPartner;
 
-private:
-	Fvector				m_torch_angle_offset;
-	Fvector				m_torch_position_offset;
-	LPCSTR				m_torch_bone_name;
-
 public:
-	IC	const Fvector	&torch_angle_offset		() const;
-	IC	const Fvector	&torch_position_offset	() const;
-	IC	LPCSTR			torch_bone_name			() const;
-	virtual void		renderable_Render		();
-	virtual	bool		use_torch				() const;
-	virtual void		OnItemTake				(CInventoryItem *inventory_item) {};
-	virtual void		OnItemDrop				(CInventoryItem *inventory_item) {};
-	virtual void		OnItemDropUpdate		() {}
-	virtual bool		use_bolts				() const {return(true);}
+	virtual void			renderable_Render		();
+	virtual void			OnItemTake				(CInventoryItem *inventory_item);
+	virtual void			OnItemDrop				(CInventoryItem *inventory_item);
+	virtual void			OnItemDropUpdate		() {}
+	virtual bool			use_bolts				() const {return(true);}
+	virtual	bool			attach_item				(const CInventoryItem *inventory_item) const;
+			bool			attached				(const CInventoryItem *inventory_item) const;
+	IC		const xr_vector<CAttachableItem*> &attached_objects() const;
+
+protected:
+	xr_vector<ref_str>			m_attach_item_sections;
+	xr_vector<CAttachableItem*>	m_attached_objects;
 };
 
 #include "inventory_owner_inline.h"

@@ -9,9 +9,10 @@
 #pragma once
 
 #include "inventory_space.h"
+#include "physic_item.h"
 
-class CInventoryItem : virtual public CGameObject {
-	typedef CGameObject	inherited;
+class CInventoryItem : public CPhysicItem {
+	typedef CPhysicItem	inherited;
 public:
 					CInventoryItem		();
 	virtual			~CInventoryItem		();
@@ -159,12 +160,26 @@ protected:
 
 private:
 	u64				m_inventory_mask;
+	u32				m_dwFrameLoad;
+	u32				m_dwFrameReload;
+	u32				m_dwFrameReinit;
+	u32				m_dwFrameSpawn;
+	u32				m_dwFrameDestroy;
+
 public:
 	virtual void	BuildInventoryMask	(const CInventory *inventory);
 	IC		u64		InventoryMask		() const;
 	IC		int		GetVolume			() const;
 	IC		int		GetHeight			() const;
 	IC		int		GetWidth			() const;
+	virtual BOOL	net_Spawn			(LPVOID DC);
+	virtual void	net_Destroy			();
+	virtual void	renderable_Render	();
+	virtual void	reload				(LPCSTR section);
+	virtual void	reinit				();
+
+private:
+			bool	frame_check			(u32 &frame);
 };
 
 #include "inventory_item_inline.h"

@@ -111,7 +111,8 @@ void CGrenade::OnAnimationEnd()
 
 	case MS_END:
 		{
-			if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+			if (m_pPhysicsShell)
+				m_pPhysicsShell->Deactivate();
 			xr_delete(m_pPhysicsShell);
 			
 			//выкинуть гранату из инвентаря
@@ -216,7 +217,11 @@ bool CGrenade::Action(s32 cmd, u32 flags)
 					return true;
 				}
 			}
-		} return true;
+			return true;
+		};
+	case kDROP:
+		setup_throw_params();
+		return true;
 	}
 	return false;
 }
@@ -255,4 +260,24 @@ void CGrenade::reinit				()
 {
 	CMissile::reinit			();
 	CExplosive::reinit			();
+}
+
+void CGrenade::reload					(LPCSTR section)
+{
+	CMissile::reload			(section);
+}
+
+void CGrenade::activate_physic_shell	()
+{
+	CMissile::activate_physic_shell();
+}
+
+void CGrenade::setup_physic_shell		()
+{
+	CMissile::setup_physic_shell();
+}
+
+void CGrenade::create_physic_shell		()
+{
+	CMissile::create_physic_shell();
 }

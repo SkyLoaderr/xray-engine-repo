@@ -14,46 +14,7 @@ CCustomDetector::~CCustomDetector(void)
 
 BOOL CCustomDetector::net_Spawn(LPVOID DC) 
 {
-	BOOL res = inherited::net_Spawn(DC);
-
-//	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
-//	if(V) V->PlayCycle("idle");
-	CSkeletonRigid* V = PSkeletonRigid(Visual());
-	R_ASSERT(V);
-
-
-	if (m_pPhysicsShell == NULL) 
-	{
-		// Physics (Box)
-		Fobb obb; Visual()->vis.box.get_CD(obb.m_translate,obb.m_halfsize); 
-		obb.m_rotate.identity();
-		// Physics (Elements)
-		CPhysicsElement* E = P_create_Element(); 
-		R_ASSERT(E); 
-		E->add_Box(obb);
-		// Physics (Shell)
-		m_pPhysicsShell = P_create_Shell(); 
-		R_ASSERT(m_pPhysicsShell);
-		m_pPhysicsShell->add_Element(E);
-		m_pPhysicsShell->setDensity(2000.f);
-		CSE_Abstract *l_pE = (CSE_Abstract*)DC;
-		if(l_pE->ID_Parent==0xffff) m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-		m_pPhysicsShell->mDesired.identity();
-		m_pPhysicsShell->fDesiredStrength = 0.f;
-	}
-//	CCF_Shape*	shape			= xr_new<CCF_Shape>	(this);
-//	CFORM()						= shape;
-//	Fsphere S;	S.P.set			(0,1.f,0); S.R = m_buzzer_radius;
-//	shape->add_sphere			(S);
-//	shape->ComputeBounds						();
-//#pragma todo("@@@ WT: Check if detector will work w/o registration.")
-//	g_pGameLevel->ObjectSpace.Object_Register		(this);
-//	CFORM()->OnMove								();
-
-	setVisible(true);
-	setEnabled(true);
-
-	return res;
+	return		(inherited::net_Spawn(DC));
 }
 
 void CCustomDetector::Load(LPCSTR section) 
@@ -95,8 +56,6 @@ void CCustomDetector::Load(LPCSTR section)
 
 void CCustomDetector::net_Destroy() 
 {
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
-	xr_delete(m_pPhysicsShell);
 	inherited::net_Destroy();
 	SoundDestroy(m_noise);
 	xr_map<CLASS_ID, ref_sound*>::iterator l_it;
@@ -203,20 +162,6 @@ void CCustomDetector::shedule_Update(u32 dt)
 void CCustomDetector::UpdateCL() 
 {
 	inherited::UpdateCL();
-	/*
-	f32 l_zonePow = 0;
-	xr_list<CCustomZone*>::iterator l_it;
-	for(l_it = m_zones.begin(); m_zones.end() != l_it; ++l_it) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(Position())));
-	CGameFont* H		= HUD().pFontMedium;
-	H->SetColor			(0xf0ffffff); 
-	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
-	*/
-	if(getVisible() && m_pPhysicsShell) 
-	{
-		m_pPhysicsShell->Update	();
-		XFORM().set				(m_pPhysicsShell->mXFORM);
-		Position().set			(XFORM().c);
-	}
 }
 
 void CCustomDetector::feel_touch_new(CObject* O) 
@@ -264,9 +209,6 @@ void CCustomDetector::SoundDestroy(ref_sound& dest)
 void CCustomDetector::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
-	setVisible					(false);
-	setEnabled					(false);
-	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 }
 
 void CCustomDetector::OnH_B_Independent() 
@@ -276,32 +218,6 @@ void CCustomDetector::OnH_B_Independent()
 	//выключить
 	m_buzzer.stop				();
 	m_noise.stop				();
-
-	setVisible(true);
-	setEnabled(true);
-	
-	CObject* E = dynamic_cast<CObject*>(H_Parent()); 
-	R_ASSERT(E);
-	
-	XFORM().set(E->XFORM());
-	
-	if(m_pPhysicsShell) 
-	{
-		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
-		Fvector l_fw; l_fw.set(trans.k);
-		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
-		Fmatrix l_p1, l_p2;
-		l_p1.set(XFORM()); l_p1.c.add(l_up); l_up.mul(1.2f); 
-		l_p2.set(XFORM()); l_p2.c.add(l_up); l_fw.mul(3.f); l_p2.c.add(l_fw);
-		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		XFORM().set(l_p1);
-	}
-
-
-	//NET_Packet			P;
-	//u_EventGen			(P,GE_DESTROY,ID());
-	//u_EventSend			(P);
 }
 
 #ifdef DEBUG
@@ -321,9 +237,5 @@ void CCustomDetector::OnRender()
 
 void CCustomDetector::renderable_Render()
 {
-	if(getVisible() && !H_Parent())
-	{
-		::Render->set_Transform		(&XFORM());
-		::Render->add_Visual		(Visual());
-	}
+	inherited::renderable_Render();
 }

@@ -44,15 +44,34 @@ CInventoryItem::CInventoryItem()
 	m_bInInterpolation = false;
 	
 	m_inventory_mask = u64(-1);
+
 	m_name = m_nameShort = NULL;
+
+	m_dwFrameLoad		= u32(-1);
+	m_dwFrameReload		= u32(-1);
+	m_dwFrameReinit		= u32(-1);
+	m_dwFrameSpawn		= u32(-1);
+	m_dwFrameDestroy	= u32(-1);
 }
 
 CInventoryItem::~CInventoryItem() 
 {
 }
 
+bool CInventoryItem::frame_check(u32 &frame)
+{
+	if (Device.dwFrame == frame)
+		return		(false);
+
+	frame			= Device.dwFrame;
+	return			(true);
+}
+
 void CInventoryItem::Load(LPCSTR section) 
 {
+	if (!frame_check(m_dwFrameLoad))
+		return;
+
 	inherited::Load(section);
 
 	m_name = pSettings->r_string(section, "inv_name");
@@ -256,39 +275,11 @@ bool CInventoryItem::Merge(PIItem /**pIItem/**/)
 void CInventoryItem::OnH_B_Independent	()
 {
 	inherited::OnH_B_Independent();
-
-/*
-	if(m_pPhysicsShell) 
-	{
-		Fvector l_fw; l_fw.set(XFORM().k); l_fw.mul(2.f);
-		Fvector l_up; l_up.set(XFORM().j); l_up.mul(2.f);
-		Fmatrix l_p1, l_p2;
-		l_p1.set(XFORM());
-		l_p2.set(XFORM()); l_fw.mul(2.f); l_p2.c.add(l_fw);
-		m_pPhysicsShell->Activate(l_p1, 0, l_p2);
-		XFORM().set(l_p1);
-	}*/
 }
 
 void CInventoryItem::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
-	/*
-	setVisible					(false);
-	setEnabled					(false);
-	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
-
-	if(Local()) OnStateSwitch(eHiding);
-
-
-	if (Local() && (0xffff!=respawnPhantom)) 
-	{
-	NET_Packet		P;
-	u_EventGen		(P,GE_RESPAWN,respawnPhantom);
-	u_EventSend		(P);
-	respawnPhantom	= 0xffff;
-	}
-	*/
 }
 
 void CInventoryItem::OnH_A_Chield		()
@@ -296,35 +287,11 @@ void CInventoryItem::OnH_A_Chield		()
 	inherited::OnH_A_Chield		();
 	if (m_pInventory)
 		BuildInventoryMask		(m_pInventory);
-	/*
-	setVisible					(false);
-	setEnabled					(false);
-	if (m_pPhysicsShell)		m_pPhysicsShell->Deactivate	();
-
-	if(Local()) OnStateSwitch(eHiding);
-
-
-	if (Local() && (0xffff!=respawnPhantom)) 
-	{
-	NET_Packet		P;
-	u_EventGen		(P,GE_RESPAWN,respawnPhantom);
-	u_EventSend		(P);
-	respawnPhantom	= 0xffff;
-	}
-	*/
 }
 
 void CInventoryItem::UpdateCL()
 {
 	inherited::UpdateCL();
-
-/*	if (0==H_Parent() && m_pPhysicsShell)		
-	{
-		m_pPhysicsShell->Update	();
-		XFORM().set			(m_pPhysicsShell->mXFORM);
-		XFORM().set			(m_pPhysicsShell->mXFORM);
-		Position().set			(XFORM().c);
-	}*/
 }
 
 
@@ -368,6 +335,22 @@ bool CInventoryItem::Detach(const char* item_section_name)
 }
 
 /////////// network ///////////////////////////////
+BOOL CInventoryItem::net_Spawn			(LPVOID DC)
+{
+	if (!frame_check(m_dwFrameSpawn))
+		return	(TRUE);
+
+	return		(inherited::net_Spawn(DC));
+}
+
+void CInventoryItem::net_Destroy		()
+{
+	if (!frame_check(m_dwFrameDestroy))
+		return;
+
+	inherited::net_Destroy	();
+}
+
 void CInventoryItem::net_Import			(NET_Packet& P) 
 {	
 	net_update_IItem			N;
@@ -536,11 +519,9 @@ void CInventoryItem::make_Interpolation	()
 	m_dwILastUpdateTime = Level().timeServer();
 	if (!m_bInInterpolation) return;
 	
-	if(!H_Parent() && getVisible() && m_pPhysicsShell) 
-	{
+	if(!H_Parent() && getVisible() && m_pPhysicsShell) {
 		u32 CurTime = Level().timeServer();
-		if (CurTime >= m_dwIEndTime)
-		{
+		if (CurTime >= m_dwIEndTime) {
 			m_bInInterpolation = false;
 
 			CPHSynchronize* pSyncObj = NULL;
@@ -551,8 +532,7 @@ void CInventoryItem::make_Interpolation	()
 			pSyncObj->cv2obj_Xfrom(PredictedState.quaternion, PredictedState.position, xformI);
 			XFORM().set(xformI);
 		}
-		else
-		{
+		else {
 			VERIFY			(CurTime <= m_dwIEndTime);
 			float factor	= float(CurTime - m_dwIStartTime)/(m_dwIEndTime - m_dwIStartTime);
 
@@ -622,4 +602,25 @@ void CInventoryItem::BuildInventoryMask	(const CInventory	*inventory)
 	m_inventory_mask			= 0;
 	for (int i=0; i<GetHeight(); ++i)
 		m_inventory_mask		|= ((u64(1) << GetWidth()) - 1) << (i*inventory->RuckWidth());
+}
+
+void CInventoryItem::renderable_Render	()
+{
+	inherited::renderable_Render();
+}
+
+void CInventoryItem::reload		(LPCSTR section)
+{
+	if (!frame_check(m_dwFrameReload))
+		return;
+
+	inherited::reload	(section);
+}
+
+void CInventoryItem::reinit		()
+{
+	if (!frame_check(m_dwFrameReload))
+		return;
+
+	inherited::reinit	();
 }

@@ -76,7 +76,6 @@ CWeaponRPG7Grenade::CWeaponRPG7Grenade()
 CWeaponRPG7Grenade::~CWeaponRPG7Grenade() 
 {
 	::Render->light_destroy(m_pTrailLight);
-	xr_delete	(m_pPhysicsShell);
 }
 
 
@@ -164,83 +163,25 @@ void CWeaponRPG7Grenade::net_Destroy()
 void CWeaponRPG7Grenade::OnH_B_Independent() 
 {
 	CExplosive::OnH_B_Independent();
-	
-	setVisible(true);
-	setEnabled(true);
-	
-	CObject* E	= dynamic_cast<CObject*>(H_Parent());
-	R_ASSERT(E);
-
-	XFORM().set(E->XFORM()); 
-	XFORM().c.set(m_pos);
-
-	if(m_pPhysicsShell) 
-	{
-		Fmatrix trans;
-		Level().Cameras.unaffected_Matrix(trans);
-	
-		CWeaponRPG7 *l_pW = dynamic_cast<CWeaponRPG7*>(E);
-		Fmatrix l_p1, l_r; 
-		l_r.rotateY(M_PI*2.f); 
-		
-		l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
-		l_p1.c.set(/*m_pos*/*l_pW->m_pGrenadePoint);
-		Fvector a_vel; a_vel.set(0, 0, 0);
-		
-		m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
-		XFORM().set(m_pPhysicsShell->mXFORM);
-		Position().set(m_pPhysicsShell->mXFORM.c);
-		
-		m_pPhysicsShell->set_PhysicsRefObject(this);
-		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
-		m_pPhysicsShell->set_ContactCallback(NULL);
-
-		m_state			= stEngine;
-		m_dwEngineTime	= ENGINE_TIME;
-
-		//запустить хвост из партиклов
-		CParticlesObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
-		Fmatrix l_m; l_m.set(XFORM());
-		Fvector zero_vel = {0.f,0.f,0.f};
-		for(s32 i = 0; i < l_c; ++i) 
-		{
-			pStaticPG = xr_new<CParticlesObject>(*m_trailEffects[i],Sector(),false);
-			pStaticPG->UpdateParent(l_m,zero_vel);
-			pStaticPG->Play();
-			m_trailEffectsPSs.push_back(pStaticPG);
-		}
-
-		//включить световую подсветку от двигателя
-		m_pTrailLight->set_color(m_TrailLightColor.r, 
-								 m_TrailLightColor.g, 
-								 m_TrailLightColor.b);
-		m_pTrailLight->set_range(m_fTrailLightRange);
-		m_pTrailLight->set_position(Position()); 
-		m_pTrailLight->set_active(true);
-
-	}
 }
 
 void CWeaponRPG7Grenade::UpdateCL() 
 {
 	//вызывается UpdateCL GameObject, чтоб не выполнять логику 
 	//CWeaponFakeGrenade и CExplosive
-	CGameObject::UpdateCL();
-	
+
 	switch (m_state)
 	{
 	case stInactive:
+		CGameObject::UpdateCL();
 		break;
 	case stExplode: 
+		CGameObject::UpdateCL();
 		CExplosive::UpdateCL();
 		break;
 	case stEngine:
-		if(getVisible() && m_pPhysicsShell) 
-		{
-			m_pPhysicsShell->Update	();
-			XFORM().set	(m_pPhysicsShell->mXFORM);
-			Position().set	(m_pPhysicsShell->mXFORM.c);
-			
+		if(getVisible() && m_pPhysicsShell) {
+			CWeaponFakeGrenade::UpdateCL();
 			if(m_dwEngineTime <= 0) 
 			{
 				m_state	= stFlying;
@@ -268,14 +209,11 @@ void CWeaponRPG7Grenade::UpdateCL()
 				m_pTrailLight->set_position(Position());
 			}
 		}
+		else
+			CGameObject::UpdateCL();
 		break;
 	case stFlying:
-		if(getVisible() && m_pPhysicsShell) 
-		{
-			m_pPhysicsShell->Update	();
-			XFORM().set	(m_pPhysicsShell->mXFORM);
-			Position().set	(m_pPhysicsShell->mXFORM.c);
-		}
+		CGameObject::UpdateCL();
 		break;
 	}
 }
@@ -289,4 +227,52 @@ void CWeaponRPG7Grenade::StopEngine()
 			  m_trailEffectsPSs.end() != it; ++it) 
 					(*it)->Stop();
 	m_pTrailLight->set_active(false);
+}
+
+void CWeaponRPG7Grenade::activate_physic_shell()
+{
+	Fmatrix trans;
+	Level().Cameras.unaffected_Matrix(trans);
+
+	CObject		*E = dynamic_cast<CObject*>(H_Parent());
+	R_ASSERT	(E);
+	CWeaponRPG7 *l_pW = dynamic_cast<CWeaponRPG7*>(E);
+	Fmatrix l_p1, l_r; 
+	l_r.rotateY(M_PI*2.f); 
+	
+	l_p1.mul(l_pW->GetHUDmode()?trans:XFORM(), l_r); 
+	l_p1.c.set(/*m_pos*/*l_pW->m_pGrenadePoint);
+	Fvector a_vel; a_vel.set(0, 0, 0);
+	
+	m_pPhysicsShell->Activate(l_p1, m_vel, a_vel);
+	m_pPhysicsShell->Update	();
+	XFORM().set(m_pPhysicsShell->mXFORM);
+	Position().set(m_pPhysicsShell->mXFORM.c);
+	
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
+	m_pPhysicsShell->set_ContactCallback(NULL);
+
+	m_state			= stEngine;
+	m_dwEngineTime	= ENGINE_TIME;
+
+	//запустить хвост из партиклов
+	CParticlesObject* pStaticPG; s32 l_c = (s32)m_trailEffects.size();
+	Fmatrix l_m; l_m.set(XFORM());
+	Fvector zero_vel = {0.f,0.f,0.f};
+	for(s32 i = 0; i < l_c; ++i) 
+	{
+		pStaticPG = xr_new<CParticlesObject>(*m_trailEffects[i],Sector(),false);
+		pStaticPG->UpdateParent(l_m,zero_vel);
+		pStaticPG->Play();
+		m_trailEffectsPSs.push_back(pStaticPG);
+	}
+
+	//включить световую подсветку от двигателя
+	m_pTrailLight->set_color(m_TrailLightColor.r, 
+								m_TrailLightColor.g, 
+								m_TrailLightColor.b);
+	m_pTrailLight->set_range(m_fTrailLightRange);
+	m_pTrailLight->set_position(Position()); 
+	m_pTrailLight->set_active(true);
 }

@@ -85,13 +85,6 @@ BOOL CBastArtifact::net_Spawn(LPVOID DC)
 	BOOL result = inherited::net_Spawn(DC);
 	if(!result) return FALSE;
 
-	if(m_pPhysicsShell) 
-	{
-		m_pPhysicsShell->set_PhysicsRefObject(this);
-		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
-		m_pPhysicsShell->set_ContactCallback(NULL);
-	}
-
 	m_bStrike = false;
 	m_AttakingEntity = NULL;
 	m_AliveList.clear();
@@ -136,17 +129,10 @@ void CBastArtifact::UpdateCL()
 	//современем энергия по немногу тоже уменьшается
 	if(m_fEnergy>0) m_fEnergy -= m_fEnergyDecreasePerTime*Device.fTimeDelta;
 
-	if(getVisible() && m_pPhysicsShell) 
-	{
-		m_pPhysicsShell->Update();
-		XFORM().set(m_pPhysicsShell->mXFORM);
-		Position().set(m_pPhysicsShell->mXFORM.c);
-
-		if(m_bStrike)
-		{
+	if (getVisible() && m_pPhysicsShell) {
+		if(m_bStrike) {
 			//выбрать жертву, если она еще не выбрана
-			if(!m_AliveList.empty() && m_AttakingEntity == NULL)
-			{
+			if(!m_AliveList.empty() && m_AttakingEntity == NULL) {
 				CEntityAlive* pEntityToHit = NULL;
 				if(m_AliveList.size()>1)
 				{
@@ -274,4 +260,11 @@ BOOL CBastArtifact::feel_touch_contact(CObject* O)
 		return TRUE;
 	else
 		return FALSE;
+}
+
+void CBastArtifact::setup_physic_shell	()
+{
+	m_pPhysicsShell->set_PhysicsRefObject(this);
+	m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
+	m_pPhysicsShell->set_ContactCallback(NULL);
 }

@@ -12,7 +12,21 @@
 #include "actor.h"
 #include "trade.h"
 #include "inventory.h"
+#include "attachable_item.h"
 
+struct CStringSortPredicate {
+	bool		operator()	(const ref_str &s1, const ref_str &s2) const
+	{
+		return			(s1 < s2);
+	}
+};
+
+struct CStringFindPredicate {
+	bool		operator()	(const ref_str &s1, const ref_str &s2) const
+	{
+		return			(s1 != s2);
+	}
+};
 
 //////////////////////////////////////////////////////////////////////////
 // CInventoryOwner class 
@@ -31,20 +45,12 @@ CInventoryOwner::~CInventoryOwner			()
 
 void CInventoryOwner::Init					()
 {
-	m_torch_angle_offset		= Fvector().set(0,0,0);
-	m_torch_position_offset		= Fvector().set(0,0,0);
-	m_torch_bone_name			= "";
 	m_inventory					= xr_new<CInventory>();
 	m_trade_storage				= xr_new<CInventory>();
 }
 
 void CInventoryOwner::Load					(LPCSTR section)
 {
-	if (use_torch()) {
-		m_torch_angle_offset	= pSettings->r_fvector3	(section,"torch_angle_offset");
-		m_torch_position_offset	= pSettings->r_fvector3	(section,"torch_position_offset");
-		m_torch_bone_name		= pSettings->r_string	(section,"torch_bone_name");
-	}
 }
 
 void CInventoryOwner::reinit				()
@@ -62,6 +68,19 @@ void CInventoryOwner::reinit				()
 
 void CInventoryOwner::reload				(LPCSTR section)
 {
+	if (!pSettings->line_exist(section,"attachable_items")) {
+		m_attach_item_sections.clear();
+		return;
+	}
+
+	LPCSTR						attached_sections = pSettings->r_string(section,"attachable_items");
+	u32							item_count = _GetItemCount(attached_sections);
+	string16					current_item_section;
+	m_attach_item_sections.resize(item_count);
+	for (u32 i=0; i<item_count; ++i)
+		m_attach_item_sections[i] = _GetItem(attached_sections,i,current_item_section);
+
+	std::sort					(m_attach_item_sections.begin(),m_attach_item_sections.end(),CStringSortPredicate());
 }
 
 void __stdcall InventoryCallback(CKinematics *tpKinematics);
@@ -75,11 +94,6 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	
 	if(!pThis->Local())  return TRUE;
     
-	if (use_torch()) {
-		VERIFY			(pThis->Visual());
-		pThis->add_visual_callback(InventoryCallback);
-	}
-	
 	if (ai().get_alife())
 		return			TRUE;
 
@@ -324,25 +338,17 @@ void __stdcall InventoryCallback(CKinematics *tpKinematics)
 	CInventoryOwner		*inventory_owner = dynamic_cast<CInventoryOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
 	VERIFY				(inventory_owner);
 
-	CInventoryItem		*torch = inventory_owner->inventory().Get(CLSID_DEVICE_TORCH,false);
-	if (!torch) {
-		torch			= inventory_owner->inventory().Get(CLSID_DEVICE_TORCH,true);
-		if (!torch)
-			return;
-	}
-
 	CGameObject			*game_object = dynamic_cast<CGameObject*>(inventory_owner);
-	if (!game_object)
-		return;
+	VERIFY				(game_object);
 
-	if (xr_strlen(inventory_owner->torch_bone_name())) {
-		Fmatrix			matrix;
-		matrix.setHPB	(VPUSH(inventory_owner->torch_angle_offset()));
-		matrix.c		= inventory_owner->torch_position_offset();
-		CBoneInstance	&l_tBoneInstance = PKinematics(game_object->Visual())->LL_GetBoneInstance(PKinematics(game_object->Visual())->LL_BoneID(inventory_owner->torch_bone_name()));
+	xr_vector<CAttachableItem*>::const_iterator	I = inventory_owner->attached_objects().begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = inventory_owner->attached_objects().end();
+	for ( ; I != E; ++I) {
+		Fmatrix			matrix = (*I)->offset();
+		CBoneInstance	&l_tBoneInstance = PKinematics(game_object->Visual())->LL_GetBoneInstance(PKinematics(game_object->Visual())->LL_BoneID((*I)->bone_name()));
 		matrix.mulA		(l_tBoneInstance.mTransform);
 		matrix.mulA		(game_object->XFORM());
-		torch->XFORM()	= matrix;
+		(*I)->XFORM()	= matrix;
 	}
 }
 
@@ -359,7 +365,57 @@ void CInventoryOwner::renderable_Render		()
 		torch->renderable_Render();
 }
 
-bool CInventoryOwner::use_torch				() const
+void CInventoryOwner::OnItemTake			(CInventoryItem *inventory_item)
 {
-	return				(true);
+	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I) {
+		VERIFY								((*I)->ID() != inventory_item->ID());
+	}
+
+	if (attach_item(inventory_item)) {
+		VERIFY								(dynamic_cast<CAttachableItem*>(inventory_item));
+		if (m_attached_objects.empty()) {
+			CGameObject						*game_object = dynamic_cast<CGameObject*>(this);
+			VERIFY							(game_object && game_object->Visual());
+			game_object->add_visual_callback(InventoryCallback);
+		}
+		m_attached_objects.push_back		(dynamic_cast<CAttachableItem*>(inventory_item));
+	}
+}
+
+void CInventoryOwner::OnItemDrop			(CInventoryItem *inventory_item)
+{
+	xr_vector<CAttachableItem*>::iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I) {
+		if ((*I)->ID() == inventory_item->ID()) {
+			m_attached_objects.erase	(I);
+			if (m_attached_objects.empty()) {
+				CGameObject					*game_object = dynamic_cast<CGameObject*>(this);
+				VERIFY						(game_object && game_object->Visual());
+				game_object->remove_visual_callback(InventoryCallback);
+			}
+			break;
+		}
+	}
+}
+
+bool CInventoryOwner::attached				(const CInventoryItem *inventory_item) const
+{
+	xr_vector<CAttachableItem*>::const_iterator	I = m_attached_objects.begin();
+	xr_vector<CAttachableItem*>::const_iterator	E = m_attached_objects.end();
+	for ( ; I != E; ++I)
+		if ((*I)->ID() == inventory_item->ID())
+			return		(true);
+	return				(false);
+}
+
+bool CInventoryOwner::attach_item			(const CInventoryItem *inventory_item) const
+{
+	if (!dynamic_cast<const CAttachableItem*>(inventory_item))
+		return			(false);
+
+#pragma todo("Dima to Oles : Please make one more cName and cNameSect prototype which return ref_str")
+	return				(std::binary_search(m_attach_item_sections.begin(),m_attach_item_sections.end(),ref_str(inventory_item->cNameSect()),CStringFindPredicate()));
 }

@@ -100,6 +100,10 @@ protected:
 
 protected:
 	u32					m_animation_slot;
+			void	setup_throw_params		();
 public:
-	IC u32				HandDependence		()				{	return m_animation_slot;}
+	IC		u32		HandDependence			()	{	return m_animation_slot;}
+	virtual void	activate_physic_shell	();
+	virtual void	setup_physic_shell		();
+	virtual void	create_physic_shell		();
 };

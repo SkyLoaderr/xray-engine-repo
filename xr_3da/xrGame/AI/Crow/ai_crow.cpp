@@ -74,8 +74,6 @@ CAI_Crow::~CAI_Crow()
 {
 	// removing all data no more being neded 
 	m_Sounds.m_idle.Unload		();
-	xr_delete(m_pPhysicsShell);
-
 }
 
 void CAI_Crow::Init		()
@@ -167,13 +165,13 @@ void CAI_Crow::switch2_DeathFall()
 //	m_PhysicMovementControl.SetVelocity(V);
 	PSkeletonAnimated(Visual())->PlayCycle	(m_Anims.m_death.GetRandom(),TRUE,cb_OnHitEndPlaying,this);
 }
+
 void CAI_Crow::shedule_Update(u32 DT)
 {
 	spatial.type &=~STYPE_VISIBLEFORAI;
 
 	inherited::shedule_Update(DT);
 
-	UpdatePhysicsShell();
 	if (st_target!=st_current){
 		switch(st_target){
 		case eFlyUp: 
@@ -388,17 +386,9 @@ void CAI_Crow::CreateSkeleton()
 	CPhysicsElement* E = P_create_Element(); R_ASSERT(E); E->add_Box(obb);
 	m_pPhysicsShell->add_Element(E);
 	m_pPhysicsShell->setMass(0.3f);
-	m_pPhysicsShell->SetMaterial("creatures/crow");
+	m_pPhysicsShell->SetMaterial(PKinematics(Visual())->LL_GetData(PKinematics(Visual())->LL_GetBoneRoot()).game_mtl_idx);
 	m_pPhysicsShell->Activate(XFORM(),0,XFORM());
-	
-}
-
-void CAI_Crow::UpdatePhysicsShell()
-{
-	if(!m_pPhysicsShell) return;
-
-	m_pPhysicsShell->Update	();
-	XFORM().set				(m_pPhysicsShell->mXFORM);
+	m_pPhysicsShell->Update();
 }
 
 void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in_object_space, float impulse, ALife::EHitType hit_type)
@@ -409,4 +399,9 @@ void CAI_Crow::Hit(float P, Fvector &dir, CObject* who, s16 element,Fvector p_in
 BOOL CAI_Crow::UsedAI_Locations()
 {
 	return		(FALSE);
+}
+
+void CAI_Crow::create_physic_shell()
+{
+	// do not delete!!!
 }

@@ -42,13 +42,7 @@ void CMercuryBall::UpdateCL()
 {
 	inherited::UpdateCL();
 
-	if(getVisible() && m_pPhysicsShell) 
-	{
-
-		m_pPhysicsShell->Update	();
-		XFORM().set(m_pPhysicsShell->mXFORM);
-		Position().set(m_pPhysicsShell->mXFORM.c);
-	
+	if (getVisible() && m_pPhysicsShell) {
 		if(Device.TimerAsync() - m_timeLastUpdate> m_timeToUpdate)
 		{
 			m_timeLastUpdate = Device.TimerAsync();
