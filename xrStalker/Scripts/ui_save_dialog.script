@@ -167,7 +167,7 @@ function save_dialog:InitCallBacks()
 end
 
 function save_dialog:OnListItemClicked()
-	local list_box = self:GetListBox("list_window")
+	local list_box = self:GetListWnd("list_window")
 	local item_id = list_box:GetFocusedItem()
 	local item = list_box:GetItem(intem_id)
 	
