@@ -19,21 +19,6 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
-LPCSTR					r2p(LPCSTR name)
-{
-	static string128	path;
-	if (RImplementation.b_nv3x)	strconcat(path,"r2_nv3x\\",name);
-	else						strconcat(path,"r2_r3xx\\",name);
-	return				path;
-}
-LPCSTR					r2v(LPCSTR name)
-{
-	static string128	path;
-	if (RImplementation.b_nv3x)	strconcat(path,"r2_nv3x\\",name);
-	else						strconcat(path,"r2_r3xx\\",name);
-	return				path;
-}
-
 //
 void					CRender::create					()
 {
