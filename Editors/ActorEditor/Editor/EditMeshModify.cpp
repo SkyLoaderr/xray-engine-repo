@@ -21,7 +21,9 @@ void CEditableMesh::Transform(const Fmatrix& parent){
 }
 //----------------------------------------------------
 
-void CEditableMesh::RebuildVMaps(){
+void CEditableMesh::RebuildVMaps()
+{
+	ELog.Msg		(mtInformation,"Rebuild VMaps...");
 	IntVec			m_PointVMap;
 	m_PointVMap.resize(m_Points.size(),-1);
 	VMapVec		nVMaps;
