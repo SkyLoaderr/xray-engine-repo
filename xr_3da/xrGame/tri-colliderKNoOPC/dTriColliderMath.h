@@ -114,7 +114,14 @@ inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2,
 							 {
 								 dVector3	dir		=	{to[0]-from[0],to[1]-from[1],to[2]-from[2]}	;
 								 dReal		rmag	=	dDOT(dir,dir)								;
-								 VERIFY(rmag!=0.f)													;
+								 if(rmag<EPS_S)	
+								 {
+									 //in the case when "from" & "to" are same the call suppose they lies on the plane
+									 point[0]=from[0]												;	
+									 point[1]=from[1]												;	
+									 point[2]=from[2]												;
+									 return;
+								 }
 								 rmag	=	dSqrt(rmag)									;
 								 rmag	=	1.f/rmag									;
 
