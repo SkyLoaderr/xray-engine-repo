@@ -65,6 +65,12 @@ class CAI_Rat : public CCustomMonster
 		typedef struct tagSRatAnimations{
 			SNormalAnimations	tNormal;
 		}SRatAnimations;
+		
+		typedef struct tagSTerrainPlace{
+			svector<_LOCATION_ID,LOCATION_TYPE_COUNT>	tMask;
+			u32											dwMinTime;
+			u32											dwMaxTime;
+		}STerrainPlace;
 		//////////////////////////
 		// END OF STRUCTURES
 		//////////////////////////
@@ -72,6 +78,12 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// CLASS MEMBERS
 		//////////////////////////
+
+		// Graph
+		_GRAPH_ID			m_tCurGP;
+		_GRAPH_ID			m_tNextGP;
+		u32					m_dwTimeToChange;
+		vector<STerrainPlace> m_tpaTerrain;
 
 		// FSM
 		stack<ERatStates>	m_tStateStack;
@@ -314,6 +326,14 @@ class CAI_Rat : public CCustomMonster
 			}
 			return(!dwNewNode || !getAI().u_InsideNode(*tpNewNode,QueryPos));
 		};
+
+		IC	bool bfCheckMask(svector<_LOCATION_ID,LOCATION_TYPE_COUNT> &M, _LOCATION_ID E[LOCATION_TYPE_COUNT])
+		{
+			for (int i=0; i<LOCATION_TYPE_COUNT; i++)
+				if ((M[i] != E[i]) && (M[i] != 255))
+					return(false);
+			return(true);
+		};
 		
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
@@ -333,6 +353,8 @@ class CAI_Rat : public CCustomMonster
 		void	vfSetMovementType(char cBodyState, float fSpeed);
 		void	vfUpdateDynamicObjects() {};
 		void	CreateSkeleton();
+		void	vfUpdateSpawnPosition();
+		void	tfChooseNextGraphPoint();
 		//////////////////////////
 		// FSM STATES
 		//////////////////////////

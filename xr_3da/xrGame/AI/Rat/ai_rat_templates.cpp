@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
+#include "..\\..\\ai_alife_graph.h"
 
 void CAI_Rat::vfSaveEnemy()
 {
@@ -283,4 +284,47 @@ bool CAI_Rat::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)
 	}
 
 	return(m_bResult);
+}
+
+using namespace ALife;
+
+void CAI_Rat::tfChooseNextGraphPoint()
+{
+	_GRAPH_ID			tGraphID		= m_tNextGP;
+	u16					wNeighbourCount = (u16)getAI().m_tpaGraph[tGraphID].tNeighbourCount;
+	CALifeGraph::SGraphEdge			*tpaEdges		= (CALifeGraph::SGraphEdge *)((BYTE *)getAI().m_tpaGraph + getAI().m_tpaGraph[tGraphID].dwEdgeOffset);
+	
+	int					iPointCount		= (int)m_tpaTerrain.size();
+	int					iBranches		= 0;
+	for (int i=0; i<wNeighbourCount; i++)
+		for (int j=0; j<iPointCount; j++)
+			if (bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP))
+				iBranches++;
+	if (!iBranches) {
+		for (int i=0; i<wNeighbourCount; i++) {
+			for (int j=0; j<iPointCount; j++)
+				if (bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes)) {
+					m_tCurGP	= m_tNextGP;
+					m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
+					m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
+					return;
+				}
+		}
+	}
+	else {
+		int iChosenBranch = ::Random.randI(0,iBranches);
+		iBranches = 0;
+		for (int i=0; i<wNeighbourCount; i++) {
+			for (int j=0; j<iPointCount; j++)
+				if (bfCheckMask(m_tpaTerrain[j].tMask,getAI().m_tpaGraph[tpaEdges[i].dwVertexNumber].tVertexTypes) && (tpaEdges[i].dwVertexNumber != m_tCurGP)) {
+					if (iBranches == iChosenBranch) {
+						m_tCurGP	= m_tNextGP;
+						m_tNextGP	= (_GRAPH_ID)tpaEdges[i].dwVertexNumber;
+						m_dwTimeToChange	= Level().timeServer() + ::Random.randI(m_tpaTerrain[j].dwMinTime,m_tpaTerrain[j].dwMaxTime);
+						return;
+					}
+					iBranches++;
+				}
+		}
+	}
 }

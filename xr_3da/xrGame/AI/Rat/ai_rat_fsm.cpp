@@ -42,6 +42,7 @@
 void CAI_Rat::Think()
 {
 	vfUpdateMorale();
+	vfUpdateSpawnPosition();
 	m_bStopThinking = false;
 	do {
 		m_ePreviousState = m_eCurrentState;
@@ -198,7 +199,7 @@ void CAI_Rat::FreeHuntingActive()
 
 	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(m_Enemy.Enemy,aiRatEatCorpse);
 	
-	m_tSpawnPosition.set(m_tSafeSpawnPosition);
+	m_tSpawnPosition.set	(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= m_fSafeGoalChangeDelta;
 	m_tVarGoal.set			(m_tGoalVariation);
 	m_fASpeed				= m_fAngleSpeed;
@@ -665,5 +666,29 @@ void CAI_Rat::EatCorpse()
 			m_Enemy.Enemy->m_fFood -= m_fHitPower/10.f;
 		}
 		m_bFiring = true;
+	}
+}
+
+void CAI_Rat::vfUpdateSpawnPosition()
+{
+	INIT_SQUAD_AND_LEADER;
+	if (this != Leader)	{
+		CAI_Rat *tpLeader = dynamic_cast<CAI_Rat*>(Leader);
+		if (tpLeader) {
+			if (m_tSafeSpawnPosition.distance_to(tpLeader->m_tSafeSpawnPosition) > EPS_L) {
+				vfAddActiveMember(true);
+				m_eCurrentState = aiRatFreeHuntingActive;
+			}
+			m_tSafeSpawnPosition = tpLeader->m_tSafeSpawnPosition;
+		}
+	}
+	else {
+		if ((Level().timeServer() >= m_dwTimeToChange) && (getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex == m_tNextGP)) {
+			m_tNextGP					= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
+			tfChooseNextGraphPoint		();
+			m_tSafeSpawnPosition.set	(getAI().m_tpaGraph[m_tNextGP].tLocalPoint);
+			Msg("Next graph point %d",m_tNextGP);
+		}
+
 	}
 }

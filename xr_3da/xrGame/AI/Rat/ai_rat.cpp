@@ -10,6 +10,7 @@
 
 #include "ai_rat.h"
 #include "..\\ai_monsters_misc.h"
+#include "..\\..\\..\\xr_trims.h"
 
 CAI_Rat::CAI_Rat()
 {
@@ -44,15 +45,15 @@ CAI_Rat::CAI_Rat()
 	q_look.o_look_speed		= PI;
 	m_pPhysicsShell			= NULL;
 	m_saved_impulse			= 0.f;
+	m_dwTimeToChange		= 0;
 }
 
 CAI_Rat::~CAI_Rat()
 {
-	DELETE_SOUNDS(SND_HIT_COUNT,	m_tpaSoundHit);
-	DELETE_SOUNDS(SND_DIE_COUNT,	m_tpaSoundDie);
-	DELETE_SOUNDS(SND_VOICE_COUNT,	m_tpaSoundVoice);
+	DELETE_SOUNDS			(SND_HIT_COUNT,	m_tpaSoundHit);
+	DELETE_SOUNDS			(SND_DIE_COUNT,	m_tpaSoundDie);
+	DELETE_SOUNDS			(SND_VOICE_COUNT,	m_tpaSoundVoice);
 	xr_delete				(m_pPhysicsShell);
-
 }
 
 void CAI_Rat::Die()
@@ -139,6 +140,21 @@ void CAI_Rat::Load(LPCSTR section)
 	m_phMass						= pSettings->ReadFLOAT (section,"corp_mass");
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;
+
+	m_tpaTerrain.clear				();
+	LPCSTR							S = pSettings->ReadSTRING(section,"terrain");
+	u32								N = _GetItemCount(S);
+	R_ASSERT						(((N % (LOCATION_TYPE_COUNT + 2)) == 0) && (N));
+	STerrainPlace					tTerrainPlace;
+	tTerrainPlace.tMask.resize		(LOCATION_TYPE_COUNT);
+	string16						I;
+	for (u32 i=0; i<N;) {
+		for (u32 j=0; j<LOCATION_TYPE_COUNT; j++, i++)
+			tTerrainPlace.tMask[j] = _LOCATION_ID(atoi(_GetItem(S,i,I)));
+		tTerrainPlace.dwMinTime		= atoi(_GetItem(S,i++,I))*1000;
+		tTerrainPlace.dwMaxTime		= atoi(_GetItem(S,i++,I))*1000;
+		m_tpaTerrain.push_back(tTerrainPlace);
+	}
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
@@ -190,6 +206,10 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tHPB.x						= r_torso_current.yaw;
 	m_tHPB.y						= r_torso_current.pitch;
 	m_tHPB.z						= 0;
+
+	INIT_SQUAD_AND_LEADER;
+	if (this == Leader)
+		m_tCurGP					= m_tNextGP	= getAI().m_tpaCrossTable[AI_NodeID].tGraphIndex;
 	
 	return							(TRUE);
 }
