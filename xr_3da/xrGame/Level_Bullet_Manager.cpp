@@ -355,7 +355,7 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	float range = bullet->speed*delta_time_sec;
 	
 	Collide::ray_defs RD(bullet->pos, bullet->dir, range, 0 ,Collide::rqtBoth);
-	BOOL result = Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet);
+//	BOOL result = Level().ObjectSpace.RayQuery( RD, firetrace_callback, bullet);
 	
 		
 	//изменить положение пули
