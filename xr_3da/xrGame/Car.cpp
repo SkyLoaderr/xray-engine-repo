@@ -135,11 +135,12 @@ void CCar::shedule_Update(u32 dt)
 	if (GetScriptControl())
 		ProcessScripts();
 	else {
+		if (!m_tpActionQueue.empty())
+			ResetScriptData				(false);
 		while (!m_tpActionQueue.empty()) {
 			xr_delete	(*m_tpActionQueue.begin());
 			m_tpActionQueue.erase(m_tpActionQueue.begin());
 		}
-		ResetScriptData				(false);
 	}
 }
 
