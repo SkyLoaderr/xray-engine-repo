@@ -34,7 +34,7 @@ void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 e
 	XFORM().transform_dir(D,vLocalDir);
 	m_dwHitTime = Level().timeServer();
 	m_tHitDir.set(D);
-	m_tHitDir.normalize();
+	vfNormalizeSafe(m_tHitDir);
 	m_tHitPosition = who->Position();
 	
 	SHurt	tHurt;

@@ -18,7 +18,7 @@ void CAI_Biting::SetReversedDirectionLook()
 		CObject::SavedPosition tPreviousPosition = ps_Element(i - 2), tCurrentPosition = ps_Element(i - 1);
 		tWatchDirection.sub(tPreviousPosition.vPosition,tCurrentPosition.vPosition);
 		if (tWatchDirection.magnitude() > EPS_L) {
-			tWatchDirection.normalize();
+			vfNormalizeSafe(tWatchDirection);
 			r_torso_target.yaw += PI;
 			mk_rotation(tWatchDirection,r_torso_target);
 		}
@@ -99,7 +99,7 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 		Fvector position_in_bone_space;
 		position_in_bone_space.set(0.f,0.f,0.f);
 		tDirection.sub(ve.obj->Position(),this->Position());
-		tDirection.normalize();
+		vfNormalizeSafe(tDirection);
 
 		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
 //		
