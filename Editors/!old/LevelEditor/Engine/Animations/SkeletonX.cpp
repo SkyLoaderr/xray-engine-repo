@@ -377,7 +377,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 {
 	// Create HW VB in case this is possible
 	BOOL	bSoft				= HW.Caps.geometry.bSoftware;
-	u32		dwUsage				= D3DUSAGE_WRITEONLY | (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);
+	u32		dwUsage				= /*D3DUSAGE_WRITEONLY |*/ (bSoft?D3DUSAGE_SOFTWAREPROCESSING:0);	// VB may be read by wallmarks code
 	switch	(RenderMode)
 	{
 	case RM_SKINNING_SOFT:
