@@ -3872,6 +3872,12 @@
 						RelativePath=".\script_debugger_messages.h">
 					</File>
 					<File
+						RelativePath=".\script_debugger_threads.cpp">
+					</File>
+					<File
+						RelativePath=".\script_debugger_threads.h">
+					</File>
+					<File
 						RelativePath=".\script_debugger_utils.cpp">
 					</File>
 					<File
