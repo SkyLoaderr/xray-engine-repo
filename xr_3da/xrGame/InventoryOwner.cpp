@@ -29,10 +29,16 @@ CInventoryOwner::~CInventoryOwner			()
 
 void CInventoryOwner::Init					()
 {
+	m_torch_angle_offset		= Fvector().set(0,0,0);
+	m_torch_position_offset		= Fvector().set(0,0,0);
+	m_torch_bone_name			= "";
 }
 
 void CInventoryOwner::Load					(LPCSTR section)
 {
+	m_torch_angle_offset		= pSettings->r_fvector3	(section,"torch_angle_offset");
+	m_torch_position_offset		= pSettings->r_fvector3	(section,"torch_position_offset");
+	m_torch_bone_name			= pSettings->r_string	(section,"torch_bone_name");
 }
 
 void CInventoryOwner::reinit				()
@@ -53,15 +59,19 @@ void CInventoryOwner::reload				(LPCSTR section)
 {
 }
 
+void __stdcall VisualCallback(CKinematics *tpKinematics);
+
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 {
 	//получить указатель на объект, InventoryOwner
-	CGameObject* pThis = dynamic_cast<CGameObject*>(this);
+	CGameObject			*pThis = dynamic_cast<CGameObject*>(this);
 	if(!pThis) return FALSE;
 
 	
 	if(!pThis->Local())  return TRUE;
     
+	VERIFY				(pThis->Visual());
+	PKinematics			(pThis->Visual())->Callback(VisualCallback,this);
 	//////////////////////////////////////////////
 	//проспавнить PDA каждому inventory owner
 	//////////////////////////////////////////////
@@ -271,4 +281,47 @@ LPCSTR CInventoryOwner::GetGameRank()
 LPCSTR CInventoryOwner::GetGameCommunity()
 {
 	return "Char Community";
+}
+
+void __stdcall VisualCallback(CKinematics *tpKinematics)
+{
+	CInventoryOwner		*inventory_owner = dynamic_cast<CInventoryOwner*>(static_cast<CObject*>(tpKinematics->Update_Callback_Param));
+	VERIFY				(inventory_owner);
+
+	CInventoryItem		*torch = inventory_owner->m_inventory.Get(CLSID_DEVICE_TORCH,false);
+	if (!torch) {
+		torch			= inventory_owner->m_inventory.Get(CLSID_DEVICE_TORCH,true);
+		if (!torch)
+			return;
+	}
+
+	CGameObject			*game_object = dynamic_cast<CGameObject*>(inventory_owner);
+	if (!game_object)
+		return;
+
+	Fmatrix				matrix;
+
+	matrix.setHPB		(VPUSH(inventory_owner->torch_angle_offset()));
+	matrix.c			= inventory_owner->torch_position_offset();
+
+	if (xr_strlen(inventory_owner->torch_bone_name())) {
+		CBoneInstance	&l_tBoneInstance = PKinematics(game_object->Visual())->LL_GetBoneInstance(PKinematics(game_object->Visual())->LL_BoneID(inventory_owner->torch_bone_name()));
+		matrix.mulA		(l_tBoneInstance.mTransform);
+		matrix.mulA		(game_object->XFORM());
+	}
+
+	torch->XFORM()		= matrix;
+}
+
+void CInventoryOwner::renderable_Render		()
+{
+	if (m_inventory.ActiveItem())
+		m_inventory.ActiveItem()->renderable_Render();
+
+	CInventoryItem		*torch = m_inventory.Get(CLSID_DEVICE_TORCH,false);
+	if (!torch)
+		torch			= m_inventory.Get(CLSID_DEVICE_TORCH,true);
+
+	if (torch)
+		torch->renderable_Render();
 }

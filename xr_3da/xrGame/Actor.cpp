@@ -170,6 +170,7 @@ void CActor::Load	(LPCSTR section )
 	Msg						("Loading actor: %s",section);
 	inherited::Load			(section);
 	CMaterialManager::Load	(section);
+	CInventoryOwner::Load	(section);
 
 	//////////////////////////////////////////////////////////////////////////
 	ISpatial*		self			=	dynamic_cast<ISpatial*> (this);
@@ -1170,11 +1171,9 @@ void CActor::shedule_Update	(u32 DT)
 
 void CActor::renderable_Render	()
 {
-	inherited::renderable_Render	();
-
-	//CWeapon* W				= Weapons->ActiveWeapon();
-	//CWeapon *W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem()); if(W) W->renderable_Render();
-	if(m_inventory.ActiveItem()&&!m_vehicle) m_inventory.ActiveItem()->renderable_Render();
+	inherited::renderable_Render			();
+	if (!m_vehicle)
+		CInventoryOwner::renderable_Render	();
 }
 
 void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)

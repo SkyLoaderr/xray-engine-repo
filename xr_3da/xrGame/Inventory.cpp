@@ -969,7 +969,7 @@ PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck)
 	for(PPIItem it = list.begin(); list.end() != it; ++it) 
 	{
 		PIItem pIItem = *it;
-		if(pIItem->CLS_ID == cls_id && 
+		if(pIItem->SUB_CLS_ID == cls_id && 
 								pIItem->Useful()) 
 				return pIItem;
 	}

@@ -81,4 +81,17 @@ protected:
 
 	bool m_bTalking; 
 	CInventoryOwner* m_pTalkPartner;
+
+private:
+	Fvector				m_torch_angle_offset;
+	Fvector				m_torch_position_offset;
+	LPCSTR				m_torch_bone_name;
+
+public:
+	IC	const Fvector	&torch_angle_offset		() const;
+	IC	const Fvector	&torch_position_offset	() const;
+	IC	LPCSTR			torch_bone_name			() const;
+	virtual void		renderable_Render		();
 };
+
+#include "inventory_owner_inline.h"

@@ -25,9 +25,8 @@ BOOL CAI_Stalker::feel_vision_isRelevant(CObject* O)
 
 void CAI_Stalker::renderable_Render	()
 {
-	inherited::renderable_Render	();
-	if(m_inventory.ActiveItem())
-		m_inventory.ActiveItem()->renderable_Render();
+	inherited::renderable_Render		();
+	CInventoryOwner::renderable_Render	();
 }
 
 void CAI_Stalker::Exec_Look(float dt)

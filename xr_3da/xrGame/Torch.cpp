@@ -108,19 +108,17 @@ void CTorch::net_Destroy()
 void CTorch::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield	();
-	setVisible				(false);
-	setEnabled				(false);
 	H_Root()->Center		(Position());
-	XFORM().c.set		(Position());
+	XFORM().c.set			(Position());
 	m_focus.set				(Position());
 	if(m_pPhysicsShell)		m_pPhysicsShell->Deactivate();
+	setVisible				(true);
+	setEnabled				(true);
 }
 
 void CTorch::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
-	setVisible(true);
-	setEnabled(true);
 	CObject* E = dynamic_cast<CObject*>(H_Parent()); R_ASSERT(E);
 	XFORM().set(E->XFORM());
 	Position().set(XFORM().c);
@@ -143,37 +141,17 @@ void CTorch::UpdateCL()
 {
 	inherited::UpdateCL();
 	
-	if(getVisible() && m_pPhysicsShell) 
-	{
-		m_pPhysicsShell->Update	();
-		XFORM().set				(m_pPhysicsShell->mXFORM);
-		Position().set			(XFORM().c);
-		
-		if (light_render->get_active())
-		{
-			light_render->set_direction	(XFORM().k);
-			light_render->set_position	(XFORM().c);
-			glow_render->set_position	(XFORM().c);
-			time2hide			-= Device.fTimeDelta;
-			if (time2hide<0)
-			{
-				light_render->set_active(false);
-				glow_render->set_active(false);
-			}
-		}
-	} 
-	else if(H_Parent()) 
-	{
+	if (H_Parent()) {
 		/*Collide::rq_result RQ;
 		H_Parent()->setEnabled(false);
 		Fvector l_p, l_d; dynamic_cast<CEntity*>(H_Parent())->g_fireParams(l_p,l_d);
 		//Fmatrix l_cam; Level().Cameras.unaffected_Matrix(l_cam);
 		Fvector l_end, l_up; 
 		if(Level().ObjectSpace.RayPick(l_p, l_d, 50.f, Collide::rqtBoth, RQ)) {
-			l_end.mad(l_p, l_d, RQ.range); l_up.set(0, 1.f, 0);
-			XFORM().k.sub(l_end, l_p); XFORM().k.normalize();
-			XFORM().i.crossproduct(l_up, XFORM().k); XFORM().i.normalize();
-			XFORM().j.crossproduct(XFORM().k, XFORM().i);
+		l_end.mad(l_p, l_d, RQ.range); l_up.set(0, 1.f, 0);
+		XFORM().k.sub(l_end, l_p); XFORM().k.normalize();
+		XFORM().i.crossproduct(l_up, XFORM().k); XFORM().i.normalize();
+		XFORM().j.crossproduct(XFORM().k, XFORM().i);
 		}
 		m_focus.inertion(l_end,1-Device.fTimeDelta*4);
 
@@ -190,8 +168,26 @@ void CTorch::UpdateCL()
 		light_render->set_direction	(XFORM().k);
 		light_render->set_position	(XFORM().c);
 		glow_render->set_position	(XFORM().c);
-
 	}
+	else 
+		if(getVisible() && m_pPhysicsShell) {
+			m_pPhysicsShell->Update	();
+			XFORM().set				(m_pPhysicsShell->mXFORM);
+			Position().set			(XFORM().c);
+			
+			if (light_render->get_active())
+			{
+				light_render->set_direction	(XFORM().k);
+				light_render->set_position	(XFORM().c);
+				glow_render->set_position	(XFORM().c);
+				time2hide			-= Device.fTimeDelta;
+				if (time2hide<0)
+				{
+					light_render->set_active(false);
+					glow_render->set_active(false);
+				}
+			}
+		} 
 	
 	// update light source
 	if (light_render->get_active())

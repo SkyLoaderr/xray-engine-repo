@@ -29,7 +29,7 @@ public:
 	virtual void	OnH_B_Independent	();
 
 	virtual void	UpdateCL			();
-	virtual void	renderable_Render			();
+	virtual void	renderable_Render	();
 
 	void			Switch				();
 	void			Switch				(bool light_on);
