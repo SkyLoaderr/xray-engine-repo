@@ -862,7 +862,7 @@ public:
 		CScriptDebugger* d = CScriptDebugger::GetDebugger();
 		if(d){
 			if(d->Active())
-				d->DebugBreak();
+				d->initiateDebugBreak();
 			else
 				Msg("Script debugger not active.");
 		}else

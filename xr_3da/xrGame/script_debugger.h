@@ -14,7 +14,7 @@ struct lua_State;
 #define DMOD_STEP_OVER				2
 #define DMOD_STEP_OUT				3
 #define DMOD_RUN_TO_CURSOR			4
-#define DMOD_SHOW_STACK_LEVEL		5
+//#define DMOD_SHOW_STACK_LEVEL		5
 
 #define DMOD_BREAK					10
 #define DMOD_STOP					11
@@ -45,8 +45,8 @@ public:
 	void			AddGlobalVariable	(const char* name, const char* type, const char* value);
 	void			ClearGlobalVariables();
 	void			StackLevelChanged	();
-	void			Break				();
-	void			DebugBreak			();
+//	void			Break				();
+	void			initiateDebugBreak	();
 	void			DebugBreak			(const char* szFile, int nLine);
 	void			ErrorBreak			(const char* szFile = 0, int nLine = 0);
 	void			LineHook			(const char* szFile, int nLine);
@@ -75,12 +75,14 @@ public:
 	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
+	void			GetBreakPointsFromIde();
 	void			FillBreakPointsIn	(CMailSlotMsg* msg);
 	bool			HasBreakPoint		(const char* fileName, s32 lineNum);
 	void			CheckNewMessages	();
 	LRESULT			DebugMessage		(UINT nMsg, WPARAM wParam, LPARAM lParam);
-	LRESULT			WaitForReply		(UINT nMsg);
-	int				TranslateIdeMessage (CMailSlotMsg*);
+	void			WaitForReply		(bool bWaitForModalResult);
+	bool			TranslateIdeMessage (CMailSlotMsg*);
+	void			SendMessageToIde	(CMailSlotMsg&);
 
 	UINT			StartDebugger		();	
 

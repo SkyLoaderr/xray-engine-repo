@@ -5,6 +5,18 @@
 
 CScriptDebugger* CScriptDebugger::m_pDebugger = NULL;
 
+void CScriptDebugger::SendMessageToIde	(CMailSlotMsg& msg)
+{
+	if(CheckExisting(IDE_MAIL_SLOT))
+	{
+		SendMailslotMessage(IDE_MAIL_SLOT, msg);
+		m_bIdePresent = true;
+	}
+	else
+		m_bIdePresent = false;
+
+}
+
 LRESULT CScriptDebugger::_SendMessage(u32 message, WPARAM wParam, LPARAM lParam)
 {
 	if ( (m_pDebugger)&&(m_pDebugger->Active())&&(message >= _DMSG_FIRST_MSG && message <= _DMSG_LAST_MSG) )
@@ -19,88 +31,65 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 
 	switch( nMsg )
 	{
-	case DMSG_NEW_CONNECTION:
-		msg.w_int(DMSG_NEW_CONNECTION);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		break;
-
-	case DMSG_WRITE_DEBUG:
-		msg.w_int(DMSG_WRITE_DEBUG);
-		msg.w_string((char*)wParam);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		break;
-
-	case DMSG_HAS_BREAKPOINT:
-		msg.w_int(DMSG_HAS_BREAKPOINT);
-		msg.w_string((char*)wParam);
-		msg.w_int((int)lParam);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		return WaitForReply(DMSG_HAS_BREAKPOINT);
-		break;
-
-	case DMSG_GOTO_FILELINE:
-		msg.w_int(DMSG_GOTO_FILELINE);
-		msg.w_string((char*)wParam);
-		msg.w_int((int)lParam);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		break;
-
-	case DMSG_DEBUG_BREAK:{
-		msg.w_int(DMSG_SHOW_IDE);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		
-		m_nMode = (int)WaitForReply(DMSG_SHOW_IDE);
-
-		if(m_nMode == DMOD_SHOW_STACK_LEVEL){
-			msg.Reset();
-			msg.w_int(DMSG_GET_STACKTRACE_LEVEL);
-			SendMailslotMessage(IDE_MAIL_SLOT, msg);
-			int sl = (int)WaitForReply(DMSG_GET_STACKTRACE_LEVEL);
-			m_callStack.GotoStackTraceLevel(sl);
-			}
+	case DMSG_NEW_CONNECTION:{
+			msg.w_int(DMSG_NEW_CONNECTION);
+			SendMessageToIde(msg);
 		}break;
 
-	case DMSG_CLEAR_STACKTRACE:
-		m_callStack.Clear();
-		msg.w_int(DMSG_CLEAR_STACKTRACE);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		return 1;
-		break;
+	case DMSG_WRITE_DEBUG:{
+			msg.w_int(DMSG_WRITE_DEBUG);
+			msg.w_string((char*)wParam);
+			SendMessageToIde(msg);
+		}break;
 
-	case DMSG_ADD_STACKTRACE:
-		m_callStack.Add(((StackTrace*)wParam)->szDesc, 
-			((StackTrace*)wParam)->szFile, 
-			((StackTrace*)wParam)->nLine);
+	case DMSG_GOTO_FILELINE:{
+			msg.w_int(DMSG_GOTO_FILELINE);
+			msg.w_string((char*)wParam);
+			msg.w_int((int)lParam);
+			SendMessageToIde(msg);
+		}break;
 
-		msg.w_int(DMSG_ADD_STACKTRACE);
-		msg.w_buff((StackTrace*)wParam, sizeof(StackTrace) );
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		return 1;
-		break;
+	case DMSG_DEBUG_BREAK:{
+			msg.w_int(DMSG_ACTIVATE_IDE);
+			SendMessageToIde(msg);
+			WaitForReply(true);
+		}break;
 
-	case DMSG_GOTO_STACKTRACE_LEVEL:
-		m_callStack.GotoStackTraceLevel((int)wParam);
-		StackLevelChanged();
-		return 1;
-		break;
+	case DMSG_CLEAR_STACKTRACE:{
+			m_callStack.Clear();
+			msg.w_int(DMSG_CLEAR_STACKTRACE);
+			SendMessageToIde(msg);
+		}break;
+
+	case DMSG_ADD_STACKTRACE:{
+			m_callStack.Add(((StackTrace*)wParam)->szDesc, 
+							((StackTrace*)wParam)->szFile, 
+							((StackTrace*)wParam)->nLine);
+
+			msg.w_int(DMSG_ADD_STACKTRACE);
+			msg.w_buff((StackTrace*)wParam, sizeof(StackTrace) );
+			SendMessageToIde(msg);
+		}break;
+
+	case DMSG_GOTO_STACKTRACE_LEVEL:{
+			m_callStack.GotoStackTraceLevel((int)wParam);
+			StackLevelChanged();
+		}break;
 	
-	case DMSG_CLEAR_LOCALVARIABLES:
-		msg.w_int(DMSG_CLEAR_LOCALVARIABLES);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		return 1;
-		break;
+	case DMSG_CLEAR_LOCALVARIABLES:{
+			msg.w_int(DMSG_CLEAR_LOCALVARIABLES);
+			SendMessageToIde(msg);
+		}break;
 
-	case DMSG_ADD_LOCALVARIABLE:
-		msg.w_int(DMSG_ADD_LOCALVARIABLE);
-		msg.w_buff((void*)wParam,sizeof(Variable));
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		return 1;
-		break;
+	case DMSG_ADD_LOCALVARIABLE:{
+			msg.w_int(DMSG_ADD_LOCALVARIABLE);
+			msg.w_buff((void*)wParam,sizeof(Variable));
+			SendMessageToIde(msg);
+		}break;
 
-	case DMSG_REDRAW_WATCHES:
-//		m_wndWatches.Redraw();
-		return 0;
-		break;
+	case DMSG_REDRAW_WATCHES:{
+//			m_wndWatches.Redraw();
+		}break;
 
 	}//case
 
@@ -125,8 +114,8 @@ CScriptDebugger::CScriptDebugger()
 		_SendMessage(DMSG_NEW_CONNECTION,0,0);
 		CMailSlotMsg msg;
 		msg.w_int(DMSG_GET_BREAKPOINTS);
-		SendMailslotMessage(IDE_MAIL_SLOT, msg);
-		WaitForReply(DMSG_GET_BREAKPOINTS);
+		SendMessageToIde(msg);
+		WaitForReply(false);
 
 	}
 }
@@ -162,14 +151,9 @@ BOOL CScriptDebugger::PrepareLuaBind()
 	return TRUE;
 }
 
-void CScriptDebugger::DebugBreak()
+void CScriptDebugger::initiateDebugBreak()
 {
 	m_nMode = DMOD_BREAK;
-}
-
-void CScriptDebugger::Break()
-{
-
 }
 
 void CScriptDebugger::Write(const char* szMsg)
@@ -181,47 +165,48 @@ void CScriptDebugger::LineHook(const char *szFile, int nLine)
 {
 	CheckNewMessages();
 	if ( m_nMode == DMOD_STOP )
-		Break();
+		return;
 
 	if (
-		HasBreakPoint(szFile, nLine) ||
-//		_SendMessage(DMSG_HAS_BREAKPOINT, (WPARAM)szFile, (LPARAM)nLine) ||
-			m_nMode==DMOD_STEP_INTO	|| 
-			m_nMode==DMOD_BREAK ||
-		(m_nMode==DMOD_STEP_OVER && m_nLevel<=0) || 
-		(m_nMode==DMOD_STEP_OUT && m_nLevel<0) ||
-		(m_nMode==DMOD_RUN_TO_CURSOR && 
-		xr_strcmp(m_strPathName,szFile) &&
-		m_nLine==nLine) )
+		HasBreakPoint(szFile, nLine)				||
+		m_nMode==DMOD_STEP_INTO						|| 
+		m_nMode==DMOD_BREAK							||
+		(m_nMode==DMOD_STEP_OVER && m_nLevel<=0)	|| 
+		(m_nMode==DMOD_STEP_OUT && m_nLevel<0)		||
+		(	m_nMode==DMOD_RUN_TO_CURSOR		&& 
+			xr_strcmp(m_strPathName,szFile)	&&
+			m_nLine==nLine)								)
 	{
 		DebugBreak(szFile, nLine);		
+		GetBreakPointsFromIde();
 	}
 }
 
 void CScriptDebugger::FunctionHook(const char *szFile, int nLine, BOOL bCall)
 {
 	if ( m_nMode == DMOD_STOP )
-		Break();
+		return;
 
 	m_nLevel += (bCall?1:-1);
 }
 
 void CScriptDebugger::DebugBreak(const char *szFile, int nLine)
 {
+	m_nMode = DMOD_NONE;
 	m_lua.DrawStackTrace();
 	m_callStack.SetStackTraceLevel(0);
-	do{
-		m_lua.DrawGlobalVariables();
-		_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, GetStackTraceLevel(), 0);
+	m_lua.DrawGlobalVariables();
+	_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, GetStackTraceLevel(), 0);
 
-		_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
+	_SendMessage(DMSG_DEBUG_BREAK, 0, 0);
+}
 
-	}while(m_nMode==DMOD_SHOW_STACK_LEVEL);
-	
+void CScriptDebugger::GetBreakPointsFromIde()
+{
 	CMailSlotMsg msg;
 	msg.w_int(DMSG_GET_BREAKPOINTS);
-	SendMailslotMessage(IDE_MAIL_SLOT, msg);
-	WaitForReply(DMSG_GET_BREAKPOINTS);
+	SendMessageToIde(msg);
+	WaitForReply(false);
 }
 
 void CScriptDebugger::ErrorBreak(const char* szFile, int nLine)
@@ -302,89 +287,85 @@ void CScriptDebugger::CheckNewMessages()
 
 }
 
-LRESULT CScriptDebugger::WaitForReply(UINT nMsg)
+void CScriptDebugger::WaitForReply(bool bWaitForModalResult)//UINT nMsg)
 {
-	CMailSlotMsg msg;
-	u32 t = Device.dwTimeGlobal;
-	while (true){
-		if(CheckMailslotMessage(m_mailSlot,msg)) break;
-		Sleep(100);
+	bool mr = false;
+	do{
+		CMailSlotMsg msg;
+		u32 t = Device.dwTimeGlobal;
+		while (true){
+			if(CheckMailslotMessage(m_mailSlot,msg)) break;
+			Sleep(100);
 
-		if( (t+1000)>Device.dwTimeGlobal ){
-			CMailSlotMsg m;
-			m.w_int(DMSG_SHOW_IDE);
-			SendMailslotMessage(IDE_MAIL_SLOT,m);
-			t = Device.dwTimeGlobal;
+			if( bWaitForModalResult && (t+3000)<Device.dwTimeGlobal ){
+				CMailSlotMsg m;
+				m.w_int(DMSG_ACTIVATE_IDE);
+				SendMessageToIde(m);
+				t = Device.dwTimeGlobal;
+			};
 		};
-	};
-	R_ASSERT(msg.GetLen());
-	
-	int msgType;
-	msg.r_int(msgType);
-	VERIFY(msgType==(int)nMsg);
-	switch(msgType) {
-	case DMSG_GET_BREAKPOINTS:{
-			FillBreakPointsIn(&msg);
-			return 1;
-		}break;
-	case DMSG_SHOW_IDE:{
-			return TranslateIdeMessage(&msg);
-	}break;
-	case DMSG_GET_STACKTRACE_LEVEL:{
-			int res;
-			msg.r_int(res);
-			return res;
-	}break;
-	default:
-		return 0;
-		break;
-	}
-
+		R_ASSERT(msg.GetLen());
+		
+		mr = TranslateIdeMessage(&msg); //mr--is this an ide modalResult ?
+	}while( bWaitForModalResult && !mr );
 }
 
-int CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
+bool CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 {
 	int nType;
 	msg->r_int(nType);
 	switch(nType) {
-	case DMSG_DEBUG_GO:
-		m_nMode = DMOD_NONE;
-		return DMOD_NONE;
-		break;
+	case DMSG_DEBUG_GO:{
+			m_nMode = DMOD_NONE;
+			return true;
+		}break;
 
-	case DMSG_DEBUG_BREAK:
-		m_nMode = DMOD_BREAK;
-		return DMOD_BREAK;
-		break;
+	case DMSG_DEBUG_BREAK:{
+			m_nMode = DMOD_BREAK;
+			return true;
+		}break;
 
-	case DMSG_DEBUG_STEP_INTO:
-		return DMOD_STEP_INTO;
-		break;
+	case DMSG_DEBUG_STEP_INTO:{
+			m_nMode = DMOD_STEP_INTO;
+			return true;
+		}break;
 
-	case DMSG_DEBUG_STEP_OVER:
-		m_nLevel=0;
-		return DMOD_STEP_OVER;
-		break;
+	case DMSG_DEBUG_STEP_OVER:{
+			m_nLevel=0;
+			m_nMode = DMOD_STEP_OVER;
+			return true;
+		}break;
 
-	case DMSG_DEBUG_STEP_OUT:
-		m_nLevel=0;
-		return DMOD_STEP_OUT;
-		break;
+	case DMSG_DEBUG_STEP_OUT:{
+			m_nLevel=0;
+			m_nMode = DMOD_STEP_OUT;
+			return true;
+		}break;
 
-	case DMSG_DEBUG_RUN_TO_CURSOR:
-		return DMOD_RUN_TO_CURSOR;
-		break;
+	case DMSG_DEBUG_RUN_TO_CURSOR:{
+		//DMOD_RUN_TO_CURSOR;
+		return true;
+		}break;
 
-	case DMSG_STOP_DEBUGGING:
-		return DMOD_STOP;
-		break;
+	case DMSG_STOP_DEBUGGING:{
+			m_nMode = DMOD_STOP;
+			return true;
+		}break;
 	
-	case DMSG_GOTO_STACKTRACE_LEVEL:
-		return DMOD_SHOW_STACK_LEVEL;
-		break;
+	case DMSG_GOTO_STACKTRACE_LEVEL:{
+			int nLevel;
+			msg->r_int(nLevel);
+			_SendMessage(DMSG_GOTO_STACKTRACE_LEVEL, nLevel, 0);
+			return false;
+		}break;
+
+	case DMSG_GET_BREAKPOINTS:{
+			FillBreakPointsIn(msg);
+			return false;
+		}break;
 
 	default:
-		return DMOD_NONE;
+		return false;
 	}
 }
 
@@ -396,7 +377,6 @@ bool CScriptDebugger::HasBreakPoint(const char* fileName, s32 lineNum)
 	char ext[_MAX_EXT];
 
 	_splitpath( fileName, drive, dir, sFileName, ext );
-
 
 
 	for(u32 i=0; i< m_breakPoints.size(); ++i)
