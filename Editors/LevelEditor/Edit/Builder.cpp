@@ -17,12 +17,13 @@ SceneBuilder Builder;
 SceneBuilder::SceneBuilder()
 {
     m_iDefaultSectorNum = 0;
-    l_verts			= 0;
-    l_faces			= 0;
-    l_vert_cnt		= 0;
-    l_face_cnt 		= 0;
-	l_vert_it	 	= 0;
-	l_face_it		= 0;
+    l_scene_stat		= 0;
+    l_verts				= 0;
+    l_faces				= 0;
+    l_vert_cnt			= 0;
+    l_face_cnt 			= 0;
+	l_vert_it	 		= 0;
+	l_face_it			= 0;
 }
 
 SceneBuilder::~SceneBuilder()
@@ -58,8 +59,10 @@ BOOL SceneBuilder::Compile()
             VERIFY_COMPILE(CompileStatic(),				"Failed static remote build.");
             VERIFY_COMPILE(BuildLTX(),					"Failed to build level description.");
             VERIFY_COMPILE(BuildGame(),					"Failed to build game.");
-            BuildHOMModel();
-			BuildAIMap();
+            VERIFY_COMPILE(BuildSceneStat(),			"Failed to build scene statistic.");
+            BuildHOMModel	();
+			BuildAIMap		();
+		    Clear			();
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());

@@ -97,3 +97,14 @@ void ESceneObjectTools::Clear		(bool bSpecific)
     m_Flags.zero					();
 }
 
+bool ESceneObjectTools::GetBox		(Fbox& bb)
+{
+	bb.invalidate					();
+    Fbox bbo;
+    for (ObjectIt a_it=m_Objects.begin(); a_it!=m_Objects.end(); a_it++){
+    	(*a_it)->GetBox				(bbo);
+        bb.merge					(bbo);
+    }
+    return bb.is_valid();
+}
+

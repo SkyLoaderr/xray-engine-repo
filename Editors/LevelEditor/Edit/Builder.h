@@ -19,6 +19,7 @@ class CPortal;
 struct st_SPData;
 class CSurface;
 struct st_DPSurface;
+class CSceneStat;
 //----------------------------------------------------
 // some types
 typedef Fvector b_vnormal;
@@ -55,6 +56,8 @@ class SceneBuilder{
     xr_vector<b_portal>        	l_portals;
     xr_vector<Flight>          	l_light_keys;
 
+    CSceneStat*					l_scene_stat;
+
     void    GetBBox         (u32 st_fid, u32 cnt, Fbox& box);
 
     BOOL    BuildGlow       (CGlow* e);
@@ -65,7 +68,7 @@ class SceneBuilder{
     BOOL    BuildObject     (CSceneObject* obj);
     BOOL    BuildMUObject   (CSceneObject* obj);
 
-    void    ResetStructures ();
+    void    Clear 			();
 
     int		BuildLightControl(LPCSTR name);
     void 	BuildHemiLights	(u8 quality, LPCSTR lcontrol);
@@ -109,6 +112,7 @@ protected:
     BOOL	ParseGAME				(IWriter& game, IWriter& spawn, ObjectList& lst, LPCSTR prefix=0);
     BOOL 	BuildGame				();
 
+    BOOL	BuildSceneStat			();
     bool 	BuildHOMModel			();
     bool	BuildAIMap				();
     BOOL	ParseStaticObjects		(ObjectList& lst, LPCSTR prefix=0);

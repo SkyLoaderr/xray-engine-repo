@@ -34,6 +34,8 @@ public:
     IC LPCSTR			ClassDesc				(){return "Scene Object";}
     IC int				RenderPriority			(){return 1;}
 
+    bool				GetBox					(Fbox& bb);
+
     virtual void		Clear					(bool bSpecific=false);       
     // IO
     virtual bool   		Load            		(IReader&);

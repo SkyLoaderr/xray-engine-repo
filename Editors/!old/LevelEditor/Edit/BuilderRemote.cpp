@@ -14,17 +14,100 @@
 #include "groupobject.h"
 #include "portal.h"
 #include "xrLevel.h"
-#include "ui_main.h"
+#include "ui_main.h"           
 #include "xrHemisphere.h"
 #include "ResourceManager.h"
 #include "ImageManager.h"
+#include "Image.h"
 
 #include "ESceneLightTools.h"
+
 //------------------------------------------------------------------------------
 // !!! использовать prefix если нужно имя !!! (Связано с группами)
 //------------------------------------------------------------------------------
 
 #define LEVEL_LODS_TEX_NAME "level_lods"
+#define LEVEL_DI_TEX_NAME "level_stat"
+
+class CSceneStat{
+	Fvector	bb_min;
+	u32		bb_sx, bb_sz;
+
+    u32 	max_svert;
+	U32Vec	svertices;
+    u32&	svertex(u32 ix, u32 iz){VERIFY((ix<bb_sx)&&(iz<bb_sz)); return svertices[iz*bb_sx+ix];}
+
+    u32 	max_muvert;
+	U32Vec	muvertices;
+    u32&	muvertex(u32 ix, u32 iz){VERIFY((ix<bb_sx)&&(iz<bb_sz)); return muvertices[iz*bb_sx+ix];}
+public:
+	CSceneStat(const Fbox& bb)
+    {
+    	Fvector				sz;
+    	bb.getsize			(sz);
+    	bb_sx				= iFloor(sz.x+1.f);
+        bb_sz				= iFloor(sz.z+1.f);
+        bb_min.set			(bb.min);
+        max_svert			= 0;
+        svertices.resize	(bb_sx*bb_sz,0);
+        muvertices.resize	(bb_sx*bb_sz,0);
+    }
+    void add_svert(const Fvector& p)
+    {
+    	u32 ix	= clampr((u32)iFloor(p.x-bb_min.x),(u32)0,bb_sx-1);
+    	u32 iz	= clampr((u32)iFloor(p.z-bb_min.z),(u32)0,bb_sz-1);
+        u32& v	= svertex(ix,iz); v++;
+        if (v>max_svert) max_svert=v;
+    }
+    void add_muvert(const Fmatrix& parent, const Fvector& _p)
+    {
+    	Fvector p;
+        parent.transform_tiny(p,_p);
+    	u32 ix	= clampr((u32)iFloor(p.x-bb_min.x),(u32)0,bb_sx-1);
+    	u32 iz	= clampr((u32)iFloor(p.z-bb_min.z),(u32)0,bb_sz-1);
+        u32& v	= muvertex(ix,iz); v++;
+        if (v>max_muvert) max_muvert=v;
+    }
+    bool flush(LPCSTR fn)
+    {
+    	// flush image
+    	u32 sx=bb_sx, sz=bb_sz;
+        U32Vec data	(sx*sz);
+    	// prepare vertex info
+        // find max
+        u32 ix,iz;
+        u32 total_svert=0;
+        u32 total_muvert=0;
+        for (ix=0; ix<bb_sx; ix++){
+	        for (iz=0; iz<bb_sz; iz++){
+            	total_svert			= svertex(ix,iz);
+            	total_muvert		= muvertex(ix,iz);
+                u8 v_s 				= iFloor(float(svertex(ix,iz))/float(max_svert)*255.f+0.5f);
+                u8 v_mu 			= iFloor(float(muvertex(ix,iz))/float(max_muvert)*255.f+0.5f);
+                data[iz*bb_sx+ix] 	= color_rgba(v_s,v_mu,0,0);
+            }
+        }
+        
+        AnsiString image_name = AnsiString(fn)+".tga";
+        CImage* I 	= xr_new<CImage>();
+        I->Create	(sx,sz,data.begin());
+        I->Vflip	();
+        I->SaveTGA	(image_name.c_str());
+        xr_delete	(I);
+
+        // flush text
+        AnsiString txt_name = AnsiString(fn)+".txt";
+        CMemoryWriter 	F;
+        F.w_string		(AnsiString().sprintf("Map size X x Z:            [%d x %d]",bb_sx,bb_sz).c_str());
+        F.w_string		(AnsiString().sprintf("Max static vertex per m^2: %d",max_svert).c_str());
+        F.w_string		(AnsiString().sprintf("Total static vertices:     %d",total_svert).c_str());
+        F.w_string		(AnsiString().sprintf("Max mu vertex per m^2:     %d",max_muvert).c_str());
+        F.w_string		(AnsiString().sprintf("Total mu vertices:         %d",total_muvert).c_str());
+        F.save_to		(txt_name.c_str());
+
+        return true;
+    }
+};
 
 void SceneBuilder::SaveBuild()
 {
@@ -127,7 +210,7 @@ int SceneBuilder::CalculateSector(const Fvector& P, float R)
     return m_iDefaultSectorNum; // по умолчанию
 }
 
-void SceneBuilder::ResetStructures ()
+void SceneBuilder::Clear ()
 {
     l_vert_cnt 				= 0;
 	l_face_cnt				= 0;
@@ -154,6 +237,7 @@ void SceneBuilder::ResetStructures ()
     l_glows.clear			();
     l_portals.clear			();
     l_light_keys.clear		();
+    xr_delete				(l_scene_stat);
 }
 
 //------------------------------------------------------------------------------
@@ -290,6 +374,11 @@ BOOL SceneBuilder::BuildObject(CSceneObject* obj)
 		CSector* S = PortalUtils.FindSector(obj,*M);
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
     	if (!BuildMesh(T,O,*M,sect_num,l_verts,l_vert_cnt,l_vert_it,l_faces,l_face_cnt,l_face_it)) return FALSE;
+        // fill DI vertices
+        for (FvectorIt pt_it=(*M)->m_Points.begin(); pt_it!=(*M)->m_Points.end(); pt_it++){
+        	Fvector v; T.transform_tiny(v,*pt_it);
+            l_scene_stat->add_svert(v);
+        }
     }
     return TRUE;
 }
@@ -342,6 +431,11 @@ BOOL SceneBuilder::BuildMUObject(CSceneObject* obj)
     R.flags.zero		();
 	R.sector			= sect_num;
 
+    // scene stats
+    b_mu_model& M		= l_mu_models[model_idx];
+    for (u32 mu_vi=0; mu_vi<M.vert_cnt; mu_vi++)
+    	l_scene_stat->add_muvert(obj->_Transform(),M.verts[mu_vi]);
+    
     return TRUE;
 }
 
@@ -799,7 +893,7 @@ BOOL SceneBuilder::CompileStatic()
 {
 	BOOL bResult = TRUE;
 
-    ResetStructures();
+    Clear		();
 
 	int objcount = Scene.ObjCount();
 	if( objcount <= 0 )	return FALSE;
@@ -834,6 +928,8 @@ BOOL SceneBuilder::CompileStatic()
     }
 	l_faces		= xr_alloc<b_face>(l_face_cnt);
 	l_verts		= xr_alloc<b_vertex>(l_vert_cnt);
+
+    l_scene_stat= xr_new<CSceneStat>(m_LevelBox);
 
 // make hemisphere
 	ESceneLightTools* lt = dynamic_cast<ESceneLightTools*>(Scene.GetOTools(OBJCLASS_LIGHT));
@@ -888,9 +984,11 @@ BOOL SceneBuilder::CompileStatic()
 // save build    
     if (bResult&&!UI->NeedAbort()) SaveBuild();
 
-    ResetStructures();
-
     return bResult;
 }
 
-
+BOOL SceneBuilder::BuildSceneStat()
+{
+    AnsiString dest_name = m_LevelPath+LEVEL_DI_TEX_NAME;
+    return l_scene_stat->flush(dest_name.c_str());
+}

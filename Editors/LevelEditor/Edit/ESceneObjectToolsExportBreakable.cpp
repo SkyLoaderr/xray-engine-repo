@@ -10,16 +10,13 @@
 #include "xrServer_Objects_ALife.h"
 #include "clsid_game.h"
 #include "ui_main.h"
+#include "GeometryCollector.h"
 
 //----------------------------------------------------
-struct SBVert{
-	Fvector			pos;
-public:
-    bool			similar(const Fvector& v){return pos.similar(v,EPS_L);}
-};
+
 struct SBFace;
-DEFINE_VECTOR		(SBVert*,SBVertVec,SBVertVecIt);
 DEFINE_VECTOR		(SBFace*,SBFaceVec,SBFaceVecIt);
+
 struct SBFace{
 // prepare
     int 			vert_id[3];
@@ -405,27 +402,18 @@ bool SBPart::Export	(IWriter& F)
     return bRes;
 }
 
-IC void	append_face(SBVertVec& verts, SBFaceVec& faces, Fvector* v, const Fvector2* uvs[3], CSurface* surf)
+IC void	append_face(VCPacked& verts, SBFaceVec& faces, Fvector* v, const Fvector2* uvs[3], CSurface* surf)
 {
-	SBFace* F		= xr_new<SBFace>(surf,uvs);
-	// find similar verts
-	for (SBVertVecIt v_it=verts.begin(); v_it!=verts.end(); v_it++){
-    	for (int k=0; k<3; k++)
-	    	if ((F->vert_id[k]==-1)&&(*v_it)->similar(v[k])) F->vert_id[k]=v_it-verts.begin();
-    }
+	SBFace* F			= xr_new<SBFace>(surf,uvs);
+    // insert verts
     for (int k=0; k<3; k++){
-	    F->p[k].set			(v[k]);
-        if (F->vert_id[k]==-1){
-        	SBVert* V		= xr_new<SBVert>(); 
-            V->pos.set		(v[k]);
-         	F->vert_id[k]	= verts.size();
-            verts.push_back	(V);
-        }
+        F->vert_id[k] 	= verts.add_vert(v[k]);
+	    F->p[k].set		(v[k]);
     }
     faces.push_back		(F);
 }
 
-IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, SBVertVec& m_verts, SBFaceVec& m_faces)
+IC bool build_mesh(const Fmatrix& parent, CEditableMesh* mesh, VCPacked& m_verts, SBFaceVec& m_faces)
 {
 	bool bResult 			= true;
     // fill faces
@@ -482,10 +470,17 @@ IC void recurse_tri(SBPart* P, SBFaceVec& faces, SBAdjVec& adjs, SBFace* F)
 bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
 {
 	bool bResult = true;
-	SBVertVec 	verts;
-    SBFaceVec 	faces;
+    SBFaceVec 	faces;       
     SBPartVec 	parts;
     SBAdjVec	adjs;
+
+
+    Fbox 		bb;
+    if (!GetBox(bb)) return false;
+
+    // prepare verts collector
+	VCPacked* 	verts = xr_new<VCPacked>(bb,EPS_L);
+    
 	// collect verts&&faces
     {
 	    UI->ProgressStart(m_Objects.size(),"Prepare geometry...");
@@ -496,14 +491,14 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
                 CEditableObject *O 	= obj->GetReference();
                 const Fmatrix& T 	= obj->_Transform();
                 for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++)
-                    if (!build_mesh	(T,*M,verts,faces)){bResult=false;break;}
+                    if (!build_mesh	(T,*M,*verts,faces)){bResult=false;break;}
             }
         }
 	    UI->ProgressEnd();
     }
     // make adjacement
     if (bResult){
-    	adjs.resize	(verts.size());
+    	adjs.resize	(verts->getVS());
 		for (SBFaceVecIt f_it=faces.begin(); f_it!=faces.end(); f_it++)
         	for (int k=0; k<3; k++) adjs[(*f_it)->vert_id[k]].push_back(*f_it);
     }
@@ -574,11 +569,11 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
     }
     // clean up
     {
-        for (SBVertVecIt v_it=verts.begin(); v_it!=verts.end(); v_it++) xr_delete(*v_it);
+    	xr_delete(verts);
         for (SBFaceVecIt f_it=faces.begin(); f_it!=faces.end(); f_it++) xr_delete(*f_it);
         for (SBPartVecIt p_it=parts.begin(); p_it!=parts.end(); p_it++) xr_delete(*p_it);
     }
-    
+
     return bResult;
 }
 //----------------------------------------------------
