@@ -14,13 +14,6 @@ LPCSTR RTextValue::GetText(TOnDrawTextEvent OnDrawText)
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------
-LPCSTR ATextValue::GetText(TOnDrawTextEvent OnDrawText)
-{
-    prop_draw_text=GetValue();
-    if (OnDrawText)OnDrawText(this, &prop_draw_text);
-    return prop_draw_text.c_str();
-}
-//------------------------------------------------------------------------------
 
 LPCSTR TextValue::GetText(TOnDrawTextEvent OnDrawText)
 {

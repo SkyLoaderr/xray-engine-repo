@@ -21,16 +21,13 @@ enum EPropType{
 	PROP_FLAG,
     PROP_VECTOR,
 	PROP_TOKEN,
-	PROP_A_TOKEN,
-	PROP_TOKEN2,
-    PROP_TOKEN3,
+	PROP_RTOKEN,
     PROP_SH_TOKEN,
 	PROP_LIST,
 	PROP_COLOR,
 	PROP_FCOLOR,
 	PROP_VCOLOR,
 	PROP_TEXT,
-    PROP_A_TEXT,
 	PROP_R_TEXT,
 	PROP_TEXTURE2,
 	PROP_WAVE,
@@ -47,19 +44,19 @@ DEFINE_VECTOR			(PropItem*,PropItemVec,PropItemIt);
 #include "ChooseTypes.H"     
 //------------------------------------------------------------------------------
 
-typedef void 	__fastcall (__closure *TBeforeEdit)			(PropItem* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
-typedef void 	__fastcall (__closure *TOnChange)			(PropValue* sender);
-typedef void 	__fastcall (__closure *TOnClick)			(PropItem* sender);
-typedef void 	__fastcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified, bool& bSafe);
-typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
-typedef void 	__fastcall (__closure *TOnModifiedEvent)	(void);
-typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
-typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
-typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
-typedef bool 	__fastcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
-typedef void 	__fastcall (__closure* TOnChooseFillProp)	(ChooseItemVec& lst);
+typedef void 	__stdcall (__closure *TBeforeEdit)			(PropItem* sender, LPVOID edit_val);
+typedef void 	__stdcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edit_val);
+typedef void 	__stdcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
+typedef void 	__stdcall (__closure *TOnChange)			(PropValue* sender);
+typedef void 	__stdcall (__closure *TOnClick)			(PropItem* sender);
+typedef void 	__stdcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified, bool& bSafe);
+typedef void 	__stdcall (__closure *TOnCloseEvent)		(void);
+typedef void 	__stdcall (__closure *TOnModifiedEvent)	(void);
+typedef void 	__stdcall (__closure *TOnItemFocused)		(TElTreeItem* item);
+typedef void 	__stdcall (__closure *TOnPropItemFocused)	(PropItem* sender);
+typedef void 	__stdcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
+typedef bool 	__stdcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
+typedef void 	__stdcall (__closure* TOnChooseFillProp)	(ChooseItemVec& lst);
 //------------------------------------------------------------------------------
 extern AnsiString prop_draw_text;
 //------------------------------------------------------------------------------
@@ -322,20 +319,6 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API ATextValue: public CustomValue<AnsiString>{
-public:
-						ATextValue		(TYPE* val):CustomValue<AnsiString>(val){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
-    virtual bool		ApplyValue		(LPVOID val)
-    {
-        if (0!=xr_strcmp(value->c_str(),LPCSTR(val))){
-            *value		= LPCSTR(val);
-            return		true;
-        }
-        return 			false;
-    }
-};
-
 class XR_EPROPS_API RTextValue: public CustomValue<ref_str>{
 public:
 						RTextValue		(TYPE* val):CustomValue<ref_str>(val){};
@@ -368,11 +351,6 @@ public:
 class XR_EPROPS_API ChooseValue: public TextValue, public ChooseValueCustom{
 public:
 						ChooseValue			(LPSTR val, int len, u32 cid, LPCSTR path):TextValue(val,len),ChooseValueCustom(path,cid){}
-};
-
-class XR_EPROPS_API AChooseValue: public ATextValue, public ChooseValueCustom{
-public:
-						AChooseValue		(AnsiString* val, u32 cid, LPCSTR path):ATextValue(val),ChooseValueCustom(path,cid){}
 };
 
 class XR_EPROPS_API RChooseValue: public RTextValue, public ChooseValueCustom{
@@ -564,83 +542,28 @@ typedef TokenValue<u16>	Token16Value;
 typedef TokenValue<u32>	Token32Value;
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API ATokenValueCustom{
+class XR_EPROPS_API RTokenValueCustom{
 public:
-	ATokenVec*			token;
-    					ATokenValueCustom(ATokenVec* _token):token(_token){;}
+	RTokenVec*			token;
+    					RTokenValueCustom(RTokenVec* _token):token(_token){;}
 };
 template <class T>
-class XR_EPROPS_API ATokenValue: public CustomValue<T>, public ATokenValueCustom
+class XR_EPROPS_API RTokenValue: public CustomValue<T>, public RTokenValueCustom
 {
 public:
-						ATokenValue		(T* val, ATokenVec* _token):CustomValue<T>(val),ATokenValueCustom(_token){};
+						RTokenValue		(T* val, RTokenVec* _token):CustomValue<T>(val),RTokenValueCustom(_token){};
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
     {
         u32 draw_val 	= GetValue();
         if (OnDrawText)OnDrawText(this, &draw_val);
-        for(ATokenIt it=token->begin(); it!=token->end(); it++) if (it->id==draw_val) return it->name.c_str();
+        for(RTokenVecIt it=token->begin(); it!=token->end(); it++) if (it->id==draw_val) return *it->name;
         return 0;
     }
 };
 //------------------------------------------------------------------------------
-typedef ATokenValue<u8>	AToken8Value;
-typedef ATokenValue<u16>AToken16Value;
-typedef ATokenValue<u32>AToken32Value;
-//------------------------------------------------------------------------------
-
-class XR_EPROPS_API TokenValue2Custom{
-public:
-	AStringVec 			items;
-    					TokenValue2Custom(AStringVec* _items):items(*_items){;}
-};
-template <class T>
-class XR_EPROPS_API TokenValue2: public CustomValue<T>, public TokenValue2Custom
-{
-public:
-						TokenValue2		(T* val, AStringVec* _items):CustomValue<T>(val),TokenValue2Custom(_items){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
-    {
-        T draw_val 		= GetValue();
-        if (OnDrawText)OnDrawText(this, &draw_val);
-        if (draw_val>=items.size()) return 0;
-        return items[draw_val].c_str();
-    }
-};
-//------------------------------------------------------------------------------
-typedef TokenValue2<u8>		Token8Value2;
-typedef TokenValue2<u16> 	Token16Value2;
-typedef TokenValue2<u32> 	Token32Value2;
-//------------------------------------------------------------------------------
-
-class XR_EPROPS_API TokenValue3Custom{
-public:
-	struct Item {
-		u32				ID;
-		AnsiString		str;
-        				Item			(u32 id, const AnsiString& nm){ID=id; str=nm;}
-	};
-    DEFINE_VECTOR		(Item,ItemVec,ItemIt);
-    const ItemVec*		items;
-    					TokenValue3Custom(const ItemVec* _items):items(_items){;}
-};
-template <class T>
-class XR_EPROPS_API TokenValue3: public CustomValue<T>, public TokenValue3Custom 
-{
-public:
-						TokenValue3		(T* val, const ItemVec* _items):CustomValue<T>(val),TokenValue3Custom(_items){};
-    virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText)
-    {
-        T draw_val 		= GetValue();
-        if (OnDrawText)OnDrawText(this, &draw_val);
-        for (ItemVec::const_iterator it=items->begin(); it!=items->end(); it++)
-            if (it->ID==draw_val) return it->str.c_str();
-        return 0;
-    }
-};
-//------------------------------------------------------------------------------
-typedef TokenValue3<u8>		Token8Value3;
-typedef TokenValue3<u16> 	Token16Value3;
-typedef TokenValue3<u32> 	Token32Value3;
+typedef RTokenValue<u8>	RToken8Value;
+typedef RTokenValue<u16>RToken16Value;
+typedef RTokenValue<u32>RToken32Value;
 //------------------------------------------------------------------------------
 
 class XR_EPROPS_API TokenValueSH: public CustomValue<u32>{
@@ -658,20 +581,19 @@ public:
 };
 //------------------------------------------------------------------------------
 
-class XR_EPROPS_API ListValue: public TextValue{
+class XR_EPROPS_API ListValue: public RTextValue{
 public:                                   
-	AStringVec 			items;
+	RStringVec*			items;
 public:                                   
-						ListValue		(LPSTR val, int lim, AStringVec* _items):TextValue(val,lim),items(*_items){};
-						ListValue		(LPSTR val, int lim, u32 cnt, LPCSTR* _items):TextValue(val,lim){items.resize(cnt); int i=0; for (AStringIt it=items.begin(); items.end() != it; ++it,++i) *it=_items[i]; };
+						ListValue		(ref_str* val, RStringVec* _items):RTextValue(val),items(_items){};
 	virtual bool		Equal			(PropValue* val)
     {
     	if (OnTestEqual) return OnTestEqual(this,val);
-    	AStringIt s_it	= items.begin();
-    	AStringIt d_it	= ((ListValue*)val)->items.begin();
-    	for (; items.end()!=s_it; ++s_it,++d_it)
-        	if ((*s_it)!=(*d_it)) {m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); return false;}
-        return TextValue::Equal(val);
+        if (items!=((ListValue*)val)->items){
+        	m_Owner->m_Flags.set(PropItem::flDisabled,TRUE); 
+        	return false;
+        }
+        return RTextValue::Equal(val);
     }
 };
 //------------------------------------------------------------------------------

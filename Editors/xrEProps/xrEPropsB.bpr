@@ -42,14 +42,13 @@
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG 
-      -IC:\Rad\Borland\CBuilder6\Projects -IR:\SDK\DirectX9.0\include 
+    <IDLCFLAGS value="-IC:\Rad\Borland\CBuilder6\Projects -IR:\SDK\DirectX9.0\include 
       -I$(BCB)\include -I$(BCB)\include\vcl -IP:\MagicFM_Borland\Sdk\Include 
       -IR:\Borland\Components6\AlexMX 
       -IR:\Borland\Components6\ElPack\Code\Source -IR:\Borland\CBuilder6\Include\Mfc 
-      -IP:\xrCore -boa"/>
-    <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vx -Ve -xf -xp -VF -ff -X- -r- -ps 
-      -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
+      -IP:\xrCore -src_suffix cpp -D_EDITOR -DXR_EPROPS_EXPORTS -D_DEBUG -boa"/>
+    <CFLAG1 value="-WD -Od -H=intermediate\pch.csm -Hc -Q -Vms -Vx -Ve -xf -xp -VF -ff -X- 
+      -r- -ps -a4 -6 -b- -k -y -v -vi- -tWD -tWM -c"/>
     <PFLAGS value="-N2intermediate -N0intermediate -$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
     <AFLAGS value="/mu /w2 /zi"/>
@@ -166,7 +165,7 @@ RunParams=
 Launcher=
 UseLauncher=0
 DebugCWD=
-HostApplication=x:\ParticleEditor.exe
+HostApplication=x:\ActorEditor.exe
 RemoteHost=
 RemotePath=
 RemoteLauncher=

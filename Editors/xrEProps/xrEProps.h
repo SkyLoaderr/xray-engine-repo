@@ -51,7 +51,7 @@ public:
     virtual void 		RenameSelItem			()=0;
     virtual void		FireOnItemFocused		()=0;
 
-    virtual void		GetFolders				(RStrVec& folders)=0;
+    virtual void		GetFolders				(RStringVec& folders)=0;
 
     virtual void 		ClearList				()=0;
 
@@ -71,17 +71,26 @@ public:
     virtual int  		GetSelected				(ElItemsVec& items)=0;
     virtual TElTreeItem*GetSelected				()=0;
 
+    virtual void		LoadSelection			(TFormStorage* storage)=0;
+    virtual void		SaveSelection			(TFormStorage* storage)=0;
+
     virtual void  		SaveParams				(TFormStorage* fs)=0;
     virtual void  		LoadParams				(TFormStorage* fs)=0;
 #endif
 
 	virtual void 		GenerateObjectName		(ref_str name, LPCSTR start_node, LPCSTR pref="object", bool num_first=false)=0;
 
+    virtual void		SetOnItemFocusedEvent	(TOnILItemFocused)=0;
     virtual void		SetOnItemsFocusedEvent	(TOnILItemsFocused)=0;
     virtual void		SetOnCloseEvent			(TOnILCloseEvent)=0;
     virtual void		SetOnItemRenameEvent	(CFolderHelper::TOnItemRename e)=0;
     virtual void		SetOnItemRemoveEvent	(CFolderHelper::TOnItemRemove e)=0;
     virtual void		SetOnModifiedEvent		(TOnModifiedEvent e)=0;
+
+    virtual void 		SetILFocus				()=0;
+    
+    virtual u32			GetFlags				()=0;	
+    virtual void		SetFlags				(u32 mask)=0;
 };
 
 //---------------------------------------------------------------------------

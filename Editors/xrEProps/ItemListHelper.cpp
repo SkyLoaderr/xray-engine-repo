@@ -14,7 +14,7 @@ bool CListHelper::NameAfterEdit(ListItem* sender, AnsiString value, AnsiString& 
 	int cnt=_GetItemCount(N.c_str(),'\\');
     if (cnt>1)		{ N=value; return false; }
 
-	TElTreeItem* node    = sender->Item(); VERIFY(node);
+	TElTreeItem* node    = (TElTreeItem*)sender->Item(); VERIFY(node);
 
     for (TElTreeItem* itm=node->GetFirstSibling(); itm; itm=itm->GetNextSibling()){
         if ((itm->Text==N)&&(itm!=node)){
@@ -26,7 +26,7 @@ bool CListHelper::NameAfterEdit(ListItem* sender, AnsiString value, AnsiString& 
     // all right
     node->Text = N;
     AnsiString tmp;
-	_ReplaceItem(sender->key.c_str(),	_GetItemCount(sender->key.c_str(),'\\')-1,	N.c_str(),tmp,'\\');	sender->key=tmp;
+	_ReplaceItem(*sender->key,	_GetItemCount(*sender->key,'\\')-1,	N.c_str(),tmp,'\\'); sender->key=tmp.c_str();
     // Имя объекта может быть составным из a\\b\\name
 	_ReplaceItem(value.c_str(),			_GetItemCount(value.c_str(),'\\')-1,		N.c_str(),tmp,'\\');	N=tmp;
     

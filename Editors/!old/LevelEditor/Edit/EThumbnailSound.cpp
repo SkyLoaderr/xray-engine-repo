@@ -102,12 +102,12 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
 #include "ai_sounds.h"
 
 void ESoundThumbnail::FillProp(PropItemVec& items)
-{
+{                                     
     PHelper.CreateFloat			(items, "Quality", 	&m_fQuality);
     PHelper.CreateFloat			(items, "Min Dist",	&m_fMinDist, 0.f,10000.f);
     PHelper.CreateFloat			(items, "Max Dist",	&m_fMaxDist, 0.f,10000.f);
     PHelper.CreateFloat			(items, "Volume",	&m_fVolume, 0.f,2.f);
-    PHelper.CreateToken<u32>	(items, "Game Type",&m_uGameType, anomaly_type_token);
+    PHelper.CreateToken32		(items, "Game Type",&m_uGameType, anomaly_type_token);
 }
 //------------------------------------------------------------------------------
 

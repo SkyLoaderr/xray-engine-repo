@@ -214,34 +214,35 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
     m_Items					= items;
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop		= *it;
-        if (!prop->key.IsEmpty()&&(prop->key[prop->key.Length()]=='\\')){
-        	TElTreeItem* I	= FHelper.AppendFolder(tvItems,prop->key,!m_Flags.is(ilSuppressIcon));
+        if (prop->key.size()&&(prop->key[prop->key.size()-1]=='\\')){
+        	TElTreeItem* I	= FHelper.AppendFolder(tvItems,*prop->key,!m_Flags.is(ilSuppressIcon));
             I->UseStyles				= true;
-            I->MainStyle->TextColor 	= prop->prop_color;         
+            I->MainStyle->TextColor 	= (TColor)prop->prop_color;         
             I->MainStyle->Style			= ElhsOwnerDraw;
         }else{
-            prop->item			= FHelper.AppendObject(tvItems,prop->key,false,!m_Flags.is(ilSuppressIcon));
+            prop->item			= FHelper.AppendObject(tvItems,*prop->key,false,!m_Flags.is(ilSuppressIcon));
             if (!prop->item){
-				Msg				("#!Duplicate item name found: '%s'",prop->key);
+				Msg				("#!Duplicate item name found: '%s'",*prop->key);
                 break;
             }
-            prop->item->ImageIndex	= prop->icon_index;
-            prop->item->Tag	    	= (int)prop;
-            prop->item->UseStyles	= true;
-            prop->item->CheckBoxEnabled = prop->m_Flags.is(ListItem::flShowCB);
-            prop->item->ShowCheckBox 	= prop->m_Flags.is(ListItem::flShowCB);
-            prop->item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(ListItem::flCBChecked);
+            TElTreeItem* prop_item	= (TElTreeItem*)prop->item;
+            prop_item->ImageIndex	= prop->icon_index;
+            prop_item->Tag	    	= (int)prop;
+            prop_item->UseStyles	= true;
+            prop_item->CheckBoxEnabled = prop->m_Flags.is(ListItem::flShowCB);
+            prop_item->ShowCheckBox 	= prop->m_Flags.is(ListItem::flShowCB);
+            prop_item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(ListItem::flCBChecked);
 
-	        prop->item->MainStyle->OwnerProps 	= false;
-    	    prop->item->MainStyle->TextColor	= clRed;
+	        prop_item->MainStyle->OwnerProps 	= false;
+    	    prop_item->MainStyle->TextColor	= clRed;
             // set flags                                        
             if (prop->m_Flags.is(ListItem::flDrawThumbnail)){
-                prop->item->Height 		= 64;
-                prop->item->OwnerHeight = !miDrawThumbnails->Checked;
+                prop_item->Height 		= 64;
+                prop_item->OwnerHeight = !miDrawThumbnails->Checked;
             }
             // set style
-            prop->item->MainStyle->OwnerProps 	= true;
-            prop->item->MainStyle->Style 		= ElhsOwnerDraw;
+            prop_item->MainStyle->OwnerProps 	= true;
+            prop_item->MainStyle->Style 		= ElhsOwnerDraw;
         }
     }
 
@@ -272,7 +273,7 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
     }else{
         for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
             ListItem* prop		= *it;
-            if (prop->m_Flags.is(ListItem::flSorted)) prop->item->Sort(true);
+            if (prop->m_Flags.is(ListItem::flSorted)) ((TElTreeItem*)prop->item)->Sort(true);
         }
     }
 
@@ -354,8 +355,9 @@ int __fastcall TItemList::GetSelected(LPCSTR pref, ListItemsVec& items, bool bOn
     for (TElTreeItem* item = tvItems->GetNextSelected(0); item; item = tvItems->GetNextSelected(item)){
         ListItem* prop 		= (ListItem*)item->Tag;
         if (prop&&(!bOnlyObject||(bOnlyObject&&prop->m_Object))){
+        	AnsiString key	= *prop->key;
         	if (pref){
-            	if (1==prop->key.Pos(pref))
+            	if (1==key.Pos(pref))
                 	items.push_back	(prop);
             }else
 				items.push_back	(prop);
@@ -428,9 +430,9 @@ void __fastcall TItemList::RefreshForm()
     for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop = *it;
     	if (prop->m_Flags.is(ListItem::flDrawThumbnail)) 
-        	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
+        	((TElTreeItem*)prop->item)->OwnerHeight = !miDrawThumbnails->Checked;
         else
-        	prop->item->OwnerHeight = true;
+        	((TElTreeItem*)prop->item)->OwnerHeight = true;
     }
 	UnlockUpdating			();
 	tvItems->Repaint		();
@@ -441,7 +443,7 @@ void __fastcall TItemList::tvItemsItemDraw(TObject *Sender,
 {
     ListItem* prop 			= (ListItem*)Item->Tag;
     if (prop){
-    	Surface->Font->Color= prop->prop_color;
+    	Surface->Font->Color= (TColor)prop->prop_color;
         DrawText			(Surface->Handle, AnsiString(Item->Text).c_str(), -1, &R, DT_LEFT | DT_SINGLELINE);
         if (miDrawThumbnails->Checked&&prop->m_Flags.is(ListItem::flDrawThumbnail)){ 
             R.top			+= tvItems->LineHeight-4;
@@ -651,7 +653,7 @@ void TItemList::FireOnItemFocused()
 }
 //---------------------------------------------------------------------------
 
-void TItemList::GetFolders(RStrVec& folders)
+void TItemList::GetFolders(RStringVec& folders)
 {
     for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
         if (FHelper.IsFolder(item)){

@@ -2,15 +2,14 @@
 #ifndef ItemListTypesH
 #define ItemListTypesH
 
-#include "ElTree.hpp"
 //---------------------------------------------------------------------------
 
 class XR_EPROPS_API ListItem{
 	friend class		CListHelper;
     friend class		TItemList;
-    AnsiString			key;
+    ref_str				key;
     int					type;
-	TElTreeItem*		item;
+	void*				item;
 public:
     typedef void 	__fastcall (__closure *TOnListItemFocused)	(ListItem* sender);
     typedef void 	__fastcall (__closure *TOnClick)			(ListItem* sender);
@@ -23,7 +22,7 @@ public:
     int 				tag;
     LPVOID				m_Object;
     int					icon_index;
-    TColor				prop_color;
+    u32					prop_color;
 public:
     enum{
     	flShowCB		= (1<<0),
@@ -36,12 +35,11 @@ public:
 public:
 						ListItem		(int _type):type(_type),prop_color(clBlack),item(0),key(0),tag(0),icon_index(-1),OnDrawThumbnail(0),OnItemFocused(0),m_Object(0){m_Flags.zero();}
 	virtual 			~ListItem		(){};
-    void				SetItemHeight	(int height){item->OwnerHeight=false; item->Height=height;}
     void				SetName			(LPCSTR _key){key=_key;}
 
     IC int				Type			(){return type;}
-	IC TElTreeItem*		Item			(){return item;}
-	IC LPCSTR			Key				(){return key.c_str();}
+	IC void*			Item			(){return item;}
+	IC LPCSTR			Key				(){return *key;}
     IC void				SetIcon			(int index){icon_index=index;}
 };
 

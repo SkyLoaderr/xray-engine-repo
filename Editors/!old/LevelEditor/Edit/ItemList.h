@@ -124,8 +124,8 @@ public:		// User declarations
 
     virtual void		SetImages				(TImageList* image_list){tvItems->Images=image_list;}
 
-    void				LoadSelection			(TFormStorage* storage);
-    void				SaveSelection			(TFormStorage* storage);
+    virtual void		LoadSelection			(TFormStorage* storage);
+    virtual void		SaveSelection			(TFormStorage* storage);
 
     virtual void  		SaveParams				(TFormStorage* fs)
     {
@@ -145,7 +145,7 @@ public:		// User declarations
     virtual void 		RenameSelItem			();
     virtual void		FireOnItemFocused		();
 
-    virtual void		GetFolders				(RStrVec& folders);
+    virtual void		GetFolders				(RStringVec& folders);
 
     virtual void 		OnCreate				(LPCSTR title, TWinControl* parent, TAlign align, u32 flags);
     virtual void 		OnDestroy				();
@@ -154,11 +154,17 @@ public:		// User declarations
 
 	virtual void 		GenerateObjectName		(ref_str name, LPCSTR start_node, LPCSTR pref="object", bool num_first=false);
 
+    virtual void		SetOnItemFocusedEvent	(TOnILItemFocused e)			{OnItemFocusedEvent=e;}
     virtual void		SetOnItemsFocusedEvent	(TOnILItemsFocused e)			{OnItemsFocusedEvent=e;}
     virtual void		SetOnCloseEvent			(TOnILCloseEvent e)				{OnCloseEvent=e;}
     virtual void		SetOnItemRenameEvent	(CFolderHelper::TOnItemRename e){OnItemRenameEvent=e;}
     virtual void		SetOnItemRemoveEvent	(CFolderHelper::TOnItemRemove e){OnItemRemoveEvent=e;}
     virtual void		SetOnModifiedEvent		(TOnModifiedEvent e)			{OnModifiedEvent=e;}
+
+    virtual void 		SetILFocus				(){SetFocus();}
+
+    virtual u32			GetFlags				()			{return m_Flags.flags;}	
+    virtual void		SetFlags				(u32 mask)	{m_Flags.assign(mask);}	
 };
 //---------------------------------------------------------------------------
 #endif

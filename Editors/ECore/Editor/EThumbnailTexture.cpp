@@ -150,7 +150,7 @@ LPCSTR ETextureThumbnail::FormatString()
 {
 	LPCSTR c_fmt = 0;
     for(int i=0; tfmt_token[i].name; i++)
-        if (tfmt_token[i].id==m_TexParams.fmt){
+        if (tfmt_token[i].id==(int)m_TexParams.fmt){
             c_fmt=tfmt_token[i].name;
             break;
         }

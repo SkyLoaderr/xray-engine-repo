@@ -608,9 +608,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
             break;
             case PROP_TOKEN:
-            case PROP_A_TOKEN:
-            case PROP_TOKEN2:
-            case PROP_TOKEN3:
+            case PROP_RTOKEN:
             case PROP_SH_TOKEN:
             case PROP_LIST:
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
@@ -620,7 +618,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 OutText(FloatTimeToStrTime(V->GetValue()).c_str(),Surface,R,prop->Enabled());
             }break;
             case PROP_R_TEXT:
-            case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag!=(int)Item)
                     OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
@@ -647,7 +644,6 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             switch(type){
             case PROP_TIME:
             case PROP_R_TEXT:
-            case PROP_A_TEXT:
             case PROP_TEXT:
                 if (edText->Tag==(int)Item) if (!edText->Visible) ShowLWText(R);
             break;
@@ -746,46 +742,17 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                         pmEnum->Items->Add(mi);
                     }
                 }break;
-                case PROP_A_TOKEN:{
+                case PROP_RTOKEN:{
                     pmEnum->Items->Clear();
-                    ATokenValueCustom* T		= dynamic_cast<ATokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
-                    ATokenVec* token_list 		= T->token;
+                    RTokenValueCustom* T		= dynamic_cast<RTokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
+                    RTokenVec* token_list 		= T->token;
                     TMenuItem* mi 				= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 				= "-";
                     pmEnum->Items->Add			(mi);
-                    for(ATokenIt it=token_list->begin(); it!=token_list->end(); it++){
+                    for(RTokenVecIt it=token_list->begin(); it!=token_list->end(); it++){
                         mi 			= xr_new<TMenuItem>((TComponent*)0);
                         mi->Tag		= it-token_list->begin();
-                        mi->Caption = it->name;
-                        mi->OnClick = PMItemClick;
-                        pmEnum->Items->Add(mi);
-                    }
-                }break;
-                case PROP_TOKEN2:{
-                    pmEnum->Items->Clear();
-                    TokenValue2Custom* T	= dynamic_cast<TokenValue2Custom*>(prop->GetFrontValue()); R_ASSERT(T);
-                    AStringVec& lst = T->items;
-                    TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Caption 	= "-";
-                    pmEnum->Items->Add(mi);
-                    for(AStringIt it=lst.begin(); it!=lst.end(); it++){
-                        mi 			= xr_new<TMenuItem>((TComponent*)0);
-                        mi->Tag		= it-lst.begin();
-                        mi->Caption = *it;
-                        mi->OnClick = PMItemClick;
-                        pmEnum->Items->Add(mi);
-                    }
-                }break;
-                case PROP_TOKEN3:{
-                    pmEnum->Items->Clear();
-                    TokenValue3Custom* T	= dynamic_cast<TokenValue3Custom*>(prop->GetFrontValue()); R_ASSERT(T);
-                    TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
-                    mi->Caption 	= "-";
-                    pmEnum->Items->Add(mi);
-                    for (TokenValue3Custom::ItemVec::const_iterator it=T->items->begin(); it!=T->items->end(); it++){
-                        mi 			= xr_new<TMenuItem>((TComponent*)0);
-                        mi->Tag		= it-T->items->begin();
-                        mi->Caption = it->str;
+                        mi->Caption = *it->name;
                         mi->OnClick = PMItemClick;
                         pmEnum->Items->Add(mi);
                     }
@@ -807,14 +774,14 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_LIST:{
                     pmEnum->Items->Clear();
                     ListValue* T				= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(T);
-                    AStringVec& lst = T->items;
+                    RStringVec* lst = T->items;
                     TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
                     mi->Caption 	= "-";
                     pmEnum->Items->Add(mi);
-                    for(AStringIt it=lst.begin(); it!=lst.end(); it++){
+                    for(RStringVecIt it=lst->begin(); it!=lst->end(); it++){
                         mi 			= xr_new<TMenuItem>((TComponent*)0);
-                        mi->Tag		= it-lst.begin();
-                        mi->Caption = *it;
+                        mi->Tag		= it-lst->begin();
+                        mi->Caption = it->c_str();
                         mi->OnClick = PMItemClick;
                         pmEnum->Items->Add(mi);
                     }
@@ -835,7 +802,6 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                     PrepareLWNumber(item);
                 break;
                 case PROP_R_TEXT:
-                case PROP_A_TEXT:
                 case PROP_TEXT:
                 	if ((X-prop->draw_rect.left)<(prop->draw_rect.Width()-(m_BMEllipsis->Width+2)))	PrepareLWText(item);
                     else								                   							ExecTextEditor(prop);
@@ -861,9 +827,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 };
                 switch(prop->type){
                 case PROP_TOKEN:
-                case PROP_A_TOKEN:
-                case PROP_TOKEN2:
-                case PROP_TOKEN3:
+                case PROP_RTOKEN:
                 case PROP_SH_TOKEN:
                 case PROP_LIST:
                 case PROP_TEXTURE2:
@@ -959,28 +923,11 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             }
 			item->ColumnText->Strings[0]= prop->GetText();
         }break;
-		case PROP_A_TOKEN:{
-			ATokenValueCustom* T	= dynamic_cast<ATokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
-            ATokenVec* token_list   = T->token;
+		case PROP_RTOKEN:{
+			RTokenValueCustom* T	= dynamic_cast<RTokenValueCustom*>(prop->GetFrontValue()); R_ASSERT(T);
+            RTokenVec* token_list   = T->token;
             u32 new_val				= (*token_list)[mi->Tag].id;
 			prop->OnAfterEdit(&new_val);
-            if (prop->ApplyValue(&new_val)){
-            	Modified			();
-            }
-			item->ColumnText->Strings[0]= prop->GetText();
-        }break;
-		case PROP_TOKEN2:{
-            u32 new_val				= mi->Tag;
-			prop->OnAfterEdit		(&new_val);
-            if (prop->ApplyValue(&new_val)){
-            	Modified			();
-            }
-			item->ColumnText->Strings[0]= prop->GetText();
-        }break;
-		case PROP_TOKEN3:{
-			TokenValue3Custom* T	= dynamic_cast<TokenValue3Custom*>(prop->GetFrontValue()); R_ASSERT(T);
-            u32 new_val				= (*T->items)[mi->Tag].ID;
-			prop->OnAfterEdit		(&new_val);
             if (prop->ApplyValue(&new_val)){
             	Modified			();
             }
@@ -997,10 +944,9 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
         }break;
 		case PROP_LIST:{
 			ListValue* T			= dynamic_cast<ListValue*>(prop->GetFrontValue()); R_ASSERT(T);
-            AStringVec& lst		 	= T->items;
-            string256 new_val;	strcpy(new_val,lst[mi->Tag].c_str());
+            ref_str new_val			= (*T->items)[mi->Tag];
 			prop->OnAfterEdit		(&new_val);
-            if (prop->ApplyValue(new_val)){
+            if (prop->ApplyValue(&new_val)){
 	            Modified			();
             }
 			item->ColumnText->Strings[0]= prop->GetText();
@@ -1129,17 +1075,11 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
     	edit_val			= TV->GetValue();
         CV					= dynamic_cast<ChooseValueCustom*>(TV); R_ASSERT(CV);
     }else{
-        ATextValue* AV		= dynamic_cast<ATextValue*>(prop->GetFrontValue());
-        if (AV){ 
-        	edit_val		= AV->GetValue();
-			CV				= dynamic_cast<ChooseValueCustom*>(AV); R_ASSERT(CV);
-        }else{
-			RTextValue* RV	= dynamic_cast<RTextValue*>(prop->GetFrontValue());
-            if (RV){
-            	edit_val	= *RV->GetValue();
-				CV			= dynamic_cast<ChooseValueCustom*>(RV); R_ASSERT(CV);
-            }else Debug.fatal("Unknown choose value type");
-        }
+        RTextValue* RV		= dynamic_cast<RTextValue*>(prop->GetFrontValue());
+        if (RV){
+            edit_val		= *RV->GetValue();
+            CV				= dynamic_cast<ChooseValueCustom*>(RV); R_ASSERT(CV);
+        }else Debug.fatal("Unknown choose value type");
     }
 	if (!edit_val.Length()) edit_val = CV->start_path;
 	prop->OnBeforeEdit		(&edit_val);
@@ -1408,14 +1348,6 @@ void TProperties::PrepareLWText(TElTreeItem* item)
 		edText->Text 		= edit_val;
 		edText->MaxLength	= 0;
     }break;
-    case PROP_A_TEXT:{
-		ATextValue* V	= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-        AnsiString edit_val	= V->GetValue();
-        prop->OnBeforeEdit	(&edit_val);
-        edText->EditMask	= "";
-		edText->Text 		= edit_val;
-		edText->MaxLength	= 0;
-    }break;
     case PROP_TEXT:{
 		TextValue* V		= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 		AnsiString edit_val	= V->GetValue();
@@ -1456,15 +1388,6 @@ void TProperties::ApplyLWText()
 	    switch (prop->type){
         case PROP_R_TEXT:{
 			RTextValue* V		= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-			AnsiString new_val	= edText->Text;
-			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue(new_val.c_str())){
-            	Modified();
-            }
-            item->ColumnText->Strings[0] = prop->GetText();
-        }break;
-        case PROP_A_TEXT:{
-			ATextValue* V		= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
 			prop->OnAfterEdit	(&new_val);
             if (prop->ApplyValue(new_val.c_str())){
@@ -1527,13 +1450,6 @@ void __fastcall TProperties::edTextDblClick(TObject *Sender)
             ApplyLWText();
             HideLWText();
         }break;
-    	case PROP_A_TEXT:{
-			AnsiString new_val	= edText->Text;
-			if (TfrmText::RunEditor(new_val,AnsiString(item->Text).c_str()))
-            	edText->Text = new_val;
-            ApplyLWText();
-            HideLWText();
-        }break;
     	case PROP_TEXT:{
 			TextValue* V	= dynamic_cast<TextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
@@ -1554,17 +1470,6 @@ void TProperties::ExecTextEditor(PropItem* prop)
     	case PROP_R_TEXT:{
             RTextValue* V	= dynamic_cast<RTextValue*>(prop->GetFrontValue()); R_ASSERT(V);
             AnsiString edit_val	= *V->GetValue();
-            prop->OnBeforeEdit	(&edit_val);
-            if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false)){
-                prop->OnAfterEdit	(&edit_val);
-                if (prop->ApplyValue(edit_val.c_str()))
-                    Modified();
-                prop->Item()->ColumnText->Strings[0] = prop->GetText();
-            }
-        }break;
-    	case PROP_A_TEXT:{
-            ATextValue* V	= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
-            AnsiString edit_val	= V->GetValue();
             prop->OnBeforeEdit	(&edit_val);
             if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false)){
                 prop->OnAfterEdit	(&edit_val);
