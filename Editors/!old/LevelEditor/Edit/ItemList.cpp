@@ -211,9 +211,11 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
         if (prop->key.size()&&(prop->key[prop->key.size()-1]=='\\')){
         	prop->item		= FHelper.AppendFolder(tvItems,*prop->key,!m_Flags.is(ilSuppressIcon));
             TElTreeItem* prop_item	= (TElTreeItem*)prop->item;
+            prop_item->CheckBoxEnabled 		= false;
             prop_item->UseStyles		   	= true;
-            prop_item->MainStyle->TextColor	= (TColor)prop->prop_color;         
-            prop_item->MainStyle->Style		= ElhsOwnerDraw;
+            prop_item->MainStyle->TextColor		= (TColor)prop->prop_color;         
+            prop_item->MainStyle->OwnerProps 	= true;
+            prop_item->MainStyle->Style 		= ElhsOwnerDraw;
         }else{
             prop->item		= FHelper.AppendObject(tvItems,*prop->key,false,!m_Flags.is(ilSuppressIcon));
             if (!prop->item){
@@ -228,8 +230,6 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
             prop_item->ShowCheckBox 	= prop->m_Flags.is(ListItem::flShowCB);
             prop_item->CheckBoxState 	= (TCheckBoxState)prop->m_Flags.is(ListItem::flCBChecked);
 
-	        prop_item->MainStyle->OwnerProps 	= false;
-    	    prop_item->MainStyle->TextColor	= clRed;
             // set flags                                        
             if (prop->m_Flags.is(ListItem::flDrawThumbnail)){
                 prop_item->Height 		= 64;

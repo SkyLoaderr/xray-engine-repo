@@ -84,7 +84,7 @@ AnsiString MakeFullBonePath(CBone* bone)
 void CEditableObject::FillSurfaceList(LPCSTR pref, ListItemsVec& items, int modeID)
 {
     SurfaceVec& s_lst 	= Surfaces();
-	if (pref) LHelper().CreateItem(items, pref, modeID, ListItem::flSorted);
+	if (pref&&s_lst.empty()) LHelper().CreateItem(items, pref, modeID, ListItem::flSorted);
     for (SurfaceIt s_it=s_lst.begin(); s_it!=s_lst.end(); s_it++)
         LHelper().CreateItem(items, PrepareKey(pref, (*s_it)->_Name()).c_str(), modeID, 0, *s_it);
 }
@@ -93,7 +93,7 @@ void CEditableObject::FillSurfaceList(LPCSTR pref, ListItemsVec& items, int mode
 void CEditableObject::FillBoneList(LPCSTR pref, ListItemsVec& items, int modeID)
 {
     BoneVec& b_lst 		= Bones();
-	if (pref) LHelper().CreateItem(items, pref, modeID, ListItem::flSorted);
+	if (pref&&b_lst.empty()) LHelper().CreateItem(items, pref, modeID, ListItem::flSorted);
     for(BoneIt b_it=b_lst.begin(); b_it!=b_lst.end(); b_it++){
     	AnsiString pt	= MakeFullBonePath(*b_it);
     	AnsiString path	= pt.IsEmpty()?pref:PrepareKey(pref, pt.c_str()).c_str();
@@ -104,8 +104,7 @@ void CEditableObject::FillBoneList(LPCSTR pref, ListItemsVec& items, int modeID)
 void CEditableObject::FillMotionList(LPCSTR pref, ListItemsVec& items, int modeID)
 {
     SMotionVec&	m_lst	= SMotions();
-	if (pref) LHelper().CreateItem(items, pref,  modeID, ListItem::flSorted);
-
+	if (pref&&m_lst.empty()) LHelper().CreateItem(items, pref,  modeID, ListItem::flSorted);
     for (SMotionIt m_it=m_lst.begin(); m_it!=m_lst.end(); m_it++)
         LHelper().CreateItem(items, PrepareKey(pref, (*m_it)->Name()).c_str(), modeID, 0, *m_it);
 }
