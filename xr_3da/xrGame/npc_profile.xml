@@ -73,6 +73,23 @@
 		<team>Svoboda_master</team>
 	</character>
 
+	<!-- Monolit -->
+	<character id="monolit">
+		<team>Monolit</team>
+	</character>
+	<character id="monolit_novice">
+		<team>Monolit_novice</team>
+	</character>
+	<character id="monolit_general">
+		<team>Monolit_general</team>
+	</character>
+	<character id="monolit_veteran">
+		<team>Monolit_veteran</team>
+	</character>
+	<character id="monolit_master">
+		<team>Monolit_master</team>
+	</character>
+
 	
 	<character id="escape_trader">
 		<team>Trader</team>
