@@ -120,9 +120,10 @@ public:
 	
 	IC void w_chunk_close8		(u32 position)
 	{
-		u32 size			= u32		(w_tell()-position)-sizeof(u8);
+		u32 size			= u32(w_tell() - position) - sizeof(u8);
 		VERIFY				(size<256	);
-		w_seek				(position,&size,sizeof(u8));
+		u8					_size = (u8)size;
+		w_seek				(position,&_size,sizeof(_size));
 	}
 
 	IC void	w_chunk_open16		(u32& position)
@@ -133,15 +134,17 @@ public:
 
 	IC void w_chunk_close16		(u32 position)
 	{
-		u32 size			= u32		(w_tell()-position)-sizeof(u16);
+		u32 size			= u32(w_tell() - position) - sizeof(u16);
 		VERIFY				(size<65536);
-		w_seek				(position,&size,sizeof(u16));
+		u16					_size = (u16)size;
+		w_seek				(position,&_size,sizeof(_size));
 	}
 
 	// reading
 	IC void		read_start(){
 		r_pos		= 0;
 	}
+
 	IC u32		r_begin			( u16& type	)	// returns time of receiving
 	{
 		r_pos		= 0;
