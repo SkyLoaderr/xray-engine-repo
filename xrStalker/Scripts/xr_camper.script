@@ -220,6 +220,7 @@ function add_to_binder(object, ini, scheme, section, storage)
 		xr_motivator.addCommonPrecondition(action)
 		action:add_effect (world_property(properties["end"],				true))
 		manager:add_action (operators["patrol"], action)
+		xr_logic.subscribe_action_for_events(object, storage, action)
 
 		action = this.action_kill (object:name(),"action_kill", db.storage[object:id()].camper)
 		action:add_precondition	(world_property(stalker_ids.property_alive, true))
