@@ -696,7 +696,8 @@ void CInventory::Update(u32 deltaT)
 				m_activeSlot = m_nextActiveSlot;
 				m_nextActiveSlot = 0xffffffff;
 			}
-			else if(!m_slots[m_activeSlot].m_pIItem->Activate())
+			else if(m_activeSlot == 0xffffffff || 
+					!m_slots[m_activeSlot].m_pIItem->Activate())
 			{
 				m_activeSlot = m_nextActiveSlot = 0xffffffff;
 			}
