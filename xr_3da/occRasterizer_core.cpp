@@ -145,7 +145,7 @@ __forceinline void i_section	(occRasterizer* OCC, float *A, float *B, float *C, 
 	float mE2	= E2[0]/E2[1];
 	
 	// Initial Y offset for left and right (due to pixel rounding)
-	float	e1_init_dY = startY - startp1[1], e2_init_dY = startY - startp2[1];
+	float	e1_init_dY = float(startY) - startp1[1], e2_init_dY = float(startY) - startp2[1];
 	float	t,leftX, leftZ, rightX, rightZ, left_dX, right_dX, left_dZ, right_dZ;
 	
 	// find initial values, step values
