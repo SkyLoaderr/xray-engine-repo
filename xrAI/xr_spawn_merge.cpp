@@ -17,6 +17,11 @@
 #include "xr_spawn_merge.h"
 #include "xrCrossTable.h"
 
+typedef struct tagSLevelPoint {
+	Fvector		tPoint;
+	u32			tNodeID;
+} SLevelPoint;
+
 DEFINE_VECTOR(CSE_ALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
 CSE_ALifeGraph						*tpGraph = 0;
@@ -45,6 +50,7 @@ public:
 	u32							m_dwLevelID;
 	CAI_Map						*m_tpAI_Map;
 	CSE_ALifeCrossTable			*m_tpCrossTable;
+	xr_vector<SLevelPoint>		m_tpLevelPoints;
 
 								CSpawn(LPCSTR name, const CSE_ALifeGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
@@ -205,7 +211,7 @@ public:
 			sprintf				(S,"There are no graph vertices in the game graph for the level '%s' !\n",m_tLevel.caLevelName);
 			R_ASSERT2			(dwStart < dwFinish,S);
 		}
-		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .75f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
+		for (int i=0; i<(int)m_tpSpawnPoints.size(); i++, thProgress = .5f*(fRelation + float(i)/float(m_tpSpawnPoints.size())*(1.f - fRelation))) {
 			if ((m_tpSpawnPoints[i]->m_tNodeID = m_tpAI_Map->dwfFindCorrespondingNode(m_tpSpawnPoints[i]->o_Position)) == -1) {
 				string4096 S1;
 				char *S = S1;
@@ -234,8 +240,10 @@ public:
 			m_tpSpawnPoints[i]->m_tGraphID	= dwBest;
 			m_tpSpawnPoints[i]->m_fDistance	= fCurrentBestDistance;
 		}
-		thProgress				= .75f;
+		thProgress				= .5f;
 		vfGenerateArtefactSpawnPositions();
+		thProgress				= .6f;
+		vfGenerateMonsterDeathposition();
 		thProgress				= 1.0f;
 	};
 
@@ -280,6 +288,37 @@ public:
 	
 	void						vfGenerateArtefactSpawnPositions()
 	{
+		m_tpLevelPoints.clear	();
+		xr_vector<u32>			l_tpaStack;
+		l_tpaStack.reserve		(1024);
+		m_tpAI_Map->q_mark_bit.assign(m_tpAI_Map->q_mark_bit.size(),false);
+		ALIFE_OBJECT_P_IT		B = m_tpSpawnPoints.begin(), I = B;
+		ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
+		for ( ; I != E; I++) {
+			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(*I);
+			if (!l_tpALifeAnomalousZone)
+				continue;
+
+			vfShallowGraphSearch(l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
+
+			if (l_tpALifeAnomalousZone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
+				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();
+				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
+				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
+				xr_vector<SLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<SLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<u32>::iterator						i = l_tpaStack.begin();
+				for ( ; I != E; I++, i++) {
+					(*I).tNodeID	= *i;
+					(*I).tPoint		= m_tpAI_Map->tfGetNodeCenter(*i);
+				}
+			}
+		}
+	}
+
+	void						vfGenerateMonsterDeathposition()
+	{
+		m_tpLevelPoints.clear	();
 		xr_vector<u32>			l_tpaStack;
 		l_tpaStack.reserve		(1024);
 		m_tpAI_Map->q_mark_bit.assign(m_tpAI_Map->q_mark_bit.size(),false);
@@ -293,16 +332,37 @@ public:
 			vfShallowGraphSearch(l_tpALifeAnomalousZone->m_tNodeID,l_tpALifeAnomalousZone->m_fRadius,l_tpaStack,m_tpAI_Map->q_mark_bit);
 
 			if (l_tpALifeAnomalousZone->m_wArtefactSpawnCount >= l_tpaStack.size()) {
-				l_tpALifeAnomalousZone->m_wArtefactSpawnCount = l_tpaStack.size();
+				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();
+				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
+				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
+				xr_vector<SLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<SLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<u32>::iterator						i = l_tpaStack.begin();
+				for ( ; I != E; I++, i++) {
+					(*I).tNodeID	= *i;
+					(*I).tPoint		= m_tpAI_Map->tfGetNodeCenter(*i);
+				}
 			}
 		}
 	}
 
-	void						Save(CMemoryWriter &fs, u32 &dwID)
+	void						Save(CMemoryWriter &fs, u32 &dwID, xr_vector<SLevelPoint> &tpLevelPoints)
 	{
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
-			CSE_Abstract*	E	= m_tpSpawnPoints[i];
+			CSE_Abstract		*E = m_tpSpawnPoints[i];
+
+			CSE_ALifeAnomalousZone *l_tpALifeAnomalousZone = dynamic_cast<CSE_ALifeAnomalousZone*>(E);
+			if (l_tpALifeAnomalousZone) {
+				u32									l_dwStartIndex = tpLevelPoints.size();
+				tpLevelPoints.resize				(l_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
+				xr_vector<SLevelPoint>::iterator	I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<SLevelPoint>::iterator	E = I + l_tpALifeAnomalousZone->m_wArtefactSpawnCount;
+				xr_vector<SLevelPoint>::iterator	i = tpLevelPoints.begin() + l_dwStartIndex;
+				for ( ; I != E; I++,i++)
+					*I = *i;
+				l_tpALifeAnomalousZone->m_dwStartIndex = l_dwStartIndex;
+			}
 
 			fs.open_chunk		(dwID);
 
@@ -318,12 +378,16 @@ public:
 			fs.w				(P.B.data,P.B.count);
 
 			fs.close_chunk		();
+			
 		}
 	};
 };
 
 void xrMergeSpawns(LPCSTR name)
 {
+	xr_vector<SLevelPoint>		l_tpLevelPoints;
+	l_tpLevelPoints.clear		();
+
 	// load all the graphs
 	Phase						("Loading game graph");
 	char						S[256];
@@ -371,7 +435,12 @@ void xrMergeSpawns(LPCSTR name)
 	tMemoryStream.w				(&tSpawnHeader,sizeof(tSpawnHeader));
 	tMemoryStream.close_chunk	();
 	for (u32 i=0, dwID = 0, N = tpLevels.size(); i<N; i++)
-		tpLevels[i]->Save		(tMemoryStream,dwID);
+		tpLevels[i]->Save		(tMemoryStream,dwID,l_tpLevelPoints);
+	
+	tMemoryStream.open_chunk	(dwID++);
+	save_base_vector			(l_tpLevelPoints,tMemoryStream);
+	tMemoryStream.close_chunk	();
+
 	tMemoryStream.save_to		("game.spawn");
 
 	Phase						("Freeing resources being allocated");

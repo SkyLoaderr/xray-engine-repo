@@ -31,7 +31,8 @@ void free_map(xr_map<T1,T2 *> &tpMap)
 };
 
 // server objects
-IC void save_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
+template <class M>
+void save_bool_vector(xr_vector<bool> &baVector, M &tNetPacket)
 {
 	tNetPacket.w_u32			((u32)baVector.size());
 	xr_vector<bool>::iterator 	I = baVector.begin();
@@ -51,7 +52,8 @@ IC void save_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
 	}
 };
 
-IC void load_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
+template <class M>
+void load_bool_vector(xr_vector<bool> &baVector, M &tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
@@ -68,8 +70,8 @@ IC void load_bool_vector(xr_vector<bool> &baVector, NET_Packet &tNetPacket)
 	}
 };
 
-template <class T>
-void save_base_vector(xr_vector<T> &tpVector, NET_Packet &tNetPacket)
+template <class T, class M>
+void save_base_vector(xr_vector<T> &tpVector, M &tNetPacket)
 {
 	tNetPacket.w_u32			((u32)tpVector.size());
 	xr_vector<T>::iterator		I = tpVector.begin();
@@ -101,8 +103,8 @@ void init_vector(xr_vector<T *> &tpVector, LPCSTR caSection)
 	}
 };
 
-template <class T>
-void save_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
+template <class T, class M>
+void save_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 {
 	tNetPacket.w_u32			((u32)tpVector.size());
 	xr_vector<T *>::iterator	I = tpVector.begin();
@@ -111,8 +113,8 @@ void save_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
 		(*I)->UPDATE_Write		(tNetPacket);
 };
 
-template <class T>
-void load_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
+template <class T, class M>
+void load_vector(xr_vector<T *> &tpVector, M &tNetPacket)
 {
 	u32							dwDummy;
 	tNetPacket.r_u32			(dwDummy);
@@ -125,8 +127,8 @@ void load_vector(xr_vector<T *> &tpVector, NET_Packet &tNetPacket)
 	}
 };
 
-template <class T1, class T2>
-void save_map(xr_map<T1,T2 *> &tpMap, NET_Packet &tNetPacket)
+template <class T1, class T2, class M>
+void save_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket)
 {
 	tNetPacket.w_u32			(tpMap.size());
 	xr_map<T1,T2 *>::iterator	I = tpMap.begin();
@@ -135,8 +137,8 @@ void save_map(xr_map<T1,T2 *> &tpMap, NET_Packet &tNetPacket)
 		(*I).second->Save		(tMemoryStream);
 };
 
-template <class T1, class T2>
-void load_map(xr_map<T1,T2 *> &tpMap, NET_Packet &tNetPacket, T1 tfGetKey(const T2 *))
+template <class T1, class T2, class M>
+void load_map(xr_map<T1,T2 *> &tpMap, M &tNetPacket, T1 tfGetKey(const T2 *))
 {
 	tpMap.clear					();
 	u32							dwCount	= tFileStream.Rdword();
