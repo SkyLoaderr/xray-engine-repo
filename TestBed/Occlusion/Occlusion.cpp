@@ -75,6 +75,7 @@ const float p_c		= 32.7f;
 const float p_r		= 25.4f;
 const float p_r2	= 30.4f;
 const float p_a		= 1.f;
+const int	offset	= 0;
 #define ADJ_NONE	((occTri*)0xffffffff)
 
 void edges(occTri& T)
@@ -96,27 +97,27 @@ int __cdecl main	(int argc, char* argv[])
 	printf			("\n");
 	Raster.clear	();
 	SetPriorityClass(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
-	for (int test=0; test<=360; test++)
+	for (int test=offset; test<=offset; test	+= 1)
 	{
-		float		a0	= rad(test*p_a);
-		float		a1	= rad(test*p_a + 60.f);
-		float		a2	= rad(test*p_a + 100.f);
-		float		a3	= rad(test*p_a + 30.f);
+		float		a0	= rad(p_a);
+		float		a1	= rad(p_a + 60.f);
+		float		a2	= rad(p_a + 100.f);
+		float		a3	= rad(p_a + 30.f);
 		
 		// setup tri(s)
 		occTri	T1,T2;
 		T1.adjacent[0]	= &T2;
 		T1.adjacent[1]	= ADJ_NONE;
 		T1.adjacent[2]	= ADJ_NONE;
-		T1.raster[0].x	= p_c + p_r*cosf(a0);
+		T1.raster[0].x	= test + p_r*cosf(a0);
 		T1.raster[0].y	= p_c + p_r*sinf(a0);
 		T1.raster[0].z	= 0.1f;
 		
-		T1.raster[1].x	= p_c + p_r*cosf(a1);
+		T1.raster[1].x	= test + p_r*cosf(a1);
 		T1.raster[1].y	= p_c + p_r*sinf(a1);
 		T1.raster[1].z	= 0.1f;
 		
-		T1.raster[2].x	= p_c + p_r*cosf(a2);
+		T1.raster[2].x	= test + p_r*cosf(a2);
 		T1.raster[2].y	= p_c + p_r*sinf(a2);
 		T1.raster[2].z	= 0.9f;
 		
@@ -124,7 +125,7 @@ int __cdecl main	(int argc, char* argv[])
 		T2.adjacent[0]	= &T1;
 		T2.adjacent[1]	= ADJ_NONE;
 		T2.adjacent[2]	= ADJ_NONE;
-		T2.raster[2].x	= p_c + p_r2*cosf(a3);
+		T2.raster[2].x	= test + p_r2*cosf(a3);
 		T2.raster[2].y	= p_c + p_r2*sinf(a3);
 		T2.raster[2].z	= 0.99f;
 		
