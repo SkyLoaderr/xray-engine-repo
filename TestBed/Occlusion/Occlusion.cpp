@@ -21,6 +21,54 @@ public:
 	VOID maketga( char *fname );
 };
 
+const DWORD		scale	= 16;
+const DWORD		size	= occ_dim0*scale;
+DWORD			buf		[size*size];
+
+void pixel	(int x, int y, DWORD C=255<<16)
+{
+	if (x<0) return; else if (x>=(int)size)	return;
+	if (y<0) return; else if (y>=(int)size)	return;
+	buf [y*size+x]	= C;
+}
+
+void line	( int x1, int y1, int x2, int y2 )
+{
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = x2 >= x1 ? 1 : -1;
+    int sy = y2 >= y1 ? 1 : -1;
+	
+    if ( dy <= dx ){
+        int d  = ( dy << 1 ) - dx;
+        int d1 = dy << 1;
+        int d2 = ( dy - dx ) << 1;
+		
+		pixel(x1,y1);
+		
+        for  (int x = x1 + sx, y = y1, i = 1; i <= dx; i++, x += sx){
+            if ( d > 0){
+                d += d2; y += sy;
+            }else
+                d += d1;
+			pixel(x,y);
+        }
+    }else{
+        int d  = ( dx << 1 ) - dy;
+        int d1 = dx << 1;
+        int d2 = ( dx - dy ) << 1;
+		
+		pixel(x1,y1);
+        for  (int x = x1, y = y1 + sy, i = 1; i <= dy; i++, y += sy ){
+            if ( d > 0){
+                d += d2; x += sx;
+            }else
+                d += d1;
+			pixel(x,y);
+        }
+    }
+}
+
 int __cdecl main	(int argc, char* argv[])
 {
 	occRasterizer	occ;
@@ -28,15 +76,15 @@ int __cdecl main	(int argc, char* argv[])
 	// setup tri
 	occTri	T;
 	T.raster[0].x	= 0.1f;
-	T.raster[0].y	= 0.1f;
+	T.raster[0].y	= 0.15f;
 	T.raster[0].z	= 0.01f;
 	
-	T.raster[1].x	= 60.f;
-	T.raster[1].y	= 10.f;
+	T.raster[1].x	= 60.5f;
+	T.raster[1].y	= 10.9f;
 	T.raster[1].z	= 0.1f;
 	
-	T.raster[2].x	= 20.f;
-	T.raster[2].y	= 50.f;
+	T.raster[2].x	= 20.2f;
+	T.raster[2].y	= 50.3f;
 	T.raster[2].z	= 0.99f;
 
 	// draw tri
@@ -45,9 +93,6 @@ int __cdecl main	(int argc, char* argv[])
 	occ.propagade	();
 
 	// copy into surface
-	const DWORD		S = 8;
-	const DWORD		size = occ_dim0*S;
-	DWORD			buf[size*size];
 	for (int y=0; y<occ_dim0; y++)
 	{
 		for (int x=0; x<occ_dim0; x++)
@@ -57,12 +102,17 @@ int __cdecl main	(int argc, char* argv[])
 			DWORD  mask	= (*(occ.dbg_frame() + y*occ_dim0 + x)) ? 255 : 0;
 			DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
 
-			for (int by=0; by<S; by++)
-				for (int bx=0; bx<S; bx++)
-					buf[(y*S+by)*size + x*S+bx]	= C;
+			for (int by=0; by<scale; by++)
+				for (int bx=0; bx<scale; bx++)
+					buf[(y*scale+by)*size + x*scale+bx]	= C;
 		}
 	}
 
+	// draw edges
+	line			(int(T.raster[0].x*scale),int(T.raster[0].y*scale),int(T.raster[1].x*scale),int(T.raster[1].y*scale));
+	line			(int(T.raster[1].x*scale),int(T.raster[1].y*scale),int(T.raster[2].x*scale),int(T.raster[2].y*scale));
+	line			(int(T.raster[2].x*scale),int(T.raster[2].y*scale),int(T.raster[0].x*scale),int(T.raster[0].y*scale));
+	
 	// save
 	TGAdesc	desc;
 	desc.format		= IMG_32B;
