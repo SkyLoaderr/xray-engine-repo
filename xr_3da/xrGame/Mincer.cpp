@@ -111,40 +111,45 @@ void CMincer ::Center	(Fvector& C) const
 
 void CMincer::OnOwnershipTake(u16 id)
 {
-		Fvector dir;float impulse;
-		//if(!m_telekinetics.has_impacts()) return;
-	
+	Fvector dir;
+	float impulse;
+	//if(!m_telekinetics.has_impacts()) return;
 
-		CObject* obj=Level().Objects.net_Find(id);
-		if(obj->CLS_ID ==CLSID_ARTEFACT) return;
+	CObject* obj=Level().Objects.net_Find(id);
 
-		m_telekinetics.draw_out_impact(dir,impulse);
-		CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(obj);
-		if(PP)
-		{
-			PP->StartParticles(m_torn_particles,Fvector().set(0,1,0),ID());
-		}
-		m_tearing_sound.play_at_pos(this,m_telekinetics.Center());
-		if (OnServer())
-		{
-			NET_Packet	l_P;
-			u_EventGen	(l_P,GE_HIT, id);
-			l_P.w_u16	(ID());
-			l_P.w_u16	(ID());
-			l_P.w_dir	(Fvector().set(1.f,0.f,1.f));//dir
-			l_P.w_float	(0.f);
-			l_P.w_s16	(0/*(s16)BI_NONE*/);
-			Fvector		position_in_bone_space={0.f,0.f,0.f};
-			l_P.w_vec3	(position_in_bone_space);
-			l_P.w_float	(impulse);
-			l_P.w_u16	(ALife::eHitTypeExplosion);
-			u_EventSend	(l_P);
-			/////////////////////////////////////////////////////////
-			obj->H_SetParent(NULL);
-			return;
-		};
+	if(obj->CLS_ID ==CLSID_ARTEFACT)
+	{
+		inherited::OnOwnershipTake(id);
+		return;
 	}
-	
+
+	m_telekinetics.draw_out_impact(dir,impulse);
+	CParticlesPlayer* PP = smart_cast<CParticlesPlayer*>(obj);
+	if(PP)
+	{
+		PP->StartParticles(m_torn_particles,Fvector().set(0,1,0),ID());
+	}
+	m_tearing_sound.play_at_pos(this,m_telekinetics.Center());
+	if (OnServer())
+	{
+		NET_Packet	l_P;
+		u_EventGen	(l_P,GE_HIT, id);
+		l_P.w_u16	(ID());
+		l_P.w_u16	(ID());
+		l_P.w_dir	(Fvector().set(1.f,0.f,1.f));//dir
+		l_P.w_float	(0.f);
+		l_P.w_s16	(0/*(s16)BI_NONE*/);
+		Fvector		position_in_bone_space={0.f,0.f,0.f};
+		l_P.w_vec3	(position_in_bone_space);
+		l_P.w_float	(impulse);
+		l_P.w_u16	(ALife::eHitTypeExplosion);
+		u_EventSend	(l_P);
+		/////////////////////////////////////////////////////////
+		obj->H_SetParent(NULL);
+		return;
+	};
+}
+
 
 void CMincer::AffectPullAlife(CEntityAlive* EA,const Fvector& throw_in_dir,float dist)
 {

@@ -1043,6 +1043,10 @@ void CCustomZone::OnOwnershipTake(u16 id)
 {
 	CArtefact *artefact = smart_cast<CArtefact*>(Level().Objects.net_Find(id));  VERIFY(artefact);
 	artefact->H_SetParent(this);
+	
+	artefact->setVisible(FALSE);
+	artefact->setEnabled(FALSE);
+
 	AddArtefact(artefact);
 }
 void CCustomZone::OnStateSwitch	(EZoneState new_state)
