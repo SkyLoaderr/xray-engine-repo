@@ -62,6 +62,22 @@ void CAI_Soldier::OnFightAlone()
 void CAI_Soldier::OnFightGroup()
 {
 	WRITE_TO_LOG("fight group");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+	
+	CHECK_IF_GO_TO_PREV_STATE_THIS_UPDATE(bfCheckIfGroupFightType());
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(dwHitTime >= m_dwLastUpdate,aiSoldierHurtAlone);
+
+	SelectEnemy(Enemy);
+
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.Enemy,aiSoldierFindAlone);
+	CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(!Enemy.bVisible,aiSoldierPursuitAlone);
+	switch (tfGetGroupFightType()) {
+		case FIGHT_TYPE_ATTACK  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierAttackAlone);
+		case FIGHT_TYPE_DEFEND  : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierDefendAlone);
+		case FIGHT_TYPE_RETREAT : SWITCH_TO_NEW_STATE_THIS_UPDATE(aiSoldierRetreatAlone);
+	}
 }
 
 void CAI_Soldier::OnAttackAlone()

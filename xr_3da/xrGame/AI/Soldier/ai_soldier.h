@@ -482,6 +482,7 @@ class CAI_Soldier : public CCustomMonster
 
 		// miscellanious funtions	
 		DWORD tfGetAloneFightType();
+		DWORD tfGetGroupFightType();
 		bool bfCheckIfGroupFightType();
 		bool bfCheckForDanger();
 		void vfStopFire();

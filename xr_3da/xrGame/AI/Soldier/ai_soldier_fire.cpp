@@ -492,3 +492,191 @@ DWORD CAI_Soldier::tfGetAloneFightType()
 		else
 			return(FIGHT_TYPE_ATTACK);
 }
+
+DWORD CAI_Soldier::tfGetGroupFightType()
+{
+	objVisible &KnownEnemies = Level().Teams[g_Team()].KnownEnemys;
+	float fFightCoefficient = 0.f, fTempCoefficient;
+	CCustomMonster *tpCustomMonster = 0;
+
+	for (int i=0; i<KnownEnemies.size(); i++) {
+		tpCustomMonster = dynamic_cast<CCustomMonster *>(KnownEnemies[i].key);
+		if (!tpCustomMonster)
+			continue;
+		switch (tpCustomMonster->SUB_CLS_ID) {
+			case CLSID_AI_RAT		: {
+				fFightCoefficient += RAT_ENEMY*tpCustomMonster->g_Health()/100.f;
+				break;
+			}
+			case CLSID_AI_SOLDIER	: {
+				fTempCoefficient = SOLDIER_ENEMY*tpCustomMonster->g_Health()/100.f;
+				for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
+					CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->GetWeaponByIndex(j);
+					int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
+					int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+					switch (tpWeapon->SUB_CLS_ID) {
+						case CLSID_OBJECT_W_M134		: {
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+						case CLSID_OBJECT_W_M134_en		: {
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= M134_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= M134_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+						case CLSID_OBJECT_W_FN2000		: {
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= FN2000_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= FN2000_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+						case CLSID_OBJECT_W_AK74		: {	
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= AK74_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= AK74_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+						case CLSID_OBJECT_W_LR300		: {
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= LR300_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= LR300_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+						case CLSID_OBJECT_W_HPSA		: {	
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= HPSA_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= HPSA_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+						case CLSID_OBJECT_W_PM			: {
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= PM_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= PM_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+						case CLSID_OBJECT_W_FORT		: {	
+							if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+								fTempCoefficient *= FORT_ENEMY_ACTIVE*iAmmoCurrent;
+							else
+								fTempCoefficient *= FORT_ENEMY_INACTIVE*iAmmoCurrent;
+							break;
+						}
+					}
+				}
+			}
+			case CLSID_AI_ZOMBIE	: {
+				fFightCoefficient += ZOMBIE_ENEMY*tpCustomMonster->g_Health()/100.f;
+				break;
+			}
+		}
+	}
+
+	INIT_SQUAD_AND_LEADER
+	CGroup &Group = Squad.Groups[g_Group()];
+	for ( i=0; i<Group.Members.size() + 1; i++) {
+		
+		if (i<Group.Members.size())
+			tpCustomMonster = dynamic_cast<CCustomMonster*>(Group.Members[i]);
+		else
+			tpCustomMonster = dynamic_cast<CCustomMonster*>(Squad.Leader);
+		
+//		if ((tpCustomMonster) && (tpCustomMonster != this)) {
+		if (tpCustomMonster) {
+			switch (tpCustomMonster->SUB_CLS_ID) {
+				case CLSID_AI_RAT		: {
+					fFightCoefficient += RAT_FRIEND*tpCustomMonster->g_Health()/100.f;
+					break;
+				}
+				case CLSID_AI_SOLDIER	: {
+					fTempCoefficient = SOLDIER_FRIEND*tpCustomMonster->g_Health()/100.f;
+					for (int j=0; j<tpCustomMonster->tpfGetWeapons()->WeaponCount(); j++) {
+						CWeapon *tpWeapon = tpCustomMonster->tpfGetWeapons()->GetWeaponByIndex(j);
+						int iAmmoCurrent = tpWeapon->GetAmmoCurrent();
+						int iAmmoElapsed = tpWeapon->GetAmmoElapsed();
+						switch (tpWeapon->SUB_CLS_ID) {
+							case CLSID_OBJECT_W_M134		: {
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= M134_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+							case CLSID_OBJECT_W_M134_en		: {
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= M134_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= M134_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+							case CLSID_OBJECT_W_FN2000		: {
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= FN2000_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= FN2000_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+							case CLSID_OBJECT_W_AK74		: {	
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= AK74_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= AK74_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+							case CLSID_OBJECT_W_LR300		: {
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= LR300_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= LR300_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+							case CLSID_OBJECT_W_HPSA		: {	
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= HPSA_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= HPSA_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+							case CLSID_OBJECT_W_PM			: {
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= PM_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= PM_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+							case CLSID_OBJECT_W_FORT		: {	
+								if (j == tpCustomMonster->tpfGetWeapons()->ActiveWeaponID())
+									fTempCoefficient *= FORT_FRIEND_ACTIVE*iAmmoCurrent;
+								else
+									fTempCoefficient *= FORT_FRIEND_INACTIVE*iAmmoCurrent;
+								break;
+							}
+						}
+					}
+				}
+				case CLSID_AI_ZOMBIE	: {
+					fFightCoefficient += ZOMBIE_FRIEND*tpCustomMonster->g_Health()/100.f;
+					break;
+				}
+			}
+			fFightCoefficient += fTempCoefficient;
+		}
+	}
+
+	if (fFightCoefficient > 400)
+		return(FIGHT_TYPE_RETREAT);
+	else
+		if (fFightCoefficient > 100)
+			return(FIGHT_TYPE_DEFEND);
+		else
+			return(FIGHT_TYPE_ATTACK);
+}
