@@ -743,7 +743,7 @@
 				</Filter>
 			</Filter>
 			<Filter
-				Name="Items&amp;Weapons"
+				Name="Items &amp; Weapons"
 				Filter="">
 				<File
 					RelativePath="ItemHealth.cpp">

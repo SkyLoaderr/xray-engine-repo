@@ -78,6 +78,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 		break;
 	case GE_TRANSFER_AMMO:
 		{
+			Log					("~~~!!!~~~ SV: receive 'GE_TRANSFER_AMMO'");
 			u16					id_parent=destination,id_entity;
 			P.r_u16				(id_entity);
 			xrServerEntity*		e_parent	= ID_to_entity	(id_parent);	// кто забирает (для своих нужд)
@@ -92,6 +93,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			SendBroadcast		(0xffffffff,P,MODE);
 
 			// Perfrom real destroy
+			Log					("~~~!!!~~~ SV: destroy ",e_entity->s_name);
 			entity_Destroy		(e_entity);
 			entities.erase		(id_entity);
 		}
