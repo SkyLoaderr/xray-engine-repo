@@ -25,6 +25,7 @@ public:
 	virtual void Load				(LPCSTR section);
 	virtual void UpdateCL			();
 	virtual void shedule_Update		(u32 dt);
+	virtual BOOL net_Spawn			(LPVOID DC);
 
 	virtual	void Hit				(float P, Fvector &dir,	
 										CObject* who, s16 element,
@@ -32,18 +33,32 @@ public:
 										float impulse, 
 										ALife::EHitType hit_type = eHitTypeWound);
 
+	virtual bool Useful();
+
 
 	virtual void feel_touch_new	(CObject* O);
 	virtual void feel_touch_delete	(CObject* O);
 	virtual BOOL feel_touch_contact	(CObject* O);
 
+	bool IsAttacking() {return m_AttakingEntity!=NULL;}
+
 protected:
+	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c);
+	//столкновение мочалки с сущностью
+	void BastCollision(CEntityAlive* pEntityAlive);
+
+
 	//параметры артефакта
 	
 	//пороговое значение импульса после получени€ 
 	//которого артефакт активизируетс€
 	float m_fImpulseThreshold;
+	
 	float m_fEnergy;
+	float m_fEnergyMax;
+	float m_fEnergyDecreasePerTime;
+
+
 	float m_fRadius;
 	float m_fStrikeImpulse;
 
@@ -53,6 +68,8 @@ protected:
 
 	//список живых существ в зоне дос€гаемости артефакта
 	ALIVE_LIST m_AliveList;
-	//та жива€ сущность, которубю атакуем в данный момент
-	CEntityAlive* m_pAttackingEntity; 
+	//то, что мы ударили
+	CEntityAlive* m_pHitedEntity; 
+	//то что атакуем
+	CEntityAlive* m_AttakingEntity;
 };

@@ -59,8 +59,12 @@ BOOL CWeaponAmmo::net_Spawn(LPVOID DC) {
 
 	setVisible(true);
 	setEnabled(true);
-	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
-	if(V) V->PlayCycle("idle");
+	
+//	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
+//	if(V) V->PlayCycle("idle");
+	CSkeletonRigid* V = PSkeletonRigid(Visual());
+	R_ASSERT(V);
+
 
 	if (0==m_pPhysicsShell) {
 		// Physics (Box)

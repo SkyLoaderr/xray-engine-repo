@@ -28,8 +28,11 @@ BOOL CInfoDocument::net_Spawn(LPVOID DC)
 
 	m_iInfoIndex = l_tpALifeItemDocument->m_wDocIndex;
 
-	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
-	if(V) V->PlayCycle("idle");
+//	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
+//	if(V) V->PlayCycle("idle");
+	CSkeletonRigid* V = PSkeletonRigid(Visual());
+	R_ASSERT(V);
+
 
 	if (m_pPhysicsShell==0) 
 	{

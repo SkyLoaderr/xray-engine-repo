@@ -40,7 +40,7 @@ void CGraviArtifact::Load(LPCSTR section)
 	inherited::Load(section);
 
 	if(pSettings->line_exist(section, "jump_height")) m_fJumpHeight = pSettings->r_float(section,"jump_height");
-	m_fEnergy = pSettings->r_float(section,"energy");
+//	m_fEnergy = pSettings->r_float(section,"energy");
 }
 
 

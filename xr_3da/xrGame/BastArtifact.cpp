@@ -6,28 +6,26 @@
 #include "stdafx.h"
 #include "BastArtifact.h"
 #include "PhysicsShell.h"
+#include "extendedgeom.h"
 
 
 CBastArtifact::CBastArtifact(void) 
 {
 	m_fImpulseThreshold = 10.f;
-	m_fEnergy = 1.f;
+	m_fEnergy = 0.f;
+	m_fEnergyDecreasePerTime = 1.1f;
+	
 	m_fRadius = 10.f;
-	m_fStrikeImpulse = 510.f;
-
-	m_bStrike = false;
-
-	m_pAttackingEntity = NULL;
+	m_fStrikeImpulse = 50.f;
 }
 
 CBastArtifact::~CBastArtifact(void) 
 {
 }
-/*
 
+//вызывается при столкновении мочалки с чем-то
 void __stdcall CBastArtifact::ObjectContactCallback(bool& do_colide,dContact& c) 
 {
-	do_colide = false;
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
 	if(dGeomGetClass(c.geom.g1)==dGeomTransformClass) 
@@ -46,41 +44,62 @@ void __stdcall CBastArtifact::ObjectContactCallback(bool& do_colide,dContact& c)
 	else 
 		l_pUD2 = dGeomGetUserData(c.geom.g2);
 
-	CBastArtifact *l_this = l_pUD1 ? dynamic_cast<CBastArtifact*>(l_pUD1->ph_ref_object) : NULL;
-	if(!l_this) l_this = l_pUD2 ? dynamic_cast<CBastArtifact*>(l_pUD2->ph_ref_object) : NULL;
-	
-	if(!l_this) return;
-	CGameObject *l_pOwner = l_pUD1 ? dynamic_cast<CGameObject*>(l_pUD1->ph_ref_object) : NULL;
-	if(!l_pOwner || l_pOwner == (CGameObject*)l_this) l_pOwner = l_pUD2 ? dynamic_cast<CGameObject*>(l_pUD2->ph_ref_object) : NULL;
-	if(!l_pOwner || l_pOwner != l_this->m_pOwner) 
+	if(!l_pUD1 || !l_pUD2) return;
+
+	//определить кто есть кто, из двух столкнувшихся предметов
+	CBastArtifact *pBastArtifact = l_pUD1 ? dynamic_cast<CBastArtifact*>(l_pUD1->ph_ref_object) : NULL;
+	if(!pBastArtifact) pBastArtifact = l_pUD2 ? dynamic_cast<CBastArtifact*>(l_pUD2->ph_ref_object) : NULL;
+	if(!pBastArtifact) return;
+	if(!pBastArtifact->IsAttacking()) return;
+
+	CEntityAlive *pEntityAlive = NULL;
+	pEntityAlive = l_pUD1 ? dynamic_cast<CEntityAlive*>(l_pUD1->ph_ref_object) : NULL;
+	if(!pEntityAlive) pEntityAlive = l_pUD2 ? dynamic_cast<CEntityAlive*>(l_pUD2->ph_ref_object) : NULL;
+
+	pBastArtifact->BastCollision(pEntityAlive);
+}
+
+void CBastArtifact::BastCollision(CEntityAlive* pEntityAlive)
+{
+	//попали во что-то живое
+	if(pEntityAlive && pEntityAlive->g_Alive())
 	{
-		if(l_this->m_pOwner) 
+		m_AttakingEntity = NULL;
+		m_pHitedEntity = pEntityAlive;
+
+
+		if(m_AliveList.size()>1)
 		{
-			Fvector l_pos; 
-			l_pos.set(l_this->Position());
-			
-			if(!l_pUD1||!l_pUD2) 
-			{
-				dxGeomUserData *&l_pUD = l_pUD1?l_pUD1:l_pUD2;
-				if(l_pUD->pushing_neg) 
-				{
-					Fvector velocity;
-					l_this->PHGetLinearVell(velocity);
-					velocity.normalize();
-					float cosinus=velocity.dotproduct(*((Fvector*)l_pUD->neg_tri.norm));
-					float dist=l_pUD->neg_tri.dist/cosinus;
-					velocity.mul(dist);
-					l_pos.sub(velocity);
-				}
-			}
-			l_this->Explode(l_pos, *(Fvector*)&c.geom.normal);
+			m_bStrike = true;
 		}
-	} 
-	else 
-	{
+		else
+		{
+			m_bStrike = false;
+		}
+
+		m_bStrike = true;
+		Fvector vel;
+		vel.set(0,0,0);
+	//	this->m_pPhysicsShell->set_LinearVel(vel);
+	//	this->m_pPhysicsShell->set_AngularVel(vel);
+
 	}
 }
-*/
+
+BOOL CBastArtifact::net_Spawn(LPVOID DC)
+{
+	BOOL result = inherited::net_Spawn(DC);
+	if(!result) return FALSE;
+
+	if(m_pPhysicsShell) 
+	{
+		m_pPhysicsShell->set_PhysicsRefObject(this);
+		m_pPhysicsShell->set_ObjectContactCallback(ObjectContactCallback);
+		m_pPhysicsShell->set_ContactCallback(NULL);
+	}
+
+	return TRUE;
+}
 
 void CBastArtifact::Load(LPCSTR section) 
 {
@@ -95,11 +114,22 @@ void CBastArtifact::Load(LPCSTR section)
 //	m_fEnergy = pSettings->r_float(section,"energy");
 }
 
+void CBastArtifact::shedule_Update(u32 dt) 
+{
+	inherited::shedule_Update(dt);
+
+	Fvector	P; 
+	P.set(Position());
+	feel_touch_update(P,m_fRadius);
+}
 
 
 void CBastArtifact::UpdateCL() 
 {
 	inherited::UpdateCL();
+
+	//современем энергия по немногу тоже уменьшается
+	if(m_fEnergy>0) m_fEnergy -= m_fEnergyDecreasePerTime*Device.fTimeDelta;
 
 	if(getVisible() && m_pPhysicsShell) 
 	{
@@ -107,20 +137,54 @@ void CBastArtifact::UpdateCL()
 		XFORM().set(m_pPhysicsShell->mXFORM);
 		Position().set(m_pPhysicsShell->mXFORM.c);
 
-		if(!m_AliveList.empty() && m_bStrike)
+		if(m_bStrike)
 		{
-			CEntityAlive* pEntityToHit = m_AliveList.front();
+			//выбрать жертву, если она еще не выбрана
+			if(!m_AliveList.empty() && m_AttakingEntity == NULL)
+			{
+				CEntityAlive* pEntityToHit = NULL;
+				if(m_AliveList.size()>1)
+				{
+					do
+					{
+						int rnd = ::Random.randI(m_AliveList.size());
+						pEntityToHit = m_AliveList[rnd];
+					} while (pEntityToHit == m_pHitedEntity);
+				}
+				else
+				{
+					pEntityToHit = m_AliveList.front();
+				}
 
-			Fvector dir;
-			//dir = pEntityToHit->Position();
-			pEntityToHit->Center(dir);
-			dir.sub(this->Position()); 
-		
-			m_pPhysicsShell->applyImpulse(dir, 
-										  m_fStrikeImpulse * Device.fTimeDelta *
-										  m_pPhysicsShell->getMass());
-			m_bStrike = false;
+				m_AttakingEntity = pEntityToHit;
+			}
 		}
+		
+		if(m_AttakingEntity)
+		{
+			if(m_AttakingEntity->g_Alive() && m_fEnergy>m_fStrikeImpulse)
+			{
+				m_fEnergy -= m_fStrikeImpulse;
+
+				//бросить артефакт на выбранную цель
+				Fvector dir;
+				m_AttakingEntity->Center(dir);
+				dir.sub(this->Position()); 
+				dir.y += ::Random.randF(-0.05f, 0.5f);
+		
+				m_pPhysicsShell->applyImpulse(dir, 
+								  m_fStrikeImpulse * Device.fTimeDelta *
+								  m_pPhysicsShell->getMass());
+			}
+			else
+			{
+				m_AttakingEntity = NULL;
+				m_bStrike = false;
+			}
+		}
+
+
+
 	} 
 	else if(H_Parent()) XFORM().set(H_Parent()->XFORM());
 }
@@ -135,12 +199,27 @@ void CBastArtifact::Hit(float P, Fvector &dir,
 	if(impulse>m_fImpulseThreshold && !m_AliveList.empty())
 	{
 		m_bStrike = true;
+		m_AttakingEntity = m_pHitedEntity = NULL;
+		
+		m_fEnergy += m_fStrikeImpulse*impulse;
+
+		//чтоб выстрел не повлиял на траекторию полета артефакта
 		impulse = 0;
 	}
 	
 	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
 }
 
+
+//объект можно поднять только в спокойном состоянии
+bool CBastArtifact::Useful()
+{
+	if(m_fEnergy>0) 
+		return false;
+	else 
+		return true;
+
+}
 
 void CBastArtifact::feel_touch_new(CObject* O) 
 {
@@ -172,14 +251,4 @@ BOOL CBastArtifact::feel_touch_contact(CObject* O)
 		return TRUE;
 	else
 		return FALSE;
-}
-
-
-void CBastArtifact::shedule_Update(u32 dt) 
-{
-	inherited::shedule_Update(dt);
-
-	Fvector	P; 
-	P.set(Position());
-	feel_touch_update(P,m_fRadius);
 }

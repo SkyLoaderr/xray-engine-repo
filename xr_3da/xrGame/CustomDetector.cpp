@@ -16,8 +16,11 @@ BOOL CCustomDetector::net_Spawn(LPVOID DC)
 {
 	BOOL res = inherited::net_Spawn(DC);
 
-	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
-	if(V) V->PlayCycle("idle");
+//	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
+//	if(V) V->PlayCycle("idle");
+	CSkeletonRigid* V = PSkeletonRigid(Visual());
+	R_ASSERT(V);
+
 
 	if (m_pPhysicsShell == NULL) 
 	{

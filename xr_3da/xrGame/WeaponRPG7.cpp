@@ -362,8 +362,11 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 	if(0==pstrWallmark) hWallmark	= 0; 
 	else hWallmark.create			("effects\\wallmark",*pstrWallmark);
 
-	CSkeletonAnimated* V			= PSkeletonAnimated(Visual());
-	if(V) V->PlayCycle("idle1");
+//	CSkeletonAnimated* V			= PSkeletonAnimated(Visual());
+//	if(V) V->PlayCycle("idle1");
+	CSkeletonRigid* V = PSkeletonRigid(Visual());
+	R_ASSERT(V);
+
 	//setVisible					(true);
 	//setEnabled					(true);
 

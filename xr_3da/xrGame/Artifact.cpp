@@ -51,8 +51,11 @@ BOOL CArtifact::net_Spawn(LPVOID DC)
 	//xrSE_MercuryBall* E			= (xrSE_MercuryBall*)DC;
 	//cNameVisual_set				(E->s_Model);
 
-	CSkeletonAnimated* V		= PSkeletonAnimated(Visual());
-	if(V) V->PlayCycle			("idle");
+//	CSkeletonAnimated* V		= PSkeletonAnimated(Visual());
+//	if(V) V->PlayCycle			("idle");
+	CSkeletonRigid* V = PSkeletonRigid(Visual());
+	R_ASSERT(V);
+
 
 	if (0==m_pPhysicsShell)
 	{

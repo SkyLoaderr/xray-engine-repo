@@ -1,0 +1,172 @@
+///////////////////////////////////////////////////////////////
+// BlackGraviArtifact.cpp
+// BlackGraviArtifact - гравитационный артефакт, 
+// такой же как и обычный, но при получении хита
+///////////////////////////////////////////////////////////////
+
+#include "stdafx.h"
+#include "BlackGraviArtifact.h"
+#include "PhysicsShell.h"
+#include "GameObject.h"
+#include "Entity.h"
+
+CBlackGraviArtifact::CBlackGraviArtifact(void) 
+{
+	m_fImpulseThreshold = 10.f;
+//	m_fEnergy = 0.f;
+//	m_fEnergyDecreasePerTime = 1.1f;
+	
+	m_fRadius = 10.f;
+	m_fStrikeImpulse = 50.f;
+
+	m_bStrike = false;
+}
+
+CBlackGraviArtifact::~CBlackGraviArtifact(void) 
+{
+	m_GameObjectList.clear();
+}
+
+void CBlackGraviArtifact::Load(LPCSTR section) 
+{
+	inherited::Load(section);
+}
+
+void CBlackGraviArtifact::UpdateCL() 
+{
+	inherited::UpdateCL();
+
+	if(getVisible() && m_pPhysicsShell) 
+	{
+		if(m_bStrike)
+		{
+			Fvector	P; 
+			P.set(Position());
+			feel_touch_update(P,m_fRadius);
+
+			GraviStrike();
+
+			m_bStrike = false;
+		}
+	}
+		
+}
+
+void CBlackGraviArtifact::Hit(float P, Fvector &dir,
+						CObject* who, s16 element,
+						Fvector position_in_object_space,
+						float impulse,
+						ALife::EHitType hit_type)
+{
+	if(impulse>m_fImpulseThreshold)
+	{
+		m_bStrike = true;
+		//чтоб выстрел не повлиял на траекторию полета артефакта
+		impulse = 0;
+	}
+	
+	inherited::Hit(P, dir, who, element, position_in_object_space, impulse, hit_type);
+}
+
+void CBlackGraviArtifact::feel_touch_new(CObject* O) 
+{
+	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
+	CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
+
+	if(pGameObject && !pArtifact) 
+	{
+		m_GameObjectList.push_back(pGameObject);
+	}
+}
+
+void CBlackGraviArtifact::feel_touch_delete(CObject* O) 
+{
+	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
+	CArtifact* pArtifact = dynamic_cast<CArtifact*>(O);
+
+	if(pGameObject && !pArtifact)
+	{
+		m_GameObjectList.erase(std::find(m_GameObjectList.begin(), 
+										 m_GameObjectList.end(), 
+										 pGameObject));
+	}
+}
+
+BOOL CBlackGraviArtifact::feel_touch_contact(CObject* O) 
+{
+	CGameObject* pGameObject = dynamic_cast<CGameObject*>(O);
+
+	if(pGameObject)
+		return TRUE;
+	else
+		return FALSE;
+}
+
+void CBlackGraviArtifact::GraviStrike()
+{
+	xr_list<s16>		elements_list;
+	xr_list<Fvector>	bone_position_list;
+
+	Fvector object_pos; 
+	Fvector strike_dir;
+
+	for(GAME_OBJECT_LIST_it it = m_GameObjectList.begin(); 
+						    it!= m_GameObjectList.end();
+							it++)
+	{
+		CGameObject* pGameObject = *it;
+
+		if(pGameObject->Visual()) 
+			pGameObject->Center(object_pos); 
+		else 
+			object_pos.set(pGameObject->Position());
+
+		strike_dir.sub(object_pos, Position()); 
+		float distance = strike_dir.magnitude(); 
+
+		float impulse = 100.f*m_fStrikeImpulse * (1.f - (distance/m_fRadius)*
+										   (distance/m_fRadius));
+						
+		if(impulse > .001f) 
+		{
+			setEnabled(false);
+			impulse *= pGameObject->ExplosionEffect(Position(), m_fRadius, 
+											  elements_list, 
+											  bone_position_list);
+			setEnabled(true);
+		}
+
+		float hit_power;
+		CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(pGameObject);
+		if(pGameObject->m_pPhysicsShell) 
+			hit_power = 0;
+		else if(pEntityAlive && pEntityAlive->g_Alive() && 
+				pEntityAlive->Movement.CharacterExist())
+			hit_power = 0;
+		else
+			hit_power = impulse;
+
+		
+		if(impulse > .001f) 
+		{
+			while(!elements_list.empty()) 
+			{
+				s16 element = elements_list.front();
+				Fvector bone_pos = bone_position_list.front();
+				
+				NET_Packet		P;
+				u_EventGen		(P,GE_HIT, pGameObject->ID());
+				P.w_u16			(u16(ID()));
+				P.w_dir			(strike_dir);
+				P.w_float		(hit_power);
+				P.w_s16			(element);
+				P.w_vec3		(bone_pos);
+				P.w_float		(impulse);
+				P.w_u16			(u16(eHitTypeWound));
+				u_EventSend		(P);
+				elements_list.pop_front();
+				bone_position_list.pop_front();
+			}
+		}
+	}
+}

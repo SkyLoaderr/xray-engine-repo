@@ -45,8 +45,13 @@ BOOL CMissile::net_Spawn(LPVOID DC) {
 	m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
 
-	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
-	if(V) V->PlayCycle("idle");
+//	CSkeletonAnimated* V = PSkeletonAnimated(Visual());
+//	if(V) V->PlayCycle("idle");
+	CSkeletonRigid* V = PSkeletonRigid(Visual());
+	R_ASSERT(V);
+
+
+
 	setVisible					(true);
 	setEnabled					(true);
 
