@@ -37,10 +37,20 @@ CPatrolPathManager::~CPatrolPathManager			()
 	xr_delete				(m_extrapolate_callback);
 }
 
+void CPatrolPathManager::set_callback			()
+{
+	xr_delete				(m_callback);
+}
+
 void CPatrolPathManager::set_callback			(CScriptCallback &callback)
 {
 	xr_delete				(m_callback);
 	m_callback				= xr_new<CScriptCallback>(callback);
+}
+
+void CPatrolPathManager::set_extrapolate_callback()
+{
+	xr_delete				(m_extrapolate_callback);
 }
 
 void CPatrolPathManager::set_extrapolate_callback(CExtrapolateCallback &callback)

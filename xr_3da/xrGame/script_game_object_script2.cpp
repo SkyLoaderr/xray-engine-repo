@@ -193,6 +193,10 @@ class_<CScriptGameObject> &script_register_game_object1(class_<CScriptGameObject
 		.def("clear_animations",			&CScriptGameObject::clear_animations)
 		.def("animation_count",				&CScriptGameObject::animation_count)
 		.def("eat",							&CScriptGameObject::eat)
+
+		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)())(CScriptGameObject::set_patrol_extrapolate_callback))
+		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)(const luabind::functor<bool> &))(CScriptGameObject::set_patrol_extrapolate_callback))
+		.def("set_patrol_extrapolate_callback",	(void (CScriptGameObject::*)(const luabind::functor<bool> &, const luabind::object &))(CScriptGameObject::set_patrol_extrapolate_callback))
 	
 	;return	(instance);
 }

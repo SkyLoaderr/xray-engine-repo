@@ -396,6 +396,7 @@ public:
 			void				patrol_path_make_inactual();
 			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor);
 			void				set_patrol_extrapolate_callback(const luabind::functor<bool> &functor, const luabind::object &object);
+			void				set_patrol_extrapolate_callback();
 			void				enable_memory_object	(CScriptGameObject *object, bool enable);
 			int					active_sound_count		();
 			int					active_sound_count		(bool only_playing);
@@ -452,7 +453,6 @@ public:
 			void				eat						(CScriptGameObject *item);
 			bool				inside					(const Fvector &position, float epsilon) const;
 			bool				inside					(const Fvector &position) const;
-
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CScriptGameObject)

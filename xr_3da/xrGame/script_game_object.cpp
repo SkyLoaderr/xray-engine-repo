@@ -545,3 +545,13 @@ void CScriptGameObject::set_patrol_extrapolate_callback(const luabind::functor<b
 	callback.set			(functor,object);
 	monster->movement().patrol().set_extrapolate_callback(callback);
 }
+
+void CScriptGameObject::set_patrol_extrapolate_callback()
+{
+	CCustomMonster			*monster = smart_cast<CCustomMonster*>(&this->object());
+	if (!monster) {
+		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomMonster : cannot access class member set_patrol_extrapolate_callback!");
+		return;
+	}
+	monster->movement().patrol().set_extrapolate_callback();
+}

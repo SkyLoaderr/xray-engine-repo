@@ -54,7 +54,9 @@ public:
 	IC								CPatrolPathManager		(CRestrictedObject *object, CGameObject *game_object);
 		virtual						~CPatrolPathManager		();
 		virtual	void				reinit					();
+				void				set_callback			();
 				void				set_callback			(CScriptCallback &callback);
+				void				set_extrapolate_callback();
 				void				set_extrapolate_callback(CExtrapolateCallback &callback);
 	IC			void				make_inactual			();
 	IC			const CPatrolPath	*get_path				() const;
