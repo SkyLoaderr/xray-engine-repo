@@ -3,6 +3,7 @@
 
 #include "fs.h"
 #include "blenders\blender.h"
+#include "xr_ini.h"
 
 
 void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures) 
@@ -132,14 +133,15 @@ void	CShaderManager::OnDeviceDestroy(BOOL bKeepTextures)
 	// destroy TD
 	for (TDPairIt _t=td.begin(); _t!=td.end(); _t++)
 	{
-		xr_free(_t->first);
-		xr_free(_t->second->T);
-		xr_free(_t->second->M);
+		xr_free((LPSTR)_t->first);
+		xr_free((LPSTR)_t->second.T);
+		xr_free((LPSTR)_t->second.M);
 	}
 	td.clear();
 }
 
-void	CShaderManager::OnDeviceCreate	(CStream* FS){
+void	CShaderManager::OnDeviceCreate	(CStream* FS)
+{
 	if (!Device.bReady) return;
 	cache.Invalidate	();
 	cache.pRT			= HW.pBaseRT;
@@ -211,7 +213,7 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS){
 			string256		T,M;
 			float			s;
 
-			Item& item		= *I;
+			CInifile::Item& item		= *I;
 			sscanf			(item.second,"%s,%f",T,&s);
 
 			// Search or create matrix
@@ -230,14 +232,15 @@ void	CShaderManager::OnDeviceCreate	(CStream* FS){
 			if (0==M[0])	{
 				strconcat		(M,"$user$td$",T);
 				CMatrix* _M		= _CreateMatrix	(M);
-				M->dwMode		= CMatrix::modeDetail;
-				M->xform.scale	(s,s,s);
+				_M->dwMode		= CMatrix::modeDetail;
+				_M->xform.scale	(s,s,s);
 			}
 
 			// 
 			D.T				= xr_strdup		(T);
 			D.M				= xr_strdup		(M);
-			TDMap.insert	(xr_strdup(item.first),D);
+			LPSTR N			= xr_strdup(item.first);
+			TDMap.insert	(make_pair(N,D));
 		}
 	}
 }

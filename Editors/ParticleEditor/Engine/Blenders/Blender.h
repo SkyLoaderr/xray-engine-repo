@@ -33,6 +33,7 @@ public:
 
 class ENGINE_API CBlender	: public CPropertyBase
 {
+	friend class	CBlender_Compile;
 protected:
 	CBlender_DESC	description;
 	xrP_Integer		oPriority;

@@ -647,8 +647,16 @@ void	CShaderManager::Evict()
 	CHK_DX(HW.pDevice->ResourceManagerDiscardBytes(0));
 }
 
-BOOL	CShaderManager::_GetDetailTexture(LPCSTR Name,string256& T, string256& M)
+BOOL	CShaderManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, LPCSTR& M)
 {
-	if (0==TD)	return FALSE;
-
+	LPSTR N = LPSTR(Name);
+	map<LPSTR,texture_detail,str_pred>::iterator I = td.find	(N);
+	if (I!=td.end())	
+	{
+		T = I->second.T;
+		M = I->second.M;
+		return TRUE;
+	} else {
+		return FALSE;
+	}
 }

@@ -85,7 +85,7 @@ void	CBlender_Compile::PassTemplate_Detail(LPCSTR Base)
 		StageSET_TMC			("project","$user$detail","$null",1);
 		StageEnd				();
 	}
-	C.PassEnd			();
+	PassEnd			();
 }
 
 void	CBlender_Compile::PassSET_ZB		(BOOL bZTest, BOOL bZWrite)
