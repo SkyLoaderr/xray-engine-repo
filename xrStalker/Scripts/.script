@@ -6,7 +6,6 @@ module ("xr_evaluators_id")
 module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_storyline")
-module ("xr_door")
 
 module ("debug_info")
 module ("utils")
@@ -979,6 +978,8 @@ function print_table(table, subs)
 		if type(v) == "table" then
 			printf(sub.."%s:", k)
 			this.print_table(v, sub.."    ")
+		elseif type(v) == "function" then
+			printf(sub.."%s:function", k)
 		else
 			if v ~= nil then
 				printf(sub.."%s:%s", k,v)
