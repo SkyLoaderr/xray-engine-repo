@@ -7,7 +7,7 @@ function fract:__init(name)
 	self.state = 0 		-- состояние схемы. 0 - дефолтовое. 1 и дальше - различные особые состояния, например тревога для блокпоста
 	self.stateBegin = nil
 
-	self.checkTime = 60000 	-- время между проверками постов
+	self.checkTime = 10000 	-- время между проверками постов
 	self.checkBegin = nil
 
 	self.Object = {}        -- список ресурсов
