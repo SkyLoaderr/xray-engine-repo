@@ -90,7 +90,7 @@ protected:
 	CObject*		owner;			// владелец
 	Irect			last_rect;		// последние занимаемые слоты
 	Fbox			s_box;			// BBox объекта
-	u32			dwQueryID;
+	u32				dwQueryID;
 
 public:
 	Fsphere			Sphere;
