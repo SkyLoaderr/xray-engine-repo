@@ -118,6 +118,31 @@ position            = 0,0,0
 ;visual              = weapon\knife\wpn_knife_hud.ogf
 visual              = weapon\bolt\wpn_bolt_hud.ogf
 
+[knife]
+class				= W_KNIFE
+cform				= skeleton
+visual				= weapon\knife\wpn_knife.ogf
+inv_name			= Bolt
+$prefetch 			= 16
+inv_name_short		= 
+inv_weight			= .0
+slot				= 5
+hud					= knife_hud
+force_min			= 25
+force_max			= 100
+force_grow_speed	= 25
+
+cost				= 0
+
+[knife_hud]
+shell_point			= 0.0, 0.0, 0.0
+fire_point          = 0.05, 0.0, 0.1
+fire_bone           = wpn_knife_0
+
+orientation         = 0,0,0
+position            = 0,0,0
+visual              = weapon\knife\wpn_knife_hud.ogf
+
 [grenade_f1]
 GroupControlSection	= spawn_group
 $spawn 				= on
