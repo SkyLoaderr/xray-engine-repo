@@ -75,21 +75,31 @@ void	MODEL::build(Fvector* V, int Vcnt, TRI* T, int Tcnt)
 	tris		= cl_alloc<TRI>		(tris_count);
 	CopyMemory	(tris,T,tris_count*sizeof(TRI));
 	
-	// convert tris to 'pointer' form
+	// Allocate temporary "OPCODE" tris + convert tris to 'pointer' form
+	DWORD*		temp_tris	= cl_alloc<DWORD>	(tris_count*3);
+	DWORD*		temp_ptr	= temp_tris;
 	for (int i=0; i<tris_count; i++)
+	{
+		*temp_ptr++	= tris[i].IDverts()[0];
+		*temp_ptr++	= tris[i].IDverts()[1];
+		*temp_ptr++	= tris[i].IDverts()[2];
 		tris[i].convert_I2P(verts,tris);
+	}
 	
 	// Build a non quantized no-leaf tree
 	OPCODECREATE	OPCC;
 	OPCC.NbTris		= tris_count;
 	OPCC.NbVerts	= verts_count;
-	OPCC.Tris		= tris;
+	OPCC.Tris		= (unsigned*)temp_tris;
 	OPCC.Verts		= (Point*)verts;
 	OPCC.Rules		= SPLIT_COMPLETE | SPLIT_SPLATTERPOINTS;
 	OPCC.NoLeaf		= true;
 	OPCC.Quantized	= false;
 	tree			= new OPCODE_Model;
 	tree->Build		(OPCC);
+
+	// Free temporary tris
+	cl_free			(temp_tris);
 }
 DWORD MODEL::memory()
 {
