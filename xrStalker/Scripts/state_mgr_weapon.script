@@ -1,5 +1,4 @@
 
-
 --' ОРУЖИЕ
 --' Соответствует ли состояние оружия требуемому
 class "eva_state_mgr_weapon" (property_evaluator)
@@ -11,29 +10,19 @@ function eva_state_mgr_weapon:evaluate()
 	   (state_lib.states[self.st.target_state].weapon == "strapped" and
 		self.object:weapon_strapped()) or
 	   (state_lib.states[self.st.target_state].weapon == "unstrapped" and
-		self.object:weapon_unstrapped()) 
+		self.object:weapon_unstrapped() and
+		
+		self.object:active_item() ~= nil and		
+		self.object:best_weapon() ~= nil and
+		self.object:active_item():id() == self.object:best_weapon():id()
+		
+		)
 	then
---		printf("eva_state_mgr_weapon:evaluate() TRUE")
+		printf("eva_state_mgr_weapon:evaluate() TRUE")
 		return true
 	end
---	printf("eva_state_mgr_weapon:evaluate() FALSE")
+	printf("eva_state_mgr_weapon:evaluate() FALSE")
 	return false
-end
---' Висит ли оружие на спине
-class "eva_state_mgr_weapon_strapped" (property_evaluator)
-function eva_state_mgr_weapon_strapped:__init(name) super (nil, name)
-end
-function eva_state_mgr_weapon_strapped:evaluate()
---	printf("eva_state_mgr_weapon_strapped:evaluate() %s", utils.to_str(self.object:weapon_strapped()))
-	return self.object:weapon_strapped()
-end
---' Держит ли он оружие в руках
-class "eva_state_mgr_weapon_unstrapped" (property_evaluator)
-function eva_state_mgr_weapon_unstrapped:__init(name) super (nil, name)
-end
-function eva_state_mgr_weapon_unstrapped:evaluate()
---	printf("eva_state_mgr_weapon_unstrapped:evaluate() %s", utils.to_str(self.object:weapon_unstrapped()))
-	return self.object:weapon_unstrapped()
 end
 --' Лочим ли мы все это для оружия или нет?
 class "eva_state_mgr_weapon_locked" (property_evaluator)
@@ -41,6 +30,47 @@ function eva_state_mgr_weapon_locked:__init(name) super (nil, name)
 end
 function eva_state_mgr_weapon_locked:evaluate()
 	return not (self.object:weapon_unstrapped() or self.object:weapon_strapped())
+end
+
+--' Необходимо ли повесить оружие на спину
+class "eva_state_mgr_weapon_strapped" (property_evaluator)
+function eva_state_mgr_weapon_strapped:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_weapon_strapped:evaluate()
+	return state_lib.states[self.st.target_state].weapon == "strapped"
+end
+--' Висит ли уже оружие на спине
+class "eva_state_mgr_weapon_strapped_now" (property_evaluator)
+function eva_state_mgr_weapon_strapped_now:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_strapped_now:evaluate()
+	return self.object:weapon_strapped()
+end
+
+--' Необходимо ли держать оружие в руках
+class "eva_state_mgr_weapon_unstrapped" (property_evaluator)
+function eva_state_mgr_weapon_unstrapped:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_weapon_unstrapped:evaluate()
+	return state_lib.states[self.st.target_state].weapon == "unstrapped"
+end
+--' Держит ли уже он оружие в руках
+class "eva_state_mgr_weapon_unstrapped_now" (property_evaluator)
+function eva_state_mgr_weapon_unstrapped_now:__init(name) super (nil, name)
+end
+function eva_state_mgr_weapon_unstrapped_now:evaluate()
+	return self.object:weapon_unstrapped()
+end
+
+--' Необходимо ли стрелять из оружия
+class "eva_state_mgr_weapon_fire" (property_evaluator)
+function eva_state_mgr_weapon_fire:__init(name, st) super (nil, name)
+	self.st = st
+end
+function eva_state_mgr_weapon_fire:evaluate()
+	return state_lib.states[self.st.target_state].weapon == "fire"
 end
 
 --' Достать оружие
@@ -58,6 +88,23 @@ end
 function act_state_mgr_weapon_unstrapp:finalize()
 	action_base.finalize(self)
 end
+
+--' Стрелять из оружия
+class "act_state_mgr_weapon_fire" (action_base)
+function act_state_mgr_weapon_fire:__init(name) super (nil, name)
+end
+function act_state_mgr_weapon_fire:initialize()
+	action_base.initialize(self)
+	self.object:set_item(object.fire1, self.object:best_weapon())
+end
+function act_state_mgr_weapon_fire:execute()
+--	printf("*STATE MGR* Weapon Fire action")
+	action_base.execute(self)
+end
+function act_state_mgr_weapon_fire:finalize()
+	action_base.finalize(self)
+end
+
 --' Спрятать оружие
 class "act_state_mgr_weapon_strapp" (action_base)
 function act_state_mgr_weapon_strapp:__init(name) super (nil, name)
@@ -71,19 +118,5 @@ function act_state_mgr_weapon_strapp:execute()
 	action_base.execute(self)
 end
 function act_state_mgr_weapon_strapp:finalize()
-	action_base.finalize(self)
-end
---' Ожидание, пока оружие достается либо прячется
-class "act_state_mgr_weapon_idle" (action_base)
-function act_state_mgr_weapon_idle:__init(name) super (nil, name)
-end
-function act_state_mgr_weapon_idle:initialize()
-	action_base.initialize(self)
-end
-function act_state_mgr_weapon_idle:execute()
---	printf("*STATE MGR* Weapon Idle action")
-	action_base.execute(self)
-end
-function act_state_mgr_weapon_idle:finalize()
 	action_base.finalize(self)
 end
