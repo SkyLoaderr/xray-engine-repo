@@ -410,6 +410,13 @@ function process_map_spot(info_id)
            remove_location (1000, "rad_antenna_location")
 	
 	end
+	
+	-- bar_rostok
+	if info_id = "bar_bar_hunter_quest_start" then
+		add_location(002, bar_hunter_toz_location)
+
+
+
 end
 
 
