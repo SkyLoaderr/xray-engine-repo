@@ -111,7 +111,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 class "action_path" (action_base)
 
-function action_path:__init (path) super ()
+function action_path:__init (path,name) super (nil,name)
     self.path = path
 end
 
@@ -161,7 +161,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:reload (section)
 	object_binder.reload	(self, section)
-	printf					("00")
 	local					actions = {}
 	local					properties = {}
 	local					manager	= self.object:motivation_action_manager ()
@@ -172,24 +171,18 @@ function patrol_binder:reload (section)
 	
 	goal:clear ()
 	-- // evaluators
-	printf					("01")
 	manager:add_evaluator	(properties["path_end"],	this.evaluator_const	(false))
-	printf					("02")
 
-	action = this.action_path (globals.GetPatrolPath (self.npc:name ()))
-	printf					("03")
+--	action = this.action_path (globals.GetPatrolPath (self.npc:name ()),"action_path")
+	action = this.action_path ("patrol_way","action_path")
 	action:add_precondition	(world_property(stalker_ids.property_alive,	true))
 	action:add_precondition	(world_property(stalker_ids.property_items,	false))
 	action:add_precondition	(world_property(stalker_ids.property_enemy,	false))
 	action:add_effect		(world_property(properties["path_end"],	    true))
-	printf					("04")
 	manager:add_action		(actions["move"],			                action)
-	printf					("05")
 	
 	action                  = manager:action (stalker_ids.action_free_no_alife)
-	printf					("06")
 	action:add_precondition (world_property(properties["path_end"],	    true))
-    printf					("07")
 end
 ----------------------------------------------------------------------------------------------------------------------
 function patrol_binder:net_spawn	(server_object)
