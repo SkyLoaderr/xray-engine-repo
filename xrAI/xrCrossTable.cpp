@@ -36,14 +36,22 @@ void					vfRecurseUpdate(FLOAT_VECTOR &tDistances, CLevelGraph& tMap, xr_vector<
 
 void					vfRecurseMark(const CLevelGraph &tMap, xr_vector<bool> &tMarks, u32 dwStartNodeID)
 {
-	CLevelGraph::CVertex		*tpNode = tMap.vertex(dwStartNodeID);
 	CLevelGraph::const_iterator	I, E;
-	tMap.begin					(dwStartNodeID,I,E);
-	tMarks[dwStartNodeID]		= true;
-	for ( ; I != E; ++I) {
-		u32						dwNexNodeID = tpNode->link(I);
-		if (tMap.valid_vertex_id(dwNexNodeID) && !tMarks[dwNexNodeID])
-			vfRecurseMark		(tMap,tMarks,dwNexNodeID);
+	xr_vector<u32>				l_stack;
+	l_stack.reserve				(8192);
+	l_stack.push_back			(dwStartNodeID);
+
+	for (;!l_stack.empty();) {
+		dwStartNodeID			= l_stack.back();
+		l_stack.resize			(l_stack.size() - 1);
+		CLevelGraph::CVertex	*node = tMap.vertex(dwStartNodeID);
+		tMap.begin				(dwStartNodeID,I,E);
+		tMarks[dwStartNodeID]	= true;
+		for ( ; I != E; ++I) {
+			u32						dwNexNodeID = node->link(I);
+			if (tMap.valid_vertex_id(dwNexNodeID) && !tMarks[dwNexNodeID])
+				l_stack.push_back	(dwNexNodeID);
+		}
 	}
 }
 
