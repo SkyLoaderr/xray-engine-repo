@@ -51,7 +51,7 @@ void	game_sv_CS::OnTeamScore		(u32 team)
 	for		(u32 it=0; it<cnt; it++)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
-		ps->money_for_round		+=	(s32(team)==ps->team)?+1000:+500;
+		ps->money_for_round		+=	(s32(team)==ps->team)?+2000:+500;
 	}
 	Unlock	();
 }
