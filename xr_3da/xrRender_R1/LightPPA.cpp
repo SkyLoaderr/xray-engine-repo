@@ -48,7 +48,8 @@ void CLightR_Manager::render_point	()
 	RCache.set_xform_world		(Fidentity);
 	RCache.set_xform_project	(Device.mProject);
 
-	RCache.set_Shader			(hShader);
+	RImplementation.r1_dlight_light		= selected_point.front();
+	RCache.set_Shader					(hShader);
 	for (xr_vector<light*>::iterator it=selected_point.begin(); it!=selected_point.end(); it++)
 	{
 		//		2. Set global light-params to be used by shading
