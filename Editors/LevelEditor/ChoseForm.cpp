@@ -237,7 +237,7 @@ void __fastcall TfrmChoseItem::FillGameMaterial()
     form->Caption					= "Select Game Material";
 	GameMtlIt _F 					= GMLib.FirstMaterial();
 	GameMtlIt _E 					= GMLib.LastMaterial();
-	for ( ;_F!=_E;_F++)				AppendItem(*(*_F)->name);
+	for ( ;_F!=_E;_F++)				AppendItem(*(*_F)->m_Name);
 }
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
