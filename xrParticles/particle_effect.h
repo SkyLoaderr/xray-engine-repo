@@ -84,7 +84,7 @@ namespace PAPI{
 				P.color 	= color;
 				P.age 		= age;
 				P.frame 	= frame;
-				P.flags.set	(flags); 
+				P.flags.assign(flags); 
 	            if (b_cb)	b_cb(owner,param,P,p_count);
 				p_count++;
 				return TRUE;
