@@ -521,7 +521,7 @@ void CScriptEntity::net_Destroy()
 void CScriptEntity::set_callback	(const luabind::object &lua_object, LPCSTR method, const ScriptEntity::EActionType tActionType)
 {
 #ifdef DEBUG
-	if (tActionType < eActionTypeCount) {
+	if (!(tActionType < eActionTypeCount)) {
 		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid action type passed to the set_callback function for object %s",*m_object->cName());
 		return;
 	}
@@ -538,7 +538,7 @@ void CScriptEntity::set_callback	(const luabind::object &lua_object, LPCSTR meth
 void CScriptEntity::set_callback	(const luabind::functor<void> &lua_function, const ScriptEntity::EActionType tActionType)
 {
 #ifdef DEBUG
-	if (tActionType < eActionTypeCount) {
+	if (!(tActionType < eActionTypeCount)) {
 		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid action type passed to the set_callback function for object %s",*m_object->cName());
 		return;
 	}
@@ -555,7 +555,7 @@ void CScriptEntity::set_callback	(const luabind::functor<void> &lua_function, co
 void CScriptEntity::clear_callback	(const ScriptEntity::EActionType tActionType)
 {
 #ifdef DEBUG
-	if (tActionType < eActionTypeCount) {
+	if (!(tActionType < eActionTypeCount)) {
 		ai().script_engine().script_log(eLuaMessageTypeError,"Invalid action type passed to the clear_callback function for object %s",*m_object->cName());
 		return;
 	}
@@ -711,6 +711,29 @@ void CScriptEntity::hit_callback	(float amount, const Fvector &vLocalDir, const 
 	if (!smart_cast<const CGameObject*>(who))
 		return;
 
+#if 0
+	if (m_tHitCallback.get_function()) {
+		(*m_tHitCallback.get_function()) (
+			object().lua_game_object(),
+			amount,
+			vLocalDir,
+			smart_cast<const CGameObject*>(who)->lua_game_object(),
+			element
+		);
+	}
+
+	if (m_tHitCallback.get_object()) {
+		luabind::call_member<void>(
+			*m_tHitCallback.get_object(),
+			*m_tHitCallback.get_method(),
+			object().lua_game_object(),
+			amount,
+			vLocalDir,
+			smart_cast<const CGameObject*>(who)->lua_game_object(),
+			element
+		);
+	}
+#else
 	SCRIPT_CALLBACK_EXECUTE_5(m_tHitCallback, 
 		object().lua_game_object(),
 		amount,
@@ -718,6 +741,7 @@ void CScriptEntity::hit_callback	(float amount, const Fvector &vLocalDir, const 
 		smart_cast<const CGameObject*>(who)->lua_game_object(),
 		element
 	);
+#endif
 }
 
 CEntity	*CScriptEntity::GetCurrentEnemy()
