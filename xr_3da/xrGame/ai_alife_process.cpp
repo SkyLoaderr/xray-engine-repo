@@ -23,7 +23,7 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 		m_bSwitchChanged				= false;
 		if ((*I).second->m_qwSwitchCounter == m_qwCycleCounter) {
 #ifdef ALIFE_LOG
-			Msg							("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
+			Msg							("[LSS][OOS][%d : %d]",i-1, m_tpCurrentLevel->size());
 #endif
 			return;
 		}

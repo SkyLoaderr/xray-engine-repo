@@ -27,6 +27,11 @@ CSE_ALifeSimulator::CSE_ALifeSimulator(xrServer *tpServer)
 	m_tpWeaponVector.resize	(m_dwInventorySlotCount);
 	m_baMarks.assign		(u16(-1),false);
 	m_qwCycleCounter		= u64(-1);
+
+	m_tpTrader1.reserve		(MAX_STACK_DEPTH);
+	m_tpTrader1.reserve		(MAX_STACK_DEPTH);
+	m_tpSums1.reserve		(MAX_STACK_DEPTH);
+	m_tpSums2.reserve		(MAX_STACK_DEPTH);
 }
 
 CSE_ALifeSimulator::~CSE_ALifeSimulator()

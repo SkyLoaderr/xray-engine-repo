@@ -42,6 +42,20 @@ class CSE_ALifeSimulator :
 	CSE_ALifeSchedulable			*m_tpaCombatObjects[2];
 	D_OBJECT_MAP					m_tpGraphPointObjects;
 
+	// temporary buffers for trading
+	enum {
+		MAX_STACK_DEPTH				= u32(128),
+		SUM_COUNT_THRESHOLD			= u32(30),
+	};
+
+	INT_VECTOR						m_tpTrader1;
+	INT_VECTOR						m_tpTrader2;
+	INT_VECTOR						m_tpSums1;
+	INT_VECTOR						m_tpSums2;
+
+	SSumStackCell					m_tpStack1[MAX_STACK_DEPTH];
+	SSumStackCell					m_tpStack2[MAX_STACK_DEPTH];
+
 	// common
 			void					vfUpdateDynamicData			(bool						bReserveID = true);
 			void					vfUpdateDynamicData			(CSE_ALifeDynamicObject		*tpALifeDynamicObject);
@@ -85,6 +99,13 @@ class CSE_ALifeSimulator :
 			
 			void					vfFillCombatGroup			(CSE_ALifeSchedulable		*tpALifeSchedulable,		int						iGroupIndex);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
+
+			void					vfGenerateSums				(INT_VECTOR					&tpTrader,					INT_VECTOR				&tpSums);
+			bool					bfGetItemIndexes			(INT_VECTOR					&tpTrader,					int						iSum1,							INT_VECTOR	&tpIndexes, SSumStackCell	*tpStack,	int			iStartI,	int iStackPointer);
+			bool					bfCheckInventoryCapacity	(INT_VECTOR					&tpTrader1,					int						iSum1,							int			iMoney1,	INT_VECTOR		&tpTrader2, int			iSum2,		int iMoney2,		int iBallance);
+			bool					bfCheckForTrade				(INT_VECTOR					&tpTrader1,					INT_VECTOR				&tpSums1,						int			iMoney1,	INT_VECTOR		&tpTrader2, INT_VECTOR	&tpSums2,	int iMoney2,		int iBallance);
+			void					vfNullTradersBallance		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int			iBallance);
+
 public:
 	// members
 	bool							m_bLoaded;

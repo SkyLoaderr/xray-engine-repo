@@ -107,12 +107,16 @@ namespace ALife {
 	};
 
 	struct SLevel {
-		string256					caLevelName;
-		Fvector						tOffset;
-		_LEVEL_ID					tLevelID;
+		string256				caLevelName;
+		Fvector					tOffset;
+		_LEVEL_ID				tLevelID;
 	};
 
-
+	struct SSumStackCell {
+		int						i1;
+		int						i2;
+		int						iCurrentSum;
+	};
 
 	enum EInjureType {
 		eInjureTypeNone = u32(0),
@@ -317,6 +321,7 @@ namespace ALife {
 		ARTEFACT_ORDER_VECTOR	m_tpOrders;
 	};
 
+	DEFINE_VECTOR	(int,						INT_VECTOR,						INT_IT);
 	DEFINE_VECTOR	(CSE_ALifeDynamicObject*,	D_OBJECT_P_VECTOR,				D_OBJECT_P_IT);
 	DEFINE_VECTOR	(CSE_ALifeEvent*,			EVENT_P_VECTOR,					EVENT_P_IT);
 	DEFINE_VECTOR	(_OBJECT_ID,				OBJECT_VECTOR,					OBJECT_IT);
