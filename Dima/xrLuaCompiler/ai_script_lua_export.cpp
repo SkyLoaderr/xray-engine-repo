@@ -74,12 +74,6 @@ void CScriptEngine::lua_hook_call(CLuaVirtualMachine *L, lua_Debug *tpLuaDebug)
 //	ai().script_engine().script_log		(l_tLuaMessageType,tpLuaDebug->event == LUA_HOOKLINE ? "%s%s : %s %s %s (current line %d)" : "%s%s : %s %s %s",S,tpLuaDebug->short_src,tpLuaDebug->what,tpLuaDebug->namewhat,tpLuaDebug->name ? tpLuaDebug->name : "",tpLuaDebug->currentline);
 }
 
-#ifndef DEBUG
-void FlushLogFake()
-{
-}
-#endif
-
 void LoadScriptModule(LPCSTR script_name)
 {
 	ai().script_engine().add_file(script_name);
@@ -87,20 +81,23 @@ void LoadScriptModule(LPCSTR script_name)
 
 void FlushLogs()
 {
+#ifdef DEBUG
 	FlushLog();
 	ai().script_engine().flush_log();
+#endif
+}
+
+void verify_if_thread_is_running()
+{
+	VERIFY2			(xr_strlen(ai().script_engine().current_thread()),"coroutine.yield() is called outside the LUA thread!");
 }
 
 void CScriptEngine::export_globals()
 {
-	function	(lua(),	"log",		LuaLog);
-
-#ifdef DEBUG
-	function	(lua(),	"flush",	FlushLogs);
-#else
-	function	(lua(),	"flush",	FlushLogFake);
-#endif
-	function	(lua(),	"module",	LoadScriptModule);
+	function	(lua(),	"log",							LuaLog);
+	function	(lua(),	"flush",						FlushLogs);
+	function	(lua(),	"module",						LoadScriptModule);
+	function	(lua(),	"verify_if_thread_is_running",	verify_if_thread_is_running);
 }
 
 void CScriptEngine::export_fvector()

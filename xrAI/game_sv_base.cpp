@@ -384,8 +384,7 @@ void game_sv_GameState::Update		()
 		C->ps.ping				= u16(C->stats.getPing());
 	}
 	
-	if (ai().script_engine().script_processor("game"))
-		ai().script_engine().script_processor("game")->update();
+	ai().script_engine().script_processor("game")->update();
 }
 
 game_sv_GameState::game_sv_GameState()

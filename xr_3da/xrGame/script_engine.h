@@ -20,6 +20,7 @@ public:
 protected:
 	CScriptProcessorStorage		m_script_processors;
 	xr_deque<LPSTR>				m_load_queue;
+	LPCSTR						m_thread_name;
 
 protected:
 			void		export_globals				();
@@ -55,6 +56,8 @@ public:
 			void		add_file					(LPCSTR file_name);
 			void		process						();
 			void		export						();
+	IC		void		set_current_thread			(LPCSTR thread_name);
+	IC		LPCSTR		current_thread				() const;
 };
 
 #include "script_engine_inline.h"

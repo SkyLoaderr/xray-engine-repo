@@ -13,6 +13,7 @@
 CScriptEngine::CScriptEngine	()
 {
 	lua_setgcthreshold		(m_virtual_machine,64);
+	m_thread_name			= "";
 }
 
 CScriptEngine::~CScriptEngine			()

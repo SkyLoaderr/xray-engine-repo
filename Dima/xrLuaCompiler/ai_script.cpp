@@ -45,7 +45,9 @@ bool CScript::Update()
 {
 	if (!m_bActive)
 		R_ASSERT2		(false,"Cannot resume dead Lua thread!");
+	ai().script_engine().set_current_thread	(m_script_name);
 	int					l_iErrorCode = lua_resume(m_tpLuaThread,0);
+	ai().script_engine().set_current_thread	("");
 	if (l_iErrorCode) {
 #ifdef DEBUG
 		if (!ai().script_engine().print_output(m_tpLuaThread,m_script_name,l_iErrorCode))

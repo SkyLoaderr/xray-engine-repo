@@ -8,7 +8,7 @@
 
 #pragma once
 
-IC	void CScriptEngine::add_script_processor	(LPCSTR processor_name, CScriptProcessor *script_processor)
+IC	void CScriptEngine::add_script_processor		(LPCSTR processor_name, CScriptProcessor *script_processor)
 {
 	CScriptProcessorStorage::const_iterator	I = m_script_processors.find(processor_name);
 	VERIFY									(I == m_script_processors.end());
@@ -23,3 +23,12 @@ CScriptProcessor *CScriptEngine::script_processor	(LPCSTR processor_name) const
 	return									(0);
 }
 
+IC	void CScriptEngine::set_current_thread			(LPCSTR thread_name)
+{
+	m_thread_name							= thread_name;
+}
+
+IC	LPCSTR CScriptEngine::current_thread			() const
+{
+	return									(m_thread_name);
+}
