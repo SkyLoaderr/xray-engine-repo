@@ -23,36 +23,35 @@
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-ENGINE_API float	psGravity = 30.f;
+ENGINE_API float	psGravity = 20.f;
 ENGINE_API Flags32	psEnvFlags= {effSunGlare};
 
-CEnvironment::CEnvironment()
+CEnvironment::CEnvironment	()
 {
 	pSkydome				= NULL;
 }
 
-CEnvironment::~CEnvironment()
+CEnvironment::~CEnvironment	()
 {
 	for(u32 i=0; i<Suns.size(); i++) xr_delete(Suns[i]);
 
 	Render->model_Delete	(pSkydome,TRUE);
 }
 
-void CEnvironment::Load(CInifile *pIni, char *section)
+void CEnvDescriptor::load	(LPCSTR sect)
 {
-	for(int env=0; env<32; env++) 
+}
+
+void CEnvironment::Load		(CInifile *pIni, char *section)
+{
+	for(int env=0; env<24; env++) 
 	{
-		char	name[32];
-		sprintf(name,"env%d",env);
-		if (!pIni->line_exist(section,name)) break;
-		LPCSTR	E	= pIni->r_string(section,name);
-		SEnvDef	D;
-		sscanf	(E,"%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f,%f",
-			&D.Ambient.r,&D.Ambient.g,&D.Ambient.b,
-			&D.Fog.r,	&D.Fog.g,	&D.Fog.b,
-			&D.Fogness,	&D.Far,
-			&D.Sky.r,	&D.Sky.g,	&D.Sky.b,	&D.Sky.a
-			);
+		LPCSTR	sect		= "environment";
+		char	name		[32];
+		sprintf				(name,"%d",env);
+		if (!pSettings->line_exist	(sect,name))	continue;
+		CEnvDescriptor		D;
+		D.load				(pSettings->r_string(sect,name))
 		Palette.push_back	(D);
 	}
 	

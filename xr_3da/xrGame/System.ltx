@@ -1,3 +1,32 @@
+[environment]
+8			=	e_08
+9			=	e_09
+;12			=	e_12
+
+[e_08]
+; normal
+sky_color	=	0.471, 0.537,	0.667
+far_plane	=	100
+fog_color	=	0.537, 0.557,	0.616
+fog_density	=	0.9
+ambient		=	0.271, 0.239,	0.161
+lmap_color	=	1.000, 1.000,	1.000
+hemi_color	=	0.835, 0.659,	0.584
+sun_color	=	1.000, 0.776,	0.537
+sun_dir		=	-32.7, -173.2, -15.3
+
+[e_09]
+; mid-day
+sky_color	=	0.471, 0.537,	0.667
+far_plane	=	100
+fog_color	=	0.537, 0.557,	0.616
+fog_density	=	0.5
+ambient		=	0.271, 0.239,	0.161
+lmap_color	=	1.000, 1.000,	1.000
+hemi_color	=	0.475, 0.541,   0.651
+sun_color	=	1.000, 0.911,   0.816 
+sun_dir		=	-72.7, -193.2,  -5.3
+
 [console_font]
 shader 	= font
 texture	= ui\ui_font_console_02
@@ -69,22 +98,17 @@ class				= O_PHYSIC
 [device_torch]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn					= "devices\tourch"
-class					= D_TORCH
-;cform                   = rigid
-;visual                  = lights\torch.ogf
-;$prefetch 				= 16
-cost					= 0
-
-inv_name				= "Torch"
-inv_name_short			= "Torch"
-inv_weight				= .4
-
+$spawn				= "devices\tourch"
+class				= D_TORCH
+cost				= 0
+inv_name			= "Torch"
+inv_name_short		= "Torch"
+inv_weight			= .4
 position			= .35,.25,0
 
 [af_magnet]
 GroupControlSection	= spawn_group
-$spawn					= "artifacts\magnet"
+$spawn				= "artifacts\magnet"
 class				= ARTEFACT
 cform				= skeleton
 $prefetch 			= 64
@@ -291,7 +315,7 @@ visual              = weapon\grenade\wpn_f_1_hud.ogf
 [grenade_rgd5]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 			= "weapons\grenades\rgd5"
+$spawn 				= "weapons\grenades\rgd5"
 class				= G_RGD5
 cform				= skeleton
 visual				= weapon\grenade\wpn_rgd_5.ogf
@@ -4281,7 +4305,7 @@ selector_free_hunting    =      20.0,            20.0,                 1000.0,  
 ;                           fSearchRange,fCoverFromEnemyWeight,fOptEnemyDistance,fOptEnemyDistanceWeight,fMinEnemyDistance,fMinEnemyDistanceWeight,fMaxEnemyDistance,fMaxEnemyDistanceWeight
 selector_cover           =      20.0,            -1000.0,                30.0,                 0.0,                  0.0,              100000.0,             100000.0,               1000.0,
 
-terrain				 = 255,255,255,255,30,40
+terrain						= 255,255,255,255,30,40
 
 hit_type = wound
 
