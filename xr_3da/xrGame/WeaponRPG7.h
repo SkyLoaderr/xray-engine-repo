@@ -1,6 +1,6 @@
 #pragma once
 #include "weaponpistol.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 
 class CWeaponRPG7Grenade :
 	public CGameObject,
