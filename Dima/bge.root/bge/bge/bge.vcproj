@@ -45,7 +45,7 @@
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="TRUE"
-				ExceptionHandling="0"
+				ExceptionHandling="1"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
 				UsePrecompiledHeader="3"
@@ -2478,7 +2478,7 @@
 					Name="uniform"
 					>
 					<Filter
-						Name="32"
+						Name="32_bit"
 						>
 						<File
 							RelativePath=".\gtl\random32.cpp"
@@ -2488,6 +2488,10 @@
 							RelativePath=".\gtl\random32.h"
 							>
 						</File>
+					</Filter>
+					<Filter
+						Name="64_bit"
+						>
 					</Filter>
 				</Filter>
 				<Filter
@@ -2521,13 +2525,6 @@
 				<File
 					RelativePath=".\gtl\smart_container.cpp"
 					>
-					<FileConfiguration
-						Name="Debug|Win32"
-						>
-						<Tool
-							Name="VCCLCompilerTool"
-						/>
-					</FileConfiguration>
 				</File>
 				<File
 					RelativePath=".\gtl\smart_container.h"
