@@ -103,6 +103,10 @@ LRESULT CScriptDebugger::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 			DrawThreadInfo(nThreadID);
 		}break;
 
+	case DMSG_GET_VAR_TABLE:{
+			DrawVariableInfo((char*)wParam);
+		}break;
+
 	case DMSG_REDRAW_WATCHES:{
 //			m_wndWatches.Redraw();
 		}break;
@@ -273,19 +277,22 @@ void CScriptDebugger::StackLevelChanged()
 	m_lua.DrawLocalVariables();
 }
 
-
+void CScriptDebugger::DrawVariableInfo(char* varName)
+{
+	m_lua.DrawVariableInfo(varName);
+}
 
 void CScriptDebugger::ClearLocalVariables()
 {
 	_SendMessage(DMSG_CLEAR_LOCALVARIABLES, 0, 0);
 }
 
-void CScriptDebugger::AddLocalVariable(const char *name, const char *type, const char *value)
+void CScriptDebugger::AddLocalVariable(const Variable& var)
 {
-	Variable var;
+/*	Variable var;
 	strcat(var.szName, name );
 	strcat(var.szType, type );
-	strcat(var.szValue, value );
+	strcat(var.szValue, value );*/
 	_SendMessage(DMSG_ADD_LOCALVARIABLE, (WPARAM)&var, 0);
 }
 
@@ -404,6 +411,12 @@ bool CScriptDebugger::TranslateIdeMessage (CMailSlotMsg* msg)
 			msg->r_int(nThreadID);
 			_SendMessage(DMSG_THREAD_CHANGED, nThreadID, 0);
 			return false;
+		}break;
+
+	case DMSG_GET_VAR_TABLE:{
+			string512 varName; varName[0]=0;
+			msg->r_string(varName);
+			_SendMessage(DMSG_GET_VAR_TABLE, (WPARAM)varName, 0);
 		}break;
 
 	default:

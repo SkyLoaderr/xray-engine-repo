@@ -312,6 +312,7 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 	case DMSG_NEW_CONNECTION:
 			m_wndCallStack.Clear();
 			m_wndLocals.RemoveAll();
+			m_wndThreads.RemoveAll();
 			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Clear();
 			GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Script debugger connected...\n");
 			OnUpdateFrameTitle(TRUE);
@@ -364,9 +365,7 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case DMSG_ADD_LOCALVARIABLE:
-		m_wndLocals.AddVariable(((Variable*)wParam)->szName, 
-			((Variable*)wParam)->szType, 
-			((Variable*)wParam)->szValue);
+			m_wndLocals.AddVariable((Variable*)wParam);
 		break;
 
 	case DMSG_CLEAR_THREADS:
@@ -794,11 +793,24 @@ BOOL CMainFrame::ErrorStringToFileLine(CString strError, CString &strPathName, i
 
 	return TRUE;
 }
+
 void CMainFrame::ThreadChanged(int nThreadID)
 {
+	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
 	msg.w_int(DMSG_THREAD_CHANGED);
 	msg.w_int(nThreadID);
 	if( CheckExisting(DEBUGGER_MAIL_SLOT) )
 		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
 }
+
+void CMainFrame::OpenVarTable(char* varName)
+{
+	if (!m_needAnswer)return;
+	CMailSlotMsg msg;
+	msg.w_int(DMSG_GET_VAR_TABLE);
+	msg.w_string(varName);
+	if( CheckExisting(DEBUGGER_MAIL_SLOT) )
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+}
+

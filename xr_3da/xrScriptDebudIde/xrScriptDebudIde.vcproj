@@ -507,6 +507,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TreeViewLocals.cpp">
+			</File>
+			<File
 				RelativePath="VariablesBar.cpp">
 				<FileConfiguration
 					Name="Release|Win32">
@@ -649,6 +652,9 @@
 			</File>
 			<File
 				RelativePath="TreeViewFiles.h">
+			</File>
+			<File
+				RelativePath=".\TreeViewLocals.h">
 			</File>
 			<File
 				RelativePath="VariablesBar.h">

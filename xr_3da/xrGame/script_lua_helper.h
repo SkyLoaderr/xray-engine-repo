@@ -43,6 +43,9 @@ public:
 	static void line_hook					(lua_State *, lua_Debug *);
 	static void func_hook					(lua_State *, lua_Debug *);
 	static void set_lua						(lua_State *);
+	void		DrawVariable				(lua_State * l, const char* name, bool bOpenTable);
+	void		DrawTable					(lua_State *l, const char* name, bool bRecursive=true);
+	void		DrawVariableInfo			(char*);
 protected:
 	static		CDbgLuaHelper*				m_pThis;
 

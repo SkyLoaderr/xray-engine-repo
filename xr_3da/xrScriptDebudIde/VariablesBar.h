@@ -1,24 +1,22 @@
 #pragma once
 
-class CVariablesBar : public CCJControlBar  
+#include "TreeViewLocals.h"
+
+struct Variable;
+
+class CVariablesBar : public CCJTabCtrlBar//CCJControlBar  
 {
 public:
 	void RemoveAll();
-	void AddVariable(const char* szName, const char* szType, const char* szValue);
+	void AddVariable(Variable*);
 	CVariablesBar();
 	virtual ~CVariablesBar();
+	virtual BOOL Create(CWnd* pParentWnd, UINT nID, LPCTSTR lpszWindowName = NULL, CSize sizeDefault = CSize(200,100), DWORD dwStyle = CBRS_LEFT);
+	CTreeViewLocals* GetTreeViewLocals();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CVariablesBar)
-	//}}AFX_VIRTUAL
+//protected:
+//	CImageList	m_tabImages;
+//	CCJListCtrl m_variables;
 
-// Generated message map functions
-protected:
-	CCJListCtrl m_variables;
-
-	//{{AFX_MSG(CVariablesBar)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
 };
+

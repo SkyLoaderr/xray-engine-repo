@@ -41,7 +41,7 @@ class CScriptDebugger
 {
 public:
 	void			Eval				(const char* strCode, char* res);
-	void			AddLocalVariable	(const char* name, const char* type, const char* value);
+	void			AddLocalVariable	(const Variable& var);
 	void			ClearLocalVariables	();
 	void			AddGlobalVariable	(const char* name, const char* type, const char* value);
 	void			ClearGlobalVariables();
@@ -79,6 +79,7 @@ public:
 	static LRESULT			_SendMessage(UINT message, WPARAM wParam, LPARAM lParam);
 
 protected:
+	void			DrawVariableInfo(char* varName);
 	void			DrawCurrentState	();
 	void			DrawThreadInfo		(int nThreadID);
 	void			GetBreakPointsFromIde();

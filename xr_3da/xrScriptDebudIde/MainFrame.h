@@ -65,6 +65,7 @@ public:
 
 // Implementation
 public:
+	void			OpenVarTable(char* varName);
 	void			ThreadChanged(int nThreadID);
 	void			StackLevelChanged(int nLevel);
 	BOOL			ErrorStringToFileLine(CString strError, CString &strPathName, int &nLine);

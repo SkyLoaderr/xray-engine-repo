@@ -266,26 +266,9 @@ void CDbgLuaHelper::DrawLocalVariables()
 	if ( lua_getstack (L, nLevel, &ar) )
 	{
 		int i = 1;
-		const char *name, *type;
+		const char *name;
 		while ((name = lua_getlocal(L, &ar, i++)) != NULL) {
-			int ntype = lua_type(L, -1);
-			type = lua_typename(L, ntype);
-			char value[64];
-
-			switch(ntype)
-			{
-			case LUA_TNUMBER:
-				sprintf(value, "%f", lua_tonumber(L, -1));
-				break;
-			case LUA_TSTRING:
-				sprintf(value, "%.63s", lua_tostring(L, -1));
-				break;
-			default:
-				value[0] = '\0';
-				break;
-			}
-
-			CScriptDebugger::GetDebugger()->AddLocalVariable(name, type, value);
+				DrawVariable(L,name,true);
 
 			lua_pop(L, 1);  /* remove variable value */
 		}
@@ -450,4 +433,84 @@ void CDbgLuaHelper::RestoreGlobals()
 	}
 
 	lua_pop(L, 1); // pop table of covered globals;
+}
+
+void CDbgLuaHelper::DrawVariable(lua_State * l, const char* name, bool bOpenTable)
+{
+	Variable var;
+	strcpy(var.szName, name );
+
+	const char * type;
+	int ntype = lua_type(l, -1);
+	type = lua_typename(l, ntype);
+	strcpy(var.szType, type);
+
+	char value[64];
+
+	switch(ntype)
+	{
+	case LUA_TNUMBER:
+		sprintf(value, "%f", lua_tonumber(l, -1));
+		strcpy(var.szValue, value );
+		break;
+
+	case LUA_TSTRING:
+		sprintf(value, "%.63s", lua_tostring(l, -1));
+		strcpy(var.szValue, value );
+		break;
+
+	case LUA_TTABLE:
+			var.szValue[0]=0;
+			CScriptDebugger::GetDebugger()->AddLocalVariable(var);
+			if(bOpenTable)
+				DrawTable(l, name);
+			return;
+		break;
+
+	default:
+		value[0] = '\0';
+		break;
+	}
+
+	CScriptDebugger::GetDebugger()->AddLocalVariable(var);
+}
+
+void CDbgLuaHelper::DrawTable(lua_State *l, LPCSTR S, bool bRecursive)
+{
+	char		str[1024];
+
+	if (!lua_istable(l,-1))
+		return;
+
+//	sprintf			(str,"\nContent of the table \"%s\" :\n",S);
+//	CScriptDebugger::GetDebugger()->Write(str);
+
+	lua_pushnil		(l);  /* first key */
+	while (lua_next(l, -2) != 0) {
+		//		printf		("%16s - %s\n", lua_tostring(l, -2), lua_typename(l, lua_type(l, -1)));
+//		sprintf		(str,"%16s - %s\n", lua_tostring(l, -2), lua_typename(l, lua_type(l, -1)));
+//		CScriptDebugger::GetDebugger()->Write(str);
+//		DrawVariable(l, lua_tostring(l, -2));
+
+
+		char stype[256];
+		char sname[256];
+		char sFullName[256];
+		sprintf(stype,"%s",lua_typename(l, lua_type(l, -1)));
+		sprintf(sname,"%s",lua_tostring(l, -2));
+//		sprintf(str,"%16s - %s\n", sname, stype);
+		
+//		CScriptDebugger::GetDebugger()->Write(str);
+		sprintf(sFullName,"%s.%s",S,sname);
+//		DrawVariable(l, sFullName, false);
+		DrawVariable(l, sFullName, true);
+
+		lua_pop		(l, 1);  /* removes `value'; keeps `key' for next iteration */
+	}
+
+}
+
+void CDbgLuaHelper::DrawVariableInfo(char* varName)
+{
+
 }
