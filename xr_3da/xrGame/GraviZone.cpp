@@ -167,11 +167,6 @@ void CGraviZone::Affect(CObject* O)
 		else if(GO && GO->PPhysicsShell())
 		{
 			GO->PPhysicsShell()->applyImpulse(throw_in_dir, m_fThrowInImpulse*GO->GetMass()/500.f);
-			if (GO->SUB_CLS_ID == CLSID_OBJECT_ACTOR)
-			{
-				int x=0;
-				x=x;
-			}
 		}
 	}
 	else
