@@ -514,7 +514,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
 	bool bRes		= true;
 	// Load definitions
     U16Vec rm_bones	(bones->size(),BI_NONE);
-	IReader* MP 	= data->open_chunk(OGF_SMPARAMS);
+	IReader* MP 	= data->open_chunk(OGF_S_SMPARAMS);
     if (MP){
 	    u16 		vers 			= MP->r_u16();
         u16 		part_bone_cnt	= 0;
@@ -577,7 +577,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
     if (!bRes)	return false;
     
 	// Load animation
-	IReader*	MS		= data->open_chunk(OGF_MOTIONS);
+	IReader*	MS		= data->open_chunk(OGF_S_MOTIONS);
     if (!MS) 	return false;
     
     u32			dwCNT	= 0;
@@ -631,7 +631,7 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 	blend_instances	= NULL;
 
 	// Load animation
-    if (data->find_chunk(OGF_MOTION_REFS)){
+    if (data->find_chunk(OGF_S_MOTION_REFS)){
     	string_path	fn,nm;
         data->r_stringZ	(nm);
         if (!FS.exist(fn, "$level$", nm, ".omf")){

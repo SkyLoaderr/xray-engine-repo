@@ -39,32 +39,13 @@ void IRender_Visual::Load		(const char* N, IReader *data, u32 dwFlags)
 	ogf_header	hdr;
 	if (data->r_chunk_safe(OGF_HEADER,&hdr,sizeof(hdr)))
 	{
-		R_ASSERT			(hdr.format_version==xrOGF_FormatVersion);
+		R_ASSERT2			(hdr.format_version==xrOGF_FormatVersion, "Invalid visual version");
 		Type				= hdr.type;
 		if (hdr.shader_id)	hShader	= ::Render->getShader(hdr.shader_id);
+		vis.box.set			(hdr.bb.min,hdr.bb.max	);
+		vis.sphere.set		(hdr.bs.c,	hdr.bs.r	);
 	} else {
 		Debug.fatal			("Invalid visual");
-	}
-
-	// BBox
-	ogf_bbox bbox;
-	if (data->r_chunk_safe(OGF_BBOX,&bbox,sizeof(bbox)))
-	{
-		vis.box.set		(bbox.min,bbox.max);
-		vis.sphere.P.sub(bbox.max,bbox.min);
-		vis.sphere.P.div(2);
-		vis.sphere.R	= vis.sphere.P.magnitude();
-		vis.sphere.P.add(bbox.min);
-		vis.box.grow	(EPS_S);
-	} else {
-		Debug.fatal		("Invalid visual");
-	}
-
-	// Sphere (if exists)
-	if (data->find_chunk(OGF_BSPHERE))
-	{
-		data->r(&vis.sphere.P,3*sizeof(float));
-		data->r(&vis.sphere.R,sizeof(float));
 	}
 
 	// Shader

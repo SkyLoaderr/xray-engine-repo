@@ -397,7 +397,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 			vertBoned1W*	src = (vertBoned1W*)_verts_;
 			for (u32 it=0; it<V.vCount; it++)	{
 				Fvector2	uv; uv.set(src->u,src->v);
-				dst->set	(src->P,src->N,uv,src->matrix*3);
+				dst->set	(src->P,src->N,src->T,src->B,uv,src->matrix*3);
 				dst++; src++;
 			}
 			V.pVertices->Unlock	();
@@ -416,7 +416,7 @@ void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 			vertBoned2W*	src = (vertBoned2W*)_verts_;
 			for (u32 it=0; it<V.vCount; it++)	{
 				Fvector2	uv; uv.set(src->u,src->v);
-				dst->set	(src->P0,src->P1,src->N0,src->N1,uv,int(src->matrix0)*3,int(src->matrix1)*3,src->w);
+				dst->set	(src->P,src->N,src->T,src->B,uv,int(src->matrix0)*3,int(src->matrix1)*3,src->w);
 				dst++;		src++;
 			}
 			V.pVertices->Unlock	();

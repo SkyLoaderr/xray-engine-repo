@@ -158,11 +158,11 @@ void CBoneData::CalculateM2B(const Fmatrix& parent)
                                  
 void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 {
-	Msg				("skeleton: %s",N);
+	//Msg				("skeleton: %s",N);
 	inherited::Load	(N, data, dwFlags);
 
 	// User data
-	IReader* UD 	= data->open_chunk(OGF_USERDATA);
+	IReader* UD 	= data->open_chunk(OGF_S_USERDATA);
     pUserData		= UD?xr_new<CInifile>(UD):0;
     if (UD)			UD->close();
 
@@ -175,7 +175,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 	// Load bones
 	xr_vector<ref_str>	L_parents;
 
-	R_ASSERT		(data->find_chunk(OGF_BONE_NAMES));
+	R_ASSERT		(data->find_chunk(OGF_S_BONE_NAMES));
 
     visimask.zero	();
 	u32 dwCount 	= data->r_u32();
@@ -228,7 +228,7 @@ void	CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
     L_parents.clear();
 
     // IK data
-	IReader* IKD 	= data->open_chunk(OGF_IKDATA);
+	IReader* IKD 	= data->open_chunk(OGF_S_IKDATA);
     if (IKD){
         for (u32 i=0; i<bones->size(); i++) {
             CBoneData*	B 	= (*bones)[i];

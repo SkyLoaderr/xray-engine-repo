@@ -32,7 +32,7 @@ FHierrarhyVisual::~FHierrarhyVisual()
 void FHierrarhyVisual::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	IRender_Visual::Load(N,data,dwFlags);
-	if (data->find_chunk(OGF_CHIELDS_L)) 
+	if (data->find_chunk(OGF_CHILDREN_L)) 
 	{
 		// From Link
 		u32 cnt = data->r_u32		();
