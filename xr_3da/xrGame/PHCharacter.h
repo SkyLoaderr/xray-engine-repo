@@ -89,7 +89,7 @@ virtual		void		SetApplyGravity						(BOOL flag)						{ dBodySetGravityMode(m_bod
 virtual		void		SetObjectContactCallback			(ObjectContactCallbackFun* callback)						=0 ;
 virtual		void		GetVelocity							(Fvector& vvel)												=0 ;
 virtual		void		SetVelocity							(Fvector vel)												=0 ;
-virtual		void		SetAirControlFactor				(float factor)												=0 ;
+virtual		void		SetAirControlFactor					(float factor)												=0 ;
 virtual		void		GetPosition							(Fvector& vpos)												=0 ;
 virtual		void		SetMas								(dReal mass)												=0 ;
 virtual		void		SetPhysicsRefObject					(CPhysicsShellHolder* ref_object)									=0 ;
