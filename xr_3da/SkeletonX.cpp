@@ -69,18 +69,18 @@ void CSkeletonX_PM::Render		(float LOD)
 {
 	int lod_id				= iFloor((1.f-LOD)*float(SW_count-1));
 	SlideWindow& SW			= pSWs[lod_id];
-	_Render		(hGeom,SW.offset,SW.num_verts,SW.num_tris);
+	_Render		(hGeom,SW.num_verts,SW.offset,SW.num_tris);
 }
 void CSkeletonX_ST::Render		(float LOD) 
 {
-	_Render		(hGeom,0,vCount,dwPrimitives);
+	_Render		(hGeom,vCount,0,dwPrimitives);
 }
 void CSkeletonX::_Render		(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
 {
 	switch (RenderMode)
 	{
 	case RM_SKINNING_SOFT:
-		_Render_soft			(hGeom,iOffset,vCount,pCount);
+		_Render_soft			(hGeom,vCount,iOffset,pCount);
 		break;
 	case RM_SINGLE:	
 		{
