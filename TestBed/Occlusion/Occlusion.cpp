@@ -104,9 +104,35 @@ public:
 	}
 };
 
+__interface	BBB
+{
+public:
+	virtual void	a(float x)					= 0;
+};
+__interface	CCC	: public BBB
+{
+public:
+	virtual void	a(float x)					= 0;
+	virtual void	a(float x, const int& z)	= 0;
+};
+class	DDD : public CCC
+{
+public:
+	virtual void	a(float x)					{ printf("1"); }
+	virtual void	a(float x, const int& z)	{ printf("2"); }
+};
+
 extern void t_test	();
 int __cdecl main	(int argc, char* argv[])
 {
+	DDD				t;
+	t.a				(1);
+	t.a				(1,1);
+
+	CCC*			tc = dynamic_cast<CCC*> (&t);
+	tc->a			(1);
+	tc->a			(1,1);
+
 	CTimer			TM;
 	AAA				A;
 	
