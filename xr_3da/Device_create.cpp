@@ -117,5 +117,5 @@ void CRenderDevice::Create	()
 
 	_Create			("GameData\\shaders.xr");
 
-	PreCache		(10);
+	PreCache		(0);
 }
