@@ -64,4 +64,18 @@ void CActor::feel_touch_new				(CObject* O)
 
 void CActor::feel_touch_delete	(CObject* O)
 {
+	switch (GameID())
+	{
+	case GAME_CS:
+		{
+			CTargetCSBase*		T	= dynamic_cast<CTargetCSBase*>	(O);
+			if (T)
+			{
+				u_EventGen	(P,GE_OWNERSHIP_REJECT,ID());
+				P.w_u16		(u16(T->ID()));
+				u_EventSend	(P);
+				return;
+			}
+		}
+	}
 }
