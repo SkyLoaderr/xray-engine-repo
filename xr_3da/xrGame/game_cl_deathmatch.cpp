@@ -369,7 +369,7 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 					if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 					{
 						m_game_ui->SetSpectatorMsgCaption("SPECTATOR : Free-fly camera");
-						m_game_ui->SetPressJumpMsgCaption("Press Jump to start");
+						m_game_ui->SetPressJumpMsgCaption("Press %c255,0,0 Jump to start");
 						m_game_ui->SetPressBuyMsgCaption("Press 'B' to access buy menu");
 					};
 				};
