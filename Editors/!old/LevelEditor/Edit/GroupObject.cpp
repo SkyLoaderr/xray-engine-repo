@@ -59,6 +59,7 @@ bool CGroupObject::GetBox(Fbox& bb)
     // update box
     for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
         switch((*it)->ClassID){
+        case OBJCLASS_SPAWNPOINT:
         case OBJCLASS_SCENEOBJECT:{
             Fbox 	box;
             if ((*it)->GetBox(box))
@@ -113,6 +114,7 @@ bool CGroupObject::AppendObjectCB(CCustomObject* object)
 void CGroupObject::UpdatePivot(LPCSTR nm, bool center)
 {
     // first init
+    VERIFY(m_Objects.size());
     if (false==center){
     	CCustomObject* object = 0;
     	if (nm&&nm[0]){
@@ -123,12 +125,16 @@ void CGroupObject::UpdatePivot(LPCSTR nm, bool center)
                 }
             }
         }else{
+        	bool bValidPivot = false;
             for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++){
                 if ((*it)->ClassID==OBJCLASS_SCENEOBJECT){
                 	object		= (*it);
+                    bValidPivot = true;
                     break;
                 }
             }
+            if (!bValidPivot)
+            	object			= m_Objects.front();
         }
         if (object){
             PPosition = object->PPosition;
@@ -409,8 +415,10 @@ void CGroupObject::Save(IWriter& F)
 bool CGroupObject::ExportGame(SExportStreams& data)
 {
 	bool bres=true;
-	for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
-    	if (!(*it)->ExportGame(data)) bres = false;
+	if (!IsOpened()){
+        for (ObjectIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+            if (!(*it)->ExportGame(data)) bres = false;
+    }
 	return bres;
 }
 //----------------------------------------------------
