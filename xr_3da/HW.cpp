@@ -53,6 +53,9 @@ D3DFORMAT CHW::selectDepthStencil	(D3DFORMAT fTarget)
 
 void	CHW::DestroyDevice	()
 {
+	_RELEASE				(pBaseZB);
+	_RELEASE				(pBaseRT);
+	R_CHK					(HW.pDevice->DeleteStateBlock(dwDebugSB));
 	_SHOW_REF				("DeviceREF:",HW.pDevice);
 	_RELEASE				(HW.pDevice);
 	DestroyD3D				();
@@ -132,7 +135,7 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 
     // Set up the presentation parameters
 	D3DPRESENT_PARAMETERS P;
-    ZeroMemory( &P, sizeof(P) );
+    ZeroMemory				( &P, sizeof(P) );
 
 	// Back buffer
 	P.BackBufferWidth		= dwWidth;
@@ -195,9 +198,17 @@ DWORD CHW::CreateDevice		(HWND m_hWnd,DWORD &dwWidth,DWORD &dwHeight)
 		break;
 	}
 
-	CHK_DX(HW.pDevice->CreateStateBlock(D3DSBT_ALL,&dwDebugSB));
-
+	// Capture misc data
+	R_CHK	(pDevice->CreateStateBlock		(D3DSBT_ALL,&dwDebugSB));
+	R_CHK	(pDevice->GetRenderTarget		(&pBaseRT));
+	R_CHK	(pDevice->GetDepthStencilSurface(&pBaseZB));
+	
 	return dwWindowStyle;
+}
+
+void	CHW::setRT					()
+{
+	R_CHK	(HW.pDevice->SetRenderTarget	(pBaseRT,	pBaseZB));
 }
 
 DWORD	CHW::selectPresentInterval	()
@@ -234,8 +245,6 @@ DWORD CHW::selectGPU ()
 
 DWORD CHW::selectRefresh(DWORD dwWidth, DWORD dwHeight)
 {
-	return D3DPRESENT_RATE_DEFAULT;
-	
 	DWORD count		= pD3D->GetAdapterModeCount(D3DADAPTER_DEFAULT);
 	DWORD selected	= D3DPRESENT_RATE_DEFAULT;
 	for (DWORD I=0; I<count; I++)

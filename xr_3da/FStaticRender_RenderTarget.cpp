@@ -7,12 +7,8 @@ LPCSTR	RTname	= "$user$rendertarget";
 CRenderTarget::CRenderTarget()
 {
 	bAvailable	= FALSE;
-	pSurface	= 0;
-	pRT			= 0;
-	pBaseRT		= 0;
-	pBaseZB		= 0;
+	RT			= 0;
 
-	pTexture	= 0;
 	pShaderSet	= 0;
 	pShaderGray	= 0;
 	pStream		= 0;
@@ -23,53 +19,18 @@ CRenderTarget::CRenderTarget()
 
 BOOL CRenderTarget::Create	()
 {
-	R_ASSERT	(HW.pDevice);
-	HRESULT		_hr;
+	RT			= Device.Shader._CreateRT		(RTname,Device.dwWidth,Device.dwHeight);
 	
-	// Get caps
-	D3DCAPS8	caps;
-	R_CHK		(HW.pDevice->GetDeviceCaps(&caps));
-	
-	// Check nonpow2 conditional
-	if (!HW.Caps.pixel.bNonPow2)										return FALSE;
-	
-	// Check width-and-height of render target surface
-	if (Device.dwWidth>caps.MaxTextureWidth)							return FALSE;
-	if (Device.dwHeight>caps.MaxTextureHeight)							return FALSE;
-	
-	// Validate render-target usage
-	_hr = HW.pD3D->CheckDeviceFormat(
-		D3DADAPTER_DEFAULT,
-		D3DDEVTYPE_HAL,
-		HW.Caps.fTarget,
-		D3DUSAGE_RENDERTARGET,
-		D3DRTYPE_TEXTURE,
-		HW.Caps.fTarget
-		);
-	if (FAILED(_hr))													return FALSE;
-	
-	// Try to create texture/surface
-	_hr = HW.pDevice->CreateTexture(Device.dwWidth,Device.dwHeight,1,D3DUSAGE_RENDERTARGET,HW.Caps.fTarget,D3DPOOL_DEFAULT,&pSurface);
-	if (FAILED(_hr) || (0==pSurface))									return FALSE;
-	
-	// OK
-	R_CHK	(pSurface->GetSurfaceLevel			(0,&pRT));
-	R_CHK	(HW.pDevice->GetRenderTarget		(&pBaseRT));
-	R_CHK	(HW.pDevice->GetDepthStencilSurface	(&pBaseZB));
-	
-	// Texture and shader
+	// Shaders and stream
 	pStream		= Device.Streams.Create			(FVF::F_TL,8);
-	pTexture	= Device.Shader._CreateTexture	(RTname);
 	pShaderSet	= Device.Shader.Create			("effects\\screen_set",		RTname);
 	pShaderGray	= Device.Shader.Create			("effects\\screen_gray",	RTname);
 	pShaderBlend= Device.Shader.Create			("effects\\screen_blend",	RTname);
-	pTexture->surface_set	(pSurface);
-	return	TRUE;
+	return	RT->Valid();
 }
 
 void CRenderTarget::OnDeviceCreate	()
 {
-	bAvailable	= FALSE;
 	bAvailable	= Create	();
 }
 
@@ -78,13 +39,7 @@ void CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(pShaderBlend);
 	Device.Shader.Delete		(pShaderGray);
 	Device.Shader.Delete		(pShaderSet);
-	pTexture->surface_set		(0);
-	Device.Shader._DeleteTexture(pTexture);
-	
-	_RELEASE	(pBaseZB	);
-	_RELEASE	(pBaseRT	);
-	_RELEASE	(pRT		);
-	_RELEASE	(pSurface	);
+	Device.Shader._DeleteRT		(RT);
 }
 
 void CRenderTarget::Begin	()

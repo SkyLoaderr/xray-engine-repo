@@ -70,6 +70,7 @@ void CTexture::Apply	(DWORD dwStage)
 void CTexture::Load(LPCSTR cName)
 {
 	if (pSurface)					return;
+	Device.Shader.Evict				();
 
 	bUser							= FALSE;
 	dwMemoryUsage					= 0;

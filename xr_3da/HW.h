@@ -12,6 +12,9 @@ public:
 	IDirect3D8* 			pD3D;		// direct 3d
 	IDirect3DDevice8*       pDevice;	// render device
 
+	IDirect3DSurface8*		pBaseRT;
+	IDirect3DSurface8*		pBaseZB;
+	
 	CHWCaps					Caps;
 
 	CHW()
@@ -26,6 +29,8 @@ public:
 	DWORD					selectPresentInterval	();
 	DWORD					selectGPU				();
 	DWORD					selectRefresh			(DWORD dwWidth, DWORD dwHeight);
+
+	void					setRT					();
 
 #ifdef DEBUG
 	void	Validate(void)	{	VERIFY(pDevice); VERIFY(pD3D); };

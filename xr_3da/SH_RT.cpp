@@ -32,6 +32,7 @@ void CRT::Create	(LPCSTR Name, DWORD w, DWORD h)
 	if (FAILED(_hr))					return;
 
 	// Try to create texture/surface
+	Device.Shader.Evict				();
 	_hr = HW.pDevice->CreateTexture	(w, h, 1, D3DUSAGE_RENDERTARGET, HW.Caps.fTarget, D3DPOOL_DEFAULT, &pSurface);
 	if (FAILED(_hr) || (0==pSurface))	return;
 	
