@@ -3,9 +3,6 @@
 #include	"fmesh.h"
 #include	"fs.h"
 
-#define		m_VB_maxSize		(4096*1024)
-#define		m_VB_maxVertices	(65535)
-
 // Vertex containers
 class VBContainer 
 {
@@ -55,9 +52,9 @@ public:
 			if (!vDcl[CID].equal(R_DCL))	continue;
 			
 			u32 bytes_already	= (u32)vContainers[CID].size();
-			if ((bytes_already+bytes_collected)>g_params.m_VB_maxSize) continue;
+			if ((bytes_already+bytes_collected)>c_VB_maxSize) continue;
 			u32 vertices_already = bytes_already/dwSize;
-			if ((vertices_already+vertices_collected)>g_params.m_VB_maxVertices) continue;
+			if ((vertices_already+vertices_collected)>c_VB_maxVertices) continue;
 			
 			// If we get here - container CID can take the data
 			*dwContainerID			= CID;

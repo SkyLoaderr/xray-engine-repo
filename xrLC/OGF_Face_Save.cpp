@@ -411,7 +411,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, BOOL bVertexColored)
 				WORD* strip_F			= (WORD*)&*faces.begin(); 
 				strip_indices.assign	(strip_F, strip_F+I_Current);
 				strip_permute.resize	(V_Current);
-				xrStripify				(strip_indices,strip_permute,g_params.m_vCacheSize,0);
+				xrStripify				(strip_indices,strip_permute,c_vCacheSize,0);
 				
 				// Permute vertices
 				strip_verts.resize		(V_Current);

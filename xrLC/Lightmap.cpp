@@ -29,11 +29,11 @@ CLightmap::~CLightmap()
 void CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOOL bRotated)
 {
 	// Allocate 512x512 texture if needed
-	if (lm.surface.empty())	lm.create(lmap_size,lmap_size);
+	if (lm.surface.empty())	lm.create(c_LMAP_size,c_LMAP_size);
 	
 	// Addressing
 	xr_vector<UVtri>	tris;
-	D->RemapUV			(tris,b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,lmap_size,lmap_size,bRotated);
+	D->RemapUV			(tris,b_u+BORDER,b_v+BORDER,s_u-2*BORDER,s_v-2*BORDER,c_LMAP_size,c_LMAP_size,bRotated);
 	
 	// Capture faces and setup their coords
 	for (UVIt T=tris.begin(); T!=tris.end(); T++)
@@ -50,11 +50,11 @@ void CLightmap::Capture		(CDeflector *D, int b_u, int b_v, int s_u, int s_v, BOO
 	{
 		u32 real_H	= (L.height	+ 2*BORDER);
 		u32 real_W	= (L.width	+ 2*BORDER);
-		blit	(lm,lmap_size,lmap_size,L,real_W,real_H,b_u,b_v,254-BORDER);
+		blit	(lm,c_LMAP_size,c_LMAP_size,L,real_W,real_H,b_u,b_v,254-BORDER);
 	} else {
 		u32 real_H	= (L.height	+ 2*BORDER);
 		u32 real_W	= (L.width	+ 2*BORDER);
-		blit_r	(lm,lmap_size,lmap_size,L,real_W,real_H,b_u,b_v,254-BORDER);
+		blit_r	(lm,c_LMAP_size,c_LMAP_size,L,real_W,real_H,b_u,b_v,254-BORDER);
 	}
 }
 
@@ -116,11 +116,11 @@ void CLightmap::Save()
 
 	// Borders correction
 	Status			("Borders...");
-	for (u32 _y=0; _y<lmap_size; _y++)
+	for (u32 _y=0; _y<c_LMAP_size; _y++)
 	{
-		for (u32 _x=0; _x<lmap_size; _x++)
+		for (u32 _x=0; _x<c_LMAP_size; _x++)
 		{
-			u32	offset	= _y*lmap_size+_x;
+			u32	offset	= _y*c_LMAP_size+_x;
 			if (lm.marker[offset]>=(254-BORDER))	lm.marker[offset]=255; else lm.marker[offset]=0;
 		}
 	}

@@ -60,7 +60,6 @@ void xrStripify		(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCache
 void OGF::Stripify()
 {
 	if (I_Current>=0)			return;	// Mesh already progressive - don't stripify it
-	if (!g_params.m_bStripify)	return; // user forced no strippification at all
 
 //	set_status("Stripifying",treeID,faces.size(),vertices.size());
 	try {
@@ -70,7 +69,7 @@ void OGF::Stripify()
 		WORD* F			= (WORD*)&*faces.begin(); 
 		indices.assign	(F,F+(faces.size()*3));
 		permute.resize	(vertices.size());
-		xrStripify		(indices,permute,g_params.m_vCacheSize,0);
+		xrStripify		(indices,permute,c_vCacheSize,0);
 		
 		// Copy faces
 		CopyMemory		(&*faces.begin(),&*indices.begin(),(u32)indices.size()*sizeof(WORD));

@@ -127,7 +127,7 @@ void OGF::CreateOccluder()
 
 void OGF::MakeProgressive()
 {
-	if (faces.size()>u32(g_params.m_SS_DedicateCached)) 
+	if (faces.size()>c_PM_LowVertLimit) 
 	{
 //		set_status("CLODing",treeID,faces.size(),vertices.size());
 		vertices_saved	= vertices;
