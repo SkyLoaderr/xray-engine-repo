@@ -142,8 +142,8 @@ namespace CDB
 
 	class XRCDB_API Collector
 	{
-		xr_vectortor<Fvector>	verts;
-		xr_vectortor<TRI>		faces;
+		xr_vector<Fvector>	verts;
+		xr_vector<TRI>		faces;
 
 		u32					VPack(Fvector& V, float eps);
 	public:
