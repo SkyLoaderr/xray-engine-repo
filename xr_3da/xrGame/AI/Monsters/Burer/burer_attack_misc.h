@@ -11,6 +11,8 @@ class CBurerAttackRunAround : public IState {
 	Fvector						selected_point;
 	TTime						time_started;
 
+	Fvector						dest_direction;
+
 public:
 
 					CBurerAttackRunAround	(CBurer *p);

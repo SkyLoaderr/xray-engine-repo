@@ -226,10 +226,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	++G.m_dwAliveCount;
 	
 	CActor	*pA = dynamic_cast<CActor*>(this);
-	if (!pA) {
-		Level().SquadMan->RegisterMember((u8)id_Squad, this);
-		//Level().SquadMan.Dump();
-	}
+	if (!pA) { Level().SquadMan->RegisterMember((u8)id_Squad, this);}
 
 	Engine.Sheduler.Unregister	(this);
 	Engine.Sheduler.Register	(this);

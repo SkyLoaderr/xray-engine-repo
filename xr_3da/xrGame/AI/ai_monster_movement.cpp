@@ -251,5 +251,9 @@ void CMonsterMovement::update_velocity()
 	velocity_lerp	(m_velocity_linear.current, m_velocity_linear.target, t_accel, Device.fTimeDelta);
 }
 
+void CMonsterMovement::set_dest_direction(const Fvector &dir)
+{
+	CDetailPathManager::set_dest_direction(dir);
+}
 
 

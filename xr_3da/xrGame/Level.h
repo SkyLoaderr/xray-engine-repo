@@ -179,6 +179,7 @@ public:
 		}
 		return SQ.Groups[G];
 	}
+
 	int							get_RPID				(LPCSTR name);
 
 

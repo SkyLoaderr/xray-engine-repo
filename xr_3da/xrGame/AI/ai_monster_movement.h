@@ -55,6 +55,8 @@ public:
 	IC	void	disable_path			() {b_enable_movement = false;}
 	IC	void	enable_path				() {b_enable_movement = true;}
 
+		void	set_dest_direction		(const Fvector &dir);
+
 	IC 	bool	is_path_targeted		() {return b_targeted_path;}
 	IC	void	set_path_targeted		(bool val = true) {b_targeted_path = val;}
 	// -------------------------------------------------------------------
@@ -85,4 +87,5 @@ private:
 		void		SetPathParams			(u32 dest_vertex_id, const Fvector &dest_pos);
 		void		SetSelectorPathParams	();
 
+		
 };

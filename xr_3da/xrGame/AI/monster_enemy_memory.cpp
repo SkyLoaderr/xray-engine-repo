@@ -66,7 +66,8 @@ void CMonsterEnemyMemory::remove_non_actual()
 		if (	!it->first					|| 
 			!it->first->g_Alive()		|| 
 			it->first->getDestroy()		||
-			(it->second.time + time_memory < cur_time)
+			(it->second.time + time_memory < cur_time) ||
+			(it->first->g_Team() == monster->g_Team())
 			) 
 			m_objects.erase (it);
 	}

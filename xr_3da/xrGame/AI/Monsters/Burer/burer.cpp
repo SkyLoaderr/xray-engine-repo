@@ -302,7 +302,7 @@ void CBurer::UpdateGraviObject()
 	Fmatrix pos; 
 
 	// установить направление
-	pos.k.set(Fvector().set(0.0f,1.0f,0.0f));
+	pos.k.set(Fvector().set(dir));
 	Fvector::generate_orthonormal_basis(pos.k, pos.i, pos.j);
 	// установить позицию
 	pos.c.set(m_gravi_object.cur_pos);
@@ -373,6 +373,7 @@ void CBurer::Hit(float P,Fvector &dir,CObject*who,s16 element,Fvector p_in_objec
 
 		// вычислить позицию и направленность партикла
 		Fmatrix pos; 
+		//CParticlesPlayer::MakeXFORM(this,element,Fvector().set(0.f,0.f,1.f),p_in_object_space,pos);
 		CParticlesPlayer::MakeXFORM(this,element,dir,p_in_object_space,pos);
 
 		// установить particles

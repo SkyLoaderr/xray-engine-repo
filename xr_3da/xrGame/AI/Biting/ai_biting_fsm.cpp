@@ -63,20 +63,32 @@ void CAI_Biting::Think()
 	HDebug->SetActive						(true);
 #endif
 
-	//if (IsMovingOnPath()) {
-	//	HDebug->L_Clear();
-	//	for (u32 i=0; i<CDetailPathManager::path().size();i++) {
-	//		xr_map<u32,CDetailPathManager::STravelParams>::const_iterator it = m_movement_params.find(CDetailPathManager::path()[i].velocity);
-	//		VERIFY(it != m_movement_params.end());
+	static u32 next_bridge	= 10000;
 
-	//		if (fis_zero((*it).second.linear_velocity))
-	//			HDebug->L_AddPoint(CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(255,0,100));
-	//		else 
-	//			HDebug->L_AddPoint(CDetailPathManager::path()[i].position,0.15f,D3DCOLOR_XRGB(0,255,100));
-	//	}
-	//}
+	if (next_bridge < m_current_update) {
+		next_bridge = m_current_update + 5000;
+		
+		// remove from prev team
+		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+		Group.Member_Remove(this);
 
+		// set new team
+		if (g_Team() == 0){
+			id_Team		= 1;
+			id_Squad	= 1;
+			id_Group	= 0;
+		} else {
+			id_Team		= 0;
+			id_Squad	= 0;
+			id_Group	= 0;
+		}
+		
+		// add to new team
+		Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+		Group.Member_Add(this);
+	} 
 
+	Msg("Time[%u]  ::  Team[%u] Squad[%u] Group[%u]", m_current_update, g_Team(),g_Squad(),g_Group());
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
