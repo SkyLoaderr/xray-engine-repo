@@ -79,7 +79,7 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	s_RP						= 0xFE;			// Use supplied coords
 	s_flags.assign				(0);
 	s_name						= caSection;
-	s_name_replace				= 0;
+	s_name_replace				= xr_strdup("");
 	o_Angle.set					(0.f,0.f,0.f);
 	o_Position.set				(0.f,0.f,0.f);
 	m_bALifeControl				= false;
@@ -130,9 +130,6 @@ CSE_Motion* CSE_Abstract::motion			()
 	
 void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 {
-	LPCSTR						temp;
-	
-	temp						= pSettings->r_string("rat_group","monster_section");
 	// generic
 	tNetPacket.w_begin			(M_SPAWN);
 	tNetPacket.w_stringZ		(s_name			);
