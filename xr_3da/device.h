@@ -82,6 +82,10 @@ public:
 	Fmatrix									mProject;
 	Fmatrix									mFullTransform;
 	float									fFOV;
+	IC void									set_xform	(DWORD ID, const Fmatrix& M);
+	IC void									set_xform_W	(const Fmatrix& M)	{ set_xform(D3DTS_WORLD,M);			}
+	IC void									set_xform_V	(const Fmatrix& M)	{ set_xform(D3DTS_VIEW,M);			}
+	IC void									set_xform_P	(const Fmatrix& M)	{ set_xform(D3DTS_PROJECTION,M);	}
 	
 	CRenderDevice() {
 	    m_hWnd              = NULL;
@@ -130,6 +134,11 @@ public:
 };
 
 extern ENGINE_API CRenderDevice Device;
+
+IC void	CRenderDevice::set_xform	(DWORD ID, const Fmatrix& M)
+{
+	CHK_DX(HW.pDevice->SetTransform((D3DTRANSFORMSTATETYPE)ID,(D3DMATRIX*)&M));
+}
 
 #include "TextureManager_Runtime.h"
 #include "PrimitivesR_Runtime.h"
