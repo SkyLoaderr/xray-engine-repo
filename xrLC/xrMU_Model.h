@@ -92,8 +92,12 @@ public:
     Fmatrix				xform;
     Flags32				flags;
 	u16					sector;
+
+	vector<Fcolor>		color;
 public:
 	void				Load				(CStream& FS);
+	void				calc_lighting		();
+
 	void				export_cform_rcast	(CDB::CollectorPacked& CL);
 	void				export_cform_game	(CDB::CollectorPacked& CL);
 	void				export_ogf			();
