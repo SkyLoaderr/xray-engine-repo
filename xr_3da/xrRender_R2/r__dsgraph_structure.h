@@ -79,6 +79,7 @@ public:
 	void		r_dsgraph_render_hud							();
 	void		r_dsgraph_render_lods							();
 	void		r_dsgraph_render_sorted							();
+	void		r_dsgraph_render_emissive						();
 	void		r_dsgraph_render_subspace						(IRender_Sector* _sector, Fmatrix& mCombined, Fvector& _cop, BOOL _dynamic	);
 	void		r_dsgraph_render_R1_box							(IRender_Sector* _sector, Fbox& _bb, int _element);
 };

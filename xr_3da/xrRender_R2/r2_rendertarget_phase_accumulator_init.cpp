@@ -2,9 +2,14 @@
 
 void CRenderTarget::phase_accumulator_init()
 {
-	dwLightMarkerID						= 5;		// start from 5, increment in 2 units
-	u32		clr4clear					= color_rgba(0,0,0,0);	// 0x00
-	CHK_DX(HW.pDevice->Clear			( 0L, NULL, D3DCLEAR_TARGET, clr4clear, 1.0f, 0L));
+	dwLightMarkerID								= 5;		// start from 5, increment in 2 units
+	u32		clr4clear							= color_rgba(0,0,0,0);	// 0x00
+	CHK_DX	(HW.pDevice->Clear					( 0L, NULL, D3DCLEAR_TARGET, clr4clear, 1.0f, 0L));
+
+	// Render emissive geometry
+	// Stencil - write 0x0 at pixel pos
+	RCache.set_Stencil							( TRUE,D3DCMP_ALWAYS,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE,D3DSTENCILOP_KEEP);
+	RImplementation.r_dsgraph_render_emissive	();
 
 	// Common
 	u32		Offset						= 0;
@@ -73,7 +78,7 @@ void CRenderTarget::phase_accumulator_init()
 	// Stencil	- draw only where stencil >= 0x1
 	// Stencil	- increment value if both (stencil,aref) pass
 	// Stencil	- result -> 0x2 where pixel can be potentialy lighted/shadowed
-	if (ps_r2_ls_flags.test(R2FLAG_SUN))
+	if (0 && ps_r2_ls_flags.test(R2FLAG_SUN))
 	{
 		// Restore targets
 		u_setrt						(rt_Accumulator,NULL,NULL,HW.pBaseZB);
