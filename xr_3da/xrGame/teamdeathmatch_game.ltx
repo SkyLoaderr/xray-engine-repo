@@ -2,46 +2,47 @@
 wpn_knife			=	0
 
 wpn_pm				=       0
-wpn_pb				=	100
-wpn_fort			=	125
-wpn_hpsa			=	150
-wpn_usp				=	200
-wpn_desert_eagle	        =       225
-//wpn_colt1911		        =	0  
-//wpn_walther			=	0  
-//wpn_beretta			=	0  
+wpn_pb				=	0
+wpn_fort			=	100
+wpn_hpsa			=	125
+wpn_colt1911		=	150
+wpn_walther			=	175
+wpn_beretta			=	175
+wpn_sig220  		= 200  
+wpn_desert_eagle	      =       225  
+wpn_usp			=	225
 
 wpn_bm16 			=	200
 wpn_toz34			=	200
-wpn_spas12                      =       500
-            
-wpn_val				=	400
-wpn_lr300			=	500
-wpn_mp5                         =       500
-wpn_ak74			=	600
-wpn_fn2000			=	750
-wpn_l85				=	800
-wpn_groza			=	1100
-//wpn_ak74u			=	0
-
-
-wpn_vintorez                    =       750
+wpn_spas12              =     350
+ 
+wpn_ak74u			=	375          
+wpn_mp5                 =     400
+wpn_ak74			=	425
+wpn_l85			=	550
+wpn_val			=	800
+wpn_groza			=	850
+wpn_lr300			=	700
+wpn_fn2000			=	800
+wpn_vintorez                    =       850
+wpn_svd				=	1000
 wpn_svu				=	1000
-wpn_svd				=	1100
-wpn_gauss			=	1200
-
+wpn_gauss			=	1500
 wpn_rpg7			=	2000
-//wpn_rg-6                         =    0
 
-grenade_f1			=	75
-grenade_rgd5		        =       75
+//wpn_rg-6                =    0
+
+grenade_f1			=	200	
+grenade_rgd5		=     175
 ammo_vog-25			=	85
 ammo_m209			=	85
 ammo_og-7b			=	200
 
-exo_outfit			=	500
-military_stalker_outfit         =       300
-scientific_outfit	=	400
+exo_outfit			=	700
+scientific_outfit	=	800
+military_stalker_outfit         =       900
+
+medkit				= 250
 
 device_torch		=	50
 detector_simple		=	50
@@ -49,18 +50,20 @@ wpn_addon_scope		=	100
 wpn_addon_silencer	=	50
 wpn_addon_grenade_launcher			= 150
 wpn_addon_grenade_launcher_m203		= 150
-medkit			= 200
+
+
+//Green
 
 [teamdeathmatch_team1]
+
 slot1 = wpn_knife
-slot2 = wpn_pb, wpn_usp, wpn_fort
-slot3 = wpn_toz34, wpn_spas12, wpn_val, wpn_vintorez, wpn_mp5, wpn_fn2000, wpn_svd, wpn_rpg7, wpn_gauss
-slot4 = grenade_f1, ammo_vog-25, ammo_m209, ammo_og-7b
-slot5 = military_stalker_outfit, scientific_outfit, exo_outfit
-slot6 = device_torch, wpn_addon_silencer,wpn_addon_grenade_launcher_m203, medkit
+slot2 = wpn_pm,wpn_hpsa,wpn_colt1911,wpn_walther,  wpn_desert_eagle
+slot3 = wpn_toz34, wpn_spas12, wpn_mp5,wpn_l85,wpn_lr300, wpn_fn2000,wpn_vintorez,wpn_svu, wpn_rpg7, wpn_gauss
+slot4 = grenade_f1,grenade_rgd5, ammo_vog-25, ammo_m209, ammo_og-7b
+slot5 = exo_outfit,military_stalker_outfit, scientific_outfit
+slot6 = device_torch, wpn_addon_scope, wpn_addon_silencer, wpn_addon_grenade_launcher, medkit
 
 skins = stalker_sv_balon_10, stalker_sv_hood_9,stalker_sv_rukzak_3,stalker_sv_rukzak_2
-
 
 default_items	= wpn_knife;, wpn_pb;, device_torch
 
@@ -70,12 +73,12 @@ military_stalker_outfit			= stalker_sv_military
 exo_outfit			= stalker_sv_exoskeleton
 
 ;//money amounts
-money_start		= 500
+money_start		= 400
 money_min		= 0
 
 kill_rival		= 500
 kill_self		= 0
-kill_team		= -100
+kill_team		= -250
 
 target_rival	= 0
 target_team		= 0
@@ -88,6 +91,8 @@ round_draw		= 50
 
 round_loose_minor		= 0
 round_win_minor		= 0
+
+kill_while_invincible = 0.5
 
 wpn_pb_cost	= 0
 
@@ -105,13 +110,16 @@ indicator_texture = ui\ui_greenteam
 invincible_shader = friendly_indicator
 invincible_texture = ui\ui_skull
 
+
+//Blue
+
 [teamdeathmatch_team2]
 slot1 = wpn_knife
-slot2 = wpn_pm, wpn_hpsa, wpn_desert_eagle
-slot3 = wpn_bm16, wpn_spas12, wpn_lr300,	wpn_ak74,  wpn_svu, wpn_l85, wpn_groza, wpn_rpg7, wpn_gauss
-slot4 = grenade_rgd5, ammo_vog-25, ammo_m209, ammo_og-7b
-slot5 = military_stalker_outfit, scientific_outfit, exo_outfit
-slot6 = device_torch, wpn_addon_scope, wpn_addon_silencer, wpn_addon_grenade_launcher, medkit
+slot2 = wpn_pb,wpn_fort, wpn_beretta,wpn_sig220,wpn_usp
+slot3 = wpn_bm16, wpn_spas12, wpn_ak74u, 	wpn_ak74, wpn_val, wpn_groza, wpn_vintorez, wpn_svd, wpn_rpg7, wpn_gauss
+slot4 = grenade_f1, grenade_rgd5,ammo_vog-25, ammo_m209, ammo_og-7b
+slot5 = exo_outfit,military_stalker_outfit, scientific_outfit
+slot6 = device_torch, wpn_addon_silencer,wpn_addon_grenade_launcher_m203, medkit
 
 
 skins = stalker_killer_head_1,stalker_killer_antigas,stalker_killer_head_3,stalker_killer_mask
@@ -124,7 +132,7 @@ scientific_outfit		= stalker_sci_killer
 exo_outfit				= stalker_killer_exoskeleton
 
 ;//money amounts
-money_start		= 500
+money_start		= 400
 money_min		= 0
 
 kill_rival		= 500
@@ -142,6 +150,8 @@ round_draw		= 50
 
 round_loose_minor		= 0
 round_win_minor		= 0
+
+kill_while_invincible = 0.5
 
 wpn_pm_cost		= 0
 

@@ -1,48 +1,48 @@
 [deathmatch_base_cost]
-wpn_knife_mp			=	0
+wpn_knife			=	0
 
 wpn_pm				=       0
-wpn_pb				=	100
-wpn_fort			=	125
-wpn_hpsa			=	150
-wpn_usp				=	200
-wpn_desert_eagle	        =       225
-//wpn_colt1911		        =	0  
-//wpn_walther			=	0  
-//wpn_beretta			=	0  
+wpn_pb				=	50
+wpn_fort			=	100
+wpn_hpsa			=	125
+wpn_colt1911		=	150
+wpn_walther			=	175
+wpn_beretta			=	175
+wpn_sig220  		= 200  
+wpn_desert_eagle	      =       225  
+wpn_usp			=	225
 
 wpn_bm16 			=	200
 wpn_toz34			=	200
-wpn_spas12                      =       500
-            
-wpn_val				=	400
-wpn_lr300			=	500
-wpn_mp5                         =       500
-wpn_ak74			=	600
-wpn_fn2000			=	750
-wpn_l85				=	800
-wpn_groza			=	1100
-//wpn_ak74u			=	0
-
-
-wpn_vintorez                    =       750
+wpn_spas12              =     350
+ 
+wpn_ak74u			=	375          
+wpn_mp5                 =     400
+wpn_ak74			=	425
+wpn_l85			=	550
+wpn_val			=	800
+wpn_groza			=	850
+wpn_lr300			=	700
+wpn_fn2000			=	800
+wpn_vintorez                    =       850
+wpn_svd				=	1000
 wpn_svu				=	1000
-wpn_svd				=	1100
-wpn_gauss			=	1200
-
+wpn_gauss			=	1500
 wpn_rpg7			=	2000
-//wpn_rg-6                         =    0
 
-grenade_f1			=	75
-grenade_rgd5		        =       75
+//wpn_rg-6                =    0
+
+grenade_f1			=	200	
+grenade_rgd5		=     175
 ammo_vog-25			=	85
 ammo_m209			=	85
 ammo_og-7b			=	200
 
-exo_outfit			=	500
-military_stalker_outfit         =       300
-scientific_outfit	=	400
-medkit				= 200
+exo_outfit			=	700
+scientific_outfit	=	800
+military_stalker_outfit         =       900
+
+medkit				= 250
 
 device_torch		=	50
 detector_simple		=	50
@@ -52,11 +52,11 @@ wpn_addon_grenade_launcher			= 150
 wpn_addon_grenade_launcher_m203		= 150
 
 [deathmatch_team0]
-slot1 = wpn_knife_mp
-slot2 = wpn_pm, wpn_pb, wpn_fort, wpn_hpsa, wpn_usp, wpn_desert_eagle
-slot3 = wpn_val, wpn_lr300, wpn_mp5, wpn_ak74, wpn_fn2000, wpn_l85, wpn_vintorez, wpn_svu, wpn_svd, wpn_groza, wpn_toz34, wpn_rpg7, wpn_gauss, wpn_bm16, wpn_spas12  
+slot1 = wpn_knife
+slot2 = wpn_pm, wpn_pb, wpn_fort, wpn_hpsa,wpn_colt1911,wpn_walther, wpn_beretta,wpn_sig220,wpn_desert_eagle,wpn_usp 
+slot3 = wpn_ak74u, wpn_mp5, wpn_ak74,wpn_l85,wpn_lr300,wpn_val, wpn_fn2000,wpn_groza,  wpn_vintorez, wpn_svd,wpn_svu, wpn_toz34, wpn_rpg7, wpn_gauss, wpn_bm16, wpn_spas12  
 slot4 = grenade_f1, ammo_vog-25, grenade_rgd5, ammo_m209, ammo_og-7b
-slot5 =  military_stalker_outfit, scientific_outfit, exo_outfit
+slot5 =  exo_outfit,scientific_outfit,military_stalker_outfit
 slot6 = wpn_addon_silencer, wpn_addon_grenade_launcher, device_torch, detector_simple, wpn_addon_scope, wpn_addon_grenade_launcher_m203, medkit
 
 skins = stalker_killer_head_1,stalker_killer_antigas,stalker_killer_head_3,stalker_killer_mask
@@ -67,10 +67,10 @@ scientific_outfit		= stalker_sci_killer
 exo_outfit				= stalker_killer_exoskeleton
 
 ;//money amounts
-money_start		= 4000
+money_start		= 5000
 money_min		= 0
 
-kill_rival		= 400
+kill_rival		= 500
 kill_self		= 0
 kill_team		= 0
 
@@ -86,9 +86,11 @@ round_draw		= 50
 round_loose_minor		= 0
 round_win_minor		= 0
 
+kill_while_invincible = 0.5
+
 wpn_pm_cost		= 0
 
-default_items	= wpn_knife_mp, wpn_pm
+default_items	= wpn_knife, wpn_pm
 ;//---- indicator data --------
 indicator_r1 = 0.2
 indicator_r2 = 0.2
