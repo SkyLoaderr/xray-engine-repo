@@ -158,14 +158,13 @@ bool CUI_Camera::MoveStart(TShiftState Shift){
 }
 
 bool CUI_Camera::MoveEnd(TShiftState Shift){
+	m_Shift = Shift;
 	if (!Shift.Contains(ssLeft)||!Shift.Contains(ssShift)){
 	    SetCursorPos(m_StartPos.x, m_StartPos.y);
     	ShowCursor	(TRUE);
 		m_bMoving	= false;
-		m_Shift 	= Shift;
         return true;
     }
-	m_Shift = Shift;
     return false;
 }
 
@@ -177,17 +176,17 @@ bool CUI_Camera::Process(TShiftState Shift, int dx, int dy){
         	SetCursorPos(m_StartPos.x,m_StartPos.y);
             switch (m_Style){
             case csPlaneMove:
-                if (Shift.Contains(ssLeft) && Shift.Contains(ssRight)) Rotate (dx,dy);
-                else if (Shift.Contains(ssLeft))			Pan		(dx,dy);
-                		else if(Shift.Contains(ssRight))   	Scale  	(dy);
+                if (m_Shift.Contains(ssLeft) && m_Shift.Contains(ssRight)) Rotate (dx,dy);
+                else if (m_Shift.Contains(ssLeft))				Pan		(dx,dy);
+                		else if(m_Shift.Contains(ssRight))   	Scale  	(dy);
             break;
             case csFreeFly:
-                if (Shift.Contains(ssLeft)||Shift.Contains(ssRight)) Rotate (dx,dy);
+                if (m_Shift.Contains(ssLeft)||m_Shift.Contains(ssRight)) Rotate (dx,dy);
 //                if (Shift.Contains(ssLeft)) Rotate (d.x,d.y);
 //                else if (Shift.Contains(ssRight)) Scale(d.y);
             break;
             case cs3DArcBall:
-            	ArcBall(Shift,dx,dy);
+            	ArcBall(m_Shift,dx,dy);
             break;
             }
 		    UI->RedrawScene();

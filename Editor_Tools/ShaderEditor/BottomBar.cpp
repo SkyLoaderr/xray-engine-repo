@@ -6,8 +6,6 @@
 #include "UI_main.h"
 #include "leftbar.h"
 #include "LogForm.h"
-#include "d3dx.h"
-#include "statisticform.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -39,15 +37,21 @@ void TUI::ProgressEnd(){
 void TUI::ProgressUpdate(float val){
 	fraBottomBar->fStatusProgress=val;
     if (fraBottomBar->fMaxVal>=0){
-		fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
-        fraBottomBar->cgProgress->Repaint();
+    	int new_val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (new_val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+    	    fraBottomBar->cgProgress->Repaint();
+        }
     }
 }
 void TUI::ProgressInc(){
 	fraBottomBar->fStatusProgress++;
     if (fraBottomBar->fMaxVal>=0){
-		fraBottomBar->cgProgress->Progress=(int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
-        fraBottomBar->cgProgress->Repaint();
+    	int val = (int)((fraBottomBar->fStatusProgress/fraBottomBar->fMaxVal)*100);
+        if (val!=fraBottomBar->cgProgress->Progress){
+			fraBottomBar->cgProgress->Progress=val;
+	        fraBottomBar->cgProgress->Repaint();
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -72,28 +76,30 @@ void TUI::OutUICursorPos(){
 __fastcall TfraBottomBar::TfraBottomBar(TComponent* Owner)
     : TFrame(Owner)
 {
-    char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
+    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
 }
 //---------------------------------------------------------------------------
+
+#define SET_FLAG(F,V){if (V) psDeviceFlags|=(F); else psDeviceFlags&=~(F);}
+
 void __fastcall TfraBottomBar::ClickOptionsMenuItem(TObject *Sender)
 {
     TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
     if (mi){
         mi->Checked = !mi->Checked;
-        if (mi==miDrawGrid)     			UI->bDrawGrid    	= mi->Checked;
-        else if (mi==miRenderFillPoint)		UI->dwRenderFillMode=D3DFILL_POINT;
-        else if (mi==miRenderFillWireframe)	UI->dwRenderFillMode=D3DFILL_WIREFRAME;
-        else if (mi==miRenderFillSolid)		UI->dwRenderFillMode=D3DFILL_SOLID;
-        else if (mi==miRenderShadeFlat)		UI->dwRenderShadeMode=D3DSHADE_FLAT;
-        else if (mi==miRenderShadeGouraud)	UI->dwRenderShadeMode=D3DSHADE_GOURAUD;
-        else if (mi==miRenderWithTextures)	UI->bRenderTextures = mi->Checked;
-        else if (mi==miLightScene)  		UI->bRenderLights   = mi->Checked;
-        else if (mi==miRenderLinearFilter)	UI->bRenderFilter   = mi->Checked;
-        else if (mi==miRenderEdgedFaces)	UI->bRenderEdgedFaces =mi->Checked;
-        else if (mi==miFog){				UI->bRenderFog = mi->Checked; UI->Device.UpdateFog();}
-        else if (mi==miRenderHWTransform){	UI->dwRenderHWTransform = mi->Checked?D3DX_DEFAULT:D3DX_HWLEVEL_RASTER;}
-        else if (mi==miRealTime)			UI->bRenderRealTime = mi->Checked;
+        if (mi==miDrawGrid)     			SET_FLAG(rsDrawGrid,mi->Checked)
+        else if (mi==miRenderFillPoint)		Device.dwFillMode 	= D3DFILL_POINT;
+        else if (mi==miRenderFillWireframe)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
+        else if (mi==miRenderFillSolid)		Device.dwFillMode 	= D3DFILL_SOLID;
+        else if (mi==miRenderShadeFlat)		Device.dwShadeMode	= D3DSHADE_FLAT;
+        else if (mi==miRenderShadeGouraud)	Device.dwShadeMode	=D3DSHADE_GOURAUD;
+        else if (mi==miRenderWithTextures)	SET_FLAG(rsRenderTextures,mi->Checked)
+        else if (mi==miLightScene)  		SET_FLAG(rsLighting,mi->Checked)
+        else if (mi==miRenderLinearFilter)	SET_FLAG(rsFilterLinear,mi->Checked)
+        else if (mi==miRenderEdgedFaces)	SET_FLAG(rsEdgedFaces,mi->Checked)
+        else if (mi==miRenderHWTransform){	SET_FLAG(rsForceHWTransform,mi->Checked); UI->Resize(); }
+        else if (mi==miRealTime)			SET_FLAG(rsRenderRealTime,mi->Checked)
     }
     UI->RedrawScene();
     UI->Command(COMMAND_UPDATE_TOOLBAR);
@@ -109,24 +115,22 @@ void __fastcall TfraBottomBar::QualityClick(TObject *Sender)
 void __fastcall TfraBottomBar::fsStorageRestorePlacement(TObject *Sender)
 {
     // fill mode
-    if (miRenderFillPoint->Checked) 		UI->dwRenderFillMode=D3DFILL_POINT;
-    else if (miRenderFillWireframe->Checked)UI->dwRenderFillMode=D3DFILL_WIREFRAME;
-	else if (miRenderFillSolid->Checked)	UI->dwRenderFillMode=D3DFILL_SOLID;
+    if (miRenderFillPoint->Checked) 		Device.dwFillMode=D3DFILL_POINT;
+    else if (miRenderFillWireframe->Checked)Device.dwFillMode=D3DFILL_WIREFRAME;
+	else if (miRenderFillSolid->Checked)	Device.dwFillMode=D3DFILL_SOLID;
     // shade mode
-	if (miRenderShadeFlat->Checked)			UI->dwRenderShadeMode=D3DSHADE_FLAT;
-    else if (miRenderShadeGouraud->Checked)	UI->dwRenderShadeMode=D3DSHADE_GOURAUD;
+	if (miRenderShadeFlat->Checked)			Device.dwShadeMode=D3DSHADE_FLAT;
+    else if (miRenderShadeGouraud->Checked)	Device.dwShadeMode=D3DSHADE_GOURAUD;
     // hw transform
-	if (miRenderHWTransform->Checked)		UI->dwRenderHWTransform=D3DX_DEFAULT;
-    else 									UI->dwRenderHWTransform=D3DX_HWLEVEL_RASTER;
+    SET_FLAG(rsForceHWTransform,miRenderHWTransform->Checked);
     // other render
-    UI->bRenderTextures 	= miRenderWithTextures->Checked;
-    UI->bRenderLights   	= miLightScene->Checked;
-    UI->bRenderFilter   	= miRenderLinearFilter->Checked;
-    UI->bRenderEdgedFaces	= miRenderEdgedFaces->Checked;
-    UI->bRenderRealTime 	= miRealTime->Checked;
-    UI->bRenderFog			= miFog->Checked;
-    // other draw
-    UI->bDrawGrid       	= miDrawGrid->Checked;
+    SET_FLAG(rsRenderTextures,	miRenderWithTextures->Checked);
+    SET_FLAG(rsLighting,		miLightScene->Checked);
+    SET_FLAG(rsFilterLinear,	miRenderLinearFilter->Checked);
+    SET_FLAG(rsEdgedFaces,		miRenderEdgedFaces->Checked);
+    SET_FLAG(rsRenderRealTime,	miRealTime->Checked);
+    SET_FLAG(rsDrawGrid,		miDrawGrid->Checked);
+
     // quality
     if 		(N200->Checked)	QualityClick(N200);
     else if (N150->Checked)	QualityClick(N150);
@@ -146,16 +150,12 @@ void __fastcall TfraBottomBar::ebLogClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraBottomBar::ebStopClick(TObject *Sender)
-{
-	UI->Command(COMMAND_BREAK_LAST_OPERATION);	
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TfraBottomBar::ebStatClick(TObject *Sender)
 {
-	if (ebStat->Down) 	TfrmStatistic::ShowStatistic();
-    else				TfrmStatistic::HideStatistic();
+	if (ebStat->Down) 	psDeviceFlags |= rsStatistic;
+    else				psDeviceFlags &=~rsStatistic;
+    UI->RedrawScene();
 }
 //---------------------------------------------------------------------------
 

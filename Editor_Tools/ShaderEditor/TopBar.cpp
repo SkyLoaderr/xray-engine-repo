@@ -14,7 +14,7 @@ TfraTopBar *fraTopBar;
 __fastcall TfraTopBar::TfraTopBar(TComponent* Owner)
         : TFrame(Owner)
 {
-    char buf[MAX_PATH] 		= {"actor_ed.ini"};  FS.m_ExeRoot.Update(buf);
+    char buf[MAX_PATH] 		= {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName 	= buf;
 }
 //---------------------------------------------------------------------------

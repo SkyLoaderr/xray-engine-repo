@@ -1,7 +1,7 @@
 object fraBottomBar: TfraBottomBar
   Left = 0
   Top = 0
-  Width = 948
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -9,7 +9,7 @@ object fraBottomBar: TfraBottomBar
   object paBottomBar: TPanel
     Left = 0
     Top = 0
-    Width = 948
+    Width = 443
     Height = 17
     Align = alTop
     BevelInner = bvLowered
@@ -18,16 +18,16 @@ object fraBottomBar: TfraBottomBar
     object paInfo: TPanel
       Left = 74
       Top = 1
-      Width = 873
+      Width = 368
       Height = 15
       Align = alClient
       Alignment = taLeftJustify
       BevelOuter = bvNone
       TabOrder = 0
       object paStatus: TPanel
-        Left = 150
+        Left = 116
         Top = 0
-        Width = 441
+        Width = 28
         Height = 15
         Align = alClient
         Alignment = taLeftJustify
@@ -40,7 +40,7 @@ object fraBottomBar: TfraBottomBar
         ParentFont = False
         TabOrder = 0
         object cgProgress: TCGauge
-          Left = 312
+          Left = -101
           Top = 2
           Width = 127
           Height = 11
@@ -57,7 +57,7 @@ object fraBottomBar: TfraBottomBar
         end
       end
       object paStatusLabel: TPanel
-        Left = 102
+        Left = 68
         Top = 0
         Width = 48
         Height = 15
@@ -68,7 +68,7 @@ object fraBottomBar: TfraBottomBar
         TabOrder = 1
       end
       object paCameraPos: TPanel
-        Left = 649
+        Left = 144
         Top = 0
         Width = 130
         Height = 15
@@ -88,7 +88,7 @@ object fraBottomBar: TfraBottomBar
       object paButtons: TPanel
         Left = 0
         Top = 0
-        Width = 102
+        Width = 68
         Height = 15
         Align = alLeft
         BevelOuter = bvNone
@@ -114,26 +114,6 @@ object fraBottomBar: TfraBottomBar
           FlatAlwaysEdge = True
           OnClick = ebLogClick
         end
-        object ebStop: TExtBtn
-          Left = 68
-          Top = 0
-          Width = 34
-          Height = 15
-          Align = alNone
-          BevelShow = False
-          CloseButton = False
-          Caption = 'Break'
-          Font.Charset = DEFAULT_CHARSET
-          Font.Color = clWindowText
-          Font.Height = -11
-          Font.Name = 'MS Sans Serif'
-          Font.Style = []
-          Kind = knMinimize
-          ParentFont = False
-          Transparent = False
-          FlatAlwaysEdge = True
-          OnClick = ebStopClick
-        end
         object ebStat: TExtBtn
           Left = 34
           Top = 0
@@ -158,26 +138,8 @@ object fraBottomBar: TfraBottomBar
           OnClick = ebStatClick
         end
       end
-      object paSel: TPanel
-        Left = 591
-        Top = 0
-        Width = 58
-        Height = 15
-        Align = alRight
-        Alignment = taLeftJustify
-        BevelInner = bvLowered
-        Caption = 'Sel: 1024'
-        Color = clSilver
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clMaroon
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        TabOrder = 4
-      end
       object paUICursor: TPanel
-        Left = 779
+        Left = 274
         Top = 0
         Width = 94
         Height = 15
@@ -192,7 +154,7 @@ object fraBottomBar: TfraBottomBar
         Font.Name = 'MS Sans Serif'
         Font.Style = []
         ParentFont = False
-        TabOrder = 5
+        TabOrder = 4
       end
     end
     object paMenu: TPanel
@@ -231,10 +193,6 @@ object fraBottomBar: TfraBottomBar
     OnRestorePlacement = fsStorageRestorePlacement
     StoredProps.Strings = (
       'miDrawGrid.Checked'
-      'miDrawPortalSimpleModel.Checked'
-      'miDrawSectors.Checked'
-      'miDrawSectorEdgedCHull.Checked'
-      'miDrawSectorCHull.Checked'
       'N100.Checked'
       'N125.Checked'
       'N150.Checked'
@@ -242,15 +200,9 @@ object fraBottomBar: TfraBottomBar
       'N25.Checked'
       'N50.Checked'
       'N75.Checked'
-      'miDrawSectorFaces.Checked'
-      'miDrawAnimateLight.Checked'
-      'miDrawHiddenMeshes.Checked'
       'miDrawObjectBones.Checked'
       'miObjectLoopedAnimation.Checked'
-      'miDrawSky.Checked'
-      'miDrawObjectAnimPath.Checked'
       'ebStat.Down'
-      'miFog.Checked'
       'miLightScene.Checked'
       'miRealTime.Checked'
       'miRenderEdgedFaces.Checked'
@@ -261,9 +213,7 @@ object fraBottomBar: TfraBottomBar
       'miRenderLinearFilter.Checked'
       'miRenderShadeFlat.Checked'
       'miRenderShadeGouraud.Checked'
-      'miRenderWithTextures.Checked'
-      'miDrawSectorEdgedSFaces.Checked'
-      'miShowHint.Checked')
+      'miRenderWithTextures.Checked')
     StoredValues = <>
     Left = 185
     Top = 33
@@ -367,7 +317,7 @@ object fraBottomBar: TfraBottomBar
         GroupIndex = 4
       end
       object miRenderHWTransform: TMenuItem
-        Caption = 'HW Transform (need restart)'
+        Caption = 'Used Only 8 Lights'
         Checked = True
         GroupIndex = 4
         OnClick = ClickOptionsMenuItem
@@ -396,71 +346,12 @@ object fraBottomBar: TfraBottomBar
     object Objects1: TMenuItem
       Caption = 'Objects'
       GroupIndex = 4
-      object miDrawHiddenMeshes: TMenuItem
-        Caption = 'Draw Hidden Meshes'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
       object miDrawObjectBones: TMenuItem
         Caption = 'Draw Bones'
         OnClick = ClickOptionsMenuItem
       end
       object miObjectLoopedAnimation: TMenuItem
-        Caption = 'Looped animation'
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawObjectAnimPath: TMenuItem
-        Caption = 'Draw animation path'
-        Checked = True
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object miDrawSectors: TMenuItem
-      Caption = 'Sectors'
-      GroupIndex = 4
-      object miDrawSectorFaces: TMenuItem
-        Caption = 'Draw Sector Faces'
-        GroupIndex = 1
-        RadioItem = True
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawSectorCHull: TMenuItem
-        Caption = 'Draw Convex Hull'
-        Checked = True
-        GroupIndex = 1
-        RadioItem = True
-        OnClick = ClickOptionsMenuItem
-      end
-      object N5: TMenuItem
-        Caption = '-'
-        GroupIndex = 1
-      end
-      object miDrawSectorEdgedSFaces: TMenuItem
-        Caption = 'Draw Edged Sector Faces'
-        Checked = True
-        GroupIndex = 1
-        OnClick = ClickOptionsMenuItem
-      end
-      object miDrawSectorEdgedCHull: TMenuItem
-        Caption = 'Draw Edged Convex Hull'
-        Checked = True
-        GroupIndex = 1
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object Portals1: TMenuItem
-      Caption = 'Portals'
-      GroupIndex = 4
-      object miDrawPortalSimpleModel: TMenuItem
-        Caption = 'Draw Simple Model'
-        OnClick = ClickOptionsMenuItem
-      end
-    end
-    object Animations1: TMenuItem
-      Caption = 'Light'
-      GroupIndex = 4
-      object miDrawAnimateLight: TMenuItem
-        Caption = 'Animate'
+        Caption = 'Looped Animation'
         OnClick = ClickOptionsMenuItem
       end
     end
@@ -474,33 +365,12 @@ object fraBottomBar: TfraBottomBar
       GroupIndex = 4
       OnClick = ClickOptionsMenuItem
     end
-    object miDrawSky: TMenuItem
-      Caption = 'Draw Sky'
-      Checked = True
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
     object N3: TMenuItem
-      Caption = '-'
-      GroupIndex = 4
-    end
-    object miShowHint: TMenuItem
-      Caption = 'Show Hint'
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
-    object N1: TMenuItem
       Caption = '-'
       GroupIndex = 4
     end
     object miLightScene: TMenuItem
       Caption = 'Light Scene'
-      Checked = True
-      GroupIndex = 4
-      OnClick = ClickOptionsMenuItem
-    end
-    object miFog: TMenuItem
-      Caption = 'Fog'
       Checked = True
       GroupIndex = 4
       OnClick = ClickOptionsMenuItem

@@ -1,17 +1,17 @@
 //---------------------------------------------------------------------------
-#ifndef ActorToolsH
-#define ActorToolsH
+#ifndef ShaderToolsH
+#define ShaderToolsH
 
 // refs
 class CEditableObject;
 
-class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
+class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CEditableObject*	m_EditObject;
 	BOOL				m_Modified;
 public:
-						CActorTools		();
-    virtual 			~CActorTools	();
+						CShaderTools		();
+    virtual 			~CShaderTools	();
 
     bool				Load			(LPCSTR name);
     bool				Save			(LPCSTR name);

@@ -77,7 +77,7 @@ void __fastcall TfrmMain::FormCloseQuery(TObject *Sender, bool &CanClose)
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormCreate(TObject *Sender)
 {
-    char buf[MAX_PATH] = {"actor_ed.ini"};  FS.m_ExeRoot.Update(buf);
+    char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsMainForm->IniFileName = buf;
     Application->OnIdle = IdleHandler;
 }
@@ -243,13 +243,6 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
         if (UI) UI->iRelease();
     	paWindow->Color=clGray;
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::D3DWindowMouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-	UI->OnMousePress(Shift);
 }
 //---------------------------------------------------------------------------
 

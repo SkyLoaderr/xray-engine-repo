@@ -13,7 +13,7 @@
 #include "EditorPref.h"
 #include "main.h"
 #include "xr_trims.h"
-#include "ActorTools.h"
+#include "ShaderTools.h"
 
 TUI* UI=0;
 
@@ -50,13 +50,13 @@ TUI::TUI()
     FS.Init			();
 
     SHLib			= new CShaderLibrary();
-	m_ActorTools	= new CActorTools();
+	m_ShaderTools	= new CShaderTools();
 }
 //---------------------------------------------------------------------------
 TUI::~TUI()
 {
     _DELETE(SHLib);
-    _DELETE(m_ActorTools);
+    _DELETE(m_ShaderTools);
 }
 
 bool TUI::Init(TD3DWindow* wnd){
@@ -84,7 +84,7 @@ bool TUI::Init(TD3DWindow* wnd){
 void TUI::Clear()
 {
 	DU::UninitUtilLibrary();
-	m_ActorTools->Clear();
+	m_ShaderTools->Clear();
     SHLib->Clear();
 
     Device.Destroy();
@@ -128,7 +128,7 @@ void TUI::Redraw(){
         }
         
 	// render
-	m_ActorTools->Render();
+	m_ShaderTools->Render();
 
     // draw selection rect
 		if(m_SelectionRect) DU::DrawSelectionRect(m_SelStart,m_SelEnd);
@@ -152,7 +152,7 @@ void TUI::Idle()
     Sleep(5);
 	Device.UpdateTimer();
     if (bRedraw){
-		m_ActorTools->Update();
+		m_ShaderTools->Update();
         Redraw();
     }
 }
@@ -197,7 +197,7 @@ bool __fastcall TUI::KeyPress(WORD Key, TShiftState Shift)
 }
 
 //----------------------------------------------------
-void TUI::OnMousePress(TShiftState state){
+void TUI::OnMousePress(int btn){
 	if(!g_bEditorValid) return;
     if(m_MouseCaptured) return;
 
@@ -209,8 +209,8 @@ void TUI::OnMousePress(TShiftState state){
 
     bMouseInUse = true;
 
-    if (state.Contains(ssLeft)) 	m_ShiftState << ssLeft;
-    if (state.Contains(ssRight)) 	m_ShiftState << ssRight;
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 
     // camera activate
     if(!Device.m_Camera.MoveStart(m_ShiftState)){
@@ -221,8 +221,8 @@ void TUI::OnMousePress(TShiftState state){
 void TUI::OnMouseRelease(int btn){
 	if(!g_bEditorValid) return;
 
-    if (iGetBtnState(0)) m_ShiftState << ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 
     if( Device.m_Camera.IsMoving() ){
         if (Device.m_Camera.MoveEnd(m_ShiftState)) bMouseInUse = false;
@@ -235,8 +235,8 @@ void TUI::OnMouseMove(int x, int y){
 	if(!g_bEditorValid) return;
     bool bRayUpdated = false;
 
-    if (iGetBtnState(0)) m_ShiftState << ssLeft;
-    if (iGetBtnState(1)) m_ShiftState << ssRight;
+    if (iGetBtnState(0)) m_ShiftState << ssLeft; else m_ShiftState >> ssLeft;
+    if (iGetBtnState(1)) m_ShiftState << ssRight;else m_ShiftState >> ssRight;
 
 	if (!Device.m_Camera.Process(m_ShiftState,x,y)){
     	/// other

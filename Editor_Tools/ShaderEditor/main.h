@@ -81,8 +81,6 @@ __published:	// IDE-managed Components
 	void __fastcall D3DWindowChangeFocus(TObject *Sender);
 	void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
-	void __fastcall D3DWindowMouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
 	void __fastcall FormActivate(TObject *Sender);
 	void __fastcall FormDeactivate(TObject *Sender);
 private:	// User declarations

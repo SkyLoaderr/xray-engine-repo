@@ -3,33 +3,33 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ActorTools.h"
+#include "ShaderTools.h"
 #include "EditObject.h"
 #include "bottombar.h"
 #include "ui_main.h"
 
-CActorTools::CActorTools(){
+CShaderTools::CShaderTools(){
 	m_EditObject = 0;
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
 }
 
-CActorTools::~CActorTools(){
+CShaderTools::~CShaderTools(){
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 	Clear();
 }
 //---------------------------------------------------------------------------
 
-void CActorTools::Init(){
+void CShaderTools::Init(){
 }
 
-void CActorTools::Clear(){
+void CShaderTools::Clear(){
 	_DELETE(m_EditObject);
     m_Modified = FALSE;
 }
 
-bool CActorTools::IfModified(){
+bool CShaderTools::IfModified(){
     if (m_Modified && UI->GetEditFileName()[0]){
         int mr = ELog.DlgMsg(mtConfirmation, "The object has been modified. Do you want to save your changes?");
         switch(mr){
@@ -41,7 +41,7 @@ bool CActorTools::IfModified(){
     return true;
 }
 
-bool CActorTools::Load(LPCSTR name){
+bool CShaderTools::Load(LPCSTR name){
 	Clear();
     m_EditObject = new CEditableObject(0);
 	if (!m_EditObject->LoadObject(name)){
@@ -53,24 +53,24 @@ bool CActorTools::Load(LPCSTR name){
     return true;
 }
 
-bool CActorTools::Save(LPCSTR name){
+bool CShaderTools::Save(LPCSTR name){
 	if (m_EditObject){
     }
     m_Modified = FALSE;
     return true;
 }
 
-void CActorTools::Render(){
+void CShaderTools::Render(){
 	if (m_EditObject)
     	m_EditObject->RenderSingle(precalc_identity);
 }
 
-void CActorTools::Update(){
+void CShaderTools::Update(){
 	if (m_EditObject)
     	m_EditObject->RTL_Update(Device.fTimeDelta);
 }
 
-void CActorTools::ZoomObject(){
+void CShaderTools::ZoomObject(){
 	if (m_EditObject){
         Device.m_Camera.ZoomExtents(m_EditObject->GetBox());
     }else{
@@ -80,7 +80,7 @@ void CActorTools::ZoomObject(){
     }
 }
 
-void CActorTools::OnDeviceCreate(){
+void CShaderTools::OnDeviceCreate(){
 	if (m_EditObject) m_EditObject->OnDeviceCreate();
     // add directional light
     Flight L;
@@ -112,7 +112,7 @@ void CActorTools::OnDeviceCreate(){
 	Device.LightEnable(4,true);
 }
 
-void CActorTools::OnDeviceDestroy(){
+void CShaderTools::OnDeviceDestroy(){
 	if (m_EditObject) m_EditObject->OnDeviceDestroy();
 }
 

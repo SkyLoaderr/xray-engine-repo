@@ -3,8 +3,8 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.05.03"/>
-    <PROJECT value="x:\ActorEditor.exe"/>
-    <OBJFILES value="Intermediate\ActorEditor.obj Intermediate\stdafx.obj 
+    <PROJECT value="x:\ShaderEditor.exe"/>
+    <OBJFILES value="Intermediate\ShaderEditor.obj Intermediate\stdafx.obj 
       Intermediate\Texture.obj Intermediate\FileSystem.obj 
       Intermediate\D3DUtils.obj Intermediate\Log.obj Intermediate\frustum.obj 
       Intermediate\EditMesh.obj Intermediate\Shader.obj 
@@ -34,8 +34,8 @@
       Intermediate\XR_CustomFont.obj Intermediate\XR_HUDFont.obj 
       Intermediate\c_dinput.obj Intermediate\pure.obj 
       Intermediate\xrImage_Resampler.obj Intermediate\cpuid.obj 
-      Intermediate\_math.obj Intermediate\LeftBar.obj Intermediate\ActorTools.obj"/>
-    <RESFILES value="ActorEditor.res"/>
+      Intermediate\_math.obj Intermediate\LeftBar.obj Intermediate\ShaderTools.obj"/>
+    <RESFILES value="ShaderEditor.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
@@ -43,8 +43,8 @@
       LogForm.dfm LeftBar.dfm"/>
     <LIBFILES value="lib\LWO.lib lib\cg32.lib lib\xrProgressive.lib lib\MagicFMd.lib 
       lib\DXT.lib lib\CreateDX.lib lib\d3d8.lib lib\d3dx8d.lib lib\dinput.lib"/>
-    <LIBRARIES value="ELTREEB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
-    <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib ELTREEB5.lib"/>
+    <LIBRARIES value="elpackB5.lib ELTREEB5.lib dclusr50.lib VCLX50.lib bcbsmp50.lib Vcl50.lib"/>
+    <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib ELTREEB5.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
       TeeDB50.bpi dclusr50.bpi"/>
     <PATHCPP value=".;editor;engine;lib;Intermediate"/>
@@ -54,9 +54,9 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="tlink32"/>
-    <USERDEFINES value="_ACTOR_EDITOR;_DEBUG"/>
+    <USERDEFINES value="_SHADER_EDITOR;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_RTLDLL"/>
-    <MAINSOURCE value="ActorEditor.cpp"/>
+    <MAINSOURCE value="ShaderEditor.cpp"/>
     <INCLUDEPATH value="editor;lib;lib\X;lib\DX;R:\DirectX8.1\include\;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;$(BCB)\include;$(BCB)\include\vcl;engine;edit;Import\LWO;Collide;P:\MagicFM_Borland\Sdk\Include\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;c:\rad\borland\components\renderwindow\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
     <LIBPATH value="editor;lib;lib\X;engine;engin;eng;en;e;lib\DX;c:\rad\Borland\CBuilder5\Bin\;c:\rad\borland\CBuilder5\Projects\;shared;edit;edit\Shader;Collide;Import\LWO;$(BCB)\lib;$(BCB)\lib\obj;$(BCB)\Projects\Lib;c:\rad\borland\components\renderwindow\;c:\rad\borland\components\extbtn\;c:\rad\borland\components\multi\;C:\RAD\borland\Components\RX\Units\;&quot;C:\RAD\borland\Components\ElTree\Code\Source\&quot;"/>
     <WARNINGS value="-w-par -w-8027"/>
@@ -70,7 +70,7 @@
       -Ic:\rad\borland\components\renderwindow\. 
       -IC:\RAD\borland\Components\RX\Units\. 
       -I&quot;C:\RAD\borland\Components\ElTree\Code\Source\.&quot; -src_suffix cpp 
-      -D_ACTOR_EDITOR -D_DEBUG -no_tie -boa"/>
+      -D_SHADER_EDITOR -D_DEBUG -no_tie -boa"/>
     <CFLAG1 value="-Od -H=$(BCB)\lib\vcl50.csm -Hc -Q -Vx -Ve -xf -xp -RT- -VF -ff -X- -r- 
       -a4 -6 -b- -d -k -y -v -vi- -He -c -tW -tWM"/>
     <PFLAGS value="-N2Intermediate -N0Intermediate -$Y+ -$W -$Q -$O- -$C- -v -JPHNE -M"/>
@@ -188,7 +188,7 @@ Item2=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
 Count=8
-Item0=_ACTOR_EDITOR;_DEBUG
+Item0=_SHADER_EDITOR;_DEBUG
 Item1=_EDITOR;_DEBUG
 Item2=_EDITOR
 Item3=_EDITOR;_DEBUG;_STLP_USE_OWN_NAMESPACE
@@ -200,7 +200,7 @@ Item7=_DEBUG
 [HistoryLists\hlIntOutputDir]
 Count=2
 Item0=Intermediate
-Item1=ActorEditor
+Item1=ShaderEditor
 
 [HistoryLists\hlFinalOutputDir]
 Count=3

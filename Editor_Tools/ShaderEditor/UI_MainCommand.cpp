@@ -8,7 +8,7 @@
 #include "bottombar.h"
 #include "EditorPref.h"
 #include "main.h"
-#include "ActorTools.h"
+#include "ShaderTools.h"
 
 #include "UI_Main.h"
 
@@ -20,7 +20,7 @@ bool TUI::Command( int _Command, int p1 ){
 	switch( _Command ){
 
 	case COMMAND_EXIT:{
-    	if (!m_ActorTools->IfModified()) return false;
+    	if (!m_ShaderTools->IfModified()) return false;
         Clear();
 		}break;
 	case COMMAND_SHOWPROPERTIES:
@@ -34,9 +34,9 @@ bool TUI::Command( int _Command, int p1 ){
         	if (p1)	strcpy( filebuffer, (char*)p1 );
             else	strcpy( filebuffer, m_LastFileName );
 			if( p1 || FS.GetOpenName( &FS.m_Objects, filebuffer ) ){
-                if (!m_ActorTools->IfModified()) return false;
+                if (!m_ShaderTools->IfModified()) return false;
             	Command(COMMAND_CLEAR);
-                if (m_ActorTools->Load(filebuffer))	strcpy(m_LastFileName,filebuffer);
+                if (m_ShaderTools->Load(filebuffer))	strcpy(m_LastFileName,filebuffer);
                 else								strcpy(m_LastFileName,"");
 			    Command(COMMAND_UPDATE_CAPTION);
 			}
@@ -46,7 +46,7 @@ bool TUI::Command( int _Command, int p1 ){
 	case COMMAND_SAVE:
 		{
 			if(m_LastFileName[0]){
-				m_ActorTools->Save(m_LastFileName);
+				m_ShaderTools->Save(m_LastFileName);
 			    UI->Command(COMMAND_UPDATE_CAPTION);
 			}else{
 				bRes = Command( COMMAND_SAVEAS ); }
@@ -57,7 +57,7 @@ bool TUI::Command( int _Command, int p1 ){
 		{
 			filebuffer[0] = 0;
 			if( FS.GetSaveName( &FS.m_Objects, filebuffer ) ){
-            	m_ActorTools->Save(filebuffer);
+            	m_ShaderTools->Save(filebuffer);
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = UI->Command(COMMAND_UPDATE_CAPTION);
 			}else
@@ -67,9 +67,9 @@ bool TUI::Command( int _Command, int p1 ){
 
 	case COMMAND_CLEAR:
 		{
-	    	if (!m_ActorTools->IfModified()) return false;
+	    	if (!m_ShaderTools->IfModified()) return false;
 			Device.m_Camera.Reset();
-            m_ActorTools->Clear();
+            m_ShaderTools->Clear();
 			m_LastFileName[0] = 0;
 			UI->Command(COMMAND_UPDATE_CAPTION);
 		}
@@ -80,7 +80,7 @@ bool TUI::Command( int _Command, int p1 ){
 		break;
 
 	case COMMAND_ZOOM_EXTENTS:
-		m_ActorTools->ZoomObject();
+		m_ShaderTools->ZoomObject();
     	break;
     case COMMAND_RENDER_FOCUS:
 		if (frmMain->Visible&&g_bEditorValid)

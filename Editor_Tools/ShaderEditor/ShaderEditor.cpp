@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #pragma hdrstop
-USERES("ActorEditor.res");
+USERES("ShaderEditor.res");
 USE("!.txt", File);
 USEUNIT("stdafx.cpp");
 USEUNIT("editor\Texture.cpp");
@@ -80,7 +80,7 @@ USEUNIT("engine\xrImage_Resampler.cpp");
 USEOBJ("Intermediate\cpuid.obj");
 USEOBJ("Intermediate\_math.obj");
 USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
-USEUNIT("ActorTools.cpp");
+USEUNIT("ShaderTools.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"
@@ -103,7 +103,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->SetStatus("Loading...");
 
 // startup create
-		Application->Title = "Actor Editor";
+		Application->Title = "Shader Editor";
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		Application->CreateForm(__classid(TfrmEditorPreferences), &frmEditorPreferences);
 		frmMain->SetHInst(hInst);

@@ -15,7 +15,7 @@ extern bool g_bEditorValid;
 class CCustomObject;
 class TUI_Tools;
 class TUI_Tools;
-class CActorTools;
+class CShaderTools;
 //class CTexturizer;
 //------------------------------------------------------------------------------
 class TUI: public CController{
@@ -64,7 +64,7 @@ protected:
 	bool m_MouseMultiClickCaptured;
 	bool bMouseInUse;
 public:
-    CActorTools*	m_ActorTools;
+    CShaderTools*	m_ShaderTools;
 public:
     // mouse sensetive
     float m_MouseSM, m_MouseSS, m_MouseSR;
@@ -119,7 +119,7 @@ public:
     void SetStatus(LPSTR s);
 
 	// direct input
-	void OnMousePress					(TShiftState State);
+	virtual void OnMousePress			(int btn);
 	virtual void OnMouseRelease			(int btn);
 	virtual void OnMouseMove			(int x, int y);
 
