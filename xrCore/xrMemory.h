@@ -66,7 +66,7 @@ XRCORE_API char* __stdcall	xr_strdup	(const char* string);
 #endif
 
 // POOL-ing
-const		u32			mem_pools_count			=	80;
+const		u32			mem_pools_count			=	65;
 const		u32			mem_pools_ebase			=	16;
 const		u32			mem_generic				=	mem_pools_count+1;
 extern		MEMPOOL		mem_pools				[mem_pools_count];
