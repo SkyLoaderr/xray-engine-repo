@@ -14,7 +14,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 
 extern xrSkin1W			xrSkin1W_x86;
 extern xrSkin1W			xrSkin1W_3DNow;
-// extern xrSkin1W			xrSkin1W_SSE;
+// extern xrSkin1W		xrSkin1W_SSE;
 extern xrSkin2W			xrSkin2W_x86;
 extern xrSkin2W			xrSkin2W_SSE;
 extern xrSkin2W			xrSkin2W_3DNow;
@@ -49,7 +49,7 @@ extern "C" {
 		
 		// SSE
 		if (dwFeatures & _CPU_FEATURE_SSE) {
-			T->memCopy		= xrMemCopy_MMXSSE3DNow;
+			T->memCopy	= xrMemCopy_MMXSSE3DNow;
 			T->skin2W	= xrSkin2W_SSE;
 		}
  

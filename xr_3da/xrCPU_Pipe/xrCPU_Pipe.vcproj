@@ -345,6 +345,9 @@
 			<File
 				RelativePath=".\xrSkin1W_3DNow!.cpp">
 			</File>
+			<File
+				RelativePath=".\xrSkin2W_3DNow!.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="SSE"
