@@ -22,7 +22,18 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader._DeleteRT		(rt_Position	);
 }
 
-void	CRenderTarget::Begin			()
+void	CRenderTarget::phase_scene		()
 {
-	RCache.set_RT()
+	RCache.set_RT				(rt_Position->pRT,		0);
+	RCache.set_RT				(rt_Normal->pRT,		1);
+	RCache.set_RT				(rt_Color->pRT,			2);
+	RCache.set_ZB				(HW.pBaseZB);
+}
+
+void	CRenderTarget::phase_combine	()
+{
+	RCache.set_RT				(HW.pBaseRT,			0);
+	RCache.set_RT				(0);
+	RCache.set_RT				(0);
+	RCache.set_ZB				(HW.pBaseZB);
 }

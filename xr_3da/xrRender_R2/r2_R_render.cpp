@@ -163,7 +163,7 @@ void CRender::Render	()
 	Device.Statistic.RenderDUMP.Begin();
 
 	// Target.set_gray					(.5f+sinf(Device.fTimeGlobal)/2.f);
-	Target.Begin					();
+	Target.phase_scene				();
 
 	// HUD render
 	{
@@ -276,7 +276,7 @@ void CRender::Render	()
 	pCreator->Environment.RenderLast		();
 	
 	// Postprocess
-	Target.End				();
+	Target.phase_combine					();
 	
 	// HUD
 	Device.Statistic.RenderDUMP_HUD.Begin	();

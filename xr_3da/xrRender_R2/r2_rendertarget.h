@@ -22,8 +22,8 @@ public:
 	void				OnDeviceCreate		();
 	void				OnDeviceDestroy		();
 
-	void				Begin				();
-	void				End					();
+	void				phase_scene			();
+	void				phase_combine		();
 
 	virtual void		eff_load			(LPCSTR n)		{};
 
