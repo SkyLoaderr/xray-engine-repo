@@ -42,9 +42,10 @@ SERVER_ENTITY_DECLARE_BEGIN0(CSE_ALifeTraderAbstract)
 	void							set_specific_character	(SPECIFIC_CHARACTER_INDEX);
 #endif
 
+	CHARACTER_COMMUNITY_INDEX		m_community_index;
+
 #ifdef XRGAME_EXPORTS
 	ALife::ERelationType			get_relation			(u16 person_id, CHARACTER_COMMUNITY_INDEX);
-	CHARACTER_COMMUNITY_INDEX		m_community_index;
 private:
 	bool							m_character_profile_init;
 #endif
