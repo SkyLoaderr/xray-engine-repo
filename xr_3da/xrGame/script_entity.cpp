@@ -32,7 +32,6 @@ void __stdcall ActionCallback(CKinematics *tpKinematics);
 
 CScriptEntity::CScriptEntity()
 {
-	init					();
 }
 
 CScriptEntity::~CScriptEntity()
@@ -47,10 +46,12 @@ void CScriptEntity::init()
 	ResetScriptData						();
 }
 
-void CScriptEntity::Load				(LPCSTR section)
+DLL_Pure *CScriptEntity::_construct		()
 {
 	m_object	= smart_cast<CGameObject*>(this);
 	VERIFY		(m_object);
+	init		();
+	return		(m_object);
 }
 
 void CScriptEntity::ResetScriptData(void *pointer)

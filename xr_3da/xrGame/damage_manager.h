@@ -10,16 +10,15 @@
 
 class CDamageManager {
 protected:
-	float			m_default_hit_factor;
-	float			m_default_wound_factor;
+	float				m_default_hit_factor;
+	float				m_default_wound_factor;
+	CObject				*m_object;
 
 public:
-					CDamageManager			();
-	virtual			~CDamageManager			();
-			void	init					();
-	virtual	void	Load					(LPCSTR section);
-	virtual	void	reinit					();
-	virtual	void	reload					(LPCSTR section,CInifile* ini);
+						CDamageManager	();
+	virtual				~CDamageManager	();
+	virtual	DLL_Pure	*_construct		();
+	virtual	void		reload			(LPCSTR section,CInifile* ini);
 };
 
 #include "damage_manager_inline.h"

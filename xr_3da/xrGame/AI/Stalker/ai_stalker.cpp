@@ -45,19 +45,9 @@ extern int g_AI_inactive_time;
 CAI_Stalker::CAI_Stalker			()
 {
 	m_movement_manager				= 0;
-	init							();
-	InitTrade						();
-	m_pPhysics_support				= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
-	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
-
-	m_actor_relation_flags.zero		();
-
-	m_animation_manager				= xr_new<CStalkerAnimationManager>();
-	m_brain							= xr_new<CMotivationActionManagerStalker>();
-	m_sight_manager					= xr_new<CSightManager>(this);
-	m_setup_manager					= xr_new<CSSetupManager>(this);
-
-	CStepManager::init_external		(this);
+	shedule.t_min					= 1;
+	shedule.t_max					= 200;
+	m_demo_mode						= false;
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -67,13 +57,6 @@ CAI_Stalker::~CAI_Stalker			()
 	xr_delete						(m_brain);
 	xr_delete						(m_sight_manager);
 	xr_delete						(m_setup_manager);
-}
-
-void CAI_Stalker::init()
-{
-	shedule.t_min					= 1;
-	shedule.t_max					= 200;
-	m_demo_mode						= false;
 }
 
 void CAI_Stalker::reinit			()
@@ -685,4 +668,19 @@ const SRotation CAI_Stalker::Orientation	() const
 const MonsterSpace::SBoneRotation &CAI_Stalker::head_orientation	() const
 {
 	return movement().head_orientation();
+}
+
+DLL_Pure *CAI_Stalker::_construct			()
+{
+	CCustomMonster::_construct			();
+	CObjectHandler::_construct			();
+	CStepManager::_construct			();
+	m_pPhysics_support					= xr_new<CCharacterPhysicsSupport>(CCharacterPhysicsSupport::EType::etStalker,this);
+	m_PhysicMovementControl->AllocateCharacterObject(CPHMovementControl::CharacterType::ai);
+	m_actor_relation_flags.zero			();
+	m_animation_manager					= xr_new<CStalkerAnimationManager>();
+	m_brain								= xr_new<CMotivationActionManagerStalker>();
+	m_sight_manager						= xr_new<CSightManager>(this);
+	m_setup_manager						= xr_new<CSSetupManager>(this);
+	return								(this);
 }

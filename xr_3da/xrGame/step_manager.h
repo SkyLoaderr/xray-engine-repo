@@ -20,27 +20,27 @@ class CStepManager {
 	u32				m_time_anim_started;
 
 public: 
-					CStepManager				();
-	virtual			~CStepManager				();
+						CStepManager			();
+	virtual				~CStepManager			();
 
 	// init on construction
-			void	init_external				(CCustomMonster	*obj) {m_object = obj;}
-	virtual	void	load						(LPCSTR section);
-	virtual void	reinit						();
+	virtual DLL_Pure	*_construct				();
+	virtual	void		load					(LPCSTR section);
+	virtual void		reinit					();
 	
 	// call on set animation
-			void	on_animation_start			(shared_str anim, CBlend *blend);
+			void		on_animation_start		(shared_str anim, CBlend *blend);
 	// call on updateCL
-			void	update						();
+			void		update					();
 	
 	// process event
-	virtual	void	event_on_step				() {}	
+	virtual	void		event_on_step			() {}	
 
 protected:
-			Fvector	get_foot_position			(ELegType leg_type);
+			Fvector		get_foot_position		(ELegType leg_type);
 private:
-			void	reload_foot_bones			();
-			void	load_foot_bones				(CInifile::Sect &data);
+			void		reload_foot_bones		();
+			void		load_foot_bones			(CInifile::Sect &data);
 			
-			float	get_blend_time				();
+			float		get_blend_time			();
 };

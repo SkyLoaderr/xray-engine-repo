@@ -608,6 +608,7 @@ protected:
 
 public:
 	IC		CActorCondition		&conditions					() const;
+	virtual DLL_Pure			*_construct					();
 };
 
 IC	CActorCondition	&CActor::conditions	() const

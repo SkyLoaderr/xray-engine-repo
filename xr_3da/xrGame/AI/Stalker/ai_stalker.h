@@ -338,6 +338,7 @@ protected:
 	virtual CMovementManager			*create_movement_manager		();
 public:
 	IC		CStalkerMovementManager		&movement						() const;
+	virtual DLL_Pure					*_construct						();
 };
 
 #include "ai_stalker_inline.h"

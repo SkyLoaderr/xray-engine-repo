@@ -101,27 +101,27 @@ private:
 	u32											m_sound_mask;
 	CObject										*m_object;
 
-			u32		load					(xr_vector<ref_sound*> &sounds, LPCSTR	prefix, u32 max_count, ESoundTypes type);
-	IC		Fvector compute_sound_point		(const CSoundSingle &sound);
-			void	remove_inappropriate_sounds(u32 sound_mask);
-			void	update_playing_sounds	();
-			bool	check_sound_legacy		(u32 internal_type) const;
-			void	init					();
+			u32			load						(xr_vector<ref_sound*> &sounds, LPCSTR	prefix, u32 max_count, ESoundTypes type);
+	IC		Fvector		compute_sound_point			(const CSoundSingle &sound);
+			void		remove_inappropriate_sounds	(u32 sound_mask);
+			void		update_playing_sounds		();
+			bool		check_sound_legacy			(u32 internal_type) const;
 
 public:
-					CSoundPlayer			();
-	virtual			~CSoundPlayer			();
-	virtual	void	reinit					();
-	virtual	void	reload					(LPCSTR section);
-			u32		add						(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim = 0);
-			void	remove					(u32 internal_type);
-			void	clear					();
-			void	play					(u32 internal_type, u32 max_start_time = 0, u32 min_start_time = 0, u32 max_stop_time = 0, u32 min_stop_time = 0, u32 id = u32(-1));
-			void	update					(float time_delta);
-	IC		void	set_sound_mask			(u32 sound_mask);
-	IC		void	remove_active_sounds	(u32 sound_mask);
-	IC		const xr_vector<CSoundSingle>	&playing_sounds() const;
-	IC		u32		active_sound_count		(bool only_playing = false) const;
+						CSoundPlayer				();
+	virtual				~CSoundPlayer				();
+	virtual	DLL_Pure	*_construct					();
+	virtual	void		reinit						();
+	virtual	void		reload						(LPCSTR section);
+			u32			add							(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim = 0);
+			void		remove						(u32 internal_type);
+			void		clear						();
+			void		play						(u32 internal_type, u32 max_start_time = 0, u32 min_start_time = 0, u32 max_stop_time = 0, u32 min_stop_time = 0, u32 id = u32(-1));
+			void		update						(float time_delta);
+	IC		void		set_sound_mask				(u32 sound_mask);
+	IC		void		remove_active_sounds		(u32 sound_mask);
+	IC		const xr_vector<CSoundSingle> &playing_sounds() const;
+	IC		u32			active_sound_count			(bool only_playing = false) const;
 };
 
 #include "sound_player_inline.h"

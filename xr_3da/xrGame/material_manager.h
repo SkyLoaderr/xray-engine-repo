@@ -27,7 +27,7 @@ protected:
 public:
 								CMaterialManager		();
 	virtual						~CMaterialManager		();
-			void				init					();
+	virtual DLL_Pure			*_construct				();
 	virtual void				Load					(LPCSTR section);
 	virtual void				reinit					();
 	virtual void				reload					(LPCSTR section);

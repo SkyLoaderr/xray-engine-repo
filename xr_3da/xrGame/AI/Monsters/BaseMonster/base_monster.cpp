@@ -61,8 +61,6 @@ CBaseMonster::CBaseMonster()
 
 	StateMan						= 0;
 
-	CStepManager::init_external		(this);
-	
 	CriticalActionInfo				= xr_new<CCriticalActionInfo>();
 
 	DirMan.init_external			(this);
@@ -406,4 +404,11 @@ void CBaseMonster::on_first_update()
 CMovementManager *CBaseMonster::create_movement_manager	()
 {
 	return		(m_movement_manager = xr_new<CMonsterMovement>(this));
+}
+
+DLL_Pure *CBaseMonster::_construct	()
+{
+	CCustomMonster::_construct	();
+	CStepManager::_construct	();
+	return						(this);
 }

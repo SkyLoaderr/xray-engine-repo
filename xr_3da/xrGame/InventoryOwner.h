@@ -37,13 +37,14 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	// общие функции
 
-	virtual BOOL	net_Spawn					(LPVOID DC);
-	virtual void	net_Destroy					();
-			void	Init						();
-	virtual void	Load						(LPCSTR section);
-	virtual void	reinit						();
-	virtual void	reload						(LPCSTR section);
-	virtual void	OnEvent						(NET_Packet& P, u16 type);
+	virtual DLL_Pure	*_construct				();
+	virtual BOOL		net_Spawn				(LPVOID DC);
+	virtual void		net_Destroy				();
+			void		Init					();
+	virtual void		Load					(LPCSTR section);
+	virtual void		reinit					();
+	virtual void		reload					(LPCSTR section);
+	virtual void		OnEvent					(NET_Packet& P, u16 type);
 
 	//serialization
 	virtual void	save						(NET_Packet &output_packet);
@@ -74,7 +75,6 @@ public:
 
 
 	//инициализация объекта торговли
-	void InitTrade();
 	CTrade* GetTrade();
 
 	//для включения разговора

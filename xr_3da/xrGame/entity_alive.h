@@ -29,14 +29,14 @@ public:
 	virtual					~CEntityAlive			();
 
 	// Core events
-			void			init					();
+	virtual DLL_Pure		*_construct				();
 	virtual void			Load					(LPCSTR section);
 	virtual void			reinit					();
 	virtual void			reload					(LPCSTR section);
 
 	//object serialization
-	virtual void			save				(NET_Packet &output_packet);
-	virtual void			load				(IReader &input_packet);
+	virtual void			save					(NET_Packet &output_packet);
+	virtual void			load					(IReader &input_packet);
 
 
 	virtual BOOL			net_Spawn				(LPVOID DC);

@@ -13,6 +13,13 @@ CStepManager::~CStepManager()
 {
 }
 
+DLL_Pure *CStepManager::_construct	()
+{
+	m_object			= smart_cast<CCustomMonster*>(this);
+	VERIFY				(m_object);
+	return				(m_object);
+}
+
 void CStepManager::load(LPCSTR section)
 {	
 	m_legs_count		= pSettings->r_u8		(section, "LegsCount");

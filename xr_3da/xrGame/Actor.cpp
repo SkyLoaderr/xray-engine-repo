@@ -145,8 +145,6 @@ CActor::CActor() : CEntityAlive()
 	Device.seqRender.Add(this,REG_PRIORITY_LOW);
 #endif
 
-	InitTrade();
-
 	//разрешить использование пояса в inventory
 	inventory().SetBeltUseful(true);
 
@@ -1461,4 +1459,12 @@ void CActor::LoadCondition(LPCSTR section)
 bool CActor::IsLimping() const
 {
 	return		(conditions().IsLimping());
+}
+
+DLL_Pure *CActor::_construct		()
+{
+	CEntityAlive::_construct		();
+	CInventoryOwner::_construct		();
+	CMaterialManager::_construct	();
+	return							(this);
 }

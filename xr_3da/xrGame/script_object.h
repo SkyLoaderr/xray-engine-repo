@@ -18,7 +18,7 @@ class CScriptObject :
 public:
 								CScriptObject			();
 	virtual						~CScriptObject			();
-	virtual	void				Load					(LPCSTR section);
+	virtual DLL_Pure			*_construct				();
 	virtual	void				reinit					();
 	virtual BOOL				net_Spawn				(LPVOID DC);
 	virtual void				net_Destroy				();

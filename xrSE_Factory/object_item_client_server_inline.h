@@ -24,14 +24,14 @@ IC	CSObjectItemClientServer::CObjectItemClientServer	(const CLASS_ID &clsid, LPC
 TEMPLATE_SPECIALIZATION
 ObjectFactory::CLIENT_BASE_CLASS *CSObjectItemClientServer::client_object	() const
 {
-	return				(xr_new<CLIENT_TYPE>());
+	return				(xr_new<CLIENT_TYPE>()->_construct());
 }
 #endif
 
 TEMPLATE_SPECIALIZATION
 ObjectFactory::SERVER_BASE_CLASS *CSObjectItemClientServer::server_object	(LPCSTR section) const
 {
-	return				(xr_new<SERVER_TYPE>(section));
+	return				(xr_new<SERVER_TYPE>(section)->init());
 }
 
 #undef TEMPLATE_SPECIALIZATION

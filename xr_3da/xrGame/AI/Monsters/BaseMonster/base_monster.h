@@ -103,6 +103,7 @@ public:
 	virtual void			SelectAnimation					(const Fvector& _view, const Fvector& _move, float speed );
 
 	virtual void			Load							(LPCSTR section);
+	virtual DLL_Pure		*_construct						();
 
 	virtual BOOL			net_Spawn						(LPVOID DC);
 	virtual void			net_Destroy						();

@@ -46,8 +46,8 @@ STR_VECTOR* CEntityAlive::m_pFireParticlesVector = NULL;
 /////////////////////////////////////////////
 CEntityAlive::CEntityAlive()
 {
-	init				();
-	monster_community	= xr_new<MONSTER_COMMUNITY>();
+	m_PhysicMovementControl = xr_new<CPHMovementControl>();
+	monster_community		= xr_new<MONSTER_COMMUNITY>();
 }
 
 CEntityAlive::~CEntityAlive()
@@ -57,15 +57,8 @@ CEntityAlive::~CEntityAlive()
 	xr_delete				(m_entity_condition);
 }
 
-void CEntityAlive::init			()
-{
-	m_PhysicMovementControl = xr_new<CPHMovementControl>();
-}
-
 void CEntityAlive::Load		(LPCSTR section)
 {
-	m_entity_condition				= create_entity_condition();
-
 	CEntity::Load					(section);
 	conditions().LoadCondition		(section);
 	conditions().LoadImmunities		(section);
@@ -568,4 +561,11 @@ float CEntityAlive::g_Health	() const
 float CEntityAlive::g_MaxHealth	() const
 {
 	return conditions().GetMaxHealth()*100.f;
+}
+
+DLL_Pure *CEntityAlive::_construct	()
+{
+	inherited::_construct	();
+	m_entity_condition		= create_entity_condition();
+	return					(this);
 }

@@ -258,6 +258,7 @@ public:
 public:
 								CAI_Rat					();
 	virtual						~CAI_Rat				();
+	virtual DLL_Pure			*_construct				();
 
 public:
 	virtual CInventoryItem*		cast_inventory_item			()	{return this;}

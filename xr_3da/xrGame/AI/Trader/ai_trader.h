@@ -65,7 +65,7 @@ public:
 
 public:
 
-	virtual	void		init			();
+	virtual DLL_Pure	*_construct		();
 	virtual void		Load			( LPCSTR section );
 	virtual BOOL		net_Spawn		( LPVOID DC );
 	virtual void		net_Export		(NET_Packet& P);

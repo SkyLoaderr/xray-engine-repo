@@ -68,12 +68,12 @@ public:
 	virtual						~CScriptEntity			();
 			void				init					();
 	virtual	void				reinit					();
-	virtual	void				Load					(LPCSTR section);
 	virtual BOOL				net_Spawn				(LPVOID DC);
 	virtual void				net_Destroy				();
 	virtual void				shedule_Update			(u32				DT);
 	virtual void				UpdateCL				();
 	virtual CScriptEntity*		cast_script_entity		()	{return this;}
+	virtual DLL_Pure			*_construct				();
 
 public:
 			const Fmatrix		GetUpdatedMatrix		(shared_str caBoneName, const Fvector &tPositionOffset, const Fvector &tAngleOffset);

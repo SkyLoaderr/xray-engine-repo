@@ -17,10 +17,11 @@ CScriptObject::~CScriptObject			()
 {
 }
 
-void CScriptObject::Load				(LPCSTR section)
+DLL_Pure *CScriptObject::_construct		()
 {
-	CScriptEntity::Load				(section);
-	CGameObject::Load				(section);
+	CGameObject::_construct			();
+	CScriptEntity::_construct		();
+	return							(this);
 }
 
 void CScriptObject::reinit				()

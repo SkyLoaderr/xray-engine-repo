@@ -102,7 +102,6 @@ void __stdcall  CCar::cb_Steer(CBoneInstance* B)
 // Core events
 void	CCar::Load					( LPCSTR section )
 {
-	CScriptEntity::Load				(section);
 	inherited::Load					(section);
 	//CPHSkeleton::Load(section);
 	ISpatial*		self				=	smart_cast<ISpatial*> (this);
@@ -1643,4 +1642,11 @@ IC void CCar::fill_doors_map(LPCSTR S,xr_map<u16,SDoor>& doors)
 		}
 
 	}
+}
+
+DLL_Pure *CCar::_construct			()
+{
+	inherited::_construct		();
+	CScriptEntity::_construct	();
+	return						(this);
 }

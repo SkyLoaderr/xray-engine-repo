@@ -283,7 +283,9 @@ static float restore_yaw_speed = 0;
 
 void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float actor_pitch)
 {
+#if 1
 	return;
+#else
 
 	if(!m_bInertionEnable) 
 	{
@@ -350,6 +352,7 @@ void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float ac
 	inertion.rotateY(cur_yaw-actor_yaw);
 	//inertion.rotateY(0.2f);
 	hud_trans.mulB(inertion);
+#endif
 }
 
 void CHudItem::UpdateCL()

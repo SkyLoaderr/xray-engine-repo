@@ -13,38 +13,32 @@
 
 CDamageManager::CDamageManager			()
 {
-	init								();
 }
 
 CDamageManager::~CDamageManager			()
 {
 }
 
-void CDamageManager::init				()
+DLL_Pure *CDamageManager::_construct	()
 {
-	m_default_hit_factor				= 1.f;
-	m_default_wound_factor				= 1.f;
-}
-
-void CDamageManager::Load				(LPCSTR section)
-{
-}
-
-void CDamageManager::reinit				()
-{
+	m_object				= smart_cast<CObject*>(this);
+	VERIFY					(m_object);
+	return					(m_object);
 }
 
 void CDamageManager::reload				(LPCSTR section,CInifile* ini)
 {
-	string32						buffer;
+	m_default_hit_factor	= 1.f;
+	m_default_wound_factor	= 1.f;
 
-	CObject					*object = smart_cast<CObject*>(this);
-	VERIFY					(object);
+	string32				buffer;
 
+	CKinematics				*kinematics = smart_cast<CKinematics*>(m_object->Visual());
+	VERIFY					(kinematics);
 	//инициализировать default параметрами
-	for(u16 i = 0; i<smart_cast<CKinematics*>(object->Visual())->LL_BoneCount(); i++)
+	for(u16 i = 0; i<kinematics->LL_BoneCount(); i++)
 	{
-		CBoneInstance			&bone_instance = smart_cast<CKinematics*>(object->Visual())->LL_GetBoneInstance(i);
+		CBoneInstance			&bone_instance = kinematics->LL_GetBoneInstance(i);
 		bone_instance.set_param	(0,1.f);
 		bone_instance.set_param	(1,1.f);
 		bone_instance.set_param	(2,1.f);
@@ -59,10 +53,10 @@ void CDamageManager::reload				(LPCSTR section,CInifile* ini)
 				m_default_wound_factor  = (float)atof(_GetItem(*(*i).second,2,buffer));
 			}
 			else {
-				VERIFY					(object);
-				int						bone = smart_cast<CKinematics*>(object->Visual())->LL_BoneID(i->first);
+				VERIFY					(m_object);
+				int						bone = kinematics->LL_BoneID(i->first);
 				R_ASSERT2				(BI_NONE != bone, *(*i).first);
-				CBoneInstance			&bone_instance = smart_cast<CKinematics*>(object->Visual())->LL_GetBoneInstance(u16(bone));
+				CBoneInstance			&bone_instance = kinematics->LL_GetBoneInstance(u16(bone));
 				bone_instance.set_param	(0,(float)atof(_GetItem(*(*i).second,0,buffer)));
 				bone_instance.set_param	(1,(float)atoi(_GetItem(*(*i).second,1,buffer)));
 				bone_instance.set_param	(2,(float)atof(_GetItem(*(*i).second,2,buffer)));

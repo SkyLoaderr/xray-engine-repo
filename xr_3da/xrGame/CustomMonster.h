@@ -136,6 +136,7 @@ public:
 
 public:
 
+	virtual DLL_Pure	*_construct				();
 	virtual BOOL		net_Spawn				( LPVOID DC);
 	virtual void		Die						( CObject* who);
 

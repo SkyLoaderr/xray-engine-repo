@@ -204,8 +204,6 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 		return				(FALSE);
 
 	// load damage params
-	CDamageManager::Load	(*cNameSect());
-
 	CSE_Abstract			*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeCreatureAbstract	*E	= smart_cast<CSE_ALifeCreatureAbstract*>(e);
 	if (!E) {
@@ -311,8 +309,6 @@ void CEntity::reinit			()
 {
 	inherited::reinit			();
 
-	CDamageManager::reinit		();
-
 	m_level_death_time			= 0;
 	m_game_death_time			= 0;
 }
@@ -335,4 +331,11 @@ bool CEntity::IsMyCamera		()const	{ return (smart_cast<const CEntity*>(g_pGameLe
 
 void CEntity::set_ready_to_save	()
 {
+}
+
+DLL_Pure *CEntity::_construct	()
+{
+	inherited::_construct		();
+	CDamageManager::_construct	();
+	return						(this);
 }

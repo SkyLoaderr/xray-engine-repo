@@ -32,10 +32,23 @@
 //////////////////////////////////////////////////////////////////////////
 CInventoryOwner::CInventoryOwner			()
 {
-	Init						();
+	m_pCharacterInfo = NULL;
+	m_pTrade = NULL;
+	
+	m_inventory					= xr_new<CInventory>();
+	m_pCharacterInfo			= xr_new<CCharacterInfo>();
+	
+	EnableTalk();
+	
 	m_pPdaCallback				= xr_new<CScriptCallback>();
 	m_pInfoCallback				= xr_new<CScriptCallback>();
 	m_known_info_registry		= xr_new<CInfoPortionWrapper>();
+}
+
+DLL_Pure *CInventoryOwner::_construct		()
+{
+	m_pTrade					= xr_new<CTrade>(this);
+	return						(0);
 }
 
 CInventoryOwner::~CInventoryOwner			() 
@@ -46,17 +59,6 @@ CInventoryOwner::~CInventoryOwner			()
 	xr_delete					(m_pPdaCallback);
 	xr_delete					(m_pInfoCallback);
 	xr_delete					(m_known_info_registry);
-}
-
-void CInventoryOwner::Init					()
-{
-	m_pCharacterInfo = NULL;
-	m_pTrade = NULL;
-	
-	m_inventory					= xr_new<CInventory>();
-	m_pCharacterInfo			= xr_new<CCharacterInfo>();
-	
-	EnableTalk();
 }
 
 void CInventoryOwner::Load					(LPCSTR section)
@@ -259,10 +261,6 @@ void CInventoryOwner::SendPdaMessage(u16 who, EPdaMsg msg, INFO_INDEX info_index
 	GetPDA()->SendMessageID(who, msg, info_index);
 }
 
-void CInventoryOwner::InitTrade()
-{
-	m_pTrade = xr_new<CTrade>(this);
-}
 CTrade* CInventoryOwner::GetTrade() 
 {
 	R_ASSERT2(m_pTrade, "trade for object does not init yet");

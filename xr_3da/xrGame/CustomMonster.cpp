@@ -69,10 +69,6 @@ CCustomMonster::~CCustomMonster	()
 
 void CCustomMonster::Load		(LPCSTR section)
 {
-	CScriptEntity::Load			(section);
-	m_memory_manager			= xr_new<CMemoryManager>(this);
-	m_movement_manager			= create_movement_manager();
-
 	inherited::Load				(section);
 	CLocationManager::Load		(section);
 	CMaterialManager::Load		(section);
@@ -905,4 +901,17 @@ const SRotation CCustomMonster::Orientation	() const
 const MonsterSpace::SBoneRotation &CCustomMonster::head_orientation	() const
 {
 	return					(movement().m_body);
+}
+
+DLL_Pure *CCustomMonster::_construct()
+{
+	m_memory_manager			= xr_new<CMemoryManager>(this);
+	m_movement_manager			= create_movement_manager();
+
+	inherited::_construct		();
+	CScriptEntity::_construct	();
+	CSoundPlayer::_construct	();
+	CMaterialManager::_construct();
+
+	return						(this);
 }

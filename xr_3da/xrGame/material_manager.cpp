@@ -14,24 +14,24 @@
 
 CMaterialManager::CMaterialManager	()
 {
-	init					();
+	m_my_material_idx		= GAMEMTL_NONE_IDX;
+	m_run_mode				= false;
+	m_object				= 0;
 }
 
 CMaterialManager::~CMaterialManager	()
 {
 }
 
-void CMaterialManager::init			()
+DLL_Pure *CMaterialManager::_construct	()
 {
-	m_my_material_idx		= GAMEMTL_NONE_IDX;
-	m_run_mode				= false;
-	m_object				= 0;
+	m_object				= smart_cast<CObject*>(this);
+	VERIFY					(m_object);
+	return					(m_object);
 }
 
 void CMaterialManager::Load			(LPCSTR section)
 {
-	m_object				= smart_cast<CObject*>(this);
-	VERIFY					(m_object);
 	if (!pSettings->line_exist(section,"material")) {
 		R_ASSERT3(false,"Material not found in the section ",*(m_object->cNameSect()));
 	}

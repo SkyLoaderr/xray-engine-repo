@@ -23,8 +23,6 @@
 
 CAI_Trader::CAI_Trader()
 {
-	InitTrade();
-	init();
 } 
 
 CAI_Trader::~CAI_Trader()
@@ -34,7 +32,6 @@ CAI_Trader::~CAI_Trader()
 
 void CAI_Trader::Load(LPCSTR section)
 {
-	CScriptEntity::Load				(section);
 	setEnabled						(false);
 	inherited::Load					(section);
 
@@ -45,10 +42,6 @@ void CAI_Trader::Load(LPCSTR section)
 	inventory().SetMaxWeight(max_weight*1000);
 	inventory().SetMaxRuck(1000000);
 	inventory().CalcTotalWeight();
-}
-
-void CAI_Trader::init()
-{
 }
 
 void CAI_Trader::reinit	()
@@ -555,4 +548,13 @@ ALife::ERelationType  CAI_Trader::tfGetRelationType	(const CEntityAlive *tpEntit
 		return relation;
 	else
 		return inherited::tfGetRelationType(tpEntityAlive);
+}
+
+DLL_Pure *CAI_Trader::_construct	()
+{
+	CEntityAlive::_construct	(); 
+	CInventoryOwner::_construct	();
+	CScriptEntity::_construct	();
+	CSoundPlayer::_construct	();
+	return						(this);
 }

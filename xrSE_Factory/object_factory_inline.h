@@ -101,18 +101,18 @@ IC	int	CObjectFactory::script_clsid	(const CLASS_ID &clsid) const
 #ifndef NO_XR_GAME
 IC	CObjectFactory::CLIENT_BASE_CLASS *CObjectFactory::client_object	(const CLASS_ID &clsid) const
 {
-	return				(item(clsid).client_object()->_construct());
+	return				(item(clsid).client_object());
 }
 
 IC	CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::server_object	(const CLASS_ID &clsid, LPCSTR section) const
 {
-	return				(item(clsid).server_object(section)->init());
+	return				(item(clsid).server_object(section));
 }
 #else
 IC	CObjectFactory::SERVER_BASE_CLASS *CObjectFactory::server_object	(const CLASS_ID &clsid, LPCSTR section) const
 {
 	const CObjectItemAbstract	*object = item(clsid,true);
-	return				(object ? object->server_object(section)->init() : 0);
+	return				(object ? object->server_object(section) : 0);
 }
 #endif
 

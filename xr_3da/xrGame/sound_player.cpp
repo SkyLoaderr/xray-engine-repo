@@ -16,7 +16,14 @@
 
 CSoundPlayer::CSoundPlayer			()
 {
-	init							();
+	seed							(u32(CPU::GetCycleCount() & 0xffffffff));
+}
+
+DLL_Pure *CSoundPlayer::_construct	()
+{
+	m_object						= smart_cast<CObject*>(this);
+	VERIFY							(m_object);
+	return							(m_object);
 }
 
 CSoundPlayer::~CSoundPlayer			()
@@ -30,11 +37,6 @@ void CSoundPlayer::clear			()
 		remove						(m_sounds.begin()->first);
 }
 
-void CSoundPlayer::init				()
-{
-	seed							(u32(CPU::GetCycleCount() & 0xffffffff));
-}
-
 void CSoundPlayer::reinit			()
 {
 }
@@ -44,8 +46,6 @@ void CSoundPlayer::reload			(LPCSTR section)
 	clear							();
 	remove_active_sounds			(u32(-1));
 	VERIFY							(m_playing_sounds.empty());
-	m_object						= smart_cast<CObject*>(this);
-	VERIFY							(m_object);
 }
 
 u32 CSoundPlayer::add				(LPCSTR prefix, u32 max_count, ESoundTypes type, u32 priority, u32 mask, u32 internal_type, LPCSTR bone_name, LPCSTR head_anim)
