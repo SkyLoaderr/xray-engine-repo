@@ -19,11 +19,12 @@ void CPHWorld::Render()
 {
 	Device.Shader.OnFrameEnd		();
 	Fvector center;
+	Jeep.DynamicData.CalculateData();
 	memcpy(&center,Jeep.DynamicData.pos,sizeof(Fvector));
 	Device.Primitive.dbg_DrawAABB	(center,Jeep.jeepBox[0],Jeep.jeepBox[1],Jeep.jeepBox[2],0xffffffff);
 	center.x-=Jeep.jeepBox[0]/2.;
 	center.x+=Jeep.cabinBox[0]/2.;
-	center.y-=Jeep.jeepBox[1]/2.;
+	center.y+=Jeep.jeepBox[1]/2.;
 	center.y+=Jeep.cabinBox[1]/2.;
 	Device.Primitive.dbg_DrawAABB	(center,Jeep.cabinBox[0],Jeep.cabinBox[1],Jeep.cabinBox[2],0xffffffff);
 	Fmatrix M;
