@@ -480,15 +480,16 @@ HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
 
     if (pCaps->PixelShaderVersion < D3DPS_VERSION(2, 0))
         return E_FAIL;
+	if (pCaps->VertexShaderVersion < D3DVS_VERSION(2, 0))
+		return E_FAIL;
 
-	/*
 	if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0)
 	{
 		return E_FAIL;
 	}
-	*/
 
 	// If device doesn't support 1.1 vertex shaders in HW, switch to SWVP.
+	/*
     if (pCaps->VertexShaderVersion < D3DVS_VERSION(1, 1))
     {
         if ((dwBehavior & D3DCREATE_SOFTWARE_VERTEXPROCESSING) == 0)
@@ -496,6 +497,7 @@ HRESULT CMyD3DApplication::ConfirmDevice( D3DCAPS9* pCaps, DWORD dwBehavior,
             return E_FAIL;
         }
     }
+	*/
 
     return S_OK;
 }
