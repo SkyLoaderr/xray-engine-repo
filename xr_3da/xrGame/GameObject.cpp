@@ -8,6 +8,7 @@
 #include "PhysicsShell.h"
 #include "ai_space.h"
 #include "CustomMonster.h"
+#include "physicobject.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -114,56 +115,65 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	CSE_Temporary			*l_tpTemporary = dynamic_cast<CSE_Temporary*>(E);
 	u32						l_dwDesiredNodeID = a_obj ? a_obj->m_tNodeID : (l_tpTemporary ? l_tpTemporary->m_tNodeID : u32(-1));
 	
-	if (E->ID_Parent == 0xffff) {
-		if (l_dwDesiredNodeID != u32(-1)) {
-			CAI_Space&	AI		= getAI();
-			R_ASSERT			(AI.bfCheckIfGraphLoaded());
-			//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
-			//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
-			//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
-			//Msg("Net_spawn %s",cName());
-			if ((l_dwDesiredNodeID < getAI().Header().count) && l_dwDesiredNodeID)
-				AI_NodeID			=	AI.q_Node	(l_dwDesiredNodeID,Position());
-			else
-				AI_NodeID			=	AI.q_LoadSearch(Position());
+	if (!getAI().bfCheckIfMapLoaded()) {
+		AI_NodeID			= u32(-1);
+		AI_Node				= 0;
+	}
+	else
+		if (E->ID_Parent == 0xffff) {
+			if (l_dwDesiredNodeID != u32(-1)) {
+				CAI_Space&	AI		= getAI();
+				R_ASSERT			(AI.bfCheckIfGraphLoaded());
+				//Msg					("G2L : %f",getAI().m_tpaGraph[a_obj->m_tGraphID].tLocalPoint.distance_to(Position()));
+				//		AI_NodeID			=	AI.q_Node	(getAI().m_tpaGraph[a_obj->m_tGraphID].tNodeID,Position());
+				//		Msg					("G2L : %f",getAI().tfGetNodeCenter(a_obj->m_tNodeID).distance_to(Position()));
+				//Msg("Net_spawn %s",cName());
+				if ((l_dwDesiredNodeID < getAI().Header().count) && l_dwDesiredNodeID)
+					AI_NodeID			=	AI.q_Node	(l_dwDesiredNodeID,Position());
+				else
+					AI_NodeID			=	AI.q_LoadSearch(Position());
 
-			if (!AI_NodeID || (AI_NodeID == u32(-1))) {
-				Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
-				R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
-				AI_NodeID			= u32(-1);
-				AI_Node				= NULL;
+				if (!AI_NodeID || (AI_NodeID == u32(-1))) {
+					Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
+					R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
+					AI_NodeID			= u32(-1);
+					AI_Node				= NULL;
+				}
+				else {
+					AI_Node				= AI.Node(AI_NodeID);
+					//Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
+					getAI().ref_add		(AI_NodeID);
+					CPhysicObject		*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
+					if (!l_tpPhysicObject)
+						Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+				}
 			}
 			else {
-				AI_Node				= AI.Node(AI_NodeID);
-				//Msg					("REF_ADD (%s) %d = %d",cName(),AI_NodeID,getAI().q_mark[AI_NodeID] + 1);
-				getAI().ref_add		(AI_NodeID);
-				Position().y		= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+				Fvector					nPos = Position();
+				int node				= getAI().q_LoadSearch(nPos);
+
+				if (node<=0)			{
+					Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
+					R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
+					AI_NodeID			= u32(-1);
+					AI_Node				= NULL;
+				} else {
+					AI_NodeID			= u32(node);
+					AI_Node				= getAI().Node(AI_NodeID);
+					getAI().ref_add		(AI_NodeID);
+					CPhysicObject		*l_tpPhysicObject = dynamic_cast<CPhysicObject*>(this);
+					if (!l_tpPhysicObject)
+						Position().y	= getAI().ffGetY(*AI_Node,Position().x,Position().z);
+				}
 			}
 		}
 		else {
-			Fvector					nPos = Position();
-			int node				= getAI().q_LoadSearch(nPos);
-
-			if (node<=0)			{
-				Msg					("! ERROR: AI node not found for object '%s'. (%f,%f,%f)",cName(),nPos.x,nPos.y,nPos.z);
-				R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
-				AI_NodeID			= u32(-1);
-				AI_Node				= NULL;
-			} else {
-				AI_NodeID			= u32(node);
-				AI_Node				= getAI().Node(AI_NodeID);
-				getAI().ref_add		(AI_NodeID);
-				Position().y		= getAI().ffGetY(*AI_Node,Position().x,Position().z);
-			}
+			CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
+			VERIFY						(O);
+			Position().set				(O->Position());
+			AI_NodeID					= O->AI_NodeID;
+			AI_Node						= O->AI_Node;
 		}
-	}
-	else {
-		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
-		VERIFY						(O);
-		Position().set				(O->Position());
-		AI_NodeID					= O->AI_NodeID;
-		AI_Node						= O->AI_Node;
-	}
 
 #pragma todo("Oles to Dima: Incorrect spawning, just hackery?")
 #pragma todo("Dima to Oles: Parent will be assigned after object's net_spawn, though I need it filled correctly during net_spawn to prevent illegal node ref_add/ref_dec in the sector_detect")
@@ -185,8 +195,7 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 
 void CGameObject::spatial_move		()
 {
-	if (H_Parent())
-	{
+	if (H_Parent()) {
 //		// Use parent information
 		CGameObject* O	= dynamic_cast<CGameObject*>(H_Root());
 		VERIFY						(O);
@@ -203,7 +212,7 @@ void CGameObject::spatial_move		()
 	} else {
 		// We was moved - so find _new AI-Node
 //		if ((AI_Node) && (Visual())) {
-		if (Visual()) {
+		if (Visual() && getAI().bfCheckIfMapLoaded()) {
 			Fvector		Pos	= Visual()->vis.sphere.P;		  
 			Pos.add		(Position());
 			CAI_Space&	AI = getAI();
@@ -310,6 +319,29 @@ void CGameObject::OnH_B_Chield()
 {
 	inherited::OnH_B_Chield();
 	PHSetPushOut();
+}
+
+void CGameObject::OnH_B_Independent()
+{
+	inherited::OnH_B_Independent();
+	if (!getAI().bfCheckIfMapLoaded())
+		return;
+
+	if ((AI_NodeID < getAI().Header().count) && AI_NodeID)
+		AI_NodeID			=	getAI().q_Node	(AI_NodeID,Position());
+	else
+		AI_NodeID			=	getAI().q_LoadSearch(Position());
+
+	if (!AI_NodeID || (AI_NodeID == u32(-1))) {
+		Msg					("! GameObject::NET_Spawn : Corresponding node hasn't been found for object %s",cName());
+		R_ASSERT3			(!getAI().bfCheckIfMapLoaded(),"Cannot find a proper node for object ",cName());
+		AI_NodeID			= u32(-1);
+		AI_Node				= NULL;
+	}
+	else
+		AI_Node				= getAI().Node(AI_NodeID);
+
+	getAI().ref_add			(AI_NodeID);
 }
 
 void CGameObject::PHSetPushOut()
