@@ -243,8 +243,13 @@ void CStalkerMovementManager::update(u32 time_delta)
 
 	update_path						();
 
-	if ((m_movement_type != eMovementTypeStand) && (m_mental_state == eMentalStateFree) && (path_direction_angle() >= PI_DIV_4) && (speed() > EPS_L))
-		m_mental_state		= eMentalStateDanger;
+	if (m_mental_state == eMentalStateFree) {
+		float						max_angle = PI_DIV_4;
+		if ((m_movement_type == eMovementTypeStand) || (speed() < EPS_L))
+			max_angle				= PI_DIV_2;
+		if (path_direction_angle() >= max_angle)
+			m_mental_state			= eMentalStateDanger;
+	}
 
 	set_desirable_speed				(custom_monster->m_fCurSpeed);
 }

@@ -89,7 +89,8 @@ LPCSTR caMovementActionNames[] = {
 
 LPCSTR caInPlaceNames		[] = {
 	"idle_1",
-	"turn",
+	"turn_left",
+	"turn_right",
 	"jump_begin",
 	"jump_idle",
 	"jump_end",
@@ -459,20 +460,23 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 void CStalkerAnimations::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 {
 	EBodyState				l_tBodyState = (eBodyStateStand == m_object->body_state()) && m_object->IsLimping() ? eBodyStateStandDamaged : m_object->body_state();
+	
+	// moving
+	float					yaw, pitch;
+	m_object->GetDirectionAngles	(yaw,pitch);
+	yaw						= angle_normalize_signed(-yaw);
+
 	if ((m_object->speed() < EPS_L) || (eMovementTypeStand == m_object->movement_type())) {
 		// standing
 		if (angle_difference(m_object->body_orientation().target.yaw,m_object->body_orientation().current.yaw) <= EPS_L) {
 			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[0];
 		}
 		else {
-			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[1];
+			bool			left = (angle_difference(yaw,angle_normalize_signed(m_object->head_orientation().current.yaw + PI_DIV_2)) <= PI_DIV_4);
+			tpLegsAnimation	= m_tAnims.A[m_object->body_state()].m_tInPlace.A[left ? 1 : 2];
 		}
 		return;
 	}
-	// moving
-	float					yaw, pitch;
-	m_object->GetDirectionAngles	(yaw,pitch);
-	yaw						= angle_normalize_signed(-yaw);
 //	float					fAngleDifference = _abs(angle_normalize_signed(m_object->body_orientation().current.yaw - m_object->head_orientation().current.yaw));
 	float					fAnimationSwitchFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f : 1.f - (fAngleDifference - PI_DIV_2)/(PI - PI_DIV_2);
 	if	(((eMovementDirectionForward == m_tDesirableDirection) && (eMovementDirectionBack == m_tMovementDirection))	||	((eMovementDirectionBack == m_tDesirableDirection) && (eMovementDirectionForward == m_tMovementDirection)))
