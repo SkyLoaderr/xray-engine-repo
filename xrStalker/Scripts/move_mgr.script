@@ -304,7 +304,6 @@ function move_mgr:update()
 		self.state = state_moving
 
 		if patrol_walk_count == 1 then
-			printf("_bp1")
 			self:waypoint_callback(self.object, nil, self.last_index)
 		else
 			self:reset_sl() -- отпустить прожектор
@@ -485,6 +484,23 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.cur_anim_set = default_anim
 		end
 
+		printf("_BP1")
+		local att = self.path_look_info[pt_chosen_idx]["att"]
+		if att then
+			att = tonumber(att)
+			printf("_BP2: %d", att)
+			if att == 1 then
+				self.shall_shoot = 1
+			elseif att == 2 then
+				self.shall_shoot = 2
+			else
+				self.shall_shoot = nil
+			end
+		else
+			self.shall_shoot = nil
+		end
+		printf("_BP3")
+
 		printf("[%s] pt_chosen_idx == %d", self.object:name(), pt_chosen_idx)
 		if not suggested_snd then -- в path_walk звук не задан, проверить, задан ли он на точке
 			suggested_snd = self.path_look_info[pt_chosen_idx]["snd"]
@@ -507,6 +523,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 
 		if pt_chosen_idx ~= self.last_look_index then
+			printf("_BP4")
 			xr_state.anim_update(nil, self.object) -- не играть анимацию во время поворота!
 			self.expiration_time = device():time_global() + 700 -- дать 700 мс на начало поворота
 			printf("move_mgr:waypoint_callback(): look_at_waypoint")
