@@ -21,6 +21,7 @@ local sync = {}
 class "move_mgr"
 
 function move_mgr:__init()
+	self.dialog_mgr = xr_dialogs.dialog_mgr()
 end
 
 function move_mgr:initialize(npc)
@@ -115,7 +116,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 		s[self.object:id()] = -1
 	end
 
-	--dialog_mgr:reset(self.object, team)
+	self.dialog_mgr:reset(self.object, team)
 
 	self.last_index = nil
 	self:simulate_callback_if_neccessary()
@@ -159,7 +160,9 @@ end
 
 function move_mgr:update_sound()
 	if self.sound then
-		xr_sound.sound_update(self.object, self.sound)
+		if self.dialog_mgr:active() == nil then
+			xr_sound.sound_update(self.object, self.sound)
+		end
 		if self.play_once then
 			self.sound = nil
 		end
@@ -239,7 +242,7 @@ end
 function move_mgr:update()
 	--printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
 
-	--dialog_mgr:update(self.object, self.team)
+	self.dialog_mgr:update()
 
 	-- Если это не тот тип звука, который нужно проиграть всего один раз, то играть его:
 	if not self.play_sound_after_anim_start then
@@ -354,6 +357,8 @@ function move_mgr:update()
 end
 
 function move_mgr:finalize(npc)
+	self.dialog_mgr:finalize()
+
 	self.object:clear_callback(game_object.movement)
 
 	if self.team then
@@ -442,12 +447,22 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 		-- Этот звук играть прямо сейчас, а не когда начнется анимация на позиции (после поворота и т.д.):
 		if not self.play_sound_after_anim_start then
-			self:update_sound()
+			if self.dialog_mgr:active() == nil then
+				self:update_sound()
+			end
 		end
 	else
 		self.sound = nil
 	end
 	-- </ЗВУК>
+
+	local suggested_dlg = self.path_walk_info[index]["ds"]
+	if suggested_dlg then
+		self.dialog_mgr:enable(parse_names(suggested_dlg))
+	else
+		self.dialog_mgr:disable()
+	end
+	self.dialog_mgr:update()
 
 	local suggested_running = self.path_walk_info[index]["r"]
 	if suggested_running == "true" then
