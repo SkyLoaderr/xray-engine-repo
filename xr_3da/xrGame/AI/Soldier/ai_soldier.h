@@ -441,7 +441,7 @@ class CAI_Soldier : public CCustomMonster
 			if (m_bLessCoverLook)
 				SetLessCoverLook(AI_Node);
 			else
-				SetDirectionLook();\
+				SetDirectionLook();
 			vfSetFire(a,Group);
 			vfSetMovementType(b,c,d);
 		}

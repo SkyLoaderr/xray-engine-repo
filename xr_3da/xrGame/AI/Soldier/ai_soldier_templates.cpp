@@ -248,15 +248,15 @@ void CAI_Soldier::vfSetMovementType(char cBodyState, char cMovementType,float fM
 	float dot = view.dotproduct(move);
 	Fvector cross; 
 	cross.crossproduct(view,move);
-	if ((cMovementType == WALK_FORWARD_0) || 
-		(cMovementType == RUN_FORWARD_0) || 
-		(cMovementType == WALK_FORWARD_1) || 
-		(cMovementType == RUN_FORWARD_1) || 
-		(cMovementType == WALK_FORWARD_2) || 
-		(cMovementType == RUN_FORWARD_2) || 
-		(cMovementType == WALK_FORWARD_3) || 
-		(cMovementType == RUN_FORWARD_3) || 
-		(cMovementType == WALK_FORWARD_4)) {
+	if ((cMovementType != WALK_FORWARD_0) && 
+		(cMovementType != RUN_FORWARD_0) && 
+		(cMovementType != WALK_FORWARD_1) && 
+		(cMovementType != RUN_FORWARD_1) && 
+		(cMovementType != WALK_FORWARD_2) && 
+		(cMovementType != RUN_FORWARD_2) && 
+		(cMovementType != WALK_FORWARD_3) && 
+		(cMovementType != RUN_FORWARD_3) && 
+		(cMovementType != WALK_FORWARD_4)) {
 		m_cMovementType = WALK_NO;
 		m_fCurSpeed = 0.0f;
 	}
