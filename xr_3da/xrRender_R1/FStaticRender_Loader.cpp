@@ -138,30 +138,7 @@ void CRender::LoadBuffers	(IReader *base_fs)
 			fs().advance		(vCount*vSize);
 		}
 	} else {
-		// Use DX7-style FVFs
-		destructor<IReader>		fs	(base_fs->open_chunk(fsL_VBUFFERS));
-		u32 count				= fs().r_u32();
-		DCL.resize				(count);
-		VB.resize				(count);
-		for (u32 i=0; i<count; i++)
-		{
-			u32 vFVF			= fs().r_u32	();
-			u32 vCount			= fs().r_u32	();
-			u32 vSize			= D3DXGetFVFVertexSize	(vFVF);
-			Msg("* [Loading VB] %d verts, %d Kb",vCount,(vCount*vSize)/1024);
-
-			D3DVERTEXELEMENT9*	dcl_dst	= DCL[i].begin();
-			CHK_DX				(D3DXDeclaratorFromFVF	(vFVF,dcl_dst));
-
-			// Create and fill
-			BYTE*	pData		= 0;
-			R_CHK				(HW.pDevice->CreateVertexBuffer(vCount*vSize,dwUsage,0,D3DPOOL_MANAGED,&VB[i],0));
-			R_CHK				(VB[i]->Lock(0,0,(void**)&pData,0));
-			Memory.mem_copy		(pData,fs().pointer(),vCount*vSize);
-			VB[i]->Unlock		();
-
-			fs().advance		(vCount*vSize);
-		}
+		Debug.fatal				("DX7-style FVFs unsupported");
 	}
 
 	// Index buffers
