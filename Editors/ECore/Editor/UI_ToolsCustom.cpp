@@ -75,22 +75,22 @@ void CToolsCustom::SetAction(ETAction action)
         case etaScale:   UI->GetD3DWindow()->Cursor = crVSplit;    break;
         default:         UI->GetD3DWindow()->Cursor = crHelp;
     }
-    UI->RedrawScene();
-    UI->Command(COMMAND_REFRESH_UI_BAR);
+    UI->RedrawScene(); 
+    ExecCommand(COMMAND_REFRESH_UI_BAR);
 }
 
 void CToolsCustom::SetAxis(ETAxis axis)
 {
 	m_Axis=axis;
     UI->RedrawScene();
-    UI->Command(COMMAND_REFRESH_UI_BAR);
+    ExecCommand(COMMAND_REFRESH_UI_BAR);
 }				
 
 void CToolsCustom::SetSettings(u32 mask, BOOL val)
 {
 	m_Settings.set(mask,val);
     UI->RedrawScene();
-    UI->Command(COMMAND_REFRESH_UI_BAR);
+    ExecCommand(COMMAND_REFRESH_UI_BAR);
 }				
 
 

@@ -60,7 +60,7 @@ bool TUI_CustomControl::HiddenMode(){
 //------------------------------------------------------------------------------
 CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift, TBeforeAppendCallback before, TAfterAppendCallback after)
 {
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return 0;}
+    if (Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return 0;}
     Fvector p,n;
     CCustomObject* obj=0;
     if (LUI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,1,&n)){
@@ -83,7 +83,7 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
 		obj->MoveTo(p,n);
         Scene->SelectObjects(false,parent_tool->ClassID);
 		Scene->AppendObject(obj);
-		if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOW_PROPERTIES);
+		if (Shift.Contains(ssCtrl)) ExecCommand(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return obj;
@@ -136,7 +136,7 @@ bool __fastcall TUI_CustomControl::SelectStart(TShiftState Shift)
 	EObjClass cls = LTools->CurrentClassID();
 
 	if (CheckSnapList(Shift)) return false;
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
+    if (Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if (!(Shift.Contains(ssCtrl)||Shift.Contains(ssAlt))) Scene->SelectObjects( false, cls);
 
     int cnt 		= Scene->RaySelect(Shift.Contains(ssCtrl)?-1:Shift.Contains(ssAlt)?0:1,parent_tool->ClassID);
@@ -170,7 +170,7 @@ bool __fastcall TUI_CustomControl::MovingStart(TShiftState Shift)
 {
 	EObjClass cls = LTools->CurrentClassID();
 
-    if(Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
+    if(Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene->SelectionCount(true,cls)==0) return false;
 
     if (Shift.Contains(ssCtrl)){
@@ -245,7 +245,7 @@ bool __fastcall TUI_CustomControl::RotateStart(TShiftState Shift)
 {
 	EObjClass cls = LTools->CurrentClassID();
 
-    if(Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
+    if(Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene->SelectionCount(true,cls)==0) return false;
 
     m_RotateVector.set(0,0,0);
@@ -285,7 +285,7 @@ bool __fastcall TUI_CustomControl::RotateEnd(TShiftState _Shift)
 bool __fastcall TUI_CustomControl::ScaleStart(TShiftState Shift)
 {
 	EObjClass cls = LTools->CurrentClassID();
-    if(Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
+    if(Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,parent_tool->ClassID); return false;}
     if(Scene->SelectionCount(true,cls)==0) return false;
 	return true;
 }

@@ -44,8 +44,6 @@ extern void __stdcall xrSkin2W_x86	(vertRender* D, vertBoned2W* S, u32 vCount, C
 void CEngine::Initialize(void)
 {
 	// Other stuff
-	EFS.OnCreate		   	();
-
 	string256               fn;
     strconcat               (fn,UI->EditorName(),".log");
     FS.update_path			(fn,_local_root_,fn);
@@ -78,6 +76,5 @@ void CEngine::ReloadSettings()
 void CEngine::Destroy()
 {
     xr_delete				(pSettings);
-	EFS.OnDestroy			();
 	if (hPSGP)	{ FreeLibrary(hPSGP); hPSGP=0; }
 }

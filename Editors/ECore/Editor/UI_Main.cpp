@@ -36,8 +36,6 @@ TUI::TUI()
  	m_SelectionRect = false;
     bMouseInUse		= false;
 
-	m_LastFileName	= "";
-
     m_bHintShowing	= false;
 	m_pHintWindow	= 0;
 	m_LastHint		= "";
@@ -60,7 +58,7 @@ void TUI::OnDeviceDestroy()
 
 bool TUI::IsModified()
 {
-	return Command(COMMAND_CHECK_MODIFIED);
+	return ExecCommand(COMMAND_CHECK_MODIFIED);
 }
 //---------------------------------------------------------------------------
 
@@ -292,7 +290,7 @@ void TUI::Redraw(){
 	VERIFY(m_bReady);
 	if (m_Flags.is(flResize)){ 
     	Device.Resize	(m_D3DWindow->Width,m_D3DWindow->Height); m_Flags.set(flResize,FALSE);
-        Command			(COMMAND_UPDATE_PROPERTIES);
+        ExecCommand		(COMMAND_UPDATE_PROPERTIES);
         return;
     }
 // set render state
@@ -417,7 +415,7 @@ void TUI::Idle()
 //---------------------------------------------------------------------------
 void ResetActionToSelect()
 {
-    UI->Command(COMMAND_CHANGE_ACTION, etaSelect);
+    ExecCommand(COMMAND_CHANGE_ACTION, etaSelect);
 }
 //---------------------------------------------------------------------------
 
@@ -432,7 +430,7 @@ void __fastcall PanelMinMax(TPanel *pa)
             pa->Tag    = pa->Height;
             pa->Height = MIN_PANEL_HEIGHT;
         }
-        UI->Command(COMMAND_UPDATE_TOOLBAR);
+        ExecCommand(COMMAND_UPDATE_TOOLBAR);
     }
 }
 void __fastcall PanelMinimize(TPanel *pa)
@@ -442,7 +440,7 @@ void __fastcall PanelMinimize(TPanel *pa)
             pa->Tag    = pa->Height;
             pa->Height = MIN_PANEL_HEIGHT;
         }
-        UI->Command(COMMAND_UPDATE_TOOLBAR);
+        ExecCommand(COMMAND_UPDATE_TOOLBAR);
     }
 }
 void __fastcall PanelMaximize(TPanel *pa)
@@ -452,7 +450,7 @@ void __fastcall PanelMaximize(TPanel *pa)
             pa->Height = pa->Tag;
             pa->Tag    = 0;
         }
-        UI->Command(COMMAND_UPDATE_TOOLBAR);
+        ExecCommand(COMMAND_UPDATE_TOOLBAR);
     }
 }
 void __fastcall PanelMinMaxClick(TObject* Sender)

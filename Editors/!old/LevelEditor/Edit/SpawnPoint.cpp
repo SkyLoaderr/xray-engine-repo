@@ -68,7 +68,7 @@ void CSpawnPoint::CLE_Visual::OnChangeVisual	()
         visual				= ::Render->model_Create(source->visual_name.c_str());
         PlayAnimation		();
     }
-	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand				(COMMAND_UPDATE_PROPERTIES);
 }
 void CSpawnPoint::CLE_Visual::PlayAnimation ()
 {
@@ -100,7 +100,7 @@ void __stdcall	CSpawnPoint::CLE_Motion::OnChangeMotion	()
         animator->Load			(*source->motion_name);
         PlayMotion				();
     }
-	UI->Command					(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand					(COMMAND_UPDATE_PROPERTIES);
 }
 void CSpawnPoint::CLE_Motion::PlayMotion()
 {
@@ -210,7 +210,7 @@ void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int p
 void CSpawnPoint::SSpawnData::OnFrame()
 {
 	if (m_Data->m_editor_flags.is(ISE_Abstract::flUpdateProperties))
-    	UI->Command				(COMMAND_UPDATE_PROPERTIES);
+    	ExecCommand				(COMMAND_UPDATE_PROPERTIES);
     // visual part
 	if (m_Visual){
 	    if (m_Data->m_editor_flags.is(ISE_Abstract::flVisualChange))

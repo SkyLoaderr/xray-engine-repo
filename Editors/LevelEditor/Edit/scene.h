@@ -37,8 +37,8 @@ int __cdecl _CompareByDist( const void *a, const void *b)
 */
 
 struct st_LevelOptions{
-	AnsiString	m_FNLevelPath;
-	AnsiString 	m_BOPText;
+	ref_str		m_FNLevelPath;
+	ref_str 	m_BOPText;
 
     b_params	m_BuildParams;
 

@@ -81,7 +81,7 @@ bool CEditableObject::GetSummaryInfo(SSceneSummary* inf)
 {
 	if (IsStatic()||IsMUStatic()){
         for(SurfaceIt 	s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-            inf->textures.insert(ChangeFileExt(*(*s_it)->m_Texture,"").LowerCase().c_str());
+            inf->textures.insert(ChangeFileExt(AnsiString(*(*s_it)->m_Texture),"").LowerCase().c_str());
         if (m_Flags.is(eoUsingLOD)){
             inf->textures.insert	(GetLODTextureName().c_str());
             inf->lod_objects.insert	(m_LibName.c_str());

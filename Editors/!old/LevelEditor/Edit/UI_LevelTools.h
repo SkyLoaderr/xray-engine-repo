@@ -116,6 +116,10 @@ public:
     EObjClass 			CurrentClassID		();
 
     void				ShowObjectList		();
+
+    // commands
+    void 				CommandChangeTarget		(u32 p1, u32 p2, u32& res);
+	void 				CommandShowObjectList	(u32 p1, u32 p2, u32& res);
 };
 extern CLevelTools*&	LTools;
 

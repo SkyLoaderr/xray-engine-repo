@@ -26,7 +26,7 @@ void TfraSpawn::OnItemFocused(ListItemsVec& items)
     m_Current 			= 0;
     for (ListItemsIt it=items.begin(); it!=items.end(); it++)
         m_Current 		= (LPCSTR)(*it)->m_Object;
-    UI->Command			(COMMAND_RENDER_FOCUS);
+    ExecCommand			(COMMAND_RENDER_FOCUS);
 }
 //------------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ void __fastcall TfraSpawn::ExpandClick(TObject *Sender)
 
 void __fastcall TfraSpawn::ebAttachObjectClick(TObject *Sender)
 {
-	if (ebAttachObject->Down) UI->Command(COMMAND_CHANGE_ACTION, etaAdd);
+	if (ebAttachObject->Down) ExecCommand(COMMAND_CHANGE_ACTION, etaAdd);
 }
 //---------------------------------------------------------------------------
 
@@ -175,7 +175,7 @@ void __fastcall TfraSpawn::ebMultiSelectByRefAppendClick(TObject *Sender)
 
 void __fastcall TfraSpawn::seSelPercentKeyPress(TObject *Sender, char &Key)
 {
-	if (Key==VK_RETURN) UI->Command(COMMAND_RENDER_FOCUS);
+	if (Key==VK_RETURN) ExecCommand(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 

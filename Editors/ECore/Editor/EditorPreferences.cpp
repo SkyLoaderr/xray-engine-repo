@@ -66,7 +66,7 @@ void CEditorPreferences::ApplyValues()
     Device.m_Camera.SetSensitivity	(cam_sens_move, cam_sens_rot);
     Device.m_Camera.SetFlyParams	(cam_fly_speed, cam_fly_alt);
 
-    UI->Command		(COMMAND_UPDATE_GRID);
+    ExecCommand		(COMMAND_UPDATE_GRID);
 
 	psSoundRolloff	= sound_rolloff;
 }
@@ -270,7 +270,7 @@ void CEditorPreferences::AppendRecentFile(LPCSTR name)
 	while (scene_recent_list.size()>=EPrefs.scene_recent_count) 
     	scene_recent_list.pop_back();
 
-    UI->Command				(COMMAND_REFRESH_UI_BAR);
+    ExecCommand				(COMMAND_REFRESH_UI_BAR);
 }
 //---------------------------------------------------------------------------
 

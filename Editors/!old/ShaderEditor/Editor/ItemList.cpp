@@ -216,12 +216,13 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop		= *it;
         if (prop->key.size()&&(prop->key[prop->key.size()-1]=='\\')){
-        	TElTreeItem* I	= FHelper.AppendFolder(tvItems,*prop->key,!m_Flags.is(ilSuppressIcon));
-            I->UseStyles				= true;
-            I->MainStyle->TextColor 	= (TColor)prop->prop_color;         
-            I->MainStyle->Style			= ElhsOwnerDraw;
+        	prop->item		= FHelper.AppendFolder(tvItems,*prop->key,!m_Flags.is(ilSuppressIcon));
+            TElTreeItem* prop_item	= (TElTreeItem*)prop->item;
+            prop_item->UseStyles		   	= true;
+            prop_item->MainStyle->TextColor	= (TColor)prop->prop_color;         
+            prop_item->MainStyle->Style		= ElhsOwnerDraw;
         }else{
-            prop->item			= FHelper.AppendObject(tvItems,*prop->key,false,!m_Flags.is(ilSuppressIcon));
+            prop->item		= FHelper.AppendObject(tvItems,*prop->key,false,!m_Flags.is(ilSuppressIcon));
             if (!prop->item){
 				Msg				("#!Duplicate item name found: '%s'",*prop->key);
                 break;

@@ -38,7 +38,7 @@ void __fastcall TfraObject::OnItemFocused(ListItemsVec& items)
     m_Current 			= 0;
     for (ListItemsIt it=items.begin(); it!=items.end(); it++)
         m_Current 		= (*it)->Key();
-    UI->Command			(COMMAND_RENDER_FOCUS);
+    ExecCommand			(COMMAND_RENDER_FOCUS);
 }
 //------------------------------------------------------------------------------
 void __fastcall TfraObject::PaneMinClick(TObject *Sender)
@@ -176,7 +176,7 @@ void __fastcall TfraObject::ebMultiSelectByRefAppendClick(TObject *Sender)
 void __fastcall TfraObject::seSelPercentKeyPress(TObject *Sender,
       char &Key)
 {
-	if (Key==VK_RETURN) UI->Command(COMMAND_RENDER_FOCUS);
+	if (Key==VK_RETURN) ExecCommand(COMMAND_RENDER_FOCUS);
 }
 //---------------------------------------------------------------------------
 

@@ -171,10 +171,10 @@ void __fastcall TfrmImageLib::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-    	if (Key==VK_CANCEL)		UI->Command(COMMAND_BREAK_LAST_OPERATION);
+    	if (Key==VK_CANCEL)		ExecCommand(COMMAND_BREAK_LAST_OPERATION);
     }else{
         if (Key==VK_ESCAPE){
-            if (bFormLocked)	UI->Command(COMMAND_BREAK_LAST_OPERATION);
+            if (bFormLocked)	ExecCommand(COMMAND_BREAK_LAST_OPERATION);
             Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
         }
     }
@@ -194,7 +194,7 @@ void __fastcall TfrmImageLib::ebOkClick(TObject *Sender)
 void __fastcall TfrmImageLib::ebCancelClick(TObject *Sender)
 {
 	if (bFormLocked){
-		UI->Command(COMMAND_BREAK_LAST_OPERATION);
+		ExecCommand(COMMAND_BREAK_LAST_OPERATION);
     	return;
     }
 

@@ -98,9 +98,11 @@ public:
 	bool 			PickGround				(Fvector& hitpoint, const Fvector& start, const Fvector& direction, int bSnap=1, Fvector* hitnormal=0);
 	bool 			SelectionFrustum		(CFrustum& frustum);
 
-    virtual bool	Command					(int _Command, int p = 0, int p2 = 0);
     virtual bool 	ApplyShortCut			(WORD Key, TShiftState Shift);
     virtual bool 	ApplyGlobalShortCut		(WORD Key, TShiftState Shift);
+
+    // commands
+	virtual	void	RegisterCommands		(); 
 };    
 extern CLevelMain*&	LUI;
 

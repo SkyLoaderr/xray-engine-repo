@@ -33,7 +33,7 @@ bool ESceneObjectTools::Load(IReader& F)
         F.r_fvector3(m_AppendRandomMaxRotation);
         int cnt		= F.r_u32();
         if (cnt){
-        	AnsiString buf;
+        	ref_str	buf;
             for (int i=0; i<cnt; i++){
                 F.r_stringZ						(buf);
                 m_AppendRandomObjects.push_back	(buf);
@@ -64,8 +64,8 @@ void ESceneObjectTools::Save(IWriter& F)
     F.w_fvector3	(m_AppendRandomMaxRotation);
     F.w_u32			(m_AppendRandomObjects.size());
     if (m_AppendRandomObjects.size()){
-    	for (AStringIt it=m_AppendRandomObjects.begin(); it!=m_AppendRandomObjects.end(); it++)
-            F.w_stringZ(it->c_str());
+    	for (RStringVecIt it=m_AppendRandomObjects.begin(); it!=m_AppendRandomObjects.end(); it++)
+            F.w_stringZ(*it);
     }
     F.close_chunk	();
 }

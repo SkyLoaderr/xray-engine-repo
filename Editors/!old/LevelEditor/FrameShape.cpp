@@ -42,7 +42,7 @@ void __fastcall TfraShape::ebDetachAllShapesClick(TObject *Sender)
 
 void __fastcall TfraShape::ebAttachShapeClick(TObject *Sender)
 {
-	if (ebAttachShape->Down) UI->Command(COMMAND_CHANGE_ACTION, etaAdd);
+	if (ebAttachShape->Down) ExecCommand(COMMAND_CHANGE_ACTION, etaAdd);
 }
 //---------------------------------------------------------------------------
 

@@ -75,6 +75,8 @@ public:
     float 				fFogness;
     u32					dwFogColor;
 public:
+	AnsiString 			m_LastFileName;
+public:
 						CToolsCustom 		();
     virtual 			~CToolsCustom		();
 
@@ -114,13 +116,13 @@ public:
 
     virtual void		OnShowHint			(AStringVec& SS)=0;
 
-    virtual bool __fastcall 	MouseStart  		(TShiftState Shift)=0;
-    virtual bool __fastcall 	MouseEnd    		(TShiftState Shift)=0;
-    virtual void __fastcall 	MouseMove   		(TShiftState Shift)=0;
-	virtual bool __fastcall 	HiddenMode  		(){return m_bHiddenMode;}
-    virtual bool __fastcall 	KeyDown     		(WORD Key, TShiftState Shift){return false;}
-    virtual bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
-    virtual bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
+    virtual bool __fastcall 	MouseStart 	(TShiftState Shift)=0;
+    virtual bool __fastcall 	MouseEnd   	(TShiftState Shift)=0;
+    virtual void __fastcall 	MouseMove  	(TShiftState Shift)=0;
+	virtual bool __fastcall 	HiddenMode 	(){return m_bHiddenMode;}
+    virtual bool __fastcall 	KeyDown    	(WORD Key, TShiftState Shift){return false;}
+    virtual bool __fastcall 	KeyUp      	(WORD Key, TShiftState Shift){return false;}
+    virtual bool __fastcall 	KeyPress   	(WORD Key, TShiftState Shift){return false;}
 
     virtual bool		Pick				(TShiftState Shift)=0;
 	virtual bool 		RayPick				(const Fvector& start, const Fvector& dir, float& dist, Fvector* pt=0, Fvector* n=0)=0;
@@ -128,6 +130,8 @@ public:
     virtual void		ShowProperties		()=0;
     virtual void		UpdateProperties	(bool bForced=false)=0;
     virtual void		RefreshProperties	()=0;
+
+    const AnsiString&	GetEditFileName		()	{ return m_LastFileName; }
 };
 extern ECORE_API CToolsCustom*	Tools;
 

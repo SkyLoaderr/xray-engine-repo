@@ -137,8 +137,8 @@ DEFINE_VECTOR	(COMotion*,OMotionVec,OMotionIt);
 DEFINE_VECTOR	(CSMotion*,SMotionVec,SMotionIt);
 
 struct ECORE_API SBonePart{
-	AnsiString 		alias;
-    AStringVec 		bones;
+	ref_str 		alias;
+    RStringVec 		bones;
 };
 DEFINE_VECTOR(SBonePart,BPVec,BPIt);
 
@@ -159,9 +159,9 @@ class ECORE_API CEditableObject{
 	ref_geom 		vs_SkeletonGeom;
 #endif
 // desc
-	AnsiString		m_CreateName;
+	ref_str			m_CreateName;
     time_t			m_CreateTime;
-	AnsiString		m_ModifName;
+	ref_str			m_ModifName;
     time_t			m_ModifTime;
     
 // general

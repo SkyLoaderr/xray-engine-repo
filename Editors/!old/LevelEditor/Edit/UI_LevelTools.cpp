@@ -52,7 +52,7 @@ bool CLevelTools::OnCreate()
     // scene creating
     Scene->OnCreate	();
     // change target to Object
-	UI->Command		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
+    ExecCommand		(COMMAND_CHANGE_TARGET, OBJCLASS_SCENEOBJECT);
 	m_Props 		= TProperties::CreateForm("Object Inspector",0,alClient,TOnModifiedEvent(this,&CLevelTools::OnPropsModified),0,TOnCloseEvent(this,&CLevelTools::OnPropsClose));
     pObjectListForm = TfrmObjectList::CreateForm();
     return true;
@@ -84,7 +84,7 @@ bool __fastcall CLevelTools::MouseStart(TShiftState Shift)
 void __fastcall CLevelTools::MouseMove(TShiftState Shift) 
 {
     if(pCurTools&&pCurTools->pCurControl){
-	    if (HiddenMode())	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	    if (HiddenMode())	ExecCommand(COMMAND_UPDATE_PROPERTIES);
      	pCurTools->pCurControl->Move(Shift);
     }
 }
@@ -92,7 +92,7 @@ void __fastcall CLevelTools::MouseMove(TShiftState Shift)
 bool __fastcall CLevelTools::MouseEnd(TShiftState Shift)
 {
     if(pCurTools&&pCurTools->pCurControl){	
-	    if (HiddenMode())	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	    if (HiddenMode())	ExecCommand(COMMAND_UPDATE_PROPERTIES);
     	return pCurTools->pCurControl->End(Shift);
     }
     return false;
@@ -133,7 +133,7 @@ void CLevelTools::RealSetAction   (ETAction act)
 {
 	inherited::SetAction(act);
     if (pCurTools) pCurTools->SetAction(act);
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    ExecCommand(COMMAND_UPDATE_TOOLBAR);
     m_Flags.set	(flChangeAction,FALSE);
 }
 
@@ -167,7 +167,7 @@ void __fastcall CLevelTools::RealSetTarget   (EObjClass tgt,bool bForced)
     UI->RedrawScene();
     fraLeftBar->ChangeTarget(tgt);
     fraLeftBar->UpdateSnapList();
-    UI->Command(COMMAND_UPDATE_TOOLBAR);
+    ExecCommand(COMMAND_UPDATE_TOOLBAR);
     m_Flags.set(flChangeTarget,FALSE);
 }
 //---------------------------------------------------------------------------

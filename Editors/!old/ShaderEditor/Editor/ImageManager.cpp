@@ -217,7 +217,7 @@ void CImageManager::SafeCopyLocalToServer(FS_QueryMap& files)
 		dest_name 		= p_textures + EFS.ChangeFileExt(fn,".tga");
         if (FS.exist(dest_name.c_str()))
 	        EFS.BackupFile	(_textures_,EFS.ChangeFileExt(fn,".tga").c_str());
-        if (strext	(src_name.c_str())==".tga"){
+        if (0==strcmp(strext(src_name.c_str()),".tga")){
 			FS.file_copy(src_name.c_str(),dest_name.c_str());
         }else{
         	// convert to TGA

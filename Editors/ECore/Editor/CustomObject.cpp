@@ -80,7 +80,7 @@ void CCustomObject::Select( int flag )
     if (m_CO_Flags.is(flVisible)&&(!!m_CO_Flags.is(flSelected)!=flag)){ 
         m_CO_Flags.set		(flSelected,(flag==-1)?(m_CO_Flags.is(flSelected)?FALSE:TRUE):flag);
         UI->RedrawScene		();
-        UI->Command			(COMMAND_UPDATE_PROPERTIES);
+        ExecCommand			(COMMAND_UPDATE_PROPERTIES);
     }
 }
 

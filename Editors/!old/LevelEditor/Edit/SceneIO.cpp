@@ -69,7 +69,6 @@ void st_LevelOptions::Read(IReader& F)
         return;
     }
 
-    char buf[4096];
     R_ASSERT(F.find_chunk(CHUNK_LO_NAMES));
     F.r_stringZ 	(m_FNLevelPath);
 
@@ -283,7 +282,7 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
         // snap list
         if (F->find_chunk(CHUNK_SNAPOBJECTS)){
-            AnsiString 	buf;
+            ref_str 	buf;
             int cnt 	= F->r_u32();
             if (cnt){
                 for (int i=0; i<cnt; i++){

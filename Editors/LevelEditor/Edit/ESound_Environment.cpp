@@ -44,7 +44,7 @@ ESoundEnvironment::~ESoundEnvironment()
 void ESoundEnvironment::OnUpdateTransform()
 {
 	inherited::OnUpdateTransform();
-	UI->Command		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
+    ExecCommand		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
 }
 //----------------------------------------------------
 
@@ -83,7 +83,7 @@ void ESoundEnvironment::Save(IWriter& F)
 
 void ESoundEnvironment::OnChangeEnvs	(PropValue* prop)
 {
-	UI->Command		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
+	ExecCommand		(COMMAND_REFRESH_SOUND_ENV_GEOMETRY);
 }
 //----------------------------------------------------
 
@@ -113,6 +113,6 @@ void ESoundEnvironment::get_box(Fmatrix& m)
 void ESoundEnvironment::OnSceneUpdate()
 {
 	inherited::OnSceneUpdate();
-	UI->Command( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
+	ExecCommand( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
 }
 

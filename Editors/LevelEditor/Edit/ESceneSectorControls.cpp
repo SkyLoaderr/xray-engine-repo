@@ -68,7 +68,7 @@ bool TUI_ControlSectorAdd::AddSector(){
 
 bool __fastcall TUI_ControlSectorAdd::Start(TShiftState Shift)
 {
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
+    if (Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SECTOR); return false;}
     TfraSector* fraSector = (TfraSector*)parent_tool->pFrame; VERIFY(fraSector);
     if (fraSector->ebCreateNew->Down){
     	if (AddSector()&&(!Shift.Contains(ssAlt))) fraSector->ebCreateNew->Down=false;

@@ -587,7 +587,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
             if (m_Source->VerifyBoneParts()){
                 F.w_u16(bp_lst.size());
                 for (BPIt bp_it=bp_lst.begin(); bp_it!=bp_lst.end(); bp_it++){
-                    F.w_stringZ	(LowerCase(bp_it->alias).c_str());
+                    F.w_stringZ	(LowerCase(bp_it->alias.c_str()).c_str());
                     F.w_u16		(bp_it->bones.size());
                     for (int i=0; i<int(bp_it->bones.size()); i++){
                         F.w_stringZ	(bp_it->bones[i].c_str());

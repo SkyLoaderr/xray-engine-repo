@@ -20,7 +20,7 @@ __fastcall TUI_ControlObjectAdd::TUI_ControlObjectAdd(int st, int act, ESceneCus
 
 bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
 {
-    if (Shift==ssRBOnly){ UI->Command(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SCENEOBJECT); return false;}
+    if (Shift==ssRBOnly){ ExecCommand(COMMAND_SHOWCONTEXTMENU,OBJCLASS_SCENEOBJECT); return false;}
     TfraObject* fraObject = (TfraObject*)parent_tool->pFrame; VERIFY(fraObject);
 	Fvector p,n;
 	if(!LUI->PickGround(p,UI->m_CurrentRStart,UI->m_CurrentRNorm,1,&n)) return false;
@@ -73,7 +73,7 @@ bool __fastcall TUI_ControlObjectAdd::Start(TShiftState Shift)
 
         Scene->SelectObjects(false,OBJCLASS_SCENEOBJECT);
         Scene->AppendObject( obj );
-        if (Shift.Contains(ssCtrl)) UI->Command(COMMAND_SHOW_PROPERTIES);
+        if (Shift.Contains(ssCtrl)) ExecCommand(COMMAND_SHOW_PROPERTIES);
         if (!Shift.Contains(ssAlt)) ResetActionToSelect();
     }
     return false;

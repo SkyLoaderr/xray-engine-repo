@@ -14,7 +14,7 @@
 
 bool SceneBuilder::PreparePath()
 {
-	if (Scene->m_LevelOp.m_FNLevelPath.IsEmpty()) return false;
+	if (Scene->m_LevelOp.m_FNLevelPath.size()==0) return false;
     FS.update_path	(m_LevelPath,_game_levels_,Scene->m_LevelOp.m_FNLevelPath.c_str());
     m_LevelPath		+= "\\";
     return true;
@@ -30,8 +30,8 @@ bool SceneBuilder::PrepareFolders()
 
 bool SceneBuilder::EvictResource()
 {
-	UI->Command(COMMAND_EVICT_OBJECTS);
-    UI->Command(COMMAND_EVICT_TEXTURES);
+	ExecCommand(COMMAND_EVICT_OBJECTS);
+    ExecCommand(COMMAND_EVICT_TEXTURES);
 
 	int objcount = Scene->ObjCount(OBJCLASS_SCENEOBJECT);
 	if( objcount <= 0 ) return true;

@@ -164,7 +164,7 @@ void __fastcall TfrmEditLibrary::FormDestroy(TObject *Sender)
 
 	form = 0;
 
-    UI->Command(COMMAND_CLEAR);
+    ExecCommand(COMMAND_CLEAR);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormCloseQuery(TObject *Sender, bool &CanClose)
@@ -270,10 +270,10 @@ void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Shift.Contains(ssCtrl)){
-    	if (Key==VK_CANCEL)		UI->Command(COMMAND_BREAK_LAST_OPERATION);
+    	if (Key==VK_CANCEL)		ExecCommand(COMMAND_BREAK_LAST_OPERATION);
     }else{
         if (Key==VK_ESCAPE){
-            if (bFormLocked)	UI->Command(COMMAND_BREAK_LAST_OPERATION);
+            if (bFormLocked)	ExecCommand(COMMAND_BREAK_LAST_OPERATION);
             else				ebCancel->Click();
             Key = 0; // :-) нужно для того чтобы AccessVoilation не вылазил по ESCAPE
         }
@@ -415,8 +415,8 @@ void TfrmEditLibrary::ChangeReference(LPCSTR new_name)
     }
     // update transformation
     m_pEditObject->UpdateTransform();
-    UI->Command(COMMAND_EVICT_OBJECTS);
-    UI->Command(COMMAND_EVICT_TEXTURES);
+    ExecCommand(COMMAND_EVICT_OBJECTS);
+    ExecCommand(COMMAND_EVICT_TEXTURES);
 }
 //---------------------------------------------------------------------------
 
@@ -498,7 +498,7 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
 //		AnsiString path; // нужен при multi-open для сохранения последнего пути
 		std::string m_LastSelection;
         for (AStringIt it=lst.begin(); it!=lst.end(); it++){
-        	nm = EFS.ChangeFileExt(strext(it->c_str()),"");
+        	nm = ChangeFileExt(ExtractFileName(*it),"").c_str();
             CEditableObject* O = xr_new<CEditableObject>(nm.c_str());
             if (O->Load(it->c_str())){
                 O->m_Version = FS.get_file_age(it->c_str());
@@ -524,6 +524,8 @@ void __fastcall TfrmEditLibrary::ebImportClick(TObject *Sender)
             if (folder.Pos(p)>0){ 
             	m_LastSelection = std::string(folder.c_str()+strlen(p))+nm;
                 xr_strlwr		(m_LastSelection);
+            }else{
+            	m_LastSelection = std::string(folder.c_str())+nm;
             }
         }
         if (bNeedUpdate){

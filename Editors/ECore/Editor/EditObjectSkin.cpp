@@ -65,12 +65,12 @@ bool CEditableObject::LoadBoneData(IReader& F)
     }
     // load bone part
     if (F.find_chunk(EOBJ_CHUNK_BONEPARTS2)){
-    	AnsiString buf;
+    	ref_str 	buf;
         m_BoneParts.resize(F.r_u32());
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
             F.r_stringZ			(buf); bp_it->alias=buf;
             bp_it->bones.resize	(F.r_u32());
-            for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
+            for (RStringVecIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
                 F.r_stringZ		(*s_it);
         }
         if (!m_BoneParts.empty()&&!VerifyBoneParts())
@@ -94,8 +94,8 @@ void CEditableObject::SaveBoneData(IWriter& F)
     for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
         F.w_stringZ	(bp_it->alias.c_str());
         F.w_u32		(bp_it->bones.size());
-        for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
-            F.w_stringZ(s_it->c_str());
+        for (RStringVecIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
+            F.w_stringZ(*s_it);
     }
     F.close_chunk	();
 }

@@ -171,165 +171,165 @@ void TfraLeftBar::ChangeTarget(EObjClass tgt)
 
 void __fastcall TfraLeftBar::ebClearClick(TObject *Sender)
 {
-	UI->Command( COMMAND_CLEAR );
+	ExecCommand( COMMAND_CLEAR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebLoadClick(TObject *Sender)
 {
-	UI->Command( COMMAND_LOAD );
+	ExecCommand( COMMAND_LOAD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSaveClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SAVE );
+	ExecCommand( COMMAND_SAVE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSaveAsClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SAVEAS );
+	ExecCommand( COMMAND_SAVEAS );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebBuildClick(TObject *Sender)
 {
-	UI->Command( COMMAND_BUILD );
+	ExecCommand( COMMAND_BUILD );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::miSceneSummaryClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SCENE_SUMMARY );
+	ExecCommand( COMMAND_SCENE_SUMMARY );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebOptionsClick(TObject *Sender)
 {
-	UI->Command( COMMAND_OPTIONS );
+	ExecCommand( COMMAND_OPTIONS );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebCutClick(TObject *Sender)
 {
-	UI->Command( COMMAND_CUT );
+	ExecCommand( COMMAND_CUT );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebCopyClick(TObject *Sender)
 {
-	UI->Command( COMMAND_COPY );
+	ExecCommand( COMMAND_COPY );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPasteClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_PASTE );
+ 	ExecCommand( COMMAND_PASTE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebUndoClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_UNDO );
+ 	ExecCommand( COMMAND_UNDO );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRedoClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_REDO );
+ 	ExecCommand( COMMAND_REDO );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebOpenSelClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_LOAD_SELECTION );
+ 	ExecCommand( COMMAND_LOAD_SELECTION );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSaveSelClick(TObject *Sender)
 {
- 	UI->Command( COMMAND_SAVE_SELECTION );
+ 	ExecCommand( COMMAND_SAVE_SELECTION );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebValidateSceneClick(TObject *Sender)
 {
-	UI->Command( COMMAND_VALIDATE_SCENE );
+	ExecCommand( COMMAND_VALIDATE_SCENE );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebRefreshEditorClick(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_TEXTURES );
+	ExecCommand( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::RefreshObjects1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_RELOAD_OBJECTS );
+	ExecCommand( COMMAND_RELOAD_OBJECTS );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::RefreshLibrary1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_LIBRARY );
+	ExecCommand( COMMAND_REFRESH_LIBRARY );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::CheckNewTexturesClick(TObject *Sender)
 {
-	UI->Command( COMMAND_CHECK_TEXTURES );
+	ExecCommand( COMMAND_CHECK_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ImageEditor1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_IMAGE_EDITOR );
+	ExecCommand( COMMAND_IMAGE_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::UpdateSceneTextures1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_RELOAD_TEXTURES );
+	ExecCommand( COMMAND_RELOAD_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem9Click(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_TEXTURES );
+	ExecCommand( COMMAND_REFRESH_TEXTURES );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MenuItem14Click(TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_SOUND_ENVS );
+	ExecCommand( COMMAND_REFRESH_SOUND_ENVS );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::UpdateEnvironmentGeometry1Click(
       TObject *Sender)
 {
-	UI->Command( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
+	ExecCommand( COMMAND_REFRESH_SOUND_ENV_GEOMETRY );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebObjectListClick(TObject *Sender)
 {
-	UI->Command( COMMAND_SHOW_OBJECTLIST );
+	ExecCommand( COMMAND_SHOW_OBJECTLIST );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebEditLibClick(TObject *Sender)
 {
-	UI->Command( COMMAND_LIBRARY_EDITOR );
+	ExecCommand( COMMAND_LIBRARY_EDITOR );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::TargetClick(TObject *Sender)
 {
     TExtBtn* btn=dynamic_cast<TExtBtn*>(Sender);    VERIFY(btn);
-    UI->Command(COMMAND_CHANGE_TARGET, btn->Down?btn->Tag:OBJCLASS_DUMMY);
+    ExecCommand(COMMAND_CHANGE_TARGET, btn->Down?btn->Tag:OBJCLASS_DUMMY);
     // turn off snap mode
     ebSnapListMode->Down = false;
 }
@@ -352,123 +352,123 @@ void __fastcall TfraLeftBar::PanelMaximizeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEditorPreferencesClick(TObject *Sender)
 {
-	UI->Command(COMMAND_EDITOR_PREF);
+	ExecCommand(COMMAND_EDITOR_PREF);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebInvertClick(TObject *Sender)
 {
-	UI->Command(COMMAND_INVERT_SELECTION_ALL);
+	ExecCommand(COMMAND_INVERT_SELECTION_ALL);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSelectAllClick(TObject *Sender)
 {
-	UI->Command(COMMAND_SELECT_ALL);
+	ExecCommand(COMMAND_SELECT_ALL);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebUnselectAllClick(TObject *Sender)
 {
-	UI->Command(COMMAND_DESELECT_ALL);
+	ExecCommand(COMMAND_DESELECT_ALL);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebDeleteClick(TObject *Sender)
 {
-	UI->Command(COMMAND_DELETE_SELECTION);
+	ExecCommand(COMMAND_DELETE_SELECTION);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebHideAllClick(TObject *Sender)
 {
-	UI->Command(COMMAND_HIDE_ALL,FALSE);
+	ExecCommand(COMMAND_HIDE_ALL,FALSE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebUnhideAllClick(TObject *Sender)
 {
-	UI->Command(COMMAND_HIDE_ALL,TRUE);
+	ExecCommand(COMMAND_HIDE_ALL,TRUE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebHideSelectedClick(TObject *Sender)
 {
-	UI->Command(COMMAND_HIDE_SEL,FALSE);
+	ExecCommand(COMMAND_HIDE_SEL,FALSE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebHideUnselectedClick(TObject *Sender)
 {
-	UI->Command(COMMAND_HIDE_UNSEL);
+	ExecCommand(COMMAND_HIDE_UNSEL);
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TfraLeftBar::ebLockAllClick(TObject *Sender)
 {
-	UI->Command(COMMAND_LOCK_ALL,TRUE);
+	ExecCommand(COMMAND_LOCK_ALL,TRUE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebLockSelClick(TObject *Sender)
 {
-	UI->Command(COMMAND_LOCK_SEL,TRUE);
+	ExecCommand(COMMAND_LOCK_SEL,TRUE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebLockUnselClick(TObject *Sender)
 {
-	UI->Command(COMMAND_LOCK_UNSEL,TRUE);
+	ExecCommand(COMMAND_LOCK_UNSEL,TRUE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebUnlockAllClick(TObject *Sender)
 {
-	UI->Command(COMMAND_LOCK_ALL,FALSE);
+	ExecCommand(COMMAND_LOCK_ALL,FALSE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebUnlockSelClick(TObject *Sender)
 {
-	UI->Command(COMMAND_LOCK_SEL,FALSE);
+	ExecCommand(COMMAND_LOCK_SEL,FALSE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebUnlockUnselClick(TObject *Sender)
 {
-	UI->Command(COMMAND_LOCK_UNSEL,FALSE);
+	ExecCommand(COMMAND_LOCK_UNSEL,FALSE);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebMakeGameClick(TObject *Sender)
 {
-	UI->Command( COMMAND_MAKE_GAME );
+	ExecCommand( COMMAND_MAKE_GAME );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MakeDetailsClick(TObject *Sender)
 {
-	UI->Command( COMMAND_MAKE_DETAILS );
+	ExecCommand( COMMAND_MAKE_DETAILS );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MakeHOM1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_MAKE_HOM );
+	ExecCommand( COMMAND_MAKE_HOM );
 }
 //---------------------------------------------------------------------------
 
 
 void __fastcall TfraLeftBar::MakeAIMap1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_MAKE_AIMAP );
+	ExecCommand( COMMAND_MAKE_AIMAP );
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::MakeWallmarks1Click(TObject *Sender)
 {
-	UI->Command( COMMAND_MAKE_WM );
+	ExecCommand( COMMAND_MAKE_WM );
 }
 //---------------------------------------------------------------------------
 
@@ -544,37 +544,37 @@ void __fastcall TfraLeftBar::ExtBtn9MouseDown(TObject *Sender,
 
 void __fastcall TfraLeftBar::ebLightAnimationEditorClick(TObject *Sender)
 {
-	UI->Command(COMMAND_LANIM_EDITOR);
+	ExecCommand(COMMAND_LANIM_EDITOR);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebClearSnapClick(TObject *Sender)
 {
 	if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to clear snap objects?")==mrYes)
-		UI->Command(COMMAND_CLEAR_SNAP_OBJECTS);
+		ExecCommand(COMMAND_CLEAR_SNAP_OBJECTS);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebSetSnapClick(TObject *Sender)
 {
-	UI->Command(COMMAND_SET_SNAP_OBJECTS);
+	ExecCommand(COMMAND_SET_SNAP_OBJECTS);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfraLeftBar::miAddSelectedToListClick(TObject *Sender)
 {
-	UI->Command(COMMAND_ADD_SEL_SNAP_OBJECTS);
+	ExecCommand(COMMAND_ADD_SEL_SNAP_OBJECTS);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::SelectObjectFromList1Click(TObject *Sender)
 {
-	UI->Command(COMMAND_SELECT_SNAP_OBJECTS);
+	ExecCommand(COMMAND_SELECT_SNAP_OBJECTS);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::RemoveSelectedFromList1Click(TObject *Sender)
 {
-	UI->Command(COMMAND_DEL_SEL_SNAP_OBJECTS);
+	ExecCommand(COMMAND_DEL_SEL_SNAP_OBJECTS);
 }
 //---------------------------------------------------------------------------
 
@@ -609,37 +609,37 @@ void __fastcall TfraLeftBar::ebUseSnapListClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::miPropertiesClick(TObject *Sender)
 {
-    UI->Command(COMMAND_SHOW_PROPERTIES);
+    ExecCommand(COMMAND_SHOW_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::Quit1Click(TObject *Sender)
 {
-	UI->Command(COMMAND_QUIT);
+	ExecCommand(COMMAND_QUIT);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebPropertiesClick(TObject *Sender)
 {
-	UI->Command(COMMAND_SHOW_PROPERTIES);
+	ExecCommand(COMMAND_SHOW_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ImportCompilerErrorsClick(TObject *Sender)
 {
-	UI->Command(COMMAND_IMPORT_COMPILER_ERROR);
+	ExecCommand(COMMAND_IMPORT_COMPILER_ERROR);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebIgnoreModeClick(TObject *Sender)
 {
-	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::miClearErrorListClick(TObject *Sender)
 {
-	UI->Command(COMMAND_CLEAR_COMPILER_ERROR);
+	ExecCommand(COMMAND_CLEAR_COMPILER_ERROR);
 }
 //---------------------------------------------------------------------------
 
@@ -656,13 +656,13 @@ void __fastcall TfraLeftBar::ebSnapListModeClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::MenuItem12Click(TObject *Sender)
 {
-	UI->Command(COMMAND_SOUND_EDITOR);
+	ExecCommand(COMMAND_SOUND_EDITOR);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::SynchronizeSounds1Click(TObject *Sender)
 {
-	UI->Command(COMMAND_SYNC_SOUNDS);
+	ExecCommand(COMMAND_SYNC_SOUNDS);
 }
 //---------------------------------------------------------------------------
 
@@ -670,7 +670,7 @@ void __fastcall TfraLeftBar::miRecentFilesClick(TObject *Sender)
 {
 	TMenuItem* MI = dynamic_cast<TMenuItem*>(Sender); R_ASSERT(MI&&(MI->Tag==0x1001));
     AnsiString fn = MI->Caption;
-    UI->Command(COMMAND_LOAD,(u32)fn.c_str());
+    ExecCommand(COMMAND_LOAD,(u32)fn.c_str());
 }
 //---------------------------------------------------------------------------
 

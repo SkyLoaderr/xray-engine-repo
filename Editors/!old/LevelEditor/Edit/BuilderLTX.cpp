@@ -38,8 +38,8 @@ BOOL SceneBuilder::BuildLTX()
 	// -- defaults --           
     CMemoryWriter F;          
     F.w_string( "; level script file");
-	if( !Scene->m_LevelOp.m_BOPText.IsEmpty() )
-		F.w_stringZ( Scene->m_LevelOp.m_BOPText.c_str() );
+	if( Scene->m_LevelOp.m_BOPText.size() )
+		F.w_stringZ( Scene->m_LevelOp.m_BOPText );
 	F.save_to(ltx_filename.c_str());
 
 	return bResult;

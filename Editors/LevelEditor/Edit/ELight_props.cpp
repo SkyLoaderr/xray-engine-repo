@@ -117,7 +117,7 @@ void  CLight::OnAttenuationDraw(CanvasValue* sender, void* _canvas, const Irect&
 
 void 	CLight::OnPointDataChange(PropValue* value)
 {
-	UI->Command(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand(COMMAND_UPDATE_PROPERTIES);
 }
 
 void 	CLight::OnPointDataTestEqual(CanvasValue* a, CanvasValue* b, bool& res)
@@ -238,7 +238,7 @@ void CLight::FillProp(LPCSTR pref, PropItemVec& items)
 
 void 	CLight::OnTypeChange(PropValue* value)
 {
-	UI->Command		(COMMAND_UPDATE_PROPERTIES);
+	ExecCommand		(COMMAND_UPDATE_PROPERTIES);
 
 	Update			();
 }

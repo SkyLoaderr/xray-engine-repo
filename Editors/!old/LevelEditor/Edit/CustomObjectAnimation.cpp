@@ -18,7 +18,7 @@ void  CCustomObject::OnMotionableChange(PropValue* sender)
     	xr_delete		(m_Motion);
     	xr_delete		(m_MotionParams);
     }
-    UI->Command			(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 }
 
 void CCustomObject::AnimationCreateKey(float t)
@@ -138,7 +138,7 @@ void 	CCustomObject::OnMotionControlClick(PropValue* value, bool& bModif, bool& 
     }break;
     }
     AnimationUpdate			(m_MotionParams->Frame());
-    UI->Command				(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand 			(COMMAND_UPDATE_PROPERTIES);
     bModif = false;
 }
 
@@ -212,7 +212,7 @@ void 	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif, bool& bS
             m_MotionParams->Set	(m_Motion);
             AnimationUpdate		(m_MotionParams->Frame());
 			bModif 				= true;
-		    UI->Command			(COMMAND_UPDATE_PROPERTIES);
+		    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
         }
     break;
     case 1:
@@ -225,7 +225,7 @@ void 	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif, bool& bS
 void 	CCustomObject::OnMotionFrameChange(PropValue* value)
 {
 	m_Motion->SetParam	(m_MotionParams->min_t*30.f,m_MotionParams->max_t*30.f,30.f);
-    UI->Command			(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 }
 
 void 	CCustomObject::OnMotionCurrentFrameChange(PropValue* value)
@@ -235,7 +235,7 @@ void 	CCustomObject::OnMotionCurrentFrameChange(PropValue* value)
 	m_Motion->SetParam	(m_MotionParams->min_t*30.f,m_MotionParams->max_t*30.f,30.f);
     m_MotionParams->bPlay= FALSE;
     AnimationUpdate		(m_MotionParams->Frame());
-    UI->Command			(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand			(COMMAND_UPDATE_PROPERTIES);
 }
 
 void 	CCustomObject::OnMotionCameraViewChange(PropValue* value)

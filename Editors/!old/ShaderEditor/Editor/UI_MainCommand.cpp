@@ -19,6 +19,291 @@
 #include "ResourceManager.h"
 #include "igame_persistent.h"
 
+ECommandVec ECommands;
+BOOL 		bAllowReceiveCommand	= FALSE;
+
+void 	EnableReceiveCommands()
+{
+	bAllowReceiveCommand = TRUE;
+}
+u32 	ExecCommand		(u32 cmd, u32 p1, u32 p2)
+{
+	if (!bAllowReceiveCommand)	return 0;
+
+	VERIFY		(cmd<ECommands.size());
+	SECommand&	CMD = ECommands[cmd];
+    VERIFY		(!CMD.command.empty());
+    u32 res		= TRUE;
+    CMD.command	(p1,p2,res);
+    return		res;
+}
+void	RegisterCommand (u32 cmd, const SECommand& cmd_impl)
+{
+	if (cmd>=ECommands.size()) 
+    	ECommands.resize(cmd+1);
+	SECommand&	CMD = ECommands[cmd];
+    if (!CMD.command.empty())
+    	Msg		("RegisterCommand: command '%s' overridden by command '%s'.",*CMD.caption,*cmd_impl.caption);
+    CMD	   		= cmd_impl;
+}
+void	TUI::ClearCommands ()
+{
+	ECommands.clear	();
+}
+
+//------------------------------------------------------------------------------
+// UI Commands
+//------------------------------------------------------------------------------
+void 	TUI::CommandRenderFocus(u32 p1, u32 p2, u32& res)
+{
+    if (((TForm*)m_D3DWindow->Owner)->Visible&&m_bReady)
+        m_D3DWindow->SetFocus();
+}
+void 	TUI::CommandBreakLastOperation(u32 p1, u32 p2, u32& res)
+{
+    if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to break current action?")){
+        NeedBreak	();
+        ELog.Msg	(mtInformation,"Execution canceled.");
+    }
+}
+void 	TUI::CommandRenderResize(u32 p1, u32 p2, u32& res)
+{
+    if (psDeviceFlags.is(rsDrawSafeRect)){
+        int w=m_D3DPanel->Width,h=m_D3DPanel->Height,w_2=w/2,h_2=h/2;
+        Irect rect;
+        if ((0.75f*float(w))>float(h)) 	rect.set(w_2-1.33f*float(h_2),0,1.33f*h,h);
+        else                   			rect.set(0,h_2-0.75f*float(w_2),w,0.75f*w);
+        m_D3DWindow->Left  	= rect.x1;
+        m_D3DWindow->Top  	= rect.y1;
+        m_D3DWindow->Width 	= rect.x2;
+        m_D3DWindow->Height	= rect.y2;
+    }else{
+        m_D3DWindow->Left  	= 0;
+        m_D3DWindow->Top  	= 0;
+        m_D3DWindow->Width 	= m_D3DPanel->Width;
+        m_D3DWindow->Height	= m_D3DPanel->Height;
+    }
+}
+
+//------------------------------------------------------------------------------
+// Common Commands
+//------------------------------------------------------------------------------
+void 	CommandInitialize(u32 p1, u32 p2, u32& res)
+{
+    Engine.Initialize	();
+    // make interface
+    //----------------
+    EPrefs.OnCreate		();
+    if (UI->OnCreate((TD3DWindow*)p1,(TPanel*)p2)){
+        ExecCommand		(COMMAND_CREATE_SOUND_LIB);	R_ASSERT(SndLib);
+        SndLib->OnCreate();
+        g_pGamePersistent= xr_new<IGame_Persistent>();
+        Lib.OnCreate	();
+        LALib.OnCreate	();
+        if (Tools->OnCreate()){
+            Device.seqAppCycleStart.Process(rp_AppCycleStart);
+            ExecCommand	(COMMAND_RESTORE_UI_BAR);
+            ExecCommand	(COMMAND_REFRESH_UI_BAR);
+            ExecCommand	(COMMAND_CLEAR);
+            ExecCommand	(COMMAND_RENDER_FOCUS);
+            ExecCommand	(COMMAND_CHANGE_ACTION, etaSelect);
+            ExecCommand	(COMMAND_RENDER_RESIZE);
+        }else{
+        	res			= FALSE;
+        }
+    }else{
+        res 			= FALSE;
+    }
+}             
+void 	CommandDestroy(u32 p1, u32 p2, u32& res)
+{
+    ExecCommand			(COMMAND_SAVE_UI_BAR);
+    EPrefs.OnDestroy	();
+    ExecCommand			(COMMAND_CLEAR);
+    Device.seqAppCycleEnd.Process(rp_AppCycleEnd);
+    xr_delete			(g_pGamePersistent);
+    LALib.OnDestroy		();
+    Tools->OnDestroy	();
+    SndLib->OnDestroy	();
+    xr_delete			(SndLib);
+    Lib.OnDestroy		();
+    UI->OnDestroy		();
+    Engine.Destroy		();
+}             
+void 	CommandQuit(u32 p1, u32 p2, u32& res)
+{
+    UI->Quit			();
+}             
+void 	CommandEditorPrefs(u32 p1, u32 p2, u32& res)
+{
+    EPrefs.Edit			();
+}             
+void 	CommandChangeAction(u32 p1, u32 p2, u32& res)
+{
+    Tools->SetAction	(ETAction(p1));
+}             
+void 	CommandChangeAxis(u32 p1, u32 p2, u32& res)
+{
+    Tools->SetAxis	(ETAxis(p1));
+}             
+void 	CommandChangeSettings(u32 p1, u32 p2, u32& res)
+{
+	Tools->SetSettings(p1,p2);
+}             
+void 	CommandSoundEditor(u32 p1, u32 p2, u32& res)
+{
+    TfrmSoundLib::EditLib(AnsiString("Sound Editor"));
+}
+void 	CommandSyncSounds(u32 p1, u32 p2, u32& res)
+{
+    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to synchronize sounds?")==mrYes)
+        SndLib->RefreshSounds(true);
+}
+void 	CommandImageEditor(u32 p1, u32 p2, u32& res)
+{
+    TfrmImageLib::EditLib(AnsiString("Image Editor"));
+}
+void 	CommandCheckTextures(u32 p1, u32 p2, u32& res)
+{
+    TfrmImageLib::ImportTextures();
+}
+void 	CommandRefreshTextures(u32 p1, u32 p2, u32& res)
+{
+    if (ELog.DlgMsg(mtConfirmation,TMsgDlgButtons() << mbYes << mbNo,"Are you sure to synchronize textures?")==mrYes)
+        ImageLib.RefreshTextures(0);
+}
+void 	CommandReloadTextures(u32 p1, u32 p2, u32& res)
+{
+    Device.ReloadTextures();
+}
+void 	CommandChangeSnap(u32 p1, u32 p2, u32& res)
+{
+    ((TExtBtn*)p1)->Down = !((TExtBtn*)p1)->Down;
+}
+void 	CommandUnloadTextures(u32 p1, u32 p2, u32& res)
+{
+    Device.UnloadTextures();
+}
+void 	CommandEvictObjects(u32 p1, u32 p2, u32& res)
+{
+    Lib.EvictObjects();
+}
+void 	CommandEvictTextures(u32 p1, u32 p2, u32& res)
+{
+    Device.Resources->Evict();
+}
+void 	CommandCheckModified(u32 p1, u32 p2, u32& res)
+{
+    res = Tools->IsModified();
+}
+void 	CommandExit(u32 p1, u32 p2, u32& res)
+{
+    res = Tools->IfModified();
+}
+void 	CommandShowProperties(u32 p1, u32 p2, u32& res)
+{
+    Tools->ShowProperties();
+}
+void 	CommandUpdateProperties(u32 p1, u32 p2, u32& res)
+{
+    Tools->UpdateProperties((bool)p1);
+}
+void 	CommandRefreshProperties(u32 p1, u32 p2, u32& res)
+{
+    Tools->RefreshProperties();
+}
+void 	CommandZoomExtents(u32 p1, u32 p2, u32& res)
+{
+    Tools->ZoomObject(p1);
+}
+void 	CommandRenderWire(u32 p1, u32 p2, u32& res)
+{
+    if (p1)	Device.dwFillMode 	= D3DFILL_WIREFRAME;
+    else 	Device.dwFillMode 	= D3DFILL_SOLID;
+}
+void 	CommandToggleSafeRect(u32 p1, u32 p2, u32& res)
+{
+    psDeviceFlags.set	(rsDrawSafeRect,!psDeviceFlags.is(rsDrawSafeRect));
+    ExecCommand			(COMMAND_RENDER_RESIZE);
+}
+void 	CommandToggleGrid(u32 p1, u32 p2, u32& res)
+{
+    psDeviceFlags.set(rsDrawGrid,!psDeviceFlags.is(rsDrawGrid));
+}
+void 	CommandUpdateGrid(u32 p1, u32 p2, u32& res)
+{
+    DU.UpdateGrid(EPrefs.grid_cell_count,EPrefs.grid_cell_size);
+    UI->OutGridSize();
+}
+void 	CommandGridNumberOfSlots(u32 p1, u32 p2, u32& res)
+{
+    if (p1)	EPrefs.grid_cell_count += 2;
+    else	EPrefs.grid_cell_count -= 2;
+    ExecCommand	(COMMAND_UPDATE_GRID);
+}
+void 	CommandGridSlotSize(u32 p1, u32 p2, u32& res)
+{
+    float step = 1.f;
+    float val = EPrefs.grid_cell_size;
+    if (p1){
+        if (val<1) step/=10.f;
+        EPrefs.grid_cell_size += step;
+    }else{
+        if (fsimilar(val,1.f)||(val<1)) step/=10.f;
+        EPrefs.grid_cell_size -= step;
+    }
+    ExecCommand	(COMMAND_UPDATE_GRID);
+}
+void 	CommandCreateSoundLib(u32 p1, u32 p2, u32& res)
+{
+    SndLib		= xr_new<CSoundManager>();
+}
+void 	CommandMuteSound(u32 p1, u32 p2, u32& res)
+{
+    SndLib->MuteSounds(p1);
+}
+
+void TUI::RegisterCommands()
+{
+	RegisterCommand(COMMAND_INITIALIZE,				SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandInitialize)));
+	RegisterCommand(COMMAND_DESTROY,        		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandDestroy)));
+	RegisterCommand(COMMAND_EXIT,               	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandExit)));
+	RegisterCommand(COMMAND_QUIT,           		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandQuit)));
+	RegisterCommand(COMMAND_EDITOR_PREF,    		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandEditorPrefs)));
+	RegisterCommand(COMMAND_CHANGE_ACTION,  		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeAction)));
+	RegisterCommand(COMMAND_CHANGE_AXIS,    		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeAxis)));
+	RegisterCommand(COMMAND_CHANGE_SETTINGS,		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeSettings)));
+	RegisterCommand(COMMAND_SOUND_EDITOR,   		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSoundEditor)));
+	RegisterCommand(COMMAND_SYNC_SOUNDS,    		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandSyncSounds)));
+    RegisterCommand(COMMAND_IMAGE_EDITOR,   		SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandImageEditor)));
+	RegisterCommand(COMMAND_CHECK_TEXTURES,     	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandCheckTextures)));
+	RegisterCommand(COMMAND_REFRESH_TEXTURES,   	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshTextures)));	
+	RegisterCommand(COMMAND_RELOAD_TEXTURES,    	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandReloadTextures)));
+	RegisterCommand(COMMAND_CHANGE_SNAP,        	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandChangeSnap)));
+    RegisterCommand(COMMAND_UNLOAD_TEXTURES,    	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUnloadTextures)));
+    RegisterCommand(COMMAND_EVICT_OBJECTS,      	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandEvictObjects)));
+    RegisterCommand(COMMAND_EVICT_TEXTURES,     	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandEvictTextures)));
+    RegisterCommand(COMMAND_CHECK_MODIFIED,     	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandCheckModified)));
+	RegisterCommand(COMMAND_SHOW_PROPERTIES,    	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandShowProperties)));
+	RegisterCommand(COMMAND_UPDATE_PROPERTIES,  	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateProperties)));
+	RegisterCommand(COMMAND_REFRESH_PROPERTIES, 	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRefreshProperties)));
+	RegisterCommand(COMMAND_ZOOM_EXTENTS,       	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandZoomExtents)));
+    RegisterCommand(COMMAND_RENDER_WIRE,        	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandRenderWire)));
+    RegisterCommand(COMMAND_RENDER_FOCUS,       	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(this,TUI::CommandRenderFocus)));
+	RegisterCommand(COMMAND_BREAK_LAST_OPERATION,	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(this,TUI::CommandBreakLastOperation)));
+    RegisterCommand(COMMAND_TOGGLE_SAFE_RECT,   	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandToggleSafeRect)));
+	RegisterCommand(COMMAND_RENDER_RESIZE,      	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_C(this,TUI::CommandRenderResize)));
+    RegisterCommand(COMMAND_TOGGLE_GRID,        	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandToggleGrid)));
+	RegisterCommand(COMMAND_UPDATE_GRID,        	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandUpdateGrid)));
+    RegisterCommand(COMMAND_GRID_NUMBER_OF_SLOTS,	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandGridNumberOfSlots)));
+    RegisterCommand(COMMAND_GRID_SLOT_SIZE,     	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandGridSlotSize)));
+    RegisterCommand(COMMAND_CREATE_SOUND_LIB,   	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandCreateSoundLib)));
+    RegisterCommand(COMMAND_MUTE_SOUND,         	SECommand("",MAKE_EMPTY_SHORTCUT,BIND_CMD_EVENT_S(CommandMuteSound)));
+}
+
+
+
+/*
 bool TUI::Command( int _Command, int p1, int p2 )
 {
 	if ((_Command!=COMMAND_INITIALIZE)&&!m_bReady) return false;
@@ -207,6 +492,7 @@ bool TUI::Command( int _Command, int p1, int p2 )
     RedrawScene();
     return bRes;
 }
+*/
 
 //---------------------------------------------------------------------------
 bool TUI::ApplyShortCut(WORD Key, TShiftState Shift)

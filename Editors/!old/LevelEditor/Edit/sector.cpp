@@ -283,7 +283,7 @@ void CSector::CaptureInsideVolume(){
         }
 		m_Flags.set		(flNeedUpdateVolume,TRUE);
 		UI->RedrawScene	();
-        UI->Command		(COMMAND_UPDATE_PROPERTIES);
+        ExecCommand		(COMMAND_UPDATE_PROPERTIES);
     }
 }
 //----------------------------------------------------

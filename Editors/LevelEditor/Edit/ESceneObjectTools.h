@@ -24,7 +24,7 @@ public:
     Fvector				m_AppendRandomMaxScale;
     Fvector				m_AppendRandomMinRotation;
     Fvector				m_AppendRandomMaxRotation;
-    AStringVec			m_AppendRandomObjects;
+    RStringVec			m_AppendRandomObjects;
 public:
 						ESceneObjectTools		();
 

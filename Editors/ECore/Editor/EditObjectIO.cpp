@@ -143,9 +143,9 @@ void CEditableObject::Save(IWriter& F)
         F.open_chunk	(EOBJ_CHUNK_BONEPARTS2);
         F.w_u32			(m_BoneParts.size());
         for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
-            F.w_stringZ	(bp_it->alias.c_str());
+            F.w_stringZ	(bp_it->alias);
             F.w_u32		(bp_it->bones.size());
-            for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
+            for (RStringVecIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
 	            F.w_stringZ(s_it->c_str());
         }
         F.close_chunk	();
@@ -179,7 +179,7 @@ bool CEditableObject::Load(IReader& F)
 	bool bRes = true;
 	do{
 		u32 version = 0;
-        AnsiString buf;
+        ref_str buf;
 		char sh_name[255];
 		R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
 		if (version!=EOBJ_CURRENT_VERSION){
@@ -328,7 +328,7 @@ bool CEditableObject::Load(IReader& F)
                 for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
                     F.r_stringZ	(buf); bp_it->alias=buf;
                     bp_it->bones.resize(F.r_u32());
-                    for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++){
+                    for (RStringVecIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++){
                         int idx		= F.r_u32();
                         if ((idx>=0)&&(idx<(int)m_Bones.size())){
                             *s_it	= m_Bones[idx]->Name();
@@ -348,7 +348,7 @@ bool CEditableObject::Load(IReader& F)
                 for (BPIt bp_it=m_BoneParts.begin(); bp_it!=m_BoneParts.end(); bp_it++){
                     F.r_stringZ	(buf); bp_it->alias=buf;
                     bp_it->bones.resize(F.r_u32());
-                    for (AStringIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
+                    for (RStringVecIt s_it=bp_it->bones.begin(); s_it!=bp_it->bones.end(); s_it++)
                         F.r_stringZ(*s_it);
                 }
                 if (!m_BoneParts.empty()&&!VerifyBoneParts())

@@ -28,7 +28,6 @@ class ECORE_API TUI: public IInputReceiver{
 protected:
     friend class CEditorPreferences;
     friend class CRenderDevice;
-	AnsiString 	m_LastFileName;
     TD3DWindow* m_D3DWindow;
     TPanel*		m_D3DPanel;
 
@@ -61,13 +60,12 @@ protected:
     void Redraw();
 protected:
     virtual void RealUpdateScene()=0;
-
+    void D3D_CreateStateBlocks();
+    void D3D_DestroyStateBlocks();
+public:
     virtual void OutUICursorPos	()=0;
 	virtual void OutGridSize	()=0;
 	virtual void OutInfo		()=0;
-
-    void D3D_CreateStateBlocks();
-    void D3D_DestroyStateBlocks();
 public:
 	// non-hidden ops
 	Ivector2 m_StartCp;
@@ -119,7 +117,6 @@ public:
     virtual bool 	OnCreate		(TD3DWindow* w, TPanel* p);
     virtual void 	OnDestroy		();
 
-    const AnsiString&	GetEditFileName	()	{ return m_LastFileName; }
     virtual char* 		GetCaption		()=0;
 
     bool 			IsModified		();
@@ -147,8 +144,6 @@ public:
 	void __fastcall MousePress			(TShiftState Shift, int X, int Y);
 	void __fastcall MouseRelease		(TShiftState Shift, int X, int Y);
 	void __fastcall MouseMove			(TShiftState Shift, int X, int Y);
-
-    virtual bool 	Command				(int _Command, int p = 0, int p2 = 0)=0;
 
     void 			BeginEState			(EEditorState st){ m_EditorState.push_back(st); }
     void 			EndEState			(){ m_EditorState.pop_back(); }
@@ -201,13 +196,21 @@ public:
 
     virtual LPCSTR 	EditorName			()=0;
     virtual LPCSTR	EditorDesc			()=0;
+
+// commands   
+	virtual	void	RegisterCommands			()=0; 
+	void			ClearCommands				();
+    
+	void 			CommandRenderFocus			(u32 p1, u32 p2, u32& res);
+	void 			CommandBreakLastOperation	(u32 p1, u32 p2, u32& res);
+	void 			CommandRenderResize			(u32 p1, u32 p2, u32& res);
 };
 //---------------------------------------------------------------------------
 extern ECORE_API TUI* UI;  
 //---------------------------------------------------------------------------
 void ECORE_API ResetActionToSelect();
-#define COMMAND0(cmd)		{Command(cmd);bExec=true;}
-#define COMMAND1(cmd,p0)	{Command(cmd,p0);bExec=true;}
+#define COMMAND0(cmd)		{ExecCommand(cmd);bExec=true;}
+#define COMMAND1(cmd,p0)	{ExecCommand(cmd,p0);bExec=true;}
 extern ECORE_API void __fastcall PanelMinMax		(TPanel *pa);
 extern ECORE_API void __fastcall PanelMinimize		(TPanel *pa);
 extern ECORE_API void __fastcall PanelMaximize		(TPanel *pa);

@@ -27,7 +27,7 @@ void TfraPS::OnItemFocused(ListItemsVec& items)
     m_Current 			= 0;
     for (ListItemsIt it=items.begin(); it!=items.end(); it++)
         m_Current 		= (*it)->Key();
-    UI->Command			(COMMAND_RENDER_FOCUS);
+    ExecCommand			(COMMAND_RENDER_FOCUS);
 }
 //------------------------------------------------------------------------------
 void __fastcall TfraPS::PaneMinClick(TObject *Sender)

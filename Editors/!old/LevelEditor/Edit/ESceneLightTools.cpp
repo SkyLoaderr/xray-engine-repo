@@ -148,7 +148,7 @@ void  ESceneLightTools::OnRender(int priority, bool strictB2F)
 void ESceneLightTools::OnControlAppendClick(PropValue* sender, bool& bDataModified, bool& bSafe)
 {
 	AppendLightControl(GenLightControlName().c_str());
-    UI->Command(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
     bDataModified = true;
 }
 //------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ void ESceneLightTools::OnControlRenameRemoveClick(PropValue* sender, bool& bData
     }break;
     case 1: RemoveLightControl(item_name.c_str());	break;
 	}
-    UI->Command(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand(COMMAND_UPDATE_PROPERTIES);
     bDataModified = true;
 }
 //------------------------------------------------------------------------------

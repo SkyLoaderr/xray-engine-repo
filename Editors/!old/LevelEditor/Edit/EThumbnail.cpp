@@ -11,7 +11,7 @@ ECustomThumbnail::ECustomThumbnail(LPCSTR src_name, THMType type)
 {
 	m_Type		= type;
     m_SrcName   = src_name;
-	m_Name 		= ChangeFileExt(src_name,".thm");
+	m_Name 		= ChangeFileExt(AnsiString(src_name),".thm");
     m_Age		= 0;
 }
 //------------------------------------------------------------------------------

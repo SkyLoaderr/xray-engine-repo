@@ -74,7 +74,7 @@ void EDetailManager::ClearBase()
 {
     m_Base.Clear		();
     m_SnapObjects.clear	();
-    UI->Command			(COMMAND_REFRESH_SNAP_OBJECTS);
+    ExecCommand			(COMMAND_REFRESH_SNAP_OBJECTS);
 }
 void EDetailManager::Clear(bool bSpecific)
 {

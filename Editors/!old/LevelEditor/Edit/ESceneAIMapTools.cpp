@@ -119,7 +119,7 @@ void ESceneAIMapTools::Clear(bool bOnlyNodes)
 	m_Nodes.clear		();
 	if (!bOnlyNodes){
 	    m_SnapObjects.clear	();
-        UI->Command		(COMMAND_REFRESH_SNAP_OBJECTS);
+        ExecCommand		(COMMAND_REFRESH_SNAP_OBJECTS);
     }
 }
 //----------------------------------------------------
@@ -222,7 +222,7 @@ bool ESceneAIMapTools::Load(IReader& F)
     
 	// snap objects
     if (F.find_chunk(AIMAP_CHUNK_SNAP_OBJECTS)){
-    	AnsiString 	buf;
+    	ref_str 	buf;
 		int cnt 	= F.r_u32();
         if (cnt){
 	        for (int i=0; i<cnt; i++){

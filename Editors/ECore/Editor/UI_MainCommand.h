@@ -2,7 +2,7 @@
 #define UI_MainCommandH
 
 enum{
-	COMMAND_INITIALIZE,			// p1 - D3DWindow, p2 - TPanel
+	COMMAND_INITIALIZE=0,		// p1 - D3DWindow, p2 - TPanel
 	COMMAND_DESTROY,
 	COMMAND_QUIT,
 	COMMAND_EDITOR_PREF,
@@ -61,6 +61,37 @@ enum{
     COMMAND_MAIN_LAST
 };
 //------------------------------------------------------------------------------
+
+typedef fastdelegate::FastDelegate3<u32,u32,u32&> TECommandEvent;
+
+struct ECORE_API SECommand{
+	struct SShortcut{
+    	enum{
+        	flAlt	= (1<<0),
+        	flCtrl	= (1<<1),
+            flShift	= (1<<2)
+        };
+    	u32 		key;
+        Flags8		ext;
+        			SShortcut		(u32 k, BOOL a, BOOL c, BOOL s):key(k){ext.assign((a?flAlt:0)|(c?flCtrl:0)|(s?flShift:0));}
+        			SShortcut		(){}
+    };
+    ref_str			caption;
+	SShortcut 		shortcut;
+    TECommandEvent	command;
+                    SECommand		(){}
+    				SECommand		(ref_str capt, const SShortcut& shrt, TECommandEvent cmd):caption(capt),shortcut(shrt),command(cmd){}
+};
+DEFINE_VECTOR(SECommand,ECommandVec,ECommandVecIt);
+
+ECORE_API u32 		ExecCommand				(u32 cmd, u32 p1=0, u32 p2=0);
+ECORE_API void		RegisterCommand 		(u32 cmd_type, const SECommand& cmd_impl);
+ECORE_API void		EnableReceiveCommands	();
+
+#define MAKE_SHORTCUT(k,a,c,s)  SECommand::SShortcut(k,a,c,s)
+#define MAKE_EMPTY_SHORTCUT  	MAKE_SHORTCUT(0,0,0,0)
+#define BIND_CMD_EVENT_S(a) 	TECommandEvent().bind(a)
+#define BIND_CMD_EVENT_C(a,b)	TECommandEvent().bind(a,&b)
 
 #endif //UI_MainCommandH
 

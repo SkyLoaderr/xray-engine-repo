@@ -108,7 +108,7 @@ void CWayPoint::Select( int flag )
 {
 	m_bSelected = (flag==-1)?(m_bSelected?false:true):flag;
     UI->RedrawScene();
-    UI->Command	(COMMAND_UPDATE_PROPERTIES);
+    ExecCommand	(COMMAND_UPDATE_PROPERTIES);
 }
 WPLIt CWayPoint::FindLink(CWayPoint* P)
 {
@@ -436,7 +436,7 @@ bool CWayObject::Load(IReader& F)
 	Clear();
 
 	u32 version = 0;
-	AnsiString buf;
+	ref_str buf;
 
     if (!F.find_chunk(WAYOBJECT_CHUNK_VERSION)) return false;
     R_ASSERT(F.r_chunk(WAYOBJECT_CHUNK_VERSION,&version));

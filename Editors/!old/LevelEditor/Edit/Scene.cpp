@@ -77,7 +77,7 @@ void EScene::OnCreate()
 	ELog.Msg				( mtInformation, "Scene: initialized" );
 	m_Valid 				= true;
     m_RTFlags.zero			();
-	UI->Command				(COMMAND_UPDATE_CAPTION);
+    ExecCommand				(COMMAND_UPDATE_CAPTION);
 	m_SummaryInfo 			= TProperties::CreateForm("Level Summary Info", 0, alNone, 0,0,0, TProperties::plFolderStore|TProperties::plItemFolders);
 }
 
@@ -186,12 +186,12 @@ bool EScene::GetBox(Fbox& box, ObjectList& lst)
 void EScene::Modified()
 {
 	m_RTFlags.set(flRT_Modified|flRT_Unsaved,TRUE);
-    UI->Command(COMMAND_UPDATE_CAPTION);
+    ExecCommand(COMMAND_UPDATE_CAPTION);
 }
 
 bool EScene::IsUnsaved()
 {
-    return (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI->GetEditFileName().IsEmpty()));
+    return (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!Tools->GetEditFileName().IsEmpty()));
 }
 bool EScene::IsModified()
 {
@@ -204,10 +204,10 @@ bool EScene::IfModified()
         ELog.DlgMsg( mtError, "Scene sharing violation" );
         return false;
     }
-    if (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!UI->GetEditFileName().IsEmpty())){
+    if (m_RTFlags.is(flRT_Unsaved) && (ObjCount()||!Tools->GetEditFileName().IsEmpty())){
         int mr = ELog.DlgMsg(mtConfirmation, "The scene has been modified. Do you want to save your changes?");
         switch(mr){
-        case mrYes: if (!UI->Command(COMMAND_SAVE)) return false; break;
+        case mrYes: if (!ExecCommand(COMMAND_SAVE)) return false; break;
         case mrNo: m_RTFlags.set(flRT_Unsaved,FALSE); break;
         case mrCancel: return false;
         }
@@ -369,7 +369,7 @@ bool EScene::Validate(bool bNeedOkMsg, bool bTestPortal, bool bTestHOM, bool bTe
 std::string EScene::LevelPath()
 {
     std::string path;
-	if (m_LevelOp.m_FNLevelPath.Length()){
+	if (m_LevelOp.m_FNLevelPath.size()){
         FS.update_path	(path,"$level$",m_LevelOp.m_FNLevelPath.c_str());
         path			+= "\\";
     }

@@ -36,9 +36,9 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
         frmSplash->SetStatus	("Loading...");
 
 // startup create
-        ATools					= xr_new<CActorTools>();
-        AUI						= xr_new<CActorMain>();
-        AUI->RegisterCommands	();
+        Tools					= xr_new<CActorTools>();
+        UI						= xr_new<CActorMain>();
+        UI->RegisterCommands	();
 
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
@@ -53,8 +53,7 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 
         TfrmLog::DestroyLog		(); 
 
-		AUI->ClearCommands		();
-        
+		UI->ClearCommands		();
         xr_delete				(Tools);
         xr_delete				(UI);
 
