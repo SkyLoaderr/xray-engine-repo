@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "render.h"
+#include "fstaticrender.h"
 #include "fbasicvisual.h"
 #include "fmesh.h"
 #include "xrLevel.h"
@@ -34,9 +34,8 @@ void CRender::level_Load()
 	chunk->Close();
 	
 	// Lights
-	pApp->LoadTitle("Loading lights...");
-	LoadLights(fs);
-	Lights_Dynamic.Initialize();
+	pApp->LoadTitle	("Loading lights...");
+	LoadLights		(fs);
 	
 	// Sectors
 	pApp->LoadTitle("Loading sectors & portals...");
@@ -79,14 +78,14 @@ void CRender::level_Unload()
 	// 2.
 	for (I=0; I<Sectors.size(); I++)
 		_DELETE(Sectors[I]);
-	Sectors.clear			();
+	Sectors.clear		();
 	// 3.
-	Portals.clear			();
+	Portals.clear		();
 
 	//*** Lights
-	Glows.Unload			();
-	Lights.Unload			();
-	Lights_Dynamic.Destroy	();
+	Glows.Unload		();
+	L_DB.Unload			();
+	L_Dynamic.Destroy	();
 
 	//*** Visuals
 	for (I=0; I<Visuals.size(); I++)
@@ -177,7 +176,7 @@ void CRender::LoadLights(CStream *fs)
 	// lights
 	chunk = fs->OpenChunk(fsL_LIGHTS);
 	R_ASSERT	(chunk && "Can't find lights");
-	Lights.Load	(chunk);
+	L_DB.Load	(chunk);
 	chunk->Close();
 
 	// glows

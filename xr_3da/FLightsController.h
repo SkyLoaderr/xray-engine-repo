@@ -12,8 +12,6 @@ class ENGINE_API CStream;
 
 class ENGINE_API CLightDB_Static 
 {
-	friend BOOL __forceinline lights_compare(int a, int b);
-
 	vector<xrLIGHT>	Lights;			// -- Lights itself
 	vector<BYTE>	Enabled;		// -- is Enabled
 	vecI			Distance;		// -- Only selected are valid!!!
