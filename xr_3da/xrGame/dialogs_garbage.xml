@@ -1,25 +1,10 @@
-<?xml version='1.0' encoding="windows-1251"?>
-
+<?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-	<dialog id="escape_talk_about_garbage">
-	<precondition>dialogs.level_garbage</precondition>
-	<phrase_list>
-	   	<phrase id="0">
-			<text>escape_talk_about_garbage_0</text>
-			<next>10</next>
-		</phrase>                                                                                               
-	   	<phrase id="10">
-			<text>escape_talk_about_garbage_10</text>
-			<next>1</next>
-		</phrase>	
-	   	<phrase id="1">
-			<text>escape_talk_about_garbage_1</text>
-			<next>21</next>
-		</phrase>
-	   	<phrase id="21">
-			<text>escape_talk_about_garbage_21</text>
-		</phrase>                                                                                               		
-	</phrase_list>
-	</dialog>
-    
+    <dialog id="gar_dramm_novice_start">
+        <phrase_list>
+            <phrase id="0">
+                <text>gar_dramm_novice_start_0</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
 </game_dialogs>

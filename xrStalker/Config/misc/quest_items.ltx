@@ -1,31 +1,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Devices
+;; ESCAPE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-[device_atifact_merger]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\artifact merger"
-;$prefetch 			= 32
-class				= D_AFMERG
-cform				= skeleton
-visual				= equipments\item_merger.ogf
-radius				= 1
-
-inv_name			= ArtefactMerger
-inv_name_short		= AfMerger
-inv_weight			= 3	;0.2
-
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 6
-inv_grid_y			= 13
-cost				= 5000
 
 [quest_case_01]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 				= "devices\quest_case_01"
+$spawn 				= "devices\quest_items\quest_case_01"
 ;$prefetch 			= 32
 class				= D_AFMERG
 cform				= skeleton
@@ -43,74 +23,10 @@ inv_grid_x			= 8
 inv_grid_y			= 18
 cost				= 50
 
-[garbage_letter]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\garbage_letter"
-;$prefetch 			= 32
-class				= D_AFMERG
-cform				= skeleton
-visual				= equipments\item_flash_1.ogf
-radius				= 1
-script_binding		= stalker.object_init
-
-inv_name			= Flash card
-inv_name_short		= Flash card
-inv_weight			= 3	;0.2
-
-inv_grid_width		= 1
-inv_grid_height		= 1
-inv_grid_x			= 7
-inv_grid_y			= 19
-cost				= 1000
-
-
-[agroprom_notebook]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\agroprom_notebook"
-;$prefetch 			= 32
-class				= D_AFMERG
-cform				= skeleton
-visual				= equipments\item_flash_1.ogf
-radius				= 1
-script_binding		= stalker.object_init
-
-inv_name			= Flash card
-inv_name_short		= Flash card
-inv_weight			= 3	;0.2
-
-inv_grid_width		= 1
-inv_grid_height		= 1
-inv_grid_x			= 7
-inv_grid_y			= 19
-cost				= 10
-
-[quest_case_02]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn 				= "devices\quest_case_02"
-;$prefetch 			= 32
-class				= D_AFMERG
-cform				= skeleton
-visual				= equipments\item_merger.ogf
-radius				= 1
-script_binding		= stalker.object_init
-
-inv_name			= Case
-inv_name_short		= Case
-inv_weight			= 3	;0.2
-
-inv_grid_width		= 2
-inv_grid_height		= 2
-inv_grid_x			= 8
-inv_grid_y			= 18
-cost				= 1000
-
 [dynamite]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 				= "devices\dynamite"
+$spawn 				= "devices\quest_items\dynamite"
 ;$prefetch 			= 32
 class				= D_AFMERG
 cform				= skeleton
@@ -131,7 +47,7 @@ cost				= 1000
 [fox_flash]
 GroupControlSection	= spawn_group
 discovery_dependency = 
-$spawn 				= "devices\fox_flash"
+$spawn 				= "devices\quest_items\fox_flash"
 ;$prefetch 			= 32
 class				= D_AFMERG
 cform				= skeleton
@@ -147,5 +63,77 @@ inv_grid_width		= 1
 inv_grid_height		= 1
 inv_grid_x			= 3
 inv_grid_y			= 19
-cost				= 1000
+cost				= 0
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; GARBAGE
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[garbage_seriy_flash]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\garbage_seriy_flash"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_flash_1.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Flash card
+inv_name_short		= Flash card
+inv_weight			= 0.1	;0.2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 7
+inv_grid_y			= 19
+cost				= 0
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; AGROPROM
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[agroprom_notebook]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\agroprom_notebook"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_flash_1.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Flash card
+inv_name_short		= Flash card
+inv_weight			= 3	;0.2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 7
+inv_grid_y			= 19
+cost				= 10
+
+[quest_case_02]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "devices\quest_items\quest_case_02"
+;$prefetch 			= 32
+class				= D_AFMERG
+cform				= skeleton
+visual				= equipments\item_merger.ogf
+radius				= 1
+script_binding		= stalker.object_init
+
+inv_name			= Case
+inv_name_short		= Case
+inv_weight			= 3	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 2
+inv_grid_x			= 8
+inv_grid_y			= 18
+cost				= 1000

@@ -344,6 +344,9 @@
 					RelativePath=".\Config\misc\postprocess.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\quest_items.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\smart_terrain.ltx">
 				</File>
 				<File

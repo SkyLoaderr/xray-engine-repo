@@ -32,7 +32,7 @@
 
 	<specific_character id="stalker_esc_fox" team_default = "1">
 		<name>Сталкер "Лис"</name>
-		<icon x="26" y="4"></icon>
+		<icon x="16" y="10"></icon>
 		<map_icon x="0" y="0"></map_icon>
 		<bio>Старый прожженый зоной одиночка.</bio>
 
@@ -42,7 +42,7 @@
 		<rank>30</rank>
 		<reputation>0</reputation>
 
-		<visual>actors\neytral\stalker_neytral_hood_4</visual>
+		<visual>actors\neytral\stalker_neytral_balon_4</visual>
 		<supplies>
 			[spawn] \n
 			wpn_pb \n
