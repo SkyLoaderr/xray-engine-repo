@@ -154,7 +154,7 @@ IC void CBackend::set_Format			(IDirect3DVertexDeclaration9* _decl)
 	}
 }
 
-IC void CBackend::set_PS				(IDirect3DPixelShader9* _ps)
+ICF void CBackend::set_PS				(IDirect3DPixelShader9* _ps, LPCSTR _n)
 {
 	if (ps!=_ps)
 	{
@@ -162,10 +162,13 @@ IC void CBackend::set_PS				(IDirect3DPixelShader9* _ps)
 		stat.ps			++;
 		ps				= _ps;
 		CHK_DX			(HW.pDevice->SetPixelShader(ps));
+#ifdef DEBUG
+		ps_name			= _n;
+#endif
 	}
 }
 
-IC void CBackend::set_VS				(IDirect3DVertexShader9* _vs)
+ICF void CBackend::set_VS				(IDirect3DVertexShader9* _vs, LPCSTR _n)
 {
 	if (vs!=_vs)
 	{
@@ -173,6 +176,9 @@ IC void CBackend::set_VS				(IDirect3DVertexShader9* _vs)
 		stat.vs			++;
 		vs				= _vs;
 		CHK_DX			(HW.pDevice->SetVertexShader(vs));
+#ifdef DEBUG
+		vs_name			= _n;
+#endif
 	}
 }
 

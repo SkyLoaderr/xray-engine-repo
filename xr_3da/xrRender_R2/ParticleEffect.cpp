@@ -320,9 +320,9 @@ void CParticleEffect::Render(float LOD)
 				RCache.set_Geometry		(hGeom);
 
                 u32 cm					= RCache.get_CullMode();
-                RCache.set_CullMode		(D3DCULL_NONE);
+                RCache.set_CullMode		(CULL_NONE	);
 				RCache.Render	   		(D3DPT_TRIANGLELIST,dwOffset,0,dwCount,0,dwCount/2);
-                RCache.set_CullMode		(cm); 
+                RCache.set_CullMode		(CULL_CCW	); 
 			}
 		}
 	}
