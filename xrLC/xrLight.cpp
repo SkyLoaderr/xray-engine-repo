@@ -11,6 +11,7 @@ public:
 	BOOL				volatile	bContinue;
 	HASH							H;
 	RAPID::XRCollide				DB;
+	vector<R_Light>					LightsSelected;
 public:
 	CLMThread	(DWORD ID, CDeflector* D) : CThread(ID)
 	{

@@ -30,7 +30,7 @@ struct R_Light
 	float			energy;				// For radiosity ONLY
 	
 	Fvector			tri[3];
-
+	
 	R_Light()		{
 		tri[0].set	(0,0,0);
 		tri[1].set	(0,0,EPS_S);
@@ -39,6 +39,7 @@ struct R_Light
 };
 
 typedef hash2D<UVtri*,128,128>	HASH;
+typedef vector<R_Light>			LSelection;
 
 class CDeflector
 {
@@ -51,22 +52,20 @@ public:
 		b_texture		lm;
 		
 		DWORD			Area ()	{ return (lm.dwWidth+2*BORDER)*(lm.dwHeight+2*BORDER); }
-
+		
 		Layer()			{ ZeroMemory(this,sizeof(*this)); }
 	};
 	vector<Layer>		layers;
-
+	
 	Fsphere				Sphere;
-
+	
 	DWORD				dwWidth;
 	DWORD				dwHeight;
 	BOOL				bMerged;
-
-	vector<R_Light>		LightsSelected;
 public:
 	CDeflector					();
 	~CDeflector					();
-
+		
 	void	OA_SetNormal		(Fvector &_N )	{ N.set(_N); N.normalize(); }
 	BOOL	OA_Place			(Face *owner);
 	void	OA_Place			(vecFace& lst);
@@ -75,11 +74,11 @@ public:
 	void	GetRect				(UVpoint &min, UVpoint &max);
 	Layer*	GetLayer			(b_light* base);
 	DWORD	GetFaceCount()		{ return UVpolys.size();	};
-
-	VOID	Light				(RAPID::XRCollide* DB, HASH& H);
-	VOID	L_Direct			(RAPID::XRCollide* DB, HASH& H);
-	VOID	L_Direct_Edge		(RAPID::XRCollide* DB, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
-	VOID	L_Calculate			(RAPID::XRCollide* DB, HASH& H);
+		
+	VOID	Light				(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H	);
+	VOID	L_Direct			(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H  );
+	VOID	L_Direct_Edge		(RAPID::XRCollide* DB, LSelection* LightsSelected, UVpoint& p1, UVpoint& p2, Fvector& v1, Fvector& v2, Fvector& N, float texel_size);
+	VOID	L_Calculate			(RAPID::XRCollide* DB, LSelection* LightsSelected, HASH& H  );
 
 	WORD	GetBaseMaterial		() { return UVpolys.front().owner->dwMaterial;	}
 
