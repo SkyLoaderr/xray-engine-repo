@@ -393,7 +393,7 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			3.141592654f / 3.0f,						// tangent space smooth angle
 			0,											// no texture matrix applied to my texture coordinates
 			NVMeshMender::FixTangents,					// fix degenerate bases & texture mirroring
-			NVMeshMender::FixCylindricalTexGen,			// handle cylindrically mapped textures via vertex duplication
+			NVMeshMender::DontFixCylindricalTexGen,			// handle cylindrically mapped textures via vertex duplication
 			NVMeshMender::DontWeightNormalsByFaceSize	// weigh vertex normals by the triangle's size
 			))
 		{
@@ -440,10 +440,10 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 			D3DXVec3Normalize				(&B,&B);
 
 			// ortho-normalize
-			D3DXVec3Cross					(&T,&B,&N);
-			D3DXVec3Normalize				(&T,&T);
-			D3DXVec3Cross					(&B,&N,&T);
+			D3DXVec3Cross					(&B,&T,&N);
 			D3DXVec3Normalize				(&B,&B);
+			D3DXVec3Cross					(&T,&N,&B);
+			D3DXVec3Normalize				(&T,&T);
 
 			vertexBufferNew[i].n.x			= N.x;
 			vertexBufferNew[i].n.y			= N.y;
@@ -679,7 +679,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,
 		0,NULL,NULL,&height);
 	hr = D3DXCreateTexture				(m_pd3dDevice,512,512,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
-	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_GREEN,4.f);
+	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,8.f);
 	height->Release						();
 
 	hr = CreatePower					(m_pd3dDevice,256,32.f,&t_SpecularPower_32);
