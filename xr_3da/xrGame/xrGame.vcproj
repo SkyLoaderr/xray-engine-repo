@@ -2850,6 +2850,9 @@
 					RelativePath=".\PHCapture.h">
 				</File>
 				<File
+					RelativePath=".\PHCaptureInit.cpp">
+				</File>
+				<File
 					RelativePath="PHCharacter.cpp">
 				</File>
 				<File

@@ -1,16 +1,12 @@
+#pragma	 once
 #ifndef PH_CAPTURE_H
 #define PH_CAPTURE_H
 
 class CPHCapture : public CPHObject
 {
 public:
-					CPHCapture							(CPHCharacter     *a_character,
-														 CGameObject	  *a_taget_object
-														 );
-					CPHCapture							(CPHCharacter     *a_character,
-														 CGameObject	  *a_taget_object,
-														 int			   a_taget_elemrnt
-														 );
+					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object);
+					CPHCapture	(CPHCharacter     *a_character,CGameObject	  *a_taget_object,int a_taget_elemrnt);
 virtual				~CPHCapture							();
 
 
