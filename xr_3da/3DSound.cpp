@@ -294,7 +294,8 @@ void C3DSound::Update()
 
 void C3DSound::OnMove()
 {
-	pBuffer->GetStatus(&dwStatus);
+	DWORD old_Status	= dwStatus;
+	pBuffer->GetStatus	(&dwStatus);
 	if ( dwStatus & DSBSTATUS_PLAYING ) {
 		Update();
 		if ((dwStatus&DSBSTATUS_LOOPING)&&(iLoopCountRested>0)) {
@@ -314,29 +315,40 @@ void C3DSound::OnMove()
 			pBuffer->Play( 0, 0, bMustLoop?DSBPLAY_LOOPING:0 );
 			dwStatus	|= DSBSTATUS_PLAYING;
 		} else {
-			// we are in 'stopped' condition
-			if (owner) {	*owner	= 0; owner	= 0; }
+			if (old_Status&DSBSTATUS_PLAYING) 
+			{
+				// The sound-play has ended
+				internalStopOrComplete();
+			}
 		}
 	}
 }
 
-void C3DSound::SetPosition(const Fvector &pos)
+void C3DSound::internalStopOrComplete()
+{
+	if (owner)			{ *owner = 0; owner	= 0; }
+	ps.dwMode			=	DS3DMODE_DISABLE;
+	dwStatus			&= ~DSBSTATUS_PLAYING;
+	bNeedUpdate			= true;
+}
+
+void C3DSound::SetPosition	(const Fvector &pos)
 {
 	ps.vPosition.set(pos);
-	bNeedUpdate = true;
+	bNeedUpdate			= true;
 }
 
-void C3DSound::SetFrequency(DWORD freq)
+void C3DSound::SetFrequency	(DWORD freq)
 {
-	dwFreq		= freq;
-	bNeedUpdate = true;
+	dwFreq				= freq;
+	bNeedUpdate			= true;
 }
 
-void C3DSound::SetMinMax		(float min, float max)
+void C3DSound::SetMinMax	(float min, float max)
 {
 	ps.flMinDistance	= min;
 	ps.flMaxDistance	= max;
-	bNeedUpdate = true;
+	bNeedUpdate			= true;
 }
 
 void C3DSound::Play(C3DSound** P, BOOL bLoop, int iLoopCount)
@@ -357,10 +369,9 @@ void C3DSound::Play(C3DSound** P, BOOL bLoop, int iLoopCount)
 void C3DSound::Stop()
 {
 	bMustPlay = false;
-	pBuffer->Stop();
-	pBuffer->SetCurrentPosition(0);
-	if (owner) { *owner	= 0; owner	= 0; }
-	dwStatus	&= ~DSBSTATUS_PLAYING;
+	pBuffer->Stop				();
+	pBuffer->SetCurrentPosition	(0);
+	internalStopOrComplete		();
 }
 
 void C3DSound::Rewind()

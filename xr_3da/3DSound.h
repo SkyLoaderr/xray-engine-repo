@@ -39,9 +39,11 @@ private:
 	DWORD					dwLastTimeActive;
 private:
 	LPDIRECTSOUNDBUFFER		LoadWaveAs3D			(LPCSTR name, BOOL bCtrlFreq);
-	void					Load					(CInifile *, LPCSTR sect);// wav+params
-	void					Load					(LPCSTR, BOOL bCtrlFreq=FALSE);// wav-file
+	void					Load					(CInifile *, LPCSTR sect);			// wav+params
+	void					Load					(LPCSTR, BOOL bCtrlFreq=FALSE);		// wav-file
 	void					Load					(const C3DSound *);					// clone
+
+	void					internalStopOrComplete	();
 public:
 	BOOL					isPlaying				(void)	{ return (dwStatus&DSBSTATUS_PLAYING)||bMustPlay; }
 
