@@ -128,12 +128,13 @@ void CSheduler::Pop		()
 
 void CSheduler::ProcessStep			()
 {
-	u32	dwTime					= Device.dwTimeGlobal;
-
 	// Normal priority
-//	CTimer						eTimer(true);
-	while (!Items.empty() && Top().dwTimeForExecute < dwTime)
+	CTimer							eTimer;
+	while (!Items.empty() && Top().dwTimeForExecute < Device.dwTimeGlobal)
 	{
+		u32		dwTime				= Device.dwTimeGlobal;
+		u32		delta_ms			= dwTime - Top().dwTimeForExecute;
+
 		// Update
 		Item	T					= Top	();
 		u32		Elapsed				= dwTime-T.dwTimeOfLastExecute;
@@ -163,9 +164,9 @@ void CSheduler::ProcessStep			()
 
 		// Real update call
 		// Msg							("------- %d:",Device.dwFrame);
-//		eTimer.Start				();
 #ifdef DEBUG
 		T.Object->dbg_startframe	= Device.dwFrame;
+		eTimer.Start				();
 #endif
 
 		T.Object->shedule.b_locked	= TRUE;
@@ -173,18 +174,22 @@ void CSheduler::ProcessStep			()
 		T.Object->shedule.b_locked	= FALSE;
 
 #ifdef DEBUG
+		u32	execTime				= eTimer.GetElapsed_ms		();
 		//void*	dbgaddr				= dynamic_cast<void*>		(T.Object);
 		CObject*	O				= dynamic_cast<CObject*>	(T.Object);
 		VERIFY3						(T.Object->dbg_update_shedule == T.Object->dbg_startframe, "Broken sequence of calls to 'shedule_Update'", O?*O->cName():"unknown object" );
-/*		u32	execTime				= eTimer.GetElapsed_ms		();
-		if (execTime>3)
+		if (delta_ms> 3*dwUpdate)
 		{
-			//.LPCSTR	_class			= typeid(T.Object).name	();
-			//CObject*	O				= dynamic_cast<CObject*> (T.Object);
-			//if (O)					Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%s / %dms)",_class,O->cName(),execTime);
-			//else						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%x / %dms)",_class,T.Object,execTime);
+			CObject*	O			= dynamic_cast<CObject*> (T.Object);
+			if (O)					Msg	("! xrSheduler: failed to shedule object [%s] (%dms)",O->cName(),delta_ms);
+			else					Msg	("! xrSheduler: failed to shedule object [%s] (%dms)","unknown", delta_ms);
 		}
-*/
+		if (execTime> 10)
+		{
+			CObject*	O			= dynamic_cast<CObject*> (T.Object);
+			if (O)					Msg	("! xrSheduler: too much time consumed by object [%s] (%dms)",O->cName(),execTime);
+			else					Msg	("! xrSheduler: too much time consumed by object [%s] (%dms)","unknown", execTime);
+		}
 #endif
 
 		Slice						();
