@@ -2,21 +2,22 @@
 #define __XR_UIBUYMENU_H__
 #pragma once
 
+#include "UICustomMenu.h"
 // refs
 class CCustomMenuItem;
+class CUIGameCustom;
 
 class CUIBuyMenu{
 	CCustomMenuItem*	menu_root;	
 	CCustomMenuItem*	menu_active;
 	
-	static void 		BuyItem				(CCustomMenuItem* sender);
 	int					menu_offs;
 	int					menu_offs_col[2];
 public:
 						CUIBuyMenu			();
 	virtual				~CUIBuyMenu			();
 
-	void				Load				(LPCSTR ini);
+	void				Load				(LPCSTR ini, CUIGameCustom* parent, OnExecuteEvent exec);
 
 	void				Render				();
 	void				OnFrame				();

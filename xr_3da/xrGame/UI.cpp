@@ -39,9 +39,9 @@ void CUI::Load()
 {
 	switch (GameID())
 	{
-	case GAME_CS:			pUIGame = new CUIGameCS();	break;
-	case GAME_ASSAULT:									break;
-	case GAME_DEATHMATCH:	pUIGame = new CUIGameDM();	break;
+	case GAME_CS:			pUIGame = new CUIGameCS(this);	break;
+	case GAME_ASSAULT:										break;
+	case GAME_DEATHMATCH:	pUIGame = new CUIGameDM(this);	break;
 	}
 }
 //--------------------------------------------------------------------

@@ -1,18 +1,19 @@
 #include "stdafx.h"
 #include "UIGameCS.h"
 
-#include "UIBuyMenu.h"
-#include "UICSPlayerList.h"
-#include "UICSFragList.h"
+#include "UI.h"
+#include "entity.h"
 
 //--------------------------------------------------------------------
-CUIGameCS::CUIGameCS()
+CUIGameCS::CUIGameCS(CUI* parent):CUIGameCustom(parent)
 {
-	BuyMenu.Load			("game_cs.ltx");
+	BuyMenu.Load			("game_cs.ltx",this,BuyItem);
 	FragList.Init			();
 	PlayerList.Init			();
-	BuyZone.Init			("ui\\ui_cs_base",		"font", 5,200,	alLeft|alTop); BuyZone.SetColor(0x8000FF00);
-	Artifact.Init			("ui\\ui_cs_artefact",	"font",	5,240,	alLeft|alTop); Artifact.SetColor(0x80FF00A2);
+	OwnBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); OwnBase.SetColor	(0x8000FF00);
+	EnemyBase.Init			("ui\\ui_cs_base",		"font",	5,175,	alLeft|alTop); EnemyBase.SetColor(0x80FF0000);
+	BuyZone.Init			("ui\\ui_cs_buyzone",	"font", 5,210,	alLeft|alTop); BuyZone.SetColor	(0x8000FF00);
+	Artifact.Init			("ui\\ui_cs_artefact",	"font",	5,245,	alLeft|alTop); Artifact.SetColor(0x80FF00A2);
 }
 //--------------------------------------------------------------------
 
@@ -27,6 +28,26 @@ BOOL CUIGameCS::CanBuy()
 }
 //--------------------------------------------------------------------
 
+void CUIGameCS::BuyItem(CCustomMenuItem* sender)
+{
+	CUIGameCS* G	= (CUIGameCS*)sender->tag; R_ASSERT(G);
+	if (G)			G->SetFlag(CUIGameCustom::flShowBuyMenu,FALSE);
+
+	if (G->CanBuy()&&sender->value1){
+		string64 buf;
+		sprintf(buf,"%s/cost=%s",sender->value1,sender->value0);
+		// buy item
+		CEntity* E		= dynamic_cast<CEntity*>(Level().CurrentEntity());
+		if (E){
+			NET_Packet P;
+			E->u_EventGen	(P,GE_BUY,E->ID());
+			P.w_string		(buf);
+			E->u_EventSend	(P);
+		}
+	}
+}
+//--------------------------------------------------------------------
+
 void CUIGameCS::OnFrame()
 {
 	switch (Game().phase){
@@ -36,7 +57,7 @@ void CUIGameCS::OnFrame()
 	case GAME_PHASE_INPROGRESS:
 		if (uFlags&flShowBuyMenu)		BuyMenu.OnFrame	();
 		else if (uFlags&flShowFragList) FragList.OnFrame	();
-
+/*
 		map<u32,game_cl_GameState::Player>::iterator I=Game().players.begin();
 		map<u32,game_cl_GameState::Player>::iterator E=Game().players.end();
 		for (;I!=E;I++){
@@ -46,6 +67,7 @@ void CUIGameCS::OnFrame()
 //				if (P->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)			Artifact.OnFrame();
 			}
 		}
+*/
 	break;
 	}
 }
@@ -64,6 +86,8 @@ void CUIGameCS::Render()
 		for (;I!=E;I++){
 			game_cl_GameState::Player* P = (game_cl_GameState::Player*)&I->second;
 			if (P->flags&GAME_PLAYER_FLAG_LOCAL){
+				if (P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)				OwnBase.Render();
+				else if (P->flags&GAME_PLAYER_FLAG_CS_ON_ENEMY_BASE)	EnemyBase.Render();
 				if ((P->flags&GAME_PLAYER_FLAG_CS_ON_BASE)&&CanBuy())	BuyZone.Render();
 				if (P->flags&GAME_PLAYER_FLAG_CS_HAS_ARTEFACT)			Artifact.Render();
 			}

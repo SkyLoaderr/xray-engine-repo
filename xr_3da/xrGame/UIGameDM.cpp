@@ -7,7 +7,7 @@
 #define MSGS_OFFS 510
 
 //--------------------------------------------------------------------
-CUIGameDM::CUIGameDM()
+CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 {
 	pFragList	= new CUIDMFragList		();
 	pPlayerList	= new CUIDMPlayerList	();

@@ -2,15 +2,17 @@
 #define __XR_UIGAMECUSTOM_H__
 #pragma once
 
+// refs
+class CUI;
+
 class CUIGameCustom{
 protected:
 	u32					uFlags;
+	CUI*				m_Parent;
 public:
 	enum{
 		flShowBuyMenu	= (1<<0),
 		flShowFragList	= (1<<1),
-		flShowBuyZone	= (1<<2),
-		flShowArtifact	= (1<<3),
 
 		fl_force_dword	= u32(-1)
 	};
@@ -18,7 +20,7 @@ public:
 	void				InvertFlag			(u32 mask){if (uFlags&mask) uFlags&=~mask; else uFlags|=mask; }
 	BOOL				GetFlag				(u32 mask){return uFlags&mask;}
 public:
-						CUIGameCustom		(){uFlags=0;}
+						CUIGameCustom		(CUI* parent){uFlags=0;m_Parent=parent;}
 	virtual				~CUIGameCustom		(){}
 	virtual void		Render				()=0;
 	virtual void		OnFrame				()=0;

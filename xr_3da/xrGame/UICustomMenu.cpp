@@ -10,7 +10,7 @@ void CCustomMenuItem::Execute()
 	else if (OnExecute)				OnExecute(this);
 }
 //--------------------------------------------------------------------
-CCustomMenuItem* UIParseMenu	(CInifile* ini, CCustomMenuItem* root, LPCSTR sect, OnExecuteEvent exec, OnItemDrawEvent draw)
+CCustomMenuItem* UIParseMenu	(CInifile* ini, CCustomMenuItem* root, LPCSTR sect, int tag, OnExecuteEvent exec, OnItemDrawEvent draw)
 {
 	CCustomMenuItem* I=0;
 	string256	buf,buf1;
@@ -25,8 +25,8 @@ CCustomMenuItem* UIParseMenu	(CInifile* ini, CCustomMenuItem* root, LPCSTR sect,
 				LPCSTR line		= ini->ReadSTRING(sect,buf);	R_ASSERT(_GetItemCount(line)==2);
 				LPCSTR	name	= _GetItem(line,0,buf);
 				LPCSTR	new_sect= strlwr(_GetItem(line,1,buf1));
-				I				= new CCustomMenuItem(root,name,0,0,0,draw);
-				UIParseMenu(ini,I,new_sect,exec,draw);
+				I				= new CCustomMenuItem(root,name,0,0,tag,0,draw);
+				UIParseMenu(ini,I,new_sect,tag,exec,draw);
 				root->AppendItem(I);
 			}
 			// append if exist value item
@@ -34,9 +34,9 @@ CCustomMenuItem* UIParseMenu	(CInifile* ini, CCustomMenuItem* root, LPCSTR sect,
 			if (ini->LineExists(sect,buf)){
 				LPCSTR line		= ini->ReadSTRING(sect,buf);	R_ASSERT(_GetItemCount(line)>=2);
 				LPCSTR	name	= _GetItem(line,0,buf);
-				LPCSTR	value	= _GetItem(line,1,buf1);
-				LPCSTR	execCC	= (_GetItemCount(line)>2)?_GetItem(line,2,buf2):0;
-				root->AppendItem(new CCustomMenuItem(root,name,value,execCC,exec,draw));
+				LPCSTR	value0	= _GetItem(line,1,buf1);
+				LPCSTR	value1	= (_GetItemCount(line)>2)?_GetItem(line,2,buf2):0;
+				root->AppendItem(new CCustomMenuItem(root,name,value0,value1,tag,exec,draw));
 			}
 		}
 	}
@@ -44,14 +44,14 @@ CCustomMenuItem* UIParseMenu	(CInifile* ini, CCustomMenuItem* root, LPCSTR sect,
 }
 //--------------------------------------------------------------------
 
-CCustomMenuItem* UILoadMenu		(LPCSTR ini_name, OnExecuteEvent exec, OnItemDrawEvent draw)
+CCustomMenuItem* UILoadMenu		(LPCSTR ini_name, int tag, OnExecuteEvent exec, OnItemDrawEvent draw)
 {
 	// check ini exist
 	CCustomMenuItem* I=0;
 	string256 fn;
 	if (Engine.FS.Exist(fn,Path.GameData,ini_name)){
 		CInifile* ini		= CInifile::Create(fn);
-		I					= UIParseMenu(ini,0,"cs_buy_menu",exec,draw);
+		I					= UIParseMenu(ini,0,"cs_buy_menu",tag,exec,draw);
 		CInifile::Destroy	(ini);
 	}
 	return I;

@@ -12,20 +12,19 @@ class CCustomMenuItem{
 	MIVec				items;
 	OnExecuteEvent		OnExecute;
 	OnItemDrawEvent		OnItemDraw;
-	LPSTR				executeCC;
 public:
 	LPSTR				caption;
 	LPSTR				value0;
 	LPSTR				value1;
 	int					tag;
 public:
-	CCustomMenuItem		(CCustomMenuItem* parent, LPCSTR text, LPCSTR val0, LPCSTR val1=0, OnExecuteEvent exec=0, OnItemDrawEvent draw=0)
+	CCustomMenuItem		(CCustomMenuItem* parent, LPCSTR text, LPCSTR val0, LPCSTR val1=0, int _tag=0, OnExecuteEvent exec=0, OnItemDrawEvent draw=0)
 	{
 		m_Parent		= parent;
 		caption			= text?xr_strdup(text):0;
 		value0			= val0?xr_strdup(val0):0;
 		value1			= val1?xr_strdup(val1):0;
-		tag				= 0;
+		tag				= _tag;
 		OnExecute		= exec;
 		OnItemDraw		= draw;
 	}
@@ -67,8 +66,8 @@ public:
 	}
 	void				Execute				();
 };
-CCustomMenuItem*		UIParseMenu			(CInifile* ini, CCustomMenuItem* root, LPCSTR sect, OnExecuteEvent exec=0, OnItemDrawEvent draw=0);
-CCustomMenuItem*		UILoadMenu			(LPCSTR ini_name, OnExecuteEvent exec=0, OnItemDrawEvent draw=0);
+CCustomMenuItem*		UIParseMenu			(CInifile* ini, CCustomMenuItem* root, LPCSTR sect, int tag, OnExecuteEvent exec=0, OnItemDrawEvent draw=0);
+CCustomMenuItem*		UILoadMenu			(LPCSTR ini_name, int tag=0, OnExecuteEvent exec=0, OnItemDrawEvent draw=0);
 CCustomMenuItem*		UIFindMenuItem		(CCustomMenuItem* root, LPCSTR name);
 
 #endif //__XR_UICUSTOMMENU_H__

@@ -12,7 +12,7 @@ class CUIGameDM: public CUIGameCustom{
 	CUIDMFragList*		pFragList;
 	CUIDMPlayerList*	pPlayerList;
 public:
-						CUIGameDM			();
+						CUIGameDM			(CUI* parent);
 	virtual 			~CUIGameDM			();
 	virtual void		Render				();
 	virtual void		OnFrame				();

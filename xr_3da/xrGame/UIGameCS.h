@@ -8,15 +8,21 @@
 #include "UICSPlayerList.h"
 #include "UIIcon.h"
 
+// refs
+class CCustomMenuItem;
+
 class CUIGameCS: public CUIGameCustom{
 	CUIBuyMenu			BuyMenu;
 	CUICSFragList		FragList;
 	CUICSPlayerList		PlayerList;
 	CUIIcon				BuyZone;
 	CUIIcon				Artifact;
+	CUIIcon				OwnBase;
+	CUIIcon				EnemyBase;
 	BOOL				CanBuy				();
+	static void 		BuyItem				(CCustomMenuItem* sender);
 public:
-						CUIGameCS			();
+						CUIGameCS			(CUI* parent);
 	virtual 			~CUIGameCS			();
 	virtual void		Render				();
 	virtual void		OnFrame				();

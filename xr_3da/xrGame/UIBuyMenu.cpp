@@ -3,7 +3,6 @@
 #include "HUDManager.h"
 #include "UICustomMenu.h"
 #include "..\\xr_trims.h"
-#include "entity.h"
 
 #define BUY_MENU_OFFS		200
 #define BUY_MENU_OFFS_COL1	0
@@ -26,10 +25,10 @@ CUIBuyMenu::~CUIBuyMenu	()
 }
 //--------------------------------------------------------------------
 
-void CUIBuyMenu::Load	(LPCSTR ini)
+void CUIBuyMenu::Load	(LPCSTR ini, CUIGameCustom* parent, OnExecuteEvent exec)
 {
 	// check ini exist
-	menu_root			= UILoadMenu(ini,BuyItem);
+	menu_root			= UILoadMenu(ini,(int)parent,exec);
 	menu_active			= menu_root;
 }
 //--------------------------------------------------------------------
@@ -62,25 +61,6 @@ void CUIBuyMenu::OnFrame()
 
 void CUIBuyMenu::Render	()
 {
-}
-//--------------------------------------------------------------------
-void CUIBuyMenu::BuyItem(CCustomMenuItem* sender)
-{
-	CUIGameCustom* G	= Level().HUD()->GetUI()->UIGame();
-	if (G)				G->SetFlag(CUIGameCustom::flShowBuyMenu,FALSE);
-
-	if (sender->value1){
-		string64 buf;
-		sprintf(buf,"%s/cost=%s",sender->value1,sender->value0);
-		// buy item
-		CEntity* E		= dynamic_cast<CEntity*>(Level().CurrentEntity());
-		if (E){
-			NET_Packet P;
-			E->u_EventGen	(P,GE_BUY,E->ID());
-			P.w_string		(buf);
-			E->u_EventSend	(P);
-		}
-	}
 }
 //--------------------------------------------------------------------
 bool CUIBuyMenu::OnKeyboardPress(int dik)
