@@ -54,6 +54,7 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 	b_depart=false;
 	b_meet=false;
 	b_lose_control=true;
+	b_lose_ground=true;
 	b_jump=false;
 	b_side_contact=false;
 	b_clamb_jump=false;
@@ -300,7 +301,7 @@ void		CPHSimpleCharacter::ApplyImpulse(const Fvector& dir,const dReal P)
 	if(!b_exist) return;
 	//if(!dBodyIsEnabled(m_body)) dBodyEnable(m_body);
 	Enable();
-	b_lose_control=true;
+	b_lose_ground=true;
 	b_external_impulse=true;
 	dBodyAddForce(m_body,dir.x*P/fixed_step,dir.y*P/fixed_step,dir.z*P/fixed_step);
 }
@@ -332,7 +333,7 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 		if(!ph_world->IsFreezed())b_lose_control=false;
 		return;
 	}
-	if(is_contact&&!is_control&&!b_lose_control)
+	if(is_contact&&!is_control&&!b_lose_ground)
 		Disabling();
 
 	if( !dBodyIsEnabled(m_body)) {
@@ -382,6 +383,12 @@ void CPHSimpleCharacter::PhDataUpdate(dReal /**step/**/){
 
 void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 
+	//if(b_jumping)
+	//{
+	//	Log("vel" ,*((const Fvector*)(dBodyGetLinearVel(m_body))));
+	//	Log("pos" ,*((const Fvector*)(dBodyGetPosition(m_body))));
+	//	Log("time %f",Device.fTimeGlobal);
+	//}
 	//if(!b_exist)return;
 	b_air_contact_state=!is_contact;
 	bool b_good_graund=b_valide_ground_contact&&m_ground_contact_normal[1]>M_SQRT1_2;
@@ -419,7 +426,6 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 		// b_clamb_jump=true;
 		b_side_contact=false;
 		m_friction_factor=1.f;
-		m_max_velocity=0.4f;
 		if(b_stop_control) 
 			dBodySetLinearVel(m_body,0.f,0.f,0.f);
 	}
@@ -505,13 +511,14 @@ void CPHSimpleCharacter::PhTune(dReal /**step/**/){
 	{
 		b_lose_control=true;
 		dBodySetLinearVel(m_body,m_jump_accel.x,m_jump_accel.y,m_jump_accel.z);//vel[1]+
+		//Log("jmp",m_jump_accel);
 		Memory.mem_copy(m_jump_depart_position,dBodyGetPosition(m_body),sizeof(dVector3));
 		//m_jump_accel=m_acceleration;
 		b_jump=false;
 		b_jumping=true;
 	}
 
-
+	b_lose_ground=!b_good_graund||b_lose_control;
 
 
 
@@ -733,12 +740,12 @@ void CPHSimpleCharacter::ApplyAcceleration()
 		 */
 		if(b_at_wall&&b_valide_wall_contact){
 
-			dReal press_to_ladder=world_gravity*m_mass*0.0f;
+			dReal press_to_ladder=world_gravity*m_mass*0.05f;
 			dReal proj=dDOT(accel,m_wall_contact_normal);
-			fvdir[0]=accel[0]-m_wall_contact_normal[0]*(proj+press_to_ladder);
+			fvdir[0]=accel[0]-m_wall_contact_normal[0]*(proj+press_to_ladder);//proj+press_to_ladder
 			//fvdir[1]=-proj;
-			fvdir[1]=m_wall_contact_normal[1]<0.1f ? -proj : -m_wall_contact_normal[1]*(proj+press_to_ladder);//accel[1]-m_wall_contact_normal[1]*proj,
-			fvdir[2]=accel[2]-m_wall_contact_normal[2]*(proj+press_to_ladder);
+			fvdir[1]=m_wall_contact_normal[1]<0.1f ? -proj : -m_wall_contact_normal[1]*(proj+press_to_ladder);//accel[1]-m_wall_contact_normal[1]*proj,//+press_to_ladder
+			fvdir[2]=accel[2]-m_wall_contact_normal[2]*(proj+press_to_ladder);//+press_to_ladder
 			dNormalize3(fvdir);
 			m_control_force[0]+=fvdir[0]*m.mass*30.f;
 			m_control_force[1]+=fvdir[1]*m.mass*30.f;

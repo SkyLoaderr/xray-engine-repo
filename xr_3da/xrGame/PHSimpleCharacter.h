@@ -58,6 +58,7 @@ protected:
 	bool b_meet_control;
 	bool b_on_ground;
 	bool b_lose_control;
+	bool b_lose_ground;
 	bool b_depart_control;
 	bool b_jump;
 	bool b_clamb_jump;
@@ -149,7 +150,7 @@ IC	void		SafeAndLimitVelocity						()
 		const float		*linear_velocity		=dBodyGetLinearVel(m_body);
 		//limit velocity
 		dReal l_limit;
-		if(is_control&&!b_lose_control) 
+		if(is_control&&!b_lose_ground) 
 			l_limit = m_max_velocity/phTimefactor;
 		else			
 			l_limit=10.f/fixed_step;
@@ -163,10 +164,11 @@ IC	void		SafeAndLimitVelocity						()
 			{
 				dReal f=mag/l_limit;
 				dBodySetLinearVel(m_body,linear_velocity[0]/f,linear_velocity[1]/f,linear_velocity[2]/f);///f
-				dBodySetPosition(m_body,
-								m_safe_position[0]+linear_velocity[0]*fixed_step,
-								m_safe_position[1]+linear_velocity[1]*fixed_step,
-								m_safe_position[2]+linear_velocity[2]*fixed_step);
+				if(is_control&&!b_lose_control)
+										dBodySetPosition(m_body,
+														m_safe_position[0]+linear_velocity[0]*fixed_step,
+														m_safe_position[1]+linear_velocity[1]*fixed_step,
+														m_safe_position[2]+linear_velocity[2]*fixed_step);
 			}
 		}
 		else
