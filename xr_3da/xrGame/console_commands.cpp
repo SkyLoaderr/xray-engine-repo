@@ -1284,6 +1284,7 @@ public:
 	}
 };
 
+#ifdef DEBUG
 class CCC_Script : public IConsole_Command {
 public:
 	CCC_Script(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -1322,7 +1323,6 @@ public:
 	}
 };
 
-#ifdef DEBUG
 class CCC_ScriptDbg : public IConsole_Command {
 public:
 	CCC_ScriptDbg(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
@@ -1596,11 +1596,11 @@ void CCC_RegisterCommands()
 	CMD1(CCC_ScriptDbg,			"script_debug_break");
 	CMD1(CCC_ScriptDbg,			"script_debug_stop");
 	CMD1(CCC_ScriptDbg,			"script_debug_restart");
-#endif // DEBUG
 	
-
 	CMD1(CCC_Script,			"run_script");
 	CMD1(CCC_ScriptCommand,		"run_string");
+#endif // DEBUG
+	
 
 	CMD1(CCC_PostprocessTest,	"pp_test");
 
