@@ -207,7 +207,6 @@ function get_sound_for_enemy(enemy)
 		otype == clsid.burer or
 		otype == clsid.chimera or
 		otype == clsid.boar or
-		otype == clsid.idol or
 		otype == clsid.flesh_group or
 		otype == clsid.dog_red or
 		otype == clsid.dog_black or
