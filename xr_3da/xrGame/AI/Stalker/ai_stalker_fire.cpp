@@ -180,7 +180,7 @@ void CAI_Stalker::SelectEnemy(SEnemySelected& S)
 	}
 	if (m_tEnemy.Enemy)
 		vfSaveEnemy();
-	if (m_tSavedEnemy->getDestroy())
+	if (m_tSavedEnemy && m_tSavedEnemy->getDestroy())
 		m_tSavedEnemy = 0;
 }
 
