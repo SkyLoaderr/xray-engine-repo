@@ -29,6 +29,7 @@ public:
 		DWORD	C_dw;
 		float	scale_calculated;           
 		Fmatrix	mRotY;
+		DWORD	vis_ID;
 	};
 	struct	SlotPart
 	{
@@ -51,6 +52,8 @@ public:
 		Fbox				BB;
 		SlotPart			G[dm_obj_in_slot];
 	};
+
+	typedef svector<vector<SlotItem*>,dm_max_objects>	vis_list;
 public:	
 	int						dither			[16][16];
 public:
@@ -60,26 +63,31 @@ public:
 	DetailSlot				DS_empty;
 public:
 	DetailVec				objects;
-	svector<Slot,dm_cache_size>					cache;
-	svector<vector<SlotItem*>,dm_max_objects> 	visible;
+	svector<Slot,dm_cache_size>		cache;
+	vis_list						visible[3];	// 0=still, 1=Wave1, 2=Wave2
 public:
 #ifdef _EDITOR
 	virtual ObjectList*		GetSnapObjects	()=0;
 #endif
 	IC bool					UseVS			()		{ return HW.Caps.vertex.dwVersion >= CAP_VERSION(1,1); }
 
+	// Software processor
 	CVS*					soft_VS;
 	void					soft_Load		();
 	void					soft_Unload		();
 	void					soft_Render		();
 
-	CVS*					hw_VS;
+	// Hardware processor
+	CVS*					hw_VS_wave;
+	CVS*					hw_VS_still;
 	DWORD					hw_BatchSize;
 	IDirect3DVertexBuffer8*	hw_VB;
 	IDirect3DIndexBuffer8*	hw_IB;
 	void					hw_Load			();
 	void					hw_Unload		();
 	void					hw_Render		();
+	void					hw_Render_dump	(CVS* vs, vis_list& vis, DWORD c_base);
+
 public:
 	void					Decompress		(int sx, int sz, Slot& D);
 	Slot&					Query			(int sx, int sz);

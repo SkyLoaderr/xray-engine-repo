@@ -68,7 +68,8 @@ CDetailManager::CDetailManager	()
 	dtFS 		= 0;
 	dtSlots		= 0;
 	soft_VS		= 0;
-	hw_VS		= 0;
+	hw_VS_wave	= 0;
+	hw_VS_still	= 0;
 	hw_BatchSize= 0;
 	hw_VB		= 0;
 	hw_IB		= 0;
@@ -115,7 +116,11 @@ void CDetailManager::Load		()
 	m_slots->Close	();
 	
 	// Initialize 'vis' and 'cache'
-	ZeroMemory(&visible,sizeof(visible));	visible.resize	(dm_max_objects);
+	ZeroMemory(&visible,sizeof(visible));	
+	visible[0].resize	(dm_max_objects);
+	visible[1].resize	(dm_max_objects);
+	visible[2].resize	(dm_max_objects);
+
 	ZeroMemory(&cache,sizeof(cache));		cache.resize	(dm_cache_size);	
 	for (DWORD s=0; s<cache.size(); s++)	cache[s].type	= stInvalid;
 	
@@ -138,7 +143,9 @@ void CDetailManager::Unload		()
     }
 	objects.clear	();
 	cache.clear		();
-	visible.clear	();
+	visible[0].clear();
+	visible[1].clear();
+	visible[2].clear();
 	_DELETE			(dtFS);
 }
 
@@ -191,7 +198,6 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						vector<SlotItem*>&	vis = visible	[sp.id];
 						float				R   = objects	[sp.id]->bv_sphere.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
@@ -210,8 +216,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 								
 								if (radius*radius/dist_sq < r_ssaDISCARD) continue;
 
-								Item.scale_calculated = scale; //alpha;
-								vis.push_back	(siIT);
+								Item.scale_calculated = scale;			//alpha;
+								visible[Item.vis_ID][sp.id].push_back	(siIT);
 							}
 						}
 					}
@@ -224,7 +230,6 @@ void CDetailManager::Render		(Fvector& vecEYE)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
 						if (sp.id==0xff)	continue;
-						vector<SlotItem*>&	vis = visible	[sp.id];
 						float				R   = objects	[sp.id]->bv_sphere.R;
 						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
@@ -241,8 +246,8 @@ void CDetailManager::Render		(Fvector& vecEYE)
 
 							if (radius*radius/dist_sq < r_ssaDISCARD) continue;
 
-							Item.scale_calculated = scale;	//alpha;
-							vis.push_back	(siIT);
+							Item.scale_calculated = scale;			//alpha;
+							visible[Item.vis_ID][sp.id].push_back	(siIT);
 						}
 					}
 				}
@@ -376,14 +381,14 @@ void CDetailManager::UpdateCache	(int limit)
 		
 		// Prepare to selection
 		float		density		= psDetailDensity;
-		float		jitter		= density/2.f;
+		float		jitter		= density/1.7f;
 		DWORD		d_size		= iCeil	(slot_size/density);
 		svector<int,dm_obj_in_slot>		selected;
 		
-		CRandom				r_selection	(0x12071980);
-		CRandom				r_jitter	(0x12071980);
-		CRandom				r_yaw		(0x12071980);
-		CRandom				r_scale		(0x12071980);
+		CRandom				r_selection	(0x12071980^::Random.randI(32760));
+		CRandom				r_jitter	(0x12071980^::Random.randI(32760));
+		CRandom				r_yaw		(0x12071980^::Random.randI(32760));
+		CRandom				r_scale		(0x12071980^::Random.randI(32760));
 
 		// Prepare to actual-bounds-calculations
 		Fbox				Bounds;	
@@ -479,6 +484,20 @@ void CDetailManager::UpdateCache	(int limit)
 				clamp			(c_dw,0,255);
 				Item.C_dw		=	D3DCOLOR_RGBA		(c_dw,c_dw,c_dw,255);
 				Item.C			=	c_f/255.f;
+
+				// Vis-sorting
+				if (!UseVS())	
+				{
+					// Always still on CPU pipe
+					Item.vis_ID	= 0;
+				} else {
+					if (Dobj->flags&DO_NO_WAVING)	Item.vis_ID	= 0;
+					else 
+					{
+						if (::Random.randI(0,3)==0)	Item.vis_ID	= 2;	// Second wave
+						else						Item.vis_ID = 1;	// First wave
+					}
+				}
 				
 				// Save it
 				D.G[index].items.push_back(Item);

@@ -29,7 +29,7 @@ void CDetailManager::soft_Render	()
 
 	for (DWORD O=0; O<objects.size(); O++)
 	{
-		vector<SlotItem*>&	vis = visible	[O];
+		vector<SlotItem*>&	vis = visible[0][O];
 		if (vis.empty())	continue;
 
 		CDetail&	Object		= *objects[O];
@@ -62,7 +62,7 @@ void CDetailManager::soft_Render	()
 			// Calc Lock params
 			DWORD	vCount_Lock	= item_range*vCount_Object;
 			DWORD	iCount_Lock = item_range*iCount_Object;
-	
+
 			// Lock buffers
 			DWORD	vBase,iBase,iOffset=0;
 			CDetail::fvfVertexOut* vDest	= (CDetail::fvfVertexOut*)	_VS.Lock(vCount_Lock,soft_VS->dwStride,vBase);
@@ -73,14 +73,14 @@ void CDetailManager::soft_Render	()
 			{
 				SlotItem&	Instance	= *(vis[item]);
 				float	scale			= Instance.scale_calculated;
-				
+
 				// Build matrix
 				Fmatrix& M = Instance.mRotY;
 				mXform._11=M._11*scale;	mXform._12=M._12*scale;	mXform._13=M._13*scale;	mXform._14=M._14;
 				mXform._21=M._21*scale;	mXform._22=M._22*scale;	mXform._23=M._23*scale;	mXform._24=M._24;
 				mXform._31=M._31*scale;	mXform._32=M._32*scale;	mXform._33=M._33*scale;	mXform._34=M._34;
 				mXform._41=M._41;		mXform._42=M._42;		mXform._43=M._43;		mXform._44=1;
-				
+
 				// Transfer vertices
 				{
 					DWORD					C = Instance.C_dw;
@@ -95,7 +95,7 @@ void CDetailManager::soft_Render	()
 						dstIt->v	= srcIt->v;
 					}
 				}
-				
+
 				// Transfer indices (in 32bit lines)
 				VERIFY	(iOffset<65535);
 				{
@@ -108,7 +108,7 @@ void CDetailManager::soft_Render	()
 					if		(Object.number_indices&1)	
 						iDest[Object.number_indices-1]=Object.indices[Object.number_indices-1]+WORD(iOffset);
 				}
-				
+
 				// Increment counters
 				vDest					+=	vCount_Object;
 				iDest					+=	iCount_Object;
@@ -116,14 +116,14 @@ void CDetailManager::soft_Render	()
 			}
 			_VS.Unlock		(vCount_Lock,soft_VS->dwStride);
 			_IS.Unlock		(iCount_Lock);
-			
+
 			// Render
 			Device.Primitive.setVertices	(soft_VS->dwHandle,soft_VS->dwStride,_VS.Buffer());
 			Device.Primitive.setIndices		(vBase, _IS.Buffer());
 			DWORD	dwNumPrimitives			= iCount_Lock/3;
 			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
 		}
-		
+
 		// Clean up
 		vis.clear	();
 	}
