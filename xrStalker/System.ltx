@@ -334,6 +334,19 @@ effects			= anomaly\marevo, anomaly\storm_01
 artefacts		= af_magnet,0.7
 BirthProbability = 0.9
 
+[zone_mosquito_bald_weapon]
+GroupControlSection	= spawn_group_zone
+$spawn 			= on
+$prefetch 		= 16
+class			= Z_MBALD
+hit_impulse_scale	= .1
+sound			= zone_mosquito_bald.wav
+postprocess		= postprocess_anomaly
+hit_effect		= explosions\expl_02_sparks
+effects			= anomaly\marevo, anomaly\storm_01
+artefacts		= wpn_ak7,0.2, wpn_pm,0.4, wpn_knife,0.5 
+BirthProbability = 0.9
+
 [zone_mincer]
 GroupControlSection	= spawn_group_zone
 $spawn 			= on
