@@ -50,7 +50,8 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	xml_init.InitFrameWindow(uiXml, "frame_window", 0, &UIDialogFrame);
 
 	//Вопросы
-	UIDialogFrame.AttachChild(&UIQuestionsList);
+	//UIDialogFrame.AttachChild(&UIQuestionsList);
+	AttachChild(&UIQuestionsList);
 	xml_init.InitListWnd(uiXml, "list", 0, &UIQuestionsList);
 
 	//Ответы

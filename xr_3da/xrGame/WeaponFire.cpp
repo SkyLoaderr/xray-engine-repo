@@ -55,9 +55,16 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 		}
 	}		
 	
-	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
+/*	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
 						GROUND_HIT_PARTICLES:
+						*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];*/
+
+	LPCSTR ps_name = (!mtl_pair || mtl_pair->CollideParticles.empty())?
+						NULL:
 						*mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];
+	if(!ps_name) return;
+
+
 	//отыграть партиклы попадания в материал
 	CParticlesObject* pStaticPG;
 	pStaticPG = xr_new<CParticlesObject>(ps_name,Sector());
