@@ -58,7 +58,7 @@ public:
 	virtual float			renderable_Ambient	();
 
 	virtual void			shedule_Update		(u32 dt);	
-	virtual void			renderable_Render			();
+	virtual void			renderable_Render	();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual void			UpdateCL			();
 	
@@ -83,17 +83,16 @@ public:
 	virtual void			PHUnFreeze			();
 	virtual void			PHFreeze			();
 ///////////////////// network /////////////////////////////////////////
-	virtual void			make_Interpolation () {}; //interpolation from last visible to corrected position/rotation
-	virtual void			PH_B_CrPr		() {}; // actions & operations before physic correction-prediction steps
-	virtual void			PH_I_CrPr		() {}; // actions & operations after correction before prediction steps
-	virtual void			PH_A_CrPr		() {}; // actions & operations after phisic correction-prediction steps
+	virtual void			make_Interpolation	() {}; //interpolation from last visible to corrected position/rotation
+	virtual void			PH_B_CrPr			() {}; // actions & operations before physic correction-prediction steps
+	virtual void			PH_I_CrPr			() {}; // actions & operations after correction before prediction steps
+	virtual void			PH_A_CrPr			() {}; // actions & operations after phisic correction-prediction steps
 ///////////////////////////////////////////////////////////////////////
-	virtual bool			IsVisibleForZones() { return true; }
+	virtual bool			IsVisibleForZones	() { return true; }
 ///////////////////////////////////////////////////////////////////////
-	virtual bool			NeedToDestroyObject() const;
-	virtual void			DestroyObject();
+	virtual bool			NeedToDestroyObject	() const;
+	virtual void			DestroyObject		();
 ///////////////////////////////////////////////////////////////////////
-
 
 	// Position stack
 	virtual	SavedPosition	ps_Element			(u32 ID);
