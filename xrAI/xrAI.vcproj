@@ -481,11 +481,6 @@
 					<File
 						RelativePath=".\path_test.cpp">
 						<FileConfiguration
-							Name="Debug|Win32">
-							<Tool
-								Name="VCCLCompilerTool"/>
-						</FileConfiguration>
-						<FileConfiguration
 							Name="Release|Win32"
 							ExcludedFromBuild="TRUE">
 							<Tool
@@ -603,6 +598,9 @@
 				</File>
 				<File
 					RelativePath="ai_alife_graph.h">
+				</File>
+				<File
+					RelativePath=".\ai_alife_interfaces.cpp">
 				</File>
 				<File
 					RelativePath="ai_alife_interfaces.h">
