@@ -10,6 +10,27 @@
 
 #include "data_storage_base.h"
 
+namespace DataStorageHeap {
+	#pragma pack(push,4)
+	template <
+		typename _dist_type, 
+		typename _index_type, 
+		u8 index_bits, 
+		u8 mask_bits
+	>
+	struct SGraphNode : 
+		DataStorageBaseIndex::SGraphNode <
+			_dist_type,
+			_index_type,
+			index_bits,
+			mask_bits
+		>
+	{
+		SGraphNode		*back;
+	};
+	#pragma pack(pop)
+};
+
 template <
 	typename	_dist_type				= float, 
 	typename	_index_type				= u32, 
@@ -20,7 +41,7 @@ template <
 >	
 class CDataStorageBinaryHeap :
 	public CDataStorageBaseIndexBlock <
-		DataStorageBaseIndex::SGraphNode<
+		DataStorageHeap::SGraphNode<
 			_dist_type,
 			_index_type,
 			index_bits,
@@ -35,7 +56,12 @@ class CDataStorageBinaryHeap :
 	>
 {
 public:
-	typedef DataStorageBaseIndex::SGraphNode<_dist_type,_index_type,index_bits,mask_bits> CGraphNode;
+	typedef DataStorageHeap::SGraphNode<
+		_dist_type,
+		_index_type,
+		index_bits,
+		mask_bits
+	> CGraphNode;
 protected:	
 	typedef CDataStorageBaseIndexBlock <
 		CGraphNode,
@@ -81,8 +107,7 @@ public:
 
 	IC		void		init			()
 	{
-		inherited1::init		();
-		inherited2::init		();
+		inherited::init			();
 		heap_head				= heap_tail = heap;
 	}
 

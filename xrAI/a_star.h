@@ -43,7 +43,7 @@ public:
 		start.h()				= path_manager.estimate(start.index());
 		start.f()				= start.g() + start.h();
 		// assign null parent to the start node
-		data_storage.assign_parent(start,NULL);
+		data_storage.assign_parent(start,0);
 		// add start node to the opened list
 		data_storage.add_opened	(start);
 	}

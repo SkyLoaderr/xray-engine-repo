@@ -10,12 +10,13 @@
 
 namespace DataStorageBase {
 	#pragma pack(push,4)
-	template <typename _dist_type> 
+	template <
+		typename _dist_type
+	> 
 	struct SGraphNode {
 		_dist_type		_f;
 		_dist_type		_g;
 		_dist_type		_h;
-		SGraphNode		*back;
 
 		IC	_dist_type	&f()
 		{
@@ -67,26 +68,35 @@ public:
 
 	IC		void		get_path		(xr_vector<_index_type> &path, _GraphNode *best)
 	{
-		_GraphNode				*t1 = best, *t2 = static_cast<_GraphNode*>(best->back);
-		for (_index_type i=1; t2; t1 = t2, t2 = static_cast<_GraphNode*>(t2->back), i++) ;
+		_GraphNode				*t1 = best, *t2 = best->back;
+		for (_index_type i=1; t2; t1 = t2, t2 = t2->back, i++) ;
 
 		path.resize				(i);
 
 		t1						= best;
 		path[--i]				= best->index();
-		t2						= static_cast<_GraphNode*>(t1->back);
+		t2						= t1->back;
 
 		xr_vector<_index_type>::reverse_iterator	I = path.rbegin();
 		xr_vector<_index_type>::reverse_iterator	E = path.rend();
-		for (++I ; t2; t2 = static_cast<_GraphNode*>(t2->back), ++I)
+		for (++I ; t2; t2 = t2->back, ++I)
 			*I = t2->index();
 	}
 };
 
 namespace DataStorageBaseIndex {
 	#pragma pack(push,4)
-	template <typename _dist_type, typename _index_type, u8 index_bits, u8 mask_bits>
-	struct SGraphNode : DataStorageBase::SGraphNode<_dist_type> {
+	template <
+		typename _dist_type, 
+		typename _index_type, 
+		u8 index_bits, 
+		u8 mask_bits
+	>
+	struct SGraphNode : 
+		DataStorageBase::SGraphNode<
+			_dist_type
+		> 
+	{
 		_index_type		open_close_mask	: mask_bits;
 		_index_type		_index			: index_bits;
 
@@ -279,6 +289,12 @@ public:
 
 	virtual				~CDataStorageBaseIndexBlock()
 	{
+	}
+
+	IC		void		init			()
+	{
+		inherited1::init		();
+		inherited2::init		();
 	}
 
 	IC		_GraphNode	&create_node	(const _index_type node_index)
