@@ -22,10 +22,12 @@ const dReal fixed_step=0.02f;
 const u32	dis_frames=11;
 const dReal default_w_limit = M_PI/16.f/fixed_step;
 const dReal default_l_limit = 3.f/fixed_step;
-const dReal default_l_scale=1.01f;
-const dReal default_w_scale=1.01f;
-const dReal default_disw=0.00005f;
-const dReal default_disl=0.005f;
+const dReal default_l_scale	=1.01f;
+const dReal default_w_scale	=1.01f;
+const dReal	default_k_l		=0.0002f;//square resistance !!
+const dReal	default_k_w		=0.05f;
+const dReal default_disw	=0.00005f;
+const dReal default_disl	=0.005f;
 
 const dReal	world_gravity=2.f*9.81f;
 

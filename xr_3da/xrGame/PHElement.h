@@ -97,7 +97,8 @@ public:
 	void					ReEnable						();
 	void					ResetDisable					();
 	void					Enable							();
-	virtual void			SetAirResistance				(dReal linear=0.0002f, dReal angular=0.05f) {
+	virtual void			SetAirResistance				(dReal linear=default_k_l, dReal angular=default_k_w) 
+	{
 		k_w= angular;
 		k_l=linear;
 	}

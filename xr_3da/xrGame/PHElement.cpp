@@ -401,68 +401,105 @@ void CPHElement::Update(){
 
 
 void CPHElement::PhDataUpdate(dReal step){
-	//UpdateInterpolation				();
-	//return;
+
 	if(! bActive)return;
 
 	///////////////skip for disabled elements////////////////////////////////////////////////////////////
-	if( !dBodyIsEnabled(m_body)) {
-			if(dInfinity != previous_p[0]) previous_p[0]=dInfinity;//disable
-	//	UpdateInterpolation				();
+	if( !dBodyIsEnabled(m_body)) 
+	{
+		if(dInfinity != previous_p[0]) previous_p[0]=dInfinity;//disable
 		return;
 	}
 
+//////////////////////////////////base pointers/////////////////////////////////////////////////
+	const dReal* linear_velocity	=	dBodyGetLinearVel(m_body)	;
+	const dReal* angular_velocity	=	dBodyGetAngularVel(m_body)	;
 
+	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	///////////////scale velocity///////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 
-	///const dReal m_l_scale=1.01f;
-	//const dReal m_w_scale=1.01f;
-	const dReal* vel1= dBodyGetLinearVel(m_body);
-	dBodySetLinearVel(m_body,vel1[0]/m_l_scale,vel1[1]/m_l_scale,vel1[2]/m_l_scale);
-	const dReal* wvel1 = dBodyGetAngularVel(m_body);
-	dBodySetAngularVel(m_body,wvel1[0]/m_w_scale,wvel1[1]/m_w_scale,wvel1[2]/m_w_scale);
+	dBodySetLinearVel(
+						m_body,
+						linear_velocity[0]			/m_l_scale		,
+						linear_velocity[1]			/m_l_scale		,
+						linear_velocity[2]			/m_l_scale
+					 );
+	dBodySetAngularVel(
+						m_body,
+						angular_velocity[0]			/m_w_scale		,
+						angular_velocity[1]			/m_w_scale		,
+						angular_velocity[2]			/m_w_scale
+						);
 
 
-
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////limit velocity & secure /////////////////////////////////////////////////////////////////////////////////////////
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////scale changes values directly so get base values after it/////////////////////////
+/////////////////////////////base values////////////////////////////////////////////////////////////
+	dReal linear_velocity_smag	=		dDOT(linear_velocity,linear_velocity);
+	dReal linear_velocity_mag		=	_sqrt(linear_velocity_smag);
+	
+	dReal angular_velocity_smag	=	dDOT(angular_velocity,angular_velocity);
+	dReal angular_velocity_mag	=	_sqrt(angular_velocity_smag);
+	
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////limit velocity & secure /////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	////////////////limit linear vel////////////////////////////////////////////////////////////////////////////////////////
-	const dReal* pos = dBodyGetLinearVel(m_body);
-	dReal mag;
-	mag=_sqrt(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
-	if(!dV_valid(pos)){
+	
+
+	if(!dV_valid(linear_velocity))
+	{
 		dBodySetLinearVel(m_body,0.f,0.f,0.f);
-		mag=0.f;
+		linear_velocity_smag=0.f;
+		linear_velocity_mag =0.f;
 	}
-	else if(mag>m_l_limit){
-		dReal f=mag/m_l_limit;
-		dBodySetLinearVel(m_body,pos[0]/f,pos[1]/f,pos[2]/f);
-	}
+	else if(linear_velocity_mag>m_l_limit)
+	     {
+			dReal f=linear_velocity_mag/m_l_limit;
+			linear_velocity_mag=m_l_limit;
+			linear_velocity_smag=m_l_limit*m_l_limit;
+			dBodySetLinearVel(
+				m_body,
+				linear_velocity[0]/f,
+				linear_velocity[1]/f,
+				linear_velocity[2]/f
+				);
+		 }
 
 	////////////////secure position///////////////////////////////////////////////////////////////////////////////////
 	const dReal* position=dBodyGetPosition(m_body);
 	if(!dV_valid(position)) 
-		dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
-		m_safe_position[1]-m_safe_velocity[1]*fixed_step,
-		m_safe_position[2]-m_safe_velocity[2]*fixed_step);
-	else{
+	{
+		dBodySetPosition(
+			m_body,
+			m_safe_position[0]-m_safe_velocity[0]*fixed_step,
+			m_safe_position[1]-m_safe_velocity[1]*fixed_step,
+			m_safe_position[2]-m_safe_velocity[2]*fixed_step
+			);
+	}
+	else
+	{
 		Memory.mem_copy(m_safe_position,position,sizeof(dVector3));
 		Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 	}
 
 	/////////////////limit & secure angular vel///////////////////////////////////////////////////////////////////////////////
-	const dReal* rot = dBodyGetAngularVel(m_body);
-	dReal w_mag=_sqrt(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
-	if(!dV_valid(rot)) 
+
+	if(!dV_valid(angular_velocity)) 
 		dBodySetAngularVel(m_body,0.f,0.f,0.f);
-	else if(w_mag>m_w_limit){
-		dReal f=w_mag/m_w_limit;
-		dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
+	else if(angular_velocity_mag>m_w_limit)
+	{
+		dReal f=angular_velocity_mag/m_w_limit;
+		angular_velocity_mag=m_w_limit;
+		angular_velocity_smag=m_w_limit*m_w_limit;
+		dBodySetAngularVel(
+							m_body,
+							angular_velocity[0]/f,
+							angular_velocity[1]/f,
+							angular_velocity[2]/f);
 	}
 
 	////////////////secure rotation////////////////////////////////////////////////////////////////////////////////////////
@@ -489,18 +526,28 @@ void CPHElement::PhDataUpdate(dReal step){
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//////////////////air resistance/////////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	//const dReal k_w=0.05f;
-	//const dReal k_l=0.0002f;//1.8f;
+
 	if(!fis_zero(k_w))
-		dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+			dBodyAddTorque(
+							m_body,
+							-angular_velocity[0]*k_w,
+							-angular_velocity[1]*k_w,
+							-angular_velocity[2]*k_w
+							);
+
 	dMass mass;
 	dBodyGetMass(m_body,&mass);
-	dReal l_air=mag*k_l;
-	//if(mag*mag*k_l/fixed_step>mass.mass*mag) k_l=mass.mass/mag/fixed_step;
-	if(mag*l_air/fixed_step>mass.mass*mag) l_air=mass.mass/fixed_step;
-	//dBodyAddForce(m_body,-pos[0]*mag*k_l,-pos[1]*mag*k_l,-pos[2]*mag*k_l);
+	dReal l_air=linear_velocity_mag*k_l;//force/velocity !!!
+	if(l_air>mass.mass/fixed_step) l_air=mass.mass/fixed_step;//validate
+
 	if(!fis_zero(l_air))
-		dBodyAddForce(m_body,-pos[0]*l_air,-pos[1]*l_air,-pos[2]*l_air);
+			dBodyAddForce(
+							m_body,
+							-linear_velocity[0]*l_air,
+							-linear_velocity[1]*l_air,
+							-linear_velocity[2]*l_air
+							);
+
 VERIFY2(dV_valid(dBodyGetPosition(m_body)),"invalid body position");
 VERIFY2(dM_valid(dBodyGetRotation(m_body)),"invalid body rotation");
 UpdateInterpolation				();

@@ -20,6 +20,8 @@ IC float Spring(float cfm,float erp)	{return ((erp)/(cfm)/fixed_step);}
 IC float Damping(float cfm,float erp)	{return ((1.f-(erp))/(cfm));}
 extern const dReal default_l_limit;
 extern const dReal default_w_limit;
+extern const dReal	default_k_l;
+extern const dReal	default_k_w;
 extern const dReal default_l_scale;
 extern const dReal default_w_scale;
 extern const dReal default_disw;
@@ -75,7 +77,7 @@ public:
 	virtual void			applyForce				(const Fvector& dir, float val)							= 0;
 	virtual void			applyForce				(float x,float y,float z)								= 0;
 	virtual void			applyImpulse			(const Fvector& dir, float val)							= 0;
-	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f)				= 0;
+	virtual void			SetAirResistance		(float linear=default_k_l, float angular=default_k_w)	= 0;
 	virtual void			set_DynamicLimits		(float l_limit=default_l_limit,float w_limit=default_w_limit)= 0;
 	virtual void			set_DynamicScales		(float l_scale=default_l_scale,float w_scale=default_w_scale)= 0;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)							= 0;

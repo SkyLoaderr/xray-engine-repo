@@ -58,10 +58,10 @@ virtual ~CPHShell				()
 		elements.push_back(ph_element);
 
 	};
-	virtual void remove_Element(CPhysicsElement* E){
-	}
+
 	void					SetPhObjectInElements	();
-	virtual void			SetAirResistance		(dReal linear=0.0002f, dReal angular=0.05f)
+
+	virtual void			SetAirResistance		(dReal linear=default_k_l, dReal angular=default_k_w)
 	{
 		xr_vector<CPHElement*>::iterator i;
 		for(i=elements.begin();elements.end()!=i;++i)
