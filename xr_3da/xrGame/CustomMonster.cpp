@@ -289,7 +289,6 @@ void CCustomMonster::Update	( DWORD DT )
 		{
 			Exec_Look		(dt);
 			Exec_Movement	(dt);
-			Exec_Action		(dt);
 			Exec_Visibility	(dt);
 			
 			net_update			uNext;
@@ -299,6 +298,7 @@ void CCustomMonster::Update	( DWORD DT )
 			uNext.p_pos			= vPosition;
 			NET.push_back		(uNext);
 		}
+		Exec_Action			(dt);
 	}
 
 	// weapons
