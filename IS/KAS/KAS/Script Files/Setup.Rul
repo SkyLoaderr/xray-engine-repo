@@ -29,10 +29,11 @@ BOOL	g_bServer;
 #define MSDE_INSTANCE_NAME	 	"kas_sql_srv"
 #define MSDE_INSTANCE_FOLDER	PROGRAMFILES^"Microsoft SQL Server\\Mssql$"+MSDE_INSTANCE_NAME+"\\"
 
-#define MSDE_START_SERVER_CMD	PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe"
+#define MSDE_SERVER_CMD			"\""+PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe"+"\""
 #define MSDE_START_SERVER_PAR	" -Action 1 -Silent 1 -Service mssql$kas_sql_srv"
+#define MSDE_STOP_SERVER_PAR	" -Action 6 -Silent 1 -Service mssql$kas_sql_srv"
                    
-#define DLL_FILE  				TARGETDIR^"SQL_CONFIG.dll"    
+#define DLL_FILE  				TARGETDIR^"SQL_CONFIG.dll"
 #define SQL_USER_NAME_ 			"sa"
 #define SQL_USER_PASS_ 			"KAStorka40"
 #define SQL_SERVER_HOST_ 		"localhost\\"+MSDE_INSTANCE_NAME
@@ -64,6 +65,7 @@ prototype 				StopServer					();
 prototype 				ParseSerialNumber			(byval string, byref string, byref string);
 prototype BOOL 			CheckMSDEStatus				();
 prototype 				ConfigureServer				();
+prototype BOOL			CheckMDACFeature			();
 // external SQL server management function
 prototype CDECL BOOL 	SQL_CONFIG.initLibrary		();
 prototype CDECL BOOL 	SQL_CONFIG.deInitLibrary	();
@@ -80,24 +82,9 @@ export prototype 		MSDE_2000_UnInstalled		();
 //---------------------------------------------------------------------------
 function CreateUninstallShortcut()   
 string strCmdLine;  
-LIST lstPath; 
 begin   
-	 // For an InstallScript installation:
-	 strCmdLine = DISK1TARGET ^ "Setup.exe";    
-	 // For an InstallScript MSI installation:
-	 strCmdLine = UNINSTALL_STRING;    
- 
-	 // The path has to be handled differently if you are running   
-	 // an InstallScript MSI installation on Windows 9X.  
- 	if ( SYSINFO.WIN9X.bWin9X ) then   
-	 	lstPath = ListCreate( STRINGLIST );  
-		StrGetTokens( lstPath, UNINSTALL_STRING, "/" );    
-	
-		ListGetFirstString( lstPath, strCmdLine );  
-		LongPathToQuote( strCmdLine, TRUE );    
-	
-		strCmdLine = strCmdLine + " /M" + PRODUCT_GUID; 
-	endif;  
+	// For an InstallScript installation:
+	strCmdLine = "\""+DISK1TARGET ^ "Setup.exe"+"\"";    
 	// Create the shortcut. 
 	AddFolderIcon(SHELL_OBJECT_FOLDER, @IDSL_REMOVE_KAS,strCmdLine, "",TARGETDIR^"MDISplit.ico",0, "", REPLACE );  
 end;
@@ -105,7 +92,7 @@ end;
 function CreateStartServerShortcut()   
 begin   
 	if ( SYSINFO.WIN9X.bWin9X ) then   
-		AddFolderIcon	(FOLDER_STARTUP, "Start KAS SQLServer","\""+MSDE_START_SERVER_CMD+"\" "+MSDE_START_SERVER_PAR, "",TARGETDIR^"MDISplit.ico",0, "", REPLACE );  
+		AddFolderIcon	(FOLDER_STARTUP, "Start KAS SQLServer",MSDE_SERVER_CMD+" "+MSDE_START_SERVER_PAR, "",TARGETDIR^"MDISplit.ico",0, "", REPLACE );  
 	endif;  
 end;
 //---------------------------------------------------------------------------
@@ -142,12 +129,12 @@ end;
 //---------------------------------------------------------------------------
 function StartServer()
 begin
-	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 1 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
+	LaunchAppAndWait (MSDE_SERVER_CMD, MSDE_START_SERVER_PAR, WAIT);
 end;
 //---------------------------------------------------------------------------
 function StopServer()
 begin
-	LaunchAppAndWait (PROGRAMFILES^"Microsoft SQL Server\\80\\Tools\\Binn\\scm.exe" , " -Action 6 -Silent 1 -Service mssql$kas_sql_srv", WAIT);
+	LaunchAppAndWait (MSDE_SERVER_CMD, MSDE_STOP_SERVER_PAR, WAIT);
 end;
 //---------------------------------------------------------------------------
 function BOOL CheckMSDEStatus()
@@ -183,7 +170,7 @@ end;
 //---------------------------------------------------------------------------
 function StopClientUpdater()
 begin
-	LaunchAppAndWait 		(TARGETDIR^"ClientUpdate.exe" , " /r", WAIT);
+	LaunchAppAndWait 		("\""+TARGETDIR^"ClientUpdate.exe"+"\"", " /r", WAIT);
 end;
 //---------------------------------------------------------------------------
 function CleanupTargetFolder()
@@ -325,9 +312,6 @@ begin
 			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_SERVER_ID, REGDB_STRING, sServerName,-1) < 0) then
 			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
 			endif;
-			if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
-			    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
-			endif;
 
 			// create auto-start shortcut
 			CreateStartServerShortcut();
@@ -361,12 +345,42 @@ label_end:
     if (bRes=FALSE) then abort; endif;
 end;
 //---------------------------------------------------------------------------                                                                        
-
+          
+function BOOL CheckMDACFeature()
+	BOOL	mdac_found, mdac_need_install;
+    string 	mdac_ver;
+	NUMBER 	nvType, nvSize, nLocation;
+begin
+	mdac_found				= FALSE;
+	mdac_need_install		= TRUE;
+	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
+	if (RegDBGetKeyValueEx("Software\\Microsoft\\dataAccess","FullInstallVer",nvType,mdac_ver,nvSize) = 0) then
+		nLocation			= StrFind(mdac_ver,"2.8");
+		if (nLocation=0)	then  mdac_found=TRUE; endif;
+	endif;
+	if (mdac_found=TRUE) then
+		if (AskYesNo(@IDS_ASK_MDAC_VERSION,NO)=NO) then
+			mdac_need_install = FALSE;
+	 	endif;
+	endif;     
+/*	                              
+	if (mdac_need_install=TRUE) then
+		if (SYSINFO.WIN9X.bWinMe) then
+			LaunchAppAndWait ("mdac_typ.exe", "", WAIT);
+		else
+			LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q:D /N\"", WAIT);
+		endif;
+		g_bNeedReboot 		= TRUE;
+	endif;
+*/
+	return mdac_need_install;
+end;
+          
 //---------------------------------------------------------------------------                                                                        
 // InstallShield Events
 //---------------------------------------------------------------------------                                                                        
 function OnBegin()
-begin       
+begin     
 	g_bNeedReboot 	= FALSE;
 	g_bServer 		= FALSE;
 	// check admin rights
@@ -438,7 +452,8 @@ Dlg_SetupType:
 		endif;
 		if (FeatureSetupTypeSet (MEDIA, sSetupType) < 0) then
 			MessageBox (@IDSL_FEATURE_SETUP_FAILED, SEVERE);
-		endif;
+		endif;      
+		FeatureSelectItem (MEDIA,"MDAC",CheckMDACFeature());
         nSize = 0;
         FeatureCompareSizeRequired(MEDIA, sTargetPath, nSize);
         if (nSize != 0) then      
@@ -647,35 +662,16 @@ function OnFirstUIAfter()
     STRING szTitle, szMsg1, szMsg2, szOpt1, szOpt2;
     NUMBER bvOpt1, bvOpt2;
 	NUMBER bShowUpdateServiceDlg;
-
-	BOOL	mdac_found, mdac_need_install;
-    string 	mdac_ver;
-	NUMBER 	nvType, nvSize, nLocation;
-begin
-	// launch MuDAC setup	
-	mdac_found				= FALSE;
-	mdac_need_install		= TRUE;
-	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
-	if (RegDBGetKeyValueEx("Software\\Microsoft\\dataAccess","FullInstallVer",nvType,mdac_ver,nvSize) = 0) then
-		nLocation			= StrFind(mdac_ver,"2.8");
-		if (nLocation=0)	then  mdac_found=TRUE; endif;
-	endif;
-	if (mdac_found=TRUE) then
-		if (AskYesNo(@IDS_ASK_MDAC_VERSION,NO)=NO) then
-			mdac_need_install = FALSE;
-	 	endif;
-	endif;                                   
-	if (mdac_need_install=TRUE) then
-		if (SYSINFO.WIN9X.bWinMe) then
-			LaunchAppAndWait ("mdac_typ.exe", "", WAIT);
-		else
-			LaunchAppAndWait ("mdac_typ.exe", " /Q:A /C:\"dasetup /Q:D /N\"", WAIT);
-		endif;
-		g_bNeedReboot 		= TRUE;
-	endif;
-           
+begin     
 	// configure server (if needed)           
 	if (g_bServer) then 	ConfigureServer(); endif;
+	
+	// insert registry keys
+	// client & server
+	RegDBSetDefaultRoot		(HKEY_LOCAL_MACHINE);
+	if (RegDBSetKeyValueEx 	("Software\\KASClient\\Settings", REG_INSTANCE_ID, REGDB_STRING, MSDE_INSTANCE_NAME,-1) < 0) then
+	    MessageBox 			("RegDBSetKeyValueEx failed.", SEVERE);
+	endif;
            
 	// create uninstall shortcut
 	CreateUninstallShortcut();

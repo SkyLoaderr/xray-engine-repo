@@ -217,7 +217,9 @@
 		<col def="S255">ISFeatureCabName</col>
 		<col def="S255">ISProFeatureName</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td>##IDS_SERVER_FEATURE_NAME##</td><td/><td>6</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ServerFeature</td></row>
+		<row><td>{261B747F-3CF6-40FD-A638-08F21986305A}</td><td>{8F67D428-38CE-4C09-9696-D03819EF0796}</td><td>New MDAC 2.8 (ODBC, OLEDB, ADO, RDS) 1</td><td/><td>12</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MDAC 2.8 (ODBC, OLEDB, ADO, RDS)</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td>New MSDE 2000 Object 1</td><td/><td>9</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MSDE_2000_Object</td></row>
+		<row><td>{8F67D428-38CE-4C09-9696-D03819EF0796}</td><td/><td>##ID_STRING11##</td><td/><td>10</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MDAC</td></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td>##IDS_VLIENT_FEATURE_NAME##</td><td/><td>4</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>ClientFeature</td></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td>DefaultFeature</td><td/><td>2</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>DefaultFeature</td></row>
 		<row><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td/><td>##ID_STRING10##</td><td/><td>8</td><td>1</td><td>TARGETDIR</td><td>0</td><td/><td/><td/><td>MSDE</td></row>
@@ -324,7 +326,7 @@
 		<col def="I4">Disk</col>
 		<row><td>NewDisk1File1</td><td>&lt;ISPROJECTDIR&gt;\source\setup\setupMSDE.ini</td><td>1</td></row>
 		<row><td>NewDisk1File2</td><td>&lt;ISPROJECTDIR&gt;\source\setup\grant_rights.cmd</td><td>1</td></row>
-		<row><td>NewDisk1File3</td><td>&lt;ISPROJECTDIR&gt;\source\setup\MDAC_TYP.EXE</td><td>1</td></row>
+		<row><td>NewDisk1File4</td><td>&lt;ISPROJECTDIR&gt;\source\setup\autorun.inf</td><td>1</td></row>
 	</table>
 
 	<table name="ISDynamicFile">
@@ -351,7 +353,9 @@
 		<col def="S50">CDRomFolder</col>
 		<col def="S50">Moniker</col>
 		<row><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
+		<row><td>{261B747F-3CF6-40FD-A638-08F21986305A}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:4055284D-E31E-4AA5-A687-9AAA8E17EE5F</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td/><td>NewMSDE2000Object1_Installed</td><td>MSDE_2000_Object_UnInstalling</td><td>MSDE_2000_Object_UnInstalled</td><td/><td/><td/><td/><td>20</td><td/><td/><td>@ismk10:1ADF3B18-18D7-4FB7-BDE9-D42DEDDF1A06</td></row>
+		<row><td>{8F67D428-38CE-4C09-9696-D03819EF0796}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
 		<row><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td><td/><td/><td/><td/><td/><td/><td/><td/><td>44</td><td/><td/><td/></row>
 		<row><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td><td/><td/><td/><td>MSDE_2000_UnInstalled</td><td/><td/><td/><td/><td>36</td><td/><td/><td/></row>
@@ -486,6 +490,7 @@
 		<col key="yes" def="s72">Feature_</col>
 		<col key="yes" def="s72">Property</col>
 		<col def="L0">Value</col>
+		<row><td>{261B747F-3CF6-40FD-A638-08F21986305A}</td><td>StatusText</td><td>""</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AllowXDBChaining</td><td>0,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>AutomaticPackageSelection</td><td>-1,Bool</td></row>
 		<row><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td><td>Collation</td><td>""</td></row>
@@ -731,15 +736,21 @@
 	<table name="ISSetupTypeFeatures">
 		<col key="yes" def="s38">ISSetupType_</col>
 		<col key="yes" def="s38">Feature_</col>
+		<row><td>Client</td><td>{261B747F-3CF6-40FD-A638-08F21986305A}</td></row>
+		<row><td>Client</td><td>{8F67D428-38CE-4C09-9696-D03819EF0796}</td></row>
 		<row><td>Client</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
 		<row><td>Client</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>ClientServer</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
+		<row><td>ClientServer</td><td>{261B747F-3CF6-40FD-A638-08F21986305A}</td></row>
 		<row><td>ClientServer</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
+		<row><td>ClientServer</td><td>{8F67D428-38CE-4C09-9696-D03819EF0796}</td></row>
 		<row><td>ClientServer</td><td>{AA1539E9-95B9-4AF8-8084-FFDF23D57A6C}</td></row>
 		<row><td>ClientServer</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>ClientServer</td><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td></row>
 		<row><td>Server</td><td>{04C8817B-B642-4D55-9F46-A886BBAC94BE}</td></row>
+		<row><td>Server</td><td>{261B747F-3CF6-40FD-A638-08F21986305A}</td></row>
 		<row><td>Server</td><td>{7E18998D-DC6F-411F-A96A-B953C50F3EBC}</td></row>
+		<row><td>Server</td><td>{8F67D428-38CE-4C09-9696-D03819EF0796}</td></row>
 		<row><td>Server</td><td>{B7857EFB-765E-449F-A928-7ACA9C22FAFB}</td></row>
 		<row><td>Server</td><td>{E75979B2-D796-4D7B-88E1-909BCEA7508A}</td></row>
 	</table>
@@ -806,7 +817,7 @@
 		<row><td>IDSL_PROGRESS_TUNE_CONNECTION</td><td>1033</td><td/><td>0</td><td/><td>-971486965</td></row>
 		<row><td>IDSL_PROGRESS_TUNE_CONNECTION</td><td>1049</td><td>'00P!$$$0@1`!#X$.00Z!#`$(`!!!#X$-00T!#@$/00U!#T$.`1/!"X`</td><td>21</td><td/><td>-971486965</td></row>
 		<row><td>IDSL_REMOVE_KAS</td><td>1033</td><td/><td>0</td><td/><td>-971471030</td></row>
-		<row><td>IDSL_REMOVE_KAS</td><td>1049</td><td>(P0T!#`$.P0U!#T$.`0U!"``&amp;@00!"$$</td><td>12</td><td/><td>-971468982</td></row>
+		<row><td>IDSL_REMOVE_KAS</td><td>1049</td><td>%`0U!%8$/01!!$($,`0[!#L$3P1&amp;!%8$3P0@`!H$$`0A!```</td><td>17</td><td/><td>-1466334546</td></row>
 		<row><td>IDSL_SETUP_ERROR</td><td>1033</td><td/><td>0</td><td/><td>-971468789</td></row>
 		<row><td>IDSL_SETUP_ERROR</td><td>1049</td><td>'@1(!#@$,00Z!#`$(``_!$`$.`0@`$,$001"!#`$/00^!#($.@0U!"``30!3`$0`10`N````</td><td>26</td><td/><td>-971468789</td></row>
 		<row><td>IDS_ASK_MDAC_VERSION</td><td>1033</td><td/><td>0</td><td/><td>-971493749</td></row>
@@ -886,31 +897,31 @@ HgRCBDwENQQ9BDAE
 			</td><td>0</td><td/><td>-971452725</td></row>
 		<row><td>IDS__DialogId_10205_ControlId_9</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>-971452725</td></row>
 		<row><td>IDS__DialogId_10305</td><td>1033</td><td>InstallShield Wizard</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305</td><td>1049</td><td>InstallShield Wizard</td><td>0</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305</td><td>1049</td><td>InstallShield Wizard</td><td>0</td><td/><td>-1466350548</td></row>
 		<row><td>IDS__DialogId_10305_ControlId_1200</td><td>1033</td><td>@10550,10551;1;0;;0,128,128</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305_ControlId_1200</td><td>1049</td><td>@10550,10551;1;0;;0,128,128</td><td>0</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305_ControlId_1200</td><td>1049</td><td>@10550,10551;1;0;;0,128,128</td><td>0</td><td/><td>-1466350548</td></row>
 		<row><td>IDS__DialogId_10305_ControlId_1500</td><td>1033</td><td>Progress2</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305_ControlId_1500</td><td>1049</td><td>Progress2</td><td>0</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305_ControlId_1500</td><td>1049</td><td>Progress2</td><td>0</td><td/><td>-1466350548</td></row>
 		<row><td>IDS__DialogId_10305_ControlId_17809</td><td>1033</td><td dt:dt="bin.base64" md5="273ae7e84ab3fcb25c0f4a259257967c">
 HgRBBEIEMAQ7BD4EQQRMBCAAPwRABDgEPAQ1BEAEPQQ+BDoA
 			</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305_ControlId_17809</td><td>1049</td><td>'@1!!$($,`0[!#X$001,!"``/P1`!#@$/`0U!$`$/00^!#H`</td><td>18</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305_ControlId_17809</td><td>1049</td><td>'@1!!$($,`0[!#X$001,!"``/P1`!#@$/`0U!$`$/00^!#H`</td><td>18</td><td/><td>-1466348500</td></row>
 		<row><td>IDS__DialogId_10305_ControlId_17810</td><td>1033</td><td dt:dt="bin.base64" md5="42789e859738795525b18f6d970fa016">
 IQQ6BD4EQAQ+BEEEQgRMBCAAPwQ1BEAENQQ0BDAERwQ4BDoA
 			</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305_ControlId_17810</td><td>1049</td><td>(00Z!#X$0`0^!$$$0@1,!"``/P0U!$`$-00T!#`$1P0X!#H`</td><td>18</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305_ControlId_17810</td><td>1049</td><td>(00Z!#X$0`0^!$$$0@1,!"``/P0U!$`$-00T!#`$1P0X!#H`</td><td>18</td><td/><td>-1466348500</td></row>
 		<row><td>IDS__DialogId_10305_ControlId_2</td><td>1033</td><td dt:dt="bin.base64" md5="ffba6b042cf96ec8407bace115c7c5be">
 HgRCBDwENQQ9BDAE
 			</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305_ControlId_2</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305_ControlId_2</td><td>1049</td><td>'@1"!#P$-00]!#`$</td><td>6</td><td/><td>-1466348500</td></row>
 		<row><td>IDS__DialogId_10305_ControlId_50</td><td>1033</td><td dt:dt="bin.base64" md5="c3695b5f2bc61678acde94add5a7a812">
 IQQ+BEEEQgQ+BE8EPQQ4BDUEIABDBEEEQgQwBD0EPgQyBDoEOAQ=
 			</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305_ControlId_50</td><td>1049</td><td>(00^!$$$0@0^!$\$/00X!#4$(`!#!$$$0@0P!#T$/@0R!#H$.`0`</td><td>19</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305_ControlId_50</td><td>1049</td><td>(00^!$$$0@0^!$\$/00X!#4$(`!#!$$$0@0P!#T$/@0R!#H$.`0`</td><td>19</td><td/><td>-1466348500</td></row>
 		<row><td>IDS__DialogId_10305_ControlId_710</td><td>1033</td><td dt:dt="bin.base64" md5="55abdbb844a96c6b0251451f940922c8">
 HwRABD4EMwRABDAEPAQ8BDAEIABDBEEEQgQwBD0EPgQyBDoEOAQgACUAUAAgADIESwQ/BD4EOwQ9BE8ENQRCBCAAQgRABDUEMQRDBDUEPARLBDUEIAA+BD8ENQRABDAERgQ4BDgELgA=
 			</td><td>0</td><td/><td>-971471029</td></row>
-		<row><td>IDS__DialogId_10305_ControlId_710</td><td>1049</td><td>'P1`!#X$,P1`!#`$/`0\!#`$(`!#!$$$0@0P!#T$/@0R!#H$.`0@`"4`4``@`#($2P0_!#X$.P0]!$\$-01"!"``0@1`!#4$,01#!#4$/`1+!#4$(``^!#\$-01`!#`$1@0X!#@$+@``</td><td>52</td><td/><td>-971470676</td></row>
+		<row><td>IDS__DialogId_10305_ControlId_710</td><td>1049</td><td>'P1`!#X$,P1`!#`$/`0\!#`$(`!#!$$$0@0P!#T$/@0R!#H$.`0@`"4`4``@`#($2P0_!#X$.P0]!$\$-01"!"``0@1`!#4$,01#!#4$/`1+!#4$(``^!#\$-01`!#`$1@0X!#@$+@``</td><td>52</td><td/><td>-1466350548</td></row>
 		<row><td>IDS__DialogId_12006</td><td>1033</td><td>InstallShield Wizard</td><td>0</td><td/><td>-971495701</td></row>
 		<row><td>IDS__DialogId_12006</td><td>1049</td><td>InstallShield Wizard</td><td>0</td><td/><td>-971480243</td></row>
 		<row><td>IDS__DialogId_12006_ControlId_1</td><td>1033</td><td dt:dt="bin.base64" md5="ca396e10db0fb260880d223d716f26a3">
@@ -1255,6 +1266,9 @@ HgRCBDwENQQ9BDAE
 		<row><td>ID_STRING1</td><td>1049</td><td>NewFeature1</td><td>0</td><td/><td>1981287670</td></row>
 		<row><td>ID_STRING10</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>-1105722639</td></row>
 		<row><td>ID_STRING10</td><td>1049</td><td>NewFeature1</td><td>0</td><td/><td>-1105722639</td></row>
+		<row><td>ID_STRING11</td><td>1033</td><td>NewFeature1</td><td>0</td><td/><td>-1466342609</td></row>
+		<row><td>ID_STRING11</td><td>1049</td><td>NewFeature1</td><td>0</td><td/><td>-1466342609</td></row>
+		<row><td>ID_STRING11</td><td>1058</td><td>NewFeature1</td><td>0</td><td/><td>-1466342609</td></row>
 		<row><td>ID_STRING2</td><td>1033</td><td>NewShortcut1</td><td>0</td><td/><td>1981284439</td></row>
 		<row><td>ID_STRING2</td><td>1049</td><td>NewShortcut1</td><td>0</td><td/><td>1981284439</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>NewShortcut11</td><td>0</td><td/><td>1981309527</td></row>
@@ -1282,15 +1296,15 @@ GgQQBCEEIAA6BDsEOAQ1BD0EQgQ=
 		<row><td>ID_ST_CLIENT_SERVER_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981306411</td></row>
 		<row><td>ID_ST_CLIENT_SERVER_NAME</td><td>1049</td><td>&amp;@0[!#@$-00]!$($(``X!"``(00U!$`$,@0U!$`$(``T!#`$/00]!$L$100`</td><td>22</td><td/><td>1981306411</td></row>
 		<row><td>ID_ST_CLIENT_SHORTCUT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981307031</td></row>
-		<row><td>ID_ST_CLIENT_SHORTCUT_NAME</td><td>1049</td><td>&amp;@00!"$$(``Z!#L$.`0U!#T$0@0`</td><td>10</td><td/><td>-1642590124</td></row>
+		<row><td>ID_ST_CLIENT_SHORTCUT_NAME</td><td>1049</td><td>&amp;@00!"$$(``Z!#L$5@0U!#T$0@0`</td><td>10</td><td/><td>-1466363250</td></row>
 		<row><td>ID_ST_HELP_SHORTCUT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981343895</td></row>
-		<row><td>ID_ST_HELP_SHORTCUT_NAME</td><td>1049</td><td>%`0^!#H$0P0\!#4$/01"!#`$1@0X!$\$</td><td>12</td><td/><td>1981313783</td></row>
+		<row><td>ID_ST_HELP_SHORTCUT_NAME</td><td>1049</td><td>%`0^!#H$0P0\!#4$/01"!#`$1@16!$\$</td><td>12</td><td/><td>-1466359154</td></row>
 		<row><td>ID_ST_SERVER_DESC</td><td>1033</td><td>Description</td><td>0</td><td/><td>1981329035</td></row>
 		<row><td>ID_ST_SERVER_DESC</td><td>1049</td><td>'00P!"``.@0^!#P$/P1,!$X$0@0U!$`$(`!#!$$$0@0P!#T$,`0R!#L$.`0R!#`$-01"!$$$3P0@`$($/@0[!$P$.@0^!"``000U!$`$,@0U!$`$(``T!#`$/00]!$L$100L`"``,@0@`#H$/@1"!#X$0`0^!#P$(`!%!$`$,`0]!#@$0@1!!$\$(``X!#T$1`0^!$`$/`0P!$8$.`1/!"``.`0@`#H$(``Z!#X$0@0^!$`$/@0\!$,$(``R!"``-`0P!#L$3`0]!#4$.01(!#4$/`0@`#$$0P0T!$,$0@0@`#\$/@0T!#H$.P1.!$&lt;$,`1"!$P$001/!"``/P1`!#X$,P1`!#`$/`0\!$L$(``T!#L$3P0@`#\$0`0^!$$$/`0^!$($0`0P!"``*`!'!$($-00]!#@$3P0I`"``-`0P!#T$/01+!$4$+@``</td><td>166</td><td/><td>1981329035</td></row>
 		<row><td>ID_ST_SERVER_NAME</td><td>1033</td><td>SetupType1</td><td>0</td><td/><td>1981308555</td></row>
 		<row><td>ID_ST_SERVER_NAME</td><td>1049</td><td>(00U!$`$,@0U!$`$(``T!#`$/00]!$L$100N````</td><td>14</td><td/><td>1981308555</td></row>
 		<row><td>ID_ST_UPDATE_SHORTCUT_NAME</td><td>1033</td><td/><td>0</td><td/><td>1981335735</td></row>
-		<row><td>ID_ST_UPDATE_SHORTCUT_NAME</td><td>1049</td><td>&amp;@00!"$$(``^!#$$/00^!#($.P0U!#T$.`0U!```</td><td>14</td><td/><td>1981295383</td></row>
+		<row><td>ID_ST_UPDATE_SHORTCUT_NAME</td><td>1049</td><td>&amp;@00!"$$(``^!#T$/@0R!#L$-00]!#T$3P0`</td><td>13</td><td/><td>-1466350962</td></row>
 	</table>
 
 	<table name="ISVRoot">
