@@ -46,11 +46,11 @@ void CObjectList::Load()
 void CObjectList::Unload	( )
 {
 	// Destroy objects
-	Msg	("!!!------------- Unload, %d objects",objects.size());
+	// Msg	("!!!------------- Unload, %d objects",objects.size());
 	while (objects.size())
 	{
 		CObject*	O	= objects.back();
-		Msg	("!!!------------- Unload: %s",O->cName());
+		// Msg	("!!!------------- Unload: %s",O->cName());
 		O->net_Destroy	(   );
 		Destroy			( O );
 	}

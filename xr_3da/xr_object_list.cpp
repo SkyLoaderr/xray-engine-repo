@@ -95,14 +95,14 @@ void CObjectList::net_Register	(CObject* O)
 {
 	R_ASSERT		(O);
 	map_NETID.insert(make_pair(O->ID(),O));
-	Msg				("-------------------------------- Register: %s",O->cName());
+	//Msg			("-------------------------------- Register: %s",O->cName());
 }
 
 void CObjectList::net_Unregister(CObject* O)
 {
 	map<u32,CObject*>::iterator	it = map_NETID.find(O->ID());
 	if ((it!=map_NETID.end()) && (it->second == O))	{
-		Msg				("-------------------------------- Unregster: %s",O->cName());
+		// Msg			("-------------------------------- Unregster: %s",O->cName());
 		map_NETID.erase(it);
 	}
 }
