@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\xr_mac.h"
 #include "actor.h"
 #include "CustomItem.h"
 

@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\xr_mac.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 #include "..\xr_hudfont.h"
