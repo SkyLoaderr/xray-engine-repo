@@ -7,7 +7,10 @@
 class ENGINE_API CMotionDef;
 
 #define SND_RIC_COUNT 5
+#define MAX_ANIM_COUNT 8
  
+typedef svector<CMotionDef*,MAX_ANIM_COUNT> MotionSVec;
+
 class CWeaponMagazined: public CWeapon
 {
 private:
@@ -29,11 +32,11 @@ protected:
 	ESoundTypes		m_eSoundRicochet;
 					
 	// HUD :: Animations
-	CMotionDef*		mhud_idle;
-	CMotionDef*		mhud_reload;
-	CMotionDef*		mhud_hide;
-	CMotionDef*		mhud_show;
-	svector<CMotionDef*,8>	mhud_shots;
+	MotionSVec		mhud_idle;
+	MotionSVec		mhud_reload;
+	MotionSVec		mhud_hide;
+	MotionSVec		mhud_show;
+	MotionSVec		mhud_shots;
 	// General
 	float			fTime;
 	BOOL			bFlame;
@@ -52,6 +55,7 @@ protected:
 		eHiding
 	};
 	EState			st_current, st_target;
+	void			animGet			(MotionSVec& lst, LPCSTR prefix);
 protected:
 	virtual void	FireShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
 	virtual void	OnMagazineEmpty	();

@@ -38,6 +38,18 @@ CWeaponMagazined::~CWeaponMagazined()
 	MediaUNLOAD		();
 }
 
+void CWeaponMagazined::animGet(MotionSVec& lst, LPCSTR prefix)
+{
+	CMotionDef* M		= m_pHUD->animGet(prefix);
+	if (M)				lst.push_back(M);
+	for (int i=0; i<MAX_ANIM_COUNT; i++){
+		string128		sh_anim;
+		sprintf			(sh_anim,"%s%d",prefix,i);
+		M				= m_pHUD->animGet(sh_anim);
+		if (M)			lst.push_back(M);
+	}
+}
+
 void CWeaponMagazined::Load(CInifile* ini, const char* section)
 {
 	inherited::Load	(ini, section);
@@ -55,17 +67,11 @@ void CWeaponMagazined::Load(CInifile* ini, const char* section)
 	SoundCreate			(sndRicochet[4],"ric5"    ,m_eSoundRicochet);
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
-	mhud_idle			= m_pHUD->animGet("idle"	);
-	mhud_reload			= m_pHUD->animGet("reload"	);
-	mhud_show			= m_pHUD->animGet("draw"	);
-	mhud_hide			= m_pHUD->animGet("holster"	);
-	for (int i=0; i<32; i++)
-	{
-		string128		sh_anim;
-		sprintf			(sh_anim,"shoot%d",i);
-		CMotionDef* M	= m_pHUD->animGet(sh_anim);
-		if (M)			mhud_shots.push_back(M);
-	}
+	animGet				(mhud_idle,		"idle");
+	animGet				(mhud_reload,	"reload");
+	animGet				(mhud_show,		"draw");
+	animGet				(mhud_hide,		"holster");
+	animGet				(mhud_shots,	"shoot");
 }
 
 void CWeaponMagazined::OnDeviceCreate()
@@ -447,7 +453,7 @@ void CWeaponMagazined::OnAnimationEnd()
 
 void CWeaponMagazined::switch2_Idle	(BOOL bHUDView)
 {
-	m_pHUD->animPlay(mhud_idle);
+	m_pHUD->animPlay(mhud_idle[Random.randI(mhud_idle.size())]);
 }
 void CWeaponMagazined::switch2_Fire	(BOOL bHUDView)
 {
@@ -458,19 +464,19 @@ void CWeaponMagazined::switch2_Empty(BOOL bHUDView)
 void CWeaponMagazined::switch2_Reload(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndReload,H_Root(),vLastFP);
-	m_pHUD->animPlay			(mhud_reload,TRUE,this);
+	m_pHUD->animPlay			(mhud_reload[Random.randI(mhud_reload.size())],TRUE,this);
 }
 
 void CWeaponMagazined::switch2_Hiding(BOOL bHUDView)
 {
 	switch2_Idle				(bHUDView);
 	pSounds->Play3DAtPos		(sndHide,H_Root(),vLastFP);
-	m_pHUD->animPlay			(mhud_hide,TRUE,this);
+	m_pHUD->animPlay			(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
 }
 
 void CWeaponMagazined::switch2_Showing(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndShow,H_Root(),vLastFP);
-	m_pHUD->animPlay			(mhud_show,FALSE,this);
+	m_pHUD->animPlay			(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }
 

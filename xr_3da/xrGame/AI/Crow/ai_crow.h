@@ -66,6 +66,12 @@ class CAI_Crow : public CCustomMonster
 		void FreeHunting();
 		void SetDirectionLook();
 		bool bfChangeFlyTrajectory(Fvector &tActorPosition, DWORD dwTime);
+
+		// parameters block
+		Fvector			m_vGoalDir;
+		Fvector			m_vCurrentDir;
+		Fvector			m_vHPB;
+		float			m_fDHeading;
 	public:
 					   CAI_Crow();
 		virtual		  ~CAI_Crow();
