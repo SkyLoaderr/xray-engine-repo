@@ -85,6 +85,8 @@ protected:
 	//изменение силы хита в зависимости от надетого костюма
 	//(только для InventoryOwner)
 	virtual float HitOutfitEffect(float hit_power, ALife::EHitType hit_type);
+	//изменение потери сил в зависимости от надетого костюма
+	virtual float HitPowerEffect(float power_loss);
 	
 	//для подсчета состояния открытых ран,
 	//запоминается кость куда был нанесен хит

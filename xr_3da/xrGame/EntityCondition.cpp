@@ -349,6 +349,17 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 	return new_hit_power;
 }
 
+float CEntityCondition::HitPowerEffect(float power_loss)
+{
+	CInventoryOwner* pInvOwner = smart_cast<CInventoryOwner*>(m_object);
+	if(!pInvOwner) return power_loss;
+
+	CCustomOutfit* pOutfit = (CCustomOutfit*)pInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;
+	if(!pOutfit) return power_loss;
+	float new_power_loss = power_loss*pOutfit->GetPowerLoss();
+
+	return new_power_loss;
+}
 
 CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u16 element)
 {

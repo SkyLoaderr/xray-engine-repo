@@ -60,6 +60,10 @@ void CCustomOutfit::Load(LPCSTR section)
 		m_ActorVisual = NULL;
 
 	m_ef_equipment_type		= pSettings->r_u32(section,"ef_equipment_type");
+	if (pSettings->line_exist(section, "power_loss"))
+		m_fPowerLoss = pSettings->r_float(section, "power_loss");
+	else
+		m_fPowerLoss = 1.0f;
 }
 
 void CCustomOutfit::net_Destroy() 

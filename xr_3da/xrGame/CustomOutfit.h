@@ -38,6 +38,9 @@ public:
 	//при соответствующем типе воздействия
 	//если на персонаже надет костюм
 	float GetHitTypeProtection(ALife::EHitType hit_type);
+	//коэффициент на который домножается потеря силы
+	//если на персонаже надет костюм
+	float GetPowerLoss() {return m_fPowerLoss;};
 
 	int GetIconX() {return m_iOutfitIconX;}
 	int GetIconY() {return m_iOutfitIconY;}
@@ -50,6 +53,7 @@ protected:
 	int m_iOutfitIconY;
 
 	HitImmunity::HitTypeSVec m_HitTypeProtection;
+	float m_fPowerLoss;
 
 	shared_str		m_ActorVisual;
 
