@@ -15,18 +15,18 @@ function save_dialog:InitControls()
 	local screen = {width = 1024,height = 768}	
 	local main_rect = {x = 0, x = 0, width = 800, height = 600}
 	
-	main_rect.x = 0--(screen.width - main_rect.width)/2
-	main_rect.y = 0--(screen.height - main_rect.height)/2
+	main_rect.x = (screen.width - main_rect.width)/2
+	main_rect.y = (screen.height - main_rect.height)/2
 	
 	-- init self position and size
 	self:Init(main_rect.x, main_rect.y, main_rect.width, main_rect.height)
 	
 	-- Init Mant Static		
-	local main_static = CUIStatic()
+	local main_static = CUIFrameWindow()
 	main_static:SetAutoDelete(true)              --parent will delete this item in destructor
-	main_static:SetWindowName("static_0")
+	main_static:SetWindowName("main_frame")
 	--init texture and position relatively parent	
-	main_static:Init("ui\\ui_inv_info_over_b",0,0,main_rect.width, main_rect.height)
+	main_static:Init("ui\\ui_inv_personal_over",0,0,main_rect.width, main_rect.height)
     --textures name, root is Gamedata\Textures folder
 	main_static:ClipperOn() --clip texture by window region
 	self:AttachChild(main_static)
