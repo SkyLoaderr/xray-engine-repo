@@ -14,7 +14,7 @@ class CGlow				: public IRender_Glow
 public:
 	bool				bActive;
 public:
-	virtual void					set_active			(bool)						{ bActive=TRUE;		}
+	virtual void					set_active			(bool b)					{ bActive=b;		}
 	virtual bool					get_active			()							{ return bActive;	}
 	virtual void					set_position		(const Fvector& P)			{ }
 	virtual void					set_direction		(const Fvector& D)			{ }
