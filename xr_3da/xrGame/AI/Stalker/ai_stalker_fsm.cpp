@@ -91,40 +91,21 @@ void CAI_Stalker::ForwardCover()
 	Fvector						tPoint;
 	m_tEnemy.Enemy->svCenter	(tPoint);
 
-	float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition) - 3.f;
-	
 	if (m_bStateChanged) {
-		m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-		m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
+		float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
+		m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+		m_tSelectorCover.m_fMinEnemyDistance = max(1*fDistance - 1*m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
+		CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
+		if (tpWeapon)
+			m_tSelectorCover.m_fOptEnemyDistance = tpWeapon->m_fMinRadius;
 		m_dwLastRangeSearch = 0;
+		m_tActionState = eActionStateRun;
 	}
-//	if (Level().timeServer() >= m_dwActionEndTime) {
-//		m_dwActionStartTime = Level().timeServer();
-//		switch (m_tActionState) {
-//			case eActionStateRun : {
-//				m_tActionState		= eActionStateStand;
-//				m_dwActionEndTime	= m_dwActionStartTime + ::Random.randI(2000,3000);
-//				break;
-//			}
-//			case eActionStateStand : {
-//				if (AI_Path.TravelPath.size() > AI_Path.TravelStart + 1)
-//					m_tActionState		= eActionStateRun;
-//				else
-//					m_tActionState		= eActionStateStand;
-//				m_dwActionEndTime	= m_dwActionStartTime + ::Random.randI(4000,5000);
-//				break;
-//			}
-//		}
-//	}
 	switch (m_tActionState) {
 		case eActionStateRun : {
 			Msg							("State RUN");
-			EBodyState					tBodyState;
+			
 			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
-				tBodyState = m_tBodyState;
-			else
-				tBodyState = eBodyStateStand;
 			if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle) && (!tpWeapon->GetAmmoElapsed())) {
 				m_inventory.Action(kWPN_FIRE, CMD_START);
 				m_inventory.Action(kWPN_FIRE, CMD_STOP);
@@ -132,9 +113,9 @@ void CAI_Stalker::ForwardCover()
 			vfSetParameters				(
 				m_tSelectorCover,
 				0,
-				eWeaponStateIdle,
+				eWeaponStatePrimaryFire,
 				ePathTypeDodge,
-				tBodyState,
+				eBodyStateStand,
 				eMovementTypeRun,
 				eLookTypeFirePoint,
 				tPoint);
@@ -144,27 +125,26 @@ void CAI_Stalker::ForwardCover()
 		}
 		case eActionStateStand : {
 			Msg							("State STAND");
-			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
-			m_tSelectorCover.m_fMinEnemyDistance = m_tSelectorCover.m_fOptEnemyDistance - 3.f;
-			m_dwLastRangeSearch = 0;
-
-			EBodyState					tBodyState;
+			
+			float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
+			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
+			m_tSelectorCover.m_fMinEnemyDistance = max(1*fDistance - 1*m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
 			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
-			if (tpWeapon && (tpWeapon->STATE != CWeapon::eFire) && (tpWeapon->STATE != CWeapon::eFire2) && (tpWeapon->STATE != CWeapon::eIdle))
-				tBodyState = m_tBodyState;
-			else
-				tBodyState = eBodyStateCrouch;;
+			if (tpWeapon)
+				m_tSelectorCover.m_fOptEnemyDistance = tpWeapon->m_fMinRadius;
+
 			vfSetParameters				(
 				m_tSelectorCover,
 				0,
 				eWeaponStatePrimaryFire,
 				ePathTypeDodge,
-				tBodyState,
+				eBodyStateCrouch,
 				eMovementTypeStand,
 				eLookTypeFirePoint,
 				tPoint);
-			if ((!m_inventory.ActiveItem() || !dynamic_cast<CWeapon*>(m_inventory.ActiveItem()) || (dynamic_cast<CWeapon*>(m_inventory.ActiveItem())->STATE != CWeapon::eFire)) && !m_bIfSearchFailed)
-				m_tActionState		= eActionStateRun;
+			
+			if (!tpWeapon || (tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || (!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1)))
+				m_tActionState			= eActionStateRun;
 			break;
 		}
 		default : NODEFAULT;

@@ -96,6 +96,7 @@ public:
 	u32					eye_pp_timestamp;
 	objSET				eye_pp_seen;
 	Fvector				m_tEyeShift;
+	BOOL				NET_WasExtrapolating;
 
 	// AI
 	AI::AIC_Look		q_look;

@@ -46,7 +46,6 @@ CAI_Stalker::CAI_Stalker			()
 	m_tPathState					= ePathStateSearchNode;
 	m_tPathType						= ePathTypeDodge;
 
-	m_tActionState					= eActionStateRun;
 	m_dwActionStartTime				= 0;
 	m_dwActionEndTime				= 0;
 	m_bHammerIsClutched				= false;
