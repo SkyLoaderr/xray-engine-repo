@@ -15,6 +15,7 @@
 
 #include "xrGraph.h"
 #include "ai_nodes.h"
+//#include "ai_a_star.h"
 #include "ai_a_star_search.h"
 
 extern CStream*					vfs;			// virtual file
@@ -229,6 +230,7 @@ class CGraphThread : public CThread
 	float				m_fMaxDistance;
 	CCriticalSection	*m_tpCriticalSection;
 	vector<u32>			tpaNodes;
+	vector<u32>			tpaNodes1;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 
 public:
@@ -262,9 +264,9 @@ public:
 		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
 		u32 a = M*m_dwStart - m_dwStart*(m_dwStart + 1)/2, b = M*m_dwEnd - m_dwEnd*(m_dwEnd + 1)/2, c = b - a;
 		thProgress = 0.0f;
-		for (int i=(int)m_dwStart*1 + 0*195; i<(int)m_dwEnd; i++) {
+		for (int i=(int)m_dwStart*1 + 0*1; i<(int)m_dwEnd; i++) {
 			SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
-			for (int j = (i + 1)*1 + 0*315; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
+			for (int j = (i + 1)*1 + 0*274; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - a)/c) {
 				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
 					try {
@@ -284,7 +286,38 @@ public:
 								tCurrentGraphVertex.tPoint,
 								tNeighbourGraphVertex.tPoint,
 								tpaNodes);
-							//vfFindTheShortestPath(m_tpHeap, m_tpIndexes, m_dwAStarStaticCounter, tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance,m_fMaxDistance,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,tpaNodes);//,*m_tpCriticalSection,((tCurrentGraphVertex.dwNodeID == 28975) && (tNeighbourGraphVertex.dwNodeID == 6080)));
+//							float fSafeDistance = fDistance;
+//							vfFindTheShortestPath(
+//								(TNode *)m_tpHeap, 
+//								(TIndexNode *)m_tpIndexes, 
+//								m_dwAStarStaticCounter, 
+//								tCurrentGraphVertex.dwNodeID,
+//								tNeighbourGraphVertex.dwNodeID,
+//								fDistance,
+//								m_fMaxDistance,
+//								tCurrentGraphVertex.tPoint,
+//								tNeighbourGraphVertex.tPoint,
+//								tpaNodes1);
+//							if (fabsf(fDistance - fSafeDistance) > EPS_L) {
+//								m_tpCriticalSection->Enter();
+//								Msg("%d[%7.2f], %d[%7.2f]",i,fSafeDistance,j,fDistance);
+//								m_tpCriticalSection->Leave();
+//								//throw("");
+//							}
+//							m_tpCriticalSection->Enter();
+//							if (tpaNodes.size() != tpaNodes1.size()) {
+//								Msg("%d[%9.4f], %d[%9.4f]",i,fSafeDistance,j,fDistance);
+//								Msg("* different sizes (%d, %d)!",tpaNodes.size(),tpaNodes1.size());
+//							}
+//							bool bOk = true;
+//							for (int ii=0; ii<(int)min(tpaNodes.size(),tpaNodes1.size()); ii++)
+//								if (tpaNodes[ii] != tpaNodes1[ii]) {
+//									if (bOk)
+//										Msg("%d[%9.4f], %d[%9.4f]",i,fSafeDistance,j,fDistance);
+//									bOk = false;
+//									Msg("* [%d(%d)][%d(%d)] %d : %d -> %d",i,tCurrentGraphVertex.dwNodeID,j,tNeighbourGraphVertex.dwNodeID,ii,tpaNodes[ii],tpaNodes1[ii]);
+//								}
+//							m_tpCriticalSection->Leave();
 						}
 						if (fDistance < m_fMaxDistance) {
 							m_tpCriticalSection->Enter();

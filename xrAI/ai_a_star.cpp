@@ -132,6 +132,7 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 			tpTemp = tpTemp1->tpBack;
 			for (u32 j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
 				tpaNodes[i - j] = tpTemp->iIndex;
+			//return;
 
 			float fCumulativeDistance = 0, fLastDirectDistance = 0, fDirectDistance;
 			Fvector tPosition = tStartPosition;
