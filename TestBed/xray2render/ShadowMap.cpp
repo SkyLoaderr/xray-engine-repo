@@ -15,7 +15,7 @@ enum COMBINE_MODE
 //-----------------------------------------------------------------------------
 
 #define SHADOW_MAP_FORMAT	D3DFMT_R32F
-#define SHADOW_MAP_SIZE		1024
+#define SHADOW_MAP_SIZE		256
 #define OVERLAY_SIZE		128
 #define DEPTH_RANGE			4.0f
 
@@ -889,7 +889,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 	{
 		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f,		.3f,		1.,			.9);
 
-		Fvector4 J; float scale					= (4.f / SHADOW_MAP_SIZE)/11.f;
+		Fvector4 J; float scale					= (3.f / SHADOW_MAP_SIZE)/11.f;
 		J.set(11, 0,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,0,J.x,J.y,-J.y,-J.x);
 		J.set(19, 3,  0);		J.sub(11); J.mul(scale);	cc.seta	(C,1,J.x,J.y,-J.y,-J.x);
 		J.set(22, 11, 0);		J.sub(11); J.mul(scale);	cc.seta	(C,2,J.x,J.y,-J.y,-J.x);
