@@ -3,7 +3,7 @@
 //	Created 	: 19.08.2003
 //  Modified 	: 19.08.2003
 //	Author		: Dmitriy Iassenev
-//	Description : A-Life simulation of zones
+//	Description : A-Life zones simulation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

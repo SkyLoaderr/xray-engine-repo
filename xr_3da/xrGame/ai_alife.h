@@ -10,6 +10,9 @@
 
 #include "ai_alife_registries.h"
 
+#pragma todo("Dima to Dima : Be attentive with this speed optimization - it doesn't suit to the OOP paradigm!")
+#define FAST_OWNERSHIP
+
 class CSE_ALifeSimulator : 
 	public CSE_ALifeHeader, 
 	public CSE_ALifeGameTime,
@@ -113,7 +116,11 @@ class CSE_ALifeSimulator :
 			void					vfAssignItemParents			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		int						iItemCount);
 			void					vfAttachOwnerItems			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector,					ITEM_P_VECTOR	&tpOwnItems);
 			void					vfRestoreItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
+#ifdef FAST_OWNERSHIP
 			void					vfAttachGatheredItems		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			OBJECT_VECTOR	&tpObjectVector);
+#else
+			void					vfAttachGatheredItems		(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		OBJECT_VECTOR			&tpObjectVector);
+#endif
 			int						ifComputeBalance			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
 			void					vfFillTraderVector			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		int						iItemCount,						ITEM_P_VECTOR	&tpItemVector);
 			void					vfGenerateSums				(ITEM_P_VECTOR				&tpTrader,					INT_VECTOR				&tpSums);
@@ -124,7 +131,6 @@ class CSE_ALifeSimulator :
 			bool					bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAbstract	*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2,			int				iItemCount1,				int						iItemCount2,			int						iBalance);
 			void					vfPerformTrading			(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract1,		CSE_ALifeHumanAbstract	*tpALifeHumanAbstract2);
 			void					vfPerformCommunication		();
-
 public:
 	// members
 	bool							m_bLoaded;

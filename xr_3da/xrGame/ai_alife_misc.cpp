@@ -3,7 +3,7 @@
 //	Created 	: 14.01.2003
 //  Modified 	: 14.01.2003
 //	Author		: Dmitriy Iassenev
-//	Description : A-Life simulation miscellanious functions
+//	Description : A-Life simulation : miscellanious functions
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

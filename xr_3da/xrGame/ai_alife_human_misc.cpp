@@ -3,7 +3,7 @@
 //	Created 	: 24.07.2003
 //  Modified 	: 24.07.2003
 //	Author		: Dmitriy Iassenev
-//	Description : A-Life simulation of humans
+//	Description : A-Life humans simulation : miscellanious functions
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

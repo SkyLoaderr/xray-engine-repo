@@ -2334,6 +2334,9 @@
 						RelativePath=".\ai_alife_monster.cpp">
 					</File>
 					<File
+						RelativePath=".\ai_alife_trader.cpp">
+					</File>
+					<File
 						RelativePath=".\ai_alife_zone.cpp">
 					</File>
 				</Filter>

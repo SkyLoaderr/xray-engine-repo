@@ -26,6 +26,9 @@ public:
 	
 									CSE_ALifeTraderAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeTraderAbstract();
+			void					vfAttachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	bool		bALifeRequest,	bool bAddChildren = true);
+			void					vfDetachItem			(CSE_ALifeInventoryItem *tpALifeInventoryItem,	OBJECT_IT	*I = 0,			bool bALifeRequest = true,	bool bRemoveChildren = true);
+			void					vfInitInventory			();
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
@@ -121,11 +124,11 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeMonsterAbstract,CSE_ALifeCreatureAbstract,
 	virtual	void					Update					()	{};
 #else
 	virtual	void					Update					();
-	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,			 float &fHitPower);
-	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable, int iGroupIndex, bool bMutualDetection);
+	virtual	CSE_ALifeItemWeapon		*tpfGetBestWeapon		(EHitType				&tHitType,				float	&fHitPower);
+	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,	int		iGroupIndex,	bool bMutualDetection);
 	virtual bool					bfActive				();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
-	virtual	void					vfDetachAll				()	{};
+	virtual	void					vfDetachAll				(bool					bFictitious = false) {};
 			void					vfCheckForPopulationChanges();
 #endif
 #endif
@@ -258,7 +261,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	virtual	EMeetActionType			tfGetActionType			(CSE_ALifeSchedulable	*tpALifeSchedulable,		int				iGroupIndex,		bool			bMutualDetection);
 			void					vfCollectAmmoBoxes		();
 	virtual CSE_ALifeDynamicObject	*tpfGetBestDetector		();
-	virtual	void					vfDetachAll				();
+	virtual	void					vfDetachAll				(bool					bFictitious = false);
 			int						ifChooseEquipment		(OBJECT_VECTOR			*tpObjectVector = 0);
 			int						ifChooseWeapon			(EWeaponPriorityType	tWeaponPriorityType,		OBJECT_VECTOR	*tpObjectVector = 0);
 			int						ifChooseFood			(OBJECT_VECTOR			*tpObjectVector = 0);

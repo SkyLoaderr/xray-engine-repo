@@ -3,7 +3,7 @@
 //	Created 	: 12.08.2003
 //  Modified 	: 12.08.2003
 //	Author		: Dmitriy Iassenev
-//	Description : A-Life simulation combats
+//	Description : A-Life combats simulation 
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"

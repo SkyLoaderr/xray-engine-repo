@@ -1,9 +1,9 @@
-
+////////////////////////////////////////////////////////////////////////////
 //	Module 		: ai_alife_human.cpp
 //	Created 	: 24.07.2003
 //  Modified 	: 24.07.2003
 //	Author		: Dmitriy Iassenev
-//	Description : A-Life simulation of humans
+//	Description : A-Life humans simulation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
@@ -191,6 +191,7 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 				if (*I == m_tpCurrentBestWeapon->ID) {
 					l_bOk				= true;
 					CSE_ALifeItem		*l_tpALifeItem = dynamic_cast<CSE_ALifeItem*>(m_tpALife->tpfGetObjectByID(*I));
+#pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
 					m_tpALife->vfDetachItem(*this,l_tpALifeItem,m_tGraphID);
 					m_tpALife->vfReleaseObject(l_tpALifeItem,true);
 					break;
@@ -207,6 +208,7 @@ bool CSE_ALifeHumanAbstract::bfPerformAttack()
 			for (int i=0, n=children.size() ; i<n; i++) {
 				CSE_ALifeItemAmmo		*l_tpALifeItemAmmo = dynamic_cast<CSE_ALifeItemAmmo*>(m_tpALife->tpfGetObjectByID(children[i]));
 				if (l_tpALifeItemAmmo && strstr(m_tpCurrentBestWeapon->m_caAmmoSections,l_tpALifeItemAmmo->s_name) && l_tpALifeItemAmmo->a_elapsed) {
+#pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
 					m_tpALife->vfDetachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
 					m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
 					i--;
@@ -266,6 +268,7 @@ void CSE_ALifeHumanAbstract::vfCollectAmmoBoxes()
 		if (!l_tpALifeItemAmmo || l_tpALifeItemAmmo->a_elapsed)
 			continue;
 
+#pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
 		m_tpALife->vfDetachItem	(*this,l_tpALifeItemAmmo,m_tGraphID);
 		m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
 		i--;
@@ -295,6 +298,7 @@ void CSE_ALifeHumanAbstract::vfUpdateWeaponAmmo()
 						m_tpCurrentBestWeapon->m_dwAmmoAvailable = 0;
 						continue;
 					}
+#pragma todo("Dima to Dima : Optimize next 2 strings for better performance")
 					m_tpALife->vfDetachItem(*this,l_tpALifeItemAmmo,m_tGraphID);
 					m_tpALife->vfReleaseObject(l_tpALifeItemAmmo,true);
 					i--;
@@ -375,17 +379,20 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 		vfAttachItems();
 }
 
-void CSE_ALifeHumanAbstract::vfDetachAll()
+void CSE_ALifeHumanAbstract::vfDetachAll(bool bFictitious)
 {
 	while (!children.empty()) {
-		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = m_tpALife->tpfGetObjectByID(*children.begin());
-		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(l_tpALifeDynamicObject);
+		CSE_ALifeInventoryItem		*l_tpALifeInventoryItem = dynamic_cast<CSE_ALifeInventoryItem*>(m_tpALife->tpfGetObjectByID(*children.begin()));
 		R_ASSERT2					(l_tpALifeInventoryItem,"Invalid inventory object");
-		m_tpALife->vfDetachItem		(*this,l_tpALifeInventoryItem,m_tGraphID);
+		if (!bFictitious)
+			m_tpALife->vfDetachItem	(*this,l_tpALifeInventoryItem,m_tGraphID);
+		else {
+			OBJECT_IT				I = children.begin();
+			vfDetachItem			(l_tpALifeInventoryItem,&I);
+		}
 	}
 	R_ASSERT2						((m_fCumulativeItemMass < EPS_L) && (m_iCumulativeItemVolume < EPS_L),"Invalid cumulative item mass or volume value");
-	m_fCumulativeItemMass			= 0.f;
-	m_iCumulativeItemVolume			= 0;
+	vfInitInventory					();
 }
 
 EMeetActionType	CSE_ALifeHumanAbstract::tfGetActionType(CSE_ALifeSchedulable *tpALifeSchedulable, int iGroupIndex, bool bMutualDetection)

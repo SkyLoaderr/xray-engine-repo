@@ -3,7 +3,7 @@
 //	Created 	: 24.07.2003
 //  Modified 	: 24.07.2003
 //	Author		: Dmitriy Iassenev
-//	Description : A-Life simulation of monsters
+//	Description : A-Life mnsters simulation
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
