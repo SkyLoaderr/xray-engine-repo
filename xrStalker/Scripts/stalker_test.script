@@ -36,7 +36,7 @@ function main ()
 	action (
 		stalker, 
 		move		(move.standing, move.stand, move.line, patrol ("way0000")),
-		anim		("stoya_ruje_ 0"),
+		anim		("stoya_ruje_ 0",true),
 		cond		(cond.time_end, 10000000)
 	)
 	
