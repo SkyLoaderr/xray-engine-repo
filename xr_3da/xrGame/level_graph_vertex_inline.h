@@ -64,6 +64,16 @@ IC float CLevelGraph::distance(const u32 vertex_id, const Fvector &position) con
 	return				(distance(position,vertex_id));
 }
 
+IC float CLevelGraph::distance(const u32 vertex_id, const CPosition &position) const
+{
+	return				(distance(vertex_position(position),vertex_id));
+}
+
+IC float CLevelGraph::distance(const CPosition &position, const u32 vertex_id) const
+{
+	return				(distance(vertex_position(position),vertex_id));
+}
+
 IC CLevelGraph::ELineIntersections  CLevelGraph::intersect( 
 					   float x1, float y1,		/* First line segment */
 					   float x2, float y2,

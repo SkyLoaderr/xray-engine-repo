@@ -143,6 +143,8 @@ public:
 	IC		float	distance					(const CVertex *tpNode0, u32 vertex_id1) const;
 	IC		float	distance					(u32 vertex_id0, const CVertex *vertex) const;
 	IC		float	distance					(const CVertex *node0, const CVertex *node1) const;
+	IC		float	distance					(const u32 vertex_id, const CPosition &position) const;
+	IC		float	distance					(const CPosition &position, const u32 vertex_id) const;
 	IC		ELineIntersections	intersect		(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float *x, float *y) const;
 	IC		bool	similar						(const Fvector &point0, const Fvector &point1) const;
 	IC		bool	inside						(const Fvector &point, const SContour &contour) const;
