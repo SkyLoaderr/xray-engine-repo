@@ -90,7 +90,9 @@ end
 function generic_object_binder:reinit()
 	object_binder.reinit(self)
 
-	self.object:set_patrol_extrapolate_callback(generic_object_binder.extrapolate_callback, self)
+	if self.object:clsid() ~= clsid.trader then
+		self.object:set_patrol_extrapolate_callback(generic_object_binder.extrapolate_callback, self)
+	end
 
 	printf("generic_object_binder:reinit()")
 
