@@ -2069,6 +2069,16 @@
 							RelativePath=".\inventory_space.h">
 						</File>
 						<Filter
+							Name="EatableItem"
+							Filter="">
+							<File
+								RelativePath=".\eatable_item.cpp">
+							</File>
+							<File
+								RelativePath=".\eatable_item.h">
+							</File>
+						</Filter>
+						<Filter
 							Name="InventoryItem"
 							Filter="">
 							<File
@@ -2102,16 +2112,6 @@
 							</File>
 							<File
 								RelativePath="trade.h">
-							</File>
-						</Filter>
-						<Filter
-							Name="EatableItem"
-							Filter="">
-							<File
-								RelativePath=".\eatable_item.cpp">
-							</File>
-							<File
-								RelativePath=".\eatable_item.h">
 							</File>
 						</Filter>
 					</Filter>
