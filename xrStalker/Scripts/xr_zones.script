@@ -253,14 +253,14 @@ function zone_fractions:__init( zone, ini )
 	local fi = 1
 
 	repeat
-		table.insert( f, {} )
-		local ffi = f[fi]
-
 		sect = "fraction"..fi
 
 		if not ini:section_exist( sect ) then
 			break
 		end
+
+		table.insert( f, {} )
+		local ffi = f[fi]
 
 		if ini:line_exist( sect, "type" ) then
 			ffi.type                            = ini:r_string( sect, "type" )
@@ -273,14 +273,13 @@ function zone_fractions:__init( zone, ini )
 			ffi.group                           = r_num ( ini, sect, "group" )
 		else
 			table.remove( f, fi )
+			break
 		end
 
 		fi = fi + 1
-		
-		printf( "duration %d to %d", ffi.duration_min, ffi.duration_max )
 	until false
 
-	if fi == 1 then
+	if fi <= 1 then
 		return
 	end
 
@@ -337,8 +336,6 @@ end
 function zone_fractions:create_fraction()
 	local fn      = math.random( 1, table.getn( self.fractions ) )
 	local fparams = self.fractions[fn]
-
-	printf( "fn = %d", fn )
 
 	self.fraction_params = fparams
 
