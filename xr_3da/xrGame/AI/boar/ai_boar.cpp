@@ -225,6 +225,8 @@ void CAI_Boar::CheckSpecParams(u32 spec_params)
 		new_angular_velocity = 2.5f * delta_yaw / time; 
 
 		MotionMan.ForceAngularSpeed(new_angular_velocity);
+
+		Msg("!!!new angular = [%f]", new_angular_velocity);
 	}
 }
 
@@ -238,16 +240,23 @@ void CAI_Boar::UpdateCL()
 void CAI_Boar::ProcessTurn()
 {
 	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) return;
+	if (delta_yaw < deg(1)) {
+		m_body.current.yaw = m_body.target.yaw;
+		return;
+	}
 	
 	EMotionAnim anim = MotionMan.GetCurAnim();
 	
 	bool turn_left = true;
 	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
-
+ 
 	switch (anim) {
 		case eAnimStandIdle: 
 			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
+			return;
+		case eAnimJumpLeft:
+		case eAnimJumpRight:
+			MotionMan.SetCurAnim(anim);
 			return;
 		default:
 			if (delta_yaw > deg(30)) {

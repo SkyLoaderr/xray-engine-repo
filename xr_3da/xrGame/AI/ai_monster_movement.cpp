@@ -192,7 +192,9 @@ bool CMonsterMovement::IsPathEnd(u32 n_points, float dist_to_end)
 bool CMonsterMovement::ObjectNotReachable(const CEntity *entity) 
 {
 	if (!object_position_valid(entity)) return true;
-	if (pMonster->MotionMan.BadMotionFixed()) return true;
+	
+	// Commented because of Acceleration Conflict
+	//if (pMonster->MotionMan.BadMotionFixed()) return true;
 
 	return false;
 }

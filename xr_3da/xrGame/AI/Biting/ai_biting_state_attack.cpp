@@ -159,6 +159,10 @@ void CBitingAttack::Run()
 			LOG_EX("ATTACK: RUN");
 			pMonster->MotionMan.m_tAction	= ACT_RUN;
 			pMonster->CMonsterMovement::set_try_min_time(false);
+			
+			pMonster->MotionMan.accel_activate		(eAT_Aggressive);
+			pMonster->MotionMan.accel_set_braking	(false);
+
 
 			DO_IN_TIME_INTERVAL_BEGIN(LastTimeRebuild,100 + 50.f * dist);
 				bNeedRebuild = true; 
@@ -269,9 +273,9 @@ void CBitingAttack::Run()
 		case ACTION_ENEMY_POSITION_APPROACH:
 		// **********************************
 			LOG_EX("ATTACK: ENEMY_POSITION_APPROACH");
-			pMonster->MotionMan.m_tAction = ACT_RUN;
-
-			pMonster->MoveToTarget(m_tEnemy.obj->Position());
+			pMonster->MotionMan.m_tAction		= ACT_RUN;
+			pMonster->MoveToTarget				(m_tEnemy.obj->Position());
+			pMonster->MotionMan.accel_activate	(eAT_Calm);
 			
 			pMonster->CSoundPlayer::play(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
 
@@ -285,6 +289,7 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction		= ACT_WALK_FWD;
 			pMonster->MoveAwayFromTarget		(random_position(m_tEnemy.position, 2.f));
 			pMonster->CSoundPlayer::play		(MonsterSpace::eMonsterSoundAttack, 0,0,pMonster->_sd->m_dwAttackSndDelay);
+			pMonster->MotionMan.accel_activate	(eAT_Calm);
 		
 			break;
 

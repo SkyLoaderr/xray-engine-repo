@@ -379,3 +379,4 @@ enum EAccelValue {
 #define deg(x) (x * PI / 180)
 
 #define CHECK_SHARED_LOADED() {if (CSharedClass<_motion_shared>::IsLoaded()) return; }
+

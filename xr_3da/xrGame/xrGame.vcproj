@@ -1534,6 +1534,94 @@
 						<File
 							RelativePath=".\ai\biting\biting_state_manager_inline.h">
 						</File>
+						<Filter
+							Name="States"
+							Filter="">
+							<Filter
+								Name="State Rest"
+								Filter="">
+								<File
+									RelativePath=".\ai\biting\biting_state_rest.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_rest.h">
+								</File>
+								<Filter
+									Name="Sleep"
+									Filter="">
+									<File
+										RelativePath=".\ai\biting\biting_state_rest_sleep.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\biting\biting_state_rest_sleep.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Walk Graph Point"
+									Filter="">
+									<File
+										RelativePath=".\ai\biting\biting_state_rest_wander.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\biting\biting_state_rest_wander.h">
+									</File>
+								</Filter>
+							</Filter>
+							<Filter
+								Name="State Attack"
+								Filter="">
+								<File
+									RelativePath=".\ai\biting\biting_state_attack.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_attack.h">
+								</File>
+								<Filter
+									Name="Run"
+									Filter="">
+									<File
+										RelativePath=".\ai\biting\biting_state_attack_run.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\biting\biting_state_attack_run.h">
+									</File>
+								</Filter>
+								<Filter
+									Name="Attack Melee"
+									Filter="">
+									<File
+										RelativePath=".\ai\biting\biting_state_attack_melee.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\biting\biting_state_attack_melee.h">
+									</File>
+								</Filter>
+							</Filter>
+							<Filter
+								Name="State Eat"
+								Filter="">
+							</Filter>
+							<Filter
+								Name="State Panic"
+								Filter="">
+								<File
+									RelativePath=".\ai\biting\biting_state_panic.cpp">
+								</File>
+								<File
+									RelativePath=".\ai\biting\biting_state_panic.h">
+								</File>
+								<Filter
+									Name="Run Away"
+									Filter="">
+									<File
+										RelativePath=".\ai\biting\biting_state_panic_run.cpp">
+									</File>
+									<File
+										RelativePath=".\ai\biting\biting_state_panic_run.h">
+									</File>
+								</Filter>
+							</Filter>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter

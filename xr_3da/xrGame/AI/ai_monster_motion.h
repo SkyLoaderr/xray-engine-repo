@@ -210,7 +210,7 @@ public:
 		void	accel_load				(LPCSTR section);
 
 		void	accel_activate			(EAccelType type);
-	IC	void	accel_deactivate		() {m_accel.active = false;}
+	IC	void	accel_deactivate		() {m_accel.active = false;	m_accel.enable_braking = false;}
 	IC	void	accel_set_braking		(bool val = true) {m_accel.enable_braking = val;}
 
 		float	accel_get				(EAccelValue val = eAV_Accel);

@@ -24,9 +24,6 @@ void CAI_Biting::Think()
 	m_current_update						= Level().timeServer();
 
 
-	CStateManagerBiting::update				(m_current_update - m_dwLastUpdateTime);
-
-
 	MotionStats->update						();
 	
 	vfUpdateParameters						();
@@ -50,17 +47,19 @@ void CAI_Biting::Think()
 		} 
 	}
 
-	StateSelector						();
-	CurrentState->Execute				(m_current_update);
+	MotionMan.accel_deactivate			();
+
+	if (!MotionMan.Seq_Active()) {
+		StateSelector						();
+		CurrentState->Execute				(m_current_update);
+	} else disable_path();
+	//CStateManagerBiting::update			(m_current_update - m_dwLastUpdateTime);
 
 	TranslateActionToPathParams				();
 
 	// построить путь
 	CMonsterMovement::Frame_Update			();
 	
-	MotionMan.accel_activate				(eAT_Aggressive);
-	MotionMan.accel_set_braking				(false);
-
 	MotionMan.Update						();
 
 	// установить текущую скорость

@@ -12,6 +12,8 @@
 
 class CAI_Biting;
 
+
+
 class CStateManagerBiting : public CStateManagerState<CAI_Biting> {
 protected:
 	typedef CStateManagerState<CAI_Biting> inherited;
@@ -27,9 +29,11 @@ public:
 						CStateManagerBiting		(LPCSTR state_name);
 	virtual				~CStateManagerBiting	();
 			void		Init					();
+	
 	virtual	void		Load					(LPCSTR section);
 	virtual	void		reinit					(CAI_Biting *object);
 	virtual	void		reload					(LPCSTR section);
+	
 	virtual	void		initialize				();
 	virtual	void		execute					();
 	virtual	void		finalize				();
