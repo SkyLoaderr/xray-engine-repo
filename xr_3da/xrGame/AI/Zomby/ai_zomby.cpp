@@ -277,7 +277,7 @@ IC bool CAI_Zomby::bfInsideSubNode(const Fvector &tCenter, const float fRadius, 
 	float fDist1 = SQR(tCenter.x - tpSubNode.tLeftDown.x) + SQR(tCenter.z - tpSubNode.tRightUp.z);
 	float fDist2 = SQR(tCenter.x - tpSubNode.tRightUp.x) + SQR(tCenter.z - tpSubNode.tLeftDown.z);
 	float fDist3 = SQR(tCenter.x - tpSubNode.tRightUp.x) + SQR(tCenter.z - tpSubNode.tRightUp.z);
-	return(min(fDist0,min(fDist1,min(fDist2,fDist3))) <= (fRadius - 0.5f)*(fRadius - 0.5f) + EPSILON);
+	return(_min(fDist0,_min(fDist1,_min(fDist2,fDist3))) <= (fRadius - 0.5f)*(fRadius - 0.5f) + EPSILON);
 }
 
 IC bool CAI_Zomby::bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode)

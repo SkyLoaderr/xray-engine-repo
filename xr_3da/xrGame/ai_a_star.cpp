@@ -13,7 +13,6 @@
 #include "ai_space.h"
 
 #define ASSIGN_GOODNESS(t)		(t)->f = (t)->g + (t)->h;
-#define SQR(t)					((t)*(t))
 #define OPEN_MASK				1
 #define mNodeStructure(x)		(*(this->Node(x)))
 #define mNode(x)				(this->Node(x))
@@ -26,7 +25,7 @@ TNode  *taHeap,**tpaIndexes;
 
 #define OPTINAL_ENEMY_DISTANCE 40.f
 
-__forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
+IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 {
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -40,10 +39,10 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1)
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + 0*fYSize2*SQR(y2 - y1))));
+	return(fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*_sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + 0*fYSize2*_sqr(y2 - y1))));
 }
 
-__forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, NodeCompressed tEnemyNode, float fOptimalEnemyDistance)
+IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, NodeCompressed tEnemyNode, float fOptimalEnemyDistance)
 {
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
 	float y1 = (float)(tNode0.p1.y) + (float)(tNode0.p0.y);
@@ -61,10 +60,10 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Nod
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fCriteriaEnemyViewWeight*SQR((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(fCriteriaEnemyViewWeight*_sqr((float)sqrt((float)(fSize2*(_sqr(x3 - x1) + _sqr(z3 - z1)) + fYSize2*_sqr(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + fYSize2*_sqr(y2 - y1))));
 }
 
-__forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Fvector tEnemyPosition, float fOptimalEnemyDistance)
+IC float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Fvector tEnemyPosition, float fOptimalEnemyDistance)
 {
 	/**/
 	float x1 = (float)(tNode0.p1.x) + (float)(tNode0.p0.x);
@@ -83,10 +82,10 @@ __forceinline float ffCriteria(NodeCompressed tNode0, NodeCompressed tNode1, Fve
 
 	float fLight = (float)(tNode1.light)/255.f;
 	
-	return(fCriteriaEnemyViewWeight*((float)sqrt((float)(fSize2*(SQR(x3 - x1) + SQR(z3 - z1)) + fYSize2*SQR(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(SQR(x2 - x1) + SQR(z2 - z1)) + fYSize2*SQR(y2 - y1))));
+	return(fCriteriaEnemyViewWeight*((float)sqrt((float)(fSize2*(_sqr(x3 - x1) + _sqr(z3 - z1)) + fYSize2*_sqr(y3 - y1))) - fOptimalEnemyDistance) + fLight*fCriteriaLightWeight + fCover*fCriteriaCoverWeight + fCriteriaDistanceWeight*(float)sqrt((float)(fSize2*(_sqr(x2 - x1) + _sqr(z2 - z1)) + fYSize2*_sqr(y2 - y1))));
 }
 
-__forceinline void vfUpdateSuccessors(TNode *tpList, float dDifference)
+IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 {
 	TNode *tpTemp = tpList->tpForward;
 	while (tpTemp) {
@@ -120,17 +119,17 @@ __forceinline void vfUpdateSuccessors(TNode *tpList, float dDifference)
 
 void CAI_Space::vfLoadSearch()
 {
-	fSize2 = SQR(fSize = this->m_header.size)/4;
-	fYSize2 = SQR(fYSize = (float)(this->m_header.size_y/32767.0))/4;
+	fSize2	= _sqr(fSize = this->m_header.size)/4;
+	fYSize2 = _sqr(fYSize = (float)(this->m_header.size_y/32767.0))/4;
 
-	taHeap = (TNode *)calloc(this->m_header.count + 1,sizeof(TNode));
+	taHeap	= (TNode *)calloc(this->m_header.count + 1,sizeof(TNode));
 	tpaIndexes = (TNode **)calloc(this->m_header.count,sizeof(TNode *));
 }
 
 void CAI_Space::vfUnloadSearch()
 {
-	free(taHeap);
-	free(tpaIndexes);
+	_FREE(taHeap);
+	_FREE(tpaIndexes);
 }
 
 float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path& Result, float fLightWeight, float fCoverWeight, float fDistanceWeight)

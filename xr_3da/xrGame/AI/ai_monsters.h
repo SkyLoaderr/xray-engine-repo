@@ -10,7 +10,6 @@
 #define __XRAY_AI_MONSTERS__
 
 #define MAGNITUDE_EPSILON 0.01
-#define SQR(x) ((x)*(x))
 #define CHECK_RESULT \
 	if (m_fResult > BestCost)\
 		return(m_fResult);
