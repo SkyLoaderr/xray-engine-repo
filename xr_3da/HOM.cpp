@@ -231,11 +231,11 @@ void CHOM::Render_ZB	()
 	RCache.Render					(D3DPT_TRIANGLELIST,vOffset,vCount/3);
 	//CHK_DX(HW.pDevice->SetRenderState(D3DRS_COLORWRITEENABLE,0xf));
 }
-
+*/
 void CHOM::Debug		()
 {
 	return;
-
+/*
 	if (0==dbg_surf)	return;
 
 	// Texture
@@ -274,8 +274,8 @@ void CHOM::Debug		()
 	RCache.set_Shader	(dbg_shader);
 	RCache.set_Geometry	(dbg_geom);
 	RCache.Render		(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
-}
 */
+}
 
 IC	BOOL	xform_b0	(Fvector2& min, Fvector2& max, float& minz, Fmatrix& X, float _x, float _y, float _z)
 {
