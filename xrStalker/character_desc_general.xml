@@ -1,25 +1,6 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
-<!-- INFORMATION  ABOUT A SPECIFIC CHARACTERS IN GAME-->
-
 <xml>
-	<specific_character id="stalker_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="0" y="0"></icon>
-		<map_icon x="0" y="0"></map_icon>
-		<bio>Ничем себя проявить еще не успел.</bio>
-
-		<team>Stalker</team>
-		<rank>50</rank>
-		<reputation>50</reputation>
-
-		<visual>actors\soldier\soldier_bandana</visual>
-			
-		<start_dialog>hello_dialog</start_dialog>
-		<actor_dialog>general_pda_talk</actor_dialog>
-		<actor_dialog>escape_talk_about_escape</actor_dialog>
-	</specific_character>
-
 	<specific_character id="stalker_demon">
 		<name>Олег "Демон" Гусаров</name>
 		<icon x="0" y="0"></icon>
@@ -296,18 +277,6 @@
 		<actor_dialog>escape_trader_talk_flame</actor_dialog>
 		<actor_dialog>escape_trader_jobs</actor_dialog>
 	</specific_character>
-
-	<specific_character id="soldier_default" team_default = "1">
-		<name>Неизвестный военный.</name>
-		<icon x="0" y="9"></icon>
-		<map_icon x="0" y="4"></map_icon>
-		<bio>Один из бесчисленного количества военных, отправленных охранять Зону.</bio>
-
-		<team>Soldier</team>
-		<rank>50</rank>
-		<reputation>50</reputation>
-	</specific_character>
-
 
 	<specific_character id="actor" team_default = "1">
 		<name>Меченый</name>

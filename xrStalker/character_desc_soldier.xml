@@ -1,1 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding="windows-1251"?>
+
+<xml>
+	<specific_character id="soldier_default" team_default = "1">
+		<name>Неизвестный военный.</name>
+		<icon x="0" y="9"></icon>
+		<map_icon x="0" y="4"></map_icon>
+		<bio>Один из бесчисленного количества военных, отправленных охранять Зону.</bio>
+
+		<team>Soldier</team>
+		<rank>50</rank>
+		<reputation>50</reputation>
+	</specific_character>
+</xml>
