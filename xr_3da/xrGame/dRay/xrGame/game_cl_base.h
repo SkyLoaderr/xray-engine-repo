@@ -6,6 +6,9 @@ class	CGameObject;
 
 class	game_cl_GameState	: public game_GameState
 {
+protected:
+	ref_sound		pMessageSounds[6];
+
 public:
 	struct Player : public game_PlayerState 
 	{
