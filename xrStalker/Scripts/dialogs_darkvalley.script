@@ -29,6 +29,6 @@ function val_punch_ambush(first_speaker, second_speaker)
 	st.dest_walk = patrol("val_ambush_dest_walk"):point(0)
 	st.dest_look = utils.vector_copy_by_val(
 		patrol("val_ambush_dest_look"):point(0)):sub(st.dest_walk)
-	st.info = { "val_prisoner_plr_captured", "val_prisoner_door_unlocked_demo" }
+	st.info = { "val_prisoner_plr_captured", "val_prisoner_door_unlocked",  "val_prisoner_door_unlocked_demo" }
 	db.storage[second_speaker:id()].punch.enabled = true
 end
