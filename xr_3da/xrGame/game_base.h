@@ -10,11 +10,6 @@ enum
 	GAME_CS				= 5
 };
 
-#ifndef _EDITOR
-extern DWORD	GAME;
-extern int		g_team;	
-#endif
-
 #pragma pack(push,1)
 struct	game_PlayerState
 {
