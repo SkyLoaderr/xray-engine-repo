@@ -13,12 +13,10 @@
 struct console_ui {
 	IC		console_ui	()
 	{
-		log("test::test() called!\n");
 	}
 
 	virtual ~console_ui	()
 	{
-		log("test::~test() called!\n");
 	}
 
 	int __cdecl log		(LPCSTR format, ...)

@@ -11,11 +11,11 @@
 #include "processor_info.h"
 
 namespace CPU {
-	CProcessorInfo		processor_info;
-	u64					cycles_per_second;
-	u64					cycles_per_rdtsc;
-	float				cycles2seconds;
-	float				cycles2milisec;
+	extern CProcessorInfo	processor_info;
+	extern u64				cycles_per_second;
+	extern u64				cycles_per_rdtsc;
+	extern float			cycles2seconds;
+	extern float			cycles2milisec;
 
 	#pragma warning(disable:4035)
 	IC	u64				cycles()

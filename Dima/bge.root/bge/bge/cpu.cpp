@@ -11,6 +11,12 @@
 #include "ui.h"
 #include <float.h>
 
+CProcessorInfo	CPU::processor_info;
+u64				CPU::cycles_per_second;
+u64				CPU::cycles_per_rdtsc;
+float			CPU::cycles2seconds;
+float			CPU::cycles2milisec;
+
 const u32 RDTSC_TRY_COUNT = 64;
 
 IC	void detect				()

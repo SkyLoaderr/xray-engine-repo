@@ -7,9 +7,11 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ui.h"
+#include "cpu.h"
+#include "fpu.h"
 
 void main(char *argc, char *argv[])
 {
-	ui();
+	CPU::init	();
+	FPU::init	();
 }
