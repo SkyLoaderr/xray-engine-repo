@@ -121,6 +121,7 @@ end
 function action_door:close_check()
 	printf("_bp: close_check()")
 	if not self.initialized then
+		printf("_bp: close_check(): not initialized")
 		return false
 	end
 
@@ -128,9 +129,11 @@ function action_door:close_check()
 		local angle = self.joint:get_axis_angle(90)
 		printf("_bp: action_door:update(): angle %f limits %f, %f", angle, self.low_limits, self.hi_limits)
 		if angle >= self.hi_limits then
+			printf("_bp: close_check(): true")
 			return true
 		end
 	end
+	printf("_bp: close_check(): false")
 	return false
 end
 
