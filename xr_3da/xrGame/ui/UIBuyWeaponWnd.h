@@ -34,6 +34,7 @@ extern const u32	cAttached;
 extern const u32	cUnableToBuy;
 extern const u32	cAbleToBuy;
 extern const u32	cAbleToBuyOwned;
+extern const float	fRealItemSellMultiplier;
 
 class CUIBuyWeaponWnd: public CUIDialogWnd
 {

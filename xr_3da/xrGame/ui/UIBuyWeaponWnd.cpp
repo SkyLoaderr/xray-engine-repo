@@ -394,7 +394,7 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	// Если аддон
 	if (pAddonOwner)	
 	{
-		pAddonOwner->AttachDetachAddon(pDDItemMP, !pAddonOwner->IsAddonAttached(addonID));
+		pAddonOwner->AttachDetachAddon(pDDItemMP, !pAddonOwner->IsAddonAttached(addonID), pDDItemMP->m_bHasRealRepresentation);
 		return false;
 	}
 	// Не аддон
@@ -697,22 +697,22 @@ void CUIBuyWeaponWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 				UIBagWnd.SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DROP, NULL);
 				break;
 			case ATTACH_SCOPE_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case ATTACH_SILENCER_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case ATTACH_GRENADE_LAUNCHER_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, true, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case DETACH_SCOPE_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, false);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SCOPE, false, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case DETACH_SILENCER_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, false);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_SILENCER, false, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			case DETACH_GRENADE_LAUNCHER_ADDON:
-				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, false);
+				m_pCurrentDragDropItem->AttachDetachAddon(CUIDragDropItemMP::ID_GRENADE_LAUNCHER, false, m_pCurrentDragDropItem->m_bHasRealRepresentation);
 				break;
 			}
 		}
@@ -985,7 +985,7 @@ bool CUIBuyWeaponWnd::ToSlot()
 	CUIDragDropItemMP * pDDItemMP = IsItemAnAddon(m_pCurrentDragDropItem, ID);
 	if (pDDItemMP)
 	{
-		pDDItemMP->AttachDetachAddon(ID, true);
+		pDDItemMP->AttachDetachAddon(ID, true, pDDItemMP->m_bHasRealRepresentation);
 	}
 
 	// Если вещь без номера слота, то ее поместить никуда нельзя (например патроны)
@@ -1820,36 +1820,41 @@ bool CUIBuyWeaponWnd::CheckBuyAvailabilityInSlots()
 		// Если вещь есть
 		if (!UITopList[priorityArr[j]].GetDragDropItemsList().empty())
 		{
-			CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(UITopList[priorityArr[j]].GetDragDropItemsList().front());
-			R_ASSERT(pDDItemMP);
+			DRAG_DROP_LIST &pList = UITopList[priorityArr[j]].GetDragDropItemsList();
 
-			// И если на нее хватает денег, то отнимаем ее цену от количества денег
-			// Если эта вещь принесена игроком, то деньги не отнимаем
-			if (!pDDItemMP->m_bHasRealRepresentation)
+			for (DRAG_DROP_LIST_it it = pList.begin(); it != pList.end(); ++it)
 			{
-				if (pDDItemMP->GetCost() <= GetMoneyAmount())
+				CUIDragDropItemMP *pDDItemMP = dynamic_cast<CUIDragDropItemMP*>(*it);
+				R_ASSERT(pDDItemMP);
+
+				// И если на нее хватает денег, то отнимаем ее цену от количества денег
+				// Если эта вещь принесена игроком, то деньги не отнимаем
+				if (!pDDItemMP->m_bHasRealRepresentation)
 				{
-					pDDItemMP->SetColor(cAbleToBuy);
-					SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+					if (pDDItemMP->GetCost() <= GetMoneyAmount())
+					{
+						SetMoneyAmount(GetMoneyAmount() - pDDItemMP->GetCost());
+						pDDItemMP->SetColor(cAbleToBuy);
+					}
+					else
+					{
+						pDDItemMP->SetColor(cUnableToBuy);
+						status = false;
+
+						// Для армора закрашиваем дополнительно и иконку с изображением персонажа
+						if (OUTFIT_SLOT == pDDItemMP->GetSlot())
+							UIOutfitIcon.SetColor(cUnableToBuy);
+						pDDItemMP->m_bAlreadyPaid = false;
+					}
 				}
 				else
 				{
-					pDDItemMP->SetColor(cUnableToBuy);
-					status = false;
+					pDDItemMP->SetColor(cAbleToBuyOwned);
 
-					// Для армора закрашиваем дополнительно и иконку с изображением персонажа
+					// Для армора закрациваем дополнительно и иконку с изображением персонажа
 					if (OUTFIT_SLOT == pDDItemMP->GetSlot())
-						UIOutfitIcon.SetColor(cUnableToBuy);
-					pDDItemMP->m_bAlreadyPaid = false;
+						UIOutfitIcon.SetColor(cAbleToBuyOwned);
 				}
-			}
-			else
-			{
-				pDDItemMP->SetColor(cAbleToBuyOwned);
-
-				// Для армора закрациваем дополнительно и иконку с изображением персонажа
-				if (OUTFIT_SLOT == pDDItemMP->GetSlot())
-					UIOutfitIcon.SetColor(cAbleToBuyOwned);
 			}
 		}
 	}
@@ -2018,7 +2023,7 @@ void CUIBuyWeaponWnd::ClearRealRepresentationFlags()
 	for (int i = 0; i < m_iUsedItems; ++i)
 	{
 		m_vDragDropItems[i].m_bHasRealRepresentation = false;
-//		m_vDragDropItems[i].SetColor(cAbleToBuy);
+		m_vDragDropItems[i].SetColor(cAbleToBuy);
 		m_vDragDropItems[i].EnableDragDrop(true);
 	}
 }

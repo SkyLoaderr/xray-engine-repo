@@ -34,6 +34,9 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 	AddonIDs ID = IsOurAddon(pPossibleAddon);
 	if (ID != ID_NONE)
 	{
+		CUIBuyWeaponWnd *this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
+		R_ASSERT(this_inventory);
+
 		if (bAttach)
 		{
 			if (m_AddonInfo[ID].iAttachStatus != 1)
@@ -41,7 +44,15 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 				m_pAddon[ID] = pPossibleAddon;
 				m_pAddon[ID]->GetParent()->DetachChild(m_pAddon[ID]);
 				GetParent()->AttachChild(m_pAddon[ID]);
+				m_pAddon[ID]->Show(false);
 				m_pAddon[ID]->m_bHasRealRepresentation = bRealRepresentationSet;
+				m_pAddon[ID]->SetColor(GetUIStaticItem().GetColor());
+				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
+
+				// Отнимаем денежку
+				this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - 
+					static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+				m_pAddon[ID]->m_bAlreadyPaid = true;
 			}
 		}
 		else
@@ -50,6 +61,16 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 			{
 				GetParent()->DetachChild(m_pAddon[ID]);
 				m_pAddon[ID]->GetOwner()->AttachChild(m_pAddon[ID]);
+				m_pAddon[ID]->Show(true);
+				m_pAddon[ID]->Rescale(dynamic_cast<CUIDragDropList*>(m_pAddon[ID]->GetParent())->GetItemsScale());
+				// Прибавляем денежку
+				if (m_pAddon[ID]->GetCost() <= this_inventory->GetMoneyAmount() || !m_pAddon[ID]->m_bHasRealRepresentation)
+				{
+					this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + 
+						static_cast<int>(m_pAddon[ID]->GetCost() * (m_pAddon[ID]->m_bHasRealRepresentation ? fRealItemSellMultiplier : 1)));
+					m_pAddon[ID]->m_bAlreadyPaid = true;
+				}
+
 				m_pAddon[ID] = NULL;
 			}
 		}
@@ -66,7 +87,10 @@ void CUIDragDropItemMP::AttachDetachAddon(CUIDragDropItemMP *pPossibleAddon, boo
 void CUIDragDropItemMP::AttachDetachAllAddons(bool bAttach)
 {
 	for (int i = 0; i < 3; ++i)
-		AttachDetachAddon(static_cast<AddonIDs>(i), bAttach);
+	{
+		if (m_pAddon[i])
+			AttachDetachAddon(static_cast<AddonIDs>(i), bAttach, m_pAddon[i]->m_bHasRealRepresentation);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -127,10 +151,10 @@ void CUIDragDropItemMP::Draw()
 				down_offset +  iFloor(0.5f+(float)nfo.y * GetTextureScale()), 
 				NULL, pDDItemMP->GetUIStaticItem());
 
-			if (pDDItemMP->m_bHasRealRepresentation)
-				pDDItemMP->GetUIStaticItem().SetColor(cAbleToBuyOwned);
-			else
-				pDDItemMP->GetUIStaticItem().SetColor(cDetached);
+//			if (pDDItemMP->m_bHasRealRepresentation)
+//				pDDItemMP->GetUIStaticItem().SetColor(cAbleToBuyOwned);
+//			else
+//				pDDItemMP->GetUIStaticItem().SetColor(cDetached);
 
 			pDDItemMP->GetUIStaticItem().Render();
 //			pDDItemMP->GetUIStaticItem().SetColor(cAttached);
