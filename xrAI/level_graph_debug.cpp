@@ -216,7 +216,7 @@ void CLevelGraph::render()
 	}
 #endif
 
-	if (!bDebug)	return;
+	if (!bDebug || !ai().get_level_graph())	return;
 
 	//	if (0==sh_debug)				return;
 	if (!psAI_Flags.test(aiDebug))	return;
