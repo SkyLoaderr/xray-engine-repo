@@ -26,32 +26,6 @@ static u32 COLORS[8] =
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-//extern u32 num_portals;
-
-void drawPoly(sPoly &P, CPortal* Portal)
-{
-	Fplane PL;
-	PL.build(P[0],P[1],P[2]);
-	CSector* S=0;
-	if (PL.classify(Device.vCameraPosition)<0)	S=Portal->Back	();
-	else										S=Portal->Front	();
-	
-	Fvector Center,End;
-	u32 C		 = COLORS[S->SelfID % 8];
-	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE);
-	Center.add(P[0],P[1]);
-	for (u32 i=2; i<P.size(); i++)
-	{
-		RCache.dbg_DrawTRI(Fidentity,P[0],P[i-1],P[i],C);
-		Center.add(P[i]);
-	}
-	Center.div	(float(P.size()));
-	End.mad		(Center,PL.n,.5f);
-	RCache.dbg_DrawLINE(Fidentity,Center,End,0xffffffff);
-	HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW);
-}
-
-
 CPortal::~CPortal()
 {
 }
