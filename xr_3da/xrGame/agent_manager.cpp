@@ -80,13 +80,18 @@ void CAgentManager::remove_links		(CObject *object)
 void CAgentManager::shedule_Update		(u32 time_delta)
 {
 	ISheduled::shedule_Update	(time_delta);
-	memory().update				();
-	corpse().update				();
-	enemy().update				();
-	explosive().update			();
-	location().update			();
-	member().update				();
-	brain().update				();
+	if (!member().members().empty()) {
+		memory().update			();
+		corpse().update			();
+		enemy().update			();
+		explosive().update		();
+		location().update		();
+		member().update			();
+		brain().update			();
+		return;
+	}
+	CAgentManager				*self = this;
+	xr_delete					(self);
 }
 
 float CAgentManager::shedule_Scale		()

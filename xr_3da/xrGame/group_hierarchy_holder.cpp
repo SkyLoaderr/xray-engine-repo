@@ -117,8 +117,10 @@ void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
 		agent_manager().member().remove	(member);
 
 	if (m_members.empty()) {
-		if (get_agent_manager())
-			xr_delete					(m_agent_manager);
+		if (get_agent_manager()) {
+			VERIFY						(agent_manager().member().members().empty());
+			m_agent_manager				= 0;
+		}
 		xr_delete						(m_visible_objects);
 		xr_delete						(m_sound_objects);
 		xr_delete						(m_hit_objects);
