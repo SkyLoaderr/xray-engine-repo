@@ -211,7 +211,7 @@ void CLightShadows::calculate	()
 			if (p_far<(p_near+eps))	p_far	= p_near+eps;
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
-			mProjectR.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
+			mProjectR.build_projection_HAT	(p_hat,p_asp,p_nearR,	p_far);
 			Device.set_xform_project		(mProject);
 			
 			// calculate view-matrix
