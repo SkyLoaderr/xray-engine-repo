@@ -50,9 +50,9 @@ void CRender::InsertSG_Dynamic	(IVisual *pVisual, Fvector& Center)
 
 void CRender::InsertSG_Static	(IVisual *pVisual)
 {
-	if (pVisual->vis.frame == Device.dwFrame)	return;
+	if (pVisual->vis.frame == RImplementation.marker)	return;
 
-	pVisual->vis.frame = Device.dwFrame;
+	pVisual->vis.frame = RImplementation.marker;
 
 	float distSQ;
 	float SSA    = CalcSSA		(distSQ,pVisual->vis.sphere.P,pVisual);

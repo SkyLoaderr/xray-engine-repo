@@ -166,7 +166,7 @@ void CSector::Render(CFrustum &F)
 	for (u32 I=0; I<Portals.size(); I++)
 	{
 		sPoly	S,D;
-		if (Portals[I]->dwFrame != Device.dwFrame) {
+		if (Portals[I]->dwFrame != RImplementation.marker) {
 			CPortal* PORTAL = Portals[I];
 			CSector* pSector;
 
@@ -200,7 +200,7 @@ void CSector::Render(CFrustum &F)
 			// Create _new_ frustum and recurse
 			CFrustum			Clip;
 			Clip.CreateFromPortal(P,Device.vCameraPosition,Device.mFullTransform);
-			PORTAL->dwFrame		= Device.dwFrame;
+			PORTAL->dwFrame		= RImplementation.marker;
 			PORTAL->bDualRender	= FALSE;
 			pSector->Render		(Clip);
 		}

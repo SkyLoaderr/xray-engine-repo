@@ -118,7 +118,7 @@ public:
 	BOOL							val_bHUD;
 	CFrustum						ViewBase;
 	CFrustum*						View;
-	u32								frame;
+	u32								marker;
 public:
 	// Loading / Unloading
 	virtual	void					level_Load				()								= 0;
