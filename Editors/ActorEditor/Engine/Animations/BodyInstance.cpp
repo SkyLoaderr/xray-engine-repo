@@ -577,6 +577,16 @@ void CKinematics::IBlend_Startup	()
 	blend_fx.clear		();
 }
 
+CBlend*	CKinematics::IBlend_Create	()
+{
+	Update();
+	CBlend *I=blend_pool.begin(), *E=blend_pool.end();
+	for (; I!=E; I++)
+		if (I->blend == CBlend::eFREE_SLOT) return I;
+	Debug.fatal("Too many blended motions requisted");
+	return 0;
+}
+
 void CKinematics::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	inherited::Load(N,data, dwFlags);

@@ -39,67 +39,71 @@ IC void MakeKeysSelected(ConsistantKey *keys, int count)
 // Calculation
 void CBoneData::Calculate(CKinematics* K, Fmatrix *parent)
 {
-	static CKey				R[MAX_BLENDED];
-	static ConsistantKey	S[MAX_BLENDED];
-
-	// Calculate all keys
-	CKey*	D = R;
-	CBoneInstance& INST			= K->LL_GetInstance(SelfID);
-	BlendListIt					BI;
-	for (BI=INST.Blend.begin(); BI!=INST.Blend.end(); BI++,D++)
+	if (Callback_overwrite && INST.Callback)
 	{
-		CBlend*			B		=	*BI;
-		float			time	=	B->timeCurrent*float(SAMPLE_FPS);
-		CMotion&		M		=	Motions[B->motionID];
-		u32				frame	=	iFloor(time);
-		float			delta	=	time-float(frame);
-		u32				count	=	M._count;
-		CKeyQ&			K1		=	M._keys[(frame+0)%count];
-		CKeyQ&			K2		=	M._keys[(frame+1)%count];
-		PSGP.blerp				(D,&K1,&K2,delta);
-	}
+		INST.Callback		(&INST);
+	} else {
+		CKey				R[MAX_BLENDED];
+		ConsistantKey		S[MAX_BLENDED];
 
-	// Blend them together
-	BI				= INST.Blend.begin();
-
-	CKey			Result;
-
-	switch (INST.Blend.size())
-	{
-	case 0:
-		Result.Q.set	(0,0,0,0);
-		Result.T.set	(0,0,0);
-		break;
-	case 1: 
-		Result			= R[0];
-		break;
-	case 2:
+		// Calculate all keys
+		CKey*	D			= R;
+		CBoneInstance& INST			= K->LL_GetInstance(SelfID);
+		BlendListIt					BI;
+		for (BI=INST.Blend.begin(); BI!=INST.Blend.end(); BI++,D++)
 		{
-			float w0 = BI[0]->blendAmount;
-			float w1 = BI[1]->blendAmount;
-			float ws = w0+w1;
-			float w;
-			if (fis_zero(ws))	w = 0;
-			else				w = w1/ws;
-			KEY_Interp		(Result,R[0],R[1],w);
+			CBlend*			B		=	*BI;
+			float			time	=	B->timeCurrent*float(SAMPLE_FPS);
+			CMotion&		M		=	Motions[B->motionID];
+			u32				frame	=	iFloor(time);
+			float			delta	=	time-float(frame);
+			u32				count	=	M._count;
+			CKeyQ&			K1		=	M._keys[(frame+0)%count];
+			CKeyQ&			K2		=	M._keys[(frame+1)%count];
+			PSGP.blerp				(D,&K1,&K2,delta);
 		}
-		break;
-	default:
-		{
-			int count = INST.Blend.size();
-			for (int i=0; i<count; i++)		S[i].set(R+i,BI[i]->blendAmount);
-			std::sort	(S,S+count);
-			KEY_Interp	(Result,*S[0].K, *S[1].K, S[1].w/(S[0].w+S[1].w));
-		}
-		break;
-	}
 
-	// Build matrix
-	Fmatrix					RES;
-	RES.mk_xform			(Result.Q,Result.T);
-//	PSGP.m44_mul			(&INST.mTransform,parent,&RES);
-	INST.mTransform.mul_43	(*parent,RES);
-	if (INST.Callback)		INST.Callback(&INST);
+		// Blend them together
+		BI				= INST.Blend.begin();
+
+		CKey			Result;
+
+		switch (INST.Blend.size())
+		{
+		case 0:
+			Result.Q.set	(0,0,0,0);
+			Result.T.set	(0,0,0);
+			break;
+		case 1: 
+			Result			= R[0];
+			break;
+		case 2:
+			{
+				float w0 = BI[0]->blendAmount;
+				float w1 = BI[1]->blendAmount;
+				float ws = w0+w1;
+				float w;
+				if (fis_zero(ws))	w = 0;
+				else				w = w1/ws;
+				KEY_Interp		(Result,R[0],R[1],w);
+			}
+			break;
+		default:
+			{
+				int count = INST.Blend.size();
+				for (int i=0; i<count; i++)		S[i].set(R+i,BI[i]->blendAmount);
+				std::sort	(S,S+count);
+				KEY_Interp	(Result,*S[0].K, *S[1].K, S[1].w/(S[0].w+S[1].w));
+			}
+			break;
+		}
+
+		// Build matrix
+		Fmatrix					RES;
+		RES.mk_xform			(Result.Q,Result.T);
+		INST.mTransform.mul_43	(*parent,RES);
+		if (INST.Callback)		INST.Callback(&INST);
+	}
 
 	// Calculate children
 	for (xr_vector<CBoneData*>::iterator C=children.begin(); C!=children.end(); C++)

@@ -104,18 +104,22 @@ public:
 class ENGINE_API CBoneInstance
 {
 public:
+
+public:
 	// data
 	Fmatrix			mTransform;
 	BlendList		Blend;
 	BoneCallback	Callback;
 	void*			Callback_Param;
-	float			param		[MAX_BONE_PARAMS];						
+	BOOL			Callback_overwrite;
+	float			param		[MAX_BONE_PARAMS];
 
 	// methods
 	IC	void		construct	()
 	{
 		ZeroMemory	(this,sizeof(*this));
-		mTransform.identity();
+		mTransform.identity	();
+		Callback_overwrite	= FALSE;
 	}
 	IC	void		blend_add	(CBlend* H)
 	{	
@@ -150,18 +154,18 @@ class ENGINE_API CBoneData
 public:
 	typedef svector<int,128>	BoneDebug;
 public:
-	int				SelfID;
-	vecBones		children;		// bones which are slaves to this
+	int					SelfID;
+	vecBones			children;		// bones which are slaves to this
 	xr_vector<CMotion>	Motions;	// all known motions
-	Fobb			obb;
+	Fobb				obb;
 
-	Fvector			bind_xyz;
-	Fvector			bind_translate;
-    SBoneShape		shape;
-    string64		game_mtl;
-    SJointIKData	IK_data;
-    float			mass;
-    Fvector			center_of_mass;
+	Fvector				bind_xyz;
+	Fvector				bind_translate;
+    SBoneShape			shape;
+    string64			game_mtl;
+    SJointIKData		IK_data;
+    float				mass;
+    Fvector				center_of_mass;
     
 	// Motion control
 	void			Motion_Start	(CKinematics* K, CBlend* handle);	// with recursion
@@ -272,16 +276,8 @@ private:
 	void									IBoneInstances_Create	();
 	void									IBoneInstances_Destroy	();
 
-	void									IBlend_Startup	();
-	IC CBlend*								IBlend_Create	()
-	{
-		Update();
-		CBlend *I=blend_pool.begin(), *E=blend_pool.end();
-		for (; I!=E; I++)
-			if (I->blend == CBlend::eFREE_SLOT) return I;
-		Debug.fatal("Too many blended motions requisted");
-		return 0;
-	}
+	void									IBlend_Startup			();
+	CBlend*									IBlend_Create			();
 public:
 	// Low level interface
 	int							LL_BoneID		(LPCSTR B);
