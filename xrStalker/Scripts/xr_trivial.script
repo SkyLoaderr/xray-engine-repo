@@ -152,8 +152,6 @@ function add_zombie(obj)
     local operators     = {}
     local properties    = {}
 
-    xr_sounds.load_sounds(obj)
-
     properties[ "zombie_alife" ]      = xr_evaluators_id.jon_stalker_zombie
     operators [ "stalker_zombie" ]     = xr_actions_id.jon_stalker_zombie
 
