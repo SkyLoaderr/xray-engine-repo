@@ -142,6 +142,18 @@
 			<File
 				RelativePath=".\xrD3D9-Null.def">
 			</File>
+			<File
+				RelativePath=".\xrD3D9-Null_OutProc.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="3"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\xrD3D9-Null_OutProc.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -190,6 +202,36 @@
 			</File>
 			<File
 				RelativePath=".\IDirect3DQuery9.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="IDirect3DSurface9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DSurface9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DSurface9.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="IDirect3DIndexBuffer9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DIndexBuffer9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DIndexBuffer9.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="IDirect3DVertexBuffer9"
+			Filter="">
+			<File
+				RelativePath=".\IDirect3DVertexBuffer9.cpp">
+			</File>
+			<File
+				RelativePath=".\IDirect3DVertexBuffer9.h">
 			</File>
 		</Filter>
 		<File

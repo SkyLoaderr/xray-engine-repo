@@ -24,10 +24,10 @@ xrIDirect3DIndexBuffer9::xrIDirect3DIndexBuffer9(IDirect3DDevice9*	pIDirect3DDev
 	switch(Format)
 	{
 	case D3DFMT_INDEX16:
-		m_pIndexBuffer = new BYTE[Length * 2];
+		m_pBuffer = new BYTE[Length * 2];
 		break;
 	case D3DFMT_INDEX32:
-		m_pIndexBuffer = new BYTE[Length * 4];
+		m_pBuffer = new BYTE[Length * 4];
 		break;
 	}
 
@@ -58,7 +58,7 @@ ULONG			xrIDirect3DIndexBuffer9::Release()
 	m_refCount--;
 	if (m_refCount < 0)
 	{
-		delete[]	m_pIndexBuffer;
+		delete[]	m_pBuffer;
 		delete this;
 	}
 	return ULONG_Proc(m_refCount);
@@ -82,7 +82,7 @@ D3DRESOURCETYPE	__stdcall	xrIDirect3DIndexBuffer9::GetType		()																	{
 HRESULT			__stdcall	xrIDirect3DIndexBuffer9::Lock			( UINT OffsetToLock,UINT SizeToLock,void** ppbData,DWORD Flags)		
 {
 	APIDEBUG("xrIDirect3DIndexBuffer9::Lock			");
-	*ppbData = m_pIndexBuffer + OffsetToLock;
+	*ppbData = m_pBuffer + OffsetToLock;
 	return HRESULT_Proc(S_OK);
 };
 HRESULT			__stdcall	xrIDirect3DIndexBuffer9::Unlock			()																	{APIDEBUG("xrIDirect3DIndexBuffer9::Unlock			");return HRESULT_Proc(S_OK);};

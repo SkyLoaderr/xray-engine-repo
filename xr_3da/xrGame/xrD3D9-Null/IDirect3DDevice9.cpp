@@ -4,6 +4,7 @@
 #include "IDirect3DQuery9.h"
 #include "IDirect3DSurface9.h"
 #include "IDirect3DIndexBuffer9.h"
+#include "IDirect3DVertexBuffer9.h"
 
 #include "xrD3D9-Null_OutProc.h"
 
@@ -162,7 +163,15 @@ HRESULT		xrIDirect3DDevice9::CreateVolumeTexture( UINT Width,UINT Height,UINT De
 HRESULT		xrIDirect3DDevice9::CreateCubeTexture( UINT EdgeLength,UINT Levels,DWORD Usage,D3DFORMAT Format,D3DPOOL Pool,IDirect3DCubeTexture9** ppCubeTexture,HANDLE* pSharedHandle) 
 { APIDEBUG("xrIDirect3DDevice9::CreateCubeTexture");  return HRESULT_Proc(S_OK); };
 HRESULT		xrIDirect3DDevice9::CreateVertexBuffer( UINT Length,DWORD Usage,DWORD FVF,D3DPOOL Pool,IDirect3DVertexBuffer9** ppVertexBuffer,HANDLE* pSharedHandle) 
-{ APIDEBUG("xrIDirect3DDevice9::CreateVertexBuffer");  return HRESULT_Proc(S_OK); };
+{ 
+	APIDEBUG("xrIDirect3DDevice9::CreateVertexBuffer");  
+
+	*ppVertexBuffer = NULL;
+	xrIDirect3DVertexBuffer9* I = new xrIDirect3DVertexBuffer9(this, Length, Usage, FVF, Pool);
+	*ppVertexBuffer = I;
+
+	return HRESULT_Proc(S_OK); 
+};
 HRESULT		xrIDirect3DDevice9::CreateIndexBuffer( UINT Length,DWORD Usage,D3DFORMAT Format,D3DPOOL Pool,IDirect3DIndexBuffer9** ppIndexBuffer,HANDLE* pSharedHandle) 
 { 
 	APIDEBUG("xrIDirect3DDevice9::CreateIndexBuffer");  

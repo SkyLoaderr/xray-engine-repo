@@ -10,7 +10,7 @@
 extern "C" {
 #endif
 
-	class xrIDirect3DIndexBuffer9: public IDirect3DIndexBuffer9
+	class xrIDirect3DVertexBuffer9: public IDirect3DVertexBuffer9
 	{
 	protected:
 
@@ -18,7 +18,7 @@ extern "C" {
 		BYTE		*m_pBuffer;
 		IDirect3DDevice9*	m_pIDirect3DDevice9;
 	public:
-		xrIDirect3DIndexBuffer9(IDirect3DDevice9*	pIDirect3DDevice9, UINT iLength,DWORD iUsage,D3DFORMAT iFormat,D3DPOOL iPool);
+		xrIDirect3DVertexBuffer9(IDirect3DDevice9*	pIDirect3DDevice9, UINT iLength,DWORD iUsage,DWORD iFVF,D3DPOOL iPool);
 		/*** IUnknown methods ***/
 		HRESULT			__stdcall	QueryInterface( REFIID riid, void** ppvObj) ;
 		ULONG			__stdcall	AddRef() ;
@@ -35,13 +35,13 @@ extern "C" {
 		D3DRESOURCETYPE	__stdcall	GetType() ;
 		HRESULT			__stdcall	Lock( UINT OffsetToLock,UINT SizeToLock,void** ppbData,DWORD Flags) ;
 		HRESULT			__stdcall	Unlock() ;
-		HRESULT			__stdcall	GetDesc( D3DINDEXBUFFER_DESC *pDesc) ;
+		HRESULT			__stdcall	GetDesc( D3DVERTEXBUFFER_DESC *pDesc) ;
 
 #ifdef D3D_DEBUG_INFO
 		LPCWSTR Name;
 		UINT Length;
 		DWORD Usage;
-		D3DFORMAT Format;
+		DWORD m_FVF;
 		D3DPOOL Pool;
 		DWORD Priority;
 		UINT LockCount;
