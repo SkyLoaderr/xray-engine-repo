@@ -227,7 +227,7 @@ void CActor::Load(CInifile* ini, const char* section )
 
 BOOL CActor::Spawn		(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o_angle, NET_Packet& P, u16 flags)
 {
-	if (!inherited::Spawn(bLocal,sid,team,squad,group,o_pos,o_angle,P))	return FALSE;
+	if (!inherited::Spawn(bLocal,server_id,o_pos,o_angle,P,flags))	return FALSE;
 	r_model_yaw			= o_angle.y;
 	cameras[cam_active]->Set(o_angle.y,0,0);		// set's camera orientation
 
