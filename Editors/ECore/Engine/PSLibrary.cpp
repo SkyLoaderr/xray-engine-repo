@@ -33,8 +33,6 @@ void CPSLibrary::OnDestroy()
 	for (PS::PEDIt e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
     	(*e_it)->DestroyShader();
 
-    m_PSs.clear		();
-
 	for (e_it = m_PEDs.begin(); e_it!=m_PEDs.end(); e_it++)
 		xr_delete	(*e_it);
 	m_PEDs.clear	();
@@ -44,20 +42,6 @@ void CPSLibrary::OnDestroy()
 	m_PGDs.clear	();
 }
 //----------------------------------------------------
-
-PS::SDef* CPSLibrary::FindPS			(LPCSTR Name)
-{
-#ifdef _EDITOR
-	for (PS::PSIt it=m_PSs.begin(); it!=m_PSs.end(); it++)
-    	if (0==xr_strcmp(it->m_Name,Name)) return &*it;
-	return NULL;
-#else                                       
-	PS::PSIt I = std::lower_bound(m_PSs.begin(),m_PSs.end(),Name,ps_find_pred);
-	if (I==m_PSs.end() || (0!=xr_strcmp(I->m_Name,Name)))	return 0;
-	else													return &*I;
-#endif
-}
-
 PS::PEDIt CPSLibrary::FindPEDIt(LPCSTR Name)
 {
 	if (!Name) return m_PEDs.end();
@@ -98,12 +82,6 @@ PS::CPGDef* CPSLibrary::FindPGD(LPCSTR Name)
     return (it==m_PGDs.end())?0:*it;
 }
 
-void CPSLibrary::RenamePS(PS::SDef* src, LPCSTR new_name)
-{
-	R_ASSERT(src&&new_name&&new_name[0]);
-	src->SetName(new_name);
-}
-
 void CPSLibrary::RenamePED(PS::CPEDef* src, LPCSTR new_name)
 {
 	R_ASSERT(src&&new_name&&new_name[0]);
@@ -118,47 +96,28 @@ void CPSLibrary::RenamePGD(PS::CPGDef* src, LPCSTR new_name)
 
 void CPSLibrary::Remove(const char* nm)
 {
-    PS::SDef* sh = FindPS(nm);
-    if (sh){ 
-    	sh->m_CachedShader.destroy();
-    	m_PSs.erase(sh);
-    }else{
-    	PS::PEDIt it = FindPEDIt(nm);
-        if (it!=m_PEDs.end()){
-	    	(*it)->DestroyShader();
-        	xr_delete		(*it);
-	       	m_PEDs.erase	(it);
-        }else{
-            PS::PGDIt it = FindPGDIt(nm);
-            if (it!=m_PGDs.end()){
-    	    	xr_delete	(*it);
-		       	m_PGDs.erase(it);
-            }
-        }
-    }
+	PS::PEDIt it = FindPEDIt(nm);
+	if (it!=m_PEDs.end()){
+		(*it)->DestroyShader();
+		xr_delete		(*it);
+		m_PEDs.erase	(it);
+	}else{
+		PS::PGDIt it = FindPGDIt(nm);
+		if (it!=m_PGDs.end()){
+			xr_delete	(*it);
+			m_PGDs.erase(it);
+		}
+	}
 }
 //----------------------------------------------------
 
 bool CPSLibrary::Load(const char* nm)
 {
 	IReader*	F			= FS.r_open(nm);
-	m_PSs.clear				();
-
 	bool bRes 				= true;
     R_ASSERT(F->find_chunk(PS_CHUNK_VERSION));
     u16 ver					= F->r_u16();
     if (ver!=PS_VERSION) return false;
-    // two version
-    // first generation
-    R_ASSERT(F->find_chunk(PS_CHUNK_FIRSTGEN));
-    u32 count 				= F->r_u32();
-    if (count)
-	{
-        m_PSs.resize		(count);
-        F->r				(&*m_PSs.begin(), count*sizeof(PS::SDef));
-        for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
-            s_it->m_CachedShader._clear();
-    }
     // second generation
     IReader* OBJ;
     OBJ			 			= F->open_chunk(PS_CHUNK_SECONDGEN);
@@ -192,7 +151,6 @@ bool CPSLibrary::Load(const char* nm)
     // final
 	FS.r_close			(F);
 
-	std::sort			(m_PSs.begin(),m_PSs.end(),ps_sort_pred);
 	std::sort			(m_PEDs.begin(),m_PEDs.end(),ped_sort_pred);
 	std::sort			(m_PGDs.begin(),m_PGDs.end(),pgd_sort_pred);
    
