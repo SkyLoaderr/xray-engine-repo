@@ -154,7 +154,7 @@ end
 
 function Monster:initialize ()
 	self.npc:script (true, self.script)
-	action (self.npc, move (move.act_stand_idle, move.default, nil), cond (cond.time_end, time_infinite))
+	action (self.npc, move (move.act_stand_idle, move.default, vector ():set (0, 0, 0)), cond (cond.time_end, time_infinite))
 end
 
 function Monster:set_enemyes (enemyes)
