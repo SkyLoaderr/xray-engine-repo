@@ -236,9 +236,9 @@ end
 -- { "infop_name" = true/false }.
 function parse_infop(rslt, str) 
 	printf("_bp: parse_infop: %s", utils.to_str(str))
-	local infop_name, sign
-	local infop_n = 1
 	if str then
+		local infop_name, sign
+		local infop_n = 1
 		for s in string.gfind(str, "%s*([%-%+][^%-%+%s]+)%s*") do
 			printf("_bp: parse_infop: s=%s", utils.to_str(s))
 			sign = string.sub(s, 1, 1)
@@ -250,6 +250,7 @@ function parse_infop(rslt, str)
 			else
 				abort_syntax_error_in_cond(npc, section, field)
 			end
+			infop_n = infop_n + 1
 		end
 	end
 end
