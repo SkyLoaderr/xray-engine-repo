@@ -241,9 +241,10 @@ HRESULT CMyD3DApplication::Render		()
 		// RenderOverlay		();
 
 		RenderFAT					();
-		// RenderShadowMap			();
+		RenderShadowMap				();
 		RenderLight_Direct			();
 		RenderCombine				(CM_DBG_ACCUMULATOR);
+		RenderOverlay				();
 
         // Output statistics
         m_pFont->DrawText			(OVERLAY_SIZE + 12,  0, D3DCOLOR_ARGB(255,255,255,0), m_strFrameStats);
@@ -880,20 +881,18 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderOverlay()
 {
-/*
     m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
     m_pd3dDevice->SetSamplerState		(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
 	m_pd3dDevice->SetRenderState		(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	m_pd3dDevice->SetFVF				(TVERTEX_FVF);
 	m_pd3dDevice->SetStreamSource		(0, m_pOverlayVB, 0, sizeof(TVERTEX));
-	m_pd3dDevice->SetPixelShader		(m_pShowMapPS);
-	m_pd3dDevice->SetTexture			(0, m_pShadowMap);
-	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
-	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	m_pd3dDevice->SetPixelShader		(0);
+	m_pd3dDevice->SetTexture			(0, sm_ShadowMap);
+	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLORARG1,	D3DTA_TEXTURE);
+	m_pd3dDevice->SetTextureStageState	(0, D3DTSS_COLOROP,		D3DTOP_SELECTARG1);
 	m_pd3dDevice->DrawPrimitive			(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pd3dDevice->SetTexture			(0, NULL);
-*/
 
 	return S_OK;
 }
