@@ -34,7 +34,7 @@ void CPHDestroyable::Destroy()
 
 		l_tpALifePhysicObject->m_tGraphID	=obj->game_vertex_id();
 		l_tpALifeDynamicObject->m_tNodeID	= obj->level_vertex_id();
-		l_tpALifePhysicObject->set_visual	(*obj->cNameVisual());
+		l_tpALifePhysicObject->set_visual	(*m_destroyed_obj_visual_name);
 
 		l_tpALifePhysicObject->source_id	= u16(-1);
 	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;

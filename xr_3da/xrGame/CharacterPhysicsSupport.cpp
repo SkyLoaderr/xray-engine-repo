@@ -127,8 +127,10 @@ void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 	//CPHSkeleton::Update(DT);
 }
 
-void CCharacterPhysicsSupport::in_Hit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
+void CCharacterPhysicsSupport::in_Hit(float P,Fvector &dir,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
 {
+	//if(P>50.f)
+		//CPHDestroyable::Destroy();
 	if((!m_EntityAlife.g_Alive()||is_killing)&&!fis_zero(m_shot_up_factor)&&hit_type!=ALife::eHitTypeExplosion)
 	{
 		dir.y+=m_shot_up_factor;
