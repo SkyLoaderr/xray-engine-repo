@@ -13,6 +13,8 @@
 #include "sight_action.h"
 #include "inventory.h"
 
+//#define TEST
+
 //////////////////////////////////////////////////////////////////////////
 // CAgentManagerActionBase
 //////////////////////////////////////////////////////////////////////////
@@ -58,11 +60,13 @@ void CAgentManagerActionNoOrders::execute			()
 	CAgentManager::iterator		I = m_object->members().begin();
 	CAgentManager::iterator		E = m_object->members().end();
 	for ( ; I != E; ++I) {
+#ifndef TEST
 		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
-
-//		(*I).order_type			(AgentManager::eOrderTypeAction);
-//		(*I).action				(CSetupAction(0.f,0));
-//		(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+#else
+		(*I).order_type			(AgentManager::eOrderTypeAction);
+		(*I).action				(CSetupAction(0.f,0));
+		(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+#endif
 
 //		(*I).order_type			(AgentManager::eOrderTypeGoal);
 //		(*I).goal				(goal);
@@ -127,15 +131,20 @@ void CAgentManagerActionKillEnemy::execute			()
 	CAgentManager::iterator			I = m_object->members().begin();
 	CAgentManager::iterator			E = m_object->members().end();
 	for ( ; I != E; ++I) {
-//		if ((*I).object()->enemy())
-//			Msg						("%6d : %s vs %s",Level().timeServer(),*(*I).object()->cName(),*(*I).object()->enemy()->cName());
-//		if (m_level_time >= Level().timeServer()) {
-//			(*I).order_type			(AgentManager::eOrderTypeAction);
-//			(*I).action				(CSetupAction(0.f,0));
-//			(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
-//		}
-//		else {
+#ifndef TEST
+		(*I).order_type				(AgentManager::eOrderTypeNoOrder);
+#else
+		if ((*I).object()->enemy())
+			Msg						("%6d : %s vs %s",Level().timeServer(),*(*I).object()->cName(),*(*I).object()->enemy()->cName());
+		if (m_level_time >= Level().timeServer()) {
+			(*I).order_type			(AgentManager::eOrderTypeAction);
+			(*I).action				(CSetupAction(0.f,0));
+			(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+			if ((*I).object()->enemy())
+			(*I).action().sight		(CSightAction((*I).object()->enemy(),true));
+		}
+		else
 			(*I).order_type			(AgentManager::eOrderTypeNoOrder);
-//		}
+#endif
 	}
 }

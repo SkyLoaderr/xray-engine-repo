@@ -97,7 +97,10 @@ protected:
 			void							fill_enemies		();
 			void							compute_enemy_danger();
 			void							assign_enemies		();
+			void							permutate_enemies	();
 			void							assign_enemy_masks	();
+			float							evaluate			(const CEntityAlive *object0, const CEntityAlive *object1) const;
+			void							exchange_enemies	(CMemberOrder &member0, CMemberOrder &member1);
 
 public:
 											CAgentManager		();

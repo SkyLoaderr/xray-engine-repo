@@ -22,6 +22,9 @@ protected:
 	CSetupAction							m_action;
 	bool									m_initialized;
 	float									m_probability;
+	xr_vector<u32>							m_enemies;
+	bool									m_processed;
+	u32										m_selected_enemy;
 
 public:
 	IC										CMemberOrder	(CAI_Stalker *object);
@@ -31,11 +34,16 @@ public:
 	IC		const AgentManager::EOrderType	&order_type		() const;
 	IC		const CGraphEngine::CWorldState	&goal			() const;
 	IC		float							probability		() const;
+	IC		bool							processed		() const;
+	IC		u32								selected_enemy	() const;
 	IC		CSetupAction					&action			();
 	IC		void							action			(const CSetupAction	&action);
 	IC		void							order_type		(const AgentManager::EOrderType &order_type);
 	IC		void							goal			(const CGraphEngine::CWorldState &goal);
 	IC		void							probability		(float probability);
+	IC		xr_vector<u32>					&enemies		();
+	IC		void							processed		(bool processed);
+	IC		void							selected_enemy	(u32 selected_enemy);
 };
 
 #include "member_order_inline.h"

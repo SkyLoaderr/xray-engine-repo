@@ -14,7 +14,8 @@ IC	CMemberOrder::CMemberOrder					(CAI_Stalker *object) :
 	m_order_type	(AgentManager::eOrderTypeNoOrder),
 	m_action		(0.f,0)
 {
-	VERIFY			(m_object);
+	VERIFY				(m_object);
+	m_enemies.reserve	(16);
 }
 
 IC	bool CMemberOrder::initialized				() const
@@ -77,4 +78,29 @@ IC	float CMemberOrder::probability				() const
 IC	void CMemberOrder::probability				(float probability)
 {
 	m_probability	= probability;
+}
+
+IC	xr_vector<u32> &CMemberOrder::enemies		()
+{
+	return			(m_enemies);
+}
+
+IC	bool CMemberOrder::processed				() const
+{
+	return			(m_processed);
+}
+
+IC	void CMemberOrder::processed				(bool processed)
+{
+	m_processed		= processed;
+}
+
+IC	u32	 CMemberOrder::selected_enemy			() const
+{
+	return			(m_selected_enemy);
+}
+
+IC	void CMemberOrder::selected_enemy			(u32 selected_enemy)
+{
+	m_selected_enemy = selected_enemy;
 }

@@ -32,6 +32,29 @@ struct CEnemyFiller {
 	}
 };
 
+float CAgentManager::evaluate			(const CEntityAlive *object0, const CEntityAlive *object1) const
+{
+	ai().ef_storage().m_tpCurrentMember = object0;
+	ai().ef_storage().m_tpCurrentEnemy  = object1;
+	return								(ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f);
+}
+
+void CAgentManager::exchange_enemies	(CMemberOrder &member0, CMemberOrder &member1)
+{
+	u32								enemy0 = member0.selected_enemy();
+	u32								enemy1 = member1.selected_enemy();
+	MemorySpace::squad_mask_type	mask0 = mask(member0.object());
+	MemorySpace::squad_mask_type	mask1 = mask(member1.object());
+	m_enemies[enemy0].m_distribute_mask.set(mask0,FALSE);
+	m_enemies[enemy1].m_distribute_mask.set(mask1,FALSE);
+	m_enemies[enemy0].m_distribute_mask.set(mask1,TRUE);
+	m_enemies[enemy1].m_distribute_mask.set(mask0,TRUE);
+	member0.selected_enemy			(enemy1);
+	member1.selected_enemy			(enemy0);
+//	Msg								("Member %s changed enemy from %s to %s",*member0.object()->cName(),*m_enemies[enemy0].m_object->cName(),*m_enemies[enemy1].m_object->cName());
+//	Msg								("Member %s changed enemy from %s to %s",*member1.object()->cName(),*m_enemies[enemy1].m_object->cName(),*m_enemies[enemy0].m_object->cName());
+}
+
 void CAgentManager::fill_enemies		()
 {
 	m_enemies.clear					();
@@ -48,13 +71,11 @@ void CAgentManager::compute_enemy_danger()
 	xr_vector<CEnemy>::iterator		I = m_enemies.begin();
 	xr_vector<CEnemy>::iterator		E = m_enemies.end();
 	for ( ; I != E; ++I) {
-		ai().ef_storage().m_tpCurrentMember = (*I).m_object;
 		float						best = -1.f;
 		xr_vector<CMemberOrder>::const_iterator	i = members().begin();
 		xr_vector<CMemberOrder>::const_iterator	e = members().end();
 		for ( ; i != e; ++i) {
-			ai().ef_storage().m_tpCurrentEnemy = (*i).object();
-			float					value = ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f;
+			float					value = evaluate((*I).m_object,(*i).object());
 			if (value > best)
 				best				= value;
 		}
@@ -80,9 +101,7 @@ void CAgentManager::assign_enemies		()
 				iterator				i = member(K);
 				if (!fsimilar((*i).probability(),1.f))
 					continue;
-				ai().ef_storage().m_tpCurrentMember = (*i).object();
-				ai().ef_storage().m_tpCurrentEnemy = (*I).m_object;
-				float					value = ai().ef_storage().m_pfVictoryProbability->ffGetValue()/100.f;
+				float					value = evaluate((*i).object(),(*I).m_object);
 				if (value > best) {
 					best				= value;
 					N					= K;
@@ -111,12 +130,108 @@ void CAgentManager::assign_enemies		()
 	}
 }
 
+void CAgentManager::permutate_enemies	()
+{
+	// filling member enemies
+	iterator					I = m_members.begin();
+	iterator					E = m_members.end();
+	for ( ; I != E; ++I) {
+		// clear enemies
+		(*I).enemies().clear	();
+		// setup procesed flag
+		(*I).processed			(false);
+		// get member squad mask
+		MemorySpace::squad_mask_type		member_mask = mask((*I).object());
+		// setup if player has enemy
+		bool								enemy_selected = false;
+		// iterate on enemies
+		xr_vector<CEnemy>::const_iterator	i = m_enemies.begin(), b = i;
+		xr_vector<CEnemy>::const_iterator	e = m_enemies.end();
+		for ( ; i != e; ++i) {
+			if ((*i).m_mask.is(member_mask))
+				(*I).enemies().push_back	(u32(i - b));
+			if ((*i).m_distribute_mask.is(member_mask)) {
+				(*I).selected_enemy			(u32(i - b));
+				enemy_selected				= true;
+			}
+		}
+		// if there is enemy - all is ok
+		if (enemy_selected)
+			continue;
+
+		// otherwise temporary make the member processed
+		(*I).processed			(true);
+	}
+	
+	// perform permutations
+	bool						changed;
+	do {
+		changed					= false;
+		iterator				I = m_members.begin();
+		iterator				E = m_members.end();
+		for ( ; I != E; ++I) {
+			// if member is processed the continue;
+			if ((*I).processed())
+				continue;
+
+			float				best = (*I).object()->Position().distance_to(m_enemies[(*I).selected_enemy()].m_object->Position());
+			bool				found = false;
+			xr_vector<u32>::const_iterator	i = (*I).enemies().begin();
+			xr_vector<u32>::const_iterator	e = (*I).enemies().end();
+			for ( ; i != e; ++i) {
+				float			my_distance = (*I).object()->Position().distance_to(m_enemies[*i].m_object->Position());
+				if (my_distance < best) {
+					// check if we can exchange enemies
+					MemorySpace::squad_mask_type	J = m_enemies[*i].m_distribute_mask.get(), K;
+					// iterating on members, whose current enemy is the new one
+					for ( ; J; J &= J - 1) {
+						K			= (J & (J - 1)) ^ J;
+						iterator	j = member(K);
+						xr_vector<u32>::iterator	ii = std::find((*j).enemies().begin(),(*j).enemies().end(),(*I).selected_enemy());
+						// check if member can my current enemy
+						if (ii == (*j).enemies().end())
+							continue;
+
+						// check if I'm closer to the enemy
+						float		member_distance = (*j).object()->Position().distance_to(m_enemies[*i].m_object->Position());
+						if (member_distance <= my_distance)
+							continue;
+
+						// check if our effectiveness is near the same
+						float		my_to_his = evaluate((*I).object(),m_enemies[(*j).selected_enemy()].m_object);
+						float		his_to_my = evaluate((*j).object(),m_enemies[(*I).selected_enemy()].m_object);
+						if (!fsimilar(my_to_his,(*j).probability()) || !fsimilar(his_to_my,(*I).probability()))
+							continue;
+
+						exchange_enemies	(*I,*j);
+
+						found		= true;
+						best		= my_distance;
+						break;
+					}
+				}
+
+				if (found)
+					break;
+			}
+
+			if (!found) {
+				(*I).processed	(true);
+				continue;
+			}
+
+			changed				= true;
+		}
+	}
+	while						(changed);
+}
+
 void CAgentManager::assign_enemy_masks	()
 {
-	xr_vector<CEnemy>::iterator	I = m_enemies.begin();
-	xr_vector<CEnemy>::iterator	E = m_enemies.end();
+	xr_vector<CEnemy>::iterator		I = m_enemies.begin();
+	xr_vector<CEnemy>::iterator		E = m_enemies.end();
 	for ( ; I != E; ++I)
-		setup_mask				(*I);
+		setup_mask					(*I);
 }
 
 void CAgentManager::distribute_enemies	()
@@ -124,6 +239,7 @@ void CAgentManager::distribute_enemies	()
 	fill_enemies					();
 	compute_enemy_danger			();
 	assign_enemies					();
+	permutate_enemies				();
 	assign_enemy_masks				();
 }
 

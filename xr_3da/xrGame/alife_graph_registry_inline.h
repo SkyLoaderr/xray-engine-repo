@@ -117,8 +117,12 @@ IC	void CALifeGraphRegistry::detach	(CSE_Abstract &object, CSE_ALifeInventoryIte
 #endif
 	if (alife_query)
 		add						(dynamic_cast<CSE_ALifeDynamicObject*>(item),game_vertex_id);
-	else
-		level().add 			(dynamic_cast<CSE_ALifeDynamicObject*>(item));
+	else {
+		CSE_ALifeDynamicObject	*object = dynamic_cast<CSE_ALifeDynamicObject*>(item);
+		VERIFY					(object);
+		object->m_tGraphID		= game_vertex_id;
+		level().add 			(object);
+	}
 
 	CSE_ALifeTraderAbstract		*trader = dynamic_cast<CSE_ALifeTraderAbstract*>(&object);
 	R_ASSERT2					(!alife_query || trader,"Cannot detach an item from non-trader object");
