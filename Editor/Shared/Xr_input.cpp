@@ -51,18 +51,22 @@ CInput::CInput						( BOOL bExclusive, int deviceForInit)
 		((bExclusive)?DISCL_EXCLUSIVE:DISCL_NONEXCLUSIVE) | DISCL_FOREGROUND | DISCL_NOWINKEY,
 		MOUSEBUFFERSIZE ));
 
+#ifdef ENGINE_BUILD 
 	Device.seqAppActivate.Add		(this);
 	Device.seqAppDeactivate.Add		(this);
 	if (psDeviceFlags&mtInput)		Device.seqFrameMT.Add	(this, REG_PRIORITY_LOW);
 	else							Device.seqFrame.Add		(this, REG_PRIORITY_HIGH);
+#endif
 }
 
 CInput::~CInput(void)
 {
+#ifdef ENGINE_BUILD 
 	Device.seqFrameMT.Remove		(this);
 	Device.seqFrame.Remove			(this);
 	Device.seqAppDeactivate.Remove	(this);
 	Device.seqAppActivate.Remove	(this);
+#endif
 	//_______________________
 
 	// Unacquire and release the device's interfaces
