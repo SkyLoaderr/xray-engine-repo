@@ -1433,11 +1433,13 @@ antirad = 0.3					;временно! вместо антирада
 material				= creatures\human
 camera_height_factor	= 0.85
 
-;дисперсия во время ходьбы и бега
+;дисперсия стрельбы с учетом ходьбы и бега
+disp_base			 = 2.6	;угол (в градусах) разлета пуль, когда актер стоит на месте
 disp_vel_factor		 = 0.2
-disp_accel_factor	 = 0.5
-disp_jump_factor	 = 0.5
+disp_accel_factor	 = 2.5
 disp_crouch_factor	 = 0.5
+
+disp_jump_factor	 = 0.5
 
 
 
