@@ -4,5 +4,5 @@ end
 module		("se_smart_terrain")
 
 function register(object_factory)
-	object_factory:register	("se_smart_terrain.se_smart_terrain","se_smart_terrain.se_smart_terrain","SMRTTRRN","smart_terrain")
+	object_factory:register	("ce_script_zone","se_smart_terrain.se_smart_terrain","SMRTTRRN","smart_terrain")
 end
