@@ -81,14 +81,6 @@ void Startup()
 		}
 	}
 
-	if (strstr(Engine.Params,"-demo ")) {
-		string64				cmd;
-		string64				pDemoName;
-		sscanf					(strstr(Engine.Params,"-demo ")+6,"%[^ ] ",pDemoName);
-		strconcat				(cmd,"demo_play ",pDemoName);
-		Console.Execute			(cmd);
-	}
-
 	// Main cycle
 	// Sleep					(1000);
 	Device.Run					( );
@@ -231,6 +223,15 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
 		R_ASSERT	(pCreator->net_Start(Name,TRUE));
 		_FREE		(Name);
+
+		// start demo if exist
+		if (strstr(Engine.Params,"-demo ")) {
+			string64				cmd;
+			string64				pDemoName;
+			sscanf					(strstr(Engine.Params,"-demo ")+6,"%[^ ] ",pDemoName);
+			strconcat				(cmd,"demo_play ",pDemoName);
+			Console.Execute			(cmd);
+		}
 	} else if (E==eStartClient) {
 		Console.Hide();
 		LPSTR		Name = LPSTR(P1);
