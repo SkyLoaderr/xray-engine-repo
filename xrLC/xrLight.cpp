@@ -15,7 +15,7 @@ public:
 
 	virtual void	Execute()
 	{
-		defl->Light	(0);
+		defl->Light	();
 	}
 };
 

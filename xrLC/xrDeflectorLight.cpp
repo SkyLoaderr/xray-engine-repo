@@ -212,7 +212,7 @@ void LightPoint(RAPID::XRCollide* DB, Fcolor &C, Fvector &P, Fvector &N, R_Light
 }
 
 
-VOID CDeflector::Light(float P_Base)
+VOID CDeflector::Light()
 {
 	HASH	hash;
 
