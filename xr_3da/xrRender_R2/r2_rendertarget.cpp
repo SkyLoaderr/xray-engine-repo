@@ -63,12 +63,12 @@ void	CRenderTarget::phase_combine	()
 	p1.set						((_w+.5f)/_w, (_h+.5f)/_h );
 	
 	// Fill vertex buffer
-	FVF::TL* pv			= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
-	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
-	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
-	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
-	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
-	RCache.Vertex.Unlock(4,g_combine->vb_stride);
+	FVF::TL* pv					= (FVF::TL*) RCache.Vertex.Lock	(4,g_combine->vb_stride,Offset);
+	pv->set						(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
+	pv->set						(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
+	pv->set						(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
+	pv->set						(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
+	RCache.Vertex.Unlock		(4,g_combine->vb_stride);
 
 	// Draw COLOR
 	RCache.set_Shader			(s_combine_dbg_Normal);
