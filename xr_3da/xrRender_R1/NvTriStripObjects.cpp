@@ -952,7 +952,8 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 	NvStripInfoVec tempStrips;
 	
 	//split up strips into threshold-sized pieces
-	for(int i = 0; i < allStrips.size(); i++)
+	int i;
+	for(i = 0; i < allStrips.size(); i++)
 	{
 		NvStripInfo* currentStrip;
 		NvStripStartInfo startInfo(NULL, NULL, false);
@@ -963,12 +964,12 @@ void NvStripifier::SplitUpStripsAndOptimize(NvStripInfoVec &allStrips, NvStripIn
 			int numTimes    = allStrips[i]->m_faces.size() / threshold;
 			int numLeftover = allStrips[i]->m_faces.size() % threshold;
 			
-			for(int j = 0; j < numTimes; j++)
+			int j;
+			for(j = 0; j < numTimes; j++)
 			{
 				currentStrip = xr_new<NvStripInfo> (startInfo, 0, -1);
 				
-				for(int faceCtr = j*threshold; faceCtr < threshold+(j*threshold); faceCtr++)
-				{
+				for(int faceCtr = j*threshold; faceCtr < threshold+(j*threshold); faceCtr++) {
 					currentStrip->m_faces.push_back(allStrips[i]->m_faces[faceCtr]);
 				}
 				
@@ -1239,7 +1240,8 @@ void NvStripifier::FindAllStrips(NvStripInfoVec &allStrips,
 		experiments.resize			(numSamples * 6);
 		int							experimentIndex = 0;
 		xr_set   <NvFaceInfo*>		resetPoints;
-		for (int i = 0; i < numSamples; i++)
+		int							i;
+		for (i = 0; i < numSamples; i++)
 		{
 			// Try to find another good reset point.
 			// If there are none to be found, we are done

@@ -77,7 +77,6 @@ void CBuild::xrPhase_MergeLM()
 		CDeflector*	D		= g_deflectors[it];
 		if (D->bMerged)		continue;
 		Layer.push_back		(D);
-		materials[D->GetBaseMaterial()]->internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()]->internal_max_area);
 	}
 
 	// Merge this layer
@@ -93,16 +92,16 @@ void CBuild::xrPhase_MergeLM()
 		for (u32 it=0; it<materials.size(); it++) materials[it].internal_max_area	= 0;
 		for (u32 it=0; it<Layer.size(); it++)	{
 			CDeflector*	D		= Layer[it];
-			materials[D->GetBaseMaterial()]->internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()]->internal_max_area);
+			materials[D->GetBaseMaterial()].internal_max_area	= _max(D->layer.Area(),materials[D->GetBaseMaterial()].internal_max_area);
 		}
 		std::stable_sort(Layer.begin(),Layer.end(),sort_defl_complex);
 
 		// Select first deflectors which can fit
 		Status		("Selection...");
-		int maxarea		= c_LMAP_size*c_LMAP_size*4;	// Max up to 4 lm selected
-		int curarea		= 0;
-		int merge_count	= 0;
-		for (it=0; it<(int)Layer.size(); it++)	{
+		u32 maxarea		= c_LMAP_size*c_LMAP_size*4;	// Max up to 4 lm selected
+		u32 curarea		= 0;
+		u32 merge_count	= 0;
+		for (u32 it=0; it<(int)Layer.size(); it++)	{
 			int		defl_area	= Layer[it]->layer.Area();
 			if (curarea + defl_area > maxarea) break;
 			curarea		+=	defl_area;
@@ -116,7 +115,7 @@ void CBuild::xrPhase_MergeLM()
 		g_lightmaps.push_back	(lmap);
 
 		// Process 
-		for (it=0; it<merge_count; it++) 
+		for (u32 it=0; it<merge_count; it++) 
 		{
 			if (0==(it%1024))	Status	("Process [%d/%d]...",it,merge_count);
 			lm_layer&	L		= Layer[it]->layer;

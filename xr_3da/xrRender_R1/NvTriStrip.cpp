@@ -151,7 +151,8 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 		
 		//first, the strips
 		int startingLoc = 0;
-		for(int stripCtr = 0; stripCtr < numSeparateStrips; stripCtr++)
+		int stripCtr;
+		for	(stripCtr = 0; stripCtr < numSeparateStrips; stripCtr++)
 		{
 			int stripLength = 0;
 			if(numSeparateStrips != 1)
@@ -199,7 +200,7 @@ void GenerateStrips(const u16* in_indices, const s32 in_numIndices, xr_vector<Pr
 	//clean up everything
 
 	//_delete strips
-	for(i = 0; i < tempStrips.size(); i++)
+	for(u32 i = 0; i < tempStrips.size(); i++)
 	{
 		for(int j = 0; j < tempStrips[i]->m_faces.size(); j++)
 		{
