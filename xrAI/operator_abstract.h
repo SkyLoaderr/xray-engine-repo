@@ -30,7 +30,6 @@ public:
 	virtual										~COperatorAbstract	();
 	IC		u32									priority			() const;
 	IC		const xr_vector<COperatorCondition>	&effects			() const;
-	IC		void								add_condition		(const COperatorCondition &condition);
 	IC		void								add_effect			(const COperatorCondition &effect);
 	virtual bool								applicable			(const CSConditionState &condition, const CSConditionState &start) const;
 	virtual bool								applicable			(const CSConditionState &condition) const;

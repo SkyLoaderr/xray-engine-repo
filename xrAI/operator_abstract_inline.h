@@ -67,12 +67,6 @@ IC	const xr_vector<typename CAbstractOperator::COperatorCondition>	&CAbstractOpe
 }
 
 TEMPLATE_SPECIALIZATION
-IC	void CAbstractOperator::add_condition	(const COperatorCondition &condition)
-{
-	m_conditions.push_back	(condition);
-}
-
-TEMPLATE_SPECIALIZATION
 IC	void CAbstractOperator::add_effect		(const COperatorCondition &effect)
 {
 	m_effects.push_back		(effect);
