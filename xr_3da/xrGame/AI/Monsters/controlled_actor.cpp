@@ -41,7 +41,8 @@ void CControlledActor::frame_update()
 
 void CControlledActor::look_point(float speed, const Fvector &point)
 {
-	m_speed	= speed;
+	m_speed_yaw		= speed;
+	m_speed_pitch	= speed;
 
 	Fvector	P,D,N;
 	m_actor->cam_Active()->Get			(P,D,N);
@@ -71,19 +72,26 @@ void CControlledActor::update_turn()
 	h		= angle_normalize(-h);
 	p		= angle_normalize(-p);
 
-	
+	if (angle_difference(target_yaw,h) < PI / (5*180))		yaw_dir		= DIR_NONE;
+	if (angle_difference(target_pitch,p) < PI / (5*180))	pitch_dir	= DIR_NONE;
+
+	if ((pitch_dir == DIR_NONE) && (yaw_dir == DIR_NONE)) 
+		m_active_turn	= false;
+
 	if (yaw_dir != DIR_NONE) {
 		if (yaw_dir == DIR_RIGHT) {
 			if (from_right(target_yaw,h)) {
-				m_actor->cam_Active()->Move	(kRIGHT,	m_speed * Device.fTimeDelta);
+				m_actor->cam_Active()->Move	(kRIGHT,	m_speed_yaw * Device.fTimeDelta);
 			} else {
-				yaw_dir = DIR_NONE;
+				yaw_dir		= DIR_LEFT;
+				m_speed_yaw /= 2;
 			}
 		} else {
 			if (!from_right(target_yaw,h)) {
-				m_actor->cam_Active()->Move	(kLEFT,		m_speed * Device.fTimeDelta);
+				m_actor->cam_Active()->Move	(kLEFT,		m_speed_yaw * Device.fTimeDelta);
 			} else {
-				yaw_dir = DIR_NONE;
+				yaw_dir		= DIR_RIGHT;
+				m_speed_yaw /= 2;
 			}
 		}
 	}
@@ -91,20 +99,21 @@ void CControlledActor::update_turn()
 	if (pitch_dir != DIR_NONE) {
 		if (pitch_dir == DIR_UP) {
 			if (from_right(target_pitch,p)) {
-				m_actor->cam_Active()->Move	(kUP,	m_speed * Device.fTimeDelta);
+				m_actor->cam_Active()->Move	(kUP,	m_speed_pitch * Device.fTimeDelta);
 			} else {
-				pitch_dir = DIR_NONE;
+				pitch_dir		= DIR_BOTTOM;
+				m_speed_pitch	/= 2;
 			}
 		} else {
 			if (!from_right(target_pitch,p)) {
-				m_actor->cam_Active()->Move	(kDOWN,	m_speed * Device.fTimeDelta);
+				m_actor->cam_Active()->Move	(kDOWN,	m_speed_pitch * Device.fTimeDelta);
 			} else {
-				pitch_dir = DIR_NONE;
+				pitch_dir		= DIR_UP;
+				m_speed_pitch	/= 2;
 			}
 		}
 	}
-
-	if ((pitch_dir == DIR_NONE) && (yaw_dir == DIR_NONE)) m_active_turn	= false;
+	
 }
 
 void CControlledActor::reset()
@@ -120,3 +129,14 @@ bool CControlledActor::is_controlled()
 {
 	return (m_actor && m_actor->IsControlled());
 }
+
+void CControlledActor::update_look_point(const Fvector &point)
+{
+	Fvector	P,D,N;
+	m_actor->cam_Active()->Get			(P,D,N);
+	
+	Fvector().sub(point, P).getHP		(target_yaw, target_pitch);
+	target_yaw		= angle_normalize	(-target_yaw);
+	target_pitch	= angle_normalize	(-target_pitch);
+}
+

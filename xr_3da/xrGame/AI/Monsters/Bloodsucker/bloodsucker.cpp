@@ -7,10 +7,12 @@
 #include "../../../../skeletoncustom.h"
 #include "../../../detail_path_manager.h"
 #include "../../../actor.h"
+#include "../../../ActorEffector.h"
 #include "../../../../skeletonanimated.h"
 #include "../ai_monster_movement.h"
 #include "../../../level.h"
 #include "../../../material_manager.h"
+#include "bloodsucker_vampire_effector.h"
 
 CAI_Bloodsucker::CAI_Bloodsucker()
 {
@@ -115,6 +117,10 @@ void CAI_Bloodsucker::reinit()
 	def2 = skel_animated->ID_Cycle_Safe("vampire_1");	VERIFY(def2);
 	def3 = skel_animated->ID_Cycle_Safe("vampire_2");	VERIFY(def3);
 	anim_triple_vampire.reinit_external	(&EventMan, def1, def2, def3, false);
+
+	MotionMan.AddAnimTranslation	(def1,"vampire_0");
+	MotionMan.AddAnimTranslation	(def2,"vampire_1");
+	MotionMan.AddAnimTranslation	(def3,"vampire_2");
 }
 
 void CAI_Bloodsucker::reload(LPCSTR section)
@@ -213,6 +219,11 @@ void CAI_Bloodsucker::LookPosition(Fvector to_point, float angular_speed)
 void CAI_Bloodsucker::ActivateEffector(float life_time)
 {
 	//Level().Cameras.AddEffector(xr_new<CMonsterEffector>(pp_effector, life_time, 0.3f, 0.9f));
+
+	CActor *pA = smart_cast<CActor *>(Level().CurrentEntity());
+	if (pA) {
+		pA->EffectorManager().AddEffector(xr_new<CVampireCameraEffector>(5.f, 5.f, life_time));
+	}
 }
 
 

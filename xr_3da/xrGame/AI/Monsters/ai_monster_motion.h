@@ -61,6 +61,10 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 
 	CAnimTriple					*pCurAnimTriple;
 
+private:
+
+	ANIM_TO_MOTION_MAP			m_anim_motion_map;
+
 public:
 
 	EAction					m_tAction;
@@ -235,10 +239,15 @@ public:
 
 	// Other
 		void	SetTurnAnimation		();
+
+	// MotionDef to animation name translation
+		void		AddAnimTranslation		(CMotionDef *motion, LPCSTR str);
+		shared_str	GetAnimTranslation		(CMotionDef *motion);
 public:
 		
 		// информация о текущей анимации
 		SCurrentAnimationInfo	m_cur_anim;
 		SCurrentAnimationInfo	&cur_anim_info() {return m_cur_anim;}
+
 };
 

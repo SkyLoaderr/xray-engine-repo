@@ -81,6 +81,8 @@ void CMotionManager::reinit()
 	target_transition_anim		= cur_anim_info().motion;
 
 	m_prev_character_velocity	= 0.01f;
+
+	m_anim_motion_map.clear		();
 }
 
 
@@ -95,10 +97,16 @@ bool CMotionManager::PrepareAnimation()
 	}
 	if (0 != m_tpCurAnim) return false;
 	if (TA_IsActive()) {
+		bool ret_value				= pCurAnimTriple->prepare_animation(&m_tpCurAnim);
+
+		m_cur_anim.name				= GetAnimTranslation(m_tpCurAnim);
+			
 		m_cur_anim.speed.current	= -1.f;
 		m_cur_anim.speed.target		= -1.f;
+		
+		m_cur_anim.time_started		= Device.dwTimeGlobal;
 
-		return pCurAnimTriple->prepare_animation(&m_tpCurAnim);
+		return ret_value;
 	}
 
 	// перекрыть все определения и установть анимацию
@@ -275,12 +283,14 @@ void CMotionManager::Seq_Finish()
 // Сравнивает тек. время с временами хитов в стеке
 bool CMotionManager::AA_TimeTest(SAAParam &params)
 {
+
 	// Частота хитов не может быть больше 'TIME_DELTA'
 	TTime cur_time	= Device.dwTimeGlobal;
 
 	if (aa_time_last_attack + TIME_DELTA > cur_time) return false;
 
 	// искать текущую анимацию в AA_MAP
+
 	AA_MAP_IT it = get_sd()->aa_map.find(m_cur_anim.name);
 	if (it == get_sd()->aa_map.end()) return false;
 	
@@ -562,3 +572,18 @@ bool CMotionManager::IsCriticalAction()
 	return (JumpActive() || Seq_Active() || TA_IsActive());
 	//return (JumpActive() || Seq_Active());
 }
+
+void CMotionManager::AddAnimTranslation(CMotionDef *motion, LPCSTR str)
+{
+	m_anim_motion_map.insert(mk_pair(motion, str));	
+}
+shared_str CMotionManager::GetAnimTranslation(CMotionDef *motion)
+{
+	shared_str ret_value;
+
+	ANIM_TO_MOTION_MAP_IT anim_it = m_anim_motion_map.find(motion);
+	if (anim_it != m_anim_motion_map.end()) ret_value = anim_it->second;
+
+	return ret_value;
+}
+

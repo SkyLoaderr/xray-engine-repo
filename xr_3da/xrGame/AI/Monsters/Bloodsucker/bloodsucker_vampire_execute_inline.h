@@ -1,6 +1,9 @@
 #pragma once
 
 #include "../../../../skeletoncustom.h"
+#include "../../../level.h"
+#include "../../../actor.h"
+#include "../../../../CameraBase.h"
 
 #define TEMPLATE_SPECIALIZATION template <\
 	typename _Object\
@@ -28,17 +31,37 @@ void CStateBloodsuckerVampireExecuteAbstract::initialize()
 	global_transform.set(object->XFORM());
 	global_transform.mulB(bone_transform);
 
-	object->CControlledActor::look_point	(2.f, global_transform.c);
+	object->CControlledActor::look_point	(2.0f, global_transform.c);
 
 	m_action				= eActionPrepare;
 	time_vampire_started	= 0;
 
 	object->CInvisibility::manual_deactivate();
+
+	m_effector_activated		= false;
 }
 
 TEMPLATE_SPECIALIZATION
 void CStateBloodsuckerVampireExecuteAbstract::execute()
 {
+	if (!object->CControlledActor::is_turning() && !m_effector_activated) {
+		float dist = object->EnemyMan.get_enemy()->Position().distance_to(object->Position());
+
+		object->ActivateEffector	(dist - 0.6f);
+		m_effector_activated		= true;
+	}
+	
+	
+	CKinematics *pK = smart_cast<CKinematics*>(object->Visual());
+	Fmatrix bone_transform;
+	bone_transform = pK->LL_GetTransform(pK->LL_BoneID("bip01_head"));	
+
+	Fmatrix global_transform;
+	global_transform.set(object->XFORM());
+	global_transform.mulB(bone_transform);
+
+	object->CControlledActor::update_look_point(global_transform.c);
+
 	switch (m_action) {
 		case eActionPrepare:
 			execute_vampire_prepare();
@@ -138,23 +161,23 @@ void CStateBloodsuckerVampireExecuteAbstract::execute_vampire_hit()
 {
 	object->MotionMan.TA_PointBreak();
 
-	// apply impulse
-	const CEntityAlive *enemy = object->EnemyMan.get_enemy();
+	//// apply impulse
+	//const CEntityAlive *enemy = object->EnemyMan.get_enemy();
 
-	Fvector				dir;
-	dir.sub				(enemy->Position(), object->Position());
+	//Fvector				dir;
+	//dir.sub				(enemy->Position(), object->Position());
 
-	float				h,p;
-	dir.getHP			(h,p);
-	p					+= PI_DIV_6;
-	dir.setHP			(h,p);
-	dir.normalize_safe	();
+	//float				h,p;
+	//dir.getHP			(h,p);
+	//p					+= PI_DIV_6;
+	//dir.setHP			(h,p);
+	//dir.normalize_safe	();
 
-	CEntityAlive	*entity		= const_cast<CEntityAlive*>(enemy);
-	Fvector			position_in_bone_space;
-	position_in_bone_space.set	(0.f,0.f,0.f);
-	s16 element					= smart_cast<CKinematics*>(entity->Visual())->LL_GetBoneRoot();
-	entity->Hit					(0.01f, dir, object, element, position_in_bone_space,VAMPIRE_HIT_IMPULSE);
+	//CEntityAlive	*entity		= const_cast<CEntityAlive*>(enemy);
+	//Fvector			position_in_bone_space;
+	//position_in_bone_space.set	(0.f,0.f,0.f);
+	//s16 element					= smart_cast<CKinematics*>(entity->Visual())->LL_GetBoneRoot();
+	//entity->Hit					(0.01f, dir, object, element, position_in_bone_space,VAMPIRE_HIT_IMPULSE);
 }
 
 //////////////////////////////////////////////////////////////////////////

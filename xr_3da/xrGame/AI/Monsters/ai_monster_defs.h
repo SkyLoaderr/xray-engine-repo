@@ -487,4 +487,8 @@ enum EDangerType {
 	eNone
 };
 
+DEFINE_MAP(CMotionDef*, shared_str, ANIM_TO_MOTION_MAP, ANIM_TO_MOTION_MAP_IT);
+
+
+
 
