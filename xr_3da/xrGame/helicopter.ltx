@@ -21,7 +21,7 @@ on_point_range_dist				= 10.0
 smoke_particle						= damage_fx\heli_burn
 explode_particle					= explosions\expl_mushroom_01
 explode_sound						= weapons\heli_explosion
-snd_shoot_rocket					= weapons\rpg7_shoot
+snd_shoot_rocket					= weapons\heli_rocket_shoot
 
 light_range							= 10.0
 light_brightness					= 5.0
@@ -36,7 +36,7 @@ time_delay_between_patrol	= 60	;sec
 velocity					= 25.0	;m/sec
 attack_velocity				= 10.0
 altitude					= 50	;20.0	;m
-attack_altitude				= 20	;20.0
+attack_altitude				= 15; 20	;20.0
 max_key_dist				= 15.0
 
 altitude_korridor			= 0.1 ;0.0		;не ниже 1/10 высоты уровня
@@ -47,9 +47,9 @@ use_rocket					= true;
 use_mgun					= true;
 min_mgun_attack_dist		= 50;15.0  ;m
 max_mgun_attack_dist		= 250;300.0 ;m
-min_rocket_attack_dist		= 90;15.0	;m
+min_rocket_attack_dist		= 100;15.0	;m
 max_rocket_attack_dist		= 300;150.0 ;m
-time_between_rocket_attack	= 1500 ; 500 ; msec
+time_between_rocket_attack	= 500 ; 1500 ; msec
 syncronize_rocket			= false; true
 
 death_angular_vel			= 3.0,3.0,0.0
@@ -78,7 +78,7 @@ shell_particles			= weapons\generic_shells
 snd_shoot				= weapons\pkm_shot
 
 rocket_class			= helicopter_missile ;wpn_rpg7_missile 
-launch_speed			= 50;76 500
+launch_speed			= 60;50;76 500
 
 burn_immunity			= 0.8	;коэффициенты иммунитета 
 strike_immunity			= 0.0 ;0.7
@@ -87,7 +87,7 @@ wound_immunity			= 0.0 ;0.15
 radiation_immunity		= 0.0 ;0.2
 telepatic_immunity		= 0.0 ;1.0
 chemical_burn_immunity	= 0.0 ;0.9
-fire_wound_immunity		= 0.35 ;0.1;0.05
+fire_wound_immunity		= 0.45 ;0,35;0.1;0.05
 explosion_immunity		= 1
 
 //feel-vision
@@ -112,7 +112,7 @@ inv_grid_y				= 0
 cost					= 200
 ;---------------------------------------------------------------
 blast				= 520;120
-blast_r				= 15
+blast_r				= 10;15
 blast_impulse		= 550;320
 ;delete
 blast_impulse_factor = 1
