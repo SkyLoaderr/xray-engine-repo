@@ -51,6 +51,7 @@ public:
 
 void	ISpatial_DB::q_frustum		(u32 _o, u32 _mask, const CFrustum& _frustum)	
 {
+	VERIFY			(verify());
 	q_result.clear	();
 	walker			W(_mask,&_frustum);	W.walk(m_root,m_center,m_bounds,_frustum.getMask()); 
 }

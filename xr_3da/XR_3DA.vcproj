@@ -427,6 +427,9 @@
 							AssemblerOutput="4"/>
 					</FileConfiguration>
 				</File>
+				<File
+					RelativePath=".\ISpatial_verify.cpp">
+				</File>
 			</Filter>
 			<Filter
 				Name="Collidable"

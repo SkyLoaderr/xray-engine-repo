@@ -57,6 +57,8 @@ public:
 
 void	ISpatial_DB::q_box			(u32 _o, u32 _mask, const Fvector& _center, const Fvector& _size)
 {
+	VERIFY							(verify());
+
 	q_result.clear	();
 	if (_o & O_ONLYFIRST)			{ walker<true>	W(_mask,_center,_size);	W.walk(m_root,m_center,m_bounds); } 
 	else							{ walker<false>	W(_mask,_center,_size);	W.walk(m_root,m_center,m_bounds); } 

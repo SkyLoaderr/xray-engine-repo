@@ -183,6 +183,7 @@ void			ISpatial_DB::_insert	(ISpatial_NODE* N, Fvector& n_C, float n_R)
 			chield			=	_node_create();
 			VERIFY			(chield);
 			chield->_init	(N);
+			VERIFY			(chield);
 		}
 		VERIFY			(chield);
 		_insert			(chield, c_C, c_R);
@@ -216,6 +217,8 @@ void			ISpatial_DB::insert		(ISpatial* S)
 		S->spatial.node_radius		=	m_bounds;
 	}
 	stat_insert.End		();
+
+	VERIFY		(verify());
 }
 
 void			ISpatial_DB::_remove	(ISpatial_NODE* N, ISpatial_NODE* N_sub)
@@ -247,4 +250,6 @@ void			ISpatial_DB::remove		(ISpatial* S)
 	// Recurse
 	if (N->_empty())					_remove(N->parent,N);
 	stat_remove.End		();
+
+	VERIFY		(verify());
 }
