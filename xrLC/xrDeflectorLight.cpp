@@ -305,6 +305,7 @@ IC u32	rms_diff	(u32 a, u32 b)
 	if (a>b)	return a-b;
 	else		return b-a;
 }
+
 BOOL	__stdcall rms_test	(lm_layer& lm, u32 w, u32 h, u32 rms)
 {
 	if ((w<=1) || (h<=1))	return FALSE;
