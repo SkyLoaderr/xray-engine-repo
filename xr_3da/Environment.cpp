@@ -10,7 +10,6 @@
 #include "xr_effsun.h"
 #include "xr_trims.h"
 #include "xr_input.h"
-#include "PSObject.h"
 
 #include "fmesh.h"
 #include "fhierrarhyvisual.h"

@@ -5,8 +5,8 @@
 #pragma hdrstop
 
 #include "PSObject.h"
-#include "PSVisual.h"
-#include "render.h"
+#include "..\PSVisual.h"
+#include "..\render.h"
 
 CPSObject::CPSObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 {

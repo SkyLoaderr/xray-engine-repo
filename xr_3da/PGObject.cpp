@@ -5,8 +5,8 @@
 #pragma hdrstop
 
 #include "PGObject.h"
-#include "ParticleEffect.h"
-#include "render.h"
+#include "..\ParticleEffect.h"
+#include "..\render.h"
 
 CPGObject::CPGObject	(LPCSTR ps_name, IRender_Sector* S, BOOL bAutoRemove)
 {
