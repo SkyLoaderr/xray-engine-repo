@@ -9,22 +9,24 @@ class hash2D
 public:
 	hash2D()
 	{
-		for (DWORD y=0; y<s_Y; y++)
-			for (DWORD x=0; x<s_Y; x++)
-				table[y][x]	= NULL;
 		bounds.invalidate	();
 		size.set			(0.f,0.f);
+
+		for (DWORD y=0; y<s_Y; y++)
+			for (DWORD x=0; x<s_Y; x++)
+				table[y][x]	= xr_new<vector<T> > ();
 	}
 	~hash2D()
 	{
-		clear		();
+		for (DWORD y=0; y<s_Y; y++)
+			for (DWORD x=0; x<s_X; x++)
+				xr_delete	(table[y][x]);
 	}
 
 	void		initialize	(Fbox2& R, DWORD faces)
 	{
 		bounds.set	(R);
 		size.set	(R.max.x-R.min.x,R.max.y-R.min.y);
-		clear		();
 
 		DWORD		size	= s_Y*s_X;
 		DWORD		apx		= faces/size;
@@ -32,8 +34,8 @@ public:
 		for (DWORD y=0; y<s_Y; y++)
 			for (DWORD x=0; x<s_X; x++)
 			{
-				table[y][x] = xr_new<vector<T> >	();
-				table[y][x]->reserve				(apx);
+				table[y][x]->clear		();
+				table[y][x]->reserve	(apx);
 			}
 	};
 	void		add			(Fbox2& R, T& value)
@@ -53,10 +55,4 @@ public:
 		int _y	= iFloor(float(s_Y)*(y-bounds.min.y)/size.y); clamp(_y,0,int(s_Y-1));
 		return *table[_y][_x];
 	};
-	void		clear		()
-	{
-		for (DWORD y=0; y<s_Y; y++)
-			for (DWORD x=0; x<s_X; x++)
-				xr_delete(table[y][x]);
-	}
 };

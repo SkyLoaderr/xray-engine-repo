@@ -392,7 +392,6 @@ void CBuild::ImplicitLighting()
 		*/
 	}
 
-	ImplicitHash->clear	();
 	xr_delete			(ImplicitHash);
 	calculator.clear	();
 }
