@@ -279,10 +279,8 @@ function SetScheme (object)
     action:add_effect       (world_property (wounded_property,      false))
     manager:add_action      (act_see_enemy,         action)
     
-    action = manager:action (stalker_ids.action_free_no_alife)
+    action = manager:action (stalker_ids.action_puzzle_solver)
     action:add_precondition (world_property (wounded_property,  false))
-    --action = manager:action (stalker_ids.action_free_alife)
-    --action:add_precondition (world_property (wounded_property,  false))
     
     printf ("Add wounded scheme")
 end
