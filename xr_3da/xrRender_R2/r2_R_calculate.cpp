@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "..\customhud.h"
 
-float				g_fGLOD			;
 float				g_fSCREEN		;
 
+extern float		r_dtex_range	;
 extern float		r_ssaDISCARD	;
 extern float		r_ssaDONTSORT	;
 extern float		r_ssaLOD_A		;
@@ -24,6 +24,7 @@ void CRender::Calculate		()
 	r_ssaGLOD_start					=	_sqr(ps_r__GLOD_ssa_start)	/g_fSCREEN;
 	r_ssaGLOD_end					=	_sqr(ps_r__GLOD_ssa_end)	/g_fSCREEN;
 	r_ssaHZBvsTEX					=	_sqr(ps_r2_ssaHZBvsTEX)		/g_fSCREEN;
+	r_dtex_range					=	ps_r2_df_parallax_range * g_fSCREEN / (1024.f * 768.f);
 	
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 

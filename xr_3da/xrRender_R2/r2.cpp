@@ -26,13 +26,14 @@ public:
 	virtual void					set_color			(float r, float g, float b)	{ }
 };
 
+float		r_dtex_range		= 50.f;
 //////////////////////////////////////////////////////////////////////////
 ShaderElement*			CRender::rimp_select_sh_dynamic	(IRender_Visual	*pVisual, float cdist_sq)
 {
 	int		id	= SE_R2_SHADOW;
 	if	(CRender::PHASE_NORMAL == RImplementation.phase)
 	{
-		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<ps_r2_df_parallax_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
+		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<r_dtex_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
 	}
 	return pVisual->hShader->E[RImplementation.phase]._get();
 }
@@ -42,17 +43,14 @@ ShaderElement*			CRender::rimp_select_sh_static	(IRender_Visual	*pVisual, float 
 	int		id	= SE_R2_SHADOW;
 	if	(CRender::PHASE_NORMAL == RImplementation.phase)
 	{
-		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<ps_r2_df_parallax_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
+		id = ((_sqrt(cdist_sq)-pVisual->vis.sphere.R)<r_dtex_range)?SE_R2_NORMAL_HQ:SE_R2_NORMAL_LQ;
 	}
 	return pVisual->hShader->E[RImplementation.phase]._get();
 }
-extern float					g_fSCREEN		;
 static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_constant* C)
 {
 	float			h			=	ps_r2_df_parallax_h;
-	float			scale		=	g_fSCREEN / (1024.f*768.f);
-	float			range		=	ps_r2_df_parallax_range * scale;
-	RCache.set_c	(C,h,-h/2.f,1.f/range,1.f/range);
+	RCache.set_c	(C,h,-h/2.f,1.f/r_dtex_range,1.f/r_dtex_range);
 }}	binder_parallax;
 
 //////////////////////////////////////////////////////////////////////////

@@ -190,7 +190,6 @@ void					CRender::apply_object			(IRenderable*		O )
 }
 
 // Misc
-float					g_fGLOD;
 float					g_fSCREEN;
 static	BOOL			gm_Nearer	= 0;
 
