@@ -138,7 +138,7 @@ function action_follow:__init (name, storage) super (nil, name)
     self.dist = self.a.distance
     self.sound_s = { 
                    rnd = 100,
-                   maxidle = math.random (5, 10),
+                   maxidle = math.random (30, 60),
                    sumidle = math.random (2, 10),
                    themes = { "weather", "state" } 
                    }
@@ -508,6 +508,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     xr_motivator.addCommonPrecondition(action)
     action:add_effect           (world_property (properties["leader_present"],  true))
     manager:add_action (operators["leader_wait"], action)
+    military_radio.add (npc, action)
     
     action = this.action_follow ("action_follow", storage)
     action:add_precondition     (world_property (stalker_ids.property_alive,    true))
@@ -518,6 +519,7 @@ function  add_to_binder(npc, ini, scheme, section, storage)
     xr_motivator.addCommonPrecondition(action)
     action:add_effect           (world_property (properties["follow"],          false))
     manager:add_action (operators["follow"], action)
+    military_radio.add (npc, action)
     
     action = this.action_raid ("action_raid", storage)
     action:add_precondition (world_property(stalker_ids.property_alive, true))
