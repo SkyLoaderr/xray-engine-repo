@@ -56,9 +56,7 @@ end
 
 	--' ׁ‏זוע
 	level_tasks.proceed(self.object)
-
-	self.object:give_info_portion("encyclopedy")
-		
+	
 	if  self.bCheckStart then
 
 		printf("SET DEFAULT INFOS")		
