@@ -106,57 +106,7 @@ IC float ffGetY(NodeCompressed &tNode, float X, float Z)
 }
 
 #define COMPUTE_DISTANCE_2D(t,p) (sqrtf(SQR((t).x - (p).x) + SQR((t).z - (p).z)))
-
-void CAI_Soldier::vfCreateStraightForwardPath(Fvector &tStartPoint, Fvector tFinishPoint, DWORD dwStartNode, DWORD dwFinishNode, vector<CTravelNode> &tpaPath)
-{
-	CTravelNode tTravelNode;
-	Fvector tPrevPoint;
-	NodeCompressed *tpNode;
-	NodeLink *taLinks;
-	PContour tCurContour, tNextContour;
-	PSegment tSegment;
-	int i, iCount, iNodeIndex;
-	DWORD dwCurNode;
-	float fDistance;
-	CAI_Space &AI = Level().AI;
-
-	tStartPoint.y = ffGetY(*(AI.Node(dwStartNode)),tStartPoint.x,tStartPoint.z);
-	tFinishPoint.y = ffGetY(*(AI.Node(dwFinishNode)),tFinishPoint.x,tFinishPoint.z);
-
-	fDistance = COMPUTE_DISTANCE_2D(tStartPoint,tFinishPoint);
-
-	tpaPath.clear();
-	tTravelNode.P = tStartPoint;
-	tTravelNode.floating = FALSE;
-	tpaPath.push_back(tTravelNode);
-
-	dwCurNode = dwStartNode;
-	tPrevPoint = tStartPoint;
-	do {
-		UnpackContour(tCurContour,dwCurNode);
-		tpNode = AI.Node(dwCurNode);
-		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-		iCount = tpNode->link_count;
-		for ( i=0; i < iCount; i++) {
-			iNodeIndex = AI.UnpackLink(taLinks[i]);
-			UnpackContour(tNextContour,iNodeIndex);
-			IntersectContours(tSegment,tCurContour,tNextContour);
-			if ((lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z)) &&	(fabsf(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) + COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) - fDistance) < .1f) && (fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x- tTravelNode.P.z) > 0.1)) {
-				tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-				tpaPath.push_back(tTravelNode);
-				tPrevPoint = tTravelNode.P;
-				dwCurNode = iNodeIndex;
-				break;
-			}
-		}
-		VERIFY(i<iCount);
-	}
-	while (dwCurNode != dwFinishNode);
-	if (fabsf(tPrevPoint.x + tPrevPoint.z - tFinishPoint.x- tFinishPoint.z) > 0.1) {
-		tTravelNode.P = tFinishPoint;
-		tpaPath.push_back(tTravelNode);
-	}
-}
+#define EPSILON .001f
 
 void CAI_Soldier::vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD> &dwaNodes, vector<CTravelNode> &tpaPath)
 {
@@ -192,7 +142,7 @@ void CAI_Soldier::vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD
 			tpaPath.push_back(tTravelNode);
 		}
 
-		dwCurNode = dwaNodes[iCurrentPatrolPoint];
+		dwCurNode = dwStartNode;
 		tPrevPoint = tStartPoint;
 		do {
 			UnpackContour(tCurContour,dwCurNode);
@@ -203,15 +153,18 @@ void CAI_Soldier::vfCreateRealisticPath(vector<Fvector> &tpaPoints, vector<DWORD
 				iNodeIndex = AI.UnpackLink(taLinks[i]);
 				UnpackContour(tNextContour,iNodeIndex);
 				IntersectContours(tSegment,tCurContour,tNextContour);
-				if ((lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z)) &&	(fabsf(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) + COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) - fDistance) < .1f) && (fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x- tTravelNode.P.z) > 0.1)) {
+				if ((lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tSegment.v1.x,tSegment.v1.z,tSegment.v2.x,tSegment.v2.z,&tTravelNode.P.x,&tTravelNode.P.z)) &&	(fabsf(COMPUTE_DISTANCE_2D(tStartPoint,tTravelNode.P) + COMPUTE_DISTANCE_2D(tFinishPoint,tTravelNode.P) - fDistance) < EPSILON) && (fabsf(tPrevPoint.x + tPrevPoint.z - tTravelNode.P.x- tTravelNode.P.z) > EPSILON)) {
 					tTravelNode.P.y = ffGetY(*(tpNode),tTravelNode.P.x,tTravelNode.P.z);
-					tpaPath.push_back(tTravelNode);
+					if ((fabsf(tTravelNode.P.y - tPrevPoint.y) > EPSILON) || (dwCurNode == dwStartNode))
+						tpaPath.push_back(tTravelNode);
+					else
+						tpaPath[tpaPath.size() - 1].P = tTravelNode.P;
 					tPrevPoint = tTravelNode.P;
 					dwCurNode = iNodeIndex;
 					break;
 				}
 			}
-			VERIFY(i<iCount);
+			R_ASSERT(i<iCount);
 		}
 		while (dwCurNode != dwFinishNode);
 
