@@ -37,7 +37,7 @@ namespace DU{
         box.getcenter(C);
         DrawSelectionBox(C,S,c);
     }
-    void DrawIdentBox(bool bWire, DWORD* c=0);
+    void DrawIdentBox(bool bSolid, bool bWire, DWORD* c=0);
     void DrawBox    (const Fvector& offs, const Fvector& Size, bool bWire, DWORD c);
     void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb);
 
@@ -45,6 +45,10 @@ namespace DU{
     void DrawPivot	(const Fvector& pos);
 	void DrawAxis	();
 	void DrawSelectionRect(const Fvector2& m_SelStart, const Fvector2& m_SelEnd);
+
+    void DrawPrimitiveL(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, DWORD color, bool bCull, bool bCycle);
+    void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle);
+    void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, DWORD pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle);
 };
 //----------------------------------------------------
 #endif /*_INCDEF_D3DUtils_H_*/

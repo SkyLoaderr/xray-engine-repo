@@ -140,7 +140,6 @@ USEUNIT("edit\UI_AITPointTools.cpp");
 USEUNIT("edit\UI_Camera.cpp");
 USEUNIT("edit\ui_control.cpp");
 USEUNIT("edit\UI_CustomTools.cpp");
-USEUNIT("edit\UI_D3D.cpp");
 USEUNIT("edit\UI_DOTools.cpp");
 USEUNIT("edit\UI_DPatchTools.cpp");
 USEUNIT("edit\UI_EventTools.cpp");

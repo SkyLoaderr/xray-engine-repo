@@ -216,7 +216,7 @@ bool ETextureCore::CreateDDSurface(){
 	FS.m_Textures.Update(aname);
     // check file version if non equal remake
 	CheckVersionAndUpdateFiles();
-    HRESULT hr 	= 0;//D3DXCreateTextureFromFile(HW.pDevice, name.c_str(), &m_Surface);
+    HRESULT hr 	= D3DXCreateTextureFromFile(HW.pDevice, name.c_str(), &m_Surface);
     if (FAILED(hr)){
     	ELog.Msg(mtError,"D3D Error: %s",InterpretError(hr));
         return false;

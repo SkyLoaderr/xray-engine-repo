@@ -74,7 +74,7 @@ void CEvent::RenderBox(bool bAlpha ){
 //		Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE);
         Device.SetTransform(D3DTS_WORLD,mTransform);
 	    Device.Shader.Set(Device.m_SelectionShader);
-        DU::DrawIdentBox(false,&C);
+        DU::DrawIdentBox(true,false,&C);
 //		Device.SetRS(D3DRENDERSTATE_CULLMODE,D3DCULL_CCW);
     }else{
         C=D3DCOLOR_RGBA( 32, 32, 32, 255 );
@@ -82,7 +82,7 @@ void CEvent::RenderBox(bool bAlpha ){
         Device.SetTransform(D3DTS_WORLD,mTransform);
 	    Device.Shader.Set(Device.m_WireShader);
         Device.ResetNearer();
-        DU::DrawIdentBox(true,&C);
+        DU::DrawIdentBox(false,true,&C);
         if(Selected()){
             Fbox bb;
 			bb.min.set(-0.5f,-0.5f,-0.5f);

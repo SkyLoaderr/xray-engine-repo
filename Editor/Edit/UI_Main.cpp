@@ -309,6 +309,12 @@ void TUI::Redraw(){
         Device.SetRS(D3DRS_FILLMODE, dwRenderFillMode);
 		Device.SetRS(D3DRS_SHADEMODE,dwRenderShadeMode);
 
+    // draw grid
+    	if (bDrawGrid){
+	        DU::DrawGrid();
+    	    DU::DrawPivot(m_Pivot);
+        }
+
 	    EEditorState est = GetEState();
         switch(est){
         case esEditLibrary: 	if (frmEditLibrary) frmEditLibrary->OnRender(); break;
@@ -316,12 +322,6 @@ void TUI::Redraw(){
         case esEditParticles: 	TfrmEditParticles::OnRender(); break;
         case esEditImages:	 	TfrmImageLib::OnRender(); break;
         case esEditScene:		Scene->Render(&precalc_identity); break;
-        }
-
-    // draw grid
-    	if (bDrawGrid){
-	        DU::DrawGrid();
-    	    DU::DrawPivot(m_Pivot);
         }
 
     // draw selection rect

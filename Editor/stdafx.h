@@ -153,6 +153,7 @@ DEFINE_VECTOR(AnsiString,AStringVec,AStringIt);
 #include "device.h"
 
 DEFINE_VECTOR(FVF::L,FLvertexVec,FLvertexIt);
+DEFINE_VECTOR(FVF::TL,FTLvertexVec,FTLvertexIt);
 DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 
 #define MAX_FOLDER_NAME    255

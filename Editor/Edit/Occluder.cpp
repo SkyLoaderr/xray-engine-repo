@@ -144,7 +144,6 @@ bool COccluder::GetBox( Fbox& box ){
 }
 
 void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
-	FLvertexVec V;
 	Device.SetRS(D3DRS_FILLMODE,D3DFILL_SOLID);
 	if (flag==rpAlphaNormal){
 		DWORD C=D3DCOLOR_RGBA( 128, 255, 128, Selected()?BYTE(255*0.3f):BYTE(255*0.15f) );
@@ -152,12 +151,7 @@ void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
         DU::DrawPlane(m_vCenter,m_vPlaneSize,m_vRotate,D3DCOLOR_RGBA(128,255,128,Selected()?BYTE(255*0.15f):BYTE(255*0.07f)),false,false,0);
         UpdatePoints3D();
         // draw convex plane
-        V.resize(m_3DPoints.m_Points.size());
-        FLvertexIt l_it=V.begin();
-        for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++,l_it++) l_it->set(*it,C);
-        Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-///        Device.DP( D3DPT_TRIANGLEFAN,FVF::F_L, V.begin(), V.size());
-        Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+        DU::DrawPrimitiveL(D3DPT_TRIANGLEFAN,m_3DPoints.m_Points.size()-2,m_3DPoints.m_Points.begin(),m_3DPoints.m_Points.size(),C,false,false);
     }
     if (flag==rpNormal){
         if(Selected()){
@@ -171,13 +165,9 @@ void COccluder::Render( Fmatrix& parent, ERenderPriority flag ){
         DWORD CP=D3DCOLOR_RGBA( 255, 0,   0, 255 );
         DWORD CB=D3DCOLOR_RGBA( 0,   196, 0, Selected()?BYTE(255*1.0f):BYTE(255*0.6f) );
         // edges
-        V.resize(m_3DPoints.m_Points.size());
-        FLvertexIt l_it=V.begin();
-        for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++,l_it++) l_it->set(*it,CB);
-        V.push_back(V.front());
-///        Device.DP( D3DPT_LINESTRIP,FVF::F_L, V.begin(), V.size());
+        DU::DrawPrimitiveL(D3DPT_LINESTRIP,m_3DPoints.m_Points.size(),m_3DPoints.m_Points.begin(),m_3DPoints.m_Points.size(),CB,false,true);
         // points
-        for(it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++)
+        for(FvectorIt it=m_3DPoints.m_Points.begin(); it!=m_3DPoints.m_Points.end(); it++)
             DU::DrawCross(*it,0.025f,0.025f,0.025f,0.025f,0.025f,0.025f,CP,false);
         // sel points
         if (Selected()){

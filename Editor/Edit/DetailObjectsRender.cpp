@@ -117,9 +117,7 @@ void CDetailManager::RenderTexture(float alpha){
 
 	Device.Shader.Set(m_pBaseShader);
     Device.SetTransform(D3DTS_WORLD,precalc_identity);
-    Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
-///    Device.DP(D3DPT_TRIANGLEFAN,FVF::F_LIT, V, 4);
-    Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+    DU::DrawPrimitiveLIT(D3DPT_TRIANGLEFAN,2,V,4,false,false);
 }
 
 //------------------------------------------------------------------------------
@@ -127,8 +125,8 @@ float ssaLIMIT = 3;
 
 void CDetailManager::RenderObjects(const Fvector& EYE)
 {
-	int s_x	= iFloor			(EYE.x/DETAIL_SLOT_SIZE+0.5f);
-	int s_z	= iFloor			(EYE.z/DETAIL_SLOT_SIZE+0.5f);
+	int s_x	= iFloor			(EYE.x/slot_size+.5f);
+	int s_z	= iFloor			(EYE.z/slot_size+.5f);
 
 	UpdateCache					(5);
 
@@ -137,11 +135,16 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 	float fade_range			= fade_limit-fade_start;
 
 	// Collect objects for rendering
-	for (int _z=s_z-dm_size; _z<=(s_z+dm_size); _z++){
-		for (int _x=s_x-dm_size; _x<=(s_x+dm_size); _x++){
+///	Device.Statistic.RenderDUMP_DT_VIS.Begin	();
+	for (int _z=s_z-dm_size; _z<=(s_z+dm_size); _z++)
+	{
+		for (int _x=s_x-dm_size; _x<=(s_x+dm_size); _x++)
+		{
 			// Query for slot
+///			Device.Statistic.RenderDUMP_DT_Cache.Begin	();
 			Slot&	S		= Query(_x,_z);
-			S.dwFrameUsed	= Device.m_Statistic.dwTotalFrame;
+			S.dwFrameUsed	= Device.dwFrame;
+///			Device.Statistic.RenderDUMP_DT_Cache.End	();
 
 			// Transfer visibile and partially visible slot contents
 			BYTE mask		= 0xff;
@@ -157,21 +160,21 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 						if (sp.id==0xff)	continue;
 						vector<SlotItem*>&	vis = m_Visible	[sp.id];
 						float				R   = m_Objects	[sp.id]->m_fRadius;
-
+						
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
-						for (; siIT!=siEND; siIT++)
+						for (; siIT!=siEND; siIT++) 
 						{
 							SlotItem& Item	= *siIT;
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
-
+							
 							if (Device.m_Frustum.testSphere(siIT->P,R*Item.scale))
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
 								float	radius	= R*scale;
-
+								
 								if (Device.GetRenderArea()*radius*radius/dist_sq < ssaLIMIT) continue;
 
 								Item.scale_calculated = scale; //alpha;
@@ -181,7 +184,7 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 					}
 				}
 				break;
-			case fcvFully:		// addition */
+			case fcvFully:		// addition
 				{
 					for (int sp_id=0; sp_id<3; sp_id++)
 					{
@@ -191,13 +194,13 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 						float				R   = m_Objects	[sp.id]->m_fRadius;
 
 						SlotItem			*siIT=sp.items.begin(), *siEND=sp.items.end();
-						for (; siIT!=siEND; siIT++)
+						for (; siIT!=siEND; siIT++) 
 						{
 							SlotItem& Item	= *siIT;
 
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
-
+							
 							float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 							float	scale	= Item.scale*(1-alpha);
 							float	radius	= R*scale;
@@ -213,51 +216,134 @@ void CDetailManager::RenderObjects(const Fvector& EYE)
 			}
 		}
 	}
+///	Device.Statistic.RenderDUMP_DT_VIS.End	();
 
-	Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
+///	Device.Statistic.RenderDUMP_DT_Render.Begin	();
+	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_NONE));
 
 	// Render itself
 	float	fPhaseRange	= PI/16;
 	float	fPhaseX		= sinf(Device.fTimeGlobal*0.1f)	*fPhaseRange;
-	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)	*fPhaseRange;
+	float	fPhaseZ		= sinf(Device.fTimeGlobal*0.11f)*fPhaseRange;
 
-	for (DWORD O=0; O<dm_max_objects; O++){
+	// Get index-stream
+	CIndexStream*	IS	= Device.Streams.Get_IB();
+
+	for (DWORD O=0; O<dm_max_objects; O++)
+	{
 		vector<SlotItem*>&	vis = m_Visible	[O];
 		if (vis.empty())	continue;
 
 		CDetail&	Object		= *m_Objects[O];
-        Device.Shader.Set	(Object.m_pShader);
-		Fmatrix		mXform,mRotXZ;
-		for (DWORD item=0; item<vis.size(); item++){
-            SlotItem&	Instance	= *(vis[item]);
-            float	scale			= Instance.scale_calculated;
+		DWORD	vCount_Object	= Object.m_Vertices.size();
+		DWORD	iCount_Object	= Object.m_Indices.size();
+		DWORD	vCount_Total	= vis.size()*vCount_Object;
 
-            // Build matrix
-            if (scale>0.7f)
-            {
-                mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
-                mXform.mul_43			(mRotXZ,Instance.mRotY);
-                mXform._11				*= scale;
-                mXform._22				*= scale;
-                mXform._33				*= scale;
-                mXform.translate_over	(Instance.P);
-            } else {
-                Fmatrix& M = Instance.mRotY;
-                Fvector& P = Instance.P;
-                mXform._11=M._11*scale;	mXform._12=M._12;		mXform._13=M._13;		mXform._14=M._14;
-                mXform._21=M._21;		mXform._22=M._22*scale;	mXform._23=M._23;		mXform._24=M._24;
-                mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
-                mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
-            }
-            // render objects
-			Device.SetTransform(D3DTS_WORLD,mXform);
-///			Device.DIP(D3DPT_TRIANGLELIST,F_DOV,Object.m_Vertices.begin(),Object.m_Vertices.size(),Object.m_Indices.begin(),Object.m_Indices.size());
+		// calculate lock count needed
+		DWORD	lock_count		= vCount_Total/vs_size;
+		if	(vCount_Total>(lock_count*vs_size))	lock_count++;
+
+		// calculate objects per lock
+		DWORD	o_total			= vis.size();
+		DWORD	o_per_lock		= o_total/lock_count;
+		if  (o_total > (o_per_lock*lock_count))	o_per_lock++;
+
+		// Fill VB (and flush it as nesessary)
+		Device.Shader.Set				(Object.m_pShader);
+		Device.Shader.SetupPass			(0);
+		Device.Primitive.setVertices	(VS->getFVF(),VS->getStride(),VS->getBuffer());
+
+		Fmatrix		mXform,mRotXZ;
+		for (DWORD L_ID=0; L_ID<lock_count; L_ID++)
+		{
+			// Calculate params
+			DWORD	item_start	= L_ID*o_per_lock;
+			DWORD	item_end	= item_start+o_per_lock;
+			if (item_end>o_total)	item_end = o_total;
+			if (item_end<=item_start)	break;
+			DWORD	item_range	= item_end-item_start;
+
+			// Calc Lock params
+			DWORD	vCount_Lock	= item_range*vCount_Object;
+			DWORD	iCount_Lock = item_range*iCount_Object;
+
+			// Lock buffers
+			DWORD	vBase,iBase,iOffset=0;
+			CDetail::fvfVertexIn* vDest	= (CDetail::fvfVertexIn*)	VS->Lock(vCount_Lock,vBase);
+			WORD*	iDest			   	= (WORD*)					IS->Lock(iCount_Lock,iBase);
+			WORD*	dbgIndices		   	= iDest;
+
+			// Filling itself
+			for (DWORD item=item_start; item<item_end; item++)
+			{
+				SlotItem&	Instance	= *(vis[item]);
+				float	scale			= Instance.scale_calculated;
+
+				// Build matrix
+				if (scale>0.7f)
+				{
+					mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
+					mXform.mul_43			(mRotXZ,Instance.mRotY);
+					mXform._11				*= scale;
+					mXform._22				*= scale;
+					mXform._33				*= scale;
+					mXform.translate_over	(Instance.P);
+				} else {
+					Fmatrix& M = Instance.mRotY;
+					Fvector& P = Instance.P;
+					mXform._11=M._11*scale;	mXform._12=M._12;		mXform._13=M._13;		mXform._14=M._14;
+					mXform._21=M._21;		mXform._22=M._22*scale;	mXform._23=M._23;		mXform._24=M._24;
+					mXform._31=M._31;		mXform._32=M._32;		mXform._33=M._33*scale;	mXform._34=M._34;
+					mXform._41=P.x;			mXform._42=P.y;			mXform._43=P.z;			mXform._44=1;
+				}
+
+				// Transfer vertices
+				{
+//					DWORD					C = Instance.C;
+					CDetail::fvfVertexIn	*srcIt = Object.m_Vertices.begin(), *srcEnd = Object.m_Vertices.end();
+					CDetail::fvfVertexIn	*dstIt = vDest;
+					for	(; srcIt!=srcEnd; srcIt++, dstIt++)
+					{
+						mXform.transform_tiny	(dstIt->P,srcIt->P);
+//						dstIt->C	= C;
+						dstIt->u	= srcIt->u;
+						dstIt->v	= srcIt->v;
+					}
+				}
+
+				// Transfer indices (in 32bit lines)
+				VERIFY	(iOffset<65535);
+				{
+					DWORD	item	= (iOffset<<16) | iOffset;
+					DWORD	count	= Object.m_Indices.size()/2;
+					LPDWORD	sit		= LPDWORD(Object.m_Indices.begin());
+					LPDWORD	send	= sit+count;
+					LPDWORD	dit		= LPDWORD(iDest);
+					for		(; sit!=send; dit++,sit++)	*dit=*sit+item;
+					if		(Object.m_Indices.size()&1)
+						iDest[Object.m_Indices.size()-1]=Object.m_Indices[Object.m_Indices.size()-1]+WORD(iOffset);
+				}
+
+				// Increment counters
+				vDest					+=	vCount_Object;
+				iDest					+=	iCount_Object;
+				iOffset					+=	vCount_Object;
+			}
+			VS->Unlock	(vCount_Lock);
+			IS->Unlock	(iCount_Lock);
+
+			// Render
+			Device.Primitive.setIndicesUC	(vBase, IS->getBuffer());
+			DWORD	dwNumPrimitives			= iCount_Lock/3;
+			Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,vCount_Lock,iBase,dwNumPrimitives);
+			UPDATEC							(vCount_Lock,dwNumPrimitives,2);
 		}
 
 		// Clean up
 		vis.clear	();
 	}
-	Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
+	CHK_DX(HW.pDevice->SetRenderState(D3DRS_CULLMODE,D3DCULL_CCW));
+///	Device.Statistic.RenderDUMP_DT_Render.End	();
 }
 
 CDetailManager::Slot&	CDetailManager::Query	(int sx, int sz)

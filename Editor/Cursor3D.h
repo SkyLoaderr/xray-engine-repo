@@ -6,14 +6,13 @@
 
 enum ECursorStyle{
 	csLasso,
-    csCross,
     csPoint
 };
 
 class C3DCursor{
     float   d_angle;
     DWORD	dwColor;
-    FLvertexVec m_RenderBuffer;
+    FvectorVec m_RenderBuffer;
 
     Fvector brush_start, brush_dir;
     Fmatrix brush_mat;

@@ -6,6 +6,7 @@
 #include "ui_main.h"
 #include "scene.h"
 #include "texture.h"
+#include "D3DUtils.h"
 
 //---------------------------------------------------------------------------
 static WORD CrossIndices[4]={0,2,1,3};
@@ -28,15 +29,13 @@ C3DCursor::~C3DCursor(){
 //---------------------------------------------------------------------------
 
 void C3DCursor::SetBrushSegment(float segment){
-    m_RenderBuffer.resize(int(segment+1));
+    m_RenderBuffer.resize(segment);
     d_angle = float(PI_MUL_2)/float(segment);
 }
 //---------------------------------------------------------------------------
 
 void C3DCursor::SetColor(Fcolor& c){
 	dwColor = c.get();
-    for (FLvertexIt v=m_RenderBuffer.begin(); v!=m_RenderBuffer.end(); v++)
-        (*v).color=dwColor;
 }
 //---------------------------------------------------------------------------
 //#define UP_OFFS 1
@@ -79,38 +78,17 @@ void C3DCursor::Render(){
                 m_ViewMat.build_camera(pinf.pt, at, D); m_ViewMat.invert();
                 Fvector p;
                 float s_a = 0;
-                for (DWORD idx=0; idx<m_RenderBuffer.size()-1; s_a+=d_angle, idx++){
+                for (DWORD idx=0; idx<m_RenderBuffer.size(); s_a+=d_angle, idx++){
                     p.set(cosf(s_a)*brush_radius, sinf(s_a)*brush_radius, 0);
                     m_ViewMat.transform(p);
-                    GetPickPoint(p, m_RenderBuffer[idx].p, NULL);
+                    GetPickPoint(p, m_RenderBuffer[idx], NULL);
                 }
-                m_RenderBuffer.back().p.set(m_RenderBuffer[0].p);
 
-    //            UI->D3D_RenderNearer(0.0001);
+//                UI->D3D_RenderNearer(0.0001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
 				Device.Shader.Set(Device.m_WireShader);
-///                Device.DP(D3DPT_LINESTRIP,FVF::F_L,
-///                    &(m_RenderBuffer.front()), m_RenderBuffer.size());
-    //            UI->D3D_ResetNearer();
-            }break;
-            case csCross:{
-                Fmatrix m_ViewMat;
-                Fvector at;
-                at.sub(pinf.pt, N);
-                m_ViewMat.build_camera(pinf.pt, at, D); m_ViewMat.invert();
-                Fvector p;
-                float s_a = 0;
-            	FVF::L pt[4];
-                for (DWORD idx=0; idx<4; s_a+=PI_DIV_2, idx++){
-                    p.set(cosf(s_a)*0.15f, sinf(s_a)*0.15f, 0.f);
-                    m_ViewMat.transform(p);
-	                pt[idx].set(p,dwColor);
-                }
-                Device.RenderNearer(0.001);
-                Device.SetTransform(D3DTS_WORLD,precalc_identity);
-				Device.Shader.Set(Device.m_WireShader);
-///                Device.DIP(D3DPT_LINELIST,FVF::F_L, pt, 4, CrossIndices, 4);
-                Device.ResetNearer();
+                DU::DrawPrimitiveL(D3DPT_LINESTRIP,m_RenderBuffer.size(),m_RenderBuffer.begin(),m_RenderBuffer.size(),dwColor,true,true);
+//                UI->D3D_ResetNearer();
             }break;
             case csPoint:{
             	FVF::TL pt[5];
@@ -125,7 +103,7 @@ void C3DCursor::Render(){
                 Device.RenderNearer(0.001);
                 Device.SetTransform(D3DTS_WORLD,precalc_identity);
 				Device.Shader.Set(Device.m_WireShader);
-///                Device.DP(D3DPT_POINTLIST,FVF::F_TL, pt, 5);
+                DU::DrawPrimitiveTL(D3DPT_POINTLIST,5,pt,5,true,true);
                 Device.ResetNearer();
             }break;
             }

@@ -65,6 +65,8 @@ public:
 	bool				Update			(LPCSTR name);
 
     IC LPCSTR			GetName			(){R_ASSERT(m_pRefs); return m_pRefs->GetName();}
+	void				OnDeviceCreate	();
+	void				OnDeviceDestroy	();
 };
 
 DEFINE_VECTOR(CDetail*,DOVec,DOIt);
@@ -144,6 +146,7 @@ public:
 		SlotPart	  	G[dm_obj_in_slot];
 	};
 
+	CVertexStream*		VS;
 	svector<Slot,dm_cache_size>					m_Cache;
 	svector<vector<SlotItem*>,dm_max_objects> 	m_Visible;
 
@@ -198,6 +201,9 @@ public:
 	int 				SelectionCount          (bool testflag);
 
     bool				Valid					(){return !!m_Slots.size()||!!m_Objects.size();}
+
+	void				OnDeviceCreate			();
+	void				OnDeviceDestroy			();
 };
 #endif /*_INCDEF_DetailObjects_H_*/
 

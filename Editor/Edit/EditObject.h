@@ -20,6 +20,7 @@ struct st_Surface{
 	char			name[MAX_OBJ_NAME];
     AStringVec		textures;       //
     AStringVec		vmaps;			// одинаковый размер массивов!!!
+    AnsiString		sh_name;
     Shader*			shader;
     BYTE			sideflag;
     DWORD			dwFVF;

@@ -30,6 +30,8 @@ static Fvector fwd_vec	={0.f,0.f,1.f};
 static Fvector back_vec	={0.f,0.f,-1.f};
 
 static CRandom DetailRandom(0x26111975);
+
+const DWORD	vs_size				= 3000;
 //------------------------------------------------------------------------------
 
 #define DETOBJ_CHUNK_VERSION		0x1000
@@ -64,8 +66,19 @@ CDetail::CDetail(){
 }
 
 CDetail::~CDetail(){
-	if (m_pShader) 		Device.Shader.Delete(m_pShader);
 	m_Vertices.clear	();
+}
+
+void CDetail::OnDeviceCreate(){
+    m_pRefs->OnDeviceCreate();
+    st_Surface* surf	= *m_pRefs->FirstSurface();
+    R_ASSERT			(surf);
+    m_pShader			= surf->shader;
+}
+
+void CDetail::OnDeviceDestroy(){
+    m_pRefs->OnDeviceDestroy();
+    m_pShader 			= 0;
 }
 
 bool CDetail::Update	(LPCSTR name){
@@ -94,8 +107,7 @@ bool CDetail::Update	(LPCSTR name){
     m_bSideFlag			= surf->sideflag;
 
     // create shader
-	if (m_pShader) 		Device.Shader.Delete(m_pShader);
-    m_pShader			= Device.Shader.Create(surf->shader->shader->cName,surf->textures);
+    m_pShader			= surf->shader;
     R_ASSERT			(m_pShader);
 
     // fill geometry
@@ -209,6 +221,7 @@ CDetailManager::CDetailManager(){
     ZeroMemory			(&m_Header,sizeof(DetailHeader));
     m_Selected.clear	();
     InitRender			();
+	VS					= Device.Streams.Create	(D3DFVF_XYZ | D3DFVF_TEX1, vs_size);
 }
 
 CDetailManager::~CDetailManager(){
@@ -216,6 +229,22 @@ CDetailManager::~CDetailManager(){
     m_Slots.clear		();
 	m_Cache.clear		();
 	m_Visible.clear		();
+}
+
+void CDetailManager::OnDeviceCreate(){
+	// base texture
+    if (m_pBaseTexture) m_pBaseShader = Device.Shader.Create("def_trans",m_pBaseTexture->name(),false);
+	// detail objects
+	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	(*it)->OnDeviceCreate();
+}
+
+void CDetailManager::OnDeviceDestroy(){
+	// base texture
+    if (m_pBaseShader) Device.Shader.Delete(m_pBaseShader);
+	// detail objects
+	for (DOIt it=m_Objects.begin(); it!=m_Objects.end(); it++)
+    	(*it)->OnDeviceDestroy();
 }
 
 DetailSlot&	CDetailManager::GetSlot(DWORD sx, DWORD sz){

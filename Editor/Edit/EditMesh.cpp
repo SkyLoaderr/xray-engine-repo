@@ -25,7 +25,7 @@ void CEditMesh::Construct(){
 }
 
 void CEditMesh::Clear(){
-//	ClearRenderBuffers	();
+	ClearRenderBuffers	();
 	m_Points.clear 		();
     m_Adjs.clear		();
 	m_Faces.clear		();

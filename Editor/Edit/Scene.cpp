@@ -705,6 +705,7 @@ void EScene::OnDeviceCreate(){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceCreate();
 	}
+    if (m_DetailObjects) m_DetailObjects->OnDeviceCreate();
 }
 
 void EScene::OnDeviceDestroy(){
@@ -713,6 +714,7 @@ void EScene::OnDeviceDestroy(){
     	for(ObjectIt _F = lst.begin();_F!=lst.end();_F++)
         	(*_F)->OnDeviceDestroy();
 	}
+    if (m_DetailObjects) m_DetailObjects->OnDeviceDestroy();
 }
 
 int EScene::GetQueryObjects(ObjectList& objset, EObjClass classfilter, int iSel, int iVis, int iLock){

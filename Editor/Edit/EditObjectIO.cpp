@@ -120,11 +120,11 @@ bool CEditObject::Load(CStream& F){
             R_ASSERT(F.FindChunk(EOBJ_CHUNK_SURFACES));
             DWORD cnt = F.Rdword();
             m_Surfaces.resize(cnt);
-            char sh_name[64];
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                 *s_it = new st_Surface();
                 F.RstringZ((*s_it)->name);
-                F.RstringZ(sh_name);
+                F.RstringZ(buf);
+                (*s_it)->sh_name	= buf;
                 (*s_it)->sideflag 	= F.Rbyte();
                 (*s_it)->dwFVF 		= F.Rdword();
                 cnt 				= F.Rdword();
@@ -136,8 +136,8 @@ bool CEditObject::Load(CStream& F){
                 for (AStringIt v_it=(*s_it)->vmaps.begin(); v_it!=(*s_it)->vmaps.end(); v_it++){
                     F.RstringZ		(buf); *v_it = buf;
                 }
-                (*s_it)->shader 	= Device.Shader.Create(sh_name,(*s_it)->textures);
-                SH_ShaderDef* sh_base = SHLib->FindShader(AnsiString(sh_name));
+                (*s_it)->shader 	= Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
+                SH_ShaderDef* sh_base = SHLib->FindShader((*s_it)->sh_name);
                 if (sh_base)        (*s_it)->has_alpha = (sh_base->Passes_Count)?sh_base->Passes[0].Flags.bABlend:false;
             }
 

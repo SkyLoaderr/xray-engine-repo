@@ -66,25 +66,22 @@ void CPortal::Render( Fmatrix& parent, ERenderPriority flag ){
         FvectorVec& src 	= (fraBottomBar->miDrawPortalSimpleModel->Checked)?m_SimplifyVertices:m_Vertices;
         if (src.size()<2) 	return;
         DWORD 				i;
-		WORDVec 			I;
-        FLvertexVec 		LV;
-        LV.resize			(src.size()+2);
-        LV[0].set			(m_Center,C);
-        for(i=0; i<src.size(); i++) LV[i+1].set(src[i],C);
-        LV[LV.size()-1].set	(src[0],C);
-        for(i=0; i<src.size()-1; i++){ I.push_back(i+1);I.push_back(i+2); }
-		I.push_back			(i+1);
-        I.push_back			(1);
+        FvectorVec	 		V;
+        V.resize			(src.size()+2);
+        V[0].set			(m_Center);
+        for(i=0; i<src.size(); i++) V[i+1].set(src[i]);
+        V[V.size()-1].set	(src[0]);
 		Device.RenderNearer(0.0002);
+        // render normal
+        Device.Shader.Set	(Device.m_WireShader);
+        DU::DrawFaceNormal	(m_Center,m_Normal,0.5f,0xff00ff00);
 		// render portal tris
         Device.Shader.Set	(Device.m_SelectionShader);
-///		Device.DP			(D3DPT_TRIANGLEFAN, FVF::F_L, LV.begin(), LV.size());
+        DU::DrawPrimitiveL	(D3DPT_TRIANGLEFAN, V.size()-2, V.begin(), V.size(), C, false, false);
 		// render portal edges
         Device.Shader.Set	(Device.m_WireShader);
-///		Device.DIP			(D3DPT_LINELIST, FVF::F_L, LV.begin(), LV.size(), I.begin(),I.size());
+        DU::DrawPrimitiveL	(D3DPT_LINESTRIP, src.size(), src.begin(), src.size(), C, true, true);
         Device.ResetNearer	();
-        // render normal
-        DU::DrawFaceNormal	(m_Center,m_Normal,0.5f,col.get());
    	}
 }
 
@@ -136,7 +133,7 @@ bool CPortal::Update(bool bLoadMode){
     R_ASSERT(!m_Vertices.empty());
     R_ASSERT(m_Vertices.size()>=3);
 
-    for (DWORD i=0; i<3; i++){//i<m_Vertices.size()-1
+    for (DWORD i=0; i<m_Vertices.size()-1; i++){
     	Fvector temp;
         temp.mknormal(m_Center,m_Vertices[i],m_Vertices[i+1]);
     	m_Normal.add(temp);
@@ -376,8 +373,12 @@ void CPortal::Simplify(){
     norm.div(m_SimplifyVertices.size());
     float m=norm.magnitude();    VERIFY(fabsf(m)>EPS);    norm.div(m);
 
-    if (norm.dotproduct(m_Normal)<0)
+    if (norm.dotproduct(m_Normal)<0){
     	reverse(m_SimplifyVertices.begin(), m_SimplifyVertices.end());
+	    m_Normal.invert(norm);
+    }else{
+	    m_Normal.set(norm);
+    }
 }
 //----------------------------------------------------
 

@@ -174,7 +174,6 @@ void CEditObject::CopyGeometry (CEditObject* source){
         m_OMotions.push_back(new COMotion(*o_it));
 
     ClearRenderBuffers();
-//    UpdateRenderBuffers();
 }
 
 int CEditObject::GetFaceCount(){
@@ -335,12 +334,11 @@ void CEditObject::RenderAnimation(const Fmatrix& parent){
     	float max_t=(float)m_ActiveOMotion->FrameEnd()/fps;
 
         Fvector T,r;
-        FLvertexVec v;
+        FvectorVec v;
         DWORD clr=0xffffffff;
         for (float t=min_t; t<max_t; t+=0.1f){
-            v.push_back(FVF::L());
 	        m_ActiveOMotion->Evaluate(t,T,r);
-            v.back().set(T,clr);
+            v.push_back(T);
         }
 
         // update transform matrix
@@ -354,7 +352,7 @@ void CEditObject::RenderAnimation(const Fmatrix& parent){
 
         Device.Shader.Set		(Device.m_WireShader);
         Device.SetTransform		(D3DTS_WORLD,M);
-///        Device.DP				(D3DPT_LINESTRIP,FVF::F_L,v.begin(),v.size());
+        DU::DrawPrimitiveL		(D3DPT_LINESTRIP,v.size()-1,v.begin(),v.size(),clr,true,false);
     }
 }
 
@@ -571,22 +569,16 @@ void CEditObject::LocalScale( Fvector& amount ){
 }
 
 void CEditObject::ClearRenderBuffers(){
-//	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-//    	if (*_M) (*_M)->ClearRenderBuffers();
+	for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
+    	if (*_M) (*_M)->ClearRenderBuffers();
     m_LoadState &=~ EOBJECT_LS_RENDERBUFFER;
 }
 
-extern bool BeginLightVertices(const Fmatrix& parent);
-extern void EndLightVertices();
-
 void CEditObject::UpdateRenderBuffers(){
 	ClearRenderBuffers();
-    DWORD dwCaps;
-//    if (HW.Caps.bForceSWTransform) dwCaps = D3DVBCAPS_WRITEONLY | D3DVBCAPS_SYSTEMMEMORY;
-//    else dwCaps = D3DVBCAPS_WRITEONLY;
-    EditMeshIt _M;
-//	for (_M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
-//    	(*_M)->UpdateRenderBuffers(Device.GetD3D(),dwCaps);
+    EditMeshIt _M=m_Meshes.begin();
+    EditMeshIt _E=m_Meshes.end();
+	for (; _M!=_E; _M++) (*_M)->UpdateRenderBuffers();
     m_LoadState |= EOBJECT_LS_RENDERBUFFER;
 }
 //------------------------------------------------------------------------------
@@ -636,7 +628,6 @@ void CEditObject::TranslateToWorld() {
     UpdateTransform();
 
     ClearRenderBuffers();
-//    UpdateRenderBuffers();
 
 	UpdateBox();
 }
@@ -677,11 +668,25 @@ st_Surface*	CEditObject::FindSurfaceByName(const char* surf_name, int* s_id){
 
 
 void CEditObject::OnDeviceCreate(){
-//    UpdateRenderBuffers();
+	if (m_LibRef) m_LibRef->OnDeviceCreate();
+	else{
+	// пока буфера не аппаратные не нужно пересоздавать их
+    //	UpdateRenderBuffers();
+	// создать заново shaders
+		for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+			(*s_it)->shader = Device.Shader.Create((*s_it)->sh_name.c_str(),(*s_it)->textures);
+    }
 }
 
 void CEditObject::OnDeviceDestroy(){
-	ClearRenderBuffers();
+	if (m_LibRef) 	m_LibRef->OnDeviceDestroy();
+	else{
+	// пока буфера не аппаратные не нужно пересоздавать их
+    //	ClearRenderBuffers();
+		// удалить shaders
+		for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
+			if ((*s_it)->shader) Device.Shader.Delete((*s_it)->shader);
+    }
 }
 
 void CEditObject::LightenObject(){

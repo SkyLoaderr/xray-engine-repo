@@ -83,6 +83,17 @@ DEFINE_VECTOR		(st_SVert,SVertVec,SVertIt);
 struct st_RenderBuffer;
 struct st_Surface;
 
+struct st_RenderBuffer{
+    DWORD			dwStartVertex;
+    DWORD			dwNumVertex;
+	BYTE* 			buffer;
+    DWORD			buffer_size;
+    CVertexStream*	stream;
+    st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),buffer(0),buffer_size(0){;}
+};
+DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
+DEFINE_MAP(st_Surface*,RBVector,RBMap,RBMapPairIt);
+
 #define EMESH_LS_CF_MODEL	0x0001
 #define EMESH_LS_FNORMALS 	0x0002
 #define EMESH_LS_PNORMALS 	0x0004
@@ -114,9 +125,12 @@ class CEditMesh {
     // internal variables
     BYTE			m_Visible;
     BYTE			m_Locked;
+
+    RBMap			m_RenderBuffers;
 public:
 	st_MeshOptions	m_Ops;
     DWORD 			m_LoadState;
+
 protected:
 	Fbox			m_Box;
     FvectorVec		m_Points;	// |
@@ -129,9 +143,9 @@ protected:
     VMapVec			m_VMaps;
     VMRefsVec		m_VMRefs;
 
-//    void			UpdateRenderBuffers		(LPDIRECT3D7 pD3D,DWORD dwCaps);
-//	void 			FillRenderBuffer		(INTVec& face_lst, int start_face, int num_face, const st_Surface* surf, LPVOID& data);
-//    void 			ClearRenderBuffers		();
+    void			UpdateRenderBuffers		();
+	void 			FillRenderBuffer		(INTVec& face_lst, int start_face, int num_face, const st_Surface* surf, LPBYTE& data);
+    void 			ClearRenderBuffers		();
 
 	void 			RecurseTri				(int id);
 
