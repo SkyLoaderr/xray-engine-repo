@@ -100,44 +100,6 @@ float CAI_Biting::CorpHeuristics(CEntity* E)
 		return flt_max;
 }
 
-//void CAI_Biting::SelectCorp(SEnemySelected& S)
-//{
-//	// Initiate process
-//	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-//	S.Enemy				= 0;
-//	S.bVisible			= FALSE;
-//	S.fCost				= flt_max-1;
-//	
-//	if (Known.size()==0)
-//		return;
-//	// Get visible list
-//	feel_vision_get	(m_tpaVisibleObjects);
-//	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
-//	
-//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-//	
-//	for (u32 i=0; i<Known.size(); i++) {
-//		CEntity*	E = dynamic_cast<CEntity*>(Known[i].key);
-//		float		H = CorpHeuristics(E);
-//		if (H < flt_max) {
-//			bool bVisible = false;
-//			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
-//				if (m_tpaVisibleObjects[i] == E) {
-//					bVisible = true;
-//					break;
-//				}
-//				float	cost	 = bVisible? H*.95f : H;
-//			if (cost<S.fCost)	{
-//				S.Enemy		= E;
-//				S.bVisible	= bVisible;
-//				S.fCost		= cost;
-//				Group.m_bEnemyNoticed = true;
-//			}
-//		}
-//	}
-//}
-
-
 // Возвращает true - если необходимо нанести Hit
 bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat) 
 {
@@ -155,7 +117,8 @@ bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat)
 		Fvector vEnemyBoxCenter;
 		float   fEnemyBoxRadius;
 
-		pA->ph_Movement.GetBoundingSphere(vEnemyBoxCenter,fEnemyBoxRadius);
+		pA->Center(vEnemyBoxCenter);
+		fEnemyBoxRadius = pA->Radius();
 
 		// положение костей внутри bbox врага?
 		bool LeftBoneIn = false, RightBoneIn = false;
