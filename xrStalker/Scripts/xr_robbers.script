@@ -1,4 +1,3 @@
-sounds = {}
 
 function action2(obj,...)
     local act = entity_action()
@@ -46,14 +45,13 @@ function action_robber_activity:__init (npc_name,action_name,storage) super (nil
 	self.state_waiting_for_plr_to_come = 1 -- ждет игрока
 	self.state_shout_stop = 2 -- кричит "не двигаться!"
 	self.state_shout_drop_your_weapon = 3 -- кричит "если хочешь жить, брось оружие!"
-	self.state_shout_will_live = 4 -- кричит "молодец, будешь жить"
-	self.state_go_to_plr = 5 -- идет к игроку
-	self.state_look_at_plr = 6 -- смотрит на игрока
+	self.state_go_to_plr = 4 -- идет к игроку
+	self.state_look_at_plr = 5 -- смотрит на игрока
 	self.state_anim_hit = 6 -- бьет игрока
 
 	self.state = self.state_none
 
-	self.path_main = self.a.path_main
+	self.path_rob = self.a.path_rob
 end
 
 function action_robber_activity:initialize()
@@ -67,12 +65,16 @@ function action_robber_activity:initialize()
 	self.object:set_item(object.idle, self.object:best_weapon())
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
-	self.object:set_movement_type(move.walk)
-	self.object:set_path_type(game_object.patrol_path)
-	self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
+        self.object:set_movement_type(move.stand)
+	--self.object:set_path_type(game_object.patrol_path)
+	--self.object:set_patrol_path(self.path_active, patrol.start, patrol.continue, true)
 	--self.object:set_mental_state(anim.free)
 	--self.object:set_sight(look.search, nil, 0)
 	self.object:set_sight(look.danger, nil, 0)
+
+	self.patrol_rob = patrol(self.path_rob)
+	local look_pt = xr_robbers.vector_copy_by_val(self.patrol_rob:point(0)):sub(self.object:position())
+	self.object:set_sight(look.direction, look_pt, 0)
 
 	self.state = self.state_waiting_for_plr_to_come
 end
@@ -81,6 +83,10 @@ function action_robber_activity:execute()
 	--printf("_debug_robber [%s]: state [%d], animation_count [%d]", self.object:name(), self.state,
 	--self.object:animation_count())
 
+	if not self.actor then
+		self.actor = level.actor()
+	end
+		
 	if self.state == self.state_waiting_for_plr_to_come then
 		--printf("_debug_robber [%s]: adding animations", self.object:name())
 		while self.object:animation_count() <= 1 do
@@ -107,8 +113,30 @@ function action_robber_activity:execute()
 				self.object:add_animation("chasovoy_4", true)
 			end
 		end
-	end
 
+		if self.actor then
+			local distance = self.actor:position():distance_to(self.patrol_rob:point(0))
+			if distance <= 1 then
+				self.expiration_time = device():time_global() + 5000
+				-- TODO: крикнуть "СТОЙ!"
+				printf("STOI !!!")
+				self.state = self.state_shout_stop
+			end
+		end
+
+	elseif self.state == self.state_shout_stop then
+		if device():time_global() >= self.expiration_time then
+			self.expiration_time = device():time_global() + 5000
+			-- TODO: "bros orujie"
+			printf("BROS ORUJIE !!!")
+			self.state = self.state_shout_drop_your_weapon
+		end
+
+	elseif self.state == self.state_shout_drop_your_weapon then
+		if self.actor then
+			
+		end
+	end
 end
 
 function action_robber_activity:finalize()
@@ -126,6 +154,7 @@ function add_to_binder(npc)
 	local operators    = {}
 	local properties  = {}
 
+	local sounds = {}
 	sounds["commander_snd"]        = xr_sounds_id.zmey_robber_base + 1
 	sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_robber_base + 2
 	sounds["soldiers_idle2_snd"]    = xr_sounds_id.zmey_robber_base + 3

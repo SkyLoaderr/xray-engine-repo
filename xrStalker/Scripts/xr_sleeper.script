@@ -21,11 +21,11 @@ end
 --Evaluators
 ----------------------------------------------------------------------------------------------------------------------
 -- Константа
-class "evaluator_need_camper" (property_evaluator)
-function evaluator_need_camper:__init(storage) super ()
+class "evaluator_need_sleeper" (property_evaluator)
+function evaluator_need_sleeper:__init(storage) super ()
   self.a = storage
 end
-function evaluator_need_camper:evaluate ()
+function evaluator_need_sleeper:evaluate ()
   local tt
 
   tt = self.a.enabled == true
@@ -37,9 +37,9 @@ end
 --Actions
 ----------------------------------------------------------------------------------------------------------------------
 -- Обычное поведение
-class "action_camper_activity" (action_base)
-function action_camper_activity:__init (npc_name,action_name,storage) super (nil, action_name)
-  --printf("_bp: action_camper_activity: __init")
+class "action_sleeper_activity" (action_base)
+function action_sleeper_activity:__init (npc_name,action_name,storage) super (nil, action_name)
+  --printf("_bp: action_sleeper_activity: __init")
     self.a = storage
 
     self.state_none = 0
@@ -62,8 +62,8 @@ function action_camper_activity:__init (npc_name,action_name,storage) super (nil
     self.last_look_index = nil
 end
 
-function action_camper_activity:initialize()
-  --printf("_bp: action_camper_activity: initialize")
+function action_sleeper_activity:initialize()
+  --printf("_bp: action_sleeper_activity: initialize")
     action_base.initialize(self)
     self.object:set_node_evaluator()
     self.object:set_path_evaluator()
@@ -85,7 +85,7 @@ function action_camper_activity:initialize()
     self.object:set_callback(self, "waypoint_callback", game_object.movement)
 end
 
-function action_camper_activity:waypoint_callback(obj, action_type, index)
+function action_sleeper_activity:waypoint_callback(obj, action_type, index)
     -- Будет использоваться позже для вызова этой функции с целью иммитации коллбека (для путей, состоящих из одной точки):
     self.last_action_type = action_type
     self.last_index = index
@@ -127,7 +127,7 @@ function action_camper_activity:waypoint_callback(obj, action_type, index)
 end
 
 -- Посмотреть в направлении указанной точки текущего маршрута
-function action_camper_activity:look_at_waypoint(pt)
+function action_sleeper_activity:look_at_waypoint(pt)
     local way = patrol (self.object:patrol ())
     local look_pt = this.vector_copy_by_val(way:point(pt)):sub (self.object:position ())
     self.object:set_sight(look.direction, look_pt, 0)
@@ -137,11 +137,11 @@ function action_camper_activity:look_at_waypoint(pt)
     if not self.projector then
       self.projector = level.object(self.projector_name)
       if not self.projector then
-        --printf("xr_camper: WARNING: unable to initialize projector")
+        --printf("xr_sleeper: WARNING: unable to initialize projector")
       end
     end
     if self.projector then
-      reset_action(self.projector, "xr_camper")
+      reset_action(self.projector, "xr_sleeper")
 --      action(self.projector, look(self.object:position(), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
 --      action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
 --        action(self.projector, look(way:point(pt), self.speedh, self.speedv), cond(cond.time_end, time_infinite))
@@ -149,12 +149,12 @@ function action_camper_activity:look_at_waypoint(pt)
     end
   end
 end
-function action_camper_activity:execute()
-  --[[printf("_debug_camper [%s]: state [%d], animation_count [%d]",
+function action_sleeper_activity:execute()
+  --[[printf("_debug_sleeper [%s]: state [%d], animation_count [%d]",
     self.object:name(), self.state, self.object:animation_count())]]
 
     if self.state == self.state_standing_before_anim and self.expiration_time and device():time_global() >= self.expiration_time then
-    --printf("_debug_camper [%s]: adding animations", self.object:name())
+    --printf("_debug_sleeper [%s]: adding animations", self.object:name())
         while self.object:animation_count() <= 1 do
             local animate = math.random(1, 10)
             if animate == 1 then
@@ -182,7 +182,7 @@ function action_camper_activity:execute()
     self.state = self.state_anim_playing
     end
 
-  --printf("_debug_camper [%s]: animation_count=%d", self.object:name(), self.object:animation_count())
+  --printf("_debug_sleeper [%s]: animation_count=%d", self.object:name(), self.object:animation_count())
 
   if self.state == self.state_anim_playing and self.object:animation_count() <= 1 then
         self.state = self.state_moving
@@ -190,7 +190,7 @@ function action_camper_activity:execute()
         self:waypoint_callback(self.object, self.last_action_type, self.last_index)
     end
 end
-function action_camper_activity:finalize()
+function action_sleeper_activity:finalize()
   --printf("_bp: FINALIZE")
   self.last_look_index = nil -- воможно уходим с точки, последнее неправление взгляда уже не актуально
 
@@ -204,16 +204,16 @@ end
 --Guard binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder(npc)
-  --printf("_bp: add_to_binder (camper)")
+  --printf("_bp: add_to_binder (sleeper)")
   local operators    = {}
   local properties  = {}
 
-  sounds["commander_snd"]     = xr_sounds_id.zmey_camper_base + 1
-  sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_camper_base + 2
-  sounds["soldiers_idle2_snd"]     = xr_sounds_id.zmey_camper_base + 3
-  sounds["soldiers_replics_snd"]     = xr_sounds_id.zmey_camper_base + 4
-  sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_camper_base + 5
-  sounds["soldier_alarm"]     = xr_sounds_id.zmey_camper_base + 6
+  sounds["commander_snd"]     = xr_sounds_id.zmey_sleeper_base + 1
+  sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_sleeper_base + 2
+  sounds["soldiers_idle2_snd"]     = xr_sounds_id.zmey_sleeper_base + 3
+  sounds["soldiers_replics_snd"]     = xr_sounds_id.zmey_sleeper_base + 4
+  sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_sleeper_base + 5
+  sounds["soldier_alarm"]     = xr_sounds_id.zmey_sleeper_base + 6
 
   npc:add_sound ("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
      npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
@@ -224,25 +224,25 @@ function add_to_binder(npc)
 
    local manager = npc:motivation_action_manager()
 
-  properties["need_camper"]   = xr_evaluators_id.zmey_camper_base + 1
+  properties["need_sleeper"]   = xr_evaluators_id.zmey_sleeper_base + 1
 
-  operators["action_camper"]   = xr_actions_id.zmey_camper_base + 1
+  operators["action_sleeper"]   = xr_actions_id.zmey_sleeper_base + 1
 
    -- // evaluators
-    manager:add_evaluator (properties["need_camper"],   this.evaluator_need_camper  (xr_motivator.storage[npc:id()].camper))
+    manager:add_evaluator (properties["need_sleeper"],   this.evaluator_need_sleeper  (xr_motivator.storage[npc:id()].sleeper))
 
-   local new_action = this.action_camper_activity(npc, "action_camper_activity", xr_motivator.storage[npc:id()].camper)
+   local new_action = this.action_sleeper_activity(npc, "action_sleeper_activity", xr_motivator.storage[npc:id()].sleeper)
     new_action:add_precondition    (world_property(stalker_ids.property_alive,   true))
     new_action:add_precondition    (world_property(stalker_ids.property_enemy,   false))
-      new_action:add_precondition    (world_property(properties["need_camper"],   true))
-   new_action:add_effect(world_property(properties["need_camper"], false))
-    manager:add_action(operators["action_camper"], new_action)
+      new_action:add_precondition    (world_property(properties["need_sleeper"],   true))
+   new_action:add_effect(world_property(properties["need_sleeper"], false))
+    manager:add_action(operators["action_sleeper"], new_action)
 
   new_action = manager:action(stalker_ids.action_free_no_alife)
-    new_action:add_precondition(world_property(properties["need_camper"], false))
+    new_action:add_precondition(world_property(properties["need_sleeper"], false))
 
     new_action = manager:action(stalker_ids.action_gather_items)
-    new_action:add_precondition(world_property(properties["need_camper"], false))
+    new_action:add_precondition(world_property(properties["need_sleeper"], false))
 end
 
 -- функции
