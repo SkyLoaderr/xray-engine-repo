@@ -40,7 +40,7 @@
 #include "lcp.h"
 #include "step.h"
 #include <stdlib.h>
-
+#include "Lcp33.h"
 // misc defines
 
 #define ALLOCA dALLOCA16
@@ -434,10 +434,18 @@ dInternalStepFast (dxWorld * world, dxBody * body[2], dReal * GI[2], dReal * Gin
 #	endif
 	dReal *lambda = (dReal *) ALLOCA (m * sizeof (dReal));
 	dReal *residual = (dReal *) ALLOCA (m * sizeof (dReal));
-	dReal lo[6], hi[6];
+	dReal lo[6], hi[6],lo1[6],hi1[6];
 	memcpy (lo, Jinfo.lo, m * sizeof (dReal));
 	memcpy (hi, Jinfo.hi, m * sizeof (dReal));
-	dSolveLCP (m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
+
+	if(m==3&&nub==0)
+	{
+		memcpy (lo1, Jinfo.lo, m * sizeof (dReal));
+		memcpy (hi1, Jinfo.hi, m * sizeof (dReal));
+		dSolveLCP33(m, A, lambda, rhs, residual, nub, lo1, hi1, Jinfo.findex);
+	}
+	//else 
+		dSolveLCP (m, A, lambda, rhs, residual, nub, lo, hi, Jinfo.findex);
 #endif
 
 	// LCP Solver replacement:
@@ -1044,7 +1052,7 @@ quickstart:
 		}
 
 		// now do something with body and joint lists
-		if (jcount>3)	dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
+		if (jcount>0)	dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
 		else			dInternalStepIsland		(world, body, bcount, joint, jcount, stepsize);		
 
 		// what we've just done may have altered the body/joint tag values.

@@ -361,6 +361,12 @@
 				RelativePath="..\..\..\ode\src\array.cpp">
 			</File>
 			<File
+				RelativePath="..\..\..\ode\src\Bounder33.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\Bounder33.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\collision_kernel.cpp">
 			</File>
 			<File
@@ -398,6 +404,9 @@
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\lcp.cpp">
+			</File>
+			<File
+				RelativePath="..\..\..\ode\src\Lcp33.h">
 			</File>
 			<File
 				RelativePath="..\..\..\ode\src\mass.cpp">
