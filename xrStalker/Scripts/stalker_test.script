@@ -1,6 +1,6 @@
 function main()
     actor				= get_actor()
-    stalker				= get_level_object("m_stalker_e")
+--    stalker				= get_level_object("m_stalker_e")
     snd					= sound_object("scripts\\rolik\\alarm")
     wait				(2000)
     snd:play_at_pos		(actor,actor:position())
