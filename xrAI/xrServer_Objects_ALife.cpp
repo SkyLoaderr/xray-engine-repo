@@ -667,7 +667,6 @@ void CSE_ALifeLevelChanger::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 void CSE_ALifeLevelChanger::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	inherited::STATE_Write		(tNetPacket);
-	cform_write					(tNetPacket);
 	tNetPacket.w				(&m_tNextGraphID,sizeof(m_tNextGraphID));
 	tNetPacket.w_u32			(m_dwNextNodeID);
 	tNetPacket.w_float			(m_tNextPosition.x);
