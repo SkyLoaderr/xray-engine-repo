@@ -10,12 +10,12 @@
 #include "..\xrLevel.h"
 
 namespace AI {
+	#pragma pack(push,4)
 	typedef struct tagSGraphEdge {
 		u32		dwVertexNumber;
 		float	fPathDistance;
 	} SGraphEdge;
 
-	#pragma pack(push,4)
 	typedef struct tagSGraphVertex {
 		Fvector	tPoint;
 		u32		dwNodeID:24;

@@ -269,36 +269,38 @@ void CAI_ALife::Save()
 
 void CAI_ALife::Generate()
 {
-	for (_SPAWN_ID i=0; i<(_SPAWN_ID)m_tSpawnHeader.dwCount; ) {
-		u16	wGroupID = m_tpSpawnPoints[i].wGroupID;
-		float fSum = m_tpSpawnPoints[i].fBirthProbability;
-		for (_SPAWN_ID j= i + 1; (j<(_SPAWN_ID)m_tSpawnHeader.dwCount) && (m_tpSpawnPoints[j].wGroupID == wGroupID); j++)
-			fSum += m_tpSpawnPoints[j].fBirthProbability;
+	SPAWN_IT	B = m_tpSpawnPoints.begin();
+	SPAWN_IT	E  = m_tpSpawnPoints.end();
+	for (SPAWN_IT it = B ; it != E; ) {
+		u16	wGroupID = it->wGroupID;
+		float fSum = it->fBirthProbability;
+		for (SPAWN_IT j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++)
+			fSum += j->fBirthProbability;
 		float fProbability = ::Random.randF(0,fSum);
-		fSum = m_tpSpawnPoints[i].fBirthProbability;
-		_SPAWN_ID m = j, k = i;
-		for ( j= i + 1; (j<(_SPAWN_ID)m_tSpawnHeader.dwCount) && (m_tpSpawnPoints[j].wGroupID == wGroupID); j++) {
-			fSum += m_tpSpawnPoints[j].fBirthProbability;
+		fSum = it->fBirthProbability;
+		SPAWN_IT m = j, k = it;
+		for ( j= it + 1; (j != E) && (j->wGroupID == wGroupID); j++) {
+			fSum += j->fBirthProbability;
 			if (fSum > fProbability) {
 				k = j;
 				break;
 			}
 		}
 		CALifeItem	*tpALifeObject;
-		if (pSettings->ReadBOOL(m_tpSpawnPoints[i].caModel, "Scheduled"))
-			if (pSettings->ReadBOOL(m_tpSpawnPoints[i].caModel, "Human"))
+		if (pSettings->ReadBOOL(k->caModel, "Scheduled"))
+			if (pSettings->ReadBOOL(k->caModel, "Human"))
 				tpALifeObject	= new CALifeHuman;
 			else
 				tpALifeObject	= new CALifeMonster;
 		else
 			tpALifeObject		= new CALifeItem;
 
-		tpALifeObject->Init(k,m_tpSpawnPoints);
+		tpALifeObject->Init(_SPAWN_ID(k - B),m_tpSpawnPoints);
 		m_tObjectRegistry.Add(tpALifeObject);
-		i = m;	
+		it = m;	
 	}
-	m_tALifeHeader.dwVersion			= ALIFE_VERSION;
-	m_tALifeHeader.tTimeID				= 0;
+	m_tALifeHeader.dwVersion	= ALIFE_VERSION;
+	m_tALifeHeader.tTimeID		= 0;
 }
 
 void CAI_ALife::Update(u32 dt)
