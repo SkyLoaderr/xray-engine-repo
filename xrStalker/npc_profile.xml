@@ -75,6 +75,5 @@
 		<visual>string_name2</visual>
 		<rank>novice</rank>
 		<team>Lonewolf</team>
-		<start_dialog>stalker_talk_about</start_dialog>
 	</character>
 </xml>

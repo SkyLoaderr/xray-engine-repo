@@ -455,6 +455,9 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\actor.ltx">
+		</File>
+		<File
 			RelativePath=".\npc_profile.xml">
 		</File>
 		<File
