@@ -33,7 +33,7 @@ end
 
 function load_dialog:FillList()
 
-	local f = getFS();
+	local f = getFS()
 	local flist = f:file_list_open_ex("$game_saves$",FS.FS_ListFiles,"*.sav")
 	local f_cnt = flist:Size()
 	
