@@ -44,7 +44,6 @@ TFrame*	TUI_Tools::GetFrame(){
 
 void TUI_Tools::OnCreate()
 {
-	UI.BeginEState	(esEditScene);
     target          = -1;
     action          = -1;
     ZeroMemory      (m_pTools,sizeof(TUI_CustomTools*)*etMaxTarget);
