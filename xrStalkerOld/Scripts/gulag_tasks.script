@@ -101,7 +101,7 @@ function loadStates(gname, type)
 			return 0
 		end
 	end
-	if type == "garbage_stalkers" or type == "garbage_bandits" then
+	if type == "gar_stalkers" or type == "gar_bandits" then
 		return function(gulag)
 			if gulag.state == 1 then return 1 end
 			
