@@ -3,11 +3,11 @@
 
 #include "clsid.h"
 
-ENGINE_API void CLSID2TEXT(CLASS_ID id, char *text) {
+ENGINE_API void __stdcall CLSID2TEXT(CLASS_ID id, char *text) {
 	text[8]=0;
 	for (int i=7; i>=0; i--) { text[i]=char(id&0xff); id>>=8; }
 }
-ENGINE_API CLASS_ID TEXT2CLSID(const char *text) {
+ENGINE_API CLASS_ID __stdcall TEXT2CLSID(const char *text) {
 	char buf[10];
 	strncpy(buf,text,9);
 	int need = 8-strlen(buf);

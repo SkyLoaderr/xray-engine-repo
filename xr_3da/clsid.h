@@ -10,7 +10,7 @@ typedef unsigned __int64	CLASS_ID;
 
 #define MK_CLSID_INV(a,b,c,d,e,f,g,h) MK_CLSID(h,g,f,e,d,c,b,a)
 
-extern ENGINE_API void		CLSID2TEXT(CLASS_ID id, char *text);
-extern ENGINE_API CLASS_ID	TEXT2CLSID(const char *text);
+extern ENGINE_API void		__stdcall CLSID2TEXT(CLASS_ID id, char *text);
+extern ENGINE_API CLASS_ID	__stdcall TEXT2CLSID(const char *text);
 
 #endif
