@@ -36,7 +36,7 @@
 
 #define drand48() (((float) rand())/((float) RAND_MAX))
 #define srand48(x) srand(x)
-#define age_quant	33.f
+#define age_quant	60.606060606060606060606061f
 
 namespace PAPI
 {
@@ -79,10 +79,10 @@ namespace PAPI
 		pVector	size;   // 12
 		pVector	rot;	// 12   60
 		u32		color;	// 4
-		u16		_age;	// 4
+		u16		age;	// 2
 		u16		frame;	// 2
 		Flags16	flags;	// 2
-	};                  // 		72
+	};                  // 		70
 	#pragma pack (pop)
     
 
@@ -117,7 +117,7 @@ namespace PAPI
 				P.rot = rot;
 				P.vel = vel;
 				P.color = color;
-				P._age = iFloor(age*age_quant);
+				P.age 	= iFloor(age*age_quant);
 				P.frame = frame;
 				P.flags.set(flags);
 				p_count++;
