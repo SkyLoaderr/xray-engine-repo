@@ -297,6 +297,25 @@ function process_map_spot(info_id)
 	elseif info_id == "escape_dynamite_done" then
 		remove_location(006, "esc_wolf_location")
 	
+	-- agroprom
+	elseif info_id == "agr_krot_band" then
+		add_location(302, "agr_krot_location")
+
+	elseif info_id == "agr_krot_band_done" then
+		remove_location(302, "agr_krot_location")
+
+	elseif info_id == "agr_find_gunslinger_cache" then
+		add_location(301, "agr_gunslinger_cache_location")
+
+	elseif info_id == "agr_find_gunslinger_cache_done" then
+		remove_location(301, "agr_gunslinger_cache_location")
+
+	elseif info_id == "agroprom_military_case" then
+		add_location(300, "agr_military_case_location")
+
+	elseif info_id == "agroprom_military_case_have" then
+		remove_location(300, "agr_military_case_location")
+
 	-- military	
 	elseif info_id == "mil_max_job" then
 	       add_location (703, "mil_crazy_location")
