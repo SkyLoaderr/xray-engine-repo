@@ -17,13 +17,14 @@ end
 function CSE_NewAttachableItem:STATE_Write	(packet)
 	log							("CSE_NewAttachableItem::STATE_Write called!")
 	cse_alife_item.STATE_Write	(self,packet)
-	packet:w_s32				(self.script_property0)
+	packet:w_s32				(10)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	log							("CSE_NewAttachableItem::STATE_Read called!")
 	cse_alife_item.STATE_Read	(self,packet,size)
 	self.script_property0		= packet:r_s32()
+	printf						("STATE_Read : %d",self.script_property0)
 end
 
 function CSE_NewAttachableItem:UPDATE_Write	(packet)
