@@ -11,8 +11,10 @@
 
 int		psSoundRelaxTime		= 3;
 DWORD	psSoundFlags			= ssWaveTrace;
-float	psSoundOcclusionScale	= 0.7f;
-float	psSoundCull				= 0.1f;
+float	psSoundOcclusionScale	= 0.85f;
+float	psSoundCull				= 0.07f;
+float	psSoundRolloff			= 0.3f;
+float	psSoundDoppler			= 0.3f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -76,6 +78,7 @@ void C3DSoundRender::OnMove()
 	Listener.vPosition.set				(Device.vCameraPosition);
 	Listener.vOrientFront.set			(Device.vCameraDirection);
 	Listener.vOrientTop.set				(Device.vCameraTop);
+	Listener.fDopplerFactor				= psSoundDoppler;
 	Listener.fRolloffFactor				= psSoundRolloff;
 	pListener->SetAllParameters			((DS3DLISTENER*)&Listener, DS3D_DEFERRED );
 	pListener->CommitDeferredSettings	();
