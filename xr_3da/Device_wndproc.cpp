@@ -15,10 +15,10 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam )
 			Device.bActive	= (fActive!=WA_INACTIVE) && (!fMinimized);
 			if (Device.bActive)	{
 				Device.seqAppActivate.Process	(rp_AppActivate);
-				ShowCursor(FALSE);
+				ShowCursor	(FALSE);
 			} else	{
 				Device.seqAppDeactivate.Process(rp_AppDeactivate);
-				ShowCursor(TRUE);
+				ShowCursor	(TRUE);
 			}
 		}
 		return 0;

@@ -34,6 +34,7 @@ void CRenderDevice::Destroy	(void) {
 
 void CRenderDevice::Reset		()
 {
+	ShowCursor				(TRUE);
 	u32 tm_start			= TimerAsync();
 	Resources->reset_begin	();
 	Memory.mem_compact		();
@@ -47,4 +48,5 @@ void CRenderDevice::Reset		()
 	PreCache				(10);
 	u32 tm_end				= TimerAsync();
 	Msg						("*** RESET [%d ms]",tm_end-tm_start);
+	ShowCursor				(FALSE);
 }
