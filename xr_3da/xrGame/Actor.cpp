@@ -847,17 +847,17 @@ void CActor::UpdateCL()
 	};
 
 	if (g_Alive()) {
-//		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
-//		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
-//		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
-//		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
+		float				k =	(mstate_real&mcCrouch)?0.75f:1.f;
+		float				tm = isAccelerated(mstate_real)?(PI/(k*10.f)):(PI/(k*7.f));
+		float				s_k	= ((mstate_real&mcCrouch) ? CROUCH_SOUND_FACTOR : 1.f);
+		float				s_vol = s_k * (isAccelerated(mstate_real) ? 1.f : ACCELERATED_SOUND_FACTOR);
 		SGameMtlPair		*mtl_pair = GMLib.GetMaterialPair(self_material_id(),last_material_id());
-//		CMaterialManager::update		(
-//			Device.fTimeDelta,
-//			s_vol,
-//			tm,
-//			!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall|mcLanding|mcLanding2))))
-//		);
+		CMaterialManager::update		(
+			Device.fTimeDelta,
+			s_vol,
+			tm,
+			!(mtl_pair && (mstate_real & mcAnyMove) && (!(mstate_real & (mcJump|mcFall|mcLanding|mcLanding2))))
+		);
 
 		// landing sounds
 		if (mtl_pair && !sndLanding.feedback && (mstate_real & (mcLanding | mcLanding2))){
