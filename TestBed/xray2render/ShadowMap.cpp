@@ -64,13 +64,16 @@ D3DVERTEXELEMENT9 decl_vert[] =
 };
 
 // 2D-bloom combine
-struct TVERTEX
+struct TVERTEXbloom
 {
 	D3DXVECTOR4 p;
-	FLOAT       tu, tv;
+	D3DXVECTOR2 tc0;
+	D3DXVECTOR2 tc1;
+	D3DXVECTOR2 tc2;
+	D3DXVECTOR2 tc3;
 };
-#define TVERTEX_FVF (D3DFVF_XYZRHW | D3DFVF_TEX1)
-D3DVERTEXELEMENT9 decl_vert2D[] =
+#define TVERTEXbloom_FVF (D3DFVF_XYZRHW | D3DFVF_TEX1)
+D3DVERTEXELEMENT9 decl_vert2Dbloom[] =
 {
 	{ 0, 0,		D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITIONT,	0 },
 	{ 0, 16,	D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,	0 },
@@ -1447,7 +1450,7 @@ HRESULT CMyD3DApplication::RenderCombine_Normal	()
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Combine_Normal.ps);
 	m_pd3dDevice->SetVertexShader			(s_Combine_Normal.vs);
-	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	m_pd3dDevice->SetFVF					(TVERTEXbloom_FVF);
 	cc.flush								(m_pd3dDevice);
 
 	// Render Quad
