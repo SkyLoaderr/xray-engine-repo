@@ -1,16 +1,16 @@
 local units = {
               {
-              name = "walker",
+              name = "escape_patrol_commander2",
               id = -1,
               in_zone = false
               },
               {
-              name = "walker0000",
+              name = "escape_patrol_soldier1",
               id = -1,
               in_zone = false
               },              
               {
-              name = "walker0001",
+              name = "escape_patrol_soldier2",
               id = -1,
               in_zone = false
               }
