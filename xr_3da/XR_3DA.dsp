@@ -510,6 +510,10 @@ SOURCE=.\tss.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\tss_def.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\tss_def.h
 # End Source File
 # End Group
@@ -599,10 +603,6 @@ SOURCE=.\Shader_TSS.h
 # Begin Source File
 
 SOURCE=.\WaveForm.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\xrShaderTypes.h
 # End Source File
 # End Group
 # Begin Group "Textures"

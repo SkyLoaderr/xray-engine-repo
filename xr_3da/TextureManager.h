@@ -38,7 +38,7 @@ private:
 	vector<SConstantList*>			lst_constants;
 
 	// cache
-	struct
+	struct XXX
 	{
 		CPass						pass;
 		CTexture*					surfaces	[8];

@@ -44,20 +44,5 @@ public:
 		if (0!=memcmp(States.begin(),S.States.begin(),States.size()*sizeof(State))) return FALSE;
 		return TRUE;
 	}
-	IC DWORD		record	()
-	{
-		CHK_DX(HW.pDevice->BeginStateBlock());
-		for (DWORD it=0; it<States.size(); it++)
-		{
-			State& S = States[it];
-			switch (S.Type) 
-			{
-			case 0:	CHK_DX(HW.pDevice->SetRenderState((D3DRENDERSTATETYPE)S.v1,S.v2));	break;
-			case 1: CHK_DX(HW.pDevice->SetTextureStageState(S.v1,(D3DTEXTURESTAGESTATETYPE)S.v2,S.v3));	break;
-			}
-		}
-		DWORD SB = 0;
-		CHK_DX(HW.pDevice->EndStateBlock(&SB));
-		return SB;
-	}
+	DWORD			record	();
 };

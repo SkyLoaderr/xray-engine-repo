@@ -6,6 +6,7 @@
 #define SHADER__INCLUDED_
 #pragma once
 
+class	ENGINE_API	CBlender;
 class	ENGINE_API	CTexture;
 class	ENGINE_API	CMatrix;
 class	ENGINE_API	CConstant;
@@ -24,6 +25,8 @@ struct	ENGINE_API	SConstantList	: public svector<CConstant*,8>
 	DWORD	dwReference;
 };
 #pragma warning(default : 4275)
+
+typedef svector<string64,8>			sh_list;
 
 struct	ENGINE_API		CPass 
 {
