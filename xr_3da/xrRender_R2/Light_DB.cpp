@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "light_db.h"
+#include "..\xrLevel.h"
 
 CLight_DB::CLight_DB()
 {
@@ -17,7 +18,6 @@ void CLight_DB::Load			(IReader *fs)
 	{
 		F				= fs->open_chunk		(fsL_LIGHT_CONTROL);
 		xrLIGHT_control	temp;
-		string128		c_name;
 
 		while (!F->eof())
 		{

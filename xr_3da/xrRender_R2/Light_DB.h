@@ -1,5 +1,6 @@
 #pragma once
 
+#include "..\light.h"
 #include "light.h"
 
 class CLight_DB
