@@ -1,4 +1,9 @@
-function break_dialog(first_speaker, second_speaker)
+function break_dialog(first_speaker, second_speaker, id)
+	if id ~= nil then
+		printf("DIALOGA: %s", id)
+	else
+		printf("DIALOGA: nil")
+	end
         first_speaker:stop_talk()
         second_speaker:stop_talk()
 end

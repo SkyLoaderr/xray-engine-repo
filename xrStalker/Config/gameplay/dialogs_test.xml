@@ -94,14 +94,17 @@
 		<precondition>dialogs.dialog_allowed</precondition>    
         <phrase_list>
 			<phrase id="0">
+				<precondition>dialogs.dialog_allowed</precondition> 
                 <text>optional_dialog_test_0</text>
                 <next>1</next>
             </phrase>
             <phrase id="1">
+				<precondition>dialogs.dialog_allowed</precondition>             
                 <text>optional_dialog_test_1</text>
                 <next>11</next>
             </phrase>
             <phrase id="11">
+				<precondition>dialogs.dialog_allowed</precondition>             
                 <text>optional_dialog_test_11</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
