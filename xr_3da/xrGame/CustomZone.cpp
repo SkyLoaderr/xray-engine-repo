@@ -1,9 +1,9 @@
 #include "stdafx.h"
+#include "..\xr_ioconsole.h"
 #include "customzone.h"
 #include "actor.h"
 #include "hudmanager.h"
-#include "..\xr_ioconsole.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 CCustomZone::CCustomZone(void) {
 	m_maxPower = 100.f;

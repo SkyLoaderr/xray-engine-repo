@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "mosquitobald.h"
 #include "hudmanager.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 static
 f32 g_pp_fade = 2000.f;

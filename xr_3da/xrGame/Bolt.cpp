@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "bolt.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 CBolt::CBolt(void) {
 	//m_belt = true;

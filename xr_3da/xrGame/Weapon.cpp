@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "effectorshot.h"
-#include "..\PSObject.h"
+#include "PSObject.h"
 #include "Weapon.h"
 #include "WeaponHUD.h"
 

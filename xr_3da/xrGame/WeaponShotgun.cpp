@@ -4,7 +4,7 @@
 #include "xr_weapon_list.h"
 #include "entity.h"
 #include "effectorshot.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 CWeaponShotgun::CWeaponShotgun(void) : CWeaponCustomPistol("TOZ34")
 {

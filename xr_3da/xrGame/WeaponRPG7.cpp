@@ -3,8 +3,8 @@
 #include "WeaponHUD.h"
 #include "entity.h"
 #include "extendedgeom.h"
-#include "..\PSObject.h"
-#include "..\PGObject.h"
+#include "PSObject.h"
+#include "PGObject.h"
 
 #define INVSQRT2 .70710678118654752440084436210485f
 static void GetBasis(const Fvector &n, Fvector &u, Fvector &v) {

@@ -4,7 +4,6 @@
 
 #include "DemoActor.h"
 #include "..\ObjectAnimator.h"
-#include "dummyobject.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

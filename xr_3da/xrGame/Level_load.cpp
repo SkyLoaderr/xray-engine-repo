@@ -3,7 +3,7 @@
 #include "LevelGameDef.h"
 #include "ai_space.h"
 #include "ai\ai_selector_template.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 void CLevel::vfCreateAllPossiblePaths(string64 sName, SPath &tpPatrolPath)
 {

@@ -2,7 +2,7 @@
 #include "weaponpistol.h"
 #include "WeaponHUD.h"
 #include "effectorshot.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 CWeaponPistol::CWeaponPistol(LPCSTR name) : CWeaponCustomPistol(name)
 {

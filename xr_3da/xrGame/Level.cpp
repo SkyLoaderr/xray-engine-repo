@@ -7,7 +7,7 @@
 #include "..\fdemorecord.h"
 #include "..\fdemoplay.h"
 #include "..\environment.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 #include "Level.h"
 #include "entity.h"

@@ -2,8 +2,8 @@
 #include "weaponmagazinedwgrenade.h"
 #include "WeaponHUD.h"
 #include "entity.h"
-#include "..\PSObject.h"
-#include "..\PGObject.h"
+#include "PSObject.h"
+#include "PGObject.h"
 #include "extendedgeom.h"
 #include "effectorshot.h"
 

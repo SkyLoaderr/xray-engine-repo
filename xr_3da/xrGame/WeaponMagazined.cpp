@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "effectorshot.h"
-#include "..\PSObject.h"
+#include "PSObject.h"
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
@@ -9,7 +9,7 @@
 #include "actor.h"
 #include "xr_weapon_list.h"
 #include "actor.h"
-#include "..\PGObject.h"
+#include "PGObject.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
