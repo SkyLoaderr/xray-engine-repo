@@ -54,7 +54,7 @@ void CRender::Render	()
 	Device.Statistic.RenderDUMP_HUD.End		();
 
 	// Direct-compute
-	// LR_Direct.compute_xf_1					();
+	LR_Direct.compute_xf_1					();
 
 	// pCreator->Environment.RenderFirst	();
 	// pCreator->Environment.RenderLast		();

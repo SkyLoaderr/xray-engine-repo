@@ -37,7 +37,7 @@ void	CLight_Render_Direct::compute_xf_1	()
 	// Shadow-test
 	Fmatrix		mCam;		mCam.invert			(Device.mView);
 	Fvector					camD,camN,camR,camP;
-	Fvector					_F	[5];
+	Fvector					_F	[6];
 
 	// 1
 	camD.set				(mCam.k);
