@@ -42,9 +42,11 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 	xr_vector<u32>			path;
 	u64						start, finish;
 	u32						test_count = path_params.size();
-	
+
+#ifndef DEBUG
 	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+#endif
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -65,8 +67,10 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 
 	finish					= CPU::GetCycleCount();
 	
+#ifndef DEBUG
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+#endif
 
 	xr_delete				(data_storage);
 	xr_delete				(path_manager);
@@ -93,8 +97,10 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 	u64						start, finish;
 	u32						test_count = path_params.size();
 	
+#ifndef DEBUG
 	SetPriorityClass		(GetCurrentProcess(),REALTIME_PRIORITY_CLASS);
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_TIME_CRITICAL);
+#endif
 	Sleep					(1);
 	
 	start					= CPU::GetCycleCount();
@@ -115,8 +121,10 @@ void test					(const _Graph *graph, const xr_vector<SPathParams> &path_params, _
 
 	finish					= CPU::GetCycleCount();
 	
+#ifndef DEBUG
 	SetThreadPriority		(GetCurrentThread(),THREAD_PRIORITY_NORMAL);
 	SetPriorityClass		(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+#endif
 
 	xr_delete				(data_storage);
 	xr_delete				(path_manager);
@@ -247,9 +255,9 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 
 void path_test				(LPCSTR caLevelName)
 {
-	test_all<CLevelGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
+//	test_all<CLevelGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
 	test_all<CGameGraph>				(caLevelName,TEST_COUNT,float(0),float(2000));
-	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
-	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
-	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
+//	test_all<CTestTable<u32,30,30> >	(caLevelName,TEST_COUNT,u32(0),u32(60));
+//	test_all<CTestTable<u32,300,300> >	(caLevelName,TEST_COUNT,u32(0),u32(600));
+//	test_all<CTestTable<u32,900,900> >	(caLevelName,TEST_COUNT,u32(0),u32(1800));
 }
