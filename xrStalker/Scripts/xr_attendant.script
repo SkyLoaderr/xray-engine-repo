@@ -316,9 +316,9 @@ function action_follow:reset_scheme ()
     self.vertex_id = nil
     self.index = nil
     self.state = 0 -- 0 - идем, 1 - стоим
+    self.st.signals = {}
     self.st.signals["leader_section_changed"] = false
     self.st.signals["leader_dead"] = false
-    self.st.signals = {}
     self.st.signals["leader_section_changed"] = false
     self.st.signals["leader_dead"] = false
 end
