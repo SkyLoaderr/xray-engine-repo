@@ -281,8 +281,9 @@ void CTorch::UpdateCL	()
 				m_prev_hp.x		= angle_inertion_var(m_prev_hp.x,-actor->cam_FirstEye()->yaw,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 				m_prev_hp.y		= angle_inertion_var(m_prev_hp.y,-actor->cam_FirstEye()->pitch,TORCH_INERTION_SPEED_MIN,TORCH_INERTION_SPEED_MAX,TORCH_INERTION_CLAMP,Device.fTimeDelta);
 
-				Fvector dir;	
+				Fvector			dir,right,up;	
 				dir.setHP		(m_prev_hp.x+m_delta_h,m_prev_hp.y);
+				Fvector::generate_orthonormal_basis_normalized(dir,up,right);
 
 				Fvector offset	= M.c; 
 				offset.mad		(M.i,TORCH_OFFSET.x);
@@ -292,9 +293,8 @@ void CTorch::UpdateCL	()
 				light_render->set_position	(offset);
 				glow_render->set_position	(M.c);
 
-				light_render->set_rotation	(dir,
-											actor->cam_FirstEye()->vNormal);
-				glow_render->set_direction	(actor->cam_FirstEye()->vDirection);
+				light_render->set_rotation	(dir, right);
+				glow_render->set_direction	(dir);
 
 			}else{
 				light_render->set_position	(M.c);
