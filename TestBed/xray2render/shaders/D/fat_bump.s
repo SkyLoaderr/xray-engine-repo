@@ -49,7 +49,7 @@ v2p_out v_main	( a2v  	IN )
 	OUT.HPos 		= mul	(m_model2view2projection,	IN.Position	);
 	float3 Pe 		= mul	(m_model2view, 				IN.Position	);
 	OUT.Pe 			= float4(Pe.x,Pe.y,Pe.z,0);
-	OUT.tc0 		= IN.TexCoords;
+	OUT.tc0 		= IN.tc0;
 
 	// Calculate the 3x3 transform from tangent space to eye-space
 	// TangentToEyeSpace = object2eye * tangent2object
@@ -75,7 +75,7 @@ p2f 	p_main	( v2p_in IN )
   p2f OUT;
 
   // Transfer position and sample diffuse
-  OUT.Pe	= IN.Pe;
+  OUT.Pe	= float4	(IN.Pe.x,IN.Pe.y,IN.Pe.z,0);
   OUT.C 	= tex2D		(s_texture, IN.tc0);
 
   // Sample normal and rotate it by matrix
