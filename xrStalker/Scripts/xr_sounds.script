@@ -7,6 +7,20 @@ function load_sounds (obj)
     sounds_base = this.load_common (obj, sounds_base)
 end
 -----------------------------------------------------------------------------------------------------------------------------------
+function play_sound_table (obj, delay_min, delay_max, theme, sub_theme, phrase_set)
+    if obj == nil or theme == nil or sub_theme == nil then return end
+    if typeof (phrase_set) ~= "table" or table.getn (phrase_set) == 0 then 
+       this.play_sound (obj, delay_min, theme, sub_theme, phrase_set)
+       return
+    end
+    local phrase = 0
+    if table.getn (phrase_set) == 1 then phrase = 1
+    else
+       phrase = phrase_set[math.random (1, table,getn (phrase_set)]
+    end    
+    this.play_sound (obj, delay_min, theme, sub_theme, phrase)
+end
+-----------------------------------------------------------------------------------------------------------------------------------
 function play_sound (obj, delay, theme, sub_theme, phrase_set, sub_phrase)
 
     if obj == nil or theme == nil then return end
