@@ -4,7 +4,7 @@
 
 SWIContainer			g_SWI,x_SWI;
 VBContainer				g_VB,x_VB;
-IBContainer				g_IB,x_VB;
+IBContainer				g_IB,x_IB;
 xr_vector<LPCSTR>		g_Shaders;
 
 u32						g_batch_count;

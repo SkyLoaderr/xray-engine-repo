@@ -97,7 +97,7 @@ void CBuild::Run	(LPCSTR P)
 	strconcat					(path,P,"\\")	;
 	string_path					lfn				;
 	IWriter* fs					= FS.w_open		(strconcat(lfn,path,"level."));
-	fs->open_chunk				(fsL_HEADER2)	;
+	fs->open_chunk				(fsL_HEADER)	;
 	hdrLEVEL H;	H.XRLC_version	= XRCL_PRODUCTION_VERSION;
 	fs->w						(&H,sizeof(H));
 	fs->close_chunk				();
