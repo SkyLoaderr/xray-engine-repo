@@ -19,6 +19,7 @@ BOOL	testSKIP		(LPCSTR path)
 	if (0==stricmp(p_ext,".key"))	return TRUE;
 	if (0==stricmp(p_name,"build"))	return TRUE;
 	if ('~'==p_ext[1])				return TRUE;
+	if ('_'==p_ext[1])				return TRUE;
 	return FALSE;
 }
 BOOL	testVFS			(LPCSTR path)
@@ -28,10 +29,10 @@ BOOL	testVFS			(LPCSTR path)
 	_splitpath			(path, 0, 0, p_name, p_ext );
 	
 	if (0==stricmp(p_name,"level"))	{
-		if (stricmp(p_ext,".game"))		return FALSE;
-		if (stricmp(p_ext,".hom"))		return FALSE;
-		if (stricmp(p_ext,".ltx"))		return FALSE;
-		if (stricmp(p_ext,".spawn"))	return FALSE;
+		if (0==stricmp(p_ext,".game"))		return FALSE;
+		if (0==stricmp(p_ext,".hom"))		return FALSE;
+		if (0==stricmp(p_ext,".ltx"))		return FALSE;
+		if (0==stricmp(p_ext,".spawn"))	return FALSE;
 		return TRUE;
 	}
 	return FALSE;
