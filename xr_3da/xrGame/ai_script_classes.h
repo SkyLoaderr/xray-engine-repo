@@ -21,6 +21,7 @@
 #include "hit_memory_manager.h"
 #include "sound_memory_manager.h"
 #include "missile.h"
+#include "script_binder.h"
 
 class CInventoryItem;
 class CLuaHit;
@@ -499,4 +500,12 @@ public:
 			CLuaGameObject		*GetEnemy			() const;
 			CLuaGameObject		*GetCorpse			() const;
 
+	IC		void				set_object			(const luabind::object &object)
+	{
+		CScriptBinder			*binder = dynamic_cast<CScriptBinder*>(m_tpGameObject);
+		if (!binder)
+			LuaOut					(Lua::eLuaMessageTypeError,"CScriptBinder : cannot access class member set_object!");
+		else
+			binder->set_lua_object	(object);
+	}
 };

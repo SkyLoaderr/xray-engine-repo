@@ -28,7 +28,6 @@ void CScriptBinder::init			()
 void CScriptBinder::reinit			()
 {
 	inherited::reinit		();
-	VERIFY					(!m_lua_instance);
 }
 
 void CScriptBinder::Load			(LPCSTR section)
@@ -39,6 +38,7 @@ void CScriptBinder::Load			(LPCSTR section)
 void CScriptBinder::reload			(LPCSTR section)
 {
 	inherited::reload		(section);
+	VERIFY					(!m_lua_instance);
 	if (!pSettings->line_exist(section,"script_binding"))
 		return;
 	
@@ -62,10 +62,14 @@ void CScriptBinder::reload			(LPCSTR section)
 		strcpy				(function,J + 1);
 	}
 
-	if (Script::bfIsObjectPresent(ai().lua(),name_space,function,LUA_TFUNCTION))
-		lua_dostring		(ai().lua(),strconcat(name_space,string_to_run,"()"));
-	else
+	if	(!Script::bfIsObjectPresent(ai().lua(),name_space,function,LUA_TFUNCTION)) {
 		Lua::LuaOut			(Lua::eLuaMessageTypeError,"function %s is not loaded!",string_to_run);
+		return;
+	}
+
+	luabind::object			lua_namespace	= luabind::get_globals(ai().lua())[name_space];
+	luabind::functor<void>	lua_function	= luabind::object_cast<luabind::functor<void> >(lua_namespace[function]);
+	lua_function			(lua_game_object());
 }
 
 BOOL CScriptBinder::net_Spawn		(LPVOID DC)

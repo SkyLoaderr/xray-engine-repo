@@ -339,6 +339,44 @@ bool Script::bfGetNamespaceTable(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
 	return	(true); 
 }
 
+CLuaVirtualMachine *Script::get_namespace_table(CLuaVirtualMachine *tpLuaVM, LPCSTR N)
+{
+	if (!xr_strlen(N))
+		return				(tpLuaVM);
+	lua_pushstring 			(tpLuaVM,"_G"); 
+	lua_gettable 			(tpLuaVM,LUA_GLOBALSINDEX); 
+	string256				S2;
+	strcpy					(S2,N);
+	LPCSTR					S	= S2;
+	for (;;) { 
+		if (!xr_strlen(S))
+			return			(0); 
+		LPSTR				S1 = strchr(S,'.'); 
+		if (S1)
+			*S1				= 0; 
+		lua_pushstring 		(tpLuaVM,S); 
+		lua_gettable 		(tpLuaVM,-2); 
+		if (lua_isnil(tpLuaVM,-1)) { 
+			lua_pop			(tpLuaVM,2); 
+			return			(0);	//	there is no namespace!
+		}
+		else 
+			if (!lua_istable(tpLuaVM,-1)) { 
+				lua_pop		(tpLuaVM,2); 
+				Debug.fatal	(" Error : the namespace name is already being used by the non-table object!\n");
+				return		(0); 
+			} 
+
+			lua_remove		(tpLuaVM,-2);
+
+			if (S1)
+				S			= ++S1; 
+			else
+				break; 
+	} 
+	return					(tpLuaVM); 
+}
+
 bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR identifier, int type)
 {
 	lua_pushnil (tpLuaVM); 
@@ -355,6 +393,7 @@ bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR identifier, 
 
 bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR namespace_name, LPCSTR identifier, int type)
 {
-	if (!bfGetNamespaceTable(tpLuaVM,namespace_name)) return (false); 
-	return (bfIsObjectPresent(tpLuaVM,identifier,type)); 
+	if (xr_strlen(namespace_name) && !bfGetNamespaceTable(tpLuaVM,namespace_name))
+		return				(false); 
+	return					(bfIsObjectPresent(tpLuaVM,identifier,type)); 
 }

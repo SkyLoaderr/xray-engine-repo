@@ -154,15 +154,16 @@ BOOL CGameObject::net_Spawn		(LPVOID	DC)
 	if (l_tpVisual) 
 		cNameVisual_set				(l_tpVisual->get_visual());
 
-	reinit							();
-	reload							(*cNameSect());
-
-	setDestroy						(FALSE);	// @@@ WT
-
 	// Naming
 	cName_set						(E->s_name);
 	cNameSect_set					(E->s_name);
-	if (E->s_name_replace[0])		cName_set		(E->s_name_replace);
+	if (E->s_name_replace[0])
+		cName_set					(E->s_name_replace);
+
+	reload							(*cNameSect());
+	reinit							();
+
+	setDestroy						(FALSE);	// @@@ WT
 
 	// XForm
 	XFORM().setXYZ					(E->o_Angle);
