@@ -58,15 +58,11 @@ public:
 				float fStraightDistance = tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint);
 				if (fStraightDistance < m_parameters->max_range) {
 					try {
-						if (fStraightDistance < 200.f) {
-							u32 vertex_id = m_graph->check_position_in_direction(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint);
-							if (m_graph->valid_vertex_id(vertex_id))
-								fDistance = tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint);
-							else
-								fDistance = flt_max;
-						}
+						u32 vertex_id = m_graph->check_position_in_direction(tCurrentGraphVertex.tNodeID,tCurrentGraphVertex.tLocalPoint,tNeighbourGraphVertex.tLocalPoint);
+						if (m_graph->valid_vertex_id(vertex_id))
+							fDistance = tCurrentGraphVertex.tLocalPoint.distance_to(tNeighbourGraphVertex.tLocalPoint);
 						else
-							fDistance = m_parameters->max_range;
+							fDistance = fDistance = m_parameters->max_range;
 						if (fDistance == m_parameters->max_range) {
 							VERIFY						(m_parameters);
 							m_parameters->m_start_point = tCurrentGraphVertex.tLocalPoint;
