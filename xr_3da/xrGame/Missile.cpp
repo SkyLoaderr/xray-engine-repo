@@ -33,10 +33,7 @@ void CMissile::reinit		()
 	inherited::reinit	();
 	m_state				= MS_HIDDEN;
 	m_throw				= false;
-	m_fThrowForce				= 0;
-	m_fMinForce			= 20.f;
-	m_fMaxForce			= 200.f;
-	m_fForceGrowSpeed	= 50.f;
+	m_fThrowForce		= 0;
 	m_dwDestroyTime		= 0xffffffff;
 	m_bPending			= false;
 	m_fake_missile		= NULL;
