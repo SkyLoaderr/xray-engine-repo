@@ -643,8 +643,10 @@ void CActor::UpdateCL()
 	float dt = float(Device.dwTimeDelta)/1000.0f;
 
 	if (eacFirstEye == cam_active && pWeapon &&
-		pWeapon->IsZoomed() && !pWeapon->IsRotatingToZoom())
+		pWeapon->IsZoomed() && (!pWeapon->ZoomTexture() ||
+		(!pWeapon->IsRotatingToZoom() && pWeapon->ZoomTexture())))
 		cam_Update(dt, pWeapon->GetZoomFactor());
+	
 	else 
 		cam_Update(dt, DEFAULT_FOV);
 
