@@ -190,8 +190,8 @@ BOOL CPEDef::Load(IReader& F)
 	string256		buf;
 	if (m_Flags.is(dfSprite)){
 		R_ASSERT	(F.find_chunk(PED_CHUNK_SPRITE));
-		F.r_stringZ	(buf); m_ShaderName = xr_strdup(buf);
-		F.r_stringZ	(buf); m_TextureName= xr_strdup(buf);
+		F.r_stringZ	(m_ShaderName);
+		F.r_stringZ	(m_TextureName);
 	}
 
 	if (m_Flags.is(dfFramed)){

@@ -11,17 +11,13 @@
 	#include "ui_main.h"
 	void __stdcall ELogCallback(LPCSTR txt)
 	{
-		if (0!=txt[0]){
-        	if (txt[0]=='#'){
-            	if (txt[1]){
-                    if (txt[1]=='!')TfrmLog::AddDlgMessage(mtError,AnsiString(txt+2));
-                    else			TfrmLog::AddDlgMessage(mtInformation,AnsiString(txt+1));
-                }
-            }else{
-                if (txt[0]=='!')TfrmLog::AddMessage(mtError,AnsiString(txt+1));
-                else			TfrmLog::AddMessage(mtInformation,AnsiString(txt));
-            }
-		}
+    	if (0==txt[0]) return;
+    	bool bDlg 		= ('#'==txt[0])||((0!=txt[1])&&('#'==txt[1]));
+        TMsgDlgType mt	= ('!'==txt[0])||((0!=txt[1])&&('!'==txt[1]))?mtError:mtInformation;
+        if (('!'==txt[0])||('#'==txt[0])) txt++;
+        if (('!'==txt[0])||('#'==txt[0])) txt++;
+		if (bDlg)		TfrmLog::AddDlgMessage	(mt,txt);
+        else			TfrmLog::AddMessage		(mt,txt);
 	}
 #endif
 #ifdef _LW_EXPORT

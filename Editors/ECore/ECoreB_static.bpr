@@ -71,7 +71,8 @@
       intermediate\UI_Camera.obj intermediate\UI_MainCommand.obj 
       intermediate\UI_Main.obj intermediate\stdafx.obj 
       intermediate\UI_ToolsCustom.obj intermediate\ImageManagerDO.obj 
-      intermediate\ParticleEffectDef.obj intermediate\LevelGameDef.obj"/>
+      intermediate\ParticleEffectDef.obj intermediate\LevelGameDef.obj 
+      intermediate\ai_sounds.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -258,6 +259,7 @@
       <FILE FILENAME="Editor\ImageManagerDO.cpp" FORMNAME="" UNITNAME="ImageManagerDO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\ParticleEffectDef.cpp" FORMNAME="" UNITNAME="ParticleEffectDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LevelGameDef.cpp" FORMNAME="" UNITNAME="LevelGameDef" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\ai_sounds.cpp" FORMNAME="" UNITNAME="ai_sounds" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
