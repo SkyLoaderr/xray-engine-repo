@@ -275,6 +275,8 @@ BOOL CHOM::visible		(Fbox& B)
 
 BOOL CHOM::visible		(sPoly& P)
 {
+	if (0==m_pModel)	return TRUE;
+
 	// Find min/max points of xformed-box
 	Fmatrix&	XF		= Device.mFullTransform;
 	Fvector2	min,max;

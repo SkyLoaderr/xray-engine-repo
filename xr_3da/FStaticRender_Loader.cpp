@@ -251,7 +251,7 @@ void CRender::LoadSectors(CStream* fs)
 
 	// debug
 	for (int d=0; d<Sectors.size(); d++)
-		Sectors[d].DebugDump	();
+		Sectors[d]->DebugDump	();
 
 	pLastSector = 0;
 }

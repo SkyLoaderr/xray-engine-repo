@@ -134,10 +134,11 @@ void CSector::Render(CFrustum &F)
 			if (PORTAL->bDualRender) {
 				pSector = PORTAL->getSector(this);
 			} else {
-				pSector = PORTAL->getSectorBack(Device.vCameraPosition);
+				pSector = PORTAL->getSectorBack		(Device.vCameraPosition);
 				if (pSector==this)			continue;
 				if (pSector==pLastSector)	continue;
 			}
+
 			vector<Fvector> &POLY = PORTAL->getPoly();
 			S.assign(POLY.begin(),POLY.size()); D.clear();
 
