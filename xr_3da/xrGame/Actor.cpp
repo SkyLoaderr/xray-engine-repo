@@ -414,6 +414,9 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	//проспавнить PDA у InventoryOwner
 	if (!CInventoryOwner::net_Spawn(DC)) return FALSE;
 	
+//	m_PhysicMovementControl.CreateCharacter();
+//	m_PhysicMovementControl.SetPhysicsRefObject(this);
+//	m_PhysicMovementControl.SetPLastMaterial(&m_last_material_id);
 	m_PhysicMovementControl.SetPosition	(Position());
 	m_PhysicMovementControl.SetVelocity	(0,0,0);
 
