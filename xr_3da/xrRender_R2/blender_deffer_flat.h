@@ -4,7 +4,7 @@ class CBlender_deffer_flat : public IBlender
 {
 public:
 	virtual		LPCSTR		getComment()	{ return "LEVEL: defer-base-flat";	}
-	virtual		BOOL		canBeDetailed()	{ return FALSE;	}
+	virtual		BOOL		canBeDetailed()	{ return TRUE;	}
 	virtual		BOOL		canBeLMAPped()	{ return FALSE;	}
 
 	virtual		void		Save			(IWriter&	fs);

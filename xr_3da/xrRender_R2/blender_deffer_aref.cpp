@@ -29,13 +29,29 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 			strcpy			(fname,C.L_textures[0]); if (strext(fname)) *strext(fname)=0;
 			strconcat		(fnameA,fname,"_bump");
 			strconcat		(fnameB,"$user$",fname,"_bumpX");
-			// bump found
-			C.r_Pass		("deffer_base_bump","deffer_base_aref_bump",FALSE);
-			C.r_Sampler		("s_base",		C.L_textures[0]);
-			C.r_Sampler		("s_ncm",		r2_ncm,		false,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
-			C.r_Sampler		("s_bumpX",		fnameB);	// should be before base bump
-			C.r_Sampler		("s_bump",		fnameA);
-			C.r_End			();
+
+			if (C.bDetail)	
+			{
+				string256		fNameDT;
+				strconcat		(fNameDT,C.detail_texture,"_bump");
+
+				// bump + Dbump
+				C.r_Pass		("deffer_base_bump_d","deffer_base_aref_bump_d",FALSE);
+				C.r_Sampler		("s_base",		C.L_textures[0]);
+				C.r_Sampler		("s_ncm",		r2_ncm,		false,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+				C.r_Sampler		("s_bumpX",		fnameB	);	// should be before base bump
+				C.r_Sampler		("s_bump",		fnameA	);
+				C.r_Sampler		("s_bumpD",		fNameDT	);
+				C.r_End			();
+			} else {
+				// bump only
+				C.r_Pass		("deffer_base_bump","deffer_base_aref_bump",FALSE);
+				C.r_Sampler		("s_base",		C.L_textures[0]);
+				C.r_Sampler		("s_ncm",		r2_ncm,		false,D3DTADDRESS_CLAMP,D3DTEXF_LINEAR,D3DTEXF_NONE,D3DTEXF_LINEAR);
+				C.r_Sampler		("s_bumpX",		fnameB);	// should be before base bump
+				C.r_Sampler		("s_bump",		fnameA);
+				C.r_End			();
+			}
 		}
 		break;
 	case 1:		// smap-direct
