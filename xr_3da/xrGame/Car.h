@@ -14,6 +14,7 @@ private:
 	CPHJeep					m_jeep;
 	bool					m_repairing;
 	CCameraBase*			camera;
+	float					m_fCamDPitch;
 	
 	void					cam_Update			(float dt);
 

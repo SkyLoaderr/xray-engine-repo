@@ -11,10 +11,11 @@ extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
 {
-	camera		= new CCameraLook		(this, pSettings, "car_look_cam",		false);
-	m_jeep.Create(ph_world->GetSpace(),phWorld);
+	camera			= new CCameraLook		(this, pSettings, "car_look_cam",		false);
+	m_jeep.Create	(ph_world->GetSpace(),phWorld);
 	ph_world->AddObject((CPHObject*)this);
-	m_repairing=false;
+	m_repairing		=false;
+	m_fCamDPitch	= 0.5f;
 }
 
 CCar::~CCar(void)
@@ -95,7 +96,7 @@ void	CCar::cam_Update			(float dt)
 	clXFORM().k.getHP				(yaw_dest,pitch_dest);
 
 	angle_lerp						(camera->yaw,-yaw_dest,PI_DIV_4,dt);
-	angle_lerp						(camera->pitch,-pitch_dest,PI_DIV_4,dt);
+	angle_lerp						(camera->pitch,pitch_dest+m_fCamDPitch,PI_DIV_4,dt);
 	camera->Update					(P,Da);
 	Level().Cameras.Update			(camera);
 }
@@ -192,8 +193,8 @@ void	CCar::OnKeyboardPress		(int cmd)
 	case kACCEL:	m_jeep.DriveVelocity=1*M_PI;
 					m_jeep.Drive();
 					break;
-	case kRIGHT:	m_jeep.Steer(1);
-		break;
+	case kRIGHT:	m_jeep.Steer(1);		
+					break;
 	case kLEFT:		m_jeep.Steer(-1);
 					break;
 	case kUP:		m_jeep.DriveDirection=1;
@@ -220,14 +221,10 @@ void	CCar::OnKeyboardRelease		(int cmd)
 	case kACCEL:	m_jeep.DriveVelocity=12*M_PI;
 					m_jeep.Drive();
 					break;
-	case kLEFT:		m_jeep.Steer(0);
-					break;
+	case kLEFT:	
 	case kRIGHT:	m_jeep.Steer(0);
 					break;
-	case kUP:		m_jeep.DriveDirection=0;
-					m_jeep.DriveForce=0;
-					m_jeep.Drive();
-					break;
+	case kUP:	
 	case kDOWN:		m_jeep.DriveDirection=0;
 					m_jeep.DriveForce=0;
 					m_jeep.Drive();
@@ -248,12 +245,18 @@ void	CCar::OnKeyboardHold		(int cmd)
 	case kCAM_ZOOM_IN: 
 	case kCAM_ZOOM_OUT: 
 		camera->Move(cmd); break;
-	case kFWD:		camera->Move(kUP);		break;
-	case kBACK:		camera->Move(kDOWN);	break;
-	case kL_STRAFE: camera->Move(kLEFT);	break;
-	case kR_STRAFE: camera->Move(kRIGHT);	break;
-	case kREPAIR:	m_repairing=true;		break;
+	case kFWD:		m_fCamDPitch += PI_DIV_4*Device.fTimeDelta; //camera->Move(kUP);		
+		break;
+	case kBACK:		m_fCamDPitch -= PI_DIV_4*Device.fTimeDelta; //camera->Move(kDOWN);	
+		break;
+	case kL_STRAFE: camera->Move(kLEFT);	
+		break;
+	case kR_STRAFE: camera->Move(kRIGHT);	
+		break;
+	case kREPAIR:	m_repairing=true;		
+		break;
 	}
+	clamp(m_fCamDPitch, 0.f, 1.f);
 }
 
 void	CCar::OnHUDDraw				(CCustomHUD* hud)
