@@ -7,12 +7,12 @@
 
 void	EV_LIST::_CreateOne(const char* DEF)
 {
-	char	Event[128],Param[128];
+	char	Event[1280],Param[1280];
 	Event[0]=0; Param[0]=0;
 	sscanf	(DEF,"%[^,],%s",Event,Param);
 	if (Event[0]) {
 		// Parse param's macroses
-		char	Parsed	[128], sBegin[128], sName[128], sEnd[128], sBuf[128];
+		char	Parsed	[1280], sBegin[1280], sName[1280], sEnd[1280], sBuf[128];
 		sscanf	(Param,"%[^$]$rp$%[^$]$%s",sBegin,sName,sEnd);
 		if (sName[0])	{
 			int id		= Level().get_RPID(sName);
