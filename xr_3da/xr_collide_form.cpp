@@ -86,7 +86,7 @@ BOOL CCF_Polygonal::_clRayTest( RayQuery& Q)
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
-	temp.invert			(owner->clTransform);
+	temp.invert			(owner->clXFORM());
 	temp.transform_tiny	(dS,Q.start);
 	temp.transform_dir	(dD,Q.dir);
 	
@@ -110,7 +110,7 @@ BOOL CCF_Polygonal::_svRayTest( RayQuery& Q)
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
-	temp.invert			(owner->svTransform);
+	temp.invert			(owner->svXFORM());
 	temp.transform_tiny	(dS,Q.start);
 	temp.transform_dir	(dD,Q.dir);
 	
@@ -133,10 +133,10 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
 	{
 		// Return only top level
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
-		Q.AddBox			(owner->svTransform,s_box);
+		Q.AddBox			(owner->svXFORM(),s_box);
 	} else {
 		// XForm box
-		Fmatrix&	T = owner->svTransform;
+		const Fmatrix&	T = owner->svXFORM();
 		Fmatrix		w2m,b2m;
 		w2m.invert	(T);
 		b2m.mul_43	(w2m,M);
@@ -203,7 +203,7 @@ void CCF_Skeleton::BuildState()
 	CKinematics* K	= PKinematics(owner->Visual());
 	K->Calculate	();
 	
-	Fmatrix &L2W	= owner->clTransform;
+	const Fmatrix &L2W	= owner->clXFORM();
 	Fmatrix Mbox,T,TW;
 	for (DWORD i=0; i<model.size(); i++)
 	{
@@ -267,7 +267,7 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
 		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
 		// Return only top level
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
-		Q.AddBox			(owner->svTransform,s_box);
+		Q.AddBox			(owner->svXFORM(),s_box);
 	} else { 
 		if (dwFrame!=Device.dwFrame) BuildState();
 
@@ -296,7 +296,7 @@ CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 	A[6].set( +1, -1, +1);
 	A[7].set( +1, -1, -1);
 
-	Fmatrix& T = O->svTransform;
+	const Fmatrix& T = O->svXFORM();
 	for (int i=0; i<8; i++) {
 		A[i].mul(.5f);
 		T.transform_tiny(B[i],A[i]);
@@ -321,7 +321,7 @@ BOOL CCF_EventBox::Contact(CObject* O)
 	float			R = V->bv_Radius;
 	
 	Fvector			PT;
-	O->svTransform.transform_tiny(PT,P);
+	O->svXFORM().transform_tiny(PT,P);
 	
 	for (int i=0; i<6; i++) {
 		if (Planes[i].classify(PT)>R) return FALSE;
@@ -407,7 +407,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 	if (0==V)		return FALSE;
 	Fvector& P		= V->bv_Position;
 	S.R				= V->bv_Radius;
-	O->svTransform.transform_tiny	(S.P,P);
+	O->svXFORM().transform_tiny	(S.P,P);
 	if (Sphere.intersect(S))	return TRUE;
 	else						return FALSE;
 	

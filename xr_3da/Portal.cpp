@@ -77,7 +77,7 @@ void CSector::Render(CFrustum &F)
 			if (O->bVisible) 
 			{
 				FBasicVisual*	pV = O->Visual();
-				O->clTransform.transform_tiny(Tpos, pV->bv_Position);
+				O->clXFORM().transform_tiny(Tpos, pV->bv_Position);
 				if (F.testSphere_dirty(Tpos,pV->bv_Radius))	O->OnVisible	();
 			}
 		}
@@ -165,7 +165,7 @@ void CSector::ll_GetObjects	(CFrustum& F, Fvector& vBase, Fmatrix& mFullXFORM)
 			if (!oQuery.Qualifier(O,oQuery.Param))	continue;
 
 			Fvector		Pos;
-			O->clTransform.transform_tiny	(Pos,O->Visual()->bv_Position);
+			O->clXFORM().transform_tiny	(Pos,O->Visual()->bv_Position);
 			if (F.testSphere_dirty	(Pos,O->Radius()))
 				oQuery.Collector->push_back(O);
 		}
