@@ -105,6 +105,7 @@ class CBitingAttack : public IState {
 		ACTION_RUN,
 		ACTION_ATTACK_MELEE,
 		ACTION_FIND_ENEMY,
+		ACTION_STEAL,
 		ACTION_JUMP
 	} m_tAction;
 
@@ -123,6 +124,8 @@ class CBitingAttack : public IState {
 	bool			m_bInvisibility;
 	
 	bool			flag_once_1;
+
+	bool			bEnemyDoesntSeeMe;
 
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);

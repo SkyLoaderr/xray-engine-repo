@@ -63,6 +63,7 @@ void CBitingAttack::Init()
 	
 	flag_once_1	= false;
 
+	bEnemyDoesntSeeMe = ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME);
 	// Test
 	WRITE_TO_LOG("_ Attack Init _");
 }
@@ -105,6 +106,10 @@ void CBitingAttack::Run()
 	bool bJumpState	= pMonster->Movement.JumpState();
 	if (bJumpState || (!bJumpState && pMonster->CanJump())) m_tAction = ACTION_JUMP;
 
+	if ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) != FLAG_ENEMY_DOESNT_SEE_ME) bEnemyDoesntSeeMe = false;
+	bool bEnemyRunAway = (pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST;
+	if ((m_tAction == ACTION_RUN) && bEnemyDoesntSeeMe && !bEnemyRunAway) m_tAction = ACTION_STEAL;
+
 	// Выполнение состояния
 	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
@@ -145,6 +150,14 @@ void CBitingAttack::Run()
 			if (m_bAttackRat) pMonster->MotionMan.SetSpecParams(ASP_ATTACK_RAT);
 			pMonster->MotionMan.m_tAction = ACT_ATTACK;
 
+			break;
+		case ACTION_STEAL:
+			if (dist < (m_fDistMax + 2.f)) bEnemyDoesntSeeMe = false;
+
+			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, delay);
+
+			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
 		case ACTION_JUMP:
 			DO_ONCE_BEGIN(flag_once_1);

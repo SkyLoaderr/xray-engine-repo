@@ -122,6 +122,7 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fsRunTurnAngular				= pSettings->r_float(section,"RunTurnAngular");
 	m_fsRunAngular					= pSettings->r_float(section,"RunAngular");
 	m_fsDrag						= pSettings->r_float(section,"Drag");
+	m_fsSteal						= pSettings->r_float(section,"Steal");
 
 	m_timeLieIdleMin				= pSettings->r_u32   (section,"LieIdleTimeMin");
 	m_timeLieIdleMax				= pSettings->r_u32   (section,"LieIdleTimeMax");

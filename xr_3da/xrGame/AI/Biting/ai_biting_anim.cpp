@@ -347,7 +347,6 @@ void CMotionManager::FixBadState()
 {	
 	bool is_moving_action = IsMoving();
 	bool is_action_changed = prev_action != m_tAction;
-	TTime critical_stand_time = 1000;
 	TTime cur_time = Level().timeServer();
 
 	// если конец пути и монстр идёт - исправить
@@ -367,8 +366,11 @@ void CMotionManager::FixBadState()
 		time_start_stand	= cur_time;
 	}
 
-	if (is_moving_action && !is_action_changed && (time_start_stand + critical_stand_time < cur_time) && pMonster->IsStanding(critical_stand_time)) {
+
+	if (is_moving_action && !is_action_changed && (time_start_stand + CRITICAL_STAND_TIME < cur_time) && pMonster->IsStanding(CRITICAL_STAND_TIME)) {
 		cur_anim = eAnimStandIdle;	
+
+		if (time_start_stand + CRITICAL_STAND_TIME + TIME_STAND_RECHECK < cur_time) time_start_stand = 0;
 		Msg("Bad Movement Fixing");
 	}
 

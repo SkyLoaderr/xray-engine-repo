@@ -87,6 +87,7 @@ BOOL CAI_Boar::net_Spawn (LPVOID DC)
 	MotionMan.AddAnim(eAnimLieToSleep,		"lie_to_sleep_",		-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, m_fsDrag,				m_fsWalkAngular,			PS_STAND);
 	MotionMan.AddAnim(eAnimLookAround,		"stand_idle_",			 2, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimSteal,			"stand_crawl_",			-1, m_fsSteal,				m_fsWalkAngular,			PS_STAND);
 
 	// define transitions
 	// order : 1. [anim -> anim]	2. [anim->state]	3. [state -> anim]		4. [state -> state]
@@ -107,8 +108,15 @@ BOOL CAI_Boar::net_Spawn (LPVOID DC)
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
 	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimRun, eAnimRun, PI_DIV_6/6);
-	MotionMan.LinkAction(ACT_STEAL,			eAnimWalkFwd);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimLookAround);
+
+	Fvector center;
+	center.set		(0.f,0.f,0.f);
+
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		2.5f, m_fHitPower, PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	center,		2.5f, m_fHitPower, -PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		3.0f, m_fHitPower, 0,			PI_DIV_6);
 
 	return TRUE;
 }

@@ -155,9 +155,11 @@ void CAI_Biting::vfUpdateParameters()
 			}
 		}
 
-		if (((flagsEnemy & FLAG_ENEMY_STANDING) == FLAG_ENEMY_STANDING)  && !I) flagsEnemy |= FLAG_ENEMY_DOESN_KNOW_ABOUT_ME;
+		if (((flagsEnemy & FLAG_ENEMY_STANDING) == FLAG_ENEMY_STANDING)  && !I) flagsEnemy |= FLAG_ENEMY_DOESNT_KNOW_ABOUT_ME;
 	}
 	
+	if (m_tEnemy.obj && !I) flagsEnemy |= FLAG_ENEMY_DOESNT_SEE_ME;
+
 	if (!m_tEnemy.obj && m_tEnemyPrevFrame.obj && m_tEnemyPrevFrame.obj->getDestroy()) flagsEnemy |= FLAG_ENEMY_GO_OFFLINE;
 
 	// Save current enemy (only if valid)
@@ -189,10 +191,9 @@ bool CAI_Biting::bfAssignMovement (CEntityAction *tpEntityAction)
 
 	CMovementAction	&l_tMovementAction	= tpEntityAction->m_tMovementAction;
 
-	//
 	// build path to the point
 	vfChoosePointAndBuildPath(0,&l_tMovementAction.m_tDestinationPosition, false, 0);
-	
+	Msg("Biting use script...");
 	//MotionMan.ProcessAction();
 
 	return			(true);		

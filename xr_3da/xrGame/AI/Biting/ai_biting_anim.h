@@ -57,6 +57,7 @@ enum EMotionAnim {
 	eAnimLookAround,
 
 	eAnimJump,
+	eAnimSteal,
 };
 
 
@@ -141,6 +142,10 @@ struct SMotionItem {
 	m_tpCurAnim = 0;							\
 	pMonster->SelectAnimation(pMonster->Direction(),pMonster->Direction(),0); \
 }
+
+#define CRITICAL_STAND_TIME 1400
+#define TIME_STAND_RECHECK  2000
+
 
 // Определение времени аттаки по анимации
 typedef struct {
