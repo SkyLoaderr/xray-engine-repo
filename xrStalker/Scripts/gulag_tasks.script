@@ -181,8 +181,105 @@ function loadJob(sj, gname, type, squad, groups)
 		}
 		table.insert(sj, t)		
 	end
+----------------------------------------------------------------------------	
+-- Garbage DOLG blockpost	
+----------------------------------------------------------------------------	
+	if type == "gar_dolg" then
+		t = { section = "walker1@gar_dolg",
+			idle = 0,
+			prior = 3, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "walker2@gar_dolg",
+			idle = 0,
+			prior = 3, state = {1},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "walker3@gar_dolg",
+			idle = 0,
+			prior = 3, state = {1},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)				
+		t = { section = "kamp1@gar_dolg",
+			idle = 0,
+			prior = 0, state = {0},
+			in_rest = "", out_rest = "gar_golg"
+		}
+		table.insert(sj, t)		
+		t = { section = "patrol1@gar_dolg",
+			idle = 2 * 1000 * 60 * 60,
+			prior = 8, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		t = { section = "follower1@gar_dolg",
+			idle = 2 * 1000 * 60 * 60,
+			prior = 4, state = {0},
+			in_rest = "", out_rest = "",
+			leader = "patrol1@gar_dolg"
+		}
+		table.insert(sj, t)		
+		t = { section = "follower1@gar_dolg",
+			idle = 2 * 1000 * 60 * 60,
+			prior = 4, state = {0},
+			in_rest = "", out_rest = "",
+			leader = "patrol1@gar_dolg"
+		}
+		table.insert(sj, t)		
+		t = { section = "zoneguard1@gar_dolg",
+			idle = 0,
+			prior = 10, state = {0},
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		
+		
+    end	    
+----------------------------------------------------------------------------	
+-- Garbage DOLG blockpost end
+----------------------------------------------------------------------------	
+	
 	
 	if type == "blockpost" then
+		--t = { section = "patrol1@blockpost",
+			--idle = 2 * 1000 * 60 * 60,
+			--prior = 4, state = {0},
+			--in_rest = "", out_rest = ""
+		--}
+		--table.insert(sj, t)		
+		--t = { section = "follower1@blockpost",
+			--idle = 2 * 1000 * 60 * 60,
+			--prior = 4, state = {0},
+			--in_rest = "", out_rest = "",
+			--leader = self:nameStalker(patrol1@blockpost)
+		--}
+		--table.insert(sj, t)		
 	end
 
 	if type == "test1" then
