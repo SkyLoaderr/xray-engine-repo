@@ -446,10 +446,10 @@ PARTICLEDLL_API void __stdcall pVortex(float center_x, float center_y, float cen
 	_pSendAction(&S, PAVortexID, sizeof(PAVortex));
 }
 
-PARTICLEDLL_API void __stdcall pFrame(BOOL animated, BOOL random_frame, BOOL random_playback,
+PARTICLEDLL_API void __stdcall pAnimate(BOOL animated, BOOL random_frame, BOOL random_playback,
 			WORD frame_count, float speed)
 {
-	PAFrame S;
+	PAAnimate S;
 	
 	S.animated			= animated;
 	S.random_frame		= random_frame;
@@ -457,5 +457,5 @@ PARTICLEDLL_API void __stdcall pFrame(BOOL animated, BOOL random_frame, BOOL ran
 	S.frame_count		= frame_count;
 	S.speed				= speed;
 	
-	_pSendAction(&S, PAFrameID, sizeof(PAFrame));
+	_pSendAction(&S, PAAnimateID, sizeof(PAAnimate));
 }

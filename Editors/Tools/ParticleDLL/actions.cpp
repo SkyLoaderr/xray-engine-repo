@@ -1507,21 +1507,20 @@ void PAVortex::Execute(ParticleGroup *group)
 }
 
 // frame ...
-void PAFrame::Execute(ParticleGroup *group)
+void PAAnimate::Execute(ParticleGroup *group)
 {
 	float speedFac = speed * dt;
 	for(int i = 0; i < group->p_count; i++){
 		Particle &m = group->list[i];
 		if (m.frame==P_MAXFLOAT){// first init
+			m.frame	= 0.f;
 			if (random_frame)				m.frame	= drand48()*frame_count;
-			if (animated&&random_playback)	m.flags |= drand48()>=0.5f?Particle::FRAME_CCW:0;
+			if (animated&&random_playback)	m.flags |= drand48()>=0.5f?Particle::ANIMATE_CCW:0;
 		}else{
 			if (animated){
-				m.frame += ((m.flags&Particle::FRAME_CCW)?-1.f:1.f)*speedFac;
-				if (m.frame>frame_count) 
-					m.frame-=frame_count;
-				if (m.frame<-frame_count) 
-					m.frame+=frame_count;
+				m.frame += ((m.flags&Particle::ANIMATE_CCW)?-1.f:1.f)*speedFac;
+				if (m.frame>frame_count)	m.frame-=frame_count;
+				if (m.frame<0.f)			m.frame+=frame_count;
 			}
 		}
 	}

@@ -161,7 +161,7 @@ extern "C"{
 
 	PARTICLEDLL_API void __stdcall pFollow(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);
 
-	PARTICLEDLL_API void __stdcall pFrame(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE,
+	PARTICLEDLL_API void __stdcall pAnimate(BOOL animated=FALSE, BOOL random_frame=FALSE, BOOL random_playback=FALSE,
 		WORD frame_count=16, float speed=24.f);
 
 	PARTICLEDLL_API void __stdcall pGravitate(float magnitude = 1.0f, float epsilon = P_EPS, float max_radius = P_MAXFLOAT);

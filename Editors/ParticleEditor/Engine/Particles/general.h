@@ -20,7 +20,7 @@
 struct Particle
 {
 	enum{
-		FRAME_CCW	= (1<<0),
+		ANIMATE_CCW	= (1<<0),
 	};
 	pVector pos;
 	pVector posB;
@@ -107,6 +107,7 @@ struct pDomain
 enum PActionEnum
 {
 	PAHeaderID,			// The first action in each list.
+	PAAnimateID,		// 
 	PAAvoidID,			// Avoid entering the domain of space.
 	PABounceID,			// Bounce particles off a domain of space.
 	PACallActionListID,	// 
@@ -114,7 +115,6 @@ enum PActionEnum
 	PADampingID,		// Dampen particle velocities.
 	PAExplosionID,		// An Explosion.
 	PAFollowID,			// Accelerate toward the previous particle in the group.
-	PAFrameID,			// 
 	PAGravitateID,		// Accelerate each particle toward each other particle.
 	PAGravityID,		// Acceleration in the given direction.
 	PAJetID,			// 
@@ -411,7 +411,7 @@ struct PAVortex : public ParticleAction
 	ExecMethod
 };
 
-struct PAFrame : public ParticleAction
+struct PAAnimate : public ParticleAction
 {
 	BOOL animated;
 	BOOL random_frame;
