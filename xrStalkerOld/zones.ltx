@@ -90,7 +90,7 @@ GroupControlSection	= spawn_group_zone
 $spawn 			= "zones\mine_field"
 $prefetch 		= 16
 class			= Z_MBALD
-hit_impulse_scale	= 0.1;0.5 ;0.1
+hit_impulse_scale	= 0.15;0.5 ;0.1
 effective_radius	= 0.75 ;размер радиуса в процентах от оригинального, где действует зона
 sound			= 
 
@@ -119,14 +119,14 @@ hit_sound			= anomaly\anomaly_gravy_hit1								;на персонаже, когда тот получае
 entrance_sound		= weapons\generic_checkout	;при попадании объекта в аномалию
 
 
-awaking_time		= 30
+awaking_time		= 200
 blowout_time		= 300	
 accamulate_time		= 200000 ;200
 
-blowout_light_time		= 200
-blowout_explosion_time	= 300
-blowout_particles_time	= 300
-blowout_sound_time  	= 200
+blowout_light_time		= 100
+blowout_explosion_time	= 100
+blowout_particles_time	= 100
+blowout_sound_time  	= 100
 
 disable_time		= -1 ; 5000		;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
