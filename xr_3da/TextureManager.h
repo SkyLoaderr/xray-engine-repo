@@ -15,6 +15,7 @@ private:
 	vector<CTexture *>				textures;
 	vector<CShader*>				shaders;
 	vector<CConstant*>				constants;
+	vector<CMatrix*>				matrices;
 
 	vector<CTextureArray*>			comb_textures;
 	vector<CConstantArray*>			comb_constants;
@@ -22,29 +23,36 @@ private:
 	BOOL							bDeferredLoad;
 
 	// cache
+	enum 
+	{
+		c_shader	= (1<<0),
+		c_textures	= (1<<1),
+		c_constants	= (1<<2),
+		c_matrices	= (1<<3),
+		c_all		= c_shader|c_textures|c_constants|c_matrices
+	};
 	struct
 	{
-		CShader*					shader;
-		CTexture*					surfaces	[8];
-		CTextureArray*				textures;
-		CConstantArray*				constants;
+		Shader						S;
 		DWORD						pass;
+		CTexture*					surfaces	[8];
+		CMatrix*					matrices	[8];
+		DWORD						changes;
 	} cache;
 public:
 	CTexture*						_CreateTexture	(LPCSTR Name);
 	CShader*						_CreateShader	(LPCSTR Name);
 	CConstant*						_CreateConstant (LPCSTR Name);
+	CMatrix*						_CreateMatrix	(LPCSTR Name);
 	DWORD							_GetMemoryUsage	();
 
-	DWORD					dwPassesRequired;
+	DWORD							dwPassesRequired;
 
 	CShaderManager			()
 	{
 		dwPassesRequired	= 0;
 		bDeferredLoad		= FALSE;
-		current_shader		= 0;
-		current_SBH			= 0;
-		ZeroMemory			(current_surf,sizeof(current_surf));
+		ZeroMemory			(&cache,sizeof(cache));
 	}
 
 	void	xrStartUp		();

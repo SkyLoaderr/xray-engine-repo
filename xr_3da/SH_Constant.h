@@ -1,26 +1,46 @@
 #pragma once
 
+#include "WaveForm.h"
+
 class	ENGINE_API	CConstant
 {
+public:
+	enum { modeProgrammable=0, modeWaveForm	};
 public:
 	LPSTR			name;
 	Fcolor			const_float;
 	DWORD			const_dword;
 
-	void			set_float	(float r, float g, float b, float a)
+	DWORD			dwFrame;
+	DWORD			dwMode;
+	WaveForm		_R;
+	WaveForm		_G;
+	WaveForm		_B;
+	WaveForm		_A;
+
+	IC void			set_float	(float r, float g, float b, float a)
 	{
 		const_float.set	(r,g,b,a);
 		const_dword		= const_float.get();
 	}
-	void			set_float	(Fcolor& c)
+	IC void			set_float	(Fcolor& c)
 	{
 		const_float.set	(c);
 		const_dword		= const_float.get();
 	}
-	void			set_dword	(DWORD c)
+	IC void			set_dword	(DWORD c)
 	{
 		const_float.set(c);
 		const_dword		= c;
+	}
+	IC void			Calculate	()
+	{
+		if (dwFrame==Device.dwFrame)	return;
+		dwFrame		= Device.dwFrame;
+		if (modeProgrammable==dwMode)	return;
+
+		float	t	= Device.fTimeGlobal;
+		set_float	(_R.Calculate(t),_G.Calculate(t),_B.Calculate(t),_A.Calculate(t));
 	}
 };
 
