@@ -329,5 +329,40 @@ void CMonsterMemory::UpdateMemory()
 	UpdateVision(curtime);
 	UpdateHearing(curtime);
 
+	RemoveOldDangerousEnemies();
 }
+
+void CMonsterMemory::AddDangerousEnemy(CObject *pO, TTime ttr)
+{
+	DANGER_ENEMIES_VEC_IT res;
+	SDangerousEnemies new_elem;
+
+	res = std::find(danger_enemies.begin(), danger_enemies.end(), pO);
+	if (res == danger_enemies.end()) {
+		new_elem.who = pO;
+		new_elem.time_till_remember = Level().timeServer() + ttr;	
+		danger_enemies.push_back(new_elem);
+	} else {
+		if (res->time_till_remember < Level().timeServer() + ttr) 
+			res->time_till_remember = Level().timeServer() + ttr;
+	}
+}
+
+bool CMonsterMemory::IsDangerousEnemy(CObject *pO)
+{
+	DANGER_ENEMIES_VEC_IT res;
+
+	res = std::find(danger_enemies.begin(), danger_enemies.end(), pO);
+	if (res == danger_enemies.end()) return false;
+	else return true;
+}
+
+void CMonsterMemory::RemoveOldDangerousEnemies()
+{
+	// удалить 'старых' врагов 
+	DANGER_ENEMIES_VEC_IT I = remove_if(danger_enemies.begin(), danger_enemies.end(), predicate_remove_old_dangerous_enemies(Level().timeServer()));
+	danger_enemies.erase(I,danger_enemies.end());
+}
+
+
 

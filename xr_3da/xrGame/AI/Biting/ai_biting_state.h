@@ -113,7 +113,7 @@ class CBitingAttack : public IState {
 		ACTION_ATTACK_MELEE,
 		ACTION_FIND_ENEMY,
 		ACTION_STEAL,
-		ACTION_JUMP
+		ACTION_THREATEN
 	} m_tAction;
 
 	VisionElem		m_tEnemy;
@@ -122,6 +122,7 @@ class CBitingAttack : public IState {
 
 	float			m_fDistMin;						//!< минимально допустимое расстояния для аттаки
 	float			m_fDistMax;						//!< максимально допустимое расстояние для аттаки
+	float			dist;							// текущая дистанция
 
 	TTime			m_dwFaceEnemyLastTime;
 	TTime			m_dwFaceEnemyLastTimeInterval;
@@ -134,6 +135,9 @@ class CBitingAttack : public IState {
 
 	bool			bEnemyDoesntSeeMe;
 
+	bool			bCanThreaten;
+
+
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);
 
@@ -142,7 +146,9 @@ public:
 	virtual	void	Init			();
 	virtual void	Run				();
 	virtual void	Done			();
-			
+
+			bool	CheckThreaten	();
+
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

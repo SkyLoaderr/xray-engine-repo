@@ -59,6 +59,8 @@ void CBitingAttack::Init()
 		m_fDistMin = pMonster->_sd->m_fMinAttackDist;
 		m_fDistMax = pMonster->_sd->m_fMaxAttackDist;
 	}
+	
+	dist = 0;
 
 	pMonster->SetMemoryTimeDef();
 	
@@ -67,6 +69,8 @@ void CBitingAttack::Init()
 	bEnemyDoesntSeeMe = ((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME);
 
 	pMonster->AS_Start();
+
+	bCanThreaten	= true;
 
 	// Test
 	LOG_EX("_ Attack Init _");
@@ -88,7 +92,7 @@ void CBitingAttack::Run()
 	// ¬ыбор состо€ни€
 	bool bAttackMelee = (m_tAction == ACTION_ATTACK_MELEE);
 
-	float dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
+	dist = m_tEnemy.obj->Position().distance_to(pMonster->Position());
 
 	if (bAttackMelee && (dist < m_fDistMax)) m_tAction = ACTION_ATTACK_MELEE;
 	else m_tAction = ((dist > m_fDistMin) ? ACTION_RUN : ACTION_ATTACK_MELEE);
@@ -125,9 +129,7 @@ void CBitingAttack::Run()
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
 	if ((m_tAction == ACTION_RUN) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
 
-	
-//	// если мораль маленька€
-//	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
+	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
 
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
@@ -140,6 +142,8 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_RUN;
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
+			bCanThreaten	= false;
+
 			// если враг крыса под монстром подпрыгнуть и убить
 			if (m_bAttackRat) {
 				if (dist < 0.6f) {
@@ -177,24 +181,26 @@ void CBitingAttack::Run()
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
-//		case ACTION_THREATEN: 
-//			// —мотреть на врага 
-//			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
-//				float yaw, pitch;
-//				Fvector dir;
-//				yaw = pMonster->r_torso_target.yaw;
-//				pMonster->AI_Path.TravelPath.clear();
-//				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
-//				dir.getHP(yaw,pitch);
-//				yaw *= -1;
-//				yaw = angle_normalize(yaw);
-//				pMonster->r_torso_target.yaw = yaw;
-//			DO_IN_TIME_INTERVAL_END();
-//
-//			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
-//			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
-//
-//			break;
+		case ACTION_THREATEN: 
+			// —мотреть на врага 
+			LOG_EX("ACTION THREATEN!!!");
+
+			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
+				float yaw, pitch;
+				Fvector dir;
+				yaw = pMonster->r_torso_target.yaw;
+				pMonster->AI_Path.TravelPath.clear();
+				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
+				dir.getHP(yaw,pitch);
+				yaw *= -1;
+				yaw = angle_normalize(yaw);
+				pMonster->r_torso_target.yaw = yaw;
+			DO_IN_TIME_INTERVAL_END();
+
+			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+			//pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
+
+			break;
 	}
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->_sd->m_dwAttackSndDelay);
@@ -206,3 +212,41 @@ void CBitingAttack::Done()
 
 	pMonster->AS_Stop();
 }
+
+
+// –еализаци€ пугани€:
+// мораль - маленька€, рассто€ние - рассто€ние дл€ аттаки
+// на прот€жении N мин не был атакован этим монстром
+// враг стоит не бежит, видит
+// если состо€ни€ ATTACK_MELEE ещЄ не было
+
+bool CBitingAttack::CheckThreaten()
+{
+	if (pMonster->GetEntityMorale() > 0.8f) {
+		LOG_EX("Try Threaten:: Entity Morale > 0.8");
+		return false;
+	}
+
+	if (((pMonster->flagsEnemy & FLAG_ENEMY_DOESNT_SEE_ME) == FLAG_ENEMY_DOESNT_SEE_ME) || 
+		((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST)) {
+		LOG_EX("Try Threaten:: враг бежит || не видит");
+		return false;
+	}
+
+	if ((dist < m_fDistMin) || (dist > m_fDistMax)) {
+		LOG_EX("Try Threaten:: дистанци€ не дл€ атаки");
+		return false;
+	}
+	if (pMonster->IsDangerousEnemy(m_tEnemy.obj)) {
+		LOG_EX("Try Threaten:: враг опасный");
+		return false;
+	}
+
+	if (!bCanThreaten) {
+		LOG_EX("Try Threaten:: не могу атаковать");	
+		return false;
+	}
+
+	return true;
+}
+

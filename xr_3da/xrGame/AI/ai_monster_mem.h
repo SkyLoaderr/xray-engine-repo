@@ -264,26 +264,46 @@ private:
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------------------
 
-//typedef struct tagSoundElement
-//{
-//	CObject				*who;
-//
-//} SoundElem;
+typedef struct tagDangerousEnemies {
+	CObject		*who;
+	TTime		time_till_remember;	
 
+	bool operator == (const tagDangerousEnemies &obj) {return (who == obj.who);}
+	bool operator == (CObject *obj) {return (who == obj);}
+} SDangerousEnemies;
+
+// предикат удаления 'старых' объектов
+struct predicate_remove_old_dangerous_enemies {
+	TTime new_time;
+	predicate_remove_old_dangerous_enemies(TTime time) { new_time = time; }
+	bool operator() (const SDangerousEnemies &x) { return (x.time_till_remember < new_time); }
+};
 
 
 class CMonsterMemory : public CSoundMemory, public CVisionMemory {
+	
+	DEFINE_VECTOR(SDangerousEnemies, DANGER_ENEMIES_VEC, DANGER_ENEMIES_VEC_IT);
 
-
+	DANGER_ENEMIES_VEC	danger_enemies;
 public:
-	void InitMemory(TTime sound_mem, TTime vision_mem){
+	void	InitMemory					(TTime sound_mem, TTime vision_mem) {
 		CSoundMemory::Init(sound_mem);
 		CVisionMemory::Init(vision_mem);
 	}
-	void DeinitMemory() {
+	void	DeinitMemory				() {
 		CSoundMemory::Deinit();
 		CVisionMemory::Deinit();
 	}
 
-	void UpdateMemory();
+	void	UpdateMemory				();
+
+	//-------------------------------------------------------
+
+	void	AddDangerousEnemy			(CObject *pO, TTime ttr);
+	bool	IsDangerousEnemy			(CObject *pO);
+
+private:
+
+	void	RemoveOldDangerousEnemies	();
 };
+
