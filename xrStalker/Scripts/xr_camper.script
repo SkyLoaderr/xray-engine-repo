@@ -95,6 +95,7 @@ function action_patrol:initialize()
 end
 function action_patrol:reset_scheme()
 	state_mgr.set_state(self.object, "patrol")
+	self.st.signals = {}
 	self.move_mgr:initialize()
 	self.move_mgr:reset(self.a.path_walk, 
 		utils.path_parse_waypoints(self.a.path_walk),
