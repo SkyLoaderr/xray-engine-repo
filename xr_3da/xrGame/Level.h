@@ -65,7 +65,7 @@ public:
 
 	xrServer*					Server;
 
-	xr_vector<CTeam>			Teams;
+	svector<CTeam,maxTeams>		Teams;
 
 	CTracer						Tracers;
 	CEffect_Rain				eff_Rain;
