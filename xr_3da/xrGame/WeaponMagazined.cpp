@@ -149,8 +149,8 @@ void CWeaponMagazined::Reload			()
 
 void CWeaponMagazined::TryReload		()
 {
-	if (iAmmoCurrent)	st_target = eReload;
-	else				st_target = eIdle;
+	if (iAmmoCurrent && (iAmmoElapsed<iMagazineSize))	st_target = eReload;
+	else												st_target = eIdle;
 }
 
 void CWeaponMagazined::OnMagazineEmpty	()
