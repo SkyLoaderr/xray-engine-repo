@@ -41,16 +41,26 @@
  #include "CustomObject.h"
 #endif
 
-// refs
+// refs   
 struct xr_token;
 struct xr_list;
 
-DEFINE_VECTOR(LPVOID,LPVOIDVec,LPVOIDIt);
-typedef void __fastcall (__closure *TAfterOperation)(LPVOID data);
+typedef void __fastcall (__closure *TBeforeEdit)(LPVOID data);
+typedef void __fastcall (__closure *TAfterEdit)(LPVOID data);
+typedef LPCSTR __fastcall (__closure *TOnDrawValue)(LPVOID data);
+typedef void __fastcall (__closure *TOnModifiedEvent)(void);
+
+static AnsiString static_text;
 
 class PropertiesValue{
 public:
+    TAfterEdit		OnAfterEdit;
+    TBeforeEdit		OnBeforeEdit;
+    TOnDrawValue	OnDrawValue;
+public:
+	PropertiesValue(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw){};
 	virtual ~PropertiesValue(){};
+    virtual LPCSTR	get_draw_text()=0;
 };
 
 class IntValue: public PropertiesValue{
@@ -59,8 +69,15 @@ public:
 	int		lim_mn;
     int		lim_mx;
     int 	inc;
-    TAfterOperation	OnAfterOperation;
-    IntValue(int* value, int mn, int mx, int increm, TAfterOperation after):val(value),lim_mn(mn),lim_mx(mx),inc(increm),OnAfterOperation(after){};
+    IntValue(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increm),PropertiesValue(after,before,draw){};
+    virtual LPCSTR	get_draw_text()
+    {
+    	if (OnDrawValue) return OnDrawValue(this);
+        else{
+        	static_text=*val;
+            return static_text.c_str();
+        }
+    }
 };
 class FloatValue: public PropertiesValue{
 public:
@@ -69,30 +86,41 @@ public:
     float	lim_mx;
     float 	inc;
     int 	dec;
-    TAfterOperation	OnAfterOperation;
-    FloatValue(float* value, float mn, float mx, float increment, int decimal, TAfterOperation after):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),OnAfterOperation(after){};
+    FloatValue(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropertiesValue(after,before,draw){};
+    virtual LPCSTR	get_draw_text()
+    {
+    	if (OnDrawValue) return OnDrawValue(this);
+        else{
+            AnsiString fmt; fmt.sprintf("%%.%df",dec);
+            static_text.sprintf(fmt.c_str(),*val);
+            return static_text.c_str();
+        }
+    }
 };
 class FlagValue: public PropertiesValue{
 public:
 	DWORD*	val;
 	DWORD	mask;
-    TAfterOperation	OnAfterOperation;
-	FlagValue(DWORD* value, DWORD _mask, TAfterOperation after):val(value),mask(_mask),OnAfterOperation(after){};
+	FlagValue(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),mask(_mask),PropertiesValue(after,before,draw){};
+    virtual LPCSTR	get_draw_text();
 };
 class TokenValue: public PropertiesValue{
 public:
 	DWORD*	val;
 	xr_token* token;
-    TAfterOperation	OnAfterOperation;
-	TokenValue(DWORD* value, xr_token* _token, TAfterOperation after):val(value),token(_token),OnAfterOperation(after){};
-	LPCSTR 	GetValue	(int id);
+	TokenValue(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),token(_token),PropertiesValue(after,before,draw){};
+	virtual LPCSTR get_draw_text();
 };
 class ListValue: public PropertiesValue{
 public:
 	LPSTR	val;
 	AStringVec items;
-    TAfterOperation	OnAfterOperation;
-	ListValue(LPSTR value, AStringVec* _items, TAfterOperation after):val(value),items(*_items),OnAfterOperation(after){};
+	ListValue(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):val(value),items(*_items),PropertiesValue(after,before,draw){};
+	virtual LPCSTR	get_draw_text()
+    {
+    	if (OnDrawValue) return OnDrawValue(this);
+        else return val;
+    }
 };
 //---------------------------------------------------------------------------
 DEFINE_VECTOR(PropertiesValue*,PropValVec,PropValIt)
@@ -127,7 +155,7 @@ private:	// User declarations
 	void __fastcall SShaderEngineClick(TElTreeItem* item);
 	void __fastcall SShaderCompileClick(TElTreeItem* item);
 	void __fastcall ColorClick(TElTreeItem* item);
-	Graphics::TBitmap* m_BMEllipsis;
+//	Graphics::TBitmap* m_BMEllipsis;
     bool bModified;
     bool bFillMode;
 	// LW style inpl editor
@@ -137,17 +165,20 @@ private:	// User declarations
     void ApplyLWNumber();
 
     PropValVec m_Params;
+    TOnModifiedEvent OnModifiedEvent;
+    void Modified(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
 public:		// User declarations
 	__fastcall TfrmProperties		        (TComponent* Owner);
 #ifdef _LEVEL_EDITOR
     int  __fastcall ShowPropertiesModal		(ObjectList& lst);
 #endif
-	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone);
+	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0);
 	static void 	DestroyProperties		(TfrmProperties* props);
     void __fastcall ShowProperties			();
     void __fastcall HideProperties			();
     void __fastcall ClearProperties			();
     bool __fastcall IsModified				(){return bModified;}
+    void __fastcall RefreshProperties		(){tvProperties->Repaint();}
 
     void __fastcall BeginFillMode			(const AnsiString& title="Properties", LPCSTR section=0);
     void __fastcall FillFromStream			(CFS_Memory& stream, DWORD advance);
@@ -174,33 +205,33 @@ public:		// User declarations
 		tvProperties->HeaderSections->Item[1]->Width = fs->ReadInteger("props_column1_width",tvProperties->HeaderSections->Item[1]->Width);
     }
 
-	FlagValue* 		MakeFlagValue			(LPVOID val, DWORD mask, TAfterOperation after=0)
+	FlagValue* 		MakeFlagValue			(LPVOID val, DWORD mask, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-    	FlagValue* V=new FlagValue((LPDWORD)val,mask,after);
+    	FlagValue* V=new FlagValue((LPDWORD)val,mask,after,before,draw);
         m_Params.push_back(V);
         return V;
     }
-	TokenValue* 	MakeTokenValue			(LPVOID val, xr_token* token, TAfterOperation after=0)
+	TokenValue* 	MakeTokenValue			(LPVOID val, xr_token* token, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-    	TokenValue* V=new TokenValue((LPDWORD)val,token,after);
+    	TokenValue* V=new TokenValue((LPDWORD)val,token,after,before,draw);
         m_Params.push_back(V);
     	return V;
     }
-	ListValue* 		MakeListValue			(LPVOID val, AStringVec* lst, TAfterOperation after=0)
+	ListValue* 		MakeListValue			(LPVOID val, AStringVec* lst, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-    	ListValue* V=new ListValue((LPSTR)val,lst,after);
+    	ListValue* V=new ListValue((LPSTR)val,lst,after,before,draw);
         m_Params.push_back(V);
     	return V;
     }
-	IntValue* 		MakeIntValue			(LPVOID val, int mn=0, int mx=100, int inc=1, TAfterOperation after=0)
+	IntValue* 		MakeIntValue			(LPVOID val, int mn=0, int mx=100, int inc=1, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-    	IntValue* V	=new IntValue((int*)val,mn,mx,inc,after);
+    	IntValue* V	=new IntValue((int*)val,mn,mx,inc,after,before,draw);
         m_Params.push_back(V);
     	return V;
     }
-	FloatValue* 	MakeFloatValue			(LPVOID val, float mn=0.f, float mx=1.f, float inc=0.01f, int dec=2, TAfterOperation after=0)
+	FloatValue* 	MakeFloatValue			(LPVOID val, float mn=0.f, float mx=1.f, float inc=0.01f, int dec=2, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0)
     {
-    	FloatValue* V=new FloatValue((float*)val,mn,mx,inc,dec,after);
+    	FloatValue* V=new FloatValue((float*)val,mn,mx,inc,dec,after,before,draw);
         m_Params.push_back(V);
     	return V;
     }

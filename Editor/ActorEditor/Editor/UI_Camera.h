@@ -57,6 +57,7 @@ public:
     void			ViewRight 	(){m_HPB.set(PI_DIV_2,0.f,0.f); BuildCamera();}
     void			ViewTop		(){m_HPB.set(0.f,-PI_DIV_2,0.f); BuildCamera();}
     void			ViewBottom 	(){m_HPB.set(0.f,PI_DIV_2,0.f); BuildCamera();}
+    void			ViewReset 	(){m_HPB.set(0.f,0,0.f); m_Position.set(0,0,0); m_Target.set(0,0,0); BuildCamera();}
 
     const Fmatrix&	GetTransform() const {return m_CamMat;}
     void			GetView		(Fmatrix& V) const {return V.invert(m_CamMat);}

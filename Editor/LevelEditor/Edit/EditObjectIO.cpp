@@ -88,7 +88,7 @@ bool CEditableObject::Load(CStream& F){
             break;
         }
 
-        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAGS, &m_DynamicObject));
+        R_ASSERT(F.ReadChunk(EOBJ_CHUNK_FLAGS, &m_dwFlags));
 
         if (F.FindChunk	(EOBJ_CHUNK_CLASSSCRIPT)){
             F.RstringZ	(buf); m_ClassScript=buf;
@@ -205,6 +205,10 @@ bool CEditableObject::Load(CStream& F){
             SetActiveSMotion(FindSMotionByName(buf));
         }
 
+		if (F.FindChunk	(EOBJ_CHUNK_ACTORTRANSFORM)){
+	        F.Rvector	(a_vPosition);
+    	    F.Rvector	(a_vRotate);
+		}
         if (!bRes) break;
         UpdateBox();
     }while(0);
@@ -221,7 +225,7 @@ void CEditableObject::Save(CFS_Base& F){
 	F.WstringZ		(m_ClassScript.c_str());
 	F.close_chunk	();
 
-    F.write_chunk	(EOBJ_CHUNK_FLAGS,&m_DynamicObject,sizeof(m_DynamicObject));
+    F.write_chunk	(EOBJ_CHUNK_FLAGS,&m_dwFlags,sizeof(m_dwFlags));
 
     // object version
     F.write_chunk	(EOBJ_CHUNK_LIB_VERSION,&m_ObjVer,m_ObjVer.size());
@@ -302,7 +306,14 @@ void CEditableObject::Save(CFS_Base& F){
 	    F.close_chunk	();
     }
 
-	t_bOnModified		= false;
+    if (IsFlag(eoDynamic)){
+		F.open_chunk	(EOBJ_CHUNK_ACTORTRANSFORM);
+        F.Wvector		(a_vPosition);
+        F.Wvector		(a_vRotate);
+		F.close_chunk	();
+    }
+
+	bOnModified		= false;
 }
 //------------------------------------------------------------------------------
 CSMotion* CEditableObject::LoadSMotion(const char* fname){

@@ -1,7 +1,7 @@
 object fraTopBar: TfraTopBar
   Left = 0
   Top = 0
-  Width = 1050
+  Width = 785
   Height = 18
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
@@ -1371,7 +1371,7 @@ object fraTopBar: TfraTopBar
   object paView: TPanel
     Left = 502
     Top = 0
-    Width = 159
+    Width = 179
     Height = 18
     Align = alLeft
     BevelOuter = bvNone
@@ -1512,7 +1512,7 @@ object fraTopBar: TfraTopBar
       OnClick = ebViewClick
     end
     object ebCameraPlane: TExtBtn
-      Left = 91
+      Left = 109
       Top = 0
       Width = 20
       Height = 18
@@ -1537,7 +1537,7 @@ object fraTopBar: TfraTopBar
     end
     object ebCameraArcBall: TExtBtn
       Tag = 1
-      Left = 111
+      Left = 129
       Top = 0
       Width = 20
       Height = 18
@@ -1561,7 +1561,7 @@ object fraTopBar: TfraTopBar
     end
     object ebCameraFly: TExtBtn
       Tag = 2
-      Left = 131
+      Left = 149
       Top = 0
       Width = 20
       Height = 18
@@ -1582,6 +1582,28 @@ object fraTopBar: TfraTopBar
       ParentFont = False
       Spacing = 15
       OnClick = ebCameraStyleClick
+    end
+    object ebViewReset: TExtBtn
+      Left = 90
+      Top = 0
+      Width = 15
+      Height = 18
+      Hint = 'Bottom View'
+      Align = alNone
+      HotTrack = True
+      HotColor = 15790320
+      CloseButton = False
+      Caption = 'X'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      Margin = 2
+      NumGlyphs = 2
+      ParentFont = False
+      Spacing = 15
+      OnClick = ebViewClick
     end
   end
   object Panel1: TPanel

@@ -45,6 +45,10 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     TElTreeItem*		m_pCycleNode;
     TElTreeItem*		m_pFXNode;
 	void __fastcall		OnMotionTypeChange	(LPVOID data);
+
+	void __fastcall 	FloatOnAfterEdit(LPVOID data);
+	void __fastcall 	FloatOnBeforeEdit(LPVOID data);
+	LPCSTR __fastcall 	FloatOnDraw(LPVOID data);
 public:
     TfrmProperties*		m_Props;
 public:
@@ -59,7 +63,7 @@ public:
 
     bool				IfModified			();
     bool				IsModified			(){return m_bModified;}
-    void				Modified			();
+    void __fastcall		Modified			(void);
 
     CEditableObject*	CurrentObject		(){return m_EditObject;}
     void				SetCurrentMotion	(LPCSTR name);

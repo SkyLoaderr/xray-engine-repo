@@ -45,7 +45,7 @@ bool CActorTools::OnCreate(){
     Device.seqDevDestroy.Add(this);
 
     // props
-    m_Props = TfrmProperties::CreateProperties(fraLeftBar->paPSProps,alClient);
+    m_Props = TfrmProperties::CreateProperties(fraLeftBar->paPSProps,alClient,Modified);
 
     m_bReady = true;
 
@@ -90,8 +90,14 @@ void CActorTools::Modified(){
 
 void CActorTools::Render(){
 	if (!m_bReady) return;
-	if (m_EditObject)
-    	m_EditObject->RenderSkeletonSingle(precalc_identity);
+	if (m_EditObject){
+        // update transform matrix
+        Fmatrix	mTransform,mTranslate,mRotate;
+        mRotate.setHPB			(m_EditObject->a_vRotate.y, m_EditObject->a_vRotate.x, m_EditObject->a_vRotate.z);
+        mTranslate.translate	(m_EditObject->a_vPosition);
+        mTransform.mul			(mTranslate,mRotate);
+    	m_EditObject->RenderSkeletonSingle(mTransform);
+    }
 }
 
 void CActorTools::Update(){
@@ -156,7 +162,7 @@ bool CActorTools::Load(LPCSTR name)
 {
 	VERIFY(m_bReady);
 	CEditableObject* O = new CEditableObject(name);
-	if (O->Load(name)&&O->IsDynamic()){
+	if (O->Load(name)&&O->IsFlag(CEditableObject::eoDynamic)){
     	_DELETE(m_EditObject);
         m_EditObject = O;
         return true;
@@ -262,17 +268,8 @@ bool __fastcall CActorTools::MouseStart(TShiftState Shift)
 {
 	switch(m_Action){
     case eaSelect: return false;
-    case eaAdd:{
-        if (m_EditObject){
-/*            Fvector p;
-            float dist=UI.ZFar();
-            SRayPickInfo pinf;
-            if (m_EditObject->RayPick(dist,UI.m_CurrentRStart,UI.m_CurrentRNorm,precalc_identity,&pinf)){
-                R_ASSERT(pinf.e_mesh);
-                m_EditPS.m_DefaultEmitter.m_Position.set(pinf.pt);
-            }
-*/        }
-    }break;
+    case eaAdd:
+    break;
     case eaMove:{
         if (fraTopBar->ebAxisY->Down){
             m_MovingXVector.set(0,0,0);
@@ -290,17 +287,12 @@ bool __fastcall CActorTools::MouseStart(TShiftState Shift)
     case eaRotate:{
         m_RotateCenter.set( UI.pivot() );
         m_RotateVector.set(0,0,0);
-        if (fraTopBar->ebAxisX->Down) m_RotateVector.set(0,1,0);
-        else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(1,0,0);
+        if (fraTopBar->ebAxisX->Down) m_RotateVector.set(1,0,0);
+        else if (fraTopBar->ebAxisY->Down) m_RotateVector.set(0,1,0);
         else if (fraTopBar->ebAxisZ->Down) m_RotateVector.set(0,0,1);
         m_fRotateSnapAngle = 0;
     }break;
-    case eaScale:{
-		m_ScaleCenter.set( UI.pivot() );
-    }break;
     }
-//    UpdateEmitter();
-//    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 	return m_bHiddenMode;
 }
 
@@ -311,6 +303,7 @@ bool __fastcall CActorTools::MouseEnd(TShiftState Shift)
 
 void __fastcall CActorTools::MouseMove(TShiftState Shift)
 {
+	if (!m_EditObject) return;
 	switch(m_Action){
     case eaSelect: return;
     case eaAdd: break;
@@ -328,15 +321,19 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
         if (!fraTopBar->ebAxisX->Down&&!fraTopBar->ebAxisZX->Down) amount.x = 0.f;
         if (!fraTopBar->ebAxisZ->Down&&!fraTopBar->ebAxisZX->Down) amount.z = 0.f;
         if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
-//		amount
+		m_EditObject->a_vPosition.add(amount);
+        m_Props->RefreshProperties();
+        Modified();
     }break;
     case eaRotate:{
         float amount = -UI.m_DeltaCpH.x * UI.m_MouseSR;
         if( fraTopBar->ebASnap->Down ) CHECK_SNAP(m_fRotateSnapAngle,amount,UI.anglesnap());
-		//m_RotateVector, amount
+        m_EditObject->a_vRotate.mad(m_RotateVector,amount);
+        m_Props->RefreshProperties();
+        Modified();
     }break;
     case eaScale:{
-        float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
+/*        float dy = UI.m_DeltaCpH.x * UI.m_MouseSS;
         if (dy>1.f) dy=1.f; else if (dy<-1.f) dy=-1.f;
 
         Fvector amount;
@@ -347,10 +344,10 @@ void __fastcall CActorTools::MouseMove(TShiftState Shift)
             if (!fraTopBar->ebAxisZ->Down && !fraTopBar->ebAxisZX->Down) amount.z = 0.f;
             if (!fraTopBar->ebAxisY->Down) amount.y = 0.f;
         }
-
-        //amount
-    }break;
+        m_EditObject->t_vScale.add(amount);
+*/    }break;
     }
+//    m_PSProps->fraEmitter->GetInfoFirst(m_EditPS.m_DefaultEmitter);
 }
 
 void CActorTools::SetCurrentMotion(LPCSTR name)
@@ -359,12 +356,46 @@ void CActorTools::SetCurrentMotion(LPCSTR name)
     	m_EditObject->SetActiveSMotion(m_EditObject->FindSMotionByName(name));
 }
 
+void __fastcall CActorTools::FloatOnAfterEdit(LPVOID data)
+{
+	FloatValue* V = (FloatValue*)data;
+    *V->val = deg2rad(*V->val);
+}
+
+void __fastcall CActorTools::FloatOnBeforeEdit(LPVOID data)
+{
+	FloatValue* V = (FloatValue*)data;
+    *V->val = rad2deg(*V->val);
+}
+
+LPCSTR __fastcall CActorTools::FloatOnDraw(LPVOID data)
+{
+	static_text = rad2deg(*((FloatValue*)data)->val);
+	return static_text.c_str();
+}
+
 void CActorTools::FillBaseProperties()
 {
 	R_ASSERT(m_EditObject);
     m_Props->BeginFillMode();
     TElTreeItem* M=0;
     TElTreeItem* N=0;
+	m_Props->AddItem(0,PROP_FLAG,	"Make progressive",	m_Props->MakeFlagValue(&m_EditObject->GetFlags(),CEditableObject::eoProgressive));
+    M = m_Props->AddItem(0,PROP_MARKER,	"Transformation");
+    {
+	    N = m_Props->AddItem(M,PROP_MARKER,	"Rotate (Grd)");
+        {
+			m_Props->AddItem(N,PROP_FLOAT, 	"Yaw", 		m_Props->MakeFloatValue(&m_EditObject->a_vRotate.y,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
+			m_Props->AddItem(N,PROP_FLOAT, 	"Pitch", 	m_Props->MakeFloatValue(&m_EditObject->a_vRotate.x,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
+			m_Props->AddItem(N,PROP_FLOAT, 	"Heading", 	m_Props->MakeFloatValue(&m_EditObject->a_vRotate.z,	-10000.f,10000.f,0.01f,2,FloatOnAfterEdit,FloatOnBeforeEdit,FloatOnDraw));
+        }
+	    N = m_Props->AddItem(M,PROP_MARKER,	"Offset");
+        {
+			m_Props->AddItem(N,PROP_FLOAT, 	"X", 		m_Props->MakeFloatValue(&m_EditObject->a_vPosition.x,	-100000.f,100000.f,0.01f,2));
+			m_Props->AddItem(N,PROP_FLOAT, 	"Y", 		m_Props->MakeFloatValue(&m_EditObject->a_vPosition.y,	-100000.f,100000.f,0.01f,2));
+			m_Props->AddItem(N,PROP_FLOAT, 	"Z", 		m_Props->MakeFloatValue(&m_EditObject->a_vPosition.z,	-100000.f,100000.f,0.01f,2));
+        }
+    }
     M = m_Props->AddItem(0,PROP_MARKER,		"Surfaces");
     {
         for (SurfaceIt& it=m_EditObject->FirstSurface(); it!=m_EditObject->LastSurface(); it++){

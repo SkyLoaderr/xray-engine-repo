@@ -69,7 +69,7 @@ void CEditableObject::RenderSkeletonSingle(Fmatrix& parent)
 //		Render(parent, 0, false);
 //		Render(parent, 0, true);
 //    }
-    if (fraBottomBar->miDrawObjectBones) RenderBones(precalc_identity);
+    if (fraBottomBar->miDrawObjectBones->Checked) RenderBones(parent);
 }
 
 void CEditableObject::RenderSingle(Fmatrix& parent)

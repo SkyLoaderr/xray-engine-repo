@@ -119,23 +119,30 @@ class CEditableObject{
     CSMotion*		m_ActiveSMotion;
     st_AnimParam	m_SMParam;
 
-// params
-	DWORD			m_dwFlags;
-protected:
+public:
+	enum{
+		eoDynamic 	 	= (1<<0),
+		eoProgressive 	= (1<<1),
+		eoFORCE32		= DWORD(-1)
+    };
+private:
 	// options
-	int 			m_DynamicObject;
-
+	DWORD			m_dwFlags;
 	// bounding volume
 	Fbox 			m_Box;
 public:
+    // temp variable for actor
+	Fvector 		a_vPosition;
+    Fvector			a_vRotate;
+
     // temp variables for transformation
 	Fvector 		t_vPosition;
     Fvector			t_vScale;
     Fvector			t_vRotate;
 
-    bool			t_bOnModified;
-    IC bool			IsModified				(){return t_bOnModified;}
-    IC void			Modified				(){t_bOnModified=true;}
+    bool			bOnModified;
+    IC bool			IsModified				(){return bOnModified;}
+    IC void 		Modified				(){bOnModified=true;}
 
     AnsiString		m_LoadName;
     int				m_RefCount;
@@ -193,8 +200,11 @@ public:
 
 ///    IC bool			CheckVersion			()  {if(m_LibRef) return (m_ObjVer==m_LibRef->m_ObjVer); return true;}
     // get object properties methods
-	IC bool 		IsDynamic     			()	{return (m_DynamicObject!=0); }
-    IC void			SetDynamic				(bool bDynamic){m_DynamicObject=bDynamic;}
+	IC DWORD& 		GetFlags	   			(){return m_dwFlags; }
+	IC bool 		IsFlag	     			(DWORD flag){return !!(m_dwFlags&flag); }
+    IC void			SetFlag					(DWORD flag){m_dwFlags|flag;}
+    IC void			ResetFlag				(DWORD flag){m_dwFlags&~flag;}
+
 	IC AnsiString&	GetClassScript			()	{return m_ClassScript;}
     IC const Fbox&	GetBox					() 	{return m_Box;}
 
@@ -314,6 +324,7 @@ public:
 #define EOBJ_CHUNK_ACTIVE_SMOTION	0x0917
 #define EOBJ_CHUNK_SURFACES_XRLC	0x0918
 #define EOBJ_CHUNK_BONEPARTS		0x0919
+#define EOBJ_CHUNK_ACTORTRANSFORM	0x0920
 //----------------------------------------------------
 
 #endif /*_INCDEF_EditObject_H_*/

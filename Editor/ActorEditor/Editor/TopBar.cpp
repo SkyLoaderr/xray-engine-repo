@@ -64,6 +64,7 @@ void __fastcall TfraTopBar::ebViewClick(TObject *Sender)
         if (btn==ebViewRight)   Device.m_Camera.ViewRight();
         if (btn==ebViewTop)     Device.m_Camera.ViewTop();
         if (btn==ebViewBottom)  Device.m_Camera.ViewBottom();
+        if (btn==ebViewReset)  	Device.m_Camera.ViewReset();
     }
     UI.RedrawScene();
 }

@@ -19,7 +19,7 @@ CEditableObject::CEditableObject(LPCSTR name)
 {
 	m_LibName		= name;
 
-	m_DynamicObject = false;
+	m_dwFlags 		= eoProgressive;
     m_ObjVer.reset	();
 
 	m_Box.invalidate();
@@ -33,7 +33,10 @@ CEditableObject::CEditableObject(LPCSTR name)
     t_vScale.set   	(1.f,1.f,1.f);
     t_vRotate.set  	(0.f,0.f,0.f);
 
-    t_bOnModified	= false;
+	a_vPosition.set	(0.f,0.f,0.f);
+    a_vRotate.set  	(0.f,0.f,0.f);
+
+    bOnModified		= false;
 
     m_RefCount		= 0;
 }

@@ -52,6 +52,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebCameraPlane;
 	TExtBtn *ebCameraArcBall;
 	TExtBtn *ebCameraFly;
+	TExtBtn *ebViewReset;
     void __fastcall ebEditUndoClick(TObject *Sender);
     void __fastcall ebEditRedoClick(TObject *Sender);
     void __fastcall ActionClick(TObject *Sender);
