@@ -128,7 +128,7 @@ function stateAttackThreaten:execute()
 			local l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 10)
             if(l_v == self.memory.npc:level_vertex_id()) then
             	dir.x = - dir.x
-                dir.z = - dir.z 
+                dir.z = - dir.z
                 l_v = level.vertex_in_direction(self.memory.npc:level_vertex_id(), dir, 30)
             end
 
@@ -224,6 +224,7 @@ function stateAttackArtful:check_complited()
        	end
 
 		if(self.angry == false and device():time_global() > self.time + 40000)then
+			printf( "completed. Device time = %d  nedd time = %d", device():time_global(), self.time + 40000 )
         	return true
         end
     else
