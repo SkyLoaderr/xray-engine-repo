@@ -114,8 +114,13 @@ void R_dsgraph_structure::r_dsgraph_insert_dynamic	(IRender_Visual *pVisual, Fve
 	// the most common node
 	SPass&						pass	= *sh->passes.front	();
 	mapMatrix_T&				map		= mapMatrix			[sh->flags.iPriority/2];
+#ifdef DEBUG
+	mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs);
+	mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+#else
 	mapMatrixVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
 	mapMatrixPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+#endif
 	mapMatrixCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
 	mapMatrixStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
 	mapMatrixTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
@@ -207,8 +212,13 @@ void R_dsgraph_structure::r_dsgraph_insert_static	(IRender_Visual *pVisual)
 	counter_S					++;
 	SPass&						pass	= *sh->passes.front	();
 	mapNormal_T&				map		= mapNormal			[sh->flags.iPriority/2];
+#ifdef DEBUG
+	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs);
+	mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps);
+#else
 	mapNormalVS::TNode*			Nvs		= map.insert		(pass.vs->vs);
 	mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);
+#endif
 	mapNormalCS::TNode*			Ncs		= Nps->val.insert	(pass.constants._get());
 	mapNormalStates::TNode*		Nstate	= Ncs->val.insert	(pass.state->state);
 	mapNormalTextures::TNode*	Ntex	= Nstate->val.insert(pass.T._get());
