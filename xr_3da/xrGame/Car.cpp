@@ -353,13 +353,18 @@ void CCar::ParseDefinitions()
 	float main_gear_ratio=ini->r_float("car_definition","main_gear_ratio");
 	
 	R_ASSERT2(ini->section_exist("transmission_gear_ratio"),"no section transmission_gear_ratio");
-	m_gear_ratious.push_back(-ini->r_float("transmission_gear_ratio","R")*main_gear_ratio);
+	m_gear_ratious.push_back(ini->r_fvector3("transmission_gear_ratio","R"));
+	m_gear_ratious[0][0]=-m_gear_ratious[0][0]*main_gear_ratio;
 	string32 rat_num;
 	for(int i=1;true;i++)
 	{
 		sprintf(rat_num,"N%d",i);
 		if(!ini->line_exist("transmission_gear_ratio",rat_num)) break;
-		m_gear_ratious.push_back(ini->r_float("transmission_gear_ratio",rat_num)*main_gear_ratio);
+		Fvector gear_rat=ini->r_fvector3("transmission_gear_ratio",rat_num);
+		gear_rat[0]*=main_gear_ratio;
+		gear_rat[1]*=(1.f/60.f*2.f*M_PI);
+		gear_rat[2]*=(1.f/60.f*2.f*M_PI);
+		m_gear_ratious.push_back(gear_rat);
 	}
 
 	///////////////////////////////sound///////////////////////////////////////////////////////
@@ -511,6 +516,7 @@ PlayExhausts();
 //m_car_sound.Start();
 m_car_sound->Drive();
 b_engine_on=true;
+m_current_rpm=0.f;
 }
 void CCar::StopEngine()
 {
@@ -519,6 +525,7 @@ StopExhausts();
 NeutralDrive();//set zero speed
 b_engine_on=false;
 UpdatePower();//set engine friction;
+m_current_rpm=0.f;
 }
 
 void CCar::Stall()
@@ -528,6 +535,7 @@ void CCar::Stall()
 	NeutralDrive();//set zero speed
 	b_engine_on=false;
 	UpdatePower();//set engine friction;
+	m_current_rpm=0.f;
 
 }
 void CCar::ReleasePedals()
@@ -564,8 +572,8 @@ void CCar::UpdatePower()
 
 	if(b_auto_switch_transmission) 
 	{
-		if(m_current_rpm<m_auto_switch_rpm.x) TransmisionDown();
-		if(m_current_rpm>m_auto_switch_rpm.y) TransmisionUp();
+		if(m_current_rpm<m_gear_ratious[m_current_transmission_num][1]) TransmisionDown();
+		if(m_current_rpm>m_gear_ratious[m_current_transmission_num][2]) TransmisionUp();
 	}
 
 	xr_vector<SWheelDrive>::iterator i,e;
@@ -753,7 +761,7 @@ void CCar::Transmision(size_t num)
 	if(num<m_gear_ratious.size())
 	{
 		m_current_transmission_num=num;
-		m_current_gear_ratio=m_gear_ratious[num];
+		m_current_gear_ratio=m_gear_ratious[num][0];
 	//	m_current_rpm=m_torque_rpm;
 	}
 }
@@ -950,7 +958,7 @@ float CCar::EngineDriveSpeed()
 		drive_speed+=i->ASpeed();
 		//if(wheel_speed<drive_speed)drive_speed=wheel_speed;
 	}
-	return dFabs(drive_speed*m_current_gear_ratio)/m_driving_wheels.size();
+	return (0.5f*m_current_rpm+0.5f*dFabs(drive_speed*m_current_gear_ratio)/m_driving_wheels.size());
 	//if(drive_speed<dInfinity) return dFabs(drive_speed*m_current_gear_ratio);
 	//else					  return 0.f;
 }

@@ -241,7 +241,7 @@ private:
 	xr_map	  <int,SDoor>	m_doors;
 	xr_vector <SDoor*>		m_doors_update;
 	//xr_list   <SDoor*>		m_doors_opened;
-	xr_vector <float>		m_gear_ratious;
+	xr_vector <Fvector>		m_gear_ratious;
 	xr_vector <Fmatrix>		m_sits_transforms;// m_sits_transforms[0] - driver_place
 	float					m_current_gear_ratio;
 
@@ -258,6 +258,7 @@ private:
 
 	float					m_current_engine_power;
 	float					m_current_rpm;
+
 	float					m_axle_friction;
 
 	float					m_max_rpm;
