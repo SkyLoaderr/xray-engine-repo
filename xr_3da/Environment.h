@@ -44,12 +44,8 @@ public:
 class ENGINE_API	CEnvironment
 {
 public:
-	xr_vector<CSun*>			Suns;
-	xr_vector<CSoundStream*>	Music;
-	int							Music_Active;
-	int							Music_Fade;
-public:
 	// Environments
+	xr_vector<CSun*>			Suns;
 	CEnvDescriptor				Current;
 	xr_vector<CEnvDescriptor>	Palette;
 	ref_shader					sh_2sky;

@@ -11,11 +11,6 @@
 #include "Environment.h"
 #include "xr_effsun.h"
 #include "xr_trims.h"
-#include "customhud.h"
-
-// font
-#include "x_ray.h"
-#include "gamefont.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
