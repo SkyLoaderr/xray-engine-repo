@@ -194,30 +194,6 @@ meet_dialog = gar_dolg_start
 meet_talk_enabled = true
 
 
-[logic@gar_dolg_kamp2]
-active = kamp2@gar_dolg
-actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
-
-[kamp2@gar_dolg]
-center_point = kamp_center
-patrol_path = kamp_walk1
-path_look = kamp_look1
-meet_dialog = gar_dolg_start
-meet_talk_enabled = true
-
-
-[logic@gar_dolg_kamp3]
-active = kamp3@gar_dolg
-actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
-
-[kamp3@gar_dolg]
-center_point = kamp_center
-patrol_path = kamp_walk2
-path_look = kamp_look2
-meet_dialog = gar_dolg_start
-meet_talk_enabled = true
-
-
 [logic@gar_dolg_patrol1]
 active = walker@gar_dolg
 actor_dialogs = dolg@gar_dolg_kamp_actor_dialogs
@@ -227,6 +203,7 @@ path_walk = patrol_path
 path_look = patrol_look
 meet_dialog = gar_dolg_start
 meet_enabled = true
+meet_state = guard
 on_signal = arrive | %=search_gulag_job%
 
 
@@ -239,6 +216,7 @@ escape_path = patrol_look
 meet_dialog = gar_dolg_start
 meet_enabled = true
 on_signal = arrive | %=search_gulag_job%
+meet_state = guard
 
 
 [logic@gar_dolg_zoneguard1]
@@ -251,10 +229,25 @@ path_look = guard_look1
 team = team_0
 zone_warn = zone_warn
 zone_guard = zone_kill
-no_move = false
+no_move = true
 ignore_cond = {+gar_dolg_access_rostok}
+on_info = {+gar_dolg_access_rostok} zoneguard1@gar_dolg_allow
 meet_dialog = gar_dolg_guard_start
 meet_talk_enabled = true
+meet_state = threat
+
+[zoneguard1@gar_dolg_allow]
+path_walk = guard_way1
+path_look = guard_look1
+team = team_0
+zone_warn = zone_warn
+zone_guard = zone_kill
+no_move = true
+ignore_cond = {+gar_dolg_access_rostok}
+on_info = {-gar_dolg_access_rostok} zoneguard1@gar_dolg
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
+meet_state = guard
 
 
 [logic@gar_dolg_zoneguard2]
@@ -267,10 +260,25 @@ path_look = guard_look2
 team = team_0
 zone_warn = zone_warn
 zone_guard = zone_kill
-no_move = false
+no_move = true
 ignore_cond = {+gar_dolg_access_rostok}
+on_info = {+gar_dolg_access_rostok} zoneguard2@gar_dolg_allow
 meet_dialog = gar_dolg_guard_start
 meet_talk_enabled = true
+meet_state = threat
+
+[zoneguard2@gar_dolg_allow]
+path_walk = guard_way2
+path_look = guard_look2
+team = team_0
+zone_warn = zone_warn
+zone_guard = zone_kill
+no_move = true
+ignore_cond = {+gar_dolg_access_rostok}
+on_info = {-gar_dolg_access_rostok} zoneguard2@gar_dolg
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
+meet_state = guard
 
 
 [logic@gar_dolg_zoneguard3]
@@ -283,10 +291,27 @@ path_look = guard_look3
 team = team_0
 zone_warn = zone_warn
 zone_guard = zone_kill
-no_move = false
+no_move = true
 ignore_cond = {+gar_dolg_access_rostok}
+on_info = {+gar_dolg_access_rostok} zoneguard3@gar_dolg_allow
 meet_dialog = gar_dolg_guard_start
 meet_talk_enabled = true
+meet_state = threat
+
+[zoneguard3@gar_dolg_allow]
+path_walk = guard_way3
+path_look = guard_look3
+team = team_0
+zone_warn = zone_warn
+zone_guard = zone_kill
+no_move = true
+ignore_cond = {+gar_dolg_access_rostok}
+on_info = {-gar_dolg_access_rostok} zoneguard3@gar_dolg
+meet_dialog = gar_dolg_guard_start
+meet_talk_enabled = true
+meet_state = guard
+
+
 
 
 [logic@gar_dolg_camper1]

@@ -172,25 +172,13 @@ function load_job(sj, gname, type, squad, groups)
 			prior = 0, state = {0},
 			in_rest = "", out_rest = "gar_golg_restrictor",
 		}
-		table.insert(sj, t)
 		t = { section = "logic@gar_dolg_kamp1",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor",
-		}
-		table.insert(sj, t)				
-		t = { section = "logic@gar_dolg_kamp1",
-			idle = 0,
-			prior = 0, state = {0},
-			in_rest = "", out_rest = "gar_golg_restrictor",
-		}
-		t = { section = "logic@gar_dolg_kamp2",
 			idle = 15*60*1000,
 			prior = 2, state = {0},
 			in_rest = "", out_rest = "gar_golg_restrictor",
 		}
 		table.insert(sj, t)				
-		t = { section = "logic@gar_dolg_kamp3",
+		t = { section = "logic@gar_dolg_kamp1",
 			idle = 15*60*1000,
 			prior = 3, state = {0},
 			in_rest = "", out_rest = "gar_golg_restrictor",

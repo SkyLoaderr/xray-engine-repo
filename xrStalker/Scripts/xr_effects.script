@@ -87,7 +87,7 @@ end
 -- FIXME: ÝÒÎ ÍÅ ÑÎÕÐÀÍßÅÒÑß !!!
 local counter = 0
 local need_monsters = 0
-function garbage_monster_death (actor, npc)
+function garbage_monster_death(actor, npc)
     printf ("Monster %s killed...", npc:name ())
     
     local st = db.storage[npc:id ()]
@@ -119,11 +119,11 @@ function garbage_monster_death (actor, npc)
        actor:give_info_portion ("gar_dolg_help_kill_rush")
        actor:give_info_portion ("gar_dolg_access_rostok")
     end   
-    if counter >= 20 then
+    if counter >= 15 then
        actor:give_info_portion ("gar_dolg_help_kill_rush_good")
        xr_gulag.setGulagRelation ("gar_dolg", game_object.friend, actor)
     end   
-    if counter >= 30 then
+    if counter >= 20 then
        actor:give_info_portion ("gar_dolg_help_kill_rush_perfect")
     end    
     
