@@ -38,7 +38,7 @@
 #  define LZO1Y
 #endif
 
-#include <lzo1y.h>
+#include "lzo1y.h"
 
 #define M2_MAX_LEN		14
 #define M2_MAX_OFFSET	0x0400

@@ -31,7 +31,7 @@
  */
 
 
-#include <lzo1.h>
+#include "lzo1.h"
 
 #define LZO_NO_R1
 #include "config1a.h"
