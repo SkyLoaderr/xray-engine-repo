@@ -31,6 +31,4 @@ public:
 	CUIStatic UICommunity;
 	CUIStatic UIText;
 	CUIStatic UIRelation;
-
-	CUIFrameWindow	UIMask;
 };

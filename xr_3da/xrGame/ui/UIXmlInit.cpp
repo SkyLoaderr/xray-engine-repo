@@ -131,16 +131,9 @@ bool CUIXmlInit::InitStatic(CUIXml& xml_doc, LPCSTR path,
 	else
 		pWnd->SetStretchTexture(false); 
 
-	ref_str texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
+	pWnd->Init(x, y, width, height);
 
-	if(*texture)
-	{
-		pWnd->Init(*texture, x, y, width, height);
-	}
-	else
-	{
-		pWnd->Init(x, y, width, height);
-	}
+	InitTexture(xml_doc, path, index, pWnd);
 	
 	ref_str text_path = strconcat(buf,path,":text");
 	u32 color;
@@ -175,13 +168,9 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 	int height = xml_doc.ReadAttribInt(path, index, "height");
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
 	
-	LPCSTR  texture = xml_doc.Read(strconcat(buf,path,":texture"), index, NULL);
+	pWnd->Init(x, y, width, height);
+	InitTexture(xml_doc, path, index, pWnd);
 
-	if(texture)
-		pWnd->Init(texture, x, y, width, height);
-	else
-		pWnd->Init(x, y, width, height);
-	
 	pWnd->SetAccelerator(accel);
 
 	// Init font from xml config file
@@ -567,6 +556,40 @@ bool CUIXmlInit::InitAnimatedStatic(CUIXml &xml_doc, const char *path, int index
 	pWnd->SetAnimCols(animCols);
 	pWnd->SetAnimationDuration(animDuration);
 	if (play) pWnd->Play();
+
+	return true;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+bool CUIXmlInit::InitTexture(CUIXml &xml_doc, const char *path, int index, CUIStatic *pWnd)
+{
+	string256 buf;
+	if (0 == xr_strcmp(path, ""))
+	{
+		strcpy(buf, "texture");
+	}
+	else
+	{
+		strconcat(buf, path, ":texture");
+	}
+
+	ref_str texture = xml_doc.Read(buf, index, NULL);
+	
+	if (0 == texture.size()) return false;
+
+	pWnd->InitTexture(*texture);
+
+	int x			= xml_doc.ReadAttribInt(buf, 0, "x", 0);
+	int y			= xml_doc.ReadAttribInt(buf, 0, "y", 0);
+	int width		= xml_doc.ReadAttribInt(buf, 0, "width", 0);
+	int height		= xml_doc.ReadAttribInt(buf, 0, "height", 0);
+
+	if (width != 0 && height != 0)
+	{
+		pWnd->GetUIStaticItem().SetOriginalRect(x, y, width, height);
+		pWnd->ClipperOn();
+	}
 
 	return true;
 }

@@ -22,6 +22,7 @@ const char * const ENCYCLOPEDIA_DIALOG_XML	= "encyclopedia.xml";
 //////////////////////////////////////////////////////////////////////////
 
 CUIEncyclopediaWnd::CUIEncyclopediaWnd()
+	:	m_pCurrArticle		(NULL)
 {
 }
 
@@ -29,6 +30,8 @@ CUIEncyclopediaWnd::CUIEncyclopediaWnd()
 
 CUIEncyclopediaWnd::~CUIEncyclopediaWnd()
 {
+	if (m_pCurrArticle)
+		UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->image);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -61,14 +64,26 @@ void CUIEncyclopediaWnd::Init()
 
 	UIEncyclopediaIdxBkg.AttachChild(&UIIdxList);
 	xml_init.InitListWnd(uiXml, "idx_list", 0, &UIIdxList);
+	UIIdxList.SetMessageTarget(this);
 
 	UIEncyclopediaInfoBkg.AttachChild(&UIInfoList);
 	xml_init.InitListWnd(uiXml, "info_list", 0, &UIInfoList);
 	UIInfoList.AddItem<CUIListItem>("Test of UIInfoList");
+	UIInfoList.ActivateList(false);
+
+	// mask
+	xml_init.InitFrameWindow(uiXml, "item_static:mask_frame_window", 0, &UIImgMask);
 
 	string256 header;
-	strconcat(header, ALL_PDA_HEADER_PREFIX, " / Encyclopedia / ");
+	strconcat(header, ALL_PDA_HEADER_PREFIX, "/Encyclopedia");
 	m_InfosHeaderStr = header;
+
+	AddArticle("one");
+	AddArticle("two");
+	AddArticle("three");
+	AddArticle("four");
+	AddArticle("five");
+	AddArticle("six");
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -109,7 +124,8 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 	xml_init.InitStatic(localXml, "item_static", 0, &a.image);
 
 	// Текстура
-	a.image.InitTexture(uiXml.ReadAttrib(pNode, "image", ""));
+	localXml.SetLocalRoot(pNode);
+	xml_init.InitTexture(localXml, "", 0, &a.image);
 
 	// И текст
 	a.info = uiXml.Read(pNode, "");
@@ -118,7 +134,7 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 	R_ASSERT(!group.empty());
 
 	// Парсим строку группы для определения вложенности
-	GroupTree							groupTree;
+	GroupTree					groupTree;
 
 	std::string::size_type		pos;
 	std::string					oneLevel;
@@ -185,19 +201,25 @@ void CUIEncyclopediaWnd::AddArticle(const ref_str &ID)
 		pTVItemChilds->SetRoot(true);
 		UIIdxList.AddItem<CUITreeViewItem>(pTVItemChilds);
 
-		pTVItemChilds = AddTreeTail(groupTree.begin() + 1, groupTree, pTVItemChilds);
+		// Если в списке вложенности 1 элемент, то хвоста нет, и соответственно ничего не добавляем
+		if (groupTree.size() > 1)
+			pTVItemChilds = AddTreeTail(groupTree.begin() + 1, groupTree, pTVItemChilds);
 	}
 
 	// Теперь читаем имя в xml и добавляем последний элемент
 	const ref_str name = uiXml.ReadAttrib(pNode, "name", "");
-	
-	// Но сначала проверяем нет ли записи с таким названием?
-	if (!pTVItemChilds->Find(*name))
-	{
-		pTVItem = xr_new<CUITreeViewItem>();
-		pTVItem->SetText(*name);
-		pTVItemChilds->AddItem(pTVItem);
-	}
+
+	// К этому моменту pTVItemChilds обязательно должна быть не NULL
+	R_ASSERT(pTVItemChilds);
+
+	// Cначала проверяем нет ли записи с таким названием, и добавляем если нет
+//	if (!pTVItemChilds->Find(*name))
+//	{
+	pTVItem		= xr_new<CUITreeViewItem>();
+	pTVItem->SetText(*name);
+	pTVItem->SetValue(m_ArticlesDB.size() - 1);
+	pTVItemChilds->AddItem(pTVItem);
+//	}
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -227,11 +249,48 @@ bool CUIEncyclopediaWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
 	if (DIK_T == dik)
 	{
 		AddArticle("one");
-	}
-	if (DIK_Y == dik)
-	{
 		AddArticle("two");
+		AddArticle("three");
+		AddArticle("four");
+		AddArticle("five");
+		AddArticle("six");
 	}
 
 	return false;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIEncyclopediaWnd::SendMessage(CUIWindow *pWnd, s16 msg, void* pData)
+{
+	if (&UIIdxList == pWnd && CUIListWnd::LIST_ITEM_CLICKED == msg)
+	{
+		// для начала проверим, что нажатый элемент не рутовый
+		CUITreeViewItem *pTVItem = static_cast<CUITreeViewItem*>(pData);
+		R_ASSERT(pTVItem);
+
+		if (!pTVItem->IsRoot())
+		{
+			// Удаляем текущую катинку и текст
+			if (m_pCurrArticle)
+			{
+				UIEncyclopediaInfoBkg.DetachChild(&m_pCurrArticle->image);
+				m_pCurrArticle->image.SetMask(NULL);
+			}
+			UIInfoList.RemoveAll();
+
+			// Отображаем новые
+			CUIString str;
+			str.SetText(*m_ArticlesDB[pTVItem->GetValue()].info);
+			UIInfoList.AddParsedItem<CUIListItem>(str, 0, 0xffffffff);
+			UIEncyclopediaInfoBkg.AttachChild(&m_ArticlesDB[pTVItem->GetValue()].image);
+			m_ArticlesDB[pTVItem->GetValue()].image.SetMask(&UIImgMask);
+
+			std::string caption = static_cast<std::string>(*m_InfosHeaderStr) + pTVItem->GetHierarchyAsText();
+			UIEncyclopediaInfoHeader.UITitleText.SetText(caption.c_str());
+
+			// Запоминаем текущий эдемент
+			m_pCurrArticle = &m_ArticlesDB[pTVItem->GetValue()];
+		}
+	}
 }

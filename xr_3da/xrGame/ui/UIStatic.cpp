@@ -81,7 +81,7 @@ void  CUIStatic::Draw()
 	}
 
 	// draw mask rect
-	if (m_pMask) m_pMask->Draw();
+//	if (m_pMask) m_pMask->Draw();
 
 	inherited::Draw();
 
@@ -521,12 +521,14 @@ Irect CUIStatic::GetClipRect()
 
 void CUIStatic::SetMask(CUIFrameWindow *pMask)
 {
+	DetachChild(m_pMask);
+
 	m_pMask = pMask;
 
 	if (m_pMask)
 	{
-		RECT r = GetAbsoluteRect();
-		m_pMask->SetWndRect(r.left, r.top, r.right, r.bottom);
+		AttachChild(m_pMask);
+		RECT r = GetWndRect();
 		m_pMask->SetWidth(r.right - r.left);
 		m_pMask->SetHeight(r.bottom - r.top);
 	}

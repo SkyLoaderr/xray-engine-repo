@@ -22,12 +22,18 @@ class CUITreeViewItem: public CUIListItem
 	bool			isOpened;
 	// Смещение в пробелах
 	int				iTextShift;
+	// Кому мы пренадлежим
+	CUITreeViewItem *pOwner;
 public:
 	void			SetRoot(bool set);
-	bool			IsRoot() const			{ return isRoot; }
+	bool			IsRoot() const						{ return isRoot; }
 
 	// Устанавливаем смещение текста
-	void			SetTextShift(int delta)	{ iTextShift += delta; }
+	void			SetTextShift(int delta)				{ iTextShift += delta; }
+
+	// Владелец
+	CUITreeViewItem * GetOwner() const					{ return pOwner; }
+	void			SetOwner(CUITreeViewItem *owner)	{ pOwner = owner; }
 protected:
 	// Функция вызываемая при изменении свойства рута
 	// для изменения визуального представления себя
@@ -36,7 +42,7 @@ public:
 	// Раксрыть/свернуть локальнцю иерархию
 	void			Open();
 	void			Close();
-	bool			IsOpened() const		{ return isOpened; }
+	bool			IsOpened() const					{ return isOpened; }
 protected:
 	// Функция вызываемая при изменении cостояния открыто/закрыто 
 	// для изменения визуального представления себя
@@ -55,6 +61,9 @@ public:
 	// Найти элемент с заданным именем
 	// Return:	указатель на элемент, если нашли, либо NULL в противном случае
 	CUITreeViewItem * Find(LPCSTR text) const;
+	// Вернуть иерархию от верха до текущего элемента в виде строки-пути
+	// Рутовые элементы заканчиваются символом "/"
+	std::string GetHierarchyAsText();
 
 	// Redefine some stuff
 	// ATTENTION! Для корректного функционирования значков [+-] вызов SetText

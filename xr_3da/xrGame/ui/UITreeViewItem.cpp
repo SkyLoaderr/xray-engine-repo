@@ -20,7 +20,8 @@ const int		subShift	= 1;
 CUITreeViewItem::CUITreeViewItem()
 	:	isRoot			(false),
 		isOpened		(false),
-		iTextShift		(0)
+		iTextShift		(0),
+		pOwner			(NULL)
 {
 }
 
@@ -174,11 +175,8 @@ void CUITreeViewItem::AddItem(CUITreeViewItem *pItem)
 	vSubItems.push_back(pItem);
 	pItem->ManualDelete(true);
 
-//	std::string str;
-//	for (int i = 0; i < subShift; ++i)
-//		str += " ";
-	
-//	str += pItem->;
+	pItem->SetOwner(this);
+
 	pItem->SetText(pItem->GetText());
 
 }
@@ -272,4 +270,28 @@ CUITreeViewItem * CUITreeViewItem::Find(LPCSTR text) const
 	}
 
 	return pResult;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+std::string CUITreeViewItem::GetHierarchyAsText()
+{
+	std::string name;
+
+	if (GetOwner())
+	{
+		name = GetOwner()->GetHierarchyAsText();
+	}
+
+	std::string::size_type prevPos = name.size() + 1;
+	name += static_cast<std::string>("/") + static_cast<std::string>(GetText());
+
+	// Удаляем мусор: [ +-]
+	std::string::size_type pos = name.find_first_not_of("/ +-", prevPos);
+	if (std::string::npos != pos)
+	{
+		name.erase(prevPos, pos - prevPos);
+	}
+
+	return name;
 }

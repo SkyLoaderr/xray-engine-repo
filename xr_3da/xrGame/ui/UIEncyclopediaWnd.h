@@ -37,6 +37,7 @@ public:
 
 	virtual void Init();
 	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void* pData = NULL);
 
 	// Добавлем 1 энциклопедиционную статью
 	void AddArticle(const ref_str &ID);
@@ -53,6 +54,9 @@ protected:
 	CUIListWnd			UIIdxList;
 	CUIListWnd			UIInfoList;
 
+	// Маска для изображения предмета текущей статьи
+	CUIFrameWindow		UIImgMask;
+
 	// Стуктура статьи
 	struct Article
 	{
@@ -64,6 +68,8 @@ protected:
 	typedef xr_vector<Article>				ArticlesDB;
 	typedef xr_vector<Article>::iterator	ArticlesDB_it;
 	ArticlesDB								m_ArticlesDB;
+
+	Article				*m_pCurrArticle;
 };
 
 #endif	//UI_ENCYCLOPEDIA_WND_H_

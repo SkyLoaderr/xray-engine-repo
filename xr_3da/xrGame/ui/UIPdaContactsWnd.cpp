@@ -11,7 +11,7 @@
 #define PDA_CONTACT_HEIGHT 70
 
 const char * const PDA_CONTACTS_XML					= "pda_contacts.xml";
-const char * const PDA_CONTACTS_HEADER_SUFFIX		= " / Contacts";
+const char * const PDA_CONTACTS_HEADER_SUFFIX		= "/Contacts";
 
 CUIPdaContactsWnd::CUIPdaContactsWnd()
 {

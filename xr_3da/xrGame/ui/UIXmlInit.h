@@ -31,44 +31,47 @@ public:
 	virtual ~CUIXmlInit();
 
 	
-	bool InitWindow(CUIXml& xml_doc, const char* path, 	int index, CUIWindow* pWnd);
+	bool InitWindow				(CUIXml& xml_doc, const char* path,
+								int index, CUIWindow* pWnd);
 
-	bool InitFrameWindow(CUIXml& xml_doc, const char* path, 
-							int index, CUIFrameWindow* pWnd);
+	bool InitFrameWindow		(CUIXml& xml_doc, const char* path, 
+								int index, CUIFrameWindow* pWnd);
 
-	bool InitFrameLine(CUIXml& xml_doc, const char* path, 
-							int index, CUIFrameLineWnd* pWnd);
+	bool InitFrameLine			(CUIXml& xml_doc, const char* path, 
+								int index, CUIFrameLineWnd* pWnd);
 
-	bool InitStatic(CUIXml& xml_doc, const char* path, 
-							int index, CUIStatic* pWnd);
-
+	bool InitStatic				(CUIXml& xml_doc, const char* path, 
+								int index, CUIStatic* pWnd);
 	
-	bool InitButton(CUIXml& xml_doc, const char* path, 
-							int index, CUIButton* pWnd);
+	bool InitButton				(CUIXml& xml_doc, const char* path, 
+								int index, CUIButton* pWnd);
 
-	bool InitDragDropList(CUIXml& xml_doc, const char* path, 
-						int index, CUIDragDropList* pWnd);
+	bool InitDragDropList		(CUIXml& xml_doc, const char* path, 
+								int index, CUIDragDropList* pWnd);
 
-	bool InitListWnd(CUIXml& xml_doc, const char* path, 
-								   int index, CUIListWnd* pWnd);
+	bool InitListWnd			(CUIXml& xml_doc, const char* path, 
+								int index, CUIListWnd* pWnd);
 
-	bool InitProgressBar(CUIXml& xml_doc, const char* path, 
-						int index, CUIProgressBar* pWnd);
+	bool InitProgressBar		(CUIXml& xml_doc, const char* path, 
+								int index, CUIProgressBar* pWnd);
 
-	bool InitFont(CUIXml &xml_doc, const char *path, 
-				int index, u32 &color, CGameFont *&pFnt);
+	bool InitFont				(CUIXml &xml_doc, const char *path, 
+								int index, u32 &color, CGameFont *&pFnt);
 
-	bool InitTabControl(CUIXml &xml_doc, const char *path,
-						int index, CUITabControl *pWnd);
+	bool InitTabControl			(CUIXml &xml_doc, const char *path,
+								int index, CUITabControl *pWnd);
 
-	bool InitTextBanner(CUIXml &xml_doc, const char *path,
-						int index, CUITextBanner *pBnr);
+	bool InitTextBanner			(CUIXml &xml_doc, const char *path,
+								int index, CUITextBanner *pBnr);
 
-	bool InitMultiTextStatic(CUIXml &xml_doc, const char *path,
-							 int index, CUIMultiTextStatic *pWnd);
+	bool InitMultiTextStatic	(CUIXml &xml_doc, const char *path,
+								int index, CUIMultiTextStatic *pWnd);
 
-	bool InitAnimatedStatic(CUIXml &xml_doc, const char *path,
-							int index, CUIAnimatedStatic *pWnd);
+	bool InitAnimatedStatic		(CUIXml &xml_doc, const char *path,
+								int index, CUIAnimatedStatic *pWnd);
+
+	bool InitTexture			(CUIXml &xml_doc, const char *path,
+								int index, CUIStatic *pWnd);
 
 	//автоматическая инициализация статических элеменитов
 	bool InitAutoStatic(CUIXml& xml_doc, const char* tag_name, CUIWindow* pParentWnd);
