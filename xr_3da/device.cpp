@@ -54,8 +54,38 @@ void CRenderDevice::End		(void)
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
 }
 
+#pragma pack(push,8)
+struct THREAD_NAME
+{
+	DWORD	dwType;
+	LPCSTR	szName;
+	DWORD	dwThreadID;
+	DWORD	dwFlags;
+};
+
+void	SetThreadName(LPCSTR name)
+{
+	THREAD_NAME		tn;
+	tn.dwType		= 0x1000;
+	tn.szName		= name;
+	tn.dwThreadID	= DWORD(-1);
+	tn.dwFlags		= 0;
+	__try
+	{
+		RaiseException(0x406D1388,0,sizeof(tn)/sizeof(DWORD),(DWORD*)&tn);
+	}
+	__except(EXCEPTION_CONTINUE_EXECUTION)
+	{
+	}
+}
+
+#pragma pack(pop)
+
+
 volatile u32	mt_Thread_marker		= 0x12345678;
-void __cdecl	mt_Thread(void *ptr)	{
+void __cdecl	mt_Thread	(void *ptr)	{
+	SetThreadName			("X-RAY Secondary thread");
+
 	while (true) {
 		// waiting for Device permission to execute
 		EnterCriticalSection	(&Device.mt_csEnter);
@@ -90,7 +120,8 @@ void CRenderDevice::Run			()
     MSG         msg;
     BOOL		bGotMsg;
 
-	Log			("Starting engine...");
+	Log				("Starting engine...");
+	SetThreadName	("X-RAY Primary thread");
 
 	// Startup timers and calculate timer delta
 	dwTimeGlobal				= 0;
