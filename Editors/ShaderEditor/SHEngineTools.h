@@ -3,7 +3,7 @@
 #define SHEngineToolsH
 
 #include "ElTree.hpp"
-#include "PropertiesListTypes.h"
+#include "PropertiesList.h"
 
 DEFINE_VECTOR(CBlender*,TemplateVec,TemplateIt);
 DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
@@ -68,24 +68,25 @@ friend class TfrmShaderProperties;
     void 				PrepareRender		();
 
     // matrix props
-	void __fastcall 	ModeOnAfterEdit		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-	void __fastcall 	MatrixOnAfterEdit	(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
+	void __fastcall 	ModeOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	MatrixOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall 	AddMatrixProps		(TElTreeItem* parent, LPSTR name);
 	void __fastcall 	RemoveMatrixProps	(TElTreeItem* parent);
 	void __fastcall 	UpdateMatrixModeProps(TElTreeItem* parent, CMatrix* M, DWORD mode);
-	void __fastcall 	MCOnDraw			(PropItem* sender, LPVOID draw_val);
+	void __fastcall 	MCOnDraw			(PropValue* sender, LPVOID draw_val);
     // constant props
-	void __fastcall 	ConstOnAfterEdit	(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
+	void __fastcall 	ConstOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 	void __fastcall 	AddConstProps		(TElTreeItem* parent, LPSTR name);
 	void __fastcall 	RemoveConstProps	(TElTreeItem* parent);
     // name
-	void __fastcall 	NameOnAfterEdit		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit	(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-	void __fastcall 	NameOnDraw			(PropItem* sender, LPVOID draw_val);
+	void __fastcall 	NameOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnDraw			(PropValue* sender, LPVOID draw_val);
 
     void				RealResetShaders	();
 
 	void __fastcall 	FillMatrix			(PropValueVec& values, LPCSTR pref, CMatrix* m);
+	void __fastcall 	FillConst			(PropValueVec& values, LPCSTR pref, CConstant* c);
     void __fastcall		RefreshProperties	();
 public:
 	CFS_Memory 			m_RenderShaders;

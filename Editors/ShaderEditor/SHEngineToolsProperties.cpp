@@ -22,33 +22,30 @@ xr_token							mode_token					[ ]={
 	{ 0,							0							}           
 };
 //---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::FillMatrix(PropValueVec& values, LPCSTR pref, CMatrix* m)
+void __fastcall CSHEngineTools::UpdateMatrixModeProps(TElTreeItem* item, CMatrix* m, DWORD mode)
 {
 	TProperties* P = Tools.m_Props;
-
-    if (m->dwMode==CMatrix::modeTCM){
-	    FILL_PROP_EX(values, pref,	"Scale enabled",	&m->tcm,  	PROP::CreateFlagValue(CMatrix::tcmScale));
-	    FILL_PROP_EX(values, pref, 	"Scale U",			&m->scaleU, PROP::CreateWaveValue());
-	    FILL_PROP_EX(values, pref, 	"Scale V",			&m->scaleV, PROP::CreateWaveValue());
-
-	    FILL_PROP_EX(values, pref, 	"Rotate enabled",	&m->tcm,  	PROP::CreateFlagValue(CMatrix::tcmRotate));
-	    FILL_PROP_EX(values, pref, 	"Rotate",			&m->rotate, PROP::CreateWaveValue());
-
-	    FILL_PROP_EX(values, pref, 	"Scroll enabled",	&m->tcm,  	PROP::CreateFlagValue(CMatrix::tcmScroll));
-	    FILL_PROP_EX(values, pref, 	"Scroll U",			&m->scrollU,PROP::CreateWaveValue());
-	    FILL_PROP_EX(values, pref, 	"Scroll V",			&m->scrollV,PROP::CreateWaveValue());
+	P->BeginEditMode();
+    if (mode==CMatrix::modeTCM){
+        P->AddFlagItem(item,"Scale enabled",	&m->tcm,CMatrix::tcmScale);
+        P->AddWaveItem(item,"Scale U",			&m->scaleU);
+        P->AddWaveItem(item,"Scale V",			&m->scaleV);
+        P->AddFlagItem(item,"Rotate enabled",	&m->tcm,CMatrix::tcmRotate);
+        P->AddWaveItem(item,"Rotate",			&m->rotate);
+        P->AddFlagItem(item,"Scroll enabled",	&m->tcm,CMatrix::tcmScroll);
+        P->AddWaveItem(item,"Scroll U",			&m->scrollU);
+        P->AddWaveItem(item,"Scroll V",			&m->scrollV);
+    }else{
+        for (TElTreeItem* itm=item->GetLastChild(); itm;){
+            TElTreeItem* node=item->GetPrevChild(itm);
+            itm->Delete();
+            itm=node;
+        }
     }
+	P->EndEditMode();
 }
 //---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::RefreshProperties()
-{
-	PropValueVec values;
-	if (m_CurrentBlender){
-    }
-    Tools.m_Props->AssignValues(values,true);
-}
-//---------------------------------------------------------------------------
-void __fastcall CSHEngineTools::ModeOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::ModeOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	TElTreeItem* parent=item->Parent; R_ASSERT(parent);
     R_ASSERT(parent->Tag==PROP_LIST);
@@ -56,17 +53,18 @@ void __fastcall CSHEngineTools::ModeOnAfterEdit(TElTreeItem* item, PropValue* se
     string128 nm; strcpy(nm,V->GetValue());
     CMatrix* M = FindMatrix(nm,false); R_ASSERT(M);
     V->ApplyValue(nm);
-    RefreshProperties();
+    DWORD mode=*(DWORD*)edit_val;
+    UpdateMatrixModeProps(item,M,mode);
 }
 //---------------------------------------------------------------------------
 void __fastcall CSHEngineTools::AddMatrixProps(TElTreeItem* item, LPSTR name)
 {
     CMatrix* M = FindMatrix(name,true);
     R_ASSERT(M);
-//s	Tools.m_Props->BeginEditMode();
-//s    TElTreeItem* node = Tools.m_Props->AddTokenItem(item,"Mode",&M->dwMode,mode_token,&ModeOnAfterEdit)->item;
-//s    UpdateMatrixModeProps(node,M,M->dwMode);
-//s	Tools.m_Props->EndEditMode(item);
+	Tools.m_Props->BeginEditMode();
+    TElTreeItem* node = Tools.m_Props->AddTokenItem(item,"Mode",&M->dwMode,mode_token,&ModeOnAfterEdit)->item;
+    UpdateMatrixModeProps(node,M,M->dwMode);
+	Tools.m_Props->EndEditMode(item);
 }
 //---------------------------------------------------------------------------
 
@@ -82,7 +80,7 @@ void __fastcall CSHEngineTools::RemoveMatrixProps(TElTreeItem* parent){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, LPVOID draw_val)
+void __fastcall CSHEngineTools::MCOnDraw(PropItem* sender, LPVOID draw_val)
 {
 	AnsiString& V=*(AnsiString*)draw_val;
     VERIFY(V[1]);
@@ -90,7 +88,7 @@ void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, LPVOID draw_val)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	ListValue* V = (ListValue*)sender;
 	LPSTR nm=(LPSTR)edit_val;	VERIFY(nm&&nm[0]);
@@ -102,7 +100,7 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropValue* 
         }else{
             strcpy(nm,V->GetValue());
         }
-    }else{
+    }else{                       
         if (*V->GetValue()!='$'){
         	string128 nmm; strcpy(nmm,V->GetValue());
             RemoveMatrix(nmm);
@@ -113,12 +111,8 @@ void __fastcall CSHEngineTools::MatrixOnAfterEdit(TElTreeItem* item, PropValue* 
 }
 //------------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::FillConst(PropValueVec& values, LPCSTR pref, CConstant* c)
-{
-}
 void __fastcall CSHEngineTools::AddConstProps(TElTreeItem* item, LPSTR name)
 {
-/*
 	Tools.m_Props->BeginEditMode();
 	CConstant* C = Tools.SEngine.FindConstant(name,true);
     R_ASSERT(C);
@@ -128,7 +122,6 @@ void __fastcall CSHEngineTools::AddConstProps(TElTreeItem* item, LPSTR name)
     P->AddWaveItem(item,"B",&C->_B);
     P->AddWaveItem(item,"A",&C->_A);
 	Tools.m_Props->EndEditMode(item);
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -144,7 +137,7 @@ void __fastcall CSHEngineTools::RemoveConstProps(TElTreeItem* parent){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	ListValue* V = (ListValue*)sender;
 	LPSTR nm=(LPSTR)edit_val;	VERIFY(nm&&nm[0]);
@@ -166,7 +159,7 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(TElTreeItem* item, PropValue* s
     }
 }
 //------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::NameOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	TextValue* V = (TextValue*)sender;
     AnsiString* new_name = (AnsiString*)edit_val;
@@ -174,12 +167,12 @@ void __fastcall CSHEngineTools::NameOnAfterEdit(TElTreeItem* item, PropValue* se
     	RemoteRenameBlender(V->GetValue(),new_name->c_str());
 }
 //------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::NameOnBeforeEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
 {
 	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnDraw(PropValue* sender, LPVOID draw_val)
+void __fastcall CSHEngineTools::NameOnDraw(PropItem* sender, LPVOID draw_val)
 {
 	FOLDER::TextDraw(((TextValue*)sender)->GetValue(),*(AnsiString*)draw_val);
 }
@@ -189,7 +182,7 @@ void CSHEngineTools::UpdateProperties()
 {
 	if (m_bFreezeUpdate) return;
 	TProperties* P=Tools.m_Props;
-    P->BeginFillMode();
+    P->BeginFillMode("Engine shader");
 	if (m_CurrentBlender){ // fill Tree
     	CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
         CBlender_DESC* desc=(CBlender_DESC*)data.Pointer();
@@ -257,4 +250,4 @@ void CSHEngineTools::UpdateProperties()
 }
 //------------------------------------------------------------------------------
 
-
+ 

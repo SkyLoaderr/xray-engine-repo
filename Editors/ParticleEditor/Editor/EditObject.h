@@ -4,7 +4,7 @@
 #ifndef _INCDEF_Object_H_
 #define _INCDEF_Object_H_
                                       
-#include "Bone.h"
+#include "Bone.h"                     
 #include "SceneClassList.h"
 #ifdef _EDITOR
 	#include "PropertiesListTypes.h"

@@ -201,6 +201,9 @@ struct astr_pred : public binary_function<AnsiString&, AnsiString&, bool>
 	DEFINE_VECTOR(FVF::LIT,FLITvertexVec,FLITvertexIt);
 
 	#include "xrXRC.h"
+
+	class PropValue;
+	DEFINE_VECTOR(PropValue*,PropValueVec,PropValueIt);
 #endif
 
 

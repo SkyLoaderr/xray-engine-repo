@@ -185,6 +185,19 @@ void __fastcall TProperties::FormClose(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, LPCSTR key, PropValue* prop)
+{
+    prop->item			= tvProperties->Items->AddChild(parent,key);
+    prop->item->Tag	    = (int)prop;
+    prop->item->UseStyles=true;
+    TElCellStyle* CS    = prop->item->AddStyle();
+    CS->OwnerProps 		= true;
+    CS->CellType 		= sftUndef;
+    CS->Style 			= ElhsOwnerDraw;
+    prop->item->ColumnText->Add(prop->GetText());
+    return prop->item;
+}
+
 //CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
 /*
 void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
@@ -231,12 +244,11 @@ void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
 
 void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand, const AnsiString& title)
 {
-	R_ASSERT(!values.empty());
 	// begin fill mode
 	tvProperties->IsUpdating = true;
 	CancelEditControl();
     // clear values
-    FOLDER::MakeFullName(tvProperties->Selected,0,last_selected_item);
+    if (tvProperties->Selected) FOLDER::MakeFullName(tvProperties->Selected,0,last_selected_item);
     ClearParams();
     tvProperties->Items->Clear();
     // fill values
@@ -257,8 +269,12 @@ void __fastcall TProperties::AssignValues(PropValueVec& values, bool full_expand
     // end fill mode
     bModified=false;
 	if (full_expand) tvProperties->FullExpand();
-    FOLDER::RestoreSelection	(tvProperties,last_selected_item.c_str());
-    tvProperties->IsUpdating 	= false;
+
+    TElTreeItem* sel_node	= FOLDER::ExpandItem(tvProperties,last_selected_item.c_str());
+
+    tvProperties->IsUpdating= false;
+
+    FOLDER::RestoreSelection(tvProperties,sel_node);
 
     Caption = title;
 }
@@ -432,6 +448,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             BOOL new_val 				= !V->GetValue();
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (V->ApplyValue(new_val)){
+				if (V->OnChange) V->OnChange(V);
                 Modified();
 	            RefreshForm();
             }
@@ -441,6 +458,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             BOOL new_val 				= !V->GetValue();
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
             if (V->ApplyValue(new_val)){
+				if (V->OnChange) V->OnChange(V);
                 Modified();
 	            RefreshForm();
             }
@@ -566,21 +584,30 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             xr_token* token_list   	= V->token;
             DWORD new_val			= token_list[mi->Tag].id;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val))	Modified();
+            if (V->ApplyValue(new_val)){	
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TOKEN2:{
         	TokenValue2* V			= (TokenValue2*)prop;
             DWORD new_val			= mi->Tag;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val))	Modified();
+            if (V->ApplyValue(new_val)){	
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TOKEN3:{
         	TokenValue3* V			= (TokenValue3*)prop;
             DWORD new_val			= V->items[mi->Tag].ID;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val))	Modified();
+            if (V->ApplyValue(new_val)){	
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_LIST:{
@@ -588,7 +615,10 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             AStringVec& lst		 	= V->items;
             string256 new_val;	strcpy(new_val,lst[mi->Tag].c_str());
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val))	Modified();
+            if (V->ApplyValue(new_val)){	
+				if (V->OnChange) V->OnChange(V);
+	            Modified();
+            }
 			item->ColumnText->Strings[0]= V->GetText();
         }break;
 		case PROP_TEXTURE2:{
@@ -604,7 +634,10 @@ void __fastcall TProperties::PMItemClick(TObject *Sender)
             if (new_val){
                 edit_val		 	= new_val;
                 if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
-                if (V->ApplyValue(edit_val.c_str())) Modified();
+                if (V->ApplyValue(edit_val.c_str())){
+					if (V->OnChange) V->OnChange(V);
+	                Modified();
+                }
                 item->ColumnText->Strings[0]= V->GetText();
             }
         }break;
@@ -624,7 +657,10 @@ void __fastcall TProperties::WaveFormClick(TElTreeItem* item)
 
 	if (TfrmShaderFunction::Run(&edit_val)==mrOk){
         if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
-        if (V->ApplyValue(edit_val)) Modified();
+        if (V->ApplyValue(edit_val)){
+			if (V->OnChange) V->OnChange(V);
+        	Modified();
+        }
         item->ColumnText->Strings[0]= V->GetText();
     }
 }
@@ -644,6 +680,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
 	        edit_val.set	(ev);
             if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
             if (V->ApplyValue(edit_val)){
+				if (V->OnChange) V->OnChange(V);
                 item->RedrawItem(true);
                 Modified();
             }
@@ -657,6 +694,7 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
         if (SelectColor(&edit_val)){
             if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
             if (V->ApplyValue(edit_val)){	
+				if (V->OnChange) V->OnChange(V);
                 item->RedrawItem(true);
                 Modified();
             }
@@ -677,6 +715,7 @@ void __fastcall TProperties::VectorClick(TElTreeItem* item)
 	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&mn,&mx)){
         if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
         if (V->ApplyValue(edit_val)){
+			if (V->OnChange) V->OnChange(V);
 			item->RedrawItem(true);
             Modified();
         }
@@ -702,7 +741,10 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
     if (new_val){
         edit_val			= new_val;
         if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
-        if (V->ApplyValue(edit_val.c_str()))	Modified();
+        if (V->ApplyValue(edit_val.c_str())){	
+			if (V->OnChange) V->OnChange(V);
+        	Modified();
+        }
         item->ColumnText->Strings[0]= V->GetText();
     }
 }
@@ -723,7 +765,10 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
     if (new_val){
         edit_val				= new_val;
         if (V->OnAfterEdit) 	V->OnAfterEdit(item,V,&edit_val);
-        if (V->ApplyValue(edit_val)) Modified();
+        if (V->ApplyValue(edit_val)){ 
+			if (V->OnChange) V->OnChange(V);
+        	Modified();
+        }
         item->ColumnText->Strings[0]= V->GetText();
     }
 }
@@ -808,21 +853,30 @@ void TProperties::ApplyLWNumber()
 	        DWORDValue* V 	= (DWORDValue*)prop; VERIFY(V);
             DWORD new_val	= seNumber->Value;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val)) Modified();
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
             item->ColumnText->Strings[0] = V->GetText();
         }break;
     	case PROP_INTEGER:{
 	        IntValue* V 	= (IntValue*)prop; VERIFY(V);
             int new_val		= seNumber->Value;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val)) Modified();
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
             item->ColumnText->Strings[0] = V->GetText();
         }break;
 	    case PROP_FLOAT:{
 	        FloatValue* V 	= (FloatValue*)prop; VERIFY(V);
             float new_val	= seNumber->Value;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val)) Modified();
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
             item->ColumnText->Strings[0] = V->GetText();
         }break;
     	}
@@ -904,7 +958,10 @@ void TProperties::ApplyLWText()
 			AnsiString new_val	= edText->Text;
             edText->MaxLength	= 0;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val)) Modified();
+            if (V->ApplyValue(new_val)){ 
+				if (V->OnChange) V->OnChange(V);
+            	Modified();
+            }
             item->ColumnText->Strings[0] = V->GetText();
         }break;
     	case PROP_TEXT:{
@@ -912,7 +969,10 @@ void TProperties::ApplyLWText()
             edText->MaxLength	= V->lim;
 			AnsiString new_val	= edText->Text;
 			if (V->OnAfterEdit) V->OnAfterEdit(item,V,&new_val);
-            if (V->ApplyValue(new_val.c_str())) Modified();
+            if (V->ApplyValue(new_val.c_str())){ 
+				if (V->OnChange) V->OnChange(V);
+	            Modified();
+            }
             item->ColumnText->Strings[0] = V->GetText();
         }break;
     	}
@@ -993,5 +1053,6 @@ void __fastcall TProperties::FormDeactivate(TObject *Sender)
 	ApplyEditControl();
 }
 //---------------------------------------------------------------------------
+
 
 

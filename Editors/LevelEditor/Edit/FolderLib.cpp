@@ -501,11 +501,10 @@ bool FOLDER::RemoveItem(TElTree* tv, TElTreeItem* pNode, TOnRemoveItem OnRemoveI
     }
     return bRes;
 }
-TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, TElTreeItem* node)
+TElTreeItem* FOLDER::ExpandItem(TElTree* tv, TElTreeItem* node)
 {
 	if (node){
-	    tv->Selected 		= node;
-		tv->EnsureVisible	(node);
+	    tv->IsUpdating 	= true;
         TElTreeItem* folder	= node->Parent;
         while(folder){
 			if (folder) folder->Expand(false);
@@ -513,6 +512,19 @@ TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, TElTreeItem* node)
             	folder = folder->Parent;
             }else				break;
         }
+	    tv->IsUpdating 	= false;
+    }
+    return node;
+}
+TElTreeItem* FOLDER::ExpandItem(TElTree* tv, LPCSTR full_name)
+{
+	return ExpandItem(tv,FindItem(tv,full_name));
+}
+TElTreeItem* FOLDER::RestoreSelection(TElTree* tv, TElTreeItem* node)
+{
+	if (node){
+	    tv->Selected 		= node;
+		tv->EnsureVisible	(node);
     }
     return node;
 }

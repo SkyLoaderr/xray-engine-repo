@@ -7,7 +7,6 @@
 #include "UI_Tools.h"
 #include "ui_main.h"
 #include "LeftBar.h"
-#include "PropertiesList.h"
 #include "xr_trims.h"
 #include "folderlib.h"
 

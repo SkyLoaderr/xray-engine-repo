@@ -6,21 +6,21 @@
 
 AnsiString prop_draw_text;
 //------------------------------------------------------------------------------
-// TextValue
+// AnsiTextValue
 //------------------------------------------------------------------------------
-LPCSTR TextValue::GetText()
-{
-    prop_draw_text=values.front();
+LPCSTR ATextValue::GetText(){
+    prop_draw_text=*values.front();
     if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
-// AnsiTextValue
+// TextValue
 //------------------------------------------------------------------------------
-LPCSTR ATextValue::GetText(){
-    prop_draw_text=*values.front();
+LPCSTR TextValue::GetText()
+{
+    prop_draw_text=values.front();
     if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
     return prop_draw_text.c_str();
 }

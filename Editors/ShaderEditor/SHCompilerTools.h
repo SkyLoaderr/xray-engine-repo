@@ -6,7 +6,7 @@
 #include "ElTree.hpp"
 
 // refs
-class PropItem;
+class PropValue;
 
 class CSHCompilerTools
 {
@@ -18,9 +18,9 @@ class CSHCompilerTools
     Shader_xrLC_LIB		m_Library;
     bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
     // name
-	void __fastcall 	NameOnAfterEdit		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit	(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-	void __fastcall 	NameOnDraw			(PropItem* sender, LPVOID draw_val);
+	void __fastcall 	NameOnAfterEdit		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnDraw			(PropValue* sender, LPVOID draw_val);
 public:
     Shader_xrLC*		m_LibShader;
     Shader_xrLC			m_EditShader;
