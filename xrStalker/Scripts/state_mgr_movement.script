@@ -12,8 +12,8 @@ function eva_state_mgr_movement:evaluate()
 --	printf("MOVE: %s",utils.to_str(self.object:target_movement_type()))
 		   
 	return (state_lib.states[self.st.target_state].movement == nil) or
---		   (state_lib.states[self.st.target_state].movement == self.object:target_movement_type())
-		   (state_lib.states[self.st.target_state].movement == self.object:movement_type())		   
+		   (state_lib.states[self.st.target_state].movement == self.object:target_movement_type())
+--		   (state_lib.states[self.st.target_state].movement == self.object:movement_type())		   
 end
 --' нужно ли нам идти
 class "eva_state_mgr_movement_walk" (property_evaluator)
@@ -45,8 +45,8 @@ function eva_state_mgr_movement_stand_now:__init(name, st) super (nil, name)
 	self.st = st
 end
 function eva_state_mgr_movement_stand_now:evaluate()
---	return self.object:target_movement_type() == move.stand
-	return self.object:movement_type() == move.stand
+	return self.object:target_movement_type() == move.stand
+--	return self.object:movement_type() == move.stand
 end
 
 
