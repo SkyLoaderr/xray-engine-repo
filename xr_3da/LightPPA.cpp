@@ -29,8 +29,8 @@ void CLightPPA::set_mode	(mode _M)
 	if (_M==LIGHT_ENABLED && M==LIGHT_ENABLED_SHADOWED)	return;
 
 	M	= _M;
-	if (LIGHT_DISABLED == M)	Render_Implementation.L_Dynamic.Deactivate	(this);
-	else						Render_Implementation.L_Dynamic.Activate	(this);
+	if (LIGHT_DISABLED == M)	RImplementation.L_Dynamic.Deactivate	(this);
+	else						RImplementation.L_Dynamic.Activate		(this);
 }
 
 IC void mk_vertex		(CLightPPA_Vertex& D, Fvector& P, Fvector& N, Fvector& C, float r2)
@@ -127,7 +127,7 @@ void CLightPPA_Manager::Render()
 		if (PPL.color.magnitude_sqr_rgb()<EPS)									continue;
 		float	alpha		= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
 		if (alpha>=1)															continue;
-		if (!::Render->ViewBase.testSphere_dirty (PPL.sphere.P,PPL.sphere.R))	continue;
+		if (!RImplementation.ViewBase.testSphere_dirty (PPL.sphere.P,PPL.sphere.R))	continue;
 
 		// Calculations and rendering
 		Device.Statistic.RenderDUMP_Lights.Begin();

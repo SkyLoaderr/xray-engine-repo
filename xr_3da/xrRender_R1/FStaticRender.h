@@ -1,9 +1,3 @@
-// CRender.h: interface for the CRender class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_FSTATICRENDER_H__CC9820C1_A341_11D3_B4E3_4854E82A090D__INCLUDED_)
-#define AFX_FSTATICRENDER_H__CC9820C1_A341_11D3_B4E3_4854E82A090D__INCLUDED_
 #pragma once
 
 #include "..\FLightsController.h"
@@ -171,6 +165,4 @@ public:
 	virtual ~CRender				();
 };
 
-extern CRender						Render_Implementation;
-
-#endif // !defined(AFX_FSTATICRENDER_H__CC9820C1_A341_11D3_B4E3_4854E82A090D__INCLUDED_)
+extern CRender						RImplementation;

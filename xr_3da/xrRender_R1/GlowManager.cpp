@@ -91,7 +91,7 @@ void CGlowManager::add(vector<WORD> &V)
 
 		float	range = start.distance_to_sqr(G.C);
 		if (range < dlim2) {
-			if (::Render->View->testSphere_dirty(G.C,G.R)) {
+			if (RImplementation.View->testSphere_dirty(G.C,G.R)) {
 				G.dwFrame = mark;
 
 				// 2. Use result of test
@@ -121,9 +121,9 @@ void CGlowManager::Render()
 	if (!Selected_Count) return;
 
 	Device.Statistic.RenderDUMP_Glows.Begin();
-	float	_width		= float(::Render->getTarget()->get_width());
+	float	_width		= float(RImplementation.getTarget()->get_width());
 	float	_width_2	= _width / 2.f;
-	float	_height_2	= float(::Render->getTarget()->get_height())/2.f;
+	float	_height_2	= float(RImplementation.getTarget()->get_height())/2.f;
 	float	fov_scale	= _width / (Device.fFOV/90.f);
 	{
 		// 1. Test some number of glows

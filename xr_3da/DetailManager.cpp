@@ -161,7 +161,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 	float	r_ssaCHEAP			= 16*r_ssaDISCARD;
 
 	Fvector		EYE				= vecEYE;
-	CFrustum	View			= ::Render->ViewBase;
+	CFrustum	View			= RImplementation.ViewBase;
 
 	int s_x	= iFloor			(EYE.x/dm_slot_size+.5f);
 	int s_z	= iFloor			(EYE.z/dm_slot_size+.5f);
@@ -194,7 +194,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 				break;
 			case fcvPartial:	// addition with TEST
 				{
-					if (!::Render->occ_visible(S.vis))		continue;
+					if (!RImplementation.occ_visible(S.vis))		continue;
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];
@@ -209,7 +209,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 							float	dist_sq = EYE.distance_to_sqr(Item.P);
 							if (dist_sq>fade_limit)	continue;
 
-							if (::Render->ViewBase.testSphere_dirty(Item.P,R*Item.scale))
+							if (RImplementation.ViewBase.testSphere_dirty(Item.P,R*Item.scale))
 							{
 								float	alpha	= (dist_sq<fade_start)?0.f:(dist_sq-fade_start)/fade_range;
 								float	scale	= Item.scale*(1-alpha);
@@ -229,7 +229,7 @@ void CDetailManager::Render		(Fvector& vecEYE)
 				break;
 			case fcvFully:		// addition
 				{
-					if (!::Render->occ_visible(S.vis))		continue;
+					if (!RImplementation.occ_visible(S.vis))		continue;
 					for (int sp_id=0; sp_id<dm_obj_in_slot; sp_id++)
 					{
 						SlotPart&			sp	= S.G		[sp_id];

@@ -10,7 +10,7 @@
 #include "..\CustomHUD.h"
 #include "..\lighttrack.h"
 
-CRender										Render_Implementation;
+CRender										RImplementation;
 
 // Implementation
 IVisual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
@@ -132,8 +132,8 @@ IC		void		gm_SetNearer		(BOOL bNearer)
 	if (bNearer	!= gm_Nearer)
 	{
 		gm_Nearer	= bNearer;
-		if (gm_Nearer)	Render->rmNear	();
-		else			Render->rmNormal();
+		if (gm_Nearer)	RImplementation.rmNear	();
+		else			RImplementation.rmNormal();
 	}
 }
 IC		void		gm_SetLighting		(CObject* O)
@@ -147,7 +147,7 @@ IC		void		gm_SetLighting		(CObject* O)
 		// shadowing
 		if (LT.Shadowed_dwFrame==Device.dwFrame)	{
 			gm_SetAmbient		(0);
-			Render_Implementation.L_Projector.setup	(LT.Shadowed_Slot);
+			RImplementation.L_Projector.setup	(LT.Shadowed_Slot);
 		} else {
 			gm_SetAmbient		(iFloor(LT.ambient)/2);
 		}

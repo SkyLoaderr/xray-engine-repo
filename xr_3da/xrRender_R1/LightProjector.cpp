@@ -187,11 +187,11 @@ void CLightProjector::calculate	()
 		// Build bbox and render
 		Fvector	min,max;
 		Fbox	BB;
-		min.set					(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
-		max.set					(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
-		BB.set					(min,max);
-		::Render->RenderBox		(C.O->Sector(),BB,2);
-		boxes.push_back			(BB);
+		min.set						(C.C.x-p_R,	C.C.y-(p_R+P_cam_range),	C.C.z-p_R);
+		max.set						(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
+		BB.set						(min,max);
+		RImplementation.RenderBox	(C.O->Sector(),BB,2);
+		boxes.push_back				(BB);
 	}
 	
 	// Blur

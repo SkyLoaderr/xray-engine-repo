@@ -105,10 +105,10 @@ void CSector::Render(CFrustum &F)
 	// Render everything
 	{
 		Fvector	Tpos;
-		::Render->set_Frustum	(&F);
-		::Render->add_Glows		(Glows);
-		::Render->add_Lights	(Lights);
-		::Render->add_Geometry	(pRoot);
+		RImplementation.set_Frustum		(&F);
+		RImplementation.add_Glows		(Glows);
+		RImplementation.add_Lights		(Lights);
+		RImplementation.add_Geometry	(pRoot);
 		
 		// 1 sorting-pass on objects
 		for (int s=0; s<int(Objects.size())-1; s++)
@@ -129,9 +129,9 @@ void CSector::Render(CFrustum &F)
 				O->clXFORM().transform_tiny	(Tpos, vis.sphere.P);
 				if (F.testSphere_dirty(Tpos,vis.sphere.R))	
 				{
-					::Render->set_Object	(O);
-					O->OnVisible			();
-					::Render->set_Object	(0);
+					RImplementation.set_Object	(O);
+					O->OnVisible				();
+					RImplementation.set_Object	(0);
 				}
 			}
 		}
@@ -146,7 +146,7 @@ void CSector::Render(CFrustum &F)
 					u32 planes		=	F.getMask();
 					vis_data&	vis	=	pV->Visual()->vis;
 					if (F.testSAABB(vis.sphere.P,vis.sphere.R,vis.box.min,vis.box.max,planes)!=fcvNone)
-						::Render->add_Geometry	(pV->Visual());
+						RImplementation.add_Geometry	(pV->Visual());
 				}
 				else
 				{
@@ -162,7 +162,7 @@ void CSector::Render(CFrustum &F)
 	}
 
 	// Search visible portals and go through them
-	CSector*	pLastSector		= (CSector*)::Render->getSectorActive();
+	CSector*	pLastSector		= (CSector*)RImplementation.getSectorActive();
 	for (u32 I=0; I<Portals.size(); I++)
 	{
 		sPoly	S,D;
@@ -195,7 +195,7 @@ void CSector::Render(CFrustum &F)
 			if (0==P)			continue;
 			
 			// Cull by HOM
-			if (!::Render->occ_visible(*P))	continue;
+			if (!RImplementation.occ_visible(*P))	continue;
 
 			// Create _new_ frustum and recurse
 			CFrustum Clip;
@@ -289,14 +289,14 @@ void CSector::Load(IReader& fs)
 	u32 count	= size/2;
 	while (count) {
 		WORD ID		= fs.r_u16();
-		CPortal* P	= (CPortal*)::Render->getPortal	(ID);
+		CPortal* P	= (CPortal*)RImplementation.getPortal	(ID);
 		Portals.push_back(P);
 		count--;
 	}
 
 	// Assign visual
-	size = fs.find_chunk(fsP_Root);	R_ASSERT(size==4);
-	pRoot = ::Render->getVisual(fs.r_u32());
+	size	= fs.find_chunk(fsP_Root);	R_ASSERT(size==4);
+	pRoot	= RImplementation.getVisual(fs.r_u32());
 
 	// Load glows
 	size	= fs.find_chunk(fsP_Glows);

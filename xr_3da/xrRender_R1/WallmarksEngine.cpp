@@ -234,7 +234,7 @@ void CWallmarksEngine::Render()
 	for (u32 i=0; i<marks.size(); i++)
 	{
 		wallmark* W		= marks	[i];
-		if (::Render->ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)) 
+		if (RImplementation.ViewBase.testSphere_dirty(W->bounds.P,W->bounds.R)) 
 		{
 			float dst = Device.vCameraPosition.distance_to_sqr(W->bounds.P);
 			float ssa = W->bounds.R * W->bounds.R / dst;
