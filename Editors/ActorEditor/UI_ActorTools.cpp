@@ -250,6 +250,8 @@ void CActorTools::GetStatTime(float& a, float& b, float& c)
     }
 }
 //---------------------------------------------------------------------------
+//#include "d3dutils.h"
+//DU.DrawIdentSpherePart(false,true,0xffffffff,0xffff);
 
 void CActorTools::Render()
 {
