@@ -329,13 +329,9 @@ function checkNpc(npc_community, gulag_type)
 		return true
 	end
 
-	if gulag_type == "agr_nii" then
+	if gulag_type == "agr_nii" or gulag_type == "agr_factory" then
 		return npc_community == "military"
 	end
 
-	if gulag_type == "agr_factory" then
-		return npc_community == "military"
-	end
-	
 	return false
 end
