@@ -9,6 +9,10 @@
 #ifndef xrServer_Objects_ALife_MonstersH
 #define xrServer_Objects_ALife_MonstersH
 
+#ifdef _EDITOR
+#include "xrServer_Objects_ALife_Items.h"
+#endif
+
 #include "xrServer_Objects_ALife.h"
 
 class CSE_ALifeTraderAbstract : virtual public CSE_Abstract {
