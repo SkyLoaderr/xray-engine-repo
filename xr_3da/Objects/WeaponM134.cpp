@@ -223,7 +223,8 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 
 		switch(st_target){
 		case eM134Spinup:
-			fTime = 0;
+			bPending		= TRUE;
+			fTime			= 0;
 			// play start fire sound
 			pSounds->Play3DAtPos(sndFireStart,	vLastFP,false);
 			pSounds->Play3DAtPos(sndServo,		vLastFP,true);
@@ -238,6 +239,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 			pSounds->Play3DAtPos(sndServo,vLastFP,true);
 			break;
 		case eM134Idle:
+			bPending		= FALSE;
 			if (st_current==eM134Brake) {
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
@@ -280,8 +282,8 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 			sndServo.feedback->SetFrequency(freq);
 		}
 		if (fRotateSpeed<=0){
-			st_target = eM134Idle;
-			fRotateSpeed = 0;
+			st_target		= eM134Idle;
+			fRotateSpeed	= 0;
 		}
 		break;
 	case eM134Fire:
