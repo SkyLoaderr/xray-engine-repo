@@ -149,7 +149,7 @@ float	sinc				(float x)
 float	Lanczos3_filter		(float t)
 {
 	if(t < 0) t = -t;
-	if(t < 3.0) return(sinc(t) * sinc(t/3.0));
+	if(t < 3.0f) return	float(sinc(t) * sinc(t/3.0f));
 	return(0.0);
 }
 
@@ -164,17 +164,17 @@ float	Mitchell_filter		(float t)
 
 	tt = t * t;
 	if(t < 0) t = -t;
-	if(t < 1.0) {
+	if(t < 1.0f) {
 		t = (((12.0f - 9.0f * B - 6.0f * C) * (t * tt))
-		   + ((-18.0f + 12.0f * B + 6.0 * C) * tt)
-		   + (6.0f - 2.f * B));
+		   + ((-18.0f + 12.0f * B + 6.0f * C) * tt)
+		   + (6.0f - 2.0f * B));
 		return(t / 6.0f);
-	} else if(t < 2.0) {
-		t = (((-1.0 * B - 6.0 * C) * (t * tt))
-		   + ((6.0 * B + 30.0 * C) * tt)
-		   + ((-12.0 * B - 48.0 * C) * t)
-		   + (8.0 * B + 24 * C));
-		return(t / 6.0);
+	} else if(t < 2.0f) {
+		t = (((-1.0f * B - 6.0f * C) * (t * tt))
+		   + ((6.0f * B + 30.0f * C) * tt)
+		   + ((-12.0f * B - 48.0f * C) * t)
+		   + (8.0f * B + 24.f * C));
+		return(t / 6.0f);
 	}
 	return(0.0);
 }
@@ -356,7 +356,7 @@ void	imf_Process	(u32* dstI, u32 dstW, u32 dstH, u32* srcI, u32 srcW, u32 srcH, 
 	if(yscale < 1.0) {
 		try	{
 			width	= fwidth / yscale;
-			fscale	= 1.0 / yscale;
+			fscale	= 1.0f / yscale;
 			for	(i = 0; i < dst.ysize; ++i)
 			{
 				contrib[i].n	= 0;
