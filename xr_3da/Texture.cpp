@@ -368,7 +368,7 @@ _BUMP_from_base:
 		R_CHK(D3DXComputeNormalMap	(T_normal_1,T_base,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,5.f));
 
 		// Transfer gloss-map
-		TW_Iterate_1OP				(pTexture2D,T_base,it_gloss_rev_base);
+		TW_Iterate_1OP				(T_normal_1,T_base,it_gloss_rev_base);
 
 		// Compress
 		fmt								= D3DFMT_DXT5;

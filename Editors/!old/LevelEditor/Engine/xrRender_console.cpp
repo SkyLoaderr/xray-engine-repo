@@ -37,6 +37,7 @@ float		ps_r2_ssaLOD_B			= 48.f;
 float		ps_r2_ssaHZBvsTEX		= 256.f;
 
 // R2-specific
+float		ps_r2_df_parallaxh		= 0.04f;
 float		ps_r2_ls_dynamic_range	= 2.f;	// r2-only
 float		ps_r2_ls_bloom_kernel	= 3.3f;	// r2-only
 float		ps_r2_ls_dsm_kernel		= .7f;	// r2-only
@@ -102,8 +103,9 @@ void		xrRender_initconsole	()
 	CMD3(CCC_Mask,		"r2_bump_af",			&ps_r2_ls_flags,			R2FLAG_BUMP_AF);
 	CMD3(CCC_Mask,		"r2_spot_unmask",		&ps_r2_ls_flags,			R2FLAG_SPOT_UNMASK);
 	CMD3(CCC_Mask,		"r2_aa",				&ps_r2_ls_flags,			R2FLAG_AA);
-	CMD3(CCC_Mask,		"r2_parallax",			&ps_r2_ls_flags,			R2FLAG_PARALLAX);
 	CMD4(CCC_Float,		"r2_aa_kernel",			&ps_r2_aa_kernel,			0.01f,	0.99f	);
+	CMD3(CCC_Mask,		"r2_parallax",			&ps_r2_ls_flags,			R2FLAG_PARALLAX);
+	CMD4(CCC_Float,		"r2_parallax_h",		&ps_r2_df_parallaxh,		.0f,	.5f		);
 
 	tw_min.set			(0,0,0);	tw_max.set			(1,1,1);
 	CMD4(CCC_Vector3,	"r2_aa_break",			&ps_r2_aa_barier,			tw_min, tw_max	);

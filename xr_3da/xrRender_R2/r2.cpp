@@ -49,11 +49,17 @@ static class cl_decodeZ01		: public R_constant_setup		{	virtual void setup	(R_co
 	enc.mul			(0.995f);
 	RCache.set_c	(C,enc.x,enc.y,enc.z,0.f);
 }}	binder_decodeZ01;
+static class cl_parallax		: public R_constant_setup		{	virtual void setup	(R_constant* C)
+{
+	float			h			= ps_r2_ls_flags.test(R2FLAG_PARALLAX) ? ps_r2_df_parallaxh:0;
+	RCache.set_c	(C,h,-h/2,0.f,0.f);
+}}	binder_parallax;
 //////////////////////////////////////////////////////////////////////////
 // Just two static storage
 void					CRender::create					()
 {
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);
+	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 	::Device.Resources->RegisterConstantSetup	("v_decodeZ01",	&binder_decodeZ01);
 
 	Target.OnDeviceCreate		();
