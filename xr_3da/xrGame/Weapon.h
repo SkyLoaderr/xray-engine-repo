@@ -22,6 +22,7 @@ protected:
 	LPSTR			m_WpnName;
 
 	Fmatrix			m_Offset;
+	
 protected:
 	CEntity*		m_pParent;
 	CWeaponList*	m_pContainer;
