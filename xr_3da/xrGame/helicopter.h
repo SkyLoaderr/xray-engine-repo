@@ -72,7 +72,7 @@ protected:
 	CObject*						m_destEnemy;
 	Fvector							m_destEnemyPos;
 
-
+	u16								m_last_launched_rocket;
 
 
 	static void __stdcall	BoneMGunCallbackX		(CBoneInstance *B);
@@ -85,6 +85,7 @@ public:
 	float							m_max_rocket_dist;
 	u32								m_time_between_rocket_attack;
 	u32								m_last_rocket_attack;
+	BOOL							m_syncronize_rocket;
 
 	float							m_korridor;
 	u32								m_time_delay_before_start;

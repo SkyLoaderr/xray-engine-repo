@@ -135,7 +135,9 @@ CHelicopter::startRocket(u16 idx)
 		u_EventGen(P,GE_OWNERSHIP_REJECT,ID());
 		P.w_u16(u16( getCurrentRocket()->ID()));
 		u_EventSend(P);
-		
+
 		dropCurrentRocket();
+
+		m_last_launched_rocket = idx;
 	}
 }

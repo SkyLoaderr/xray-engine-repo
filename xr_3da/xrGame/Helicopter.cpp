@@ -88,7 +88,8 @@ CHelicopter::init()
 	m_bind_x_rot= 0.f;
 	m_bind_y_rot= 0.f;
 	m_allow_fire= FALSE;
-	m_use_rocket_on_attack = FALSE;
+	m_use_rocket_on_attack	= FALSE;
+	m_syncronize_rocket		= TRUE;
 	m_min_rocket_dist	= 20.0f;
 	m_max_rocket_dist	= 200.0f;
 	m_time_between_rocket_attack = 0;
@@ -150,6 +151,7 @@ CHelicopter::Load(LPCSTR section)
 	m_min_rocket_dist						= pSettings->r_float(section,"min_rocket_attack_dist");
 	m_max_rocket_dist						= pSettings->r_float(section,"max_rocket_attack_dist");
 	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
+	m_syncronize_rocket						= pSettings->r_bool(section,"syncronize_rocket");
 }
 
 void		
@@ -304,11 +306,6 @@ CHelicopter::UpdateCL()
 	{
 		updateMGunDir();
 
-		if(!m_destEnemy || m_destEnemy->getDestroy() )
-		{
-			m_destEnemy = 0;
-			setState(CHelicopter::eInitiatePatrolZone);
-		};
 	}
 	// lerp angle
 	angle_lerp	(m_cur_x_rot, m_tgt_x_rot, PI, Device.fTimeDelta);
@@ -349,13 +346,28 @@ CHelicopter::shedule_Update(u32	time_delta)
 				(d < m_max_rocket_dist) &&
 				(Device.dwTimeGlobal-m_last_rocket_attack > m_time_between_rocket_attack))
 			{
-				startRocket(1);
-				startRocket(2);
+				if(m_syncronize_rocket)
+				{
+					startRocket(1);
+					startRocket(2);
+				}else
+				{
+					if(m_last_launched_rocket==1)
+						startRocket(2);
+					else
+						startRocket(1);
+				}
 				m_last_rocket_attack = Device.dwTimeGlobal;
 			}
 
 		}else
 			FireEnd();
+
+		if( m_destEnemy->getDestroy() )
+		{
+			m_destEnemy = 0;
+			setState(CHelicopter::eInitiatePatrolZone);
+		};
 
 	}else
 		FireEnd();
@@ -386,7 +398,7 @@ CHelicopter::Hit(	float P,
 
 		Log("----Helicopter::PilotHit(). type=",hit_type);
 		Log("----Helicopter::PilotHit(). power=",P);
-		Log("----Helicopter::Hit(). health=",curHealth);
+		Log("----Helicopter::PilotHit(). health=",curHealth);
 		Log("----Helicopter::PilotHit(). k=",It->second);
 		Log("----------------------------------------");
 
@@ -462,7 +474,7 @@ void
 CHelicopter::Die()
 {
 //	PPhysicsShell()=P_build_Shell	(this,false);
-	setState(CHelicopter::eInitiateWaitBetweenPatrol);
+//	setState(CHelicopter::eInitiateWaitBetweenPatrol);
 //	setState(CHelicopter::eDead);
 //	SetfHealth(100.0f);
 //	StartParticles();
