@@ -1212,6 +1212,12 @@
 					RelativePath=".\Config\misc\zone_radioactive.ltx">
 				</File>
 				<File
+					RelativePath=".\Config\misc\zone_rustyhair.ltx">
+				</File>
+				<File
+					RelativePath=".\Config\misc\zone_torrid.ltx">
+				</File>
+				<File
 					RelativePath=".\Config\misc\zones.ltx">
 				</File>
 			</Filter>
