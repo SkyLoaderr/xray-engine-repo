@@ -1325,6 +1325,16 @@
 					RelativePath=".\tga.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="Net"
+				Filter="">
+				<File
+					RelativePath=".\NET_Compressor.h">
+				</File>
+				<File
+					RelativePath=".\NET_utils.h">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Scripting"

@@ -1,7 +1,6 @@
 #ifndef __XR_AREA_H__
 #define __XR_AREA_H__
 
-#include "xr_qlist.h"
 #include "xr_collide_form.h"
 #include "xr_collide_defs.h"
 
