@@ -821,10 +821,11 @@ void CPHSimpleCharacter::OnRender(){
 	m.identity();
 	Fvector n=*(Fvector*)m_ground_contact_normal;
 	n.mul(100.f);
-	Device.Primitive.dbg_DrawLINE(m,GetPosition(),*(Fvector*)m_control_force, 0xffffffff);
-	Device.Primitive.dbg_DrawLINE(m,GetPosition(),n, 0xefffffff);
-
 	Fvector pos=GetPosition();
+	Device.Primitive.dbg_DrawLINE(m,pos,*(Fvector*)m_control_force, 0xffffffff);
+	Device.Primitive.dbg_DrawLINE(m,pos,n, 0xefffffff);
+
+	
 	Fvector scale;
 	scale.set(0.35f,0.35f,0.35f);
 	Fmatrix M;
