@@ -3,7 +3,8 @@
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
 local dist_walk = 10 -- < dist_run
-local dist_run = 25
+--local dist_run = 25
+local dist_run = 2500
 -- otherwise - sprint
 
 local walk_min_time = 3000
