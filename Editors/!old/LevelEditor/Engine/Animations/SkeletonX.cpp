@@ -168,35 +168,7 @@ void CSkeletonX::_Copy		(CSkeletonX *B)
 	RMS_boneid				= B->RMS_boneid;
 	RMS_bonecount			= B->RMS_bonecount;
 }
-void CSkeletonX_PM::Copy	(IRender_Visual *V) 
-{
-    inherited1::Copy		(V);
-	CSkeletonX_PM *X		= (CSkeletonX_PM*)(V);
-	_Copy					((CSkeletonX*)X);
-}
-void CSkeletonX_ST::Copy	(IRender_Visual *P) 
-{
-	inherited1::Copy		(P);
-	CSkeletonX_ST *X		= (CSkeletonX_ST*)P;
-	_Copy					((CSkeletonX*)X);
-}
 //////////////////////////////////////////////////////////////////////
-void CSkeletonX_PM::Render	(float LOD) 
-{
-	int lod_id				= inherited1::last_lod;
-	if (LOD>=0.f){
-		clamp				(LOD,0.f,1.f);
-		lod_id				= iFloor((1.f-LOD)*float(pSWI->count-1)+0.5f);
-		inherited1::last_lod= lod_id;
-	}
-	VERIFY					(lod_id>=0 && lod_id<int(pSWI->count));
-	FSlideWindow& SW		= pSWI->sw[lod_id];
-	_Render					(hGeom,SW.num_verts,SW.offset,SW.num_tris);
-}
-void CSkeletonX_ST::Render	(float LOD) 
-{
-	_Render		(hGeom,vCount,0,dwPrimitives);
-}
 void CSkeletonX::_Render	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCount)
 {
 	switch (RenderMode)
@@ -270,15 +242,6 @@ void CSkeletonX::_Render_soft	(ref_geom& hGeom, u32 vCount, u32 iOffset, u32 pCo
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,vCount,iOffset,pCount);
 }
 
-//////////////////////////////////////////////////////////////////////
-void CSkeletonX_PM::Release()
-{
-	inherited1::Release();
-}
-void CSkeletonX_ST::Release()
-{
-	inherited1::Release();
-}
 //////////////////////////////////////////////////////////////////////
 void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount) 
 {	
@@ -362,26 +325,6 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		break;
 	}
 }
-
-void CSkeletonX_PM::Load(const char* N, IReader *data, u32 dwFlags) 
-{
-	_Load							(N,data,vCount);
-	void*	_verts_					= data->pointer	();
-	inherited1::Load				(N,data,dwFlags|VLOAD_NOVERTICES);
-	::Render->shader_option_skinning(-1);
-	vBase							= 0;
-	_Load_hw						(*this,_verts_);
-}
-void CSkeletonX_ST::Load(const char* N, IReader *data, u32 dwFlags) 
-{
-	_Load							(N,data,vCount);
-	void*	_verts_					= data->pointer	();
-	inherited1::Load				(N,data,dwFlags|VLOAD_NOVERTICES);
-	::Render->shader_option_skinning(-1);
-	vBase							= 0;
-	_Load_hw						(*this,_verts_);
-}
-
 void CSkeletonX::_Load_hw	(Fvisual& V, void *	_verts_)
 {
 	// Create HW VB in case this is possible
@@ -491,19 +434,6 @@ void CSkeletonX::_CollectBoneFaces(Fvisual* V, u32 iBase, u32 iCount)
 	}break;
 	}
 	R_CHK					(V->pIndices->Unlock());
-}
-
-void CSkeletonX_ST::AfterLoad(CKinematics* parent, u16 child_idx)
-{
-	inherited2::AfterLoad			(parent,child_idx);
-	inherited2::_CollectBoneFaces	(this,iBase,iCount);
-}
-
-void CSkeletonX_PM::AfterLoad(CKinematics* parent, u16 child_idx)
-{
-	inherited2::AfterLoad			(parent,child_idx);
-	FSlideWindow& SW				= pSWI->sw[0]; // max LOD
-	inherited2::_CollectBoneFaces	(this,iBase+SW.offset,SW.num_tris*3);
 }
 
 BOOL CSkeletonX::_PickBoneSoft1W	(Fvector& normal, float& dist, const Fvector& S, const Fvector& D, u16* indices, CBoneData::FacesVec& faces)
@@ -626,15 +556,6 @@ BOOL CSkeletonX::_PickBone			(Fvector& normal, float& dist, const Fvector& start
 	}
 	R_CHK				(V->pIndices->Unlock());
 	return result;
-}
-BOOL CSkeletonX_ST::PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)
-{
-	return inherited2::_PickBone	(normal,dist,start,dir,this,bone_id,iBase,iCount);
-}
-BOOL CSkeletonX_PM::PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)
-{
-	FSlideWindow& SW				= pSWI->sw[0];
-	return inherited2::_PickBone	(normal,dist,start,dir,this,bone_id,iBase+SW.offset,SW.num_tris*3);
 }
 
 // Fill Vertices
@@ -800,14 +721,4 @@ void CSkeletonX::_FillVertices(const Fmatrix& view, CSkeletonWallmark& wm, const
 	case RM_SKINNING_2B:			_FillVerticesHW2W		(view,wm,normal,size,V,indices+iBase,*faces);		break;
 	}
 	R_CHK				(V->pIndices->Unlock());
-}
-
-void CSkeletonX_ST::FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id)
-{
-	inherited2::_FillVertices		(view,wm,normal,size,this,bone_id,iBase,iCount);
-}
-void CSkeletonX_PM::FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id)
-{
-	FSlideWindow& SW				= pSWI->sw[0];
-	inherited2::_FillVertices		(view,wm,normal,size,this,bone_id,iBase+SW.offset,SW.num_tris*3);
 }

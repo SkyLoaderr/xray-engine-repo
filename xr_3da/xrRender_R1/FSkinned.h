@@ -86,12 +86,42 @@ protected:
 	BOOL					_PickBoneHW2W		(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16* indices, CBoneData::FacesVec& faces);
 	BOOL					_PickBone			(Fvector& normal, float& range, const Fvector& S, const Fvector& D, Fvisual* V, u16 bone_id, u32 iBase, u32 iCount);
 public:
-							CSkeletonX		()	{ Parent = 0; ChildIDX = u16(-1); }
+	CSkeletonX		()	{ Parent = 0; ChildIDX = u16(-1); }
 
 	virtual void			SetParent		(CKinematics* K)					{ Parent = K; }
 	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx)=0;
 	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id)=0;
 	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id)=0;
+};
+
+class ENGINE_API CSkeletonX_ST	: public Fvisual, public CSkeletonX
+{
+private:
+	typedef Fvisual			inherited1;
+	typedef CSkeletonX		inherited2;
+public:
+	virtual void			Render			(float LOD);
+	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
+	virtual void			Copy			(IRender_Visual *pFrom);
+	virtual void			Release			();
+	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx);
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
+	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id);
+};
+
+class ENGINE_API CSkeletonX_PM	: public FProgressive, public CSkeletonX
+{
+private:
+	typedef FProgressive	inherited1;
+	typedef CSkeletonX		inherited2;
+public:
+	virtual void			Render			(float LOD);
+	virtual void			Load			(const char* N, IReader *data, u32 dwFlags);
+	virtual void			Copy			(IRender_Visual *pFrom);
+	virtual void			Release			();
+	virtual void			AfterLoad		(CKinematics* parent, u16 child_idx);
+	virtual BOOL			PickBone		(Fvector& normal, float& dist, const Fvector& start, const Fvector& dir, u16 bone_id);
+	virtual void			FillVertices	(const Fmatrix& view, CSkeletonWallmark& wm, const Fvector& normal, float size, u16 bone_id);
 };
 
 #endif // SkeletonXH

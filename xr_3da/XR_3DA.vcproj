@@ -805,26 +805,6 @@
 					RelativePath=".\Fmesh.h">
 				</File>
 				<Filter
-					Name="Ordinal (normal)"
-					Filter="">
-					<File
-						RelativePath=".\FVisual.cpp">
-					</File>
-					<File
-						RelativePath=".\FVisual.h">
-					</File>
-				</Filter>
-				<Filter
-					Name="Progressive"
-					Filter="">
-					<File
-						RelativePath=".\FProgressive.cpp">
-					</File>
-					<File
-						RelativePath=".\FProgressive.h">
-					</File>
-				</Filter>
-				<Filter
 					Name="Hierrarhy"
 					Filter="">
 					<File
