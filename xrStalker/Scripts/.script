@@ -6,7 +6,7 @@ module ("xr_sounds_id")
 module ("xr_evaluators")
 module ("xr_motivator")
 
---module ("xr_reactions")
+module ("xr_reactions")
 module ("xr_meet")
 module ("xr_tradeseller")
 module ("xr_kamp")
@@ -20,6 +20,7 @@ module ("bandits")
 module ("xr_ambush")
 module ("xr_waiter")
 module ("xr_camper")
+module ("xr_wounded")
 
 
 function printf(fmt,...)

@@ -17,7 +17,7 @@ end
 function evaluator_new:evaluate()
 	self.a.evn:calculate()
 	self.a.evn:print()
-	return false
+	return self.a.evn:isEvents()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -33,9 +33,12 @@ function action_wait:initialize()
 	self.object:set_node_evaluator()
 	self.object:set_path_evaluator()
 	self.object:set_desired_position()
-	self.object:set_desired_direction()    
+	self.object:set_desired_direction()
 end
 function action_wait:execute ()
+	local npc = self.a.evn:get_event()
+
+	self.a.evn:markAsUsed(npc)
 	action_base.execute (self)
 end
 function action_wait:finalize ()
@@ -70,7 +73,6 @@ function add_to_binder(object)
 	action:add_precondition		(world_property(properties["new"],		false))
 end
 
-
 ----------------------------------------------------------------------------------------------------------------------
 -- Classs
 ----------------------------------------------------------------------------------------------------------------------
@@ -79,6 +81,7 @@ function events:__init(npc)
 	self.npc = npc
 	self.arhive = {} -- массив дескрипторов раздражителей
 	self.used = {} -- обработанные объекты, некоторое врем€ раздражители по ним учитыватьс€ не будут
+	self.watch = {}	-- раздражители, за которыми мы следим
 
 	self.descr = {	visibility = nil,  -- дескриптор раздражителей
 			sound_kat = nil,
@@ -125,6 +128,8 @@ function events:__init(npc)
 end
 function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителей дл€ текущего элемента
 	self.arhive = {}	
+
+	-- удал€ть обработанные устаревшие раздражители
 
 	-- определ€ем что нам известно о звуке объекта
 	local stable = self.npc:memory_sound_objects()
@@ -238,13 +243,22 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 	end
 end
 function events:get_event()  -- ¬ыдает наиболее приоритетный раздражитель
-	local prior == nil
+	local prior = nil
 	-- должна выдавать:
 	-- позицию раздражител€
 	-- тип действи€ (сто€ть ждать, идти провер€ть, отметить)
 	-- описание раздражител€ (дл€ типа действи€ отметить)
-	for key,value in self.value do
+	-- указатель, что мы получили раздражитель от объекта, за которым мы следим
+	for key,value in self.arhive do
 		local cc = false
+
+		-- ≈сли он в уже отработанных - игнорировать
+		for k,v in self.used do
+			if key == v then
+				cc = true
+				break
+			end
+		end
 
 		-- ѕровер€ем есть ли у нас лучший
 		if not cc and prior == nil then 
@@ -297,7 +311,7 @@ function events:get_event()  -- ¬ыдает наиболее приоритетный раздражитель
 		if not cc and not is_this_vision and not is_prior_vision then
 			-- проверка по типу звука
 			if not cc and (value.sound_kat == "type3" and self.arhive[prior].sound_kat ~= "type3") or 
-			    value.sound_kat == "type2" and self.arhive[prior].sound_kat == "type1") then
+			    (value.sound_kat == "type2" and self.arhive[prior].sound_kat == "type1") then
 				prior = key
 				cc = true
 			end
@@ -308,11 +322,23 @@ function events:get_event()  -- ¬ыдает наиболее приоритетный раздражитель
 			end
 		end
 	end
+	return prior
 end
-function events:markAsUsed(npc) do
+function events:markAsUsed(npc)
 	table.insert(self.used, npc:id())
+	self.used[npc:id()] = device():time_global()
 end
-function events:isEvents() do
+function events:markAsWatch(npc)
+	table.insert(self.watch, npc:id())
+end
+function events:removeFromWatch(npc)
+	for key,value in self.watch do
+		if npc:id() == value then
+			table.remove(self.watch, key)	
+		end
+	end
+end
+function events:isEvents()
 	local tt = false
 
 	for key,value in self.arhive do 
@@ -355,6 +381,14 @@ function events:print()
 
 		-- item print
 		if value.item.power == true then	printf("Powerfull") end
+
+		-- used print
+		for k,v in self.used do
+			if key == v then
+				printf("used")
+				break
+			end
+		end
 	end
 end
 function events:type(obj)
