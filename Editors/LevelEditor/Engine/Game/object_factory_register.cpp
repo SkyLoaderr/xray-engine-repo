@@ -125,6 +125,8 @@
 #	include "physicobject.h"
 #	include "ai/script/ai_script_monster.h"
 #	include "BreakableObject.h"
+#else
+#	include "clsid_game.h"
 #endif
 
 #ifndef _EDITOR
