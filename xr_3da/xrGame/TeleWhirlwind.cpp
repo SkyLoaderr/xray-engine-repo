@@ -59,9 +59,9 @@ void		CTeleWhirlwindObject::		raise					(float power)
 			Fvector dir;dir.set(diff);dir.mul(1.f/mag);
 			float cur_vel_to_center=vel.dotproduct(dir);
 			
-			Fvector v_to_c; v_to_c.set(dir);v_to_c.mul(cur_vel_to_center);
-			Fvector tangent_vel; tangent_vel.sub(vel,v_to_c);
-			float  t_vel=tangent_vel.magnitude();
+			//Fvector v_to_c; v_to_c.set(dir);v_to_c.mul(cur_vel_to_center);
+			//Fvector tangent_vel; tangent_vel.sub(vel,v_to_c);
+			//float  t_vel=tangent_vel.magnitude();
 
 			float predict_vel_to_center=cur_vel_to_center+delta_v;
 			float max_vel_to_center=mag/fixed_step;
