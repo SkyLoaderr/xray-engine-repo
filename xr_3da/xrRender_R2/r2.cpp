@@ -68,6 +68,10 @@ void					CRender::create					()
 	o.fp16_blend		= HW.support	(D3DFMT_A16B16G16R16F,	D3DRTYPE_TEXTURE,D3DUSAGE_QUERY_POSTPIXELSHADER_BLENDING);
 	VERIFY2				(o.mrt&&o.HW_smap&&o.fp16_filter&&o.fp16_blend,"Hardware doesn't meet minimum feature-level");
 
+	// nvstencil on NV40 and up
+	o.nvstencil			= FALSE;
+	if ((HW.Caps.id_vendor==0x10DE)&&(HW.Caps.id_device>=0x40))	o.nvstencil = TRUE;
+
 	// options (smap-pool-size)
 	if (strstr(Core.Params,"-smap1536"))	o.smapsize	= 1536;
 	if (strstr(Core.Params,"-smap2048"))	o.smapsize	= 2048;
@@ -82,7 +86,6 @@ void					CRender::create					()
 	o.Tshadows			= (strstr(Core.Params,"-notsh"))?		FALSE	:TRUE	;
 	o.distortion		= (strstr(Core.Params,"-nodistort"))?	FALSE	:TRUE	;
 	o.disasm			= (strstr(Core.Params,"-disasm"))?		TRUE	:FALSE	;
-	o.nvstencil			= (strstr(Core.Params,"-nvstencil"))?	TRUE	:FALSE	;
 
 	// constants
 	::Device.Resources->RegisterConstantSetup	("v_encodeZ01",	&binder_encodeZ01);

@@ -38,12 +38,15 @@ public:
 	u32				dwRefreshRate;
 
 	// caps itself
-	u16				geometry_major;
-	u16				geometry_minor;
-	caps_Geometry	geometry;
-	u16				raster_major;
-	u16				raster_minor;
-	caps_Raster		raster;
+	u16				geometry_major	;
+	u16				geometry_minor	;
+	caps_Geometry	geometry		;
+	u16				raster_major	;
+	u16				raster_minor	;
+	caps_Raster		raster			;
+
+	u32				id_vendor		;
+	u32				id_device		;
 
 	BOOL			bStencil;			// stencil buffer present
 	BOOL			bScissor;			// scissor rect supported

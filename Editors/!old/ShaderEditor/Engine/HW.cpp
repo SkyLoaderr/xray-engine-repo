@@ -152,7 +152,10 @@ u32		CHW::CreateDevice		(HWND m_hWnd,u32 &dwWidth,u32 &dwHeight)
 	// Display the name of video board
 	D3DADAPTER_IDENTIFIER9	adapterID;
 	R_CHK	(pD3D->GetAdapterIdentifier(DevAdapter,0,&adapterID));
-	Msg		("* GPU: %s",adapterID.Description);
+	Msg		("* GPU [vendor:%X]-[device:%X]: %s",adapterID.VendorId,adapterID.DeviceId,adapterID.Description);
+
+	Caps.id_vendor	= adapterID.VendorId;
+	Caps.id_device	= adapterID.DeviceId;
 
 	// Retreive windowed mode
 	D3DDISPLAYMODE mWindowed;
