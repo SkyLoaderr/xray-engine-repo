@@ -145,7 +145,6 @@ void CObject::OnDeviceDestroy	()
 {
 	if (pVisual)				Render.Models.Delete	(pVisual);
 	if (sh_Shader)				Device.Shader.Delete	(sh_Shader);
-	if (pSector)				{ pSector->objectRemove	(this); pSector=NULL; }
 }
 void CObject::OnDeviceCreate	()
 {
@@ -154,7 +153,6 @@ void CObject::OnDeviceCreate	()
 	pVisual						= Render.Models.Create	(pVisualName);
 	sh_Shader					= Device.Shader.Create	("effects\\shadow","effects\\shadow",false);
 	sh_Size						= Radius()/2;
-	Sector_Detect				();
 }
 
 // Updates
