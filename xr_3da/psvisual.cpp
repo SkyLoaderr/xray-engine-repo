@@ -219,7 +219,8 @@ void CPSVisual::Render(float LOD)
 }
 
 //----------------------------------------------------
-void CPSVisual::Compile(LPCSTR name, PS::SEmitter* E){
+void CPSVisual::Compile(LPCSTR name, PS::SEmitter* E)
+{
 	PS::SDef* source= Device.PSLib.FindPS(name);
 	R_ASSERT		(source);
 	R_ASSERT		(source->m_ShaderName[0]&&source->m_TextureName[0]);
