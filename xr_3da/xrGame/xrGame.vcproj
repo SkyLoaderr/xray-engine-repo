@@ -1709,6 +1709,9 @@
 		<Filter
 			Name="AI"
 			Filter="">
+			<File
+				RelativePath="ai_commands.h">
+			</File>
 			<Filter
 				Name="AEval"
 				Filter="">

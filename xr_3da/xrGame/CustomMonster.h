@@ -13,6 +13,7 @@
 #include "phmovementcontrol.h"
 #include "ai_space.h"
 #include "ai_commands.h"
+#include "ai_pathnodes.h"
 
 class CCustomMonster : 
 	public CEntityAlive, 
