@@ -206,7 +206,7 @@ IC u32 it_height_rev_base(u32 d, u32 s)	{	return	color_rgba	(
 	(color_get_R(s)+color_get_G(s)+color_get_B(s))/3	);	// height
 }
 
-IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName)
+IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName, u32& msize)
 {
 	IDirect3DTexture9*		pTexture2D		= NULL;
 	IDirect3DCubeTexture9*	pTextureCUBE	= NULL;
@@ -239,6 +239,7 @@ _DDS:
 		// Load and get header
 		D3DXIMAGE_INFO			IMG;
 		IReader*	S			= FS.r_open	(fn);
+		msize					= S->length	();
 		R_ASSERT				(S);
 		R_CHK					(D3DXGetImageInfoFromFileInMemory	(S->pointer(),S->length(),&IMG));
 		if (IMG.ResourceType	== D3DRTYPE_CUBETEXTURE)			goto _DDS_CUBE;
@@ -300,6 +301,7 @@ _BUMP:
 		// Load   SYS-MEM-surface, bound to device restrictions
 		D3DXIMAGE_INFO			IMG;
 		IReader* S				= FS.r_open	(fn);
+		msize					= S->length	();
 		IDirect3DTexture9*		T_height_gloss;
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
 			HW.pDevice,	S->pointer(),S->length(),
@@ -371,6 +373,7 @@ _BUMP_from_base:
 		// Load   SYS-MEM-surface, bound to device restrictions
 		D3DXIMAGE_INFO			IMG;
 		IReader* S				= FS.r_open	(fn);
+		msize					= S->length	();
 		IDirect3DTexture9*		T_base;
 		R_CHK(D3DXCreateTextureFromFileInMemoryEx(
 			HW.pDevice,	S->pointer(),S->length(),

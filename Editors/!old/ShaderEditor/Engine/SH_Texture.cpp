@@ -187,11 +187,12 @@ void CTexture::Load		()
 			_Trim		(buffer);
 			if (buffer[0])	{
 				// Load another texture
-				pSurface = ::Render->texture_load	(buffer);
+				u32	mem  = 0;
+				pSurface = ::Render->texture_load	(buffer,mem);
 				if (pSurface)	{
 					// pSurface->SetPriority	(PRIORITY_LOW);
 					seqDATA.push_back		(pSurface);
-					flags.MemoryUsage		+= 0;
+					flags.MemoryUsage		+= mem;
 				}
 			}
 		}
@@ -199,12 +200,13 @@ void CTexture::Load		()
 	} else
 	{
 		// Normal texture
-		pSurface = ::Render->texture_load	(*cName);
+		u32	mem  = 0;
+		pSurface = ::Render->texture_load	(*cName,mem);
 
 		// Calc memory usage and preload into vid-mem
 		if (pSurface) {
 			// pSurface->SetPriority	(PRIORITY_NORMAL);
-			flags.MemoryUsage		=	0;
+			flags.MemoryUsage		=	mem;
 		}
 	}
 }
