@@ -2,103 +2,6 @@
 
 <game_dialogs>
 
-	<dialog id="trader_hello_dialog">
-		<phrase_list>
-			<phrase id="0">
-				<text>Привет! У меня для тебя есть работка на выходных.</text>
-			</phrase>
-		</phrase_list>
-	</dialog>
-
-	<dialog id="trader_job">
-		<precondition>trader_job.is_trader</precondition>
-		<phrase_list>
-			<phrase id="0">
-				<text>Какая у тебя есть работа?</text>
-				<next>1</next>
-			</phrase>
-			<phrase id="1">
-				<text>Есть несколько заданий: \nЯщик с блокпоста \nвыкрасть кое-что с Агропрома \nи лично для меня эээ... секретная работенка\nНу а по ходу можешь притаранить пару-тройку артефактов</text>
-				<next>2</next>
-				<next>3</next>
-				<next>4</next>
-				<next>14</next>
-				<next>15</next>
-			</phrase>
-			<phrase id="2">
-				<dont_has_info>trader_start2</dont_has_info>
-				<dont_has_info>job_box_finished</dont_has_info>
-				<text>Я возьмусь за ящик с блокпоста.</text>
-				<next>5</next>
-			</phrase>
-			<phrase id="3">
-				<dont_has_info>trader_start4</dont_has_info>
-				<dont_has_info>job_box02_finished</dont_has_info>
-				<text>Я возьмусь выкрасть кое-что с Агропрома.</text>
-				<next>6</next>
-			</phrase>
-			<phrase id="4">
-				<dont_has_info>trader_start5</dont_has_info>
-				<text>Что за секретная работа?</text>
-				<next>7</next>
-			</phrase>
-			<phrase id="5">
-				<text>Надо проникнуть на блокпост и тихо украсть ящик, \n так чтоб никто не заметил.</text>
-				<next>8</next>
-				<next>9</next>
-			</phrase>
-			<phrase id="6">
-				<text>На Агропроме что-то раскопали военные сталкеры... \n Принеси мне это и я тебе хорошо заплачу.</text>
-				<next>10</next>
-				<next>9</next>
-			</phrase>
-			<phrase id="7">
-				<text>Со мной связался мой старый знакомый сталкер ветеран... \nОн раскопал кой-какую интресующую меня информацию... \nТак вот, встреться с ним и забери ее... Когда принесешь ее мне, \nя тебе отплачу... \n \nИ чуть не забыл, он может знать о группировке Стрелка, \n спроси его... он много чего знает.</text>
-				<next>11</next>
-				<next>9</next>
-			</phrase>
-
-			<phrase id="8">
-				<text>Ок. Я принесу ящик.</text>
-				<give_info>trader_start2</give_info>
-				<next>12</next>
-			</phrase>
-			<phrase id="9">
-				<text>Нет, не буду браться.</text>
-				<next>13</next>
-			</phrase>
-			<phrase id="10">
-				<text>Ок. Я принесу то, что раскопали военные сталкеры.</text>
-				<give_info>trader_start4</give_info>
-				<next>12</next>
-			</phrase>
-			<phrase id="11">
-				<text>Хорошо... Я берусь встретиться со сталкером.</text>
-				<give_info>trader_start5</give_info>
-				<next>12</next>
-			</phrase>
-			<phrase id="12">
-				<text>Я заплачу, когда ты выполнишь задание.</text>
-			</phrase>
-			<phrase id="13">
-				<text>Ну как знаешь.</text>
-			</phrase>
-			<phrase id="14">
-				<text>Что-то я передумал работать.</text>
-				<next>13</next>
-			</phrase>
-			<phrase id="15">
-				<text>Что-то за артефакты?.</text>
-				<next>16</next>
-			</phrase>
-			<phrase id="16">
-				<text>Мне тут просили достать, плачу вдвое обычного.</text>
-				<script_text>trader_job.artefacts_task_text</script_text>
-			</phrase>
-
-		</phrase_list>
-	</dialog>
-
 	<dialog id="trader_talk_about">
 	<precondition>trader_job.is_trader</precondition>
 	    <has_info>actor_start</has_info>
@@ -146,20 +49,10 @@
 		</phrase_list>
 	</dialog>
 
-
 	<dialog id="hello_dialog">
 		<phrase_list>
 			<phrase id="0">
 				<text>Привет</text>
-			</phrase>
-		</phrase_list>
-	</dialog>
-
-
-	<dialog id="stalker_hello_dialog">
-		<phrase_list>
-			<phrase id="0">
-				<text>Ха! Новенький в Зоне?</text>
 			</phrase>
 		</phrase_list>
 	</dialog>
@@ -225,43 +118,5 @@
 
 		</phrase_list>
 	</dialog>
-
-
-	<dialog id="job_box">
-        <precondition>trader_job.is_box_present</precondition>
-
-		<phrase_list>
-			<phrase id="0">
-				<text>Я выполнил работу! Принес ящик с блокпоста.</text>
-				<next>1</next>
-				<give_info>job_box_finished</give_info>
-			</phrase>
-			<phrase id="1">
-				<text>Отлично, ты хорошо поработал. Вот твои деньги. \n          [получено 500 рублей]</text>
-				<action>trader_job.give_box_to_trader</action>
-			</phrase>
-		</phrase_list>
-	</dialog>
-
-	<dialog id="job_box02">
-        <precondition>trader_job.is_box02_present</precondition>
-
-		<phrase_list>
-			<phrase id="0">
-				<text>Я выполнил работу! Принес чемодан с Агропрома.</text>
-				<next>1</next>
-				<give_info>job_box02_finished</give_info>
-			</phrase>
-			<phrase id="1">
-				<text>Отлично, ты хорошо поработал. Вот твои деньги. \n          [получено 1500 рублей]</text>
-				<next>2</next>
-				<action>trader_job.give_box02_to_trader</action>
-			</phrase>
-			<phrase id="2">
-				<text>Спасибо... надеюсь мы еще увидимся. Удачи!</text>
-			</phrase>
-		</phrase_list>
-	</dialog>
-
 
 </game_dialogs>
