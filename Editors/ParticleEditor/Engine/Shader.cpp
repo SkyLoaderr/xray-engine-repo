@@ -73,7 +73,11 @@ BOOL ShaderElement::equal	(ShaderElement& S)
 }
 
 BOOL ShaderElement::equal	(ShaderElement* S)
-{	return	equal(*S);	}
+{	
+	if (0==S && 0==this)	return TRUE;
+	if (0==S || 0==this)	return FALSE;
+	return	equal	(*S);	
+}
 
 //
 BOOL Shader::equal	(Shader& S)
