@@ -346,7 +346,7 @@ void CAI_Stalker::CreateSkeleton()
 {
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Movement.GetDeathPosition(vPosition);
-	vPosition.y+=.1f;
+	//vPosition.y+=.1f;
 	UpdateTransform();
 #endif
 	if (!pVisual)

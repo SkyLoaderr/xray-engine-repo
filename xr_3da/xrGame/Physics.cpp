@@ -8,9 +8,13 @@ struct Fcylinder;
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
+///////////////////////////////////////////////////////////////
+#pragma warning(disable:4995)
 #include "..\ode\src\collision_kernel.h"
 #include <..\ode\src\joint.h>
 #include <..\ode\src\objects.h>
+#pragma warning(default:4995)
+///////////////////////////////////////////////////////////////////
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
