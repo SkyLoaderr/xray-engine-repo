@@ -90,3 +90,137 @@ function checkStalker(npc_community, gulag_type)
 	end
 	return false
 end
+
+
+local t = {}
+
+
+
+
+
+function load_job(sj, gname, type, squad, groups)
+
+	-- Гулаг ветеранов Долга внутри базы Долга
+	if type == "bar_dolg_veterans" then
+		t = { section = "walker1@bar_dolg_veterans", 
+			idle = 0,
+			prior = 10, state = {0,1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)		    
+	
+	t = { section = "walker2@bar_dolg_veterans", 
+			idle = 0,
+			prior = 5, state = {0,1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+
+	t = { section = "walker3@bar_dolg_veterans", 
+			idle = 0,
+			prior = 5, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+
+	t = { section = "walker4@bar_dolg_veterans", 
+			idle = 0,
+			prior = 1, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	
+	t = { section = "walker5@bar_dolg_veterans", 
+			idle = 0,
+			prior = 1, state = {0}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	
+	t = { section = "kamp1@bar_dolg_veterans", 
+			idle = 0,
+			prior = 1, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	
+	t = { section = "kamp2@bar_dolg_veterans", 
+			idle = 0,
+			prior = 1, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	
+	t = { section = "kamp3@bar_dolg_veterans", 
+			idle = 0,
+			prior = 1, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+	
+	t = { section = "walker6@bar_dolg_veterans", 
+			idle = 0,
+			prior = 5, state = {2}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)	
+
+	t = { section = "walker7@bar_dolg_veterans", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+
+	t = { section = "walker8@bar_dolg_veterans", 
+			idle = 0,
+			prior = 10, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	
+	t = { section = "camper1@bar_dolg_veterans", 
+			idle = 0,
+			prior = 5, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+
+	t = { section = "camper2@bar_dolg_veterans", 
+			idle = 0,
+			prior = 7, state = {1}, squad = squad, group = groups[0],
+			in_rest = "", out_rest = ""
+		}
+		table.insert(sj, t)
+	end
+end
+
+function load_states(gname, type)
+	return function (gulag)
+			for k,v in gulag.Object do
+				enemy = v:best_enemy()
+				if enemy ~= nil then
+   					gulag.alarm_start = game.get_game_time()
+   					return 2 -- аларм
+				end
+			end		
+		
+			if gulag.alarm_start == nil or
+				game.get_game_time():diffSec(gulag.alarm_start) > 300 then
+				if level.get_time_hours() >= 6 and level.get_time_hours() <= 22 then
+					return 0  -- день
+				else
+					return 1  -- ночь
+				end
+			else
+				return 2
+			end
+        end
+end
+
+function checkStalker(npc_community, gulag_type)
+	if gulag_type == "bar_dolg_veterans" then
+		return npc_community == "dolg"
+	end
+	return false
+end
