@@ -43,7 +43,7 @@ void CAI_Biting::Think()
 
 	// Update path
 	set_path_type			(ePathTypeLevelPath);	// temp here
-	build_path				();
+	update_path				();
 
 	// process sound
 	ControlSound(m_current_update);
