@@ -154,9 +154,9 @@ bool CUIEditBox::KeyPressed(int dik)
 		it = gs_DIK2CHR.find(dik);
 			
 		//нажата клавиша с буквой 
-		if(gs_DIK2CHR.end() != it)
+		if (gs_DIK2CHR.end() != it)
 		{
-			AddLetter(gs_DIK2CHR[dik]);
+			AddLetter(it.second);
 			str_updated = true; 
 		}
 		break;
