@@ -338,7 +338,8 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 {
 	if (g_Alive()>0)ph_Movement.ApplyImpulse(dir,impulse);
 	else if(m_phSkeleton) 
-		m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
+		m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse,element);
+		//m_phSkeleton->applyImpulseTrace(position_in_bone_space,dir,impulse);
 
 	if (g_Alive()<=0) return;
 
@@ -1218,6 +1219,7 @@ void CActor::create_Skeleton(){
 	//create shell
 	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
 	m_phSkeleton		= P_create_Shell();
+	m_phSkeleton->set_Kinematics(M);
 	CPhysicsJoint*		joint;
 	//get bone instance
 	int id=M->LL_BoneID("bip01_pelvis");

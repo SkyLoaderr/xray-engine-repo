@@ -1500,6 +1500,15 @@ void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, floa
 	(*elements.begin())->applyImpulseTrace		( pos,  dir,  val);
 }
 
+void	CPHShell::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element){
+	if(!bActive) return;
+	VERIFY(p_kinematics);
+	CBoneInstance& instance=p_kinematics->LL_GetInstance				(element);
+	if(!instance.Callback_Param) return;
+	((CPHElement*)instance.Callback_Param)->applyImpulseTrace		( pos,  dir,  val);
+
+}
+
 void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val){
 
 	if( !dBodyIsEnabled(m_body)) dBodyEnable(m_body);

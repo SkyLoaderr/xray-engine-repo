@@ -90,14 +90,18 @@ public:
 // ABSTRACT: 
 class CPhysicsShell			: public CPhysicsBase
 {
+protected:
+CKinematics* p_kinematics;
 public:
 	BOOL					bActive;
 public:
+	void					set_Kinematics			(CKinematics* p)	{p_kinematics=p;}
 	virtual	void			add_Element				(CPhysicsElement* E)								= 0;
 	virtual	void			add_Joint				(CPhysicsJoint* E)									= 0;
 	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
 	virtual BoneCallbackFun* GetBonesCallback		()													= 0;
 	virtual void			Update					()													= 0;
+	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element) = 0;
 	};
 
 

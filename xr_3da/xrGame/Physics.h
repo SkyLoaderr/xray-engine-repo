@@ -392,6 +392,7 @@ public:
 	CPHShell				()							{bActive=false;
 														 bActivating=false;
 														 m_space=NULL;
+														 p_kinematics=NULL;
 
 											
 																		};
@@ -408,7 +409,7 @@ public:
 														joints.clear();
 														}
 
-
+	virtual void	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element);
 	static void __stdcall	BonesCallback				(CBoneInstance* B);
 	virtual	BoneCallbackFun* GetBonesCallback		()	{return BonesCallback ;}
 	virtual	void			add_Element				(CPhysicsElement* E)		  {

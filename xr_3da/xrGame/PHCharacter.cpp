@@ -160,7 +160,7 @@ dGeomSetBody(m_hat_transform,m_body);
 dGeomSetBody(m_wheel,m_body);
 //dBodySetPosition(m_body,-10,3,0);
 //dGeomCreateUserData(m_wheel_transform);
-dGeomCreateUserData(m_wheel);
+//dGeomCreateUserData(m_wheel);
 //dGeomCreateUserData(m_cap_transform);
 //dGeomCreateUserData(m_shell_transform);
 dGeomCreateUserData(m_geom_shell);
@@ -492,7 +492,7 @@ if(b_valide_wall_contact && (m_contact_count>1)&& b_clamb_jump)
 const dReal spring_rate=0.5f;
 const dReal dumping_rate=20.1f;
 void CPHSimpleCharacter::InitContact(dContact* c){
-		*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_geom_shell))->tri_material;
+		*p_lastMaterial=((dxGeomUserData*)dGeomGetData(m_wheel))->tri_material;
 		bool bo1=(c->geom.g1==m_wheel)||c->geom.g1==m_cap_transform||c->geom.g1==m_shell_transform;
 		if(c->geom.g1==m_cap_transform||c->geom.g2==m_cap_transform||c->geom.g1==m_shell_transform||c->geom.g2==m_shell_transform){//
 		dNormalize3(m_control_force);
