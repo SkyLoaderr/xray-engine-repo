@@ -170,8 +170,9 @@ void CObject::Update	( DWORD T )
 	}
 }
 
-void CObject::OnMoveVisible	()
+float CObject::OnVisible	()
 {
+	return 1.f;
 }
 
 void CObject::Sector_Detect	()

@@ -432,20 +432,6 @@ void CCustomMonster::Exec_Visibility	( float dt )
 		pCreator->Cameras.Update(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,eye_range);
 }
 
-void CCustomMonster::OnMoveVisible()
-{
-	inherited::OnMoveVisible	();
-/*
-	Fvector P;	clCenter(P);
-	TEST.SetPosition	(P);
-	TEST.SetRange		(4.f);
-	TEST.SetColor		(0,0,.7f);
-	::Render.Lights_Dynamic.Add	(&TEST);
-*/
-	// weapons
-//	Weapons->OnRender			(false);
-}
-
 extern void dbg_draw_frustum (float FOV, float _FAR, float A, Fvector &P, Fvector &D, Fvector &U);
 void CCustomMonster::OnRender()
 {

@@ -19,8 +19,10 @@ struct				SRotation
 	SRotation() { yaw=pitch=0; }
 };
 
-class CEntity : public CObject
+class CEntity : public CGameObject
 {
+private:
+	typedef	CGameObject	inherited;			
 protected:
 	// health & shield
 	int					iHealth,	iMAX_Health;
@@ -75,7 +77,7 @@ public:
 
 	virtual void		Load				(CInifile* ini, LPCSTR section);
 	virtual BOOL		Spawn				(BOOL bLocal, int server_id, int team, int squad, int group, Fvector4& o_pos);
-	virtual void		OnMoveVisible		();
+	virtual float		OnVisible			();
 
 	bool				IsFocused			()	{ return (pCreator->CurrentEntity()==this);		}
 	bool				IsMyCamera			()	{ return (pCreator->CurrentViewEntity()==this);	}

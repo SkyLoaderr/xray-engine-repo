@@ -158,7 +158,6 @@ public:
 
 	// debug
 	virtual void		OnRender				( );
-	virtual void		OnMoveVisible			( );
 
 	// HUD
 	virtual void		OnHUDDraw				(CCustomHUD* hud);

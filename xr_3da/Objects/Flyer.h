@@ -76,7 +76,6 @@ public:
 	virtual void		HitSignal			( int iHitAmount, Fvector& vLocalDir, CEntity* E ){;}
 
 	virtual void		Update				( DWORD DT );
-	virtual void		OnMoveVisible		( );
 
 	virtual void		OnMouseMove			(int x, int y);
 	virtual void		OnKeyboardPress		(int dik);

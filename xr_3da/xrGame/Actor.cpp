@@ -486,11 +486,13 @@ void CActor::Update	(DWORD DT)
 	}
 }
 
-void CActor::OnMoveVisible()
+float CActor::OnVisible()
 {
-	inherited::OnMoveVisible();
+	float ret = inherited::OnVisible();
 
 	Weapons->OnRender(HUDview());
+
+	return ret;
 }
 
 void CActor::g_cl_ValidateMState(DWORD mstate_wf)

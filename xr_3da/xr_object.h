@@ -107,7 +107,7 @@ public:
 	virtual void						Sector_Move		(CSector* P);
 	
 	// Update
-	virtual void						OnMoveVisible	(void );
+	virtual float						OnVisible		(void);								// returns lighting level
 	virtual void						Update			(DWORD dt);
 	virtual void						UpdateCL		();									// Called each frame, so no need for dt
 	virtual void						net_Export		(NET_Packet* P) {};					// export to server

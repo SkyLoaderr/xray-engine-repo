@@ -159,7 +159,9 @@ BOOL CEntity::Spawn		(BOOL bLocal, int server_id, int team, int squad, int group
 	return				TRUE;
 }
 
-void CEntity::OnMoveVisible()
+float CEntity::OnVisible()
 {
+	float ret = inherited::OnVisible();
 	::Render.Wallmarks.AddShadow(this);
+	return ret;
 }

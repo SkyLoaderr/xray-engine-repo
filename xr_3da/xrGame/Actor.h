@@ -197,7 +197,7 @@ public:
 	virtual void		OnKeyboardHold			(int dik);
 
 	virtual void		Update					( DWORD T ); 
-	virtual void		OnMoveVisible			( ); 
+	virtual float		OnVisible				( ); 
 
 	void				Statistic				( );
 	virtual void		OnRender				( );
