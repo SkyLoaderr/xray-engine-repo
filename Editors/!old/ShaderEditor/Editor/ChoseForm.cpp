@@ -527,7 +527,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 		lbItemName->Caption = "-";
 		lbFileName->Caption	= "-";
     }
-    if (m_Thm)	m_Thm->FillProp		(items);
+    if (m_Thm)	m_Thm->FillInfo		(items);
     m_Props->AssignItems			(items,true);
     paInfo->Visible					= !items.empty();
 	paImage->Repaint				();

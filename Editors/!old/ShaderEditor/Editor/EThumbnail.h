@@ -35,6 +35,7 @@ public:
 	virtual void 	Save			(int age=0,LPCSTR path=0)=0;
     virtual bool	Valid			()=0;
 	virtual void	FillProp		(PropItemVec& values)=0;
+	virtual void	FillInfo		(PropItemVec& values)=0;
 };
 //------------------------------------------------------------------------------
 
@@ -75,6 +76,7 @@ public:
 	virtual void 	Save			(int age=0,LPCSTR path=0);
     virtual bool	Valid			(){return !m_Pixels.empty();}
 	virtual void	FillProp		(PropItemVec& values);
+	virtual void	FillInfo		(PropItemVec& values);
 	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,_Width(),_Height(),bUseAlpha);}
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,_Width(),_Height(),bUseAlpha);}
 
@@ -103,6 +105,7 @@ public:
 	virtual void 	Save			(int age=0,LPCSTR path=0);
     virtual bool	Valid			(){return !m_Pixels.empty();}
 	virtual void	FillProp		(PropItemVec& values);
+	virtual void	FillInfo		(PropItemVec& values);
 	virtual void 	Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false){inherited::Draw(pCanvas,R,0,0,false);}
 	virtual void 	Draw			(TMxPanel* panel, bool bUseAlpha=false){inherited::Draw(panel,0,0,false);}
 
@@ -127,6 +130,7 @@ public:
 	virtual void 	Save			(int age=0,LPCSTR path=0);
     virtual bool	Valid			(){return true;}
 	virtual void	FillProp		(PropItemVec& values);
+	virtual void	FillInfo		(PropItemVec& values);
 };
 //------------------------------------------------------------------------------
 

@@ -100,3 +100,12 @@ void ESoundThumbnail::FillProp(PropItemVec& items)
 }
 //------------------------------------------------------------------------------
 
+void ESoundThumbnail::FillInfo(PropItemVec& items)
+{
+    PHelper.CreateCaption		(items, "Quality", 	m_fQuality);
+    PHelper.CreateCaption		(items, "Min Dist", m_fMinDist);
+    PHelper.CreateCaption		(items, "Max Dist",	m_fMaxDist);
+    PHelper.CreateCaption		(items, "Game Type",anomaly_type_token[m_uGameType].name);
+}
+//------------------------------------------------------------------------------
+

@@ -102,3 +102,10 @@ void EObjectThumbnail::FillProp(PropItemVec& items)
 }
 //------------------------------------------------------------------------------
 
+void EObjectThumbnail::FillInfo(PropItemVec& items)
+{
+    PHelper.CreateCaption	(items, "Face Count",				AnsiString(face_count).c_str());
+    PHelper.CreateCaption	(items, "Vertex Count",				AnsiString(vertex_count).c_str());
+}
+//------------------------------------------------------------------------------
+
