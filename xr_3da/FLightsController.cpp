@@ -181,67 +181,11 @@ void	CLightsController::add_sector_lights(vector<WORD> &L)
 		xrLIGHT&  T	= Lights[ID];
 		if (T.dwFrame==Device.dwFrame) continue;
 		
-		if ((T.type == D3DLIGHT_DIRECTIONAL)||(::Render.View->visibleSphereNC(T.position, T.range))) 
+		if ((T.type == D3DLIGHT_DIRECTIONAL)||(::Render.View->testSphere_dirty	(T.position, T.range))) 
 		{
-			/*
-			if (T.flags&XRLIGHT_PROCEDURAL)
-			{
-				SelectedProcedural.push_back(ID);
-				T.interpolate(Device.fTimeDelta,Keyframes.begin());
-				CHK_DX(HW.pDevice->SetLight(ID,T.d3d()));
-			} else {
-				Selected.push_back(ID);
-			}
-			*/
 			Selected.push_back(ID);
 			T.dwFrame=Device.dwFrame;
 		}
 	}
 };
 
-void CLightsController::Render(void) 
-{
-/*
-ID3DXSimpleShape *	Sphere;
-int					i;
-Fmatrix				matrix;
-Fmaterial			material;
-
-  Device.SetMode(vZTest);
-  CHK_DX(D3DXCreateSphere(HW.pDevice,1.f,D3DX_DEFAULT,D3DX_DEFAULT,1,&Sphere));
-  Device.Texture.Set(0);
-  CHK_DX(HW.pDevice->SetRenderState( D3DRENDERSTATE_FILLMODE,		D3DFILL_WIREFRAME	));
-  material.Set(1,1,1,1);
-  //	CHK_DX(HW.pDevice->SetMaterial(material.d3d()));
-  CHK_DX(HW.pDevice->SetRenderState(D3DRENDERSTATE_CULLMODE,D3DCULL_NONE));
-  for (i=0; i<Selected.count; i++) {
-		// color
-		CHK_DX(HW.pDevice->SetRenderState( D3DRENDERSTATE_AMBIENT, Lights[Selected[i]].diffuse.get_ideal() ));
-
-		  // translate & scale
-		  matrix.translate(Lights[Selected[i]].position);
-		  matrix.m[0][0] = matrix.m[1][1] = matrix.m[2][2] = Lights[Selected[i]].range;
-		  CHK_DX(HW.pDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, matrix.d3d()));
-
-			// render
-			Sphere->Draw();
-			}
-			for (i=0; i<SelectedDynamic.count; i++) {
-			// color
-			CHK_DX(HW.pDevice->SetRenderState( D3DRENDERSTATE_AMBIENT, LightsDynamic[SelectedDynamic[i]-Lights.count]->diffuse.get_ideal() ));
-
-			  // translate & scale
-			  matrix.translate(LightsDynamic[SelectedDynamic[i]-Lights.count]->position);
-			  matrix.m[0][0] = matrix.m[1][1] = matrix.m[2][2] = LightsDynamic[SelectedDynamic[i]-Lights.count]->range;
-			  CHK_DX(HW.pDevice->SetTransform(D3DTRANSFORMSTATE_WORLD, matrix.d3d()));
-
-				// render
-				Sphere->Draw();
-				}
-				if (RM.dwRenderState&rsWireframe)	{ CHK_DX(HW.pDevice->SetRenderState( D3DRENDERSTATE_FILLMODE,		D3DFILL_WIREFRAME	)); }
-				else								{ CHK_DX(HW.pDevice->SetRenderState( D3DRENDERSTATE_FILLMODE,		D3DFILL_SOLID		)); }
-				CHK_DX(HW.pDevice->SetRenderState	( D3DRENDERSTATE_AMBIENT,	0			));
-				CHK_DX(HW.pDevice->SetRenderState	( D3DRENDERSTATE_CULLMODE,D3DCULL_CCW	));
-				_RELEASE(Sphere);
-	*/
-}
