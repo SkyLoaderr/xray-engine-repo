@@ -22,6 +22,9 @@ CUIGameDM::CUIGameDM(CUI* parent):CUIGameCustom(parent)
 	
 	pBuyMenuTeam0	= NULL;
 	pCurBuyMenu		= NULL;
+	
+	PresetItemsTeam0.clear();
+	pCurPresetItems	= NULL;;
 
 	pSkinMenuTeam0	= NULL;
 	pCurSkinMenu	= NULL;
@@ -315,15 +318,41 @@ void CUIGameDM::OnBuyMenu_Ok	()
 	NET_Packet		P;
 	l_pPlayer->u_EventGen		(P,GEG_PLAYER_BUY_FINISHED,l_pPlayer->ID()	);
 	//-------------------------------------------------------------------------------
-	u8 NumItems = pCurBuyMenu->GetBeltSize();
+	pCurPresetItems->clear();
+//	u8 NumItems = pCurBuyMenu->GetBeltSize();
+//	for (u8 s =0; s<6; s++)
+//	{
+//		if (pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]) != 0xff) NumItems++;
+//	};
+
 	for (u8 s =0; s<6; s++)
 	{
-		if (pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]) != 0xff) NumItems++;
+		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
+		if (ItemID == 0xff) continue;
+		u16 SlotID = SlotsToCheck[s];
+		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
+		s16	ID = (s16(SlotID) << 0x08) | s16(ItemID);
+		pCurPresetItems->push_back(ID);
+//		P.w_s16(ID);
 	}
 
+	for (u8 i=0; i<pCurBuyMenu->GetBeltSize(); i++)
+	{
+		u8 SectID, ItemID;
+		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
+		s16	ID = (s16(SectID) << 0x08) | s16(ItemID);
+		pCurPresetItems->push_back(ID);
+//		P.w_s16(ID);
+	};	
 	//-------------------------------------------------------------------------------
-	P.w_u8		(NumItems);
+	P.w_u8		(u8(pCurPresetItems->size()));
+	for (s=0; s<pCurPresetItems->size(); s++)
+	{
+		P.w_s16((*pCurPresetItems)[s]);
+	}
+//	P.w_u8		(NumItems);
 	//-------------------------------------------------------------------------------
+	/*
 	for (s =0; s<6; s++)
 	{
 		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
@@ -340,7 +369,8 @@ void CUIGameDM::OnBuyMenu_Ok	()
 		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
 		u16	ID = (s16(SectID) << 0x08) | s16(ItemID);
 		P.w_s16(ID);
-	};	
+	};
+	*/
 	//-------------------------------------------------------------------------------
 	l_pPlayer->u_EventSend		(P);
 };
@@ -459,10 +489,10 @@ BOOL		CUIGameDM::CanCallBuyMenu			()
 void		CUIGameDM::SetCurrentBuyMenu	()	
 {
 	pCurBuyMenu = pBuyMenuTeam0; 
+	pCurPresetItems	= &PresetItemsTeam0;
 
 	game_cl_GameState::Player* P = Game().local_player;
 	if (!P) return;
-	
 };
 
 void		CUIGameDM::SetBuyMenuItems		()
@@ -473,18 +503,27 @@ void		CUIGameDM::SetBuyMenuItems		()
 
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().Objects.net_Find	(P->GameID));
 	if (!pCurActor) return;
-
+	//---------------------------------------------------------
 	pCurBuyMenu->ClearSlots();
 	pCurBuyMenu->ClearRealRepresentationFlags();
-
+	//---------------------------------------------------------
 	TIItemSet::const_iterator	I = pCurActor->inventory().m_all.begin();
 	TIItemSet::const_iterator	E = pCurActor->inventory().m_all.end();
 	for ( ; I != E; ++I) 
 	{
 		PIItem pItem = (*I);
 		if ((*I)->getDestroy() || (*I)->m_drop) continue;
-		pCurBuyMenu->MoveWeapon(*pItem->cNameSect(), true);
+		pCurBuyMenu->SectionToSlot(*pItem->cNameSect(), true);
 	};
-
-	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
+	//---------------------------------------------------------
+	PRESET_ITEMS_it		It = pCurPresetItems->begin();
+	PRESET_ITEMS_it		Et = pCurPresetItems->end();
+	for ( ; It != Et; ++It) 
+	{
+		s16	ItemID = (*It);
+		
+		pCurBuyMenu->SectionToSlot(u8((ItemID&0xff00)>>0x08), u8(ItemID&0x00ff), false);
+	};
+	//---------------------------------------------------------
+	pCurBuyMenu->CheckBuyAvailabilityInSlots();
 };

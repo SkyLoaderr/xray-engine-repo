@@ -28,6 +28,7 @@ protected:
 	DEF_VECTOR			(FRAGS_LISTS, CUIDMFragList*);
 	DEF_VECTOR			(PLAYERS_LISTS, CUIDMPlayerList*);
 	DEF_VECTOR			(TEAMS_LIST, std::string);
+	DEF_VECTOR			(PRESET_ITEMS, s16);
 
 	FRAGS_LISTS			m_aFragsLists;
 	PLAYERS_LISTS		m_aPlayersLists;
@@ -35,6 +36,9 @@ protected:
 
 	CUIBuyWeaponWnd*		pBuyMenuTeam0;
 	CUIBuyWeaponWnd*		pCurBuyMenu;
+
+	PRESET_ITEMS			PresetItemsTeam0;
+	PRESET_ITEMS*			pCurPresetItems;
 
 	BOOL				m_bBuyEnabled;
 

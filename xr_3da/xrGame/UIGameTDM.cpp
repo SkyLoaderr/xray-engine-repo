@@ -20,6 +20,9 @@ CUIGameTDM::CUIGameTDM(CUI* parent):CUIGameDM(parent)
 	pBuyMenuTeam1 = NULL;
 	pBuyMenuTeam2 = NULL;
 
+	PresetItemsTeam1.clear();
+	PresetItemsTeam2.clear();
+
 	pSkinMenuTeam1 = NULL;
 	pSkinMenuTeam2 = NULL;
 
@@ -140,8 +143,16 @@ void CUIGameTDM::SetCurrentBuyMenu	()
 {
 	if (!pCurBuyMenu || !pCurBuyMenu->IsShown())
 	{
-		if (Game().local_player->team == 1) pCurBuyMenu = pBuyMenuTeam1;
-		else pCurBuyMenu = pBuyMenuTeam2;
+		if (Game().local_player->team == 1) 
+		{
+			pCurBuyMenu = pBuyMenuTeam1;
+			pCurPresetItems = &PresetItemsTeam1;
+		}
+		else 
+		{
+			pCurBuyMenu = pBuyMenuTeam2;
+			pCurPresetItems = &PresetItemsTeam2;
+		};
 	};
 
 	if (pCurBuyMenu) pCurBuyMenu->SetSkin(pCurSkinMenu->GetActiveIndex());

@@ -32,6 +32,9 @@ protected:
 	CUISkinSelectorWnd*	pSkinMenuTeam1;
 	CUISkinSelectorWnd*	pSkinMenuTeam2;
 
+	PRESET_ITEMS		PresetItemsTeam1;
+	PRESET_ITEMS		PresetItemsTeam2;
+
 	BOOL				m_bTeamSelected;
 
 	virtual s16			ModifyTeam			(s16 Team)	{return Team-1;};
