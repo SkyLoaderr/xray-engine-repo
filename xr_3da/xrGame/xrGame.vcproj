@@ -1270,8 +1270,7 @@
 								<File
 									RelativePath=".\state_combat_attack_weak.cpp">
 									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
+										Name="Debug|Win32">
 										<Tool
 											Name="VCCLCompilerTool"/>
 									</FileConfiguration>
@@ -1279,8 +1278,7 @@
 								<File
 									RelativePath=".\state_combat_attack_weak.h">
 									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
+										Name="Debug|Win32">
 										<Tool
 											Name="VCCustomBuildTool"/>
 									</FileConfiguration>
@@ -1288,8 +1286,7 @@
 								<File
 									RelativePath=".\state_combat_attack_weak_inline.h">
 									<FileConfiguration
-										Name="Debug|Win32"
-										ExcludedFromBuild="TRUE">
+										Name="Debug|Win32">
 										<Tool
 											Name="VCCustomBuildTool"/>
 									</FileConfiguration>
