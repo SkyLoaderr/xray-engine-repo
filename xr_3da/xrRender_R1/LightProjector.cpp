@@ -231,7 +231,8 @@ void CLightProjector::calculate	()
 		max.set				(C.C.x+p_R,	C.C.y+0,					C.C.z+p_R);
 		BB.set				(min,max);
 		ISpatial*	spatial	= dynamic_cast<ISpatial*>	(C.O);
-		if (spatial)		RImplementation.r_dsgraph_render_subspace(spatial->spatial.sector,mCombine,v_C,FALSE);
+		if (spatial)		RImplementation.r_dsgraph_render_R1_box		(spatial->spatial.sector,BB,2);
+		//if (spatial)		RImplementation.r_dsgraph_render_subspace	(spatial->spatial.sector,mCombine,v_C,FALSE);
 	}
 
 	// Blur
