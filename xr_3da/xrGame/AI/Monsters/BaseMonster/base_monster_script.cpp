@@ -52,6 +52,9 @@ bool CBaseMonster::bfAssignMovement (CScriptEntityAction *tpEntityAction)
 		case CScriptMovementAction::eGoalTypeNoPathPosition :
 			movement().set_target_point	(l_tMovementAction.m_tDestinationPosition);
 			break;
+		case CScriptMovementAction::eGoalTypePathNodePosition :
+			movement().set_target_point	(l_tMovementAction.m_tDestinationPosition, l_tMovementAction.m_tNodeID);
+			break;
 	}
 	return			(true);		
 }

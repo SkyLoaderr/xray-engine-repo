@@ -7,9 +7,9 @@
 -- константы
 local TIME_RELEASE	=	10000		-- время, которое монстр находится под унисхемой
 local TIME_CAPTURE	=	10000		-- время, которое монстр находится под скриптом
-local MIN_DIST		=	20			-- расстояние до актера, меньше которого, монстр переходит в унисхему
-local MAX_DIST		=	30			-- расстояние до актера, больше которого, монстр переходит в унисхему
-local DIST_TO_END	=	2			-- расстояние до конца пути
+local MIN_DIST		=	5			-- расстояние до актера, меньше которого, монстр переходит в унисхему
+local MAX_DIST		=	10			-- расстояние до актера, больше которого, монстр переходит в унисхему
+local DIST_TO_END	=	0.5			-- расстояние до конца пути
 
 
 class "mob_eluder"
@@ -37,8 +37,7 @@ function mob_eluder:reset_scheme()
 	
 	self.prev_point_id			= 0
 	
-	self.time_released			= 0
-	self.time_captured			= 0
+	self.time_state_changed		= 0
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -58,7 +57,7 @@ function mob_eluder:update(delta)
 		-- Select point here
 		self:update_distances	()
 		
-		action(self.object, move(move.run_fwd, patrol(self.st.path):point(self.best_point_id), DIST_TO_END), cond(cond.move_end))
+		action(self.object, move(move.run_fwd, patrol(self.st.path):level_vertex_id(self.best_point_id), patrol(self.st.path):point(self.best_point_id), DIST_TO_END), cond(cond.move_end))
 	end
 	
 end
@@ -128,10 +127,10 @@ function mob_eluder:check_script_control()
 		-- if near actor
 		-- if far from actor and its time to release for a while
 		if  (self.object:position():distance_to(db.actor:position()) < MIN_DIST) or
-			(self.time_captured + TIME_CAPTURE < cur_time) then
+			(self.time_state_changed + TIME_CAPTURE < cur_time) then
 			
 			xr_logic.mob_release(self.object)
-			self.time_released = cur_time
+			self.time_state_changed = cur_time
 		end
 
 	else 
@@ -140,11 +139,11 @@ function mob_eluder:check_script_control()
 		-- if far from actor
 		if self.object:position():distance_to(db.actor:position()) > MAX_DIST then
 			-- if its time to capture for a while
-			if self.time_released + TIME_RELEASE < cur_time then
+			if self.time_state_changed + TIME_RELEASE < cur_time then
 				-- check if it can_capture
 				if self.object:can_script_capture() then 
 					xr_logic.mob_capture(self.object, true)
-					self.time_captured = cur_time
+					self.time_state_changed = cur_time
 				end
 			end
 		end

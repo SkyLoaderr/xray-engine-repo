@@ -484,6 +484,14 @@ bool CScriptEntity::bfAssignMovement(CScriptEntityAction *tpEntityAction)
 			m_monster->movement().level_selector().set_evaluator(0);
 			break;
 		}
+		case CScriptMovementAction::eGoalTypePathNodePosition : {
+			VERIFY(ai().level_graph().valid_vertex_id(l_tMovementAction.m_tNodeID));
+			m_monster->movement().set_path_type					(MovementManager::ePathTypeLevelPath);
+			m_monster->movement().detail().set_dest_position	(l_tMovementAction.m_tDestinationPosition);
+			m_monster->movement().level_path().set_dest_vertex	(l_tMovementAction.m_tNodeID);
+			m_monster->movement().level_selector().set_evaluator(0);
+			break;
+		}
 		case CScriptMovementAction::eGoalTypeNoPathPosition : {
 			m_monster->movement().set_path_type(MovementManager::ePathTypeLevelPath);
 			if (m_monster->movement().detail().path().empty() || (m_monster->movement().detail().path()[m_monster->movement().detail().path().size() - 1].position.distance_to(l_tMovementAction.m_tDestinationPosition) > .1f)) {
