@@ -7,24 +7,12 @@ class "test_callback"
 function test_callback:__init()
 end
 
-function object_idle(name,script,...)
-	local				act = action(nil,unpack(arg))
-	while true do
-		local			obj	= get_level_object(name)
-		obj:script		(true,script)
-		obj:command		(act,false);
-		while			(level.object(name) ~= nil) do
-			wait		()
-		end
-	end
-end
-
 function test_callback:callback(obj,action_type,index)
 	printf		("Patrol point %d (object %s, patrol path %s)",index,obj:name(),obj:patrol())
 end
 
 function main ()
-    stalker_test.object_idle	("script_object0000",stalker_test:script_name(),anim("norm_walk_fwd"),cond(cond.anim_end))
+    object			= script_object("script_object0000",stalker_test:script_name(),anim("norm_walk_fwd"),cond(cond.anim_end))
     
     stalker			= get_level_object ("m_stalker_e0000")
     stalker:script	(true,stalker_test:script_name());
@@ -83,7 +71,8 @@ function main ()
 --	)
 	
 	while stalker:action() do
-		wait		();
+		object:update()
+		wait		()
 	end
 	
     stalker:script	(false,stalker_test:script_name());
