@@ -13,6 +13,8 @@ class TProperties;
 
 class CShaderTools: public CToolsCustom
 {
+	typedef CToolsCustom inherited;
+    
     void				RegisterTools		();
     void				UnregisterTools		();
     void				RealUpdateProperties();
@@ -62,7 +64,7 @@ public:
     virtual void		OnDeviceCreate		();
     virtual void		OnDeviceDestroy		();
 
-    virtual void		Clear				(){;}
+    virtual void		Clear				(){inherited::Clear();}
 
     virtual void		OnShowHint			(AStringVec& SS);
 

@@ -117,7 +117,8 @@ void CShaderTools::OnDestroy()
 void CShaderTools::Render()
 {
     PrepareLighting		();
-	Current()->OnRender();
+	Current()->OnRender	();
+    inherited::Render	();
 }
 
 void CShaderTools::OnFrame()

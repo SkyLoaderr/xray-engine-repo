@@ -183,6 +183,8 @@ void CParticleTools::Render()
 
     if (m_Flags.is(flAnimatedPath))
     	m_ParentAnimator->DrawPath();
+
+    inherited::Render	();
 }
 
 void CParticleTools::OnFrame()
