@@ -116,6 +116,9 @@ void CWeaponList::weapon_die		()
 			m_pParent->u_EventSend		(P);
 		}
 	}
+
+	m_iSelectedWeapon	= -1;
+	m_iActiveWeapon		= -1;
 }
 
 BOOL CWeaponList::ActivateWeaponNext(BOOL ignore)
