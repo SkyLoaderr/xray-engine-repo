@@ -8,32 +8,36 @@
 
 #pragma once
 
-#include "path_manager_game_selector.h"
+#include "abstract_path_manager.h"
+#include "game_graph.h"
 
-class CGamePathManager {
-protected:
-	bool									m_game_path_actual;
-			bool	valid					() const;
-			bool	valid					(u32 node_id) const;
+template <
+	typename _VertexEvaluator,
+	typename _vertex_id_type,
+	typename _index_type
+>
+class 
+	CBasePathManager<
+		CGameGraph,
+		_VertexEvaluator,
+		_vertex_id_type,
+		_index_type
+	> :
+	public CAbstractPathManager<
+		CGameGraph,
+		_VertexEvaluator,
+		_vertex_id_type,
+		_index_type
+	> 
+{
+	typedef CAbstractPathManager<
+		CGameGraph,
+		_VertexEvaluator,
+		_vertex_id_type,
+		_index_type
+	> inherited;
 public:
-	enum EGamePathType {
-		eGamePathTypeMinTime = u32(0),
-	};
-
-	xr_vector<u32>							m_game_path;
-	u32										m_game_start_node;
-	u32										m_game_dest_node;
-	u32										m_game_cur_node_index;
-	EGamePathType							m_game_path_type;
-	PathManagers::CAbstractNodeEvaluator	*m_game_path_evaluator;
-
-
-					CGamePathManager			();
-	virtual			~CGamePathManager			();
-	virtual void	init						();
-			void	build_game_path				();
-			void	select_game_path_vertex		();
-			bool	game_path_actual			() const;
-			bool	game_path_completed			() const;
+	IC			bool	actual						(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id) const;
 };
 
+#include "game_path_manager_inline.h"

@@ -3,7 +3,7 @@
 //	Created 	: 02.10.2001
 //  Modified 	: 12.11.2003
 //	Author		: Dmitriy Iassenev
-//	Description : m_PhysicMovementControl manager
+//	Description : Movement manager
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
@@ -12,6 +12,8 @@
 #include "path_manager_level_selector.h"
 #include "abstract_location_selector.h"
 #include "abstract_path_manager.h"
+#include "game_path_manager.h"
+#include "level_path_manager.h"
 #include "detail_path_manager.h"
 #include "enemy_location_predictor.h"
 #include "gameobject.h"
@@ -20,18 +22,18 @@ class CPHMovementControl;
 
 class CMovementManager : 
 	public CAbstractLocationSelector<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>,
-	public CAbstractPathManager		<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
+	public CBasePathManager			<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
 	public CAbstractLocationSelector<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>,
-	public CAbstractPathManager		<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
+	public CBasePathManager			<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>,
 	public CDetailPathManager,
 	public CEnemyLocationPredictor,
 	virtual public CGameObject
 {
 private:
 	typedef CAbstractLocationSelector	<CGameGraph,PathManagers::SVertexType<float,u32,u32>,u32>			CGameLocationSelector;
-	typedef CAbstractPathManager		<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CGamePathManager;
+	typedef CBasePathManager			<CGameGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CGamePathManager;
 	typedef CAbstractLocationSelector	<CLevelGraph,PathManagers::CAbstractVertexEvaluator,u32>			CLevelLocationSelector;
-	typedef CAbstractPathManager		<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CLevelPathManager;
+	typedef CBasePathManager			<CLevelGraph,PathManagers::SBaseParameters<float,u32,u32>,u32,u32>	CLevelPathManager;
 
 	enum EPathState {
 		ePathStateSelectGameVertex = u32(0),
