@@ -41,11 +41,13 @@ void CObject::processing_activate	()
 {
 	VERIFY3	(255!= Props.bActiveCounter, "Invalid sequence of processing enable/disable calls: overflow",*cName());
 	Props.bActiveCounter			++;
+	if (0==(Props.bActiveCounter-1))	g_pGameLevel->Objects.o_activate	(this);
 }
 void CObject::processing_deactivate	()
 {
 	VERIFY3	(0	!= Props.bActiveCounter, "Invalid sequence of processing enable/disable calls: underflow",*cName());
 	Props.bActiveCounter			--;
+	if (0==Props.bActiveCounter)		g_pGameLevel->Objects.o_sleep		(this);
 }
 
 void CObject::setEnabled			(BOOL _enabled)
