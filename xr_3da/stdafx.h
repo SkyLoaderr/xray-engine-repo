@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 14:48:12 , by user : Oles , from computer : OLES
 // stdafx.h : include file for standard system include files,
 //  or project specific include files that are used frequently, but
 //      are changed infrequently
@@ -32,6 +33,8 @@
 #define NOPROFILER
 #define NOMCX
 #define NOMINMAX
+
+#define DOSWIN32
 
 #define DIRECTSOUND_VERSION 0x0700
 #define DIRECTINPUT_VERSION 0x0700
