@@ -19,18 +19,40 @@ void CActor::feel_touch_delete	(CObject* O)
 {
 }
 
-BOOL CActor::feel_touch_contact	(CObject* O)
-{	
-	CInventoryItem* item = smart_cast<CInventoryItem*>(O);
-	CInventoryOwner* inventory_owner = smart_cast<CInventoryOwner*>(O);
-	if(item && item->Useful() && !item->H_Parent()) 
+BOOL CActor::feel_touch_contact		(CObject *O)
+{
+	CInventoryItem	*item = smart_cast<CInventoryItem*>(O);
+	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(O);
+
+	if (item && item->Useful() && !item->H_Parent()) 
 		return TRUE;
-	else if(inventory_owner && inventory_owner != smart_cast<CInventoryOwner*>(this))
+
+	if(inventory_owner && inventory_owner != smart_cast<CInventoryOwner*>(this))
 		return TRUE;
-	else
-		return FALSE;
+
+/**
+	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(O);
+	if (!custom_zone)
+		return	(TRUE);
+
+	if (custom_zone->inside(Position()))
+		return	(TRUE);
+/**/
+
+	return		(FALSE);
 }
 
+BOOL CActor::feel_touch_on_contact	(CObject *O)
+{
+	CCustomZone	*custom_zone = smart_cast<CCustomZone*>(O);
+	if (!custom_zone)
+		return	(TRUE);
+
+	if (custom_zone->inside(Position()))
+		return	(TRUE);
+
+	return		(FALSE);
+}
 
 void CActor::PickupModeOn()
 {

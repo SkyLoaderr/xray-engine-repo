@@ -347,6 +347,7 @@ public:
 	virtual void			feel_touch_new				(CObject* O);
 	virtual void			feel_touch_delete			(CObject* O);
 	virtual BOOL			feel_touch_contact			(CObject* O);
+	virtual BOOL			feel_touch_on_contact		(CObject* O);
 
 	CGameObject*			ObjectWeLookingAt			() {return m_pObjectWeLookingAt;}
 	CInventoryOwner*		PersonWeLookingAt			() {return m_pPersonWeLookingAt;}
