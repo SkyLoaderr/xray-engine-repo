@@ -68,28 +68,28 @@ void CStats::Show(CFontBase* font)
 	    CFontBase& 	F = *font;
 		F.Color		(0xFFFFFFFF	);
 		F.OutSet	(5,5);
-		F.OutNext	("FPS/RFPS:    %3.1f/%3.1f",	fFPS,fRFPS);
-		F.OutNext	("TPS:         %2.2f M",		fTPS);
-		F.OutNext	("VERT:        %d",				DPS.stat_verts);
-		F.OutNext	("POLY:        %d",				DPS.stat_polys);
-		F.OutNext	("DIP/DP:      %d",				DPS.stat_calls);
-		F.OutNext	("SH/T/M/C:    %d/%d/%d/%d",	dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
-		F.OutNext	("LIGHT S/T:   %d/%d",			dwLightInScene,dwTotalLight);
-		F.OutNext	("Skeletons:   %2.2fms, %d",	Animation.result,Animation.count);
-		F.OutNext	("Skinning:    %2.2fms",		RenderDUMP_SKIN.result);
+		F.OutNext	("FPS/RFPS:     %3.1f/%3.1f",	fFPS,fRFPS);
+		F.OutNext	("TPS:          %2.2f M",		fTPS);
+		F.OutNext	("VERT:         %d",				DPS.stat_verts);
+		F.OutNext	("POLY:         %d",				DPS.stat_polys);
+		F.OutNext	("DIP/DP:       %d",				DPS.stat_calls);
+		F.OutNext	("SH/T/M/C:     %d/%d/%d/%d",	dwShader_Codes,dwShader_Textures,dwShader_Matrices,dwShader_Constants);
+		F.OutNext	("LIGHT S/T:    %d/%d",			dwLightInScene,dwTotalLight);
+		F.OutNext	("Skeletons:    %2.2fms, %d",	Animation.result,Animation.count);
+		F.OutNext	("Skinning:     %2.2fms",		RenderDUMP_SKIN.result);
 		F.OutSkip	();
-        F.OutNext	("Render:      %2.2fms",		RenderDUMP_RT.result);
-		F.OutNext	("Input:       %2.2fms",		Input.result);
-		F.OutNext	("clRAY:       %2.2fms, %d",	clRAY.result,clRAY.count);
-		F.OutNext	("clBOX:       %2.2fms, %d",	clBOX.result,clBOX.count);
-        F.OutNext	("clFRUSTUM:   %2.2fms, %d",	clFRUSTUM.result,clFRUSTUM.count);
+        F.OutNext	("Render:       %2.2fms",		RenderDUMP_RT.result);
+		F.OutNext	("Input:        %2.2fms",		Input.result);
+		F.OutNext	("clRAY:        %2.2fms, %d",	clRAY.result,clRAY.count);
+		F.OutNext	("clBOX:        %2.2fms, %d",	clBOX.result,clBOX.count);
+        F.OutNext	("clFRUSTUM:    %2.2fms, %d",	clFRUSTUM.result,clFRUSTUM.count);
 		F.OutSkip	();
 		F.OutSkip	();
         F.OutNext	("Level summary:");
-        F.OutNext	(" Polygons:   %d",				dwLevelFaceCount);
-        F.OutNext	(" Vertices:   %d",				dwLevelVertexCount);
-		dwLevelSelFaceCount
-		dwLevelSelVertexCount
+        F.OutNext	(" Total Faces: %d",				dwLevelFaceCount);
+        F.OutNext	(" Total Verts: %d",				dwLevelVertexCount);
+        F.OutNext	(" Sel Faces:   %d",				dwLevelSelFaceCount);
+        F.OutNext	(" Sel Verts:   %d",				dwLevelSelVertexCount);
 	}
 
 	{
@@ -119,6 +119,8 @@ void CStats::Show(CFontBase* font)
 	DPS.stat_vb		= 0;
 	DPS.stat_ib		= 0;
 
-	dwLevelFaceCount= 0;
-	dwLevelVertexCount=0;
+	dwLevelFaceCount		= 0;
+	dwLevelVertexCount		= 0;
+	dwLevelSelFaceCount		= 0;
+	dwLevelSelVertexCount	= 0;
 }

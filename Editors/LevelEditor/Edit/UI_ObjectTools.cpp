@@ -17,12 +17,16 @@ TUI_ObjectTools::TUI_ObjectTools():TUI_CustomTools(OBJCLASS_SCENEOBJECT){
     AddControlCB(new TUI_ControlObjectAdd   (estSelf,eaAdd,		this));
 }
 
-void TUI_ObjectTools::OnActivate  (){
+void TUI_ObjectTools::OnActivate  ()
+{
     pFrame = new TfraObject(0);
+    ((TfraObject*)pFrame)->fsStorage->RestoreFormPlacement();
 	TUI_CustomTools::OnActivate();
 }
-void TUI_ObjectTools::OnDeactivate(){
+void TUI_ObjectTools::OnDeactivate()
+{
 	TUI_CustomTools::OnDeactivate();
+    ((TfraObject*)pFrame)->fsStorage->SaveFormPlacement();
     _DELETE(pFrame);
 }
 //------------------------------------------------------------------------------

@@ -13,12 +13,15 @@
 #include "xr_trims.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "multi_edit"
+#pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 
 //---------------------------------------------------------------------------
 __fastcall TfraObject::TfraObject(TComponent* Owner)
         : TFrame(Owner)
 {
+    DEFINE_INI(fsStorage);
     OutCurrentName();
 }
 //---------------------------------------------------------------------------
@@ -50,24 +53,41 @@ void __fastcall TfraObject::ebDeselectByRefsClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfraObject::ebMultiSelectByRefClick(TObject *Sender)
+void __fastcall TfraObject::MultiSelByRefObject ( bool clear_prev )
 {
-    ObjectList objlist;
+    ObjectList 	objlist;
+    LPDWORDVec 	sellist;
     if (Scene.GetQueryObjects(objlist,OBJCLASS_SCENEOBJECT,1,1,-1)){
     	for (ObjectIt it=objlist.begin(); it!=objlist.end(); it++){
 	        LPCSTR N = ((CSceneObject*)*it)->GetRefName();
             ObjectIt _F = Scene.FirstObj(OBJCLASS_SCENEOBJECT);
             ObjectIt _E = Scene.LastObj(OBJCLASS_SCENEOBJECT);
             for(;_F!=_E;_F++){
-                if((*_F)->Visible()){
-                    CSceneObject *_O = (CSceneObject *)(*_F);
-                    if(_O->RefCompare(N)) _O->Select( true );
+	            CSceneObject *_O = (CSceneObject *)(*_F);
+                if((*_F)->Visible()&&_O->RefCompare(N)){
+                	if (clear_prev){ 
+                    	_O->Select( false );
+	                    sellist.push_back((LPDWORD)_O);
+                    }else{ 
+                    	if (!_O->Selected()) 
+                        	sellist.push_back((LPDWORD)_O);
+                    }
                 }
             }
+        }           
+        sort			(sellist.begin(),sellist.end());
+        sellist.erase	(unique(sellist.begin(),sellist.end()),sellist.end());
+        random_shuffle	(sellist.begin(),sellist.end());
+        int max_k		= iFloor(float(sellist.size())/100.f*float(seSelPercent->Value)+0.5f);
+        int k			= 0;
+        for (LPDWORDIt o_it=sellist.begin(); k<max_k; o_it++,k++){
+            CSceneObject *_O = (CSceneObject *)(*o_it);
+            _O->Select( true );
         }
     }
 }
 //---------------------------------------------------------------------------
+
 
 void TfraObject::SelByRefObject( bool flag )
 {
@@ -138,4 +158,23 @@ void __fastcall TfraObject::ebMultiAppendClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraObject::ebMultiSelectByRefMoveClick(TObject *Sender)
+{
+	MultiSelByRefObject(true);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfraObject::ebMultiSelectByRefAppendClick(TObject *Sender)
+{
+	MultiSelByRefObject(false);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TfraObject::seSelPercentKeyPress(TObject *Sender,
+      char &Key)
+{
+	if (Key==VK_RETURN) UI.Command(COMMAND_RENDER_FOCUS);
+}
+//---------------------------------------------------------------------------
 

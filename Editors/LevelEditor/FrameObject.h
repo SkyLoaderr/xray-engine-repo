@@ -11,6 +11,8 @@
 
 #include "ui_customtools.h"
 #include "ExtBtn.hpp"
+#include "multi_edit.hpp"
+#include "mxPlacemnt.hpp"
 // refs
 class CEditableObject;
 //---------------------------------------------------------------------------
@@ -31,15 +33,23 @@ __published:	// IDE-managed Components
 	TExtBtn *ExtBtn1;
 	TLabel *APHeadLabel3;
 	TExtBtn *ExtBtn3;
-	TExtBtn *ebMultiSelectByRef;
+	TExtBtn *ebMultiSelectByRefMove;
+	TMultiObjSpinEdit *seSelPercent;
+	TBevel *Bevel1;
+	TFormStorage *fsStorage;
+	TLabel *Label1;
+	TExtBtn *ebMultiSelectByRefAppend;
     void __fastcall PaneMinClick(TObject *Sender);
     void __fastcall ebSelectByRefsClick(TObject *Sender);
     void __fastcall ebDeselectByRefsClick(TObject *Sender);
     void __fastcall ExpandClick(TObject *Sender);
     void __fastcall ebCurObjClick(TObject *Sender);
 	void __fastcall ebMultiAppendClick(TObject *Sender);
-	void __fastcall ebMultiSelectByRefClick(TObject *Sender);
+	void __fastcall ebMultiSelectByRefMoveClick(TObject *Sender);
+	void __fastcall ebMultiSelectByRefAppendClick(TObject *Sender);
+	void __fastcall seSelPercentKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
+    void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
     void __fastcall OutCurrentName();
 public:		// User declarations

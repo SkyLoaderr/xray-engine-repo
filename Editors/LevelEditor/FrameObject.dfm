@@ -1,7 +1,7 @@
 object fraObject: TfraObject
   Left = 0
   Top = 0
-  Width = 123
+  Width = 443
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -19,8 +19,8 @@ object fraObject: TfraObject
   object paSelectObject: TPanel
     Left = 0
     Top = 33
-    Width = 123
-    Height = 47
+    Width = 443
+    Height = 64
     Align = alTop
     ParentColor = True
     TabOrder = 0
@@ -33,7 +33,7 @@ object fraObject: TfraObject
       WordWrap = True
     end
     object ebSelectByRefs: TExtBtn
-      Left = 65
+      Left = 60
       Top = 16
       Width = 26
       Height = 14
@@ -51,7 +51,7 @@ object fraObject: TfraObject
       OnClick = ebSelectByRefsClick
     end
     object ebDeselectByRefs: TExtBtn
-      Left = 91
+      Left = 93
       Top = 16
       Width = 26
       Height = 14
@@ -71,7 +71,7 @@ object fraObject: TfraObject
     object APHeadLabel3: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -104,8 +104,8 @@ object fraObject: TfraObject
       ParentFont = False
       OnClick = PaneMinClick
     end
-    object ebMultiSelectByRef: TExtBtn
-      Left = 65
+    object ebMultiSelectByRefMove: TExtBtn
+      Left = 60
       Top = 31
       Width = 26
       Height = 14
@@ -113,20 +113,73 @@ object fraObject: TfraObject
       BevelShow = False
       HotTrack = True
       CloseButton = False
-      Caption = '++'
+      Caption = '=%'
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
       Font.Height = -11
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
-      OnClick = ebMultiSelectByRefClick
+      OnClick = ebMultiSelectByRefMoveClick
+    end
+    object Bevel1: TBevel
+      Left = 60
+      Top = 45
+      Width = 51
+      Height = 16
+    end
+    object Label1: TLabel
+      Left = 112
+      Top = 47
+      Width = 10
+      Height = 13
+      Caption = '%'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object ebMultiSelectByRefAppend: TExtBtn
+      Left = 93
+      Top = 31
+      Width = 26
+      Height = 14
+      Align = alNone
+      BevelShow = False
+      HotTrack = True
+      CloseButton = False
+      Caption = '+%'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      OnClick = ebMultiSelectByRefAppendClick
+    end
+    object seSelPercent: TMultiObjSpinEdit
+      Left = 61
+      Top = 47
+      Width = 49
+      Height = 13
+      LWSensitivity = 1
+      ButtonKind = bkLightWave
+      MaxValue = 100
+      MinValue = 1
+      Value = 100
+      AutoSize = False
+      BorderStyle = bsNone
+      Color = 12698049
+      TabOrder = 0
+      OnKeyPress = seSelPercentKeyPress
     end
   end
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 123
+    Width = 443
     Height = 33
     Align = alTop
     ParentColor = True
@@ -153,7 +206,7 @@ object fraObject: TfraObject
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -189,8 +242,8 @@ object fraObject: TfraObject
   end
   object paAddObject: TPanel
     Left = 0
-    Top = 80
-    Width = 123
+    Top = 97
+    Width = 443
     Height = 32
     Align = alTop
     ParentColor = True
@@ -217,7 +270,7 @@ object fraObject: TfraObject
     object APHeadLabel2: TLabel
       Left = 1
       Top = 1
-      Width = 121
+      Width = 441
       Height = 13
       Align = alTop
       Alignment = taCenter
@@ -250,5 +303,19 @@ object fraObject: TfraObject
       ParentFont = False
       OnClick = PaneMinClick
     end
+  end
+  object fsStorage: TFormStorage
+    IniSection = 'FrameObject'
+    Options = []
+    Version = 2
+    StoredProps.Strings = (
+      'paCommands.Tag'
+      'paCommands.Height'
+      'seSelPercent.Value'
+      'paSelectObject.Tag'
+      'paSelectObject.Height'
+      'paAddObject.Height'
+      'paAddObject.Tag')
+    StoredValues = <>
   end
 end

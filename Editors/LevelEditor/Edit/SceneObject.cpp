@@ -255,8 +255,14 @@ void CSceneObject::OnFrame(){
         UpdateTransform(true);
 	}
 	if (psDeviceFlags & rsStatistic){
-	    Device.Statistic.dwLevelFaceCount 	+= GetFaceCount();
-	    Device.Statistic.dwLevelVertexCount += GetVertexCount();
+    	if (IsStatic()){
+		    Device.Statistic.dwLevelFaceCount 	+= GetFaceCount();
+		    Device.Statistic.dwLevelVertexCount += GetVertexCount();
+            if (Selected()){
+                Device.Statistic.dwLevelSelFaceCount 	+= GetFaceCount();
+                Device.Statistic.dwLevelSelVertexCount 	+= GetVertexCount();
+            }
+        }
     }
 }
 //S	SetActiveOMotion(0,false);
