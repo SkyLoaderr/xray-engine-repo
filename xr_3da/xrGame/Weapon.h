@@ -38,7 +38,10 @@ protected:
 
 	float			fireDistance;
 	float			fireDispersion;
-	
+	float			fireDispersion_Inc;
+	float			fireDispersion_Dec;
+	float			fireDispersion_Current;
+
 	float			camRelax;
 	float			camDispersion;
 	

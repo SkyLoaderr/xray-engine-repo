@@ -50,58 +50,61 @@ void CWeapon::Load(CInifile* ini, const char* section)
 	CLASS_ID load_cls	= TEXT2CLSID(Class);
 	R_ASSERT(load_cls==SUB_CLS_ID);
 
-	CObject::Load	(ini,section);
+	CObject::Load		(ini,section);
 
-	SectorMode		= EPM_AT_LOAD;
-	if (pSector)	pSector->objectRemove	(this);
+	SectorMode			= EPM_AT_LOAD;
+	if (pSector)		pSector->objectRemove	(this);
 
-	Fvector			pos,ypr;
-	pos				= ini->ReadVECTOR(section,"position");
-	ypr				= ini->ReadVECTOR(section,"orientation");
-	ypr.mul			(PI/180.f);
+	Fvector				pos,ypr;
+	pos					= ini->ReadVECTOR(section,"position");
+	ypr					= ini->ReadVECTOR(section,"orientation");
+	ypr.mul				(PI/180.f);
 
-	m_Offset.setHPB	(ypr.x,ypr.y,ypr.z);
+	m_Offset.setHPB		(ypr.x,ypr.y,ypr.z);
 	m_Offset.translate_over(pos);
 
 
-	fTimeToFire		= ini->ReadFLOAT	(section,"rpm");
-	fTimeToFire		= 60 / fTimeToFire;
+	fTimeToFire			= ini->ReadFLOAT	(section,"rpm");
+	fTimeToFire			= 60 / fTimeToFire;
 
-	LPCSTR	tex		= ini->ReadSTRING	(section,"ui_icon");
-	hUIIcon			= Device.Shader.Create("font",tex);
+	LPCSTR	tex			= ini->ReadSTRING	(section,"ui_icon");
+	hUIIcon				= Device.Shader.Create("font",tex);
 	
-	LPCSTR	name	= ini->ReadSTRING	(section,"wm_name");
-	if (name=="")	hWallmark = 0; 
-	else			hWallmark = Device.Shader.Create("effects\\wallmark",name);
-	fWallmarkSize	= ini->ReadFLOAT	(section,"wm_size");
+	LPCSTR	name		= ini->ReadSTRING	(section,"wm_name");
+	if (name=="")		hWallmark = 0; 
+	else				hWallmark = Device.Shader.Create("effects\\wallmark",name);
+	fWallmarkSize		= ini->ReadFLOAT	(section,"wm_size");
 
-	LPCSTR hud_sect= ini->ReadSTRING	(section,"hud");
-	m_pHUD->Load	(ini,hud_sect);
-	iAmmoElapsed	= ini->ReadINT		(section,"startup_ammo");
-	iAmmoLimit		= ini->ReadINT		(section,"ammo_limit");
+	LPCSTR hud_sect		= ini->ReadSTRING	(section,"hud");
+	m_pHUD->Load		(ini,hud_sect);
+	iAmmoElapsed		= ini->ReadINT		(section,"startup_ammo");
+	iAmmoLimit			= ini->ReadINT		(section,"ammo_limit");
 
-	fireDistance	= ini->ReadFLOAT	(section,"fire_distance"	);
-	fireDispersion	= ini->ReadFLOAT	(section,"fire_dispersion"	); fireDispersion = deg2rad(fireDispersion);
+	fireDistance		= ini->ReadFLOAT	(section,"fire_distance"	);
+	fireDispersion		= ini->ReadFLOAT	(section,"fire_dispersion"	); fireDispersion = deg2rad(fireDispersion);
+	fireDispersion_Inc	= ini->ReadFLOAT	(section,"fire_dispersion_inc"); 
+	fireDispersion_Dec	= ini->ReadFLOAT	(section,"fire_dispersion_dec"); 
+	fireDispersion_Current	= 0;
 
-	camRelax		= ini->ReadFLOAT	(section,"cam_relax"		);
-	camDispersion	= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
+	camRelax			= ini->ReadFLOAT	(section,"cam_relax"		);
+	camDispersion		= ini->ReadFLOAT	(section,"cam_dispersion"	); camDispersion = deg2rad(camDispersion);
 
 	// tracer
-	tracerHeadSpeed	= ini->ReadFLOAT	(section,"tracer_head_speed"	);
-	tracerTrailCoeff= ini->ReadFLOAT	(section,"tracer_trail_scale"	);
-	tracerStartLength= ini->ReadFLOAT	(section,"tracer_start_length"	);
-	tracerWidth		= ini->ReadFLOAT	(section,"tracer_width"			);
+	tracerHeadSpeed		= ini->ReadFLOAT	(section,"tracer_head_speed"	);
+	tracerTrailCoeff	= ini->ReadFLOAT	(section,"tracer_trail_scale"	);
+	tracerStartLength	= ini->ReadFLOAT	(section,"tracer_start_length"	);
+	tracerWidth			= ini->ReadFLOAT	(section,"tracer_width"			);
 
 	// light
-	Fvector clr		= ini->ReadVECTOR	(section,"light_color"		);
+	Fvector clr			= ini->ReadVECTOR	(section,"light_color"		);
 	light_base.SetColor	(clr.x,clr.y,clr.z);
 	light_base.SetRange	(ini->ReadFLOAT	(section,"light_range"		));
-	light_var_color	= ini->ReadFLOAT	(section,"light_var_color"	);
-	light_var_range	= ini->ReadFLOAT	(section,"light_var_range"	);
+	light_var_color		= ini->ReadFLOAT	(section,"light_var_color"	);
+	light_var_range		= ini->ReadFLOAT	(section,"light_var_range"	);
 
-	iHitPower		= ini->ReadINT		(section,"hit_power"		);
+	iHitPower			= ini->ReadINT		(section,"hit_power"		);
 
-	bVisible		= FALSE;
+	bVisible			= FALSE;
 }
 
 void CWeapon::Hide		()
