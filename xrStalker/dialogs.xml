@@ -235,6 +235,16 @@
 		</phrase_list>
 	</dialog>
 
+	<dialog id="loser_hello_dialog">
+		<phrase_list>
+			<phrase id="0">
+				<text>Урки ограбили!!! Принеси мне какое-нибудь серьезное оружие...\nПринеси! Я этого не забуду...</text>
+			</phrase>
+		</phrase_list>
+	</dialog>
+
+
+
 	<dialog id="stalker_talk_about">
 	<precondition>trader_job.if_not_a_trader</precondition>
 	    <has_info>actor_start</has_info>
