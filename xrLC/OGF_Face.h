@@ -131,6 +131,7 @@ struct OGF : public OGF_Base
 
 	void				Optimize		();
 	void				CreateOccluder	();
+	void				CalculateTB		();
 	void				MakeProgressive	();
 	void				Stripify		();
 	void				PerturbPMAP		();

@@ -42,13 +42,26 @@ public:
 class base_color
 {
 public:
-	fixed16<16>				r;
-	fixed16<16>				g;
-	fixed16<16>				b;
-	fixed16<16>				h;
-	fixed16<16>				s;
-	fixed16<16>				t;
-
+	union{
+		struct{
+			fixed16<16>		r;
+			fixed16<16>		g;
+			fixed16<16>		b;
+			fixed16<16>		h;
+			fixed16<16>		s;
+			fixed16<16>		t;
+		};
+		struct{
+			float			_x;
+			float			_y;
+			float			_z;
+		};
+	};
+	void					_set		(float x, float y, float z)	{
+		_x					= x;
+		_y					= y;
+		_z					= z;
+	}
 	void					_set		(base_color_c& C)	{
 		r._w(C.rgb.x);		g._w(C.rgb.y);		b._w(C.rgb.z);
 		h._w(C.hemi);		s._w(C.sun);		t._w(C._tmp_);

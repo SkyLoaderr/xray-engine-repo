@@ -55,6 +55,7 @@ void xrMU_Model::calc_ogf()
 		try {
 			pOGF->Optimize		();
 			pOGF->CalcBounds	();
+			pOGF->CalculateTB	();
 			pOGF->MakeProgressive();
 			pOGF->Stripify		();
 		} catch (...)
