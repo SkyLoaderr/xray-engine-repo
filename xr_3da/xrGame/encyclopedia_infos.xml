@@ -2,7 +2,7 @@
 <encyclopedia>
     <!-- LIST OF ENCYCLOPEDIA ENTRIES -->
     <article id="one" name="AK-74" group="Diary/Weapons/Machineguns" article_type="1">
-        <texture width="250" height="100">ui\ui_inv_box_heavy_weapons</texture>
+        <texture>ui\ui_inv_box_heavy_weapons</texture>
         <text>ak_74_desc</text>
     </article>
     <article id="bbb" name="AK-74_info" group="Diary/Weapons/Machineguns" article_type="1">
