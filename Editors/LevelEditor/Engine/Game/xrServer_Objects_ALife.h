@@ -280,7 +280,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectProjector,CSE_ALifeDynamicObjectVisua
 SERVER_ENTITY_DECLARE_END
 
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual)
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHelicopter,CSE_ALifeDynamicObjectVisual,CSE_Motion)
 #ifdef _EDITOR
 	void __fastcall					OnChangeAnim				(PropValue* sender);
 	void __fastcall					OnChooseAnim				(ChooseItemVec& lst);
