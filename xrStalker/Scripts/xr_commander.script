@@ -98,6 +98,9 @@ function action_commander:finalize()
 
     self.object:clear_callback( game_object.movement )
 
+    self.object:set_sound_mask( -1 )
+    self.object:set_sound_mask( 0 )
+
     local enemy = self.object:best_enemy()
     if enemy and is_object_online( enemy:id() ) then
         if enemy:clsid() == clsid.stalker or enemy:clsid() == clsid.actor then
@@ -226,7 +229,7 @@ function action_commander:add_inside_animations( n )
             self.object:add_animation( "drunk_idle_0", true )
         end
     else
-        for i = 1, math.random( n ) - 1 do
+        for i = 1, math.random( n ) do
             self.object:add_animation(
                 random_choice_weighted{
                     ["komandir_4"] = 40,
@@ -312,6 +315,9 @@ function action_commander:exec_look_box()
             if self.time_end <= device():time_global() then
                 if not self.object:see( self.box ) then
                     printf( "ящик украли! “ревога!!!" )
+                    
+                    self.object:set_sound_mask( -1 )
+                    self.object:set_sound_mask( 0 )
 
                     if self.drunk then
                         self.object:play_sound( snd_lost_box_drunk, 1, 0 )
@@ -320,6 +326,7 @@ function action_commander:exec_look_box()
                     end
                 else
                     printf( "ящик на месте" )
+                    self:add_inside_animations( 2 )
                 end
 
                 self.look_at_box   = false
@@ -328,7 +335,6 @@ function action_commander:exec_look_box()
                 self.time_end = nil
 
                 self.act = walk_inside
-                self:add_inside_animations( 1 )
             end
         else
             self.object:set_sight( look.point, self.a.way:point( self.a.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
@@ -340,7 +346,7 @@ function action_commander:exec_look_box()
     else
         self.look_at_box = false
         self.act = walk_inside
-        self:add_inside_animations( 1 )
+        self:add_inside_animations( 2 )
     end
 end
 
