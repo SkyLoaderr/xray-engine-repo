@@ -264,8 +264,6 @@ void CAI_Soldier::FindEnemy()
 	vfSetFire(false,Group);
 	
 	vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
-
-	
 }
 
 void CAI_Soldier::FollowLeader()
@@ -650,17 +648,6 @@ void CAI_Soldier::PatrolUnderFire()
 	tTemp.mul(40.f);
 	SelectorUnderFire.m_tEnemyPosition.sub(Group.m_tHitPosition,tTemp);
 
-	/**
-	if (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1) {
-		mk_rotation(Group.m_tLastHitDirection,r_torso_target);
-		r_target.yaw = r_torso_target.yaw;
-		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	}
-	else
-		SetLessCoverLook(AI_Node);
-	/**/
-
-	/**/
 	if (dwCurTime - Group.m_dwLastHitTime >= m_dwUnderFireShock) {
 		if (AI_Path.bNeedRebuild)
 			vfBuildPathToDestinationPoint(0);
@@ -668,16 +655,6 @@ void CAI_Soldier::PatrolUnderFire()
 			if (m_dwLastSuccessfullSearch <= Group.m_dwLastHitTime)
 				vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
 			
-		//mk_rotation(Group.m_tLastHitDirection,r_torso_target);
-		//r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
-		//r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-		/**
-		tWatchDirection.sub(Group.m_tHitPosition,eye_matrix.c);
-		mk_rotation(tWatchDirection,r_torso_target);
-		r_target.yaw = r_torso_target.yaw;
-		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-		//r_torso_target.pitch = r_target.pitch = 0;
-		/**/
 		SetLessCoverLook(AI_Node);
 		if (AI_Path.fSpeed)
 			vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
@@ -745,8 +722,7 @@ void CAI_Soldier::PatrolHurtAggressiveUnderFire()
 	CGroup &Group = Squad.Groups[g_Group()];
 	
 	tWatchDirection.sub(Group.m_tHitPosition,vPosition);
-	mk_rotation(tWatchDirection,r_torso_target);
-	r_target.yaw = r_torso_target.yaw;
+	LOOK_AT_DIRECTION(tWatchDirection)
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
 	//r_torso_target.pitch = r_target.pitch = 0;
 	vfSetMovementType(BODY_STATE_LIE,0);
@@ -821,17 +797,6 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 	tTemp.mul(40.f);
 	SelectorUnderFire.m_tEnemyPosition.sub(Position(),tTemp);
 
-	/**
-	if (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 1) {
-		mk_rotation(Group.m_tLastHitDirection,r_torso_target);
-		r_target.yaw = r_torso_target.yaw;
-		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-	}
-	else
-		SetLessCoverLook(AI_Node);
-	/**/
-
-	/**/
 	if (dwCurTime - dwHitTime >= m_dwUnderFireShock) {
 		if (AI_Path.bNeedRebuild)
 			vfBuildPathToDestinationPoint(0);
@@ -839,16 +804,6 @@ void CAI_Soldier::PatrolHurtNonAggressiveUnderFire()
 			if (m_dwLastSuccessfullSearch <= Group.m_dwLastHitTime)
 				vfSearchForBetterPosition(SelectorUnderFire,Squad,Leader);
 			
-		//mk_rotation(Group.m_tLastHitDirection,r_torso_target);
-		//r_target.yaw = r_torso_target.yaw + 0*PI_DIV_6;
-		//r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-		/**
-		tWatchDirection.sub(Group.m_tHitPosition,eye_matrix.c);
-		mk_rotation(tWatchDirection,r_torso_target);
-		r_target.yaw = r_torso_target.yaw;
-		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-		//r_torso_target.pitch = r_target.pitch = 0;
-		/**/
 		SetLessCoverLook(AI_Node);
 		vfSetMovementType(BODY_STATE_CROUCH,m_fMaxSpeed);
 	}
@@ -1330,11 +1285,11 @@ void CAI_Soldier::UnderFire()
 		
 		mk_rotation(tHitDir,r_torso_target);
 		r_target.yaw = r_torso_target.yaw;
+		r_target.pitch = 0;
+		r_torso_target.pitch = 0;
 		ASSIGN_SPINE_BONE;
-		r_target.yaw += PI_DIV_6;
+		//r_target.yaw += PI_DIV_6;
 		r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
-		//r_target.pitch = 0;
-		//r_torso_target.pitch = 0;
 		
 		//q_look.o_look_speed=8*_FB_look_speed;
 		

@@ -64,27 +64,6 @@ bool CAI_Soldier::bfCheckForVisibility(CEntity* tpEntity)
 	return(fResult >= m_fVisibilityThreshold);
 }
 
-static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
-{
-	if (O->CLS_ID!=CLSID_ENTITY)			
-		return FALSE;
-	else
-		return TRUE;
-}
-
-objQualifier* CAI_Soldier::GetQualifier	()
-{
-	return(&SoldierQualifier);
-}
-
-void CAI_Soldier::OnVisible()
-{
-	inherited::OnVisible();
-	
-	Weapons->OnRender(FALSE);
-	//return(0);
-}
-
 void CAI_Soldier::SetDirectionLook()
 {
 	int i = ps_Size();
@@ -96,7 +75,7 @@ void CAI_Soldier::SetDirectionLook()
 			mk_rotation(tWatchDirection,r_torso_target);
 			r_target.yaw = r_torso_target.yaw;
 			ASSIGN_SPINE_BONE;
-			r_target.yaw += PI_DIV_6;
+			//r_target.yaw += PI_DIV_6;
 			q_look.o_look_speed=PI_DIV_4;
 		}
 	}
@@ -173,7 +152,7 @@ void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode)
 			ASSIGN_SPINE_BONE;
 			q_look.o_look_speed = PI_DIV_4;
 			//r_torso_speed = _FB_look_speed;//(r_torso_target.yaw - r_torso_current.yaw);
-			r_target.yaw += PI_DIV_6;
+			//r_target.yaw += PI_DIV_6;
 		}
 	}
 	//r_target.pitch = 0;
@@ -222,6 +201,7 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 	//q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
 	mk_rotation(tEnemyDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
+	ASSIGN_SPINE_BONE;
 	r_torso_target.yaw = r_torso_target.yaw - EYE_WEAPON_DELTA;
 	r_target.pitch *= -1;
 	q_look.o_look_speed=8*_FB_look_speed;
@@ -242,8 +222,29 @@ void CAI_Soldier::vfAimAtEnemy()
 	tWatchDirection.sub(pos1,pos2);
 	mk_rotation(tWatchDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
+	r_target.yaw += PI_DIV_6;
 	ASSIGN_SPINE_BONE;
-	//r_target.yaw += 2*PI_DIV_6;
 	//r_torso_target.yaw = r_torso_target.yaw - 2*PI_DIV_6;//EYE_WEAPON_DELTA;
 	q_look.o_look_speed=_FB_look_speed;
+}
+
+static BOOL __fastcall SoldierQualifier(CObject* O, void* P)
+{
+	if (O->CLS_ID!=CLSID_ENTITY)			
+		return FALSE;
+	else
+		return TRUE;
+}
+
+objQualifier* CAI_Soldier::GetQualifier	()
+{
+	return(&SoldierQualifier);
+}
+
+void CAI_Soldier::OnVisible()
+{
+	inherited::OnVisible();
+	
+	Weapons->OnRender(FALSE);
+	//return(0);
 }
