@@ -35,8 +35,6 @@ public:
 	t_i								c_i;
 	t_b								c_b;
 public:
-	void					fatal	();
-
 	void					set		(R_constant* C, R_constant_load& L, const Fmatrix& A)
 	{
 		VERIFY		(RC_float == C->type);
@@ -57,7 +55,7 @@ public:
 			it[3].set			(A._14, A._24, A._34, A._44);
 			break;
 		default:
-			fatal();
+			Debug.fatal		("Invalid constant run-time-type for '%s'",C->name);
 			break;
 		}
 	}
@@ -95,7 +93,7 @@ public:
 			it[3].set			(A._14, A._24, A._34, A._44);
 			break;
 		default:
-			fatal();
+			Debug.fatal		("Invalid constant run-time-type for '%s'",C->name);
 			break;
 		}
 	}

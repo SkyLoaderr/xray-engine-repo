@@ -195,14 +195,13 @@ void	CDetailManager::hw_Render_dump	(R_constant* x_array, u32 var_id, u32 lod_id
 				float	scale			= Instance.scale_calculated;
 				float	C				= Instance.C;
 
-				// Build matrix
+				// Build matrix ( 3x4 matrix, last row - color )
+				u32 base				= dwBatch*4;
 				Fmatrix& M				= Instance.mRotY;
-				Fmatrix  X;				// 3x4 matrix, last row - color
-				X.i.set					(M._11*scale,	M._12*scale,	M._13*scale);	X._14 =	C;
-				X.j.set					(M._21*scale,	M._22*scale,	M._23*scale);	X._24 = C;
-				X.k.set					(M._31*scale,	M._32*scale,	M._33*scale);	X._34 = C;
-				X.c.set					(M._41,			M._42,			M._43);			X._44 = 1.f;
-				RCache.set_ca			(x_array,		dwBatch,	X);
+				RCache.set_ca			(x_array,		base+0,		M._11*scale,	M._12*scale,	M._13*scale,	C);
+				RCache.set_ca			(x_array,		base+1,		M._21*scale,	M._22*scale,	M._23*scale,	C);
+				RCache.set_ca			(x_array,		base+2,		M._31*scale,	M._32*scale,	M._33*scale,	C);
+				RCache.set_ca			(x_array,		base+3,		M._41,			M._42,			M._43,			1.f);
 
 				dwBatch	++;
 				if (dwBatch == hw_BatchSize)	
