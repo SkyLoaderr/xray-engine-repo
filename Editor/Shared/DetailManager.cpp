@@ -296,10 +296,15 @@ void CDetailManager::Render		(Fvector& EYE)
 
 				// Build matrix and xform vertices
 				mScale.scale			(scale,scale,scale);
-				mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
-				mRot.mul_43				(mRotXZ,Instance.mRotY);
-				mXform.mul_43			(mRot,mScale);
-				mXform.translate_over	(Instance.P);
+				if (scale>0.7f)	{
+					mRotXZ.setXYZ			(Instance.phase_x+fPhaseX,0,Instance.phase_z+fPhaseZ);
+					mRot.mul_43				(mRotXZ,Instance.mRotY);
+					mXform.mul_43			(mRot,mScale);
+					mXform.translate_over	(Instance.P);
+				} else {
+					mXform.set				(Instance.mRotY);
+					mXform.translate_over	(Instance.P);
+				}
 				Object.Transfer			(mXform, vDest, Instance.C);
 				vDest					+=	vCount_Object;
 			}
