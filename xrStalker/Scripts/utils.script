@@ -302,3 +302,22 @@ function action2(obj,...)
 	end
 	return  entity_action(act)
 end
+
+function wpn_info_get(npc)
+	local rslt = {}
+
+	local active_item = npc:active_item()
+	local has_weapon = active_item and isWeapon(active_item)
+	if has_weapon then
+		rslt["id"] = active_item:id()
+		rslt["ammo"] = active_item:get_ammo_in_magazine()
+	end
+
+	return rslt
+end
+
+function wpn_info_equal(wpn_info1, wpn_info2)
+	return wpn_info1["id"] == wpn_info2["id"] and wpn_info1["ammo"] == wpn_info2["ammo"]
+end
+
+
