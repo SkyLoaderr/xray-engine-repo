@@ -13,8 +13,13 @@ void CLevel::ClientReceive()
 		case M_SPAWN:
 			g_sv_Spawn(P);
 			break;
+
 		case M_UPDATE:
-			Objects.net_Import	(P);
+			game.net_import_update	(P);
+			Objects.net_Import		(P);
+			break;
+		case M_SV_CONFIG_GAME:
+			game.net_import_state	(P);
 			break;
 		case M_EVENT:
 			{
