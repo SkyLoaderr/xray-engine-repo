@@ -350,8 +350,6 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeObjectClimable)
 #define script_type_list save_type_list(CSE_ALifeObjectClimable)
 
-#define script_type_list save_type_list(CSE_ALifeObjectBreakable)
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeMountedWeapon,CSE_ALifeDynamicObjectVisual)
 									CSE_ALifeMountedWeapon	(LPCSTR caSection);
 	virtual							~CSE_ALifeMountedWeapon	();
