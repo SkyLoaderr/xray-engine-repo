@@ -288,14 +288,14 @@ void	CResourceManager::Evict()
 	CHK_DX	(HW.pDevice->EvictManagedResources());
 }
 
-BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup* &M)
+BOOL	CResourceManager::_GetDetailTexture(LPCSTR Name,LPCSTR& T, R_constant_setup* &CS)
 {
 	LPSTR N = LPSTR(Name);
 	xr_map<LPSTR,texture_detail,str_pred>::iterator I = m_td.find	(N);
 	if (I!=m_td.end())
 	{
-		T = I->second.T;
-		M = I->second.M;
+		T	= I->second.T;
+		CS	= I->second.cs;
 		return TRUE;
 	} else {
 		return FALSE;

@@ -19,7 +19,7 @@ private:
 	struct texture_detail
 	{
 		const char*			T;
-		R_constant_setup*	M;
+		R_constant_setup*	cs;
 	};
 public:
 	DEFINE_MAP_PRED(LPSTR,IBlender*,	map_Blender,	map_BlenderIt,		str_pred);
