@@ -1,9 +1,9 @@
 #include "stdafx.h"
 #include "cl_collector.h"
 #include "build.h"
+#include "communicate.h"
 
 CDB::MODEL*	RCAST_Model	= 0;
-
 
 IC bool				FaceEqual(Face& F1, Face& F2)
 {
@@ -94,13 +94,24 @@ void CBuild::BuildRapid()
 	Status					("Saving...");
 	CFS_File		MFS		((pBuild->path+"build.cform").c_str());
 
+	vector<b_rc_face>		rc_faces;
+	rc_faces.resize			(CL.getTS());
 	// Prepare faces
 	for (int k=0; k<CL.getTS(); k++){
 		CDB::TRI* T			= CL.getT()+k;
 		base_Face* F		= (base_Face*)T->dummy;
-		T->dummy			= F->dwMaterial;
+		T->dummy			= k;
+		b_rc_face& cf		= rc_faces[k];
+		cf.bOpaque			= F->bOpaque;
+		cf.dwMaterial		= F->dwMaterial;
+		cf.dwMaterialGame	= F->dwMaterialGame;
+		Fvector2*	cuv		= F->getTC0();
+		cf.t[0].set			(cuv[0]);
+		cf.t[1].set			(cuv[1]);
+		cf.t[2].set			(cuv[2]);
 	}
 
+	MFS.open_chunk			(0);
 	// Header
 	hdrCFORM hdr;
 	hdr.version				= CFORM_CURRENT_VERSION;
@@ -112,4 +123,9 @@ void CBuild::BuildRapid()
 	// Data
 	MFS.write				(CL.getV(),CL.getVS()*sizeof(Fvector));
 	MFS.write				(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
+	MFS.close_chunk			();
+
+	MFS.open_chunk			(1);
+	MFS.write				(rc_faces.begin(),rc_faces.size()*sizeof(b_rc_face));
+	MFS.close_chunk			();
 }

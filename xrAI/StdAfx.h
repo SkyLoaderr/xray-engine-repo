@@ -24,6 +24,11 @@
 #include "xrCDB.h"
 #include "_d3d_extensions.h"
 
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <io.h>
+#include <stdio.h>
 // TODO: reference additional headers your program requires here
 
 //{{AFX_INSERT_LOCATION}}

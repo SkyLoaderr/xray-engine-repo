@@ -1,11 +1,13 @@
 #include "stdafx.h"
 #include "xrlevel.h"
+#include "shader_xrlc.h"
 #include "communicate.h"
 #include "xrThread.h"
 #include "detailformat.h"
 #include "xrhemisphere.h"
 #include "cl_intersect.h"
 #include "ftimer.h"
+#include "Etextureparams.h"
 
 #define NUM_THREADS		3
 
@@ -55,32 +57,90 @@ typedef	svector<R_Light*,4*1024>	LSelection;
 DEF_VECTOR		(Lights,R_Light);
 //-----------------------------------------------------------------
 
+struct b_BuildTexture : public b_texture
+{
+	STextureParams	THM;
+
+	u32&	Texel	(DWORD x, DWORD y)
+	{
+		return pSurface[y*dwWidth+x];
+	}
+	void	Vflip		()
+	{
+		R_ASSERT(pSurface);
+		for (DWORD y=0; y<dwHeight/2; y++)
+		{
+			DWORD y2 = dwHeight-y-1;
+			for (DWORD x=0; x<dwWidth; x++) 
+			{
+				DWORD		t	= Texel(x,y);
+				Texel	(x,y)	= Texel(x,y2);
+				Texel	(x,y2)	= t;
+			}
+		}
+	}
+};
+
+//-----------------------------------------------------------------
 Lights					g_lights;
-CDB::MODEL				Level;
+CDB::MODEL				RCAST_Model;
 Fbox					LevelBB;
 CVirtualFileStreamRW*	dtFS=0;
 DetailHeader			dtH;
 DetailSlot*				dtS;
+
+Shader_xrLC_LIB			g_shaders_xrlc;
+
 b_params				g_params;
+
+vector<b_material>		g_materials;
+vector<b_shader>		g_shader_render;
+vector<b_shader>		g_shader_compile;
+vector<b_BuildTexture>	g_textures;
+vector<b_rc_face>		g_rc_faces;
+
+//-----------------------------------------------------------------
+template <class T>
+void transfer(const char *name, vector<T> &dest, CStream& F, u32 chunk)
+{
+	CStream*	O		= F.OpenChunk(chunk);
+	u32		count	= O?(O->Length()/sizeof(T)):0;
+	clMsg			("* %16s: %d",name,count);
+	if (count)  
+	{
+		dest.reserve(count);
+		dest.insert	(dest.begin(), (T*)O->Pointer(), (T*)O->Pointer() + count);
+	}
+	if (O)		O->Close	();
+}
+
+extern u32*		Surface_Load	(char* name, u32& w, u32& h);
+extern void		Surface_Init	();
 
 // 
 void xrLoad(LPCSTR name)
 {
+	g_shaders_xrlc.Load			("gamedata\\shaders_xrlc.xr");
 	// Load CFORM
 	string256			N;
 	{
 		strconcat			(N,name,"build.cform");
 		CVirtualFileStream	FS(N);
 		
+		R_ASSERT(FS.FindChunk(0));
 		hdrCFORM			H;
 		FS.Read				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
 		Fvector*	verts	= (Fvector*)FS.Pointer();
 		CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
-		Level.build			( verts, H.vertcount, tris, H.facecount );
-		Msg("* Level CFORM: %dK",Level.memory()/1024);
-		
+		RCAST_Model.build	( verts, H.vertcount, tris, H.facecount );
+		Msg("* Level CFORM: %dK",RCAST_Model.memory()/1024);
+
+		g_rc_faces.resize	(H.facecount);
+		R_ASSERT(FS.FindChunk(1));
+		FS.Read				(g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
+
 		LevelBB.set			(H.aabb);
 	}
 	
@@ -155,6 +215,79 @@ void xrLoad(LPCSTR name)
 				F->Close		();
 			}
 		}
+		transfer("materials",	g_materials,			FS,		EB_Materials);
+		transfer("shaders_xrlc",g_shader_compile,		FS,		EB_Shaders_Compile);
+		// process textures
+		Status			("Processing textures...");
+		{
+			Surface_Init		();
+			F = FS.OpenChunk	(EB_Textures);
+			u32 tex_count	= F->Length()/sizeof(b_texture);
+			for (u32 t=0; t<tex_count; t++)
+			{
+				Progress		(float(t)/float(tex_count));
+
+				b_texture		TEX;
+				F->Read			(&TEX,sizeof(TEX));
+
+				b_BuildTexture	BT;
+				CopyMemory		(&BT,&TEX,sizeof(TEX));
+
+				// load thumbnail
+				LPSTR N			= BT.name;
+				if (strchr(N,'.')) *(strchr(N,'.')) = 0;
+				strlwr			(N);
+				char th_name[256]; strconcat(th_name,"\\\\x-ray\\stalkerdata$\\textures\\",N,".thm");
+				CCompressedStream THM	(th_name,THM_SIGN);
+
+				// analyze thumbnail information
+				R_ASSERT		(THM.ReadChunk(THM_CHUNK_TEXTUREPARAM,&BT.THM));
+				BOOL			bLOD=FALSE;
+				if (N[0]=='l' && N[1]=='o' && N[2]=='d' && N[3]=='\\') bLOD = TRUE;
+
+				// load surface if it has an alpha channel or has "implicit lighting" flag
+				BT.dwWidth	= BT.THM.width;
+				BT.dwHeight	= BT.THM.height;
+				BT.bHasAlpha= BT.THM.HasAlphaChannel();
+				if (!bLOD) 
+				{
+					if (BT.bHasAlpha || BT.THM.flags.test(STextureParams::flImplicitLighted))
+					{
+						clMsg		("- loading: %s",N);
+						u32			w=0, h=0;
+						BT.pSurface = Surface_Load(N,w,h);
+						BT.Vflip	();
+					} else {
+						// Free surface memory
+					}
+				}
+
+				// save all the stuff we've created
+				g_textures.push_back	(BT);
+			}
+		}
+/*
+		// post-process materials
+		Status	("Post-process materials...");
+		for (u32 m=0; m<g_materials.size(); m++)
+		{
+			b_material &M	= g_materials[m];
+
+			if (65535==M.shader_xrlc)	{
+				// No compiler shader
+				M.reserved	= WORD(-1);
+				clMsg	(" *  %20s",g_shader_render[M.shader].name);
+			} else {
+				clMsg	(" *  %20s / %-20s",g_shader_render[M.shader].name, g_shader_compile[M.shader_xrlc].name);
+				int id = g_shaders_xrlc.GetID(g_shader_compile[M.shader_xrlc].name);
+				if (id<0) {
+					clMsg	("ERROR: Shader '%s' not found in library",g_shader_compile[M.shader].name);
+					R_ASSERT(id>=0);
+				}
+				M.reserved = WORD(id);
+			}
+		}
+*/
 	}
 }
 
@@ -169,7 +302,7 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 
 	// 2. Polygon doesn't pick - real database query
 	t_start			= CPU::GetCycleCount();
-	DB.ray_query	(&Level,P,D,r);
+	DB.ray_query	(&RCAST_Model,P,D,r);
 	t_time			+=	CPU::GetCycleCount()-t_start-CPU::cycles_overhead;
 	t_count			+=	1;
 	
@@ -179,7 +312,7 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 	} else {
 		// cache polygon
 		CDB::RESULT&	rpinf	= *DB.r_begin();
-		CDB::TRI&		T		= Level.get_tris()[rpinf.id];
+		CDB::TRI&		T		= RCAST_Model.get_tris()[rpinf.id];
 		L.tri[0].set	(*T.verts[0]);
 		L.tri[1].set	(*T.verts[1]);
 		L.tri[2].set	(*T.verts[2]);
@@ -187,7 +320,92 @@ IC bool RayPick(CDB::COLLIDER& DB, Fvector& P, Fvector& D, float r, R_Light& L)
 	}
 }
 
-float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
+float getLastRP_Scale(CDB::COLLIDER* DB, R_Light& L)//, Face* skip)
+{
+	u32	tris_count  = DB->r_count();
+	float	scale		= 1.f;
+	Fvector B;
+
+//	X_TRY 
+	{
+		for (u32 I=0; I<tris_count; I++)
+		{
+			CDB::RESULT& rpinf = DB->r_begin()[I];
+
+			// Access to texture
+			CDB::TRI& clT								= RCAST_Model.get_tris()[rpinf.id];
+			b_rc_face& F								= g_rc_faces[clT.dummy];
+//			if (0==F)									continue;
+//			if (skip==F)								continue;
+
+			//N			b_material& M	= pBuild->materials			[F->dwMaterial];
+			b_material& M	= g_materials				[F.dwMaterial];
+			b_texture&	T	= g_textures				[M.surfidx];
+			Shader_xrLC& SH	= *g_shaders_xrlc.Get		(M.shader_xrlc);
+			if (!SH.flags.bLIGHT_CastShadow)			continue;
+
+			if (F.bOpaque)		
+			{
+				// Opaque poly - cache it
+				L.tri[0].set	(*clT.verts[0]);
+				L.tri[1].set	(*clT.verts[1]);
+				L.tri[2].set	(*clT.verts[2]);
+				return 0;
+			}
+
+			// barycentric coords
+			// note: W,U,V order
+			B.set	(1.0f - rpinf.u - rpinf.v,rpinf.u,rpinf.v);
+
+			// calc UV
+			Fvector2*	cuv = F.t;
+			Fvector2	uv;
+			uv.x = cuv[0].x*B.x + cuv[1].x*B.y + cuv[2].x*B.z;
+			uv.y = cuv[0].y*B.x + cuv[1].y*B.y + cuv[2].y*B.z;
+
+			int U = iFloor(uv.x*float(T.dwWidth) + .5f);
+			int V = iFloor(uv.y*float(T.dwHeight)+ .5f);
+			U %= T.dwWidth;		if (U<0) U+=T.dwWidth;
+			V %= T.dwHeight;	if (V<0) V+=T.dwHeight;
+
+			u32 pixel		= T.pSurface[V*T.dwWidth+U];
+			u32 pixel_a		= color_get_A(pixel);
+			float opac		= 1.f - float(pixel_a)/255.f;
+			scale			*= opac;
+		}
+	} 
+//	X_CATCH
+//	{
+//		clMsg("* ERROR: getLastRP_Scale");
+//	}
+
+	return scale;
+}
+
+float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R)//, Face* skip)
+{
+	R_ASSERT	(DB);
+
+	// 1. Check cached polygon
+	float _u,_v,range;
+	bool res = CDB::TestRayTri(P,D,L.tri,_u,_v,range,false);
+	if (res) {
+		if (range>0 && range<R) return 0;
+	}
+
+	// 2. Polygon doesn't pick - real database query
+	DB->ray_query	(&RCAST_Model,P,D,R);
+
+	// 3. Analyze polygons and cache nearest if possible
+	if (0==DB->r_count()) {
+		return 1;
+	} else {
+		return getLastRP_Scale(DB,L);//,skip);
+	}
+	return 0;
+}
+
+float LightPoint(CDB::COLLIDER* DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.mad	(Pold,N,0.1f);
@@ -206,7 +424,9 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			if( D <=0 ) continue;
 
 			// Raypick
-			if (!RayPick(DB,Pnew,Ldir,1000.f,*L))	amount+=D*L->energy;
+//O			if (!RayPick(DB,Pnew,Ldir,1000.f,*L))	amount+=D*L->energy;
+			// Trace Light
+			amount += D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);//,skip);
 		} else {
 			// Distance
 			float sqD	= Pnew.distance_to_sqr(L->position);
@@ -219,9 +439,13 @@ float LightPoint(CDB::COLLIDER& DB, Fvector &Pold, Fvector &N, LSelection& SEL)
 			if( D <=0 ) continue;
 			
 			// Raypick
+//O			float R		= _sqrt(sqD);
+//O			if (!RayPick(DB,Pnew,Ldir,R,*L))
+//O				amount += (D*L->energy)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+			// Trace Light
 			float R		= _sqrt(sqD);
-			if (!RayPick(DB,Pnew,Ldir,R,*L))
-				amount += (D*L->energy)/(L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
+			float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);//,skip);
+			amount		+= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 		}
 	}
 	return amount;
@@ -288,13 +512,13 @@ public:
 				// Select polygons
 				Fvector				bbC,bbD;
 				BB.get_CD			(bbC,bbD);	bbD.add(0.01f);
-				DB.box_query		(&Level,bbC,bbD);
+				DB.box_query		(&RCAST_Model,bbC,bbD);
 
 				box_result.clear	();
 				for (CDB::RESULT* I=DB.r_begin(); I!=DB.r_end(); I++) box_result.push_back(I->id);
 				if (box_result.empty())	continue;
 
-				CDB::TRI* tris		= Level.get_tris();
+				CDB::TRI* tris		= RCAST_Model.get_tris();
 				
 				// select lights
 				Selected.clear();
@@ -356,7 +580,7 @@ public:
 						}
 
 						// light point
-						amount	[pid]	+= LightPoint(DB,P,t_n,Selected);
+						amount	[pid]	+= LightPoint(&DB,P,t_n,Selected);
 						count	[pid]	+= 1;
 					}
 				}
@@ -395,7 +619,7 @@ void	xrLight			()
 	{
 		CThread*	T		= xr_new<LightThread> (thID,thID*stride,thID*stride+((thID==(NUM_THREADS-1))?last:stride));
 		T->thMessages		= FALSE;
-		T->thMonitor		= TRUE;
+		T->thMonitor		= FALSE;
 		Threads.start		(T);
 	}
 	Threads.wait			();

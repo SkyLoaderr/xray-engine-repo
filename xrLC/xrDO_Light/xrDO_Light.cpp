@@ -13,6 +13,7 @@
 #pragma comment(lib,"X:\\xrHemisphere.lib")
 #pragma comment(lib,"X:\\xrCDB.lib")
 #pragma comment(lib,"X:\\xrCore.lib")
+#pragma comment(lib,"X:\\FreeImage.lib")
 
 extern void	xrCompiler			(LPCSTR name);
 extern void __cdecl logThread	(void *dummy);

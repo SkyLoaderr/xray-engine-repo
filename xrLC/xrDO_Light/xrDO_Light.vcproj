@@ -333,6 +333,15 @@
 			RelativePath=".\DetailFormat.h">
 		</File>
 		<File
+			RelativePath="ETextureParams.h">
+		</File>
+		<File
+			RelativePath="FreeImage.h">
+		</File>
+		<File
+			RelativePath="Shader_xrLC.h">
+		</File>
+		<File
 			RelativePath=".\communicate.h">
 		</File>
 		<File
@@ -349,6 +358,9 @@
 		</File>
 		<File
 			RelativePath=".\xrLevel.h">
+		</File>
+		<File
+			RelativePath="xrLoadSurface.cpp">
 		</File>
 		<File
 			RelativePath=".\xrShaderTypes.h">
