@@ -230,7 +230,7 @@ BOOL CCF_Skeleton::_RayTest( RayQuery& Q)
 	temp.transform_dir	(dD,Q.dir);
 
 	// 
-	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+	if (!bv_sphere.intersect(dS,dD))		return FALSE;
 
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
