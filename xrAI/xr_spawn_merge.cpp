@@ -49,7 +49,7 @@ public:
 	u32							m_dwLevelID;
 	CLevelGraph					*m_tpAI_Map;
 	CGameLevelCrossTable		*m_tpCrossTable;
-	xr_vector<SLevelPoint>		m_tpLevelPoints;
+	xr_vector<CLevelPoint>		m_tpLevelPoints;
 
 								CSpawn(LPCSTR name, const SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset) : CThread(dwLevelID)
 	{
@@ -269,8 +269,8 @@ public:
 				l_tpALifeAnomalousZone->m_wArtefactSpawnCount	= l_tpaStack.size();
 				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
 				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<SLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<SLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CLevelPoint>::iterator				E = m_tpLevelPoints.end();
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
@@ -282,8 +282,8 @@ public:
 				//random_shuffle									(l_tpaStack.begin(),l_tpaStack.end());
 				l_tpALifeAnomalousZone->m_dwStartIndex			= m_tpLevelPoints.size();
 				m_tpLevelPoints.resize							(l_tpALifeAnomalousZone->m_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<SLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<SLevelPoint>::iterator				E = m_tpLevelPoints.end();
+				xr_vector<CLevelPoint>::iterator				I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CLevelPoint>::iterator				E = m_tpLevelPoints.end();
 				xr_vector<u32>::iterator						i = l_tpaStack.begin();
 				for ( ; I != E; I++, i++) {
 					(*I).tNodeID	= *i;
@@ -294,7 +294,7 @@ public:
 		}
 	}
 
-	void						Save(CMemoryWriter &fs, u32 &dwID, xr_vector<SLevelPoint> &tpLevelPoints)
+	void						Save(CMemoryWriter &fs, u32 &dwID, xr_vector<CLevelPoint> &tpLevelPoints)
 	{
 		NET_Packet		P;
 		for (u32 i=0 ; i<m_tpSpawnPoints.size(); i++, dwID++) {
@@ -307,9 +307,9 @@ public:
 			if (l_tpALifeAnomalousZone) {
 				u32									l_dwStartIndex = tpLevelPoints.size();
 				tpLevelPoints.resize				(l_dwStartIndex + l_tpALifeAnomalousZone->m_wArtefactSpawnCount);
-				xr_vector<SLevelPoint>::iterator	I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
-				xr_vector<SLevelPoint>::iterator	E = I + l_tpALifeAnomalousZone->m_wArtefactSpawnCount;
-				xr_vector<SLevelPoint>::iterator	i = tpLevelPoints.begin() + l_dwStartIndex;
+				xr_vector<CLevelPoint>::iterator	I = m_tpLevelPoints.begin() + l_tpALifeAnomalousZone->m_dwStartIndex;
+				xr_vector<CLevelPoint>::iterator	E = I + l_tpALifeAnomalousZone->m_wArtefactSpawnCount;
+				xr_vector<CLevelPoint>::iterator	i = tpLevelPoints.begin() + l_dwStartIndex;
 				for ( ; I != E; I++,i++)
 					*i = *I;
 				l_tpALifeAnomalousZone->m_dwStartIndex = l_dwStartIndex;
@@ -352,7 +352,7 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 
 void xrMergeSpawns(LPCSTR name)
 {
-	xr_vector<SLevelPoint>		l_tpLevelPoints;
+	xr_vector<CLevelPoint>		l_tpLevelPoints;
 	l_tpLevelPoints.clear		();
 
 	// load all the graphs

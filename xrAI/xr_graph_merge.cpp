@@ -44,7 +44,7 @@ u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
 	return(-1);
 }
 
-DEFINE_MAP		(u32,	CLevelGameGraph*,	GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
+DEFINE_MAP		(u32,	ALife::CLevelGameGraph*,	GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
 DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CCompareVertexPredicate);
 
 class CLevelGameGraph {
@@ -79,12 +79,12 @@ public:
 		GRAPH_VERTEX_IT			I = B;
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
 		for ( ; I != E; I++) {
-			(*I).tLocalPoint		= m_tpGraph->vertex(int(I - B)).level_point();
-			(*I).tGlobalPoint.add	(m_tpGraph->vertex(int(I - B)).game_point(),m_tLevel.tOffset);
+			(*I).tLocalPoint		= m_tpGraph->vertex(int(I - B))->level_point();
+			(*I).tGlobalPoint.add	(m_tpGraph->vertex(int(I - B))->game_point(),m_tLevel.offset());
 			(*I).tLevelID			= dwLevelID;
-			(*I).tNodeID			= m_tpGraph->vertex(int(I - B)).level_vertex_id();
-			Memory.mem_copy			((*I).tVertexTypes,m_tpGraph->vertex(int(I - B)).vertex_type(),LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
-			(*I).tNeighbourCount	= m_tpGraph->vertex(int(I - B)).edge_count();
+			(*I).tNodeID			= m_tpGraph->vertex(int(I - B))->level_vertex_id();
+			Memory.mem_copy			((*I).tVertexTypes,m_tpGraph->vertex(int(I - B))->vertex_type(),LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			(*I).tNeighbourCount	= m_tpGraph->vertex(int(I - B))->edge_count();
 			CGameGraph::const_iterator	b,i,e;
 			m_tpGraph->begin		(int(I - B),i,e);
 			(*I).tpaEdges			= (CGameGraph::CEdge*)xr_malloc((*I).tNeighbourCount*sizeof(CGameGraph::CEdge));
@@ -207,7 +207,7 @@ public:
 		m_tpVertices[dwVertexNumber].tpaEdges[m_tpVertices[dwVertexNumber].tNeighbourCount - 1] = tGraphEdge;
 	}
 
-	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset, u32 &dwPointOffset, xr_vector<SLevelPoint> *tpLevelPoints)
+	void						vfSaveVertices(CMemoryWriter &tMemoryStream, u32 &dwOffset, u32 &dwPointOffset, xr_vector<CLevelPoint> *tpLevelPoints)
 	{
 		GRAPH_VERTEX_IT			I = m_tpVertices.begin();
 		GRAPH_VERTEX_IT			E = m_tpVertices.end();
@@ -224,7 +224,7 @@ public:
 			tVertex.tDeathPointCount = (*I).tDeathPointCount;
 			tMemoryStream.w			(&tVertex,sizeof(tVertex));
 			dwOffset				+= (*I).tNeighbourCount*sizeof(CGameGraph::CEdge);
-			dwPointOffset			+= (*I).tDeathPointCount*sizeof(ALife::SLevelPoint);
+			dwPointOffset			+= (*I).tDeathPointCount*sizeof(ALife::CLevelPoint);
 		}
 	};
 	
@@ -273,8 +273,8 @@ public:
 
 		u32						m = l_dwaNodes.size() > 10 ? _min(iFloor(.1f*l_dwaNodes.size()),255) : l_dwaNodes.size(), l_dwStartIndex = m_tpLevelPoints.size();
 		m_tpLevelPoints.resize	(l_dwStartIndex + m);
-		xr_vector<SLevelPoint>::iterator I = m_tpLevelPoints.begin() + l_dwStartIndex;
-		xr_vector<SLevelPoint>::iterator E = m_tpLevelPoints.end();
+		xr_vector<CLevelPoint>::iterator I = m_tpLevelPoints.begin() + l_dwStartIndex;
+		xr_vector<CLevelPoint>::iterator E = m_tpLevelPoints.end();
 		xr_vector<u32>::iterator		 i = l_dwaNodes.begin();
 
 		dwDeathPointCount		= m;
@@ -308,7 +308,7 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 	SLevel							tLevel;
 	u32								dwOffset = 0;
 	u32								l_dwPointOffset = 0;
-	xr_vector<SLevelPoint>			l_tpLevelPoints;
+	xr_vector<CLevelPoint>			l_tpLevelPoints;
 	l_tpLevelPoints.clear			();
     LPCSTR							N,V;
 

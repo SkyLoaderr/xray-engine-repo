@@ -235,84 +235,82 @@ void vfNormalizeGraph()
 
 class CGraphSaver {
 public:
-	CGraphSaver(LPCSTR name, CLevelGraph *tpAI_Map);
-};
-
-CGraphSaver::CGraphSaver(LPCSTR name, CLevelGraph *tpAI_Map)
-{
-	string256					fName;
-	strconcat					(fName,name,"level.graph");
-	
-	CMemoryWriter				tGraph;
-	tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
-	tGraphHeader.dwLevelCount	= 1;
-	tGraphHeader.dwVertexCount	= tpaGraph.size();
-	tGraphHeader.dwEdgeCount	= 0;
-	//
+	CGraphSaver(LPCSTR name, CLevelGraph *tpAI_Map)
 	{
-		for (int i=0; i<(int)tpaGraph.size(); i++)
-			tGraphHeader.dwEdgeCount += tpaGraph[i].tNeighbourCount;
-	}
-	//
-	tGraphHeader.dwDeathPointCount = 0;
+		string256					fName;
+		strconcat					(fName,name,"level.graph");
+		
+		CMemoryWriter				tGraph;
+		tGraphHeader.dwVersion		= XRAI_CURRENT_VERSION;
+		tGraphHeader.dwLevelCount	= 1;
+		tGraphHeader.dwVertexCount	= tpaGraph.size();
+		tGraphHeader.dwEdgeCount	= 0;
+		//
+		{
+			for (int i=0; i<(int)tpaGraph.size(); i++)
+				tGraphHeader.dwEdgeCount += tpaGraph[i].tNeighbourCount;
+		}
+		//
+		tGraphHeader.dwDeathPointCount = 0;
 
-	SLevel						tLevel;
-	tLevel.tOffset.set			(0,0,0);
-	tLevel.tLevelID				= 0;
-	Memory.mem_copy				(tLevel.caLevelName,name,(u32)xr_strlen(name) + 1);
-	tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
-	tGraph.w_u32				(tGraphHeader.dwVersion);
-	tGraph.w_u32				(tGraphHeader.dwLevelCount);
-	tGraph.w_u32				(tGraphHeader.dwVertexCount);
-	tGraph.w_u32				(tGraphHeader.dwEdgeCount);
-	tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
-	LEVEL_PAIR_IT				I = tGraphHeader.tpLevels.begin();
-	LEVEL_PAIR_IT				E = tGraphHeader.tpLevels.end();
-	for ( ; I != E; I++) {
-		tGraph.w_stringZ		((*I).second.caLevelName);
-		tGraph.w_fvector3		((*I).second.tOffset);
-		tGraph.w_u32			((*I).second.tLevelID);
-	}
+		ALife::SLevel				tLevel;
+		tLevel.tOffset.set			(0,0,0);
+		tLevel.tLevelID				= 0;
+		Memory.mem_copy				(tLevel.caLevelName,name,(u32)xr_strlen(name) + 1);
+		tGraphHeader.tpLevels.insert(std::make_pair(tLevel.tLevelID,tLevel));
+		tGraph.w_u32				(tGraphHeader.dwVersion);
+		tGraph.w_u32				(tGraphHeader.dwLevelCount);
+		tGraph.w_u32				(tGraphHeader.dwVertexCount);
+		tGraph.w_u32				(tGraphHeader.dwEdgeCount);
+		tGraph.w_u32				(tGraphHeader.dwDeathPointCount);
+		LEVEL_PAIR_IT				I = tGraphHeader.tpLevels.begin();
+		LEVEL_PAIR_IT				E = tGraphHeader.tpLevels.end();
+		for ( ; I != E; I++) {
+			tGraph.w_stringZ		((*I).second.caLevelName);
+			tGraph.w_fvector3		((*I).second.tOffset);
+			tGraph.w_u32			((*I).second.tLevelID);
+		}
 
-	u32							dwPosition = tGraph.size();
-	
-	Progress					(0.0f);
-	CGameGraph::CVertex			tGraphVertex;
-	Memory.mem_fill				(&tGraphVertex,0,sizeof(CGameGraph::CVertex));
-	for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
-		tGraph.w				(&tGraphVertex,sizeof(CGameGraph::CVertex));
-	
-	Progress					(0.25f);
-	for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
-		SDynamicGraphVertex		&tDynamicGraphVertex = tpaGraph[i];
-		for (int j=0, k=0; j<(int)tDynamicGraphVertex.tNeighbourCount; j++)
-			if (!tpAI_Map->q_mark_bit[tDynamicGraphVertex.tpaEdges + j - tpaEdges]) {
-				k++;
-				tGraph.w_u32	(tDynamicGraphVertex.tpaEdges[j].vertex_id());	
-				tGraph.w_float	(tDynamicGraphVertex.tpaEdges[j].distance());	
-			}
-		tDynamicGraphVertex.tNeighbourCount = k;
+		u32							dwPosition = tGraph.size();
+		
+		Progress					(0.0f);
+		CGameGraph::CVertex			tGraphVertex;
+		Memory.mem_fill				(&tGraphVertex,0,sizeof(CGameGraph::CVertex));
+		for (int i=0; i<(int)tpaGraph.size(); Progress(float(++i)/tpaGraph.size()/4))
+			tGraph.w				(&tGraphVertex,sizeof(CGameGraph::CVertex));
+		
+		Progress					(0.25f);
+		for (int i=0; i<(int)tpaGraph.size(); Progress(.25f + float(++i)/tpaGraph.size()/2)) {
+			SDynamicGraphVertex		&tDynamicGraphVertex = tpaGraph[i];
+			for (int j=0, k=0; j<(int)tDynamicGraphVertex.tNeighbourCount; j++)
+				if (!tpAI_Map->q_mark_bit[tDynamicGraphVertex.tpaEdges + j - tpaEdges]) {
+					k++;
+					tGraph.w_u32	(tDynamicGraphVertex.tpaEdges[j].vertex_id());	
+					tGraph.w_float	(tDynamicGraphVertex.tpaEdges[j].distance());	
+				}
+			tDynamicGraphVertex.tNeighbourCount = k;
+		}
+		
+		Progress					(.75f);
+		tGraph.seek					(dwPosition);
+		for (int i=0, j=0, k=tpaGraph.size()*sizeof(CGameGraph::CVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
+			SDynamicGraphVertex				&tDynamicGraphVertex = tpaGraph[i];
+			tGraphVertex.tLocalPoint		= tDynamicGraphVertex.tLocalPoint;
+			tGraphVertex.tGlobalPoint		= tDynamicGraphVertex.tGlobalPoint;
+			tGraphVertex.tNodeID			= tDynamicGraphVertex.tNodeID;
+			Memory.mem_copy					(tGraphVertex.tVertexTypes,tDynamicGraphVertex.tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
+			tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
+			tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
+			tGraphVertex.dwEdgeOffset		= k + j*(u32)sizeof(CGameGraph::CEdge);
+			tGraphVertex.tDeathPointCount	= tDynamicGraphVertex.tDeathPointCount;
+			tGraphVertex.dwPointOffset		= tDynamicGraphVertex.dwPointOffset;
+			tGraph.w						(&tGraphVertex,	sizeof(CGameGraph::CVertex));
+		}
+		tGraph.save_to				(fName);
+		Progress					(1.0f);
+		Msg							("%d bytes saved",int(tGraph.size()));
 	}
-	
-	Progress					(.75f);
-	tGraph.seek					(dwPosition);
-	for (int i=0, j=0, k=tpaGraph.size()*sizeof(CGameGraph::CVertex); i<(int)tpaGraph.size(); j += tpaGraph[i].tNeighbourCount, Progress(.75f + float(++i)/tpaGraph.size()/4)) {
-		SDynamicGraphVertex				&tDynamicGraphVertex = tpaGraph[i];
-		tGraphVertex.tLocalPoint		= tDynamicGraphVertex.tLocalPoint;
-		tGraphVertex.tGlobalPoint		= tDynamicGraphVertex.tGlobalPoint;
-		tGraphVertex.tNodeID			= tDynamicGraphVertex.tNodeID;
-		Memory.mem_copy					(tGraphVertex.tVertexTypes,tDynamicGraphVertex.tVertexTypes,LOCATION_TYPE_COUNT*sizeof(_LOCATION_ID));
-		tGraphVertex.tLevelID			= tDynamicGraphVertex.tLevelID;
-		tGraphVertex.tNeighbourCount	= tDynamicGraphVertex.tNeighbourCount;
-		tGraphVertex.dwEdgeOffset		= k + j*(u32)sizeof(CGameGraph::CEdge);
-		tGraphVertex.tDeathPointCount	= tDynamicGraphVertex.tDeathPointCount;
-		tGraphVertex.dwPointOffset		= tDynamicGraphVertex.dwPointOffset;
-		tGraph.w						(&tGraphVertex,	sizeof(CGameGraph::CVertex));
-	}
-	tGraph.save_to				(fName);
-	Progress					(1.0f);
-	Msg							("%d bytes saved",int(tGraph.size()));
-}
+};
 
 void vfRemoveIncoherentGraphPoints(CLevelGraph *tpAI_Map, u32 &dwVertexCount)
 {
@@ -416,7 +414,7 @@ void xrBuildGraph(LPCSTR name)
 	vfOptimizeGraph(dwEdgeCount,tpAI_Map);
 
 	Phase("Saving graph");
-	CGraphSaver	tGraphSaver(name,tpAI_Map);
+	ALife::CGraphSaver	tGraphSaver(name,tpAI_Map);
 	for (int i=0, dwNewEdgeCount=0; i<(int)tpaGraph.size(); i++)
 		dwNewEdgeCount += tpaGraph[i].tNeighbourCount;
 	Msg("%d edges are removed",dwEdgeCount - dwNewEdgeCount);

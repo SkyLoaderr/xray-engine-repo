@@ -251,7 +251,7 @@ void test_all				(LPCSTR caLevelName, u32 test_count, _dist_type min_value, _dis
 	xr_delete				(graph);
 }
 
-/#define TEST_COUNT 1000
+#define TEST_COUNT 1000
 
 void path_test				(LPCSTR caLevelName)
 {

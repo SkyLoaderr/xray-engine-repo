@@ -143,6 +143,10 @@ namespace ALife {
 		{
 			return				(fDistance);
 		}
+
+#ifdef AI_COMPILER
+		friend class CLevelGameGraph;
+#endif
 	};
 
 	enum EInjureType {
@@ -413,7 +417,9 @@ namespace ALife {
 };
 
 #ifndef _EDITOR
-	#include "ai_debug.h"
+	#ifndef AI_COMPILER
+		#include "ai_debug.h"
+	#endif
 #endif
 
 #endif
