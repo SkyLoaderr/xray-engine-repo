@@ -45,22 +45,22 @@ void __stdcall CActor::SpinCallback(CBoneInstance* B)
 	B->mTransform.mulB_43(spin);
 }
 
-void CActor::net_Export(NET_Packet* P)					// export to server
+void CActor::net_Export	(NET_Packet& P)					// export to server
 {
 	// export 
 	R_ASSERT			(net_Local);
 	VERIFY				(Weapons);
 
 	u8					flags=0;
-	P->w_u32			(Level().timeServer());
-	P->w_u8				(flags);
-	P->w_vec3			(vPosition);
-	P->w_u8				(u8(mstate_real));
-	P->w_angle8			(r_model_yaw);
-	P->w_angle8			(r_torso.yaw);
-	P->w_angle8			(r_torso.pitch);
-	P->w_sdir			(NET_SavedAccel);
-	P->w_sdir			(Movement.GetVelocity());
+	P.w_u32				(Level().timeServer());
+	P.w_u8				(flags);
+	P.w_vec3			(vPosition);
+	P.w_u8				(u8(mstate_real));
+	P.w_angle8			(r_model_yaw);
+	P.w_angle8			(r_torso.yaw);
+	P.w_angle8			(r_torso.pitch);
+	P.w_sdir			(NET_SavedAccel);
+	P.w_sdir			(Movement.GetVelocity());
 
 //	int w_id = Weapons->SelectedWeaponID	();
 //	if (w_id<0)			P->w_u8(0xff);
@@ -75,22 +75,22 @@ void CActor::net_Export(NET_Packet* P)					// export to server
 //	}
 }
 
-void CActor::net_Import(NET_Packet* P)					// import from server
+void CActor::net_Import(NET_Packet& P)					// import from server
 {
 	// import
 	R_ASSERT		(!net_Local);
 	net_update		N;
 
 	u8	 flags, tmp;
-	P->r_u32		(N.dwTimeStamp	);
-	P->r_u8			(flags			);
-	P->r_vec3		(N.p_pos		);
-	P->r_u8			(tmp			); N.mstate = DWORD(tmp);
-	P->r_angle8		(N.o_model		);
-	P->r_angle8		(N.o_torso.yaw	);
-	P->r_angle8		(N.o_torso.pitch);
-	P->r_sdir		(N.p_accel		);
-	P->r_sdir		(N.p_velocity	);
+	P.r_u32			(N.dwTimeStamp	);
+	P.r_u8			(flags			);
+	P.r_vec3		(N.p_pos		);
+	P.r_u8			(tmp			); N.mstate = DWORD(tmp);
+	P.r_angle8		(N.o_model		);
+	P.r_angle8		(N.o_torso.yaw	);
+	P.r_angle8		(N.o_torso.pitch);
+	P.r_sdir		(N.p_accel		);
+	P.r_sdir		(N.p_velocity	);
 
 //	P->r_u8			(wpn);
 //	if (0xff==wpn)	N.weapon		= -1;

@@ -169,11 +169,11 @@ void	CCar::OnVisible				( )
 	inherited::OnVisible			();
 }
 
-void	CCar::net_Export			(NET_Packet* P)
+void	CCar::net_Export			(NET_Packet& P)
 {
 }
 
-void	CCar::net_Import			(NET_Packet* P)
+void	CCar::net_Import			(NET_Packet& P)
 {
 }
 

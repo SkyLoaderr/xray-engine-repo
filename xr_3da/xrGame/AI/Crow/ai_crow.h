@@ -95,8 +95,8 @@ public:
 	virtual BOOL	ShadowReceive	()			{ return FALSE;	}
 	virtual void	Update			(DWORD DT);
 	virtual void	UpdateCL		();
-	virtual void	net_Export		(NET_Packet* P);
-	virtual void	net_Import		(NET_Packet* P);
+	virtual void	net_Export		(NET_Packet& P);
+	virtual void	net_Import		(NET_Packet& P);
 
 	virtual void	g_fireParams	(Fvector& P, Fvector& D)	{};
 	virtual void	g_WeaponBones	(int& L, int& R)			{};
