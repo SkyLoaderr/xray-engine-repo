@@ -239,7 +239,7 @@ void	CObject::spatial_move()
 	ISpatial::spatial_move		();
 }
 
-CObject::SavedPosition CObject::ps_Element(u32 ID)
+CObject::SavedPosition CObject::ps_Element(u32 ID) const
 {
 	VERIFY(ID<ps_Size());
 	return PositionStack[ID];

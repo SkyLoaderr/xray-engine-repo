@@ -354,7 +354,7 @@ float CGameObject::renderable_Ambient	()
 	return (ai().get_level_graph() && ai().level_graph().valid_vertex_id(level_vertex_id()) ? float(level_vertex()->light()/15.f) : 1.f);
 }
 
-CObject::SavedPosition CGameObject::ps_Element(u32 ID)
+CObject::SavedPosition CGameObject::ps_Element(u32 ID) const
 {
 	VERIFY(ID<ps_Size());
 	inherited::SavedPosition	SP	=	PositionStack[ID];
@@ -635,14 +635,4 @@ void CGameObject::shedule_Update	(u32 dt)
 BOOL CGameObject::net_SaveRelevant	()
 {
 	return						(false);
-}
-
-u32	CGameObject::ps_Size		() const
-{
-	return						((u32)PositionStack.size());
-}
-
-CGameObject::SavedPosition CGameObject::ps_Element	(u32 id) const
-{
-	return						(PositionStack[id]);
 }

@@ -159,8 +159,8 @@ public:
 	virtual void						net_Relcase			(CObject*	 O) { };				// destroy all links to another objects
 
 	// Position stack
-	IC u32								ps_Size				()				{ return PositionStack.size(); }
-	virtual	SavedPosition				ps_Element			(u32 ID);
+	IC u32								ps_Size				()			const	{ return PositionStack.size(); }
+	virtual	SavedPosition				ps_Element			(u32 ID)	const;
 	virtual void						ForceTransform		(const Fmatrix& m)	{};
 
 	// HUD
