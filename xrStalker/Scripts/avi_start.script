@@ -64,7 +64,7 @@ function main()
 	snd_pos.y = snd_pos.y + 1.5
 
 	--wait for first frame
-	while device().precache_frame ~= 0 do
+	while device().precache_frame < 5 do
 		wait()
 	end
 	
