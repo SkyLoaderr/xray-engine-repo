@@ -18,12 +18,6 @@ IC	const Fvector vertex_position(const CLevelGraph::CPosition &Psrc, const Fbox 
 	return				(Pdest);
 }
 
-struct SNodePositionOld {
-	s16				x;
-	u16				y;
-	s16				z;
-};
-
 struct CNodePositionConverter {
 	IC		CNodePositionConverter(const SNodePositionOld &Psrc, hdrNODES &m_header, NodePosition &np);
 };
