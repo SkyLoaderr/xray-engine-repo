@@ -703,6 +703,7 @@ function add_to_binder(obj, char_ini)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_path, raid_process)
+    printf ("XR_PATROL:SET_PATROL called for %s", npc:name ())
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].patrol
 	
