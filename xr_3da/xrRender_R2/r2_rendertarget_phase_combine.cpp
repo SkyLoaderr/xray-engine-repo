@@ -54,9 +54,9 @@ void	CRenderTarget::phase_combine	()
 		Fvector4	ambclr			= { envdesc.ambient.x*2,	envdesc.ambient.y*2,	envdesc.ambient.z*2,		0	};
 		Fvector4	envclr			= { envdesc.sky_color.x*2,	envdesc.sky_color.y*2,	envdesc.sky_color.z*2,		envdesc.sky_factor };
 		Fvector4	fogclr			= { envdesc.fog_color.x,	envdesc.fog_color.y,	envdesc.fog_color.z,		0	};
-					envclr.x		*= 2; //hemi_correct;
-					envclr.y		*= 2; //hemi_correct;
-					envclr.z		*= 2; //hemi_correct;
+					envclr.x		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
+					envclr.y		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
+					envclr.z		*= 2*ps_r2_sun_lumscale_hemi; //hemi_correct;
 
 		// Fill VB
 		u32		C					= color_rgba	(255,255,255,255);
