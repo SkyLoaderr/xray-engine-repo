@@ -9,7 +9,7 @@
 #include "ui/UIInventoryUtilities.h"
 #include "UI/UIXmlInit.h"
 
-void clean_memory_global()
+void clean_game_globals()
 {
 	// xml parser options
 	XML_CleanUpMemory					();
@@ -22,7 +22,7 @@ void clean_memory_global()
 	xr_delete							(g_monster_squad);
 
 
-	InventoryUtilities::DestroyShaders();
+	InventoryUtilities::DestroyShaders	();
 
 	//info portions static data
 	CInfoPortion::DeleteIdToIndexData	();

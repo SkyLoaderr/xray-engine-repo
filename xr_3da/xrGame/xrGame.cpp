@@ -31,7 +31,6 @@ extern "C" {
 };
 
 extern void CCC_RegisterCommands();
-extern void clean_memory_global();
 
 BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 {
@@ -51,7 +50,6 @@ BOOL APIENTRY DllMain(HANDLE hModule, u32 ul_reason_for_call, LPVOID lpReserved)
 		}
 
 		case DLL_PROCESS_DETACH: {
-			clean_memory_global();
 			break;
 		}
 	}

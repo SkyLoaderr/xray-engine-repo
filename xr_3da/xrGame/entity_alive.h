@@ -105,7 +105,6 @@ protected:
 
 	virtual void			BloodyWallmarks			(float P, const Fvector &dir, s16 element, const Fvector& position_in_object_space);
 	static  void			LoadBloodyWallmarks		(LPCSTR section);
-	static  bool			m_BloodyWallmarksLoaded;
 public:	
 	static  void			UnloadBloodyWallmarks	();
 protected:
@@ -113,16 +112,12 @@ protected:
 														float trace_dist, float wallmark_size,
 														SHADER_VECTOR& wallmarks_vector);
 
-
-
 	//информация о кровавых отметках на стенах, общая для всех CEntityAlive
 	static SHADER_VECTOR* m_pBloodMarksVector;
 	static float m_fBloodMarkSizeMax;
 	static float m_fBloodMarkSizeMin;
 	static float m_fBloodMarkDistance;
 	static float m_fNominalHit;
-
-
 
 	//текстурки капель крови
 	static SHADER_VECTOR* m_pBloodDropsVector;

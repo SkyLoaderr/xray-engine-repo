@@ -15,8 +15,6 @@
 
 //отметки крови на стенах 
 SHADER_VECTOR* CEntityAlive::m_pBloodMarksVector = NULL;
-bool CEntityAlive::m_BloodyWallmarksLoaded = false;
-
 float CEntityAlive::m_fBloodMarkSizeMin = 0.f;
 float CEntityAlive::m_fBloodMarkSizeMax = 0.f;
 float CEntityAlive::m_fBloodMarkDistance = 0.f;
@@ -66,19 +64,19 @@ void CEntityAlive::Load		(LPCSTR section)
 	m_fFood					= 100*pSettings->r_float	(section,"ph_mass");
 
 	//bloody wallmarks
-	if(!m_BloodyWallmarksLoaded)
+	if(0==m_pBloodMarksVector)
 		LoadBloodyWallmarks ("bloody_marks");
 
-	if(m_pFireParticlesVector == 0)
-		LoadFireParticles("entity_fire_particles");
+	if(0==m_pFireParticlesVector)
+		LoadFireParticles	("entity_fire_particles");
 }
 
 void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 {
-	m_BloodyWallmarksLoaded = true;
-
-	m_pBloodMarksVector = xr_new<SHADER_VECTOR>();
-	m_pBloodDropsVector = xr_new<SHADER_VECTOR>();
+	VERIFY					(0==m_pBloodMarksVector);
+	VERIFY					(0==m_pBloodDropsVector);
+	m_pBloodMarksVector		= xr_new<SHADER_VECTOR>();
+	m_pBloodDropsVector		= xr_new<SHADER_VECTOR>();
 	
 	//кровавые отметки на стенах
 	string256	tmp;
@@ -119,13 +117,14 @@ void CEntityAlive::LoadBloodyWallmarks (LPCSTR section)
 
 void CEntityAlive::UnloadBloodyWallmarks	()
 {
-	m_BloodyWallmarksLoaded = false;
-
-	m_pBloodMarksVector->clear();
-	m_pBloodDropsVector->clear();
-
-	xr_delete(m_pBloodMarksVector);
-	xr_delete(m_pBloodDropsVector);
+	if (m_pBloodMarksVector){ 
+		m_pBloodMarksVector->clear	();
+		xr_delete					(m_pBloodMarksVector);
+	}
+	if (m_pBloodDropsVector){
+		m_pBloodDropsVector->clear	();
+		xr_delete					(m_pBloodDropsVector);
+	}
 }
 
 void CEntityAlive::LoadFireParticles(LPCSTR section)

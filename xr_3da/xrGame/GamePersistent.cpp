@@ -80,9 +80,12 @@ void CGamePersistent::OnAppCycleStart()
 	__super::OnAppCycleStart	();
 }
 
+extern void clean_game_globals	();
 void CGamePersistent::OnAppCycleEnd	()
 {
 	__super::OnAppCycleEnd		();
+
+	clean_game_globals			();
 
 	GMLib.Unload				();
 }
