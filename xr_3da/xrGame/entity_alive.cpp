@@ -277,6 +277,7 @@ CPHSynchronize* CEntityAlive::PHGetSyncItem	(u16 item)
 void CEntityAlive::PHUnFreeze()
 {
 	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->UnFreeze();
+	else if(m_pPhysicsShell) m_pPhysicsShell->UnFreeze();
 }
 void CEntityAlive::PHFreeze()
 {
