@@ -292,5 +292,9 @@
 	<character id="bar_bar_drunk_dolg">
 		<class>stalker_bar_drunk_dolg</class>
 	</character>
+	<character id="bar_bar_night_sniper">
+		<class>stalker_bar_night_sniper</class>
+	</character>
+
 
 </xml>
