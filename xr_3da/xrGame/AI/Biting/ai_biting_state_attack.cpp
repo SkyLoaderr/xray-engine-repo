@@ -55,8 +55,8 @@ void CBitingAttack::Init()
 		m_fDistMin = 0.7f;				// todo: make as ltx parameters
 		m_fDistMax = 2.8f;				// todo: make as ltx parameters
 	} else {
-		m_fDistMin = 2.4f;				// todo: make as ltx parameters
-		m_fDistMax = 3.8f;				// todo: make as ltx parameters
+		m_fDistMin = pMonster->m_fMinAttackDist;
+		m_fDistMax = pMonster->m_fMaxAttackDist;
 	}
 
 	pMonster->SetMemoryTimeDef();

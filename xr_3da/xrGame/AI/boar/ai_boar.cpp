@@ -114,9 +114,9 @@ BOOL CAI_Boar::net_Spawn (LPVOID DC)
 	Fvector center;
 	center.set		(0.f,0.f,0.f);
 
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		2.5f, m_fHitPower, PI_DIV_6,	PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	center,		2.5f, m_fHitPower, -PI_DIV_6,	PI_DIV_6);
-	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		3.0f, m_fHitPower, 0,			PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 500,	600,	center,		2.3f, m_fHitPower, PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 500,	600,	center,		2.3f, m_fHitPower, -PI_DIV_6,	PI_DIV_6);
+	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 500,	600,	center,		3.0f, m_fHitPower, 0,			PI_DIV_6);
 
 	return TRUE;
 }

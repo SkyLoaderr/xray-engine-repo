@@ -144,6 +144,8 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fMaxSatiety					= pSettings->r_float(section,"Max_Satiety");
 
 	m_fDistToCorpse					= pSettings->r_float(section,"distance_to_corpse");
+	m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
+	m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
 
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
