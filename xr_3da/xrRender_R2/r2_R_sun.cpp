@@ -618,8 +618,8 @@ void CRender::render_sun				()
 			0.f,           0.f, 1.f, 0.f,
 			-centerOrig.x, -centerOrig.y, 0.f, 1.f );
 
-		D3DXVECTOR2	center_dir(centerPts[1] - centerOrig)
-		float half_center_len = D3DXVec2Length( &center_dir);
+		D3DXVECTOR2	center_dirl	= D3DXVECTOR2(centerPts[1] - centerOrig)
+		float half_center_len = D3DXVec2Length( &center_dirl);
 		float x_len = centerPts[1].x - centerOrig.x;
 		float y_len = centerPts[1].y - centerOrig.y;
 
