@@ -151,6 +151,8 @@ void CPSVisual::Render(float LOD)
 	rb.set	(1.f,1.f);
 
 	// actual rendering
+	bv_BBox.invalidate	();
+	float			p_size	= 0;
 	DWORD			vOffset;
 	FVF::TL*		pv_start= (FVF::TL*)m_Stream->Lock(m_Particles.size()*4,vOffset);
 	FVF::TL*		pv		= pv_start;
@@ -185,6 +187,7 @@ void CPSVisual::Render(float LOD)
             
             PS::SimulateColor	(C,P,k,k_inv,mb_v);	// adjust current Color from calculated Deltas and time elapsed.
             PS::SimulateSize	(sz,P,k,k_inv);		// adjust current Size & Angle
+			if (sz>p_size)		p_size = sz;
 			
             Fvector D;
 			if (m_Definition->m_dwFlag&PS_ALIGNTOPATH){
@@ -212,6 +215,7 @@ void CPSVisual::Render(float LOD)
 			bv_BBox.modify(Pos);
         }
     }
+	bv_BBox.grow	(p_size);
 	
 	// unlock VB and Render it as triangle list
 	DWORD dwNumVerts = pv-pv_start;
