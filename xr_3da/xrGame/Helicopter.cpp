@@ -949,8 +949,9 @@ void CHelicopter::UpdateHeliParticles	()
 void CHelicopter::Explode ()
 {
 	if(m_pParticle){
-		m_pParticle->Stop();
-		xr_delete(m_pParticle);
+		m_pParticle->Stop		();
+		m_pParticle->PSI_destroy();
+		m_pParticle				= NULL;
 	}
 	m_pParticle = xr_new<CParticlesObject>(*m_explode_particle,false);
 
