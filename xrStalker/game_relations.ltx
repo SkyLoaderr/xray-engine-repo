@@ -1,3 +1,18 @@
 [game_relations]
 rating			= novice, 10, veteran, 50, master, 100, super_master
 reputation		= bad, -20, neutral, 20, good, 40, very_good
+
+;пороговые значения для отношения персонажов
+attitude_neutal_threshold = 20 
+attitude_friend_threshold = 75
+
+
+;названия группировок
+communities		= individual, monolith, military
+
+[communities_relations]
+;;			   |individual  | monolith  | military |
+============================================================
+individual	=       1.0,        1.0,      1.0      
+monolith	=       1.0,        1.0,      1.0     
+military	=       1.0,        1.0,      1.0    
