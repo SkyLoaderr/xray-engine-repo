@@ -19,7 +19,7 @@ public:
 	virtual						~CExplosive(void);
 
 	virtual void 				Load(LPCSTR section);
-	
+	virtual void				Load(CInifile *ini,LPCSTR section);
 
 	virtual void 				net_Destroy		();
 
@@ -34,7 +34,8 @@ public:
 
 
 	virtual void 				OnEvent (NET_Packet& P, u16 type) ;//{inherited::OnEvent( P, type);}
-
+	virtual void				OnAfterExplosion();
+	virtual void				OnBeforeExplosion();
 	virtual void 				SetCurrentParentID	(u16 parent_id) {m_iCurrentParentID = parent_id;}
 	virtual void 				GenExplodeEvent (const Fvector& pos, const Fvector& normal);
 	virtual void 				FindNormal(Fvector& normal);

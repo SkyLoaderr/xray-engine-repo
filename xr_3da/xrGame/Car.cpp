@@ -143,6 +143,7 @@ void	CCar::net_Destroy()
 {
 	inherited::net_Destroy();
 	CScriptEntity::net_Destroy();
+	CExplosive::net_Destroy();
 	if(m_pPhysicsShell)
 	{
 		m_pPhysicsShell->Deactivate();
@@ -274,14 +275,14 @@ void CCar::shedule_Update(u32 dt)
 	CPHSkeleton::Update(dt);
 	if(fEntityHealth<=0.f && m_death_time!=u32(-1)&& Device.dwTimeGlobal-m_death_time>m_time_to_explode)
 	{
-		Explode();
+		CarExplode();
 	}
 }
 
 void	CCar::UpdateCL				( )
 {
 	inherited::UpdateCL();
-
+	CExplosive::UpdateCL();
 	#ifdef DEBUG
 	if(m_pPhysicsShell&&Owner())
 	{
@@ -520,13 +521,16 @@ bool CCar::Exit(const Fvector& pos,const Fvector& dir)
 
 void CCar::ParseDefinitions()
 {
+	
+	
 	bone_map.clear();
 
 	CKinematics* pKinematics=smart_cast<CKinematics*>(Visual());
 	bone_map.insert(mk_pair(pKinematics->LL_GetBoneRoot(),physicsBone()));
 	CInifile* ini = pKinematics->LL_UserData();
 	R_ASSERT2(ini,"Car has no description !!! See ActorEditor Object - UserData");
-
+	CExplosive::Load(ini,"explosion");
+	CExplosive::SetCurrentParentID(ID());
 	m_camera_position			= ini->r_fvector3("car_definition","camera_pos");
 	///////////////////////////car definition///////////////////////////////////////////////////
 	fill_wheel_vector			(ini->r_string	("car_definition","driving_wheels"),m_driving_wheels);
@@ -1419,7 +1423,7 @@ void CCar::ResetKeys()
 void CCar::OnEvent(NET_Packet& P, u16 type)
 {
 	inherited::OnEvent		(P,type);
-
+	CExplosive::OnEvent		(P,type);
 
 	//обработка сообщений, нужных для работы с багажником машины
 	u16 id;
@@ -1498,28 +1502,40 @@ u16 CCar::DriverAnimationType()
 	return m_driver_anim_type;
 }
 
-void CCar::Explode()
+void CCar::OnAfterExplosion()
 {
-	m_damage_particles.PlayExplosion(this);
-	m_car_sound->Explosion();
+
+}
+
+void CCar::OnBeforeExplosion()
+{
+
+}
+void CCar::CarExplode()
+{
+
 	m_death_time=u32(-1);
-	if (Owner()&&OnServer())
-	{
-		NET_Packet	l_P;
-		u_EventGen	(l_P,GE_HIT, Owner()->ID());
-		l_P.w_u16	(u16(Owner()->ID()));
-		l_P.w_u16	(ID());
-		l_P.w_dir	(Fvector().set(0.f,-1.f,0.f));//dir
-		l_P.w_float	(100.f);
-		l_P.w_s16	(0/*(s16)BI_NONE*/);
-		Fvector		position_in_bone_space={0.f,0.f,0.f};
-		l_P.w_vec3	(position_in_bone_space);
-		l_P.w_float	(0.f);
-		l_P.w_u16	(ALife::eHitTypeExplosion);
-		u_EventSend	(l_P);
-		/////////////////////////////////////////////////////////
-		return;
-	};
+	CExplosive::GenExplodeEvent(Position(),Fvector().set(0.f,1.f,0.f));
+	//m_damage_particles.PlayExplosion(this);
+	//m_car_sound->Explosion();
+	//
+	//if (Owner()&&OnServer())
+	//{
+	//	NET_Packet	l_P;
+	//	u_EventGen	(l_P,GE_HIT, Owner()->ID());
+	//	l_P.w_u16	(u16(Owner()->ID()));
+	//	l_P.w_u16	(ID());
+	//	l_P.w_dir	(Fvector().set(0.f,-1.f,0.f));//dir
+	//	l_P.w_float	(100.f);
+	//	l_P.w_s16	(0/*(s16)BI_NONE*/);
+	//	Fvector		position_in_bone_space={0.f,0.f,0.f};
+	//	l_P.w_vec3	(position_in_bone_space);
+	//	l_P.w_float	(0.f);
+	//	l_P.w_u16	(ALife::eHitTypeExplosion);
+	//	u_EventSend	(l_P);
+	//	/////////////////////////////////////////////////////////
+	//	return;
+	//};
 }
 //void CCar::object_contactCallbackFun(bool& do_colide,dContact& c,SGameMtl * /*material_1*/,SGameMtl * /*material_2*/)
 //{

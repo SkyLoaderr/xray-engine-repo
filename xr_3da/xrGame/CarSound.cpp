@@ -28,10 +28,7 @@ void CCar::SCarSound::Init()
 		{
 			snd_transmission.create(TRUE,ini->r_string("car_sound","transmission_switch"));
 		}
-		if(ini->line_exist("car_sound","explosion_sound"))
-		{
-			snd_explosion.create(TRUE,ini->r_string("car_sound","explosion_sound"));
-		}
+	
 	
 	} else {
 		Msg					("! Car doesn't contain sound params");

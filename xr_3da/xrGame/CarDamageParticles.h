@@ -9,7 +9,7 @@ struct CCarDamageParticles
 	shared_str							m_wheels_damage_particles2;
 	shared_str							m_car_damage_particles1;
 	shared_str							m_car_damage_particles2;
-	shared_str							m_car_explosion_particles;
+
 public:
 
 void			Init			(CCar* car);

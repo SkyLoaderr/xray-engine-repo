@@ -59,46 +59,48 @@ CExplosive::~CExplosive(void)
 
 void CExplosive::Load(LPCSTR section) 
 {
-
-	m_fBlastHit			= pSettings->r_float(section,"blast");
-	m_fBlastRadius		= pSettings->r_float(section,"blast_r");
-	m_fBlastHitImpulse	= pSettings->r_float(section,"blast_impulse");
-	
-	m_iFragsNum			= pSettings->r_s32(section,"frags");
-	m_fFragsRadius		= pSettings->r_float(section,"frags_r");
-	m_fFragHit			= pSettings->r_float(section,"frag_hit");
-	m_fFragHitImpulse	= pSettings->r_float(section,"frag_hit_impulse");
-
-	m_eHitTypeBlast		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_blast"));
-	m_eHitTypeFrag		= ALife::g_tfString2HitType(pSettings->r_string(section, "hit_type_frag"));
-
-	m_fUpThrowFactor	= pSettings->r_float(section,"up_throw_factor");
-
-
-	fWallmarkSize		= pSettings->r_float(section,"wm_size");
-	R_ASSERT			(fWallmarkSize>0);
-
-	m_sExplodeParticles = pSettings->r_string(section,"explode_particles");
-
-	sscanf				(pSettings->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
-	m_fLightRange		= pSettings->r_float(section,"light_range");
-	m_fLightTime		= pSettings->r_float(section,"light_time");
-
-	//трассы для разлета осколков
-	tracerHeadSpeed		= pSettings->r_float		(section,"tracer_head_speed"	);
-	tracerMaxLength		= pSettings->r_float		(section,"tracer_max_length"	);
-
-	shared_str				snd_name = pSettings->r_string(section,"snd_explode");
-	sndExplode.create	(TRUE,*snd_name, m_eSoundExplode);
-
-	m_fExplodeDurationMax	= pSettings->r_float(section, "explode_duration");
-
-	effector.time			= pSettings->r_float("explode_effector","time");
-	effector.amplitude		= pSettings->r_float("explode_effector","amplitude");
-	effector.period_number	= pSettings->r_float("explode_effector","period_number");
+	Load(pSettings,section);
 }
 
+void CExplosive::Load(CInifile *ini,LPCSTR section)
+{
+	m_fBlastHit			= ini->r_float(section,"blast");
+	m_fBlastRadius		= ini->r_float(section,"blast_r");
+	m_fBlastHitImpulse	= ini->r_float(section,"blast_impulse");
 
+	m_iFragsNum			= ini->r_s32(section,"frags");
+	m_fFragsRadius		= ini->r_float(section,"frags_r");
+	m_fFragHit			= ini->r_float(section,"frag_hit");
+	m_fFragHitImpulse	= ini->r_float(section,"frag_hit_impulse");
+
+	m_eHitTypeBlast		= ALife::g_tfString2HitType(ini->r_string(section, "hit_type_blast"));
+	m_eHitTypeFrag		= ALife::g_tfString2HitType(ini->r_string(section, "hit_type_frag"));
+
+	m_fUpThrowFactor	= ini->r_float(section,"up_throw_factor");
+
+
+	fWallmarkSize		= ini->r_float(section,"wm_size");
+	R_ASSERT			(fWallmarkSize>0);
+
+	m_sExplodeParticles = ini->r_string(section,"explode_particles");
+
+	sscanf				(ini->r_string(section,"light_color"), "%f,%f,%f", &m_LightColor.r, &m_LightColor.g, &m_LightColor.b);
+	m_fLightRange		= ini->r_float(section,"light_range");
+	m_fLightTime		= ini->r_float(section,"light_time");
+
+	//трассы для разлета осколков
+	tracerHeadSpeed		= ini->r_float		(section,"tracer_head_speed"	);
+	tracerMaxLength		= ini->r_float		(section,"tracer_max_length"	);
+
+	shared_str				snd_name = ini->r_string(section,"snd_explode");
+	sndExplode.create	(TRUE,*snd_name, m_eSoundExplode);
+
+	m_fExplodeDurationMax	= ini->r_float(section, "explode_duration");
+
+	effector.time			= ini->r_float("explode_effector","time");
+	effector.amplitude		= ini->r_float("explode_effector","amplitude");
+	effector.period_number	= ini->r_float("explode_effector","period_number");
+}
 
 void CExplosive::net_Destroy	()
 {
@@ -151,9 +153,7 @@ void CExplosive::Explode()
 	Fvector& pos = m_vExplodePos;
 	Fvector& dir = m_vExplodeDir;
 
-	cast_game_object()->setVisible(false);
-	cast_game_object()->setEnabled(false);
-
+	OnBeforeExplosion();
 	//играем звук взрыва
 	Sound->play_at_pos(sndExplode, 0, pos, false);
 	
@@ -335,11 +335,7 @@ void CExplosive::UpdateCL()
 
 		StopLight();
 		
-		//ликвидировать сам объект 
-		NET_Packet			P;
-		cast_game_object()->u_EventGen			(P,GE_DESTROY,cast_game_object()->ID());
-//		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
-		if (cast_game_object()->Local()) cast_game_object()->u_EventSend			(P);
+		OnAfterExplosion();
 	} 
 	else
 	{
@@ -358,6 +354,21 @@ void CExplosive::UpdateCL()
 				StopLight();
 		}
 	}
+}
+
+void CExplosive::OnAfterExplosion()
+{
+	//ликвидировать сам объект 
+	NET_Packet			P;
+	cast_game_object()->u_EventGen			(P,GE_DESTROY,cast_game_object()->ID());
+	//		Msg					("ge_destroy: [%d] - %s",ID(),*cName());
+	if (cast_game_object()->Local()) cast_game_object()->u_EventSend			(P);
+}
+void CExplosive::OnBeforeExplosion()
+{
+	cast_game_object()->setVisible(false);
+	cast_game_object()->setEnabled(false);
+
 }
 
 void CExplosive::OnEvent(NET_Packet& P, u16 type) 

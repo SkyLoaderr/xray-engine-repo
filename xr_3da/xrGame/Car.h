@@ -14,7 +14,7 @@
 #include "xrserver_objects_alife.h"
 #include "CarDamageParticles.h"
 #include "hit_immunity.h"
-
+#include "Explosive.h"
 // refs
 class ENGINE_API			CBoneInstance;
 class						CActor;
@@ -33,8 +33,8 @@ class CCar :
 	public CDamagableItem,
 	public CPHDestroyable,
 	public CPHCollisionDamageReceiver,
-	public CHitImmunity
-	//public CExplosive
+	public CHitImmunity,
+	public CExplosive
 {
 	static BONE_P_MAP bone_map; //interface for PhysicsShell
 	virtual void						PhDataUpdate				(dReal step)			;
@@ -271,7 +271,6 @@ virtual void ApplyDamage(u16 level);
 	{
 		ref_sound					snd_engine;
 		ref_sound					snd_transmission;
-		ref_sound					snd_explosion;
 		enum 
 		{
 			sndOff,
@@ -436,7 +435,7 @@ IC	size_t CurrentTransmission(){return m_current_transmission_num;}
 	void ClearExhausts					();
 	void UpdateFuel						(float time_delta);
 	float AddFuel						(float ammount); //ammount - fuel to load, ret - fuel loaded
-	void Explode						();
+	void CarExplode						();
 	////////////////////////////////////////////////////
 
 	void					OnCameraChange		(int type);
@@ -492,6 +491,8 @@ public:
 	virtual void			OnKeyboardHold		(int dik);
 	virtual void			vfProcessInputKey	(int iCommand, bool bPressed);
 	virtual void			OnEvent				( NET_Packet& P, u16 type);
+	virtual void			OnAfterExplosion	();
+	virtual void			OnBeforeExplosion	();
 	virtual void			ResetScriptData		(void *P=0);
 
 	// Hits
@@ -531,7 +532,8 @@ private:
 	
 	virtual	void reinit			();
 	virtual	void reload			(LPCSTR section);
-	virtual CPhysicsShellHolder*cast_physics_shell_holder	()	{return this;}
-	virtual CParticlesPlayer*	cast_particles_player		()	{return this;}
-	virtual CScriptEntity*		cast_script_entity			()	{return this;}
+	virtual CGameObject			*cast_game_object			()	{return this;}
+	virtual CPhysicsShellHolder	*cast_physics_shell_holder	()	{return this;}
+	virtual CParticlesPlayer	*cast_particles_player		()	{return this;}
+	virtual CScriptEntity		*cast_script_entity			()	{return this;}
 };

@@ -24,7 +24,6 @@ void CCarDamageParticles::Init(CCar *car)
 	CInifile	*ini=K->LL_UserData();
 	if(ini->section_exist("damage_particles"))
 	{
-		m_car_explosion_particles=ini->r_string("damage_particles","explosion_particles");
 		m_car_damage_particles1=ini->r_string("damage_particles","car_damage_particles1");
 		m_car_damage_particles2=ini->r_string("damage_particles","car_damage_particles2");
 		m_wheels_damage_particles1=ini->r_string("damage_particles","wheels_damage_particles1");
