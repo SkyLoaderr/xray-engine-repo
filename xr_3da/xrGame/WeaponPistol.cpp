@@ -111,6 +111,7 @@ void CWeaponPistol::switch2_Fire()
 
 void CWeaponPistol::switch2_Reload()
 {
+	if(STATE==eReload) return;
 	inherited::switch2_Reload();
 }
 
