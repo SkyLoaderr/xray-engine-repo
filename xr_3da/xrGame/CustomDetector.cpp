@@ -14,10 +14,14 @@ CCustomDetector::CCustomDetector(void)
 CCustomDetector::~CCustomDetector(void) 
 {
 	SoundDestroy(m_noise);
+	SoundDestroy(m_buzzer);
 
 	ZONE_TYPE_MAP_IT it;
-	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it) 
+	for(it = m_ZoneTypeMap.begin(); m_ZoneTypeMap.end() != it; ++it)
+	{
 		SoundDestroy(*it->second.detect_snd);
+		xr_delete(it->second.detect_snd);
+	}
 }
 
 BOOL CCustomDetector::net_Spawn(LPVOID DC) 
@@ -40,10 +44,10 @@ void CCustomDetector::Load(LPCSTR section)
 	m_fBuzzerRadius = pSettings->r_float(section,"buzzer_radius");
 
 	LPCSTR sound_name = pSettings->r_string(section,"noise");
-	
 	SoundCreate(m_noise, sound_name);
 	sound_name = pSettings->r_string(section,"buzzer");
 	SoundCreate(m_buzzer, sound_name);
+
 	u32 i = 1;
 	string256 temp;
 
