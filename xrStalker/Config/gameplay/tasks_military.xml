@@ -59,6 +59,10 @@
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
 		<objective>
+			<text>mil_courier_spy</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
 			<text>mil_intersept_courier</text>
 			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
 		</objective>
