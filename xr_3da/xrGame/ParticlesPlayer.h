@@ -48,7 +48,7 @@ private:
 	// список костей
 	u64						bone_mask; // используемые кости
 	BoneInfoVec				m_Bones;
-
+	bool					m_bActiveBones;	//есть ли косточки на которых играются партиклы
 public:
 	IC SBoneInfo*			get_bone_info			(u16 bone_index)
 	{

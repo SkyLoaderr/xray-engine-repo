@@ -354,6 +354,8 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 }
 void CEntityAlive::UpdateFireParticles()
 {
+	if(m_ParticlesWoundList.empty()) return;
+	
 	for(WOUND_LIST_it it = m_ParticlesWoundList.begin();
 					  it != m_ParticlesWoundList.end();)
 	{

@@ -66,7 +66,7 @@ CEntityCondition::CEntityCondition(void)
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
 
-	m_WoundMap.clear();
+	m_WoundVector.clear();
 
 	Awoke();
 	/*
@@ -141,7 +141,7 @@ void CEntityCondition::reinit	()
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
 
-	m_WoundMap.clear();
+	m_WoundVector.clear();
 
 	Awoke();
 }
@@ -177,9 +177,9 @@ void CEntityCondition::ChangeEntityMorale(float value)
 void CEntityCondition::ChangeBleeding(float percent)
 {
 	//затянуть раны на заданное кол-во процентов
-	for(WOUND_PAIR_IT it = m_WoundMap.begin(); m_WoundMap.end() != it; ++it)
+	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
-		(*it).second->Incarnation(percent);
+		(*it)->Incarnation(percent);
 	}
 }
 
@@ -294,25 +294,36 @@ float CEntityCondition::HitOutfitEffect(float hit_power, ALife::EHitType hit_typ
 	return hit_power;
 }
 
+
 CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u16 element)
 {
 	//запомнить кость по которой ударили и силу удара
-	WOUND_PAIR_IT it = m_WoundMap.find(element);
-	//новая рана
-	if (it == m_WoundMap.end())
+	WOUND_VECTOR_IT it = m_WoundVector.begin();
+	for(;it != m_WoundVector.end(); it++)
 	{
-		m_WoundMap[element] = xr_new<CWound>(element);
-		m_WoundMap[element]->AddHit(hit_power*m_fV_Bleeding*
+		if((*it)->GetBoneNum() == element)
+			break;
+	}
+	
+	CWound* pWound = NULL;
+
+	//новая рана
+	if (it == m_WoundVector.end())
+	{
+		pWound = xr_new<CWound>(element);
+		pWound->AddHit(hit_power*m_fV_Bleeding*
 							::Random.randF(0.5f,1.5f), hit_type);
+		m_WoundVector.push_back(pWound);
 	}
 	//старая 
 	else
 	{
-		m_WoundMap[element]->AddHit(hit_power*m_fV_Bleeding*
-			::Random.randF(0.5f,1.5f), hit_type);
+		pWound = *it;
+		pWound->AddHit(hit_power*m_fV_Bleeding*::Random.randF(0.5f,1.5f), hit_type);
 	}
 
-	return m_WoundMap[element];
+	VERIFY(pWound);
+	return pWound;
 }
 
 CWound* CEntityCondition::ConditionHit(CObject* who, float hit_power, ALife::EHitType hit_type, u16 element)
@@ -357,69 +368,41 @@ float CEntityCondition::BleedingSpeed()
 {
 	float bleeding_speed =0;
 
-	for(WOUND_PAIR_IT it = m_WoundMap.begin(); m_WoundMap.end() != it; ++it)
+	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
-		bleeding_speed += (*it).second->TotalSize();
+		bleeding_speed += (*it)->TotalSize();
 	}
 	return bleeding_speed;
 }
 
 
+
+bool RemoveWoundPred(CWound* pWound)
+{
+	return (0 == pWound->TotalSize());
+}
+
+
 void CEntityCondition::UpdateHealth()
 {
-
 	m_fDeltaHealth -= BleedingSpeed() * m_iDeltaTime/1000;
 	VERIFY(_valid(m_fDeltaHealth));
 
 	//затянуть раны
-	for(WOUND_PAIR_IT it = m_WoundMap.begin(); m_WoundMap.end() != it; ++it)
+	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
 	{
-		(*it).second->Incarnation( m_fV_WoundIncarnation * m_iDeltaTime/1000);
+		(*it)->Incarnation( m_fV_WoundIncarnation * m_iDeltaTime/1000);
 	}
 
 
 	//убрать все зашившие раны из списка
-	
-	s16 previous_bone_num;
-	bool search_completed = false;
-
-	WOUND_PAIR_IT begin_it;
-
-	begin_it = m_WoundMap.begin(); 
-
-	do
+	WOUND_VECTOR_IT last_it = remove_if(m_WoundVector.begin(), m_WoundVector.end(),RemoveWoundPred);
+	if(m_WoundVector.end() != last_it)
 	{
-		previous_bone_num = -1;
-
-		for(WOUND_PAIR_IT it = begin_it; 
-						  m_WoundMap.end() != it;)
-		{
-			if((*it).second->TotalSize() == 0)
-				break;
-
-			//запомнить номер последней кости
-			previous_bone_num = (*it).first;
-			++it;
-		}
-
-
-		if(it == m_WoundMap.end()) 
-			search_completed = true; 
-		else
-		{
-			xr_delete((*it).second);
-			m_WoundMap.erase(it);
-			search_completed = false;
-
-			begin_it = m_WoundMap.find(previous_bone_num);
-			if(begin_it == m_WoundMap.end())
-			{
-				begin_it = m_WoundMap.begin();
-			}
-		}
-
-	}while(!search_completed);
-
+		for(WOUND_VECTOR_IT  it = last_it; it != m_WoundVector.end(); it++)
+			xr_delete((*it));
+		m_WoundVector.erase(last_it, m_WoundVector.end());
+	}
 }
 void CEntityCondition::UpdatePower()
 {

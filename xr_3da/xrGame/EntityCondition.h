@@ -81,8 +81,8 @@ protected:
 	//для подсчета состояния открытых ран,
 	//запоминается кость куда был нанесен хит
 	//и скорость потери крови из раны
-	DEFINE_MAP (u16, CWound*, WOUND_MAP, WOUND_PAIR_IT);
-	WOUND_MAP m_WoundMap;
+	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
+	WOUND_VECTOR m_WoundVector;
 
 	//все величины от 0 до 1			
 	float m_fHealth;				//здоровье

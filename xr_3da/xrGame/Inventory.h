@@ -29,7 +29,9 @@ public:
 	virtual ~CInventory();
 
 	// Вес инвенторя
-	float TotalWeight() const;										
+	float TotalWeight		() const;
+	float CalcTotalWeight	();
+
 	// Взять объект. Объект попадает в рюкзак, 
 	//если bNotActivate == false, то активировать объект, 
 	//если у владельца инвентаря ничего не активировано (e.g. трейдер)
@@ -152,8 +154,11 @@ protected:
 	//флаг, допускающий использование слотов
 	bool m_bSlotsUseful;
 
-	// Максимальный вес инвентаря
+	// максимальный вес инвентаря
 	float m_fMaxWeight;
+	// текущий вес в инвентаре
+	float m_fTotalWeight;
+
 	// Максимальное кол-во объектов в рюкзаке и 
 	u32 m_iMaxRuck;
 	//на поясе

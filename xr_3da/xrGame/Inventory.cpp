@@ -62,6 +62,9 @@ CInventory::CInventory()
 	m_bSlotsUseful = true;
 	m_bBeltUseful = false;
 	m_inventory_mask.resize((RuckWidth()*RuckHeight() - 1)/64 + 1);
+
+	//инициализируем невалидный вес инвентаря
+	m_fTotalWeight = -1.f;
 }
 
 
@@ -84,6 +87,8 @@ void CInventory::Clear()
 	
 
 	m_pOwner = NULL;
+
+	CalcTotalWeight();
 }
 
 //разместились ли вещи в рюкзаке
@@ -146,6 +151,10 @@ bool CInventory::Take(CGameObject *pObj, bool bNotActivate)
 	}
 
 	m_pOwner->OnItemTake		(pIItem);
+
+
+	CalcTotalWeight();
+
 	return true;
 }
 
@@ -185,6 +194,9 @@ bool CInventory::DropAll()
 		Ruck(pIItem);
 		pIItem->Drop();
 	}
+	
+	CalcTotalWeight();
+
 	return true;
 }
 
@@ -199,6 +211,8 @@ void CInventory::ClearAll()
 	}
 	m_ruck.clear();
 	m_all.clear();
+
+	CalcTotalWeight();
 }
 
 //положить вещь в слот
@@ -256,6 +270,8 @@ bool CInventory::Belt(PIItem pIItem)
 	{
 		PPIItem it = std::find(m_ruck.begin(), m_ruck.end(), pIItem); 
 		if(m_ruck.end() != it) m_ruck.erase(it);
+
+		CalcTotalWeight();
 		return true;
 	}
 }
@@ -281,6 +297,7 @@ bool CInventory::Ruck(PIItem pIItem)
 	}
 	
 	m_ruck.insert(m_ruck.end(), pIItem); 
+	CalcTotalWeight();
 	return true;
 }
 
@@ -582,12 +599,21 @@ PIItem CInventory::Get(const u16 id, bool bSearchRuck) const
 
 float CInventory::TotalWeight() const
 {
+	VERIFY(m_fTotalWeight>=0.f);
+	return m_fTotalWeight;
+}
+
+
+float CInventory::CalcTotalWeight()
+{
 	float weight = 0;
 	for(TIItemSet::const_iterator it = m_all.begin(); m_all.end() != it; ++it) 
-					weight += (*it)->Weight();
-	
-	return weight;
+		weight += (*it)->Weight();
+
+	m_fTotalWeight = weight;
+	return m_fTotalWeight;
 }
+
 
 u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)
 {

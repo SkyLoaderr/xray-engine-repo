@@ -37,6 +37,8 @@ CParticlesPlayer::CParticlesPlayer ()
 {
 	m_Bones.push_back	(SBoneInfo(0,Fvector().set(0,0,0)));
 	bone_mask			= u64(1)<<u64(0);
+	
+	m_bActiveBones = false;
 }
 
 CParticlesPlayer::~CParticlesPlayer ()
@@ -126,6 +128,8 @@ void CParticlesPlayer::StartParticles(const ref_str& particles_name, u16 bone_nu
 	MakeXFORM						(object,pBoneInfo->index,particles_info->dir,pBoneInfo->offset,xform);
 	particles_info->ps->UpdateParent(xform,zero_vel);
 	particles_info->ps->Play		();
+
+	m_bActiveBones = true;
 }
 
 void CParticlesPlayer::StartParticles(const ref_str& ps_name, const Fvector& dir, u16 sender_id, int life_time, bool auto_stop)
@@ -148,6 +152,8 @@ void CParticlesPlayer::StartParticles(const ref_str& ps_name, const Fvector& dir
 		if(!particles_info->ps->IsPlaying())
 			particles_info->ps->Play	();
 	}
+
+	m_bActiveBones = true;
 }
 
 void CParticlesPlayer::StopParticles(u16 sender_id, u16 bone_id)
@@ -189,9 +195,11 @@ void CParticlesPlayer::AutoStopParticles(const ref_str& ps_name, u16 bone_id)
 }
 void CParticlesPlayer::UpdateParticles()
 {
-	if(!bone_mask) return;
+	if(!m_bActiveBones) return;
 
-	CObject* object			= dynamic_cast<CObject*>(this);
+	m_bActiveBones  = false;
+
+    CObject* object			= dynamic_cast<CObject*>(this);
 	VERIFY(object);
 
 	for(BoneInfoVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
@@ -214,6 +222,8 @@ void CParticlesPlayer::UpdateParticles()
 				ParticlesInfoListIt cur_it	= p_it++;
 				b_info.particles.erase		(cur_it);
 			}
+			else
+				m_bActiveBones  = true;
 		}
 	}
 }
