@@ -741,3 +741,9 @@ void CActor::g_wpn_Set(DWORD id)
 		Level().Send(P,net_flags(TRUE));
 	}
 }
+void CActor::g_wpn_Next	()
+{
+}
+void CActor::g_wpn_Prev	()
+{
+}
