@@ -65,11 +65,11 @@ void			CLight_DB::Unload	()
 
 light*			CLight_DB::Create	()
 {
-	light*	L					= xr_new<light>	();
-	L->flags.bStatic			= false;
-	L->flags.bActive			= false;
-	L->flags.bShadow			= true;
-	return						L;
+	light*	L			= xr_new<light>	();
+	L->flags.bStatic	= false;
+	L->flags.bActive	= false;
+	L->flags.bShadow	= true;
+	return				L;
 }
 
 void			CLight_DB::Destroy	(light* L)
