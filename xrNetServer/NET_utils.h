@@ -134,7 +134,7 @@ public:
 	}
 
 	// reading
-	IC u32		read_start(){
+	IC void		read_start(){
 		r_pos		= 0;
 	}
 	IC u32		r_begin			( u16& type	)	// returns time of receiving
