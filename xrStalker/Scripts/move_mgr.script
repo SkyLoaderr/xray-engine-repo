@@ -95,9 +95,11 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.object:set_detail_path_type(move.line)
 	self.object:set_body_state(move.standing)
-	--self.object:set_mental_state(anim.danger)
-	self.object:set_mental_state(anim.free)
-	self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
+
+	--self.object:set_mental_state(anim.free)
+	--self.object:set_movement_type(move.run) -- на стартовую точку идти бегом
+	self:update_movement_state()
+
 	self.object:set_path_type(game_object.patrol_path)
 	self.object:set_patrol_path(self.path_walk, patrol.start, patrol.continue, true)
 	self.object:set_sight(look.danger, nil, 0)
