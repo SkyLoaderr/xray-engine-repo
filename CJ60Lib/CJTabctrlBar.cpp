@@ -101,6 +101,8 @@ CCJTabCtrlBar::CCJTabCtrlBar()
 
 CCJTabCtrlBar::~CCJTabCtrlBar()
 {
+	m_TabFont.DeleteObject();
+
 	safe_delete(m_pTabCtrl);
 	while(!m_views.IsEmpty()) {
 		TCB_ITEM *pMember=m_views.RemoveHead();

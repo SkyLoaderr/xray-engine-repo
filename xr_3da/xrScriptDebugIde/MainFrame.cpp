@@ -86,14 +86,17 @@ CMainFrame::CMainFrame()
 	m_hAccelNoProject = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_NO_PROJECT));
 	m_hAccelDebug = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_DEBUG));
 	m_hAccelDebugBreak = ::LoadAccelerators(theApp.m_hInstance, MAKEINTRESOURCE(IDR_ACCEL_DEBUG_BREAK));
+	m_do_thread_end = false;
 }
 
 CMainFrame::~CMainFrame()
 {
 	AfxGetApp()->WriteProfileString("options","last project", GetProject()->GetName() );
 
-	if(m_pMailSlotThread!=NULL)
- 		delete m_pMailSlotThread;
+	m_do_thread_end = true;
+	m_pMailSlotThread->m_bAutoDelete = FALSE;
+	WaitForSingleObject(m_pMailSlotThread->m_hThread, INFINITE);
+	delete m_pMailSlotThread;
 
 	CloseHandle(m_mailSlot);
 
@@ -120,7 +123,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create toolbar\n");
 		return -1;      // fail to create
 	}
-
+/*
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
 		  sizeof(indicators)/sizeof(UINT)))
@@ -128,7 +131,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-
+*/
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
@@ -819,6 +822,8 @@ UINT CMainFrame::StartListener()
 	if( CheckMailslotMessage(m_mailSlot, msg) )
 		TranslateMsg(msg);
 		Sleep(10);
+		if(m_do_thread_end)
+			AfxEndThread(0);
 	};
 
 }

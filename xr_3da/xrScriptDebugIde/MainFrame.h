@@ -50,7 +50,7 @@ protected:
 	void			TranslateMsg( CMailSlotMsg& msg );
 	CWinThread*		m_pMailSlotThread;
 	HANDLE			m_mailSlot;
-
+	bool			m_do_thread_end;
 	BOOL			checkExistingFolder(CString str);
 // Operations
 public:
@@ -92,7 +92,7 @@ public:
 #endif
 
 protected:  // control bar embedded members
-	CStatusBar		m_wndStatusBar;
+//	CStatusBar		m_wndStatusBar;
 	CToolBar		m_wndToolBar;
 
 // Generated message map functions

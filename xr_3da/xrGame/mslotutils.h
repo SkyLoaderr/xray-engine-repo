@@ -155,9 +155,11 @@ inline BOOL CheckMailslotMessage(HANDLE hSlot, CMailSlotMsg& msg){
         (LPDWORD) NULL);              // no read time-out 
  
 	R_ASSERT(fResult);
-    if (!fResult) return false; 
  
-    if (cbMessage == MAILSLOT_NO_MESSAGE) return false; 
+	if (!fResult || cbMessage == MAILSLOT_NO_MESSAGE) {
+		CloseHandle(hEvent);
+		return false; 
+	}
  
 		msg.Reset();
         fResult = ReadFile(hSlot, 
@@ -167,6 +169,7 @@ inline BOOL CheckMailslotMessage(HANDLE hSlot, CMailSlotMsg& msg){
             &ov); 
 		msg.SetLen(cbRead);
 		R_ASSERT(fResult);
-
+	
+		CloseHandle(hEvent);
 		return fResult;
 }
