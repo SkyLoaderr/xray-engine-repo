@@ -16,29 +16,14 @@
 #pragma link "ExtBtn"
 #pragma resource "*.dfm"
 
-struct SIntegerParam{
-	int min;
-    int max;
-	int increment;
-    SIntegerParam(int mn, int mx, int inc):min(mn),max(mx),increment(inc){;}
-};
-
-struct SFloatParam{
-	float min;
-    float max;
-	float increment;
-    SFloatParam(float mn, float mx, float inc):min(mn),max(mx),increment(inc){;}
-};
-
-AStringVec BoolData;
+CFS_Memory TfrmShaderProperties::m_Stream;
+const LPSTR BOOLString[2]={"False","True"};
 
 TfrmShaderProperties* TfrmShaderProperties::form=0;
 //---------------------------------------------------------------------------
 __fastcall TfrmShaderProperties::TfrmShaderProperties(TComponent* Owner)
 	: TForm(Owner)
 {
-	BoolData.push_back("False");
-	BoolData.push_back("True");
     char buf[MAX_PATH] = {"shader_ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
 }
@@ -58,21 +43,6 @@ void __fastcall TfrmShaderProperties::HideProperties(){
 void __fastcall TfrmShaderProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-	// free resource
-    for ( TElTreeItem* node = tvProperties->Items->GetFirstNode(); node; node = node->GetNext()){
-        switch((DWORD)node->Tag){
-        case BPID_INTEGER:
-        case BPID_FLOAT:{
-            LPVOID p = node->ColumnText->Objects[0];
-            delete p;
-        }break;
-        case BPID_BOOL:
-        case BPID_TOKEN:{
-        	AStringVec& v = *(AStringVec*)node->ColumnText->Objects[0];
-            v.clear();
-        }break;
-        }
-    }
 	form = 0;
 	Action = caFree;
 }
@@ -91,12 +61,13 @@ void __fastcall TfrmShaderProperties::FormShow(TObject *Sender)
     InplaceCustom->Editor->BorderStyle= bsNone;
     InplaceCustom->Editor->ButtonGlyph->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
     InplaceCustom->Editor->ReadOnly	= true;
+    InplaceCustom->Editor->OnButtonClick = CustomClick;
 
 	LoadProperties();
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value, LPDWORD p){
+TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value){
 	TElTreeItem* TI     = tvProperties->Items->AddChildObject(parent,key,(TObject*)value);
     TI->Tag	            = type;
 	TI->UseStyles 		= true;
@@ -105,14 +76,14 @@ TElTreeItem* __fastcall TfrmShaderProperties::AddItem(TElTreeItem* parent, DWORD
 
     switch (type){
     case BPID_MARKER:	CS->CellType = sftUndef;	break;
-    case BPID_STRING:	CS->CellType = sftText; 	TI->ColumnText->Add (LPCSTR(value));break;
-    case BPID_MATRIX:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Matrix]");   break;
+    case BPID_MATRIX:	CS->CellType = sftCustom;   TI->ColumnText->Add (LPSTR(value));break;//"[Matrix]");   break;
     case BPID_CONSTANT:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Color]");	break;
     case BPID_TEXTURE:	CS->CellType = sftCustom;   TI->ColumnText->Add ("[Textures]");	break;
-    case BPID_INTEGER:	CS->CellType = sftNumber;	TI->ColumnText->AddObject(AnsiString(*(int*)value),(TObject*)p);	break;
-    case BPID_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->AddObject(AnsiString(*(float*)value),(TObject*)p);	break;
-    case BPID_TOKEN:	CS->CellType = sftUndef;	TI->ColumnText->AddObject(LPCSTR((*(AStringVec*)p)[*value].c_str()),(TObject*)p); CS->Style = ElhsOwnerDraw; break;
-    case BPID_BOOL: 	CS->CellType = sftUndef;    TI->ColumnText->AddObject(LPCSTR(BoolData[*value].c_str()),(TObject*)&BoolData); CS->Style = ElhsOwnerDraw;break;
+    case BPID_INTEGER:	CS->CellType = sftNumber;	TI->ColumnText->Add	(AnsiString(*(int*)value));		break;
+    case BPID_FLOAT:	CS->CellType = sftFloating; TI->ColumnText->Add	(AnsiString(*(float*)value));	break;
+    case BPID_BOOL: 	CS->CellType = sftUndef;    TI->ColumnText->Add	(BOOLString[((BP_BOOL*)value)->value]); CS->Style = ElhsOwnerDraw; break;
+//    case BPID_TOKEN:{	CS->CellType = sftUndef;	BP_TOKEN* T = (BP_TOKEN*)value; TI->ColumnText->Add	(T->elements[T->IDselected]); CS->Style = ElhsOwnerDraw; }break;
+	default: THROW2("BPID_????");
     }
     return TI;
 }
@@ -142,22 +113,22 @@ void __fastcall TfrmShaderProperties::InplaceFloatBeforeOperation(
       TObject *Sender, bool &DefaultConversion)
 {
 	TElFloatSpinEdit* E = InplaceFloat->Editor;
-    SFloatParam* P = (SFloatParam*)InplaceFloat->Item->ColumnText->Objects[0];
+    BP_Float* P = (BP_Float*)InplaceFloat->Item->Data;
     E->MinValue = P->min;
     E->MaxValue = P->max;
-    E->Increment= P->increment;
-    E->LargeIncrement = P->increment*10;
+    E->Increment= (P->max-P->min)/1000.f;
+    E->LargeIncrement = E->Increment*10;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmShaderProperties::InplaceNumberBeforeOperation(
       TObject *Sender, bool &DefaultConversion)
 {
 	TElSpinEdit* E = InplaceNumber->Editor;
-    SIntegerParam* P = (SIntegerParam*)InplaceNumber->Item->ColumnText->Objects[0];
+    BP_Integer* P = (BP_Integer*)InplaceNumber->Item->Data;
     E->MinValue = P->min;
     E->MaxValue = P->max;
-    E->Increment= P->increment;
-    E->LargeIncrement = P->increment*10;
+    E->Increment= 1;
+    E->LargeIncrement = E->Increment*10;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmShaderProperties::tvPropertiesClick(TObject *Sender)
@@ -203,26 +174,37 @@ void __fastcall TfrmShaderProperties::tvPropertiesMouseDown(TObject *Sender,
 	TElTreeItem* item = tvProperties->GetItemAt(X,Y,0,HS);
   	if ((HS==1)&&(Button==mbLeft)){
     	DWORD type = (DWORD)item->Tag;
+		pmEnum->Tag = (int)item;
         switch(type){
-		case BPID_TOKEN:
 		case BPID_BOOL:{
             pmEnum->Items->Clear();
-            AStringVec& tokens = *(AStringVec*)item->ColumnText->Objects[0];
-            for (DWORD i=0; i<tokens.size(); i++){
+            for (DWORD i=0; i<2; i++){
                 TMenuItem* mi = new TMenuItem(0);
-                mi->Caption = tokens[i];
-                mi->Tag     = (int)item;
+                mi->Caption = BOOLString[i];
                 mi->OnClick = PMItemClick;
                 pmEnum->Items->Add(mi);
             }
+        }break;
+		case BPID_TOKEN:{
+            pmEnum->Items->Clear();
+            BP_TOKEN* tokens = (BP_TOKEN*)item->Data;
+            for (DWORD i=0; i<tokens->Count; i++){
+                TMenuItem* mi = new TMenuItem(0);
+//                mi->Caption = tokens->elements[i];
+                mi->OnClick = PMItemClick;
+                pmEnum->Items->Add(mi);
+            }
+        }break;
+        };
+        switch(type){
+		case BPID_BOOL:
+		case BPID_TOKEN:
             TPoint P; P.x = X; P.y = Y;
             P=tvProperties->ClientToScreen(P);
             pmEnum->Canvas->Brush->Color = clBlack;
-            pmEnum->Canvas->Brush->Color = clBlack;
             pmEnum->Popup(P.x,P.y-10);
+            break;
         }
-        break;
-        };
     };
 }
 //---------------------------------------------------------------------------
@@ -230,33 +212,28 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
 {
     TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
     if (mi){
-        TElTreeItem* item = (TElTreeItem*)mi->Tag;
+        TElTreeItem* item = (TElTreeItem*)pmEnum->Tag;
     	DWORD type = (DWORD)item->Tag;
         switch(type){
+		case BPID_BOOL:
+            item->ColumnText->Strings[0] 	= mi->Caption;
+            ((BP_BOOL*)item->Data)->value 	= mi->MenuIndex;
+        break;
 		case BPID_TOKEN:
-		case BPID_BOOL:{
-            AStringVec& tokens = *(AStringVec*)item->ColumnText->Objects[0];
-            item->ColumnText->Strings[0] = tokens[mi->MenuIndex];
-            *(int*)item->Data = mi->MenuIndex;
-        }break;
+            item->ColumnText->Strings[0] 		= mi->Caption;
+            ((BP_TOKEN*)item->Data)->IDselected = mi->MenuIndex;
+        break;
         }
     }
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmShaderProperties::ebShaderPropertiesClick(
-      TObject *Sender)
-{
-//
-}
-//---------------------------------------------------------------------------
 // *** FORMAT ***
 // DWORD	type
 // stringZ	name
 // []		data
-
 void __fastcall TfrmShaderProperties::LoadProperties(){
-	CFS_Memory m_Stream;
+	m_Stream.clear();
 	if (form&&SHTools.GetCurrentBlender(m_Stream)){ // fill Tree
         CStream data(m_Stream.pointer(), m_Stream.size());
         data.Advance(sizeof(CBlender_DESC));
@@ -265,25 +242,24 @@ void __fastcall TfrmShaderProperties::LoadProperties(){
         TElTreeItem* marker_node=0;
         TElTreeItem* node;
 
-        char buf[255];
-        BP_Integer i;
-        BP_Float f;
-        BP_BOOL b;
         while (!data.Eof()){
+	        int sz=0;
             type = data.Rdword();
             data.RstringZ(key);
             switch(type){
-            case BPID_MARKER:	node = form->AddItem(marker_node,type,key); break;
+            case BPID_MARKER:	break;
             case BPID_TOKEN: 	break;
-            case BPID_STRING:
-            case BPID_MATRIX:
-            case BPID_CONSTANT:
-            case BPID_TEXTURE: 	data.RstringZ(buf);					node = form->AddItem(marker_node,type,key,(LPDWORD)&buf);break;
-            case BPID_INTEGER: 	data.Read(&i,sizeof(BP_Integer));	node = form->AddItem(marker_node,type,key,(LPDWORD)&i);	break;
-            case BPID_FLOAT: 	data.Read(&f,sizeof(BP_Float)); 	node = form->AddItem(marker_node,type,key,(LPDWORD)&f); break;
-            case BPID_BOOL: 	data.Read(&b,sizeof(BP_BOOL)); 		node = form->AddItem(marker_node,type,key,(LPDWORD)&b); break;
+            case BPID_MATRIX:	sz=sizeof(string64);	break;
+            case BPID_CONSTANT:	sz=sizeof(string64); 	break;
+            case BPID_TEXTURE: 	sz=sizeof(string64); 	break;
+            case BPID_INTEGER: 	sz=sizeof(BP_Integer);	break;
+            case BPID_FLOAT: 	sz=sizeof(BP_Float); 	break;
+            case BPID_BOOL: 	sz=sizeof(BP_BOOL); 	break;
             }
+            if (type==BPID_MARKER) marker_node = 0;
+            node = form->AddItem(marker_node,type,key,(LPDWORD)data.Pointer());
             if (type==BPID_MARKER) marker_node = node;
+            data.Advance(sz);
         }
 	    form->tvProperties->FullExpand();
     }
@@ -291,10 +267,23 @@ void __fastcall TfrmShaderProperties::LoadProperties(){
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmShaderProperties::SaveProperties(){
-	CFS_Memory m_Stream;
+//	CFS_Memory m_Stream;
 //S заполнить ???    SHTools.GetCurrentBlender(m_Stream);
 	CStream data(m_Stream.pointer(), m_Stream.size());
     SHTools.SetCurrentBlender(data);
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmShaderProperties::CustomClick(
+      TObject *Sender)
+{
+	DWORD type = InplaceCustom->Item->Tag;
+    switch (type){
+    case BPID_MATRIX:	type=0; break;
+    case BPID_CONSTANT:	type=0; break;
+    case BPID_TEXTURE:	type=0; break;
+    }
+}
+//---------------------------------------------------------------------------
+
 

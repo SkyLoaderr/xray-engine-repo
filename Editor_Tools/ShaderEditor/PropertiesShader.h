@@ -64,11 +64,12 @@ __published:	// IDE-managed Components
           TCanvas *Surface, TRect &R, int SectionIndex);
 	void __fastcall tvPropertiesMouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
-	void __fastcall ebShaderPropertiesClick(TObject *Sender);
+	void __fastcall CustomClick(TObject *Sender);
 private:	// User declarations
 	static TfrmShaderProperties *form;
     void __fastcall PMItemClick(TObject *Sender);
-	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0, LPDWORD p=0);
+	TElTreeItem* __fastcall AddItem(TElTreeItem* parent, DWORD type, LPCSTR key, LPDWORD value=0);
+	static CFS_Memory m_Stream;
 public:		// User declarations
 	__fastcall TfrmShaderProperties		        (TComponent* Owner);
     static void __fastcall ShowProperties();

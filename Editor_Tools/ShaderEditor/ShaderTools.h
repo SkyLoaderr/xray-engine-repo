@@ -17,6 +17,11 @@ DEFINE_MAP_PRED(LPSTR,CConstant*,ConstantMap,ConstantPairIt,str_pred);
 DEFINE_MAP_PRED(LPSTR,CMatrix*,MatrixMap,MatrixPairIt,str_pred);
 DEFINE_MAP_PRED(LPSTR,CBlender*,BlenderMap,BlenderPairIt,str_pred);
 
+class CParseBlender{
+public:
+	virtual void Parse(DWORD type, LPCSTR key, LPVOID data)=0;
+};
+
 class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 {
 	CLibObject*			m_LibObject;
@@ -25,14 +30,39 @@ class CShaderTools: public pureDeviceCreate, public pureDeviceDestroy
 
 	TemplateVec			m_TemplatePalette;
 
+	ConstantMap			m_OptConstants;
+	MatrixMap			m_OptMatrices;
 	ConstantMap			m_Constants;
 	MatrixMap			m_Matrices;
 	BlenderMap			m_Blenders;
 
-    LPCSTR				GenerateBlenderName(LPSTR name, LPCSTR source);
+	CBlender*			FindBlender			(LPCSTR name);
+    LPCSTR				GenerateBlenderName	(LPSTR name, LPCSTR source);
+    void				RemoveBlender		(LPCSTR name);
+
+	CMatrix*			FindMatrix			(LPCSTR name);
+    LPCSTR				GenerateMatrixName	(LPSTR name);
+    LPCSTR				AppendMatrix		(CMatrix* src=0);
+    void				RemoveMatrix		(LPCSTR name);
+
+	CConstant*			FindConstant		(LPCSTR name);
+    LPCSTR				GenerateConstantName(LPSTR name);
+    LPCSTR				AppendConstant		(CConstant* src=0);
+    void				RemoveConstant		(LPCSTR name);
+
+friend class CCollapseBlender;
+friend class CExpandBlender;
+friend class TfrmShaderProperties;
+    void				CollapseMatrix		(LPSTR name);
+    void				CollapseConstant	(LPSTR name);
+    void				ExpandMatrix		(LPSTR name);
+    void				ExpandConstant		(LPSTR name);
+    void				ExpandReferences	();
+    void				CollapseReferences	();
+
+    void 				ParseBlender		(CBlender* B, CParseBlender& P);
 public:
     CBlender*			m_CurrentBlender;
-	CBlender*			FindBlenderByName(LPCSTR name);
 public:
 						CShaderTools	();
     virtual 			~CShaderTools	();
