@@ -77,7 +77,7 @@ end
 function FSM:run_loop()
 	printf("running FSM loop for NPC %s", self.npc:name())
 
-	while self.is_running() do
+	while self:is_running() do
 		local transition_vector = self.transition_matrix[self.current_state]
 		table.foreach(transition_vector, 
 					  function(to_state_num, cond_func) 
