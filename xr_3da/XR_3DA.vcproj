@@ -500,7 +500,7 @@
 							RelativePath=".\Blenders\Blender_CLSID.h">
 						</File>
 						<File
-							RelativePath="Blender_Palette.cpp">
+							RelativePath="Blenders\Blender_Palette.cpp">
 						</File>
 						<File
 							RelativePath=".\Blenders\Blender_Recorder.cpp">

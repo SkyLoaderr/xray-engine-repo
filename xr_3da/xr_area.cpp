@@ -54,7 +54,7 @@ CObjectSpace::CObjectSpace( )
 //----------------------------------------------------------------------
 CObjectSpace::~CObjectSpace( )
 {
-	Sound->set_geometry			(NULL);
+	Sound->set_geometry_occ		(NULL);
 	Sound->set_handler			(NULL);
 
 	Device.Shader.Delete		(sh_debug);
@@ -209,7 +209,7 @@ void CObjectSpace::Load	(IReader *F)
 	Dynamic.SetSize			( x_count, z_count );
 
 	// Sound
-	Sound->set_geometry			( &Static );
+	Sound->set_geometry_occ		( &Static );
 	Sound->set_handler			( _sound_event );
 }
 //----------------------------------------------------------------------
