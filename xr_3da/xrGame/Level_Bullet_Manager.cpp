@@ -67,6 +67,8 @@ void SBullet::Init(const Fvector& position,
 
 	flags.set(TRACER_FLAG, cartridge.m_tracer);
 	flags.set(RICOCHET_ENABLED_FLAG, cartridge.m_ricochet);
+
+	render_offset = ::Random.randF(0.f,1.0f);
 }
 
 
@@ -295,7 +297,7 @@ void CBulletManager::Render	()
 		dist.normalize();
 
 		Fvector center;
-		center.mad(bullet->pos, dist,  -length/2.f);
+		center.mad(bullet->pos, dist,  -length*bullet->render_offset);
 		tracers.Render(verts, center, dist, length, width);
 	}
 

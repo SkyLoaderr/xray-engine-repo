@@ -6476,6 +6476,9 @@
 				RelativePath=".\devices.ltx">
 			</File>
 			<File
+				RelativePath=".\effectors.ltx">
+			</File>
+			<File
 				RelativePath=".\environment.ltx">
 			</File>
 			<File
@@ -6483,6 +6486,9 @@
 			</File>
 			<File
 				RelativePath=".\future.txt">
+			</File>
+			<File
+				RelativePath=".\helicopter.ltx">
 			</File>
 			<File
 				RelativePath=".\monsters.ltx">
