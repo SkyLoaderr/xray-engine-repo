@@ -8,7 +8,7 @@
 	#define XRSOUND_API __declspec(dllimport)
 #endif
 
-#ifdef _EDITOR
+#ifdef __BORLANDC__
 	#define XRSOUND_EDITOR_API XRSOUND_API
 #else
 	#define XRSOUND_EDITOR_API
