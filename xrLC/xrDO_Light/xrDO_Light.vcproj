@@ -165,7 +165,7 @@
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
-				Detect64BitPortabilityProblems="TRUE"
+				Detect64BitPortabilityProblems="FALSE"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
