@@ -42,36 +42,6 @@ function set_storyline(object, char_ini)
             xr_trivial.add_novice3    (object)
         end
 
-
-    -- Бандиты на свалке в гараже
-    xr_motivator.storage[object:id()].robber = {
-        enabled = false,
-            leader = false,
-            helper = false,
-            path_rob = nil
-        }
-        if char_ini:section_exist ("robber") == true then
-            if char_ini:line_exist("robber", "enabled") == true then
-                    xr_motivator.storage[object:id()].robber.enabled = char_ini:r_bool("robber", "enabled")
-            end
-            if char_ini:line_exist("robber", "leader") == true then
-                    xr_motivator.storage[object:id()].robber.leader = char_ini:r_bool("robber", "leader")
-            end
-            if char_ini:line_exist("robber", "helper") == true then
-                    xr_motivator.storage[object:id()].robber.helper = char_ini:r_bool("robber", "helper")
-            end
-            if char_ini:line_exist("robber", "path_rob") == true then
-                    xr_motivator.storage[object:id()].robber.path_rob = char_ini:r_string("robber", "path_rob")
-            end
-        end
-    if xr_motivator.storage[object:id()].robber.enabled == true and
-       actor ~= nil and
-       actor:dont_has_info("garbage_robber_processed")
-    then
-        xr_robbers.add_to_binder  (object)
-    end
-
-
     --Настройка сталкера зомби
     xr_motivator.storage[object:id()].zombie = {
             path     = nil,         --Путь, по которому ходить
