@@ -92,8 +92,8 @@ void CWeapon::Load(CInifile* ini, const char* section)
 
 	iHitPower		= ini->ReadINT		(section,"hit_power"		);
 
-	light_base.SetColor	(.5f,.5f,.0f);
-	light_base.SetRange	(4.f);
+	light_base.SetColor	(.5f,.3f,.0f);
+	light_base.SetRange	(3.f);
 
 	bVisible		= FALSE;
 }
@@ -173,11 +173,14 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	{
 		light_frame		= Device.dwFrame;
 		
-		light_render.SetPosition	(Peff);
-		light_render.SetColor		(light_base.color);
-		light_render.SetRange		(light_base.sphere.R);
+		float	var_color = 0.05f;
+		float	var_range = 0.5f;
 
-		::Render.Lights_Dynamic.Add(&light_render);
+		light_render.SetPosition	(Peff);
+		light_render.SetColor		(Random.randFs(var_color,light_base.color.r),Random.randFs(var_color,light_base.color.g),Random.randFs(var_color,light_base.color.b));
+		light_render.SetRange		(Random.randFs(var_range,light_base.sphere.R));
+
+		::Render.Lights_Dynamic.Add	(&light_render);
 	}
 
 	return				bResult;
