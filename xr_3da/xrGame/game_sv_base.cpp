@@ -66,7 +66,7 @@ u32					game_sv_GameState::get_alive_count			(u32 team)
 	for		(u32 it=0; it<cnt; it++)	
 	{
 		game_PlayerState*	ps	=	get_it	(it);
-		if (ps->team == team)	alive	+=	(ps->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)?0:1;
+		if (u32(ps->team) == team)	alive	+=	(ps->flags&GAME_PLAYER_FLAG_VERY_VERY_DEAD)?0:1;
 	}
 	return alive;
 }
@@ -303,6 +303,6 @@ void game_sv_GameState::Update		()
 	for (u32 it=0; it<S->client_Count(); it++)
 	{
 		xrClientData*	C		= (xrClientData*)	S->client_Get(it);
-		C->ps.ping				= C->stats.getPing	();
+		C->ps.ping				= u16(C->stats.getPing());
 	}
 }
