@@ -44,6 +44,6 @@ p2f 	p_main	( v2p_in IN )
 
   half4 C 	= tex2D		(s_accumulator, float2(IN.Tex0.x, IN.Tex0.y)); 
   half4 S	= half4		(C.w,C.w,C.w,C.w);
-  OUT.C 	= C; // + S;
+  OUT.C 	= C + S;
   return OUT;
 }
