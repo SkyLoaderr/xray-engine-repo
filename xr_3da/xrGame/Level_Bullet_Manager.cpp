@@ -91,6 +91,7 @@ void CBulletManager::Load		()
 	m_dwStepTime = pSettings->r_u32(BULLET_MANAGER_SECTION,	   "time_step");
 	m_fMinBulletSpeed = pSettings->r_float(BULLET_MANAGER_SECTION, "min_bullet_speed");
 	m_fCollisionEnergyMin  = pSettings->r_float(BULLET_MANAGER_SECTION, "collision_energy_min");
+	m_fCollisionEnergyMax  = pSettings->r_float(BULLET_MANAGER_SECTION, "collision_energy_max");
 }
 
 void CBulletManager::Clear		()

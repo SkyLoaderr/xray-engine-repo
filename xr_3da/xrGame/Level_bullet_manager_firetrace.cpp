@@ -147,7 +147,7 @@ void CBulletManager::StaticObjectHit(SBullet* bullet, const Fvector& end_point, 
 		//уменьшение скорости полета в зависимости 
 		//от угла падения пули (чем прямее угол, тем больше потеря)
 		float scale = 1.f -_abs(bullet->dir.dotproduct(hit_normal))*m_fCollisionEnergyMin;
-		clamp(scale, 0.f, 0.9f);
+		clamp(scale, 0.f, m_fCollisionEnergyMax);
 			
 		//вычисление рикошета, делается немного фейком,
 		//т.к. пуля остается в точке столкновения
