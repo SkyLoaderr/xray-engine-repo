@@ -178,7 +178,7 @@ void __fastcall TfrmChoseItem::FillGameAnim()
 {
     form->Caption					= "Select Anim";
     FS_QueryMap lst;
-    if (FS.file_list(lst,_game_meshes_,FS_ListFiles|FS_ClampExt,".anm")){
+    if (FS.file_list(lst,"$game_anims$",FS_ListFiles,".anm,*.anms")){
 	    FS_QueryPairIt	it			= lst.begin();
     	FS_QueryPairIt	_E			= lst.end();
 	    for (; it!=_E; it++)		AppendItem(it->first.c_str());

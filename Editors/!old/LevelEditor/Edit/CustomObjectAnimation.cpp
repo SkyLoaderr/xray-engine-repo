@@ -200,7 +200,7 @@ void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif
 	AnsiString fn;
 	switch(B->btn_num){
     case 0:
-        if(EFS.GetOpenName(_omotion_, fn)){
+        if(EFS.GetOpenName("$game_anims$", fn)){
             m_Motion->LoadMotion(fn.c_str());
             m_MotionParams->Set	(m_Motion);
             AnimationUpdate		(m_MotionParams->Frame());
@@ -209,7 +209,7 @@ void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif
         }
     break;
     case 1:
-        if(EFS.GetSaveName(_omotion_, fn))
+        if(EFS.GetSaveName("$game_anims$", fn))
             m_Motion->SaveMotion(fn.c_str());
     break;
 	}

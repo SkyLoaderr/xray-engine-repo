@@ -6,7 +6,7 @@
 
 #define EOBJ_OMOTION   			0x1100
 #define EOBJ_SMOTION   			0x1200
-#define EOBJ_OMOTION_VERSION   	0x0004
+#define EOBJ_OMOTION_VERSION   	0x0005
 #define EOBJ_SMOTION_VERSION   	0x0006
 
 #ifdef _LW_EXPORT
@@ -118,6 +118,14 @@ bool COMotion::Load(IReader& F)
             envs[ch] = xr_new<CEnvelope> ();
             envs[ch]->Load_1(F);
         }
+    }else if (vers==0x0004){
+	    Clear	();
+        envs[ctPositionX] = xr_new<CEnvelope>();	envs[ctPositionX]->Load_2(F);
+        envs[ctPositionY] = xr_new<CEnvelope>();	envs[ctPositionY]->Load_2(F);
+        envs[ctPositionZ] = xr_new<CEnvelope>();	envs[ctPositionZ]->Load_2(F);
+        envs[ctRotationP] = xr_new<CEnvelope>();	envs[ctRotationP]->Load_2(F);
+        envs[ctRotationH] = xr_new<CEnvelope>();	envs[ctRotationH]->Load_2(F);
+        envs[ctRotationB] = xr_new<CEnvelope>();	envs[ctRotationB]->Load_2(F);
     }else{
 		if (vers!=EOBJ_OMOTION_VERSION) return false;
 	    Clear	();
@@ -135,8 +143,8 @@ void COMotion::CreateKey(float t, const Fvector& P, const Fvector& R)
 	envs[ctPositionX]->InsertKey(t,P.x);
 	envs[ctPositionY]->InsertKey(t,P.y);
 	envs[ctPositionZ]->InsertKey(t,P.z);
-	envs[ctRotationH]->InsertKey(t,R.x);
-	envs[ctRotationP]->InsertKey(t,R.y);
+	envs[ctRotationH]->InsertKey(t,R.y);
+	envs[ctRotationP]->InsertKey(t,R.x);
 	envs[ctRotationB]->InsertKey(t,R.z);
 }
 void COMotion::DeleteKey(float t)
