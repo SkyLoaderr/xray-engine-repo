@@ -3,8 +3,8 @@
 <xml>
 <!---------------------------KILLER REGULAR----------------------->
 	<specific_character id="killer_regular_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="27" y="6"></icon>
+		<name>Неизвестный убийца</name>
+		<icon x="4" y="2"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
@@ -21,8 +21,8 @@
 
 <!---------------------------KILLER SNIPER---------------------->
 	<specific_character id="killer_sniper_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="2" y="2"></icon>
+		<name>Неизвестный убийца</name>
+		<icon x="28" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
@@ -39,8 +39,8 @@
 
 <!---------------------------KILLER SPECNAZ---------------------->
 	<specific_character id="killer_specnaz_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="29" y="6"></icon>
+		<name>Неизвестный убийца</name>
+		<icon x="30" y="6"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
@@ -57,8 +57,8 @@
 
 <!---------------------------KILLER MASTER----------------------->
 	<specific_character id="killer_master_default" team_default = "1">
-		<name>Неизвестный сталкер</name>
-		<icon x="12" y="0"></icon>
+		<name>Неизвестный убийца</name>
+		<icon x="14" y="0"></icon>
 		<map_icon x="2" y="0"></map_icon>
 		<bio>Об этом сталкере ничего не известно.</bio>
 
