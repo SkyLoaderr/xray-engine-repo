@@ -243,7 +243,7 @@ void CRender::Calculate				()
 
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
-	float	fov_factor				=	90.f / Device.fFOV;
+	float	fov_factor				=	_sqr		(90.f / Device.fFOV);
 	g_fFarSq						=	75.f;
 	g_fFarSq						*=	g_fFarSq;
 	g_fSCREEN						=	float(T->get_width()*T->get_height())*fov_factor;
