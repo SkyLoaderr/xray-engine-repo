@@ -14,6 +14,7 @@
 CBlender_Vertex_aref::CBlender_Vertex_aref()
 {
 	description.CLS		= B_VERT_AREF;
+	description.version	= 1;
 	oAREF.value			= 32;
 	oAREF.min			= 0;
 	oAREF.max			= 255;
