@@ -3,6 +3,12 @@
 
 #include "detailmanager.h"
 
+#include "..\igame_persistent.h"
+#ifdef _EDITOR
+#else
+#include "..\environment.h"
+#endif
+
 const int			quant	= 16384;
 const int			c_hdr	= 12;
 const int			c_base	= c_hdr;
