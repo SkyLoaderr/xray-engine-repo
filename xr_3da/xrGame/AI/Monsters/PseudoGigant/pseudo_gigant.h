@@ -1,8 +1,12 @@
 #pragma once
 #include "../../biting/ai_biting.h"
+#include "../../controlled_entity.h"
 
-class CPseudoGigant : public CAI_Biting {
+class CPseudoGigant : public CAI_Biting,
+					  public CControlledEntity<CPseudoGigant> {
+	
 	typedef		CAI_Biting	inherited;
+	typedef		CControlledEntity<CPseudoGigant>	controlled;
 
 	// step_effector
 	struct {
@@ -18,7 +22,6 @@ public:
 	virtual void	Load				(LPCSTR section);
 
 	virtual void	StateSelector		();
-	virtual	void	ProcessTurn			();
 	virtual bool	ability_earthquake	() {return true;}
 	virtual void	event_on_step		();
 

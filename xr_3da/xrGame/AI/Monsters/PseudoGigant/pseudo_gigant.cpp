@@ -16,9 +16,12 @@ CPseudoGigant::CPseudoGigant()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
 	stateNull			= xr_new<CBitingNull>		();
+	stateControlled		= xr_new<CBitingControlled>	(this);
 
 	CurrentState		= stateRest;
 	CurrentState->Reset	();
+
+	controlled::init_external(this);
 }
 
 CPseudoGigant::~CPseudoGigant()
@@ -32,6 +35,7 @@ CPseudoGigant::~CPseudoGigant()
 	xr_delete(stateExploreNDE);
 	xr_delete(stateExploreDNE);
 	xr_delete(stateNull);
+	xr_delete(stateControlled);
 }
 
 
@@ -100,6 +104,11 @@ void CPseudoGigant::Load(LPCSTR section)
 
 void CPseudoGigant::StateSelector()
 {	
+	if (is_under_control()) {
+		SetState(stateControlled);
+		return;
+	}
+	
 	IState *state = 0;
 
 	TTime last_hit_time = 0;
@@ -121,28 +130,6 @@ void CPseudoGigant::StateSelector()
 	else									state = stateRest;
 
 	SetState(state);
-}
-
-void CPseudoGigant::ProcessTurn()
-{
-	float delta_yaw = angle_difference(m_body.target.yaw, m_body.current.yaw);
-	if (delta_yaw < deg(1)) return;
-
-	EMotionAnim anim = MotionMan.GetCurAnim();
-
-	bool turn_left = true;
-	if (from_right(m_body.target.yaw, m_body.current.yaw)) turn_left = false; 
-
-	switch (anim) {
-		case eAnimStandIdle: 
-			(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			return;
-		default:
-			if (delta_yaw > deg(30)) {
-				(turn_left) ? MotionMan.SetCurAnim(eAnimStandTurnLeft) : MotionMan.SetCurAnim(eAnimStandTurnRight);
-			}
-			return;
-	}
 }
 
 #define MAX_STEP_RADIUS 60.f

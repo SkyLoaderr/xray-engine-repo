@@ -12,11 +12,13 @@ CAI_Dog::CAI_Dog()
 	statePanic			= xr_new<CBitingPanic>		(this);
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
+	stateControlled		= xr_new<CBitingControlled>	(this);
 	
 	CurrentState		= stateRest;
 	CurrentState->Reset	();
 	
 	CJumping::Init		(this);
+	controlled::init_external(this);
 }
 
 CAI_Dog::~CAI_Dog()
@@ -29,7 +31,7 @@ CAI_Dog::~CAI_Dog()
 	xr_delete(statePanic);
 	xr_delete(stateExploreNDE);
 	xr_delete(stateExploreDNE);
-
+	xr_delete(stateControlled);
 }
 
 void CAI_Dog::reinit()
@@ -128,6 +130,11 @@ void CAI_Dog::Load(LPCSTR section)
 
 void CAI_Dog::StateSelector()
 {	
+	if (is_under_control()) {
+		SetState(stateControlled);
+		return;
+	}
+	
 	IState *state = 0;
 	
 	TTime last_hit_time = 0;

@@ -271,6 +271,7 @@ public:
 	IState				*stateSquadTask;
 	IState				*stateTest;
 	IState				*stateNull;
+	IState				*stateControlled;
 
 	IState				*CurrentState;
 

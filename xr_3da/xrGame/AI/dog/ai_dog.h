@@ -1,12 +1,17 @@
 #pragma once
 
-#include "../\biting/ai_biting.h"
-#include "../\ai_monster_bones.h"
-#include "../\ai_monster_jump.h"
+#include "../biting/ai_biting.h"
+#include "../ai_monster_bones.h"
+#include "../ai_monster_jump.h"
+#include "../controlled_entity.h"
 
 
-class CAI_Dog : public CAI_Biting, public CJumping{
-	typedef		CAI_Biting	inherited;
+class CAI_Dog : public CAI_Biting, 
+				public CJumping,
+				public CControlledEntity<CAI_Dog> {
+	
+	typedef		CAI_Biting					inherited;
+	typedef		CControlledEntity<CAI_Dog>	controlled;
 
 	bool					strike_in_jump;
 	bonesManipulation		Bones;

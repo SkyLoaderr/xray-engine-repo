@@ -1,10 +1,14 @@
 #pragma once
 
-#include "../\biting/ai_biting.h"
+#include "../biting/ai_biting.h"
+#include "../controlled_entity.h"
 
-class CAI_Boar : public CAI_Biting {
+class CAI_Boar : public CAI_Biting,
+				 public CControlledEntity<CAI_Boar> {
 
 	typedef		CAI_Biting	inherited;
+	typedef		CControlledEntity<CAI_Boar>	controlled;
+
 public:
 					CAI_Boar			();
 	virtual			~CAI_Boar			();	

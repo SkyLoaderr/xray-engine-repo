@@ -97,6 +97,9 @@ CStateManagerController::~CStateManagerController()
 {
 }
 
+#define FIND_ENEMY_TIME_ENEMY_HIDDEN	5000
+#define FIND_ENEMY_MAX_DISTANCE			10.f
+
 void CStateManagerController::execute()
 {
 	u32 state_id = u32(-1);
@@ -110,6 +113,15 @@ void CStateManagerController::execute()
 			case eStrong:		
 			case eNormal:
 			case eWeak:			state_id = eStateAttack; break;
+		}
+		
+		if (state_id == eStateAttack) {
+			if (object->EnemyMan.get_enemy_time_last_seen() + FIND_ENEMY_TIME_ENEMY_HIDDEN < object->m_current_update) {
+				if (prev_substate == eStateFindEnemy) state_id = eStateFindEnemy;
+				else {
+					if (object->EnemyMan.get_enemy_position().distance_to(object->Position()) < FIND_ENEMY_MAX_DISTANCE) state_id = eStateFindEnemy;
+				}
+			}
 		}
 	} else if (object->HitMemory.is_hit()) {
 		state_id = eStateHitted;

@@ -33,7 +33,7 @@ void CPsyAuraController::reinit()
 
 void CPsyAuraController::on_activate()
 {
-	if (m_actor) m_current_radius = m_actor->Position().distance_to(get_object()->Position());
+	if (m_actor) m_current_radius = get_radius()-0.05f;
 }
 
 void CPsyAuraController::on_deactivate()
@@ -76,7 +76,14 @@ void CPsyAuraController::frame_update()
 	
 	if (is_active()) {
 		if (m_actor) {
-			m_effector.Update(m_actor->Position().distance_to(get_object()->Position()));
+			
+			m_effector.Update(m_current_radius);
+
+			if (m_current_radius < m_actor->Position().distance_to(get_object()->Position())) 
+				m_current_radius += Device.fTimeDelta * 1.2f;
+			else 
+				m_current_radius -= Device.fTimeDelta * 1.2f;
+			
 			b_updated = true;
 		}
 	} else {

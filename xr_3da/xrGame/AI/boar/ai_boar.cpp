@@ -13,9 +13,12 @@ CAI_Boar::CAI_Boar()
 	stateExploreNDE		= xr_new<CBitingExploreNDE>	(this);
 	stateExploreDNE		= xr_new<CBitingRunAway>	(this);
 	stateNull			= xr_new<CBitingNull>		();
+	stateControlled		= xr_new<CBitingControlled>	(this);
 
 	CurrentState		= stateRest;
 	CurrentState->Reset	();
+
+	controlled::init_external(this);
 }
 
 CAI_Boar::~CAI_Boar()
@@ -29,6 +32,7 @@ CAI_Boar::~CAI_Boar()
 	xr_delete(stateExploreNDE);
 	xr_delete(stateExploreDNE);
 	xr_delete(stateNull);
+	xr_delete(stateControlled);
 }
 
 
@@ -103,6 +107,10 @@ void CAI_Boar::Load(LPCSTR section)
 
 void CAI_Boar::StateSelector()
 {	
+	if (is_under_control()) {
+		SetState(stateControlled);
+		return;
+	}
 
 	IState *state = 0;
 
