@@ -344,7 +344,6 @@ void CCC_Register()
 	// Sound
 	CMD2(CCC_Float,		"snd_volume_eff",		&psSoundVEffects);
 	CMD2(CCC_Float,		"snd_volume_music",		&psSoundVMusic);
-	CMD2(CCC_Float,		"snd_volume_master",	&psSoundVMaster);
 	CMD3(CCC_Token,		"snd_freq",				&psSoundFreq,		snd_freq_token		);
 	CMD3(CCC_Token,		"snd_model",			&psSoundModel,		snd_model_token		);
 	CMD1(CCC_SND_Restart,"snd_restart"			);
