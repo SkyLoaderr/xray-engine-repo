@@ -141,7 +141,7 @@ void CPHWorld::Create()
 
 	phWorld = dWorldCreate();
 	//Space = dHashSpaceCreate(0);
-	
+
 	//dVector3 extensions={2048,256,2048};
 	Fbox	level_box		=	Level().ObjectSpace.GetBoundingVolume();
 	Fvector level_size,level_center;
@@ -206,7 +206,7 @@ void CPHWorld::OnFrame()
 static u32 start_time=0;
 void CPHWorld::Step()
 {
-//	u32 start_time=Device.dwTimeGlobal;
+	//	u32 start_time=Device.dwTimeGlobal;
 	xr_list<CPHObject*>::iterator iter;
 
 	++disable_count;		
@@ -242,7 +242,7 @@ void CPHWorld::Step()
 
 	dWorldStepFast1	(phWorld,	fixed_step,	phIterations/*+Random.randI(0,phIterationCycle)*/);
 #endif
-	
+
 
 	for(iter=m_objects.begin();m_objects.end() != iter;++iter)
 		(*iter)->PhDataUpdate(fixed_step);
@@ -316,8 +316,8 @@ void CPHWorld::Freeze()
 {
 	R_ASSERT2(!b_world_freezed,"already freezed!!!");
 	xr_list<CPHObject*>::iterator iter=m_objects.begin(),
-	e=	m_objects.end()	;
-	
+		e=	m_objects.end()	;
+
 	for(; e != iter;++iter)
 		(*iter)->Freeze();
 	b_world_freezed=true;
@@ -422,7 +422,6 @@ IC static void CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 				usr_data_1->ph_object->InitContact(&c,do_collide);
 
 			}
-
 		}
 
 		Flags32	&flags_1=material_1->Flags;
@@ -430,7 +429,6 @@ IC static void CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup)
 
 		if(is_tri_1)
 		{ 
-
 			if(material_1->Flags.is(SGameMtl::flSlowDown)&&!(usr_data_2->pushing_neg||usr_data_2->pushing_b_neg))
 			{
 				dBodyID body=dGeomGetBody(g2);
@@ -517,22 +515,22 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 			{
 				if(vel_cret>30.f && !mtl_pair->CollideMarks.empty())
 				{
-				
+
 					ref_shader pWallmarkShader = mtl_pair->CollideMarks[::Random.randI(0,mtl_pair->CollideMarks.size())];;
-		
+
 					//добавить отметку на материале
 					::Render->add_Wallmark(pWallmarkShader, *((Fvector*)c->pos), 
-											0.09f, T,
-											Level().ObjectSpace.GetStaticVerts());
+						0.09f, T,
+						Level().ObjectSpace.GetStaticVerts());
 
 					//::Render->add_Wallmark	(
 					//SELECT_RANDOM(mtl_pair->HitMarks),
 					//*((Fvector*)c->pos),
 					//0.09f,
 					//T);
-					
+
 				}
-				
+
 				SGameMtl* mtl = NULL;
 				SGameMtl* mtl1 = NULL;
 				if(vel_cret>10.0f)
@@ -552,7 +550,7 @@ void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c)
 				}
 
 
-								
+
 				if(vel_cret>15.f && !mtl_pair->CollideParticles.empty())
 				{
 					LPCSTR ps_name = *mtl_pair->CollideParticles[::Random.randI(0,mtl_pair->CollideParticles.size())];

@@ -89,7 +89,9 @@ LPCSTR Script::cafEventToString(int iEventCode)
 		case LUA_HOOKTAILRET	: return("hook tail return");
 		default					: NODEFAULT;
 	}
+#ifdef DEBUG
 	return(0);
+#endif
 }
 
 bool Script::bfListLevelVars(CLuaVirtualMachine *tpLuaVirtualMachine, int iStackLevel)
