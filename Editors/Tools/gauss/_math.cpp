@@ -19,7 +19,7 @@ XRCORE_API	CRandom			Random;
 #ifdef _M_AMD64
 u16			getFPUsw()		{ return 0;	}
 
-namespace FPU 
+namespace	FPU 
 {
 	XRCORE_API void 	m24		(void)	{
 		_control87	( _PC_24,   MCW_PC );

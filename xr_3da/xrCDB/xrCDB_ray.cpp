@@ -1,85 +1,11 @@
 #include "stdafx.h"
 #pragma hdrstop
+#include <xmmintrin.h>
 
 #include "xrCDB.h"
-#include "isect_ray_aabb.h"
 
 using namespace		CDB;
 using namespace		Opcode;
-
-ICF u32&	uf			(float &x)	{ return (u32&)x; }
-ICF BOOL	isect_fpu	(const Fvector& min, const Fvector& max, const ray_t &ray, Fvector& coord)
-{
-	Fvector				MaxT;
-	MaxT.x=MaxT.y=MaxT.z=-1.0f;
-	BOOL Inside			= TRUE;
-
-	// Find candidate planes.
-	if(origin[0] < min[0]) {
-		coord[0]	= min[0];
-		Inside		= FALSE;
-		if(uf(idir[0]))	MaxT[0] = (min[0] - origin[0]) * idir[0]; // Calculate T distances to candidate planes
-	} else if(origin[0] > max[0]) {
-		coord[0]	= max[0];
-		Inside		= FALSE;
-		if(uf(idir[0]))	MaxT[0] = (max[0] - origin[0]) * idir[0]; // Calculate T distances to candidate planes
-	}
-	if(origin[1] < min[1]) {
-		coord[1]	= min[1];
-		Inside		= FALSE;
-		if(uf(idir[1]))	MaxT[1] = (min[1] - origin[1]) * idir[1]; // Calculate T distances to candidate planes
-	} else if(origin[1] > max[1]) {
-		coord[1]	= max[1];
-		Inside		= FALSE;
-		if(uf(idir[1]))	MaxT[1] = (max[1] - origin[1]) * idir[1]; // Calculate T distances to candidate planes
-	}
-	if(origin[2] < min[2]) {
-		coord[2]	= min[2];
-		Inside		= FALSE;
-		if(uf(idir[2]))	MaxT[2] = (min[2] - origin[2]) * idir[2]; // Calculate T distances to candidate planes
-	} else if(origin[2] > max[2]) {
-		coord[2]	= max[2];
-		Inside		= FALSE;
-		if(uf(idir[2]))	MaxT[2] = (max[2] - origin[2]) * idir[2]; // Calculate T distances to candidate planes
-	}
-
-	// Ray origin inside bounding box
-	if(Inside)		{
-		coord		= origin;
-		return		true;
-	}
-
-	// Get largest of the maxT's for final choice of intersection
-	u32 WhichPlane = 0;
-	if	(MaxT[1] > MaxT[0])				WhichPlane = 1;
-	if	(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
-
-	// Check final candidate actually inside box (if max < 0)
-	if(uf(MaxT[WhichPlane])&0x80000000) return false;
-
-	if  (0==WhichPlane)	{	// 1 & 2
-		coord[1] = origin[1] + MaxT[0] * dir[1];
-		if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
-		coord[2] = origin[2] + MaxT[0] * dir[2];
-		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
-		return true;
-	}
-	if (1==WhichPlane)	{	// 0 & 2
-		coord[0] = origin[0] + MaxT[1] * dir[0];
-		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
-		coord[2] = origin[2] + MaxT[1] * dir[2];
-		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
-		return true;
-	}
-	if (2==WhichPlane)	{	// 0 & 1
-		coord[0] = origin[0] + MaxT[2] * dir[0];
-		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
-		coord[1] = origin[1] + MaxT[2] * dir[1];
-		if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
-		return true;
-	}
-	return false;
-}
 
 // can you say "barebone"?
 #define _MM_ALIGN16		__declspec(align(16))
@@ -99,6 +25,80 @@ struct _MM_ALIGN16		ray_t	{
 struct ray_segment_t {
 	float		t_near,t_far;
 };
+
+ICF u32&	uf			(float &x)	{ return (u32&)x; }
+ICF BOOL	isect_fpu	(const Fvector& min, const Fvector& max, const ray_t &ray, Fvector& coord)
+{
+	Fvector				MaxT;
+	MaxT.x=MaxT.y=MaxT.z=-1.0f;
+	BOOL Inside			= TRUE;
+
+	// Find candidate planes.
+	if(ray.pos[0] < min[0]) {
+		coord[0]	= min[0];
+		Inside		= FALSE;
+		if(uf(ray.inv_dir[0]))	MaxT[0] = (min[0] - ray.pos[0]) * ray.inv_dir[0]; // Calculate T distances to candidate planes
+	} else if(ray.pos[0] > max[0]) {
+		coord[0]	= max[0];
+		Inside		= FALSE;
+		if(uf(ray.inv_dir[0]))	MaxT[0] = (max[0] - ray.pos[0]) * ray.inv_dir[0]; // Calculate T distances to candidate planes
+	}
+	if(ray.pos[1] < min[1]) {
+		coord[1]	= min[1];
+		Inside		= FALSE;
+		if(uf(ray.inv_dir[1]))	MaxT[1] = (min[1] - ray.pos[1]) * ray.inv_dir[1]; // Calculate T distances to candidate planes
+	} else if(ray.pos[1] > max[1]) {
+		coord[1]	= max[1];
+		Inside		= FALSE;
+		if(uf(ray.inv_dir[1]))	MaxT[1] = (max[1] - ray.pos[1]) * ray.inv_dir[1]; // Calculate T distances to candidate planes
+	}
+	if(ray.pos[2] < min[2]) {
+		coord[2]	= min[2];
+		Inside		= FALSE;
+		if(uf(ray.inv_dir[2]))	MaxT[2] = (min[2] - ray.pos[2]) * ray.inv_dir[2]; // Calculate T distances to candidate planes
+	} else if(ray.pos[2] > max[2]) {
+		coord[2]	= max[2];
+		Inside		= FALSE;
+		if(uf(ray.inv_dir[2]))	MaxT[2] = (max[2] - ray.pos[2]) * ray.inv_dir[2]; // Calculate T distances to candidate planes
+	}
+
+	// Ray ray.pos inside bounding box
+	if(Inside)		{
+		coord		= ray.pos;
+		return		true;
+	}
+
+	// Get largest of the maxT's for final choice of intersection
+	u32 WhichPlane = 0;
+	if	(MaxT[1] > MaxT[0])				WhichPlane = 1;
+	if	(MaxT[2] > MaxT[WhichPlane])	WhichPlane = 2;
+
+	// Check final candidate actually inside box (if max < 0)
+	if(uf(MaxT[WhichPlane])&0x80000000) return false;
+
+	if  (0==WhichPlane)	{	// 1 & 2
+		coord[1] = ray.pos[1] + MaxT[0] * ray.fwd_dir[1];
+		if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
+		coord[2] = ray.pos[2] + MaxT[0] * ray.fwd_dir[2];
+		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
+		return true;
+	}
+	if (1==WhichPlane)	{	// 0 & 2
+		coord[0] = ray.pos[0] + MaxT[1] * ray.fwd_dir[0];
+		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
+		coord[2] = ray.pos[2] + MaxT[1] * ray.fwd_dir[2];
+		if((coord[2] < min[2]) || (coord[2] > max[2]))	return false;
+		return true;
+	}
+	if (2==WhichPlane)	{	// 0 & 1
+		coord[0] = ray.pos[0] + MaxT[2] * ray.fwd_dir[0];
+		if((coord[0] < min[0]) || (coord[0] > max[0]))	return false;
+		coord[1] = ray.pos[1] + MaxT[2] * ray.fwd_dir[1];
+		if((coord[1] < min[1]) || (coord[1] > max[1]))	return false;
+		return true;
+	}
+	return false;
+}
 
 // turn those verbose intrinsics into something readable.
 #define loadps(mem)			_mm_load_ps((const float * const)(mem))
@@ -210,7 +210,7 @@ public:
 		aabb_t		box;
 		box.min.sub (bCenter,bExtents);	box.min.pad = 0;
 		box.max.add	(bCenter,bExtents); box.max.pad = 0;
-        return 		isect_sse	(BB.min,BB.max,ray,dist);
+        return 		isect_sse	(box,ray,dist);
 	}
 	
 	IC bool			_tri		(u32* p, float& u, float& v, float& range)
@@ -226,16 +226,16 @@ public:
 		edge2.sub			(p2, p0);
 		// begin calculating determinant - also used to calculate U parameter
 		// if determinant is near zero, ray lies in plane of triangle
-		pvec.crossproduct	(rD, edge2);
+		pvec.crossproduct	(ray.fwd_dir, edge2);
 		det = edge1.dotproduct(pvec);
 		if (bCull)
 		{						
 			if (det < EPS)  return false;
-			tvec.sub(rC, p0);						// calculate distance from vert0 to ray origin
+			tvec.sub(ray.pos, p0);						// calculate distance from vert0 to ray origin
 			u = tvec.dotproduct(pvec);					// calculate U parameter and test bounds
 			if (u < 0.f || u > det) return false;
 			qvec.crossproduct(tvec, edge1);				// prepare to test V parameter
-			v = rD.dotproduct(qvec);					// calculate V parameter and test bounds
+			v = ray.fwd_dir.dotproduct(qvec);			// calculate V parameter and test bounds
 			if (v < 0.f || u + v > det) return false;
 			range = edge2.dotproduct(qvec);				// calculate t, scale parameters, ray intersects triangle
 			inv_det = 1.0f / det;
@@ -247,11 +247,11 @@ public:
 		{			
 			if (det > -EPS && det < EPS) return false;
 			inv_det = 1.0f / det;
-			tvec.sub(rC, p0);						// calculate distance from vert0 to ray origin
+			tvec.sub(ray.pos, p0);						// calculate distance from vert0 to ray origin
 			u = tvec.dotproduct(pvec)*inv_det;			// calculate U parameter and test bounds
 			if (u < 0.0f || u > 1.0f)    return false;
 			qvec.crossproduct(tvec, edge1);				// prepare to test V parameter
-			v = rD.dotproduct(qvec)*inv_det;			// calculate V parameter and test bounds
+			v = ray.fwd_dir.dotproduct(qvec)*inv_det;	// calculate V parameter and test bounds
 			if (v < 0.0f || u + v > 1.0f) return false;
 			range = edge2.dotproduct(qvec)*inv_det;		// calculate t, ray intersects triangle
 		}
@@ -318,7 +318,7 @@ public:
 			// use FPU
 			Fvector		P;
 			if (!_box_fpu((Fvector&)node->mAABB.mCenter,(Fvector&)node->mAABB.mExtents,P))	return;
-			if (P.distance_to_sqr(rC)>rRange2)												return;
+			if (P.distance_to_sqr(ray.pos)>rRange2)											return;
 		}
 		
 		// 1st chield
@@ -343,7 +343,7 @@ void	COLLIDER::ray_query	(const MODEL *m_def, const Fvector& r_start,  const Fve
 	const AABBNoLeafNode* N = T->GetNodes();
 	r_clear					();
 	
-	if (CPU::ID.)			{
+	if (CPU::ID.feature&_CPU_FEATURE_SSE)	{
 		// SSE
 		// Binary dispatcher
 		if (ray_mode&OPT_CULL)		{
