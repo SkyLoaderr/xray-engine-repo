@@ -6,46 +6,17 @@
 
 CGameMtlLibrary GMLib;
 
-#ifdef GM_NON_GAME
-SGameMtlPair::~SGameMtlPair		()
-{
-}
-void SGameMtlPair::Load(IReader& fs)
-{
-	string128			buf;
-
-	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_PAIR));
-    mtl0				= fs.r_u32();
-    mtl1				= fs.r_u32();
-    ID					= fs.r_u32();
-    ID_parent			= fs.r_u32();
-    OwnProps.set		(fs.r_u32());
-
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_FLOTATION));
-    fFlotation			= fs.r_float();
-
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
-    fs.r_stringZ			(buf); 	BreakingSounds	= buf;
-
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
-    fs.r_stringZ			(buf);	StepSounds		= buf;
-
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
-    fs.r_stringZ			(buf);	CollideSounds	= buf;
-
-    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_HIT));
-    fs.r_stringZ			(buf);	HitSounds		= buf;
-    fs.r_stringZ			(buf);	HitParticles	= buf;
-    fs.r_stringZ			(buf);	HitMarks		= buf;
-}
-#endif
-
 void SGameMtl::Load(IReader& fs)
 {
+	string512				tmp;
 	R_ASSERT(fs.find_chunk(GAMEMTL_CHUNK_MAIN));
 	ID						= fs.r_u32();
-	fs.r_stringZ				(name);
+    fs.r_stringZ			(tmp); m_Name=tmp;
 
+    if (fs.find_chunk(GAMEMTL_CHUNK_DESC)){
+		fs.r_stringZ		(tmp); m_Desc=tmp;
+    }
+    
 	R_ASSERT(fs.find_chunk(GAMEMTL_CHUNK_FLAGS));
     Flags.set				(fs.r_u32());
 
@@ -60,10 +31,20 @@ void SGameMtl::Load(IReader& fs)
     fShootFactor			= fs.r_float();
     fBounceDamageFactor		= fs.r_float();
     fVisTransparencyFactor	= fs.r_float();
+    fSndOcclusionFactor		= fs.r_float();
+
+	if(fs.find_chunk(GAMEMTL_CHUNK_FLOTATION))
+	    fFlotationFactor	= fs.r_float();
 }
 
-void CGameMtlLibrary::Load(LPCSTR name)
+void CGameMtlLibrary::Load()
 {
+	string256			name;
+	if (!FS.exist(name,	_game_data_,GAMEMTL_FILENAME)){
+    	Log				("! Can't find game material file '%s'",name);
+    	return;
+    }
+
    	R_ASSERT			(material_pairs_rt.empty());
     R_ASSERT			(material_pairs.empty());
     R_ASSERT			(materials.empty());
@@ -123,4 +104,33 @@ void CGameMtlLibrary::Load(LPCSTR name)
     }
 #endif
 }
+
+#ifdef GM_NON_GAME
+SGameMtlPair::~SGameMtlPair		()
+{
+}                     
+void SGameMtlPair::Load(IReader& fs)
+{
+	string128			buf;
+
+	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_PAIR));
+    mtl0				= fs.r_u32();
+    mtl1				= fs.r_u32();
+    ID					= fs.r_u32();
+    ID_parent			= fs.r_u32();
+    OwnProps.set		(fs.r_u32());
+
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
+    fs.r_stringZ			(buf); 	BreakingSounds	= buf;
+
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
+    fs.r_stringZ			(buf);	StepSounds		= buf;
+
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
+    fs.r_stringZ			(buf);	CollideSounds	= buf;
+    fs.r_stringZ			(buf);	CollideParticles= buf;
+    fs.r_stringZ			(buf);	CollideMarks	= buf;
+}
+#endif
+
 

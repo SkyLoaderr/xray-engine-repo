@@ -16,19 +16,21 @@
 #define GAMEMTL_CHUNK_FLAGS	        	0x1001
 #define GAMEMTL_CHUNK_PHYSICS        	0x1002
 #define GAMEMTL_CHUNK_FACTORS        	0x1003
+#define GAMEMTL_CHUNK_FLOTATION   		0x1004
+#define GAMEMTL_CHUNK_DESC				0x1005
 //----------------------------------------------------
 #define GAMEMTLPAIR_CHUNK_PAIR   		0x1000
-#define GAMEMTLPAIR_CHUNK_FLOTATION   	0x1001
+//#define GAMEMTLPAIR_CHUNK_FLOTATION   0x1001 - obsolete
 #define GAMEMTLPAIR_CHUNK_BREAKING   	0x1002
 #define GAMEMTLPAIR_CHUNK_STEP   		0x1003
-#define GAMEMTLPAIR_CHUNK_COLLIDE   	0x1004
-#define GAMEMTLPAIR_CHUNK_HIT		  	0x1005
+//#define GAMEMTLPAIR_CHUNK_COLLIDE   	0x1004 - obsolete / rename HIT
+#define GAMEMTLPAIR_CHUNK_COLLIDE	  	0x1005
 //----------------------------------------------------
 
 #define GAMEMTL_SUBITEM_COUNT			4
 
 #define GAMEMTL_NONE					u32(-1)
-#define GAMEMTL_FILENAME				"gamemtl.xr"
+#define GAMEMTL_FILENAME				"gamemtl2.xr"
 
 #ifdef _EDITOR
 #define GM_NON_GAME
@@ -41,6 +43,10 @@
 #endif
 #ifdef _MAYA_PLUGIN
 #define GM_NON_GAME
+#endif
+
+#ifdef _EDITOR
+#include "ElTree.hpp"
 #endif
 
 #ifdef GM_NON_GAME
@@ -62,15 +68,22 @@ protected:
 public:
 	enum{
     	flBreakable		= 1<<0,
-        flShootable 	= 1<<1,
+//		flShootable 	= 1<<1,
         flBounceable	= 1<<2,
         flSkidmark		= 1<<3,
         flBloodmark		= 1<<4,
         flClimbable		= 1<<5,
-        flWalkOn		= 1<<6, // obsolette
+//		flWalkOn		= 1<<6, // obsolette
+        flPassable		= 1<<7,
+        flDynamic		= 1<<8,
+
+		flShootable 	= 1<<29,
+        flTransparent	= 1<<30,
+        flSlowDown		= 1<<31 // flSlowDown = (fFlotationFactor<1.f)
     };
 public:
-	string64			name;
+	ref_str				m_Name;
+    ref_str				m_Desc;
 
     Flags32				Flags;
     // physics part
@@ -79,17 +92,24 @@ public:
     float				fPHSpring;              // ?
     float				fPHBounceStartVelocity;	// ?
 	float				fPHBouncing;            // ?
-	// shoot&bounce&visibility
-    float				fShootFactor;			// 0.f - 1.f
+	// shoot&bounce&visibility&flotation
+    float		    	fFlotationFactor;		// 0.f - 1.f   	(1.f-проходимый полностью)
+    float				fShootFactor;			// 0.f - 1.f	(1.f-полностью простреливаемый)
     float				fBounceDamageFactor;	// 0.f - 100.f
-    float				fVisTransparencyFactor;	// 0.f - 1.f
-    float				fSndOcclusionFactor;	// 0.f - 1.f
+    float				fVisTransparencyFactor;	// 0.f - 1.f	(1.f-полностью прозрачный)
+    float				fSndOcclusionFactor;	// 0.f - 1.f    (1.f-полностью прозрачный)
 public:
 	SGameMtl			()
     {
-		ZeroMemory		(this,sizeof(*this));
-		strcpy			(name,"unknown");
-        ID				= -1;
+        ID						= -1;
+		m_Name					= "unknown";
+        Flags.zero				();
+        // factors
+        fFlotationFactor		= 1.f;
+        fShootFactor			= 0.f;
+        fBounceDamageFactor		= 0.f;
+        fVisTransparencyFactor	= 0.f;
+        fSndOcclusionFactor		= 0.f;
         // physics
         fPHFriction				= 1.f;
         fPHDamping				= 1.f;
@@ -101,7 +121,7 @@ public:
     void 				Save			(IWriter& fs);
     IC int				GetID			(){return ID;}
 #ifdef _EDITOR
-    void 				FillProp		(PropItemVec& values);
+    void 				FillProp		(PropItemVec& values, TElTreeItem* owner);
 #endif
 };
 DEFINE_VECTOR(SGameMtl*,GameMtlVec,GameMtlIt);
@@ -117,37 +137,32 @@ protected:
     int					ID_parent;
 public:
 	enum{
-        flFlotation		= (1<<0),
+//		flFlotation		= (1<<0),
         flBreakingSounds= (1<<1),
         flStepSounds	= (1<<2),
-        flCollideSounds	= (1<<3),
-        flHitSounds		= (1<<4),
-        flHitParticles	= (1<<5),
-        flHitMarks		= (1<<6)
+//		flCollideSounds	= (1<<3),
+        flCollideSounds		= (1<<4),
+        flCollideParticles	= (1<<5),
+        flCollideMarks		= (1<<6)
     };
     Flags32				OwnProps;
 //	properties
-    float		    	fFlotation;
     SoundSVec4			BreakingSounds;
     SoundSVec4			StepSounds;
     SoundSVec4			CollideSounds;
-    SoundSVec4			HitSounds;
-    PSSVec4				HitParticles;
-    ShaderSVec4			HitMarks;
+    PSSVec4				CollideParticles;
+    ShaderSVec4			CollideMarks;
 #ifdef _EDITOR
-    PropValue*	    	propFlotation;
     PropValue*			propBreakingSounds;
     PropValue*			propStepSounds;
     PropValue*			propCollideSounds;
-    PropValue*			propHitSounds;
-    PropValue*			propHitParticles;
-    PropValue*			propHitMarks;
+    PropValue*			propCollideParticles;
+    PropValue*			propCollideMarks;
     void __fastcall 	OnFlagChange	(PropValue* sender);
 #endif
 public:
 	SGameMtlPair		(CGameMtlLibrary* owner)
     {
-		fFlotation		= 0;
     	mtl0			= -1;
     	mtl1			= -1;
         ID				= -1;
@@ -214,17 +229,15 @@ public:
     IC GameMtlIt 		GetMaterialIt	(LPCSTR name)
     {
         for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)
-            if (0==strcmpi((*it)->name,name)) return it;
+            if (0==strcmpi(*(*it)->m_Name,name)) return it;
         return materials.end();
     }
-/*
     IC GameMtlIt 		GetMaterialIt	(ref_str& name)
     {
         for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)
-            if (name.equal((*it)->name)) return it;
+            if (name.equal((*it)->m_Name)) return it;
         return materials.end();
     }
-*/
     IC GameMtlIt 		GetMaterialItByID(int id)
     {
         for (GameMtlIt it=materials.begin(); materials.end() != it; ++it)
@@ -282,8 +295,8 @@ public:
 	IC GameMtlPairIt	LastMaterialPair	(){return material_pairs.end();}
 
 	// IO routines
-	void				Load				(LPCSTR name);
-	void				Save				(LPCSTR name);
+	void				Load				();
+	void				Save				();
 };
 
 extern CGameMtlLibrary GMLib;
