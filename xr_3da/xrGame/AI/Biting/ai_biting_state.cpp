@@ -93,7 +93,8 @@ void CBitingRest::Run()
 void CBitingRest::Replanning()
 {
 	// Test
-	WRITE_TO_LOG("_ Rest replanning _");
+	string128 s1,s2,s3,s4, s5;
+
 
 	m_dwLastPlanTime = m_dwCurrentTime;	
 	u32		rand_val = ::Random.randI(100);
@@ -103,17 +104,22 @@ void CBitingRest::Replanning()
 	if (rand_val < (cur_val = pMonster->m_dwProbRestWalkFree)) {	
 		m_tAction = ACTION_WALK;
 		// Построить путь обхода точек графа
+		pMonster->AI_Path.TravelPath.clear();
 		pMonster->vfUpdateDetourPoint();	
 		pMonster->AI_Path.DestNode	= getAI().m_tpaGraph[pMonster->m_tNextGP].tNodeID;
 
 		dwMinRand = pMonster->m_timeFreeWalkMin;
 		dwMaxRand = pMonster->m_timeFreeWalkMax;
+		itoa(pMonster->AI_Path.DestNode,s5,10);
+		strconcat(s4,"  ACTION_WALK, DEST_NODE = ",s5);
 
 	} else if (rand_val < (cur_val = cur_val + pMonster->m_dwProbRestStandIdle)) {	
 		m_tAction = ACTION_STAND;
 
 		dwMinRand = pMonster->m_timeStandIdleMin;
 		dwMaxRand = pMonster->m_timeStandIdleMax;
+		
+		strcpy(s4,"  ACTION_STAND");
 
 	} else if (rand_val < (cur_val = cur_val + pMonster->m_dwProbRestLieIdle)) {	
 		m_tAction = ACTION_LIE;
@@ -126,16 +132,27 @@ void CBitingRest::Replanning()
 		dwMinRand = pMonster->m_timeLieIdleMin;
 		dwMaxRand = pMonster->m_timeLieIdleMax;
 
+		strcpy(s4,"  ACTION_LIE");
+
 	} else  {	
 		m_tAction = ACTION_TURN;
 		pMonster->r_torso_target.yaw = angle_normalize(pMonster->r_torso_target.yaw + PI_DIV_2);
 
 		dwMinRand = 1000;
 		dwMaxRand = 1100;
+
+		strcpy(s4,"  ACTION_TURN");
 	}
 	
 	m_dwReplanTime = ::Random.randI(dwMinRand,dwMaxRand);
-	SetNextThink(dwMinRand);
+	//SetNextThink(dwMinRand);
+
+	itoa(m_dwReplanTime,s1,10);
+	itoa(m_dwCurrentTime,s2,10);
+
+	strconcat(s3,"_ Rest replanning _ :: CurrentTime = [",s1,"] ReplanTime = [",s2,"]", s4);
+	WRITE_TO_LOG(s3);
+
 }
 
 

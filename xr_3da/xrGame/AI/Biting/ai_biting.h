@@ -15,14 +15,14 @@
 #include "..\\ai_monster_mem.h"
 
 // logging
-#define SILENCE
+//#define SILENCE
 
 #undef	WRITE_TO_LOG
 #ifdef SILENCE
 #define WRITE_TO_LOG(s) ;
 #else
 #define WRITE_TO_LOG(s) {\
-	Msg("Monster %s : \n* State : %s",cName(),s);\
+	Msg("%s",s);\
 }
 #endif
 
