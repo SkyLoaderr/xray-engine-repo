@@ -76,6 +76,9 @@ int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
 	if ( 0 == info.m_rect.width())
 		return 0;
 
+	if (info.m_shader == NULL)
+		return 0;
+
 	int		y = 0;
 	int		selfHeight = GetHeight();
 	float	scale = 0;
