@@ -1,12 +1,12 @@
-[m_gigant_attack_animations]
+[m_gigant_attack_params]
 
 ;----------------------------------------------------------------------------------------------------------------
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir	   |	Field of hit_test   |	Test Dist
 ;----------------------------------------------------------------------------------------------------------------
-stand_walk_fwd_0 =	  	0.4,		50,		  300,    0.0, 1.0, 0.0,     -0.6, 0.6, -0.6, 0.6		  2.0
+stand_walk_fwd_0 =	  	0.4,		50,		  300,    0.0, 1.0, 0.0,		 -0.6, 0.6, -0.6, 0.6,		  2.0
 
 
-[m_gigant_step_events]
+[m_gigant_step_params]
 ;----------------------------------------------------------------------------------------------------------------
 ;	anim			| time1 | power1 | time2 | power2 | time3 | power3 | time4 | power4 |
 ;----------------------------------------------------------------------------------------------------------------
@@ -195,3 +195,7 @@ step_snd_drag			= 1.0, 2.0
 
 squad_attack_algorithm	= 1
 attack_effector			= monster_attack_effector
+
+attack_params			= m_gigant_attack_params
+step_params				= m_gigant_step_params
+
