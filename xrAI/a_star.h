@@ -88,7 +88,7 @@ public:
 					if (neighbour.g() > g) {
 						// so, new path is better
 						// assign corresponding values to the node
-						_dist_type		d = neighbour.g() - g;
+						_dist_type		d = neighbour.f();
 						neighbour.g()	= g;
 						neighbour.f()	= neighbour.g() + neighbour.h();
 						// assign correct parent to the node to be able
@@ -178,6 +178,9 @@ public:
 			
 			// so, limit is not reached
 			// check if new step will get us success
+			if (i == 142) {
+				i=i;
+			}
 			if (step(data_storage, path_manager, graph))
 				// so this step reached the goal, return success
 				return			(true);

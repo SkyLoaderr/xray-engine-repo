@@ -147,13 +147,13 @@ public:
 		return					(*indexes[node_index].node);
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 		VERIFY					(is_opened(node));
 //		priority_queue.remove	(indexes[node.index()].pq_node);
 //		indexes[node.index()].pq_node = priority_queue.push(&node);
-//		priority_queue.increase	(indexes[node.index()].pq_node,&node);
+		priority_queue.increase	(indexes[node.index()].pq_node,&node);
 	}
 	
 

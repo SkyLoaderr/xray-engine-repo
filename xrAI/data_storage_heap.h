@@ -138,7 +138,7 @@ public:
 		std::push_heap			(heap_head,++heap_tail,CGraphNodePredicate());
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 		for (CGraphNode **i = heap_head; *i != &node; ++i);
@@ -297,7 +297,7 @@ public:
 		std::push_heap			(heap.heap_head,++heap.heap_tail,CGraphNodePredicate());
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 		SBinaryHeap				&heap = heaps[node.index() % heap_count];
@@ -561,7 +561,7 @@ public:
 		push_front_if_needed	(heap_head, *heap.heap_head);
 	}
 
-	IC		void		decrease_opened	(CGraphNode &node, _dist_type value)
+	IC		void		decrease_opened	(CGraphNode &node, const _dist_type value)
 	{
 		VERIFY					(!is_opened_empty());
 		SBinaryHeap				&heap = heaps[compute_heap_index(node.index())];
