@@ -34,7 +34,7 @@ CCreator::~CCreator	( )
 	_DELETE						( pLevel );
 
 	// Render-level unload
-	Render.level_Unload			( );
+	Render.OnDeviceDestroy		( );
 	Device.seqDevDestroy.Remove	(&Render);
 	Device.seqDevCreate.Remove	(&Render);
 
