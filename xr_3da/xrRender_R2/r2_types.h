@@ -23,9 +23,11 @@
 #define		r2_RT_smap_depth	"$user$smap_depth"		// ---	directional
 
 #define		r2_material			"$user$material"		// ---
-#define		r2_float2RG			"$user$float2rg"		// --- compression/encoding table
-#define		r2_float2B			"$user$float2b"			// --- compression/encoding table
 #define		r2_ds2_fade			"$user$ds2_fade"		// ---
+
+#define		r2_jitter			"$user$jitter_"			// --- dither
+
+#define		JITTER(a) r2_jitter #a
 
 const		float				SMAP_near_plane		= .1f	;
 
@@ -35,8 +37,8 @@ const		u32					SMAP_adapt_max		= 1024	;
 
 const		u32					TEX_material_LdotN	= 128	;	// diffuse,		X, almost linear = small res
 const		u32					TEX_material_LdotH	= 256	;	// specular,	Y
-const		u32					TEX_ds2_fade_size	= 256	;
-const		u32					TEX_float2rgb		= 256	;
+const		u32					TEX_jitter			= 64	;
+const		u32					TEX_jitter_count	= 2		;
 
 const		u32					BLOOM_size_X		= 256	;
 const		u32					BLOOM_size_Y		= 256	;

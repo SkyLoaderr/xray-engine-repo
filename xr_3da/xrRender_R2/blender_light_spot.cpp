@@ -34,6 +34,10 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r_Sampler			("s_lmap",			C.L_textures[0]);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
+		C.r_Sampler_rtf		("jitter0",			JITTER(0)		);
+		C.r_Sampler_rtf		("jitter1",			JITTER(1)		);
+		C.r_Sampler_rtf		("jitter2",			JITTER(2)		);
+		C.r_Sampler_rtf		("jitter3",			JITTER(3)		);
 		C.r_End				();
 		break;
 	case SE_L_FULLSIZE:		// normal-fullsize
@@ -44,6 +48,10 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r_Sampler			("s_lmap",			C.L_textures[0]);
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
+		C.r_Sampler_rtf		("jitter0",			JITTER(0)		);
+		C.r_Sampler_rtf		("jitter1",			JITTER(1)		);
+		C.r_Sampler_rtf		("jitter2",			JITTER(2)		);
+		C.r_Sampler_rtf		("jitter3",			JITTER(3)		);
 		C.r_End				();
 		break;
 	case SE_L_TRANSLUENT:	// shadowed + transluency
@@ -54,6 +62,10 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r_Sampler_clf		("s_lmap",			r2_RT_smap_surf);			// diff here
 		if (b_HW_smap)		C.r_Sampler_clf		("s_smap",r2_RT_smap_depth	);
 		else				C.r_Sampler_rtf		("s_smap",r2_RT_smap_surf	);
+		C.r_Sampler_rtf		("jitter0",			JITTER(0)		);
+		C.r_Sampler_rtf		("jitter1",			JITTER(1)		);
+		C.r_Sampler_rtf		("jitter2",			JITTER(2)		);
+		C.r_Sampler_rtf		("jitter3",			JITTER(3)		);
 		C.r_End				();
 		break;
 	}

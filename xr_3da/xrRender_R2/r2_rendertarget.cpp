@@ -109,6 +109,29 @@ Ivector	vpack			(Fvector src)
 	return		ipck;
 }
 
+void	generate_jitter	(DWORD*	dest, u32 elem_count)
+{
+	const	int		cmax		= 8;
+	svector<Ivector2,cmax>		samples;
+	for (int it=0; it<elem_count*2; it++)
+	{
+		Ivector2	test;
+		test.set	(::Random.randI(0,256),::Random.randI(0,256));
+		BOOL		valid = TRUE;
+		for (int t=0; t<samples.size(); t++)
+		{
+			int		dist	= _abs(test.x-samples[t].x)+_abs(test.y-samples[t].y);
+			if (dist<8)		{
+				valid		= FALSE;
+				break;
+			}
+		}
+		if (valid)	samples.push_back	(test);
+	}
+	for	(int it=0; it<elem_count; it++, dest++)
+		*dest	= color_rgba(samples[2*it].x,samples[2*it].y,samples[2*it+1].y,samples[2*it+1].x);
+}
+
 void	CRenderTarget::OnDeviceCreate	()
 {
 	dwAccumulatorClearMark			= 0;
@@ -284,48 +307,39 @@ void	CRenderTarget::OnDeviceCreate	()
 			// #endif
 		}
 
-		// Build encode table - RG
-		/*
-		if (0)
+		// Build noise table
+		if (1)
 		{
-			// Surface
-			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_float2rgb,TEX_float2rgb,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&t_encodeRG_surf));
-			t_encodeRG					= Device.Resources->_CreateTexture(r2_float2RG);
-			t_encodeRG->surface_set		(t_encodeRG_surf);
-
-			// Fill it, scale = (1,255,65536)
-			D3DLOCKED_RECT				R;
-			R_CHK						(t_encodeRG_surf->LockRect	(0,&R,0,0));
-			for (u32 y=0; y<TEX_float2rgb; y++)
+			// Surfaces
+			D3DLOCKED_RECT				R[TEX_jitter_count];
+			for (int it=0; it<TEX_jitter_count; it++)
 			{
-				for (u32 x=0; x<TEX_float2rgb; x++)
+				string_path					name;
+				sprintf						(name,"%s%d",r2_jitter,it);
+				R_CHK	(D3DXCreateTexture	(HW.pDevice,TEX_jitter,TEX_jitter,1,0,D3DFMT_Q8W8V8U8,D3DPOOL_MANAGED,&t_noise_surf[it]));
+				t_noise[it]					= Device.Resources->_CreateTexture	(name);
+				t_noise[it]->surface_set	(t_noise_surf[it]);
+				R_CHK						(t_noise_surf[it]->LockRect	(0,&R[it],0,0));
+			}
+
+			// Fill it,
+			for (u32 y=0; y<TEX_jitter; y++)
+			{
+				for (u32 x=0; x<TEX_jitter; x++)
 				{
-					u32*	p	=	(u32*)		(LPBYTE (R.pBits) + y*R.Pitch + x*4);
-					*p			=	color_rgba	(x,y,0,0);
+					DWORD	data	[TEX_jitter_count];
+					generate_jitter	(data,TEX_jitter_count);
+					for (u32 it=0; it<TEX_jitter_count; it++)
+					{
+						u32*	p	=	(u32*)	(LPBYTE (R[it].pBits) + y*R[it].Pitch + x*4);
+								*p	=	data	[it];
+					}
 				}
 			}
-			R_CHK						(t_encodeRG_surf->UnlockRect	(0));
-		}
-
-		// Build encode table - B
-		if (0)
-		{
-			// Surface
-			R_CHK						(D3DXCreateTexture(HW.pDevice,TEX_float2rgb,1,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&t_encodeB_surf));
-			t_encodeB					= Device.Resources->_CreateTexture(r2_float2B);
-			t_encodeB->surface_set		(t_encodeB_surf);
-
-			// Fill it, scale = (1,255,65536)
-			D3DLOCKED_RECT				R;
-			R_CHK						(t_encodeB_surf->LockRect	(0,&R,0,0));
-			for (u32 x=0; x<TEX_float2rgb; x++)
-			{
-				u32*	p	=	(u32*)		(LPBYTE (R.pBits) + x*4);
-				*p			=	color_rgba	(0,0,x,0);
+			for (int it=0; it<TEX_jitter_count; it++)	{
+				R_CHK						(t_noise_surf[it]->UnlockRect(0));
 			}
-			R_CHK						(t_encodeB_surf->UnlockRect	(0));
 		}
-		*/
 	}
 
 	// 
@@ -339,6 +353,13 @@ void	CRenderTarget::OnDeviceDestroy	()
 	t_material->surface_set		(NULL);
 	_RELEASE					(rt_smap_ZB				);
 
+	// Jitter
+	for (int it=0; it<TEX_jitter_count; it++)	{
+		t_noise	[it]->surface_set	(NULL);
+		_RELEASE					(t_noise_surf[it]);
+	}
+
+	// 
 	accum_spot_geom_destroy		();
 	accum_omnip_geom_destroy	();
 	accum_point_geom_destroy	();
