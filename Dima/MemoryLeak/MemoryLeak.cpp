@@ -19,6 +19,7 @@ struct SCoverCluster : public SCover {
 	u32				acc_cover[4];
 	u32				sort_cover;
 	u32				m_magnitude;
+	float			m_sqrt_magnitude;
 	u32				item_count;
 	SCoverCluster	*cluster;
 
@@ -46,6 +47,7 @@ struct SCoverCluster : public SCover {
 	IC void set_magnitude()
 	{
 		m_magnitude			= _sqr((u32)cover[0]) + _sqr((u32)cover[1]) + _sqr((u32)cover[2]) + _sqr((u32)cover[3]);
+		m_sqrt_magnitude	= _sqrt(float(m_magnitude));
 	}
 
 	IC void	compress(const u32 &node)
@@ -77,6 +79,11 @@ struct SCoverCluster : public SCover {
 	IC u32 magnitude() const
 	{
 		return		(m_magnitude);
+	}
+
+	IC float magnitude_sqrt() const
+	{
+		return		(m_sqrt_magnitude);
 	}
 };
 
@@ -192,11 +199,12 @@ void xrPalettizeCovers(u32 *data, u32 N)
 		best_pair[0]		= 0;
 		best_pair[1]		= 1;
 		best_distance		= clusters[0]->distance(*clusters[1]);
+		float				best_distance_sqrt = _sqrt((float)best_distance);
 		if (best_distance) {
 			xr_vector<SCoverCluster*>::const_iterator		b = clusters.begin(), i = b, j, k;
 			xr_vector<SCoverCluster*>::const_iterator		e = clusters.end();
 			for ( ; i != e; ++i) {
-				u32			max_magnitude = iFloor(_sqr(_sqrt((float)(*i)->magnitude()) + _sqrt((float)best_distance)));
+				u32			max_magnitude = iFloor(_sqr((*i)->magnitude_sqrt() + best_distance_sqrt));
 				k			= upper_bound(i,e,max_magnitude,cover_predicate_magnitude());
 				R_ASSERT	(k != i);
 				for (j = i + 1 ; j != k; ++j) {
@@ -209,8 +217,9 @@ void xrPalettizeCovers(u32 *data, u32 N)
 							i = b + clusters.size() - 1;
 							break;
 						}
-						max_magnitude	= iFloor(_sqr(_sqrt((float)(*i)->magnitude()) + _sqrt((float)best_distance)));
-						k				= upper_bound(i,k,max_magnitude,cover_predicate_magnitude());
+						best_distance_sqrt	= _sqrt((float)best_distance);
+						max_magnitude		= iFloor(_sqr((*i)->magnitude_sqrt() + best_distance_sqrt));
+						k					= upper_bound(i,k,max_magnitude,cover_predicate_magnitude());
 						if (j == k)
 							break;
 					}
