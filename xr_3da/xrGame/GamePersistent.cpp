@@ -84,6 +84,7 @@ void CGamePersistent::OnAppStart()
 }
 
 extern void clean_game_globals	();
+
 void CGamePersistent::OnAppEnd	()
 {
 	__super::OnAppEnd			();
