@@ -15,6 +15,7 @@
 
 class CALifeObject : public xrServerEntity {
 public:
+	typedef xrServerEntity inherited;
 	_CLASS_ID						m_tClassID;
 	_OBJECT_ID						m_tObjectID;
 	_GRAPH_ID						m_tGraphID;
