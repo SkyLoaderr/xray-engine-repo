@@ -547,9 +547,8 @@ public:
 		Msg							("GAME SPAWN is successfully saved to the file\n%s",l_caFileName);
 
 		Phase						("Freeing resources being allocated");
+		delete_data					(tpLevels);
 		xr_delete					(tpGraph);
-		for (u32 i=0, N = tpLevels.size(); i<N; i++)
-			xr_delete				(tpLevels[i]);
 	}
 };
 
