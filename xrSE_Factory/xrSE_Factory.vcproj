@@ -32,6 +32,7 @@
 				BasicRuntimeChecks="3"
 				SmallerTypeCheck="TRUE"
 				RuntimeLibrary="3"
+				StructMemberAlignment="3"
 				RuntimeTypeInfo="TRUE"
 				UsePrecompiledHeader="3"
 				PrecompiledHeaderThrough="stdafx.h"
@@ -232,6 +233,9 @@
 		<Filter
 			Name="Core"
 			Filter="">
+			<File
+				RelativePath=".\FastDelegate.h">
+			</File>
 			<File
 				RelativePath=".\import_export.h">
 			</File>
