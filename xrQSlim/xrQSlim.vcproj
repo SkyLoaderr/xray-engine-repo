@@ -124,7 +124,16 @@
 				RelativePath=".\src\mat4.h">
 			</File>
 			<File
+				RelativePath=".\src\mixmops.cxx">
+			</File>
+			<File
+				RelativePath=".\src\mixmops.h">
+			</File>
+			<File
 				RelativePath=".\src\mixvops.h">
+			</File>
+			<File
+				RelativePath=".\src\MxBlock2.h">
 			</File>
 			<File
 				RelativePath=".\src\MxGeom3D.cxx">
@@ -146,6 +155,18 @@
 			</File>
 			<File
 				RelativePath=".\src\MxMat4.h">
+			</File>
+			<File
+				RelativePath=".\src\MxMatrix.cxx">
+			</File>
+			<File
+				RelativePath=".\src\MxMatrix.h">
+			</File>
+			<File
+				RelativePath=".\src\MxQMetric.cxx">
+			</File>
+			<File
+				RelativePath=".\src\MxQMetric.h">
 			</File>
 			<File
 				RelativePath=".\src\MxQMetric3.cxx">
@@ -213,6 +234,12 @@
 		<Filter
 			Name="QSlim"
 			Filter="">
+			<File
+				RelativePath=".\src\MxPropSlim.cxx">
+			</File>
+			<File
+				RelativePath=".\src\MxPropSlim.h">
+			</File>
 			<File
 				RelativePath=".\src\MxQSlim.cxx">
 			</File>
