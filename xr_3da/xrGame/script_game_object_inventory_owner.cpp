@@ -243,7 +243,7 @@ LPCSTR CScriptGameObject::CharacterCommunity	()
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	VERIFY(pInventoryOwner);
-	return pInventoryOwner->CharacterInfo().Community();
+	return *pInventoryOwner->CharacterInfo().Community();
 }
 
 void CScriptGameObject::SetCharacterCommunity	(LPCSTR comm)

@@ -53,8 +53,6 @@ void CPhraseDialogManager::SayPhrase(DIALOG_SHARED_PTR& phrase_dialog,
 
 void CPhraseDialogManager::UpdateAvailableDialogs(CPhraseDialogManager* partner)
 {
-	m_AvailableDialogs.clear();
-	m_CheckedDialogs.clear();
 }
 
 bool CPhraseDialogManager::AddAvailableDialog(PHRASE_DIALOG_ID dialog_id, CPhraseDialogManager* partner)

@@ -68,6 +68,11 @@ CCharacterInfo::CCharacterInfo()
 {
 	m_iProfileIndex = NO_PROFILE;
 	m_iSpecificCharacterIndex = NO_SPECIFIC_CHARACTER;
+
+	m_CurrentRank = NO_RANK;
+	m_CurrentReputation = NO_REPUTATION;
+	m_CurrentCommunity = NO_COMMUNITY;
+
 }
 
 
@@ -101,10 +106,12 @@ void CCharacterInfo::SetSpecificCharacter ()
 	R_ASSERT(m_iSpecificCharacterIndex != NO_SPECIFIC_CHARACTER);
 
 	m_SpecificCharacter.Load(m_iSpecificCharacterIndex);
-	///if(Rank() == NO_RANK)
-	SetRank(m_SpecificCharacter.Rank());
-	//if(Reputation() == NO_REPUTATION)
-	SetReputation(m_SpecificCharacter.Reputation());
+	if(Rank() == NO_RANK)
+		SetRank(m_SpecificCharacter.Rank());
+	if(Reputation() == NO_REPUTATION)
+		SetReputation(m_SpecificCharacter.Reputation());
+	if(Community() == NO_COMMUNITY)
+		SetCommunity(m_SpecificCharacter.Community());
 
 	if(ai().get_alife())
 	{
@@ -193,7 +200,7 @@ void CCharacterInfo::load_shared	(LPCSTR)
 	uiXml.SetLocalRoot(item_node);
 
 	//игровое имя персонажа
-	data()->m_Community		= uiXml.Read("team", 0, NO_COMMUNITY);
+	data()->m_Community		= uiXml.Read("team", 0, *NO_COMMUNITY);
 	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
 	data()->m_Reputation	= uiXml.ReadInt("reputation", 0, NO_REPUTATION);
 
@@ -213,9 +220,9 @@ CHARACTER_RANK CCharacterInfo::Rank() const
 {
 	return	m_CurrentRank;
 }
-LPCSTR CCharacterInfo::Community() const
+CHARACTER_COMMUNITY CCharacterInfo::Community() const
 {
-	return	m_SpecificCharacter.Community();
+	return	m_CurrentCommunity;
 }
 
 CHARACTER_REPUTATION CCharacterInfo::Reputation() const

@@ -183,6 +183,7 @@ void  CActor::ReceivePhrase		(DIALOG_SHARED_PTR& phrase_dialog)
 void   CActor::UpdateAvailableDialogs	(CPhraseDialogManager* partner)
 {
 	m_AvailableDialogs.clear();
+	m_CheckedDialogs.clear();
 
 	if(CInventoryOwner::known_info_registry.objects_ptr())
 	{

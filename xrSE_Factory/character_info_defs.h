@@ -29,7 +29,7 @@ typedef int				CHARACTER_REPUTATION;
 typedef int			CHARACTER_RANK;
 #define NO_RANK		CHARACTER_RANK(-1)
 
-typedef LPCSTR			CHARACTER_COMMUNITY;
+typedef ref_str			CHARACTER_COMMUNITY;
 #define NO_COMMUNITY	CHARACTER_COMMUNITY(NULL)
 
 //структура, описывающая отношение одного персонажа к другому

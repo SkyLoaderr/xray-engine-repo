@@ -102,7 +102,7 @@ void CSpecificCharacter::load_shared	(LPCSTR)
 	//игровое имя персонажа
 	data()->m_sGameName		= uiXml.Read("name", 0, NULL);
 
-	data()->m_Community		= uiXml.Read("team", 0, NO_COMMUNITY);
+	data()->m_Community		= uiXml.Read("team", 0, *NO_COMMUNITY);
 	R_ASSERT3(data()->m_Community != NO_COMMUNITY, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
 	data()->m_Rank			= uiXml.ReadInt("rank", 0, NO_RANK);
 	R_ASSERT3(data()->m_Rank != NO_RANK, "not all fields fulfiled for specific character", *IndexToId(m_iOwnIndex));
@@ -121,7 +121,7 @@ CHARACTER_RANK CSpecificCharacter::Rank() const
 }
 LPCSTR CSpecificCharacter::Community() const 
 {
-	return	data()->m_Community;
+	return	*data()->m_Community;
 }
 
 CHARACTER_REPUTATION	 CSpecificCharacter::Reputation	() const 
