@@ -85,9 +85,9 @@ void OGF::Stripify		()
 
 		// alternative stripification - faces
 		{
-			u32*		remap	= xr_alloc<u32>		(x_faces.size());
-			HRESULT		rhr		= D3DXOptimizeFaces	(x_faces.begin(),x_faces.size(),x_vertices.size(),FALSE,remap);
-			R_CHK		(_hr);
+			DWORD*		remap	= xr_alloc<DWORD>		(x_faces.size());
+			HRESULT		rhr		= D3DXOptimizeFaces		(&x_faces.front(),x_faces.size(),x_vertices.size(),FALSE,remap);
+			R_CHK		(rhr);
 			vecOGF_F	_source	= x_faces;
 			for (u32 it=0; it<_source.size(); it++)	x_faces[it] = _source[remap[it]];
 			xr_free		(remap);
@@ -95,11 +95,11 @@ void OGF::Stripify		()
 
 		// alternative stripification - vertices
 		{
-			u32*		remap	= xr_alloc<u32>			(x_vertices.size());
-			HRESULT		rhr		= D3DXOptimizeVertices	(x_faces.begin(),x_faces.size(),x_vertices.size(),FALSE,remap);
-			R_CHK		(_hr);
+			DWORD*		remap	= xr_alloc<DWORD>		(x_vertices.size());
+			HRESULT		rhr		= D3DXOptimizeVertices	(&x_faces.front(),x_faces.size(),x_vertices.size(),FALSE,remap);
+			R_CHK		(rhr);
 			vec_XV		_source = x_vertices;
-			for(u32 it=0; it<_source.size(); it++)	x_vertices[i]=_source[remap[it]];
+			for(u32 it=0; it<_source.size(); it++)	x_vertices[it]=_source[remap[it]];
 			xr_free		(remap);
 		}
 	}
