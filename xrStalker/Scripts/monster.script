@@ -103,7 +103,7 @@ function generic_object_binder:reinit()
 	--xr_logic.enable_scripts(self.object, self.ini, xr_logic.stype_mobile) --xTEST
 
 --TEST-------------------------------------------------------------
-	reset_action(self.object, script_name())
+	--reset_action(self.object, script_name())
 --TEST-------------------------------------------------------------
 end
 
