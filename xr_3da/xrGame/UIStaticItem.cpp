@@ -32,6 +32,7 @@ void CUIStaticItem::Init(float left, float top, float tx_width, float tx_height,
 {
 	inherited::Init						(tx_width,tx_height);
 	Level().HUD()->ClientToScreenScaled	(left,top,vPos,align);
+	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 }
 
 void CUIStaticItem::Render(Shader* sh)

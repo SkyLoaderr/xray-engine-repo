@@ -12,12 +12,11 @@
 
 class ENGINE_API CDraw
 {
-	friend class			CRender;
-	
 	IDirect3DVertexBuffer8*	pCurVB;
 	IDirect3DIndexBuffer8*	pCurIB;
 	DWORD					vCurShader;
 	DWORD					vCurBase;
+	DWORD					vCurStride;
 public:
 	// Tight interface
 	IDirect3DIndexBuffer8*	&CurrentIB()	{ return pCurIB; }
@@ -27,12 +26,8 @@ public:
 	IC void setVertices		(DWORD vs,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
 	{
 		if (vs!=vCurShader)	HW.pDevice->SetVertexShader(vCurShader=vs);
-		if (VB!=pCurVB)		HW.pDevice->SetStreamSource(0,pCurVB=VB,STRIDE);
-	}
-	IC void setVerticesUC	(DWORD vs,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
-	{
-		HW.pDevice->SetVertexShader	(vCurShader=vs);
-		HW.pDevice->SetStreamSource	(0,pCurVB=VB,STRIDE);
+		if ((VB!=pCurVB)||(STRIDE!=vCurStride))
+			HW.pDevice->SetStreamSource(0,pCurVB=VB,vCurStride=STRIDE);
 	}
 	IC void setIndices		(DWORD BASE, IDirect3DIndexBuffer8* IB)
 	{
