@@ -125,6 +125,7 @@ function proceed(actor)
 	   actor:object("borov_flash") then
 		actor:give_info_portion("val_player_knows_password") 
 	end
+
 	
 	-- Bar Rostok
 	if actor:has_info("bar_resque_research_start") and
@@ -143,14 +144,21 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_hunter_rifle", 1)
 	end 
 
-	if	actor:has_info("bar_dolg_veteran_start") and 
- 		actor:dont_has_info("bar_dolg_veteran_gain") and
-		actor:object("dolg_arhive_documents") ~= nil 
+	if	actor:has_info("bar_resque_research_start") and 
+ 		actor:dont_has_info("bar_resque_research_gain") and
+		actor:object("bar_ecolog_flash") ~= nil 
 	then		
-		actor:give_info_portion("bar_dolg_veteran_gain")
-		set_task_state(task.completed, "bar_dolg_test_quest", 1)
+		actor:give_info_portion("bar_resque_research_gain")
+		set_task_state(task.completed, "bar_resque_information", 1)
 	end 
 
+	if	actor:has_info("bar_get_research_start") and 
+ 		actor:dont_has_info("bar_get_research_gain") and
+		actor:object("bar_ecolog_flash") ~= nil 
+	then		
+		actor:give_info_portion("bar_get_research_gain")
+		set_task_state(task.completed, "bar_get_information", 1)
+	end 
 
 	if	actor:has_info("bar_bar_drunk_dolg_quest_start") and 
  		actor:dont_has_info("bar_bar_drunk_dolg_quest_finish") and
@@ -161,6 +169,18 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_drunk_dolg_quest", 1)
 	end 
 
+	if	actor:has_info("bar_resque_research_done") and 
+ 		actor:dont_has_info("bar_get_research_fail")
+	then		
+		actor:give_info_portion("bar_get_research_fail")
+		set_task_state(task.fail, "bar_get_information", 0)
+	end 
+	if	actor:has_info("bar_get_research_done") and 
+ 		actor:dont_has_info("bar_resque_research_fail")
+	then		
+		actor:give_info_portion("bar_resque_research_fail")
+		set_task_state(task.fail, "bar_resque_information", 0)
+	end 
 
 	
 	
@@ -387,6 +407,7 @@ function process_map_spot(info_id)
 	elseif info_id == "bar_bar_hunter_quest_finish" then
 		remove_location(504, "bar_hunter_location")
 
+
 	elseif info_id == "bar_resque_research_start" then
 		add_location(503, "bar_ecolog_crush_location")
 		
@@ -399,6 +420,21 @@ function process_map_spot(info_id)
 
 	elseif info_id == "bar_resque_research_fail" then
 		remove_location(500, "bar_barman_location")
+
+
+	elseif info_id == "bar_get_research_start" then
+		add_location(503, "bar_ecolog_crush_location")
+		
+	elseif info_id == "bar_get_research_gain" then
+		remove_location(503, "bar_ecolog_crush_location")
+		add_location(509, "bar_freedom_volkodav_location")
+
+	elseif info_id == "bar_get_research_done" then
+		remove_location(509, "bar_freedom_volkodav_location")
+
+		
+	elseif info_id == "bar_get_research_fail" then
+		remove_location(509, "bar_freedom_volkodav_location")
 
 	elseif info_id == "bar_dolg_veteran_start" then
 		add_location(501, "bar_dolg_arhive_document_location")
