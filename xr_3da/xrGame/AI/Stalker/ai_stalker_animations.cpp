@@ -10,9 +10,9 @@
 #include "ai_stalker.h"
 #include "ai_stalker_animations.h"
 
-static const float y_spin_factor		= 0.4f;
-static const float y_shoulder_factor	= 0.4f;
-static const float y_head_factor		= 0.2f;
+static const float y_spin_factor		= 0.5f;
+static const float y_shoulder_factor	= 0.5f;
+static const float y_head_factor		= 0.0f;
 static const float p_spin_factor		= 0.2f;
 static const float p_shoulder_factor	= 0.7f;
 static const float p_head_factor		= 0.1f;
@@ -254,9 +254,9 @@ void CAI_Stalker::vfAssignLegsAnimation(CMotionDef *&tpLegsAnimation)
 //	float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_current.yaw));
 	float					fAnimationSwitchFactor = 1.f;//fAngleDifference < PI_DIV_2 ? 1.f : 1.f - (fAngleDifference - PI_DIV_2)/(PI - PI_DIV_2);
 	if	(((m_tDesirableDirection == eMovementDirectionForward) && (m_tMovementDirection == eMovementDirectionBack))	||	((m_tDesirableDirection == eMovementDirectionBack) && (m_tMovementDirection == eMovementDirectionForward)))
-		fAnimationSwitchFactor = .3f;
+		fAnimationSwitchFactor = .0f;
 	if	(((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight))	||	((m_tDesirableDirection == eMovementDirectionLeft) && (m_tMovementDirection == eMovementDirectionRight)))
-		fAnimationSwitchFactor = .3f;
+		fAnimationSwitchFactor = .0f;
 
 	if (getAI().bfTooSmallAngle(yaw,r_current.yaw,MAX_HEAD_TURN_ANGLE)) {
 		// moving forward
