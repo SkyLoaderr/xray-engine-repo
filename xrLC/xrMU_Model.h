@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xrPool.h"
+
 class xrMU_Model
 {
 public:
@@ -60,6 +62,10 @@ public:
 		BOOL			RenderEqualTo	(Face *F);
 	};
 public:
+	string128			m_name;
+	v_vertices			m_vertices;
+	v_faces				m_faces;
+public:
 	void		Load	(CStream& FS);
 };
 
@@ -70,3 +76,6 @@ public:
 public:
 	void		Load	(CStream& FS);
 };
+
+extern	poolSS<xrMU_Model::_vertex,256>	mu_vertices;
+extern	poolSS<xrMU_Model::_face,256>	mu_faces;

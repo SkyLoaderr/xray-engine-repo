@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "xrmu_model.h"
 
+poolSS<xrMU_Model::_vertex,256>	mu_vertices;
+poolSS<xrMU_Model::_face,256>	mu_faces;
+
 // vertex utilities
 void	xrMU_Model::_vertex::prep_add				(_face* F)
 {
