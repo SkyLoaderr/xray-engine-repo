@@ -11,7 +11,7 @@ function callback_static(object,action,index)
 end
 
 function hit_callback(self, amount,local_direction,who,bone_index)
-	printf			("[%6d] Object %s was hit by object %s with power %d in bone %d and direction [%f][%f][%f]",
+	printf			("[%6d] Object %s was hit by object %s with power %f in bone %d and direction [%f][%f][%f]",
 						device():time_global(),
 						self:name(),
 						who:name(),
@@ -24,7 +24,7 @@ function hit_callback(self, amount,local_direction,who,bone_index)
 end
 
 function hear_callback(self, who, sound_type, sound_position, sound_power)
-	printf			("[%6d] Object %s hears sound by object %s with power %d , type %d from position [%f][%f][%f]",
+	printf			("[%6d] Object %s hears sound by object %s with power %f , type %d from position [%f][%f][%f]",
 						device():time_global(),
 						self:name(),
 						who:name(),
