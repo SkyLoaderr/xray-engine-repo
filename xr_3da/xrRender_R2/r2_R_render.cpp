@@ -77,7 +77,6 @@ void CRender::Render	()
 	Target.accum_direct						();
 
 	// Point lighting (shadowed)
-	/*
 	{
 		HOM.Disable								();
 		vector&	Lvec	= Lights.v_selected_shadowed;
@@ -108,7 +107,6 @@ void CRender::Render	()
 			Target.accum_point				(L);
 		}
 	}
-	*/
 
 	// Postprocess
 	Target.phase_combine					();
