@@ -8,12 +8,15 @@
 
 #pragma once
 
+#include "wrapper_abstract.h"
+#include "motivation.h"
 #include "motivation_action.h"
+#include "ai_script_classes.h"
 
 class CAI_Stalker;
 
-typedef CMotivation<CAI_Stalker>		CStalkerMotivation;
-typedef CMotivationAction<CAI_Stalker>	CStalkerMotivationAction;
+typedef CWrapperAbstract<CAI_Stalker,CMotivation>			CStalkerMotivation;
+typedef CWrapperAbstract<CAI_Stalker,CMotivationAction>	CStalkerMotivationAction;
 
 //////////////////////////////////////////////////////////////////////////
 // CMotivationGlobal

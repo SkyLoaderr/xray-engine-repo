@@ -8,11 +8,12 @@
 
 #pragma once
 
-#include "motivation_action_manager.h"
+#include "motivation_action_manager_script.h"
+#include "action_script_base.h"
 
 class CAI_Stalker;
 
-class CMotivationActionManagerStalker : public CMotivationActionManager<CAI_Stalker> {
+class CMotivationActionManagerStalker : public CMotivationActionManagerScript<CAI_Stalker> {
 public:
 	enum EMotivations {
 		eMotivationGlobal			= u32(0),
@@ -44,11 +45,11 @@ public:
 	};
 
 protected:
-	typedef CMotivationActionManager<CAI_Stalker>	inherited;
-	typedef CActionBase<CAI_Stalker>				CAction;
-	typedef CGraphEngine::_solver_value_type		_value_type;
-	typedef CGraphEngine::_solver_condition_type	_condition_type;
-	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
+	typedef CMotivationActionManagerScript<CAI_Stalker>	inherited;
+	typedef CActionScriptBase<CAI_Stalker>				CAction;
+	typedef CGraphEngine::_solver_value_type			_value_type;
+	typedef CGraphEngine::_solver_condition_type		_condition_type;
+	typedef CGraphEngine::CSolverConditionStorage		CConditionStorage;
 
 	using inherited::add_condition;
 

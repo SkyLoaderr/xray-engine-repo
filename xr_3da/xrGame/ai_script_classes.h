@@ -510,7 +510,7 @@ public:
 			binder->set_lua_object	(object);
 	}
 
-	IC		CMotivationActionManager<CAI_Stalker>	*motivation_action_manager()
+	IC		CMotivationActionManager<CLuaGameObject>	*motivation_action_manager()
 	{
 		CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(m_tpGameObject);
 		if (!stalker) {
@@ -518,6 +518,6 @@ public:
 			return				(0);
 		}
 		else
-			return				(dynamic_cast<CMotivationActionManager<CAI_Stalker>*>(stalker));
+			return				(dynamic_cast<CMotivationActionManager<CLuaGameObject>*>(stalker));
 	}
 };

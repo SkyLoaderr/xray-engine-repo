@@ -12,14 +12,14 @@
 #define CBaseAction				CActionBase<_object_type>
 
 TEMPLATE_SPECIALIZATION
-CBaseAction::CActionBase		(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, _object_type *object, LPCSTR action_name) :
+IC	CBaseAction::CActionBase		(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, _object_type *object, LPCSTR action_name) :
 	inherited			(conditions,effects)
 {
 	init				(object,action_name);
 }
 
 TEMPLATE_SPECIALIZATION
-CBaseAction::CActionBase		(_object_type *object, LPCSTR action_name)
+IC	CBaseAction::CActionBase		(_object_type *object, LPCSTR action_name)
 {
 	init				(object,action_name);
 }

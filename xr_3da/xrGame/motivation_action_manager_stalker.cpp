@@ -11,6 +11,7 @@
 #include "stalker_motivations.h"
 #include "stalker_actions.h"
 #include "stalker_property_evaluators.h"
+#include "ai/stalker/ai_stalker.h"
 
 CMotivationActionManagerStalker::CMotivationActionManagerStalker	()
 {

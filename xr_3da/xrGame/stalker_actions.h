@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "action_base.h"
+#include "action_script_base.h"
 
 class CAI_Stalker;
 
@@ -16,9 +16,9 @@ class CAI_Stalker;
 // CStalkerActionBase
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerActionBase : public CActionBase<CAI_Stalker> {
+class CStalkerActionBase : public CActionScriptBase<CAI_Stalker> {
 protected:
-	typedef CActionBase<CAI_Stalker>				inherited;
+	typedef CActionScriptBase<CAI_Stalker>			inherited;
 	typedef CGraphEngine::CSolverConditionStorage	CConditionStorage;
 	typedef CGraphEngine::_solver_condition_type	_condition_type;
 	typedef CGraphEngine::_solver_value_type		_value_type;

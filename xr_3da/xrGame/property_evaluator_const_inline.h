@@ -8,14 +8,23 @@
 
 #pragma once
 
-template <typename _object_type>
-CPropertyEvaluatorConst<_object_type>::CPropertyEvaluatorConst	(_value_type value) :
+#define TEMPLATE_SPECIALIZATION \
+	template <\
+		typename _object_type\
+	>
+#define CEvaluator	CPropertyEvaluatorConst<_object_type>
+
+TEMPLATE_SPECIALIZATION
+IC	CEvaluator::CPropertyEvaluatorConst	(_value_type value) :
 	m_value			(value)
 {
 }
 
-template <typename _object_type>
-typename CPropertyEvaluatorConst<_object_type>::_value_type	CPropertyEvaluatorConst<_object_type>::evaluate	()
+TEMPLATE_SPECIALIZATION
+typename CEvaluator::_value_type CEvaluator::evaluate	()
 {
 	return			(m_value);
 }
+
+#undef TEMPLATE_SPECIALIZATION
+#undef CEvaluator

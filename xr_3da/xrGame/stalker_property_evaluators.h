@@ -8,21 +8,23 @@
 
 #pragma once
 
+#include "wrapper_abstract.h"
 #include "property_evaluator_const.h"
 #include "property_evaluator_member.h"
 
 class CAI_Stalker;
 
-typedef CPropertyEvaluatorConst<CAI_Stalker>	CStalkerPropertyEvaluatorConst;
-typedef CPropertyEvaluatorMember<CAI_Stalker>	CStalkerPropertyEvaluatorMember;
+typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluator>								CStalkerPropertyEvaluator;
+typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluatorConst>							CStalkerPropertyEvaluatorConst;
+typedef CWrapperAbstract<CAI_Stalker,CPropertyEvaluatorMember>						CStalkerPropertyEvaluatorMember;
 
 //////////////////////////////////////////////////////////////////////////
 // CStalkerPropertyEvaluatorALife
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerPropertyEvaluatorALife : public CPropertyEvaluator<CAI_Stalker> {
+class CStalkerPropertyEvaluatorALife : public CStalkerPropertyEvaluator {
 protected:
-	typedef CPropertyEvaluator<CAI_Stalker> inherited;
+	typedef CStalkerPropertyEvaluator inherited;
 
 public:
 	virtual _value_type	evaluate						();
@@ -32,9 +34,9 @@ public:
 // CStalkerPropertyEvaluatorAlive
 //////////////////////////////////////////////////////////////////////////
 
-class CStalkerPropertyEvaluatorAlive : public CPropertyEvaluator<CAI_Stalker> {
+class CStalkerPropertyEvaluatorAlive : public CStalkerPropertyEvaluator {
 protected:
-	typedef CPropertyEvaluator<CAI_Stalker> inherited;
+	typedef CStalkerPropertyEvaluator inherited;
 
 public:
 	virtual _value_type	evaluate						();
