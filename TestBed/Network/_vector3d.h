@@ -441,8 +441,9 @@ template <class T>
 BOOL	_valid			(const _vector3<T>& v)	{ return _valid((T)v.x) && _valid((T)v.y) && _valid((T)v.z);	}
 
 //////////////////////////////////////////////////////////////////////////
-IC		double rsqrt	(double v)		{	return 1.0/_sqrt(v);			}
-BOOL	exact_normalize	(Fvector3& a)	{	return exact_normalize(&a.x);	}
+#pragma warning(push)
+#pragma warning(disable:4244)
+ICF		double rsqrt	(double v)		{	return 1.0/_sqrt(v);			}
 BOOL	exact_normalize (float* a)
 {
 	double	sqr_magnitude	= a[0]*a[0] + a[1]*a[1] + a[2]*a[2];
@@ -503,5 +504,7 @@ aa2_largest:	// aa2 is largest
 	}
 	return	TRUE;
 }
+BOOL	exact_normalize	(Fvector3& a)	{	return exact_normalize(&a.x);	}
+#pragma warning(pop)
 
 #endif
