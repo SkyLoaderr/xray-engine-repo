@@ -304,6 +304,10 @@ xrSE_DECLARE_END
 
 //
 xrServerEntity*	F_entity_Create		(LPCSTR name);
-void			F_entity_Destroy	(xrServerEntity*& P);
+
+template <class T> void	F_entity_Destroy	(T*& P)
+{
+	xr_delete(P);
+};
 
 #endif

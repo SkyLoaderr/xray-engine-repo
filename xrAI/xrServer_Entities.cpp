@@ -1121,8 +1121,3 @@ xrServerEntity*	F_entity_Create		(LPCSTR name)
 	}
 	return 0;
 }
-
-void			F_entity_Destroy	(xrServerEntity*& P)
-{
-	xr_delete	(P);
-}
