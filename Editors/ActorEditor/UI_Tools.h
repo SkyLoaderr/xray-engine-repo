@@ -6,6 +6,7 @@
 #include "mxplacemnt.hpp"
 #include "BodyInstance.h"
 #include "ItemListHelper.h"
+#include "EditObject.h"
 // refs
 class TProperties;
 class CEditableObject;
@@ -144,6 +145,8 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
     
 	void __fastcall 	OnJointTypeChange		(PropValue* sender);
 	void __fastcall 	OnShapeTypeChange		(PropValue* sender);
+
+    SMotionVec 			appended_motions;
 protected:
 	// flags
     enum{

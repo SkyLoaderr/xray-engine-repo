@@ -168,7 +168,8 @@ void CActorTools::OnGeometryModified()
 bool CActorTools::AppendMotion(LPCSTR fn)
 {
 	VERIFY(m_pEditObject);
-    return m_pEditObject->AppendSMotion(fn);
+    bool bRes = m_pEditObject->AppendSMotion(fn,&appended_motions);
+    return bRes;
 }
 
 bool CActorTools::RemoveMotion(LPCSTR name)
