@@ -9,9 +9,7 @@
 #pragma once
 
 #include "ai_alife_space.h"
-#include "ai_space.h"
 using namespace ALife;
-using namespace AI;
 
 //IC void save_bool_vector(vector<bool> &baVector, CFS_Memory &tMemoryStream)
 //{

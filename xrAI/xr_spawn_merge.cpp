@@ -18,7 +18,6 @@
 #include "game_base.h"
 #include "xr_spawn_merge.h"
 
-DEFINE_VECTOR(u32,				DWORD_VECTOR,			DWORD_IT);
 DEFINE_VECTOR(CALifeObject *,	ALIFE_OBJECT_P_VECTOR,	ALIFE_OBJECT_P_IT);
 
 CVirtualFileStream				*tpGraphVFS = 0;

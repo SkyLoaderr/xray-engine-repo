@@ -858,7 +858,7 @@ public:
 
 class CALifeHumanAbstract : public CALifeMonsterAbstract, public CALifeTraderAbstract {
 public:
-	AI::DWORD_VECTOR					m_tpaVertices;
+	DWORD_VECTOR					m_tpaVertices;
 	BOOL_VECTOR						m_baVisitedVertices;
 	PERSONAL_TASK_P_VECTOR			m_tpTasks;
 	ETaskState						m_tTaskState;
