@@ -47,8 +47,6 @@ private:	// User declarations
     bool ApplyObjectInfo();
     void __fastcall OnModified();
     void __fastcall UpdateProps();
-    // props events
-    void __fastcall OnNameAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
 public:		// User declarations
     __fastcall TfrmPropertiesSpawnPoint(TComponent* Owner);
     static int __fastcall Run(list<CCustomObject*>* pObjects, bool& bChange);

@@ -8,8 +8,10 @@
 #include "Communicate.h"
 #include "pure.h"
 #include "CustomObject.h"
+#include "ElTree.hpp"
 //refs
 struct FSChunkDef;
+class PropValue;
 //----------------------------------------------------
 
 #pragma pack( push,1 )
@@ -225,6 +227,8 @@ public:
 	void 			OnShowHint		(AStringVec& dest);
 
     void			SynchronizeObjects();
+// utils
+	void __fastcall OnObjectNameAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 };
 
 //----------------------------------------------------

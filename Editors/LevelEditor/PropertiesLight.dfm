@@ -1,10 +1,10 @@
 object frmPropertiesLight: TfrmPropertiesLight
-  Left = 869
-  Top = 308
+  Left = 735
+  Top = 237
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsDialog
   Caption = 'Light properties'
-  ClientHeight = 563
+  ClientHeight = 456
   ClientWidth = 301
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -21,157 +21,6 @@ object frmPropertiesLight: TfrmPropertiesLight
   OnPaint = FormPaint
   PixelsPerInch = 96
   TextHeight = 13
-  object gbColor: TGroupBox
-    Left = 0
-    Top = 405
-    Width = 301
-    Height = 37
-    Align = alBottom
-    Caption = ' Color: '
-    TabOrder = 1
-    object mcDiffuse: TMultiObjColor
-      Left = 50
-      Top = 13
-      Width = 42
-      Height = 16
-      Shape = stRoundRect
-      OnMouseDown = mcColorMouseDown
-    end
-    object RxLabel6: TLabel
-      Left = 8
-      Top = 14
-      Width = 36
-      Height = 13
-      Caption = 'Diffuse:'
-    end
-    object RxLabel18: TLabel
-      Left = 96
-      Top = 14
-      Width = 52
-      Height = 13
-      Caption = 'Brightness:'
-    end
-    object tbBrightness: TTrackBar
-      Left = 214
-      Top = 13
-      Width = 85
-      Height = 17
-      Max = 300
-      Min = -300
-      Orientation = trHorizontal
-      Frequency = 75
-      Position = 0
-      SelEnd = 0
-      SelStart = 0
-      TabOrder = 0
-      ThumbLength = 12
-      TickMarks = tmBottomRight
-      TickStyle = tsAuto
-      OnChange = tbBrightnessChange
-    end
-    object seBrightness: TMultiObjSpinEdit
-      Left = 151
-      Top = 12
-      Width = 54
-      Height = 18
-      LWSensitivity = 1
-      ButtonKind = bkLightWave
-      Increment = 0.1
-      MaxValue = 3
-      MinValue = -3
-      ValueType = vtFloat
-      AutoSize = False
-      TabOrder = 1
-      OnBottomClick = seBrightnessChange
-      OnTopClick = seBrightnessChange
-      OnChange = seBrightnessChange
-      OnExit = seBrightnessChange
-    end
-  end
-  object gbAddition: TGroupBox
-    Left = 0
-    Top = 442
-    Width = 301
-    Height = 100
-    Align = alBottom
-    Caption = ' Addition: '
-    TabOrder = 2
-    object MxLabel1: TLabel
-      Left = 6
-      Top = 16
-      Width = 31
-      Height = 13
-      Caption = 'Name:'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-    end
-    object gbLightType: TGroupBox
-      Left = 7
-      Top = 30
-      Width = 154
-      Height = 66
-      Caption = ' Light Type '
-      TabOrder = 0
-      object cbTargetLM: TMultiObjCheck
-        Left = 7
-        Top = 14
-        Width = 122
-        Height = 17
-        Alignment = taLeftJustify
-        BiDiMode = bdLeftToRight
-        Caption = 'Lightmap'
-        ParentBiDiMode = False
-        TabOrder = 0
-        OnClick = cbTargetLMClick
-      end
-      object cbTargetDynamic: TMultiObjCheck
-        Left = 7
-        Top = 30
-        Width = 122
-        Height = 17
-        Alignment = taLeftJustify
-        BiDiMode = bdLeftToRight
-        Caption = 'Dynamic models'
-        ParentBiDiMode = False
-        TabOrder = 1
-      end
-      object cbTargetAnimated: TMultiObjCheck
-        Left = 7
-        Top = 46
-        Width = 122
-        Height = 17
-        Alignment = taLeftJustify
-        BiDiMode = bdLeftToRight
-        Caption = 'Animated'
-        ParentBiDiMode = False
-        TabOrder = 2
-        OnClick = cbTargetAnimatedClick
-      end
-    end
-    object cbUseInD3D: TMultiObjCheck
-      Left = 218
-      Top = 79
-      Width = 76
-      Height = 17
-      BiDiMode = bdLeftToRight
-      Caption = 'Use in D3D'
-      ParentBiDiMode = False
-      TabOrder = 1
-    end
-    object edName: TEdit
-      Left = 56
-      Top = 13
-      Width = 240
-      Height = 18
-      AutoSize = False
-      Color = 14671839
-      TabOrder = 2
-    end
-  end
   object gbType: TGroupBox
     Left = 0
     Top = 0
@@ -471,12 +320,12 @@ object frmPropertiesLight: TfrmPropertiesLight
   end
   object Panel1: TPanel
     Left = 0
-    Top = 542
+    Top = 435
     Width = 301
     Height = 21
     Align = alBottom
     BevelOuter = bvNone
-    TabOrder = 3
+    TabOrder = 1
     object ExtBtn1: TExtBtn
       Left = 101
       Top = 2
@@ -521,11 +370,11 @@ object frmPropertiesLight: TfrmPropertiesLight
     Left = 0
     Top = 265
     Width = 301
-    Height = 128
-    Align = alTop
+    Height = 170
+    Align = alClient
     BevelInner = bvRaised
     BevelOuter = bvLowered
-    TabOrder = 4
+    TabOrder = 2
   end
   object tmAnimation: TTimer
     Enabled = False

@@ -27,7 +27,7 @@
 // refs
 class CLAItem;
 class TProperties;
-class PropItem;
+class PropValue;
 //---------------------------------------------------------------------------
 
 class TfrmEditLightAnim : public TForm
@@ -135,9 +135,9 @@ private:	// User declarations
 
     TProperties*		m_Props;
     void __fastcall		OnModified		(void);
-	void __fastcall 	NameOnAfterEdit	(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-	void __fastcall 	NameOnBeforeEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-	void __fastcall 	NameOnDraw		(PropItem* sender, LPVOID draw_val);
+	void __fastcall 	NameOnAfterEdit	(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+	void __fastcall 	NameOnDraw		(PropValue* sender, LPVOID draw_val);
 public:		// User declarations
     __fastcall TfrmEditLightAnim(TComponent* Owner);
     static bool FinalClose();

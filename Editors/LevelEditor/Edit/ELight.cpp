@@ -45,7 +45,7 @@ CLight::CLight(LPVOID data, LPCSTR name):CCustomObject(data,name){
 void CLight::Construct(LPVOID data){
 	ClassID 		= OBJCLASS_LIGHT;
 
-    m_UseInD3D		= true;
+    m_UseInD3D		= TRUE;
 
     ZeroMemory		(&m_D3D,sizeof(m_D3D));
 
@@ -61,9 +61,7 @@ void CLight::Construct(LPVOID data){
 
     m_pAnimRef		= 0;
 
-    m_Flags.bAffectStatic 	= TRUE;
-    m_Flags.bAffectDynamic 	= FALSE;
-    m_Flags.bProcedural 	= FALSE;
+    m_dwFlags		= flAffectStatic;
 }
 
 CLight::~CLight(){
@@ -101,7 +99,7 @@ bool CLight::GetBox( Fbox& box ){
 void CLight::Render(int priority, bool strictB2F){
     if ((1==priority)&&(false==strictB2F)){
     	DWORD clr;
-        clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_Flags.bAffectDynamic?NORM_DYN_COLOR:NORM_COLOR));
+        clr = Locked()?LOCK_COLOR:(Selected()?SEL_COLOR:(m_dwFlags&flAffectDynamic?NORM_DYN_COLOR:NORM_COLOR));
     	switch (m_D3D.type){
         case D3DLIGHT_POINT:
             if (Selected()) DU::DrawLineSphere( m_D3D.position, m_D3D.range, clr, true );
@@ -190,9 +188,9 @@ void CLight::OnShowHint(AStringVec& dest){
     }
     dest.push_back(temp);
     temp = "Flags: ";
-    if (m_Flags.bAffectStatic)  temp+="Stat ";
-    if (m_Flags.bAffectDynamic) temp+="Dyn ";
-    if (m_Flags.bProcedural) 	temp+="Proc ";
+    if (m_dwFlags&flAffectStatic)  	temp+="Stat ";
+    if (m_dwFlags&flAffectDynamic) 	temp+="Dyn ";
+    if (m_dwFlags&flProcedural)		temp+="Proc ";
     dest.push_back(temp);
     temp.sprintf("Pos:   %3.2f, %3.2f, %3.2f",m_D3D.position.x,m_D3D.position.y,m_D3D.position.z);
     dest.push_back(temp);
@@ -227,7 +225,7 @@ bool CLight::Load(CStream& F){
         }
     }
 
-    if (F.FindChunk(LIGHT_CHUNK_FLAG)) F.Read(&m_Flags,sizeof(DWORD));
+    if (F.FindChunk(LIGHT_CHUNK_FLAG)) F.Read(&m_dwFlags,sizeof(DWORD));
 
 	if (D3DLIGHT_DIRECTIONAL==m_D3D.type) m_LensFlare.Load(F);
 
@@ -256,7 +254,7 @@ void CLight::Save(CFS_Base& F){
 	F.write_chunk	(LIGHT_CHUNK_BRIGHTNESS,&m_Brightness,sizeof(m_Brightness));
 	F.write_chunk	(LIGHT_CHUNK_D3D_PARAMS,&m_D3D,sizeof(m_D3D));
     F.write_chunk	(LIGHT_CHUNK_USE_IN_D3D,&m_UseInD3D,sizeof(m_UseInD3D));
-    F.write_chunk	(LIGHT_CHUNK_FLAG,&m_Flags,sizeof(DWORD));
+    F.write_chunk	(LIGHT_CHUNK_FLAG,&m_dwFlags,sizeof(DWORD));
     
     if (m_pAnimRef){
 		F.open_chunk(LIGHT_CHUNK_ANIMREF);

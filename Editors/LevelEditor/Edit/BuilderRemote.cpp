@@ -281,7 +281,7 @@ BOOL SceneBuilder::BuildSun(CLight* e)
 
 BOOL SceneBuilder::BuildLight(CLight* e, BOOL bRoot)
 {
-    if (!e->m_Flags.bAffectStatic&&!e->m_Flags.bAffectDynamic)
+    if (!(e->m_dwFlags&CLight::flAffectStatic)&&!(e->m_dwFlags&CLight::flAffectDynamic))
     	return FALSE;
 
     int controller_ID 	= BuildLightControl(e);
@@ -291,15 +291,16 @@ BOOL SceneBuilder::BuildLight(CLight* e, BOOL bRoot)
     L.ambient.mul_rgb	(e->m_Brightness);
     L.specular.mul_rgb	(e->m_Brightness);
     
-    if (e->m_Flags.bProcedural){
+    if (e->m_dwFlags&CLight::flProcedural){
 //	    b.controller_ID= ?;
     }
     
-    if (e->m_Flags.bAffectStatic){
+    if (e->m_dwFlags&CLight::flAffectStatic){
         if (D3DLIGHT_DIRECTIONAL==L.type){
-            if (bRoot){
-                BuildSun(e);
-            }else{
+//            if (bRoot){
+//                BuildSun(e);
+//            }else
+			{
                 l_light_static.push_back(b_light_static());
                 b_light_static& sl	= l_light_static.back();
                 sl.controller_ID 	= controller_ID;
@@ -314,7 +315,7 @@ BOOL SceneBuilder::BuildLight(CLight* e, BOOL bRoot)
         }
     }
 
-    if (e->m_Flags.bAffectDynamic){
+    if (e->m_dwFlags&CLight::flAffectDynamic){
         b_light_dynamic dl;
         dl.controller_ID 			= controller_ID;
         dl.data			    		= L;
@@ -342,6 +343,8 @@ BOOL SceneBuilder::BuildLight(CLight* e, BOOL bRoot)
                         dl.sectors.push_back(_S->sector_num);
                 }
                 if (dl.sectors.empty()) return FALSE; 
+            }else{
+	            dl.sectors.push_back(m_iDefaultSectorNum);
             }
             l_light_dynamic.push_back(dl);
         break;

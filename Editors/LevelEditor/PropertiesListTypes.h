@@ -18,6 +18,7 @@ enum EPropType{
     PROP_TOKEN3,
 	PROP_LIST,
 	PROP_COLOR,
+	PROP_FCOLOR,
 	PROP_TEXT,
     PROP_ANSI_TEXT,
 	PROP_SH_ENGINE,
@@ -34,104 +35,161 @@ enum EPropType{
 };
 // refs
 struct 	xr_token;
-class PropItem;
+class PropValue;
 
 //------------------------------------------------------------------------------
-typedef void 	__fastcall (__closure *TBeforeEdit)		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TAfterEdit)		(TElTreeItem* item, PropItem* sender, LPVOID edit_val);
-typedef void 	__fastcall (__closure *TOnDrawValue)	(PropItem* sender, LPVOID draw_val);
+typedef void 	__fastcall (__closure *TBeforeEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TAfterEdit)		(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
+typedef void 	__fastcall (__closure *TOnDrawValue)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)(void);
 typedef void 	__fastcall (__closure *TOnItemFocused)	(TElTreeItem* item);
 //------------------------------------------------------------------------------
 
-class PropItem{
+class PropValue{
+protected:
+	bool				bDiff;
 public:
 	TElTreeItem*		item;
     EPropType			type;
 public:
-						PropItem		():item(0){};
-	virtual 			~PropItem		(){};
-    virtual LPCSTR		GetText			()=0;
-    virtual void		InitNext		(LPVOID value)=0;
-//	virtual void		Load			(CStream& F){;}
-//	virtual void		Save			(CFS_Base& F){;}
-};
-
-class MarkerItem: public PropItem{
-	AnsiString			value;
-public:
-						MarkerItem		(LPCSTR val):PropItem(),value(val){};
-    virtual LPCSTR		GetText			(){return value.c_str();}
-    virtual void		InitNext		(LPVOID value){};
-};
-
-class PropValue: public PropItem{
-public:
-	bool				bDiff;
     TAfterEdit			OnAfterEdit;
     TBeforeEdit			OnBeforeEdit;
     TOnDrawValue		OnDrawValue;
 public:
-						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropItem(),bDiff(false),OnAfterEdit(after),OnBeforeEdit(before),OnDrawValue(draw){};
+						PropValue		(TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):
+                        				item(0),bDiff(false),OnAfterEdit(after),
+                                        OnBeforeEdit(before),OnDrawValue(draw){};
 	virtual 			~PropValue		(){};
-    virtual bool		IsDiffValues	(){return bDiff;}
+    virtual LPCSTR		GetText			()=0;
+    virtual void		InitNext		(LPVOID value)=0;
+    virtual void		ResetValue		()=0;
+    virtual bool		ApplyValue		(LPCVOID value)=0;
 };
 //------------------------------------------------------------------------------
 
+class MarkerItem: public PropValue{
+	AnsiString			value;
+public:
+						MarkerItem		(LPCSTR val):PropValue(TAfterEdit(0),TBeforeEdit(0),TOnDrawValue(0)),value(val){};
+    virtual LPCSTR		GetText			(){return value.c_str();}
+    virtual void		InitNext		(LPVOID value){};
+    virtual	void		ResetValue		(){;}
+    virtual bool		ApplyValue		(){return false;}
+};
+
 class TextValue: public PropValue{
+	AStringVec			init_values;
 	LPSTRVec			values;
+    void				AppendValue		(LPSTR value){values.push_back(value);init_values.push_back(value);}
 public:
 	int					lim;
-						TextValue		(LPSTR value, int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim(_lim),PropValue(after,before,draw){values.push_back(value);};
+						TextValue		(LPSTR value, int _lim, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim(_lim),PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			();
-    virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; values.push_back((LPSTR)value);}
-    void				ApplyValue		(LPCSTR value){bDiff=false;for (LPSTRIt it=values.begin();it!=values.end();it++) strcpy(*it,value);}
+    virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
+    virtual bool		ApplyValue		(LPCVOID value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPSTRIt it=values.begin();it!=values.end();it++){
+        	if (0!=strcmp(*it,(LPCSTR)value)){
+	        	strcpy(*it,(LPCSTR)value);
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     LPCSTR				GetValue		(){return values.front();}
+    void				ResetValue		(){AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());}
 };
 //------------------------------------------------------------------------------
 
 class AnsiTextValue: public PropValue{
+	AStringVec			init_values;
 	LPAStringVec		values;
+    void				AppendValue		(AnsiString* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){values.push_back(value);};
+						AnsiTextValue	(AnsiString* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			();
-    virtual void		InitNext		(LPVOID value){if (*(AnsiString*)value!=*values.front()) bDiff=true; values.push_back((AnsiString*)value);}
-    void				ApplyValue		(const AnsiString& value){bDiff=false;for (LPAStringIt it=values.begin();it!=values.end();it++) **it=value;}
+    virtual void		InitNext		(LPVOID value){if (*(AnsiString*)value!=*values.front()) bDiff=true; AppendValue((AnsiString*)value);}
+    virtual bool		ApplyValue		(LPCVOID value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPAStringIt it=values.begin();it!=values.end();it++){
+        	if (**it!=(const AnsiString&)value){
+	        	**it=(const AnsiString&)value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     const AnsiString&	 GetValue		(){return *values.front();}
+    void				ResetValue		(){AStringIt src=init_values.begin(); for (LPAStringIt it=values.begin();it!=values.end();it++,src++) **it=*src;}
 };
 //------------------------------------------------------------------------------
 
 class BOOLValue: public PropValue{
+	BOOLVec				init_values;
 	LPBOOLVec			values;
+    void				AppendValue		(LPBOOL value){values.push_back(value);init_values.push_back(*value);}
 public:
-						BOOLValue		(BOOL* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){values.push_back(value);};
+						BOOLValue		(LPBOOL value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			();
-    virtual void		InitNext		(LPVOID value){if (*(BOOL*)value!=*values.front()) bDiff=true; values.push_back((BOOL*)value);}
-    void				ApplyValue		(BOOL value){bDiff=false;for (LPBOOLIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value){if (*(BOOL*)value!=*values.front()) bDiff=true; AppendValue((BOOL*)value);}
+    virtual bool		ApplyValue		(LPCVOID value)
+    {	
+    	bDiff			= false;
+    	bool bChanged	= false;
+	    for (LPBOOLIt it=values.begin();it!=values.end();it++){
+        	if (**it!=(BOOL)value){
+	        	**it 	= (BOOL)value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     BOOL 				GetValue		(){return *values.front();}
+    void				ResetValue		(){BOOLIt src=init_values.begin(); for (LPBOOLIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
+DEFINE_VECTOR(WaveForm,WaveFormVec,WaveFormIt);
 DEFINE_VECTOR(WaveForm*,LPWaveFormVec,LPWaveFormIt);
 
 class WaveValue: public PropValue{
+	WaveFormVec			init_values;
 	LPWaveFormVec		values;
+    void				AppendValue		(WaveForm* value){values.push_back(value);init_values.push_back(*value);}
 public:
-						WaveValue		(WaveForm* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){values.push_back(value);};
+						WaveValue		(WaveForm* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value);};
     virtual LPCSTR		GetText			(){return "[Wave]";}
-    virtual void		InitNext		(LPVOID value){if (!((WaveForm*)value)->Similar(*values.front())) bDiff=true; values.push_back((WaveForm*)value);}
-    void				ApplyValue		(const WaveForm& value){bDiff=false;for (LPWaveFormIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value){if (!((WaveForm*)value)->Similar(*values.front())) bDiff=true; AppendValue((WaveForm*)value);}
+    virtual bool		ApplyValue		(LPVOID value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPWaveFormIt it=values.begin();it!=values.end();it++){
+        	if (!(*it)->Similar((WaveForm)value)){
+	        	**it 	= (WaveForm)value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     const WaveForm& 	GetValue		(){return *values.front();}
+    void				ResetValue		(){WaveFormIt src=init_values.begin(); for (LPWaveFormIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class DWORDValue: public PropValue{
+	DWORDVec			init_values;
 	LPDWORDVec			values;
+    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
     DWORD				lim_mx;
     DWORD 				inc;
 public:
-						DWORDValue		(DWORD* value, DWORD mx, DWORD increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mx(mx),inc(increm),PropValue(after,before,draw){clamp(*value,0ul,lim_mx); values.push_back(value);};
+						DWORDValue		(DWORD* value, DWORD mx, DWORD increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mx(mx),inc(increm),PropValue(after,before,draw){clamp(*value,0ul,lim_mx); AppendValue(value);};
     virtual LPCSTR		GetText			(){
     	DWORD draw_val 	= GetValue();
         if (OnDrawValue)OnDrawValue(this, &draw_val);
@@ -139,19 +197,33 @@ public:
         draw_text		= draw_val;
         return draw_text.c_str();
     }
-    virtual void		InitNext		(LPVOID value){clamp(*(DWORD*)value,0ul,lim_mx); if (*(DWORD*)value!=*values.front()) bDiff=true; values.push_back((DWORD*)value);}
-    void				ApplyValue		(DWORD value){bDiff=false;for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value){clamp(*(DWORD*)value,0ul,lim_mx); if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
+    virtual bool		ApplyValue		(LPCVOID value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPDWORDIt it=values.begin();it!=values.end();it++){
+        	if (**it!=(DWORD)value){
+	        	**it 	= (DWORD)value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     DWORD 				GetValue		(){return *values.front();}
+    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class IntValue: public PropValue{
+	IntVec				init_values;
 	LPIntVec			values;
+    void				AppendValue		(int* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	int					lim_mn;
     int					lim_mx;
     int 				inc;
-    					IntValue		(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw){clamp(*value,lim_mn,lim_mx); values.push_back(value);};
+    					IntValue		(int* value, int mn, int mx, int increm, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increm),PropValue(after,before,draw){clamp(*value,lim_mn,lim_mx); AppendValue(value);};
     virtual LPCSTR		GetText			()
     {
     	int draw_val 	= GetValue();
@@ -160,20 +232,32 @@ public:
         draw_text		= draw_val;
         return draw_text.c_str();
     }
-    virtual void		InitNext		(LPVOID value){clamp(*(int*)value,lim_mn,lim_mx); if (*(int*)value!=*values.front()) bDiff=true; values.push_back((int*)value);}
-    void				ApplyValue		(int value){bDiff=false;for (LPIntIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value){clamp(*(int*)value,lim_mn,lim_mx); if (*(int*)value!=*values.front()) bDiff=true; AppendValue((int*)value);}
+    virtual bool		ApplyValue		(int value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPIntIt it=values.begin();it!=values.end();it++) **it = value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     int 				GetValue		(){return *values.front();}
+    void				ResetValue		(){IntIt src=init_values.begin(); for (LPIntIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class FloatValue: public PropValue{
+	FloatVec			init_values;
 	LPFloatVec			values;
+    void				AppendValue		(float* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	float				lim_mn;
     float				lim_mx;
     float 				inc;
     int 				dec;
-    					FloatValue		(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){clamp(*value,lim_mn,lim_mx); values.push_back(value);}
+    					FloatValue		(float* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){clamp(*value,lim_mn,lim_mx); AppendValue(value);}
     virtual LPCSTR		GetText			()
     {
     	float draw_val 	= GetValue();
@@ -183,20 +267,56 @@ public:
         draw_text.sprintf(fmt.c_str(),draw_val);
 		return draw_text.c_str();
     }
-    virtual void		InitNext		(LPVOID value){clamp(*(float*)value,lim_mn,lim_mx); if (*(float*)value!=*values.front()) bDiff=true; values.push_back((float*)value);}
-    void				ApplyValue		(float value){bDiff=false;for (LPFloatIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value){clamp(*(float*)value,lim_mn,lim_mx); if (*(float*)value!=*values.front()) bDiff=true; AppendValue((float*)value);}
+    virtual bool		ApplyValue		(float value)
+    {	
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPFloatIt it=values.begin();it!=values.end();it++) **it = value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     float 				GetValue		(){return *values.front();}
+    void				ResetValue		(){FloatIt src=init_values.begin(); for (LPFloatIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
+class ColorValue: public PropValue{
+	FcolorVec			init_values;
+	LPFcolorVec			values;
+    void				AppendValue		(Fcolor* value){values.push_back(value);init_values.push_back(*value);}
+public:
+						ColorValue		(Fcolor* value, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value);}
+    virtual LPCSTR		GetText			(){return 0;}
+    virtual void		InitNext		(LPVOID value){if (!((Fcolor*)value)->similar_rgba(*values.front())) bDiff=true; AppendValue((Fcolor*)value);}
+    virtual bool		ApplyValue		(const Fcolor& value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPFcolorIt it=values.begin();it!=values.end();it++) **it = value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
+    const Fcolor&		GetValue		(){return *values.front();}
+    void				ResetValue		(){FcolorIt src=init_values.begin(); for (LPFcolorIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
+};
+//------------------------------------------------------------------------------
+
+
 class VectorValue: public PropValue{
+	FvectorVec			init_values;
 	LPFvectorVec		values;
+    void				AppendValue		(Fvector* value){values.push_back(value);init_values.push_back(*value);}
 public:
 	float				lim_mn;
     float				lim_mx;
     float 				inc;
     int 				dec;
-						VectorValue		(Fvector* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){values.push_back(value);}
+						VectorValue		(Fvector* value, float mn, float mx, float increment, int decimal, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):lim_mn(mn),lim_mx(mx),inc(increment),dec(decimal),PropValue(after,before,draw){AppendValue(value);}
     virtual LPCSTR		GetText			()
     {
 		Fvector draw_val 	= GetValue();
@@ -206,50 +326,98 @@ public:
         draw_text.sprintf(fmt.c_str(),draw_val.x,draw_val.y,draw_val.z);
 		return draw_text.c_str();
     }
-    virtual void		InitNext		(LPVOID value){if (!((Fvector*)value)->similar(*values.front())) bDiff=true; values.push_back((Fvector*)value);}
-    void				ApplyValue		(const Fvector& value){bDiff=false;for (LPFvectorIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value){if (!((Fvector*)value)->similar(*values.front())) bDiff=true; AppendValue((Fvector*)value);}
+    virtual bool		ApplyValue		(const Fvector& value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPFvectorIt it=values.begin();it!=values.end();it++) **it = value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     const Fvector&		GetValue		(){return *values.front();}
+    void				ResetValue		(){FvectorIt src=init_values.begin(); for (LPFvectorIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class FlagValue: public PropValue{
+	DWORDVec			init_values;
 	LPDWORDVec			values;
+    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	DWORD				mask;
-						FlagValue		(DWORD* value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):mask(_mask),PropValue(after,before,draw){values.push_back(value);}
+						FlagValue		(LPDWORD value, DWORD _mask, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):mask(_mask),PropValue(after,before,draw){AppendValue(value);}
     virtual LPCSTR		GetText			(){return 0;}
-    virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(DWORD*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; values.push_back((DWORD*)value);}
-    void				ApplyValue		(bool value){for (LPDWORDIt it=values.begin();it!=values.end();it++) if (value) **it|=mask; else **it&=~mask; }
+    virtual void		InitNext		(LPVOID value){bDiff=false; bool a=(*(DWORD*)value)&mask; bool b=(*values.front())&mask; if (a!=b) bDiff=true; AppendValue((DWORD*)value);}
+    virtual bool		ApplyValue		(bool value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+    	for (LPDWORDIt it=values.begin();it!=values.end();it++) if (value) **it|=mask; else **it&=~mask; 
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     bool	 			GetValue		(){return (*values.front())&mask;}
+    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) if ((*src)&mask) **it|=mask; else **it&=~mask;}
 };
 //------------------------------------------------------------------------------
 
 class TokenValue: public PropValue{
+	DWORDVec			init_values;
 	LPDWORDVec			values;
+    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	xr_token* 			token;
-						TokenValue		(DWORD* value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):token(_token),PropValue(after,before,draw){values.push_back(value);}
+						TokenValue		(LPDWORD value, xr_token* _token, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):token(_token),PropValue(after,before,draw){AppendValue(value);}
 	virtual LPCSTR 		GetText			();
-    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; values.push_back((DWORD*)value);}
-    void				ApplyValue		(DWORD value)	{bDiff=false;for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
+    virtual bool		ApplyValue		(DWORD value)	
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     DWORD 				GetValue		(){return *values.front();}
+    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class TokenValue2: public PropValue{
+	DWORDVec			init_values;
 	LPDWORDVec			values;
+    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	AStringVec 			items;
-						TokenValue2		(DWORD* value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(after,before,draw){values.push_back(value);}
+						TokenValue2		(LPDWORD value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(after,before,draw){AppendValue(value);}
 	virtual LPCSTR 		GetText			();
-    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; values.push_back((DWORD*)value);}
-    void				ApplyValue		(DWORD value)	{bDiff=false;for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
+    virtual bool		ApplyValue		(DWORD value)	
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     DWORD 				GetValue		(){return *values.front();}
+    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class TokenValue3: public PropValue{
+	DWORDVec			init_values;
 	LPDWORDVec			values;
+    void				AppendValue		(LPDWORD value){values.push_back(value);init_values.push_back(*value);}
 public:
 	struct Item {
 		DWORD		ID;
@@ -257,27 +425,49 @@ public:
 	};
 	DWORD				cnt;
     const Item*			items;
-						TokenValue3		(DWORD* value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):cnt(_cnt),items(_items),PropValue(after,before,draw){values.push_back(value);};
+						TokenValue3		(LPDWORD value, DWORD _cnt, const Item* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):cnt(_cnt),items(_items),PropValue(after,before,draw){AppendValue(value);};
 	virtual LPCSTR 		GetText			();
-    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; values.push_back((DWORD*)value);}
-    void				ApplyValue		(DWORD value)	{bDiff=false;for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;}
+    virtual void		InitNext		(LPVOID value)	{if (*(DWORD*)value!=*values.front()) bDiff=true; AppendValue((DWORD*)value);}
+    virtual bool		ApplyValue		(DWORD value)	
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPDWORDIt it=values.begin();it!=values.end();it++) **it = value;
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     DWORD 				GetValue		(){return *values.front();}
+    void				ResetValue		(){DWORDIt src=init_values.begin(); for (LPDWORDIt it=values.begin();it!=values.end();it++,src++) **it = *src;}
 };
 //------------------------------------------------------------------------------
 
 class ListValue: public PropValue{
+	AStringVec			init_values;
 	LPSTRVec			values;
+    void				AppendValue		(LPSTR value){values.push_back(value);init_values.push_back(value);}
 public:
 	AStringVec 			items;
-						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(after,before,draw){values.push_back(value);};
-						ListValue		(LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){values.push_back(value); items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
+						ListValue		(LPSTR value, AStringVec* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):items(*_items),PropValue(after,before,draw){AppendValue(value);};
+						ListValue		(LPSTR value, DWORD cnt, LPCSTR* _items, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw):PropValue(after,before,draw){AppendValue(value); items.resize(cnt); int i=0; for (AStringIt it=items.begin(); it!=items.end(); it++,i++) *it=_items[i]; };
 	virtual LPCSTR		GetText			();
-    virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; values.push_back((LPSTR)value);}
-    void				ApplyValue		(LPCSTR value){bDiff=false;for (LPSTRIt it=values.begin();it!=values.end();it++) strcpy(*it,value);}
+    virtual void		InitNext		(LPVOID value){if (0!=strcmp((LPSTR)value,values.front())) bDiff=true; AppendValue((LPSTR)value);}
+    virtual bool		ApplyValue		(LPCSTR value)
+    {
+    	bDiff			= false;
+    	bool bChanged	= false;
+        for (LPSTRIt it=values.begin();it!=values.end();it++) strcpy(*it,value);
+                bChanged= true;
+            }
+        }
+        return bChanged;
+    }
     LPCSTR				GetValue		(){return values.front();}
+    void				ResetValue		(){AStringIt src=init_values.begin(); for (LPSTRIt it=values.begin();it!=values.end();it++,src++) strcpy(*it,src->c_str());}
 };
 //------------------------------------------------------------------------------
-DEFINE_VECTOR(PropItem*,PropItemVec,PropItemIt)
+DEFINE_VECTOR(PropValue*,PropValueVec,PropValueIt)
 
 //---------------------------------------------------------------------------
 #endif

@@ -28,15 +28,16 @@ class CLight : public CCustomObject{
 protected:
 	typedef CCustomObject inherited;
 public:
-	struct {
-		DWORD		bAffectStatic	: 1;
-		DWORD		bAffectDynamic	: 1;
-		DWORD		bProcedural		: 1;
-	}				m_Flags;
+	enum{
+		flAffectStatic	= (1<<0),
+		flAffectDynamic	= (1<<1),
+		flProcedural	= (1<<2)
+    };
+    DWORD			m_dwFlags;
 	Flight			m_D3D;
 
 	// build options
-    int 			m_UseInD3D;
+    BOOL 			m_UseInD3D;
     float 			m_Brightness;
 
     CLAItem*		m_pAnimRef;

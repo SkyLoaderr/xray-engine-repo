@@ -91,9 +91,9 @@ void TProperties::ClearParams(TElTreeItem* node)
 	if (node){
     	//S когда будут все итемы удалить у каждого
     	for (TElTreeItem* item=node; item; item=item->GetNext()){
-			PropItem* V = (PropItem*)GetItemData(item);
+			PropValue* V = (PropValue*)GetItemData(item);
             if (V){
-	            PropItemIt it=find(m_Params.begin(),m_Params.end(),V); VERIFY(it!=m_Params.end());
+	            PropValueIt it=find(m_Params.begin(),m_Params.end(),V); VERIFY(it!=m_Params.end());
     	        if (it){
 					m_Params.erase(it);
 					_DELETE(V);
@@ -101,7 +101,7 @@ void TProperties::ClearParams(TElTreeItem* node)
             }
 		}
     }else{
-	    for (PropItemIt it=m_Params.begin(); it!=m_Params.end(); it++)
+	    for (PropValueIt it=m_Params.begin(); it!=m_Params.end(); it++)
     		_DELETE(*it);
 		m_Params.clear();
     }
@@ -220,7 +220,7 @@ void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
 */
 //---------------------------------------------------------------------------
 
-PropItem* __fastcall TProperties::AddItem(TElTreeItem* parent, EPropType type, LPCSTR key, PropItem* prop)
+PropValue* __fastcall TProperties::AddItem(TElTreeItem* parent, EPropType type, LPCSTR key, PropValue* prop)
 {
 	R_ASSERT(iFillMode>0);
     R_ASSERT(prop);
@@ -235,6 +235,7 @@ PropItem* __fastcall TProperties::AddItem(TElTreeItem* parent, EPropType type, L
 
     switch (type){
     case PROP_BOOLEAN:		break;	// dasn't have text
+    case PROP_FCOLOR:		break;  // dasn't have text
     case PROP_COLOR:		break;  // dasn't have text
     case PROP_MARKER:
     case PROP_WAVE:
@@ -291,118 +292,125 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 	   	Surface->Font->Style 	= TFontStyles()<< fsBold;
     }
   	if (SectionIndex == 1){
-    	PropItem* prop 	= (PropItem*)Item->Data;
-        PropValue* val	= dynamic_cast<PropValue*>(prop);
-        if (val){
-        	if (val->IsDiffValues()){ 
-            	TColor C 		= Surface->Brush->Color;
-                TBrushStyle S 	= Surface->Brush->Style;
-                Surface->Brush->Style = bsSolid;
-                Surface->Brush->Color = 0x008E8E8E;
-                TRect r	=	R;
-            	r.Left 	-= 	1;
-            	r.Right	+=	1;
-            	r.Bottom+= 	2;
-            	r.Top	-=	1;
-                Surface->FillRect(r);
-                Surface->Brush->Color 	= C;
-                Surface->Brush->Style	= S;
-            }
-        }
-    	DWORD type = (DWORD)Item->Tag;
-        switch(type){
-    	case PROP_MARKER:
-		    Surface->Font->Color = clSilver;
+    	PropValue* prop 	= (PropValue*)Item->Data;
+        if (prop->IsDiffValues()){ 
+            TColor C 		= Surface->Brush->Color;
+            TBrushStyle S 	= Surface->Brush->Style;
+            Surface->Brush->Style = bsSolid;
+            Surface->Brush->Color = (TColor)0x008E8E8E;
+            TRect r	=	R;
+            r.Left 	-= 	1;
+            r.Right	+=	1;
+            r.Bottom+= 	2;
+            r.Top	-=	1;
+            Surface->FillRect(r);
+            Surface->Brush->Color 	= C;
+            Surface->Brush->Style	= S;
             R.Right-= 1;
             R.Left += 1;
-    		DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-        break;
-        case PROP_COLOR:{
-			Surface->Brush->Style = bsSolid;
- 			Surface->Brush->Color = TColor(0x00000000);
-            Surface->FrameRect(R);
-            R.Right	-=	1;
-            R.Left 	+= 	1;
-            R.Top	+=	1;
-            R.Bottom-= 	1;
-        	DWORDValue* V=(DWORDValue*)prop;
-		    Surface->Brush->Color = (TColor)rgb2bgr(V->GetValue());
-            Surface->FillRect(R);
-        }break;
-        case PROP_FLAG:{
-        	FlagValue* V=(FlagValue*)prop;
-        	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
-            if (V->GetValue())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-            else				Surface->Draw(R.Left,R.Top+3,m_BMDot);
-        }break;
-        case PROP_BOOLEAN:{
-        	BOOLValue* V=(BOOLValue*)prop;
-        	Surface->CopyMode = cmSrcAnd;//cmSrcErase;
-            if (V->GetValue())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
-            else			   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
-        }break;
-        case PROP_WAVE:
-        case PROP_LIGHTANIM:
-        case PROP_LIBOBJECT:
-        case PROP_ENTITY:
-        case PROP_TEXTURE:
-        case PROP_TEXTURE2:
-        case PROP_ANSI_TEXTURE:
-        case PROP_ANSI_SH_ENGINE:
-        case PROP_ANSI_SH_COMPILE:
-        case PROP_SH_ENGINE:
-        case PROP_SH_COMPILE:
-            R.Right	-=	12;
-            R.Left 	+= 	1;
-    		DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-            R.Left 	= 	R.Right;
-        	Surface->CopyMode = cmSrcAnd;
-            Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
-        break;
-		case PROP_TOKEN:
-        case PROP_TOKEN2:
-        case PROP_TOKEN3:
-        case PROP_LIST:
-            R.Right	-=	12;
-            R.Left 	+= 	1;
-    		DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-            R.Left 	= 	R.Right;
-            R.Right += 	10;
-            DrawArrow	(Surface, eadDown, R, clWindowText, true);
-        break;
-        case PROP_ANSI_TEXT:
-        case PROP_TEXT:
-        	if (edText->Tag!=(int)Item){
-//                R.Right	-=	12;
-//                R.Left 	+= 	1;
-//                DrawText	(Surface->Handle, ((PropItem*)Item->Data)->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-//                R.Left 	= 	R.Right;
-//                Surface->CopyMode = cmSrcAnd;
-//                Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
+            DrawText	(Surface->Handle, "(mixed)", -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+        }else{
+            DWORD type = (DWORD)Item->Tag;
+            switch(type){
+            case PROP_MARKER:
+                Surface->Font->Color = clSilver;
+                R.Right-= 1;
+                R.Left += 1;
+                DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+            break;
+            case PROP_FCOLOR:{
+                Surface->Brush->Style = bsSolid;
+                Surface->Brush->Color = TColor(0x00000000);
+                Surface->FrameRect(R);
+                R.Right	-=	1;
+                R.Left 	+= 	1;
+                R.Top	+=	1;
+                R.Bottom-= 	1;
+                ColorValue* V=(ColorValue*)prop;
+                Surface->Brush->Color = (TColor)V->GetValue().get_windows();
+                Surface->FillRect(R);
+            }break;
+            case PROP_COLOR:{
+                Surface->Brush->Style = bsSolid;
+                Surface->Brush->Color = TColor(0x00000000);
+                Surface->FrameRect(R);
+                R.Right	-=	1;
+                R.Left 	+= 	1;
+                R.Top	+=	1;
+                R.Bottom-= 	1;
+                DWORDValue* V=(DWORDValue*)prop;
+                Surface->Brush->Color = (TColor)rgb2bgr(V->GetValue());
+                Surface->FillRect(R);
+            }break;
+            case PROP_FLAG:{
+                FlagValue* V=(FlagValue*)prop;
+                Surface->CopyMode = cmSrcAnd;//cmSrcErase;
+                if (V->GetValue())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+                else				Surface->Draw(R.Left,R.Top+3,m_BMDot);
+            }break;
+            case PROP_BOOLEAN:{
+                BOOLValue* V=(BOOLValue*)prop;
+                Surface->CopyMode = cmSrcAnd;//cmSrcErase;
+                if (V->GetValue())	Surface->Draw(R.Left,R.Top+3,m_BMCheck);
+                else			   	Surface->Draw(R.Left,R.Top+3,m_BMDot);
+            }break;
+            case PROP_WAVE:
+            case PROP_LIGHTANIM:
+            case PROP_LIBOBJECT:
+            case PROP_ENTITY:
+            case PROP_TEXTURE:
+            case PROP_TEXTURE2:
+            case PROP_ANSI_TEXTURE:
+            case PROP_ANSI_SH_ENGINE:
+            case PROP_ANSI_SH_COMPILE:
+            case PROP_SH_ENGINE:
+            case PROP_SH_COMPILE:
+                R.Right	-=	12;
+                R.Left 	+= 	1;
+                DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                R.Left 	= 	R.Right;
+                Surface->CopyMode = cmSrcAnd;
+                Surface->Draw(R.Left+1,R.Top+5,m_BMEllipsis);
+            break;
+            case PROP_TOKEN:
+            case PROP_TOKEN2:
+            case PROP_TOKEN3:
+            case PROP_LIST:
+                R.Right	-=	12;
+                R.Left 	+= 	1;
+                DrawText	(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                R.Left 	= 	R.Right;
+                R.Right += 	10;
+                DrawArrow	(Surface, eadDown, R, clWindowText, true);
+            break;
+            case PROP_ANSI_TEXT:
+            case PROP_TEXT:
+                if (edText->Tag!=(int)Item){
+                    R.Right-= 1;
+                    R.Left += 1;
+                    DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                }else{
+                    if (!edText->Visible) ShowLWText(R);
+                }
+            break;
+            case PROP_VECTOR:
                 R.Right-= 1;
                 R.Left += 1;
                 DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-            }else{
-            	if (!edText->Visible) ShowLWText(R);
-            }
-        break;
-        case PROP_VECTOR:
-            R.Right-= 1;
-            R.Left += 1;
-            DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-        break;
-        case PROP_DWORD:
-        case PROP_INTEGER:
-        case PROP_FLOAT:
-        	if (seNumber->Tag!=(int)Item){
-	            R.Right-= 1;
-    	        R.Left += 1;
-    			DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
-            }else{
-            	if (!seNumber->Visible) ShowLWNumber(R);
-            }
-        break;
-        };
+            break;
+            case PROP_DWORD:
+            case PROP_INTEGER:
+            case PROP_FLOAT:
+                if (seNumber->Tag!=(int)Item){
+                    R.Right-= 1;
+                    R.Left += 1;
+                    DrawText(Surface->Handle, prop->GetText(), -1, &R, DT_LEFT | DT_SINGLELINE | DT_VCENTER);
+                }else{
+                    if (!seNumber->Visible) ShowLWNumber(R);
+                }
+            break;
+            };
+        }
   	}
 }
 //---------------------------------------------------------------------------
@@ -500,6 +508,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
         }break;
         case PROP_VECTOR: 			VectorClick(item); 			break;
         case PROP_WAVE: 			WaveFormClick(item); 		break;
+        case PROP_FCOLOR: 			
         case PROP_COLOR: 			ColorClick(item); 			break;
         case PROP_LIGHTANIM:
         case PROP_LIBOBJECT:
@@ -650,20 +659,40 @@ void __fastcall TProperties::WaveFormClick(TElTreeItem* item)
 void __fastcall TProperties::ColorClick(TElTreeItem* item)
 {
 	DWORD type = item->Tag;
-    R_ASSERT(PROP_COLOR==type);
+    switch (type){
+    case PROP_FCOLOR:{
+        ColorValue* V		= (ColorValue*)item->Data;
+        Fcolor edit_val		= V->GetValue();
+        Fcolor old_val		= V->GetValue();
+        if (V->OnBeforeEdit)V->OnBeforeEdit(item,V,&edit_val);
 
-    DWORDValue* V		= (DWORDValue*)item->Data;
-    DWORD edit_val		= V->GetValue();
-    DWORD old_val		= V->GetValue();
-	if (V->OnBeforeEdit)V->OnBeforeEdit(item,V,&edit_val);
-
-	if (SelectColor(&edit_val)){
-        if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
-        if (old_val!=edit_val){	
-	        V->ApplyValue	(edit_val);
-	    	item->RedrawItem(true);
-        	Modified();
+        DWORD ev 			= edit_val.get();
+        if (SelectColor(&ev)){
+	        edit_val.set	(ev);
+            if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
+            if (!old_val.similar_rgba(edit_val)){	
+                V->ApplyValue	(edit_val);
+                item->RedrawItem(true);
+                Modified();
+            }
         }
+    }break;
+    case PROP_COLOR:{
+        DWORDValue* V		= (DWORDValue*)item->Data;
+        DWORD edit_val		= V->GetValue();
+        DWORD old_val		= V->GetValue();
+        if (V->OnBeforeEdit)V->OnBeforeEdit(item,V,&edit_val);
+
+        if (SelectColor(&edit_val)){
+            if (V->OnAfterEdit) V->OnAfterEdit(item,V,&edit_val);
+            if (old_val!=edit_val){	
+                V->ApplyValue	(edit_val);
+                item->RedrawItem(true);
+                Modified();
+            }
+        }
+    }break;
+    default: THROW2("Unsuported type");
     }
 }
 //---------------------------------------------------------------------------

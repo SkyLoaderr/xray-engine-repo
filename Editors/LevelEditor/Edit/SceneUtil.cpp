@@ -11,8 +11,17 @@
 #include "SceneObject.h"
 #include "Frustum.h"
 #include "ui_tools.h"
+#include "PropertiesListTypes.h"
 
 //----------------------------------------------------
+void __fastcall EScene::OnObjectNameAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
+{
+	TextValue* V = (TextValue*)sender;
+	AnsiString* new_name = (AnsiString*)edit_val;
+	if (FindObjectByName(new_name->c_str(),0)) *new_name = V->GetValue();
+    else *new_name = new_name->LowerCase();
+}
+//---------------------------------------------------------------------------
 
 CCustomObject* EScene::FindObjectByName( LPCSTR name, EObjClass classfilter ){
 	ObjectIt _F = FirstObj(classfilter);
@@ -115,9 +124,9 @@ void EScene::TurnLightsForObject(CSceneObject* obj){
     for (DWORD i=0; i<frame_light.size(); i++){
         CLight* l = frame_light[i];
 
-        if (!l->m_Flags.bAffectDynamic&&!l->m_Flags.bAffectStatic) continue;
-        if (obj->IsDynamic()&&!l->m_Flags.bAffectDynamic) continue;
-        if (!obj->IsDynamic()&&!l->m_Flags.bAffectStatic) continue;
+        if (!l->m_dwFlags&CLight::flAffectDynamic&&!l->m_dwFlags&CLight::flAffectStatic) continue;
+        if (obj->IsDynamic()&&!l->m_dwFlags&CLight::flAffectDynamic) continue;
+        if (!obj->IsDynamic()&&!l->m_dwFlags&CLight::flAffectStatic) continue;
 
         if (l->m_D3D.type==D3DLIGHT_DIRECTIONAL){
             l->Enable(TRUE);

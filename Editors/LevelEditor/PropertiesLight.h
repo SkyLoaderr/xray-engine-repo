@@ -12,6 +12,7 @@
 #include <ComCtrls.hpp>
 
 #include "ELight.h"
+#include "PropertiesListTypes.h"
 #include "multi_check.hpp"
 #include "multi_color.hpp"
 #include "multi_edit.hpp"
@@ -28,11 +29,7 @@ class TProperties;
 class TfrmPropertiesLight : public TForm
 {
 __published:	// IDE-managed Components
-	TGroupBox *gbColor;
-	TGroupBox *gbAddition;
     TGroupBox *gbType;
-    TMultiObjColor *mcDiffuse;
-	TLabel *RxLabel6;
 	TLabel *RxLabel1;
     TPageControl *pcType;
     TTabSheet *tsSun;
@@ -53,21 +50,11 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel3;
     TMultiObjSpinEdit *seAutoBMax;
 	TLabel *RxLabel4;
-    TTrackBar *tbBrightness;
-	TLabel *RxLabel18;
-	TGroupBox *gbLightType;
-	TMultiObjCheck *cbTargetLM;
-	TMultiObjCheck *cbTargetDynamic;
-	TMultiObjCheck *cbTargetAnimated;
 	TMultiObjSpinEdit *sePointRange;
 	TMultiObjSpinEdit *seA0;
 	TMultiObjSpinEdit *seA1;
 	TMultiObjSpinEdit *seA2;
-	TMultiObjSpinEdit *seBrightness;
 	TTimer *tmAnimation;
-	TMultiObjCheck *cbUseInD3D;
-	TLabel *MxLabel1;
-	TEdit *edName;
 	TPanel *Panel1;
 	TExtBtn *ExtBtn1;
 	TExtBtn *ebOk;
@@ -82,19 +69,15 @@ __published:	// IDE-managed Components
     void __fastcall tbA1Change(TObject *Sender);
     void __fastcall tbA2Change(TObject *Sender);
     void __fastcall FormPaint(TObject *Sender);
-    void __fastcall tbBrightnessChange(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall seA0Change(TObject *Sender);
     void __fastcall seA1Change(TObject *Sender);
     void __fastcall seA2Change(TObject *Sender);
-    void __fastcall seBrightnessChange(TObject *Sender);
     void __fastcall sePointRangeChange(TObject *Sender);
     void __fastcall ebALautoClick(TObject *Sender);
     void __fastcall ebQLautoClick(TObject *Sender);
-	void __fastcall cbTargetAnimatedClick(TObject *Sender);
 	void __fastcall btCancelClick(TObject *Sender);
-	void __fastcall cbTargetLMClick(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall fsStorageRestorePlacement(TObject *Sender);
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
@@ -102,12 +85,20 @@ private:	// User declarations
     list<CCustomObject*>* m_Objects;
     void 			GetObjectsInfo();
     bool 			ApplyObjectsInfo();
+    void 			CancelObjectsInfo();
     void __fastcall DrawGraph();
 
-    CLight* 		m_SaveLight;
-    CLight* 		m_CurLight;
     TProperties*	m_SunProps;
     TProperties*	m_Props;
+
+    TextValue*		txName;
+    ColorValue*		clDiffuse;
+    FloatValue*		flBrightness;
+    BOOLValue* 		blUseInD3D;
+    FlagValue* 		fgTargetLM;
+    FlagValue* 		fgTargetDyn;
+    FlagValue* 		fgTargetAnm;
+	void __fastcall OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val);
 public:		// User declarations
     __fastcall TfrmPropertiesLight(TComponent* Owner);
     void __fastcall Run(ObjectList* pObjects, bool& bChange);

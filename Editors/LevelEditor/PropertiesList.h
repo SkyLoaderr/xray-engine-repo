@@ -73,7 +73,7 @@ private:	// User declarations
     void ApplyLWText();
     void CancelLWText();
 
-    PropItemVec m_Params;
+    PropValueVec m_Params;
     TOnModifiedEvent 	OnModifiedEvent;
     TOnItemFocused      OnItemFocused;
     void Modified(){bModified=true; if (OnModifiedEvent) OnModifiedEvent();}
@@ -147,6 +147,12 @@ private:	// User declarations
         m_Params.push_back(V);
     	return V;
     }
+	ColorValue* 	MakeColorValue			(Fcolor* val, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw)
+    {
+    	ColorValue* V	=new ColorValue(val,after,before,draw);
+        m_Params.push_back(V);
+    	return V;
+    }
 	BOOLValue* 		MakeBOOLValue			(LPBOOL val, TAfterEdit after, TBeforeEdit before, TOnDrawValue draw)
     {
     	BOOLValue* V	=new BOOLValue(val,after,before,draw);
@@ -171,7 +177,7 @@ private:	// User declarations
         m_Params.push_back(V);
     	return V;
     }
-	PropItem* __fastcall AddItem			(TElTreeItem* parent, EPropType type, LPCSTR key, PropItem* item);
+	PropValue* __fastcall AddItem			(TElTreeItem* parent, EPropType type, LPCSTR key, PropValue* item);
 public:		// User declarations
 	__fastcall TProperties		        	(TComponent* Owner);
 	static TProperties* CreateForm			(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0);
@@ -262,6 +268,9 @@ public:		// User declarations
     }
     IC DWORDValue* 			AddColorItem	(TElTreeItem* parent, LPCSTR key, LPDWORD value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
         return (DWORDValue*)AddItem 		(parent,PROP_COLOR,key,MakeDWORDValue(value,0xffffffff,1,after,before,draw));
+    }
+    IC ColorValue*			AddColorItem	(TElTreeItem* parent, LPCSTR key, Fcolor* value, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
+    	return (ColorValue*)AddItem			(parent,PROP_FCOLOR,key,MakeColorValue(value,after,before,draw));
     }
 	IC TextValue* 			AddTextItem		(TElTreeItem* parent, LPCSTR key, LPSTR value, int lim, TAfterEdit after=0, TBeforeEdit before=0, TOnDrawValue draw=0){
     	return (TextValue*)	AddItem	    	(parent,PROP_TEXT,key,MakeTextValue(value,lim,after,before,draw));

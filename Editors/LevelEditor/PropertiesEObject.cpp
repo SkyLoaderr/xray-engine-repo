@@ -52,7 +52,7 @@ void TfrmPropertiesEObject::DestroyProperties(TfrmPropertiesEObject*& props)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = deg2rad(V->x);
@@ -61,7 +61,7 @@ void __fastcall TfrmPropertiesEObject::RotateOnAfterEdit(TElTreeItem* item, Prop
 	UI.RedrawScene();
 }
 
-void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	Fvector* V = (Fvector*)edit_val;
 	V->x = rad2deg(V->x);
@@ -69,7 +69,7 @@ void __fastcall TfrmPropertiesEObject::RotateOnBeforeEdit(TElTreeItem* item, Pro
 	V->z = rad2deg(V->z);
 }
 
-void __fastcall TfrmPropertiesEObject::RotateOnDraw(PropItem* sender, LPVOID draw_val)
+void __fastcall TfrmPropertiesEObject::RotateOnDraw(PropValue* sender, LPVOID draw_val)
 {
 	Fvector* V = (Fvector*)draw_val;
 	V->x = rad2deg(V->x);
@@ -233,7 +233,7 @@ void __fastcall TfrmPropertiesEObject::OnPick(const SRayPickInfo& pinf)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	AnsiString new_name = *(AnsiString*)edit_val;
 	TElTreeItem* parent	= item->Parent; VERIFY(parent);
@@ -244,7 +244,7 @@ void __fastcall TfrmPropertiesEObject::OnAfterShaderEdit(TElTreeItem* item, Prop
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	AnsiString new_name = *(AnsiString*)edit_val;
 	TElTreeItem* parent	= item->Parent; VERIFY(parent);
@@ -255,7 +255,7 @@ void __fastcall TfrmPropertiesEObject::OnAfterTextureEdit(TElTreeItem* item, Pro
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesEObject::OnAfterTransformation(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
+void __fastcall TfrmPropertiesEObject::OnAfterTransformation(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	UI.RedrawScene();
 }

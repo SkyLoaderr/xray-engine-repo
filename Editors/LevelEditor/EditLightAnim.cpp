@@ -167,17 +167,17 @@ void TfrmEditLightAnim::UpdateView()
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLightAnim::NameOnAfterEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
+void __fastcall TfrmEditLightAnim::NameOnAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	FOLDER::AfterTextEdit(tvItems->Selected,((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(TElTreeItem* item, PropItem* sender, LPVOID edit_val)
+void __fastcall TfrmEditLightAnim::NameOnBeforeEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
 	FOLDER::BeforeTextEdit(((TextValue*)sender)->GetValue(),*(AnsiString*)edit_val);
 }
 //------------------------------------------------------------------------------
-void __fastcall TfrmEditLightAnim::NameOnDraw(PropItem* sender, LPVOID draw_val)
+void __fastcall TfrmEditLightAnim::NameOnDraw(PropValue* sender, LPVOID draw_val)
 {
 	FOLDER::TextDraw(((TextValue*)sender)->GetValue(),*(AnsiString*)draw_val);
 }

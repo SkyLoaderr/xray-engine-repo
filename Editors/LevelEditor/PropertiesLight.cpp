@@ -8,11 +8,13 @@
 #include "PropertiesList.h"
 #include "ColorPicker.h"
 #include "ui_main.h"
+#include "xr_tokens.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "mxPlacemnt"
 #pragma resource "*.dfm"
 TfrmPropertiesLight *frmPropertiesLight=0;
+
 //---------------------------------------------------------------------------
 void frmPropertiesLightRun(ObjectList* pObjects, bool& bChange){
 	frmPropertiesLight = new TfrmPropertiesLight(0);
@@ -27,11 +29,23 @@ __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     m_SunProps 	= TProperties::CreateForm(tsSun,alClient);
     m_Props		= TProperties::CreateForm(paProps,alClient);
 	DEFINE_INI(fsStorage);
+    txName		= 0;
+    clDiffuse	= 0;
+    flBrightness= 0;
+    blUseInD3D	= 0;
+    fgTargetLM	= 0;
+    fgTargetDyn	= 0;
+    fgTargetAnm	= 0;
 }
 //----------------------------------------------------
 void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
+    switch (ModalResult){
+    case mrOk: 		ApplyObjectsInfo();		break;
+    case mrCancel: 	CancelObjectsInfo();	break;
+    default: THROW2("Invalid case");
+    }
 	TProperties::DestroyForm(m_SunProps);
 	TProperties::DestroyForm(m_Props);
 }
@@ -40,7 +54,6 @@ void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 {
     m_Objects = pObjects;
     pcType->ActivePage = tsPoint;
-    m_SaveLight = 0;
 
     pcType->Show();
 	ObjectIt _F=m_Objects->begin();
@@ -51,9 +64,6 @@ void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 	GetObjectsInfo();
 
     bChange = (ShowModal()==mrOk);
-	if (m_CurLight) m_CurLight->Lock(false);
-
-    _DELETE(m_SaveLight);
 }
 
 //---------------------------------------------------------------------------
@@ -61,6 +71,8 @@ void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)
 #define Y_GRID 6
 void __fastcall TfrmPropertiesLight::DrawGraph()
 {
+	if (!flBrightness) return;
+
     int w = LG->Width;
     int h = LG->Height;
 
@@ -91,8 +103,8 @@ void __fastcall TfrmPropertiesLight::DrawGraph()
     if (!(fis_zero(seA0->Value)&&fis_zero(seA1->Value)&&fis_zero(seA2->Value))){
         for (int d=1; d<w; d++){
             float R = d*d_cost;
-            float b = seBrightness->Value/(seA0->Value+seA1->Value*R+seA2->Value*R*R);
-            float bb = h-((h/(seBrightness->MaxValue*2))*b + h/2);
+            float b = flBrightness->GetValue()/(seA0->Value+seA1->Value*R+seA2->Value*R*R);
+            float bb = h-((h/(flBrightness->lim_mx*2))*b + h/2);
             LG->Canvas->LineTo(d-2,bb);
         }
     }
@@ -118,6 +130,9 @@ void TfrmPropertiesLight::GetObjectsInfo(){
 	_L = (CLight *)(*_F);
 
 	sePointRange->ObjFirstInit		( _L->m_D3D.range );
+    seA0->ObjFirstInit				( _L->m_D3D.attenuation0 );
+    seA1->ObjFirstInit				( _L->m_D3D.attenuation1 );
+    seA2->ObjFirstInit				( _L->m_D3D.attenuation2 );
 
     switch(_L->m_D3D.type){
     case D3DLIGHT_POINT:   		pcType->ActivePage = tsPoint;   break;
@@ -125,45 +140,39 @@ void TfrmPropertiesLight::GetObjectsInfo(){
     default: THROW;
     }
 
-	mcDiffuse->ObjFirstInit			( _L->m_D3D.diffuse.get_windows() );
-    cbUseInD3D->ObjFirstInit	   	( TCheckBoxState(_L->m_UseInD3D) );
-    cbTargetLM->ObjFirstInit	   	( (_L->m_Flags.bAffectStatic)?cbChecked:cbUnchecked );
-    cbTargetDynamic->ObjFirstInit	( (_L->m_Flags.bAffectDynamic)?cbChecked:cbUnchecked );
-    cbTargetAnimated->ObjFirstInit	( (_L->m_Flags.bProcedural)?cbChecked:cbUnchecked );
-
-    seA0->ObjFirstInit				( _L->m_D3D.attenuation0 );
-    seA1->ObjFirstInit				( _L->m_D3D.attenuation1 );
-    seA2->ObjFirstInit				( _L->m_D3D.attenuation2 );
-
-    seBrightness->ObjFirstInit		( _L->m_Brightness );
-
-    if (m_Objects->size()==1){
-    	edName->Enabled 			= true;
-		edName->Text				= _L->Name;
-    }else{
-    	edName->Enabled 			= false;
-        edName->Text				= "<Multiple selection>";
-    }
+	TElTreeItem* M,*N,*O;
+    m_Props->BeginFillMode	();
+    txName		= m_Props->AddTextItem	(0,"Name",		_L->FName, sizeof(_L->FName), Scene.OnObjectNameAfterEdit);
+    clDiffuse	= m_Props->AddColorItem	(0,"Diffuse",	&_L->m_D3D.diffuse);
+    flBrightness= m_Props->AddFloatItem	(0,"Brightness",&_L->m_Brightness,-3.f,3.f,0.1f,2);
+    blUseInD3D	= m_Props->AddBOOLItem	(0,"Use In D3D",&_L->m_UseInD3D);
+	M			= m_Props->AddMarkerItem(0,"Usage"		)->item;
+    fgTargetLM	= m_Props->AddFlagItem	(M,"LightMap",	&_L->m_dwFlags,CLight::flAffectStatic);
+    fgTargetDyn	= m_Props->AddFlagItem	(M,"Dynamic",	&_L->m_dwFlags,CLight::flAffectDynamic);
+    fgTargetAnm	= m_Props->AddFlagItem	(M,"Animated",	&_L->m_dwFlags,CLight::flProcedural);
 
 	_F++;
 	for(;_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L = (CLight *)(*_F);
 
-        seA0->ObjNextInit				( _L->m_D3D.attenuation0 );
-        seA1->ObjNextInit				( _L->m_D3D.attenuation1 );
-        seA2->ObjNextInit				( _L->m_D3D.attenuation2 );
+        txName->item->Enabled		= false;
+        txName->InitNext			(_L->FName);
+        clDiffuse->InitNext			(&_L->m_D3D.diffuse);
+        flBrightness->InitNext		(&_L->m_Brightness);
+        blUseInD3D->InitNext		(&_L->m_UseInD3D);
+        fgTargetLM->InitNext		(&_L->m_dwFlags);
+        fgTargetDyn->InitNext		(&_L->m_dwFlags);
+        fgTargetAnm->InitNext		(&_L->m_dwFlags);
 
-		sePointRange->ObjNextInit		( _L->m_D3D.range );
-	    seBrightness->ObjNextInit		( _L->m_Brightness );
+        seA0->ObjNextInit		 	(_L->m_D3D.attenuation0);
+        seA1->ObjNextInit		 	(_L->m_D3D.attenuation1);
+        seA2->ObjNextInit		 	(_L->m_D3D.attenuation2);
 
-		mcDiffuse->ObjNextInit			( _L->m_D3D.diffuse.get_windows() );
-        cbUseInD3D->ObjNextInit			( TCheckBoxState(_L->m_UseInD3D) );
-
-	    cbTargetLM->ObjNextInit			( (_L->m_Flags.bAffectStatic)?cbChecked:cbUnchecked );
-    	cbTargetDynamic->ObjNextInit	( (_L->m_Flags.bAffectDynamic)?cbChecked:cbUnchecked );
-	    cbTargetAnimated->ObjNextInit	( (_L->m_Flags.bProcedural)?cbChecked:cbUnchecked );
+		sePointRange->ObjNextInit	(_L->m_D3D.range);
 	}
+    m_Props->EndFillMode	();
+    
     // init flares
     if (m_Objects->size()==1){
 		CEditFlare& F = ((CLight*)m_Objects->front())->m_LensFlare;
@@ -203,17 +212,9 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
 	tmAnimation->Enabled = false;
 
 	CLight *_L = 0;
-    bool bMultiSel = (m_Objects->size()>1);
 	for(ObjectIt _F = m_Objects->begin();_F!=m_Objects->end();_F++){
 		VERIFY( (*_F)->ClassID==OBJCLASS_LIGHT );
 		_L = (CLight *)(*_F);
-        if (!bMultiSel){
-        	if (Scene.FindObjectByName(edName->Text.c_str(),_L)){
-            	ELog.DlgMsg(mtError,"Duplicate object name already exists: '%s'",edName->Text.c_str());
-            	return false;
-            }
-	        _L->Name = edName->Text.c_str();
-        }
         if  (pcType->ActivePage==tsSun){
             _L->m_D3D.type 		= D3DLIGHT_DIRECTIONAL;
         }else if (pcType->ActivePage==tsPoint){
@@ -223,20 +224,7 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
         seA0->ObjApplyFloat( _L->m_D3D.attenuation0 );
         seA1->ObjApplyFloat( _L->m_D3D.attenuation1 );
         seA2->ObjApplyFloat( _L->m_D3D.attenuation2 );
-        seBrightness->ObjApplyFloat( _L->m_Brightness );
         sePointRange->ObjApplyFloat( _L->m_D3D.range );
-
-        int c;
-        if (mcDiffuse->ObjApply(c)){  _L->m_D3D.diffuse.set_windows(c); }
-
-        cbUseInD3D->ObjApply( _L->m_UseInD3D );
-
-	    c=(_L->m_Flags.bAffectStatic)?1:0;
-	    cbTargetLM->ObjApply		(c); _L->m_Flags.bAffectStatic=c;
-	    c=(_L->m_Flags.bAffectDynamic)?1:0;
-	    cbTargetDynamic->ObjApply	(c); _L->m_Flags.bAffectDynamic=c;
-	    c=(_L->m_Flags.bProcedural)?1:0;
-	    cbTargetAnimated->ObjApply(c); 	 _L->m_Flags.bProcedural=c;
 
         _L->Update();
 	}
@@ -245,6 +233,21 @@ bool TfrmPropertiesLight::ApplyObjectsInfo(){
     return bResult;
 }
 //---------------------------------------------------------------------------
+
+void TfrmPropertiesLight::CancelObjectsInfo()
+{
+    txName->ResetValue		();
+    clDiffuse->ResetValue	();
+    flBrightness->ResetValue();
+    blUseInD3D->ResetValue	();
+    fgTargetLM->ResetValue	();
+    fgTargetDyn->ResetValue	();
+    fgTargetAnm->ResetValue	();
+
+    UI.UpdateScene();
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmPropertiesLight::btApplyClick(TObject *Sender)
 {
     if (ApplyObjectsInfo())
@@ -254,20 +257,20 @@ void __fastcall TfrmPropertiesLight::btApplyClick(TObject *Sender)
 
 void __fastcall TfrmPropertiesLight::btOkClick(TObject *Sender)
 {
+/*
     if (ApplyObjectsInfo()){
 	    ModalResult = mrOk;
     }else{
 	    ModalResult = mrNone;
     }
+*/
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::btCancelClick(TObject *Sender)
 {
-	if (m_CurLight&&m_SaveLight)
-	    m_CurLight->CopyFrom(m_SaveLight);
-    Close();
 	ModalResult = mrCancel;
+    Close();
 }
 //---------------------------------------------------------------------------
 
@@ -299,9 +302,8 @@ void __fastcall TfrmPropertiesLight::FormPaint(TObject *Sender)
 //---------------------------------------------------------------------------
 
 
-void __fastcall TfrmPropertiesLight::tbBrightnessChange(TObject *Sender)
+void __fastcall TfrmPropertiesLight::OnBrightnessAfterEdit(TElTreeItem* item, PropValue* sender, LPVOID edit_val)
 {
-    seBrightness->Value = float(tbBrightness->Position)/100.f;
     DrawGraph();
 }
 //---------------------------------------------------------------------------
@@ -309,7 +311,7 @@ void __fastcall TfrmPropertiesLight::tbBrightnessChange(TObject *Sender)
 void __fastcall TfrmPropertiesLight::FormKeyDown(TObject *Sender,
       WORD &Key, TShiftState Shift)
 {
-	if (!m_SunProps->tvProperties->Focused()){
+	if (!m_SunProps->tvProperties->Focused()&&!m_Props->tvProperties->Focused()){
 	    if (Key==VK_ESCAPE) ebCancel->Click();
     	if (Key==VK_RETURN) ebOk->Click();
     }
@@ -331,47 +333,28 @@ void __fastcall TfrmPropertiesLight::seA2Change(TObject *Sender){
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmPropertiesLight::seBrightnessChange(TObject *Sender){
-    if (seBrightness->Text.Length()){
-    	tbBrightness->Position = float(seBrightness->Value)*100.f;
-        DrawGraph();
-    }
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmPropertiesLight::sePointRangeChange(TObject *Sender){
     if (sePointRange->Text.Length()) DrawGraph();
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfrmPropertiesLight::ebALautoClick(TObject *Sender){
+	if (!flBrightness) return;
     float P = seAutoBMax->Value/100.f;
     seA0->Value = 1.f;
-    seA1->Value = (seBrightness->Value-P-P*sePointRange->Value*sePointRange->Value*seA2->Value)/(P*sePointRange->Value);
+    seA1->Value = (flBrightness->GetValue()-P-P*sePointRange->Value*sePointRange->Value*seA2->Value)/(P*sePointRange->Value);
     tbA0->Position = float(seA0->Value)*100.f;
     tbA1->Position = float(seA1->Value)*100.f;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfrmPropertiesLight::ebQLautoClick(TObject *Sender){
+	if (!flBrightness) return;
     float P = seAutoBMax->Value/100.f;
     seA0->Value = 1.f;
-    seA2->Value = (seBrightness->Value-P-P*sePointRange->Value*seA1->Value)/(P*sePointRange->Value*sePointRange->Value);
+    seA2->Value = (flBrightness->GetValue()-P-P*sePointRange->Value*seA1->Value)/(P*sePointRange->Value*sePointRange->Value);
     tbA0->Position = float(seA0->Value)*100.f;
     tbA2->Position = float(seA2->Value)*100.f;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::cbTargetLMClick(TObject *Sender)
-{
-    if (cbTargetLM->Checked) cbTargetAnimated->Checked = false;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmPropertiesLight::cbTargetAnimatedClick(TObject *Sender){
-//	ebAdjustScene->Visible 		= cbTargetAnimated->Checked;
-    if (cbTargetAnimated->Checked) cbTargetLM->Checked = false;
 }
 //---------------------------------------------------------------------------
 
