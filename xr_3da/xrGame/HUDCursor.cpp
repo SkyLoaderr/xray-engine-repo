@@ -103,12 +103,14 @@ void CHUDCursor::Render()
 
 	// actual rendering
 	u32			vOffset;
-	FVF::TL*	pv	= (FVF::TL*)Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
+	FVF::TL*	pv		= (FVF::TL*)Device.Streams.Vertex.Lock(4,hVS->dwStride,vOffset);
 	float			size= float(::Render->getTarget()->get_width()) * di_size;
+	float			w_2	= float(::Render->getTarget()->get_width())		/ 2;
+	float			h_2	= float(::Render->getTarget()->get_height())	/ 2;
 	
 	// Convert to screen coords
-	float cx        = Device._x2real(PT.p.x);
-	float cy        = Device._y2real(PT.p.y);
+	float cx        = (PT.p.x+1)*w_2;
+	float cy        = (PT.p.y+1)*h_2;
 	
 	pv->set(cx - size, cy + size, PT.p.z, PT.p.w, C, 0, 1); pv++;
 	pv->set(cx - size, cy - size, PT.p.z, PT.p.w, C, 0, 0); pv++;

@@ -32,10 +32,10 @@ void CUICursor::Render	()
 	float			size= 2 * Device.dwWidth * 0.015f;
 	
 	// Convert to screen coords
-	float cx        = Device._x2real(vPos.x);
-	float cy        = Device._y2real(vPos.y);
+	float cx					= (vPos.x+1)*(Device.dwWidth/2);
+	float cy					= (vPos.y+1)*(Device.dwHeight/2);
 	
-	u32 C			= C_DEFAULT;
+	u32 C						= C_DEFAULT;
 
 	pv->set(cx, cy+size,		.0001f,.9999f, C, 0, 1); pv++;
 	pv->set(cx, cy,				.0001f,.9999f, C, 0, 0); pv++;
