@@ -1153,16 +1153,16 @@
 					Name="Binders"
 					Filter="">
 					<File
+						RelativePath=".\Scripts\bind_monster.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\bind_physic_object.script">
+					</File>
+					<File
+						RelativePath=".\Scripts\bind_stalker.script">
+					</File>
+					<File
 						RelativePath=".\scripts\modules.script">
-					</File>
-					<File
-						RelativePath=".\scripts\monster.script">
-					</File>
-					<File
-						RelativePath=".\scripts\physic_object.script">
-					</File>
-					<File
-						RelativePath=".\scripts\stalker.script">
 					</File>
 					<File
 						RelativePath=".\scripts\xr_motivator.script">
