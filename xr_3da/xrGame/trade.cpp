@@ -217,7 +217,7 @@ void CTrade::ShowItems()
 			num ++;
 		}
 	}
-	
+
 	// Вывести последний item
 	if (B != E)
 		Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",pThis.base->cName(),++i,CurName,l_dwCost, num);
