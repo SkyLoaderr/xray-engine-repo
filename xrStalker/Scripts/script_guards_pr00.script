@@ -1,5 +1,7 @@
 function main()
 
+	actor   	= get_actor()
+
 	guard01	= get_level_object("guard01")
 	guard02	= get_level_object("guard02")
 	guard03	= get_level_object("guard03")
