@@ -20,6 +20,7 @@ public:
 
 	virtual void Init(const char *strCaptionPrimary, const char *strCaptionSecondary, bool bDual = false);
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
+	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
 
 	// Установка нового режима отображения
 	void SetDisplayMode(bool bDual = false);

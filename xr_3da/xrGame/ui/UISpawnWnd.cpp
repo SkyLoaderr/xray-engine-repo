@@ -114,3 +114,16 @@ void CUISpawnWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 	inherited::SendMessage(pWnd, msg, pData);
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+bool CUISpawnWnd::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+{
+	if (KEY_PRESSED == keyboard_action && DIK_ESCAPE == dik)
+	{
+		HUD().GetUI()->UIGame()->StartStopMenu(this);
+		return true;
+	}
+
+	inherited::OnKeyboard(dik, keyboard_action);
+}
