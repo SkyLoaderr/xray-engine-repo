@@ -58,10 +58,10 @@ void xrServer::Update	()
 			if (!Test.net_Ready)		continue;
 			if (Test.owner == Client)	continue;	// Can't be relevant
 
-			if (Test.RelevantTo(Base))	{
+//			if (Test.RelevantTo(Base))	{
 				Packet.w_u16		(Test.ID);
 				Test.UPDATE_Write	(Packet	);
-			}
+//			}
 		}
 		if (Packet.B.count > 2)	
 		{
