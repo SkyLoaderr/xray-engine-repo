@@ -40,13 +40,13 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	float	intensity1			= (L->color.r * 0.2125f + L->color.g * 0.7154f + L->color.b * 0.0721f);
 	float	intensity			= (intensity0+intensity1)/2.f;		// intensity1 tends to underestimate...
 
-	// compute how much duelling frusta occurs	[-1..1]->[-0.5 .. +0.5]  += 1
+	// compute how much duelling frusta occurs	[-1..1]-> 1 + [-0.5 .. +0.5]
 	float	duel_dot			= 1.f -	0.5f*Device.vCameraDirection.dotproduct(L_dir);
 
 	// factors
 	float	factor0				= powf	(ssa,		1.f/2.f);		// ssa is quadratic
-	float	factor1				= powf	(intensity, 1.f/4.f);		// less perceptually important?
-	float	factor2				= powf	(duel_dot,	1.f/2.f);		// difficult to change here -> visible
+	float	factor1				= powf	(intensity, 1.f/8.f);		// less perceptually important?
+	float	factor2				= powf	(duel_dot,	1.f/4.f);		// difficult to change here -> visible
 	float	factor				= ps_r2_ls_squality * factor0 * factor1 * factor2;
 	
 	// 
