@@ -34,7 +34,7 @@ void CLightShadows::OnDeviceCreate	()
 	LPCSTR	RTname	= "$user$shadow";
 	
 	// 
-	RT			= Device.Shader._CreateRT	("$user$temp",S_rt_size,S_rt_size);
+	RT			= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
 	RT_Blur		= Device.Shader._CreateRT	(RTname,S_rt_size,S_rt_size);
 	sh_Texture	= Device.Shader.Create		("effects\\shadow_texture");
 	sh_World	= Device.Shader.Create		("effects\\shadow_world",RTname);
