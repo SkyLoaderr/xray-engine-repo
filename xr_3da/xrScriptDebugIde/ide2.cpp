@@ -112,8 +112,8 @@ BOOL CIdeApp::InitInstance()
 	g_mainFrame->UpdateWindow();
 	
 	LoadIcon(IDR_MAINFRAME);
-
-//	m_ssConnection.b_Connect("","","\\\\X-RAY\\VSS$\\srcsafe.ini");
+	
+	m_ssConnection.b_Connect("","","\\\\X-RAY\\VSS$\\srcsafe.ini");
 	return TRUE;
 }
 

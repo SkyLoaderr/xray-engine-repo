@@ -389,6 +389,8 @@ void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
 
 long CTreeViewFiles::VSSGetStatus(HTREEITEM itm)
 {
+	if(m_pTree->GetParentItem(itm)!=m_hFilesFolder)
+		return -1;
 	if(!theApp.m_ssConnection.b_IsConnected())
 		return -1;
 
@@ -398,6 +400,8 @@ long CTreeViewFiles::VSSGetStatus(HTREEITEM itm)
 	IVSSItemPtr vssItem;
 	CComBSTR file_name = working_folder+str;
 	theApp.m_ssConnection.p_GetSourcesafeDatabase()->get_VSSItem(file_name, FALSE, &vssItem);
+	if(vssItem==NULL)
+		return -1;
 	long stat;
 	HRESULT hr;
 	CString str_temp;
