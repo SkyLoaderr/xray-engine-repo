@@ -8,8 +8,9 @@
 #define	r2_RT_generic	"$user$generic"			// ---
 #define	r2_RT_bloom1	"$user$bloom1"			// ---
 #define	r2_RT_bloom2	"$user$bloom2"			// ---
-#define	r2_RT_smap_d	"$user$smap_d"			// ---
-#define	r2_RT_smap_p	"$user$smap_p"			// ---
+#define	r2_RT_smap_d	"$user$smap_d"			// ---	directional
+#define	r2_RT_smap_p	"$user$smap_p"			// ---	point
+#define	r2_RT_smap_s	"$user$smap_s"			// ---	spot
 
 #define r2_material		"$user$material"		// ---
 #define r2_ds2_fade		"$user$ds2_fade"		// ---
@@ -20,7 +21,10 @@ const float				DSM_distance_2		= 100.f;
 const float				DSM_d_range			= 100.f;
 
 const u32				PSM_size			= 512;
-const float				PSM_near_plane		= .07f;
+const float				PSM_near_plane		= .08f;
+
+const u32				SSM_size			= 512;
+const float				SSM_near_plane		= .08f;
 
 const u32				TEX_material_LdotN	= 128;	// diffuse,		X
 const u32				TEX_material_LdotH	= 256;	// specular,	Y
