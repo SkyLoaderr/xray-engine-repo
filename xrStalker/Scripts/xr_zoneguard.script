@@ -317,7 +317,7 @@ function set_scheme(npc, ini, scheme, section, gulag_name)
 	st.ignore_cond = xr_logic.cfg_get_condlist (ini, section, "ignore_cond",    npc)
 	st.no_danger = utils.cfg_get_bool          (ini, section, "no_danger",      npc, false)
 	st.anim = utils.cfg_get_string             (ini, section, "anim",           npc, false, "")
-	printf("_bp: st.anim == %s", st.anim)
+	--printf("_bp: st.anim == %s", st.anim)
 	
 	st.path_walk_info = nil -- Будут инициализированы в reset(), сейчас пути могут быть еще
 	st.path_look_info = nil -- не загружены.
