@@ -710,7 +710,7 @@ end
 -- проверяет оружие ли это (передавать game_object)
 function isWeapon(object)
 	local id = get_clsid(object)
-	if id == nil then return false
+	if id == nil then return false end
 
     if id == clsid.wpn_vintorez then return true
     elseif id == clsid.wpn_fn2000 then return true
