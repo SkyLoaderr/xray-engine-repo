@@ -46,6 +46,7 @@
 				BrowseInformation="1"
 				WarningLevel="3"
 				SuppressStartupBanner="TRUE"
+				Detect64BitPortabilityProblems="TRUE"
 				CallingConvention="2"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
@@ -99,8 +100,10 @@
 				PreprocessorDefinitions="WIN32,_DEBUG,_CONSOLE"
 				StringPooling="TRUE"
 				MinimalRebuild="TRUE"
+				ExceptionHandling="TRUE"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="5"
+				SmallerTypeCheck="TRUE"
+				RuntimeLibrary="3"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="TRUE"
 				UsePrecompiledHeader="3"
