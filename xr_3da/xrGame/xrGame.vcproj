@@ -2687,6 +2687,9 @@
 			</Filter>
 		</Filter>
 		<File
+			RelativePath=".\environment.ltx">
+		</File>
+		<File
 			RelativePath="Error.txt">
 		</File>
 		<File
