@@ -629,6 +629,7 @@ void CDetailPathManager::build_smooth_path		(
 #ifndef SMOOTH_PATH
 	build_straight_path					(level_path,intermediate_index);
 	m_current_travel_point				= 0;
+	m_last_patrol_point					= m_path.size() - 1;
 #else
 	m_failed							= true;
 	u32									straight_line_index, straight_line_index_negative;
