@@ -17,8 +17,6 @@
 
 class CLevelGraph {
 public:
-	typedef u8				Cover[4];
-
 	class CHeader : private hdrNODES {
 	public:
 		IC	u32				version					() const;
@@ -34,7 +32,7 @@ public:
 	public:
 		IC	u32				link					(int i) const;
 		IC	u8				light					() const;
-		IC	u8				cover					() const;
+		IC	u8				cover					(u8 index) const;
 		IC	u16				plane					() const;
 		IC	const CPosition &position				() const;
 		friend class CLevelGraph;
@@ -50,8 +48,6 @@ private:
 
 	IReader				*m_reader;		// level graph virtual storage
 	CHeader				*m_header;		// level graph header
-	u32					m_palette_size;
-	Cover				*m_cover_palette;
 	CVertex				*m_nodes;		// nodes array
 	xr_vector<u8>		m_ref_counts;	// reference counters for handling dynamic objects
 	u32					m_level_id;		// unique level identifier
@@ -100,9 +96,6 @@ public:
 	IC		const CHeader &header				() const;
 	IC		bool	valid_vertex_id				(u32 vertex_id) const;
 	IC		u32		level_id					() const;
-	IC		u8		*cover						(const CVertex &vertex) const;
-	IC		u8		*cover						(const CVertex *vertex) const;
-	IC		u8		*cover						(const u32 vertex) const;
 	IC		void	unpack_xz					(const CLevelGraph::CPosition &vertex_position, int &x, int &z) const;
 	IC		void	unpack_xz					(const CLevelGraph::CPosition &vertex_position, float &x, float &z) const;
 	template <typename T>

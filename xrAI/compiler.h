@@ -26,7 +26,6 @@ struct vertex					// definition of "patch" or "node"
 	float	LightLevel;
 	
 	float	cover[4];		// cover in four directions
-	u8		cover_index;
 
 	vertex() {
 		n1=n2=n3=n4	= UnkonnectedNode;
@@ -110,7 +109,7 @@ void	xrCover			();
 void	xrMerge			();
 void	xrConvertAndLink();
 void	xrDisplay		();
-void	xrPalettizeCovers();
+//void	xrPalettizeCovers();
 void	xrSaveNodes		(LPCSTR name);
 
 // constants

@@ -87,9 +87,9 @@ void xrCompiler(LPCSTR name)
 	
 	/////////////////////////////////////
 
-	Phase("Palettizing cover values...");
-	xrPalettizeCovers();
-	mem_Optimize();
+//	Phase("Palettizing cover values...");
+//	xrPalettizeCovers();
+//	mem_Optimize();
 
 //	Phase("Visualizing nodes...");
 //	xrDisplay	();

@@ -307,9 +307,9 @@ IC	u32	CLevelGraph::CVertex::link(int index) const
 #endif
 }
 
-IC	u8	CLevelGraph::CVertex::cover() const
+IC	u8	CLevelGraph::CVertex::cover(u8 index) const
 {
-	return				(NodeCompressed::cover);
+	return				((u8)NodeCompressed::cover(index));
 }
 
 IC	u16	CLevelGraph::CVertex::plane() const

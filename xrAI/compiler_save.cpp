@@ -3,7 +3,7 @@
 
 IC BYTE	compress(float c, int max_value)
 {
-	int	cover = iFloor(c*float(max_value)+EPS_L);
+	int	cover = iFloor(c*float(max_value)+.5f);
 	clamp(cover,0,max_value);
 	return BYTE(cover);
 }
@@ -43,7 +43,16 @@ void	Compress	(NodeCompressed& Dest, vertex& Src, hdrNODES& H)
 //	Dest.cover[1]	= CompressCover(Src.cover[1]);
 //	Dest.cover[2]	= CompressCover(Src.cover[2]);
 //	Dest.cover[3]	= CompressCover(Src.cover[3]);
-	Dest.cover		= Src.cover_index;
+	Dest.cover0		= compress(Src.cover[0],15);
+	Dest.cover1		= compress(Src.cover[1],15);
+	Dest.cover2		= compress(Src.cover[2],15);
+	Dest.cover3		= compress(Src.cover[3],15);
+//	Msg				("[%.3f -> %d][%.3f -> %d][%.3f -> %d][%.3f -> %d]",
+//		Src.cover[0],Dest.cover0,
+//		Src.cover[1],Dest.cover1,
+//		Src.cover[2],Dest.cover2,
+//		Src.cover[3],Dest.cover3
+//		);
 
 	// Compress links
 //	R_ASSERT	(Src.neighbours.size()<64);
@@ -81,9 +90,9 @@ void xrSaveNodes(LPCSTR N)
 	H.size_y		= CalculateHeight(H.aabb);
 	fs->w			(&H,sizeof(H));
 	
-	fs->w_u32		(g_covers_palette.size());
-	for (u32 j=0; j<g_covers_palette.size(); ++j)
-		fs->w		(&g_covers_palette[j],sizeof(g_covers_palette[j]));
+//	fs->w_u32		(g_covers_palette.size());
+//	for (u32 j=0; j<g_covers_palette.size(); ++j)
+//		fs->w		(&g_covers_palette[j],sizeof(g_covers_palette[j]));
 
 	// All nodes
 	Status			("Saving nodes...");

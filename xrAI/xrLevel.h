@@ -132,7 +132,10 @@ private:
 	}
 
 public:
-	u8				cover;
+	u16				cover0 : 4;
+	u16				cover1 : 4;
+	u16				cover2 : 4;
+	u16				cover3 : 4;
 	u16				plane;
 	NodePosition	p;
 
@@ -155,6 +158,17 @@ public:
 		return			(data[10] >> 4);
 	}
 	
+	IC	u16	cover(u8 index) const
+	{
+		switch (index) {
+			case 0 : return(cover0);
+			case 1 : return(cover1);
+			case 2 : return(cover2);
+			case 3 : return(cover3);
+			default : NODEFAULT;
+		}
+	}
+
 	friend class CLevelGraph;
 	friend struct CNodeCompressed;
 };									// 2+5+1+11 = 19b
@@ -174,6 +188,6 @@ typedef	SNodePositionOld NodePosition;
 const u32 XRCL_CURRENT_VERSION		=	16;	// input
 const u32 XRCL_PRODUCTION_VERSION	=	12;	// output
 const u32 CFORM_CURRENT_VERSION		=	4;
-const u32 XRAI_CURRENT_VERSION		=	4;
+const u32 XRAI_CURRENT_VERSION		=	5;
 
 #endif // xrLevelH

@@ -580,7 +580,7 @@ IC	float CLevelGraph::compute_square(float fAngle, float fAngleOfView, float b0,
 	return(fSquare);
 }
 
-#define NORMALIZE_NODE_COVER(a,b) (float(cover(a)[b])/255.f)
+#define NORMALIZE_NODE_COVER(a,b) (float(a->cover(b))/255.f)
 
 IC	float CLevelGraph::compute_square(float fAngle, float fAngleOfView, const CLevelGraph::CVertex *vertex) const
 {
@@ -660,21 +660,6 @@ IC	float CLevelGraph::cover_in_direction(float angle, const CLevelGraph::CVertex
 IC	float CLevelGraph::cover_in_direction(float angle, u32 vertex_id) const
 {
 	return				(cover_in_direction(angle, vertex(vertex_id)));
-}
-
-IC	u8 *CLevelGraph::cover(const CVertex &vertex) const
-{
-	return				(m_cover_palette[vertex.cover()]);
-}
-
-IC	u8 *CLevelGraph::cover(const CVertex *vertex) const
-{
-	return				(cover(*vertex));
-}
-
-IC	u8 *CLevelGraph::cover(const u32 _node) const
-{
-	return				(cover(vertex(_node)));
 }
 
 IC	u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const
