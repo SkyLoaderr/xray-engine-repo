@@ -227,6 +227,16 @@ void CSpaceRestriction::initialize					()
 	if (m_out_space_restriction && !m_out_space_restriction->initialized())
 		m_out_space_restriction->initialize();
 
+#ifdef DEBUG
+	if (m_out_space_restriction) {
+		if (!m_out_space_restriction->object().correct()) {
+			Msg						("! BAD out restrictions combination :");
+			Msg						("! %s",*m_out_space_restriction->name());
+		}
+	}
+#endif
+
+
 	if (m_in_space_restriction && !m_in_space_restriction->initialized())
 		m_in_space_restriction->initialize();
 

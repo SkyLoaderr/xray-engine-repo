@@ -13,6 +13,7 @@
 #include "restriction_space.h"
 #include "ai_space.h"
 #include "level_graph.h"
+#include "graph_engine.h"
 
 struct CMergePredicate {
 	CSpaceRestrictionComposition *m_restriction;
@@ -56,8 +57,10 @@ void CSpaceRestrictionComposition::initialize	()
 	string256					temp;
 	u32							n = _GetItemCount(*m_space_restrictors);
 	VERIFY						(n);
-	if (n == 1)
+	if (n == 1) {
+		m_correct				= true;
 		return;
+	}
 
 	for (u32 i=0; i<n ;++i)
 		if (!m_space_restriction_holder->restriction(_GetItem(*m_space_restrictors,i,temp))->initialized())
@@ -80,4 +83,55 @@ void CSpaceRestrictionComposition::initialize	()
 	m_border.erase				(I,m_border.end());
 
 	process_borders				();
+
+#ifdef DEBUG
+	test_correctness			();
+#endif
 }
+
+#ifdef DEBUG
+void CSpaceRestrictionComposition::test_correctness()
+{
+	m_correct					= true;
+	m_test_storage.clear		();
+
+	//{
+	//	RESTRICTIONS::iterator		I = m_restrictions.begin();
+	//	RESTRICTIONS::iterator		E = m_restrictions.end();
+	//	for ( ; I != E; ++I)
+	//		if (!(*I)->object().m_correct)
+	//			m_correct			= false;
+	//}
+
+	//if (!m_correct)
+	//	return;
+
+	{
+		RESTRICTIONS::iterator		I = m_restrictions.begin();
+		RESTRICTIONS::iterator		E = m_restrictions.end();
+		for ( ; I != E; ++I)
+			m_test_storage.insert	(m_test_storage.end(),(*I)->object().m_test_storage.begin(),(*I)->object().m_test_storage.end());
+	}
+
+	{
+		std::sort					(m_test_storage.begin(),m_test_storage.end());
+		xr_vector<u32>::iterator	I = unique(m_test_storage.begin(),m_test_storage.end());
+		m_test_storage.erase		(I,m_test_storage.end());
+	}
+
+	xr_vector<u32>					nodes;
+	{
+		RESTRICTIONS::iterator		I = m_restrictions.begin();
+		RESTRICTIONS::iterator		E = m_restrictions.end();
+		for ( ; I != E; ++I) {
+			nodes.clear						();
+			ai().level_graph().set_mask		(border());
+			ai().graph_engine().search		(ai().level_graph(), (*I)->object().m_test_storage.back(), (*I)->object().m_test_storage.back(), &nodes, GraphEngineSpace::CFlooder());
+			ai().level_graph().clear_mask	(border());
+			m_correct						= (m_test_storage.size() <= nodes.size());
+			if (!m_correct)
+				break;
+		}
+	}
+}
+#endif

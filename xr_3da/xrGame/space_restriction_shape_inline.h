@@ -39,6 +39,7 @@ IC	CSpaceRestrictionShape::CSpaceRestrictionShape	(CSpaceRestrictor *space_restr
 	m_default					= default_restrictor;
 	m_initialized				= true;
 	
+
 	VERIFY						(space_restrictor);
 	m_restrictor				= space_restrictor;
 	

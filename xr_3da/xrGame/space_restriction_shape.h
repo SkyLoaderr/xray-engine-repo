@@ -35,6 +35,9 @@ public:
 		virtual shared_str	name					() const;
 	IC	virtual bool	shape					() const;
 	IC	virtual bool	default_restrictor		() const;
+#ifdef DEBUG
+				void	test_correctness		();
+#endif
 };
 
 #include "space_restriction_shape_inline.h"

@@ -13,6 +13,13 @@ protected:
 	xr_vector<u32>					m_border;
 	bool							m_initialized;
 
+#ifdef DEBUG
+public:
+	xr_vector<u32>					m_test_storage;
+	bool							m_correct;
+#endif
+
+
 protected:
 			void					process_borders			();
 
@@ -28,6 +35,9 @@ public:
 	virtual shared_str				name					() const = 0;
 	virtual bool					shape					() const = 0;
 	virtual bool					default_restrictor		() const = 0;
+#ifdef DEBUG
+	IC		bool					correct					() const {return m_correct;}
+#endif
 };
 
 #include "space_restriction_base_inline.h"

@@ -23,7 +23,7 @@ protected:
 	RESTRICTIONS			m_restrictions;
 	shared_str				m_space_restrictors;
 	CSpaceRestrictionHolder	*m_space_restriction_holder;
-	
+
 protected:
 	IC			void		merge							(CBaseRestrictionPtr restriction);
 
@@ -34,6 +34,9 @@ public:
 	IC	virtual shared_str	name							() const;
 	IC	virtual bool		shape							() const;
 	IC	virtual bool		default_restrictor				() const;
+#ifdef DEBUG
+				void		test_correctness				();
+#endif
 };
 
 #include "space_restriction_composition_inline.h"

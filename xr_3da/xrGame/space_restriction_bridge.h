@@ -16,7 +16,7 @@ class CSpaceRestrictionBridge : public RestrictionSpace::CTimeIntrusiveBase {
 protected:
 	CSpaceRestrictionBase			*m_object;
 
-protected:
+public:
 	IC		CSpaceRestrictionBase	&object						() const;
 
 public:

@@ -11,6 +11,7 @@
 #include "ai_space.h"
 #include "level_graph.h"
 #include "space_restrictor.h"
+#include "graph_engine.h"
 
 struct CBorderMergePredicate {
 	CSpaceRestrictionShape			*m_restriction;
@@ -26,6 +27,25 @@ struct CBorderMergePredicate {
 			m_restriction->m_border.push_back	(ai().level_graph().vertex_id(&vertex));
 	}
 };
+
+
+#ifdef DEBUG
+struct CShapeTestPredicate {
+	CSpaceRestrictionShape			*m_restriction;
+
+	IC			CShapeTestPredicate		(CSpaceRestrictionShape *restriction)
+	{
+		m_restriction				= restriction;
+	}
+
+	IC	void	operator()				(const CLevelGraph::CVertex &vertex) const
+	{
+		if (m_restriction->inside(ai().level_graph().vertex_id(&vertex),false))
+			m_restriction->m_test_storage.push_back(ai().level_graph().vertex_id(&vertex));
+	}
+};
+#endif
+
 
 void CSpaceRestrictionShape::fill_shape		(const CCF_Shape::shape_def &shape)
 {
@@ -68,6 +88,10 @@ void CSpaceRestrictionShape::fill_shape		(const CCF_Shape::shape_def &shape)
 		default : NODEFAULT;
 	}
 	ai().level_graph().iterate_vertices(start,dest,CBorderMergePredicate(this));
+
+#ifdef DEBUG
+	ai().level_graph().iterate_vertices(start,dest,CShapeTestPredicate(this));
+#endif
 }
 
 void CSpaceRestrictionShape::build_border	()
@@ -81,7 +105,27 @@ void CSpaceRestrictionShape::build_border	()
 		fill_shape					(*I);
 	
 	process_borders					();
+
+#ifdef DEBUG
+	test_correctness				();
+#endif
 }
+
+#ifdef DEBUG
+void CSpaceRestrictionShape::test_correctness	()
+{
+	VERIFY(!m_test_storage.empty());
+
+	ai().level_graph().set_mask		(border());
+
+	xr_vector<u32>					nodes;
+	ai().graph_engine().search		(ai().level_graph(), m_test_storage.back(), m_test_storage.back(), &nodes, GraphEngineSpace::CFlooder());
+
+	ai().level_graph().clear_mask	(border());
+	
+	m_correct						= (m_test_storage.size() == nodes.size());
+}
+#endif
 
 bool CSpaceRestrictionShape::inside	(const Fvector &position, float radius)
 {
@@ -95,3 +139,4 @@ shared_str	CSpaceRestrictionShape::name() const
 	VERIFY							(m_restrictor);
 	return							(m_restrictor->cName());
 }
+

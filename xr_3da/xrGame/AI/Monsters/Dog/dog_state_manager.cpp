@@ -55,21 +55,23 @@ void CStateManagerDog::execute()
 		else			state_id = eStateRest;
 	}
 
-	select_state(state_id); 
+	select_state		(state_id); 
 
 	// выполнить текущее состояние
 	get_state_current()->execute();
 
-	prev_substate = current_substate;
+	prev_substate		= current_substate;
 
 
 	if (state_id == eStateAttack) {
-		float yaw,pitch;
-		Fvector().sub(object->EnemyMan.get_enemy_position(), object->Position()).getHP(yaw,pitch);
+		float				yaw,pitch;
 
-		yaw = angle_normalize(-yaw);
+		Fvector().sub		(object->EnemyMan.get_enemy_position(), object->Position()).getHP(yaw,pitch);
+		yaw					= angle_normalize(-yaw);
 
-		if (angle_difference(yaw, object->movement().m_body.current.yaw) > PI_DIV_2) {
+		float angle_diff	= angle_difference(yaw, object->movement().m_body.current.yaw);
+
+		if ((angle_diff > PI_DIV_3) && (angle_diff < 5 * PI_DIV_6)) {
 
 			if (from_right(yaw, object->movement().m_body.current.yaw)) object->MotionMan.SetSpecParams(ASP_ROTATION_RUN_RIGHT);
 			else object->MotionMan.SetSpecParams(ASP_ROTATION_RUN_LEFT);
