@@ -420,10 +420,12 @@ void	CRender::Render		()
 // Device events
 void CRender::OnDeviceDestroy()
 {
-	level_Unload();
+	level_Unload			();
+	Target.OnDeviceDestroy	();
 }
 
 void CRender::OnDeviceCreate()
 {
-	level_Load	();
+	Target.OnDeviceCreate	();
+	level_Load				();
 }
