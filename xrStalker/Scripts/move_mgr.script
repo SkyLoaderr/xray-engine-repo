@@ -1,3 +1,4 @@
+
 -- Movement manager
 -- Created by: Andrey Fidrya (Zmey), af@svitonline.com
 
@@ -65,6 +66,10 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.running = false
 	self.danger = false
 
+	self.sound = nil
+	self.play_sound_after_anim_start = false
+	self.play_once = false
+
 	-- Точка, в которую смотрели в прошлый раз. Ее запоминаем для того, чтобы не делать паузу между анимациями,
 	-- если собираемся смотреть в ту же самую точку, не поворачиваясь никуда...
 	self.last_look_index = nil
@@ -105,8 +110,22 @@ function move_mgr:look_at_waypoint(pt)
 	self.last_look_index = pt
 end
 
+function move_mgr:update_sound()
+	if self.sound then
+		xr_sound.sound_update(self.object, self.sound)
+		if self.play_once then
+			self.sound = nil
+		end
+	end
+end
+
 function move_mgr:update()
 	printf("move_mgr:update(self.state == %s)", utils.to_str(self.state))
+
+	-- Если это не тот тип звука, который нужно проиграть всего один раз, то играть его:
+	if not self.play_sound_after_anim_start then
+		self:update_sound()
+	end
 
 	if not self.is_shooting then 
 		self.object:set_item(object.idle, self.object:best_weapon())
@@ -125,6 +144,11 @@ function move_mgr:update()
 	   self.expiration_time and device():time_global() >= self.expiration_time and
 	   not self.object:is_body_turning() then
 		--printf("_debug_guard [%s]: adding animations", self.object:name())
+		if self.play_sound_after_anim_start then
+			-- Проиграть звук после анимации:
+			self:update_sound()
+		end
+
 		if self.object:animation_count() <= 0 then
 			if not self.shall_shoot then
 				xr_state.anim_update(self.cur_anim_set, self.object)
@@ -199,6 +223,59 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		printf("ERROR: move_mgr: waypoint_callback: index is -1")
 		return
 	end
+
+	-- <ЗВУК>
+	local snd_from = self.path_look_info[index]["snd_from"]
+	if snd_from then
+		snd_from = tonumber(snd_from)
+	end
+	local snd_to = self.path_look_info[index]["snd_to"]
+	if snd_to then
+		snd_to = tonumber(snd_to)
+	end
+
+	local snd_prob = self.path_look_info[index]["snd_prob"]
+	if snd_prob then
+		snd_prob = tonumber(snd_prob)
+	else
+		snd_prob = 100
+	end
+
+	local suggested_snd_once = self.path_look_info[index]["snd_cont"]
+	if suggested_snd_cont == "true" then
+		self.play_once = false
+	else
+		self.play_once = true
+	end
+
+	local snd_wait_anim = self.path_look_info[index]["snd_wait_anim"]
+	if snd_wait_anim == "true" then
+		self.play_sound_after_anim_start = true
+	else
+		self.play_sound_after_anim_start = false
+	end
+
+	local suggested_snd = self.path_look_info[index]["snd"]
+	if suggested_snd then
+		if snd_from and snd_to then
+			self.sound = { rnd = snd_prob,
+				maxidle = snd_to - snd_from + 1, 
+				sumidle = snd_from - 1,
+				themes = parse_names(suggested_snd) }
+		else
+			self.sound = { rnd = snd_prob,
+				maxidle = 1, 
+				sumidle = -1,
+				themes = parse_names(suggested_snd) }
+		end
+		-- Этот звук играть прямо сейчас, а не когда начнется анимация на позиции (после поворота и т.д.):
+		if not self.play_sound_after_anim_start then
+			self:update_sound()
+		end
+	else
+		self.sound = nil
+	end
+	-- </ЗВУК>
 
 	local suggested_running = self.path_walk_info[index]["run"]
 	if suggested_running == "true" then
