@@ -325,7 +325,7 @@ void CActor::g_Physics(Fvector& accel, float jump, float dt)
 {
 	// Calculate physics
 	Movement.SetPosition	(vPosition);
-	float step = 0.08f;
+	float step = 0.1f;
 	while (dt>step)			{
 		Movement.Calculate		(accel,0,jump,step,false);
 		dt -= step;
@@ -371,6 +371,7 @@ void CActor::Update	(DWORD DT)
 	if (!bSndAmbientPlaying)	{
 		bSndAmbientPlaying	= TRUE;
 		pSounds->Play2D		(sndAmbient,true);
+		clamp			(DT,0ul,50ul);
 	}
 
 	clamp			(DT,0ul,100ul);
