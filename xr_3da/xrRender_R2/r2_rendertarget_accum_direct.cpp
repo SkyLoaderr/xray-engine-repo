@@ -129,7 +129,7 @@ void CRenderTarget::accum_direct()
 	Device.mView.transform_dir	(L_dir,RImplementation.Lights.sun_dir);
 	L_dir.normalize				();
 	RCache.set_c				("light_direction",	L_dir.x,L_dir.y,L_dir.z,0.f);
-	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,.2f);
+	RCache.set_c				("light_color",		L_clr.x,L_clr.y,L_clr.z,.2f*L_clr.magnitude());
 
 	// Render if stencil >= 0x2
 	CHK_DX						(HW.pDevice->SetRenderState	( D3DRS_STENCILREF,		0x02	));

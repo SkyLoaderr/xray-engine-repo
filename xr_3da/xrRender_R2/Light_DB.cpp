@@ -175,8 +175,10 @@ void			CLight_DB::Update()
 		sun_dir_1.add			(sun_dir_base);
 		sun_dir_1.normalize		();
 
-		sun_color_0.set			(sun_color_1);
-		sun_color_1.set			(::Random.randF(.5f,1.5f),::Random.randF(.5f,1.5f),::Random.randF(.5f,1.5f));
+		sun_color_0.set				(sun_color_1);
+		sun_color_1.set				(::Random.randF(15.f),::Random.randF(15.f),::Random.randF(15.f));
+		sun_color_1.normalize_safe	();
+		sun_color_1.mul				(::Random.randF(.5,1.5f));
 	}
 	
 	float f					= float(t-sun_tm_base)/float(sun_tm_next-sun_tm_base);
@@ -187,5 +189,5 @@ void			CLight_DB::Update()
 	sun_dir.normalize		();
 
 	sun_color.lerp			(sun_color_0,sun_color_1,f);
-	sun_color.lerp			(sun_color,sun_color_base,.5f);
+//	sun_color.lerp			(sun_color,sun_color_base,.5f);
 }
