@@ -216,7 +216,6 @@ void CWeapon::Show		()
 
 void CWeapon::SetDefaults()
 {
-	iAmmoElapsed	= 0;
 	bWorking		= false;
 	bPending		= false;
 }
