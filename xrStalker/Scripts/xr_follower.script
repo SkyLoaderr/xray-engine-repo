@@ -41,7 +41,7 @@ function evaluator_leader_present:evaluate ()
     end         
 
     if self.a.leader_id == -1 then
-       self.a.leader_id = self.get_leader () 
+       self.a.leader_id = self:get_leader () 
        if self.a.leader_id == -1 then 
           return false  
        end   
@@ -558,11 +558,11 @@ function set_scheme (npc, ini, scheme, section, gulag_name)
 	st.raid_look    = utils.cfg_get_string (ini, section, "raid_look",   npc, false, gulag_name)
 	st.team         = utils.cfg_get_string (ini, section, "team",        npc, false, gulag_name)
     --st.leader_name  = utils.cfg_get_string (ini, section, "leader_name", npc, true, "")
-    st.leader_name  = utils.cfg_get_string (ini, section, "leader_sid",  npc, true, "")
+    st.leader_name  = utils.cfg_get_string (ini, section, "leader_sid",  npc, false, "")
     
     st.leader_id = -1
     
-    if st.leader_name == "empty" then st.leader_name = nil end
+    if st.leader_name == "" then st.leader_name = nil end
 	
 	st.mental_state = anim.free
     st.raid_process = false
