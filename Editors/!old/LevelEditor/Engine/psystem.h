@@ -502,7 +502,7 @@ namespace PAPI
 	};
 
     DEFINE_VECTOR(ParticleAction*,PAVec,PAVecIt);
-	struct ParticleActions{
+	struct PARTICLEDLL_API ParticleActions{
 		PAVec			actions;
 	public:
 						ParticleActions()
