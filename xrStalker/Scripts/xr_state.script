@@ -108,7 +108,7 @@ function body_state:__init(npc)
 											"prisluh_3_idle_4" },
 									[4]	= {	"prisluh_4_idle_2",
 											"prisluh_4_idle_3",
-											"prisluh_4_idle_4" }}},
+											"prisluh_4_idle_4" }}},										
 		poisk		= {	state_id = xr_state.stand,
 						prop	= { maxidle = 5,
 									sumidle = 3,
