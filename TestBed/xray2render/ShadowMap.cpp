@@ -1803,10 +1803,11 @@ HRESULT CMyD3DApplication::UpdateTransform()
 
 	// Texture adjustment matrix
 	FLOAT fTexelOffs			= (.5f / SHADOW_MAP_SIZE);
-	D3DXMATRIX matTexAdj	(	0.5f,      0.0f,        0.0f,        0.0f,
-		0.0f,     -0.5f,        0.0f,        0.0f,
-		0.0f,      0.0f,        1.0f,        0.0f,
-		0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f, 1.0f);
+	D3DXMATRIX matTexAdj	
+		(	0.5f,      0.0f,        0.0f,        0.0f,
+			0.0f,     -0.5f,        0.0f,        0.0f,
+			0.0f,      0.0f,        1.0f,        0.0f,
+			0.5f + fTexelOffs,	0.5f + fTexelOffs,	0.0f, 1.0f);
 	D3DXMatrixMultiply			(&dm_model2world2view2projection_light, &matView2World2Light, &matTexAdj);
 
 	// ***** Verify results
