@@ -102,7 +102,6 @@ void CBuild::xrPhase_Subdivide()
 			g_XSplit.erase		(g_XSplit.begin()+X); X--;
 			g_XSplit.push_back	(new vecFace(s1));	Detach(&s1);
 			g_XSplit.push_back	(new vecFace(s2));	Detach(&s2);
-			mem_CompactSubdivs	();
 		}
 		s1.clear	();
 		s2.clear	();
@@ -111,4 +110,5 @@ void CBuild::xrPhase_Subdivide()
 
 	for (u32 i=0; i<g_XSplit.size(); i++) 
 		Msg		("%d / %d",g_XSplit[i]->size(),g_XSplit[i]->capacity());
+	mem_CompactSubdivs	();
 }

@@ -111,8 +111,6 @@ void CBuild::xrPhase_MergeGeometry	()
 			_DELETE			(g_XSplit[selected]);
 			g_XSplit.erase	(g_XSplit.begin()+selected);
 		}
-		mem_CompactSubdivs	();
-
 		Progress(sqrtf(sqrtf(float(split)/float(g_XSplit.size()))));
 	}
 	Msg("%d subdivisions.",g_XSplit.size());
