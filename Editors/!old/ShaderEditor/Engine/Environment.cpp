@@ -190,7 +190,7 @@ void	CEnvironment::mods_load			()
 {
 	Modifiers.clear_and_free			();
 	string_path							path;
-	if (FS.exist(path,"$level$","level.envmod"))	
+	if (FS.exist(path,"$level$","level.env_mod"))	
 	{
 		IReader*	fs	= FS.r_open		(path);
 		u32			id	= 0;
