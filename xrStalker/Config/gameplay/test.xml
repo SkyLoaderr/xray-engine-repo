@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<game_dialogs>
+    <dialog id="test_dialog1">
+        <phrase_list>
+            <phrase id="101">
+                <text>test_dialog1_101</text>
+                <next>201</next>
+            </phrase>
+            <phrase id="201">
+                <text>test_dialog1_201</text>
+            </phrase>
+            <phrase id="102">
+                <text>test_dialog1_102</text>
+            </phrase>
+            <phrase id="0">
+                <text>test_dialog1_0</text>
+                <next>101</next>
+                <next>102</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="test_dialog">
+        <phrase_list>
+            <phrase id="102">
+                <text>test_dialog_102</text>
+            </phrase>
+            <phrase id="101">
+                <text>test_dialog_101</text>
+            </phrase>
+            <phrase id="100">
+                <text>test_dialog_100</text>
+                <next>200</next>
+            </phrase>
+            <phrase id="200">
+                <text>test_dialog_200</text>
+            </phrase>
+            <phrase id="0">
+                <text>test_dialog_0</text>
+                <give_info>test_info</give_info>
+                <next>100</next>
+                <next>101</next>
+                <next>102</next>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="vodka_est">
+        <phrase_list>
+            <phrase id="0">
+                <text>vodka_est_0</text>
+                <next>101</next>
+            </phrase>
+            <phrase id="101">
+                <text>vodka_est_101</text>
+                <next>201</next>
+            </phrase>
+            <phrase id="201">
+                <text>vodka_est_201</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="net_deneg">
+        <phrase_list>
+            <phrase id="101">
+                <text>net_deneg_101</text>
+                <next>201</next>
+            </phrase>
+            <phrase id="0">
+                <text>net_deneg_0</text>
+                <next>101</next>
+            </phrase>
+            <phrase id="201">
+                <text>net_deneg_201</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+</game_dialogs>
