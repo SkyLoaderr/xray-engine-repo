@@ -32,7 +32,7 @@
 	<info_portion id="actor_start02">
 		<location >
 			<level>0</level>
-			<object>quest_case_02</object>
+			<object>quest_case_01</object>
 			<icon name="ƒипломат" x="2" y="8" width="1" height="1"></icon>
 			<text>”кради научный \nчемоданчик с блокпоста,\nтак чтобы никто не заметил...</text>
 		</location>
@@ -52,7 +52,7 @@
 	<info_portion id="actor_start04">
 		<location >
 			<level>0</level>
-			<object>quest_case_01</object>
+			<object>quest_case_02</object>
 			<icon name="Case" x="2" y="8" width="1" height="1"></icon>
 		</location>
 	</info_portion>
