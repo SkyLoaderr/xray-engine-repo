@@ -7,7 +7,7 @@
 
 ENGINE_API occRasterizer	Raster;
 
-void __stdcall fillDW_8x	(void* p, u32 size, u32 value)
+void __stdcall fillDW_8x	(void* _p, u32 size, u32 value)
 {
 	LPDWORD ptr = LPDWORD	(_p);
 	LPDWORD end = ptr+size;
