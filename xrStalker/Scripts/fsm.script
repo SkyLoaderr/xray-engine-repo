@@ -67,7 +67,7 @@ function if_see_actor(npc)
 end
 
 function dont_see_actor(npc)
-	if npc:see(actor) == true then
+	if npc:see(actor) == false then
 		log("i lost a trace of this fucking actor")
 		return true
 	end
