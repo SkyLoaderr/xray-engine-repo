@@ -27,6 +27,7 @@ public:
 public:
 	void				dbg_register	(void* _p, u32 _size);
 	void				dbg_unregister	(void* _p);
+	void				dbg_check		();
 
 	u32					mem_usage		(u32* pBlocksUsed=NULL, u32* pBlocksFree=NULL);
 	void				mem_compact		();

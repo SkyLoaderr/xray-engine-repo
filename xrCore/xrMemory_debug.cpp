@@ -59,3 +59,29 @@ void	xrMemory::dbg_unregister	(void* _p)
 	debug_cs.Leave			();
 }
 
+extern	u32		get_header		(void*	P);
+extern	u32		get_pool		(size_t size);
+
+void	xrMemory::dbg_check		()
+{
+	if (!debug_mode)		return;
+
+	// Check overrun
+	debug_cs.Enter			();
+	debug_mode				= FALSE;
+	for (int it=0; it<debug_info.size(); it++)
+	{
+		if (0==debug_info[it]._p)	
+			continue;
+
+		// check header
+		R_ASSERT2			(get_header(debug_info[it]._p)==get_pool(debug_info[it]._size),"Memory block header corrupted");
+
+		// check footer
+		u8*			_ptr	= (u8*)	debug_info[it]._p;
+		u32*		_shred	= (u32*)(_ptr + debug_info[it]._size);
+		R_ASSERT2			(u32(-1)==*_shred, "Memory overrun error");
+	}
+	debug_mode				= TRUE;
+	debug_cs.Leave			();
+}
