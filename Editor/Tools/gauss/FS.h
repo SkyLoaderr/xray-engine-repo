@@ -217,11 +217,9 @@ public:
 	{	Pos=ptr;	VERIFY((Pos<=Size) && (Pos>=0));	};
 	IC void	Advance(int cnt)		// перемещение указателя
 	{	Pos+=cnt;	VERIFY((Pos<=Size) && (Pos>=0));	};
-	IC void	Read(void *p,int cnt)	// главная ф-я чтения
-	{	VERIFY(Pos+cnt<=Size);
-		CopyMemory(p,Pointer(),cnt);
-		Advance(cnt);
-	};
+	void	Read(void *p,int cnt);	// главная ф-я чтения
+
+	
 	IC void	Rstring(char *dest)	// читает строку до CR/LF
 	{
 		char *src = (char *) data;

@@ -43,6 +43,22 @@ CStream*	CStream::OpenChunk(DWORD ID)
 void	CStream::Close()
 {	delete this; }
 
+#ifdef	ENGINE_BUILD
+void	CStream::Read	(void *p,int cnt)
+{
+	VERIFY		(Pos+cnt<=Size);
+	PSGP.memCopy(p,Pointer(),cnt);
+	Advance		(cnt);
+};
+#else
+void	CStream::Read	(void *p,int cnt)
+{
+	VERIFY(Pos+cnt<=Size);
+	CopyMemory(p,Pointer(),cnt);
+	Advance(cnt);
+};
+#endif
+
 //---------------------------------------------------
 // temp stream
 CTempStream::~CTempStream()

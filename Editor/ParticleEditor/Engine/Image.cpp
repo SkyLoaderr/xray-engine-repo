@@ -124,7 +124,7 @@ void CImage::LoadT(char *name)
 	bAlpha	= TUisAlphaPresents(hdr->fmt);
 
 	pData	= (DWORD*)malloc(dwWidth*dwHeight*4);
-	CopyMemory(pData,pixels,dwWidth*dwHeight*4);
+	// CopyMemory(pData,pixels,dwWidth*dwHeight*4);
 
 	free(data);
 }
