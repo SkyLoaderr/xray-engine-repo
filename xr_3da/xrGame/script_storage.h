@@ -25,10 +25,8 @@ protected:
 	CMemoryWriter				m_output;
 
 protected:
-			bool				create_namespace			(LPCSTR	caNamespaceName);
-			void				copy_globals				();
+			bool				parse_namespace				(LPCSTR caNamespaceName, LPSTR b, LPSTR c);
 			bool				do_file						(LPCSTR	caScriptName,		LPCSTR caNameSpaceName,		bool	bCall);
-			void				set_namespace				();
 
 public:
 								CScriptStorage				();
