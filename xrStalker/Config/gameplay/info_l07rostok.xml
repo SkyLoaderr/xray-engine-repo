@@ -132,6 +132,7 @@
 		<action>level_tasks.notify_new_task</action>
 	</info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_killed"></info_portion>
+	<info_portion id="bar_kill_svoboda_ambush_voronin"></info_portion>
 	<info_portion id="bar_kill_svoboda_ambush_done"></info_portion>
 
 	<info_portion id="bar_kill_svoboda_leader_start"></info_portion>

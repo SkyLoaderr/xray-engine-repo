@@ -123,6 +123,23 @@
 		</objective>
 	</game_task>
 
+
+	<game_task id="bar_dolg_svoboda_ambush_quest">
+		<title>bar_dolg_svoboda_ambush_quest</title>
+		<objective>
+			<text>bar_dolg_svoboda_ambush_quest</text>
+			<icon x="0" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_kill_tiran</text>
+			<icon x="200" y="50" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+		<objective>
+			<text>bar_dolg_svoboda_ambush_return</text>
+			<icon x="150" y="0" width="50" height="50">ui\ui_icons_task</icon>
+		</objective>
+	</game_task>
+
 	
 	<game_task id="bar_crazy_veterans_quest">
 		<title>bar_crazy_veterans_quest</title>
