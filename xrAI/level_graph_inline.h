@@ -93,7 +93,7 @@ IC const CLevelGraph::CPosition &CLevelGraph::vertex_position	(CLevelGraph::CPos
 	float				sp = 1/header().cell_size();
 	int					pxz	= iFloor(((source_position.x - header().box().min.x)*sp + EPS_L + .5f))*m_row_length + iFloor((source_position.z - header().box().min.z)*sp   + EPS_L + .5f);
 	int					py	= iFloor(65535.f*(source_position.y - header().box().min.y)/header().factor_y() + EPS_L);
-	clamp				(pxz,0,(1 << 24) - 1);
+	clamp				(pxz,0,(1 << 21) - 1);
 	dest_position.xz	(u32(pxz));
 	clamp				(py,0,65535);
 	dest_position.y		(u16(py));
