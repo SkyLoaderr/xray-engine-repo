@@ -264,8 +264,8 @@ void CStalkerAnimations::vfAssignTorsoAnimation(CMotionDef *&tpTorsoAnimation)
 	if (!stalker->g_Alive())
 		return;
 
-	CWeapon					*tpWeapon = dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
-	CMissile				*missile = 0;//dynamic_cast<CMissile*>(stalker->inventory().ActiveItem());
+	CWeapon					*tpWeapon	= dynamic_cast<CWeapon*>(stalker->inventory().ActiveItem());
+	CMissile				*missile	= dynamic_cast<CMissile*>(stalker->inventory().ActiveItem());
 	CLASS_ID				clsid = tpWeapon ? tpWeapon->SUB_CLS_ID : missile ? missile->SUB_CLS_ID : 0;
 	u32						dwCurrentAniSlot = 0;
 	if (tpWeapon || missile)
