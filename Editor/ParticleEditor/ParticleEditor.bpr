@@ -52,7 +52,8 @@
       Intermediate\TLSPRITE.obj Intermediate\CustomObject.obj 
       Intermediate\TopBar.obj Intermediate\EditMeshPick.obj 
       Intermediate\EditObjectEditor.obj Intermediate\Blender_LaEmB.obj 
-      Intermediate\Blender_Lm(EbB).obj Intermediate\Blender_LmBmmD.obj"/>
+      Intermediate\Blender_Lm(EbB).obj Intermediate\Blender_LmBmmD.obj 
+      Intermediate\Blender_BmmD.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
