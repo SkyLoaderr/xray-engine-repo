@@ -126,7 +126,8 @@ public:
 	CFrustum						ViewBase;
 	CFrustum*						View;
 public:
-	GenerationLevel					get_generation			()											= 0;
+	// feature level
+	virtual	GenerationLevel			get_generation			()											= 0;
 
 	// Loading / Unloading
 	virtual	void					create					()											= 0;
