@@ -33,7 +33,16 @@ struct HOM_poly
 
 void CHOM::Load			()
 {
-	destructor<CStream> S(Engine.FS.Open(Name));
+	// Find and open file
+	string256	fName;
+	if (!Engine.FS.Exist(fName, Path.Current, "level.hom"))
+	{
+		Msg		("! Occlusion map '%s' not found.",fName);
+		return;
+	}
+	
+	destructor<CStream> FS	(Engine.FS.Open(fName));
+	destructor<CStream>	S	(FS->OpenChunk(1));
 
 	// Load tris and merge them
 	CDB::Collector		CL;
@@ -62,3 +71,10 @@ void CHOM::Load			()
 	m_pModel			= new CDB::MODEL();
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
 }
+
+void CHOM::Unload		()
+{
+	_DELETE		(m_pModel);
+	_FREE		(m_pTris);
+}
+

@@ -15,7 +15,8 @@ private:
 	occTri*					m_pTris;
 public:
 	void					Load	();
-
+	void					Unload	();
+	
 	CHOM();
 	~CHOM();
 };
