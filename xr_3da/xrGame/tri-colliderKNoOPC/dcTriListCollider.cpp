@@ -569,7 +569,7 @@ const dReal* v2=(dReal*)T->verts[2];
 					SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
 					SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 					SURFACE(Contacts,0)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
-					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDumping;
+					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
 					//////////////////////////////////
 				//	OutTriCount++;
 					return 1;
@@ -627,7 +627,7 @@ const float SphereRadius = dGeomSphereGetRadius(Sphere);
 					SURFACE(Contacts,0)->bounce=GMLib.GetMaterial(T->material)->fPHBouncing;
 					SURFACE(Contacts,0)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 					SURFACE(Contacts,0)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
-					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDumping;
+					SURFACE(Contacts,0)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
 					//////////////////////////////////
 				//	OutTriCount++;
 					return 1;

@@ -781,7 +781,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
 				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_2->material)->fPHFriction;
 				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_2->material)->fPHSpring;
-				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_2->material)->fPHDumping;
+				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_2->material)->fPHDamping;
 			if(usr_data_2->ph_object){
 					usr_data_2->ph_object->InitContact(&contacts[i]);
 					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
@@ -797,7 +797,7 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 				usr_data_1->pushing_neg;
 				contacts[i].surface.mu*=GMLib.GetMaterial(usr_data_1->material)->fPHFriction;
 				contacts[i].surface.soft_cfm*=GMLib.GetMaterial(usr_data_1->material)->fPHSpring;
-				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDumping;
+				contacts[i].surface.soft_erp*=GMLib.GetMaterial(usr_data_1->material)->fPHDamping;
 			if(usr_data_1->ph_object){
 					usr_data_1->ph_object->InitContact(&contacts[i]);
 					//if(pushing_neg) contacts[i].surface.mu=dInfinity;
