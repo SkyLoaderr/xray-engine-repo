@@ -108,7 +108,12 @@ void Startup(LPSTR     lpCmdLine)
 				if (strstr(cmd,"-s")) {
 					if (xr_strlen(name))
 						name[xr_strlen(name) - 1] = 0;
-					xrMergeSpawns		(name);
+					char				*output = strstr(cmd,"-out");
+					if (output) {
+						output			+= xr_strlen("-out");
+						_TrimLeft		(output);
+					}
+					xrMergeSpawns		(name,output);
 				}
 				else
 					if (strstr(cmd,"-t")) {
@@ -120,7 +125,7 @@ void Startup(LPSTR     lpCmdLine)
 					}
 					else
 						if (strstr(cmd,"-c")) {
-							xrConvertMaps	();
+//							xrConvertMaps	();
 						}
 		}
 	// Show statistic

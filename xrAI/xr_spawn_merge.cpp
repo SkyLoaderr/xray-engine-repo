@@ -422,7 +422,7 @@ extern void read_levels(CInifile *Ini, xr_set<CLevelInfo> &levels);
 
 class CSpawnMerger {
 public:
-			CSpawnMerger	(LPCSTR name)
+			CSpawnMerger	(LPCSTR name, LPCSTR output)
 	{
 		xr_vector<CGameGraph::CLevelPoint>		l_tpLevelPoints;
 		l_tpLevelPoints.clear		();
@@ -501,7 +501,14 @@ public:
 		tMemoryStream.close_chunk	();
 
 		string256					l_caFileName;
-		FS.update_path				(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
+		if (!output)
+			FS.update_path			(l_caFileName,"$game_spawn$",cafGetActorLevelName(tpLevels,S));
+		else {
+			cafGetActorLevelName	(tpLevels,S);
+			string256				out;
+			strconcat				(out,output,".spawn");
+			FS.update_path			(l_caFileName,"$game_spawn$",out);
+		}
 		tMemoryStream.save_to		(l_caFileName);
 
 		Msg							("GAME SPAWN is successfully saved to the file\n%s",l_caFileName);
@@ -513,7 +520,7 @@ public:
 	}
 };
 
-void xrMergeSpawns(LPCSTR name)
+void xrMergeSpawns(LPCSTR name, LPCSTR output)
 {
-	CSpawnMerger	A(name);
+	CSpawnMerger	A(name,output);
 }
