@@ -42,5 +42,10 @@
 		<text>Case from blockpost</text>
 		<text ln="rus">ящик с блокпоста.</text>
 	</string>
+	<string id="alife_news_kill">
+		<text>%%s kill %%s</text>
+		<text ln="rus">%%s убил %%s</text>
+	</string>
+	
 </string_table>
 
