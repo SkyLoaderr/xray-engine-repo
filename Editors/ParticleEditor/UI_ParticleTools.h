@@ -59,7 +59,7 @@ public:
 	EEditMode			m_EditMode;
     
     TProperties*		m_ItemProps;
-    IItemList*			m_PList;
+    TItemList*			m_PList;
 public:
 	// flags
     enum{

@@ -294,6 +294,7 @@ public:
 	void			SetActiveSMotion		(CSMotion* mot);
 	bool 			CheckBoneCompliance		(CSMotion* M);
     bool			VerifyBoneParts			();
+    void			OptimizeSMotions		();
 
 	bool 			LoadBoneData			(IReader& F);
 	void 			SaveBoneData			(IWriter& F);

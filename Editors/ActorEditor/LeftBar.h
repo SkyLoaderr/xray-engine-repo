@@ -85,6 +85,8 @@ __published:	// IDE-managed Components
 	TMenuItem *MenuItem3;
 	TMenuItem *MenuItem4;
 	TMenuItem *miExportOMF;
+	TMenuItem *N1;
+	TMenuItem *OptimizeMotions1;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall PanelMimimizeClick(TObject *Sender);
     void __fastcall PanelMaximizeClick(TObject *Sender);
@@ -127,6 +129,7 @@ __published:	// IDE-managed Components
 	void __fastcall MenuItem2Click(TObject *Sender);
 	void __fastcall MenuItem4Click(TObject *Sender);
 	void __fastcall miExportOMFClick(TObject *Sender);
+	void __fastcall OptimizeMotions1Click(TObject *Sender);
 private:	// User declarations
 	void __fastcall ShowPPMenu		(TMxPopupMenu* M, TObject* btn);
 	void 			RenameItem		(LPCSTR p0, LPCSTR p1, EItemType tp);

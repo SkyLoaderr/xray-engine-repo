@@ -108,7 +108,7 @@ private:	// User declarations
     void __stdcall 			OnFrameCountAfterEdit	(PropValue* v, s32& val, bool& accepted);
 	void __stdcall  		OnItemFocused			(TElTreeItem* item);
 
-    IItemList*				m_Items;
+    TItemList*				m_Items;
     TProperties*			m_Props;
     void __stdcall 			OnModified				(void);
 public:		// User declarations

@@ -95,7 +95,9 @@ void EScene::Save(LPCSTR initial, LPCSTR map_name, bool bUndo)
 {
 	VERIFY(map_name);
 
-    AnsiString full_name = (initial)?FS.update_path(full_name,initial,map_name):AnsiString(map_name);
+    std::string full_name;
+    if (initial)	FS.update_path	(full_name,initial,map_name);
+    else			full_name		= map_name;
     
     CMemoryWriter F;
 
@@ -226,7 +228,10 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 
 	if (!map_name||(0==map_name[0])) return false;
     
-    AnsiString full_name = (initial)?FS.update_path(full_name,initial,map_name):AnsiString(map_name);
+    std::string full_name;
+    if (initial)	FS.update_path	(full_name,initial,map_name);
+    else			full_name 		= map_name;
+    
 	ELog.Msg( mtInformation, "EScene: loading '%s'", map_name);
     if (FS.exist(full_name.c_str())){
         IReader* F = FS.r_open(full_name.c_str());
@@ -329,7 +334,10 @@ bool EScene::Load(LPCSTR initial, LPCSTR map_name, bool bUndo)
 void EScene::SaveSelection( EObjClass classfilter, LPCSTR initial, LPCSTR fname )
 {
 	VERIFY( fname );
-    AnsiString full_name = (initial)?FS.update_path(full_name,initial,fname):AnsiString(fname);
+
+    std::string full_name;
+    if (initial)	FS.update_path	(full_name,initial,fname);
+    else			full_name 		= fname;
 
     CMemoryWriter F;
 
@@ -373,7 +381,10 @@ bool EScene::LoadSelection( LPCSTR initial, LPCSTR fname )
     DWORD version = 0;
 
 	VERIFY( fname );
-    AnsiString full_name = (initial)?FS.update_path(full_name,initial,fname):AnsiString(fname);
+
+    std::string 	full_name;
+    if (initial)	FS.update_path	(full_name,initial,fname);
+    else			full_name 		= fname;
 
 	ELog.Msg( mtInformation, "EScene: loading part %s...", fname );
 

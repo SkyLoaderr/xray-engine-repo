@@ -31,7 +31,7 @@ bool SceneBuilder::BuildHOMModel()
     BOOL bValid = !!F.chunk_size();
     F.close_chunk();
     if (bValid){
-	    AnsiString hom_name = m_LevelPath+"level.hom";
+	    std::string hom_name = MakeLevelPath("level.hom");
 	    F.save_to(hom_name.c_str());
     }
 	return bValid;

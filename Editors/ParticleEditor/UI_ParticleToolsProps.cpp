@@ -5,6 +5,7 @@
 #include "UI_ParticleTools.h"
 #include "UI_ParticleMain.h"
 #include "TextForm.h"
+#include "ItemList.h"
 
 void CParticleTools::OnParticleItemRename(LPCSTR old_name, LPCSTR new_name, EItemType type)
 {              

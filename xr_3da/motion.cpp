@@ -331,7 +331,8 @@ void CSMotion::SaveMotion(const char* buf){
 	F.save_to		(buf);
 }
 
-bool CSMotion::LoadMotion(const char* buf){
+bool CSMotion::LoadMotion(const char* buf)
+{
 	destructor<IReader>	F(FS.r_open(buf));
 	R_ASSERT		(F().find_chunk(EOBJ_SMOTION));
 	return Load		(F());
@@ -419,6 +420,14 @@ bool CSMotion::Load(IReader& F)
         }
 	}
 	return true;
+}
+
+void CSMotion::Optimize()
+{
+    for(BoneMotionIt bm_it=bone_mots.begin(); bm_it!=bone_mots.end(); bm_it++){
+        for (int ch=0; ch<ctMaxChannel; ch++)
+            bm_it->envs[ch]->Optimize();
+    }
 }
 
 void CSMotion::SortBonesBySkeleton(BoneVec& bones)

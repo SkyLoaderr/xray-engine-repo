@@ -228,6 +228,9 @@ bool CActorMain::Command(int _Command, int p1, int p2)
     case COMMAND_UPDATE_CAPTION:
     	frmMain->UpdateCaption();
     	break;
+    case COMMAND_OPTIMIZE_MOTIONS:
+    	ATools->OptimizeMotions();
+    	break;
     default:
     	return inherited::Command(_Command,p1,p2);
     }

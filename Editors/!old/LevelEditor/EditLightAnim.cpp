@@ -10,6 +10,7 @@
 #include "ColorPicker.h"
 #include "ui_main.h"
 #include "PropertiesList.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma link "multi_edit"
 #pragma link "Gradient"
@@ -36,7 +37,7 @@ __fastcall TfrmEditLightAnim::TfrmEditLightAnim(TComponent* Owner)
 void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
 {
     m_Props = TProperties::CreateForm("LAProps",paProps,alClient,TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
-    m_Items	= IItemList::CreateForm("LA Items",paItems,alClient,IItemList::ilEditMenu|IItemList::ilDragAllowed|IItemList::ilFolderStore);
+    m_Items	= TItemList::CreateForm("LA Items",paItems,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed|TItemList::ilFolderStore);
     m_Items->SetOnModifiedEvent		(TOnModifiedEvent(this,&TfrmEditLightAnim::OnModified));
     m_Items->SetOnItemFocusedEvent	(TOnILItemFocused().bind(this,&TfrmEditLightAnim::OnItemFocused));
     m_Items->SetOnItemRemoveEvent	(TOnItemRemove().bind(&LALib,&ELightAnimLibrary::RemoveObject));
@@ -47,7 +48,7 @@ void __fastcall TfrmEditLightAnim::FormCreate(TObject *Sender)
 void __fastcall TfrmEditLightAnim::FormDestroy(TObject *Sender)
 {
 	TProperties::DestroyForm(m_Props);
-    IItemList::DestroyForm(m_Items);
+    TItemList::DestroyForm(m_Items);
 }
 //---------------------------------------------------------------------------
 

@@ -256,6 +256,8 @@ public:
     void				StopMotion			();
     void				PauseMotion			();
     bool				RenameMotion		(LPCSTR old_name, LPCSTR new_name);
+
+    void				OptimizeMotions		();
 };
 
 extern CActorTools*&	ATools;

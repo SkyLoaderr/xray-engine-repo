@@ -14,6 +14,7 @@
 #include "mxPlacemnt.hpp"
 
 #include "ESceneCustomMTools.h"
+#include "ItemList.h"
 
 // refs
 class CEditableObject;
@@ -77,7 +78,7 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall MultiSelByRefObject ( bool clear_prev );
     void __fastcall SelByRefObject  	( bool flag );
-    IItemList* m_Items;
+    TItemList* m_Items;
     void __stdcall  OnItemFocused		(ListItemsVec& items);
     LPCSTR m_Current;
 	void __stdcall  OnDrawObjectThumbnail(ListItem* sender, void *Surface, Irect &R);

@@ -198,11 +198,11 @@ void TfraObject::RefreshList()
     ListItemsVec items;
     FS_QueryMap lst;
     if (Lib.GetObjects(lst)){
-	    FS_QueryPairIt	it	= lst.begin();
+	    FS_QueryPairIt	it	= lst.begin();            
     	FS_QueryPairIt	_E	= lst.end();
 	    for (; it!=_E; it++){
-            AnsiString fn 	= ChangeFileExt(it->first.c_str(),".thm");
-            FS.update_path	(_objects_,fn);
+            std::string fn;
+            FS.update_path	(fn,_objects_,ChangeFileExt(it->first.c_str(),".thm").c_str());
 	    	ListItem* I=LHelper().CreateItem(items,it->first.c_str(),0,FS.exist(fn.c_str())?ListItem::flDrawThumbnail:0,0);
             if (I->m_Flags.is(ListItem::flDrawThumbnail)) I->OnDrawThumbnail.bind(this,&TfraObject::OnDrawObjectThumbnail);
         }
@@ -231,14 +231,14 @@ void __fastcall TfraObject::FormHide(TObject *Sender)
 
 void __fastcall TfraObject::FormCreate(TObject *Sender)
 {
-    m_Items 				= IItemList::CreateForm("Objects", paItems, alClient, 0);
+    m_Items 				= TItemList::CreateForm("Objects", paItems, alClient, 0);
     m_Items->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&TfraObject::OnItemFocused));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraObject::FormDestroy(TObject *Sender)
 {
-    IItemList::DestroyForm	(m_Items);
+    TItemList::DestroyForm	(m_Items);
 }
 //---------------------------------------------------------------------------
 

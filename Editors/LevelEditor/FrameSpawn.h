@@ -57,7 +57,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebMultiSelectByRefAppendClick(TObject *Sender);
 	void __fastcall seSelPercentKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
-    IItemList* m_Items;
+	TItemList* m_Items;
     void __stdcall  OnItemFocused	(ListItemsVec& items);
     LPCSTR m_Current;
 	void 	SelByRefObject		( bool flag );

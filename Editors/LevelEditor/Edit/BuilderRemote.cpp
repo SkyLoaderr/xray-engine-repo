@@ -194,7 +194,7 @@ void SceneBuilder::SaveBuild()
 	F.w				(l_mu_refs.begin(),sizeof(b_mu_reference)*l_mu_refs.size());
     F.close_chunk	();
 
-    AnsiString fn	= m_LevelPath+"build.prj";
+    std::string fn	= MakeLevelPath("build.prj");
     F.save_to		(fn.c_str());
 }
 
@@ -780,9 +780,9 @@ int SceneBuilder::BuildTexture(const char* name)
 int	SceneBuilder::BuildObjectLOD(const Fmatrix& parent, CEditableObject* e, int sector_num)
 {
 	if (!e->m_Flags.is(CEditableObject::eoUsingLOD)) return -1;
-    AnsiString lod_name = e->GetLODTextureName();
+    std::string lod_name = e->GetLODTextureName();
 
-	AnsiString fname = lod_name+AnsiString(".tga");
+	std::string fname = lod_name+".tga";
     if (!FS.exist(_textures_,fname.c_str())){
 		ELog.DlgMsg(mtError,"Can't find object LOD texture: %s",fname.c_str());
     	return -2;
@@ -962,7 +962,7 @@ BOOL SceneBuilder::CompileStatic()
             textures.push_back(l_lods[k].tex_name);
 	        UI->ProgressInc	();                    
         }                           
-        AnsiString fn 		= m_LevelPath+LEVEL_LODS_TEX_NAME;
+        std::string fn 		= MakeLevelPath(LEVEL_LODS_TEX_NAME);
         if (1==ImageLib.CreateMergedTexture(textures,fn.c_str(),STextureParams::tfDXT5,512,2048,256,1024,offsets,scales,rotated,remap)){
 	        for (k=0; k<(int)l_lods.size(); k++){        
 	            e_b_lod& l	= l_lods[k];         
@@ -990,6 +990,6 @@ BOOL SceneBuilder::CompileStatic()
 
 BOOL SceneBuilder::BuildSceneStat()
 {
-    AnsiString dest_name = m_LevelPath+LEVEL_DI_TEX_NAME;
+    std::string dest_name = MakeLevelPath(LEVEL_DI_TEX_NAME);
     return l_scene_stat->flush(dest_name.c_str());
 }

@@ -197,6 +197,8 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
                 M->SetName			(m_name);
                 m_SMotions.push_back(M);
                 if (inserted)		inserted->push_back(M);
+                // optimize
+                M->Optimize			();
             }else{
                 ELog.DlgMsg(mtError,"Append failed.",fname);
                 xr_delete(M);
@@ -232,6 +234,8 @@ bool CEditableObject::AppendSMotion(LPCSTR fname, SMotionVec* inserted)
                     M->SetName			(m_name);
                     m_SMotions.push_back(M);
                     if (inserted)		inserted->push_back(M);
+                    // optimize
+                    M->Optimize			();
                 }
             }
         }
@@ -394,4 +398,12 @@ bool CEditableObject::CheckBoneCompliance(CSMotion* M)
     return true;
 }
 
-
+void CEditableObject::OptimizeSMotions()
+{
+	UI->ProgressStart		(m_SMotions.size(),"Motions optimizing...");
+    for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
+        (*s_it)->Optimize	();
+	    UI->ProgressInc		();
+    }
+    UI->ProgressEnd			();
+}

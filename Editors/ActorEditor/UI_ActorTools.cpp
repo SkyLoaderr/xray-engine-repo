@@ -702,3 +702,12 @@ LPCSTR CActorTools::GetInfo()
 {
 	return 0;
 }
+
+void CActorTools::OptimizeMotions()
+{
+	if (m_pEditObject){
+		m_pEditObject->OptimizeSMotions	();
+	 	Modified						();
+	    UndoSave						();
+    }
+}

@@ -30,10 +30,10 @@ BOOL SceneBuilder::BuildLTX()
 	int objcount = Scene->ObjCount();
 	if( objcount <= 0 ) return true;
 
-	AnsiString ltx_filename	= m_LevelPath+"level.ltx";
+	std::string ltx_filename	= MakeLevelPath("level.ltx");
 
     if (FS.exist(ltx_filename.c_str()))
-    	EFS.MarkFile(ltx_filename,true);
+    	EFS.MarkFile(ltx_filename.c_str(),true);
 
 	// -- defaults --           
     CMemoryWriter F;          

@@ -47,6 +47,19 @@ struct st_Key{
 	float		bias;
 	float		param[ 4 ];
 				st_Key		(){ZeroMemory(this,sizeof(st_Key));}
+    IC bool		equal		(const st_Key& tgt)
+    {
+    	if (!fsimilar(value,tgt.value)) 			return false;
+    	if (!fsimilar(shape,tgt.shape)) 			return false;
+    	if (!fsimilar(tension,tgt.tension)) 		return false;
+    	if (!fsimilar(continuity,tgt.continuity)) 	return false;
+    	if (!fsimilar(bias,tgt.bias)) 				return false;
+    	if (!fsimilar(param[0],tgt.param[0])) 		return false;
+    	if (!fsimilar(param[1],tgt.param[1]))	 	return false;
+    	if (!fsimilar(param[2],tgt.param[2])) 		return false;
+    	if (!fsimilar(param[3],tgt.param[3])) 		return false;
+        return true;
+    }
     IC void		Save		(IWriter& F)
     {
         F.w_float	(value);
@@ -120,6 +133,8 @@ public:
     void		DeleteKey	(float t);
     BOOL		ScaleKeys	(float from_time, float to_time, float scale_factor, float eps);
     float		GetLength	(float* mn, float* mx);
+
+    void		Optimize	();
 };
 
 #endif //_ENVELOPE_H_

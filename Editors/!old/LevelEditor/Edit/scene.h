@@ -269,7 +269,7 @@ public:
 
     void			ShowSummaryInfo	();
 
-    AnsiString 		LevelPath		();
+    std::string		LevelPath		();
 };
 
 //----------------------------------------------------

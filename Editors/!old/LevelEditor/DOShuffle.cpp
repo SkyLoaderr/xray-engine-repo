@@ -341,7 +341,7 @@ void __fastcall TfrmDOShuffle::tvItemsStartDrag(TObject *Sender,
 
 void __fastcall TfrmDOShuffle::ebSaveListClick(TObject *Sender)
 {
-	AnsiString fname;
+	std::string fname;
 	if (EFS.GetSaveName(_detail_objects_,fname)){
 		DM->ExportColorIndices(fname.c_str());
     }
@@ -350,7 +350,7 @@ void __fastcall TfrmDOShuffle::ebSaveListClick(TObject *Sender)
 
 void __fastcall TfrmDOShuffle::ebLoadListClick(TObject *Sender)
 {
-	AnsiString fname;
+	std::string fname;
 	if (EFS.GetOpenName(_detail_objects_,fname)){
 		if (DM->ImportColorIndices(fname.c_str())){
 			bColorIndModif 		= true;

@@ -345,7 +345,9 @@ void TfraLeftBar::RefreshBar()
 }
 //---------------------------------------------------------------------------
 
-
-
-
+void __fastcall TfraLeftBar::OptimizeMotions1Click(TObject *Sender)
+{
+	UI->Command( COMMAND_OPTIMIZE_MOTIONS );
+}
+//---------------------------------------------------------------------------
 

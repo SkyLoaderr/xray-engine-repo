@@ -6,6 +6,7 @@
 #include "PSLibrary.h"
 #include "Scene.h"
 #include "EParticlesObject.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ExtBtn"
@@ -116,7 +117,7 @@ void __fastcall TfraPS::FormShow(TObject *Sender)
 
 void __fastcall TfraPS::FormCreate(TObject *Sender)
 {
-    m_Items 				= IItemList::CreateForm("Particles",paItems, alClient, 0);
+    m_Items 				= TItemList::CreateForm("Particles",paItems, alClient, 0);
     m_Items->SetImages		(ilModeIcons);
     m_Items->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&TfraPS::OnItemFocused));
 }
@@ -124,7 +125,7 @@ void __fastcall TfraPS::FormCreate(TObject *Sender)
 
 void __fastcall TfraPS::FormDestroy(TObject *Sender)
 {
-    IItemList::DestroyForm	(m_Items);
+	TItemList::DestroyForm	(m_Items);
 }
 //---------------------------------------------------------------------------
 

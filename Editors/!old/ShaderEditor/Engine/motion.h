@@ -153,6 +153,8 @@ public:
 
     void			SortBonesBySkeleton(BoneVec& bones);
     void			WorldRotate		(int boneId, float h, float p, float b);
+
+    void			Optimize		();
 #ifdef _LW_EXPORT
 	void			ParseBoneMotion	(LWItemID bone);
 #endif

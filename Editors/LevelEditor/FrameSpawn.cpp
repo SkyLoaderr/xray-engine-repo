@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "ChoseForm.h"
 #include "SpawnPoint.h"
+#include "ItemList.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -85,14 +86,14 @@ void __fastcall TfraSpawn::FormShow(TObject *Sender)
 
 void __fastcall TfraSpawn::FormCreate(TObject *Sender)
 {
-    m_Items 				= IItemList::CreateForm("Spawns",paItems, alClient, 0);
+    m_Items 				= TItemList::CreateForm("Spawns",paItems, alClient, 0);
     m_Items->SetOnItemsFocusedEvent(TOnILItemsFocused(this,&TfraSpawn::OnItemFocused));
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraSpawn::FormDestroy(TObject *Sender)
 {
-    IItemList::DestroyForm	(m_Items);
+    TItemList::DestroyForm	(m_Items);
 }
 //---------------------------------------------------------------------------
 

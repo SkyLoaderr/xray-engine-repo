@@ -46,7 +46,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
     void __fastcall SelByRef		(bool flag);
-    IItemList* m_Items;
+    TItemList* m_Items;
     void __stdcall  OnItemFocused	(ListItemsVec& items);
     LPCSTR m_Current;
 public:		// User declarations

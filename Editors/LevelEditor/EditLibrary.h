@@ -88,7 +88,7 @@ private:	// User declarations
 
 	void __fastcall 		OnObjectRename	(LPCSTR p0, LPCSTR p1, EItemType type);
 
-    IItemList*				m_Items;
+    TItemList*				m_Items;
 	void __stdcall  		OnItemFocused	(TElTreeItem* item);
 	bool 					GenerateLOD		(TElTreeItem* node);
     bool 					bFormLocked;

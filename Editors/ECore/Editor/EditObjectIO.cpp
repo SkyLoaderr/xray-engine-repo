@@ -54,12 +54,14 @@ void CEditableObject::SaveObject(const char* fname)
     }
 
     // save object
-    CMemoryWriter 	F;
-    F.open_chunk	(EOBJ_CHUNK_OBJECT_BODY);
-    Save			(F);
-    F.close_chunk	();
+    IWriter* F		= FS.w_open(fname);
 
-    F.save_to		(fname);
+    F->open_chunk	(EOBJ_CHUNK_OBJECT_BODY);
+    Save			(*F);
+    F->close_chunk	();
+
+    FS.w_close		(F);
+
 	m_LoadName 		= fname;
 }
 
@@ -309,7 +311,7 @@ bool CEditableObject::Load(IReader& F)
                         ELog.Msg(mtError,"Motions has different version. Load failed.");
                         xr_delete(*s_it);
                         m_SMotions.clear();
-                        break;
+                        break;                 
                     }
                 }
             }

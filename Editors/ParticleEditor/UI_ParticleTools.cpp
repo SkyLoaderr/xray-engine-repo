@@ -19,6 +19,7 @@
 #include "TextForm.h"
 #include "d3dutils.h"
 #include "ObjectAnimator.h"
+#include "ItemList.h"
 #include "ParticleEffectActions.h"
 //------------------------------------------------------------------------------
 CParticleTools*&	PTools=(CParticleTools*)Tools;
@@ -52,7 +53,7 @@ CParticleTools::~CParticleTools()
 bool CParticleTools::OnCreate()
 {
 	// shader test locking
-	AnsiString fn; 
+	std::string fn; 
     FS.update_path(fn,_game_data_,PSLIB_FILENAME);
 	if (EFS.CheckLocking(0,fn.c_str(),false,true)) return false;
 
@@ -69,7 +70,7 @@ bool CParticleTools::OnCreate()
     m_EditPG		= (PS::CParticleGroup*)::Render->Models->CreatePG(0);
     m_ItemProps 	= TProperties::CreateForm("Item Props",fraLeftBar->paItemProps,alClient,TOnModifiedEvent().bind(this,&CParticleTools::OnItemModified),0,0,TProperties::plFolderStore|TProperties::plFullExpand|TProperties::plItemFolders|TProperties::plIFTop);
     // item list
-    m_PList			= IItemList::CreateForm("Items",fraLeftBar->paItemList,alClient,IItemList::ilEditMenu|IItemList::ilDragAllowed);
+    m_PList			= TItemList::CreateForm("Items",fraLeftBar->paItemList,alClient,TItemList::ilEditMenu|TItemList::ilDragAllowed);
     m_PList->SetOnItemsFocusedEvent	(TOnILItemsFocused().bind(this,&CParticleTools::OnParticleItemFocused));
 	m_PList->SetOnItemRenameEvent	(TOnItemRename().bind(this,&CParticleTools::OnParticleItemRename));
     m_PList->SetOnItemRemoveEvent	(TOnItemRemove().bind(this,&CParticleTools::OnParticleItemRemove));
@@ -95,7 +96,7 @@ void CParticleTools::OnDestroy()
     EFS.UnlockFile		(_game_data_,PSLIB_FILENAME);
 
 	Lib.RemoveEditObject(m_EditObject);
-    IItemList::DestroyForm(m_PList);
+    TItemList::DestroyForm(m_PList);
 	TProperties::DestroyForm(m_ItemProps);
     xr_delete			(m_EditPG);
     xr_delete			(m_EditPE);

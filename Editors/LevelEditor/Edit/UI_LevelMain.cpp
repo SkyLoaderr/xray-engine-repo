@@ -69,28 +69,30 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
     	break;
 	case COMMAND_LOAD:
 		if( !Scene->locked() ){
-            AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
+            std::string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
 			if( p1 || EFS.GetOpenName( _maps_, temp_fn ) ){
-                if (1==temp_fn.Pos(FS.get_path(_maps_)->m_Path))
-                    temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path)).LowerCase();
+                if (0==temp_fn.find(FS.get_path(_maps_)->m_Path)){
+                    temp_fn = std::string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
+                    xr_strlwr(temp_fn);
+                }
                 
                 if (!Scene->IfModified()){
                 	bRes=false;
                     break;
                 }
-                if (0!=temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_maps_,temp_fn.c_str(),false,true)){
+                if (0!=temp_fn.compare(m_LastFileName.c_str())&&EFS.CheckLocking(_maps_,temp_fn.c_str(),false,true)){
                 	bRes=false;
                     break;
                 }
-                if (0==temp_fn.AnsiCompareIC(m_LastFileName)&&EFS.CheckLocking(_maps_,temp_fn.c_str(),true,false)){
+                if (0==temp_fn.compare(m_LastFileName.c_str())&&EFS.CheckLocking(_maps_,temp_fn.c_str(),true,false)){
 	                EFS.UnlockFile(_maps_,temp_fn.c_str());
                 }
                 SetStatus("Level loading...");
             	Command			(COMMAND_CLEAR);
 				if (Scene->Load	(_maps_, temp_fn.c_str(), false)){
-                    m_LastFileName	= temp_fn;
+                    m_LastFileName	= temp_fn.c_str();
                     ResetStatus		();
-                    Scene->UndoClear	();
+                    Scene->UndoClear();
                     Scene->UndoSave	();
                     Scene->m_RTFlags.set(EScene::flRT_Unsaved|EScene::flRT_Modified,FALSE);
 				    Command			(COMMAND_UPDATE_CAPTION);
@@ -141,16 +143,19 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
 		break;
 
     case COMMAND_SAVE_BACKUP:{
-    	AnsiString fn = AnsiString(Core.CompName)+"_"+Core.UserName+"_backup.level";
-        FS.update_path(_maps_,fn);
-    	Command(COMMAND_SAVEAS,(int)fn.c_str());
+    	std::string 	fn;
+        fn				= std::string(Core.CompName)+"_"+Core.UserName+"_backup.level";
+        FS.update_path	(fn,_maps_,fn.c_str());
+    	Command			(COMMAND_SAVEAS,(int)fn.c_str());
     }break;
 	case COMMAND_SAVEAS:
 		if( !Scene->locked() ){
-        	AnsiString temp_fn	= AnsiString((char*)p1).LowerCase();
+        	std::string temp_fn	= AnsiString((char*)p1).LowerCase().c_str();
 			if(p1 || EFS.GetSaveName( _maps_, temp_fn ) ){
-                if (1==temp_fn.Pos(FS.get_path(_maps_)->m_Path))
-                    temp_fn = AnsiString(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path)).LowerCase();
+                if (0==temp_fn.find(FS.get_path(_maps_)->m_Path)){
+                    temp_fn 	= std::string(temp_fn.c_str()+strlen(FS.get_path(_maps_)->m_Path));
+                    xr_strlwr	(temp_fn);
+                }
 
                 SetStatus		("Level saving...");
 				Scene->Save		(_maps_, temp_fn.c_str(), false);
@@ -160,7 +165,7 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
     	        EFS.UnlockFile	(_maps_,m_LastFileName.c_str());
                 // set new name
                 EFS.LockFile	(_maps_,temp_fn.c_str());
-				m_LastFileName 	= temp_fn;
+				m_LastFileName 	= temp_fn.c_str();
 			    bRes 			= Command(COMMAND_UPDATE_CAPTION);
                 EPrefs.AppendRecentFile(temp_fn.c_str());
 			}else
@@ -206,7 +211,7 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
         break;
 
     case COMMAND_IMPORT_COMPILER_ERROR:{
-    	AnsiString fn;
+    	std::string fn;
     	if(EFS.GetOpenName("$logs$", fn, false, NULL, 0)){
         	Scene->LoadCompilerError(fn.c_str());
         }
@@ -269,7 +274,7 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
 
 	case COMMAND_LOAD_SELECTION:
 		if( !Scene->locked() ){
-        	AnsiString fn;
+        	std::string fn;
 			if( EFS.GetOpenName( _maps_, fn ) ){
                 SetStatus		("Fragment loading...");
 				Scene->LoadSelection	(0,fn.c_str());
@@ -287,7 +292,7 @@ bool CLevelMain::Command(int _Command, int p1, int p2)
         
 	case COMMAND_SAVE_SELECTION:
 		if( !Scene->locked() ){
-        	AnsiString fn;
+        	std::string fn;
 			if( EFS.GetSaveName	( _maps_, fn ) ){
                 SetStatus		("Fragment saving...");
 				Scene->SaveSelection(LTools->CurrentClassID(),0,fn.c_str());
