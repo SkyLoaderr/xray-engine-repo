@@ -15,6 +15,9 @@ IGame_Persistent::IGame_Persistent	()
 	Device.seqAppStart.Add			(this);
 	Device.seqAppEnd.Add			(this);
 	Device.seqFrame.Add				(this,REG_PRIORITY_HIGH+1);
+	Device.seqAppActivate.Add		(this);
+	Device.seqAppDeactivate.Add		(this);
+
 	m_pMainUI						= NULL;
 }
 
@@ -23,6 +26,19 @@ IGame_Persistent::~IGame_Persistent	()
 	Device.seqFrame.Remove			(this);
 	Device.seqAppStart.Remove		(this);
 	Device.seqAppEnd.Remove			(this);
+	Device.seqAppActivate.Remove	(this);
+	Device.seqAppDeactivate.Remove	(this);
+}
+
+void IGame_Persistent::OnAppActivate		()
+{
+	Device.Pause(FALSE);
+}
+
+void IGame_Persistent::OnAppDeactivate		()
+{
+	if(!bDedicatedServer)
+		Device.Pause(TRUE);
 }
 
 void IGame_Persistent::OnAppStart	()

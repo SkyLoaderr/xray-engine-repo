@@ -15,6 +15,8 @@ class ENGINE_API IGame_Persistent	:
 #endif
 	public pureAppStart, 
 	public pureAppEnd,
+	public pureAppActivate, 
+	public pureAppDeactivate,
 	public pureFrame
 {
 public:
@@ -28,6 +30,8 @@ public:
 
 	virtual	void					OnAppStart			();
 	virtual void					OnAppEnd			();
+	virtual	void					OnAppActivate		();
+	virtual void					OnAppDeactivate		();
 	virtual void					OnFrame				();
 
 	virtual void					RegisterModel		(IRender_Visual* V)
