@@ -442,27 +442,29 @@ public:
 		VERIFY(fabsf(v)>0.000001f);
 		mul(1.0f/v);
 	}
-	IC	void	build_projection(float fFOV, float fAspect, float fNearPlane, float fFarPlane) {
+	// fov
+	IC	void	build_projection		(float fFOV, float fAspect, float fNearPlane, float fFarPlane) {
+		build_projection_HAT			(tanf(fFOV/2.f),fAspect,fNearPlane,fFarPlane);
+	}
+	// half_fov-angle-tangent
+	IC	void	build_projection_HAT	(float HAT, float fAspect, float fNearPlane, float fFarPlane) {
 		VERIFY( fabsf(fFarPlane-fNearPlane) > 0.01f );
-		VERIFY( fabsf(sinf(fFOV/2)) > 0.01f );
-
-		fFOV/=2.0f;
-		float cot	= cosf(fFOV)/sinf(fFOV);
+		VERIFY( fabsf(HT) > 0.001f );
+		
+		float cot	= 1/HAT;
 		float w		= fAspect * cot;
 		float h		= 1.0f    * cot;
 		float Q		= fFarPlane / ( fFarPlane - fNearPlane );
-
-		ZeroMemory( this, sizeof(_matrix) );
-		_11 = w;
-		_22 = h;
-		_33 = Q;
-		_34 = 1.0f;
-		_43 = -Q*fNearPlane;
+		
+		identity	();
+		_11			= w;
+		_22			= h;
+		_33			= Q;
+		_34			= 1.0f;
+		_43			= -Q*fNearPlane;
 	}
 	IC	void	build_camera(const Fvector &vFrom, const Fvector &vAt, const Fvector &vWorldUp) 
 	{
-//		D3DXMatrixLookAtLH((D3DXMATRIX *)this,(D3DXVECTOR3 *)&vEye,(D3DXVECTOR3 *)&vAt,(D3DXVECTOR3 *)&vUp);
-
 		// Get the z basis vector, which points straight ahead. This is the
 		// difference from the eyepoint to the lookat point.
 		Fvector vView;
