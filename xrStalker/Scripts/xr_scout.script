@@ -420,6 +420,13 @@ end
 --patrol binder
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder( obj )
+    local aa = xr_motivator.storage[obj:id()]
+    local a  = aa.scout
+
+    if not a.path_name then
+        return
+    end
+
     local operators  = {}
     local properties = {}
 
@@ -440,10 +447,6 @@ function add_to_binder( obj )
     operators["look_around"] = base_id + 1
     operators["free"]        = base_id + 2
     operators["dead_hook"]   = base_id + 3
-    
-
-    local aa = xr_motivator.storage[obj:id()]
-    local a  = aa.scout
 
     a.path        = patrol( a.path_name )
     a.pos_vert_id = a.path:level_vertex_id( 0 )
