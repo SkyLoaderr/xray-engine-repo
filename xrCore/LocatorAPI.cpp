@@ -260,10 +260,9 @@ void CLocatorAPI::_initialize	(BOOL bBuildCopy)
 		pair<PathPairIt, bool> I;
         FS_Path* P	= xr_new<FS_Path>((p_it!=pathes.end())?p_it->second->m_Path:root,lp_add,lp_def,lp_capt,fl);
         bNoRecurse	= !(fl&FS_Path::flRecurse);
-		if (Recurse(P->m_Path)){
-            I		= pathes.insert(make_pair(xr_strdup(id),P));
-            R_ASSERT(I.second);
-        }
+		Recurse		(P->m_Path);
+        I			= pathes.insert(make_pair(xr_strdup(id),P));
+        R_ASSERT	(I.second);
 	}
 	r_close			(F);
 	DWORD	M2		= Memory.mem_usage();
