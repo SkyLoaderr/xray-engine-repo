@@ -31,24 +31,24 @@
 
 CLensFlare::CLensFlare()
 {
-	VS					= 0;
-
 	// Device
 #ifndef _EDITOR
-	Device.seqDevDestroy.Add			(this);
-	Device.seqDevCreate.Add				(this);
+	Device.seqDevDestroy.Add	(this);
+	Device.seqDevCreate.Add		(this);
 #endif
 
-	bInit				= false;
-	dwFrame				= 0xfffffffe;
+	bInit						= false;
+	dwFrame						= 0xfffffffe;
 
-    m_Flags.bFlare		= FALSE;
-    m_Flags.bSource		= FALSE;
-    m_Flags.bGradient	= FALSE;
-	fBlend				= 0.f;
+    m_Flags.bFlare				= FALSE;
+    m_Flags.bSource				= FALSE;
+    m_Flags.bGradient			= FALSE;
+	fBlend						= 0.f;
 
-    LightColor.set		( 0xFFFFFFFF );
-	fGradientValue		= 0.f;
+    LightColor.set				( 0xFFFFFFFF );
+	fGradientValue				= 0.f;
+
+	VS							= 0;
 }
 
 
@@ -61,7 +61,7 @@ CLensFlare::~CLensFlare()
 #endif
 }
 
-void CLensFlare::OnDeviceCreate()
+void CLensFlare::OnDeviceCreate	()
 {
 	// VS
 	VS				= Device.Shader._CreateVS	(FVF::F_LIT);
@@ -75,9 +75,9 @@ void CLensFlare::OnDeviceCreate()
 void CLensFlare::OnDeviceDestroy()
 {
 	// shaders
-	if (m_Gradient.hShader) Device.Shader.Delete(m_Gradient.hShader);
-	if (m_Source.hShader)	Device.Shader.Delete(m_Source.hShader);
-    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) if (it->hShader) Device.Shader.Delete(it->hShader);
+	Device.Shader.Delete	(m_Gradient.hShader);
+	Device.Shader.Delete	(m_Source.hShader);
+    for (FlareIt it=m_Flares.begin(); it!=m_Flares.end(); it++) Device.Shader.Delete(it->hShader);
 
 	// VS
 	Device.Shader._DeleteVS						(VS);
@@ -96,16 +96,14 @@ Shader* CLensFlare::CreateFlareShader(const char* tex_name)
 void CLensFlare::SetSource(float fRadius, const char* tex_name)
 {
 	m_Source.fRadius	= fRadius;
-	m_Source.hShader	= CreateSourceShader(tex_name);
-    strcpy(m_Source.texture,tex_name);
+    strcpy				(m_Source.texture,tex_name);
 }
 
 void CLensFlare::SetGradient(float fMaxRadius, float fOpacity, const char* tex_name)
 {
 	m_Gradient.fRadius	= fMaxRadius;
-	m_Gradient.hShader	= CreateFlareShader(tex_name);
 	m_Gradient.fOpacity	= fOpacity;
-    strcpy(m_Gradient.texture,tex_name);
+    strcpy				(m_Gradient.texture,tex_name);
 }
 
 void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const char* tex_name)
@@ -114,9 +112,8 @@ void CLensFlare::AddFlare(float fRadius, float fOpacity, float fPosition, const 
 	F.fRadius	= fRadius;
 	F.fOpacity	= fOpacity;
     F.fPosition	= fPosition;
-	F.hShader	= CreateFlareShader(tex_name);
-    strcpy(F.texture,tex_name);
-	m_Flares.push_back(F);
+    strcpy				(F.texture,tex_name);
+	m_Flares.push_back	(F);
 }
 
 void CLensFlare::Load( CInifile* pIni, LPSTR section )
@@ -154,9 +151,7 @@ void CLensFlare::Load( CInifile* pIni, LPSTR section )
 	}
 	bInit			= false;
 
-#ifndef _EDITOR
 	if (Device.bReady) OnDeviceCreate	();
-#endif
 }
 
 void CLensFlare::OnFrame()

@@ -3,11 +3,7 @@
 
 class ENGINE_API CInifile;
 
-class ENGINE_API CLensFlare
-#ifndef _EDITOR
-	:public pureDeviceCreate,
-	public pureDeviceDestroy
-#endif
+class ENGINE_API CLensFlare : public pureDeviceCreate, public pureDeviceDestroy
 {
 protected:
 	BOOL			bInit;
