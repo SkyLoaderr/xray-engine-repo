@@ -119,6 +119,7 @@ function action_bar_single:__init (name, storage) super (nil, name)
     self.current = 1
     self.count = 0
     self.set = 0
+    self.in_talk = false
 end
 -------------------
 function action_bar_single:initialize ()
@@ -126,17 +127,25 @@ function action_bar_single:initialize ()
     self.object:clear_animations ()
     self:recreate_animations ()
     self.object:set_use_callback (self, "use_callback")
+    self.in_talk = false
 end
 -------------------
 function action_bar_single:execute ()
     action_base.execute (self)
 
     if self.object:is_talking () == true then
+       self.in_talk = true 
        if self.object:animation_count () < 2 then
           self.object:add_animation ("drink_idle_0_talk", true)
        end
        return   
     end
+    
+    if self.in_talk == true then
+       self.object:clear_animations ()
+       self.object:add_animation ("drink_idle_0_0", true)
+       self.in_talk = false
+    end    
     
     if self.object:animation_count () < 2 then
        if self.anims[self.current].count == 0 then
@@ -182,12 +191,12 @@ end
 -------------------
 function action_bar_single:use_callback ()
     if self.a.talking == false then 
-       printf ("FUCK OFF !!!")
+       xr_sounds.play_sound (self.object, 0, "bar", 1)
        return 
     end
     
     if self.set == 3 and self.current < 4 then
-       printf ("FUCK OFF !!!")
+       xr_sounds.play_sound (self.object, 0, "bar", 1)
        return 
     end
     
