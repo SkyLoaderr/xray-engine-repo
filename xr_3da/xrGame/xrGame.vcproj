@@ -5267,9 +5267,6 @@
 						<File
 							RelativePath=".\PHShellNetState.cpp">
 						</File>
-						<File
-							RelativePath=".\PHShellNetState.cpp">
-						</File>
 					</Filter>
 					<Filter
 						Name="BaseShell"

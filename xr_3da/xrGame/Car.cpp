@@ -1135,8 +1135,9 @@ void CCar::SExhaust::Update()
 	global_transform.mulB(transform);
 	dVector3 res;
 	Fvector	 res_vel;
-	dBodyGetRelPointVel(pelement->get_body(),transform.c.x,transform.c.y,transform.c.z,res);
+	dBodyGetPointVel(pelement->get_body(),global_transform.c.x,global_transform.c.y,global_transform.c.z,res);
 	Memory.mem_copy (&res_vel,res,sizeof(Fvector));
+	res_vel.invert();
 	p_pgobject->UpdateParent(global_transform,res_vel);
 }
 
