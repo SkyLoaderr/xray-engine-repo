@@ -229,6 +229,9 @@
 		<File
 			RelativePath="r_constants.h">
 		</File>
+		<File
+			RelativePath="r_constants_cache.h">
+		</File>
 	</Files>
 	<Globals>
 	</Globals>
