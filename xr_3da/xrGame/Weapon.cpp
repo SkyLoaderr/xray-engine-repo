@@ -577,7 +577,7 @@ void CWeapon::OnDeviceCreate	()
 		m_pPhysicsShell						= P_create_Shell	();
 		R_ASSERT							(m_pPhysicsShell);
 		m_pPhysicsShell->add_Element		(E);
-		m_pPhysicsShell->setMass			(10.f);
+		m_pPhysicsShell->setMass			(500.f);//400 - плотность т.е. - масса 1 м^3!
 		m_pPhysicsShell->Activate			(svXFORM(),0,svXFORM());
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;

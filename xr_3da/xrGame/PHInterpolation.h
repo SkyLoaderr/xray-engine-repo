@@ -8,14 +8,17 @@ public:
 CPHInterpolation();
 void SetBody(dBodyID body);
 static const PH_INTERPOLATION_POINTS=2;
-Fvector InterpolatePosition();
+void InterpolatePosition(Fvector& pos);
 void	UpdatePositions();
+void	UpdateRotations();
+void InterpolateRotation(Fmatrix& rot);
 private:
 	dBodyID m_body;
 	deque<Fvector>					qPositions;
-	deque<double>					qTimes;
-	Fvector vUpdatePositions[PH_INTERPOLATION_POINTS];
-	float fUpdateTimes[PH_INTERPOLATION_POINTS];
-	float fTimeDelta;
+	deque<Fquaternion>				qRotations;
+	//deque<double>					qTimes;
+	//Fvector vUpdatePositions[PH_INTERPOLATION_POINTS];
+	//float fUpdateTimes[PH_INTERPOLATION_POINTS];
+	//float fTimeDelta;
 };
 #endif

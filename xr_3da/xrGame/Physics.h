@@ -4,6 +4,7 @@
 #include "dCylinder/dCylinder.h"
 #include "PhysicsShell.h"
 #include "PHObject.h"
+#include "PHInterpolation.h"
 ///////////////////////////////////////////////////////////////////////////////
 class CPHMesh {
 	dGeomID Geom;
@@ -225,6 +226,7 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	Fmatrix m_m2;
 	Fmatrix m_m0;
 	dBodyID m_body;
+	CPHInterpolation m_body_interpolation;
 	Fmatrix m_inverse_local_transform;
 //dVector3 mean_w;
 //dVector3 mean_v;

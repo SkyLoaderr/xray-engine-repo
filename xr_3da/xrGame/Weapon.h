@@ -201,7 +201,7 @@ public:
 	virtual void			OnDeviceDestroy		();
 	virtual void			OnEvent				(NET_Packet& P, u16 type);
 	virtual	void			Hit					(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space){
-																															m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P/50.f);
+																															m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,P);
 																															}
 };
 

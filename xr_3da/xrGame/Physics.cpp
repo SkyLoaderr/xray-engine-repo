@@ -1126,6 +1126,8 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	previous_p[0]=dInfinity;
 	previous_r[0]=0.f;
 	dis_count_f=0;
+
+	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
 	if(disable) dBodyDisable(m_body);
 }
@@ -1144,6 +1146,9 @@ void CPHShell::PhDataUpdate(dReal step){
 //////////////////////////////////////////////////////////////////////
 ////limit velocity of the main body/////////////////////////////////
 /////////////////////////////////////////////////////////////////////
+				m_body_interpolation.UpdatePositions();
+				m_body_interpolation.UpdateRotations();
+
 	if( !dBodyIsEnabled(m_body)) {
 					if(previous_p[0]!=dInfinity) previous_p[0]=dInfinity;
 					return;
@@ -1304,13 +1309,15 @@ void CPHShell::PhDataUpdate(dReal step){
 				}
 /////////////////////////////////////////////////////////////////
 	
-			//	const dReal k_w=0.1f;
-			//	dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+				const dReal k_w=0.05f;
+				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
 	
-			//	const dReal k_l=0.1f;
-			//	dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
+				const dReal k_l=1.8f;
+				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
+
 
 }
+
 void CPHShell::PhTune(dReal step){
 }
 
@@ -1321,12 +1328,14 @@ void CPHShell::Update(){
 
 if( !dBodyIsEnabled(m_body)) return;
 				
+		//		PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
+		//					  dBodyGetPosition(m_body),
+		//					  mXFORM);
+
+				m_body_interpolation.InterpolateRotation(mXFORM);	
+				m_body_interpolation.InterpolatePosition(mXFORM.c);
 
 
-				PHDynamicData::DMXPStoFMX(dBodyGetRotation(m_body),
-							  dBodyGetPosition(m_body),
-							  mXFORM);
-	
 				mXFORM.mulB(m_inverse_local_transform);
 
 }
