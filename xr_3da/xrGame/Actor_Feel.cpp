@@ -11,6 +11,7 @@
 #include "level.h"
 #include "GameMtlLib.h"
 #include "ui/UIMainIngameWnd.h"
+#include "Grenade.h"
 
 #define PICKUP_INFO_COLOR 0xFFDDDDDD
 //AAAAAA
@@ -158,6 +159,8 @@ void	CActor::PickupModeUpdate_COD	()
 		ISpatial*		spatial	= ISpatialResult[o_it];
 		CInventoryItem*	pIItem	= smart_cast<CInventoryItem*> (spatial->dcast_CObject        ());
 		if (0 == pIItem) continue;
+		CGrenade*	pGrenade	= smart_cast<CGrenade*> (spatial->dcast_CObject        ());
+		if (pGrenade && !pGrenade->Useful()) continue;
 		
 		Fvector A, B, tmp; 
 		pIItem->object().Center			(A);

@@ -88,6 +88,7 @@ void CGrenade::OnH_A_Independent()
 void CGrenade::OnH_A_Chield()
 {
 	m_dwGrenadeIndependencyTime = 0;
+	m_dwDestroyTime = 0xffffffff;
 	inherited::OnH_A_Chield();
 }
 
