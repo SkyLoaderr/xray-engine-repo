@@ -143,6 +143,7 @@ void CLightProjector::calculate	()
 		// calculate projection-matrix
 		Fmatrix		mProject;
 		float		p_R			=	R.O->renderable.visual->vis.sphere.R * 1.1f;
+		VERIFY2		(p_R>EPS_L,"Object has no physical size");
 		float		p_hat		=	p_R/P_cam_dist;
 		float		p_asp		=	1.f;
 		float		p_near		=	P_cam_dist-EPS_L;									

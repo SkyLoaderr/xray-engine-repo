@@ -238,6 +238,7 @@ void CLightShadows::calculate	()
 			if (p_near<eps)			continue;
 			if (p_far<(p_near+eps))	continue;
 			if (p_hat>0.9f)			continue;
+			if (p_hat<0.01f)		continue;
 			
 			mProject.build_projection_HAT	(p_hat,p_asp,p_near,	p_far);
 			mProjectR.build_projection_HAT	(p_hat,p_asp,p_nearR,	p_far);
