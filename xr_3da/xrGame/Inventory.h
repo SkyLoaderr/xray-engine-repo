@@ -42,20 +42,20 @@ public:
 	virtual void OnEvent (NET_Packet& P, u16 type);
 	
 	virtual bool	Useful();									// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Attach(PIItem pIItem) {return false;}
-	virtual bool	Detach(PIItem pIItem) {return false;}
+	virtual bool	Attach(PIItem /**pIItem/**/) {return false;}
+	virtual bool	Detach(PIItem /**pIItem/**/) {return false;}
 	//при детаче спаунится новая вещь при заданно названии секции
 	virtual bool	Detach(const char* item_section_name);
 	//проверяет может ли элемент быть присоединен
 	//не производя самого действия
-	virtual bool	CanAttach(PIItem pIItem) {return false;}
-	virtual bool	CanDetach(const char* item_section_name) {return false;}
+	virtual bool	CanAttach(PIItem /**pIItem/**/) {return false;}
+	virtual bool	CanDetach(const char* /**item_section_name/**/) {return false;}
 
 
 	
 	virtual bool	Activate();									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual void	Deactivate();								// !!! Переопределить. (см. в Inventory.cpp)
-	virtual bool	Action(s32 cmd, u32 flags) {return false;}	// true если известная команда, иначе false
+	virtual bool	Action(s32 /**cmd/**/, u32 /**flags/**/) {return false;}	// true если известная команда, иначе false
 	
 	virtual bool	IsHidden()					{return true;}	// вещь спрятано в инвентаре
 	virtual bool	IsPending()					{return false;}	// true если вещь чем-то занята
