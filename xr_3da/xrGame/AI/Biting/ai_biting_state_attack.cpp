@@ -218,10 +218,7 @@ void CBitingAttack::Run()
 
 					// проверить выбрана ли новая позиция
 					if (squad_ai_last_updated !=0 ) {		// новая позиция
-						pMonster->Path_ApproachPoint(0, target);
-						pMonster->m_tSelectorApproach->m_tEnemyPosition = target;
-						pMonster->m_tSelectorApproach->m_tEnemy			= 0;
-						
+						pMonster->Path_ApproachPoint(target);
 						pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 					} else { 
 						// squad_ai выбрал оптимальную позицию, соответствующую позиции врага	
@@ -233,11 +230,8 @@ void CBitingAttack::Run()
 
 							Fvector target_point;
 							target_point.add(m_tEnemy.obj->Position(),dir);
-							pMonster->Path_ApproachPoint(0, target_point);
+							pMonster->Path_ApproachPoint(target_point);
 							pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
-							pMonster->m_tSelectorApproach->m_tEnemyPosition = target_point;
-							pMonster->m_tSelectorApproach->m_tEnemy			= 0;
-
 						} else {
 							pMonster->MoveToTarget(m_tEnemy.obj);
 						}
@@ -251,7 +245,7 @@ void CBitingAttack::Run()
 					dir.sub(m_tEnemy.obj->Position(), pMonster->Position()); 
 					dir.normalize();
 					pos.mad(pMonster->Position(), dir, BUILD_HALF_PATH_DIST);
-					pMonster->Path_ApproachPoint(0, pos);
+					pMonster->Path_ApproachPoint(pos);
 					pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 				}
 			}
@@ -368,10 +362,7 @@ void CBitingAttack::Run()
 			if (IS_NEED_REBUILD()) bNeedRebuild = true;
 			
 			if (bNeedRebuild) {
-				pMonster->Path_ApproachPoint(0, m_tEnemy.obj->Position());
-				pMonster->m_tSelectorApproach->m_tEnemyPosition = m_tEnemy.obj->Position();
-				pMonster->m_tSelectorApproach->m_tEnemy			= 0;
-
+				pMonster->Path_ApproachPoint(m_tEnemy.obj->Position());
 				pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 			}
 

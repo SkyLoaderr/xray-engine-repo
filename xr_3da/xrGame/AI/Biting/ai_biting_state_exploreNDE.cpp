@@ -48,7 +48,7 @@ void CBitingExploreNDE::Run()
 		LOG_EX("nde: GOTO_SOUND_SOURCE");
 		
 		pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
-		pMonster->Path_ApproachPoint(0, m_tSound.position);
+		pMonster->Path_ApproachPoint(m_tSound.position);
 		
 		// если монстр дошел до конца пути, перейти к следующему заданию
 		if (IS_NEED_REBUILD()) m_tAction = ACTION_LOOK_AROUND; 

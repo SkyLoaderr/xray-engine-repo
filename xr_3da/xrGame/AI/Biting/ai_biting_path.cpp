@@ -76,16 +76,11 @@ void CAI_Biting::Path_CoverFromPoint(const CEntity *pE, Fvector position)
 //	vfChoosePointAndBuildPath(m_tSelectorCover, 0, true, 0, rebuild_time);
 }
 
-void CAI_Biting::Path_ApproachPoint(const CEntity *pE, Fvector position)
+void CAI_Biting::Path_ApproachPoint(Fvector position)
 {
-	if (pE) {
-		m_tEnemy.Set(pE,0); 									// forse enemy selection
-		vfInitSelector(*m_tSelectorApproach, false);
-	} else {
-		vfInitSelector(*m_tSelectorApproach, true);
-		m_tSelectorApproach->m_tEnemyPosition = position;
-		m_tSelectorApproach->m_tEnemy		  = 0;		
-	}
+	vfInitSelector(*m_tSelectorApproach, true);
+	m_tSelectorApproach->m_tEnemyPosition = position;
+	m_tSelectorApproach->m_tEnemy		  = 0;		
 
 	CLevelLocationSelector::set_evaluator(m_tSelectorApproach);
 }

@@ -74,7 +74,7 @@ void CBitingSquadTask::Run()
 					(pMonster->CDetailPathManager::completed(pMonster->Position()))) saved_pos = pMonster->RandomPosInR(pos,5.f);
 			} else saved_pos = pMonster->RandomPosInR(pos,5.f);
 
-			pMonster->Path_ApproachPoint(0, saved_pos);
+			pMonster->Path_ApproachPoint(saved_pos);
 			pMonster->MotionMan.m_tAction = ACT_WALK_FWD;
 			pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
@@ -98,7 +98,7 @@ void CBitingSquadTask::Run()
 		break;
 	case SC_FOLLOW:			
 		// Exec path selector
-		pMonster->Path_ApproachPoint(0, task.target.pos);
+		pMonster->Path_ApproachPoint(task.target.pos);
 		pMonster->set_path_type (CMovementManager::ePathTypeLevelPath);
 
 		LOG_EX("Squad Task	::	Evaluate selector... ");

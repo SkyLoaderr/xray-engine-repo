@@ -204,7 +204,7 @@ public:
 			void			vfInitSelector					(PathManagers::CAbstractVertexEvaluator &S, bool hear_sound = false);
 			void			Path_GetAwayFromPoint			(const CEntity *pE, Fvector position, float dist);
 			void			Path_CoverFromPoint				(const CEntity *pE, Fvector position);
-			void			Path_ApproachPoint				(const CEntity *pE, Fvector position);
+			void			Path_ApproachPoint				(Fvector position);
 			void			Path_WalkAroundObj				(const CEntity *pE, Fvector position);
 			
 			void			SetPathParams					(u32 dest_vertex_id, const Fvector &dest_pos);
