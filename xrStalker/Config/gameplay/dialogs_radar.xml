@@ -307,17 +307,6 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="rad_test1">
-        <phrase_list>
-            <phrase id="0">
-                <text>rad_test1_0</text>
-                <next>1</next>
-            </phrase>
-            <phrase id="1">
-                <text>rad_test1_1</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="rad_test2">
         <phrase_list>
             <phrase id="0">
@@ -326,6 +315,17 @@
             </phrase>
             <phrase id="1">
                 <text>rad_test2_1</text>
+            </phrase>
+        </phrase_list>
+    </dialog>
+    <dialog id="rad_test1">
+        <phrase_list>
+            <phrase id="0">
+                <text>rad_test1_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="1">
+                <text>rad_test1_1</text>
             </phrase>
         </phrase_list>
     </dialog>
