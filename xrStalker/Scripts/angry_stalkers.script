@@ -135,15 +135,6 @@ function main()
 	    wait	()
 	end
 
-	while siviy:action() and chert:action() do
-	    wait	()
-	end
-
-			siviy:script	(false,  angry_stalkers.script_name())
-			chert:script	(false,  angry_stalkers.script_name())
-			stalker:script	(false,  angry_stalkers.script_name())
-			ecolog:script	(false,  angry_stalkers.script_name())
-
 	while true do
 		if siviy.health <= 0  then
 		wait(2000)			
@@ -164,8 +155,14 @@ function main()
 		wait()			
 	end
 
+	while true do
+	    wait()
+	end
 
-
+			siviy:script	(false,  angry_stalkers.script_name())
+			chert:script	(false,  angry_stalkers.script_name())
+			stalker:script	(false,  angry_stalkers.script_name())
+			ecolog:script	(false,  angry_stalkers.script_name())
 
 end
 
