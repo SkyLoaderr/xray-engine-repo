@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "build.h"
 
-const float		tess	= 24.0001f;
+const float		tess	= 2.0001f;
 
 void CBuild::Tesselate	()
 {
