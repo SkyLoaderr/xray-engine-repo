@@ -348,6 +348,24 @@
     <string id="bar_dolg_base_guard_start_31">
         <text>Проходи, брат. И помни, миссия Долга - очищение!</text>
     </string>
+    <string id="bar_dolg_guard_bunker_acces_0">
+        <text>Почему вы не пускаете меня в бункер?</text>
+    </string>
+    <string id="bar_dolg_guard_bunker_acces_1">
+        <text>Пропуск, если хочешь чтобы мы тебя пропустили, получи специальный пропуск. Сходи к Петренко, он тебе все объяснит.</text>
+    </string>
+    <string id="bar_dolg_guard_bunker_start_0">
+        <text>default text</text>
+    </string>
+    <string id="bar_dolg_guard_bunker_start_11">
+        <text>Стой! Дальше вход только членам группировки. Без специального разрешения в бункер не пустим! Если хочешь его получить, сходи к полковнику Петренко, он в администрации через двор.</text>
+    </string>
+    <string id="bar_dolg_guard_bunker_start_21">
+        <text>Чего стоишь? Проходи быстрее.</text>
+    </string>
+    <string id="bar_dolg_guard_bunker_start_31">
+        <text>Проходи, брат. И помни, миссия Долга - очищение!</text>
+    </string>
     <string id="bar_dolg_novice_start_2">
         <text>Здравствуй, брат сталкер</text>
     </string>
