@@ -35,5 +35,6 @@ function main()
 			object_table[a]:update()
 			wait()
 		end
+		wait()
     end
 end
