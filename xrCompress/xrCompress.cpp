@@ -8,7 +8,8 @@ typedef set_cstr::iterator	set_cstr_it;
 	
 set_cstr			files;
 
-extern void Recurse	(const char* path);
+extern void Recurse		(const char* path);
+extern void Compress	(const char* path);
 
 void ProcessOne		(_finddata_t& F, const char* path)
 {
