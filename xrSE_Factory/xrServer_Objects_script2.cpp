@@ -5,6 +5,26 @@
 
 using namespace luabind;
 
+
+void CSE_SpawnGroup::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_abstract1(
+			CSE_SpawnGroup,
+			"cse_event",
+			CSE_Abstract
+		)
+	];
+}
+
+void CSE_PHSkeleton::script_register(lua_State *L)
+{
+	module(L)[
+		class_<CSE_PHSkeleton>
+			("cse_ph_skeleton")
+	];
+}
+
 void CSE_AbstractVisual::script_register(lua_State *L)
 {
 	module(L)[
@@ -17,15 +37,3 @@ void CSE_AbstractVisual::script_register(lua_State *L)
 		.def	("getStartupAnimation",		&CSE_AbstractVisual::getStartupAnimation)
 	];
 }
-/*
-void CSE_Trigger::script_register(lua_State *L)
-{
-		module(L)[
-			luabind_class_abstract1(
-				CSE_Trigger,
-				"cse_trigger",
-				CSE_Abstract
-				)
-		];
-}
-*/

@@ -32,6 +32,7 @@ class CScriptEntity;
 class CAI_ObjectLocation;
 class CWeapon;
 class CExplosive;
+class CHolderCustom;
 
 namespace GameObject {
 	enum ECallbackType;
@@ -73,6 +74,9 @@ public:
 	virtual CScriptEntity*				cast_script_entity			()						{return NULL;}
 	virtual CWeapon*					cast_weapon					()						{return NULL;}
 	virtual CExplosive*					cast_explosive				()						{return NULL;}
+	virtual CSpaceRestrictor*			cast_restrictor				()						{return NULL;}
+	virtual CAttachableItem*			cast_attachable_item		()						{return NULL;}
+	virtual CHolderCustom*				cast_holder_custom			()						{return NULL;}
 
 public:
 	virtual BOOL						feel_touch_on_contact	(CObject *)					{return TRUE;}

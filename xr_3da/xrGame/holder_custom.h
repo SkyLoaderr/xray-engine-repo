@@ -18,6 +18,7 @@ protected:
 public:
 							CHolderCustom		()				{m_owner=0;}
 	virtual					~CHolderCustom		()				{;}
+	virtual CHolderCustom	*cast_holder_custom	()				{return this;}
 			bool			Engaged				()				{return m_owner!=NULL;}
 	virtual void			OnMouseMove			(int x, int y)	= 0;
 	virtual void			OnKeyboardPress		(int dik)		= 0;

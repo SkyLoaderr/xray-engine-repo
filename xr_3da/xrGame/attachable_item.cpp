@@ -67,14 +67,16 @@ void CAttachableItem::enable		(bool value)
 	}
 
 	if (value && !enabled() && H_Parent()) {
-		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(H_Parent());
+		CGameObject			*game_object = smart_cast<CGameObject*>(H_Parent());
+		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(game_object);
 		VERIFY				(owner);
 		m_enabled			= value;
 		owner->attach		(this);
 		setVisible			(true);
 	}
 	if (!value && enabled() && H_Parent()) {
-		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(H_Parent());
+		CGameObject			*game_object = smart_cast<CGameObject*>(H_Parent());
+		CAttachmentOwner	*owner = smart_cast<CAttachmentOwner*>(game_object);
 		VERIFY				(owner);
 		m_enabled			= value;
 		owner->detach		(this);

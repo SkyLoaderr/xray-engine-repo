@@ -171,9 +171,29 @@
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CAI_Stalker,		CGameObject)
 
-		DECLARE_SPECIALIZATION	(CScriptEntity,	CGameObject,	cast_script_entity);
+		DECLARE_SPECIALIZATION	(CScriptEntity,	CGameObject,		cast_script_entity);
 #		undef cast_type_list
 #		define cast_type_list save_cast_list	(CScriptEntity,	CGameObject)
+
+		DECLARE_SPECIALIZATION	(CSpaceRestrictor,	CGameObject,	cast_restrictor);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CSpaceRestrictor,	CGameObject)
+
+		DECLARE_SPECIALIZATION	(CExplosive,	CGameObject,		cast_explosive);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CExplosive,	CGameObject)
+
+		DECLARE_SPECIALIZATION	(CGameObject,	CAttachmentOwner,	cast_game_object);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CGameObject,	CAttachmentOwner)
+
+		DECLARE_SPECIALIZATION	(CGameObject,	CInventoryItem,		cast_game_object);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CGameObject,	CInventoryItem)
+
+		DECLARE_SPECIALIZATION	(CAttachableItem,	CGameObject,	cast_attachable_item);
+#		undef cast_type_list
+#		define cast_type_list save_cast_list	(CAttachableItem,	CGameObject)
 
 #	endif
 	

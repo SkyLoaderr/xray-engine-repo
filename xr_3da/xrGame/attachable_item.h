@@ -40,6 +40,8 @@ public:
 	virtual bool			can_be_attached		() const;
 	virtual void			afterAttach			();
 	virtual void			afterDetach			();
+
+	virtual CAttachableItem	*cast_attachable_item	()	{return this;}
 };
 
 #include "attachable_item_inline.h"

@@ -538,6 +538,7 @@ private:
 	virtual CParticlesPlayer	*cast_particles_player		()	{return this;}
 	virtual CScriptEntity		*cast_script_entity			()	{return this;}
 	virtual IDamageSource		*cast_IDamageSource			()	{return this;}
+	virtual CHolderCustom		*cast_holder_custom			()	{return this;}
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CCar)

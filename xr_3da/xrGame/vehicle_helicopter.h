@@ -30,6 +30,7 @@ protected:
 public:
 						CVehicleHelicopter	();
 	virtual				~CVehicleHelicopter	();
+	virtual CHolderCustom	*cast_holder_custom	()				{return this;}
 			void		init				();
 	virtual	void		Load				(LPCSTR		section);
 	virtual	void		reinit				();

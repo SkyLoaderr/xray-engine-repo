@@ -79,29 +79,3 @@ void CSE_ALifeCreatureAbstract::script_register(lua_State *L)
 		.def_readwrite("group",&CSE_ALifeCreatureAbstract::s_group)
 	];
 }
-
-void CSE_ALifeMonsterAbstract::script_register(lua_State *L)
-{
-	module(L)[
-		luabind_class_monster2(
-			CSE_ALifeMonsterAbstract,
-			"cse_alife_monster_abstract",
-			CSE_ALifeCreatureAbstract,
-			CSE_ALifeSchedulable
-		)
-	];
-}
-
-void CSE_ALifeCreatureActor::script_register(lua_State *L)
-{
-	module(L)[
-		luabind_class_creature3(
-			CSE_ALifeCreatureActor,
-			"cse_alife_creature_actor",
-			CSE_ALifeCreatureAbstract,
-			CSE_ALifeTraderAbstract,
-			CSE_PHSkeleton
-		)
-	];
-}
-

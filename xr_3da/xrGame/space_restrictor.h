@@ -62,6 +62,7 @@ public:
 #ifdef DEBUG
 	virtual void	OnRender			();
 #endif
+	virtual	CSpaceRestrictor*	cast_restrictor	()	{return this;}
 };
 
 #include "space_restrictor_inline.h"
