@@ -64,7 +64,15 @@ void Startup(LPSTR     lpCmdLine)
 	name[0]=0;				sscanf(strstr(cmd,"-f")+2,"%s",name);
 	string prjName			= "game\\data\\levels\\"+string(name)+"\\build.prj";
 	Phase					("Reading project...");
-	CCompressedStream*		F	= new CCompressedStream(prjName.c_str(),	"xrLC");
+
+	string32	ID			= "xrLC";
+	string32	id;
+	CStream*	F			= new CFileStream(prjName.c_str());
+	F->Read		(&id,8);
+	if (0==strcmp(id,ID))	{
+		_DELETE		(F);
+		F			= new CCompressedStream(prjName.c_str(),ID);
+	}
 	CStream&				FS	= *F;
 
 	// Version

@@ -16,10 +16,15 @@ template <class T>
 void transfer(const char *name, vector<T> &dest, CStream& F, DWORD chunk)
 {
 	CStream*	O		= F.OpenChunk(chunk);
+	if (0==O)	return;
+
 	DWORD		count	= O->Length()/sizeof(T);
 	Msg			("* %16s: %d",name,count);
-	dest.reserve(count);
-	dest.insert	(dest.begin(), (T*)O->Pointer(), (T*)O->Pointer() + count);
+	if (count)  
+	{
+		dest.reserve(count);
+		dest.insert	(dest.begin(), (T*)O->Pointer(), (T*)O->Pointer() + count);
+	}
 	O->Close	();
 }
 
