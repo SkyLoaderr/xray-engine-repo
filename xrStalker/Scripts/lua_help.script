@@ -225,7 +225,7 @@ C++ class game_messages {
     const GAME_EVENT_PLAYER_READY = 0;
     const GAME_EVENT_ROUND_END = 10;
     const GAME_EVENT_ROUND_STARTED = 9;
-    const GAME_EVENT_SCRIPT_BEGINS_FROM = 24;
+    const GAME_EVENT_SCRIPT_BEGINS_FROM = 29;
     const GAME_EVENT_SKIN_MENU_CLOSED = 20;
     const GAME_EVENT_TEAM_MENU_CLOSED = 19;
     
@@ -1157,6 +1157,18 @@ C++ class client_spawn_manager {
     function add(number, number, const function<void>&);
 };
 
+C++ class CConsole {
+    function execute_script(string);
+    function get_string(string);
+    function execute(string);
+    function get_bool(CConsole*, string);
+    function get_float(CConsole*, string);
+    function get_integer(CConsole*, string);
+    function get_token(string);
+    function show();
+    function hide();
+};
+
 C++ class cover_point {
     function level_vertex_id() const;
     function position() const;
@@ -1280,26 +1292,26 @@ C++ class stalker_ids {
     const property_alife = 3;
     const property_alive = 0;
     const property_already_dead = 2;
-    const property_anomaly = 23;
+    const property_anomaly = 31;
     const property_customer_satisfied = 8;
     const property_dead = 1;
-    const property_enemy = 10;
-    const property_enemy_aimed = 17;
-    const property_fire_enough = 19;
-    const property_found_ammo = 15;
-    const property_found_item_to_kill = 13;
-    const property_inside_anomaly = 24;
-    const property_item_can_kill = 14;
-    const property_item_to_kill = 12;
-    const property_items = 9;
+    const property_enemy = 18;
+    const property_enemy_aimed = 25;
+    const property_fire_enough = 27;
+    const property_found_ammo = 23;
+    const property_found_item_to_kill = 21;
+    const property_inside_anomaly = 32;
+    const property_item_can_kill = 22;
+    const property_item_to_kill = 20;
+    const property_items = 17;
     const property_puzzle_solved = 4;
     const property_reach_customer_location = 7;
     const property_reach_task_location = 5;
-    const property_ready_to_kill = 16;
-    const property_safe_to_kill = 18;
-    const property_script = 25;
-    const property_see_enemy = 11;
-    const property_squad_action = 21;
+    const property_ready_to_kill = 24;
+    const property_safe_to_kill = 26;
+    const property_script = 33;
+    const property_see_enemy = 19;
+    const property_squad_action = 29;
     const property_task_completed = 6;
     const sound_alarm = 3;
     const sound_attack = 6;
@@ -4851,6 +4863,31 @@ C++ class game_sv_mp_script : game_sv_mp {
     function get_option_i(string, string, number);
 };
 
+C++ class CTime {
+    const DateToDay = 0;
+    const DateToMonth = 1;
+    const DateToYear = 2;
+    const TimeToHours = 0;
+    const TimeToMilisecs = 3;
+    const TimeToMinutes = 1;
+    const TimeToSeconds = 2;
+    
+    CTime ();
+    CTime (const CTime&);
+    
+    function sub(const CTime&);
+    operator ==(const CTime&, CTime);
+    function setHMSms(number, number, number, number);
+    operator <(const CTime&, CTime);
+    operator +(CTime&, CTime);
+    function dateToString(number);
+    function setHMS(number, number, number);
+    function timeToString(number);
+    function diffSec(const CTime&);
+    operator -(CTime&, CTime);
+    function add(const CTime&);
+};
+
 End of list of the classes exported to LUA
 
  
@@ -4914,6 +4951,6 @@ namespace  {
  
     namespace game {
         function time();
+        function get_time();
     };
 };
-End of list of the namespaces exported to LUA
