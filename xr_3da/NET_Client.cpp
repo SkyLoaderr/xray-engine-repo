@@ -61,7 +61,7 @@ void			INetQueue::Release	()
 
 //
 const u32 syncQueueSize		= 256;
-const int syncSamples		= 8;
+const int syncSamples		= 16;
 class ENGINE_API syncQueue
 {
 	u32				table[syncQueueSize];
