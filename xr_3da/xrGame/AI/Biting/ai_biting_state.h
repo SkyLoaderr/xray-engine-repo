@@ -104,7 +104,8 @@ class CBitingAttack : public IState {
 	enum {
 		ACTION_RUN,
 		ACTION_ATTACK_MELEE,
-		ACTION_FIND_ENEMY
+		ACTION_FIND_ENEMY,
+		ACTION_JUMP
 	} m_tAction;
 
 	VisionElem		m_tEnemy;
@@ -121,6 +122,8 @@ class CBitingAttack : public IState {
 
 	bool			m_bInvisibility;
 	
+	bool			flag_once_1;
+
 public:	
 					CBitingAttack	(CAI_Biting *p, bool bVisibility);
 

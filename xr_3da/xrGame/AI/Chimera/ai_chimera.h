@@ -21,6 +21,7 @@ public:
 			void			SpinBoneInMotion	(CBoneInstance *B);
 			void			SpinBoneInAttack	(CBoneInstance *B);
 
+	virtual	bool			CanJump				() {return true;}
 			
 	// реализация плавного поворота	
 	float	fSpinYaw;				// угол поворота для боны

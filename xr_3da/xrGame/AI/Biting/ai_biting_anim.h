@@ -55,6 +55,8 @@ enum EMotionAnim {
 	eAnimAttackJump,
 
 	eAnimLookAround,
+
+	eAnimJump,
 };
 
 
@@ -71,7 +73,8 @@ enum EAction {
 	ACT_DRAG,
 	ACT_ATTACK,
 	ACT_STEAL,
-	ACT_LOOK_AROUND
+	ACT_LOOK_AROUND,
+	ACT_JUMP
 };
 
 enum EPState {

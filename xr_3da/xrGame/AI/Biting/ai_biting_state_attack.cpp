@@ -60,6 +60,8 @@ void CBitingAttack::Init()
 	}
 
 	pMonster->SetMemoryTimeDef();
+	
+	flag_once_1	= false;
 
 	// Test
 	WRITE_TO_LOG("_ Attack Init _");
@@ -99,6 +101,9 @@ void CBitingAttack::Run()
 //			}
 //		}
 //	}
+	bool bJumpState	= pMonster->Movement.JumpState();
+
+	if (bJumpState || (!bJumpState && pMonster->CanJump())) m_tAction = ACTION_JUMP;
 
 	// Выполнение состояния
 	switch (m_tAction) {	
@@ -141,6 +146,19 @@ void CBitingAttack::Run()
 			pMonster->MotionMan.m_tAction = ACT_ATTACK;
 
 			break;
+		case ACTION_JUMP:
+			DO_ONCE_BEGIN(flag_once_1);
+				WRITE_TO_LOG("Try to jump");
+				pMonster->Movement.Jump(m_tEnemy.obj->Position(), 1000);
+			DO_ONCE_END();
+
+			pMonster->AI_Path.DestNode = m_tEnemy.obj->AI_NodeID;
+			pMonster->vfChoosePointAndBuildPath(0,&m_tEnemy.obj->Position(), true, 0, 0);
+
+			pMonster->MotionMan.m_tAction = ACT_JUMP;
+			break;
 	}
+
+	
 }
 

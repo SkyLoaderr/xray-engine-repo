@@ -130,6 +130,8 @@ public:
 
 
 			bool			IsStanding						(TTime time);		// проверить, стоит ли монстр на протяжении времени time
+
+	virtual	bool			CanJump							() {return false;}
 // members
 public:
 

@@ -247,7 +247,7 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 
 void CAI_Stalker::vfDodgeTravelLine()
 {
-	Device.Statistic.TEST0.Begin();
+	//Device.Statistic.TEST0.Begin();
 
 	int							N = (int)m_tpaTempPath.size();
 	AI_Path.TravelPath.resize	(N);
@@ -311,7 +311,7 @@ void CAI_Stalker::vfDodgeTravelLine()
 	AI_Path.TravelStart			= 0;
 	m_tPathState				= ePathStateSearchNode;
 
-	Device.Statistic.TEST0.End();
+	//Device.Statistic.TEST0.End();
 }
 
 void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode)
