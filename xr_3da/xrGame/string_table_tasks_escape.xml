@@ -25,7 +25,7 @@
         <text>Найди выжившего после обстрела и помогите ему.</text>
     </string>
     <string id="esc_trader_need_electra_artefact">
-        <text>Найти и принести артефакт из грави-аномалии.</text>
+        <text>Найти и принести артефакт.</text>
     </string>
     <string id="esc_trader_need_electra_artefact_0">
         <text>Торговцу нужен артефакт.</text>
@@ -88,7 +88,7 @@
         <text>Необходимо достать военные документы и доставить их бармену в баре сталкеров.</text>
     </string>
     <string id="agroprom_get_military_documents_1">
-        <text>Добудьте военные документы из НИИ "Агропром".</text>
+        <text>Добудьте военные документы.</text>
     </string>
     <string id="agroprom_get_military_documents_2">
         <text>Отнесите документы бармену в баре сталкеров.</text>
