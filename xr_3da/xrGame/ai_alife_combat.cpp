@@ -150,10 +150,12 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 	}
 	
 	// perform interaction
-#ifdef ALIFE_LOG
-	_GRAPH_ID						l_tGraphID = l_tpALifeMonsterAbstract1 ? l_tpALifeMonsterAbstract1->m_tGraphID : l_tpALifeMonsterAbstract2->m_tGraphID;
-	vfPrintTime						("\n[LSS]",tfGetGameTime());
-	Msg								("[LSS] %s met %s on the graph point %d (level %s[%d][%d][%d][%d])",tpALifeSchedulable1->s_name_replace,tpALifeSchedulable2->s_name_replace,l_tGraphID,getAI().GraphHeader().tpLevels.find(getAI().m_tpaGraph[l_tGraphID].tLevelID)->second.caLevelName,getAI().m_tpaGraph[l_tGraphID].tVertexTypes[0],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[1],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[2],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[3]);
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		_GRAPH_ID						l_tGraphID = l_tpALifeMonsterAbstract1 ? l_tpALifeMonsterAbstract1->m_tGraphID : l_tpALifeMonsterAbstract2->m_tGraphID;
+		vfPrintTime						("\n[LSS]",tfGetGameTime());
+		Msg								("[LSS] %s met %s on the graph point %d (level %s[%d][%d][%d][%d])",tpALifeSchedulable1->s_name_replace,tpALifeSchedulable2->s_name_replace,l_tGraphID,getAI().GraphHeader().tpLevels.find(getAI().m_tpaGraph[l_tGraphID].tLevelID)->second.caLevelName,getAI().m_tpaGraph[l_tGraphID].tVertexTypes[0],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[1],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[2],getAI().m_tpaGraph[l_tGraphID].tVertexTypes[3]);
+	}
 #endif
 	
 	bMutualDetection				= false;
@@ -161,13 +163,17 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 
 	if (bfCheckObjectDetection(tpALifeSchedulable1,tpALifeSchedulable2)) {
 		iCombatGroupIndex			= 0;
-#ifdef ALIFE_LOG
-		Msg							("[LSS] %s detected %s",tpALifeSchedulable1->s_name_replace,tpALifeSchedulable2->s_name_replace);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg						("[LSS] %s detected %s",tpALifeSchedulable1->s_name_replace,tpALifeSchedulable2->s_name_replace);
+		}
 #endif
 	}
 	else {
-#ifdef ALIFE_LOG
-		Msg							("[LSS] %s didn't detect %s",tpALifeSchedulable1->s_name_replace,tpALifeSchedulable2->s_name_replace);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg						("[LSS] %s didn't detect %s",tpALifeSchedulable1->s_name_replace,tpALifeSchedulable2->s_name_replace);
+		}
 #endif
 	}
 
@@ -178,8 +184,10 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 			m_tCombatType = eCombatTypeMonsterAnomaly;
 
 	if (bfCheckObjectDetection(tpALifeSchedulable2,tpALifeSchedulable1)) {
-#ifdef ALIFE_LOG
-		Msg						("[LSS] %s detected %s",tpALifeSchedulable2->s_name_replace,tpALifeSchedulable1->s_name_replace);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg						("[LSS] %s detected %s",tpALifeSchedulable2->s_name_replace,tpALifeSchedulable1->s_name_replace);
+		}
 #endif
 		if (!iCombatGroupIndex)
 			bMutualDetection		= true;
@@ -187,8 +195,10 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 			iCombatGroupIndex		= 1;
 	}
 	else {
-#ifdef ALIFE_LOG
-		Msg							("[LSS] %s didn't detect %s",tpALifeSchedulable2->s_name_replace,tpALifeSchedulable1->s_name_replace);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg						("[LSS] %s didn't detect %s",tpALifeSchedulable2->s_name_replace,tpALifeSchedulable1->s_name_replace);
+		}
 #endif
 	}
 
@@ -199,8 +209,10 @@ bool CSE_ALifeSimulator::bfCheckForInteraction(CSE_ALifeSchedulable *tpALifeSche
 			m_tCombatType = eCombatTypeMonsterAnomaly;
 
 	if (iCombatGroupIndex < 0) {
-#ifdef ALIFE_LOG
-		Msg							("[LSS] There is no interaction");
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg						("[LSS] There is no interaction");
+		}
 #endif
 		return						(false);
 	}
@@ -236,8 +248,10 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 		
 		getAI().m_tpCurrentALifeObject = dynamic_cast<CSE_ALifeObject*>(*I);
 		getAI().m_tpCurrentALifeMember = *I;
-#ifdef ALIFE_LOG
-		Msg("[LSS] %s attacks with %s(%d ammo) %d times in a row",(*I)->s_name_replace,(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->s_name_replace : "its natural weapon",(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->m_dwAmmoAvailable : 0,iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue() + .5f));
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg				("[LSS] %s attacks with %s(%d ammo) %d times in a row",(*I)->s_name_replace,(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->s_name_replace : "its natural weapon",(*I)->m_tpCurrentBestWeapon ? (*I)->m_tpCurrentBestWeapon->m_dwAmmoAvailable : 0,iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue() + .5f));
+		}
 #endif
 		for (int i=0, n=iFloor(getAI().m_pfWeaponAttackTimes->ffGetValue() + .5f); i<n; i++) {
 			if (randF(100) < (int)getAI().m_pfWeaponSuccessProbability->ffGetValue()) {
@@ -248,8 +262,10 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 				R_ASSERT2					(l_tpALifeMonsterAbstract,"Invalid combat object");
 				float						l_fHit = randF(l_fHitPower*0.5f,l_fHitPower*1.5f);
 				l_tpALifeMonsterAbstract->fHealth -= l_tpALifeMonsterAbstract->m_fpImmunityFactors[l_tHitType]*l_fHit;
-#ifdef ALIFE_LOG
-				Msg("[LSS] %s %s %s [power %5.2f][damage %5.2f][health %5.2f][creatures left %d]",(*I)->s_name_replace,l_tpALifeMonsterAbstract->fHealth <= 0 ? "killed" : "attacked",l_tpALifeMonsterAbstract->s_name_replace,l_fHit,l_tpALifeMonsterAbstract->m_fpImmunityFactors[l_tHitType]*l_fHit,_max(l_tpALifeMonsterAbstract->fHealth,0.f),l_tpALifeMonsterAbstract->fHealth >= EPS_L ? m_tpaCombatGroups[iCombatGroupIndex ^ 1].size() : m_tpaCombatGroups[iCombatGroupIndex ^ 1].size() - 1);
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					Msg						("[LSS] %s %s %s [power %5.2f][damage %5.2f][health %5.2f][creatures left %d]",(*I)->s_name_replace,l_tpALifeMonsterAbstract->fHealth <= 0 ? "killed" : "attacked",l_tpALifeMonsterAbstract->s_name_replace,l_fHit,l_tpALifeMonsterAbstract->m_fpImmunityFactors[l_tHitType]*l_fHit,_max(l_tpALifeMonsterAbstract->fHealth,0.f),l_tpALifeMonsterAbstract->fHealth >= EPS_L ? m_tpaCombatGroups[iCombatGroupIndex ^ 1].size() : m_tpaCombatGroups[iCombatGroupIndex ^ 1].size() - 1);
+				}
 #endif
 				// check if victim became dead
 				if (l_tpALifeMonsterAbstract->fHealth <= 0) {
@@ -259,8 +275,10 @@ void CSE_ALifeSimulator::vfPerformAttackAction(int iCombatGroupIndex)
 				}
 			}
 			else {
-#ifdef ALIFE_LOG
-				Msg("[LSS] %s missed",(*I)->s_name_replace);
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					Msg		("[LSS] %s missed",(*I)->s_name_replace);
+				}
 #endif
 			}
 			// perform attack (if we use a weapon we should delete ammo we used)
@@ -372,8 +390,10 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	}
 	
 	if (m_tpItemVector.empty() || (m_tCombatType != eCombatTypeMonsterMonster)) {
-#ifdef ALIFE_LOG
-		Msg								("[LSS] There is nothing to take");
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg							("[LSS] There is nothing to take");
+		}
 #endif
 		return;
 	}
@@ -396,8 +416,10 @@ void CSE_ALifeSimulator::vfFinishCombat(ECombatResult tCombatResult)
 	}
 	
 	if (l_iGroupIndex >= 0) {
-#ifdef ALIFE_LOG
-		Msg								("[LSS] Starting taking items [%s][%f]",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[l_iGroupIndex])->fHealth);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg							("[LSS] Starting taking items [%s][%f]",m_tpaCombatObjects[l_iGroupIndex]->s_name_replace,dynamic_cast<CSE_ALifeMonsterAbstract*>(m_tpaCombatObjects[l_iGroupIndex])->fHealth);
+		}
 #endif
 		m_tpaCombatObjects[l_iGroupIndex]->vfAttachItems();
 	}

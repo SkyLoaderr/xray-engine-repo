@@ -761,6 +761,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Mask,				"ai_dbg_motion",		&psAI_Flags,	aiMotion);
 		CMD3(CCC_Mask,				"ai_dbg_frustum",		&psAI_Flags,	aiFrustum);
 		CMD3(CCC_Mask,				"ai_dbg_funcs",			&psAI_Flags,	aiFuncs);
+		CMD3(CCC_Mask,				"ai_dbg_alife",			&psAI_Flags,	aiALife);
 
 		// Trader
 		CMD1(CCC_Trader,			"trade");		

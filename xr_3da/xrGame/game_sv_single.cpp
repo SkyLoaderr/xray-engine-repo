@@ -49,9 +49,11 @@ BOOL	game_sv_Single::OnTouch			(u16 eid_who, u16 eid_what)
 		
 		if (l_tpTraderParams && l_tpALifeInventoryItem && l_tpDynamicObject && (m_tpALife->m_tpCurrentLevel->find(l_tpALifeInventoryItem->ID) != m_tpALife->m_tpCurrentLevel->end()) && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(e_what->ID) != m_tpALife->m_tObjectRegistry.end()))
 			m_tpALife->vfAttachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
-#ifdef ALIFE_LOG
+#ifdef DEBUG
 		else
-			Msg					("Cannot attach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+			if (psAI_Flags.test(aiALife)) {
+				Msg				("Cannot attach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+			}
 #endif
 	}
 	return TRUE;
@@ -73,9 +75,11 @@ BOOL	game_sv_Single::OnDetach		(u16 eid_who, u16 eid_what)
 		
 		if ((m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tpCurrentLevel->find(l_tpALifeInventoryItem->ID) == m_tpALife->m_tpCurrentLevel->end()) && (m_tpALife->m_tObjectRegistry.find(e_who->ID) != m_tpALife->m_tObjectRegistry.end()) && (m_tpALife->m_tObjectRegistry.find(e_what->ID) != m_tpALife->m_tObjectRegistry.end()))
 			m_tpALife->vfDetachItem(*e_who,l_tpALifeInventoryItem,l_tpDynamicObject->m_tGraphID,false);
-#ifdef ALIFE_LOG
+#ifdef DEBUG
 		else
-			Msg					("Cannot detach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+			if (psAI_Flags.test(aiALife)) {
+				Msg			("Cannot detach object [%s][%d] to object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,l_tpDynamicObject->s_name_replace,l_tpDynamicObject->ID);
+			}
 #endif
 	}
 	return					(TRUE);

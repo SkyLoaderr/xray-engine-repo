@@ -22,8 +22,10 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 	for (int i=1; ; i++) {
 		m_bSwitchChanged				= false;
 		if ((*I).second->m_qwSwitchCounter == m_qwCycleCounter) {
-#ifdef ALIFE_LOG
-			Msg							("[LSS][OOS][%d : %d]",i-1, m_tpCurrentLevel->size());
+#ifdef DEBUG
+			if (psAI_Flags.test(aiALife)) {
+				Msg						("[LSS][OOS][%d : %d]",i-1, m_tpCurrentLevel->size());
+			}
 #endif
 			return;
 		}
@@ -46,8 +48,10 @@ void CSE_ALifeSimulator::vfProcessAllTheSwitches()
 		m_tNextFirstSwitchObjectID		= (*I).first;
 
 //		if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
-//#ifdef ALIFE_LOG
-//			Msg							("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
+//#ifdef DEBUG
+//			if (psAI_Flags.test(aiALife)) {
+//				Msg						("[LSS][OOS][%d : %d]",i, m_tpCurrentLevel->size());
+//			}
 //#endif
 //			return;
 //		}
@@ -64,8 +68,10 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 		for (int i=1; ; i++) {
 			m_bUpdateChanged				= false;
 			if ((*I).second->m_qwUpdateCounter == m_qwCycleCounter) {
-#ifdef ALIFE_LOG
-				Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					Msg						("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
+				}
 #endif
 				return;
 			}
@@ -86,8 +92,10 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 				if (I == m_tpScheduledObjects.end()) {
 					I						= m_tpScheduledObjects.begin();
 					if (I == m_tpScheduledObjects.end()) {
-#ifdef ALIFE_LOG
-						Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
+#ifdef DEBUG
+						if (psAI_Flags.test(aiALife)) {
+							Msg				("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
+						}
 #endif
 						return;
 					}
@@ -95,8 +103,10 @@ void CSE_ALifeSimulator::vfProcessUpdates()
 			m_tNextFirstProcessObjectID		= (*I).first;
 
 			if ((CPU::GetCycleCount() - qwStartTime)*(i + 1)/i >= l_qwMaxProcessTime) {
-#ifdef ALIFE_LOG
-				Msg							("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					Msg						("[LSS][US][%d : %d]",i, m_tpScheduledObjects.size());
+				}
 #endif
 				return;
 			}

@@ -9,10 +9,6 @@
 #ifndef XRAY_AI_ALIFE_SPACE
 #define XRAY_AI_ALIFE_SPACE
 
-#ifdef DEBUG
-//#define ALIFE_LOG
-#endif
-
 // spawn points
 #define SPAWN_POINT_VERSION			0x0001
 #define SPAWN_POINT_CHUNK_VERSION	0xffff
@@ -384,5 +380,9 @@ namespace ALife {
 	DEFINE_MAP_PRED	(LPSTR,						TRADER_SET,						TRADER_SET_MAP,				TRADER_SET_PAIR_IT,				pred_str);
 	DEFINE_MAP_PRED	(LPSTR,						SArtefactTraderOrder*,			ARTEFACT_TRADER_ORDER_MAP,	ARTEFACT_TRADER_ORDER_PAIR_IT,	pred_str);
 };
+
+#ifndef _EDITOR
+#include "ai_console.h"
+#endif
 
 #endif

@@ -27,7 +27,7 @@
 	(c) = (e)[(f)].iCurrentSum;\
 }
 
-#ifdef ALIFE_LOG
+#ifdef DEBUG
 void CSE_ALifeSimulator::vfPrintItems(CSE_ALifeHumanAbstract *tpALifeHumanAbstract, ITEM_P_VECTOR &tpItemVector)
 {
 	Msg					("%s[%d]",tpALifeHumanAbstract->s_name_replace,tpALifeHumanAbstract->m_dwMoney);
@@ -327,46 +327,55 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 			if (!bfCheckForInventoryCapacity(tpALifeHumanAbstract1,tpTrader1,l_tpIndexes1,tpALifeHumanAbstract2,tpTrader2,l_tpIndexes2))
 				continue;
 
-#ifdef ALIFE_LOG
+#ifdef DEBUG
 			string4096		S;
 			char			*S1 = S;	
-			S1				+= sprintf(S1,"%s -> ",tpALifeHumanAbstract1->s_name_replace);
-			
-			if (iSum1) {
-				for (int i=0, n=l_tpIndexes1.size(); i<n ;i++)
-					S1		+= sprintf(S1,"%3d",l_tpIndexes1[i]);
+			if (psAI_Flags.test(aiALife)) {
+				S1				+= sprintf(S1,"%s -> ",tpALifeHumanAbstract1->s_name_replace);
+				
+				if (iSum1) {
+					for (int i=0, n=l_tpIndexes1.size(); i<n ;i++)
+						S1		+= sprintf(S1,"%3d",l_tpIndexes1[i]);
+				}
 			}
-			
 #endif
 			if (iSum1 < iBalance + iSum2) {
-#ifdef ALIFE_LOG
-				S1			+= sprintf(S1," + $%d",iBalance + iSum2 - iSum1);
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					S1			+= sprintf(S1," + $%d",iBalance + iSum2 - iSum1);
+				}
 #endif
 				R_ASSERT	(int(tpALifeHumanAbstract1->m_dwMoney) >= iBalance + iSum2 - iSum1);
 				tpALifeHumanAbstract1->m_dwMoney -= iBalance + iSum2 - iSum1;
 				tpALifeHumanAbstract2->m_dwMoney += iBalance + iSum2 - iSum1;
 			}
 			
-#ifdef ALIFE_LOG
-			S1				+= sprintf(S1,"\n%s -> ",tpALifeHumanAbstract2->s_name_replace);
-			
-			if (iSum2) {
-				for (int i=0, n=l_tpIndexes2.size(); i<n ;i++)
-					S1		+= sprintf(S1,"%3d",l_tpIndexes2[i]);
+#ifdef DEBUG
+			if (psAI_Flags.test(aiALife)) {
+				S1				+= sprintf(S1,"\n%s -> ",tpALifeHumanAbstract2->s_name_replace);
+				
+				if (iSum2) {
+					for (int i=0, n=l_tpIndexes2.size(); i<n ;i++)
+						S1		+= sprintf(S1,"%3d",l_tpIndexes2[i]);
+				}
 			}
 #endif
 			
 			if (iSum1 > iBalance + iSum2) {
-#ifdef ALIFE_LOG
-				S1			+= sprintf(S1," + $%d",iSum1 - iBalance - iSum2);
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					S1			+= sprintf(S1," + $%d",iSum1 - iBalance - iSum2);
+				}
 #endif
 				R_ASSERT	(int(tpALifeHumanAbstract2->m_dwMoney) >= iSum1 - iBalance - iSum2);
 				tpALifeHumanAbstract1->m_dwMoney += iSum1 - iBalance - iSum2;
 				tpALifeHumanAbstract2->m_dwMoney -= iSum1 - iBalance - iSum2;
 			}
 
-#ifdef ALIFE_LOG
-			Msg				("%s\n Can trade!",S);
+#ifdef DEBUG
+			if (psAI_Flags.test(aiALife)) {
+				Msg			("%s\n Can trade!",S);
+			}
 #endif
 			return			(true);
 		}
@@ -416,8 +425,10 @@ bool CSE_ALifeSimulator::bfCheckForTrade	(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	}
 
 	if (I == E) {
-#ifdef ALIFE_LOG
-		Msg					("Can't trade!\n");
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg				("Can't trade!\n");
+		}
 #endif
 		return				(false);
 	}
@@ -428,8 +439,10 @@ bool CSE_ALifeSimulator::bfCheckForTrade	(CSE_ALifeHumanAbstract *tpALifeHumanAb
 bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, int iItemCount1, int iItemCount2, int iBalance)
 {
 	if (!iBalance) {
-#ifdef ALIFE_LOG
-		Msg				("Balance is null");
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg			("Balance is null");
+		}
 #endif
 		return			(true);
 	}
@@ -438,8 +451,10 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAbstract *
 		if (int(tpALifeHumanAbstract1->m_dwMoney) >= -iBalance) {
 			tpALifeHumanAbstract1->m_dwMoney += iBalance;
 			tpALifeHumanAbstract2->m_dwMoney -= iBalance;
-#ifdef ALIFE_LOG
-			Msg			("Balance is covered by money");
+#ifdef DEBUG
+			if (psAI_Flags.test(aiALife)) {
+				Msg		("Balance is covered by money");
+			}
 #endif
 			return	(true);
 		}
@@ -448,8 +463,10 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAbstract *
 		if (int(tpALifeHumanAbstract2->m_dwMoney) >= iBalance) {
 			tpALifeHumanAbstract1->m_dwMoney += iBalance;
 			tpALifeHumanAbstract2->m_dwMoney -= iBalance;
-#ifdef ALIFE_LOG
-			Msg			("Balance is covered by money");
+#ifdef DEBUG
+			if (psAI_Flags.test(aiALife)) {
+				Msg			("Balance is covered by money");
+			}
 #endif
 			return	(true);
 		}
@@ -460,49 +477,53 @@ bool CSE_ALifeSimulator::bfCheckIfCanNullTradersBalance(CSE_ALifeHumanAbstract *
 		sort				(m_tpTrader1.begin(),m_tpTrader1.end(),CSortItemByValuePredicate());
 		sort				(m_tpTrader2.begin(),m_tpTrader2.end(),CSortItemByValuePredicate());
 
-#ifdef ALIFE_LOG
-		{
-			string4096		S;
-			char			*S1 = S;
-			S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract1->s_name_replace,tpALifeHumanAbstract1->m_dwMoney);
-			for (int i=0, n=m_tpTrader1.size(); i<n; i++)
-				S1			+= sprintf(S1,"%6d",m_tpTrader1[i]->m_dwCost);
-			Msg				("%s",S);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			{
+				string4096		S;
+				char			*S1 = S;
+				S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract1->s_name_replace,tpALifeHumanAbstract1->m_dwMoney);
+				for (int i=0, n=m_tpTrader1.size(); i<n; i++)
+					S1			+= sprintf(S1,"%6d",m_tpTrader1[i]->m_dwCost);
+				Msg				("%s",S);
+			}
+			{
+				string4096		S;
+				char			*S1 = S;
+				S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract2->s_name_replace,tpALifeHumanAbstract2->m_dwMoney);
+				for (int i=0, n=m_tpTrader2.size(); i<n; i++)
+					S1			+= sprintf(S1,"%6d",m_tpTrader2[i]->m_dwCost);
+				Msg				("%s",S);
+			}
+			Msg					("Balance : %6d",iBalance);
 		}
-		{
-			string4096		S;
-			char			*S1 = S;
-			S1				+= sprintf(S1,"%s [%5d]: ",tpALifeHumanAbstract2->s_name_replace,tpALifeHumanAbstract2->m_dwMoney);
-			for (int i=0, n=m_tpTrader2.size(); i<n; i++)
-				S1			+= sprintf(S1,"%6d",m_tpTrader2[i]->m_dwCost);
-			Msg				("%s",S);
-		}
-		Msg					("Balance : %6d",iBalance);
 #endif
 
 		vfGenerateSums		(m_tpTrader1,m_tpSums1);
 		vfGenerateSums		(m_tpTrader2,m_tpSums2);
 
-#ifdef ALIFE_LOG
-		{	
-			string4096		S;
-			char			*S1 = S;
-			S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract1->s_name_replace);
-			INT_IT			I = m_tpSums1.begin();
-			INT_IT			E = m_tpSums1.end();
-			for ( ; I != E; I++)
-				S1			+= sprintf(S1,"%6d",*I);
-			Msg				("%s",S);
-		}
-		{
-			string4096		S;
-			char			*S1 = S;
-			S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract2->s_name_replace);
-			INT_IT			I = m_tpSums2.begin();
-			INT_IT			E = m_tpSums2.end();
-			for ( ; I != E; I++)
-				S1			+= sprintf(S1,"%6d",*I);
-			Msg				("%s",S);
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			{	
+				string4096		S;
+				char			*S1 = S;
+				S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract1->s_name_replace);
+				INT_IT			I = m_tpSums1.begin();
+				INT_IT			E = m_tpSums1.end();
+				for ( ; I != E; I++)
+					S1			+= sprintf(S1,"%6d",*I);
+				Msg				("%s",S);
+			}
+			{
+				string4096		S;
+				char			*S1 = S;
+				S1				+= sprintf(S1,"%s : ",tpALifeHumanAbstract2->s_name_replace);
+				INT_IT			I = m_tpSums2.begin();
+				INT_IT			E = m_tpSums2.end();
+				for ( ; I != E; I++)
+					S1			+= sprintf(S1,"%6d",*I);
+				Msg				("%s",S);
+			}
 		}
 #endif
 
@@ -529,9 +550,11 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	vfAppendItemVector	(tpALifeHumanAbstract1->children,m_tpItems1);
 	vfAppendItemVector	(tpALifeHumanAbstract2->children,m_tpItems2);
 
-#ifdef ALIFE_LOG
-	vfPrintItems		(tpALifeHumanAbstract1,m_tpItems1);
-	vfPrintItems		(tpALifeHumanAbstract2,m_tpItems2);
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		vfPrintItems	(tpALifeHumanAbstract1,m_tpItems1);
+		vfPrintItems	(tpALifeHumanAbstract2,m_tpItems2);
+	}
 #endif
 	tpALifeHumanAbstract1->m_dwTotalMoney = dwfComputeItemCost(m_tpItems1) + tpALifeHumanAbstract1->m_dwMoney;
 	tpALifeHumanAbstract2->m_dwTotalMoney = dwfComputeItemCost(m_tpItems2) + tpALifeHumanAbstract2->m_dwMoney;
@@ -539,8 +562,10 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	if (!(tpALifeHumanAbstract1->m_dwTotalMoney*tpALifeHumanAbstract2->m_dwTotalMoney)) {
 		tpALifeHumanAbstract1->m_dwTotalMoney = u32(-1);
 		tpALifeHumanAbstract2->m_dwTotalMoney = u32(-1);
-#ifdef ALIFE_LOG
-		Msg				("There is no money and valuable items to trade");
+#ifdef DEBUG
+		if (psAI_Flags.test(aiALife)) {
+			Msg			("There is no money and valuable items to trade");
+		}
 #endif
 		return;
 	}
@@ -671,9 +696,11 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 	}
 #endif
 
-#ifdef ALIFE_LOG
-	vfPrintItems		(tpALifeHumanAbstract1);
-	vfPrintItems		(tpALifeHumanAbstract2);
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		vfPrintItems		(tpALifeHumanAbstract1);
+		vfPrintItems		(tpALifeHumanAbstract2);
+	}
 #endif
 
 	tpALifeHumanAbstract1->m_dwTotalMoney = u32(-1);
@@ -709,8 +736,10 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 	}
 	
 	// trade items
-#ifdef ALIFE_LOG
-	Msg					("Selling all the items to %s",tpALifeTrader->s_name_replace);
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg				("Selling all the items to %s",tpALifeTrader->s_name_replace);
+	}
 #endif
 	tpALifeHumanAbstract->m_dwTotalMoney = tpALifeHumanAbstract->m_dwMoney;
 	{
@@ -757,8 +786,10 @@ void CSE_ALifeSimulator::vfCommunicateWithCustomer(CSE_ALifeHumanAbstract *tpALi
 #pragma todo("Dima to Dima : Process situation if trader has not enough money")
 	R_ASSERT2								(int(tpALifeTrader->m_dwMoney) >= 0,"Trader must have enough money to pay for the artefacts!");
 
-#ifdef ALIFE_LOG
-	Msg					("Assigning correct parents");
+#ifdef DEBUG
+	if (psAI_Flags.test(aiALife)) {
+		Msg					("Assigning correct parents");
+	}
 #endif
 	vfAttachGatheredItems					(tpALifeHumanAbstract,tpALifeTrader,m_tpBlockedItems1);
 	vfAttachGatheredItems					(tpALifeTrader,tpALifeHumanAbstract,m_tpBlockedItems2);

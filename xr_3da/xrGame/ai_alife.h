@@ -107,7 +107,7 @@ class CSE_ALifeSimulator :
 			void					vfFillCombatGroup			(CSE_ALifeSchedulable		*tpALifeSchedulable,		int						iGroupIndex);
 			void					vfFinishCombat				(ECombatResult				tCombatResult);
 	// trading routines
-#ifdef ALIFE_LOG
+#ifdef DEBUG
 			void					vfPrintItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract,		ITEM_P_VECTOR			&tpItemVector);
 			void					vfPrintItems				(CSE_ALifeHumanAbstract		*tpALifeHumanAbstract);
 #endif

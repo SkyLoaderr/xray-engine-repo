@@ -385,13 +385,17 @@ void CSE_ALifeHumanAbstract::vfProcessItems()
 		if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfUseful() && !(*I).second->m_bOnline)
 			if ((m_tpALife->randF(1.0f) < m_fProbability)) {
 				m_tpALife->m_tpItemVector.push_back(l_tpALifeInventoryItem);
-#ifdef ALIFE_LOG
-				Msg		("[LSS] %s detected item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					Msg		("[LSS] %s detected item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+				}
 #endif
 			}
 			else {
-#ifdef ALIFE_LOG
-				Msg		("[LSS] %s didn't detect item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+#ifdef DEBUG
+				if (psAI_Flags.test(aiALife)) {
+					Msg		("[LSS] %s didn't detect item %s on the graph point %d (probability %f, speed %f)",s_name_replace,l_tpALifeInventoryItem->s_name_replace,m_tGraphID,m_fProbability,m_fCurSpeed);
+				}
 #endif
 			}
 	}

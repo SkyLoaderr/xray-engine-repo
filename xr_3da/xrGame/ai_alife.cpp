@@ -76,8 +76,10 @@ void CSE_ALifeSimulator::vfUpdateDynamicData(CSE_ALifeDynamicObject *tpALifeDyna
 	if (l_tpALifeInventoryItem && l_tpALifeInventoryItem->bfAttached()) {
 		CSE_ALifeDynamicObject			*II = tpfGetObjectByID(l_tpALifeInventoryItem->ID_Parent);
 		if (std::find(II->children.begin(),II->children.end(),l_tpALifeInventoryItem->ID) != II->children.end()) {
-#ifdef ALIFE_LOG
-			Msg							("[LSS] Specified item [%s][%d] is already attached to the specified object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,II->s_name_replace,II->ID);
+#ifdef DEBUG
+			if (psAI_Flags.test(aiALife)) {
+				Msg						("[LSS] Specified item [%s][%d] is already attached to the specified object [%s][%d]",l_tpALifeInventoryItem->s_name_replace,l_tpALifeInventoryItem->ID,II->s_name_replace,II->ID);
+			}
 #endif
 			Debug.fatal					("[LSS] Cannot recover from the previous error!");
 		}

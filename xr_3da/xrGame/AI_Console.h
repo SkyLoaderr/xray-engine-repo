@@ -7,3 +7,4 @@ extern	Flags32		psAI_Flags;
 #define aiMotion	(1<<2)
 #define aiFrustum	(1<<3)
 #define aiFuncs		(1<<4)
+#define aiALife		(1<<5)
