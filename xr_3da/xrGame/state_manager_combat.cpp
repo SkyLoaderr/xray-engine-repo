@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "state_manager_combat.h"
+#include "state_combat_attack_weak.h"
 
 CStateManagerCombat::CStateManagerCombat	()
 {

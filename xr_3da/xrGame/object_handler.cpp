@@ -567,10 +567,8 @@ u32 CObjectHandler::object_state() const
 				case MS_HIDDEN	 : return(eObjectActionNoItems);
 				case MS_SHOWING	 : return(uid(eObjectActionShow,missile->ID()));
 				case MS_HIDING	 : return(uid(eObjectActionHide,missile->ID()));
-//				case MS_HIDING	 : return(uid(eObjectActionIdle,missile->ID()));
 				case MS_IDLE	 : return(uid(eObjectActionIdle,missile->ID()));
 				case MS_EMPTY	 : return(uid(eObjectActionEmpty1,missile->ID()));
-//				case MS_EMPTY	 : return(uid(eObjectActionIdle,missile->ID()));
 				case MS_THREATEN : return(uid(eObjectActionFire2,missile->ID()));
 				case MS_READY	 : return(uid(eObjectActionSwitch1,missile->ID()));
 				case MS_THROW	 : return(uid(eObjectActionFire1,missile->ID()));

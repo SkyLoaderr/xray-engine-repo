@@ -1264,6 +1264,37 @@
 							<File
 								RelativePath=".\state_manager_combat_inline.h">
 							</File>
+							<Filter
+								Name="StateCombatAttackWeak"
+								Filter="">
+								<File
+									RelativePath=".\state_combat_attack_weak.cpp">
+									<FileConfiguration
+										Name="Debug|Win32"
+										ExcludedFromBuild="TRUE">
+										<Tool
+											Name="VCCLCompilerTool"/>
+									</FileConfiguration>
+								</File>
+								<File
+									RelativePath=".\state_combat_attack_weak.h">
+									<FileConfiguration
+										Name="Debug|Win32"
+										ExcludedFromBuild="TRUE">
+										<Tool
+											Name="VCCustomBuildTool"/>
+									</FileConfiguration>
+								</File>
+								<File
+									RelativePath=".\state_combat_attack_weak_inline.h">
+									<FileConfiguration
+										Name="Debug|Win32"
+										ExcludedFromBuild="TRUE">
+										<Tool
+											Name="VCCustomBuildTool"/>
+									</FileConfiguration>
+								</File>
+							</Filter>
 						</Filter>
 						<Filter
 							Name="StateManagerDeath"
