@@ -207,7 +207,7 @@ IRender_Visual* CModelPool::Instance_Find(LPCSTR N)
 IRender_Visual* CModelPool::Create(const char* name)
 {
 	// Msg					("-CREATE %s",name);
-	string128 low_name;		R_ASSERT(strlen(name)<128);
+	string128 low_name;		R_ASSERT(xr_strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 	IRender_Visual* Model			= NULL;
 
@@ -240,7 +240,7 @@ IRender_Visual* CModelPool::Create(const char* name)
 
 IRender_Visual* CModelPool::Create(LPCSTR name, IReader* data)
 {
-	string128 low_name;		R_ASSERT(strlen(name)<128);
+	string128 low_name;		R_ASSERT(xr_strlen(name)<128);
 	strcpy(low_name,name);	strlwr(low_name);
 
 	// 1. Search for already loaded model
