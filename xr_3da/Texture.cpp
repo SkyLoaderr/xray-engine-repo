@@ -123,6 +123,60 @@ IC void	Reduce				(int& w, int& h, int& l, int& skip)
 	if (h<1)	h=1;
 }
 
+ENGINE_API IDirect3DBaseTexture9*	TW_LoadTextureFromTexture
+(
+	IDirect3DBaseTexture9*	t_from,
+	D3DFORMAT&				t_dest_fmt,
+	u32						levels_2_skip,
+	u32&					w,
+	u32&					h
+)
+{
+	// Calculate levels & dimensions
+	IDirect3DBaseTexture9*	t_dest			= NULL;
+	D3DSURFACE_DESC			t_from_desc0	;
+	R_CHK					(t_from->GetLevelDesc	(0,&t_from_desc0));
+	int levels_exist		= t_from->GetLevelCount();
+	int top_width			= t_from_desc0.Width;
+	int top_height			= t_from_desc0.Height;
+	Reduce					(top_width,top_height,levels_exist,levels_2_skip);
+
+	// Create HW-surface
+	if (D3DX_DEFAULT=t_dest_fmt)	t_dest_fmt = T_sysmem_desc0.Format;
+	R_CHK					(D3DXCreateTexture(
+		HW.pDevice,
+		top_width,top_height,
+		levels_exist,0,t_dest_fmt,
+		D3DPOOL_MANAGED,&t_dest
+		));
+
+	// Copy surfaces & destroy temporary
+	IDirect3DTexture9* T_src= t_from;
+	IDirect3DTexture9* T_dst= t_dest;
+
+	int		L_src			= T_src->GetLevelCount	()-1;
+	int		L_dst			= T_dst->GetLevelCount	()-1;
+	for (; L_dst>=0; L_src--,L_dst--)
+	{
+		// Get surfaces
+		IDirect3DSurface9		*S_src, *S_dst;
+		R_CHK	(T_src->GetSurfaceLevel	(L_src,&S_src));
+		R_CHK	(T_dst->GetSurfaceLevel	(L_dst,&S_dst));
+
+		// Copy
+		R_CHK	(D3DXLoadSurfaceFromSurface(S_dst,NULL,NULL,S_src,NULL,NULL,D3DX_FILTER_NONE,0));
+
+		// Release surfaces
+		_RELEASE				(S_src);
+		_RELEASE				(S_dst);
+	}
+
+	// OK
+	w						= top_width;
+	h						= top_height;
+	return					t_dest;
+}
+
 ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
 (
 	u32&				mem,
@@ -220,51 +274,11 @@ _DDS_2D:
 				));
 			FS.r_close				(S);
 
-			// Calculate levels & dimensions
-			D3DSURFACE_DESC			T_sysmem_desc0;
-			R_CHK					(T_sysmem->GetLevelDesc	(0,&T_sysmem_desc0));
-			int levels_2_skip		= psTextureLOD;
-			int levels_exist		= T_sysmem->GetLevelCount();
-			int top_width			= T_sysmem_desc0.Width;
-			int top_height			= T_sysmem_desc0.Height;
-			D3DFORMAT F				= T_sysmem_desc0.Format;
-			Reduce					(top_width,top_height,levels_exist,levels_2_skip);
-
-			// Create HW-surface
-			R_CHK					(D3DXCreateTexture(
-				HW.pDevice,
-				top_width,top_height,
-				levels_exist,0,F,
-				D3DPOOL_MANAGED,&pTexture2D
-				));
-
-			// Copy surfaces & destroy temporary
-			IDirect3DTexture9* T_src= T_sysmem;
-			IDirect3DTexture9* T_dst= pTexture2D;
-
-			int		L_src			= T_src->GetLevelCount	()-1;
-			int		L_dst			= T_dst->GetLevelCount	()-1;
-			for (; L_dst>=0; L_src--,L_dst--)
-			{
-				// Get surfaces
-				IDirect3DSurface9		*S_src, *S_dst;
-				R_CHK	(T_src->GetSurfaceLevel	(L_src,&S_src));
-				R_CHK	(T_dst->GetSurfaceLevel	(L_dst,&S_dst));
-
-				// Copy
-				R_CHK	(D3DXLoadSurfaceFromSurface(S_dst,NULL,NULL,S_src,NULL,NULL,D3DX_FILTER_NONE,0));
-
-				// Release surfaces
-				_RELEASE				(S_src);
-				_RELEASE				(S_dst);
-			}
-
+			pTexture2D				= TW_LoadTextureFromTexture(T_sysmem,IMG.Format,psTextureLOD,dwWidth,dwHeight);
 			_RELEASE				(T_sysmem);
 
 			// OK
-			dwWidth					= top_width;
-			dwHeight				= top_height;
-			fmt						= F;
+			fmt						= IMG.Format;
 			return					pTexture2D;
 		}
 	}
@@ -280,7 +294,7 @@ _BUMP:
 			D3DX_DEFAULT,D3DX_DEFAULT,
 			D3DX_DEFAULT,0,
 			D3DFMT_A8R8G8B8,
-			D3DPOOL_SCRATCH,
+			D3DPOOL_SYSTEMMEM,
 			D3DX_DEFAULT,
 			D3DX_DEFAULT,
 			0,&IMG,0,
@@ -289,40 +303,48 @@ _BUMP:
 		FS.r_close				(S);
 
 		// Create HW-surface
-		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &pTexture2D));
+		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM, &pTexture2D));
 		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,0,D3DX_CHANNEL_RED,5.f));
 
 		// Transfer gloss-map
-		if (1)
-		{
-			LPDIRECT3DTEXTURE9			tDest	= pTexture2D;
-			LPDIRECT3DTEXTURE9			tSrc	= T_sysmem;
-			DWORD mips							= tDest->GetLevelCount();
-			R_ASSERT							(mips == tSrc->GetLevelCount());
+		LPDIRECT3DTEXTURE9			tDest	= pTexture2D;
+		LPDIRECT3DTEXTURE9			tSrc	= T_sysmem;
+		DWORD mips							= tDest->GetLevelCount();
+		R_ASSERT							(mips == tSrc->GetLevelCount());
 
-			for (DWORD i = 0; i < mips; i++)	{
-				D3DLOCKED_RECT				Rsrc,Rdst;
-				D3DSURFACE_DESC				desc;
+		for (DWORD i = 0; i < mips; i++)	{
+			D3DLOCKED_RECT				Rsrc,Rdst;
+			D3DSURFACE_DESC				desc;
 
-				tDest->GetLevelDesc			(i, &desc);
+			tDest->GetLevelDesc			(i, &desc);
+			tSrc->LockRect				(i,&Rsrc,0,0);
+			tDest->LockRect				(i,&Rdst,0,0);
 
-				tSrc->LockRect				(i,&Rsrc,0,0);
-				tDest->LockRect				(i,&Rdst,0,0);
-
-				for (u32 y = 0; y < desc.Height; y++)	{
-					for (u32 x = 0; x < desc.Width; x++)	{
-						DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
-						DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
-						DWORD	mask	= DWORD(0xff) << DWORD(24);
-						pDst			= (pDst& (~mask)) | (pSrc&mask);
-					}
+			for (u32 y = 0; y < desc.Height; y++)	{
+				for (u32 x = 0; x < desc.Width; x++)	{
+					DWORD&	pSrc	= *(((DWORD*)((BYTE*)Rsrc.pBits + (y * Rsrc.Pitch)))+x);
+					DWORD&	pDst	= *(((DWORD*)((BYTE*)Rdst.pBits + (y * Rdst.Pitch)))+x);
+					pDst			= color_rgba
+						(
+						color_get_R(pDst),
+						color_get_G(pDst),
+						color_get_B(pDst),
+						color_get_A(pSrc)
+						);
 				}
-
-				tDest->UnlockRect			(i);
-				tSrc->UnlockRect			(i);
 			}
+
+			tDest->UnlockRect			(i);
+			tSrc->UnlockRect			(i);
 		}
 		_RELEASE	(T_sysmem);
+
+		// Compress
+		fmt								= D3DFMT_DXT5;
+		IDirect3DTexture9*		T_cmp	= TW_LoadTextureFromTexture(pTexture2D,fmt,psTextureLOD,dwWidth,dwHeight);
+		_RELEASE						(pTexture2D);
+		pTexture2D						= T_cmp;
+
 		return		pTexture2D;
 	}
 _BUMP_from_base:
@@ -340,7 +362,7 @@ _BUMP_from_base:
 			D3DX_DEFAULT,D3DX_DEFAULT,
 			D3DX_DEFAULT,0,
 			D3DFMT_A8R8G8B8,
-			D3DPOOL_SCRATCH,
+			D3DPOOL_SYSTEMMEM,
 			D3DX_DEFAULT,
 			D3DX_DEFAULT,
 			0,&IMG,0,
@@ -349,7 +371,7 @@ _BUMP_from_base:
 		FS.r_close				(S);
 
 		// Create HW-surface
-		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &pTexture2D));
+		R_CHK(D3DXCreateTexture		(HW.pDevice,IMG.Width,IMG.Height,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_SYSTEMMEM, &pTexture2D));
 		R_CHK(D3DXComputeNormalMap	(pTexture2D,T_sysmem,0,D3DX_NORMALMAP_COMPUTE_OCCLUSION,D3DX_CHANNEL_LUMINANCE,5.f));
 
 		// Transfer gloss-map
@@ -384,6 +406,13 @@ _BUMP_from_base:
 			}
 		}
 		_RELEASE	(T_sysmem);
+
+		// Compress
+		fmt								= D3DFMT_DXT5;
+		IDirect3DTexture9*		T_cmp	= TW_LoadTextureFromTexture(pTexture2D,fmt,psTextureLOD,dwWidth,dwHeight);
+		_RELEASE						(pTexture2D);
+		pTexture2D						= T_cmp;
+
 		return		pTexture2D;
 	}
 }
