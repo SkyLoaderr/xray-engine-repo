@@ -296,7 +296,7 @@ void __cdecl clMsg( const char *format, ...)
 	vsprintf( buf, format, mark );
 
 	char _out_	[256];
-	strconcat	(_out_,"       | ", buf );   
+	strconcat	(_out_,"    |   | ", buf );   
 	LOut		(_out_);
 }
 
