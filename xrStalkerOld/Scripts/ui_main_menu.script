@@ -159,7 +159,7 @@ end
 
 function main_menu:OnButton_save_clicked()
 	local dlg = ui_save_dialog.save_dialog()
-	self:GetHolder():start_stop_menu(dlg, true)
+	level:start_stop_menu(dlg, true)
 end
 
 function main_menu:OnButton_findsrv()
@@ -236,7 +236,7 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	
 	if bind == key_bindings.kQUIT then
 		if level.present() then
-			self:GetHolder():start_stop_menu(dlg, true)
+			self:GetHolder():start_stop_menu(self, true)
 		end
 	end
 	
