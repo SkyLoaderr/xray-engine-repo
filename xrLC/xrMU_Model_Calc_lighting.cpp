@@ -81,7 +81,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 		v_trans					/=	float(V->adjacent.size());
 		float v_inv				=	1.f-v_amb;
 
-		base_color				vC;
+		base_color_c			vC;
 		Fvector					vP,vN;
 		xform.transform_tiny	(vP,V->P);
 		Rxform.transform_dir	(vN,V->N);
@@ -101,7 +101,7 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 		vC._tmp_				=	v_trans;
 		if (flags&LP_dont_hemi) ;
 		else					vC.hemi	+=	v_amb;
-		V->C					=	vC;
+		V->C._set				(vC);
 
 		// Search
 		const float key			= V->P.x;
@@ -142,22 +142,29 @@ void xrMU_Model::calc_lighting	(xr_vector<base_color>& dest, Fmatrix& xform, CDB
 		VL.erase			(std::unique(VL.begin(),VL.end()),VL.end());
 
 		// Calc summary color
-		base_color	C;
+		base_color_c	C;
 		for (int v=0; v<int(VL.size()); v++)
-			C.max		(VL[v]->C);
+		{
+			base_color_c	vC;
+			VL[v]->C._get	(vC);
+			C.max			(vC);
+		}
 
 		// Calculate final vertex color
 		for (u32 v=0; v<int(VL.size()); v++)
 		{
+			base_color_c		vC;
+			VL[v]->C._get		(vC);
+
 			// trans-level
-			float	level		= VL[v]->C._tmp_;
+			float	level		= vC._tmp_;
 
 			// 
-			base_color			R;
-			R.lerp				(VL[v]->C,C,level);
-			R.max				(VL[v]->C);
-			VL[v]->C			= R;
-			VL[v]->C.mul		(.5f);
+			base_color_c		R;
+			R.lerp				(vC,C,level);
+			R.max				(vC);
+			R.mul				(.5f);
+			VL[v]->C._set		(R);
 		}
 	}
 

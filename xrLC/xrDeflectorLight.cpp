@@ -40,7 +40,7 @@ void Jitter_Select(Fvector2* &Jitter, u32& Jcount)
 	}
 }
 
-void GET			(lm_layer &lm, int x, int y, u32 ref, u32 &count,  base_color& dst)
+void GET			(lm_layer &lm, int x, int y, u32 ref, u32 &count,  base_color_c& dst)
 {
 	// wrap pixels
 	if (x<0) return;
@@ -52,8 +52,10 @@ void GET			(lm_layer &lm, int x, int y, u32 ref, u32 &count,  base_color& dst)
 	u32		id	= y*lm.width + x;
 	if (lm.marker[id]<=ref)		return;
 
-	dst.add	(lm.surface[id]);
-	count	++;
+	base_color_c		C;
+	lm.surface[id]._get	(C);
+	dst.add				(C);
+	count				++;
 }
 
 BOOL ApplyBorders	(lm_layer &lm, u32 ref) 
@@ -68,7 +70,7 @@ BOOL ApplyBorders	(lm_layer &lm, u32 ref)
 			{
 				if (lm.marker[y*lm.width+x]==0) 
 				{
-					base_color	clr;
+					base_color_c	clr;
 					u32			C	=0;
 					GET(lm,x-1,y-1,ref,C,clr);
 					GET(lm,x  ,y-1,ref,C,clr);
@@ -83,7 +85,7 @@ BOOL ApplyBorders	(lm_layer &lm, u32 ref)
 
 					if (C) {
 						clr.scale			(C);
-						result.surface		[y*lm.width+x]=clr;
+						result.surface		[y*lm.width+x]._set(clr);
 						result.marker		[y*lm.width+x]=u8(ref);
 						bNeedContinue		= TRUE;
 					}
@@ -189,7 +191,7 @@ float rayTrace	(CDB::COLLIDER* DB, CDB::MODEL* MDL, R_Light& L, Fvector& P, Fvec
 	return 0;
 }
 
-void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags, Face* skip)
+void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color_c &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags, Face* skip)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.mad	(P,N,0.01f);

@@ -12,10 +12,11 @@ void lm_layer::Pack		(xr_vector<u32>& dest)
 	xr_vector<u32>::iterator		W=dest.begin();
 	for (; I!=E; I++)
 	{
-		u8	_r	= u8_clr(I->rgb.x);
-		u8	_g	= u8_clr(I->rgb.y);
-		u8	_b	= u8_clr(I->rgb.z);
-		u8	_d	= u8_clr(I->sun);
+		base_color_c	C; I->_get(C);
+		u8	_r	= u8_clr(C.rgb.x);
+		u8	_g	= u8_clr(C.rgb.y);
+		u8	_b	= u8_clr(C.rgb.z);
+		u8	_d	= u8_clr(C.sun);
 		*W++	= color_rgba(_r,_g,_b,_d);
 	}
 }
