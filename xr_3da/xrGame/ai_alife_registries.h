@@ -355,7 +355,7 @@ public:
 	{
 		if (bRemoveChild) {
 			xr_vector<u16>				&tChildren = tServerEntity.children;
-			xr_vector<u16>::iterator	I = find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
+			xr_vector<u16>::iterator	I = std::find	(tChildren.begin(),tChildren.end(),tpALifeItem->ID);
 			VERIFY					(I != tChildren.end());
 			tChildren.erase			(I);
 			tpALifeItem->ID_Parent	= 0xffff;

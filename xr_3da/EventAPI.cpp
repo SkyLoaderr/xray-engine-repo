@@ -27,7 +27,7 @@ public:
 
 	void	Attach(CEventBase* H)
 	{
-		if (find(Handlers.begin(),Handlers.end(),H)==Handlers.end())
+		if (std::find(Handlers.begin(),Handlers.end(),H)==Handlers.end())
 			Handlers.push_back(H);
 	}
 	void	Detach(CEventBase* H)
