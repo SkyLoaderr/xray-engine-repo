@@ -86,6 +86,7 @@ public:
 	u32								m_dwSpawnGroup;
 	bool							m_bDirectControl;
 	u32								m_tNodeID;
+	string64						m_caGroupControl;
 
 									CSE_ALifeObject	(LPCSTR caSection) : CSE_Abstract(caSection)
 	{
@@ -99,6 +100,7 @@ public:
 		m_dwSpawnGroup				= 0;
 		m_bDirectControl			= true;
 		m_tNodeID					= u32(-1);
+		strcpy						(m_caGroupControl,"");
 	};
 
 	virtual void					STATE_Write		(NET_Packet &tNetPacket);

@@ -23,6 +23,9 @@ CSE_Abstract *F_entity_Create			(LPCSTR caSection)
 		case CLSID_OBJECT_ACTOR:		return xr_new<CSE_ALifeCreatureActor>			(caSection);          	// Visualed
 		case CLSID_OBJECT_DUMMY:		return xr_new<CSE_Dummy>						(caSection);
 		case CLSID_OBJECT_HLAMP:		return xr_new<CSE_ALifeObjectHangingLamp>		(caSection);            // Visualed
+		
+		case CLSID_AI_SPAWN_GROUP:		return xr_new<CSE_SpawnGroup>					(caSection);
+		
 		case CLSID_AI_GRAPH:			return xr_new<CSE_ALifeGraphPoint>				(caSection);			
 		case CLSID_AI_CROW:				return xr_new<CSE_ALifeMonsterCrow>				(caSection);            // Visualed
 		case CLSID_AI_RAT:				return xr_new<CSE_ALifeMonsterRat>				(caSection);			// Visualed

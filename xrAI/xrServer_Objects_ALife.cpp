@@ -321,6 +321,7 @@ void CSE_ALifeObject::STATE_Write			(NET_Packet &tNetPacket)
 	tNetPacket.w_u32			(m_bDirectControl);
 	tNetPacket.w_u32			(m_tNodeID);
 	tNetPacket.w				(&m_tSpawnID,	sizeof(m_tSpawnID));
+	tNetPacket.w_string			(m_caGroupControl);
 }
 
 void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
@@ -345,6 +346,8 @@ void CSE_ALifeObject::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 		tNetPacket.r_u32		(m_tNodeID);
 	if (m_wVersion > 22)
 		tNetPacket.r			(&m_tSpawnID,	sizeof(m_tSpawnID));
+	if (m_wVersion > 23)
+		tNetPacket.r_string		(m_caGroupControl);
 }
 
 void CSE_ALifeObject::UPDATE_Write			(NET_Packet &tNetPacket)
@@ -359,8 +362,8 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref, items);
-	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),		&m_ucProbability,	0,100);
-	PHelper.CreateU32			(items,	PHelper.PrepareKey(pref, "ALife\\Spawn group ID"),	&m_dwSpawnGroup,	0,0xffffffff);
+	PHelper.CreateU8			(items,	PHelper.PrepareKey(pref, "ALife\\Probability"),			&m_ucProbability,	0,100);
+	PHelper.Create...			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Group control"),	&m_caGroupControl,  pSettings->r_string("GroupControlSection"));
 }
 #endif
 
@@ -549,13 +552,13 @@ void CSE_ALifeAnomalousZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeAnomalousZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited1::FillProp		(pref,items);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),				&m_maxPower,0.f,1000.f);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),		&m_attn,0.f,100.f);
-    PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),			&m_period,20,10000);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),			&m_fRadius,0.f,100.f);
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Power"),								&m_maxPower,0.f,1000.f);
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Attenuation"),						&m_attn,0.f,100.f);
+    PHelper.CreateU32			(items,PHelper.PrepareKey(pref,s_name,"Period"),							&m_period,20,10000);
+    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Radius"),							&m_fRadius,0.f,100.f);
 	for (u16 i=0; i<m_wItemCount; i++)
-		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,s_name,"Artefact Weights",m_cppArtefactSections[i]), m_dwaWeights + i,20,10000);
-    PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"Birth probability"),&m_fBirthProbability,0.f,1.f);
+		PHelper.CreateU32		(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact Weights",			m_cppArtefactSections[i]), m_dwaWeights + i,20,10000);
+	PHelper.CreateFloat			(items,PHelper.PrepareKey(pref,s_name,"ALife\\Artefact birth probability"),	&m_fBirthProbability,0.f,1.f);
 }
 #endif
 

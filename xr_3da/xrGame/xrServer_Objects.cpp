@@ -538,3 +538,39 @@ void CSE_Temporary::FillProp				(LPCSTR pref, PropItemVec& values)
 };
 
 #endif
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_SpawnGroup
+////////////////////////////////////////////////////////////////////////////
+
+CSE_SpawnGroup::CSE_SpawnGroup				(LPCSTR caSection) : CSE_Abstract(caSection)
+{
+	m_fGroupProbability						= 1.f;
+}
+
+void CSE_SpawnGroup::STATE_Read				(NET_Packet	&tNetPacket, u16 size)
+{
+	tNetPacket.r_float						(m_fGroupProbability);
+};
+
+void CSE_SpawnGroup::STATE_Write			(NET_Packet	&tNetPacket)
+{
+	tNetPacket.w_float						(m_fGroupProbability);
+};
+
+void CSE_SpawnGroup::UPDATE_Read			(NET_Packet	&tNetPacket)
+{
+};
+
+void CSE_SpawnGroup::UPDATE_Write			(NET_Packet	&tNetPacket)
+{
+};
+
+#ifdef _EDITOR
+void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProp			(pref,values);
+	PHelper.CreateFloat			(values,PHelper.PrepareKey(pref,s_name,"ALife\\Group probability"),	&m_fGroupProbability,0.f,1.f);
+};
+
+#endif
