@@ -41,7 +41,7 @@ public:
 	virtual	void			reinit					();
 	virtual	void			reload					(LPCSTR section);
 	virtual	void			update					(float time_delta);
-			ALife::ERelationType get_relation		(const CEntityAlive *tpEntityAlive) const;
+
 	template <typename _predicate>
 	IC		void			fill_enemies			(const _predicate &predicate) const;
 	IC		bool			visible					(const CObject *object) const;
