@@ -26,9 +26,9 @@ public:
 		D_OBJECT_PAIR_IT			I = m_tObjectRegistry.find(tObjectID);
 		
 		if (!bNoAssert)
-			R_ASSERT2				(I != m_tObjectRegistry.end(),"Specified object hasn't been found in the Object registry!");
+			R_ASSERT2				(m_tObjectRegistry.end() != I,"Specified object hasn't been found in the Object registry!");
 		else
-			if (I == m_tObjectRegistry.end())
+			if (m_tObjectRegistry.end() == I)
 				return				(0);
 
 		return						((*I).second);
@@ -51,9 +51,9 @@ public:
 		EVENT_PAIR_IT				I = m_tEventRegistry.find(tEventID);
 
 		if (!bNoAssert)
-			R_ASSERT2				(I != m_tEventRegistry.end(),"Specified event hasn't been found in the Event registry!");
+			R_ASSERT2				(m_tEventRegistry.end() != I,"Specified event hasn't been found in the Event registry!");
 		else
-			if (I == m_tEventRegistry.end())
+			if (m_tEventRegistry.end() == I)
 				return				(0);
 
 		return						((*I).second);
@@ -78,9 +78,9 @@ public:
 		TASK_PAIR_IT				I = m_tTaskRegistry.find(tTaskID);
 
 		if (!bNoAssert)
-			R_ASSERT2				(I != m_tTaskRegistry.end(),"Specified task hasn't been found in the Task registry!");
+			R_ASSERT2				(m_tTaskRegistry.end() != I,"Specified task hasn't been found in the Task registry!");
 		else
-			if (I == m_tTaskRegistry.end())
+			if (m_tTaskRegistry.end() == I)
 				return				(0);
 
 		return						((*I).second);
