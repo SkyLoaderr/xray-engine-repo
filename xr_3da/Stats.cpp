@@ -128,8 +128,8 @@ void CStats::Show()
 		F.OutNext	("  SP/SA:     %d/%d",  dwSND_Played,dwSND_Allocated);
 		F.OutSkip	();
 		F.OutNext	("Input:       %2.2fms",Input.result);
-		F.OutNext	("clRAY:       %2.2fms, %d",clRAY.result,clRAY.count);
-		F.OutNext	("clBOX:       %2.2fms, %d",clBOX.result,clBOX.count);
+		F.OutNext	("clRAY:       %2.2fms, %d, %2.1f",clRAY.result,clRAY.count,r_ps);
+		F.OutNext	("clBOX:       %2.2fms, %d, %2.1f",clBOX.result,clBOX.count,b_ps);
 		F.OutNext	("clFRUSTUM:   %2.2fms, %d",clFRUSTUM.result,clFRUSTUM.count);
 		F.OutSkip	();
 		F.OutNext	("netClient:   %2.2fms, %d",netClient.result,netClient.count);
