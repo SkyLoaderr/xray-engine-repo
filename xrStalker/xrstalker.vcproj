@@ -504,6 +504,9 @@
 					RelativePath=".\motion_icon.xml">
 				</File>
 				<File
+					RelativePath=".\Config\ui\motion_icon.xml">
+				</File>
+				<File
 					RelativePath=".\Config\ui\news.xml">
 				</File>
 				<File
@@ -1430,9 +1433,6 @@
 				</File>
 			</Filter>
 		</Filter>
-		<File
-			RelativePath=".\Config\ui\motion_icon.xml">
-		</File>
 	</Files>
 	<Globals>
 	</Globals>
