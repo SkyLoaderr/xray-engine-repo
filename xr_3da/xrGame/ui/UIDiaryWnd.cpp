@@ -317,7 +317,6 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItemSub->SetValue(idJobsCurrent);
 	pTVItemSub->SetFont(m_pTreeItemFont);
 	pTVItemSub->SetReadedColor(m_uTreeItemColor);
-//	pTVItemSub->SetUnreadedColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 	m_pActiveJobs = pTVItemSub;
 
@@ -334,7 +333,6 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItemSub->SetValue(idJobsFailed);
 	pTVItemSub->SetFont(m_pTreeItemFont);
 	pTVItemSub->SetReadedColor(m_uTreeItemColor);
-//	pTVItemSub->SetUnreadedColor(m_uTreeItemColor);
 	pTVItem->AddItem(pTVItemSub);
 
 	pTVItem->MarkArticleAsRead(true);
@@ -345,7 +343,6 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetReadedColor(m_uTreeRootColor);
-//	pTVItem->SetUnreadedColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 	m_pContractsTreeItem = pTVItem;
 	pTVItem->MarkArticleAsRead(true);
@@ -356,29 +353,18 @@ void CUIDiaryWnd::InitTreeView()
 	pTVItem->SetRoot(true);
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetReadedColor(m_uTreeRootColor);
-//	pTVItem->SetUnreadedColor(m_uTreeRootColor);
 	UITreeView.AddItem(pTVItem);
 	m_pActorDiaryRoot = pTVItem;
 	pTVItem->MarkArticleAsRead(true);
 
 	// News section
 	pTVItem = xr_new<CUITreeViewItem>();
-	pTVItem->SetText(*stbl("News & Events"));
-	pTVItem->SetRoot(true);
+	pTVItem->SetText(*stbl("News"));
 	pTVItem->SetFont(m_pTreeRootFont);
 	pTVItem->SetReadedColor(m_uTreeRootColor);
-//	pTVItem->SetUnreadedColor(m_uTreeRootColor);
+	pTVItem->SetValue(idNews);
 	UITreeView.AddItem(pTVItem);
 	m_pNews = pTVItem;
-
-	pTVItemSub = xr_new<CUITreeViewItem>();
-	pTVItemSub->SetFont(m_pTreeItemFont);
-	pTVItemSub->SetValue(idNews);
-	pTVItemSub->SetReadedColor(m_uTreeItemColor);
-//	pTVItemSub->SetUnreadedColor(m_uTreeItemColor);
-	pTVItemSub->SetText(*stbl("News"));
-	pTVItem->AddItem(pTVItemSub);
-	pTVItem->MarkArticleAsRead(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
