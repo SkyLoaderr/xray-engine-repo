@@ -201,7 +201,7 @@ void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float spee
 			else		  PathDIrPoint(path,index,m_path_distance,1.f,dir);
 
 
-			//travel_point=(u32)index;
+			travel_point=(u32)index;
 			m_start_index=index;
 			dir.y=0.f;
 			m_character->SetMaximumVelocity(speed);
