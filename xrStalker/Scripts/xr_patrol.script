@@ -94,10 +94,11 @@ function action_single_patrol:initialize ()
     self.object:set_node_evaluator        ()
     self.object:set_path_evaluator        ()
     self.object:set_desired_position      ()
-    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    self.object:set_item                  (object.activate, self.object:best_weapon ())
     self.object:set_detail_path_type      (move.line)
     self.object:set_body_state            (move.standing)
     self.object:set_movement_type         (move.walk)
+           --self.object:add_animation ("walk_poisk_0", true)    --!!!
     self.object:set_path_type             (game_object.patrol_path)
     self.object:set_patrol_path           (self.a.patrol_path, patrol.nearest, patrol.continue, true)
     self.object:set_mental_state          (anim.free)
@@ -158,7 +159,13 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:execute ()
     action_base.execute (self)
-    self.object:set_item                  (object.idle, self.object:best_weapon ())
+    
+    local wpn = self.object:active_item ()
+    if wpn == nil or isWeapon (wpn:clsid ()) == false then
+       self.object:set_item                  (object.activate, self.object:best_weapon ())
+    else
+       self.object:set_item                  (object.idle, self.object:best_weapon ())     
+    end   
     
     if self:check_return () == true then return end
     
@@ -174,6 +181,7 @@ function action_single_patrol:execute ()
         if self.object:animation_count () == 0 then
            self.stage = 0
            self.object:set_movement_type (move.walk) 
+           --self.object:add_animation ("walk_poisk_0", true)    --!!!
            self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
            if patrol (self.object:patrol()):flag (self.waypoint, 0) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 2, 0)
@@ -183,12 +191,15 @@ function action_single_patrol:execute ()
         if self:process_radio () == true then
            self.stage = 0
            self.object:set_movement_type (move.walk) 
+           --self.object:add_animation ("walk_poisk_0", true)    --!!!
            self.object:set_patrol_path   (self.a.patrol_path, patrol.nearest, patrol.continue, true)
            if patrol (self.object:patrol()):flag (self.waypoint, 2) == true and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
            	  self:speak (commander_snd, 1, 0)
            end   
         end   
     elseif self.stage == 3 then    
+           self.object:set_mental_state (anim.danger)
+           self.object:set_movement_type (move.run)
            self:set_command (leader_return)
     end    
 end
@@ -270,12 +281,15 @@ function action_single_patrol:check_return ()
         if xr_motivator.storage[self.object:id()].followers[count].npc:alive () == false then
            if self.a.escape_path == nil then 
               self.a.enabled = false
+              self.object:clear_animations ()
               return true
            end         
+           self.object:clear_animations ()
            self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, true) 
            self.object:set_mental_state (anim.danger)
            self.object:set_movement_type (move.run)
            self:set_command (leader_return)
+           self.object:clear_animations ()
            self.stage = 3 
            return true
         end
@@ -288,6 +302,8 @@ function action_single_patrol:set_command (command)
     if size == 0 then return end
     for a = 1, size, 1 do
         xr_motivator.storage[self.object:id()].followers[a].leader_command = command
+        xr_motivator.storage[self.object:id()].followers[a].npc:motivation_action_manager ():action (xr_actions_id.sidor_act_follower_base + 1):recalculate_position ()
+        --recalculate_position
     end
 end
 ---------------------------------------------------------------------------------------------------------------------
@@ -306,6 +322,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
     
     if ptr:flag (index, 0) == true then
        self.object:set_movement_type (move.stand)
+       self.object:clear_animations ()
        self:set_animation ()
        self:set_look_dir ()
        self:set_command (leader_stop)
@@ -315,6 +332,7 @@ function action_single_patrol:move_callback (obj, action_type, index)
    
     if ptr:flag (index, 1) then
        self.object:set_movement_type (move.stand)
+       self.object:clear_animations ()
        --self:set_animation ()
        self:radio ()
        self:set_look_dir ()
@@ -336,21 +354,21 @@ function action_single_patrol:set_look_dir ()
     local size = table.getn (xr_motivator.storage[self.object:id()].followers)
     if size == 0 then return end
     
-    for a = 1, size, 1 do
-        xr_motivator.storage[self.object:id()].followers[a].look_dir = xr_motivator.storage[self.object:id()].followers[a].direction
-    end    
-    
---    local side = false
-    
 --    for a = 1, size, 1 do
---        if side == true then 
---           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), -45.0)
---           side = false
---        else
---           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), 45.0)
---           side = true
---        end   
---    end
+--        xr_motivator.storage[self.object:id()].followers[a].look_dir = xr_motivator.storage[self.object:id()].followers[a].direction
+--    end    
+    
+    local side = false
+    
+    for a = 1, size, 1 do
+        if side == true then 
+           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), -45.0)
+           side = false
+        else
+           xr_motivator.storage[self.object:id()].followers[a].look_dir = this.vector_rotate_y (self.object:direction (), 45.0)
+           side = true
+        end   
+    end
 end
 ---------------------------------------------------------------------------------------------------------------------
 function action_single_patrol:set_animation ()

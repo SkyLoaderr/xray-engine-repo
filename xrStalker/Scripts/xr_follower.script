@@ -335,6 +335,21 @@ function action_follow:update_stage_1 ()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function action_follow:update_stage_2 ()
+
+    if self.a.leader:alive () == false or self.a.leader_command == leader_return then 
+       self.object:clear_animations ()
+       if self.a.escape_path == nil then 
+          self.a.enabled = false
+          return
+       end         
+       self.object:set_path_type (game_object.patrol_path)
+       self.object:set_patrol_path (self.a.escape_path, patrol.nearest, patrol.stop, false)
+       self.object:set_mental_state (anim.danger)
+       self.object:set_movement_type (move.run)
+       self.stage = 3 
+       return
+    end   
+
     if self.a.leader_command == leader_move then
        self.stage = 0
        self.object:clear_animations ()
