@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 18:46:35 , by user : Oles , from computer : OLES
 // TextureManager.cpp: implementation of the CShaderManager class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -363,6 +364,32 @@ void	CShaderManager::OnDeviceCreate(void)
 	if (!Device.bReady) return;
 	cache.Invalidate	();
 	
+	CCompressedStream		FS("shaders.xr","xrSHADER");
+	char					name[256];
+	
+	// Load constants
+	{
+		CStream*	fs		= FS.OpenChunk(0);
+		while (!fs->Eof())	{
+			fs->RstringZ	(name);
+			CConstant*		C = new CConstant;
+			C->Load			(fs);
+			constants.insert(make_pair(strdup(name),C));
+		}
+		fs->Close();
+	}
+	
+	// Load matrices
+	{
+		CStream*	fs		= FS.OpenChunk(1);
+		while (!fs->Eof())	{
+			fs->RstringZ	(name);
+			CMatrix*		M = new CMatrix;
+			M->Load			(fs);
+			matrices.insert	(make_pair(strdup(name),M));
+		}
+		fs->Close();
+	}
 }
 
 void	CShaderManager::OnFrameEnd	()
