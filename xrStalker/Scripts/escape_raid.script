@@ -16,6 +16,7 @@ function add_member (npc)
     end    
     --нету :( Внесем нахала в черный список.
     table.insert (members, npc.id)
+    printf ("Stalker %s is added to list", npc:name ())
     -- и изгоним из мира живых
     this.switch_offline (npc.id)    
 end
@@ -38,6 +39,7 @@ function escape_raid:__init (zone, ini)
     -- абсолютный стандарт
     self.ini_ok = true
     printf ("Zone %s is added to binder", zone:name ())
+    self.time = 0
 end
 -----------------------
 function escape_raid:on_enter (obj)
@@ -46,12 +48,10 @@ function escape_raid:on_enter (obj)
     if ini == nil or ini:section_exist ("escape_raid") == false then
        return
     end
-    
     -- и сколько же вас разбрелось ?
     local size = table.getn (moved)
     -- никого :(
     if size == 0 then return end
-    
     --пороемся в реестре покинувших зону и отметим вход
     for a = 1, size, 1 do
         if moved[a].id == obj:id () then
@@ -76,15 +76,23 @@ function escape_raid:on_enter (obj)
            end
         end   
     end
+    self.time = device ():time_global ()
     -- все вернулись. По могилам !!!
     for a = 1, size, 1 do
         this.switch_offline (moved[a].id)
     end
     -- реестр умножим на 0
-    moved = {}           
+    moved = {}
 end
 -----------------------
-function escape_raid:on_exit (obj)
+function escape_raid:on_leave (obj)
+    if self.time ~= 0 then
+       if device ():time_global () - self.time < 10000 then 
+          return 
+       else 
+          self.time = 0  
+       end
+    end   
     -- на всякий случай проверим, а ниш ли это мужик, а то
     -- ходют тут всякие...
     local present = false
@@ -105,6 +113,7 @@ function escape_raid:on_exit (obj)
     end        
     -- зарегистрируем выход
     local t = {object = obj, id = obj:id (), out = true}
+    printf ("Stalker %s is outed", obj:name ())
     table.insert (moved, t)
 end
 
@@ -121,7 +130,6 @@ function switch_online (id)
 end
 -------------------------------------------------------------------------------------------
 function switch_offline (id)
-    if npc == nil then return end
     local sim = alife ()
     if sim ~= nil then
        sim:set_switch_online  (id, false)
