@@ -29,6 +29,9 @@ protected:
 public:
 	void		Add		(const Fvector& from, const Fvector& to, float bullet_speed, float trail_speed_factor, float start_length, float width);
 	void		Render	();
+//	void		Render	(const Fvector& pos, const Fvector& dir, float length, float width);
+	void		Render	(const Fvector& head, const Fvector& trail,float length, float width);
+
 
 	CTracer();
 	~CTracer();

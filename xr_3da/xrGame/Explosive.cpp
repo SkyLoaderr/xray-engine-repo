@@ -166,8 +166,10 @@ void CExplosive::Explode()
 			m_vEndPoint.mad(Position(), frag_dir, tracerDist);
 		
 		// добавить трассеры для полета осколков
+/*		
 		Level().Tracers.Add	(m_vCurrentShootPos,m_vEndPoint,tracerHeadSpeed,
 							 tracerTrailCoeff,tracerStartLength,tracerWidth);
+*/
 	}	
 
 	if (Remote()) return;

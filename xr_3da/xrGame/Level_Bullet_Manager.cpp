@@ -67,12 +67,12 @@ void SBullet::Init(const Fvector& position,
 CBulletManager::CBulletManager()
 {
 	m_dwStepTime = STEP_TIME;
-	Device.seqRender.Add		(this,REG_PRIORITY_LOW-1000);
+//	Device.seqRender.Add		(this,REG_PRIORITY_LOW-1000);
 }
 
 CBulletManager::~CBulletManager()
 {
-	Device.seqRender.Remove		(this);
+//	Device.seqRender.Remove		(this);
 }
 
 
@@ -198,12 +198,26 @@ bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 	return true;
 }
 
-void CBulletManager::OnRender	()
+#define TRACER_WIDTH 0.07f
+#define TRACER_LENGHT 25.f
+#define TRACER_LENGTH_TO_WIDTH_RATIO 5.f
+
+void CBulletManager::Render	()
 {
 	for(BULLET_LIST_it it = m_BulletList.begin();
 		it != m_BulletList.end(); it++)
 	{
 		SBullet* bullet = *it;
-		RCache.dbg_DrawLINE(Fidentity,bullet->prev_pos,bullet->pos,D3DCOLOR_XRGB(0,255,0));
+	//	RCache.dbg_DrawLINE(Fidentity,bullet->prev_pos,bullet->pos,D3DCOLOR_XRGB(0,255,0));
+
+		float length = TRACER_LENGHT;
+
+//		if(length>TRACER_LENGHT)
+//			length = TRACER_LENGHT;
+		float width = length>(TRACER_WIDTH*TRACER_LENGTH_TO_WIDTH_RATIO)?
+						TRACER_WIDTH:(length/TRACER_LENGTH_TO_WIDTH_RATIO);
+		
+		//tracers.Render	(bullet->pos, bullet->dir, length, width);
+		tracers.Render	(bullet->pos, bullet->prev_pos, length, width);
 	}
 }

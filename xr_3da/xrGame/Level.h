@@ -9,7 +9,6 @@
 #include "xrServer.h"
 #include "game_cl_base.h"
 #include "group.h"
-#include "tracer.h"
 #include "ai_sounds.h"
 #include "net_queue.h"
 #include "ai/ai_monster_group.h"
@@ -105,8 +104,6 @@ public:
 public:
 	svector<CTeam,maxTeams>		Teams;
 	CSquadManager				SquadMan;
-
-	CTracer						Tracers;
 
 	// sounds
 	xr_vector<ref_sound*>		static_Sounds;

@@ -6,6 +6,7 @@
 
 
 #include "weaponammo.h"
+#include "tracer.h"
 
 
 #define STEP_TIME 33
@@ -78,7 +79,7 @@ class CLevel;
 
 
 
-class CBulletManager: public pureRender
+class CBulletManager
 {
 	friend CLevel;
 public:
@@ -90,7 +91,7 @@ public:
 	void AddBullet	(SBullet* pBullet);
 	void Update		();
 
-	virtual void OnRender ();
+	void Render		();
 
 protected:
 
@@ -125,7 +126,9 @@ protected:
 	//фиксированное время шага просчета пули
 	u32	m_dwStepTime;
 
-
 	//материал для пули и осколков (инициализируется в CLevel::Load)
 	u16 bullet_material_idx;
+
+	//отрисовка трассеров от пуль
+	CTracer tracers;
 };
