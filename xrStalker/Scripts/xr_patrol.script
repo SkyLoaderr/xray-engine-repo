@@ -784,5 +784,6 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
 end
 ----------------------------------------------------------------------------------------------------------------------
 function is_patrol_end (npc)
+    if npc == nil then return false end
     return xr_motivator.storage[npc:id()].patrol.patrol_end
 end
