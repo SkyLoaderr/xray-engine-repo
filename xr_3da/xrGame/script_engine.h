@@ -33,6 +33,7 @@ protected:
 	bool						m_reload_modules;
 
 protected:
+#ifdef XRGAME_EXPORTS
 			void				export_globals				();
 			void				export_fvector				();
 			void				export_fmatrix				();
@@ -52,6 +53,8 @@ protected:
 			void				export_motivation_management();
 			void				export_monster_info			();
 			void				export_alife				();
+#endif
+			void				export_server_entities		();
 
 public:
 								CScriptEngine				();

@@ -91,6 +91,7 @@ void CScriptEngine::export()
 	luabind::set_cast_failed_callback	(CScriptEngine::lua_cast_failed);
 	lua_atpanic							(lua(),CScriptEngine::lua_panic);
 
+#ifdef XRGAME_EXPORTS
 	export_globals						();
 	export_fvector						();
 	export_fmatrix						();
@@ -100,6 +101,9 @@ void CScriptEngine::export()
 	export_particles					();
 	export_sound						();
 	export_hit							();
+#endif
+	export_server_entities				();
+#ifdef XRGAME_EXPORTS
 	export_actions						();
 	export_ini							();
 	export_object						();
@@ -110,6 +114,7 @@ void CScriptEngine::export()
 	export_action_management			();
 	export_motivation_management		();
 	export_monster_info					();
+#endif
 
 #ifdef XRGAME_EXPORTS
 	object_factory().register_script	();
