@@ -129,7 +129,11 @@ BOOL	game_sv_CS::OnTouch			(u16 eid_who, u16 eid_what)
 
 	xrSE_Actor*			A		= dynamic_cast<xrSE_Actor*> (e_who);
 	if (A) 	{
-		game_PlayerState*	ps_who		=	get_id			(e_who->ID);
+		// player_id = entity->owner->ID			-- 
+		// entity->owner->owner == entity			-- is this entity player
+
+		game_PlayerState*	ps_who	=	get_id			(e_who->owner->ID);
+
 		// Actor touches something
 		xrSE_Weapon*	W			=	dynamic_cast<xrSE_Weapon*> (e_what);
 		if (W) 
