@@ -267,15 +267,6 @@ void CCustomMonster::shedule_Update	( u32 DT )
 	if (dt > 3) 
 		return;
 	
-//	XFORM()				= m_tServerTransform;
-//	if (!Remote()) {
-//		if ((fEntityHealth>0) || bfExecMovement())
-//			// функция должна выполняться до inherited::shedule_Update, для smooth movement
-//			Exec_Movement	(float(DT)/1000.f);  
-//	}
-//	m_tServerTransform	= XFORM();
-
-	VERIFY				(_valid(Position()));
 	// *** general stuff
 	inherited::shedule_Update	(DT);
 
@@ -386,7 +377,6 @@ void CCustomMonster::UpdateCL	()
 				}
 			}
 			
-			
 			// Signal, that last time we used interpolation
 			NET_WasInterpolating	= TRUE;
 			NET_Time				= dwTime;
@@ -396,11 +386,8 @@ void CCustomMonster::UpdateCL	()
 	if (Local() && g_Alive()) {
 #pragma todo("Dima to All : this is FAKE, network is not supported here!")
 		if (SUB_CLS_ID != CLSID_AI_RAT) {
-
-//			if (dwTime - N.dwTimeStamp > Device.dwTimeDelta)
+			
 			AI_Path.Calculate(this,NET_Last.p_pos,Position(),m_fCurSpeed,Device.fTimeDelta);
-//			else
-//				AI_Path.Calculate(this,Position(),Position(),1.f*m_fCurSpeed,float(dwTime - N.dwTimeStamp)/1000.f);
 
 			if (!bfScriptAnimation()) {
 				Fvector				dir;

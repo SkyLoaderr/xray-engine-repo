@@ -431,21 +431,8 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	if (dt > 3)
 		return;
 
-//	XFORM()				= m_tServerTransform;
-//	VERIFY				(_valid(Position()));
-//	if (!Remote()) {
-//		if ((fEntityHealth>0) || bfExecMovement())
-//			// функция должна выполняться до inherited::shedule_Update, для smooth movement
-//			//Msg				("TIME DELTA : %d",DT);
-//			Exec_Movement	(dt);  
-//	}
-//	m_tServerTransform	= XFORM();
-///ниже по коду вызывается Engine.Sheduler.Slice			(),который может перехренячить позицию полученную 
-// в Exec_Movement	(dt) взяв ее из сетевого пакета пакета который отправляется после (	uNext.p_pos			= Position();) 
-// если такое однажды получается Engine.Sheduler.Slice			() может все время устанавливать неправильную позицию
-// поетому сохраним позицию
 	Fvector				vNewPosition = Position();
-//	VERIFY				(_valid(Position()));
+	VERIFY				(_valid(Position()));
 	// *** general stuff
 	inherited::inherited::shedule_Update	(DT);
 	
