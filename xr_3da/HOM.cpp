@@ -86,10 +86,20 @@ void CHOM::Load			()
 	// Create AABB-tree
 	m_pModel			= new CDB::MODEL();
 	m_pModel->build		(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
+	
+	// Debug
+	HW.pDevice->CreateTexture(occ_dim_0,occ_dim_0,1,0,D3DFMT_X8R8G8B8,D3DPOOL_MANAGED,&m_pDBG);
+	R_ASSERT			(m_pDBG);
+	LPCSTR		RTname	= "$user$hom";
+	pStream		= Device.Streams.Create			(FVF::F_TL,4);
+	pTexture	= Device.Shader._CreateTexture	(RTname);
+	pShader		= Device.Shader.Create			("effects\\screen_set",		RTname);
+	pTexture->surface_set	(m_pDBG);
 }
 
 void CHOM::Unload		()
 {
+	_RELEASE	(m_pDBG);
 	_DELETE		(m_pModel);
 	_FREE		(m_pTris);
 }
@@ -123,13 +133,13 @@ void CHOM::Render		(CFrustum& base)
 	for (; it!=end; it++)
 	{
 		occTri& T	= m_pTris	[it->id];
-
+		
 		// Test for good occluder - should be improved :)
 		if (!(T.flags || (T.plane.classify(COP)>0)))	continue;
-
+		
 		// Access to triangle vertices
 		CDB::TRI& t	= m_pModel->get_tris() [it->id];
-
+		
 		// XForm
 		xform		(XF,T.raster[0],*t.verts[0],dim);
 		xform		(XF,T.raster[1],*t.verts[1],dim);
@@ -138,11 +148,34 @@ void CHOM::Render		(CFrustum& base)
 		// Rasterize
 		Raster.rasterize(&T);
 	}
-
+	
 	// Propagade
 	Raster.propagade	();
-
+	
 	Device.Statistic.RenderCALC_HOM.End		();
+}
+void CHOM::Debug		()
+{
+	// UV
+	Fvector2		shift,p0,p1;
+	p0.set			(.5f/occ_dim_0, .5f/occ_dim_0);
+	p1.set			((occ_dim_0+.5f)/occ_dim_0, (occ_dim_0+.5f)/occ_dim_0);
+	p0.add			(shift);
+	p1.add			(shift);
+	
+	// Fill vertex buffer
+	DWORD Offset, C=0xffffffff;
+	DWORD _w = 64, _h = 64;
+	FVF::TL* pv = (FVF::TL*) pStream->Lock(4,Offset);
+	pv->set(0,			float(_h),	.0001f,.9999f, C, p0.x, p1.y);	pv++;
+	pv->set(0,			0,			.0001f,.9999f, C, p0.x, p0.y);	pv++;
+	pv->set(float(_w),	float(_h),	.0001f,.9999f, C, p1.x, p1.y);	pv++;
+	pv->set(float(_w),	0,			.0001f,.9999f, C, p1.x, p0.y);	pv++;
+	pStream->Unlock			(4);
+	
+	// Actual rendering
+	Device.Shader.set_Shader(pShaderGray);
+	Device.Primitive.Draw	(pStream,4,2,Offset,Device.Streams_QuadIB);
 }
 
 BOOL CHOM::Visible		(Fbox& B)

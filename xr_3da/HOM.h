@@ -13,12 +13,18 @@ class ENGINE_API CHOM
 private:
 	CDB::MODEL*				m_pModel;
 	occTri*					m_pTris;
-public:
-	void					Load	();
-	void					Unload	();
-	void					Render	(CFrustum& base);
 
-	BOOL					Visible	(Fbox& B);
+	IDirect3DTexture8*		m_pDBG;
+	CTexture*				pTexture;
+	Shader*					pShader;
+	CVertexStream*			pStream;
+public:
+	void					Load		();
+	void					Unload		();
+	void					Render		(CFrustum& base);
+	void					Debug		();
+
+	BOOL					Visible		(Fbox& B);
 	
 	CHOM();
 	~CHOM();

@@ -233,7 +233,6 @@ void CEnvironment::RenderFirst()
 					CHK_DX						(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,Current.Sky.get()));
 					V->Render					(1.f);
 				}
-					
 			}
 			break;
 		default:
