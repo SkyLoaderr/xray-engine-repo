@@ -254,11 +254,10 @@
 	<!-- infoportions for factory on escape -->
 	<info_portion id="escape_factory_quest">
 	</info_portion>
-	
+	<info_portion id="escape_factory_assault_say_hello">
+	</info_portion>
 	<info_portion id="sniper_dead">
 	</info_portion>
 	
-	<info_portion id="go_to_vodka">
-	</info_portion>
 
 </game_information_portions>
