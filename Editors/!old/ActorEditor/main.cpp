@@ -58,8 +58,6 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner)
     	FlushLog			();
     	TerminateProcess(GetCurrentProcess(),-1);
     }
-
-	Application->OnMinimize 	= OnMinimized;
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmMain::FormShow(TObject *Sender)
@@ -111,11 +109,6 @@ void __fastcall TfrmMain::sbToolsMinClick(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::OnMinimized(TObject *Sender)
-{
-	WindowState = wsMinimized;
-}
 
 void __fastcall TfrmMain::TopClick(TObject *Sender)
 {

@@ -7,16 +7,15 @@
 #include "UI_ActorTools.h"
 #include "LogForm.h"
 //---------------------------------------------------------------------------
-USEFORM("BonePart.cpp", 	frmBonePart	);
-USEFORM("ClipEditor.cpp", 	ClipMaker	);
-USEFORM("KeyBar.cpp", 		frmKeyBar	);
-USEFORM("LeftBar.cpp", 		fraLeftBar	); /* TFrame: File Type */
-USEFORM("Splash.cpp", 		frmSplash	);
-USEFORM("main.cpp", 		frmMain		);
-USEFORM("TopBar.cpp", 		fraTopBar	); /* TFrame: File Type */
-USEFORM("BottomBar.cpp", 	fraBottomBar); /* TFrame: File Type */
+USEFORM("BonePart.cpp", frmBonePart);
+USEFORM("ClipEditor.cpp", ClipMaker);
+USEFORM("KeyBar.cpp", frmKeyBar);
+USEFORM("LeftBar.cpp", fraLeftBar); /* TFrame: File Type */
+USEFORM("Splash.cpp", frmSplash);
+USEFORM("main.cpp", frmMain);
+USEFORM("TopBar.cpp", fraTopBar); /* TFrame: File Type */
+USEFORM("BottomBar.cpp", fraBottomBar); /* TFrame: File Type */
 //---------------------------------------------------------------------------
-
 WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 {
 //    try{
@@ -27,8 +26,12 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 
     	Core._initialize		("actor",ELogCallback);
 
+        if (!Application->Handle){ 
+            Application->CreateHandle(); 
+            Application->Icon->Handle = LoadIcon(MainInstance, "MAINICON"); 
+        } 
+        
         Application->Initialize	();
-        Application->Icon		= frmSplash->Icon;
                                        
         frmSplash->SetStatus	("Loading...");
 
@@ -39,8 +42,8 @@ WINAPI WinMain(HINSTANCE  hInst, HINSTANCE, LPSTR, int)
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
 
-		Application->CreateForm	(__classid(TfrmMain), &frmMain);
-		Application->CreateForm	(__classid(TfrmBonePart), &frmBonePart);
+		Application->CreateForm(__classid(TfrmMain), &frmMain);
+		Application->CreateForm(__classid(TfrmBonePart), &frmBonePart);
 		frmMain->SetHInst		(hInst);
 
 		xr_delete				(frmSplash);
