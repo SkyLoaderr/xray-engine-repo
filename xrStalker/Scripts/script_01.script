@@ -68,7 +68,7 @@ function main()
 				sound	("scripts\\idle\\cough1","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				cond	(cond.time_end, 10000)
 			)
---			wait(4000)
+			wait(3000)
 			action(                                                                                                       
 			    stalker2,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
