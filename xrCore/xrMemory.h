@@ -40,7 +40,12 @@ IC	void	xr_delete	(T* &ptr)
 // generic "C"-like allocations/deallocations
 template <class T>
 IC T*		xr_alloc	(u32 count)				{	return  (T*)Memory.mem_alloc(count*sizeof(T));	}
+
+template <class T>
+IC void		xr_free		(T* &P)					{	Memory.mem_free((void*)P); P=NULL;				}
+
 IC void*	xr_malloc	(size_t size)			{	return	Memory.mem_alloc(size);					}
-IC void		xr_free		(void* &P)				{	Memory.mem_free(P); P=NULL;						}
+
 IC void*	xr_realloc	(void* P, size_t size)	{	return Memory.mem_realloc(P,size);				}
+
 char*		xr_strdup	(const char* string);
