@@ -391,6 +391,10 @@
 		<mini_map  spot="mp_af_friend_mini_spot" pointer="mp_af_friend_mini_pointer"></mini_map>
 	</mp_af_friend_location>
 	
+	<mp_hit_sector_location hint="hit_sector" ttl="1" pos_to_actor="1">
+		<mini_map  spot="mp_hit_sector_mini_spot"></mini_map>
+	</mp_hit_sector_location>
+	
 	
 <!-- spots definitions -->
 	<actor_level_spot x="0" y="0" width="32" height="32" heading="1" alignment="c">
@@ -446,6 +450,11 @@
 	<mp_af_neutral_mini_spot width="6" height="6" stretch = "1" alignment="c"> 
 		<texture r="255" g="255" b="255" stretch = "1">ui\hud_map_point</texture>
 	</mp_af_neutral_mini_spot>
+	
+	<mp_hit_sector_mini_spot x="0" y="0" width="256" height="256" heading="1" alignment="c"> 
+		<texture x="0" y="0" width="256" height="256"> ui\ui_mp_minimap_hit_sector</texture>
+	</mp_hit_sector_mini_spot>
+	
 <!-- pointers definitions -->
 	<actor_pointer x="0" y="0" width="15" height="17" heading="1" alignment="c"> 
 		<texture x="8" y="7" width="15" height="17" r="0" g="" b="128"> ui\ui_map_arrow_02</texture>

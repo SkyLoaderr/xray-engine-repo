@@ -68,6 +68,8 @@
 #include "IColisiondamageInfo.h"
 #include "ui/UIMainIngameWnd.h"
 
+#include "map_manager.h"
+
 const u32		patch_frames	= 50;
 const float		respawn_delay	= 1.f;
 const float		respawn_auto	= 7.f;
@@ -377,6 +379,10 @@ void CActor::PHHit(float P,Fvector &dir, CObject *who,s16 element,Fvector p_in_o
 {
 	m_pPhysics_support->in_Hit(P,dir,who,element,p_in_object_space,impulse,hit_type,!g_Alive());
 }
+
+#define ENAMY_HIT_SPOT	"mp_hit_sector_location"
+BOOL	g_bShowHitSectors	= TRUE;
+
 void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector position_in_bone_space, float impulse, ALife::EHitType hit_type)
 {
 #ifndef _DEBUG
@@ -422,6 +428,17 @@ void CActor::Hit		(float iLost, Fvector &dir, CObject* who, s16 element,Fvector 
 	else
 		hit_slowmo = 0.f;
 	//---------------------------------------------------------------
+	if (Level().CurrentViewEntity() == this)
+	{
+		if (g_bShowHitSectors)
+		{
+			if (who && !Level().MapManager().HasMapLocation(ENAMY_HIT_SPOT, who->ID()))
+			{
+				Level().MapManager().AddMapLocation(ENAMY_HIT_SPOT, who->ID());
+			}
+		};
+	};
+
 	if (mstate_real & mcSprint && Level().CurrentControlEntity() == this)
 	{
 		mstate_real	&=~mcSprint;
