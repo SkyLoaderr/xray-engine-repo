@@ -117,7 +117,6 @@ private:
 	float				cam_BobCycle;
 	float				fPrevCamPos;
 
-	void				ChangeCamStyle			(EActorCameras style);
 //------------------------------
 	struct				net_update 		
 	{
@@ -153,7 +152,10 @@ private:
 	void				g_Physics				(Fvector& accel, float jump, float dt);
 	void				g_SetAnimation			(DWORD mstate_rl);
 
-	void				UpdateCamera			(float dt);
+	void				cam_Set					(EActorCameras style);
+	void				cam_Update				(float dt);
+
+	void				wpn_Set					(int id);
 
 	bool				HUDview					( ) { return IsFocused()&&(cam_active==eacFirstEye); }
 public:

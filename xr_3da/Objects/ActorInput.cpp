@@ -17,11 +17,24 @@ void CActor::OnKeyboardPress(int cmd){
 	case kBACK:		mstate_wishful |= mcBack;		break;
 	case kJUMP:		mstate_wishful |= mcJump;		break;
 	case kCROUCH:	mstate_wishful |= mcCrouch;		break;
+
+	case kCAM_1:	cam_Set			(eacFirstEye);	break;
+	case kCAM_2:	cam_Set			(eacLookAt);	break;
+	case kCAM_3:	cam_Set			(eacFreeLook);	break;
+
 	case kWPN_FIRE:	g_cl_fireStart();				break;
-	case kCAM_1:	ChangeCamStyle(eacFirstEye);	break;
-	case kCAM_2:	ChangeCamStyle(eacLookAt);		break;
-	case kCAM_3:	ChangeCamStyle(eacFreeLook);	break;
 	case kWPN_ZOOM:	pCreator->Environment.Zoom(TRUE);break;
+	case kWPN_1:	
+	case kWPN_2:	
+	case kWPN_3:	
+	case kWPN_4:	
+	case kWPN_5:	
+	case kWPN_6:	
+	case kWPN_7:	
+	case kWPN_8:	
+	case kWPN_9:	
+		wpn_Set		(cmd-kWPN_1);			
+		break;
 	}
 }
 
@@ -36,6 +49,7 @@ void CActor::OnKeyboardRelease(int cmd){
 	case kBACK:		mstate_wishful &=~mcBack;		break;
 	case kJUMP:		mstate_wishful &=~mcJump;		break;
 	case kCROUCH:	mstate_wishful &=~mcCrouch;		break;
+
 	case kWPN_FIRE:	g_fireEnd();					break;
 	case kWPN_ZOOM:	pCreator->Environment.Zoom(FALSE);break;
 	}
