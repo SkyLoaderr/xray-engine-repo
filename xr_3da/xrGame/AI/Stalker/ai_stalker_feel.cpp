@@ -111,6 +111,7 @@ void CAI_Stalker::SetDirectionLook()
 
 void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, bool bDifferenceLook)
 {
+	SetDirectionLook();
 	SetLessCoverLook(tpNode,MAX_HEAD_TURN_ANGLE,bDifferenceLook);
 }
 

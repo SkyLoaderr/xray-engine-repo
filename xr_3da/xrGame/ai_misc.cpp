@@ -267,7 +267,7 @@ void CAI_Space::vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, PCont
 		}
 		dwIntersect				= lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCheckPoint1.x,tCheckPoint1.z,tCheckPoint2.x,tCheckPoint2.z,&tIntersectPoint.x,&tIntersectPoint.z);
 		if (dwIntersect == LI_INTERSECT) {
-			if (tFinishPoint.distance_to_xz(tIntersectPoint) < tFinishPoint.distance_to_xz(tTempPoint) + EPS) {
+			if (tFinishPoint.distance_to_xz(tIntersectPoint) < tFinishPoint.distance_to_xz(tTempPoint) + EPS_L) {
 				tTempPoint = tIntersectPoint;
 				iSavedIndex = iNodeIndex;
 			}
@@ -827,7 +827,7 @@ bool CAI_Space::bfCheckNodeInDirection(u32 dwStartNode, Fvector tStartPosition, 
 	NodeLink				*taLinks;
 	int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
 	Fvector					tStartPoint = tStartPosition, tTempPoint = tStartPosition, tFinishPoint = tfGetNodeCenter(dwFinishNode);;
-	float					fCurDistance = 0.f, fDistance = tStartPosition.distance_to(tfGetNodeCenter(dwFinishNode));
+	float					fCurDistance = 0.f, fDistance = tStartPosition.distance_to_xz(tfGetNodeCenter(dwFinishNode));
 	u32						dwCurNode = dwStartNode;
 
 	while ((dwCurNode != dwFinishNode) && (fCurDistance < (fDistance + EPS_L))) {
@@ -858,7 +858,7 @@ u32 CAI_Space::dwfCheckPositionInDirection(u32 dwStartNode, Fvector tStartPositi
 	NodeLink				*taLinks;
 	int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
 	Fvector					tStartPoint = tStartPosition, tTempPoint = tStartPosition, tFinishPoint = tFinishPosition;
-	float					fCurDistance = 0.f, fDistance = tStartPosition.distance_to(tFinishPosition);
+	float					fCurDistance = 0.f, fDistance = tStartPosition.distance_to_xz(tFinishPosition);
 	u32						dwCurNode = dwStartNode;
 
 	while (!bfInsideNode(Node(dwCurNode),tFinishPoint) && (fCurDistance < (fDistance + EPS_L))) {

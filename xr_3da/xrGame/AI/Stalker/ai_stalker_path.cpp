@@ -285,7 +285,8 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			break;
 		}
 		case ePathStateDodgeTravelLine : {
-			vfDodgeTravelLine();
+			//vfDodgeTravelLine();
+			m_tPathState = ePathStateSearchNode;
 			break;
 		}
 	}
