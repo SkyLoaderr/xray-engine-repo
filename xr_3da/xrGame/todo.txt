@@ -122,13 +122,13 @@ Oles:
 Sanya:
 	. BUG:  Run, Press Jump (don't release), after landing - release, try to jump again :)
 	. BUG:	Turn sometimes cycles in continuesly
+	. BUG:   оординаты строк сообщений выводить в соответствии с разрешением
 	. BUG:	SetHPB(-,-,+)
 	+ BUG:	RayPick -- не всегда выбирает монстрика (FillLine...)
 	+ BUG:	Ќе вращаетс€ пушка (callback??)
 	+ BUG:	ќгонь в HUD отстает от ствола (? на один кадр)
 	+ BUG:	ѕрыжок у актора - виснем
 
-	. TODO:  оординаты строк сообщений выводить в соответствии с разрешением
 	. TODO: DirectX 8.1
 	+ TODO: Cursor - перенести в HUD
 	+-TODO: ControlCenter (HUD control panel - интерфейс дл€ приказов/команд)
