@@ -229,6 +229,8 @@ void CCar::detach_Actor()
 	NeutralDrive();
 	Unclutch();
 	ResetKeys();
+	m_current_rpm=m_min_rpm;
+
 	///Break();
 }
 
@@ -249,6 +251,7 @@ bool CCar::attach_Actor(CActor* actor)
 	}
 	CBoneInstance& instance=K->LL_GetInstance				(u16(id));
 	m_sits_transforms.push_back(instance.mTransform);
+
 
 	//CBoneData&	bone_data=K->LL_GetData(id);
 	//Fmatrix driver_pos_tranform;
