@@ -2,15 +2,15 @@
 
 <xml>
 <!---------------------------SOLDIER PRIVATE----------------------->
-	<specific_character id="soldier_private_default" team_default = "1">
+	<specific_character id="soldier_regular_default" team_default = "1">
 		<name>Неизвестный солдат</name>
 		<icon x="10" y="2"></icon>
 		<map_icon x="0" y="2"></map_icon>
 		<bio>Рядовой представитель вооруженных сил.</bio>
 
-		<team>Soldier_private</team>
+		<team>Soldier_regular</team>
 		
-		<class>Soldier_private</class>
+		<class>Soldier_regular</class>
 		<community>military</community>
 		
 		<rank>30</rank>
