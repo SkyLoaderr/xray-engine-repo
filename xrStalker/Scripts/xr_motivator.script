@@ -305,7 +305,8 @@ xr_motivator.storage[self.object:id ()].bar =
     enabled = false,
     meat = false,
     interlocutor = nil,
-    talking = false
+    talking = false,
+    pose = nil
 }
 bar_stalker.add_to_binder (self.object, char_ini)
         
