@@ -1,0 +1,230 @@
+[medkit]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\medkit"
+$prefetch 			= 8
+class				= II_MEDKI
+cform				= skeleton
+visual				= equipments\item_aptechka.ogf
+
+inv_name			= Medkit
+inv_name_short		= Medkit
+inv_weight			= 1.0	;0.2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 6
+inv_grid_y			= 14
+cost				= 150
+
+; eatable item
+eat_health = 	0.5	;0.1										
+eat_satiety = 	0
+eat_power = 	0.1	;0.05
+eat_radiation = -0.1	;-0.01	
+eat_portions_num = 1	;100
+
+; food item
+animation_slot		= 4
+
+;hud item
+hud = wpn_vodka_hud
+
+[bread]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\bread"
+;$prefetch 			= 32
+class				= II_FOOD
+cform				= skeleton
+visual				= weapons\bred\bred.ogf
+
+inv_name			= Bread
+inv_name_short		= Bread
+inv_weight			= 0.5	;0.2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 11
+inv_grid_y			= 13
+cost				= 60
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+; food item
+slot				= 4
+animation_slot		= 1
+
+;hud item
+hud = wpn_vodka_hud
+
+position_offset		= -0.035,-0.08,0.065
+angle_offset		= 0,0,0
+
+
+[kolbasa]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\kolbasa"
+$prefetch 			= 8
+class				= II_FOOD
+cform				= skeleton
+visual				= weapons\kolbasa\kolbasa.ogf
+
+inv_name			= Kolbasa
+inv_name_short		= Kolbasa
+inv_weight			= 0.5
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 12
+cost				= 100
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+; food item
+slot				= 4
+animation_slot		= 2
+
+;hud item
+hud = wpn_vodka_hud
+
+position_offset		= -0.035,-0.08,0.065
+angle_offset		= 0,0,0
+
+
+[conserva]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\conserva"
+;$prefetch 			= 32
+class				= II_FOOD
+cform				= skeleton
+visual				= food\conserv1.ogf
+
+inv_name			= Conserva
+inv_name_short		= Conserva
+inv_weight			= 0.5
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 9
+inv_grid_y			= 13
+cost				= 70
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = 0	
+eat_portions_num = -1
+
+; food item
+slot				= 4
+animation_slot		= 4
+
+;hud item
+hud = wpn_vodka_hud
+
+position_offset		= -0.035,-0.08,0.065
+angle_offset		= 0,0,0
+
+[vodka]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 				= "food and drugs\vodka"
+;$prefetch 			= 32
+class				= II_BOTTL
+cform				= skeleton
+visual				= Weapons\vodka\vodka.ogf
+
+inv_name			= Vodka
+inv_name_short		= Vodka
+inv_weight			= 1.0	;0.2
+
+inv_grid_width		= 1
+inv_grid_height		= 2
+inv_grid_x			= 5
+inv_grid_y			= 2
+cost				= 50
+
+slot				= 4
+
+; eatable item
+eat_health = 0.01
+eat_satiety = 0.2
+eat_power = 0
+eat_radiation = -0.2	
+eat_portions_num = -1
+
+; food item
+slot				= 4
+animation_slot		= 4
+
+;hud item
+hud = wpn_vodka_hud
+
+break_particles		= explosions\explosion_01b
+break_sound			= weapons\f1_explode
+
+position_offset		= -0.035,-0.08,0.065
+angle_offset		= 0,0,0
+
+
+[wpn_vodka_hud]
+
+fire_point               = 0.0, 0.0, 0.06
+fire_bone                = bip01_head
+orientation              = 0, 0, 0
+position                 = 0, 0, 0
+visual                   = weapons\vodka\vodka_hud.ogf
+
+anim_idle			= vodka_2
+anim_show			= vodka_1
+anim_hide			= vodka_4
+anim_play			= vodka_5
+anim_prepare		= vodka_5
+anim_eat			= vodka_3
+
+[antirad]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn 			= "food and drugs\antirad"
+;$prefetch 		= 32
+class			= II_ANTIR
+cform           = skeleton
+visual          = equipments\item_antirad.ogf
+
+inv_name			= Antirad
+inv_name_short		= Antirad
+inv_weight			= 0.2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 12
+cost				= 150
+
+; eatable item
+eat_health = 0										
+eat_satiety = 0
+eat_power = -0.01
+eat_radiation = -0.3
+eat_portions_num = 10
+
+; food item
+animation_slot		= 4
+
+;hud item
+hud = wpn_vodka_hud
