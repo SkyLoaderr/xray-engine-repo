@@ -36,8 +36,8 @@ public:
 	u32					m_dwMoney;
 	ALife::EStalkerRank	m_tRank;
 
-	CPda* GetPDA();
-	bool IsActivePDA();
+	CPda* GetPDA		() const;
+	bool IsActivePDA	() const;
 
 	//функци€ через которую
 	//другие персонажи отправл€ют объекту PDA сообщение.
@@ -74,7 +74,9 @@ public:
 	//убрать информацию
 	virtual void OnDisableInfo(INFO_ID info_index);
 	//передать/удалить информацию через сервер
-	virtual void TransferInfo(INFO_ID info_index, bool add_info);
+	virtual void TransferInfo(INFO_ID info_index, bool add_info) const;
+	//есть ли информаци€ у персонажа
+	virtual bool HasInfo(INFO_ID info_index) const;
 	
 	const CInventory &inventory() const {return(*m_inventory);}
 	CInventory &inventory() {return(*m_inventory);}

@@ -11,7 +11,6 @@
 
 #define  INFO_PORTION_XML			"info_portions.xml"
 
-
 //////////////////////////////////////////////////////////////////////////
 // SInfoPortionData: данные для InfoProtion
 
@@ -28,6 +27,60 @@ SInfoPortionData::~SInfoPortionData ()
 //	class CInfoPortion
 //
 
+//статический вектор, для хранения строк идентификаторов в по порядку
+//для получения чилсового ID
+CInfoPortion::STR_ID_VECTOR* CInfoPortion::m_pStrToID = NULL;
+
+CInfoPortion::STR_ID_VECTOR& CInfoPortion::StrIdVector ()
+{
+	if(!m_pStrToID)
+	{
+		m_pStrToID = xr_new<STR_ID_VECTOR >();
+
+		CUIXml uiXml;
+		bool xml_result = uiXml.Init("$game_data$", INFO_PORTION_XML);
+		R_ASSERT2(xml_result, "xml file not found");
+
+		//общий список info_portions
+		int info_num = uiXml.GetNodesNum(uiXml.GetRoot(), "info_portion");
+		for(int i=0; i<info_num; ++i)
+		{
+			LPCSTR info_name = uiXml.ReadAttrib(uiXml.GetRoot(), "info_portion", i, "id", NULL);
+
+			string128 buf;
+			sprintf(buf, "%d", i);
+			R_ASSERT3(info_name, "id for info portion don't set. Info num:", buf);
+
+			//проверетить ID на уникальность
+			STR_ID_VECTOR_IT it = std::find(m_pStrToID->begin(), m_pStrToID->end(), info_name);
+			R_ASSERT3(m_pStrToID->end() == it, "duplicate info id", info_name);
+			
+			m_pStrToID->push_back(info_name);
+		}
+	}
+
+	return *m_pStrToID;
+}
+
+INFO_ID CInfoPortion::StrToID(const INFO_STR_ID& str_id)
+{
+	STR_ID_VECTOR_IT it = std::find(StrIdVector().begin(), StrIdVector().end(), str_id);
+	R_ASSERT3(StrIdVector().end() != it, "info not found", *str_id);
+	return (INFO_ID)(it-StrIdVector().begin());
+}
+
+
+INFO_STR_ID CInfoPortion::IDToStr(INFO_ID info_id)
+{
+	return StrIdVector()[info_id];
+}
+
+void CInfoPortion::DeleteStrToID	()
+{
+	xr_delete(m_pStrToID);
+}
+
+
 CInfoPortion::CInfoPortion()
 {
 }
@@ -36,7 +89,10 @@ CInfoPortion::~CInfoPortion ()
 {
 }
 
-
+void CInfoPortion::Load	(INFO_STR_ID info_str_id)
+{
+	Load	(StrToID(info_str_id));
+}
 
 void CInfoPortion::Load	(INFO_ID info_id)
 {
@@ -51,10 +107,8 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 	R_ASSERT2(xml_result, "xml file not found");
 
 	//loading from XML
-	string128 buf_str;
-	sprintf(buf_str, "%d", m_InfoId);
-	XML_NODE* pNode = uiXml.NavigateToNodeWithAttribute("info_portion", "index", buf_str);
-	R_ASSERT3(pNode, "info_portion index=", buf_str);
+	XML_NODE* pNode = uiXml.NavigateToNodeWithAttribute("info_portion", "id", *IDToStr(m_InfoId));
+	R_ASSERT3(pNode, "info_portion id=", *IDToStr(m_InfoId));
 
 	//текст
 	info_data()->m_text = uiXml.Read(pNode, "text", 0);
@@ -80,14 +134,7 @@ void CInfoPortion::load_shared	(LPCSTR xml_file)
 	}
 
 	//имена скриптовых функций
-	int script_actions_num = uiXml.GetNodesNum(pNode, "action");
-	info_data()->m_ScriptActions.clear();
-	for(i=0; i<script_actions_num; i++)
-	{
-		ref_str action_name = uiXml.Read(pNode, "action", i, NULL);
-		info_data()->m_ScriptActions.push_back(action_name);
-	}
-
+	info_data()->m_PhraseScript.Load(uiXml, pNode);
 
 	//загрузить позиции на карте
 	SMapLocation map_location;

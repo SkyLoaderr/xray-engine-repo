@@ -35,6 +35,10 @@
 #include "xrServer_Objects_ALife.h"
 #include "game_level_cross_table.h"
 
+
+#include "infoportion.h"
+
+
 CPHWorld*	ph_world = 0;
 
 //////////////////////////////////////////////////////////////////////
@@ -141,6 +145,9 @@ CLevel::~CLevel()
 	xr_delete					(game);
 	xr_delete					(game_events);
 	xr_delete					(SquadMan);
+
+
+	CInfoPortion::DeleteStrToID();
 }
 
 // Game interface ////////////////////////////////////////////////////

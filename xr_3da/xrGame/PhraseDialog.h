@@ -135,4 +135,7 @@ protected:
 	//буфферные данные для рекурсивной функции
 	CUIXml					uiXml;
 	XML_NODE*				phrase_list_node;
+
+	//проверить, что все диалоги имеют уникальный ID
+	static bool	m_bCheckUniqueness;
 };

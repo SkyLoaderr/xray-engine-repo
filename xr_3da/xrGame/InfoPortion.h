@@ -6,11 +6,11 @@
 
 #pragma once
 
-#include "ui/xrXMLParser.h"
-#include "map_location.h"
-
 #include "shared_data.h"
 
+#include "ui/xrXMLParser.h"
+#include "map_location.h"
+#include "PhraseScript.h"
 
 //////////////////////////////////////////////////////////////////////////
 // SInfoPortionData: данные для InfoProtion
@@ -33,8 +33,7 @@ struct SInfoPortionData : CSharedResource
 
 	//скриптовые действия, которые активируется после того как 
 	//информацию получает персонаж
-	DEFINE_VECTOR(ref_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
-	ACTION_NAME_VECTOR	m_ScriptActions;
+	CPhraseScript m_PhraseScript;
 
 	//массив с индексами тех порций информации, которые
 	//исчезнут, после получения этой info_portion
@@ -60,18 +59,35 @@ public:
 	//инициализация info данными
 	//если info с таким id раньше не использовался
 	//он будет загружен из файла
+	virtual void Load	(INFO_STR_ID info_str_id);
 	virtual void Load	(INFO_ID info_id);
 
 	const LOCATIONS_VECTOR&							MapLocations()	{return info_data()->m_MapLocations;}
 	const SInfoPortionData::DIALOG_NAME_VECTOR&		DialogNames()	{return info_data()->m_DialogNames;}
 	const SInfoPortionData::INFO_INDEX_VECTOR&		DisableInfos()	{return info_data()->m_DisableInfo;}
-	const SInfoPortionData::ACTION_NAME_VECTOR&		ScriptActions()	{return	info_data()->m_ScriptActions;}
+	
+	//запуск присоединенных скриптовых функций	
+	virtual void RunScriptActions   (const CGameObject* pOwner)	{info_data()->m_PhraseScript.Action(pOwner);}
 
 	//текстовое представление информации
 	virtual LPCSTR GetText ();
+
+
 protected:
     INFO_ID	m_InfoId;
 
 	void load_shared	(LPCSTR xml_file);
 	SInfoPortionData* info_data() { VERIFY(inherited_shared::get_sd()); return inherited_shared::get_sd();}
+
+	//для работы с ID (строковыми и числовыми)
+public:
+	static INFO_ID		StrToID			(const INFO_STR_ID& info_str_id);
+	static INFO_STR_ID	IDToStr			(INFO_ID info_id);
+	//удаление статичекого массива
+	static void			DeleteStrToID	();
+
+	DEFINE_VECTOR(ref_str, STR_ID_VECTOR, STR_ID_VECTOR_IT);
+	static STR_ID_VECTOR& StrIdVector ();
+protected:
+	static xr_vector<ref_str>* m_pStrToID;
 };

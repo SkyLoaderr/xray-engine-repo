@@ -53,6 +53,10 @@
 #include "gameobject.h"
 
 
+
+bool CPhraseDialog::m_bCheckUniqueness = false;
+
+
 //////////////////////////////////////////////////////////////////////////
 
 SPhraseDialogData::SPhraseDialogData ()
@@ -214,6 +218,10 @@ void CPhraseDialog::load_shared	(LPCSTR xml_file)
 {
 	bool xml_result = uiXml.Init("$game_data$", xml_file);
 	R_ASSERT2(xml_result, "xml file not found");
+
+	//проверить файл диалога на корректность
+	if(!m_bCheckUniqueness)	
+		uiXml.CheckUniqueAttrib(uiXml.GetRoot(), "dialog", "id");
 
 	//loading from XML
 

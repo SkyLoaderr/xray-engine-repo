@@ -5,8 +5,12 @@
 
 #include "ui/xrXMLParser.h"
 
+#include "InfoPortionDefs.h"
+
+#pragma once
 
 class CGameObject;
+class CInventoryOwner;
 
 class CPhraseScript
 {
@@ -17,8 +21,13 @@ public:
 	//загрузка из XML файла
 	virtual void Load		(CUIXml& ui_xml, XML_NODE* phrase_node);
 
+	//вызов с одним параметром (info_portion)
+	virtual bool Precondition	(const CGameObject* pSpeaker) const;
+	virtual void Action			(const CGameObject* pSpeaker) const;
+	//вызов с двум€ параметрами (dialog, phrase)
 	virtual bool Precondition	(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
 	virtual void Action			(const CGameObject* pSpeaker1, const CGameObject* pSpeaker2) const;
+
 
 
 	DEFINE_VECTOR(ref_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
@@ -27,14 +36,29 @@ public:
 	DEFINE_VECTOR(ref_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
 	virtual const ACTION_NAME_VECTOR& Actions() const {return m_ScriptActions;}
 protected:
+	//загрузка содержани€ последовательности тагов в контейнер строк 
+	template<class T> 
+		void LoadSequence (CUIXml& ui_xml, XML_NODE* phrase_node, 
+						   LPCSTR tag, T&  str_vector);
+
+	//манипул€ции с информацией во врем€ вызовов Precondition и Action 
+	virtual bool CheckInfo		(const CInventoryOwner* pOwner) const;
+	virtual void TransferInfo	(const CInventoryOwner* pOwner) const;
 
 	//скриптовые действи€, которые активируетс€ после того как 
 	//говоритс€ фраза
 	DEFINE_VECTOR(ref_str, ACTION_NAME_VECTOR, ACTION_NAME_VECTOR_IT);
 	ACTION_NAME_VECTOR m_ScriptActions;
+	
+	DEFINE_VECTOR(INFO_STR_ID, INFO_VECTOR, INFO_VECTOR_IT);
+	INFO_VECTOR m_GiveInfo;
+	INFO_VECTOR m_DisableInfo;
 
 	//список скриптовых предикатов, выполнение, которых необходимо
 	//дл€ того чтоб фраза стала доступной
 	DEFINE_VECTOR(ref_str, PRECONDITION_VECTOR, PRECONDITION_VECTOR_IT);
 	PRECONDITION_VECTOR m_Preconditions;
+	//проверка наличи€/отсутстви€ информации
+	INFO_VECTOR m_HasInfo;
+	INFO_VECTOR m_DontHasInfo;
 };

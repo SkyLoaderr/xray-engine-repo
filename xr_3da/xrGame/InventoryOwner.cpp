@@ -146,7 +146,7 @@ void CInventoryOwner::UpdateInventoryOwner(u32 deltaT)
 
 
 //достать PDA из специального слота инвентаря
-CPda* CInventoryOwner::GetPDA()
+CPda* CInventoryOwner::GetPDA() const
 {
 //	CEntityAlive* pEntityAlive = dynamic_cast<CEntityAlive*>(this);
 	
@@ -155,10 +155,10 @@ CPda* CInventoryOwner::GetPDA()
 	/*R_ASSERT2(inventory().m_slots[PDA_SLOT].m_pIItem, 
 			"PDA for character does not init yet");*/
 	
-	return (CPda*)inventory().m_slots[PDA_SLOT].m_pIItem;
+	return static_cast<CPda*>(inventory().m_slots[PDA_SLOT].m_pIItem);
 }
 
-bool CInventoryOwner::IsActivePDA()
+bool CInventoryOwner::IsActivePDA() const
 {
 	if(GetPDA() && GetPDA()->IsActive())
 		return true;
@@ -211,21 +211,12 @@ void CInventoryOwner::OnReceiveInfo(INFO_ID info_index)
 	CInfoPortion info_portion;
 	info_portion.Load(info_index);
 
-	
 	//запустить скриптовые функции
-	for(u32 i = 0; i<info_portion.ScriptActions().size(); i++)
-	{
-		luabind::functor<void>	lua_function;
-		bool functor_exists = ai().script_engine().functor(*info_portion.ScriptActions()[i] ,lua_function);
-		R_ASSERT3(functor_exists, "Cannot find info portion script function", *info_portion.ScriptActions()[i]);
-		lua_function (pThisGameObject->lua_game_object());
-	}
+	info_portion.RunScriptActions(pThisGameObject);
 
 	//выкинуть те info portions которые стали неактуальными
-	for(i=0; i<info_portion.DisableInfos().size(); i++)
-	{
+	for(u32 i=0; i<info_portion.DisableInfos().size(); i++)
 		TransferInfo(info_portion.DisableInfos()[i], false);
-	}
 }
 
 void CInventoryOwner::OnDisableInfo(INFO_ID info_index)
@@ -233,7 +224,7 @@ void CInventoryOwner::OnDisableInfo(INFO_ID info_index)
 	GetPDA()->OnRemoveInfo(info_index);
 }
 
-void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info)
+void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info) const
 {
 	VERIFY(GetPDA());
 
@@ -244,6 +235,12 @@ void CInventoryOwner::TransferInfo(INFO_ID info_index, bool add_info)
 	P.w_s32			(info_index);							//сообщение
 	P.w_u8			(add_info?1:0);							//добавить/удалить информацию
 	CGameObject::u_EventSend(P);
+}
+
+bool CInventoryOwner::HasInfo(INFO_ID info_index) const
+{
+	VERIFY(GetPDA());
+	return GetPDA()->IsKnowAbout(info_index);
 }
 
 //who - id PDA которому отправляем сообщение

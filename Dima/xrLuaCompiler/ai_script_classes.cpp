@@ -47,25 +47,25 @@ void CLuaGameObject::Hit(CLuaHit &tLuaHit)
 	m_tpGameObject->u_EventSend(P);
 }
 
-bool CLuaGameObject::GiveInfoPortion(INFO_ID info_index)
+bool CLuaGameObject::GiveInfoPortion(LPCSTR info_index)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
 	if(!pInventoryOwner->GetPDA()) return false;
-	pInventoryOwner->TransferInfo(info_index, true);
+	pInventoryOwner->TransferInfo(CInfoPortion::StrToID(info_index), true);
 	return			true;
 }
 
-bool CLuaGameObject::DisableInfoPortion(INFO_ID info_index)
+bool CLuaGameObject::DisableInfoPortion(LPCSTR info_index)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
 	if(!pInventoryOwner->GetPDA()) return false;
-	pInventoryOwner->TransferInfo(info_index, false);
+	pInventoryOwner->TransferInfo(CInfoPortion::StrToID(info_index), false);
 	return true;
 }
 
-bool CLuaGameObject::GiveInfoPortionViaPda(INFO_ID info_index, CLuaGameObject* pFromWho)
+bool CLuaGameObject::GiveInfoPortionViaPda(LPCSTR info_index, CLuaGameObject* pFromWho)
 {
 	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
 	if(!pInventoryOwner) return false;
@@ -80,10 +80,28 @@ bool CLuaGameObject::GiveInfoPortionViaPda(INFO_ID info_index, CLuaGameObject* p
 	m_tpGameObject->u_EventGen(P,GE_PDA,pInventoryOwner->GetPDA()->ID());
 	P.w_u16			(u16(pFromWhoInvOwner->GetPDA()->ID()));		//отправитель
 	P.w_s16			(ePdaMsgInfo);									
-	P.w_s32			(info_index);									
+	P.w_s32			(CInfoPortion::StrToID(info_index));									
 	m_tpGameObject->u_EventSend(P);
 	return			true;
 }
+
+
+bool  CLuaGameObject::HasInfo				(LPCSTR info_index)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return false;
+	if(!pInventoryOwner->GetPDA()) return false;
+	return pInventoryOwner->HasInfo(CInfoPortion::StrToID(info_index));
+
+}
+bool  CLuaGameObject::DontHasInfo			(LPCSTR info_index)
+{
+	CInventoryOwner* pInventoryOwner = dynamic_cast<CInventoryOwner*>(m_tpGameObject);
+	if(!pInventoryOwner) return true;
+	if(!pInventoryOwner->GetPDA()) return true;
+	return !pInventoryOwner->HasInfo(CInfoPortion::StrToID(info_index));
+}
+
 
 bool CLuaGameObject::SendPdaMessage(EPdaMsg pda_msg, CLuaGameObject* pForWho)
 {

@@ -6,4 +6,5 @@
 #pragma once
 
 #define NO_INFO_INDEX (-1)
-typedef int INFO_ID;
+typedef int			INFO_ID;
+typedef ref_str		INFO_STR_ID;

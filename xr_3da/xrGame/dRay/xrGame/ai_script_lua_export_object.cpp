@@ -235,7 +235,8 @@ void CScriptEngine::export_object()
 			.def("give_info_portion",			&CLuaGameObject::GiveInfoPortion)
 			.def("give_info_portion_via_pda",	&CLuaGameObject::GiveInfoPortionViaPda)
 			.def("disable_info_portion",		&CLuaGameObject::DisableInfoPortion)
-
+			.def("has_info",					&CLuaGameObject::HasInfo)
+			.def("dont_has_info",				&CLuaGameObject::DontHasInfo)
 
 			.def("send_pda_message",			&CLuaGameObject::SendPdaMessage)
 
