@@ -126,11 +126,11 @@ void CAI_ALife::Load()
 #endif
 }
 
-void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeObject)
+void CAI_ALife::vfUpdateDynamicData(CALifeDynamicObject *tpALifeDynamicObject)
 {
-	CALifeGraphRegistry::Update		(tpALifeObject);
-	CALifeTraderRegistry::Update	(tpALifeObject);
-	CALifeScheduleRegistry::Update	(tpALifeObject);
+	CALifeGraphRegistry::Update		(tpALifeDynamicObject);
+	CALifeTraderRegistry::Update	(tpALifeDynamicObject);
+	CALifeScheduleRegistry::Update	(tpALifeDynamicObject);
 }
 
 void CAI_ALife::vfUpdateDynamicData()

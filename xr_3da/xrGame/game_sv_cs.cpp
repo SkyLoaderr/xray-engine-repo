@@ -98,8 +98,17 @@ void game_sv_CS::SaveDefaultWeapon(CFS_Memory &store) {		//@@@ WT: Ёто надо пере
 			W_pistol->Spawn_Write(l_packet, true);
 			l_mem.open_chunk(l_chunk); l_mem.write(l_packet.B.data, l_packet.B.count); l_mem.close_chunk();
 		}
-		if(W_prim) F_entity_Destroy(W_prim);
-		if(W_pistol) F_entity_Destroy(W_pistol);
+		//////////////////////////////////////////////////////////////////////////
+		// это полный јЅ«ј÷!!! я не знаю, почему не работает закомментированный код :-(
+		//////////////////////////////////////////////////////////////////////////
+		// if(W_prim) F_entity_Destroy(W_prim);
+		// if(W_pistol) F_entity_Destroy(W_pistol);
+		//////////////////////////////////////////////////////////////////////////
+		// конец полного јЅ«ј÷ј (ƒима)
+		//////////////////////////////////////////////////////////////////////////
+		xrServerEntity *A;
+		if(W_prim) F_entity_Destroy(A = W_prim);
+		if(W_pistol) F_entity_Destroy(A = W_pistol);
 	}
 }
 

@@ -10,33 +10,33 @@
 #include "ai_alife.h"
 #include "GameObject.h"
 
-void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeObject)
+void CAI_ALife::vfCreateObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	NET_Packet						P;
-	m_tpServer->Process_spawn		(P,0,FALSE,tpALifeObject);
+	m_tpServer->Process_spawn		(P,0,FALSE,tpALifeDynamicObject);
 }
 
-void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeObject)
+void CAI_ALife::vfReleaseObject(CALifeDynamicObject *tpALifeDynamicObject)
 {
 	NET_Packet						P;
-	m_tpServer->game->u_EventGen	(P,GE_DESTROY,tpALifeObject->ID);
+	m_tpServer->game->u_EventGen	(P,GE_DESTROY,tpALifeDynamicObject->ID);
 	m_tpServer->game->u_EventSend	(P);
 }
 
-void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeObject)
+void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 {
-	VERIFY							(!tpALifeObject->m_bOnline);
-	vfCreateObject					(tpALifeObject);
-	tpALifeObject->m_bOnline		= true;
-	Msg								("- SERVER: Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeObject->s_name_replace, tpALifeObject->g_team(), tpALifeObject->g_squad(), tpALifeObject->g_group(), tpALifeObject->ID, "*SERVER*");
+	VERIFY							(!tpALifeDynamicObject->m_bOnline);
+	vfCreateObject					(tpALifeDynamicObject);
+	tpALifeDynamicObject->m_bOnline		= true;
+	Msg								("- SERVER: Going online [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
-void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeObject)
+void CAI_ALife::vfSwitchObjectOffline(CALifeDynamicObject *tpALifeDynamicObject)
 {
-	VERIFY							(tpALifeObject->m_bOnline);
-	vfReleaseObject					(tpALifeObject);
-	tpALifeObject->m_bOnline		= false;
-	Msg								("- SERVER: Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeObject->s_name_replace, tpALifeObject->g_team(), tpALifeObject->g_squad(), tpALifeObject->g_group(), tpALifeObject->ID, "*SERVER*");
+	VERIFY							(tpALifeDynamicObject->m_bOnline);
+	vfReleaseObject					(tpALifeDynamicObject);
+	tpALifeDynamicObject->m_bOnline		= false;
+	Msg								("- SERVER: Going offline [%d] '%s'(%d,%d,%d) as #%d, on '%s'",Device.dwTimeGlobal,tpALifeDynamicObject->s_name_replace, tpALifeDynamicObject->g_team(), tpALifeDynamicObject->g_squad(), tpALifeDynamicObject->g_group(), tpALifeDynamicObject->ID, "*SERVER*");
 }
 
 void CAI_ALife::ProcessOnlineOfflineSwitches(CALifeDynamicObject *I)
