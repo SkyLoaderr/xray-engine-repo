@@ -340,11 +340,11 @@ void CAI_ALife::vfProcessNPC(CALifeItem	*tpALifeMonster)
 
 void CAI_ALife::vfChooseNextRoutePoint(CALifeItem	*tpALifeMonster)
 {
-//	if (m_tpNPC[dwNPCIndex].wNextGraphPoint != m_tpNPC[dwNPCIndex].wGraphPoint) {
+//	if (tpALifeMonster->m_tNextGraphPointID != tpALifeMonster->m_tGraphPointID) {
 //		u32 dwCurTime = Level().timeServer();
-//		m_tpNPC[dwNPCIndex].fDistanceFromPoint += float(dwCurTime - m_tpNPC[dwNPCIndex].dwLastUpdateTime)/1000.f * m_tpNPC[dwNPCIndex].fSpeed;
-//		if (m_tpNPC[dwNPCIndex].fDistanceToPoint - m_tpNPC[dwNPCIndex].fDistanceFromPoint < EPS_L) {
-//			vfChangeGraphPoint(dwNPCIndex,m_tpNPC[dwNPCIndex].wGraphPoint,m_tpNPC[dwNPCIndex].wNextGraphPoint);
+//		tpALifeMonster->m_fDistanceFromPoint += float(dwCurTime - tpALifeMonster->m_tTimeID)/1000.f * tpALifeMonster->m_fCurfSpeed;
+//		if (tpALifeMonster->m_fDistanceToPoint - tpALifeMonster->m_fDistanceFromPoint < EPS_L) {
+//			vfChangeGraphPoint(tpALifeMonster->m_tObjectID,tpALifeMonster->m_tGraphID,m_tpNPC[dwNPCIndex].wNextGraphPoint);
 //			m_tpNPC[dwNPCIndex].fDistanceToPoint	= m_tpNPC[dwNPCIndex].fDistanceFromPoint	= 0.0f;
 //			m_tpNPC[dwNPCIndex].wPrevGraphPoint		= m_tpNPC[dwNPCIndex].wGraphPoint;
 //			m_tpNPC[dwNPCIndex].wGraphPoint			= m_tpNPC[dwNPCIndex].wNextGraphPoint;

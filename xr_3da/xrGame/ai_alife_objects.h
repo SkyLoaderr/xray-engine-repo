@@ -218,9 +218,8 @@ class CALifeMonster : public CALifeCorp {
 public:
 	typedef	CALifeCorp inherited;
 	
-	_GRAPH_ID						m_tCurrentGraphPointID;
-	_GRAPH_ID						m_tNextGraphPointID;
-	_GRAPH_ID						m_tPrevGraphPointID;
+	_GRAPH_ID						m_tNextGraphID;
+	_GRAPH_ID						m_tPrevGraphID;
 	float							m_fCurSpeed;
 	float							m_fMinSpeed;
 	float							m_fMaxSpeed;
@@ -231,9 +230,8 @@ public:
 	virtual	void					Save(CFS_Memory &tMemoryStream)
 	{
 		inherited::Save		(tMemoryStream);
-		tMemoryStream.write	(&m_tCurrentGraphPointID,	sizeof(m_tCurrentGraphPointID));
-		tMemoryStream.write	(&m_tNextGraphPointID,		sizeof(m_tNextGraphPointID));
-		tMemoryStream.write	(&m_tPrevGraphPointID,		sizeof(m_tPrevGraphPointID));
+		tMemoryStream.write	(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+		tMemoryStream.write	(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
 		tMemoryStream.write	(&m_fMinSpeed,				sizeof(m_fMinSpeed));
 		tMemoryStream.write	(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
 		tMemoryStream.write	(&m_fCurSpeed,				sizeof(m_fCurSpeed));
@@ -245,9 +243,8 @@ public:
 	virtual	void					Load(CStream	&tFileStream)
 	{
 		inherited::Load		(tFileStream);
-		tFileStream.Read	(&m_tCurrentGraphPointID,	sizeof(m_tCurrentGraphPointID));
-		tFileStream.Read	(&m_tNextGraphPointID,		sizeof(m_tNextGraphPointID));
-		tFileStream.Read	(&m_tPrevGraphPointID,		sizeof(m_tPrevGraphPointID));
+		tFileStream.Read	(&m_tNextGraphID,			sizeof(m_tNextGraphID));
+		tFileStream.Read	(&m_tPrevGraphID,			sizeof(m_tPrevGraphID));
 		tFileStream.Read	(&m_fMinSpeed,				sizeof(m_fMinSpeed));
 		tFileStream.Read	(&m_fMaxSpeed,				sizeof(m_fMaxSpeed));
 		tFileStream.Read	(&m_fCurSpeed,				sizeof(m_fCurSpeed));
@@ -259,15 +256,14 @@ public:
 	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_iHealth				= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
+		m_tNextGraphID			= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_tPrevGraphID			= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
 		m_fMinSpeed				= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MinSpeed");
 		m_fMaxSpeed				= pSettings->ReadFLOAT	(tpSpawnPoints[tSpawnID].caModel, "MaxSpeed");
 		m_fCurSpeed				= 0.0f;
 		m_fDistanceFromPoint	= 0.0f;
 		m_fDistanceToPoint		= 0.0f;
-		m_tCurrentGraphPointID	= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tNextGraphPointID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tPrevGraphPointID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_iHealth				= pSettings->ReadINT	(tpSpawnPoints[tSpawnID].caModel, "Health");
 	}
 };
 
@@ -336,8 +332,8 @@ public:
 	virtual void					Init(_SPAWN_ID	tSpawnID, vector<SSpawnPoint> &tpSpawnPoints)
 	{
 		inherited::Init(tSpawnID,tpSpawnPoints);
-		m_tCurrentGraphPointID	= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tNextGraphPointID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
-		m_tPrevGraphPointID		= tpSpawnPoints[tSpawnID].tNearestGraphPointID;
+		m_tpEvents.	clear();
+		m_tpItemIDs.clear();
+		m_tpTaskIDs.clear();
 	}
 };
