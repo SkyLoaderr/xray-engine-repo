@@ -52,12 +52,12 @@
 
     <article id="dar_password_info1" name="dar_password_info1" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
-        <text>dar_password_info1</text>
+        <text>Password: 1243 </text>
     </article>
     
     <article id="dar_password_info2" name="dar_password_info2" group="Diary">
         <texture x="200" y="650" width="200" height="150">ui\ui_icon_photo</texture>    
-        <text>dar_password_info2</text>
+        <text>Very important documents</text>
     </article>
  
 </encyclopedia>
