@@ -121,11 +121,18 @@ IC	bool CBoardClassicOthello::can_move		(const cell_index &index) const
 
 bool CBoardClassicOthello::can_move			(const cell_index &index) const
 {
-	VERIFY		(cell(index) == EMPTY);
-	if (color_to_move() == BLACK)
-		return	(can_move<BLACK>(index));
-	else
-		return	(can_move<WHITE>(index));
+	if (index) {
+		VERIFY		(cell(index) == EMPTY);
+		if (color_to_move() == BLACK)
+			return	(can_move<BLACK>(index));
+		else
+			return	(can_move<WHITE>(index));
+	}
+
+	if (!can_move())
+		return		(true);
+
+	return			(false);
 }
 
 template <CBoardClassicOthello::cell_type _color_to_move>

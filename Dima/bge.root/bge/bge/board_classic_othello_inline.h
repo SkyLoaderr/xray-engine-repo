@@ -58,6 +58,11 @@ IC	int	 CBoardClassicOthello::difference		() const
 	return							(m_difference);
 }
 
+IC	bool CBoardClassicOthello::passed			() const
+{
+	return							(m_passed);
+}
+
 template <CBoardClassicOthello::cell_type opponent_color>
 IC	void CBoardClassicOthello::undo_move		()
 {

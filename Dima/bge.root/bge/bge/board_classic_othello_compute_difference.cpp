@@ -140,9 +140,13 @@ IC	int CBoardClassicOthello::compute_difference	(const cell_index &index) const
 
 int	 CBoardClassicOthello::compute_difference	(const cell_index &index) const
 {
-	VERIFY		(can_move(index) == EMPTY);
-	if (color_to_move() == BLACK)
-		return	(compute_difference<BLACK>(index));
-	else
-		return	(compute_difference<WHITE>(index));
+	if (index) {
+		VERIFY		(can_move(index) == EMPTY);
+		if (color_to_move() == BLACK)
+			return	(compute_difference<BLACK>(index));
+		else
+			return	(compute_difference<WHITE>(index));
+	}
+	VERIFY			(!can_move());
+	return			(difference());
 }

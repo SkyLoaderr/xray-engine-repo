@@ -29,7 +29,7 @@ public:
 
 public:
 	typedef u8 cell_type;
-	typedef u8 cell_index;
+	typedef s8 cell_index;
 
 private:
 	static const u8 flipping_directions[BOARD_SIZE];
@@ -39,9 +39,9 @@ private:
 	cell_type		m_color_to_move;
 	u8				m_empties;
 	int				m_difference;
+	bool			m_passed;
 	cell_type		*m_flip_stack[4096];
 	cell_type		**m_current_flip;
-
 
 protected:
 	IC		void			show_cell				(const cell_type &value) const;
@@ -83,6 +83,7 @@ public:
 	IC		const cell_type	&color_to_move			() const;
 	IC		u8				empties					() const;
 	IC		int				difference				() const;
+	IC		bool			passed					() const;
 
 public:
 	IC		cell_index		index					(const cell_index &index0, const cell_index &index1) const;

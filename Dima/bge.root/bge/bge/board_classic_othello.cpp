@@ -38,6 +38,7 @@ void CBoardClassicOthello::start_position	()
 	m_color_to_move	= BLACK;
 	m_empties		= 60;
 	m_difference	= 0;
+	m_passed		= false;
 	m_current_flip	= m_flip_stack;
 }
 

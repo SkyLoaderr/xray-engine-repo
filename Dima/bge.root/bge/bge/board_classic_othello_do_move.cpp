@@ -147,8 +147,18 @@ IC	bool CBoardClassicOthello::do_move		(const cell_index &index)
 
 bool CBoardClassicOthello::do_move			(const cell_index &index)
 {
-	if (color_to_move() == BLACK)
-		return	(do_move<BLACK>(index));
-	else
-		return	(do_move<WHITE>(index));
+	if (index) {
+		if (color_to_move() == BLACK)
+			return	(do_move<BLACK>(index));
+		else
+			return	(do_move<WHITE>(index));
+	}
+	
+	if (!can_move()) {
+		m_color_to_move		= color_to_move() == BLACK ? WHITE : BLACK;
+		m_passed			= true;
+		return				(true);
+	}
+
+	return					(false);
 }
