@@ -53,7 +53,8 @@ private:
 	IDirect3DIndexBuffer9*		g_accum_point_ib;
 
 	// Bloom
-	SGeometry*					g_bloom;
+	SGeometry*					g_bloom_build;
+	SGeometry*					g_bloom_filter;
 	Shader*						s_bloom_dbg_1;
 	Shader*						s_bloom_dbg_2;
 	Shader*						s_bloom;

@@ -53,7 +53,8 @@ void	CRenderTarget::OnDeviceCreate	()
 		u32	w=Device.dwWidth/2, h=Device.dwHeight/2;
 		rt_Bloom_1					= Device.Shader._CreateRT	(r2_RT_bloom1,	w,h,D3DFMT_A8R8G8B8);
 		rt_Bloom_2					= Device.Shader._CreateRT	(r2_RT_bloom2,	w,h,D3DFMT_A8R8G8B8);
-		g_bloom						= Device.Shader.CreateGeom	(D3DFVF_XYZRHW|D3DFVF_TEX8, RCache.Vertex.Buffer(), RCache.QuadIB);
+		g_bloom_build				= Device.Shader.CreateGeom	(D3DFVF_XYZRHW|D3DFVF_TEX4, RCache.Vertex.Buffer(), RCache.QuadIB);
+		g_bloom_filter				= Device.Shader.CreateGeom	(D3DFVF_XYZRHW|D3DFVF_TEX8, RCache.Vertex.Buffer(), RCache.QuadIB);
 		s_bloom_dbg_1				= Device.Shader.Create		("effects\\screen_set",		r2_RT_bloom1);
 		s_bloom_dbg_2				= Device.Shader.Create		("effects\\screen_set",		r2_RT_bloom2);
 		s_bloom						= Device.Shader.Create_B	(b_bloom,					"r2\\bloom");
@@ -149,7 +150,8 @@ void	CRenderTarget::OnDeviceDestroy	()
 	Device.Shader.Delete		(s_bloom				);
 	Device.Shader.Delete		(s_bloom_dbg_2			);
 	Device.Shader.Delete		(s_bloom_dbg_1			);
-	Device.Shader.DeleteGeom	(g_bloom				);
+	Device.Shader.DeleteGeom	(g_bloom_filter			);
+	Device.Shader.DeleteGeom	(g_bloom_build			);
 
 	// POINT
 	Device.Shader.DeleteGeom	(g_accum_point			);
