@@ -54,7 +54,7 @@ ImpulseMax			 = 550.0
 ; speed factors			linear angular min		max
 Velocity_Stand			= 0,	1.4,	1,		1
 Velocity_WalkFwdNormal		= 1.95,	1.9,	0.02,	2.0
-Velocity_RunFwdNormal		= 8.0,	3.5,	0.4,	1	
+Velocity_RunFwdNormal		= 7.0,	3.5,	0.4,	1	
 Velocity_WalkFwdDamaged		= 1.7,	3.0,	0.2,	2.0	
 Velocity_RunFwdDamaged		= 5.0,  4.0,	0.2,	1
 Velocity_Drag			= 1.0,	3.0,	1,		1
@@ -66,11 +66,11 @@ Accel_Calm			= 2.5
 Accel_Aggressive		= 7.5
 
 ;attack parameters
-MinAttackDist		= 1.0	;0.5
-MaxAttackDist		= 2.5	;3.8
+MinAttackDist		= 1.8	;0.5
+MaxAttackDist		= 2.4	;3.8
 
 as_min_dist				= 0.5
-as_step					= 0.1
+as_step					= 0.5
 
 ; "Rest" state specific 
 ProbRestWalkFree	= 30    ; яЁш тvсюЁх фхщёЄтш , т 50% ёыєўр ї ьюэёЄЁ сєфхЄ їюфшЄ№
@@ -80,8 +80,8 @@ ProbRestTurnLeft	= 5
 
 DayTime_Begin		= 0			; эрўрыр фэ  фы  ьюэёЄЁр
 DayTime_End			= 21		; ъюэхЎ фэ  фы  ьюэёЄЁр
-Min_Satiety			= 0.6		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
-Max_Satiety			= 0.9		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
+Min_Satiety			= 0.4		; ьшэ. эюЁьр ёvЄюёЄш (ьхэ№°х - єцх уюыюфэvщ)
+Max_Satiety			= 1.0		; ьръё. эюЁьр ёvЄюёЄш (сюы№°х - юўхэ№ ёvЄvщ)
 
 distance_to_corpse	= 1.2		; фшёЄ. фю ЄЁєяр, яЁш ъюЄюЁющ юэ яхЁхїюфшЄ т ёюёЄю эшх хфv
 
@@ -104,7 +104,7 @@ hit_type = wound
 ;entity condition
 
 ; entity condition
-satiety_v 		= 0.0001				;0.01			;скорость уменьшения сытости со временем
+satiety_v 		= 0.01				;0.01			;скорость уменьшения сытости со временем
 radiation_v 		= 0.00001		;0.004			;скорость уменьшения радиации
 satiety_power_v 	= 0.005		;0.01			;увеличение силы при уменьшении сытости 
 satiety_health_v 	= 0.001	;0.03			;увеличение здоровья при уменьшении сытости 
@@ -132,7 +132,7 @@ sleep_satiety = 1.0		;0.8
 sleep_radiation = 1.0	;1.1
 
 eat_freq			=	5.0		; ўрёЄюЄр єъєёют т ёхъ
-eat_slice			=	0.001	; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
+eat_slice			=	0.1	; єтхышўхэшх ёvЄюёЄш яЁш 1 єъєёх
 eat_slice_weight	=	10.0	; єьхэ№°хэшх хфv є ЄЁєяр
 
 
