@@ -255,5 +255,5 @@ _value_type CStalkerPropertyEvaluatorCanBuyAmmo::evaluate	()
 
 _value_type CStalkerPropertyEvaluatorHumanToDialog::evaluate	()
 {
-	return				(true);//false);//true);
+	return				(false);//true);//false);//true);
 }
