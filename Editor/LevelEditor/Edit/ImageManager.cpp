@@ -23,7 +23,7 @@ bool Surface_Load(LPCSTR full_name, DWORDVec& data, int& w, int& h, int& a)
 	AnsiString ext = ExtractFileExt(full_name).LowerCase();
 	if (ext==".tga"){
     	CImage img;
-        img.LoadTGA			(full_name);
+        if (!img.LoadTGA	(full_name)) return false;
 		w 					= img.dwWidth;
         h 					= img.dwHeight;
         a					= img.bAlpha;

@@ -210,6 +210,7 @@ bool TUI::Command( int _Command, int p1, int p2 ){
 				strcpy(m_LastFileName,filebuffer);
 			    bRes = Command(COMMAND_UPDATE_CAPTION);
 	            EndEState();
+                fraLeftBar->AppendRecentFile(filebuffer);
 			}else
             	bRes = false;
 		} else {
@@ -655,6 +656,9 @@ void TUI::ApplyShortCut(WORD Key, TShiftState Shift)
         	else if (Key==VK_RETURN)Command(COMMAND_SHOWPROPERTIES);
             else if (Key==VK_OEM_4)	Command(COMMAND_GRID_SLOT_SIZE,false);
             else if (Key==VK_OEM_6)	Command(COMMAND_GRID_SLOT_SIZE,true);
+            else if (Key==VK_OEM_MINUS)	Command(COMMAND_HIDE_SEL, FALSE);
+            else if (Key==VK_OEM_PLUS)	Command(COMMAND_HIDE_UNSEL, FALSE);
+            else if (Key==VK_OEM_5)		Command(COMMAND_HIDE_ALL, TRUE);
         }
     }
 }

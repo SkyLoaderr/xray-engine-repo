@@ -34,11 +34,11 @@ bool TUI::PickGround(Fvector& hitpoint, const Fvector& start, const Fvector& dir
         if (bPickObject){
 		    if (fraTopBar->ebVSnap->Down&&bSnap){
                 Fvector pn;
-                float u = pinf.rp_inf.u;
-                float v = pinf.rp_inf.v;
+                float u = pinf.inf.u;
+                float v = pinf.inf.v;
                 float w = 1-(u+v);
 				Fvector verts[3];
-				pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.rp_inf.id,verts);
+				pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
                 if ((w>u) && (w>v)) pn.set(verts[0]);
                 else if ((u>w) && (u>v)) pn.set(verts[1]);
                 else pn.set(verts[2]);
@@ -93,9 +93,9 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
     for (int i=0; i<4; i++){
 	    Device.m_Camera.MouseRayFromPoint(st, d, pt[i]);
         if (frmEditorPreferences->cbBoxPickLimitedDepth->Checked){
-			pinf.rp_inf.range = Device.m_Camera.m_Zfar; // max pick range
+			pinf.inf.range = Device.m_Camera.m_Zfar; // max pick range
             if (Scene.RayPick(st, d, OBJCLASS_SCENEOBJECT, &pinf, false, false))
-	            if (pinf.rp_inf.range > depth) depth = pinf.rp_inf.range;
+	            if (pinf.inf.range > depth) depth = pinf.inf.range;
         }
     }
     if (depth<Device.m_Camera.m_Znear) depth = Device.m_Camera.m_Zfar;
@@ -118,6 +118,7 @@ bool TUI::SelectionFrustum(CFrustum& frustum){
 
 void TUI::Redraw(){
 	VERIFY(m_bReady);
+    if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
 	if (bResize){ Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height); bResize=false; }
 // set render state
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
@@ -183,13 +184,16 @@ void TUI::Redraw(){
 		Device.Resize(m_D3DWindow->Width,m_D3DWindow->Height);
     }
 
-    if (!(psDeviceFlags&rsRenderRealTime)) bRedraw = false;
 	fraBottomBar->paSel->Caption = AnsiString(AnsiString(" Sel: ")+AnsiString(Scene.SelectionCount(true,Tools.CurrentClassID())));
 }
 //---------------------------------------------------------------------------
 void TUI::Idle()
 {
 	VERIFY(m_bReady);
+	// reset fpu
+//    _clear87();
+//    FPU::m24r();
+	// input
     pInput->OnFrame();
     if (g_ErrorMode) return;
 //    ELog.Msg(mtInformation,"%f",Device.m_FrameDTime);

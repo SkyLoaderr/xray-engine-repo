@@ -171,7 +171,7 @@ struct TGAHeader
 };
 #pragma pack(pop)
 
-void CImage::LoadTGA(LPCSTR name)
+bool CImage::LoadTGA(LPCSTR name)
 {
 	destructor<CStream>	TGA(Engine.FS.Open(name));
 
@@ -180,10 +180,22 @@ void CImage::LoadTGA(LPCSTR name)
 
 	TGA().Read(&hdr,sizeof(TGAHeader));
 
-	if (!((hdr.imgtype==2)||(hdr.imgtype==10)))	Device.Fatal("Unsupported texture format (%s)",name);
-	R_ASSERT((hdr.pixsize==24) || (hdr.pixsize==32));	// 24bpp/32bpp
-	R_ASSERT(btwIsPow2(hdr.width));
-	R_ASSERT(btwIsPow2(hdr.height));
+	if (!((hdr.imgtype==2)||(hdr.imgtype==10))){
+    	Msg("Unsupported texture format (%s)",name);
+        return false;
+    }
+	if (!((hdr.pixsize==24)||(hdr.pixsize==32))){
+    	Msg("Texture (%s) - invalid pixsize: %d",name,hdr.pixsize);
+        return false;
+    }
+	if (!btwIsPow2(hdr.width)){
+    	Msg("Texture (%s) - invalid width: %d",name,hdr.width);
+        return false;
+    }
+	if (!btwIsPow2(hdr.height)){
+    	Msg("Texture (%s) - invalid height: %d",name,hdr.height);
+        return false;
+    }
 
 	// Skip funky stuff
 	if (hdr.idlen)	TGA().Advance(hdr.idlen);
@@ -260,4 +272,6 @@ void CImage::LoadTGA(LPCSTR name)
 */
 	if (vflip) Vflip();
 	if (hflip) Hflip();
+
+    return true;
 }

@@ -43,6 +43,7 @@ void CEditableMesh::Clear(){
 void CEditableMesh::UnloadCForm     (){
 #ifdef _EDITOR
 	cdb_model_destroy(m_CFModel);
+    m_CFModel = 0;
 #endif
     m_LoadState &=~ EMESH_LS_CF_MODEL;
 }

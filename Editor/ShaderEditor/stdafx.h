@@ -98,7 +98,7 @@ __inline LPVOID _aligned_malloc(size_t sz, int r){
 	return malloc(sz);
 }
 
-__inline _aligned_free(LPVOID ptr){
+__inline void _aligned_free(LPVOID ptr){
 	free(ptr);
 }
 

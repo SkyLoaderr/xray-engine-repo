@@ -12,22 +12,24 @@ class CSceneObject;
 
 #ifdef _EDITOR
 	struct SRayPickInfo{
+		CDB::RESULT 		inf;
 		CSceneObject*		s_obj;
 		CEditableObject*	e_obj;
 		CEditableMesh*		e_mesh;
 		Fvector     		pt;
-		CDB::RESULT 		rp_inf;
 		SRayPickInfo		(){Reset();}
-		IC void Reset		(){ ZeroMemory(this,sizeof(SRayPickInfo));rp_inf.range = 5000;}
+		IC void Reset		(){ ZeroMemory(this,sizeof(SRayPickInfo));inf.range = 5000;}
+		IC void SetRESULT	(CDB::MODEL* M, CDB::RESULT* R){inf=*R;inf.id=(M->get_tris()+inf.id)->dummy;}
 	};
     DEFINE_VECTOR(CDB::RESULT,BPInfVec,BPInfIt);
 	struct SBoxPickInfo{
+    	BPInfVec			inf;
 		CSceneObject*		s_obj;
 		CEditableObject*	e_obj;
 		CEditableMesh*		e_mesh;
-    	BPInfVec			bp_inf;
 		SBoxPickInfo		(){Reset();}
 		IC void Reset		(){ZeroMemory(this,sizeof(SBoxPickInfo));}
+		IC void AddRESULT	(CDB::MODEL* M, CDB::RESULT* R){inf.push_back(*R); inf.back().id=(M->get_tris()+inf.back().id)->dummy;}
 	};
 	DEFINE_VECTOR(SBoxPickInfo,SBoxPickInfoVec,SBoxPickInfoIt);
 #endif

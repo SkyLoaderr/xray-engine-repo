@@ -489,8 +489,9 @@ void CDetailManager::UpdateCache	(int limit)
 				{
                     Fvector verts[3];
                     SBoxPickInfo& I=pinf[tid];
-		        	for (int k=0; k<I.bp_inf.size(); k++){
-                        I.s_obj->GetFaceWorld(I.e_mesh,I.bp_inf[k].id,verts);
+		        	for (int k=0; k<I.inf.size(); k++){
+                    	R_ASSERT(I.s_obj);
+                        I.s_obj->GetFaceWorld(I.e_mesh,I.inf[k].id,verts);
                         if (CDB::TestRayTri(Item.P,dir,verts,r_u,r_v,r_range,TRUE))
                         {
                             if (r_range>=0)	{

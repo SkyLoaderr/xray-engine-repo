@@ -168,8 +168,6 @@ USEUNIT("Engine\Blenders\Blender_Vertex_aref.cpp");
 USEUNIT("Engine\Blenders\BlenderDefault.cpp");
 USEUNIT("Engine\Image.cpp");
 USEUNIT("Engine\tss_def.cpp");
-USEOBJ("Intermediate\cpuid.obj");
-USEOBJ("Intermediate\_math.obj");
 USEUNIT("Engine\xrLoadSurface.cpp");
 USEUNIT("edit\ImageManager.cpp");
 USEUNIT("edit\ImageThumbnail.cpp");
@@ -207,6 +205,8 @@ USEUNIT("edit\ExportSkeleton.cpp");
 USEUNIT("edit\Engine.cpp");
 USEUNIT("edit\ModelPool.cpp");
 USELIB("lib\xrCDB.lib");
+USEUNIT("Engine\cpuid.cpp");
+USEUNIT("Engine\_math.cpp");
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

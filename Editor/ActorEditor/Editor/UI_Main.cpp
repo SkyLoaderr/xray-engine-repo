@@ -205,6 +205,12 @@ void TUI::MouseRelease(TShiftState Shift, int X, int Y)
     RedrawScene();
 }
 //----------------------------------------------------
+void TUI::MouseMove(TShiftState Shift, int X, int Y)
+{
+	if (!m_bReady) return;
+    m_ShiftState = Shift;
+}
+//----------------------------------------------------
 void TUI::OnMouseMove(int x, int y){
 	if (!m_bReady) return;
     bool bRayUpdated = false;

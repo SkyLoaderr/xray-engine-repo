@@ -78,25 +78,25 @@
       intermediate\Blender_Editor_Wire.obj intermediate\Blender_Screen_GRAY.obj 
       intermediate\Blender_Screen_SET.obj intermediate\Blender_default_aref.obj 
       intermediate\Blender_Vertex_aref.obj intermediate\BlenderDefault.obj 
-      intermediate\Image.obj intermediate\tss_def.obj Intermediate\cpuid.obj 
-      Intermediate\_math.obj intermediate\xrLoadSurface.obj 
-      intermediate\ImageManager.obj intermediate\ImageThumbnail.obj 
-      intermediate\TextureManager.obj intermediate\PropertiesList.obj 
-      intermediate\ETextureParams.obj intermediate\blender_light.obj 
-      intermediate\FolderLib.obj intermediate\EStats.obj 
-      intermediate\UI_MainExtern.obj intermediate\xr_efflensflare.obj 
-      intermediate\PropertiesSceneObject.obj intermediate\EditObjectEditor.obj 
-      intermediate\Blender_LaEmB.obj intermediate\Blender_Lm(EbB).obj 
-      intermediate\Blender_LmBmmD.obj intermediate\fmesh.obj 
-      intermediate\Blender_BmmD.obj intermediate\BuilderGame.obj 
-      intermediate\EventOneAction.obj intermediate\xrXRC.obj 
-      intermediate\xrSkin1W.obj intermediate\FBasicVisual.obj 
-      intermediate\FHierrarhyVisual.obj intermediate\FProgressive.obj 
-      intermediate\FProgressiveFixedVisual.obj intermediate\FVisual.obj 
-      intermediate\SkeletonCalculate.obj intermediate\SkeletonX.obj 
-      intermediate\xrBoneLerp.obj intermediate\BodyInstance.obj 
-      intermediate\ExportSkeleton.obj intermediate\Engine.obj 
-      intermediate\ModelPool.obj"/>
+      intermediate\Image.obj intermediate\tss_def.obj 
+      intermediate\xrLoadSurface.obj intermediate\ImageManager.obj 
+      intermediate\ImageThumbnail.obj intermediate\TextureManager.obj 
+      intermediate\PropertiesList.obj intermediate\ETextureParams.obj 
+      intermediate\blender_light.obj intermediate\FolderLib.obj 
+      intermediate\EStats.obj intermediate\UI_MainExtern.obj 
+      intermediate\xr_efflensflare.obj intermediate\PropertiesSceneObject.obj 
+      intermediate\EditObjectEditor.obj intermediate\Blender_LaEmB.obj 
+      intermediate\Blender_Lm(EbB).obj intermediate\Blender_LmBmmD.obj 
+      intermediate\fmesh.obj intermediate\Blender_BmmD.obj 
+      intermediate\BuilderGame.obj intermediate\EventOneAction.obj 
+      intermediate\xrXRC.obj intermediate\xrSkin1W.obj 
+      intermediate\FBasicVisual.obj intermediate\FHierrarhyVisual.obj 
+      intermediate\FProgressive.obj intermediate\FProgressiveFixedVisual.obj 
+      intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
+      intermediate\SkeletonX.obj intermediate\xrBoneLerp.obj 
+      intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
+      intermediate\Engine.obj intermediate\ModelPool.obj intermediate\cpuid.obj 
+      intermediate\_math.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -120,7 +120,7 @@
     <SPARELIBS value="Vcl50.lib bcbsmp50.lib VCLX50.lib dclusr50.lib elpackB5.lib"/>
     <PACKAGES value="Vcl50.bpi Vclx50.bpi bcbsmp50.bpi TeeUI50.bpi Tee50.bpi Vclbde50.bpi 
       TeeDB50.bpi dclusr50.bpi"/>
-    <PATHCPP value=".;edit;engine;lib\DX;Engine\Blenders;Intermediate;Engine\Animations"/>
+    <PATHCPP value=".;edit;engine;lib\DX;Engine\Blenders;Engine\Animations"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>

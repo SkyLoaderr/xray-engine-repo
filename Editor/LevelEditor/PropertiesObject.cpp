@@ -195,7 +195,7 @@ void __fastcall TfrmPropertiesObject::OnPick(const SRayPickInfo& pinf){
             form->tvMeshes->EnsureVisible(form->tvMeshes->Selected);
         }else if (form->pcObjects->ActivePage==form->tsSurfaces){
             UI.RedrawScene();
-            CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.rp_inf.id);
+            CSurface* surf=pinf.e_mesh->GetSurfaceByFaceID(pinf.inf.id);
             form->tvSurfaces->Selected = form->tvSurfaces->Items->LookForItem(0,surf->_Name(),0,0,false,true,false,false,true);
             form->tvSurfaces->EnsureVisible(form->tvSurfaces->Selected);
         }

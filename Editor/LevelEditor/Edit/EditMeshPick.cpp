@@ -6,6 +6,7 @@
 #pragma hdrstop
 
 #include "EditMesh.h"
+#include "EditObject.h"
 #include "UI_Main.h"
 #include "frustum.h"
 #include "EditorPref.h"
@@ -44,17 +45,16 @@ void CEditableMesh::GenerateCFModel(){
 
 	CDB::Collector CL;
 	// double sided
-/*	не корректно работает с сурфейсами
 	for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
 		INTVec& face_lst = sp_it->second;
 		for (INTIt it=face_lst.begin(); it!=face_lst.end(); it++){
 			st_Face&	F = m_Faces[*it];
-			CL.add_face(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], 0,0,0, 0,0,0);
-			if (sp_it->first->sideflag)
-				CL.add_face(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], 0,0,0, 0,0,0);
+			CL.add_face(m_Points[F.pv[0].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[2].pindex], 0,0,0, 0,0,*it);
+			if (sp_it->first->_2Sided())
+				CL.add_face(m_Points[F.pv[2].pindex],m_Points[F.pv[1].pindex],m_Points[F.pv[0].pindex], 0,0,0, 0,0,*it);
 		}
 	}
-*/
+/*
 	// without double sided
 	for (FaceIt P = m_Faces.begin(); P!=m_Faces.end(); P++){
 		st_Face&	F = *P;
@@ -63,7 +63,7 @@ void CEditableMesh::GenerateCFModel(){
 			0,0,0,
 			0,0,0 );
 	}
-
+*/
     cdb_model_build(m_CFModel,CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
 	m_LoadState |= EMESH_LS_CF_MODEL;
 }
@@ -80,10 +80,10 @@ bool CEditableMesh::RayPick(float& distance, Fvector& start, Fvector& direction,
 		CDB::RESULT* I	= XRC.r_begin	();
 		if (I->range<distance) {
 	        if (pinf){
-	            pinf->rp_inf	= *I;
+            	pinf->SetRESULT	(m_CFModel,I);
     	        pinf->e_obj 	= m_Parent;
         	    pinf->e_mesh	= this;
-	            pinf->pt.mul	(direction,pinf->rp_inf.range);
+	            pinf->pt.mul	(direction,pinf->inf.range);
     	        pinf->pt.add	(start);
             }
             distance = I->range;
@@ -159,7 +159,7 @@ bool CEditableMesh::BoxPick(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& p
     	pinf.push_back(SBoxPickInfo());
 		pinf.back().e_obj 	= m_Parent;
 	    pinf.back().e_mesh	= this;
-	    for (CDB::RESULT* I=XRC.r_begin(); I!=XRC.r_end(); I++) pinf.back().bp_inf.push_back(*I);
+	    for (CDB::RESULT* I=XRC.r_begin(); I!=XRC.r_end(); I++) pinf.back().AddRESULT(m_CFModel,I);
         return true;
     }
     return false;

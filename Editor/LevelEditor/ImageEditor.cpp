@@ -26,6 +26,13 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
     bCheckMode = false;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
+{
+	ImageProps = TfrmProperties::CreateProperties(paProperties,alClient);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfrmImageLib::EditImageLib(AnsiString& title, bool bCheck){
 	if (!form){
         form = new TfrmImageLib(0);
@@ -69,10 +76,6 @@ bool __fastcall TfrmImageLib::HideImageLib(){
 //---------------------------------------------------------------------------
 void __fastcall TfrmImageLib::FormShow(TObject *Sender)
 {
-	ImageProps = TfrmProperties::CreateProperties(paProperties,alClient);
-    ImageProps->tvProperties->HeaderSections->Item[0]->Width = 101;
-    ImageProps->tvProperties->HeaderSections->Item[1]->Width = 55;
-
     InitItemsList();
     UI.BeginEState(esEditImages);
 
@@ -183,23 +186,26 @@ void __fastcall TfrmImageLib::tvItemsItemFocused(TObject *Sender)
 
         ImageProps->BeginFillMode("Image properties");
         ImageProps->AddItem(0,PROP_TOKEN,"Format",			ImageProps->MakeTokenValue(&fmt.fmt,tfmt_token));
+        M = ImageProps->AddItem(0,PROP_MARKER,"MipMaps");
+        ImageProps->AddItem(M,PROP_FLAG,"Enabled",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGenerateMipMaps));
+        ImageProps->AddItem(M,PROP_TOKEN,"Filter",			ImageProps->MakeTokenValue(&fmt.mip_filter,tparam_token));
+        M = ImageProps->AddItem(0,PROP_MARKER,"Fade");
+        ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToColor));
+        ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToAlpha));
+        ImageProps->AddItem(M,PROP_INTEGER,"Amount",		ImageProps->MakeIntValue(&fmt.fade_amount,0,1000,1));
+        ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.fade_color);
+        M = ImageProps->AddItem(0,PROP_MARKER,"Border");
+        ImageProps->AddItem(M,PROP_FLAG,"Color Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flColorBorder));
+        ImageProps->AddItem(M,PROP_FLAG,"Alpha Enabled",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flAlphaBorder));
+        ImageProps->AddItem(M,PROP_COLOR,"Color",			&fmt.border_color);
         M = ImageProps->AddItem(0,PROP_MARKER,"Flags");
-        ImageProps->AddItem(M,PROP_FLAG,"Generate MipMaps",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGenerateMipMaps));
         ImageProps->AddItem(M,PROP_FLAG,"Binary Alpha",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flBinaryAlpha));
         ImageProps->AddItem(M,PROP_FLAG,"Normal Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flNormalMap));
         ImageProps->AddItem(M,PROP_FLAG,"Du Dv Map",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDuDvMap));
-        ImageProps->AddItem(M,PROP_FLAG,"Border",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flColorBorder));
-        ImageProps->AddItem(M,PROP_FLAG,"Alpha Border",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flAlphaBorder));
-        ImageProps->AddItem(M,PROP_FLAG,"Fade To Color",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToColor));
-        ImageProps->AddItem(M,PROP_FLAG,"Fade To Alpha",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flFadeToAlpha));
         ImageProps->AddItem(M,PROP_FLAG,"Dither",			ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherColor));
         ImageProps->AddItem(M,PROP_FLAG,"Dither Each MIP",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flDitherEachMIPLevel));
         ImageProps->AddItem(M,PROP_FLAG,"Grayscale",		ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flGreyScale));
         ImageProps->AddItem(M,PROP_FLAG,"Implicit Lighted",	ImageProps->MakeFlagValue(&fmt.flag,STextureParams::flImplicitLighted));
-        ImageProps->AddItem(0,PROP_TOKEN,"Mip Filter",		ImageProps->MakeTokenValue(&fmt.mip_filter,tparam_token));
-        ImageProps->AddItem(0,PROP_COLOR,"Border Color",	&fmt.border_color);
-        ImageProps->AddItem(0,PROP_INTEGER,"Fade Amount",	ImageProps->MakeIntValue(&fmt.fade_amount,0,1000,1));
-        ImageProps->AddItem(0,PROP_COLOR,"Fade Color",		&fmt.fade_color);
         ImageProps->EndFillMode();
 
         m_LastSelection = m_SelectedName;
@@ -252,4 +258,15 @@ void __fastcall TfrmImageLib::tvItemsKeyPress(TObject *Sender, char &Key)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmImageLib::fsStorageRestorePlacement(TObject *Sender)
+{
+	ImageProps->RestoreColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TfrmImageLib::fsStorageSavePlacement(TObject *Sender)
+{
+	ImageProps->SaveColumnWidth(fsStorage);
+}
+//---------------------------------------------------------------------------
 

@@ -56,6 +56,9 @@ __published:	// IDE-managed Components
 	void __fastcall ebConvertClick(TObject *Sender);
 	void __fastcall tvItemsKeyPress(TObject *Sender, char &Key);
 	void __fastcall tvItemsItemFocused(TObject *Sender);
+	void __fastcall fsStorageRestorePlacement(TObject *Sender);
+	void __fastcall fsStorageSavePlacement(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
 private:
 // list functions
     void InitItemsList(const char* nm=0);

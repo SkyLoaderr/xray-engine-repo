@@ -43,7 +43,7 @@ void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N){
     Fvector start;
     SRayPickInfo pinf;
     start.set(src); start.y+=brush_up_depth;
-    pinf.rp_inf.range = brush_up_depth+brush_dn_depth;
+    pinf.inf.range = brush_up_depth+brush_dn_depth;
     pinf.pt.set(src);
     Fvector pick_dir;
     pick_dir.set(0,-1,0);
@@ -51,7 +51,7 @@ void C3DCursor::GetPickPoint (Fvector& src, Fvector& dst, Fvector* N){
         dst.set(pinf.pt);
         if (N){
 			Fvector verts[3];
-			pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.rp_inf.id,verts);
+			pinf.s_obj->GetFaceWorld(pinf.e_mesh,pinf.inf.id,verts);
         	N->mknormal(verts[0], verts[1], verts[2]);
         }
     }else{

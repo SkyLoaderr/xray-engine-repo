@@ -217,3 +217,10 @@ void __fastcall TfrmMain::D3DWindowMouseUp(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmMain::D3DWindowMouseMove(TObject *Sender,
+      TShiftState Shift, int X, int Y)
+{
+    UI.MouseMove(Shift,X,Y);
+}
+//---------------------------------------------------------------------------
+

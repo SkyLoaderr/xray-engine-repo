@@ -13,6 +13,8 @@
 #include "library.h"
 #include "EditMesh.h"
 
+#define BLINK_TIME 300.f
+
 //----------------------------------------------------
 CSceneObject::CSceneObject( char *name ):CCustomObject(){
 	Construct();
@@ -36,10 +38,18 @@ void CSceneObject::Construct(){
 
     m_Center.set(0,0,0);
     m_fRadius = 0;
+    m_dwBlinkTime = 0;
 }
 
 CSceneObject::~CSceneObject(){
 	Lib.RemoveEditObject(m_pRefs);
+}
+
+//----------------------------------------------------
+void CSceneObject::Select(BOOL flag)
+{
+	inherited::Select(flag);
+    if (flag) m_dwBlinkTime=Device.dwTimeGlobal+BLINK_TIME+Device.dwTimeDelta;
 }
 
 //----------------------------------------------------
@@ -98,10 +108,16 @@ void CSceneObject::Render(int priority, bool strictB2F){
 	m_pRefs->Render(mTransform, priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
         if (Selected()){
-	        Device.SetShader(Device.m_WireShader);
-    	    Device.SetTransform(D3DTS_WORLD,mTransform);
-        	DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
-	        DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);
+            if (m_dwBlinkTime>Device.dwTimeGlobal){
+            	DWORD c=D3DCOLOR_ARGB(iFloor(sqrtf(float(m_dwBlinkTime-Device.dwTimeGlobal)/BLINK_TIME)*48),255,255,255);
+                RenderSelection(c);
+                UI.RedrawScene();
+            }else{
+                Device.SetShader(Device.m_WireShader);
+                Device.SetTransform(D3DTS_WORLD,mTransform);
+                DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
+                DU::DrawSelectionBox(m_pRefs->GetBox(),&clr);
+            }
         }
     }
 }
@@ -118,13 +134,13 @@ void CSceneObject::RenderBones(){
 	m_pRefs->RenderBones(mTransform);
 }
 
-void CSceneObject::RenderEdge(CEditableMesh* mesh){
+void CSceneObject::RenderEdge(CEditableMesh* mesh, DWORD color){
     if (Device.m_Frustum.testSphere(m_Center,m_fRadius))
-		m_pRefs->RenderEdge(mTransform, mesh);
+		m_pRefs->RenderEdge(mTransform, mesh, color);
 }
 
-void CSceneObject::RenderSelection(){
-	m_pRefs->RenderSelection(mTransform);
+void CSceneObject::RenderSelection(DWORD color){
+	m_pRefs->RenderSelection(mTransform,0,color);
 }
 
 bool CSceneObject::FrustumPick(const CFrustum& frustum){
@@ -150,11 +166,7 @@ bool CSceneObject::RayPick(float& dist, Fvector& S, Fvector& D, SRayPickInfo* pi
 }
 
 bool CSceneObject::BoxPick(const Fbox& box, SBoxPickInfoVec& pinf){
-	if (m_pRefs->BoxPick(box, mTransform, pinf)){
-        pinf.back().s_obj = this;
-        return true;
-    }
-	return false;
+	return m_pRefs->BoxPick(this, box, mTransform, pinf);
 }
 
 void CSceneObject::Move(Fvector& amount){

@@ -19,7 +19,7 @@ public:
 
 	void	Create		(DWORD w, DWORD h);
 	void	LoadT		(LPCSTR name);
-	void	LoadTGA		(LPCSTR name);
+	bool	LoadTGA		(LPCSTR name);
 	void	SaveTGA		(LPCSTR name, BOOL b24=FALSE);
 
 	void	Vflip		(void);

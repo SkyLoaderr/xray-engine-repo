@@ -59,8 +59,8 @@ void CGlow::Render(int priority, bool strictB2F){
     	Fvector D;
         SRayPickInfo pinf;
         D.sub(Device.m_Camera.GetPosition(),m_Position);
-        pinf.rp_inf.range = D.magnitude();
-        if (pinf.rp_inf.range) D.div(pinf.rp_inf.range);
+        pinf.inf.range = D.magnitude();
+        if (pinf.inf.range) D.div(pinf.inf.range);
         // тестируем находится ли во фрустуме glow
 		Device.SetTransform(D3DTS_WORLD,precalc_identity);
         if (Device.m_Frustum.testSphere(m_Position,m_Range)){

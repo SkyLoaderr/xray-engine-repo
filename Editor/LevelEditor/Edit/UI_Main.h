@@ -147,6 +147,7 @@ public:
     bool __fastcall KeyPress    (WORD Key, TShiftState Shift);
 	void __fastcall MousePress	(TShiftState Shift, int X, int Y);
 	void __fastcall MouseRelease(TShiftState Shift, int X, int Y);
+	void __fastcall MouseMove	(TShiftState Shift, int X, int Y);
 
     bool Command( int _Command, int p = 0, int p2 = 0 );
 

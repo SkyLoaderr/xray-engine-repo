@@ -243,8 +243,8 @@ public:
 
     // render methods
 	void 			Render					(Fmatrix& parent, int priority, bool strictB2F);
-	void 			RenderSelection			(Fmatrix& parent, CEditableMesh* m=0);
-	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0);
+	void 			RenderSelection			(Fmatrix& parent, CEditableMesh* m=0, DWORD c=0x40E64646);
+	void 			RenderEdge				(Fmatrix& parent, CEditableMesh* m=0, DWORD c=0xFFC0C0C0);
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
 	void 			RenderSingle			(Fmatrix& parent);
@@ -258,7 +258,7 @@ public:
     // pick methods
 	bool 			RayPick					(float& dist, Fvector& S, Fvector& D, Fmatrix& parent, SRayPickInfo* pinf=0);
 #ifdef _LEVEL_EDITOR
-    bool 			BoxPick					(const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
+    bool 			BoxPick					(CSceneObject* obj, const Fbox& box, Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool 			FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
     bool 			SpherePick				(const Fvector& center, float radius, const Fmatrix& parent);
 #endif

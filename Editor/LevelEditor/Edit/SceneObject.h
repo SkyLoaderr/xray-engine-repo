@@ -11,7 +11,9 @@
 class CSceneObject : public CCustomObject {
 	CEditableObject*m_pRefs;
     st_Version		m_ObjVer;
-protected:                             
+protected:
+	typedef CCustomObject inherited;
+    int				m_dwBlinkTime;           
     // orientation
     Fvector 		vScale;
     Fvector 		vRotate;
@@ -29,6 +31,7 @@ public:
 					CSceneObject			(char *name);
 	virtual 		~CSceneObject			();
 
+	virtual void 	Select					(BOOL flag);
 	void 			Construct				();
 
     IC bool			CheckVersion			()  {return (m_ObjVer==m_pRefs->m_ObjVer);}
@@ -50,8 +53,8 @@ public:
     // render methods
 	virtual bool 	IsRender				();
 	virtual void 	Render					(int priority, bool strictB2F);
-	void 			RenderSelection			();
-	void 			RenderEdge				(CEditableMesh* m=0);
+	void 			RenderSelection			(DWORD color=0x40E64646);
+	void 			RenderEdge				(CEditableMesh* m=0, DWORD color=0xFFC0C0C0);
 	void 			RenderBones				();
 	void 			RenderAnimation			();
 	void 			RenderSingle			();

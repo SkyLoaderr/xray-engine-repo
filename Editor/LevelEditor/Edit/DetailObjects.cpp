@@ -445,10 +445,10 @@ void CDetailManager::UpdateSlotBBox(int sx, int sz, DetailSlot& slot){
         slot.y_min		= flt_max;
         slot.y_max		= flt_min;
 		for (SBoxPickInfoIt it=pinf.begin(); it!=pinf.end(); it++){
-        	for (int k=0; k<it->bp_inf.size(); k++){
+        	for (int k=0; k<it->inf.size(); k++){
                 float range;
                 Fvector verts[3];
-                it->s_obj->GetFaceWorld(it->e_mesh,it->bp_inf[k].id,verts);
+                it->s_obj->GetFaceWorld(it->e_mesh,it->inf[k].id,verts);
                 sPoly sSrc	(verts,3);
                 sPoly sDest;
                 sPoly* sRes = frustum.ClipPoly(sSrc, sDest);

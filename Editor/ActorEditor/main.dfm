@@ -123,6 +123,7 @@ object frmMain: TfrmMain
         OnKeyPress = D3DWindowKeyPress
         OnKeyUp = D3DWindowKeyUp
         OnMouseDown = D3DWindowMouseDown
+        OnMouseMove = D3DWindowMouseMove
         OnMouseUp = D3DWindowMouseUp
         OnResize = D3DWindowResize
         OnPaint = D3DWindowPaint

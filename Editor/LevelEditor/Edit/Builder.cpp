@@ -64,11 +64,8 @@ bool SceneBuilder::Execute( ){
         UI.Command(COMMAND_RELOAD);
         UI.ProgressEnd();
     }catch(...){
-        UI.ProgressStart(2, "Restoring scene...");
-        UI.ProgressUpdate(1);
-        UI.Command(COMMAND_RELOAD);
-        UI.ProgressEnd();
-        return false;
+    	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
+        abort();
     }
 
 	return true;
@@ -93,7 +90,12 @@ bool SceneBuilder::MakeLTX( ){
 	m_InProgress = true;
 	//---------------
 	UI.BeginEState(esBuildLevel);
-    ThreadMakeLTX();
+    try{
+	    ThreadMakeLTX();
+    }catch(...){
+    	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
+        abort();
+    }
 	UI.EndEState();
 	//---------------
 	UI.ProgressStart(2, "Restoring scene...");
@@ -221,6 +223,7 @@ DWORD SceneBuilder::Thread(){
 
 	if( error_flag ) 		ELog.DlgMsg(mtError,error_text.c_str());
 	else if ( UI.NeedAbort())ELog.DlgMsg(mtInformation,"Building terminated...");
+
     else					ELog.DlgMsg(mtInformation,"Building OK...");
 
 	m_InProgress = false;
