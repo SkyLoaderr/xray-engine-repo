@@ -114,7 +114,7 @@ void CZoneEffector::Stop()
 void CZoneEffector::Update(float dist)
 {
 	// count r_min && r_max
-	float min_r = radius * r_min_perc;
+/*	float min_r = radius * r_min_perc;
 	float max_r = radius * r_max_perc;
 
 	bool CreateEffector = (Level().CurrentEntity() && Level().CurrentEntity()->SUB_CLS_ID == CLSID_OBJECT_ACTOR);
@@ -129,6 +129,8 @@ void CZoneEffector::Update(float dist)
 		clamp(f,0.01f,1.0f);
 		p_effector->Update(f);
 	}
+
+	*/
 }
 
 void CZoneEffector::SetParam(u32 type, float val)
