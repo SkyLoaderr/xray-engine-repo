@@ -96,7 +96,8 @@ void CBuild::xrPhase_MergeLM()
 			string256	phase_name;
 			sprintf		(phase_name,"Building lightmap %d...",g_lightmaps.size());
 			Phase		(phase_name);
-
+			Status		("Selection...");
+			
 			// Sort layer by similarity (state changes)
 			std::sort	(Layer.begin(),Layer.end(),compare1_defl);
 
@@ -126,6 +127,7 @@ void CBuild::xrPhase_MergeLM()
 			g_lightmaps.push_back	(lmap);
 
 			// Process 
+			Status		("Process...");
 			for (it=0; it<merge_count; it++) 
 			{
 				CDeflector::Layer&	L = *(Layer[it]->GetLayer(L_base));
@@ -150,13 +152,16 @@ void CBuild::xrPhase_MergeLM()
 				}
 				Progress(float(it)/float(merge_count));
 			}
-
+			Progress	(1.f);
+			
 			// Remove merged lightmaps
+			Status		("Cleanup...");
 			vecDeflIt last	= remove_if	(Layer.begin(),Layer.end(),pred_remove());
 			Layer.erase		(last,Layer.end());
 
 			// Save
-			lmap->Save		();
+			Status		("Saving...");
+			lmap->Save	();
 		}
 	}
 	Msg	("%d lightmaps builded",g_lightmaps.size());
