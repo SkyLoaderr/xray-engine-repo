@@ -57,12 +57,12 @@ void	CBlender::Save(	CFS_Base& FS )
 	xrPWRITE_PROP	(FS,"Transform",		xrPID_MATRIX,	oT_xform);
 }
 
-void	CBlender::Load(	CStream& FS )
+void	CBlender::Load(	CStream& FS, WORD version )
 {
 	// Read desc and doesn't change version
-	WORD	version = description.version;
+	WORD	V		= description.version;
 	FS.Read			(&description,sizeof(description));
-	description.version	= version;
+	description.version	= V;
 
 	// Properties
 	xrPREAD_MARKER	(FS);

@@ -28,7 +28,7 @@ void	CBlender_Vertex::Save	( CFS_Base& FS	)
 
 void	CBlender_Vertex::Load	( CStream& FS	)
 {
-	CBlender::Load	(FS);
+	CBlender::Load	(FS,version);
 }
 
 void CBlender_Vertex::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)

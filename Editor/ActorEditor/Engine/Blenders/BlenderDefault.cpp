@@ -24,7 +24,7 @@ void	CBlender_default::Save(	CFS_Base& FS )
 {
 	CBlender::Save	(FS);
 }
-void	CBlender_default::Load(	CStream& FS )
+void	CBlender_default::Load(	CStream& FS, WORD version )
 {
 	CBlender::Load	(FS);
 }

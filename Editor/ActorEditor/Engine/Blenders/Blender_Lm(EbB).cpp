@@ -33,7 +33,7 @@ void	CBlender_LmEbB::Save(	CFS_Base& FS )
 
 void	CBlender_LmEbB::Load(	CStream& FS, WORD version )
 {
-	CBlender::Load	(FS);
+	CBlender::Load	(FS,version);
 	xrPREAD_MARKER	(FS);
 	xrPREAD_PROP	(FS,xrPID_TEXTURE,	oT2_Name);
 	xrPREAD_PROP	(FS,xrPID_MATRIX,	oT2_xform);
