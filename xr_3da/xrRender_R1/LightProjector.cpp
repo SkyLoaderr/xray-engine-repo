@@ -99,7 +99,7 @@ void CLightProjector::setup		(int id)
 	float			factor	= _sqr(dist/P_distance);
 	RCache.set_c	("m_plmap_xform",	receivers[id].UVgen);
 	RCache.set_c	("m_plmap_clamp",	receivers[id].UVclamp);
-	RCache.set_c	("m_plmap_factor",	factor);
+	RCache.set_c	("m_plmap_factor",	factor,factor,factor,factor);
 }
 
 /*
