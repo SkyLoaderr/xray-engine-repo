@@ -100,7 +100,7 @@ void CPatrolPathManager::select_point(const Fvector &position, u32 &dest_vertex_
 			}
 			default			: NODEFAULT;
 		}
-		VERIFY3				(accessible(vertex),*m_path_name,*m_game_object->cName());
+		VERIFY3				(vertex,*m_path_name,*m_game_object->cName());
 
 		if (!m_path->vertex(m_prev_point_index))
 			m_prev_point_index	= vertex->vertex_id();
