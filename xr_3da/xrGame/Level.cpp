@@ -67,7 +67,7 @@ CLevel::~CLevel()
 	static_Sounds.clear();
 
 	xr_delete			(tpAI_Space);
-	xr_delete			(Server);
+	//xr_delete			(Server);
 }
 
 // Game interface ////////////////////////////////////////////////////

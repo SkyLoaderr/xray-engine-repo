@@ -40,14 +40,12 @@ void CLevel::IR_OnKeyboardPress(int key)
 				Engine.Event.Defer	("KERNEL:disconnect");
 				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup("game00/single/alife")),size_t(xr_strdup("localhost/dima")));
 			}
+			else {
+				Engine.Event.Defer	("KERNEL:disconnect");
+				Engine.Event.Defer	("KERNEL:start",size_t(xr_strdup("occ_part_ph1/single")),size_t(xr_strdup("localhost/dima")));
+			}
 		}
 		return;
-	case DIK_F7: 
-		if (Server->game->type == GAME_SINGLE) { 
-			Engine.Event.Defer ("KERNEL:disconnect"); 
-			Engine.Event.Defer ("KERNEL:start",size_t(xr_strdup("occ_part_ph1/single")),size_t(xr_strdup("localhost/slipch"))); 
-		} 
-		return;	
 	case DIK_F9:
 		// SLS_Load					("quick.save");
 		return;
