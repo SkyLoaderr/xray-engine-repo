@@ -459,7 +459,7 @@ bool CAttack::CheckCompletion()
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CEat::CEat(CAI_Biting *p)  
-: IState(p) 
+	: IState(p) 
 {
 	Reset();
 }
@@ -535,6 +535,102 @@ bool CEat::CheckCompletion()
 
 
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CHide class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CHide::CHide(CAI_Biting *p)
+	: inherited(p) 
+{
+	Reset();
+}
+
+void CHide::Init()
+{
+	inherited::Init();
+
+	if (!pData->SelectEnemy(m_tEnemy)) R_ASSERT(false);
+	pData->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.position.distance_to(pData->Position()) + pData->m_tSelectorCover.m_fSearchRange;
+	pData->m_tSelectorCover.m_fOptEnemyDistance = pData->m_tSelectorCover.m_fMaxEnemyDistance;
+	pData->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.position.distance_to(pData->Position()) + 3.f;
+
+	pData->m_tPathType = ePathTypeStraight;
+}
+
+void CHide::Reset()
+{
+	inherited::Reset();
+
+	m_tEnemy.obj		= 0;
+}
+
+void CHide::Run()
+{
+	pData->vfChoosePointAndBuildPath(&pData->m_tSelectorCover, 0, true, 0);
+
+	// Установить параметры движения
+	pData->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pData->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
+}
+
+bool CHide::CheckCompletion()
+{	
+	// если большая дистанция || враг забыт
+	return false;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CDetour class
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+CDetour::CDetour(CAI_Biting *p)
+		: inherited(p) 
+{
+	Reset();
+}
+
+void CDetour::Reset()
+{
+	inherited::Reset();
+	m_tEnemy.obj		= 0;
+}
+
+void CDetour::Init()
+{
+	inherited::Init();
+
+	if (!pData->SelectEnemy(m_tEnemy)) R_ASSERT(false);
+
+	pData->m_tPathType = ePathTypeStraight;
+}
+
+void CDetour::Run()
+{
+	pData->vfUpdateDetourPoint();
+	pData->AI_Path.DestNode		= getAI().m_tpaGraph[pData->m_tNextGP].tNodeID;
+	
+	pData->m_tSelectorCover.m_fMaxEnemyDistance = m_tEnemy.obj->Position().distance_to(pData->Position()) + pData->m_tSelectorCover.m_fSearchRange;
+	pData->m_tSelectorCover.m_fOptEnemyDistance = 15;
+	pData->m_tSelectorCover.m_fMinEnemyDistance = m_tEnemy.obj->Position().distance_to(pData->Position()) + 3.f;
+	
+	pData->vfChoosePointAndBuildPath(&pData->m_tSelectorCover, 0, false, 0);
+
+	// Установить параметры движения
+	pData->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pData->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
+
+	SetNextThink(1000);
+}
+
+bool CDetour::CheckCompletion()
+{	
+	// если большая дистанция || враг забыт
+	return false;
+}
+
+
+//---------------------------------------------------------------------------------------------------------
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////

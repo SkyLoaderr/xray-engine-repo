@@ -269,5 +269,46 @@ public:
 private:
 	void Init();
 	void Run();
-	void Replanning();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CHide class	// отход перебежками через укрытия
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CHide : public IState {
+
+	VisionElem		m_tEnemy;
+
+	TTime			m_dwReplanTime;						//!< время через, которое делать планирование
+	TTime			m_dwLastPlanTime;					//!< последнее время планирования
+
+	typedef IState inherited;
+
+public:
+					CHide			(CAI_Biting *p);
+
+	virtual	bool	CheckCompletion	();
+	virtual void	Reset			();	
+	
+private:
+
+	virtual void	Init			();
+	virtual void	Run				();
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CDetour class	// отход перебежками через укрытия
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+class CDetour : public IState {
+	VisionElem		m_tEnemy;
+
+	typedef IState inherited;
+public:
+					CDetour			(CAI_Biting *p);
+
+	virtual void	Reset			();	
+	virtual	bool	CheckCompletion	();
+
+private:
+	virtual void	Init			();
+	virtual void	Run				();
 };

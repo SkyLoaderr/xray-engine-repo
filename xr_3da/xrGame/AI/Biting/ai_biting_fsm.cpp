@@ -606,7 +606,9 @@ void CAI_Biting::Think()
 		//- FSM 1-level 
 		VisionElem VE;
 		if (SelectEnemy(VE)) {
-			SetState(stateAttack);
+			//SetState(stateAttack);
+			//SetState(stateHide);
+			SetState(stateDetour);
 		} else if (SelectCorpse(VE)){	
 			SetState(stateEat);
 		} else {

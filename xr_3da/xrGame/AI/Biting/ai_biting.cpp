@@ -19,6 +19,8 @@ CAI_Biting::CAI_Biting()
 	stateRest			= xr_new<CRest>		(this);
 	stateAttack			= xr_new<CAttack>	(this);
 	stateEat			= xr_new<CEat>		(this);
+	stateHide			= xr_new<CHide>		(this);
+	stateDetour			= xr_new<CDetour>	(this);
 	CurrentState		= stateRest;
 }
 
@@ -27,7 +29,8 @@ CAI_Biting::~CAI_Biting()
 	xr_delete(stateRest);
 	xr_delete(stateAttack);
 	xr_delete(stateEat);
-
+	xr_delete(stateHide);
+	xr_delete(stateDetour);
 }
 
 void CAI_Biting::Init()

@@ -270,6 +270,8 @@ private:
 	CRest				*stateRest;
 	CAttack				*stateAttack;
 	CEat				*stateEat;
+	CHide				*stateHide;
+	CDetour				*stateDetour;
 
 	friend	class CBitingMotion;
 	friend	class CMotionParams;
@@ -279,7 +281,8 @@ private:
 	friend	class IState;
 	friend	class CRest;
 	friend	class CEat;
-
+	friend	class CHide;
+	friend	class CDetour;
 
 	void SetState(IState *pS);
 	
