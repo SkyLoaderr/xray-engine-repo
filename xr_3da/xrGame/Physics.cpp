@@ -21,7 +21,7 @@
 
 #include "ExtendedGeom.h"
 //union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
-
+PhysicsStepTimeCallback		*physics_step_time_callback=0;
 const dReal fixed_step=0.02f;
 const u32	dis_frames=11;
 const dReal default_w_limit = M_PI/16.f/fixed_step;
@@ -205,6 +205,8 @@ void CPHWorld::OnFrame()
 //static dReal frame_time=0.f;
 void CPHWorld::Step()
 {
+	
+	u32 start_time=Device.dwTimeGlobal;
 	xr_list<CPHObject*>::iterator iter;
 
 	++disable_count;		
@@ -248,7 +250,7 @@ void CPHWorld::Step()
 	ContactFeedBacks.empty();
 	ContactEffectors.empty();
 	Device.Statistic.ph_core.End		();
-
+	if(physics_step_time_callback) physics_step_time_callback(start_time,start_time+u32(fixed_step*1000));	
 
 
 	//	for(iter=m_objects.begin();m_objects.end()!=iter;++iter)

@@ -40,8 +40,6 @@ void __stdcall PushOutCallback(bool& do_colide,dContact& c);
 void __stdcall PushOutCallback1(bool& do_colide,dContact& c);
 void __stdcall ContactShotMark(CDB::TRI* T,dContactGeom* c);
 
-
-
-
-
+typedef	void	__stdcall	PhysicsStepTimeCallback(u32	step_start,u32	step_end);
+extern			PhysicsStepTimeCallback		*physics_step_time_callback;
 #endif  //PHYSICS_COMMON_H
