@@ -46,6 +46,8 @@ void				OGF_Base::CalcBounds	()
 
 	// 3: calc magic-fm
 	Mgc::Sphere _S3				= Mgc::MinSphere(V.size(), (const Mgc::Vector3*) V.begin());
+	Fsphere	S3;
+	S3.P.set	(_S3.)
 
 	Log	("---");
 	Log	("pos",S1.P);
