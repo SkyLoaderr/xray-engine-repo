@@ -286,13 +286,13 @@ void CRender::Calculate				()
 		// Traverse object database
 		g_SpatialSpace->q_frustum
 			(
+			lstRenderables,
 			ISpatial_DB::O_ORDERED,
 			STYPE_RENDERABLE + STYPE_LIGHTSOURCE,
 			ViewBase
 			);
 
 		// Exact sorting order (front-to-back)
-		lstRenderables.swap					(g_SpatialSpace->q_result);
 		std::sort							(lstRenderables.begin(),lstRenderables.end(),pred_sp_sort);
 
 		// Determine visibility for dynamic part of scene
