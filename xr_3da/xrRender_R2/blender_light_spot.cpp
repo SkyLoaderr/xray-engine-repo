@@ -14,7 +14,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 	{
 		// two positions, depth as texture, filtered
 		// lighting/shadowing - front/back
-		C.r2_Pass				("null",			r2s("r2_accum_spot"),TRUE/*$$$*/,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
+		C.r2_Pass				("null",			r2s("r2_accum_spot"),FALSE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE);
 		C.r2_Sampler_rtf		("s_position0",		r2_RT_DEFFER, r2_RT_DEFFER_P0);
 		C.r2_Sampler_rtf		("s_position1",		r2_RT_DEFFER, r2_RT_DEFFER_P1);
 		C.r2_Sampler_rtf		("s_normal",		r2_RT_DEFFER, r2_RT_DEFFER_N_H);
@@ -32,7 +32,7 @@ void	CBlender_accum_spot::Compile(CBlender_Compile& C)
 		C.r2_End				();
 		break;
 		*/
-	} 
+	}
 	else
 	{
 		switch (C.iElement)
