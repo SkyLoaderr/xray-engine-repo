@@ -90,15 +90,13 @@ void vfLoadAIPoints(LPCSTR name)
 void vfLoadRespawnPoints(LPCSTR name)
 {
 	FILE_NAME	fName;
-	strconcat	(fName,name,"level.spawn");
+	strconcat	(fName,name,"level.game");
 	CVirtualFileStream	F(fName);
 
 	CStream *O = 0;
 
-	if (0!=(O = F.OpenChunk	(RPOINT_CHUNK)))
-	{
-		for (int id=0; O->FindChunk(id); id++)
-		{
+	if (0 != (O = F.OpenChunk(RPOINT_CHUNK))) {
+		for (int i = 0; O->FindChunk(i); i++) {
 			RPoint			R;
 			int				team;
 
