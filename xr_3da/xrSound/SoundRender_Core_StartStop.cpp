@@ -47,7 +47,7 @@ void	CSoundRender_Core::i_stop		(CSoundRender_Emitter* E)
 
 void	CSoundRender_Core::i_rewind		(CSoundRender_Emitter* E)
 {
-	Msg					("- %10s : %3d[%1.4f] : %s","i_stop",E->dbg_ID,E->priority(),E->source->fname);
+	Msg					("- %10s : %3d[%1.4f] : %s","i_rewind",E->dbg_ID,E->priority(),E->source->fname);
 	R_ASSERT			(E);
 	R_ASSERT			(E == E->target->get_emitter());
 	E->target->rewind	();
