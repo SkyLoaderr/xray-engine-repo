@@ -11,9 +11,7 @@
 #include "object_interfaces.h"
 #include "alife_space.h"
 
-#ifndef XRGAME_EXPORTS
-#	include "net_utils.h"
-#endif
+class NET_Packet;
 
 class CALifeEventPersonal : public IPureSerializeObject {
 public:
