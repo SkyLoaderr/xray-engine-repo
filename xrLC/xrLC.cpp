@@ -65,7 +65,7 @@ void Startup(LPSTR     lpCmdLine)
 	string prjName			= "game\\data\\levels\\"+string(name)+"\\build.prj";
 	Phase					("Reading project...");
 
-	string32	ID			= "xrLC";
+	string32	ID			= BUILD_PROJECT_MARK;
 	string32	id;
 	CStream*	F			= new CFileStream(prjName.c_str());
 	F->Read		(&id,8);

@@ -240,4 +240,6 @@ enum EBUILD_CHUNKS
 	EB_FORCE_DWORD = DWORD(-1)
 };
 
+#define BUILD_PROJECT_MARK "xrLC"
+
 #endif
