@@ -19,7 +19,7 @@ BOOL CPhysicObject::net_Spawn(LPVOID DC)
 	m_type = EPOType(po->type);
 	m_mass = po->mass;
 
-	R_ASSERT(!cfModel);
+	xr_delete(cfModel);
 	switch(m_type) {
 		case epotBox:			cfModel = xr_new<CCF_Rigid>(this);		break;
 		case epotFixedChain:	
