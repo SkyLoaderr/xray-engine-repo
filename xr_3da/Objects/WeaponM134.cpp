@@ -175,11 +175,11 @@ void CWeaponM134::UpdateXForm(BOOL bHUDView)
 			Fmatrix& mR		= V->LL_GetTransform(m_pContainer->m_iACTboneR);
 			
 			Fvector			R,D,N;
-			D.sub	(mL.c,mR.c);	D.normalize_safe();
-			R.crossproduct(mR.j,D);	R.normalize_safe();
-			N.crossproduct(D,R);	N.normalize_safe();
-			mRes.set	(R,N,D,mR.c);
-			mRes.mul2	(m_pParent->clTransform);
+			D.sub			(mL.c,mR.c);	D.normalize_safe();
+			R.crossproduct	(mR.j,D);		R.normalize_safe();
+			N.crossproduct	(D,R);			N.normalize_safe();
+			mRes.set		(R,N,D,mR.c);
+			mRes.mul2		(m_pParent->clTransform);
 			UpdatePosition	(mRes);
 		}
 	}
