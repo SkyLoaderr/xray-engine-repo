@@ -1332,7 +1332,7 @@ void xrSE_Idol::FillProp(LPCSTR pref, PropItemVec& items)
 {
    	inherited::FillProp		(pref, items);
     PHelper.CreateGameObject(items, PHelper.PrepareKey(pref,s_name,"Idol", "Animations"),m_caAnimations,sizeof(m_caAnimations));
-   	PHelper.CreateU32		(items, PHelper.PrepareKey(pref,s_name,"Idol", "Health"),&m_iAniPlayType,0,2,1);
+   	PHelper.CreateU32		(items, PHelper.PrepareKey(pref,s_name,"Idol", "Health"),&m_dwAniPlayType,0,2,1);
 }	
 #endif
 
