@@ -94,7 +94,7 @@ void CALifeSimulatorBase::reload			(LPCSTR section)
 	m_anomalies					= xr_new<CALifeAnomalyRegistry>		(section);
 	m_organizations				= xr_new<CALifeOrganizationRegistry>(section);
 	m_news						= xr_new<CALifeNewsRegistry>		(section);
-	m_graph_objects				= xr_new<CALifeGraphRegistry>		(server_command_line());
+	m_graph_objects				= xr_new<CALifeGraphRegistry>		();
 	m_traders					= xr_new<CALifeTraderRegistry>		();
 	m_scheduled					= xr_new<CALifeScheduleRegistry>	();
 	m_story_objects				= xr_new<CALifeStoryRegistry>		();

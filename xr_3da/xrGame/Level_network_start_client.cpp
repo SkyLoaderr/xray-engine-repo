@@ -7,6 +7,7 @@
 #include "../x_ray.h"
 #include "../igame_persistent.h"
 #include "PhysicsGamePars.h"
+#include "ai_space.h"
 
 extern	pureFrame*				g_pNetProcessor;
 
@@ -25,20 +26,20 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 	pApp->LoadTitle				(temp);
 
 ///	if (Connect(options)) 
-	if (Connect2Server(options))
-	{
+	if (Connect2Server(options)) {
+		
+		LPCSTR					level_name = ai().get_alife() ? *name() : net_SessionName	();
 		// Determine internal level-ID
-		LPCSTR	level_name	= net_SessionName	();
-		int		level_id	= pApp->Level_ID(level_name);
-		if	(level_id<0)	{
-			Disconnect		();
-			pApp->LoadEnd	();
+		int						level_id = pApp->Level_ID(level_name);
+		if (level_id<0)	{
+			Disconnect			();
+			pApp->LoadEnd		();
 			return FALSE;
 		}
-		pApp->Level_Set		(level_id);
+		pApp->Level_Set			(level_id);
 
 		// Load level
-		R_ASSERT2(Load						(level_id),"Loading failed.");
+		R_ASSERT2				(Load(level_id),"Loading failed.");
 
 		// Send physics to single or multithreaded mode
 		LoadPhysicsGameParams				();

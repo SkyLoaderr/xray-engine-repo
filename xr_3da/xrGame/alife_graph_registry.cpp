@@ -12,10 +12,8 @@
 
 using namespace ALife;
 
-CALifeGraphRegistry::CALifeGraphRegistry	(shared_str *server_command_line)
+CALifeGraphRegistry::CALifeGraphRegistry	()
 {
-	VERIFY							(server_command_line);
-	m_server_command_line			= server_command_line;
 	for (int i=0; i<GameGraph::LOCATION_TYPE_COUNT; ++i) {
 		{
 			for (int j=0; j<GameGraph::LOCATION_COUNT; ++j)
@@ -83,14 +81,8 @@ void CALifeGraphRegistry::setup_current_level	()
 
 		m_temp.clear			();
 	}
-	string512					S,S1;
-	strcpy						(S,**m_server_command_line);
-	LPSTR						temp = strchr(S,'/');
-	R_ASSERT2					(temp,"Invalid server options!");
 	GameGraph::LEVEL_MAP::const_iterator I = ai().game_graph().header().levels().find(ai().game_graph().vertex(actor()->m_tGraphID)->level_id());
 	R_ASSERT2					(ai().game_graph().header().levels().end() != I,"Graph point level ID not found!");
-	strconcat					(S1,*(*I).second.name(),temp);
-	*m_server_command_line		= S1;
 
 	int							id = pApp->Level_ID(*(*I).second.name());
 	VERIFY						(id >= 0);

@@ -187,10 +187,13 @@ MotionID CStalkerAnimationManager::missile_animation	(u32 slot, const EBodyState
 
 MotionID CStalkerAnimationManager::assign_torso_animation	()
 {
+	VERIFY			((body_state() != eBodyStateCrouch) || (body_state() == object().movement().body_state()));
 	if (!object().inventory().ActiveItem())
 		return		(no_object_animation(body_state()));
 
+	VERIFY			((body_state() != eBodyStateCrouch) || (body_state() == object().movement().body_state()));
 	fill_object_info();
+	VERIFY			((body_state() != eBodyStateCrouch) || (body_state() == object().movement().body_state()));
 
 	if (m_weapon)
 		if (!strapped())
@@ -198,8 +201,10 @@ MotionID CStalkerAnimationManager::assign_torso_animation	()
 		else
 			return	(no_object_animation(body_state()));
 
+	VERIFY			((body_state() != eBodyStateCrouch) || (body_state() == object().movement().body_state()));
 	if (m_missile)
 		return		(missile_animation(object_slot(),body_state()));
 
+	VERIFY			((body_state() != eBodyStateCrouch) || (body_state() == object().movement().body_state()));
 	return			(unknown_object_animation(object_slot(),body_state()));
 }

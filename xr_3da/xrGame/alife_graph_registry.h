@@ -67,7 +67,6 @@ protected:
 	CALifeLevelRegistry					*m_level;
 	CSE_ALifeCreatureActor				*m_actor;
 	u64									m_process_time;
-	shared_str								*m_server_command_line;
 	xr_vector<CSE_ALifeDynamicObject*>	m_temp;
 
 protected:
@@ -76,7 +75,7 @@ protected:
 	IC		void						iterate					(C &c, const F& f);
 
 public:
-										CALifeGraphRegistry		(shared_str *server_command_line);
+										CALifeGraphRegistry		();
 	virtual								~CALifeGraphRegistry	();
 			void						update					(CSE_ALifeDynamicObject		*object);
 			void						attach					(CSE_Abstract				&object,	CSE_ALifeInventoryItem	*item,			GameGraph::_GRAPH_ID	game_vertex_id,				bool alife_query = true);
