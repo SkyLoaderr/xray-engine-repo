@@ -583,7 +583,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 		D3DX_DEFAULT,D3DX_DEFAULT,D3DX_DEFAULT,0,D3DFMT_UNKNOWN,D3DPOOL_SCRATCH,D3DX_DEFAULT,D3DX_DEFAULT,
 		0,NULL,NULL,&height);
 	hr = D3DXCreateTexture				(m_pd3dDevice,256,256,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
-	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_LUMINANCE,8.f);
+	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_LUMINANCE,4.f);
 
 	{
 		const DWORD	size				= 256;
