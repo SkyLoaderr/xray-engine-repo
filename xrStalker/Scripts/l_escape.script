@@ -1,0 +1,26 @@
+local work = {}
+
+function main()
+	printf("started")
+
+	-- загрузка всех кого нужно обсудить и брание их под контроль
+	escape_bobic.init_bobik()
+	table.insert(work, "escape_bobik")
+
+
+    	while(table.getn(work) > 0) do
+		local deleted = {}
+		for k,v in work do
+			if v == "escape_bobik" then
+				if escape_bobic.execute_bobik() == false then
+					escape_bobic.finalize_bobik()
+					table.insert(deleted, k)
+				end
+			end
+		end
+		for k,v in deleted do
+                	table.remove(work, v)
+		end
+    		wait()
+    	end
+end
