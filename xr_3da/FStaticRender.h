@@ -17,6 +17,7 @@
 #include "modelpool.h"
 #include "fstaticrender_types.h"
 #include "detailmanager.h"
+#include "fstaticrender_rendertarget.h"
 
 // refs
 class ENGINE_API CStream;
@@ -32,9 +33,6 @@ class ENGINE_API CRender			:
 	public pureDeviceDestroy
 {
 public:
-	float							fGLOD;
-	float							fPOWER;
-
 	// Dynamic scene graph
 	Fmatrix*						pTransform;
 	int								iLightLevel;
