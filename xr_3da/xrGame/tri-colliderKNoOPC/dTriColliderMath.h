@@ -110,26 +110,26 @@ inline bool  TriContainPoint(const dReal* v0,const dReal* v1,const dReal* v2,
 
 							 }
 
-							 inline void PlanePoint(const dReal* norm,dReal pos,const dReal* from,const dReal* to,dReal* point)
+							 inline void PlanePoint(const Triangle& tri,const dReal* from,const dReal* to,float from_dist,dReal* point)
 							 {
 								 dVector3	dir		=	{to[0]-from[0],to[1]-from[1],to[2]-from[2]}	;
-								 dReal		rmag	=	dDOT(dir,dir)								;
-								 if(rmag<EPS_S)	
-								 {
-									 //in the case when "from" & "to" are same the call suppose they lies on the plane
-									 point[0]=from[0]												;	
-									 point[1]=from[1]												;	
-									 point[2]=from[2]												;
-									 return;
-								 }
-								 rmag	=	dSqrt(rmag)									;
-								 rmag	=	1.f/rmag									;
+								 //dReal		mag	=	dDOT(dir,dir)									;
+								 //if(mag<EPS_S)	
+								 //{
+									// //in the case when "from" & "to" are same the call suppose they lies on the plane
+									// point[0]=from[0]												;	
+									// point[1]=from[1]												;	
+									// point[2]=from[2]												;
+									// return;
+								 //}
+								// mag	=	dSqrt(mag)												;
+								// float rmag	=	1.f/rmag											;
 
-								 dir[0]*=rmag;	dir[1]*=rmag;	dir[2]*=rmag						;
+								 //dir[0]*=rmag;	dir[1]*=rmag;	dir[2]*=rmag						;
 
-								 dReal		cosinus	=		dDOT(norm,dir)							;
+								 dReal		cosinus	=	(tri.dist-from_dist)							;
 								 VERIFY2(cosinus<0.f,"wrong positions")								;
-								 dReal mul=(dDOT(from,norm)-pos)/cosinus								;
+								 dReal mul=(from_dist)/cosinus								;
 								 dir[0]*=mul;	dir[1]*=mul;	dir[2]*=mul							;
 								 point[0]=from[0]-dir[0]												;	
 								 point[1]=from[1]-dir[1]												;	

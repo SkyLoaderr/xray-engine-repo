@@ -88,7 +88,8 @@ int dSortTriPrimitiveCollide (
 		
 		Point vertices[3]={Point((dReal*)&Res->verts[0]),Point((dReal*)&Res->verts[1]),Point((dReal*)&Res->verts[2])};
 		if(tri.dist<0.f){
-			if((!(dDOT(last_pos,tri.norm)-tri.pos<0.f))||*pushing_neg||*pushing_b_neg)
+			float last_pos_dist=dDOT(last_pos,tri.norm)-tri.pos;
+			if((!(last_pos_dist<0.f))||*pushing_neg||*pushing_b_neg)
 				if(__aabb_tri(Point(p),Point((float*)&AABB),vertices))
 				{
 					if(!(*pushing_neg||*pushing_b_neg))
@@ -97,7 +98,7 @@ int dSortTriPrimitiveCollide (
 						{
 
 							dVector3 tri_point;
-							PlanePoint(tri.norm,tri.pos,last_pos,p,tri_point);
+							PlanePoint(tri,last_pos,p,last_pos_dist,tri_point);
 							intersect=intersect||TriContainPoint(	(dReal*)&Res->verts[0],
 								(dReal*)&Res->verts[1],
 								(dReal*)&Res->verts[2],
