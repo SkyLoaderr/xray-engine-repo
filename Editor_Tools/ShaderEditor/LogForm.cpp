@@ -47,6 +47,7 @@ void __fastcall TfrmLog::AddMessage(TMsgDlgType mt, const AnsiString& msg){
 
 #define MSG_ERROR 	0x00C4C4FF
 #define MSG_INFO  	0x00E6FFE7
+#define MSG_CONF 	0x00FFE6E7
 #define MSG_DEF  	0x00E8E8E8
 
 void __fastcall TfrmLog::lbLogDrawItem(TWinControl *Control, int Index,
@@ -58,9 +59,9 @@ void __fastcall TfrmLog::lbLogDrawItem(TWinControl *Control, int Index,
 		pCanvas->Brush->Color 	= TColor(MSG_DEF);
 	    TMsgDlgType mt 			= (TMsgDlgType)lb->Items->Objects[Index];
 	    switch(mt){
-	    case mtError: 			pCanvas->Brush->Color=TColor(MSG_ERROR);	break;
-	    case mtInformation:
-	    case mtConfirmation: 	pCanvas->Brush->Color=TColor(MSG_INFO);	break;
+	    case mtError: 			pCanvas->Brush->Color=TColor(MSG_ERROR);break;
+	    case mtInformation:     pCanvas->Brush->Color=TColor(MSG_INFO); break;
+	    case mtConfirmation: 	pCanvas->Brush->Color=TColor(MSG_CONF);	break;
     	}
     }
 	pCanvas->FillRect(Rect);

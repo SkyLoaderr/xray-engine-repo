@@ -58,7 +58,7 @@ void CShaderTools::OnCreate(){
 }
 
 void CShaderTools::OnDestroy(){
-	m_EditObject = 0;
+    Lib.RemoveEditObject(m_EditObject);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
 	Engine.OnDestroy();
@@ -130,7 +130,8 @@ void CShaderTools::SelectPreviewObject(int p){
         case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,0,fn); if (!fn) return; m_bCustomEditObject = true; break;
         default: THROW2("Failed select test object.");
     }
-    m_EditObject = Lib.GetEditObject(fn);
+    Lib.RemoveEditObject(m_EditObject);
+    m_EditObject = Lib.CreateEditObject(fn);
     if (!m_EditObject)
         ELog.DlgMsg(mtError,"Object '%s.object' can't find in object library. Preview disabled.",fn);
 	ZoomObject();

@@ -236,7 +236,12 @@ bool TUI::Command( int _Command, int p1, int p2 ){
     	break;
 
     case COMMAND_REFRESH_LIBRARY:
-    	Lib.RefreshLibrary();
+        if (!Scene.ObjCount()&&!Scene.locked()){
+	    	Lib.RefreshLibrary();
+        }else{
+            ELog.DlgMsg(mtError, "Scene must be empty before refreshing library!");
+			bRes = false;
+        }
     	break;
 
     case COMMAND_RELOAD_OBJECTS:

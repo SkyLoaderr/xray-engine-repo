@@ -71,7 +71,6 @@ __published:	// IDE-managed Components
 private:	// User declarations
 	static TfrmChoseItem* form;
     static AnsiString select_item;
-    static AnsiString last_item;
     const char* StartFolder;
 
     EImageThumbnail* m_Thm;
@@ -81,9 +80,11 @@ private:	// User declarations
     	smShader,
         smShaderXRLC,
         smPS,
-        smTexture
+        smTexture,
+        smMaxMode
     };
     ESelectMode Mode;
+    static AnsiString m_LastSelection[smMaxMode];
 
     void InitItemsList(const char* nm=0);
 

@@ -34,6 +34,7 @@
 #pragma resource "*.dfm"
 
 TfrmEditLibrary* TfrmEditLibrary::form=0;
+AnsiString TfrmEditLibrary::m_LastSelection;
 
 //---------------------------------------------------------------------------
 __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
@@ -109,6 +110,14 @@ void __fastcall TfrmEditLibrary::FormShow(TObject *Sender)
     L.direction.set(1,-1,-1); L.direction.normalize();
 	Device.SetLight(1,L);
 	Device.LightEnable(1,true);
+
+    if (!m_LastSelection.IsEmpty()){
+    	TElTreeItem *node=FOLDER::FindObject(tvObjects,m_LastSelection.c_str());
+	    if (node){
+    	    tvObjects->Selected = node;
+        	tvObjects->EnsureVisible(node);
+	    }
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action)
@@ -186,6 +195,7 @@ void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
             ZoomObject();
 		    ebMakeThm->Enabled = true;
         }
+        m_LastSelection = nm;
     }
     if (m_Thm&&m_Thm->Valid())	pbImagePaint(Sender);
     else                        pbImage->Repaint();
@@ -287,7 +297,7 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
     	        tex.CreateFromData(pixels.begin(),w,h);
         	    tex.Save(src_age);
                 tvObjectsItemFocused(Sender);
-            	ELog.DlgMsg(mtInformation,"Thumbnail created.");
+            	ELog.Msg(mtInformation,"Thumbnail created.");
             }else{
 	            ELog.DlgMsg(mtError,"Can't make screenshot.");
             }

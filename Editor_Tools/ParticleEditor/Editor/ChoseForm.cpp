@@ -28,7 +28,8 @@
 #pragma resource "*.dfm"
 TfrmChoseItem *TfrmChoseItem::form=0;
 AnsiString TfrmChoseItem::select_item="";
-AnsiString TfrmChoseItem::last_item="";
+
+AnsiString TfrmChoseItem::m_LastSelection[smMaxMode];
 //---------------------------------------------------------------------------
 // Constructors
 //---------------------------------------------------------------------------
@@ -40,7 +41,7 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, LPCSTR start_folder, 
     form->iMultiSelLimit 			= 8;
     form->tvItems->ShowCheckboxes 	= bMulti;
 	// init
-	if (start_name) last_item 		= start_name;
+	if (start_name) m_LastSelection[form->Mode] = start_name;
 	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected 		= 0;
     form->tvItems->Items->Clear		();
@@ -64,10 +65,10 @@ LPCSTR __fastcall TfrmChoseItem::SelectShader(LPCSTR init_name){
 	form = new TfrmChoseItem(0);
 	form->Mode = smShader;
 	// init
-	if (init_name) last_item = init_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected = 0;
-    form->tvItems->Items->Clear();
+	if (init_name) m_LastSelection[form->Mode] = init_name;
+	form->tvItems->IsUpdating	= true;
+    form->tvItems->Selected 	= 0;
+    form->tvItems->Items->Clear	();
     // fill shaders list
     CShaderManager::BlenderMap& blenders = Device.Shader._GetBlenders();
 	CShaderManager::BlenderPairIt _F = blenders.begin();
@@ -86,10 +87,10 @@ LPCSTR __fastcall TfrmChoseItem::SelectShaderXRLC(LPCSTR init_name){
 	form = new TfrmChoseItem(0);
 	form->Mode = smShaderXRLC;
 	// init
-	if (init_name) last_item = init_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected = 0;
-    form->tvItems->Items->Clear();
+	if (init_name) m_LastSelection[form->Mode] = init_name;
+	form->tvItems->IsUpdating	= true;
+    form->tvItems->Selected 	= 0;
+    form->tvItems->Items->Clear	();
     // fill shaders list
     Shader_xrLCVec& shaders = Device.ShaderXRLC.Library();
 	Shader_xrLCIt _F = shaders.begin();
@@ -109,10 +110,10 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
 	form = new TfrmChoseItem(0);
 	form->Mode = smPS;
 	// init
-	if (init_name) last_item = init_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected = 0;
-    form->tvItems->Items->Clear();
+	if (init_name) m_LastSelection[form->Mode] = init_name;
+	form->tvItems->IsUpdating	= true;
+    form->tvItems->Selected 	= 0;
+    form->tvItems->Items->Clear	();
 	AnsiString fld;
     // fill
     for (PS::SDef* S=PSLib.FirstPS(); S!=PSLib.LastPS(); S++){
@@ -135,10 +136,10 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
     form->iMultiSelLimit = 8;
     form->tvItems->ShowCheckboxes = msel;
 	// init
-	if (init_name) last_item = init_name;
-	form->tvItems->IsUpdating		= true;
-    form->tvItems->Selected = 0;
-    form->tvItems->Items->Clear();
+	if (init_name) m_LastSelection[form->Mode] = init_name;
+	form->tvItems->IsUpdating	= true;
+    form->tvItems->Selected 	= 0;
+    form->tvItems->Items->Clear	();
     // fill
     FileMap lst;
     FilePairIt it=lst.begin();
@@ -217,14 +218,14 @@ void __fastcall TfrmChoseItem::FormKeyDown(TObject *Sender, WORD &Key,
 
 void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 {
-	int itm_cnt = _GetItemCount(last_item.c_str());
+	int itm_cnt = _GetItemCount(m_LastSelection[form->Mode].c_str());
 	if (bMultiSel&&(itm_cnt>1)){
 	    char T[MAX_OBJ_NAME];
         for (int i=0; i<itm_cnt; i++){
-            TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(last_item.c_str(),i,T));
+            TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(m_LastSelection[form->Mode].c_str(),i,T));
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
-				tvMulti->Items->Add(0,_GetItem(last_item.c_str(),i,T));
+				tvMulti->Items->Add(0,_GetItem(m_LastSelection[form->Mode].c_str(),i,T));
             	itm_node->Checked = true;
                 tvItems->EnsureVisible(itm_node);
                 fld_node=itm_node->Parent;
@@ -232,8 +233,8 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             }
         }
     }else{
-        TElTreeItem* itm_node = FOLDER::FindObject(tvItems,last_item.c_str());
-        TElTreeItem* fld_node = 0;//FOLDER::FindFolder(tvItems,last_item.c_str());;
+        TElTreeItem* itm_node = FOLDER::FindObject(tvItems,m_LastSelection[form->Mode].c_str());
+        TElTreeItem* fld_node = 0;//FOLDER::FindFolder(tvItems,last_item[form->Mode].c_str());;
         if (itm_node){
         	if (bMultiSel){
 				tvMulti->Items->Add(0,itm_node->Text);
@@ -255,14 +256,12 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 
 void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 {
+    if (tvItems->Selected) m_LastSelection[form->Mode]=tvItems->Selected->Text;
 	_DELETE(m_Thm);
 	Action = caFree;
     form = 0;
-    if (tvItems->Selected) last_item=tvItems->Selected->Text;
 }
 //---------------------------------------------------------------------------
-
-
 
 void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 {

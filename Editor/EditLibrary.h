@@ -65,6 +65,7 @@ private:	// User declarations
     bool CloseEditLibrary(bool bReload);
 	static TfrmEditLibrary *form;
     CEditableObject* m_SelectedObject;
+	static AnsiString m_LastSelection;
 public:		// User declarations
     __fastcall TfrmEditLibrary(TComponent* Owner);
     static bool FinalClose();

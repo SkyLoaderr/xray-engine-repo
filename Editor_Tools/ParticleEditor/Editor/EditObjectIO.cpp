@@ -299,4 +299,9 @@ COMotion* CEditableObject::LoadOMotion(const char* fname){
 	return 0;
 }
 //------------------------------------------------------------------------------
+bool CEditableObject::Reload()
+{
+	R_ASSERT2(0,"TODO:: Reload ...");
+	return false;
+}
 

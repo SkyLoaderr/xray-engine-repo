@@ -41,8 +41,8 @@ bool TUI::Command( int _Command, int p1, int p2 ){
         }
     	}break;
 	case COMMAND_DESTROY:
-		Lib.OnDestroy	();
 		Tools.OnDestroy	();
+		Lib.OnDestroy	();
         UI.OnDestroy	();
 		//----------------
         _DELETE(fraLeftBar);
