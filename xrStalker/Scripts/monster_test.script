@@ -14,18 +14,34 @@ end
 
 function main()
 	local obj			= get_level_object("search")
+	local monster		= get_level_object("monster")
 
-	obj:script			( true, script_name() )
-	
+	monster:script		( true, script_name() )
+
 	while true do
 		
-		set_action(obj)
+		action(	monster, 
+				move( move.run_fwd, patrol( "way2", patrol.start, patrol.continue) ),
+				cond( cond.time_end, 10000 )
+		)
+		
+		while monster:action() do 
+			wait() 
+		end
+		
+		
+		obj:script			( true, script_name() )
 
+		set_action			(obj)
+		
 		while obj:action() do 
 			wait() 
 		end
-			
-	end
 
-	obj:script( false, script_name() )
+		obj:script			( false, script_name() )		
+
+	end
+	
+	monster:script		( false, script_name() )
+
 end
