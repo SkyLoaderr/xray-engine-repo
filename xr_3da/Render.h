@@ -23,7 +23,7 @@ public:
 	// Data
 	CObject*						val_pObject;
 	Fmatrix*						val_pTransform;
-	BOOL							val_bNearer;
+	BOOL							val_bHUD;
 	CFrustum						ViewBase;
 	CFrustum*						View;
 public:
@@ -44,7 +44,7 @@ public:
 	// Main 
 	IC		void					set_Frustum				(CFrustum*	O	)			{ VERIFY(O);	View = O;			}
 	IC		void					set_Transform			(Fmatrix*	M	)			{ VERIFY(M);	val_pTransform = M;	}
-	IC		void					set_Nearer				(BOOL 		V	)			{ val_bNearer		= V;			}
+	IC		void					set_HUD					(BOOL 		V	)			{ val_bHUD		= V;				}
 	virtual void					flush					()					= 0;	
 	virtual void					set_Object				(CObject*	O	)	= 0;
 	virtual void					add_Visual				(CVisual*	V	)	= 0;	// add visual leaf	(no culling performed at all)

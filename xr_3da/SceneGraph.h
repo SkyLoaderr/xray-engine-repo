@@ -15,7 +15,6 @@ namespace SceneGraph
 		Fmatrix			Matrix;				// matrix (copy)
 		Fvector			vCenter;
 		float			lod;
-		BOOL			nearer;
 	};
 	struct _PatchItem	{
 		ShaderElement*	S;
@@ -67,6 +66,9 @@ namespace SceneGraph
 
 	typedef FixedMAP<float,_MatrixItem>				mapSorted_T;
 	typedef mapSorted_T::TNode						mapSorted_Node;
+
+	typedef FixedMAP<float,_MatrixItem>				mapHUD_T;
+	typedef mapSorted_T::TNode						mapHUD_Node;
 
 	typedef std::vector<_PatchItem>					vecPatches_T;
 };

@@ -29,13 +29,18 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 
 	// Select List and add to it
 	ShaderElement*		sh		= L_Projector.shadowing()?pVisual->hShader->lod0:pVisual->hShader->lod1;
-	if (sh->Flags.bStrictB2F) {
+	if (val_bHUD)	{
+		SceneGraph::mapHUD_Node* N			= mapHUD.insertInAnyWay(distSQ);
+		N->val.pObject			= val_pObject;
+		N->val.pVisual			= pVisual;
+		N->val.Matrix			= *val_pTransform;
+		N->val.vCenter.set		(Center);
+	} else if (sh->Flags.bStrictB2F) {
 		SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 		N->val.pObject			= val_pObject;
 		N->val.pVisual			= pVisual;
 		N->val.Matrix			= *val_pTransform;
 		N->val.vCenter.set		(Center);
-		N->val.nearer			= val_bNearer;
 		L_Shadows.add_element	(N);
 	} else {
 		SceneGraph::mapMatrix_Node* N		= mapMatrix.insert		(sh		);
@@ -44,7 +49,6 @@ void CRender::InsertSG_Dynamic	(CVisual *pVisual, Fvector& Center)
 		C->val.pVisual			= pVisual;
 		C->val.Matrix			= *val_pTransform;
 		C->val.vCenter.set		(Center);
-		C->val.nearer			= val_bNearer;
 		L_Shadows.add_element	(C);
 	}
 }

@@ -26,13 +26,6 @@ private:
 	CHitMarker				HitMarker;
 	// hud cursor
 	CHUDCursor				HUDCursor;
-	// Models
-	struct Model {
-		CVisual*			V;
-		Fmatrix				M;
-		int					iLightLevel;
-	};
-	svector<Model,8>		Models;
 
 	float					fScale;
 public:
@@ -58,15 +51,6 @@ public:
 	virtual		BOOL		IsUIActive			(){return pUI->IsActive();}
 
 	virtual		void		Hit					(int idx){HitMarker.Hit(idx);}
-	virtual		void		RenderModel			(CVisual* V, Fmatrix& M, int iLightLevel)
-	{
-		if (Models.size()<8) {
-			Models.last().V = V;
-			Models.last().M.set(M);
-			Models.last().iLightLevel = iLightLevel;
-			Models.inc();
-		}
-	}
 
 	virtual		void		OnDeviceCreate		();
 	virtual		void		OnDeviceDestroy		();

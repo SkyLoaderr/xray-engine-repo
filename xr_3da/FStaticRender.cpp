@@ -201,12 +201,14 @@ void CRender::Calculate()
 		pPortal->bDualRender = TRUE;
 	}
 
-	// Render sector(s) and their objects
-	set_Object						(0);
-	if (0!=pLastSector) pLastSector->Render(ViewBase);
-	L_Shadows.calculate				();
-	L_Projector.calculate			();
+	// Calculate sector(s) and their objects
+	set_Object								(0);
+	if (0!=pLastSector) pLastSector->Render	(ViewBase);
+	pCreator->pHUD->Render_Calcualte		();	
+	L_Shadows.calculate						();
+	L_Projector.calculate					();
 	
+	// End calc
 	Device.Statistic.RenderCALC.End	();
 }
 
@@ -270,7 +272,6 @@ void __fastcall matrix_L2	(SceneGraph::mapMatrixItem::TNode *N)
 {
 	CVisual *V				= N->val.pVisual;
 	Device.set_xform_world	(N->val.Matrix);
-	gm_SetNearer			(N->val.nearer);
 	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
@@ -288,7 +289,6 @@ void __fastcall sorted_L1	(SceneGraph::mapSorted_Node *N)
 	CVisual *V = N->val.pVisual;
 	Device.Shader.set_Shader(V->hShader);
 	Device.set_xform_world	(N->val.Matrix);
-	gm_SetNearer			(N->val.nearer);
 	gm_SetLighting			(N->val.pObject);
 	V->Render				(calcLOD(N->key,V->bv_Radius));
 }
@@ -401,12 +401,38 @@ void	CRender::Render		()
 	// Target.set_blur	(1.f);
 	Target.Begin							();
 
+	// HUD render
+	{
+		extern float psHUD_FOV;
+		// Change projection
+		Fmatrix Pold				= Device.mProject;
+		Fmatrix FTold				= Device.mFullTransform;
+		float aspect				= float(Device.dwHeight)/float(Device.dwWidth);
+		Device.mProject.build_projection(
+			deg2rad(psHUD_FOV*Device.fFOV*aspect), 
+			aspect, VIEWPORT_NEAR, 
+			pCreator->Environment.Current.Far);
+		Device.mFullTransform.mul	(Device.mProject, Device.mView);
+		Device.set_xform_project	(Device.mProject);
+
+		// Rendering
+		rmNear						();
+		mapHUD.traverseLR			(sorted_L1);
+		mapHUD.clear				();
+		rmNormal					();
+
+		// Restore projection
+		Device.mProject				= Pold;
+		Device.mFullTransform		= FTold;
+		Device.set_xform_project	(Device.mProject);
+	}
+
 	// Environment render
-	pCreator->Environment.RenderFirst		();
+	// pCreator->Environment.RenderFirst		();
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
-	Device.set_xform_world	(Fidentity);
+	Device.set_xform_world			(Fidentity);
 
 	// Sorting by SSA
 	for (DWORD pr=0; pr<4; pr++)

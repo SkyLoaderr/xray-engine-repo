@@ -76,44 +76,20 @@ ENGINE_API extern float psHUD_FOV;
 
 void CHUDManager::Render_Calcualte()
 {
+	if (0==pUI)	return;
+	CObject*	O	= pCreator->CurrentViewEntity()->H_Root();
+	if (0==O)	return;
+
+	::Render->set_Object		(O);
+	::Render->set_HUD			(TRUE);
+	O->OnHUDDraw				(this);
+	::Render->set_HUD			(FALSE);
 }
 
 void CHUDManager::Render_Affected()
 {
-	if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw	(this);
-	
-	// HUD model
-	if (psHUD_Flags&HUD_WEAPON) {
-		Fmatrix Pold			= Device.mProject;
-		Fmatrix FTold			= Device.mFullTransform;
-		float aspect			= float(Device.dwHeight)/float(Device.dwWidth);
-		Device.mProject.build_projection(
-			deg2rad(psHUD_FOV*Device.fFOV*aspect), 
-			aspect, VIEWPORT_NEAR, 
-			pCreator->Environment.Current.Far);
-		Device.mFullTransform.mul(Device.mProject, Device.mView);
-		Device.set_xform_project(Device.mProject);
-		
-		// Sort shaders 
-		for (DWORD i=0; i<Models.size(); i++) 
-		{
-			Model& M = Models[i];
-			::Render->set_Transform		(&M.M);
-			::Render->add_Visual		(M.V);
-		}
-		
-		// Render with ZB hack :)
-		::Render->rmNear		();
-		::Render->flush			();
-		::Render->rmNormal		();
-		
-		Device.mProject			= Pold;
-		Device.mFullTransform	= FTold;
-		Device.set_xform_project(Device.mProject);
-	}
-	Models.clear	();
 }
-
+ 
 void CHUDManager::Render_Direct	()
 {
 	BOOL bAlready = FALSE;

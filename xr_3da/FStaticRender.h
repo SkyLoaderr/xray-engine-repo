@@ -30,9 +30,10 @@ class ENGINE_API CRender			:  public CRender_interface
 {
 public:
 	// Dynamic scene graph
-	SceneGraph::mapNormal_T							mapNormal[4];
+	SceneGraph::mapNormal_T							mapNormal	[4];
 	SceneGraph::mapMatrix_T							mapMatrix;
 	SceneGraph::mapSorted_T							mapSorted;
+	SceneGraph::mapHUD_T							mapHUD;
 	SceneGraph::vecPatches_T						vecPatches;
 
 	vector<FCached*>								vecCached;

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "detailmodel.h"
-
+ 
 void CDetail::Load		(CStream* S)
 {
 	// Shader

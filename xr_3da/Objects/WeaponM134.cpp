@@ -350,10 +350,11 @@ void CWeaponM134::Render	(BOOL bHUDView)
 {
 	inherited::Render		(bHUDView);
 	UpdateXForm	(bHUDView);
-	if (bHUDView)
+	if (bHUDView && m_pHUD)
 	{ 
 		// HUD render
-		if (m_pHUD) Level().HUD()->RenderModel(m_pHUD->Visual(),m_pHUD->Transform(),0);
+		::Render->set_Transform		(&m_pHUD->Transform());
+		::Render->add_Visual		(m_pHUD->Visual());
 	}
 	else
 	{

@@ -9,7 +9,7 @@
 #include "lighttrack.h"
 
 const	int		P_rt_size	= 512;
-const	int		P_o_size	= 32;
+const	int		P_o_size	= 61;
 const	int		P_o_line	= P_rt_size/P_o_size;
 const	int		P_o_count	= P_o_line*P_o_line;
 const	float	P_distance	= 48;
