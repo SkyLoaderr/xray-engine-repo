@@ -283,6 +283,10 @@ void game_cl_Deathmatch::shedule_Update			(u32 dt)
 			};
 
 	};
+	if (Phase()==GAME_PHASE_PENDING)
+	{
+		m_game_ui->ShowPlayersList(true);
+	}
 
 
 	inherited::shedule_Update(dt);
