@@ -112,7 +112,7 @@ public:
 	virtual	void	Update			(float dt, BOOL bHUDView);
 	virtual	void	Render			(BOOL bHUDView);
 
-	IC LPCSTR*		GetName			()				{return m_WpnName;		}
+	IC LPCSTR		GetName			()				{return m_WpnName;		}
 	IC int			GetAmmoElapsed	()				{return iAmmoElapsed;	}
 	IC int			GetAmmoLimit	()				{return iAmmoLimit;		}
 	IC int			GetAmmoCurrent	()				{return iAmmoCurrent;	}

@@ -9,7 +9,7 @@
 #include "hudmanager.h"
 
 #include "WeaponHUD.h"
-#include "WeaponAK74.h"
+#include "WeaponAutoRifle.h"
 #include "entity.h"
 #include "xr_weapon_list.h"
 
