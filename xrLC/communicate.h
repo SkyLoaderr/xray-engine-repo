@@ -14,6 +14,7 @@ struct b_face
 	DWORD				v[3];				// vertices
 	Fvector2			t[3];				// TC
 	WORD				dwMaterial;			// index of material
+	DWORD				dwMaterialGame;		// unique-ID of game material
 };
 
 struct b_material

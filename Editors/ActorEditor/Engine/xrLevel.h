@@ -83,7 +83,7 @@ struct NodeCompressed
 #pragma warning	(default:4200)
 #pragma pack	(pop)
 
-const u32 XRCL_CURRENT_VERSION		=	12;
+const u32 XRCL_CURRENT_VERSION		=	13;
 const u32 XRCL_PRODUCTION_VERSION	=	9;
-const u32 CFORM_CURRENT_VERSION		=	2;
+const u32 CFORM_CURRENT_VERSION		=	3;
 const u32 XRAI_CURRENT_VERSION		=	3;
