@@ -69,12 +69,12 @@ void CCameraLook::Update(Fvector& point, Fvector& noise_dangle)
 void CCameraLook::Move( int cmd, float val )
 {
 	switch (cmd){
-	case kZOOMIN:	dist	-= val?val:(rot_speed.z*Device.fTimeDelta);	break;
-	case kZOOMOUT:	dist	+= val?val:(rot_speed.z*Device.fTimeDelta);	break;
-	case kDOWN:		pitch	-= val?val:(rot_speed.y*Device.fTimeDelta);	break;
-	case kUP:		pitch	+= val?val:(rot_speed.y*Device.fTimeDelta);	break;
-	case kLEFT:		yaw		-= val?val:(rot_speed.x*Device.fTimeDelta);	break;
-	case kRIGHT:	yaw		+= val?val:(rot_speed.x*Device.fTimeDelta);	break;
+	case kCAM_ZOOM_IN:	dist	-= val?val:(rot_speed.z*Device.fTimeDelta);	break;
+	case kCAM_ZOOM_OUT:	dist	+= val?val:(rot_speed.z*Device.fTimeDelta);	break;
+	case kDOWN:			pitch	-= val?val:(rot_speed.y*Device.fTimeDelta);	break;
+	case kUP:			pitch	+= val?val:(rot_speed.y*Device.fTimeDelta);	break;
+	case kLEFT:			yaw		-= val?val:(rot_speed.x*Device.fTimeDelta);	break;
+	case kRIGHT:		yaw		+= val?val:(rot_speed.x*Device.fTimeDelta);	break;
 	}
 	if (bClampYaw)		clamp(yaw,lim_yaw[0],lim_yaw[1]);
 	if (bClampPitch)	clamp(pitch,lim_pitch[0],lim_pitch[1]);
