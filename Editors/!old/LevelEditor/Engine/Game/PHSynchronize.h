@@ -1,7 +1,9 @@
 #ifndef PH_SYNCHRONIZE_H
 #define PH_SYNCHRONIZE_H
 
-#include "net_utils.h"
+#ifdef AI_COMPILER
+	#include "net_utils.h"
+#endif
 
 struct SPHNetState
 {
