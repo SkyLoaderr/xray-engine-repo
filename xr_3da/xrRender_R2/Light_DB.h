@@ -21,6 +21,9 @@ public:
 	void					Load				(IReader* fs);
 	void					Unload				();
 
+	void					Activate			(light* L);
+	void					Deactivate			(light* L);
+
 	light*					Create				();
 	void					Destroy				(light*);
 
