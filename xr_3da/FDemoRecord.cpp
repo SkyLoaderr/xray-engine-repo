@@ -112,10 +112,10 @@ void CDemoRecord::MakeCubeMapFace(Fvector &D, Fvector &N)
 	case 5:
 		N.set		(cmNorm[s_idx]);
 		D.set		(cmDir[s_idx]);
-		Render->Screenshot	(itoa(s_idx,buf,10),TRUE);
+		Render->Screenshot	(IRender_interface::SM_FOR_CUBEMAP,itoa(s_idx,buf,10));
 	break;
 	case 6:
-		Render->Screenshot	(itoa(s_idx,buf,10),TRUE);
+		Render->Screenshot	(IRender_interface::SM_FOR_CUBEMAP,itoa(s_idx,buf,10));
 		N.set		(m_Camera.j);
 		D.set		(m_Camera.k);
 		psHUD_Flags.assign(s_hud_flag);
