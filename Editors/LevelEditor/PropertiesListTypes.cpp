@@ -19,7 +19,7 @@ LPCSTR TextValue::GetText()
 //------------------------------------------------------------------------------
 // AnsiTextValue
 //------------------------------------------------------------------------------
-LPCSTR AnsiTextValue::GetText(){
+LPCSTR ATextValue::GetText(){
     prop_draw_text=*values.front();
     if (OnDrawValue)OnDrawValue(this, &prop_draw_text);
     return prop_draw_text.c_str();
@@ -29,12 +29,6 @@ LPCSTR AnsiTextValue::GetText(){
 //------------------------------------------------------------------------------
 // BOOLValue
 //------------------------------------------------------------------------------
-LPCSTR BOOLValue::GetText()
-{
-	BOOL val = *values.front();
-    if (OnDrawValue)OnDrawValue(this, &val);
-    return LPCSTR(val);
-}
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
