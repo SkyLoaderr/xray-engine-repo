@@ -425,7 +425,6 @@ void CWeapon::net_update::lerp(CWeapon::net_update& A, CWeapon::net_update& B, f
 void CWeapon::UpdateCL		()
 {
 	inherited::UpdateCL		();
-	Msg						("W: %s",Local()?"LOCAL":"REMOTE");
 
 	if (Remote() && NET.size())
 	{
@@ -460,9 +459,9 @@ void CWeapon::UpdateCL		()
 				iAmmoElapsed		= NET_Last.ammo_elapsed;
 				if (NET_Last.flags&M_UPDATE_WEAPON_wfWorking)
 				{
-					if (!IsWorking())	{ FireStart(); Log("! START"); }
+					if (!IsWorking())	{ FireStart(); }
 				} else {
-					if (IsWorking())	{ FireEnd(); Log("! END"); }
+					if (IsWorking())	{ FireEnd(); }
 				}
 				if (DWORD(NET_Last.state)!=STATE)	OnStateSwitch(NET_Last.state);
 			}
