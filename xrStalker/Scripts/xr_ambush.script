@@ -27,8 +27,7 @@ function evaluator_ambush:__init( name, a ) super()
 end
 
 function evaluator_ambush:evaluate()
---    return self.a.enabled == true
-    return true
+    return self.a.enabled == true
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -98,6 +97,8 @@ function action_sit:initialize()
     self.object:set_sight           ( look.direction, self.a.path:point( 1 ):sub( self.object:position() ), 0 )
     self.object:set_body_state      ( move.crouch )
     self.object:set_mental_state    ( anim.danger )
+
+    xr_position.setPosition( self.object, self.a.path:level_vertex_id( 0 ) )
 end
 
 function action_sit:execute()
@@ -137,9 +138,8 @@ function action_await:finalize()
 end
 
 -------------------------------------------------------------------------------------------------------------------
-
 function squad_hash( npc )
-    return npc:team() * 100000 + npc:group() * 1000 + npc:squad()
+    return npc:team() * 10000 + npc:group() * 100 + npc:squad()
 end
 
 function add_to_binder( npc, char_ini )
@@ -156,7 +156,6 @@ function add_to_binder( npc, char_ini )
 
     local action = this.action_sit( "action_sit", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
---    action:add_precondition( world_property( xr_evaluators_id.state_change, true  ) )
     action:add_precondition( world_property( xr_evaluators_id.position,     true ) )
     action:add_effect( world_property( prop_ambush, false ) )
     manager:add_action( act_sit, action )
@@ -166,7 +165,6 @@ function add_to_binder( npc, char_ini )
 
     action = this.action_await( "action_await", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    true ) )
---    action:add_precondition( world_property( xr_evaluators_id.state_change, true  ) )
     action:add_precondition( world_property( xr_evaluators_id.position,     true ) )
     action:add_effect( world_property( prop_attack, true ) )
     manager:add_action( act_await, action )
@@ -179,52 +177,44 @@ function add_to_binder( npc, char_ini )
     end
 end
 
-function init_ambush( npc, a )
-    local char_ini = npc:spawn_ini()
+function set_ambush( npc, enable, path, dist )
+    	printf( "SET AMBUSH" )
 
-    if char_ini:section_exist( "ambush" ) then
-        -- включен?
-        if char_ini:line_exist( "ambush", "enabled" ) then
-            if not char_ini:r_bool( "ambush", "enabled" ) then
-                return false
-            end
-        else
-            return false
-        end
+    	local char_ini = npc:spawn_ini()
+    	local st = xr_motivator.storage[npc:id()].ambush
 
-        if char_ini:line_exist( "ambush", "path" ) then
-            this.setPathName( npc, char_ini:r_string( "ambush", "path" ) )
-        else
-            return false
-        end
+	if enable == nil then
+       		if char_ini:section_exist ("ambush") == true and char_ini:line_exist("ambush", "enabled") == true then
+               		st.enabled = char_ini:r_bool("ambush", "enabled")
+		else
+			st.enabled = false
+	        end
+	else
+		st.enabled = enable		
+	end	
+	if st.enabled == true then
+		if path == nil then
+        		if char_ini:section_exist ("ambush") == true and char_ini:line_exist("ambush", "path") == true then
+	        	        st.path = patrol(char_ini:r_string("ambush", "path"))
+        		else
+	        	    	st.enabled = false
+		        end
+		else
+			st.path = patrol(path)
+		end
+	end
+	if st.enabled == true then
+		if dist == nil then
+        		if char_ini:section_exist ("ambush") == true and char_ini:line_exist("ambush", "dist") == true then
+	        	        local dist = char_ini:r_float("ambush", "dist")
+				st.dist_sqr = dist*dist
+        		else
+	        	    	st.dist_sqr = 20*20
+		        end
+		else
+			st.dist_sqr = 20*20
+		end
+	end
 
-        if char_ini:line_exist( "ambush", "dist" ) then
-            local dist = char_ini:r_float( "ambush", "dist" )
-            a.dist_sqr = dist * dist
-        else
-            a.dist_sqr = 20 * 20
-        end
-    else
-        return false
-    end
-end
-
-function set_ambush( npc, enable )
-    printf( "SET AMBUSH" )
-
-    local a = xr_motivator.storage[npc:id()].ambush
-
-    if enable == nil then
-        a.enabled = this.init_ambush( npc, a )
-    else
-        a.enabled = enable and this.init_ambush( npc, a )
-    end
-
-    xr_motivator.checkStorage( npc )
-end
-
-function setPathName( npc, path_name )
-    local path = patrol( path_name )
-    xr_motivator.storage[npc:id()].ambush.path = path
-    xr_position.setPosition( npc, path:level_vertex_id( 0 ) )
+    	xr_motivator.checkStorage( npc )
 end

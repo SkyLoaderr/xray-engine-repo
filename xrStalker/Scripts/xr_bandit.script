@@ -152,7 +152,7 @@ function bandit:updateJob()
 			end
         	end
 	end
-	self:print()
+--	self:print()
 end
 function bandit:setJob(npc, job) 
 	-- удаляем у этого npc все работы (в сторадже)
@@ -162,6 +162,11 @@ function bandit:setJob(npc, job)
 		job.object = npc
 		job.begin = game.time()
 	        xr_kamp.set_kamp(npc, true, job.center_point, nil)
+	end
+	if job.name == "ambush" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_ambush.set_ambush(npc, true, job.point, nil)
 	end
 	if job.name == "patrol" then
 		job.object = npc
@@ -261,29 +266,29 @@ function bandit:loadJob(name) -- загружает список заданий
 			leader_name = nil }
 		table.insert(self.Job, t)			
 
-		t = { 	name = "kamp",
+		t = { 	name = "ambush",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = 3, -- в каких состояниях это задание существует
-			center_point = "black_ambush_center"}
+			point = "black_ambush_1"}
 		table.insert(self.Job, t)			
-		t = { 	name = "kamp",
+		t = { 	name = "ambush",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = 3, -- в каких состояниях это задание существует
-			center_point = "black_ambush_center"}
+			point = "black_ambush_2"}
 		table.insert(self.Job, t)			
-		t = { 	name = "kamp",
+		t = { 	name = "ambush",
 			object = nil,
 			begin = nil, 
 			idle = 0,	-- раз в какое время запускается работа
 			prior = 1,
 			state = 3, -- в каких состояниях это задание существует
-			center_point = "black_ambush_center"}
+			point = "black_ambush_3"}
 		table.insert(self.Job, t)
 
 		t = { name = "patrol",
@@ -355,6 +360,8 @@ function addMember(name, npc, char_ini)
 		        xr_patrol.add_to_binder  (npc, nil)
 		elseif v == "follower" then
 		        xr_follower.add_to_binder(npc, nil)
+		elseif v == "ambush" then
+		        xr_ambush.add_to_binder(npc, nil)
 		end
 	end
 end
