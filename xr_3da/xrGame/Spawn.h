@@ -30,7 +30,7 @@ public:
 #pragma pack(push,4)
 
 // Base class
-class CSpawn  
+class CSpawn : public CPropertyBase
 {
 	CSpawn_DESC				description;
 public:
@@ -38,7 +38,7 @@ public:
 	static		void		CreatePalette	(vector<CSpawn*> & palette);
 
 	CSpawn_DESC&			getDescription	(){return description;}
-	IC			LPCSTR		getName			(){return description.cName;}
+	virtual 	LPCSTR		getName			(){return description.cName;}
 	virtual		LPCSTR		getComment		()	= 0;
 	
 	virtual		void		Save			(CFS_Base&  FS);
