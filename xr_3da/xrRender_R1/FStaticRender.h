@@ -46,9 +46,6 @@ public:
 	CModelPool*												Models;
 
 	CRenderTarget*											Target;			// Render-target
-
-	ref_matrix												matDetailTexturing;
-	ref_matrix												matFogPass;
 private:
 	// Loading / Unloading
 	void							LoadBuffers				(IReader	*fs);
