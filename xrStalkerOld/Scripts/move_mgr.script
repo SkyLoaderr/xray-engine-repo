@@ -229,6 +229,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	-- self.dialog_mgr:reset(self.object, team) UNCOMMENT ME
 
 	self.last_index = nil
+	self.last_look_pos = nil
 	-- self:simulate_callback_if_neccessary() WORKAROUND
 end
 
@@ -390,7 +391,8 @@ end
 
 function move_mgr:update_standing_state(look_pos)
 	state_mgr.set_state(self.object, self.cur_state_standing,
-		{ obj = self, func = self.time_callback }, self.pt_wait_time,
+		{ obj = self, func = self.time_callback, turn_end_func = self.turn_end_callback },
+		self.pt_wait_time,
 		{ look_position = look_pos } )
 	self.moving = false
 end
@@ -416,6 +418,32 @@ function move_mgr:time_callback()
 			self.no_validation)
 	else
 		self:update_movement_state() -- идти дальше
+	end
+end
+
+function move_mgr:turn_end_callback()
+	if self.retval_after_rotation then
+		if not self.move_cb_func then
+			utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
+				"callback function wasn't registered in move_mgr:reset()",
+				self.object:name(), self.path_look)
+		end
+		-- Отключаем таймер путем установки того же самого состояния, но без таймера,
+		-- затем вызываем callback.
+		-- Если callback вернул false, т.е. решил не вмешиваться в перемещение,
+		-- то включаем опять таймер.
+		-- Если callback вернул true - не восстанавливаем таймер т.к. это могли сделать в
+		-- самом callback-е.
+		
+		-- 1) Отключаем таймер
+		state_mgr.set_state(self.object, self.cur_state_standing, nil, nil, nil)
+		-- 2) Вызываем callback
+		if self.move_cb_func(self.move_cb_obj, this.arrival_after_rotation, self.retval_after_rotation) then
+			-- Callback решил перехватить управление перемещением, не восстанавливаем таймер
+			return
+		end
+		-- Callback не перехватил управление, нужно восстановить таймер:
+		self:update_standing_state(self.last_look_pos)
 	end
 end
 
@@ -492,7 +520,6 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	else
 		self.cur_state_moving = self.default_state_moving1
 	end
-	self.standing_crouch = self.crouch
 
 	local retv = self.path_walk_info[index]["ret"]
 	if retv then
@@ -594,6 +621,7 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.pt_wait_time = nil
 		end
 		local look_pos = self.patrol_look:point(pt_chosen_idx)
+		self.last_look_pos = look_pos
 		self:update_standing_state(look_pos)
 
 		self.state = state_standing
