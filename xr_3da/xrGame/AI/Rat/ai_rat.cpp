@@ -862,7 +862,7 @@ void CAI_Rat::Attack()
 		}
 		else {
 			if (Enemy.bVisible) {
-				float fDistance = ffGetDistance(Position(),Enemy.Enemy->Position());
+				float fDistance = Position().distance_to(Enemy.Enemy->Position());
 				if ((Enemy.Enemy) && (fDistance < SelectorAttack.fMaxEnemyDistance) && (fDistance > SelectorAttack.fMinEnemyDistance)) {
 					m_bAttackGravitation = true;
 					m_bAttackStarted = true;
@@ -882,7 +882,7 @@ void CAI_Rat::Attack()
 					}
 					m_tpEnemyBeingAttacked = Enemy.Enemy;
 					FollowLeader(Enemy.Enemy->Position(),SelectorAttack.fMinEnemyDistance);				
-					float fDistance = ffGetDistance(Position(),Enemy.Enemy->Position());
+					float fDistance = Position().distance_to(Enemy.Enemy->Position());
 					q_action.setup(AI::AIC_Action::AttackEnd);
 					if (fDistance > SelectorAttack.fMaxEnemyDistance)
 						SetDirectionLook();

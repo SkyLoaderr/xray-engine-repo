@@ -29,7 +29,6 @@ struct SEnemySelected
 };
 
 extern IC void vfNormalizeSafe(Fvector& Vector);
-extern IC float ffGetDistance(Fvector P1, Fvector P2);
 
 class CAISelectorBase : public AI::NodeEstimator 
 {

@@ -825,7 +825,7 @@ void CAI_Zomby::Attack()
 					1000);
 				q_look.o_look_speed=_FB_look_speed;
 				
-				if ((Enemy.Enemy) && (ffGetDistance(Position(),Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
+				if ((Enemy.Enemy) && (Position()->distance_to(Enemy.Enemy->Position()) < SelectorAttack.fMaxEnemyDistance)) {
 					q_action.setup(AI::AIC_Action::AttackBegin);
 					m_tpEnemyBeingAttacked = Enemy.Enemy;
 				}
