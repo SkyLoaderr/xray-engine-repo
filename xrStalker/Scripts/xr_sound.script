@@ -207,7 +207,9 @@ function sound_update(npc, sound, now)
 		end
 
 		for k,v in sound.themes do
-			get_sound(theme[v])
+			if theme[v] ~= nil then
+				get_sound(theme[v])
+			end
 		end
 
 		-- проиграть один звук
