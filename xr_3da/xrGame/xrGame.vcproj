@@ -1688,6 +1688,18 @@
 					Name="UIWindows"
 					Filter="">
 					<File
+						RelativePath=".\ui\UIButton.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIButton.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIFrameWindow.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIFrameWindow.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIWindow.cpp">
 					</File>
 					<File

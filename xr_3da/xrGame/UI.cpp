@@ -21,19 +21,25 @@ CUI::CUI(CHUDManager* p)
 	UIHealth.Init	();
 	UISquad.Init	();
 
-	/*UIMainWindow.Init("ui\\ui_hud_frame", 100,100, 500,500);
+	UIMainWindow.Init("ui\\ui_hud_frame", 100,100, 500,500);
 	
 	UIMainWindow.AttachChild(&UIButton1);
 	UIMainWindow.AttachChild(&UIButton2);
 
 	UIButton1.Init(10,10,128,128);
-	UIButton2.Init(10,210,128,128);*/
+	UIButton2.Init(10,210,128,128);
+
+	
+
+//	CGameFont *pGameFont = m_Parent->pFontMedium;
+	//UIButton1.SetFont(m_Parent->pFontMedium);
+	//UIButton2.SetFont(m_Parent->pFontSmall);
 
 			
 	//show the cursor
 	UICursor.SetPos(Device.dwWidth/2, Device.dwHeight/2);
-	//UICursor.Show();
-	UICursor.Hide();
+	UICursor.Show();
+	//UICursor.Hide();
 
 	
 
@@ -95,6 +101,15 @@ void CUI::OnFrame()
 		if(l_pA && (l_pA->m_inventory.m_activeSlot < l_pA->m_inventory.m_slots.size())) {
 			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->m_inventory.m_slots[l_pA->m_inventory.m_activeSlot].m_pIItem));
 		} else UIWeapon.Out(NULL);
+
+
+		//update windows
+		UIButton1.SetFont(m_Parent->pFontMedium);
+		UIButton2.SetFont(m_Parent->pFontMedium);
+		UIMainWindow.Update();
+
+				
+
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->OnFrame	();
@@ -128,8 +143,8 @@ bool CUI::Render()
 		UIWeapon.Render();
 		UIHealth.Render();
 
-	//
-	//	UIMainWindow.Draw();
+		//Draw main window and its children
+		UIMainWindow.Draw();
 
 		//render cursor only when it visible
 		if(UICursor.IsVisible())
