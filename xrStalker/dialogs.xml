@@ -209,7 +209,7 @@
 		</phrase_list>
 	</dialog>
 
-	<dialog id="stalker_talk_about">
+	<dialog id="stalker_talk_about2">
 	<precondition>trader_job.if_not_a_trader</precondition>
 	    <has_info>actor_start</has_info>
 		<phrase_list>
@@ -306,7 +306,7 @@
 
 
 
-	<dialog id="job_medkit">
+	<dialog id="stalker_talk_about">
 --	        <precondition>trader_job.is_medkit_present</precondition>
 		<phrase_list>
 			<phrase id="0">
