@@ -1,5 +1,83 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="mil_dolg_dialog_1000">
+        <text>Привет. Что делаем ?</text>
+    </string>
+    <string id="mil_dolg_dialog_1001">
+        <text>Да хотим этих свободных козлов наказать, за то, что нашего замочили. Беспредел полный творится.\nЕсли хочешь подзаработать, то грохни снайпера на вышке, а то у нас снайперка навернулась. Вовремя, мля.</text>
+    </string>
+    <string id="mil_dolg_dialog_1002">
+        <text>Ок. Грохну.</text>
+    </string>
+    <string id="mil_dolg_dialog_10020">
+        <text>Ждем-с.</text>
+    </string>
+    <string id="mil_dolg_dialog_1003">
+        <text>Я подумаю.</text>
+    </string>
+    <string id="mil_dolg_dialog_10030">
+        <text>Давай, мыслитель.</text>
+    </string>
+    <string id="mil_dolg_dialog_1004">
+        <text>Не, меня ломает. Да и с моей хлопушкой несподручно.</text>
+    </string>
+    <string id="mil_dolg_dialog_10040">
+        <text>А какого ты вообще по Зоне ходишь ?</text>
+    </string>
+    <string id="mil_dolg_dialog_2000">
+        <text>Я подумал.</text>
+    </string>
+    <string id="mil_dolg_dialog_2001">
+        <text>И до чего додумался ?</text>
+    </string>
+    <string id="mil_dolg_dialog_2002">
+        <text>Я еще подумаю.</text>
+    </string>
+    <string id="mil_dolg_dialog_20020">
+        <text>Ну ты и тугодум.</text>
+    </string>
+    <string id="mil_dolg_dialog_2003">
+        <text>Пожалуй нет.</text>
+    </string>
+    <string id="mil_dolg_dialog_20030">
+        <text>Ну и вали отсюда.</text>
+    </string>
+    <string id="mil_dolg_dialog_2004">
+        <text>Ок. Я его шлепну.</text>
+    </string>
+    <string id="mil_dolg_dialog_20040">
+        <text>Ок.</text>
+    </string>
+    <string id="mil_dolg_dialog_3000">
+        <text>Я его грохнул.</text>
+    </string>
+    <string id="mil_dolg_dialog_3001">
+        <text>Ок. Вот твои деньги.</text>
+    </string>
+    <string id="mil_dolg_dialog_3002">
+        <text>Заходите еще.</text>
+    </string>
+    <string id="mil_dolg_dialog_30020">
+        <text>Обязательно.</text>
+    </string>
+    <string id="mil_dolg_dialog_4000">
+        <text>Не могу я этого типа грохнуть.</text>
+    </string>
+    <string id="mil_dolg_dialog_4001">
+        <text>Жидковато, однако. Может еще попробуешь ?</text>
+    </string>
+    <string id="mil_dolg_dialog_4002">
+        <text>Ладно, попробую.</text>
+    </string>
+    <string id="mil_dolg_dialog_40020">
+        <text>Не тяни резину.</text>
+    </string>
+    <string id="mil_dolg_dialog_4003">
+        <text>Да ну его нахрен.</text>
+    </string>
+    <string id="mil_dolg_dialog_40030">
+        <text>Как знаешь.</text>
+    </string>
     <string id="mil_dolg_job_0">
         <text>Сталкер, ты именно тот, кто нам нужен.</text>
     </string>

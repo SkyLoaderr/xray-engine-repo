@@ -8,11 +8,24 @@
 	<!-- Атака Долга -->
 	<info_portion id="mil_sniper1_dead"></info_portion>
 	<info_portion id="mil_sniper2_dead"></info_portion>
+	<info_portion id="mil_lukash_dead"></info_portion>
+	<info_portion id="mil_dolg_attack"></info_portion>
+	
 	
 	<!-- Атака Свободы -->
 	<info_portion id="mil_freedom_attack"></info_portion>
 	
 	<!-- База Свободы под атакой-->
 	<info_portion id="mil_freedom_under_attack"></info_portion>
+	
+	<!-- Диалоговые инфопоршены-->
+	
+	<!-- Диалог с долговцами-->
+	<info_portion id="mil_dolg_first"></info_portion>
+	<info_portion id="mil_dolg_mission_complete"></info_portion>
+	<info_portion id="mil_sniper_i_think"></info_portion>
+	<info_portion id="mil_sniper_dead"></info_portion>
+	<info_portion id="mil_sniper_get_job"></info_portion>
+	
 	
 </game_information_portions>
