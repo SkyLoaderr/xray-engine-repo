@@ -10,7 +10,7 @@
 
 class CDamageManager {
 protected:
-	float				m_default_hit_factor;
+	float			m_default_hit_factor;
 
 public:
 					CDamageManager			();

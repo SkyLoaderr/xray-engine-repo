@@ -95,3 +95,8 @@ void CMaterialManager::update		(float time_delta, float volume, float step_time,
 			m_step_sound[i].set_volume		(m_step_sound[i].handle->start_volume()*volume);
 		}
 }
+
+void CMaterialManager::set_run_mode			(bool run_mode)
+{
+	m_run_mode			= run_mode;
+}
