@@ -231,9 +231,10 @@ void CStats::Show()
 		pFont->OnRender		();
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+	// PERF ALERT
 	{
-		//////////////////////////////////////////////////////////////////////////
-		// PERF ALERT
+		CGameFont&	F = *((CGameFont*)pFont);
 		F.SetColor						(color_rgba(255,16,16,255));
 		F.OutSet						(300,300);
 		F.SetSize						(f_base_size*2);
@@ -253,6 +254,7 @@ void CStats::Show()
 		}
 	}
 
+	//////////////////////////////////////////////////////////////////////////
 	// Show errors
 	if (errors.size())
 	{
