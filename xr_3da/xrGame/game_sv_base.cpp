@@ -181,7 +181,3 @@ void game_sv_GameState::OnPlayerDisconnect		(u32 id_who)
 {
 	signal_Syncronize	();
 }
-void game_sv_GameState::OnPlayerChangedInfo		(u32 id_who)
-{
-	signal_Syncronize	();
-}

@@ -26,6 +26,6 @@ void xrServer::OnCL_Disconnected	(IClient* CL)
 	}
 
 	// Game config (all, info excludes deleted player)
-	game->OnPlayerDisconnect();
+	game->OnPlayerDisconnect(CL->ID);
 	game->signal_Syncronize	();
 }

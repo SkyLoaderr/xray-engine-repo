@@ -33,7 +33,6 @@ public:
 	// Events
 	virtual		void				OnPlayerConnect			(u32 id_who);
 	virtual		void				OnPlayerDisconnect		(u32 id_who);
-	virtual		void				OnPlayerChangedInfo		(u32 id_who);
 	virtual		void				OnPlayerReady			(u32 id_who)					{};
 	virtual		void				OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)	= 0;
 	virtual		BOOL				OnTargetTouched			(u32 id_who, u32 eid_target)	= 0;	// TRUE=allow ownership, FALSE=denie
