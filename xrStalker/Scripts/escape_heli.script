@@ -300,7 +300,7 @@ function main()
 --	snd:play_at_pos( actor, actor:position():add( vector():set( 80, 0, 0 ) ) )
 
 	heli_mgr = xr_heli.HeliManager()
-	heli_mgr:initialize( 14, nil, 30, 30 )
+	heli_mgr:initialize( 14, nil, 20, 20 )
 
 	if not state then
 		chst( state_before )
