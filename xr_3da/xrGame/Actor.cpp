@@ -1358,7 +1358,9 @@ void __stdcall TestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material
 		if(depth>max_depth)
 				max_depth=depth;
 		c.surface.mu*=0.2f;
-		if(depth>0.02)
+		
+
+		if(depth>0.1f)
 		{
 			float force = 100.f *world_gravity;
 			dBodyID b1=dGeomGetBody(c.geom.g1);
@@ -1383,6 +1385,8 @@ void __stdcall TestDepthCallback (bool& do_colide,dContact& c,SGameMtl* material
 			
 			do_colide=false;
 		}
+		else if(depth>0.02f)
+			c.surface.soft_cfm*=1.f;
 	}
 	
 }
@@ -1437,7 +1441,7 @@ bool CActor:: ActivateBox(DWORD id)
 		max_depth=0.f;
 		m_PhysicMovementControl->EnableCharacter();
 		ph_world->Step();
-		if(max_depth<0.02f) 
+		if(max_depth<0.1f) 
 		{
 			ret=true;
 			break;

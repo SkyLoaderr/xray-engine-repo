@@ -114,6 +114,16 @@ IC void		prg_pos_on_axis(const Fvector	&in_ax_p,const Fvector &in_ax_d,Fvector &
 	in_out_pos.add(in_ax_p);
 }
 
+IC void		restrict_vector_in_dir(Fvector& V,const Fvector& dir)
+{
+	Fvector sub;sub.set(dir);
+	float dotpr =dir.dotproduct(V);
+	if(dotpr>0.f)
+	{
+		sub.mul(dotpr);
+		V.sub(sub);
+	}
+}
 IC bool check_obb_sise(Fobb& obb)
 {
 	return (!fis_zero(obb.m_halfsize.x,EPS_L)||

@@ -482,6 +482,7 @@ void CCar::SDoor::GetExitPosition(Fvector& pos)
 			   bb.m_halfsize.y,add1.set(pf.j);add1.mul(bb.m_halfsize.y),
 			  bb.m_halfsize.z,add1.set(pf.k);add1.mul(bb.m_halfsize.z))
 		Fvector dir_from_car;dir_from_car.sub(pf.c,pcar->Position());
+		dir_from_car.y=0.f;
 		if(add1.dotproduct(dir_from_car)<0.f)add1.invert();	
 		add1.mul(3.f);
 		pos.add(add1);

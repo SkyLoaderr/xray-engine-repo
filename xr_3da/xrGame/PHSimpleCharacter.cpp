@@ -378,7 +378,7 @@ void CPHSimpleCharacter::PhTune(dReal step){
 		return;
 	}
 
-	if(m_acceleration.magnitude()>0.f) is_control=true;
+	if(m_acceleration.magnitude()>0.1f) is_control=true;
 	else							   is_control=false;
 
 	b_depart=was_contact&&(!is_contact);

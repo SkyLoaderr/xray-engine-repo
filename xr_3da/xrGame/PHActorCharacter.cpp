@@ -33,6 +33,7 @@ void CPHActorCharacter::Create(dVector3 sizes)
 	inherited::Create(sizes);
 	dGeomSetBody(m_restrictor_transform,m_body);
 	dSpaceAdd(m_space,m_restrictor_transform);
+	dGeomUserDataSetPhObject(m_restrictor,(CPHObject*)this);
 }
 
 void CPHActorCharacter::Destroy()
@@ -122,7 +123,7 @@ void CPHActorCharacter::RestrictorCallBack (bool& do_colide,dContact& c,SGameMtl
 	{
 		do_colide=true;
 		A->movement_control()->MulFrictionFactor(0.1f);
-		S->movement_control()->MulFrictionFactor(100.f);
+		S->movement_control()->MulFrictionFactor(10000000000000000000.f);
 	}
 }
 
@@ -138,5 +139,38 @@ void CPHActorCharacter::InitContact(dContact* c,bool &do_collide,SGameMtl * mate
 		c->surface.mu		=0.00f;
 	}
 	inherited::InitContact(c,do_collide,material_1,material_2);
-	if(b_restrictor&&do_collide) m_friction_factor*=0.1f;
+	if(b_restrictor&&do_collide)
+	{
+		bool b1=c->geom.g1==m_restrictor_transform;
+		dBodyID body=NULL;
+		if(b1)
+		{
+			body= dGeomGetBody(c->geom.g2);
+		}else
+		{
+			body= dGeomGetBody(c->geom.g1);
+		}
+		Fvector restrict_dir;
+		dVectorSub((dReal*)&restrict_dir,dBodyGetPosition(m_body),dBodyGetPosition(body));
+		restrict_dir.y=0.f;
+		restrict_dir.normalize_safe();
+		Fvector value;
+		value.set(*(Fvector*)dBodyGetLinearVel(m_body));
+		restrict_vector_in_dir(value,restrict_dir);
+		dBodySetLinearVel(m_body,value.x,value.y,value.z);
+		
+		value.set(*(Fvector*)dBodyGetForce(m_body));
+		restrict_vector_in_dir(value,restrict_dir);
+		dBodySetForce(m_body,value.x,value.y,value.z);
+		dJointID contact_joint	= dJointCreateContact(0, ContactGroup, c);
+		Enable();
+		CPHObject::Island().DActiveIsland()->ConnectJoint(contact_joint);
+		if(b1)
+			dJointAttach			(contact_joint, dGeomGetBody(c->geom.g1), 0);
+		else
+			dJointAttach			(contact_joint, 0, dGeomGetBody(c->geom.g2));
+		do_collide=false;
+		m_friction_factor*=0.1f;
+		
+	}
 }
