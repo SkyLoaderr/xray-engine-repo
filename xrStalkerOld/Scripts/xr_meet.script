@@ -57,12 +57,12 @@ function evaluator_weapon:evaluate()
 		if self.a.actor:alive() and
 		   self.object:see(self.a.actor) and
 		   self.object:relation(self.a.actor) == game_object.neutral 
---		   and
---		   (self.object:character_community() ~= "dolg" and
---		    self.object:character_community() ~= "freedom" and
---		    self.object:character_community() ~= "killer")
 		then 
-			return isWeapon(self.a.actor:active_item())
+			if self.object:get_current_holder() == nil then
+				return isWeapon(self.a.actor:active_item())
+			else
+				return false
+			end
 		end
 	end
 	return false
