@@ -72,8 +72,8 @@ void	CBlender_Vertex_aref::Compile(CBlender_Compile& C)
 			C.RS.StageBegin		();
 			{
 				C.RS.StageSET_Address	(D3DTADDRESS_WRAP);
-				C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
-				C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
+				C.RS.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
+				C.RS.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_DIFFUSE);
 				C.RS.Stage_Texture		(oT_Name,	C.L_textures);
 				C.RS.Stage_Matrix		(oT_xform,	C.L_matrices,	0);
 				C.RS.Stage_Constant		("$null",	C.L_constants);
