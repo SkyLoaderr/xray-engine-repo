@@ -458,5 +458,31 @@
 		<actor_dialog>bar_dolg_ivancov_test_finish</actor_dialog>
 	</specific_character>	
 
+<!---------------------------DOLG LEADER---------------------->
+	<specific_character id="bar_dolg_leader" team_default = "1">
+		<name>Майор Воронин</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Лидер Долга. Основатель группировки Долг, вот уже пять лет возглавляет группировку.</bio>
+
+		<class>stalker_bar_leader</class>
+		<community>dolg</community>
+		
+		<rank>99</rank>
+		<reputation>0</reputation>
+ 
+		<visual>actors\dolg\stalker_do_balon_2</visual>
+		<supplies>
+			[spawn] \n
+			wpn_spas12 \n
+			ammo_12x70_buck \n
+		</supplies>
+		
+		<start_dialog>bar_dolg_leader_start</start_dialog>
+		<actor_dialog>bar_dolg_leader_join</actor_dialog>
+		<actor_dialog>bar_dolg_leader_quest_rg6_finish</actor_dialog>
+		<actor_dialog>bar_dolg_leader_job</actor_dialog>
+	</specific_character>	
+
 
 </xml>
