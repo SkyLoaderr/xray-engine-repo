@@ -123,8 +123,10 @@ void CWallmarksEngine::AddWallmark	(RAPID::tri* pTri, const Fvector &contact_poi
 	sml_normal.set		(N);
 
 	// build 3D ortho-frustum
-	Fmatrix				mView;
+	Fmatrix				mView,mRot;
 	BuildMatrix			(mView,1/sz,contact_point);
+	mRot.rotateZ		(::Random.randF(0,PI_MUL_2));
+	mView.mul			(mRot);
 	CFrustum			F;
 	F.CreateFromMatrix	(mView);
 

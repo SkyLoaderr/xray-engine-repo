@@ -3,6 +3,8 @@
 
 #include "Blender_Screen_SET.h"
 
+#define		VER_2_oBlendCount	7
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -11,7 +13,7 @@ CBlender_Screen_SET::CBlender_Screen_SET()
 {
 	description.CLS		= B_SCREEN_SET;
 	description.version	= 2;
-	oBlend.Count		= 7;
+	oBlend.Count		= VER_2_oBlendCount;
 	oBlend.IDselected	= 0;
 	oAREF.value			= 32;
 	oAREF.min			= 0;
@@ -55,7 +57,7 @@ void	CBlender_Screen_SET::Load	( CStream& FS	)
 	CBlender::Load	(FS);
 
 	// Blend mode
-	xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);
+	xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);	oBlend.Count =   VER_2_oBlendCount;
 	xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
 	xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
 	xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
