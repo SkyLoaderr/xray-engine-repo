@@ -268,6 +268,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
     virtual 						~CSE_ALifeObjectPhysic	();
 	virtual bool					used_ai_locations		() const;
 	virtual bool					can_save				() const;
+	virtual	void					load					(NET_Packet &tNetPacket);
 SERVER_ENTITY_DECLARE_END
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectHangingLamp,CSE_ALifeDynamicObjectVisual)
