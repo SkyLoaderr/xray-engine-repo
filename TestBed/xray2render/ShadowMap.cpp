@@ -679,6 +679,8 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16,	&d_Color,&d_Color_S);
 	CreateRT						(m_pd3dDevice,w,h,D3DFMT_A8R8G8B8,		&d_Accumulator,&d_Accumulator_S);
 	CreateRT						(m_pd3dDevice,SHADOW_MAP_SIZE,SHADOW_MAP_SIZE,D3DFMT_R32F,&sm_ShadowMap,&sm_ShadowMap_S);
+	CreateRT						(m_pd3dDevice,w/2,h/2,D3DFMT_X8R8G8B8,	&d_Bloom_1,&d_Bloom_1_S);
+	CreateRT						(m_pd3dDevice,w/2,h/2,D3DFMT_X8R8G8B8,	&d_Bloom_2,&d_Bloom_2_S);
 
 	// Create depth buffer for shadow map rendering
 	if (FAILED(m_pd3dDevice->CreateDepthStencilSurface(SHADOW_MAP_SIZE, SHADOW_MAP_SIZE, D3DFMT_D24X8, D3DMULTISAMPLE_NONE, 0, TRUE, &sm_ShadowMap_Z, NULL)))
