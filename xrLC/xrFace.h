@@ -66,6 +66,7 @@ public:
 	Fvector					P;
 	Fvector					N;
 	base_color				C;			// all_lighting info
+	u32						handle;		// used in mesh-processing/optimization/conversion
 public:
 	base_Vertex()			{ }
 	virtual ~base_Vertex()	= 0; 
