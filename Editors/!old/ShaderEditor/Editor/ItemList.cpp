@@ -138,8 +138,7 @@ void __fastcall TItemList::DeselectAll()
 //---------------------------------------------------------------------------
 ListItem* TItemList::FindItem(LPCSTR full_name)
 {
-	TElTreeItem* item;              
-    FHelper.FindObject			(tvItems,full_name,&item);
+	TElTreeItem* item    		= FHelper.FindObject(tvItems,full_name,&item);
     return item?(ListItem*)item->Tag:0;
 }
 //---------------------------------------------------------------------------
@@ -666,7 +665,7 @@ void TItemList::GetFolders(RStringVec& folders)
 }
 //---------------------------------------------------------------------------
 
-void TItemList::GenerateObjectName(shared_str name, LPCSTR start_node, LPCSTR pref, bool num_first)
+void TItemList::GenerateObjectName(shared_str& name, LPCSTR start_node, LPCSTR pref, bool num_first)
 {
 	AnsiString _name;
 	TElTreeItem* node 		  	= FHelper.FindItem(tvItems, start_node);

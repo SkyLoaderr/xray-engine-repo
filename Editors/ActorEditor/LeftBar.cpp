@@ -242,6 +242,12 @@ void __fastcall TfraLeftBar::SaevAs1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfraLeftBar::ExportBatch1Click(TObject *Sender)
+{
+	ExecCommand( COMMAND_BATCH_CONVERT );
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TfraLeftBar::MakeThumbnail1Click(TObject *Sender)
 {
 	ExecCommand(COMMAND_MAKE_THUMBNAIL);

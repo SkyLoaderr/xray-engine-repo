@@ -752,24 +752,33 @@ void CActorTools::MakeThumbnail()
 
 bool CActorTools::BatchConvert(LPCSTR fn)
 {
+	bool bRes = true;
 	CInifile* ini = CInifile::Create(fn); VERIFY(ini);
     if (ini->section_exist("ogf")){
     	CInifile::Sect& sect	= ini->r_section("ogf");
+        Msg						("Start converting %d items...",sect.size());
         for (CInifile::Item* it=sect.begin(); it!=sect.end(); it++){
         	std::string 		src_name;
             std::string 		tgt_name;
-            FS.update_path		(src_name,_objects_,		it->first.c_str());
+            FS.update_path		(src_name,_objects_,		it->first.c_str());	
             FS.update_path		(tgt_name,_game_meshes_, 	it->second.c_str());
+            src_name			= EFS.ChangeFileExt	(src_name,".object");
+            tgt_name			= EFS.ChangeFileExt	(tgt_name,".ogf");
             if (FS.exist(src_name.c_str())){
-            	Msg				("Converting '%s' to '%s'",it->first.c_str(),it->second.c_str());
+            	Msg				(".Converting '%s' <-> '%s'",it->first.c_str(),it->second.c_str());
+                CEditableObject* O = xr_new<CEditableObject>("convert");
+                BOOL res		= O->Load		(src_name.c_str());
+                if (res) res	= O->ExportOGF	(tgt_name.c_str());
+                Log				(res?".OK":"!.FAILED");
+                xr_delete		(O);
             }else{
             	Log				("!Invalid source file name:",it->first.c_str());
+                bRes			= false;
             }
+            if (UI->NeedAbort()) break;
         }
-    	return true;
-    }else{
-    	return false;
     }
+    return bRes;
 }
 
 

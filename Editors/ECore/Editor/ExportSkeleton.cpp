@@ -529,11 +529,11 @@ bool CExportSkeleton::PrepareGeometry()
 
     R_ASSERT(m_Source->IsDynamic()&&m_Source->IsSkeleton());
 
-    SPBItem* pb = UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"Prepare skeleton geometry...");
+    SPBItem* pb = UI->ProgressStart(5+m_Source->MeshCount()*2+m_Source->SurfaceCount(),"..Prepare skeleton geometry");
     pb->Inc		();
 
     u32 mtl_cnt=0;
-	UI->SetStatus("Split meshes...");
+	UI->SetStatus("..Split meshes");
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
         // generate vertex offset
@@ -584,7 +584,7 @@ bool CExportSkeleton::PrepareGeometry()
         MESH->UnloadFNormals();
         pb->Inc		();
     }
-    UI->SetStatus("Calculate TB...");
+    UI->SetStatus("..Calculate TB");
 
     // calculate TB
     for (SplitIt split_it=m_Splits.begin(); split_it!=m_Splits.end(); split_it++){
@@ -607,7 +607,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 {
 	if (!PrepareGeometry()) return false;
 
-    SPBItem* pb = UI->ProgressStart(3+m_Splits.size(),"Export skeleton geometry...");
+    SPBItem* pb = UI->ProgressStart(3+m_Splits.size(),"..Export skeleton geometry");
     pb->Inc		("Make Progressive...");
     // fill per bone vertices
     BoneVec& bones 			= m_Source->Bones();
@@ -707,11 +707,11 @@ struct bm_item{
 bool CExportSkeleton::ExportMotionKeys(IWriter& F)
 {
     if (!!m_Source->m_SMotionRefs.size()||(m_Source->SMotionCount()<1)){
-    	ELog.Msg(mtError,"Object doesn't have own motion.");
+    	Msg("!..Object doesn't have own motion");
      	return !!m_Source->m_SMotionRefs.size();
     }
 
-	SPBItem* pb = UI->ProgressStart(1+m_Source->SMotionCount(),"Export skeleton motions keys...");
+	SPBItem* pb = UI->ProgressStart(1+m_Source->SMotionCount(),"..Export skeleton motions keys");
     pb->Inc		();
 
     // mem active motion
@@ -856,7 +856,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
 
     bool bRes=true;
 
-	SPBItem* pb = UI->ProgressStart(3,"Export skeleton motions defs...");
+	SPBItem* pb = UI->ProgressStart(3,"..Export skeleton motions defs");
     pb->Inc		();
 
     if (m_Source->m_SMotionRefs.size()){

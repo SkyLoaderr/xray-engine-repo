@@ -507,7 +507,7 @@ void TClipMaker::RealUpdateProperties()
             if (MI)				tmp.sprintf("%s [%3.2fs, %s]",mname.c_str(),MI->GetLength(),MD->bone_or_part?"stop at end":"looped");
             if (BP)				PHelper().CreateCaption	(p_items,PrepareKey("Current Clip\\Cycles",BP->alias.c_str()), tmp);
 		}            
-        if (*sel_clip->fx)		PHelper().CreateFloat		(p_items,PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
+        if (sel_clip->fx.size())PHelper().CreateFloat		(p_items,PrepareKey("Current Clip\\FXs",*sel_clip->fx), &sel_clip->fx_power, 0.f, 1000.f);
     }
 	m_ClipProps->AssignItems(p_items);
 }
@@ -796,7 +796,7 @@ void TClipMaker::RealUpdateClips()
     // clip list
     ListItemsVec	l_items;
     for (it=clips.begin(); it!=clips.end(); it++)
-    	LHelper().CreateItem		(l_items,*(*it)->name,0,0,*it);
+    	LHelper().CreateItem	(l_items,*(*it)->name,0,0,*it);
 	m_ClipList->AssignItems		(l_items,true);
 	// select default clip
  	if (!clips.empty()&&(sel_clip==0)) 
@@ -884,16 +884,20 @@ void __fastcall TClipMaker::ebSaveClipsClick(TObject *Sender)
 
 void __fastcall TClipMaker::ebSyncClick(TObject *Sender)
 {
-    for (UIClipIt c_it=clips.begin(); c_it!=clips.end(); c_it++){
-    	float len = 0.f;
-        for (u32 k=0; k<4; k++){
-            AnsiString mname	= (*c_it)->CycleName(k);	
-            CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
-            if (MI&&(len<MI->GetLength())) len = MI->GetLength();
-		}            
-    	(*c_it)->length = fis_zero(len)?2.f:len;
+    if (ATools->IsEngineMode()){
+        for (UIClipIt c_it=clips.begin(); c_it!=clips.end(); c_it++){
+            float len = 0.f;
+            for (u32 k=0; k<4; k++){
+                AnsiString mname	= (*c_it)->CycleName(k);	
+                CMotion* MI			= ATools->m_RenderObject.FindMotionKeys	(mname.c_str());
+                if (MI&&(len<MI->GetLength())) len = MI->GetLength();
+            }            
+            (*c_it)->length = fis_zero(len)?2.f:len;
+        }
+        UpdateClips		();
+    }else{
+        ELog.DlgMsg(mtInformation,"Time syncronize only in Engine Mode.");
     }
-    UpdateClips		();
 }
 //---------------------------------------------------------------------------
 
