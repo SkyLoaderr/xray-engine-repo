@@ -151,6 +151,7 @@ void CSheduler::ProcessStep			()
 		T.Object->shedule_Update	(Elapsed);
 		T.Object->shedule.b_locked	= FALSE;
 		u32	execTime				= eTimer.GetElapsed_ms		();
+#ifdef DEBUG
 		if (execTime>3)
 		{
 			LPCSTR		_class			= typeid(T.Object).name	();
@@ -158,6 +159,7 @@ void CSheduler::ProcessStep			()
 			if (O)						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%s / %dms)",_class,O->cName(),execTime);
 			else						Msg	("! xrSheduler: object [%s] exceed [3ms] timelimit (%x / %dms)",_class,T.Object,execTime);
 		}	
+#endif
 
 		Slice						();
 	}
