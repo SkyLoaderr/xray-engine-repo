@@ -13,7 +13,7 @@ function save_dialog:__init() super()
    self:InitCallBacks()
 end
 
-function save_dialog:__finilize()
+function save_dialog:__finalize()
 
 end
 
@@ -52,8 +52,8 @@ function save_dialog:InitControls()
 	list_rect.width  = main_rect.width - indent*2
 	list_rect.height = main_rect.height - indent*2 - list_rect.y - btn_ok_rect.height	
 	local message_rect   = {x = 0, y = 0, width = 550, height = 300}
-	message_rect.x = (main_rect.width - message_rect.width)/2
-	message_rect.y = (main_rect.height - message_rect.height)/2
+	--message_rect.x = (main_rect.width - message_rect.width)/2
+	--message_rect.y = (main_rect.height - message_rect.height)/2
 	
 	----- CODE -------
 	
@@ -145,10 +145,10 @@ function save_dialog:InitControls()
 	message_box:SetWindowName("message_box")
 	message_box:SetFont(GetFontLetterica25())
 	message_box:Init("ui\\ui_frame",message_rect.x, message_rect.y, message_rect.width, message_rect.height)
-	message_box:SetStyle(1)
-	message_box:AutoCenter()
+	message_box:SetStyle(1)	
 	message_box:Hide()
 	main_frame:AttachChild(message_box)
+	message_box:AutoCenter()
 end
 
 function save_dialog:InitCallBacks()
@@ -195,5 +195,17 @@ function save_dialog:AddItemToList(item)
 	
 	list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontLetterica25(), parse)
 	
+end
+
+
+-- We need to customize behavior of ListBox
+class "CUISatanListBox" (CUIListBox)
+
+function CUISatanListBox:__init() super()
+
+end
+
+function CUISatanListBox:__finalize()
+
 end
 
