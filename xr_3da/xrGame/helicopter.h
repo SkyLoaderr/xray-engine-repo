@@ -7,6 +7,40 @@
 #include "entity.h"
 #include "phskeleton.h"
 
+struct SHeliShared{
+	CObject*						m_destEnemy;
+	Fvector							m_destEnemyPos; //lastEnemyPos
+	Fvector							m_stayPoint;
+
+	float							m_pitch_k;
+	float							m_bank_k;
+	float							m_time_delay_between_patrol;
+	float							m_time_patrol_period;
+	float							m_alt_korridor;
+	float							m_baseAltitude;
+	float							m_attackAltitude;
+	float							m_basePatrolSpeed;
+	float							m_baseAttackSpeed;
+	float							m_hunt_dist;
+	float							m_hunt_time;
+	Fvector							m_to_point;//tmp, fix it
+	Fvector							m_via_point;//tmp, fix it
+
+	float							m_wait_in_point;//tmp, fix it
+	float							m_maxKeyDist;
+	float							m_endAttackTime;
+	Fvector							m_startDir;
+	float							m_time_last_patrol_end;
+	float							m_time_last_patrol_start;
+	float							m_time_delay_before_start;
+
+	Fmatrix							m_desiredXFORM;
+	Fvector							m_desiredP;
+	Fvector							m_desiredR;
+
+	ref_str							m_patrol_path_name;
+
+};
 
 class CHelicopter : 
 	public CEntity,
@@ -29,10 +63,33 @@ public:
 		eMovingToWaitPoint,					// ->eWaitBetweenPatrol
 		eInitiateGoToPoint,					// ->eMovingByPatrolZonePath
 		eMovingToPoint,
+		eInitiatePatrolByPath,
+		eMovingByPatrolPath,
 		eDead
 	}; 
+	SHeliShared						m_data;
 protected:
-	
+	float							m_curLinearSpeed;//m/s
+	float							m_curLinearAcc;
+	float							m_LinearAcc_fw;
+	float							m_LinearAcc_bk;
+	float							m_angularSpeedPitch;
+	float							m_angularSpeedHeading;
+
+	float							m_model_angSpeedBank;
+	float							m_model_angSpeedPitch;
+
+	Fvector							m_currP;
+	Fvector							m_currR;
+	float							m_currPathH;
+	float							m_currPathP;
+
+	float							m_currBodyH;
+	float							m_currBodyP;
+	float							m_currBodyB;
+
+
+//////////////////////////////////////////////////
 	EHeliState						m_curState;
 
 
@@ -46,6 +103,9 @@ protected:
 
 	u16								m_left_rocket_bone;
 	u16								m_right_rocket_bone;
+	u16								m_fire_bone;
+	u16								m_rotate_x_bone;
+	u16								m_rotate_y_bone;
 
 	Fvector							m_fire_pos;
 	Fvector							m_fire_dir;
@@ -62,24 +122,17 @@ protected:
 	u16								m_last_launched_rocket;
 	float							m_min_rocket_dist;
 	float							m_max_rocket_dist;
-
 	float							m_min_mgun_dist;
 	float							m_max_mgun_dist;
-
 	u32								m_time_between_rocket_attack;
 	u32								m_last_rocket_attack;
 	bool							m_syncronize_rocket;
 
-	u16								m_fire_bone;
-	u16								m_rotate_x_bone;
-	u16								m_rotate_y_bone;
 
 	ref_str							m_sAmmoType;
 	ref_str							m_sRocketSection;
 	CCartridge						m_CurrentAmmo;
 
-	CObject*						m_destEnemy;
-	Fvector							m_destEnemyPos;
 
 
 
@@ -93,7 +146,6 @@ protected:
 public:
 	Fmatrix							m_left_rocket_bone_xform;
 	Fmatrix							m_right_rocket_bone_xform;
-	Fvector							m_stayPos;
 
 
 	CHelicopter();
@@ -102,7 +154,6 @@ public:
 	CHelicopter::EHeliState			state		()		{return m_curState;};
 
 	void							setState	(CHelicopter::EHeliState s);
-	const Fvector&					lastEnemyPos()		{return m_destEnemyPos;};
 	//CAI_ObjectLocation
 	void							init		();
 	virtual	void					reinit		();

@@ -1,31 +1,19 @@
 #pragma once
 
-#define NEW_MANAGER
-
-#ifdef NEW_MANAGER
-	#undef MOV_MANAGER_OLD
-	#define MOV_MANAGER_NEW
-#else
-#define MOV_MANAGER_OLD
-	#undef MOV_MANAGER_NEW
-#endif
-
 
 #include "HelicopterMotion.h"
 
 class CHelicopter;
 
 class CHelicopterMovManager :public CHelicopterMotion
+#ifdef DEBUG
+	,public pureRender
+#endif
+
 {
-//	bool							m_bLoop;
-	Fmatrix							m_XFORM;
-	float							m_pitch_k;
-	float							m_maxKeyDist;
-	float							m_endAttackTime;
-	Fvector							m_startDir;
-	float							m_time_last_patrol_end;
-	float							m_time_last_patrol_start;
-	float							m_time_delay_before_start;
+	CHelicopter*					m_heli;
+
+//	Fmatrix							m_XFORM;
 	
 	
 	float	_flerp					(float src, float dst, float t)		{return src*(1.f-t) + dst*t;};
@@ -40,8 +28,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 
 	void	fixateKeyPath			(float from_time);
 	void	buildHuntPath			(const Fvector& enemyPos);
-	void	onFrame					();
-	void	onTime					(float t);
+	void	onTime					(float t, Fvector& P, Fvector& R);
 	void	insertKeyPoints			(float from_time, xr_vector<Fvector>& keys, float velocity, bool updateHPB, bool normalizeTime);
 	void	updatePathHPB			(float from_time);
 	void	buildHPB				(const Fvector& p_prev, const Fvector& p_prev_phb, const Fvector& p0, const Fvector& p_next, Fvector& p0_phb_res, float time);
@@ -54,6 +41,7 @@ class CHelicopterMovManager :public CHelicopterMotion
 
 	void	getPathAltitude			(Fvector& point, float base_altitude);
 	void	truncatePathSafe		(float from_time, float& safe_time, Fvector& lastPoint);
+	void	addGoBySpecifiedPatrolPath	(float time_from);
 
 	//patrol path
 	void	makeNewPoint			(const Fvector& prevPoint, const Fvector& point, const Fbox& box, Fvector& newPoint);
@@ -66,28 +54,21 @@ public:
 	CHelicopterMovManager			();
 	virtual ~CHelicopterMovManager	();
 
-	void	init					(const Fmatrix& heli_xform);
+	void	init					(CHelicopter* h);
 	void	load					(LPCSTR		section);
-	void	shedule_Update			(u32 timeDelta, CHelicopter* heli);
-	void	getPathPosition			(float time, float fTimeDelta, Fmatrix& dest);
+	void	shedule_Update			(u32 timeDelta);
+	void	getPathPosition			(float time, Fvector& P, Fvector& R);
 
 	float	EndTime					();
 
-	Fvector							m_stayPoint;
-	float							m_time_delay_between_patrol;
-	float							m_time_patrol_period;
-	float							m_alt_korridor;
-	float							m_baseAltitude;
-	float							m_attackAltitude;
-	float							m_basePatrolSpeed;
-	float							m_baseAttackSpeed;
-	float							m_hunt_dist;
-	float							m_hunt_time;
-	Fvector							m_to_point;//tmp, fix it
-	Fvector							m_via_point;//tmp, fix it
-	float							m_wait_in_point;//tmp, fix it
 
 	Fbox							m_boundingVolume;
 	Fbox							m_boundingAssert;
+
+#ifdef DEBUG
+public:
+	virtual void	OnRender		();
+	void			DrawPath		(bool bDrawInterpolated, bool bDrawKeys, float dTime=0.5f);
+#endif
 
 };

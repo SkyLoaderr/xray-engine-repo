@@ -343,6 +343,7 @@ void CScriptGameObject::script_register(lua_State *L)
 			.def("heli_go_to_point",			&CScriptGameObject::heli_go_to_point)
 			.def("heli_last_point_time",		&CScriptGameObject::heli_last_point_time)
 			.def("get_physics_shell",			&CScriptGameObject::get_physics_shell)
+			.def("heli_go_by_patrol_path",		&CScriptGameObject::heli_go_by_patrol_path)
 
 			//usable object
 			.def("set_use_callback",			(void (CScriptGameObject::*)(const luabind::functor<void> &))(CScriptGameObject::SetUseCallback))

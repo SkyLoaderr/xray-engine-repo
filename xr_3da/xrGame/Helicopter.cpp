@@ -5,6 +5,7 @@
 #include "CustomRocket.h"
 #include "ExplosiveRocket.h"
 #include "level.h"
+#include "HudManager.h"
 
 CHelicopter::CHelicopter()
 {
@@ -67,6 +68,14 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 		str = "eMovingToPoint";
 		break;
 
+	case CHelicopter::eInitiatePatrolByPath:
+		str = "eInitiatePatrolByPath";
+		break;
+
+	case CHelicopter::eMovingByPatrolPath:
+		str = "eMovingByPatrolPath";
+		break;
+
 	default:
 		str = "unknown";
 		break;
@@ -79,7 +88,7 @@ void CHelicopter::setState(CHelicopter::EHeliState s)
 //CAI_ObjectLocation
 void CHelicopter::init()
 {
-	m_destEnemy					= 0;
+	m_data.m_destEnemy					= NULL;
 	m_cur_x_rot					= 0.0f;
 	m_cur_y_rot					= 0.0f;
 	m_tgt_x_rot					= 0.0f;
@@ -98,7 +107,7 @@ void CHelicopter::init()
 	setState(CHelicopter::eIdleState);
 	SetfHealth(100.0f);
 
-	m_stayPos.set(0.0f, 0.0f, 0.0f);
+	m_data.m_stayPoint.set(0.0f, 0.0f, 0.0f);
 
 	m_HitTypeK.resize(ALife::eHitTypeMax);
 
@@ -119,7 +128,38 @@ void CHelicopter::Load(LPCSTR section)
 	inherited::Load			(section);
 	CShootingObject::Load	(section);
 	CRocketLauncher::Load	(section);
+
+////////////////////////////////////
+	m_data.m_time_last_patrol_end		= 0.0f;
+	m_data.m_time_last_patrol_start	= 0.0f;
+
+	m_data.m_hunt_dist				= 20.0f;
+	m_data.m_hunt_time				= 5.0f;
 	
+	m_data.m_startDir.set				(1.0f,0.0f,2.0f);
+	m_angularSpeedPitch					= pSettings->r_float(section,"path_angular_sp_pitch");
+	m_angularSpeedHeading				= pSettings->r_float(section,"path_angular_sp_heading");
+	m_LinearAcc_fw						= pSettings->r_float(section,"path_linear_acc_fw");
+	m_LinearAcc_bk						= pSettings->r_float(section,"path_linear_acc_bk");
+
+	m_model_angSpeedBank					= pSettings->r_float(section,"model_angular_sp_bank");
+	m_model_angSpeedPitch					= pSettings->r_float(section,"model_angular_sp_pitch");
+	m_data.m_pitch_k					= pSettings->r_float(section,"model_pitch_koef");
+	m_data.m_bank_k					= pSettings->r_float(section,"model_bank_koef");
+
+	m_data.m_baseAltitude				= pSettings->r_float(section,"altitude");
+	m_data.m_attackAltitude			= pSettings->r_float(section,"attack_altitude");
+	m_data.m_basePatrolSpeed			= pSettings->r_float(section,"velocity");
+	m_data.m_baseAttackSpeed			= pSettings->r_float(section,"attack_velocity");
+	m_data.m_alt_korridor				= pSettings->r_float(section,"altitude_korridor");
+	m_data.m_maxKeyDist				= pSettings->r_float(section,"max_key_dist");
+
+	m_data.m_time_delay_between_patrol	= pSettings->r_float(section,"time_delay_between_patrol");
+	m_data.m_time_patrol_period		= pSettings->r_float(section,"time_patrol_period");
+	m_data.m_time_delay_before_start	= pSettings->r_float(section,"time_delay_before_start");
+
+
+////////////////////////////////////
 	m_movMngr.load (section);
 
 	m_sAmmoType = pSettings->r_string(section, "ammo_class");
@@ -138,16 +178,14 @@ void CHelicopter::Load(LPCSTR section)
 	m_HitTypeK[ALife::eHitTypeExplosion]	= pSettings->r_float(section,"explosion_immunity");
 
 
-	m_use_rocket_on_attack					= !!pSettings->r_bool(section,"use_rocket");
-	m_use_mgun_on_attack					= !!pSettings->r_bool(section,"use_mgun");
-	m_min_rocket_dist						= pSettings->r_float(section,"min_rocket_attack_dist");
-	m_max_rocket_dist						= pSettings->r_float(section,"max_rocket_attack_dist");
-	m_time_between_rocket_attack			= pSettings->r_u32(section,"time_between_rocket_attack");
-	m_syncronize_rocket						= !!pSettings->r_bool(section,"syncronize_rocket");
-
+	m_use_rocket_on_attack				= !!pSettings->r_bool(section,"use_rocket");
+	m_use_mgun_on_attack				= !!pSettings->r_bool(section,"use_mgun");
+	m_min_rocket_dist					= pSettings->r_float(section,"min_rocket_attack_dist");
+	m_max_rocket_dist					= pSettings->r_float(section,"max_rocket_attack_dist");
 	m_min_mgun_dist						= pSettings->r_float(section,"min_mgun_attack_dist");
 	m_max_mgun_dist						= pSettings->r_float(section,"max_mgun_attack_dist");
-
+	m_time_between_rocket_attack		= pSettings->r_u32(section,"time_between_rocket_attack");
+	m_syncronize_rocket					= !!pSettings->r_bool(section,"syncronize_rocket");
 
 }
 
@@ -163,11 +201,8 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 		return			(FALSE);
 
 
-
-	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
-	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
-	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
-	CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
+	for(u32 i=0; i<4; ++i)
+		CRocketLauncher::SpawnRocket(*m_sRocketSection, dynamic_cast<CGameObject*>(this/*H_Parent()*/));
 
 	// assigning m_animator here
 	CSE_Abstract		*abstract	=(CSE_Abstract*)(DC);
@@ -243,11 +278,24 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 		Debug.fatal("helicopter spawned out of level bounding box");
 	};
 	b.getcenter(XFORM().c);
-	m_stayPos			= XFORM().c;
 
+	m_data.m_stayPoint			= XFORM().c;
+/////////////////////////////	
+	m_data.m_desiredXFORM	= XFORM();
+	m_data.m_desiredP		= XFORM().c;
+	XFORM().getXYZ(m_data.m_desiredR);
+	float bbb;
+	XFORM().getHPB(m_currPathH, m_currPathP, bbb);
 
+	m_currP					= m_data.m_desiredP;
+	m_currR					= m_data.m_desiredR;
 
-    m_movMngr.init		(XFORM());
+	m_curLinearSpeed		= 0.0f;
+	m_curLinearAcc			= 3.0f;
+
+	XFORM().getHPB(m_currBodyH, m_currBodyP, m_currBodyB);
+
+    m_movMngr.init		(this);
 
 	return				(TRUE);
 }
@@ -296,8 +344,99 @@ void CHelicopter::UpdateCL()
 		return;
 	}
 
-	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
+//	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 
+///////////////////////////////////////////////////////////////////////////
+	float td = Device.fTimeDelta;
+	float lt = Level().timeServer()/1000.0f;
+
+	Fvector stub;
+	m_movMngr.getPathPosition (lt ,m_data.m_desiredP, stub/*m_data.m_desiredR*/);
+
+	//rotation
+//	m_currR = m_data.m_desiredR;
+//	XFORM().setHPB(m_currR.y,m_currR.x,m_currR.z);
+
+	float dist = m_currP.distance_to(m_data.m_desiredP);
+
+	Fvector dir, pathDir;
+	dir.sub(m_data.m_desiredP,m_currP);
+	dir.normalize_safe();
+	pathDir = dir;
+	float desired_H, desired_P;
+	dir.getHP(desired_H, desired_P);
+	
+
+	angle_lerp	(m_currPathH, desired_H, m_angularSpeedHeading, td);
+	angle_lerp	(m_currPathP, desired_P, m_angularSpeedPitch, td);
+	
+	dir.setHP(m_currPathH, m_currPathP);
+
+
+	//position
+	float dDist = m_curLinearSpeed*td+(m_curLinearAcc*td*td)/2.0f;
+	float deltaDist = dDist-dist;
+	int incFlag = 0;
+	if(!fis_zero(dist,EPS_L)&&deltaDist>2.0f)
+		incFlag = -1;
+	if(!fis_zero(dist,EPS_L)&&deltaDist<-2.0f)
+		incFlag = 1;
+
+	if(angle_difference(m_currPathH,desired_H)>PI_DIV_2)
+		incFlag = -1;
+
+	switch(incFlag){
+		case 0://no acceleration
+			m_curLinearAcc = 0.0f;
+		break;
+		case 1://increase linear speed
+			m_curLinearAcc = m_LinearAcc_fw;
+		break;
+		case -1://decrease linear speed
+			m_curLinearAcc = -m_LinearAcc_bk;
+		break;
+		default:
+			NODEFAULT;
+	};
+	float vp = m_curLinearSpeed*td+(m_curLinearAcc*td*td)/2.0f;
+	m_currP.mad	(dir, vp);
+	m_curLinearSpeed += m_curLinearAcc*td;
+	
+	float clamp_speed = m_data.m_basePatrolSpeed;
+	if(clamp_speed<m_data.m_baseAttackSpeed)
+		clamp_speed = m_data.m_baseAttackSpeed;
+
+	clamp(m_curLinearSpeed,0.0f,clamp_speed);
+
+	m_currBodyH = m_currPathH;
+
+	float needBodyP = -m_data.m_pitch_k*m_curLinearSpeed;
+	if(incFlag==-1) needBodyP*=-1;
+	angle_lerp	(m_currBodyP, needBodyP, m_model_angSpeedPitch, Device.fTimeDelta);
+
+
+	float sign;
+	Fvector cp;
+	cp.crossproduct (pathDir,dir);
+	(cp.y>0.0)?sign=1.0f:sign=-1.0f;
+	float ang_diff = angle_difference (m_currPathH, desired_H);
+	
+	float needBodyB = -ang_diff*sign*m_data.m_bank_k*m_curLinearSpeed;
+	angle_lerp	(m_currBodyB, needBodyB, m_model_angSpeedBank, Device.fTimeDelta);
+	
+
+	XFORM().setHPB(m_currBodyH,m_currBodyP,m_currBodyB);
+
+	XFORM().translate_over(m_currP);
+	
+
+	HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
+	HUD().pFontSmall->OutSet	(120,630);
+	HUD().pFontSmall->OutNext("Linear Velocity:         [%3.5f]",m_curLinearSpeed);
+	HUD().pFontSmall->OutNext("Linear Acceleration:     [%3.2f]",m_curLinearAcc);
+	HUD().pFontSmall->OutNext("Lag:                     [%3.2f]",deltaDist);
+
+///////////////////////////////////////////////////////////////////////////
 	m_engineSound.set_position(XFORM().c);
 
 	//weapon
@@ -334,36 +473,15 @@ void CHelicopter::UpdateCL()
 	// lerp angle
 	angle_lerp	(m_cur_x_rot, m_tgt_x_rot, PI, Device.fTimeDelta);
 	angle_lerp	(m_cur_y_rot, m_tgt_y_rot, PI, Device.fTimeDelta);
-}
 
-void CHelicopter::shedule_Update(u32 time_delta)
-{
-	if (!getEnabled())	return;
-	inherited::shedule_Update	(time_delta);
-	CPHSkeleton::Update(time_delta);
-//	if( GetfHealth() >= 0.0f ){
-
-	if ( (state() != CHelicopter::eDead) && (GetfHealth() <= 0.0f) )
-		Die();
-
-	if(state() != CHelicopter::eDead)
-		m_movMngr.shedule_Update (time_delta, this);
-//	};
-
-//	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
-//		Die();
-
-//	if( m_curState==CHelicopter::eWaitBetweenPatrol){
-//		SetfHealth(100.0f);
-//	};
 
 	if( m_curState==CHelicopter::eMovingByAttackTraj ){
-		m_destEnemy->Center(m_destEnemyPos);
+		m_data.m_destEnemy->Center(m_data.m_destEnemyPos);
 		updateMGunDir();
 
 		if(m_allow_fire){
 			
-			float d = XFORM().c.distance_to_xz(m_destEnemyPos);
+			float d = XFORM().c.distance_to_xz(m_data.m_destEnemyPos);
 			
 			if( (d > m_min_mgun_dist) && 
 				(d < m_max_mgun_dist) ){
@@ -391,13 +509,29 @@ void CHelicopter::shedule_Update(u32 time_delta)
 				MGunFireEnd();
 		}
 
-		if( m_destEnemy->getDestroy() )	{
-			m_destEnemy = 0;
+		if( m_data.m_destEnemy->getDestroy() )	{
+			m_data.m_destEnemy = NULL;
 			setState(CHelicopter::eInitiatePatrolZone);
 		};
 
 	}else
 		MGunFireEnd();
+
+}
+
+void CHelicopter::shedule_Update(u32 time_delta)
+{
+	if (!getEnabled())	return;
+	inherited::shedule_Update	(time_delta);
+	CPHSkeleton::Update(time_delta);
+
+	if ( (state() != CHelicopter::eDead) && (GetfHealth() <= 0.0f) )
+		Die();
+
+	if(state() != CHelicopter::eDead)
+		m_movMngr.shedule_Update (time_delta);
+
+
 
 	if(getRocketCount()<4)
 		for(u32 i=getRocketCount(); i<4; ++i) {
@@ -444,8 +578,9 @@ if(who==this)
 	if (who){
 		switch (who->SUB_CLS_ID){
 			case CLSID_OBJECT_ACTOR: 
-				doHunt(who);
+//				doHunt(who);
 //				doHunt2(who, 5, 5);
+				goPatrolByPatrolPath("heli_way_1");
 			break;
 		default:
 			break;
@@ -459,8 +594,8 @@ void CHelicopter::doHunt(CObject* dest)
 	VERIFY(this != dest);
 
 	if( !isOnAttack()  ){
-		m_destEnemy		= dest;
-		dest->Center	(m_destEnemyPos);
+		m_data.m_destEnemy		= dest;
+		dest->Center	(m_data.m_destEnemyPos);
 		
 		setState(CHelicopter::eInitiateHunt);
 	}
@@ -470,11 +605,11 @@ void CHelicopter::doHunt2(CObject* dest, float dist, float time)
 {
 	if( !isOnAttack() ){
 
-		m_destEnemy		= dest;
-		dest->Center	(m_destEnemyPos);
+		m_data.m_destEnemy		= dest;
+		dest->Center	(m_data.m_destEnemyPos);
 
-		m_movMngr.m_hunt_dist = dist;
-		m_movMngr.m_hunt_time = time;
+		m_data.m_hunt_dist = dist;
+		m_data.m_hunt_time = time;
 		setState(CHelicopter::eInitiateHunt2);
 	}
 }
@@ -509,11 +644,11 @@ void CHelicopter::Die()
 void CHelicopter::gotoStayPoint(float time, Fvector* pos)
 {
 	if( !fis_zero(time) )
-		m_movMngr.m_time_delay_between_patrol = time;
+		m_data.m_time_delay_between_patrol = time;
 		
 
 	if(pos)
-		m_movMngr.m_stayPoint = *pos;
+		m_data.m_stayPoint = *pos;
 	
 	setState(CHelicopter::eInitiateWaitBetweenPatrol);
 }
@@ -521,20 +656,19 @@ void CHelicopter::gotoStayPoint(float time, Fvector* pos)
 void CHelicopter::goPatrol(float time)
 {
 	if( !fis_zero(time) )
-		m_movMngr.m_time_patrol_period = time;
+		m_data.m_time_patrol_period = time;
 
 	setState(CHelicopter::eInitiatePatrolZone);
 }
 
 void CHelicopter::goToPoint(Fvector* to, Fvector* via, float time)
 {
-	m_movMngr.m_to_point = *to;
-	m_movMngr.m_via_point = *via;
-	m_movMngr.m_wait_in_point = time;
+	m_data.m_to_point = *to;
+	m_data.m_via_point = *via;
+	m_data.m_wait_in_point = time;
 
-	if(time>61.0f)	{
-		m_movMngr.m_wait_in_point = 60.0f;
-	};
+	if(time>61.0f)
+		m_data.m_wait_in_point = 60.0f;
 
 	setState(CHelicopter::eInitiateGoToPoint);
 }
@@ -547,5 +681,6 @@ float CHelicopter::getLastPointTime	()
 
 void CHelicopter::goPatrolByPatrolPath (LPCSTR path_name)
 {
-
+	m_data.m_patrol_path_name = path_name;
+	setState(CHelicopter::eInitiatePatrolByPath);
 }

@@ -7,9 +7,6 @@ class CEnvelope;
 
 
 class CHelicopterMotion
-#ifdef DEBUG
-	:public pureRender
-#endif
 {
 	CEnvelope*		envs			[ctMaxChannel];
 	float			fFPS;
@@ -42,9 +39,5 @@ public:
 	void			GetKey			(u32 idx, Fvector& T, Fvector& R);
 	void			GetKeyTime		(u32 idx, float& time);
 	float			GetDistanceInWay(float from_tm, float to_tm);
-#ifdef DEBUG
-	virtual void	OnRender		();
-	void			DrawPath		(bool bDrawInterpolated, bool bDrawKeys, float dTime=0.5f);
-#endif
 };
 

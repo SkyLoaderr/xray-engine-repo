@@ -20,12 +20,8 @@ BOOL CLevel::Load_GameSpecific_Before()
 
 	if (FS.exist(fn_game, "$level$", "level.game")) {
 		IReader							*stream = FS.r_open		(fn_game);
-
-		if (ai().get_level_graph()) {
-			VERIFY						(m_patrol_path_storage);
-			m_patrol_path_storage->load	(*stream);
-		}
-
+		VERIFY							(m_patrol_path_storage);
+		m_patrol_path_storage->load		(*stream);
 		FS.r_close						(stream);
 	}
 

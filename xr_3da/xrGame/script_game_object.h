@@ -379,6 +379,7 @@ public:
 			void				heli_go_patrol			(float time=0.0f);
 			void				heli_go_to_point		(Fvector& pos, Fvector& via, float time);
 			float				heli_last_point_time	();
+			void				heli_go_by_patrol_path	(LPCSTR path_name);
 			
 			Fvector				bone_position			(LPCSTR bone_name) const;
 			bool				is_body_turning			() const;

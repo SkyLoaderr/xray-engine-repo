@@ -3,6 +3,8 @@
 #include "Helicopter.h"
 #include "level.h"
 #include "../envelope.h"
+#include "patrol_path.h"
+#include "patrol_path_storage.h"
 
 #define ROUND_RADIUS 20.0f
 
@@ -23,40 +25,21 @@ void dumpMotion(CHelicopterMotion* m)
 
 CHelicopterMovManager::CHelicopterMovManager()
 {
+	m_heli = NULL;
+#ifdef DEBUG
+	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
+#endif
 }
 
 CHelicopterMovManager::~CHelicopterMovManager	()
 {
+#ifdef DEBUG
+	Device.seqRender.Remove(this);
+#endif
 }
 
 void	CHelicopterMovManager::load(LPCSTR		section)
 {
-	m_alt_korridor				= 0.1f;
-	m_baseAltitude				= 10.0f;
-	m_attackAltitude			= 5.0f;
-	m_basePatrolSpeed			= 20.0f;
-	m_baseAttackSpeed			= 20.0f;
-	m_time_last_patrol_end		= 0.0f;
-	m_time_last_patrol_start	= 0.0f;
-	m_time_delay_between_patrol = 120000.0f;//2min
-	m_time_patrol_period		= 120000.0f;//2min
-	m_time_delay_before_start	= 1000.0f;	//1sec
-	
-	m_maxKeyDist				= 35.0f;
-	m_startDir.set				(1.0f,0.0f,2.0f);
-	m_pitch_k					= 0.006f;
-
-	m_pitch_k					= pSettings->r_float(section,"pitch_koef");
-	m_baseAltitude				= pSettings->r_float(section,"altitude");
-	m_attackAltitude			= pSettings->r_float(section,"attack_altitude");
-	m_basePatrolSpeed			= pSettings->r_float(section,"velocity");
-	m_baseAttackSpeed			= pSettings->r_float(section,"attack_velocity");
-	m_alt_korridor				= pSettings->r_float(section,"altitude_korridor");
-	m_maxKeyDist				= pSettings->r_float(section,"max_key_dist");
-
-	m_time_delay_between_patrol	= pSettings->r_float(section,"time_delay_between_patrol");
-	m_time_patrol_period		= pSettings->r_float(section,"time_patrol_period");
-	m_time_delay_before_start	= pSettings->r_float(section,"time_delay_before_start");
 
 	float	x_level_bound				= pSettings->r_float(section,"x_level_bound");
 	float	z_level_bound				= pSettings->r_float(section,"z_level_bound");
@@ -75,41 +58,34 @@ void	CHelicopterMovManager::load(LPCSTR		section)
 	m_boundingAssert  = m_boundingVolume;
 	m_boundingAssert.scale(0.2f);
 
-	m_hunt_dist = 20.0f;
-	m_hunt_time = 5.0f;
 }
 
-void CHelicopterMovManager::init(const Fmatrix& heli_xform)
+void CHelicopterMovManager::init(CHelicopter* heli)
 {
-	m_XFORM = heli_xform;
-	m_stayPoint = m_XFORM.c;
+//	m_heli->m_data.m_desiredXFORM = heli_xform;
+	m_heli = heli;
 }
 
-void CHelicopterMovManager::onTime(float t)
+void CHelicopterMovManager::onTime(float t, Fvector& P, Fvector& R)
 {
-	Fvector P,R;
 	CHelicopterMovManager::_Evaluate(t,P,R);
-	m_XFORM.setXYZ	(R.x,R.y,R.z);
-	m_XFORM.translate_over(P);
+//	m_heli->m_data.m_desiredR = R;
+//	m_heli->m_data.m_desiredP = P;
+//	m_heli->m_data.m_desiredXFORM.setXYZ	(R.x,R.y,R.z);
+//	m_heli->m_data.m_desiredXFORM.translate_over(P);
 }
 
-void CHelicopterMovManager::onFrame()
-{
-	float t = Level().timeServer()/1000.0f;
-	
-	onTime(t);
-}
 
 void CHelicopterMovManager::getPathPosition(float time, 
-											float fTimeDelta, 
-											Fmatrix& dest)
+											Fvector& P,
+											Fvector& R)
 {
 	if(m_endTime < time) {
 //		Log("----Helicopter: no path (m_endTime<time)");	
 		return;
 	};
-	onFrame ();
-	dest.set(m_XFORM);
+	onTime (time, P, R);
+//	dest.set(m_heli->m_data.m_desiredXFORM);
 }
 
 
@@ -178,76 +154,80 @@ void CHelicopterMovManager::insertKeyPoints(	float from_time,
 	CHelicopterMotion::GetKeyTime	(CHelicopterMotion::KeyCount()-1, m_endTime);
 }
 
-void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
+void CHelicopterMovManager::shedule_Update(u32 timeDelta)
 {
 	float lt	= Level().timeServer()/1000.0f;
 	
 
-	if ( heli->state()==CHelicopter::eWaitForStart ) {
-		if(lt >= m_time_delay_before_start)
-			heli->setState(CHelicopter::eInitiatePatrolZone);
+	if ( m_heli->state()==CHelicopter::eWaitForStart ) {
+		if(lt >= m_heli->m_data.m_time_delay_before_start)
+			m_heli->setState(CHelicopter::eInitiatePatrolZone);
 	};
 	
-	if (heli->state() == CHelicopter::eInitiateGoToPoint) {
+	if (m_heli->state() == CHelicopter::eInitiateGoToPoint) {
 		addGoToPointPath(lt);
-		m_time_last_patrol_start = lt;
+		m_heli->m_data.m_time_last_patrol_start = lt;
 //		heli->setState(CHelicopter::eMovingByPatrolZonePath);
-		heli->setState(CHelicopter::eMovingToPoint);
+		m_heli->setState(CHelicopter::eMovingToPoint);
 	};
 
-	if (heli->state() == CHelicopter::eInitiatePatrolZone) {
+	if (m_heli->state() == CHelicopter::eInitiatePatrolZone) {
 		addPartolPath(lt);
-		m_time_last_patrol_start = lt;
-		heli->setState(CHelicopter::eMovingByPatrolZonePath);
+		m_heli->m_data.m_time_last_patrol_start = lt;
+		m_heli->setState(CHelicopter::eMovingByPatrolZonePath);
 	};
 
 
-	if ((heli->state() == CHelicopter::eMovingByPatrolZonePath) ||
-		(heli->state() == CHelicopter::eMovingByAttackTraj)		) {
+	if ((m_heli->state() == CHelicopter::eMovingByPatrolZonePath) ||
+		(m_heli->state() == CHelicopter::eMovingByAttackTraj)		) {
 		updatePatrolPath(lt);	
 		
-		if( (heli->state()==CHelicopter::eMovingByPatrolZonePath) &&
-			(lt > m_time_last_patrol_start+m_time_patrol_period) )
-				heli->setState(CHelicopter::eInitiateWaitBetweenPatrol);
+		if( (m_heli->state()==CHelicopter::eMovingByPatrolZonePath) &&
+			(lt > m_heli->m_data.m_time_last_patrol_start+m_heli->m_data.m_time_patrol_period) )
+				m_heli->setState(CHelicopter::eInitiateWaitBetweenPatrol);
 	};
 
-	if (heli->state() == CHelicopter::eInitiateHunt) {
-		addHuntPath(lt, heli->lastEnemyPos() );
-		heli->setState(CHelicopter::eMovingByAttackTraj);
-		m_endAttackTime = m_endTime;
+	if (m_heli->state() == CHelicopter::eInitiateHunt) {
+		addHuntPath(lt, m_heli->m_data.m_destEnemyPos );
+		m_heli->setState(CHelicopter::eMovingByAttackTraj);
+		m_heli->m_data.m_endAttackTime = m_endTime;
 	};
 
 
-	if (heli->state() == CHelicopter::eInitiateHunt2) {
-		addHuntPath2(lt, heli->lastEnemyPos());
-		heli->setState(CHelicopter::eMovingByAttackTraj);
-		m_endAttackTime = m_endTime;
+	if (m_heli->state() == CHelicopter::eInitiateHunt2) {
+		addHuntPath2(lt, m_heli->m_data.m_destEnemyPos);
+		m_heli->setState(CHelicopter::eMovingByAttackTraj);
+		m_heli->m_data.m_endAttackTime = m_endTime;
 	};
 
-	if (heli->state() == CHelicopter::eMovingByAttackTraj) {
-		if(lt>m_endAttackTime)
-		heli->setState(CHelicopter::eInitiatePatrolZone);
+	if (m_heli->state() == CHelicopter::eMovingByAttackTraj) {
+		if(lt>m_heli->m_data.m_endAttackTime)
+		m_heli->setState(CHelicopter::eInitiatePatrolZone);
 	}
 	
-	if( (heli->state()==CHelicopter::eInitiateWaitBetweenPatrol) ) {
+	if( (m_heli->state()==CHelicopter::eInitiateWaitBetweenPatrol) ) {
 		addPathToStayPoint(lt);
-		heli->setState(CHelicopter::eMovingToWaitPoint);
+		m_heli->setState(CHelicopter::eMovingToWaitPoint);
 	};
 
- 	if( heli->state()==CHelicopter::eMovingToWaitPoint) {
+ 	if( m_heli->state()==CHelicopter::eMovingToWaitPoint) {
 		if( (m_endTime - lt) < 1000.0f ) {
-			heli->setState(CHelicopter::eWaitBetweenPatrol);
-			m_time_last_patrol_end		= lt;
-			m_time_last_patrol_start	= 0.0f;
+			m_heli->setState(CHelicopter::eWaitBetweenPatrol);
+			m_heli->m_data.m_time_last_patrol_end		= lt;
+			m_heli->m_data.m_time_last_patrol_start	= 0.0f;
 		};
 
 	};
 
-	if( heli->state()==CHelicopter::eWaitBetweenPatrol) {
-		if( lt >= m_time_last_patrol_end+m_time_delay_between_patrol )
-			heli->setState(CHelicopter::eInitiatePatrolZone);
+	if( m_heli->state()==CHelicopter::eWaitBetweenPatrol) {
+		if( lt >= m_heli->m_data.m_time_last_patrol_end+m_heli->m_data.m_time_delay_between_patrol )
+			m_heli->setState(CHelicopter::eInitiatePatrolZone);
 	};
-
+	if( m_heli->state()==CHelicopter::eInitiatePatrolByPath) {
+		addGoBySpecifiedPatrolPath(lt);
+		m_heli->setState(CHelicopter::eMovingByPatrolPath);
+	}
+	
 }
 
 void CHelicopterMovManager::truncatePathSafe(float from_time, 
@@ -284,7 +264,7 @@ void CHelicopterMovManager::truncatePathSafe(float from_time,
 	if( CHelicopterMotion::KeyCount() )
 		CHelicopterMotion::_Evaluate(safe_time, lastPoint, fromRot);
 	else
-		lastPoint = m_XFORM.c;
+		lastPoint = m_heli->m_data.m_desiredXFORM.c;
 
 }
 
@@ -300,7 +280,7 @@ void CHelicopterMovManager::addPartolPath(float from_time)
 	if( kc > 0 )
 		CHelicopterMotion::_Evaluate(t,fromPos,fromRot);
 	else
-		fromPos = m_XFORM.c;
+		fromPos = m_heli->m_data.m_desiredXFORM.c;
 
 	VERIFY( m_boundingAssert.contains(fromPos) );
 	
@@ -311,7 +291,7 @@ void CHelicopterMovManager::addPartolPath(float from_time)
 	xr_vector<Fvector> vSmoothKeys;
 	makeSmoothKeyPath(t, vAddedKeys, vSmoothKeys);
 //	insertKeyPoints(t, vSmoothKeys, m_basePatrolSpeed,false, true);
-	insertKeyPoints(t, vSmoothKeys, m_basePatrolSpeed,false, false);
+	insertKeyPoints(t, vSmoothKeys, m_heli->m_data.m_basePatrolSpeed,false, false);
 	fixateKeyPath(t);
 	updatePathHPB(t);
 }
@@ -329,7 +309,7 @@ void	CHelicopterMovManager::addHuntPath(float from_time, const Fvector& enemyPos
 
 	createHuntPathTrajectory(from_time, fromPos, enemyPos, vAddedKeys);
 //	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, true);
-	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, false);
+	insertKeyPoints(safe_time, vAddedKeys, m_heli->m_data.m_baseAttackSpeed, false, false);
 
 	fixateKeyPath(safe_time);
 
@@ -350,12 +330,12 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	Fvector dir;
 	dir.sub(dstPos, fromPos).normalize_safe();
 	float dist = fromPos.distance_to(dstPos);
-	if(dist>m_hunt_dist){
-		dstPos.mad(fromPos,dir,dist-m_hunt_dist);
+	if(dist>m_heli->m_data.m_hunt_dist){
+		dstPos.mad(fromPos,dir,dist-m_heli->m_data.m_hunt_dist);
 	}
 
 	createHuntPathTrajectory(from_time, fromPos, dstPos, vAddedKeys);
-	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, false);
+	insertKeyPoints(safe_time, vAddedKeys, m_heli->m_data.m_baseAttackSpeed, false, false);
 	fixateKeyPath(safe_time);
 
 	dstPos = vAddedKeys.back();
@@ -365,7 +345,7 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	dir.sub(dstPos,T).normalize_safe();
 
 	vAddedKeys.clear();
-	createRocking(dstPos, dir, vAddedKeys, m_hunt_time);
+	createRocking(dstPos, dir, vAddedKeys, m_heli->m_data.m_hunt_time);
 	insertKeyPoints(m_endTime, vAddedKeys, 0.1f, false, false);
 	updatePathHPB(safe_time);
 
@@ -402,7 +382,7 @@ void CHelicopterMovManager::createHuntPathTrajectory(float from_time,
 {
 	Fvector destPos = enemyPos;
 //	destPos.y += m_attackAltitude;
-	getPathAltitude(destPos, m_attackAltitude);
+	getPathAltitude(destPos, m_heli->m_data.m_attackAltitude);
 	keys.push_back(fromPos);//tmp
 
 //rounding
@@ -452,7 +432,7 @@ void CHelicopterMovManager::addPathToStayPoint (float from_time)
 	xr_vector<Fvector> vAddedKeys;
 
 	createStayPathTrajectory(fromPos, vAddedKeys);
-	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed, false, true);
+	insertKeyPoints(safe_time, vAddedKeys, m_heli->m_data.m_basePatrolSpeed, false, true);
 	fixateKeyPath(safe_time);
 //	CHelicopterMotion::NormalizeKeys(safe_time,m_endTime,m_basePatrolSpeed);
 	updatePathHPB(safe_time);
@@ -467,10 +447,10 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 	truncatePathSafe(from_time, safe_time, fromPos);
 	
 	xr_vector<Fvector> vAddedKeys;
-	createHuntPathTrajectory(from_time, fromPos, m_via_point, vAddedKeys);
-	getPathAltitude(m_to_point,m_baseAltitude);
-	vAddedKeys.push_back(m_to_point);
-	insertKeyPoints(safe_time, vAddedKeys, m_basePatrolSpeed, false, false);
+	createHuntPathTrajectory(from_time, fromPos, m_heli->m_data.m_via_point, vAddedKeys);
+	getPathAltitude(m_heli->m_data.m_to_point,m_heli->m_data.m_baseAltitude);
+	vAddedKeys.push_back(m_heli->m_data.m_to_point);
+	insertKeyPoints(safe_time, vAddedKeys, m_heli->m_data.m_basePatrolSpeed, false, false);
 	
 //	dumpMotion(this);
 	
@@ -487,7 +467,7 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 	vAddedKeys.clear();
 //	dumpMotion(this);
 
-	createRocking(dstPos, dir, vAddedKeys, m_wait_in_point);
+	createRocking(dstPos, dir, vAddedKeys, m_heli->m_data.m_wait_in_point);
 	insertKeyPoints(m_endTime, vAddedKeys, 0.1f, false, false);
 
 //	dumpMotion(this);
@@ -501,7 +481,7 @@ void CHelicopterMovManager::addGoToPointPath(float from_time)
 void CHelicopterMovManager::createStayPathTrajectory(const Fvector& fromPos, xr_vector<Fvector>& keys)
 {
 	keys.push_back(fromPos);
-	keys.push_back(m_stayPoint);
+	keys.push_back(m_heli->m_data.m_stayPoint);
 }
 
 
@@ -617,7 +597,7 @@ void CHelicopterMovManager::buildHPB(const Fvector& p_prev,
 	//x
 	float speed_on_section = s1/time;
 
-	p0_phb_res.x = (p1*speed_on_section)/m_basePatrolSpeed + m_pitch_k*speed_on_section;
+	p0_phb_res.x = (p1*speed_on_section)/m_heli->m_data.m_basePatrolSpeed + m_heli->m_data.m_pitch_k*speed_on_section;
 	clamp(p0_phb_res.x, -PI_DIV_8, PI_DIV_8);
 	p0_phb_res.x *= -1.0f;
 
@@ -696,14 +676,16 @@ void CHelicopterMovManager::fixateKeyPath(float from_time)
 	u32 min_idx,max_idx;
 	Fvector T,R;
 
-	float dTime = (m_baseAttackSpeed>m_basePatrolSpeed)?m_maxKeyDist/m_baseAttackSpeed : m_maxKeyDist/m_basePatrolSpeed;
+	float dTime = (m_heli->m_data.m_baseAttackSpeed>m_heli->m_data.m_basePatrolSpeed)?
+							m_heli->m_data.m_maxKeyDist/m_heli->m_data.m_baseAttackSpeed : 
+							m_heli->m_data.m_maxKeyDist/m_heli->m_data.m_basePatrolSpeed;
 
 	for(float t=from_time; t<m_endTime; t+=dTime){
 		FindNearestKey(t, min_t, max_t, min_idx, max_idx);
 		if( (_abs(t-min_t)<1.5f)||(_abs(t-max_t)<1.5f) )
 			continue;
 		CHelicopterMotion::_Evaluate(t,T,R);
-		getPathAltitude(T,m_baseAltitude);
+		getPathAltitude(T,m_heli->m_data.m_baseAltitude);
 		vAddKeys.push_back(T);
 		VERIFY( m_boundingAssert.contains(T) );
 
@@ -747,4 +729,39 @@ float CHelicopterMovManager::EndTime()
 {
 	return m_endTime;
 
+}
+
+
+void CHelicopterMovManager::addGoBySpecifiedPatrolPath	(float from_time)
+{
+	const CPatrolPath* pp = Level().patrol_paths().path(m_heli->m_data.m_patrol_path_name);
+	const xr_vector<CPatrolPath::CVertex>& vv = pp->vertices();
+	CPatrolPath::const_vertex_iterator it_bg = vv.begin();
+	CPatrolPath::const_vertex_iterator it_end = vv.end();
+
+	float t		= 0.0f;
+
+	(m_endTime > from_time)? t=m_endTime : t=from_time;
+	
+	Fvector fromPos,fromRot;
+	
+	int kc = CHelicopterMotion::KeyCount();
+	if( kc > 0 )
+		CHelicopterMotion::_Evaluate(t,fromPos,fromRot);
+	else
+		fromPos = m_heli->m_data.m_desiredXFORM.c;
+
+	xr_vector<Fvector> vAddedKeys;
+	for(;it_bg!=it_end; ++it_bg){
+		Fvector p = (*it_bg).data().position();
+		getPathAltitude(p,m_heli->m_data.m_baseAltitude);
+		vAddedKeys.push_back( p );
+	}
+//	createLevelPatrolTrajectory(6, fromPos, vAddedKeys);
+
+	xr_vector<Fvector> vSmoothKeys;
+	makeSmoothKeyPath(t, vAddedKeys, vSmoothKeys);
+	insertKeyPoints(t, vSmoothKeys, m_heli->m_data.m_basePatrolSpeed,false, false);
+	fixateKeyPath(t);
+	updatePathHPB(t);
 }

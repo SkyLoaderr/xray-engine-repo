@@ -95,7 +95,7 @@ void CHelicopter::updateMGunDir()
 	Fmatrix XFi;
 	XFi.invert			(XFORM());
 	Fvector dep;
-	XFi.transform_tiny	(dep,m_destEnemyPos);
+	XFi.transform_tiny	(dep,m_data.m_destEnemyPos);
 	{// x angle
 		Fvector A_;		A_.sub(dep,m_bind_x);	m_i_bind_x_xform.transform_dir(A_); A_.normalize();
 		m_tgt_x_rot		= angle_normalize_signed(m_bind_x_rot-A_.getP());

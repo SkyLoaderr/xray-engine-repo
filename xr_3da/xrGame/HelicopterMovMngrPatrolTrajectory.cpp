@@ -2,6 +2,7 @@
 #include "HelicopterMovementManager.h"
 #include "Helicopter.h"
 #include "level.h"
+#include "hudmanager.h"
 
 
 
@@ -87,7 +88,7 @@ void CHelicopterMovManager::makeNewPoint (const Fbox& fbox,
 	newPoint.y = (fbox.max.y-fbox.min.y)/2.0f;
 	VERIFY( m_boundingAssert.contains(newPoint) );
 
-	getPathAltitude(newPoint,m_baseAltitude);
+	getPathAltitude(newPoint,m_heli->m_data.m_baseAltitude);
 	VERIFY( m_boundingAssert.contains(newPoint) );
 
 
@@ -187,7 +188,7 @@ void CHelicopterMovManager::selectSafeDir(const Fvector& prevPoint,
 										  Fvector& newDir)
 {
 	Fvector pt = prevPoint;
-	newDir = m_startDir;
+	newDir = m_heli->m_data.m_startDir;
 	newDir.normalize_safe();
 	VERIFY(fsimilar(newDir.y, 0.0f));
 
@@ -219,17 +220,84 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point, float base_altitude
 	
 	point.y = point.y-cR.range;
 
-	if( point.y+m_baseAltitude < m_boundingVolume.max.y )
+	if( point.y+m_heli->m_data.m_baseAltitude < m_boundingVolume.max.y )
 		point.y += base_altitude;
 	else
 		point.y = m_boundingVolume.max.y-EPS_L;
 
 	VERIFY( m_boundingAssert.contains(point) );
 
-	float minY = m_boundingVolume.min.y+(m_boundingVolume.max.y-m_boundingVolume.min.y)*m_alt_korridor;
+	float minY = m_boundingVolume.min.y+(m_boundingVolume.max.y-m_boundingVolume.min.y)*m_heli->m_data.m_alt_korridor;
 	float maxY = m_boundingVolume.max.y+base_altitude;
 //	minY = maxY-EPS_L;
 	clamp (point.y,minY,maxY);
 	VERIFY( m_boundingAssert.contains(point) );
 
 }
+
+#ifdef DEBUG
+void CHelicopterMovManager::DrawPath(bool bDrawInterpolated, bool bDrawKeys, float dTime)
+{
+
+	float t = Level().timeServer()/1000.0f;
+	Fvector P,R;
+	_Evaluate(t,P,R);
+	RCache.dbg_DrawAABB  (P,0.1f,0.1f,0.1f,D3DCOLOR_XRGB(255,0,0));
+
+/*	Fvector P_,R_;
+	_Evaluate(t+1.0f,P_,R_);
+	float s = P_.distance_to(P);
+
+	HUD().pFontSmall->SetColor(color_rgba(0xff,0xff,0xff,0xff));
+	HUD().pFontSmall->OutSet	(320,630);
+	HUD().pFontSmall->OutNext("Motion Speed:			[%3.2f]",s);
+*/
+	if(bDrawInterpolated){
+	
+	FvectorVec path_points;
+	FvectorVec path_rot;
+
+	float min_t				= m_startTime;
+	float max_t				= m_endTime;
+
+	Fvector 				T,r;
+	path_points.clear		();
+	for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=dTime){
+		_Evaluate(t,T,r);
+		path_points.push_back(T);
+		path_rot.push_back(r);
+	}
+
+	float path_box_size = .05f;
+	for(u32 i = 0; i<path_points.size (); ++i) {
+		RCache.dbg_DrawAABB  (path_points[i],path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
+	}	
+/*		r.setHP(path_rot[i].y, path_rot[i].x );
+		r.mul (3.0f);
+		T.add (path_points[i],r);
+		RCache.dbg_DrawLINE (Fidentity, path_points[i], T, D3DCOLOR_XRGB(255,0,0));
+*/
+	}
+
+	if(bDrawKeys){
+		float key_box_size = .25f;
+		u32 cnt = KeyCount();
+		for(u32 ii=0;ii<cnt;++ii) {
+			Fvector _t;
+			Fvector _r;
+			GetKey (ii,_t,_r);
+			RCache.dbg_DrawAABB  (_t,key_box_size,key_box_size,key_box_size,D3DCOLOR_XRGB(0,255,255));
+
+//			_r.setHP(_r.y, _r.x );
+//			_r.mul (6.0f);
+//			TT.add (_t,_r);
+//			RCache.dbg_DrawLINE (Fidentity, _t, TT, D3DCOLOR_XRGB(255,0,0));
+		}
+	}
+
+}
+void CHelicopterMovManager::OnRender()
+{
+//	DrawPath (false, true);
+}
+#endif

@@ -14,9 +14,6 @@ CHelicopterMotion::CHelicopterMotion()
 	m_startTime		= 0.0f;
 	m_endTime		= 0.0f;
 
-#ifdef DEBUG
-	Device.seqRender.Add(this,REG_PRIORITY_LOW-1);
-#endif
 }
 
 
@@ -24,9 +21,6 @@ CHelicopterMotion::~CHelicopterMotion()
 {
 	Clear			();
 
-#ifdef DEBUG
-	Device.seqRender.Remove(this);
-#endif
 }
 
 void CHelicopterMotion::Clear()
@@ -157,58 +151,6 @@ BOOL CHelicopterMotion::NormalizeKeys(float from_time, float to_time, float spee
 	return FALSE;
 }
 
-#ifdef DEBUG
-void CHelicopterMotion::DrawPath(bool bDrawInterpolated, bool bDrawKeys, float dTime)
-{
-	if(bDrawInterpolated){
-	
-	FvectorVec path_points;
-	FvectorVec path_rot;
-
-	float min_t				= m_startTime;
-	float max_t				= m_endTime;
-
-	Fvector 				T,r;
-	path_points.clear		();
-	for (float t=min_t; (t<max_t)||fsimilar(t,max_t,EPS_L); t+=dTime){
-		_Evaluate(t,T,r);
-		path_points.push_back(T);
-		path_rot.push_back(r);
-	}
-
-	float path_box_size = .05f;
-	for(u32 i = 0; i<path_points.size (); ++i) {
-		RCache.dbg_DrawAABB  (path_points[i],path_box_size,path_box_size,path_box_size,D3DCOLOR_XRGB(0,255,0));
-	}	
-/*		r.setHP(path_rot[i].y, path_rot[i].x );
-		r.mul (3.0f);
-		T.add (path_points[i],r);
-		RCache.dbg_DrawLINE (Fidentity, path_points[i], T, D3DCOLOR_XRGB(255,0,0));
-*/
-	}
-
-	if(bDrawKeys){
-		float key_box_size = .25f;
-		u32 cnt = KeyCount();
-		for(u32 ii=0;ii<cnt;++ii) {
-			Fvector _t;
-			Fvector _r;
-			GetKey (ii,_t,_r);
-			RCache.dbg_DrawAABB  (_t,key_box_size,key_box_size,key_box_size,D3DCOLOR_XRGB(0,255,255));
-
-//			_r.setHP(_r.y, _r.x );
-//			_r.mul (6.0f);
-//			TT.add (_t,_r);
-//			RCache.dbg_DrawLINE (Fidentity, _t, TT, D3DCOLOR_XRGB(255,0,0));
-		}
-	}
-
-}
-void CHelicopterMotion::OnRender()
-{
-//	DrawPath (true, true);
-}
-#endif
 
 void CHelicopterMotion::DropTailKeys(u32 cnt)
 {
