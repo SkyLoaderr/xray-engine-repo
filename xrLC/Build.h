@@ -77,6 +77,7 @@ public:
 	vector<BYTE>			L_control_data;
 	
 	vector<xrMU_Model*>		mu_models;
+	vector<xrMU_Reference*>	mu_refs;
 
 	Shader_xrLC_LIB			shaders;
 	string					path;

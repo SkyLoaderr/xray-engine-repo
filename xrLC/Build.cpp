@@ -137,7 +137,12 @@ CBuild::CBuild	(const b_params& Params, const CStream& _in_FS)
 	{
 		R_ASSERT				(F);
 		u32 count				= F->Rdword	();
-		
+		while (count && !F->Eof())
+		{
+			mu_refs.push_back				(xr_new<xrMU_Reference>());
+			mu_refs.back()->Load			(*F);
+			count--;
+		}		
 		F->Close				();
 	}
 
