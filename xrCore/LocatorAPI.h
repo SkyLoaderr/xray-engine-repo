@@ -46,8 +46,21 @@ public:
 		xr_free	(m_DefExt);
 		xr_free	(m_FilterCaption);
 	}
-	LPCSTR		_update		(LPSTR fname) const;
 	LPCSTR		_update		(LPSTR dest, LPCSTR src) const;
+	void		_set		(LPSTR add)
+	{
+		// m_Add
+		R_ASSERT		(add);
+		xr_free			(m_Add);
+		m_Add			= strlwr(xr_strdup(add));
+
+		// m_Path
+		string256		temp;
+		strconcat		(temp,m_Root,m_Add);
+		if (temp[strlen(temp)-1]!='\\') strcat(temp,"\\");
+		xr_free			(m_Path);
+		m_Path			= strlwr(xr_strdup(temp));
+	}
 };
 
 #ifdef __BORLANDC__
@@ -145,7 +158,6 @@ public:
                                       
     bool						path_exist		(LPCSTR path);
     FS_Path*					get_path		(LPCSTR path);
-    LPCSTR						update_path		(LPCSTR initial, LPSTR path);
     LPCSTR						update_path		(LPSTR dest, LPCSTR initial, LPCSTR src);
 
 #ifdef __BORLANDC__

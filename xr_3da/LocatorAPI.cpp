@@ -28,19 +28,13 @@ FS_Path::FS_Path	(LPCSTR _Root, LPCSTR _Add, LPCSTR _DefExt, LPCSTR _FilterCapti
 	VerifyPath		(m_Path);
 }
 
-LPCSTR FS_Path::_update(LPSTR _fname)const
-{
-	VERIFY(_fname);
-	string256		temp;
-	strcpy			(temp,_fname);
-	return strlwr(strconcat(_fname,m_Path,temp));
-}
-
 LPCSTR FS_Path::_update(LPSTR dest, LPCSTR src)const
 {
 	R_ASSERT(dest);
     R_ASSERT(src);
-	return strlwr(strconcat(dest,m_Path,src));
+	string256		temp;
+	strcpy			(temp,src);
+	return strlwr(strconcat(dest,m_Path,temp));
 }
 
 #ifdef __BORLANDC__
