@@ -369,7 +369,7 @@ void	CShaderManager::OnDeviceCreate(void)
 	if (!Device.bReady) return;
 	cache.Invalidate	();
 	
-	CCompressedStream		FS("shaders.xr","xrSHADER");
+	CCompressedStream		FS("shaders.xr","shENGINE");
 	char					name[256];
 	
 	// Load constants
