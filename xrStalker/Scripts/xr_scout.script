@@ -1,12 +1,19 @@
 --[[------------------------------------------------------------------------------------------------------------------
-Схема "Разведчик" (управляет разведчиком, который водит за собой follower'ов)
-Чугай Саша
+╤їхьр "╨рчтхфўшъ" (єяЁрты хЄ Ёрчтхфўшъюь, ъюЄюЁ√щ тюфшЄ чр ёюсющ follower'ют)
+╫єурщ ╤р°р
 
-Сделать:
+╤фхырЄ№:
 --------------------------------------------------------------------------------------------------------------------]]
 
-local leader_move = 0
-local leader_stop = 1
+--local leader_move = xr_follower.leader_move
+--local leader_stop = xr_follower.leader_stop
+
+local leader_no_command                 = 0
+local leader_move                       = 1
+local leader_stop                       = 2
+local leader_speak                      = 3
+local leader_speak_enable               = 4
+local leader_return                     = 5  
 
 -- rotate vector around Y axis
 function vector_rotate_y( v, angle )
@@ -17,8 +24,8 @@ function vector_rotate_y( v, angle )
 end
 
 function set_soldier_positions( scout, a, around )
-    local size = table.getn( a.followers )
-    if size == 0 then
+    local size = table.getn( a.followers ) - 1
+    if size <= 0 then
         return
     end
 
@@ -27,7 +34,6 @@ function set_soldier_positions( scout, a, around )
     dir:normalize ()
 
     local step
-    local angle = 90.0
     local vec0 = vector():set( 0, 0, 0 )
 
     if around then
@@ -36,28 +42,34 @@ function set_soldier_positions( scout, a, around )
         step = 180.0 / size
     end
 
+    local angle = 90.0 - step * 0.5
+
     for i, v in ipairs( a.followers ) do
-        if i == 1 then
-            angle = angle + step * 0.5
-        else
+        if v.enabled then
+--            printf( "%d", i )
+            
             angle = angle + step
-        end
 
-        local vec = this.vector_rotate_y( dir, angle )
+            local vec = this.vector_rotate_y( dir, angle )
 
-        v.direction = vec
+            v.direction = vec
 
-        if around then
-            v.look_dir = vec
-            v.distance = 4 + math.random( 2 )
-        else
-            v.look_dir = vec0
-            v.distance = 3
+            if around then
+                v.look_dir = vec
+                v.distance = 10 --+ math.random( 2 )
+            else
+                v.look_dir = vec0
+                v.distance = 3
+            end
         end
     end
 end
 
 function set_command( a, command )
+    if command == leader_stop then
+        printf( "scout ёърчры ╤╥╬▀╥▄!!! тЁхь =%d", device():time_global() )
+    end
+
     for i, v in ipairs( a.followers ) do
         v.leader_command = command
         v.mental_state   = anim.danger
@@ -65,7 +77,7 @@ function set_command( a, command )
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "схема разведчика активна"
+-- ▌трыєрЄюЁ ётющёЄтр "ёїхьр Ёрчтхфўшър ръЄштэр"
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_scout" (property_evaluator)
 
@@ -82,7 +94,7 @@ function evaluator_scout:evaluate ()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "нахожусь на позиции"
+-- ▌трыєрЄюЁ ётющёЄтр "эрїюцєё№ эр яючшЎшш"
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_in_pos" (property_evaluator)
 
@@ -101,7 +113,7 @@ function evaluator_in_pos:evaluate ()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "сработал ли уже запущенный таймер"
+-- ▌трыєрЄюЁ ётющёЄтр "ёЁрсюЄры ыш єцх чряє∙хээ√щ ЄрщьхЁ"
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_timer" (property_evaluator)
 
@@ -117,7 +129,7 @@ function evaluator_timer:evaluate ()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Эвалуатор свойства "перехвачено ли уже событие смерти сталкера?"
+-- ▌трыєрЄюЁ ётющёЄтр "яхЁхїтрўхэю ыш єцх ёюс√Єшх ёьхЁЄш ёЄрыъхЁр?"
 ---------------------------------------------------------------------------------------------------------------------
 class "evaluator_dead_hook" ( property_evaluator )
 
@@ -130,7 +142,7 @@ function evaluator_dead_hook:evaluate()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Действие "идти на позицию"
+-- ─хщёЄтшх "шфЄш эр яючшЎш■"
 ---------------------------------------------------------------------------------------------------------------------
 
 class "action_go_to_pos" (action_base)
@@ -172,7 +184,7 @@ function action_go_to_pos:finalize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Действие "рассредоточить ведомых"
+-- ─хщёЄтшх "ЁрёёЁхфюЄюўшЄ№ тхфюь√ї"
 ---------------------------------------------------------------------------------------------------------------------
 
 class "action_look_around" (action_base)
@@ -194,7 +206,7 @@ function action_look_around:initialize()
     self.object:set_movement_type       ( move.stand )
     self.object:set_mental_state        ( anim.danger )
 
-    self.a.timer = device():time_global() + 15000
+    self.a.timer = device():time_global() + 60000
 
     this.set_command( self.aa, leader_stop )
     this.set_soldier_positions( self.object, self.aa, true )
@@ -204,16 +216,18 @@ end
 
 function action_look_around:execute()
     action_base.execute( self )
+    --this.set_soldier_positions( self.object, self.aa, true )
 end
 
 function action_look_around:finalize()
     action_base.finalize( self )
 
     this.set_soldier_positions( self.object, self.aa )
+    this.set_command( self.aa, leader_move )
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Действие освобождения сталкера во free_no_alife
+-- ─хщёЄтшх юётюсюцфхэш  ёЄрыъхЁр тю free_no_alife
 ---------------------------------------------------------------------------------------------------------------------
 
 class "action_free" (action_base)
@@ -237,7 +251,7 @@ function action_free:finalize()
 end
 
 ---------------------------------------------------------------------------------------------------------------------
--- Действие для перехвата смерти сталкера
+-- ─хщёЄтшх фы  яхЁхїтрЄр ёьхЁЄш ёЄрыъхЁр
 ---------------------------------------------------------------------------------------------------------------------
 class "action_dead_hook" ( action_base )
 
@@ -251,17 +265,17 @@ function action_dead_hook:initialize()
 
     self.a.dead_hook = true
 
-    -- назначить первого попавшегося живого follower-a новым лидером
+    -- эрчэрўшЄ№ яхЁтюую яюярт°хуюё  цштюую follower-a эют√ь ышфхЁюь
     for i, v in ipairs( self.aa.followers ) do
         if v.npc:alive() then
             for ii, vv in ipairs( self.aa.followers ) do
                 vv.leader_name = v.npc:name()
                 vv.leader      = v.npc
-                -- иногда до перехвата смерти командира некоторые успевают выйти из-под схемы follower. Вернуть их.
+                -- шэюуфр фю яхЁхїтрЄр ёьхЁЄш ъюьрэфшЁр эхъюЄюЁ√х єёяхтр■Є т√щЄш шч-яюф ёїхь√ follower. ┬хЁэєЄ№ шї.
                 vv.enabled     = true
             end
 
-            -- командир теперь scout, а не follower
+            -- ъюьрэфшЁ ЄхяхЁ№ scout, р эх follower
             xr_motivator.storage[v.npc:id()].scout.enabled = true
             v.enabled = false
 
@@ -281,7 +295,7 @@ function action_dead_hook:finalize()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
--- Настройка GOAP
+-- ═рёЄЁющър GOAP
 ----------------------------------------------------------------------------------------------------------------------
 function add_to_binder( obj )
     local aa = xr_motivator.storage[obj:id()]

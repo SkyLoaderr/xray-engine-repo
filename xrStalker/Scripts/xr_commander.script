@@ -3,11 +3,10 @@
 Чугай Саша
 
 Сделать:
-    - дождаться пока сделают ходьбу
     - подставить настоящие звуки
     - звуки во сне
     - сон
-    - time_end=nil
+    - сажание+водка
 --------------------------------------------------------------------------------------------------------------------]]
 
 local prop_commander = xr_evaluators_id.commander_commander
@@ -45,14 +44,12 @@ local h2ms = 60 * 60 * 1000
 class "action_commander" ( action_base )
 
 function action_commander:__init( name )  super ( nil, name )
-    self.initialized = false
 --    self.drunk = true
+    self.decision = true
 end
 
 function action_commander:initialize()
     action_base.initialize( self )
-
-    self.decision = true
 
     --self.object:set_item( object.idle, self.object:best_weapon() )
     self.object:set_item( object.idle, nil )
@@ -151,7 +148,7 @@ function action_commander:walk_to_pos( way, waypoint )
     self.object:set_item                ( object.idle, nil )
     self.object:set_body_state          ( move.standing )
     self.object:set_movement_type       ( move.walk )
-    self.object:set_mental_state        ( anim.danger )
+    self.object:set_mental_state        ( anim.free )
     self.object:set_path_type           ( game_object.level_path )
     self.object:set_detail_path_type    ( move.line )
     self.object:set_dest_level_vertex_id( way:level_vertex_id( waypoint ) )
@@ -189,7 +186,7 @@ function action_commander:execute()
                                    [look_map]     = 10,
                                    [look_outside] = 10,
                                    [radio_talk]   = 20,
-                                   [drink_vodka]  = 10 }
+                                   [drink_vodka]  = 10000 }
                 else
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 60,
@@ -246,7 +243,7 @@ function action_commander:add_inside_animations( n )
             self.object:add_animation( "drunk_idle_0", true )
         end
     else
-        for i = 1, math.random( n ) do
+        for i = 1, math.random( n ) - 1 do
             self.object:add_animation(
                 random_choice_weighted{
                     ["komandir_4"] = 40,
@@ -254,6 +251,9 @@ function action_commander:add_inside_animations( n )
                     ["komandir_3"] = 20 },
                 true )
         end
+
+        -- чтоб не было дёрга при переходе в разговор по рации
+        self.object:add_animation( "komandir_4", true )
     end
 end
 
@@ -261,7 +261,7 @@ function action_commander:exec_walk_inside()
     if self.pos then
         if self:in_pos() then
             if self.sub_act then
-                if self.object:animation_count() == 0 then
+                if self.object:animation_count() == 1 then
                     self.decision = true
                 end
             else
@@ -279,7 +279,7 @@ function action_commander:exec_walk_inside()
         else
             -- если сдвинулся с позиции, то уйти
             if self.sub_act then
-                self.object:clear_animations()
+                --self.object:clear_animations()
                 self.decision = true
             end
         end
@@ -298,6 +298,8 @@ function action_commander:exec_walk_inside()
         if math.random( 100 ) < 40 then
             self.object:play_sound( snd_singing, 1, 0 )
         end
+
+        self.object:clear_animations()
 
         printf( "decision made: walk_inside" )
     end
@@ -327,7 +329,8 @@ function action_commander:exec_look_box()
             end
         else
             self.object:set_sight( look.point, self.way:point( self.way:index( "box" ) ):add( vector():set( 0, 1.5, 0 ) ), 0 )
-            self.object:set_mental_state( anim.danger )
+            --self.object:set_sight( look.direction, vector():set( 1, 0, 0 ), 0 )
+            self.object:set_mental_state( anim.free )
 
             self.time_end = device():time_global() + 3000
         end
@@ -340,6 +343,8 @@ end
 
 function action_commander:exec_walk_outside()
     if not self.sub_act then
+        self.object:clear_animations()
+
         self.object:set_node_evaluator    ()
         self.object:set_path_evaluator    ()
         self.object:set_desired_position  ()
@@ -350,7 +355,7 @@ function action_commander:exec_walk_outside()
         self.object:set_detail_path_type  ( move.line )
         self.object:set_body_state        ( move.standing )
         self.object:set_movement_type     ( move.walk )
-        --self.object:set_mental_state      ( anim.free )
+        self.object:set_mental_state      ( anim.free )
         --self.object:set_item              ( object.idle, self.object:best_weapon() )
         self.object:set_item              ( object.idle, nil )
 
@@ -387,12 +392,13 @@ function action_commander:exec_look_map()
         else
             -- если сдвинулся с позиции, то уйти
             if self.time_end then
-                self.object:clear_animations()
+                --self.object:clear_animations()
                 self.decision = true
                 self.time_end = nil
             end
         end
     else
+        self.object:clear_animations()
         self:walk_to_pos( self.way, "level_map" )
         printf( "decision made: look_map" )
     end
@@ -420,11 +426,12 @@ function action_commander:exec_look_outside()
         else
             -- если сдвинулся с позиции, то уйти
             if self.time_end then
-                self.object:clear_animations()
+                --self.object:clear_animations()
                 self.decision = true
             end
         end
     else
+        self.object:clear_animations()
         self:walk_to_pos( self.way, "near_door" )
         printf( "decision made: look_outside" )
     end
@@ -456,11 +463,13 @@ function action_commander:exec_radio_talk()
             self.decision = true
         end
     else
---        self:stop()
+        self.object:clear_animations()
+        self:stop()
 
         self:radio()
 
         self.object:set_item( object.idle, nil )
+        self.object:set_sight( look.direction, self.object:direction(), 0 ) -- против глюка
 
         self.sub_act = true
 
@@ -528,7 +537,7 @@ function action_commander:process_radio()
     if count ~= 0 then 
        return false 
     end
-    
+
     while table.getn (self.phrases) ~= 0 do
           table.remove (self.phrases, 1)
     end
@@ -545,37 +554,47 @@ function action_commander:exec_drink_vodka()
     if self.pos then
         if self:in_pos() then
             if self.sub_act then
-                if self.object:animation_count() == 0 then
+                --if self.object:animation_count() == 0 then
+                if self.time_end <= device():time_global() then
                     self.decision = true
                 end
             else
                 self:stop()
 
-                self.object:set_sight( look.point, self.way:point( self.way:index( "mattress_dir" ) ), 0 )
-                self.object:set_item ( object.idle, nil )
+                self.object:set_sight( look.point, self.way:point( self.way:index( "mattress_dir" ) ):add( vector():set( 0, 0.5, 0 ) ), 0 )
+                --self.object:set_item ( object.idle, nil )
 
-                self.object:add_animation( "stalker_2_down", true )
+--[[                self.object:add_animation( "stalker_2_down", true )
                 self.object:add_animation( "vodka_1", true )
                 self.object:add_animation( "vodka_2", true )
                 self.object:add_animation( "vodka_3", true )
                 self.object:add_animation( "vodka_4", true )
                 self.object:add_animation( "vodka_2", true )
-                self.object:add_animation( "stalker_2_up", true )
+                self.object:add_animation( "stalker_2_up", true )]]
+               
+                local vodka = self.object:object( "vodka" )
+                
+                self.object:set_item( object.activate, vodka )
+                self.object:set_item( object.use, vodka )
+                self.object:set_item( object.deactivate, vodka )
+                
                 
                 if day_time() > 14 * h2ms then
                     self.drunk = true
                 end
 
                 self.sub_act = true
+                self.time_end = device():time_global() + 60000
             end
         else
             -- если сдвинулся с позиции, то уйти
             if self.sub_act then
-                self.object:clear_animations()
+                --self.object:clear_animations()
                 self.decision = true
             end
         end
     else
+        self.object:clear_animations()
         self:walk_to_pos( self.way, "mattress" )
         printf( "decision made: drink_vodka" )
     end
@@ -593,7 +612,7 @@ function action_commander:exec_sleep()
                     self.decision = true
                     self.time_end = nil
 
-                    self.object:clear_animations()
+                    --self.object:clear_animations()
                 else
                     if self.object:animation_count() < 3 then
                         self.object:add_animation( "waunded_idle_0", true )
@@ -612,12 +631,13 @@ function action_commander:exec_sleep()
         else
             -- если сдвинулся с позиции, то уйти
             if self.time_end then
-                self.object:clear_animations()
+                --self.object:clear_animations()
                 self.decision = true
                 self.time_end = nil
             end
         end
     else
+        self.object:clear_animations()
         self:walk_to_pos( self.way, "mattress" )
         printf( "decision made: sleep" )
     end
