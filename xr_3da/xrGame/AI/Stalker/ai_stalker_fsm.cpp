@@ -625,7 +625,7 @@ void CAI_Stalker::SearchEnemy()
 				}
 			}
 			
-			if ((m_iCurrentSuspiciousNodeIndex >= 0) && ((int)Group.m_tpaSuspiciousNodes.size() < (m_iCurrentSuspiciousNodeIndex + 1))) {
+			if ((m_iCurrentSuspiciousNodeIndex >= 0) && ((int)Group.m_tpaSuspiciousNodes.size() > (m_iCurrentSuspiciousNodeIndex + 1))) {
 				bool bOk = false;	
 #ifdef AI_BEST
 				for (u32 i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
