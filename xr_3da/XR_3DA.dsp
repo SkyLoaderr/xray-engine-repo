@@ -454,6 +454,9 @@ SOURCE=.\xr_effgamma.h
 # Begin Group "Shaders"
 
 # PROP Default_Filter ""
+# Begin Group "Blender"
+
+# PROP Default_Filter ""
 # Begin Group "Blenders"
 
 # PROP Default_Filter ""
@@ -486,6 +489,7 @@ SOURCE=.\Blender_Recorder.cpp
 
 SOURCE=.\Blender_Recorder.h
 # End Source File
+# End Group
 # Begin Source File
 
 SOURCE=.\tss.h

@@ -39,8 +39,7 @@ public:
 	{
 		// y = arg0 + arg1*func( (time+arg2)*arg3 )
 		float x = (t+arg[2])*arg[3];
-		x -= floorf(x);
-		return arg[0] + arg[1]*Func(x);
+		return arg[0] + arg[1]*Func(x-floorf(x));
 	}
 };
 
@@ -60,14 +59,6 @@ struct ENGINE_API SH_StageDef
 		tcaMirror		= 1,
 		tcaClamp		= 2,
 		tcaFORCE32		= DWORD(-1)
-	};
-	enum ETCMod
-	{
-		tcmScale		= (1<<0),
-		tcmRotate		= (1<<1),
-		tcmScroll		= (1<<2),
-		tcmStretch		= (1<<3),
-		tcmFORCE32		= DWORD(-1)
 	};
 public:
 	sh_name				Tname;			// Texture Name, without extension, lowercase
