@@ -1623,12 +1623,6 @@
 				<Filter
 					Name="core"
 					Filter="">
-					<File
-						RelativePath=".\ai_script_lua_space.h">
-					</File>
-					<File
-						RelativePath=".\ai_script_space.h">
-					</File>
 					<Filter
 						Name="Script"
 						Filter="">
@@ -1684,6 +1678,12 @@
 						</File>
 						<File
 							RelativePath=".\ai_script_lua_extension.h">
+						</File>
+						<File
+							RelativePath=".\ai_script_lua_space.h">
+						</File>
+						<File
+							RelativePath=".\ai_script_space.h">
 						</File>
 					</Filter>
 					<Filter
