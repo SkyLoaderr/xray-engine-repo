@@ -45,6 +45,7 @@ CBuild::CBuild(b_transfer * L)
 
 	//*******
 	Status		("Vertices...");
+	g_vertices.reserve	(L->vertex_count);
 	scene_bb.invalidate	();
 	for (i=0; i<L->vertex_count; i++)
 	{
@@ -59,6 +60,7 @@ CBuild::CBuild(b_transfer * L)
 
 	//*******
 	Status	("Faces...");
+	g_faces.reserve	(L->face_count);
 	for (i=0; i<L->face_count; i++)
 	{
 		Face*	F		= new Face;

@@ -19,6 +19,7 @@ vecFace			g_faces;
 Vertex::Vertex()
 {
 	g_vertices.push_back(this);
+	adjacent.reserve	(4);
 }
 Vertex::~Vertex()
 {
