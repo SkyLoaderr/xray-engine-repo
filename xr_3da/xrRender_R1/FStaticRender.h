@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\PSLibrary.h"
+#include "PSLibrary.h"
 
 #include "portal.h"
 #include "hom.h"
