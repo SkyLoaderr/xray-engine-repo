@@ -15,6 +15,7 @@ CRender													RImplementation;
 //////////////////////////////////////////////////////////////////////////
 void					CRender::create					()
 {
+	Models				= xr_new<CModelPool>			();
 	/*
 	Models		
 	L_DB				= xr_new<CLightDB_Static>		();
@@ -28,6 +29,7 @@ void					CRender::create					()
 }
 void					CRender::destroy				()
 {
+	xr_delete			(Models);
 }
 
 // Implementation
