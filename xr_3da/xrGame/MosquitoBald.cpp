@@ -37,8 +37,8 @@ void CMosquitoBald::Affect(CObject* O) {
 		Fvector P; clXFORM().transform_tiny(P,cfModel->getSphere().P);
 		char l_pow[255]; sprintf(l_pow, "zone hit. %.1f", Power(l_pO->Position().distance_to(P)));
 		if(bDebug) HUD().outMessage(0xffffffff,l_pO->cName(), l_pow);
-		//Fvector l_dir; l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(.0f,1.f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
-		Fvector l_dir; l_dir.sub(l_pO->Position(), P); l_dir.normalize();
+		Fvector l_dir; l_dir.set(::Random.randF(-.5f,.5f), ::Random.randF(.0f,1.f), ::Random.randF(-.5f,.5f)); l_dir.normalize();
+		//Fvector l_dir; l_dir.sub(l_pO->Position(), P); l_dir.normalize();
 		//l_pO->ph_Movement.ApplyImpulse(l_dir, 50.f*Power(l_pO->Position().distance_to(P)));
 		Fvector position_in_bone_space;
 		float power = Power(l_pO->Position().distance_to(P)), impulse = m_hitImpulseScale*power*l_pO->GetMass();
