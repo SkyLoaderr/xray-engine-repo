@@ -478,7 +478,7 @@ void CAI_Stalker::ForwardCover()
 				m_tSelectorCover.m_fOptEnemyDistance = (tpWeapon->m_fMinRadius + 0*tpWeapon->m_fMaxRadius)/1;
 			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 1.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);
 			m_tSelectorCover.m_fMinEnemyDistance = max(fDistance - m_tSelectorCover.m_fSearchRange,m_tSelectorCover.m_fOptEnemyDistance - 3.f);
-			vfSetParameters			(&m_tSelectorCover,0,true,eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+			vfSetParameters			(&m_tSelectorCover,0,true,(m_tpCurrentSound && m_tpCurrentSound->feedback) ? eWeaponStateIdle : eWeaponStatePrimaryFire,ePathTypeDodgeCriteria,eBodyStateCrouch,eMovementTypeStand,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 			if (!tpWeapon || ((tpWeapon->STATE != CWeapon::eFire) && !tpWeapon->GetAmmoElapsed() && (!m_bIfSearchFailed || ((!AI_Path.TravelPath.empty() && AI_Path.TravelPath.size() > AI_Path.TravelStart + 1) && (Level().timeServer() - m_dwActionStartTime > 5000))))) {
 				m_tActionState		= eActionStateWatchGo;
 				m_dwActionStartTime = Level().timeServer();
