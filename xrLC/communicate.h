@@ -212,6 +212,8 @@ struct b_transfer
 	DWORD		mtl_count;
 	b_shader*	shaders;
 	DWORD		shader_count;
+	b_shader*	shaders_xrlc;
+	DWORD		shader_xrlc_count;
 	b_texture*	textures;
 	DWORD		tex_count;
 	b_light*	lights;
