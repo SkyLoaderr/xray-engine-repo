@@ -23,15 +23,29 @@ CEngineAPI::~CEngineAPI()
 
 void CEngineAPI::Initialize(void)
 {
-	//
-	LPCSTR			r_name	= "xrRender_R1.dll";
-	if (strstr(Core.Params,"-r2"))	r_name	= "xrRender_R2.dll";
-	Log				("Loading DLL:",r_name);
-	hRender			= LoadLibrary	(r_name);
-	if (0==hRender)	R_CHK			(GetLastError());
-	R_ASSERT		(hRender);
+	//////////////////////////////////////////////////////////////////////////
+	// render
+	LPCSTR			r1_name	= "xrRender_R1.dll";
+	LPCSTR			r2_name	= "xrRender_R2.dll";
+	if (strstr(Core.Params,"-r2"))	{
+		// try to initialize R2
+		Log				("Loading DLL:",	r2_name);
+		hRender			= LoadLibrary		(r2_name);
+		if (0==hRender)	{
+			// try to load R1
+			Msg			("...Failed - incompatible hardware.");
+		}
+	}
+	if (0==hRender)		{
+		// try to load R1
+		Log				("Loading DLL:",	r1_name);
+		hRender			= LoadLibrary		(r1_name);
+		if (0==hRender)	R_CHK				(GetLastError());
+		R_ASSERT		(hRender);
+	}
 
-	//
+	//////////////////////////////////////////////////////////////////////////
+	// game	
 	LPCSTR			g_name	= "xrGame.dll";
 	Log				("Loading DLL:",g_name);
 	hGame			= LoadLibrary	(g_name);

@@ -20,6 +20,44 @@
 #include "ispatial.h"
 #include "CopyProtection.h"
 
+//---------------------------------------------------------------------
+void Intro		( char *filename )
+{
+	MCIERROR			me;
+	MCI_OPEN_PARMS		openparams;
+	MCI_PLAY_PARMS		playparams;
+	MCI_GENERIC_PARMS	closeparams;
+
+	do	{
+		// open
+		ZeroMemory		(&openparams,sizeof(openparams));
+		openparams.lpstrDeviceType = "avivideo";
+		openparams.lpstrElementName = filename;
+		me = mciSendCommand(0, MCI_OPEN,
+			MCI_WAIT|MCI_OPEN_TYPE|MCI_OPEN_ELEMENT,
+			(DWORD) &openparams );
+
+		if( me )		break;
+
+		// play
+		ZeroMemory		(&playparams,sizeof(playparams));
+		me = mciSendCommand( openparams.wDeviceID,MCI_PLAY,
+			MCI_MCIAVI_PLAY_FULLSCREEN|MCI_WAIT,
+			(DWORD) &playparams);
+
+		if( me )		break;
+
+		// close
+		ZeroMemory		(&closeparams,sizeof(closeparams));
+		me = mciSendCommand( openparams.wDeviceID,
+			MCI_CLOSE, MCI_WAIT,
+			(DWORD) &closeparams);
+
+		if( me )		break;
+	}
+	while(0);
+}
+//---------------------------------------------------------------------
 // 2446363
 // umbt@ukr.net
 //////////////////////////////////////////////////////////////////////////
