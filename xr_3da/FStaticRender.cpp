@@ -111,6 +111,10 @@ IC		void		gm_SetNearer		(BOOL bNearer)
 }
 IC		void		gm_SetLighting		(CObject* O)
 {
+	if (O != gm_Object)
+	{
+		gm_Object	= O;
+	}
 }
 
 //////////////////////////////////////////////////////////////////////
