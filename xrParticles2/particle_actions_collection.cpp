@@ -1571,17 +1571,22 @@ void PAVortex::Transform(const Fmatrix& m)
 
 // Turbulence
 #include "noise.h"
+PATurbulence::PATurbulence()
+{
+	age=0.f;
+}
 void PATurbulence::Execute(ParticleEffect *effect, float dt)
 {
     pVector pV;
     pVector vX;
     pVector vY;
     pVector vZ;
+    age		+= dt;
     for(u32 i = 0; i < effect->p_count; i++)
     {
         Particle &m = effect->particles[i];
 
-        pV.add(m.pos,offset);
+        pV.mad(m.pos,offset,age);
         vX.set(pV.x+epsilon,pV.y,pV.z);
         vY.set(pV.x,pV.y+epsilon,pV.z);
         vZ.set(pV.x,pV.y,pV.z+epsilon);

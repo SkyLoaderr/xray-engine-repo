@@ -280,7 +280,9 @@ namespace PAPI{
 		float magnitude;	// Scale for rotation around axis
 		float epsilon;		// Softening parameter
         pVector offset;		// Offset
+        float age;
 
+        PATurbulence();
         _METHODS;
     };
 };
