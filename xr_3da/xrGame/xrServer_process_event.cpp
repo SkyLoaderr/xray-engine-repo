@@ -177,11 +177,20 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 			// Parse message
 			u16					id_dest		=	destination;
 			CSE_Abstract*		e_dest		=	game->get_entity_from_eid	(id_dest);	// кто должен быть уничтожен
-			R_ASSERT			(e_dest			);
+#pragma todo("Dima to All : For 24.02.2004 only!")
+			if (!e_dest)
+				return;
+//			R_ASSERT			(e_dest			);
 			xrClientData*		c_dest		=	e_dest->owner;				// клиент, чей юнит
-			R_ASSERT			(c_dest			);
+#pragma todo("Dima to All : For 24.02.2004 only!")
+			if (!c_dest)
+				return;
+//			R_ASSERT		(c_dest			);
 			xrClientData*		c_from		=	ID_to_client	(sender);	// клиент, кто прислал
-			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
+#pragma todo("Dima to All : For 24.02.2004 only!")
+			if (c_dest != c_from)
+				return;
+//			R_ASSERT			(c_dest == c_from);							// assure client ownership of event
 
 			
 			SendBroadcast		(0xffffffff,P,MODE);

@@ -137,9 +137,9 @@ void CMonsterMovement::MoveAwayFromTarget(const Fvector &position, float dist)
 	Fvector target_pos;
 	Fvector dir;
 	dir.sub(Position(), position);
-	clamp(dir.x,-5000000.f,5000000.f);
-	clamp(dir.y,-5000000.f,5000000.f);
-	clamp(dir.z,-5000000.f,5000000.f);
+#pragma todo("Dima to Jim : verify why direction becomes incorrect, pssibly XFORM() and/or position is not valid")
+	if (!_valid(dir))
+		dir.set(0.f,0.f,1.f);
 	if (fis_zero(dir.square_magnitude(),EPS_L)) dir.set(0.f,0.f,1.f);
 	dir.normalize();
 	target_pos.mad(Position(),dir,dist);
