@@ -1219,117 +1219,6 @@ lights_enabled 		= true			;свет вокруг ракеты, во время полета
 trail_light_color 	= 0.6,0.5,0.3
 trail_light_range 	= 8.0
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Addons
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-[wpn_addon_scope]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn			= "weapons\addons\scope" ; option for Level Editor
-class			= W_SCOPE
-cform           = skeleton
-visual          = Weapons\upgrade\wpn_scope.ogf
-$prefetch 		= 32
-
-cost					 = 200
-
-inv_name		= "Scope"
-inv_name_short	= "Scope"
-inv_weight		= .2
-
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 18
-inv_grid_y			= 2
-scope_texture		= wpn\wpn_crosshair
-scope_zoom_factor	= 15		;ПСО-1 4X
-
-[wpn_addon_scope_susat]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn			= "weapons\addons\scope_susat" ; option for Level Editor
-class			= W_SCOPE
-cform           = skeleton
-visual          = Weapons\upgrade\wpn_scope_susat.ogf
-;$prefetch 		= 64
-
-cost					 = 200
-
-inv_name		= "Scope"
-inv_name_short	= "Scope"
-inv_weight		= .2
-
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 18
-inv_grid_y			= 2
-scope_texture		= wpn\wpn_crosshair
-scope_zoom_factor	= 15		;SUSAT 4X
-
-[wpn_addon_silencer]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn			= "weapons\addons\silencer" ; option for Level Editor
-class			= W_SILENC
-cform           = skeleton
-visual          = Weapons\upgrade\wpn_silencer.ogf
-$prefetch 		= 32
-
-cost					 = 150
-
-inv_name		= "Silencer"
-inv_name_short	= "Silencer"
-inv_weight		= .2
-
-inv_grid_width		= 1
-inv_grid_height		= 1
-inv_grid_x			= 18
-inv_grid_y			= 1
-
-[wpn_addon_grenade_launcher]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn			= "weapons\addons\grenade_launcher" ; option for Level Editor
-class			= W_GLAUNC
-cform           = skeleton
-visual          = Weapons\upgrade\wpn_grenade_launcher.ogf
-$prefetch 		= 32
-
-cost					 = 250
-
-inv_name		= "Grenade Launcher Addon"
-inv_name_short	= "Grenade Launcher Addon"
-inv_weight		= .2
-
-inv_grid_width		= 2
-inv_grid_height		= 1
-inv_grid_x			= 18
-inv_grid_y			= 0
-
-grenade_vel			= 76
-
-[wpn_addon_grenade_launcher_m203]
-GroupControlSection	= spawn_group
-discovery_dependency = 
-$spawn			= "weapons\addons\grenade_launcher_m203" ; option for Level Editor
-class			= W_GLAUNC
-cform           = skeleton
-visual          = Weapons\upgrade\wpn_grenade_launcher_m203.ogf
-$prefetch 		= 32
-
-cost					 = 250
-
-inv_name		= "Grenade Launcher Addon"
-inv_name_short	= "Grenade Launcher Addon"
-inv_weight		= .2
-
-inv_grid_width		= 3
-inv_grid_height		= 1
-inv_grid_x			= 9
-inv_grid_y			= 15
-
-grenade_vel			= 76
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Explosive Inventory Items
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1467,3 +1356,112 @@ telepatic_immunity		= 1.0
 chemical_burn_immunity	= 1.0
 explosion_immunity		= 1.0
 fire_wound_immunity		= 1.0
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;	WEAPON ADDON
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[wpn_addon_scope]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\scope" ; option for Level Editor
+class			= W_SCOPE
+cform           = skeleton
+visual          = Weapons\upgrade\wpn_scope.ogf
+$prefetch 		= 32
+
+cost					 = 200
+inv_name		= "Scope"
+inv_name_short	= "Scope"
+inv_weight		= .2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 2
+scope_texture		= wpn\wpn_crosshair
+scope_zoom_factor	= 15		;ПСО-1 4X
+
+
+[wpn_addon_scope_susat]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\scope_susat" ; option for Level Editor
+class			= W_SCOPE
+cform           = skeleton
+visual          = Weapons\upgrade\wpn_scope_susat.ogf
+;$prefetch 		= 64
+
+cost					 = 200
+inv_name		= "Scope"
+inv_name_short	= "Scope"
+inv_weight		= .2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 2
+scope_texture		= wpn\wpn_crosshair
+scope_zoom_factor	= 15		;SUSAT 4X
+
+
+[wpn_addon_silencer]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\silencer" ; option for Level Editor
+class			= W_SILENC
+cform           = skeleton
+visual          = Weapons\upgrade\wpn_silencer.ogf
+$prefetch 		= 32
+
+cost					 = 150
+inv_name		= "Silencer"
+inv_name_short	= "Silencer"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 1
+
+
+[wpn_addon_grenade_launcher]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\grenade_launcher" ; option for Level Editor
+class			= W_GLAUNC
+cform           = skeleton
+visual          = Weapons\upgrade\wpn_grenade_launcher.ogf
+$prefetch 		= 32
+
+cost					 = 250
+inv_name		= "Grenade Launcher Addon"
+inv_name_short	= "Grenade Launcher Addon"
+inv_weight		= .2
+
+inv_grid_width		= 2
+inv_grid_height		= 1
+inv_grid_x			= 18
+inv_grid_y			= 0
+grenade_vel			= 76
+
+
+[wpn_addon_grenade_launcher_m203]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\addons\grenade_launcher_m203" ; option for Level Editor
+class			= W_GLAUNC
+cform           = skeleton
+visual          = Weapons\upgrade\wpn_grenade_launcher_m203.ogf
+$prefetch 		= 32
+
+cost					 = 250
+inv_name		= "Grenade Launcher Addon"
+inv_name_short	= "Grenade Launcher Addon"
+inv_weight		= .2
+
+inv_grid_width		= 3
+inv_grid_height		= 1
+inv_grid_x			= 9
+inv_grid_y			= 15
+grenade_vel			= 76
