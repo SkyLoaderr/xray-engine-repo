@@ -11,7 +11,16 @@
 
 #include <xrCore.h>
 
-#include "psystem.h"
+//#include <errno.h>
+#include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
+
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
 
 #ifdef __BORLANDC__
 #pragma comment( lib, "x:\\xrCoreB.lib"	)

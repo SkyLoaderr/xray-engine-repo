@@ -3,24 +3,12 @@
 ** Standard I/O (and system) library
 ** See Copyright Notice in lua.h
 */
-#include <xrCore.h>
+#include "stdafx.h"
+#pragma hdrstop
 
-
-
-#include <errno.h>
-#include <locale.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <time.h>
 #include "..\\src\\xr_print.h"
 
 #define liolib_c
-
-#include "lua.h"
-
-#include "lauxlib.h"
-#include "lualib.h"
 
 
 
