@@ -27,8 +27,13 @@ void	xrMemory::dbg_unregister	(void* _p)
 		}
 	}
 
-	if (u32(-1)==_found)	{ __asm int 3;	Debug.fatal("Memory allocation error"); }
-	else					{ debug_info[_found]=NULL; debug_info_update++;			}
+	if (u32(-1)==_found)	{ 
+		__asm int 3;	
+		Debug.fatal("Memory allocation error"); 
+	} else	{ 
+		debug_info[_found]	= NULL; 
+		debug_info_update++;
+	}
 
 	if (debug_info_update>1024)
 	{
