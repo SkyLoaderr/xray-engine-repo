@@ -18,8 +18,6 @@ namespace AI {
 	DEFINE_VECTOR	(float,						FLOAT_VECTOR,			FLOAT_IT);
 	DEFINE_VECTOR	(bool,						BOOL_VECTOR,			BOOL_IT);
 
-	const int	hashSize	= 32;
-
 	class	NodePath
 	{
 	public:
@@ -116,7 +114,7 @@ public:
 	}
 	IC	BYTE		ref_dec			(u32 ID)
 	{
- 		if (vfs && ID!=u32(-1))	return q_mark[ID] -= BYTE(1);	
+ 		if (vfs && ID!=u32(-1))		return q_mark[ID] -= BYTE(1);	
 		else						return BYTE(0);
 	}
 
