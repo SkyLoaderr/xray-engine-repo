@@ -16,12 +16,15 @@
 
 CBone::CBone()
 {
-	flags.zero	();
-    name[0]		= 0;
-    parent[0]	= 0;
-    wmap[0]		= 0;
-    rest_length	= 0;
-    ResetData	();
+	flags.zero		();
+    name[0]			= 0;
+    parent_name[0]	= 0;
+    wmap[0]			= 0;
+    rest_length		= 0;
+	index			= -1;
+    parent			= 0;
+
+    ResetData		();
 }
 
 CBone::~CBone()
@@ -51,7 +54,7 @@ void CBone::Save(IWriter& F)
     
 	F.open_chunk	(BONE_CHUNK_DEF);
 	F.w_stringZ		(name);
-	F.w_stringZ		(parent);
+	F.w_stringZ		(parent_name);
 	F.w_stringZ		(wmap);
     F.close_chunk	();
 
@@ -66,13 +69,13 @@ void CBone::Save(IWriter& F)
 
 void CBone::Load_0(IReader& F)
 {
-	F.r_stringZ	(name);
-	F.r_stringZ	(parent);
-	F.r_stringZ	(wmap);
-	F.r_fvector3(rest_offset);
-	F.r_fvector3(rest_rotate);
-	rest_length	= F.r_float();
-    Reset		();
+	F.r_stringZ		(name);
+	F.r_stringZ		(parent_name);
+	F.r_stringZ		(wmap);
+	F.r_fvector3	(rest_offset);
+	F.r_fvector3	(rest_rotate);
+	rest_length		= F.r_float();
+    Reset			();
 }
 
 void CBone::Load_1(IReader& F)
@@ -85,7 +88,7 @@ void CBone::Load_1(IReader& F)
     
 	R_ASSERT(F.find_chunk(BONE_CHUNK_DEF));
 	F.r_stringZ		(name);
-	F.r_stringZ		(parent);
+	F.r_stringZ		(parent_name);
 	F.r_stringZ		(wmap);
 
 	R_ASSERT(F.find_chunk(BONE_CHUNK_BIND_POSE));

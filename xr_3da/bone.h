@@ -7,6 +7,9 @@
 #include <lwhost.h>
 #endif
 
+// refs
+class CBone;
+
 #pragma pack( push,1 )
 enum EJointType
 {
@@ -79,92 +82,102 @@ struct SJointIKData
 
 class CBone
 {
-	string64		name;
-	string64		parent;
-	string64		wmap;
-	Fvector			rest_offset;
-	Fvector			rest_rotate;    // HPB format
-	float			rest_length;
+	string64			name;
+	string64			parent_name;
+	string64			wmap;
+	Fvector			    rest_offset;
+	Fvector			    rest_rotate;    // HPB format
+	float			    rest_length;
 
-	Fvector			mot_offset;
-	Fvector			mot_rotate;		// HPB format
-	float			mot_length;
+	Fvector			    mot_offset;
+	Fvector			    mot_rotate;		// HPB format
+	float			    mot_length;
 
-    Fmatrix			mot_transform;
-    Fmatrix			last_transform;
-    Fmatrix			last_i_transform;
-	int				parent_idx;
-
+    Fmatrix			    mot_transform;
+    Fmatrix			    last_transform;
+    Fmatrix			    last_i_transform;
+    
+    Fmatrix			    rest_transform;
+    Fmatrix			    rest_i_transform;
+public:
+	int				    index;
+    CBone*			    parent;
 public:
     // editor part
-    Flags8			flags;    
+    Flags8			    flags;    
 	enum{
-    	flSelected	= (1<<0),
+    	flSelected	    = (1<<0),
+        flCalculate	    = (1<<1)
     };
-    SJointIKData	IK_data;
-    string64		game_mtl;
-    SBoneShape		shape;
+    SJointIKData	    IK_data;
+    string64		    game_mtl;
+    SBoneShape		    shape;
 
-    float			mass;
-    Fvector			center_of_mass;
+    float			    mass;
+    Fvector			    center_of_mass;
 public:
-					CBone			();
-	virtual			~CBone			();
+					    CBone			();
+	virtual			    ~CBone			();
 
-	void			SetName			(const char* p){if(p) strcpy(name,p); strlwr(name); }
-	void			SetParent		(const char* p){if(p) strcpy(parent,p); strlwr(parent); }
-	void			SetWMap			(const char* p){if(p) strcpy(wmap,p);}
-	void			SetRestParams	(float length, const Fvector& offset, const Fvector& rotate){rest_offset.set(offset);rest_rotate.set(rotate);rest_length=length;};
+	void			    SetName			(const char* p){if(p) strcpy(name,p); strlwr(name); }
+	void			    SetParentName	(const char* p){if(p) strcpy(parent_name,p); strlwr(parent_name); }
+	void			    SetWMap			(const char* p){if(p) strcpy(wmap,p);}
+	void			    SetRestParams	(float length, const Fvector& offset, const Fvector& rotate){rest_offset.set(offset);rest_rotate.set(rotate);rest_length=length;};
 
-	const char*		Name			(){return name;}
-	const char*		Parent			(){return parent;}
-	const char*		WMap			(){return wmap;}
-    const Fvector&  Offset			(){return mot_offset;}
-    const Fvector&  Rotate			(){return mot_rotate;}
-    float			Length			(){return mot_length;}
-    IC Fmatrix&		MTransform		(){return mot_transform;}
-    IC Fmatrix&		LTransform		(){return last_transform;}
-    IC Fmatrix&		LITransform		(){return last_i_transform;}
-    IC int&			ParentIndex		(){return parent_idx;}
-    IC BOOL			IsRoot			(){return parent_idx==-1;}
+	const char*		    Name			(){return name;}
+	const char*		    ParentName		(){return parent_name;}
+	const char*		    WMap			(){return wmap;}
+    const Fvector&      Offset			(){return mot_offset;}
+    const Fvector&      Rotate			(){return mot_rotate;}
+    float			    Length			(){return mot_length;}
+    IC Fmatrix&			RTransform		(){return rest_transform;}
+    IC Fmatrix&			RITransform		(){return rest_i_transform;}
+    IC Fmatrix&		    MTransform		(){return mot_transform;}
+    IC Fmatrix&		    LTransform		(){return last_transform;}
+    IC Fmatrix&		    LITransform		(){return last_i_transform;}
+    IC int			    Index			(){return index;}
+    IC CBone*		    Parent			(){return parent;}
+    IC BOOL			    IsRoot			(){return (parent==0);}
 
-	void			Update			(const Fvector& T, const Fvector& R){mot_offset.set(T); mot_rotate.set(R); mot_length=rest_length;}
-    void			Reset			(){mot_offset.set(rest_offset); mot_rotate.set(rest_rotate); mot_length=rest_length;}
+	void			    Update			(const Fvector& T, const Fvector& R){mot_offset.set(T); mot_rotate.set(R); mot_length=rest_length;}
+    void			    Reset			(){mot_offset.set(rest_offset); mot_rotate.set(rest_rotate); mot_length=rest_length;}
 
-	void			Save			(IWriter& F);
-	void			Load_0			(IReader& F);
-	void			Load_1			(IReader& F);
+	void			    Save			(IWriter& F);
+	void			    Load_0			(IReader& F);
+	void			    Load_1			(IReader& F);
 
 #ifdef _LW_EXPORT
-	void			ParseBone		(LWItemID bone);
+	void			    ParseBone		(LWItemID bone);
 #endif
 
-	void			SaveData		(IWriter& F);
-	void			LoadData		(IReader& F);
-    void			ResetData		();
-    void			CopyData		(CBone* bone);
+	void			    SaveData		(IWriter& F);
+	void			    LoadData		(IReader& F);
+    void			    ResetData		();
+    void			    CopyData		(CBone* bone);
     
 #ifdef _EDITOR
-	Fvector&		get_rest_offset	(){return rest_offset;}
-	Fvector&		get_rest_rotate	(){return rest_rotate;}
-	float&			get_rest_length	(){return rest_length;}
+	Fvector&		    get_rest_offset	(){return rest_offset;}
+	Fvector&		    get_rest_rotate	(){return rest_rotate;}
+	float&			    get_rest_length	(){return rest_length;}
 
-	void			ShapeScale		(const Fvector& amount);
-	void			ShapeRotate		(const Fvector& amount);
-	void			ShapeMove		(const Fvector& amount);
+	void			    ShapeScale		(const Fvector& amount);
+	void			    ShapeRotate		(const Fvector& amount);
+	void			    ShapeMove		(const Fvector& amount);
 
-	void			BoneRotate		(const Fvector& axis, float angle);
+	void			    BoneRotate		(const Fvector& axis, float angle);
 
-	bool 			Pick			(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent);
+	bool 			    Pick			(float& dist, const Fvector& S, const Fvector& D, const Fmatrix& parent);
 
-    void			Select			(BOOL flag){flags.set(flSelected,flag);}
-    bool			Selected		(){return flags.is(flSelected);}
+    void			    Select			(BOOL flag){flags.set(flSelected,flag);}
+    bool			    Selected		(){return flags.is(flSelected);}
 
-    void			ClampByLimits	();
+    void			    ClampByLimits	();
 
-    const Fvector&  RestRotate		(){return rest_rotate;}
+    const Fvector&      RestRotate		(){return rest_rotate;}
+
+    void 			    ExportOGF		(IWriter& F);
 #endif
 };
-DEFINE_VECTOR		(CBone*,BoneVec,BoneIt);
+DEFINE_VECTOR		    (CBone*,BoneVec,BoneIt);
 
 #endif

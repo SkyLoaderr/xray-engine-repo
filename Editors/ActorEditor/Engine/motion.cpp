@@ -180,7 +180,8 @@ void CSMotion::CopyMotion(CSMotion* source){
     }
 }
 
-void CSMotion::Evaluate(int bone_idx, float t, Fvector& T, Fvector& R){
+void CSMotion::Evaluate(int bone_idx, float t, Fvector& T, Fvector& R)
+{
 	VERIFY(bone_idx<(int)bone_mots.size());
 	CEnvelope** envs = bone_mots[bone_idx].envs;
 	T.x = envs[ctPositionX]->Evaluate(t);
