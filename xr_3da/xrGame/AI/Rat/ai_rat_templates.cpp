@@ -98,7 +98,7 @@ void CAI_Rat::vfComputeNewPosition()
 	Level().AI.PackPosition	(QueryPos,vPosition);
 
 	if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
-		dwNewNode = Level().AI.q_Node(0,vPosition);
+		dwNewNode = Level().AI.q_Node(AI_NodeID,vPosition);
 		tpNewNode = Level().AI.Node(dwNewNode);
 	}
 	if (dwNewNode && Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
