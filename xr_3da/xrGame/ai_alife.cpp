@@ -533,7 +533,5 @@ void CAI_ALife::vfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 					tHumanParams.m_fCumulativeItemMass	= fItemMass;
 			}
 		}
-		else {
-		}
 	}
 }
