@@ -42,7 +42,7 @@ namespace CDB
 			};
 		};
 	public:
-		IC u32*			IDverts()		{ return verts;	}
+		IC u32			IDvert	(u32 ID)		{ return verts[ID];	}
 	};
 
 	// Build callback
