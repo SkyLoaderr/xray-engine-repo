@@ -4,7 +4,6 @@
 #include "alife_simulator.h"
 #include "xrserver_objects.h"
 #include "game_base.h"
-#include "level.h"
 #include "game_cl_base.h"
 #include "ai_space.h"
 #include "alife_object_registry.h"

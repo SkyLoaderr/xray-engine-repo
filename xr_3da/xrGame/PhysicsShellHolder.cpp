@@ -2,7 +2,6 @@
 #include "PhysicsShellHolder.h"
 #include "PhysicsShell.h"
 #include "xrMessages.h"
-#include "Level.h"
 #include "ph_shell_interface.h"
 #include "../skeletoncustom.h"
 

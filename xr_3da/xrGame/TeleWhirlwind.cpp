@@ -5,7 +5,6 @@
 #include "../level.h"
 #include "phdestroyable.h"
 #include "xrmessages.h"
-#include "Level.h"
 #include "../SkeletonCustom.h"
 CTeleWhirlwind ::CTeleWhirlwind () 
 {
@@ -88,7 +87,7 @@ bool		CTeleWhirlwindObject::		init(CTelekinesis* tele,CPhysicsShellHolder *obj, 
 void		CTeleWhirlwindObject::		raise_update			()
 {
 	
-	//u32 time=Level().timeServer();
+	//u32 time=Device.dwTimeGlobal;
 //	if (time_raise_started + 100000 < time) release();
 	
 }

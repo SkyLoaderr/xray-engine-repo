@@ -4,7 +4,6 @@
 #include "stdafx.h"
 #include "UISleepWnd.h"
 #include "../alife_space.h"
-#include "../level.h"
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -6,7 +6,6 @@
 #include "ui3dstatic.h"
 #include "../gameobject.h"
 #include "../HUDManager.h"
-#include "../Level.h"
 #include "../../fbasicvisual.h"
 
 //////////////////////////////////////////////////////////////////////

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "UIScriptWnd.h"
-#include "../Level.h"
 #include "../HudManager.h"
 #include "../script_space.h"
 #include <luabind/operator.hpp>

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "ai_monster_invisibility.h"
-#include "../level.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Реализация невидимости (мерцания)
@@ -52,7 +51,7 @@ bool CMonsterInvisibility::Switch (bool bVis)
 
 bool CMonsterInvisibility::Update () 
 {
-	timeCurrent = Level().timeServer();
+	timeCurrent = Device.dwTimeGlobal;
 
 	if (timeStartBlinking + timeBlinking > timeCurrent) {
 		if (timeLastBlink + timeBlinkInterval < timeCurrent) {

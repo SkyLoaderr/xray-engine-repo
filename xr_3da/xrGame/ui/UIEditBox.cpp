@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include <dinput.h>
 #include "uieditbox.h"
-#include "../Level.h"
 #include "../HUDManager.h"
 
 static u32 DILetters[] = { DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, 

@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include ".\uiradiobutton.h"
-#include "../Level.h"
 #include "../HUDManager.h"
 
 CUIRadioButton::CUIRadioButton(void)

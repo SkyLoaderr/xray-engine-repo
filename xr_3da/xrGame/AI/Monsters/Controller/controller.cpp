@@ -284,7 +284,7 @@ void CController::control_hit()
 	}
 
 	active_control_fx			= true;
-	time_control_hit_started	= Level().timeServer();
+	time_control_hit_started	= Device.dwTimeGlobal;
 
 }
 
@@ -303,7 +303,7 @@ void CController::UpdateCL()
 	
 	if (active_control_fx) {
 		u32 time_to_show	= 150;
-		float percent		= float((Level().timeServer() - time_control_hit_started)) / float(time_to_show);
+		float percent		= float((Device.dwTimeGlobal - time_control_hit_started)) / float(time_to_show);
 		float percent2		= 1 - (percent - TEXTURE_SIZE_PERCENT) / 2 ;
 
 		

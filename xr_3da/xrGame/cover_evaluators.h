@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "level.h"
 #include "restricted_object.h"
 #include "game_graph_space.h"
 

@@ -4,20 +4,17 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-
 #include "UIPdaMsgListItem.h"
 #include "../Entity.h"
 #include "../character_info.h"
-
-
-
 #include "UIInventoryUtilities.h"
-using namespace InventoryUtilities;
-
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "uicoloranimatorwrapper.h"
 
 #define PDA_MSG_MAINGAME_CHAR "maingame_pda_msg.xml"
+
+using namespace InventoryUtilities;
 
 CUIPdaMsgListItem::CUIPdaMsgListItem(void)
 {

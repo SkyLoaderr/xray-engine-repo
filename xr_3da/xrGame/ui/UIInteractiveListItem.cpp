@@ -6,7 +6,6 @@
 
 #include "StdAfx.h"
 #include "UIInteractiveListItem.h"
-#include "../Level.h"
 #include "../HUDManager.h"
 
 //=============================================================================

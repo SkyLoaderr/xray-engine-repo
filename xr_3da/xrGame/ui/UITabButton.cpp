@@ -9,7 +9,6 @@
 
 #include "StdAfx.h"
 #include "UITabButton.h"
-#include "../Level.h"
 #include "../HUDManager.h"
 
 CUITabButton::CUITabButton(){

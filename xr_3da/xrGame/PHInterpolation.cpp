@@ -2,11 +2,14 @@
 #include "PHInterpolation.h"
 #include "PHDynamicData.h"
 #include "Physics.h"
-#include "level.h"
 #include "MathUtils.h"
-CPHInterpolation::CPHInterpolation(){
-m_body=NULL;
-//fTimeDelta=0.f;
+
+extern CPHWorld *ph_world;
+
+CPHInterpolation::CPHInterpolation()
+{
+	m_body=NULL;
+//	fTimeDelta=0.f;
 }
 
 void CPHInterpolation::SetBody(dBodyID body){

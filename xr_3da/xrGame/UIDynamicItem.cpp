@@ -2,7 +2,6 @@
 #include "stdafx.h"
 #include "uidynamicitem.h"
 #include "hudmanager.h"
-#include "level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

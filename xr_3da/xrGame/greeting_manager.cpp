@@ -13,50 +13,50 @@
 const u32 FORGET_GREETING_TIME = 300000;
 
 struct CRemoveOldGreetingPredicate {
-	IC	bool	operator()	(const CGreetingManager::CGreeting &greeting) const
+	IC	bool	operator()	(const CGreetingManager::COldGreeting &greeting) const
 	{
-		return			(Device.dwTimeGlobal > greeting.m_time + FORGET_GREETING_TIME);
+		return					(Device.dwTimeGlobal > greeting.m_time + FORGET_GREETING_TIME);
 	}
 };
 
-IC	bool CGreetingManager::CGreeting::operator==(const CAI_Stalker *stalker) const
+IC	bool CGreetingManager::COldGreeting::operator==(const CAI_Stalker *stalker) const
 {
-	return				(m_object->ID() < stalker->ID());
+	return						(m_object->ID() < stalker->ID());
 }
 
 CGreetingManager::CGreetingManager	(CCustomMonster *object)
 {
-	VERIFY				(object);
-	m_object			= smart_cast<CAI_Stalker*>(object);
+	VERIFY						(object);
+	m_object					= smart_cast<CAI_Stalker*>(object);
 }
 
 void CGreetingManager::reload		(LPCSTR section)
 {
-	m_greetings.clear	();
+	m_old_greetings.clear		();
 }
 
 bool CGreetingManager::useful		(const CAI_Stalker *object) const
 {
-	return				(!old_greeting(object));
+	return						(!old_greeting(object));
 }
 
 float CGreetingManager::evaluate	(const CAI_Stalker *object) const
 {
-	return				(m_object->Position().distance_to_sqr(object->Position()));
+	return						(m_object->Position().distance_to_sqr(object->Position()));
 }
 
 IC	void CGreetingManager::remove_old_greetings	()
 {
-	GREETINGS::iterator	I = remove_if(m_greetings.begin(),m_greetings.end(),CRemoveOldGreetingPredicate());
-	m_greetings.erase	(I,m_greetings.end());
+	OLD_GREETINGS::iterator		I = remove_if(m_old_greetings.begin(),m_old_greetings.end(),CRemoveOldGreetingPredicate());
+	m_old_greetings.erase		(I,m_old_greetings.end());
 }
 
-IC	const CGreetingManager::CGreeting *CGreetingManager::old_greeting	(const CAI_Stalker *stalker) const
+IC	const CGreetingManager::COldGreeting *CGreetingManager::old_greeting	(const CAI_Stalker *stalker) const
 {
-	GREETINGS::const_iterator	I = std::find(m_greetings.begin(),m_greetings.end(),stalker);
-	if (I == m_greetings.end())
-		return			(0);
-	return				(&*I);
+	OLD_GREETINGS::const_iterator	I = std::find(m_old_greetings.begin(),m_old_greetings.end(),stalker);
+	if (I == m_old_greetings.end())
+		return					(0);
+	return						(&*I);
 }
 
 void CGreetingManager::update		()
@@ -64,14 +64,14 @@ void CGreetingManager::update		()
 	if (!m_object)
 		return;
 
-	remove_old_greetings();
+	remove_old_greetings		();
 
-	inherited::update	();
+	inherited::update			();
 }
 
 void CGreetingManager::process_greeting	()
 {
-	VERIFY					(selected());
-	VERIFY					(!old_greeting(selected()));
-	m_greetings.push_back	(CGreeting(selected(),Device.dwTimeGlobal));
+	VERIFY						(selected());
+	VERIFY						(!old_greeting(selected()));
+	m_old_greetings.push_back	(COldGreeting(selected(),Device.dwTimeGlobal));
 }

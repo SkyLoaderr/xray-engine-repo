@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "xrGameSpyServer.h"
 #include "xrGameSpyServer_callbacks.h"
-
 #include "xrMessages.h"
-#include "level.h"
 
 //------------------------------ Available --------------------------
 void			xrGameSpyServer::CheckAvailableServices		()

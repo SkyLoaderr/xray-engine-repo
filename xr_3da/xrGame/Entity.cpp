@@ -305,7 +305,7 @@ void CEntity::reload			(LPCSTR section)
 
 void CEntity::set_death_time	()
 {
-	m_level_death_time	= Level().timeServer();
+	m_level_death_time	= Device.dwTimeGlobal;
 	m_game_death_time	= Level().GetGameTime();
 }
 

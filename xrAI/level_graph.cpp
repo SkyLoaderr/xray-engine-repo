@@ -83,7 +83,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 			// so, our node corresponds to the position
 #ifdef _DEBUG
 //			if (valid_vertex_id(current_node_id))
-//				Msg					("%6d No search (%d,[%f][%f][%f],[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position),VPUSH(vertex_position(current_node_id)));
+//				Msg					("%6d No search (%d,[%f][%f][%f],[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position),VPUSH(vertex_position(current_node_id)));
 #endif
 #ifndef AI_COMPILER
 			Device.Statistic.AI_Node.End();
@@ -96,7 +96,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 		// try to search it with O(logN) time algorithm
 #ifdef _DEBUG
 //		if (valid_vertex_id(current_node_id))
-//			Msg						("%6d Logarithmic search (%d,[%f][%f][%f],[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position),VPUSH(vertex_position(current_node_id)));
+//			Msg						("%6d Logarithmic search (%d,[%f][%f][%f],[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position),VPUSH(vertex_position(current_node_id)));
 #endif
 		u32						_vertex_id = vertex_id(position);
 		if (valid_vertex_id(_vertex_id)) {
@@ -115,7 +115,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 		// so, we do not have a correct current node
 		// performing very slow full search
 #ifdef _DEBUG
-//		Msg					("%6d Full search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+//		Msg					("%6d Full search (%d,[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position));
 #endif
 		id					= vertex(position);
 		VERIFY				(valid_vertex_id(id));
@@ -130,7 +130,7 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position) const
 	// try to search the nearest one iteratively
 
 #ifdef _DEBUG
-//	Msg					("%6d Neighbour search (%d,[%f][%f][%f])",Level().timeServer(),current_node_id,VPUSH(position));
+//	Msg					("%6d Neighbour search (%d,[%f][%f][%f])",Device.dwTimeGlobal,current_node_id,VPUSH(position));
 #endif
 	valid_vertex_position(position);
 	SContour			_contour;

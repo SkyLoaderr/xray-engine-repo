@@ -3,8 +3,8 @@
 #include "PhysicsShell.h"
 #include "Physics.h"
 #include "xrserver_objects_alife.h"
-#include "level.h"
 #include "../skeletonanimated.h"
+#include "../xr_collide_form.h"
 
 CPhysicObject::CPhysicObject(void) 
 {
@@ -12,13 +12,10 @@ CPhysicObject::CPhysicObject(void)
 	m_mass = 10.f;
 
 }
+
 CPhysicObject::~CPhysicObject(void)
 {
-
 }
-
-
-
 
 BOOL CPhysicObject::net_Spawn(CSE_Abstract* DC)
 {

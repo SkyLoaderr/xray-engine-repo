@@ -58,7 +58,7 @@ IC	void CSoundMemoryManager::update_sound_threshold			()
 		m_self_sound_factor*
 		m_sound_threshold*
 		exp(
-			float(Level().timeServer() - m_last_sound_time)/
+			float(Device.dwTimeGlobal - m_last_sound_time)/
 			float(m_sound_decrease_quant)*
 			log(m_decrease_factor)
 		),
@@ -94,7 +94,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	CObject					*self = m_object;
 	VERIFY					(self);
 #ifndef SILENCE
-	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Level().timeServer(),sound_type,object ? *object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
+	Msg						("%s (%d) - sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),Device.dwTimeGlobal,sound_type,object ? *object->cName() : "world",Device.dwTimeGlobal,position.x,position.y,position.z,sound_power);
 #endif
 
 	CScriptEntity			*script_monster = m_object;
@@ -119,7 +119,7 @@ void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const 
 	if (sound_power >= m_sound_threshold)
 		add					(object,sound_type,position,sound_power);
 
-	m_last_sound_time		= Level().timeServer();
+	m_last_sound_time		= Device.dwTimeGlobal;
 	m_sound_threshold		= _max(m_sound_threshold,sound_power);
 }
 
@@ -164,7 +164,7 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 #endif
 
 #ifndef SILENCE
-	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),sound_type,object ? object->cName() : "world",Level().timeServer(),position.x,position.y,position.z,sound_power);
+	Msg							("* %s - ref_sound type %x from %s at %d in (%.2f,%.2f,%.2f) with power %.2f",*self->cName(),sound_type,object ? object->cName() : "world",Device.dwTimeGlobal,position.x,position.y,position.z,sound_power);
 #endif
 
 	const CGameObject		*game_object = smart_cast<const CGameObject*>(object);
@@ -178,7 +178,7 @@ void CSoundMemoryManager::add			(const CObject *object, int sound_type, const Fv
 		CSoundObject			sound_object;
 
 		sound_object.fill		(game_object,self,ESoundTypes(sound_type),sound_power);
-		sound_object.m_first_level_time	= Level().timeServer();
+		sound_object.m_first_level_time	= Device.dwTimeGlobal;
 		sound_object.m_first_game_time	= Level().GetGameTime();
 
 		VERIFY					(m_max_sound_count);

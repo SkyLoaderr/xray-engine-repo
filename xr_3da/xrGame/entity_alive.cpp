@@ -211,11 +211,11 @@ void CEntityAlive::shedule_Update(u32 dt)
 	if(Local() && !g_Alive() && !AlreadyDie())
 	{
 		if(conditions().GetWhoHitLastTime()) {
-//			Msg			("%6d : KillEntity from CEntityAlive (using who hit last time) for object %s",Level().timeServer(),*cName());
+//			Msg			("%6d : KillEntity from CEntityAlive (using who hit last time) for object %s",Device.dwTimeGlobal,*cName());
 			KillEntity(conditions().GetWhoHitLastTime());
 		}
 		else {
-//			Msg			("%6d : KillEntity from CEntityAlive for object %s",Level().timeServer(),*cName());
+//			Msg			("%6d : KillEntity from CEntityAlive for object %s",Device.dwTimeGlobal,*cName());
 			KillEntity(this);
 		}
 	}

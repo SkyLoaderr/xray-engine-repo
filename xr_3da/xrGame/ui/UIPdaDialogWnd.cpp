@@ -10,7 +10,6 @@
 #include "../character_info.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#include "../Level.h"
 
 //////////////////////////////////////////////////////////////////////////
 

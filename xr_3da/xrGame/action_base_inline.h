@@ -71,7 +71,7 @@ void CBaseAction::initialize		()
 	if (m_use_log && xr_strlen(m_action_name))
 		debug_log		(eActionStateInitialized);
 #endif
-	m_start_level_time	= Level().timeServer();
+	m_start_level_time	= Device.dwTimeGlobal;
 	m_start_game_time	= Level().GetGameTime();
 }
 
@@ -98,7 +98,7 @@ void CBaseAction::finalize		()
 TEMPLATE_SPECIALIZATION
 bool CBaseAction::completed		() const
 {
-	return				(m_start_level_time + m_inertia_time <= Level().timeServer());
+	return				(m_start_level_time + m_inertia_time <= Device.dwTimeGlobal);
 }
 
 TEMPLATE_SPECIALIZATION
@@ -131,23 +131,23 @@ IC	void CBaseAction::debug_log			(const EActionStates state_state) const
 {
 	switch (state_state) {
 		case eActionStateConstructed : {
-			Msg			("[%6d] action %s is constructed",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is constructed",Device.dwTimeGlobal,m_action_name);
 			break;
 		}
 		case eActionStateSetup : {
-			Msg			("[%6d] action %s is setup",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is setup",Device.dwTimeGlobal,m_action_name);
 			break;
 		}
 		case eActionStateInitialized : {
-			Msg			("[%6d] action %s is initialized",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is initialized",Device.dwTimeGlobal,m_action_name);
 			break;
 		}
 		case eActionStateExecuted : {
-			Msg			("[%6d] action %s is executed",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is executed",Device.dwTimeGlobal,m_action_name);
 			break;
 		}
 		case eActionStateFinalized : {
-			Msg			("[%6d] action %s is finalized",Level().timeServer(),m_action_name);
+			Msg			("[%6d] action %s is finalized",Device.dwTimeGlobal,m_action_name);
 			break;
 		}
 		default : NODEFAULT;

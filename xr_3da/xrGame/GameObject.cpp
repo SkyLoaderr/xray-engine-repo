@@ -346,7 +346,7 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 //	u64								stop = CPU::GetCycleCount();
 
 #ifdef _DEBUG
-//	Msg								("%6d Searching for node for object %s (%.5f seconds)",Level().timeServer(),*cName(),float(s64(stop - start))*CPU::cycles2seconds);
+//	Msg								("%6d Searching for node for object %s (%.5f seconds)",Device.dwTimeGlobal,*cName(),float(s64(stop - start))*CPU::cycles2seconds);
 #endif
 	VERIFY							(ai().level_graph().valid_vertex_id(l_dwNewLevelVertexID));
 

@@ -6,7 +6,6 @@
 #pragma once
 #include "UIListItem.h"
 #include "..\InventoryOwner.h"
-#include "../level.h"
 
 class CUIPdaMsgListItem : public CUIListItem
 {

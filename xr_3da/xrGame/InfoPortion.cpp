@@ -5,17 +5,14 @@
 
 #include "stdafx.h"
 #include "InfoPortion.h"
-#include "level.h"
 #include "gameobject.h"
 #include "encyclopedia_article.h"
 #include "gametask.h"
-
 #include "ai_space.h"
 #include "alife_simulator.h"
 #include "alife_story_registry.h"
 #include "xrServer_Objects_ALife.h"
 #include "script_engine.h"
-
 #include "ui\uixmlinit.h"
 
 //////////////////////////////////////////////////////////////////////////

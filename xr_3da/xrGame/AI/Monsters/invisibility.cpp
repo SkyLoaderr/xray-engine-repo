@@ -1,7 +1,5 @@
 #include "stdafx.h"
 #include "invisibility.h"
-#include "../level.h"
-
 
 void CInvisibility::reinit()
 {
@@ -41,7 +39,7 @@ void CInvisibility::on_deactivate()
 void CInvisibility::start_blink()
 {
 	m_blink				= true;
-	m_time_start_blink	= Level().timeServer();
+	m_time_start_blink	= Device.dwTimeGlobal;
 	m_time_last_blink	= 0;
 }
 
@@ -57,7 +55,7 @@ void CInvisibility::update_blink()
 {
 	if (!m_blink) return;
 	
-	u32 cur_time = Level().timeServer();
+	u32 cur_time = Device.dwTimeGlobal;
 
 	// check for whole blink time
 	if (m_time_start_blink + timeBlink < cur_time) {

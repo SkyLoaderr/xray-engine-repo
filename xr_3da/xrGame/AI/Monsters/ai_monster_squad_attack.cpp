@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ai_monster_squad.h"
 #include "../entity.h"
-#include "../level.h"
 
 void CMonsterSquad::ProcessAttack()
 {
@@ -368,7 +367,7 @@ void CMonsterSquad::Attack_AssignTargetDir(ENTITY_VEC &members, CEntity *enemy)
 //	}
 //
 //	// ѕройти по всем лини€м и заполнить таргеты у npc
-//	u32 cur_time = Level().timeServer();
+//	u32 cur_time = Device.dwTimeGlobal;
 //
 //	for (u32 i = 0; i < lines.size(); i++){
 //		ENTITY_STATE_MAP_IT	it	= states.find(lines[i].pE);

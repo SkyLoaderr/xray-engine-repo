@@ -87,7 +87,7 @@ void CAI_Stalker::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 
 	if (g_Alive()) {
 		CCoverPoint				*cover = agent_manager().member(this).cover();
 		if (cover && who && (who->ID() != ID()) && !fis_zero(amount) && brain().affect_cover())
-			agent_manager().add_danger_cover	(cover,Level().timeServer());
+			agent_manager().add_danger_cover	(cover,Device.dwTimeGlobal);
 
 		// Play hit-ref_sound
 		CEntityAlive		*entity_alive = smart_cast<CEntityAlive*>(who);

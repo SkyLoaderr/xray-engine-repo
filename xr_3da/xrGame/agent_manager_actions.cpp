@@ -116,7 +116,7 @@ CAgentManagerActionKillEnemy::CAgentManagerActionKillEnemy	(CAgentManager *objec
 
 void CAgentManagerActionKillEnemy::initialize		()
 {
-	m_level_time					= Level().timeServer() + 10000;
+	m_level_time					= Device.dwTimeGlobal + 10000;
 	m_object->clear_danger_covers	();
 }
 
@@ -138,8 +138,8 @@ void CAgentManagerActionKillEnemy::execute			()
 		(*I).order_type				(AgentManager::eOrderTypeNoOrder);
 #else
 		if ((*I).object().enemy())
-			Msg						("%6d : %s vs %s",Level().timeServer(),*(*I).object().cName(),*(*I).object().enemy()->cName());
-		if (m_level_time >= Level().timeServer()) {
+			Msg						("%6d : %s vs %s",Device.dwTimeGlobal,*(*I).object().cName(),*(*I).object().enemy()->cName());
+		if (m_level_time >= Device.dwTimeGlobal) {
 			(*I).order_type			(AgentManager::eOrderTypeAction);
 			(*I).action				(CSetupAction(0.f,0));
 			(*I).action().movement().set_level_dest_vertex_id((*I).object().ai_location().level_vertex_id());

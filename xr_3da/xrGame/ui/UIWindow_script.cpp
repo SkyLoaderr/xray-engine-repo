@@ -3,7 +3,6 @@
 #include "UIFrameWindow.h"
 #include "UIFrameLineWnd.h"
 #include "UIDialogWnd.h"
-#include "../level.h"
 #include "../HUDManager.h"
 #include "../script_space.h"
 #include <luabind\adopt_policy.hpp>

@@ -128,7 +128,7 @@ TEMPLATE_SPECIALIZATION
 bool CStateMonsterAttackAbstract::check_find_enemy_state()
 {
 	// check state find enemy
-	if (object->EnemyMan.get_enemy_time_last_seen() + FIND_ENEMY_DELAY < Level().timeServer()) return true;
+	if (object->EnemyMan.get_enemy_time_last_seen() + FIND_ENEMY_DELAY < Device.dwTimeGlobal) return true;
 	return false;
 }
 

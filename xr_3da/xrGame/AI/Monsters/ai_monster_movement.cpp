@@ -233,7 +233,7 @@ float CMonsterMovement::get_path_angle()
 
 bool CMonsterMovement::is_path_built()
 {
-	return (!path_completed() && (detail().time_path_built() >= Level().timeServer()));
+	return (!path_completed() && (detail().time_path_built() >= Device.dwTimeGlobal));
 }
 
 void CMonsterMovement::set_velocity_from_path() 

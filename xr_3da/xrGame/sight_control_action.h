@@ -9,7 +9,6 @@
 #pragma once
 
 #include "sight_action.h"
-#include "level.h"
 
 class CSightControlAction : public CSightAction {
 protected:

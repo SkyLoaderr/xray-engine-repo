@@ -22,7 +22,7 @@ void CPoltergeist::ProcessTelekinesis(const CObject *target)
 
 	CTelekinesis::activate(obj,1.5f, 2.f, 5000);
 
-	time_tele_start = Level().timeServer();
+	time_tele_start = Device.dwTimeGlobal;
 	tele_enemy		= target;
 	tele_object		= obj;
 }
@@ -32,7 +32,7 @@ void CPoltergeist::UpdateTelekinesis()
 {
 	if (!CTelekinesis::is_active()) return;
 	if (!tele_enemy) return;
-	if (time_tele_start + TIME_TO_HOLD > Level().timeServer()) return;
+	if (time_tele_start + TIME_TO_HOLD > Device.dwTimeGlobal) return;
 	
 	Fvector enemy_pos = tele_enemy->Position();
 	enemy_pos.y += 5 * tele_enemy->Radius();

@@ -22,12 +22,12 @@ IC	float CSightControlAction::weight			() const
 
 IC	void CSightControlAction::initialize		()
 {
-	m_start_time		= Level().timeServer();
+	m_start_time		= Device.dwTimeGlobal;
 }
 
 IC	bool CSightControlAction::completed			() const
 {
-	return				(Level().timeServer() - m_start_time >= m_inertia_time);
+	return				(Device.dwTimeGlobal - m_start_time >= m_inertia_time);
 }
 
 IC	bool CSightControlAction::use_torso_look	() const

@@ -68,7 +68,7 @@ void CPlanner::update				()
 	// printing solution
 	if (m_use_log) {
 		if (m_solution_changed) {
-			Msg						("%6d : Solution for object %s [%d vertices searched]",Level().timeServer(),object_name(),ai().graph_engine().solver_algorithm().data_storage().get_visited_node_count());
+			Msg						("%6d : Solution for object %s [%d vertices searched]",Device.dwTimeGlobal,object_name(),ai().graph_engine().solver_algorithm().data_storage().get_visited_node_count());
 			for (int i=0; i<(int)solution().size(); ++i)
 				Msg					("%s",action2string(solution()[i]));
 		}
@@ -81,7 +81,7 @@ void CPlanner::update				()
 		show					();
 		{
 			Msg					("! ERROR : there is no action sequence, which can transfer current world state to the target one");
-			Msg					("Time : %6d",Level().timeServer());
+			Msg					("Time : %6d",Device.dwTimeGlobal);
 			Msg					("Object : %s",object_name());
 			Msg					("Current world state :");
 			EVALUATOR_MAP::const_iterator	I = evaluators().begin();

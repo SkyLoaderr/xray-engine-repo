@@ -12,7 +12,6 @@
 #include "stdafx.h"
 #include "UIFrameLine.h"
 #include "../hudmanager.h"
-#include "../level.h"
 
 //////////////////////////////////////////////////////////////////////////
 

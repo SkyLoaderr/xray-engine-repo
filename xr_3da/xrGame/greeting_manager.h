@@ -16,11 +16,11 @@ public:
 	typedef CObjectManager<const CAI_Stalker>	inherited;
 
 public:
-	struct CGreeting {
+	struct COldGreeting {
 		const CAI_Stalker	*m_object;
 		u32					m_time;
 
-		IC		CGreeting	(const CAI_Stalker *stalker, u32 time)
+		IC		COldGreeting(const CAI_Stalker *stalker, u32 time)
 		{
 			VERIFY			(stalker);
 			m_object		= stalker;
@@ -31,14 +31,14 @@ public:
 	};
 
 public:
-	typedef xr_vector<CGreeting>				GREETINGS;
+	typedef xr_vector<COldGreeting>				OLD_GREETINGS;
 
 protected:
 	CAI_Stalker				*m_object;
-	GREETINGS				m_greetings;
+	OLD_GREETINGS			m_old_greetings;
 
 protected:
-	IC		const CGreeting	*old_greeting		(const CAI_Stalker *stalker) const;
+	IC	const COldGreeting	*old_greeting		(const CAI_Stalker *stalker) const;
 	IC		void			remove_old_greetings();
 
 public:

@@ -3,7 +3,6 @@
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
 #include "PHContactBodyEffector.h"
-#include "level.h"
 #include "gamemtllib.h"
 #include "gameobject.h"
 #include "PhysicsShellHolder.h"
@@ -17,6 +16,7 @@
 #pragma warning(default:4267)
 #pragma warning(default:4995)
 
+extern CPHWorld *ph_world;
 ///////////////////////////////////////////////////////////////////
 
 #include "ExtendedGeom.h"

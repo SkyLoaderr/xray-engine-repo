@@ -42,7 +42,7 @@ void CStalkerActionSolveZonePuzzle::initialize	()
 {
 	inherited::initialize			();
 
-	m_stop_weapon_handling_time		= Level().timeServer();
+	m_stop_weapon_handling_time		= Device.dwTimeGlobal;
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
 		m_stop_weapon_handling_time	+= ::Random32.random(30000) + 30000;
 
@@ -71,7 +71,7 @@ void CStalkerActionSolveZonePuzzle::finalize	()
 void CStalkerActionSolveZonePuzzle::execute		()
 {
 	inherited::execute				();
-	if (Level().timeServer() >= m_stop_weapon_handling_time)
+	if (Device.dwTimeGlobal >= m_stop_weapon_handling_time)
 		if (!object().best_weapon())
 			object().CObjectHandler::set_goal	(eObjectActionIdle);
 		else

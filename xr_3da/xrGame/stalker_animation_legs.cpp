@@ -76,15 +76,15 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 	if (forward_direction) {
 		// moving forward
 		if (eMovementDirectionForward == m_movement_direction)
-			m_direction_start_time	= Level().timeServer();
+			m_direction_start_time	= Device.dwTimeGlobal;
 		else
 			if (eMovementDirectionForward != m_desirable_direction) {
-				m_direction_start_time	= Level().timeServer();
+				m_direction_start_time	= Device.dwTimeGlobal;
 				m_desirable_direction	= eMovementDirectionForward;
 			}
 			else
-				if ((Level().timeServer() - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
-					m_direction_start_time	= Level().timeServer();
+				if ((Device.dwTimeGlobal - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
+					m_direction_start_time	= Device.dwTimeGlobal;
 					m_movement_direction	= eMovementDirectionForward;
 				}
 	}
@@ -103,45 +103,45 @@ const CAnimationPair *CStalkerAnimationManager::assign_legs_animation	()
 			if (left) {
 				// moving right, looking left
 				if (eMovementDirectionRight == m_movement_direction)
-					m_direction_start_time	= Level().timeServer();
+					m_direction_start_time	= Device.dwTimeGlobal;
 				else
 					if (eMovementDirectionRight != m_desirable_direction) {
-						m_direction_start_time	= Level().timeServer();
+						m_direction_start_time	= Device.dwTimeGlobal;
 						m_desirable_direction	= eMovementDirectionRight;
 					}
 					else
-						if ((Level().timeServer() - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
-							m_direction_start_time	= Level().timeServer();
+						if ((Device.dwTimeGlobal - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
+							m_direction_start_time	= Device.dwTimeGlobal;
 							m_movement_direction	= eMovementDirectionRight;
 						}
 			}
 			else {
 				// moving left, looking right
 				if (eMovementDirectionLeft == m_movement_direction)
-					m_direction_start_time	= Level().timeServer();
+					m_direction_start_time	= Device.dwTimeGlobal;
 				else
 					if (eMovementDirectionLeft != m_desirable_direction) {
-						m_direction_start_time	= Level().timeServer();
+						m_direction_start_time	= Device.dwTimeGlobal;
 						m_desirable_direction	= eMovementDirectionLeft;
 					}
 					else
-						if ((Level().timeServer() - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
-							m_direction_start_time	= Level().timeServer();
+						if ((Device.dwTimeGlobal - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
+							m_direction_start_time	= Device.dwTimeGlobal;
 							m_movement_direction	= eMovementDirectionLeft;
 						}
 			}
 		else {
 			// moving back
 			if (eMovementDirectionBack == m_movement_direction)
-				m_direction_start_time	= Level().timeServer();
+				m_direction_start_time	= Device.dwTimeGlobal;
 			else
 				if (eMovementDirectionBack != m_desirable_direction) {
-					m_direction_start_time	= Level().timeServer();
+					m_direction_start_time	= Device.dwTimeGlobal;
 					m_desirable_direction	= eMovementDirectionBack;
 				}
 				else
-					if ((Level().timeServer() - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
-						m_direction_start_time	= Level().timeServer();
+					if ((Device.dwTimeGlobal - m_direction_start_time) > m_animation_switch_interval*fAnimationSwitchFactor) {
+						m_direction_start_time	= Device.dwTimeGlobal;
 						m_movement_direction	= eMovementDirectionBack;
 					}
 		}

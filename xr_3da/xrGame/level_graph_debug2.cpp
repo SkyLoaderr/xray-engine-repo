@@ -36,6 +36,7 @@
 #include "memory_manager.h"
 #include "enemy_manager.h"
 #include "memory_space.h"
+#include "level.h"
 #include "ai_object_location.h"
 #include "movement_manager.h"
 
@@ -1004,7 +1005,7 @@ void CLevelGraph::build_detail_path()
 	}
 	else {
 		if (compute_path(level_graph,start,dest,start_set,dest_set,&m_tpTravelLine)) {
-			Msg	("%d : ok, %d points",Level().timeServer(),m_tpTravelLine.size());
+			Msg	("%d : ok, %d points",Device.dwTimeGlobal,m_tpTravelLine.size());
 #ifndef AI_COMPILER
 			Device.Statistic.TEST0.End		();
 #endif

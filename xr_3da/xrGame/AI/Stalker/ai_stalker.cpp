@@ -481,7 +481,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 		else
 			if (!m_demo_mode && (Device.dwFrame > spawn_time() + g_AI_inactive_time))
 				Think					();
-		m_dwLastUpdateTime				= Level().timeServer();
+		m_dwLastUpdateTime				= Device.dwTimeGlobal;
 		Device.Statistic.AI_Think.End	();
 #ifndef IMPORTANT_BUILD
 		Engine.Sheduler.Slice			();
@@ -531,7 +531,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 	// inventory update
 	if (GetLevelDeathTime() && (inventory().TotalWeight() > 0)) {
 		CWeapon *tpWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());
-		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !hammer_is_clutched() || (Level().timeServer() - GetLevelDeathTime() > 500)) {
+		if (!tpWeapon || !tpWeapon->GetAmmoElapsed() || !hammer_is_clutched() || (Device.dwTimeGlobal - GetLevelDeathTime() > 500)) {
 			xr_vector<CInventorySlot>::iterator I = inventory().m_slots.begin(), B = I;
 			xr_vector<CInventorySlot>::iterator E = inventory().m_slots.end();
 			for ( ; I != E; ++I)
@@ -655,25 +655,25 @@ void CAI_Stalker::OnRender			()
 void CAI_Stalker::Think			()
 {
 	try {
-		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
+		brain().update			(Device.dwTimeGlobal - m_dwLastUpdateTime);
 	}
 	catch (std::string &message) {
 		Msg						("! Expression \"%s\"",message.c_str());
 		brain().setup			(this);
-		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
+		brain().update			(Device.dwTimeGlobal - m_dwLastUpdateTime);
 	}
 	catch(...) {
 		brain().setup			(this);
-		brain().update			(Level().timeServer() - m_dwLastUpdateTime);
+		brain().update			(Device.dwTimeGlobal - m_dwLastUpdateTime);
 	}
 
 	try {
-		movement().update		(Level().timeServer() - m_dwLastUpdateTime);
+		movement().update		(Device.dwTimeGlobal - m_dwLastUpdateTime);
 	}
 	catch(...) {
 		
 		movement().initialize	();
-		movement().update		(Level().timeServer() - m_dwLastUpdateTime);
+		movement().update		(Device.dwTimeGlobal - m_dwLastUpdateTime);
 	}
 
 	try {

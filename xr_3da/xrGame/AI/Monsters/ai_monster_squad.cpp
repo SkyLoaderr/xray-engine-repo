@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "ai_monster_squad.h"
 #include "../entity.h"
-#include "../level.h"
 
 void CMonsterSquad::RegisterMember(CEntity *pE)
 {

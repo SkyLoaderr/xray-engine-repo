@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../../../skeletoncustom.h"
-#include "../../../level.h"
 #include "../../../actor.h"
 #include "../../../../CameraBase.h"
 

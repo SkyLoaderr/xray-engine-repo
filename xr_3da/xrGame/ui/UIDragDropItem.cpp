@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "UIDragDropItem.h"
-#include "../Level.h"
 #include "../HUDManager.h"
 
 

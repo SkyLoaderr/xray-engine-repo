@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "UIButton.h"
-#include "../Level.h"
 #include "../HUDManager.h"
 
 #define PUSH_OFFSET_RIGHT 2

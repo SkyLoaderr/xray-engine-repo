@@ -187,8 +187,8 @@ void CSightManager::Exec_Look		(float dt)
 	float							fSpeedFactor = 1.f;
 
 #ifdef SIGHT_DEBUG
-//	Msg								("%6d BEFORE BODY [%f] -> [%f]",Level().timeServer(),object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
-//	Msg								("%6d BEFORE HEAD [%f] -> [%f]",Level().timeServer(),object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
+//	Msg								("%6d BEFORE BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+//	Msg								("%6d BEFORE HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
 	vfValidateAngleDependency		(object().movement().m_body.current.yaw,object().movement().m_body.target.yaw,object().movement().m_head.current.yaw);
@@ -210,8 +210,8 @@ void CSightManager::Exec_Look		(float dt)
 	object().movement().m_head.current.pitch	= angle_normalize_signed	(object().movement().m_head.current.pitch);
 
 #ifdef SIGHT_DEBUG
-//	Msg								("%6d AFTER  BODY [%f] -> [%f]",Level().timeServer(),object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
-//	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Level().timeServer(),object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
+//	Msg								("%6d AFTER  BODY [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
+//	Msg								("%6d AFTER  HEAD [%f] -> [%f]",Device.dwTimeGlobal,object().movement().m_head.current.yaw,object().movement().m_head.target.yaw);
 #endif
 
 	Fmatrix							mXFORM;

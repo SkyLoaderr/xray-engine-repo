@@ -21,14 +21,14 @@ void CSightAction::execute		()
 		case SightManager::eSightTypeCurrentDirection : {
 			object().movement().m_head.target	= object().movement().m_head.current;
 #ifdef SIGHT_TEST
-			Msg					("%6d eSightTypeCurrentDirection",Level().timeServer());
+			Msg					("%6d eSightTypeCurrentDirection",Device.dwTimeGlobal);
 #endif
 			break;
 		}
 		case SightManager::eSightTypePathDirection : {
 			object().sight().SetDirectionLook();
 #ifdef SIGHT_TEST
-			Msg					("%6d eSightTypePathDirection",Level().timeServer());
+			Msg					("%6d eSightTypePathDirection",Device.dwTimeGlobal);
 #endif
 			break;
 		}
@@ -37,7 +37,7 @@ void CSightAction::execute		()
 			object().movement().m_head.target.yaw		*= -1;
 			object().movement().m_head.target.pitch	*= -1;
 #ifdef SIGHT_TEST
-			Msg					("%6d eSightTypeDirection",Level().timeServer());
+			Msg					("%6d eSightTypeDirection",Device.dwTimeGlobal);
 #endif
 			break;
 		}
@@ -47,7 +47,7 @@ void CSightAction::execute		()
 			else
 				object().sight().SetPointLookAngles		(m_vector3d,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 #ifdef SIGHT_TEST
-			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFirePosition" : "eSightTypePosition");
+			Msg					("%6d %s",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFirePosition" : "eSightTypePosition");
 #endif
 			break;
 		}
@@ -61,7 +61,7 @@ void CSightAction::execute		()
 			else
 				object().sight().SetPointLookAngles		(look_pos,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 #ifdef SIGHT_TEST
-			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFireObject" : "eSightTypeObject");
+			Msg					("%6d %s",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFireObject" : "eSightTypeObject");
 #endif
 			break;
 		}
@@ -71,7 +71,7 @@ void CSightAction::execute		()
 			else
 				object().sight().SetLessCoverLook(m_object->ai_location().level_vertex(),m_path);
 #ifdef SIGHT_TEST
-			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFireCover" : "eSightTypeCover");
+			Msg					("%6d %s",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFireCover" : "eSightTypeCover");
 #endif
 			break;
 		}
@@ -83,7 +83,7 @@ void CSightAction::execute		()
 				object().sight().SetLessCoverLook(m_object->ai_location().level_vertex(),m_path);
 			object().movement().m_head.target.pitch	= PI_DIV_4;
 #ifdef SIGHT_TEST
-			Msg					("%6d %s",Level().timeServer(),m_torso_look ? "eSightTypeFireSearch" : "eSightTypeSearch");
+			Msg					("%6d %s",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFireSearch" : "eSightTypeSearch");
 #endif
 			break;
 		}

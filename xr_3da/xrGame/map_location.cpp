@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "map_location.h"
-
 #include "level.h"
 #include "ai_space.h"
 #include "game_graph.h"
-
 #include "xrServer.h"
 #include "xrServer_Objects_ALife.h"
 

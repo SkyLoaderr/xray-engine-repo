@@ -54,7 +54,7 @@ IC	void CMemoryObject<T>::fill				(const T *game_object, const T *self)
 	m_last_game_time		= m_game_time;
 	m_last_level_time		= m_level_time;
 	m_game_time				= Level().GetGameTime();
-	m_level_time			= Level().timeServer();
+	m_level_time			= Device.dwTimeGlobal;
 	m_object_params.fill	(game_object);
 	m_self_params.fill		(self);
 	SMemoryObject::fill		();

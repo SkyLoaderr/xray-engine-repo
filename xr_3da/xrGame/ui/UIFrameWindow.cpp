@@ -7,7 +7,6 @@
 #include "stdafx.h"
 #include "UIFrameWindow.h"
 #include "../HUDManager.h"
-#include "../level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

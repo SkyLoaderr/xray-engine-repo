@@ -81,29 +81,29 @@ CStalkerActionHello::CStalkerActionHello	(CAI_Stalker *object, LPCSTR action_nam
 
 void CStalkerActionHello::initialize	()
 {
-	inherited::initialize			();
-	object().movement().set_node_evaluator	(0);
-	object().movement().set_path_evaluator	(0);
-	object().movement().set_desired_direction	(0);
-	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
-	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state		(eBodyStateStand);
-	object().movement().set_movement_type		(eMovementTypeWalk);
-	object().movement().set_mental_state		(eMentalStateDanger);
+	inherited::initialize							();
+	object().movement().set_node_evaluator			(0);
+	object().movement().set_path_evaluator			(0);
+	object().movement().set_desired_direction		(0);
+	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
+	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
+	object().movement().set_body_state				(eBodyStateStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
+	object().movement().set_mental_state			(eMentalStateDanger);
 	object().movement().set_nearest_accessible_position();
-	object().sight().setup			(SightManager::eSightTypeCurrentDirection);
-	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
-	object().body_action			(eBodyActionHello);
+	object().sight().setup							(SightManager::eSightTypeCurrentDirection);
+	object().sound().remove_active_sounds			(u32(eStalkerSoundMaskNoHumming));
+	object().body_action							(eBodyActionHello);
 	
 	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->object().ID() == object().best_weapon()->object().ID()))
-		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
+		object().CObjectHandler::set_goal			(eObjectActionStrapped,object().best_weapon());
 	else
-		object().CObjectHandler::set_goal	(eObjectActionIdle);
+		object().CObjectHandler::set_goal			(eObjectActionIdle);
 
-	CStalkerAnimationManager		&animation_manager = object().animation();
-	animation_manager.setup_storage	(m_storage);
-	animation_manager.property_id	(eWorldPropertyHelloCompleted);
-	animation_manager.property_value(true);
+	CStalkerAnimationManager						&animation_manager = object().animation();
+	animation_manager.setup_storage					(m_storage);
+	animation_manager.property_id					(eWorldPropertyHelloCompleted);
+	animation_manager.property_value				(true);
 }
 
 void CStalkerActionHello::finalize	()
@@ -133,19 +133,19 @@ CStalkerActionDialog::CStalkerActionDialog	(CAI_Stalker *object, LPCSTR action_n
 
 void CStalkerActionDialog::initialize	()
 {
-	inherited::initialize			();
-	object().movement().set_node_evaluator	(0);
-	object().movement().set_path_evaluator	(0);
+	inherited::initialize						();
+	object().movement().set_node_evaluator		(0);
+	object().movement().set_path_evaluator		(0);
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_body_state		(eBodyStateStand);
+	object().movement().set_body_state			(eBodyStateStand);
 	object().movement().set_movement_type		(eMovementTypeWalk);
 	object().movement().set_mental_state		(eMentalStateDanger);
 	object().movement().set_nearest_accessible_position();
-	object().sight().setup			(SightManager::eSightTypeCurrentDirection);
-	object().sound().remove_active_sounds	(u32(eStalkerSoundMaskNoHumming));
-	object().body_action			(eBodyActionHello);
+	object().sight().setup						(SightManager::eSightTypeCurrentDirection);
+	object().sound().remove_active_sounds		(u32(eStalkerSoundMaskNoHumming));
+	object().body_action						(eBodyActionHello);
 //	
 //	if (object().inventory().ActiveItem() && object().best_weapon() && (object().inventory().ActiveItem()->ID() == object().best_weapon()->ID()))
 //		object().CObjectHandler::set_goal	(eObjectActionStrapped,object().best_weapon());
@@ -155,16 +155,16 @@ void CStalkerActionDialog::initialize	()
 
 void CStalkerActionDialog::finalize	()
 {
-	inherited::finalize		();
+	inherited::finalize					();
 
 	if (!object().g_Alive())
 		return;
 
-	object().sound().set_sound_mask(0);
+	object().sound().set_sound_mask		(0);
 }
 
 void CStalkerActionDialog::execute		()
 {
-	inherited::execute		();
+	inherited::execute					();
 	object().CObjectHandler::set_goal	(eObjectActionFire1,object().inventory().m_slots[5].m_pIItem);
 }

@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "uiiteminfo.h"
 #include "../string_table.h"
-#include "../level.h"
 #include "../HUDManager.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"

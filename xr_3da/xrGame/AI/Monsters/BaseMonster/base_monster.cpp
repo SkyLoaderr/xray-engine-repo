@@ -27,6 +27,7 @@
 #include "../ai_monster_movement.h"
 #include "../../../entitycondition.h"
 #include "../../../sound_player.h"
+#include "../../../level.h"
 
 CBaseMonster::CBaseMonster()
 {

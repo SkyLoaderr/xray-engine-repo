@@ -6,7 +6,6 @@
 
 #include "hudmanager.h"
 #include "game_cl_base.h"
-#include "level.h"
 
 #include "game_cl_TeamDeathmatch.h"
 

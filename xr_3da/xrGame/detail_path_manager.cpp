@@ -9,7 +9,6 @@
 #include "stdafx.h"
 #include "detail_path_manager.h"
 #include "ai_space.h"
-#include "level.h"
 #include "ai_object_location.h"
 
 CDetailPathManager::CDetailPathManager	(CRestrictedObject *object)
@@ -94,7 +93,7 @@ void CDetailPathManager::build_path(const xr_vector<u32> &level_path, u32 interm
 		if (valid()) {
 			m_actuality				= true;
 			m_current_travel_point	= 0;
-			m_time_path_built		= Level().timeServer();
+			m_time_path_built		= Device.dwTimeGlobal;
 		}
 	}
 }

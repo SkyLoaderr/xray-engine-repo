@@ -2,10 +2,11 @@
 #include "Physics.h"
 #include "PHObject.h"
 #include "PHWorld.h"
-#include "level.h"
 #include "PHMoveStorage.h"
 #include "dRayMotions.h"
 #include "PHCollideValidator.h"
+
+extern CPHWorld* ph_world;
 
 CPHObject::CPHObject()
 {

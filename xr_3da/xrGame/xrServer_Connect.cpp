@@ -1,13 +1,10 @@
 #include "stdafx.h"
-
 #include "xrserver.h"
 #include "game_sv_single.h"
 #include "game_sv_deathmatch.h"
 #include "game_sv_teamdeathmatch.h"
 #include "game_sv_artefacthunt.h"
-#include "level.h"
 #include "xrMessages.h"
-
 
 BOOL xrServer::Connect(shared_str &session_name)
 {

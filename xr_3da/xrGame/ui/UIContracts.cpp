@@ -10,7 +10,6 @@
 #include "UIContracts.h"
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
-#include "../Level.h"
 
 //////////////////////////////////////////////////////////////////////////
 

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "uicustomitem.h"
 #include "hudmanager.h"
-#include "level.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -87,7 +87,7 @@ void CHitMemoryManager::add		(float amount, const Fvector &vLocalDir, const CObj
 		CHitObject				hit_object;
 
 		hit_object.fill			(entity_alive,m_object);
-		hit_object.m_first_level_time	= Level().timeServer();
+		hit_object.m_first_level_time	= Device.dwTimeGlobal;
 		hit_object.m_first_game_time	= Level().GetGameTime();
 
 		if (m_max_hit_count <= m_hits->size()) {

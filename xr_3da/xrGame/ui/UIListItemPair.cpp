@@ -13,7 +13,6 @@
 #include "StdAfx.h"
 #include "UIListItemPair.h"
 #include "../HUDManager.h"
-#include "../level.h"
 #include "../UI.h"
 
 //-----------------------

@@ -208,7 +208,7 @@ BOOL CAI_Rat::net_Spawn	(CSE_Abstract* DC)
 	int								iPointCount	= (int)movement().locations().vertex_types().size();
 	for (int j=0; j<iPointCount; ++j)
 		if (ai().game_graph().mask(movement().locations().vertex_types()[j].tMask,ai().game_graph().vertex(ai_location().game_vertex_id())->vertex_type())) {
-			m_dwTimeToChange	= Level().timeServer() + ::Random.randI(movement().locations().vertex_types()[j].dwMinTime,movement().locations().vertex_types()[j].dwMaxTime);
+			m_dwTimeToChange	= Device.dwTimeGlobal + ::Random32.random(movement().locations().vertex_types()[j].dwMaxTime - movement().locations().vertex_types()[j].dwMinTime) + movement().locations().vertex_types()[j].dwMinTime;
 			break;
 		}
 

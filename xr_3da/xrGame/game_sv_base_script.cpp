@@ -9,13 +9,13 @@
 #include "stdafx.h"
 #include "game_sv_base.h"
 #include "script_space.h"
-#include "level.h"
 #include <luabind/iterator_policy.hpp>
 #include <luabind/operator.hpp>
 #include <luabind/out_value_policy.hpp>
 #include "xrMessages.h"
 #include "ui/UIInventoryUtilities.h"
 #include "xr_time.h"
+#include "net_utils.h"
 
 using namespace luabind;
 
