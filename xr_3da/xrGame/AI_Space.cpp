@@ -9,6 +9,7 @@
 
 // for a* search
 #include "ai_a_star.h"
+#include "ai_console.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
