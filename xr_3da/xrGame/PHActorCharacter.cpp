@@ -124,7 +124,8 @@ void CPHActorCharacter::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
 }
 void SPHCharacterRestrictor::SetPhysicsRefObject(CPhysicsShellHolder* ref_object)
 {
-	dGeomUserDataSetPhysicsRefObject(m_restrictor,ref_object);
+	if(m_character)
+		dGeomUserDataSetPhysicsRefObject(m_restrictor,ref_object);
 }
 void CPHActorCharacter::SetMaterial							(u16 material)
 {
