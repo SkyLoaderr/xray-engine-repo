@@ -3,15 +3,14 @@
 Чугай Саша
 
 Сделать:
-    - реалистичная анимация ходьбы
-    - направление на карту уровня сделать точкой пути, если понадобится
+    - реалистичная анимация ходьбы (КОГДА ИСПРАВЯТ)
+    - направление на карту уровня сделать точкой пути (ЕСЛИ ПОНАДОБИТСЯ)
     - сбалансировать вероятности действий и реплик
     - подставить настоящие звуки
     - звуки рации
     - звуки во сне
     - пьяный во второй половине дня (звуки, анимации)
     - смотреть на солдата, а не на позицию солдата. ГЛЮЧИТ
-    - на матраце сперва повернуться, а потом сесть
     - time_end=nil
 --------------------------------------------------------------------------------------------------------------------]]
 
@@ -46,6 +45,7 @@ class "action_commander" ( action_base )
 
 function action_commander:__init( name )  super ( nil, name )
     self.initialized = false
+    self.drunk = true
 end
 
 function action_commander:initialize()
@@ -176,7 +176,7 @@ function action_commander:execute()
 
         if day_time() > 7 * h2ms and day_time() < 23 * h2ms then
             repeat
-                if self.drunk then
+                if not self.drunk then
                     self.act = random_choice_weighted{
                                    [walk_inside]  = 40,
                                    [walk_outside] = 20,
@@ -236,12 +236,16 @@ end
 -- анимации для стояния в домике
 function action_commander:add_inside_animations( n )
     for i = 1, math.random( n ) do
-        self.object:add_animation(
-            random_choice_weighted{
-                ["komandir_4"] = 60,
-                ["komandir_2"] = 25,
-                ["komandir_3"] = 15 },
-            true )
+        if self.drunk then
+            self.object:add_animation( "drunk_idle_0", true )
+        else
+            self.object:add_animation(
+                random_choice_weighted{
+                    ["komandir_4"] = 60,
+                    ["komandir_2"] = 25,
+                    ["komandir_3"] = 15 },
+                true )
+        end
     end
 end
 
