@@ -103,7 +103,7 @@ void Startup(LPSTR     lpCmdLine)
 		}
 	// Show statistic
 	char	stats[256];
-	extern	string make_time(DWORD sec);
+	extern	std::string make_time(DWORD sec);
 	extern  HWND logWindow;
 	DWORD				dwEndTime = timeGetTime();
 	sprintf				(stats,"Time elapsed: %s",make_time((dwEndTime-dwStartupTime)/1000).c_str());
