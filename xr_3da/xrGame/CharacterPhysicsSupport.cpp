@@ -122,7 +122,7 @@ void CCharacterPhysicsSupport::in_Init()
 
 void CCharacterPhysicsSupport::in_shedule_Update(u32 DT)
 {
-	CPHSkeleton::Update(DT);
+	//CPHSkeleton::Update(DT);
 }
 
 void CCharacterPhysicsSupport::in_Hit(Fvector &dir,s16 element,Fvector p_in_object_space, float impulse,ALife::EHitType hit_type ,bool is_killing)
