@@ -25,9 +25,9 @@ class CTargetCS;
 class CActor: 
 	public CEntityAlive, 
 	public Feel::Touch,
-	public CInventoryOwner,
+	public CInventoryOwner
 #ifdef DEBUG
-	public pureRender
+	,public pureRender
 #endif
 {
 private:
