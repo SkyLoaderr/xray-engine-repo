@@ -30,6 +30,7 @@ class cl_fog_plane	: public R_constant_setup {
 	{
 		if (marker!=Device.dwFrame)
 		{
+			// Plane
 			Fvector4		plane;
 			Fmatrix&	M	= Device.mFullTransform;
 			plane.x			= -(M._14 + M._13);
@@ -37,27 +38,18 @@ class cl_fog_plane	: public R_constant_setup {
 			plane.z			= -(M._34 + M._33);
 			plane.w			= -(M._44 + M._43);
 			float denom		= -1.0f / _sqrt(_sqr(plane.x)+_sqr(plane.y)+_sqr(plane.z));
-			result.set		(plane.x*denom,	plane.y*denom,	plane.z*denom,	plane.w*denom);								// view-plane
+			plane.mul		(denom);
+
+			// Near/Far
+			float A			= g_pGamePersistent->Environment.CurrentEnv.fog_near;
+			float B			= 1/(g_pGamePersistent->Environment.CurrentEnv.fog_far - A);
+
+			result.set		(-plane.x*B, -plane.y*B, -plane.z*B, 1 - (plane.w-A)*B	);								// view-plane
 		}
 		RCache.set_c	(C,result);
 	}
 };
 static cl_fog_plane		binder_fog_plane;
-
-class cl_fog_params	: public R_constant_setup {
-	u32			marker;
-	float		f_near,f_far;
-	virtual void setup(R_constant* C)
-	{
-		if (marker!=Device.dwFrame)
-		{
-			f_near	= g_pGamePersistent->Environment.CurrentEnv.fog_near;
-			f_far	= 1/(g_pGamePersistent->Environment.CurrentEnv.fog_far - f_near);
-		}
-		RCache.set_c	(C,f_near,f_far,0,0);
-	}
-};
-static cl_fog_params	binder_fog_params;
 
 // eye-params
 class cl_eye_P		: public R_constant_setup {
@@ -176,7 +168,6 @@ void	CBlender_Compile::SetMapping	()
 
 	// fog-params
 	r_Constant				("fog_plane",		&binder_fog_plane);
-	r_Constant				("fog_params",		&binder_fog_params);
 
 	// eye-params
 	r_Constant				("eye_position",	&binder_eye_P);
