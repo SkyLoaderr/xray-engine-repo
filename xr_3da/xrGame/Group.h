@@ -27,8 +27,8 @@ DEFINE_VECTOR(CEntity*,EntityVec,EntityIt);
 #define MAX_GROUP_SIZE 256
 
 typedef struct tagSSearchPlace {
-	DWORD	dwNodeID:31;
-	DWORD	bSearched:1;
+	DWORD	dwNodeID:24;
+	DWORD	dwSearched:8;
 	float	fCost;
 } SSearchPlace;
 

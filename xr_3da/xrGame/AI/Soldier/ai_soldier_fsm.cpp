@@ -276,7 +276,7 @@ void CAI_Soldier::OnFindAloneFire()
  		if (!m_bActionStarted) {
 			if (m_bStateChanged) {
 				if (!Group.m_tpaSuspiciousNodes.size()) {
-					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,min(8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,30.f),Group);
+					vfFindAllSuspiciousNodes(dwSavedEnemyNodeID,tSavedEnemyPosition,tSavedEnemyPosition,min(8.f*vPosition.distance_to(tSavedEnemyPosition)/4.5f,40.f),Group);
 				}
 			}
 			vfInitSelector(SelectorPatrol,Squad,Leader);
@@ -295,15 +295,15 @@ void CAI_Soldier::OnFindAloneFire()
 		if (iIndex != -1) {
 			if (this == Group.Members[0]) {
 				if (AI_Path.fSpeed < EPS_L) {
-//					for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
-//						if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
-//							Group.m_tpaSuspiciousNodes[i].bSearched = true;
-//							break;
-//						}
+					for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+						if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
+							Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+							break;
+						}
 					float fMin = 1000;
 					int Index = -1;
 					for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-						if (Group.m_tpaSuspiciousNodes[i].bSearched)
+						if (Group.m_tpaSuspiciousNodes[i].dwSearched)
 							continue;
 						if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
 							fMin = Group.m_tpaSuspiciousNodes[i].fCost;
@@ -311,7 +311,7 @@ void CAI_Soldier::OnFindAloneFire()
 						}
 					}
 					if (Index != -1) {
-						Group.m_tpaSuspiciousNodes[Index].bSearched = 1;
+						Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
 						AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
 						vfBuildPathToDestinationPoint(0);
 					}
@@ -338,15 +338,15 @@ void CAI_Soldier::OnFindAloneFire()
 			else
 				if (this == Group.Members[1]) {
 					if (AI_Path.fSpeed < EPS_L) {
-//						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
-//							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
-//								Group.m_tpaSuspiciousNodes[i].bSearched = true;
-//								break;
-//							}
+						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
+								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+								break;
+							}
 						float fMin = 1000;
 						int Index = -1;
 						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-							if (Group.m_tpaSuspiciousNodes[i].bSearched)
+							if (Group.m_tpaSuspiciousNodes[i].dwSearched)
 								continue;
 							if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
 								fMin = Group.m_tpaSuspiciousNodes[i].fCost;
@@ -354,7 +354,7 @@ void CAI_Soldier::OnFindAloneFire()
 							}
 						}
 						if (Index != -1) {
-							Group.m_tpaSuspiciousNodes[Index].bSearched = 1;
+							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
 							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
 							vfBuildPathToDestinationPoint(0);
 						}
@@ -380,15 +380,15 @@ void CAI_Soldier::OnFindAloneFire()
 				}
 				else { 
 					if (AI_Path.fSpeed < EPS_L) {
-//						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
-//							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
-//								Group.m_tpaSuspiciousNodes[i].bSearched = true;
-//								break;
-//							}
+						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
+							if (Group.m_tpaSuspiciousNodes[i].dwNodeID == AI_NodeID) {
+								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
+								break;
+							}
 						float fMin = 1000;
 						int Index = -1;
 						for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-							if (Group.m_tpaSuspiciousNodes[i].bSearched)
+							if (Group.m_tpaSuspiciousNodes[i].dwSearched)
 								continue;
 							if (Group.m_tpaSuspiciousNodes[i].fCost < fMin) {
 								fMin = Group.m_tpaSuspiciousNodes[i].fCost;
@@ -396,7 +396,7 @@ void CAI_Soldier::OnFindAloneFire()
 							}
 						}
 						if (Index != -1) {
-							Group.m_tpaSuspiciousNodes[Index].bSearched = 1;
+							Group.m_tpaSuspiciousNodes[Index].dwSearched = 1;
 							AI_Path.DestNode = Group.m_tpaSuspiciousNodes[Index].dwNodeID;
 							vfBuildPathToDestinationPoint(0);
 						}

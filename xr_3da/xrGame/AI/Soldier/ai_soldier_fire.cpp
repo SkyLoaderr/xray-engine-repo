@@ -971,7 +971,7 @@ float CAI_Soldier::ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCom
 	return(ffCalcSquare(tRotation.yaw,fEyeFov,FN(0),FN(1),FN(2),FN(3)));
 }
 
-void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group, bool bMinimum)
+void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group)
 {
 	Device.Statistic.AI_Range.Begin	();
 
@@ -1060,46 +1060,80 @@ void CAI_Soldier::vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPositi
 			mk_rotation(tDirection,tRotation);
 			float fCost = ffGetCoverInDirection(tRotation.yaw,FNN(0,T),FNN(1,T),FNN(2,T),FNN(3,T));
 			Msg("%d %.2f",Test,fCost);
-			if (bMinimum) {
-				if (fCost < .3f)
+//			if (fCost < .3f)
+//				if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
+//					tSearchPlace.dwNodeID	= Test;
+//					tSearchPlace.bSearched	= 0;
+//					tSearchPlace.fCost		= fCost;
+//					Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
+//				}
+//				else {
+//					float fMax = 0.f;
+//					for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
+//						if (Group.m_tpaSuspiciousNodes[i].fCost > fMax) {
+//							fMax = Group.m_tpaSuspiciousNodes[i].fCost;
+//							iIndex = i;
+//						}
+//					if ((fMax > fCost) && (iIndex >= 0)) {
+//						Group.m_tpaSuspiciousNodes[iIndex].dwNodeID = Test;
+//						Group.m_tpaSuspiciousNodes[iIndex].fCost = fCost;
+//					}
+//				}
+			if (fCost < .3f) {
+				bool bOk = false;
+				Fvector tP0, tP1, tTestNode;
+				NodeCompressed *tpNode = Level().AI.Node(Test);
+				Level().AI.UnpackPosition(tP0,tpNode->p0);
+				Level().AI.UnpackPosition(tP1,tpNode->p1);
+				tTestNode.add(tP0,tP1);
+				tTestNode.mul(.5f);
+				float fMax = 0.f;
+				for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+					NodeCompressed *tpNode = Level().AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+					Level().AI.UnpackPosition(tP0,tpNode->p0);
+					Level().AI.UnpackPosition(tP1,tpNode->p1);
+					tP0.add(tP1);
+					tP0.mul(.5f);
+					float fDistance = tP0.distance_to(tTestNode);
+					if (fDistance < 10.f) {
+						if (fDistance < 3.f) {
+							if (fCost < Group.m_tpaSuspiciousNodes[i].fCost) {
+								Group.m_tpaSuspiciousNodes[i].dwNodeID = Test;
+								Group.m_tpaSuspiciousNodes[i].fCost = fCost;
+							}
+							bOk = true;
+							break;
+						}
+						tDirection.sub(tP0,tTestNode);
+						tDirection.normalize_safe();
+						mk_rotation(tDirection,tRotation);
+						if (ffGetCoverInDirection(tRotation.yaw,FNN(0,T),FNN(1,T),FNN(2,T),FNN(3,T)) > .3f) {
+							if (fCost < Group.m_tpaSuspiciousNodes[i].fCost) {
+								Group.m_tpaSuspiciousNodes[i].dwNodeID = Test;
+								Group.m_tpaSuspiciousNodes[i].fCost = fCost;
+							}
+							bOk = true;
+							break;
+						}
+					}
+					if (fCost > fMax) {
+						fMax = Group.m_tpaSuspiciousNodes[i].fCost;
+						iIndex = i;
+					}
+				}
+				if (!bOk) {
 					if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
 						tSearchPlace.dwNodeID	= Test;
-						tSearchPlace.bSearched	= 0;
+						tSearchPlace.dwSearched	= 0;
 						tSearchPlace.fCost		= fCost;
 						Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
 					}
-					else {
-						float fMax = 0.f;
-						for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++)
-							if (Group.m_tpaSuspiciousNodes[i].fCost > fMax) {
-								fMax = Group.m_tpaSuspiciousNodes[i].fCost;
-								iIndex = i;
-							}
+					else
 						if ((fMax > fCost) && (iIndex >= 0)) {
 							Group.m_tpaSuspiciousNodes[iIndex].dwNodeID = Test;
 							Group.m_tpaSuspiciousNodes[iIndex].fCost = fCost;
 						}
-					}
-			}
-			else {
-				if (fCost > .7f)
-					if (Group.m_tpaSuspiciousNodes.size() < MAX_SUSPICIOUS_NODE_COUNT) {
-						tSearchPlace.dwNodeID = Test;
-						tSearchPlace.bSearched = 0;
-						Group.m_tpaSuspiciousNodes.push_back(tSearchPlace);
-					}
-					else {
-						float fMin = 100.f;
-						for (int i=0, iIndex = -1; i<Group.m_tpaSuspiciousNodes.size(); i++) {
-							float fTempCost = ffGetCoverFromNode(AI,tPointPosition,AI.Node(Group.m_tpaSuspiciousNodes[i].dwNodeID),fEyeFov);
-							if (fTempCost < fMin) {
-								fMin = fTempCost;
-								iIndex = i;
-							}
-						}
-						if (fMin < fCost)
-							Group.m_tpaSuspiciousNodes[iIndex].dwNodeID = Test;
-					}
+				}
 			}
 		}
 		if (bStop)

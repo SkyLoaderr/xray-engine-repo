@@ -526,7 +526,7 @@ class CAI_Soldier : public CCustomMonster
 		// miscellanious funtions	
 		bool bfAddEnemyToDynamicObjects(CAI_Soldier *tpSoldier);
 		float ffGetCoverFromNode(CAI_Space &AI, Fvector &tPosition, NodeCompressed *tpNode, float fEyeFov);
-		void vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group, bool bMinimum = true);
+		void vfFindAllSuspiciousNodes(DWORD StartNode, Fvector tPointPosition, const Fvector& BasePos, float Range, CGroup &Group);
 		int	 ifFindDynamicObject(CEntity *tpEntity);
 		bool bfSaveFromEnemy(CEntity *tpEntity);
 		bool bfSetLookToDangerPlace();
