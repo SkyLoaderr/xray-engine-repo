@@ -70,6 +70,7 @@ void CAI_Stalker::vfSearchForBetterPosition(IBaseAI_NodeEvaluator &tNodeEvaluato
 //		Msg									("Evaluator : [%f][%f][%f]",tNodeEvaluator.m_fMaxEnemyDistance,tNodeEvaluator.m_fOptEnemyDistance,tNodeEvaluator.m_fMinEnemyDistance);
 		if ((AI_Path.DestNode != tNodeEvaluator.m_dwBestNode) && (tNodeEvaluator.m_fBestCost < fOldCost - 0.f)){
 			AI_Path.DestNode		= tNodeEvaluator.m_dwBestNode;
+			AI_Path.Nodes.clear		();
 			m_tPathState			= ePathStateBuildNodePath;
 			vfAddToSearchList		();
 			m_bIfSearchFailed		= false;
@@ -280,7 +281,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 	if (m_tPrevPathType != m_tPathType) {
 		m_tPrevPathType		= m_tPathType;
 		m_tPathState		= ePathStateSearchNode;
-		//AI_Path.DestNode	= u32(-1);
+		AI_Path.Nodes.clear	();
 	}
 	if (tpNodeEvaluator)
 	vfInitSelector			(*tpNodeEvaluator,Squad,Leader);
@@ -324,7 +325,7 @@ void CAI_Stalker::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluat
 			break;
 		}
 		case ePathStateBuildNodePath : {
-			if ((AI_Path.DestNode != AI_NodeID) || (!tpDestinationPosition))
+			if (!AI_Path.Nodes.size() || (AI_Path.Nodes[AI_Path.Nodes.size() - 1] != AI_Path.DestNode))
 				vfBuildPathToDestinationPoint(tpNodeEvaluator);
 			else
 				if ((AI_Path.DestNode == AI_NodeID) && tpDestinationPosition) {
