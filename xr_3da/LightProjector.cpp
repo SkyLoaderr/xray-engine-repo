@@ -1,9 +1,9 @@
-// LightShadows.cpp: implementation of the CLightShadows class.
+// LightProjector.cpp: implementation of the CLightProjector class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "LightShadows.h"
+#include "LightProjector.h"
 #include "xr_object.h"
 #include "render.h"
 #include "flightscontroller.h"
@@ -31,17 +31,17 @@ const	int 	S_clip		= 256-24;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CLightShadows::CLightShadows()
+CLightProjector::CLightProjector()
 {
 	current	= 0;
 	RT		= 0;
 }
 
-CLightShadows::~CLightShadows()
+CLightProjector::~CLightProjector()
 {
 }
 
-void CLightShadows::OnDeviceCreate	()
+void CLightProjector::OnDeviceCreate	()
 {
 	LPCSTR	RTname		= "$user$shadow";
 	LPCSTR	RTtemp		= "$user$temp";
@@ -63,7 +63,7 @@ void CLightShadows::OnDeviceCreate	()
 	vs_Screen	= Device.Streams.Create		(FVF::F_TL,4);
 }
 
-void CLightShadows::OnDeviceDestroy	()
+void CLightProjector::OnDeviceDestroy	()
 {
 	// Debug
 	Device.Shader.Delete					(sh_Screen	);
@@ -77,7 +77,7 @@ void CLightShadows::OnDeviceDestroy	()
 	Device.Shader._DeleteRT					(RT			);
 }
 
-void CLightShadows::set_object	(CObject* O)
+void CLightProjector::set_object	(CObject* O)
 {
 	if (0==O)	current		= 0;
 	else 
@@ -99,7 +99,7 @@ void CLightShadows::set_object	(CObject* O)
 	}
 }
 
-void CLightShadows::add_element	(NODE* N)
+void CLightProjector::add_element	(NODE* N)
 {
 	if (0==current)	return;
 	casters.back().nodes.push_back	(*N);
@@ -148,13 +148,13 @@ IC int PLC_calc	(Fvector& P, Fvector& N, Flight* L, float energy, Fvector& O)
 //
 class	pred_casters
 {
-	CLightShadows*		S;
+	CLightProjector*		S;
 public:
-	pred_casters(CLightShadows* _S) : S(_S) {};
+	pred_casters(CLightProjector* _S) : S(_S) {};
 	IC bool operator () (int c1, int c2)
 	{ return S->casters[c1].D<S->casters[c2].D; }
 };
-void CLightShadows::calculate	()
+void CLightProjector::calculate	()
 {
 	if (id.empty())	return;
 
@@ -304,7 +304,7 @@ void CLightShadows::calculate	()
 }
 
 #define CLS(a) D3DCOLOR_RGBA(a,a,a,a)
-void CLightShadows::render	()
+void CLightProjector::render	()
 {
 	Device.Statistic.RenderDUMP_Srender.Begin	();
 	// Gain access to collision-DB

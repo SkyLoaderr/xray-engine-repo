@@ -2593,6 +2593,7 @@ SOURCE=.\LightPPA.h
 # Begin Source File
 
 SOURCE=.\LightProjector.cpp
+# PROP Exclude_From_Build 1
 # End Source File
 # Begin Source File
 

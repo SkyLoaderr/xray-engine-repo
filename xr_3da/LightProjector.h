@@ -2,8 +2,8 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_LIGHTSHADOWS_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_)
-#define AFX_LIGHTSHADOWS_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_
+#if !defined(AFX_LIGHTPRJ_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_)
+#define AFX_LIGHTPRJ_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_
 #pragma once
 
 #include "scenegraph.h"
@@ -11,7 +11,7 @@
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
 
-class ENGINE_API	CLightShadows  : public pureDeviceCreate, public pureDeviceDestroy
+class ENGINE_API	CLightProjector  : public pureDeviceCreate, public pureDeviceDestroy
 {
 	friend class pred_casters;
 private:
@@ -24,24 +24,10 @@ private:
 		float				D;
 		svector<NODE,32>	nodes;
 	};
-	struct	shadow 
-	{
-		int					slot;
-		Fvector				C;
-		Fmatrix				M;
-		Flight*				L;
-	};
-	struct	tess_tri
-	{
-		Fvector				v[3];
-		Fvector				N;
-	};
 private:
 	CObject*				current;
 	vector<caster>			casters;
-	vector<shadow>			shadows;
 	vector<int>				id;
-	vector<tess_tri>		tess;
 
 	CRT*					RT;
 	CRT*					RT_temp;
@@ -63,8 +49,8 @@ public:
 	virtual	void			OnDeviceCreate	();
 	virtual	void			OnDeviceDestroy	();
 	
-	CLightShadows			();
-	~CLightShadows			();
+	CLightProjector			();
+	~CLightProjector			();
 };
 
-#endif // !defined(AFX_LIGHTSHADOWS_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_)
+#endif // !defined(AFX_LIGHTPRJ_H__CFA216D9_CACB_4515_9FBE_7C531649168F__INCLUDED_)
