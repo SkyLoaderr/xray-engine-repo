@@ -95,8 +95,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	Core._initialize		("xray");
 	FPU::m24r				();
 
-	R_ASSERT2				(0,"test");
-
 	int a	= 1;
 	int b	= 0;
 	int c	= a/b;
