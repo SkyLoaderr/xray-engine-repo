@@ -1,13 +1,3 @@
-function play_sound_object(obj_name,snd_name,looped)
-	local 	snd = sound_object(snd_name)
-	local	obj = get_level_object(obj_name)
-	while obj == nil do
-		obj = level.object(obj_name)
-		wait()
-	end
-	snd:play_at_pos(obj,obj:position(),looped)
-end
-
 is_creature_entered = false
 is_actor_entered = false
 
@@ -69,9 +59,6 @@ function main()
 
 	wait		(1000)
 
-	local 	snd = sound_object("scripts\\kto-to_idet")
-	snd:play_at_pos(actor,actor:position(),0);
-
 	stalker1:script	(true,script_01.script_name())
 	stalker2:script	(true,script_01.script_name())
 
@@ -99,9 +86,18 @@ function main()
 			flush()
 			stalker1:script	(false, script_01.script_name())
 			stalker1:script	(true,  script_01.script_name())
+			stalker2:script	(false, script_01.script_name())
+			stalker2:script	(true,  script_01.script_name())
 			action(
 				stalker1,
 				sound	("scripts\\kto-to_idet","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 3000)
+				)
+			action(
+				stalker2,
+				sound	("nemedlenno","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 3000)
