@@ -98,6 +98,13 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 
 	motion.mul			(mdir, dist / mdist);
 	dest_position.add	(motion);
+	/////////////////////////////////////////////
+	
+	
+	Fvector velocity					=	mdir;
+	velocity.normalize_safe();							  //как не странно, mdir - не нормирован
+	velocity.mul						(desirable_speed);//*1.25f
+	movement_control->SetVelocity		(velocity);
 
 	if ((tpNearestList.empty())) {  // нет физ. объектов
 		
@@ -110,9 +117,9 @@ void CMovementManager::move_along_path	(CPHMovementControl *movement_control, Fv
 
 		} else {
 			movement_control->b_exect_position	=	true;
-			Fvector velocity					=	mdir;
-			velocity.mul						(desirable_speed);//*1.25f
-			movement_control->SetVelocity		(velocity);
+			//Fvector velocity					=	mdir;
+			//velocity.mul						(desirable_speed);//*1.25f
+			//movement_control->SetVelocity		(velocity);
 		}
 	} else { // есть физ. объекты
 		movement_control->Calculate				(CDetailPathManager::path(), desirable_speed, CDetailPathManager::m_current_travel_point, precision);
