@@ -162,8 +162,14 @@ void CAI_Biting::Load(LPCSTR section)
 	m_dwEatSndDelay					= pSettings->r_u32(section,"eat_sound_delay");
 	m_dwAttackSndDelay				= pSettings->r_u32(section,"attack_sound_delay");
 
+	m_fMoraleSuccessAttackQuant		= pSettings->r_float(section,"MoraleSuccessAttackQuant");
+	m_fMoraleDeathQuant				= pSettings->r_float(section,"MoraleDeathQuant");
+	m_fMoraleFearQuant				= pSettings->r_float(section,"MoraleFearQuant");
+	m_fMoraleRestoreQuant			= pSettings->r_float(section,"MoraleRestoreQuant");
+	m_fMoraleBroadcastDistance		= pSettings->r_float(section,"MoraleBroadcastDistance");
+
 	AS_Load							(section);
-	
+
 	m_pPhysics_support				->in_Load(section);
 	R_ASSERT2 ((m_dwProbRestWalkFree + m_dwProbRestStandIdle + m_dwProbRestLieIdle + m_dwProbRestTurnLeft) == 100, "Probability sum isn't 1");
 }
@@ -305,3 +311,13 @@ CBoneInstance *CAI_Biting::GetBoneInstance(int bone_id)
 	return (&PKinematics(Visual())->LL_GetBoneInstance(u16(bone_id)));
 }
 
+void CAI_Biting::MoraleBroadcast(float fValue)
+{
+	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+	for (u32 i=0; i<Group.Members.size(); i++) {
+		CEntityAlive *pE = dynamic_cast<CEntityAlive *>(Group.Members[i]);
+		if (!pE) continue;
+		
+		if (pE->g_Alive() && (pE->Position().distance_to(Position()) < m_fMoraleBroadcastDistance)) pE->ChangeEntityMorale(fValue);
+	}
+}

@@ -125,6 +125,10 @@ void CBitingAttack::Run()
 	if (((pMonster->flagsEnemy & FLAG_ENEMY_GO_FARTHER_FAST) == FLAG_ENEMY_GO_FARTHER_FAST) && (m_dwStateStartedTime + 4000 < m_dwCurrentTime)) bEnemyDoesntSeeMe = false;
 	if ((m_tAction == ACTION_RUN) && bEnemyDoesntSeeMe) m_tAction = ACTION_STEAL;
 
+	
+//	// если мораль маленька€
+//	if (CheckThreaten()) m_tAction = ACTION_THREATEN;
+
 	// ¬ыполнение состо€ни€
 	switch (m_tAction) {	
 		case ACTION_RUN:		 // бежать на врага
@@ -173,6 +177,24 @@ void CBitingAttack::Run()
 
 			pMonster->MotionMan.m_tAction = ACT_STEAL;
 			break;
+//		case ACTION_THREATEN: 
+//			// —мотреть на врага 
+//			DO_IN_TIME_INTERVAL_BEGIN(m_dwFaceEnemyLastTime, m_dwFaceEnemyLastTimeInterval);
+//				float yaw, pitch;
+//				Fvector dir;
+//				yaw = pMonster->r_torso_target.yaw;
+//				pMonster->AI_Path.TravelPath.clear();
+//				dir.sub(m_tEnemy.obj->Position(), pMonster->Position());
+//				dir.getHP(yaw,pitch);
+//				yaw *= -1;
+//				yaw = angle_normalize(yaw);
+//				pMonster->r_torso_target.yaw = yaw;
+//			DO_IN_TIME_INTERVAL_END();
+//
+//			pMonster->MotionMan.m_tAction = ACT_STAND_IDLE;
+//			pMonster->MotionMan.SetSpecParams(ASP_THREATEN);
+//
+//			break;
 	}
 
 	pMonster->SetSound(SND_TYPE_ATTACK, pMonster->m_dwAttackSndDelay);

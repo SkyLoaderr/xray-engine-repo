@@ -20,7 +20,7 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 {
 	if (MotionMan.PrepareAnimation()) {
 		PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
-		Msg("Animation Selected!!!");
+		Msg("Animation Selected: PTR = [%u] Time = [%u]", MotionMan.m_tpCurAnim, m_dwCurrentTime);
 	}
 }
 

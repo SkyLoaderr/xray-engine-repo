@@ -32,6 +32,8 @@
 
 #define SOUND_ATTACK_HIT_MIN_DELAY 1000
 
+#define MORALE_NORMAL	0.5f
+
 // logging
 #define SILENCE
 
@@ -135,6 +137,17 @@ public:
 
 			CBoneInstance *GetBoneInstance					(LPCTSTR bone_name);
 			CBoneInstance *GetBoneInstance					(int bone_id);
+		
+			// attack-stop
+			void			AS_Init							();
+			void			AS_Load							(LPCSTR section);
+			void			AS_Start						();
+			void			AS_Stop							();
+			void			AS_Check						(bool hit_success);
+			bool			AS_Active						();
+	
+	// Morale
+			void			MoraleBroadcast					(float fValue);
 
 // members
 public:
@@ -258,48 +271,13 @@ public:
 
 	// -------------------------------------------------------
 	// attack stops
-	struct {
+	struct SAttackStop {
 		float	min_dist;		// load from ltx
 		float	step;			// load from ltx
 		bool	active;
 		bool	prev_prev_hit;
 		bool	prev_hit;
-	} m_tAttackStop;
-
-	void AS_Init	() {
-		m_tAttackStop.active	= false;
-	}
-	void AS_Load	(LPCSTR section) {
-		m_tAttackStop.min_dist	= pSettings->r_float(section,"as_min_dist");
-		m_tAttackStop.step		= pSettings->r_float(section,"as_step");
-	}
-	void AS_Start	() {
-		m_tAttackStop.active			= true;
-		m_tAttackStop.prev_prev_hit		= true;
-		m_tAttackStop.prev_hit			= true;
-	}
-	void AS_Stop	() {
-		m_tAttackStop.active			= false;
-		m_fCurMinAttackDist				= m_fMinAttackDist;
-	}
-	void AS_Check	(bool hit_success) {
-		if (!m_tAttackStop.active) return;
-		
-		m_tAttackStop.prev_prev_hit = m_tAttackStop.prev_hit;
-		m_tAttackStop.prev_hit		= hit_success;
-
-		if (!m_tAttackStop.prev_prev_hit && !m_tAttackStop.prev_prev_hit) {
-			if ((m_fCurMinAttackDist >= m_tAttackStop.min_dist) && (m_fCurMinAttackDist >= m_tAttackStop.min_dist + m_tAttackStop.step)) {
-				m_fCurMinAttackDist -= m_tAttackStop.step;
-			}
-		} else if (m_tAttackStop.prev_prev_hit && m_tAttackStop.prev_prev_hit) {
-			if ((m_fCurMinAttackDist < m_fMinAttackDist - m_tAttackStop.step)) {
-				m_fCurMinAttackDist += m_tAttackStop.step;
-			}
-		}
-	}
-
-	bool AS_Active() {return m_tAttackStop.active;}
+	} _as;
 
 	// -------------------------------------------------------
 
@@ -307,4 +285,53 @@ public:
 	TTime			m_dwEatSndDelay;
 	TTime			m_dwAttackSndDelay;
 
+	// -------------------------------------------------------
+
+	// Мораль 
+	float			m_fMoraleSuccessAttackQuant;		// увеличение морали при успешной атаке
+	float			m_fMoraleDeathQuant;				// уменьшение морали при смерти монстра из одной команды
+	float			m_fMoraleFearQuant;					// уменьшение морали в панике
+	float			m_fMoraleRestoreQuant;				// квант восстановления морали ? 
+	float			m_fMoraleBroadcastDistance;			// мораль уменьшается, если в данном радиусе умер монстр из команды
+
+	// -----------------------------------------------------------
 };
+
+
+/////////////////////
+// Inline Section
+//////////////////////
+
+/////////////////////////////////////////////////////////////////////////////////////
+// Attack Stops
+IC void CAI_Biting::AS_Init() {
+	_as.active	= false;
+}
+IC void CAI_Biting::AS_Load(LPCSTR section) {
+	_as.min_dist	= pSettings->r_float(section,"as_min_dist");
+	_as.step		= pSettings->r_float(section,"as_step");
+}
+IC void CAI_Biting::AS_Start() {
+	_as.active			= true;
+	_as.prev_prev_hit	= true;
+	_as.prev_hit		= true;
+}
+IC void CAI_Biting::AS_Stop() {
+	_as.active				= false;
+	m_fCurMinAttackDist		= m_fMinAttackDist;
+}
+IC void CAI_Biting::AS_Check(bool hit_success) {
+	if (!_as.active) return;
+
+	_as.prev_prev_hit	= _as.prev_hit;
+	_as.prev_hit		= hit_success;
+
+	if ((!_as.prev_prev_hit && !_as.prev_prev_hit) && ((m_fCurMinAttackDist >= _as.min_dist) && (m_fCurMinAttackDist >= _as.min_dist + _as.step))) {
+			m_fCurMinAttackDist -= _as.step;
+	} else if (_as.prev_prev_hit && _as.prev_prev_hit && (m_fCurMinAttackDist < m_fMinAttackDist - _as.step)) {
+			m_fCurMinAttackDist += _as.step;
+	}
+}
+
+IC bool CAI_Biting::AS_Active() {return _as.active;}
+

@@ -136,6 +136,7 @@ void CEntity::Load		(LPCSTR section)
 	id_Squad= -1; if (pSettings->line_exist(section,"squad"))	id_Squad	= pSettings->r_s32	(section,"squad");
 	id_Group= -1; if (pSettings->line_exist(section,"group"))	id_Group	= pSettings->r_s32	(section,"group");
 	
+#pragma todo("Jim to Dima: no specific figures or comments needed")	
 	m_fMorale = 66.f;
 
 	// Msg					("! entity size: %d",sizeof(*this));

@@ -96,12 +96,12 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_RUN,			eAnimRun,	eAnimJumpLeft, eAnimJumpRight, PI_DIV_4);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun,	eAnimJumpLeft, eAnimJumpRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimJumpLeft, eAnimJumpRight, PI_DIV_6);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
@@ -241,6 +241,10 @@ void CAI_Dog::UpdateCL()
 
 	float trace_dist = 1.0f;
 
+	//show pos
+	Msg("My cur yaw = [%f], My target yaw = [%f], My r_speed = [%f]", r_torso_current.yaw, r_torso_target.yaw, r_torso_speed);
+
+
 	// Проверить на нанесение хита во время прыжка
 	if (CJumping::IsGlide()) {
 		
@@ -267,6 +271,14 @@ void CAI_Dog::UpdateCL()
 		// !!!
 		LookPosition(pE->Position());
 	}
+
+
+	
+}
+
+void CAI_Dog::OnJumpStop()
+{
+	MotionMan.ProcessAction();
 }
 
 ///////////////////////////////////////////////////////

@@ -75,6 +75,9 @@ public:
 			bool	IsGlide					() {return ((active) ? ptr_cur->type == JT_GLIDE : false);}
 			CObject	*GetEnemy				() {return entity;}
 
+	virtual void	OnJumpStart				() {};
+	virtual void	OnJumpStop				() {};
+
 private:
 			void	Reset					();
 			// Начало прыжка
@@ -86,7 +89,6 @@ private:
 			void	ApplyParams				();
 			// Переключить следующее состояние прыжка				
 			void	NextState				();
-
 
 };
 

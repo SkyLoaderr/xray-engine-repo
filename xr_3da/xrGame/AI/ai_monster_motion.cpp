@@ -186,7 +186,8 @@ bool CMotionManager::PrepareAnimation()
 	AA_SwitchAnimation(cur_anim, index);
 
 	// todo: find out the reason quick animation changes
-	//Msg("ANIM_SELECT: anim = [%s] index= [%i] Time = [%i]",*anim_it->second.target_name, index, pMonster->m_dwCurrentTime);
+	Msg("--------------------------------------------------------------------");
+	Msg("ANIM_SELECT: anim = [%s] index= [%i] Time = [%i]",*anim_it->second.target_name, index, pMonster->m_dwCurrentTime);
 
 	return true;
 }
@@ -250,6 +251,9 @@ void CMotionManager::ProcessAction()
 				// необходим поворот влево или вправо
 				if (angle_normalize_signed(target_yaw - cur_yaw) > 0) 	cur_anim = MI.turn.anim_right;	// вправо
 				else													cur_anim = MI.turn.anim_left; 	// влево
+
+				Seq_Add(cur_anim);
+				Seq_Switch();
 			}
 		}	
 

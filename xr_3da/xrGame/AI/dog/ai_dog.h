@@ -24,6 +24,9 @@ public:
 
 	virtual void	LookPosition		(Fvector to_point);		
 
+	virtual void	OnJumpStop			();
+	virtual bool	CanJump				() {return false;}
+
 private:
 	static	void __stdcall	BoneCallback			(CBoneInstance *B);
 	

@@ -94,7 +94,8 @@ void CEntityCondition::Load(LPCSTR section)
 	m_fV_RadiationHealth = pSettings->r_float(section,"radiation_health_v");
 	m_fV_Bleeding = pSettings->r_float(section,"bleeding_v");
 	m_fV_WoundIncarnation = pSettings->r_float(section,"wound_incarnation_v");
-
+	m_fV_EntityMorale = pSettings->r_float(section,"morale_v");
+	
 	m_fHealthHitPart = pSettings->r_float(section,"health_hit_part");
 	m_fPowerHitPart = pSettings->r_float(section,"power_hit_part");
 
@@ -213,8 +214,8 @@ void CEntityCondition::UpdateCondition()
 
 	if(m_fCircumspection<0) m_fCircumspection = 0;
 	if(m_fCircumspection>m_fCircumspectionMax) m_fCircumspection = m_fCircumspectionMax;
-	if(m_fEntityMorale<0) m_fEntityMorale = 0;
-	if(m_fEntityMorale>m_fEntityMoraleMax) m_fEntityMorale = m_fEntityMoraleMax;
+	
+	clamp(m_fEntityMorale,0.0f,m_fEntityMoraleMax);
 }
 
 

@@ -264,8 +264,17 @@ private:
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------------------
 
+//typedef struct tagSoundElement
+//{
+//	CObject				*who;
+//
+//} SoundElem;
+
+
+
 class CMonsterMemory : public CSoundMemory, public CVisionMemory {
-	
+
+
 public:
 	void InitMemory(TTime sound_mem, TTime vision_mem){
 		CSoundMemory::Init(sound_mem);

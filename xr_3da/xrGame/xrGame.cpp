@@ -613,7 +613,7 @@ public:
 				string256	S;
 				S[0]		= 0;
 				sscanf		(args ,"%s",S);
-				if (!strlen(S))
+				if (!xr_strlen(S))
 					Log("* Specify file name!");
 				else
 					tpGame->m_tpALife->Save(S);
@@ -645,7 +645,7 @@ public:
 			string256	S;
 			S[0]		= 0;
 			sscanf		(args ,"%s",S);
-			if (!strlen(S))
+			if (!xr_strlen(S))
 				Log("* Specify file name!");
 			else {
 				strconcat(Level().m_caServerOptions,S,"/single");
@@ -665,7 +665,7 @@ public:
 			string256	S;
 			S[0]		= 0;
 			sscanf		(args ,"%s",S);
-			if (!strlen(S))
+			if (!xr_strlen(S))
 				Log("* Specify file name!");
 			else {
 				strconcat(Level().m_caServerOptions,S,"/single/alife");

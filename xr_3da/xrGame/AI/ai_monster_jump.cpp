@@ -29,10 +29,6 @@ void CJumping::Load(LPCSTR section)
 	m_fTraceDist					= pSettings->r_float(section,"jump_trace_dist");
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-// NEW JUMPS
-//////////////////////////////////////////////////////////////////////////////////////////////////////
-
 void CJumping::AddState(CMotionDef *motion, EJumpStateType type, bool change, float linear, float angular)
 {
 	SJumpState jmp;
@@ -48,7 +44,8 @@ void CJumping::AddState(CMotionDef *motion, EJumpStateType type, bool change, fl
 
 void CJumping::Start()
 {
-	Msg("Start jump...");
+	Msg("START:: Monster Pos = [%f,%f,%f], cur_time = [%i]", VPUSH(pMonster->Position()), pMonster->m_dwCurrentTime);
+	Msg("START:: Starting, cur_time = [%i]", pMonster->m_dwCurrentTime);
 	
 	ptr_cur		= bank.begin();
 	cur_motion	= 0;
@@ -62,8 +59,11 @@ void CJumping::Start()
 void CJumping::Stop()
 {
 	active = false;
-	
-	Msg("Stop jump...");
+		
+	Msg("STOP:: Monster Pos = [%f,%f,%f], cur_time = [%i]", VPUSH(pMonster->Position()), pMonster->m_dwCurrentTime);
+	Msg("STOP:: Stopped, cur_time = [%i]", pMonster->m_dwCurrentTime);
+
+	OnJumpStop();
 }
 // вызывается на каждом SelectAnimation
 bool CJumping::PrepareAnimation(CMotionDef **m)
@@ -76,7 +76,7 @@ bool CJumping::PrepareAnimation(CMotionDef **m)
 // вызывается по окончанию анимации
 void CJumping::OnAnimationEnd()
 {
-	Msg("Animation Ended!!!");
+	Msg("Animation Ended!!!, cur_time = [%i]", pMonster->m_dwCurrentTime);
 	if (ptr_cur->change) NextState();
 }
 
@@ -84,12 +84,12 @@ void CJumping::ApplyParams()
 {
 	pMonster->m_fCurSpeed		= ptr_cur->speed.linear;
 	pMonster->r_torso_speed		= ptr_cur->speed.angular;
-	Msg("Apply params...");
+	Msg("Apply params..., cur_time = [%i]", pMonster->m_dwCurrentTime);
 }
 
 void CJumping::NextState()
 {
-	Msg("Next state...");
+	Msg("Next state..., cur_time = [%i]", pMonster->m_dwCurrentTime);
 
 	ptr_cur++;
 	if (ptr_cur == bank.end()) {
@@ -105,7 +105,7 @@ void CJumping::NextState()
 
 void CJumping::Execute()
 {
-	Msg("Execute phisical Jump...");
+	Msg("EXEC:: Executing phisical jump..., cur_time = [%i]", pMonster->m_dwCurrentTime);
 	if (entity) {
 		// установить целевую точку 
 		u16 bone_id = PKinematics(entity->Visual())->LL_BoneID("bip01_head");
@@ -122,6 +122,7 @@ void CJumping::Execute()
 	ph_time = pMonster->Movement.JumpMinVelTime(target_pos);
 	// выполнить прыжок в соответствии с делителем времени
 	pMonster->Movement.Jump(target_pos,ph_time/m_fJumpFactor);
+	Msg("EXEC:: Traget pos [%f,%f,%f], cur_time = [%i]", VPUSH(target_pos), pMonster->m_dwCurrentTime);
 
 	time_started		= pMonster->m_dwCurrentTime;
 	time_next_allowed	= time_started + m_dwDelayAfterJump;
@@ -135,7 +136,7 @@ void CJumping::Update()
 	TTime itime = TTime(ph_time * 1000);
 
 	// проверить на завершение прыжка
-	if ((time_started + itime < pMonster->m_dwCurrentTime + TTime(itime/4))) {
+	if ((time_started + itime < pMonster->m_dwCurrentTime + TTime(itime/5))) {
 		NextState();
 	}
 
