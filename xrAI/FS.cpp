@@ -24,7 +24,6 @@ void VerifyPath(LPCSTR path)
 		tmp[i] = 0;
 		CreateDirectory( tmp, 0 );
 	}
-    return TRUE;
 }
 void* __stdcall FileDownload(LPCSTR fn, u32* pdwSize)
 {
