@@ -109,11 +109,11 @@ namespace ALife {
 	};
 
 	enum ETaskState {
-		eTaskStateNone = u32(0),
+		eTaskStateNoTask = u32(0),
+		eTaskStateGoToTrader,
+		eTaskStateChooseTask,
 		eTaskStateGoing,
 		eTaskStateSearching,
-		eTaskStateReturningSuccess,
-		eTaskStateReturningFailed,
 		eTaskStateDummy = u32(-1),
 	};
 

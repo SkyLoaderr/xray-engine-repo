@@ -485,7 +485,7 @@ public:
 		m_tpaVertices.clear			();
 		m_baVisitedVertices.clear	();
 		m_fMaxItemMass				= pSettings->ReadFLOAT				(tpSpawnPoints[tSpawnID].caModel, "max_item_mass");
-		m_tTaskState				= eTaskStateNone;
+		m_tTaskState				= eTaskStateNoTask;
 		m_tCurTask.tTaskID			= u32(-1);
 		m_dwCurNode					= u32(-1);
 		m_dwCurTaskLocation			= u32(-1);

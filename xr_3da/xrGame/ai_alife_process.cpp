@@ -71,45 +71,57 @@ void CAI_ALife::vfUpdateHumanGroup(CALifeHumanGroup *tpALifeHumanGroup)
 void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 {
 	switch (tpALifeHuman->m_tTaskState) {
-		case eTaskStateNone : {
+		case eTaskStateNoTask : {
 			if (!tpALifeHuman->m_tpTaskIDs.size()) {
-				if (!tpALifeHuman->m_tpaVertices.size()) {
-					CALifeHuman *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
-					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
-					tpALifeHuman->m_dwCurNode = 0;
-				}
-				else {
-					if ((tpALifeHuman->m_dwCurNode >= (tpALifeHuman->m_tpaVertices.size() - 1)) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
-						tpALifeHuman->m_tpaVertices.clear();
-						tpALifeHuman->m_dwCurNode = u32(-1);
-						vfCommunicateWithTrader(tpALifeHuman,tpfGetNearestSuitableTrader(tpALifeHuman));
-					}
-				}
-			}
-			else {
-				tpALifeHuman->m_tCurTask = m_tTaskRegistry.m_tpMap[tpALifeHuman->m_tpTaskIDs[0]];
-				_GRAPH_ID tGraphID = _GRAPH_ID(-1);
-				switch (tpALifeHuman->m_tCurTask.tTaskType) {
-					case eTaskTypeSearchForItemCG :
-					case eTaskTypeSearchForItemOG : {
-						tGraphID = tpALifeHuman->m_tCurTask.tGraphID;
-						break;
-					}
-					case eTaskTypeSearchForItemCL :
-					case eTaskTypeSearchForItemOL : {
-						VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
-						tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
-						tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size(),false);
-						tGraphID = m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
-						tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
-						break;
-					}
-					default : NODEFAULT;
-				};
-				tpALifeHuman->m_tTaskState = eTaskStateGoing;
-				Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tGraphID,tpALifeHuman->m_tpaVertices);
+				CALifeHuman *tpTrader = tpfGetNearestSuitableTrader(tpALifeHuman);
+				Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tpTrader->m_tGraphID,tpALifeHuman->m_tpaVertices);
 				tpALifeHuman->m_dwCurNode = 0;
+				tpALifeHuman->m_tTaskState = eTaskStateGoToTrader;
+				tpALifeHuman->m_tCurTask.tCustomerID = _OBJECT_ID(-1);
 			}
+			else
+				tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
+			break;
+		}
+		case eTaskStateGoToTrader : {
+			if ((tpALifeHuman->m_dwCurNode >= (tpALifeHuman->m_tpaVertices.size() - 1)) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
+				tpALifeHuman->m_tpaVertices.clear();
+				tpALifeHuman->m_dwCurNode = u32(-1);
+				OBJECT_PAIR_IT I = m_tObjectRegistry.m_tppMap.find(tpALifeHuman->m_tCurTask.tCustomerID);
+				CALifeHuman *tpTrader = 0;
+				if (I != m_tObjectRegistry.m_tppMap.end())
+					 tpTrader = dynamic_cast<CALifeHuman *>(I->second);
+				if (tpTrader)
+					vfCommunicateWithTrader(tpALifeHuman,tpTrader);
+				else
+					vfCommunicateWithTrader(tpALifeHuman,tpfGetNearestSuitableTrader(tpALifeHuman));
+				tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
+			}
+			break;
+		}
+		case eTaskStateChooseTask : {
+			tpALifeHuman->m_tCurTask = m_tTaskRegistry.m_tpMap[tpALifeHuman->m_tpTaskIDs[0]];
+			_GRAPH_ID tGraphID = _GRAPH_ID(-1);
+			switch (tpALifeHuman->m_tCurTask.tTaskType) {
+				case eTaskTypeSearchForItemCG :
+				case eTaskTypeSearchForItemOG : {
+					tGraphID = tpALifeHuman->m_tCurTask.tGraphID;
+					break;
+				}
+				case eTaskTypeSearchForItemCL :
+				case eTaskTypeSearchForItemOL : {
+					VERIFY(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
+					tpALifeHuman->m_baVisitedVertices.resize(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size());
+					tpALifeHuman->m_baVisitedVertices.assign(m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID].size(),false);
+					tGraphID = m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation = 0];
+					tpALifeHuman->m_baVisitedVertices[tpALifeHuman->m_dwCurTaskLocation] = true;
+					break;
+				}
+				default : NODEFAULT;
+			};
+			tpALifeHuman->m_tTaskState = eTaskStateGoing;
+			Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,tGraphID,tpALifeHuman->m_tpaVertices);
+			tpALifeHuman->m_dwCurNode = 0;
 			break;
 		}
 		case eTaskStateGoing : {
@@ -117,17 +129,17 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 				if (bfCheckIfTaskCompleted(tpALifeHuman)) {
 					Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tObjectRegistry.m_tppMap[tpALifeHuman->m_tCurTask.tCustomerID]->m_tGraphID,tpALifeHuman->m_tpaVertices);
 					tpALifeHuman->m_dwCurNode = 0;
-					tpALifeHuman->m_tTaskState = eTaskStateReturningSuccess;
+					tpALifeHuman->m_tTaskState = eTaskStateGoToTrader;
 				}
 				else {
 					switch (tpALifeHuman->m_tCurTask.tTaskType) {
 						case eTaskTypeSearchForItemCG :
 						case eTaskTypeSearchForItemOG : {
-							if ((tpALifeHuman->m_dwCurNode >= (tpALifeHuman->m_tpaVertices.size() - 1)) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
+							if ((tpALifeHuman->m_dwCurNode + 1>= (tpALifeHuman->m_tpaVertices.size())) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
 								tpALifeHuman->m_tpaVertices.clear();
 								tpALifeHuman->m_dwCurNode = u32(-1);
 								vfCommunicateWithTrader(tpALifeHuman,tpfGetNearestSuitableTrader(tpALifeHuman));
-								tpALifeHuman->m_tTaskState = eTaskStateNone;
+								tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
 							}
 							break;
 						}
@@ -139,14 +151,8 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 								Level().AI.m_tpAStar->ffFindMinimalPath(tpALifeHuman->m_tGraphID,m_tpTerrain[tpALifeHuman->m_tCurTask.tLocationID][tpALifeHuman->m_dwCurTaskLocation],tpALifeHuman->m_tpaVertices);
 								tpALifeHuman->m_dwCurNode = 0;
 							}
-							else {
-								if ((tpALifeHuman->m_dwCurNode >= (tpALifeHuman->m_tpaVertices.size() - 1)) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
-									tpALifeHuman->m_tpaVertices.clear();
-									tpALifeHuman->m_dwCurNode = u32(-1);
-									vfCommunicateWithTrader(tpALifeHuman,tpfGetNearestSuitableTrader(tpALifeHuman));
-									tpALifeHuman->m_tTaskState = eTaskStateNone;
-								}
-							}
+							else
+								tpALifeHuman->m_tTaskState = eTaskStateChooseTask;
 							break;
 						}
 					};
@@ -155,16 +161,7 @@ void CAI_ALife::vfUpdateHuman(CALifeHuman *tpALifeHuman)
 			}
 			break;
 		}
-		case eTaskStateReturningSuccess : {
-			if ((tpALifeHuman->m_dwCurNode >= (tpALifeHuman->m_tpaVertices.size() - 1)) && (tpALifeHuman->m_tGraphID == tpALifeHuman->m_tNextGraphID)) {
-				tpALifeHuman->m_tpaVertices.clear();
-				tpALifeHuman->m_dwCurNode = u32(-1);
-				vfCommunicateWithTrader(tpALifeHuman,dynamic_cast<CALifeHuman *>(m_tObjectRegistry.m_tppMap[tpALifeHuman->m_tCurTask.tCustomerID]));
-				tpALifeHuman->m_tTaskState = eTaskStateNone;
-			}
-			break;
-		}
-		case eTaskStateReturningFailed : {
+		case eTaskStateSearching : {
 			break;
 		}
 		default : NODEFAULT;
