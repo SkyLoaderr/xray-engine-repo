@@ -8,7 +8,7 @@
 #include "3DSound.h"
 
 int		psSoundRelaxTime		= 3;
-u32		psSoundFlags			= ssWaveTrace;
+Flags32	psSoundFlags			= {ssWaveTrace};
 float	psSoundOcclusionScale	= 0.85f;
 float	psSoundCull				= 0.07f;
 float	psSoundRolloff			= 0.3f;

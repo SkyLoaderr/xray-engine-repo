@@ -286,14 +286,14 @@ void CSoundStream::LoadADPCM( )
 	R_ASSERT		(hf>=0);
 	ZeroMemory		(&riff, sizeof(riff));
     XRead			(riff);
-    memcpy			(buf,riff.id,4); buf[4]=0;
-    memcpy			(buf,riff.wave_id,4); buf[4]=0;
+    PSGP.memCopy	(buf,riff.id,4); buf[4]=0;
+    PSGP.memCopy	(buf,riff.wave_id,4); buf[4]=0;
 
     while (!hf->Eof()) 
 	{
-		XRead	(hdr);
-        memcpy	(buf,hdr.id,4); buf[4]=0;
-        pos		= hf->Tell();
+		XRead			(hdr);
+        PSGP.memCopy	(buf,hdr.id,4); buf[4]=0;
+        pos				= hf->Tell();
         if (stricmp(buf, "fmt ")==0) {
 			dwFMT_Size = hdr.len;
 			psrc		= (LPWAVEFORMATEX)xr_malloc(dwFMT_Size);
