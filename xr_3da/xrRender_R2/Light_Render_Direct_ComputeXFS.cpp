@@ -32,17 +32,20 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	// Compute approximate screen area (treating it as an point light) - R*R/dist_sq
 	// Note: we clamp screen space area to ONE, although it is not correct at all
 	float	dist				= Device.vCameraPosition.distance_to(L->spatial.center)-L->spatial.radius;
+			if (dist<0)	dist	= 0;
 	float	ssa					= clampr	(L->range*L->range / (1.f+dist*dist),0.f,1.f);
 
 	// compute intensity
 	float	intensity			= (L->color.r + L->color.g + L->color.b)/3.f;
 
-	// compute how much duelling frusta occurs
+	// compute how much duelling frusta occurs	[-1..1]->[-0.5 .. +0.5]  += 1
+	float	duel_dot			= 1.f -	0.5f*Device.vCameraDirection.dotproduct(L_dir);
 
 	// factors
 	float	factor0				= powf	(ssa,		1.f/2.f);		// ssa is quadratic
 	float	factor1				= powf	(intensity, 1.f/4.f);		// less perceptually important?
-	float	factor				= ps_r2_ls_squality * factor0 * factor1;
+	float	factor2				= powf	(duel_dot,	1.f/2.f);		// difficult to change here -> visible
+	float	factor				= ps_r2_ls_squality * factor0 * factor1 * factor2;
 	
 	// 
 	L->X.S.size					= iFloor( factor * SMAP_adapt_optimal );
