@@ -42,7 +42,7 @@ if not editor() then
 	CTime_0 = game.CTime()
 end
 
-local the_actor, n, ini, sect, g, gi, ggi, o, o_id, sim, t
+local the_actor, n, ini, sect, g, gi, ggi, o, oT, o_id, sim, t
 
 ----------------------------------------------------------------------------------------------------------------------
 -- –азные полезные функции
@@ -306,10 +306,6 @@ function se_smart_terrain:free_stalker( obj_id )
 	return true
 end
 
-function se_smart_terrain:checkNpc( obj )
-	return xr_gulag.checkNpc( nil, self.gparams.type )
-end
-
 function se_smart_terrain:obj_id( obj )
 	return obj.id
 end
@@ -436,10 +432,6 @@ function cl_smart_terrain:free_stalker( obj_id )
 	end
 end
 
-function cl_smart_terrain:checkNpc( obj )
-	return xr_gulag.checkNpc( obj:character_community(), self.gparams.type )
-end
-
 function cl_smart_terrain:obj_id( obj )
 	return obj:id()
 end
@@ -510,42 +502,45 @@ function read_ini( self )
 	else
 		self.ini_ok = true
 	end
-
-	printf( "READ INI OK" )
 end
 
 -- добавить сталкера в гулаг
 function add_stalker( self, obj )
 	-- если в гулаге есть свободные места и он подходит гулагу, то добавить
 	n = self.gulag:get_population()
-	if n < self.gparams.capacity and self:checkNpc( obj ) then
+	if n < self.gparams.capacity then
 		o_id = self:obj_id( obj )
 
 		sim = alife()
 		o = sim:object( o_id )
 
-		o = cast_alife_object_to_creature( o )
+		oT = cast_alife_object_to_trader_abstract( o )
+		printf( "comm=%s", oT:community() )
 
-		self.stalkers[o_id] = {
-			group          = o:g_group(),
-			squad          = o:g_squad(),
-			move_offline   = o:move_offline(),
-			switch_offline = o:can_switch_offline(),
-			stay_end       = game.CTime()
-		}
+		if xr_gulag.checkNpc( oT:community(), self.gparams.type ) then
+			o  = cast_alife_object_to_creature( o )
 
-		--printf( "squad=%s group=%s", utils.to_str ( self.stalkers[o_id].squad ), utils.to_str ( self.stalkers[o_id].group ) )
+			self.stalkers[o_id] = {
+				group          = o:g_group(),
+				squad          = o:g_squad(),
+				move_offline   = o:move_offline(),
+				switch_offline = o:can_switch_offline(),
+				stay_end       = game.CTime()
+			}
 
-		t = self.stalkers[o_id].stay_end
-		t:setHMSms( 0, 0, 0, math.random( self.gparams.stay_min * h2ms, self.gparams.stay_max * h2ms ) )
-		t:add( game.get_game_time() )
+			--printf( "squad=%s group=%s", utils.to_str ( self.stalkers[o_id].squad ), utils.to_str ( self.stalkers[o_id].group ) )
 
-		o:move_offline( false )
-		sim:set_switch_offline( o_id, false )
+			t = self.stalkers[o_id].stay_end
+			t:setHMSms( 0, 0, 0, math.random( self.gparams.stay_min * h2ms, self.gparams.stay_max * h2ms ) )
+			t:add( game.get_game_time() )
 
-		self.gulag:addObject( obj )
+			o:move_offline( false )
+			sim:set_switch_offline( o_id, false )
 
-		printf( "[smart_terrain %s] adding %s to gulag type=%s", self:name(), o:name(), self.gparams.type )
+			self.gulag:addObject( obj )
+
+			printf( "[smart_terrain %s] adding %s to gulag type=%s", self:name(), o:name(), self.gparams.type )
+		end
 	end
 end
 
@@ -575,7 +570,7 @@ end
 function is_gulag_available( gulag_params )
 	if gulag_params.preconditions then
 		for i, v in gulag_params.preconditions do
-			if not the_actor:has_info( v ) then
+			if the_actor:dont_has_info( v ) then
 				return false
 			end
 		end
@@ -674,14 +669,14 @@ function update( self )
 				-- провер€ть, не собралс€ ли кто-то к этому времени уже уходить
 				sn = 0
 				for id, v in self.gulag.Object do
---[[					if self.stalkers[id].stay_end < game.get_game_time() then
+					if self.stalkers[id].stay_end < game.get_game_time() then
 						-- попытка освободить сталкера. если неудачно, то он всЄ ещЄ числитс€
 						if not free_stalker( self, id ) then
 							sn = sn + 1
 						end
-					else]]
+					else
 						sn = sn + 1
---					end
+					end
 				end
 
 				-- если мужиков в гулаге больше не осталось, убрать гулаг
