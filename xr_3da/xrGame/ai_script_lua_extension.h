@@ -13,7 +13,6 @@
 
 namespace Script {
 #ifndef ENGINE_BUILD
-	bool		bfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, int iErorCode = 0);
 	void		vfExportGlobals				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportFvector				(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportFmatrix				(CLuaVirtualMachine *tpLuaVirtualMachine);
@@ -29,13 +28,14 @@ namespace Script {
 	void		vfExportArtifactMerger		(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfLoadStandardScripts		(CLuaVirtualMachine *tpLuaVirtualMachine);
 	void		vfExportToLua				(CLuaVirtualMachine *tpLuaVirtualMachine);
-	bool		bfLoadBuffer				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caBuffer,		size_t	tSize,				LPCSTR	caScriptName);
-	LPCSTR		cafEventToString			(int				iEventCode);
-	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);
-	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iStackLevel);
+	bool		bfLoadFile					(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	bool	bCall = true);
 	void		LuaHookCall					(CLuaVirtualMachine *tpLuaVirtualMachine, lua_Debug *tpLuaDebug);
 	int			LuaPanic					(CLuaVirtualMachine *tpLuaVirtualMachine);
 #endif
-	bool		bfLoadFile					(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	bool	bCall = true);
+	bool		bfPrintOutput				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName, int iErorCode = 0);
+	LPCSTR		cafEventToString			(int				iEventCode);
+	void		vfPrintError				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iErrorCode);
+	bool		bfListLevelVars				(CLuaVirtualMachine *tpLuaVirtualMachine, int		iStackLevel);
+	bool		bfLoadBuffer				(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caBuffer,		size_t	tSize,				LPCSTR	caScriptName);
 	bool		bfLoadFileIntoNamespace		(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR	caScriptName,	LPCSTR	caNamespaceName,	bool	bCall);
 };

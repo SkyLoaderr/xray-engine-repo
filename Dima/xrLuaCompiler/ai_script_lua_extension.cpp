@@ -6,22 +6,23 @@
 //	Description : XRay Script extensions
 ////////////////////////////////////////////////////////////////////////////
 
+#include <stdarg.h>
 #include "stdafx.h"
 #include "ai_script_lua_extension.h"
+#include "ai_script_space.h"
 
 #ifndef ENGINE_BUILD
-	#include <stdarg.h>
-	#include "ai_script_space.h"
 	#include "ai_space.h"
 #endif
 
 using namespace Script;
 
-#ifndef ENGINE_BUILD
 int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, ...)
 {
+#ifndef ENGINE_BUILD
 	if (!psAI_Flags.test(aiLua))
 		return(0);
+#endif
 
 	LPCSTR		S = "", SS = "";
 	LPSTR		S1;
@@ -82,13 +83,19 @@ int __cdecl Lua::LuaOut(Lua::ELuaMessageType tLuaMessageType, LPCSTR caFormat, .
 	strcpy	(S2,SS);
 	S1		= S2 + xr_strlen(SS);
 	vsprintf(S1,caFormat,l_tMarker);
+
+#ifdef ENGINE_BUILD
+	Msg("[LUA Output] : %s",S2);
+#else
 	getAI().m_tpLuaOutput->w_string(S2);
+#endif
 
 	va_end	(l_tMarker);
 
 	return	(l_iResult);
 }
 
+#ifndef ENGINE_BUILD
 void Script::vfLoadStandardScripts(CLuaVirtualMachine *tpLuaVirtualMachine)
 {
 	string256		S,S1;
@@ -131,7 +138,6 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 
 	vfLoadStandardScripts(tpLuaVirtualMachine);
 }
-#endif
 
 bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScriptName, bool bCall)
 {
@@ -142,6 +148,7 @@ bool Script::bfLoadFile(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caScript
 	else
 		return		(bfLoadFileIntoNamespace(tpLuaVirtualMachine,caScriptName,l_caNamespaceName,bCall));
 }
+#endif
 
 bool bfCreateNamespaceTable(CLuaVirtualMachine *tpLuaVirtualMachine, LPCSTR caNamespaceName)
 {
