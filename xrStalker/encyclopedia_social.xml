@@ -67,7 +67,7 @@
 
     <article id="social_stalker-clans_clear-sky" name="Clear-sky" group="Social/Stalker-clans">
         <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
-        <text>enc_social_stalker-clans_clear-sky</text>
+        <text>enc_social_stalker-clans_сlear-sky</text>
     </article>
 
 
