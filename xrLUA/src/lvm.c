@@ -318,7 +318,7 @@ void luaV_concat (lua_State *L, int total, int last) {
       char *buffer;
       int i;
       while (n < total && tostring(L, top-n-1)) {  /* collect total length */
-        tl += tsvalue(top-n-1)->tsv.len;
+        tl += (lu_mem)tsvalue(top-n-1)->tsv.len;
         n++;
       }
       if (tl > MAX_SIZET) luaG_runerror(L, "string size overflow");
@@ -326,8 +326,8 @@ void luaV_concat (lua_State *L, int total, int last) {
       tl = 0;
       for (i=n; i>0; i--) {  /* concat all strings */
         size_t l = tsvalue(top-i)->tsv.len;
-        Memory.mem_copy(buffer+tl, svalue(top-i), l);
-        tl += l;
+        Memory.mem_copy(buffer+tl, svalue(top-i), (u32)l);
+        tl += (lu_mem)l;
       }
       setsvalue2s(top-n, luaS_newlstr(L, buffer, tl));
     }
@@ -734,7 +734,7 @@ StkId luaV_execute (lua_State *L) {
         if (GET_OPCODE(i) == OP_SETLIST)
           n = (bc&(LFIELDS_PER_FLUSH-1)) + 1;
         else {
-          n = L->top - ra - 1;
+          n = int(L->top - ra - 1);
           L->top = L->ci->top;
         }
         bc &= ~(LFIELDS_PER_FLUSH-1);  /* bc = bc - bc%FPF */

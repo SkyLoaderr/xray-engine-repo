@@ -320,7 +320,7 @@ static const char *end_capture (MatchState *ms, const char *s,
                                   const char *p) {
   int l = capture_to_close(ms);
   const char *res;
-  ms->capture[l].len = s - ms->capture[l].init;  /* close capture */
+  ms->capture[l].len = sint32(s - ms->capture[l].init);  /* close capture */
   if ((res = match(ms, s, p)) == NULL)  /* match failed? */
     ms->capture[l].len = CAP_UNFINISHED;  /* undo capture */
   return res;
@@ -517,7 +517,7 @@ static int gfind_aux (lua_State *L) {
     const char *e;
     ms.level = 0;
     if ((e = match(&ms, src, p)) != NULL) {
-      int newstart = e-s;
+      int newstart = int(e-s);
       if (e == src) newstart++;  /* empty match? go at least one position */
       lua_pushnumber(L, (lua_Number)newstart);
       lua_replace(L, lua_upvalueindex(3));

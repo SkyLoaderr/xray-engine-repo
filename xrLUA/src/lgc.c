@@ -223,11 +223,11 @@ static void traverseclosure (GCState *st, Closure *cl) {
 
 
 static void checkstacksizes (lua_State *L, StkId max) {
-  int used = L->ci - L->base_ci;  /* number of `ci' in use */
+  int used = int(L->ci - L->base_ci);  /* number of `ci' in use */
   if (4*used < L->size_ci && 2*BASIC_CI_SIZE < L->size_ci)
     luaD_reallocCI(L, L->size_ci/2);  /* still big enough... */
   else condhardstacktests(luaD_reallocCI(L, L->size_ci));
-  used = max - L->stack;  /* part of stack in use */
+  used = int(max - L->stack);  /* part of stack in use */
   if (4*used < L->stacksize && 2*(BASIC_STACK_SIZE+EXTRA_STACK) < L->stacksize)
     luaD_reallocstack(L, L->stacksize/2);  /* still big enough... */
   else condhardstacktests(luaD_reallocstack(L, L->stacksize));

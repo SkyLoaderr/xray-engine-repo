@@ -102,10 +102,13 @@ Node *luaH_mainposition (const Table *t, const TObject *key) {
       return hashstr(t, tsvalue(key));
     case LUA_TBOOLEAN:
       return hashboolean(t, bvalue(key));
-    case LUA_TLIGHTUSERDATA:
+#pragma warning(push)
+#pragma warning(disable:4311)
+	case LUA_TLIGHTUSERDATA:
       return hashpointer(t, pvalue(key));
     default:
       return hashpointer(t, gcvalue(key));
+#pragma warning(pop)
   }
 }
 

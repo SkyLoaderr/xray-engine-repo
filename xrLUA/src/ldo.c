@@ -93,7 +93,7 @@ int luaD_rawrunprotected (lua_State *L, Pfunc f, void *ud) {
 static void restore_stack_limit (lua_State *L) {
   L->stack_last = L->stack+L->stacksize-1;
   if (L->size_ci > LUA_MAXCALLS) {  /* there was an overflow? */
-    int inuse = (L->ci - L->base_ci);
+    int inuse = int(L->ci - L->base_ci);
     if (inuse + 1 < LUA_MAXCALLS)  /* can `undo' overflow? */
       luaD_reallocCI(L, LUA_MAXCALLS);
   }
@@ -164,7 +164,7 @@ void luaD_callhook (lua_State *L, int event, int line) {
     if (event == LUA_HOOKTAILRET)
       ar.i_ci = 0;  /* tail call; no debug information about it */
     else
-      ar.i_ci = L->ci - L->base_ci;
+      ar.i_ci = int(L->ci - L->base_ci);
     luaD_checkstack(L, LUA_MINSTACK);  /* ensure minimum stack size */
     L->ci->top = L->top + LUA_MINSTACK;
     L->allowhook = 0;  /* cannot call hooks inside a hook */
@@ -183,7 +183,7 @@ static void adjust_varargs (lua_State *L, int nfixargs, StkId base) {
   int i;
   Table *htab;
   TObject nname;
-  int actual = L->top - base;  /* actual number of arguments */
+  int actual = int(L->top - base);  /* actual number of arguments */
   if (actual < nfixargs) {
     luaD_checkstack(L, nfixargs - actual);
     for (; actual < nfixargs; ++actual)

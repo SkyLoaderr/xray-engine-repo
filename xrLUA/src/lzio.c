@@ -56,7 +56,7 @@ size_t luaZ_read (ZIO *z, void *b, size_t n) {
       }
     }
     m = (n <= z->n) ? n : z->n;  /* min. between n and z->n */
-    Memory.mem_copy(b, z->p, m);
+    Memory.mem_copy(b, z->p, (u32)m);
     z->n -= m;
     z->p += m;
     b = (char *)b + m;
