@@ -1,7 +1,7 @@
 // Actor.h: interface for the CActor class.
 //
 //////////////////////////////////////////////////////////////////////
-
+ 
 #if !defined(AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_)
 #define AFX_ACTOR_H__C66583EA_EEA6_45F0_AC9F_918B5997F194__INCLUDED_
 #pragma once
@@ -28,6 +28,7 @@ class CActor:
 private:
 	typedef CEntityAlive	inherited;
 protected:
+	CPHMovementControl ph_Movement;
 	enum ESoundCcount {
 		SND_HIT_COUNT=4,
 		SND_DIE_COUNT=4
@@ -39,7 +40,6 @@ protected:
 		eacMaxCam
 	};
 public:
-	CPHMovementControl ph_Movement;
 	enum EMoveCommand
 	{
 		mcFwd		= (1ul<<0ul),
@@ -243,8 +243,8 @@ public:
 	virtual void						net_Destroy			();
 
 	virtual void						Die					( );
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, float impulse);
-	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space, float impulse);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element);
+	virtual	void						Hit					(float P, Fvector &dir,			CObject* who, s16 element, Fvector position_in_bone_space);
 	virtual void						HitSignal			(float P, Fvector &vLocalDir,	CObject* who, s16 element);
 	virtual	float						HitScale			(int element);
 
@@ -285,11 +285,10 @@ public:
 
 	void								ZoneEffect			(float z_amount);
 	void								Statistic			( );
-
+	void								SetPhPosition		(const Fmatrix& pos);
 	// HUD
 	virtual void						OnHUDDraw			(CCustomHUD* hud);
 	CWeaponList*						tpfGetWeapons		()	{return Weapons;}
-	
 
 #ifdef DEBUG
 	virtual void						OnRender			();
