@@ -12,7 +12,6 @@ void __stdcall CWeaponMounted::BoneCallbackX(CBoneInstance *B)
 	CWeaponMounted	*P = dynamic_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
 
 	if (P->Owner()){
-//		CKinematics* K	= PKinematics	(P->Visual());
 		Fmatrix rX;		rX.rotateX		(P->camera->pitch);
 		B->mTransform.mulB(rX);
 	}
@@ -22,7 +21,6 @@ void __stdcall CWeaponMounted::BoneCallbackY(CBoneInstance *B)
 	CWeaponMounted	*P = dynamic_cast<CWeaponMounted*> (static_cast<CObject*>(B->Callback_Param));
 
 	if (P->Owner()){
-//		CKinematics* K	= PKinematics	(P->Visual());
 		Fmatrix rY;		rY.rotateY		(P->camera->yaw);
 		B->mTransform.mulB(rY);
 	}
@@ -43,7 +41,7 @@ void	CWeaponMounted::Load(LPCSTR section)
 {
 	inherited::Load(section);
 
-	CShootingObject::Load	(section);
+//	CShootingObject::Load	(section);
 }
 
 BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
@@ -70,15 +68,12 @@ BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
 
 	CBoneData& bdX			= K->LL_GetData(rotate_x_bone); VERIFY(bdX.IK_data.type==jtJoint);
 	camera->lim_pitch.set	(bdX.IK_data.limits[0].limit.x,bdX.IK_data.limits[0].limit.y);
-	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(rotate_x_bone);	
-	biX.set_callback		(BoneCallbackX,this);
 	CBoneData& bdY			= K->LL_GetData(rotate_y_bone); VERIFY(bdY.IK_data.type==jtJoint);
 	camera->lim_yaw.set		(bdY.IK_data.limits[1].limit.x,bdY.IK_data.limits[1].limit.y);
-	camera->lim_yaw.set		(0,0);
-	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(rotate_y_bone);	
-	biY.set_callback		(BoneCallbackY,this);
 
-	//P_BuildShell
+	U16Vec fixed_bones;
+	fixed_bones.push_back	(K->LL_GetBoneRoot());
+	m_pPhysicsShell			= P_build_Shell(this,false,fixed_bones);
 
 	setVisible	(true);
 	setEnabled	(true);
@@ -88,14 +83,18 @@ BOOL	CWeaponMounted::net_Spawn(LPVOID DC)
 
 void	CWeaponMounted::net_Destroy()
 {
+	inherited::net_Destroy();
+	xr_delete(m_pPhysicsShell);
 }
 
 void	CWeaponMounted::net_Export(NET_Packet& P)
 {
+	inherited::net_Export(P);
 }
 
 void	CWeaponMounted::net_Import(NET_Packet& P)
 {
+	inherited::net_Import(P);
 }
 
 void	CWeaponMounted::UpdateCL()
@@ -198,7 +197,13 @@ bool	CWeaponMounted::attach_Actor		(CActor* actor)
 	CHolderCustom::attach_Actor(actor);
 	CKinematics* K		= PKinematics(Visual());
 	// убрать оружие из рук	
-	// деактивировать шелл на пушке
+	// disable shell callback
+	m_pPhysicsShell->EnabledCallbacks(FALSE);
+	// enable actor rotate callback
+	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(rotate_x_bone);	
+	biX.set_callback		(BoneCallbackX,this);
+	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(rotate_y_bone);	
+	biY.set_callback		(BoneCallbackY,this);
 	// destroy actor character
 	// set actor to mounted position
 	const Fmatrix& A	= K->LL_GetTransform(actor_bone);
@@ -211,6 +216,13 @@ bool	CWeaponMounted::attach_Actor		(CActor* actor)
 void	CWeaponMounted::detach_Actor		()
 {
 	CHolderCustom::detach_Actor();
+	// disable actor rotate callback
+	CBoneInstance& biX		= PKinematics(Visual())->LL_GetBoneInstance(rotate_x_bone);	
+	biX.set_callback		(0,0);
+	CBoneInstance& biY		= PKinematics(Visual())->LL_GetBoneInstance(rotate_y_bone);	
+	biY.set_callback		(0,0);
+	// enable shell callback
+	m_pPhysicsShell->EnabledCallbacks(TRUE);
 }
 
 Fvector	CWeaponMounted::ExitPosition		()
