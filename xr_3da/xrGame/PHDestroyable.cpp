@@ -17,11 +17,13 @@ CPHDestroyable::CPHDestroyable()
 	m_flags.flags=0;
 }
 /////////spawn object representing destroyed item//////////////////////////////////////////////////////////////////////////////////
-void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section)
+void CPHDestroyable::GenSpawnReplace(u16 ref_id,LPCSTR section,shared_str visual_name)
 {
 
-	CSE_Abstract*				D	= F_entity_Create(section);//*cNameSect()
+	CSE_Abstract				*D	= F_entity_Create(section);//*cNameSect()
 	VERIFY						(D);
+	CSE_Visual					*V  =smart_cast<CSE_Visual*>(D);
+	V->set_visual				(*visual_name);
 	//init
 	InitServerObject			(D);
 	// Send
@@ -44,7 +46,7 @@ void CPHDestroyable::InitServerObject(CSE_Abstract* D)
 
 	l_tpALifeDynamicObject->m_tGraphID	=obj->ai_location().game_vertex_id();
 	l_tpALifeDynamicObject->m_tNodeID	= obj->ai_location().level_vertex_id();
-	l_tpALifeDynamicObject->set_visual	(*m_destroyed_obj_visual_name);
+
 
 	l_tpPHSkeleton->source_id	= u16(-1);
 	//	l_tpALifePhysicObject->startup_animation=m_startup_anim;
@@ -84,7 +86,9 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 		//	Msg					("ge_destroy: [%d] - %s",ID(),*cName());
 		if (obj->Local()) obj->u_EventSend			(P);
 	}
-	GenSpawnReplace(source_id,section);
+	xr_vector<shared_str>::iterator i=m_destroyed_obj_visual_names.begin(),e=m_destroyed_obj_visual_names.end();
+	for(;e!=i;i++)
+		GenSpawnReplace(source_id,section,*i);
 ///////////////////////////////////////////////////////////////////////////
 	m_flags.set(fl_destroyed,TRUE);
 	return;
@@ -92,16 +96,30 @@ void CPHDestroyable::Destroy(u16 source_id/*=u16(-1)*/,LPCSTR section/*="ph_skel
 
 void CPHDestroyable::Load(CInifile* ini,LPCSTR section)
 {
+	CPhysicsShellHolder *shell_holder=PPhysicsShellHolder();
+	shared_str visual_name;
+	visual_name=shell_holder->cNameVisual();
 	if(ini->line_exist(section,"destroyed_vis_name"))
 	{
 		m_flags.set(fl_destroyable,TRUE);
-		m_destroyed_obj_visual_name=ini->r_string(section,"destroyed_vis_name");
-		CPhysicsShellHolder * shell_holder=PPhysicsShellHolder();
-		shared_str visual_name;
-		visual_name=shell_holder->cNameVisual();
-		shell_holder->cNameVisual_set(m_destroyed_obj_visual_name);
-		shell_holder->cNameVisual_set(visual_name);
+		m_destroyed_obj_visual_names.push_back(ini->r_string(section,"destroyed_vis_name"));
+		shell_holder->cNameVisual_set(m_destroyed_obj_visual_names[0]);
+
 	}
+	else
+	{
+		CInifile::Sect& data		= ini->r_section(section);
+		if(data.size()>0) m_flags.set(fl_destroyable,TRUE);
+		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
+			CInifile::Item& item	= *I;
+			if(*item.first)
+			{
+				m_destroyed_obj_visual_names.push_back		(*item.first);
+				shell_holder->cNameVisual_set(*item.first);
+			}
+		}
+	}
+	shell_holder->cNameVisual_set(visual_name);
 }
 void CPHDestroyable::Load(LPCSTR section)
 {
@@ -116,4 +134,5 @@ void CPHDestroyable::Init()
 void CPHDestroyable::RespawnInit()
 {
 	m_flags.set(fl_destroyed,FALSE);
+	m_destroyed_obj_visual_names.clear();
 }

@@ -6,7 +6,7 @@ class CSE_Abstract;
 
 class CPHDestroyable
 {
-			shared_str					m_destroyed_obj_visual_name																												;
+			xr_vector<shared_str>		m_destroyed_obj_visual_names																											;
 			Flags8						m_flags																																	;
 			enum
 			{
@@ -24,7 +24,7 @@ public:
 			void						Load						(LPCSTR section)																							;
 			void						Load						(CInifile* ini,LPCSTR section)																				;
 IC			bool						CanDestroy					()												{return m_flags.test(fl_destroyable)&&!m_flags.test(fl_destroyed);}
-virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section)																								;
+virtual		void						GenSpawnReplace				(u16 source_id,LPCSTR section,shared_str visual_name)														;
 virtual		void						InitServerObject			(CSE_Abstract*				D)																				;
 };
 
