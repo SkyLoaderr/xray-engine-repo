@@ -12,9 +12,9 @@
 
 namespace LevelNavigationGraph {
 #ifdef AI_COMPILER
-	struct CCellVertex;
-#endif
 	struct CCellVertexEx;
+#endif
+	struct CCellVertex;
 	class  CSector;
 };
 
