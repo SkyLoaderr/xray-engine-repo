@@ -108,6 +108,7 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DSURFACE9				d_Color_S;
 	LPDIRECT3DTEXTURE9				d_Accumulator;	// 32bit		(r,g,b,specular)
 	LPDIRECT3DSURFACE9				d_Accumulator_S;
+	LPDIRECT3DSURFACE9				
 
 	// Shadow map
 	LPDIRECT3DTEXTURE9				sm_ShadowMap;
