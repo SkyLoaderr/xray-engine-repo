@@ -59,7 +59,7 @@ class CAI_Zombie : public CCustomMonster
 		typedef struct tagSNormalTorsoAnimations{
 			CMotionDef *tpDamageLeft;
 			CMotionDef *tpDamageRight;
-			CMotionDef *tpBlaBlaBla0;
+///			CMotionDef *tpBlaBlaBla0;
 		}SNormalTorsoAnimations;
 
 		// normal animations

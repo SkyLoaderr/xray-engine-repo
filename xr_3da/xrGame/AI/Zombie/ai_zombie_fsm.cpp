@@ -238,10 +238,10 @@ void CAI_Zombie::FreeHuntingActive()
 			m_fSafeSpeed = m_fSpeed;
 		}
 	
-	if (Level().timeServer() - m_dwLastRangeSearch > 5000) {
-		m_dwLastRangeSearch = Level().timeServer();
-		PKinematics(pVisual)->PlayFX(m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0);
-	}
+//	if (Level().timeServer() - m_dwLastRangeSearch > 5000) {
+//		m_dwLastRangeSearch = Level().timeServer();
+//		PKinematics(pVisual)->PlayFX(m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0);
+//	}
 	
 	if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
 		u32 dwCurTime = Level().timeServer();

@@ -92,7 +92,7 @@ void CAI_Zombie::vfLoadAnimations()
 	m_tZombieAnimations.tNormal.tTorso.tpDamageLeft  = tpVisualObject->ID_FX("norm_damage_ls");
 	m_tZombieAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_FX("norm_damage_rs");
 
-	m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0  = tpVisualObject->ID_FX("norm_fx_0");
+//	m_tZombieAnimations.tNormal.tTorso.tpBlaBlaBla0  = tpVisualObject->ID_FX("norm_fx_0");
 
 	tpVisualObject->PlayCycle(m_tZombieAnimations.tNormal.tGlobal.tpaIdle[0]);
 }
