@@ -18,7 +18,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia_new.xml";
+const char * const	ENCYCLOPEDIA_DIALOG_XML		= "encyclopedia.xml";
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -42,7 +42,7 @@ void CUIEncyclopediaWnd::Init()
 {
 	CUIXml		uiXml;
 	bool xml_result = uiXml.Init("$game_data$", ENCYCLOPEDIA_DIALOG_XML);
-	R_ASSERT2(xml_result, "xml file not found");
+	R_ASSERT3(xml_result, "xml file not found", ENCYCLOPEDIA_DIALOG_XML);
 
 	CUIXmlInit	xml_init;
 

@@ -49,17 +49,17 @@ void CUIArtefactMerger::InitArtefactMerger(CArtefactMerger* pArtefactMerger)
 
 void CUIArtefactMerger::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(pWnd == &UIPerformButton && msg == CUIButton::BUTTON_CLICKED)
+	if(pWnd == &UIPerformButton && msg == BUTTON_CLICKED)
 	{
 		PerformArtefactMerger();
-		GetMessageTarget()->SendMessage(this, PERFORM_BUTTON_CLICKED);
+		GetMessageTarget()->SendMessage(this, ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED);
 	}
-	else if(pWnd == &UICloseButton && msg == CUIButton::BUTTON_CLICKED)
+	else if(pWnd == &UICloseButton && msg == BUTTON_CLICKED)
 	{
 		//выкинуть все артефакты
 		m_pArtefactMerger->RemoveAllArtefacts();
 
-		GetMessageTarget()->SendMessage(this, CLOSE_BUTTON_CLICKED);
+		GetMessageTarget()->SendMessage(this, ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED);
 	}
 
 	inherited::SendMessage(pWnd, msg, pData);
@@ -83,7 +83,7 @@ void CUIArtefactMerger::Update()
 	inherited::Update();
 }
 
-bool CUIArtefactMerger::ArtefactProc(CUIDragDropItem* pItem, CUIDragDropList* /**pList/**/)
+bool CUIArtefactMerger::ArtefactProc(CUIDragDropItem* pItem, CUIDragDropList*)
 {
 	PIItem pInvItem = (PIItem)pItem->GetData();
 

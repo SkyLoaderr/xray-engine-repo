@@ -44,7 +44,7 @@ public:
 
 
 	virtual void SendMessage(CUIWindow *pWnd, s16 msg, void *pData);
-	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
+	virtual void OnMouse(int x, int y, EUIMessages mouse_action);
 
 
 //	CInventory* GetInventory() {return m_pInv;}
@@ -310,7 +310,7 @@ public:
 	// Получить указатель на аддон по ID. В случае несуществования аддона возвращаем NULL.
 	CUIDragDropItemMP * GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID);
 	// Обработчик нажатий на кнопки клавы
-	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+	virtual bool OnKeyboard(int dik, EUIMessages keyboard_action);
 
 	// Получить имя секции в weapon.ltx соответствующий оружию в слоте или на поясе
 	// Params:	slotNum		- номер слота в котором смотрим

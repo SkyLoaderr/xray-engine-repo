@@ -59,10 +59,7 @@ private:
 	ArticlesDB		m_ArticlesDB;
 	// Маска для изображения предмета текущей статьи
 	CUIFrameWindow	UIImgMask;
-	//положение картинки в энциклопедии
-	int				m_iItemX;
-	int				m_iItemY;
-
+	
 	// Текущая выбранная статья
 	CEncyclopediaArticle	*m_pCurrArticle;
 	CUIStatic		*pItemImage;

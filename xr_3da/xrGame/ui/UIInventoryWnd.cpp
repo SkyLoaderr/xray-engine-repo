@@ -555,7 +555,7 @@ bool CUIInventoryWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 	// Проверка возможности надевания нового костюма
 	
 	if (dynamic_cast<CCustomOutfit*>(pInvItem))
-		pInvWnd->SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
+		pInvWnd->SendMessage(NULL, UNDRESS_OUTFIT, NULL);
 
 	if(!this_inventory->GetInventory()->CanPutInSlot(pInvItem)) return false;
 
@@ -612,7 +612,7 @@ bool CUIInventoryWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 //как только подняли элемент, сделать его текущим
 void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 {
-	if(msg == CUIDragDropItem::ITEM_DRAG)
+	if(msg == DRAG_DROP_ITEM_DRAG)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 				
@@ -623,7 +623,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		// Cкейлим и увеличиваем текстуру
 		m_pCurrentDragDropItem->Rescale(1.0f);
 	}
-	else if(msg == CUIDragDropItem::ITEM_DB_CLICK)
+	else if(msg == DRAG_DROP_ITEM_DB_CLICK)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 		
@@ -631,7 +631,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_pCurrentDragDropItem = (CUIDragDropItem*)pWnd;
 
 		// "Поднять" вещь для освобождения занимаемого места
-		SendMessage(m_pCurrentDragDropItem, CUIDragDropItem::ITEM_DRAG, NULL);
+		SendMessage(m_pCurrentDragDropItem, DRAG_DROP_ITEM_DRAG, NULL);
 
 		//попытаться закинуть элемент в слот, рюкзак или на пояс
 		if(!ToSlot())
@@ -647,7 +647,7 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		m_pCurrentDragDropItem->Rescale(((CUIDragDropList*)m_pCurrentDragDropItem->GetParent())->GetItemsScale());
     }
 	//по нажатию правой кнопки
-	else if(msg == CUIDragDropItem::ITEM_RBUTTON_CLICK)
+	else if(msg == DRAG_DROP_ITEM_RBUTTON_CLICK)
 	{
 		PIItem pInvItem = (PIItem)((CUIDragDropItem*)pWnd)->GetData();
 				
@@ -658,58 +658,58 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	//сообщение от меню вызываемого правой кнопкой
 	else if(pWnd == &UIPropertiesBox &&
-			msg == CUIPropertiesBox::PROPERTY_CLICKED)
+			msg == PROPERTY_CLICKED)
 	{
 		
 		if(UIPropertiesBox.GetClickedItem())
 		{
 			switch(UIPropertiesBox.GetClickedItem()->GetValue())
 			{
-			case TO_SLOT_ACTION:	
+			case INVENTORY_TO_SLOT_ACTION:	
 				ToSlot();
 				break;
-			case TO_BELT_ACTION:	
+			case INVENTORY_TO_BELT_ACTION:	
 				ToBelt();
 				break;
-			case TO_BAG_ACTION:	
+			case INVENTORY_TO_BAG_ACTION:	
 				ToBag();
 				break;
-			case DROP_ACTION:	//выкинуть объект
+			case INVENTORY_DROP_ACTION:	//выкинуть объект
 				DropItem();
 				break;
-			case EAT_ACTION:	//съесть объект
+			case INVENTORY_EAT_ACTION:	//съесть объект
 				EatItem();
 				break;
-			case ARTIFACT_MERGER_ACTIVATE:
+			case INVENTORY_ARTEFACT_MERGER_ACTIVATE:
 				StartArtefactMerger();
 				break;
-			case ARTIFACT_MERGER_DEACTIVATE:
+			case INVENTORY_ARTEFACT_MERGER_DEACTIVATE:
 				StopArtefactMerger();
 				break;
-			case ATTACH_ADDON:
+			case INVENTORY_ATTACH_ADDON:
 				AttachAddon();
 				break;
-			case DETACH_SCOPE_ADDON:
+			case INVENTORY_DETACH_SCOPE_ADDON:
 				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetScopeName());
 				break;
-			case DETACH_SILENCER_ADDON:
+			case INVENTORY_DETACH_SILENCER_ADDON:
 				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetSilencerName());
 				break;
-			case DETACH_GRENADE_LAUNCHER_ADDON:
+			case INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON:
 				DetachAddon(*(dynamic_cast<CWeapon*>(m_pCurrentItem))->GetGrenadeLauncherName());
 				break;
 			}
 		}
 	}
-	//сообщения от ArtefactMerger
-	else if(pWnd == &UIArtefactMergerWnd && msg == CUIArtefactMerger::PERFORM_BUTTON_CLICKED)
+	//сообщения от ArtifactMerger
+	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_PERFORM_BUTTON_CLICKED)
 	{
 	}
-	else if(pWnd == &UIArtefactMergerWnd && msg == CUIArtefactMerger::CLOSE_BUTTON_CLICKED)
+	else if(pWnd == &UIArtefactMergerWnd && msg == ARTEFACT_MERGER_CLOSE_BUTTON_CLICKED)
 	{
 		StopArtefactMerger();
 	}
-	else if(pWnd == &UISleepWnd && msg == CUISleepWnd::PERFORM_BUTTON_CLICKED)
+	else if(pWnd == &UISleepWnd && msg == SLEEP_WND_PERFORM_BUTTON_CLICKED)
 	{
 		CActor *pActor = dynamic_cast<CActor*>(Level().CurrentEntity());
 		if(!pActor) return;
@@ -722,19 +722,19 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 		pActor->GoSleep(*reinterpret_cast<u32*>(pData));
 		Game().StartStopMenu(this);
 	}
-	else if (CUIOutfitSlot::UNDRESS_OUTFIT == msg)
+	else if (UNDRESS_OUTFIT == msg)
 	{
 		UndressOutfit();
 	}
-	else if (&UIDropButton == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	else if (&UIDropButton == pWnd && BUTTON_CLICKED == msg)
 	{
 		if (m_pCurrentDragDropItem && m_pCurrentItem) DropItem();
 	}
-	else if (CUIDragDropList::REFRESH_ACTIVE_ITEM == msg)
+	else if (DRAG_DROP_REFRESH_ACTIVE_ITEM == msg)
 	{
 		if (m_pCurrentDragDropItem) m_pCurrentDragDropItem->Highlight(true);
 	}
-	else if (&UIExitButton == pWnd && CUIButton::BUTTON_CLICKED == msg)
+	else if (&UIExitButton == pWnd && BUTTON_CLICKED == msg)
 	{
 		Game().StartStopMenu(this);
 	}
@@ -743,10 +743,10 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 }
 
 
-void CUIInventoryWnd::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
+void CUIInventoryWnd::OnMouse(int x, int y, EUIMessages mouse_action)
 {
 	//вызов дополнительного меню по правой кнопке
-	if(mouse_action == RBUTTON_DOWN)
+	if(mouse_action == WINDOW_RBUTTON_DOWN)
 	{
 		if(UIPropertiesBox.IsShown())
 		{
@@ -813,7 +813,7 @@ void CUIInventoryWnd::DropItem()
 //	if (dynamic_cast<CCustomOutfit*>(m_pCurrentItem))
 //		SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
 	if (m_pCurrentDragDropItem == UIOutfitSlot.GetDragDropItemsList().front())
-		SendMessage(NULL, CUIOutfitSlot::UNDRESS_OUTFIT, NULL);
+		SendMessage(NULL, UNDRESS_OUTFIT, NULL);
 
 	m_pCurrentItem->Drop();
 	m_pCurrentDragDropItem->Highlight(false);
@@ -944,23 +944,23 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 
 	if(m_pCurrentItem->GetSlot()<SLOTS_NUM && m_pInv->CanPutInSlot(m_pCurrentItem))
 	{
-		UIPropertiesBox.AddItem("Move to slot",  NULL, TO_SLOT_ACTION);
+		UIPropertiesBox.AddItem("Move to slot",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}
 	if(m_pCurrentItem->Belt() && m_pInv->CanPutInBelt(m_pCurrentItem))
 	{
-		UIPropertiesBox.AddItem("Move on belt",  NULL, TO_BELT_ACTION);
+		UIPropertiesBox.AddItem("Move on belt",  NULL, INVENTORY_TO_BELT_ACTION);
 	}
 	if(m_pCurrentItem->Ruck() && m_pInv->CanPutInRuck(m_pCurrentItem))
 	{
 		if(!pOutfit)
-			UIPropertiesBox.AddItem("Move to bag",  NULL, TO_BAG_ACTION);
+			UIPropertiesBox.AddItem("Move to bag",  NULL, INVENTORY_TO_BAG_ACTION);
 		else
-			UIPropertiesBox.AddItem("Undress outfit",  NULL, TO_BAG_ACTION);
+			UIPropertiesBox.AddItem("Undress outfit",  NULL, INVENTORY_TO_BAG_ACTION);
 		bAlreadyDressed = true;
 	}
 	if(pOutfit  && !bAlreadyDressed /*&& m_pInv->CanPutInSlot(m_pCurrentItem)*/)
 	{
-		UIPropertiesBox.AddItem("Dress in outfit",  NULL, TO_SLOT_ACTION);
+		UIPropertiesBox.AddItem("Dress in outfit",  NULL, INVENTORY_TO_SLOT_ACTION);
 	}
 	
 	//отсоединение аддонов от вещи
@@ -968,15 +968,15 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	{
 		if(pWeapon->GrenadeLauncherAttachable() && pWeapon->IsGrenadeLauncherAttached())
 		{
-			UIPropertiesBox.AddItem("Detach grenade launcher",  NULL, DETACH_GRENADE_LAUNCHER_ADDON);
+			UIPropertiesBox.AddItem("Detach grenade launcher",  NULL, INVENTORY_DETACH_GRENADE_LAUNCHER_ADDON);
 		}
 		if(pWeapon->ScopeAttachable() && pWeapon->IsScopeAttached())
 		{
-			UIPropertiesBox.AddItem("Detach scope",  NULL, DETACH_SCOPE_ADDON);
+			UIPropertiesBox.AddItem("Detach scope",  NULL, INVENTORY_DETACH_SCOPE_ADDON);
 		}
 		if(pWeapon->SilencerAttachable() && pWeapon->IsSilencerAttached())
 		{
-			UIPropertiesBox.AddItem("Detach silencer",  NULL, DETACH_SILENCER_ADDON);
+			UIPropertiesBox.AddItem("Detach silencer",  NULL, INVENTORY_DETACH_SILENCER_ADDON);
 		}
 	}
 	
@@ -986,13 +986,13 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pScope))
 		 {
-			 UIPropertiesBox.AddItem("Attach scope to pitol",  NULL, ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("Attach scope to pitol",  NULL, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pScope))
 		 {
-			 UIPropertiesBox.AddItem("Attach scope to rifle",  NULL, ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("Attach scope to rifle",  NULL, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
 		 }
 	}
@@ -1001,13 +1001,13 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		 if(m_pInv->m_slots[PISTOL_SLOT].m_pIItem != NULL &&
 		   m_pInv->m_slots[PISTOL_SLOT].m_pIItem->CanAttach(pSilencer))
 		 {
-			 UIPropertiesBox.AddItem("Attach silencer to pitol",  NULL, ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("Attach silencer to pitol",  NULL, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[PISTOL_SLOT].m_pIItem;
 		 }
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pSilencer))
 		 {
-			 UIPropertiesBox.AddItem("Attach silencer to rifle",  NULL, ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("Attach silencer to rifle",  NULL, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
 		 }
 	}
@@ -1016,7 +1016,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		 if(m_pInv->m_slots[RIFLE_SLOT].m_pIItem != NULL &&
 			m_pInv->m_slots[RIFLE_SLOT].m_pIItem->CanAttach(pGrenadeLauncher))
 		 {
-			 UIPropertiesBox.AddItem("Attach grenade launcher to rifle",  NULL, ATTACH_ADDON);
+			 UIPropertiesBox.AddItem("Attach grenade launcher to rifle",  NULL, INVENTORY_ATTACH_ADDON);
 			 m_pItemToUpgrade = m_pInv->m_slots[RIFLE_SLOT].m_pIItem;
 		 }
 
@@ -1025,7 +1025,7 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 	
 	if(pEatableItem)
 	{
-		UIPropertiesBox.AddItem("Eat",  NULL, EAT_ACTION);
+		UIPropertiesBox.AddItem("Eat",  NULL, INVENTORY_EAT_ACTION);
 	}
 
 	if(pArtefactMerger)
@@ -1033,18 +1033,18 @@ void CUIInventoryWnd::ActivatePropertiesBox()
 		if(!UIArtefactMergerWnd.IsShown())
 		{
 			UIPropertiesBox.AddItem("Activate Merger", NULL, 
-									ARTIFACT_MERGER_ACTIVATE);
-			UIPropertiesBox.AddItem("Drop", NULL, DROP_ACTION);
+									INVENTORY_ARTEFACT_MERGER_ACTIVATE);
+			UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
 		}
 		else
 		{
 			UIPropertiesBox.AddItem("Deactivate Merger", NULL, 
-									ARTIFACT_MERGER_DEACTIVATE);
+									INVENTORY_ARTEFACT_MERGER_DEACTIVATE);
 		}
 	}
 	else
 	{
-		UIPropertiesBox.AddItem("Drop", NULL, DROP_ACTION);
+		UIPropertiesBox.AddItem("Drop", NULL, INVENTORY_DROP_ACTION);
 	}
 
 	UIPropertiesBox.AutoUpdateSize();
@@ -1071,7 +1071,7 @@ bool CUIInventoryWnd::ToSlot()
 			// ...и посылаем слоту сообщение переместить эту вещь в себя
 			UIBagList.SendMessage(
 				*DDList.begin(), 
-				CUIDragDropItem::ITEM_DROP,
+				DRAG_DROP_ITEM_DROP,
 				NULL);
 		}
 	}
@@ -1314,7 +1314,7 @@ bool CUIInventoryWnd::SlotToBag(PIItem pItem, CUIDragDropList *pList, const u32 
 		(*pList->GetDragDropItemsList().begin())->MoveOnNextDrop();
 		// ...и посылаем ему сообщение переместиться в сумку
 		GetBag()->SendMessage((*pList->GetDragDropItemsList().begin()), 
-			CUIDragDropItem::ITEM_DROP, NULL);
+			DRAG_DROP_ITEM_DROP, NULL);
 	}
 	return true;
 }
@@ -1394,6 +1394,6 @@ void CUIInventoryWnd::UpdateWeight()
 		strcpy(cl, weightColor);
 	}
 
-	sprintf(buf, "%%cdefaultWeight %s%6.1f %s/%5.1f", cl, total, weightColor, max);
+	sprintf(buf, "%%cdefaultCarry weight %s%6.1f %s/%5.1f", cl, total, weightColor, max);
 	UIStaticWeight.SetText(buf);
 }

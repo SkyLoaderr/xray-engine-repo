@@ -58,19 +58,19 @@ bool CUIDialogWnd::IR_OnKeyboardPress(int dik)
 	{
 		OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
 				static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),
-                CUIWindow::LBUTTON_DOWN);
+                WINDOW_LBUTTON_DOWN);
 		return true;
 	}
 	else if(dik==MOUSE_2)
 	{
 		OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
 				static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),
-                CUIWindow::RBUTTON_DOWN);
+                WINDOW_RBUTTON_DOWN);
 		return true;
 	}
 
 	
-	return 	OnKeyboard(dik,	CUIWindow::KEY_PRESSED);
+	return 	OnKeyboard(dik,	WINDOW_KEY_PRESSED);
 }
 bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 {
@@ -81,18 +81,18 @@ bool CUIDialogWnd::IR_OnKeyboardRelease(int dik)
 	{
 			OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
 			 	    static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),	
-					CUIWindow::LBUTTON_UP);
+					WINDOW_LBUTTON_UP);
 		return true;
 	}
 	else if(dik==MOUSE_2)
 	{
 			OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()),
 			 	    static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()),	
-					CUIWindow::RBUTTON_UP);
+					WINDOW_RBUTTON_UP);
 		return true;
 	}
 
-	return 	OnKeyboard(dik,	CUIWindow::KEY_RELEASED);
+	return 	OnKeyboard(dik,	WINDOW_KEY_RELEASED);
 }
 bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 {
@@ -103,7 +103,7 @@ bool CUIDialogWnd::IR_OnMouseMove(int dx, int dy)
 		HUD().GetUI()->GetCursor()->MoveBy(dx, dy);
 		OnMouse(static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().x / HUD().GetScale()), 
 				static_cast<int>(HUD().GetUI()->GetCursor()->GetPos().y / HUD().GetScale()), 
-				CUIWindow::MOUSE_MOVE);
+				WINDOW_MOUSE_MOVE);
 	}
 
 	return true;
