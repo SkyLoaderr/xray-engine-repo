@@ -70,5 +70,36 @@ void	CBlender_deffer_flat::Compile(CBlender_Compile& C)
 		C.r_Sampler		("s_base",C.L_textures[0]);
 		C.r_End			();
 		break;
+	case 4: 	// deffer-emap
+		{
+			string256		fname,fnameA,fnameB;
+			strcpy			(fname,C.L_textures[0]); if (strext(fname)) *strext(fname)=0;
+			strconcat		(fnameA,fname,"_bump");
+			strconcat		(fnameB,"$user$",fname,"_bumpX");
+
+			if (C.bDetail)	
+			{
+				string256		fNameDT;
+				strconcat		(fNameDT,C.detail_texture,"_bump");
+
+				// bump + Dbump
+				C.r_Pass		("deffer_base_bump_d_e","deffer_base_bump_d_e",FALSE);
+				C.r_Sampler		("s_base",		C.L_textures[0],	false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
+				C.r_Sampler		("s_ncm",		r2_ncm,				false,	D3DTADDRESS_CLAMP,	D3DTEXF_LINEAR,		D3DTEXF_NONE,	D3DTEXF_LINEAR);
+				C.r_Sampler		("s_bumpX",		fnameB,				false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);	// should be before base bump
+				C.r_Sampler		("s_bump",		fnameA,				false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
+				C.r_Sampler		("s_bumpD",		fNameDT,			false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
+				C.r_End			();
+			} else {
+				// bump only
+				C.r_Pass		("deffer_base_bump_e","deffer_base_bump_e",FALSE);
+				C.r_Sampler		("s_base",		C.L_textures[0],	false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
+				C.r_Sampler		("s_ncm",		r2_ncm,				false,	D3DTADDRESS_CLAMP,	D3DTEXF_LINEAR,		D3DTEXF_NONE,	D3DTEXF_LINEAR);
+				C.r_Sampler		("s_bumpX",		fnameB,				false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);	// should be before base bump
+				C.r_Sampler		("s_bump",		fnameA,				false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
+				C.r_End			();
+			}
+		}
+		break;
 	}
 }

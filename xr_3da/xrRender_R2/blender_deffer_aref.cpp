@@ -84,7 +84,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 				strconcat		(fNameDT,C.detail_texture,"_bump");
 
 				// bump + Dbump
-				C.r_Pass		("deffer_base_bump_d","deffer_base_aref_bump_d",FALSE);
+				C.r_Pass		("deffer_base_bump_d_e","deffer_base_aref_bump_d_e",FALSE);
 				C.r_Sampler		("s_base",		C.L_textures[0],	false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
 				C.r_Sampler		("s_ncm",		r2_ncm,				false,	D3DTADDRESS_CLAMP,	D3DTEXF_LINEAR,		D3DTEXF_NONE,	D3DTEXF_LINEAR);
 				C.r_Sampler		("s_bumpX",		fnameB,				false,	D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);	// should be before base bump
@@ -93,7 +93,7 @@ void	CBlender_deffer_aref::Compile(CBlender_Compile& C)
 				C.r_End			();
 			} else {
 				// bump only
-				C.r_Pass		("deffer_base_bump","deffer_base_aref_bump",FALSE);
+				C.r_Pass		("deffer_base_bump_e","deffer_base_aref_bump_e",FALSE);
 				C.r_Sampler		("s_base",		C.L_textures[0],	false, D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);
 				C.r_Sampler		("s_ncm",		r2_ncm,				false, D3DTADDRESS_CLAMP,	D3DTEXF_LINEAR,		D3DTEXF_NONE,	D3DTEXF_LINEAR);
 				C.r_Sampler		("s_bumpX",		fnameB,				false, D3DTADDRESS_WRAP,	D3DTEXF_ANISOTROPIC,D3DTEXF_LINEAR,	D3DTEXF_LINEAR);	// should be before base bump
