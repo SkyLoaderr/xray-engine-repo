@@ -292,106 +292,106 @@ SGameMtlPair* CGameMtlLibrary::GetMaterialPair(LPCSTR name)
 //------------------------------------------------------------------------------
 // IO - routines
 //------------------------------------------------------------------------------
-void SGameMtl::Save(CFS_Base& fs)
+void SGameMtl::Save(IWriter& fs)
 {
 	fs.open_chunk			(GAMEMTL_CHUNK_MAIN);
-	fs.Wdword				(ID);
-	fs.WstringZ				(name);
+	fs.w_u32				(ID);
+	fs.w_stringZ				(name);
     fs.close_chunk			();
 
 	fs.open_chunk			(GAMEMTL_CHUNK_FLAGS);
-    fs.Wdword				(Flags.get());
+    fs.w_u32				(Flags.get());
     fs.close_chunk			();
 
 	fs.open_chunk			(GAMEMTL_CHUNK_PHYSICS);
-    fs.Wfloat				(fPHFriction);
-    fs.Wfloat				(fPHDamping);
-    fs.Wfloat				(fPHSpring);
-    fs.Wfloat				(fPHBounceStartVelocity);
-    fs.Wfloat				(fPHBouncing);
+    fs.w_float				(fPHFriction);
+    fs.w_float				(fPHDamping);
+    fs.w_float				(fPHSpring);
+    fs.w_float				(fPHBounceStartVelocity);
+    fs.w_float				(fPHBouncing);
     fs.close_chunk			();
 
 	fs.open_chunk			(GAMEMTL_CHUNK_FACTORS);
-    fs.Wfloat				(fShootFactor);
-    fs.Wfloat				(fBounceDamageFactor);
-    fs.Wfloat				(fVisTransparencyFactor);
-    fs.Wfloat				(fSndOcclusionFactor);
+    fs.w_float				(fShootFactor);
+    fs.w_float				(fBounceDamageFactor);
+    fs.w_float				(fVisTransparencyFactor);
+    fs.w_float				(fSndOcclusionFactor);
     fs.close_chunk			();
 }
 
-void SGameMtlPair::Load(CStream& fs)
+void SGameMtlPair::Load(IReader& fs)
 {
 	string128			buf;
 
-	R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_PAIR));
-    mtl0				= fs.Rdword();
-    mtl1				= fs.Rdword();
-    ID					= fs.Rdword();
-    ID_parent			= fs.Rdword();
-    OwnProps.set		(fs.Rdword());
+	R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_PAIR));
+    mtl0				= fs.r_u32();
+    mtl1				= fs.r_u32();
+    ID					= fs.r_u32();
+    ID_parent			= fs.r_u32();
+    OwnProps.set		(fs.r_u32());
 
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_FLOTATION));
-    fFlotation			= fs.Rfloat();
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_FLOTATION));
+    fFlotation			= fs.r_float();
 
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_BREAKING));
-    fs.RstringZ			(buf); 	BreakingSounds	= buf;
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_BREAKING));
+    fs.r_stringZ			(buf); 	BreakingSounds	= buf;
     
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_STEP));
-    fs.RstringZ			(buf);	StepSounds		= buf;
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_STEP));
+    fs.r_stringZ			(buf);	StepSounds		= buf;
     
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_COLLIDE));
-    fs.RstringZ			(buf);	CollideSounds	= buf;
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_COLLIDE));
+    fs.r_stringZ			(buf);	CollideSounds	= buf;
     
-    R_ASSERT(fs.FindChunk(GAMEMTLPAIR_CHUNK_HIT));
-    fs.RstringZ			(buf);	HitSounds		= buf;
-    fs.RstringZ			(buf);	HitParticles	= buf;
-    fs.RstringZ			(buf);	HitMarks		= buf;
+    R_ASSERT(fs.find_chunk(GAMEMTLPAIR_CHUNK_HIT));
+    fs.r_stringZ			(buf);	HitSounds		= buf;
+    fs.r_stringZ			(buf);	HitParticles	= buf;
+    fs.r_stringZ			(buf);	HitMarks		= buf;
 }
 
-void SGameMtlPair::Save(CFS_Base& fs)
+void SGameMtlPair::Save(IWriter& fs)
 {
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_PAIR);
-    fs.Wdword			(mtl0);
-    fs.Wdword			(mtl1);
-    fs.Wdword			(ID);
-    fs.Wdword			(ID_parent);
-    fs.Wdword			(OwnProps.get());
+    fs.w_u32			(mtl0);
+    fs.w_u32			(mtl1);
+    fs.w_u32			(ID);
+    fs.w_u32			(ID_parent);
+    fs.w_u32			(OwnProps.get());
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_FLOTATION);
-    fs.Wfloat			(fFlotation);
+    fs.w_float			(fFlotation);
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_BREAKING);
-    fs.WstringZ			(BreakingSounds.c_str());
+    fs.w_stringZ		(BreakingSounds.c_str());
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_STEP);
-    fs.WstringZ			(StepSounds.c_str());
+    fs.w_stringZ		(StepSounds.c_str());
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_COLLIDE);
-    fs.WstringZ			(CollideSounds.c_str());
+    fs.w_stringZ		(CollideSounds.c_str());
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLPAIR_CHUNK_HIT);
-    fs.WstringZ			(HitSounds.c_str());
-    fs.WstringZ			(HitParticles.c_str());
-    fs.WstringZ			(HitMarks.c_str());
+    fs.w_stringZ		(HitSounds.c_str());
+    fs.w_stringZ		(HitParticles.c_str());
+    fs.w_stringZ		(HitMarks.c_str());
 	fs.close_chunk		();
 }
 
 void CGameMtlLibrary::Save(LPCSTR name)
 {
 	// save
-	CFS_Memory fs;
+	CMemoryWriter fs;
     fs.open_chunk		(GAMEMTLS_CHUNK_VERSION);
-    fs.Wword			(GAMEMTL_CURRENT_VERSION);
+    fs.w_u16			(GAMEMTL_CURRENT_VERSION);
 	fs.close_chunk		();
 
     fs.open_chunk		(GAMEMTLS_CHUNK_AUTOINC);
-    fs.Wdword			(material_index);
-    fs.Wdword			(material_pair_index);
+    fs.w_u32			(material_index);
+    fs.w_u32			(material_pair_index);
 	fs.close_chunk		();
     
     fs.open_chunk		(GAMEMTLS_CHUNK_MTLS);
@@ -412,6 +412,6 @@ void CGameMtlLibrary::Save(LPCSTR name)
     }
 	fs.close_chunk		();
 
-    fs.SaveTo			(name,0);
+    fs.save_to			(name,0);
 }
 

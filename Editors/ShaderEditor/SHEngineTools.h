@@ -60,11 +60,11 @@ friend class TfrmShaderProperties;
 
     void 				ParseBlender		(CBlender* B, CParseBlender& P);
 
-	CFS_Memory 			m_BlenderStream;	// пользоваться функциями обновления стрима для синхронизации
+	CMemoryWriter			m_BlenderStream;	// пользоваться функциями обновления стрима для синхронизации
     bool 				m_bUpdateCurrent;	// если менялся объект непосредственно  Update____From___()
     bool				m_bCurBlenderChanged;
 
-    void 				Save				(CFS_Memory& F);
+    void 				Save				(CMemoryWriter& F);
     void 				PrepareRender		();
 
     // matrix props
@@ -84,7 +84,7 @@ friend class TfrmShaderProperties;
 	void __fastcall 	FillConst			(PropItemVec& values, LPCSTR pref, CConstant* c);
     void __fastcall		RefreshProperties	();
 public:
-	CFS_Memory 			m_RenderShaders;
+	CMemoryWriter		m_RenderShaders;
 
     CBlender*			m_CurrentBlender;
     CBlender*			AppendBlender		(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent);

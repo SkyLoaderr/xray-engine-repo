@@ -139,9 +139,9 @@ void CSHEngineTools::UpdateProperties()
 	if (m_CurrentBlender){ // fill Tree
     	AnsiString marker_text="";
     
-    	CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
-        CBlender_DESC* desc=(CBlender_DESC*)data.Pointer();
-        data.Advance(sizeof(CBlender_DESC));
+    	IReader data(m_BlenderStream.pointer(), m_BlenderStream.size());
+        CBlender_DESC* desc=(CBlender_DESC*)data.pointer();
+        data.advance(sizeof(CBlender_DESC));
         DWORD type;
         char key[255];
 
@@ -149,22 +149,22 @@ void CSHEngineTools::UpdateProperties()
         PropValue* V	= PHelper.CreateText(items,"Name",desc->cName,sizeof(desc->cName));
         V->SetEvents	(NameOnAfterEdit,FHelper.NameBeforeEdit); V->Owner()->SetEvents(FHelper.NameDraw);
 
-        while (!data.Eof()){
+        while (!data.eof()){
             int sz=0;
-            type = data.Rdword();     
-            data.RstringZ(key);
+            type = data.r_u32();     
+            data.r_stringZ(key);
             switch(type){
             case xrPID_MARKER:
 	            marker_text = key;
             break;
             case xrPID_TOKEN:{
-            	xrP_TOKEN* V=(xrP_TOKEN*)data.Pointer();
+            	xrP_TOKEN* V=(xrP_TOKEN*)data.pointer();
             	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*V->Count;
-                PHelper.CreateToken3(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.Pointer()) + sizeof(xrP_TOKEN)));
+                PHelper.CreateToken3(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.pointer()) + sizeof(xrP_TOKEN)));
             }break;
             case xrPID_MATRIX:{
             	sz				= sizeof(string64);
-                LPSTR V			= (LPSTR)data.Pointer();
+                LPSTR V			= (LPSTR)data.pointer();
                 PropValue* P	= PHelper.CreateListA(items,PHelper.PrepareKey(marker_text.c_str(),key),V,MCSTRING_COUNT,MCString);
                 AnsiString pref = AnsiString(PHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
 				if (V&&V[0]&&(*V!='$')) FillMatrixProps(items,pref.c_str(),V);
@@ -174,7 +174,7 @@ void CSHEngineTools::UpdateProperties()
             case xrPID_CONSTANT:{
             	sz=sizeof(string64);
             	sz				= sizeof(string64);
-                LPSTR V			= (LPSTR)data.Pointer();
+                LPSTR V			= (LPSTR)data.pointer();
                 PropValue* P	= PHelper.CreateListA(items,PHelper.PrepareKey(marker_text.c_str(),key),V,MCSTRING_COUNT,MCString);
                 AnsiString pref = AnsiString(PHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
 				if (V&&V[0]&&(*V!='$')) FillConstProps(items,pref.c_str(),V);
@@ -183,26 +183,26 @@ void CSHEngineTools::UpdateProperties()
             }break;
             case xrPID_TEXTURE:
             	sz=sizeof(string64);
-                PHelper.CreateTexture2(items,PHelper.PrepareKey(marker_text.c_str(),key),(LPSTR)data.Pointer(),sz);
+                PHelper.CreateTexture2(items,PHelper.PrepareKey(marker_text.c_str(),key),(LPSTR)data.pointer(),sz);
             break;
             case xrPID_INTEGER:{
             	sz=sizeof(xrP_Integer);
-                xrP_Integer* V=(xrP_Integer*)data.Pointer();
+                xrP_Integer* V=(xrP_Integer*)data.pointer();
                 PHelper.CreateS32(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,1);
             }break;
             case xrPID_FLOAT:{
             	sz=sizeof(xrP_Float);
-                xrP_Float* V=(xrP_Float*)data.Pointer();
+                xrP_Float* V=(xrP_Float*)data.pointer();
                 PHelper.CreateFloat(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,0.01f,2);
             }break;
             case xrPID_BOOL:{
             	sz=sizeof(xrP_BOOL);
-                xrP_BOOL* V=(xrP_BOOL*)data.Pointer();
+                xrP_BOOL* V=(xrP_BOOL*)data.pointer();
                 PHelper.CreateBOOL(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value);
             }break;
             default: THROW2("UNKNOWN xrPID_????");
             }
-            data.Advance(sz);
+            data.advance(sz);
         }
         ApplyChanges(true);
     }

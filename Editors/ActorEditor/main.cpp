@@ -204,6 +204,7 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
     }else{
 		UI.OnAppDeactivate();
         UI.iRelease();
+        paWindow->Color=paWindow->Color; // чтобы не было  internal code gen error
 //    	paWindow->Color=(TColor)0x00202020;
     }
 }

@@ -145,7 +145,7 @@ void CSHEngineTools::RealResetShaders()
     // save to temp file
     PrepareRender		();
     // reset device shaders from temp file
-    CStream data		(m_RenderShaders.pointer(), m_RenderShaders.size());
+    IReader data		(m_RenderShaders.pointer(), m_RenderShaders.size());
     Device.Reset		(&data,TRUE);
 	// enable props vis update
     m_bFreezeUpdate 	= FALSE;
@@ -182,59 +182,59 @@ void CSHEngineTools::Load(){
 
     fraLeftBar->tvEngine->IsUpdating = true;
     if (Engine.FS.Exist(fn.c_str())){
-        CFileStream		FS(fn.c_str());
+        CFileReader		FS(fn.c_str());
         char			name[256];
 
         // Load constants
         {
-            CStream*	fs		= FS.OpenChunk(0);
-            while (fs&&!fs->Eof())	{
-                fs->RstringZ	(name);
+            IReader*	fs		= FS.open_chunk(0);
+            while (fs&&!fs->eof())	{
+                fs->r_stringZ	(name);
                 CConstant*		C = xr_new<CConstant>();
                 C->Load			(fs);
                 m_Constants.insert(make_pair(xr_strdup(name),C));
             }
-            fs->Close();
+            fs->close();
         }
 
         // Load matrices
         {
-            CStream*	fs		= FS.OpenChunk(1);
-            while (fs&&!fs->Eof())	{
-                fs->RstringZ	(name);
+            IReader*	fs		= FS.open_chunk(1);
+            while (fs&&!fs->eof())	{
+                fs->r_stringZ	(name);
                 CMatrix*		M = xr_new<CMatrix>();
                 M->Load			(fs);
                 m_Matrices.insert(make_pair(xr_strdup(name),M));
             }
-            fs->Close();
+            fs->close();
         }
 
         // Load blenders
         {
-            CStream*	fs		= FS.OpenChunk(2);
-            CStream*	chunk	= NULL;
+            IReader*	fs		= FS.open_chunk(2);
+            IReader*	chunk	= NULL;
             int			chunk_id= 0;
 
-            while ((chunk=fs->OpenChunk(chunk_id))!=NULL)
+            while ((chunk=fs->open_chunk(chunk_id))!=NULL)
             {
                 CBlender_DESC	desc;
-                chunk->Read		(&desc,sizeof(desc));
+                chunk->r		(&desc,sizeof(desc));
                 CBlender*		B = CBlender::Create(desc.CLS);
 				if	(B->getDescription().version != desc.version)
 				{
 					Msg			("! Version conflict in shader '%s'",desc.cName);
 				}
-                chunk->Seek		(0);
+                chunk->seek		(0);
                 B->Load			(*chunk,desc.version);
 
                 LPSTR blender_name = xr_strdup(desc.cName);
                 pair<BlenderPairIt, bool> I =  m_Blenders.insert(make_pair(blender_name,B));
                 R_ASSERT2		(I.second,"shader.xr - found duplicate name!!!");
                 fraLeftBar->AddBlender(desc.cName);
-                chunk->Close	();
+                chunk->close	();
                 chunk_id++;
             }
-            fs->Close();
+            fs->close();
         }
 
         UpdateRefCounters		();
@@ -247,13 +247,13 @@ void CSHEngineTools::Load(){
     m_bFreezeUpdate				= FALSE;
 }
 
-void CSHEngineTools::Save(CFS_Memory& F)
+void CSHEngineTools::Save(CMemoryWriter& F)
 {
     // Save constants
     {
     	F.open_chunk(0);
 		for (ConstantPairIt c=m_Constants.begin(); c!=m_Constants.end(); c++){
-        	F.WstringZ(c->first);
+        	F.w_stringZ(c->first);
         	c->second->Save(&F);
     	}
         F.close_chunk();
@@ -263,7 +263,7 @@ void CSHEngineTools::Save(CFS_Memory& F)
     {
     	F.open_chunk(1);
 		for (MatrixPairIt m=m_Matrices.begin(); m!=m_Matrices.end(); m++){
-        	F.WstringZ(m->first);
+        	F.w_stringZ(m->first);
         	m->second->Save(&F);
         }
         F.close_chunk();
@@ -283,9 +283,9 @@ void CSHEngineTools::Save(CFS_Memory& F)
     // Save blender names
     {
     	F.open_chunk(3);
-		F.Wdword(m_Blenders.size());
+		F.w_u32(m_Blenders.size());
 		for (BlenderPairIt b=m_Blenders.begin(); b!=m_Blenders.end(); b++)
-        	F.WstringZ(b->first);
+        	F.w_stringZ(b->first);
         F.close_chunk();
     }
 }
@@ -304,13 +304,13 @@ void CSHEngineTools::Save()
 	CollapseReferences();
 
     // save to stream
-    CFS_Memory F;
+    CMemoryWriter F;
 
     Save(F);
 
     // save new file
     Engine.FS.UnlockFile		(0,fn.c_str(),false);
-    F.SaveTo					(fn.c_str(), 0);
+    F.save_to					(fn.c_str(), 0);
     Engine.FS.LockFile			(0,fn.c_str(),false);
 
     m_bModified	= FALSE;
@@ -392,44 +392,44 @@ CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBl
     char old_name[128]; if (parent) strcpy(old_name,parent->getName());
     CBlender* B = CBlender::Create(cls_id);
     // append matrix& constant
-    CFS_Memory M;
+    CMemoryWriter M;
     if (parent) parent->Save(M); else B->Save(M);
 	// parse data
-    CStream data(M.pointer(), M.size());
-    data.Advance(sizeof(CBlender_DESC));
+    IReader data(M.pointer(), M.size());
+    data.advance(sizeof(CBlender_DESC));
     DWORD type;
     char key[255];
 
-    while (!data.Eof()){
+    while (!data.eof()){
         int sz=0;
-        type = data.Rdword();
-        data.RstringZ(key);
+        type = data.r_u32();
+        data.r_stringZ(key);
         switch(type){
         case xrPID_MARKER:	break;
         case xrPID_MATRIX:
         	sz=sizeof(string64);
-            if (strcmp((LPSTR)data.Pointer(),"$null")!=0){
-	        	if (!parent) strcpy((LPSTR)data.Pointer(),AppendMatrix());
-    	        else AddMatrixRef((LPSTR)data.Pointer());
+            if (strcmp((LPSTR)data.pointer(),"$null")!=0){
+	        	if (!parent) strcpy((LPSTR)data.pointer(),AppendMatrix());
+    	        else AddMatrixRef((LPSTR)data.pointer());
             }
         break;
         case xrPID_CONSTANT:
         	sz=sizeof(string64);
-            if (strcmp((LPSTR)data.Pointer(),"$null")!=0){
-	            if (!parent) strcpy((LPSTR)data.Pointer(),AppendConstant());
-    	        else AddConstantRef((LPSTR)data.Pointer());
+            if (strcmp((LPSTR)data.pointer(),"$null")!=0){
+	            if (!parent) strcpy((LPSTR)data.pointer(),AppendConstant());
+    	        else AddConstantRef((LPSTR)data.pointer());
             }
         break;
         case xrPID_TEXTURE:	sz=sizeof(string64); 	break;
         case xrPID_INTEGER:	sz=sizeof(xrP_Integer);	break;
         case xrPID_FLOAT: 	sz=sizeof(xrP_Float); 	break;
         case xrPID_BOOL: 	sz=sizeof(xrP_BOOL); 	break;
-        case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count);	break;
+        case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.pointer())->Count);	break;
         default: THROW2("xrPID_????");
         }
-        data.Advance(sz);
+        data.advance(sz);
     }
-    data.Seek(0);
+    data.seek(0);
     B->Load(data,B->getDescription().version);
 	// set name
     char name[128]; name[0]=0;
@@ -558,7 +558,7 @@ void CSHEngineTools::UpdateStreamFromObject(){
 
 void CSHEngineTools::UpdateObjectFromStream(){
     if (m_CurrentBlender){
-        CStream data(m_BlenderStream.pointer(), m_BlenderStream.size());
+        IReader data(m_BlenderStream.pointer(), m_BlenderStream.size());
         m_CurrentBlender->Load(data,m_CurrentBlender->getDescription().version);
     }
 }
@@ -638,18 +638,18 @@ void CSHEngineTools::UpdateConstantRefs(LPSTR name){
 }
 
 void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P){
-    CFS_Memory M;
+    CMemoryWriter M;
     B->Save(M);
 
-    CStream data(M.pointer(), M.size());
-    data.Advance(sizeof(CBlender_DESC));
+    IReader data(M.pointer(), M.size());
+    data.advance(sizeof(CBlender_DESC));
     DWORD type;
     char key[255];
 
-    while (!data.Eof()){
+    while (!data.eof()){
         int sz=0;
-        type = data.Rdword();
-        data.RstringZ(key);
+        type = data.r_u32();
+        data.r_stringZ(key);
         switch(type){
         case xrPID_MARKER:							break;
         case xrPID_MATRIX:	sz=sizeof(string64); 	break;
@@ -658,14 +658,14 @@ void CSHEngineTools::ParseBlender(CBlender* B, CParseBlender& P){
         case xrPID_INTEGER: sz=sizeof(xrP_Integer);	break;
         case xrPID_FLOAT: 	sz=sizeof(xrP_Float); 	break;
         case xrPID_BOOL: 	sz=sizeof(xrP_BOOL); 	break;
-		case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.Pointer())->Count); break;
+		case xrPID_TOKEN: 	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*(((xrP_TOKEN*)data.pointer())->Count); break;
         default: THROW2("xrPID_????");
         }
-        P.Parse(type, key, data.Pointer());
-        data.Advance(sz);
+        P.Parse(type, key, data.pointer());
+        data.advance(sz);
     }
 
-    data.Seek(0);
+    data.seek(0);
     B->Load(data,B->getDescription().version);
 }
 
