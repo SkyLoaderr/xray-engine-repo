@@ -38,7 +38,7 @@ IDirect3DTexture8*	CTexture::surface_get	()
 	return pSurface;
 }
 
-void CTexture::Apply(DWORD dwStage)
+void CTexture::Apply	(DWORD dwStage)
 {
 	if (pAVI && pAVI->NeedUpdate())
 	{
