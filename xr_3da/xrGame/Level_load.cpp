@@ -317,7 +317,7 @@ BOOL CLevel::Load_GameSpecific_After()
 	// loading scripts
 	xr_delete					(m_tpScriptProcessor);
 
-	if (pLevel->r_string("level_scripts","script"))
+	if (pLevel->section_exist("level_scripts") && pLevel->line_exist("level_scripts","script"))
 		m_tpScriptProcessor		= xr_new<CScriptProcessor>("Level",pLevel->r_string("level_scripts","script"));
 
 	return TRUE;
