@@ -713,6 +713,8 @@ CSE_ALifeItemExplosive::~CSE_ALifeItemExplosive	()
 void CSE_ALifeItemExplosive::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket,size);
+	if (m_wVersion < 53)
+		tNetPacket.r_float();
 }
 
 void CSE_ALifeItemExplosive::STATE_Write		(NET_Packet	&tNetPacket)
