@@ -18,8 +18,8 @@ void				PHCaptureObject(CGameObject* object,u16 element);
 CPHCapture*			PHCapture      (){return m_capture;}
 void				PHReleaseObject();
 void				Jump(const Fvector &jump_velocity);
-void				Jump(const Fvector &start_point, const Fvector &end_point, float time);
-void				Jump(const Fvector &end_point, float time);
+void				Jump(const Fvector &start_point, const Fvector &end_point, u32 utime);
+void				Jump(const Fvector &end_point, u32 utime);
 bool				JumpState(){return (m_character&&m_character->b_exist&&m_character->IsEnabled()&&m_character->JumpState());};
 bool			b_exect_position;
 public:

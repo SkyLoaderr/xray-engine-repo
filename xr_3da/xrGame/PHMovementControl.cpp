@@ -730,12 +730,13 @@ void CPHMovementControl::Jump(const Fvector &jump_velocity)
 	m_character->Jump(jump_velocity);
 }
 
-void CPHMovementControl::Jump(const Fvector &end_point, float time)
+void CPHMovementControl::Jump(const Fvector &end_point, u32 utime)
 {
 Jump(vPosition,end_point,time);
 }
-void CPHMovementControl::Jump(const Fvector &start_point,const Fvector &end_point, float time)
+void CPHMovementControl::Jump(const Fvector &start_point,const Fvector &end_point, u32 utime)
 {
+float time=float(utime)/1000.f;
 Fvector velosity;
 velosity.x=end_point.x-start_point.x;
 velosity.z=end_point.z-start_point.z;
