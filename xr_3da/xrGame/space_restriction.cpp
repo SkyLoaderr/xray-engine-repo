@@ -141,19 +141,18 @@ IC	bool CSpaceRestriction::intersects			(SpaceRestrictionHolder::CBaseRestrictio
 void CSpaceRestriction::merge_in_out_restrictions	()
 {
 	xr_vector<u32>					temp_border;
-
-	m_border						= m_out_space_restriction->border();
-	temp_border						= m_in_space_restriction->border();
-	
 	xr_vector<u32>::iterator		I;
 
+	m_border						= m_out_space_restriction->border();
 	I								= remove_if(m_border.begin(),m_border.end(),CMergeInOutPredicate<true>(m_out_space_restriction,m_in_space_restriction));
 	m_border.erase					(I,m_border.end());
 
-	I								= remove_if(temp_border.begin(),temp_border.end(),CMergeInOutPredicate<false>(m_out_space_restriction,m_in_space_restriction));
-	temp_border.erase				(I,temp_border.end());
-
-	m_border.insert					(m_border.end(),temp_border.begin(),temp_border.end());
+	if (m_in_space_restriction) {
+		temp_border					= m_in_space_restriction->border();
+		I							= remove_if(temp_border.begin(),temp_border.end(),CMergeInOutPredicate<false>(m_out_space_restriction,m_in_space_restriction));
+		temp_border.erase			(I,temp_border.end());
+		m_border.insert				(m_border.end(),temp_border.begin(),temp_border.end());
+	}
 	
 	std::sort						(m_border.begin(),m_border.end());
 	I								= unique(m_border.begin(),m_border.end());
