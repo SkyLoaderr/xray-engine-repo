@@ -275,8 +275,9 @@ void CCustomMonster::net_Import(NET_Packet* P)
 void CCustomMonster::Exec_Physics( float dt )
 {
 	// Test nearest object
-	Fvector C; float R;		
-	Movement.GetBoundingSphere(C,R);
+	Fvector C; float R;	
+	svCenter(C);
+	R = Radius();
 	Level().ObjectSpace.TestNearestObject(cfModel, C, R);
 }
 
