@@ -41,8 +41,7 @@ void CPhysicsSkeletonObject::SaveNetState(NET_Packet& P)
 {
 
 	CKinematics* K	=PKinematics(Visual());
-	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
-		m_flags.set(CSE_ALifePHSkeletonObject::flActive,m_pPhysicsShell->isEnabled());
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)			m_flags.set(CSE_ALifePHSkeletonObject::flActive,m_pPhysicsShell->isEnabled());
 
 	P.w_u8 (m_flags.get());
 	if(K)
@@ -144,22 +143,34 @@ BOOL CPhysicsSkeletonObject::net_Spawn(LPVOID DC)
 	CSE_ALifePHSkeletonObject *po	= dynamic_cast<CSE_ALifePHSkeletonObject*>(e);
 	R_ASSERT				(po);
 	inherited::net_Spawn	(DC);
-
+bool generic_spawn			=	(po->m_tClassID==CLSID_PH_SKELETON_OBJECT);
 	m_flags					= po->flags;
 	m_startup_anim			= po->startup_animation;
-
+	if(generic_spawn)
+	{
+		xr_delete(collidable.model);
+		collidable.model = xr_new<CCF_Skeleton>(this);
+	}
 	if(po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))
 	{
 		CPhysicsSkeletonObject* source=dynamic_cast<CPhysicsSkeletonObject*>(Level().Objects.net_Find(po->source_id));
 		R_ASSERT2(source,"no source");
 		source->UnsplitSingle(this);
+		m_flags.set				(CSE_ALifePHSkeletonObject::flSpawnCopy,FALSE);
+	}
+	else if(generic_spawn)
+	{
+	
+		CreatePhysicsShell(e);
+		PKinematics(Visual())->Calculate();
+		if(po->flags.test(CSE_ALifePHSkeletonObject::flSavedData))
+		{
+			RestoreNetState(po->saved_bones.bones);
+			po->flags.set(CSE_ALifePHSkeletonObject::flSavedData,FALSE);
+		}
+		
 	}
 	
-
- 
-
-	m_flags.set				(CSE_ALifePHSkeletonObject::flSpawnCopy,FALSE);
-
 	return TRUE;
 }
 
@@ -177,9 +188,15 @@ void CPhysicsSkeletonObject::Load(LPCSTR section)
 	remove_time= pSettings->r_u32(section,"remove_time")*1000;
 }
 
-void CPhysicsSkeletonObject::CreatePhysicsShell(CSE_Abstract* po)
+void CPhysicsSkeletonObject::CreatePhysicsShell(CSE_Abstract* e)
 {
-
+	CSE_ALifePHSkeletonObject	*po=dynamic_cast<CSE_ALifePHSkeletonObject*>(e);
+	if(m_pPhysicsShell) return;
+	if (!Visual()) return;
+	CKinematics* K= PKinematics(Visual());
+	K->LL_SetBoneRoot(po->saved_bones.root_bone);
+	K->LL_SetBonesVisible(po->saved_bones.bones_mask);
+	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_ALifePHSkeletonObject::flActive));
 }
 
 
@@ -215,7 +232,7 @@ void CPhysicsSkeletonObject::net_Save(NET_Packet &P)
 void CPhysicsSkeletonObject::SpawnCopy()
 {
 	if(Local()) {
-		CSE_Abstract*				D	= F_entity_Create(*cNameSect());
+		CSE_Abstract*				D	= F_entity_Create("ph_skeleton_object");//*cNameSect()
 		R_ASSERT					(D);
 		InitServerObject			(D);
 		// Send
@@ -298,7 +315,7 @@ void CPhysicsSkeletonObject::SetAutoRemove()
 {
 	b_removing=true;
 	m_unsplit_time=Device.dwTimeGlobal;
-	m_flags.set(CSE_ALifePHSkeletonObject::flNotSave);
+	m_flags.set(CSE_ALifePHSkeletonObject::flNotSave,TRUE);
 }
 
 
@@ -348,7 +365,7 @@ void CPhysicsSkeletonObject::InitServerObject(CSE_Abstract * D)
 	l_tpALifePhysicObject->flags.set	(CSE_ALifePHSkeletonObject::flSpawnCopy,1);
 	l_tpALifePhysicObject->source_id	= u16(ID());
 	l_tpALifePhysicObject->startup_animation=m_startup_anim;
-	strcpy				(D->s_name,*cNameSect());
+	strcpy				(D->s_name,"ph_skeleton_object");//*cNameSect()
 	strcpy				(D->s_name_replace,"");
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;
@@ -359,4 +376,29 @@ void CPhysicsSkeletonObject::InitServerObject(CSE_Abstract * D)
 	XFORM()				.getHPB(D->o_Angle);
 	D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
 	D->RespawnTime		=	0;
+}
+
+BOOL CPhysicsSkeletonObject::net_SaveRelevant()
+{
+	return TRUE;//!m_flags.test(CSE_ALifeObjectPhysic::flSpawnCopy);
+}
+
+
+BOOL CPhysicsSkeletonObject::UsedAI_Locations()
+{
+	return					(FALSE);
+}
+
+void CPhysicsSkeletonObject::UpdateCL()
+{
+	inherited::UpdateCL		();
+	PHObjectPositionUpdate	();
+}
+
+void CPhysicsSkeletonObject::	PHObjectPositionUpdate()
+{
+	if(m_pPhysicsShell)
+	{
+			m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
+	}
 }

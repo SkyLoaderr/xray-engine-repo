@@ -1281,15 +1281,18 @@ u16	CPHElement::numberOfGeoms()
 
 void CPHElement::cv2bone_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)
 {
+	VERIFY2(_valid(q)&&_valid(pos),"cv2bone_Xfrom receive wrong data");
 	xform.rotation(q);
 	xform.c.set(pos);
 	xform.mulB(m_inverse_local_transform);
-
+	VERIFY2(_valid(xform),"cv2bone_Xfrom returns wrong data");
 }
 void CPHElement::cv2obj_Xfrom(const Fquaternion& q,const Fvector& pos, Fmatrix& xform)
 {
+	
 	cv2bone_Xfrom(q,pos,xform);
 	xform.mulB(m_shell->m_object_in_root);
+	VERIFY2(_valid(xform),"cv2obj_Xfrom returns wrong data");
 }
 
 void CPHElement::set_ApplyByGravity(bool flag)

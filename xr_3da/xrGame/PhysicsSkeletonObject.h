@@ -39,18 +39,19 @@ public:
 
 	virtual BOOL	net_Spawn			( LPVOID DC)																	;
 	virtual void	net_Destroy			()																				;
-	virtual	void	CreatePhysicsShell	(CSE_Abstract	*po)												;
+	virtual	void	CreatePhysicsShell	(CSE_Abstract	*e)												;
 
 	virtual void	Load				(LPCSTR section)																;
-	//virtual void	UpdateCL			( )																				;// Called each frame, so no need for dt
+	virtual void	UpdateCL			( )																				;// Called each frame, so no need for dt
 	virtual void	shedule_Update		(u32 dt)																		;	//
 	virtual void	net_Save			(NET_Packet& P)																	;
-	//virtual	BOOL	net_SaveRelevant	()																				;
-	//virtual BOOL	UsedAI_Locations	()																				;
+	virtual	BOOL	net_SaveRelevant	()																				;
+	virtual BOOL	UsedAI_Locations	()																				;
 protected:
 			void	RestoreNetState		(PHNETSTATE_VECTOR& saved_bones);
 			void	UnsplitSingle		(CPhysicsSkeletonObject* O)														;
-	virtual	void	InitServerObject	(CSE_Abstract	*D)															;
+	virtual	void	InitServerObject	(CSE_Abstract	*D)																;
+		virtual void	PHObjectPositionUpdate()																		;
 
 };
 

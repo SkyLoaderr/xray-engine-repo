@@ -130,6 +130,8 @@
 #define CLSID_OBJECT_PHYSIC			MK_CLSID('O','_','P','H','Y','S','I','C')
 #define CLSID_OBJECT_BREAKABLE		MK_CLSID('O','_','B','R','K','B','L',' ')
 
+#define CLSID_PH_SKELETON_OBJECT	MK_CLSID('P','_','S','K','E','L','E','T')
+
 // Zones 
 #define CLSID_ZONE					MK_CLSID('Z','_','Z','O','N','E',' ',' ')
 #define CLSID_Z_MBALD				MK_CLSID('Z','_','M','B','A','L','D',' ')

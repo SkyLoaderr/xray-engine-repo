@@ -215,8 +215,8 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifePHSkeletonObject,CSE_ALifeDynamicObjectVisu
 		flActive					= (1<<0),
 		flSpawnCopy					= (1<<1),
 		flSavedData					= (1<<2),
-		flNotSave					= (1<<3)
-	};
+		flNotSave					= (1<<3),
+		};
 	ref_str							startup_animation;
 	Flags8							flags;
 	SPHBonesData					saved_bones;

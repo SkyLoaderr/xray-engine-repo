@@ -108,9 +108,9 @@ void CPhysicObject::shedule_Update		(u32 dt)
 {
 	inherited::shedule_Update(dt);
 }
-void CPhysicObject::UpdateCL	()
+void CPhysicObject::PHObjectPositionUpdate	()
 {
-	inherited::UpdateCL		();
+	
 	if(m_pPhysicsShell)
 	{
 
@@ -230,7 +230,7 @@ void CPhysicObject::InitServerObject(CSE_Abstract * D)
 {
 	inherited::InitServerObject(D);
 	CSE_ALifeObjectPhysic		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifeObjectPhysic*>(D);
-	R_ASSERT					(l_tpALifePhysicObject);
+	if(!l_tpALifePhysicObject)return;
 	l_tpALifePhysicObject->type			= u32(m_type);
 }
 

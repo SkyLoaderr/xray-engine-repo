@@ -129,6 +129,7 @@
 #	include "physicobject.h"
 #	include "ai/script/ai_script_monster.h"
 #	include "BreakableObject.h"
+#	include "PhysicsSkeletonObject.h"
 #endif
 
 #ifndef NO_XR_GAME
@@ -289,4 +290,5 @@ void CObjectFactory::register_classes	()
 	ADD(CPhysicObject		,CSE_ALifeObjectPhysic			,CLSID_OBJECT_PHYSIC		,"obj_physic");
 	ADD(CScriptMonster		,CSE_ALifeDynamicObjectVisual	,CLSID_SCRIPT_OBJECT		,"script_object");
 	ADD(CBreakableObject	,CSE_ALifeObjectBreakable		,CLSID_OBJECT_BREAKABLE		,"obj_breakable");
+	ADD(CPhysicsSkeletonObject,CSE_ALifePHSkeletonObject	,CLSID_PH_SKELETON_OBJECT	,"obj_phskeleton");
 }
