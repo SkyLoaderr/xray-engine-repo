@@ -8,7 +8,7 @@ function se_smart_terrain:update		()
 	log							("se_smart_terrain::update called!")
 	cse_alife_smart_zone.update	(self)
 
-	if device():time_global() >= self.m_start_hold_time + 30000 then
+	if (self.m_monster ~= nil) and (device():time_global() >= self.m_start_hold_time + 30000) then
 		self.monster:move_offline	(self.m_move_offline)
 		self.m_monster				= nil
 	end
@@ -36,6 +36,7 @@ end
 function se_smart_terrain:__init		(section) super(section)
 	log							("se_smart_terrain::se_smart_terrain called!")
 	self.m_monster				= nil
+	self.m_start_hold_time		= 0
 end
 
 function se_smart_terrain:__finalize	()
