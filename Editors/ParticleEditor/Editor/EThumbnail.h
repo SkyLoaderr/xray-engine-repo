@@ -115,11 +115,9 @@ class ESoundThumbnail: public ECustomThumbnail{
 	typedef ECustomThumbnail inherited;
 private:
 	float			m_fQuality;
-    struct SGameData{
-        float		m_fMinDist;
-        u32			m_uGameType;
-    };
-    SGameData		m_GD;
+    float			m_fMinDist;
+    float			m_fMaxDist;
+    u32				m_uGameType;
 public:
 					ESoundThumbnail	(LPCSTR src_name, bool bLoad=true);
 	virtual			~ESoundThumbnail();

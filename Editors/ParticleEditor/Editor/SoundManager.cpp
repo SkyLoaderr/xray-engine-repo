@@ -155,15 +155,20 @@ void CSoundManager::CreateSoundThumbnail(ESoundThumbnail* THM, const AnsiString&
 	if (bSetDefParam){
 		THM->m_Age 				= FS.get_file_age(base_name.c_str());
 		THM->m_fQuality 		= 0.f;
-		THM->m_GD.m_fMinDist 	= 1.f;
-        THM->m_GD.m_uGameType	= 0;
+		THM->m_fMinDist 		= 1.f;
+        THM->m_uGameType		= 0;
     }
 }                             
 
 void CSoundManager::MakeGameSound(ESoundThumbnail* THM, LPCSTR src_name, LPCSTR game_name)
 {
 	VerifyPath(game_name);
-	if (!ogg_enc(src_name,game_name, THM->m_fQuality, &THM->m_GD, sizeof(THM->m_GD))){
+    CMemoryWriter 	F;
+    F.w_u32			(OGG_COMMENT_VERSION);
+    F.w_float		(THM->m_fMinDist);
+    F.w_float		(THM->m_fMaxDist);
+    F.w_u32			(THM->m_uGameType);
+	if (!ogg_enc(src_name,game_name, THM->m_fQuality,F.pointer(),F.size())){
     	FS.file_delete(game_name);
     	ELog.DlgMsg(mtError,"Can't make game sound '%s'.",game_name);
     }
