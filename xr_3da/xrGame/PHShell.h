@@ -170,7 +170,7 @@ public:
 	{
 		if(!m_space) 
 		{
-			m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+			m_space=dSimpleSpaceCreate(0);
 			dSpaceSetCleanup (m_space, 0);
 		}
 	}

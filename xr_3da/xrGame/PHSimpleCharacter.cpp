@@ -197,7 +197,7 @@ void CPHSimpleCharacter::Create(dVector3 sizes){
 	dMassAdjust(&m,m_mass);
 	dBodySetMass(m_body,&m);
 
-	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	m_space=dSimpleSpaceCreate(0);
 	//dGeomGroupAdd(m_geom_group,m_wheel_transform);
 	dSpaceAdd(m_space,m_wheel);
 

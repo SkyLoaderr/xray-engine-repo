@@ -27,7 +27,7 @@ class CPHWorld	: public pureFrame
 	u32							m_update_delay_count										;
 	bool						b_world_freezed												;
 	static const u32			update_delay=1												;
-	dSpaceID					Space														;
+///	dSpaceID					Space														;
 
 	CPHMesh						Mesh														;
 	PH_OBJECT_STORAGE			m_objects													;
@@ -45,7 +45,7 @@ public:
 								CPHWorld						()							;
 	virtual						~CPHWorld						()				{}			;
 
-IC	dSpaceID					GetSpace						()			{return Space;}	;
+//IC	dSpaceID					GetSpace						()			{return Space;}	;
 
 	void						Create							()							;
 	void						AddObject						(CPHObject* object)			;

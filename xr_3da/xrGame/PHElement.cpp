@@ -687,7 +687,7 @@ void CPHElement::StataticRootBonesCallBack(CBoneInstance* B)
 	{
 		//if(!dBodyIsEnabled(m_body))
 		//	dBodyEnable(m_body);
-		if(ph_world->GetSpace()->lock_count) return;
+		//if(ph_world->GetSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;
@@ -746,7 +746,7 @@ void CPHElement::BonesCallBack(CBoneInstance* B)
 	{
 		//if(!dBodyIsEnabled(m_body))
 		//	dBodyEnable(m_body);
-		if(ph_world->GetSpace()->lock_count) return;
+		//if(ph_world->GetSpace()->lock_count) return;
 		mXFORM.set(B->mTransform);
 		m_start_time=Device.fTimeGlobal;
 		Fmatrix global_transform;

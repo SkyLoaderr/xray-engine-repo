@@ -6,6 +6,7 @@
 #ifdef DRAW_CONTACTS
 #include "ExtendedGeom.h"
 #endif
+
 //////////////////////////////////////////////////////////////
 //////////////CPHMesh///////////////////////////////////////////
 ///////////////////////////////////////////////////////////
@@ -81,22 +82,24 @@ void CPHWorld::Create()
 	//Space = dHashSpaceCreate(0);
 
 	//dVector3 extensions={2048,256,2048};
+	/*
 	Fbox	level_box		=	Level().ObjectSpace.GetBoundingVolume();
 	Fvector level_size,level_center;
 	level_box				.	getsize		(level_size);
 	level_box				.	getcenter	(level_center);
 	dVector3 extensions		=	{ level_size.x ,256.f,level_size.z};
 	dVector3 center			=	{level_center.x,0.f,level_center.z};
-	Space					=	dQuadTreeSpaceCreate (0, center,extensions, 6);
+	*/
+	//Space					=	dQuadTreeSpaceCreate (0, center,extensions, 6);
 
-	dSpaceSetCleanup			(Space,0);
+	//dSpaceSetCleanup			(Space,0);
 #ifdef ODE_SLOW_SOLVER
 #else
 	dWorldSetAutoEnableDepthSF1(phWorld, 100000000);
 #endif
 	ContactGroup			= dJointGroupCreate(0);		
 	dWorldSetGravity		(phWorld, 0,-world_gravity, 0);//-2.f*9.81f
-	Mesh.Create				(Space,phWorld);
+	Mesh.Create				(0,phWorld);
 	//Jeep.Create(Space,phWorld);//(Space,phWorld)
 	//Gun.Create(Space);
 #ifdef PH_PLAIN
@@ -122,7 +125,7 @@ void CPHWorld::Destroy(){
 	dGeomDestroy(plane);
 #endif
 	dJointGroupEmpty(ContactGroup);
-	dSpaceDestroy(Space);
+	//dSpaceDestroy(Space);
 	dWorldDestroy(phWorld);
 	dCloseODE();
 	dCylinderClassUser=-1;

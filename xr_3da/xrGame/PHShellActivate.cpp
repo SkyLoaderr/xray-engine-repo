@@ -27,7 +27,7 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	ELEMENT_I i;
 
 	mXFORM.set(m0);
-	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	m_space=dSimpleSpaceCreate(0);
 	dSpaceSetCleanup(m_space,0);
 	for(i=elements.begin();elements.end() != i;++i){
 
@@ -51,7 +51,7 @@ void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fv
 	ELEMENT_I i;
 
 	mXFORM.set(transform);
-	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	m_space=dSimpleSpaceCreate(0);
 	dSpaceSetCleanup(m_space,0);
 	//dSpaceSetCleanup (m_space, 0);
 	for(i=elements.begin();elements.end() != i;++i){
@@ -77,7 +77,7 @@ void CPHShell::Activate(bool place_current_forms,bool disable)
 	if(!disable)EnableObject();
 	if(!m_space)
 	{
-		m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+		m_space=dSimpleSpaceCreate(0);
 		dSpaceSetCleanup(m_space,0);
 	}
 
@@ -132,7 +132,7 @@ void CPHShell::RunSimulation(bool place_current_forms/*true*/)
 {
 
 	EnableObject();
-	dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
+	//dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
 	dSpaceSetCleanup(m_space,0);
 	{		
 		ELEMENT_I i=elements.begin(),e=elements.end();
@@ -162,7 +162,7 @@ void CPHShell::PureActivate()
 {
 	if(bActive)	return;
 	bActive=true;
-	dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
+	//dSpaceAdd(ph_world->GetSpace(),(dGeomID)m_space);
 	EnableObject();
 	spatial_register();
 	//m_saved_contacts=dJointGroupCreate (0);
