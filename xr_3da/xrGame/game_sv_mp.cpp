@@ -93,6 +93,17 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	
 	if (xrCData && xrCData->ps->testFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD)) return;
 	if (xrCData) xrCData->ps->setFlag(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+	//-------------------------------------------------------
+	CActor* pActor = smart_cast <CActor*>(pObject);
+	if (pActor)
+	{
+		if (!pActor->g_Alive())
+		{
+			return;
+		}
+		pActor->set_death_time		();
+	}
+	//-------------------------------------------------------
 	u16 PlayerID = (xrCData != 0) ? xrCData->ps->GameID : GameID;
 	// Kill Player on all clients
 	NET_Packet			P;
@@ -101,13 +112,7 @@ void	game_sv_mp::KillPlayer				(ClientID id_who, u16 GameID)
 	P.w_clientID		(id_who);
 	ClientID clientID;clientID.setBroadcast();
 	u_EventSend(P);
-	//-------------------------------------------------------
-	CActor* pActor = smart_cast <CActor*>(pObject);
-	if (pActor)
-	{
-		pActor->set_death_time		();
-	}
-	//-------------------------------------------------------
+	
 	signal_Syncronize();
 };
 
