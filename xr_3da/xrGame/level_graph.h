@@ -170,8 +170,8 @@ public:
 			u32		vertex						(u32 current_vertex_id, const Fvector &position, bool full_search = false) const;
 			void	compute_circle				(const Fvector &position,	const Fvector &point0, const Fvector &point1, float &radius, Fvector &center, Fvector &final_position, float &beta) const;
 			void	choose_point				(const Fvector &start_point, const Fvector &finish_point, const SContour &contour, int vertex_id, Fvector &temp_point, int &saved_index) const;
-			bool	check_vertex_in_direction	(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const;
-			u32		check_position_in_direction	(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position) const;
+	IC		bool	check_vertex_in_direction	(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const;
+	IC		u32		check_position_in_direction (u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position) const;
 			float	check_position_in_direction	(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position, const float max_distance) const;
 			float	mark_nodes_in_direction		(u32 start_vertex_id, const Fvector &start_position, const Fvector &direction, float distance, xr_vector<u32> &vertex_stack, xr_vector<bool> *vertex_marks) const;
 			float	mark_nodes_in_direction		(u32 start_vertex_id, const Fvector &start_position, u32 finish_node, xr_vector<u32> &vertex_stack, xr_vector<bool> *vertex_marks) const;
@@ -179,24 +179,14 @@ public:
 			float	find_farthest_node_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, u32 &finish_vertex_id, xr_vector<bool> *tpaMarks) const;
 			bool	create_straight_PTN_path	(u32 start_vertex_id, const Fvector &start_point, const Fvector &finish_point, xr_vector<Fvector> &tpaOutputPoints, xr_vector<u32> &tpaOutputNodes, bool bAddFirstPoint, bool bClearPath = true) const;
 			
-			bool	check_vertex_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const;
-			u32		check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const;
+	IC		bool	check_vertex_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const;
+	IC		u32		check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const;
+			bool	check_vertex_in_direction_slow	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const;
+			u32		check_position_in_direction_slow(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const;
 #ifndef AI_COMPILER
 			void	find_game_point_in_direction(u32 start_vertex_id, const Fvector &start_point, const Fvector &tDirection, u32 &finish_vertex_id, ALife::_GRAPH_ID tGraphID) const;
 #endif
 
-#ifdef DEBUG
-#ifndef AI_COMPILER
-private:
-	ref_shader			sh_debug;
-	xr_vector<Fvector>	m_tpTravelLine;
-	xr_vector<Fvector>	m_tpaPoints;
-	xr_vector<Fvector>	m_tpaDeviations;
-	xr_vector<Fvector>	m_tpaTravelPath;
-	xr_vector<u32>		m_tpaPointNodes;
-	xr_vector<Fvector>	m_tpaLine;
-	xr_vector<u32>		m_tpaNodes;
-	xr_vector<Fvector>	m_tpaTempPath;
 public:
 	struct STravelParams {
 		float			linear_velocity;
@@ -225,6 +215,18 @@ public:
 	{
 	};
 
+#ifdef DEBUG
+#ifndef AI_COMPILER
+private:
+	ref_shader			sh_debug;
+	xr_vector<Fvector>	m_tpTravelLine;
+	xr_vector<Fvector>	m_tpaPoints;
+	xr_vector<Fvector>	m_tpaDeviations;
+	xr_vector<Fvector>	m_tpaTravelPath;
+	xr_vector<u32>		m_tpaPointNodes;
+	xr_vector<Fvector>	m_tpaLine;
+	xr_vector<u32>		m_tpaNodes;
+	xr_vector<Fvector>	m_tpaTempPath;
 private:
 	STrajectoryPoint	start, dest;
 public:

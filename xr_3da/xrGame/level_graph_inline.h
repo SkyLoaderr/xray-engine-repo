@@ -9,10 +9,14 @@
 #pragma once
 
 #ifdef AI_COMPILER
-#include "profile.h"
+	#include "profile.h"
 #else
-#define TIMER_START(a)
-#define TIMER_STOP(a)
+	#ifdef TIMER_START
+		#undef TIMER_START
+		#undef TIMER_STOP
+		#define TIMER_START(a)
+		#define TIMER_STOP(a)
+	#endif
 #endif
 
 IC const CLevelGraph::CHeader &CLevelGraph::header	() const
@@ -203,10 +207,13 @@ IC bool CLevelGraph::inside				(const u32 vertex_id, const Fvector &position, co
 
 IC bool	CLevelGraph::inside				(const u32 vertex_id,	const Fvector2 &position) const
 {
+	TIMER_START			(Inside)
 	float				sp = 1/header().cell_size();
 	int					pxz	= iFloor(((position.x - header().box().min.x)*sp + EPS_S + .5f))*m_row_length + iFloor((position.y - header().box().min.z)*sp + EPS_S + .5f);
 	clamp				(pxz,0,(1 << 21) - 1);
-	return				(vertex(vertex_id)->position().xz() == u32(pxz));
+	bool				b = vertex(vertex_id)->position().xz() == u32(pxz);
+	TIMER_STOP			(Inside)
+	return				(b);
 }
 
 IC float CLevelGraph::vertex_plane_y	(const CLevelGraph::CVertex &vertex, const float X, const float Z) const

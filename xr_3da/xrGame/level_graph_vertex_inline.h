@@ -8,6 +8,17 @@
 
 #pragma once
 
+#ifdef AI_COMPILER
+	#include "profile.h"
+#else
+	#ifdef TIMER_START
+		#undef TIMER_START
+		#undef TIMER_STOP
+		#define TIMER_START(a)
+		#define TIMER_STOP(a)
+	#endif
+#endif
+
 IC float CLevelGraph::distance(const Fvector &position, const Fvector &point0, const Fvector &point1) const
 {
 	Fvector				c, V;
@@ -587,3 +598,26 @@ IC	u8 *CLevelGraph::cover(const u32 _node) const
 	return				(cover(vertex(_node)));
 }
 
+IC	u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const
+{
+	if (inside(start_vertex_id,finish_position))
+		return				(start_vertex_id);
+	return					(check_position_in_direction_slow(start_vertex_id,start_position,finish_position));
+}
+
+IC	bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const
+{
+	if (start_vertex_id == finish_vertex_id)
+		return				(true);
+	return					(check_vertex_in_direction_slow(start_vertex_id,start_position,finish_vertex_id));
+}
+
+IC	u32 CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position) const
+{
+	return					(check_position_in_direction(start_vertex_id,Fvector2().set(start_position.x,start_position.z),Fvector2().set(finish_position.x,finish_position.z)));
+}
+
+IC	bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const
+{
+	return					(check_vertex_in_direction(start_vertex_id,Fvector2().set(start_position.x,start_position.z),finish_vertex_id));
+}

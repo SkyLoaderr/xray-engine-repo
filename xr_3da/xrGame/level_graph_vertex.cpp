@@ -350,14 +350,9 @@ void CLevelGraph::find_game_point_in_direction(u32 start_vertex_id, const Fvecto
 }
 #endif
 
-u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const
+u32	 CLevelGraph::check_position_in_direction_slow	(u32 start_vertex_id, const Fvector2 &start_position, const Fvector2 &finish_position) const
 {
 	TIMER_START(CheckPositionInDirection)
-	if (inside(start_vertex_id,finish_position)) {
-		TIMER_STOP(CheckPositionInDirection)
-		return				(start_vertex_id);
-	}
-
 	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
 	Fbox2					box;
 	Fvector2				identity, start, dest, dir;
@@ -405,14 +400,9 @@ u32	 CLevelGraph::check_position_in_direction	(u32 start_vertex_id, const Fvecto
 	}
 }
 
-bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const
+bool CLevelGraph::check_vertex_in_direction_slow	(u32 start_vertex_id, const Fvector2 &start_position, u32 finish_vertex_id) const
 {
 	TIMER_START(CheckVertexInDirection)
-	if (start_vertex_id == finish_vertex_id) {
-		TIMER_STOP(CheckVertexInDirection)
-		return				(true);
-	}
-
 	Fvector					finish_position = vertex_position(finish_vertex_id);
 	u32						cur_vertex_id = start_vertex_id, prev_vertex_id = u32(-1);
 	Fbox2					box;
@@ -462,12 +452,3 @@ bool CLevelGraph::check_vertex_in_direction		(u32 start_vertex_id, const Fvector
 	TIMER_STOP(CheckVertexInDirection)
 }
 
-u32 CLevelGraph::check_position_in_direction(u32 start_vertex_id, const Fvector &start_position, const Fvector &finish_position) const
-{
-	return					(check_position_in_direction(start_vertex_id,Fvector2().set(start_position.x,start_position.z),Fvector2().set(finish_position.x,finish_position.z)));
-}
-
-bool CLevelGraph::check_vertex_in_direction(u32 start_vertex_id, const Fvector &start_position, u32 finish_vertex_id) const
-{
-	return					(check_vertex_in_direction(start_vertex_id,Fvector2().set(start_position.x,start_position.z),finish_vertex_id));
-}
