@@ -110,6 +110,7 @@ static BOOL __fastcall RatQualifier(CObject* O, void* P)
 		CEntity* E = dynamic_cast<CEntity*> (O);
 		if (!E) return FALSE;
 		if (!E->IsVisibleForAI()) return FALSE; 
+		if (E->g_Team() == *((int*)P)) return FALSE;
 		return TRUE;
 	}
 }
