@@ -125,10 +125,10 @@
 	<info_portion id="escape_stalker_spawn">	
 	</info_portion>
 	<info_portion id="escape_stalker_done">
-		<disble>escape_stalker_help</disble>
+		<disable>escape_stalker_help</disable>
 	</info_portion>
 	<info_portion id="escape_stalker_die">
-		<disble>escape_stalker_help</disble>
+		<disable>escape_stalker_help</disable>
 	</info_portion>
 
 	
