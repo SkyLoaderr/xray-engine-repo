@@ -237,6 +237,15 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 			return;
 		};
 
+		u32 z = m_keyTrajectory.size();
+		if( m_currKeyIdx == z-1 )
+		{
+			helicopter()->setState(CHelicopter::eInitiatePatrolZone);
+			Log("-------add trajectory path");
+			return;
+		}
+			
+
 		u32 tt = m_path.back().time;
 		u32 lt = Level().timeServer();
 		if( (int)(tt - lt) < 1000 )
@@ -246,7 +255,8 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 			STravelPathPoint _p;
 			_p.time = lt-2000;
 			b = std::lower_bound(m_path.begin(),m_path.end(),_p,time_lesser);
-			if(b!=m_path.end())
+			
+			if( (b!=m_path.end()) && (std::distance(b,m_path.end()) > 5)    )
 				m_path.erase( m_path.begin(), b);
 		};
 
@@ -343,7 +353,7 @@ CHelicopterMovementManager::shedule_Update(u32 time_delta)
 	if( (helicopter()->state()==CHelicopter::eInitiatePatrolZone) )
 	{
 		xr_vector<Fvector> t;
-		createLevelPatrolTrajectory(35, t);
+		createLevelPatrolTrajectory(200, t);
 		m_keyTrajectory.clear();
 
 		if( m_path.size() )
