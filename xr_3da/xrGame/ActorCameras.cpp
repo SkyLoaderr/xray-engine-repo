@@ -27,7 +27,7 @@ void CActor::UpdateCamera(float dt)
 	//-----------------------------------------------------------
 	float dS = point.y-fPrevCamPos;
 	if (fabsf(dS)>EPS_L){
-		point.y = 0.8f*fPrevCamPos+0.2f*point.y;
+		point.y = 0.7f*fPrevCamPos+0.3f*point.y;
 	}
 
 	// save previous position of camera

@@ -77,7 +77,6 @@ void CHUDManager::Render()
 {
 	if (psHUD_Flags&HUD_DRAW){
 		if (pUI) pCreator->CurrentViewEntity()->OnHUDDraw(this);
-		
 		// HUD model
 		if (psHUD_Flags&HUD_WEAPON) {
 			Fmatrix Pold = Device.mProject;
@@ -113,7 +112,6 @@ void CHUDManager::Render()
 		// font render
 		pSmallFont->OnRender	();
 		pGameFont->OnRender		();
-		
 		// UI
 		if (pUI&&!pUI->Render()) HUDCursor.Render();
 		pHUDFont->OnRender		();

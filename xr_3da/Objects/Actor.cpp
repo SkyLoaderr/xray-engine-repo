@@ -243,7 +243,7 @@ BOOL CActor::Spawn		( BOOL bLocal, int sid, int team, int squad, int group, Fvec
 	cameras[cam_active]->Set(o_pos.w,0,0);		// set's camera orientation
 
 	bAlive				= TRUE;
-	bEnabled			= FALSE;
+	bEnabled			= bLocal?TRUE:FALSE;
 	
 	Weapons->Reset		();
 	
@@ -479,8 +479,8 @@ void CActor::g_cl_ValidateMState(DWORD mstate_wf)
 		if (mstate_real&mcJump){
 			if (Movement.gcontact_Was)	mstate_real &= ~mcJump;
 		}
-		if ((mstate_wf&mcJump)==0)	m_bJumping = false;
 	}
+	if ((mstate_wf&mcJump)==0)	m_bJumping = false;
 
 	// Зажало-ли меня/уперся - не двигаюсь
 	if (Movement.GetVelocityActual()<0.2f || Movement.bSleep) 
@@ -584,7 +584,7 @@ void CActor::g_cl_Orientate	(DWORD mstate_rl, float dt)
 
 	// если хоть что-то нажато - выровнять модель по камере
 	if (mstate_rl&mcAnyMove)	{
-		r_model_yaw		= r_torso.yaw;
+		r_model_yaw		= normalize_angle(r_torso.yaw);
 		mstate_real		&=~mcTurn;
 	} else {
 		// if camera rotated more than 45 degrees - align model with it
@@ -695,8 +695,23 @@ void CActor::OnHUDDraw(CCustomHUD* hud)
 {
 	if (HUDview())					Weapons->OnRender(HUDview());
 
-	CUI* pUI=hud->GetUI();
+	CHUDManager* HUD = (CHUDManager*)hud;
+	CUI* pUI=HUD->GetUI();
 	pUI->OutHealth(iHealth,iArmor);
 	pUI->OutWeapon(Weapons->ActiveWeaponName(),Weapons->ActiveWeaponAmmoElapsed(),Weapons->ActiveWeaponAmmoLimit(),0,0);
 	pUI->SetHeading(r_torso.yaw);
+	
+	char buf[128];
+	buf[0] = 0;
+	if (mstate_real&mcAccel)	strcat(buf,"Accel ");
+	if (mstate_real&mcCrouch)	strcat(buf,"Crouch ");
+	if (mstate_real&mcFwd)		strcat(buf,"Fwd ");
+	if (mstate_real&mcBack)		strcat(buf,"Back ");
+	if (mstate_real&mcLStrafe)	strcat(buf,"LStrafe ");
+	if (mstate_real&mcRStrafe)	strcat(buf,"RStrafe ");
+	if (mstate_real&mcJump)		strcat(buf,"Jump ");
+	if (mstate_real&mcTurn)		strcat(buf,"Turn ");
+	if (m_bJumping)				strcat(buf,"+Jumping ");
+
+	HUD->pHUDFont->Out(400,320,buf);
 }
