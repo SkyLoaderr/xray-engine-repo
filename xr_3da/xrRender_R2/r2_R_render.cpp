@@ -36,45 +36,48 @@ void CRender::Render	()
 	}
 	Device.Statistic.RenderDUMP.End			();
 
-	for (u32 dls_phase=0; dls_phase<2; dls_phase++)
+	if (0)
 	{
-		//******* Direct lighting+shadow		::: Calculate
-		Device.Statistic.RenderCALC.Begin		();
+		for (u32 dls_phase=0; dls_phase<2; dls_phase++)
 		{
-			marker									++;
-			phase									= PHASE_SMAP_D;
+			//******* Direct lighting+shadow		::: Calculate
+			Device.Statistic.RenderCALC.Begin		();
+			{
+				marker									++;
+				phase									= PHASE_SMAP_D;
 
-			HOM.Disable								();
-			LR_Direct.compute_xf_1					(dls_phase);
-			render_smap_direct						(LR_Direct.L_combine);
-			LR_Direct.compute_xf_2					(dls_phase);
+				HOM.Disable								();
+				LR_Direct.compute_xf_1					(dls_phase);
+				render_smap_direct						(LR_Direct.L_combine);
+				LR_Direct.compute_xf_2					(dls_phase);
+			}
+			Device.Statistic.RenderCALC.End			();
+
+			//******* Direct lighting+shadow		::: Render
+			Device.Statistic.RenderDUMP.Begin		();
+			{
+				Target.phase_smap_direct				();
+
+				RCache.set_xform_world					(Fidentity);
+				RCache.set_xform_view					(LR_Direct.L_view);
+				RCache.set_xform_project				(LR_Direct.L_project);
+				render_scenegraph						();
+			}
+			Device.Statistic.RenderDUMP.End			();
+
+			//******* Direct lighting+shadow		::: Accumulate
+			Device.Statistic.RenderDUMP.Begin		();
+			{
+				Target.phase_accumulator				();
+				Target.shadow_direct					(dls_phase);
+			}
+			Device.Statistic.RenderDUMP.End			();
 		}
-		Device.Statistic.RenderCALC.End			();
 
-		//******* Direct lighting+shadow		::: Render
-		Device.Statistic.RenderDUMP.Begin		();
-		{
-			Target.phase_smap_direct				();
-
-			RCache.set_xform_world					(Fidentity);
-			RCache.set_xform_view					(LR_Direct.L_view);
-			RCache.set_xform_project				(LR_Direct.L_project);
-			render_scenegraph						();
-		}
-		Device.Statistic.RenderDUMP.End			();
-
-		//******* Direct lighting+shadow		::: Accumulate
-		Device.Statistic.RenderDUMP.Begin		();
-		{
-			Target.phase_accumulator				();
-			Target.shadow_direct					(dls_phase);
-		}
-		Device.Statistic.RenderDUMP.End			();
+		// Multiply by lighting contribution
+		Target.phase_accumulator				();
+		Target.accum_direct						();
 	}
-
-	// Multiply by lighting contribution
-	Target.phase_accumulator				();
-	Target.accum_direct						();
 
 	// Point lighting (shadowed)
 	if (1)
