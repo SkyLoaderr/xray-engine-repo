@@ -17,7 +17,7 @@
 	#include "PropertiesListHelper.h"
 #endif
 
-#define SPAWN_VERSION	u16(60)
+#define SPAWN_VERSION	u16(61)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
@@ -77,6 +77,7 @@
 // 58 - CSE_ALifeObject					appended with ini_string
 // 59 - CSE_ALifeItemPDA				appended with m_original_owner
 // 60 - CSE_AlifeInventoryItem			appended with property m_eItemPlace
+// 61 - CSE_AlifeObjectPhysic			appended with unsplit_time, bones_mask, root_bone
 //------------------------------------------------------------------------------
 
 class CPureServerObject : public IPureServerObject {

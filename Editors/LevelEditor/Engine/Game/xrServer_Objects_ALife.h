@@ -262,6 +262,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
     enum{
     	flActive					= (1<<0),
 		flSpawnCopy					= (1<<1),
+		flSavedData					= (1<<2)
     };
     Flags8							flags;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);

@@ -828,6 +828,11 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion>56)
 		tNetPacket.r_u16		(source_id);
 
+	if (m_wVersion>60	&&	flags.test(flSavedData)) {
+		unsplit_time				=tNetPacket.r_u32();
+		bones_mask					=tNetPacket.r_u64();
+		root_bone					=tNetPacket.r_u16();
+	}
 #ifdef _EDITOR    
 	PlayAnimation				(*startup_animation?*startup_animation:"$editor");
 #endif
@@ -842,6 +847,13 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_string			(startup_animation);
 	tNetPacket.w_u8				(flags.flags);
 	tNetPacket.w_u16			(source_id);
+////////////////////////saving///////////////////////////////////////
+	if(flags.test(flSavedData))
+	{
+		tNetPacket.w_u32			(unsplit_time);
+		tNetPacket.w_u64			(bones_mask);
+		tNetPacket.w_u16			(root_bone);
+	}
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
@@ -870,6 +882,7 @@ void CSE_ALifeObjectPhysic::load(NET_Packet &tNetPacket)
 	unsplit_time				=tNetPacket.r_u32();
 	bones_mask					=tNetPacket.r_u64();
 	root_bone					=tNetPacket.r_u16();
+	flags.set(flSavedData,TRUE);
 }
 
 #ifdef _EDITOR
