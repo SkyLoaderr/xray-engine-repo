@@ -84,6 +84,6 @@ p2f 	p_main	( v2p_in IN )
 	S			=	half4		(C.w,C.w,C.w,C.w);	// replicated specular
 	accum		+=	C+S;
 	
-	OUT.C 		= accum - half4(1,1,1,1);
+	OUT.C 		= accum * 0.25 - half4(1,1,1,1);
 	return OUT;
 }
