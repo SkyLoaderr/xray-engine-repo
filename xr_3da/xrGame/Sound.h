@@ -68,15 +68,15 @@ enum {
 	sm_forcedword		= u32(-1),
 };
 
-class CSoundUserDataVisitor;
+class CSound_UserDataVisitor;
 
-class CSoundUserData : public xr_resource{
+class CSound_UserData	: public xr_resource		{
 public:
-	virtual							~CSoundUserData(){}
-	virtual void					accept(CSoundUserDataVisitor*)=0;
-	virtual void					invalidate()=0;
+	virtual							~CSound_UserData()							{}
+	virtual void					accept			(CSoundUserDataVisitor*)	=0;
+	virtual void					invalidate		()							=0;
 };
-typedef resptr_core<CSoundUserData,resptr_base<CSoundUserData> >	CSoundUserDataPtr;
+typedef resptr_core<CSound_UserData,resptr_base<CSound_UserData> >	CSound_UserDataPtr;
 
 /*! \class ref_sound
 \brief Sound source + control
@@ -91,7 +91,7 @@ struct	ref_sound
 	CSound_interface*				feedback;		//!< Pointer to emitter, automaticaly clears on emitter-stop
 	int								g_type;			//!< Sound type, usually for AI
 	CObject*						g_object;		//!< Game object that emitts ref_sound
-	CSoundUserDataPtr				g_userdata;
+	CSound_UserDataPtr				g_userdata;
 
     //! A constructor
     /*!
@@ -244,7 +244,6 @@ public:
 	//@}
 
 	virtual void					update					( const Fvector& P, const Fvector& D, const Fvector& N, float dt )						= 0;
-	virtual void					update_events			( )																						= 0;
 	virtual void					statistic				( CSound_stats&  dest )																	= 0;
 
 #ifdef __BORLANDC__

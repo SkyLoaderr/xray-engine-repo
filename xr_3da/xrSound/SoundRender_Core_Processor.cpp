@@ -91,7 +91,7 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 	}
 
 	// update EAX
-    if (psSoundFlags.test(ssEAX)&&bEAX){
+    if (psSoundFlags.test(ssEAX) && bEAX){
         if (bListenerMoved){
             bListenerMoved			= FALSE;
             e_target				= *get_environment	(P);
@@ -112,6 +112,9 @@ void CSoundRender_Core::update	( const Fvector& P, const Fvector& D, const Fvect
 		for (it=0; it<s_targets_defer.size(); it++)
 			s_targets_defer[it]->render	();
 	}
+
+	// Events
+	update_events					();
 }
 
 void	CSoundRender_Core::update_events		()

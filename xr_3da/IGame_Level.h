@@ -42,7 +42,14 @@ public:
 	xr_set<CPS_Instance*>		ps_active;
 	xr_vector<CPS_Instance*>	ps_destroy;
 	xr_vector<CPS_Instance*>	ps_needtoplay;
-	xr_vector<ISpatial*>		snd_ER;					// event receivers
+
+public:	// deferred sound events
+	struct	_esound_delegate	{
+		Feel::Sound*	dest	;
+		ref_sound*		source	;
+		float			power	;
+	};
+	xr_vector<_esound_delegate>	snd_Events;
 public:
 	// Main, global functions
 	IGame_Level					();
@@ -69,7 +76,9 @@ public:
 	CObject*					CurrentViewEntity		( void ) const							{ return pCurrentViewEntity;			}
 	void						SetEntity				( CObject* O  )							{ pCurrentEntity=pCurrentViewEntity=O;	}
 	void						SetViewEntity			( CObject* O  )							{ pCurrentViewEntity=O;					}
-	void						SoundEvent				( ref_sound* S, float range );
+	
+	void						SoundEvent_Register		( ref_sound* S, float range );
+	void						SoundEvent_Dispatch		( );
 
 	// Loader interface
 	ref_shader					LL_CreateShader			(int S, int T, int M, int C);

@@ -10,24 +10,23 @@
 
 using namespace	collide;
 
-IC void minmax(float &mn, float &mx) { if (mn > mx) std::swap(mn,mx); }
-
-void	IGame_Level::SoundEvent	( ref_sound* S, float range )
+void	IGame_Level::SoundEvent_Register	( ref_sound* S, float range )
 {
-	if (S->g_object&&S->g_object->getDestroy()) return;
+	if (S->g_object && S->g_object->getDestroy())	return	;
+	clamp					(range,0.1f,500.f);
 
 	const CSound_params*	p	= S->feedback->get_params();
 	VERIFY					(p);
 
 	// Query objects
-	Fvector					bb_size	= {range,range,range};
+	xr_vector<ISpatial*>	snd_ER	;	snd_ER.reserve	(8+iCeil(range/10.f));
+	Fvector					bb_size	=	{range,range,range};
 	g_SpatialSpace->q_box	(snd_ER,0,STYPE_REACTTOSOUND,p->position,bb_size);
 
 	// Iterate
 	xr_vector<ISpatial*>::iterator	it	= snd_ER.begin	();
 	xr_vector<ISpatial*>::iterator	end	= snd_ER.end	();
-	for (; it!=end; it++)
-	{
+	for (; it!=end; it++)	{
 		Feel::Sound* L		= (*it)->dcast_FeelSound	();
 		if (0==L)			continue;
 
@@ -36,14 +35,31 @@ void	IGame_Level::SoundEvent	( ref_sound* S, float range )
 		float A				= p->min_distance/(psSoundRolloff*D);					// (Dmin*V)/(R*D) 
 		clamp				(A,0.f,1.f);
 		float Power			= A*p->volume;
-		if (Power>EPS_S)	L->feel_sound_new	(S->g_object,S->g_type,S->g_userdata,p->position,Power);
+		if (Power>EPS_S)	{
+			_esound_delegate	D	=	{ L, S, Power };
+			snd_Events.push_back	(D)	;
+		}
 	}
 }
 
-void __stdcall _sound_event	(ref_sound* S, float range)
+void	IGame_Level::SoundEvent_Dispatch	( )
 {
-	if ( g_pGameLevel && S && S->feedback )
-		g_pGameLevel->SoundEvent(S,range);
+	while	(!snd_Events.empty())	{
+		_esound_delegate&	D	= snd_Events.back	();
+		D.dest->feel_sound_new	(
+			D.source->g_object,
+			D.source->g_type,
+			D.source->g_userdata,
+			D.source->feedback->get_params()->position,
+			D.power
+			);
+		snd_Events.pop_back		();
+	}
+}
+
+void __stdcall _sound_event		(ref_sound* S, float range)
+{
+	if ( g_pGameLevel && S && S->feedback )	g_pGameLevel->SoundEvent_Register	(S,range);
 }
 
 //----------------------------------------------------------------------
