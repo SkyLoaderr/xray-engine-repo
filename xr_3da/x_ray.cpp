@@ -111,7 +111,6 @@ void execUserScript				( )
 		strcpy					(Console->ConfigFile,"user.ltx");
 	Console->ExecuteScript		(Console->ConfigFile);
 }
-/*
 void __cdecl	slowdownthread	( void* )
 {
 	Sleep	(30*1000);
@@ -123,19 +122,15 @@ void __cdecl	slowdownthread	( void* )
 		if (0==pApp)				return;
 	}
 }
-*/
 void CheckPrivilegySlowdown		( )
 {
-	/*
 	u32		crc_dima_ai	= shared_str("dima-ai")._get()->dwCRC;	Msg("%x",crc_dima_ai);	// 0x574b9c29
 	u32		crc_dima	= shared_str("dima")._get()->dwCRC;		Msg("%x",crc_dima);		// 0x38e00bc3
 	u32		crc_shuttle	= shared_str("shuttle")._get()->dwCRC;	Msg("%x",crc_shuttle);	// 0xd64cb17b
 	u32		crc_jim		= shared_str("jim")._get()->dwCRC;		Msg("%x",crc_jim);		// 0x3d3d5aef
 	u32		crc_london	= shared_str("london")._get()->dwCRC;	Msg("%x",crc_london);	// 0x09de56e5
 	u32		crc_dandy	= shared_str("dandy")._get()->dwCRC;	Msg("%x",crc_dandy);	// 0x430b37e7
-	*/
 #ifdef DEBUG
-/*
 	BOOL	bDima	=	(shared_str(Core.CompName)._get()->dwCRC == 0x574b9c29) && (shared_str(Core.UserName)._get()->dwCRC==0x38e00bc3) ;
 	BOOL	bJim	=	(shared_str(Core.CompName)._get()->dwCRC == 0xd64cb17b) && (shared_str(Core.UserName)._get()->dwCRC==0x3d3d5aef) ;
 	BOOL	bDandy	=	(shared_str(Core.CompName)._get()->dwCRC == 0x09de56e5) && (shared_str(Core.UserName)._get()->dwCRC==0x430b37e7) ;
@@ -145,7 +140,6 @@ void CheckPrivilegySlowdown		( )
 		_beginthread(slowdownthread,0,0);
 //		_beginthread(slowdownthread,0,0);
 	}
-*/
 #endif
 }
 
