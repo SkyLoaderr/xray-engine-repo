@@ -1,59 +1,63 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <game_information_portions>
-  <info_portion id="escape_need_blockpost_case">
-        <location>
-            <level>l01_escape</level>
-            <object>000</object>
-      <icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
-            <text>Украсть ящик с блокпоста</text>
-        </location>
-        <task>escape_blockpost_case</task>
-    </info_portion>
-    <info_portion id="escape_take_blockpost_case">
-    <location>
-            <level>l01_escape</level>
-            <object>003</object>
-      <icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-            <text>Принеси ящик торговцу.</text>
-        </location>
-        <disable>escape_need_blockpost_case</disable>
-        <dialog>escape_trader_done_blockpost_box</dialog>
-    </info_portion>
-    <info_portion id="escape_have_blockpost_case">
-        <disable>escape_need_blockpost_case</disable>
-        <disable>escape_take_blockpost_case</disable>
-    </info_portion>
-
-    <info_portion id="tutorial_artefact_start">
-        <location>
-            <level>l01_escape</level>
-            <object>002</object>
-            <text>Артефакт.</text>
-        </location>
-        <task>escape_trader_artefact</task>
+	<info_portion id="escape_need_blockpost_case">
+		<location>
+			<level>l01_escape</level>
+			<object>000</object>
+			<icon name="Ящик" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="0"></icon>
+			<text>Украсть ящик с блокпоста</text>
+		</location>
+		<task>escape_blockpost_case</task>
 	</info_portion>
+
+	<info_portion id="escape_take_blockpost_case">
+		<location>
+			<level>l01_escape</level>
+			<object>003</object>
+			<icon name="Торговец" x="6" y="0" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Принеси ящик торговцу.</text>
+		</location>
+		<disable>escape_need_blockpost_case</disable>
+		<dialog>escape_trader_done_blockpost_box</dialog>
+	</info_portion>
+
+	<info_portion id="escape_have_blockpost_case">
+		<disable>escape_need_blockpost_case</disable>
+		<disable>escape_take_blockpost_case</disable>
+	</info_portion>
+
+	<info_portion id="tutorial_artefact_start">
+		<location>
+			<level>l01_escape</level>
+			<object>002</object>
+			<text>Артефакт.</text>
+		</location>
+		<task>escape_trader_artefact</task>
+	</info_portion>
+
 	<info_portion id="tutorial_artefact_gain">
 		<disable>tutorial_artefact_start</disable>
 	</info_portion>
 
+	<info_portion id="escape_need_agroprom_documents">
+		<location>
+			<level>l03_agroprom</level>
+			<object>200</object>
+			<icon name="Документы" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
+			<text>Важные военные документы.</text>
+		</location>
+		<task>agroprom_get_military_documents</task>
+	</info_portion>
 
-  <info_portion id="escape_need_agroprom_documents">
-        <location>
-            <level>l03_agroprom</level>
-            <object>200</object>
-      <icon name="Документы" x="5" y="1" width="1" height="1" r="238" g="155" b="23" marker="1"></icon>
-            <text>Важные военные документы.</text>
-        </location>
-        <task>agroprom_get_military_documents</task>
-    </info_portion>
-    <info_portion id="agroprom_take_agroprom_documents">
-        <disable>escape_need_agroprom_documents</disable>
-    </info_portion>
-    <info_portion id="bar_have_agroprom_documents">
-        <disable>escape_need_agroprom_documents</disable>
-        <disable>agroprom_take_agroprom_documents</disable>
-    </info_portion>
+	<info_portion id="agroprom_take_agroprom_documents">
+		<disable>escape_need_agroprom_documents</disable>
+	</info_portion>
+    
+	<info_portion id="bar_have_agroprom_documents">
+		<disable>escape_need_agroprom_documents</disable>
+		<disable>agroprom_take_agroprom_documents</disable>
+	</info_portion>
 
 
 
