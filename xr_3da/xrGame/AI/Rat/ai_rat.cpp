@@ -123,12 +123,10 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
 	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
 
-	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"DeathDistance");
-
+	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"MoraleDeathDistance");
 	m_dwActionRefreshRate	 		= pSettings->ReadINT   (section,"ActionRefreshRate");
 
 	m_fMaxHealthValue	 			= pSettings->ReadFLOAT (section,"MaxHealthValue");
-
 	m_fSoundThreshold				= pSettings->ReadFLOAT (section,"SoundThreshold");
 
 	m_bEatMemberCorps				= pSettings->ReadBOOL  (section,"EatMemberCorps");
