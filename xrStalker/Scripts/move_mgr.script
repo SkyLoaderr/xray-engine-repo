@@ -278,7 +278,12 @@ function move_mgr:update()
 	   self.expiration_time and device():time_global() >= self.expiration_time and
 	   not self.object:is_body_turning() then
 		if self.retval_after_rotation then
-			if self.move_cb(move_mgr.arrival_after_rotation, tonumber(retv)) then
+			if not self.move_cb then
+				utils.abort("object '%s': path_look '%s': ret flag is set, but " ..
+					"callback function wasn't registered in move_mgr:reset()",
+					self.object:name(), self.path_look)
+			end
+			if self.move_cb(this.arrival_after_rotation, tonumber(retv)) then
 				-- Идти сразу дальше
 				self.expiration_time = 0
 				self.state = state_anim_playing
@@ -501,12 +506,15 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	end
 	self.standing_danger = self.danger
 
-	if self.move_cb then
-		local retv = self.path_walk_info[index]["ret"]
-		if retv then
-			if self.move_cb(move_mgr.arrival_before_rotation, tonumber(retv)) then
-				return
-			end
+	local retv = self.path_walk_info[index]["ret"]
+	if retv then
+		if not self.move_cb then
+			utils.abort("object '%s': path_walk '%s': ret flag is set, but " ..
+				"callback function wasn't registered in move_mgr:reset()",
+				self.object:name(), self.path_walk)
+		end
+		if self.move_cb(this.arrival_before_rotation, tonumber(retv)) then
+			return
 		end
 	end
 
