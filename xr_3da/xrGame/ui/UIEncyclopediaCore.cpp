@@ -87,6 +87,10 @@ shared_str CUIEncyclopediaCore::SetCurrentArtice(CUITreeViewItem *pTVItem)
 		UIImgMask.SetClipper(true, r);
 		AdjustImagePos(img);
 		pInfoList->AttachChild(&img);
+		
+		if( UIImgMask.GetParent() )
+			UIImgMask.GetParent()->DetachChild(&UIImgMask);
+
 		img.SetMask(&UIImgMask);
 
 		// Добавляем текст

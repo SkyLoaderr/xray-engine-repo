@@ -42,7 +42,7 @@ public:
 	virtual void DetachAll();
 	int GetChildNum() {return m_ChildWndList.size();} 
 
-	void SetParent(CUIWindow* pNewParent) {m_pParentWnd = pNewParent;}
+	void SetParent(CUIWindow* pNewParent);
 	CUIWindow* GetParent() {return m_pParentWnd;}
 	
 	//получить окно самого верхнего уровня

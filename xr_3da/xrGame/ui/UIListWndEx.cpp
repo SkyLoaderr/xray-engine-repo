@@ -30,21 +30,24 @@ void CUIListWndEx::SendMessage(CUIWindow *pWnd, s16 msg, void* pData){
 	}
 	else 
 	{
+
 		// if message has come from one of child
-		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
+/*		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
 			m_ChildWndList.end(), 
 			pWnd);
 
 		if( m_ChildWndList.end() != it)
+*/
+		if( IsChild(pWnd) )
 		{
-			CUIListItem* pListItem2, *pListItem = smart_cast<CUIListItem*>(*it);
+			CUIListItem* pListItem2, *pListItem = smart_cast<CUIListItem*>(pWnd);
 			R_ASSERT(pListItem);
 
 			if(BUTTON_CLICKED == msg)
 			{
 				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 				// 
-				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				for (WINDOW_LIST_it it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
 					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) 
@@ -79,7 +82,7 @@ void CUIListWndEx::SendMessage(CUIWindow *pWnd, s16 msg, void* pData){
 
 				// prototype code
 
-				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				for (WINDOW_LIST_it it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
 					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;
@@ -101,7 +104,7 @@ void CUIListWndEx::SendMessage(CUIWindow *pWnd, s16 msg, void* pData){
 			{
 				if(pListItem->GetIndex() == m_iFocusedItem && !m_bForceFocusedItem) m_iFocusedItem = -1;
 
-				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				for (WINDOW_LIST_it it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
 					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;

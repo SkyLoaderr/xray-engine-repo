@@ -127,6 +127,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrQSlim", "..\xrQSlim\xrQSl
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "..\pasha\client\client.vcproj", "{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "srv", "..\pasha\srv\srv.vcproj", "{08E09432-1268-4A41-8901-CD5AF725A8F4}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SourceCodeControl) = preSolution
 		SccNumberOfProjects = 24
@@ -411,6 +419,22 @@ Global
 		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Mixed.Build.0 = Release|Win32
 		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.ActiveCfg = Release|Win32
 		{F1836CE2-59EF-4189-8B9C-D103A511CB27}.Release.Build.0 = Release|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.Debug.ActiveCfg = Debug|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.Debug.Build.0 = Debug|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.DebugNoExceptions.Build.0 = Debug|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.Mixed.ActiveCfg = Release|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.Mixed.Build.0 = Release|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.Release.ActiveCfg = Release|Win32
+		{EFDFFE21-03D1-4EDB-B86F-3E91A3BFCCAB}.Release.Build.0 = Release|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.Debug.ActiveCfg = Debug|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.Debug.Build.0 = Debug|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.DebugNoExceptions.ActiveCfg = Debug|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.DebugNoExceptions.Build.0 = Debug|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.Mixed.ActiveCfg = Release|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.Mixed.Build.0 = Release|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.Release.ActiveCfg = Release|Win32
+		{08E09432-1268-4A41-8901-CD5AF725A8F4}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionItems) = postSolution
 		..\..\XR_3DA.vsd = ..\..\XR_3DA.vsd

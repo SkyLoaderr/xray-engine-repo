@@ -6,6 +6,7 @@ m_fItemsScale// UIDragDropList.cpp: список элементов Drag&Drop
 #include "stdafx.h"
 #include "uidragdroplist.h"
 #include "UIOutfitSlot.h"
+#include "../object_broker.h"
 
 #define SCROLLBAR_OFFSET_X 5
 #define SCROLLBAR_OFFSET_Y 0
@@ -20,8 +21,8 @@ CUIDragDropList::CUIDragDropList()
 	SetCellHeight				(50);
 	SetCellWidth				(50);
 
-	m_vCellStatic.clear			();
-	m_vGridState.clear			();
+//	m_vpCellStatic.clear		();
+//	m_vGridState.clear			();
 
 
 	m_pCheckProc				= NULL;
@@ -47,12 +48,14 @@ CUIDragDropList::CUIDragDropList()
 
 CUIDragDropList::~CUIDragDropList()
 {
+	
 	DetachAll();
 
 	m_vGridState.clear();
-	m_vCellStatic.clear();
+	delete_data(m_vpCellStatic);
 	m_DragDropItemsList.clear();
 	
+
 }
 
 void CUIDragDropList::AttachChild(CUIWindow* pChild)
@@ -78,11 +81,7 @@ void CUIDragDropList::AttachChild(CUIWindow* pChild)
 }
 void CUIDragDropList::DetachChild(CUIWindow* pChild)
 {
-	WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
-								  m_ChildWndList.end(), 
-								  pChild);
-
-	if( m_ChildWndList.end() != it)
+	if( IsChild(pChild) )
 	{
 
 		CUIDragDropItem* pDragDropItem = smart_cast<CUIDragDropItem*>(pChild);
@@ -112,15 +111,10 @@ void CUIDragDropList::DropAll()
 	m_pMouseCapturer = NULL;
 
 
-/*	for(DRAG_DROP_LIST_it it = m_DragDropItemsList.begin(); m_DragDropItemsList.end() != it; ++it)
-	{
-		DetachChild((CUIWindow*)*it);
-	}
-	m_DragDropItemsList.clear();*/
 
-	for(u32 i=0; i<m_vCellStatic.size(); ++i)
+	for(u32 i=0; i<m_vpCellStatic.size(); ++i)
 	{
-		AttachChild(&m_vCellStatic[i]);
+		AttachChild(m_vpCellStatic[i]);
 	}
 	AttachChild(&m_ScrollBar);
 
@@ -165,18 +159,10 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(smart_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DRAG)
 	{
-		//принадлежит ли элемент отправивший сообщение ITEM_DRAG нашему списку
-		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(),
-										m_ChildWndList.end(),
-										pWnd);
-		
-		//элемент наш, поднять окно на вершину списка, 
-		//чтоб оно могло выводить себя и этот элемент поверх всех окон
-		//и получило сообщения DRAG в последнюю очередь
-		if( m_ChildWndList.end() != it)
+		if( IsChild(pWnd) ) 
 		{
 			//поднять окно вместе с родителями на вершину
-			(*it)->BringAllToTop(); 
+			pWnd->BringAllToTop(); 
 
 			pWnd->Show(true);
 
@@ -188,17 +174,9 @@ void CUIDragDropList::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	}
 	else if(smart_cast<CUIDragDropItem*>(pWnd) && msg == DRAG_DROP_ITEM_DROP)
 	{	
-		//принадлежит ли элемент отправивший сообщение ITEM_DROP нашему списку
-		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
-										m_ChildWndList.end(), 
-										pWnd);
-
 		CUIDragDropItem* pItem = (CUIDragDropItem*)pWnd;
 
-		//элемени чужой, надо взять его себе, 
-		//но только если он в нашей области
-
-		if( it == m_ChildWndList.end())
+		if( !IsChild(pWnd) ) 
 		{
 			RECT rect = GetAbsoluteRect();
 			POINT pt_lt, pt_lb, pt_rt, pt_rb;
@@ -362,7 +340,7 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 	m_bGridVisible = bGridVisible;
 	if(bGridVisible)
 	{
-		m_vCellStatic.resize(GetViewRows()*m_iColsNum);
+		ReallocateCells(GetViewRows()*m_iColsNum);
 
 		int i,j;
 
@@ -372,25 +350,25 @@ void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum,
 		float scaleY = (GetCellHeight() - 1)/51.f;
 //		float scale = GetCellWidth()/52.f;
 		
-		CELL_STATIC_IT it=m_vCellStatic.begin();
+		CELL_STATIC_IT it=m_vpCellStatic.begin();
 
 		for(i=0; i<GetViewRows(); ++i)
 		{
 			for(j=0; j<GetCols(); ++j)
 			{
 
-				(*it).Init(CELL_TEXTURE,
+				(*it)->Init(CELL_TEXTURE,
 								j*(GetCellWidth()),
 								i*(GetCellHeight()),
 								(GetCellWidth()),
 								(GetCellHeight()));
-				(*it).GetUIStaticItem().SetOriginalRect(0, 0, 64, 64);
-				it->ClipperOn();
+				(*it)->GetUIStaticItem().SetOriginalRect(0, 0, 64, 64);
+				(*it)->ClipperOn();
 
-				if (!IsChild(&(*it)))
-					AttachChild(&(*it));
+				if (!IsChild( *it ) )
+					AttachChild( *it );
 				
-				(*it).SetTextureScaleXY(scaleX, scaleY);
+				(*it)->SetTextureScaleXY(scaleX, scaleY);
 
 				++it;
 			}
@@ -756,9 +734,9 @@ void CUIDragDropList::HighlightCell(int row, int col, bool on)
 {
 	R_ASSERT(row < m_iRowsNum && col < m_iColsNum);
 
-	if (static_cast<u32>(row*GetCols() + col) >= m_vCellStatic.size()) return;
-	CUIStatic &cell = m_vCellStatic[row*GetCols() + col];
-	cell.GetUIStaticItem().SetOriginalRect(static_cast<int>(on) * 64, 0, 64, 64);
+	if (static_cast<u32>(row*GetCols() + col) >= m_vpCellStatic.size()) return;
+	CUIStatic * cell = m_vpCellStatic[row*GetCols() + col];
+	cell->GetUIStaticItem().SetOriginalRect(static_cast<int>(on) * 64, 0, 64, 64);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -786,4 +764,21 @@ void CUIDragDropList::RearrangeItems()
 		PlaceItemInGrid(*it);
 	}
 	ScrollBarRecalculate(true);
+}
+
+int	CUIDragDropList::ReallocateCells(u32 new_size)
+{
+	int res = new_size - m_vpCellStatic.size() ;
+	if( new_size>m_vpCellStatic.size() )
+		while(m_vpCellStatic.size() != new_size ){
+			m_vpCellStatic.push_back( xr_new<CUIStatic>() );
+			++res;
+			}
+	else
+		while(m_vpCellStatic.size() != new_size ){
+			xr_delete(m_vpCellStatic.back());
+			m_vpCellStatic.pop_back();
+			}
+	
+	return res;
 }

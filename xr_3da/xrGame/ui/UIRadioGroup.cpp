@@ -17,14 +17,9 @@ CUIRadioGroup::~CUIRadioGroup(void)
 //присоединить радио кнопку
 void CUIRadioGroup::AttachChild(CUIRadioButton* pChild)
 {
-	if(!pChild) return;
-
-	pChild->SetParent(this);
-
+	CUIWindow::AttachChild(pChild);
 
 	pChild->ResetCheck();
-
-	m_ChildWndList.push_back(pChild);
 }
 
 
@@ -33,7 +28,8 @@ void CUIRadioGroup::AttachChild(CUIRadioButton* pChild)
 //отсоединить радио кнопку
 void CUIRadioGroup::DetachChild(CUIRadioButton* pChild)
 {
-	m_ChildWndList.remove(pChild);
+	CUIWindow::DetachChild(pChild);
+//	m_ChildWndList.remove(pChild);
 }
 
 

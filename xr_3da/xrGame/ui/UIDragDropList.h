@@ -132,8 +132,9 @@ protected:
 	GRID_STATE_VECTOR m_vGridState;
 
 	//для изображения клеточек сетки
-	DEFINE_VECTOR	(CUIStatic, CELL_STATIC_VECTOR, CELL_STATIC_IT);
-	CELL_STATIC_VECTOR m_vCellStatic;
+	DEFINE_VECTOR	(CUIStatic*, CELL_STATIC_VECTOR, CELL_STATIC_IT);
+	CELL_STATIC_VECTOR m_vpCellStatic;
+	int				ReallocateCells			(u32 new_size);
 
 	//автоматическое расстановка элементов
 	bool m_bCustomPlacement;

@@ -46,8 +46,14 @@ CUIListWnd::~CUIListWnd()
 	//очистить список и удалить все элементы
 	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
 	{
-		DetachChild(*it);
-		if(NULL != *it && !(*it)->IsManualDelete())xr_delete(*it);
+		CUIListItem* itm = (*it);
+		bool bAuto = itm->IsAutoDelete();
+//		bool bManual = itm->IsManualDelete();
+//		VERIFY( !( bAuto && bManual ) );
+
+		DetachChild(itm);
+//		if( !itm->IsAutoDelete() )
+//			xr_delete(itm);
 	}
 
 	m_ItemList.clear();
@@ -131,10 +137,12 @@ void CUIListWnd::RemoveItem(int index)
 	for(int i=0; i<index;++i, ++it);
 
 	R_ASSERT(m_ItemList.end() != it);
-
+	
+	VERIFY( (*it)->IsAutoDelete() );
+	
 	DetachChild(*it);
-	if (!(*it)->IsManualDelete())
-		xr_delete(*it);
+//	if (!(*it)->IsManualDelete())
+//		xr_delete(*it);
 
 	m_ItemList.erase(it);
 
@@ -192,8 +200,10 @@ void CUIListWnd::RemoveAll()
 	{
 		it = m_ItemList.begin();
 		
+//		VERIFY( !(*it)->IsAutoDelete() );
+		
 		DetachChild(*it);
-		if(NULL != *it && !(*it)->IsManualDelete()) xr_delete(*it);
+//		if(NULL != *it && !(*it)->IsManualDelete()) xr_delete(*it);
 
 		m_ItemList.erase(it);
 	}
@@ -279,21 +289,24 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 	else 
 	{
 		//если сообщение пришло от одного из элементов списка
-		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
+
+/*		WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
 									  m_ChildWndList.end(), 
 									  pWnd);
 	
 		if( m_ChildWndList.end() != it)
+*/
+		if( IsChild(pWnd) )
 		{
 			CUIListItem* pListItem2;
-			CUIListItem* pListItem = smart_cast<CUIListItem*>(*it);
+			CUIListItem* pListItem = smart_cast<CUIListItem*>(pWnd);
 			R_ASSERT(pListItem);
 
 			if(BUTTON_CLICKED == msg)
 			{
 				GetMessageTarget()->SendMessage(this, LIST_ITEM_CLICKED, pListItem);
 				// 
-				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				for (WINDOW_LIST_it it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
 					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) 
@@ -329,7 +342,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 
 				// prototype code
 				
-				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				for (WINDOW_LIST_it it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
 					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;
@@ -351,7 +364,7 @@ void CUIListWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			{
 				if(pListItem->GetIndex() == m_iFocusedItem && !m_bForceFocusedItem) m_iFocusedItem = -1;
 
-				for (it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
+				for (WINDOW_LIST_it it = m_ChildWndList.begin(); it != m_ChildWndList.end(); ++it)
 				{
 					pListItem2 = smart_cast<CUIListItem*>(*it);
 					if (!pListItem2) continue;

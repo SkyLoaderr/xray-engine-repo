@@ -69,6 +69,7 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	UIAnswersList.EnableScrollBar(true);
 	UIAnswersList.ActivateList(false);
 	UIAnswersList.SetRightIndention(10);
+	UIAnswersList.SetWindowName("---UIAnswersList");
 
 	//Вопросы
 	//UIDialogFrame.AttachChild(&UIQuestionsList);
@@ -80,6 +81,7 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 	UIQuestionsList.EnableScrollBar(true);
 	UIQuestionsList.SetMessageTarget(this);
 	UIQuestionsList.SetRightIndention(10);
+	UIQuestionsList.SetWindowName("---UIQuestionsList");
 
 
 	//кнопка перехода в режим торговли
@@ -94,6 +96,9 @@ void CUITalkDialogWnd::Init(int x, int y, int width, int height)
 
 	CGameFont * pFont = NULL;
 	xml_init.InitFont(uiXml, "font", 1, m_uOurReplicsColor, pFont);
+
+
+	SetWindowName("----CUITalkDialogWnd");
 }
 
 

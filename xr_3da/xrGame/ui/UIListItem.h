@@ -42,9 +42,8 @@ public:
 	virtual bool IsHighlightText();
 	virtual void SetHighlightText(bool Highlight)		{ m_bHighlightText = Highlight; }
 
-	// Автоматическое обновление
-	void	ManualDelete(bool value) { m_bManualDelete = value; }
-	bool	IsManualDelete() { return m_bManualDelete; }
+//	void	ManualDelete(bool value) { m_bManualDelete = value; }
+//	bool	IsManualDelete() { return m_bManualDelete; }
 
 protected:
 	//указатель на произвольные данные, которые могут
@@ -64,7 +63,7 @@ protected:
 	bool m_bHighlightText;
 
 	// удалять item при детаче?
-	bool m_bManualDelete;
+//	bool m_bManualDelete;
 };
 
 #endif

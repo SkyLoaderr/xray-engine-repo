@@ -33,6 +33,13 @@ CUIWindow::CUIWindow()
 
 CUIWindow::~CUIWindow()
 {
+	VERIFY( !(GetParent()&&IsAutoDelete()) );
+
+	CUIWindow* parent	= GetParent();
+	bool ad				= IsAutoDelete();
+	if( parent && !ad )
+		parent->CUIWindow::DetachChild( this );
+
 	DetachAll();
 }
 
@@ -81,7 +88,8 @@ void CUIWindow::Update()
 void CUIWindow::AttachChild(CUIWindow* pChild)
 {
 	if(!pChild) return;
-
+	
+	VERIFY( !IsChild(pChild) );
 	pChild->SetParent(this);
 
 	m_ChildWndList.push_back(pChild);
@@ -89,27 +97,43 @@ void CUIWindow::AttachChild(CUIWindow* pChild)
 
 
 
-
 //отсоединить дочернее окно
 void CUIWindow::DetachChild(CUIWindow* pChild)
 {
+	if(NULL==pChild) return;
+	
+//	VERIFY( !pChild->IsAutoDelete() );
+	
 	if(m_pMouseCapturer == pChild) SetCapture(pChild, false);
 
 	m_ChildWndList.remove(pChild);
+
+	pChild->SetParent(NULL);
+
+	if(pChild->IsAutoDelete())
+		xr_delete(pChild);
+
 }
 
 void CUIWindow::DetachAll()
 {
 	if(m_ChildWndList.empty()) return;
 
+	while( !m_ChildWndList.empty() ){
+		DetachChild( m_ChildWndList.back() );	
+	}
+/*
 	for(WINDOW_LIST_it it = m_ChildWndList.begin(); m_ChildWndList.end() != it; ++it)
 	{
 		CUIWindow* pChild = *it;
-		if(pChild->IsAutoDelete()) 
+		pChild->m_pParentWnd = NULL;
+		if(pChild->IsAutoDelete()) {
 			xr_delete(pChild);
+		}
 	}
 
-	m_ChildWndList.erase(m_ChildWndList.begin(), m_ChildWndList.end());
+	m_ChildWndList.clear();
+*/
 }
 
 
@@ -319,14 +343,15 @@ void CUIWindow::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 bool CUIWindow::BringToTop(CUIWindow* pChild)
 {
 	//найти окно в списке
-	WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
+/*	WINDOW_LIST_it it = std::find(m_ChildWndList.begin(), 
 										m_ChildWndList.end(), 
 										pChild);
-
-	if( it == m_ChildWndList.end()) return false;
+*/
+	if( !IsChild(pChild) ) return false;
 
 	//удалить со старого места
-	m_ChildWndList.erase(it);
+//	m_ChildWndList.erase(it);
+	m_ChildWndList.remove(pChild);
 	//поместить на вершину списка
 	m_ChildWndList.push_back(pChild);
 
@@ -370,6 +395,7 @@ bool CUIWindow::IsChild(CUIWindow *pPossibleChild) const
 	return it != m_ChildWndList.end();
 }
 
+
 CUIWindow*	CUIWindow::FindChild(const shared_str name)
 {
 	if(WindowName()==name)
@@ -384,4 +410,11 @@ CUIWindow*	CUIWindow::FindChild(const shared_str name)
 	}
 
 	return NULL;
+}
+
+void CUIWindow::SetParent(CUIWindow* pNewParent) 
+{
+	VERIFY( !(m_pParentWnd && m_pParentWnd->IsChild(this)) );
+
+	m_pParentWnd = pNewParent;
 }

@@ -19,8 +19,8 @@ CUIListItem::CUIListItem(void)
 	m_iValue = 0;
 	m_bHighlightText = false;
 	m_iGroupID = -1;
-	m_bManualDelete = false;
-
+//	m_bManualDelete = false;
+	SetAutoDelete(true);
 	SetTextAlign(CGameFont::alLeft);
 }
 

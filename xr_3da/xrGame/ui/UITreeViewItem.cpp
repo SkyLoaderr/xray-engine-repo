@@ -19,7 +19,7 @@
 
 // Смещение относительно родителя
 const int				subShift					= 1;
-const char * const		treeItemBackgroundTexture	= "ui\\ui_pda_over_list";
+const char * const		= "ui\\ui_pda_over_list";
 // Цвет непрочитанного элемента
 static const u32		unreadColor					= 0xff00ff00;
 
@@ -191,7 +191,8 @@ void CUITreeViewItem::AddItem(CUITreeViewItem *pItem)
 	pItem->SetTextShift(subShift + iTextShift);
 
 	vSubItems.push_back(pItem);
-	pItem->ManualDelete(true);
+//	pItem->ManualDelete(true);
+	pItem->SetAutoDelete(false);
 
 	pItem->SetOwner(this);
 
@@ -207,11 +208,12 @@ void CUITreeViewItem::DeleteAllSubItems()
 	{
 		CUIWindow *pWindow = (*it)->GetParent();
 
+//		VERIFY( (*it)->IsAutoDelete() );
 		if (pWindow)
 			pWindow->DetachChild(*it);
 
-		xr_delete(*it);
-		(*it) = NULL;
+//		xr_delete(*it);
+//		(*it) = NULL;
 	}
 
 	vSubItems.clear();
