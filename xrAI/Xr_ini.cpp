@@ -21,7 +21,7 @@ ENGINE_API void _parse(LPSTR dest, LPCSTR src)
 	if (src) {
 		BOOL bInsideSTR = false;
 		while (*src) {
-			if (isspace(*src)) {
+			if (isspace((u8)*src)) {
 				if (bInsideSTR) { *dest++ = *src++; continue; }
 				while (*src && isspace(*src)) src++;
 				continue;

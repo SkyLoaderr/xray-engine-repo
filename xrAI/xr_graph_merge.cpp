@@ -106,7 +106,7 @@ void xrMergeGraphs()
 	// load all the graphs
 	Phase("Reading level graphs");
 	pSettings = xr_new<CInifile>(INI_FILE);
-	if (!pSettings->SectionExists("game_levels"))
+	if (!pSettings->SectionExists("levels"))
 		THROW;
 	GRAPH_P_VECTOR					tpGraphs;
 	string256						S1, S2;
@@ -115,7 +115,7 @@ void xrMergeGraphs()
 	R_ASSERT						(pSettings->SectionExists("levels"));
     LPCSTR N,V;
     for (u32 k = 0; pSettings->ReadLINE("levels",k,&N,&V); k++) {
-		R_ASSERT					(pSettings->SectionExists(tLevel.caLevelName));
+		R_ASSERT					(pSettings->SectionExists(N));
 		tLevel.tOffset				= pSettings->ReadVECTOR(N,"offset");
 		V							= pSettings->ReadSTRING(N,"name");
 		Memory.mem_copy				(tLevel.caLevelName,V,strlen(V) + 1);
