@@ -11,7 +11,7 @@
 class ENGINE_API	CObject;
 class ENGINE_API	xrLIGHT;
 
-class ENGINE_API	CLightShadows  : public pureDeviceCreate, public pureDeviceDestroy
+class CLightShadows			: public pureDeviceCreate, public pureDeviceDestroy
 {
 	friend class pred_casters;
 private:

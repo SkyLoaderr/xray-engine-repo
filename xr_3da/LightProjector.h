@@ -10,7 +10,7 @@
 
 class ENGINE_API	CObject;
 
-class ENGINE_API	CLightProjector  : public pureDeviceCreate, public pureDeviceDestroy
+class CLightProjector		: public pureDeviceCreate, public pureDeviceDestroy
 {
 	friend class			pred_sorter;
 private:
