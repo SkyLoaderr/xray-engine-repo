@@ -337,7 +337,7 @@ bool	Script::bfIsObjectPresent	(CLuaVirtualMachine *tpLuaVM, LPCSTR identifier, 
 		} 
 		lua_pop (tpLuaVM, 1); 
 	} 
-	lua_pop (tpLuaVM, 2); 
+	lua_pop (tpLuaVM, 1); 
 	return	(false); 
 }
 
