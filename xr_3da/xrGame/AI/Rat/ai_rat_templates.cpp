@@ -12,6 +12,7 @@
 #include "../../game_graph.h"
 #include "../../magic_box3.h"
 #include "../../clsid_game.h"
+#include "../../../fbasicvisual.h"
 
 void CAI_Rat::vfSetFire(bool bFire)
 {

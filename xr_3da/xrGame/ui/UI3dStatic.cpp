@@ -7,6 +7,7 @@
 #include "../gameobject.h"
 #include "../HUDManager.h"
 #include "../Level.h"
+#include "../../fbasicvisual.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

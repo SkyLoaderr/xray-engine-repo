@@ -11,6 +11,8 @@
 
 class CCartridge;
 class CParticlesObject;
+class IRender_Sector;
+
 extern const Fvector zero_vel;
 
 #define WEAPON_MATERIAL_NAME "objects\\bullet"

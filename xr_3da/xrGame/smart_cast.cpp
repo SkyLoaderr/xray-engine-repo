@@ -14,6 +14,7 @@
 #		include "actor.h"
 #		include "custommonster.h"
 #		include "../ispatial.h"
+#		include "../fbasicvisual.h"
 #	endif
 #endif
 

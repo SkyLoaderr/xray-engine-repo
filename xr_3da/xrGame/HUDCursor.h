@@ -3,6 +3,7 @@
 #pragma once
 
 #include "HUDCrosshair.h"
+#include "../xr_collide_defs.h"
 
 
 class CHUDManager;
