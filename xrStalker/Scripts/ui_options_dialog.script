@@ -44,17 +44,17 @@ function options_dialog:InitControls()
 							 height = self.btn_rect.height}
 							 
 	local btn_sound_rect  = {x = self.left_aling_x,
-							 y = btn_video_rect.y + btn_video_rect.height + indent,
+							 y = btn_video_rect.y + btn_video_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 							 
 	local btn_game_rect   = {x = self.left_aling_x,
-							 y = btn_sound_rect.y + btn_sound_rect.height + indent,
+							 y = btn_sound_rect.y + btn_sound_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	
 	local btn_control_rect= {x = self.left_aling_x,
-							 y = btn_game_rect.y + btn_game_rect.height + indent,
+							 y = btn_game_rect.y + btn_game_rect.height + self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 		----- Bottom right align --->>>
@@ -63,7 +63,7 @@ function options_dialog:InitControls()
 							 width = self.btn_special_rect.width,
 							 height = self.btn_special_rect.height}
 							 
-	local btn_accept_rect = {x = btn_cancel_rect.x - self.btn_special_rect.width - indent, 
+	local btn_accept_rect = {x = btn_cancel_rect.x - self.btn_special_rect.width - self.indent, 
 							 y = btn_cancel_rect.y,
 							 width = self.btn_special_rect.width,
 							 height = self.btn_special_rect.height}
@@ -87,7 +87,7 @@ function options_dialog:InitControls()
 	btn:SetText("Video")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(button_indent)
+	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 	
@@ -99,7 +99,7 @@ function options_dialog:InitControls()
 	btn:SetText("Sound")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(button_indent)
+	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)	
 	
@@ -111,7 +111,7 @@ function options_dialog:InitControls()
 	btn:SetText("Game")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(button_indent)
+	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 	
@@ -123,7 +123,7 @@ function options_dialog:InitControls()
 	btn:SetText("Controls")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(button_indent)
+	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 	
@@ -135,7 +135,7 @@ function options_dialog:InitControls()
 	btn:SetText("Cancel")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(button_indent)
+	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 	
@@ -146,7 +146,7 @@ function options_dialog:InitControls()
 	btn:SetText("Accept")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(button_indent)
+	btn:SetTextY(self.button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 		
@@ -155,7 +155,10 @@ function options_dialog:InitControls()
 	message_box:SetAutoDelete(true)
 	message_box:SetWindowName("message_box")
 	message_box:SetFont(GetFontLetterica25())
-	message_box:Init("ui\\ui_frame",message_rect.x, message_rect.y, message_rect.width, message_rect.height)
+	message_box:Init("ui\\ui_frame",self.message_rect.x, 
+									self.message_rect.y, 
+									self.message_rect.width, 
+									self.message_rect.height)
 	message_box:SetStyle(0)	
 	message_box:Hide()
 	self:Register(message_box)
