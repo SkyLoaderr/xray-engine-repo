@@ -280,11 +280,13 @@ HRESULT	CRender::CompileShader			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
+	/*
 	if (b_distortion)	{
 		defines[def_it].Name		=	"USE_DISTORT";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
+	*/
 	
 	// finish
 	defines[def_it].Name			=	0;
