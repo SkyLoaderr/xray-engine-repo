@@ -57,12 +57,8 @@ void CRenderTarget::accum_spot	(light* L)
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
-	RCache.set_ColorWriteEnable				();
-	RCache.set_CullMode						(CULL_CW);		// back
-	/*
-	if (bIntersect)	RCache.set_CullMode		(CULL_CW);		// back
-	else			RCache.set_CullMode		(CULL_CCW);		// front
-	*/
+	RCache.set_ColorWriteEnable		();
+	RCache.set_CullMode				(CULL_CW);		// back
 
 	// 2D texgen (texture adjustment matrix)
 	Fmatrix			m_Texgen;
@@ -132,8 +128,17 @@ void CRenderTarget::accum_spot	(light* L)
 
 	// Draw volume with projective texgen
 	{
-		// Lighting
-		RCache.set_Element			(shader->E[ L->flags.bShadow ? 1:2 ]);
+		// Select shader
+		u32		_id					= 0;
+		if (L->flags.bShadow)		{
+			bool	bFullSize			= (L->X.S.size == DSM_size);
+			if (L->X.S.transluent)	_id	= SE_SPOT_TRANSLUENT;
+			else if		(bFullSize)	_id	= SE_SPOT_FULLSIZE;
+			else					_id	= SE_SPOT_NORMAL;
+		} else {
+			_id						= SE_SPOT_UNSHADOWED;
+		}
+		RCache.set_Element			(shader->E[ _id ]	);
 
 		// Constants
 		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L->range*L->range));
@@ -164,5 +169,4 @@ void CRenderTarget::accum_spot	(light* L)
 			J.set(9,  7,  15, 9);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,4,J.x,J.y, J.w, J.z);
 			J.set(13, 15, 7,  13);	J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y, J.w, J.z);
 		}
-
 */

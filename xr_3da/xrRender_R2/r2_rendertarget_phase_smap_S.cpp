@@ -11,20 +11,15 @@ void	CRenderTarget::phase_smap_spot		(light* L)
 	// Misc		- draw only front-faces //back-faces
 	RCache.set_CullMode					( CULL_CCW );
 	RCache.set_Stencil					( FALSE );
-	if (RImplementation.b_tshadows && _has_transparent)		
-	{
-		// transparency enabled	-> color-write
-		CHK_DX							(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER + D3DCLEAR_TARGET, 0xffffffff,	1.0f, 0L));
-		RCache.set_ColorWriteEnable		();
-	} else {
-		// no transparency
-		CHK_DX							(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER,	0xffffffff,	1.0f, 0L));
-		if (RImplementation.b_HW_smap)	RCache.set_ColorWriteEnable	(FALSE);
-	}
+	// no transparency
+	CHK_DX								(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER,	0xffffffff,	1.0f, 0L));
+	if (RImplementation.b_HW_smap)		RCache.set_ColorWriteEnable	(FALSE);
 }
 
-void	CRenderTarget::phase_smap_spot_tsh	()
+void	CRenderTarget::phase_smap_spot_tsh	(light* L)
 {
-	CHK_DX							(HW.pDevice->Clear( 0L, NULL, D3DCLEAR_ZBUFFER + D3DCLEAR_TARGET, 0xffffffff,	1.0f, 0L));
+	VERIFY							(RImplementation.b_Tshadows);
 	RCache.set_ColorWriteEnable		();
+
+	// fill color-mask
 }

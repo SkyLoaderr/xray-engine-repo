@@ -131,6 +131,7 @@ public:
 	void						phase_smap_direct		(light* L);
 	void						phase_smap_point		(light* L, u32 pls_phase);
 	void						phase_smap_spot			(light* L);
+	void						phase_smap_spot_tsh		();
 	void						phase_accumulator		();
 	void						phase_accumulator_init	();
 	void						shadow_direct			(light* L, u32 dls_phase);

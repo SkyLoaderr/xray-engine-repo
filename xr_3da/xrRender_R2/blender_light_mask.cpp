@@ -12,9 +12,10 @@ void	CBlender_accum_direct_mask::Compile(CBlender_Compile& C)
 
 	switch (C.iElement) 
 	{
-	case 0:	// white mask for skybox
-		//C.r_Pass			("null",			"bloom_mask",FALSE,FALSE,FALSE);
-		//C.r_End				();
+	case SE_SPOT_MASK:		// 
+		C.r_Pass			("accum_mask",		"dumb",		false,	TRUE,FALSE);
+		C.r_Sampler_rtf		("s_position",		r2_RT_P);
+		C.r_End				();
 		break;
 	case 1:	// mask downsample
 		//C.r_Pass			("null",			"bloom_mask_filter",FALSE,FALSE,FALSE);

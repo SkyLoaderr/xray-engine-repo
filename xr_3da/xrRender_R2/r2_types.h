@@ -47,3 +47,15 @@ const u32					BLOOM_size_Y		= 256;
 const u32					LUMINANCE_size		= 16;
 
 const u32					occq_size			= 128;
+
+// spot
+#define		SE_SPOT_FILL		0
+#define		SE_SPOT_UNSHADOWED	1
+#define		SE_SPOT_NORMAL		2	// typical, scaled
+#define		SE_SPOT_FULLSIZE	3	// full texture coverage
+#define		SE_SPOT_TRANSLUENT	4	// with opacity/color mask
+
+// mask
+#define		SE_MASK_SPOT		0
+#define		SE_MASK_POINT		1
+#define		SE_MASK_DIRECT		2

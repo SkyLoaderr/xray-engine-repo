@@ -63,6 +63,7 @@ public:
 			u32							size;
 			u32							posX;
 			u32							posY;
+			BOOL						transluent;
 		}	S;
 	}	X;
 #endif
