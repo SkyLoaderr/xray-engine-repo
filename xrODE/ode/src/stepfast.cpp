@@ -732,6 +732,16 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			int r = rand () % (j+1);
 			SwapJoints(j,r,joints,info,Jinfo);
 		}
+		
+		//int lastns=0;
+		//for (j = 0; j < nj; j++)
+		//{
+		//	if(!joint->node[0].body||!joint->node[1].body)
+		//	{
+		//			SwapJoints(lastns,j,joints,info,Jinfo);
+		//			lastns++;
+		//	}
+		//}
 #endif
 
 		//now iterate through the random ordered joint array we created.
@@ -745,10 +755,10 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 			bodyPair[0] = joint->node[0].body;
 			bodyPair[1] = joint->node[1].body;
 
-			if (bodyPair[0] && (bodyPair[0]->flags & dxBodyDisabled))
-				bodyPair[0] = 0;
-			if (bodyPair[1] && (bodyPair[1]->flags & dxBodyDisabled))
-				bodyPair[1] = 0;
+			//if (bodyPair[0] && (bodyPair[0]->flags & dxBodyDisabled))
+			//	bodyPair[0] = 0;
+			//if (bodyPair[1] && (bodyPair[1]->flags & dxBodyDisabled))
+			//	bodyPair[1] = 0;
 
 			//if this joint is not connected to any enabled bodies, skip it.
 			if (!bodyPair[0] && !bodyPair[1])
@@ -883,7 +893,8 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 // never start a new islands from a disabled body. thus islands of disabled
 // bodies will not be included in the simulation. disabled bodies are
 // re-enabled if they are found to be part of an active island.
-
+const int MAXJ_ALLOC= 2500;
+const int MAXB_ALLOC= 1000;
 static void
 processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 {
@@ -896,10 +907,11 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 	// nothing to do if no bodies
 	if (world->nb <= 0)
 		return;
-
+	int jalloc=world->nj>MAXJ_ALLOC ? world->nj : MAXJ_ALLOC;
+	int balloc=world->nb>MAXB_ALLOC ? world->nb : MAXB_ALLOC;
 	// make arrays for body and joint lists (for a single island) to go into
-	body = (dxBody **) ALLOCA (world->nb * sizeof (dxBody *));
-	joint = (dxJoint **) ALLOCA (world->nj * sizeof (dxJoint *));
+	body = (dxBody **) ALLOCA (balloc * sizeof (dxBody *));
+	joint = (dxJoint **) ALLOCA (jalloc * sizeof (dxJoint *));
 	int bcount = 0;				// number of bodies in `body'
 	int jcount = 0;				// number of joints in `joint'
 	int tbcount = 0;
@@ -915,7 +927,7 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 	// the stack can be the lesser of the number of bodies or joints, because
 	// new bodies are only ever added to the stack by going through untagged
 	// joints. all the bodies in the stack must be tagged!
-	int stackalloc = (world->nj < world->nb) ? world->nj : world->nb;
+	int stackalloc = (jalloc < balloc) ? jalloc : balloc;
 	dxBody **stack = (dxBody **) ALLOCA (stackalloc * sizeof (dxBody *));
 	int *autostack = (int *) ALLOCA (stackalloc * sizeof (int));
 
@@ -942,6 +954,7 @@ processIslandsFast (dxWorld * world, dReal stepsize, int maxiterations)
 			b = stack[--stacksize];	// pop body off stack
 			autoDepth = autostack[stacksize];
 			body[bcount++] = b;	// put body on body list
+			if(bcount>balloc) goto quit;
 quickstart:
 
 			// traverse and tag all body's joints, add untagged connected bodies
@@ -953,6 +966,7 @@ quickstart:
 					int thisDepth = autoEnableDepth;
 					n->joint->tag = 1;
 					joint[jcount++] = n->joint;
+					if(jcount>jalloc) goto quit;
 					if (n->body && !n->body->tag)
 					{
 						if (n->body->flags & dxBodyDisabled)
@@ -966,10 +980,10 @@ quickstart:
 					}
 				}
 			}
-			dIASSERT (stacksize <= world->nb);
-			dIASSERT (stacksize <= world->nj);
+			dIASSERT (stacksize <= balloc);
+			dIASSERT (stacksize <= jalloc);
 		}
-
+quit:
 		// now do something with body and joint lists
 		if (jcount>3)	dInternalStepIslandFast (world, body, bcount, joint, jcount, stepsize, maxiterations);
 		else			dInternalStepIsland		(world, body, bcount, joint, jcount, stepsize);		
