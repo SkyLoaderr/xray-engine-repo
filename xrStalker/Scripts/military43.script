@@ -7,8 +7,7 @@ function main ()
 	
 	for a = 1, table.getn (st), 1 do
 		st[a]:script (true, military43.script_name ())
-		action (st[a], object (weapons[a], object.activate), anim (anim.free), object (st[a]:best_weapon (), object.activate), 
-		        cond (cond.time_end, time_infinite))
+		action (st[a], object (weapons[a], object.activate), anim (anim.free), cond (cond.time_end, time_infinite))
 	end
 
 	printf ("Best weapon for stalker %s is %s", st[1]:name (), st[1]:best_weapon ():name ())
