@@ -11,8 +11,6 @@
 
 CPSVisual::CPSVisual():CVisual()
 {
-	m_Stream	= Device.Streams.Create(FVF::F_TL,MAX_PARTICLES*4);
-	
 	m_Definition= 0;
 	m_Emitter	= 0;
     m_Particles.clear();
@@ -21,7 +19,6 @@ CPSVisual::CPSVisual():CVisual()
 CPSVisual::~CPSVisual()
 {
 	m_Particles.clear();
-	m_Stream	= 0;
 }
 //----------------------------------------------------
 void CPSVisual::Copy(CVisual* pFrom)
@@ -164,11 +161,15 @@ IC void FillSprite	(FVF::TL*& pv, const Fmatrix& M, const Fvector& pos, const Fv
 void CPSVisual::Render		(float LOD)
 {
 	DWORD			vOffset;
-	FVF::TL*		pv		= (FVF::TL*)m_Stream->Lock(m_Particles.size()*4,vOffset);
+	FVF::TL*		pv		= (FVF::TL*)Device.Streams.Vertex.Lock(m_Particles.size()*4,hVS->dwStride,vOffset);
 	DWORD			dwCount	= RenderTO(pv);
-	m_Stream->Unlock(dwCount);
-	if (dwCount)
-		Device.Primitive.Draw	(m_Stream,dwCount,dwCount/2,vOffset,Device.Streams_QuadIB);
+	Device.Streams.Vertex.Unlock(dwCount,hVS->dwStride);
+	if (dwCount)    {
+		Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
+		Device.Primitive.setIndices		(vOffset,Device.Streams_QuadIB);;
+		Device.Primitive.Render			(D3DPT_TRIANGLELIST,0,dwCount,0,dwCount/2);
+		UPDATEC							(dwCount,dwCount/2,1);
+	}
 }
  
 DWORD CPSVisual::RenderTO	(FVF::TL* dest)
@@ -270,6 +271,8 @@ void CPSVisual::Compile(PS::SDef_RT* source, PS::SEmitter* E)
 {
     hShader				= source->m_CachedShader;
 	m_Definition		= source;
+	hVS					= Device.Shader._CreateVS	(FVF::F_TL);
+
 
 	// set default emitter data
 	VERIFY				(E);
