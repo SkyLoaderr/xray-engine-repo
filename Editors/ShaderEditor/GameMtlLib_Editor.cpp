@@ -122,13 +122,13 @@ void SGameMtlPair::FillProp(PropItemVec& items)
     propHitParticles->Owner()->m_Flags.set	(SetMask(show_CB,OwnProps,flHitParticles));
     propHitMarks->Owner()->m_Flags.set		(SetMask(show_CB,OwnProps,flHitMarks));
 
-    propFlotation->SetEvents				(0,0,OnChange);
-    propBreakingSounds->SetEvents			(0,0,OnChange);
-    propStepSounds->SetEvents				(0,0,OnChange);
-    propCollideSounds->SetEvents			(0,0,OnChange);
-    propHitSounds->SetEvents				(0,0,OnChange);
-    propHitParticles->SetEvents				(0,0,OnChange);
-    propHitMarks->SetEvents					(0,0,OnChange);
+    propFlotation->OnChangeEvent			= OnChange;
+    propBreakingSounds->OnChangeEvent		= OnChange;
+    propStepSounds->OnChangeEvent			= OnChange;
+    propCollideSounds->OnChangeEvent		= OnChange;
+    propHitSounds->OnChangeEvent			= OnChange;
+    propHitParticles->OnChangeEvent			= OnChange;
+    propHitMarks->OnChangeEvent				= OnChange;
 
     propBreakingSounds->Owner()->subitem= GAMEMTL_SUBITEM_COUNT;
     propStepSounds->Owner()->subitem	= GAMEMTL_SUBITEM_COUNT;

@@ -197,10 +197,6 @@ BOOL __fastcall TfraLeftBar::RemoveItem(LPCSTR p0)
 //---------------------------------------------------------------------------
 void TfraLeftBar::AfterRemoveItem()
 {
-//.    case aeEngine: 		
-//.        Tools.SEngine.ResetCurrentBlender();
-//.        Tools.SEngine.ApplyChanges();
-//.        Tools.SEngine.ResetShaders();
 	Tools.Current()->ResetCurrentItem();
 	Tools.Current()->Modified();
 }

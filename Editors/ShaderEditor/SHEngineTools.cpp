@@ -139,7 +139,7 @@ void CSHEngineTools::ZoomObject(bool bOnlySel)
 
 void CSHEngineTools::RealResetShaders() 
 {
-	Ext.m_ItemProps->IsUpdating	(true);
+	Ext.m_ItemProps->LockUpdating();
 	// disable props vis update
     m_bFreezeUpdate 	= TRUE;
 	// mem current blender
@@ -159,7 +159,7 @@ void CSHEngineTools::RealResetShaders()
 	// restore current shader
 	SetCurrentItem		(name.c_str());
 
-	Ext.m_ItemProps->IsUpdating	(false);
+	Ext.m_ItemProps->UnlockUpdating();
 
     m_bNeedResetShaders	= FALSE;
 }
@@ -555,8 +555,7 @@ void CSHEngineTools::RemoveItem(LPCSTR name)
     xr_free 		((LPSTR)I->first);
     xr_delete		(I->second);
     m_Blenders.erase(I);
-// from left bar
-//.    
+
 	ApplyChanges	();
 	ResetShaders	();
 }

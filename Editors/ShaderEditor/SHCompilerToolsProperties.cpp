@@ -12,11 +12,7 @@ void CSHCompilerTools::UpdateProperties()
 	PropItemVec items;
 	if (m_Shader){
 		Shader_xrLC& L 			= *m_Shader;
-        PropValue* P=0;
-        P=PHelper.CreateText	(items, "Name",					L.Name,  		sizeof(L.Name));
-        P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit);
-        P->Owner()->SetEvents	(FHelper.NameDraw);
-        P->Owner()->tag			= (int)FHelper.FindObject(View(),L.Name); VERIFY(P->Owner()->tag);
+        PHelper.CreateName_TI	(items, "Name",					L.Name,  		sizeof(L.Name), FHelper.FindObject(View(),L.Name));
         PHelper.CreateFloat		(items, "Translucency",			&L.vert_translucency);
         PHelper.CreateFloat		(items, "Ambient",				&L.vert_ambient);
         PHelper.CreateFloat		(items, "LM density",			&L.lm_density,   0.01f,20.f);

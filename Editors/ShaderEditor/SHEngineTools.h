@@ -74,14 +74,14 @@ friend class TfrmShaderProperties;
 
     // matrix props
 	void __fastcall 		ModeOnAfterEdit		(PropValue* sender, LPVOID edit_val);
-	void __fastcall 		MatrixOnAfterEdit	(PropValue* sender, LPVOID edit_val);
+	void __fastcall 		MatrixOnAfterEdit	(PropItem* sender, LPVOID edit_val);
 	void __fastcall 		FillMatrixProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
 	void __fastcall 		MCOnDraw			(PropValue* sender, LPVOID draw_val);
     // constant props
-	void __fastcall 		ConstOnAfterEdit	(PropValue* sender, LPVOID edit_val);
+	void __fastcall 		ConstOnAfterEdit	(PropItem* sender, LPVOID edit_val);
 	void __fastcall 		FillConstProps		(PropItemVec& items, LPCSTR pref, LPSTR name);
     // name
-	void __fastcall 		NameOnAfterEdit		(PropValue* sender, LPVOID edit_val);
+	void __fastcall 		NameOnAfterEdit		(PropItem* sender, LPVOID edit_val);
 
     void					RealResetShaders	();
 

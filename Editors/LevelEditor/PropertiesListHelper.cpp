@@ -8,6 +8,11 @@
 
 CPropHelper PHelper;
 
+void CPropHelper::NameAfterEdit_TI(PropItem* sender, LPVOID edit_val)
+{
+	FHelper.NameAfterEdit((TElTreeItem*)sender->tag,((TextValue*)sender->GetFrontValue())->GetValue(),*(AnsiString*)edit_val);
+}
+//---------------------------------------------------------------------------
 void CPropHelper::NameAfterEdit(PropItem* sender, LPVOID edit_val)
 {
 	LHelper.NameAfterEdit((ListItem*)sender->tag,((TextValue*)sender->GetFrontValue())->GetValue(),*(AnsiString*)edit_val);

@@ -189,8 +189,10 @@ void CSHGameMtlTools::UpdateProperties()
     	m_Mtl->FillProp			(items);
         PropItem* I 			= PHelper.FindItem(items,"Name",PROP_TEXT);			R_ASSERT(I);
 		PropValue* P			= I->GetFrontValue();                               R_ASSERT(P);
-    	P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit,OnMaterialNameChange);
-	    I->SetEvents			(FHelper.NameDraw);
+        P->OnChangeEvent		= OnMaterialNameChange;
+    	I->OnAfterEditEvent 	= PHelper.NameAfterEdit_TI;
+        I->OnBeforeEditEvent	= PHelper.NameBeforeEdit;
+	    I->OnDrawTextEvent		= PHelper.NameDraw;
     	I->tag					= (int)FHelper.FindObject(View(),m_Mtl->name); 		R_ASSERT(I->tag);
     }
     Ext.m_ItemProps->AssignItems		(items,true);

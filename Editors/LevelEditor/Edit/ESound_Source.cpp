@@ -168,30 +168,31 @@ void __fastcall	ESoundSource::OnChangeSource	(PropValue* prop)
 	m_Source.set_params			(&m_Params);
 }
 
-void __fastcall ESoundSource::OnControlClick(PropValue* sender)
+void __fastcall ESoundSource::OnControlClick(PropValue* sender, bool& bModif)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
     case 0: Play();	break;
     case 1: Stop();	break;
 	}
+    bModif = false;
 }
 
 void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
 {
 	ButtonValue* B;
-    B=PHelper.CreateButton		(values, PHelper.PrepareKey(pref,"Controls"), 	"Play,Stop");
+    B=PHelper.CreateButton		(values, FHelper.PrepareKey(pref,"Controls"), 	"Play,Stop");
     B->OnBtnClickEvent			= OnControlClick;
     PropValue* V;
-    V=PHelper.CreateASoundSrc	(values,PHelper.PrepareKey(pref,"WAVE name"),	&m_WAVName);
+    V=PHelper.CreateASoundSrc	(values,FHelper.PrepareKey(pref,"WAVE name"),	&m_WAVName);
     V->OnChangeEvent			= OnChangeWAV;
-	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
+	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
     V->OnChangeEvent			= OnChangeSource;
-	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
+	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
     V->OnChangeEvent			= OnChangeSource;
-	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
+	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
     V->OnChangeEvent			= OnChangeSource;
-	V=PHelper.CreateFloat		(values,PHelper.PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
+	V=PHelper.CreateFloat		(values,FHelper.PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
     V->OnChangeEvent			= OnChangeSource;
 }
 //----------------------------------------------------

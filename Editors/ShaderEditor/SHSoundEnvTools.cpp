@@ -201,7 +201,7 @@ void CSHSoundEnvTools::ResetCurrentItem()
 	UseEnvironment	();
 }
 
-void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender)
+void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender, bool& bModif)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -211,7 +211,7 @@ void __fastcall CSHSoundEnvTools::OnRevResetClick(PropValue* sender)
     Ext.m_ItemProps->RefreshForm();
     Modified();
 }
-void __fastcall CSHSoundEnvTools::OnEchoResetClick(PropValue* sender)
+void __fastcall CSHSoundEnvTools::OnEchoResetClick(PropValue* sender, bool& bModif)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -227,23 +227,20 @@ void CSHSoundEnvTools::UpdateProperties()
 	if (m_Env){
         // fill environment
 		CSoundRender_Environment& S	= *m_Env;
-        PropValue* P=0;
-        P=PHelper.CreateText	(items, "Environment\\Name",					S.name,  		sizeof(S.name));
-        P->SetEvents			(FHelper.NameAfterEdit,FHelper.NameBeforeEdit);
-        P->Owner()->SetEvents	(FHelper.NameDraw);
-        P->Owner()->tag			= (int)FHelper.FindObject(View(),S.name); VERIFY(P->Owner()->tag);
+        ButtonValue* B=0;
+        PHelper.CreateName_TI	(items, "Environment\\Name",					S.name,  		sizeof(S.name), FHelper.FindObject(View(),S.name));
         PHelper.CreateFloat		(items, "Environment\\Reverb\\In Gain",			&S.R_InGain, 	-96,	0, 		0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Reverb\\Mix",				&S.R_Mix,		-96,	0, 		0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Reverb\\Time",			&S.R_Time,		0.01f,	3000, 	0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Reverb\\HF Ratio",		&S.R_HFRatio,	0.001f,	0.999f, 0.01f,	3);
-        P=PHelper.CreateButton	(items, "Environment\\Reverb\\Set",				"Default,Identity");
-        P->SetEvents			(0,0,0,0,OnRevResetClick);
+        B=PHelper.CreateButton	(items, "Environment\\Reverb\\Set",				"Default,Identity");
+        B->OnBtnClickEvent 		= OnRevResetClick;
 
         PHelper.CreateFloat		(items, "Environment\\Echo\\Wet Dry",			&S.E_WetDry,	0,		100,	0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Echo\\Feedback",			&S.E_FeedBack,	0,		100,	0.01f,	3);
         PHelper.CreateFloat		(items, "Environment\\Echo\\Delay",				&S.E_Delay,		1,		2000,	0.01f,	3);
-        P=PHelper.CreateButton	(items, "Environment\\Echo\\Set",				"Default,Identity");
-        P->SetEvents			(0,0,0,0,OnEchoResetClick);
+        B=PHelper.CreateButton	(items, "Environment\\Echo\\Set",				"Default,Identity");
+        B->OnBtnClickEvent 		= OnEchoResetClick;
     }
     Ext.m_ItemProps->AssignItems		(items,true);
     Ext.m_ItemProps->SetModifiedEvent	(Modified);

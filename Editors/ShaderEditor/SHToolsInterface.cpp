@@ -21,7 +21,7 @@ void ISHTools::ViewAddItem(LPCSTR full_name)
 
 void ISHTools::ViewSetCurrentItem(LPCSTR full_name)
 {
-	FHelper.RestoreSelection(Ext.tvView,full_name);
+	FHelper.RestoreSelection(Ext.tvView,full_name,false);
 }
 //---------------------------------------------------------------------------
 

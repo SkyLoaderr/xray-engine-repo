@@ -87,6 +87,7 @@ public:
     }
 
     // name
+    void __fastcall		NameAfterEdit_TI(PropItem* sender, LPVOID edit_val);
     void __fastcall		NameAfterEdit	(PropItem* sender, LPVOID edit_val);
     void __fastcall		NameBeforeEdit	(PropItem* sender, LPVOID edit_val);
     void __fastcall		NameDraw		(PropValue* sender, LPVOID draw_val);
@@ -203,6 +204,15 @@ public:
     IC TextValue* 		CreateName		(PropItemVec& items, LPCSTR key, LPSTR val, int lim, ListItem* owner)  
     {   TextValue* V	= (TextValue*) 	CreateText	(items,key,val,lim);
         V->Owner()->OnAfterEditEvent   	= NameAfterEdit;
+        V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
+        V->Owner()->OnDrawTextEvent 	= NameDraw;
+        V->Owner()->tag					= (int)owner;
+	    if (V->Owner()->m_Flags.is(PropItem::flMixed)) V->Owner()->m_Flags.set(PropItem::flDisabled,TRUE);
+        return V;					
+    }
+    IC TextValue* 		CreateName_TI	(PropItemVec& items, LPCSTR key, LPSTR val, int lim, TElTreeItem* owner)  
+    {   TextValue* V	= (TextValue*) 	CreateText	(items,key,val,lim);
+        V->Owner()->OnAfterEditEvent   	= NameAfterEdit_TI;
         V->Owner()->OnBeforeEditEvent  	= NameBeforeEdit;
         V->Owner()->OnDrawTextEvent 	= NameDraw;
         V->Owner()->tag					= (int)owner;

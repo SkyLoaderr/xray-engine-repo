@@ -78,10 +78,10 @@ public:
     bool __fastcall 	KeyUp       		(WORD Key, TShiftState Shift){return false;}
     bool __fastcall 	KeyPress    		(WORD Key, TShiftState Shift){return false;}
 
-    bool				Pick				(){return false;}
+    bool				Pick				(TShiftState Shift){return false;}
 
     void				ShowProperties		();
-    void				UpdateProperties	(){;}
+    void				UpdateProperties	(bool bForced=false){;}
     void				RefreshProperties	(){;}
 
 	void				SetNumPosition		(CCustomObject* p1){;}

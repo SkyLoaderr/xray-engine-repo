@@ -68,6 +68,8 @@ public:
 	void __fastcall		StartDrag			(TObject *Sender, TDragObject *&DragObject);
     // popup menu
     void				ShowPPMenu			(TMxPopupMenu* M, TExtBtn* B=0);
+    // name edit
+	bool 				NameAfterEdit		(TElTreeItem* node, AnsiString value, AnsiString& N);
     // last selection
     TElTreeItem*		RestoreSelection	(TElTree* tv, TElTreeItem* node, bool bLeaveSel);
     TElTreeItem*		RestoreSelection	(TElTree* tv, AnsiString full_name, bool bLeaveSel);

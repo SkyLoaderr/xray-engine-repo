@@ -38,18 +38,18 @@ void __fastcall CSHEngineTools::FillMatrixProps(PropItemVec& items, LPCSTR pref,
     R_ASSERT(M);
 
 	PropValue* P=0;
-    PHelper.CreateToken(items,PHelper.PrepareKey(pref,"Mode"),&M->dwMode,mode_token,sizeof(M->dwMode));
-//    P->SetEvents(ModeOnAfterEdit);
+    PHelper.CreateToken(items,FHelper.PrepareKey(pref,"Mode"),&M->dwMode,mode_token,sizeof(M->dwMode));
+//.?    P->SetEvents(ModeOnAfterEdit);
 
     if (M->dwMode==CMatrix::modeTCM){
-	    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Scale enabled"),	&M->tcm_flags,CMatrix::tcmScale);
-		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scale U"),			&M->scaleU);
-		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scale V"),			&M->scaleV);
-	    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Rotate enabled"),	&M->tcm_flags,CMatrix::tcmRotate);
-		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Rotate"),			&M->rotate);
-	    PHelper.CreateFlag32(items,	PHelper.PrepareKey(pref,"Scroll enabled"),	&M->tcm_flags,CMatrix::tcmScroll);
-		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scroll U"),		&M->scrollU);
-		PHelper.CreateWave	(items,	PHelper.PrepareKey(pref,"Scroll V"),		&M->scrollV);
+	    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Scale enabled"),	&M->tcm_flags,CMatrix::tcmScale);
+		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scale U"),			&M->scaleU);
+		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scale V"),			&M->scaleV);
+	    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Rotate enabled"),	&M->tcm_flags,CMatrix::tcmRotate);
+		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Rotate"),			&M->rotate);
+	    PHelper.CreateFlag32(items,	FHelper.PrepareKey(pref,"Scroll enabled"),	&M->tcm_flags,CMatrix::tcmScroll);
+		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scroll U"),		&M->scrollU);
+		PHelper.CreateWave	(items,	FHelper.PrepareKey(pref,"Scroll V"),		&M->scrollV);
     }
 }
 //---------------------------------------------------------------------------
@@ -62,9 +62,9 @@ void __fastcall CSHEngineTools::MCOnDraw(PropValue* sender, LPVOID draw_val)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::MatrixOnAfterEdit(PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::MatrixOnAfterEdit(PropItem* sender, LPVOID edit_val)
 {
-	ListValue* V = (ListValue*)sender;
+	ListValue* V = dynamic_cast<ListValue*>(sender->GetFrontValue());  R_ASSERT(V);
 	LPSTR nm=(LPSTR)edit_val;	VERIFY(nm&&nm[0]);
 
 	if (*nm!='$'){
@@ -89,16 +89,16 @@ void __fastcall CSHEngineTools::FillConstProps(PropItemVec& items, LPCSTR pref, 
 {
 	CConstant* C = FindConstant(name,true);
     R_ASSERT(C);
-    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"R"),&C->_R);
-    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"G"),&C->_G);
-    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"B"),&C->_B);
-    PHelper.CreateWave(items,PHelper.PrepareKey(pref,"A"),&C->_A);
+    PHelper.CreateWave(items,FHelper.PrepareKey(pref,"R"),&C->_R);
+    PHelper.CreateWave(items,FHelper.PrepareKey(pref,"G"),&C->_G);
+    PHelper.CreateWave(items,FHelper.PrepareKey(pref,"B"),&C->_B);
+    PHelper.CreateWave(items,FHelper.PrepareKey(pref,"A"),&C->_A);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall CSHEngineTools::ConstOnAfterEdit(PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::ConstOnAfterEdit(PropItem* sender, LPVOID edit_val)
 {
-	ListValue* V = dynamic_cast<ListValue*>(sender); R_ASSERT(V);
+	ListValue* V = dynamic_cast<ListValue*>(sender->GetFrontValue());  R_ASSERT(V);
 	LPSTR nm=(LPSTR)edit_val;	VERIFY(nm&&nm[0]);
 
 	if (*nm!='$'){
@@ -118,9 +118,9 @@ void __fastcall CSHEngineTools::ConstOnAfterEdit(PropValue* sender, LPVOID edit_
     }
 }
 //------------------------------------------------------------------------------
-void __fastcall CSHEngineTools::NameOnAfterEdit(PropValue* sender, LPVOID edit_val)
+void __fastcall CSHEngineTools::NameOnAfterEdit(PropItem* sender, LPVOID edit_val)
 {
-	TextValue* V = (TextValue*)sender;
+	TextValue* V = dynamic_cast<TextValue*>(sender->GetFrontValue()); R_ASSERT(V);
     AnsiString* new_name = (AnsiString*)edit_val;
 	if (FHelper.NameAfterEdit(View()->Selected,V->GetValue(),*new_name))
     	RemoteRenameBlender(V->GetValue(),new_name->c_str());
@@ -142,8 +142,12 @@ void CSHEngineTools::UpdateProperties()
         char key[255];
 
         PHelper.CreateCaption(items,"Type",m_CurrentBlender->getComment());
+//. ListItem
+//.        PHelper.CreateName(items,"Name",desc->cName,sizeof(desc->cName),0);
         PropValue* V	= PHelper.CreateText(items,"Name",desc->cName,sizeof(desc->cName));
-        V->SetEvents	(NameOnAfterEdit,FHelper.NameBeforeEdit); V->Owner()->SetEvents(FHelper.NameDraw);
+        V->Owner()->OnAfterEditEvent 	= NameOnAfterEdit;
+        V->Owner()->OnBeforeEditEvent 	= PHelper.NameBeforeEdit;
+        V->Owner()->OnDrawTextEvent 	= PHelper.NameDraw;
 
         while (!data.eof()){
             int sz=0;
@@ -156,45 +160,45 @@ void CSHEngineTools::UpdateProperties()
             case xrPID_TOKEN:{
             	xrP_TOKEN* V=(xrP_TOKEN*)data.pointer();
             	sz=sizeof(xrP_TOKEN)+sizeof(xrP_TOKEN::Item)*V->Count;
-                PHelper.CreateToken3(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.pointer()) + sizeof(xrP_TOKEN)));
+                PHelper.CreateToken3(items,FHelper.PrepareKey(marker_text.c_str(),key),&V->IDselected,V->Count,(TokenValue3::Item*)(LPBYTE(data.pointer()) + sizeof(xrP_TOKEN)));
             }break;
             case xrPID_MATRIX:{
             	sz				= sizeof(string64);
                 LPSTR V			= (LPSTR)data.pointer();
-                PropValue* P	= PHelper.CreateListA(items,PHelper.PrepareKey(marker_text.c_str(),key),V,MCSTRING_COUNT,MCString);
-                AnsiString pref = AnsiString(PHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
+                PropValue* P	= PHelper.CreateListA(items,FHelper.PrepareKey(marker_text.c_str(),key),V,sz,MCSTRING_COUNT,MCString);
+                AnsiString pref = AnsiString(FHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
 				if (V&&V[0]&&(*V!='$')) FillMatrixProps(items,pref.c_str(),V);
-                P->SetEvents	(MatrixOnAfterEdit);
-                P->Owner()->SetEvents(MCOnDraw);
+                P->Owner()->OnAfterEditEvent = MatrixOnAfterEdit;
+                P->Owner()->OnDrawTextEvent  = MCOnDraw;
             }break;
             case xrPID_CONSTANT:{
             	sz=sizeof(string64);
             	sz				= sizeof(string64);
                 LPSTR V			= (LPSTR)data.pointer();
-                PropValue* P	= PHelper.CreateListA(items,PHelper.PrepareKey(marker_text.c_str(),key),V,MCSTRING_COUNT,MCString);
-                AnsiString pref = AnsiString(PHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
+                PropValue* P	= PHelper.CreateListA(items,FHelper.PrepareKey(marker_text.c_str(),key),V,sz,MCSTRING_COUNT,MCString);
+                AnsiString pref = AnsiString(FHelper.PrepareKey(marker_text.c_str(),"Custom "))+key;
 				if (V&&V[0]&&(*V!='$')) FillConstProps(items,pref.c_str(),V);
-                P->SetEvents	(ConstOnAfterEdit);
-                P->Owner()->SetEvents(MCOnDraw);
+                P->Owner()->OnAfterEditEvent = ConstOnAfterEdit;
+                P->Owner()->OnDrawTextEvent  = MCOnDraw;
             }break;
             case xrPID_TEXTURE:
             	sz=sizeof(string64);
-                PHelper.CreateTexture2(items,PHelper.PrepareKey(marker_text.c_str(),key),(LPSTR)data.pointer(),sz);
+                PHelper.CreateTexture2(items,FHelper.PrepareKey(marker_text.c_str(),key),(LPSTR)data.pointer(),sz);
             break;
             case xrPID_INTEGER:{
             	sz=sizeof(xrP_Integer);
                 xrP_Integer* V=(xrP_Integer*)data.pointer();
-                PHelper.CreateS32(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,1);
+                PHelper.CreateS32(items,FHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,1);
             }break;
             case xrPID_FLOAT:{
             	sz=sizeof(xrP_Float);
                 xrP_Float* V=(xrP_Float*)data.pointer();
-                PHelper.CreateFloat(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,0.01f,2);
+                PHelper.CreateFloat(items,FHelper.PrepareKey(marker_text.c_str(),key),&V->value,V->min,V->max,0.01f,2);
             }break;
             case xrPID_BOOL:{
             	sz=sizeof(xrP_BOOL);
                 xrP_BOOL* V=(xrP_BOOL*)data.pointer();
-                PHelper.CreateBOOL(items,PHelper.PrepareKey(marker_text.c_str(),key),&V->value);
+                PHelper.CreateBOOL(items,FHelper.PrepareKey(marker_text.c_str(),key),&V->value);
             }break;
             default: THROW2("UNKNOWN xrPID_????");
             }
