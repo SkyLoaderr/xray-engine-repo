@@ -1,17 +1,19 @@
-#ifndef ImageThumbnailH
-#define ImageThumbnailH
+#ifndef EThumbnailH
+#define EThumbnailH
 
 #include "ETextureParams.h"
 #include "PropertiesListHelper.h"
+#include "MXCtrls.hpp"
 //----------------------------------------------------
 
 //----------------------------------------------------
-class EImageThumbnail{   
+class EThumbnail{   
 public:
 	enum THMType{
     	EITUndef	= -1,
     	EITObject	= 0,
         EITTexture	= 1,
+        EITSound	= 2,
         force_dword = (-1)
     };
 private:
@@ -25,6 +27,8 @@ public:
 					EImageThumbnail	(LPCSTR src_name, THMType type, bool bLoad=true);
 	virtual			~EImageThumbnail();
 
+    LPCSTR			Name			(){return m_Name.c_str();}
+    
     IC bool			IsObject		(){return m_Type==EITObject;}
     IC bool			IsTexture		(){return m_Type==EITTexture;}
     // Object routines
@@ -37,7 +41,7 @@ public:
     IC u32			_Alpha			(){R_ASSERT(IsTexture()); return m_TexParams.HasAlphaChannel();}
 	void 			CreateFromData	(u32* p, u32 w, u32 h);
 	void 			Draw			(TCanvas* pCanvas, const TRect& R, bool bUseAlpha=false);
-	void 			Draw			(TPaintBox* pbox, bool bUseAlpha=false);
+	void 			Draw			(TMxPanel* panel, bool bUseAlpha=false);
     void			VFlip			();
     // thumbnail public routines
     IC STextureParams& _Format		(){R_ASSERT(Valid());return m_TexParams;}

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "ImageThumbnail.h"
+#include "EThumbnail.h"
 #include "ImageManager.h"
 #include "xrImage_Resampler.h"
 
@@ -189,13 +189,6 @@ bool EImageThumbnail::Load(LPCSTR src_name, LPCSTR path)
     if (!FS.exist(fn.c_str())) return false;
     
     IReader* F 	= FS.r_open(fn.c_str());
-/*    string32 id;
-    F->r(&id,8);
-    if (strncmp(id,THM_SIGN,8)==0){
-    	FS.r_close(F);
-		F = xr_new<CCompressedReader>(fn.c_str(),THM_SIGN);
-    }
-*/    
     u32 version = 0;
 
     R_ASSERT(F->r_chunk(THM_CHUNK_VERSION,&version));
@@ -316,7 +309,7 @@ void EImageThumbnail::Draw(TCanvas* pCanvas, const TRect& R, bool bUseAlpha)
     }
 }
 
-void EImageThumbnail::Draw(TPaintBox* pbox, bool bUseAlpha)
+void EImageThumbnail::Draw(TMxPanel* panel, bool bUseAlpha)
 {
 	if (Valid()){
         if (IsTexture()){
@@ -325,20 +318,20 @@ void EImageThumbnail::Draw(TPaintBox* pbox, bool bUseAlpha)
             float w, h;
             w = _Width();
             h = _Height();
-            if (w!=h)	pbox->Canvas->FillRect(pbox->BoundsRect);
-            if (w>h){   r.right = pbox->Width-1; r.bottom = h/w*pbox->Height-1;
-            }else{      r.right = w/h*pbox->Width-1; r.bottom = pbox->Height-1;}
+            if (w!=h)	panel->Canvas->FillRect(panel->BoundsRect);
+            if (w>h){   r.right = panel->Width-1; r.bottom = h/w*panel->Height-1;
+            }else{      r.right = w/h*panel->Width-1; r.bottom = panel->Height-1;}
     //		HDC hdc 	= GetDC	(panel->Handle);
     //		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
     //		ReleaseDC	(panel->Handle,hdc);
-            DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
+            DrawThumbnail(panel->Canvas,r,m_Pixels,bUseAlpha);
         }else{
             TRect r;	r.left = 2; r.top = 2;
-            r.right 	= pbox->Width-1; r.bottom = pbox->Height-1;
+            r.right 	= panel->Width-1; r.bottom = panel->Height-1;
     //		HDC hdc 	= GetDC	(panel->Handle);
     //		DrawThumbnail(hdc,m_Pixels,r.left,r.top,r.right-r.left,r.bottom-r.top,THUMB_WIDTH,THUMB_HEIGHT);
     //		ReleaseDC	(panel->Handle,hdc);
-            DrawThumbnail(pbox->Canvas,r,m_Pixels,bUseAlpha);
+            DrawThumbnail(panel->Canvas,r,m_Pixels,bUseAlpha);
         }
     }
 }
