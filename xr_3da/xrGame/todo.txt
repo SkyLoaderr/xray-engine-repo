@@ -1,7 +1,8 @@
+	+ TODO: ***Sheduler***
 	+ TODO: Adaptive Texture Sorter
 	+ TODO: Weapons as 'native' objects
 	+ TODO: NET: Can't connect
-	+ TODO: Level-unload
+	+ TODO: Level-unload / reload
 	+ TODO: ltx
 	+ TODO: NET: Server Disconnect
 	+ TODO: NET: Client Disconnect
@@ -13,6 +14,7 @@
 	. TODO: NET: Demo Record/Replay
 	+ BUG:  Sliding anims
 	+ BUG:  Lock after jump
+	+ BUG:  Shader still referenced
 	
 	. TODO: Detail texturing
 
