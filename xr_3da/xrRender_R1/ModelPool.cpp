@@ -190,7 +190,7 @@ IVisual* CModelPool::Create(const char* name)
 
 	// 0. Search POOL
 	POOL_IT	it			=	Pool.find	(low_name);
-	if (it!=map_POOL.end())
+	if (it!=Pool.end())
 	{
 		// 1. Instance found
 		Model				=	it->second;

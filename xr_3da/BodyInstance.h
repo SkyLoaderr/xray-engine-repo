@@ -261,13 +261,7 @@ private:
 	void									IBoneInstances_Create	();
 	void									IBoneInstances_Destroy	();
 
-	IC void									IBlend_Startup	()
-	{
-		CBlend B; ZeroMemory(&B,sizeof(B));
-		B.blend = CBlend::eFREE_SLOT;
-		for (int i=0; i<MAX_BLENDED_POOL; i++)
-			blend_pool.push_back(B);
-	}
+	void									IBlend_Startup	();
 	IC CBlend*								IBlend_Create	()
 	{
 		Update();
@@ -341,6 +335,7 @@ public:
 	virtual void				Copy			(IVisual *pFrom);
 	virtual void				Load			(const char* N, IReader *data, u32 dwFlags);
 	virtual void				Release			();
+	virtual void				Spawn			();
 	virtual						~CKinematics	();
 };
 IC CKinematics* PKinematics		(IVisual* V) { return dynamic_cast<CKinematics*>(V); }
