@@ -9,6 +9,10 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Ecolog_general</team>
+		
+		<class>ecolog_general</class>
+		<community>ecolog</community>
+		
 		<rank>80</rank>
 		<reputation>50</reputation>
 
@@ -27,6 +31,11 @@
 		<bio>Об этом сталкере ничего не известно.</bio>
 
 		<team>Ecolog_guard_general</team>
+
+		<class>Ecolog_guard_general</class>
+		<community>ecolog</community>
+
+		
 		<rank>80</rank>
 		<reputation>50</reputation>
 
