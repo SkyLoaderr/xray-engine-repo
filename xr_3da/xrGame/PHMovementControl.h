@@ -33,7 +33,7 @@ public:
 	enum CharacterType
 	{
 		actor,
-		ai_stalker
+		ai
 	};
 private:
 	void				CheckEnvironment	(const Fvector& V);

@@ -9,7 +9,7 @@
 
 CPhysicsElement*			P_create_Element		()
 {
-	CPHElement* element=xr_new<CPHElement>	(ph_world->GetSpace());
+	CPHElement* element=xr_new<CPHElement>	();
 	return element;
 }
 

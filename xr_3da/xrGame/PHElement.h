@@ -12,54 +12,57 @@ typedef		void	__stdcall	ContactCallbackFun		(CDB::TRI* T,dContactGeom* c);
 void				__stdcall	ContactShotMark			(CDB::TRI* T,dContactGeom* c);
 typedef		void	__stdcall	PushOutCallbackFun		(bool& do_colide,dContact& c);
 
+DEFINE_LIST(CODEGeom*,GEOM_STORAGE,GEOM_I)
+
 class CPHElement	:  public CPhysicsElement 
 {
-	xr_vector <CODEGeom*>	m_geoms;
-	float					m_start_time;
-	float					m_volume;
-	Fvector					m_mass_center;
-	u32						ul_material;
-	dMass					m_mass;
-	dSpaceID				m_space;
-	dBodyID					m_body;
-	dGeomID					m_group;
-	dReal					m_l_scale;
-	dReal					m_w_scale;
-	dReal					m_disw_param;
-	dReal					m_disl_param;
-	CPhysicsRefObject*		m_phys_ref_object;
-	CPHElement				*m_parent_element;
-	CPHShell				*m_shell;
-	CPHInterpolation		m_body_interpolation;
+	GEOM_STORAGE			m_geoms;					//e
+	float					m_start_time;				//uu ->to shell ??
+	float					m_volume;					//e ??
+	Fvector					m_mass_center;				//e ??
+	u32						ul_material;				//e ??
+	dMass					m_mass;						//e ??
+	dBodyID					m_body;						//e
+	dSpaceID				m_group;					//e
+	dReal					m_l_scale;					// ->to shell ??
+	dReal					m_w_scale;					// ->to shell ??
+	dReal					m_disw_param;				// ->to shell ??
+	dReal					m_disl_param;				// ->to shell ??
+	CPhysicsRefObject*		m_phys_ref_object;			//->to shell ??
+	CPHElement				*m_parent_element;			//bool !
+	CPHShell				*m_shell;					//e
+	CPHInterpolation		m_body_interpolation;		//e
 
 	/////disable///////////////////////
 	//dVector3 mean_w;
 	//dVector3 mean_v;
-	dReal m_w_limit ;
-	dReal m_l_limit ;
+	dReal						m_w_limit ;				//->to shell ??
+	dReal						m_l_limit ;				//->to shell ??
 
-	dVector3					m_safe_position;
-	dVector3					m_safe_velocity;
-	dVector3					previous_p;
-	dMatrix3					previous_r;
-	dVector3					previous_p1;
-	dMatrix3					previous_r1;
+	dVector3					m_safe_position;		//e
+	dVector3					m_safe_velocity;		//e
+	dVector3					previous_p;				//e
+	dMatrix3					previous_r;				//e//to angles
+	dVector3					previous_p1;			//e
+	dMatrix3					previous_r1;			//e//to angles
 	//dVector3 previous_f;
 	//dVector3 previous_t;
-	dReal						previous_dev;
-	dReal						previous_v;
-	UINT						dis_count_f;
-	UINT						dis_count_f1;
-	dReal						k_w;
-	dReal						k_l;//1.8f;
+	dReal						previous_dev;			//e
+	dReal						previous_v;				//e
+	UINT						dis_count_f;			//e
+	UINT						dis_count_f1;			//e
+	dReal						k_w;					//->to shell ??
+	dReal						k_l;//1.8f;				//->to shell ??
 
-	bool						b_contacts_saved;
-	dJointGroupID				m_saved_contacts;
-	ContactCallbackFun*			contact_callback;
-	ObjectContactCallbackFun*	object_contact_callback;
-	ObjectContactCallbackFun*	temp_for_push_out;
-	u32							push_untill;
-	bool						bUpdate;
+	bool						b_contacts_saved;		//e
+	dJointGroupID				m_saved_contacts;		//e
+	
+	ContactCallbackFun*			contact_callback;		//->to shell ??
+	ObjectContactCallbackFun*	object_contact_callback;//->to shell ??
+	ObjectContactCallbackFun*	temp_for_push_out;		//->to shell ??
+
+	u32							push_untill;			//->to shell ??
+	bool						bUpdate;				//->to shell ??
 public:
 
 	/////////////////////////////////////////////////////////////////////////////
@@ -124,7 +127,7 @@ public:
 	void			SetPhObjectInGeomData					(CPHObject* O);
 
 	
-	void			build									(dSpaceID space);
+	void			build									();
 	void			destroy									();
 	Fvector			get_mc_data								();
 	Fvector			get_mc_geoms							();
@@ -173,7 +176,7 @@ public:
 	};
 	virtual void			Update					();
 
-	CPHElement(dSpaceID a_space)
+	CPHElement()
 	{ 
 		m_w_limit = default_w_limit;
 		m_l_limit = default_l_limit;
@@ -185,7 +188,6 @@ public:
 		contact_callback=ContactShotMark;
 		object_contact_callback=NULL;
 		temp_for_push_out=NULL;
-		m_space=a_space;
 		m_body=NULL;
 		bActive=false;
 		bActivating=false;

@@ -25,7 +25,7 @@ class CODEGeom
 protected:
 	dGeomID m_geom_transform;
 	u16		m_bone_id;
-private:
+protected:
 	IC dGeomID geom()
 	{
 		return dGeomTransformGetGeom(m_geom_transform);
@@ -33,17 +33,18 @@ private:
 
 public:
 	//get
-	virtual		float		volume				()															=0;
-	virtual		void		get_mass			(dMass& m)													=0;		//unit dencity mass;
-				void		get_mass			(dMass& m,const Fvector& ref_point, float density)			 ;
-				void		get_mass			(dMass& m,const Fvector& ref_point)							 ;
-				void		add_self_mass		(dMass& m,const Fvector& ref_point)							 ;
-				void		add_self_mass		(dMass& m,const Fvector& ref_point, float density)			 ;
-				void		get_local_center_bt	(Fvector& center)											 ;		//for built
-				void		get_global_center_bt(Fvector& center)											 ;		//for built
-				void		get_local_form_bt	(Fmatrix& form)												 ;	    //for built
-				void		get_global_form_bt	(Fmatrix& form)												 ;		//for built
-	virtual		float		radius				()															=0;
+	virtual		float		volume				()																	=0;
+	virtual		void		get_mass			(dMass& m)															=0;		//unit dencity mass;
+				void		get_mass			(dMass& m,const Fvector& ref_point, float density)					 ;
+				void		get_mass			(dMass& m,const Fvector& ref_point)									 ;
+				void		add_self_mass		(dMass& m,const Fvector& ref_point)									 ;
+				void		add_self_mass		(dMass& m,const Fvector& ref_point, float density)					 ;
+				void		get_local_center_bt	(Fvector& center)													 ;		//for built
+				void		get_global_center_bt(Fvector& center)													 ;		//for built
+				void		get_local_form_bt	(Fmatrix& form)														 ;	    //for built
+				void		get_global_form_bt	(Fmatrix& form)														 ;		//for built
+	virtual		float		radius				()																	=0;
+	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) =0;
 	IC			dGeomID		geometry_transform   ()
 							{
 								return m_geom_transform;
@@ -52,65 +53,68 @@ public:
 							{
 								if(m_geom_transform) return geom() ? geom() : m_geom_transform;
 							}
-virtual const	Fvector&	local_center		()															=0;
-virtual			void		get_local_form		(Fmatrix& form)												=0;
+virtual const	Fvector&	local_center		()																	=0;
+virtual			void		get_local_form		(Fmatrix& form)														=0;
 	//set
 	//element part
-				void		set_body			(dBodyID body)												  ;
-				void		add_to_space		(dSpaceID space)											  ;
-				void		set_material		(u32 ul_material)											  ;
-				void		set_contact_cb		(ContactCallbackFun* ccb)									  ;
-				void		set_obj_contact_cb	(ObjectContactCallbackFun* occb)							  ;
-				void		set_ref_object		(CPhysicsRefObject* ro)										  ;
-				void		set_ph_object		(CPHObject* o)												  ;
+				void		set_body			(dBodyID body)														;
+				void		add_to_space		(dSpaceID space)													;
+				void		set_material		(u32 ul_material)													;
+				void		set_contact_cb		(ContactCallbackFun* ccb)											;
+				void		set_obj_contact_cb	(ObjectContactCallbackFun* occb)									;
+				void		set_ref_object		(CPhysicsRefObject* ro)												;
+				void		set_ph_object		(CPHObject* o)														;
 	//build/destroy
 protected:
 public:
-	virtual		void		build				(const Fvector& ref_point)			=0;
-				void		destroy				()									;
-							CODEGeom			()									;
-	virtual					~ CODEGeom			()									;
+	virtual		void		build				(const Fvector& ref_point)											=0;
+				void		destroy				()																	;
+							CODEGeom			()																	;
+	virtual					~ CODEGeom			()																	;
 };
 
 class CBoxGeom : public CODEGeom
 {
-	typedef CODEGeom inherited														;
+	typedef CODEGeom inherited																						;
 	Fobb	m_box;
 public:
-							CBoxGeom			(const Fobb& box)					;
-	virtual		float		volume				()									;
-	virtual		float		radius				()									;
-	virtual		void		get_mass			(dMass& m)							;//unit dencity mass;
-virtual const	Fvector&	local_center		()									;
-	virtual		void		get_local_form		(Fmatrix& form)						;
-	virtual		void		build				(const Fvector& ref_point)			;
+							CBoxGeom			(const Fobb& box)													;
+	virtual		float		volume				()																	;
+	virtual		float		radius				()																	;
+	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) ;
+	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
+virtual const	Fvector&	local_center		()																	;
+	virtual		void		get_local_form		(Fmatrix& form)														;
+	virtual		void		build				(const Fvector& ref_point)											;
 };
 
 class CSphereGeom : public CODEGeom
 {
-	typedef CODEGeom inherited														;
+	typedef CODEGeom inherited																						;
 	Fsphere	m_sphere;
 public:
-							CSphereGeom			(const Fsphere& sphere)				;
-	virtual		float		volume				()									;
-	virtual		float		radius				()									;
-	virtual		void		get_mass			(dMass& m)							;//unit dencity mass;
-virtual const	Fvector&	local_center		()									;
-	virtual		void		get_local_form		(Fmatrix& form)						;
-	virtual		void		build				(const Fvector& ref_point);
+							CSphereGeom			(const Fsphere& sphere)												;
+	virtual		float		volume				()																	;
+	virtual		float		radius				()																	;
+	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) ;
+	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
+virtual const	Fvector&	local_center		()																	;
+	virtual		void		get_local_form		(Fmatrix& form)														;
+	virtual		void		build				(const Fvector& ref_point)											;
 };
 
 class CCylinderGeom : public CODEGeom
 {
-	typedef CODEGeom inherited														;
+	typedef CODEGeom inherited																						;
 	Fcylinder m_cylinder;
 public:
-							CCylinderGeom		(const Fcylinder& cyl)				;
-	virtual		float		volume				()									;
-	virtual		float		radius				()									;
-virtual const	Fvector&	local_center		()									;
-	virtual		void		get_mass			(dMass& m)							;//unit dencity mass;
-	virtual		void		get_local_form		(Fmatrix& form)						;
-	virtual		void		build				(const Fvector& ref_point)			;
+							CCylinderGeom		(const Fcylinder& cyl)												;
+	virtual		float		volume				()																	;
+	virtual		float		radius				()																	;
+	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) ;
+virtual const	Fvector&	local_center		()																	;
+	virtual		void		get_mass			(dMass& m)															;//unit dencity mass;
+	virtual		void		get_local_form		(Fmatrix& form)														;
+	virtual		void		build				(const Fvector& ref_point)											;
 };
 #endif //GEOMETRY_H

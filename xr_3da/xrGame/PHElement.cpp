@@ -65,7 +65,7 @@ void CPHElement::add_Cylinder	(const Fcylinder& V)
 	m_geoms.push_back(dynamic_cast<CODEGeom*>(xr_new<CCylinderGeom>(V)));
 }
 
-void CPHElement::			build	(dSpaceID space){
+void CPHElement::			build	(){
 
 	m_body=dBodyCreate(phWorld);
 	m_saved_contacts=dJointGroupCreate (0);
@@ -76,14 +76,14 @@ void CPHElement::			build	(dSpaceID space){
 
 	dBodySetMass(m_body,&m_mass);
 
-	if(m_geoms.size()>1)m_group=dCreateGeomGroup(0);
+	if(m_geoms.size()>1)m_group=dSimpleSpaceCreate(0);
 
 	m_inverse_local_transform.identity();
 	m_inverse_local_transform.c.set(m_mass_center);
 	m_inverse_local_transform.invert();
 	dBodySetPosition(m_body,m_mass_center.x,m_mass_center.y,m_mass_center.z);
 	///////////////////////////////////////////////////////////////////////////////////////
-	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;i_geom++) build_Geom(**i_geom);
 	
 }
@@ -94,7 +94,7 @@ void CPHElement::RunSimulation()
 		push_untill+=Device.dwTimeGlobal;
 
 	if(m_group)
-		dSpaceAdd(m_shell->GetSpace(),m_group);
+		dSpaceAdd(m_shell->GetSpace(),(dGeomID)m_group);
 	else
 		(*m_geoms.begin())->add_to_space(m_shell->GetSpace());
 	dBodyEnable(m_body);
@@ -103,7 +103,7 @@ void CPHElement::RunSimulation()
 void CPHElement::destroy	()
 {
 	dJointGroupDestroy(m_saved_contacts);
-	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 
 
 	for(;i!=e;i++)
@@ -128,7 +128,7 @@ Fvector CPHElement::			get_mc_data	(){
 	float pv;
 	m_mass_center.set(0,0,0);
 	m_volume=0.f;
-	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;i_geom++)
 	{
 		pv=(*i_geom)->volume();
@@ -143,7 +143,7 @@ Fvector CPHElement::			get_mc_data	(){
 void CPHElement::			calc_volume_data	()
 {
 	m_volume=0.f;
-	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;i_geom++)
 	{
 		m_volume+=(*i_geom)->volume();
@@ -179,7 +179,7 @@ void CPHElement::calculate_it_data(const Fvector& mc,float mas)
 void CPHElement::calculate_it_data_use_density(const Fvector& mc,float density)
 {
 	dMassSetZero(&m_mass);
-	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;i_geom++)(*i_geom)->add_self_mass(m_mass,mc,density);
 }
 
@@ -214,7 +214,7 @@ void		CPHElement::	setMassMC		(float M,const Fvector& mass_center)
 
 void		CPHElement::Start()
 {
-	build(m_space);
+	build();
 	RunSimulation();
 }
 
@@ -250,7 +250,7 @@ void CPHElement::SetTransform(const Fmatrix &m0){
 CPHElement::~CPHElement	()
 {
 	Deactivate();
-	xr_vector<CODEGeom*>::iterator i_geom=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i_geom=m_geoms.begin(),e=m_geoms.end();
 	for(;i_geom!=e;i_geom++)xr_delete(*i_geom);
 	m_geoms.clear();
 }
@@ -646,7 +646,7 @@ void CPHElement::Disable(){
 	if(m_group)
 		SaveContacts(ph_world->GetMeshGeom(),m_group,m_saved_contacts);
 	else 
-		SaveContacts(ph_world->GetMeshGeom(),m_geoms[0]->geometry_transform(),m_saved_contacts);
+		SaveContacts(ph_world->GetMeshGeom(),(*m_geoms.begin())->geometry_transform(),m_saved_contacts);
 
 	dBodyDisable(m_body);
 }
@@ -773,7 +773,7 @@ void CPHElement::CallBack(CBoneInstance* B){
 
 		if(!m_parent_element) 
 			m_shell->CreateSpace();
-		build(m_space);
+		build();
 
 
 		Fmatrix global_transform;
@@ -924,7 +924,7 @@ void CPHElement::set_PhysicsRefObject(CPhysicsRefObject* ref_object)
 {
 	m_phys_ref_object=ref_object;
 	if(!bActive) return;
-	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++) (*i)->set_ref_object(ref_object);
 }
 
@@ -933,7 +933,7 @@ void CPHElement::set_ObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	object_contact_callback= callback;
 	if(!bActive)return;
-	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++) (*i)->set_obj_contact_cb(callback);
 }
 
@@ -942,14 +942,14 @@ void CPHElement::set_ContactCallback(ContactCallbackFun* callback)
 	contact_callback=callback;
 	push_untill=0;
 	if(!bActive)return;
-	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++) (*i)->set_contact_cb(callback);
 }
 
 void CPHElement::SetPhObjectInGeomData(CPHObject* O)
 {
 	if(!bActive) return;
-	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++) (*i)->set_ph_object(O);
 }
 
@@ -959,7 +959,7 @@ void CPHElement::SetMaterial(u32 m)
 {
 	ul_material=m;
 	if(!bActive) return;
-	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++) (*i)->set_material(m);
 }
 
@@ -1170,87 +1170,17 @@ void CPHElement::set_DisableParams(float dis_l/* =default_disl */,float dis_w/* 
 }
 
 
-void GetBoxExtensions(dGeomID box,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
-{
-R_ASSERT2(dGeomGetClass(box)==dBoxClass,"is not a box");
-dVector3 length;
-dGeomBoxGetLengths(box,length);
-dReal dif=dDOT(dGeomGetPosition(box),axis)-center_prg;
-const dReal* rot=dGeomGetRotation(box);
-dReal ful_ext=dFabs(dDOT14(axis,rot+0))*length[0]
-			 +dFabs(dDOT14(axis,rot+1))*length[1]
-			 +dFabs(dDOT14(axis,rot+2))*length[2];
- ful_ext/=2.f;
-*lo_ext=-ful_ext+dif;
-*hi_ext=ful_ext+dif;
-}
 
-void GetCylinderExtensions(dGeomID cyl,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
-{
-	R_ASSERT2(dGeomGetClass(cyl)==dCylinderClassUser,"is not a cylinder");
-	dReal radius,length;
-	dGeomCylinderGetParams(cyl,&radius,&length);
-	dReal dif=dDOT(dGeomGetPosition(cyl),axis)-center_prg;
-	const dReal* rot=dGeomGetRotation(cyl);
-
-	dReal _cos=dFabs(dDOT14(axis,rot+1));
-	dReal cos1=dDOT14(axis,rot+0);
-	dReal cos3=dDOT14(axis,rot+2);
-	dReal _sin=_sqrt(cos1*cos1+cos3*cos3);
-	length/=2.f;
-	dReal ful_ext=_cos*length+_sin*radius;
-	*lo_ext=-ful_ext+dif;
-	*hi_ext=ful_ext+dif;
-}
-
-void GetSphereExtensions(dGeomID sphere,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
-{
-	R_ASSERT2(dGeomGetClass(sphere)==dSphereClass,"is not a sphere");
-	dReal radius=dGeomSphereGetRadius(sphere);
-	dReal dif=dDOT(dGeomGetPosition(sphere),axis)-center_prg;
-	*lo_ext=-radius+dif;
-	*hi_ext=radius+dif;
-}
-
-void GetTransformedGeometryExtensions(dGeomID geom_transform,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
-{
-	R_ASSERT2(dGeomGetClass(geom_transform)==dGeomTransformClass,"is not a geom transform");
-	dGeomID obj=dGeomTransformGetGeom(geom_transform);
-
-	const dReal* rot=dGeomGetRotation(geom_transform);
-	const dReal* pos=dGeomGetPosition(geom_transform);
-	dVector3 local_axis,local_pos;
-
-	dMULTIPLY1_331(local_axis,rot,axis);
-	dMULTIPLY1_331(local_pos,rot,pos);
-	dReal local_center_prg=center_prg-dDOT(local_pos,local_axis);
-
-	int geom_class_id=dGeomGetClass(obj);
-
-	if(geom_class_id==dCylinderClassUser)	
-	{
-		GetCylinderExtensions	(obj,local_axis,local_center_prg,lo_ext,hi_ext);
-		return;
-	}
-
-	switch(geom_class_id) 
-	{
-	case dBoxClass:				GetBoxExtensions		(obj,local_axis,local_center_prg,lo_ext,hi_ext);
-		break;
-	case dSphereClass:			GetSphereExtensions		(obj,local_axis,local_center_prg,lo_ext,hi_ext);
-		break;
-	default: NODEFAULT;
-	}
-}
 
 void CPHElement::get_Extensions(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
 {
 	lo_ext=dInfinity;hi_ext=-dInfinity;
-	xr_vector<CODEGeom*>::iterator i=m_geoms.begin(),e=m_geoms.end();
+	GEOM_I i=m_geoms.begin(),e=m_geoms.end();
 	for(;i!=e;i++)
 	{
 		float temp_lo_ext,temp_hi_ext;
-		GetTransformedGeometryExtensions((*i)->geometry_transform(),(float*)&axis,center_prg,&temp_lo_ext,&temp_hi_ext);
+		//GetTransformedGeometryExtensions((*i)->geometry_transform(),(float*)&axis,center_prg,&temp_lo_ext,&temp_hi_ext);
+		(*i)->get_extensions_bt(axis,center_prg,temp_lo_ext,temp_hi_ext);
 		if(lo_ext>temp_lo_ext)lo_ext=temp_lo_ext;
 		if(hi_ext<temp_hi_ext)hi_ext=temp_hi_ext;
 	}

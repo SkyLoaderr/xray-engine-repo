@@ -82,7 +82,6 @@ CPHCapture::CPHCapture	(CPHCharacter   *a_character, CGameObject	*a_taget_object
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 CPHCapture::CPHCapture(CPHCharacter   *a_character,CGameObject	*a_taget_object,u16 a_taget_element)
 {
-#pragma todo("-- OLES to SLIPCH: a_taget_element should be u16, not int. BTW, -1 = BI_NONE :)")
 
 	CPHObject::Activate();
 	m_joint					=NULL;	

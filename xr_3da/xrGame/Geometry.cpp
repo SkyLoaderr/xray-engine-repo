@@ -3,6 +3,93 @@
 #include "PHDynamicData.h"
 #include "ExtendedGeom.h"
 #include "dcylinder//dCylinder.h"
+//global
+void GetBoxExtensions(dGeomID box,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+	R_ASSERT2(dGeomGetClass(box)==dBoxClass,"is not a box");
+	dVector3 length;
+	dGeomBoxGetLengths(box,length);
+	dReal dif=dDOT(dGeomGetPosition(box),axis)-center_prg;
+	const dReal* rot=dGeomGetRotation(box);
+	dReal ful_ext=dFabs(dDOT14(axis,rot+0))*length[0]
+	+dFabs(dDOT14(axis,rot+1))*length[1]
+	+dFabs(dDOT14(axis,rot+2))*length[2];
+	ful_ext/=2.f;
+	*lo_ext=-ful_ext+dif;
+	*hi_ext=ful_ext+dif;
+}
+
+void GetCylinderExtensions(dGeomID cyl,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+	R_ASSERT2(dGeomGetClass(cyl)==dCylinderClassUser,"is not a cylinder");
+	dReal radius,length;
+	dGeomCylinderGetParams(cyl,&radius,&length);
+	dReal dif=dDOT(dGeomGetPosition(cyl),axis)-center_prg;
+	const dReal* rot=dGeomGetRotation(cyl);
+
+	dReal _cos=dFabs(dDOT14(axis,rot+1));
+	dReal cos1=dDOT14(axis,rot+0);
+	dReal cos3=dDOT14(axis,rot+2);
+	dReal _sin=_sqrt(cos1*cos1+cos3*cos3);
+	length/=2.f;
+	dReal ful_ext=_cos*length+_sin*radius;
+	*lo_ext=-ful_ext+dif;
+	*hi_ext=ful_ext+dif;
+}
+
+void GetSphereExtensions(dGeomID sphere,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+	R_ASSERT2(dGeomGetClass(sphere)==dSphereClass,"is not a sphere");
+	dReal radius=dGeomSphereGetRadius(sphere);
+	dReal dif=dDOT(dGeomGetPosition(sphere),axis)-center_prg;
+	*lo_ext=-radius+dif;
+	*hi_ext=radius+dif;
+}
+
+void TransformedGeometryExtensionLocalParams(dGeomID geom_transform,const dReal* axis,float center_prg,dReal* local_axis,dReal& local_center_prg)
+{
+	R_ASSERT2(dGeomGetClass(geom_transform)==dGeomTransformClass,"is not a geom transform");
+	const dReal* rot=dGeomGetRotation(geom_transform);
+	const dReal* pos=dGeomGetPosition(geom_transform);
+	dVector3	local_pos;
+
+	dMULTIPLY1_331(local_axis,rot,axis);
+	dMULTIPLY1_331(local_pos,rot,pos);
+	local_center_prg=center_prg-dDOT(local_pos,local_axis);
+}
+void GetTransformedGeometryExtensions(dGeomID geom_transform,const dReal* axis,float center_prg,dReal* lo_ext,dReal* hi_ext)
+{
+	R_ASSERT2(dGeomGetClass(geom_transform)==dGeomTransformClass,"is not a geom transform");
+	dGeomID obj=dGeomTransformGetGeom(geom_transform);
+
+	const dReal* rot=dGeomGetRotation(geom_transform);
+	const dReal* pos=dGeomGetPosition(geom_transform);
+	dVector3 local_axis,local_pos;
+
+	dMULTIPLY1_331(local_axis,rot,axis);
+	dMULTIPLY1_331(local_pos,rot,pos);
+	dReal local_center_prg=center_prg-dDOT(local_pos,local_axis);
+
+	int geom_class_id=dGeomGetClass(obj);
+
+	if(geom_class_id==dCylinderClassUser)	
+	{
+		GetCylinderExtensions	(obj,local_axis,local_center_prg,lo_ext,hi_ext);
+		return;
+	}
+
+	switch(geom_class_id) 
+	{
+	case dBoxClass:				GetBoxExtensions		(obj,local_axis,local_center_prg,lo_ext,hi_ext);
+		break;
+	case dSphereClass:			GetSphereExtensions		(obj,local_axis,local_center_prg,lo_ext,hi_ext);
+		break;
+	default: NODEFAULT;
+	}
+}
+
+
+
 CODEGeom::CODEGeom()
 {
 	m_geom_transform=NULL;
@@ -195,6 +282,17 @@ float CBoxGeom::radius()
 {
 	return m_box.m_halfsize.x;
 }
+void CBoxGeom::get_extensions_bt(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
+{
+	if(geom())
+	{
+	dVector3 local_axis;
+	float	 local_center_prg;
+	TransformedGeometryExtensionLocalParams(m_geom_transform,(const float*)(&axis),center_prg,local_axis,local_center_prg);
+	GetBoxExtensions(geom(),local_axis,local_center_prg,&lo_ext,&hi_ext);
+	}
+	else GetBoxExtensions(geom(),(const float*)&axis,center_prg,&lo_ext,&hi_ext);
+}
 const Fvector& CBoxGeom::local_center()
 {
 	return m_box.m_translate;
@@ -252,6 +350,17 @@ float CSphereGeom::radius()
 	return m_sphere.R;
 }
 
+void CSphereGeom::get_extensions_bt(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
+{
+	if(geom())
+	{
+		dVector3 local_axis;
+		float	 local_center_prg;
+		TransformedGeometryExtensionLocalParams(m_geom_transform,(const float*)(&axis),center_prg,local_axis,local_center_prg);
+		GetSphereExtensions(geom(),local_axis,local_center_prg,&lo_ext,&hi_ext);
+	}
+	else GetSphereExtensions(geom(),(const float*)&axis,center_prg,&lo_ext,&hi_ext);
+}
 const Fvector& CSphereGeom::local_center()
 {
 	return m_sphere.P;
@@ -304,6 +413,17 @@ float CCylinderGeom::radius()
 	return m_cylinder.m_radius;
 }
 
+void CCylinderGeom::get_extensions_bt(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext)
+{
+	if(geom())
+	{
+		dVector3 local_axis;
+		float	 local_center_prg;
+		TransformedGeometryExtensionLocalParams(m_geom_transform,(const float*)(&axis),center_prg,local_axis,local_center_prg);
+		GetCylinderExtensions(geom(),local_axis,local_center_prg,&lo_ext,&hi_ext);
+	}
+	else GetCylinderExtensions(geom(),(const float*)&axis,center_prg,&lo_ext,&hi_ext);
+}
 const Fvector& CCylinderGeom::local_center()
 {
 	return m_cylinder.m_center;

@@ -681,7 +681,7 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 	switch(type)
 	{
 	case actor:			m_character = xr_new<CPHActorCharacter>	();break;
-	case ai_stalker:	m_character = xr_new<CPHAICharacter>	();break;
+	case ai:	m_character = xr_new<CPHAICharacter>	();break;
 	}
 	m_character->SetMas(fMass);
 	m_character->SetPosition(vPosition);
