@@ -51,6 +51,7 @@ public:
 	virtual	void				reinit			();
 	virtual	void				reload			(LPCSTR section);
 	virtual	void				update			(float time_delta);
+			void				remove_links	(CObject *object);
 
 public:
 			void				enable			(const CObject *object, bool enable);

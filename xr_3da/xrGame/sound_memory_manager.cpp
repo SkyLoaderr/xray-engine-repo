@@ -222,3 +222,29 @@ void CSoundMemoryManager::update()
 		}
 	}
 }
+
+struct CSoundObjectPredicate {
+	const CObject *m_object;
+
+				CSoundObjectPredicate	(const CObject *object) :
+	m_object		(object)
+	{
+	}
+
+	bool		operator()			(const MemorySpace::CSoundObject &sound_object) const
+	{
+		if (!m_object)
+			return			(!sound_object.m_object);
+		if (!sound_object.m_object)
+			return			(false);
+		return				(m_object->ID() == sound_object.m_object->ID());
+	}
+};
+
+void CSoundMemoryManager::remove_links	(CObject *object)
+{
+	VERIFY					(m_sounds);
+	SOUNDS::iterator		I = std::find_if(m_sounds->begin(),m_sounds->end(),CSoundObjectPredicate(object));
+	if (I != m_sounds->end())
+		m_sounds->erase		(I);
+}

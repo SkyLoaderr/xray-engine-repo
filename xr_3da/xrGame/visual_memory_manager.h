@@ -66,6 +66,7 @@ public:
 	virtual	void	reload					(LPCSTR section);
 	virtual	void	update					(float time_delta);
 	virtual	float	feel_vision_mtl_transp	(u32 element);	
+			void	remove_links			(CObject *object);
 
 public:
 			bool	visible					(const CGameObject *game_object, float time_delta);

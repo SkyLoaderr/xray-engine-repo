@@ -172,3 +172,10 @@ const CMemoryInfo	CMemoryManager::memory(const CObject *object) const
 
 	return		(result);
 }
+
+void CMemoryManager::remove_links	(CObject *object)
+{
+	visual().remove_links	(object);
+	sound().remove_links	(object);
+	hit().remove_links		(object);
+}

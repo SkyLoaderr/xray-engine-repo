@@ -33,6 +33,7 @@ public:
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
 	virtual void			update				();
+			void			remove_links		(CObject *object);
 
 public:
 			void			add					(const CEntityAlive	*who);

@@ -59,6 +59,7 @@ public:
 	virtual	void				reload					(LPCSTR section);
 	virtual void				feel_sound_new			(CObject* who, int eType, const Fvector &Position, float power);
 	virtual	void				update					();
+			void				remove_links			(CObject *object);
 
 public:
 			void				add						(const CObject *object, int sound_type, const Fvector &position, float sound_power);

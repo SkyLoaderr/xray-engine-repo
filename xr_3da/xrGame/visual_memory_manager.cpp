@@ -381,3 +381,45 @@ float CVisualMemoryManager::feel_vision_mtl_transp(u32 element)
 	CDB::TRI* T			= Level().ObjectSpace.GetStaticTris()+element;
 	return GMLib.GetMaterialByIdx(T->material)->fVisTransparencyFactor;
 }
+
+struct CVisibleObjectPredicateEx {
+	const CObject *m_object;
+
+				CVisibleObjectPredicateEx	(const CObject *object) :
+	m_object		(object)
+	{
+	}
+
+	bool		operator()			(const MemorySpace::CVisibleObject &visible_object) const
+	{
+		if (!m_object)
+			return			(!visible_object.m_object);
+		if (!visible_object.m_object)
+			return			(false);
+		return				(m_object->ID() == visible_object.m_object->ID());
+	}
+
+	bool		operator()			(const MemorySpace::CNotYetVisibleObject &not_yet_visible_object) const
+	{
+		if (!m_object)
+			return			(!not_yet_visible_object.m_object);
+		if (!not_yet_visible_object.m_object)
+			return			(false);
+		return				(m_object->ID() == not_yet_visible_object.m_object->ID());
+	}
+};
+
+void CVisualMemoryManager::remove_links	(CObject *object)
+{
+	{
+		VERIFY						(m_objects);
+		VISIBLES::iterator			I = std::find_if(m_objects->begin(),m_objects->end(),CVisibleObjectPredicateEx(object));
+		if (I != m_objects->end())
+			m_objects->erase		(I);
+	}
+	{
+		NOT_YET_VISIBLES::iterator	I = std::find_if(m_not_yet_visible_objects.begin(),m_not_yet_visible_objects.end(),CVisibleObjectPredicateEx(object));
+		if (I != m_not_yet_visible_objects.end())
+			m_not_yet_visible_objects.erase	(I);
+	}
+}
