@@ -42,6 +42,7 @@ CGrenade::CGrenade(void) {
 	m_expoldeTime = 0xffffffff;
 	m_pLight = ::Render->light_create();
 	m_pLight->set_shadow(true);
+	hWallmark = 0;
 }
 
 CGrenade::~CGrenade(void) {
