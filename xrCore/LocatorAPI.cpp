@@ -16,6 +16,12 @@
 
 CLocatorAPI*	xr_FS	= NULL;
 
+#ifdef _EDITOR
+#define FSLTX	"fs.ltx"
+#else
+#define FSLTX	"fsgame.ltx"
+#endif
+
 //////////////////////////////////////////////////////////////////////
 // FS_Path
 //////////////////////////////////////////////////////////////////////
@@ -105,7 +111,7 @@ void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 s
 	desc.ptr			= ptr;
 	desc.size_real		= size_real;
 	desc.size_compressed= size_compressed;
-    desc.modif			= modif;
+    desc.modif			= modif & ~(u32(1));
 
 	// if file already exist - update info
 	files_it	I		= files.find(desc);
@@ -291,10 +297,10 @@ void CLocatorAPI::_initialize	(u32 flags, LPCSTR target_folder)
 		string_path		buf;
 		IReader* F		= 0;
 		Recurse			("");
-		F				= r_open("fs.ltx"); 
+		F				= r_open(FSLTX); 
 		if (!F&&m_Flags.is(flScanAppRoot))
-			F			= r_open("$app_root$","fs.ltx"); 
-		R_ASSERT2		(F,"Can't open file 'fs.ltx'");
+			F			= r_open("$app_root$",FSLTX); 
+		R_ASSERT3		(F,"Can't open file:",FSLTX);
 		// append all pathes    
 		string_path		id, temp, root, add, def, capt;
 		LPCSTR			lp_add, lp_def, lp_capt;
