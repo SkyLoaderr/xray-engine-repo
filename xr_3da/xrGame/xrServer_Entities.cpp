@@ -58,25 +58,25 @@ public:
 	{
 		P.r_u8				(s_style);
 
-		if (style&esAnimated)		{
+		if (s_style&esAnimated)		{
 			// Load animator
 			string256				fn;
 			P.r_string				(fn);
 			s_Animation				= strdup(fn);
 		}
-		if (style&esModel)			{
+		if (s_style&esModel)			{
 			// Load model
 			string256				fn;
 			P.r_string				(fn);
 			s_Model					= strdup(fn);
 		}
-		if (style&esParticles)		{
+		if (s_style&esParticles)		{
 			// Load model
 			string256				fn;
 			P.r_string				(fn);
 			s_Particles				= strdup(fn);
 		}
-		if (style&esSound)			{
+		if (s_style&esSound)			{
 			// Load model
 			string256				fn;
 			P.r_string				(fn);
