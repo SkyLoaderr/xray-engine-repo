@@ -97,6 +97,7 @@ public:
 	virtual void					level_Unload			()								= 0;
 
 	// Information
+	virtual ref_shader				getShader				(int id)						= 0;
 	virtual IRender_Sector*			getSector				(int id)						= 0;
 	virtual IRender_Visual*			getVisual				(int id)						= 0;
 	virtual D3DVERTEXELEMENT9*		getVB_Format			(int id)						= 0;
