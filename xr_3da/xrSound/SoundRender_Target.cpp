@@ -128,7 +128,7 @@ void	CSoundRender_Target::stop			()
 	if (rendering)
 	{
 		R_CHK		(pBuffer->Stop());
-//.		R_CHK		(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
+		R_CHK		(pControl->SetMode(DS3DMODE_DISABLE,DS3D_DEFERRED));
 	}
 	pEmitter		= NULL;
 	rendering		= FALSE;
@@ -211,7 +211,7 @@ void	CSoundRender_Target::fill_parameters()
 		buf.dwMode					= pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL;
 		R_CHK(pControl->SetAllParameters(&buf,DS3D_DEFERRED));
 */
-//.		R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
+		R_CHK(pControl->SetMode			(pEmitter->b2D ? DS3DMODE_DISABLE : DS3DMODE_NORMAL,DS3D_DEFERRED));
 		R_CHK(pControl->SetMinDistance	(pEmitter->p_source.min_distance,	DS3D_DEFERRED));
 		R_CHK(pControl->SetMaxDistance	(pEmitter->p_source.max_distance,	DS3D_DEFERRED));
 		R_CHK(pControl->SetPosition		(p_pos.x,p_pos.y,p_pos.z,			DS3D_DEFERRED));
