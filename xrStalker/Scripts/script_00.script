@@ -82,7 +82,7 @@ function main()
 	event:set_callback(this.on_enter,true)
 	event:set_callback(this.on_exit,false)
 
-			wait(1000)			
+	wait(1000)			
 
 	while true do
 		if stalkers_already_saw_actor == false then
