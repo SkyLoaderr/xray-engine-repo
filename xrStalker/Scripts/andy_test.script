@@ -19,11 +19,27 @@ function  _main()
 end
 
 function main ()
-	local info = "tutorial_artefact_start" 
-	if db.actor:has_info(info) then
-		db.actor:disable_info_portion(info)
+--	local info = "tutorial_artefact_start" 
+--	if db.actor:has_info(info) then
+--		db.actor:disable_info_portion(info)
+--	else
+--		db.actor:give_info_portion(info) 
+--	end
+
+	local h = db.actor:dont_has_info("storyline_actor_start")
+	if h then 
+		printf ("dont_has_info(storyline_actor_start) ==TRUE")
 	else
-		db.actor:give_info_portion(info) 
+		printf ("dont_has_info(storyline_actor_start) ==FALSE")
+	end
+
+	db.actor:give_info_portion("storyline_actor_start")
+
+	h = db.actor:dont_has_info("storyline_actor_start")
+	if h then 
+		printf ("dont_has_info(storyline_actor_start) ==TRUE")
+	else
+		printf ("dont_has_info(storyline_actor_start) ==FALSE")
 	end
 
 --	local a 	= level.debug_actor()
