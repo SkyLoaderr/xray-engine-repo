@@ -883,12 +883,6 @@
 						RelativePath=".\ParticleEffect.h">
 					</File>
 					<File
-						RelativePath="ParticleGroup.cpp">
-					</File>
-					<File
-						RelativePath="ParticleGroup.h">
-					</File>
-					<File
 						RelativePath=".\psvisual.cpp">
 						<FileConfiguration
 							Name="Release|Win32">

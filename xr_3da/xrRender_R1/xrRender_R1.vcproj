@@ -562,6 +562,12 @@
 				<File
 					RelativePath="FTreeVisual.h">
 				</File>
+				<File
+					RelativePath=".\ParticleGroup.cpp">
+				</File>
+				<File
+					RelativePath=".\ParticleGroup.h">
+				</File>
 			</Filter>
 		</Filter>
 		<Filter

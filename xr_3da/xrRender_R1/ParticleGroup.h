@@ -8,7 +8,7 @@
 namespace PS{
 class ENGINE_API CParticleEffect;
 
-class ENGINE_API CPGDef
+class CPGDef
 {
 public:
     string64			m_Name;
@@ -51,7 +51,7 @@ public:
 };
 DEFINE_VECTOR(CPGDef*,PGDVec,PGDIt);
 
-class ENGINE_API CParticleGroup: public IParticleCustom
+class CParticleGroup: public IParticleCustom
 {
 	const CPGDef*		m_Def;
     float				m_CurrentTime;
