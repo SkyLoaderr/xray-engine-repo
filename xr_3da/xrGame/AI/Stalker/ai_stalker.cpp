@@ -1001,9 +1001,10 @@ void CAI_Stalker::Update	( u32 DT )
 	// *** general stuff
 	inherited::inherited::Update	(DT);
 	
-	if(m_pPhysicsShell){
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+	{
 
-	if(m_pPhysicsShell->bActive && m_saved_impulse!=0.f)
+	if(m_saved_impulse!=0.f)
 		{
 			m_pPhysicsShell->applyImpulseTrace(m_saved_hit_position,m_saved_hit_dir,m_saved_impulse*1.f,m_saved_element);
 			m_saved_impulse=0.f;
@@ -1028,12 +1029,12 @@ void CAI_Stalker::Update	( u32 DT )
 
 		skel_ddelay--;
 		
-		mRotate.set(m_pPhysicsShell->mXFORM);
-		mRotate.c.set(0,0,0);
-		UpdateTransform					();
-		vPosition.set(m_pPhysicsShell->mXFORM.c);
-		svTransform.set(m_pPhysicsShell->mXFORM);
-		UpdateTransform();		
+		///mRotate.set(m_pPhysicsShell->mXFORM);
+		//mRotate.c.set(0,0,0);
+		//UpdateTransform					();
+		//vPosition.set(m_pPhysicsShell->mXFORM.c);
+		//svTransform.set(m_pPhysicsShell->mXFORM);
+		//UpdateTransform();		
 	//	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
 	//	int id=M->LL_BoneID("bip01_pelvis");
 	//	CBoneInstance& instance=M->LL_GetInstance				(id);

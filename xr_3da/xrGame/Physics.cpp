@@ -223,7 +223,7 @@ void CPHWorld::Step(dReal step)
 		#ifdef ODE_SLOW_SOLVER
 		dWorldStep			(phWorld, fixed_step);
 		#else
-		dWorldStepFast (phWorld,fixed_step,20);
+		dWorldStepFast (phWorld,fixed_step,10);
 		#endif
 		Device.Statistic.ph_core.End		();
 

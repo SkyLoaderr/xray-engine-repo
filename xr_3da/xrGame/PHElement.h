@@ -117,7 +117,7 @@ public:
 	void			Start							();
 	void			RunSimulation					();
 
-	dBodyID			get_body						(){return m_body;};
+
 	float			get_volume						(){get_mc_data();return m_volume;};
 	void			SetTransform					(const Fmatrix& m0);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ public:
 	virtual void			SetMaterial				(u32 m);
 
 	virtual void			SetMaterial				(LPCSTR m){SetMaterial(GMLib.GetMaterialIdx(m));}
-
+	virtual	dBodyID			get_body				()		{return m_body;};
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
 	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel,bool disable=false);
 	virtual void			Activate				(bool place_current_forms=false,bool disable=false);

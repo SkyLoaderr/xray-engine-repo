@@ -70,6 +70,9 @@ CPHSimpleCharacter::CPHSimpleCharacter()
 
 	previous_p[0]=dInfinity;
 	dis_count_f=0;
+	
+	m_capture_joint=NULL;
+
 
 }
 
@@ -922,4 +925,29 @@ void	CPHSimpleCharacter::Disabling(){
 	}
 	/////////////////////////////////////////////////////////////////
 
+}
+
+
+void CPHSimpleCharacter::CaptureObject(dBodyID body,const dReal* anchor)
+{
+m_capture_joint=dJointCreateBall(phWorld,0);
+dJointAttach(m_capture_joint,m_body,body);
+dJointSetBallAnchor(m_capture_joint,anchor[0],anchor[1],anchor[2]);
+dJointSetFeedback(m_capture_joint,&m_capture_joint_feedback);
+}
+
+void CPHSimpleCharacter::CapturedSetPosition(const dReal* position)
+{
+if(!m_capture_joint) return;
+dJointSetBallAnchor(m_capture_joint,position[0],position[1],position[2]);
+}
+
+void CPHSimpleCharacter::CheckCaptureJoint()
+{
+	//m_capture_joint_feedback
+}
+
+void CPHSimpleCharacter::doCaptureExist(bool& do_exist)
+{
+do_exist=!!m_capture_joint;
 }

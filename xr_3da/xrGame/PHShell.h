@@ -93,19 +93,21 @@ public:
 		}
 		//(*i)->SetForceAndVelocity(force);
 	}
-	virtual void			set_ContactCallback		  (ContactCallbackFun* callback)				;
-	virtual void			set_ObjectContactCallback (ObjectContactCallbackFun* callback);
-	virtual void			set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
-	virtual void			set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
-	virtual void			get_LinearVel			  (Fvector& velocity);
-	virtual void			SetMaterial				  (u32 m);
-	virtual void			SetMaterial				  (LPCSTR m);
-	virtual void			Enable					();
+	virtual void				set_ContactCallback		  (ContactCallbackFun* callback)				;
+	virtual void				set_ObjectContactCallback (ObjectContactCallbackFun* callback);
+	virtual void				set_PhysicsRefObject	  (CPhysicsRefObject* ref_object);
+	virtual void				set_PushOut				  (u32 time,PushOutCallbackFun* push_out=PushOutCallback);
+	virtual void				get_LinearVel			  (Fvector& velocity);
+	virtual void				SetMaterial				  (u32 m);
+	virtual void				SetMaterial				  (LPCSTR m);
+	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
+	virtual CPhysicsElement*	get_Element				  (LPCSTR bone_name);
+	virtual void				Enable						();
 
-	virtual	void PhDataUpdate(dReal step);
-	virtual	void PhTune(dReal step);
-	virtual void InitContact(dContact* c){};
-	virtual void StepFrameUpdate(dReal step){};
+	virtual	void				PhDataUpdate				(dReal step);
+	virtual	void				PhTune						(dReal step);
+	virtual void				InitContact					(dContact* c){};
+	virtual void				StepFrameUpdate				(dReal step){};
 
 
 	virtual void			SmoothElementsInertia(float k);

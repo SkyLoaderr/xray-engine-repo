@@ -62,9 +62,10 @@ public:
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
 	virtual	void			set_ParentElement		(CPhysicsElement* p)							= 0;
-	virtual	void			set_BoxMass				(const Fobb& box, float mass)				= 0;
+	virtual	void			set_BoxMass				(const Fobb& box, float mass)					= 0;
 
 	virtual void			setInertia				(const Fmatrix& M)								= 0;
+	virtual	dBodyID			get_body				()												= 0;
 
 	virtual ~CPhysicsElement	()																	{};
 };
@@ -132,16 +133,18 @@ CKinematics* p_kinematics;
 public:
 	BOOL					bActive;
 public:
-	void					set_Kinematics			(CKinematics* p)	{p_kinematics=p;}
-	virtual void			set_JointResistance		(float force)										= 0;
-	virtual	void			add_Element				(CPhysicsElement* E)								= 0;
-	virtual	void			add_Joint				(CPhysicsJoint* E)									= 0;
-	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
-	virtual BoneCallbackFun* GetBonesCallback		()													= 0;
-	virtual void			Update					()													= 0;
-	virtual void			applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element) = 0;
-	virtual void			setMass1				(float M)											=0;
-	virtual void			SmoothElementsInertia	(float k)											=0;
+	void						set_Kinematics			(CKinematics* p)	{p_kinematics=p;}
+	virtual void				set_JointResistance		(float force)										= 0;
+	virtual	void				add_Element				(CPhysicsElement* E)								= 0;
+	virtual	void				add_Joint				(CPhysicsJoint* E)									= 0;
+	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val)	= 0;
+	virtual BoneCallbackFun*	GetBonesCallback		()													= 0;
+	virtual void				Update					()													= 0;
+	virtual void				applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,const s16 element) = 0;
+	virtual void				setMass1				(float M)											= 0;
+	virtual void				SmoothElementsInertia	(float k)											= 0;
+	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
+	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
 	};
 
 

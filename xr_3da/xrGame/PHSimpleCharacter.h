@@ -13,9 +13,12 @@ protected:
 	dGeomID m_geom_group;
 	dGeomID m_wheel_transform;
 	dGeomID m_shell_transform;
-
+	
 	dReal m_radius;
 	dReal m_cyl_hight;
+	///////////////////////////////////
+	dJointID m_capture_joint;
+	dJointFeedback m_capture_joint_feedback;
 	////////////////////////// movement
 	dVector3 m_control_force;
 	Fvector	 m_acceleration;	
@@ -27,7 +30,7 @@ protected:
 	dVector3 m_ground_contact_position;
 	dReal	 jump_up_velocity;//=6.0f;//5.6f;
 
-	dReal m_max_velocity;
+	dReal	 m_max_velocity;
 
 
 
@@ -104,7 +107,12 @@ public:
 	virtual		void		SetMas								(dReal mass)		;
 
 	virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object);
+
+	virtual		void		CaptureObject						(dBodyID body,const dReal* anchor);
+	virtual		void		CapturedSetPosition					(const dReal* position);
+	virtual		void		doCaptureExist						(bool&	do_exist);
 private:
+	void		CheckCaptureJoint					()					;
 	void		ApplyAcceleration					()					;
 	bool		ValidateWalkOn						()					;
 public:	
