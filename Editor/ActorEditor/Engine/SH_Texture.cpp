@@ -113,21 +113,22 @@ void CTexture::Load(LPCSTR cName)
 	{
 		// Sequence
 		char buffer[256];
-		CFileStream fs(fn);
+		destructor<CStream>	fs(Engine.FS.Open(fn));
+		// CFileStream fs(fn);
 
 		seqCycles	= FALSE;
-		fs.Rstring	(buffer);
+		fs().Rstring	(buffer);
 		if (0==stricmp	(buffer,"cycled"))
 		{
-			seqCycles	= TRUE;
-			fs.Rstring	(buffer);
+			seqCycles		= TRUE;
+			fs().Rstring	(buffer);
 		}
 		DWORD fps	= atoi(buffer);
 		seqMSPF		= 1000/fps;
 
-		while (!fs.Eof())
+		while (!fs().Eof())
 		{
-			fs.Rstring	(buffer);
+			fs().Rstring(buffer);
 			_Trim		(buffer);
 			if (buffer[0])	
 			{

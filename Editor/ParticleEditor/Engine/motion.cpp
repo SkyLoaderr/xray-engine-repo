@@ -83,8 +83,9 @@ void COMotion::SaveMotion(const char* buf){
 	F.SaveTo		(buf,0);
 }
 
-bool COMotion::LoadMotion(const char* buf){
-	CFileStream		F(buf);
+bool COMotion::LoadMotion(const char* buf)
+{
+	destructor<CStream>	F(Engine.FS.Open(buf));
 	R_ASSERT(F.FindChunk(EOBJ_OMOTION));
 	return Load		(F);
 }
@@ -184,8 +185,8 @@ void CSMotion::SaveMotion(const char* buf){
 }
 
 bool CSMotion::LoadMotion(const char* buf){
-	CFileStream		F(buf);
-	R_ASSERT(F.FindChunk(EOBJ_SMOTION));
+	destructor<CStream>	F(Engine.FS.Open(buf));
+	R_ASSERT		(F.FindChunk(EOBJ_SMOTION));
 	return Load		(F);
 }
 

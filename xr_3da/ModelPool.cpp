@@ -93,11 +93,12 @@ FBasicVisual*	CModelPool::Instance_Load		(const char* N)
 	}
 	
 	// Actual loading
-	CFileStream			data(fn);
+	CStream*			data	= Engine.FS.Open(fn);
 	ogf_header			H;
-	data.ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
+	data->ReadChunkSafe	(OGF_HEADER,&H,sizeof(H));
 	V = Instance_Create (H.type);
-	V->Load				(fn,&data,0);
+	V->Load				(fn,data,0);
+	Engine.FS.Close		(data);
 
 	// Registration
 	ModelDef			M;

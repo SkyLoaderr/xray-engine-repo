@@ -160,7 +160,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 		FILE_NAME	fn_spawn;
 		if (Engine.FS.Exist(fn_spawn, Path.Current, "level.spawn"))
 		{
-			CFileStream		SP(fn_spawn);
+			CStream*		SP	= Engine.FS.Open(fn_spawn);
 			NET_Packet		P;
 			CStream*		S		= 0;
 			int				S_id	= 0;
@@ -172,6 +172,7 @@ BOOL CLevel::net_Client		( LPCSTR name_of_server )
 				Send		(P,net_flags(TRUE));
 				S_id		+=	1;
 			}
+			Engine.FS.Close	(SP);
 		}
 
 		// And receiving spawn information (game-state)

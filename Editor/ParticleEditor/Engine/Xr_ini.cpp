@@ -72,15 +72,16 @@ CInifile::CInifile( LPCSTR szFileName, BOOL ReadOnly)
 	}
 #endif
 
-	CFileStream file(szFileName);
+	destructor<CStream>	file(Engine.FS.Open(szFileName));
+//	CFileStream file(szFileName);
 
 	Sect	Current;	Current.Name = 0;
 	char	str			[1024];
 	char	str2		[1024];
 
-	while (!file.Eof())
+	while (!file().Eof())
 	{
-		file.Rstring	(str);
+		file().Rstring	(str);
 		_Trim			(str);
 		LPSTR semi		= strchr(str,';');
 		LPSTR comment	= 0;

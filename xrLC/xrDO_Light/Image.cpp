@@ -173,7 +173,7 @@ struct TGAHeader
 
 void CImage::LoadTGA(LPCSTR name)
 {
-	CFileStream	TGA(name);
+	destructor<CStream*>	TGA(Engine.FS.Open(name));
 	TGAHeader	hdr;
 	BOOL		hflip, vflip;
 
@@ -188,8 +188,8 @@ void CImage::LoadTGA(LPCSTR name)
 	R_ASSERT(btwIsPow2(hdr.height));
 
 	// Skip funky stuff
-	if (hdr.idlen)	TGA.Advance(hdr.idlen);
-	if (hdr.cmlen)	TGA.Advance(hdr.cmlen*((hdr.cmes+7)/8));
+	if (hdr.idlen)	TGA().Advance(hdr.idlen);
+	if (hdr.cmlen)	TGA().Advance(hdr.cmlen*((hdr.cmes+7)/8));
 
 	hflip		= (hdr.desc & 0x10) ? TRUE : FALSE;		// Need hflip
 	vflip		= (hdr.desc & 0x20) ? TRUE : FALSE;		// Need vflip

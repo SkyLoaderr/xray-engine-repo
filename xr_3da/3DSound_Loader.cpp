@@ -108,10 +108,10 @@ LPDIRECTSOUNDBUFFER C3DSound::LoadWaveAs3D(const char *pName, BOOL bCtrlFreq)
 	}
 
 	// Load file into memory and parse WAV-format
-	CFileStream		data	(pName);
+	destructor<CStream>	data(Engine.FS.Open(pName));
 	WAVEFORMATEX*	pFormat;
 	DWORD			dwLen;
-	void *			wavedata = ParseWave(&data,pFormat,dwLen);
+	void *			wavedata = ParseWave(&data(),pFormat,dwLen);
 	if (!wavedata)	return NULL;
 
 	// Parsing OK, converting to best format

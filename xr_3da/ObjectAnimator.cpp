@@ -38,30 +38,30 @@ CObjectAnimator::~CObjectAnimator()
 	m_Motions.clear		();
 }
 
-void CObjectAnimator::SetActiveMotion(COMotion* mot, bool bLoop){
+void CObjectAnimator::SetActiveMotion(COMotion* mot, bool bLoop)
+{
 	m_ActiveMotion		=mot;
     if (m_ActiveMotion) m_MParam.Set(m_ActiveMotion, bLoop);
 	vPosition.set		(0,0,0);
 	mRotate.identity	();
 }
 
-void CObjectAnimator::LoadMotions(const char* fname){
+void CObjectAnimator::LoadMotions(const char* fname)
+{
 	FILE_NAME			full_path;
 	if (!Engine.FS.Exist( full_path, Path.Current, fname ))
 		if (!Engine.FS.Exist( full_path, Path.Meshes, fname ))
 			Device.Fatal("Can't find motion file '%s'.",fname);
 
-	CFileStream F		(full_path);
+	CStream* F			= Engine.FS.Open(full_path);
 	DWORD dwMCnt		= F.Rdword(); VERIFY(dwMCnt);
 	for (DWORD i=0; i<dwMCnt; i++){
 		COMotion* M		= new COMotion();
 		bool bRes		= M->Load(F);
-		if (!bRes){		
-			Log("ERROR: Can't load motion. Incorrect file version.");
-			THROW;
-		}
+		if (!bRes)		Device.Fatal("ERROR: Can't load motion. Incorrect file version.");
 		m_Motions[strdup(M->Name())]=M;
 	}
+	Engine.FS.Close		(F);
 }
 
 void CObjectAnimator::Load(CInifile* ini, const char * section)

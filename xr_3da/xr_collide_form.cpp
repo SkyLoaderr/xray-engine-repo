@@ -62,7 +62,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 		}
 
 	// Actual load
-	CFileStream			f(full_path);
+	CStream*			f	= Engine.FS.Open(full_path);
 	hdrCFORM			H;
 	f.Read				(&H,sizeof(hdrCFORM));
 	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
@@ -75,6 +75,7 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	RAPID::tri*	tris	= (RAPID::tri*)(verts+H.vertcount);
 	model.BuildModel	( verts, H.vertcount, tris, H.facecount );
 	Msg("* CFORM memory usage: %dK",model.MemoryUsage()/1024);
+	Engine.FS.Close		(f);
 
 	return				TRUE;
 }
