@@ -98,6 +98,13 @@ protected:
 	void PlaceItemAtPos(int place_row, int place_col, CUIDragDropItem* pItem);
 	bool CanPlace(int row, int col, CUIDragDropItem* pItem);
 
+	// Для привязки скроллбара к контенту листа необходимо определить самую
+	// нижнюю (правую не надо пока, так как в DDList'е HSCROLL не используется) занятую клеточку
+	int GetLastBottomFullCell();
+
+	// Пересчитать состояние скроллбара
+	void ScrollBarRecalculate();
+
 	//состояние клеточки в сетке
 	E_CELL_STATE& 	GetCell(int row, int col){VERIFY(row<m_iRowsNum && col<m_iColsNum);return m_vGridState[row*GetCols() + col];}
 	E_CELL_STATE    GetCellState(int row, int col);

@@ -64,6 +64,7 @@ void CUIDragDropList::AttachChild(CUIWindow* pChild)
 		m_DragDropItemsList.push_back(pDragDropItem);
 
 		pDragDropItem->ClipperOn();
+		ScrollBarRecalculate();
 	}
 
 	inherited::AttachChild(pChild);
@@ -82,6 +83,7 @@ void CUIDragDropList::DetachChild(CUIWindow* pChild)
 		{
 			RemoveItemFromGrid(pDragDropItem);
 			m_DragDropItemsList.remove(pDragDropItem);
+			ScrollBarRecalculate();
 		}
 	}
 
@@ -271,6 +273,7 @@ void CUIDragDropList::Init(int x, int y, int width, int height)
 //					 GetHeight(), false);
 
 	inherited::Init(x, y, width, height);
+	ScrollBarRecalculate();
 }
 //инициализация сетки Drag&Drop
 void CUIDragDropList::InitGrid(int iRowsNum, int iColsNum, 
@@ -630,4 +633,42 @@ void CUIDragDropList::SetItemsScale(float fItemsScale)
 	R_ASSERT(fItemsScale > 0);
 
 	m_fItemsScale = fItemsScale;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+int CUIDragDropList::GetLastBottomFullCell()
+{
+	for (int i = GetRows() - 1; i >= 0; --i)
+	{
+		for (int j = 0; j < GetCols(); ++j)
+		{
+			if (CELL_FULL == GetCellState(i, j))
+				return i;
+		}
+	}
+
+	return 0;
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUIDragDropList::ScrollBarRecalculate()
+{
+	const int bottom = GetLastBottomFullCell();
+
+	// Если все элементы помещаются в видимую область, то скроллбар не требуется
+	if (bottom <= GetViewRows())
+	{
+		EnableScrollBar(false);
+	}
+	else
+	{
+		// Иначе требуется и необходим пересчет
+		EnableScrollBar(true);
+
+		m_ScrollBar.SetRange(0, s16(bottom-1));
+		m_ScrollBar.SetPageSize(s16(m_iViewRowsNum));
+		m_ScrollBar.SetScrollPos(0);
+	}
 }
