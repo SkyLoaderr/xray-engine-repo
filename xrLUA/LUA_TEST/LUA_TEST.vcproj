@@ -429,6 +429,9 @@
 			Name="Lua-test"
 			Filter="">
 			<File
+				RelativePath=".\delegate_test.cpp">
+			</File>
+			<File
 				RelativePath=".\LUA_TEST.cpp">
 			</File>
 			<File
@@ -468,11 +471,6 @@
 					<Tool
 						Name="VCCLCompilerTool"
 						CallingConvention="2"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"/>
 				</FileConfiguration>
 			</File>
 		</Filter>

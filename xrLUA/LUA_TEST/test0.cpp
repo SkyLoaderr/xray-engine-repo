@@ -1053,6 +1053,7 @@ struct CMemCallbackHolder {
 //Typelist<_A2,Typelist<_A1,Typelist<CEmptyClass,CEmptyClass> > >
 
 extern void script_test();
+extern void delegate_test();
 
 void test1()
 {
@@ -1077,7 +1078,9 @@ void test1()
 //	else
 //		printf					("FALSE\n");
 //	holder.OnSomeEvent			(5);
-	
+
+	delegate_test();
+
 	string4096		SSS;
 	strcpy			(SSS,"");
 	g_ca_stdout		= SSS;
