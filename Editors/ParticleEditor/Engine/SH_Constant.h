@@ -7,15 +7,13 @@
 class	ENGINE_API	IReader;
 class	ENGINE_API	IWriter;
 
-class	ENGINE_API	CConstant
-{
+class	ENGINE_API	CConstant	: public xr_resorce									{
 public:
 	enum			{ modeProgrammable=0, modeWaveForm	};
 public:
 	Fcolor			const_float;
 	u32				const_dword;
 
-	u32				dwReference;
 	u32				dwFrame;
 	u32				dwMode;
 	WaveForm		_R;

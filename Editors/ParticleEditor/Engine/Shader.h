@@ -10,6 +10,9 @@
 #include "xr_resource.h"
 
 #include "sh_atomic.h"
+#include "sh_texture.h"
+#include "sh_matrix.h"
+#include "sh_constant.h"
 
 typedef svector<string64,4>	sh_list;
 
