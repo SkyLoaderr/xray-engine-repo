@@ -25,6 +25,7 @@ module ("xr_position")
 module ("xr_sound")
 
 module ("xr_gulag")
+module ("gulag_tasks.script")
 module ("xr_bandit")
 module ("xr_meet")
 module ("xr_kamp")
