@@ -62,17 +62,14 @@ hit_power			 = 70.0;
 ImpulseMin			 = 2000.0
 ImpulseMax			 = 2500.0 
 
-; speed factors
-TurnNormalAngular		= 3.05
-WalkFwdNormal			= 1.8
-WalkFwdDamaged			= 1.0	;0.7
-WalkBkwdNormal			= 1.0
-WalkAngular				= 3.0
-RunFwdNormal			= 6.5	;5.5
-RunFwdDamaged			= 2.30	;1.35
-RunAngular				= 6.0
-Drag					= 1.5 
-Steal					= 0.7
+; speed factors			linear angular min		max
+Velocity_Stand			= 0,	3.05,	1,		1
+Velocity_WalkFwdNormal	= 1.8,	3.0,	0.5,	2.0
+Velocity_WalkFwdDamaged	= 1.0,	3.0,	0.5,	2.0	
+Velocity_RunFwdNormal	= 6.5,	6.0,	0.2,	1	
+Velocity_RunFwdDamaged	= 2.3,  6.0,	0.2,	1
+Velocity_Drag			= 1.5,	3.0,	1,		1
+Velocity_Steal			= 0.7,	3.0,	1,		1
 
 
 ;attack parameters
