@@ -194,7 +194,10 @@ void	CSoundRender_TargetD::fill_block		()
 	// Copy data (and clear the end)
 	pEmitter->fill_block(ptr1,buf_block);
 	pos_write		+= buf_block;
-    pos_write		%= buf_size;
+
+	// wrap around for the sake of sanity
+	// ??? is it possible to do this at every iteration ???
+	if (pos_write > (2ul<<24ul))	pos_write	%= buf_size;	
 
 	R_CHK			(pBuffer->Unlock(ptr1, bytes1, ptr2, bytes2));
 }
