@@ -181,6 +181,9 @@ function fract:print()
 	end
 end
 function fract:loadJob(name)
+--'-----------------------------------------------------------------------------------------
+--' DOLG 
+--'-----------------------------------------------------------------------------------------
 	if name == "dolg" then
 		local t = { name = "sleeper",
 			object = nil,
@@ -309,6 +312,9 @@ function fract:loadJob(name)
 		table.insert(self.Job, t)			
 	end
  
+ --'-----------------------------------------------------------------------------------------
+--' ESCAPE BLOCKPOST
+--'-----------------------------------------------------------------------------------------
 	if name == "blockpost" then
 		local t = { name = "guard",
 			object = nil,
@@ -543,6 +549,164 @@ function fract:loadJob(name)
 			path_hideout = "blockpost_search2" }
 		table.insert(self.Job, t)			
 	end
+
+--'-----------------------------------------------------------------------------------------
+--' AGROPROM MILITARY BASE
+--'-----------------------------------------------------------------------------------------
+	if name == "agroprom_mili" then
+		local t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 10,
+			state = { 0 },
+			group = 0,
+			running = false,
+			search_light = nil,
+			path_main = "mili_root_guard",
+			path_hideout = "mili_root_guard" }
+		table.insert(self.Job, t)			
+		local t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 9,
+			state = { 0 },
+			group = 0,
+			running = false,
+			search_light = nil,
+			path_main = "mili_2stage_guard",
+			path_hideout = "mili_2stage_guard" }
+		table.insert(self.Job, t)			
+		local t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 8,
+			state = { 0 },
+			group = 0,
+			running = false,
+			search_light = nil,
+			path_main = "mili_3stage_guard",
+			path_hideout = "mili_3stage_guard" }
+		table.insert(self.Job, t)			
+		local t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 6,
+			state = { 0 },
+			group = 0,
+			running = false,
+			search_light = nil,
+			path_main = "mili_house_guard_1",
+			path_hideout = "mili_house_guard_1" }
+		table.insert(self.Job, t)			
+		local t = { name = "guard",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 6,
+			state = { 0 },
+			group = 0,
+			running = false,
+			search_light = nil,
+			path_main = "mili_house_guard_2",
+			path_hideout = "mili_house_guard_2" }
+		table.insert(self.Job, t)			
+					
+		t = { name = "patrol",
+			object = nil,
+			begin = nil, 
+			idle = 3*60*60*1000,
+			prior = 5,
+			state = { 0 },
+			group = 1,
+			patrol_path = "mili_patrol_path",
+			escape_path = "mili_patrol_return" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 3*60*60*1000,
+			prior = 4,
+			state = { 0 },
+			group = 1,
+			leader_name = nil,
+			escape_path = "mili_patrol_return" }
+		table.insert(self.Job, t)			
+		t = { name = "follower",
+			object = nil,
+			begin = nil, 
+			idle = 3*60*60*1000,
+			prior = 4,
+			state = { 0 },
+			group = 1,
+			leader_name = nil,
+			escape_path = "mili_patrol_return" }
+		table.insert(self.Job, t)			
+		
+		t = { name = "sleeper",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 1,
+			state = { 0 },
+			group = 0,
+			path_main = "mili_sleep_1"}
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 1,
+			state = { 0 },
+			group = 0,
+			path_main = "mili_sleep_2"}
+		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 1,
+			state = { 0 },
+			group = 0,
+			path_main = "mili_sleep_3"}
+		table.insert(self.Job, t)			
+
+		t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 2,
+			state = { 0 },
+			group = 0,
+			center_point = "mili_kamp_center",
+			patrol_path = "mili_kamp_patrol"
+		table.insert(self.Job, t)			
+		t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 2,
+			state = { 0 },
+			group = 0,
+			center_point = "mili_kamp_center",
+			patrol_path = "mili_kamp_patrol"
+		table.insert(self.Job, t)			
+		t = { name = "kamp",
+			object = nil,
+			begin = nil, 
+			idle = 0,
+			prior = 2,
+			state = { 0 },
+			group = 0,
+			center_point = "mili_kamp_center",
+			patrol_path = "mili_kamp_patrol"
+		table.insert(self.Job, t)			
+
+		
+	end
 end
 function fract:setJob(npc, job) 
 	self:clearAllJob(npc)
@@ -575,6 +739,12 @@ function fract:setJob(npc, job)
 		    xr_follower.set_follower(npc, true, nn, job.escape_path)			
 		end
 	end
+	if job.name == "kamp" then
+		job.object = npc
+		job.begin = game.time()
+			xr_kamp.set_kamp(npc, true, job.center_point, job.patrol_path)
+	end
+	
 	if job.group ~= nil then
 		job.object:change_team(job.object:team(), job.object:squad(), job.group)
 	end
@@ -617,7 +787,9 @@ function fract:clearAllJob(npc)
 		   k == "follower" or
 		   k == "patrol" or
 		   k == "guard" or
-		   k == "bodyguard" 
+		   k == "bodyguard" or
+		   k == "sniper" or
+		   k == "kamp"
 		then
 			v.enabled = false
 		end
@@ -777,9 +949,12 @@ function addMember(name, npc, char_ini)
 		        xr_follower.add_to_binder(npc, nil)
 		elseif v == "bodyguard" then
 		        xr_bodyguard.add_to_binder(npc, nil)
-		end
+		elseif v == "sniper" then
+		        xr_sniper.add_to_binder(npc, nil)
+		elseif v == "kamp" then
+		        xr_kamp.add_to_binder(npc, nil)
+		end		        
 	end
-
 	xr_formation.add_to_binder(npc)
 end
 function setFractionState(name, id)
