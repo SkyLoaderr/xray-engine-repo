@@ -17,11 +17,13 @@
 
 --------------------------------------------------------------------------------------------------------------------]]
 
-local prop_commander = xr_evaluators_id.chugai_commander_base
-local prop_dead_hook = xr_evaluators_id.chugai_commander_base + 1
+local prop_commander		= xr_evaluators_id.chugai_commander_base
+local prop_dead_hook		= xr_evaluators_id.chugai_commander_base + 1
+local prop_actor_is_close	= xr_evaluators_id.chugai_commander_base + 2
 
-local act_commander  = xr_actions_id.chugai_commander_base
-local act_dead_hook  = xr_actions_id.chugai_commander_base + 1
+local act_commander		= xr_actions_id.chugai_commander_base
+local act_dead_hook		= xr_actions_id.chugai_commander_base + 1
+local act_look_at_actor	= xr_actions_id.chugai_commander_base + 2
 
 -- состо€ни€ (действи€) автомата в "action_commander"
 local walk_random      = 0
@@ -85,6 +87,23 @@ function evaluator_commander:evaluate ()
 --    if b then sb = "true" else sb = "false" end
 --    printf( "s2 "..sb )
     return b
+end
+
+---------------------------------------------------------------------------------------------------------------------
+-- Ёвалуатор свойства "актЄр близко"
+---------------------------------------------------------------------------------------------------------------------
+class "evaluator_actor_is_close" ( property_evaluator )
+
+function evaluator_actor_is_close:__init( name, npc ) super()
+    self.npc = npc
+end
+
+function evaluator_actor_is_close:evaluate()
+    if not the_actor then
+        the_actor = level.actor()
+    end
+
+    return the_actor ~= nil and the_actor:position():distance_to_sqr( self.npc:position() ) < 6.25
 end
 
 ---------------------------------------------------------------------------------------------------------------------
@@ -224,10 +243,12 @@ function action_commander:execute()
         end
     end
 
-    if self.decision then
-        self.decision = false
-        self.sub_act  = false
-        self.pos      = nil
+    if self.decision or self.a.continue_act then
+        self.decision		= false
+        self.sub_act		= false
+        self.pos			= nil
+        self.time_end		= nil	-- <<< !!!!!!!!!!! проверить, можно ли здесь это делать
+        self.a.continue_act	= false
 
         self.last_act = self.act
 
@@ -919,6 +940,56 @@ function action_dead_hook:finalize()
 end
 
 ----------------------------------------------------------------------------------------------------------------------
+-- ƒействие "втыкать на актЄра"
+----------------------------------------------------------------------------------------------------------------------
+class "action_look_at_actor" ( action_base )
+
+function action_look_at_actor:__init( name, a )  super ( nil, name )
+	self.a = a
+end
+
+function action_look_at_actor:initialize()
+    action_base.initialize( self )
+
+    self.object:clear_animations()
+
+    self.object:set_movement_type       ( move.stand )
+    self.object:set_mental_state        ( anim.free )
+    self.object:set_item                ( object.idle, nil )
+
+    self.object:enable_talk()
+
+	if self.a.dialog then
+		self.object:set_start_dialog( self.a.dialog )
+	end
+
+    xr_sounds.play_sound( self.object, 0, "barman", 1, 2, 1 )
+end
+
+function action_look_at_actor:execute()
+    action_base.execute( self )
+
+    if self.object:see( the_actor ) then
+        local item = the_actor:active_item()
+
+        if item and isWeapon( item ) then
+            self.object:set_relation( game_object.enemy, the_actor )
+            return
+        end
+    end
+
+    self.object:set_sight( look.direction, the_actor:position():sub( self.object:position() ), 0 )
+end
+
+function action_look_at_actor:finalize()
+    action_base.finalize( self )
+
+    self.object:disable_talk()
+
+    self.a.continue_act = true
+end
+
+----------------------------------------------------------------------------------------------------------------------
 
 function add_to_binder( npc, char_ini )
     if char_ini and not char_ini:section_exist( "commander" ) then
@@ -929,15 +1000,21 @@ function add_to_binder( npc, char_ini )
 
     a.dead_hook = false
 
-    local action = this.action_commander( "action_commander", a )
-
     local manager = npc:motivation_action_manager()
 
     manager:add_evaluator( prop_commander, this.evaluator_commander( "property_commander", a ) )
     manager:add_evaluator( prop_dead_hook, this.evaluator_dead_hook( "property_dead_hook", a ) )
+    manager:add_evaluator( prop_actor_is_close, this.evaluator_actor_is_close( "property_actor_is_close", npc ) )
+    
+    local action = this.action_look_at_actor( "action_look_at_actor", a )
+    action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
+    action:add_effect( world_property( prop_actor_is_close, false ) )
+    manager:add_action( act_look_at_actor, action )
 
+    action = this.action_commander( "action_commander", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
     action:add_precondition( world_property( xr_evaluators_id.state_change, true  ) )
+    action:add_precondition( world_property( prop_actor_is_close, false ) )
     action:add_effect( world_property( prop_commander, false ) )
     manager:add_action( act_commander, action )
 
@@ -1088,6 +1165,11 @@ function init_commander( npc, a )
         -- им€ группировки (лагер€)
         if char_ini:line_exist( "commander", "fraction" ) then
             a.fraction = char_ini:r_string( "commander", "fraction" )
+        end
+
+        -- диалог
+        if char_ini:line_exist( "commander", "dialog" ) then
+            a.dialog = char_ini:r_string( "commander", "dialog" )
         end
     else
         --printf( "no section" )
