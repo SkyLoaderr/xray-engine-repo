@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding="windows-1251"?>
 
 <xml>
-<!---------------------------DOLG NOVICE----------------------->
-	<specific_character id="dolg_novice_default" team_default = "1">
+<!---------------------------DOLG REGULAR----------------------->
+	<specific_character id="dolg_regular_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="27" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
-		<team>Dolg_novice</team>
+		<team>Dolg_regular</team>
 		
-		<class>Dolg_novice</class>
+		<class>Dolg_regular</class>
 		<community>dolg</community>
 
 		
@@ -24,16 +24,16 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------DOLG GENERAL---------------------->
-	<specific_character id="dolg_general_default" team_default = "1">
+<!---------------------------DOLG SNIPER---------------------->
+	<specific_character id="dolg_sniper_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="8" y="2"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
-		<team>Dolg_general</team>
+		<team>Dolg_sniper</team>
 
-		<class>Dolg_general</class>
+		<class>Dolg_sniper</class>
 		<community>dolg</community>
 
 		
@@ -47,16 +47,16 @@
 		<actor_dialog>escape_talk_about_escape</actor_dialog>
 	</specific_character>
 
-<!---------------------------DOLG VETERAN---------------------->
+<!---------------------------DOLG SPECNAZ---------------------->
 	<specific_character id="dolg_veteran_default" team_default = "1">
 		<name>Неизвестный сталкер</name>
 		<icon x="29" y="4"></icon>
 		<map_icon x="4" y="0"></map_icon>
 		<bio>Об этом сталкере не известно ничего, кроме того что он принадлежит группировке "Долг".</bio>
 
-		<team>Dolg_veteran</team>
+		<team>Dolg_specnaz</team>
 
-		<class>Dolg_veteran</class>
+		<class>Dolg_specnaz</class>
 		<community>dolg</community>
 
 		<rank>70</rank>
