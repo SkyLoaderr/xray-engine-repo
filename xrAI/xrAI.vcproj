@@ -654,9 +654,6 @@
 				Name="Shared"
 				Filter="">
 				<File
-					RelativePath=".\ai_alife_interfaces.cpp">
-				</File>
-				<File
 					RelativePath="ai_alife_interfaces.h">
 				</File>
 				<File
