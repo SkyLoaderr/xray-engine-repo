@@ -65,13 +65,14 @@ function give_box_to_trader(first_speaker, second_speaker)
 	second_speaker:transfer_item (box01, first_speaker)
 	second_speaker:disable_info_portion ("trader_start2")
 -- передать деньги актеру
-	first_speaker:transfer_money (55, second_speaker)
+	first_speaker:transfer_money (500, second_speaker)
 end
 
 function give_box02_to_trader(first_speaker, second_speaker)
 	local box02 = second_speaker:object("quest_case_02")
 	second_speaker:transfer_item (box02, first_speaker)
 	second_speaker:disable_info_portion ("trader_start4")
+	first_speaker:transfer_money (1500, second_speaker)
 end
 
 function test_action(first_speaker, second_speaker)
