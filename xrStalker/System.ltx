@@ -4584,7 +4584,7 @@ MaxSpeed		     = 4.5	;1.5						; option for ALife Simulator
 going_speed          = 2.0	;1.0                      ; option for ALife Simulator
 search_speed         = .5                       ; option for ALife Simulator
 visual				 = monsters\krovosos\krovosos
-MaxHealthValue		 = 100						; range [0..200]
+MaxHealthValue		 = 200						; range [0..200]
 
 cform                = skeleton					; collision class
 class                = AI_BLOOD					; AI class
@@ -4630,11 +4630,11 @@ ImpulseMin			 = 1000.0
 ImpulseMax			 = 1500.0 
 
 ; motion factors
-StandTurnRSpeed		= 1.05						; PI_DIV_3
+StandTurnRSpeed		= 3.0	;1.05						; PI_DIV_3
 WalkSpeed			= 1.5
-WalkTurningSpeed	= 1.0
+WalkTurningSpeed	= 2.0	;1.0
 WalkRSpeed			= 0.79						; PI_DIV_4	when SetDirLook
-WalkTurnRSpeed		= 1.57						; PI_DIV_2	when turn needed
+WalkTurnRSpeed		= 2.57	;1.57						; PI_DIV_2	when turn needed
 WalkMinAngle		= 0.52						; PI_DIV_6
 RunAttackSpeed		= 5.5
 RunAttackTurnSpeed	= 3.5
@@ -4667,7 +4667,7 @@ BlinkTime			= 400	;300		; врем€ мерцани€
 BlinkMicroInterval  = 30		; врем€ кванта мерцани€
 RestoreInterval		= 5000		; врем€ восстановлени€ 5 сек
 InvisibilityTimeMin	= 2000		; мин врем€, на которое монстр становитс€ невидимым
-InvisibilityTimeMax	= 7000	;4000		; макс врем€, на которое монстр становитс€ невидимым
+InvisibilityTimeMax	= 5000	;4000		; макс врем€, на которое монстр становитс€ невидимым
 PowerDownFactor		= 0.10		; [0..1] коэффициент, на который падает сила монстра при активации невидимости
 PowerThreshold		= 0.70		; [0..1] порог силы, после которого нельз€ стать невидимым 
 InvisibilityDist	= 8.0		; [1..n] дистанци€ до врага, на которой монстр может становитьс€ нивидимым
@@ -4708,7 +4708,7 @@ power_hit_part = 1.0		;0.9			;процент хита, уход€щий на отнимание силы
 burn_immunity = 1.0							;коэффициенты иммунитета 
 strike_immunity = 1.0
 shock_immunity = 1.0
-wound_immunity = 0.3	;1.0		
+wound_immunity = 0.1	;1.0		
 radiation_immunity = 1.0
 telepatic_immunity = 1.0
 
