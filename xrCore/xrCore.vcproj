@@ -564,6 +564,13 @@
 				RelativePath=".\rt_lzo_config.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="string library"
+			Filter="">
+			<File
+				RelativePath=".\xrstring.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath="xrSyncronize.h">
 		</File>
