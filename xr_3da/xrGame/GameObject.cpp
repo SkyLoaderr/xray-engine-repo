@@ -87,9 +87,8 @@ void CGameObject::net_Destroy	()
 	m_dwSpawnFrame2				= Device.dwFrame;
 	m_dwSpawnFrame0				= u32(-1);
 	m_dwSpawnFrame1				= u32(-1);
-	m_initialized					= false;
-	VERIFY							(Visual());
-	if (PKinematics(Visual()))
+	m_initialized				= false;
+	if (Visual() && PKinematics(Visual()))
 		PKinematics(Visual())->Callback	(0,0);
 
 	inherited::net_Destroy						();
