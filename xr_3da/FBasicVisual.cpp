@@ -60,7 +60,7 @@ void CVisual::Load(const char* N, CStream *data, DWORD dwFlags)
 	} else {
 		THROW;
 	}
-	Msg	("DBG: [%f,%f,%f] - [%f,%f,%f]",VPUSH(bbox.min),VPUSH(bbox.max));
+	// Msg	("DBG: [%f,%f,%f] - [%f,%f,%f]",VPUSH(bbox.min),VPUSH(bbox.max));
 
 	// Sphere (if exists)
 	if (data->FindChunk(OGF_BSPHERE))
