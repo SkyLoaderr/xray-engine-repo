@@ -7,6 +7,8 @@ const DWORD XR_MAX_UVMAPS		= 1;
 const DWORD XR_MAX_TEXTURES		= 32;
 const DWORD XR_MAX_PORTAL_VERTS	= 6;
 
+#include "light.h"
+
 // All types to interact with xrLC
 typedef Fvector b_vertex;
 
@@ -41,14 +43,8 @@ struct b_texture
 	BOOL				bHasAlpha;
 	DWORD*				pSurface;
 };
-struct b_light : public Flight
+struct b_light : public xrLIGHT
 {
-	struct {
-		DWORD			bAffectStatic	: 1;
-		DWORD			bAffectDynamic	: 1;
-		DWORD			bProcedural		: 1;
-	}					flags;
-	string64			name;
 	svector<WORD,16>	sectors;
 };
 struct b_glow

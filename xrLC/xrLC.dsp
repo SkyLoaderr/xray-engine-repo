@@ -479,6 +479,10 @@ SOURCE=.\b_globals.h
 
 SOURCE=.\communicate.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\light.h
+# End Source File
 # End Group
 # Begin Group "NV_Strips"
 
@@ -511,10 +515,6 @@ SOURCE=.\NV_Library\VertexCache.h
 # Begin Source File
 
 SOURCE=.\FreeImage.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\light.h
 # End Source File
 # Begin Source File
 
