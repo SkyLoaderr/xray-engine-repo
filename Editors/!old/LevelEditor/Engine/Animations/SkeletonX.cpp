@@ -35,6 +35,7 @@ void CSkeletonX::_Copy		(CSkeletonX *B)
 	cache_vOffset			= B->cache_vOffset;
 	RenderMode				= B->RenderMode;
 	RMS_boneid				= B->RMS_boneid;
+	RMS_bonecount			= B->RMS_bonecount;
 }
 void CSkeletonX_PM::Copy	(IRender_Visual *V) 
 {
@@ -172,7 +173,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	u32			hw_bones	= 0;
 #endif
 
-	u32			dwVertType,size,it,bpv=0,crc;
+	u32			dwVertType,size,it,crc;
 	dwVertType	= data->r_u32(); 
 	dwVertCount	= data->r_u32();
 
@@ -181,7 +182,6 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	switch		(dwVertType)
 	{
 	case 1*0x12071980:
-		bpv			= 1;
 		size		= dwVertCount*sizeof(vertBoned1W);
 		crc			= crc32	(data->pointer(),size);
 		Vertices1W.create	(crc,dwVertCount,(vertBoned1W*)data->pointer());
@@ -201,7 +201,6 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 		}
 		break;
 	case 2*0x12071980:
-		bpv			= 2;
 		size		= dwVertCount*sizeof(vertBoned2W);
 		crc			= crc32	(data->pointer(),size);
 		Vertices2W.create	(crc,dwVertCount,(vertBoned2W*)data->pointer());
