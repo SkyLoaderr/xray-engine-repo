@@ -161,7 +161,7 @@
 			<texture_t>ui\ui_btn_shotgun_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_shotgun_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_shotgun</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_shotguns</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 	</btn_bag_shotgun>	
@@ -170,7 +170,7 @@
 			<texture_t>ui\ui_btn_assault_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_assault_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_assault</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_rifles</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 	</btn_bag_assault>
@@ -179,7 +179,7 @@
 			<texture_t>ui\ui_btn_sniper_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_sniper_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_sniper</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_sniper_rifles</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 	</btn_bag_sniper>
@@ -188,7 +188,7 @@
 			<texture_t>ui\ui_btn_heavy_t</texture_t>
 			<texture_e>ui\ui_btn_primary_e</texture_e>
 			<texture_h>ui\ui_btn_heavy_t</texture_h>
-			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_heavy</text>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_heavy_weapons</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
 	</btn_bag_heavy>
