@@ -21,15 +21,16 @@ protected:
 	xr_vector<bool>		temp;
 
 protected:
-	IC		bool		edge_vertex			(u32 index);
-	IC		bool		cover				(CLevelGraph::CVertex *v, u32 index0, u32 index1);
-	IC		bool		critical_point		(CLevelGraph::CVertex *v, u32 index, u32 index0, u32 index1);
-	IC		bool		critical_cover		(u32 index);
+	IC		bool					edge_vertex			(u32 index);
+	IC		bool					cover				(CLevelGraph::CVertex *v, u32 index0, u32 index1);
+	IC		bool					critical_point		(CLevelGraph::CVertex *v, u32 index, u32 index0, u32 index1);
+	IC		bool					critical_cover		(u32 index);
 
 public:
-						CCoverManager		();
-	virtual				~CCoverManager		();
-			void		compute_static_cover();
+									CCoverManager		();
+	virtual							~CCoverManager		();
+			void					compute_static_cover();
+	IC		CPointQuadTree			&covers				() const;
 };
 
 #include "cover_manager_inline.h"

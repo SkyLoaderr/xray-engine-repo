@@ -51,3 +51,8 @@ IC	bool CCoverManager::critical_cover	(u32 index)
 		critical_point(v,3,0,2)
 	);
 }
+
+IC	CCoverManager::CPointQuadTree &CCoverManager::covers	() const
+{
+	return					(*m_covers);
+}

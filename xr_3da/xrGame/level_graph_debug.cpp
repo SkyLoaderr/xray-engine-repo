@@ -22,6 +22,8 @@
 #include "custommonster.h"
 #include "ai/stalker/ai_stalker.h"
 #include "xrserver_objects_alife_monsters.h"
+#include "cover_point.h"
+#include "cover_manager.h"
 
 #define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x += tCameraPosition.x, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z += tCameraPosition.z;
 #define DRAW_GRAPH_POINT(t0,c0,c1,c2) {\
@@ -156,6 +158,19 @@ void CLevelGraph::render()
 
 	if (!psHUD_Flags.test(HUD_DRAW))
 		return;
+
+	if (Level().CurrentEntity()) {
+		xr_vector<CCoverPoint*>	nearest;
+		nearest.reserve			(1000);
+		ai().cover_manager().covers().nearest(Level().CurrentEntity()->Position(),100.f,nearest);
+		xr_vector<CCoverPoint*>::const_iterator	I = nearest.begin();
+		xr_vector<CCoverPoint*>::const_iterator	E = nearest.end();
+		for ( ; I != E; ++I) {
+			Fvector				position = (*I)->position();
+			position.y			+= 1.f;
+			RCache.dbg_DrawAABB(position,ai().level_graph().header().cell_size()*.5f-.01f,1.f,ai().level_graph().header().cell_size()*.5f-.01f,D3DCOLOR_XRGB(0*255,255,0*255));
+		}
+	}
 	
 	if (psAI_Flags.test(aiBrain)) {
 		if (ai().get_level_graph()) {
