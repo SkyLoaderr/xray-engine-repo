@@ -365,9 +365,9 @@ void CBuild::ImplicitLighting()
 			Msg		("Saving texture '%s'...",out_name);
 			VerifyPath				(out_name);
 			BYTE*	raw_data		= LPBYTE(TEX.pSurface);
-			u32	w				= TEX.dwWidth;
-			u32	h				= TEX.dwHeight;
-			u32	pitch			= w*4;
+			u32	w					= TEX.dwWidth;
+			u32	h					= TEX.dwHeight;
+			u32	pitch				= w*4;
 			STextureParams* fmt		= &(TEX.THM);
 			DXTCompress				(out_name,raw_data,w,h,pitch,fmt,4);
 		}
