@@ -117,8 +117,8 @@ void CExportSkeleton::SSplit::Save(IWriter& F, BOOL b2Link)
 
     // Vertices
     m_Box.invalidate	();
-    F.open_chunk		(OGF_VERTICES2);
-    F.w_u32				(b2Link);
+    F.open_chunk		(OGF_VERTICES);
+    F.w_u32				(b2Link?OGF_SKELETON_2L:OGF_SKELETON_1L);
     F.w_u32				(m_Verts.size());
     if (b2Link){
         for (SkelVertIt v_it=m_Verts.begin(); v_it!=m_Verts.end(); v_it++){
@@ -518,7 +518,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 
     bool bRes = true;
                     
-    F.open_chunk(OGF_IKDATA2);
+    F.open_chunk(OGF_IKDATA);
     for (bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++)
         if (!(*bone_it)->ExportOGF(F)) bRes=false; 
     F.close_chunk();
@@ -553,7 +553,7 @@ bool CExportSkeleton::ExportMotionKeys(IWriter& F)
     CSMotion* active_motion=m_Source->ResetSAnimation();
 
     // Motions
-    F.open_chunk(OGF_MOTIONS2);
+    F.open_chunk(OGF_MOTIONS);
     F.open_chunk(0);
     F.w_u32(m_Source->SMotionCount());
     F.close_chunk();
@@ -704,7 +704,7 @@ bool CExportSkeleton::ExportMotionDefs(IWriter& F)
         UI->ProgressInc	();
     }else{
         // save smparams
-        F.open_chunk	(OGF_SMPARAMS2);
+        F.open_chunk	(OGF_SMPARAMS);
         F.w_u16			(xrOGF_SMParamsVersion);
         // bone parts
         BPVec& bp_lst 	= m_Source->BoneParts();

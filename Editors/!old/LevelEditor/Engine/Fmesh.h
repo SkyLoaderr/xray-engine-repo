@@ -35,24 +35,25 @@ enum OGF_Chuncks {
 	OGF_BSPHERE		= 11,
 	OGF_CHIELDS_L	= 12,	// Link to child visuals
 	OGF_BONE_NAMES	= 13,	// * For skeletons only
-	OGF_MOTIONS		= 14,	// * For skeletons only
+	OGF_MOTIONS 	= 14,	// * For skeletons only
 	OGF_DPATCH		= 15,	// --- DPatches only
 	OGF_P_LODS		= 16,
     OGF_CHILDREN	= 17,	// * For skeletons only
-	OGF_SMPARAMS	= 18,	// * For skeletons only
+	OGF_SMPARAMS  	= 18,	// * For skeletons only
 	OGF_ICONTAINER	= 19,
-	OGF_SMPARAMS2	= 20,	// * For skeletons only
+	OGF_IKDATA		= 20,	// * For skeletons only
 	OGF_LODDEF2		= 21,	// + 5 channel data
 	OGF_TREEDEF2	= 22,	// + 5 channel data
-	OGF_IKDATA_obs	= 23,	// * For skeletons only (__obsolete__)
-	OGF_USERDATA	= 24,	// * For skeletons only (Ini-file)
-	OGF_IKDATA		= 25,	// * For skeletons only
-	OGF_MOTIONS2	= 26,	// * For skeletons only
-	OGF_DESC		= 27,	// * 
-	OGF_IKDATA2		= 28,	// * For skeletons only
-	OGF_MOTION_REFS	= 29,	// * For skeletons only
-    OGF_VERTICES2	= 30,	// remove O1 & N1 (позиция и нормаль в координатах модели)
+	OGF_USERDATA	= 23,	// * For skeletons only (Ini-file)
+	OGF_DESC		= 24,	// * For skeletons only
+	OGF_MOTION_REFS	= 25,	// * For skeletons only
     OGF_forcedword	= 0xFFFFFFFF         
+};
+
+enum OGF_VertType {
+	OGF_STATIC		= 0,
+	OGF_SKELETON_1L	= 1,
+	OGF_SKELETON_2L	= 2,
 };
 
 const u16	xrOGF_SMParamsVersion	= 3;
@@ -72,7 +73,7 @@ struct ECORE_API ogf_desc{
 };
 
 // OGF_HEADER
-const u8	xrOGF_FormatVersion		= 3;
+const u8	xrOGF_FormatVersion		= 4;
 struct ogf_header {
 	u8		format_version;			// = xrOGF_FormatVersion
 	u8		type;					// MT

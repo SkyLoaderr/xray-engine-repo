@@ -165,7 +165,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	xr_vector<u32>	bids;
 
 	// Load vertices
-	R_ASSERT	(data->find_chunk(OGF_VERTICES2));
+	R_ASSERT	(data->find_chunk(OGF_VERTICES));
 			
 	u32			hw_bones	= (HW.Caps.geometry.dwRegisters-22)/3;
 	u32			sw_bones	= 0;
@@ -181,7 +181,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 	Render->shader_option_skinning	(0);
 	switch		(dwVertType)
 	{
-	case 0: // 1-Link
+	case OGF_SKELETON_1L: // 1-Link
 		{
 			size			= dwVertCount*sizeof(vertBoned1W);
 			vertBoned1W* VO = (vertBoned1W*)data->pointer();
@@ -207,7 +207,7 @@ void CSkeletonX::_Load	(const char* N, IReader *data, u32& dwVertCount)
 			}
 		}
 		break;
-	case 1: // 2-Link
+	case OGF_SKELETON_2L: // 2-Link
 		{
 			size			= dwVertCount*sizeof(vertBoned2W);
 			vertBoned2W* VO = (vertBoned2W*)data->pointer();

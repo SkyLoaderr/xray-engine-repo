@@ -514,78 +514,37 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
 	bool bRes		= true;
 	// Load definitions
     U16Vec rm_bones	(bones->size(),BI_NONE);
-	IReader* MP 	= data->open_chunk(OGF_SMPARAMS2);
+	IReader* MP 	= data->open_chunk(OGF_SMPARAMS);
     if (MP){
 	    u16 		vers 			= MP->r_u16();
         u16 		part_bone_cnt	= 0;
         string128 	buf;
-        if (1==vers){
-            // partitions
-            u16 part_count;
-            part_count = MP->r_u16();
-            for (u16 part_i=0; part_i<part_count; part_i++){
-                CPartDef&	PART	= (*partition)[part_i];
-                MP->r_stringZ		(buf);
-                PART.Name			= _strlwr(buf);
-                PART.bones.resize	(MP->r_u16());
-                MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
-                part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
+        R_ASSERT3(vers==xrOGF_SMParamsVersion,"Invalid OGF/OMF version:",N);
+        // partitions
+        u16 part_count;
+        part_count 				= MP->r_u16();
+        for (u16 part_i=0; part_i<part_count; part_i++){
+            CPartDef&	PART	= (*partition)[part_i];
+            MP->r_stringZ		(buf);
+            PART.Name			= _strlwr(buf);
+            PART.bones.resize	(MP->r_u16());
+//				Log					("Part:",buf);
+            for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
+                MP->r_stringZ	(buf);
+                u16 m_idx 		= u16		(MP->r_u32());
+                *b_it			= LL_BoneID	(buf); 
+//					Msg				("Bone: #%2d, ID: %2d, Name: '%s'",b_it-PART.bones.begin(),*b_it,buf);
+#ifdef _EDITOR
+                if (*b_it==BI_NONE){
+                    bRes		= false;
+                    Msg			("!Can't find bone: '%s'",buf);
+                }
+#else
+                VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
+#endif
+                if (bRes)		rm_bones[m_idx] = u16(*b_it);
             }
-		    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=u16(i);
-        }else{
-        	if (2==vers){
-                // partitions
-                u16 part_count;
-                part_count 				= MP->r_u16();
-                for (u16 part_i=0; part_i<part_count; part_i++){
-                    CPartDef&	PART	= (*partition)[part_i];
-                    MP->r_stringZ		(buf);
-                    PART.Name			= _strlwr(buf);
-                    PART.bones.resize	(MP->r_u16());
-                    for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
-                        MP->r_stringZ	(buf);
-                        *b_it			= LL_BoneID	(buf); 
-    #ifdef _EDITOR
-                        if (*b_it==BI_NONE){
-                            bRes		= false;
-                            Msg			("!Can't find bone: '%s'",buf);
-                        }
-    #else
-                        VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
-    #endif
-                    }
-                    part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
-                }
-			    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=u16(i);
-            }else{
-                R_ASSERT3(vers==xrOGF_SMParamsVersion,"Invalid OGF/OMF version:",N);
-                // partitions
-                u16 part_count;
-                part_count 				= MP->r_u16();
-                for (u16 part_i=0; part_i<part_count; part_i++){
-                    CPartDef&	PART	= (*partition)[part_i];
-                    MP->r_stringZ		(buf);
-                    PART.Name			= _strlwr(buf);
-                    PART.bones.resize	(MP->r_u16());
-    //				Log					("Part:",buf);
-                    for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
-                        MP->r_stringZ	(buf);
-                        u16 m_idx 		= u16		(MP->r_u32());
-                        *b_it			= LL_BoneID	(buf); 
-    //					Msg				("Bone: #%2d, ID: %2d, Name: '%s'",b_it-PART.bones.begin(),*b_it,buf);
-    #ifdef _EDITOR
-                        if (*b_it==BI_NONE){
-                            bRes		= false;
-                            Msg			("!Can't find bone: '%s'",buf);
-                        }
-    #else
-                        VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
-    #endif
-                        if (bRes)		rm_bones[m_idx] = u16(*b_it);
-                    }
-                    part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
-                }
-    		}
+            part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
         }
 
         m_cycle = xr_new<mdef> ();
@@ -612,44 +571,13 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
         }
         MP->close();
     }else{
-		IReader* MP = data->open_chunk(OGF_SMPARAMS);
-        if (MP){
-            // partitions
-            u16 part_count;
-            part_count = MP->r_u16();
-            string128 buf;
-            for (u16 part_i=0; part_i<part_count; part_i++){
-                CPartDef&	PART	= (*partition)[part_i];
-                MP->r_stringZ(buf);
-                PART.Name			= ref_str(_strlwr(buf));
-                PART.bones.resize	(MP->r_u16());
-                MP->r				(&*PART.bones.begin(),PART.bones.size()*sizeof(u32));
-            }
-
-            m_cycle = xr_new<mdef> ();
-            m_fx	= xr_new<mdef> ();
-
-            // motion defs (cycle&fx)
-            u16 mot_count			= MP->r_u16();
-            for (u16 mot_i=0; mot_i<mot_count; mot_i++){
-                MP->r_stringZ(buf);
-                BYTE bCycle			=	MP->r_u8();
-				CMotionDef	D;		D.Load(this,MP,bCycle?0:esmFX);
-				BYTE bNoLoop		=	MP->r_u8();
-				D.flags				|=	(bNoLoop?esmStopAtEnd:0);
-                if (bCycle)			m_cycle->insert(mk_pair(ref_str(_strlwr(buf)),D));
-                else				m_fx->insert(mk_pair(ref_str(_strlwr(buf)),D));
-            }
-            MP->close();
-        }else{
-			Debug.fatal				("Old skinned model version unsupported! (%s)",N);
-        }
+        Debug.fatal	("Old skinned model version unsupported! (%s)",N);
     }
 
     if (!bRes)	return false;
     
 	// Load animation
-	IReader*	MS		= data->open_chunk(OGF_MOTIONS2);
+	IReader*	MS		= data->open_chunk(OGF_MOTIONS);
     if (!MS) 	return false;
     
     u32			dwCNT	= 0;
