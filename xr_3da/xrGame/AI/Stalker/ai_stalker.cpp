@@ -354,6 +354,7 @@ void CAI_Stalker::net_Export		(NET_Packet& P)
 	P.w_u32							(0);
 	P.w_u32							(0);
 	P.w_u32							(0);
+	P.w_u32							(0);
 }
 
 void CAI_Stalker::net_Import		(NET_Packet& P)
@@ -385,6 +386,7 @@ void CAI_Stalker::net_Import		(NET_Packet& P)
 	P.r_u32							(dwDummy);
 	P.r_u32							(dwDummy);
 
+	P.r_u32							(dwDummy);
 	P.r_u32							(dwDummy);
 	P.r_u32							(dwDummy);
 	P.r_u32							(dwDummy);

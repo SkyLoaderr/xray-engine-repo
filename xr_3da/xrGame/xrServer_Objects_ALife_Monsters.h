@@ -209,18 +209,9 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	u32								m_dwCurTaskLocation;
 	u32								m_dwCurTask;
 	float							m_fSearchSpeed;
+	u32								m_dwCurNode;
 
-									CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
-	{
-		m_tpaVertices.clear			();
-		m_baVisitedVertices.clear	();
-		m_tpTasks.clear				();
-		m_dwCurTask					= u32(-1);
-		m_tTaskState				= eTaskStateNoTask;
-		m_dwCurTaskLocation			= u32(-1);
-		m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
-	};
-
+									CSE_ALifeHumanAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanAbstract();
 SERVER_ENTITY_DECLARE_END
 

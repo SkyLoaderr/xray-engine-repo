@@ -693,6 +693,18 @@ void CSE_ALifeMonsterChimera::FillProp	(LPCSTR pref, PropItemVec& values)
 //////////////////////////////////////////////////////////////////////////
 // CSE_ALifeHumanAbstract
 //////////////////////////////////////////////////////////////////////////
+CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTraderAbstract(caSection), CSE_ALifeMonsterAbstract(caSection), CSE_Abstract(caSection)
+{
+	m_tpaVertices.clear			();
+	m_baVisitedVertices.clear	();
+	m_tpTasks.clear				();
+	m_dwCurTask					= u32(-1);
+	m_tTaskState				= eTaskStateNoTask;
+	m_dwCurTaskLocation			= u32(-1);
+	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
+	m_dwCurNode					= u32(-1);
+}
+
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
 {
 	delete_data					(m_tpTasks);
@@ -726,6 +738,7 @@ void CSE_ALifeHumanAbstract::UPDATE_Write	(NET_Packet &tNetPacket)
 	tNetPacket.w				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.w_u32			(m_dwCurTaskLocation);
 	tNetPacket.w_u32			(m_dwCurTask);
+	tNetPacket.w_u32			(m_dwCurNode);
 };
 
 void CSE_ALifeHumanAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
@@ -736,6 +749,7 @@ void CSE_ALifeHumanAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 	tNetPacket.r				(&m_tTaskState,sizeof(m_tTaskState));
 	tNetPacket.r_u32			(m_dwCurTaskLocation);
 	tNetPacket.r_u32			(m_dwCurTask);
+	tNetPacket.r_u32			(m_dwCurNode);
 };
 
 #ifdef _EDITOR
