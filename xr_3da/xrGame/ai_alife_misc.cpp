@@ -76,6 +76,13 @@ void CSE_ALifeSimulator::vfChooseNextRoutePoint(CSE_ALifeMonsterAbstract	*tpALif
 			CSE_ALifeAbstractGroup					*tpALifeAbstractGroup = dynamic_cast<CSE_ALifeAbstractGroup*>(tpALifeMonsterAbstract);
 			if (tpALifeAbstractGroup)
 				tpALifeAbstractGroup->m_bCreateSpawnPositions = true;
+			else {
+#pragma todo("Dima to Dima : Add stalker search state code here")
+				CSE_ALifeHumanAbstract *l_tpALifeHumanAbstract = dynamic_cast<CSE_ALifeHumanAbstract*>(tpALifeMonsterAbstract);
+				if (l_tpALifeHumanAbstract && (l_tpALifeHumanAbstract->m_tTaskState == eTaskStateSearching)) {
+					
+				}
+			}
 		}
 	}
 	if (tpALifeMonsterAbstract->m_tNextGraphID == tpALifeMonsterAbstract->m_tGraphID) {

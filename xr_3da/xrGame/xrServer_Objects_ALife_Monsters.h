@@ -44,6 +44,8 @@ public:
 };
 
 SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_ALifeTraderAbstract)
+	_ORGANIZATION_ID				m_tOrgID;
+
 									CSE_ALifeTrader	(LPCSTR caSection);
 	virtual							~CSE_ALifeTrader();
 
@@ -210,6 +212,8 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeHumanAbstract,CSE_ALifeTraderAbstract,CSE_
 	u32								m_dwCurTask;
 	float							m_fSearchSpeed;
 	u32								m_dwCurNode;
+	string128						m_caKnownTraders;
+	OBJECT_VECTOR					m_tpKnownTraders;
 
 									CSE_ALifeHumanAbstract(LPCSTR caSection);
 	virtual							~CSE_ALifeHumanAbstract();

@@ -492,7 +492,7 @@ void CSE_ALifeSimulator::vfSellArtefacts(CSE_ALifeTrader &tTrader)
 			for ( ; I != E; I++) {
 				// checking if our rank is enough for the organization
 				// and the organization in the appropriate state
-				if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
+				if (((*I).second->m_tOrgID == tTrader.m_tOrgID) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
 					// iterating on all the organization artefact orders
 					ARTEFACT_ORDER_IT		ii = (*I).second->m_tpOrderedArtefacts.begin();
 					ARTEFACT_ORDER_IT		ee = (*I).second->m_tpOrderedArtefacts.end();
@@ -554,7 +554,7 @@ void CSE_ALifeSimulator::vfUpdateArtefactOrders(CSE_ALifeTrader &tTrader)
 	for ( ; I != E; I++) {
 		// checking if our rank is enough for the organization
 		// and the organization in the appropriate state
-		if (((*I).second->m_tTraderRank == tTrader.m_tRank) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
+		if (((*I).second->m_tOrgID == tTrader.m_tOrgID) && ((*I).second->m_tResearchState == eResearchStateJoin)) {
 			ARTEFACT_ORDER_IT		i = (*I).second->m_tpOrderedArtefacts.begin();
 			ARTEFACT_ORDER_IT		e = (*I).second->m_tpOrderedArtefacts.end();
 			for ( ; i != e; i++) {

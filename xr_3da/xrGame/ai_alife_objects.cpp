@@ -121,7 +121,7 @@ CSE_ALifeOrganization::CSE_ALifeOrganization(LPCSTR caSection)
 	}
 	m_fJoinProbability			= pSettings->r_float	(caSection,"join_probability");
 	m_fLeftProbability			= pSettings->r_float	(caSection,"left_probability");
-	m_tTraderRank				= EStalkerRank			(pSettings->r_u32(caSection,"trader_rank"));
+	m_tOrgID					= _ORGANIZATION_ID		(pSettings->r_u32(caSection,"organization_id"));
 	strcpy						(m_caDiscoveryToInvestigate,"");
 	m_tResearchState			= eResearchStateLeft;
 }

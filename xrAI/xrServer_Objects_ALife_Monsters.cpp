@@ -81,6 +81,7 @@ void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
 	inherited2::STATE_Write		(tNetPacket);
+	tNetPacket.w				(&m_tOrgID,sizeof(m_tOrgID));
 	{
 		tNetPacket.w_u32		(m_tpOrderedArtefacts.size());
 		ARTEFACT_TRADER_ORDER_IT	I = m_tpOrderedArtefacts.begin();
@@ -108,6 +109,9 @@ void CSE_ALifeTrader::STATE_Read			(NET_Packet &tNetPacket, u16 size)
 {
 	inherited1::STATE_Read		(tNetPacket, size);
 	inherited2::STATE_Read		(tNetPacket, size);
+	if (m_wVersion > 35)
+		tNetPacket.r			(&m_tOrgID,sizeof(m_tOrgID));
+		
 	if (m_wVersion > 29) {
 		u32						l_dwCount;
 		tNetPacket.r_u32		(l_dwCount);
@@ -171,14 +175,14 @@ void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
     AnsiString 					pref = FHelper.PrepareKey(_pref,s_name,"ALife\\Supplies");
 
     supplies_count				= m_tpSupplies.size();
-	PropValue* V=PHelper.CreateS32(items, FHelper.PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
+	PropValue					*V = PHelper.CreateS32(items, FHelper.PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
     V->OnChangeEvent			= OnSuppliesCountChange;
     
 	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
 	for ( ; I != E; I++) {
     	S.sprintf				("Slot #%d",I-B+1).c_str();
-		V=PHelper.CreateEntity	(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections));
+		aV=PHelper.CreateEntity	(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections));
         V->Owner()->subitem		= 8;
 		PHelper.CreateU32		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Count"), 	&(*I).m_dwCount,	1, 256);
 		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
@@ -703,6 +707,8 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_dwCurTaskLocation			= u32(-1);
 	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
 	m_dwCurNode					= u32(-1);
+	strcpy						(m_caKnownTraders,"m_trader0000");
+	m_tpKnownTraders.clear		();
 }
 
 CSE_ALifeHumanAbstract::~CSE_ALifeHumanAbstract()
@@ -717,6 +723,8 @@ void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)
 	save_data					(m_tpaVertices,tNetPacket);
 	save_data					(m_baVisitedVertices,tNetPacket);
 	save_data					(m_tpTasks,tNetPacket);
+	tNetPacket.w_string			(m_caKnownTraders);
+	save_data					(m_tpKnownTraders,tNetPacket);
 }
 
 void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
@@ -727,6 +735,10 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 		load_data				(m_tpaVertices,tNetPacket);
 		load_data				(m_baVisitedVertices,tNetPacket);
 		load_data				(m_tpTasks,tNetPacket);
+		if (m_wVersion > 35) {
+			tNetPacket.w_string	(m_caKnownTraders);
+			load_data			(m_tpKnownTraders,tNetPacket);
+		}
 	}
 }
 
@@ -757,6 +769,8 @@ void CSE_ALifeHumanAbstract::FillProp		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProp		(pref,items);
   	inherited2::FillProp		(pref,items);
+	PropValue					*V = PHelper.CreateSceneItem(items, FHelper.PrepareKey(pref,s_name,"ALife\\Known traders"),	m_caKnownTraders,  sizeof(m_caKnownTraders), OBJCLASS_SPAWNPOINT, "m_trader_e")	;
+	V->Owner()->subitem			= 8;
 }
 #endif
 
