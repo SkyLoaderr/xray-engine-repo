@@ -49,7 +49,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 			RS.PassBegin		();
 			{
 				RS.PassSET_ZB		(TRUE,TRUE);
-				RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
+				RS.PassSET_Blend_SET();
 				RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
 				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 				
@@ -85,7 +85,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 			RS.PassBegin		();
 			{
 				RS.PassSET_ZB		(TRUE,TRUE);
-				RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
+				RS.PassSET_Blend_SET();
 				RS.R().SetRS		(D3DRS_LIGHTING,					BC(TRUE));
 				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 				
@@ -119,7 +119,7 @@ void	CBlender_LaEmB::Compile(CBlender_Recorder& RS, sh_list& L_textures, sh_list
 			RS.PassBegin		();
 			{
 				RS.PassSET_ZB		(TRUE,FALSE);
-				RS.PassSET_Blend	(TRUE,D3DBLEND_DESTCOLOR,D3DBLEND_SRCCOLOR,	FALSE,0);
+				RS.PassSET_Blend_MUL();
 				RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 				RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 				
@@ -159,7 +159,7 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(TRUE,TRUE);
-		RS.PassSET_Blend	(FALSE,D3DBLEND_ONE,D3DBLEND_ZERO,	FALSE,0);
+		RS.PassSET_Blend_SET();
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 		
@@ -193,7 +193,7 @@ void CBlender_LaEmB::compile_2	(CBlender_Recorder& RS, sh_list& L_textures, sh_l
 	RS.PassBegin		();
 	{
 		RS.PassSET_ZB		(TRUE,FALSE);
-		RS.PassSET_Blend	(TRUE, D3DBLEND_ZERO, D3DBLEND_SRCCOLOR,	FALSE,0);
+		RS.PassSET_Blend_MUL();
 		RS.R().SetRS		(D3DRS_LIGHTING,					BC(FALSE));
 		RS.R().SetRS		(D3DRS_FOGENABLE,					BC(TRUE));
 		
