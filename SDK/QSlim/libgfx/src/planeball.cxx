@@ -75,12 +75,12 @@ bool Planeball::mouse_drag(int *where, int *last, int which)
 
 	if( which==1 ){
 		Vec3 A;
-		float x = 0.005*diam*(where[0] - last[0]);
+		float x = 0.1*(where[0] - last[0]);//0.001*diam*(where[0] - last[0]);
 		A[0] = M[0][0]*x;
 		A[1] = 0;//M[0][1]*x;
 		A[2] = M[0][2]*x;
 		trans += A;
-		float z = 0.005*diam*(where[1] - last[1]);
+		float z = 0.1*(where[1] - last[1]);//0.001*diam*(where[1] - last[1]);
 		A[0] = M[2][0]*z;
 		A[1] = 0;//M[2][1]*z;
 		A[2] = M[2][2]*z;
@@ -89,7 +89,7 @@ bool Planeball::mouse_drag(int *where, int *last, int which)
 		hpb[1] += 0.01*(where[1] - last[1]);
 		hpb[0] += 0.01*(where[0] - last[0]);
 	}else if( which==3 ){
-		trans[1] -= 0.005*diam*(where[1] - last[1]);
+		trans[1] -= 0.1*(where[1] - last[1]);//0.005*diam*(where[1] - last[1]);
 	}else return false;
 	return true;
 }
