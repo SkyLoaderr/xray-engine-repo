@@ -32,7 +32,7 @@ enum EEffectorType		{
 	cefHit
 };
 
-enum EEffectorPPType		{
+enum EEffectorPPType	{
 	cefppDemo,
 	cefppHit
 };

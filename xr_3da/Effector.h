@@ -9,7 +9,7 @@
 
 #include "CameraDefs.h"
 
-class ENGINE_API CEffector
+class ENGINE_API		CEffector
 {
 protected:
 	EEffectorType		eType;
