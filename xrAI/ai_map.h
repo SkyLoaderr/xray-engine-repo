@@ -50,13 +50,14 @@ public:
 		// m_header & data
 		vfs->r		(&m_header,sizeof(m_header));
 		R_ASSERT	(m_header.version == XRAI_CURRENT_VERSION);
-		m_nodes		= (BYTE*) vfs->pointer();
+		m_row_length= iFloor((m_header.aabb.max.z - m_header.aabb.min.z)/m_header.size + EPS_L + .5f) + 1;
 
 		m_fSize2	= _sqr(m_header.size)/1;
 		m_fYSize2	= _sqr((float)(m_header.size_y/32767.0))/1;
-		m_tpCoverPalette = (Cover*)vfs->pointer();
 		u32			dwPaletteSize = vfs->r_u32();
+		m_tpCoverPalette = (Cover*)vfs->pointer();
 		vfs->advance(dwPaletteSize*sizeof(Cover));
+		m_nodes		= (BYTE*) vfs->pointer();
 
 		// dispatch table
 		m_nodes_ptr	= (NodeCompressed**)xr_malloc(m_header.count*sizeof(void*));
@@ -87,9 +88,9 @@ public:
 	IC	void PackPosition(NodePosition &Pdest, const Fvector& Psrc) const
 	{
 		float sp = 1/m_header.size;
-		int pxz	= iFloor((Psrc.x - m_header.aabb.min.x)*sp + EPS_L + .5f)*iFloor((Psrc.z - m_header.aabb.min.z)*sp   + EPS_L + .5f);
+		int pxz	= iFloor(((Psrc.x - m_header.aabb.min.x)*sp + EPS_L + .5f)*m_row_length) + iFloor((Psrc.z - m_header.aabb.min.z)*sp   + EPS_L + .5f);
 		int py	= iFloor(65535.f*(Psrc.y-m_header.aabb.min.y)/(m_header.size_y)+EPS_L);
-		clamp	(pxz,0,(1 << 24) - 1);	Pdest.xz = pxz;
+		clamp	(pxz,0,(1 << 24) - 1);	Pdest.xz = u32(pxz);
 		clamp	(py,0,     65535);	Pdest.y = u16	(py);
 	}
 
