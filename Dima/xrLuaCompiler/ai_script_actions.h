@@ -718,19 +718,19 @@ public:
 	{
 		m_dwFlags			= 0;
 		m_tLifeTime			= _TIME_ID(-1);
-		m_tStartTime		= Level().GetGameTime();
+		m_tStartTime		= _TIME_ID(-1);
 	}
 
 							CActionCondition		(u32 dwFlags, double dTime = -1)
 	{
 		m_dwFlags			= dwFlags;
 		m_tLifeTime			= _TIME_ID(dTime);
-		m_tStartTime		= Level().GetGameTime();
+		m_tStartTime		= _TIME_ID(-1);
 	}
 
 	IC		void			initialize				()
 	{
-		m_tStartTime		= Level().GetGameTime();
+		m_tStartTime		= Device.TimerAsync();
 	}
 
 			bool			completed				() const
