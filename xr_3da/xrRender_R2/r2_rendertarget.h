@@ -93,12 +93,15 @@ public:
 	void						phase_scene_sky			();
 	void						phase_smap_direct		();
 	void						phase_smap_point		(u32 pls_phase);
+	void						phase_smap_spot			();
 	void						phase_accumulator		();
 	void						phase_accumulator_init	();
 	void						shadow_direct			(u32 dls_phase);
 	void						accum_direct			();
 	void						accum_point_shadow		(light* L);
 	void						accum_point_unshadow	(light* L);
+	void						accum_spot_shadow		(light* L);
+	void						accum_spot_unshadow		(light* L);
 	void						phase_bloom				();
 	void						phase_combine			();
 
