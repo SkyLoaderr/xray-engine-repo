@@ -48,6 +48,7 @@ public:
 	FSPath 	m_Objects;
 	FSPath 	m_Textures;
 	FSPath 	m_TexturesThumbnail;
+	FSPath 	m_ObjectsThumbnail;
 	FSPath 	m_Config;
 	FSPath 	m_Temp;
 public:

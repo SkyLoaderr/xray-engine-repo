@@ -13,7 +13,7 @@
 //----------------------------------------------------
 #define LOBJ_CHUNK_NAMES		0x1201
 #define LOBJ_CHUNK_VERSION	  	0x1202
-#define LOBJ_CHUNK_FOLDER		0x1203
+#define LOBJ_CHUNK_FOLDER		0x1203  // must die!!!
 #define LOBJ_CHUNK_SRCNAME		0x1204
 //----------------------------------------------------
 #define CURRENT_LIBRARY_VERSION 0x0011
@@ -101,7 +101,7 @@ void CLibObject::Load(CStream& F){
     m_FileName = m_Name;
 
     R_ASSERT(F.FindChunk(LOBJ_CHUNK_FOLDER));
-    F.RstringZ	(buf); m_FolderName=buf;
+    F.RstringZ	(buf); if (buf[0]) m_Name=AnsiString(buf)+AnsiString("\\")+m_Name;
 
     if(F.FindChunk(LOBJ_CHUNK_SRCNAME)){
 	    F.RstringZ(buf); m_SrcName=buf;
@@ -113,10 +113,6 @@ void CLibObject::Save(CFS_Base& F){
 
     F.open_chunk(LOBJ_CHUNK_NAMES);
     F.WstringZ	(m_Name.c_str());
-    F.close_chunk();
-
-    F.open_chunk(LOBJ_CHUNK_FOLDER);
-    F.WstringZ	(m_FolderName.c_str());
     F.close_chunk();
 
     F.open_chunk(LOBJ_CHUNK_SRCNAME);
@@ -139,6 +135,7 @@ void ELibrary::AddObject(CLibObject* obj){
 	VERIFY( m_Valid );
     m_Objects.push_back(obj);
 }
+//----------------------------------------------------
 void ELibrary::RemoveObject(CLibObject* obj){
 	VERIFY( obj );
 	VERIFY( m_Valid );
@@ -149,6 +146,11 @@ void ELibrary::RemoveObject(CLibObject* obj){
         FS.MarkFile(fn);
      	m_Objects.erase(l_obj);
     }
+}
+//----------------------------------------------------
+void ELibrary::RemoveObject(LPCSTR name){
+	CLibObject* _O = SearchObject(name); R_ASSERT(_O);
+    RemoveObject(_O);
 }
 //----------------------------------------------------
 void ELibrary::UnloadMeshes(){

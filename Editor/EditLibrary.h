@@ -52,7 +52,6 @@ __published:	// IDE-managed Components
 	TExtBtn *ebSaveObjectSkeletonOGF;
 	TExtBtn *ebReloadObject;
 	TCheckBox *cbPreview;
-	TExtBtn *ebSaveObjectDO;
     void __fastcall ebSaveClick(TObject *Sender);
     void __fastcall ebCancelClick(TObject *Sender);
     void __fastcall FormShow(TObject *Sender);
@@ -60,12 +59,11 @@ __published:	// IDE-managed Components
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,
           TShiftState Shift);
     void __fastcall ebPropertiesClick(TObject *Sender);
-    void __fastcall ebDeleteObjectClick(TObject *Sender);
+    void __fastcall ebDeleteItemClick(TObject *Sender);
     void __fastcall tvObjectsDblClick(TObject *Sender);
     void __fastcall ebLoadObjectClick(TObject *Sender);
     void __fastcall miNewFolderClick(TObject *Sender);
     void __fastcall miEditFolderClick(TObject *Sender);
-    void __fastcall miDeleteFolderClick(TObject *Sender);
     void __fastcall tvObjectsDragDrop(TObject *Sender, TObject *Source,
           int X, int Y);
     void __fastcall tvObjectsDragOver(TObject *Sender, TObject *Source,
@@ -89,12 +87,9 @@ __published:	// IDE-managed Components
 	void __fastcall ebSaveObjectSkeletonOGFClick(TObject *Sender);
 	void __fastcall ebReloadObjectClick(TObject *Sender);
 	void __fastcall tvObjectsKeyPress(TObject *Sender, char &Key);
+	void __fastcall tvObjectsItemFocused(TObject *Sender);
 private:	// User declarations
     void InitObjectFolder();
-    TElTreeItem* FindFolder(const char* s);
-    TElTreeItem* FindObject(void *obj);
-    TElTreeItem* AddFolder(const char* s);
-    TElTreeItem* AddObject(TElTreeItem* node, const char* name, void* obj);
     TElTreeItem* FDragItem;
     TElTreeItem* FEditNode;
     CLibObject* m_SelectedObject;

@@ -138,6 +138,8 @@ __published:	// IDE-managed Components
 	TMxLabel *RxLabel41;
 	TMultiObjSpinEdit *seLMFuzzyMax;
 	TEdit *edLevelPath;
+	TMxLabel *MxLabel1;
+	TMultiObjSpinEdit *seLMRMSZero;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall btContinueClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

@@ -127,7 +127,7 @@ struct ENGINE_API 	SParams
 
 struct ENGINE_API SDef: public SParams
 {
-    sh_name			m_Folder;
+    sh_name			m_Reserved;
 	sh_name			m_Computer;
     sh_name			m_ShaderName;
     sh_name			m_TextureName;
@@ -135,7 +135,7 @@ struct ENGINE_API SDef: public SParams
     SEmitterDef		m_DefaultEmitter;
 
     void 			Reset(){
-	    m_Folder[0]		= 0;
+	    m_Reserved[0]	= 0;
 		m_Computer[0]	= 0;
 		m_ShaderName[0]	= 0;
 		m_TextureName[0]= 0;
@@ -203,10 +203,6 @@ struct ENGINE_API SDef: public SParams
 		}
 		return false;
 	};
-    void			SetFolder(const char* fld){
-		VERIFY(strlen(fld)<64);
-		strcpy(m_Folder,fld);
-    }
     void			SetShader(const char* sh){
 		VERIFY(strlen(sh)<64);
 		strcpy(m_ShaderName,sh);

@@ -16,7 +16,7 @@
 #include "Builder.h"
 #include "Texture.h"
 #include "BottomBar.h"
-#include "ETexture.h"
+#include "FolderLib.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "ElTree"
@@ -43,8 +43,7 @@ void frmEditLibraryEditLibrary(){
 __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     : TForm(Owner)
 {
-//    m_EditObject = 0;
-//    m_SaveObject = 0;
+    m_SelectedObject = 0;
     FEditNode = 0;
     char buf[MAX_PATH] = {"ed.ini"};  FS.m_ExeRoot.Update(buf);
     fsStorage->IniFileName = buf;
@@ -121,7 +120,6 @@ void __fastcall TfrmEditLibrary::FormClose(TObject *Sender, TCloseAction &Action
 	Action = caFree;
 
     TfrmPropertiesObject::HideProperties();
-//    if (bEditObjectMode) ebCancelEdit->Click();
 	Scene->unlock();
     Lib->ResetAnimation();
     Lib->m_Current = 0;
@@ -156,7 +154,7 @@ void TfrmEditLibrary::OnModified(){
     ebSave->Enabled = true;
     // test name changing
     if (m_SelectedObject){
-    	TElTreeItem* node = FindObject(m_SelectedObject);
+    	TElTreeItem* node = FOLDER::FindObject(tvObjects,m_SelectedObject->m_Name.c_str());
         VERIFY(node);
 		if (strcmp(m_SelectedObject->GetName(),AnsiString(node->Text).c_str())!=0)
         	node->Text = m_SelectedObject->GetName();
@@ -164,18 +162,16 @@ void TfrmEditLibrary::OnModified(){
 }
 //---------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------
-// Folder routines
-//---------------------------------------------------------------------------
-void __fastcall TfrmEditLibrary::tvObjectsItemSelectedChange(
-      TObject *Sender, TElTreeItem *Item)
+void __fastcall TfrmEditLibrary::tvObjectsItemFocused(TObject *Sender)
 {
-	if (Item==tvObjects->Selected) return;
-
     CLibObject* new_selection=0;
+
+    TElTreeItem* node = tvObjects->Selected;
+
     ebMakeThm->Enabled = false;
-    if (Item->Data&&UI.ContainEState(esEditLibrary)){
-        new_selection = (CLibObject*)Item->Data;
+    if (FOLDER::IsObject(node)&&UI.ContainEState(esEditLibrary)){
+    	AnsiString name; FOLDER::MakeName(node,0,name,false);
+        new_selection = Lib->SearchObject(name.c_str());
         new_selection->Refresh();
 	    ebMakeThm->Enabled = true;
     }
@@ -190,60 +186,25 @@ void __fastcall TfrmEditLibrary::cbPreviewClick(TObject *Sender)
     TElTreeItem *itm = tvObjects->Selected;
 	m_SelectedObject = 0;
     ebMakeThm->Enabled = false;
-    if (cbPreview->Checked&&itm&&itm->Data&&UI.ContainEState(esEditLibrary)){
-        m_SelectedObject = (CLibObject*)itm->Data;
+    if (cbPreview->Checked&&itm&&FOLDER::IsObject(itm)&&UI.ContainEState(esEditLibrary)){
+    	AnsiString name; FOLDER::MakeName(itm,0,name,false);
+        m_SelectedObject = Lib->SearchObject(name.c_str());
 	    ebMakeThm->Enabled = true;
     }
     UI.RedrawScene();
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmEditLibrary::FindFolder(const char* s)
-{
-    for ( TElTreeItem* node = tvObjects->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (AnsiString(node->Text) == s)) return node;
-    return 0;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmEditLibrary::FindObject(void *obj)
-{
-    for ( TElTreeItem* node = tvObjects->Items->GetFirstNode(); node; node = node->GetNext())
-		if (node->Data==obj) return node;
-    return 0;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmEditLibrary::AddFolder(const char* s)
-{
-    TElTreeItem* node = 0;
-    if (s[0]!=0){
-        node = tvObjects->Items->AddObject(0,s,0);
-        node->ParentStyle = false;
-        node->Bold = true;
-    }
-    return node;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmEditLibrary::AddObject(TElTreeItem* node, const char* name, void* obj)
-{
-    TElTreeItem* obj_node = tvObjects->Items->AddChildObject(node, name, obj);
-    obj_node->ParentStyle = false;
-    obj_node->Bold = false;
-    return obj_node;
-}
-//---------------------------------------------------------------------------
 void TfrmEditLibrary::InitObjectFolder()
 {
-	SendMessage(tvObjects->Handle,WM_SETREDRAW,0,0);
+	tvObjects->IsUpdating		= true;
     tvObjects->Items->Clear();
-    AddFolder(SKYDOME_FOLDER);
-    AddFolder(DETAILOBJECT_FOLDER);
+    FOLDER::AppendFolder(tvObjects,SKYDOME_FOLDER);
+    FOLDER::AppendFolder(tvObjects,DETAILOBJECT_FOLDER);
     for(LibObjIt it=Lib->FirstObj(); it!=Lib->LastObj(); it++){
         CLibObject* _O = *it;
-        TElTreeItem* node = FindFolder(_O->GetFolderName());
-        if (!node) node = AddFolder(_O->GetFolderName());
-        AddObject(node,(*it)->GetName(),(void*)(*it));
+        FOLDER::AppendObject(tvObjects,_O->GetName());
     }
-	SendMessage(tvObjects->Handle,WM_SETREDRAW,1,0);
-	tvObjects->Repaint();
+	tvObjects->IsUpdating		= false;
 //    tvObjects->FullExpand();
 }
 //---------------------------------------------------------------------------
@@ -262,8 +223,8 @@ void __fastcall TfrmEditLibrary::tvObjectsItemChange(TObject *Sender,
     if (FEditNode){
         for ( TElTreeItem* pNode = FEditNode->GetFirstChild(); pNode; pNode = FEditNode->GetNextChild(pNode))
             if (pNode->Data){
-                CLibObject* _pT = (CLibObject*)pNode->Data;
-                _pT->SetFolderName(FEditNode->Text);
+//S                CLibObject* _pT = (CLibObject*)pNode->D a t a???;
+//S                _pT->SetFolderName(FEditNode->Text);
                 OnModified();
             }
         FEditNode = 0;
@@ -278,7 +239,7 @@ void __fastcall TfrmEditLibrary::FormKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
     if (Key==VK_ESCAPE) 	ebCancel->Click();
-	else if (Key==VK_DELETE)ebDeleteObjectClick(Sender);
+	else if (Key==VK_DELETE)ebDeleteItemClick(Sender);
 	else if (Key==VK_INSERT)ebLoadObjectClick(Sender);
 }
 //---------------------------------------------------------------------------
@@ -302,10 +263,6 @@ void __fastcall TfrmEditLibrary::ebSaveClick(TObject *Sender)
     else{
         ebSave->Enabled = false;
         Lib->SaveLibrary();
-//        CEditObject* _pT = 0;
-//        TElTreeItem* pNode = tvObjects->Selected;
-//        if (pNode && pNode->Data) _pT = (CEditObject*) pNode->Data;
-//        InitObjectFolder(_pT);
     }
 }
 //---------------------------------------------------------------------------
@@ -341,16 +298,10 @@ void __fastcall TfrmEditLibrary::ebLoadObjectClick(TObject *Sender)
         	LO->SetName(obj_name);
             // find last folder
             TElTreeItem* node = tvObjects->Selected;
-            TElTreeItem* pParentNode = 0;
-            if (node){
-                pParentNode = (node->Parent)?node->Parent:node;
-                if (!pParentNode->Data){
-                    LO->SetFolderName(pParentNode->Text);
-                }else{
-                    pParentNode=0;
-                }
-            }
-		    tvObjects->Selected = AddObject(pParentNode, LO->GetName(), (void*)LO);
+            AnsiString folder;
+            FOLDER::MakeName(node,0,folder,true);
+			LO->SetName(folder+AnsiString("\\")+obj_name);
+		    tvObjects->Selected = FOLDER::AppendObject(tvObjects,LO->GetName());
             ebPropertiesClick(Sender);
             // init folders
             OnModified();
@@ -364,26 +315,32 @@ void __fastcall TfrmEditLibrary::ebLoadObjectClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmEditLibrary::ebDeleteObjectClick(TObject *Sender)
+void __fastcall TfrmEditLibrary::ebDeleteItemClick(TObject *Sender)
 {
     TElTreeItem* pNode = tvObjects->Selected;
-    TElTreeItem* pPrevNode = pNode->GetPrevVisible();
     if (pNode){
-    	if (pNode->Data){
-            CLibObject* _pT = (CLibObject*)pNode->Data;
-            if (_pT)
-                if (ELog.DlgMsg(mtConfirmation, "Delete selected item?") == mrYes){
-                    Lib->RemoveObject( _pT );
-                    _DELETE(_pT);
-                    OnModified();
-                    pNode->Delete();
-                    tvObjects->Selected = pPrevNode;
-			    	frmEditLibrary->SetFocus();
-                    cbPreviewClick(Sender);
+		AnsiString full_name;
+    	if (FOLDER::IsFolder(pNode)){
+	        if (ELog.DlgMsg(mtConfirmation, "Delete selected folder?") == mrYes){
+		        for (TElTreeItem* item=pNode->GetFirstChild(); item&&(item->Level>pNode->Level); item=item->GetNext()){
+                    FOLDER::MakeName(item,0,full_name,false);
+                	if (FOLDER::IsObject(item))
+                    	Lib->RemoveObject(full_name.c_str());
                 }
-        }else{
-        	miDeleteFolderClick(Sender);
+	            pNode->Delete();
+				OnModified();
+        	}
         }
+    	if (FOLDER::IsObject(pNode)){
+	        if (ELog.DlgMsg(mtConfirmation, "Delete selected object?") == mrYes){
+				FOLDER::MakeName(pNode,0,full_name,false);
+				Lib->RemoveObject(full_name.c_str());
+	            pNode->Delete();
+				OnModified();
+        	}
+        }
+    }else{
+		ELog.DlgMsg(mtInformation, "At first selected item.");
     }
 }
 //---------------------------------------------------------------------------
@@ -434,7 +391,7 @@ void __fastcall TfrmEditLibrary::tvObjectsDblClick(TObject *Sender)
 
 void __fastcall TfrmEditLibrary::miNewFolderClick(TObject *Sender)
 {
-    TElTreeItem* pNode = AddFolder("New folder");
+    TElTreeItem* pNode = FOLDER::AppendFolder(tvObjects,"New folder");
     pNode->EditText();
 }
 //---------------------------------------------------------------------------
@@ -442,25 +399,6 @@ void __fastcall TfrmEditLibrary::miNewFolderClick(TObject *Sender)
 void __fastcall TfrmEditLibrary::miEditFolderClick(TObject *Sender)
 {
     if (tvObjects->Selected&&!tvObjects->Selected->Data) tvObjects->Selected->EditText();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmEditLibrary::miDeleteFolderClick(TObject *Sender)
-{
-    if (tvObjects->Selected&&!tvObjects->Selected->Data){
-		if (ELog.DlgMsg(mtConfirmation, "Delete selected folder and contents?") == mrYes){
-		    TElTreeItem* fld=tvObjects->Selected;
-            for ( TElTreeItem* pNode = fld->GetFirstChild(); pNode; pNode = fld->GetNextChild(pNode))
-                if (pNode->Data){
-                    CLibObject* _pT = (CLibObject*)pNode->Data;
-	                Lib->RemoveObject( _pT );
-	                _DELETE(_pT);
-                    OnModified();
-                }
-	     	fld->Delete();
-			frmEditLibrary->SetFocus();
-        }
-    }
 }
 //---------------------------------------------------------------------------
 
@@ -474,7 +412,7 @@ void __fastcall TfrmEditLibrary::tvObjectsDragDrop(TObject *Sender,
     if (FDragItem&&FDragItem->Data){
         OnModified();
         node=(node->Parent)?node->Parent:node;
-        ((CLibObject*)(FDragItem->Data))->SetFolderName(node->Text);
+//S        ((CLibObject*)(FDragItem->Data))->SetFolderName(node->Text);
     }
 }
 //---------------------------------------------------------------------------
@@ -587,9 +525,9 @@ void __fastcall TfrmEditLibrary::ebMakeThmClick(TObject *Sender)
             FS.m_Objects.Update(obj_name);
             src_age = FS.GetFileAge(obj_name);
             if (Device.MakeScreenshot(pixels,w,h)){
-	            ETextureThumbnail tex(tex_name.c_str());
-    	        tex.CreateFromData(pixels,w,h,src_age,false,false);
-        	    tex.Save(src_age);
+//S	            EImageThumbnail tex(tex_name.c_str());
+//S    	        tex.CreateFromData(pixels,w,h,src_age,false,false);
+//S        	    tex.Save(src_age);
             	ELog.DlgMsg(mtInformation,"Thumbnail created.");
             }else{
 	            ELog.DlgMsg(mtError,"Can't make screenshot.");

@@ -7,6 +7,26 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
+LPCSTR FOLDER::GetFolderName(const AnsiString& full_name, AnsiString& dest)
+{
+    for (int i=full_name.Length(); i>=1; i--)
+    	if (full_name[i]=='\\'){
+        	dest=full_name.SubString(1,i);
+            break;
+        }
+    return dest.c_str();
+}
+
+LPCSTR FOLDER::GetObjectName(const AnsiString& full_name, AnsiString& dest)
+{
+    for (int i=full_name.Length(); i>=1; i--)
+    	if (full_name[i]=='\\'){
+        	dest=full_name.SubString(i+1,full_name.Length());
+            break;
+        }
+    return dest.c_str();
+}
+
 // собирает имя от стартового итема до конечного
 // может включать либо не включать имя объекта
 bool FOLDER::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name, bool bOnlyFolder)

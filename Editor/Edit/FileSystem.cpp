@@ -84,7 +84,8 @@ void CFileSystem::Init(){
 	m_SMotions.Init	( m_Root, "import\\", 		      	"skls",		"Skeleton motions file (*.skls)|*.skls" );
 	m_Maps.Init     ( m_Root, "maps\\",         		"lv2",  	"Levels (*.lv2)|*.lv2" );
 	m_Textures.Init ( m_Root, "textures\\",     		"bmp",  	"Textures (*.bmp;*.tga)|*.bmp;*.tga" );
-    m_TexturesThumbnail.Init( m_Root, "textures\\thumbnail\\",	"",  		"" );
+    m_TexturesThumbnail.Init( m_Root, "textures\\thumbnail\\",	"", "" );
+	m_ObjectsThumbnail.Init( m_Root, "textures\\thumbnail\\$object\\","","" );
 	m_Config.Init   ( m_Root, "config\\",       		"",     	"" );
 	m_Temp.Init     ( m_Root, "temp\\",         		"",     	"" );
 }

@@ -13,6 +13,7 @@
 #include "D3DUtils.h"
 #include "ImageThumbnail.h"
 #include "FolderLib.h"
+#include "ImageManager.h"
 
 #ifdef _LEVEL_EDITOR
 #include "PSLibrary.h"
@@ -44,12 +45,11 @@ LPCSTR __fastcall TfrmChoseItem::SelectObject(bool bMulti, bool bExcludeSystem, 
     form->tvItems->Selected 		= 0;
     form->tvItems->Items->Clear		();
     // fill object list
+	AnsiString fld;
     for (LibObjIt it=Lib->FirstObj(); it!=Lib->LastObj(); it++){
-		if (!start_folder||(start_folder&&(stricmp(start_folder,(*it)->GetFolderName())==0)))
-			if (!bExcludeSystem||(bExcludeSystem&&((*it)->GetName()[0]!='$'))){
-            	TElTreeItem* folder = FOLDER::AppendFolder(form->tvItems,(*it)->GetFolderName());
-    	    	form->tvItems->Items->AddChildObject(folder,(*it)->GetName(),(TObject*)TYPE_OBJECT);
-            }
+		if (!start_folder||(start_folder&&(stricmp(start_folder,FOLDER::GetFolderName((*it)->GetName(),fld))==0)))
+			if (!bExcludeSystem||(bExcludeSystem&&((*it)->GetName()[0]!='$')))
+            	FOLDER::AppendObject(form->tvItems,(*it)->GetName());
     }
     // redraw
 	form->tvItems->IsUpdating		= false;
@@ -115,10 +115,11 @@ LPCSTR __fastcall TfrmChoseItem::SelectPS(LPCSTR start_folder, LPCSTR init_name)
 	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
+	AnsiString fld;
     // fill
     for (PS::SDef* S=PSLib->FirstPS(); S!=PSLib->LastPS(); S++){
-		if (!start_folder||(start_folder&&stricmp(start_folder,S->m_Folder)))
-        	form->AddItemToFolder(S->m_Folder,S->m_Name);
+		if (!start_folder||(start_folder&&stricmp(start_folder,FOLDER::GetFolderName(S->m_Name,fld))))
+			FOLDER::AppendObject(form->tvItems,S->m_Name);
     }
     // redraw
 	form->tvItems->IsUpdating		= false;
@@ -137,32 +138,16 @@ LPCSTR __fastcall TfrmChoseItem::SelectTexture(bool msel, LPCSTR init_name){
     form->tvItems->ShowCheckboxes = msel;
 	// init
 	if (init_name) last_item = init_name;
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,0,0);
+	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected = 0;
     form->tvItems->Items->Clear();
     // fill
-    TElTreeItem* fld = form->AddFolder("Pictures");
-	AnsiString tt;
-    AnsiString nm = "*.tga";
-    FS.m_Textures.Update(nm);
-    LPCSTR T=0;
-	if (T=FS.FindFirst(nm.c_str())){
-    	do{
-			tt = ChangeFileExt(AnsiString(T),"");
-        	form->AddItem(fld,tt.c_str());
-        }while(T=FS.FindNext());
-	}
-    nm = "*.bmp";
-    FS.m_Textures.Update(nm);
-	if (T=FS.FindFirst(nm.c_str())){
-    	do{
-			tt = ChangeFileExt(AnsiString(T),"");
-        	form->AddItem(fld,tt.c_str());
-        }while(T=FS.FindNext());
-	}
+    AStringVec lst;
+    if (ImageManager.GetFiles(lst))
+        for (AStringIt it=lst.begin(); it!=lst.end(); it++)
+        	FOLDER::AppendObject(form->tvItems,it->c_str());
     // redraw
-	SendMessage(form->tvItems->Handle,WM_SETREDRAW,1,0);
-	form->tvItems->Repaint();
+	form->tvItems->IsUpdating		= false;
 
 	// show
     if (form->ShowModal()!=mrOk) return 0;
@@ -186,55 +171,18 @@ __fastcall TfrmChoseItem::TfrmChoseItem(TComponent* Owner)
     fsStorage->IniFileName = buf;
 }
 //---------------------------------------------------------------------------
-TElTreeItem* TfrmChoseItem::FindFolder(const char* s)
-{
-    for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (!node->Data && (node->Text == WideString(s))) return node;
-    return 0;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmChoseItem::FindItem(const char* s)
-{
-    for ( TElTreeItem* node = tvItems->Items->GetFirstNode(); node; node = node->GetNext())
-        if (node->Data && (node->Text == WideString(s))) return node;
-    return 0;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmChoseItem::AddFolder(const char* s)
-{
-    TElTreeItem* node = 0;
-    if (s[0]!=0)
-        node = tvItems->Items->AddObject(0,s,0);
-    return node;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmChoseItem::AddItem(TElTreeItem* node, const char* name, void* obj)
-{
-    TElTreeItem* obj_node = tvItems->Items->AddChildObject(node, name, obj);
-	obj_node->ShowCheckBox = bMultiSel;
-    obj_node->CheckBoxEnabled = bMultiSel;
-    return obj_node;
-}
-//---------------------------------------------------------------------------
-TElTreeItem* TfrmChoseItem::AddItemToFolder(const char* folder, const char* name, void* obj){
-	TElTreeItem* node = FindFolder(folder);
-    if (!node) node = AddFolder(folder);
-	return AddItem(node,name,obj);
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
 {
 	if (bMultiSel){
         select_item = "";
 	    for ( TElTreeItem* node = tvMulti->Items->GetFirstNode(); node; node = node->GetNext()){
             select_item += node->Text;
-            select_item += ", ";
+            select_item += ",";
         }
         select_item.Delete(select_item.Length()-1,2);
 
         if (select_item.IsEmpty()){
-            if (tvItems->Selected&&tvItems->Selected->Data){
+            if (tvItems->Selected&&((DWORD)tvItems->Selected->Data==TYPE_OBJECT)){
                 select_item = tvItems->Selected->Text;
                 Close();
                 ModalResult = mrOk;
@@ -246,8 +194,8 @@ void __fastcall TfrmChoseItem::sbSelectClick(TObject *Sender)
             ModalResult = mrOk;
         }
     }else{
-	    if (tvItems->Selected&&tvItems->Selected->Data){
-    	    select_item = tvItems->Selected->Text;
+	    if (tvItems->Selected&&((DWORD)tvItems->Selected->Data==TYPE_OBJECT)){
+    	    FOLDER::MakeName(tvItems->Selected,0,select_item,false);
 	        Close();
     	    ModalResult = mrOk;
 	    }
@@ -274,10 +222,10 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 	if (bMultiSel&&(itm_cnt>1)){
 	    char T[MAX_OBJ_NAME];
         for (int i=0; i<itm_cnt; i++){
-            TElTreeItem* itm_node = FindItem(_GetItem(last_item.c_str(),i,T));
+            TElTreeItem* itm_node = FOLDER::FindObject(tvItems,_GetItem(last_item.c_str(),i,T));
 	        TElTreeItem* fld_node = 0;
             if (itm_node){
-				tvMulti->Items->Add(0,itm_node->Text);
+				tvMulti->Items->Add(0,_GetItem(last_item.c_str(),i,T));
             	itm_node->Checked = true;
                 tvItems->EnsureVisible(itm_node);
                 fld_node=itm_node->Parent;
@@ -285,8 +233,8 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
             }
         }
     }else{
-        TElTreeItem* itm_node = FindItem(last_item.c_str());
-        TElTreeItem* fld_node = FindFolder(last_item.c_str());
+        TElTreeItem* itm_node = FOLDER::FindObject(tvItems,last_item.c_str());
+        TElTreeItem* fld_node = 0;//FOLDER::FindFolder(tvItems,last_item.c_str());;
         if (itm_node){
         	if (bMultiSel){
 				tvMulti->Items->Add(0,itm_node->Text);
@@ -308,8 +256,7 @@ void __fastcall TfrmChoseItem::FormShow(TObject *Sender)
 
 void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 {
-//S	_DELETE(sel_tex);
-//S    _DELETE(sel_thm);
+	_DELETE(m_Thm);
 	Action = caFree;
     form = 0;
     if (tvItems->Selected) last_item=tvItems->Selected->Text;
@@ -320,29 +267,17 @@ void __fastcall TfrmChoseItem::FormClose(TObject *Sender, TCloseAction &Action)
 
 void __fastcall TfrmChoseItem::pbImagePaint(TObject *Sender)
 {
-//S
-/*    if (sel_tex){
+    if (m_Thm){
         RECT r;
         r.left = 2; r.top = 2;
         float w, h;
-        w = sel_tex->width();
-        h = sel_tex->height();
+        w = m_Thm->_Width();
+        h = m_Thm->_Height();
         if (w!=h)	pbImage->Canvas->FillRect(pbImage->BoundsRect);
-        if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
-        }else{      r.right = w/h*pbImage->Width; r.bottom = pbImage->Height;}
-        //sel_tex->StretchThumbnail(paImage->Handle, &r);
-        sel_tex->DrawThumbnail(paImage->Handle, &r);
-    }else if (sel_thm){
-        RECT r; r.left = 2; r.top = 2;
-        float w, h;
-        w = THUMB_WIDTH;
-        h = THUMB_HEIGHT;
-        if (w>h){   r.right = pbImage->Width; r.bottom = h/w*pbImage->Height;
-        }else{      r.right = w/h*pbImage->Width; r.bottom = pbImage->Height;}
-//		sel_thm->DrawStretch(paImage->Handle, &r);
-		sel_thm->DrawNormal(paImage->Handle, &r);
+        if (w>h){   r.right = pbImage->Width-1; r.bottom = h/w*pbImage->Height-1;
+        }else{      r.right = w/h*pbImage->Width-1; r.bottom = pbImage->Height-1;}
+        m_Thm->DrawStretch(paImage->Handle, &r);
     }
-*/
 }
 //---------------------------------------------------------------------------
 
@@ -377,7 +312,11 @@ void __fastcall TfrmChoseItem::tvItemsItemChange(TObject *Sender,
 	if (Item&&(ItemChangeMode==icmCheckState)){
 	    TElTreeItem *node = tvMulti->Items->LookForItem(0,Item->Text,0,0,false,true,false,true,true);
         if (node&&!Item->Checked) node->Delete();
-        if (!node&&Item->Checked) tvMulti->Items->Add(0,Item->Text);
+        if (!node&&Item->Checked){
+        	AnsiString fn;
+            FOLDER::MakeName(Item,0,fn,false);
+        	tvMulti->Items->Add(0,fn);
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -446,30 +385,35 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
 {
 	TElTreeItem* Item = tvItems->Selected;
 	_DELETE(m_Thm);
-	if (Item&&Item->Data){
+	if (Item&&((DWORD)Item->Data==TYPE_OBJECT)){
         if (Mode==smTexture){
-	        AnsiString nm 			= ChangeFileExt(Item->Text,"");
+	        AnsiString nm;
+        	FOLDER::MakeName		(Item,0,nm,false);
     	    m_Thm 					= new EImageThumbnail(nm.c_str());
 	        if (!m_Thm->Valid())	pbImage->Repaint();
             else	 				pbImagePaint(Sender);
-	        lbItemName->Caption 	= "\""+nm+"\"";
+	        lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
     	    lbFileName->Caption 	= "\""+Item->Text+"\"";
-			AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlphaChannel?"32b":"24b");
+			AnsiString temp; 		temp.sprintf("%d x %d x %s",m_Thm->_Width(),m_Thm->_Height(),m_Thm->_Format().HasAlphaChannel()?"32b":"24b");
             lbInfo->Caption			= temp;
         }else if (Mode==smObject){
-	        AnsiString nm = AnsiString("$O_")+Item->Text;
-    	    m_Thm 					= new EImageThumbnail(nm.c_str());
-            if (!sel_thm->Load()) 	pbImage->Repaint();
-            else				 	pbImagePaint(Sender);
-            CLibObject* LO			= (CLibObject*)Item->Data;
-			lbItemName->Caption 	= "\""+AnsiString(LO->GetName())+"\"";
+	        AnsiString nm,fn;
+        	FOLDER::MakeName		(Item,0,nm,false);
+            fn						= ChangeFileExt(nm,".thm");
+            FS.m_ObjectsThumbnail.Update(fn);
+            if (FS.Exist(fn.c_str())){
+	    	    m_Thm 					= new EImageThumbnail(nm.c_str());
+    	        if (!m_Thm->Valid()) 	pbImage->Repaint();
+        	    else				 	pbImagePaint(Sender);
+            }
+			CLibObject* LO			= Lib->SearchObject(nm.c_str()); R_ASSERT(LO);
+			lbItemName->Caption 	= "\""+Item->Text+"\"";
 			lbFileName->Caption		= "\""+AnsiString(LO->GetSrcName())+"\"";
-			AnsiString temp; 		temp.sprintf("Vertices: %d\nFaces: %d",m_Thm->_Format().reserved[0],m_Thm->_Format().reserved[1]);
-            lbInfo->Caption			= "";//temp;
+            lbInfo->Caption			= "-";
         }else{
 			lbItemName->Caption = "\""+Item->Text+"\"";
-			lbFileName->Caption	= "...";
-            lbInfo->Caption		= "...";
+			lbFileName->Caption	= "-";
+            lbInfo->Caption		= "-";
         }
     }else{
 		lbItemName->Caption = "...";

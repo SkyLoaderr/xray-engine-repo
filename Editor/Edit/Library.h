@@ -26,7 +26,6 @@ protected:
 protected:
     AnsiString		m_Name;
     AnsiString		m_FileName;
-	AnsiString		m_FolderName;
 	AnsiString		m_SrcName;
 public:
 					CLibObject				(){
@@ -37,10 +36,8 @@ public:
 	virtual 		~CLibObject				();
 
     LPCSTR			GetName					()	{return m_Name.c_str();}
-    LPCSTR			GetFolderName			()	{return m_FolderName.c_str();}
-	LPCSTR			GetSrcName				()	{return m_SrcName.c_str();}
+  	LPCSTR			GetSrcName				()	{return m_SrcName.c_str();}
     void			SetName					(const AnsiString& s)	{m_Name=s;}
-	void			SetFolderName			(const AnsiString& s)	{m_FolderName=s;}
 
 	IC bool			IsLoaded				()	{return !!m_EditObject;}
 	IC bool			IsValid					()	{return m_EditObject;}
@@ -78,6 +75,7 @@ public:
 
 	void 				AddObject			(CLibObject* obj);
 	void 				RemoveObject		(CLibObject* obj);
+	void 				RemoveObject		(LPCSTR name);
 
 	int 				ObjectCount        	();
 	CLibObject*			SearchObject		(const char *name);

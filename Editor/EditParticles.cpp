@@ -232,7 +232,7 @@ void TfrmEditParticles::InitItemsList(const char* nm)
     tvItems->Items->Clear();
 
     for(PSIt it=PSLib->FirstPS(); it!=PSLib->LastPS(); it++)
-        AddItemToFolder(it->m_Folder,it->m_Name);
+        AddItemToFolder("",it->m_Name);
 
 	SendMessage(tvItems->Handle,WM_SETREDRAW,1,0);
 	tvItems->Repaint();
@@ -259,7 +259,7 @@ void __fastcall TfrmEditParticles::tvItemsItemChange(TObject *Sender,
         for ( TElTreeItem* pNode = FEditNode->GetFirstChild(); pNode; pNode = FEditNode->GetNextChild(pNode))
             if (pNode->Data){
                 PS::SDef* ps = PSLib->FindPS(AnsiString(pNode->Text).c_str());
-                ps->SetFolder(AnsiString(FEditNode->Text).c_str());
+//S                ps->SetFolder(AnsiString(FEditNode->Text).c_str());
                 OnModified();
             }
         FEditNode = 0;
@@ -323,8 +323,8 @@ void __fastcall TfrmEditParticles::ebClonePSClick(TObject *Sender)
     if (pNode){
         PS::SDef* ps_src = PSLib->FindPS(AnsiString(pNode->Text).c_str()); VERIFY(ps_src);
         if (ps_src){
-	        AnsiString folder=ps_src->m_Folder;
-            AnsiString pref;
+//S	        AnsiString folder=ps_src->m_Folder;
+/*            AnsiString pref;
             string64 name;
             pref = ps_src->m_Name;
             PSLib->GenerateName(name,pref.c_str());
@@ -334,7 +334,7 @@ void __fastcall TfrmEditParticles::ebClonePSClick(TObject *Sender)
 		    TfrmPropertiesPSDef::ShowProperties();
             OnModified();
 //            PSLib->Save();
-        }
+*/        }
     }else{
 		ELog.DlgMsg(mtInformation, "At first selected item.");
     }
@@ -409,7 +409,7 @@ void __fastcall TfrmEditParticles::tvItemsDragDrop(TObject *Sender,
         node=(node->Parent)?node->Parent:node;
         PS::SDef* P = PSLib->FindPS(AnsiString(FDragItem->Text).c_str());
         VERIFY(P);
-        P->SetFolder(AnsiString(node->Text).c_str());
+//S        P->SetFolder(AnsiString(node->Text).c_str());
     }
 }
 //---------------------------------------------------------------------------
