@@ -98,22 +98,17 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // ------------------------------------------------------------------
 // checking whether the matrixes are equal
 // ------------------------------------------------------------------
-	mov			dx,WORD PTR [esi]S.matrix0		;
-	cmp			dx,WORD PTR [esi]S.matrix1		;
+	movzx		eax,WORD PTR [esi]S.matrix0		;	// eax = m0
+	movzx		ebx,WORD PTR [esi]S.matrix1		;	// ebx = m1
+	cmp			eax,ebx							;
 	jz			private_case					;
 // ------------------------------------------------------------------
-// calculating transformation matrix 1 addresses
+// calculating transformation matrix(es) addresses
 // ------------------------------------------------------------------
-	mov			eax,TYPE CBoneInstance			;
-	mul			WORD PTR [esi]S.matrix1			;
+	mul			eax,TYPE CBoneInstance			;
 	add			eax,Bones						;
-	mov			ebx,eax							;
-// ------------------------------------------------------------------
-// calculating transformation matrix 0 addresses
-// ------------------------------------------------------------------
-	mov			eax,TYPE CBoneInstance			;
-	mul			WORD PTR [esi]S.matrix0			;
-	add			eax,Bones						;
+	mul			ebx,TYPE CBoneInstance			;
+	add			ebx,Bones						;
 // ------------------------------------------------------------------
 // preparing data for lerps
 // ------------------------------------------------------------------
@@ -239,15 +234,24 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // => xmm3			: lerp(p0,p1) result	: ?.? | lerp(z) | lerp(y) | lerp(x)
 // ------------------------------------------------------------------
 	movups		XMMWORD PTR [edi]D.N,xmm3		; !
-	jmp short	static_data						;
+// ------------------------------------------------------------------
+	mov			eax,DWORD PTR [esi]S.u			;	// u
+	mov			ebx,DWORD PTR [esi]S.v			;	// v
+	mov			DWORD PTR [edi]D.u,eax			;
+	mov			DWORD PTR [edi]D.v,ebx			;
+	add			esi,TYPE vertBoned2W			;	// advance source
+	add			edi,TYPE vertRender				;	// advance dest
+	dec			ecx								;	// ecx = ecx - 1
+	jnz			new_dot							;	// ecx==0 ? exit : goto new_dot
+	jmp short	exit							;
+
 // ------------------------------------------------------------------
 	ALIGN		16								;
 	private_case:								;
 // ------------------------------------------------------------------
 // calculating transformation matrix 0 addresses
 // ------------------------------------------------------------------
-	mov			eax,TYPE CBoneInstance			;
-	mul			WORD PTR [esi]S.matrix0			;
+	mul			eax,TYPE CBoneInstance			;
 	add			eax,Bones						;
 // ------------------------------------------------------------------
 // transform tiny m 0
@@ -304,22 +308,14 @@ void __stdcall xrSkin2W_SSE(vertRender*		D,
 // ------------------------------------------------------------------
 	movups		XMMWORD PTR [edi]D.N,xmm3		; !	
 // ------------------------------------------------------------------
-	ALIGN		16								;
-	static_data:								;
-// ------------------------------------------------------------------
-//	static data - check
-// ------------------------------------------------------------------
-	mov			eax,DWORD PTR [esi]S.u			;
-	mov			ebx,DWORD PTR [esi]S.v			;
+	mov			eax,DWORD PTR [esi]S.u			;	// u
+	mov			ebx,DWORD PTR [esi]S.v			;	// v
 	mov			DWORD PTR [edi]D.u,eax			;
 	mov			DWORD PTR [edi]D.v,ebx			;
-// ------------------------------------------------------------------	
-// advancing	
-// ------------------------------------------------------------------	
-	add			esi,TYPE vertBoned2W	;
-	add			edi,TYPE vertRender		;
-// ------------------------------------------------------------------	
-	dec			ecx						; ecx = ecx - 1
-	jnz			new_dot					; ecx==0 ? goto new_dot : exit
+	add			esi,TYPE vertBoned2W			;	// advance source
+	add			edi,TYPE vertRender				;	// advance dest
+	dec			ecx								;	// ecx = ecx - 1
+	jnz			new_dot							;	// ecx==0 ? exit : goto new_dot
 // ------------------------------------------------------------------
+	exit:
 }}
