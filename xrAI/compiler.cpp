@@ -128,7 +128,7 @@ void xrCompiler(LPCSTR name)
 	mem_Optimize();
 	
 	Phase("Visualizing nodes...");
-//	xrDisplay	();
+	xrDisplay	();
 
 	Phase("Saving nodes...");
 	xrSaveNodes	(name);
