@@ -83,6 +83,7 @@ void CCharacterPhysicsSupport::in_NetDestroy()
 			xr_delete(m_physics_skeleton);
 			b_skeleton_in_shell=false;
 	}
+	
 
 	//if(m_pPhysicsShell)	
 	//{
@@ -262,6 +263,7 @@ void CCharacterPhysicsSupport::ActivateShell()
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 
 	m_pPhysicsShell=m_physics_skeleton;
+	m_physics_skeleton=NULL;
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
 	m_pPhysicsShell->SetCallbacks(m_pPhysicsShell->GetBonesCallback());
