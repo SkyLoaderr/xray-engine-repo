@@ -26,12 +26,12 @@ void CWeaponKnife::Load	(LPCSTR section)
 	// HUD :: Anims
 	R_ASSERT			(m_pHUD);
 	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_idle"));
-	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_draw"));
-	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_hide"));
-	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_shoot1_start"));	
-	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_shoot2_start"));	
-	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_shoot1_end"));
-	animGet				(mhud_idle,		pSettings->r_string(*hud_sect,"anim_shoot2_end"));
+	animGet				(mhud_hide,		pSettings->r_string(*hud_sect,"anim_draw"));
+	animGet				(mhud_show,		pSettings->r_string(*hud_sect,"anim_hide"));
+	animGet				(mhud_attack,	pSettings->r_string(*hud_sect,"anim_shoot1_start"));	
+	animGet				(mhud_attack2,	pSettings->r_string(*hud_sect,"anim_shoot2_start"));	
+	animGet				(mhud_attack_e,	pSettings->r_string(*hud_sect,"anim_shoot1_end"));
+	animGet				(mhud_attack2_e,pSettings->r_string(*hud_sect,"anim_shoot2_end"));
 }
 
 void CWeaponKnife::renderable_Render()
