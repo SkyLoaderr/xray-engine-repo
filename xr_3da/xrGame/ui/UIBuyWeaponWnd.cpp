@@ -1004,6 +1004,8 @@ void CUIBuyWeaponWnd::Show()
 { 
 	m_pMouseCapturer = NULL;
 	inherited::Show();
+	MenuLevelDown();
+	MenuLevelDown();
 
 	if (GameID() != GAME_SINGLE)
 	{
