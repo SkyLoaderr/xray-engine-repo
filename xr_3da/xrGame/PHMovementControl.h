@@ -64,6 +64,7 @@ public:
 													dVector3 size={aabb.x2-aabb.x1,aabb.y2-aabb.y1,aabb.z2-aabb.z1};
 													m_character.Create(size);
 												}
+	void				DestroyCharacter(){m_character.Destroy();}
 	void				Load					(LPCSTR section);
 #ifdef DEBUG
 	void				dbg_Draw(){m_character.OnRender();};
@@ -136,7 +137,7 @@ public:
 	void				Calculate		(Fvector& vAccel, float ang_speed, float jump, float dt, bool bLight);
 	void				Move			(Fvector& Dest, Fvector& Motion, BOOL bDynamic=FALSE){};
 	void				SetApplyGravity	(BOOL flag){ bIsAffectedByGravity=flag; }
-
+	void				GetDeathPosition(Fvector pos){pos.set( m_character.DeathPosition());}
 	void SetEnvironment( int enviroment,int old_enviroment);
 
 	CPHMovementControl(void);

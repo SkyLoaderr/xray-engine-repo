@@ -335,6 +335,8 @@ void CActor::Die	( )
 	g_fireEnd				();
 	mstate_wishful	&=		~mcAnyMove;
 	mstate_real		&=		~mcAnyMove;
+	ph_Movement.GetDeathPosition(vPosition);
+	ph_Movement.DestroyCharacter();
 }
 
 void CActor::g_Physics			(Fvector& _accel, float jump, float dt)

@@ -815,10 +815,10 @@ else
 
 			if(dGeomGetUserData(contacts[i].geom.g1)->ph_object){
 					dGeomGetUserData(contacts[i].geom.g1)->ph_object->InitContact(&contacts[i]);
-					pushing_neg=dGeomGetUserData(contacts[i].geom.g1)->pushing_b_neg||
-					dGeomGetUserData(contacts[i].geom.g1)->pushing_neg;
-					if(pushing_neg) contacts[i].surface.mu=
-														dInfinity;
+					//pushing_neg=dGeomGetUserData(contacts[i].geom.g1)->pushing_b_neg||
+					//dGeomGetUserData(contacts[i].geom.g1)->pushing_neg;
+					//if(pushing_neg) contacts[i].surface.mu=
+					//									dInfinity;
 					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					continue;
@@ -1313,11 +1313,11 @@ void CPHShell::PhDataUpdate(dReal step){
 				}
 /////////////////////////////////////////////////////////////////
 	
-				const dReal k_w=0.1f;
-				dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
+			//	const dReal k_w=0.1f;
+			//	dBodyAddTorque(m_body,-rot[0]*k_w,-rot[1]*k_w,-rot[2]*k_w);
 	
-				const dReal k_l=0.1f;
-				dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
+			//	const dReal k_l=0.1f;
+			//	dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);			
 
 }
 void CPHShell::PhTune(dReal step){

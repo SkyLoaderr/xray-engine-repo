@@ -46,6 +46,7 @@ Fvector m_velocity;
 dVector3 m_safe_velocity;
 dVector3 m_safe_position;
 dVector3 m_jump_depart_position;
+dVector3 m_death_position;
 Fvector  m_jump_accel;
 float m_contact_velocity;
 bool is_contact;
@@ -80,6 +81,13 @@ const float&	ContactVelocity								() {return m_contact_velocity;}
 Fvector			IPosition									() {
 																Fvector pos=m_body_interpolation.InterpolatePosition();
 																pos.y-=m_radius;
+																return pos;
+																}
+Fvector			DeathPosition								(){
+																Fvector pos;
+																pos.x=m_death_position[0];
+																pos.y=m_death_position[1];
+																pos.z=m_death_position[2];
 																return pos;
 																}
 virtual		EEnvironment CheckInvironment					()				=0	;

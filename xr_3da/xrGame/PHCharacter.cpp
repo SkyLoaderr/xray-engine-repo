@@ -70,6 +70,8 @@ m_control_force[2]=0.f;
 m_depart_position[0]=0.f;
 m_depart_position[1]=0.f;
 m_depart_position[2]=0.f;
+
+
 b_jumping=false;
 is_contact=false;
 was_contact=false;
@@ -461,7 +463,13 @@ void CPHSimpleCharacter::InitContact(dContact* c){
 	}
 
 	if(bo1){
+		memcpy(m_death_position,dGeomGetPosition(c->geom.g1),sizeof(dVector3));
+		m_death_position[1]+=c->geom.depth;
+		if(dGeomGetUserData(c->geom.g1)->pushing_neg)
+			m_death_position[1]=dGeomGetUserData(c->geom.g1)->neg_tri.pos;
 
+		if(dGeomGetUserData(c->geom.g1)->pushing_b_neg)
+			m_death_position[1]=dGeomGetUserData(c->geom.g1)->b_neg_tri.pos;
 
 		if(c->geom.normal[1]>m_ground_contact_normal[1]||!b_valide_ground_contact)//
 		{
@@ -622,7 +630,12 @@ m_control_force[2]=m_control_force[2]*accel[2]>0.f ? m_control_force[2] : -m_con
 }
 
 void CPHSimpleCharacter::SetPosition(Fvector pos){
-
+	m_death_position[0]=pos.x;
+	m_death_position[1]=pos.y;
+	m_death_position[2]=pos.z;
+	m_safe_position[0]=pos.x;
+	m_safe_position[1]=pos.y;
+	m_safe_position[2]=pos.z;
 	dBodySetPosition(m_body,pos.x,pos.y+m_radius,pos.z);
 }
 
