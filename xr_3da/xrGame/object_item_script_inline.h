@@ -16,11 +16,22 @@ IC	CObjectItemScript::CObjectItemScript	(
 	const CLASS_ID				&clsid, 
 	LPCSTR						script_clsid
 ) : 
-	inherited					(clsid,script_clsid)
-{
 #ifndef NO_XR_GAME
-	m_client_creator			= client_creator;
+	CObjectItemScriptClient		(client_creator,clsid,script_clsid),
 #endif
-	m_server_creator			= server_creator;
+	CObjectItemScriptServer		(server_creator,clsid,script_clsid),
+	CObjectItemAbstract			(clsid,script_clsid)
+{
 }
 
+#ifndef NO_XR_GAME
+ObjectFactory::CLIENT_BASE_CLASS *CObjectItemScript::client_object	() const
+{
+	return			(CObjectItemScriptClient::client_object());
+}
+#endif
+
+ObjectFactory::SERVER_BASE_CLASS *CObjectItemScript::server_object	(LPCSTR section) const
+{
+	return			(CObjectItemScriptServer::server_object(section));
+}
