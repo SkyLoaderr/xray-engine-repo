@@ -56,6 +56,7 @@ CCustomMonster::~CCustomMonster	()
 
 void CCustomMonster::init()
 {
+	m_client_update_activated	= false;
 }
 
 void CCustomMonster::Load		(LPCSTR section)
@@ -336,6 +337,11 @@ void CCustomMonster::UpdateCL	()
 { 
 	inherited::UpdateCL					();
 	
+	if (!g_Alive() && CSoundPlayer::playing_sounds().empty() && m_client_update_activated) {
+		processing_deactivate	();
+		m_client_update_activated = false;
+	}
+
 	CScriptMonster::process_sound_callbacks();
 	CEventMemoryManager::update			();
 	CSoundPlayer::update				(Device.fTimeDelta);
@@ -660,11 +666,12 @@ void CCustomMonster::HitSignal(float /**perc/**/, Fvector& /**vLocalDir/**/, COb
 void CCustomMonster::Die	()
 {
 	inherited::Die			();
-	processing_deactivate	();
 }
 
 BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 {
+	VERIFY						(!m_client_update_activated);
+
 	if (!inherited::net_Spawn(DC) || !CScriptMonster::net_Spawn(DC) || !CMovementManager::net_Spawn(DC))
 		return					(FALSE);
 	
@@ -684,8 +691,10 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 		set_level_dest_vertex	(level_vertex_id());
 
 	// Eyes
-	if (g_Alive())
+	if (g_Alive()) {
 		processing_activate		();
+		m_client_update_activated = true;
+	}
 
 	eye_bone					= PKinematics(Visual())->LL_BoneID(pSettings->r_string(cNameSect(),"bone_head"));
 
@@ -765,8 +774,10 @@ void CCustomMonster::net_Destroy()
 	inherited::net_Destroy	();
 	CScriptMonster::net_Destroy();
 	CMovementManager::net_Destroy();
-	if (g_Alive())
+	if (m_client_update_activated) {
 		processing_deactivate	();
+		m_client_update_activated = false;
+	}
 }
 
 BOOL CCustomMonster::UsedAI_Locations()
