@@ -423,13 +423,17 @@ function process_map_spot(info_id)
 
 	elseif info_id == "tutorial_wounded_die" then
 		remove_location(004, "tutorial_wounded_location")
-		set_task_state(task.fail, "tutorial_help_wounded", 0)
-		news_manager.send_news(db.actor, "escape_stalker_killed", 5)
+		if db.actor:dont_has_info("tutorial_end") then
+			set_task_state(task.fail, "tutorial_help_wounded", 0)
+			news_manager.send_news(db.actor, "escape_stalker_killed", 5)
+		end
 
 	elseif info_id == "tutorial_wounded_death" then
 		remove_location(004, "tutorial_wounded_location")
-		set_task_state(task.fail, "tutorial_help_wounded", 0)
-		news_manager.send_news(db.actor, "escape_stalker_death", 5)
+		if db.actor:dont_has_info("tutorial_end") then
+			set_task_state(task.fail, "tutorial_help_wounded", 0)
+			news_manager.send_news(db.actor, "escape_stalker_death", 5)
+		end
 		
 	elseif info_id == "escape_artefact_start" then
 		add_location(008, "esc_anomaly_field_location")
