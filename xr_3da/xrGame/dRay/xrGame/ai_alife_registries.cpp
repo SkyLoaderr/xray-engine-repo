@@ -510,6 +510,9 @@ void CSE_ALifeScheduleRegistry::Update(CSE_ALifeDynamicObject *tpALifeDynamicObj
 
 void CSE_ALifeScheduleRegistry::add(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
 {
+	if (!tpALifeDynamicObject->interactive())
+		return;
+
 	R_ASSERT2					(!tpALifeDynamicObject->m_bOnline,"Can't add to scheduled objects online object!");
 	
 	CSE_ALifeSchedulable		*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeSchedulable*>(tpALifeDynamicObject);
@@ -539,6 +542,9 @@ void CSE_ALifeScheduleRegistry::add(CSE_ALifeDynamicObject *tpALifeDynamicObject
 
 void CSE_ALifeScheduleRegistry::remove			(CSE_ALifeDynamicObject *tpALifeDynamicObject, bool bUpdateSchedulableObjects)
 {
+	if (!tpALifeDynamicObject->interactive())
+		return;
+
 //	R_ASSERT2					(tpALifeDynamicObject->m_bOnline || (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject) && (dynamic_cast<CSE_ALifeMonsterAbstract*>(tpALifeDynamicObject)->fHealth <= 0)	|| (dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject) && dynamic_cast<CSE_ALifeGroupAbstract*>(tpALifeDynamicObject)->m_tpMembers.empty())),"Can't remove from scheduled objects offline object!");
 	
 	CSE_ALifeSchedulable		*l_tpALifeSchedulable = dynamic_cast<CSE_ALifeMonsterAbstract *>(tpALifeDynamicObject);
