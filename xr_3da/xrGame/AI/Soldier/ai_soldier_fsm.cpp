@@ -588,10 +588,10 @@ void CAI_Soldier::FollowLeaderPatrol()
 	
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4)) {
 		CAI_Soldier *SoldierLeader = dynamic_cast<CAI_Soldier *>(Leader);
-		if ((Level().timeServer() - SoldierLeader->m_dwLastRangeSearch < 30000) && (SoldierLeader->m_dwLastRangeSearch)) {
-			if (m_bStateChanged)
-				m_dwLoopCount = 0;
-			m_dwLoopCount++;
+		if ((Level().timeServer() - SoldierLeader->m_dwLastRangeSearch < 3000) && (SoldierLeader->m_dwLastRangeSearch)) {
+			//if (m_bStateChanged)
+			//	m_dwLoopCount = 0;
+			m_dwLoopCount = SoldierLeader->m_dwLoopCount;
 			AI_Path.TravelPath.clear();
 			AI_Path.TravelPath.resize(SoldierLeader->AI_Path.TravelPath.size());
 			for (int i=0, j=0; i<SoldierLeader->AI_Path.TravelPath.size(); i++, j++) {
@@ -612,6 +612,7 @@ void CAI_Soldier::FollowLeaderPatrol()
 					continue;
 				}
 				tTemp.normalize();
+				
 				if (Group.Members[0] == this) 
 					if (m_dwLoopCount % 2)
 						tTemp.set(tTemp.z,0,-tTemp.x);
@@ -693,9 +694,17 @@ void CAI_Soldier::Patrol()
 	
 	//if ((!(AI_Path.fSpeed)) || (AI_Path.TravelStart >= AI_Path.TravelPath.size() - 4) || (AI_Path.TravelPath.empty())) {
 	if ((!(AI_Path.fSpeed)) || (AI_Path.TravelPath.empty()) || (AI_Path.TravelPath[AI_Path.TravelStart].P.distance_to(AI_Path.TravelPath[AI_Path.TravelPath.size() - 1].P) <= .5f)) {
+		
 		if (m_bStateChanged)
 			m_dwLoopCount = 0;
-		//if (m_dwLoopCount % 2 == 0)
+		
+		if (m_dwLoopCount % 2 == 0) {
+			vector<CLevel::SPatrolPath> &tpaPatrolPaths = Level().tpaPatrolPaths;
+			m_dwStartPatrolNode = tpaPatrolPaths[m_dwPatrolPathIndex].dwStartNode;
+			vfCreatePointSequence(tpaPatrolPaths[m_dwPatrolPathIndex],m_tpaPatrolPoints,m_bLooped);
+			m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
+		}
+		AI_Path.TravelStart = 0;
 		vfCreateFastRealisticPath(m_tpaPatrolPoints, m_dwStartPatrolNode, m_tpaPointDeviations, AI_Path.TravelPath, m_bLooped);
 		if (AI_Path.TravelPath.size()) {
 			m_dwLoopCount++;
@@ -707,11 +716,10 @@ void CAI_Soldier::Patrol()
 					AI_Path.TravelPath[dwCount - i - 1].P = tTemp;
 				}
 			}
-			AI_Path.TravelStart = 0;
 			m_dwLastRangeSearch = Level().timeServer();
 		}
-		else
-			m_dwLoopCount = 0;
+		//else
+		//	m_dwLoopCount = 0;
 	}
 	
 	SET_LOOK_FIRE_MOVEMENT(false, BODY_STATE_STAND,m_fMinSpeed)

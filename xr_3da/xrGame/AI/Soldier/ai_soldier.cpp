@@ -49,6 +49,7 @@ CAI_Soldier::CAI_Soldier()
 	// event handlers
 	m_tpEventSay = Engine.Event.Handler_Attach("level.entity.say",this);
 	m_tpEventAssignPath = Engine.Event.Handler_Attach("level.entity.path.assign",this);
+	m_dwPatrolPathIndex = -1;
 }
 
 CAI_Soldier::~CAI_Soldier()
@@ -219,6 +220,7 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 				for (int i=0; i<tpaPatrolPaths.size(); i++)
 					if (!strcmp(buf2,tpaPatrolPaths[i].sName)) {
 						m_dwStartPatrolNode = tpaPatrolPaths[i].dwStartNode;
+						m_dwPatrolPathIndex = i;
 						vfCreatePointSequence(tpaPatrolPaths[i],m_tpaPatrolPoints,m_bLooped);
 						m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
 						m_dwLoopCount = 0;

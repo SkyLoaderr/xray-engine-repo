@@ -345,6 +345,7 @@ class CAI_Soldier : public CCustomMonster
 		vector<Fvector>			m_tpaPointDeviations;
 		DWORD					m_dwStartPatrolNode;
 		bool					m_bLooped;
+		DWORD					m_dwPatrolPathIndex;
 		DWORD					m_dwLoopCount;
 		float					m_fMinPatrolDistance;
 		float					m_fMaxPatrolDistance;

@@ -711,6 +711,13 @@ void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tp
 	do {
 		for ( i=0; i<tpPatrolPath.tpaWayLinks.size(); i++)
 			if (tpPatrolPath.tpaWayLinks[i].wFrom == iCurPoint) {
+				i++;
+				for (int j=0; i<tpPatrolPath.tpaWayLinks.size(); i++, j++)
+					if (tpPatrolPath.tpaWayLinks[i].wFrom != iCurPoint)
+						break;
+				
+				i = i - j - 1 + ::Random.randI(0,j + 1);
+				
 				if (tpPatrolPath.tpaWayPoints[iCurPoint = tpPatrolPath.tpaWayLinks[i].wTo].dwFlags & FINISH_WAYPOINT) {
 					bStop = true;
 					if (iStartPoint != tpPatrolPath.tpaWayLinks[i].wTo) {
@@ -722,6 +729,7 @@ void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tp
 				}
 				else
 					tpaPoints.push_back(tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayLinks[i].wTo].tWayPoint);
+
 				break;
 			}
 	}
