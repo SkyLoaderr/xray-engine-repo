@@ -96,7 +96,8 @@ void CVehicleHelicopter::UpdateCL			()
 	m_animator->OnFrame	();
 	m_engine_sound.set_position(XFORM().c);
 
-	if (m_animator->IsPlaying())			XFORM().set	(m_animator->XFORM());
+//	if (m_animator->IsPlaying())
+		XFORM().set	(m_animator->XFORM());
 }
 
 void CVehicleHelicopter::shedule_Update(u32 DT)
