@@ -363,10 +363,12 @@ void CWeapon::UpdateFlameParticles	()
 	Fmatrix pos; 
 	pos.set(XFORM()); 
 	pos.c.set(vLastFP);
-	Fvector vel; 
+/*	Fvector vel; 
 	vel.sub(Position(),ps_Element(0).vPosition); 
 	vel.div((Level().timeServer()-ps_Element(0).dwTime)/1000.f);
 	m_pFlameParticles->UpdateParent(pos, vel); 
+*/
+	m_pFlameParticles->SetXFORM(pos); 
 }
 
 void CWeapon::FireStart	()

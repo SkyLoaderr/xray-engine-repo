@@ -101,7 +101,7 @@ namespace PAPI
 
 		IC BOOL Add(const pVector &pos, const pVector &posB,
 			const pVector &size, const pVector &rot, const pVector &vel, u32 color,
-			const float age = 0.0f, float frame=0, u32 flags=Particle::BIRTH)
+			const float age = 0.0f, u16 frame=0, u16 flags=Particle::BIRTH)
 		{
 			if(p_count >= max_particles)
 				return FALSE;

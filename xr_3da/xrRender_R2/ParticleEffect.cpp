@@ -93,7 +93,7 @@ void CPEDef::pFrameInitExecute(ParticleEffect *effect)
 		Particle &m = effect->list[i];
         if (m.flags.is(Particle::BIRTH)){
             if (m_Flags.is(dfRandomFrame))
-                m.frame	= iFloor(Random.randI(m_Frame.m_iFrameCount)*255.f);
+                m.frame	= (u16)iFloor(Random.randI(m_Frame.m_iFrameCount)*255.f);
             if (m_Flags.is(dfAnimated)&&m_Flags.is(dfRandomPlayback)&&Random.randI(2))
                 m.flags.set(Particle::ANIMATE_CCW,TRUE);
         }
@@ -107,7 +107,7 @@ void CPEDef::pAnimateExecute(ParticleEffect *effect, float dt)
         float f						= (float(m.frame)/255.f+((m.flags.is(Particle::ANIMATE_CCW))?-1.f:1.f)*speedFac);
 		if (f>m_Frame.m_iFrameCount)f-=m_Frame.m_iFrameCount;
 		if (f<0.f)					f+=m_Frame.m_iFrameCount;
-        m.frame						= iFloor(f*255.f);
+        m.frame						= (u16)iFloor(f*255.f);
 	}
 }
 
@@ -416,6 +416,7 @@ void CParticleEffect::OnFrame(u32 frame_dt)
 					if (m.size.z>p_size) p_size = m.size.z;
 				}
 				vis.box.grow		(p_size);
+				if (m_RT_Flags.is(flRT_XFORM))vis.box.xform(m_XFORM);
 				vis.box.getsphere	(vis.sphere.P,vis.sphere.R);
 			}
             if (m_RT_Flags.is(flRT_DefferedStop)&&(0==pg->p_count)){

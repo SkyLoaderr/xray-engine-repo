@@ -84,12 +84,12 @@ void CParticlesObject::Stop()
 	V->Stop			();
 }
 
-void CParticlesObject::play_at_pos(const Fvector& pos)
+void CParticlesObject::play_at_pos(const Fvector& pos, BOOL xform)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
 	Fmatrix m; m.identity(); m.c.set(pos); 
 	Fvector vel={0,0,0};
-	V->UpdateParent	(m,vel);
+	V->UpdateParent	(m,vel,xform);
 	V->Play			();
 }
 
@@ -123,16 +123,16 @@ void CParticlesObject::shedule_Update	(u32 _dt)
 }
 
 static const Fvector zero_vel		= {0.f,0.f,0.f};
-void CParticlesObject::SetTransform		(const Fmatrix& m)
+void CParticlesObject::SetXFORM		(const Fmatrix& m)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->UpdateParent		(m,zero_vel);
+	V->UpdateParent		(m,zero_vel,TRUE);
 }
 
 void CParticlesObject::UpdateParent		(const Fmatrix& m, const Fvector& vel)
 {
 	IParticleCustom* V	= dynamic_cast<IParticleCustom*>(renderable.visual); VERIFY(V);
-	V->UpdateParent		(m,vel);
+	V->UpdateParent		(m,vel,FALSE);
 }
 
 Fvector& CParticlesObject::Position		()
