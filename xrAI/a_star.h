@@ -83,7 +83,7 @@ public:
 				// check if this node is in the opened list
 				if (data_storage.is_opened(neighbour)) {
 					// compute 'g' for the node
-					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
+					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i),i);
 					// check if new path is better than the older one
 					if (neighbour.g() > g) {
 						// so, new path is better
@@ -120,7 +120,7 @@ public:
 					// then we found the _best_ path
 					
 					// check if new path is better than the older one
-					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
+					_dist_type	g = best.g() + path_manager.evaluate(best.index(),graph.get_value(i),i);
 					if (neighbour.g() > g) {
 						// so, new path is better
 						// assign corresponding values to the node
@@ -149,7 +149,7 @@ public:
 				// assign best node as its parent
 				data_storage.assign_parent(neighbour,&best);
 				// fill the corresponding node parameters 
-				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),graph.get_value(i));
+				neighbour.g()			= best.g() + path_manager.evaluate(best.index(),graph.get_value(i),i);
 				neighbour.h()			= path_manager.estimate(neighbour.index());
 				neighbour.f()			= neighbour.g() + neighbour.h();
 				// add start node to the opened list

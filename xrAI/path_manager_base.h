@@ -63,7 +63,7 @@ public:
 		max_iteration_count		= _max_iteration_count;
 	}
 
-	IC		_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2)
+	IC		_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const typename _Graph::const_iterator &i)
 	{
 		VERIFY					(graph);
 		return					(graph->get_edge_weight(node_index1,node_index2));

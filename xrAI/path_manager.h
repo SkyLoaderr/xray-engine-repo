@@ -48,7 +48,7 @@ template <
 {
 	typedef CAI_Map _Graph;
 	typedef typename CPathManagerBase <
-				CAI_Map,
+				_Graph,
 				_DataStorage,
 				_dist_type,
 				_index_type,
@@ -110,7 +110,7 @@ public:
 		z3						= (int)(tNode2.p1.z) + (int)(tNode2.p0.z);
 	}
 
-	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2)
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
 	{
 		VERIFY					(graph);
 		
@@ -129,17 +129,6 @@ public:
 		return					(_sqrt((float)(square_size_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + square_size_y*(float)_sqr(y3 - y2))));
 	}
 
-	IC	void		create_path		()
-	{
-		VERIFY					(data_storage && path);
-		data_storage->get_path	(*path);
-	}
-
-	IC	_index_type	start_node		()
-	{
-		return					(start_node_index);
-	}
-
 	IC	bool		is_goal_reached	(const _index_type node_index)
 	{
 		if (node_index == goal_node_index)
@@ -152,6 +141,95 @@ public:
 		z1						= (int)(tNode0.p1.z) + (int)(tNode0.p0.z);
 
 		return					(false);
+	}
+
+	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const
+	{
+		VERIFY					(data_storage);
+		return					(false);
+	}
+
+	IC	bool		is_accessible	(const _index_type node_index) const
+	{
+		VERIFY					(graph);
+		return					(true);
+	}
+
+	IC	bool		is_metric_euclidian()
+	{
+		return					(true);
+	}
+};
+
+template <
+	typename _DataStorage,
+	typename _dist_type,
+	typename _index_type,
+	typename _iteration_type
+>	class CPathManager <
+		CSE_ALifeGraph,
+		_DataStorage,
+		_dist_type,
+		_index_type,
+		_iteration_type
+	> : public CPathManagerBase <
+			CSE_ALifeGraph,
+			_DataStorage,
+			_dist_type,
+			_index_type,
+			_iteration_type
+		>
+{
+	typedef CSE_ALifeGraph _Graph;
+	typedef typename CPathManagerBase <
+				_Graph,
+				_DataStorage,
+				_dist_type,
+				_index_type,
+				_iteration_type
+			> inherited;
+protected:
+	_Graph::SGraphVertex	*goal_vertex;
+public:
+
+	virtual				~CPathManager	()
+	{
+	}
+
+	IC		void		setup			(
+		const _Graph			*_graph,
+		_DataStorage			*_data_storage,
+		xr_vector<_index_type>	*_path,
+		const _index_type		_start_node_index,
+		const _index_type		_goal_node_index,
+		const _index_type		_max_visited_node_count	= _index_type(u32(-1)),
+		const _dist_type		_max_range				= _dist_type(6000),
+		const _iteration_type	_max_iteration_count	= _iteration_type(u32(-1))
+		)
+	{
+		inherited::setup(
+			_graph,
+			_data_storage,
+			_path,
+			_start_node_index,
+			_goal_node_index,
+			_max_visited_node_count,
+			_max_range,
+			_max_iteration_count
+			);
+		goal_vertex				= graph->m_tpaGraph + goal_node_index;
+	}
+
+	IC	_dist_type	evaluate		(const _index_type node_index1, const _index_type node_index2, const _Graph::const_iterator &i)
+	{
+		VERIFY					(graph);
+		return					(graph->get_edge_weight(i));
+	}
+
+	IC	_dist_type	estimate		(const _index_type node_index)
+	{
+		VERIFY					(graph);
+		return					(goal_vertex->tGlobalPoint.distance_to(graph->m_tpaGraph[node_index].tGlobalPoint));
 	}
 
 	IC	bool		is_limit_reached(const _iteration_type	iteration_count) const

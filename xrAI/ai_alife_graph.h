@@ -90,4 +90,31 @@ public:
 		R_ASSERT2					(false,"There is no proper graph point neighbour!");
 		return						(ALife::_GRAPH_ID(-1));
 	}
+
+	typedef const SGraphEdge* const_iterator;
+
+	IC		bool					is_accessible		(const u32 node_index) const
+	{
+		return						(true);
+	}
+
+	IC		void					begin				(const u32 node_index, const_iterator &start, const_iterator &end) const
+	{
+		end							= (start = (const SGraphEdge *)((BYTE *)m_tpaGraph + m_tpaGraph[node_index].dwEdgeOffset)) + m_tpaGraph[node_index].tNeighbourCount;
+	}
+
+	IC		u32						get_value			(const_iterator &i) const
+	{
+		return						(i->dwVertexNumber);
+	}
+
+	IC		u32						get_node_count		() const
+	{
+		return						(m_tGraphHeader.dwVertexCount);
+	}
+
+	IC		float					get_edge_weight		(const_iterator i) const
+	{
+		return						(i->fPathDistance);
+	}
 };
