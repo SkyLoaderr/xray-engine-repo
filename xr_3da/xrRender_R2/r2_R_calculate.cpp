@@ -13,8 +13,6 @@ extern float		r_ssaHZBvsTEX;
 
 void CRender::Calculate		()
 {
-	Device.Statistic.RenderCALC.Begin	();
-
 	// Transfer to global space to avoid deep pointer access
 	IRender_Target* T				=	getTarget	();
 	g_fFarSq						=	75.f;
@@ -26,12 +24,6 @@ void CRender::Calculate		()
 	r_ssaLOD_A						=	_sqr(ps_r2_ssaLOD_A)/g_fSCREEN;
 	r_ssaLOD_B						=	_sqr(ps_r2_ssaLOD_B)/g_fSCREEN;
 	r_ssaHZBvsTEX					=	_sqr(ps_r2_ssaHZBvsTEX)/g_fSCREEN;
-	
-	// Frustum & HOM rendering
-	ViewBase.CreateFromMatrix		(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
-	View							= 0;
-	HOM.Render						(ViewBase);
-	rmNormal						();
 	
 	// Detect camera-sector
 	if (!vLastCameraPos.similar(Device.vCameraPosition,EPS_S)) 
@@ -54,13 +46,4 @@ void CRender::Calculate		()
 			pPortal->bDualRender = TRUE;
 		}
 	}
-
-	// Calculate sector(s) and their objects
-	marker									++;
-	set_Object								(0);
-	if (0!=pLastSector) pLastSector->Render	(ViewBase);
-	pCreator->pHUD->Render_Calculate		();
-	
-	// End calc
-	Device.Statistic.RenderCALC.End			();
 }

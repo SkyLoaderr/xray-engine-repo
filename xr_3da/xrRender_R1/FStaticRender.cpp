@@ -674,11 +674,6 @@ void	CRender::Render		()
 	// Glows
 	Glows.Render			();
 
-	// HUD
-	Device.Statistic.RenderDUMP_HUD.Begin	();
-	pCreator->pHUD->Render_Affected			();
-	Device.Statistic.RenderDUMP_HUD.End		();
-
 	// Patches
 	if (vecPatches.size())  {
 		flush_Patches	();

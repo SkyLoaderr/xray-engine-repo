@@ -35,5 +35,8 @@ extern float		ps_r2_ssaLOD_A;
 extern float		ps_r2_ssaLOD_B;
 extern float		ps_r2_ssaHZBvsTEX;
 
+// R2-specific
+extern float		ps_r2_ls_dynamic_range;	// r2-only
+
 extern void			xrRender_initconsole	();
 #endif

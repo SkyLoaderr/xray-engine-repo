@@ -120,10 +120,6 @@ void CHUDManager::Render_Calculate()
 	::Render->set_HUD				(FALSE);
 }
 
-void CHUDManager::Render_Affected()
-{
-}
-
 void CHUDManager::Render_Direct	()
 {
 	BOOL bAlready = FALSE;

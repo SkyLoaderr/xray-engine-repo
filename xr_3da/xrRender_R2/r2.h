@@ -83,6 +83,7 @@ private:
 
 public:
 	void							render_scenegraph		();
+	void							render_hud				();
 	void							render_smap_direct		();
 public:
 	// Loading / Unloading
@@ -104,7 +105,7 @@ public:
 	// Main 
 	virtual void					flush					();
 	virtual void					set_Object				(CObject*	O	);
-	virtual void					add_Visual				(IVisual*	V	);			// add visual leaf (no culling performed at all)
+	virtual void					add_Visual				(IVisual*	V	);			// add visual leaf	(no culling performed at all)
 	virtual void					add_Geometry			(IVisual*	V	);			// add visual(s)	(all culling performed)
 	virtual void					add_Lights				(vector<WORD> &V);
 	virtual void					add_Glows				(vector<WORD> &V);

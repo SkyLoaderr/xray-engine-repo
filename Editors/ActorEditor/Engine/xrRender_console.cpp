@@ -36,6 +36,9 @@ float		ps_r2_ssaLOD_A			= 64.f;
 float		ps_r2_ssaLOD_B			= 48.f;
 float		ps_r2_ssaHZBvsTEX		= 256.f;
 
+// R2-specific
+float		ps_r2_ls_dynamic_range	= 2.f;	// r2-only
+
 #ifndef _EDITOR
 #include	"..\xr_ioconsole.h"
 #include	"..\xr_ioc_cmd.h"
@@ -75,5 +78,8 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r2_ssa_discard",		&ps_r2_ssaDISCARD,			1,		16		);
 	CMD4(CCC_Float,		"r2_ssa_dontsort",		&ps_r2_ssaDONTSORT,			16,		128		);
 	CMD4(CCC_Float,		"r2_ssa_hzb_vs_tex",	&ps_r2_ssaHZBvsTEX,			16,		512		);
+
+	// R2-specific
+	CMD4(CCC_Float,		"r2_ls_dynamic_range",	&ps_r2_ls_dynamic_range,	1.f,	3.f		);
 }
 #endif

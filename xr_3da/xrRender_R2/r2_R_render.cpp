@@ -4,60 +4,41 @@
 
 void CRender::Render	()
 {
-	Device.Statistic.RenderDUMP.Begin();
-
-	// Target.set_gray					(.5f+sinf(Device.fTimeGlobal)/2.f);
-	Target.phase_scene				();
-
-	// HUD render
+	//******* Main calc
+	Device.Statistic.RenderCALC.Begin	();
 	{
-		ENGINE_API extern float		psHUD_FOV;
-		
-		// Change projection
-		Fmatrix Pold				= Device.mProject;
-		Fmatrix FTold				= Device.mFullTransform;
-		Device.mProject.build_projection(
-			deg2rad(psHUD_FOV*Device.fFOV*Device.fASPECT), 
-			Device.fASPECT, VIEWPORT_NEAR, 
-			pCreator->Environment.Current.Far);
-		Device.mFullTransform.mul	(Device.mProject, Device.mView);
-		RCache.set_xform_project	(Device.mProject);
+		marker									++;
 
-		// Rendering
-		/*
-		rmNear						();
-		mapHUD.traverseLR			(sorted_L1);
-		mapHUD.clear				();
-		rmNormal					();
-		*/
+		// Frustum & HOM rendering
+		ViewBase.CreateFromMatrix				(Device.mFullTransform,FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
+		View									= 0;
+		HOM.Render								(ViewBase);
+		rmNormal								();
 
-		// Restore projection
-		Device.mProject				= Pold;
-		Device.mFullTransform		= FTold;
-		RCache.set_xform_project	(Device.mProject);
+		// Calculate sector(s) and their objects
+		set_Object								(0);
+		if (0!=pLastSector) pLastSector->Render	(ViewBase);
+		pCreator->pHUD->Render_Calculate		();
 	}
+	Device.Statistic.RenderCALC.End			();
 
-	// NORMAL			*** mostly the main level
-	render_scenegraph		();
+	//******* Main render
+	Device.Statistic.RenderDUMP.Begin();
+	{
+		Target.phase_scene					();
 
-	//-----------------------------------
-	RCache.set_xform_world	(Fidentity);
-	Details.Render			(Device.vCameraPosition);
+		render_hud							();
+		render_scenegraph					();
+		Details.Render						(Device.vCameraPosition);
+		// mapSorted.traverseRL				(sorted_L1);
+		mapSorted.clear						();
+	}
+	Device.Statistic.RenderDUMP.End();
 
-	// Sorted (back to front)
-	// mapSorted.traverseRL	(sorted_L1);
-	mapSorted.clear			();
-
-	// HUD
-	Device.Statistic.RenderDUMP_HUD.Begin	();
-	pCreator->pHUD->Render_Affected			();
-	Device.Statistic.RenderDUMP_HUD.End		();
-
-	// Direct-compute
+	//******* Direct lighting shadow
+	HOM.Disable								();
 	LR_Direct.compute_xf_1					();
 
-	// pCreator->Environment.RenderFirst	();
-	// pCreator->Environment.RenderLast		();
 	
 	// Postprocess
 	Target.phase_combine					();
@@ -67,5 +48,6 @@ void CRender::Render	()
 	pCreator->pHUD->Render_Direct			();
 	Device.Statistic.RenderDUMP_HUD.End		();
 
-	Device.Statistic.RenderDUMP.End();
+	// pCreator->Environment.RenderFirst	();
+	// pCreator->Environment.RenderLast		();
 }
