@@ -79,9 +79,9 @@ class CAI_Biting : public CCustomMonster, public CBitingAnimations
 
 		// ѕерейти в следующее состо€ние, иначе завершить
 		void Switch() {		
-#pragma todo("it == States.end() ???")
+
 			Started = true;
-			if (it == States.end()) it = States.begin();
+			if (it == 0) it = States.begin();
 			else {
 				it++; 
 				if (it != States.end()) Started = true;	
