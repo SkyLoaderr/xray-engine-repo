@@ -68,7 +68,7 @@ function main()
 			flush()
 
 	while stalker1:action() and stalker2:action() do
-		if stalker1:see(actor) == false and stalker2:see(actor) == false then 
+		if stalker1:see(actor) == false and stalker2:see(actor) == false and is_actor_entered == nil then 
 
 			printf("aa!")
 			flush()
