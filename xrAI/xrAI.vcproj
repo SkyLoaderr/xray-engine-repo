@@ -592,10 +592,10 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="graph_search_engine"
+						Name="graph_engine"
 						Filter="">
 						<File
-							RelativePath=".\graph_search_engine.h">
+							RelativePath=".\graph_engine.h">
 						</File>
 					</Filter>
 					<Filter
