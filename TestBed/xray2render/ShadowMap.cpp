@@ -740,6 +740,50 @@ HRESULT CMyD3DApplication::RenderCombine	(COMBINE_MODE M)
 }
 
 //-----------------------------------------------------------------------------
+// Name: RenderLight_Direct				()
+//-----------------------------------------------------------------------------
+HRESULT CMyD3DApplication::RenderLight_Direct	()
+{
+	// samplers and texture
+	m_pd3dDevice->SetTexture				(0, d_Position);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// samplers and texture
+	m_pd3dDevice->SetTexture				(0, d_Normal);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+
+	// Shader and params
+	m_pd3dDevice->SetPixelShader			(s_Light_Direct.ps);
+	m_pd3dDevice->SetVertexShader			(s_Light_Direct.vs);
+	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
+	D3DXVECTOR3 vLightDir					= D3DXVECTOR3(2.0f, 1.0f, -1.0f);
+	D3DXMATRIX	mInvView;
+	D3DXVec3Normalize						(&vLightDir, &vLightDir);
+	D3DXMatrixInverse						(mInvView,0,dm_2view);
+	D3DXVec3TransformNormal					(vLightDir,vLightDir);
+	cc.set									(s_Scene2fat.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
+	cc.set									(s_Scene2fat.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
+	cc.flush								(m_pd3dDevice);
+
+	// Render Quad
+	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
+	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
+
+	// Cleanup
+	m_pd3dDevice->SetTexture				(0, NULL);
+
+	return S_OK;
+}
+
+
+//-----------------------------------------------------------------------------
 // Name: RenderCombineDBG_Normals			()
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::RenderCombineDBG_Normals	()
