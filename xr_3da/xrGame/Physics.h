@@ -7,7 +7,7 @@
 #include "PHObject.h"
 #include "PHInterpolation.h"
 #include "_cylinder.h"
-//#define ODE_SLOW_SOLVER
+#define ODE_SLOW_SOLVER
 ///////////////////////////////////////////////////////////////////////////////
 
 extern const dReal	default_l_limit;

@@ -262,6 +262,14 @@ private:
 	{
 		return m_max_rpm/m_current_gear_ratio;
 	}
+	float EngineCurTorque()
+	{
+		return m_current_engine_power/m_current_rpm;
+	}
+	float RefWheelCurTorque()
+	{
+		return EngineCurTorque()*((m_current_gear_ratio<0.f) ? -m_current_gear_ratio : m_current_gear_ratio);
+	}
 	float EnginePower();
 	float EngineDriveSpeed();
 	/////////////////////////////////////////////////////////////////////////	

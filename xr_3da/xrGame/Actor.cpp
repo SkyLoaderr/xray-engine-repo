@@ -1406,7 +1406,7 @@ void CActor::ForceTransform(const Fmatrix& m)
 {
 	if(g_Alive()<=0)			return;
 	XFORM().set					(m);
-	ph_Movement.EnableCharacter	();
+	if(ph_Movement.CharacterExist()) ph_Movement.EnableCharacter	();
 	ph_Movement.SetPosition		(m.c);
 }
 

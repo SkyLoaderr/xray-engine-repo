@@ -10,6 +10,7 @@ void CCar::SWheel::Init()
 	joint=(bone_map.find(bone_id))->second.joint->GetDJoint();
 	dJointSetHinge2Param(joint, dParamFMax2,0.f);//car->m_axle_friction
 	dJointSetHinge2Param(joint, dParamVel2, 0.f);
+	inited=true;
 }
 
 
@@ -45,14 +46,14 @@ void CCar::SWheelDrive::Drive()
 	float cur_speed=pwheel->car->RefWheelMaxSpeed()/gear_factor;
 	dJointSetHinge2Param(pwheel->joint, dParamVel2, pos_fvd*cur_speed);
 	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
-	dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_current_engine_power/cur_speed);
+	dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->RefWheelCurTorque()/gear_factor);
 
 }
 void CCar::SWheelDrive::UpdatePower()
 {
 	float cur_speed=pwheel->car->RefWheelMaxSpeed()/gear_factor;
 	(cur_speed<0.f) ? (cur_speed=-cur_speed) :cur_speed;
-	dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->m_current_engine_power/cur_speed);
+	dJointSetHinge2Param(pwheel->joint, dParamFMax2, pwheel->car->RefWheelCurTorque()/gear_factor);
 }
 void CCar::SWheelDrive::Neutral()
 {
@@ -62,7 +63,7 @@ void CCar::SWheelDrive::Neutral()
 
 float CCar::SWheelDrive::ASpeed()
 {
-	return dFabs(dJointGetHinge2Angle2Rate(pwheel->joint))*gear_factor;
+	return dFabs(dJointGetHinge2Angle2Rate(pwheel->joint));
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void CCar::SWheelSteer::Init()
@@ -187,7 +188,7 @@ void CCar::SWheelBreak::Init()
 
 void CCar::SWheelBreak::Break()
 {
-	dJointSetHinge2Param(pwheel->joint, dParamFMax2, break_torque);//
+	dJointSetHinge2Param(pwheel->joint, dParamFMax2, 100000.f*break_torque);//
 	dJointSetHinge2Param(pwheel->joint, dParamVel2, 0.f);
 }
 

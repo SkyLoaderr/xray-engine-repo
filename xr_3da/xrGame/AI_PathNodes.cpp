@@ -461,7 +461,7 @@ float precesition=1.f;
 
 #ifndef NO_PHYSICS_IN_AI_MOVE
 	Me->setEnabled(false);
-	Level().ObjectSpace.GetNearest		(p_dest,30.f); 
+	Level().ObjectSpace.GetNearest		(p_dest,1.f); 
 	xr_vector<CObject*> &tpNearestList	= Level().ObjectSpace.q_nearest; 
 	Me->setEnabled(true);
 #endif
