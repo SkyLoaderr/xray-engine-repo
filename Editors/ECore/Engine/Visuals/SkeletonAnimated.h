@@ -3,13 +3,11 @@
 #define SkeletonAnimatedH
 
 #include		"skeletoncustom.h"
+#include		"skeletonmotions.h"
 
 // consts
 const	u32		MAX_BLENDED			=	16;
-const	u32		MAX_PARTS			=	4;
 const	u32		MAX_BLENDED_POOL	=	(MAX_BLENDED*MAX_PARTS);
-const	f32		SAMPLE_FPS			=	30.f;
-const	f32		SAMPLE_SPF			=	(1.f/SAMPLE_FPS);
 
 // refs
 class   ENGINE_API CBlend;
@@ -18,28 +16,6 @@ class	ENGINE_API CBoneDataAnimated;
 class   ENGINE_API CBoneInstanceAnimated;
 struct	ENGINE_API CKey;
 class	ENGINE_API CInifile;
-
-// callback
-typedef void (__stdcall * PlayCallback)		(CBlend*		P);
-
-//*** Key frame definition ************************************************************************
-#pragma pack(push,2)
-const float KEY_Quant		= 32767.f;
-const float KEY_QuantI		= 1.f/KEY_Quant;
-struct ENGINE_API CKey
-{
-	Fquaternion	Q;			// rotation
-	Fvector		T;			// translation
-};
-struct ENGINE_API CKeyQR
-{
-	s16			x,y,z,w;	// rotation
-};
-struct ENGINE_API CKeyQT
-{
-	s8			x,y,z;
-};
-#pragma pack(pop)
 
 //*** Run-time Blend definition *******************************************************************
 class ENGINE_API CBlend {
@@ -76,18 +52,6 @@ public:
 typedef svector<CBlend*,MAX_BLENDED>	BlendList;
 typedef BlendList::iterator				BlendListIt;
 
-//*** Motion Data *********************************************************************************
-class ENGINE_API		CMotion
-{
-public:
-	ref_smem<CKeyQR>	_keysR;
-	ref_smem<CKeyQT>	_keysT;
-    Fvector				_initT;
-    Fvector				_sizeT;
-	u32					_count;
-	float				GetLength()				{ return float(_count)*SAMPLE_SPF; }
-};
-
 //*** Bone Instance *******************************************************************************
 #pragma pack(push,8)
 class ENGINE_API		CBlendInstance	// Bone Instance Blend List (per-bone data)
@@ -105,7 +69,7 @@ public:
 class ENGINE_API		CBoneDataAnimated: public CBoneData             
 {
 public:
-	xr_vector<CMotion>	Motions;		// all known motions
+	MotionVec*			Motions;		// all known motions
 public:
 						CBoneDataAnimated(u16 ID):CBoneData(ID){}
 	// Motion control
@@ -118,43 +82,6 @@ public:
 	virtual void		Calculate		(CKinematics* K, Fmatrix *Parent);
 };
 
-//*** Shared motion Data **************************************************************************
-class ENGINE_API CMotionDef
-{
-public:
-	u16			bone_or_part;
-	u16			motion;
-	u16			speed;		// quantized: 0..10
-	u16			power;		// quantized: 0..10
-	u16			accrue;		// quantized: 0..10
-	u16			falloff;	// quantized: 0..10
-    u32			flags;
-
-	IC float	Dequantize	(u16 V)		{	return  float(V)/655.35f; }
-	IC u16		Quantize	(float V)	{	s32		t = iFloor(V*655.35f); clamp(t,0,65535); return u16(t); }
-
-	void		Load		(CSkeletonAnimated* P, CInifile* INI, LPCSTR section, BOOL bCycle);
-	void		Load		(CSkeletonAnimated* P, IReader* MP, u32 fl);
-	CBlend*		PlayCycle	(CSkeletonAnimated* P, BOOL	bMixIn, PlayCallback Callback, LPVOID Callback_Param);
-	CBlend*		PlayCycle	(CSkeletonAnimated* P, u16	part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param);
-	CBlend*		PlayFX		(CSkeletonAnimated* P, float	power_scale);
-};
-
-//*** Shared partition Data ***********************************************************************
-class ENGINE_API	CPartDef
-{
-public:
-	shared_str			Name;
-	xr_vector<u32>	bones;
-	CPartDef()		: Name(0) {};
-};
-class ENGINE_API	CPartition
-{
-	CPartDef		P[MAX_PARTS];
-public:
-	IC CPartDef&	operator[] (u16 id)	{ return P[id]; }
-};
-
 //*** The visual itself ***************************************************************************
 class ENGINE_API	CSkeletonAnimated	: public CKinematics
 {
@@ -163,7 +90,6 @@ class ENGINE_API	CSkeletonAnimated	: public CKinematics
 	friend class								CMotionDef;
 	friend class								CSkeletonX;
 public: 
-	typedef xr_map<shared_str,CMotionDef,str_pred>	mdef;
 #ifdef _EDITOR
 public:
 #else
@@ -171,13 +97,13 @@ private:
 #endif
 	CBlendInstance*								blend_instances;
 
+	shared_motions								motions;
 	// Fast search
-	accel_map*									motion_map;			// motion assotiations	(shared) - by name
-	mdef*										m_cycle;			// motion data itself	(shared)
-	mdef*										m_fx;				// motion data itself	(shared)
-
+//.	accel_map*									motion_map;			// motion assotiations	(shared) - by name
+//.	mdef*										m_cycle;			// motion data itself	(shared)
+//.	mdef*										m_fx;				// motion data itself	(shared)
 	// Partition
-	CPartition*									partition;
+//.	CPartition*									partition;
 
 	// Blending
 	svector<CBlend, MAX_BLENDED_POOL>			blend_pool;
@@ -192,7 +118,7 @@ protected:
 	void						IBlend_Startup			();
 	CBlend*						IBlend_Create			();
 
-	bool						LoadMotions				(LPCSTR N, IReader *data);
+//.	bool						LoadMotions				(LPCSTR N, IReader *data);
 public:
 #ifdef DEBUG
 	LPCSTR						LL_MotionDefName_dbg	(u16	ID);
@@ -203,10 +129,10 @@ public:
 	u16							LL_MotionID		(LPCSTR B);
 	u16							LL_PartID		(LPCSTR B);
 
-	accel_map*					LL_Motions		(){return motion_map;}
+	accel_map*					LL_Motions		(){return motions.motion_map();}
 
-    u32							LL_CycleCount	(){return m_cycle->size();}
-    u32							LL_FXCount		(){return m_fx->size();}
+    u32							LL_CycleCount	(){return motions.cycle()->size();}
+    u32							LL_FXCount		(){return motions.fx()->size();}
 	CBlend*						LL_PlayFX		(u16 bone,		u16		motion, float blendAccrue,	float blendFalloff, float Speed, float Power);
 	CBlend*						LL_PlayCycle	(u16 partition, u16		motion, BOOL  bMixing,		float blendAccrue,	float blendFalloff, float Speed, BOOL noloop, PlayCallback Callback, LPVOID Callback_Param);
 	void						LL_FadeCycle	(u16 partition, float	falloff);

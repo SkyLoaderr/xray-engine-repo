@@ -67,13 +67,13 @@ public:
 #endif
 public:
 	// Registrators
-	CRegistrator	<pureFrame			 >	seqFrame;
-	CRegistrator	<pureFrame			 >	seqFrameMT;
-	CRegistrator	<pureRender			 >	seqRender;
-	CRegistrator	<pureAppActivate	 >	seqAppActivate;
-	CRegistrator	<pureAppDeactivate	 >	seqAppDeactivate;
-	CRegistrator	<pureAppCycleStart	 >	seqAppCycleStart;
-	CRegistrator	<pureAppCycleEnd	 >	seqAppCycleEnd;
+	CRegistrator	<pureFrame			>	seqFrame;
+	CRegistrator	<pureFrame			>	seqFrameMT;
+	CRegistrator	<pureRender			>	seqRender;
+	CRegistrator	<pureAppActivate	>	seqAppActivate;
+	CRegistrator	<pureAppDeactivate	>	seqAppDeactivate;
+	CRegistrator	<pureAppStart		>	seqAppStart;
+	CRegistrator	<pureAppEnd			>	seqAppEnd;
 
 	// Dependent classes
 	CResourceManager*						Resources;	  

@@ -10,6 +10,7 @@
 #include "environment.h"
 #include "xr_input.h"
 #include "CustomHUD.h"
+#include "SkeletonAnimated.h"
 
 #include "xr_object.h"
 
@@ -65,6 +66,15 @@ public:
 		g_pSharedMemoryContainer->dump();
 		Msg	("* ----- string storage -----");
 		g_pStringContainer->dump();
+	}
+};
+//-----------------------------------------------------------------------
+class CCC_SkelStat : public IConsole_Command
+{
+public:
+	CCC_SkelStat(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = TRUE; };
+	virtual void Execute(LPCSTR args) {
+		g_pMotionsContainer->dump();
 	}
 };
 //-----------------------------------------------------------------------
@@ -300,6 +310,7 @@ void CCC_Register()
 
 #ifdef DEBUG
 	CMD1(CCC_MemStat,	"stat_mem"				);
+	CMD1(CCC_SkelStat,	"stat_skeleton"			);
 
 	CMD3(CCC_Mask,		"mt_sound",				&psDeviceFlags,			mtSound);
 	CMD3(CCC_Mask,		"mt_physics",			&psDeviceFlags,			mtPhysics);

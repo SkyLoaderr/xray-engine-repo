@@ -5,9 +5,7 @@
 #include 	"SkeletonAnimated.h"
 #include	"SkeletonX.h"
 #include	"fmesh.h"
-#include	"motion.h"
 
-const float	fAA					= 1.5f;	// anim-change acceleration
 extern int	psSkeletonUpdate;
 
 //////////////////////////////////////////////////////////////////////////
@@ -19,7 +17,7 @@ void		CBlendInstance::construct()
 void		CBlendInstance::blend_add	(CBlend* H)
 {	
 	if (Blend.size()>=MAX_BLENDED)	{
-// for E3 by Dima
+//. for E3 by Dima
 #ifdef _DEBUG
 		Msg	("! WARNING: more than 16 blend-sequences per bone played");
 #endif
@@ -31,57 +29,6 @@ void		CBlendInstance::blend_remove	(CBlend* H)
 {
 	CBlend** I = std::find(Blend.begin(),Blend.end(),H);
 	if (I!=Blend.end())	Blend.erase(I);
-}
-
-
-//////////////////////////////////////////////////////////////////////////
-// High level control
-void CMotionDef::Load(CSkeletonAnimated* P, IReader* MP, u32 fl)
-{
-	// params
-	bone_or_part= MP->r_u16(); // bCycle?part_id:bone_id;
-	motion		= MP->r_u16(); // motion_id
-	speed		= Quantize(MP->r_float());
-	power		= Quantize(MP->r_float());
-	accrue		= Quantize(MP->r_float());
-	falloff		= Quantize(MP->r_float());
-	flags		= fl;
-	if (!(flags&esmFX) && (falloff>=accrue)) falloff = accrue-1;
-}
-
-CBlend*	CMotionDef::PlayCycle(CSkeletonAnimated* P, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
-{
-	return P->LL_PlayCycle(
-		bone_or_part,motion,bMixIn,
-		fAA*Dequantize(accrue),
-		fAA*Dequantize(falloff),
-		Dequantize(speed),
-		flags&esmStopAtEnd,
-		Callback,Callback_Param
-		);
-}
-
-CBlend*	CMotionDef::PlayCycle(CSkeletonAnimated* P, u16 part, BOOL bMixIn, PlayCallback Callback, LPVOID Callback_Param)
-{
-	return P->LL_PlayCycle(
-		part,motion,bMixIn,
-		fAA*Dequantize(accrue),
-		fAA*Dequantize(falloff),
-		Dequantize(speed),
-		flags&esmStopAtEnd,
-		Callback,Callback_Param
-		);
-}
-
-CBlend*	CMotionDef::PlayFX(CSkeletonAnimated* P, float power_scale)
-{
-	return P->LL_PlayFX(
-		bone_or_part,motion,
-		fAA*Dequantize(accrue),
-		fAA*Dequantize(falloff),
-		Dequantize(speed),
-		Dequantize(power)*power_scale
-		);
 }
 
 // Motion control
@@ -109,20 +56,20 @@ void	CBoneDataAnimated::Motion_Stop_IM	(CSkeletonAnimated* K, CBlend* handle)
 #ifdef DEBUG
 LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(u16	ID)
 {
-	CKinematics::accel_map::iterator _I, _E=motion_map->end();
-	for (_I	= motion_map->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
+	accel_map::iterator _I, _E=motions.motion_map()->end();
+	for (_I	= motions.motion_map()->begin(); _I!=_E; ++_I)	if (_I->second==ID) return *_I->first;
 	return 0;
 }
 LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 {
 	// cycles
 	mdef::const_iterator I,E;
-	I = m_cycle->begin(); 
-	E = m_cycle->end(); 
+	I = motions.cycle()->begin(); 
+	E = motions.cycle()->end(); 
 	for ( ; I != E; ++I) if (&(*I).second == ptr) return *(*I).first;
 	// fxs
-	I = m_fx->begin(); 
-	E = m_fx->end(); 
+	I = motions.fx()->begin(); 
+	E = motions.fx()->end(); 
 	for ( ; I != E; ++I) if (&(*I).second == ptr) return *(*I).first;
 	return 0;
 }
@@ -133,15 +80,15 @@ LPCSTR CSkeletonAnimated::LL_MotionDefName_dbg	(LPVOID ptr)
 //////////////////////////////////////////////////////////////////////
 u16	CSkeletonAnimated::LL_MotionID	(LPCSTR B)
 {
-	accel_map::iterator I		= motion_map->find(LPSTR(B));
-	if (I==motion_map->end())	return BI_NONE;
-	else						return I->second;
+	accel_map::iterator I		= motions.motion_map()->find(LPSTR(B));
+	if (I==motions.motion_map()->end())	return BI_NONE;
+	else								return I->second;
 }
 u16 CSkeletonAnimated::LL_PartID		(LPCSTR B)
 {
-	if (0==partition)			return BI_NONE;
+	if (0==motions.partition())			return BI_NONE;
 	for (u16 id=0; id<MAX_PARTS; id++) {
-		CPartDef&	P = (*partition)[id];
+		CPartDef&	P = (*motions.partition())[id];
 		if (0==P.Name)	continue;
 		if (0==stricmp(B,*P.Name)) return id;
 	}
@@ -151,40 +98,40 @@ u16 CSkeletonAnimated::LL_PartID		(LPCSTR B)
 // cycles
 CMotionDef*	CSkeletonAnimated::ID_Cycle	(LPCSTR  N)
 {
-	mdef::iterator I = m_cycle->find(LPSTR(N));
-	if (I==m_cycle->end())	{ Debug.fatal("! MODEL: can't find cycle: %s", N); return 0; }
+	mdef::iterator I = motions.cycle()->find(LPSTR(N));
+	if (I==motions.cycle()->end())	{ Debug.fatal("! MODEL: can't find cycle: %s", N); return 0; }
 	return &I->second;
 }
 CMotionDef*	CSkeletonAnimated::ID_Cycle_Safe(LPCSTR  N)
 {
-	mdef::iterator I = m_cycle->find(LPSTR(N));
-	if(I==m_cycle->end()) return 0;
+	mdef::iterator I = motions.cycle()->find(LPSTR(N));
+	if(I==motions.cycle()->end()) return 0;
 	return &I->second;
 }
 CBlend*	CSkeletonAnimated::PlayCycle		(LPCSTR  N, BOOL bMixIn, PlayCallback Callback, LPVOID CallbackParam)
 {
-	mdef::iterator I = m_cycle->find(LPSTR(N));
-	if (I!=m_cycle->end())	return I->second.PlayCycle(this,bMixIn,Callback,CallbackParam);
+	mdef::iterator I = motions.cycle()->find(LPSTR(N));
+	if (I!=motions.cycle()->end())	return I->second.PlayCycle(this,bMixIn,Callback,CallbackParam);
 	else					{ Debug.fatal("! MODEL: can't find cycle: %s", N); return 0; }
 }
 
 // fx'es
 CMotionDef*	CSkeletonAnimated::ID_FX			(LPCSTR  N)
 {
-	mdef::iterator I = m_fx->find(LPSTR(N));
-	if (I==m_fx->end())		{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
+	mdef::iterator I = motions.fx()->find(LPSTR(N));
+	if (I==motions.fx()->end())		{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
 	return &I->second;
 }
 CMotionDef*	CSkeletonAnimated::ID_FX_Safe		(LPCSTR  N)
 {
-	mdef::iterator I = m_fx->find(LPSTR(N));
-	if(I==m_fx->end()) return 0;
+	mdef::iterator I = motions.fx()->find(LPSTR(N));
+	if(I==motions.fx()->end()) return 0;
 	return &I->second;
 }
 CBlend*	CSkeletonAnimated::PlayFX			(LPCSTR  N, float power_scale)
 {
-	mdef::iterator I = m_fx->find(LPSTR(N));
-	if (I!=m_fx->end())		return I->second.PlayFX(this,power_scale);
+	mdef::iterator I = motions.fx()->find(LPSTR(N));
+	if (I!=motions.fx()->end())		return I->second.PlayFX(this,power_scale);
 	else					{ Debug.fatal("! MODEL: can't find FX: %s", N); return 0; }
 }
 
@@ -206,7 +153,7 @@ CBlend*	CSkeletonAnimated::LL_PlayFX		(u16 bone, u16 motion, float blendAccrue, 
 	B->speed		= Speed;
 	B->motionID		= motion;
 	B->timeCurrent	= 0;
-	B->timeTotal	= Bone->Motions[motion].GetLength();
+	B->timeTotal	= Bone->Motions->at(motion).GetLength();
 	B->bone_or_part	= bone;
 	
 	B->playing		= TRUE;
@@ -242,7 +189,7 @@ void	CSkeletonAnimated::LL_CloseCycle(u16 part)
 
 		B.blend = CBlend::eFREE_SLOT;
 		
-		CPartDef& P	= (*partition)[B.bone_or_part];
+		CPartDef& P	= (*motions.partition())[B.bone_or_part];
 		for (u32 i=0; i<P.bones.size(); i++)
 			((CBoneDataAnimated*)(*bones)[P.bones[i]])->Motion_Stop(this,*I);
 		/*
@@ -263,12 +210,12 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	flo
 		return 0;
 	}
 	if (part>=MAX_PARTS)	return 0;
-	if (0==(*partition)[part].Name)	return 0;
+	if (0==(*motions.partition())[part].Name)	return 0;
 
 	// Process old cycles and create _new_
 	if (bMixing)	LL_FadeCycle	(part,blendFalloff);
 	else			LL_CloseCycle	(part);
-	CPartDef& P	=	(*partition)[part];
+	CPartDef& P	=	(*motions.partition())[part];
 	CBlend*	B	=	IBlend_Create();
 
 	CBoneDataAnimated*	Bone=0;
@@ -294,7 +241,7 @@ CBlend*	CSkeletonAnimated::LL_PlayCycle(u16 part, u16 motion, BOOL  bMixing,	flo
 	B->speed		= Speed;
 	B->motionID		= motion;
 	B->timeCurrent	= 0;
-	B->timeTotal	= Bone->Motions[motion].GetLength();
+	B->timeTotal	= Bone->Motions->at(motion).GetLength();
 	B->bone_or_part	= part;
 	B->playing		= TRUE;
 	B->stop_at_end	= noloop;
@@ -316,7 +263,7 @@ void CSkeletonAnimated::Update ()
 	// Cycles
 	for (u16 part=0; part<MAX_PARTS; part++) 
 	{
-		if (0==(*partition)[part].Name)	continue;
+		if (0==(*motions.partition())[part].Name)	continue;
 
 		I = blend_cycles[part].begin(); E = blend_cycles[part].end();
 		for (; I!=E; I++)
@@ -358,7 +305,7 @@ void CSkeletonAnimated::Update ()
 					// destroy cycle
 					B.blend 		= CBlend::eFREE_SLOT;
 
-					CPartDef& P		= (*partition)[B.bone_or_part];
+					CPartDef& P		= (*motions.partition())[B.bone_or_part];
 					for (u32 i=0; i<P.bones.size(); i++)
 						((CBoneDataAnimated*)(*bones)[P.bones[i]])->Motion_Stop(this,*I);
 
@@ -422,19 +369,19 @@ void CSkeletonAnimated::Update ()
 void CSkeletonAnimated::Release()
 {
 	// xr_free bones
-	for (u32 i=0; i<bones->size(); i++)
-	{
-		CBoneDataAnimated* B	= (CBoneDataAnimated*)(*bones)[i];
-		B->Motions.clear		();
-	}
+//.	for (u32 i=0; i<bones->size(); i++)
+//.	{
+//.		CBoneDataAnimated* B	= (CBoneDataAnimated*)(*bones)[i];
+//.		B->Motions.clear		();
+//.	}
 
 	// destroy shared data
-	xr_delete(partition);
-	xr_delete(motion_map);
-	xr_delete(m_cycle);
-	xr_delete(m_fx);
-    
-    inherited::Release();
+//.	xr_delete(partition);
+//.	xr_delete(motion_map);
+//.	xr_delete(m_cycle);
+//.	xr_delete(m_fx);
+
+    inherited::Release	();
 }
 
 CSkeletonAnimated::~CSkeletonAnimated	()
@@ -467,10 +414,7 @@ void CSkeletonAnimated::Copy(IRender_Visual *P)
 	inherited::Copy	(P);
 
 	CSkeletonAnimated* pFrom = (CSkeletonAnimated*)P;
-	PCOPY(motion_map);
-	PCOPY(m_cycle);
-	PCOPY(m_fx);
-	PCOPY(partition);
+	PCOPY(motions);
 
 	IBlend_Startup			();
 }
@@ -508,134 +452,20 @@ CBlend*	CSkeletonAnimated::IBlend_Create	()
 	Debug.fatal("Too many blended motions requisted");
 	return 0;
 }
-
-bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
-{
-	bool bRes		= true;
-	// Load definitions
-    U16Vec rm_bones	(bones->size(),BI_NONE);
-	IReader* MP 	= data->open_chunk(OGF_S_SMPARAMS);
-    if (MP){
-	    u16 		vers 			= MP->r_u16();
-        u16 		part_bone_cnt	= 0;
-        string128 	buf;
-        R_ASSERT3(vers==xrOGF_SMParamsVersion,"Invalid OGF/OMF version:",N);
-        // partitions
-        u16 part_count;
-        part_count 				= MP->r_u16();
-        for (u16 part_i=0; part_i<part_count; part_i++){
-            CPartDef&	PART	= (*partition)[part_i];
-            MP->r_stringZ		(buf);
-            PART.Name			= _strlwr(buf);
-            PART.bones.resize	(MP->r_u16());
-//				Log					("Part:",buf);
-            for (xr_vector<u32>::iterator b_it=PART.bones.begin(); b_it<PART.bones.end(); b_it++){
-                MP->r_stringZ	(buf);
-                u16 m_idx 		= u16		(MP->r_u32());
-                *b_it			= LL_BoneID	(buf); 
-//					Msg				("Bone: #%2d, ID: %2d, Name: '%s'",b_it-PART.bones.begin(),*b_it,buf);
-#ifdef _EDITOR
-                if (*b_it==BI_NONE){
-                    bRes		= false;
-                    Msg			("!Can't find bone: '%s'",buf);
-                }
-#else
-                VERIFY3			(*b_it!=BI_NONE,"Can't find bone:",buf);
-#endif
-                if (bRes)		rm_bones[m_idx] = u16(*b_it);
-            }
-            part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
-        }
-
-        m_cycle = xr_new<mdef> ();
-        m_fx	= xr_new<mdef> ();
-
-#ifdef _EDITOR
-        if (part_bone_cnt!=(u16)bones->size()){
-        	bRes = false;
-            Msg("!Different bone count [Object: '%d' <-> Motions: '%d']",bones->size(),part_bone_cnt);
-        }
-#else
-        VERIFY3(part_bone_cnt==(u16)bones->size(),"Different bone count '%s'",N);
-#endif
-        if (bRes){
-            // motion defs (cycle&fx)
-            u16 mot_count			= MP->r_u16();
-            for (u16 mot_i=0; mot_i<mot_count; mot_i++){
-                MP->r_stringZ(buf);
-                u32 dwFlags		= MP->r_u32();
-                CMotionDef	D;		D.Load(this,MP,dwFlags);
-                if (dwFlags&esmFX)	m_fx->insert(mk_pair(shared_str(_strlwr(buf)),D));
-                else				m_cycle->insert(mk_pair(shared_str(_strlwr(buf)),D));
-            }
-        }
-        MP->close();
-    }else{
-        Debug.fatal	("Old skinned model version unsupported! (%s)",N);
-    }
-
-    if (!bRes)	return false;
-    
-	// Load animation
-	IReader*	MS		= data->open_chunk(OGF_S_MOTIONS);
-    if (!MS) 	return false;
-    
-    u32			dwCNT	= 0;
-    MS->r_chunk_safe	(0,&dwCNT,sizeof(dwCNT));
-
-    // set per bone motion size
-    for (u32 i=0; i<bones->size(); i++)
-        ((CBoneDataAnimated*)(*bones)[i])->Motions.resize(dwCNT);
-    // load motions
-    for (u32 m_idx=0; m_idx<dwCNT; m_idx++){
-        string128			mname;
-        R_ASSERT			(MS->find_chunk(m_idx+1));             
-        MS->r_stringZ		(mname);
-
-        shared_str	m_key		= shared_str(strlwr(mname));
-//		CKinematics::accel_map::iterator it = motion_map->find(m_key);
-//		if (it!=motion_map->end())	xr_delete (it->second);
-        motion_map->insert	(mk_pair(m_key,m_idx));
-
-        u32 dwLen			= MS->r_u32();
-        for (u32 i=0; i<bones->size(); i++){
-        	VERIFY2			(rm_bones[i]!=BI_NONE,"Invalid remap index.");
-            CMotion&		M	= ((CBoneDataAnimated*)(*bones)[rm_bones[i]])->Motions[m_idx];
-            M._count			= dwLen;
-            u8	t_present		= MS->r_u8	();
-            u32 crc_q			= MS->r_u32	();
-			M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
-			MS->advance			(dwLen * sizeof(CKeyQR));
-            if (t_present)	{
-                u32 crc_t			= MS->r_u32	();
-				M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
-				MS->advance			(dwLen * sizeof(CKeyQT));
-                MS->r_fvector3		(M._sizeT);
-                MS->r_fvector3		(M._initT);
-            }else{
-                MS->r_fvector3		(M._initT);
-            }
-        }
-    }
-    MS->close();
-    return bRes;
-}
-
 void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 {
 	inherited::Load	(N, data, dwFlags);
 
 	// Globals
-	motion_map		= xr_new<accel_map>		();
-	partition		= xr_new<CPartition>	();
 	blend_instances	= NULL;
 
 	// Load animation
     if (data->find_chunk(OGF_S_MOTION_REFS)){
     	string_path	fn,nm;
         data->r_stringZ	(nm);
-        if (!FS.exist(fn, "$level$", nm, ".omf")){
-            if (!FS.exist(fn, "$game_meshes$", nm, ".omf")){
+		strcat			(nm,".omf");
+        if (!FS.exist(fn, "$level$", nm)){
+            if (!FS.exist(fn, "$game_meshes$", nm)){
 #ifdef _EDITOR
                 Msg			("!Can't find motion file '%s'.",nm);
                 return;
@@ -647,16 +477,24 @@ void CSkeletonAnimated::Load(const char* N, IReader *data, u32 dwFlags)
 		IReader* MS	= FS.r_open(fn);
         // Check compatibility
         Log			("Loading reference motions:",nm);
-	    LoadMotions	(nm,MS);
+		motions.create(nm,MS,bones);
         MS->close	();
     }else{
-	    LoadMotions		(N,data);
+		string_path	nm;
+		strconcat		(nm,N,".ogf");
+		motions.create	(nm,data,bones);
     }
+
+	// initialize BoneDataAnimated
+	for (u32 i=0; i<bones->size(); i++){
+		CBoneDataAnimated* BDA	= (CBoneDataAnimated*)(*bones)[i];
+		BDA->Motions			= motions.motions(BDA->name);
+	}
 
 	// Init blend pool
 	IBlend_Startup	();
 
-	if (m_cycle->size()<2)			
+	if (motions.cycle()->size()<2)			
 		Msg("! WARNING: model '%s' has only one motion. Candidate for SkeletonRigid???",N);
 }
 
@@ -721,7 +559,7 @@ void CBoneDataAnimated::Calculate(CKinematics* _K, Fmatrix *parent)
             {
                 CBlend*			B		=	*BI;
                 float			time	=	B->timeCurrent*float(SAMPLE_FPS);
-                CMotion&		M		=	Motions[B->motionID];
+                CMotion&		M		=	Motions->at(B->motionID);
                 u32				frame	=	iFloor(time);
                 float			delta	=	time-float(frame);
                 u32				count	=	M._count;

@@ -167,7 +167,7 @@ void CRenderDevice::Run			()
 	// Message cycle
     PeekMessage					( &msg, NULL, 0U, 0U, PM_NOREMOVE );
 
-	seqAppCycleStart.Process	(rp_AppCycleStart);
+	seqAppStart.Process			(rp_AppStart);
 
 	while( WM_QUIT != msg.message  )
     {
@@ -233,7 +233,7 @@ void CRenderDevice::Run			()
         }
     }
 
-	seqAppCycleEnd.Process	(rp_AppCycleEnd);
+	seqAppEnd.Process		(rp_AppEnd);
 
 	// Stop Balance-Thread
 	mt_bMustExit = TRUE;

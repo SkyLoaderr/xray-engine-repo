@@ -8,19 +8,19 @@ ENGINE_API	IGame_Persistent*		g_pGamePersistent	= NULL;
 
 IGame_Persistent::IGame_Persistent	()
 {
-	Device.seqAppCycleStart.Add		(this);
-	Device.seqAppCycleEnd.Add		(this);
+	Device.seqAppStart.Add			(this);
+	Device.seqAppEnd.Add			(this);
 	Device.seqFrame.Add				(this,REG_PRIORITY_HIGH+1);
 }
 
 IGame_Persistent::~IGame_Persistent	()
 {
 	Device.seqFrame.Remove			(this);
-	Device.seqAppCycleStart.Remove	(this);
-	Device.seqAppCycleEnd.Remove	(this);
+	Device.seqAppStart.Remove		(this);
+	Device.seqAppEnd.Remove			(this);
 }
 
-void IGame_Persistent::OnAppCycleStart()
+void IGame_Persistent::OnAppStart	()
 {
 #ifndef _EDITOR
 	ObjectPool.load					();
@@ -31,7 +31,7 @@ void IGame_Persistent::OnAppCycleStart()
 	else									bDedicatedServer	= FALSE;
 }
 
-void IGame_Persistent::OnAppCycleEnd()
+void IGame_Persistent::OnAppEnd		()
 {
 #ifndef _EDITOR
 	ObjectPool.unload				();

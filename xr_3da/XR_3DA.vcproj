@@ -819,6 +819,12 @@
 						RelativePath=".\SkeletonCustom.h">
 					</File>
 					<File
+						RelativePath=".\SkeletonMotions.cpp">
+					</File>
+					<File
+						RelativePath=".\SkeletonMotions.h">
+					</File>
+					<File
 						RelativePath=".\SkeletonRigid.cpp">
 					</File>
 					<File

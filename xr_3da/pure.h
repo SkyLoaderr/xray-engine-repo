@@ -16,8 +16,8 @@ DECLARE_MESSAGE(Frame);
 DECLARE_MESSAGE(Render);
 DECLARE_MESSAGE(AppActivate);
 DECLARE_MESSAGE(AppDeactivate);
-DECLARE_MESSAGE(AppCycleStart);
-DECLARE_MESSAGE(AppCycleEnd);
+DECLARE_MESSAGE(AppStart);
+DECLARE_MESSAGE(AppEnd);
 
 
 //-----------------------------------------------------------------------------

@@ -8,6 +8,7 @@
 #include "stdafx.h"
 #include "igame_level.h"
 #include "igame_persistent.h"
+#include "SkeletonAnimated.h"
 
 #include "xr_input.h"
 #include "xr_ioconsole.h"
@@ -160,7 +161,7 @@ void Startup					( )
 	pApp						= xr_new<CApplication>	();
 	g_pGamePersistent			= (IGame_Persistent*)	NEW_INSTANCE (CLSID_GAME_PERSISTANT);
 	g_SpatialSpace				= xr_new<ISpatial_DB>	();
-
+	
 	// Destroy LOGO
 	DestroyWindow				(logoWindow);
 	logoWindow					= NULL;

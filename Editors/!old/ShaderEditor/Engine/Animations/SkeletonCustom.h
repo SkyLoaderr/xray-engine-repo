@@ -48,6 +48,8 @@ public:
 class ENGINE_API		CBoneData
 {
 public:
+	shared_str			name;
+
 	u16					SelfID;
 	u16					ParentID;
 	vecBones			children;		// bones which are slaves to this
@@ -120,13 +122,8 @@ class ENGINE_API	CKinematics: public FHierrarhyVisual
 	typedef FHierrarhyVisual	inherited;
 	friend class				CBoneData;
 	friend class				CSkeletonX;
-protected:
-	struct str_pred : public std::binary_function<shared_str, shared_str, bool>	{	
-		IC bool operator()(const shared_str& x, const shared_str& y) const	{	return xr_strcmp(x,y)<0;	}
-	};
 public:
 	typedef xr_vector<std::pair<shared_str,u32> >	accel;
-	typedef xr_map<shared_str,u16,str_pred>		accel_map;
 protected:
 	SkeletonWMVec				wallmarks;
 	u32							wm_frame;

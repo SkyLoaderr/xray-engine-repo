@@ -12,8 +12,8 @@ class ENGINE_API IGame_Persistent	:
 #ifndef _EDITOR
 	public DLL_Pure,
 #endif
-	public pureAppCycleStart, 
-	public pureAppCycleEnd,
+	public pureAppStart, 
+	public pureAppEnd,
 	public pureFrame
 {
 public:
@@ -23,8 +23,8 @@ public:
 	CEnvironment					Environment;
 	BOOL							bDedicatedServer	;
 
-	virtual	void					OnAppCycleStart		();
-	virtual void					OnAppCycleEnd		();
+	virtual	void					OnAppStart			();
+	virtual void					OnAppEnd			();
 	virtual void					OnFrame				();
 
 	virtual void					RegisterModel		(IRender_Visual* V)
