@@ -118,7 +118,10 @@ void CBuild::xrPhase_MergeLM()
 			Msg			("LS: %d",	Layer.size());
 			Deflector	= Layer[0];
 			R_ASSERT	(Deflector);
-			if (Layer.size()>2)	dumb_sort(Layer);
+			if (Layer.size()>2)	{
+				// dumb_sort(Layer);
+				std::sort	(Layer.begin()+1,Layer.end(),compare2_defl)
+			}
 
 			// Select first deflectors which can fit
 			Status		("Selection 3...");
