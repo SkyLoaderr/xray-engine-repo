@@ -29,7 +29,7 @@ enum {
 	rsRefresh60hz		= (1ul<<14ul),
 	mtSound				= (1ul<<15ul),
 	mtInput				= (1ul<<16ul),
-	mtPhysics			= (1ul<<17ul)
+	mtPhysics			= (1ul<<17ul),
 	mtNetwork			= (1ul<<18ul)
 // 20-32 bit - defined in Editor
 };

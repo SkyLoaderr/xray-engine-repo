@@ -41,8 +41,10 @@ BOOL CLevel::net_Start_client	( LPCSTR options )
 		ph_world->Create					();
 
 		// Send network to single or multithreaded mode
-		if (psDeviceFlags.test(mtNetwork))	Device.seqFrameMT.Add		(g_pNetProcessor,REG_PRIORITY_HIGH	+ 2);
-		else								Device.seqFrame.Add			(g_pNetProcessor,REG_PRIORITY_LOW	- 2);
+		Device.seqFrameMT.Remove			(g_pNetProcessor);
+		Device.seqFrame.Remove				(g_pNetProcessor);
+		if (psDeviceFlags.test(mtNetwork))	Device.seqFrameMT.Add	(g_pNetProcessor,REG_PRIORITY_HIGH	+ 2);
+		else								Device.seqFrame.Add		(g_pNetProcessor,REG_PRIORITY_LOW	- 2);
 
 		// Waiting for connection/configuration completition
 		while (!net_isCompleted_Connect())	Sleep(5);
