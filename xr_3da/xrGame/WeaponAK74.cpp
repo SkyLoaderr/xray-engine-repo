@@ -65,6 +65,7 @@ void CWeaponAK74::FlameLOAD()
 	for (DWORD i=0; i<scnt; i++)
 		hFlames.push_back(Device.Shader.Create("particles\\add",_GetItem(S,i,name),false));
 }
+
 void CWeaponAK74::FlameUNLOAD()
 {
 	for (DWORD i=0; i<hFlames.size(); i++)
