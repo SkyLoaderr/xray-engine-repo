@@ -10,6 +10,7 @@
 #include "stalker_animation_pair.h"
 #include "../motion.h"
 #include "ai_debug.h"
+#include "ai/stalker/ai_stalker.h"
 
 void CStalkerAnimationPair::synchronize		(const CStalkerAnimationPair &stalker_animation) const
 {
@@ -36,6 +37,13 @@ void CStalkerAnimationPair::play			(CSkeletonAnimated *skeleton_animated, PlayCa
 
 	m_blend					= skeleton_animated->PlayCycle(animation(),TRUE,callback,object);
 	m_actual				= true;
+
+	if (m_step_dependence)
+		object->CStepManager::on_animation_start(
+			m_skeleton_animated->LL_MotionDefName_dbg(
+				animation()
+			)
+		);
 
 #ifdef DEBUG
 	if (psAI_Flags.is(aiAnimation))

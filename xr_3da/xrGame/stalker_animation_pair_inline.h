@@ -23,6 +23,7 @@ IC	void CStalkerAnimationPair::reset				()
 	m_animation				= 0;
 	m_blend					= 0;
 	m_actual				= true;
+	m_step_dependence		= false;
 }
 
 IC	bool CStalkerAnimationPair::actual				() const
@@ -44,6 +45,16 @@ IC	CMotionDef *CStalkerAnimationPair::animation	() const
 IC	CBlend *CStalkerAnimationPair::blend			() const
 {
 	return					(m_blend);
+}
+
+IC	void CStalkerAnimationPair::step_dependence		(bool value)
+{
+	m_step_dependence		= value;
+}
+
+IC	bool CStalkerAnimationPair::step_dependence		() const
+{
+	return					(m_step_dependence);
 }
 
 #ifdef DEBUG

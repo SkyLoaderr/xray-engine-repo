@@ -1,3 +1,32 @@
+[stalker_foot_bones]
+front_left	= bip01_l_foot
+front_right	= bip01_r_foot
+
+[stalker_step_manager]
+; order: left, right
+;--------------------------------------------------------------------------
+;	animation		Cycles	| time1 | power1 | time2 | power2 | 
+;--------------------------------------------------------------------------
+norm_walk_fwd_0		=	1,	  0.2,	    1,	   0.25,     0.7
+norm_walk_back_0	=	1,	  0.2,	    1,	   0.25,     0.7
+norm_walk_ls_0		=	1,	  0.2,	    1,	   0.25,     0.7
+norm_walk_rs_0		=	1,	  0.2,	    1,	   0.25,     0.7
+norm_run_fwd_0		=	1,	  0.2,	    1,	   0.25,     0.7
+norm_run_back_0		=	1,	  0.2,	    1,	   0.25,     0.7
+norm_run_ls_0		=	1,	  0.2,	    1,	   0.25,     0.7
+norm_run_rs_0		=	1,	  0.2,	    1,	   0.25,     0.7
+cr_walk_fwd_0		=	1,	  0.2,	    1,	   0.25,     0.7
+cr_walk_back_0		=	1,	  0.2,	    1,	   0.25,     0.7
+cr_walk_ls_0		=	1,	  0.2,	    1,	   0.25,     0.7
+cr_walk_rs_0		=	1,	  0.2,	    1,	   0.25,     0.7
+cr_run_fwd_0		=	1,	  0.2,	    1,	   0.25,     0.7
+cr_run_back_0		=	1,	  0.2,	    1,	   0.25,     0.7
+cr_run_ls_0			=	1,	  0.2,	    1,	   0.25,     0.7
+cr_run_rs_0			=	1,	  0.2,	    1,	   0.25,     0.7
+escape_0			=	1,	  0.2,	    1,	   0.25,     0.7
+turn_left_0			=	1,	  0.2,	    1,	   0.25,     0.7
+turn_right_0		=	1,	  0.2,	    1,	   0.25,     0.7
+
 [stalker_vision_danger]
 min_view_distance 			= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
 max_view_distance 			= 1.0				; коэффициент, который множится на eye_range, в зависимости от угла
@@ -99,13 +128,6 @@ bleeding_v					= 0						;потеря крови при номинальной ране в секунду
 wound_incarnation_v			= 0.0				;крутизна кривой заживления (какой процент раны останется после заживления в игровую секунду)
 min_wound_size				= 0.01
 
-[stalker_step_section]
-; order: left, right
-;--------------------------------------------------------------------------
-;	anim			Cycles	| time1 | power1 | time2 | power2 | 
-;--------------------------------------------------------------------------
-;stand_drag_0		=	1,	  0.2,	    1,	   0.25,     0.7,   
-
 [stalker]
 class							= AI_STL						; Class identifier
 
@@ -187,6 +209,11 @@ sound_search					= monsters\human\combat\ukr\search\ukr1_finding
 sound_friendly_fire				= script_sound\reactions\friendly_fire\soldier\soldier_friendlyfire_
 sound_panic_human				= monsters\human\combat\ukr\ukr1_surrender,monsters\stalker\surrender\em1_surrender,monsters\stalker\copy\default\surrender\em1_surrender
 sound_panic_monster				= script_sound\help\soldier\soldier_help_
+
+;---STEP MANAGER------------------------------------------------------
+step_params						= stalker_step_manager
+LegsCount						= 2
+foot_bones						= stalker_foot_bones
 
 ;---MOVEMENT----------------------------------------------------------
 CrouchFactor					= 0.33

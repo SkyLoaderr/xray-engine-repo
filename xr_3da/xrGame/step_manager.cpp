@@ -170,24 +170,32 @@ Fvector	CStepManager::get_foot_position(ELegType leg_type)
 	return global_transform.c;
 }
 
+void CStepManager::load_foot_bones	(CInifile::Sect &data)
+{
+	for (CInifile::SectIt I=data.begin(); I!=data.end(); ++I){
+		CInifile::Item& item	= *I;
+
+		u16 index = smart_cast<CKinematics*>(m_object->Visual())->LL_BoneID(*item.second);
+		VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
+
+		if (xr_strcmp(*item.first, "front_left") == 0) 			m_foot_bones[eFrontLeft]	= index;
+		else if (xr_strcmp(*item.first, "front_right")== 0)		m_foot_bones[eFrontRight]	= index;
+		else if (xr_strcmp(*item.first, "back_right")== 0)		m_foot_bones[eBackRight]	= index;
+		else if (xr_strcmp(*item.first, "back_left")== 0)		m_foot_bones[eBackLeft]		= index;
+	}
+}
+
 void CStepManager::reload_foot_bones()
 {
 	CInifile* ini = smart_cast<CKinematics*>(m_object->Visual())->LL_UserData();
 	if(ini&&ini->section_exist("foot_bones")){
-
-		CInifile::Sect& data = ini->r_section("foot_bones");
-		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
-			CInifile::Item& item	= *I;
-
-			u16 index = smart_cast<CKinematics*>(m_object->Visual())->LL_BoneID(*item.second);
-			VERIFY3(index != BI_NONE, "foot bone not found", *item.second);
-
-			if (xr_strcmp(*item.first, "front_left") == 0) 			m_foot_bones[eFrontLeft]	= index;
-			else if (xr_strcmp(*item.first, "front_right")== 0)		m_foot_bones[eFrontRight]	= index;
-			else if (xr_strcmp(*item.first, "back_right")== 0)		m_foot_bones[eBackRight]	= index;
-			else if (xr_strcmp(*item.first, "back_left")== 0)		m_foot_bones[eBackLeft]		= index;
-		}
-	} else VERIFY2(false,"section [foot_bones] not found in monster user_data");
+		load_foot_bones(ini->r_section("foot_bones"));
+	}
+	else {
+		if (!pSettings->line_exist(*m_object->cNameSect(),"foot_bones"))
+			R_ASSERT2(false,"section [foot_bones] not found in monster user_data");
+		load_foot_bones(pSettings->r_section(pSettings->r_string(*m_object->cNameSect(),"foot_bones")));
+	}
 
 	// проверка на соответсвие
 	int count = 0;

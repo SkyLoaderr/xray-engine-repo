@@ -21,6 +21,7 @@
 #include "../../team_hierarchy_holder.h"
 #include "../../squad_hierarchy_holder.h"
 #include "../../group_hierarchy_holder.h"
+#include "../../step_manager.h"
 
 using namespace StalkerSpace;
 
@@ -47,7 +48,8 @@ class CAI_Stalker :
 	public CStalkerMovementManager,
 	public CMotivationActionManagerStalker,
 	public CSetupManager<CSetupAction,CAI_Stalker,u32>,
-	public CAI_PhraseDialogManager
+	public CAI_PhraseDialogManager,
+	public CStepManager
 {
 private:
 	typedef CCustomMonster								inherited;

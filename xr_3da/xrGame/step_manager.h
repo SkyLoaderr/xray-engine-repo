@@ -41,4 +41,5 @@ protected:
 			Fvector	get_foot_position			(ELegType leg_type);
 private:
 			void	reload_foot_bones			();
+			void	load_foot_bones				(CInifile::Sect &data);
 };

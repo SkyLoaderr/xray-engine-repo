@@ -18,6 +18,9 @@ void CStalkerAnimationManager::reinit				()
 	m_movement_direction		= eMovementDirectionForward;
 	m_desirable_direction		= eMovementDirectionForward;
 	m_script_animations.clear	();
+	m_legs.step_dependence		(true);
+	m_global.step_dependence	(true);
+	m_script.step_dependence	(true);
 }
 
 void CStalkerAnimationManager::reload				(CAI_Stalker *_object)

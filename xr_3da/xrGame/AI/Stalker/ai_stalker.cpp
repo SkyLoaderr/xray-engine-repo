@@ -41,6 +41,7 @@ CAI_Stalker::CAI_Stalker			()
 	m_actor_relation_flags.zero		();
 
 	m_animation_manager				= xr_new<CStalkerAnimationManager>();
+	CStepManager::init_external		(this);
 }
 
 CAI_Stalker::~CAI_Stalker			()
@@ -65,6 +66,7 @@ void CAI_Stalker::reinit			()
 	animation_manager().reinit		();
 	CStalkerMovementManager::reinit	();
 	CSSetupManager::reinit			(this);
+	CStepManager::reinit			();
 
 	m_pPhysics_support->in_Init		();
 	
@@ -161,6 +163,7 @@ void CAI_Stalker::Load				(LPCSTR section)
 	CSightManager::Load				(section);
 	CStalkerMovementManager::Load	(section);
 	CMotivationActionManagerStalker::Load	(section);
+	CStepManager::load				(section);
 
 	// skeleton physics
 	m_pPhysics_support->in_Load		(section);
@@ -391,13 +394,14 @@ void CAI_Stalker::UpdateCL()
 
 	if (g_Alive()) {
 		VERIFY						(!m_pPhysicsShell);
-		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
-		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
-		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
-		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
+//		float						s_k		= ((eBodyStateCrouch == body_state()) ? CROUCH_SOUND_FACTOR : 1.f);
+//		float						s_vol	= s_k*((eMovementTypeRun == movement_type()) ? 1.f : ACCELERATED_SOUND_FACTOR);
+//		float						step_time = !fis_zero(CMovementManager::speed()) ? .725f/CMovementManager::speed() : 1.f;
+//		CMaterialManager::update	(Device.fTimeDelta,1.f+0*s_vol,step_time,!!fis_zero(speed()));
 		CSightManager::update		();
 		CObjectHandler::update		();
 		Exec_Look					(Device.fTimeDelta);
+		CStepManager::update		();
 	}
 
 #ifdef DEBUG
