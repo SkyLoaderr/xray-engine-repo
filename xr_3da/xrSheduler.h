@@ -42,19 +42,11 @@ private:
 private:
 	vector<Item>	Items	[3];
 
-	IC void			Push	(DWORD P, Item& I)
-	{
-		Items.push_back(I);
-		push_heap	(Items.begin(), Items.end());
-	}
-	IC void			Pop		(DWORD P)
-	{
-		pop_heap	(Items.begin(), Items.end());
-		Items.pop_back();
-	}
+	IC void			Push	(DWORD P, Item& I);
+	IC void			Pop		(DWORD P);
 	IC Item&		Top		(DWORD P)
 	{
-		return Items.front();
+		return Items[P].front();
 	}
 	void			UpdateLevel	(DWORD P, DWORD mcs);
 public:

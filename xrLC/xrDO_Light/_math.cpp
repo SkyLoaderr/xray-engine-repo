@@ -38,6 +38,7 @@ namespace CPU
 	ENGINE_API u64				cycles_overhead;
 	ENGINE_API float			cycles2seconds;
 	ENGINE_API float			cycles2milisec;
+	ENGINE_API float			cycles2microsec;
 	ENGINE_API _processor_info	ID;
 
 #ifdef M_BORLAND

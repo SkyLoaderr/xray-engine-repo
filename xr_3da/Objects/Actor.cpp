@@ -220,7 +220,7 @@ void CActor::Load		(LPCSTR section )
 	m_crouch.Create		(V,"cr");
 
 	// sheduler
-	dwMinUpdate			= dwMaxUpdate = 1;
+	shedule_Min			= shedule_Max = 1;
 
 	// patch : ZoneAreas
 	if (Level().pLevel->SectionExists("zone_areas"))

@@ -45,14 +45,25 @@ void CSheduler::Unregister		(CSheduled* O)
 {
 	for (DWORD P=0; P<3; P++) 
 	{
-		for (DWORD i=0; i<Items.size(); i++)
+		for (DWORD i=0; i<Items[P].size(); i++)
 		{
-			if (Items[i].Object==O) {
-				Items.erase(Items.begin()+i);
+			if (Items[P][i].Object==O) {
+				Items[P].erase(Items[P].begin()+i);
 				return;
 			}
 		}
 	}
+}
+
+void CSheduler::Push	(DWORD P, Item& I)
+{
+	Items[P].push_back(I);
+	push_heap	(Items[P].begin(), Items[P].end());
+}
+void CSheduler::Pop		(DWORD P)
+{
+	pop_heap	(Items[P].begin(), Items[P].end());
+	Items[P].pop_back();
 }
 
 void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
@@ -66,7 +77,7 @@ void CSheduler::UpdateLevel			(DWORD Priority, DWORD mcs)
 	u64		cycles_start			= CPU::GetCycleCount();
 	u64		cycles_elapsed			= 0; 
 
-	while ((cycles_elapsed<cycles_limit) && (Top().dwTimeForExecute < dwTime))
+	while ((cycles_elapsed<cycles_limit) && (Top(Priority).dwTimeForExecute < dwTime))
 	{
 		dwCount	++;
 

@@ -47,8 +47,8 @@ void CCustomEvent::Load			(LPCSTR section)
 	bVisible					= FALSE;
 	
 	// Sheduler
-	dwMinUpdate					= 300;
-	dwMaxUpdate					= 1000;
+	shedule_Min					= 300;
+	shedule_Max					= 1000;
 }
 
 ENGINE_API void _parse(LPSTR dest, LPCSTR src);
