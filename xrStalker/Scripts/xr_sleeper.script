@@ -62,6 +62,7 @@ function action_sleeper_activity:execute()
 	end
 end
 function action_sleeper_activity:finalize()
+	xr_state.change_state(self.object, 0)
     	action_base.finalize(self)
 end
 
