@@ -536,7 +536,7 @@ PIItem CInventory::Get(CLASS_ID cls_id, bool bSearchRuck) const
 	return NULL;
 }
 
-PIItem CInventory::Get(const u32 id, bool bSearchRuck) const
+PIItem CInventory::Get(const u16 id, bool bSearchRuck) const
 {
 	const TIItemList &list = bSearchRuck ? m_ruck : m_belt;
 
