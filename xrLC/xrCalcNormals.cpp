@@ -62,8 +62,8 @@ void CBuild::CalcNormals()
 	}
 
 	// Destroy unused vertices
-	g_bUnregister = false;
-	vecVertex vtmp;
+	g_bUnregister	= false;
+	vecVertex		vtmp;
 	vtmp.assign		(g_vertices.begin(),g_vertices.begin()+Vcount);
 	g_vertices.erase(g_vertices.begin(),g_vertices.begin()+Vcount);
 	for (u32 I=0; I<Vcount; I++) VertexPool.destroy	(vtmp[I]);
@@ -79,5 +79,4 @@ void CBuild::CalcNormals()
 	Status	("Models...");
 	for		(u32 m=0; m<mu_models.size(); m++)
 		mu_models[m]->calc_normals();
-
 }
