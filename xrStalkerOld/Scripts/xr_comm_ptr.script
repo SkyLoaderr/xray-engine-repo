@@ -79,7 +79,7 @@ function action_patrol:initialize ()
     local obj = self.object:object ("hand_radio")
     if obj ~= nil then
        --self.object:enable_attachable_item (true)
-       printf ("DISABLE RADIO 1")
+       --printf ("DISABLE RADIO 1")
        obj:enable_attachable_item (false)
     end
 	
@@ -114,6 +114,11 @@ function action_patrol:execute ()
 end    
 -------------
 function action_patrol:finalize ()
+    
+    local obj = self.object:object ("hand_radio")
+    if obj ~= nil then
+       obj:enable_attachable_item (false)
+    end    
 	self.move_mgr:finalize ()
     action_base.finalize (self)
 end
@@ -159,9 +164,6 @@ function action_patrol:process_radio ()
     if self.sub_stage == 0 and count == 2 then
        local obj = self.object:object ("hand_radio")
        if obj ~= nil then
-          --printf ("ENABLE RADIO 1")
-          --self.object:enable_attachable_item (true)
-          --printf ("ENABLE RADIO 2")
           obj:enable_attachable_item (true)
        end
     end
@@ -192,8 +194,6 @@ function action_patrol:process_radio ()
     if self.sub_stage == 2 and count == 1 then
        local obj = self.object:object ("hand_radio")
        if obj ~= nil then
-          printf ("DISABLE RADIO")
-          --self.object:enable_attachable_item (false)
           obj:enable_attachable_item (false)
        end
     end
