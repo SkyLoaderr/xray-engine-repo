@@ -86,7 +86,7 @@ void xrMU_Model::calc_lighting	(vector<Fcolor>& dest, Fmatrix& xform, CDB::MODEL
 		const int n_samples		= 9;
 		for (u32 sample=0; sample<n_samples; sample++)
 		{
-			float					a	= 0.15f * float(sample) / float(n_samples);
+			float					a	= 0.2f * float(sample) / float(n_samples);
 			Fvector					P;
 			P.mad					(vP,vN,a);
 
