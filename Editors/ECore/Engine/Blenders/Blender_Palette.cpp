@@ -33,7 +33,6 @@ void		IBlender::CreatePalette(xr_vector<IBlender*> &palette)
 	palette.push_back(Create(B_LmEbB));
 	palette.push_back(Create(B_BmmD));
 	palette.push_back(Create(B_B));
-	palette.push_back(Create(B_SHADOW_TEX));
 	palette.push_back(Create(B_SHADOW_WORLD));
 	palette.push_back(Create(B_BLUR));
 	palette.push_back(Create(B_MODEL));
