@@ -28,7 +28,7 @@ void xrCore::_initialize	(LPCSTR _ApplicationName, LogCallback cb)
 	static BOOL				bInitialized	= FALSE;
 
 	strcpy					(ApplicationName,_ApplicationName);
-	if (bInitialized)		return;
+	R_ASSERT2				(!bInitialized, "xrCore already initialized.");
 
 	// Parameters
 	strcpy					(Params,GetCommandLine());
