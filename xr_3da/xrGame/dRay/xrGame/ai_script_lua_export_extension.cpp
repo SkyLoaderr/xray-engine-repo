@@ -23,9 +23,9 @@
 
 using namespace luabind;
 
-CRenderDevice &get_device()
+CRenderDevice *get_device()
 {
-	return		(Device);
+	return		(&Device);
 }
 
 CLuaGameObject *tpfGetActor()
