@@ -10,7 +10,7 @@
 #include "..\xr_object.h"
 #include "..\fmesh.h"
 #include "lighttrack.h"
-
+ 
 using	namespace		R_dsgraph;
 
 CRender													RImplementation;
