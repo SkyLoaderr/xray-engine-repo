@@ -134,7 +134,7 @@ void CDetailManager::hw_Render()
 
 	CVS_Constants& VSC	=	Device.Shader.VSC;
 	float scale			=	1.f/float(quant);
-	VSC.set				(0,	scale,		scale,		.5f,		.9f);						// consts
+	VSC.set				(0,	scale,		scale,		.25f,		.9f);						// consts
 	VSC.set				(1,	1.f/5.f,	1.f/7.f,	1.f/3.f,	Device.fTimeGlobal*2.f);	// wave
 	VSC.set				(2,	dir2D);															// wind-dir
 	VSC.set				(3,	Device.mFullTransform);
