@@ -212,7 +212,7 @@ void			ISpatial_DB::insert		(ISpatial* S)
 	stat_insert.Begin	();
 
 #ifdef DEBUG
-	BOOL		bValid	= f_valid2(S->spatial.radius) && f_valid2(S->spatial.center.x) && f_valid2(S->spatial.center.y) && f_valid2(S->spatial.center.z);
+	BOOL		bValid	= _valid(S->spatial.radius) && _valid(S->spatial.center);
 	if (!bValid)	
 	{
 		CObject*	O	= dynamic_cast<CObject*>(S);

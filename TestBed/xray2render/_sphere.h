@@ -3,17 +3,17 @@
 
 template <class T>
 struct _sphere {
-	_vector<T>	P;
+	_vector3<T>	P;
 	T			R;
 public:
-	IC void		set(const _vector<T> &_P, T _R)		{ P.set(_P); R = _R; }
+	IC void		set(const _vector3<T> &_P, T _R)	{ P.set(_P); R = _R; }
 	IC void		set(const _sphere<T> &S)			{ P.set(S.P); R=S.R; }
 	IC void		identity()							{ P.set(0,0,0); R=1; }
 
 	// Ray-sphere intersection
-	IC BOOL		intersect(const _vector<T>& S, const _vector<T>& D, T& range)	
+	IC BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D, T& range)	
     {
-		_vector<T> Q;	Q.sub(P,S);
+		_vector3<T> Q;	Q.sub(P,S);
 	
 		T c2	= Q.square_magnitude	();
 		T v		= Q.dotproduct			(D);
@@ -29,9 +29,9 @@ public:
 		}
 		return FALSE;
 	}
-	IC BOOL		intersect(const _vector<T>& S, const _vector<T>& D)	
+	IC BOOL		intersect(const _vector3<T>& S, const _vector3<T>& D)	
 	{
-		_vector<T> Q;	Q.sub(P,S);
+		_vector3<T> Q;	Q.sub(P,S);
 	
 		T c = Q.magnitude	();
 		T v = Q.dotproduct	(D);
@@ -43,7 +43,7 @@ public:
 		T SumR = R+S.R;
 		return P.distance_to_sqr(S.P) < SumR*SumR;
 	}
-	IC BOOL		contains(const _vector<T>& PT) const 
+	IC BOOL		contains(const _vector3<T>& PT) const 
 	{
 		return P.distance_to_sqr(PT) <= (R*R+EPS_S);
 	}
@@ -63,7 +63,7 @@ public:
 	{
 		return T( PI_MUL_4 / 3 ) * (R*R*R);
 	}
-	void		compute_fast	(const _vector<T> *verts, int count);
+	void		compute_fast	(const _vector3<T> *verts, int count);
 };
 
 typedef _sphere<float>	Fsphere;

@@ -298,7 +298,7 @@ public:
 	IC	void	slide(const Self& dir, const Self& norm){	// non normalized
 		mad(dir,norm,-dir.dotproduct(norm));
 	}
-    IC static void generate_orthonormal_basis(const _vector<T>& dir, _vector<T>& up, _vector<T>& right)
+    IC static void generate_orthonormal_basis(const _vector3<T>& dir, _vector3<T>& up, _vector3<T>& right)
     {
         T fInvLength;
 

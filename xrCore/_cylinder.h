@@ -5,24 +5,24 @@ template <class T>
 class _cylinder
 {
 public:
-	_vector<T>	m_center;
-	_vector<T>	m_direction;
+	_vector3<T>	m_center;
+	_vector3<T>	m_direction;
 	T			m_height;
 	T			m_radius;
 public:
 	IC void		invalidate	()			{ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0;}
-    IC int		intersect	(const _vector<T>& start, const _vector<T>& dir, T afT[2])
+    IC int		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T afT[2])
     {
         T fEpsilon = 1e-12f;
 
         // set up quadratic Q(t) = a*t^2 + 2*b*t + c
-        _vector<T> kU, kV, kW = m_direction;
-        _vector<T>::generate_orthonormal_basis(kW,kU,kV);
-        _vector<T> kD; kD.set(kU.dotproduct(dir),kV.dotproduct(dir),kW.dotproduct(dir));
+        _vector3<T> kU, kV, kW = m_direction;
+        _vector3<T>::generate_orthonormal_basis(kW,kU,kV);
+        _vector3<T> kD; kD.set(kU.dotproduct(dir),kV.dotproduct(dir),kW.dotproduct(dir));
         T fDLength = kD.normalize();
         T fInvDLength = 1.0f/fDLength;
-        _vector<T> kDiff; kDiff.sub(start,m_center);
-        _vector<T> kP; kP.set(kU.dotproduct(kDiff),kV.dotproduct(kDiff),kW.dotproduct(kDiff));
+        _vector3<T> kDiff; kDiff.sub(start,m_center);
+        _vector3<T> kP; kP.set(kU.dotproduct(kDiff),kV.dotproduct(kDiff),kW.dotproduct(kDiff));
         T fHalfHeight = 0.5f*m_height;
         T fRadiusSqr = m_radius*m_radius;
 
@@ -140,7 +140,7 @@ public:
 
         return iQuantity;
     }
-    IC bool		intersect	(const _vector<T>& start, const _vector<T>& dir, T& dist)
+    IC bool		intersect	(const _vector3<T>& start, const _vector3<T>& dir, T& dist)
     {
     	T afT[2];
         int cnt = intersect(start,dir,afT);
