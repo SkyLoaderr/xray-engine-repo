@@ -115,8 +115,8 @@ void i_iterate	(occRasterizer* OCC, occTri* T, int startY, int endY, float leftX
 	}
 }
 
-
-void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int Sect, BOOL bMiddle)
+template <int Sect, BOOL bMiddle>
+void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
 {
 	// Find the start/end Y pixel coord, set the starting pts for scan line ends
 	int		startY, endY;
@@ -200,6 +200,15 @@ void i_section	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T, int
 	}
 }
 
+void i_section_b0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
+{	i_section<BOTTOM,0>	(OCC,A,B,C,T);	}
+void i_section_b1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
+{	i_section<BOTTOM,1>	(OCC,A,B,C,T);	}
+void i_section_t0	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
+{	i_section<BOTTOM,0>	(OCC,A,B,C,T);	}
+void i_section_t1	(occRasterizer* OCC, float *A, float *B, float *C, occTri* T)
+{	i_section<BOTTOM,1>	(OCC,A,B,C,T);	}
+
 void occRasterizer::rasterize	(occTri* T)
 {
 	// Create local copy of the vertices
@@ -212,10 +221,10 @@ void occRasterizer::rasterize	(occTri* T)
 	i_order				(a, b, c);					// Order the vertices by Y
 	if (b[1]-floorf(b[1])>0.5f)	
 	{
-		i_section		(this,a, b, c, T,BOTTOM,TRUE);	// Rasterise First Section
-		i_section		(this,a, b, c, T,TOP,FALSE);	// Rasterise Second Section
+		i_section_b1	(this,a, b, c, T);	// Rasterise First Section
+		i_section_t0	(this,a, b, c, T);	// Rasterise Second Section
 	} else {
-		i_section		(this,a, b, c, T,BOTTOM,FALSE);	// Rasterise First Section
-		i_section		(this,a, b, c, T,TOP,TRUE);		// Rasterise Second Section
+		i_section_b0	(this,a, b, c, T);	// Rasterise First Section
+		i_section_t1	(this,a, b, c, T);	// Rasterise Second Section
 	}
 }
