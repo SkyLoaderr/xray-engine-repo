@@ -6,8 +6,8 @@ CDB::MODEL*	RCAST_Model	= 0;
 
 void CBuild::BuildRapid()
 {
-	float	p_total = 0;
-	float	p_cost  = 1.f/(g_faces.size());
+	float	p_total			= 0;
+	float	p_cost			= 1.f/(g_faces.size());
 
 	Status("Converting faces...");
 
@@ -28,18 +28,18 @@ void CBuild::BuildRapid()
 	Msg					("%d K memory usage",RCAST_Model->memory()/1024);
 	
 	// Saving for AI/DO usage
-	Status			("Saving...");
+	Status				("Saving...");
 	CFS_File		MFS	((pBuild->path+"build.cform").c_str());
 
 	// Header
 	hdrCFORM hdr;
-	hdr.version		= CFORM_CURRENT_VERSION;
-	hdr.vertcount	= CL.getVS();
-	hdr.facecount	= CL.getTS();
-	hdr.aabb		= scene_bb;
-	MFS.write		(&hdr,sizeof(hdr));
+	hdr.version			= CFORM_CURRENT_VERSION;
+	hdr.vertcount		= CL.getVS();
+	hdr.facecount		= CL.getTS();
+	hdr.aabb			= scene_bb;
+	MFS.write			(&hdr,sizeof(hdr));
 
 	// Data
-	MFS.write		(CL.getV(),CL.getVS()*sizeof(Fvector));
-	MFS.write		(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
+	MFS.write			(CL.getV(),CL.getVS()*sizeof(Fvector));
+	MFS.write			(CL.getT(),CL.getTS()*sizeof(CDB::TRI));
 }
