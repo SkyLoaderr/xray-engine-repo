@@ -54,16 +54,12 @@ void	CBlender_Screen_SET::Load	( CStream& FS	)
 	CBlender::Load	(FS);
 
 	// Blend mode
-	xrP_TOKEN::Item	I;
-	xrPREAD_PROP			(FS,xrPID_TOKEN,		oBlend);
-	for (DWORD it=0; it<oBlend.Count; it++)	FS.Read	(&I,sizeof(I));
-	
-	// Params
-	xrPREAD_PROP			(FS,xrPID_INTEGER,		oAREF);
-	xrPREAD_PROP			(FS,xrPID_BOOL,		oZTest);
-	xrPREAD_PROP			(FS,xrPID_BOOL,		oZWrite);
-	xrPREAD_PROP			(FS,xrPID_BOOL,		oLighting);
-	xrPREAD_PROP			(FS,xrPID_BOOL,		oFog);
+	xrPREAD_PROP		(FS,xrPID_TOKEN,		oBlend);
+	xrPREAD_PROP		(FS,xrPID_INTEGER,		oAREF);
+	xrPREAD_PROP		(FS,xrPID_BOOL,			oZTest);
+	xrPREAD_PROP		(FS,xrPID_BOOL,			oZWrite);
+	xrPREAD_PROP		(FS,xrPID_BOOL,			oLighting);
+	xrPREAD_PROP		(FS,xrPID_BOOL,			oFog);
 }
 
 void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
