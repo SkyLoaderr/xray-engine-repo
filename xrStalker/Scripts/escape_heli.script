@@ -34,8 +34,10 @@ function update()
 			wounded_id = get_level_object( "esc_vagon_wounded" ):id()
 
 			local sim = alife()
-			sim:set_switch_online(  wounded_id, false )
-			sim:set_switch_offline( wounded_id, true )
+			if sim then
+				sim:set_switch_online(  wounded_id, false )
+				sim:set_switch_offline( wounded_id, true )
+			end
 
 			state_init = false
 		end
@@ -101,7 +103,9 @@ function update()
 		if state_init then
 			-- рождаем раненного
 			local sim = alife()
-			sim:set_switch_online( wounded_id, true )
+			if sim then
+				sim:set_switch_online( wounded_id, true )
+			end
 
 			-- отправить вертолёт патрулировать уровень
 			heli_mgr:set_path( "heli_path_patrol" )
