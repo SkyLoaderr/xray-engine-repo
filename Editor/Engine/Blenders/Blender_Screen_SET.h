@@ -12,8 +12,12 @@ class ENGINE_API CBlender_Screen_SET : public CBlender
 {
 	BP_TOKEN	oBlend;
 	BP_Integer	oAREF;
+	BP_BOOL		oZTest;
+	BP_BOOL		oZWrite;
+	BP_BOOL		oLighting;
+	BP_BOOL		oFog;
 public:
-	virtual		LPCSTR		getComment()	{ return "screen-space set/blend/add"; }
+	virtual		LPCSTR		getComment()	{ return "basic"; }
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS);

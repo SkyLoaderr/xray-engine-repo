@@ -10,7 +10,7 @@
 CBlender_Screen_SET::CBlender_Screen_SET()
 {
 	description.CLS		= B_SCREEN_SET;
-	description.version	= 1;
+	description.version	= 2;
 	oBlend.Count		= 6;
 	oBlend.IDselected	= 0;
 	oAREF.value			= 32;
@@ -37,8 +37,12 @@ void	CBlender_Screen_SET::Save	( CFS_Base& FS	)
 	I.ID = 4; strcpy(I.str,"MUL_2X");	FS.write	(&I,sizeof(I));
 	I.ID = 5; strcpy(I.str,"ALPHA-ADD");FS.write	(&I,sizeof(I));
 	
-	// A-ref
+	// Params
 	BP_WRITE		("Alpha ref",	BPID_INTEGER,	oAREF);
+	BP_WRITE		("Z-test",      BPID_BOOL,		oZTest);
+	BP_WRITE		("Z-write",     BPID_BOOL,		oZWrite);
+	BP_WRITE		("Lighting",    BPID_BOOL,		oLighting);
+	BP_WRITE		("Fog",			BPID_BOOL,		oFog);
 }
 
 void	CBlender_Screen_SET::Load	( CStream& FS	)
@@ -50,8 +54,12 @@ void	CBlender_Screen_SET::Load	( CStream& FS	)
 	BP_READ			(BPID_TOKEN,		oBlend);
 	for (DWORD it=0; it<oBlend.Count; it++)	FS.Read	(&I,sizeof(I));
 	
-	// A-ref
+	// Params
 	BP_READ			(BPID_INTEGER,		oAREF);
+	BP_READ			(BPID_BOOL,			oZTest);
+	BP_READ			(BPID_BOOL,			oZWrite);
+	BP_READ			(BPID_BOOL,			oLighting);
+	BP_READ			(BPID_BOOL,			oFog);
 }
 
 void	CBlender_Screen_SET::Compile	(CBlender_Recorder& RS, sh_list& L_textures, sh_list& L_constants, sh_list& L_matrices, int param, BOOL bEditor)
