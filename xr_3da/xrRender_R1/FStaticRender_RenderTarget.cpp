@@ -143,6 +143,7 @@ BOOL CRenderTarget::Perform		()
 void CRenderTarget::Begin		()
 {
 	//.
+	/*
 	if (g_pGameLevel->IR_GetKeyState(DIK_LSHIFT))	
 	{
 		Msg					("[%5d]------------------------",Device.dwFrame);
@@ -158,6 +159,7 @@ void CRenderTarget::Begin		()
 		SHOW				(param_color_gray)
 		SHOW				(param_color_add)
 	}
+	*/
 
 	if (!Perform())	
 	{
