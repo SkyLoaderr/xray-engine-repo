@@ -325,12 +325,9 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 		}
 
 	if(level_ids.empty()) {
-		R_ASSERT				(Ini->section_exist("levels"));
 		LPCSTR					N,V;
-		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-			R_ASSERT			(Ini->section_exist(N));
+		for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
 			level_ids.push_back	(Ini->r_string(N,"caption"));
-		}
 	}
 	if (Ini)
 		xr_delete				(Ini);
@@ -340,7 +337,7 @@ void CSE_ALifeGraphPoint::FillProp			(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\3"),				(u32*)&m_tLocations[2],			&locations[2],					1);
 	PHelper.CreateToken4		(items,	FHelper.PrepareKey(pref,s_name,"Location\\4"),				(u32*)&m_tLocations[3],			&locations[3],					1);
 
-	PHelper.CreateList			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	m_caConnectionLevelName,		sizeof(m_caConnectionLevelName),		level_ids);
+	PHelper.CreateList			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Level name"),	m_caConnectionLevelName,		sizeof(m_caConnectionLevelName),		&level_ids);
 	PHelper.CreateText			(items,	FHelper.PrepareKey(pref,s_name,"Connection\\Point name"),	m_caConnectionPointName,		sizeof(m_caConnectionPointName));
 }
 #endif
@@ -626,20 +623,16 @@ void CSE_ALifeLevelChanger::FillProp		(LPCSTR pref, PropItemVec& items)
 		Ini						= xr_new<CInifile>(gm_name);
 	}
 
-	for (int i=0; i<LOCATION_TYPE_COUNT; i++)
-		if(level_ids.empty()) {
-			R_ASSERT				(Ini->section_exist("levels"));
-			LPCSTR					N,V;
-			for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++) {
-				R_ASSERT			(Ini->section_exist(N));
-				level_ids.push_back	(Ini->r_string(N,"caption"));
-			}
-		}
+    if(level_ids.empty()) {
+        LPCSTR				N,V;
+        for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
+            level_ids.push_back	(Ini->r_string(N,"caption"));
+    }
 	if (Ini)
 		xr_delete				(Ini);
 	
-	PHelper.CreateList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		m_caLevelToChange,		sizeof(m_caLevelToChange),	level_ids);
-	PHelper.CreateText			(items,FHelper.PrepareKey(pref,s_name,"Level point to change"),	m_caLevelPointToChange,	sizeof(m_caLevelPointToChange));
+	PHelper.CreateList			(items,FHelper.PrepareKey(pref,s_name,"Level to change"),		m_caLevelToChange,			sizeof(m_caLevelToChange),	&level_ids);
+	PHelper.CreateText			(items,FHelper.PrepareKey(pref,s_name,"Level point to change"),	m_caLevelPointToChange,		sizeof(m_caLevelPointToChange));
 }
 #endif
 ////////////////////////////////////////////////////////////////////////////
