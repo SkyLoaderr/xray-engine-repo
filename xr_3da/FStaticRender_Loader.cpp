@@ -166,11 +166,13 @@ void CRender::LoadLights(CStream *fs)
 
 	// lights
 	chunk = fs->OpenChunk(fsL_LIGHTS);
-	Lights.Load(chunk);
+	R_ASSERT	(chunk && "Can't find lights");
+	Lights.Load	(chunk);
 	chunk->Close();
 
 	// glows
 	chunk = fs->OpenChunk(fsL_GLOWS);
+	R_ASSERT	(chunk && "Can't find glows");
 	Glows.Load(chunk);
 	chunk->Close();
 }
