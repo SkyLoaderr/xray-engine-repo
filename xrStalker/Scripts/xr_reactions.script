@@ -488,7 +488,10 @@ function events:calculate()  -- ѕроизводить перерасчет и обновление раздражителе
 			then
 				continue = false
 			end
-		end                                                                                      
+		end
+		if continue and self:ruleExist("no_visual") then
+			continue = false
+		end
 
 		-- проверить что объект не находитс€ в списке левых предметов, которые нужно игнорировать
 		if continue and self:isTrash(vo) then
