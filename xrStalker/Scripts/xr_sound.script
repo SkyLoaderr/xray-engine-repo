@@ -8,43 +8,43 @@ local nstl = 10
 theme = {}
 
 snd_files = {
-	weather_bad_stalker            = "characters_voice\\human_1\\weather\\bad_weather\\bad_weather_",
-	weather_good_stalker           = "characters_voice\\human_1\\weather\\good_weather\\good_weather_",
+	weather_bad_stalker            = "characters_voice\\human_01\\weather\\bad_weather\\bad_weather_",
+	weather_good_stalker           = "characters_voice\\human_01\\weather\\good_weather\\good_weather_",
 	
-	state_idle_stalker             = "characters_voice\\human_1\\states\\idle\\stalker\\idle_",
-	state_health_stalker           = "characters_voice\\human_1\\states\\health\\stalker\\health_",
-	state_fatique_stalker          = "characters_voice\\human_1\\states\\fatique\\stalker\\fatique_",
-	state_starvation_stalker       = "characters_voice\\human_1\\states\\starvation\\stalker\\starvation_",
-	state_sleep_stalker            = "characters_voice\\human_1\\states\\sleep\\stalker\\sleep_",
+	state_idle_stalker             = "characters_voice\\human_01\\states\\idle\\stalker\\idle_",
+	state_health_stalker           = "characters_voice\\human_01\\states\\health\\stalker\\health_",
+	state_fatique_stalker          = "characters_voice\\human_01\\states\\fatique\\stalker\\fatique_",
+	state_starvation_stalker       = "characters_voice\\human_01\\states\\starvation\\stalker\\starvation_",
+	state_sleep_stalker            = "characters_voice\\human_01\\states\\sleep\\stalker\\sleep_",
 	
-	help_stalker                   = "characters_voice\\human_1\\help\\not_see_helper\\stalker\\help_",
-	help_stalker_see               = "characters_voice\\human_1\\help\\see_helper\\stalker\\help_",
+	help_stalker                   = "characters_voice\\human_01\\help\\not_see_helper\\stalker\\help_",
+	help_stalker_see               = "characters_voice\\human_01\\help\\see_helper\\stalker\\help_",
 	
-	hail_stalker                   = "characters_voice\\human_1\\hail\\stalker\\hail_",
+	hail_stalker                   = "characters_voice\\human_01\\hail\\stalker\\hail_",
 	
-	wait_stalker                   = "characters_voice\\human_1\\waiting\\stalker\\wait_",
+	wait_stalker                   = "characters_voice\\human_01\\waiting\\stalker\\wait_",
 	
-	threat_weap_stalker            = "characters_voice\\human_1\\threat\\drop_weapon\\stalker\\dropweapon_",
-	threat_back_stalker            = "characters_voice\\human_1\\threat\\back_off\\stalker\\backoff_",
-	threat_stop_stalker            = "characters_voice\\human_1\\threat\\stop\\stalker\\stop_",
+	threat_weap_stalker            = "characters_voice\\human_01\\threat\\drop_weapon\\stalker\\dropweapon_",
+	threat_back_stalker            = "characters_voice\\human_01\\threat\\back_off\\stalker\\backoff_",
+	threat_stop_stalker            = "characters_voice\\human_01\\threat\\stop\\stalker\\stop_",
 	
-	reac_hear_stalker              = "characters_voice\\human_1\\reactions\\hear_something\\stalker\\hear_",
-	reac_see_stalker               = "characters_voice\\human_1\\reactions\\see_something\\stalker\\see_",
-	reac_cmonstr_stalker           = "characters_voice\\human_1\\reactions\\dead_mutant\\stalker\\dead_mutant_",
-	reac_cenemy_stalker            = "characters_voice\\human_1\\reactions\\dead_enemy\\stalker\\dead_enemy_",
-	reac_cneutral_stalker          = "characters_voice\\human_1\\reactions\\dead_neutral\\stalker\\dead_neutral_",
-	reac_cfriend_stalker           = "characters_voice\\human_1\\reactions\\dead_friend\\stalker\\dead_friend_",
-	reac_nothing_stalker           = "characters_voice\\human_1\\reactions\\nothing\\stalker\\nothing_",
+	reac_hear_stalker              = "characters_voice\\human_01\\reactions\\hear_something\\stalker\\hear_",
+	reac_see_stalker               = "characters_voice\\human_01\\reactions\\see_something\\stalker\\see_",
+	reac_cmonstr_stalker           = "characters_voice\\human_01\\reactions\\dead_mutant\\stalker\\dead_mutant_",
+	reac_cenemy_stalker            = "characters_voice\\human_01\\reactions\\dead_enemy\\stalker\\dead_enemy_",
+	reac_cneutral_stalker          = "characters_voice\\human_01\\reactions\\dead_neutral\\stalker\\dead_neutral_",
+	reac_cfriend_stalker           = "characters_voice\\human_01\\reactions\\dead_friend\\stalker\\dead_friend_",
+	reac_nothing_stalker           = "characters_voice\\human_01\\reactions\\nothing\\stalker\\nothing_",
 	
-	talk_hello_stalker             = "characters_voice\\human_1\\talk\\neutral_greeting\\stalker\\greeting_",
-	talk_hello_friend_stalker      = "characters_voice\\human_1\\talk\\friendly_greeting\\stalker\\greeting_",
-	talk_bye_stalker               = "characters_voice\\human_1\\talk\\leave\\stalker\\leave_",
-	talk_accept_stalker            = "characters_voice\\human_1\\talk\\accept\\stalker\\accept_",
-	talk_reject_stalker            = "characters_voice\\human_1\\talk\\rejection\\stalker\\rejection_",
-	talk_abuse_stalker             = "characters_voice\\human_1\\talk\\abuse\\stalker\\abuse_",
+	talk_hello_stalker             = "characters_voice\\human_01\\talk\\neutral_greeting\\stalker\\greeting_",
+	talk_hello_friend_stalker      = "characters_voice\\human_01\\talk\\friendly_greeting\\stalker\\greeting_",
+	talk_bye_stalker               = "characters_voice\\human_01\\talk\\leave\\stalker\\leave_",
+	talk_accept_stalker            = "characters_voice\\human_01\\talk\\accept\\stalker\\accept_",
+	talk_reject_stalker            = "characters_voice\\human_01\\talk\\rejection\\stalker\\rejection_",
+	talk_abuse_stalker             = "characters_voice\\human_01\\talk\\abuse\\stalker\\abuse_",
 	
-	trade_yes_stalker              = "characters_voice\\human_1\\talk\\trade\\yes\\stalker\\yes_",
-	trade_no_stalker               = "characters_voice\\human_1\\talk\\trade\\no\\stalker\\no_",
+	trade_yes_stalker              = "characters_voice\\human_01\\talk\\trade\\yes\\stalker\\yes_",
+	trade_no_stalker               = "characters_voice\\human_01\\talk\\trade\\no\\stalker\\no_",
 	
 
 }
@@ -146,7 +146,7 @@ function load_sound(obj)
 	theme["trade_no"] = { exec = npc_class, types = {}}
 	theme["trade_no"].types["stalker"] = load_theme("trade_no_stalker")
 	
---	print_table(theme)
+	print_table(theme)
 	printf("All sounds loaded for %s, section %s", obj:name(), obj:section())
 end
 -----------------------------------------------------------------------------------------------------------------------------------
