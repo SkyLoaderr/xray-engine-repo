@@ -199,8 +199,9 @@ void CUIPdaWnd::UpdatePdaContacts()
 	//удалить из списка все PDA ушедшие из зоны дос€гаемости
 	for(it = m_pPda->m_DeletedPDAList.begin(); it!=m_pPda->m_DeletedPDAList.end(); it++)
 	{	
-		CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
-		UIPdaContactsWnd.UIListWnd.RemoveItem(UIPdaContactsWnd.UIListWnd.FindItem(pObject));
+		//CObject* pObject =  Level().Objects.net_Find((*it)->GetOriginalOwnerID());
+		//UIPdaContactsWnd.UIListWnd.RemoveItem(UIPdaContactsWnd.UIListWnd.FindItem(pObject));
+		UIPdaContactsWnd.UIListWnd.RemoveItem(UIPdaContactsWnd.UIListWnd.FindItem((*it)->H_Parent()));
 		
 		//текущий контак вышел из зоны дос€гаемости!
 		if(m_pContactInvOwner == (*it)->GetOriginalOwner())
@@ -222,7 +223,6 @@ void CUIPdaWnd::UpdatePdaContacts()
 		{
 			UIPdaDialogWnd.ContactRestore();
 		}
-
 	}
 }
 

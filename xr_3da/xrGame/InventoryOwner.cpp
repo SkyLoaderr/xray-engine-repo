@@ -46,6 +46,9 @@ BOOL CInventoryOwner::net_Spawn		(LPVOID DC)
 	//////////////////////////////////////////////
 	//проспавнить PDA каждому inventory owner
 	//////////////////////////////////////////////
+	if(getAI().m_tpALife)
+		return			TRUE;
+
 	CSE_Abstract *E	= (CSE_Abstract*)(DC);
 
 	// Create

@@ -104,16 +104,16 @@ void CScriptZone::feel_touch_delete	(CObject *tpObject)
 
 void CScriptZone::set_callback(luabind::functor<void> tpZoneCallback, bool bOnEnter)
 {
-	if (bOnEnter)
+	if (bOnEnter) {
+		xr_delete				(m_tpOnEnter);
 		if (tpZoneCallback.is_valid())
-			m_tpOnEnter				= xr_new<luabind::functor<void> >(tpZoneCallback);
-		else
-			xr_delete				(m_tpOnEnter);
-	else
+			m_tpOnEnter			= xr_new<luabind::functor<void> >(tpZoneCallback);
+	}
+	else {
+		xr_delete				(m_tpOnExit);
 		if (tpZoneCallback.is_valid())
-			m_tpOnExit				= xr_new<luabind::functor<void> >(tpZoneCallback);
-		else
-			xr_delete				(m_tpOnExit);
+			m_tpOnExit			= xr_new<luabind::functor<void> >(tpZoneCallback);
+	}
 }
 
 void CScriptZone::clear_callback(bool bOnEnter)

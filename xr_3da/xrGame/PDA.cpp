@@ -84,6 +84,20 @@ void CPda::Load(LPCSTR section)
 
 void CPda::net_Destroy() 
 {
+	//при переходе PDA в offline 
+	//самостоятельно выкинуть все ссылки на себя
+	//из других PDA
+	/*for(PDA_LIST_it it = m_PDAList.begin();
+					it!=m_PDAList.end(); 
+					it++)
+	{
+		CPda* pPda = (*it);
+		pPda->feel_touch_delete(H_Parent());
+	}*/
+
+
+
+
 	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
 	xr_delete(m_pPhysicsShell);
 	
@@ -144,14 +158,34 @@ void CPda::feel_touch_delete(CObject* O)
 {
 	CInventoryOwner* pInvOwner = dynamic_cast<CInventoryOwner*>(O);
 
-	if(pInvOwner && pInvOwner->IsActivePDA()) 
+	if(pInvOwner /*&& /*pInvOwner->IsActivePDA()*/) 
 	{
-		if(bDebug) HUD().outMessage(0xffffffff,cName(),"a PDA left radius of sight");
-		m_PDAList.erase(std::find(m_PDAList.begin(), 
-									m_PDAList.end(), 
-									pInvOwner->GetPDA()));
 
-		m_DeletedPDAList.push_back(pInvOwner->GetPDA());
+		if(pInvOwner->GetPDA())
+		{
+			if(bDebug) HUD().outMessage(0xffffffff,cName(),"a PDA left radius of sight");
+			m_PDAList.erase(std::find(m_PDAList.begin(), 
+										m_PDAList.end(), 
+										pInvOwner->GetPDA()));
+			m_DeletedPDAList.push_back(pInvOwner->GetPDA());
+		}
+		//для случая перехода PDA в offline
+		else
+		{
+			for(PDA_LIST_it it = m_PDAList.begin();
+					it!=m_PDAList.end(); 
+					it++)
+			{
+				CPda* pPda = (*it);
+				if(O == pPda->H_Parent())
+				{
+					m_PDAList.erase(it);
+					m_DeletedPDAList.push_back(pPda);
+					break;
+				}
+			}
+		}
+
 	}
 }
 
