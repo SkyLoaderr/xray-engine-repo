@@ -274,7 +274,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(object)
+function add_to_binder(object, char_ini)
 
 	local operators		= {}
 	local properties	= {}
@@ -286,7 +286,6 @@ function add_to_binder(object)
 	object:add_sound("script_replics\\soldier_1\\hear_something\\soldier_hear_", 10, snd_type.talk, 2, 1, sounds["wait"])
 	object:add_sound("script_replics\\soldier_1\\search_enemy\\soldier_search_", 10, snd_type.talk, 2, 1, sounds["search"])
 	object:add_sound("script_replics\\soldier_1\\idle\\soldier_idle_", 10, snd_type.talk, 2, 1, sounds["relax"])
-
 
 	local manager = object:motivation_action_manager()
 
@@ -307,9 +306,20 @@ function add_to_binder(object)
 	action:add_effect		(world_property(properties["event"],		false))
 	manager:add_action (operators["wait"], action)
 
-
 	action = manager:action (stalker_ids.action_puzzle_solver)	
 	action:add_precondition		(world_property(properties["event"],		false))
+
+    if char_ini:section_exist ("reactions") == true then
+        if char_ini:line_exist("reactions", "enabled") == true then
+                xr_motivator.storage[self.object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
+        end
+    local i = 1
+        while char_ini:line_exist("reactions", "rule_"..i) == true do
+        table.insert(xr_motivator.storage[self.object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
+            i = i + 1
+        end
+    end
+
 end
 
 ----------------------------------------------------------------------------------------------------------------------

@@ -302,31 +302,32 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --Guard binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(npc)
-  --printf("_bp: add_to_binder (guard)")
-  local operators    = {}
-  local properties  = {}
+function add_to_binder(npc, char_ini)
+    if char_ini == nil  or char_ini:section_exist ("guard") == true then
+  	local operators    = {}
+  	local properties  = {}
 
-  sounds["commander_snd"]     = xr_sounds_id.zmey_guard_base + 1
-  sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_guard_base + 2
-  sounds["soldiers_idle2_snd"]     = xr_sounds_id.zmey_guard_base + 3
-  sounds["soldiers_replics_snd"]     = xr_sounds_id.zmey_guard_base + 4
-  sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_guard_base + 5
-  sounds["soldier_alarm"]     = xr_sounds_id.zmey_guard_base + 6
+  	sounds["commander_snd"]     	= xr_sounds_id.zmey_guard_base + 1
+  	sounds["soldiers_idle_snd"]     = xr_sounds_id.zmey_guard_base + 2
+  	sounds["soldiers_idle2_snd"]    = xr_sounds_id.zmey_guard_base + 3
+  	sounds["soldiers_replics_snd"]  = xr_sounds_id.zmey_guard_base + 4
+  	sounds["soldiers_hear_snd"]     = xr_sounds_id.zmey_guard_base + 5
+  	sounds["soldier_alarm"]     	= xr_sounds_id.zmey_guard_base + 6
 
-  npc:add_sound ("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
-     npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",     20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
-     npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
-    npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
+  	npc:add_sound ("Scripts\\Patrol\\Commander1_",           20, snd_type.talk, 2, 1, sounds["commander_snd"])
+     	npc:add_sound ("Scripts\\Patrol\\soldier_idle_",         20, snd_type.talk, 2, 1, sounds["soldiers_idle_snd"])
+     	npc:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_",     20, snd_type.talk, 2, 1, sounds["soldiers_idle2_snd"])
+     	npc:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_",     20, snd_type.talk, 2, 1, sounds["soldiers_replics_snd"])
+     	npc:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_",   20, snd_type.talk, 2, 1, sounds["soldiers_hear_snd"])
+    	npc:add_sound ("script_replics\\soldier_1\\alarm\\soldier_alarm_",     20, snd_type.talk, 2, 2, sounds["soldier_alarm"])
 
-   local manager = npc:motivation_action_manager()
+   	local manager = npc:motivation_action_manager()
 
-  properties["need_guard"]   = xr_evaluators_id.zmey_guard_base + 1
-  properties["need_talker"]   = xr_evaluators_id.zmey_talker_base + 1
+	properties["event"] 		= xr_evaluators_id.reaction
+	properties["state_end"]		= xr_evaluators_id.state_change
+ 	properties["need_guard"]   = xr_evaluators_id.zmey_guard_base + 1
 
-  operators["action_guard"]   = xr_actions_id.zmey_guard_base + 1
+ 	operators["action_guard"]   = xr_actions_id.zmey_guard_base + 1
 
    	-- // evaluators
     	manager:add_evaluator (properties["need_guard"],   this.evaluator_need_guard  (xr_motivator.storage[npc:id()].guard))
@@ -334,13 +335,17 @@ function add_to_binder(npc)
 	local new_action = this.action_guard_activity(npc, "action_guard_activity", xr_motivator.storage[npc:id()].guard)
     	new_action:add_precondition    (world_property(stalker_ids.property_alive,   	true))
     	new_action:add_precondition    (world_property(stalker_ids.property_enemy,   	false))
-      	new_action:add_precondition    (world_property(properties["need_talker"],   	false))
       	new_action:add_precondition    (world_property(properties["need_guard"],   	true))
+	new_action:add_precondition    (world_property(properties["event"],		false))
+	new_action:add_precondition    (world_property(properties["state_end"],		true))
    	new_action:add_effect(world_property(properties["need_guard"], false))
     	manager:add_action(operators["action_guard"], new_action)
 
   	new_action = manager:action(stalker_ids.action_puzzle_solver)
       	new_action:add_precondition    (world_property(properties["need_guard"],   	false))
+
+	if char_ini ~= nil then xr_guard.set_guard(npc) end
+    end
 end
 
 -- функции
@@ -361,70 +366,52 @@ function set_guard(object, enable, path_main, path_hideout, running, search_ligh
 	local char_ini = object:spawn_ini()
 	local st = xr_motivator.storage[object:id()].guard
 	if enable == nil then
-	    	if char_ini:section_exist ("guard") == true then
-        		if char_ini:line_exist("guard", "enabled") == true then
-                		st.enabled = char_ini:r_bool("guard", "enabled")
-			else
-				st.enabled = false
-		        end
+       		if char_ini:line_exist("guard", "enabled") == true then
+               		st.enabled = char_ini:r_bool("guard", "enabled")
 		else
 			st.enabled = false
-		end
+	        end
 	else
 		st.enabled = enable		
 	end	
 	if st.enabled == true then
 		if path_main == nil then
-		    	if char_ini:section_exist ("guard") == true then
-	        		if char_ini:line_exist("guard", "path_main") == true then
-		        	        st.path_main = char_ini:r_string("guard", "path_main")
-	        		else
-		        	    	st.enabled = false
-			        end
-			else
-				st.enabled = false
-			end
+        		if char_ini:line_exist("guard", "path_main") == true then
+	        	        st.path_main = char_ini:r_string("guard", "path_main")
+        		else
+	        	    	st.enabled = false
+		        end
 		else
 			st.path_main = path_main
 		end
 	end
 	if st.enabled == true then
 		if path_hideout == nil then
-		    	if char_ini:section_exist ("guard") == true then
-	        		if char_ini:line_exist("guard", "path_hideout") == true then
-		        	        st.path_hideout = char_ini:r_string("guard", "path_hideout")
-	        		else
-		        	    	st.path_hideout = st.path_main
-			        end
-			else
-				st.path_hideout = st.path_main
-			end
+        		if char_ini:line_exist("guard", "path_hideout") == true then
+	        	        st.path_hideout = char_ini:r_string("guard", "path_hideout")
+        		else
+	        	    	st.path_hideout = st.path_main
+		        end
 		else
 			st.path_hideout = path_hideout
 		end
 	end
 	if st.enabled == true then
 		if running == nil then
-		    	if char_ini:section_exist ("guard") == true then
-	        		if char_ini:line_exist("guard", "running") == true then
-		        	        st.running = char_ini:r_bool("guard", "running")
-	        		else
-		        	    	st.running = false
-			        end
-			else
-				st.running = false
-			end
+        		if char_ini:line_exist("guard", "running") == true then
+	        	        st.running = char_ini:r_bool("guard", "running")
+        		else
+	        	    	st.running = false
+		        end
 		else
 			st.running = running
 		end
 	end
 	if st.enabled == true then
 		if search_light == nil then
-		    	if char_ini:section_exist ("guard") == true then
-	        		if char_ini:line_exist("guard", "search_light") == true then
-		        	        st.projector_name = char_ini:r_string("guard", "search_light")
-			        end
-			end
+        		if char_ini:line_exist("guard", "search_light") == true then
+	        	        st.projector_name = char_ini:r_string("guard", "search_light")
+		        end
 		else
 			st.projector_name = search_light
 		end

@@ -165,18 +165,6 @@ function change_state(object, new, emerg)
 			end
 		end
 
-		-- установка айдлов
---[[		if new == 0 then
-		elseif new == 1 then
-			object:add_animation("stalker_1_2", true)
-		elseif new == 2 then
-			object:add_animation("stalker_2_1", true)
-		elseif new == 3 then
-			object:add_animation("stalker_3_2", true)
-		elseif new == 4 then
-			object:add_animation("spit_2", true)
-		end
-]]
 		a = xr_state.getIdle(new)
 		if a ~= nil then
 			object:add_animation(a, true)
@@ -193,16 +181,16 @@ function change_state(object, new, emerg)
 	end
 end
 function getIdle(id)
-		if id == 0 then
-		elseif id == 1 then
-			return "stalker_1_2"
-		elseif id == 2 then
-			return "stalker_2_1"
-		elseif id == 3 then
-			return "stalker_3_2"
-		elseif id == 4 then
-			return "spit_2"
-		end
+	if id == 0 then
+	elseif id == 1 then
+		return "stalker_1_2"
+	elseif id == 2 then
+		return "stalker_2_1"
+	elseif id == 3 then
+		return "stalker_3_2"
+	elseif id == 4 then
+		return "spit_2"
+	end
 end
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -219,11 +207,6 @@ function add_to_binder(object)
 	operators["stand"]		= xr_actions_id.stohe_state_base + 2
 
 	local manager = object:motivation_action_manager()
---	local action_pl = manager:get_action(xr_actions_id.action_planner) 
---	if action_pl ~= nil then
---		local act_pl = cast_action_to_planner(action_pl)
---		if act_pl ~= nil then
-
 	-- Evaluators                                                                            
 	manager:add_evaluator (properties["state_end"], 		this.evaluator_state_end		(xr_motivator.storage[object:id()].state))
 	manager:add_evaluator (properties["stand"], 			this.evaluator_standing			(xr_motivator.storage[object:id()].state))
@@ -244,11 +227,7 @@ function add_to_binder(object)
 
 	action = manager:action (stalker_ids.action_puzzle_solver)	
 	action:add_precondition		(world_property(properties["state_end"],	true))
---	action:add_precondition		(world_property(properties["stand"],		true))
 
 	action = manager:action (stalker_ids.action_combat_planner)	
 	action:add_precondition		(world_property(properties["stand"],		true))
-
---		end
---	end
 end

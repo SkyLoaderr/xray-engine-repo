@@ -263,7 +263,7 @@ function action_single_patrol:process_radio ()
           self.object:add_animation ("raciya_2", true) 
        end
        if self.object:active_sound_count () == 0 then 
-          if self.current_phrase > t_size then
+          if self.current_phrase >= t_size then
              self.sub_stage = 2 
              self.object:clear_animations ()
              self.object:add_animation ("raciya_3", true)
@@ -282,7 +282,9 @@ function action_single_patrol:process_radio ()
        return false 
     end
     
-    self.phrases = {}
+    while table.getn (self.phrases) ~= 0 do
+          table.remove (self.phrases, 1)
+    end      
     
     self:set_animation ()
     self.stage = 1
@@ -635,31 +637,26 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 --patrol binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(obj)
+function add_to_binder(obj, char_ini)
+    if char_ini == nil or char_ini:section_exist ("patrol") == true then
 
 	local operators		= {}
 	local properties	= {}
 
---    local t = xr_sounds.create_sound_constructor ("commander_radio", 1)
-
---    for a = 1, table.getn (t.sounds), 1 do
---        printf ("NAMESPACE %d, ID %d", t.sounds[a].pack, t.sounds[a].id)
---    end        
-
-    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
-    obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
-    obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
-    obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
-    obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_start_", 30, snd_type.talk, 2, 1, radio_commander_start)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_reply_", 30, snd_type.talk, 2, 1, radio_commander_next)
-    obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, radio_commander_end)
-    obj:add_sound ("script_replics\\radio\\message\\radio_noise_", 30, snd_type.talk, 2, 1, radio_noise)
-    obj:add_sound ("script_replics\\radio\\message\\radio_voice_", 30, snd_type.talk, 2, 1, radio_voice)
-    obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_", 30, snd_type.talk, 2, 1, radio_on)
-    obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, radio_off)
+    	obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
+    	obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
+    	obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
+    	obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
+    	obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
+    	obj:add_sound ("script_replics\\radio\\commander\\radio_start_", 30, snd_type.talk, 2, 1, radio_commander_start)
+    	obj:add_sound ("script_replics\\radio\\commander\\radio_reply_", 30, snd_type.talk, 2, 1, radio_commander_next)
+    	obj:add_sound ("script_replics\\radio\\commander\\radio_finish_", 30, snd_type.talk, 2, 1, radio_commander_end)
+    	obj:add_sound ("script_replics\\radio\\message\\radio_noise_", 30, snd_type.talk, 2, 1, radio_noise)
+    	obj:add_sound ("script_replics\\radio\\message\\radio_voice_", 30, snd_type.talk, 2, 1, radio_voice)
+    	obj:add_sound ("script_replics\\radio\\message\\radio_turn_on_", 30, snd_type.talk, 2, 1, radio_on)
+    	obj:add_sound ("script_replics\\radio\\message\\radio_turn_off_", 30, snd_type.talk, 2, 1, radio_off)
     
-    printf ("PATROL_EVA_BASE = %d", xr_evaluators_id.sidor_patrol_base_property)
+    	printf ("PATROL_EVA_BASE = %d", xr_evaluators_id.sidor_patrol_base_property)
     
 	properties["complete"]           = xr_evaluators_id.sidor_patrol_base_property + 0
 	properties["raid"]               = xr_evaluators_id.sidor_patrol_base_property + 1
@@ -667,31 +664,33 @@ function add_to_binder(obj)
 
  	operators["single_patrol"]       = xr_actions_id.sidor_act_patrol + 0
 	operators["raid"]                = xr_actions_id.sidor_act_patrol + 1
-
   
 	local manager  = obj:motivation_action_manager ()
   	manager:add_evaluator (properties["complete"], this.evaluator_complete ("property_complete", xr_motivator.storage[obj:id()].patrol))
-    manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].patrol))
+    	manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].patrol))
     
   	local action = this.action_single_patrol ("action_single_patrol", xr_motivator.storage[obj:id()].patrol)
    	action:add_precondition     	(world_property (stalker_ids.property_alive,    true))
    	action:add_precondition     	(world_property (stalker_ids.property_enemy,    false))
    	action:add_precondition     	(world_property (properties["complete"],        false))
-    action:add_precondition         (world_property (properties["raid"],            true))
-	action:add_precondition		    (world_property (properties["state_end"], 	    true))
+    	action:add_precondition         (world_property (properties["raid"],            true))
+	action:add_precondition		(world_property (properties["state_end"], 	true))
    	action:add_effect           	(world_property (properties["complete"],        true))
    	manager:add_action              (operators["single_patrol"], action)
 
-    action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].patrol)
-    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    	action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].patrol)
+    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
 	action:add_precondition	    (world_property(properties["state_end"], 	    true))
-    action:add_precondition     (world_property (properties["raid"],            false))
-    action:add_effect           (world_property (properties["raid"],            true))
-    manager:add_action          (operators["raid"], action)
+    	action:add_precondition     (world_property (properties["raid"],            false))
+    	action:add_effect           (world_property (properties["raid"],            true))
+    	manager:add_action          (operators["raid"], action)
 
    	action = manager:action (stalker_ids.action_puzzle_solver)
-   	action:add_precondition (world_property (properties["complete"],  true))   	
+   	action:add_precondition (world_property (properties["complete"],  true))
+
+	if char_ini ~= nil then xr_patrol.set_patrol(obj) end
+    end
 end
 ----------------------------------------------------------------------------------------------------------------------
 function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_path, raid_process)
@@ -757,6 +756,5 @@ function set_patrol (npc, enabled, patrol_path, escape_path, raid_enabled, raid_
     end      
 	xr_motivator.checkStorage (npc)
 	
-	st.first_init = true
-	
+	st.first_init = true	
 end

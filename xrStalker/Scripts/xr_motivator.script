@@ -62,7 +62,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
     object_binder.reinit(self)
-    self.object:disable_talk()
     self.object:set_pda_callback(this.pda_call_back)
 end
 ----------------------------------------------------------------------------------------------------------------------
@@ -99,347 +98,57 @@ function motivator_binder:reload (section)
     properties["solved"]        = stalker_ids.property_puzzle_solved
     properties["trade_init"]    = xr_evaluators_id.final_trade_init
 
-    xr_motivator.storage[self.object:id()] = {  followers = {} }
+    -- Bind other scripts
+    self.object:disable_talk()
+
+    --загрузка озвучки
+    xr_sounds.load_sounds (self.object)
+
+----------------------------------------------------------------------------------------------------------------------
+-- Общие скрипты
+----------------------------------------------------------------------------------------------------------------------
     xr_motivator.trade_arhive[self.object:id()] = xr_motivator.pda_storage()
-
--- Состояние тела
-xr_motivator.storage[self.object:id()].state = {
-    body_state = 0,
-    target_state = 0,
-    position = nil,
-    dist = 2
-    }
--- Хранение трейдселлера
-xr_motivator.storage[self.object:id()].tradeseller =
-    {   Buyer = nil,
-        Seller = self.object,
-        -- Задается время ожидания в секундах
-        begin_wait_to_see = { time = 300,
-                    begin = nil },
-        -- Будет ли работать схема? если нет, то он всегда будет отказываться от торговли.
-        enabled = false
-    }
-    if char_ini:section_exist ("tradeseller") == true then
-        if char_ini:line_exist("tradeseller", "enabled") == true then
-                xr_motivator.storage[self.object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
-        end
-    end
--- Хранение лагеря у костра
-xr_motivator.storage[self.object:id()].kamp =
-    {   -- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
-        enabled = false,
-        -- Патрульный путь из 1 вэйпоинта, который указывает на центр лагеря.
-        center_point = nil,
-        -- максимальный радиус, в котором рассаживаются люди вокруг центра лагеря
-        max_rad = 2,
-        -- Идентификатор следующего действия.
-        -- 0 - нет действия
-        -- 1 - пойти обойти территорию
-        action = 0,
-        -- Последний выполненный нами экшн, чтобы не повторяться
-        last_action = 0,
-        -- Патрульные пути, по которым будут сталкеры обходить лагерь
-        patrol_path = {},
-        -- ID позиции, в которую он сядет
-        pos_id = -1,
-        -- Положение тела. 0 - стоит, остальное - разные варианты сидения
-        body_state = 0,
-        -- Время между повторением действий
-        timer = { act1 = {begin = nil, time = 120},
-                          act4 = {begin = nil, time = 60}}
-    }
--- Хранение часовых
-xr_motivator.storage[self.object:id()].guard = {
-        enabled = false,
-    action = nil,
-        path_main = nil,
-        path_hideout = nil
-    }
-xr_motivator.storage[self.object:id()].camper = {
-        enabled = false,
-            path_main = nil
-    }
-        if char_ini:section_exist ("camper") == true then
-        printf("_bp: npc is camper = %s", self.object:name())
-        if char_ini:line_exist("camper", "enabled") == true then
-                xr_motivator.storage[self.object:id()].camper.enabled = char_ini:r_bool("camper", "enabled")
-            printf("_bp: enabled = true")
-        end
-        if char_ini:line_exist("camper", "path_main") == true then
-                xr_motivator.storage[self.object:id()].camper.path_main = char_ini:r_string("camper", "path_main")
-        else
-            xr_motivator.storage[self.object:id()].camper.enabled = false
-        end
-    end
-xr_motivator.storage[self.object:id()].sleeper = {
-        enabled = false,
-            path_main = nil
-    }
-xr_motivator.storage[self.object:id()].robber = {
-        enabled = false,
-    leader = false,
-    helper = false,
-            teammate1 = nil,
-            teammate2 = nil,
-        path_rob = nil
-    }
-        if char_ini:section_exist ("robber") == true then
-        printf("_bp: npc is robber = %s", self.object:name())
-        if char_ini:line_exist("robber", "enabled") == true then
-                xr_motivator.storage[self.object:id()].robber.enabled = char_ini:r_bool("robber", "enabled")
-            printf("_bp: enabled = true")
-        end
-        if char_ini:line_exist("robber", "leader") == true then
-                xr_motivator.storage[self.object:id()].robber.leader = char_ini:r_bool("robber", "leader")
-            printf("_bp: leader = true")
-        end
-        if char_ini:line_exist("robber", "helper") == true then
-                xr_motivator.storage[self.object:id()].robber.helper = char_ini:r_bool("robber", "helper")
-            printf("_bp: helper = true")
-        end
-        if char_ini:line_exist("robber", "teammate1") == true then
-                xr_motivator.storage[self.object:id()].robber.teammate1 = char_ini:r_string("robber", "teammate1")
-        end
-        if char_ini:line_exist("robber", "teammate2") == true then
-                xr_motivator.storage[self.object:id()].robber.teammate2 = char_ini:r_string("robber", "teammate2")
-        end
-        if char_ini:line_exist("robber", "path_rob") == true then
-                xr_motivator.storage[self.object:id()].robber.path_rob = char_ini:r_string("robber", "path_rob")
-        end
-    end
-xr_motivator.storage[self.object:id()].talker = {
-        enabled = false
-    }
-        if char_ini:section_exist ("talker") == true then
-        printf("_bp: npc is talker = %s", self.object:name())
-        if char_ini:line_exist("talker", "enabled") == true then
-                xr_motivator.storage[self.object:id()].talker.enabled = char_ini:r_bool("talker", "enabled")
-            printf("_bp: enabled = true")
-        end
-    end
--- Настройка встречи
-xr_motivator.storage[self.object:id()].meet = {
-        enabled = false,
-        actor = nil,
-    noweap = false, -- игнорируем наличие оружия у актора
-        distance = 15, -- расстояние, в пределах которого мы реагируем
-        shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
-    }
-    if char_ini:section_exist ("meet") == true then
-        if char_ini:line_exist("meet", "enabled") == true then
-                xr_motivator.storage[self.object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
-        end
-        if char_ini:line_exist("meet", "noweap") == true then
-                xr_motivator.storage[self.object:id()].meet.noweap = char_ini:r_bool("meet", "noweap")
-        end
-    end
--- Настройка scout
-xr_motivator.storage[self.object:id()].scout = {
-        enabled = false,
-        direction = vector():set(0,0,1),
-        distance = 2,
-        state = 0,
-        leader_command = 0,
-        dead_hook = false
-    }
-    if char_ini:section_exist ("scout") then
-        if char_ini:line_exist("scout", "enabled") then
-            xr_motivator.storage[self.object:id()].scout.enabled = char_ini:r_bool("scout", "enabled")
-        end
-
-        if char_ini:line_exist("scout", "way") then
-            xr_motivator.storage[self.object:id()].scout.path_name = char_ini:r_string("scout", "way")
-        end
-    end
-
--- Настройка патруля
-xr_motivator.storage[self.object:id()].patrol = {
-    enabled = false,
-    patrol_path = nil,
-    escape_path = nil,
-    raid_enabled = false,
-    raid_path = nil,
-    raid_process = false,
-    npc_id = -1,
-    first_init = false
-  }
-      --if char_ini:section_exist ("patrol") == true then
---         if char_ini:line_exist("patrol", "enabled") == true then
---            xr_motivator.storage[self.object:id()].patrol.enabled = char_ini:r_bool("patrol", "enabled")
---         end
---         if char_ini:line_exist("patrol", "patrol_path") == true then
---            xr_motivator.storage[self.object:id()].patrol.patrol_path = char_ini:r_string("patrol", "patrol_path")
---         else
---            xr_motivator.storage[self.object:id()].patrol.enabled = false
---         end
---         if char_ini:line_exist("patrol", "escape_path") == true then
---            xr_motivator.storage[self.object:id()].patrol.escape_path = char_ini:r_string("patrol", "escape_path")
---         else
---            xr_motivator.storage[self.object:id()].patrol.escape_path = xr_motivator.storage[self.object:id()].patrol.patrol_path
---         end
---         if char_ini:line_exist ("patrol", "raid_enabled") == true then
---            xr_motivator.storage[self.object:id()].patrol.raid_enabled = char_ini:r_bool ("patrol", "raid_enabled")
---         end
-      --end
--- Настройка follower
-xr_motivator.storage[self.object:id()].follower = {
-    enabled = false,
-    leader_name = nil,
-    leader = nil,
-    escape_path = nil,
-    raid_enabled = false,
-    raid_path = nil,
-    mental_state = anim.free,
-    direction = vector():set(0,0,1),
-    distance = 2,
-    state = 0,
-    leader_command = 0,
-    npc = self.object,
-    look_dir = vector():set(0,0,0),
-    npc_id = -1
-    }
---      if char_ini:section_exist ("follower") == true then
---    if char_ini:line_exist("follower", "enabled") == true then
---          xr_motivator.storage[self.object:id()].follower.enabled = char_ini:r_bool("follower", "enabled")
---      end
---    if char_ini:line_exist("follower", "leader_name") == true then
---          xr_motivator.storage[self.object:id()].follower.leader_name = char_ini:r_string("follower", "leader_name")
---    else
---      xr_motivator.storage[self.object:id()].follower.leader_name = nil
---      end
---      if char_ini:line_exist ("follower", "escape_path") == true then
---          xr_motivator.storage[self.object:id()].follower.escape_path = char_ini:r_string ("follower", "escape_path")
---       end
---       if char_ini:line_exist ("follower", "raid_enabled") == true then
---          xr_motivator.storage[self.object:id()].follower.raid_enabled = char_ini:r_bool ("follower", "raid_enabled")
---      end
---      if char_ini:line_exist ("follower", "raid_path") == true then
---          xr_motivator.storage[self.object:id()].follower.raid_path = char_ini:r_string ("follower", "raid_path")
---       end
---  end
---Настройка схемы реакции новичка
-xr_motivator.storage[self.object:id()].novice = {
-                            path     = nil,         --Путь, по которому ходить
-                            rest     = nil,         --Места для сидения
-                            curState = 1,
-                            time     = nil,
-                            enemy    = nil,         --Для модификации новичка, если есть враг и есть оружие, идем мочить
-                            index    = 1,           --Index точки, к которой идем, чтоб посидеть
-                            enabled  = false
-}
-    if( char_ini:section_exist ("novice") == true ) then
-        xr_motivator.storage[self.object:id()].novice.enabled = true            --Если есть секция новичка, то включаем эту схему
-        if( char_ini:line_exist("novice", "path") == true ) then
-            xr_motivator.storage[self.object:id()].novice.path   = char_ini:r_string("novice", "path")
-        end
-        if( char_ini:line_exist("novice", "rest") == true ) then
-            xr_motivator.storage[self.object:id()].novice.rest_w = patrol(char_ini:r_string("novice", "rest"))
-        end
-        if( char_ini:line_exist("novice", "enemy") == true ) then
-            xr_motivator.storage[self.object:id()].novice.enemy = char_ini:r_string("novice", "enemy")
-        end
-    end
---Настройка схемы реакции новичка2 - новичок возле аномалии
-xr_motivator.storage[self.object:id()].novice2 = {
-                            path     = nil,         --Путь, по которому ходить
-                            curState = 1,
-                            time     = nil,
-                            enabled  = false
-}
-    if( char_ini:section_exist ("novice2") == true ) then
-        xr_motivator.storage[self.object:id()].novice2.enabled = true            --Если есть секция новичка, то включаем эту схему
-        if( char_ini:line_exist("novice2", "path") == true ) then
-            xr_motivator.storage[self.object:id()].novice2.path   = char_ini:r_string("novice2", "path")
-        end
-    end
---Настройка схемы реакции новичка3 - новичок которого ограбили
-xr_motivator.storage[self.object:id()].novice3 = {
-                            path     = nil,         --Путь, по которому ходить
-                            enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
-                            enemy    = nil,
-                            say_kill = false,       --Ни разу не говорил, что убьет бандитов
-                            enabled  = false
-                            }
-    if( char_ini:section_exist ("novice3") == true ) then
-        xr_motivator.storage[self.object:id()].novice3.enabled = true            --Если есть секция новичка, то включаем эту схему
-        if( char_ini:line_exist("novice3", "path") == true ) then
-            xr_motivator.storage[self.object:id()].novice3.path   = char_ini:r_string("novice3", "path")
-        end
-        if( char_ini:line_exist("novice3", "enemy_path") == true ) then
-            xr_motivator.storage[self.object:id()].novice3.enemy_path  = char_ini:r_string("novice3", "enemy_path")
-        end
-        if( char_ini:line_exist("novice3", "enemy") == true ) then
-            xr_motivator.storage[self.object:id()].novice3.enemy = char_ini:r_string("novice3", "enemy")
-
-        end
-    end
--- Хранение схемы командира
-xr_motivator.storage[self.object:id()].commander = {
-        enabled = false,
-        soldiers = {},
-        --way
-        --way_inside
-        --way_outside
-        --near_door_index
-}
--- Настройка бандитов на заводе (escape)
-xr_motivator.storage[self.object:id()].escape_factory_bandit = {
-        enabled  = false
-}
-    if( char_ini:section_exist ("escape_factory_bandit") ) then
-        xr_motivator.storage[self.object:id()].escape_factory_bandit.enabled = true
-    end
--- Настройка командира военных сталкеров в НИИ "Агропром"
-xr_motivator.storage[self.object:id()].agroprom_military_commander = {
-        enabled = false,
-        soldiers = {},
-        --way
-        --way_inside
-        --way_outside
-        --near_door_index
-}
-    if char_ini:section_exist("military_commander") then
-        -- пути
-        if char_ini:line_exist("military_commander", "way") then
-            local w = char_ini:r_string( "military_commander", "way" )
-
-            if level.patrol_path_exists( w ) then
-                xr_motivator.storage[self.object:id()].agroprom_military_commander.way_inside = patrol( w )
-                xr_motivator.storage[self.object:id()].agroprom_military_commander.enabled = true
-            end
-        end
-    end
--- Настройка схемы реакции
-xr_motivator.storage[self.object:id()].reactions = {
-        enabled = true,
-    time_wait = 60000, -- 15 секунд ждем повтора
-        evn = xr_reactions.events(self.object),
-    -- позицию раздражителя
-    position = nil,
-    -- id раздражителя
-    id = nil,
-    -- указатель, что мы получили раздражитель от объекта, за которым мы следим
-    watched = nil,
-    -- время раздражителя
-    time = nil,
-    -- визуальный или звуковой
-    isVisual = nil,
-    -- правила для обнаружений (какие типы объектов мы игнорим)
-    rules = {}
-    }
-    if char_ini:section_exist ("reactions") == true then
-        if char_ini:line_exist("reactions", "enabled") == true then
-                xr_motivator.storage[self.object:id()].reactions.enabled = char_ini:r_bool("reactions", "enabled")
-        end
-    local i = 1
-        while char_ini:line_exist("reactions", "rule_"..i) == true do
-        table.insert(xr_motivator.storage[self.object:id()].reactions.rules, char_ini:r_string("reactions", "rule_"..i))
-            i = i + 1
-        end
-    end
-
-    --Evaluators
-    manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[self.object:id()].tradeseller))
+    xr_motivator.storage[self.object:id()] = {  followers = {} }
+	-- Положения тела 
+	xr_motivator.storage[self.object:id()].state = {
+    		body_state = 0,
+    		target_state = 0,
+    		position = nil,
+    		dist = 2
+    	}
+    xr_state.add_to_binder(self.object)
+	-- Настройка схемы реакции
+    	xr_motivator.storage[self.object:id()].reactions = {
+        	enabled = true,
+    		time_wait = 60000, -- 15 секунд ждем повтора
+       		evn = xr_reactions.events(self.object),
+    		-- позицию раздражителя
+    		position = nil,
+    		-- id раздражителя
+    		id = nil,
+    		-- указатель, что мы получили раздражитель от объекта, за которым мы следим
+    		watched = nil,
+    		-- время раздражителя
+    		time = nil,
+    		-- визуальный или звуковой
+    		isVisual = nil,
+    		-- правила для обнаружений (какие типы объектов мы игнорим)
+    		rules = {}
+    	}
+    xr_reactions.add_to_binder(self.object, char_ini)    
+	-- схема привязки к позиции
+    xr_position.add_to_binder(self.object)
+	-- Ответ на PDA сообщение
+	xr_motivator.storage[self.object:id()].tradeseller = {   
+		Buyer = nil,
+        	Seller = self.object,
+        	-- Задается время ожидания в секундах
+        	begin_wait_to_see = { time = 300,
+                    			begin = nil },
+        	-- Будет ли работать схема? если нет, то он всегда будет отказываться от торговли.
+        	enabled = false
+    	}
+    xr_meet.add_to_binder_pda(self.object, char_ini)
 
     --Motivations
     manager:remove_motivation (motivations["solve_zone_puzzle"])
@@ -460,133 +169,97 @@ xr_motivator.storage[self.object:id()].reactions = {
     manager:add_connection (motivations["solve_zone_puzzle"], motivations["normal"])
     manager:add_connection (motivations["solve_zone_puzzle"], motivations["trade_init"])
 
-    -- Bind other scripts
-    self.object:disable_talk()
-
-    -- SCRIPT ACTION PLANNER
---[[
-    properties["scripts"] = xr_evaluators_id.script_evaluator
-    manager:add_evaluator (properties["scripts"],       this.evaluator_script       ())
-
-    local action_pl = planner_action(self.object, "script_action")
-    action_pl:add_precondition      (world_property(stalker_ids.property_alive,     true))
-    action_pl:add_precondition      (world_property(stalker_ids.property_enemy, false))
-    action_pl:add_precondition      (world_property(properties["scripts"],      true))
-    action_pl:add_effect            (world_property(properties["scripts"],      false))
-    local act_pl = cast_planner_to_action(action_pl)
-    if act_pl == nil then
-        printf("ERROR: can't cast planner to action")
-    else
-        manager:add_action (xr_actions_id.action_script, act_pl)
-    end
-
---  action = manager:action (stalker_ids.action_puzzle_solver)
---  action:add_precondition         (world_property(properties["scripts"],      false))
-]]--
-
-    --загрузка озвучки
-    xr_sounds.load_sounds (self.object)
-
-
-    -- общие скрипты
-    xr_state.add_to_binder(self.object)
-    xr_reactions.add_to_binder(self.object)
-    xr_position.add_to_binder(self.object)
-    xr_meet.add_to_binder(self.object)
-
-    -- модели поведения
-    xr_talker.add_to_binder(self.object)
-    xr_patrol.add_to_binder (self.object)
-    xr_follower.add_to_binder (self.object)
-    xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
-    xr_kamp.add_to_binder(self.object)
-    xr_commander.add_to_binder(self.object)
-    xr_guard.add_to_binder(self.object)
-    xr_camper2.add_to_binder(self.object)
-    xr_sleeper.add_to_binder(self.object)
-    xr_robbers.add_to_binder(self.object)
-    xr_scout.add_to_binder(self.object)
-
-    -- сюжетные скрипты
-    xr_trivial.add_novice     (self.object)
-    xr_trivial.add_novice2    (self.object)
-    xr_trivial.add_novice3    (self.object)
-    escape_factory_bandits.add_to_binder(self.object)
-    agroprom_military_commander.add_to_binder(self.object)
-    
-    
-    
---[[    -- модели поведения
-    if char_ini:section_exist("talker") then
-        xr_talker.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("patrol") then
-        xr_patrol.add_to_binder (self.object)
-    end
-
-    if char_ini:section_exist("follower") then
-        xr_follower.add_to_binder (self.object)
-    end
-
---    if char_ini:section_exist("report") then
-        xr_report.AddScheme (self.object, stalker_ids.action_puzzle_solver)
---    end
-
-    if char_ini:section_exist("kamp") then
-        xr_kamp.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("commander") then
-        xr_commander.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("guard") then
-        xr_guard.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("camper") then
-        xr_camper2.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("sleeper") then
-        xr_sleeper.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("robber") then
-        xr_robbers.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("scout") then
-        xr_scout.add_to_binder(self.object)
-    end
-    
-    -- сюжетные скрипты
-    if char_ini:section_exist("novice") then
-        xr_trivial.add_novice(self.object)
-    end
-
-    if char_ini:section_exist("novice2") then
-        xr_trivial.add_novice2(self.object)
-    end
-
-    if char_ini:section_exist("novice3") then
-        xr_trivial.add_novice3(self.object)
-    end
-
-    if char_ini:section_exist("escape_factory_bandit") then
-        escape_factory_bandits.add_to_binder(self.object)
-    end
-
-    if char_ini:section_exist("military_commander") then
-        agroprom_military_commander.add_to_binder(self.object)    
-    end]]
-    
-    
-    
-    if char_ini:section_exist ("bobik") == true then
-        escape_bobic.add_to_binder(self.object)
-    end
+----------------------------------------------------------------------------------------------------------------------
+-- Модели поведения
+----------------------------------------------------------------------------------------------------------------------
+	-- Настройка встречи
+	xr_motivator.storage[self.object:id()].meet = {
+        	enabled = false,
+        	actor = nil,
+    		noweap = false, -- игнорируем наличие оружия у актора
+        	distance = 15, -- расстояние, в пределах которого мы реагируем
+        	shoot_distance = 5 -- расстояние, в пределах которого мы стреляем
+    	}
+xr_meet.add_to_binder(self.object, char_ini)
+	-- лагерь у костра
+	xr_motivator.storage[self.object:id()].kamp = {
+       		-- Будет ли работать схема? если нет, то он не будет пытаться инициализировать камп
+        	enabled = false,
+        	-- Патрульный путь из 1 вэйпоинта, который указывает на центр лагеря.
+        	center_point = nil,
+        	-- максимальный радиус, в котором рассаживаются люди вокруг центра лагеря
+        	max_rad = 2,
+        	-- Идентификатор следующего действия.
+        	-- 0 - нет действия
+        	-- 1 - пойти обойти территорию
+        	action = 0,
+        	-- Последний выполненный нами экшн, чтобы не повторяться
+       		last_action = 0,
+        	-- Патрульные пути, по которым будут сталкеры обходить лагерь
+        	patrol_path = {},
+        	-- ID позиции, в которую он сядет
+        	pos_id = -1,
+        	-- Положение тела. 0 - стоит, остальное - разные варианты сидения
+        	body_state = 0,
+        	-- Время между повторением действий
+        	timer = { act1 = {begin = nil, time = 120},
+                          act4 = {begin = nil, time = 60}}
+    	}
+xr_kamp.add_to_binder(self.object, char_ini)
+	-- спящий
+	xr_motivator.storage[self.object:id()].sleeper = {
+        	enabled = false,
+            	path_main = nil
+    	}
+xr_sleeper.add_to_binder(self.object, char_ini)
+	-- часовые
+	xr_motivator.storage[self.object:id()].guard = {
+        	enabled = false,
+    		action = nil,
+        	path_main = nil,
+        	path_hideout = nil
+    	}
+xr_guard.add_to_binder(self.object, char_ini)
+	-- схема командира
+	xr_motivator.storage[self.object:id()].commander = {
+        	enabled = false,
+	        soldiers = {},
+        	--way
+	        --way_inside
+        	--way_outside
+	        --near_door_index
+	}
+xr_commander.add_to_binder(self.object, char_ini)
+	-- Настройка патруля
+	xr_motivator.storage[self.object:id()].patrol = {
+		enabled = false,
+    		patrol_path = nil,
+    		escape_path = nil,
+    		raid_enabled = false,
+    		raid_path = nil,
+    		raid_process = false,
+    		npc_id = -1,
+    		first_init = false
+  	}
+xr_patrol.add_to_binder(self.object, char_ini)
+	-- Настройка follower
+	xr_motivator.storage[self.object:id()].follower = {
+    		enabled = false,
+    		leader_name = nil,
+    		leader = nil,
+    		escape_path = nil,
+    		raid_enabled = false,
+    		raid_path = nil,
+    		mental_state = anim.free,
+    		direction = vector():set(0,0,1),
+    		distance = 2,
+    		state = 0,
+    		leader_command = 0,
+    		npc = self.object,
+    		look_dir = vector():set(0,0,0),
+    		npc_id = -1
+    	}
+xr_follower.add_to_binder(self.object, char_ini)
 
     --Привязка к организации
     if char_ini:section_exist ("fraction") == true then
@@ -594,23 +267,14 @@ xr_motivator.storage[self.object:id()].reactions = {
             xr_gulag.addMember(char_ini:r_string("fraction", "name"), self.object)
             xr_gulag.add_to_binder(self.object)
             
---[[            xr_patrol.add_to_binder  (self.object)
-            xr_follower.add_to_binder(self.object)
-            xr_guard.add_to_binder   (self.object)
-            xr_sleeper.add_to_binder (self.object)]]
+            xr_patrol.add_to_binder  (self.object, nil)
+            xr_follower.add_to_binder(self.object, nil)
+            xr_guard.add_to_binder   (self.object, nil)
+            xr_sleeper.add_to_binder (self.object, nil)
         end
-    else
-        -- включение схем
-    xr_talker.set_talker(self.object)
-        xr_kamp.set_kamp(self.object)
-        xr_guard.set_guard(self.object)
-    xr_sleeper.set_sleeper(self.object)
-        xr_patrol.set_patrol (self.object)
-        xr_follower.set_follower (self.object)
-    xr_commander.set_commander(self.object)
     end
 
-    escape.raid_init (self.object)
+	xr_storyline.set_storyline(self.object, char_ini)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function pda_call_back(recepient, who, msg, info_index)
@@ -629,12 +293,9 @@ function checkStorage(npc)
     local count = 0
     for k,v in xr_motivator.storage[npc:id()] do
         if k == "sleeper" or
-           k == "camper" or
-           k == "scout" or
            k == "follower" or
            k == "patrol" or
            k == "guard" or
-           k == "talker" or
            k == "commander"
         then
             if v.enabled == true then
@@ -646,12 +307,9 @@ function checkStorage(npc)
         printf("ERROR: there is too many active script")
         for k,v in xr_motivator.storage[npc:id()] do
             if k == "sleeper" or
-               k == "camper" or
-               k == "scout" or
                k == "follower" or
                k == "patrol" or
                k == "guard" or
-               k == "talker" or
                k == "commander"
             then
                 if v.enabled == true then

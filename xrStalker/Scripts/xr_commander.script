@@ -857,41 +857,45 @@ end
 
 ----------------------------------------------------------------------------------------------------------------------
 
-function add_to_binder( npc )
-    -- звуки
-    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_song_",         13, snd_type.talk, 2, 1, snd_singing )
-    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_outside_",      13, snd_type.talk, 2, 1, snd_look_outside )
-    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_to_soldier_",  13, snd_type.talk, 2, 1, snd_talk_outside )
-    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_see_enemy_",    13, snd_type.talk, 2, 1, snd_enemy_stalker )
-    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_alarm_",       13, snd_type.talk, 2, 1, snd_enemy_monster )
-    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_walking_",     13, snd_type.talk, 2, 1, snd_walking )
-    npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_lostbox_",     13, snd_type.talk, 2, 1, snd_lost_box )
-    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_lostbox_",      13, snd_type.talk, 2, 1, snd_lost_box_drunk )
-    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_dronk_",        13, snd_type.talk, 2, 1, snd_drunk )
-    npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_sleep_",        13, snd_type.talk, 2, 1, snd_sleep )
+function add_to_binder( npc, char_ini )
+    if char_ini == nil or char_ini:section_exist("commander") then
+    	-- звуки
+    	npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_song_",         13, snd_type.talk, 2, 1, snd_singing )
+    	npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_outside_",      13, snd_type.talk, 2, 1, snd_look_outside )
+    	npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_to_soldier_",  13, snd_type.talk, 2, 1, snd_talk_outside )
+   	npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_see_enemy_",    13, snd_type.talk, 2, 1, snd_enemy_stalker )
+    	npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_alarm_",       13, snd_type.talk, 2, 1, snd_enemy_monster )
+    	npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_walking_",     13, snd_type.talk, 2, 1, snd_walking )
+    	npc:add_sound( "script_replics\\comandir_1\\normal\\comandir_lostbox_",     13, snd_type.talk, 2, 1, snd_lost_box )
+    	npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_lostbox_",      13, snd_type.talk, 2, 1, snd_lost_box_drunk )
+    	npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_dronk_",        13, snd_type.talk, 2, 1, snd_drunk )
+    	npc:add_sound( "script_replics\\comandir_1\\drunk\\comandir_sleep_",        13, snd_type.talk, 2, 1, snd_sleep )
 
-    npc:add_sound( "script_replics\\radio\\commander\\radio_commander_",        30, snd_type.talk, 2, 1, radio_commander )
-    npc:add_sound( "script_replics\\radio\\message\\radio_noise_",               5, snd_type.talk, 2, 1, radio_noise )
-    npc:add_sound( "script_replics\\radio\\message\\radio_voice_",               5, snd_type.talk, 2, 1, radio_voice )
-    npc:add_sound( "script_replics\\radio\\message\\radio_turn_on_",             5, snd_type.talk, 2, 1, radio_on )
-    npc:add_sound( "script_replics\\radio\\message\\radio_turn_off_",            5, snd_type.talk, 2, 1, radio_off )
+    	npc:add_sound( "script_replics\\radio\\commander\\radio_commander_",        30, snd_type.talk, 2, 1, radio_commander )
+    	npc:add_sound( "script_replics\\radio\\message\\radio_noise_",               5, snd_type.talk, 2, 1, radio_noise )
+    	npc:add_sound( "script_replics\\radio\\message\\radio_voice_",               5, snd_type.talk, 2, 1, radio_voice )
+    	npc:add_sound( "script_replics\\radio\\message\\radio_turn_on_",             5, snd_type.talk, 2, 1, radio_on )
+    	npc:add_sound( "script_replics\\radio\\message\\radio_turn_off_",            5, snd_type.talk, 2, 1, radio_off )
 
-    -- GOAP
-    local a = xr_motivator.storage[npc:id()].commander
+    	-- GOAP
+    	local a = xr_motivator.storage[npc:id()].commander
 
-    local action = this.action_commander( "action_commander", a )
+    	local action = this.action_commander( "action_commander", a )
 
-    local manager = npc:motivation_action_manager()
+    	local manager = npc:motivation_action_manager()
 
-    manager:add_evaluator( prop_commander, this.evaluator_commander( "property_commander", a ) )
+    	manager:add_evaluator( prop_commander, this.evaluator_commander( "property_commander", a ) )
 
-    action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
-    action:add_precondition( world_property( xr_evaluators_id.state_change, true  ) )
-    action:add_effect( world_property( prop_commander, false ) )
-    manager:add_action( act_commander, action )
+    	action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
+    	action:add_precondition( world_property( xr_evaluators_id.state_change, true  ) )
+    	action:add_effect( world_property( prop_commander, false ) )
+    	manager:add_action( act_commander, action )
 
-    action = manager:action( stalker_ids.action_puzzle_solver )
-    action:add_precondition( world_property( prop_commander, false ) )
+    	action = manager:action( stalker_ids.action_puzzle_solver )
+    	action:add_precondition( world_property( prop_commander, false ) )
+	
+	if char_ini ~= nil then xr_commander.set_commander(npc) end
+   end
 end
 
 function init_commander( npc, a )

@@ -423,8 +423,8 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 -- binder
 ----------------------------------------------------------------------------------------------------------------------
-function add_to_binder(object)
-
+function add_to_binder(object, char_ini)
+    if char_ini:section_exist("meet") == true then
 	local operators		= {}
 	local properties	= {}
 
@@ -436,13 +436,11 @@ function add_to_binder(object)
 
 	local manager = object:motivation_action_manager()
 
-	properties["trade_init"]	= xr_evaluators_id.final_trade_init         
 	properties["event"] 		= xr_evaluators_id.reaction
 	properties["contact"]		= xr_evaluators_id.stohe_meet_base + 1         
 	properties["wait_buyer"] 	= xr_evaluators_id.stohe_tradeseller_base + 1
 
 	operators["contact"]		= xr_actions_id.stohe_meet_base + 1
-	operators["trade_init"]		= xr_actions_id.stohe_tradeseller_base + 1
 	operators["wait_buyer"] 	= xr_actions_id.stohe_tradeseller_base + 2
 
 	-- Evaluators
@@ -450,13 +448,6 @@ function add_to_binder(object)
 	manager:add_evaluator (properties["wait_buyer"], 	this.evaluator_wait		(xr_motivator.storage[object:id()].tradeseller))
 
 	-- Actions
-	local action = this.action_trade_init (object:name(),"action_trade_init", xr_motivator.storage[object:id()].tradeseller)
-	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
-	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
-	action:add_precondition		(world_property(properties["trade_init"], 	false))
-	action:add_effect 		(world_property(properties["trade_init"], 	true))
-	manager:add_action (operators["trade_init"], action)
-
 	local action = this.action_contact (object:name(),"action_contact", xr_motivator.storage[object:id()].meet)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
@@ -464,7 +455,7 @@ function add_to_binder(object)
 	action:add_effect 		(world_property(properties["contact"], 		false))
 	manager:add_action (operators["contact"], action)
 
-	local action = this.action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].tradeseller)
+	action = this.action_wait_for_buyer (object:name(),"action_wait_for_buyer", xr_motivator.storage[object:id()].tradeseller)
 	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
 	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	true))
@@ -475,4 +466,39 @@ function add_to_binder(object)
 	action = manager:action (stalker_ids.action_puzzle_solver)	
 	action:add_precondition		(world_property(properties["contact"],		false))
 	action:add_precondition		(world_property(properties["wait_buyer"], 	false))
+
+        if char_ini:line_exist("meet", "enabled") == true then
+                xr_motivator.storage[object:id()].meet.enabled = char_ini:r_bool("meet", "enabled")
+        end
+        if char_ini:line_exist("meet", "noweap") == true then
+                xr_motivator.storage[object:id()].meet.noweap = char_ini:r_bool("meet", "noweap")
+        end
+    end
+end
+function add_to_binder_pda(object, char_ini)
+	local operators		= {}
+	local properties	= {}
+
+	local manager = object:motivation_action_manager()
+
+	properties["trade_init"]	= xr_evaluators_id.final_trade_init         
+
+	operators["trade_init"]		= xr_actions_id.stohe_tradeseller_base + 1
+
+	--Evaluators
+	manager:add_evaluator (properties["trade_init"], xr_evaluators.evaluator_trade_init(xr_motivator.storage[object:id()].tradeseller))
+	
+	-- Actions
+	local action = this.action_trade_init (object:name(),"action_trade_init", xr_motivator.storage[object:id()].tradeseller)
+	action:add_precondition		(world_property(stalker_ids.property_alive, 	true))
+	action:add_precondition		(world_property(stalker_ids.property_enemy,	false))
+	action:add_precondition		(world_property(properties["trade_init"], 	false))
+	action:add_effect 		(world_property(properties["trade_init"], 	true))
+	manager:add_action (operators["trade_init"], action)
+
+    if char_ini:section_exist ("tradeseller") == true then
+        if char_ini:line_exist("tradeseller", "enabled") == true then
+                xr_motivator.storage[self.object:id()].tradeseller.enabled = char_ini:r_bool("tradeseller", "enabled")
+        end
+    end
 end

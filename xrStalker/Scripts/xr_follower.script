@@ -609,17 +609,17 @@ function action_raid:move_callback (obj, action_type, index)
 end
 
 ----------------------------------------------------------------------------------------------------------------------
-function  add_to_binder(obj)
-
+function  add_to_binder(obj, char_ini)
+    if char_ini == nil  or char_ini:section_exist ("follower") == true then
 	local operators		= {}
 	local properties	= {}
 	
-    printf ("FOLLOWER_EVA_BASE = %d", xr_evaluators_id.sidor_follower_base)
-    obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
-    obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
-    obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
-    obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
-    obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
+	printf ("FOLLOWER_EVA_BASE = %d", xr_evaluators_id.sidor_follower_base)
+    	obj:add_sound ("Scripts\\Patrol\\Commander1_", 20, snd_type.talk, 2, 1, commander_snd)
+    	obj:add_sound ("Scripts\\Patrol\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle_snd)
+    	obj:add_sound ("script_replics\\soldier_1\\idle\\soldier_idle_", 20, snd_type.talk, 2, 1, soldiers_idle2_snd)
+    	obj:add_sound ("script_replics\\soldier_1\\replics\\soldier_replic_", 20, snd_type.talk, 2, 1, soldiers_replics_snd)
+    	obj:add_sound ("script_replics\\soldier_1\\hear_something\\soldier_hear_", 20, snd_type.talk, 2, 1, soldiers_hear_snd)
 
 	local manager = obj:motivation_action_manager ()
 
@@ -632,44 +632,42 @@ function  add_to_binder(obj)
 	operators["follow"]                 = xr_actions_id.sidor_act_follower_base + 1
 	operators["raid"]                   = xr_actions_id.sidor_act_follower_base + 2
    
-    manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("evaluator_leader_alive", xr_motivator.storage[obj:id()].follower))
-    manager:add_evaluator (properties["follow"], this.evaluator_follow	("evaluator_follow", xr_motivator.storage[obj:id()].follower))
-    manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].follower))
+    	manager:add_evaluator (properties["leader_present"], this.evaluator_leader_present 	("evaluator_leader_alive", xr_motivator.storage[obj:id()].follower))
+    	manager:add_evaluator (properties["follow"], this.evaluator_follow	("evaluator_follow", xr_motivator.storage[obj:id()].follower))
+    	manager:add_evaluator (properties["raid"], this.evaluator_raid ("evaluator_raid", xr_motivator.storage[obj:id()].follower))
         
-    local action = this.action_leader_wait ("action_leader_wait",	xr_motivator.storage[obj:id()].follower)
-    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    	local action = this.action_leader_wait ("action_leader_wait",	xr_motivator.storage[obj:id()].follower)
+    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
 	action:add_precondition	    (world_property (properties["state_end"], 	    true))
-    action:add_precondition     (world_property (properties["leader_present"],  false))
-    action:add_effect           (world_property (properties["leader_present"],  true))
-    manager:add_action (operators["leader_wait"], action)
+    	action:add_precondition     (world_property (properties["leader_present"],  false))
+    	action:add_effect           (world_property (properties["leader_present"],  true))
+    	manager:add_action (operators["leader_wait"], action)
     
-    action = this.action_follow ("action_follow",			xr_motivator.storage[obj:id()].follower)
-    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
-    action:add_precondition     (world_property (properties["leader_present"],  true))
-    action:add_precondition     (world_property (properties["raid"],            true))
+    	action = this.action_follow ("action_follow",			xr_motivator.storage[obj:id()].follower)
+    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    	action:add_precondition     (world_property (properties["leader_present"],  true))
+    	action:add_precondition     (world_property (properties["raid"],            true))
 	action:add_precondition		(world_property (properties["state_end"], 	    true))
-    action:add_precondition     (world_property (properties["follow"],          false))
-    action:add_effect           (world_property (properties["follow"],          true))
-    manager:add_action (operators["follow"], action)
+    	action:add_precondition     (world_property (properties["follow"],          false))
+    	action:add_effect           (world_property (properties["follow"],          true))
+    	manager:add_action (operators["follow"], action)
     
-    action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
-    action:add_precondition     (world_property (stalker_ids.property_alive,    true))
-    action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
+    	action = this.action_raid ("action_raid", xr_motivator.storage[obj:id()].follower)
+    	action:add_precondition     (world_property (stalker_ids.property_alive,    true))
+    	action:add_precondition     (world_property (stalker_ids.property_enemy,    false))
 	action:add_precondition	    (world_property (properties["state_end"], 	    true))
-    action:add_precondition     (world_property (properties["raid"],            false))
-    action:add_effect           (world_property (properties["raid"],            true))
-    manager:add_action          (operators["raid"], action)
-    
-    
-    action = manager:action     (stalker_ids.action_puzzle_solver)
-    action:add_precondition     (world_property (properties["follow"],  true))
+    	action:add_precondition     (world_property (properties["raid"],            false))
+    	action:add_effect           (world_property (properties["raid"],            true))
+    	manager:add_action          (operators["raid"], action)
+      
+    	action = manager:action     (stalker_ids.action_puzzle_solver)
+    	action:add_precondition     (world_property (properties["follow"],  true))
 
-    --xr_report.AddScheme (obj)
-    
+	if char_ini ~= nil then xr_follower.set_follower(obj) end
+    end 
 end
-
 function set_follower (npc, enabled, leader_name, escape_path, raid_enabled, raid_path)
 	local char_ini = npc:spawn_ini()
 	local st = xr_motivator.storage[npc:id()].follower

@@ -1,0 +1,130 @@
+function set_storyline(object, char_ini)
+
+xr_motivator.storage[object:id()].robber = {
+        enabled = false,
+    leader = false,
+    helper = false,
+            teammate1 = nil,
+            teammate2 = nil,
+        path_rob = nil
+    }
+    if char_ini:section_exist ("robber") == true then
+        if char_ini:line_exist("robber", "enabled") == true then
+                xr_motivator.storage[object:id()].robber.enabled = char_ini:r_bool("robber", "enabled")
+            printf("_bp: enabled = true")
+        end
+        if char_ini:line_exist("robber", "leader") == true then
+                xr_motivator.storage[object:id()].robber.leader = char_ini:r_bool("robber", "leader")
+            printf("_bp: leader = true")
+        end
+        if char_ini:line_exist("robber", "helper") == true then
+                xr_motivator.storage[object:id()].robber.helper = char_ini:r_bool("robber", "helper")
+            printf("_bp: helper = true")
+        end
+        if char_ini:line_exist("robber", "teammate1") == true then
+                xr_motivator.storage[object:id()].robber.teammate1 = char_ini:r_string("robber", "teammate1")
+        end
+        if char_ini:line_exist("robber", "teammate2") == true then
+                xr_motivator.storage[object:id()].robber.teammate2 = char_ini:r_string("robber", "teammate2")
+        end
+        if char_ini:line_exist("robber", "path_rob") == true then
+                xr_motivator.storage[object:id()].robber.path_rob = char_ini:r_string("robber", "path_rob")
+        end
+    end
+--Настройка схемы реакции новичка
+xr_motivator.storage[object:id()].novice = {
+                            path     = nil,         --Путь, по которому ходить
+                            rest     = nil,         --Места для сидения
+                            curState = 1,
+                            time     = nil,
+                            enemy    = nil,         --Для модификации новичка, если есть враг и есть оружие, идем мочить
+                            index    = 1,           --Index точки, к которой идем, чтоб посидеть
+                            enabled  = false
+}
+    if( char_ini:section_exist ("novice") == true ) then
+        xr_motivator.storage[object:id()].novice.enabled = true            --Если есть секция новичка, то включаем эту схему
+        if( char_ini:line_exist("novice", "path") == true ) then
+            xr_motivator.storage[object:id()].novice.path   = char_ini:r_string("novice", "path")
+        end
+        if( char_ini:line_exist("novice", "rest") == true ) then
+            xr_motivator.storage[object:id()].novice.rest_w = patrol(char_ini:r_string("novice", "rest"))
+        end
+        if( char_ini:line_exist("novice", "enemy") == true ) then
+            xr_motivator.storage[object:id()].novice.enemy = char_ini:r_string("novice", "enemy")
+        end
+    end
+--Настройка схемы реакции новичка2 - новичок возле аномалии
+xr_motivator.storage[object:id()].novice2 = {
+                            path     = nil,         --Путь, по которому ходить
+                            curState = 1,
+                            time     = nil,
+                            enabled  = false
+}
+    if( char_ini:section_exist ("novice2") == true ) then
+        xr_motivator.storage[object:id()].novice2.enabled = true            --Если есть секция новичка, то включаем эту схему
+        if( char_ini:line_exist("novice2", "path") == true ) then
+            xr_motivator.storage[object:id()].novice2.path   = char_ini:r_string("novice2", "path")
+        end
+    end
+--Настройка схемы реакции новичка3 - новичок которого ограбили
+xr_motivator.storage[object:id()].novice3 = {
+                            path     = nil,         --Путь, по которому ходить
+                            enemy_path = nil,       --Нулевая точка пути, туда, куда надо бежать
+                            enemy    = nil,
+                            say_kill = false,       --Ни разу не говорил, что убьет бандитов
+                            enabled  = false
+                            }
+    if( char_ini:section_exist ("novice3") == true ) then
+        xr_motivator.storage[object:id()].novice3.enabled = true            --Если есть секция новичка, то включаем эту схему
+        if( char_ini:line_exist("novice3", "path") == true ) then
+            xr_motivator.storage[object:id()].novice3.path   = char_ini:r_string("novice3", "path")
+        end
+        if( char_ini:line_exist("novice3", "enemy_path") == true ) then
+            xr_motivator.storage[object:id()].novice3.enemy_path  = char_ini:r_string("novice3", "enemy_path")
+        end
+        if( char_ini:line_exist("novice3", "enemy") == true ) then
+            xr_motivator.storage[object:id()].novice3.enemy = char_ini:r_string("novice3", "enemy")
+
+        end
+    end
+-- Настройка бандитов на заводе (escape)
+xr_motivator.storage[object:id()].escape_factory_bandit = {
+        enabled  = false
+}
+    if( char_ini:section_exist ("escape_factory_bandit") ) then
+        xr_motivator.storage[object:id()].escape_factory_bandit.enabled = true
+    end
+-- Настройка командира военных сталкеров в НИИ "Агропром"
+xr_motivator.storage[object:id()].agroprom_military_commander = {
+        enabled = false,
+        soldiers = {},
+        --way
+        --way_inside
+        --way_outside
+        --near_door_index
+}
+    if char_ini:section_exist("military_commander") then
+        -- пути
+        if char_ini:line_exist("military_commander", "way") then
+            local w = char_ini:r_string( "military_commander", "way" )
+
+            if level.patrol_path_exists( w ) then
+                xr_motivator.storage[object:id()].agroprom_military_commander.way_inside = patrol( w )
+                xr_motivator.storage[object:id()].agroprom_military_commander.enabled = true
+            end
+        end
+    end
+
+    xr_robbers.add_to_binder  (object)
+    xr_trivial.add_novice     (object)
+    xr_trivial.add_novice2    (object)
+    xr_trivial.add_novice3    (object)
+    escape_factory_bandits.add_to_binder(object)
+    agroprom_military_commander.add_to_binder(object)    
+    
+    if char_ini:section_exist ("bobik") == true then
+        escape_bobic.add_to_binder(object)
+    end
+
+--    escape.raid_init (object)
+end

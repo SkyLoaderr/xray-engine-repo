@@ -4,6 +4,7 @@ module ("xr_actions_id")
 module ("xr_evaluators_id")
 module ("xr_sounds_id")
 module ("xr_evaluators")
+module ("xr_storyline")
 
 module ("gramofon")
 module ("escape_bobic")

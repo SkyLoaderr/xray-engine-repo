@@ -98,6 +98,5 @@ function add_to_binder(object)
 	action:add_precondition		(world_property(properties["event"], 		false))
 	action:add_precondition		(world_property(properties["position"], 	false))
 	action:add_effect 		(world_property(properties["position"], 	true))
-	manager:add_action (operators["go_position"], action)
-	
+	manager:add_action (operators["go_position"], action)	
 end
