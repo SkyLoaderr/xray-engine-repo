@@ -525,21 +525,23 @@ void CUIMainIngameWnd::Update()
 						m_iYPos * INV_GRID_HEIGHT,
 						m_iGridWidth * INV_GRID_WIDTH,
 						m_iGridHeight * INV_GRID_HEIGHT);
-					float scale_x = float(m_iWeaponIconWidth)/
+/*					float scale_x = float(m_iWeaponIconWidth)/
 						float(m_iGridWidth*INV_GRID_WIDTH);
 
 					float scale_y = float(m_iWeaponIconHeight)/
 						float(m_iGridHeight*INV_GRID_HEIGHT);
-
+*/
 //					float scale = scale_x<scale_y?scale_x:scale_y;
-					UIWeaponIcon.SetTextureScaleXY(scale_x, scale_y);
-					UIWeaponIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*scale_x));
-					UIWeaponIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*scale_y));
+//					UIWeaponIcon.SetTextureScaleXY(scale_x, scale_y);
+					UIWeaponIcon.SetStretchTexture(true);
+					UIWeaponIcon.SetWidth(iFloor(0.5f+ m_iGridWidth*INV_GRID_WIDTH*0.9f/**scale_x*/));
+					UIWeaponIcon.SetHeight(iFloor(0.5f+ m_iGridHeight*INV_GRID_HEIGHT*0.9f/**scale_y*/));
 
-					UIWeaponIcon.SetWndPos(m_iWeaponIconX + 
+/*					UIWeaponIcon.SetWndPos(m_iWeaponIconX + 
 						(m_iWeaponIconWidth - UIWeaponIcon.GetWidth())/2,
 						m_iWeaponIconY + 
 						(m_iWeaponIconHeight - UIWeaponIcon.GetHeight())/2);
+*/
 				}
 				else
 				{
