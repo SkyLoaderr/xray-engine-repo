@@ -28,6 +28,12 @@ void CUIStaticItem::CreateShader(LPCSTR tex, LPCSTR sh)
 
 void CUIStaticItem::Init(LPCSTR tex, LPCSTR sh, int left, int top, u32 align)
 {
+	//by Dandy
+	//used for reinitializing StaticItems during the game
+	hShader.destroy();
+
+	uFlags &= !flValidRect;
+
 	CreateShader	(tex,sh);
 	SetPos			(left,top);
 	SetAlign		(align);
@@ -103,3 +109,28 @@ void CUIStaticItem::Render(float angle, const ref_shader& sh)
 	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
 }
 //--------------------------------------------------------------------
+//используется для вывода растянутой и повернутой 
+//части текстуры в том прямоугольнике,
+//который задается VisRect
+
+void CUIStaticItem::Render(float x1, float y1, float x2, float y2, 
+						   float x3, float y3, float x4, float y4, Shader* sh)
+{
+	// установить обязательно перед вызовом CustomItem::Render() !!!
+	RCache.set_Shader		(sh?sh:hShader());
+	// convert&set pos
+	Ivector2		bp;
+	HUD().ClientToScreenScaled	(bp,iPos.x,iPos.y,uAlign);
+
+	// actual rendering
+	u32			vOffset;
+	FVF::TL*		pv				= (FVF::TL*)RCache.Vertex.Lock	(4,hGeom.stride(),vOffset);
+	
+	inherited::RenderTexPart(pv,bp,dwColor,x1,y1,x2,y2,x3,y3,x4,y4);	
+	
+	// unlock VB and Render it as triangle LIST
+	RCache.Vertex.Unlock	(4,hGeom.stride());
+	RCache.set_Geometry		(hGeom);
+	RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4,0,2);
+
+}

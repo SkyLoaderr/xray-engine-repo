@@ -38,7 +38,21 @@ CUIDragDropItem::~ CUIDragDropItem()
 
 
 
+void CUIDragDropItem::Init(LPCSTR tex_name, int x, int y, int width, int height)
+{
+	m_pParentWnd = NULL;
+	m_pMouseCapturer = NULL;
 
+
+
+	m_iOldMouseX = x;
+	m_iOldMouseY = y;
+
+	m_previousPos.x = x;
+	m_previousPos.y = y;
+
+	CUIButton::Init(tex_name, x, y, width, height);
+}
 
 void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 {
@@ -70,6 +84,11 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 	if(mouse_action == MOUSE_MOVE && m_eButtonState == BUTTON_NORMAL)
 			GetParent()->SetCapture(this, cursor_on_button);
 
+	if(mouse_action == LBUTTON_DB_CLICK && m_bCursorOverButton)
+	{
+		GetTop()->SendMessage(this, ITEM_DB_CLICK);
+		GetParent()->SetCapture(this, false);
+	}
 
 
 
@@ -110,15 +129,15 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 		}
 		else if(mouse_action == MOUSE_MOVE)
 		{
-			if(!cursor_on_button)
-				m_eButtonState = BUTTON_UP;
+		//	if(!cursor_on_button)
+		//		m_eButtonState = BUTTON_UP;
 			
 			//только если включен режим	drag drop
-			else if(m_bDDEnabled) 
+//			else 
+			if(m_bDDEnabled) 
 			{
 				deltaX = x - m_iOldMouseX;
 				deltaY = y - m_iOldMouseY;
-
 
 				
 				MoveWindow(GetWndRect().left+deltaX,  GetWndRect().top+deltaY);
@@ -150,7 +169,7 @@ void  CUIDragDropItem::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
 
 
 	//запомнить положение мыши, с учетом
-	//возможного картинки
+	//возможного перемещения картинки
 	m_iOldMouseX = x - deltaX;
 	m_iOldMouseY = y - deltaY;
 
@@ -162,8 +181,11 @@ void CUIDragDropItem::Draw()
 {
 	RECT rect = GetAbsoluteRect();
 
+	//отцентрировать текстуру по центру ее окна
+	int right_offset = (GetWidth()-m_UIStaticItem.GetRect().width())/2;
+	int down_offset = (GetHeight()-m_UIStaticItem.GetRect().height())/2;
 
-	m_UIStaticItem.SetPos(rect.left, rect.top);
+	m_UIStaticItem.SetPos(rect.left + right_offset, rect.top + down_offset);
 	m_UIStaticItem.Render();
 }
 

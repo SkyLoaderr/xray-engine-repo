@@ -30,9 +30,13 @@ CUIButton:: CUIButton()
 
 void CUIButton::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
-	
-	m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
 
+	m_eButtonState = BUTTON_NORMAL;
+	m_ePressMode = NORMAL_PRESS;
+	m_bButtonClicked = false;
+	m_bCursorOverButton = false;
+
+	m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
 	
 	CUIWindow::Init(x, y, width, height);
 }
@@ -215,7 +219,7 @@ void  CUIButton::Draw()
 //#define TEXT_OFFSET_DOWN  10
 
 #define TEXT_OFFSET_RIGHT (GetWidth()/2)
-#define TEXT_OFFSET_DOWN  10
+#define TEXT_OFFSET_DOWN  (GetHeight()/2 - GetFont()->CurrentHeight()/2)
 
 
 
@@ -274,14 +278,11 @@ void  CUIButton::Update()
 
 	GetFont()->SetColor(0xFFEEEEEE);
 
-	float a;
-	a = GetFont()->SizeOf("aaa", 0.001f);
-
-
+	
 	GetFont()->Out((float)rect.left + right_offset  +  TEXT_OFFSET_RIGHT, 
 				   (float)rect.top + down_offset  + TEXT_OFFSET_DOWN,
 				    m_str);
 
-	
+
 
 }

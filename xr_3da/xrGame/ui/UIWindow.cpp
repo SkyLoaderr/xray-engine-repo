@@ -11,8 +11,11 @@
 
 CUIWindow::CUIWindow()
 {
+	m_pFont = NULL;
+
 	m_pParentWnd =  NULL;
 	m_pMouseCapturer =  NULL;
+	m_pKeyboardCapturer =  NULL;
 	SetRect(&m_WndRect, 0,0,0,0);
 
     Show(true);
@@ -101,9 +104,17 @@ void CUIWindow::AttachChild(CUIWindow* pChild)
 //отсоединить дочернее окно
 void CUIWindow::DetachChild(CUIWindow* pChild)
 {
+	if(m_pMouseCapturer == pChild) SetCapture(pChild, false);
+
 	m_ChildWndList.remove(pChild);
 }
 
+void CUIWindow::DetachAll()
+{
+	if(m_ChildWndList.empty()) return;
+
+	m_ChildWndList.erase(m_ChildWndList.begin(), m_ChildWndList.end());
+}
 
 
 
@@ -135,8 +146,21 @@ RECT CUIWindow::GetAbsoluteRect()
 //координаты курсора всегда, кроме начального вызова 
 //задаются относительно текущего окна
 
+#define DOUBLE_CLICK_TIME 250
+
 void CUIWindow::OnMouse(int x, int y, E_MOUSEACTION mouse_action)
-{
+{	
+	//определить DoubleClick
+	if(mouse_action == LBUTTON_DOWN)
+	{
+		u32 dwCurTime =Device.TimerAsync();
+		if(dwCurTime-m_dwLastClickTime < DOUBLE_CLICK_TIME)
+			 mouse_action = LBUTTON_DB_CLICK;
+
+		m_dwLastClickTime = dwCurTime;
+	}
+
+
 	POINT cursor_pos;
 	
 	cursor_pos.x = x;
@@ -205,6 +229,46 @@ void CUIWindow::SetCapture(CUIWindow *pChildWindow, bool capture_status)
 }
 
 
+//реакция на клавиатуру
+bool CUIWindow::OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action)
+{
+	bool result;
+
+	//если есть дочернее окно,захватившее клавиатуру, то
+	//сообщение направляем ему сразу
+	if(m_pKeyboardCapturer!=NULL)
+	{
+		result = m_pKeyboardCapturer->OnKeyboard(dik, keyboard_action);
+		
+		if(result) return true;
+	}
+
+	WINDOW_LIST::reverse_iterator it = (WINDOW_LIST::reverse_iterator)m_ChildWndList.end();
+
+	for(u16 i=0; i<m_ChildWndList.size(); i++, it++)
+	{
+		if((*it)->IsEnabled())
+		{
+			result = (*it)->OnKeyboard(dik, keyboard_action);
+			
+			if(result)	return true;
+		}
+	}
+
+	return false;
+}
+
+
+void CUIWindow::SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status)
+{
+	if(GetParent() != NULL)
+		GetParent()->SetCapture(this, capture_status);
+
+	if(capture_status)
+		m_pKeyboardCapturer = pChildWindow;
+	else
+		m_pKeyboardCapturer = NULL;
+}
 
 
 //обработка сообщений 
@@ -239,12 +303,11 @@ bool CUIWindow::BringToTop(CUIWindow* pChild)
 //поднять на вершину списка всех родителей окна и его самого
 void CUIWindow::BringAllToTop()
 {
-	if(GetParent() == NULL)	
+	if(GetParent() == NULL)
 			return;
 	else
 	{
-		GetParent()->BringToTop(this);	
+		GetParent()->BringToTop(this);
 		GetParent()->BringAllToTop();
 	}
 }
-	

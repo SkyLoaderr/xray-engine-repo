@@ -15,7 +15,7 @@
 // включает менюшку вместо игры
 ////////////////////////////////
 
-//#define UI_INTERFACE_ON
+#define UI_INTERFACE_ON
 
 
 
@@ -23,23 +23,9 @@
 
 #ifdef UI_INTERFACE_ON
 
-#include "ui\UIFrameWindow.h"
-#include "ui\UIButton.h"
-#include "ui\UICheckButton.h"
-
-#include "ui\UIRadioButton.h"
-#include "ui\UIRadioGroup.h"
-
-#include "ui\UIScrollBar.h"
-
-#include "ui\UIMessageBox.h"
-#include "ui\UIProgressBar.h"
-#include "ui\UIStatic.h"
-
-#include "ui\UIDragDropItem.h"
-#include "ui\UIDragDropList.h"
 
 #include "ui\UIInventoryWnd.h"
+#include "ui\UIMainIngameWnd.h"
 
 #endif
 
@@ -85,55 +71,14 @@ class CUI{
 	CUISquad			UISquad;
 
 
-	//////////////////////////////////
-	// window tests begin
-	///////////////////////////////////
-
 #ifdef UI_INTERFACE_ON
-
-	//CUIFrameWindow		UIMainWindow;
-
-	CUIInventoryWnd		UIMainWindow;
-
-	CUIButton			UIButton1;
-	CUIButton			UIButton2;
-	CUIButton			UIButton3;
-
-	CUIRadioGroup		UIRadioGroup;
-	CUIRadioButton		UIRadioButton1;
-	CUIRadioButton		UIRadioButton2;
-
-	CUIScrollBar		UIScrollBar;
-
-	CUIMessageBox		UIMessageBox; 
-	CUIMessageBox		UIMessageBox1;
-	CUIMessageBox		UIMessageBox2;
-
-	CUIProgressBar		UIProgressBar; 
 	
-	CUIStatic			UIStatic;
-	
-	CUIDragDropItem		UIDragDropItem;
-	CUIDragDropItem		UIDragDropItem1;
-	CUIDragDropItem		UIDragDropItem2;
-	CUIDragDropItem		UIDragDropItem3;
-	CUIDragDropItem		UIDragDropItem4;
-	CUIDragDropItem		UIDragDropItem5;
-	CUIDragDropItem		UIDragDropItem6;
-
-	CUIDragDropList		UIDragDropList; 
-	CUIDragDropList		UIDragDropList1; 
-	CUIDragDropList		UIDragDropList2;
-
-
+	CUIMainIngameWnd UIMainIngameWnd;
 
 #endif
 
-	//////////////////////////////////
-	// window tests end
-	///////////////////////////////////
-
-
+	//whether to show main ingame indicators (health, weapon etc)
+	bool m_bShowIndicators;
 
 
 	CUIGameCustom*		pUIGame;
@@ -162,6 +107,18 @@ public:
 	// frag		(g_fraglimit)
 	// time		(g_timelimit)
 	// frag-list.....
+	
+
+	//by 	Dandy
+	void ShowCursor() {UICursor.Show();}
+	void HideCursor() {UICursor.Hide();}
+	CUICursor* GetCursor() {return &UICursor;}
+
+	void ShowIndicators() {m_bShowIndicators = true;}
+	void HideIndicators() {m_bShowIndicators = false;}
+
+	//end by Dandy
+
 
 	void				AddMessage			(LPCSTR S, LPCSTR M, u32 C=0xffffffff, float life_time=LIFE_TIME);
 };

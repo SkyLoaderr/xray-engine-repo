@@ -19,6 +19,8 @@ public:
 	virtual ~ CUIDragDropItem();
 
 
+	virtual void Init(LPCSTR tex_name, int x, int y, int width, int height);
+
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
 	//сообщения, отправляемые родительскому окну
@@ -29,7 +31,8 @@ public:
 	typedef enum{BUTTON_CLICKED, 
 					ITEM_DRAG = 0xFF0, 
 					ITEM_DROP, 
-					ITEM_MOVE} E_MESSAGE;
+					ITEM_MOVE,
+					ITEM_DB_CLICK} E_MESSAGE;
 
 
 	virtual void Draw();
@@ -52,6 +55,8 @@ public:
 	void SetGridRow(int iGridRow) {m_iGridRow = iGridRow;}
 	void SetGridCol(int iGridCol) {m_iGridCol = iGridCol;}
 
+	void* GetData() {return m_pData;}
+	void SetData(void* pData) {m_pData = pData;}
 
 
 protected:
@@ -71,6 +76,11 @@ protected:
 
 	int m_iGridCol;
 	int m_iGridRow;
+
+
+	//указатель на произвольные данные которые могут быть
+	//присоеденены к элементу
+	void* m_pData; 
 };
 
 #endif // _UI_DRAG_DROP_ITEM_H_

@@ -19,7 +19,12 @@ public:
 	virtual ~CUIProgressBar(void);
 
 
-	virtual void Init(int x, int y, int length, bool bIsHorizontal);
+	virtual void Init(int x, int y, int length, int broad, bool bIsHorizontal);
+
+	void SetProgressTexture(const char* tex_name, int progress_length, bool tile, 
+						u32 color = 0xFFFFFFFF);
+	void SetBackgroundTexture(const char* tex_name, int left_offset, int up_offset);
+
 
 	void SetRange(s16 iMin, s16 iMax) {m_iMinPos = iMin;  m_iMaxPos = iMax;
 						UpdateProgressBar();}
@@ -31,7 +36,7 @@ public:
 	s16 GetScrollPos() {return m_iProgressPos;}
 
 	//базовые размеры дл€ кнопок
-	enum {PROGRESSBAR_WIDTH = 32, PROGRESSBAR_HEIGHT = 32};
+	//enum {PROGRESSBAR_WIDTH = 32, PROGRESSBAR_HEIGHT = 32};
 
 
 	//передвинуть каретку, если возможно
@@ -59,11 +64,21 @@ protected:
 	//текущий состо€ние полосы в пиксел€х
 	int m_iCurrentLength;
 
-
 	///////////////////////////////////////	
 	//√рафический интрефейс дл€ рисовани€
 	///////////////////////////////////////
+	//полоса прогресса
 	CUIStaticItem m_UIStaticItem;
+	//вывод при помощи тайлов, иначе вс€ текстура - показывает 100% прогресса
+	bool m_bProgressTile;
+	int m_iProgressLength;
+	
+	//подложка
+	CUIStaticItem m_UIBackgroundItem;
+
+	bool m_bBackgroundPresent;
+	int m_iBackgroundLeftOffset;
+	int m_iBackgroundUpOffset;
 };
 
 

@@ -25,6 +25,11 @@ public:
 	void			Render			(const ref_shader& sh=ref_shader(0));
 	void			Render			(float angle, const ref_shader& sh=ref_shader(0));
 	
+	void			Render			(float x1, float y1, float x2, float y2, 
+									 float x3, float y3, float x4, float y4, 
+										Shader* sh=0);
+
+
 	IC void			SetTile			(int tile_x, int tile_y, int rem_x, int rem_y){iTileX=tile_x;iTileY=tile_y;iRemX=rem_x;iRemY=rem_y;}
 	IC void			SetPos			(int left, int top)			{iPos.set(left,top);}
 	IC void			SetPosX			(int left)					{iPos.x = left;}

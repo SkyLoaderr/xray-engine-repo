@@ -23,6 +23,8 @@ public:
 	//работа с дочерними и родительскими окнами
 	void AttachChild(CUIWindow* pChild);
 	void DetachChild(CUIWindow* pChild);
+	void DetachAll();
+	int GetChildNum() {return m_ChildWndList.size();} 
 
 	void SetParent(CUIWindow* pNewParent) {m_pParentWnd = pNewParent;}
 	CUIWindow* GetParent() {return m_pParentWnd;}
@@ -45,13 +47,20 @@ public:
 	//работа с внешними сообщениями (мышь, клавиатура, другие окна)
 
 	//реакция на мышь
-	typedef enum{LBUTTON_DOWN, RBUTTON_DOWN, LBUTTON_UP, RBUTTON_UP, MOUSE_MOVE} E_MOUSEACTION;
+	typedef enum{LBUTTON_DOWN, RBUTTON_DOWN, LBUTTON_UP, RBUTTON_UP, MOUSE_MOVE,
+				 LBUTTON_DB_CLICK} E_MOUSEACTION;
 
 	virtual void OnMouse(int x, int y, E_MOUSEACTION mouse_action);
 
 	//захватить/освободить мышь окном
 	//сообщение посылается дочерним окном родительскому
-	void SetCapture(CUIWindow* pChildWindow, bool capture_status);
+	virtual void SetCapture(CUIWindow* pChildWindow, bool capture_status);
+
+
+	//реакция на клавиатуру
+	typedef enum{KEY_PRESSED, KEY_RELEASED} E_KEYBOARDACTION;
+	virtual bool OnKeyboard(int dik, E_KEYBOARDACTION keyboard_action);
+	virtual void SetKeyboardCapture(CUIWindow* pChildWindow, bool capture_status);
 
 	
 	//список перечисление, на которые должна быть предусмотрена реакция
@@ -116,7 +125,8 @@ public:
 
 	//временно!!!!
 	void SetFont(CGameFont* pFont) {m_pFont = pFont;}
-	CGameFont* GetFont() {if(m_pParentWnd== NULL)	
+	CGameFont* GetFont() {if(m_pFont) return m_pFont;
+							if(m_pParentWnd== NULL)	
 								return  m_pFont;
 							else
 								return  m_pParentWnd->GetFont();}
@@ -134,6 +144,8 @@ protected:
 
 	//дочернее окно которое, захватило ввод мыши
 	CUIWindow* m_pMouseCapturer;
+	//дочернее окно которое, захватило ввод клавиатуры
+	CUIWindow* m_pKeyboardCapturer;
 
 	//положение и размер окна, задается 
 	//относительно родительского окна
@@ -150,5 +162,9 @@ protected:
 	//временно!!!!
 	CGameFont* m_pFont;
 
+
+	//время прошлого клика мышки
+	//для определения DoubleClick
+	u32 m_dwLastClickTime;
 
 };

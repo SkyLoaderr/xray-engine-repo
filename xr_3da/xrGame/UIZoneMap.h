@@ -7,6 +7,8 @@
 
 class CUIZoneMap
 {
+	CUIStaticItem	landscape;
+
 	CUIStaticItem	back;
 	CUIStaticItem	compass;
 	CUIDynamicItem	entity;
@@ -15,6 +17,13 @@ class CUIZoneMap
 	float			heading;
 	Ivector2		map_center;
 	int				map_radius;
+
+	float			m_fScale;
+	
+	float landscape_x1, landscape_y1;
+	float landscape_x2, landscape_y2;
+	float landscape_x3, landscape_y3;
+	float landscape_x4, landscape_y4;
 
 	void			EntityOut		(float diff, u32 color, const Ivector2& pt);
 	void			ConvertToLocal	(const Fmatrix& LM, const Fvector& src, Ivector2& dest);
@@ -26,6 +35,12 @@ public:
 	void			Init			();
 
 	void			UpdateRadar		(CEntity* Actor, CTeam& Team);
+
+	void			SetScale(float scale) {m_fScale = scale;}
+	float			GetScale() {return m_fScale;}
+
+	bool			ZoomIn();
+	bool			ZoomOut();
 };
 
 #endif //__XR_UIZONEMAP_H__

@@ -23,153 +23,7 @@ CUI::CUI(CHUDManager* p)
 
 #ifdef UI_INTERFACE_ON
 
-	UIMainWindow.Init();
-
-/*	UIMainWindow.Init("ui\\ui_frame", 0,0, Device.dwWidth, Device.dwHeight);
-
-	 
-	//MESSAGE BOX
-	UIMainWindow.AttachChild(&UIMessageBox);
-	UIMessageBox.Init("hello world", "hello", 
-					CUIMessageBox::MESSAGEBOX_OK,
-					"ui\\ui_frame", 10,380, 400,360);		
-	
-
-	UIMainWindow.AttachChild(&UIMessageBox1);
-	UIMessageBox1.Init("hello world", "hello", 
-					CUIMessageBox::MESSAGEBOX_OK,
-					"ui\\ui_frame", 10,10, 400,360);		
-
-
-	UIMainWindow.AttachChild(&UIMessageBox2);
-	UIMessageBox2.Init("hello world", "hello", 
-					CUIMessageBox::MESSAGEBOX_OK,
-					"ui\\ui_frame", 600,10, 400,360);		
-
-
-	UIMessageBox.AttachChild(&UIDragDropList);
-	UIDragDropList.Init("ui\\ui_frame", 10,10, 300,300);
-	UIDragDropList.InitGrid(5,6);
-	
-	UIMessageBox1.AttachChild(&UIDragDropList1);
-	UIDragDropList1.Init("ui\\ui_frame", 10,10, 300,300);
-	UIDragDropList1.InitGrid(5,6);
-
-	UIMessageBox2.AttachChild(&UIDragDropList2);
-	UIDragDropList2.Init("ui\\ui_frame", 10,10, 300,300);
-	UIDragDropList2.InitGrid(5,6);
-
-	
-
-	UIDragDropItem.Init("ui\\ui_button_01", 10,10, 150,50);
-	UIDragDropItem.SetGridHeight(1);
-	UIDragDropItem.SetGridWidth(3);
-	UIDragDropList1.AttachChild(&UIDragDropItem);
-	
-
-	UIDragDropItem1.Init("ui\\ui_button_02", 10,10, 150,50);
-	UIDragDropItem1.SetGridHeight(1);
-	UIDragDropItem1.SetGridWidth(3);
-	UIDragDropList2.AttachChild(&UIDragDropItem1);
-
-
-	UIDragDropItem2.SetGridHeight(1);
-	UIDragDropItem2.SetGridWidth(3);
-	UIDragDropItem2.Init("ui\\ui_button_02", 10,10, 150,50);
-	UIDragDropList2.AttachChild(&UIDragDropItem2);
-
-
-	UIDragDropItem3.SetGridHeight(1);
-	UIDragDropItem3.SetGridWidth(3);
-	UIDragDropItem3.Init("ui\\ui_button_03", 10,10, 150,50);
-	UIDragDropList2.AttachChild(&UIDragDropItem3);
-	
-
-	UIDragDropItem4.SetGridHeight(1);
-	UIDragDropItem4.SetGridWidth(3);
-	UIDragDropItem4.Init("ui\\ui_button_01", 10,10, 150,50);
-	UIDragDropList2.AttachChild(&UIDragDropItem4);
-	
-
-	UIDragDropItem5.Init("ui\\ui_button_02", 10,10, 150,50);
-	UIDragDropItem5.SetGridHeight(1);
-	UIDragDropItem5.SetGridWidth(3);
-	UIDragDropList2.AttachChild(&UIDragDropItem5);
-
-
-	UIDragDropItem6.Init("ui\\hud_health_back", 10,10, 150,50);
-	UIDragDropItem6.SetGridHeight(2);
-	UIDragDropItem6.SetGridWidth(3);
-	UIDragDropList1.AttachChild(&UIDragDropItem6);
-
-	
-
-
-
-	//UIDragDropList1.AttachChild(&UIDragDropItem1);
-	//UIDragDropItem1.Init("ui\\ui_frame_back", 10,10, 100,100);
-
-
-/*	//STATIC
-	UIMainWindow.AttachChild(&UIStatic);
-	UIStatic.Init("ui\\ui_frame_back", 10,10, 100,100);*/
-
-/*	//PROGRESS BAR
-	UIMainWindow.AttachChild(&UIProgressBar);
-	UIProgressBar.Init(333,60, 600, true);
-	UIProgressBar.SetRange(0, 10);
-	UIProgressBar.SetProgressPos(5);*/
-	
-
-/*	UIButton1.Init("ui\\ui_button_01", 200,475,150,50);
-	UIButton2.Init("ui\\ui_button_02", 360,475,150,50);
-	UIButton3.Init("ui\\ui_button_03", 520,475,150,50);
-
-	UIButton1.SetText("button1");
-	UIButton2.SetText("button2");
-	UIButton3.SetText("button3");
-
-	UIMainWindow.AttachChild(&UIButton1);
-	UIMainWindow.AttachChild(&UIButton2);
-	UIMainWindow.AttachChild(&UIButton3);
-/**/
-
-/*	//SCROLLBAR
-	UIMainWindow.AttachChild(&UIScrollBar);
-	UIScrollBar.Init(10,10,350,true);
-	UIScrollBar.SetRange(0, 10);
-	UIScrollBar.SetPageSize(2);
-	UIScrollBar.SetScrollPos(0);*/
-
-
-//UIButton1.Init("ui\\hud_health_back", 10,10,128,128);
-//	UIButton2.Init(10,210,128,128);
-
-//	UIMainWindow.AttachChild(&UIButton1);
-//	UIMainWindow.AttachChild(&UIButton2);
-
-/*	UIMainWindow.AttachChild(&UIRadioGroup);
-	UIRadioGroup.Init(100,10, 300,300);
-
-	UIRadioGroup.AttachChild(&UIRadioButton1);
-	UIRadioGroup.AttachChild(&UIRadioButton2);
-
-	UIRadioButton1.Init(10,10,128,128);
-	UIRadioButton2.Init(10,110,128,128);
-*/
-/*	UIMainWindow.AttachChild(&UIScrollBar);
-	UIScrollBar.Init(10,10,250,true);*/
-
-//	CGameFont *pGameFont = m_Parent->pFontMedium;
-	//UIButton1.SetFont(m_Parent->pFontMedium);
-	//UIButton2.SetFont(m_Parent->pFontSmall);
-
-	
-
-
-	//show the cursor
-	UICursor.SetPos(Device.dwWidth/2, Device.dwHeight/2);
-	UICursor.Show();
+	UIMainIngameWnd.Init();
 
 #endif
 
@@ -177,6 +31,8 @@ CUI::CUI(CHUDManager* p)
 	pUIGame			= 0;
 
 	msgs_offs		= (float)m_Parent->ClientToScreenY(MSGS_OFFS,alLeft|alBottom);
+
+	m_bShowIndicators = true;
 }
 //--------------------------------------------------------------------
 
@@ -216,6 +72,12 @@ void CUI::OnFrame()
 {
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor){
+		
+		
+		//all ingame information now in UIMainIngameWnd.Update();
+		/*
+		
+		
 		// radar
 		UIZoneMap.UpdateRadar(m_Actor,Level().Teams[m_Actor->id_Team]);
 		// viewport
@@ -231,12 +93,17 @@ void CUI::OnFrame()
 		if(l_pA && (l_pA->m_inventory.m_activeSlot < l_pA->m_inventory.m_slots.size())) {
 			UIWeapon.Out(dynamic_cast<CWeapon*>(l_pA->m_inventory.m_slots[l_pA->m_inventory.m_activeSlot].m_pIItem));
 		} else UIWeapon.Out(NULL);
+		
+		*/
 
 
 #ifdef UI_INTERFACE_ON
 		//update windows
-		UIMainWindow.SetFont(m_Parent->pFontMedium);
-		UIMainWindow.Update();
+		if(m_bShowIndicators)
+		{
+			UIMainIngameWnd.SetFont(m_Parent->pFontMedium);
+			UIMainIngameWnd.Update();
+		}
 #endif
 			
 
@@ -269,15 +136,17 @@ bool CUI::Render()
 {
 	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
 	if (m_Actor){
-		UIZoneMap.Render();
-		UIWeapon.Render();
-		UIHealth.Render();
 
-		
 #ifdef UI_INTERFACE_ON
 		//Draw main window and its children
-		UIMainWindow.Draw();
+		if(m_bShowIndicators)
+			UIMainIngameWnd.Draw();
 #endif
+	//	UIZoneMap.Render();
+	//	UIWeapon.Render();
+	//	UIHealth.Render();
+
+		
 
 		//render cursor only when it visible
 		if(UICursor.IsVisible())
@@ -285,19 +154,25 @@ bool CUI::Render()
 	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->Render	();
+
+
 	return false;
 }
 //--------------------------------------------------------------------
 bool CUI::OnKeyboardPress(int dik)
 {
-#ifdef UI_INTERFACE_ON
+/*#ifdef UI_INTERFACE_ON
 	if(dik==MOUSE_1)
 	{
 		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
 			CUIWindow::LBUTTON_DOWN);
 		return true;
 	}
-#endif
+#endif*/
+	if(UIMainIngameWnd.OnKeyboardPress(dik))
+	{
+		return true;
+	}
 
 	if (pUIGame && pUIGame->IR_OnKeyboardPress(dik)) 
 	{
@@ -309,14 +184,14 @@ bool CUI::OnKeyboardPress(int dik)
 
 bool CUI::IR_OnKeyboardRelease(int dik)
 {
-#ifdef UI_INTERFACE_ON
+/*#ifdef UI_INTERFACE_ON
 	if(dik==MOUSE_1)
 	{
 		UIMainWindow.OnMouse(UICursor.GetPos().x,UICursor.GetPos().y,
 			CUIWindow::LBUTTON_UP);
 		return true;
 	}
-#endif
+#endif*/
 
 	if (pUIGame&&pUIGame->IR_OnKeyboardRelease(dik)) 
 	{
@@ -328,9 +203,15 @@ bool CUI::IR_OnKeyboardRelease(int dik)
 
 bool CUI::IR_OnMouseMove(int dx,int dy)
 {
-	if (UICursor.IsVisible())
+/*	if (UICursor.IsVisible())
 	{ 
 		UICursor.MoveBy(dx, dy);
+
+
+		if (pUIGame&&pUIGame->IR_OnMouseMove(UICursor.GetPos().x, UICursor.GetPos().y)) 
+		{
+			return true;
+		}
 
 #ifdef UI_INTERFACE_ON
 		UIMainWindow.OnMouse(UICursor.GetPos().x,
@@ -338,7 +219,14 @@ bool CUI::IR_OnMouseMove(int dx,int dy)
 							 CUIWindow::MOUSE_MOVE);
 #endif
 		return true;
+	}*/
+
+
+	if (pUIGame&&pUIGame->IR_OnMouseMove(dx,dy)) 
+	{
+		return true;
 	}
+	
 	return false;
 }
 

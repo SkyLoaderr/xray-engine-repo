@@ -84,3 +84,33 @@ void CUICustomItem::Render(FVF::TL*& Pointer, const Ivector2& pos, u32 color, fl
 	Pointer->set	(C.x-_sin1*sz,	C.y-_cos1*sz,	color, RBt.x, LTt.y); Pointer++;
 }
 //--------------------------------------------------------------------
+//render in a rect a specified part of texture
+void CUICustomItem::RenderTexPart(FVF::TL*& Pointer, const Ivector2& pos, u32 color,  
+													float x1, float y1,  
+													float x2, float y2,
+													float x3, float y3,
+													float x4, float y4)
+{
+	CTexture* T		= RCache.get_ActiveTexture(0);
+	Ivector2		ts;
+	Fvector2		hp;
+	ts.set			((int)T->get_Width(),(int)T->get_Height());
+	hp.set			(0.5f/float(ts.x),0.5f/float(ts.y));
+	if (!(uFlags&flValidRect))	SetRect		(0,0,ts.x,ts.y);
+
+	Fvector2 LTp,RBp;
+	Fvector2 LTt,RBt, LBt, RTt;
+	float sc		= HUD().GetScale();
+	LTp.set			(pos.x+iVisRect.x1*sc,pos.y+iVisRect.y1*sc);
+	RBp.set			(pos.x+iVisRect.x2*sc,pos.y+iVisRect.y2*sc);
+
+	LBt.set(x2 + hp.x, y2 + hp.y);
+	LTt.set(x1 + hp.x, y1 + hp.y);
+	RBt.set(x3 + hp.x, y3 + hp.y);
+	RTt.set(x4 + hp.x, y4 + hp.y);
+
+	Pointer->set	(LTp.x,	RBp.y,	color, LBt.x, LBt.y); Pointer++;
+	Pointer->set	(LTp.x,	LTp.y,	color, LTt.x, LTt.y); Pointer++;
+	Pointer->set	(RBp.x,	RBp.y,	color, RBt.x, RBt.y); Pointer++;
+	Pointer->set	(RBp.x,	LTp.y,	color, RTt.x, RTt.y); Pointer++;
+}
