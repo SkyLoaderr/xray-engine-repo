@@ -437,7 +437,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		}
 		if (m_current_legs!=M_legs){
 			float pos					= 0.f;
-			if ((mstate_real&mcAnyMove)&&(mstate_old&mcAnyMove)&&m_current_legs_blend)
+			if ((mstate_real&mcAnyMove)&&(mstate_old&mcAnyMove)&&m_current_legs_blend && !fis_zero(m_current_legs_blend->timeTotal))
 				pos						= fmod(m_current_legs_blend->timeCurrent,m_current_legs_blend->timeTotal)/m_current_legs_blend->timeTotal;
 			m_current_legs_blend		= smart_cast<CSkeletonAnimated*>(Visual())->PlayCycle(M_legs,TRUE,legs_play_callback,this);
 			if ((!(mstate_old&mcAnyMove))&&(mstate_real&mcAnyMove))
