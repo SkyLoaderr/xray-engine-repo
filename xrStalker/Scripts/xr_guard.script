@@ -90,6 +90,8 @@ function action_guard_activity:reset_scheme()
 	-- ‘лажок, включить если прибыли в путь, состо€щий из одной точки
 	self.arrived_to_single_point_path = false
 
+	self.loudspeaker_enabled = false
+
 	-- “очка, в которую смотрели в прошлый раз. ≈е запоминаем дл€ того, чтобы не делать паузу между анимаци€ми,
 	-- если собираемс€ смотреть в ту же самую точку, не поворачива€сь никуда...
 	self.last_look_index = nil
@@ -139,6 +141,12 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 		self.a.running = true
 	end
 
+	if ptr:flag(index, 27) then
+		self.loudspeaker_enabled = true
+	else
+		self.loudspeaker_enabled = false
+	end	
+
 	if ptr:flag(index, 29) then
 		local phrase = math.random(1, 3)
 		while phrase == self.prev_phrase do
@@ -164,7 +172,7 @@ function action_guard_activity:waypoint_callback(obj, action_type, index)
 	end
 
 	local flagnum = nil
-	for f = 2, 28 do -- точка 0 зарезервирована дл€ начала пути, 1 - дл€ задани€ пути, состо€щего из одной точки
+	for f = 2, 20 do -- точка 0 зарезервирована дл€ начала пути, 1 - дл€ задани€ пути, состо€щего из одной точки
 	-- 30 и 31 зарезервированы дл€ состо€ний ходьбы и бега
 	-- 29 зарезервирована дл€ звука
 		if ptr:flag(index, f) then
@@ -268,6 +276,30 @@ function action_guard_activity:execute()
 				self.object:add_animation("chasovoy_3", true)
 			elseif animate == 10 then
 				self.object:add_animation("chasovoy_4", true)
+			end
+
+			if self.loudspeaker_enabled then
+				if not self.a.loudspeaker_name then
+					abort("object '" .. self.object:name() ..
+						"': waypoint flag 27 set, but loudspeaker is not specified in customdata")
+				end
+				local lsp = level.object(self.a.loudspeaker_name)
+				if lsp then
+					local phrase = math.random(1, 3)
+					while phrase == self.prev_lsp_phrase do
+						phrase = math.random(1, 3)
+					end
+					if phrase == 1 then
+						snd = sound_object("\script_replics\\megafon\\music\\megafon_music_5")
+					elseif phrase == 2 then
+						snd = sound_object("\script_replics\\bandit_1\\alarm\\bandit_alarm_1")
+					else
+						snd = sound_object("\script_replics\\megafon\\music\\megafon_music_6")
+					end
+					self.prev_lsp_phrase = phrase
+					snd:play_at_pos(lsp, lsp:position())
+					self.loudspeaker_enabled = false
+				end
 			end
 		end
 		self.state = self.state_anim_playing
@@ -425,15 +457,22 @@ end
 -- 0 - зарезервирован
 -- 1 - пусть состоит из одной точки (по нему нельз€ ходить), ставитс€ в единственную точку, куда прийдет охранник
 --
--- 2-24 - флажки дл€ пометки общих точек
+-- 2-19 - флажки дл€ пометки общих точек
 --
--- 24 - включить набор анимаций 1
--- 25 - включить набор анимаций 2
--- 26 - включить набор анимаций 3
 --
--- 27 - включить набор звуков 1
--- 28 - включить набор звуков 2
--- 29 - включить набор звуков 3
+--
+-- 20 - включить набор анимаций 1
+-- 21 - включить набор анимаций 2
+-- 22 - включить набор анимаций 3
+--
+-- 23 - включить набор звуков 1
+-- 24 - включить набор звуков 2
+-- 25 - включить набор звуков 3
+--
+-- 26 - управл€ет прожектором
+-- 27 - говорит в промкоговоритель
+--
+-- 29 - [fixme] разговор сумашедшего сталкера
 --
 -- 30 - начина€ с этой точки и дальше охранник идет спокойно
 -- 31 - начина€ с этой точки и дальше охранник побежит
