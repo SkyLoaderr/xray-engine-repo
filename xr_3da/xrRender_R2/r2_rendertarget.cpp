@@ -122,7 +122,7 @@ void	CRenderTarget::OnDeviceCreate	()
 	s_occq.create					(b_occq,		"r2\\occq");
 
 	// DIRECT (spot)
-	if (RImplementation.b_HW_smap)
+	if (RImplementation.o.HW_smap)
 	{
 		u32	w=SMAP_size, h=SMAP_size;
 
