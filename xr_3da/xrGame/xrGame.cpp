@@ -61,9 +61,21 @@ class CCC_Path : public CConsoleCommand {
 public:
 	CCC_Path(LPCSTR N) : CConsoleCommand(N)  { };
 	virtual void Execute(LPCSTR args) {
-		int id1, id2;
+		int id1=-1, id2=-1;
 		sscanf(args ,"%d %d",&id1,&id2);
-		Level().AI.vfFindMinimalPath(id1,id2,Level().AI.m_tpaNodes);
+		if (!Level().AI.GraphVFS())
+			Msg("! there is no graph!");
+		else
+			if ((id1 != -1) && (id2 != -1))
+				if (max(id1,id2) > Level().AI.GraphHeader().dwVertexCount - 1)
+					Msg("! there are only %d vertexes!",Level().AI.GraphHeader().dwVertexCount);
+				else
+					if (min(id1,id2) < 0)
+						Msg("! invalid vertex number (%d)!",min(id1,id2));
+					else
+						Level().AI.vfFindMinimalPath(id1,id2,Level().AI.m_tpaNodes);
+			else
+				Msg("! not enough parameters!");
 	}
 };
 //-----------------------------------------------------------------------
