@@ -274,7 +274,8 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("eHitTypeTelepatic",		int(ALife::eHitTypeTelepatic)),
 				value("eHitTypeChemicalBurn",	int(ALife::eHitTypeChemicalBurn)),
 				value("eHitTypeExplosion",		int(ALife::eHitTypeExplosion)),
-				value("eHitTypeFireWound",		int(ALife::eHitTypeFireWound))
+				value("eHitTypeFireWound",		int(ALife::eHitTypeFireWound)),
+				value("eHitTypeFireDummy",		int(ALife::eHitTypeMax))
 			]
 			.def_readwrite("Power",				&CLuaHit::m_fPower)
 			.def_readwrite("Direction",			&CLuaHit::m_tDirection)
@@ -336,13 +337,13 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("eStalkerRankNovice",		int(ALife::eStalkerRankNovice)),
 				value("eStalkerRankExperienced",int(ALife::eStalkerRankExperienced)),
 				value("eStalkerRankVeteran",	int(ALife::eStalkerRankVeteran)),
-				value("eStalkerRankMaster",		int(ALife::eStalkerRankMaster))
+				value("eStalkerRankMaster",		int(ALife::eStalkerRankMaster)),
+				value("eStalkerRankDummy",		int(ALife::eStalkerRankDummy))
 			]
 			.enum_("EBodyState")
 			[
 				value("eBodyStateCrouch",		int(StalkerSpace::eBodyStateCrouch)),
-				value("eBodyStateStand",		int(StalkerSpace::eBodyStateStand)),
-				value("eBodyStateStandDamaged",	int(StalkerSpace::eBodyStateStandDamaged))
+				value("eBodyStateStand",		int(StalkerSpace::eBodyStateStand))
 			]
 			.enum_("EMovementType")
 			[
@@ -379,7 +380,8 @@ void Script::vfExportToLua(CLuaVirtualMachine *tpLuaVirtualMachine)
 				value("eMentalStateFree",		int(StalkerSpace::eMentalStateFree)),
 				value("eMentalStateDanger",		int(StalkerSpace::eMentalStateDanger)),
 				value("eMentalStateAsleep",		int(StalkerSpace::eMentalStateAsleep)),
-				value("eMentalStateZombied",	int(StalkerSpace::eMentalStateZombied))
+				value("eMentalStateZombied",	int(StalkerSpace::eMentalStateZombied)),
+				value("eMentalStateDummy",		int(StalkerSpace::eMentalStateDummy))
 			]
 			.def("UseObject",					&CLuaGameObject::UseObject)
 			.def("GetRank",						&CLuaGameObject::GetRank)

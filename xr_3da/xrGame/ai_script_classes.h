@@ -40,21 +40,21 @@
 			return;\
 		}
 
-#define CAST_OBJECT1(Z,A,B,E)\
+#define CAST_OBJECT1(Z,A,B,D,E)\
 		CAST_OBJECT(Z,A,B)\
-			return		(E);\
+			return		((D)(E));\
 		}
 
-#define GET_MEMBER(C)\
-		return			(l_tpEntity->C);\
+#define GET_MEMBER(C,D)\
+		return			((D)(l_tpEntity->C));\
 	}
 
-#define CALL_FUNCTION10(C)\
-		return			(l_tpEntity->C());\
+#define CALL_FUNCTION10(C,D)\
+		return			((D)(l_tpEntity->C()));\
 	}
 
-#define CALL_FUNCTION11(C,F)\
-		return			(l_tpEntity->C((F)(f)));\
+#define CALL_FUNCTION11(C,D,F)\
+		return			((D)(l_tpEntity->C((F)(f))));\
 	}
 
 #define CALL_FUNCTION01(C,F)\
@@ -75,8 +75,8 @@
 
 #define BIND_MEMBER(Z,A,B,C,D,E) \
 	DECLARE_FUNCTION10	(A,D)\
-	CAST_OBJECT1		(Z,A,B,E)\
-	GET_MEMBER			(C)
+	CAST_OBJECT1		(Z,A,B,D,E)\
+	GET_MEMBER			(C,D)
 
 #define BIND_FUNCTION00(Z,A,B,C) \
 	DECLARE_FUNCTION10	(A,void)\
@@ -85,13 +85,13 @@
 
 #define BIND_FUNCTION10(Z,A,B,C,D,E) \
 	DECLARE_FUNCTION10	(A,D)\
-	CAST_OBJECT1		(Z,A,B,E)\
-	CALL_FUNCTION10		(C)
+	CAST_OBJECT1		(Z,A,B,D,E)\
+	CALL_FUNCTION10		(C,D)
 
 #define BIND_FUNCTION11(Z,A,B,C,D,E,F,I) \
 	DECLARE_FUNCTION11	(A,D,F)\
-	CAST_OBJECT1		(Z,A,B,E)\
-	CALL_FUNCTION11		(C,I)
+	CAST_OBJECT1		(Z,A,B,D,E)\
+	CALL_FUNCTION11		(C,D,I)
 
 #define BIND_FUNCTION01(Z,A,B,C,F,I) \
 	DECLARE_FUNCTION11	(A,void,F)\
