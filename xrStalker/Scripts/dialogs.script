@@ -44,6 +44,7 @@ end
 --' Продажа медикита
 function sell_medikit (helper, player)
     printf ("sell_medikit")
+    if player:money () < 300 then return end
     helper:transfer_item (helper:object ("medkit"), player)
     player:transfer_money (300, helper)
 end
@@ -58,7 +59,7 @@ function have_extra_weapon (player, helper)
         local obj = helper:object (a)
         if isWeapon (obj) == true then wpn = wpn + 1 end
     end
-    if wpn > 1 then return true end
+    if wpn >= 1 then return true end
     return false    
 end
 -------------------
@@ -89,15 +90,19 @@ end
 -------------------
 function disable_helper (helper, player)
     printf ("disable_helper")
-    helper:disable_talk ()
+    helper:stop_talk ()
     xr_meet.override_meet (helper, false)
     xr_motivator.storage[helper:id ()].sos.npc = nil
 end
 -------------------
 function disable_helper_2 (player, helper)
     printf ("disable_helper")
-    helper:disable_talk ()
+    helper:stop_talk ()
     xr_meet.override_meet (helper, false)
     xr_motivator.storage[helper:id ()].sos.npc = nil
+end
+-------------------
+function dialogs.trade_help (helper, player)
+    helper:switch_to_trade ()
 end
 ------------------------------------------------------------------------------------

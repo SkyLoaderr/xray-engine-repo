@@ -266,7 +266,6 @@ function action_help:execute ()
     if self:work_with_kill () == true then return end
     
     local dist = distance_between (self.object, self.a.npc)
-
     
     --обрабатываем ожидание диалога
     if distance_between (self.object, self.a.npc) < 2 then
@@ -322,6 +321,7 @@ end
 function action_help:finalize ()
     action_base.finalize (self)
     self.scream = false
+    self.object:clear_animations ()
 end    
 -----------------------
 function action_help:work_with_kill ()
@@ -445,6 +445,7 @@ end
 function action_follow_npc:finalize ()
     action_base.finalize (self)
     self.object:set_start_dialog ("hello_dialog")
+    self.object:clear_animations ()
 end
 -----------------------
 function action_follow_npc:calc_pos ()
