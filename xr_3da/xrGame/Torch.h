@@ -52,6 +52,7 @@ public:
 			void	SwitchNightVision		  ();
 			void	SwitchNightVision		  (bool light_on);
 			void	UpdateSwitchNightVision   ();
+			float	NightVisionBattery		  ();
 protected:
 	bool					m_bNightVisionEnabled;
 	bool					m_bNightVisionOn;
@@ -61,6 +62,11 @@ protected:
 	HUD_SOUND				m_NightVisionOffSnd;
 	HUD_SOUND				m_NightVisionIdleSnd;
 	CUIStaticItem			m_NightVisionTexture;
+
+	float					m_NightVisionRechargeTime;
+	float					m_NightVisionRechargeTimeMin;
+	float					m_NightVisionDischargeTime;
+	float					m_NightVisionChargeTime;
 
 public:
 

@@ -728,7 +728,7 @@ void CActor::UpdateCL()
 
 	if(pWeapon)
 	{
-		if(pWeapon->IsZoomed())
+		if(pWeapon->IsZoomed()/* && !pWeapon->IsRotatingToZoom()*/)
 		{
 			float full_fire_disp = pWeapon->GetFireDispersion(false);
 

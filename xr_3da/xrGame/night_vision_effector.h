@@ -34,6 +34,7 @@ public:
 	virtual	void	Load		(LPCSTR);
 	virtual	bool	Start		();
 	virtual	bool	Stop		();
+	virtual	bool	IsActive	();
 private:
 	SPPInfo state;
 	float	m_attack;

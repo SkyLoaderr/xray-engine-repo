@@ -25,6 +25,11 @@ CTorch::CTorch(void)
 	lanim						= 0;
 	time2hide					= 0;
 	fBrightness					= 1.f;
+
+	m_NightVisionRechargeTime		= 6.f;
+	m_NightVisionRechargeTimeMin	= 2.f;
+	m_NightVisionDischargeTime		= 10.f;
+	m_NightVisionChargeTime			= 0.f;
 }
 
 CTorch::~CTorch(void) 
@@ -63,6 +68,11 @@ void CTorch::Load(LPCSTR section)
 			HUD_SOUND::LoadSound(section,"snd_night_vision_off"	, m_NightVisionOffSnd	, TRUE, SOUND_TYPE_ITEM_USING);
 		if(pSettings->line_exist(section, "snd_night_vision_idle"))
 			HUD_SOUND::LoadSound(section,"snd_night_vision_idle", m_NightVisionIdleSnd	, TRUE, SOUND_TYPE_ITEM_USING);
+
+		m_NightVisionRechargeTime		= pSettings->r_float(section,"night_vision_recharge_time");
+		m_NightVisionRechargeTimeMin	= pSettings->r_float(section,"night_vision_recharge_time_min");
+		m_NightVisionDischargeTime		= pSettings->r_float(section,"night_vision_discharge_time");
+		m_NightVisionChargeTime			= m_NightVisionRechargeTime;
 	}
 }
 
@@ -74,7 +84,14 @@ void CTorch::SwitchNightVision()
 void CTorch::SwitchNightVision(bool vision_on)
 {
 	if(!m_bNightVisionEnabled) return;
-	m_bNightVisionOn = vision_on;
+	
+	if(vision_on && m_NightVisionChargeTime > m_NightVisionRechargeTimeMin)
+	{
+		m_NightVisionChargeTime = m_NightVisionDischargeTime*m_NightVisionChargeTime/m_NightVisionRechargeTime;
+		m_bNightVisionOn = true;
+	}
+	else
+		m_bNightVisionOn = false;
 
 	if(m_bNightVisionOn)
 	{
@@ -107,11 +124,32 @@ void CTorch::SwitchNightVision(bool vision_on)
 
 void CTorch::UpdateSwitchNightVision   ()
 {
+	if(!m_bNightVisionEnabled) return;
+
+
 	if(m_bNightVisionOn)
+	{
+		m_NightVisionChargeTime			-= Device.fTimeDelta;
+
+		if(m_NightVisionChargeTime<0.f)
+			SwitchNightVision(false);
+	}
+	else
+	{
+		m_NightVisionChargeTime			+= Device.fTimeDelta;
+		clamp(m_NightVisionChargeTime, 0.f, m_NightVisionRechargeTime);
+	}
+
+	if(m_NightVisionEffector.IsActive())
 	{
 		if(m_NightVisionTexture.GetShader())
 			HUD().GetUI()->UIMainIngameWnd.AddStaticItem(&m_NightVisionTexture, 0,0, UI_BASE_WIDTH, UI_BASE_HEIGHT);
 	}
+}
+
+float  CTorch::NightVisionBattery ()
+{
+	return m_NightVisionChargeTime/m_NightVisionRechargeTime;
 }
 
 void CTorch::Switch()
@@ -209,6 +247,8 @@ void CTorch::OnH_B_Independent()
 	HUD_SOUND::StopSound(m_NightVisionOnSnd);
 	HUD_SOUND::StopSound(m_NightVisionOffSnd);
 	HUD_SOUND::StopSound(m_NightVisionIdleSnd);
+
+	m_NightVisionChargeTime = m_NightVisionRechargeTime;
 }
 
 void CTorch::UpdateCL	() 

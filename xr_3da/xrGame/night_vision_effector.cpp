@@ -140,3 +140,11 @@ bool CNightVisionEffector::Stop	()
 
 	return true;
 }
+
+bool CNightVisionEffector::IsActive	()
+{
+	if(Level().Cameras.GetEffector(EEffectorPPType(NIGHT_VISION_EFFECTOR_TYPE_ID)))
+		return true;
+	else
+		return false;
+}
