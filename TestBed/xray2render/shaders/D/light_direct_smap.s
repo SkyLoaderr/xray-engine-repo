@@ -53,7 +53,7 @@ p2f 	p_main	( v2p_in IN )
   
   // Transform position to light/shadow space
   half4 PLS		= mul		(light_xform,float4(_P.x,_P.y,_P.z,1));
-  half2	uv0		= float2	(PLS.x/PLS.w,PLS.y/PLS.w);
+  half2	uv0		= half2		(PLS.x/PLS.w,PLS.y/PLS.w);
   half  depth	= PLS.z;
   
   // 1. Sample shadowmap 
@@ -62,41 +62,41 @@ p2f 	p_main	( v2p_in IN )
   half3 sA;
   half4 one		= float4	(1,1,1,1);
  
-  s0			= tex2D		(s_shadowmap,uv0+float2(jitter[0].x,jitter[0].y));
-  s1			= tex2D		(s_shadowmap,uv0+float2(jitter[0].w,jitter[0].z));
-  s2			= tex2D		(s_shadowmap,uv0+float2(jitter[1].x,jitter[1].y));
-  s3			= tex2D		(s_shadowmap,uv0+float2(jitter[1].w,jitter[1].z));
+  s0			= tex2D		(s_shadowmap,uv0+half2(jitter[0].x,jitter[0].y));
+  s1			= tex2D		(s_shadowmap,uv0+half2(jitter[0].w,jitter[0].z));
+  s2			= tex2D		(s_shadowmap,uv0+half2(jitter[1].x,jitter[1].y));
+  s3			= tex2D		(s_shadowmap,uv0+half2(jitter[1].w,jitter[1].z));
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.x			= dot		(sC,one);
 
-  s0			= tex2D		(s_shadowmap,uv0+float2(jitter[2].x,jitter[2].y));
-  s1			= tex2D		(s_shadowmap,uv0+float2(jitter[2].w,jitter[2].z));
-  s2			= tex2D		(s_shadowmap,uv0+float2(jitter[3].x,jitter[3].y));
-  s3			= tex2D		(s_shadowmap,uv0+float2(jitter[3].w,jitter[3].z));
+  s0			= tex2D		(s_shadowmap,uv0+half2(jitter[2].x,jitter[2].y));
+  s1			= tex2D		(s_shadowmap,uv0+half2(jitter[2].w,jitter[2].z));
+  s2			= tex2D		(s_shadowmap,uv0+half2(jitter[3].x,jitter[3].y));
+  s3			= tex2D		(s_shadowmap,uv0+half2(jitter[3].w,jitter[3].z));
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.y			= dot		(sC,one);
 
-  s0			= tex2D		(s_shadowmap,uv0+float2(jitter[4].x,jitter[4].y));
-  s1			= tex2D		(s_shadowmap,uv0+float2(jitter[4].w,jitter[4].z));
-  s2			= tex2D		(s_shadowmap,uv0+float2(jitter[5].x,jitter[5].y));
-  s3			= tex2D		(s_shadowmap,uv0+float2(jitter[5].w,jitter[5].z));
+  s0			= tex2D		(s_shadowmap,uv0+half2(jitter[4].x,jitter[4].y));
+  s1			= tex2D		(s_shadowmap,uv0+half2(jitter[4].w,jitter[4].z));
+  s2			= tex2D		(s_shadowmap,uv0+half2(jitter[5].x,jitter[5].y));
+  s3			= tex2D		(s_shadowmap,uv0+half2(jitter[5].w,jitter[5].z));
   sC			= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
   sA.z			= dot		(sC,one);
   
   half	 shadow	= (sA.x + sA.y + sA.z)/12;
   
   // Normal, vector2eye, vector2light
-  float3 N		= float3	(_N.x,_N.y,_N.z);
-  float3 V 		= -normalize(float3(_P.x,_P.y,_P.z));
-  float3 L 		= -float3	(light_direction.x,light_direction.y,light_direction.z);
+  half3 N		= half3	(_N.x,_N.y,_N.z);
+  half3 V 		= -normalize(half3(_P.x,_P.y,_P.z));
+  half3 L 		= -half3	(light_direction.x,light_direction.y,light_direction.z);
 
   // Diffuse = (L • N)
-  float	l_D 	= shadow*saturate	(dot	(L, N));
+  half	l_D 	= shadow*saturate	(dot	(L, N));
 
   // Specular = (H • N)^m
-  float l_S 	= shadow*tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
+  half	l_S 	= shadow*tex1D		(s_power,	saturate(dot(normalize(L + V), N)));
   
   // Final color
-  OUT.C 		= light_color *		float4(l_D,l_D,l_D,l_S);
+  OUT.C 		= light_color *		half4(l_D,l_D,l_D,l_S);
   return OUT;
 }
