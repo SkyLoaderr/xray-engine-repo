@@ -191,21 +191,25 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	Fmatrix m_m0;
 	dBodyID m_body;
 
-	//dVector3 mean_w;
-	//dVector3 mean_v;
-	dVector3 previous_p;
-	dMatrix3 previous_r;
-	dVector3 previous_f;
-	dVector3 previous_t;
-	dReal previous_dev;
-	dReal previous_v;
-	UINT dis_count_f;
-	list<CPHObject*>::iterator m_ident;
+//dVector3 mean_w;
+//dVector3 mean_v;
+dVector3 previous_p;
+dMatrix3 previous_r;
+dVector3 previous_p1;
+dMatrix3 previous_r1;
+//dVector3 previous_f;
+//dVector3 previous_t;
+dReal previous_dev;
+dReal previous_v;
+UINT dis_count_f;
+UINT dis_count_f1;
+list<CPHObject*>::iterator m_ident;
 public:
 	CPHShell				()							{bActive=false;
-	dis_count_f=0;
-	//	ph_world->AddObject(this);
-	};
+														dis_count_f=0;
+														dis_count_f1=0;
+												
+																		};
 
 	virtual	void			add_Element				(CPhysicsElement* E)		  {
 		elements.push_back((CPHElement*)E);
