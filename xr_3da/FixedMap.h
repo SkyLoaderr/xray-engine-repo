@@ -6,8 +6,7 @@ template<class K, class T>
 class FixedMAP
 {
 	enum	{
-		SG_REALLOC_ADVANCE	= 64,
-		SG_REALLOC_ALIGN	= 64
+		SG_REALLOC_ADVANCE	= 64
 	};
 public:
 	struct TNode {
@@ -29,7 +28,7 @@ private:
 	{
 		u32	newLimit = limit + SG_REALLOC_ADVANCE;
 		VERIFY(newLimit%SG_REALLOC_ADVANCE == 0);
-		TNode*	newNodes = (TNode*) xr_malloc	(Size(newLimit),SG_REALLOC_ALIGN);
+		TNode*	newNodes = (TNode*) xr_malloc	(Size(newLimit));
 		VERIFY(newNodes);
 
 		ZeroMemory(newNodes, Size(newLimit));
