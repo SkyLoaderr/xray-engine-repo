@@ -338,6 +338,9 @@
 				RelativePath="shaders\D\light_direct.s">
 			</File>
 			<File
+				RelativePath="shaders\D\light_direct_smap.s">
+			</File>
+			<File
 				RelativePath="shaders\D\smap_direct.s">
 			</File>
 		</Filter>
