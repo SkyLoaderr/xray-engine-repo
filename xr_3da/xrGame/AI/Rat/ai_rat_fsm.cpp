@@ -20,7 +20,9 @@
 #define ATTACK_ANGLE					PI_DIV_6
 #define LOST_MEMORY_TIME				30000
 #define UNDER_FIRE_TIME					10000
-#define UNDER_FIRE_DISTACNE				12000
+#define UNDER_FIRE_DISTANCE				20.f
+#define RETREAT_TIME					10000
+#define RETREAT_DISTANCE				20.f
 
 void CAI_Rat::Die()
 {
@@ -34,7 +36,7 @@ void CAI_Rat::Die()
 	AI_Path.Direction(dir);
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 
-	//setEnabled	(false);
+	setEnabled	(false);
 	
 	if (m_bFiring) {
 		AI_Path.Calculate(this,vPosition,vPosition,m_fCurSpeed,.1f);
@@ -80,7 +82,7 @@ void CAI_Rat::AttackFire()
 	
 	SelectEnemy(Enemy);
 	
-	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatUnderFire));
+	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
@@ -121,7 +123,7 @@ void CAI_Rat::AttackRun()
 	
 	SelectEnemy(Enemy);
 
-	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatUnderFire));
+	ERatStates eState = ERatStates(dwfChooseAction(eCurrentState,eCurrentState,aiRatRetreat));
 	if (eState != eCurrentState)
 		GO_TO_NEW_STATE_THIS_UPDATE(eState);
 
@@ -225,7 +227,7 @@ void CAI_Rat::FreeHunting()
 		Fvector tTemp;
 		tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
 		tTemp.normalize_safe();
-		tTemp.mul(UNDER_FIRE_DISTACNE);
+		tTemp.mul(UNDER_FIRE_DISTANCE);
 		m_tSpawnPosition.add(vPosition,tTemp);
 		m_fGoalChangeTime = 0;
 		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatUnderFire);
@@ -280,9 +282,7 @@ void CAI_Rat::UnderFire()
 	SelectEnemy(Enemy);
 	
 	if (Enemy.Enemy) {
-		ERatStates eState = ERatStates(dwfChooseAction(aiRatAttackRun,aiRatAttackRun,aiRatUnderFire));
-		if (eState != eCurrentState)
-			GO_TO_NEW_STATE_THIS_UPDATE(eState);
+		GO_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
 	}
 	else {
 		if (m_tLastSound.dwTime >= m_dwLastUpdateTime) {
@@ -295,7 +295,7 @@ void CAI_Rat::UnderFire()
 			Fvector tTemp;
 			tTemp.setHP(r_torso_current.yaw,r_torso_current.pitch);
 			tTemp.normalize_safe();
-			tTemp.mul(UNDER_FIRE_DISTACNE);
+			tTemp.mul(UNDER_FIRE_DISTANCE);
 			m_tSpawnPosition.add(vPosition,tTemp);
 			m_fGoalChangeTime = 0;
 		}
@@ -306,6 +306,83 @@ void CAI_Rat::UnderFire()
 		}
 	}
 
+	m_fGoalChangeDelta		= 10.f;
+	m_tVarGoal.set			(10.0,0.0,20.0);
+	m_fASpeed				= .2f;
+	
+	bfCheckIfGoalChanged();
+	
+	m_fSpeed = m_fMaxSpeed;
+	
+	vfUpdateTime(m_fTimeUpdateDelta);
+
+	vfComputeNewPosition();
+
+	SetDirectionLook();
+
+//	if (!Level().AI.bfTooSmallAngle(r_torso_target.yaw, r_torso_current.yaw,PI_DIV_8))
+//		m_fSpeed = EPS_S;
+//	else 
+//		if (m_fSafeSpeed != m_fSpeed) {
+//			int iRandom = ::Random.randI(0,2);
+//			switch (iRandom) {
+//				case 0 : {
+//					m_fSpeed = m_fMaxSpeed;
+//					break;
+//				}
+//				case 1 : {
+//					m_fSpeed = m_fMinSpeed;
+//					break;
+//				}
+//				case 2 : {
+//					if (::Random.randI(0,4) == 0)
+//						m_fSpeed = EPS_S;
+//					break;
+//				}
+//			}
+//			m_fSafeSpeed = m_fSpeed;
+//		}
+	AI_Path.TravelPath.clear();
+}
+
+void CAI_Rat::Retreat()
+{
+	WRITE_TO_LOG("Retreat");
+
+	bStopThinking = true;
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+
+	SelectEnemy(Enemy);
+	
+	if (Enemy.Enemy) {
+		ERatStates eState = ERatStates(dwfChooseAction(aiRatAttackRun,aiRatAttackRun,aiRatRetreat));
+		if (eState != eCurrentState)
+			GO_TO_NEW_STATE_THIS_UPDATE(eState);
+		m_dwLostEnemyTime = Level().timeServer();
+		
+		INIT_SQUAD_AND_LEADER;
+		
+		if (this == Leader) {
+			Fvector tTemp;
+			tTemp.sub(vPosition,Enemy.Enemy->Position());
+			tTemp.normalize_safe();
+			tTemp.mul(RETREAT_DISTANCE);
+			m_tSafeSpawnPosition.add(vPosition,tTemp);
+		}
+		else {
+			CAI_Rat *tpRatLeader = dynamic_cast<CAI_Rat *>(Leader);
+			if (tpRatLeader)
+				m_tSafeSpawnPosition.set(tpRatLeader->m_tSafeSpawnPosition);
+		}
+	}
+	else
+		if (Level().timeServer() - m_dwLostEnemyTime > RETREAT_TIME) {
+			m_tSafeSpawnPosition.set(Level().Teams[g_Team()].Squads[g_Squad()].Leader->Position());
+			GO_TO_PREV_STATE;
+		}
+
+	m_tSpawnPosition.set(m_tSafeSpawnPosition);
 	m_fGoalChangeDelta		= 10.f;
 	m_tVarGoal.set			(10.0,0.0,20.0);
 	m_fASpeed				= .2f;
@@ -373,6 +450,10 @@ void CAI_Rat::Think()
 			}
 			case aiRatUnderFire : {
 				UnderFire();
+				break;
+			}
+			case aiRatRetreat : {
+				Retreat();
 				break;
 			}
 		}
