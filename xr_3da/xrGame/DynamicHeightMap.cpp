@@ -6,7 +6,7 @@
 #include "DynamicHeightMap.h"
 #include "..\collide\cl_intersect.h"
 
-const int	tasksPerFrame	= 3;
+const int	tasksPerFrame	= 1;
 const float limit_up		= 100.f;
 const float limit_down		= 20.f;
 

@@ -240,7 +240,7 @@ void	CEffect_Rain::Render	()
 			Born		(one,b_radius,b_height);
 		}
 		Fvector&	pos_head	= one.P;
-		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.P,-drop_length);
+		Fvector		pos_trail;	pos_trail.mad	(pos_head,one.D,-drop_length);
 		
 		// Culling
 		Fvector sC,lineD;	float sR; 
