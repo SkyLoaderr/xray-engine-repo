@@ -62,7 +62,6 @@ void xrLoad(LPCSTR name)
 	}
 
 	// Load CFORM ("lighting")
-	FILE_NAME			N;
 	{
 		strconcat			(N,name,"build.cform");
 		CVirtualFileStream	FS(N);
