@@ -278,6 +278,9 @@
 				RelativePath="..\..\..\ode\src\collision_transform.h">
 			</File>
 			<File
+				RelativePath="..\..\..\include\ode\collision_trimesh.h">
+			</File>
+			<File
 				RelativePath="..\..\..\ode\src\collision_trimesh_internal.h">
 			</File>
 			<File
