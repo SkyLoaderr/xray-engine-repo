@@ -141,7 +141,7 @@ void CWeaponM134::FireStart()
 {
 	if (!IsWorking() && IsValid()){ 
 		CWeapon::FireStart();
-		m_pHUD->FireCycleStart();
+		m_pHUD->FireSpinup();
 		st_target = eM134Spinup;
 	}
 }
@@ -242,6 +242,7 @@ void CWeaponM134::Update(float dt, BOOL bHUDView)
 			break;
 		case eM134Fire:
 			if (st_current==eM134Spinup){
+				m_pHUD->FireCycleStart();
 				pSounds->Play3DAtPos(sndFireLoop,vLastFP,true);
 				if (sndServo.feedback) sndServo.feedback->Stop();
 			}
@@ -391,8 +392,9 @@ void CWeaponM134::FireShotmark	(const Fvector& vDir, const Fvector &vEnd, Collid
 
 	CSector* S			= ::Render.getSector(pTri->sector);
 
-	// stones
-	CPSObject* PS		= new CPSObject("stones",S,true);
+	// stones or sparks
+	LPCSTR ps_gibs		= (Random.randI(5)==0)?"sparks_1":"stones";
+	CPSObject* PS		= new CPSObject(ps_gibs,S,true);
 	PS->m_Emitter.m_ConeDirection.set(D);
 	PS->PlayAtPos		(vEnd);
 

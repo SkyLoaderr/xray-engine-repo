@@ -59,6 +59,7 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	// init anims
 	mIdle						= PKinematics(Visual())->ID_Cycle("idle");
 	mFireCycled					= PKinematics(Visual())->ID_Cycle_Safe("fire");
+	mFireSpinup					= PKinematics(Visual())->ID_Cycle_Safe("spinup");
 	char name[64];
 	for (int i=0; ; i++){
 		sprintf(name,"shoot%d",i);
@@ -87,8 +88,9 @@ void CWeaponHUD::UpdateAnimation()
 // update animation
 	if (cur_mstate!=new_mstate){
 		switch(new_mstate){
-		case hsIdle:		PKinematics(pVisual)->PlayCycle(mIdle); break;
-		case hsFireCycle:	PKinematics(pVisual)->PlayCycle(mFireCycled); break;
+		case hsIdle:		PKinematics(pVisual)->PlayCycle(mIdle);			break;
+		case hsFireSpinup:	if (mFireSpinup) PKinematics(pVisual)->PlayCycle(mFireSpinup);	break;
+		case hsFireCycle:	if (mFireCycled) PKinematics(pVisual)->PlayCycle(mFireCycled);	break;
 		}
 		cur_mstate = new_mstate;
 	}

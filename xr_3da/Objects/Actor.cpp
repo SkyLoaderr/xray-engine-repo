@@ -203,8 +203,8 @@ void CActor::Load(CInifile* ini, const char* section )
 	Weapons				= new CWeaponList(this);
 	Weapons->Init		();
 	Weapons->TakeItem	(CLSID_OBJECT_W_M134,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_GROZA,0);
-	Weapons->TakeItem	(CLSID_OBJECT_W_PROTECTA,0);
+//	Weapons->TakeItem	(CLSID_OBJECT_W_GROZA,0);
+//	Weapons->TakeItem	(CLSID_OBJECT_W_PROTECTA,0);
 
 	// sounds
 	char buf[256];

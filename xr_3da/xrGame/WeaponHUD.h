@@ -19,6 +19,7 @@ class CWeaponHUD :
 	enum EHUDState{
 		hsIdle = 0,
 		hsFireCycle,
+		hsFireSpinup,
 		hsShoot
 	};
 
@@ -26,6 +27,7 @@ class CWeaponHUD :
 
 	CMotionDef*		mIdle;
 	CMotionDef*		mFireCycled;
+	CMotionDef*		mFireSpinup;
 	vector<CMotionDef*>mShoots;
 public:	
 	int				iFireBone;
@@ -42,6 +44,7 @@ public:
 
 	// logic & effects
 	void			Shoot			();
+	void			FireSpinup		()	{ new_mstate = hsFireSpinup;}
 	void			FireCycleStart	()	{ new_mstate = hsFireCycle;	}
 	void			FireEnd			()	{ new_mstate = hsIdle;	}
 
