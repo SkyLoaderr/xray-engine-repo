@@ -26,7 +26,7 @@ IC	Fvector construct_position		(u32 level_vertex_id, float x, float z)
 bool CSpaceRestrictionBase::inside	(u32 level_vertex_id, bool partially_inside, float radius)
 {
 	const Fvector					&position = ai().level_graph().vertex_position(level_vertex_id);
-	float							offset = ai().level_graph().header().cell_size()*.5f - EPS;
+	float							offset = ai().level_graph().header().cell_size()*.5f - EPS_L;
 	if (partially_inside)
 		return						(
 			inside(construct_position(level_vertex_id,position.x + offset,position.z + offset),radius) || 

@@ -87,7 +87,7 @@ IC	u32	CSpaceRestrictionBridge::accessible_nearest	(T &restriction, const Fvecto
 
 	{
 		Fvector		center = ai().level_graph().vertex_position(selected);
-		float		offset = ai().level_graph().header().cell_size()*.5f - EPS;
+		float		offset = ai().level_graph().header().cell_size()*.5f - EPS_L;
 		bool		found = false;
 		min_dist_sqr = flt_max;
 		for (u32 i=0; i<5; ++i) {
