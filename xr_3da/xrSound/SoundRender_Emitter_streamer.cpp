@@ -43,7 +43,7 @@ void	CSoundRender_Emitter::fill_data		(u8* _dest, u32 offset, u32 size)
 	{
 		// cache acess
 		if (SoundRender.cache.request(source->CAT,line))		{
-
+			source->decompress	(line);
 			// decompression
 			void*	ptr			= SoundRender.cache.get_dataptr	(source->CAT,line);
 			u32		seek_offs	= (psSoundFreq==sf_22K)?(line*line_size):(line*line_size)/2;

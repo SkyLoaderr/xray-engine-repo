@@ -23,6 +23,7 @@ public:
 	CSoundRender_Source		();
 	~CSoundRender_Source	();
 
-	void					Load					(LPCSTR name,	BOOL b3D);
+	void					load					(LPCSTR name,	BOOL b3D);
+	void					decompress				(u32	line);
 };
 #endif

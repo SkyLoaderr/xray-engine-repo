@@ -73,7 +73,7 @@ void CSoundRender_Source::LoadWave	(LPCSTR pName, BOOL b3D)
 	dwTimeTotal				= sdef_source_footer + (dwBytesTotal*1000)/wfxdest.nAvgBytesPerSec;
 }
 
-void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
+void CSoundRender_Source::load		(LPCSTR name,	BOOL b3D)
 {
 	string256			fn,N;
 	strcpy				(N,name);
@@ -90,8 +90,7 @@ void CSoundRender_Source::Load		(LPCSTR name,	BOOL b3D)
 	R_ASSERT			(wave);
 	SoundRender.cache.cat_create			( CAT, dwBytesTotal );
 
-	if (dwTimeTotal<100)
-	{
+	if (dwTimeTotal<100)					{
 		Msg	("! WARNING: Invalid wave length (must be at least 100ms), file: %s",fn);
 	}
 }
