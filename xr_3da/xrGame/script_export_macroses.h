@@ -204,7 +204,7 @@
 		{																				\
 			call<void>(#v_func_name,p1,p2,&p3);											\
 		}                                   											\
-		static  void v_func_name##_static(inherited* ptr, t1* p1, t2 p2, t3 p3)			\
+		static  void v_func_name##_static(inherited* ptr, t1 p1, t2 p2, t3* p3)			\
 		{																				\
-			ptr->self_type::inherited::v_func_name(*p1,p2,*p3);							\
+			ptr->self_type::inherited::v_func_name(p1,p2,*p3);							\
 		}
