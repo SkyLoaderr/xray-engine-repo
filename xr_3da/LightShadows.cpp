@@ -337,11 +337,10 @@ void CLightShadows::render	()
 				Fvector& v2		= (*clip)[v-1];
 				Fvector& v3		= (*clip)[v];
 				Fvector		T;
-				float		l;
 				
-				S.M.transform(T,v1); pv->set(v1,PLC_calc(v1,P.n,L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v2); pv->set(v2,PLC_calc(v1,P.n,L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
-				S.M.transform(T,v3); pv->set(v3,PLC_calc(v1,P.n,L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v1); pv->set(v1,PLC_calc(v1,P.n,S.L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v2); pv->set(v2,PLC_calc(v1,P.n,S.L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
+				S.M.transform(T,v3); pv->set(v3,PLC_calc(v1,P.n,S.L,lE),(T.x+1)*t_scale.x+t_offset.x,(1-T.y)*t_scale.y+t_offset.y); pv++;
 				batch++;
 				if (batch==batch_size)	{
 					// Flush
