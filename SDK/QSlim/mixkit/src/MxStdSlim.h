@@ -30,6 +30,8 @@
 #define MX_WEIGHT_AREA_AVG      4
 #define MX_WEIGHT_RAWNORMALS    5
 
+#define EDGE_BASE_ERROR		1.f
+
 class MxStdSlim
 {
 protected:
@@ -55,7 +57,7 @@ public:
     MxStdSlim(MxStdModel *m0);
 
     virtual void initialize() = 0;
-    virtual bool decimate(uint) = 0;
+    virtual bool decimate(uint, float) = 0;
 
     MxStdModel& model() { return *m; }
 };

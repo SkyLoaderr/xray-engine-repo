@@ -16,6 +16,7 @@
 //
 int slim_mode = 0; // 0 - edge, 1 - face, 2 - prop
 
+extern float slim_max_error=1.f;
 unsigned int face_target = 0;
 int placement_policy = MX_PLACE_OPTIMAL;
 double boundary_weight = 1000.0;
@@ -104,6 +105,12 @@ void slim_init()
 
     if( eslim && target_edges )	eslim->initialize	(*target_edges, target_edges->length());
     else						slim->initialize	();
+
+	switch (slim_mode){
+	case 0: break;
+	case 1: break;
+	case 2: pslim->collect_edges();  break;
+	}
 
     if( will_record_history )
     {

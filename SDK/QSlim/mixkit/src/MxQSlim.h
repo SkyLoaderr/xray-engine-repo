@@ -82,7 +82,7 @@ public:
 
     void initialize();
     void initialize(const MxEdge *edges, uint count);
-    bool decimate(uint target);
+    bool decimate(uint target, float);
 
     void apply_contraction(const MxPairContraction& conx);
     void apply_expansion(const MxPairContraction& conx);
@@ -114,7 +114,7 @@ public:
     MxFaceQSlim(MxStdModel&);
 
     void initialize();
-    bool decimate(uint target);
+    bool decimate(uint target, float);
 };
 
 // MXQSLIM_INCLUDED

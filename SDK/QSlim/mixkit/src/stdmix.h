@@ -98,12 +98,33 @@ inline bool streq(const char *a, const char *b) { return !strcmp(a,b); }
 #endif
 
 #if SAFETY > 0
+#  define VERIFY(t) assert(t)
 #  define AssertBound(t)  assert(t)
 #  define PRECAUTION(x) x
 #else
+#  define VERIFY(t)
 #  define AssertBound(t)
 #  define PRECAUTION(x)
 #endif
+
+#define xr_delete delete
+
+// new(0)
+template <class T>
+inline	T*		xr_new		()
+{
+	return new T();
+}
+// new(1)
+template <class T, class P1>
+inline	T*		xr_new		(const P1& p1) {
+	return new T(p1);
+}
+
+// generic
+template <class T>	inline T		_min	(T a, T b)	{ return a<b?a:b;	}
+template <class T>	inline T		_max	(T a, T b)	{ return a>b?a:b;	}
+template <class T>	inline T		_sqr	(T a)		{ return a*a;		}
 
 // STDMIX_INCLUDED
 #endif

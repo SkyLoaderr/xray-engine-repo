@@ -73,7 +73,7 @@ void slim_to_target(unsigned int target, bool recalculate)
 
 	if (target > m->face_count())  target = m->face_count();
 	if (target < slim->valid_faces)
-		slim->decimate(target);
+		slim->decimate(target,slim_max_error);
 	else if( target > slim->valid_faces && history ){
 		while( slim->valid_faces < target && history->length() > 0 )
 			slim_undo();

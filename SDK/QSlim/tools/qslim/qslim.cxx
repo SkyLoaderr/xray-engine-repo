@@ -49,7 +49,7 @@ main(int argc, char **argv)
 
     // Decimate model until target is reached
     //
-    TIMING(slim_time, slim->decimate(face_target));
+    TIMING(slim_time, slim->decimate(face_target,slim_max_error));
 
     if(!be_quiet) cerr << "+ Simplified model ";
     if(!be_quiet) vfcount(cerr, slim->valid_verts, slim->valid_faces) << endl;
