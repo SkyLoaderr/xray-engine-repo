@@ -638,7 +638,7 @@ void CActor::g_Physics			(Fvector& _accel, float jump, float dt)
 			Fvector positionInBoneSpace; positionInBoneSpace.set(0,0,0);
 			if (m_PhysicMovementControl->gcontact_HealthLost)	{
 				Hit	(m_PhysicMovementControl->gcontact_HealthLost,D,this,m_PhysicMovementControl->ContactBone(),positionInBoneSpace,0,ALife::eHitTypeStrike);//s16(6 + 2*::Random.randI(0,2))
-				if(g_Alive()<=0)
+				if(!g_Alive())
 					m_PhysicMovementControl->GetDeathPosition(Position());
 			}
 		}
@@ -996,7 +996,7 @@ void CActor::SetPhPosition(const Fmatrix &transform)
 
 void CActor::ForceTransform(const Fmatrix& m)
 {
-	if(g_Alive()<=0)			return;
+	if(!g_Alive())				return;
 	XFORM().set					(m);
 	if(m_PhysicMovementControl->CharacterExist()) m_PhysicMovementControl->EnableCharacter	();
 	m_PhysicMovementControl->SetPosition		(m.c);
@@ -1058,10 +1058,6 @@ void CActor::OnRender	()
 	if (!bDebug)				return;
 
 	m_PhysicMovementControl->dbg_Draw	();
-	//if(g_Alive()>0)
-	m_PhysicMovementControl->dbg_Draw	();
-	//CCameraBase* C				= cameras	[cam_active];
-	//dbg_draw_frustum			(C->f_fov, 230.f, 1.f, C->Position(), C->vDirection, C->vNormal);
 }
 #endif
 

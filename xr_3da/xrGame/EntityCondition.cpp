@@ -13,9 +13,12 @@
 
 
 #define MAX_HEALTH 1.0f
+#define MIN_HEALTH -0.01f
+
 #define MAX_SATIETY 1.0f
 #define MAX_POWER 1.0f
 #define MAX_RADIATION 1.0f
+
 
 
 CEntityCondition::CEntityCondition(void)
@@ -256,7 +259,8 @@ void CEntityCondition::UpdateCondition()
 	m_fDeltaCircumspection = 0;
 	m_fDeltaEntityMorale = 0;
 
-	clamp(m_fHealth,0.0f,m_fHealthMax);
+	clamp(m_fHealth, MIN_HEALTH, m_fHealthMax);
+	
 	clamp(m_fPower,0.0f,m_fPowerMax);
 	clamp(m_fRadiation,0.0f,m_fRadiationMax);
 	clamp(m_fSatiety,0.0f,m_fSatietyMax);
@@ -296,7 +300,9 @@ void CEntityCondition::Sleep(float hours)
 		m_fDeltaSatiety = 0;
 		m_fDeltaRadiation = 0;
 
-		clamp(m_fHealth,0.0f,m_fHealthMax);
+		//
+		clamp(m_fHealth, MIN_HEALTH, m_fHealthMax);
+		
 		clamp(m_fPower,0.0f,m_fPowerMax);
 		clamp(m_fRadiation,0.0f,m_fRadiationMax);
 		clamp(m_fSatiety,0.0f,m_fSatietyMax);
