@@ -2,12 +2,16 @@
 #include "artifact.h"
 //#include "actor.h"
 
-CArtifact::CArtifact(void)
-{
+xr_set<CArtifact*> CArtifact::m_all;
+
+CArtifact::CArtifact(void) {
+	shedule_Min = .02f;
+	shedule_Max = .03f;
+	m_jumpHeight = 0;
 }
 
-CArtifact::~CArtifact(void)
-{
+CArtifact::~CArtifact(void) {
+	SoundDestroy(m_detectorSound);
 }
 
 #define CHOOSE_MAX(x,inst_x,y,inst_y,z,inst_z)\
@@ -18,7 +22,23 @@ CArtifact::~CArtifact(void)
 		if(y>z){inst_y;}\
 		else{inst_z;}
 
+void CArtifact::Load(LPCSTR section) {
+	// verify class
+	LPCSTR Class = pSettings->r_string(section,"class");
+	CLASS_ID load_cls = TEXT2CLSID(Class);
+	R_ASSERT(load_cls==SUB_CLS_ID);
+
+	inherited::Load(section);
+
+	m_detectorDist = pSettings->r_float(section,"detector_dist");
+	LPCSTR m_detectorSoundName = pSettings->r_string(section,"detector_sound");
+	SoundCreate(m_detectorSound, m_detectorSoundName);
+
+	if(pSettings->line_exist(section, "jump_height")) m_jumpHeight = pSettings->r_float(section,"jump_height");
+}
+
 BOOL CArtifact::net_Spawn(LPVOID DC) {
+	m_all.insert(this);
 	inherited::net_Spawn(DC);
 	setVisible					(true);
 	setEnabled					(true);
@@ -70,6 +90,13 @@ BOOL CArtifact::net_Spawn(LPVOID DC) {
 	return TRUE;
 }
 
+void CArtifact::net_Destroy() {
+	if(m_pPhysicsShell) m_pPhysicsShell->Deactivate();
+	xr_delete(m_pPhysicsShell);
+	m_all.erase(this);
+	inherited::net_Destroy();
+}
+
 void CArtifact::OnH_A_Chield() {
 	inherited::OnH_A_Chield		();
 	setVisible					(false);
@@ -118,7 +145,27 @@ void CArtifact::UpdateCL() {
 		m_pPhysicsShell->Update	();
 		svTransform.set			(m_pPhysicsShell->mXFORM);
 		vPosition.set(m_pPhysicsShell->mXFORM.c);
+		if(m_jumpHeight) {
+			Fvector l_dir; l_dir.set(0, -1.f, 0);
+			Collide::ray_query RQ;
+			setEnabled(false);
+			if(Level().ObjectSpace.RayPick(vPosition, l_dir, m_jumpHeight, RQ)) {
+				l_dir.y = 1.f; m_pPhysicsShell->applyImpulse(l_dir, 30.f * Device.fTimeDelta * m_pPhysicsShell->getMass());
+			}
+			setEnabled(true);
+		}
 	} else if(H_Parent()) svTransform.set(H_Parent()->clXFORM());
+}
+
+void CArtifact::Update(u32 dt) {
+	inherited::Update(dt);
+	if(getVisible() && m_pPhysicsShell) {
+		float l_force = 100.f;
+		//Fvector l_dir; l_dir.set(0, 1.f, 0);
+		//if(vPosition.y < 1.f) {
+		//	m_pPhysicsShell->applyImpulse(l_dir, .05f * dt * m_pPhysicsShell->getMass());
+		//}
+	}
 }
 
 void CArtifact::OnVisible() {
@@ -138,4 +185,17 @@ void CArtifact::OnVisible() {
 		::Render->set_Transform		(&clTransform);
 		::Render->add_Visual		(Visual());
 	}
+}
+
+void CArtifact::SoundCreate(sound& dest, LPCSTR s_name, int iType, BOOL bCtrlFreq) {
+	string256 temp;
+	if (FS.exist(temp,"$game_sounds$",s_name)) {
+		Sound->create(dest,TRUE,s_name,iType);
+		return;
+	}
+	Debug.fatal	("Can't find sound '%s'",s_name,cName());
+}
+
+void CArtifact::SoundDestroy(sound& dest) {
+	::Sound->destroy			(dest);
 }

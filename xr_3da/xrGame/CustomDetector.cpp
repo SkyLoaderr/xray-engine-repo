@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "customdetector.h"
 #include "hudmanager.h"
+#include "artifact.h"
 
 CCustomDetector::CCustomDetector(void) {
 //	m_belt = true;
@@ -125,20 +126,33 @@ void CCustomDetector::Update(u32 dt) {
 		if(l_maxPow > 0) {
 			if(!m_noise.feedback) Sound->play_at_pos(m_noise, this, P, true);
 			if(m_noise.feedback) {
-				l_maxPow = _max(logf(l_maxPow) / 10.f + 1.f, .0f);
+				//l_maxPow = _max(logf(l_maxPow) / 10.f + 1.f, .0f);
 				m_noise.set_volume	(l_maxPow);
 				m_noise.set_position(P);
 			}
 		} else if(m_noise.feedback) m_noise.stop();
+		xr_set<CArtifact*>::iterator l_it2;
+		for(l_it2 = CArtifact::m_all.begin(); l_it2 != CArtifact::m_all.end(); l_it2++) {
+			CArtifact &l_af = **l_it2;
+			float l_dst = P.distance_to(l_af.Position());
+			if(!l_af.H_Parent() && l_dst < l_af.m_detectorDist) {
+				if(!l_af.m_detectorSound.feedback) Sound->play_at_pos(l_af.m_detectorSound, this, P, true);
+				if(l_af.m_detectorSound.feedback) {
+					//l_af.m_detectorSound.set_volume(_max(logf((l_af.m_detectorDist-l_dst)/l_af.m_detectorDist) / 10.f + 1.f, .0f));
+					l_af.m_detectorSound.set_volume((l_af.m_detectorDist-l_dst)/l_af.m_detectorDist);
+					l_af.m_detectorSound.set_position(P);
+				}
+			} else if(l_af.m_detectorSound.feedback) l_af.m_detectorSound.stop();
+		}
 	}
 }
 
 void CCustomDetector::UpdateCL() {
 	inherited::UpdateCL();
+	/*
 	f32 l_zonePow = 0;
 	xr_list<CCustomZone*>::iterator l_it;
 	for(l_it = m_zones.begin(); l_it != m_zones.end(); l_it++) l_zonePow = _max(l_zonePow, (*l_it)->Power((*l_it)->Position().distance_to(vPosition)));
-	/*
 	CGameFont* H		= HUD().pFontMedium;
 	H->SetColor			(0xf0ffffff); 
 	H->Out				(550,500,"Anomaly force: %.0f", l_zonePow);
