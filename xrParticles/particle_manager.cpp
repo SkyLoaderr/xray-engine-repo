@@ -94,6 +94,7 @@ void CParticleManager::PlayEffect(int effect_id, int alist_id)
 		}
 	}
 }
+
 void CParticleManager::StopEffect(int effect_id, int alist_id, BOOL deffered)
 {
     // Execute the specified action list.
