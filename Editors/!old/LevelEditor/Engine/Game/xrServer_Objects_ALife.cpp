@@ -1288,14 +1288,14 @@ void CSE_ALifeObjectClimable::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 	//inherited1::STATE_Read		(tNetPacket,size);
 	//inherited2::STATE_Read		(tNetPacket,size);
-	
+	cform_read(tNetPacket);
 }
 
 void CSE_ALifeObjectClimable::STATE_Write	(NET_Packet	&tNetPacket)
 {
 	//inherited1::STATE_Write		(tNetPacket);
 	//inherited2::STATE_Write		(tNetPacket);
-
+	cform_write(tNetPacket);
 }
 
 void CSE_ALifeObjectClimable::UPDATE_Read	(NET_Packet	&tNetPacket)
