@@ -15,13 +15,12 @@ void CRender::calc_DetailTexturing()
 	c_up.set							(Device.vCameraDirection);
 	M.build_camera_dir					(c_pos,c_dir,c_up);
 	matDetailTexturing->xform.mulA_43	(M);
-	M.scale								(.1f,	.1f,	.1f	);
+	M.scale								(.05f,	.05f,	.05f);
 	matDetailTexturing->xform.mulA_43	(M);
 	M.translate							(+1.f,	-1.f,	0	);
 	matDetailTexturing->xform.mulA_43	(M);
 	M.scale								(.5f,	-.5f,	0	);
 	matDetailTexturing->xform.mulA_43	(M);
-
 
 	/*
 	Fvector&	V	= Device.vCameraPosition;

@@ -75,7 +75,7 @@ void CRender::InsertSG_Static(CVisual *pVisual)
 		if (SSA<=r_ssaDISCARD)		return;
 
 		// Select List and add to it
-		ShaderElement*		sh		= ((sqrtf(distSQ)-pVisual->bv_Radius)<10)?pVisual->hShader->lod0:pVisual->hShader->lod1;
+		ShaderElement*		sh		= ((sqrtf(distSQ)-pVisual->bv_Radius)<20)?pVisual->hShader->lod0:pVisual->hShader->lod1;
 		if (sh->Flags.bStrictB2F) {
 			SceneGraph::mapSorted_Node* N		= mapSorted.insertInAnyWay(distSQ);
 			N->val.pVisual			= pVisual;
