@@ -410,6 +410,7 @@ bool CScriptMonster::bfAssignMovement(CEntityAction *tpEntityAction)
 			CGameObject		*l_tpGameObject = dynamic_cast<CGameObject*>(l_tMovementAction.m_tpObjectToGo);
 			R_ASSERT		(l_tpGameObject);
 			l_tpMovementManager->set_path_type(CMovementManager::ePathTypeLevelPath);
+//			Msg				("%6d Object %s, position [%f][%f][%f]",Level().timeServer(),l_tpGameObject->cName(),VPUSH(l_tpGameObject->Position()));
 			l_tpMovementManager->set_dest_position(l_tpGameObject->Position());
 			l_tpMovementManager->set_level_dest_vertex(l_tpGameObject->level_vertex_id());
 			break;
