@@ -405,7 +405,7 @@ class                    = O_HEALTH
 visual                   = monsters\crow\crow.ogf
 
 [m_crow]
-$spawn                   = on
+$spawn                   = monsters\Crow		; option for Level Editor
 $prefetch 				 = 50
 spawn 	                 = on
 cform                    = skeleton
@@ -432,7 +432,7 @@ ph_friction_ground       = 7.0
 ph_friction_wall         = 4.0                              ; ???
 
 [m_stalker_e]
-$spawn 			     = on			; option for Level Editor
+$spawn                   = monsters\Stalker		; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		     = 32
 Scheduled		     = on			; option for ALife Simulator
@@ -542,7 +542,7 @@ sound_alarm			 = monsters\stalker\alarm\alarm
 sound_surrender		 = monsters\stalker\surrender\em1_surrender
 
 [m_stalker_demo]
-$spawn 			     = on			; option for Level Editor
+$spawn                   = monsters\Stalker-Demo		; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		     = 32
 Scheduled		     = on			; option for ALife Simulator
@@ -652,14 +652,14 @@ sound_alarm			 = monsters\stalker\alarm\alarm
 sound_surrender		 = monsters\stalker\surrender\em1_surrender
 
 [rat_group]
-$spawn 			     = on			; option for Level Editor
+$spawn               = monsters\Rat-Group		; option for Level Editor
 $npc			     = on			; option for Level Editor
 Human		     	     = off			; option for ALife Simulator
 class                        = AI_RAT_G			; AI class
 monster_section              = m_rat_e
 
 [m_rat_e]
-$spawn 			     = on			; option for Level Editor
+$spawn                   = monsters\Rat		; option for Level Editor
 $npc			     = on			; option for Level Editor
 $prefetch 		= 100
 Scheduled		     = on			; option for ALife Simulator
@@ -737,7 +737,7 @@ corp_mass		     = 500			;
 terrain		             = 255,255,255,255,30,40
 
 [m_zombie_e]
-$spawn 			     = on			; option for Level Editor
+$spawn                   = monsters\Zombie		; option for Level Editor
 $npc			     = on			; option for Level Editor
 Scheduled		     = on			; option for ALife Simulator
 Human		     	     = off			; option for ALife Simulator
@@ -793,7 +793,7 @@ MaxHealthValue		     = 200			; range [0..200]
 SoundThreshold		     = 0.06                     ; range [0..1]
 
 [m_soldier_e]
-$spawn 			 = on
+$spawn                   = monsters\Soldier		; option for Level Editor
 $npc			 = on				; option for Level Editor
 cform                    = skeleton
 class                    = AI_SOLD
@@ -884,7 +884,7 @@ MaxRadioIinterval	 = 120000
 RadioRefreshRate	 =   5000
 
 [m_soldier_bandana]
-$spawn 			 = on
+$spawn                   = monsters\Soldier-Bandana		; option for Level Editor
 $npc			 = on				; option for Level Editor
 cform                    = skeleton
 class                    = AI_SOLD
@@ -973,7 +973,7 @@ MaxRadioIinterval	 = 120000
 RadioRefreshRate	 =   5000
 
 [m_soldier_beret]
-$spawn 			 = on
+$spawn                   = monsters\Soldier-Beret		; option for Level Editor
 $npc			 = on				; option for Level Editor
 cform                    = skeleton
 class                    = AI_SOLD
@@ -1062,7 +1062,7 @@ MaxRadioIinterval	 = 120000
 RadioRefreshRate	 =   5000
 
 [m_soldier_pidarka]
-$spawn 			 = on
+$spawn                   = monsters\Soldier-Pidarka		; option for Level Editor
 $npc			 = on				; option for Level Editor
 cform                    = skeleton
 class                    = AI_SOLD
@@ -1231,7 +1231,7 @@ sun                      = 32
 ui\logo                  = 32
  
 [wpn_fn2000]
-$spawn                   = on								; option for Level Editor
+$spawn                   = weapons\FN-2000					; option for Level Editor
 $npc                     = off
 $prefetch 		         = 8
 scheduled                = off                              ; option for ALife Simulator
@@ -1309,18 +1309,6 @@ max_zoom_factor		     = 20.f
 ph_mass			         = 4
 cost			         = 5000
 
-[wpn_fn_ammo]
-$spawn			= on
-class			= A_PM
-box_size		= 300
-mag_size		= 30
-inv_name		= "FN2000 Ammo"
-inv_name_short		= 
-inv_weight		= .3
-;$prefetch 		= 16
-
-cost					 = 50
-
 [wpn_fn2000_hud]
 shell_point		 = 0.0, 0.0, 0.0
 fire_point               = -0.04, -0.05, 0.14
@@ -1332,7 +1320,7 @@ visual                   = weapon\fn2000\wpn_fn2000_hud.ogf
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  
 [wpn_vintorez]
-$spawn                   = on								; option for Level Editor
+$spawn                   = weapons\Vintorez					; option for Level Editor
 $npc                     = off
 $prefetch 		         = 8
 scheduled                = off                              ; option for ALife Simulator
@@ -1420,7 +1408,7 @@ visual                   = weapon\vintorez\wpn_vintorez_hud.ogf
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [wpn_lr300]
-$spawn 			 = on
+$spawn                   = weapons\LR-300					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -1506,7 +1494,7 @@ visual                   = weapon\lr300\wpn_lr300_hud_banan.ogf
 
 ;;;;;;;;;;;;;;;;;;;;;;
 [wpn_val]
-$spawn 			 = on
+$spawn                   = weapons\VAL					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 				= 8
 scheduled            = off              ; option for ALife Simulator
@@ -1596,7 +1584,7 @@ visual                   = weapon\val\wpn_val_hud.ogf
 ;;;;;;;;;;;;;;;;;;;;;;
 
 [wpn_ak74]
-$spawn 					= on
+$spawn                   = weapons\AK-74					; option for Level Editor
 $npc					= on				; option for Level Editor
 $prefetch 				= 16
 scheduled				= off              ; option for ALife Simulator
@@ -1685,7 +1673,7 @@ position                 = 0.063, -0.015, 0.02
 visual                   = weapon\ak74\wpn_ak74_hud.ogf
 
 [wpn_groza]
-$spawn 					= on
+$spawn                   = weapons\Groza					; option for Level Editor
 $npc					= on				; option for Level Editor
 $prefetch 				= 16
 scheduled				= off              ; option for ALife Simulator
@@ -1774,7 +1762,7 @@ position                 = 0.063, -0.015, 0.02
 visual                   = weapon\groza\wpn_groza_hud.ogf
 
 [wpn_hpsa]
-$spawn 			 = on
+$spawn                   = weapons\HPSA					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		= 8
 scheduled            = off              ; option for ALife Simulator
@@ -1859,7 +1847,7 @@ visual                   = weapon\hpsa\wpn_hpsa_hud_banan.ogf
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_pm]
-$spawn 			 = on
+$spawn                   = weapons\PM					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 		= 8
 scheduled            	= off              ; option for ALife Simulator
@@ -1948,7 +1936,7 @@ visual                   = weapon\pm\wpn_pm_hud_banan.ogf
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_walther]
-$spawn 			 = on
+$spawn                   = weapons\Walther					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 		= 8
 scheduled            	= off              ; option for ALife Simulator
@@ -2038,7 +2026,7 @@ visual                   = weapon\walter_99\wpn_walter_99_hud.ogf
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_usp]
-$spawn 			 = on
+$spawn                   = weapons\USP					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 			= 8
 scheduled            	= off              ; option for ALife Simulator
@@ -2128,7 +2116,7 @@ visual                   = weapon\usp_45\wpn_usp_45_hud.ogf
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_rpg7]
-$spawn 			 = on
+$spawn                   = weapons\RPG-7					; option for Level Editor
 $npc			 = on		; option for Level Editor
 $prefetch 		 = 16
 scheduled            	= off              ; option for ALife Simulator
@@ -2248,7 +2236,7 @@ engine_u			= 90
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [wpn_fort]
-$spawn 			 = on
+$spawn                   = weapons\Fort					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		= 8
 scheduled            = off              ; option for ALife Simulator
@@ -2332,7 +2320,7 @@ position                 = 0,0,0
 visual                   = weapon\fort\wpn_fort_hud_banan.ogf
 
 [wpn_binoc]
-$spawn 			 = on
+$spawn                   = weapons\Binocular					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2375,7 +2363,7 @@ position                 = 0.15, -0.14, 0.25
 visual                   = weapon\binoculars\wpn_binoculars_hud.ogf
 
 [wpn_m134]
-$spawn 			 = on
+$spawn                   = weapons\M-134					; option for Level Editor
 $npc			 = on				; option for Level Editor
 scheduled                = off              ; option for ALife Simulator
 cform                    = skeleton
@@ -2456,7 +2444,7 @@ position                 = .13, -.19, 0.75
 visual                   = weapon\m134\wpn_m134_hud.ogf
 
 [wpn_toz34]
-$spawn 			 = on
+$spawn                   = weapons\TOZ-34					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2551,7 +2539,7 @@ noise_color		= 200,128,200,50
 ;noise_color		= 200,180,50,0
 
 [wpn_svd]
-$spawn 			 = on
+$spawn                   = weapons\SVD					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2637,7 +2625,7 @@ position                 = 0, 0, 0
 visual                   = weapon\svd\wpn_svd_hud.ogf
 
 [wpn_svu]
-$spawn 			 = on
+$spawn                   = weapons\SVU					; option for Level Editor
 $npc			 = on				; option for Level Editor
 $prefetch 		 = 8
 scheduled                = off              ; option for ALife Simulator
@@ -2870,7 +2858,7 @@ damage			 = actor_damage
 ;; AMUNITION
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x18_fmj]
-$spawn			= on
+$spawn			= ammo\9x18_fmj ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_18_fmj.ogf
@@ -2895,7 +2883,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x18_pbp]
-$spawn			= on
+$spawn			= ammo\9x18_pbp ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_pbp.ogf
@@ -2920,7 +2908,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x18_pmm]
-$spawn			= on
+$spawn			= ammo\9x18_pmm ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_18_pmm.ogf
@@ -2945,7 +2933,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x19_fmj]
-$spawn			= on
+$spawn			= ammo\9x19_fmj ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_fmj.ogf
@@ -2970,7 +2958,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x19_pbp]
-$spawn			= on
+$spawn			= ammo\9x19_pbp ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_19_pbp.ogf
@@ -2995,7 +2983,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_5.45x39_fmj]
-$spawn			= on
+$spawn			= ammo\5.45x39_fmj ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron545.ogf
@@ -3020,7 +3008,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_5.45x39_ap]
-$spawn			= on
+$spawn			= ammo\5.45x39_ap ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron545_ap.ogf
@@ -3045,7 +3033,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_5.56x45_ss190]
-$spawn			= on
+$spawn			= ammo\5.56x45_ss_190 ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron556.ogf
@@ -3070,7 +3058,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_5.56x45_ap]
-$spawn			= on
+$spawn			= ammo\5.56x45_ap ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron556_ap.ogf
@@ -3095,7 +3083,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_5.7x28_fmj]
-$spawn			= on
+$spawn			= ammo\5.7x28_fmj ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron57.ogf
@@ -3120,7 +3108,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_5.7x28_ap]
-$spawn			= on
+$spawn			= ammo\5.7x28_ap ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron57_AP.ogf
@@ -3145,7 +3133,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_7.62x54_7h1]
-$spawn			= on
+$spawn			= ammo\7.62x54_7_H_1 ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_7h1.ogf
@@ -3170,7 +3158,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_7.62x54_ap]
-$spawn			= on
+$spawn			= ammo\7.62x54_ap ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_AP.ogf
@@ -3195,7 +3183,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_7.62x54_7h14]
-$spawn			= on
+$spawn			= ammo\7.62x54_7_H_14 ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron762_7h14.ogf
@@ -3220,7 +3208,7 @@ tracer			= on
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x39_pab9]
-$spawn			= on
+$spawn			= ammo\9x39_pab_9 ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_pab9.ogf
@@ -3245,7 +3233,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x39_ap]
-$spawn			= on
+$spawn			= ammo\9x39_ap ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_AP.ogf
@@ -3270,7 +3258,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_9x39_sp5]
-$spawn			= on
+$spawn			= ammo\9x39_SP_5 ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron9_sp5.ogf
@@ -3295,7 +3283,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_11.43x23_fmj]
-$spawn			= on
+$spawn			= ammo\11.43x23_fmj ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron45.ogf
@@ -3320,7 +3308,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_11.43x23_hydro]
-$spawn			= on
+$spawn			= ammo\11.43x23_Hydro ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\patron45_Hydro.ogf
@@ -3346,7 +3334,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_12x70_buck]
-$spawn			= on
+$spawn			= ammo\12x70_Buck ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\kartech.ogf
@@ -3371,7 +3359,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_12x76_dart]
-$spawn			= on
+$spawn			= ammo\12x76_Dart ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\dart.ogf
@@ -3396,7 +3384,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_12x76_zhekan]
-$spawn			= on
+$spawn			= ammo\12x76_Zhekan ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\zhekan.ogf
@@ -3422,7 +3410,7 @@ tracer			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 [ammo_og-7b]
-$spawn			= on
+$spawn			= ammo\OG-7-B ; option for Level Editor
 class			= AMMO
 cform                   = skeleton
 visual                  = munition\rpg.ogf
@@ -3493,113 +3481,112 @@ ph_friction_wall     = 4.0                              ; ???
 ; Flesh
 ;-----------------------------------------------------------------------------------
 [flesh_group]
-$spawn 			     = on			; option for Level Editor
-$npc			     = on			; option for Level Editor
-Human		     	     = off			; option for ALife Simulator
-class                        = AI_FLE_G			; AI class
-monster_section              = m_flesh_e
+$spawn               = monsters\Flesh-Group		; option for Level Editor
+$npc			     = on						; option for Level Editor
+Human		     	 = off						; option for ALife Simulator
+class                = AI_FLE_G					; AI class
+monster_section      = m_flesh_e
 
 [m_flesh_e]
-$spawn 			     = on			; option for Level Editor
-$npc			     = on			; option for Level Editor
+$spawn               = monsters\Flesh			; option for Level Editor
+$npc			     = on						; option for Level Editor
 ;$prefetch 			 = 16
-Scheduled		     = on			; option for ALife Simulator
-Human		     	 = off			; option for ALife Simulator
-Health			     = 40			; option for ALife Simulator
-MinSpeed		     = 1.0			; option for ALife Simulator
-MaxSpeed		     = 1.5			; option for ALife Simulator
-going_speed                  = 1.0                      ; option for ALife Simulator
+Scheduled		     = on						; option for ALife Simulator
+Human		     	 = off						; option for ALife Simulator
+Health			     = 40						; option for ALife Simulator
+MinSpeed		     = 1.0						; option for ALife Simulator
+MaxSpeed		     = 1.5						; option for ALife Simulator
+going_speed          = 1.0                      ; option for ALife Simulator
 visual				 = monsters\flesh\flesh_1
 
-cform                        = skeleton			; collision class
-class                        = AI_FLESH			; AI class
+cform                = skeleton					; collision class
+class                = AI_FLESH					; AI class
 
-ph_box0_center 		     =   0.0,   0.11, -0.22
-ph_box0_size 		     =   0.085, 0.11, 0.525
-ph_box1_center 		     =   0.0,   0.11, -0.22
-ph_box1_size 		     =   0.085, 0.11, 0.525
-ph_foot_center		     =   0.0,   0.0,  -0.22
-ph_foot_size 		     =   0.085, 0.11,  0.525
-ph_crash_speed_min           = 16
-ph_crash_speed_max           = 30
+ph_box0_center 		 =   0.0,   0.11, -0.22
+ph_box0_size 		 =   0.085, 0.11, 0.525
+ph_box1_center 		 =   0.0,   0.11, -0.22
+ph_box1_size 		 =   0.085, 0.11, 0.525
+ph_foot_center		 =   0.0,   0.0,  -0.22
+ph_foot_size 		 =   0.085, 0.11,  0.525
+ph_crash_speed_min   = 16
+ph_crash_speed_max   = 30
 ph_mass 		     = 2
 cost			     = 1
-ph_friction_air              = 0.01
-ph_friction_ground           = 7.0
-ph_friction_wall            = 4.0			; ???
+ph_friction_air      = 0.01
+ph_friction_ground   = 7.0
+ph_friction_wall     = 4.0						; ???
 
-bone_torso				= bip01_spine1 		; bone name
-bone_head				= bip01_head		; bone name
-weapon_usage		     = 0			; boolean
+bone_torso			 = bip01_spine1 			; bone name
+bone_head			 = bip01_head				; bone name
+weapon_usage		 = 0						; boolean
 
-EyeYShift		     = .15			; meters
+EyeYShift		     = 0						; meters
 
-MinVoiceInterval	     =  30000			; milliseconds
-MaxVoiceInterval	     = 120000			; milliseconds
-VoiceRefreshRate	     =   2500			; milliseconds
+MinVoiceInterval	 =  30000					; milliseconds
+MaxVoiceInterval	 = 120000					; milliseconds
+VoiceRefreshRate	 =   2500					; milliseconds
 
-ChangeActiveStateProbability = 1.0 			; range [0..1]
-ActiveCountPercent	     =   16				; percents
-StandingCountPercent	 =   16				; percents
-PassiveScheduleMin	     =  100				; microseconds
-PassiveScheduleMax       = 1000				; microseconds
+ChangeActiveStateProbability = 1.0 				; range [0..1]
+ActiveCountPercent	 =   16						; percents
+StandingCountPercent =   16						; percents
+PassiveScheduleMin	 =  100						; microseconds
+PassiveScheduleMax   = 1000						; microseconds
 
-LostMemoryTime		     = 20000			; milliseconds
-LostRecoilTime		     =  2000			; milliseconds
-UnderFireDistance	     =   100			; meters
-RetreatTime				 = 10000			; milliseconds
-RetreatDistance		     =   100			; meters
-AttackStraightDistance	 =    10			; meters
-StableDistance		     =     5			; meters
-WallMinTurnValue	     =    90 			; degrees
-WallMaxTurnValue	     =   270			; degrees
+LostMemoryTime		 = 20000					; milliseconds
+LostRecoilTime		 =  2000					; milliseconds
+UnderFireDistance	 =   100					; meters
+RetreatTime			 = 10000					; milliseconds
+RetreatDistance		 =   100					; meters
+AttackStraightDistance = 10						; meters
+StableDistance		 =     5					; meters
+WallMinTurnValue	 =    90 					; degrees
+WallMaxTurnValue	 =   270					; degrees
 
-AngleSpeed				 = 0.2	            ; degrees per second
-GoalChangeDelta	 	     = 10.0				; seconds
-GoalVariation	  	     = 10.0, 0.0, 20.0	; each coordinate in meters
-AngularStandSpeed		 = 360				; degrees
-AngularMinSpeed			 = 360				; degrees
-AngularMaxSpeed			 = 30				; degrees
-AngularAttackSpeed		 = 10				; degrees
+AngleSpeed			 = 0.2	            ; degrees per second
+GoalChangeDelta	 	 = 10.0				; seconds
+GoalVariation	  	 = 10.0, 0.0, 20.0	; each coordinate in meters
+AngularStandSpeed	 = 360				; degrees
+AngularMinSpeed		 = 360				; degrees
+AngularMaxSpeed		 = 30				; degrees
+AngularAttackSpeed	 = 10				; degrees
 
-MoraleDeathDistance	     = 50				; meters
-SoundThreshold		     = 0.06             ; range [0..1]
+MoraleDeathDistance	 = 50				; meters
+SoundThreshold		 = 0.06             ; range [0..1]
 
-ActionRefreshRate	     = 500			; milliseconds
-MaxHealthValue		     = 15			; range [0..200]
+ActionRefreshRate	 = 500			; milliseconds
+MaxHealthValue		 = 15			; range [0..200]
 
-EatMemberCorpses	     = 1			; range {0,1}
-Cannibalism				= 1			; range {0,1}
-EatCorpseInterval	     = 600000			; milliseconds
+EatMemberCorpses	 = 1			; range {0,1}
+Cannibalism			 = 1			; range {0,1}
+EatCorpseInterval	 = 600000			; milliseconds
 
-corp_mass				= 500			;
+corp_mass			 = 500			;
 
-; personal charactersitics
-EyeFov							= 120;
-EyeRange						= 10;
-Health							= 5;
-MinSpeed						= .5;
-MaxSpeed						= 1.5;
-AttackSpeed					= 4.0;
-MaxPursuitRadius				= 100;
-MaxHomeRadius					= 10;
-; morale
-MoraleSuccessAttackQuant		= 20;
-MoraleDeathQuant				= -10;
-MoraleFearQuant				= -20;
-MoraleRestoreQuant				=  10;
-MoraleRestoreTimeInterval	= 3000;
-MoraleMinValue					= 0;
-MoraleMaxValue					= 100;
-MoraleNormalValue				= 66;
-; attack
-HitPower						= 30.0;
-HitInterval						= 1500;
-AttackDistance					= 0.7f;
-AttackAngle						= 45;
-AttackSuccessProbability		= 0.5f;
+EyeFov				 = 120;
+EyeRange			 = 10;
+Health				 = 5;
+MinSpeed			 = .5;
+MaxSpeed			 = 1.5;
+AttackSpeed			 = 4.0;
+MaxPursuitRadius	 = 100;
+MaxHomeRadius		 = 10;
 
-terrain							= 255,255,255,255,30,40
+MoraleSuccessAttackQuant = 20;
+MoraleDeathQuant	 = -10;
+MoraleFearQuant		 = -20;
+MoraleRestoreQuant	 =  10;
+MoraleRestoreTimeInterval = 3000;
+MoraleMinValue		 = 0;
+MoraleMaxValue		 = 100;
+MoraleNormalValue	 = 66;
+
+HitPower			 = 30.0;
+HitInterval			 = 1500;
+AttackDistance		 = 0.7f;
+AttackAngle			 = 45;
+AttackSuccessProbability = 0.5f;
+
+terrain				 = 255,255,255,255,30,40
 ;-----------------------------------------------------------------
 
 [alife]
