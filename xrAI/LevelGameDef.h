@@ -100,6 +100,9 @@ public:
 class CNPC_Point : public CCustomGamePoint {
 private:
 	string64				caModel;
+	u8						cTeam;
+	u8						cSquad;
+	u8						cGroup;
 	u16						wGroupID;
 	u16						wCount;
 	float					fBirthRadius;
@@ -118,6 +121,9 @@ public:
 		// data chunk
 		fs.open_chunk		(NPC_POINT_CHUNK_DATA);
 		fs.Wstring			(caModel);
+		fs.Wbyte			(cTeam);
+		fs.Wbyte			(cSquad);
+		fs.Wbyte			(cGroup);
 		fs.Wword			(wGroupID);
 		fs.Wword			(wCount);
 		fs.Wfloat			(fBirthRadius);
@@ -136,6 +142,9 @@ public:
 		
 		R_ASSERT(fs.FindChunk(NPC_POINT_CHUNK_DATA));
 		fs.Rstring					(caModel);
+		cTeam						= fs.Rbyte();
+		cSquad						= fs.Rbyte();
+		cGroup						= fs.Rbyte();
 		wGroupID					= fs.Rword();
 		wCount						= fs.Rword();
 		fBirthRadius				= fs.Rfloat();
@@ -149,6 +158,9 @@ public:
 	virtual void FillProp	(LPCSTR pref, PropValueVec& values)
 	{
    		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"NPC name",					&caModel,					PHelper.CreateGameObject(sizeof(caModel)));
+   		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Team",						&cTeam,						PHelper.CreateU8	(0,255,1));
+   		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Squad",						&cSquad,					PHelper.CreateU8	(0,255,1));
+   		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Group",						&cGroup,					PHelper.CreateU8	(0,255,1));
    		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Group ID",					&wGroupID,					PHelper.CreateU16	(0,65535,1));
    		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Count",						&wCount,					PHelper.CreateU16	(0,65535,1));
    		FILL_PROP_EX(values, PHelper.PrepareKey(pref,s_name),"Birth radius",				&fBirthRadius,				PHelper.CreateFloat	(0,1000.f,1.f));

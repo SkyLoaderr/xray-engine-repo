@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: ai_misc.h
+//	Module 		: ai_misc.cpp
 //	Created 	: 21.03.2002
 //  Modified 	: 16.12.2002
 //	Author		: Dmitriy Iassenev

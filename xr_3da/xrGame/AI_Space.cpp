@@ -122,7 +122,7 @@ void CAI_Space::Load(LPCSTR name)
 //	Msg("A star time %11I64u",t2x);
 }
 
-#define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x -= 80.f, t.y /= 10.f, t.y += 1.f, t.z /= 10.f, t.z -= 10.f;
+#define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x -= 0.f, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z -= 40.f;
 void CAI_Space::Render()
 {
 	if (m_tpaGraph)
@@ -162,13 +162,13 @@ void CAI_Space::Render()
 				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(255,0,0));
 				t1 = t2;
 			}
-			i=1;
-			for (; m_tpIndexes[m_tpHeap[i].iIndex].dwTime == m_dwAStarStaticCounter; i++) {
-				Fvector t2 = m_tpaGraph[m_tpHeap[i].iIndex].tPoint;
-				t2.y += .6f;
-				NORMALIZE_VECTOR(t2);
-				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
-			}
+//			i=1;
+//			for (; m_tpIndexes[m_tpHeap[i].iIndex].dwTime == m_dwAStarStaticCounter; i++) {
+//				Fvector t2 = m_tpaGraph[m_tpHeap[i].iIndex].tPoint;
+//				t2.y += .6f;
+//				NORMALIZE_VECTOR(t2);
+//				Device.Primitive.dbg_DrawAABB(t2,.05f,.05f,.05f,D3DCOLOR_XRGB(255,0,0));
+//			}
 		}
 	}
 
