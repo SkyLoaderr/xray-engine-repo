@@ -37,6 +37,7 @@ R2:
 	* work out skybox					(again)						-/
 	* work out hemisphere				(again)						-	1 day (?)
 	* work out ordinary rendering + transparency					-	1 day (?)
+	* work out HUD													-	1 day (?)
 	* sRGB convert diffuse				(???)						-	?
 	* transluency						(again + experiment)		-	1day - 1week
 	* reverse culling for spot/point with initial clears - should avoid most biasing (?)	- 1day - but can just not work :)

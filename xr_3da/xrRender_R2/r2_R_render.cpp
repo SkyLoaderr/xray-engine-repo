@@ -62,7 +62,7 @@ void CRender::Render		()
 
 			// Determine visibility for dynamic part of scene
 			set_Object							(0);
-			g_pGameLevel->pHUD->Render_First	( );
+			//. g_pGameLevel->pHUD->Render_First( );
 			for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
 			{
 				ISpatial*	spatial		= lstRenderables[o_it];
@@ -122,7 +122,7 @@ void CRender::Render		()
 	{
 		// level
 		Target.phase_scene						();
-		// r_dsgraph_render_hud					();
+		r_dsgraph_render_hud					();
 		r_dsgraph_render_graph					(0);
 		Details.Render							();
 		// mapSorted.traverseRL					(sorted_L1);
