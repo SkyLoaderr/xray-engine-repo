@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "effectornoise.h"
-#include "..\render.h"
 #include "..\bodyinstance.h"
 #include "..\xr_tokens.h"
 #include "..\3DSound.h"

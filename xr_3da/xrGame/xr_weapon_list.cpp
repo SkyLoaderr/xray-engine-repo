@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "..\render.h"
 #include "..\bodyinstance.h"
 #include "..\fmesh.h"
 

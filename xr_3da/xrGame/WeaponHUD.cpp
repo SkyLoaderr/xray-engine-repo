@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\render.h"
 #include "..\fmesh.h"
 #include "..\bodyinstance.h"
 #include "WeaponHUD.h"

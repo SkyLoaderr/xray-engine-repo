@@ -3,9 +3,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\render.h"
 #include "HUDManager.h"
 #include "hudcursor.h"
+#include "actor.h"
 
 //--------------------------------------------------------------------
 CHUDManager::CHUDManager()
@@ -80,11 +80,13 @@ void CHUDManager::Render_Calcualte()
 	if (0==pUI)						return;
 	CObject*	O					= pCreator->CurrentViewEntity();
 	if (0==O)						return;
+	CActor*		A					= dynamic_cast<CActor*> (O);
+	if (A && A->HUDview())			return;
 
-	::Render->set_Object		(O->H_Root());
-	::Render->set_HUD			(TRUE);
-	O->OnHUDDraw				(this);
-	::Render->set_HUD			(FALSE);
+	::Render->set_HUD				(TRUE);
+	::Render->set_Object			(O->H_Root());
+	O->OnHUDDraw					(this);
+	::Render->set_HUD				(FALSE);
 }
 
 void CHUDManager::Render_Affected()

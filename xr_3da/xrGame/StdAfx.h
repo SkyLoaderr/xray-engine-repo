@@ -35,6 +35,8 @@
 #include "..\NET_Server.h"
 #include "..\NET_Client.h"
 
+#include "..\render.h"
+
 #include "Level.h"
 
 // TODO: reference additional headers your program requires here

@@ -4,7 +4,6 @@
 
 #include "stdafx.h"
 #include "GameObject.h"
-#include "..\render.h"
 #include "..\fbasicvisual.h"
 
 //////////////////////////////////////////////////////////////////////

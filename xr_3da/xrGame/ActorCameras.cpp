@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Actor.h"
 #include "..\CameraBase.h"
-#include "..\render.h"
 
 void CActor::cam_Set	(EActorCameras style)
 {

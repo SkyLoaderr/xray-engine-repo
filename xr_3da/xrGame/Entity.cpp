@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "..\render.h"
  
 #include "hudmanager.h"
 #include "Entity.h"

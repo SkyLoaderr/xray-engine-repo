@@ -11,7 +11,6 @@
 #include "..\fdemorecord.h"
 #include "..\fdemoplay.h"
 #include "..\xr_ioconsole.h"
-#include "..\render.h"
 #include "..\xr_level_controller.h"
 #include "HUDmanager.h"
 #include "WayPointDef.h"

@@ -163,16 +163,19 @@ private:
 	void				cam_Set					(EActorCameras style);
 	void				cam_Update				(float dt, BOOL bZoom);
 
-	bool				HUDview					( ) { return IsFocused()&&(cam_active==eacFirstEye); }
 public:
 						CActor					( );
 	virtual				~CActor					( );
 
 
-	IC static BOOL			isAccelerated		(DWORD mstate)	
+	IC BOOL					isAccelerated		(DWORD mstate)	
 	{
 		if (mstate&mcAccel)	return (psActorFlags&AF_ALWAYSRUN)?FALSE:TRUE ;
 		else				return (psActorFlags&AF_ALWAYSRUN)?TRUE :FALSE;
+	}
+	IC bool					HUDview				( ) 
+	{ 
+		return IsFocused()&&(cam_active==eacFirstEye); 
 	}
 
 	virtual void			Load				( CInifile* ini, const char *section );

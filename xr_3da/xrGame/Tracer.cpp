@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "Tracer.h"
-#include "..\render.h"
 
 const DWORD	MAX_TRACERS	= (1024*5);
 const float TRACER_SIZE = 0.2f;

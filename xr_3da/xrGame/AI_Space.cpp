@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "AI_Space.h"
 #include "gameobject.h"
-#include "..\render.h"
 
 // for a* search
 #include "ai_a_star.h"

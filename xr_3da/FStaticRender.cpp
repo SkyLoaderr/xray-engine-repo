@@ -209,8 +209,8 @@ void CRender::Calculate()
 
 	// Calculate sector(s) and their objects
 	set_Object								(0);
-	if (0!=pLastSector) pLastSector->Render	(ViewBase);
 	pCreator->pHUD->Render_Calcualte		();	
+	if (0!=pLastSector) pLastSector->Render	(ViewBase);
 	L_Shadows.calculate						();
 	L_Projector.calculate					();
 	
