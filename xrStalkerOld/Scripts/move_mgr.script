@@ -154,7 +154,6 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 	self.shall_shoot = nil
 	self.is_shooting = false
 
-	self.cur_state_standing = default_state_standing
 	if not suggested_state then
 		self.default_state_standing = default_state_standing
 		self.default_state_moving1 = default_state_moving1
@@ -171,6 +170,7 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 			suggested_state.moving3, suggested_state.moving1, default_state.moving3)
 	end
 
+	self.cur_state_standing = self.default_state_standing
 	self.cur_state_moving = self.default_state_moving1
 
 	self.moving = false -- переменная для проверки из внешнего скрипта, стоит ли персонаж на месте
