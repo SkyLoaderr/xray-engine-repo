@@ -34,7 +34,7 @@ void CUIFragList::OnFrame()
 	CGameFont* H		= Level().HUD()->pHUDFont;
 	H->OutSet			(float(list_rect.lt.x),float(list_rect.lt.y));
 	// global info
-	if (Game().fraglimit)	H->OutNext	("Frag Limit: %3d",Game().fraglimit);
+	if (Game().fraglimit)	H->OutNext	("Frag Limit:  %3d",Game().fraglimit);
 	if (Game().timelimit)	H->OutNext	("Time remain: %3d (s)",(Game().timelimit-(Level().timeServer()-Game().start_time))/1000);
 	if (Game().fraglimit||Game().timelimit)	H->OutSkip(1.5f);
 	int k=1;
