@@ -87,6 +87,7 @@ public:
 	u32					eye_pp_stage;
 	u32					eye_pp_timestamp;
 	objSET				eye_pp_seen;
+	Fvector				m_tEyeShift;
 
 	// AI
 	AI::AIC_Look		q_look;

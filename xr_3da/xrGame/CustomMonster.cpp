@@ -50,6 +50,7 @@ CCustomMonster::CCustomMonster()
 	m_tpPath			= 0;
 	vfResetPatrolData	();
 	m_dwLastUpdateTime	= 0xffffffff;
+	m_tEyeShift.set		(0,0,0);
 }
 
 CCustomMonster::~CCustomMonster	()
@@ -401,8 +402,8 @@ void CCustomMonster::eye_pp_s0			( )
 	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
 	Fmatrix		X;							X.mul_43	(svTransform,mEye);
 	eye_matrix.setHPB						(-r_current.yaw,-r_current.pitch,0);
-	eye_matrix.c.set						(X.c);
-//	X.transform_tiny						(eye_matrix.c,eye_shift);
+//	eye_matrix.c.set						(X.c);
+	eye_matrix.c.add						(X.c,m_tEyeShift);
 	Device.Statistic.TEST0.End				();
 }
 void CCustomMonster::eye_pp_s1			( )
