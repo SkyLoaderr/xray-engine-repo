@@ -86,8 +86,8 @@ public:
 	void	xrStartUp		();
 	void	xrShutDown		();
 
-	void	OnDeviceDestroy	(void);
 	void	OnDeviceCreate	(void);
+	void	OnDeviceDestroy	(void);
 	void	OnFrameEnd		();
 
 	// Creation/Destroying

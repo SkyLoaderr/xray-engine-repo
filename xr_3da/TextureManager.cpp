@@ -364,18 +364,22 @@ void	CShaderManager::OnDeviceDestroy(void)
 	constants.clear	();
 }
 
-void	CShaderManager::OnDeviceCreate(void) 
+void	CShaderManager::OnDeviceCreate(void)
 {
 	if (!Device.bReady) return;
 	cache.Invalidate	();
-	
+
+#ifdef M_BORLAND
+	CCompressedStream		FS("game\\shaders.xr","shENGINE");
+#else
 	CCompressedStream		FS("shaders.xr","shENGINE");
+#endif
 	char					name[256];
-	
+
 	// Load constants
 	{
 		CStream*	fs		= FS.OpenChunk(0);
-		while (!fs->Eof())	{
+		while (fs&&!fs->Eof())	{
 			fs->RstringZ	(name);
 			CConstant*		C = new CConstant;
 			C->Load			(fs);
@@ -383,11 +387,11 @@ void	CShaderManager::OnDeviceCreate(void)
 		}
 		fs->Close();
 	}
-	
+
 	// Load matrices
 	{
 		CStream*	fs		= FS.OpenChunk(1);
-		while (!fs->Eof())	{
+		while (fs&&!fs->Eof())	{
 			fs->RstringZ	(name);
 			CMatrix*		M = new CMatrix;
 			M->Load			(fs);
