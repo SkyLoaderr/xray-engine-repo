@@ -155,17 +155,21 @@ function bandit:updateJob()
 							end			
 						end
 					end
-					if npc == nil and self.leader ~= nil then
-						npc = self.leader
-					end
 				end
 	        		if npc ~= nil then 
 					self:setJob(npc, v) 
 				end
+			else
+				-- Проверяем не истекло ли время
+				if v.time ~= nil and
+				   game.time() - v.begin > v.time
+				then
+					v.object = nil
+				end
 			end
         	end
 	end
---	self:print()
+	self:print()
 end
 function bandit:setJob(npc, job) 
 	-- удаляем у этого npc все работы (в сторадже)
@@ -175,6 +179,11 @@ function bandit:setJob(npc, job)
 		job.object = npc
 		job.begin = game.time()
 	        xr_kamp.set_kamp(npc, true, job.center_point, nil)
+	end
+	if job.name == "sleeper" then
+		job.object = npc
+		job.begin = game.time()
+	        xr_sleeper.set_sleeper(npc, true, job.point)
 	end
 	if job.name == "ambush" then
 		job.object = npc
@@ -238,7 +247,6 @@ function bandit:loadJob(name) -- загружает список заданий
 			state = {1,5}, -- в каких состояниях это задание существует
 			center_point = "black_kamp_center"}
 		table.insert(self.Job, t)
-
 		t = { 	name = "kamp",
 			object = nil,
 			begin = nil, 
@@ -255,6 +263,15 @@ function bandit:loadJob(name) -- загружает список заданий
 			state = {1,5}, -- в каких состояниях это задание существует
 			center_point = "black_kamp_center"}
 		table.insert(self.Job, t)			
+		t = { name = "sleeper",
+			object = nil,
+			begin = nil, 
+			idle = 60*60*1000,	-- раз в какое время запускается работа
+			time = 30*60*1000,	-- продложительность работы.
+			prior = 2,
+			state = {1}, -- в каких состояниях это задание существует
+			point = "black_kamp_sleep"}
+		table.insert(self.Job, t)
 
 		t = { name = "patrol",
 			object = nil,
@@ -780,11 +797,13 @@ function addMember(name, npc, char_ini)
 		if v == "kamp" then
 		        xr_kamp.add_to_binder (npc, nil)
 		elseif v == "patrol" then
-		        xr_patrol.add_to_binder  (npc, nil)
+		        xr_patrol.add_to_binder (npc, nil)
 		elseif v == "follower" then
-		        xr_follower.add_to_binder(npc, nil)
+		        xr_follower.add_to_binder (npc, nil)
 		elseif v == "ambush" then
-		        xr_ambush.add_to_binder(npc, nil)
+		        xr_ambush.add_to_binder (npc, nil)
+		elseif v == "sleeper" then
+		        xr_sleeper.add_to_binder (npc, nil)
 		end
 	end
 end
