@@ -171,7 +171,6 @@ void CGrenade::Destroy()
 
 bool CGrenade::Useful() const
 {
-	// ≈сли IItem еще не полностью использованый, вернуть true
 	return m_dwDestroyTime == 0xffffffff;
 }
 
@@ -375,4 +374,9 @@ ALife::_TIME_ID	 CGrenade::TimePassedAfterIndependant()	const
 		return Level().timeServer() - m_dwGrenadeIndependencyTime;
 	else
 		return 0;
+}
+
+BOOL CGrenade::UsedAI_Locations		()
+{
+	return m_dwDestroyTime == 0xffffffff;
 }

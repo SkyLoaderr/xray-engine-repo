@@ -49,8 +49,7 @@ void CBolt::Throw()
 
 bool CBolt::Useful() const
 {
-	// ≈сли IItem еще не полностью использованый, вернуть true
-	return m_dwDestroyTime == 0xffffffff;
+	return false;
 }
 
 bool CBolt::Action(s32 cmd, u32 flags) 
