@@ -10,6 +10,8 @@ function fract:__init(name)
 	self.checkTime = 10000 	-- время между проверками постов
 	self.checkBegin = nil
 
+	self.casualites = 0  	-- потери на блокпосте
+
 	self.Object = {}        -- список ресурсов
 	self.Job = {}           -- список заданий
 	self.States = {}	-- список состояний
@@ -449,7 +451,12 @@ function fract:stalkerExsist(npc)
 	end
 	return false
 end
-
+function fract:getCasualites()
+	return self.casualites
+end
+function fract:changeCasualites(delta)
+	self.casualites = self.casualites + delta
+end
 ----------------------------------------------------------------------------------------------------------------------
 -- Evaluators
 ----------------------------------------------------------------------------------------------------------------------
@@ -572,5 +579,23 @@ end
 function getJob(fraction, npc)
 	if fraction ~= nil and npc ~= nil then
 		return xr_gulag.fraction[fraction]:getJob(npc)
+	end
+end
+function needRaid(fraction)
+	if xr_gulag.fraction[fraction] ~= nil then
+		local cc = xr_gulag.fraction[fraction]:getCasualites()
+		if cc >= 3 then return true end
+	end
+	return false			
+end
+function changeCasualites(fraction, delta)
+	if xr_gulag.fraction[fraction] ~= nil then
+		xr_gulag.fraction[fraction]:changeCasualites(delta)
+	end
+end
+function startRaid(fraction)
+	if xr_gulag.fraction[fraction] ~= nil then
+		local cc = xr_gulag.fraction[fraction]:getCasualites()
+		xr_gulag.fraction[fraction]:changeCasualites(-cc)
 	end
 end
