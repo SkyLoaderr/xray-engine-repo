@@ -39,12 +39,12 @@
 	<!--  ANIMATED STATIC TEST -->
 	<a_static x="200" y="92" width="32" height="32"
 			frames			= "16"
-			duration		= "300"
+			duration		= "500"
 			columns			= "8"
 			frame_width		= "32"
 			frame_height	= "32"
 			cyclic			= "1"
-			play			= "1"
+			autoplay		= "1"
 	>
 		<texture>ui\ui_pda_anims_03</texture>
 	</a_static>
