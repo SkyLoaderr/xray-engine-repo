@@ -83,6 +83,8 @@ void ESoundThumbnail::Save(int age, LPCSTR path)
     else			FS.update_path(_sounds_,fn);
     F.save_to		(fn.c_str());
 
+    int gf 			= FS.get_file_age(fn.c_str());
+
     FS.set_file_age	(fn.c_str(),age?age:m_Age);
 }
 //------------------------------------------------------------------------------
