@@ -188,8 +188,10 @@ public:
 		material_pairs_rt.clear();
 		for (GameMtlIt m_it=materials.begin(); m_it!=materials.end(); m_it++)
 			_DELETE	(*m_it);
+		materials.clear();
 		for (GameMtlPairIt p_it=material_pairs.begin(); p_it!=material_pairs.end(); p_it++)
 			_DELETE	(*p_it);
+		material_pairs.clear();
 	}
     // material routine
     IC GameMtlIt 		GetMaterialIt	(LPCSTR name)
