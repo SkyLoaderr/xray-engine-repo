@@ -61,9 +61,9 @@ function multiplayer_create_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
 	
-	local frame = ui_multiplayer_map_tab.map_tab()
-	frame:InitControls(self.left_align_x, self.top_align_y)
-	self.main_frame:AttachChild(frame)
+	self.map_tab = ui_multiplayer_map_tab.map_tab()
+	self.map_tab:InitControls(self.left_align_x, self.top_align_y)
+	self.main_frame:AttachChild(self.map_tab)
 	
 end
 
