@@ -20,6 +20,22 @@ void lm_layer::Pack		(xr_vector<u32>& dest)
 		*W++	= color_rgba(_r,_g,_b,_d);
 	}
 }
+
+void lm_layer::Pack_hemi	(xr_vector<u32>& dest)	
+{
+	//. width/2, height/2 ????
+	dest.resize			(width*height);
+	xr_vector<base_color>::iterator I=surface.begin();
+	xr_vector<base_color>::iterator E=surface.end();
+	xr_vector<u32>::iterator		W=dest.begin();
+	for (; I!=E; I++)
+	{
+		base_color_c	C; I->_get(C);
+		u8	_h	= u8_clr(C.hemi);
+		*W++	= color_rgba(_h,_h,_h,_h);
+		//.??? 4 ???? samples , average
+	}
+}
 u32 lm_layer::Pixel	(u32 ID)
 {
 	xr_vector<base_color>::iterator I = surface.begin()+ID;

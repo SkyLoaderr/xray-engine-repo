@@ -148,7 +148,7 @@ void CBuild::Run	(LPCSTR P)
 	BuildPortals				(*fs);
 
 	//****************************************** T-Basis
-	if (b_R2)	//****************************** R2 only
+	// if (b_R2) ******************************* R2 only
 	{
 		FPU::m64r					();
 		Phase						("Building tangent-basis...");
@@ -188,7 +188,7 @@ void CBuild::Run	(LPCSTR P)
 	IsolateVertices				(TRUE);
 
 	//****************************************** UV mapping
-	if (!b_R2)	//****************************** R1 only
+	// if (!b_R2)	**************************** R1 only
 	{
 		FPU::m64r					();
 		Phase						("Build UV mapping...");
@@ -205,8 +205,8 @@ void CBuild::Run	(LPCSTR P)
 	IsolateVertices				(TRUE);
 
 	//****************************************** All lighting + lmaps building and saving
-	if (!b_R2)					Light			();
-	else						Light_R2		();
+	/*if (!b_R2)*/				Light			();
+	// else						Light_R2		();
 
 	//****************************************** Merge geometry
 	FPU::m64r					();

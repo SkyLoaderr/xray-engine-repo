@@ -4,8 +4,8 @@
 #include "std_classes.h"
 #include "xrImage_Resampler.h"
 
-#define rms_zero	((4+g_params.m_lm_rms_zero)/2)
-#define rms_shrink	((8+g_params.m_lm_rms)/2)
+#define rms_zero	((4+g_params.m_lm_rms_zero)/2)	//. float
+#define rms_shrink	((8+g_params.m_lm_rms)/2)		//. float
 const	u32	rms_discard		= 8;
 
 void Jitter_Select(Fvector2* &Jitter, u32& Jcount)
@@ -353,11 +353,23 @@ BOOL	__stdcall rms_test	(lm_layer& lm, u32 w, u32 h, u32 rms)
 	if ((w<=1) || (h<=1))	return FALSE;
 
 	// scale down(lanczos3) and up (bilinear, as video board)
-	xr_vector<u32>	pOriginal;	lm.Pack			(pOriginal);
-	xr_vector<u32>	pScaled;	pScaled.resize	(w*h);
-	xr_vector<u32>	pRestored;	pRestored.resize(lm.width*lm.height);
+	//.?????????
+	xr_vector<u32>			pOriginal;		lm.Pack			(pOriginal);
+	xr_vector<u32>			pOriginal_hemi;	lm.Pack_hemi	(pOriginal);
+
+	xr_vector<base_color>	pScaled;	pScaled.resize	(w*h);
+	xr_vector<base_color>	pScaled_hemi;	pScaled.resize	(w*h);
+
+	xr_vector<base_color>	pRestored;	pRestored.resize(lm.width*lm.height);
+	xr_vector<base_color>	pRestored_hemi;	pRestored.resize(lm.width*lm.height);
+
 	try {
+		// 5-channel -> r,g,b,sun,hemi
 		imf_Process	(&*pScaled.begin(),		w,			h,			&*pOriginal.begin(),	lm.width,lm.height,imf_lanczos3	);
+		imf_Process	(&*pRestored.begin(),	lm.width,	lm.height,	&*pScaled.begin(),		w,h,imf_filter					);
+
+		// hemi ??????????
+		imf_Process	(&*pScaled_hemi.begin(),		w,			h,			&*pOriginal.begin(),	lm.width,lm.height,imf_lanczos3	);
 		imf_Process	(&*pRestored.begin(),	lm.width,	lm.height,	&*pScaled.begin(),		w,h,imf_filter					);
 	} catch (...)
 	{
@@ -370,9 +382,9 @@ BOOL	__stdcall rms_test	(lm_layer& lm, u32 w, u32 h, u32 rms)
 	for (u32 y=0; y<lm.height; y++)
 	{
 		u32		offset		= y*lm.width;
-		u8*		scan_mark	= (u8*)	&*(lm.marker.begin()+offset);
-		u32*	scan_lmap	= (u32*)&*(pOriginal.begin()+offset);
-		u32*	scan_rest	= (u32*)&*(pRestored.begin()+offset);
+		u8*		scan_mark	= (u8*)	&*(lm.marker.begin()+offset);	//.
+		u32*	scan_lmap	= (u32*)&*(pOriginal.begin()+offset);	//.
+		u32*	scan_rest	= (u32*)&*(pRestored.begin()+offset);	//.
 		for (u32 x=0; x<lm.width; x++)
 		{
 			if (scan_mark[x]>=limit)	
@@ -383,6 +395,8 @@ BOOL	__stdcall rms_test	(lm_layer& lm, u32 w, u32 h, u32 rms)
 				if (rms_diff(color_get_G(pixel_r),color_get_G(pixel))>rms)	return FALSE;
 				if (rms_diff(color_get_B(pixel_r),color_get_B(pixel))>rms)	return FALSE;
 				if (rms_diff(color_get_A(pixel_r),color_get_A(pixel))>rms)	return FALSE;
+
+				//.??? if (rms_diff(color_get_!!hemi!!!(pixel_r),color_get_A(pixel))>rms)	return FALSE;
 			}
 		}
 	}
@@ -403,6 +417,8 @@ BOOL	__stdcall rms_test	(lm_layer&	lm, u32 _r, u32 _g, u32 _b, u32 _a, u32 rms)
 				if (rms_diff(_g, color_get_G(pixel))>rms)	return FALSE;
 				if (rms_diff(_b, color_get_B(pixel))>rms)	return FALSE;
 				if (rms_diff(_a, color_get_A(pixel))>rms)	return FALSE;
+
+				//.??? if (rms_diff(color_get_!!hemi!!!(pixel_r),color_get_A(pixel))>rms)	return FALSE;
 			}
 		}
 	}
@@ -442,6 +458,7 @@ BOOL	compress_Zero		(lm_layer& lm, u32 rms)
 	} else		_c.scale(_count);
 
 	// Compress if needed
+	//.???
 	u8	_r	= u8_clr	(_c.rgb.x	);
 	u8	_g	= u8_clr	(_c.rgb.y	);
 	u8	_b	= u8_clr	(_c.rgb.z	);

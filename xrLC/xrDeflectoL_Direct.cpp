@@ -37,7 +37,7 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 		// ok - perform lighting
 		base_color_c	C;
 		Fvector			P;	P.mad(v1,vdir,time);
-		LightPoint		(DB, RCAST_Model, C, P, N, *LightsSelected, LP_dont_hemi, skip);
+		LightPoint		(DB, RCAST_Model, C, P, N, *LightsSelected, /*.???*/LP_DEFAULT, skip);
 		
 		C.mul		(.5f);
 		lm.surface	[_y*lm.width+_x]._set	(C);
@@ -97,7 +97,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
 							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
 							try {
-								LightPoint	(DB, RCAST_Model, C, wP, wN, *LightsSelected, LP_dont_hemi, F);
+								LightPoint	(DB, RCAST_Model, C, wP, wN, *LightsSelected, /*hemi!!!!*/LP_DEFAULT, F);
 								Fcount		+= 1;
 							} catch (...) {
 								clMsg("* ERROR (CDB). Recovered. ");

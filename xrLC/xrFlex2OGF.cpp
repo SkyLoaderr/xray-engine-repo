@@ -58,6 +58,9 @@ void CBuild::Flex2OGF()
 						R_ASSERT		(T.pSurface);
 						R_ASSERT		(pOGF);
 						pOGF->textures.push_back(T);
+
+						//.....?????????
+						// second light-map!!!!
 					}
 				}
 			} catch (...) {  clMsg("* ERROR: Flex2OGF, model# %d, *textures*",MODEL_ID); }

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "build.h"
 
+#pragma todo ("REMOVE THIS FILE");
+
 void CBuild::Tesselate	()
 {
 	u32	cnt_splits	= 0;

@@ -32,19 +32,15 @@ s16						s16_tc_lmap		(float uv)		// [-1 .. +1]
 	return	s16	(t);
 }
 
-D3DVERTEXELEMENT9		r2_decl			[] =	// 32
-{
-	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
-	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
-	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TANGENT,	0 },
-	{0, 20, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_BINORMAL,	0 },
-	{0, 24, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
-	D3DDECL_END()
-};
 D3DVERTEXELEMENT9		r1_decl_lmap	[] =	// 12+4+8	= 24 / 28
 {
 	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
 	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_NORMAL,	0 },
+
+	//...???
+	{0, 16, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TANGENT,	0 },
+	{0, 20, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_BINORMAL,	0 },
+
 	{0, 16, D3DDECLTYPE_FLOAT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
 	{0, 24, D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	1 },
 	D3DDECL_END()
@@ -58,29 +54,11 @@ D3DVERTEXELEMENT9		r1_decl_vert	[] =	// 12+4+4+4 = 24 / 28
 	D3DDECL_END()
 };
 #pragma pack(push,1)
-struct	r2v
-{
+struct  r1v_lmap	{
 	Fvector3	P;
 	u32			N;
 	u32			T;
 	u32			B;
-	float		tc0x,tc0y;
-
-	r2v			(Fvector3 _P, Fvector _N, base_basis _T, base_basis _B, base_color _CC, Fvector2 tc_base)
-	{
-		base_color_c	_C;	_CC._get	(_C);
-		_N.normalize_safe	();
-		P					= _P;
-		N					= u8_vec4		(_N,u8_clr(_C.hemi));
-		T					= u8_vec4		(_T);
-		B					= u8_vec4		(_B);
-		tc0x				= tc_base.x;
-		tc0y				= tc_base.y;
-	}
-};
-struct  r1v_lmap	{
-	Fvector3	P;
-	u32			N;
 	float		tc0x,tc0y;
 	s16			tc1x,tc1y;
 
@@ -90,6 +68,8 @@ struct  r1v_lmap	{
 		_N.normalize	();
 		P				= _P;
 		N				= u8_vec4		(_N,u8_clr(_C.hemi));
+		T				= u8_vec4		(_T);	//.
+		B				= u8_vec4		(_B);
 		tc0x			= tc_base.x;
 		tc0y			= tc_base.y;
 		tc1x			= s16_tc_lmap	(tc_lmap.x);
@@ -108,6 +88,8 @@ struct  r1v_vert	{
 		_N.normalize	();
 		P				= _P;
 		N				= u8_vec4		(_N,u8_clr(_C.hemi));
+		T				= u8_vec4		(_T);	//.
+		B				= u8_vec4		(_B);
 		C				= color_rgba	(u8_clr(_C.rgb.x),u8_clr(_C.rgb.y),u8_clr(_C.rgb.z),u8_clr(_C.sun));
 		tc0x			= tc_base.x;
 		tc0y			= tc_base.y;
@@ -259,6 +241,8 @@ void	OGF::PreSave			()
 	VDeclarator		D;
 	if (b_R2)
 	{
+		//. REMOVE
+		/*
 		D.set			(r2_decl);
 		g_VB.Begin		(D);
 		for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
@@ -267,6 +251,7 @@ void	OGF::PreSave			()
 			g_VB.Add		(&v,sizeof(v));
 		}
 		g_VB.End		(&vb_id,&vb_start);
+		*/
 	} else {
 		if	(bVertexColored)	
 		{

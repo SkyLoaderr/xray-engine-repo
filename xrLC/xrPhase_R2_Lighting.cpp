@@ -3,6 +3,8 @@
 #include "xrThread.h"
 #include "xrSyncronize.h"
 
+#pragma todo ("REMOVE THIS FILE");
+
 /*
 void __stdcall  hemi_callback	(float x, float y, float z, float E, LPVOID P)
 {
