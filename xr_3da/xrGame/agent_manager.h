@@ -26,15 +26,20 @@ protected:
 protected:
 	MEMBER_STORAGE			m_members;
 
+protected:
+			void			add_motivations	();
+			void			add_evaluators	();
+			void			add_actions		();
+
 public:
 							CAgentManager	();
 	virtual					~CAgentManager	();
 	virtual float			shedule_Scale	();
 	virtual void			shedule_Update	(u32 time_delta);	
 	virtual BOOL			shedule_Ready	();
+	virtual void			reload			(LPCSTR section);	
 			void			add				(CEntity *member);
 			void			remove			(CEntity *member);
-			void			update			(u32 time_delta);
 };
 
 #include "agent_manager_inline.h"

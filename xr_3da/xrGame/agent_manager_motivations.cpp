@@ -8,3 +8,14 @@
 
 #include "stdafx.h"
 #include "agent_manager_motivations.h"
+#include "agent_manager.h"
+#include "agent_manager_space.h"
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerMotivationGlobal
+//////////////////////////////////////////////////////////////////////////
+
+float CAgentManagerMotivationGlobal::evaluate	(u32 sub_motivation_id)
+{
+	return			(0.f);
+}

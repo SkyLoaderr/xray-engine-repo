@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "random32.h"
+
 #define TEMPLATE_SPECIALIZATION template<\
 	typename _condition_type,\
 	typename _value_type\

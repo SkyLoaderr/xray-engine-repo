@@ -12,16 +12,15 @@
 #include "agent_manager_actions.h"
 #include "agent_manager_motivations.h"
 #include "agent_manager_properties.h"
+#include "agent_manager_space.h"
+
+using namespace AgentManager;
 
 #define SECTION "squad_manager"
 
 CAgentManager::CAgentManager		()
 {
-	shedule.t_min				= pSettings->r_s32	(SECTION,"schedule_min");
-	shedule.t_max				= pSettings->r_s32	(SECTION,"schedule_max");
-	shedule_register			();
 	reload						(SECTION);
-	reinit						(this);
 }
 
 CAgentManager::~CAgentManager		()
@@ -38,7 +37,7 @@ float CAgentManager::shedule_Scale	()
 void CAgentManager::shedule_Update	(u32 time_delta)
 {
 	ISheduled::shedule_Update	(time_delta);
-	update						(time_delta);
+	inherited::update			(time_delta);
 }
 
 BOOL CAgentManager::shedule_Ready	()
@@ -68,7 +67,42 @@ void CAgentManager::remove			(CEntity *member)
 	m_members.erase				(I);
 }
 
-void CAgentManager::update			(u32 time_delta)
+void CAgentManager::reload			(LPCSTR section)
 {
-//	inherited::update			(time_delta);
+	shedule.t_min				= pSettings->r_s32	(section,"schedule_min");
+	shedule.t_max				= pSettings->r_s32	(section,"schedule_max");
+	shedule_register			();
+	
+	inherited::reload			(section);
+
+	clear						();
+	add_motivations				();
+	add_evaluators				();
+	add_actions					();
+	
+	inherited::reinit			(this);
+}
+
+void CAgentManager::add_motivations	()
+{
+	CWorldState				goal;
+
+	goal.clear				();
+	goal.add_condition		(CWorldProperty(ePropertyIdle,true));
+	add_motivation			(eMotivationIdle,	xr_new<CAgentManagerMotivationAction>(goal));
+}
+
+void CAgentManager::add_evaluators	()
+{
+	add_evaluator			(ePropertyIdle		,xr_new<CAgentManagerPropertyEvaluatorConst>(false));
+}
+
+void CAgentManager::add_actions		()
+{
+	CAgentManagerActionBase	*action;
+
+	action					= xr_new<CAgentManagerActionIdle>	(this,"idle");
+	add_condition			(action,ePropertyIdle,				false);
+	add_effect				(action,ePropertyIdle,				true);
+	add_operator			(eOperatorIdle,						action);
 }

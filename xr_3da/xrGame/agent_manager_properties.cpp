@@ -8,3 +8,14 @@
 
 #include "stdafx.h"
 #include "agent_manager_properties.h"
+#include "agent_manager.h"
+#include "agent_manager_space.h"
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerPropertyEvaluatorGlobal
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerPropertyEvaluatorGlobal::_value_type CAgentManagerPropertyEvaluatorGlobal::evaluate	()
+{
+	return			(false);
+}

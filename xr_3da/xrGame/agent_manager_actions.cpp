@@ -8,3 +8,46 @@
 
 #include "stdafx.h"
 #include "agent_manager_actions.h"
+#include "agent_manager.h"
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionBase
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerActionBase::CAgentManagerActionBase	(CAgentManager *object, LPCSTR action_name) :
+	inherited	(object,action_name)
+{
+}
+
+void CAgentManagerActionBase::initialize			()
+{
+}
+
+void CAgentManagerActionBase::finalize				()
+{
+}
+
+void CAgentManagerActionBase::execute				()
+{
+}
+
+//////////////////////////////////////////////////////////////////////////
+// CAgentManagerActionIdle
+//////////////////////////////////////////////////////////////////////////
+
+CAgentManagerActionIdle::CAgentManagerActionIdle	(CAgentManager *object, LPCSTR action_name) :
+	inherited		(object,action_name)
+{
+}
+
+void CAgentManagerActionIdle::initialize			()
+{
+}
+
+void CAgentManagerActionIdle::finalize				()
+{
+}
+
+void CAgentManagerActionIdle::execute				()
+{
+}

@@ -8,7 +8,6 @@
 
 #include "stdafx.h"
 #include "stalker_motivations.h"
-#include "motivation_action_manager_stalker.h"
 #include "ai/stalker/ai_stalker.h"
 #include "stalker_decision_space.h"
 
