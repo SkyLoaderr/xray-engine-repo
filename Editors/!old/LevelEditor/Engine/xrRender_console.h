@@ -11,6 +11,7 @@ extern float		ps_r__Detail_w_speed;
 extern float		ps_r__Detail_l_ambient;
 extern float		ps_r__Detail_l_aniso;
 extern float		ps_r__Detail_density;
+extern float		ps_r__Detail_rainbow_hemi;
 
 extern float		ps_r__Tree_w_rot;
 extern float		ps_r__Tree_w_speed;

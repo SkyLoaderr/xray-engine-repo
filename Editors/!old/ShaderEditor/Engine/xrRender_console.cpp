@@ -6,12 +6,13 @@
 // Common
 int			ps_r__Supersample		= 1;
 
-float		ps_r__Detail_w_rot1		= 30.f;
-float		ps_r__Detail_w_rot2		= 1.f;
-float		ps_r__Detail_w_speed	= 2.f;
-float		ps_r__Detail_l_ambient	= 0.9f;
-float		ps_r__Detail_l_aniso	= 0.25f;
-float		ps_r__Detail_density	= 0.15f;
+float		ps_r__Detail_w_rot1			= 30.f;
+float		ps_r__Detail_w_rot2			= 1.f;
+float		ps_r__Detail_w_speed		= 2.f;
+float		ps_r__Detail_l_ambient		= 0.9f;
+float		ps_r__Detail_l_aniso		= 0.25f;
+float		ps_r__Detail_density		= 0.15f;
+float		ps_r__Detail_rainbow_hemi	= 0.75f;
 
 float		ps_r__Tree_w_rot		= 10.0f;
 float		ps_r__Tree_w_speed		= 1.00f;
@@ -63,6 +64,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
 	CMD4(CCC_Float,		"r__detail_l_aniso",	&ps_r__Detail_l_aniso,		.1f,	.5f		);
 	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.3f	);
+	CMD4(CCC_Float,		"r__detail_rainbow_h",	&ps_r__Detail_rainbow_hemi,	.00f,	1.0f	);
 
 	Fvector	tw_min,tw_max;
 	tw_min.set			(EPS,EPS,EPS);
