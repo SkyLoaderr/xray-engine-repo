@@ -13,7 +13,6 @@
 #include "script_export_space.h"
 #include "xr_time.h"
 #include "character_info_defs.h"
-#include "script_callback_ex.h"
 #include "game_object_space.h"
 
 enum EPdaMsg;
@@ -73,11 +72,7 @@ class CPhysicsShell;
 class CHelicopter;
 class CHangingLamp;
 
-struct ScriptCallbackInfo{
-	CScriptCallbackEx<void>		m_callback;
-	s16							m_event;
-	ScriptCallbackInfo():m_event(-1){}
-};
+struct ScriptCallbackInfo;
 
 class CScriptGameObject {
 	mutable CGameObject		*m_game_object;

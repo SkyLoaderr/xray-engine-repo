@@ -15,6 +15,7 @@
 #include "script_space.h"
 #include "script_game_object.h"
 #include "CharacterPhysicsSupport.h"
+#include "script_callback_ex.h"
 
 #define SMALL_ENTITY_RADIUS		0.6f
 #define BLOOD_MARKS_SECT		"bloody_marks"

@@ -15,6 +15,7 @@
 #include "script_space.h"
 #include "infoportion.h"
 #include "alife_registry_wrappers.h"
+#include "script_callback_ex.h"
 
 void  CInventoryOwner::OnEvent (NET_Packet& P, u16 type)
 {

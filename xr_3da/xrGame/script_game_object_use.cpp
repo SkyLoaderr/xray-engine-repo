@@ -12,6 +12,14 @@
 #include "script_space.h"
 #include "ai/stalker/ai_stalker.h"
 #include "searchlight.h"
+#include "script_callback_ex.h"
+
+struct ScriptCallbackInfo{
+	CScriptCallbackEx<void>		m_callback;
+	s16							m_event;
+	ScriptCallbackInfo():m_event(-1){}
+};
+
 
 void CScriptGameObject::AddEventCallback			(s16 event, const luabind::functor<void> &lua_function)
 {
