@@ -247,7 +247,7 @@ void CProjectFile::ReloadFile()
 void CProjectFile::Check_view ()
 {
 	if(GetLuaView())
-		GetLuaView()->GetEditor()->SetReadOnly(m_ssStatus==vss_not_checked_out);
+		GetLuaView()->GetEditor()->SetReadOnly(m_ssStatus==vss_not_checked_out||m_ssStatus==vss_checked_out);
 }
 
 void CProjectFile::Change_status(EVSSStatus st)

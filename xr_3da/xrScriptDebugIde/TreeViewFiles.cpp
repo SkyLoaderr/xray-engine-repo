@@ -565,6 +565,7 @@ void CTreeViewFiles::VSSUpdateStatus(HTREEITEM itm)
 */
 			}break;
 		case vss_checked_out:
+			m_pTree->SetItemImage(itm, 5, 5);
 			break;
 		case vss_checked_out_me :{
 			m_pTree->SetItemImage(itm, 6, 6);
