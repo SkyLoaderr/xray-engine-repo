@@ -8,27 +8,27 @@
 
 CMissile::CMissile(void) 
 {
-	m_pHUD = xr_new<CWeaponHUD>();
-	m_offset.identity();
+	m_pHUD				= xr_new<CWeaponHUD>();
+	m_offset.identity	();
 }
 
 CMissile::~CMissile(void) 
 {
-	xr_delete(m_pHUD);
+	xr_delete			(m_pHUD);
 }
 
 void CMissile::reinit		()
 {
-	m_state = MS_HIDDEN;
-	m_throw = false;
-	m_force = 0;
-	m_minForce = 20.f;
-	m_maxForce = 200.f;
-	m_forceGrowSpeed = 50.f;
-	m_destroyTime = 0xffffffff;
-	m_stateTime = 0;
-	m_pInventory = 0;
-	m_bPending = false;
+	m_state				= MS_HIDDEN;
+	m_throw				= false;
+	m_force				= 0;
+	m_minForce			= 20.f;
+	m_maxForce			= 200.f;
+	m_forceGrowSpeed	= 50.f;
+	m_destroyTime		= 0xffffffff;
+	m_stateTime			= 0;
+	m_pInventory		= 0;
+	m_bPending			= false;
 	m_fake_missile		= NULL;
 	hud_mode			= FALSE;
 }
@@ -273,8 +273,12 @@ void CMissile::UpdateCL()
 			State(MS_THROW);
 		else 
 		{
-			m_force += (m_forceGrowSpeed * Device.dwTimeDelta) * .001f;
-			if(m_force > m_maxForce) m_force = m_maxForce;
+			CActor	*actor = dynamic_cast<CActor*>(H_Parent());
+			if (actor) {
+				m_force		+= (m_forceGrowSpeed * Device.dwTimeDelta) * .001f;
+				if (m_force > m_maxForce)
+					m_force = m_maxForce;
+			}
 		}
 	}
 	
@@ -467,7 +471,7 @@ void CMissile::Throw()
 	m_fake_missile->m_throw_direction	= m_throw_direction;
 	
 	m_fake_missile->m_force				= m_force; 
-	m_force								= 0;
+	m_force								= m_minForce;
 	
 	if (Local()) {
 		NET_Packet						P;
