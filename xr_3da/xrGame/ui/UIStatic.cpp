@@ -169,22 +169,6 @@ void CUIStatic::WordOut(const Irect &rect)
 		buf_str[word_length] = 0;
 		word_width = (int)GetFont()->SizeOf(&buf_str.front());
 
-//		// If word splitting enable then cut text trail if it's length more then rect length
-//		if (word_width > rect.right - rect.left)
-//		{
-//			int length = 0;
-//			for (STRING_IT it = buf_str.begin(); it != buf_str.end(); ++it)
-//			{
-//				length = length + static_cast<int>(pFont->SizeOf(*it));
-//				if (length > rect.right - rect.left)
-//				{
-//					*it = 0;
-//					word_width = (int)GetFont()->SizeOf(&buf_str.front());
-//					break;
-//				}
-//			}
-//		}
-
 		if(curretX+word_width<GetWidth())
 		{
 			outX = curretX;
@@ -208,24 +192,18 @@ void CUIStatic::WordOut(const Irect &rect)
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::AddLetter(char letter)
 {
 	if(!new_word)
 	{
 		new_word = true;
 		word_length = 1;
-		buf_str[word_length-1] = letter;
 	}
 	else
-	{
 		++word_length;
-		buf_str[word_length-1] = letter;
-	}
-}
 
-//////////////////////////////////////////////////////////////////////////
+	buf_str[word_length-1] = letter;
+}
 
 //прочитать цвет r,g,b
 u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
@@ -317,8 +295,6 @@ u32 CUIStatic::ReadColor(int pos, int& r, int& g, int& b)
 	return str_offset;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect)
 {
 	TextureClipper(offset_x, offset_y, pClipRect, m_UIStaticItem);
@@ -387,16 +363,12 @@ void CUIStatic::TextureClipper(int offset_x, int offset_y, Irect* pClipRect,
 	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::ClipperOn() 
 {
 	m_bClipper = true;
 
 	TextureClipper(0, 0);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 {
@@ -420,21 +392,15 @@ void CUIStatic::ClipperOff(CUIStaticItem& UIStaticItem)
 	UIStaticItem.SetRect(r);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::ClipperOff() 
 {
 	ClipperOff(m_UIStaticItem);
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::SetTextureScaleXY(float x, float y)
 {
 	m_UIStaticItem.SetScaleXY(x, y);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 float CUIStatic::GetTextureScaleX()
 {
@@ -446,15 +412,11 @@ float CUIStatic::GetTextureScaleY()
 	return m_UIStaticItem.GetScaleY();
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void  CUIStatic::SetShader(const ref_shader& sh)
 {
 	m_UIStaticItem.SetShader(sh);
 	m_bAvailableTexture = true;
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::SetText(LPCSTR str, STRING &arr) 
 {
@@ -464,8 +426,6 @@ void CUIStatic::SetText(LPCSTR str, STRING &arr)
 		arr.push_back(str[i]);
 	arr.push_back(0);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::SetText(LPCSTR str)
 {
@@ -488,7 +448,6 @@ void CUIStatic::SetText(LPCSTR str)
 	Elipsis(r, m_ElipsisPos);
 }
 
-//////////////////////////////////////////////////////////////////////////
 Irect CUIStatic::GetClipperRect()
 {
 	if (m_bClipper)
@@ -511,8 +470,6 @@ Irect CUIStatic::GetSelfClipRect()
 	return r;
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void CUIStatic::SetMask(CUIFrameWindow *pMask)
 {
 	DetachChild(m_pMask);
@@ -527,8 +484,6 @@ void CUIStatic::SetMask(CUIFrameWindow *pMask)
 		m_pMask->SetHeight	(r.bottom - r.top);
 	}
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 {
@@ -625,8 +580,6 @@ void CUIStatic::PreprocessText(STRING &str, u32 width, CGameFont *pFont)
 	processedStr.push_back(0);
     processedStr.swap(str);
 }
-
-//////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::DrawString(const Irect &rect)
 {

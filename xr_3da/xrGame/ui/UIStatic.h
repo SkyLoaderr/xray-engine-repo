@@ -34,8 +34,8 @@ public:
 	
 	//прорисовка окна
 	virtual void	Draw					();
-IC	virtual void	DrawTexture				();
-IC	virtual void	DrawText				();
+	virtual void	DrawTexture				();
+	virtual void	DrawText				();
 	virtual void	Update					();
 	virtual void	OnMouse					(int x, int y, EUIMessages mouse_action);
 	virtual void	OnFocusReceive();
