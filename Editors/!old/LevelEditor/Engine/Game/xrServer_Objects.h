@@ -138,7 +138,7 @@ public:
 	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket);
     virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items);
 	virtual LPSTR		__stdcall	name			();
-	virtual LPSTR		__stdcall	replace_name	();
+	virtual LPSTR		__stdcall	name_replace	();
 	virtual Fvector&	__stdcall	position		();
 	virtual Fvector&	__stdcall	angle			();
 	virtual Flags16&	__stdcall	flags			();
