@@ -234,7 +234,7 @@ void CSHEngineTools::UpdateProperties()
             }break;
             case xrPID_TEXTURE:
             	sz=sizeof(string64);
-                P->AddItem(marker_node,PROP_TEXTURE2,key,data.Pointer());
+                P->AddItem(marker_node,PROP_TEXTURE2,key,P->MakeTextValue	(data.Pointer()));
             break;
             case xrPID_INTEGER:{
             	sz=sizeof(xrP_Integer);

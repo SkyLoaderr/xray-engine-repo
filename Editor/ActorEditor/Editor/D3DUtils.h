@@ -20,11 +20,11 @@ namespace DU{
     void DrawPointLight(const Fvector& p, float radius, DWORD clr);
     void DrawSound(const Fvector& p, float radius, DWORD clr);
     void DrawLineSphere(const Fvector& p, float radius, DWORD clr, bool bCross);
-    void DrawLine(const Fvector& p1,	const Fvector& p2, DWORD clr);
+    void DrawLine(const Fvector& p0,	const Fvector& p1, DWORD clr);
     IC void DrawLine(const Fvector* p, DWORD clr){DrawLine(p[0],p[1],clr);}
-    void DrawLink(const Fvector& p1, const Fvector& p2, float sz, DWORD clr);
-    IC void DrawFaceNormal(const Fvector& p1, const Fvector& p2, const Fvector& p3, float size, DWORD clr){
-        Fvector N,C,P; N.mknormal(p1,p2,p3); C.set(p1);C.add(p2);C.add(p3);C.div(3);
+    void DrawLink(const Fvector& p0, const Fvector& p1, float sz, DWORD clr);
+    IC void DrawFaceNormal(const Fvector& p0, const Fvector& p1, const Fvector& p2, float size, DWORD clr){
+        Fvector N,C,P; N.mknormal(p0,p1,p2); C.set(p0);C.add(p1);C.add(p2);C.div(3);
         P.mad(C,N,size);
         DrawLine(C,P,clr);}
     IC void DrawFaceNormal(const Fvector* p, float size, DWORD clr){DrawFaceNormal(p[0],p[1],p[2],size,clr);}

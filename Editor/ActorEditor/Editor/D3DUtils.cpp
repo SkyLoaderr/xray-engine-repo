@@ -626,18 +626,17 @@ void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, DWORD pc, FVF::LIT* vertices, int vc,
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
-void DrawLink(const Fvector& p1, const Fvector& p2, float sz, DWORD clr){
-	DrawLine(p2,p1,clr);
+void DrawLink(const Fvector& p0, const Fvector& p1, float sz, DWORD clr){
+	DrawLine(p1,p0,clr);
     Fvector pp[2],D,R,N={0,1,0};
-    D.sub(p2,p1);
-    D.normalize(); D.invert();
+    D.sub(p1,p0); D.normalize();
     R.crossproduct(N,D); R.mul(0.5f); D.mul(2.0f); N.mul(0.5f);
     // LR
 	pp[0].add(R,D); pp[0].mul(sz*-0.5f);	pp[0].add(p1);
 	R.invert();
 	pp[1].add(R,D); pp[1].mul(sz*-0.5f);	pp[1].add(p1);
 	DrawLine(p1,pp[0],clr);
-	DrawLine(p1,pp[1],clr);
+ 	DrawLine(p1,pp[1],clr);
     // UB
 	pp[0].add(N,D); pp[0].mul(sz*-0.5f);	pp[0].add(p1);
     N.invert();

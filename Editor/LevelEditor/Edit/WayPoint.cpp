@@ -10,16 +10,20 @@
 #include "D3DUtils.h"
 #include "Scene.h"
 
-#define WAYPOINT_VERSION				0x0011
+#define WAYPOINT_VERSION				0x0012
 //----------------------------------------------------
 #define WAYPOINT_CHUNK_VERSION			0xE501
 #define WAYPOINT_CHUNK_POINT			0xE502
-#define WAYPOINT_CHUNK_LINKS			0xE503
-#define WAYPOINT_CHUNK_PATHNAME			0xE504
+#define WAYPOINT_CHUNK_LINK_FROM		0xE503
+#define WAYPOINT_CHUNK_LINK_TO			0xE504
+#define WAYPOINT_CHUNK_PATHNAME			0xE510
 //----------------------------------------------------
 
 #define WAYPOINT_SIZE 	1.5f
 #define WAYPOINT_RADIUS WAYPOINT_SIZE*.5f
+
+#define WP_FROM 0
+#define WP_TO	1
 //------------------------------------------------------------------------------
 // AI Traffic points
 //------------------------------------------------------------------------------
@@ -91,12 +95,12 @@ void CWayPoint::Render(int priority, bool strictB2F)
 {
 	inherited::Render(priority, strictB2F);
     if ((1==priority)&&(false==strictB2F)){
+        Fcolor c1,c2;
+        c1.set(0.f,1.f,0.f,1.f);
+        c2.set(1.f,1.f,0.f,1.f);
+		DrawLinks(c2);
         if (Device.m_Frustum.testSphere(PPosition,WAYPOINT_SIZE)){
-            Fcolor c1,c2;
-            c1.set(0.f,1.f,0.f,1.f);
-            c2.set(1.f,1.f,0.f,1.f);
             DrawPoint(c1);
-            DrawLinks(c2);
             if( Selected() ){
                 Fbox bb; GetBox(bb);
                 DWORD clr = Locked()?0xFFFF0000:0xFFFFFFFF;
@@ -109,19 +113,20 @@ void CWayPoint::Render(int priority, bool strictB2F)
 
 bool CWayPoint::FrustumPick(const CFrustum& frustum)
 {
-    return (frustum.testSphere(PPosition,WAYPOINT_SIZE))?true:false;
+	Fvector P=PPosition; P.y+=WAYPOINT_RADIUS;
+    return (frustum.testSphere(P,WAYPOINT_RADIUS))?true:false;
 }
 //----------------------------------------------------
 
 bool CWayPoint::RayPick(float& distance, Fvector& S, Fvector& D, SRayPickInfo* pinf)
 {
 	Fvector ray2;
-	ray2.sub( PPosition, S );
+	ray2.sub( PPosition, S ); ray2.y+=WAYPOINT_RADIUS;
 
     float d = ray2.dotproduct(D);
     if( d > 0  ){
         float d2 = ray2.magnitude();
-        if( ((d2*d2-d*d) < (WAYPOINT_SIZE*WAYPOINT_SIZE)) && (d>WAYPOINT_SIZE) ){
+        if( ((d2*d2-d*d) < (WAYPOINT_RADIUS*WAYPOINT_RADIUS)) && (d>WAYPOINT_RADIUS) ){
         	if (d<distance){
 	            distance = d;
     	        return true;
@@ -173,9 +178,15 @@ void CWayPoint::Save(CFS_Base& F)
 	F.Wword			(WAYPOINT_VERSION);
 	F.close_chunk	();
 
-    F.open_chunk	(WAYPOINT_CHUNK_LINKS);
+    F.open_chunk	(WAYPOINT_CHUNK_LINK_FROM);
     F.Wdword		(m_Links.size());
-    for (ObjectIt o_it=m_Links.begin(); o_it!=m_Links.end(); o_it++)
+    for (ObjectIt o_it=m_Links[WP_FROM].begin(); o_it!=m_Links[WP_FROM].end(); o_it++)
+    	F.WstringZ	((*o_it)->Name);
+	F.close_chunk	();
+
+    F.open_chunk	(WAYPOINT_CHUNK_LINK_TO);
+    F.Wdword		(m_Links.size());
+    for (ObjectIt o_it=m_Links[WP_TO].begin(); o_it!=m_Links[WP_TO].end(); o_it++)
     	F.WstringZ	((*o_it)->Name);
 	F.close_chunk	();
 

@@ -12,10 +12,10 @@ class CFrustum;
 class CWayPoint: public CCustomObject {
 	friend class 	SceneBuilder;
 
-    ObjectList		m_Links;
-    // temporary storage (load only)
-    AStringVec		m_NameLinks;
     AnsiString		m_PathName;
+    ObjectList		m_Links[2];               
+    // temporary storage (load only)
+    AStringVec		m_NameLinks[2];
 
     void            DrawPoint		(Fcolor& c);
     void			DrawLinks		(Fcolor& c);
