@@ -11,12 +11,7 @@
 #include "ai_primary_funcs.h"
 #include "ai_space.h"
 #include "ai_alife_templates.h"
-
-//#define WRITE_TO_LOG
-
-#ifndef DEBUG
-	#undef WRITE_TO_LOG
-#endif
+#include "ai_console.h"
 
 CPatternFunction::CPatternFunction() : CBaseFunction()
 {
@@ -143,18 +138,22 @@ float CPatternFunction::ffGetValue()
 
 	for (u32 i=0; i<m_dwVariableCount; i++)
 		m_dwaVariableValues[i] = getAI().m_fpaBaseFunctions[m_dwaVariableTypes[i]]->dwfGetDiscreteValue(m_dwaAtomicFeatureRange[i]);
-#ifndef WRITE_TO_LOG
-	return(m_fLastValue = ffEvaluate());
-#else
-	m_fLastValue = ffEvaluate();
-	char caString[256];
-	int j = sprintf(caString,"%32s (",m_caName);
-	for ( i=0; i<m_dwVariableCount; i++)
-		j += sprintf(caString + j," %3d",m_dwaVariableValues[i] + 1);
-	sprintf(caString + j,") = %7.2f",m_fLastValue);
-	Msg("- %s",caString);
-	return(m_fLastValue);
+
+	
+#ifdef DEBUG	
+	if (psAI_Flags.test(aiFuncs)) {
+		m_fLastValue = ffEvaluate();
+		char caString[256];
+		int j = sprintf(caString,"%32s (",m_caName);
+		for ( i=0; i<m_dwVariableCount; i++)
+			j += sprintf(caString + j," %3d",m_dwaVariableValues[i] + 1);
+		sprintf(caString + j,") = %7.2f",m_fLastValue);
+		Msg("- %s",caString);
+		return(m_fLastValue);
+	}
 #endif
+	
+	return(m_fLastValue = ffEvaluate());
 }
 
 CAI_DDD::CAI_DDD()
