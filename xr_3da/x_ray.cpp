@@ -264,7 +264,7 @@ void CApplication::LoadBegin()
 		ll_hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 		ll_hLogo1	= Device.Shader.Create		("font","ui\\logo");
 		ll_hLogo2	= Device.Shader.Create		("font","ui\\ui_logo_nv");
-		ll_hLogo	= ll_hLogo1;
+		ll_hLogo	= ll_hLogo2;
 	}
 }
 

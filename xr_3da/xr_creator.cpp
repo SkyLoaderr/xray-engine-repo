@@ -98,6 +98,7 @@ BOOL CCreator::Load(DWORD dwNum)
 	chunk = fs.OpenChunk		(fsL_CFORM);
 	ObjectSpace.Load			(chunk);
 	chunk->Close				();
+	pApp->LoadSwitch			();
 
 	// Render-level Load
 	Device.seqDevDestroy.Add	(Render);
