@@ -18,7 +18,7 @@ typedef vecVertex::iterator		vecVertexIt;
 typedef vector<Face*>			vecFace;
 typedef vecFace::iterator		vecFaceIt;
 typedef svector<Face*,32>		vecAdj;
-typedef vecADJ::iterator		vecAdjIt;
+typedef vecAdj::iterator		vecAdjIt;
 
 extern const int edge2idx[3][2];
 
@@ -31,7 +31,7 @@ public:
 	Fvector		N;
 	DWORD		Color;		// only used for Per-Vertex lighting
 
-	vecFace		adjacent;
+	vecAdj		adjacent;
 
 	IC BOOL	similar(Vertex &V, float eps)
 	{
