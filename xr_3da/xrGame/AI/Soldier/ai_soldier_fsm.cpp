@@ -278,11 +278,15 @@ void CAI_Soldier::OnFindAloneFire()
 //	if (!bfTooBigDistance(tSavedEnemyPosition,1.f)) {
 //		
 //	}
-
-	SetDirectionLook();
-	
-	StandUp();
-	vfSetMovementType(RUN_FORWARD_3);
+	if (bfCheckForDangerPlace()) {
+		Squat();
+		vfSetMovementType(WALK_FORWARD_1);
+	}
+	else {
+		SetDirectionLook();
+		StandUp();
+		vfSetMovementType(RUN_FORWARD_3);
+	}
 }
 
 void CAI_Soldier::OnRetreatAloneNonFire()
