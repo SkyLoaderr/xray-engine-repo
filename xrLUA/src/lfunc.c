@@ -3,10 +3,13 @@
 ** Auxiliary functions to manipulate prototypes and closures
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lfunc_c
+
+#include "lua.h"
 
 #include "lfunc.h"
 #include "lgc.h"
@@ -25,6 +28,7 @@
 
 Closure *luaF_newCclosure (lua_State *L, int nelems) {
   Closure *c = cast(Closure *, luaM_malloc(L, sizeCclosure(nelems)));
+  c->c.ref = 0;
   luaC_link(L, valtogco(c), LUA_TFUNCTION);
   c->c.isC = 1;
   c->c.nupvalues = cast(lu_byte, nelems);
@@ -34,9 +38,11 @@ Closure *luaF_newCclosure (lua_State *L, int nelems) {
 
 Closure *luaF_newLclosure (lua_State *L, int nelems, TObject *e) {
   Closure *c = cast(Closure *, luaM_malloc(L, sizeLclosure(nelems)));
+  c->l.ref = 0;
   luaC_link(L, valtogco(c), LUA_TFUNCTION);
   c->l.isC = 0;
   c->l.g = *e;
+  lua_addref(&c->l.g);
   c->l.nupvalues = cast(lu_byte, nelems);
   return c;
 }
@@ -55,6 +61,8 @@ UpVal *luaF_findupval (lua_State *L, StkId level) {
   v->marked = 1;  /* open upvalues should not be collected */
   v->v = level;  /* current value lives in the stack */
   v->next = *pp;  /* chain it in the proper position */
+  v->prev = NULL;
+  v->ref = 0;
   *pp = valtogco(v);
   return v;
 }
@@ -63,7 +71,7 @@ UpVal *luaF_findupval (lua_State *L, StkId level) {
 void luaF_close (lua_State *L, StkId level) {
   UpVal *p;
   while ((p = ngcotouv(L->openupval)) != NULL && p->v >= level) {
-    setobj(&p->value, p->v);  /* save current value (write barrier) */
+    setobj2n(&p->value, p->v);  /* save current value (write barrier) */
     p->v = &p->value;  /* now current value lives here */
     L->openupval = p->next;  /* remove from `open' list */
     luaC_link(L, valtogco(p), LUA_TUPVAL);
@@ -73,6 +81,7 @@ void luaF_close (lua_State *L, StkId level) {
 
 Proto *luaF_newproto (lua_State *L) {
   Proto *f = luaM_new(L, Proto);
+  f->ref = 0;
   luaC_link(L, valtogco(f), LUA_TPROTO);
   f->k = NULL;
   f->sizek = 0;

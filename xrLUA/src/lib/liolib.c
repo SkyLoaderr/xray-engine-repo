@@ -1,14 +1,18 @@
 /*
-** $Id: liolib.c,v 2.39 2003/03/19 21:16:12 roberto Exp $
+** $Id: liolib.c,v 2.39a 2003/03/19 21:16:12 roberto Exp $
 ** Standard I/O (and system) library
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "..\\src\\xr_print.h"
-
 #define liolib_c
+
+#include "lua.h"
+
+#include "lauxlib.h"
+#include "lualib.h"
 
 
 
@@ -59,7 +63,6 @@
 #define IO_INPUT		"_input"
 #define IO_OUTPUT		"_output"
 
-#pragma warning(disable:4244)
 
 static int pushresult (lua_State *L, int i, const char *filename) {
   if (i) {
@@ -150,7 +153,7 @@ static int aux_close (lua_State *L) {
 
 
 static int io_close (lua_State *L) {
-  if (lua_isnone(L, 1)) {
+  if (lua_isnone(L, 1) && lua_type(L, lua_upvalueindex(1)) == LUA_TTABLE) {
     lua_pushstring(L, IO_OUTPUT);
     lua_rawget(L, lua_upvalueindex(1));
   }
@@ -167,7 +170,7 @@ static int io_gc (lua_State *L) {
 
 
 static int io_tostring (lua_State *L) {
-  char buff[32];
+  char buff[128];
   FILE **f = topfile(L, 1);
   if (*f == NULL)
     strcpy(buff, "closed");
@@ -321,7 +324,7 @@ static int read_line (lua_State *L, FILE *f) {
       luaL_pushresult(&b);  /* close buffer */
       return (lua_strlen(L, -1) > 0);  /* check whether read something */
     }
-    l = xr_strlen(p);
+    l = strlen(p);
     if (p[l-1] != '\n')
       luaL_addsize(&b, l);
     else {
@@ -633,7 +636,7 @@ static int io_date (lua_State *L) {
     stm = localtime(&t);
   if (stm == NULL)  /* invalid date? */
     lua_pushnil(L);
-  else if (xr_strcmp(s, "*t") == 0) {
+  else if (strcmp(s, "*t") == 0) {
     lua_newtable(L);
     setfield(L, "sec", stm->tm_sec);
     setfield(L, "min", stm->tm_min);
@@ -739,6 +742,4 @@ LUALIB_API int luaopen_io (lua_State *L) {
   registerfile(L, stderr, "stderr", NULL);
   return 1;
 }
-
-#pragma warning(default:4244)
 

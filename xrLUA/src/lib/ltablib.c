@@ -3,10 +3,16 @@
 ** Library for Table Manipulation
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define ltablib_c
+
+#include "lua.h"
+
+#include "lauxlib.h"
+#include "lualib.h"
 
 
 #define aux_getn(L,n)	(luaL_checktype(L, n, LUA_TTABLE), luaL_getn(L, n))

@@ -3,10 +3,9 @@
 ** Auxiliary functions for building Lua libraries
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
-
-#include "..\\src\\xr_print.h"
 
 
 /* This file uses only the official API of Lua.
@@ -15,12 +14,16 @@
 
 #define lauxlib_c
 
+#include "lua.h"
+
+#include "lauxlib.h"
+
 
 /* number of prereserved references (for internal use) */
 #define RESERVED_REFS	2
 
 /* reserved references */
-#define FREELIST_REF	1	/* _free list of references */
+#define FREELIST_REF	1	/* free list of references */
 #define ARRAYSIZE_REF	2	/* array sizes */
 
 
@@ -40,7 +43,7 @@ LUALIB_API int luaL_argerror (lua_State *L, int narg, const char *extramsg) {
   lua_Debug ar;
   lua_getstack(L, 0, &ar);
   lua_getinfo(L, "n", &ar);
-  if (xr_strcmp(ar.namewhat, "method") == 0) {
+  if (strcmp(ar.namewhat, "method") == 0) {
     narg--;  /* do not count `self' */
     if (narg == 0)  /* error is in the self argument itself? */
       return luaL_error(L, "calling `%s' on bad self (%s)", ar.name, extramsg);
@@ -93,7 +96,7 @@ LUALIB_API int luaL_error (lua_State *L, const char *fmt, ...) {
 LUALIB_API int luaL_findstring (const char *name, const char *const list[]) {
   int i;
   for (i=0; list[i]; i++)
-    if (xr_strcmp(list[i], name) == 0)
+    if (strcmp(list[i], name) == 0)
       return i;
   return -1;  /* name not found */
 }
@@ -127,7 +130,7 @@ LUALIB_API void *luaL_checkudata (lua_State *L, int ud, const char *tname) {
   if (!lua_getmetatable(L, ud)) return NULL;  /* no metatable? */
   lua_rawget(L, LUA_REGISTRYINDEX);  /* get registry[metatable] */
   tn = lua_tostring(L, -1);
-  if (tn && (xr_strcmp(tn, tname) == 0)) {
+  if (tn && (strcmp(tn, tname) == 0)) {
     lua_pop(L, 1);
     return lua_touserdata(L, ud);
   }
@@ -168,7 +171,7 @@ LUALIB_API const char *luaL_optlstring (lua_State *L, int narg,
                                         const char *def, size_t *len) {
   if (lua_isnoneornil(L, narg)) {
     if (len)
-      *len = (def ? xr_strlen(def) : 0);
+      *len = (def ? strlen(def) : 0);
     return def;
   }
   else return luaL_checklstring(L, narg, len);
@@ -372,7 +375,7 @@ LUALIB_API void luaL_addlstring (luaL_Buffer *B, const char *s, size_t l) {
 
 
 LUALIB_API void luaL_addstring (luaL_Buffer *B, const char *s) {
-  luaL_addlstring(B, s, xr_strlen(s));
+  luaL_addlstring(B, s, strlen(s));
 }
 
 
@@ -387,7 +390,7 @@ LUALIB_API void luaL_addvalue (luaL_Buffer *B) {
   lua_State *L = B->L;
   size_t vl = lua_strlen(L, -1);
   if (vl <= bufffree(B)) {  /* fit into buffer? */
-    Memory.mem_copy(B->p, lua_tostring(L, -1), (u32)vl);  /* put it there */
+    memcpy(B->p, lua_tostring(L, -1), vl);  /* put it there */
     B->p += vl;
     lua_pop(L, 1);  /* remove from stack */
   }
@@ -416,14 +419,14 @@ LUALIB_API int luaL_ref (lua_State *L, int t) {
     lua_pop(L, 1);  /* remove from stack */
     return LUA_REFNIL;  /* `nil' has a unique fixed reference */
   }
-  lua_rawgeti(L, t, FREELIST_REF);  /* get first _free element */
+  lua_rawgeti(L, t, FREELIST_REF);  /* get first free element */
   ref = (int)lua_tonumber(L, -1);  /* ref = t[FREELIST_REF] */
   lua_pop(L, 1);  /* remove it from stack */
-  if (ref != 0) {  /* any _free element? */
+  if (ref != 0) {  /* any free element? */
     lua_rawgeti(L, t, ref);  /* remove it from list */
     lua_rawseti(L, t, FREELIST_REF);  /* (t[FREELIST_REF] = t[ref]) */
   }
-  else {  /* no _free elements */
+  else {  /* no free elements */
     ref = luaL_getn(L, t);
     if (ref < RESERVED_REFS)
       ref = RESERVED_REFS;  /* skip reserved references */
@@ -550,7 +553,7 @@ static void callalert (lua_State *L, int status) {
       lua_call(L, 1, 0);
     }
     else {  /* no _ALERT function; print it on stderr */
-      xr_printf(stderr, "%s\n", lua_tostring(L, -2));
+      fprintf(stderr, "%s\n", lua_tostring(L, -2));
       lua_pop(L, 2);  /* remove error message and _ALERT */
     }
   }
@@ -578,7 +581,7 @@ LUALIB_API int lua_dobuffer (lua_State *L, const char *buff, size_t size,
 
 
 LUALIB_API int lua_dostring (lua_State *L, const char *str) {
-  return lua_dobuffer(L, str, xr_strlen(str), str);
+  return lua_dobuffer(L, str, strlen(str), str);
 }
 
 /* }====================================================== */

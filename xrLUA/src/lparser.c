@@ -1,12 +1,15 @@
 /*
-** $Id: lparser.c,v 1.208 2003/04/03 13:35:34 roberto Exp $
+** $Id: lparser.c,v 1.208a 2003/04/03 13:35:34 roberto Exp $
 ** Lua Parser
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lparser_c
+
+#include "lua.h"
 
 #include "lcode.h"
 #include "ldebug.h"
@@ -138,6 +141,7 @@ static int luaI_registerlocalvar (LexState *ls, TString *varname) {
   luaM_growvector(ls->L, f->locvars, fs->nlocvars, f->sizelocvars,
                   LocVar, MAX_INT, "");
   f->locvars[fs->nlocvars].varname = varname;
+  lua_addrefstring(varname);
   return fs->nlocvars++;
 }
 
@@ -190,6 +194,7 @@ static int indexupvalue (FuncState *fs, TString *name, expdesc *v) {
   luaM_growvector(fs->L, fs->f->upvalues, f->nups, fs->f->sizeupvalues,
                   TString *, MAX_INT, "");
   fs->f->upvalues[f->nups] = name;
+  lua_addrefstring(name);
   fs->upvalues[f->nups] = *v;
   return f->nups++;
 }
@@ -294,7 +299,7 @@ static void leaveblock (FuncState *fs) {
   if (bl->upval)
     luaK_codeABC(fs, OP_CLOSE, bl->nactvar, 0, 0);
   lua_assert(bl->nactvar == fs->nactvar);
-  fs->freereg = fs->nactvar;  /* _free registers */
+  fs->freereg = fs->nactvar;  /* free registers */
   luaK_patchtohere(fs, bl->breaklist);
 }
 
@@ -306,6 +311,7 @@ static void pushclosure (LexState *ls, FuncState *func, expdesc *v) {
   luaM_growvector(ls->L, f->p, fs->np, f->sizep, Proto *,
                   MAXARG_Bx, "constant table overflow");
   f->p[fs->np++] = func->f;
+  lua_addrefproto(func->f);
   init_exp(v, VRELOCABLE, luaK_codeABx(fs, OP_CLOSURE, 0, fs->np-1));
   for (i=0; i<func->f->nups; i++) {
     OpCode o = (func->upvalues[i].k == VLOCAL) ? OP_MOVE : OP_GETUPVAL;
@@ -327,11 +333,13 @@ static void open_func (LexState *ls, FuncState *fs) {
   fs->freereg = 0;
   fs->nk = 0;
   fs->h = luaH_new(ls->L, 0, 0);
+  lua_addreftable(fs->h);
   fs->np = 0;
   fs->nlocvars = 0;
   fs->nactvar = 0;
   fs->bl = NULL;
   f->source = ls->source;
+  lua_addrefstring(f->source);
   f->maxstacksize = 2;  /* registers 0/1 are always valid */
 }
 
@@ -357,6 +365,7 @@ static void close_func (LexState *ls) {
   lua_assert(luaG_checkcode(f));
   lua_assert(fs->bl == NULL);
   ls->fs = fs->prev;
+  lua_releasetable(L, fs->h);
 }
 
 
@@ -437,7 +446,7 @@ static void recfield (LexState *ls, struct ConsControl *cc) {
   expr(ls, &val);
   luaK_codeABC(fs, OP_SETTABLE, cc->t->info, luaK_exp2RK(fs, &key),
                                              luaK_exp2RK(fs, &val));
-  fs->freereg = reg;  /* _free registers */
+  fs->freereg = reg;  /* free registers */
 }
 
 
@@ -448,7 +457,7 @@ static void closelistfield (FuncState *fs, struct ConsControl *cc) {
   if (cc->tostore == LFIELDS_PER_FLUSH) {
     luaK_codeABx(fs, OP_SETLIST, cc->t->info, cc->na-1);  /* flush */
     cc->tostore = 0;  /* no more items pending */
-    fs->freereg = cc->t->info + 1;  /* _free registers */
+    fs->freereg = cc->t->info + 1;  /* free registers */
   }
 }
 
@@ -464,7 +473,7 @@ static void lastlistfield (FuncState *fs, struct ConsControl *cc) {
       luaK_exp2nextreg(fs, &cc->v);
     luaK_codeABx(fs, OP_SETLIST, cc->t->info, cc->na-1);
   }
-  fs->freereg = cc->t->info + 1;  /* _free registers */
+  fs->freereg = cc->t->info + 1;  /* free registers */
 }
 
 
@@ -1138,11 +1147,15 @@ static void ifstat (LexState *ls, int line) {
 
 static void localfunc (LexState *ls) {
   expdesc v, b;
+  FuncState *fs = ls->fs;
   new_localvar(ls, str_checkname(ls), 0);
-  init_exp(&v, VLOCAL, ls->fs->freereg++);
+  init_exp(&v, VLOCAL, fs->freereg);
+  luaK_reserveregs(fs, 1);
   adjustlocalvars(ls, 1);
   body(ls, &b, 0, ls->linenumber);
-  luaK_storevar(ls->fs, &v, &b);
+  luaK_storevar(fs, &v, &b);
+  /* debug information will only see the variable after this point! */
+  getlocvar(fs, fs->nactvar - 1).startpc = fs->pc;
 }
 
 
@@ -1318,7 +1331,7 @@ static void chunk (LexState *ls) {
     islast = statement(ls);
     testnext(ls, ';');
     lua_assert(ls->fs->freereg >= ls->fs->nactvar);
-    ls->fs->freereg = ls->fs->nactvar;  /* _free registers */
+    ls->fs->freereg = ls->fs->nactvar;  /* free registers */
   }
   leavelevel(ls);
 }

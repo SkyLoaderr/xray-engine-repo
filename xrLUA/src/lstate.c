@@ -3,10 +3,13 @@
 ** Global State
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lstate_c
+
+#include "lua.h"
 
 #include "ldebug.h"
 #include "ldo.h"
@@ -63,10 +66,15 @@ static void stack_init (lua_State *L1, lua_State *L) {
   L1->stacksize = BASIC_STACK_SIZE + EXTRA_STACK;
   L1->top = L1->stack;
   L1->stack_last = L1->stack+(L1->stacksize - EXTRA_STACK)-1;
+  {
+    StkId i;
+    for (i = L1->stack; i != L1->stack_last; ++i)
+      newvalue(i);
+  }
   L1->base_ci = luaM_newvector(L, BASIC_CI_SIZE, CallInfo);
   L1->ci = L1->base_ci;
   L1->ci->state = CI_C;  /*  not a Lua function */
-  setnilvalue(L1->top++);  /* `function' entry for this `ci' */
+  setnilvalue2n(L1->top++);  /* `function' entry for this `ci' */
   L1->base = L1->ci->base = L1->top;
   L1->ci->top = L1->top + LUA_MINSTACK;
   L1->size_ci = BASIC_CI_SIZE;
@@ -94,22 +102,26 @@ static void f_luaopen (lua_State *L, void *ud) {
   g->strt.size = 0;
   g->strt.nuse = 0;
   g->strt.hash = NULL;
-  setnilvalue(defaultmeta(L));
-  setnilvalue(registry(L));
+  setnilvalue2n(defaultmeta(L));
+  setnilvalue2n(registry(L));
   luaZ_initbuffer(L, &g->buff);
   g->panic = default_panic;
   g->rootgc = NULL;
   g->rootudata = NULL;
   g->tmudata = NULL;
-  setnilvalue(gkey(g->dummynode));
-  setnilvalue(gval(g->dummynode));
+  setnilvalue2n(gkey(g->dummynode));
+  setnilvalue2n(gval(g->dummynode));
   g->dummynode->next = NULL;
   g->nblocks = sizeof(lua_State) + sizeof(global_State);
   stack_init(L, L);  /* init stack */
   /* create default meta table with a dummy table, and then close the loop */
-  defaultmeta(L)->tt = LUA_TTABLE;
+  defaultmeta(L)->tt = LUA_TNUMBER;
+  defaultmeta(L)->value.gc = NULL;
   sethvalue(defaultmeta(L), luaH_new(L, 0, 0));
+  lua_addreftable(hvalue(defaultmeta(L)));
   hvalue(defaultmeta(L))->metatable = hvalue(defaultmeta(L));
+  lua_addreftable(hvalue(defaultmeta(L))->metatable);
+  newvalue(gt(L));
   sethvalue(gt(L), luaH_new(L, 0, 4));  /* table of globals */
   sethvalue(registry(L), luaH_new(L, 4, 4));  /* registry */
   luaS_resize(L, MINSTRTABSIZE);  /* initial size of string table */
@@ -134,7 +146,7 @@ static void preinit_state (lua_State *L) {
   L->nCcalls = 0;
   L->base_ci = L->ci = NULL;
   L->errfunc = 0;
-  setnilvalue(gt(L));
+  setnilvalue2n(gt(L));
 }
 
 
@@ -184,7 +196,7 @@ LUA_API lua_State *lua_open (void) {
     preinit_state(L);
     L->l_G = NULL;
     if (luaD_rawrunprotected(L, f_luaopen, NULL) != 0) {
-      /* memory allocation error: _free partial state */
+      /* memory allocation error: free partial state */
       close_state(L);
       L = NULL;
     }

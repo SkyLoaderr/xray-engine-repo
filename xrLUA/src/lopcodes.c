@@ -4,10 +4,13 @@
 ** DO NOT EDIT
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lopcodes_c
+
+#include "lua.h"
 
 #include "lobject.h"
 #include "lopcodes.h"

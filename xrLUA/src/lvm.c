@@ -1,5 +1,5 @@
 /*
-** $Id: lvm.c,v 1.284 2003/04/03 13:35:34 roberto Exp $
+** $Id: lvm.c,v 1.284b 2003/04/03 13:35:34 roberto Exp $
 ** Lua virtual machine
 ** See Copyright Notice in lua.h
 */
@@ -7,6 +7,8 @@
 #pragma hdrstop
 
 #define lvm_c
+
+#include "lua.h"
 
 #include "ldebug.h"
 #include "ldo.h"
@@ -32,7 +34,7 @@
 #define MAXTAGLOOP	100
 
 
-const TObject *luaV_tonumber (const TObject *obj, TObject *n) {
+const TObject *luaV_tonumber (lua_State *L, const TObject *obj, TObject *n) {
   lua_Number num;
   if (ttisnumber(obj)) return obj;
   if (ttisstring(obj) && luaO_str2d(svalue(obj), &num)) {
@@ -58,7 +60,7 @@ int luaV_tostring (lua_State *L, StkId obj) {
 
 static void traceexec (lua_State *L) {
   lu_byte mask = L->hookmask;
-  if (mask > LUA_MASKLINE) {  /* instruction-hook set? */
+  if (mask & LUA_MASKCOUNT) {  /* instruction-hook set? */
     if (L->hookcount == 0) {
       resethookcount(L);
       luaD_callhook(L, LUA_HOOKCOUNT, -1);
@@ -168,6 +170,11 @@ void luaV_settable (lua_State *L, const TObject *t, TObject *key, StkId val) {
       if (!ttisnil(oldval) ||  /* result is no nil? */
           (tm = fasttm(L, h->metatable, TM_NEWINDEX)) == NULL) { /* or no TM? */
         setobj2t(oldval, val);  /* write barrier */
+		if (ttisnil(val)) {
+          TObject* keyObj = (TObject*)(luaH_getkey(h, key));
+		  if (keyObj)
+		    cleanvalue(keyObj);
+		}
         return;
       }
       /* else will try the tag method */
@@ -175,10 +182,19 @@ void luaV_settable (lua_State *L, const TObject *t, TObject *key, StkId val) {
     else if (ttisnil(tm = luaT_gettmbyobj(L, t, TM_NEWINDEX)))
       luaG_typeerror(L, t, "index");
     if (ttisfunction(tm)) {
+      TObject *newval;
       callTM(L, tm, t, key, val);
+	  if (ttistable(t)) {
+        newval = luaH_set(L, hvalue(t), key);
+	    if (ttisnil(newval)) {
+          TObject* keyObj = (TObject*)(luaH_getkey(hvalue(t), key));
+          if (keyObj)
+            cleanvalue(keyObj);
+        }
+	  }
       return;
     }
-    t = tm;  /* else repeat with `tm' */ 
+    t = tm;  /* else repeat with `tm' */
   } while (++loop <= MAXTAGLOOP);
   luaG_runerror(L, "loop in settable");
 }
@@ -234,7 +250,7 @@ static int luaV_strcmp (const TString *ls, const TString *rs) {
     int temp = strcoll(l, r);
     if (temp != 0) return temp;
     else {  /* strings are equal up to a `\0' */
-      size_t len = xr_strlen(l);  /* index of first `\0' in both strings */
+      size_t len = strlen(l);  /* index of first `\0' in both strings */
       if (len == lr)  /* r is finished? */
         return (len == ll) ? 0 : 1;
       else if (len == ll)  /* l is finished? */
@@ -318,7 +334,7 @@ void luaV_concat (lua_State *L, int total, int last) {
       char *buffer;
       int i;
       while (n < total && tostring(L, top-n-1)) {  /* collect total length */
-        tl += (lu_mem)tsvalue(top-n-1)->tsv.len;
+        tl += tsvalue(top-n-1)->tsv.len;
         n++;
       }
       if (tl > MAX_SIZET) luaG_runerror(L, "string size overflow");
@@ -326,8 +342,9 @@ void luaV_concat (lua_State *L, int total, int last) {
       tl = 0;
       for (i=n; i>0; i--) {  /* concat all strings */
         size_t l = tsvalue(top-i)->tsv.len;
-        Memory.mem_copy(buffer+tl, svalue(top-i), (u32)l);
-        tl += (lu_mem)l;
+        memcpy(buffer+tl, svalue(top-i), l);
+        tl += l;
+        cleanvalue(top-i);
       }
       setsvalue2s(top-n, luaS_newlstr(L, buffer, tl));
     }
@@ -341,8 +358,12 @@ static void Arith (lua_State *L, StkId ra,
                    const TObject *rb, const TObject *rc, TMS op) {
   TObject tempb, tempc;
   const TObject *b, *c;
-  if ((b = luaV_tonumber(rb, &tempb)) != NULL &&
-      (c = luaV_tonumber(rc, &tempc)) != NULL) {
+  newvalue(&tempb);
+  newvalue(&tempc);
+  if ((b = luaV_tonumber(L, rb, &tempb)) != NULL &&
+      (c = luaV_tonumber(L, rc, &tempc)) != NULL) {
+    cleanvalue(&tempb);
+    cleanvalue(&tempc);
     switch (op) {
       case TM_ADD: setnvalue(ra, nvalue(b) + nvalue(c)); break;
       case TM_SUB: setnvalue(ra, nvalue(b) - nvalue(c)); break;
@@ -361,8 +382,11 @@ static void Arith (lua_State *L, StkId ra,
       default: lua_assert(0); break;
     }
   }
-  else if (!call_binTM(L, rb, rc, ra, op))
+  else if (!call_binTM(L, rb, rc, ra, op)) {
+    cleanvalue(&tempb);
+    cleanvalue(&tempc);
     luaG_aritherror(L, rb, rc);
+  }
 }
 
 
@@ -391,10 +415,12 @@ StkId luaV_execute (lua_State *L) {
   TObject *k;
   const Instruction *pc;
  callentry:  /* entry point when calling new functions */
-  L->ci->u.l.pc = &pc;
-  if (L->hookmask & LUA_MASKCALL)
+  if (L->hookmask & LUA_MASKCALL) {
+    L->ci->u.l.pc = &pc;
     luaD_callhook(L, LUA_HOOKCALL, -1);
+  }
  retentry:  /* entry point when returning to old functions */
+  L->ci->u.l.pc = &pc;
   lua_assert(L->ci->state == CI_SAVEDPC ||
              L->ci->state == (CI_SAVEDPC | CI_CALLING));
   L->ci->state = CI_HASFRAME;  /* activate frame */
@@ -555,8 +581,10 @@ StkId luaV_execute (lua_State *L) {
       case OP_UNM: {
         const TObject *rb = RB(i);
         TObject temp;
+		newvalue(&temp);
         if (tonumber(rb, &temp)) {
           setnvalue(ra, -nvalue(rb));
+          cleanvalue(&temp);
         }
         else {
           setnilvalue(&temp);
@@ -665,9 +693,7 @@ StkId luaV_execute (lua_State *L) {
         }
         else {  /* yes: continue its execution */
           int nresults;
-          lua_assert(ci->u.l.pc == &pc &&
-                     ttisfunction(ci->base - 1) &&
-                     (ci->state & CI_SAVEDPC));
+          lua_assert(ttisfunction(ci->base - 1) && (ci->state & CI_SAVEDPC));
           lua_assert(GET_OPCODE(*(ci->u.l.savedpc - 1)) == OP_CALL);
           nresults = GETARG_C(*(ci->u.l.savedpc - 1)) - 1;
           luaD_poscall(L, nresults, ra);
@@ -734,7 +760,7 @@ StkId luaV_execute (lua_State *L) {
         if (GET_OPCODE(i) == OP_SETLIST)
           n = (bc&(LFIELDS_PER_FLUSH-1)) + 1;
         else {
-          n = int(L->top - ra - 1);
+          n = L->top - ra - 1;
           L->top = L->ci->top;
         }
         bc &= ~(LFIELDS_PER_FLUSH-1);  /* bc = bc - bc%FPF */
@@ -754,6 +780,7 @@ StkId luaV_execute (lua_State *L) {
         nup = p->nups;
         ncl = luaF_newLclosure(L, nup, &cl->g);
         ncl->l.p = p;
+		lua_addrefproto(ncl->l.p);
         for (j=0; j<nup; j++, pc++) {
           if (GET_OPCODE(*pc) == OP_GETUPVAL)
             ncl->l.upvals[j] = cl->upvals[GETARG_B(*pc)];
@@ -761,6 +788,7 @@ StkId luaV_execute (lua_State *L) {
             lua_assert(GET_OPCODE(*pc) == OP_MOVE);
             ncl->l.upvals[j] = luaF_findupval(L, base + GETARG_B(*pc));
           }
+          lua_addrefupval(ncl->l.upvals[j]);
         }
         setclvalue(ra, ncl);
         luaC_checkGC(L);
@@ -769,4 +797,5 @@ StkId luaV_execute (lua_State *L) {
     }
   }
 }
+
 

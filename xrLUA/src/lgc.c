@@ -1,12 +1,15 @@
 /*
-** $Id: lgc.c,v 1.171 2003/04/03 13:35:34 roberto Exp $
+** $Id: lgc.c,v 1.171a 2003/04/03 13:35:34 roberto Exp $
 ** Garbage Collector
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lgc_c
+
+#include "lua.h"
 
 #include "ldebug.h"
 #include "ldo.h"
@@ -108,7 +111,8 @@ static void marktmu (GCState *st) {
 
 
 /* move `dead' udata that need finalization to list `tmudata' */
-void luaC_separateudata (lua_State *L) {
+size_t luaC_separateudata (lua_State *L) {
+  size_t deadmem = 0;
   GCObject **p = &G(L)->rootudata;
   GCObject *curr;
   GCObject *collected = NULL;  /* to collect udata with gc event */
@@ -123,7 +127,11 @@ void luaC_separateudata (lua_State *L) {
       p = &curr->gch.next;
     }
     else {  /* must call its gc method */
+      deadmem += sizeudata(gcotou(curr)->uv.len);
       *p = curr->gch.next;
+      curr->gch.prev->gch.next = curr->gch.next;
+      if (curr->gch.next)
+        curr->gch.next->gch.prev = curr->gch.prev;
       curr->gch.next = NULL;  /* link `curr' at the end of `collected' list */
       *lastcollected = curr;
       lastcollected = &curr->gch.next;
@@ -132,10 +140,11 @@ void luaC_separateudata (lua_State *L) {
   /* insert collected udata with gc event into `tmudata' list */
   *lastcollected = G(L)->tmudata;
   G(L)->tmudata = collected;
+  return deadmem;
 }
 
 
-static void removekey (Node *n) {
+static void removekey (lua_State *L, Node *n) {
   setnilvalue(gval(n));  /* remove corresponding value ... */
   if (iscollectable(gkey(n)))
     setttype(gkey(n), LUA_TNONE);  /* dead key; remove it */
@@ -223,11 +232,11 @@ static void traverseclosure (GCState *st, Closure *cl) {
 
 
 static void checkstacksizes (lua_State *L, StkId max) {
-  int used = int(L->ci - L->base_ci);  /* number of `ci' in use */
+  int used = L->ci - L->base_ci;  /* number of `ci' in use */
   if (4*used < L->size_ci && 2*BASIC_CI_SIZE < L->size_ci)
     luaD_reallocCI(L, L->size_ci/2);  /* still big enough... */
   else condhardstacktests(luaD_reallocCI(L, L->size_ci));
-  used = int(max - L->stack);  /* part of stack in use */
+  used = max - L->stack;  /* part of stack in use */
   if (4*used < L->stacksize && 2*(BASIC_STACK_SIZE+EXTRA_STACK) < L->stacksize)
     luaD_reallocstack(L, L->stacksize/2);  /* still big enough... */
   else condhardstacktests(luaD_reallocstack(L, L->stacksize));
@@ -237,12 +246,13 @@ static void checkstacksizes (lua_State *L, StkId max) {
 static void traversestack (GCState *st, lua_State *L1) {
   StkId o, lim;
   CallInfo *ci;
+  lua_State *L = L1;
   markobject(st, gt(L1));
   lim = L1->top;
   for (ci = L1->base_ci; ci <= L1->ci; ci++) {
     lua_assert(ci->top <= L1->stack_last);
     lua_assert(ci->state & (CI_C | CI_HASFRAME | CI_SAVEDPC));
-    if (!(ci->state & CI_C) && lim < ci->top)
+    if (lim < ci->top)
       lim = ci->top;
   }
   for (o = L1->stack; o < L1->top; o++)
@@ -296,7 +306,7 @@ static int valismarked (const TObject *o) {
 /*
 ** clear collected keys from weaktables
 */
-static void cleartablekeys (GCObject *l) {
+static void cleartablekeys (lua_State *L, GCObject *l) {
   while (l) {
     Table *h = gcotoh(l);
     int i = sizenode(h);
@@ -304,7 +314,7 @@ static void cleartablekeys (GCObject *l) {
     while (i--) {
       Node *n = gnode(h, i);
       if (!valismarked(gkey(n)))  /* key was collected? */
-        removekey(n);  /* remove entry from table */
+        removekey(L, n);  /* remove entry from table */
     }
     l = h->gclist;
   }
@@ -314,7 +324,7 @@ static void cleartablekeys (GCObject *l) {
 /*
 ** clear collected values from weaktables
 */
-static void cleartablevalues (GCObject *l) {
+static void cleartablevalues (lua_State *L, GCObject *l) {
   while (l) {
     Table *h = gcotoh(l);
     int i = h->sizearray;
@@ -328,7 +338,7 @@ static void cleartablevalues (GCObject *l) {
     while (i--) {
       Node *n = gnode(h, i);
       if (!valismarked(gval(n)))  /* value was collected? */
-        removekey(n);  /* remove entry from table */
+        removekey(L, n);  /* remove entry from table */
     }
     l = h->gclist;
   }
@@ -369,6 +379,10 @@ static int sweeplist (lua_State *L, GCObject **p, int limit) {
     }
     else {
       count++;
+      if (curr->gch.prev)
+        curr->gch.prev->gch.next = curr->gch.next;
+      if (curr->gch.next)
+        curr->gch.next->gch.prev = (GCObject*)p;
       *p = curr->gch.next;
       freeobj(L, curr);
     }
@@ -385,7 +399,7 @@ static void sweepstrings (lua_State *L, int all) {
 }
 
 
-static void checkSizes (lua_State *L) {
+static void checkSizes (lua_State *L, size_t deadmem) {
   /* check size of string hash */
   if (G(L)->strt.nuse < cast(ls_nstr, G(L)->strt.size/4) &&
       G(L)->strt.size > MINSTRTABSIZE*2)
@@ -395,11 +409,11 @@ static void checkSizes (lua_State *L) {
     size_t newsize = luaZ_sizebuffer(&G(L)->buff) / 2;
     luaZ_resizebuffer(L, &G(L)->buff, newsize);
   }
-  G(L)->GCthreshold = 2*G(L)->nblocks;  /* new threshold */
+  G(L)->GCthreshold = 2*G(L)->nblocks - deadmem;  /* new threshold */
 }
 
 
-static void do1gcTM (lua_State *L, Udata *udata) {
+void do1gcTM (lua_State *L, Udata *udata) {
   const TObject *tm = fasttm(L, udata->uv.metatable, TM_GC);
   if (tm != NULL) {
     setobj2s(L->top, tm);
@@ -418,8 +432,11 @@ void luaC_callGCTM (lua_State *L) {
     GCObject *o = G(L)->tmudata;
     Udata *udata = gcotou(o);
     G(L)->tmudata = udata->uv.next;  /* remove udata from `tmudata' */
+    udata->uv.prev = (GCObject*)&G(L)->rootudata;
     udata->uv.next = G(L)->rootudata;  /* return it to `root' list */
     G(L)->rootudata = o;
+	if (udata->uv.next)
+      udata->uv.next->uv.prev = o;
     setuvalue(L->top - 1, udata);  /* keep a reference to it */
     unmark(o);
     markfinalized(udata);
@@ -449,7 +466,8 @@ static void markroot (GCState *st, lua_State *L) {
 }
 
 
-static void mark (lua_State *L) {
+static size_t mark (lua_State *L) {
+  size_t deadmem;
   GCState st;
   GCObject *wkv;
   st.g = G(L);
@@ -457,34 +475,38 @@ static void mark (lua_State *L) {
   st.wkv = st.wk = st.wv = NULL;
   markroot(&st, L);
   propagatemarks(&st);  /* mark all reachable objects */
-  cleartablevalues(st.wkv);
-  cleartablevalues(st.wv);
+  cleartablevalues(L, st.wkv);
+  cleartablevalues(L, st.wv);
   wkv = st.wkv;  /* keys must be cleared after preserving udata */
   st.wkv = NULL;
   st.wv = NULL;
-  luaC_separateudata(L);  /* separate userdata to be preserved */
+  deadmem = luaC_separateudata(L);  /* separate userdata to be preserved */
   marktmu(&st);  /* mark `preserved' userdata */
   propagatemarks(&st);  /* remark, to propagate `preserveness' */
-  cleartablekeys(wkv);
+  cleartablekeys(L, wkv);
   /* `propagatemarks' may resuscitate some weak tables; clear them too */
-  cleartablekeys(st.wk);
-  cleartablevalues(st.wv);
-  cleartablekeys(st.wkv);
-  cleartablevalues(st.wkv);
+  cleartablekeys(L, st.wk);
+  cleartablevalues(L, st.wv);
+  cleartablekeys(L, st.wkv);
+  cleartablevalues(L, st.wkv);
+  return deadmem;
 }
 
 
 void luaC_collectgarbage (lua_State *L) {
-  mark(L);
+  size_t deadmem = mark(L);
   luaC_sweep(L, 0);
-  checkSizes(L);
+  checkSizes(L, deadmem);
   luaC_callGCTM(L);
 }
 
 
 void luaC_link (lua_State *L, GCObject *o, lu_byte tt) {
+  o->gch.prev = (GCObject*)&G(L)->rootgc;
   o->gch.next = G(L)->rootgc;
   G(L)->rootgc = o;
+  if (o->gch.next)
+    o->gch.next->gch.prev = o;
   o->gch.marked = 0;
   o->gch.tt = tt;
 }

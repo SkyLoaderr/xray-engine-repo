@@ -10,7 +10,7 @@
 
 #include <limits.h>
 #include <stddef.h>
-
+#include <assert.h>
 
 #include "lua.h"
 
@@ -90,7 +90,8 @@ typedef LUA_UACNUMBER l_uacNumber;
 
 
 #ifndef lua_assert
-#define lua_assert(c)		/* empty */
+/*#define lua_assert(c)*/		/* empty */
+#define lua_assert(c) assert(c)
 #endif
 
 

@@ -9,7 +9,10 @@
 
 #define ltests_c
 
+#include "lua.h"
+
 #include "lapi.h"
+#include "lauxlib.h"
 #include "lcode.h"
 #include "ldebug.h"
 #include "ldo.h"
@@ -19,7 +22,7 @@
 #include "lstate.h"
 #include "lstring.h"
 #include "ltable.h"
-#include "xr_print.h"
+#include "lualib.h"
 
 
 
@@ -91,9 +94,9 @@ static void *checkblock (void *block, size_t size) {
 static void freeblock (void *block, size_t size) {
   if (block) {
     lua_assert(checkblocksize(block, size));
-    block	= checkblock(block, size);
-    fillmem	(block, size+HEADER+MARKSIZE);	/* erase block */
-    dlfree	(block);							/* _free original block */
+    block = checkblock(block, size);
+    fillmem(block, size+HEADER+MARKSIZE);  /* erase block */
+    free(block);  /* free original block */
     memdebug_numblocks--;
     memdebug_total -= size;
   }
@@ -116,7 +119,7 @@ void *debug_realloc (void *block, size_t oldsize, size_t size) {
     size_t realsize = HEADER+size+MARKSIZE;
     size_t commonsize = (oldsize < size) ? oldsize : size;
     if (realsize < size) return NULL;  /* overflow! */
-    newblock = dlmalloc(realsize);  /* alloc a new block */
+    newblock = malloc(realsize);  /* alloc a new block */
     if (newblock == NULL) return NULL;
     if (block) {
       memcpy(cast(char *, newblock)+HEADER, block, commonsize);
@@ -155,14 +158,14 @@ static char *buildop (Proto *p, int pc, char *buff) {
   sprintf(buff, "(%4d) %4d - ", line, pc);
   switch (getOpMode(o)) {  
     case iABC:
-      sprintf(buff+xr_strlen(buff), "%-12s%4d %4d %4d", name,
+      sprintf(buff+strlen(buff), "%-12s%4d %4d %4d", name,
               GETARG_A(i), GETARG_B(i), GETARG_C(i));
       break;
     case iABx:
-      sprintf(buff+xr_strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_Bx(i));
+      sprintf(buff+strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_Bx(i));
       break;
     case iAsBx:
-      sprintf(buff+xr_strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_sBx(i));
+      sprintf(buff+strlen(buff), "%-12s%4d %4d", name, GETARG_A(i), GETARG_sBx(i));
       break;
   }
   return buff;
@@ -568,7 +571,7 @@ static const char *getname_aux (char *buff, const char **pc) {
 }
 
 
-#define EQ(s1)	(xr_strcmp(s1, inst) == 0)
+#define EQ(s1)	(strcmp(s1, inst) == 0)
 
 #define getnum	(getnum_aux(L, &pc))
 #define getname	(getname_aux(buff, &pc))
@@ -614,7 +617,7 @@ static int testC (lua_State *L) {
       const char *s = lua_tostring(L, getnum);
       lua_pushstring(L, s);
     }
-    else if EQ("xr_strlen") {
+    else if EQ("strlen") {
       lua_pushintegral(L, lua_strlen(L, getnum));
     }
     else if EQ("tocfunction") {
@@ -818,7 +821,7 @@ static void fim (void) {
 
 static int l_panic (lua_State *L) {
   UNUSED(L);
-  xr_printf(stderr, "unable to recover; exiting\n");
+  fprintf(stderr, "unable to recover; exiting\n");
   return 0;
 }
 

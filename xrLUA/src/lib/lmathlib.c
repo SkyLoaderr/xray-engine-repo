@@ -3,13 +3,17 @@
 ** Standard mathematical library
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lmathlib_c
 
-#pragma warning(disable:4244)
-#pragma warning(disable:4305)
+#include "lua.h"
+
+#include "lauxlib.h"
+#include "lualib.h"
+
 
 #undef PI
 #define PI (3.14159265358979323846)
@@ -31,22 +35,22 @@
 
 
 static int math_abs (lua_State *L) {
-  lua_pushnumber(L, _abs(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, fabs(luaL_checknumber(L, 1)));
   return 1;
 }
 
 static int math_sin (lua_State *L) {
-  lua_pushnumber(L, _sin(TORAD(luaL_checknumber(L, 1))));
+  lua_pushnumber(L, sin(TORAD(luaL_checknumber(L, 1))));
   return 1;
 }
 
 static int math_cos (lua_State *L) {
-  lua_pushnumber(L, _cos(TORAD(luaL_checknumber(L, 1))));
+  lua_pushnumber(L, cos(TORAD(luaL_checknumber(L, 1))));
   return 1;
 }
 
 static int math_tan (lua_State *L) {
-  lua_pushnumber(L, tanf(TORAD(luaL_checknumber(L, 1))));
+  lua_pushnumber(L, tan(TORAD(luaL_checknumber(L, 1))));
   return 1;
 }
 
@@ -86,7 +90,7 @@ static int math_mod (lua_State *L) {
 }
 
 static int math_sqrt (lua_State *L) {
-  lua_pushnumber(L, _sqrt(luaL_checknumber(L, 1)));
+  lua_pushnumber(L, sqrt(luaL_checknumber(L, 1)));
   return 1;
 }
 
@@ -239,5 +243,3 @@ LUALIB_API int luaopen_math (lua_State *L) {
   return 1;
 }
 
-#pragma warning(default:4244)
-#pragma warning(default:4305)

@@ -3,10 +3,13 @@
 ** Code generator for Lua
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lcode_c
+
+#include "lua.h"
 
 #include "lcode.h"
 #include "ldebug.h"
@@ -205,6 +208,7 @@ static void freeexp (FuncState *fs, expdesc *e) {
 
 static int addk (FuncState *fs, TObject *k, TObject *v) {
   const TObject *idx = luaH_get(fs->h, k);
+  lua_State* L = fs->L;  (void)L;
   if (ttisnumber(idx)) {
     lua_assert(luaO_rawequalObj(&fs->f->k[cast(int, nvalue(idx))], v));
     return cast(int, nvalue(idx));
@@ -221,24 +225,40 @@ static int addk (FuncState *fs, TObject *k, TObject *v) {
 
 
 int luaK_stringK (FuncState *fs, TString *s) {
+  lua_State* L = fs->L;
+  int ret;
   TObject o;
+  newvalue(&o);
   setsvalue(&o, s);
-  return addk(fs, &o, &o);
+  ret = addk(fs, &o, &o);
+  cleanvalue(&o);
+  return ret;
 }
 
 
 int luaK_numberK (FuncState *fs, lua_Number r) {
+  lua_State* L = fs->L;
+  int ret;
   TObject o;
+  newvalue(&o);
   setnvalue(&o, r);
-  return addk(fs, &o, &o);
+  ret = addk(fs, &o, &o);
+  cleanvalue(&o);
+  return ret;
 }
 
 
 static int nil_constant (FuncState *fs) {
+  lua_State* L = fs->L;
+  int ret;
   TObject k, v;
-  setnilvalue(&v);
+  setnilvalue2n(&v);
+  newvalue(&k);
   sethvalue(&k, fs->h);  /* cannot use nil as key; instead use table itself */
-  return addk(fs, &k, &v);
+  ret = addk(fs, &k, &v);
+  cleanvalue(&k);
+  cleanvalue(&v);
+  return ret;
 }
 
 
@@ -371,7 +391,7 @@ void luaK_exp2nextreg (FuncState *fs, expdesc *e) {
 int luaK_exp2anyreg (FuncState *fs, expdesc *e) {
   luaK_dischargevars(fs, e);
   if (e->k == VNONRELOC) {
-    if (!hasjumps(e)) return e->info;  /* exp is already in a register */ 
+    if (!hasjumps(e)) return e->info;  /* exp is already in a register */
     if (e->info >= fs->nactvar) {  /* reg. is not a local? */
       luaK_exp2reg(fs, e, e->info);  /* put value on it */
       return e->info;

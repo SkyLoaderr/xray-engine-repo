@@ -9,6 +9,8 @@
 
 #define ltm_c
 
+#include "lua.h"
+
 #include "lobject.h"
 #include "lstate.h"
 #include "lstring.h"

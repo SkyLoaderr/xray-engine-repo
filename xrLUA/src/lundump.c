@@ -6,8 +6,9 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-
 #define lundump_c
+
+#include "lua.h"
 
 #include "ldebug.h"
 #include "lfunc.h"
@@ -41,7 +42,7 @@ static int ezgetc (LoadState* S)
 
 static void ezread (LoadState* S, void* b, int n)
 {
- int r=(int)luaZ_read(S->Z,b,n);
+ int r=luaZ_read(S->Z,b,n);
  if (r!=0) unexpectedEOZ(S);
 }
 
@@ -50,11 +51,11 @@ static void LoadBlock (LoadState* S, void* b, size_t size)
  if (S->swap)
  {
   char* p=(char*) b+size-1;
-  int n=(int)size;
+  int n=size;
   while (n--) *p--=(char)ezgetc(S);
  }
  else
-  ezread(S,b,(int)size);
+  ezread(S,b,size);
 }
 
 static void LoadVector (LoadState* S, void* b, int m, size_t size)
@@ -65,13 +66,13 @@ static void LoadVector (LoadState* S, void* b, int m, size_t size)
   while (m--)
   {
    char* p=q+size-1;
-   int n=(int)size;
+   int n=size;
    while (n--) *p--=(char)ezgetc(S);
    q+=size;
   }
  }
  else
-  ezread(S,b,(int)(m*size));
+  ezread(S,b,m*size);
 }
 
 static int LoadInt (LoadState* S)
@@ -104,7 +105,7 @@ static TString* LoadString (LoadState* S)
  else
  {
   char* s=luaZ_openspace(S->L,S->b,size);
-  ezread(S,s,(int)size);
+  ezread(S,s,size);
   return luaS_newlstr(S->L,s,size-1);		/* remove trailing '\0' */
  }
 }
@@ -143,7 +144,7 @@ static void LoadUpvalues (LoadState* S, Proto* f)
 {
  int i,n;
  n=LoadInt(S);
- if (n!=0 && n!=f->nups) 
+ if (n!=0 && n!=f->nups)
   luaG_runerror(S->L,"bad nupvalues in %s: read %d; expected %d",
 		S->name,n,f->nups);
  f->upvalues=luaM_newvector(S->L,n,TString*);
@@ -155,6 +156,7 @@ static Proto* LoadFunction (LoadState* S, TString* p);
 
 static void LoadConstants (LoadState* S, Proto* f)
 {
+ lua_State *L = S->L;
  int i,n;
  n=LoadInt(S);
  f->k=luaM_newvector(S->L,n,TObject);
@@ -163,6 +165,7 @@ static void LoadConstants (LoadState* S, Proto* f)
  {
   TObject* o=&f->k[i];
   int t=LoadByte(S);
+  newvalue(o);
   switch (t)
   {
    case LUA_TNUMBER:
@@ -189,6 +192,7 @@ static Proto* LoadFunction (LoadState* S, TString* p)
 {
  Proto* f=luaF_newproto(S->L);
  f->source=LoadString(S); if (f->source==NULL) f->source=p;
+ lua_addrefstring(f->source);
  f->lineDefined=LoadInt(S);
  f->nups=LoadByte(S);
  f->numparams=LoadByte(S);

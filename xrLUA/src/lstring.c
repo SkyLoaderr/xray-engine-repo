@@ -3,10 +3,13 @@
 ** String table (keeps all strings handled by Lua)
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lstring_c
+
+#include "lua.h"
 
 #include "lmem.h"
 #include "lobject.h"
@@ -35,6 +38,9 @@ void luaS_resize (lua_State *L, int newsize) {
       int h1 = lmod(h, newsize);  /* new position */
       lua_assert(cast(int, h%newsize) == lmod(h, newsize));
       p->gch.next = newhash[h1];  /* chain it */
+	  if (p->gch.next)
+        p->gch.next->gch.prev = p;
+      p->gch.prev = NULL;
       newhash[h1] = p;
       p = next;
     }
@@ -53,11 +59,15 @@ static TString *newlstr (lua_State *L, const char *str, size_t l, lu_hash h) {
   ts->tsv.marked = 0;
   ts->tsv.tt = LUA_TSTRING;
   ts->tsv.reserved = 0;
-  Memory.mem_copy(ts+1, str, u32(l*sizeof(char)));
+  memcpy(ts+1, str, l*sizeof(char));
   ((char *)(ts+1))[l] = '\0';  /* ending 0 */
   tb = &G(L)->strt;
   h = lmod(h, tb->size);
   ts->tsv.next = tb->hash[h];  /* chain new entry */
+  ts->tsv.ref = 0;
+  if (ts->tsv.next)
+    ts->tsv.next->gch.prev = (GCObject*)ts;
+  ts->tsv.prev = NULL;
   tb->hash[h] = valtogco(ts);
   tb->nuse++;
   if (tb->nuse > cast(ls_nstr, tb->size) && tb->size <= MAX_INT/2)
@@ -89,11 +99,16 @@ Udata *luaS_newudata (lua_State *L, size_t s) {
   u = cast(Udata *, luaM_malloc(L, sizeudata(s)));
   u->uv.marked = (1<<1);  /* is not finalized */
   u->uv.tt = LUA_TUSERDATA;
+  u->uv.ref = 0;
   u->uv.len = s;
   u->uv.metatable = hvalue(defaultmeta(L));
+  lua_addreftable(u->uv.metatable);
   /* chain it on udata list */
+  u->uv.prev = (GCObject*)&G(L)->rootudata;
   u->uv.next = G(L)->rootudata;
   G(L)->rootudata = valtogco(u);
+  if (u->uv.next)
+    u->uv.next->uv.prev = valtogco(u);
   return u;
 }
 

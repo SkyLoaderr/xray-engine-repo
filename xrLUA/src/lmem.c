@@ -9,6 +9,8 @@
 
 #define lmem_c
 
+#include "lua.h"
+
 #include "ldebug.h"
 #include "ldo.h"
 #include "lmem.h"
@@ -23,19 +25,19 @@
 ** block size; some allocators may use that.)
 */
 #ifndef l_realloc
-#define l_realloc(b,os,s)	dlrealloc(b,s)
+#define l_realloc(b,os,s)	realloc(b,s)
 #endif
 
 /*
-** definition for _free function. (`os' is the old block size; some
+** definition for free function. (`os' is the old block size; some
 ** allocators may use that.)
 */
 #ifndef l_free
-#define l_free(b,os)		dlfree(b)
+#define l_free(b,os)	free(b)
 #endif
 
 
-#define MINSIZEARRAY		4
+#define MINSIZEARRAY	4
 
 
 void *luaM_growaux (lua_State *L, void *block, int *size, int size_elems,
@@ -46,7 +48,7 @@ void *luaM_growaux (lua_State *L, void *block, int *size, int size_elems,
     newsize = MINSIZEARRAY;  /* minimum size */
   else if (*size >= limit/2) {  /* cannot double it? */
     if (*size < limit - MINSIZEARRAY)  /* try something smaller... */
-      newsize = limit;  /* still have at least MINSIZEARRAY _free places */
+      newsize = limit;  /* still have at least MINSIZEARRAY free places */
     else luaG_runerror(L, errormsg);
   }
   newblock = luaM_realloc(L, block,

@@ -3,10 +3,13 @@
 ** Lexical Analyzer
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define llex_c
+
+#include "lua.h"
 
 #include "ldo.h"
 #include "llex.h"
@@ -38,7 +41,7 @@ void luaX_init (lua_State *L) {
   for (i=0; i<NUM_RESERVED; i++) {
     TString *ts = luaS_new(L, token2string[i]);
     luaS_fix(ts);  /* reserved words are never collected */
-    lua_assert(xr_strlen(token2string[i])+1 <= TOKEN_LEN);
+    lua_assert(strlen(token2string[i])+1 <= TOKEN_LEN);
     ts->tsv.reserved = cast(lu_byte, i+1);  /* reserved word */
   }
 }
@@ -379,27 +382,27 @@ int luaX_lex (LexState *LS, SemInfo *seminfo) {
       case EOZ: {
         return TK_EOS;
       }
-      case '/':
-        next(LS);
-        if (LS->current == '/') {
-          while (LS->current != '\n' && LS->current != EOZ)
-            next(LS);
-          continue;
-        } else if (LS->current == '*') {
-          next(LS);
-          while (LS->current != EOZ) {
-            if (LS->current == '*') {
-              next(LS);
-              if (LS->current == '/') {
-                next(LS);
-                break;
-              }
-            }
-            next(LS);
-          }
-          continue;
-        } else
-          return '/';
+	  case '/':
+		  next(LS);
+		  if (LS->current == '/') {
+			  while (LS->current != '\n' && LS->current != EOZ)
+				  next(LS);
+			  continue;
+		  } else if (LS->current == '*') {
+			  next(LS);
+			  while (LS->current != EOZ) {
+				  if (LS->current == '*') {
+					  next(LS);
+					  if (LS->current == '/') {
+						  next(LS);
+						  break;
+					  }
+				  }
+				  next(LS);
+			  }
+			  continue;
+		  } else
+			  return '/';
       default: {
         if (isspace(LS->current)) {
           next(LS);

@@ -15,6 +15,7 @@
 #define gval(n)		(&(n)->i_val)
 
 
+const TObject *luaH_getkey (Table *t, const TObject *key);
 const TObject *luaH_getnum (Table *t, int key);
 TObject *luaH_setnum (lua_State *L, Table *t, int key);
 const TObject *luaH_getstr (Table *t, TString *key);

@@ -3,10 +3,13 @@
 ** Debug Interface
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define ldebug_c
+
+#include "lua.h"
 
 #include "lapi.h"
 #include "lcode.h"
@@ -103,7 +106,7 @@ LUA_API int lua_getstack (lua_State *L, int level, lua_Debug *ar) {
   }
   else {
     status = 1;
-    ar->i_ci = int(ci - L->base_ci);
+    ar->i_ci = ci - L->base_ci;
   }
   lua_unlock(L);
   return status;
@@ -512,7 +515,7 @@ void luaG_typeerror (lua_State *L, const TObject *o, const char *op) {
   const char *name = NULL;
   const char *t = luaT_typenames[ttype(o)];
   const char *kind = (isinstack(L->ci, o)) ?
-                         getobjname(L->ci, int(o - L->base), &name) : NULL;
+                         getobjname(L->ci, o - L->base, &name) : NULL;
   if (kind)
     luaG_runerror(L, "attempt to %s %s `%s' (a %s value)",
                 op, kind, name, t);
@@ -530,8 +533,10 @@ void luaG_concaterror (lua_State *L, StkId p1, StkId p2) {
 
 void luaG_aritherror (lua_State *L, const TObject *p1, const TObject *p2) {
   TObject temp;
-  if (luaV_tonumber(p1, &temp) == NULL)
+  newvalue(&temp);
+  if (luaV_tonumber(L, p1, &temp) == NULL)
     p2 = p1;  /* first operand is wrong */
+  cleanvalue(&temp);
   luaG_typeerror(L, p2, "perform arithmetic on");
 }
 
@@ -579,30 +584,3 @@ void luaG_runerror (lua_State *L, const char *fmt, ...) {
   luaG_errormsg(L);
 }
 
-int	lua_getlineinfofromproto(Proto* p,int* lines)
-{
-	int size=0;
-	int i;
-
- 	if(lines!=NULL)
- 		Memory.mem_copy(lines,p->lineinfo,sizeof(int)*p->sizelineinfo);	
- 	size+=p->sizelineinfo;	
- 	
- 	for (i=0; i<p->sizep; i++)
- 	{			
- 		size+=lua_getlineinfofromproto(
- 									p->p[i],
- 									(lines!=NULL)?lines+size:NULL);
- 	}
- 	return size;
-}
- 
-LUA_API int lua_getlineinfo(lua_State* L,int* lines)
-{
- 	const Closure* c = (const union Closure *)lua_topointer(L,-1);
- 	int size;
- 	lua_lock(L);
- 	size=lua_getlineinfofromproto(c->l.p,lines);
- 	lua_unlock(L);
- 	return size;	
-}

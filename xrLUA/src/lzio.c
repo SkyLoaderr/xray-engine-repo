@@ -3,10 +3,13 @@
 ** a generic input stream interface
 ** See Copyright Notice in lua.h
 */
+
 #include "stdafx.h"
 #pragma hdrstop
 
 #define lzio_c
+
+#include "lua.h"
 
 #include "llimits.h"
 #include "lmem.h"
@@ -56,7 +59,7 @@ size_t luaZ_read (ZIO *z, void *b, size_t n) {
       }
     }
     m = (n <= z->n) ? n : z->n;  /* min. between n and z->n */
-    Memory.mem_copy(b, z->p, (u32)m);
+    memcpy(b, z->p, m);
     z->n -= m;
     z->p += m;
     b = (char *)b + m;
