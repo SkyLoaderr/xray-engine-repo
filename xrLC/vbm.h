@@ -22,21 +22,21 @@ public:
 	{
 		R_ASSERT		(R_DCL.empty());
 		R_ASSERT		(R_DATA.empty());
-		R_DCL.set	(dwFVF);
+		R_DCL.set		(dwFVF);
 	}
 	void	Begin			(const VDeclarator& D)
 	{
 		R_ASSERT		(R_DCL.empty());
 		R_ASSERT		(R_DATA.empty());
-		R_DCL.set	(D);
+		R_DCL.set		(D);
 	}
 	void	Add				(VOID* PTR, DWORD cnt)
 	{
 		R_ASSERT		(R_DCL.size());
-		BYTE*	P	= (BYTE*) PTR;
-		R_DATA.insert(R_DATA.end(),P,P+cnt);
+		BYTE*	P		= (BYTE*) PTR;
+		R_DATA.insert	(R_DATA.end(),P,P+cnt);
 	}
-	void	End				(DWORD* dwContainerID, DWORD *dwIndexStart)
+	void	End				(u32* dwContainerID, u32 *dwIndexStart)
 	{
 		R_ASSERT		(! R_DCL.empty()	);
 		R_ASSERT		(! R_DATA.empty()	);
@@ -96,12 +96,12 @@ public:
 
 class IBContainer
 {
-	vector<vector<WORD> >	data;
+	vector<vector<u16> >	data;
 	enum {
 		LIMIT = 1024ul * 1024ul
 	};
 public:
-	void	Register		(WORD* begin, WORD* end, DWORD* dwContainerID, DWORD *dwStart)
+	void	Register		(u16* begin, u16* end, u32* dwContainerID, u32 *dwStart)
 	{
 		DWORD size				= end-begin;
 
@@ -120,7 +120,7 @@ public:
 		// Can't find suitable container - register new
 		*dwContainerID		= data.size();
 		*dwStart			= 0;
-		data.push_back		(vector<WORD> ());
+		data.push_back		(vector<u16> ());
 		data.back().assign	(begin,end);
 	}
 	void	Save	(CFS_Base &fs)

@@ -10,14 +10,19 @@ s16 QC	(float v)
 	return	s16	(t);
 }
 
+D3DVERTEXELEMENT9	decl[] = 
+{
+	{0, 0,  D3DDECLTYPE_FLOAT3,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 },
+	{0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 },
+	{0, 16, D3DDECLTYPE_SHORT2,		D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 },
+	D3DDECL_END()
+};
+
 void	xrMU_Model::export_geometry		()
 {
 	// Declarator
-	VDeclarator		D;
-	D.push_back		({0, 0,  D3DDECLTYPE_FLOAT3,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_POSITION,	0 });	// position
-	D.push_back		({0, 12, D3DDECLTYPE_D3DCOLOR,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_COLOR,		0 });	// color
-	D.push_back		({0, 16, D3DDECLTYPE_SHORT2,	D3DDECLMETHOD_DEFAULT, 	D3DDECLUSAGE_TEXCOORD,	0 });	// tc
-	D.push_back		(D3DDECL_END());
+	VDeclarator			D;
+	D.set				(decl);
 
 	// RT-check
 	R_ASSERT		(m_vertices.size()==color.size());
@@ -34,15 +39,15 @@ void	xrMU_Model::export_geometry		()
 				OGF_Vertex&		oV	= verts[v_it];
 
 				// Position
-				g_VB.Add	(&oV->P,3*sizeof(float));
+				g_VB.Add	(&oV.P,3*sizeof(float));
 
 				// Color
-				g_VB.Add	(&V->Color,4);
+				g_VB.Add	(&oV.Color,4);
 
 				// TC
 				s16	tu,tv;
-				tu			= QC(V->UV.begin()->x);
-				tv			= QC(V->UV.begin()->y);
+				tu			= QC(oV.UV.begin()->x);
+				tv			= QC(oV.UV.begin()->y);
 				g_VB.Add	(&tu,2);
 				g_VB.Add	(&tv,2);
 			}

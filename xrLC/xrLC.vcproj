@@ -842,6 +842,9 @@
 					RelativePath="xrMU_Model_Calc_normals.cpp">
 				</File>
 				<File
+					RelativePath="xrMU_Model_Calc_ogf.cpp">
+				</File>
+				<File
 					RelativePath="xrMU_Model_Load.cpp">
 				</File>
 				<File
@@ -852,6 +855,9 @@
 				</File>
 				<File
 					RelativePath="xrMU_Model_export_cform_rcast.cpp">
+				</File>
+				<File
+					RelativePath="xrMU_Model_export_geometry.cpp">
 				</File>
 			</Filter>
 		</Filter>
