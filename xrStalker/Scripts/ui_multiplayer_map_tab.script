@@ -26,13 +26,15 @@ function map_tab:InitControls(x_pos, y_pos, width, height)
 	
 	----- DATA ----
 	local list_map_rect = {}
-	list_map_rect.x = 100
+	list_map_rect.y = 100
 	
 	local list_map_l_rect = {}
-	list_map_l_rect.x = list_map_rect.x
+	list_map_l_rect.x = self.left_align_x
+	list_map_l_rect.y = list_map_rect.y
 	
 	local list_map_r_rect = {}
-	list_map_r_rect.x = list_map_rect.x
+	list_map_r_rect.x = self.left_align_x
+	list_map_r_rect.y = list_map_rect.y
 	
 	
 	----- BUTTONS --->>>	
