@@ -71,9 +71,7 @@ function main_menu:InitControls()
 	tabBtn:Init(0, 0, self.btn_rect.width, self.btn_rect.height)
 	tabBtn:InitTexture("ui\\ui_button_01")
 	tabBtn:AssociateWindow(self.main_frame)
-	tabBtn:FuckYou()
-	
-	asdfetasdfeaew
+
 		
 	----- CODE -------
 -------- BUTTONS ------------------------------- 
