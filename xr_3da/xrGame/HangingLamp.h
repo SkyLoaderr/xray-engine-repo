@@ -13,6 +13,7 @@ class CHangingLamp: public CGameObject
 	typedef	CGameObject		inherited;
 private:
 	int				light_bone_idx;
+	IRender_Light*	light_render;
 public:
 					CHangingLamp	();
 	virtual			~CHangingLamp	();
