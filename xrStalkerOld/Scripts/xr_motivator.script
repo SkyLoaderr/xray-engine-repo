@@ -98,7 +98,7 @@ function motivator_binder:reinit()
     }
 	xr_wounded.add_to_binder (self.object, char_ini)
 
-	xr_combat.set_combat_checker(self.object, char_ini, "combat", "combat")
+	--xr_combat.set_combat_checker(self.object, char_ini, "combat", "combat")
 ----------------------------------------------------------------------------------------------------------------------
 -- Скрипты, управляемые xr_logic
 ----------------------------------------------------------------------------------------------------------------------
