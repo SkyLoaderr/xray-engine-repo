@@ -188,8 +188,9 @@ void CShaderTools::SelectPreviewObject(int p){
     UI.RedrawScene();
 }
 
-void CShaderTools::ResetPreviewObject(){
-    m_EditObject 	= 0;
+void CShaderTools::ResetPreviewObject()
+{
+    Lib.RemoveEditObject(m_EditObject);
     UI.RedrawScene();
 }
 
