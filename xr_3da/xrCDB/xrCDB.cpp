@@ -42,7 +42,7 @@ void	TRI::convert_P2I	(Fvector* pBaseV)
 }
 
 // Model building
-MODEL::MODEL()
+MODEL::MODEL	()
 {
 	tree		= 0;
 	tris		= 0;
