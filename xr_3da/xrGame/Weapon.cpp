@@ -811,14 +811,13 @@ void CWeapon::FireShotmark	(const Fvector& /**vDir/**/, const Fvector &vEnd, Col
 			*/
 		}
 	} else {
-		/* !!! remove comments line!!!
 		::Render->add_Wallmark	(
 			hWallmark,
 			vEnd,
 			fWallmarkSize,
 			g_pGameLevel->ObjectSpace.GetStaticTris()+R.element,
 			g_pGameLevel->ObjectSpace.GetStaticVerts()
-			);*/
+			);
 	}
 }
 
