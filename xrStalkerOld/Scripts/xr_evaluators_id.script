@@ -9,7 +9,6 @@ final_trade_init        = stalker_ids.property_script + 2
 state_change            = stalker_ids.property_script + 3
 position				= stalker_ids.property_script + 4
 reaction				= stalker_ids.property_script + 5
-alife					= stalker_ids.action_alife_planner
 
 -- эвалуаторы Стохе
 stohe_evaluators        = stalker_ids.property_script + 1000
