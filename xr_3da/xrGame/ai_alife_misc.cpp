@@ -198,13 +198,11 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 			}
 			else {
 				sort(tHumanParams.m_tpItemIDs.begin(),tHumanParams.m_tpItemIDs.end(),CSortItemPredicate(m_tObjectRegistry));
-				OBJECT_IT	E = tHumanParams.m_tpItemIDs.end();
-				OBJECT_IT	S = tHumanParams.m_tpItemIDs.begin();
-				OBJECT_IT	I = E - 1;
 				float		fItemMass = tHumanParams.m_fCumulativeItemMass;
-#pragma todo("Reimplement with the reverse iterator because of the possible ERROR!")
-				for ( ; I != S; I--) {
-					OBJECT_PAIR_IT II = m_tObjectRegistry.find((*I));
+				u32			dwCount = tHumanParams.m_tpItemIDs.size();
+				int			i;
+				for ( i=(int)dwCount - 1; i>=0; i--) {
+					OBJECT_PAIR_IT II = m_tObjectRegistry.find(tHumanParams.m_tpItemIDs[i]);
 					VERIFY(II != m_tObjectRegistry.end());
 					CALifeItem *tpALifeItemIn = dynamic_cast<CALifeItem *>((*II).second);
 					VERIFY(tpALifeItemIn);
@@ -215,9 +213,9 @@ bool CAI_ALife::bfProcessItems(CALifeHumanParams &tHumanParams, _GRAPH_ID tGraph
 						break;
 				}
 				if (tHumanParams.m_fCumulativeItemMass + tpALifeItem->m_fMass < fMaxItemMass) {
-					for ( ; I != E; I++)
+					for (int j=i + 1 ; j < (int)dwCount; j++)
 						vfDetachItem(tHumanParams,tpALifeItem,tGraphID);
-					tHumanParams.m_tpItemIDs.erase		(I,tHumanParams.m_tpItemIDs.end());
+					tHumanParams.m_tpItemIDs.erase		(tHumanParams.m_tpItemIDs.begin() + i,tHumanParams.m_tpItemIDs.end());
 					tHumanParams.m_tpItemIDs.push_back	(tpALifeItem->m_tObjectID);
 					tHumanParams.m_fCumulativeItemMass	+= tpALifeItem->m_fMass;
 					vfAttachItem(tHumanParams,tpALifeItem,tGraphID);

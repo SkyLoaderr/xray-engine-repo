@@ -51,8 +51,6 @@ void CAI_ALife::Load()
 	shedule_Max					=    20;
 	m_dwObjectsBeingProcessed	=     0;
 	m_qwMaxProcessTime			=  100*CPU::cycles_per_microsec;
-	m_dwStartTime				=	Level().timeServer();
-	m_fTimeFactor				=   1.0f;
 
 	if (!Level().AI.m_tpaGraph)
 		return;
@@ -117,6 +115,10 @@ void CAI_ALife::Save()
 	tStream.SaveTo				("game.alife",0);
 }
 
+void CAI_ALife::vfGenerateAnomalousZones()
+{
+}
+
 void CAI_ALife::vfGenerateArtefacts()
 {
 }
@@ -156,4 +158,3 @@ void CAI_ALife::vfBallanceCreatures()
 void CAI_ALife::vfUpdateCreatures()
 {
 }
-

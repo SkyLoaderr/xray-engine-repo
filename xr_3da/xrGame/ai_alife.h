@@ -128,6 +128,7 @@ public:
 	};
 
 	// surge
+	void							vfGenerateAnomalousZones();
 	void							vfGenerateArtefacts		();
 	void							vfCreateZoneShot		();
 	void							vfSellArtefacts			(CALifeTrader &tTrader);

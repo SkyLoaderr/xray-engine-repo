@@ -111,9 +111,11 @@ public:
 				tpTemp1 = tpBestNode;
 				tpaNodes[--i] = tpBestNode->iIndex;
 				tpTemp = tpTemp1->tpBack;
-#pragma todo("Optimization note : implement reverse-iterator")
-				for (u32 j=1; tpTemp; tpTemp = tpTemp->tpBack, j++)
-					tpaNodes[i - j] = tpTemp->iIndex;
+				
+				vector<u32>::reverse_iterator	I = tpaNodes.rbegin();
+				vector<u32>::reverse_iterator	E = tpaNodes.rend();
+				for ( ; tpTemp; tpTemp = tpTemp->tpBack, I++)
+					*I = tpTemp->iIndex;
 					
 				Device.Statistic.AI_Path.End();
 				return;
