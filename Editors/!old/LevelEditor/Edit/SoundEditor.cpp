@@ -295,7 +295,7 @@ void __fastcall TfrmSoundLib::ebImportSoundClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif)
+void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -311,7 +311,7 @@ void __fastcall TfrmSoundLib::OnControlClick(PropValue* sender, bool& bModif)
 }
 //------------------------------------------------------------------------------
 
-void __fastcall TfrmSoundLib::OnControl2Click(PropValue* sender, bool& bModif)
+void __fastcall TfrmSoundLib::OnControl2Click(PropValue* sender, bool& bModif, bool& bSafe)
 {
 	ButtonValue* V = dynamic_cast<ButtonValue*>(sender); R_ASSERT(V);
     switch (V->btn_num){
@@ -367,7 +367,7 @@ void __fastcall TfrmSoundLib::OnItemsFocused(ListItemsVec& items)
         B->OnBtnClickEvent		= OnControl2Click;
     }
     
-	m_ItemProps->AssignItems		(props,true);
+	m_ItemProps->AssignItems		(props);
 }
 //---------------------------------------------------------------------------
 

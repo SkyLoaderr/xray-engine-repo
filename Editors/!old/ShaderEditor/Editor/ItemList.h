@@ -19,6 +19,7 @@
 
 #include "ItemListHelper.h"
 #include "FolderLib.h"
+#include "PropertiesListTypes.h"
 
 
 class ECORE_API TItemList: public TForm
@@ -94,6 +95,8 @@ public:
         ilDragAllowed	= (1<<2),
         ilDragCustom	= (1<<3),
         ilFolderStore	= (1<<4),
+        ilSuppressIcon 	= (1<<5),
+        ilSuppressStatus= (1<<6),
 
         // internal
         ilRT_FullExpand	= (1<<30),
@@ -102,6 +105,7 @@ public:
     s32					iLocked;
     Flags32				m_Flags;
 	// events
+    TOnModifiedEvent 	OnModifiedEvent;
     TOnItemsFocused		OnItemsFocused;
     TOnItemFocused		OnItemFocused;
     TOnCloseEvent		OnCloseEvent;

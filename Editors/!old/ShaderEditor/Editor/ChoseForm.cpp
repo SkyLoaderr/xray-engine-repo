@@ -47,7 +47,7 @@ void __fastcall TfrmChoseItem::FormDestroy(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, AStringVec* items)
+int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel_cnt, LPCSTR init_name, ChooseItemVec* items)
 {
 	VERIFY(!form);
 	form 							= xr_new<TfrmChoseItem>((TComponent*)0);
@@ -61,7 +61,7 @@ int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel
     form->tvItems->Items->Clear		();
 
     // insert [none]
-    FHelper.AppendObject			(form->tvItems,NONE_CAPTION);
+    FHelper.AppendObject			(form->tvItems,NONE_CAPTION,false,true);
 
     // fill
     switch (form->Mode){
@@ -104,20 +104,21 @@ int __fastcall TfrmChoseItem::SelectItem(EChooseMode mode, LPCSTR& dest, int sel
 // Constructors
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmChoseItem::AppendItem(LPCSTR name)
+void __fastcall TfrmChoseItem::AppendItem(LPCSTR name, LPCSTR info)
 {
-    TElTreeItem* node		= FHelper.AppendObject(form->tvItems,name);
+    TElTreeItem* node		= FHelper.AppendObject(form->tvItems,name,false,true);
+    node->Hint				= (info&&info[0])?info:name;
     node->CheckBoxEnabled 	= form->bMultiSel;
     node->ShowCheckBox 		= form->bMultiSel;
 }
 
-void __fastcall TfrmChoseItem::FillCustom(AStringVec* items)
+void __fastcall TfrmChoseItem::FillCustom(ChooseItemVec* items)
 {
 	R_ASSERT2(items,"Invalid list pointer received.");
     form->Caption				= "Select Item";
-    AStringIt  it				= items->begin();
-    AStringIt  _E				= items->end();
-    for (; it!=_E; it++)		AppendItem(it->c_str());
+    ChooseItemVecIt  it			= items->begin();
+    ChooseItemVecIt  _E			= items->end();
+    for (; it!=_E; it++)		AppendItem(it->name.c_str(),it->hint.c_str());
 }
 
 void __fastcall TfrmChoseItem::FillEntity()
@@ -483,7 +484,6 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 FHelper.MakeName		(Item,0,nm,false);
                 if (nm!=NONE_CAPTION)	m_Thm	= xr_new<ETextureThumbnail>(nm.c_str());
                 lbItemName->Caption 	= "\""+ChangeFileExt(Item->Text,"")+"\"";
-                lbFileName->Caption 	= "\""+Item->Text+"\"";
             }
         }break;
         case smObject:{
@@ -497,7 +497,7 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 }
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbFileName->Caption		= "\""+Item->Text+".object\"";
+			lbHint->Caption			= "\""+Item->Text+".object\"";
         }break;
         case smSoundSource:{
             if (ebExt->Down){
@@ -511,7 +511,6 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 }
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbFileName->Caption		= "\""+Item->Text+".ogg\"";
         }break;
         case smGameObject:{
 	        AnsiString fn;
@@ -531,18 +530,17 @@ void __fastcall TfrmChoseItem::tvItemsItemFocused(TObject *Sender)
                 ::Render->model_Delete(visual);
             }
 			lbItemName->Caption 	= "\""+Item->Text+"\"";
-			lbFileName->Caption		= "\""+Item->Text+".ogf\"";
         }break;
         default:
 			lbItemName->Caption = "\""+Item->Text+"\"";
-			lbFileName->Caption	= "-";
         }
+        lbHint->Caption 		= Item->Hint;
     }else{
 		lbItemName->Caption = "-";
-		lbFileName->Caption	= "-";
+		lbHint->Caption		= "-";
     }
     if (m_Thm)	m_Thm->FillInfo		(items);
-    m_Props->AssignItems			(items,true);
+    m_Props->AssignItems			(items);
     paInfo->Visible					= !items.empty();
 	paImage->Repaint				();
 }

@@ -63,7 +63,7 @@ void TItemList::ClearParams(TElTreeItem* node)
         if (m_Flags.is(ilFolderStore)&&tvItems->Items->Count){
 	        FolderStore.clear();
             for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
-            	if (u32(item->Data)==TYPE_FOLDER){
+            	if (item->ChildrenCount){
                 	AnsiString nm;
                 	FHelper.MakeFullName(item,0,nm);
                     SFolderStore 		st_item;
@@ -154,6 +154,7 @@ TItemList* TItemList::CreateForm(const AnsiString& title, TWinControl* parent, T
     if (props->Parent)	props->tvItems->HeaderSections->Item[0]->Text = title;
     else				props->Caption 	= title;
     props->fsStorage->IniSection   		= title;
+    props->paStatus->Visible 			= !props->m_Flags.is(ilSuppressStatus);
 	ILForms.push_back(props);
 	return props;
 }
@@ -209,9 +210,9 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
 	for (ListItemsIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	ListItem* prop		= *it;
         if (!prop->key.IsEmpty()&&(prop->key[prop->key.Length()]=='\\')){
-        	FHelper.AppendFolder(tvItems,prop->key);
+        	FHelper.AppendFolder(tvItems,prop->key,!m_Flags.is(ilSuppressIcon));
         }else{
-            prop->item			= FHelper.AppendObject(tvItems,prop->key);
+            prop->item			= FHelper.AppendObject(tvItems,prop->key,false,!m_Flags.is(ilSuppressIcon));
             if (!prop->item){
                 ELog.DlgMsg		(mtError,"Duplicate item name found: '%s'",prop->key);
                 break;
@@ -239,7 +240,7 @@ void __fastcall TItemList::AssignItems(ListItemsVec& items, bool full_expand, bo
     // folder restore
     if (m_Flags.is(ilFolderStore)&&!FolderStore.empty()){
         for (TElTreeItem* item=tvItems->Items->GetFirstNode(); item; item=item->GetNext()){
-            if (u32(item->Data)==TYPE_FOLDER){
+            if (item->ChildrenCount){
                 AnsiString nm;
                 FHelper.MakeFullName		(item,0,nm);
                 FolderStorePairIt it 		= FolderStore.find(nm);
@@ -463,8 +464,11 @@ void __fastcall TItemList::InplaceEditAfterOperation(TObject *Sender,
         R_ASSERT(m_Flags.is(ilEditMenu));
         TElTreeInplaceAdvancedEdit* IE	= InplaceEdit;
         AnsiString new_text 			= AnsiString(IE->Editor->Text).LowerCase();
-        FHelper.RenameItem				(tvItems,IE->Item,new_text,RenameItem); 
-        if (tvItems->OnAfterSelectionChange) tvItems->OnAfterSelectionChange(0);
+        bool bRes						= FHelper.RenameItem(tvItems,IE->Item,new_text,RenameItem); 
+        if (bRes){
+	        if (tvItems->OnAfterSelectionChange)tvItems->OnAfterSelectionChange(0);
+            if (OnModifiedEvent)				OnModifiedEvent();
+        }
     }
 }
 //---------------------------------------------------------------------------
@@ -514,7 +518,8 @@ void __fastcall TItemList::tvItemsKeyDown(TObject *Sender, WORD &Key,
 {
 	if (m_Flags.is(ilEditMenu)){
 		if (Key==VK_DELETE) 
-			FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemove);
+			if (FHelper.RemoveItem(tvItems,tvItems->Selected,OnItemRemove))
+            	if (OnModifiedEvent) OnModifiedEvent();
     }
 }
 //---------------------------------------------------------------------------
@@ -576,15 +581,21 @@ void TItemList::RemoveSelItems(CFolderHelper::TOnItemRemove on_remove)
     	DeselectAll					();
         tvItemsAfterSelectionChange	(0);
         bool bSelChanged=false;
+        bool bRes=false;
         for (ElItemsIt it=sel_items.begin(); it!=sel_items.end(); it++)
 			if (!FHelper.RemoveItem(tvItems,*it,on_remove?on_remove:OnItemRemove)){
             	AnsiString fn;
                 FHelper.MakeFullName(*it,0,fn);
             	SelectItem(fn,true,true,false);
                 bSelChanged=true;
+            }else{
+            	bRes = true;
             }
-        if (bSelChanged) tvItemsAfterSelectionChange(0);
-    	tvItems->IsUpdating = false;
+        if (bSelChanged||bRes){
+            tvItemsAfterSelectionChange	(0);
+            if (bRes&&OnModifiedEvent)	OnModifiedEvent(); 
+        }
+    	tvItems->IsUpdating 		= false;
     }
 }
 //---------------------------------------------------------------------------

@@ -46,7 +46,7 @@ __published:	// IDE-managed Components
 	TPanel *paItemsCount;
 	TGradient *grdFon;
 	TLabel *mxLabel2;
-	TLabel *lbFileName;
+	TLabel *lbHint;
 	TLabel *lbItemName;
 	TLabel *mxLabel1;
 	TMxPanel *paImage;
@@ -95,7 +95,7 @@ private:	// User declarations
     bool 	bMultiSel;
     int 	iMultiSelLimit;
 // fill routines
-    void __fastcall FillCustom		(AStringVec* items);
+    void __fastcall FillCustom		(ChooseItemVec* items);
     void __fastcall FillSoundSource	();
     void __fastcall FillSoundEnv	();
     void __fastcall FillObject		();
@@ -111,14 +111,14 @@ private:	// User declarations
     void __fastcall FillGameAnim	();
     void __fastcall FillGameMaterial();
 
-    void __fastcall AppendItem		(LPCSTR name);
+    void __fastcall AppendItem		(LPCSTR name, LPCSTR info="");
 public:		// User declarations
 protected:
     EChooseMode Mode;
     static AnsiString m_LastSelection[smMaxMode]; 
 public:		// User declarations
     __fastcall 					TfrmChoseItem	(TComponent* Owner);
-    static int	 	__fastcall 	SelectItem		(EChooseMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, AStringVec* items=0);
+    static int	 	__fastcall 	SelectItem		(EChooseMode mode, LPCSTR& dest, int sel_cnt=1, LPCSTR init_name=0, ChooseItemVec* items=0);
     static bool 	__fastcall 	Visible			(){return !!form;}
 };
 //---------------------------------------------------------------------------

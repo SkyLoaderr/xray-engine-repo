@@ -28,6 +28,7 @@ enum EPropType{
 	PROP_LIST,
 	PROP_COLOR,
 	PROP_FCOLOR,
+	PROP_VCOLOR,
 	PROP_TEXT,
     PROP_A_TEXT,
 	PROP_R_TEXT,
@@ -47,14 +48,14 @@ typedef void 	__fastcall (__closure *TAfterEdit)			(PropItem* sender, LPVOID edi
 typedef void 	__fastcall (__closure *TOnDrawTextEvent)	(PropValue* sender, LPVOID draw_val);
 typedef void 	__fastcall (__closure *TOnChange)			(PropValue* sender);
 typedef void 	__fastcall (__closure *TOnClick)			(PropItem* sender);
-typedef void 	__fastcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified);
+typedef void 	__fastcall (__closure *TOnBtnClick)			(PropValue* sender, bool& bDataModified, bool& bSafe);
 typedef void 	__fastcall (__closure *TOnCloseEvent)		(void);
 typedef void 	__fastcall (__closure *TOnModifiedEvent)	(void);
 typedef void 	__fastcall (__closure *TOnItemFocused)		(TElTreeItem* item);
 typedef void 	__fastcall (__closure *TOnPropItemFocused)	(PropItem* sender);
 typedef void 	__fastcall (__closure *TOnDrawCanvasEvent)	(PropValue* sender, TCanvas* canvas, const TRect& rect);
 typedef bool 	__fastcall (__closure *TOnTestEqual)		(PropValue* a, PropValue* b);
-typedef void 	__fastcall (__closure *TOnChoose)			(PropValue* sender, AStringVec& lst);
+typedef void 	__fastcall (__closure *TOnChoose)			(PropValue* sender, ChooseItemVec& lst);
 //------------------------------------------------------------------------------
 extern AnsiString prop_draw_text;
 //------------------------------------------------------------------------------
@@ -289,7 +290,7 @@ public:
     	return true;
     }
     virtual	bool		ApplyValue		(LPVOID val){return false;}
-    bool				OnBtnClick		(){if(OnBtnClickEvent)	{ bool bDModif=true; OnBtnClickEvent(this,bDModif); return bDModif;}else return false;}
+    bool				OnBtnClick		(bool& bSafe){if(OnBtnClickEvent)	{ bool bDModif=true; OnBtnClickEvent(this,bDModif,bSafe); return bDModif;}else return false;}
 };
 
 class ECORE_API TextValue: public PropValue{

@@ -22,11 +22,12 @@ ECustomThumbnail::~ECustomThumbnail()
 //------------------------------------------------------------------------------
 void DrawThumbnail(TCanvas* pCanvas, TRect& r, U32Vec& data, bool bDrawWithAlpha)
 {
+	pCanvas->CopyMode		= cmSrcCopy;
     Graphics::TBitmap *pBitmap = xr_new<Graphics::TBitmap>();
 
-    pBitmap->PixelFormat = pf32bit;
-    pBitmap->Height		 = THUMB_HEIGHT;
-    pBitmap->Width		 = THUMB_WIDTH;
+    pBitmap->PixelFormat 	= pf32bit;
+    pBitmap->Height		 	= THUMB_HEIGHT;
+    pBitmap->Width		 	= THUMB_WIDTH;
         
     if (bDrawWithAlpha){
     	Fcolor back;

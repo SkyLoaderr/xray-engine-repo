@@ -717,11 +717,12 @@ void CDrawUtilities::DrawPlane	(const Fvector& p, const Fvector& n, const Fvecto
 	u32			vBase;
     
     if (bSolid){
+	    Device.SetShader(Device.m_SelectionShader);
         FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
         pv->set		(-scale.x, 0, -scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
-        pv->set		(+scale.x, 0, -scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
-        pv->set		(+scale.x, 0, +scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
         pv->set		(-scale.x, 0, +scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, +scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, -scale.y, clr_s); mR.transform_tiny(pv->p); pv++;
         pv->set		(*(pv-4));
         Stream->Unlock(5,vs_L->vb_stride);
         if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
@@ -730,6 +731,7 @@ void CDrawUtilities::DrawPlane	(const Fvector& p, const Fvector& n, const Fvecto
     }
 
     if (bWire){
+	    Device.SetShader(Device.m_WireShader);
         FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
         pv->set		(-scale.x, 0, -scale.y, clr_w); mR.transform_tiny(pv->p); pv++;
         pv->set		(+scale.x, 0, -scale.y, clr_w); mR.transform_tiny(pv->p); pv++;
@@ -752,11 +754,12 @@ void CDrawUtilities::DrawPlane  (const Fvector& center, const Fvector2& scale, c
 	u32			vBase;
     
     if (bSolid){
+	    Device.SetShader(Device.m_SelectionShader);
         FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
         pv->set		(-scale.x, 0, -scale.y, clr_s); M.transform_tiny(pv->p); pv++;
-        pv->set		(+scale.x, 0, -scale.y, clr_s); M.transform_tiny(pv->p); pv++;
-        pv->set		(+scale.x, 0, +scale.y, clr_s); M.transform_tiny(pv->p); pv++;
         pv->set		(-scale.x, 0, +scale.y, clr_s); M.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, +scale.y, clr_s); M.transform_tiny(pv->p); pv++;
+        pv->set		(+scale.x, 0, -scale.y, clr_s); M.transform_tiny(pv->p); pv++;
         pv->set		(*(pv-4));
         Stream->Unlock(5,vs_L->vb_stride);
         if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
@@ -765,6 +768,7 @@ void CDrawUtilities::DrawPlane  (const Fvector& center, const Fvector2& scale, c
     }
 
     if (bWire){
+	    Device.SetShader(Device.m_WireShader);
         FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
         pv->set		(-scale.x, 0, -scale.y, clr_w); M.transform_tiny(pv->p); pv++;
         pv->set		(+scale.x, 0, -scale.y, clr_w); M.transform_tiny(pv->p); pv++;
@@ -784,6 +788,7 @@ void CDrawUtilities::DrawRectangle(const Fvector& o, const Fvector& u, const Fve
     u32				vBase;
     if (bSolid)
     {
+	    Device.SetShader(Device.m_SelectionShader);
         FVF::L*	pv	 	= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
         pv->set			(o.x,			o.y,		o.z,		clr_s); pv++;
         pv->set			(o.x+u.x+v.x,	o.y+u.y+v.y,o.z+u.z+v.z,clr_s); pv++;
@@ -796,6 +801,7 @@ void CDrawUtilities::DrawRectangle(const Fvector& o, const Fvector& u, const Fve
     }
     if (bWire)
     {
+	    Device.SetShader(Device.m_WireShader);
         FVF::L*	pv	 	= (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
         pv->set			(o.x,			o.y,		o.z,		clr_w); pv++;
         pv->set			(o.x+u.x,		o.y+u.y,	o.z+u.z,	clr_w); pv++;

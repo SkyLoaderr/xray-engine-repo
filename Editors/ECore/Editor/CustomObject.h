@@ -83,9 +83,9 @@ public:
 	void __fastcall OnObjectNameAfterEdit	(PropItem* sender, LPVOID edit_val);
     void __fastcall	OnTransformChange		(PropValue* value); 
 	void __fastcall OnMotionableChange		(PropValue* sender);
-    void __fastcall	OnMotionCommandsClick	(PropValue* value, bool& bModif);
-    void __fastcall	OnMotionFilesClick		(PropValue* value, bool& bModif);
-    void __fastcall	OnMotionControlClick	(PropValue* value, bool& bModif);
+    void __fastcall	OnMotionCommandsClick	(PropValue* value, bool& bModif, bool& bSafe);
+    void __fastcall	OnMotionFilesClick		(PropValue* value, bool& bModif, bool& bSafe);
+    void __fastcall	OnMotionControlClick	(PropValue* value, bool& bModif, bool& bSafe);
     void __fastcall	OnMotionFrameChange		(PropValue* value); 
     void __fastcall	OnMotionCurrentFrameChange(PropValue* value); 
     void __fastcall	OnMotionCameraViewChange(PropValue* value); 

@@ -101,11 +101,11 @@ public:
     IC ButtonValue*		CreateButton	(PropItemVec& items, AnsiString key, AnsiString val, u32 flags)
     {	return			(ButtonValue*)	AppendValue		(items,key,xr_new<ButtonValue>(val,flags),PROP_BUTTON);		}
     IC ChooseValue*		CreateChoose	(PropItemVec& items, AnsiString key, LPSTR val, int len, EChooseMode mode, LPCSTR path=0)
-    {	return			(ChooseValue*)	AppendValue		(items,key,xr_new<ChooseValue>(val,len,mode,path),PROP_CHOOSE);	}
+    {	return			(ChooseValue*)	AppendValue		(items,key,xr_new<ChooseValue>(val,len,mode,path),PROP_CHOOSE,((mode==smTexture)||(mode==smObject))?PropItem::flDrawThumbnail:0);	}
     IC AChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, AnsiString* val, EChooseMode mode, LPCSTR path=0)
-    {	return			(AChooseValue*)	AppendValue		(items,key,xr_new<AChooseValue>(val,mode,path),PROP_CHOOSE);	}
+    {	return			(AChooseValue*)	AppendValue		(items,key,xr_new<AChooseValue>(val,mode,path),PROP_CHOOSE,((mode==smTexture)||(mode==smObject))?PropItem::flDrawThumbnail:0);	}
     IC RChooseValue*	CreateChoose	(PropItemVec& items, AnsiString key, ref_str* val, EChooseMode mode, LPCSTR path=0)
-    {	return			(RChooseValue*)	AppendValue		(items,key,xr_new<RChooseValue>(val,mode,path),PROP_CHOOSE);	}
+    {	return			(RChooseValue*)	AppendValue		(items,key,xr_new<RChooseValue>(val,mode,path),PROP_CHOOSE,((mode==smTexture)||(mode==smObject))?PropItem::flDrawThumbnail:0);	}
     IC S8Value* 		CreateS8		(PropItemVec& items, AnsiString key, s8* val, s8 mn=0, s8 mx=100, s8 inc=1)
     {	return			(S8Value*)		AppendValue		(items,key,xr_new<S8Value>(val,mn,mx,inc,0),PROP_S8);	}
     IC S16Value* 		CreateS16		(PropItemVec& items, AnsiString key, s16* val, s16 mn=0, s16 mx=100, s16 inc=1)
@@ -149,6 +149,8 @@ public:
     {   return			(U32Value*)		AppendValue		(items,key,xr_new<U32Value>(val,0x00000000,0xffffffff,1,0),PROP_COLOR);}
     IC ColorValue*		CreateFColor	(PropItemVec& items, AnsiString key, Fcolor* val)
     {   return			(ColorValue*)	AppendValue		(items,key,xr_new<ColorValue>(val),PROP_FCOLOR);        }
+    IC VectorValue*		CreateVColor	(PropItemVec& items, AnsiString key, Fvector* val)
+    {   return			(VectorValue*)	AppendValue		(items,key,xr_new<VectorValue>(val,0.f,1.f,0,0),PROP_VCOLOR);        }
 	IC TextValue* 	   	CreateText		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {   return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_TEXT);       }
 	IC ATextValue* 		CreateAText		(PropItemVec& items, AnsiString key, AnsiString* val)

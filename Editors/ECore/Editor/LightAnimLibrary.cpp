@@ -267,15 +267,29 @@ CLAItem* ELightAnimLibrary::AppendItem(LPCSTR folder_name, CLAItem* parent)
 	return I;
 }
 
-void ELightAnimLibrary::DeleteItem(LPCSTR name)
+BOOL ELightAnimLibrary::RemoveObject(LPCSTR _fname, EItemType type)   
 {
-	LAItemIt it=FindItemI(name); R_ASSERT(it!=Items.end());
-    xr_delete(*it);
-	Items.erase(it);
+	if (TYPE_FOLDER==type){
+		return TRUE;
+    }else if (TYPE_OBJECT==type){
+        LAItemIt it=FindItemI(_fname); 
+        if (it!=Items.end()){
+	        xr_delete(*it);
+    	    Items.erase(it);
+            return TRUE;
+        }
+    }else THROW;
+    return FALSE;
 }
+//---------------------------------------------------------------------------
 
-void ELightAnimLibrary::RenameItem(LPCSTR old_full_name, LPCSTR new_name)
+void ELightAnimLibrary::RenameObject(LPCSTR nm0, LPCSTR nm1, EItemType type)
 {
-	CLAItem* I=FindItem(old_full_name); R_ASSERT(I);
-    strcpy(I->cName,new_name);
+	if (TYPE_FOLDER==type){
+    }else if (TYPE_OBJECT==type){
+		CLAItem* I=FindItem(nm0); R_ASSERT(I);
+		strcpy(I->cName,nm1);
+	}
 }
+//---------------------------------------------------------------------------
+

@@ -68,18 +68,8 @@ void TProperties::ClearParams(TElTreeItem* node)
     }else{
 	    if (tvProperties->Selected) FHelper.MakeFullName(tvProperties->Selected,0,last_selected_item);
         // store
-        if (m_Flags.is(plFolderStore)&&tvProperties->Items->Count){
-            FolderStore.clear();
-            for (TElTreeItem* item=tvProperties->Items->GetFirstNode(); item; item=item->GetNext()){
-            	if (u32(item->Data)==TYPE_FOLDER){
-                	AnsiString nm;
-                	FHelper.MakeFullName(item,0,nm);
-                    SFolderStore 		st_item;
-                    st_item.expand		= item->Expanded;
-                    FolderStore[nm]		= st_item;
-                }
-            }
-        }
+        FolderStorage.clear	();
+        FolderStore			();
         // clear
 	    for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++)
     		xr_delete	(*it);
@@ -122,6 +112,8 @@ __fastcall TProperties::TProperties(TComponent* Owner) : TForm(Owner)
 	m_BMEllipsis->LoadFromResourceName	((u32)HInstance,"ELLIPSIS");
     seNumber->Parent= tvProperties;
     seNumber->Hide	();
+    edText->Parent	= tvProperties;
+    edText->Hide	();
     m_Flags.zero	();
     m_Folders		= 0;
 }
@@ -143,10 +135,20 @@ TProperties* TProperties::CreateForm(const AnsiString& title, TWinControl* paren
 	props->Caption				= title;	
     props->fsStorage->IniSection= title;
     props->m_Flags.set			(flags);
-    if (props->m_Flags.is(plItemFolders)){
+    if (props->m_Flags.is_any(plItemFolders)){
+    	if (props->m_Flags.is(plIFTop)){
+            props->paFolders->Align	= alTop;
+            props->spFolders->Align	= alTop;
+            props->spFolders->Top	= props->paFolders->Top+props->paFolders->Height;
+        }else{
+            props->paFolders->Align	= alLeft;
+            props->spFolders->Align	= alLeft;
+            props->spFolders->Left	= props->paFolders->Left+props->paFolders->Width;
+        }
     	props->spFolders->Show	();
     	props->paFolders->Show	();
-    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,0);
+        props->paFolders->Refresh();
+    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus);
         props->m_Folders->OnItemFocused = props->OnFolderFocused;
     }else{
     	props->spFolders->Hide	();
@@ -166,9 +168,19 @@ TProperties* TProperties::CreateModalForm(const AnsiString& title, bool bShowBut
     props->fsStorage->IniSection= title;
     props->m_Flags.set			(flags);
     if (props->m_Flags.is(plItemFolders)){
+    	if (props->m_Flags.is(plIFTop)){
+            props->paFolders->Align	= alTop;
+            props->spFolders->Align	= alTop;
+            props->spFolders->Top	= props->paFolders->Top+props->paFolders->Height;
+        }else{
+            props->paFolders->Align	= alLeft;
+            props->spFolders->Align	= alLeft;
+            props->spFolders->Left	= props->paFolders->Left+props->paFolders->Width;
+        }
     	props->spFolders->Show	();
     	props->paFolders->Show	();
-    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,0);
+        props->paFolders->Refresh();
+    	props->m_Folders		= TItemList::CreateForm("Folders",props->paFolders,alClient,TItemList::ilSuppressIcon|TItemList::ilFolderStore|TItemList::ilSuppressStatus);
         props->m_Folders->OnItemFocused = props->OnFolderFocused;
     }else{
     	props->spFolders->Hide	();
@@ -202,6 +214,15 @@ void __fastcall TProperties::HideProperties()
 	Hide();
 }
 
+int __fastcall TProperties::EditPropertiesModal(PropItemVec& values, LPCSTR title, bool bShowButtonsBar, TOnModifiedEvent modif, TOnItemFocused focused, TOnCloseEvent close, u32 flags)
+{
+	TProperties* P 	= CreateModalForm(title,bShowButtonsBar,modif,focused,close,flags);
+    P->AssignItems	(values);
+    int res 		= P->ShowPropertiesModal();
+    DestroyForm		(P);
+    return res;
+}
+
 void __fastcall TProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
@@ -232,14 +253,14 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
                 AnsiString k	= key;		
                 LPCSTR k0		= k.c_str();
                 LPCSTR k1		= startup_pref;
-                while (k0&&k1&&(k0[0]==k1[0]))	{k0++;k1++;}
+                while (k0[0]&&k1[0]&&(k0[0]==k1[0]))	{k0++;k1++; if(k1[0]=='\\')key=k0+1;}
                 if ((k0[0]!='\\')&&(k1[0]!=0))	continue;
-                key				= k0+1;
+//                key				= k0+1;
             }else{
             	if (1!=_GetItemCount(key.c_str(),'\\')) continue;
             }
         }
-        prop->item			= FHelper.AppendObject(tvProperties,key); R_ASSERT3(prop->item,"Duplicate properties key found:",key.c_str());
+        prop->item			= FHelper.AppendObject(tvProperties,key,false,false); R_ASSERT3(prop->item,"Duplicate properties key found:",key.c_str());
         prop->item->Tag	    = (int)prop;
         prop->item->UseStyles=true;
         prop->item->CheckBoxEnabled = prop->m_Flags.is(PropItem::flShowCB);
@@ -269,10 +290,12 @@ void TProperties::FillElItems(PropItemVec& items, LPCSTR startup_pref)
         tvProperties->SortMode 		= smAdd;
         tvProperties->ShowColumns	= true;
     }
+
+    FolderRestore		();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, bool full_sort)
+void __fastcall TProperties::AssignItems(PropItemVec& items)
 {
 	// begin fill mode
 	LockUpdating		();
@@ -289,9 +312,6 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, b
     // folder
     ListItemsVec		folder_items;
 
-    m_Flags.set			(plFullExpand,	full_expand);
-    m_Flags.set			(plFullSort,	full_sort);
-    
     if (m_Flags.is(plItemFolders)){
         for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
             PropItem* prop		= *it;
@@ -314,14 +334,36 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, b
     // end fill mode
     bModified			= false;
 
-    // folder restore
-    if (m_Flags.is(plFolderStore)&&!FolderStore.empty()){
+	UnlockUpdating	();
+
+    SelectItem		(last_selected_item);
+}
+//---------------------------------------------------------------------------
+
+void TProperties::FolderStore()
+{
+    if (m_Flags.is(plFolderStore)&&tvProperties->Items->Count){
         for (TElTreeItem* item=tvProperties->Items->GetFirstNode(); item; item=item->GetNext()){
-            if (u32(item->Data)==TYPE_FOLDER){
+            if (item->ChildrenCount)
+            {
+                AnsiString nm;
+                FHelper.MakeFullName(item,0,nm);
+                SFolderStore 		st_item;
+                st_item.expand		= item->Expanded;
+                FolderStorage[nm]		= st_item;
+            }
+        }
+    }
+}
+void TProperties::FolderRestore()
+{
+    if (m_Flags.is(plFolderStore)&&!FolderStorage.empty()){
+        for (TElTreeItem* item=tvProperties->Items->GetFirstNode(); item; item=item->GetNext()){
+            if (item->ChildrenCount){   
                 AnsiString nm;
                 FHelper.MakeFullName		(item,0,nm);
-                FolderStorePairIt it 		= FolderStore.find(nm);
-                if (it!=FolderStore.end()){
+                FolderStorePairIt it 		= FolderStorage.find(nm);
+                if (it!=FolderStorage.end()){
                     SFolderStore& st_item 	= it->second;
                     if (st_item.expand) 	item->Expand	(false);
                     else					item->Collapse	(false);
@@ -329,18 +371,13 @@ void __fastcall TProperties::AssignItems(PropItemVec& items, bool full_expand, b
             }
         }
     }
-
-	UnlockUpdating	();
-
-    SelectItem		(last_selected_item);
 }
-//---------------------------------------------------------------------------
-
 void __fastcall TProperties::OnFolderFocused(TElTreeItem* item)
 {
 	AnsiString s;
 	FHelper.MakeFullName(item,0,s);
     LockUpdating	();
+    FolderStore		();
     FillElItems		(m_Items, s.c_str());
     UnlockUpdating	();
 }
@@ -500,6 +537,19 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 Surface->Brush->Color 	= (TColor)(V->GetValue()).get_windows();
                 Surface->FillRect(R);
             }break;
+            case PROP_VCOLOR:{
+                Surface->Brush->Style = bsSolid;
+                Surface->Brush->Color = TColor(0x00000000);
+                Surface->FrameRect(R);
+                R.Right	-=	1;
+                R.Left 	+= 	1;
+                R.Top	+=	1;
+                R.Bottom-= 	1;
+                VectorValue* V			= dynamic_cast<VectorValue*>(prop->GetFrontValue()); R_ASSERT(V);
+                Fcolor C; C.set			(V->value->z,V->value->y,V->value->x,0.f);
+                Surface->Brush->Color 	= (TColor)C.get();
+                Surface->FillRect(R);
+            }break;
             case PROP_COLOR:{
                 Surface->Brush->Style = bsSolid;
                 Surface->Brush->Color = TColor(0x00000000);
@@ -528,7 +578,8 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 switch(V->choose_mode){
                 case smTexture:
                     if (miDrawThumbnails->Checked){ 
-                        R.top+=tvProperties->LineHeight-4;
+                        R.top	+=	tvProperties->LineHeight-4;
+                        R.left 	= 	R.Right-(R.bottom-R.top);
                         FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
                     }
                 break;
@@ -538,6 +589,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
                 OutText(prop->GetText(),Surface,R,prop->Enabled(),m_BMEllipsis);
                 if (miDrawThumbnails->Checked){ 
                     R.top+=tvProperties->LineHeight-4;
+                    R.left 	= 	R.Right-(R.bottom-R.top);
                     FHelper.DrawThumbnail	(Surface,R,prop->GetText(),EImageThumbnail::ETTexture);
                 }
             break;
@@ -758,6 +810,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 }break;
                 case PROP_VECTOR: 			VectorClick		(item); 	break;
                 case PROP_WAVE: 			WaveFormClick	(item); 	break;
+                case PROP_VCOLOR:
                 case PROP_FCOLOR:
                 case PROP_COLOR: 			ColorClick		(item); 	break;
                 case PROP_CHOOSE:			ChooseClick		(item); 	break;
@@ -857,20 +910,21 @@ void __fastcall TProperties::tvPropertiesMouseUp(TObject *Sender,
         switch(prop->type){
         case PROP_BUTTON:{
         	if (Button==mbLeft){
-				bool bRes = false;
+				bool bRes 	= false;
+                bool bSafe	= false;
                 for (PropItem::PropValueIt it=prop->Values().begin(); it!=prop->Values().end(); it++){
                     ButtonValue* V			= dynamic_cast<ButtonValue*>(*it); R_ASSERT(V);
                     if (V->btn_num>-1){
-	                    bRes 				|= V->OnBtnClick();
+	                    bRes 				|= V->OnBtnClick(bSafe);
     	                V->btn_num			= -1;
         	            if (V->m_Flags.is(ButtonValue::flFirstOnly)) break;
                     }
                 }
                 if (bRes){
                     Modified			();
-                    RefreshForm			();
+                    if (!bSafe)			RefreshForm		();
                 }
-                item->RedrawItem	(true);
+                if (!bSafe)				item->RedrawItem(true);
             }
         }break;
         }
@@ -1003,6 +1057,22 @@ void __fastcall TProperties::ColorClick(TElTreeItem* item)
             }
         }
     }break;
+    case PROP_VCOLOR:{
+		VectorValue* V		= dynamic_cast<VectorValue*>(prop->GetFrontValue()); R_ASSERT(V);
+        Fvector edit_val	= V->GetValue();
+        prop->OnBeforeEdit	(&edit_val);
+		Fcolor C; 			C.set(edit_val.x,edit_val.y,edit_val.z,1.f);
+        u32 ev 				= C.get();
+        if (SelectColor(&ev)){
+        	C.set			(ev);
+	        edit_val.set	(C.r,C.g,C.b);
+            prop->OnAfterEdit(&edit_val);
+            if (prop->ApplyValue(&edit_val)){
+                item->RedrawItem(true);
+                Modified		();
+            }
+        }
+    }break;
     case PROP_COLOR:{
 		U32Value* V			= dynamic_cast<U32Value*>(prop->GetFrontValue()); R_ASSERT(V);
         u32 edit_val		= V->GetValue();
@@ -1025,7 +1095,6 @@ void __fastcall TProperties::VectorClick(TElTreeItem* item)
 {
     PropItem* prop 	= (PropItem*)item->Tag;
 	VectorValue* V	= dynamic_cast<VectorValue*>(prop->GetFrontValue()); R_ASSERT(V);
-    VERIFY(prop->type==PROP_VECTOR);
     Fvector edit_val= V->GetValue();
 	prop->OnBeforeEdit(&edit_val);
 	if (NumericVectorRun(AnsiString(item->Text).c_str(),&edit_val,V->dec,&edit_val,&V->lim_mn,&V->lim_mx)){
@@ -1064,7 +1133,7 @@ void __fastcall TProperties::ChooseClick(TElTreeItem* item)
 	if (!edit_val.Length()) edit_val = CV->start_path;
 	prop->OnBeforeEdit		(&edit_val);
     LPCSTR new_val			= 0;
-    AStringVec items;
+    ChooseItemVec 			items;
     if (CV->choose_mode==smCustom)
     	if (CV->OnChooseEvent) CV->OnChooseEvent(V,items);
     if (TfrmChoseItem::SelectItem(CV->choose_mode,new_val,prop->subitem,edit_val.c_str(),&items)){
@@ -1637,7 +1706,7 @@ void __fastcall TProperties::RefreshForm()
 	LockUpdating		();
     for (PropItemIt it=m_Items.begin(); it!=m_Items.end(); it++){
     	PropItem* prop = *it;
-    	if (prop->m_Flags.is(PropItem::flDrawThumbnail)) 
+    	if (prop&&prop->item&&prop->m_Flags.is(PropItem::flDrawThumbnail)) 
         	prop->item->OwnerHeight = !miDrawThumbnails->Checked;
     }
 	UnlockUpdating		();

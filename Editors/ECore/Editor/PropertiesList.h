@@ -135,7 +135,8 @@ public:
         plFolderStore	= (1<<0),
         plItemFolders	= (1<<1),
         plFullExpand	= (1<<2),
-        plFullSort		= (1<<3),
+        plFullSort		= (1<<3), 
+        plIFTop			= (1<<4)
     };
 protected:
     Flags32				m_Flags;
@@ -145,15 +146,18 @@ protected:
     	bool expand;
     };
     DEFINE_MAP(AnsiString,SFolderStore,FolderStoreMap,FolderStorePairIt);
-    FolderStoreMap		FolderStore;
+    FolderStoreMap		FolderStorage;
+    void				FolderStore				();
+    void				FolderRestore			();
 
     TItemList*			m_Folders;
     void 	__fastcall 	OnFolderFocused			(TElTreeItem* item);
 public:		// User declarations
 	__fastcall TProperties		        		(TComponent* Owner);
-	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore);
-	static TProperties* CreateModalForm			(const AnsiString& title, bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore);
+	static TProperties* CreateForm				(const AnsiString& title, TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore|plFullExpand);
+	static TProperties* CreateModalForm			(const AnsiString& title, bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore|plFullExpand);
 	static void 		DestroyForm				(TProperties*& props);
+    static int 			EditPropertiesModal		(PropItemVec& values, LPCSTR title, bool bShowButtonsBar=true, TOnModifiedEvent modif=0, TOnItemFocused focused=0, TOnCloseEvent close=0, u32 flags=plFolderStore|plFullExpand);
     int __fastcall 		ShowPropertiesModal		();
     void __fastcall 	ShowProperties			();
     void __fastcall 	HideProperties			();
@@ -163,7 +167,7 @@ public:		// User declarations
     void __fastcall 	RefreshForm				();
 
     void __fastcall		SelectItem				(const AnsiString& full_name);
-    void __fastcall 	AssignItems				(PropItemVec& values, bool full_expand, bool full_sort=false);
+    void __fastcall 	AssignItems				(PropItemVec& values);
     void __fastcall 	ResetItems				();
     bool __fastcall 	IsFocused				(){return tvProperties->Focused()||seNumber->Focused()||edText->Focused();}
     void __fastcall 	SetModifiedEvent		(TOnModifiedEvent modif=0){OnModifiedEvent=modif;}
@@ -182,12 +186,16 @@ public:		// User declarations
 		fs->WriteInteger(AnsiString().sprintf("%s_column0_width",Caption.c_str()),tvProperties->HeaderSections->Item[0]->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_column1_width",Caption.c_str()),tvProperties->HeaderSections->Item[1]->Width);
 		fs->WriteInteger(AnsiString().sprintf("%s_draw_thm",Caption.c_str()),miDrawThumbnails->Checked);
+		fs->WriteInteger(AnsiString().sprintf("%s_fp_width",Caption.c_str()),paFolders->Width);
+		fs->WriteInteger(AnsiString().sprintf("%s_fp_height",Caption.c_str()),paFolders->Height);
     }
     void __fastcall 	RestoreParams			(TFormStorage* fs)
     {                                      	
 		tvProperties->HeaderSections->Item[0]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column0_width",Caption.c_str()),tvProperties->HeaderSections->Item[0]->Width);
 		tvProperties->HeaderSections->Item[1]->Width 	= fs->ReadInteger(AnsiString().sprintf("%s_column1_width",Caption.c_str()),tvProperties->HeaderSections->Item[1]->Width);
         miDrawThumbnails->Checked						= fs->ReadInteger(AnsiString().sprintf("%s_draw_thm",Caption.c_str()),false);
+		paFolders->Width								= fs->ReadInteger(AnsiString().sprintf("%s_fp_width",Caption.c_str()),paFolders->Width);
+		paFolders->Height								= fs->ReadInteger(AnsiString().sprintf("%s_fp_height",Caption.c_str()),paFolders->Height);
         RefreshForm			();
     }
 

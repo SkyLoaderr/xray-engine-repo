@@ -18,10 +18,10 @@ class ECORE_API CFolderHelper{
     	if (val&&val[0]) return AnsiString(val)+"\\";
         return   		"";
     }
-    IC TElTreeItem*		LL_CreateFolder	(TElTree* tv, TElTreeItem* parent, const AnsiString& name)
+    IC TElTreeItem*		LL_CreateFolder	(TElTree* tv, TElTreeItem* parent, const AnsiString& name, bool force_icon)
     {
     	TElTreeItem* N	= tv->Items->AddChildObject(parent,name,(void*)TYPE_FOLDER);
-        N->ForceButtons	= true;
+        N->ForceButtons	= force_icon;
         return N;
     }
     IC TElTreeItem*		LL_CreateObject	(TElTree* tv, TElTreeItem* parent, const AnsiString& name)
@@ -56,8 +56,8 @@ public:
     bool 			 	MakeName			(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder, bool bOnlyFolder);
 	TElTreeItem* 		FindItemInFolder	(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name);
 	TElTreeItem* 		FindItemInFolder	(EItemType type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name);
-    TElTreeItem* 		AppendFolder		(TElTree* tv, AnsiString full_name);
-	TElTreeItem*		AppendObject		(TElTree* tv, AnsiString full_name, bool allow_duplicate=false);
+    TElTreeItem* 		AppendFolder		(TElTree* tv, AnsiString full_name, bool force_icon);
+	TElTreeItem*		AppendObject		(TElTree* tv, AnsiString full_name, bool allow_duplicate, bool force_icon);
     TElTreeItem* 		FindObject			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
     TElTreeItem* 		FindFolder			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0);
     TElTreeItem* 		FindItem			(TElTree* tv, AnsiString full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0); 

@@ -96,7 +96,7 @@ void CCustomObject::AnimationDrawPath()
 #endif    
 }
 
-void __fastcall	CCustomObject::OnMotionControlClick(PropValue* value, bool& bModif)
+void __fastcall	CCustomObject::OnMotionControlClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -142,7 +142,7 @@ void __fastcall	CCustomObject::OnMotionControlClick(PropValue* value, bool& bMod
     bModif = false;
 }
 
-void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bModif)
+void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
 	switch(B->btn_num){
@@ -159,7 +159,7 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
 		PHelper.CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
 		PHelper.CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
 		PHelper.CreateFloat	(items,"Scale",			&scale_factor, 	-1000.f, 1000.f);
-        P->AssignItems		(items,true);
+        P->AssignItems		(items);
         if (mrOk==P->ShowPropertiesModal()){
         	m_Motion->ScaleKeys(from_time,to_time,scale_factor);
         }
@@ -177,7 +177,7 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
 //		PHelper.CreateFloat	(items,"From Time", 	&from_time, 	from_time, to_time, 	1.f/30.f, 3);
 //		PHelper.CreateFloat	(items,"To Time",   	&to_time, 		from_time, to_time, 	1.f/30.f, 3);
 		PHelper.CreateFloat	(items,"Speed (m/sec)", &speed, 		0.f, 100.f);
-        P->AssignItems		(items,true);
+        P->AssignItems		(items);
         if (mrOk==P->ShowPropertiesModal()){
         	m_Motion->NormalizeKeys(from_time,to_time,speed);
         }
@@ -193,7 +193,7 @@ void __fastcall	CCustomObject::OnMotionCommandsClick(PropValue* value, bool& bMo
 	bModif = true;
 }
 
-void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif)
+void __fastcall	CCustomObject::OnMotionFilesClick(PropValue* value, bool& bModif, bool& bSafe)
 {
 	ButtonValue* B = dynamic_cast<ButtonValue*>(value); R_ASSERT(B);
     bModif = false;

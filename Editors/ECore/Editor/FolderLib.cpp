@@ -203,7 +203,7 @@ TElTreeItem* CFolderHelper::FindObject(TElTree* tv, AnsiString full_name, TElTre
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, AnsiString full_name)
+TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, AnsiString full_name, bool force_icon)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
@@ -216,13 +216,13 @@ TElTreeItem* CFolderHelper::AppendFolder(TElTree* tv, AnsiString full_name)
 	node = last_node;
     for (int itm=idx; itm<cnt; itm++){
     	_GetItem(full_name.c_str(),itm,fld,'\\');
-        node	= LL_CreateFolder(tv,node,fld);
+        node	= LL_CreateFolder(tv,node,fld,force_icon);
     }
 	return node;
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name, bool allow_duplicate)
+TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name, bool allow_duplicate, bool force_icon)
 {
     int idx=0;
 	TElTreeItem* last_node=0;
@@ -236,7 +236,7 @@ TElTreeItem* CFolderHelper::AppendObject(TElTree* tv, AnsiString full_name, bool
 	    fld_node = last_node;
     	for (int itm=idx; itm<fld_cnt; itm++){
     		_GetItem(full_name.c_str(),itm,fld,'\\');
-	        fld_node	= LL_CreateFolder(tv,fld_node,fld);
+	        fld_node	= LL_CreateFolder(tv,fld_node,fld,force_icon);
     	}
     }
 	AnsiString obj;
@@ -310,7 +310,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
         }
 		// если нет добавляем
         if (!pNode){ 
-        	pNode 				= (type==TYPE_FOLDER)?LL_CreateFolder(tv,cur_folder,item->Text):LL_CreateObject(tv,cur_folder,item->Text);
+        	pNode 				= (type==TYPE_FOLDER)?LL_CreateFolder(tv,cur_folder,item->Text,item->ForceButtons):LL_CreateObject(tv,cur_folder,item->Text);
             if (type==TYPE_OBJECT) pNode->Assign(item);
         }
 		if (IsFolder(item)){
@@ -447,7 +447,7 @@ void CFolderHelper::CreateNewFolder(TElTree* tv, bool bEditAfterCreate)
     MakeName(tv->Selected,0,start_folder,true);
     GenerateFolderName(tv,tv->Selected,folder);
     folder = start_folder+folder;
-	TElTreeItem* node = AppendFolder(tv,folder.c_str());
+	TElTreeItem* node = AppendFolder(tv,folder.c_str(),true);
     if (tv->Selected) tv->Selected->Expand(false);
     if (bEditAfterCreate) tv->EditItem(node,-1);
 }

@@ -19,5 +19,12 @@ enum EChooseMode{
     smGameAnim,
     smMaxMode
 };
+
+struct SChooseItem{
+	AnsiString	name;
+	AnsiString	hint;
+    SChooseItem(LPCSTR nm, LPCSTR ht):name(nm),hint(ht){}
+};
+DEFINE_VECTOR(SChooseItem,ChooseItemVec,ChooseItemVecIt);
  
 #endif

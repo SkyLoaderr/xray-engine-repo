@@ -128,7 +128,7 @@ void CEditorPreferences::Edit()
     PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Names",	&object_flags, 	epoDrawBoneNames);
     PHelper.CreateFlag<Flags32>	(props,"Objects\\Skeleton\\Draw Bone Shapes",	&object_flags, 	epoDrawBoneShapes);
     
-	m_ItemProps->AssignItems		(props,true,true);
+	m_ItemProps->AssignItems		(props);
     m_ItemProps->ShowPropertiesModal();
 }
 //---------------------------------------------------------------------------
@@ -195,7 +195,7 @@ void CEditorPreferences::OnCreate()
 
     ApplyValues			();
 
-	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,OnClose,TProperties::plItemFolders);
+	m_ItemProps 		= TProperties::CreateModalForm("Editor Preferences",false,0,0,OnClose,TProperties::plItemFolders|TProperties::plFullExpand|TProperties::plFullSort);
 }
 //---------------------------------------------------------------------------
 

@@ -92,8 +92,8 @@ private:	// User declarations
     static FS_QueryMap	modif_map;
 	ref_sound			m_Snd;
     void				PlaySound			(LPCSTR name, u32& size, u32& time);
-	void __fastcall 	OnControlClick		(PropValue* sender, bool& bModif);
-	void __fastcall 	OnControl2Click		(PropValue* sender, bool& bModif);
+	void __fastcall 	OnControlClick		(PropValue* sender, bool& bModif, bool& bSafe);
+	void __fastcall 	OnControl2Click		(PropValue* sender, bool& bModif, bool& bSafe);
 
     void				AppendModif			(LPCSTR nm);
 public:		// User declarations

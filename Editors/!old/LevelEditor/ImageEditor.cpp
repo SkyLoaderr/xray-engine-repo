@@ -310,7 +310,7 @@ void __fastcall TfrmImageLib::OnItemsFocused(ListItemsVec& items)
         }
     }
     paImage->Repaint				();
-	m_ItemProps->AssignItems		(props,true);
+	m_ItemProps->AssignItems		(props);
 }
 //---------------------------------------------------------------------------
 
