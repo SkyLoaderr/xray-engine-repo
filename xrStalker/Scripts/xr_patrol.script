@@ -219,6 +219,8 @@ function action_single_patrol:execute ()
        if (self.speak_time - device ():time_global ()) <= 0 and table.getn (xr_motivator.storage[self.object:id()].followers) ~= 0 then
           self:speak (commander_snd, 0, math.random (1, table.getn (xr_motivator.storage[self.object:id()].followers)))
        end
+       self.object:set_movement_type (self.move_type)  
+       self.object:set_mental_state  (self.mental_state)
     elseif self.stage == 1 then
         if self.object:animation_count () == 0 then
            self.stage = 0
