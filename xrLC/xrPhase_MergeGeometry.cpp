@@ -82,7 +82,7 @@ void CBuild::xrPhase_MergeGeometry	()
 	Status("Processing...");
 	for (DWORD split=0; split<g_XSplit.size(); split++)
 	{
-		vecFace&	subdiv	= g_XSplit[split];
+		vecFace&	subdiv	= *(g_XSplit[split]);
 		Fbox		bb_base;
 		while (NeedMerge(subdiv,bb_base))	
 		{
@@ -93,7 +93,7 @@ void CBuild::xrPhase_MergeGeometry	()
 			{
 				Fbox		bb;
 				float		volume;
-				vecFace&	TEST	= g_XSplit[test];
+				vecFace&	TEST	= *(g_XSplit[test]);
 
 				if (!FaceEqual(subdiv.front(),TEST.front()))						continue;
 				if (!NeedMerge(TEST,bb))											continue;
@@ -107,7 +107,8 @@ void CBuild::xrPhase_MergeGeometry	()
 			if (selected == split)	break;	// No candidates for merge
 
 			// **OK**. Perform merge
-			subdiv.insert	(subdiv.end(), g_XSplit[selected].begin(), g_XSplit[selected].end());
+			subdiv.insert	(subdiv.end(), g_XSplit[selected]->begin(), g_XSplit[selected]->end());
+			_DELETE			(g_XSplit[selected]);
 			g_XSplit.erase	(g_XSplit.begin()+selected);
 		}
 		mem_CompactSubdivs	();

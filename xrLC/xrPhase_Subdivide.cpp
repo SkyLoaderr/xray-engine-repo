@@ -10,22 +10,24 @@ void CBuild::xrPhase_Subdivide()
 	Fbox	b1, b2;
 	for (int X=0; X<int(g_XSplit.size()); X++)
 	{
-		if (g_XSplit[X].empty()) {
-			g_XSplit.erase(g_XSplit.begin()+X);
+		if (g_XSplit[X]->empty()) 
+		{
+			_DELETE			(g_XSplit[X]);
+			g_XSplit.erase	(g_XSplit.begin()+X);
 			X--;
 			continue;
 		}
 		Progress			(float(X)/float(g_XSplit.size()));
 		
 		// skip if subdivision is too small already
-		if (int(g_XSplit[X].size())<(g_params.m_SS_Low*2))	continue;
+		if (int(g_XSplit[X]->size())<(g_params.m_SS_Low*2))	continue;
 		
 		// calc bounding box
 		Fbox	bb;
 		Fvector size;
 		
 		bb.invalidate();
-		for (vecFaceIt F=g_XSplit[X].begin(); F!=g_XSplit[X].end(); F++) 
+		for (vecFaceIt F=g_XSplit[X]->begin(); F!=g_XSplit[X]->end(); F++) 
 		{
 			Face *XF = *F;
 			bb.modify(XF->v[0]->P);
@@ -39,8 +41,8 @@ void CBuild::xrPhase_Subdivide()
 		if  	(size.x>g_params.m_SS_maxsize)					bSplit	= TRUE;
 		if		(size.y>g_params.m_SS_maxsize)					bSplit	= TRUE;
 		if		(size.z>g_params.m_SS_maxsize)					bSplit	= TRUE;
-		if		(int(g_XSplit[X].size()) > g_params.m_SS_High)	bSplit	= TRUE;
-		CDeflector*	defl_base	= (CDeflector*)g_XSplit[X].front()->pDeflector;
+		if		(int(g_XSplit[X]->size()) > g_params.m_SS_High)	bSplit	= TRUE;
+		CDeflector*	defl_base	= (CDeflector*)g_XSplit[X]->front()->pDeflector;
 		if		(!bSplit && defl_base)	{
 			if (defl_base->dwWidth  >=	(lmap_size-2*BORDER))	bSplit	= TRUE;
 			if (defl_base->dwHeight >=	(lmap_size-2*BORDER))	bSplit	= TRUE;
@@ -65,7 +67,7 @@ void CBuild::xrPhase_Subdivide()
 				}
 				
 		// Process all faces and rearrange them
-		for (F=g_XSplit[X].begin(); F!=g_XSplit[X].end(); F++) 
+		for (F=g_XSplit[X]->begin(); F!=g_XSplit[X]->end(); F++) 
 		{
 			Face *XF = *F;
 			Fvector C;
@@ -96,10 +98,10 @@ void CBuild::xrPhase_Subdivide()
 			}
 
 			// Delete old SPLIT and push two new
-			g_XSplit[X].clear	();
+			_DELETE				(g_XSplit[X]);
 			g_XSplit.erase		(g_XSplit.begin()+X); X--;
-			g_XSplit.push_back	(s1);	Detach(&s1);
-			g_XSplit.push_back	(s2);	Detach(&s2);
+			g_XSplit.push_back	(new vecFace(s1));	Detach(&s1);
+			g_XSplit.push_back	(new vecFace(s2));	Detach(&s2);
 			mem_CompactSubdivs	();
 		}
 		s1.clear	();

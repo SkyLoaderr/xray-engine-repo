@@ -57,8 +57,8 @@ void	CBuild::xrPhase_UVmap()
 //		mem_CompactSubdivs	();
 		
 		// Detect vertex-lighting and avoid this subdivision
-		R_ASSERT(!g_XSplit[SP].empty());
-		Face*		Fvl = g_XSplit[SP][0];
+		R_ASSERT	(!g_XSplit[SP]->empty());
+		Face*		Fvl = g_XSplit[SP]->front();
 		if (Fvl->Shader().flags.bLIGHT_Vertex) 	continue;	// do-not touch (skip)
 		if (hasImplicitLighting(Fvl))			continue;
 		
@@ -67,7 +67,7 @@ void	CBuild::xrPhase_UVmap()
 			// Select maximal sized poly
 			Face *	msF		= NULL;
 			float	msA		= 0;
-			for (vecFaceIt it = g_XSplit[SP].begin(); it!=g_XSplit[SP].end(); it++)
+			for (vecFaceIt it = g_XSplit[SP]->begin(); it!=g_XSplit[SP]->end(); it++)
 			{
 				if ( (*it)->pDeflector == NULL ) {
 					float a = (*it)->CalcArea();
@@ -90,23 +90,24 @@ void	CBuild::xrPhase_UVmap()
 				// Detach affected faces
 				static vecFace faces_affected;
 				faces_affected.reserve	(1024);
-				for (int i=0; i<int(g_XSplit[SP].size()); i++) {
-					Face *F = g_XSplit[SP][i];
+				for (int i=0; i<int(g_XSplit[SP]->size()); i++) {
+					Face *F = (*g_XSplit[SP])[i];
 					if ( F->pDeflector==Deflector ) {
 						faces_affected.push_back(F);
-						g_XSplit[SP].erase		(g_XSplit[SP].begin()+i);
+						g_XSplit[SP]->erase		(g_XSplit[SP].begin()+i);
 						i--;
 					}
 				}
 				
 				// detaching itself
 				Detach				(&faces_affected);
-				g_XSplit.push_back	(faces_affected);
+				g_XSplit.push_back	(new vecFace(faces_affected));
 				faces_affected.clear();
 			} else {
-				if (g_XSplit[SP].empty()) 
+				if (g_XSplit[SP]->empty()) 
 				{
-					g_XSplit.erase(g_XSplit.begin()+SP);
+					_DELETE			(g_XSplit[SP]);
+					g_XSplit.erase	(g_XSplit.begin()+SP);
 					SP--;
 				}
 				// Cancel infine loop (while)
@@ -122,6 +123,7 @@ void CBuild::mem_CompactSubdivs()
 {
 	// Memory compact
 	DWORD dwT = timeGetTime	();
+	/*
 	vecFace		temp;
 	for (int SP = 0; SP<int(g_XSplit.size()); SP++) 
 	{
@@ -130,6 +132,7 @@ void CBuild::mem_CompactSubdivs()
 		g_XSplit[SP].clear	();
 		g_XSplit[SP].assign	(temp.begin(),temp.end());
 	}
+	*/
 	mem_Compact				();
 	Msg("%d ms for memory compacting...",timeGetTime()-dwT);
 }

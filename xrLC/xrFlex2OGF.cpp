@@ -16,12 +16,12 @@ void CBuild::Flex2OGF()
 	g_tree.reserve	(4096);
 	for (splitIt it=g_XSplit.begin(); it!=g_XSplit.end(); it++)
 	{
-		R_ASSERT( ! it->empty() );
+		R_ASSERT( ! (*it)->empty() );
 		
 		DWORD MODEL_ID		= it-g_XSplit.begin();
 		
 		OGF*		pOGF	= new OGF;
-		Face*		F		= *(it->begin());				// first face
+		Face*		F		= *((*it)->begin());			// first face
 		b_material*	M		= &(materials[F->dwMaterial]);	// and it's material
 		R_ASSERT	(F && M);
 		
@@ -52,7 +52,7 @@ void CBuild::Flex2OGF()
 			
 			// Collect faces & vertices
 			try {
-				for (vecFaceIt Fit=it->begin(); Fit!=it->end(); Fit++)
+				for (vecFaceIt Fit=(*it)->begin(); Fit!=(*it)->end(); Fit++)
 				{
 					static OGF_Vertex	V1,V2,V3;
 					

@@ -44,8 +44,11 @@ void	CBuild::xrPhase_ResolveMaterials()
 	Status				("Perfroming subdivisions...");
 	{
 		g_XSplit.resize	(counts.size());
-		for (DWORD I=0; I<counts.size(); I++)
-			g_XSplit[I].reserve(counts[I].dwCount);
+		for (DWORD I=0; I<counts.size(); I++) 
+		{
+			g_XSplit[I] = new vecFace;
+			g_XSplit[I]->reserve	(counts[I].dwCount);
+		}
 		
 		for (vecFaceIt F_it=g_faces.begin(); F_it!=g_faces.end(); F_it++)
 		{
@@ -54,7 +57,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 			{
 				if (F->dwMaterial == counts[I].dwMaterial)
 				{
-					g_XSplit[I].push_back	(F);
+					g_XSplit[I]->push_back	(F);
 				}
 			}
 			Progress(float(F_it-g_faces.begin())/float(g_faces.size()));
@@ -65,7 +68,7 @@ void	CBuild::xrPhase_ResolveMaterials()
 	{
 		for (DWORD it=0; it<g_XSplit.size(); it++)
 		{
-			Detach(&g_XSplit[it]);
+			Detach(g_XSplit[it]);
 		}
 	}
 	Msg("%d subdivisions.",g_XSplit.size());
