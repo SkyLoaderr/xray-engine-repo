@@ -381,9 +381,24 @@ void OGF::MakeProgressive	(float metric_limit)
 		for (u32 v_idx=0;  v_idx<x_vertices.size(); v_idx++)	VIPM_AppendVertex	(x_vertices[v_idx].P,	x_vertices[v_idx].UV						);
 		for (u32 f_idx=0;  f_idx<x_faces.size();    f_idx++)	VIPM_AppendFace		(x_faces[f_idx].v[0],	x_faces[f_idx].v[1],	x_faces[f_idx].v[2]	);
 
+		VIPM_Result*	VR		= 0;
+		try						{
+			VR		= VIPM_Convert			(u32(30),1.f,1);
+		} catch (...)			{
+			progressive_clear	()		;
+			clMsg				("* mesh simplification failed: access violation");
+		}
+		if (0==VR)				{
+			progressive_clear	()		;
+			clMsg				("* mesh simplification failed");
+		}
+
 		// Convert
+		/*
 		VIPM_Result*	VR		= VIPM_Convert		(u32(30),1.f,1);
 		VERIFY			(VR->swr_records.size()>0)	;
+		*/
+
 		// test metric
 		u32		_full	=	vertices.size	()		;
 		u32		_remove	=	VR->swr_records.size()	;
