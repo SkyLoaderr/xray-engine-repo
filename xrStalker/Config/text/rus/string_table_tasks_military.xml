@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+
+    <string id="mil_quest_kill_sniper">
+        <text>Убить снайпера на вышке.</text>
+    </string>
+    <string id="mil_quest_report_dolg">
+        <text>Сообщить о выполнении группе Долга.</text>
+    </string>
+
+</string_table>
