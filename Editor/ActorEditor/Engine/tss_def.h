@@ -31,12 +31,34 @@ private:
 public:
 	IC void			set_RS	(DWORD a, DWORD b)
 	{
+		// Search duplicates
+		for (int t=0; t<States.size(); t++)
+		{
+			State& S	= States[t];
+			if ((0==S.type)&&(a==S.v1)) {
+				States.erase(States.begin()+t);
+				break;
+			}
+		}
+		
+		// Register
 		State		st;
 		st.set_RS	(a,b);
 		States.push_back(st);
 	}
 	IC void			set_TSS	(DWORD a, DWORD b, DWORD c)
 	{
+		// Search duplicates
+		for (int t=0; t<States.size(); t++)
+		{
+			State& S	= States[t];
+			if ((1==S.type)&&(a==S.v1)&&(b==S.v2)) {
+				States.erase(States.begin()+t);
+				break;
+			}
+		}
+		
+		// Register
 		State		st;
 		st.set_TSS	(a,b,c);
 		States.push_back(st);
