@@ -61,13 +61,15 @@ void CAI_Biting::Panic()
 		}
 		return;
 	}
-
+/*	Temp comment: Saved enemy...
+ 
 	m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
 
 	vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 	vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
+*/
 }
 
 void CAI_Biting::Scared()
@@ -79,7 +81,9 @@ void CAI_Biting::Scared()
 		m_dwActionStartTime = m_dwCurrentUpdate + 1500;
 
 		Fvector ptr = vPosition;
-		ptr.sub(m_tSavedEnemy->Position());
+		/*	Temp comment: Saved enemy...
+			ptr.sub(m_tSavedEnemy->Position());
+		*/
 		ptr.normalize();
 		ptr.mul(20.f);
 		ptr.add(vPosition);
@@ -101,14 +105,14 @@ void CAI_Biting::Scared()
 			vfSetParameters	 (ePathTypeStraight,0,&m_EnemyPos,true,0,true);
 			break;
 		case eActionStateDontWatch :	// убегать
-			
+	/*	Temp comment: Saved enemy...		
 			m_tSelectorFreeHunting.m_fMaxEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
 			m_tSelectorFreeHunting.m_fOptEnemyDistance = m_tSelectorFreeHunting.m_fMaxEnemyDistance;
 			m_tSelectorFreeHunting.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
 
 			vfSetMotionActionParams		(eBodyStateStand,eMovementTypeRun,eMovementDirectionForward,eStateTypeDanger,eActionTypeRun);
 			vfSetParameters				(ePathTypeStraight,&m_tSelectorFreeHunting,0,true,0);
-
+	*/
 			break;
 	}
 }
@@ -123,9 +127,9 @@ void CAI_Biting::BackCover(bool bFire)
 	}
 
 	m_dwInertion				= 60000;
+	
 	Fvector						EnemyPosition = m_tSavedEnemyPosition;
 	m_tSelectorCover.m_fMinEnemyDistance = EnemyPosition.distance_to(vPosition) + 3.f;
-
 
 	switch (m_tActionState) {
 		case eActionStateWatchGo : 
@@ -163,46 +167,49 @@ void CAI_Biting::ForwardStraight()
 {
 	WRITE_TO_LOG("Forward Straight");
 	
+	if (!Mem.IsEnemy()) return;
+	
+
 // -----------------------------------------------------------------------------
 // Choose branch
 	m_dwInertion				= 6000;
 	
-	Fvector						EnemyPosition;
+	VisionElem					&ve = Mem.GetNearestObject(vPosition);
 	EActionState				OldState;
 
 	bool						bAttackRat;
 
-	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(m_tSavedEnemy);
+	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(ve.obj);
 	if (tpRat) 	bAttackRat = true;
 	else bAttackRat = false;
 
-	EnemyPosition = ((m_tEnemy.Enemy) ? m_tEnemy.Enemy->Position() : m_tSavedEnemy->Position());
 	OldState = m_tActionState;
 	
 	float tDist1 = 2.4f;
 	float tDist2 = 3.8f;
 
 	if (bAttackRat) {
-		tDist1 = 2.0f;
-		tDist2 = 3.0f;
+		tDist1 = 1.5f;
+		tDist2 = 2.5f;
 	}
 
-	m_tActionState = ((EnemyPosition.distance_to(vPosition) > tDist1) ? eActionStateRun : eActionStateStand);	
+	m_tActionState = ((ve.obj->Position().distance_to(vPosition) > tDist1) ? eActionStateRun : eActionStateStand);	
 	
 	if ((OldState == eActionStateStand && m_tActionState == eActionStateRun)&& 
-		(EnemyPosition.distance_to(vPosition) < tDist2)) m_tActionState = OldState;
+		(ve.obj->Position().distance_to(vPosition) < tDist2)) m_tActionState = OldState;
 
 
 // -----------------------------------------------------------------------------
 // Process branch
-	Msg("EnemyNode : %d [%d]",m_tSavedEnemy->AI_NodeID,AI_Path.DestNode);
+	Msg("EnemyNode : %d [%d]",ve.node_id,AI_Path.DestNode);
+
 	switch (m_tActionState) {
 
 		case eActionStateRun:			// бежать к врагу
-			AI_Path.DestNode		= m_tSavedEnemy->AI_NodeID;
+			AI_Path.DestNode		= ve.node_id;
 			vfSetMotionActionParams	(eBodyStateStand, eMovementTypeRun, 
 									eMovementDirectionForward, eStateTypeDanger, eActionTypeRun);
-			vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,0);
+			vfSetParameters			(ePathTypeStraight,0,&ve.obj->Position(),false,0);
 			break;
 		case eActionStateStand:			// аттаковать
 			
@@ -210,29 +217,29 @@ void CAI_Biting::ForwardStraight()
 					
 					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 											eMovementDirectionNone, eStateTypeNormal, eActionTypeAttack);
-					vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,0);
+					vfSetParameters			(ePathTypeStraight,0,&ve.obj->Position(),false,0);
 					
 					m_AttackInterval = 500;
 					if ((m_AttackLastTime + m_AttackInterval) < m_dwCurrentUpdate) {
-						if (EnemyPosition.distance_to(m_AttackLastPosition) < 0.7f) {
-							DoDamage(m_tSavedEnemy);
+						if (ve.obj->Position().distance_to(m_AttackLastPosition) < 0.7f) {
+							DoDamage(ve.obj);
 						}
 						m_AttackLastTime = m_dwCurrentUpdate;
-						m_AttackLastPosition = EnemyPosition;
+						m_AttackLastPosition = ve.obj->Position();
 					}
 			}
 			else {
 					vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
 											eMovementDirectionNone, eStateTypeDanger, eActionTypeAttack);
-					vfSetParameters			(ePathTypeStraight,0,&EnemyPosition,false,&EnemyPosition);
+					vfSetParameters			(ePathTypeStraight,0,&ve.obj->Position(),false,&ve.obj->Position());
 
 					m_AttackInterval = 500;
 					if ((m_AttackLastTime + m_AttackInterval) < m_dwCurrentUpdate) {
-						if (EnemyPosition.distance_to(m_AttackLastPosition) < 0.7f) {
-							DoDamage(m_tSavedEnemy);
+						if (ve.obj->Position().distance_to(m_AttackLastPosition) < 0.7f) {
+							DoDamage(ve.obj);
 						}
 						m_AttackLastTime = m_dwCurrentUpdate;
-						m_AttackLastPosition = EnemyPosition;
+						m_AttackLastPosition = ve.obj->Position();
 					}
 			}	
 
@@ -259,14 +266,15 @@ void CAI_Biting::Hide()
 	WRITE_TO_LOG("Hide");
 
 	m_dwInertion				= 60000;
-	
+
+/* Temp comment: save enemy
 	Fvector		EnemyPosition;
 	EnemyPosition = ((m_tEnemy.Enemy) ? m_tEnemy.Enemy->Position() : m_tSavedEnemyPosition);
 	
 	m_tSelectorCover.m_fMaxEnemyDistance = EnemyPosition.distance_to(vPosition) + m_tSelectorCover.m_fSearchRange;
 	m_tSelectorCover.m_fOptEnemyDistance = m_tSelectorCover.m_fMaxEnemyDistance;
 	m_tSelectorCover.m_fMinEnemyDistance = EnemyPosition.distance_to(vPosition) + 3.f;
-
+*/
 	vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
 							eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
 
@@ -284,13 +292,14 @@ void CAI_Biting::Detour()
 		//AI_Path.TravelPath.clear();
 	}
 
+/* Temp comment: save enemy
 	Fvector		EnemyPosition;
 	EnemyPosition = ((m_tEnemy.Enemy) ? m_tEnemy.Enemy->Position() : m_tSavedEnemyPosition);
 
 	m_tSelectorFreeHunting.m_fMaxEnemyDistance = EnemyPosition.distance_to(vPosition) + m_tSelectorFreeHunting.m_fSearchRange;
 	m_tSelectorFreeHunting.m_fOptEnemyDistance = 15;
 	m_tSelectorFreeHunting.m_fMinEnemyDistance = EnemyPosition.distance_to(vPosition) + 3.f;
-
+*/
 	vfUpdateDetourPoint();
 	AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
 	if (!AI_Path.DestNode) {
@@ -411,165 +420,165 @@ void CAI_Biting::AccomplishTask(IBaseAI_NodeEvaluator *tpNodeEvaluator)
 {
 	WRITE_TO_LOG("Accomplishing task");
 
-// -----------------------------------------------------------------------------
-// Choose branch
-
-	bool	bCorpseFound = false;
-
-	// проверка на видимость трупов
-	SelectCorp(m_tEnemy);
-	
-	Fvector *tpDesiredPosition = 0;
-
-	if (m_tEnemy.Enemy) m_tCorpse = m_tEnemy;
-	
-	if (m_tCorpse.Enemy) 
-		if (m_tCorpse.Enemy->m_fFood >= 0) bCorpseFound = true;
-
-	if (m_bStateChanged) {
-		_CAction.Init();
-	}
-
-	if (bCorpseFound) {
-		AI_Path.DestNode		= m_tCorpse.Enemy->AI_NodeID;
-		Fvector l_tCorpsePosition;
-		m_tCorpse.Enemy->clCenter(l_tCorpsePosition);
-		tpDesiredPosition = &l_tCorpsePosition;
-		
-		m_tActionState = eActionStateRun;			
-		m_dwActionStartTime = 0;
-
-		//if (bCorpseFoundFirstTime) {
-		//	bCorpseFoundFirstTime = false;
-		//	
-		//}
-	} else {
-		
-		bCorpseFoundFirstTime = true;
-
-		if (m_bStateChanged || (m_dwActionStartTime < m_dwCurrentUpdate)) {
-		
-			m_bStateChanged = false;
-			// проверка лежания
-			m_tActionState	= eActionStateStand;
-			
-			//AI_Path.TravelPath.clear();
-			AI_Path.DestNode = AI_NodeID;
-
-			vfSetParameters(ePathTypeStraight,0, 0, false, 0);
-
-
-			u32		dwMinRand, dwMaxRand;
-			dwMinRand = dwMaxRand = 1;
-
-			switch (::Random.randI(11)) {
-				
-				case 0: m_tActionState = eActionStateStand;
-						dwMinRand = 2000;
-						dwMaxRand = 3000;
-						
-						break;
-				case 1: case 2: case 3: case 4:
-				
-				 m_tActionState = eActionStateWatchGo; // бродить по точкам графа?
-						vfUpdateDetourPoint();	
-
-						AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
-						vfSetParameters(ePathTypeStraight,0, 0, false, 0);
-						dwMinRand = 7000;
-						dwMaxRand = 15000;
-						break;
-				case 5: case 6: case 7: case 8: case 9:
-						m_tActionState = eActionStateStand;
-						
-						if (!::Random.randI(2))	r_torso_target.yaw += PI_DIV_2;
-						else r_torso_target.yaw -= PI_DIV_2;
-							
-						r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
-						dwMinRand = 3000;
-						dwMaxRand = 4000;
-						break;
-				case 10: m_tActionState = eActionStateLie;
-						if (!_CA.Active()) _CA.Set(ePostureStand,eActionLieDown);
-						dwMinRand = 15000;
-						dwMaxRand = 30000;
-						break;
-			}
-
-			m_dwActionStartTime = m_dwCurrentUpdate + ::Random.randI(dwMinRand,dwMaxRand); // время брожения или стояния на месте
-		}
-	}
-
-// -----------------------------------------------------------------------------
-// Process branch
-
-	
-	switch (m_tActionState) {
-		case eActionStateStand :	
-					
-						vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
-												eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
-					
-
-					break;
-		case eActionStateLie:	
-					vfSetMotionActionParams(eBodyStateLie, eMovementTypeStand, 
-											eMovementDirectionNone, eStateTypeNormal, eActionTypeLie);
-				break;
-
-		case eActionStateWatchGo:   // бродить
-					vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
-											eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
-
-					if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
-						if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
-							m_tpSoundBeingPlayed = 0;
-							m_dwLastVoiceTalk = m_dwCurrentUpdate;
-						}
-
-						if (m_dwCurrentUpdate - m_dwLastVoiceTalk > (u32)::Random.randI(5000,15000)) {
-							m_tpSoundBeingPlayed = &(m_tpaSoundVoice[::Random.randI(SND_VOICE_COUNT)]);
-							::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
-						}
-					}
-
-					break;
-		case eActionStateRun:   // бежать к трупу
-			if (m_tCorpse.Enemy->Position().distance_to(vPosition) > 2.0f) {
-				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
-										eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
-			} else  { // ест труп
-				if (!_CAction.Active() && !_CAction.Finished) {
-					u32 time = m_dwCurrentUpdate;
-					_CAction.Add(ePostureStand,eActionCheckCorpse,( time += 2000));
-					_CAction.Add(ePostureStand, eActionLieDown,(time += 2000));
-					_CAction.Switch();
-				} 
-					
-				vfSetMotionActionParams(eBodyStateLie, eMovementTypeStand, 
-										eMovementDirectionNone, eStateTypeNormal, eActionTypeEat);
-				
-				if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentUpdate) {
-					m_tCorpse.Enemy->m_fFood -= m_fHitPower/5.f;
-					m_dwLastTimeEat = m_dwCurrentUpdate;
-				}
-
-				if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
-					if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
-						m_tpSoundBeingPlayed = 0;
-						m_dwLastVoiceTalk = m_dwCurrentUpdate;
-					}
-
-					if (m_dwCurrentUpdate - m_dwLastVoiceTalk > (u32)::Random.randI(1000,5000)) {
-						m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
-						::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
-					}
-				}
-
-			}
-			break;
-	}
-	vfSetParameters(ePathTypeStraight,0, tpDesiredPosition, false, 0);	
+//// -----------------------------------------------------------------------------
+//// Choose branch
+//
+//	bool	bCorpseFound = false;
+//
+//	// проверка на видимость трупов
+//	SelectCorp(m_tEnemy);
+//	
+//	Fvector *tpDesiredPosition = 0;
+//
+//	if (m_tEnemy.Enemy) m_tCorpse = m_tEnemy;
+//	
+//	if (m_tCorpse.Enemy) 
+//		if (m_tCorpse.Enemy->m_fFood >= 0) bCorpseFound = true;
+//
+//	if (m_bStateChanged) {
+//		_CAction.Init();
+//	}
+//
+//	if (bCorpseFound) {
+//		AI_Path.DestNode		= m_tCorpse.Enemy->AI_NodeID;
+//		Fvector l_tCorpsePosition;
+//		m_tCorpse.Enemy->clCenter(l_tCorpsePosition);
+//		tpDesiredPosition = &l_tCorpsePosition;
+//		
+//		m_tActionState = eActionStateRun;			
+//		m_dwActionStartTime = 0;
+//
+//		//if (bCorpseFoundFirstTime) {
+//		//	bCorpseFoundFirstTime = false;
+//		//	
+//		//}
+//	} else {
+//		
+//		bCorpseFoundFirstTime = true;
+//
+//		if (m_bStateChanged || (m_dwActionStartTime < m_dwCurrentUpdate)) {
+//		
+//			m_bStateChanged = false;
+//			// проверка лежания
+//			m_tActionState	= eActionStateStand;
+//			
+//			//AI_Path.TravelPath.clear();
+//			AI_Path.DestNode = AI_NodeID;
+//
+//			vfSetParameters(ePathTypeStraight,0, 0, false, 0);
+//
+//
+//			u32		dwMinRand, dwMaxRand;
+//			dwMinRand = dwMaxRand = 1;
+//
+//			switch (::Random.randI(11)) {
+//				
+//				case 0: m_tActionState = eActionStateStand;
+//						dwMinRand = 2000;
+//						dwMaxRand = 3000;
+//						
+//						break;
+//				case 1: case 2: case 3: case 4:
+//				
+//				 m_tActionState = eActionStateWatchGo; // бродить по точкам графа?
+//						vfUpdateDetourPoint();	
+//
+//						AI_Path.DestNode		= getAI().m_tpaGraph[m_tNextGP].tNodeID;
+//						vfSetParameters(ePathTypeStraight,0, 0, false, 0);
+//						dwMinRand = 7000;
+//						dwMaxRand = 15000;
+//						break;
+//				case 5: case 6: case 7: case 8: case 9:
+//						m_tActionState = eActionStateStand;
+//						
+//						if (!::Random.randI(2))	r_torso_target.yaw += PI_DIV_2;
+//						else r_torso_target.yaw -= PI_DIV_2;
+//							
+//						r_torso_target.yaw = angle_normalize(r_torso_target.yaw);
+//						dwMinRand = 3000;
+//						dwMaxRand = 4000;
+//						break;
+//				case 10: m_tActionState = eActionStateLie;
+//						if (!_CA.Active()) _CA.Set(ePostureStand,eActionLieDown);
+//						dwMinRand = 15000;
+//						dwMaxRand = 30000;
+//						break;
+//			}
+//
+//			m_dwActionStartTime = m_dwCurrentUpdate + ::Random.randI(dwMinRand,dwMaxRand); // время брожения или стояния на месте
+//		}
+//	}
+//
+//// -----------------------------------------------------------------------------
+//// Process branch
+//
+//	
+//	switch (m_tActionState) {
+//		case eActionStateStand :	
+//					
+//						vfSetMotionActionParams(eBodyStateStand, eMovementTypeStand, 
+//												eMovementDirectionNone, eStateTypeNormal, eActionTypeStand);
+//					
+//
+//					break;
+//		case eActionStateLie:	
+//					vfSetMotionActionParams(eBodyStateLie, eMovementTypeStand, 
+//											eMovementDirectionNone, eStateTypeNormal, eActionTypeLie);
+//				break;
+//
+//		case eActionStateWatchGo:   // бродить
+//					vfSetMotionActionParams(eBodyStateStand, eMovementTypeWalk, 
+//											eMovementDirectionForward, eStateTypeNormal, eActionTypeWalk);
+//
+//					if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+//						if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+//							m_tpSoundBeingPlayed = 0;
+//							m_dwLastVoiceTalk = m_dwCurrentUpdate;
+//						}
+//
+//						if (m_dwCurrentUpdate - m_dwLastVoiceTalk > (u32)::Random.randI(5000,15000)) {
+//							m_tpSoundBeingPlayed = &(m_tpaSoundVoice[::Random.randI(SND_VOICE_COUNT)]);
+//							::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+//						}
+//					}
+//
+//					break;
+//		case eActionStateRun:   // бежать к трупу
+//			if (m_tCorpse.Enemy->Position().distance_to(vPosition) > 2.0f) {
+//				vfSetMotionActionParams(eBodyStateStand, eMovementTypeRun, 
+//										eMovementDirectionForward, eStateTypeNormal, eActionTypeRun);
+//			} else  { // ест труп
+//				if (!_CAction.Active() && !_CAction.Finished) {
+//					u32 time = m_dwCurrentUpdate;
+//					_CAction.Add(ePostureStand,eActionCheckCorpse,( time += 2000));
+//					_CAction.Add(ePostureStand, eActionLieDown,(time += 2000));
+//					_CAction.Switch();
+//				} 
+//					
+//				vfSetMotionActionParams(eBodyStateLie, eMovementTypeStand, 
+//										eMovementDirectionNone, eStateTypeNormal, eActionTypeEat);
+//				
+//				if (m_dwLastTimeEat + m_dwEatInterval < m_dwCurrentUpdate) {
+//					m_tCorpse.Enemy->m_fFood -= m_fHitPower/5.f;
+//					m_dwLastTimeEat = m_dwCurrentUpdate;
+//				}
+//
+//				if	(!m_tpSoundBeingPlayed || !m_tpSoundBeingPlayed->feedback) {
+//					if (m_tpSoundBeingPlayed && !m_tpSoundBeingPlayed->feedback) {
+//						m_tpSoundBeingPlayed = 0;
+//						m_dwLastVoiceTalk = m_dwCurrentUpdate;
+//					}
+//
+//					if (m_dwCurrentUpdate - m_dwLastVoiceTalk > (u32)::Random.randI(1000,5000)) {
+//						m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
+//						::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+//					}
+//				}
+//
+//			}
+//			break;
+//	}
+//	vfSetParameters(ePathTypeStraight,0, tpDesiredPosition, false, 0);	
 
 	// Play sound
 }
@@ -608,7 +617,8 @@ void CAI_Biting::Think()
 
 
 	Mem.UpdateMemory();
-	Mem.ShowDbgInfo();
+	//Mem.ShowDbgInfo();
+	
 
 
 	m_dwLastUpdateTime		= m_dwCurrentUpdate;

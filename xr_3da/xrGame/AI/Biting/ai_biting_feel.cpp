@@ -76,7 +76,7 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 //				m_tLastSound.fPower			= power;
 //				m_tLastSound.tSavedPosition = Position;
 //			}
-//		}
+///		}
 //	}
 }
 
@@ -107,12 +107,14 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 	if (!g_Alive()) return;
 	if (!pEntity) return;
 
-	
-	if (m_tSavedEnemy && (m_tSavedEnemy->CLS_ID == CLSID_ENTITY) && (pEntity == m_tSavedEnemy)) {
+	if (!Mem.IsEnemy()) return;
+
+	VisionElem &ve = Mem.GetNearestObject(vPosition);
+	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;
 		Fvector position_in_bone_space;
 		position_in_bone_space.set(0.f,0.f,0.f);
-		tDirection.sub(m_tSavedEnemy->Position(),this->Position());
+		tDirection.sub(ve.obj->Position(),this->Position());
 		tDirection.normalize();
 
 		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);

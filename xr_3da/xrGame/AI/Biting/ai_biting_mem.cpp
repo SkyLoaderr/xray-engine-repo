@@ -64,9 +64,20 @@ bool CSoundMemory::IsRememberSound()
 	return false;
 }
 
-void CSoundMemory::GetMostDangerousSound(SoundElem &s)
+void CSoundMemory::GetMostDangerousSound(SoundElem &s, bool &bDangerous)
 {
 	if (!IsRememberSound()) return;
+
+	// возврат самого опасного
+	s = Sounds.front();
+
+	if (s.type > WEAPON_EMPTY_CLICKING) bDangerous = false;
+	else bDangerous = true;
+}
+
+void CSoundMemory::UpdateHearing(TTime dt)
+{
+	CurrentTime = dt;
 
 	// удаление устаревших звуков
 	for (u32 i = 0; i < Sounds.size(); i++) {
@@ -78,14 +89,6 @@ void CSoundMemory::GetMostDangerousSound(SoundElem &s)
 
 	// отсортировать по "опасности" звука
 	std::sort(Sounds.begin(),Sounds.end());
-
-	// возврат самого опасного
-	s = Sounds.front();
-}
-
-void CSoundMemory::UpdateHearing(TTime dt)
-{
-	CurrentTime = dt;
 }
 
 void CSoundMemory::ShowDbgInfo()
@@ -93,9 +96,9 @@ void CSoundMemory::ShowDbgInfo()
 	Msg("-- Sound Memory:  Show dbg Info ---- ");
 	Msg("Current time: [%i];  num of sounds: [%i];  remember sound? [%i]",CurrentTime,Sounds.size(),IsRememberSound());
 
-	SoundElem s;
-	GetMostDangerousSound(s);
-	if (s.who) Msg("Most_Dangerous_Sound:  Name = [%s] ",s.who->cName());
+//	SoundElem s;
+//	GetMostDangerousSound(s);
+//	if (s.who) Msg("Most_Dangerous_Sound:  Name = [%s] ",s.who->cName());
 }
 
 
@@ -165,47 +168,32 @@ void CVisionMemory::AddEnemy(const VisionElem &ve)
 	else *res = ve;
 }
 
-// Выбрать ближайшего врага к позиции pos
-void CVisionMemory::GetNearestEnemy(const Fvector &pos, CEntity *e)
-{
-	VisionElem tE;
-	float	   optimal_val = 0.f;
-	float	   cur_val;
-	
-	if (IsEnemy())
-		tE = Enemies[0];
-
-	for (u32 i=1; i < Enemies.size(); i++) {
-		cur_val = pos.distance_to(Enemies[i].position) * Enemies[i].time;
-
-		if ( cur_val < optimal_val){
-			tE = Enemies[i];
-			optimal_val = cur_val;
-		}
-	}
-	if (tE.obj)	e = tE.obj;
-}
 
 // Выбрать ближайший объект к позиции pos
-void CVisionMemory::GetNearestObject(const Fvector &pos, CEntity *e)
+// массив Enemies/Objects (в зависимости от obj_type) не должен быть пустым!
+VisionElem &CVisionMemory::GetNearestObject(const Fvector &pos, EObjectType obj_type)
 {
-	VisionElem tE;
-	float	   optimal_val = 0.f;
-	float	   cur_val;
+	float		optimal_val;
+	float		cur_val;
+	int			index = 0;	// Индекс ближайшего объекта в массиве объектов 
 
-	if (IsObject())
-		tE = Objects[0];
+	xr_vector<VisionElem> *ObjectsVector;
+	if (obj_type == ENEMY) ObjectsVector = &Enemies;
+	else ObjectsVector = &Objects;
 
-	for (u32 i=1; i <  Objects.size(); i++) {
-		cur_val = pos.distance_to(Objects[i].position) * Objects[i].time;
+	optimal_val = pos.distance_to((*ObjectsVector)[index].position) * (*ObjectsVector)[index].time;
 
-		if (cur_val < optimal_val)	
-			tE = Objects[i];
+	for (u32 i=1; i < ObjectsVector->size(); i++) {
+		cur_val = pos.distance_to((*ObjectsVector)[i].position) * (*ObjectsVector)[i].time;
+
+		if ( cur_val < optimal_val){
 			optimal_val = cur_val;
+			index = i;
+		}
 	}
-
-	e = tE.obj;
+	return (*ObjectsVector)[index];
 }
+
 
 void CVisionMemory::ShowDbgInfo()
 {

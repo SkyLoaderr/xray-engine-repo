@@ -9,20 +9,6 @@
 #include "stdafx.h"
 #include "ai_biting.h"
 
-void CAI_Biting::vfSaveEnemy()
-{
-	m_tSavedEnemy			= m_tEnemy.Enemy;
-	m_tSavedEnemyPosition	= m_tEnemy.Enemy->Position();
-	m_tpSavedEnemyNode		= m_tEnemy.Enemy->AI_Node;
-	m_dwSavedEnemyNodeID	= m_tEnemy.Enemy->AI_NodeID;
-	m_dwLostEnemyTime		= Level().timeServer();
-	m_dwSeenEnemyLastTime	= m_dwLostEnemyTime;
-	m_tMySavedPosition		= vPosition;
-	m_dwMyNodeID			= AI_NodeID;
-	vfValidatePosition		(m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
-	m_dwEnemyLastMemoryTime	= m_dwSeenEnemyLastTime;
-};
-
 float CAI_Biting::EnemyHeuristics(CEntity* E)
 {
 	if (E->g_Team()  == g_Team())	
@@ -40,48 +26,72 @@ float CAI_Biting::EnemyHeuristics(CEntity* E)
 
 void CAI_Biting::SelectEnemy(SEnemySelected& S)
 {
-	
-	if (m_tSavedEnemy && m_tSavedEnemy->g_Alive()) 
-			if (m_dwLostEnemyTime + m_dwEnemyMemoryTime > m_dwCurrentUpdate) return;
-	
-	// Initiate process
-	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
-	S.Enemy					= 0;
+	S.Enemy				= 0;
 	S.bVisible			= FALSE;
 	S.fCost				= flt_max-1;
 
-	if (Known.size()==0)
-		return;
-	// Get visible list
-	feel_vision_get	(m_tpaVisibleObjects);
-	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-
-	for (u32 i=0; i<Known.size(); i++) {
-		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
-		if (!E || !E->g_Alive())
-			continue;
-
-		float		H = EnemyHeuristics(E);
-		if (H<S.fCost) {
-			bool bVisible = false;
-			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
-				if (m_tpaVisibleObjects[i] == E) {
-					bVisible = true;
-					break;
-				}
-				float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
-				if (cost<S.fCost)	{
-					S.Enemy		= E;
-					S.bVisible	= bVisible;
-					S.fCost		= cost;
-					Group.m_bEnemyNoticed = true;
-				}
-		}
-	}
+	if (!Mem.IsEnemy()) return;
 	
-	if (m_tEnemy.Enemy)
-		vfSaveEnemy();
+	//VisionElem &ve = Mem.GetNearestObject(vPosition);
+
+
+
+//	Mem.GetNearestEnemy(vPosition,&pEnemy);
+//
+//	m_tSavedEnemy			= pEnemy;
+//	m_tSavedEnemyPosition	= pEnemy->Position();
+//	m_tpSavedEnemyNode		= pEnemy->AI_Node;
+//	m_dwSavedEnemyNodeID	= pEnemy->AI_NodeID;
+//	m_dwLostEnemyTime		= Level().timeServer();
+//	m_dwSeenEnemyLastTime	= m_dwLostEnemyTime;
+//	m_tMySavedPosition		= vPosition;
+//	m_dwMyNodeID			= AI_NodeID;
+//	vfValidatePosition		 (m_tSavedEnemyPosition,m_dwSavedEnemyNodeID);
+//	m_dwEnemyLastMemoryTime	= m_dwSeenEnemyLastTime;	
+//
+//	S.Enemy					= pEnemy; 
+
+//	if (m_tSavedEnemy && m_tSavedEnemy->g_Alive()) 
+//			if (m_dwLostEnemyTime + m_dwEnemyMemoryTime > m_dwCurrentUpdate) return;
+//	
+//	// Initiate process
+//	objVisible&	Known	= Level().Teams[g_Team()].Squads[g_Squad()].KnownEnemys;
+//	S.Enemy					= 0;
+//	S.bVisible			= FALSE;
+//	S.fCost				= flt_max-1;
+//
+//	if (Known.size()==0)
+//		return;
+//	// Get visible list
+//	feel_vision_get	(m_tpaVisibleObjects);
+//	std::sort		(m_tpaVisibleObjects.begin(),m_tpaVisibleObjects.end());
+//	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+//
+//	for (u32 i=0; i<Known.size(); i++) {
+//		CEntityAlive*	E = dynamic_cast<CEntityAlive*>(Known[i].key);
+//		if (!E || !E->g_Alive())
+//			continue;
+//
+//		float		H = EnemyHeuristics(E);
+//		if (H<S.fCost) {
+//			bool bVisible = false;
+//			for (int i=0; i<(int)m_tpaVisibleObjects.size(); i++)
+//				if (m_tpaVisibleObjects[i] == E) {
+//					bVisible = true;
+//					break;
+//				}
+//				float	cost	 = H*(bVisible?1:_FB_invisible_hscale);
+//				if (cost<S.fCost)	{
+//					S.Enemy		= E;
+//					S.bVisible	= bVisible;
+//					S.fCost		= cost;
+//					Group.m_bEnemyNoticed = true;
+//				}
+//		}
+//	}
+//	
+//	if (m_tEnemy.Enemy)
+//		vfSaveEnemy();
 }
 
 void CAI_Biting::HitSignal(float amount, Fvector& vLocalDir, CObject* who, s16 element)

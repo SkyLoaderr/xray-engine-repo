@@ -77,7 +77,7 @@ public:
 	void HearSound(const SoundElem &s);
 	void HearSound(CObject* who, int eType, const Fvector &Position, float power, TTime time);
 	bool IsRememberSound();		//
-	void GetMostDangerousSound(SoundElem &s);	// возвращает самый опасный звук
+	void GetMostDangerousSound(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
 
 protected:
 	void Init(TTime mem_time) {MemoryTime = mem_time;}
@@ -110,6 +110,7 @@ typedef struct tagVisionElem
 } VisionElem;
 
 
+
 class CVisionMemory : public Feel::Vision
 {
 	TTime	MemoryTime;				// время хранения визуальных объектов
@@ -117,15 +118,16 @@ class CVisionMemory : public Feel::Vision
 	xr_vector<VisionElem>	Objects;
 	xr_vector<VisionElem>	Enemies;
 
+	enum EObjectType {ENEMY, OBJECT};
+
 	TTime	CurrentTime;			// текущее время
 public:
 	IC bool IsRememberVisual() {return (IsEnemy() || IsObject());}
 	IC bool IsEnemy() {return (!Enemies.empty());}	 
 	IC bool IsObject() {return (!Objects.empty());}	 
 
-	void GetNearestEnemy(const Fvector &pos,CEntity *e);
-	void GetNearestObject(const Fvector &pos,CEntity *e);
-
+	VisionElem &GetNearestObject(const Fvector &pos, EObjectType obj_type = ENEMY);
+	
 	
 protected:
 	void Init(TTime mem_time) {MemoryTime = mem_time;}
