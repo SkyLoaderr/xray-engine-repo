@@ -475,6 +475,22 @@ SOURCE=.\Blender_default_aref.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Blender_Editor_Selection.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blender_Editor_Selection.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blender_Editor_Wire.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blender_Editor_Wire.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Blender_Screen_GRAY.cpp
 # End Source File
 # Begin Source File
