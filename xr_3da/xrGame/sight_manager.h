@@ -42,8 +42,8 @@ public:
 			void	SetLessCoverLook					(const LevelGraph::CVertex *tpNode, float fMaxHeadTurnAngle, bool bDifferenceLook);
 			void	vfValidateAngleDependency			(float x1, float &x2, float x3);
 			bool	need_correction						(float x1, float x2, float x3);
-	IC		void	GetDirectionAnglesByPrevPositions	(float &yaw, float &pitch);
-			void	GetDirectionAngles					(float &yaw, float &pitch);
+	IC		bool	GetDirectionAnglesByPrevPositions	(float &yaw, float &pitch);
+			bool	GetDirectionAngles					(float &yaw, float &pitch);
 	IC		bool	use_torso_look						() const;
 	template <typename T1, typename T2, typename T3>
 	IC		void	setup								(T1 _1, T2 _2, T3 _3);

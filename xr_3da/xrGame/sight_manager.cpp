@@ -85,9 +85,14 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 void CSightManager::SetDirectionLook()
 {
 	MonsterSpace::SBoneRotation				orientation = object().movement().m_head, body_orientation = object().movement().body_orientation();
-	GetDirectionAngles						(object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
-	object().movement().m_head.target.yaw	*= -1;
-	object().movement().m_head.target.pitch	*= 0;//-1;
+	orientation.target						= orientation.current;
+	body_orientation.target					= body_orientation.current;
+	if (GetDirectionAngles(object().movement().m_head.target.yaw,object().movement().m_head.target.pitch)) {
+		object().movement().m_head.target.yaw	*= -1;
+		object().movement().m_head.target.pitch	*= 0;//-1;
+	}
+	else
+		object().movement().m_head.target	= object().movement().m_head.current;
 	object().movement().m_body.target		= object().movement().m_head.target;
 }
 
@@ -288,7 +293,7 @@ void CSightManager::update			()
 	STOP_PROFILE
 }
 
-void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
+bool CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
 {
 	if (!object().movement().path().empty() && (m_object->movement().detail().curr_travel_point_index() + 1 < m_object->movement().detail().path().size())) {
 		Fvector				t;
@@ -297,26 +302,28 @@ void CSightManager::GetDirectionAngles				(float &yaw, float &pitch)
 			object().movement().path()[m_object->movement().detail().curr_travel_point_index()].position
 		);
 		t.getHP				(yaw,pitch);
-		return;
+		return				(true);
 	}
-	GetDirectionAnglesByPrevPositions	(yaw,pitch);
+	return					(GetDirectionAnglesByPrevPositions(yaw,pitch));
 };
 
-void CSightManager::GetDirectionAnglesByPrevPositions(float &yaw, float &pitch)
+bool CSightManager::GetDirectionAnglesByPrevPositions(float &yaw, float &pitch)
 {
 	Fvector					tDirection;
 	int						i = m_object->ps_Size	();
 
 	if (i < 2) 
-		return;
+		return				(false);
 
 	CObject::SavedPosition	tPreviousPosition = m_object->ps_Element(i - 2), tCurrentPosition = m_object->ps_Element(i - 1);
 	VERIFY					(_valid(tPreviousPosition.vPosition));
 	VERIFY					(_valid(tCurrentPosition.vPosition));
 	tDirection.sub			(tCurrentPosition.vPosition,tPreviousPosition.vPosition);
-	if (tDirection.magnitude() < EPS_L)	return;
+	if (tDirection.magnitude() < EPS_L)	return(false);
 	tDirection.getHP		(yaw,pitch);
 	VERIFY					(_valid(yaw));
 	VERIFY					(_valid(pitch));
+
+	return					(true);
 }
 

@@ -71,7 +71,7 @@ void CSightAction::execute		()
 			else
 				object().sight().SetLessCoverLook(m_object->ai_location().level_vertex(),m_path);
 #ifdef SIGHT_TEST
-			Msg					("%6d %s",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFireCover" : "eSightTypeCover");
+			Msg					("%6d %s [%f] -> [%f]",Device.dwTimeGlobal,m_torso_look ? "eSightTypeFireCover" : "eSightTypeCover",object().movement().m_body.current.yaw,object().movement().m_body.target.yaw);
 #endif
 			break;
 		}

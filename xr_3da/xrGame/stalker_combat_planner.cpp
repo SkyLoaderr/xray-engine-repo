@@ -176,7 +176,7 @@ void CStalkerCombatPlanner::finalize			()
 #ifdef OLD_AGENT_MANAGER_BEHAVIOUR
 	object().agent_manager().member().unregister_in_combat	(m_object);
 #endif
-	object().sound().remove_active_sounds					(u32(-1));
+//	object().sound().remove_active_sounds					(eStalkerSoundMaskNoDanger);
 }
 
 void CStalkerCombatPlanner::add_evaluators		()
