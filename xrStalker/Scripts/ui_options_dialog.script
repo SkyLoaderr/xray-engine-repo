@@ -72,15 +72,11 @@ function options_dialog:InitControls()
 							 width = btn_rect.width,
 							 height = btn_rect.height}
 	-- Bottom align
-	local btn_quit_rect    = {x = btn_rect.x,
+	local btn_back_rect    = {x = btn_rect.x,
 							 y = main_rect.height - btn_rect.height - indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
-	local btn_bonus_rect   = {x = btn_rect.x,
-							 y = btn_quit_rect.y - btn_rect.height - indent,
-							 width = btn_rect.width,
-							 height = btn_rect.height}
-	
+
 	message_rect = {x = 0, y = 0, width = 400, height = 300}
 	
 	----- CODE -------
@@ -161,30 +157,17 @@ function options_dialog:InitControls()
 	self:Register(btn)
 	main_frame:AttachChild(btn)
 	
-	--------->> QUIT TO WINDOWS
+	--------->> BACK
 	btn = CUIButton()
 	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_quit")
-	btn:Init("ui\\ui_button_01", btn_quit_rect.x, btn_quit_rect.y, btn_quit_rect.width, btn_quit_rect.height)
-	btn:SetText("Quit to Windows")
+	btn:SetWindowName("btn_back")
+	btn:Init("ui\\ui_button_01", btn_back_rect.x, btn_back_rect.y, btn_back_rect.width, btn_back_rect.height)
+	btn:SetText("Back")
 	btn:SetFont(GetFontLetterica25())
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(button_indent)
 	self:Register(btn)
 	main_frame:AttachChild(btn)
-	
-		--------->> QUIT TO WINDOWS
-	btn = CUIButton()
-	btn:SetAutoDelete(true)
-	btn:SetWindowName("btn_bonus")
-	btn:Init("ui\\ui_button_01", btn_bonus_rect.x, btn_bonus_rect.y, btn_bonus_rect.width, btn_bonus_rect.height)
-	btn:SetText("Bonus")
-	btn:SetFont(GetFontLetterica25())
-	btn:SetTextAlign(CGameFont.alCenter)
-	btn:SetTextY(button_indent)
-	self:Register(btn)
-	main_frame:AttachChild(btn)
-
 		
 	-- Message Box --
 	message_box = CUIMessageBox()
