@@ -440,7 +440,7 @@ if(m_pPhysicsShell) return;
 	*/
 	m_pPhysicsShell		= P_create_Shell();
 
-	m_pPhysicsShell->build_FromKinematics(PKinematics(pVisual));
+	m_pPhysicsShell->build_FromKinematics(PKinematics(Visual()));
 	/*
 	m_pPhysicsShell->set_Kinematics(M);
 	CPhysicsJoint*		joint;
