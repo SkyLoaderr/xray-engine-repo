@@ -19,6 +19,7 @@ CTexture::CTexture		()
 	dwReference			= 1;
 	pSurface			= NULL;
 	pAVI				= NULL;
+	dwMemoryUsage		= 0;
 }
 
 CTexture::~CTexture() 
