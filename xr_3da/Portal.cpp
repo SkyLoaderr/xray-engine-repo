@@ -97,7 +97,7 @@ void CSector::Render(CFrustum &F)
 				{
 					DWORD planes	=	F.getMask();
 					FBasicVisual* V	=	pV->Visual();
-					if (Occluders.testSAABB(V->bv_Position,V->bv_Radius,V->bv_BBox.min,V->bv_BBox.max,planes)!=fcvNone)
+					if (F.testSAABB(V->bv_Position,V->bv_Radius,V->bv_BBox.min,V->bv_BBox.max,planes)!=fcvNone)
 						::Render.add_leafs_Static(pV->Visual());
 				}
 				else
