@@ -134,7 +134,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
             Fvector p1;
             p1.set			(0,0,0);
             M.transform_tiny(p1);
-            DWORD c 		= D3DCOLOR_RGBA(255,255,0,255);
+            u32 c 		= D3DCOLOR_RGBA(255,255,0,255);
             Fvector p2,d; 	d.set	(0,0,1);
             M.transform_dir	(d);
             p2.mad			(p1,d,(*b_it)->Length());
@@ -144,7 +144,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent){
     }
 }
 
-void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, DWORD color){
+void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, u32 color){
     if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
 
     Device.SetShader(Device.m_WireShader);
@@ -153,7 +153,7 @@ void CEditableObject::RenderEdge(const Fmatrix& parent, CEditableMesh* mesh, DWO
             (*_M)->RenderEdge(parent, color);
 }
 
-void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh, DWORD color)
+void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh, u32 color)
 {
     if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
 

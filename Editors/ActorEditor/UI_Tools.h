@@ -68,8 +68,8 @@ class CActorTools: public pureDeviceCreate, public pureDeviceDestroy
 
 	CEditableObject*	m_pEditObject;
     class EngineModel{
-    	CFS_Memory		m_GeometryStream;
-	    CFS_Memory		m_MotionsStream;
+    	CMemoryWriter	m_GeometryStream;
+	    CMemoryWriter	m_MotionsStream;
 	    bool			UpdateGeometryStream(CEditableObject* source);
     	bool			UpdateMotionsStream	(CEditableObject* source);
     public:

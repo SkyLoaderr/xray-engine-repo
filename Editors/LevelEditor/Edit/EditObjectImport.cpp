@@ -90,7 +90,7 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     // fill texture layers
                     int cidx;
                     st_lwClip* Icl;
-                    DWORD dwNumTextures=0;
+                    u32 dwNumTextures=0;
                     for (st_lwTexture* Itx=Isf->color.tex; Itx; Itx=Itx->next){
                         char tname[1024]="";
                         dwNumTextures++;

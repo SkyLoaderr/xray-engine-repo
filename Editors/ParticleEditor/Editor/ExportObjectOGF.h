@@ -51,10 +51,10 @@ protected:
     OGFFaceVec		m_Faces;
 
     Fvector			m_VMmin, m_VMscale;
-    DWORDVec		m_VM[clpOGFMX+1][clpOGFMY+1][clpOGFMZ+1];
+    U32Vec			m_VM[clpOGFMX+1][clpOGFMY+1][clpOGFMZ+1];
     Fvector			m_VMeps;
 
-    DWORD			VPack(SOGFVert& V);
+    u32			VPack(SOGFVert& V);
 public:
     CObjectOGFCollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
     bool 			check      	(SOGFFace& F){

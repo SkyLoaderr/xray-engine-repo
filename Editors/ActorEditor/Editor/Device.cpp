@@ -12,7 +12,7 @@
 
 CRenderDevice 		Device;
 
-DWORD dwClearColor	= DEFAULT_CLEARCOLOR;
+u32 dwClearColor	= DEFAULT_CLEARCOLOR;
 
 extern int	rsDVB_Size;
 extern int	rsDIB_Size;
@@ -101,10 +101,10 @@ void CRenderDevice::ShutDown()
 void CRenderDevice::InitTimer(){
 	Timer_MM_Delta	= 0;
 	{
-		DWORD time_mm			= timeGetTime	();
+		u32 time_mm			= timeGetTime	();
 		while (timeGetTime()==time_mm);			// wait for next tick
-		DWORD time_system		= timeGetTime	();
-		DWORD time_local		= TimerAsync	();
+		u32 time_system		= timeGetTime	();
+		u32 time_local		= TimerAsync	();
 		Timer_MM_Delta			= time_system-time_local;
 	}
 }
@@ -170,7 +170,7 @@ void CRenderDevice::_Create(IReader* F)
 
 	// General Render States
 	HW.Caps.Update();
-	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++){
+	for (u32 i=0; i<HW.Caps.pixel.dwStages; i++){
 		float fBias = -1.f;
 		CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
@@ -300,18 +300,18 @@ void CRenderDevice::UpdateTimer(){
 	u64	qTime		= TimerGlobal.GetElapsed();
 	fTimeGlobal		= float(qTime)*CPU::cycles2seconds;
 
-	dwTimeGlobal	= DWORD((qTime*u64(1000))/CPU::cycles_per_second);
+	dwTimeGlobal	= u32((qTime*u64(1000))/CPU::cycles_per_second);
 	dwTimeDelta		= iFloor(fTimeDelta*1000.f+0.5f);
 
     m_Camera.Update(fTimeDelta);
 }
 
-void CRenderDevice::DP(D3DPRIMITIVETYPE pt, SGeometry* geom, DWORD vBase, DWORD pc)
+void CRenderDevice::DP(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 vBase, u32 pc)
 {
 	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
-    DWORD dwRequired		= S->lod0->Passes.size();
+    u32 dwRequired		= S->lod0->Passes.size();
     RCache.set_Geometry		(geom);
-    for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
+    for (u32 dwPass = 0; dwPass<dwRequired; dwPass++){
     	RCache.set_Shader	(S,dwPass);
 		RCache.Render		(pt,vBase,pc);
     }
@@ -320,9 +320,9 @@ void CRenderDevice::DP(D3DPRIMITIVETYPE pt, SGeometry* geom, DWORD vBase, DWORD 
 void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC)
 {
 	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
-    DWORD dwRequired		= S->lod0->Passes.size();
+    u32 dwRequired		= S->lod0->Passes.size();
     RCache.set_Geometry		(geom);
-    for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
+    for (u32 dwPass = 0; dwPass<dwRequired; dwPass++){
     	RCache.set_Shader	(S,dwPass);
 		RCache.Render		(pt,baseV,startV,countV,startI,PC);
     }
@@ -388,13 +388,13 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 	R_CHK(pFB->LockRect(&D,0,D3DLOCK_NOSYSLOCK));
 	pixels.resize(width*height);
 	// Image processing
-	DWORD* pPixel	= (DWORD*)D.pBits;
+	u32* pPixel	= (u32*)D.pBits;
 
     UI.ProgressStart(height,"Screenshot making");
     U32It it 		= pixels.begin();
     for (int h=height-1; h>=0; h--,it+=width){
-        LPDWORD dt 	= LPDWORD(DWORD(pPixel)+DWORD(D.Pitch*h));
-        CopyMemory	(it,dt,sizeof(DWORD)*width);
+        LPDWORD dt 	= LPDWORD(u32(pPixel)+u32(D.Pitch*h));
+        CopyMemory	(it,dt,sizeof(u32)*width);
 	    UI.ProgressInc();
     }
     UI.ProgressEnd();

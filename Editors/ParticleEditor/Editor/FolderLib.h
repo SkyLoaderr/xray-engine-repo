@@ -9,21 +9,21 @@
 
 // refs
 
-const DWORD TYPE_INVALID= -1;
-const DWORD TYPE_FOLDER	= 0;
-const DWORD TYPE_OBJECT	= 1;
+const u32 TYPE_INVALID= -1;
+const u32 TYPE_FOLDER	= 0;
+const u32 TYPE_OBJECT	= 1;
 class CFolderHelper{
 public:
 	typedef void 		__fastcall (__closure *TOnRenameItem)(LPCSTR p0, LPCSTR p1);
 	typedef BOOL 		__fastcall (__closure *TOnRemoveItem)(LPCSTR p0);
 	typedef void 		__fastcall (__closure *TOnAfterRemoveItem)();
-    IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(DWORD)node->Data):TYPE_INVALID;}
-    IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(DWORD)node->Data):TYPE_INVALID;}
+    IC bool				IsFolder			(TElTreeItem* node){return node?(TYPE_FOLDER==(u32)node->Data):TYPE_INVALID;}
+    IC bool				IsObject			(TElTreeItem* node){return node?(TYPE_OBJECT==(u32)node->Data):TYPE_INVALID;}
 
     bool 			 	MakeFullName		(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder);
     bool 			 	MakeName			(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& folder, bool bOnlyFolder);
 	TElTreeItem* 		FindItemInFolder	(TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
-	TElTreeItem* 		FindItemInFolder	(DWORD type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
+	TElTreeItem* 		FindItemInFolder	(u32 type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt=false);
     TElTreeItem* 		AppendFolder		(TElTree* tv, LPCSTR full_name);
 	TElTreeItem*		AppendObject		(TElTree* tv, LPCSTR full_name);
     TElTreeItem* 		FindObject			(TElTree* tv, LPCSTR full_name, TElTreeItem** last_valid_node=0, int* last_valid_idx=0, bool bIgnoreExt=false);

@@ -14,8 +14,8 @@
 #include "ui_main.h"
 
 /*
-void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, DWORDVec& fl){
-	DWORD i=0;
+void CEditableMesh::CHullPickFaces(PlaneVec& pl, Fmatrix& parent, U32Vec& fl){
+	u32 i=0;
 	Fvector p;
     vector<bool> inside(m_Points.size(),true);
     for(FvectorIt v_it=m_Points.begin();v_it!=m_Points.end();v_it++){
@@ -100,7 +100,7 @@ bool CEditableMesh::RayPick(float& distance, const Fvector& start, const Fvector
 #ifdef _LEVEL_EDITOR
 
 bool CEditableMesh::CHullPickMesh(PlaneVec& pl, const Fmatrix& parent){
-	DWORD i=0;
+	u32 i=0;
 	Fvector p;
     vector<bool> inside(m_Points.size(),true);
     for(FvectorIt v_it=m_Points.begin();v_it!=m_Points.end();v_it++){
@@ -135,7 +135,7 @@ void CEditableMesh::RecurseTri(int id)
 }
 //----------------------------------------------------
 
-void CEditableMesh::GetTiesFaces(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive){
+void CEditableMesh::GetTiesFaces(int start_id, U32Vec& fl, float fSoftAngle, bool bRecursive){
     R_ASSERT(start_id<int(m_Faces.size()));
     m_fSoftAngle=cosf(deg2rad(fSoftAngle));
     if (!m_LoadState.is(LS_FNORMALS)) GenerateFNormals();
@@ -173,7 +173,7 @@ bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 	if (!m_Visible) return false;
 
 	Fvector p[3];
-	for(DWORD i=0;i<m_Faces.size();i++){
+	for(u32 i=0;i<m_Faces.size();i++){
 		for( int k=0;k<3;k++)
             parent.transform_tiny(p[k],m_Points[m_Faces[i].pv[k].pindex]);
 		if (frustum.testPolyInside(p,3)) return true;
@@ -182,10 +182,10 @@ bool CEditableMesh::FrustumPick(const CFrustum& frustum, const Fmatrix& parent){
 }
 //---------------------------------------------------------------------------
 
-void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& parent, DWORDVec& fl){
+void CEditableMesh::FrustumPickFaces(const CFrustum& frustum, const Fmatrix& parent, U32Vec& fl){
 	if (!m_Visible) return;
 
-	DWORD i=0;
+	u32 i=0;
 	Fvector p[3];
     bool bCulling=frmEditorPreferences->cbBoxPickFaceCulling->Checked;
     for(FaceIt p_it=m_Faces.begin();p_it!=m_Faces.end();p_it++,i++){

@@ -103,7 +103,7 @@ bool CEditableMesh::UpdateAdjacency(){
 #define MY 15
 #define MZ 25
 static Fvector		VMmin, VMscale;
-static DWORDVec		VM[MX+1][MY+1][MZ+1];
+static U32Vec		VM[MX+1][MY+1][MZ+1];
 static Fvector		VMeps;
 
 static FvectorVec m_NewPoints;
@@ -119,13 +119,13 @@ bool CEditableMesh::OptimizeFace(st_Face& face){
 
 	// get similar vert idx list
 	for (k=0; k<3; k++){
-		DWORDVec* vl;
+		U32Vec* vl;
 		int ix,iy,iz;
 		ix = iFloor(float(points[k].x-VMmin.x)/VMscale.x*MX);
 		iy = iFloor(float(points[k].y-VMmin.y)/VMscale.y*MY);
 		iz = iFloor(float(points[k].z-VMmin.z)/VMscale.z*MZ);
 		vl = &(VM[ix][iy][iz]);
-		for(DWORDIt it=vl->begin();it!=vl->end(); it++){
+		for(U32It it=vl->begin();it!=vl->end(); it++){
 			FvectorIt v = m_NewPoints.begin()+(*it);
             if( v->similar(points[k],EPS) )
                 mface[k] = *it;
@@ -194,7 +194,7 @@ void CEditableMesh::Optimize(BOOL NoOpt){
 
 		IntVec mark_for_del;
 		mark_for_del.clear();
-		for (DWORD k=0; k<m_Faces.size(); k++){
+		for (u32 k=0; k<m_Faces.size(); k++){
     		if (!OptimizeFace(m_Faces[k]))
 				mark_for_del.push_back(k);
 		}

@@ -8,7 +8,7 @@ struct SExts{
     void format_register(LPCSTR ext)
     {
     	if (ext&&ext[0]){
-			for (DWORD i=0; i<exts.size(); i++)
+			for (u32 i=0; i<exts.size(); i++)
     			if (0==stricmp(exts[i],ext)) return;
     		exts.push_back(xr_strdup(ext));
         }
@@ -75,7 +75,7 @@ void	Surface_Init()
 
 BOOL	Surface_Detect(LPSTR F, LPSTR N)
 {
-	for (DWORD i=0; i<formats.size(); i++)
+	for (u32 i=0; i<formats.size(); i++)
 	{
 #ifdef _EDITOR
 		strconcat(F,Engine.FS.m_Textures.m_Path,N,".",formats[i]);
@@ -122,7 +122,7 @@ u32*	Surface_Load(char* name, u32& w, u32& h)
 	h					= FreeImage_GetHeight	(map32);
 	w					= FreeImage_GetWidth	(map32);
 
-	DWORD		memSize	= w*h*4;
+	u32			memSize	= w*h*4;
 	u32*		memPTR	= (u32*)(xr_malloc(memSize));
 	u32*		memDATA	= (u32*)(FreeImage_GetScanLine(map32,0));
 	CopyMemory	(memPTR,memDATA,memSize);

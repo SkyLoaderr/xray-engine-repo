@@ -72,7 +72,7 @@ void CEditableObject::SaveObject(const char* fname)
     _splitpath( fname, dir, path, nm, 0 );
 	strconcat(save_nm,dir,path,nm,".object");
 
-    Engine.FS.VerifyPath(save_nm);
+    VerifyPath(save_nm);
 
     F.save_to(save_nm,0);
 	m_LoadName = save_nm;
@@ -82,7 +82,7 @@ void CEditableObject::SaveObject(const char* fname)
 bool CEditableObject::Load(IReader& F){
     bool bRes = true;
 	do{
-        DWORD version = 0;
+        u32 version = 0;
         char buf[255];
         char sh_name[255];
         R_ASSERT(F.r_chunk(EOBJ_CHUNK_VERSION,&version));
@@ -102,7 +102,7 @@ bool CEditableObject::Load(IReader& F){
         R_ASSERT(F.r_chunk(EOBJ_CHUNK_LIB_VERSION, &m_ObjVer));
         // surfaces
         if (F.find_chunk(EOBJ_CHUNK_SURFACES3)){
-            DWORD cnt = F.r_u32();
+            u32 cnt = F.r_u32();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                 *s_it 		= xr_new<CSurface>();
@@ -119,7 +119,7 @@ bool CEditableObject::Load(IReader& F){
                 R_ASSERT(1<=cnt);
             }
         }else if (F.find_chunk(EOBJ_CHUNK_SURFACES2)){
-            DWORD cnt = F.r_u32();
+            u32 cnt = F.r_u32();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                 *s_it 		= xr_new<CSurface>();
@@ -136,7 +136,7 @@ bool CEditableObject::Load(IReader& F){
             }
         }else{
             R_ASSERT(F.find_chunk(EOBJ_CHUNK_SURFACES));
-            DWORD cnt = F.r_u32();
+            u32 cnt = F.r_u32();
             m_Surfaces.resize(cnt);
             for (SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
                 *s_it = xr_new<CSurface>();

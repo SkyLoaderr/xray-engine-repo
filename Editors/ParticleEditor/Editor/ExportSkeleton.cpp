@@ -15,10 +15,10 @@
 #include "MgcCont3DMinBox.h"
 #include "ui_main.h"
 
-DWORD CSkeletonCollectorPacked::VPack(SSkelVert& V){
-    DWORD P 	= 0xffffffff;
+u32 CSkeletonCollectorPacked::VPack(SSkelVert& V){
+    u32 P 	= 0xffffffff;
 
-    DWORD ix,iy,iz;
+    u32 ix,iy,iz;
     ix = iFloor(float(V.P.x-m_VMmin.x)/m_VMscale.x*clpSMX);
     iy = iFloor(float(V.P.y-m_VMmin.y)/m_VMscale.y*clpSMY);
     iz = iFloor(float(V.P.z-m_VMmin.z)/m_VMscale.z*clpSMZ);
@@ -26,8 +26,8 @@ DWORD CSkeletonCollectorPacked::VPack(SSkelVert& V){
 
 	int similar_pos=-1;
     {
-        DWORDVec& vl=m_VM[ix][iy][iz];
-        for(DWORDIt it=vl.begin();it!=vl.end(); it++){
+        U32Vec& vl=m_VM[ix][iy][iz];
+        for(U32It it=vl.begin();it!=vl.end(); it++){
         	SSkelVert& src=m_Verts[*it];
         	if(src.similar_pos(V)){
 	            if(src.similar(V)){
@@ -46,7 +46,7 @@ DWORD CSkeletonCollectorPacked::VPack(SSkelVert& V){
 
         m_VM[ix][iy][iz].push_back(P);
 
-        DWORD ixE,iyE,izE;
+        u32 ixE,iyE,izE;
         ixE = iFloor(float(V.P.x+m_VMeps.x-m_VMmin.x)/m_VMscale.x*clpSMX);
         iyE = iFloor(float(V.P.y+m_VMeps.y-m_VMmin.y)/m_VMscale.y*clpSMY);
         izE = iFloor(float(V.P.z+m_VMeps.z-m_VMmin.z)/m_VMscale.z*clpSMZ);
@@ -192,7 +192,7 @@ void CExportSkeleton::SSplit::MakeProgressive(){
         PM_Result R;
         I_Current = PM_Convert((LPWORD)m_Faces.begin(),m_Faces.size()*3, &R);
         if (I_Current>=0) {
-            DWORD progress_diff = m_Verts.size()-R.minVertices;
+            u32 progress_diff = m_Verts.size()-R.minVertices;
             if (progress_diff!=R.splitSIZE){
                 ELog.Msg(mtError,"PM_Convert return wrong indices.");
                 I_Current = -1;
@@ -202,7 +202,7 @@ void CExportSkeleton::SSplit::MakeProgressive(){
             SkelVertVec temp_list = m_Verts;
 
             // Perform permutation
-            for(DWORD i=0; i<temp_list.size(); i++)
+            for(u32 i=0; i<temp_list.size(); i++)
                 m_Verts[R.permutePTR[i]]=temp_list[i];
 
             // Copy results
@@ -261,7 +261,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
 	bone_points.resize	(m_Source->BoneCount());
 
     FvectorVec vnormals;
-    DWORD mtl_cnt=0;
+    u32 mtl_cnt=0;
 	UI.SetStatus("Split meshes...");
     for(EditMeshIt mesh_it=m_Source->FirstMesh();mesh_it!=m_Source->LastMesh();mesh_it++){
         CEditableMesh* MESH = *mesh_it;
@@ -285,7 +285,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
         for (SurfFacesPairIt sp_it=MESH->m_SurfFaces.begin(); sp_it!=MESH->m_SurfFaces.end(); sp_it++){
             IntVec& face_lst = sp_it->second;
             CSurface* surf = sp_it->first;
-            DWORD dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+            u32 dwTexCnt = ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
             R_ASSERT(dwTexCnt==1);
             int mtl_idx = FindSplit(surf->_ShaderName(),surf->_Texture());
             if (mtl_idx<0){
@@ -302,7 +302,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
                         st_SVert& 		sv = MESH->m_SVertices[fv.pindex];
                         int offs = 0;
                         Fvector2* 		uv = 0;
-                        for (DWORD t=0; t<dwTexCnt; t++){
+                        for (u32 t=0; t<dwTexCnt; t++){
                             st_VMapPt& vm_pt 	= MESH->m_VMRefs[fv.vmref][t+offs];
                             st_VMap& vmap		= *MESH->m_VMaps[vm_pt.vmap_index];
                             if (vmap.type!=vmtUV){ offs++; t--; continue; }
@@ -436,7 +436,7 @@ bool CExportSkeleton::ExportMotions(IWriter& F)
         BoneMotionVec& lst=motion->BoneMotions();
         int bone_id = 0;
         for (BoneMotionIt bm_it=lst.begin(); bm_it!=lst.end(); bm_it++,bone_id++){
-            DWORD flag = motion->GetMotionFlag(bone_id);
+            u32 flag = motion->GetMotionFlag(bone_id);
             CBone* B = m_Source->GetBone(bone_id);
             int parent_idx = B->ParentIndex();
             for (int frm=motion->FrameStart(); frm<motion->FrameEnd(); frm++){

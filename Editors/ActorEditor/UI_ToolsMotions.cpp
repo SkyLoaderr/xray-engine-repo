@@ -34,7 +34,7 @@ bool CActorTools::EngineModel::UpdateMotionsStream(CEditableObject* source)
 bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGeom, bool bUpdMotions)
 {
 	bool bRes = true;
-	CFS_Memory F;
+	CMemoryWriter F;
 	if (source->IsSkeleton()){
         if (bUpdGeom)	bRes = UpdateGeometryStream(source);
         if (!bRes){
@@ -45,8 +45,8 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
         if (!bRes) ELog.Msg(mtError,"Can't create preview motions.");
         if (!bRes||!m_GeometryStream.size()||!m_MotionsStream.size())
          	return false;
-        F.write(m_GeometryStream.pointer(),m_GeometryStream.size());
-        F.write(m_MotionsStream.pointer(),m_MotionsStream.size());
+        F.w(m_GeometryStream.pointer(),m_GeometryStream.size());
+        F.w(m_MotionsStream.pointer(),m_MotionsStream.size());
     }else{
         bool bRes = true;
         if (bUpdGeom) 	bRes = UpdateGeometryStream(source);
@@ -55,9 +55,9 @@ bool CActorTools::EngineModel::UpdateVisual(CEditableObject* source, bool bUpdGe
         	return false;
         }
         if (!m_GeometryStream.size()) return false;
-        F.write(m_GeometryStream.pointer(),m_GeometryStream.size());
+        F.w(m_GeometryStream.pointer(),m_GeometryStream.size());
     }
-    CStream R(F.pointer(), F.size());
+    IReader R(F.pointer(), F.size());
     Device.Models.Delete(m_pVisual);
     m_pVisual = Device.Models.Create(&R);
     m_pBlend = 0;
@@ -155,7 +155,7 @@ bool CActorTools::SaveMotions(LPCSTR name)
 void CActorTools::MakePreview()
 {
 	if (m_pEditObject){
-        CFS_Memory F;
+        CMemoryWriter F;
     	if (m_RenderObject.UpdateVisual(m_pEditObject,true,true)){
             PlayMotion();
         }else{

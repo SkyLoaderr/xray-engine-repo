@@ -64,8 +64,8 @@ void CVisual::Load		(const char* N, IReader *data, u32 dwFlags)
 	// Sphere (if exists)
 	if (data->find_chunk(OGF_BSPHERE))
 	{
-		data->r(&bv_Position,3*sizeof(float));
-		data->r(&bv_Radius,sizeof(float));
+		data->r(&vis.sphere.P,3*sizeof(float));
+		data->r(&vis.sphere.R,sizeof(float));
 	}
 
 	// textures

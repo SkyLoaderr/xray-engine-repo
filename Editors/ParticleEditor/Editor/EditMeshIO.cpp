@@ -89,7 +89,7 @@ void CEditableMesh::SaveMesh(IWriter& F){
 }
 
 bool CEditableMesh::LoadMesh(IReader& F){
-    DWORD version=0;
+    u32 version=0;
 
     R_ASSERT(F.r_chunk(EMESH_CHUNK_VERSION,&version));
     if (version!=EMESH_CURRENT_VERSION){
@@ -106,7 +106,7 @@ bool CEditableMesh::LoadMesh(IReader& F){
     F.r_chunk(EMESH_CHUNK_BOP,&m_Ops);
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_VERTS));
-	DWORD cnt			= F.r_u32();
+	u32 cnt			= F.r_u32();
     if (cnt<=3) return false;
     m_Points.resize		(cnt);
     m_Adjs.resize		(cnt);
@@ -132,8 +132,8 @@ bool CEditableMesh::LoadMesh(IReader& F){
 
     R_ASSERT(F.find_chunk(EMESH_CHUNK_SFACE));
     string128 surf_name;
-    DWORD sface_cnt		= F.r_u16(); // surface-face count
-    for (DWORD sp_i=0; sp_i<sface_cnt; sp_i++){
+    u32 sface_cnt		= F.r_u16(); // surface-face count
+    for (u32 sp_i=0; sp_i<sface_cnt; sp_i++){
         F.r_stringZ		(surf_name);
         int surf_id;
         CSurface* surf	= m_Parent->FindSurfaceByName(surf_name, &surf_id); VERIFY(surf);

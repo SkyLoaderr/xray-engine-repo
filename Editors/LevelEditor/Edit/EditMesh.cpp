@@ -114,7 +114,7 @@ void CEditableMesh::GeneratePNormals()
     m_PNormals.resize	(m_Faces.size()*3);
 	// vertex normals
     float m_fSoftAngle = cosf(deg2rad(60.f));
-    for (DWORD f_i=0; f_i<m_Faces.size(); f_i++ ){
+    for (u32 f_i=0; f_i<m_Faces.size(); f_i++ ){
 		Fvector& FN = m_FNormals[f_i];
         for (int k=0; k<3; k++){
             Fvector& N = m_PNormals[f_i*3+k];
@@ -152,13 +152,13 @@ void CEditableMesh::GenerateSVertices()
     m_Parent->CalculateAnimation(true);
 	m_SVertices.resize(m_Points.size());
 
-    for (DWORD i=0; i<m_Points.size(); i++){
+    for (u32 i=0; i<m_Points.size(); i++){
     	Fvector&  P =m_Points[i];
     	st_SVert& SV=m_SVertices[i];
     	IntVec& a_lst = m_Adjs[i];
         VERIFY2(a_lst.size(),"Karma pidaras!!! Uberi degenerats.");
 		bool bRes = false;
-        for (DWORD a=0; a<m_Adjs[i].size(); a++){
+        for (u32 a=0; a<m_Adjs[i].size(); a++){
             st_Face& F = m_Faces[m_Adjs[i][a]];
             for (int k=0; k<3; k++){
                 st_FaceVert& fv = F.pv[k];
@@ -215,7 +215,7 @@ void CEditableMesh::GenerateSVertices()
 }
 #endif
 
-CSurface*	CEditableMesh::GetSurfaceByFaceID(DWORD fid)
+CSurface*	CEditableMesh::GetSurfaceByFaceID(u32 fid)
 {
 	R_ASSERT(fid<m_Faces.size());
     for (SurfFacesPairIt sp_it=m_SurfFaces.begin(); sp_it!=m_SurfFaces.end(); sp_it++){
@@ -225,7 +225,7 @@ CSurface*	CEditableMesh::GetSurfaceByFaceID(DWORD fid)
     return 0;
 }
 
-void CEditableMesh::GetFaceTC(DWORD fid, const Fvector2* tc[3])
+void CEditableMesh::GetFaceTC(u32 fid, const Fvector2* tc[3])
 {
 	R_ASSERT(fid<m_Faces.size());
 	st_Face& F = m_Faces[fid];
@@ -235,7 +235,7 @@ void CEditableMesh::GetFaceTC(DWORD fid, const Fvector2* tc[3])
     }
 }
 
-void CEditableMesh::GetFacePT(DWORD fid, const Fvector* pt[3])
+void CEditableMesh::GetFacePT(u32 fid, const Fvector* pt[3])
 {
 	R_ASSERT(fid<m_Faces.size());
 	st_Face& F = m_Faces[fid];
@@ -267,11 +267,11 @@ int CEditableMesh::GetSurfFaceCount(CSurface* surf, bool bMatch2Sided){
 void CEditableMesh::DumpAdjacency(){
 	ELog.Msg(mtInformation,"Adjacency dump.");
 	ELog.Msg(mtInformation,"------------------------------------------------------------------------");
-/*    for (DWORD i=0; i<m_Adjs.size(); i++){
+/*    for (u32 i=0; i<m_Adjs.size(); i++){
         IntVec& a_lst	= m_Adjs[i];
         AnsiString s; s = "Point "; s+=AnsiString(i); s+=":";
         AnsiString s1;
-        for (DWORD j=0; j<a_lst.size(); j++){ s1=a_lst[j]; s+=" "+s1; }
+        for (u32 j=0; j<a_lst.size(); j++){ s1=a_lst[j]; s+=" "+s1; }
 		ELog.Msg(mtInformation,s.c_str());
     }
 */

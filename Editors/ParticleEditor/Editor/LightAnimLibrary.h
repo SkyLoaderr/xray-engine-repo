@@ -8,7 +8,7 @@ class CLAItem{
 public:
     string64    cName;
     float   	fFPS;
-    DEFINE_MAP(int,DWORD,KeyMap,KeyPairIt);
+    DEFINE_MAP(int,u32,KeyMap,KeyPairIt);
     KeyMap		Keys;
     int			iFrameCount;
 public:
@@ -16,10 +16,10 @@ public:
 	void		InitDefault			();
     void		Load				(IReader& F);
     void		Save				(IWriter& F);
-    DWORD		Interpolate			(int frame);
-    DWORD		Calculate			(float T, int& frame);
+    u32			Interpolate			(int frame);
+    u32			Calculate			(float T, int& frame);
     void		Resize				(int new_len);
-    void		InsertKey			(int frame, DWORD color);
+    void		InsertKey			(int frame, u32 color);
     void		DeleteKey			(int frame);
     void		MoveKey				(int from, int to);
     bool		IsKey				(int frame){return (Keys.end()!=Keys.find(frame));}

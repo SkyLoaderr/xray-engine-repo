@@ -137,9 +137,9 @@ __fastcall TProperties::TProperties(TComponent* Owner)
 	m_BMCheck 		= xr_new<Graphics::TBitmap>();
     m_BMDot 		= xr_new<Graphics::TBitmap>();
     m_BMEllipsis 	= xr_new<Graphics::TBitmap>();
-	m_BMCheck->LoadFromResourceName((DWORD)HInstance,"CHECK");
-	m_BMDot->LoadFromResourceName((DWORD)HInstance,"DOT");
-	m_BMEllipsis->LoadFromResourceName((DWORD)HInstance,"ELLIPSIS");
+	m_BMCheck->LoadFromResourceName((u32)HInstance,"CHECK");
+	m_BMDot->LoadFromResourceName((u32)HInstance,"DOT");
+	m_BMEllipsis->LoadFromResourceName((u32)HInstance,"ELLIPSIS");
     seNumber->Parent= tvProperties;
     seNumber->Hide	();
 }
@@ -295,7 +295,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
 	Surface->Brush->Style = bsClear;
   	if (SectionIndex == 1){
     	PropItem* prop 				= (PropItem*)Item->Tag;
-        DWORD type 					= prop->type;
+        u32 type 					= prop->type;
         if (!prop->m_Flags.is(PropItem::flDisabled)){
             Surface->Font->Color 	= clBlack;
             Surface->Font->Style 	= TFontStyles();
@@ -567,7 +567,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
 			TMenuItem* mi 	= xr_new<TMenuItem>((TComponent*)0);
 			mi->Caption 	= "-";
 			pmEnum->Items->Add(mi);
-            for (DWORD i=0; i<T->cnt; i++){
+            for (u32 i=0; i<T->cnt; i++){
                 mi 			= xr_new<TMenuItem>((TComponent*)0);
                 mi->Tag		= i;
                 mi->Caption = T->items[i].str;
@@ -643,7 +643,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
             TMenuItem* mi	= xr_new<TMenuItem>((TComponent*)0);
 			mi->Caption 	= "-";
 			pmEnum->Items->Add(mi);
-            for (DWORD i=0; i<TSTRING_COUNT; i++){
+            for (u32 i=0; i<TSTRING_COUNT; i++){
                 mi = xr_new<TMenuItem>((TComponent*)0);
                 mi->Tag		= i;
                 mi->Caption = TEXTUREString[i];

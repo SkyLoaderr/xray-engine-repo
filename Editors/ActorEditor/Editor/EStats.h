@@ -17,7 +17,7 @@ private:
 	CTimer		T;
 	__int64		accum;
 	float		result;
-	DWORD		count;
+	u32		count;
 public:
 	CStatTimer()
 	{
@@ -47,14 +47,14 @@ class ENGINE_API CStats
 {
 public:
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
-	DWORD		dwShader_Codes;		// Number of times the shader-code changes
-	DWORD		dwShader_Textures;	// Number of times the shader-tex changes
-	DWORD		dwShader_Matrices;	// Number of times the shader-xform changes
-	DWORD		dwShader_Constants;	// Number of times the shader-consts changes
-	DWORD		dwSND_Played,dwSND_Allocated;	// Play/Alloc
-    DWORD		dwTotalLight,dwLightInScene;
-	DWORD		dwLevelSelFaceCount;	// Number of faces in scene
-	DWORD		dwLevelSelVertexCount;	// Number of vertices in scene
+	u32		dwShader_Codes;		// Number of times the shader-code changes
+	u32		dwShader_Textures;	// Number of times the shader-tex changes
+	u32		dwShader_Matrices;	// Number of times the shader-xform changes
+	u32		dwShader_Constants;	// Number of times the shader-consts changes
+	u32		dwSND_Played,dwSND_Allocated;	// Play/Alloc
+    u32		dwTotalLight,dwLightInScene;
+	u32		dwLevelSelFaceCount;	// Number of faces in scene
+	u32		dwLevelSelVertexCount;	// Number of vertices in scene
 
 	CStatTimer	RenderDUMP_RT;
 	CStatTimer	RenderTOTAL;		//

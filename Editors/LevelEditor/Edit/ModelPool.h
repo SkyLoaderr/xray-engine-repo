@@ -22,7 +22,7 @@ class ENGINE_API CModelPool
 
 	void				OnDestroy			();
 public:
-	CVisual*			Instance_Create		(DWORD Type);
+	CVisual*			Instance_Create		(u32 Type);
 	CVisual*			Instance_Duplicate	(CVisual* V);
 	CVisual*			Instance_Load		(const char* N);
 	CVisual*			Instance_Load		(IReader* data);

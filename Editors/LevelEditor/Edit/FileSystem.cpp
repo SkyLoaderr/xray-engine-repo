@@ -60,17 +60,13 @@ CFileSystem::CFileSystem( ){
     m_AccessLog = 0;
 }
 
-CFileSystem::~CFileSystem(){
+CFileSystem::~CFileSystem()
+{
 	xr_delete(m_AccessLog);
 }
 
-void CFileSystem::OnCreate(){
-	// names
-	DWORD		comp_sz = sizeof(m_CompName);
-	GetComputerName(m_CompName,&comp_sz);
-	DWORD		user_sz = sizeof(m_UserName);
-	GetUserName	(m_UserName,&user_sz);
-
+void CFileSystem::OnCreate()
+{
 	strcpy(m_Local,			"x:\\");
     strcpy(m_Server,		"\\\\X-Ray\\stalker$\\");
     strcpy(m_ServerData,	"\\\\X-Ray\\stalkerdata$\\");
@@ -169,7 +165,7 @@ bool CFileSystem::GetOpenName( FSPath& initial, char *buffer, int sz_buf, bool b
 		OFN_NOCHANGEDIR|(bMulti?OFN_ALLOWMULTISELECT|OFN_EXPLORER:0);
 	bool bRes = !!GetOpenFileName( &ofn );
     if (!bRes){
-	    DWORD err = CommDlgExtendedError();
+	    u32 err = CommDlgExtendedError();
 	    switch(err){
         case FNERR_BUFFERTOOSMALL: 	ELog.DlgMsg(mtError,"Too many file selected."); break;
         }
@@ -217,7 +213,7 @@ bool CFileSystem::GetSaveName( FSPath& initial, char *buffer, int sz_buf, LPCSTR
 
 	bool bRes = !!GetSaveFileName( &ofn );
     if (!bRes){
-	    DWORD err = CommDlgExtendedError();
+	    u32 err = CommDlgExtendedError();
 	    switch(err){
         case FNERR_BUFFERTOOSMALL: 	ELog.DlgMsg(mtError,"Too many file selected."); break;
         }
@@ -466,18 +462,6 @@ int CFileSystem::GetFileList(LPCSTR path, FileMap& items, bool clamp_path, bool 
     return m_FindItems->size();
 }
 
-void CFileSystem::VerifyPath(LPCSTR path)
-{
-	char tmp[MAX_PATH];
-	for(int i=0;path[i];i++){
-		if( path[i]!='\\' || i==0 )
-			continue;
-		Memory.mem_copy( tmp, path, i );
-		tmp[i] = 0;
-		CreateDirectory( tmp, 0 );
-	}
-}
-
 AnsiString&	CFileSystem::UpdateTextureNameWithFolder(AnsiString& tex_name)
 {
 	string1024 nm;
@@ -508,13 +492,13 @@ LPSTR CFileSystem::UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name)
 void CFileSystem::WriteAccessLog(LPSTR fn, LPSTR start_msg)
 {
 	string128 dt_buf, tm_buf;
-	m_AccessLog->Msg(mtInformation,"%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
+	m_AccessLog->Msg(mtInformation,"%s:   '%s' from computer: '%s' by user: '%s' at %s %s",start_msg,fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
 }
 
 void CFileSystem::RegisterAccess(LPSTR fn, LPSTR start_msg, bool bLog)
 {
     CInifile*	ini = CInifile::Create(m_LastAccessFN,false);
-	ini->WriteString("last_access",fn,m_CompName);
+	ini->WriteString("last_access",fn,Core.CompName);
     CInifile::Destroy(ini);
     if (bLog) 	WriteAccessLog(fn,start_msg);
 }
@@ -563,7 +547,7 @@ BOOL CFileSystem::UnlockFile(FSPath *initial, LPSTR fname, bool bLog)
 		m_LockFiles.erase(it);
         if (bLog){
 			string128 dt_buf, tm_buf;
-    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,m_CompName,m_UserName,_strdate(dt_buf),_strtime(tm_buf));
+    		m_AccessLog->Msg(mtInformation,"Unlock: '%s' from computer: '%s' by user: '%s' at %s %s",fn,Core.CompName,Core.UserName,_strdate(dt_buf),_strtime(tm_buf));
         }
     	return CloseHandle(it->second);
     }

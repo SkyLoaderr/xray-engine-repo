@@ -252,7 +252,7 @@ void EImageThumbnail::Save(int age, FSPath* path){
         case EITTexture:Engine.FS.m_Textures.Update(fn); 	break;
         }
     }
-	Engine.FS.VerifyPath(fn.c_str());
+	VerifyPath(fn.c_str());
 
     F.save_to		(fn.c_str(),THM_SIGN);
 

@@ -20,7 +20,7 @@ CTLSprite::~CTLSprite( )
 {
 }
 
-void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize, DWORD clr)
+void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize, u32 clr)
 {
 	FVF::TL			P;
     float 			cx,cy,sz;
@@ -40,7 +40,7 @@ void CTLSprite::Render(Fvector &pos, float radius, bool bFixedSize, DWORD clr)
     DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
 }
 
-void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
+void CTLSprite::Render(Fvector &pos, u32 color, float radius, float angle)
 {
 	FVF::TL			P;
 
@@ -69,7 +69,7 @@ void CTLSprite::Render(Fvector &pos, DWORD color, float radius, float angle)
     DU::DrawPrimitiveTL(D3DPT_TRIANGLESTRIP,2,(FVF::TL*)&mesh,4,false,false);
 }
 
-void CTLSprite::Render( Fvector &pos, DWORD color, float radius, const Fvector& D ){
+void CTLSprite::Render( Fvector &pos, u32 color, float radius, const Fvector& D ){
 	Fvector			P1,P2;
     P1.mad			(pos,D,-radius);
     P2.mad 			(pos,D,radius);

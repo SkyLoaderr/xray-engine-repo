@@ -30,7 +30,7 @@ LPCSTR CEngine::LastWindowsError()
 	static string1024 errmsg_buf;
     LPCSTR err=0;
 
-    DWORD hr=GetLastError();
+    u32 hr=GetLastError();
 	if (hr!=0) {
 		FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM,0,hr,0,errmsg_buf,1024,0);
         err = errmsg_buf;

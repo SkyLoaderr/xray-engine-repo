@@ -45,7 +45,7 @@ LPCSTR CFolderHelper::GetObjectName(const AnsiString& full_name, AnsiString& des
 bool CFolderHelper::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, AnsiString& name, bool bOnlyFolder)
 {
 	if (begin_item){
-    	TElTreeItem* node = (DWORD(begin_item->Data)==TYPE_OBJECT)?begin_item->Parent:begin_item;
+    	TElTreeItem* node = (u32(begin_item->Data)==TYPE_OBJECT)?begin_item->Parent:begin_item;
         name = "";
         while (node){
 			name.Insert(node->Text+AnsiString('\\'),0);
@@ -53,7 +53,7 @@ bool CFolderHelper::MakeName(TElTreeItem* begin_item, TElTreeItem* end_item, Ans
             node=node->Parent;
         }
         if (!bOnlyFolder){
-        	if (DWORD(begin_item->Data)==TYPE_OBJECT) name+=begin_item->Text;
+        	if (u32(begin_item->Data)==TYPE_OBJECT) name+=begin_item->Text;
             else return false;
         }
         return true;
@@ -83,27 +83,27 @@ bool CFolderHelper::MakeFullName(TElTreeItem* begin_item, TElTreeItem* end_item,
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* CFolderHelper::FindItemInFolder(DWORD type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
+TElTreeItem* CFolderHelper::FindItemInFolder(u32 type, TElTree* tv, TElTreeItem* start_folder, const AnsiString& name, bool bIgnoreExt)
 {
 	if (bIgnoreExt){
         if (start_folder){
             for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node)){
                 AnsiString nm = ChangeFileExt(node->Text,"");
-                if (type==((DWORD)(node->Data))&&(nm==name)) return node;
+                if (type==((u32)(node->Data))&&(nm==name)) return node;
             }
         }else{
             for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling()){
                 AnsiString nm = ChangeFileExt(node->Text,"");
-                if (type==((DWORD)(node->Data))&&(nm==name)) return node;
+                if (type==((u32)(node->Data))&&(nm==name)) return node;
             }
         }
     }else{
        if (start_folder){
             for (TElTreeItem* node=start_folder->GetFirstChild(); node; node=start_folder->GetNextChild(node))
-                if (type==((DWORD)(node->Data))&&(node->Text==name)) return node;
+                if (type==((u32)(node->Data))&&(node->Text==name)) return node;
         }else{
             for (TElTreeItem* node=tv->Items->GetFirstNode(); node; node=node->GetNextSibling())
-                if (type==((DWORD)(node->Data))&&(node->Text==name)) return node;
+                if (type==((u32)(node->Data))&&(node->Text==name)) return node;
         }
     }
 
@@ -313,7 +313,7 @@ void CFolderHelper::DragDrop(TObject *Sender, TObject *Source, int X, int Y, TOn
 
     TElTreeItem* item = DragItem;
     do{
-    	DWORD type = DWORD(item->Data);
+    	u32 type = u32(item->Data);
 		TElTreeItem* pNode = FindItemInFolder(type,tv,cur_folder,item->Text);
 		if (pNode&&IsObject(item)){
             item=item->GetNext();

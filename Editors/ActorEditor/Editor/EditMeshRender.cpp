@@ -78,15 +78,15 @@ void CEditableMesh::ClearRenderBuffers()
 
 void CEditableMesh::FillRenderBuffer(IntVec& face_lst, int start_face, int num_face, const CSurface* surf, LPBYTE& src_data){
 	LPBYTE data = src_data;
-    DWORD dwFVF = surf->_FVF();
-	DWORD dwTexCnt = ((dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
+    u32 dwFVF = surf->_FVF();
+	u32 dwTexCnt = ((dwFVF&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT);
     for (int fl_i=start_face; fl_i<start_face+num_face; fl_i++){
-        DWORD f_index = face_lst[fl_i];
+        u32 f_index = face_lst[fl_i];
         VERIFY(f_index<m_Faces.size());
     	st_Face& face = m_Faces[f_index];
         for (int k=0; k<3; k++){
             st_FaceVert& fv = face.pv[k];
-            DWORD norm_id = f_index*3+k;
+            u32 norm_id = f_index*3+k;
 	        VERIFY2(norm_id<m_PNormals.size(),"Normal index out of range.");
             VERIFY2(fv.pindex<m_Points.size(),"Point index out of range.");
             Fvector& PN = m_PNormals[norm_id];
@@ -181,7 +181,7 @@ void CEditableMesh::Render(const Fmatrix& parent, CSurface* S)
 static Fvector RB[MAX_VERT_COUNT];
 static RB_cnt=0;
 
-void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl)
+void CEditableMesh::RenderList(const Fmatrix& parent, u32 color, bool bEdge, U32Vec& fl)
 {
 //	if (!m_Visible) return;
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
@@ -195,7 +195,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 	    Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
     }else
     	Device.SetShader(Device.m_SelectionShader);
-    for (DWORDIt dw_it=fl.begin(); dw_it!=fl.end(); dw_it++){
+    for (U32It dw_it=fl.begin(); dw_it!=fl.end(); dw_it++){
         st_Face& face = m_Faces[*dw_it];
         for (int k=0; k<3; k++)	RB[RB_cnt++].set(m_Points[face.pv[k].pindex]);
 		if (RB_cnt==MAX_VERT_COUNT){
@@ -210,7 +210,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 }
 //----------------------------------------------------
 
-void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
+void CEditableMesh::RenderEdge(const Fmatrix& parent, u32 color){
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
 	RCache.set_xform_world(parent);
@@ -222,7 +222,7 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
     Device.SetRS(D3DRS_FILLMODE,D3DFILL_WIREFRAME);
     for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
 		RBVector& rb_vec = p_it->second;
-	    DWORD vBase;
+	    u32 vBase;
     	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
             Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
     }
@@ -232,7 +232,7 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
 }
 //----------------------------------------------------
 
-void CEditableMesh::RenderSelection(const Fmatrix& parent, DWORD color){
+void CEditableMesh::RenderSelection(const Fmatrix& parent, u32 color){
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
     Fbox bb; bb.set(m_Box);
@@ -243,7 +243,7 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, DWORD color){
     Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
     for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
 		RBVector& rb_vec = p_it->second;
-	    DWORD vBase;
+	    u32 vBase;
     	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
             Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
     }

@@ -104,12 +104,12 @@ class CSector;
 
 #ifdef _EDITOR
 	struct st_RenderBuffer{
-		DWORD			dwStartVertex;
-	    DWORD			dwNumVertex;
+		u32			dwStartVertex;
+	    u32			dwNumVertex;
         SGeometry*		pGeom;
 		IDirect3DVertexBuffer9*	pVB;
 //		IDirect3DIndexBuffer9*	pIB;
-		st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),pGeom(0),pVB(0){;}
+		st_RenderBuffer	(u32 sv, u32 nv):dwStartVertex(sv),dwNumVertex(nv),pGeom(0),pVB(0){;}
 	};
 	DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
 	DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);
@@ -192,9 +192,9 @@ public:
 
 	IC char*		GetName					(){return m_Name;}
 	void            GetBox					(Fbox& box){box.set(m_Box);}
-	CSurface*		GetSurfaceByFaceID		(DWORD fid);
-	void			GetFaceTC				(DWORD fid, const Fvector2* tc[3]);
-	void			GetFacePT				(DWORD fid, const Fvector* pt[3]);
+	CSurface*		GetSurfaceByFaceID		(u32 fid);
+	void			GetFaceTC				(u32 fid, const Fvector2* tc[3]);
+	void			GetFacePT				(u32 fid, const Fvector* pt[3]);
 	IC BOOL 		Visible					(){return m_Visible; }
 	IC void 		Show					(bool bVisible){m_Visible=bVisible;}
 
@@ -211,16 +211,16 @@ public:
 #ifdef _LEVEL_EDITOR
     bool 			BoxPick					(const Fbox& box, const Fmatrix& parent, SBoxPickInfoVec& pinf);
 	bool            FrustumPick				(const CFrustum& frustum, const Fmatrix& parent);
-    void            FrustumPickFaces		(const CFrustum& frustum, const Fmatrix& parent, DWORDVec& fl);
+    void            FrustumPickFaces		(const CFrustum& frustum, const Fmatrix& parent, U32Vec& fl);
     bool			CHullPickMesh			(PlaneVec& pl, const Fmatrix& parent);
-	void 			GetTiesFaces			(int start_id, DWORDVec& fl, float fSoftAngle, bool bRecursive);
+	void 			GetTiesFaces			(int start_id, U32Vec& fl, float fSoftAngle, bool bRecursive);
 #endif
 
     // render routine
 	void 			Render					(const Fmatrix& parent, CSurface* S);
-	void            RenderList				(const Fmatrix& parent, DWORD color, bool bEdge, DWORDVec& fl);
-	void 			RenderEdge				(const Fmatrix& parent, DWORD color);
-	void 			RenderSelection			(const Fmatrix& parent, DWORD color);
+	void            RenderList				(const Fmatrix& parent, u32 color, bool bEdge, U32Vec& fl);
+	void 			RenderEdge				(const Fmatrix& parent, u32 color);
+	void 			RenderSelection			(const Fmatrix& parent, u32 color);
 
     // statistics methods
     int 			GetFaceCount			(bool bMatch2Sided=true);

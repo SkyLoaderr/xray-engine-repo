@@ -283,7 +283,7 @@ int	CEditableObject::GetBoneIndexByWMap(const char* wm_name){
     return (bone==m_Bones.end())?-1:bone-m_Bones.begin();
 }
 
-void CEditableObject::GetBoneWorldTransform(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix){
+void CEditableObject::GetBoneWorldTransform(u32 bone_idx, float t, CSMotion* motion, Fmatrix& matrix){
 	VERIFY(bone_idx<m_Bones.size());
     int idx	= bone_idx;
     matrix.identity();

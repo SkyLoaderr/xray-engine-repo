@@ -120,7 +120,7 @@ void CImageManager::CreateGameTexture(const AnsiString& src_name, EImageThumbnai
 //------------------------------------------------------------------------------
 void CImageManager::MakeGameTexture(EImageThumbnail* THM, LPCSTR game_name, u32* load_data)
 {
-	Engine.FS.VerifyPath(game_name);
+	VerifyPath(game_name);
     // flip
     u32 w = THM->_Width();
     u32 h = THM->_Height();
@@ -524,7 +524,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
 
     AnsiString out_name=tex_name;
     Engine.FS.m_Textures.Update(out_name);
-    Engine.FS.VerifyPath(out_name.c_str());
+    VerifyPath(out_name.c_str());
 
     CImage* I = xr_new<CImage>();
     I->Create	(tgt_w*samples,tgt_h,new_pixels.begin());

@@ -15,12 +15,12 @@ static Fvector circledef1[LINE_DIVISION];
 static Fvector circledef2[LINE_DIVISION];
 static Fvector circledef3[LINE_DIVISION];
 
-const DWORD boxcolor = D3DCOLOR_RGBA(255,255,255,0);
+const u32 boxcolor = D3DCOLOR_RGBA(255,255,255,0);
 static const int boxvertcount = 48;
 static Fvector boxvert[boxvertcount];
 
 // identity box
-const DWORD identboxcolor = D3DCOLOR_RGBA(255,255,255,0);
+const u32 identboxcolor = D3DCOLOR_RGBA(255,255,255,0);
 static const int identboxwirecount = 24;
 static Fvector identboxwire[identboxwirecount] = {
 	-0.5f, -0.5f, -0.5f,	-0.5f, +0.5f, -0.5f,    	-0.5f, +0.5f, -0.5f,	+0.5f, +0.5f, -0.5f,
@@ -58,12 +58,12 @@ static SGeometry* 	vs_LIT=0;
 
 static FLvertexVec 	m_GridPoints;
 
-DWORD m_ColorAxis	= 0xff000000;
-DWORD m_ColorGrid	= 0xff909090;
-DWORD m_ColorGridTh = 0xffb4b4b4;
-DWORD m_SelectionRect=D3DCOLOR_RGBA(127,255,127,64);
+u32 m_ColorAxis	= 0xff000000;
+u32 m_ColorGrid	= 0xff909090;
+u32 m_ColorGridTh = 0xffb4b4b4;
+u32 m_SelectionRect=D3DCOLOR_RGBA(127,255,127,64);
 
-DWORD m_ColorSafeRect = 0xffB040B0;
+u32 m_ColorSafeRect = 0xffB040B0;
 
 void UpdateGrid(int number_of_cell, float square_size, int subdiv){
 	m_GridPoints.clear();
@@ -152,7 +152,7 @@ void OnDeviceDestroy(){
 }
 //----------------
 
-void DrawSpotLight(const Fvector& p, const Fvector& d, float range, float phi, DWORD clr)
+void DrawSpotLight(const Fvector& p, const Fvector& d, float range, float phi, u32 clr)
 {
     Fmatrix T;
 	Fvector p1;
@@ -174,7 +174,7 @@ void DrawSpotLight(const Fvector& p, const Fvector& d, float range, float phi, D
    	DrawLine(p,p1,clr);
 }
 
-void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, float range, DWORD c)
+void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, float range, u32 c)
 {
     float r=radius*0.71f;
 	Fvector R,N,D; D.normalize(d);
@@ -209,16 +209,16 @@ void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, floa
 	DrawLineSphere	( p, radius, c, true );
 }
 
-void DrawPointLight(const Fvector& p, float radius, DWORD c)
+void DrawPointLight(const Fvector& p, float radius, u32 c)
 {
 	DrawCross(p, radius,radius,radius, radius,radius,radius, c, true);
 }
 
-void DrawEntity(DWORD clr, Shader* s)
+void DrawEntity(u32 clr, Shader* s)
 {
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase;
+	u32			vBase;
 	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
     pv->set			(0.f,0.f,0.f,clr); pv++;
     pv->set			(0.f,1.f,0.f,clr); pv++;
@@ -246,10 +246,10 @@ void DrawEntity(DWORD clr, Shader* s)
     }
 }
 
-void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr, bool bDrawEntity){
+void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, u32 clr, bool bDrawEntity){
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase;
+	u32			vBase;
 	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(2,vs_L->vb_stride,vBase);
     pv->set			(p,clr); pv++;
     pv->set			(p.x,p.y+height,p.z,clr); pv++;
@@ -290,15 +290,15 @@ void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_
 
 //------------------------------------------------------------------------------
 
-void DrawRomboid(const Fvector& p, float r, DWORD c){
+void DrawRomboid(const Fvector& p, float r, u32 c){
 static const WORD IL[24]={0,2, 2,5, 0,5, 3,5, 3,0, 4,3, 4,0, 4,2, 1,2, 1,5, 1,3, 1,4};
 static const WORD IT[24]={2,4,0, 4,3,0, 3,5,0, 5,2,0, 4,2,1, 2,5,1, 5,3,1, 3,4,1};
-	DWORD			vBase,iBase;
+	u32			vBase,iBase;
 
     Fcolor C;
     C.set			(c);
     C.mul_rgb		(0.75);
-    DWORD c1 =		C.get();
+    u32 c1 =		C.get();
 
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
@@ -337,13 +337,13 @@ static const WORD IT[24]={2,4,0, 4,3,0, 3,5,0, 5,2,0, 4,2,1, 2,5,1, 5,3,1, 3,4,1
 }
 //------------------------------------------------------------------------------
 
-void DrawSound(const Fvector& p, float r, DWORD c){
+void DrawSound(const Fvector& p, float r, u32 c){
 	DrawCross(p, r,r,r, r,r,r, c, true);
 }
 //------------------------------------------------------------------------------
-void DrawSphere(const Fvector& p, float radius, DWORD clr)
+void DrawSphere(const Fvector& p, float radius, u32 clr)
 {
-	DWORD			vBase,iBase;
+	u32			vBase,iBase;
 
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
@@ -363,11 +363,11 @@ void DrawSphere(const Fvector& p, float radius, DWORD clr)
 	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,vBase,0,DU_SPHERE_NUMVERTEX, iBase,DU_SPHERE_NUMFACES);
 }
 
-void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross)
+void DrawLineSphere(const Fvector& p, float radius, u32 c, bool bCross)
 {
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase, iBase;
+	u32			vBase, iBase;
     int i;
 	FVF::L*	pv;
     // seg 0
@@ -393,7 +393,7 @@ void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross)
 }
 
 //----------------------------------------------------
-void dbgDrawPlacement(const Fvector& p, int sz, DWORD clr, LPCSTR caption, DWORD clr_font)
+void dbgDrawPlacement(const Fvector& p, int sz, u32 clr, LPCSTR caption, u32 clr_font)
 {
 	VERIFY( Device.bReady );
     Fvector c,r,n,d;
@@ -405,7 +405,7 @@ void dbgDrawPlacement(const Fvector& p, int sz, DWORD clr, LPCSTR caption, DWORD
 	c.x = iFloor(Device._x2real(c.x)); c.y = iFloor(Device._y2real(-c.y));
 
 	_VertexStream*	Stream	= &RCache.Vertex;
-    DWORD vBase;
+    u32 vBase;
 	FVF::TL* pv	= (FVF::TL*)Stream->Lock(5,vs_TL->vb_stride,vBase);
 	pv->p.set(c.x-s,c.y-s,0,1); pv->color=clr; pv++;
 	pv->p.set(c.x+s,c.y-s,0,1); pv->color=clr; pv++;
@@ -422,13 +422,13 @@ void dbgDrawPlacement(const Fvector& p, int sz, DWORD clr, LPCSTR caption, DWORD
     }
 }
 
-void dbgDrawVert(const Fvector& p0, DWORD clr, LPCSTR caption)
+void dbgDrawVert(const Fvector& p0, u32 clr, LPCSTR caption)
 {
 	dbgDrawPlacement(p0,3,clr,caption);
 	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
 }
 
-void dbgDrawEdge(const Fvector& p0,	const Fvector& p1, DWORD clr, LPCSTR caption)
+void dbgDrawEdge(const Fvector& p0,	const Fvector& p1, u32 clr, LPCSTR caption)
 {
 	dbgDrawPlacement(p0,3,clr,caption);
 	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
@@ -436,7 +436,7 @@ void dbgDrawEdge(const Fvector& p0,	const Fvector& p1, DWORD clr, LPCSTR caption
     DrawLine		(p0,p1,clr);
 }
 
-void dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, DWORD clr, LPCSTR caption)
+void dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, u32 clr, LPCSTR caption)
 {
 	dbgDrawPlacement(p0,3,clr,caption);
 	DrawCross		(p0,0.01f,0.01f,0.01f, 0.01f,0.01f,0.01f, clr,false);
@@ -448,10 +448,10 @@ void dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, DWORD 
 }
 //----------------------------------------------------
 
-void DrawLine(const Fvector& p0, const Fvector& p1, DWORD c){
+void DrawLine(const Fvector& p0, const Fvector& p1, u32 c){
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase;
+	u32			vBase;
 	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(2,vs_L->vb_stride,vBase);
     pv->set			(p0,c); pv++;
     pv->set			(p1,c); pv++;
@@ -461,12 +461,12 @@ void DrawLine(const Fvector& p0, const Fvector& p1, DWORD c){
 }
 
 //----------------------------------------------------
-void DrawSelectionBox(const Fvector& C, const Fvector& S, DWORD* c){
-    DWORD cc=(c)?*c:boxcolor;
+void DrawSelectionBox(const Fvector& C, const Fvector& S, u32* c){
+    u32 cc=(c)?*c:boxcolor;
 
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase,iBase;
+	u32			vBase,iBase;
 	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(boxvertcount,vs_L->vb_stride,vBase);
     for (int i=0; i<boxvertcount; i++,pv++){
 	    pv->p.mul(boxvert[i],S);
@@ -486,7 +486,7 @@ void DrawIdentBox(bool bSolid, bool bWire, u32 cc)
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
     if (bWire){
-        DWORD			vBase;
+        u32			vBase;
 		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(identboxwirecount,vs_L->vb_stride,vBase);
         for (int i=0; i<identboxwirecount; i++,pv++)
             pv->set		(identboxwire[i],cc);
@@ -494,7 +494,7 @@ void DrawIdentBox(bool bSolid, bool bWire, u32 cc)
 	    Device.DP		(D3DPT_LINELIST,vs_L,vBase,identboxwirecount/2);
     }
     if (bSolid){
-        DWORD			vBase;
+        u32			vBase;
 		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(DU_BOX_NUMVERTEX2,vs_L->vb_stride,vBase);
         for (int i=0; i<DU_BOX_NUMVERTEX2; i++,pv++)
             pv->set		(du_box_vertices2[i],cc);
@@ -503,11 +503,11 @@ void DrawIdentBox(bool bSolid, bool bWire, u32 cc)
     }
 }
 
-void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c)
+void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, u32 c)
 {
 	_VertexStream*	Stream	= &RCache.Vertex;
     if (bWire){
-        DWORD			vBase;
+        u32			vBase;
 		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(identboxwirecount,vs_L->vb_stride,vBase);
         for (int i=0; i<identboxwirecount; i++, pv++){
             pv->p.mul	(identboxwire[i],Size);
@@ -519,7 +519,7 @@ void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c)
 
 	    Device.DP		(D3DPT_LINELIST,vs_L,vBase,identboxwirecount/2);
     }else{
-        DWORD			vBase;
+        u32			vBase;
 		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(DU_BOX_NUMVERTEX2,vs_L->vb_stride,vBase);
         for (int i=0; i<DU_BOX_NUMVERTEX2; i++, pv++){
             pv->p.mul	(du_box_vertices2[i],Size);
@@ -534,13 +534,13 @@ void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c)
 }
 //----------------------------------------------------
 
-void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb)
+void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, u32 c, bool bCull, bool bBorder, u32 cb)
 {
     Fmatrix M;
     M.setHPB(rotate.y,rotate.x,rotate.z);
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase;
+	u32			vBase;
 	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(4,vs_L->vb_stride,vBase);
     pv->set			(-scale.x, 0, -scale.y, c); M.transform_tiny(pv->p); pv->p.add(center); pv++;
     pv->set			(+scale.x, 0, -scale.y, c); M.transform_tiny(pv->p); pv->p.add(center); pv++;
@@ -565,11 +565,11 @@ void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& ro
 }
 //----------------------------------------------------
 
-void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, DWORD clr, bool bRot45)
+void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, u32 clr, bool bRot45)
 {
 	_VertexStream*	Stream	= &RCache.Vertex;
 	// actual rendering
-	DWORD			vBase;
+	u32			vBase;
 	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(bRot45?12:6,vs_L->vb_stride,vBase);
     pv->set(p.x+szx2,p.y,p.z,clr); pv++;
     pv->set(p.x-szx1,p.y,p.z,clr); pv++;
@@ -602,7 +602,7 @@ void DrawAxis(const Fmatrix& T)
 	_VertexStream*	Stream	= &RCache.Vertex;
 	VERIFY( Device.bReady );
     Fvector p[6];
-    DWORD 	c[6];
+    u32 	c[6];
 
     // colors
     c[0]=c[2]=c[4]=0x00222222; c[1]=0x00FF0000; c[3]=0x0000FF00; c[5]=0x000000FF;
@@ -615,7 +615,7 @@ void DrawAxis(const Fmatrix& T)
     p[4].set(p[0]);
     p[5].set(p[0]); p[5].z+=.015f;
 
-    DWORD vBase;
+    u32 vBase;
 	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
     // transform to screen
     float dx=-float(Device.dwWidth)/2.2f;
@@ -662,7 +662,7 @@ void DrawObjectAxis(const Fmatrix& T)
     n.x = iFloor(Device._x2real(n.x)); n.y = iFloor(Device._y2real(-n.y));
     d.x = iFloor(Device._x2real(d.x)); d.y = iFloor(Device._y2real(-d.y));
 
-    DWORD vBase;
+    u32 vBase;
 	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
 	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
 	pv->p.set(d.x,d.y,0,1); pv->color=0xFF0000FF; pv++;
@@ -699,7 +699,7 @@ void DrawSafeRect()
     else
     	rect.set(0,Device.m_RenderHeight_2-0.75f*float(Device.m_RenderWidth_2),Device.dwWidth-1,Device.m_RenderHeight_2+0.75f*float(Device.m_RenderWidth_2));
 
-    DWORD vBase;
+    u32 vBase;
 	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
     pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
     pv->set(Device.dwWidth, 0, m_ColorSafeRect,0.f,0.f); 						pv++;
@@ -717,7 +717,7 @@ void DrawGrid()
 {
 	VERIFY( Device.bReady );
 	_VertexStream*	Stream	= &RCache.Vertex;
-    DWORD vBase,iBase;
+    u32 vBase,iBase;
 	// fill VB
 	FVF::L*	pv	= (FVF::L*)Stream->Lock(m_GridPoints.size(),vs_L->vb_stride,vBase);
     for (FLvertexIt v_it=m_GridPoints.begin(); v_it!=m_GridPoints.end(); v_it++,pv++) pv->set(*v_it);
@@ -734,7 +734,7 @@ void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd){
 	VERIFY( Device.bReady );
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-    DWORD vBase;
+    u32 vBase;
 	FVF::TL* pv	= (FVF::TL*)Stream->Lock(4,vs_TL->vb_stride,vBase);
     pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelStart.y*Device.m_ScreenQuality, m_SelectionRect,0.f,0.f); pv++;
     pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelEnd.y*Device.m_ScreenQuality,   m_SelectionRect,0.f,0.f); pv++;
@@ -748,10 +748,10 @@ void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd){
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
-void DrawPrimitiveL	(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, DWORD color, bool bCull, bool bCycle){
+void DrawPrimitiveL	(D3DPRIMITIVETYPE pt, u32 pc, Fvector* vertices, int vc, u32 color, bool bCull, bool bCycle){
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase, dwNeed=(bCycle)?vc+1:vc;
+	u32			vBase, dwNeed=(bCycle)?vc+1:vc;
 	FVF::L*	pv	= (FVF::L*)Stream->Lock(dwNeed,vs_L->vb_stride,vBase);
     for(int k=0; k<vc; k++,pv++)
     	pv->set		(vertices[k],color);
@@ -763,10 +763,10 @@ void DrawPrimitiveL	(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, D
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
-void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle){
+void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, u32 pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle){
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase, dwNeed=(bCycle)?vc+1:vc;
+	u32			vBase, dwNeed=(bCycle)?vc+1:vc;
 	FVF::TL* pv		= (FVF::TL*)Stream->Lock(dwNeed,vs_TL->vb_stride,vBase);
     for(int k=0; k<vc; k++,pv++)
     	pv->set		(vertices[k]);
@@ -778,10 +778,10 @@ void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, b
     if (!bCull) 	Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
-void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, DWORD pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle){
+void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, u32 pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle){
 	// fill VB
 	_VertexStream*	Stream	= &RCache.Vertex;
-	DWORD			vBase, dwNeed=(bCycle)?vc+1:vc;
+	u32			vBase, dwNeed=(bCycle)?vc+1:vc;
 	FVF::LIT* 	pv	= (FVF::LIT*)Stream->Lock(dwNeed,vs_LIT->vb_stride,vBase);
     for(int k=0; k<vc; k++,pv++)
     	pv->set		(vertices[k]);
@@ -793,7 +793,7 @@ void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, DWORD pc, FVF::LIT* vertices, int vc,
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 }
 
-void DrawLink(const Fvector& p0, const Fvector& p1, float sz, DWORD clr){
+void DrawLink(const Fvector& p0, const Fvector& p1, float sz, u32 clr){
 	DrawLine(p1,p0,clr);
     Fvector pp[2],D,R,N={0,1,0};
     D.sub(p1,p0); D.normalize();

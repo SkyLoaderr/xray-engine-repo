@@ -82,10 +82,6 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #include "D3DX_Wrapper.h"
 
 DEFINE_VECTOR(bool,boolVec,boolIt);
-DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
-DEFINE_VECTOR(WORD,WORDVec,WORDIt);
-DEFINE_VECTOR(DWORD,DWORDVec,DWORDIt);
-DEFINE_VECTOR(DWORD*,LPDWORDVec,LPDWORDIt);
 DEFINE_VECTOR(BOOL,BOOLVec,BOOLIt);
 DEFINE_VECTOR(BOOL*,LPBOOLVec,LPBOOLIt);
 DEFINE_VECTOR(int,IntVec,IntIt);

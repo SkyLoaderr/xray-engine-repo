@@ -5,7 +5,7 @@
 
 #include "progmesh.h"
 //---------------------------------------------------------------------------
-const DWORD BONE_NONE 	= 0xffffffff;
+const u32 BONE_NONE 	= 0xffffffff;
 const float KEY_Quant	= 32767.f;
 const int clpSMX = 28, clpSMY=16, clpSMZ=28;
 //---------------------------------------------------------------------------
@@ -21,8 +21,8 @@ struct SSkelVert{
 	Fvector		N0;
 	Fvector		N1;
     Fvector2	UV;
-	DWORD		B0;
-	DWORD		B1;
+	u32		B0;
+	u32		B1;
     float 		w;
 	SSkelVert(){
 		P.set	(0,0,0);
@@ -41,13 +41,13 @@ struct SSkelVert{
         UV.set	(uv);
         w		= _w;
     }
-	void set0(Fvector& o, Fvector& n, DWORD b)
+	void set0(Fvector& o, Fvector& n, u32 b)
     {
         O0.set	(o);
 		N0.set	(n);
 		B0		= b;
 	}
-	void set1(Fvector& o, Fvector& n, DWORD b)
+	void set1(Fvector& o, Fvector& n, u32 b)
     {
         O1.set   (o);
 		N1.set	(n);
@@ -83,10 +83,10 @@ protected:
     SkelFaceVec		m_Faces;
 
     Fvector			m_VMmin, m_VMscale;
-    DWORDVec		m_VM[clpSMX+1][clpSMY+1][clpSMZ+1];
+    U32Vec			m_VM[clpSMX+1][clpSMY+1][clpSMZ+1];
     Fvector			m_VMeps;
 
-    DWORD			VPack(SSkelVert& V);
+    u32			VPack(SSkelVert& V);
 public:
     CSkeletonCollectorPacked	(const Fbox &bb, int apx_vertices=5000, int apx_faces=5000);
     bool 			check      	(SSkelFace& F){

@@ -56,7 +56,7 @@ void CLAItem::Save(IWriter& F)
 	F.close_chunk	();
 }
 
-void CLAItem::InsertKey(int frame, DWORD color)
+void CLAItem::InsertKey(int frame, u32 color)
 {
 	R_ASSERT(frame<=iFrameCount);
 	Keys[frame] = color;
@@ -97,7 +97,7 @@ void CLAItem::Resize(int new_len)
     }
 }
 
-DWORD CLAItem::Interpolate(int frame)
+u32 CLAItem::Interpolate(int frame)
 {
     R_ASSERT(frame<=iFrameCount);
 
@@ -127,7 +127,7 @@ DWORD CLAItem::Interpolate(int frame)
     return c.get();
 }
 
-DWORD CLAItem::Calculate(float T, int& frame)
+u32 CLAItem::Calculate(float T, int& frame)
 {
     frame	= fmod(Device.fTimeGlobal,float(iFrameCount)/fFPS)*fFPS;
     return Interpolate(frame);

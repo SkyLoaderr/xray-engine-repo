@@ -2,8 +2,8 @@
 // file: FileSystem.h
 //----------------------------------------------------
 
-#ifndef _INCDEF_FileSystem_H_
-#define _INCDEF_FileSystem_H_
+#ifndef FileSystemH
+#define FileSystemH
 
 class FSPath{
 public:
@@ -37,9 +37,6 @@ class CFileSystem {
     HANDLEMap 	m_LockFiles;
     string256	m_LastAccessFN;
     CLog*		m_AccessLog;
-public:
-    string128 	m_UserName;
-    string128 	m_CompName;
 public:
 	string256	m_Local;
 	string256	m_Server;
@@ -107,7 +104,6 @@ public:
 
     int			GetFileList		(LPCSTR path, FileMap& items, bool bClampPath, bool bClampExt, bool bRootOnly, LPCSTR ext_mask="*.*"); // return item count
 
-    void		VerifyPath		(LPCSTR path);
 	AnsiString&	UpdateTextureNameWithFolder(AnsiString& tex_name);
 	LPSTR		UpdateTextureNameWithFolder(LPSTR tex_name);
 	LPSTR		UpdateTextureNameWithFolder(LPCSTR src_name, LPSTR dest_name);

@@ -23,7 +23,7 @@ CRender::~CRender	()
 
 BOOL CRender::occ_visible(Fbox&	B)
 {
-	DWORD mask		= 0xff;
+	u32 mask		= 0xff;
 	return ViewBase.testAABB(B.min,B.max,mask);
 }
 

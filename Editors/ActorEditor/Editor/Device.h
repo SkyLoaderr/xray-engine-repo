@@ -23,7 +23,7 @@ class ENGINE_API CRenderDevice{
 
     float 					m_fNearer;
 
-	DWORD					Timer_MM_Delta;
+	u32					Timer_MM_Delta;
 	CTimer					Timer;
 	CTimer					TimerGlobal;
 
@@ -45,15 +45,15 @@ public:
     float					m_RenderArea;
     float 					m_ScreenQuality;
 
-	DWORD 					dwFillMode;
-    DWORD					dwShadeMode;
+	u32 					dwFillMode;
+    u32					dwShadeMode;
 public:
     HANDLE 					m_hWnd;
     HANDLE 					m_hRenderWnd;
 
     IC void					SetHandle(HANDLE main_hwnd, HANDLE render_hwnd){m_hWnd=main_hwnd; m_hRenderWnd=render_hwnd;}
 
-	DWORD					dwFrame;
+	u32					dwFrame;
 
 	BOOL					bReady;
 	BOOL					bActive;
@@ -61,8 +61,8 @@ public:
 	// Engine flow-control
 	float					fTimeDelta;
 	float					fTimeGlobal;
-	DWORD					dwTimeDelta;
-	DWORD					dwTimeGlobal;
+	u32					dwTimeDelta;
+	u32					dwTimeGlobal;
 
     // camera
 	CUI_Camera 				m_Camera;
@@ -111,15 +111,15 @@ public:
 	void			   		DP				(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 startV, u32 pc);
 	void 					DIP				(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
 
-    IC void					SetRS			(D3DRENDERSTATETYPE p1, DWORD p2)
+    IC void					SetRS			(D3DRENDERSTATETYPE p1, u32 p2)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetRenderState(p1,p2)); }
-    IC void					SetTSS			(DWORD sampler, D3DSAMPLERSTATETYPE type, DWORD value)
+    IC void					SetTSS			(u32 sampler, D3DSAMPLERSTATETYPE type, u32 value)
     { VERIFY(bReady); CHK_DX(HW.pDevice->SetSamplerState(sampler,type,value)); }
 
     // light&material
-    IC void					LightEnable		(DWORD dwLightIndex, BOOL bEnable)
+    IC void					LightEnable		(u32 dwLightIndex, BOOL bEnable)
     { CHK_DX(HW.pDevice->LightEnable(dwLightIndex, bEnable));}
-    IC void					SetLight		(DWORD dwLightIndex, Flight& lpLight)
+    IC void					SetLight		(u32 dwLightIndex, Flight& lpLight)
     { CHK_DX(HW.pDevice->SetLight(dwLightIndex, (D3DLIGHT9*)&lpLight));}
 	IC void					SetMaterial		(Fmaterial& mat)
     { CHK_DX(HW.pDevice->SetMaterial((D3DMATERIAL9*)&mat));}
@@ -158,7 +158,7 @@ enum {
 };
 
 #define DEFAULT_CLEARCOLOR 0x00555555
-extern DWORD dwClearColor;
+extern u32 dwClearColor;
 
 #define		REQ_CREATE()	if (!Device.bReady)	return;
 #define		REQ_DESTROY()	if (Device.bReady)	return;

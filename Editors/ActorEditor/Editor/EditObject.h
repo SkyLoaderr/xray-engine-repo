@@ -56,15 +56,15 @@ public:
     AnsiString		m_GameMtlName;
     Shader*			m_Shader;
     Flags32			m_Flags;
-    DWORD			m_dwFVF;
+    u32			m_dwFVF;
 #ifdef _MAX_EXPORT
-	DWORD			mid;
+	u32			mid;
 	Mtl*			mtl;
 #endif
 #ifdef _LW_IMPORT
 	LWSurfaceID		surf_id;
 #endif
-	DWORD			tag;
+	u32			tag;
 public:
 	CSurface		()
 	{
@@ -93,14 +93,14 @@ public:
     IC LPCSTR		_ShaderName		()const {return m_ShaderName.c_str();}
     IC LPCSTR		_GameMtlName	()const {return m_GameMtlName.c_str();}
     IC LPCSTR		_ShaderXRLCName	()const {return m_ShaderXRLCName.c_str();}
-    IC DWORD		_FVF			()const {return m_dwFVF;}
+    IC u32		_FVF			()const {return m_dwFVF;}
     IC LPCSTR		_Texture		(){return m_Texture.c_str();}
     IC LPCSTR		_VMap			(){return m_VMap.c_str();}
     IC void			SetName			(LPCSTR name){m_Name=name;}
     IC void			SetShader		(LPCSTR name){R_ASSERT(name&&name[0]); m_ShaderName=name;}
     IC void 		SetShaderXRLC	(LPCSTR name){m_ShaderXRLCName=name;}
     IC void			SetGameMtl		(LPCSTR name){m_GameMtlName=name;m_Flags.set(sfValidGameMtlID,FALSE);}
-    IC void			SetFVF			(DWORD fvf){m_dwFVF=fvf;}
+    IC void			SetFVF			(u32 fvf){m_dwFVF=fvf;}
     IC void			SetTexture		(LPCSTR name){m_Texture=name;}
     IC void			SetVMap			(LPCSTR name){m_VMap=name;}
 #ifdef _EDITOR
@@ -183,7 +183,7 @@ public:
         eoUsingLOD		= (1<<2),
         eoHOM			= (1<<3),
         eoMultipleUsage	= (1<<4),
-		eoFORCE32		= DWORD(-1)
+		eoFORCE32		= u32(-1)
     };
     IC BOOL			IsDynamic				(){return m_Flags.is(eoDynamic);}
     IC BOOL			IsStatic				(){return !m_Flags.is(eoDynamic)&&!m_Flags.is(eoHOM)&&!m_Flags.is(eoMultipleUsage);}
@@ -219,7 +219,7 @@ protected:
     void __fastcall	OnChangeShader			(PropValue* prop);
 	void __fastcall OnChangeTransform		(PropValue* prop);
 public:
-    DWORD			m_LoadState;
+    u32			m_LoadState;
 
 	AnsiString		m_LibName;
 public:
@@ -255,8 +255,8 @@ public:
     int				GetRootBoneID			();
     int				BoneIDByName			(LPCSTR name);
     int				PartIDByName			(LPCSTR name);
-    IC CBone*		GetBone					(DWORD idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}
-    void			GetBoneWorldTransform	(DWORD bone_idx, float t, CSMotion* motion, Fmatrix& matrix);
+    IC CBone*		GetBone					(u32 idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}
+    void			GetBoneWorldTransform	(u32 bone_idx, float t, CSMotion* motion, Fmatrix& matrix);
     IC SMotionIt	FirstSMotion			()	{return m_SMotions.begin();}
     IC SMotionIt	LastSMotion				()	{return m_SMotions.end();}
 	SMotionVec&		SMotions				()	{return m_SMotions;}
@@ -290,8 +290,8 @@ public:
 
     // render methods
 	void 			Render					(const Fmatrix& parent, int priority, bool strictB2F);
-	void 			RenderSelection			(const Fmatrix& parent, CEditableMesh* m=0, DWORD c=0x40E64646);
-	void 			RenderEdge				(const Fmatrix& parent, CEditableMesh* m=0, DWORD c=0xFFC0C0C0);
+	void 			RenderSelection			(const Fmatrix& parent, CEditableMesh* m=0, u32 c=0x40E64646);
+	void 			RenderEdge				(const Fmatrix& parent, CEditableMesh* m=0, u32 c=0xFFC0C0C0);
 	void 			RenderBones				(const Fmatrix& parent);
 	void 			RenderAnimation			(const Fmatrix& parent);
 	void 			RenderSingle			(const Fmatrix& parent);
@@ -370,9 +370,9 @@ public:
 #ifdef _MAX_EXPORT
 	BOOL			ExtractTexName			(Texmap *src, LPSTR dest);
 	BOOL			ParseStdMaterial		(StdMat* src, CSurface* dest);
-	BOOL			ParseMultiMaterial		(MultiMtl* src, DWORD mid, CSurface* dest);
-	BOOL			ParseXRayMaterial		(XRayMtl* src, DWORD mid, CSurface* dest);
-	CSurface*		CreateSurface			(Mtl* M, DWORD mat_id);
+	BOOL			ParseMultiMaterial		(MultiMtl* src, u32 mid, CSurface* dest);
+	BOOL			ParseXRayMaterial		(XRayMtl* src, u32 mid, CSurface* dest);
+	CSurface*		CreateSurface			(Mtl* M, u32 mat_id);
 	LPCSTR			GenerateSurfaceName		(LPCSTR base_name);
 	bool			ImportMAXSkeleton		(CExporter* exporter);
 #endif

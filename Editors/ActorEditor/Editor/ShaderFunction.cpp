@@ -37,16 +37,16 @@ void FillMenuFromToken(TMxPopupMenu* menu, const xr_token *token_list, ClickEven
     }
 }
 //---------------------------------------------------------------------------
-AnsiString& GetTokenNameFromVal_EQ(DWORD val, AnsiString& res, const xr_token *token_list)
+AnsiString& GetTokenNameFromVal_EQ(u32 val, AnsiString& res, const xr_token *token_list)
 {
 	bool bRes=false;
-	for( DWORD i=0; token_list[i].name; i++ )
+	for( u32 i=0; token_list[i].name; i++ )
     	if (token_list[i].id==int(val)) {res = token_list[i].name; bRes=true; break; }
 	if (!bRes) res="";
     return res;
 }
 
-DWORD GetTokenValFromName(const LPCSTR val, const xr_token *token_list)
+u32 GetTokenValFromName(const LPCSTR val, const xr_token *token_list)
 {
 	for( int i=0; token_list[i].name; i++ )
 		if( !stricmp(val,token_list[i].name) )
