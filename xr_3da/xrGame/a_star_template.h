@@ -10,6 +10,8 @@
 
 #pragma once
 
+#define MAX_VALUE	10000000.f;
+
 /**/
 #pragma pack(push,4)
 typedef struct tagSNode {
@@ -52,37 +54,40 @@ public:
 			bool		bUseMarks)
 	{
 		Device.Statistic.AI_Path.Begin();
-		
+
 		// initialization
 		dwAStarStaticCounter++;
 
 		u32					dwHeap = 0;
 		CTemplateNode		tTemplateNode(tData);
 
-		SNode  *tpOpenedList = tpHeap + dwHeap++,
-			*tpTemp       = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,
-			*tpTemp1,
-			*tpTemp2,
-			*tpBestNode;
+		SNode	*tpOpenedList = tpHeap + dwHeap++,
+				*tpOpenedEnd = tpHeap + dwHeap++,
+				*tpTemp       = tpIndexes[dwStartNode].tpNode = tpHeap + dwHeap++,
+				*tpTemp1,
+				*tpTemp2,
+				*tpBestNode;
 		
-		memset(tpOpenedList,0,sizeof(SNode));
-		memset(tpTemp,0,sizeof(SNode));
+		memset(tpOpenedList,0,3*sizeof(SNode));
+		tpOpenedEnd->f = MAX_VALUE;
 		
 		tpIndexes[dwStartNode].dwTime = dwAStarStaticCounter;
 
-		tpOpenedList->tpOpenedNext = tpTemp;
 		tpTemp->iIndex = dwStartNode;
 		tpTemp->g = 0.0;
 		tpTemp->h = tTemplateNode.ffAnticipate(dwStartNode);
 		tpTemp->tpOpenedPrev = tpOpenedList;
+		tpTemp->tpOpenedNext = tpOpenedEnd;
 		tpTemp->ucOpenCloseMask = 1;
 		tpTemp->f = tpTemp->g + tpTemp->h;
 		
-		//!!!
-		while (tpOpenedList->tpOpenedNext) {
+		tpOpenedList->tpOpenedNext = tpTemp;
+
+		tpOpenedEnd->tpOpenedPrev = tpTemp;
+		
+		while (tpOpenedList->tpOpenedNext != tpOpenedEnd) {
 			
 			// finding the node being estimated as the cheapest among the opened ones
-			//!!!
 			tpBestNode = tpOpenedList->tpOpenedNext;
 			
 			// checking if the distance is not too large
@@ -114,11 +119,9 @@ public:
 				return;
 			}
 			
-			//!!!
 			// remove that node from the opened list and put that node to the closed list
 			tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;
-			if (tpBestNode->tpOpenedNext)
-				tpBestNode->tpOpenedNext->tpOpenedPrev = tpOpenedList;
+			tpBestNode->tpOpenedNext->tpOpenedPrev = tpOpenedList;
 			tpBestNode->ucOpenCloseMask = 0;
 
 			// iterating on children/neighbours
@@ -145,8 +148,7 @@ public:
 							if (tpTemp->tpOpenedPrev->f > tpTemp->f) {
 								// decreasing value
 								tpTemp->tpOpenedPrev->tpOpenedNext = tpTemp->tpOpenedNext;
-								if (tpTemp->tpOpenedNext)
-									tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
+								tpTemp->tpOpenedNext->tpOpenedPrev = tpTemp->tpOpenedPrev;
 								float fTemp = tpTemp->f;
 								if (fTemp <= tpOpenedList->tpOpenedNext->f) {
 									tpTemp->tpOpenedPrev = tpOpenedList;
@@ -183,7 +185,6 @@ public:
 					continue;
 				}
 				else {
-					//!!!
 					tpTemp2 = tpIndexes[iNodeIndex].tpNode = tpHeap + dwHeap++;
 					tpTemp2->tpForward = tpTemp2->tpOpenedNext = tpTemp2->tpOpenedPrev = 0;
 					tpIndexes[iNodeIndex].dwTime = dwAStarStaticCounter;
@@ -191,35 +192,22 @@ public:
 					tpTemp2->iIndex = iNodeIndex;
 					tpTemp2->tpBack = tpBestNode;
 					tpTemp2->g = tpBestNode->g + tTemplateNode.ffEvaluate(iBestIndex,iNodeIndex,tIterator);
-
-					// put that node to the opened list if wasn't found there and in the closed one
 					tpTemp2->h = tTemplateNode.ffAnticipate();
 					tpTemp2->f = tpTemp2->g + tpTemp2->h;
 					
-					tpTemp  = tpOpenedList;
-					tpTemp1 = tpOpenedList->tpOpenedNext;
-					float dTemp = tpTemp2->f;
-					bool bOk = false;
-					while (tpTemp1) {
-						if (tpTemp1->f >= dTemp) {
-							tpTemp2->tpOpenedNext = tpTemp1;
-							tpTemp2->tpOpenedPrev = tpTemp;
-							tpTemp->tpOpenedNext = tpTemp2;
-							tpTemp1->tpOpenedPrev = tpTemp2;
-							bOk = true;
+					// put that node to the opened list if wasn't found there and in the closed one
+					float fTemp = tpTemp2->f;
+					for (tpTemp = tpOpenedList->tpOpenedNext; ; tpTemp = tpTemp->tpOpenedNext)
+						if (tpTemp->f >= fTemp) {
+							tpTemp2->tpOpenedNext = tpTemp;
+							tpTemp2->tpOpenedPrev = tpTemp->tpOpenedPrev;
+							tpTemp->tpOpenedPrev->tpOpenedNext = tpTemp2;
+							tpTemp->tpOpenedPrev = tpTemp2;
 							break;
 						}
-						tpTemp  = tpTemp1;
-						tpTemp1 = tpTemp1->tpOpenedNext;
-					}
-					if (!bOk) {
-						tpTemp->tpOpenedNext = tpTemp2;
-						tpTemp2->tpOpenedPrev = tpTemp;
-					}
 					tpTemp2->ucOpenCloseMask = 1;
 					
 					// make it a BESTNODE successor
-					tpTemp1 = tpBestNode->tpForward;
 					tpBestNode->tpForward = tpTemp2;
 				}
 			}
@@ -264,14 +252,10 @@ private:
 	u32						m_dwHeapSize;
 	SNode					**m_tppHeap;
 public:
-	u32						m_dwExtractMinimum;
-	u32						m_dwDecreaseValue;
-	u32						m_dwInsert;
 	CAStarSearch(u32 dwMaxNodeCount)
 	{
 		m_dwMaxNodeCount	= dwMaxNodeCount;
 		m_tppHeap			= (SNode **)xr_malloc((dwMaxNodeCount + 1)*sizeof(SNode *));
-		m_dwExtractMinimum  = m_dwDecreaseValue = m_dwInsert = 0;
 	}
 	
 	~CAStarSearch()
@@ -351,10 +335,8 @@ public:
 				return;
 			}
 			
-			//!!!
 			// remove that node from the opened list and put that node to the closed list
 			tpBestNode->ucOpenCloseMask = 0;
-			m_dwExtractMinimum++;
 			pop_heap(m_tppHeap + 1,m_tppHeap + m_dwHeapSize-- + 1,CComparePredicate());
 
 			// iterating on children/neighbours
@@ -378,7 +360,6 @@ public:
 							tpTemp->g = dG;
 							tpTemp->f = tpTemp->g + tpTemp->h;
 							tpTemp->tpBack = tpBestNode;
-							m_dwDecreaseValue++;
 							for (SNode **tpIndex = m_tppHeap + 1; *tpIndex != tpTemp; tpIndex++);
 							push_heap(m_tppHeap + 1,tpIndex + 1,CComparePredicate());
 						}
@@ -401,11 +382,8 @@ public:
 					tpTemp2->ucOpenCloseMask = 1;
 					
 					// make it a BESTNODE successor
-					tpTemp1 = tpBestNode->tpForward;
 					tpBestNode->tpForward = tpTemp2;
 					
-					//!!!
-					m_dwInsert++;
 					m_tppHeap[++m_dwHeapSize] = tpTemp2;
 					push_heap(m_tppHeap + 1,m_tppHeap + m_dwHeapSize + 1,CComparePredicate());
 				}
