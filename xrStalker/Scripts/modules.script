@@ -9,7 +9,6 @@ stype_heli    = 3
 -- Загрузка схем:
 ----------------------------------------------------------------------
 
-module ("stalker")
 module ("monsters")
 module ("globals")
 module ("xr_actions_id")
@@ -79,11 +78,8 @@ module ("xr_scientist")
 
 module ("xr_outcast")	 //Ученый отшельник на болоте 
 
---Хер знает где
-
 module ("xr_heli")
 module ("small_script")
-module ("monster")
 module ("news_manager")
 module ("dialogs")
 
