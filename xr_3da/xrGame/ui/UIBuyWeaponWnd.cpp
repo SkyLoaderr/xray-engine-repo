@@ -685,6 +685,7 @@ void CUIBuyWeaponWnd::Show()
 		if(!pActor) return;
 		pActor->HideCurrentWeapon(GEG_PLAYER_BUYMENU_OPEN);//, false);
 	}
+	UITabControl.SetActiveState();
 }
 
 void CUIBuyWeaponWnd::Hide()
