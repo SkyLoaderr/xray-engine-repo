@@ -40,11 +40,8 @@ CParticleTools::~CParticleTools()
 bool CParticleTools::OnCreate(){
 	// shader test locking
 	AnsiString fn = "particles.xr"; FS.m_GameRoot.Update(fn);
-    string256 locker="";
-	if (FS.IsFileLocking(0,fn.c_str(),false,locker)){
-		ELog.DlgMsg(mtError,"Access denied. File '%s' currently locked by user '%s'.\nEditor aborted.",fn.c_str(),locker);
+	if (FS.CheckLocking(0,fn.c_str(),false,true))
     	return false;
-    }
 
     Device.seqDevCreate.Add(this);
     Device.seqDevDestroy.Add(this);
