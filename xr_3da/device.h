@@ -59,9 +59,9 @@ public:
 	CRegistrator	<pureAppCycleEnd	 >	seqAppCycleEnd;
 
 	// Dependent classes
-	CResourceManager*						Shader;
+	CResourceManager*						Resources;	  
 	CStats									Statistic;
-	CGammaControl							Gamma;
+	CGammaControl*							Gamma;
 
 	// Engine flow-control
 	float									fTimeDelta;

@@ -1185,28 +1185,16 @@
 						Name="ShaderManager"
 						Filter="">
 						<File
-							RelativePath=".\TextureManager.cpp">
-							<FileConfiguration
-								Name="Mixed|Win32">
-								<Tool
-									Name="VCCLCompilerTool"
-									AssemblerOutput="4"/>
-							</FileConfiguration>
-							<FileConfiguration
-								Name="Release|Win32">
-								<Tool
-									Name="VCCLCompilerTool"
-									AssemblerOutput="4"/>
-							</FileConfiguration>
+							RelativePath=".\ResourceManager.cpp">
 						</File>
 						<File
-							RelativePath=".\TextureManager.h">
+							RelativePath=".\ResourceManager.h">
 						</File>
 						<File
-							RelativePath=".\TextureManager_Loader.cpp">
+							RelativePath=".\ResourceManager_Loader.cpp">
 						</File>
 						<File
-							RelativePath=".\TextureManager_Resources.cpp">
+							RelativePath=".\ResourceManager_Resources.cpp">
 						</File>
 					</Filter>
 					<Filter
