@@ -109,7 +109,7 @@ void occRasterizer::propagade	()
 			//
 			float d				= pDepth[pos];
 			clamp				(d,-1.99f,1.99f);
-			bufDepth_0[y][x]	= df_2_s16	(d);
+			bufDepth_0[y][x]	= df_2_s32	(d);
 		}
 	}
 	
@@ -140,7 +140,7 @@ IC	BOOL			test_Level	(occD* depth, int dim, float _x0, float _y0, float _x1, flo
 
 BOOL occRasterizer::test		(float _x0, float _y0, float _x1, float _y1, float _z)
 { 
-	occD	z	= df_2_s16up	(_z)+4;
+	occD	z	= df_2_s32up	(_z)+1;
 	return		test_Level		(get_depth_level(0),occ_dim_0,_x0,_y0,_x1,_y1,z);
 	/*
 	if	(test_Level(get_depth_level(2),occ_dim_2,_x0,_y0,_x1,_y1,z))

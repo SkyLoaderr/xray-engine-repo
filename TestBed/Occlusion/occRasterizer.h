@@ -25,7 +25,7 @@ public:
 
 const float			occQ_s32	= float(0x40000000);	// [-2..2]
 const float			occQ_s16	= float(16384-1);		// [-2..2]
-typedef	s16			occD;
+typedef	s32			occD;
 
 class ENGINE_API	occRasterizer  
 {
