@@ -1444,6 +1444,9 @@ void xrSE_TempObject::STATE_Read	(NET_Packet& P, u16 size) {};
 void xrSE_TempObject::STATE_Write	(NET_Packet& P) {};
 void xrSE_TempObject::UPDATE_Read	(NET_Packet& P)	{};
 void xrSE_TempObject::UPDATE_Write	(NET_Packet& P)	{};
+#ifdef _EDITOR
+void xrSE_TempObject::FillProp		(LPCSTR pref, PropItemVec& values) {};
+#endif
 
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR caSection)
