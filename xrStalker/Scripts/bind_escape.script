@@ -116,9 +116,20 @@ function CBoarPlayWithCorpse:update(delta)
 		self.object:script(true, script_name())
 	end
 
-	if(self:test_to_dead()) then return end
+	if(self.actor_near == false) then 
+		self.hear_sound	= self.object:get_sound_info()
+		if( (self.object:get_monster_hit_info().time ~= 0) or
+			(level.actor() and self.object:see(level.actor()) or
+			(self.hear_sound.who and self.hear_sound.who:id() == get_actor_id() and distance_between(self.object, level.actor()) < 4)
+			)
+		) then
+			reset_action(self.object, script_name())
+			self.actor_near	= true
+		end
+	end
 
-	if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
+	//if(self.actor_near == false and distance_between_safe(self.object, level.actor()) >flesh_distance) then
+	if(self.actor_near == false) then
 		self:set_action()
 	else
 		// јктер р€дом, бежит в аномалию
@@ -319,14 +330,14 @@ function CDangerDogs:set_action()
 	if(self.attack) then 
 		// идем пугать сталкера
 		self.dist = distance_between(self.enemy, self.object)
-		if(self.dist <= 5) then
+		if(self.dist <= 3) then
 			action(self.object, look(look.point, self.enemy:position()), anim(anim.turn, 0), sound(sound.threaten), cond(cond.look_end))
 			action(self.object, anim(anim.attack, 0), sound(sound.attack), cond(cond.time_end, 5000))		
 			action(self.object, anim(anim.stand_idle, 0), sound(sound.threaten), cond(cond.time_end, 1500))		
 		else
 			// еще далеко от сталкера, подходим, но учитываем рассто€ни€.  огда не сильно далеко, то подкрадуемс€
 			if(self.object:position():distance_to(self.dead_way:point(0)) < 2) then
-				action(self.object, move(move.steal, self.enemy:position(), 4.5), sound(sound.threaten), cond(cond.move_end))
+				action(self.object, move(move.steal, self.enemy:position(), 2.5), sound(sound.threaten), cond(cond.move_end))
 			else
 				action(self.object, move(move.walk_fwd, self.dead_way:point(0), 1), sound(sound.threaten), cond(cond.move_end))
 			end
