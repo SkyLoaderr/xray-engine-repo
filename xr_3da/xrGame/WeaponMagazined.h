@@ -66,8 +66,6 @@ protected:
 	virtual void	OnShellDrop		();
 	virtual void	OnEmptyClick	();
 	virtual void	OnShotmark		(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R);
-	virtual void	OnShow			();
-	virtual void	OnHide			();
 	virtual void	OnAnimationEnd	();
 	virtual void	OnStateSwitch	(DWORD S);
 

@@ -138,22 +138,23 @@ void CWeaponBinoculars::UpdateCL	()
 
 void CWeaponBinoculars::Hide	()
 {
-	inherited::Hide				();
+	FireEnd							();
+	bPending						= TRUE;
+
+	// add shot effector
+	if (Local())					
+	{
+		Level().Cameras.RemoveEffector	(cefShot);
+		SwitchState						(eHiding);
+	}
 }
 
 void CWeaponBinoculars::Show	()
 {
-	inherited::Show				();
-}
-
-void CWeaponBinoculars::OnShow	()
-{
-	SwitchState	(eShowing);
-}
-
-void CWeaponBinoculars::OnHide	()
-{
-	SwitchState	(eHiding);
+	if (Local())				
+	{
+		SwitchState						(eShowing);
+	}
 }
 
 float CWeaponBinoculars::GetZoomFactor()
@@ -223,6 +224,7 @@ void CWeaponBinoculars::switch2_Hiding	()
 
 void CWeaponBinoculars::switch2_Showing	()
 {
+	setVisible				(TRUE);
 	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }

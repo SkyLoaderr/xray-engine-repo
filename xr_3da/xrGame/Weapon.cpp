@@ -567,25 +567,9 @@ void CWeapon::OnDeviceDestroy	()
 	Device.Shader.Delete		(hWallmark);
 }
 
-void CWeapon::Hide				()
-{
-	FireEnd							();
-	OnHide							();
-	bPending						= TRUE;
-
-	// add shot effector
-	if (Local())					Level().Cameras.RemoveEffector	(cefShot);
-}
-
 void CWeapon::signal_HideComplete()
 {
 	setVisible		(FALSE);
-}
-
-void CWeapon::Show		()
-{
-	OnShow			();
-	setVisible		(TRUE);
 }
 
 void CWeapon::SetDefaults()

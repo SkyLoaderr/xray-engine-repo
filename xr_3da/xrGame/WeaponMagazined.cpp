@@ -274,20 +274,14 @@ void CWeaponMagazined::SetDefaults	()
 
 void CWeaponMagazined::Hide		()
 {
-	inherited::Hide				();
+	// add shot effector
+	SwitchState						(eHiding);
 }
 void CWeaponMagazined::Show		()
 {
-	inherited::Show				();
+	SwitchState						(eShowing);
 }
-void CWeaponMagazined::OnShow	()
-{
-	SwitchState	(eShowing);
-}
-void CWeaponMagazined::OnHide	()
-{
-	SwitchState	(eHiding);
-}
+
 void CWeaponMagazined::FireShotmark(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R) 
 {
 	inherited::FireShotmark		(vDir, vEnd, R);
@@ -411,8 +405,11 @@ void CWeaponMagazined::switch2_Reload()
 }
 void CWeaponMagazined::switch2_Hiding()
 {
+	FireEnd					();
+	bPending				= TRUE;
 	pSounds->PlayAtPos		(sndHide,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_hide[Random.randI(mhud_hide.size())],TRUE,this);
+	if (Local())			Level().Cameras.RemoveEffector	(cefShot);
 }
 void CWeaponMagazined::switch2_Hidden()
 {
@@ -420,6 +417,7 @@ void CWeaponMagazined::switch2_Hidden()
 }
 void CWeaponMagazined::switch2_Showing()
 {
+	setVisible				(TRUE);
 	pSounds->PlayAtPos		(sndShow,H_Root(),vLastFP);
 	m_pHUD->animPlay		(mhud_show[Random.randI(mhud_show.size())],FALSE,this);
 }

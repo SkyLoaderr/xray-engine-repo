@@ -135,8 +135,6 @@ public:
 
 	virtual void			OnMagazineEmpty		()			{};
 	virtual void			OnAnimationEnd		()			{};
-	virtual void			OnHide				()			{};
-	virtual void			OnShow				()			{};
 	virtual void			OnZoomIn			()			{};
 	virtual void			OnZoomOut			()			{};
 	virtual void			OnDrawFlame			();
@@ -165,8 +163,8 @@ public:
 	virtual void			FireEnd				()				{ bWorking=false;	}
 	virtual void			Reload				()				{};
 	
-	virtual void			Hide				();
-	virtual void			Show				();
+	virtual void			Hide				()				= 0;
+	virtual void			Show				()				= 0;
 
 	IC BOOL					IsWorking			()				{	return bWorking;							}
 	IC BOOL					IsValid				()				{	return iAmmoCurrent || iAmmoElapsed;		}

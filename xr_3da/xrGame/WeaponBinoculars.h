@@ -36,8 +36,7 @@ protected:
 	virtual void	switch2_Hiding	();
 	virtual void	switch2_Showing	();
 	virtual void	switch2_Zooming	();
-	virtual void	OnShow			();
-	virtual void	OnHide			();
+
 	virtual void	OnZoomIn		();
 	virtual void	OnZoomOut		();
 	virtual void	OnAnimationEnd	();
