@@ -33,7 +33,6 @@ void updateTaskTree()
 {
 	if(!g_tree_ctrl||!g_view)
 		return;
-	
 	g_view->updateCheckedItems();
 }
 void RunTask()
@@ -41,6 +40,8 @@ void RunTask()
 	if(!g_tree_ctrl||!g_view)
 		return;
 	
+	g_view->RedrawWindow();
+	Sleep(1000);
 	g_view->OnBnClickedBtnRun();
 }
 // CxrUpdateView
