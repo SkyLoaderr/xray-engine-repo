@@ -1099,9 +1099,6 @@
 							</FileConfiguration>
 						</File>
 						<File
-							RelativePath=".\Texture.h">
-						</File>
-						<File
 							RelativePath=".\xr_avi.cpp">
 						</File>
 						<File

@@ -106,6 +106,7 @@ public:
 	virtual	void					level_Load				()											= 0;
 	virtual void					level_Unload			()											= 0;
 
+	virtual IDirect3DBaseTexture9*	texture_load			(LPCSTR	fname)								= 0;
 	virtual HRESULT					CompileShader			(
 		LPCSTR                          pSrcData,
 		UINT                            SrcDataLen,
