@@ -716,7 +716,6 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	}
 	height->Release						();
 
-
 	// Power and Normalization Cube-Map
 	hr = CreatePower					(m_pd3dDevice,256,32.f,&t_SpecularPower_32);
 	hr = CreateNCM						(m_pd3dDevice,64,&t_NCM);
