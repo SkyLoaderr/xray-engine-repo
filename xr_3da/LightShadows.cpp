@@ -376,7 +376,7 @@ void CLightShadows::render	()
 	shadows.clear			();
 
 	// Debug
-//*
+/*
 	{
 		// UV
 		Fvector2				p0,p1;
