@@ -9417,6 +9417,12 @@
 						RelativePath=".\ui\UIItemInfo.h">
 					</File>
 					<File
+						RelativePath=".\ui\UIOutfitInfo.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIOutfitInfo.h">
+					</File>
+					<File
 						RelativePath=".\ui\UIOutfitSlot.cpp">
 					</File>
 					<File
@@ -9427,6 +9433,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UISleepWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UITimeWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UITimeWnd.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIWpnDragDropItem.cpp">
