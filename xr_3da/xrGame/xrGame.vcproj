@@ -515,31 +515,6 @@
 						</File>
 					</Filter>
 					<Filter
-						Name="ai_dog"
-						Filter="">
-						<File
-							RelativePath="AI\Dog\ai_dog.cpp">
-						</File>
-						<File
-							RelativePath="AI\Dog\ai_dog.h">
-						</File>
-						<File
-							RelativePath="AI\Dog\ai_dog_animation.cpp">
-						</File>
-						<File
-							RelativePath="AI\Dog\ai_dog_feel.cpp">
-						</File>
-						<File
-							RelativePath="AI\Dog\ai_dog_fire.cpp">
-						</File>
-						<File
-							RelativePath="AI\Dog\ai_dog_fsm.cpp">
-						</File>
-						<File
-							RelativePath="AI\Dog\ai_dog_templates.cpp">
-						</File>
-					</Filter>
-					<Filter
 						Name="ai_idol"
 						Filter="">
 						<File
