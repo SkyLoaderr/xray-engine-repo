@@ -108,7 +108,7 @@ void CSoundRender_CoreD::_initialize	(u64 window)
 	R_ASSERT					(pListener);
 
     // Create property set
-	if (psSoundFlags.test(ssHardware)){
+	{
         IDirectSoundBuffer*		pTempBuf;
         WAVEFORMATEX 			wave;
         Memory.mem_fill			(&wave, 0, sizeof(WAVEFORMATEX));

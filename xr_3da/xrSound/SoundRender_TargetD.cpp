@@ -140,7 +140,7 @@ void	CSoundRender_TargetD::update			()
 	R_CHK			(pBuffer->GetCurrentPosition(0,LPDWORD(&cursor_write)));
 	u32				r_write		= calc_interval(pos_write);
 	u32				r_cursor	= (calc_interval(cursor_write)+1)%sdef_target_count;
-	if (r_write==r_cursor)	fill_block	();
+	if (r_write==r_cursor)	fill_block	();     
 //	Msg				("write: 0x%8x",cursor_write);
 }
 
