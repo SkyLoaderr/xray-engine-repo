@@ -7,4 +7,14 @@
     <info_portion id="tips_esc_trader_about_pda">
         <text>tips_esc_trader_about_pda</text>
     </info_portion>
+
+	<info_portion id="tutorial_trader_search_corpses">
+	</info_portion>
+
+	<info_portion id="tutorial_trader_help_wounded">
+	</info_portion>
+
+	<info_portion id="tutorial_trader_give_medikit">
+	</info_portion>
+
 </game_information_portions>
