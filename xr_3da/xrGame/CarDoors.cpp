@@ -398,7 +398,22 @@ bool CCar::SDoor::IsInArea(const Fvector& pos,const Fvector& dir)
 {
 	if(!joint)
 	{
-		return IsFront(pos,dir);
+		if(!IsFront(pos,dir))return false;
+
+		CKinematics* K=PKinematics(pcar->Visual());
+		//CBoneInstance bi=K->LL_GetBoneInstance(bone_id);
+		//CBoneData& bd=K->LL_GetData(bone_id);
+		K->LL_GetBindTransform(bones_bind_forms);
+		//		Fobb bb=bd.obb;
+		Fvector tdir;tdir.set(pcar->XFORM().i);if(tdir.dotproduct(dir)<0.f)tdir.invert();
+		Fmatrix pf;
+		pf.mul(pcar->XFORM(),bones_bind_forms[bone_id]);
+		Fvector dif,dif1;
+		dif.sub(pf.c,pos);
+		pcar->Center(dif1);
+		Fvector c_to_d;c_to_d.sub(pf.c,dif1);
+		dif1.sub(pos);
+		return 2.f*abs(c_to_d.dotproduct(pcar->XFORM().i))>abs(dif1.dotproduct(pcar->XFORM().i));
 	}
 	Fmatrix closed_door_form,door_form;
 	Fvector closed_door_dir,door_dir,anchor_to_pos,door_axis;
