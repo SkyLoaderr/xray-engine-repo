@@ -568,7 +568,7 @@ void pVortex(IWriter& F, const Fvector& center, const Fvector& axis,
 	S.centerL		= pVector(center.x, center.y, center.z);
 	S.center		= S.centerL;
 	S.axisL			= pVector(axis.x, axis.y, axis.z);
-	S.axisL.normalize();
+	S.axisL.normalize_safe();
 	S.axis			= S.axisL;
 	S.magnitude		= magnitude;
 	S.epsilon		= epsilon;
