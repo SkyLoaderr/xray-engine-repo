@@ -259,9 +259,9 @@ void print_class(lua_State *L, luabind::detail::class_rep *crep)
 
 void print_help(lua_State *L)
 {
-	Msg				("\n\nList of the classes exported to LUA\n");
+	Msg				("\nList of the classes exported to LUA\n");
 	luabind::detail::class_registry::get_registry(L)->iterate_classes(L,&print_class);
-	Msg				("\nEnd of list of the classes exported to LUA\n");
+	Msg				("End of list of the classes exported to LUA\n");
 }
 
 //////////////////////////////////////////////////////////////////////////
