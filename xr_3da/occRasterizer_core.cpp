@@ -53,6 +53,10 @@ int minPixel(float v)
 {	return int(ceilf(v));	}
 int maxPixel(float v)
 {	return int(floorf(v));	}
+void Vclamp(int& v, int a, int b)
+{
+	if (v<a)	v=a; else if (v>=b) v=b-1;
+}
 
 /* Rasterize a scan line between given X point values, corresponding Z values
 and current color
@@ -64,11 +68,12 @@ void i_scan	(occRasterizer* OCC, occTri* T, int curY, float startT, float endT, 
 
 	// guard-banding and clipping
 	int minX	= minPixel(startX), maxX = maxPixel(endX);
-	if (minX >= occ_dim0)	return;
-	if (maxX <= 0)			return;
-	if (minX <= 0)			minX = 0;
-	if (maxX >= occ_dim0)	maxX = occ_dim0-1;
-	if (minX >= maxX)		return;
+	int minT	= maxPixel(startT), maxT = minPixel(endT);
+	Vclamp		(minX,0,occ_dim0);
+	Vclamp		(maxX,0,occ_dim0);
+	Vclamp		(minT,0,occ_dim0);
+	Vclamp		(maxT,0,occ_dim0);
+	if (minT >= maxT)		return;
 
 	// interpolate
 	float Z		= startZ + (minX - startX)/(endX - startX) * (endZ - startZ);	// interpolate Z to this start of boundary
