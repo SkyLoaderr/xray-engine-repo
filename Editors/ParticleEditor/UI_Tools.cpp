@@ -101,7 +101,7 @@ void CParticleTools::Render(){
 	if (m_TestObject)	m_TestObject->RenderSingle();
 }
 
-void CParticleTools::Update(){
+void CParticleTools::OnFrame(){
 	if (!m_bReady) return;
 	if (m_TestObject){
     	m_TestObject->OnFrame();

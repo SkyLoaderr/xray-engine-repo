@@ -6,7 +6,7 @@
 #include "editorpref.h"
 #include "CustomObject.h"
 
-void CCustomObject::FillProp(LPCSTR pref, PropValueVec& values)
+void CCustomObject::FillProp(LPCSTR pref, PropItemVec& values)
 {
 }
 

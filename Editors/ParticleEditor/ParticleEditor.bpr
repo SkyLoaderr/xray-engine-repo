@@ -68,7 +68,9 @@
       Intermediate\SoundManager.obj Intermediate\xrSkin2W.obj 
       Intermediate\GameFont.obj Intermediate\GameMtlLib.obj 
       Intermediate\Blender_B.obj Intermediate\defines.obj 
-      Intermediate\Blender_Model_EbB.obj Intermediate\HW.obj"/>
+      Intermediate\Blender_Model_EbB.obj Intermediate\HW.obj 
+      Intermediate\du_sphere.obj Intermediate\du_box.obj 
+      Intermediate\PropertiesListHelper.obj"/>
     <RESFILES value="ParticleEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -267,6 +269,9 @@
       <FILE FILENAME="Engine\defines.cpp" FORMNAME="" UNITNAME="defines" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Model_EbB.cpp" FORMNAME="" UNITNAME="Blender_Model_EbB" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\HW.cpp" FORMNAME="" UNITNAME="HW" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_sphere.cpp" FORMNAME="" UNITNAME="du_sphere.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\du_box.cpp" FORMNAME="" UNITNAME="du_box.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\PropertiesListHelper.cpp" FORMNAME="" UNITNAME="PropertiesListHelper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
