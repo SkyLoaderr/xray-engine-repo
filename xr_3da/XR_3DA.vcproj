@@ -283,6 +283,9 @@
 				RelativePath="_d3d_extensions.h">
 			</File>
 			<File
+				RelativePath=".\CopyProtection.h">
+			</File>
+			<File
 				RelativePath=".\defines.cpp">
 			</File>
 			<File

@@ -42,6 +42,7 @@ void Startup				( )
 	// initialization
 	Engine.Initialize			( );
 	Device.Initialize			( );
+	CheckCopyProtection			( );
 
 	// Creation
 	string256					fname; 
@@ -86,6 +87,7 @@ void Startup				( )
 	logoWindow					= NULL;
 
 	// Main cycle
+	CheckCopyProtection			( );
 	Device.Run					( );
 
 	// Destroy APP
@@ -308,7 +310,8 @@ void CApplication::LoadBegin	()
 		ll_hGeom.create	(FVF::F_TL, RCache.Vertex.Buffer(), RCache.QuadIB);
 		ll_hLogo1.create("font","ui\\ui_logo");
 		ll_hLogo2.create("font","ui\\ui_logo_nv");
-		ll_hLogo		= ll_hLogo2;
+		ll_hLogo			= ll_hLogo2;
+		CheckCopyProtection	();
 	}
 }
 
@@ -402,9 +405,10 @@ void CApplication::Level_Scan()
 
 void CApplication::Level_Set(u32 L)
 {
-	if (L>=Levels.size()) return;
+	if (L>=Levels.size())	return;
 	Level_Current = L;
 	FS.get_path	("$level$")->_set	(Levels[L].folder);
+	CheckCopyProtection		();
 }
 
 int CApplication::Level_ID(LPCSTR name)
