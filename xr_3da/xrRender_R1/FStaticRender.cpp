@@ -331,7 +331,7 @@ void CRender::Calculate				()
 			CObject*	O					= g_pGameLevel->CurrentViewEntity();
 			if (O)		{
 				CROS_impl*	R					= (CROS_impl*) O->ROS();
-				R->update						(O);
+				if (R)		R->update			(O);
 			}
 		}
 		for (u32 o_it=0; o_it<lstRenderables.size(); o_it++)
