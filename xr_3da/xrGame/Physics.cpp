@@ -196,7 +196,7 @@ void CPHJeep::Steer(const char& velocity, const char& steering)
 {
 	static const dReal steeringRate = M_PI * 4 / 3;
 	static const dReal steeringLimit = M_PI / 6;
-	static const dReal wheelVelocity = 16*12 * M_PI;
+	static const dReal wheelVelocity = 16 * M_PI;
 	ULONG i;
 	switch(steering)
 	{
@@ -300,9 +300,12 @@ void CPHWorld::Step(dReal step){
 				
 				}
 			
-			Jeep.DynamicData.CalculateData();
-
+		
+			
+				
 			dWorldStep(phWorld, step);
+			Jeep.DynamicData.CalculateData();
+			//Jeep.Steer(-1,-1);
 			dJointGroupEmpty(ContactGroup);
 	
 			isShooting=false;
