@@ -129,7 +129,7 @@ BOOL CCF_Polygonal::_svRayTest( RayQuery& Q)
 
 void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
 {
-	if ((flags&clQUERY_TOPLEVEL) || (flags&clGET_TRIS==0 && flags&clGET_BOXES))
+	if ((flags&clQUERY_TOPLEVEL) || (((flags&clGET_TRIS)==0) && (flags&clGET_BOXES)))
 	{
 		// Return only top level
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
@@ -262,7 +262,7 @@ BOOL CCF_Skeleton::_clRayTest( RayQuery& Q)
 
 void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, DWORD flags)
 {
-	if ((flags&clQUERY_TOPLEVEL) || (flags&clGET_BOXES==0))
+	if ((flags&clQUERY_TOPLEVEL) || ((flags&clGET_BOXES)==0))
 	{
 		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
 		// Return only top level

@@ -40,6 +40,7 @@ public:
 	void					set_object		(CObject*	O);
 	void					add_element		(NODE*		N);
 	void					calculate		();
+	void					render			();
 
 	virtual	void			OnDeviceCreate	();
 	virtual	void			OnDeviceDestroy	();
