@@ -1,0 +1,52 @@
+----------------------------------------------------------------------------------------------------
+-- Mob death
+----------------------------------------------------------------------------------------------------
+-- Разработчик: Andrey Fidrya (Zmey) af@svitonline.com
+----------------------------------------------------------------------------------------------------
+
+class "mob_death"
+
+function mob_death:__init(obj, storage)
+	self.object = obj
+	self.st = storage
+end
+
+function mob_death:reset_scheme()
+end
+
+function mob_death:update(delta)
+end
+
+function mob_death:death_callback(victim, who)
+	if who ~= nil then
+		printf("mob_death: [%s] killed by [%s]", victim:name(), who:name())
+		local death = xr_motivator.storage[victim:id()].death
+		if not death then
+			death = {}
+			xr_motivator.storage[victim:id()].death = death
+		end
+		death.killer = who:id()
+	else
+		printf("mob_death: [%s] killed by [Unknown]", victim:name())
+	end
+	local actor = level.actor()
+	if actor then
+		if xr_logic.try_switch_to_another_section(victim, self.st, actor) then
+			return
+		end
+	end
+end
+
+---------------------------------------------------------------------------------------------------------------------
+function add_to_binder(npc, ini, scheme, section, storage)
+	printf("DEBUG: add_to_binder: npc:name()='%s', scheme='%s', section='%s'", npc:name(), scheme, section)
+
+ 	local action = mob_death(npc, storage)
+	npc:set_death_callback(action, "death_callback")
+end
+
+function set_scheme(npc, ini, scheme, section, gulag_name)
+	local st = xr_logic.assign_storage_and_bind(npc, ini, scheme, section)
+	st.logic = xr_logic.cfg_get_switch_conditions(ini, section, npc)
+end
+
