@@ -141,6 +141,14 @@ void CActor::cam_Update(float dt, float fFOV)
 //		calc_point			(point,radius,0,valid_angle);
 //		dangle.z			= (PI_DIV_2-((PI+valid_angle)/2));
 	}
+	else
+	{
+		if (this == Level().CurrentViewEntity())
+		{
+			r_torso_tgt_roll = 0.f;
+			r_torso.roll = 0.f;
+		}
+	}
 	if (!fis_zero(r_torso.roll))
 	{
 		float radius		= point.y*0.5f;
