@@ -16,6 +16,7 @@
 #include "CustomZone.h"
 
 #define EQUIPMENT_ICONS "ui\\ui_icon_equipment"
+#define BUY_MENU		"ui\\ui_mp_buy_menu"
 #define KILLEVENT_ICONS "ui\\ui_hud_mp_icon_death"
 #define RADIATION_ICONS "ui\\ui_mn_radiations_hard"
 #define BLOODLOSS_ICONS "ui\\ui_mn_wounds_hard"
@@ -398,6 +399,14 @@ void game_cl_mp::OnSwitchPhase			(u32 old_phase, u32 new_phase)
 			};
 		}break;
 	}
+}
+
+ref_shader game_cl_mp::GetBuyMenuShader()
+{
+	if (m_BuyMenuShader) return m_BuyMenuShader;
+
+	m_BuyMenuShader.create("hud\\default", BUY_MENU);
+	return m_BuyMenuShader;
 }
 
 ref_shader game_cl_mp::GetEquipmentIconsShader	()
