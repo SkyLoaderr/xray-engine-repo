@@ -3,13 +3,13 @@ local raid_storage = {}
 function raid_init (npc)
     local ini = npc:spawn_ini ()
     if ini == nil or ini:section_exist ("escape_raid") == false then
-       return false 
+       return false
     end
-    
+
     if ini:line_exist ("escape_raid", "raider") == false then
        return false
     end
-    
+
     local t = {raider = ini:r_bool ("escape_raid", "raider"),
                npc_id = npc:id (),
                name = npc:name ()
@@ -17,17 +17,17 @@ function raid_init (npc)
     if t.raider == false then
        return false
     end
-    
+
     table.insert (raid_storage, t)
-    
+
     local sim = alife ()
     if sim ~= nil then
-       sim:set_switch_online  (npc:id (), false) 
+       sim:set_switch_online  (npc:id (), false)
        sim:set_switch_offline (npc:id (), true)
-    end   
-    
+    end
+
 --    printf ("Object %s added to ESCAPE_RAID", npc:name ())
-    
+
     return true
 end
 --------------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ function start_raid ()
     local size = table.getn (raid_storage)
     if size == 0 then return false end
     local sim = alife ()
-    
+
     for a = 1, size, 1 do
         if sim ~= nil then
            sim:set_switch_online (raid_storage[a].npc_id, true)
@@ -46,15 +46,15 @@ function start_raid ()
             xr_patrol.set_patrol (npc)
             xr_follower.set_follower (npc)
         end
-    end                
+    end
 end
 
 
 --------------------------------------------------------------------------------------------------------
--- Dialog & InfoPortions Function                                                                                                    
+-- Dialog & InfoPortions Function
 --------------------------------------------------------------------------------------------------------
 function break_dialog(first_speaker, second_speaker)
-		second_speaker:stop_talk()
+		first_speaker:stop_talk()
 end
 
 function give_kalash_to_loser(first_speaker, second_speaker)
@@ -72,4 +72,14 @@ function haveTOZ(first_speaker, second_speaker)
 	return( first_speaker:object("wpn_toz34") ~= nil )
 end
 
+function bandits_dead(first_speaker, second_speaker)
+    return(first_speaker:has_info("escape_factory_bandits_dead"))
+end
 
+function bandits_alive(first_speaker, second_speaker)
+    return(first_speaker:dont_has_info("escape_factory_bandits_dead"))
+end
+
+function set_dialog_thank(first_speaker, second_speaker)
+	first_speaker:set_start_dialog("escape_novice_thank_actor")
+end
