@@ -108,7 +108,9 @@ const typename CSXML_IdToIndex::ITEM_DATA* CSXML_IdToIndex::GetById (const T_ID&
 
 	if(ItemDataVector().end() == it)
 	{
+#ifdef DEBUG
 		g_pStringContainer->verify();
+#endif
 		int i=0;
 		for(T_VECTOR::iterator it = ItemDataVector().begin();
 			ItemDataVector().end() != it; it++,i++)
