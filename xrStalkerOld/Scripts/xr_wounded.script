@@ -195,7 +195,6 @@ end
 ------------
 function action_cover:finalize ()
     action_base.finalize (self)
-    state_mgr.set_state(self.object, "idle")
 end    
 ------------------------------------------------------------------------------------------
 
@@ -241,7 +240,6 @@ end
 function action_idle:finalize ()
     action_base.finalize (self) 
     xr_meet.override_meet (self.object, false)
-    state_mgr.set_state(self.object, "idle")
 end    
 ------------------------------------------------------------------------------------------
 
@@ -324,7 +322,6 @@ end
 function action_help:finalize ()
     action_base.finalize (self)
     xr_meet.override_meet (self.object, false)
-    state_mgr.set_state(self.object, "idle")
 end    
 ------------------------------------------------------------------------------------------
 
@@ -356,7 +353,6 @@ function action_stand:initialize ()
     elseif self.object:object ("bandage") ~= nil then
        self.object:eat (self.object:object ("bandage"))
     end   
-    state_mgr.set_state(self.object, "idle")
 end
 ------------
 function action_stand:execute ()
@@ -439,7 +435,6 @@ end
 ------------
 function action_enemy:finalize ()
     action_base.finalize (self)
-    state_mgr.set_state(self.object, "idle")
     xr_meet.override_meet (self.object, false)
 end    
 ------------------------------------------------------------------------------------------
