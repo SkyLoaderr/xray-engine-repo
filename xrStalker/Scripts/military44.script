@@ -1,37 +1,22 @@
 function main ()
 
-  local points1 = {patrol ("project1_point1"):point (0), patrol ("project1_point2"):point (0)}
-  local points2 = {patrol ("project2_point1"):point (0), patrol ("project2_point2"):point (0), patrol ("project2_point3"):point (0)}
-
-  local proj1 = classes.Projector (get_level_object ("projector1"), 0.52, 0.22, military3_5.script_name (), points1, false)
-  local proj2 = classes.Projector (get_level_object ("projector2"), 0.52, 0.22, military3_5.script_name (), points2, false)
-
-  while true do
-      proj1:process ()
-      proj2:process ()
-      wait ()
-  end
-
-
-    printf ("call military3_1");
-    local anims = classes.AnimationSet (1)
+  local points = {patrol ("project2_point1"):point (0), patrol ("project2_point2"):point (0), patrol ("project2_point3"):point (0)}
+  local proj = classes.Projector (get_level_object ("projector2"), 0.33, 0.22, military44.script_name (), points, false)
+  local anims = classes.AnimationSet (1)
   anims:add_animation ("stoya_ruje_ 0", true)
   anims:add_animation ("vishka_1", true)
   anims:add_animation ("vishka_2", false)
   anims:add_animation ("vishka_3", false)
-
-
-  local guard1 = classes.Guardian (get_level_object ("stalker_tower1"), military3_1.script_name (), "way_tower1", anims)
-  local guard2 = classes.Guardian (get_level_object ("stalker_tower2"), military3_1.script_name (), "way_tower2", anims)
+  local guard = classes.Guardian (get_level_object ("stalker_tower"), military44.script_name (), "project2_point3", anims)
 
   while true do
-      guard1:process ()
-      guard2:process ()
-        wait ()
-      end
+	  guard:process () 				
+      proj:process ()
+      wait ()
+  end
 
-  guard1:finish ()
-  guard2:finish ()
+
+  guard:finish ()
 
 
 end
