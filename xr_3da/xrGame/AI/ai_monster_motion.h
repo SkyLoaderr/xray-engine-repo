@@ -23,8 +23,7 @@ class CMotionManager : public CSharedClass<_motion_shared, CLASS_ID> {
 	bool					seq_playing;
 
 	// сохранённые анимации 
-	EMotionAnim				cur_anim; 
-	EMotionAnim				prev_anim; 
+	EMotionAnim				prev_motion; 
 
 	// исправления сосояния 'бега на месте'
 	TTime					time_start_stand;
@@ -120,8 +119,8 @@ public:
 	void		ShowDeath				();
 
 	void		SetSpecParams			(u32 param) {spec_params |= param;}
-	void		SetCurAnim				(EMotionAnim a) {cur_anim = a;}
-	EMotionAnim	GetCurAnim				() {return  cur_anim;} 
+	void		SetCurAnim				(EMotionAnim a) {cur_anim_info().motion = a;}
+	EMotionAnim	GetCurAnim				() {return  cur_anim_info().motion;} 
 
 	// работа с последовательностями
 	void		Seq_Init				();

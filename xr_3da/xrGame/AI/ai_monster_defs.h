@@ -367,7 +367,7 @@ struct SStepParam {
 struct SCurrentAnimationInfo {
 	ref_str		name;
 
-	EMotionAnim	motion_type;
+	EMotionAnim	motion;
 	u8			index;
 
 	TTime		time_started;

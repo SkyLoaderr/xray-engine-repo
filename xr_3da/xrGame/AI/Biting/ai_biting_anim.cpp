@@ -25,8 +25,11 @@ void CAI_Biting::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/**
 		info.blend = MotionMan.m_tpCurAnim->PlayCycle(PSkeletonAnimated(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
 	}
 	
-	// установить у blend скорость
-	if ((info.speed.current > 0.f) && info.blend) info.blend->speed = info.speed.current;
+	// установить скорость текущей анимации
+	if (info.blend && (info.speed.current > 0.f)) info.blend->speed = info.speed.current;
+
+	Msg("Anim = [%s] cur_anim_speed = [%f] target_anim_speed = [%f]",*info.name,info.speed.current, info.speed.target);
+
 }
 
 

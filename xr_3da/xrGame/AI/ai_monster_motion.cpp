@@ -43,7 +43,6 @@ void CMotionManager::Init (CAI_Biting	*pM)
 
 void CMotionManager::reinit()
 {
-	prev_anim				= cur_anim	= eAnimStandIdle; 
 	prev_action				= m_tAction	= ACT_STAND_IDLE;
 	m_tpCurAnim				= 0;
 	spec_params				= 0;
@@ -52,9 +51,6 @@ void CMotionManager::reinit()
 	
 	Seq_Init				();
 	
-	transition_sequence_used = false;
-	target_transition_anim	 = cur_anim;
-
 	fx_time_last_play		= 0;
 	b_forced_velocity		= false;
 	
@@ -69,7 +65,8 @@ void CMotionManager::reinit()
 
 	pJumping				= 0;
 
-	m_cur_anim.motion_type		= eAnimStandIdle;
+	// инициализация информации о текущей анимации
+	m_cur_anim.motion			= eAnimStandIdle;
 	m_cur_anim.index			= 0;
 	m_cur_anim.time_started		= 0;
 	m_cur_anim.speed.current	= -1.f;
@@ -77,6 +74,10 @@ void CMotionManager::reinit()
 	m_cur_anim.blend			= 0;
 	m_cur_anim.speed_change_vel	= 1.f;
 
+	prev_motion					= cur_anim_info().motion; 
+
+	transition_sequence_used	= false;
+	target_transition_anim		= cur_anim_info().motion;
 }
 
 
@@ -88,7 +89,7 @@ bool CMotionManager::PrepareAnimation()
 	if (!pMonster->g_Alive()) 
 		if (should_play_die_anim) {
 			should_play_die_anim = false;  // отыграть анимацию смерти только раз
-			if (get_sd()->m_tAnims.find(eAnimDie) != get_sd()->m_tAnims.end()) cur_anim = eAnimDie;
+			if (get_sd()->m_tAnims.find(eAnimDie) != get_sd()->m_tAnims.end()) cur_anim_info().motion = eAnimDie;
 			else return false;
 		} else return false;
 
@@ -104,8 +105,8 @@ bool CMotionManager::PrepareAnimation()
 	// перекрыть все определения и установть анимацию
 	pMonster->ForceFinalAnimation();
 
-	// получить элемент SAnimItem соответствующий cur_anim
-	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim);
+	// получить элемент SAnimItem, соответствующий текущей анимации
+	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 
 	// определить необходимый индекс
@@ -121,13 +122,13 @@ bool CMotionManager::PrepareAnimation()
 	m_tpCurAnim = get_motion_def(anim_it,index);
 
 	// Заполнить текущую анимацию
-	
 	string64 st;
 	sprintf(st, "%s%d", *anim_it->second.target_name, index);
 	m_cur_anim.name				= st; 
-	m_cur_anim.motion_type		= cur_anim;
 	m_cur_anim.index			= u8(index);
 	m_cur_anim.time_started		= Level().timeServer();
+	m_cur_anim.speed.current	= -1.f;
+	m_cur_anim.speed.target		= -1.f;
 
 	// инициализировать информацию о текущей анимации шагания
 	STEPS_Initialize();
@@ -176,10 +177,10 @@ void CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 }
 
 
-// Установка линейной и угловой скоростей для cur_anim
+// Установка линейной и угловой скоростей для текущей анимации
 void CMotionManager::ApplyParams()
 {
-	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
+	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	//pMonster->m_fCurSpeed		= item_it->second.speed.linear;
@@ -208,8 +209,8 @@ void CMotionManager::FixBadState()
 void CMotionManager::CheckReplacedAnim()
 {
 	for (REPLACED_ANIM_IT it=m_tReplacedAnims.begin(); m_tReplacedAnims.end()!=it ;++it) 
-		if ((cur_anim == it->cur_anim) && (*(it->flag) == true)) { 
-			cur_anim = it->new_anim;
+		if ((cur_anim_info().motion == it->cur_anim) && (*(it->flag) == true)) { 
+			cur_anim_info().motion = it->new_anim;
 			return;
 		}
 }
@@ -251,7 +252,7 @@ void CMotionManager::Seq_Switch()
 	seq_playing = true;
 
 	// установить параметры
-	cur_anim	= *seq_it;
+	cur_anim_info().motion	= *seq_it;
 	ApplyParams ();
 
 	ForceAnimSelect();
@@ -263,10 +264,10 @@ void CMotionManager::Seq_Finish()
 	Seq_Init(); 
 
 	if (transition_sequence_used) { 
-		prev_anim = cur_anim = target_transition_anim;
+		prev_motion = cur_anim_info().motion	= target_transition_anim;
 		transition_sequence_used = false;
 	} else {
-		prev_anim = cur_anim = get_sd()->m_tMotions[m_tAction].anim;
+		prev_motion	= cur_anim_info().motion	= get_sd()->m_tMotions[m_tAction].anim;
 	}
 }
 
@@ -334,7 +335,7 @@ void CMotionManager::FX_Play(EHitSide side, float amount)
 {
 	if (fx_time_last_play + FX_CAN_PLAY_MIN_INTERVAL > pMonster->m_dwCurrentTime) return;
 
-	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim);
+	ANIM_ITEM_MAP_IT anim_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != anim_it);
 	
 	clamp(amount,0.f,1.f);
@@ -379,7 +380,7 @@ void CMotionManager::ForceAngularSpeed(float vel)
 
 bool CMotionManager::IsStandCurAnim()
 {
-	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
+	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	if (fis_zero(item_it->second.velocity->velocity.linear)) return true;
@@ -411,18 +412,18 @@ void CMotionManager::Update()
 //////////////////////////////////////////////////////////////////////////
 // SelectAnimation
 // In:	path, target_yaw, m_tAction
-// Out:	установить cur_anim
+// Out:	установить анимацию в cur_anim_info().motion
 void CMotionManager::SelectAnimation()
 {
 	EAction							action = m_tAction;
 	if (pMonster->IsMovingOnPath()) action = GetActionFromPath();
 
-	cur_anim						= get_sd()->m_tMotions[action].anim;
+	cur_anim_info().motion			= get_sd()->m_tMotions[action].anim;
 	
 	pMonster->CheckSpecParams		(spec_params);	
 	if (Seq_Active()) return;
 
-	if (prev_anim != cur_anim)		CheckTransition(prev_anim, cur_anim);
+	if (prev_motion	!= cur_anim_info().motion) CheckTransition(prev_motion, cur_anim_info().motion);
 	if (Seq_Active()) return;
 
 	CheckReplacedAnim				();
@@ -436,6 +437,7 @@ void CMotionManager::SelectAnimation()
 // In:	path, target_yaw, анимация
 // Out:	установить linear и angular velocities, 
 //		по скорости движения выбрать финальную анимацию из Velocity_Chain
+//		установить скорость анимации в соответствие с физ скоростью
 void CMotionManager::SelectVelocities()
 {
 	// получить скорости движения по пути
@@ -462,7 +464,7 @@ void CMotionManager::SelectVelocities()
 		path_vel.set(_abs(current_velocity.linear_velocity), current_velocity.angular_velocity);
 	}
 
-	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim);
+	ANIM_ITEM_MAP_IT	item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 	VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 	// получить скорости движения по анимации
@@ -484,34 +486,27 @@ void CMotionManager::SelectVelocities()
 	// если невидимый, то установить скорость из пути
 	if (pMonster->state_invisible) pMonster->m_velocity_linear.target	= _abs(path_vel.linear);
 
-	// финальная корректировка анимации по физической скорости
-	//if (b_moving) {
-	//	Fvector temp_vec;
-	//	pMonster->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+	// финальная корректировка скорости анимации по физической скорости
+	if (b_moving) {
+		Fvector temp_vec;
+		pMonster->m_PhysicMovementControl->GetCharacterVelocity(temp_vec);
+		float  real_speed = temp_vec.magnitude();
+		
+		EMotionAnim new_anim;
+		float		a_speed;
 
-	//	float  real_speed = temp_vec.magnitude();
-	//	EMotionAnim new_anim;
-	//	float		a_speed;
-
-	//	if (accel_chain_get(real_speed, cur_anim,new_anim, a_speed)) {
-	//		cur_anim = new_anim;
-	//		cur_anim_info().speed.target = a_speed;
-	//	} else cur_anim_info().speed.target = -1.f;
-	//} else cur_anim_info().speed.target = -1.f;
-	
-	float  real_speed = pMonster->m_velocity_linear.target;
-	EMotionAnim new_anim;
-	float		a_speed;
-	
-	if (accel_chain_get(real_speed, cur_anim,new_anim, a_speed)) {
-		cur_anim = new_anim;
-	} else cur_anim_info().speed.target = -1.f;
-
+		if (accel_chain_get(real_speed, cur_anim_info().motion, new_anim, a_speed)) {
+			cur_anim_info().motion			= new_anim;
+			cur_anim_info().speed.target	= a_speed;
+		} else 
+			cur_anim_info().speed.target	= -1.f;
+	} else 
+		cur_anim_info().speed.target	= -1.f;
 	
 
 	// установка угловой скорости
 	if (!b_forced_velocity) {
-		item_it = get_sd()->m_tAnims.find(cur_anim);
+		item_it = get_sd()->m_tAnims.find(cur_anim_info().motion);
 		VERIFY(get_sd()->m_tAnims.end() != item_it);
 
 		pMonster->m_velocity_angular.target	= pMonster->m_velocity_angular.current = item_it->second.velocity->velocity.angular;
@@ -519,9 +514,9 @@ void CMotionManager::SelectVelocities()
 	
 	// применить 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
-	if (cur_anim != prev_anim) ForceAnimSelect();		
+	if (prev_motion	!= cur_anim_info().motion) ForceAnimSelect();		
 
-	prev_anim	= cur_anim;
+	prev_motion	= cur_anim_info().motion;
 }
 
 EAction CMotionManager::VelocityIndex2Action(u32 velocity_index)
