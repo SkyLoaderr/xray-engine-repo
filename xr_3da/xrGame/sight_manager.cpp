@@ -55,6 +55,8 @@ void CSightManager::SetFirePointLookAngles(const Fvector &tPosition, float &yaw,
 
 	if (object && object->use_center_to_aim()) {
 		m_object->Center(tTemp);
+		tTemp.x			= m_object->Position().x;
+		tTemp.z			= m_object->Position().z;
 		tTemp.sub		(tPosition,Fvector(tTemp));
 		if (fis_zero(tTemp.square_magnitude()))
 			tTemp.set	(0.f,0.f,1.f);
@@ -264,6 +266,8 @@ void CSightManager::update			()
 		}
 		else
 			m_turning_in_place			= false;
+
+//		Msg								("%6d : %f,%f",Device.dwTimeGlobal,object().movement().m_head.target.yaw,object().movement().m_head.target.pitch);
 
 		inherited::update				();
 	}
