@@ -228,6 +228,9 @@ void CEntityAlive::PHFreeze()
 void CEntityAlive::BloodyWallmarks (float P, const Fvector &dir, s16 element, 
 									const Fvector& position_in_object_space)
 {
+	if(BI_NONE == (u16)element)
+		return;
+
 	//вычислить координаты попадания
 	CKinematics* V = PKinematics(Visual());
 		
@@ -325,17 +328,28 @@ void CEntityAlive::StartFireParticles(CWound* pWound)
 		}
 
 		CKinematics* V = PKinematics(Visual());
+
 		u16 particle_bone = CParticlesPlayer::GetNearestBone(V, pWound->GetBoneNum());
-		VERIFY(particle_bone!=BI_NONE);
+		//VERIFY(BI_NONE != particle_bone);
 
 		pWound->SetParticleBoneNum(particle_bone);
 		pWound->SetParticleName(m_FireParticlesVector[::Random.randI(0,m_FireParticlesVector.size())]);
 
-		CParticlesPlayer::StartParticles(pWound->GetParticleName(), 
-			pWound->GetParticleBoneNum(),
-			Fvector().set(0,1,0),
-			ID(), 
-			u32(float(m_dwMinBurnTime)*::Random.randF(0.5f,1.5f)));
+		if(BI_NONE != particle_bone)
+		{
+			CParticlesPlayer::StartParticles(pWound->GetParticleName(), 
+				pWound->GetParticleBoneNum(),
+				Fvector().set(0,1,0),
+				ID(), 
+				u32(float(m_dwMinBurnTime)*::Random.randF(0.5f,1.5f)), false);
+		}
+		else
+		{
+			CParticlesPlayer::StartParticles(pWound->GetParticleName(), 
+				Fvector().set(0,1,0),
+				ID(), 
+				u32(float(m_dwMinBurnTime)*::Random.randF(0.5f,1.5f)), false);
+		}
 	}
 }
 void CEntityAlive::UpdateFireParticles()
@@ -351,10 +365,7 @@ void CEntityAlive::UpdateFireParticles()
 
 		if(burn_size>0 && (burn_size<m_fStopBurnWoundSize || !g_Alive()))
 		{
-			CParticlesPlayer::SBoneInfo* pBoneInfo = CParticlesPlayer::get_bone_info(pWound->GetParticleBoneNum());
-			CParticlesPlayer::SParticlesInfo* pParticleInfo = pBoneInfo->FindParticles(pWound->GetParticleName());
-			pParticleInfo->auto_stop = true;
-			
+			CParticlesPlayer::AutoStopParticles(pWound->GetParticleName(), pWound->GetParticleBoneNum());
 			it = m_ParticlesWoundList.erase(cur_it);
 		}
 	}

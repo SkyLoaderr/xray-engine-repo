@@ -51,6 +51,7 @@ void CParticlesPlayer::Load(CKinematics* K)
 	CInifile* ini		= K->LL_UserData();
 	if(ini&&ini->section_exist("particle_bones")){
 		bone_mask		= 0;
+		
 		m_Bones.clear	();
 		CInifile::Sect& data		= ini->r_section("particle_bones");
 		for (CInifile::SectIt I=data.begin(); I!=data.end(); I++){
@@ -88,8 +89,13 @@ void	CParticlesPlayer::net_DestroyParticles	()
 CParticlesPlayer::SBoneInfo* CParticlesPlayer::get_nearest_bone_info(CKinematics* K, u16 bone_index)
 {
 	u16 play_bone	= bone_index;
+	//u16 cur_bone	= play_bone;
 	while((BI_NONE!=play_bone)&&!(bone_mask&(u64(1)<<u64(play_bone))))
+	{
+		//cur_bone = play_bone;
 		play_bone	= K->LL_GetData(play_bone).ParentID;
+	}
+	//return get_bone_info(cur_bone);
 	return get_bone_info(play_bone);
 }
 
@@ -139,7 +145,8 @@ void CParticlesPlayer::StartParticles(const ref_str& ps_name, const Fvector& dir
 		Fmatrix xform;
 		MakeXFORM					(object,it->index,particles_info->dir,it->offset,xform);
 		particles_info->ps->UpdateParent(xform,zero_vel);
-		particles_info->ps->Play	();
+		if(!particles_info->ps->IsPlaying())
+			particles_info->ps->Play	();
 	}
 }
 
@@ -165,6 +172,21 @@ void CParticlesPlayer::StopParticles(const ref_str& ps_name, u16 bone_id)
 	}
 }
 
+//остановка партиклов, по истечении их времени жизни
+void CParticlesPlayer::AutoStopParticles(const ref_str& ps_name, u16 bone_id)
+{
+	if (BI_NONE==bone_id){
+		for(BoneInfoVecIt it=m_Bones.begin(); it!=m_Bones.end(); it++)
+		{
+			SParticlesInfo* pInfo = it->FindParticles	(ps_name);
+			if(pInfo) pInfo->auto_stop = true;
+		}
+	}else{
+		SBoneInfo* bi			= get_bone_info(bone_id); VERIFY(bi);
+		SParticlesInfo* pInfo = bi->FindParticles	(ps_name);
+		if(pInfo) pInfo->auto_stop = true;
+	}
+}
 void CParticlesPlayer::UpdateParticles()
 {
 	if(!bone_mask) return;
@@ -215,7 +237,13 @@ void CParticlesPlayer::MakeXFORM	(CObject* pObject, u16 bone_id, const Fvector& 
 u16 CParticlesPlayer::GetNearestBone	(CKinematics* K, u16 bone_id)
 {
 	u16 play_bone	= bone_id;
+	//u16 cur_bone = play_bone;
+
 	while((BI_NONE!=play_bone)&&!(bone_mask&(u64(1)<<u64(play_bone))))
+	{
+		//cur_bone = play_bone;
 		play_bone	= K->LL_GetData(play_bone).ParentID;
+	}
+	//return cur_bone;
 	return play_bone;
 }

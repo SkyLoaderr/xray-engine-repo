@@ -71,6 +71,7 @@ public:
 
 	void					StopParticles			(u16 sender_ID, u16 bone_id=BI_NONE);
 	void					StopParticles			(const ref_str& particles_name, u16 bone_id=BI_NONE);
+	void					AutoStopParticles		(const ref_str& ps_name, u16 bone_id);
 
 	void					MakeXFORM				(CObject* pObject, u16 bone_id, const Fvector& dir, const Fvector& offset, Fmatrix& result);
 	u16						GetNearestBone			(CKinematics* K, u16 bone_id);
