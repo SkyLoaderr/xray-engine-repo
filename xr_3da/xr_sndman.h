@@ -60,12 +60,12 @@ public:
 	C2DSound*				Play2D					( int handle, BOOL bLoop=false, int iLoopCnt=0);
 	
 	// 3D interface
-	void					Create3D				( sound3D& S, CInifile* ini, LPCSTR section, int type=0);
-	void					Create3D				( sound3D& S, LPCSTR fName, BOOL bCtrlFreq=FALSE, int type=0);
-	void					Play3D					( sound3D& S, CObject* O, BOOL bLoop=false, int iLoopCnt=0);
-	void					Play3D_Unlimited		( sound3D& S, CObject* O, BOOL bLoop=false, int iLoopCnt=0);
-	void					Play3DAtPos				( sound3D& S, CObject* O, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
-	void					Play3DAtPos_Unlimited	( sound3D& S, CObject* O, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
+	void					Create3D				( sound3D& S, CInifile* ini,	LPCSTR section,			int		type=0);
+	void					Create3D				( sound3D& S, LPCSTR fName,		BOOL bCtrlFreq=FALSE,	int		type=0);
+	void					Play3D					( sound3D& S, CObject* O,		BOOL bLoop=false,		int		iLoopCnt=0);
+	void					Play3D_Unlimited		( sound3D& S, CObject* O,		BOOL bLoop=false,		int		iLoopCnt=0);
+	void					Play3DAtPos				( sound3D& S, CObject* O,		const Fvector &pos,		BOOL	bLoop=false, int iLoopCnt=0);
+	void					Play3DAtPos_Unlimited	( sound3D& S, CObject* O,		const Fvector &pos,		BOOL	bLoop=false, int iLoopCnt=0);
 	void					Delete3D				( sound3D& S);
 	void					SetGeometry				( CDB::MODEL* M )	{ pGeometry=M; }
 	CDB::MODEL* 			GetGeometry				( )					{ return pGeometry;	}

@@ -39,6 +39,7 @@ public:
 
 	void					Play			(BOOL bLoop=false, int lcnt=0);
 	void					Stop			(void);
+	void					SetFrequency		(DWORD freq);
 	void					SetVolume		(float vol)			{ fVolume = vol; bNeedUpdate = true; }
 
 	void					OnMove			(void);
