@@ -82,6 +82,13 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	players.clear();
 	
 	players = players_new;
+//time
+	u64				GameTime;
+	P.r_u64			(GameTime);
+	float			TimeFactor;
+	P.r_float		(TimeFactor);
+
+	Level().SetGameTimeFactor	(GameTime,TimeFactor);
 }
 
 void	game_cl_GameState::net_import_update(NET_Packet& P)

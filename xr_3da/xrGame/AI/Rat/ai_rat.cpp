@@ -404,6 +404,12 @@ void CAI_Rat::feel_touch_new(CObject* O)
 /////////////////////////////////////
 // Rat as eatable item
 /////////////////////////////////////
+void CAI_Rat::OnH_A_Chield		()
+{
+	inherited::OnH_A_Chield		();
+	CEatableItem::OnH_A_Chield	();
+}
+
 void CAI_Rat::OnH_B_Chield		()
 {
 	inherited::OnH_B_Chield		();
@@ -425,7 +431,9 @@ void CAI_Rat::OnH_A_Independent	()
 bool CAI_Rat::Useful() const
 {
 	if (!g_Alive())
-		return true;
+	{
+		return CEatableItem::Useful();
+	}
 
 	return false;
 }
@@ -474,12 +482,6 @@ void CAI_Rat::PH_A_CrPr			()
 {
 	inherited::PH_A_CrPr		();
 	CEatableItem::PH_A_CrPr		();
-}
-
-void CAI_Rat::OnH_A_Chield		()
-{
-	inherited::OnH_A_Chield		();
-	CEatableItem::OnH_A_Chield	();
 }
 
 void CAI_Rat::create_physic_shell()

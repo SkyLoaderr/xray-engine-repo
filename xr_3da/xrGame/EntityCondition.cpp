@@ -150,9 +150,13 @@ void CEntityCondition::reinit	()
 	m_fDeltaPower = 0;
 	m_fDeltaSatiety = 0;
 	m_fDeltaRadiation = 0;
+	m_fDeltaCircumspection = 0;
+	m_fDeltaEntityMorale = 0;
+
 
 	m_fHealthLost = 0.f;
 	m_pWho = NULL;
+
 
 
 	for(WOUND_VECTOR_IT it = m_WoundVector.begin(); m_WoundVector.end() != it; ++it)
@@ -239,6 +243,9 @@ void CEntityCondition::UpdateCondition()
 		m_fDeltaPower = 0;
 		m_fDeltaSatiety = 0;
 		m_fDeltaRadiation = 0;
+		m_fDeltaCircumspection = 0;
+		m_fDeltaEntityMorale = 0;
+
 	}
 
 	m_iLastTimeCalled = cur_time;
@@ -251,13 +258,13 @@ void CEntityCondition::UpdateCondition()
 	UpdateCircumspection();
 	UpdateEntityMorale();
 
-	m_fHealth += m_fDeltaHealth;
-	m_fPower += m_fDeltaPower;
-	m_fSatiety += m_fDeltaSatiety;
-	m_fRadiation +=  m_fDeltaRadiation;
+	m_fHealth		+= m_fDeltaHealth;
+	m_fPower		+= m_fDeltaPower;
+	m_fSatiety		+= m_fDeltaSatiety;
+	m_fRadiation	+= m_fDeltaRadiation;
 
-	m_fCircumspection += m_fDeltaCircumspection;
-	m_fEntityMorale += m_fDeltaEntityMorale;
+	m_fCircumspection	+= m_fDeltaCircumspection;
+	m_fEntityMorale		+= m_fDeltaEntityMorale;
 
 	m_fDeltaHealth = 0;
 	m_fDeltaPower = 0;
@@ -551,6 +558,8 @@ void CEntityCondition::save	(NET_Packet &output_packet)
 }
 void CEntityCondition::load	(IReader &input_packet)
 {
+	m_bTimeValid = false;
+
 	u8 is_alive				= input_packet.r_u8	();
 	if(is_alive)
 	{
