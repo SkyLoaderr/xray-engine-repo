@@ -18,14 +18,14 @@
         </text>
     </article>
     <article id="three" name="SVU" group="Diary/Weapons/Sniper rifles" article_type="1">
-        <texture x="250" y="300" width="250" height="100">ui\ui_icon_equipment</texture> -->
+        <texture x="250" y="300" width="250" height="100">ui\ui_icon_equipment</texture>
         <text>
 	        SVU: Sniper rifle\n\n
         	TTX:\nRange - 2000M\nMagazine capacity: 10 bullets 
         </text>
     </article>
     <article id="four" name="PM" group="Diary/Weapons/Pistols" article_type="1">
-        <texture x="0" y="100" width="250" height="100">ui\ui_icon_equipment</texture> -->
+        <texture x="0" y="100" width="250" height="100">ui\ui_icon_equipment</texture>
 	<text>
 		PM: Pistolet Makarova\n\n
 		TTX:\nRange - 100M\nMagazine capacity: 7 bullets
