@@ -8,6 +8,7 @@
 #include "fstaticrender.h"
 #include "fbasicvisual.h"
 #include "xr_creator.h"
+#include "xr_object.h"
 #include "CustomHUD.h"
 
 CRender_interface::CRender_interface()		{};
