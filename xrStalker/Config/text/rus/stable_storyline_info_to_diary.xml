@@ -13,6 +13,11 @@
 		</text>
     </string>
 
+    <string id="storyline_gunslinger_cache_info">
+    	<text>Пойдёшь по отметке на карте и найдёшь в подземелье тайник
+    	</text>
+    </string>
+
     <string id="storyline_gunslinger_flash_info">
     	<text>Received from Призрак: \n
     	\n
@@ -36,10 +41,4 @@
 		Призрак" 
     	</text>
     </string>
-
-    <string id="storyline_gunslinger_cache_info">
-    	<text>Пойдёшь по отметке на карте и найдёшь в подземелье тайник
-    	</text>
-    </string>
-
 </string_table>
