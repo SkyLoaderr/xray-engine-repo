@@ -311,7 +311,7 @@ u32	__stdcall rms_average	(b_texture& lm, u32& _r, u32& _g, u32& _b)
 			if ((color_get_A(pixel))>=254)	
 			{
 				_r		+= color_get_R	(pixel);
-				_g		+= color_get_G(pixel);
+				_g		+= color_get_G	(pixel);
 				_b		+= color_get_B	(pixel);
 				_count	++;
 			}

@@ -10,6 +10,7 @@
 
 #include <xrCore.h>
 
+#include <commctrl.h>
 #include <d3dx8.h>
 #include <io.h>
 #include <fcntl.h>
