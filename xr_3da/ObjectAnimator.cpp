@@ -82,7 +82,7 @@ void CObjectAnimator::OnMove()
 {
 	if (IsMotionActive()){
 		Fvector R;
-		m_ActiveMotion->Evaluate(m_MParam.Frame(),vPosition,R);
+		m_ActiveMotion->_Evaluate(m_MParam.Frame(),vPosition,R);
 		if (!m_MParam.Update(Device.fTimeDelta)) StopMotion();
 		mRotate.setHPB	(-R.x,-R.y,-R.z);
 	}
@@ -106,6 +106,6 @@ void CObjectAnimator::StopMotion(){
 void CObjectAnimator::ManualUpdate(COMotion* M, float t){
 	R_ASSERT2(0,"XYZ");
 	Fvector R;
-	m_ActiveMotion->Evaluate(t,vPosition,R);
+	m_ActiveMotion->_Evaluate(t,vPosition,R);
 	mRotate.setHPB		(-R.x,-R.y,R.z);
 }

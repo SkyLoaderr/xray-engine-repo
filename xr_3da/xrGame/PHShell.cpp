@@ -381,7 +381,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 	if(bone_data.shape.type!=SBoneShape::stNone || !root_e)	//для BD.shape==stNone нет ни елемента ни колижена
 	{														
 		Fmatrix fm_position;
-		fm_position.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);
+		fm_position.setXYZi(bone_data.bind_xyz);
 		fm_position.c.set(bone_data.bind_translate);
 
 		if(bone_data.IK_data.type==jtRigid && root_e ) //нет элемента-колижен добавляется к root
@@ -575,7 +575,12 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, int id,const CBoneDa
 								}
 							break;
 					}
-				case jtWheel:
+				case jtWheelXZ:
+				case jtWheelXY:
+				case jtWheelYX:
+				case jtWheelYZ:
+				case jtWheelZX:
+				case jtWheelZY:
 					{
 						J= P_create_Joint(CPhysicsJoint::hinge2,root_e,E);
 						J->SetAnchorVsSecondElement	(0,0,0);

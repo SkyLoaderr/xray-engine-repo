@@ -921,7 +921,7 @@ void CCar::SExhaust::Init()
 	pelement=(bone_map.find(bone_id))->second.element;
 	CKinematics* K=PKinematics(pcar->Visual());
 	CBoneData&	bone_data=K->LL_GetData(bone_id);
-	transform.setHPB(bone_data.bind_hpb.x,bone_data.bind_hpb.y,bone_data.bind_hpb.z);
+	transform.setXYZi(bone_data.bind_xyz);
 	transform.c.set(bone_data.bind_translate);
 	transform.mulA(pcar->XFORM());
 	Fmatrix element_transform;

@@ -100,7 +100,7 @@ BOOL CDemoPlay::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float& 
 	{
 		Fvector R;
 		Fmatrix mRotate;
-		m_pMotion->Evaluate(m_MParam.Frame(),P,R);
+		m_pMotion->_Evaluate(m_MParam.Frame(),P,R);
 		if (!m_MParam.Update(Device.fTimeDelta)) fLifeTime-=Device.fTimeDelta;
 		if (m_MParam.bWrapped)	{ stat_Stop(); stat_Start(); }
 		mRotate.setHPB	(-R.x,-R.y,-R.z);
