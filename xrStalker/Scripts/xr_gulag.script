@@ -43,6 +43,13 @@ function fract:checkNpc(npc)
 	then
 		return npc:character_community() == "military"
 	end
+	
+	if self.type == "garbage_bandits" then
+		return npc:character_community() == "bandit"
+	end
+	if self.type == "garbage_stalkers" then
+		return npc:character_community() == "stalker"
+	end
 
 	if self.type == "test"
 	then
@@ -184,16 +191,6 @@ function fract:setJob(npc, job)
 	--' Спейс рестрикторы
 	--job.object:remove_all_restrictions()
 	--job.object:add_restrictions(job.out_rest, job.in_rest)
-	--' Онлайн-офлайн
-	if job.offline == false then
-		local sim = alife()
-		if sim == nil then return true end
-		sim:set_switch_online	(npc:id(), true)
-		sim:set_switch_offline	(npc:id(), false)
-	else
-		sim:set_switch_online	(npc:id(), true)
-		sim:set_switch_offline	(npc:id(), true)		
-	end
 end
 function fract:getJob(npc)
 	if npc == nil then return nil end
