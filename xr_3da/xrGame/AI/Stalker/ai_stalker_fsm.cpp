@@ -40,13 +40,11 @@ void CAI_Stalker::BackCover(bool bFire)
 	WRITE_TO_LOG				("Back cover");
 	
 	m_dwInertion				= bFire ? 20000 : 60000;
-	if (!m_tEnemy.Enemy && bfCheckIfCanKillTarget(vPosition,m_tSavedEnemyPosition,-r_torso_current.yaw,-r_torso_current.pitch,ffGetFov()/180.f*PI)) {
-		Camp(bFire);
-		return;
-	}
+	
 	m_tSelectorCover.m_fMinEnemyDistance = m_tSavedEnemyPosition.distance_to(vPosition) + 3.f;
+	
 	if (m_bStateChanged) {
-		m_dwActionStartTime = Level().timeServer() + ::Random.randI(2000,3000);
+		m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
 		m_tActionState = eActionStateRun;
 	}
 
@@ -84,10 +82,15 @@ void CAI_Stalker::BackCover(bool bFire)
 			eStateTypeDanger,
 			eLookTypeFirePoint,
 			tPoint);
-		if (Level().timeServer() >= m_dwActionStartTime) {
-			m_tActionState = eActionStateRun;
-			m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
+		if (!m_tEnemy.Enemy && getAI().bfTooSmallAngle(r_torso_current.yaw, r_torso_target.yaw,PI_DIV_6) && bfCheckIfCanKillTarget(vPosition,m_tSavedEnemyPosition,-r_torso_current.yaw,-r_torso_current.pitch,ffGetFov()/180.f*PI)) {
+			Camp(bFire);
+			return;
 		}
+		else
+			if (Level().timeServer() >= m_dwActionStartTime) {
+				m_tActionState = eActionStateRun;
+				m_dwActionStartTime = Level().timeServer() + ::Random.randI(4000,7000);
+			}
 	}
 }
 
@@ -539,7 +542,10 @@ void CAI_Stalker::Think()
 		m_dwInertion			= 20000;
 		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
+			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		else
+			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (A && !K && H && !L) {
@@ -547,7 +553,7 @@ void CAI_Stalker::Think()
 		m_dwInertion			= 20000;
 		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		if (getAI().bfInsideNode(getAI().Node(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID),tPoint))
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
 			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
 		else
 			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
@@ -558,7 +564,10 @@ void CAI_Stalker::Think()
 		m_dwInertion			= 20000;
 		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
+			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		else
+			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (A && !K && H && L) {
@@ -566,40 +575,51 @@ void CAI_Stalker::Think()
 		m_dwInertion			= 20000;
 		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
+			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		else
+			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	
 	if (B && !K && !H && !L) {
-		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
-		m_dwInertion			= 10000;
-		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
-		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+//		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
+//		m_dwInertion			= 10000;
+//		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+//		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+//		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+//		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+		Detour			();
 	} else
 	if (B && !K && H && !L) {
 		WRITE_TO_LOG			("Exploring non-danger expedient sound");
 		m_dwInertion			= 10000;
 		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
+			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		else
+			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (B && !K && !H && L) {
-		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
-		m_dwInertion			= 10000;
-		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
-		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
-		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+//		WRITE_TO_LOG			("Exploring non-danger non-expedient sound");
+//		m_dwInertion			= 10000;
+//		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
+//		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
+//		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+//		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
+		Detour			();
 	} else
 	if (B && !K && H && L) {
 		WRITE_TO_LOG			("Exploring non-danger expedient sound");
 		m_dwInertion			= 10000;
 		tPoint					= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 		AI_Path.DestNode		= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
-		tPoint.y				= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
+			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		else
+			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,tPoint);
 	} else
 	if (M) {
@@ -607,7 +627,10 @@ void CAI_Stalker::Think()
 		// taking items
 		m_tpItemToTake->svCenter(tPoint);
 		AI_Path.DestNode		= m_tpItemToTake->AI_NodeID;
-		tPoint.y				= getAI().ffGetY(*m_tpItemToTake->AI_Node,tPoint.x,tPoint.z);
+		if (getAI().bfInsideNode(getAI().Node(AI_Path.DestNode),tPoint))
+			tPoint.y			= getAI().ffGetY(*getAI().Node(AI_Path.DestNode),tPoint.x,tPoint.z);
+		else
+			tPoint				= getAI().tfGetNodeCenter(m_tpaDynamicSounds[m_iSoundIndex].dwNodeID);
 		vfSetParameters(0,&tPoint,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 	} else
 	{
