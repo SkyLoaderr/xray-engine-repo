@@ -1519,8 +1519,9 @@ void PAFrame::Execute(ParticleGroup *group)
 		}else{
 			if (animated){
 //				m.frame += ((m.flags&Particle::FRAME_CCW)?-1:1)*speedFac;
-				m.frame += speed * dt;
-				m.frame %= frame_count;
+				m.frame += speedFac;
+				if (m.frame>frame_count) m.frame-=frame_count;
+///				m.frame %= frame_count;
 			}
 		}
 	}
