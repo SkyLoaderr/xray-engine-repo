@@ -2,21 +2,6 @@
 <game_dialogs>
     <dialog id="radar_test_dialog">
         <phrase_list>
-            <phrase id="30">
-                <text>radar_test_dialog_30</text>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>radar_test_dialog_3</text>
-                <next>40</next>
-            </phrase>
-            <phrase id="40">
-                <text>radar_test_dialog_40</text>
-            </phrase>
-            <phrase id="0">
-                <text>radar_test_dialog_0</text>
-                <next>1</next>
-            </phrase>
             <phrase id="20">
                 <text>radar_test_dialog_20</text>
                 <next>2</next>
@@ -28,6 +13,25 @@
             <phrase id="2">
                 <text>radar_test_dialog_2</text>
                 <next>30</next>
+            </phrase>
+            <phrase id="30">
+                <text>radar_test_dialog_30</text>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>radar_test_dialog_3</text>
+                <next>40</next>
+            </phrase>
+            <phrase id="0">
+                <text>radar_test_dialog_0</text>
+                <next>1</next>
+            </phrase>
+            <phrase id="40">
+                <text>radar_test_dialog_40</text>
+                <next>4</next>
+            </phrase>
+            <phrase id="4">
+                <text>radar_test_dialog_4</text>
             </phrase>
         </phrase_list>
     </dialog>
