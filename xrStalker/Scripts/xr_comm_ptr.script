@@ -88,10 +88,9 @@ function action_patrol:initialize ()
 	
     local obj = self.object:object ("hand_radio")
     if obj ~= nil then
+       --self.object:enable_attachable_item (true)
        printf ("DISABLE RADIO 1")
-       self.object:enable_attachable_item (true)
-       printf ("DISABLE RADIO 2")
-       obj:enable_attachable_item (true)
+       obj:enable_attachable_item (false)
     end
 	
 end
@@ -295,6 +294,7 @@ end
 -------------
 function action_escape:execute ()
     action_base.execute (self)
+    self:set_command (leader_return)
 end    
 -------------
 function action_escape:finalize ()
@@ -312,6 +312,16 @@ function action_escape:move_callback (obj, action_type, index)
     end    
 end
 ----------------------------------------------------------------------------------------
+function action_escape:set_command (command)
+    local size = table.getn (xr_motivator.storage[self.object:id()].followers)
+    if size == 0 then return end
+    for a = 1, size, 1 do
+        xr_motivator.storage[self.object:id()].followers[a].leader_command = command
+    end
+end
+
+
+
 
 ---------------------------------------------------------------------------------------------------------------------
 class "action_raid" (action_base)
