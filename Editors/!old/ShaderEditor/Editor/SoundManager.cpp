@@ -202,8 +202,6 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 	FS_QueryMap M_BASE;
 	FS_QueryMap M_THUM;
     FS_QueryMap M_GAME;
-    FS_QueryMap M_GAME_DEL;
-    FS_QueryMap M_THM_DEL;
 
     if (source_list) M_BASE = *source_list;
     else FS.file_list(M_BASE,_sounds_,FS_ListFiles|FS_ClampExt,".wav");
@@ -265,6 +263,27 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 		    pb->Inc		(bUpdated?std::string(base_name+" - UPDATED.").c_str():"",bUpdated);
     }
     if (bProgress) UI->ProgressEnd(pb);
+    // lock rescanning
+    FS.unlock_rescan	();
+}
+
+void CSoundManager::CleanupSounds()
+{
+	FS_QueryMap 	M_BASE;
+	FS_QueryMap 	M_THUM;
+    FS_QueryMap 	M_GAME;
+    FS_QueryMap 	M_GAME_DEL;
+    FS_QueryMap 	M_THM_DEL;
+
+    FS.file_list	(M_BASE,_sounds_,		FS_ListFiles|FS_ClampExt,".wav");
+    FS.file_list	(M_THUM,_sounds_,		FS_ListFiles|FS_ClampExt,".thm");
+    FS.file_list	(M_GAME,_game_sounds_,	FS_ListFiles|FS_ClampExt,".ogg");
+
+    // lock rescanning
+    FS.lock_rescan	();
+    
+    FS_QueryPairIt it;
+	FS_QueryPairIt _E;
     // check source exist
     it	= M_GAME.begin();
 	_E 	= M_GAME.end();
@@ -282,7 +301,8 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     	if (bs==M_BASE.end())
         	M_THM_DEL.insert	(mk_pair(it->first,it->second));
     }
-    if (bProgress) pb = UI->ProgressStart(M_GAME_DEL.size()+M_THM_DEL.size(),"Mark invalid sounds...");
+
+    SPBItem* pb = UI->ProgressStart(M_GAME_DEL.size()+M_THM_DEL.size(),"Cleanup sounds...");
     // mark game del sounds
     it	= M_GAME_DEL.begin();
 	_E 	= M_GAME_DEL.end();
@@ -291,9 +311,9 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
         std::string 			fn;
         FS.update_path			(fn,_game_sounds_,EFS.ChangeFileExt(base_name,".ogg").c_str());
         EFS.MarkFile			(fn.c_str(),true);
-        if (bProgress) 		    pb->Inc	();
+        pb->Inc					();
     }
-    // mark game del sounds
+    // mark thm sounds
     it	= M_THM_DEL.begin();
 	_E 	= M_THM_DEL.end();
 	for (; it!=_E; it++){
@@ -301,11 +321,11 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
         std::string 			fn;
         FS.update_path			(fn,_sounds_,EFS.ChangeFileExt(base_name,".thm").c_str());
         EFS.MarkFile			(fn.c_str(),true);
-        if (bProgress) 		    pb->Inc	();
+        pb->Inc					();
     }
-    if (bProgress) UI->ProgressEnd(pb);
-    // lock rescanning
-    FS.unlock_rescan	();
+    UI->ProgressEnd				(pb);
+    // unlock rescanning
+    FS.unlock_rescan			();
 }
 
 void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
@@ -343,7 +363,10 @@ void CSoundManager::ChangeFileAgeTo(FS_QueryMap* tgt_map, int age)
 void CSoundManager::RefreshSounds(bool bSync)
 {
 	UI->SetStatus("Refresh sounds...");
-    if (bSync) SynchronizeSounds(true,true,false,0,0);
+    if (bSync){ 
+    	SynchronizeSounds	(true,true,false,0,0);
+        CleanupSounds		();
+    }
     Sound->refresh_sources();
 	UI->SetStatus("");
 }
