@@ -1349,7 +1349,14 @@ bool CActor:: ActivateBox(DWORD id)
 	else	return false;
 	*/
 	DWORD old_id=m_PhysicMovementControl->BoxID();
-	if(id==old_id)return true;
+	bool  character_exist=m_PhysicMovementControl->CharacterExist();
+	if(character_exist&&id==old_id)return true;
+
+	if(!character_exist)
+	{
+		m_PhysicMovementControl->CreateCharacter();
+	}
+
 	m_PhysicMovementControl->ActivateBox(id);
 	ph_world->Freeze();
 	m_PhysicMovementControl->UnFreeze();
@@ -1368,7 +1375,11 @@ bool CActor:: ActivateBox(DWORD id)
 			break;
 		}
 	}
-	if(!ret)m_PhysicMovementControl->ActivateBox(old_id);
+	if(!ret)
+	{	
+		if(!character_exist)m_PhysicMovementControl->DestroyCharacter();
+		m_PhysicMovementControl->ActivateBox(old_id);
+	}
 	ph_world->UnFreeze();
 	m_PhysicMovementControl->SetOjectContactCallback(saved_callback);
 	saved_callback=0;
