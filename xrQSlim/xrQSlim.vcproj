@@ -29,7 +29,7 @@
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
 				RuntimeTypeInfo="TRUE"
-				UsePrecompiledHeader="0"
+				UsePrecompiledHeader="3"
 				WarningLevel="3"
 				Detect64BitPortabilityProblems="TRUE"
 				DebugInformationFormat="4"
@@ -118,25 +118,25 @@
 				RelativePath=".\src\geom3d.h">
 			</File>
 			<File
-				RelativePath=".\src\mat2.cxx">
+				RelativePath=".\src\mat2.cpp">
 			</File>
 			<File
 				RelativePath=".\src\mat2.h">
 			</File>
 			<File
-				RelativePath=".\src\mat3.cxx">
+				RelativePath=".\src\mat3.cpp">
 			</File>
 			<File
 				RelativePath=".\src\mat3.h">
 			</File>
 			<File
-				RelativePath=".\src\mat4.cxx">
+				RelativePath=".\src\mat4.cpp">
 			</File>
 			<File
 				RelativePath=".\src\mat4.h">
 			</File>
 			<File
-				RelativePath=".\src\mixmops.cxx">
+				RelativePath=".\src\mixmops.cpp">
 			</File>
 			<File
 				RelativePath=".\src\mixmops.h">
@@ -151,7 +151,7 @@
 				RelativePath=".\src\MxDefines.h">
 			</File>
 			<File
-				RelativePath=".\src\MxGeom3D.cxx">
+				RelativePath=".\src\MxGeom3D.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxGeom3D.h">
@@ -160,31 +160,31 @@
 				RelativePath=".\src\MxMat2.h">
 			</File>
 			<File
-				RelativePath=".\src\MxMat3-jacobi.cxx">
+				RelativePath=".\src\MxMat3-jacobi.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxMat3.h">
 			</File>
 			<File
-				RelativePath=".\src\MxMat4-jacobi.cxx">
+				RelativePath=".\src\MxMat4-jacobi.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxMat4.h">
 			</File>
 			<File
-				RelativePath=".\src\MxMatrix.cxx">
+				RelativePath=".\src\MxMatrix.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxMatrix.h">
 			</File>
 			<File
-				RelativePath=".\src\MxQMetric.cxx">
+				RelativePath=".\src\MxQMetric.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxQMetric.h">
 			</File>
 			<File
-				RelativePath=".\src\MxQMetric3.cxx">
+				RelativePath=".\src\MxQMetric3.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxQMetric3.h">
@@ -221,26 +221,35 @@
 				RelativePath=".\src\MxGeoPrims.h">
 			</File>
 			<File
-				RelativePath=".\src\MxHeap.cxx">
+				RelativePath=".\src\MxHeap.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxHeap.h">
 			</File>
 			<File
-				RelativePath=".\src\stdmix.h">
+				RelativePath=".\src\stdafx.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="1"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\src\stdafx.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="Model"
 			Filter="">
 			<File
-				RelativePath=".\src\MxBlockModel.cxx">
+				RelativePath=".\src\MxBlockModel.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxBlockModel.h">
 			</File>
 			<File
-				RelativePath=".\src\MxStdModel.cxx">
+				RelativePath=".\src\MxStdModel.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxStdModel.h">
@@ -250,19 +259,19 @@
 			Name="QSlim"
 			Filter="">
 			<File
-				RelativePath=".\src\MxPropSlim.cxx">
+				RelativePath=".\src\MxPropSlim.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxPropSlim.h">
 			</File>
 			<File
-				RelativePath=".\src\MxQSlim.cxx">
+				RelativePath=".\src\MxQSlim.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxQSlim.h">
 			</File>
 			<File
-				RelativePath=".\src\MxStdSlim.cxx">
+				RelativePath=".\src\MxStdSlim.cpp">
 			</File>
 			<File
 				RelativePath=".\src\MxStdSlim.h">

@@ -42,7 +42,7 @@ public:
     // Access methods
     //
     operator       T*()       { return elt; }
-//    operator const T*() const { return elt; }
+    operator const T*() const { return elt; }
 
     // In-place arithmetic methods
     //
