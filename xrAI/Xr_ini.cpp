@@ -16,7 +16,7 @@ void CInifile::Destroy(CInifile* ini)
 //-----------------------------------------------------------------------------------------------------------
 //Тело функций Inifile
 //-----------------------------------------------------------------------------------------------------------
-void _parse(LPSTR dest, LPCSTR src)
+ENGINE_API void _parse(LPSTR dest, LPCSTR src)
 {
 	if (src) {
 		BOOL bInsideSTR = false;
@@ -34,7 +34,7 @@ void _parse(LPSTR dest, LPCSTR src)
 	*dest = 0;
 }
 
-void _decorate(LPSTR dest, LPCSTR src)
+ENGINE_API void _decorate(LPSTR dest, LPCSTR src)
 {
 	if (src) {
 		BOOL bInsideSTR = false;

@@ -50,8 +50,13 @@ void CCustomEvent::Load			(CInifile* ini, const char * section)
 	dwMaxUpdate					= 1000;
 }
 
-void CCustomEvent::Parse		(DEF_EVENT& D, LPCSTR DEF)
+ENGINE_API void _parse(LPSTR dest, LPCSTR src);
+
+void CCustomEvent::Parse		(DEF_EVENT& D, LPCSTR DEF_Base)
 {
+	string512	DEF;
+	_parse		(DEF,DEF_Base);
+		
 	D.E			= 0;
 	D.P1		= 0;
 	string512	Event,Param;
