@@ -44,13 +44,6 @@ void CRenderTarget::shadow_direct	(u32 dls_phase)
 			Device.mFullTransform.transform(pt_hpos,pt);
 			d_Z						= pt_hpos.z;
 			d_W						= pt_hpos.w;
-		} else {
-			Fvector3				pt;
-			Fvector4				pt_hpos;
-			pt.mad					(Device.vCameraPosition,Device.vCameraDirection,DSM_distance_2);
-			Device.mFullTransform.transform(pt_hpos,pt);
-			d_Z						= pt_hpos.z;
-			d_W						= pt_hpos.w;
 		}
 
 		// Fill vertex buffer

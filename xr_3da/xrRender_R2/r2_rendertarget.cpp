@@ -105,7 +105,7 @@ void	CRenderTarget::OnDeviceCreate	()
 				float	alpha	= _sqr(alpha_l);
 				float	fade	= _sqr(fade_l);
 				float	_mul_	= (1-fade)*alpha;
-				float	_add_	= fade*alpha*.5f;
+				float	_add_	= fade*alpha;
 				s32		_mul_i	= iFloor	(_mul_*255.5f);		clamp	(_mul_i,0,255);
 				s32		_add_i 	= iFloor	(_add_*255.5f);		clamp	(_add_i,0,255);
 				*p				= color_rgba(_mul_i,_mul_i,_mul_i,_add_i);
