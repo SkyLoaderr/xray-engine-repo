@@ -40,6 +40,7 @@ function stalker_zombe_action:execute ()
     self.object:set_item            ( object.idle, self.object:best_weapon() )
     self.object:set_mental_state    ( anim.free )
     self.object:set_sight           ( look.path_dir, nil, 0 )
+    self.object:set_path_type		( game_object.patrol_path )
 end
 ---------------------------------------------------------------------------------------------------------------------
 function stalker_zombe_action:finalize ()
@@ -143,7 +144,7 @@ function stalker_novice_action:state_walk( param )
     if( device():time_global() > self.a.time + 3000 ) then
         --Первые 3 секунды идем просто, потом начинаем что-то искать
         --printf( "Search" )
-        self.object:set_sight       ( look.search, nil, 0 )
+        self.object:set_sight       ( look.danger, nil, 0 )
     else
 		self.object:set_sight       ( look.path_dir, nil, 0 )
         --printf( "Path dir" )
