@@ -125,6 +125,7 @@ void CParticlesObject::Stop(BOOL bDefferedStop)
 void CParticlesObject::shedule_Update	(u32 _dt)
 {
 	if (Device.dwFrame==dwFrameDisableSheduleUpdate)	return;	//. hack
+	dwFrameDisableSheduleUpdate		= Device.dwFrame;
 	inherited::shedule_Update		(_dt);
 
 	// visual
