@@ -184,9 +184,9 @@ void CUIComboBox::ShowList(bool bShow){
 		SetHeight(m_editBox.GetHeight() + iCurHeight);
 
 		m_list.Show(true);
-		m_list.Draw();
+//		m_list.Draw();
 		m_frameWnd.Show(true);
-		m_frameWnd.Draw();
+//		m_frameWnd.Draw();
 
 		m_eState = LIST_EXPANDED;
 	}

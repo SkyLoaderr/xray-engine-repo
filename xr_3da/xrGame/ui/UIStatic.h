@@ -52,7 +52,7 @@ public:
 	// Получения цвета по референсу используется для анимации
 	u32&		GetColorRef					()			{ return m_UIStaticItem.GetColorRef();	}
 	
-	void InitTexture(LPCSTR tex_name);
+	virtual void InitTexture(LPCSTR tex_name);
 	void SetOriginalRect (int x, int y, int width, int height){m_UIStaticItem.SetOriginalRect(x,y,width,height);};
 	CUIStaticItem* GetStaticItem() {return &m_UIStaticItem;}
 
@@ -79,14 +79,14 @@ public:
 	void	SetShader			(const ref_shader& sh);
 	CUIStaticItem& GetUIStaticItem() {return m_UIStaticItem;}
 
-	void SetTextX(int text_x) {m_iTextOffsetX = text_x;}
-	void SetTextY(int text_y) {m_iTextOffsetY = text_y;}
+	virtual void SetTextX(int text_x) {m_iTextOffsetX = text_x;}
+	virtual void SetTextY(int text_y) {m_iTextOffsetY = text_y;}
 	int GetTextX() {return m_iTextOffsetX;}
 	int GetTextY() {return m_iTextOffsetY;}
 
-	void SetTextColor(u32 color)	{ m_dwFontColor = color; } 
-	u32 GetTextColor() const		{ return m_dwFontColor; }
-	u32 &GetTextColorRef()			{ return m_dwFontColor; }
+	virtual void SetTextColor(u32 color)	{ m_dwFontColor = color; } 
+			u32  GetTextColor() const		{ return m_dwFontColor; }
+			u32  &GetTextColorRef()			{ return m_dwFontColor; }
 
 	void SetStretchTexture(bool stretch_texture) {m_bStretchTexture = stretch_texture;}
 	bool GetStretchTexture() {return m_bStretchTexture;}

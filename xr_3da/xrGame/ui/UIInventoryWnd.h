@@ -21,8 +21,11 @@ class CInventory;
 #include "UIArtifactMergerWnd.h"
 #include "UISleepWnd.h"
 
-#include "UICharacterInfo.h"
+//#include "UICharacterInfo.h"
+#include "UIOutfitInfo.h"
 #include "UIItemInfo.h"
+
+#include "UITimeWnd.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -91,10 +94,7 @@ protected:
 	CUIStatic			UIStaticTop;
 	CUIStatic			UIStaticBelt;
 	CUIStatic			UIStaticBottom;
-	CUIStatic			UIStaticTime;
-
-	// Update current time indicator
-	void				UpdateTime();
+	CUITimeWnd			UITimeWnd;
 
 //	CUIStatic			UIStaticDesc;
 	CUIStatic			UIStaticPersonal;
@@ -121,6 +121,7 @@ protected:
 	
 	//информация о персонаже
 	//CUICharacterInfo UICharacterInfo;
+	CUIOutfitInfo UIOutfitInfo;
 	//информация о предмете
 	CUIItemInfo UIItemInfo;
 

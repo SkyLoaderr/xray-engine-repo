@@ -8,6 +8,7 @@
 
 #include "xrXMLParser.h"
 #include "UIXmlInit.h"
+#include "../string_table.h"
 
 #include "../actor.h"
 #include "../uigamesp.h"
@@ -70,6 +71,7 @@ void CUIInventoryWnd::Init()
 	R_ASSERT3(xml_result, "xml file not found", INVENTORY_XML);
 
 	CUIXmlInit xml_init;
+	CStringTable string_table;
 
 	CUIWindow::Init(CUIXmlInit::ApplyAlignX(0, alCenter),
 					CUIXmlInit::ApplyAlignY(0, alCenter),
@@ -83,10 +85,11 @@ void CUIInventoryWnd::Init()
 
 	AttachChild(&UIStaticBelt);
 	xml_init.InitStatic(uiXml, "static", 0, &UIStaticBelt);
+	UIStaticBelt.SetText(*string_table("belt"));
 	
 	AttachChild(&UIBagWnd);
 	xml_init.InitStatic(uiXml, "bag_static", 0, &UIBagWnd);
-
+	
 	UIBagWnd.AttachChild(&UIMoneyWnd);
 	xml_init.InitStatic(uiXml, "money_static", 0, &UIMoneyWnd);
 
@@ -100,6 +103,7 @@ void CUIInventoryWnd::Init()
 
 	AttachChild(&UIDescrWnd);
 	xml_init.InitStatic(uiXml, "descr_static", 0, &UIDescrWnd);
+	UIDescrWnd.SetText(*string_table("description"));
 
 	//информация о предмете
 	UIDescrWnd.AttachChild(&UIItemInfo);
@@ -108,6 +112,7 @@ void CUIInventoryWnd::Init()
 	// Кнопка Drop
 	UIDescrWnd.AttachChild(&UIDropButton);
 	xml_init.InitButton(uiXml, "drop_button", 0, &UIDropButton);
+	UIDropButton.SetText(*string_table("drop"));
 	UIDropButton.SetMessageTarget(this);
 	UIDropButton.SetTextAlign(CGameFont::alLeft);
 
@@ -115,6 +120,7 @@ void CUIInventoryWnd::Init()
 	//Окно с информации о персонаже
 	AttachChild(&UIPersonalWnd);
 	xml_init.InitFrameWindow(uiXml, "frame_window", 1, &UIPersonalWnd);
+	UIPersonalWnd.UITitleText.SetText(*string_table("personal"));
 
 	//Полосы прогресса
 	UIPersonalWnd.AttachChild(&UIProgressBarHealth);
@@ -129,7 +135,6 @@ void CUIInventoryWnd::Init()
 	UIPersonalWnd.AttachChild(&UIProgressBarRadiation);
 	xml_init.InitProgressBar(uiXml, "progress_bar", 3, &UIProgressBarRadiation);
 
-
 	UIPersonalWnd.AttachChild(&UIStaticPersonal);
 	UIStaticPersonal.Init("ui\\ui_inv_personal_over_b", -1, UIPersonalWnd.GetHeight() - 175, 260, 260);
 
@@ -137,8 +142,10 @@ void CUIInventoryWnd::Init()
 	// attributs suit of character (actor)
 	//UIStaticPersonal.AttachChild(&UICharacterInfo);
 	//UICharacterInfo.Init(0, 0, UIStaticPersonal.GetWidth(), UIStaticPersonal.GetHeight(), INVENTORY_CHARACTER_XML);
-	
 
+	UIStaticPersonal.AttachChild(&UIOutfitInfo);
+	xml_init.InitStatic(uiXml, "outfit_info_window",0, &UIOutfitInfo);
+	UIOutfitInfo.SetText(string_table);
 
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic(uiXml, "auto_static", this);
@@ -148,6 +155,7 @@ void CUIInventoryWnd::Init()
 	AttachChild(&UISleepWnd);
 	xml_init.InitStatic(uiXml, "sleep_window", 0, &UISleepWnd);
 	UISleepWnd.Init();
+	UISleepWnd.SetText(*string_table("rest"));
 
 	//Списки Drag&Drop
 	AttachChild(&UIBeltList);
@@ -199,12 +207,14 @@ void CUIInventoryWnd::Init()
 	UIPropertiesBox.Hide();
 
 	// Time indicator
-	AttachChild(&UIStaticTime);
-	xml_init.InitStatic(uiXml, "time_static", 0, &UIStaticTime);
+	AttachChild(&UITimeWnd);
+	xml_init.InitStatic(uiXml, "time_static", 0, &UITimeWnd);
+	UITimeWnd.SetText(*string_table("time"));
 
 	// Exit button
 	AttachChild(&UIExitButton);
 	xml_init.InitButton(uiXml, "exit_button", 0, &UIExitButton);
+	UIExitButton.SetText(*string_table("exit"));
 }
 
 CUIInventoryWnd::~CUIInventoryWnd()
@@ -268,17 +278,21 @@ void CUIInventoryWnd::Update()
 
 		UpdateWeight(UIBagWnd, true);
 
-			// get money
+		// update money
 		CInventoryOwner* pOurInvOwner = smart_cast<CInventoryOwner*>(pEntityAlive);
 		char sMoney[50];
 		int  iMoney(pOurInvOwner->m_dwMoney);
 		itoa(iMoney, sMoney, 10);
 		strcat(sMoney,"$");	
 		UIMoneyWnd.SetText(sMoney);
+
+		// update outfit parameters
+		CCustomOutfit* outfit = (CCustomOutfit*)pOurInvOwner->inventory().m_slots[OUTFIT_SLOT].m_pIItem;		
+		UIOutfitInfo.Update(*outfit);		
 	}
 
 	// Update time indicator
-	UpdateTime();
+	UITimeWnd.Update();
 
 
 	CUIWindow::Update();
@@ -645,19 +659,3 @@ void	CUIInventoryWnd::SendEvent_Item_Eat			(PIItem	pItem)
 	P.w_u16		(pItem->object().ID());
 	pItem->object().u_EventSend(P);
 };
-
-//////////////////////////////////////////////////////////////////////////
-
-void CUIInventoryWnd::UpdateTime()
-{
-	static shared_str prevStrTime;
-	const shared_str strTime = InventoryUtilities::GetGameTimeAsString(InventoryUtilities::etpTimeToMinutes);
-
-	if (strTime != prevStrTime)
-	{
-		string64	buf;
-		strconcat(buf, "Current Time:      ", *strTime);
-		UIStaticTime.SetText(buf);
-		prevStrTime = strTime;
-	}
-}

@@ -158,3 +158,9 @@ void CUISleepWnd::SetRestTime(u8 hours, u8 minutes)
 	sprintf(buf, "%02i:%02i", hours, minutes);
 	UIStaticRestAmount.SetText(buf);
 }
+
+//////////////////////////////////////////////////////////////////////////
+
+void CUISleepWnd::SetText(LPCSTR str){
+	this->UIRestBtn.SetText(str);
+}

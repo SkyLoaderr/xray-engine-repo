@@ -45,17 +45,18 @@ CUIListWnd::~CUIListWnd()
 {
 	//очистить список и удалить все элементы
 	for(LIST_ITEM_LIST_it it=m_ItemList.begin(); m_ItemList.end() != it; ++it)
-	{
-		CUIListItem* itm = (*it);
+		DetachChild(*it);
+//	{
+//		CUIListItem* itm = (*it);
 //		bool bAuto = 
-			itm->IsAutoDelete();
+//			itm->IsAutoDelete();
 //		bool bManual = itm->IsManualDelete();
 //		VERIFY( !( bAuto && bManual ) );
 
-		DetachChild(itm);
+
 //		if( !itm->IsAutoDelete() )
 //			xr_delete(itm);
-	}
+//	}
 
 	m_ItemList.clear();
 }

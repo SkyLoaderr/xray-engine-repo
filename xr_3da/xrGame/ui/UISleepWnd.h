@@ -20,6 +20,7 @@ public:
 
 	virtual void Init(int x, int y, int width, int height);
 	virtual void Init();
+	virtual void SetText(LPCSTR str);
 
 //	typedef enum{CLOSE_BUTTON_CLICKED,
 //				 PERFORM_BUTTON_CLICKED} E_MESSAGE;

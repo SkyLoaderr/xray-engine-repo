@@ -56,11 +56,8 @@ CUIStatic::~ CUIStatic()
 
 void CUIStatic::Init(LPCSTR tex_name, int x, int y, int width, int height)
 {
-	m_UIStaticItem.Init(tex_name,"hud\\default",x,y,alNone);
-
-	m_bAvailableTexture = true;
-	
-	CUIWindow::Init(x, y, width, height);
+	Init(x, y, width, height);
+	InitTexture(tex_name);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -75,8 +72,7 @@ void CUIStatic::InitTexture(LPCSTR tex_name)
 //////////////////////////////////////////////////////////////////////////
 
 void CUIStatic::Init(int x, int y, int width, int height)
-{
-	m_bAvailableTexture = false;
+{	
 	CUIWindow::Init(x, y, width, height);
 }
 
