@@ -56,7 +56,7 @@ function main_menu:InitControls()
 							 y = caption_rect.y + caption_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
-	local btn_load_game   = {x = btn_rect.x,
+	local btn_load_rect   = {x = btn_rect.x,
 							 y = btn_new_rect.y + btn_new_rect.height + indent,
 							 width = btn_rect.width,
 							 height = btn_rect.height}
