@@ -982,7 +982,7 @@ void CWeapon::setup_physic_shell()
 
 bool CWeapon::NeedToDestroyObject()	const
 {
-	if (Game().type == GAME_SINGLE) return false;
+	if (GameID() == GAME_SINGLE) return false;
 	if (Remote()) return false;
 	if (TimePassedAfterIndependant() > m_dwWeaponRemoveTime)
 		return true;

@@ -286,7 +286,7 @@ bool CWeaponKnife::Action(s32 cmd, u32 flags)
 			return true;
 		case kDROP:
 			{
-				if (Game().type != GAME_SINGLE)
+				if (GameID() != GAME_SINGLE)
 					return true;
 			}break;
 	}
