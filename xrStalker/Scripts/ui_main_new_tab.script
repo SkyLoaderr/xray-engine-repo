@@ -82,9 +82,10 @@ function main_new_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)	
-	
+
+--[[
 	--------->> SPAWN
---[[	btn = CUI3tButton()
+	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_spawn")
 	btn:Init(self.btn.texture, btn_spawn_rect.x, btn_spawn_rect.y, btn_spawn_rect.width, btn_spawn_rect.height)
@@ -94,7 +95,8 @@ function main_new_tab:InitControls(x, y, handler)
 	btn:SetTextY(self.btn.indent)
 	handler:Register(btn)
 	self:AttachChild(btn)
-]]	
+	]]
+	
 	btn = CUI3tButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_new_back")
