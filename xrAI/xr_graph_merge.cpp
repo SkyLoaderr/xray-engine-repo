@@ -36,6 +36,15 @@ public:
 	}
 };
 
+u32 dwfGetIDByLevelName(CInifile *Ini, LPCSTR caLevelName)
+{
+	LPCSTR				N,V;
+	for (u32 k = 0; Ini->r_line("levels",k,&N,&V); k++)
+		if (!strcmp(Ini->r_string(N,"caption"),caLevelName))
+			return(Ini->r_u32(N,"id"));
+	return(-1);
+}
+
 DEFINE_MAP		(u32,	CLevelGraph *,		GRAPH_P_MAP,	GRAPH_P_PAIR_IT);
 DEFINE_MAP_PRED	(LPSTR,	SConnectionVertex,	VERTEX_MAP,		VERTEX_PAIR_IT,	CCompareVertexPredicate);
 
@@ -46,7 +55,7 @@ public:
 	VERTEX_MAP					m_tVertexMap;
 	u32							m_dwOffset;
 
-								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, xr_vector<SLevelPoint> *tpLevelPoints) : CSE_ALifeGraph()
+								CLevelGraph(const SLevel &tLevel, LPCSTR S, u32 dwOffset, u32 dwLevelID, xr_vector<SLevelPoint> *tpLevelPoints, CInifile *Ini) : CSE_ALifeGraph()
 	{
 		m_tLevel				= tLevel;
 		m_dwOffset				= dwOffset;
@@ -162,7 +171,7 @@ public:
 						LPSTR							S;
 						S								= (char *)xr_malloc((strlen(tpGraphPoint->s_name_replace) + 1)*sizeof(char));
 						T.caConnectName					= (char *)xr_malloc((strlen(tpGraphPoint->m_caConnectionPointName) + 1)*sizeof(char));
-						T.dwLevelID						= tpGraphPoint->m_tLevelID;
+						T.dwLevelID						= dwfGetIDByLevelName(Ini,tpGraphPoint->m_caConnectionLevelName);
 						T.tGraphID						= i;
 						Memory.mem_copy					(S,tpGraphPoint->s_name_replace,(u32)strlen(tpGraphPoint->s_name_replace) + 1);
 						Memory.mem_copy					(T.caConnectName,tpGraphPoint->m_caConnectionPointName,(u32)strlen(tpGraphPoint->m_caConnectionPointName) + 1);
@@ -302,7 +311,7 @@ void xrMergeGraphs(LPCSTR name)
 		strconcat					(S2,name,S1);
 		strconcat					(S1,S2,"\\");//level.graph");
 		tLevel.dwLevelID			= Ini->r_s32(N,"id");
-		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.dwLevelID,&l_tpLevelPoints);
+		CLevelGraph					*tpLevelGraph = xr_new<CLevelGraph>(tLevel,S1,dwOffset,tLevel.dwLevelID,&l_tpLevelPoints, Ini);
 		dwOffset					+= tpLevelGraph->m_tGraphHeader.dwVertexCount;
 		tpGraphs.insert				(mk_pair(tLevel.dwLevelID,tpLevelGraph));
 		tGraphHeader.tpLevels.push_back(tLevel);
