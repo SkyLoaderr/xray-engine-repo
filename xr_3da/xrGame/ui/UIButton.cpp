@@ -264,67 +264,70 @@ void  CUIButton::Draw()
 		down_offset = m_iPushOffsetY;
 	}
 
-	UpdateTextAlign();
-	GetFont()->SetAligment(GetTextAlign());
-
-	if(IsHighlightText() && m_str && xr_strlen(m_str)>0)
+	if (GetFont())
 	{
-		GetFont()->SetColor(m_HighlightColor);
-		HUD().OutText(GetFont(), GetClipRect(), 
-			(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-			(float)rect.top + down_offset + 1  +m_iTextOffsetY,
-			m_str);
-		HUD().OutText(GetFont(), GetClipRect(), 
-			(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-			(float)rect.top + down_offset - 1 +m_iTextOffsetY,
-			m_str);
-		HUD().OutText(GetFont(), GetClipRect(),
-			(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-			(float)rect.top + down_offset + 1 +m_iTextOffsetY,
-			m_str);
-		HUD().OutText(GetFont(), GetClipRect(), 
-			(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-			(float)rect.top + down_offset - 1 +m_iTextOffsetY,
-			m_str);
-		HUD().OutText(GetFont(), GetClipRect(),
-			(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
-			(float)rect.top + down_offset + 0 +m_iTextOffsetY,
-			m_str);
-		HUD().OutText(GetFont(), GetClipRect(),
-			(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
-			(float)rect.top + down_offset - 0 +m_iTextOffsetY,
-			m_str);
-		HUD().OutText(GetFont(), GetClipRect(),
-			(float)rect.left + right_offset - 0 +m_iTextOffsetX, 
-			(float)rect.top + down_offset + 1 +m_iTextOffsetY,
-			m_str);
-		HUD().OutText(GetFont(), GetClipRect(),
-			(float)rect.left + right_offset + 0 +m_iTextOffsetX,  
-			(float)rect.top + down_offset - 1 +m_iTextOffsetY,
-			m_str);
-	}
+		UpdateTextAlign();
+		GetFont()->SetAligment(GetTextAlign());
 
-	//	inherited::Update();
-	//	return;
-
-
-	GetFont()->SetColor(m_dwFontColor);
-
-	if (!m_bNewRenderMethod)
-	{
-		if(m_str && xr_strlen(m_str)>0)
+		if(IsHighlightText() && m_str && xr_strlen(m_str)>0)
+		{
+			GetFont()->SetColor(m_HighlightColor);
 			HUD().OutText(GetFont(), GetClipRect(), 
-			(float)rect.left + right_offset  +  m_iTextOffsetX, 
-			(float)rect.top + down_offset  + m_iTextOffsetY,
-			m_str);
-		GetFont()->OnRender();
-	}
-	else
-	{
-		rect.left	+=	right_offset;
-		rect.top	+=	down_offset;
+				(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+				(float)rect.top + down_offset + 1  +m_iTextOffsetY,
+				m_str);
+			HUD().OutText(GetFont(), GetClipRect(), 
+				(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+				(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+				m_str);
+			HUD().OutText(GetFont(), GetClipRect(),
+				(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+				(float)rect.top + down_offset + 1 +m_iTextOffsetY,
+				m_str);
+			HUD().OutText(GetFont(), GetClipRect(), 
+				(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+				(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+				m_str);
+			HUD().OutText(GetFont(), GetClipRect(),
+				(float)rect.left + right_offset + 1 +m_iTextOffsetX, 
+				(float)rect.top + down_offset + 0 +m_iTextOffsetY,
+				m_str);
+			HUD().OutText(GetFont(), GetClipRect(),
+				(float)rect.left + right_offset - 1 +m_iTextOffsetX, 
+				(float)rect.top + down_offset - 0 +m_iTextOffsetY,
+				m_str);
+			HUD().OutText(GetFont(), GetClipRect(),
+				(float)rect.left + right_offset - 0 +m_iTextOffsetX, 
+				(float)rect.top + down_offset + 1 +m_iTextOffsetY,
+				m_str);
+			HUD().OutText(GetFont(), GetClipRect(),
+				(float)rect.left + right_offset + 0 +m_iTextOffsetX,  
+				(float)rect.top + down_offset - 1 +m_iTextOffsetY,
+				m_str);
+		}
 
-		inherited::DrawString(rect);
+		//	inherited::Update();
+		//	return;
+
+
+		GetFont()->SetColor(m_dwFontColor);
+
+		if (!m_bNewRenderMethod)
+		{
+			if(m_str && xr_strlen(m_str)>0)
+				HUD().OutText(GetFont(), GetClipRect(), 
+				(float)rect.left + right_offset  +  m_iTextOffsetX, 
+				(float)rect.top + down_offset  + m_iTextOffsetY,
+				m_str);
+			GetFont()->OnRender();
+		}
+		else
+		{
+			rect.left	+=	right_offset;
+			rect.top	+=	down_offset;
+
+			inherited::DrawString(rect);
+		}
 	}
 }
 
