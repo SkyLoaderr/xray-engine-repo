@@ -52,6 +52,7 @@ public:
 	CGameLevelCrossTable		*m_tpCrossTable;
 	xr_vector<CGameGraph::CLevelPoint>	m_tpLevelPoints;
 	xr_vector<CSE_ALifeLevelChanger*>	*m_level_changers;
+	xr_vector<CSE_ALifeGraphPoint*>		m_graph_points;
 	CInifile					*m_ini;
 
 								CSpawn(LPCSTR name, const CGameGraph::SLevel &tLevel, u32 dwLevelID, u32 *dwGroupOffset, xr_vector<CSE_ALifeLevelChanger*> *level_changers, CInifile *ini) : CThread(dwLevelID)
@@ -125,8 +126,13 @@ public:
 						l_tpSpawnGroup->m_dwSpawnGroup = ++*dwGroupOffset;
 						l_tpSpawnGroupControlsMap.insert(mk_pair(l_tpSpawnGroup->s_name_replace,l_tpSpawnGroup));
 					}
-					else
-						xr_delete(E);
+					else {
+						CSE_ALifeGraphPoint	*graph_point = dynamic_cast<CSE_ALifeGraphPoint*>(E);
+						if (!graph_point)
+							xr_delete(E);
+						else
+                            m_graph_points.push_back	(graph_point);
+					}
 				}
 			}
 			else
@@ -188,6 +194,7 @@ public:
 	{
 		delete_data				(m_tpAI_Map);
 		delete_data				(m_tpCrossTable);
+		delete_data				(m_graph_points);
 	};
 
 	void						Execute()
@@ -249,19 +256,31 @@ public:
 		{
 			xr_vector<CSE_ALifeLevelChanger*>::iterator i = m_level_changers->begin();
 			xr_vector<CSE_ALifeLevelChanger*>::iterator e = m_level_changers->end();
-			for ( ; i != e; ++i) {
-				if (dwfGetIDByLevelName(m_ini,(*i)->m_caLevelToChange) != m_dwLevelID)
+			for (u32 i=0, n=m_level_changers->size(); i<n; ++i) {
+				if (dwfGetIDByLevelName(m_ini,(*m_level_changers)[i]->m_caLevelToChange) != m_dwLevelID)
 					continue;
 
-				ALIFE_OBJECT_P_IT	I = m_tpSpawnPoints.begin();
-				ALIFE_OBJECT_P_IT	E = m_tpSpawnPoints.end();
+				xr_vector<CSE_ALifeGraphPoint*>::const_iterator I = m_graph_points.begin();
+				xr_vector<CSE_ALifeGraphPoint*>::const_iterator E = m_graph_points.end();
 				for ( ; I != E; ++I)
-					if (!xr_strcmp((*i)->m_caLevelPointToChange,(*I)->s_name_replace)) {
-						(*i)->m_tNextGraphID	= (*I)->m_tGraphID;
-						(*i)->m_tNextPosition	= (*I)->o_Position;
-						(*i)->m_tAngles			= (*I)->o_Angle;
-						(*i)->m_dwNextNodeID	= (*I)->m_tNodeID;
-						m_level_changers->erase	(i);
+					if (!xr_strcmp((*m_level_changers)[i]->m_caLevelPointToChange,(*I)->s_name_replace)) {
+						
+						bool ok = false;
+						for (u32 ii=0, nn = tpGraph->header().vertex_count(); ii<nn; ++ii) {
+							if ((tpGraph->vertex(ii)->level_id() != m_dwLevelID) || !tpGraph->vertex(ii)->level_point().similar((*I)->o_Position,.001f))
+								continue;
+							(*m_level_changers)[i]->m_tNextGraphID	= ii;
+							(*m_level_changers)[i]->m_tNextPosition	= (*I)->o_Position;
+							(*m_level_changers)[i]->m_tAngles		= (*I)->o_Angle;
+							(*m_level_changers)[i]->m_dwNextNodeID	= tpGraph->vertex(ii)->level_vertex_id();
+							ok = true;
+						}
+
+						VERIFY		(ok);
+
+						m_level_changers->erase	(m_level_changers->begin() + i);
+						--i;
+						--n;
 						break;
 					}
 			}
