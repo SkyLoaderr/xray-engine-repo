@@ -29,8 +29,8 @@ void	light::vis_prepare			()
 		float	c	= _sqrt					(x0*x0 + x1*x1);
 		safe_area	= _max(_max(VIEWPORT_NEAR,_max(x0,x1)),c);
 	}
-	Msg	("sc[%f,%f,%f]/c[%f,%f,%f] - sr[%f]/r[%f]",VPUSH(spatial.center),VPUSH(position),spatial.radius,range);
-	Msg	("dist:%f, sa:%f",Device.vCameraPosition.distance_to(spatial.center),safe_area);
+	//Msg	("sc[%f,%f,%f]/c[%f,%f,%f] - sr[%f]/r[%f]",VPUSH(spatial.center),VPUSH(position),spatial.radius,range);
+	//Msg	("dist:%f, sa:%f",Device.vCameraPosition.distance_to(spatial.center),safe_area);
 	if (Device.vCameraPosition.distance_to(spatial.center)<=(spatial.radius+safe_area))	{	// small error
 		vis.visible		=	true;
 		vis.pending		=	false;
@@ -59,7 +59,7 @@ void	light::vis_update			()
 
 	u32	frame			= Device.dwFrame;
 	u32 fragments		= RImplementation.occq_get	(vis.query_id);
-	Log					("",fragments);
+	//Log					("",fragments);
 	vis.visible			= (fragments > cullfragments);
 	vis.pending			= false;
 	if (vis.visible)	{
