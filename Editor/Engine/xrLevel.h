@@ -57,7 +57,12 @@ struct	hdrNODES
 #pragma pack(push,1)
 #pragma warning(disable:4200)
 typedef BYTE		NodeLink[3];
-typedef short		NodePosition[3];
+struct NodePosition
+{
+	s16				x;
+	u16				y;
+	s16				z;
+};
 struct NodeCompressed		
 {
 	WORD			plane;			// 2

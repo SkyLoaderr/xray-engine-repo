@@ -9,13 +9,14 @@ IC void	CompressPos	(NodePosition& Dest, Fvector& Src, hdrNODES& H)
 
 	int px,py,pz;
 	px = iFloor(Src.x*sp+EPS_L);
-	py = iFloor(Src.y*sy+EPS_L);
+	py = iFloor(65535.f*(Src.y-H.aabb.min.y)/(H.size_y)+EPS_L);
 	pz = iFloor(Src.z*sp+EPS_L);
 	
-	clamp	(px,-32767,32767);	Dest[0] = short	(px);
-	clamp	(py,-32767,32767);	Dest[1] = short	(py);
-	clamp	(pz,-32767,32767);	Dest[2] = short	(pz);
+	clamp	(px,-32767,32767);	Dest.x = s16	(px);
+	clamp	(py,0,     65535);	Dest.y = u16	(py);
+	clamp	(pz,-32767,32767);	Dest.z = s16	(pz);
 }
+
 IC BYTE	CompressCover(float c)
 {
 	int	cover = iFloor(c*255.f+EPS_L);
@@ -48,10 +49,10 @@ void	Compress	(NodeCompressed& Dest, NodeMerged& Src, hdrNODES& H)
 	Dest.link_count	= BYTE(Src.neighbours.size());
 }
 
-float	CalculateHeight()
+float	CalculateHeight(Fbox& BB)
 {
 	// All nodes
-	Fbox	BB; BB.invalidate();
+	BB.invalidate();
 
 	for (DWORD i=0; i<g_merged.size(); i++)
 	{
@@ -77,8 +78,7 @@ void xrSaveNodes(LPCSTR N)
 	H.version	= XRAI_CURRENT_VERSION;
 	H.count		= g_merged.size();
 	H.size		= g_params.fPatchSize;
-	H.size_y	= CalculateHeight();
-	H.aabb		= LevelBB;
+	H.size_y	= CalculateHeight(H.aabb);
 	fs.write	(&H,sizeof(H));
 
 	// All nodes
