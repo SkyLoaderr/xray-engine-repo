@@ -145,7 +145,7 @@ void CElevatorState::UpdateStNearDown()
 
 void CElevatorState::UpdateStClimbingDown()
 {
-	//if(m_character->ControlAccel().dotproduct(m_ladder->Axis())>0.f)
+
 	Fvector d;
 	
 	if(ClimbDirection()>0.f)
@@ -156,15 +156,16 @@ void CElevatorState::UpdateStClimbingDown()
 	if(!fis_zero(to_ax)&&!fis_zero(control_a)&&abs(ca.dotproduct(d))<M_SQRT1_2)SwitchState(clbDepart);
 	if(m_ladder->AxDistToLowerP(m_character)-m_character->FootRadius()<stop_climbing_dist)
 		SwitchState(clbNearDown);
-	
-	if(to_ax-m_character->FootRadius()>out_dist)
-															SwitchState((clbNone));
-	if(fis_zero(control_a)) m_character->ApplyForce(d,m_character->Mass());
+	UpdateClimbingCommon(d,to_ax,ca,control_a);
+	//if(to_ax-m_character->FootRadius()>out_dist)
+	//														SwitchState((clbNone));
+	//if(fis_zero(control_a)) 
+	//	m_character->ApplyForce(d,m_character->Mass());
 }
 
 void CElevatorState::UpdateStClimbingUp()
 {
-	//if(m_character->ControlAccel().dotproduct(m_ladder->Axis())<0.f)
+	
 	Fvector d;
 
 	if(ClimbDirection()<0.f)
@@ -176,12 +177,20 @@ void CElevatorState::UpdateStClimbingUp()
 	if(m_ladder->AxDistToUpperP(m_character)+m_character->FootRadius()<stop_climbing_dist)
 		SwitchState(clbNearUp);
 
-
-	if(to_ax-m_character->FootRadius()>out_dist)
-											SwitchState((clbNone));
-	if(fis_zero(control_a)) m_character->ApplyForce(d,m_character->Mass());
+	UpdateClimbingCommon(d,to_ax,ca,control_a);
+	//if(to_ax-m_character->FootRadius()>out_dist)
+	//										SwitchState((clbNone));
+	//if(fis_zero(control_a)) 
+	//	m_character->ApplyForce(d,m_character->Mass());
 }
-
+void CElevatorState::UpdateClimbingCommon(const Fvector	&d_to_ax,float to_ax,const Fvector& control_accel,float ca)
+{
+	
+	if(to_ax-m_character->FootRadius()>out_dist)
+		SwitchState((clbNone));
+	if(fis_zero(ca)) 
+		m_character->ApplyForce(d_to_ax,m_character->Mass()*world_gravity);//
+}
 void CElevatorState::GetControlDir(Fvector& dir)
 {
 	Fvector d;
