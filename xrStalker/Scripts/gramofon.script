@@ -51,14 +51,14 @@ function m_gramofon:__init( obj_name )
     self.delay        = 0
     self.time         = device():time_global() - 30000
     self.need_stop    = false
-    self.curState     = siren_off
+    self.curState     = gramofon.siren_off
     self.hours        = 0              --Время в часах прошлого update
     self.queue        = {}
     self.sounds       = {
-                  			sound_object( music1 ),
+           		    sound_object( music1 ),
                             sound_object( music2 ),
                             sound_object( music3 ),
-							sound_object( music4 ),
+			    sound_object( music4 ),
                             sound_object( music5 ),
                             sound_object( music6 ),
                             sound_object( music7 ),
@@ -97,17 +97,17 @@ end
 
 function m_gramofon:event( new_event)
 
-    if( new_event == siren_on1 ) then
+    if( new_event == gramofon.siren_on1 ) then
         self:clear_music()
-        self.curState  = siren_on1
-    elseif( new_event == siren_on2 ) then
+        self.curState  = gramofon.siren_on1
+    elseif( new_event == gramofon.siren_on2 ) then
         self:clear_music()
-        self.curState  = siren_on2
+        self.curState  = gramofon.siren_on2
 	end
 
-    if( new_event == siren_off ) then
+    if( new_event == gramofon.siren_off ) then
     	self:clear_music()
-        self.curState  = siren_off
+        self.curState  = gramofon.siren_off
     end
 
     gramofon_event = -1
@@ -134,14 +134,14 @@ local i = 0
 function m_gramofon:select_sound()
     h = this.local_hour()
     m = this.local_min()
-	if( self.curState == siren_on1 ) then
+	if( self.curState == gramofon.siren_on1 ) then
     	self:danger_siren()
-    elseif( self.curState == siren_on2 ) then
+    elseif( self.curState == gramofon.siren_on2 ) then
     	self:not_danger_siren()
     end
 
 	--Когда атака, звуки не играем
-	if( self.curState ~= siren_off ) then return end
+	if( self.curState ~= gramofon.siren_off ) then return end
 
     --Пробивает новый час
     if( self.hours ~= h and m < 1 ) then
