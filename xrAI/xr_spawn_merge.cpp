@@ -121,39 +121,55 @@ public:
 		R_ASSERT2(m_tpSpawnPoints.size(),"There are no spawn-points!");
 		
 		{
-			ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
-			ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
-			for ( ; I != E; I++)
-				if (strlen((*I)->m_caGroupControl) > 0) {
-					xr_map<LPCSTR,CSE_SpawnGroup*>::iterator J = l_tpSpawnGroupControlsMap.find((*I)->m_caGroupControl);
-					if (J != l_tpSpawnGroupControlsMap.end())
-						(*I)->m_dwSpawnGroup = (*J).second->m_dwSpawnGroup;
-					else {
-						string4096	S;
-						sprintf(S,"Cannot find a corresponding group control %s for object %s",(*I)->m_caGroupControl,(*I)->s_name_replace);
-						R_ASSERT2(J != l_tpSpawnGroupControlsMap.end(),S);
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	I = l_tpSpawnGroupObjectsMap.begin();
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	E = l_tpSpawnGroupObjectsMap.end();
+			
+			for ( ; I != E; I++) {
+				xr_map<LPCSTR,CSE_SpawnGroup*>::iterator			J = l_tpSpawnGroupControlsMap.find((*I).first);
+
+				R_ASSERT(J != l_tpSpawnGroupControlsMap.end());
+
+				if (strlen((*I).first)) {
+					R_ASSERT((*I).second);
+					ALIFE_OBJECT_P_IT	i = (*I).second->begin();
+					ALIFE_OBJECT_P_IT	e = (*I).second->end();
+					float				fSum = 0.f;
+					for ( ; i != e; i++)
+						fSum += (*i)->m_fProbability;
+
+					fSum /= (*J).second->m_fGroupProbability;
+
+					i = (*I).second->begin();
+					for ( ; i != e; i++) {
+						(*i)->m_fProbability /= fSum;
+						(*i)->m_dwSpawnGroup = (*J).second->m_dwSpawnGroup;
 					}
 				}
-				else
-					(*I)->m_dwSpawnGroup = *dwGroupOffset++;
-		}
-		{
-			ALIFE_OBJECT_P_IT		I = m_tpSpawnPoints.begin();
-			ALIFE_OBJECT_P_IT		E = m_tpSpawnPoints.end();
-			for ( ; I != E; I++) {
-				xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator J = l_tpSpawnGroupObjectsMap.find((*I)->m_caGroupControl);
-				if (J != l_tpSpawnGroupObjectsMap.end()) {
-					if ((*I)->m_dwSpawnGroup > 0) {
-						for (u32 i=0; i<(*J).second->size(); i++)
-							(*(*J).second)[i]->m_dwSpawnGroup = *dwGroupOffset;
-						++*dwGroupOffset;
+				else {
+					ALIFE_OBJECT_P_IT	i = (*I).second->begin();
+					ALIFE_OBJECT_P_IT	e = (*I).second->end();
+					for ( ; i != e; i++) {
+						(*i)->m_dwSpawnGroup = *dwGroupOffset++;
+						(*i)->m_fProbability = 1.f;
 					}
-					else
-						for (u32 i=0; i<(*J).second->size(); i++)
-							(*(*J).second)[i]->m_dwSpawnGroup = (*dwGroupOffset)++;
-					(*J).second->clear();
 				}
 			}
+		}
+		// freeing resources being allocated
+		{
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	I = l_tpSpawnGroupObjectsMap.begin();
+			xr_map<LPCSTR,xr_vector<CSE_ALifeObject*>*>::iterator	E = l_tpSpawnGroupObjectsMap.end();
+			
+			for ( ; I != E; I++) {
+				(*I).second->clear();
+				xr_free((*I).second);
+			}
+		}
+		{
+			xr_map<LPCSTR,CSE_SpawnGroup*>::iterator				I = l_tpSpawnGroupControlsMap.begin();
+			xr_map<LPCSTR,CSE_SpawnGroup*>::iterator				E = l_tpSpawnGroupControlsMap.end();
+			for ( ; I != E; I++)
+				xr_delete((*I).second);
 		}
 	};
 	virtual 					~CSpawn()
