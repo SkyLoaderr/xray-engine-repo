@@ -4,13 +4,13 @@ local dog1 = nil
 local dog2 = nil
 
 function init()
-    dog1 = m_monster_ai.m_MonsterArtful("btr_dog_1", this.script_name(), "way_btr_dog_1", "point_btr_dog_1", 10)
-    dog2 = m_monster_ai.m_MonsterArtful("btr_dog_2", this.script_name(), "way_btr_dog_2", "point_btr_dog_2", 10)
+    dog1 = m_monster_ai.m_MonsterArtful("btr_dog_1", script_name(), "way_btr_dog_1", "point_btr_dog_1", 10)
+    dog2 = m_monster_ai.m_MonsterArtful("btr_dog_2", script_name(), "way_btr_dog_2", "point_btr_dog_2", 10)
 end
 
 function execute()
 
-   	dog1:execute()
+     dog1:execute()
     dog2:execute()
 
     if(dog1:check_completed() and dog2:check_completed()) then
