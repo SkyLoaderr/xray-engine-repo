@@ -12,7 +12,7 @@
 
 CScriptEngine::CScriptEngine	()
 {
-	lua_setgcthreshold		(lua(),64*1024);
+//	lua_setgcthreshold		(lua(),64*1024);
 	m_current_thread		= 0;
 	m_stack_level			= 0;
 	m_reload_modules		= false;

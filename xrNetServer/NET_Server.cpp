@@ -398,6 +398,7 @@ BOOL IPureServer::HasBandwidth			(IClient* C)
 {
 	u32	dwTime			= TimeGlobal(device_timer);
 	u32	dwInterval		= 1000/psNET_ServerUpdate;
+	if	(psNET_Flags.test(NETFLAG_MINIMIZEUPDATES))	dwInterval	= 500;	// approx 2 times per second
 
 	HRESULT hr;
 	if ((dwTime-C->dwTime_LastUpdate)>dwInterval)	

@@ -18,6 +18,11 @@ XRNETSERVER_API extern int		psNET_Port;
 XRNETSERVER_API extern int		psNET_ServerUpdate;
 XRNETSERVER_API extern int		psNET_ServerPending;
 
+enum	{
+	NETFLAG_MINIMIZEUPDATES		= (1<<0),
+	NETFLAG_DBG_DUMPSIZE		= (1<<1),
+};
+
 IC u32 TimeGlobal(CTimer* timer)
 {
 	u64	qTime	= timer->GetElapsed_clk();

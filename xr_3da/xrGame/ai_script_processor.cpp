@@ -78,7 +78,9 @@ void CScriptProcessor::update()
 		if (xr_strlen(m_caOutput))
 			ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo,"%s",m_caOutput);
 	}
+#ifdef _DEBUG
 	lua_setgcthreshold	(ai().script_engine().lua(),0);
+#endif
 	g_ca_stdout			= S;
 }
 
