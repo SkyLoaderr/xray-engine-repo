@@ -21,36 +21,36 @@ IC	void CBoardClassicOthello::compute_direction(cell_type const *start_cell, int
 
 	if (start_cell[2*increment] != opponent_color) {
 		if (start_cell[2*increment] == _color_to_move)
-			result += 2;
+			result	+= _color_to_move == BLACK ? 2 : -2;
 		return;
 	}
 			
 	if (start_cell[3*increment] != opponent_color) {
 		if (start_cell[3*increment] == _color_to_move)
-			result += 4;
+			result	+= _color_to_move == BLACK ? 4 : -4;
 		return;
 	}
 			
 	if (start_cell[4*increment] != opponent_color) {
 		if (start_cell[4*increment] == _color_to_move)
-			result += 6;
+			result	+= _color_to_move == BLACK ? 6 : -6;
 		return;
 	}
 			
 	if (start_cell[5*increment] != opponent_color) {
 		if (start_cell[5*increment] == _color_to_move)
-			result += 8;
+			result	+= _color_to_move == BLACK ? 8 : -8;
 		return;
 	}
 			
 	if (start_cell[6*increment] != opponent_color) {
 		if (start_cell[6*increment] == _color_to_move)
-			result += 10;
+			result	+= _color_to_move == BLACK ? 10 : -10;
 		return;
 	}
 	
 	if (start_cell[7*increment] == _color_to_move)
-		result += 12;
+		result		+= _color_to_move == BLACK ? 12 : -12;
 }
 	
 template <CBoardClassicOthello::cell_type _color_to_move>
