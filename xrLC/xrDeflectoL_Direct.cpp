@@ -66,7 +66,7 @@ void CDeflector::L_Direct	(HASH& H)
 	Jitter_Select(Jitter, Jcount);
 	
 	// Lighting itself
-	DB.RayMode	(0);
+	DB.RayMode	(RAY_CULL);
 	
 	Fcolor		C[9];
 	for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
