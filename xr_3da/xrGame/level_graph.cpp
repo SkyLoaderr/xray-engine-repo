@@ -9,8 +9,9 @@
 #include "stdafx.h"
 #include "level_graph.h"
 #ifndef AI_COMPILER
-#include "ai_space.h"
+	#include "ai_space.h"
 #endif
+
 #include "graph_search_engine.h"
 
 #ifndef AI_COMPILER
@@ -76,13 +77,10 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 {
 #ifndef AI_COMPILER
 	Device.Statistic.AI_Node.Begin	();
-#endif
 
 	if (valid_vertex_id(current_node_id) && 
 		inside			(vertex(current_node_id),position)) {
-#ifndef AI_COMPILER
 		Device.Statistic.AI_Node.End();
-#endif
 		return				(current_node_id);
 	}
 
@@ -104,7 +102,6 @@ u32 CLevelGraph::vertex		(u32 current_node_id, const Fvector& position, bool ful
 	if (valid_vertex_id(id))
 		return				(id);
 
-#ifndef AI_COMPILER
 	Device.Statistic.AI_Node.End		();
 #endif
 	return					(current_node_id);

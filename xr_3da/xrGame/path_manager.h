@@ -10,11 +10,12 @@
 
 #include "path_manager_base.h"
 #include "path_manager_params.h"
-#include "path_manager_selector.h"
 #include "game_graph.h"
 #include "level_graph.h"
 #ifdef AI_COMPILER
 #include "test_table.h"
+#else
+#include "path_manager_selector.h"
 #endif
 
 template <
@@ -810,6 +811,7 @@ public:
 	}
 };
 
+#ifndef AI_COMPILER
 template <
 	typename _DataStorage,
 	u64		 flags,
@@ -902,4 +904,4 @@ public:
 		return					(false);
 	}
 };
-
+#endif

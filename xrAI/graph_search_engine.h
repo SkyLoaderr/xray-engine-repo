@@ -58,37 +58,37 @@ public:
 		xr_delete			(m_data_storage);
 	}
 
-	template <
-		typename _Graph,
-		typename _Parameters
-	>
-	IC		bool	build_path				(
-				const _Graph			&graph, 
-				u32						start_node, 
-				u32						dest_node, 
-				xr_vector<u32>			*node_path,
-				const _Parameters		&parameters
-			)
-	{
-		typedef CPathManager<_Graph, CDataStorage, _Parameters, _dist_type,_index_type,u32>	CPathManagerGeneric;
-		typedef CAStar<CDataStorage,CPathManagerGeneric,_iteration_type,_dist_type> CAStarGeneric;
-
-		CPathManagerGeneric			path_manager;
-		CAStarGeneric				a_star;
-
-		VERIFY						(graph.header().vertex_count() <= m_data_storage->get_max_node_count());
-
-		path_manager.setup			(
-			&graph,
-			m_data_storage,
-			node_path,
-			start_node,
-			dest_node,
-			parameters
-		);
-		return						(a_star.find(*m_data_storage,path_manager));
-	}
-
+//	template <
+//		typename _Graph,
+//		typename _Parameters
+//	>
+//	IC		bool	build_path				(
+//				const _Graph			&graph, 
+//				u32						start_node, 
+//				u32						dest_node, 
+//				xr_vector<u32>			*node_path,
+//				const _Parameters		&parameters
+//			)
+//	{
+//		typedef CPathManager<_Graph, CDataStorage, _Parameters, _dist_type,_index_type,u32>	CPathManagerGeneric;
+//		typedef CAStar<CDataStorage,CPathManagerGeneric,_iteration_type,_dist_type> CAStarGeneric;
+//
+//		CPathManagerGeneric			path_manager;
+//		CAStarGeneric				a_star;
+//
+//		VERIFY						(graph.header().vertex_count() <= m_data_storage->get_max_node_count());
+//
+//		path_manager.setup			(
+//			&graph,
+//			m_data_storage,
+//			node_path,
+//			start_node,
+//			dest_node,
+//			parameters
+//		);
+//		return						(a_star.find(*m_data_storage,path_manager));
+//	}
+//
 	template <
 		typename _Graph,
 		typename _Parameters
