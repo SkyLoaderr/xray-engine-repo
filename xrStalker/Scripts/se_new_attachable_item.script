@@ -96,6 +96,12 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	self.tokens32:add			("token32_1",1)
 	self.tokens32:add			("token32_2",2)
 	self._token32_0				= self.tokens32:id("token32_0")
+	// list
+	self.list					= rtoken_list()
+	self.list:add				("listitem_0",0)
+	self.list:add				("listitem_1",1)
+	self.list:add				("listitem_2",2)
+	self._listvalue_0			= ""
 end
 
 function CSE_NewAttachableItem:__finalize	()
@@ -181,6 +187,8 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_u16				(self._token16_0)
 	// token32
 	packet:w_u32				(self._token32_0)
+	// list
+	packet:w_stringZ			(self._listvalue_0)
 end
 
 function CSE_NewAttachableItem:STATE_Read	(packet, size)
@@ -262,6 +270,8 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	self._token16_0				= packet:r_u16()
 	// token32
 	self._token32_0				= packet:r_u32()
+	// list
+	self._listvalue_0			= packet:r_stringZ()
 end
 
 function CSE_NewAttachableItem:FillProps	(pref,items)
@@ -346,7 +356,9 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	// token8
 	properties_helper():create_token8(items,"script\\token8\\0",self,"_token8_0",self.tokens8)
 	// token16
-	properties_helper():create_token8(items,"script\\token16\\0",self,"_token16_0",self.tokens16)
+	properties_helper():create_token16(items,"script\\token16\\0",self,"_token16_0",self.tokens16)
 	// token32
-	properties_helper():create_token8(items,"script\\token32\\0",self,"_token32_0",self.tokens32)
+	properties_helper():create_token32(items,"script\\token32\\0",self,"_token32_0",self.tokens32)
+	// list
+	properties_helper():create_list(items,"script\\list\\0",self,"_listvalue_0",self.list)
 end
