@@ -264,8 +264,8 @@ object fraBottomBar: TfraBottomBar
       'miRenderShadeGouraud.Checked'
       'miRenderWithTextures.Checked')
     StoredValues = <>
-    Left = 185
-    Top = 33
+    Left = 41
+    Top = 25
   end
   object pmOptions: TMxPopupMenu
     Alignment = paCenter

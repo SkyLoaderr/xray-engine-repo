@@ -4,7 +4,6 @@
 #pragma hdrstop
 
 #include "main.h"
-#include "ui_main.h"
 
 TfrmMain *frmMain;
 //---------------------------------------------------------------------------
@@ -191,30 +190,13 @@ void __fastcall TfrmMain::D3DWindowChangeFocus(TObject *Sender)
 {
 	if (!UI||!UI->m_bReady) return;
 	if (D3DWindow->Focused()){
-//     	paWindow->Color=TColor(0x090FFFF);
-		// если потеряли фокус, а до этого кликнули мышкой -> вызовим событие MouseUp
-//        if (UI->IsMouseInUse())
-//            UI->OnMouseRelease(0);
         UI->IR_Capture();
 		UI->OnAppActivate();
     }else{
 		UI->OnAppDeactivate();
         UI->IR_Release();
-        paRender->Color=paRender->Color; // чтобы не было  internal code gen error
-//    	paWindow->Color=(TColor)0x00202020;
+//        paRender->Color=paRender->Color; // чтобы не было  internal code gen error
     }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::FormActivate(TObject *Sender)
-{
-//	UI->OnAppActivate();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TfrmMain::FormDeactivate(TObject *Sender)
-{
-//	UI->OnAppDeactivate();
 }
 //---------------------------------------------------------------------------
 

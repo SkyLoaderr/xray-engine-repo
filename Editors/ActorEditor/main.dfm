@@ -15,11 +15,9 @@ object frmMain: TfrmMain
   OldCreateOrder = False
   Position = poDefault
   Scaled = False
-  OnActivate = FormActivate
   OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
-  OnDeactivate = FormDeactivate
   OnKeyDown = FormKeyDown
   OnResize = FormResize
   OnShow = FormShow
@@ -33,8 +31,6 @@ object frmMain: TfrmMain
     Align = alRight
     BevelInner = bvLowered
     BevelOuter = bvNone
-    Constraints.MaxWidth = 238
-    Constraints.MinWidth = 238
     TabOrder = 0
     object paTools: TPanel
       Left = 1

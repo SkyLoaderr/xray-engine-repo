@@ -79,7 +79,7 @@ xr_token		sa_token					[ ]={
 void CActorTools::PreviewModel::SetPreferences()
 {
 	PropItemVec items;
-    PHelper.CreateFlag<Flags32>	(items, 	"Scroll", 		&m_Flags, 		pmScroll);
+    PHelper.CreateFlag32		(items, 	"Scroll", 		&m_Flags, 		pmScroll);
     PHelper.CreateFloat			(items, 	"Speed (m/c)",	&m_fSpeed,		-10000.f,10000.f,0.01f,2);
     PHelper.CreateFloat			(items, 	"Segment (m)",	&m_fSegment,	-10000.f,10000.f,0.01f,2);
     PHelper.CreateToken<u32>	(items,		"Scroll axis",	(u32*)&m_ScrollAxis,	sa_token);

@@ -109,6 +109,8 @@ class CActorTools: public CToolsCustom
     EEditMode			m_EditMode;
     AnsiString			m_CurrentMotion;
 
+    RTokenVec			m_BoneParts;
+
 	void __fastcall		OnMotionTypeChange		(PropValue* sender);
 
 	void __fastcall 	OnChangeTransform		(PropValue* sender);
