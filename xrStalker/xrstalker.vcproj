@@ -970,6 +970,18 @@
 					Name="Military"
 					Filter="">
 					<File
+						RelativePath=".\config\scripts\mil\mil_bandit1.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_bandit2.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_bandit3.ltx">
+					</File>
+					<File
+						RelativePath=".\config\scripts\mil\mil_bandit4.ltx">
+					</File>
+					<File
 						RelativePath=".\config\scripts\mil\mil_dolg_kamper2.ltx">
 					</File>
 					<File

@@ -3,6 +3,9 @@
 active = zoneguard1
 actor_dialogs = actor_dialogs
 on_death = death
+combat_ignore = c_ignore
+
+[c_ignore]
 
 [zoneguard1]
 path_walk = mil_dolg_path_walk1
@@ -14,23 +17,23 @@ enable_dialog = true
 meet_enabled = true
 meet_dialog = mil_dolg_dialog
 on_info = {+mil_dolg_attack} walker1
-;, {-mil_dolg_first +mil_sniper_dead} walker1
 
 [death]
 on_info = %=military_dolg_dead%
 
-
-;[actor_dialogs]
-;id = escape_factory_assault_talk
-
-
 [walker1]
-path_walk = way
-path_look = look
+path_walk = mil_dolg_attack_way1
+path_look = mil_dolg_attack_look1
+def_state_moving1 = run
+on_signal = arrive | walker2
 
+[walker2]
+path_walk = mil_dolg_attack_way1_2
+def_state_moving1 = run
+on_signal = ignore | walker3
+combat_ignore = always
 
-[walker1]
-path_walk = walk1
-path_look = look1
-
-
+[walker3]
+path_walk = mil_dolg_attack_way1_3
+def_state_moving1 = run
+on_signal = final | zoneguard1
