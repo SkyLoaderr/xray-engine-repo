@@ -97,11 +97,6 @@ __published:	// IDE-managed Components
 	TMultiObjSpinEdit *seEnvCount;
 	TMultiObjSpinEdit *seCurEnv;
 	TScrollBox *sbEnvs;
-	TGroupBox *GroupBox2;
-	TLabel *RxLabel34;
-	TLabel *RxLabel36;
-	TMultiObjSpinEdit *seLMAreaDispersion;
-	TMultiObjSpinEdit *seLMAreaSummaryEnergy;
 	TGroupBox *GroupBox3;
 	TLabel *RxLabel9;
 	TRadioGroup *rgLMJitterSamples;
@@ -116,11 +111,6 @@ __published:	// IDE-managed Components
 	TLabel *RxLabel23;
 	TMultiObjSpinEdit *seLMAmbFogness;
 	TLabel *RxLabel37;
-	TBevel *Bevel2;
-	TMultiObjColor *mcLMAreaColor;
-	TLabel *RxLabel24;
-	TLabel *RxLabel39;
-	TRadioGroup *rgAreaQuality;
 	TGroupBox *GroupBox5;
 	TCheckBox *cbLMFuzzyEnabled;
 	TLabel *RxLabel35;
@@ -132,6 +122,16 @@ __published:	// IDE-managed Components
 	TEdit *edLevelPath;
 	TLabel *MxLabel1;
 	TMultiObjSpinEdit *seLMRMSZero;
+	TGroupBox *GroupBox2;
+	TLabel *RxLabel34;
+	TLabel *RxLabel36;
+	TBevel *Bevel2;
+	TMultiObjColor *mcLMAreaColor;
+	TLabel *RxLabel24;
+	TLabel *RxLabel39;
+	TMultiObjSpinEdit *seLMAreaDispersion;
+	TMultiObjSpinEdit *seLMAreaSummaryEnergy;
+	TRadioGroup *rgAreaQuality;
     void __fastcall FormShow(TObject *Sender);
     void __fastcall btContinueClick(TObject *Sender);
     void __fastcall FormKeyDown(TObject *Sender, WORD &Key,

@@ -1,6 +1,6 @@
 object frmSceneProperties: TfrmSceneProperties
-  Left = 662
-  Top = 669
+  Left = 523
+  Top = 393
   BorderStyle = bsDialog
   Caption = 'Build options'
   ClientHeight = 300
@@ -71,6 +71,98 @@ object frmSceneProperties: TfrmSceneProperties
           Height = 18
           AutoSize = False
           TabOrder = 0
+        end
+      end
+      object GroupBox2: TGroupBox
+        Left = 3
+        Top = 35
+        Width = 350
+        Height = 65
+        Caption = ' Hemisphere lighting '
+        TabOrder = 1
+        object RxLabel34: TLabel
+          Left = 5
+          Top = 19
+          Width = 76
+          Height = 13
+          Caption = 'Dispersion (deg)'
+        end
+        object RxLabel36: TLabel
+          Left = 5
+          Top = 42
+          Width = 95
+          Height = 13
+          Caption = 'Summary energy (%)'
+        end
+        object Bevel2: TBevel
+          Left = 248
+          Top = 13
+          Width = 97
+          Height = 17
+        end
+        object mcLMAreaColor: TMultiObjColor
+          Left = 250
+          Top = 15
+          Width = 94
+          Height = 14
+          Pen.Style = psClear
+          OnMouseDown = mcLMAmbientMouseDown
+        end
+        object RxLabel24: TLabel
+          Left = 197
+          Top = 15
+          Width = 24
+          Height = 13
+          Caption = 'Color'
+        end
+        object RxLabel39: TLabel
+          Left = 197
+          Top = 42
+          Width = 32
+          Height = 13
+          Caption = 'Quality'
+        end
+        object seLMAreaDispersion: TMultiObjSpinEdit
+          Left = 88
+          Top = 17
+          Width = 91
+          Height = 18
+          LWSensitivity = 0.1
+          ButtonKind = bkLightWave
+          Decimal = 1
+          Increment = 0.1
+          MaxValue = 360
+          ValueType = vtFloat
+          Value = 7.5
+          AutoSize = False
+          TabOrder = 0
+        end
+        object seLMAreaSummaryEnergy: TMultiObjSpinEdit
+          Left = 104
+          Top = 40
+          Width = 75
+          Height = 18
+          LWSensitivity = 0.01
+          ButtonKind = bkLightWave
+          Decimal = 0
+          MaxValue = 1000
+          ValueType = vtFloat
+          Value = 100
+          AutoSize = False
+          TabOrder = 1
+        end
+        object rgAreaQuality: TRadioGroup
+          Left = 248
+          Top = 30
+          Width = 98
+          Height = 30
+          Columns = 3
+          ItemIndex = 1
+          Items.Strings = (
+            '0'
+            '1'
+            '2')
+          TabOrder = 2
         end
       end
     end
@@ -332,105 +424,13 @@ object frmSceneProperties: TfrmSceneProperties
         AutoSize = False
         TabOrder = 3
       end
-      object GroupBox2: TGroupBox
-        Left = 195
-        Top = 3
-        Width = 159
-        Height = 106
-        Caption = ' Hemisphere lighting '
-        TabOrder = 4
-        object RxLabel34: TLabel
-          Left = 5
-          Top = 16
-          Width = 76
-          Height = 13
-          Caption = 'Dispersion (deg)'
-        end
-        object RxLabel36: TLabel
-          Left = 5
-          Top = 36
-          Width = 95
-          Height = 13
-          Caption = 'Summary energy (%)'
-        end
-        object Bevel2: TBevel
-          Left = 87
-          Top = 54
-          Width = 67
-          Height = 17
-        end
-        object mcLMAreaColor: TMultiObjColor
-          Left = 89
-          Top = 56
-          Width = 64
-          Height = 14
-          Pen.Style = psClear
-          OnMouseDown = mcLMAmbientMouseDown
-        end
-        object RxLabel24: TLabel
-          Left = 5
-          Top = 55
-          Width = 24
-          Height = 13
-          Caption = 'Color'
-        end
-        object RxLabel39: TLabel
-          Left = 5
-          Top = 83
-          Width = 32
-          Height = 13
-          Caption = 'Quality'
-        end
-        object seLMAreaDispersion: TMultiObjSpinEdit
-          Left = 88
-          Top = 14
-          Width = 66
-          Height = 18
-          LWSensitivity = 0.1
-          ButtonKind = bkLightWave
-          Decimal = 1
-          Increment = 0.1
-          MaxValue = 360
-          ValueType = vtFloat
-          Value = 7.5
-          AutoSize = False
-          TabOrder = 0
-        end
-        object seLMAreaSummaryEnergy: TMultiObjSpinEdit
-          Left = 104
-          Top = 34
-          Width = 50
-          Height = 18
-          LWSensitivity = 0.01
-          ButtonKind = bkLightWave
-          Decimal = 0
-          MaxValue = 1000
-          ValueType = vtFloat
-          Value = 100
-          AutoSize = False
-          TabOrder = 1
-        end
-        object rgAreaQuality: TRadioGroup
-          Left = 56
-          Top = 71
-          Width = 98
-          Height = 30
-          Columns = 3
-          ItemIndex = 1
-          Items.Strings = (
-            '0'
-            '1'
-            '2')
-          TabOrder = 2
-        end
-      end
       object GroupBox3: TGroupBox
         Left = 0
         Top = 162
         Width = 192
         Height = 86
         Caption = ' Jittering '
-        TabOrder = 5
+        TabOrder = 4
         object RxLabel9: TLabel
           Left = 5
           Top = 62
@@ -500,7 +500,7 @@ object frmSceneProperties: TfrmSceneProperties
         Width = 192
         Height = 57
         Caption = ' Ambient '
-        TabOrder = 6
+        TabOrder = 5
         object Bevel1: TBevel
           Left = 115
           Top = 13
@@ -551,7 +551,8 @@ object frmSceneProperties: TfrmSceneProperties
         Width = 159
         Height = 139
         Caption = ' Fuzzy point light '
-        TabOrder = 7
+        TabOrder = 6
+        Visible = False
         object RxLabel35: TLabel
           Left = 5
           Top = 33
@@ -641,7 +642,7 @@ object frmSceneProperties: TfrmSceneProperties
         MaxValue = 255
         Value = 8
         AutoSize = False
-        TabOrder = 8
+        TabOrder = 7
       end
     end
     object tsProgressive: TTabSheet
@@ -1027,41 +1028,41 @@ object frmSceneProperties: TfrmSceneProperties
     HeaderHeight = 19
     HeaderHotTrack = False
     HeaderSections.Data = {
-      F4FFFFFF07000000FC3F8C0400000000FFFFFFFF000001010100295C78000000
-      00000000102700000001005020E1C605000000000000623B0000000000000167
-      000000000000000000010000000000006970653B456E67696E655C416E696D61
-      74696F6E733B456E67696E655C426C656E646572733B523A5C426F726C616E64
-      5C436F6D706F6E656E7473365C616C6590000000010000000001000000000000
-      000000000000FC3F8C0400000000FFFFFFFF000001010100295C780000000000
-      00001027000000010050E8E5C605010000000000623B00000000000001670000
-      00000000000000010000000000006970653B456E67696E655C416E696D617469
-      6F6E733B456E67696E655C426C656E646572733B523A5C426F726C616E645C43
-      6F6D706F6E656E7473365C616C65900000000100000000010000000000000000
-      00000000FC3F8C0400000000FFFFFFFF000001010100295C7800000000000000
-      1027000000010050ACE6C605020000000000623B000000000000016700000000
-      0000000000010000000000006970653B456E67696E655C416E696D6174696F6E
-      733B456E67696E655C426C656E646572733B523A5C426F726C616E645C436F6D
-      706F6E656E7473365C616C659000000001000000000100000000000000000000
-      0000FC3F8C0400000000FFFFFFFF000001010100295C78000000000000001027
-      00000001005070E7C605030000000000623B0000000000000167000000000000
-      000000010000000000006970653B456E67696E655C416E696D6174696F6E733B
-      456E67696E655C426C656E646572733B523A5C426F726C616E645C436F6D706F
-      6E656E7473365C616C6590000000010000000001000000000000000000000000
-      FC3F8C0400000000FFFFFFFF000001010100295C780000000000000010270000
-      0001005034E8C605040000000000623B00000000000001670000000000000000
-      00010000000000006970653B456E67696E655C416E696D6174696F6E733B456E
-      67696E655C426C656E646572733B523A5C426F726C616E645C436F6D706F6E65
-      6E7473365C616C6590000000010000000001000000000000000000000000FC3F
-      8C0400000000FFFFFFFF000001010100295C7800000000000000102700000001
-      0050F8E8C605050000000000623B000000000000016700000000000000000001
-      0000000000006970653B456E67696E655C416E696D6174696F6E733B456E6769
-      6E655C426C656E646572733B523A5C426F726C616E645C436F6D706F6E656E74
-      73365C616C6590000000010000000001000000000000000000000000FC3F8C04
-      00000000FFFFFFFF000001010100295C78000000000000001027000000010050
-      BCE9C605060000000000623B0000000000000167000000000000000000010000
-      000000006970653B456E67696E655C416E696D6174696F6E733B456E67696E65
-      5C426C656E646572733B523A5C426F726C616E645C436F6D706F6E656E747336
-      5C616C6590000000010000000001000000000000000000000000}
+      F4FFFFFF070000003CF1590A00000000FFFFFFFF000001010100000078000000
+      00000000102700000001006F20E1C60500000000000000000000000000000100
+      000000000000000000010000000000000600000043757273580000001F000000
+      0000000007000000446563696D616C0048F1590A1C00000080475C0A60C13005
+      1C000000426944694D6F64650000617290000000010000000001000000000000
+      0000000000003CF1590A00000000FFFFFFFF0000010101000000780000000000
+      0000102700000001006FE8E5C605010000000000000000000000000001000000
+      00000000000000010000000000000600000043757273580000001F0000000000
+      000007000000446563696D616C0048F1590A1C00000080475C0A60C130051C00
+      0000426944694D6F646500006172900000000100000000010000000000000000
+      000000003CF1590A00000000FFFFFFFF00000101010000007800000000000000
+      102700000001006FACE6C6050200000000000000000000000000010000000000
+      0000000000010000000000000600000043757273580000001F00000000000000
+      07000000446563696D616C0048F1590A1C00000080475C0A60C130051C000000
+      426944694D6F6465000061729000000001000000000100000000000000000000
+      00003CF1590A00000000FFFFFFFF000001010100000078000000000000001027
+      00000001006F70E7C60503000000000000000000000000000100000000000000
+      000000010000000000000600000043757273580000001F000000000000000700
+      0000446563696D616C0048F1590A1C00000080475C0A60C130051C0000004269
+      44694D6F64650000617290000000010000000001000000000000000000000000
+      3CF1590A00000000FFFFFFFF0000010101000000780000000000000010270000
+      0001006F34E8C605040000000000000000000000000001000000000000000000
+      00010000000000000600000043757273580000001F0000000000000007000000
+      446563696D616C0048F1590A1C00000080475C0A60C130051C00000042694469
+      4D6F646500006172900000000100000000010000000000000000000000003CF1
+      590A00000000FFFFFFFF00000101010000007800000000000000102700000001
+      006FF8E8C6050500000000000000000000000000010000000000000000000001
+      0000000000000600000043757273580000001F00000000000000070000004465
+      63696D616C0048F1590A1C00000080475C0A60C130051C000000426944694D6F
+      646500006172900000000100000000010000000000000000000000003CF1590A
+      00000000FFFFFFFF00000101010000007800000000000000102700000001006F
+      BCE9C60506000000000000000000000000000100000000000000000000010000
+      000000000600000043757273580000001F000000000000000700000044656369
+      6D616C0048F1590A1C00000080475C0A60C130051C000000426944694D6F6465
+      0000617290000000010000000001000000000000000000000000}
     HeaderFont.Charset = DEFAULT_CHARSET
     HeaderFont.Color = clWindowText
     HeaderFont.Height = -11
