@@ -117,7 +117,7 @@ void CJumping::Execute()
 
 	time_started		= pMonster->m_dwCurrentTime;
 	time_next_allowed	= time_started + m_dwDelayAfterJump;
-	
+
 }
 
 void CJumping::Update()

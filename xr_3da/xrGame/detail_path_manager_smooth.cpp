@@ -656,8 +656,10 @@ void CDetailPathManager::build_smooth_path		(
 		return;
 	}
 
-	if (!fill_key_points(level_path,intermediate_index,start,dest))
+	if (!fill_key_points(level_path,intermediate_index,start,dest)) {
+		Device.Statistic.AI_Range.End	();
 		return;
+	}
 	
 	build_path_via_key_points			(start,dest,finish_params,straight_line_index,straight_line_index_negative);
 #endif

@@ -237,13 +237,13 @@ void CAI_Dog::BonesInMotion()
 void CAI_Dog::UpdateCL()
 {
 	inherited::UpdateCL();
-	CJumping::Update();
 
+	CJumping::Update();
 	float trace_dist = 1.0f;
 
 	// Проверить на нанесение хита во время прыжка
 	if (CJumping::IsGlide()) {
-		
+
 		if (strike_in_jump) return;
 		
 		const CEntity *pE = dynamic_cast<const CEntity *>(CJumping::GetEnemy());
@@ -265,8 +265,6 @@ void CAI_Dog::UpdateCL()
 		// !!!
 		LookPosition(pE->Position());
 	}
-
-	
 }
 
 void CAI_Dog::OnJumpStop()

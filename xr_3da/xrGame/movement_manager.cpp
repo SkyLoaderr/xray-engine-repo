@@ -38,7 +38,7 @@ void CMovementManager::reinit		()
 
 	m_dwCurrentFrame						= Device.dwFrame;
 	
-	m_time_work								= 30000*CPU::cycles_per_microsec;
+	m_time_work								= 300*CPU::cycles_per_microsec;
 	m_speed									= 0.f;
 	m_path_type								= ePathTypeNoPath;
 	m_path_state							= ePathStateDummy;

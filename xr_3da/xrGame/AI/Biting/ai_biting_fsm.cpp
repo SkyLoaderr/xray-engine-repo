@@ -16,12 +16,23 @@ void CAI_Biting::Think()
 	m_dwLastUpdateTime						= m_current_update;
 	m_current_update						= Level().timeServer();
 	
+//	CTimer T; 
+//	Msg("-----------------------------------------------------------------------------");
+//	Msg("Dog = [%s]", cName());
+//	Msg("-----------------------------------------------------------------------------");	
+
+//	T.Start();
 	MotionStats->update						();
+//	Msg("* MotionStats:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
+//	T.Start();
 	vfUpdateParameters						();
+//	Msg("* UpdateParameters:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
+//	T.Start();
 	// if gliding -return;
 	if (m_PhysicMovementControl.JumpState()) enable_movement(false);
+//	Msg("* if (JumpState):: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 	// pre-update path parameters
 	enable_movement							(true);
@@ -34,29 +45,37 @@ void CAI_Biting::Think()
 		SetState							(stateRest);
 	}
 
+//	T.Start();
 	// Squad calculations
 	CMonsterSquad	*pSquad = Level().SquadMan.GetSquad((u8)g_Squad());
 	pSquad->UpdateMonsterData(this,const_cast<CEntity *>(m_tEnemy.obj));
 	if ((pSquad->GetLeader() == this)) {
 		pSquad->UpdateDecentralized();
 	} 
+//	Msg("* UpdateDecentralized:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 	StateSelector							();
 	CurrentState->Execute					(m_current_update);
 
+//	T.Start();
 	// update path
 	CDetailPathManager::set_path_type		(eDetailPathTypeSmooth);
 	CDetailPathManager::set_try_min_time	(b_try_min_time); 
 	update_path								();
+//	Msg("* Update Path:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
+//	T.Start();
 	PreprocessAction						();
 	MotionMan.ProcessAction					();
-	
+//	Msg("* Process Action:: Elapsed time (sec): %f",T.GetElapsed_sec());
+
 	SetVelocity								();
 	set_desirable_speed						(m_fCurSpeed);
 	
 	// process sound
+//	T.Start();
 	ControlSound							(m_current_update);
+//	Msg("* Control Sound:: Elapsed time (sec): %f",T.GetElapsed_sec());
 
 	// Debuging
 	HDebug->SetActive						(true);

@@ -14,8 +14,13 @@
 class CAI_Biting;
 
 #define IS_NEED_REBUILD() pMonster->NeedRebuildPath(2,0.5f)
+#define is_(param)		((flags & param) == param)
+#define not_(param)		((flags & param) != param)
+
+
 
 #include "ai_biting_state_attack.h"
+#include "ai_biting_state_exploreNDE.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingRest class
@@ -234,31 +239,6 @@ private:
 	virtual void	Run					();
 };
 
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingExploreNDE class	// Explore non-danger enemy //  Идти в сторону звука	
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-class CBitingExploreNDE : public IState {
-	typedef IState inherited;
-	CAI_Biting		*pMonster;
-	SoundElem		m_tSound;
-	
-	enum {
-		ACTION_LOOK_DESTINATION,
-		ACTION_GOTO_SOUND_SOURCE,
-		ACTION_LOOK_AROUND
-	} m_tAction;
-
-	bool			flag_once_1;
-	bool			flag_once_2;
-
-
-public:
-					CBitingExploreNDE	(CAI_Biting *p);
-private:
-	virtual void	Init				();
-	virtual void	Run					();
-};
 
 //////////////////////////////////////////////////////////////////////////
 // Тестовое состояние CBitingNull

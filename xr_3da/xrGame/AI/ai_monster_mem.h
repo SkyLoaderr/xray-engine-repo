@@ -114,6 +114,9 @@ public:
 		void	HearSound				(const CObject* who, int eType, const Fvector &Position, float power, TTime time);
 	IC	bool	IsRememberSound			() {return (!Sounds.empty());}		
 		void	GetSound				(SoundElem &s, bool &bDangerous);	// возвращает самый опасный звук
+	IC	void	GetSound				(SoundElem &s) {s = Sounds.front();}
+		const xr_vector<SoundElem>	&GetSoundData() {return Sounds;}
+		
 
 protected:
 	IC	void	Init					(TTime mem_time) {Deinit(); timeMemory = mem_time; }

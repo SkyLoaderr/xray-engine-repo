@@ -9,9 +9,6 @@
 #include "../ai_monster_group.h"
 
 
-#define is_(param)		((flags & param) == param)
-#define not_(param)		((flags & param) != param)
-
 /////////////////////////////////////////////////////////////////////////
 // State Attack Flags 
 

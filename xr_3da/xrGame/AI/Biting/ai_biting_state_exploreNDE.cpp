@@ -2,9 +2,15 @@
 #include "ai_biting.h"
 #include "ai_biting_state.h"
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CBitingExploreNDE class  
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+// Описание состояния <Слышу выгодный и неопасный звук>
+// 1. Посмотреть на позицию звука
+// 2. Прийти на точку звука
+// 3. Осмотреться
+//////////////////////////////////////////////////////////////////////////
+
+#define SF_MANY_DIFFERENT_SOUNDS	(1 << 1)
+
 CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
 {
 	pMonster = p;
@@ -14,26 +20,21 @@ CBitingExploreNDE::CBitingExploreNDE(CAI_Biting *p)
 void CBitingExploreNDE::Init()
 {
 	LOG_EX("nde init");
-	
 	inherited::Init();
 
-	bool bTemp;
-	pMonster->GetSound(m_tSound, bTemp);
-
-	flag_once_1 = false;
-	flag_once_2 = false;
+	pMonster->GetSound(m_tSound);
 
 	m_tAction = ACTION_LOOK_DESTINATION;
 }
 
 void CBitingExploreNDE::Run()
 {
-	// если новый звук, restart
-	SoundElem	se;
-	bool		bTemp;
-	pMonster->GetSound(se, bTemp);
-	if (m_tSound.time + 2000 < se.time) Init();
+	// UpdateFlags();
+	SoundElem new_sound;
+	pMonster->GetSound(new_sound);
+	if ((new_sound.time != m_tSound.time))  Init();
 
+	
 	switch (m_tAction) {
 	case ACTION_LOOK_DESTINATION:			// повернуться в сторону звука
 		LOG_EX("nde: LOOK DEST");
@@ -64,4 +65,21 @@ void CBitingExploreNDE::Run()
 	pMonster->SetPathParams(pMonster->level_vertex_id(), pMonster->Position()); 
 	pMonster->SetSound(SND_TYPE_IDLE, pMonster->_sd->m_dwIdleSndDelay);
 }
+
+//void CBitingExploreNDE::UpdateFlags()
+//{
+//	const xr_vector<SoundElem>	&sounds = pMonster->GetSoundData();
+//	
+//	SoundElem cur_sound;
+//	pMonster->GetSound(cur_sound);
+//
+//	if (m_dwStateStartedTime != m_dwCurrentTime) {
+//		if (cur_sound.type == m_tSound.time)
+//		
+//		if (cur_sound.time != m_tSound.time) {
+//
+//		}
+//	}
+//
+//}
 
