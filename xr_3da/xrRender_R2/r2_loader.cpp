@@ -264,7 +264,7 @@ void CRender::LoadSectors(IReader* fs)
 				CL.add_face_packed(
 				P.vertices[0],P.vertices[j-1],P.vertices[j],
 				CDB::edge_open,CDB::edge_open,CDB::edge_open,
-				0,0,u32(&Portals[i])
+				0,0,u32(Portals[i])
 				);
 		}
 		if (CL.getTS()<2)
