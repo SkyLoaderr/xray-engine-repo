@@ -355,7 +355,6 @@ void	CShaderManager::DBG_VerifyGeoms	()
 
 SGeometry*	CShaderManager::CreateGeom	(D3DVERTEXELEMENT9* decl, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	DBG_VerifyGeoms						();
 	R_ASSERT							(decl && vb);
 
 	IDirect3DVertexDeclaration9* dcl 	= _CreateDecl			(decl);
@@ -384,11 +383,9 @@ SGeometry*	CShaderManager::CreateGeom	(D3DVERTEXELEMENT9* decl, IDirect3DVertexB
 }
 SGeometry*	CShaderManager::CreateGeom	(u32 FVF, IDirect3DVertexBuffer9* vb, IDirect3DIndexBuffer9* ib)
 {
-	DBG_VerifyGeoms						();
 	D3DVERTEXELEMENT9	dcl	[MAX_FVF_DECL_SIZE];
 	CHK_DX				(D3DXDeclaratorFromFVF(FVF,dcl));
 	SGeometry* g		=  CreateGeom	(dcl,vb,ib);
-	DBG_VerifyGeoms						();
 	return	g;
 }
 
