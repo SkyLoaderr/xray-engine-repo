@@ -14,10 +14,26 @@
 CRender										Render_Implementation;
 
 // Implementation
-CVisual*	CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
-CVisual*	CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
-CVisual*	CRender::model_Duplicate		(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
-void		CRender::model_Delete			(CVisual* &V)					{ Models.Delete(V);						}
+CVisual*				CRender::model_Create			(LPCSTR name)					{ return Models.Create(name);			}
+CVisual*				CRender::model_Create			(LPCSTR name, IReader* data)	{ return Models.Create(name,data);		}
+CVisual*				CRender::model_Duplicate		(CVisual* V)					{ return Models.Instance_Duplicate(V);	}
+void					CRender::model_Delete			(CVisual* &V)					{ Models.Delete(V);						}
+IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
+{
+	CDetail*	D		= xr_new<CDetail> ();
+	D->Load				(F);
+	return D;
+}
+void					CRender::model_Delete			(IRender_DetailModel* & F)
+{
+	if (F)
+	{
+		CDetail*	D	= (CDetail*)F;
+		D->Unload		();
+		xr_delete		(D);
+		F				= NULL;
+	}
+}
 
 int						CRender::getVisualsCount		()					{ return Visuals.size();								}
 IRender_Portal*			CRender::getPortal				(int id)			{ VERIFY(id<int(Portals.size()));	return Portals[id];	}
