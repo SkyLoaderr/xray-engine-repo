@@ -697,6 +697,12 @@
 						RelativePath=".\ActorInput.cpp">
 					</File>
 					<File
+						RelativePath="ActorPhySkeleton.cpp">
+					</File>
+					<File
+						RelativePath="ActorVehicle.cpp">
+					</File>
+					<File
 						RelativePath="Actor_Events.cpp">
 					</File>
 					<File

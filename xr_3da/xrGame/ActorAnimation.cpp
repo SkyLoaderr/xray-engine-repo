@@ -52,7 +52,7 @@ void __stdcall CActor::HeadCallback(CBoneInstance* B)
 	B->mTransform.c		= c;
 }
 
-void CActor::SActorState::STorsoWpn::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
+void CActor::SActorMotions::SActorState::STorsoWpn::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
 	aim				= K->ID_Cycle(strconcat(buf,base0,"_torso_aim",		base1));
@@ -62,7 +62,7 @@ void CActor::SActorState::STorsoWpn::Create(CKinematics* K, LPCSTR base0, LPCSTR
 	drop			= K->ID_Cycle(strconcat(buf,base0,"_torso_drop",	base1));
 	attack			= K->ID_Cycle(strconcat(buf,base0,"_torso_attack",	base1));
 }
-void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
+void CActor::SActorMotions::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCSTR base1)
 {
 	char			buf[128];
 	legs_fwd		= K->ID_Cycle(strconcat(buf,base0,base1,"_fwd"));
@@ -71,7 +71,7 @@ void CActor::SActorState::SAnimState::Create(CKinematics* K, LPCSTR base0, LPCST
 	legs_rs			= K->ID_Cycle(strconcat(buf,base0,base1,"_rs"));
 }
 
-void CActor::SActorState::Create(CKinematics* K, LPCSTR base)
+void CActor::SActorMotions::SActorState::Create(CKinematics* K, LPCSTR base)
 {
 	char			buf[128];
 	legs_idle		= K->ID_Cycle(strconcat(buf,base,"_idle"));
@@ -87,19 +87,30 @@ void CActor::SActorState::Create(CKinematics* K, LPCSTR base)
 	jump_idle		= K->ID_Cycle(strconcat(buf,base,"_jump_idle"));
 	landing[0]		= K->ID_Cycle(strconcat(buf,base,"_jump_end"));
 	landing[1]		= K->ID_Cycle(strconcat(buf,base,"_jump_end_1"));
-	m_steering		= K->ID_Cycle("steering");
+}
+
+void CActor::SActorMotions::Create(CKinematics* V)
+{
+	m_steering_torso_left	= V->ID_Cycle("steering_torso_ls");
+	m_steering_torso_right	= V->ID_Cycle("steering_torso_rs");
+	m_steering_torso_idle	= V->ID_Cycle("steering_torso_idle");
+	m_steering_legs_idle	= V->ID_Cycle("steering_legs_idle");
+
+	m_normal.Create	(V,"norm");
+	m_crouch.Create	(V,"cr");
+	m_climb.Create	(V,"cr");
 }
 
 void CActor::g_SetAnimation( u32 mstate_rl )
 {
 	if (g_Alive())
 	{
-		SActorState* ST = 0;
-		SActorState::SAnimState*		AS = 0;
+		SActorMotions::SActorState*				ST = 0;
+		SActorMotions::SActorState::SAnimState*	AS = 0;
 		
-		if		(mstate_rl&mcCrouch)	ST = &m_crouch;
-		else if	(mstate_rl&mcClimb)		ST = &m_climb;
-		else							ST = &m_normal;
+		if		(mstate_rl&mcCrouch)	ST = &m_anims.m_crouch;
+		else if	(mstate_rl&mcClimb)		ST = &m_anims.m_climb;
+		else							ST = &m_anims.m_normal;
 
 		if (isAccelerated(mstate_rl))	AS = &ST->m_run;
 		else							AS = &ST->m_walk;
@@ -122,7 +133,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		// Torso
 		CWeapon* W = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());//(Weapons->ActiveWeapon());
 		if (W){
-			SActorState::STorsoWpn* TW	= &ST->m_torso[W->HandDependence()-1];
+			SActorMotions::SActorState::STorsoWpn* TW	= &ST->m_torso[W->HandDependence()-1];
 			if (!b_DropActivated&&!fis_zero(f_DropPower)){
 				M_torso					= TW->drop;
 				m_bAnimTorsoPlayed		= TRUE;
@@ -157,9 +168,9 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 		}
 	}else{
 		if (m_current_legs||m_current_torso){
-			SActorState* ST = 0;
-			if (mstate_rl&mcCrouch)	ST = &m_crouch;
-			else					ST = &m_normal;
+			SActorMotions::SActorState* ST = 0;
+			if (mstate_rl&mcCrouch)	ST = &m_anims.m_crouch;
+			else					ST = &m_anims.m_normal;
 			mstate_real			= 0;
 			m_current_legs		= 0;
 			m_current_torso		= 0;

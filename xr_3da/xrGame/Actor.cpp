@@ -13,21 +13,6 @@
 #include "Actor_Flags.h"
 #include "UI.h"
 
-const u32		patch_frames	= 50;
-const float		respawn_delay	= 1.f;
-const float		respawn_auto	= 7.f;
-
-
-	//skeleton
-static	float					skel_density_factor;
-static	float					skel_airr_lin_factor;
-static	float					skel_airr_ang_factor;
-static	float					hinge_force_factor;
-static	float					hinge_force_factor1;
-static	float					hinge_force_factor2;
-static	float					hinge_vel;
-static	float					skel_fatal_impulse_factor;
-
 // breakpoints
 #include "..\xr_input.h"
 
@@ -38,6 +23,21 @@ static	float					skel_fatal_impulse_factor;
 
 #include "targetassault.h"
 #include "targetcs.h"
+
+const u32		patch_frames	= 50;
+const float		respawn_delay	= 1.f;
+const float		respawn_auto	= 7.f;
+
+
+//skeleton
+float	CActor::skel_density_factor;
+float	CActor::skel_airr_lin_factor;
+float	CActor::skel_airr_ang_factor;
+float	CActor::hinge_force_factor;
+float	CActor::hinge_force_factor1;
+float	CActor::hinge_force_factor2;
+float	CActor::hinge_vel;
+float	CActor::skel_fatal_impulse_factor;
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
 static const float	s_fLandingTime2		= 0.3f;// через сколько снять флаг Landing2 (т.е. включить следующую анимацию)
@@ -58,8 +58,6 @@ Flags32			psActorFlags={0};
 //////////////////////////////////////////////////////////////////////
 CActor::CActor() : CEntityAlive()
 {
-	m_current_all			= 0;
-
 	// Cameras
 	cameras[eacFirstEye]	= xr_new<CCameraFirstEye>	(this, pSettings, "actor_firsteye_cam", false);
 	cameras[eacLookAt]		= xr_new<CCameraLook>		(this, pSettings, "actor_look_cam",		false);
@@ -170,25 +168,22 @@ void CActor::Load		(LPCSTR section )
 	// BOX activate
 	ph_Movement.ActivateBox	(0);
 
-
-
-
 	ph_Movement.Load(section);
 	ph_Movement.SetParent(this);
 
-	m_fWalkAccel		= pSettings->r_float(section,"walk_accel");	
-	m_fJumpSpeed		= pSettings->r_float(section,"jump_speed");
-	m_fRunFactor		= pSettings->r_float(section,"run_coef");
-	m_fCrouchFactor		= pSettings->r_float(section,"crouch_coef");
-	skel_density_factor = pSettings->r_float(section,"ph_skeleton_mass_factor");
-	skel_airr_lin_factor=pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
-	skel_airr_ang_factor=pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
-	hinge_force_factor  =pSettings->r_float(section,"ph_skeleton_hinger_factor");
-	hinge_force_factor1 =pSettings->r_float(section,"ph_skeleton_hinger_factor1");
-	skel_ddelay			=pSettings->r_s32(section,"ph_skeleton_ddelay");
-	hinge_force_factor2 =pSettings->r_float(section,"ph_skeleton_hinger_factor2");
-	hinge_vel			=pSettings->r_float(section,"ph_skeleton_hinge_vel");
-	skel_fatal_impulse_factor=pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
+	m_fWalkAccel				= pSettings->r_float(section,"walk_accel");	
+	m_fJumpSpeed				= pSettings->r_float(section,"jump_speed");
+	m_fRunFactor				= pSettings->r_float(section,"run_coef");
+	m_fCrouchFactor				= pSettings->r_float(section,"crouch_coef");
+	skel_density_factor 		= pSettings->r_float(section,"ph_skeleton_mass_factor");
+	skel_airr_lin_factor		= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
+	skel_airr_ang_factor		= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
+	hinge_force_factor  		= pSettings->r_float(section,"ph_skeleton_hinger_factor");
+	hinge_force_factor1 		= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
+	skel_ddelay					= pSettings->r_s32	(section,"ph_skeleton_ddelay");
+	hinge_force_factor2 		= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
+	hinge_vel					= pSettings->r_float(section,"ph_skeleton_hinge_vel");
+	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	ph_Movement.SetJumpUpVelocity(m_fJumpSpeed);
 
 	//Weapons				= xr_new<CWeaponList> (this);
@@ -370,9 +365,7 @@ BOOL CActor::net_Spawn		(LPVOID DC)
 	V->LL_GetInstance(shoulder_bone).set_callback	(ShoulderCallback,this);
 	V->LL_GetInstance(head_bone).set_callback		(HeadCallback,this);
 
-	m_normal.Create		(V,"norm");
-	m_crouch.Create		(V,"cr");
-	m_climb.Create		(V,"cr");
+	m_anims.Create		(V);
 	//
 	//Weapons->Init		("bip01_r_hand","bip01_l_finger1");
 
@@ -681,8 +674,6 @@ void CActor::UpdateCL()
 	inherited::UpdateCL();
 if(m_vehicle)
 {
-	if (m_current_all) 
-		m_current_all->timeCurrent = 0;
 	m_vehicle->UpdateCL();
 	return;
 }
@@ -1308,551 +1299,8 @@ float CActor::HitScale	(int element)
 	return hit_factor*scale;
 }
 
-void CActor::create_Skeleton(){
-	Fmatrix ident;
-	float density=100.f*skel_density_factor;
-	float hinge_force=5.f*hinge_force_factor;
-	float hinge_force1=5.f*hinge_force_factor2;
-	//u32 material=0;
-	LPCSTR material="actor";
-	ident.identity();
-
-	Fmatrix m1;
-	m1.set(ident);
-	m1._11=0.f;
-	m1._12=1.f;
-	m1._21=-1.f;
-	m1._22=0.f;
-
-
-	Fmatrix m2;
-	m2.set(ident);
-	m2._11=-1.f;
-	m2._33=-1.f;
-
-	Fmatrix m3;
-	m3.set(ident);
-	m3._11=-1.f;
-	m3._22=-1.f;
-
-	Fmatrix m4;
-	m4.set(ident);
-	m4._22=-1.f;
-	m4._33=-1.f;
-
-	Fmatrix m5;
-	m5.set(ident);
-
-	Fmatrix m6;
-	m6.set(m1);
-	m6._12=-1.f;
-	m6._21=1.f;
-
-	//create shell
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
-	m_phSkeleton		= P_create_Shell();
-	m_phSkeleton->set_Kinematics(M);
-	CPhysicsJoint*		joint;
-	//get bone instance
-	int id=M->LL_BoneID("bip01_pelvis");
-	CBoneInstance& instance=M->LL_GetInstance				(id);
-
-	//create root element
-	CPhysicsElement* element=P_create_Element				();
-	element->mXFORM.set(m1);
-	instance.set_callback(m_phSkeleton->GetBonesCallback(),element);
-
-	element->add_Box(M->LL_GetBox(id));
-	//Fsphere sphere;
-	//sphere.P.set(0,0,0);
-	//sphere.R=0.3f;
-	//pelvis->add_Sphere(sphere);
-	element->setMass(density);
-	m_phSkeleton->add_Element(element);
-	element->SetMaterial("materials\\skel1");
-	CPhysicsElement* parent=element;
-	CPhysicsElement* root=parent;
-
-	//spine
-	
-	id=M->LL_BoneID("bip01_spine");
-	element=P_create_Element				();
-	element->mXFORM.set(m1);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*1.f/4.f,M_PI*1.f/2.f,0);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-	//Fquaternion k;
-	//k.get_axis_angle
-	//Fmatrix m;
-	
-	
-	//parent=element;
-	
-	id=M->LL_BoneID("bip01_spine1");
-	element=P_create_Element				();
-	element->mXFORM.set(m1);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,2);
-	joint->SetLimits(-M_PI/4.f,M_PI/4.f,0);//
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
-	joint->SetLimits(-M_PI/8.f,M_PI/8.f,1);
-	joint->SetForceAndVelocity(hinge_force);
-	joint->SetForceAndVelocity(hinge_force*10,1.5f,2);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=element;
-	CPhysicsElement* root1=parent;
-	id=M->LL_BoneID("bip01_neck");
-	element=P_create_Element				();
-	element->mXFORM.set(m1);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	/*
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
-	*/
-	
-	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,2);
-	joint->SetAxisVsSecondElement(0,0,1,1);
-	joint->SetAxisVsSecondElement(1,0,0,0);
-
-	joint->SetLimits(-M_PI/5.f,M_PI/5.f,0);
-	joint->SetLimits(0.f,0.f,1);
-	joint->SetLimits(-M_PI/3.f,M_PI/3.f,2);
-	
-	//joint->SetLimits(0.1f,0.f,0);
-	//joint->SetLimits(0.f,0.f,1);
-	//joint->SetLimits(0.f,0.f,2);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=element;
-	id=M->LL_BoneID("bip01_head");
-	element=P_create_Element				();
-	element->mXFORM.set(m1);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density*5);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/3.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=root1;
-	
-	id=M->LL_BoneID("bip01_l_clavicle");
-	element=P_create_Element				();
-	element->mXFORM.set(m2);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-//	const Fobb& box=M->LL_GetBox(id);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);//box.m_halfsize.y box.m_halfsize.x*2.f
-	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	//parent=element;
-	
-	id=M->LL_BoneID("bip01_l_upperarm");
-	element=P_create_Element				();
-	element->mXFORM.set(m2);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/2.2f,0);
-	//joint->SetLimits(0.f,0.f,0);
-	joint->SetAxisVsSecondElement(0,1,0,2);
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
-	joint->SetLimits(0.f,0.f,1);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=element;
-	id=M->LL_BoneID("bip01_l_forearm");
-	element=P_create_Element				();
-	element->mXFORM.set(m2);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*3.f/4.f,0,0);
-	joint->SetForceAndVelocity(hinge_force1,hinge_vel);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=element;
-	id=M->LL_BoneID("bip01_l_hand");
-	element=P_create_Element				();
-	element->mXFORM.set(m3);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density*20.f);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-
-	parent=root1;
-	id=M->LL_BoneID("bip01_r_clavicle");
-	element=P_create_Element				();
-	element->mXFORM.set(m4);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(1,0,0,0);
-	joint->SetLimits(-M_PI/3.f,M_PI/4.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	//parent=element;
-	id=M->LL_BoneID("bip01_r_upperarm");
-	element=P_create_Element				();
-	element->mXFORM.set(m4);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetLimits(-M_PI/2.2f,M_PI/3.f,0);
-	joint->SetAxisVsSecondElement(0,1,0,2);
-	joint->SetLimits(-M_PI/4.f,M_PI/3.f,2);
-	joint->SetLimits(0.f,0.f,1);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=element;
-	id=M->LL_BoneID("bip01_r_forearm");
-	element=P_create_Element				();
-	element->mXFORM.set(m4);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*3.f/4.f,0,0);
-	joint->SetForceAndVelocity(hinge_force1,hinge_vel);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=element;
-	id=M->LL_BoneID("bip01_r_hand");
-	element=P_create_Element				();
-	element->mXFORM.set(m5);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density*20.f);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*1/3.f,M_PI*1/3.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-
-	parent=root;
-	id=M->LL_BoneID("bip01_r_thigh");
-	element=P_create_Element				();
-	element->mXFORM.set(m6);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetAxisVsSecondElement(0,1,0,2);
-	joint->SetLimits(-M_PI*1.f/6.f,M_PI*1.f/4.f,2);
-	joint->SetLimits(0.f,0.f,1);
-	//joint->SetLimits(0,M_PI*1/3.5f,0);
-	joint->SetLimits(-M_PI*1/8.f,0,0);
-	joint->SetForceAndVelocity(hinge_force*2.f);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial("materials\\skel1");
-
-	parent=element;
-	id=M->LL_BoneID("bip01_r_calf");
-	element=P_create_Element				();
-	element->mXFORM.set(m6);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*2/3.f,0,0);
-	joint->SetForceAndVelocity(hinge_force1,hinge_vel);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial("materials\\skel1");
-
-	parent=element;
-	id=M->LL_BoneID("bip01_r_foot");
-	element=P_create_Element				();
-	element->mXFORM.set(m6);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density*5.f);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial("materials\\skel1");
-
-	parent=root;
-	id=M->LL_BoneID("bip01_l_thigh");
-	element=P_create_Element				();
-	element->mXFORM.set(m6);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::full_control,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetAxisVsSecondElement(0,1,0,2);
-	joint->SetLimits(-M_PI*1.f/6.f,M_PI*1.f/4.f,2);
-	joint->SetLimits(0.f,0.f,1);
-	joint->SetLimits(0,M_PI*1/8.f,0);
-	joint->SetForceAndVelocity(hinge_force*2.f);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial("materials\\skel1");
-
-	parent=element;
-	id=M->LL_BoneID("bip01_l_calf");
-	element=P_create_Element				();
-	element->mXFORM.set(m6);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*2/3.f,0,0);
-	joint->SetForceAndVelocity(hinge_force1,hinge_vel);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial("materials\\skel1");
-
- 	parent=element;
-	id=M->LL_BoneID("bip01_l_foot");
-	element=P_create_Element				();
-	element->mXFORM.set(m6);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density*20.f);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::welding,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,1,0,0);
-	joint->SetLimits(-M_PI*1/6.f,M_PI*1/6.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial("materials\\skel1");
-
-
-	//set shell start position
-	Fmatrix m;
-	m.set(mRotate);
-	m.c.set(vPosition);
-	//ph_Movement.GetDeathPosition(m.c);
-	//m.c.y-=0.4f;
-	m_phSkeleton->mXFORM.set(m);
-	m_phSkeleton->SetAirResistance(0.002f*skel_airr_lin_factor,
-								   0.3f*skel_airr_ang_factor);
-	
-}
-
-
-
-void CActor::create_Skeleton1(){
-	Fmatrix ident;
-	float density=100.f;
-	float hinge_force=5.f*hinge_force_factor;
-	//u32 material=0;
-	LPCSTR material="actor";
-	ident.identity();
-
-	Fmatrix m1;
-	m1.set(ident);
-
-
-	Fmatrix m2;
-	/*
-	m2._11=	0.80434370f;
-	m2._12=	-0.59369904f;
-	m2._13=	0.00000000f;
-
-	m2._14=	0.00000000f;
-
-	m2._21=	0.59369904f;
-	m2._22=	0.80434370f;
-	m2._23=	0.00000000f;
-
-	m2._24=	0.00000000f;
-
-	m2._31=	0.00000000f;
-	m2._32=	0.00000000f;
-	m2._33=	1.0000000f;
-
-	m2._34=	0.00000000f;
-*/
-
-	m2._11=	0.0f;
-	m2._12=	-1.0f;
-	m2._13=	0.00000000f;
-
-	m2._14=	0.00000000f;
-
-	m2._21=	1.0f;
-	m2._22=	0.0f;
-	m2._23=	0.00000000f;
-
-	m2._24=	0.00000000f;
-
-	m2._31=	0.00000000f;
-	m2._32=	0.00000000f;
-	m2._33=	1.0000000f;
-
-	m2._34=	0.00000000f;
-
-
-
-	//create shell
-	CKinematics* M		= PKinematics(pVisual);			VERIFY(M);
-	m_phSkeleton		= P_create_Shell();
-	CPhysicsJoint*		joint;
-	//get bone instance
-	int id=M->LL_BoneID("bone01");
-	CBoneInstance& instance=M->LL_GetInstance				(id);
-
-	//create root element
-	CPhysicsElement* element=P_create_Element				();
-	element->mXFORM.set(m1);
-	instance.set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	//Fsphere sphere;
-	//sphere.P.set(0,0,0);
-	//sphere.R=0.3f;
-	//pelvis->add_Sphere(sphere);
-	element->setMass(density);
-	m_phSkeleton->add_Element(element);
-	element->SetMaterial(material);
-
-	CPhysicsElement* parent=element;
-
-
-	//spine
-	id=M->LL_BoneID("bone02");
-	element=P_create_Element				();
-	element->mXFORM.set(m1);
-	(M->LL_GetInstance(id)).set_callback(m_phSkeleton->GetBonesCallback(),element);
-	element->add_Box(M->LL_GetBox(id));
-	element->setMass(density);
-	element->set_ParentElement(parent);
-	m_phSkeleton->add_Element(element);
-	joint=P_create_Joint(CPhysicsJoint::hinge,parent,element);
-	joint->SetAnchorVsSecondElement(0,0,0);
-	joint->SetAxisVsSecondElement(0,0,1,0);
-	joint->SetLimits(0,M_PI*1.f/2.f,0);
-	joint->SetForceAndVelocity(hinge_force);
-	m_phSkeleton->add_Joint(joint);
-	element->SetMaterial(material);
-	//Fquaternion k;
-	//k.get_axis_angle
-	//Fmatrix m;
-	
-	
-
-
-
-
-
-	//set shell start position
-	Fmatrix m;
-	m.set(mRotate);
-	ph_Movement.GetDeathPosition(m.c);
-	m_phSkeleton->mXFORM.set(m);
-
-}
-
-
 void CActor::SetPhPosition(const Fmatrix &pos)
 {
-
 	if(!m_phSkeleton) ph_Movement.SetPosition(pos.c);
 	//else m_phSkeleton->S
 }
@@ -1869,40 +1317,8 @@ void CActor::ForceTransform(const Fmatrix& m)
 
 }
 
-
-void CActor::attach_Vehicle(CCar* vehicle)
-{
-	if(m_vehicle) return;
-	m_vehicle=dynamic_cast<CCar*>(vehicle);
-	if(!m_vehicle) return;
-	if(!m_vehicle->attach_Actor(this))
-	{
-		m_vehicle=NULL;
-		return;
-	}
-	m_current_all = PKinematics	(pVisual)->PlayCycle(m_normal.m_steering);
-	ph_Movement.DestroyCharacter();
-	PIItem iitem=m_inventory.ActiveItem();
-	if(iitem)iitem->m_showHUD=false;
-	setVisible(true);
-	
-
-
-
-
-}
-void CActor::detach_Vehicle()
-{
-	if(!m_vehicle) return;
-	//m_vehicle->detach_Actor();//calling by detach_Actor()
-	ph_Movement.CreateCharacter();
-	ph_Movement.SetPosition(vPosition);
-	m_vehicle=NULL;
-}
-
 CObject* CActor::pick_Object()
 {
-	
 	setEnabled(false);
 	Collide::ray_query	l_rq;
 	l_rq.O=NULL;
@@ -1910,25 +1326,6 @@ CObject* CActor::pick_Object()
 	setEnabled(true);
 
 	return l_rq.O;
-}
-
-void CActor::use_Vehicle()
-{
-	if(m_vehicle)	
-	{
-					detach_Vehicle();
-
-	}
-	else
-	{
-					if (pCamBobbing){Level().Cameras.RemoveEffector(cefBobbing); pCamBobbing=0;}
-					attach_Vehicle(dynamic_cast<CCar*>(pick_Object()));
-	}
-
-
-
-
-
 }
 
 #ifdef DEBUG

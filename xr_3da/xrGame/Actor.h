@@ -89,38 +89,49 @@ protected:
 	sound					sndHit[SND_HIT_COUNT];
 	sound					sndDie[SND_DIE_COUNT];
 
-	struct					SActorState
+	struct					SActorMotions
 	{
-		struct				SAnimState
+		struct				SActorState
 		{
-			CMotionDef*		legs_fwd;
-			CMotionDef*		legs_back;
-			CMotionDef*		legs_ls;
-			CMotionDef*		legs_rs;
-			void			Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
-		};
-		struct				STorsoWpn{
-			CMotionDef*		aim;
-			CMotionDef*		holster;
-			CMotionDef*		draw;
-			CMotionDef*		drop;
-			CMotionDef*		reload;
-			CMotionDef*		attack;
-			void			Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
-		};
+			struct			SAnimState
+			{
+				CMotionDef*	legs_fwd;
+				CMotionDef*	legs_back;
+				CMotionDef*	legs_ls;
+				CMotionDef*	legs_rs;
+				void		Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
+			};
+			struct			STorsoWpn{
+				CMotionDef*	aim;
+				CMotionDef*	holster;
+				CMotionDef*	draw;
+				CMotionDef*	drop;
+				CMotionDef*	reload;
+				CMotionDef*	attack;
+				void		Create(CKinematics* K, LPCSTR base0, LPCSTR base1);
+			};
 
-		CMotionDef*			legs_idle;
-		CMotionDef*			jump_begin;
-		CMotionDef*			jump_idle;
-		CMotionDef*			landing[2];
-		CMotionDef*			legs_turn;
-		CMotionDef*			death;
-		SAnimState			m_walk;
-		SAnimState			m_run;
-		STorsoWpn			m_torso[2];
-		CMotionDef*			m_torso_idle;
-		CMotionDef*			m_steering;
-		void				Create(CKinematics* K, LPCSTR base);
+			CMotionDef*		legs_idle;
+			CMotionDef*		jump_begin;
+			CMotionDef*		jump_idle;
+			CMotionDef*		landing[2];
+			CMotionDef*		legs_turn;
+			CMotionDef*		death;
+			SAnimState		m_walk;
+			SAnimState		m_run;
+			STorsoWpn		m_torso[2];
+			CMotionDef*		m_torso_idle;
+			void			Create(CKinematics* K, LPCSTR base);
+		};
+		CMotionDef*			m_steering_torso_left;
+		CMotionDef*			m_steering_torso_right;
+		CMotionDef*			m_steering_torso_idle;
+		CMotionDef*			m_steering_legs_idle;
+
+		SActorState			m_normal;
+		SActorState			m_crouch;
+		SActorState			m_climb;
+		void				Create(CKinematics* K);
 	};
 	BOOL					m_bAnimTorsoPlayed;
 	static void				AnimTorsoPlayCallBack(CBlend* B)
@@ -130,14 +141,23 @@ protected:
 	}
 public:
 	// animation
+	SActorMotions			m_anims;
+
 	CBlend*					m_current_legs_blend;
+	CBlend*					m_current_torso_blend;
 	CBlend*					m_current_jump_blend;
-	CBlend*					m_current_all;
 	CMotionDef*				m_current_legs;
 	CMotionDef*				m_current_torso;
-	SActorState				m_normal;
-	SActorState				m_crouch;
-	SActorState				m_climb;
+protected:
+	// skeleton
+	static	float			skel_density_factor;
+	static	float			skel_airr_lin_factor;
+	static	float			skel_airr_ang_factor;
+	static	float			hinge_force_factor;
+	static	float			hinge_force_factor1;
+	static	float			hinge_force_factor2;
+	static	float			hinge_vel;
+	static	float			skel_fatal_impulse_factor;
 protected:
 	Fvector					m_saved_dir;
 	Fvector					m_saved_position;
