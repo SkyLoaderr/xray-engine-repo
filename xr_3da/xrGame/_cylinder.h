@@ -27,9 +27,6 @@ struct	Fcylinder
 		m_rotate.k.set	(S.k);
 		m_translate.set	(S.c);
 	}
-
-	
-
 };
 
 #endif

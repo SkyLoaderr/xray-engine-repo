@@ -149,7 +149,7 @@ void CPHElement::			create_Sphere	(const Fsphere&	V){
 			if(object_contact_callback)dGeomUserDataSetObjectContactCallback(geom,object_contact_callback);
 		}
 };
-void CPHElement::add_Cylinder(const Fcylinder& V)
+void CPHElement::add_Cylinder	(const Fcylinder& V)
 {
 	m_cylinders_data.push_back(V);
 }
@@ -161,8 +161,8 @@ void CPHElement::create_Cylinder(const Fcylinder& V)
 	dVector3 local_position=
 	{
 		V.m_translate.x-m_mass_center.x,
-			V.m_translate.y-m_mass_center.y,
-			V.m_translate.z-m_mass_center.z
+		V.m_translate.y-m_mass_center.y,
+		V.m_translate.z-m_mass_center.z
 	};
 
 	if(m_group){

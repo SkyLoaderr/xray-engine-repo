@@ -7,7 +7,8 @@
 #include <lwhost.h>
 #endif
 
-enum EJointType{
+enum EJointType
+{
     jtRigid,
 	jtCloth,
 	jtJoint,
@@ -15,7 +16,8 @@ enum EJointType{
     jtForceU32 = u32(-1)
 };
 
-struct SJointLimit{
+struct SJointLimit
+{
 	Fvector2		limit;
     float 			spring_factor;
     float 			damping_factor;
@@ -27,16 +29,19 @@ struct SJointLimit{
     }
 };
 
-struct Fcylinder{
+struct Fcylinder
+{
     Fvector m_center;
     Fvector m_direction;
-    float m_height;
-    float m_radius;
-    void invalidate(){ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0;}
+    float	m_height;
+    float	m_radius;
+    void	invalidate()	{ m_center.set(0,0,0); m_direction.set(0,0,0); m_height=0; m_radius=0;}
 };
 
-struct SBoneShape{
-    enum EShapeType{
+struct SBoneShape
+{
+    enum EShapeType
+	{
     	stNone,
         stBox,
         stSphere,
@@ -45,12 +50,9 @@ struct SBoneShape{
     };
 
 	EShapeType		type;
-//    union
-//    {
-    	Fobb		box;      	// 15*4
-        Fsphere		sphere;		// 4*4
-        Fcylinder   cylinder;	// 8*4
-//    };
+  	Fobb			box;      	// 15*4
+    Fsphere			sphere;		// 4*4
+    Fcylinder		cylinder;	// 8*4
     SBoneShape		()
     {
     	type		= stBox;
@@ -58,10 +60,11 @@ struct SBoneShape{
     }
 };
 
-struct SJointIKData{
+struct SJointIKData
+{
     // IK
     EJointType		type;
-    SJointLimit		limits[3];
+    SJointLimit		limits	[3];
     float			spring_factor;
     float			damping_factor;
     SJointIKData	()
@@ -72,7 +75,8 @@ struct SJointIKData{
     }
 };
 
-class CBone{
+class CBone
+{
 	string64		name;
 	string64		parent;
 	string64		wmap;
@@ -127,14 +131,17 @@ public:
 #ifdef _LW_EXPORT
 	void			ParseBone		(LWItemID bone);
 #endif
+
 #ifdef _EDITOR
 	Fvector&		get_rest_offset	(){return rest_offset;}
 	Fvector&		get_rest_rotate	(){return rest_rotate;}
 	float&			get_rest_length	(){return rest_length;}
 #endif
+
 	void			ShapeScale		(const Fvector& amount);
 	void			ShapeRotate		(const Fvector& amount);
 	void			ShapeMove		(const Fvector& amount);
 };
-DEFINE_VECTOR(CBone*,BoneVec,BoneIt);
+DEFINE_VECTOR		(CBone*,BoneVec,BoneIt);
+
 #endif
