@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
 <game_dialogs>
-    <dialog id="escape_trader_done_artefact" priority="9">
-        <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
-        <has_info>escape_artefact_gain</has_info>
-        <phrase_list>
-            <phrase id="2">
-                <text>escape_trader_done_artefact_2</text>
-            </phrase>
-            <phrase id="0">
-                <text>escape_trader_done_artefact_0</text>
-                <action>escape_dialog.give_artefact_from_fleshes</action>
-                <give_info>escape_artefact_done</give_info>
-                <has_info>escape_artefact_gain</has_info>
-                <next>2</next>
-            </phrase>
-        </phrase_list>
-    </dialog>
     <dialog id="escape_fox_flame_dialog">
         <phrase_list>
             <phrase id="1">
@@ -1105,6 +1089,34 @@
             </phrase>
         </phrase_list>
     </dialog>
+    <dialog id="escape_factory_assault_hello">
+        <phrase_list>
+            <phrase id="11">
+                <text />
+                <has_info>escape_factory_assault_say_hello</has_info>
+                <next>3</next>
+            </phrase>
+            <phrase id="3">
+                <text>escape_factory_assault_hello_3</text>
+            </phrase>
+            <phrase id="0">
+                <text />
+                <next>1</next>
+                <next>11</next>
+            </phrase>
+            <phrase id="1">
+                <text />
+                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
+                <give_info>escape_factory_assault_say_hello</give_info>
+                <give_info>escape_dynamite_gain</give_info>
+                <next>2</next>
+            </phrase>
+            <phrase id="2">
+                <text>escape_factory_assault_hello_2</text>
+                <action>escape_dialog.wolf_notify_meet</action>
+            </phrase>
+        </phrase_list>
+    </dialog>
     <dialog id="esc_stalker_talk_level" priority="2">
         <precondition>dialogs.level_escape</precondition>
         <phrase_list>
@@ -1129,31 +1141,20 @@
             </phrase>
         </phrase_list>
     </dialog>
-    <dialog id="escape_factory_assault_hello">
+    <dialog id="escape_trader_done_artefact" priority="9">
+        <precondition>escape_dialog.have_artefact_from_fleshes</precondition>
+        <has_info>escape_artefact_gain</has_info>
         <phrase_list>
-            <phrase id="11">
-                <text></text>
-                <has_info>escape_factory_assault_say_hello</has_info>
-                <next>3</next>
-            </phrase>
-            <phrase id="3">
-                <text>escape_factory_assault_hello_3</text>
+            <phrase id="2">
+                <text>escape_trader_done_artefact_2</text>
             </phrase>
             <phrase id="0">
-                <text></text>
-                <next>1</next>
-                <next>11</next>
-            </phrase>
-            <phrase id="1">
-                <text></text>
-                <dont_has_info>escape_factory_assault_say_hello</dont_has_info>
-                <give_info>escape_factory_assault_say_hello</give_info>
-                <give_info>escape_dynamite_gain</give_info>
+                <text>escape_trader_done_artefact_0</text>
+                <action>escape_dialog.give_artefact_from_fleshes</action>
+                <dont_has_info>escape_artefact_done</dont_has_info>
+                <give_info>escape_artefact_done</give_info>
+                <has_info>escape_artefact_gain</has_info>
                 <next>2</next>
-            </phrase>
-            <phrase id="2">
-                <text>escape_factory_assault_hello_2</text>
-                <action>escape_dialog.wolf_notify_meet</action>
             </phrase>
         </phrase_list>
     </dialog>
