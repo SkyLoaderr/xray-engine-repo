@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /G6 /Gr /W3 /GX /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /G6 /Gz /W3 /GX /O2 /Ob2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Yu"stdafx.h" /FD /c
 # ADD BASE RSC /l 0x409 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -245,7 +245,7 @@ SOURCE=.\Occlusion.cpp
 
 !IF  "$(CFG)" == "Occlusion - Win32 Release"
 
-# ADD CPP /G6 /Gr /Ob2 /FAs
+# ADD CPP /G6 /Gz /Ob2 /FAs
 
 !ELSEIF  "$(CFG)" == "Occlusion - Win32 Debug"
 
