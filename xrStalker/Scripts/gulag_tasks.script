@@ -801,14 +801,14 @@ function loadJob(sj, gname, type, squad, groups)
 			idle = 4 * 1000 * 60 * 60,
 			prior = 3, state = {0},
 			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
-			leader = "patrol1@agr_nii"
+			leader = "logic@agr_nii_patrol1"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@agr_nii_follower2",
 			idle = 4 * 1000 * 60 * 60,
 			prior = 3, state = {0},
 			in_rest = "agroprom_underground_space_restrictor", out_rest = "",
-			leader = "patrol1@agr_nii"
+			leader = "logic@agr_nii_patrol1"
 		}
 		table.insert(sj, t)		
 		t = { section = "logic@agr_nii_sleeper1",
