@@ -206,8 +206,8 @@ void CRenderDevice::Run			()
 
 					{
 						// Build L-view vectors
-						Fvector				L_dir,L_up,L_right,L_pos;
-						float				cs	= 1000;
+						Fvector					L_dir,L_up,L_right,L_pos;
+						float					cs	= 1000;
 						
 						L_dir.set				(-0.071f, -0.574f, -0.816f);	L_dir.normalize		();
 						L_up.set				(mCam.i);						L_right.normalize	();
@@ -249,12 +249,8 @@ void CRenderDevice::Run			()
 						bb.get_CD				(bbc,bbd);
 
 						// L_project
-						// D3DXMatrixPerspectiveOffCenterLH	((D3DXMATRIX*)&L_project,bb.min.x,bb.max.x,bb.min.y,bb.max.y,cs-50.f,cs+50.f);
-						// L_project.identity			();
-						// D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,d,d,cs-1050.f,cs+50.f);
 						float				d			= 2*_max(bbd.x,bbd.y);
-						D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,2*bbd.x,2*bbd.y,cs-50.f,cs+50.f);
-						// L_project.build_projection	(deg2rad(90.f),1.f,0.2f,100.f);
+						D3DXMatrixOrthoLH				((D3DXMATRIX*)&L_project,d,d,cs-50.f,cs+50.f);
 					}
 
 					mView	= L_view;
