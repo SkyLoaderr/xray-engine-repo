@@ -9,50 +9,57 @@
 #include "../xr_ioconsole.h"
 #include "../xr_ioc_cmd.h"
 #include "../customhud.h"
-#include "ai_debug.h"
-#include "Actor_Flags.h"
-#include "ai/crow/ai_crow.h"
-#include "ai/rat/ai_rat.h"
-#include "ai/stalker/ai_stalker.h"
-#include "ai/zombie/ai_zombie.h"
-#include "ai/idol/ai_idol.h"
-#include "ai/flesh/ai_flesh.h"
-#include "ai/bloodsucker/ai_bloodsucker.h"
-#include "ai/dog/ai_dog.h"
-#include "ai/pseudodog/ai_pseudodog.h"
-#include "ai/boar/ai_boar.h"
-#include "ai/trader/ai_trader.h"
-#include "ai/monsters/Burer/burer.h"
-#include "ai/monsters/PseudoGigant/pseudo_gigant.h"
-#include "ai/monsters/chimera/chimera.h"
-#include "ai/monsters/controller/controller.h"
-#include "car.h"
-#include "customtarget.h"
 #include "../fdemorecord.h"
 #include "../fdemoplay.h"
-#include "graph_engine.h"
+
+#include "ai_debug.h"
+#include "Actor_Flags.h"
 #include "game_sv_single.h"
 #include "alife_simulator.h"
-#include "HangingLamp.h"
 #include "trade.h"
-#include "actor.h"
+#include "script_engine.h"
 #include "ai_script_processor.h"
-#include "attachable_item.h"
-#include "team_base_zone.h"
-
 #include "customzone.h"
-#include "mosquitobald.h"
-#include "mincer.h"
-#include "radioactivezone.h"
-#include "PhysicsCommon.h"
-#include "BreakableObject.h"
-#include "WeaponMounted.h"
+
+//#include "ai/crow/ai_crow.h"
+//#include "ai/rat/ai_rat.h"
+//#include "ai/stalker/ai_stalker.h"
+//#include "ai/zombie/ai_zombie.h"
+//#include "ai/idol/ai_idol.h"
+//#include "ai/flesh/ai_flesh.h"
+//#include "ai/bloodsucker/ai_bloodsucker.h"
+//#include "ai/dog/ai_dog.h"
+//#include "ai/pseudodog/ai_pseudodog.h"
+//#include "ai/boar/ai_boar.h"
+//#include "ai/trader/ai_trader.h"
+//#include "ai/monsters/Burer/burer.h"
+//#include "ai/monsters/PseudoGigant/pseudo_gigant.h"
+//#include "ai/monsters/chimera/chimera.h"
+//#include "ai/monsters/controller/controller.h"
+//#include "car.h"
+//#include "customtarget.h"
+//#include "graph_engine.h"
+//#include "HangingLamp.h"
+//#include "actor.h"
+//#include "attachable_item.h"
+//#include "team_base_zone.h"
+//
+//#include "mosquitobald.h"
+//#include "mincer.h"
+//#include "radioactivezone.h"
+//#include "PhysicsCommon.h"
+//#include "BreakableObject.h"
+//#include "WeaponMounted.h"
+
 #include "ui/UIMainIngameWnd.h"
 #include "xrServer_Objects.h"
 #include "level.h"
 #include "xrserver.h"
 #include "xr_level_controller.h"
 #include "game_cl_base.h"
+
+#include "object_factory.h"
+
 
 ENGINE_API extern float		psHUD_FOV;
 extern	float				psSqueezeVelocity;
@@ -76,6 +83,20 @@ int			g_dwInputUpdateDelta = 10;
 
 extern int x_m_x;
 extern int x_m_z;
+
+extern "C" {
+	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID clsid)
+	{
+		DLL_Pure			*object = object_factory().client_object(clsid);
+		object->SUB_CLS_ID	= clsid;
+		return				(object);
+	}
+
+	DLL_API void		__cdecl	xrFactory_Destroy		(DLL_Pure* O)
+	{
+		xr_delete(O);
+	}
+};
 
 // console commands
 class CCC_Spawn : public IConsole_Command
@@ -1053,245 +1074,3 @@ BOOL APIENTRY DllMain( HANDLE /**hModule/**/,
 	}
     return TRUE;
 }
-
-// Factory
-#include "actor.h"
-#include "customitem.h"
-#include "flyer.h"
-#include "customevent.h"
-#include "customdoor.h"
-#include "customlift.h"
-#include "demoactor.h"
-#include "hudmanager.h"
-#include "targetassault.h"
-#include "targetcsbase.h"
-#include "targetcs.h"
-#include "targetcscask.h"
-
-#include "weaponAK74.h"
-#include "weaponLR300.h"
-#include "weaponFN2000.h"
-#include "weaponHPSA.h"
-#include "weaponPM.h"
-#include "weaponFORT.h"
-#include "weaponBINOCULARS.h"
-#include "weaponShotgun.h"
-#include "weaponsvd.h"
-#include "weaponsvu.h"
-#include "weaponrpg7.h"
-#include "explosiverocket.h"
-#include "weaponval.h"
-#include "weaponvintorez.h"
-#include "weaponwalther.h"
-#include "weaponusp45.h"
-#include "weapongroza.h"
-#include "weaponmagazinedwgrenade.h"
-
-#include "scope.h"
-#include "silencer.h"
-#include "grenadelauncher.h"
-
-#include "bolt.h"
-#include "medkit.h"
-#include "antirad.h"
-#include "fooditem.h"
-#include "bottleitem.h"
-#include "explosiveitem.h"
-#include "infodocument.h"
-
-#include "ScientificOutfit.h"
-#include "StalkerOutfit.h"
-#include "MilitaryOutfit.h"
-#include "ExoOutfit.h"
-
-#include "weaponknife.h"
-#include "torch.h"
-#include "f1.h"
-#include "rgd5.h"
-#include "Spectator.h"
-
-#include "artifact.h"
-#include "GraviArtifact.h"
-#include "MercuryBall.h"
-#include "BlackDrops.h"
-#include "Needles.h"
-#include "BastArtifact.h"
-#include "BlackGraviArtifact.h"
-#include "DummyArtifact.h"
-#include "ZudaArtifact.h"
-#include "ThornArtifact.h"
-#include "FadedBall.h"
-#include "ElectricBall.h"
-#include "RustyHairArtifact.h"
-#include "GalantineArtifact.h"
-
-#include "level_changer.h"
-
-#include "simpledetector.h"
-#include "pda.h"
-#include "artifactmerger.h"
-
-#include "searchlight.h"
-
-#include "physicobject.h"
-#include "script_zone.h"
-#include "gravizone.h"
-
-#include "helicopter.h"
-
-
-
-extern "C" {
-	DLL_API DLL_Pure*	__cdecl xrFactory_Create		(CLASS_ID cls)
-	{
-		DLL_Pure*	P	= 0;
-		switch (cls) {
-			case CLSID_GAME_LEVEL:			P = xr_new<CLevel>();				break;
-			case CLSID_GAME_PERSISTANT:		P = xr_new<CGamePersistent>();		break;
-			case CLSID_HUDMANAGER:			P = xr_new<CHUDManager>();			break;
-			case CLSID_OBJECT_ACTOR:		P = xr_new<CActor>();				break;
-			case CLSID_TARGET:				P = xr_new<CCustomTarget>();		break;
-			case CLSID_SPECTATOR:			P = xr_new<CSpectator>();			break;
-
-			case CLSID_AI_GRAPH:												break;
-			case CLSID_AI_RAT:				P = xr_new<CAI_Rat>();				break;
-			case CLSID_AI_FLESH:			P = xr_new<CAI_Flesh>();			break;
-			case CLSID_AI_CHIMERA:			P = xr_new<CChimera>();				break;
-			case CLSID_AI_DOG_RED:			P = xr_new<CAI_Dog>();				break;
-			case CLSID_AI_SOLDIER:			P =	xr_new<CAI_Stalker>();			break;
-			case CLSID_AI_STALKER:			P =	xr_new<CAI_Stalker>();			break;
-			case CLSID_AI_ZOMBIE:			P = xr_new<CAI_Zombie>();			break;
-			case CLSID_AI_IDOL:				P = xr_new<CAI_Idol>();				break;
-			case CLSID_AI_BLOODSUCKER:		P = xr_new<CAI_Bloodsucker>();		break;
-			case CLSID_AI_BOAR:				P = xr_new<CAI_Boar>();				break;
-			case CLSID_AI_DOG_BLACK:		P = xr_new<CAI_PseudoDog>();		break;
-			case CLSID_AI_BURER:			P = xr_new<CBurer>();				break;
-			case CLSID_AI_GIANT:			P = xr_new<CPseudoGigant>();		break;
-			case CLSID_AI_CONTROLLER:		P = xr_new<CController>();			break;
-
-			// Trader
-			case CLSID_AI_TRADER:			P = xr_new<CAI_Trader>();			break;
-
-			case CLSID_AI_CROW:				P = xr_new<CAI_Crow>();				break;
-			case CLSID_CAR:					P = xr_new<CCar>();					break;
-
-			case CLSID_VEHICLE_HELICOPTER:	P = xr_new<CHelicopter>();	break;
-
-			// Artifacts
-			case CLSID_AF_MERCURY_BALL:		P = xr_new<CMercuryBall>();			break;
-			case CLSID_AF_BLACKDROPS:		P = xr_new<CBlackDrops>();			break;
-			//case CLSID_AF_NEEDLES:		P = xr_new<CNeedles>();				break;
-			//case CLSID_AF_NEEDLES:		P = xr_new<CBastArtifact>();		break;
-			case CLSID_AF_NEEDLES:			P = xr_new<CBlackGraviArtifact>();	break;
-
-			case CLSID_AF_BAST:				P = xr_new<CBastArtifact>();		break;
-			case CLSID_AF_BLACK_GRAVI:		P = xr_new<CBlackGraviArtifact>();	break;
-			case CLSID_AF_DUMMY:			P = xr_new<CDummyArtifact>();		break;
-			case CLSID_AF_ZUDA:				P = xr_new<CZudaArtifact>();		break;
-			case CLSID_AF_THORN:			P = xr_new<CThornArtifact>();		break;
-			case CLSID_AF_FADED_BALL:		P = xr_new<CFadedBall>();			break;
-			case CLSID_AF_ELECTRIC_BALL:	P = xr_new<CElectricBall>();		break;	
-			case CLSID_AF_RUSTY_HAIR:		P = xr_new<CRustyHairArtifact>();	break;
-			case CLSID_AF_GALANTINE:		P = xr_new<CGalantineArtifact>();	break;
-
-			case CLSID_AF_GRAVI:	
-			case CLSID_ARTEFACT:			P = xr_new<CGraviArtifact>();		break;
-
-			// Targets
-			case CLSID_TARGET_ASSAULT:		P = xr_new<CTargetAssault>();		break;
-			case CLSID_TARGET_CS_BASE:		P = xr_new<CTargetCSBase>();		break;
-			case CLSID_TARGET_CS_CASK:		P = xr_new<CTargetCSCask>();		break;
-			case CLSID_TARGET_CS:			P = xr_new<CTargetCS>();			break;
-				
-			case CLSID_OBJECT_W_FN2000:		P = xr_new<CWeaponFN2000>();		break;
-			case CLSID_OBJECT_W_AK74:		P = xr_new<CWeaponAK74>();			break;
-			case CLSID_OBJECT_W_LR300:		P = xr_new<CWeaponLR300>();			break;
-			case CLSID_OBJECT_W_HPSA:		P = xr_new<CWeaponHPSA>	();			break;
-			case CLSID_OBJECT_W_PM:			P = xr_new<CWeaponPM>	();			break;
-			case CLSID_OBJECT_A_PM:			P = xr_new<CWeaponAmmo>	();			break;
-			case CLSID_OBJECT_W_FORT:		P = xr_new<CWeaponFORT>	();			break;
-			case CLSID_OBJECT_W_BINOCULAR:	P = xr_new<CWeaponBinoculars>();	break;
-			case CLSID_OBJECT_W_SHOTGUN:	P = xr_new<CWeaponShotgun>();		break;
-			case CLSID_OBJECT_W_SVD:		P = xr_new<CWeaponSVD>();			break;
-			case CLSID_OBJECT_W_SVU:		P = xr_new<CWeaponSVU>();			break;
-			case CLSID_OBJECT_W_RPG7:		P = xr_new<CWeaponRPG7>();			break;
-			case CLSID_OBJECT_W_VAL:		P = xr_new<CWeaponVal>();			break;
-			case CLSID_OBJECT_W_VINTOREZ:	P = xr_new<CWeaponVintorez>();		break;
-			case CLSID_OBJECT_W_WALTHER:	P = xr_new<CWeaponWalther>();		break;
-			case CLSID_OBJECT_W_USP45:		P = xr_new<CWeaponUSP45>();			break;
-			case CLSID_OBJECT_W_GROZA:		P = xr_new<CWeaponGroza>();			break;
-			case CLSID_OBJECT_W_KNIFE:		P = xr_new<CWeaponKnife>();			break;
-
-			//Weapons Add-on
-			case  CLSID_OBJECT_W_SCOPE:		P = xr_new<CScope>();				break;
-			case  CLSID_OBJECT_W_SILENCER:	P = xr_new<CSilencer>();			break;
-			case  CLSID_OBJECT_W_GLAUNCHER:	P = xr_new<CGrenadeLauncher>();		break;
-
-			// Inventory
-			case CLSID_IITEM_BOLT:			P = xr_new<CBolt>();				break;
-			case CLSID_IITEM_MEDKIT:		P = xr_new<CMedkit>();				break;
-			case CLSID_IITEM_ANTIRAD:		P = xr_new<CAntirad>();				break;
-			case CLSID_IITEM_FOOD:			P = xr_new<CFoodItem>();			break;
-			case CLSID_IITEM_BOTTLE:		P = xr_new<CBottleItem>();			break;
-			case CLSID_IITEM_EXPLOSIVE:		P = xr_new<CExplosiveItem>();		break;
-			
-			//Info Document
-			case CLSID_IITEM_DOCUMENT:		P = xr_new<CInfoDocument>();		break;
-			case CLSID_IITEM_ATTACH:		P = xr_new<CAttachableItem>();		break;
-
-			//Equipment outfit
-			case CLSID_EQUIPMENT_SCIENTIFIC:P = xr_new<CScientificOutfit>();	break;
-			case CLSID_EQUIPMENT_STALKER:	P = xr_new<CStalkerOutfit>();		break;
-			case CLSID_EQUIPMENT_MILITARY:	P = xr_new<CMilitaryOutfit>();		break;
-			case CLSID_EQUIPMENT_EXO:		P = xr_new<CExoOutfit>();			break;
-
-			// Grenades
-			case CLSID_GRENADE_F1:			P = xr_new<CF1>();					break;
-			case CLSID_GRENADE_RGD5:		P = xr_new<CRGD5>();				break;
-			// Rockets
-			case CLSID_OBJECT_G_RPG7:		P = xr_new<CExplosiveRocket>();		break;
-			case CLSID_OBJECT_G_FAKE:		P = xr_new<CExplosiveRocket>();		break;
-
-			// Zones
-			case CLSID_ZONE:				P = xr_new<CCustomZone>();			break;
-			case CLSID_Z_MBALD:				P = xr_new<CMosquitoBald>();		break;
-			case CLSID_Z_MINCER:			P = xr_new<CMincer>();				break;
-			case CLSID_Z_ACIDF:				P = xr_new<CMosquitoBald>();		break;
-			case CLSID_Z_GALANT:			P = xr_new<CGraviZone>();			break;
-			case CLSID_Z_RADIO:				P = xr_new<CRadioactiveZone>();		break;
-			case CLSID_Z_BFUZZ:				P = xr_new<CMosquitoBald>();		break;
-			case CLSID_Z_RUSTYH:			P = xr_new<CMosquitoBald>();		break;
-			case CLSID_Z_DEAD:				P = xr_new<CMosquitoBald>();		break;
-			case CLSID_LEVEL_CHANGER:		P = xr_new<CLevelChanger>();		break;
-			case CLSID_SCRIPT_ZONE:			P = xr_new<CScriptZone>();			break;
-			case CLSID_Z_TEAM_BASE:			P = xr_new<CTeamBaseZone>();		break;
-
-			// Detectors
-			case CLSID_DETECTOR_SIMPLE:		P = xr_new<CSimpleDetector>();		break;
-
-			// Devices
-			case CLSID_DEVICE_TORCH:		P = xr_new<CTorch>();				break;
-			case CLSID_DEVICE_PDA:			P = xr_new<CPda>();					break;
-			case CLSID_DEVICE_AF_MERGER:	P = xr_new<CArtifactMerger>();		break;
-
-			
-			// objects
-			case CLSID_OBJECT_PROJECTOR:	P = xr_new<CProjector>();			break;
-			case CLSID_OBJECT_W_MOUNTED:	P = xr_new<CWeaponMounted>();		break;
-
-			// entity
-			case CLSID_OBJECT_HLAMP:		P = xr_new<CHangingLamp>();			break;
-			case CLSID_OBJECT_PHYSIC:		P = xr_new<CPhysicObject>();		break;
-			case CLSID_SCRIPT_OBJECT:		P = xr_new<CScriptMonster>();		break;
-			case CLSID_OBJECT_BREAKABLE:	P = xr_new<CBreakableObject>();		break;
-		}
-		R_ASSERT2		(P,"Unknown object class");
-		P->SUB_CLS_ID	= cls;
-		return P;
-	}
-
-	DLL_API void		__cdecl	xrFactory_Destroy		(DLL_Pure* O)
-	{
-		xr_delete(O);
-	}
-};

@@ -113,6 +113,10 @@ void CAgentManagerActionKillEnemy::execute			()
 {
 	CAgentManager::iterator		I = m_object->members().begin();
 	CAgentManager::iterator		E = m_object->members().end();
-	for ( ; I != E; ++I)
+	for ( ; I != E; ++I) {
 		(*I).order_type			(AgentManager::eOrderTypeNoOrder);
+//		(*I).order_type			(AgentManager::eOrderTypeAction);
+//		(*I).action				(CSetupAction(0.f,0));
+//		(*I).action().movement().set_level_dest_vertex_id((*I).object()->level_vertex_id());
+	}
 }
