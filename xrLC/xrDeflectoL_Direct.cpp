@@ -113,6 +113,7 @@ void CDeflector::L_Direct	(HASH& H)
 			*/
 			
 			FPU::m24r	();
+			
 			if (Fcount) {
 				Fcolor	Lumel,R;
 				float	cnt		= float(Fcount);
