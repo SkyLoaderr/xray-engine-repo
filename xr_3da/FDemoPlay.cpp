@@ -12,7 +12,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time):CEffector(cefDemo,life_time)
+CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time) : CEffector(cefDemo,life_time)
 {
 	Msg("! Playing demo: %s",name);
 	fStartTime	= 0;
@@ -20,9 +20,8 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time):CEffe
 	bCycle      = bc;
 
 	m_pMotion	= 0;
-	char nm[255];
-	char fn[255];
-	_ChangeFileExt(name,".anm",nm);
+	char		nm[255],fn[255];
+	strcpy	(nm,name);	if (strext(nm))	strcpy(strext(nm),".anm");
 	if (Engine.FS.Exist(fn,Path.Current,nm))
 	{
 		char anim_name[255];
@@ -46,7 +45,6 @@ CDemoPlay::CDemoPlay(const char *name, float ms, BOOL bc, float life_time):CEffe
 		Log			("! Total frames: ",m_count);
 	}
 
-//	pConsole->Execute("i_visible off");
 	timer.Start	();
 	dwFramesRendered=0;
 }
@@ -55,7 +53,6 @@ CDemoPlay::~CDemoPlay()
 {
 	_DELETE(m_pMotion);
 	timer.Stop	();
-//	pConsole->Execute("i_visible on");
 	Msg("-----");
 	Msg("* [DEMO] FPS archivied: %f",float(dwFramesRendered)/timer.Get());
 }
