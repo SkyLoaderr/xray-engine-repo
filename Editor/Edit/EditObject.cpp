@@ -8,7 +8,6 @@
 #include "EditObject.h"
 #include "UI_Main.h"
 #include "EditMesh.h"
-#include "Shader.h"
 #include "D3DUtils.h"
 #include "bottombar.h"
 #include "motion.h"
@@ -151,16 +150,16 @@ void CEditableObject::UpdateBox(){
     }
 }
 //----------------------------------------------------
-void CEditableObject::Render(Fmatrix& parent, int priority){
+void CEditableObject::Render(Fmatrix& parent, int priority, bool strictB2F){
     if (!(m_LoadState&EOBJECT_LS_RENDERBUFFER)) UpdateRenderBuffers();
 
-    if(psDeviceFlags&rsEdgedFaces&&(0==priority))
+    if(psDeviceFlags&rsEdgedFaces&&(1==priority)&&(false==strictB2F))
         RenderEdge(parent);
 
     Device.SetTransform(D3DTS_WORLD,parent);
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++){
 //    	if (!(*s_it)->Shader) continue;
-        if ((priority==(*s_it)->_Priority())){
+        if ((priority==(*s_it)->_Priority())&&(strictB2F==(*s_it)->_StrictB2F())){
             Device.SetShader((*s_it)->_Shader());
             for (EditMeshIt _M=m_Meshes.begin(); _M!=m_Meshes.end(); _M++)
                 (*_M)->Render(parent,*s_it);
@@ -169,11 +168,15 @@ void CEditableObject::Render(Fmatrix& parent, int priority){
 }
 
 void CEditableObject::RenderSingle(Fmatrix& parent){
-	Render(parent, 0);
+	Render(parent, 0, false);
+	Render(parent, 0, true);
+	Render(parent, 1, false);
     if (fraBottomBar->miDrawObjectBones) RenderBones(precalc_identity);
-	Render(parent, 1);
-	Render(parent, 2);
-	Render(parent, 3);
+	Render(parent, 1, true);
+	Render(parent, 2, false);
+	Render(parent, 2, true);
+	Render(parent, 3, false);
+	Render(parent, 3, true);
 }
 
 void CEditableObject::RenderAnimation(const Fmatrix& parent){
@@ -312,7 +315,7 @@ void CEditableObject::OnDeviceCreate(){
     //	UpdateRenderBuffers();
 	// создать заново shaders
     for(SurfaceIt s_it=m_Surfaces.begin(); s_it!=m_Surfaces.end(); s_it++)
-       (*s_it)->SetShader((*s_it)->_ShaderName(), Device.Shader.Create((*s_it)->_ShaderName(),ListToSequence((*s_it)->_Textures()).c_str()));
+       (*s_it)->SetShader((*s_it)->_ShaderName(), Device.Shader.Create((*s_it)->_ShaderName(),(*s_it)->_Texture()));
 }
 
 void CEditableObject::OnDeviceDestroy(){
