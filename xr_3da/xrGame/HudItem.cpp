@@ -205,7 +205,6 @@ void CHudItem::UpdateHudAdditonal		(Fmatrix& hud_trans)
 {
 }
 
-
 void CHudItem::StartHudInertion()
 {
 	m_bInertionEnable = true;
@@ -256,15 +255,9 @@ void CHudItem::UpdateHudInertion		(Fmatrix& hud_trans, float actor_yaw, float ac
 		origin.mad		(xform_orig.k,	-pitch * PITCH_OFFSET_D);
 		origin.mad		(xform_orig.i,	-pitch * PITCH_OFFSET_R);
 		origin.mad		(xform_orig.j,	-pitch * PITCH_OFFSET_N);
-/*
-		// calc moving lag
-		static Fvector	m_last_pos;
-		Fvector			diff_pos;
-		diff_pos.sub	(xform.c, m_last_pos);
-		m_last_pos.mad	(diff_pos,10.f*Device.fTimeDelta);
-		//	m_vecLastFacing.normalize();
-		origin.mad		(diff_pos,ORIGIN_OFFSET);
-*/
+
+		// calc moving inertion
+#pragma todo("TO ANDY: write moving inertion here...")
 	}
 /*
 	static u32 sl = 0;
