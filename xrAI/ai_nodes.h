@@ -229,7 +229,7 @@ class CGraphThread : public CThread
 	SIndexNode			*m_tpIndexes;
 	float				m_fMaxDistance;
 	CCriticalSection	*m_tpCriticalSection;
-	//vector<u32>			tpaNodes;
+	vector<u32>			tpaNodes;
 	vector<u32>			tpaNodes1;
 	CAStarSearch<CAIMapShortestPathNode,SAIMapData> m_tpMapPath;
 
@@ -271,6 +271,9 @@ public:
 				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
 					try {
 						fDistance = ffCheckPositionInDirection(tCurrentGraphVertex.dwNodeID,tCurrentGraphVertex.tPoint,tNeighbourGraphVertex.tPoint,m_fMaxDistance);
+//						m_tpCriticalSection->Enter();
+//						Msg("%d : %d",i,j);
+//						m_tpCriticalSection->Leave();
 						if (fDistance == MAX_VALUE) {
 //							SAIMapData			tData;
 //							tData.dwFinishNode	= tNeighbourGraphVertex.dwNodeID;
@@ -296,21 +299,51 @@ public:
 								m_fMaxDistance,
 								tCurrentGraphVertex.tPoint,
 								tNeighbourGraphVertex.tPoint,
-								tpaNodes1);
+								tpaNodes);
+//							float fSafeDistance = fDistance;
+//							vfFindTheShortestPath(
+//								(TNode *)m_tpHeap, 
+//								(TIndexNode *)m_tpIndexes, 
+//								m_dwAStarStaticCounter, 
+//								tCurrentGraphVertex.dwNodeID,
+//								tNeighbourGraphVertex.dwNodeID,
+//								fDistance,
+//								m_fMaxDistance,
+//								tCurrentGraphVertex.tPoint,
+//								tNeighbourGraphVertex.tPoint,
+//								tpaNodes1,true);
+//							if (fabsf(fDistance - fSafeDistance) > EPS_L) {
+//								m_tpCriticalSection->Enter();
+//								Msg("%d[%7.2f], %d[%7.2f]",i,fSafeDistance,j,fDistance);
+//								m_tpCriticalSection->Leave();
+//							}
+//							m_tpCriticalSection->Enter();
+//							if (tpaNodes.size() != tpaNodes1.size()) {
+//								Msg("%d[%9.4f], %d[%9.4f]",i,fSafeDistance,j,fDistance);
+//								Msg("* different sizes (%d, %d)!",tpaNodes.size(),tpaNodes1.size());
+//							}
+//							bool bOk = true;
+//							for (int ii=0; ii<(int)min(tpaNodes.size(),tpaNodes1.size()); ii++)
+//								if (tpaNodes[ii] != tpaNodes1[ii]) {
+//									if (bOk)
+//										Msg("%d[%9.4f], %d[%9.4f]",i,fSafeDistance,j,fDistance);
+//									bOk = false;
+//									Msg("* [%d(%d)][%d(%d)] %d : %d -> %d",i,tCurrentGraphVertex.dwNodeID,j,tNeighbourGraphVertex.dwNodeID,ii,tpaNodes[ii],tpaNodes1[ii]);
+//								}
 						}
 						if (fDistance < m_fMaxDistance) {
 							m_tpCriticalSection->Enter();
-							//tCurrentGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tCurrentGraphVertex.tpaEdges,(++tCurrentGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
-							//tNeighbourGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tNeighbourGraphVertex.tpaEdges,(++tNeighbourGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
+							int ii = tCurrentGraphVertex.dwNeighbourCount;
+							int jj = tNeighbourGraphVertex.dwNeighbourCount;
 							tCurrentGraphVertex.dwNeighbourCount++;
 							tNeighbourGraphVertex.dwNeighbourCount++;
 							m_tpCriticalSection->Leave();
+
+							tCurrentGraphVertex.tpaEdges[ii].dwVertexNumber = j;
+							tCurrentGraphVertex.tpaEdges[ii].fPathDistance  = fDistance;
 							
-							tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].dwVertexNumber = j;
-							tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
-							
-							tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].dwVertexNumber = i;
-							tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
+							tNeighbourGraphVertex.tpaEdges[jj].dwVertexNumber = i;
+							tNeighbourGraphVertex.tpaEdges[jj].fPathDistance  = fDistance;
 						}
 					}
 					catch(char *) {

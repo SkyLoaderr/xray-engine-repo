@@ -62,6 +62,9 @@ stack<u32>				dwaStack;		// stack
 u32						*dwaSortOrder;  // edge sort order
 u32						*dwaEdgeOwner;  // edge owners
 
+static 
+CCriticalSection		tCriticalSection; // synchronization
+
 void vfLoafAIMap(LPCSTR name)
 {
 	FILE_NAME	fName;
@@ -123,6 +126,57 @@ void vfLoadAIPoints(LPCSTR name)
 	}
 }
 
+void vfRemoveDuplicateAIPoints()
+{
+	Progress(0.0f);
+	u32 N = tpaGraph.size(), *dwpSortOrder = (u32 *)xr_malloc(N*sizeof(u32)), *dwpGraphOrder  = (u32 *)xr_malloc(N*sizeof(u32));
+	for (int i=0; i<(int)N; i++)
+		dwpSortOrder[i] = i;
+	bool bOk;
+	do {
+		bOk = true;
+		for ( i=1; i<(int)N; i++) {
+			Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tPoint;
+			Fvector &p2 = tpaGraph[dwpSortOrder[i]].tPoint;
+			if ((p1.x > p2.x) || ((fabsf(p1.x - p2.x) < EPS_L) && ((p1.y > p2.y) || ((fabsf(p1.y - p2.y) < EPS_L) && (p1.z > p2.z))))) {
+				int k = dwpSortOrder[i - 1];
+				dwpSortOrder[i - 1] = dwpSortOrder[i];
+				dwpSortOrder[i] = k;
+				bOk = false;
+			}
+		}
+	}
+	while (!bOk);
+
+	int j = 0;
+	for ( i=1; i<(int)N; i++) {
+		Fvector &p1 = tpaGraph[dwpSortOrder[i - 1]].tPoint;
+		Fvector &p2 = tpaGraph[dwpSortOrder[i]].tPoint;
+		if ((fabsf(p1.x - p2.x) < EPS_L) && (fabsf(p1.y - p2.y) < EPS_L) && (fabsf(p1.z - p2.z) < EPS_L))
+			dwpGraphOrder[j++] = dwpSortOrder[i];
+	}
+	
+	do {
+		bOk = true;
+		for ( i=1; i<j; i++) {
+			if (dwpGraphOrder[i - 1] > dwpGraphOrder[i]) {
+				int k = dwpGraphOrder[i - 1];
+				dwpGraphOrder[i - 1] = dwpGraphOrder[i];
+				dwpGraphOrder[i] = k;
+				bOk = false;
+			}
+		}
+	}
+	while (!bOk);
+
+	for (i=0; i<j; i++)
+		tpaGraph.erase(tpaGraph.begin() + dwpGraphOrder[i] - i);
+	_FREE(dwpSortOrder);
+	_FREE(dwpGraphOrder);
+	Progress(1.0f);
+	Msg("%d vertexes has been removed",j);
+}
+
 bool bfCheckForGraphConnectivity()
 {
 	if (!tpaGraph.size())
@@ -158,7 +212,7 @@ u32 dwfErasePoints()
 	Progress(0.0f);
 	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
 		if (tpaGraph[i].dwNodeID == u32(-1)) {
-			Msg("Point %d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tPoint.x,tpaGraph[i].tPoint.y,tpaGraph[i].tPoint.z);
+			Msg("Point %3d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tPoint.x,tpaGraph[i].tPoint.y,tpaGraph[i].tPoint.z);
 			tpaGraph.erase(tpaGraph.begin() + i--);
 		}
 	Progress(1.0f);
@@ -168,12 +222,11 @@ u32 dwfErasePoints()
 void vfAllocateMemory()
 {
 	Progress(0.0f);
-	tpaFullEdges = (SGraphEdge *)xr_malloc(tpaGraph.size()*(tpaGraph.size() - 1)*sizeof(SGraphEdge));
+	int N = tpaGraph.size();
+	tpaFullEdges = (SGraphEdge *)xr_malloc(N*(N - 1)*sizeof(SGraphEdge));
 	SGraphEdge	*tpPointer = tpaFullEdges;
-	for (int i=0, N = tpaGraph.size(); i<N; i++) {
+	for (int i=0; i<N; tpPointer += (N - 1), i++)
 		tpaGraph[i].tpaEdges = tpPointer;
-		tpPointer += N - 1;
-	}
 	Msg("* %d memory allocated",N*(N - 1)*sizeof(SGraphEdge));
 	Progress(1.0f);
 }
@@ -197,6 +250,59 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 	}
 	_FREE(tpaFullEdges);
 	Progress(1.0f);
+}
+
+void vfOptimizeGraph(u32 dwEdgeCount)
+{
+	q_mark_bit.resize(dwEdgeCount);
+	q_mark_bit.assign(dwEdgeCount,false);
+	Progress(0.0f);
+	for (int i=dwEdgeCount - 1; i>=0; Progress((float(dwEdgeCount) - (i--))/dwEdgeCount)) {
+		if (q_mark_bit[dwaSortOrder[i]])
+			continue;
+		float fDistance = tpaEdges[dwaSortOrder[i]].fPathDistance;
+		u32 dwVertex0 = dwaEdgeOwner[dwaSortOrder[i]];
+		u32 dwVertex1 = tpaEdges[dwaSortOrder[i]].dwVertexNumber;
+		SGraphVertex &tVertex0 = tpaGraph[dwVertex0];
+		SGraphVertex &tVertex1 = tpaGraph[dwVertex1];
+		bool bOk = true;
+		for (int i0=0; (i0<(int)tVertex0.dwNeighbourCount) && bOk; i0++) {
+			if (q_mark_bit[tVertex0.tpaEdges + i0 - tpaEdges])
+				continue;
+			SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
+			for (int i1=0; i1<(int)tVertex1.dwNeighbourCount; i1++)
+				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !q_mark_bit[tVertex1.tpaEdges + i1 - tpaEdges]) {
+					q_mark_bit[dwaSortOrder[i]] = true;
+					for (int j=0; j<(int)tVertex1.dwNeighbourCount; j++)
+						if (tVertex1.tpaEdges[j].dwVertexNumber == dwVertex0) {
+							q_mark_bit[tVertex1.tpaEdges + j - tpaEdges] = true;
+							break;
+						}
+					bOk = false;
+					break;
+				}
+		}
+	}
+	Progress(1.0f);
+}
+
+void vfNormalizeGraph()
+{
+	for (int i=0, N=(int)tpaGraph.size(); i<N; i++) {
+		bool bOk;
+		do {
+			bOk = true;
+			for (int j=1; j<(int)tpaGraph[i].dwNeighbourCount; j++)
+				if (tpaGraph[i].tpaEdges[j - 1].dwVertexNumber > tpaGraph[i].tpaEdges[j].dwVertexNumber) {
+					SGraphEdge tTemp = tpaGraph[i].tpaEdges[j - 1];
+					tpaGraph[i].tpaEdges[j - 1] = tpaGraph[i].tpaEdges[j];
+					tpaGraph[i].tpaEdges[j] = tTemp;
+					bOk = false;
+				}
+		} 
+		while(!bOk);
+	}
+
 }
 
 void vfSaveGraph(LPCSTR name)
@@ -240,44 +346,9 @@ void vfSaveGraph(LPCSTR name)
 	Msg("%d bytes saved",int(tGraph.size()));
 }
 
-void vfOptimizeGraph(u32 dwEdgeCount)
-{
-	q_mark_bit.resize(dwEdgeCount);
-	q_mark_bit.assign(dwEdgeCount,false);
-	Progress(0.0f);
-	for (int i=dwEdgeCount - 1; i>=0; Progress((float(dwEdgeCount) - (i--))/dwEdgeCount)) {
-		if (q_mark_bit[dwaSortOrder[i]])
-			continue;
-		float fDistance = tpaEdges[dwaSortOrder[i]].fPathDistance;
-		u32 dwVertex0 = dwaEdgeOwner[dwaSortOrder[i]];
-		u32 dwVertex1 = tpaEdges[dwaSortOrder[i]].dwVertexNumber;
-		SGraphVertex &tVertex0 = tpaGraph[dwVertex0];
-		SGraphVertex &tVertex1 = tpaGraph[dwVertex1];
-		bool bOk = true;
-		for (int i0=0; (i0<(int)tVertex0.dwNeighbourCount) && bOk; i0++) {
-			if (q_mark_bit[tVertex0.tpaEdges + i0 - tpaEdges])
-				continue;
-			SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
-			for (int i1=0; i1<(int)tVertex1.dwNeighbourCount; i1++)
-				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !q_mark_bit[tVertex1.tpaEdges + i1 - tpaEdges]) {
-					q_mark_bit[dwaSortOrder[i]] = true;
-					for (int j=0; j<(int)tVertex1.dwNeighbourCount; j++)
-						if (tVertex1.tpaEdges[j].dwVertexNumber == dwVertex0) {
-							q_mark_bit[tVertex1.tpaEdges + j - tpaEdges] = true;
-							break;
-						}
-					bOk = false;
-					break;
-				}
-		}
-	}
-	Progress(1.0f);
-}
-
 void xrBuildGraph(LPCSTR name)
 {
 	CThreadManager		tThreadManager;
-	CCriticalSection	tCriticalSection;
 
 	Msg("Building Level %s",name);
 
@@ -291,6 +362,9 @@ void xrBuildGraph(LPCSTR name)
 	vfLoadAIPoints(name);
 	u32 dwAIPoints;
 	Msg("%d vertexes loaded",int(dwAIPoints = tpaGraph.size()));
+
+	Phase("Removing duplicate AI points");
+	vfRemoveDuplicateAIPoints();
 
 	Phase("Searching AI map for corresponding nodes");
 	START_THREADS(tpaGraph.size(),CNodeThread);
@@ -310,6 +384,9 @@ void xrBuildGraph(LPCSTR name)
 		dwEdgeCount += tpaGraph[i].dwNeighbourCount;
 	Msg("%d edges built",dwEdgeCount);
 	Progress(1.0f);
+
+	Phase("Normalizing graph");
+	vfNormalizeGraph();
 
 	Phase("Checking graph connectivity");
 	if ((dwEdgeCount < ((int)tpaGraph.size() - 1)) || !bfCheckForGraphConnectivity()) {

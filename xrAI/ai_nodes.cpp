@@ -284,7 +284,6 @@ void vfGetIntersectionPoints(NodeCompressed &Node, SContour tCurContour, Fvector
 
 	switch (dwCount) {
 		case 0 : {
-			//R_ASSERT(false);
 			throw("");
 			break;
 		}
@@ -354,7 +353,7 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector t
 	SSegment tSegment;
 	int i, iNodeIndex, iCount, iSavedIndex;
 	Fvector tPrevPoint, tPoint;
-	float fCurDistance = 0.f, fCumulativeDistance = 0.f, fPrevDistance = m_header.size;
+	float fCurDistance = 0.f, fCumulativeDistance = 0.f;
 	u32 dwCurNode, dwPrevNode = u32(-1);
 
 	dwCurNode = dwStartNode;
@@ -370,9 +369,6 @@ float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector t
 				break;
 		UnpackContour(tCurContour,dwCurNode);
 		tpNode = Node(dwCurNode);
-//		if (dwCurNode == 60199) {
-//			dwCurNode = dwCurNode;
-//		}
 		vfGetIntersectionPoints(*tpNode,tCurContour,tStartPoint,tFinishPoint,tPoint);
 		taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
 		iCount = tpNode->links;

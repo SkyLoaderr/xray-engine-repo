@@ -71,7 +71,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 	}
 }
 
-void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance, Fvector tStartPosition, Fvector tFinishPosition, vector<u32> &tpaNodes)//, CCriticalSection &tCriticalSection, bool bDebug)
+void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance, Fvector tStartPosition, Fvector tFinishPosition, vector<u32> &tpaNodes)//,bool bDebug)//, CCriticalSection &tCriticalSection, bool bDebug)
 {
 	// initialization
 	dwAStarStaticCounter++;
@@ -117,6 +117,7 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 		// check if that node is our goal
 		if (tpBestNode->iIndex == (int)dwGoalNode) {
 			fDistance = tpBestNode->g;
+			//return;
 			/**/
 			float fStraightDistance = fDistance;
 
@@ -180,19 +181,21 @@ void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarSt
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					tpTemp = tpaIndexes[iNodeIndex].tpNode;
-//					bool bOk = true;
-//					if (!(tpTemp->ucOpenCloseMask)) {
-//						int iBestIndex = tpBestNode->iIndex;
-//						tpTemp2 = tpTemp->tpForward;
-//						while (tpTemp2) {
-//							if (tpTemp2->iIndex == iBestIndex) {
-//								bOk = false;
-//								break;
+//					if (bDebug) {
+//						bool bOk = true;
+//						if (!(tpTemp->ucOpenCloseMask)) {
+//							int iBestIndex = tpBestNode->iIndex;
+//							tpTemp2 = tpTemp->tpForward;
+//							while (tpTemp2) {
+//								if (tpTemp2->iIndex == iBestIndex) {
+//									bOk = false;
+//									break;
+//								}
+//								tpTemp2 = tpTemp2->tpForward;
 //							}
-//							tpTemp2 = tpTemp2->tpForward;
+//							if (!bOk)
+//								continue;
 //						}
-//						if (!bOk)
-//							continue;
 //					}
 					
 					// initialize node
