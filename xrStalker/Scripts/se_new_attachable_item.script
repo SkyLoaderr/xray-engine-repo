@@ -81,13 +81,13 @@ function CSE_NewAttachableItem:__init		(section) super(section)
 	// text
 	log							("2 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 	self._text_0				= "text"
-//	// token8
-//	log							("3 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
-//	self.tokens8				= token_list()
-//	self.tokens8:add			("token8_0",0)
-//	self.tokens8:add			("token8_1",1)
-//	self.tokens8:add			("token8_2",2)
-//	self._token8_0				= self.tokens8:id("token8_0")
+	// token8
+	log							("3 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
+	self.tokens8				= token_list()
+	self.tokens8:add			("token8_0",0)
+	self.tokens8:add			("token8_1",1)
+	self.tokens8:add			("token8_2",2)
+	self._token8_0				= self.tokens8:id("token8_0")
 //	// token16
 //	log							("4 : CSE_NewAttachableItem::CSE_NewAttachableItem called!")
 //	self.tokens16				= token_list()
@@ -207,8 +207,8 @@ function CSE_NewAttachableItem:STATE_Write	(packet)
 	packet:w_float				(self._time_2)
 	// text
 	packet:w_stringZ			(self._text_0)
-//	// token8
-//	packet:w_u8					(self._token8_0)
+	// token8
+	packet:w_u8					(self._token8_0)
 //	// token16
 //	packet:w_u16				(self._token16_0)
 //	// token32
@@ -308,8 +308,8 @@ function CSE_NewAttachableItem:STATE_Read	(packet, size)
 	self._time_2				= packet:r_float()
 	// text
 	self._text_0				= packet:r_stringZ()
-//	// token8
-//	self._token8_0				= packet:r_u8()
+	// token8
+	self._token8_0				= packet:r_u8()
 //	// token16
 //	self._token16_0				= packet:r_u16()
 //	// token32
@@ -415,8 +415,8 @@ function CSE_NewAttachableItem:FillProps	(pref,items)
 	properties_helper():create_time	(items,"script\\time\\2",self,"_time_2",0,100000.0)
 	// text
 	properties_helper():create_text	(items,"script\\text\\0",self,"_text_0")
-//	// token8
-//	properties_helper():create_token8(items,"script\\token8\\0",self,"_token8_0",self.tokens8)
+	// token8
+	properties_helper():create_token8(items,"script\\token8\\0",self,"_token8_0",self.tokens8)
 //	// token16
 //	properties_helper():create_token16(items,"script\\token16\\0",self,"_token16_0",self.tokens16)
 //	// token32
