@@ -222,7 +222,7 @@ IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName)
 	string_path				fname;
 	strcpy(fname,fRName); if (strext(fname)) *strext(fname)=0;
 	//if (FS.exist(fn,"$game_textures$",fname,	".dds")	&& strstr(fname,"_bump"))	goto _BUMP;
-	if (!FS.exist(fn,"$game_textures$",fname,	".dds")	&& strstr(fname,"_bump"))	goto _BUMP_from_base;
+	if (!FS.exist(fn,"$game_textures$",	fname,	".dds")	&& strstr(fname,"_bump"))	goto _BUMP_from_base;
 	if (FS.exist(fn,"$level$",			fname,	".dds"))							goto _DDS;
 	if (FS.exist(fn,"$game_textures$",	fname,	".dds"))							goto _DDS;
 
