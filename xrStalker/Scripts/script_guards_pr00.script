@@ -124,17 +124,17 @@ function main()
 	    wait	()
 	end
 
-	while guard01:action() and guard02:action() do
-		if (guard01:see(actor) == false or guard02:see(actor) == false) and guard_see_actor ~= 0 then
-			printf("see = true2!")
-			flush()
-			wait(7000)		
-			prof_sluhal_pro_zomby_stalkerov:play_at_pos			(guard01,guard01:position(),0);
-			wait(2000)		
-		break
-		end
-	    wait	()
-	end
+--	while guard01:action() and guard02:action() do
+--		if (guard01:see(actor) == false or guard02:see(actor) == false) and guard_see_actor ~= 0 then
+--			printf("see = true2!")
+--			flush()
+--			wait(7000)		
+--			prof_sluhal_pro_zomby_stalkerov:play_at_pos			(guard01,guard01:position(),0);
+--			wait(2000)		
+--		break
+--		end
+--	    wait	()
+--	end
 
 	while guard01:action() and guard02:action() do
 		if (guard01:see(actor) or guard02:see(actor)) and distance_between(guard01,actor) <= 20 then
