@@ -51,7 +51,7 @@ void CBuild::SaveTREE(IWriter &fs)
 		MFS.close_chunk	();
 		Progress		(float(idx)/float(g_tree.size()));
 	}
-	fs.write_compressed	(MFS.pointer(),MFS.size());
+	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
 	clMsg				("Average: %d verts/%d faces, 50(%2.1f), 100(%2.1f), 500(%2.1f), 1000(%2.1f), 5000(%2.1f)",
 		g_batch_verts/g_batch_count,
@@ -68,7 +68,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	MFS.clear			();
 	fs.open_chunk		(fsL_VBUFFERS_DX9 | CFS_CompressMark);
 	g_VB.Save			(MFS);
-	fs.write_compressed	(MFS.pointer(),MFS.size());
+	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
 	mem_Compact			();
 
@@ -76,7 +76,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	MFS.clear();
 	fs.open_chunk		(fsL_IBUFFERS | CFS_CompressMark);
 	g_IB.Save			(MFS);
-	fs.write_compressed	(MFS.pointer(),MFS.size());
+	fs.w_compressed		(MFS.pointer(),MFS.size());
 	fs.close_chunk		();
 	mem_Compact			();
 
@@ -84,7 +84,7 @@ void CBuild::SaveTREE(IWriter &fs)
 	fs.open_chunk		(fsL_STRINGS);
 	fs.w_u32			(g_Strings.size());
 	for (vector<string>::iterator T=g_Strings.begin(); T!=g_Strings.end(); T++)
-		fs.write(T->c_str(),T->length()+1);
+		fs.w(T->c_str(),T->length()+1);
 	fs.close_chunk		();
 	mem_Compact			();
 }

@@ -264,7 +264,7 @@ bool CImage::LoadTGA(LPCSTR name)
 		u32*	ptr		= pData;
 		for(int iy = 0; iy<hdr.height; ++iy) {
 			for(int ix=0; ix<hdr.width; ++ix) {
-				TGA.Read(&pixel,3); *ptr++=pixel;
+				TGA.r(&pixel,3); *ptr++=pixel;
 //				u32 R = RGBA_GETRED	(pixel)/2;
 //				u32 G = RGBA_GETGREEN	(pixel)/2;
 //				u32 B = RGBA_GETBLUE	(pixel)/2;
@@ -275,7 +275,7 @@ bool CImage::LoadTGA(LPCSTR name)
 	else
 	{	// 32bpp
 		bAlpha = TRUE;
-		TGA.Read(pData,hdr.width*hdr.height*4);
+		TGA.r(pData,hdr.width*hdr.height*4);
 	}
 */
 	if (vflip) Vflip();

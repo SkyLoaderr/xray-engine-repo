@@ -103,7 +103,7 @@ vector<b_rc_face>		g_rc_faces;
 template <class T>
 void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
 {
-	IReader*	O		= F.OpenChunk(chunk);
+	IReader*	O		= F.open_chunk(chunk);
 	u32		count	= O?(O->Length()/sizeof(T)):0;
 	clMsg			("* %16s: %d",name,count);
 	if (count)  
@@ -129,7 +129,7 @@ void xrLoad(LPCSTR name)
 		
 		R_ASSERT			(FS.find_chunk(0));
 		hdrCFORM			H;
-		FS.Read				(&H,sizeof(hdrCFORM));
+		FS.r				(&H,sizeof(hdrCFORM));
 		R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 		
 		Fvector*	verts	= (Fvector*)FS.Pointer();
@@ -139,7 +139,7 @@ void xrLoad(LPCSTR name)
 
 		g_rc_faces.resize	(H.facecount);
 		R_ASSERT(FS.FindChunk(1));
-		FS.Read				(g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
+		FS.r				(g_rc_faces.begin(),g_rc_faces.size()*sizeof(b_rc_face));
 
 		LevelBB.set			(H.aabb);
 	}
@@ -162,7 +162,7 @@ void xrLoad(LPCSTR name)
 		string32	ID			= BUILD_PROJECT_MARK;
 		string32	id;
 		IReader*	F			= xr_new<CFileStream> (N);
-		F->Read		(&id,8);
+		F->r		(&id,8);
 		if (0==strcmp(id,ID))	{
 			xr_delete			(F);
 			F					= xr_new<CCompressedStream> (N,ID);
@@ -183,13 +183,13 @@ void xrLoad(LPCSTR name)
 		{
 			// Static
 			{
-				F = FS.OpenChunk(EB_Light_static);
+				F = FS.open_chunk(EB_Light_static);
 				b_light_static	temp;
 				DWORD cnt		= F->Length()/sizeof(temp);
 				for				(DWORD i=0; i<cnt; i++)
 				{
 					R_Light		RL;
-					F->Read		(&temp,sizeof(temp));
+					F->r		(&temp,sizeof(temp));
 					Flight&		L = temp.data;
 
 					// type
@@ -221,14 +221,14 @@ void xrLoad(LPCSTR name)
 		Status			("Processing textures...");
 		{
 			Surface_Init		();
-			F = FS.OpenChunk	(EB_Textures);
+			F = FS.open_chunk	(EB_Textures);
 			u32 tex_count	= F->Length()/sizeof(b_texture);
 			for (u32 t=0; t<tex_count; t++)
 			{
 				Progress		(float(t)/float(tex_count));
 
 				b_texture		TEX;
-				F->Read			(&TEX,sizeof(TEX));
+				F->r			(&TEX,sizeof(TEX));
 
 				b_BuildTexture	BT;
 				CopyMemory		(&BT,&TEX,sizeof(TEX));

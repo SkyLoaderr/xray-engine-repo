@@ -56,7 +56,7 @@ void CBuild::Run	(string& P)
 {
 	path			= P+"\\";
 
-	CFS_File fs		((path+"level.").c_str());
+	CFileWriter fs	((path+"level.").c_str());
 
 	fs.open_chunk	(fsL_HEADER);
 	hdrLEVEL H;		ZeroMemory(&H,sizeof(H));

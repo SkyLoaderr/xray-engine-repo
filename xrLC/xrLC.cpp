@@ -75,7 +75,7 @@ void Startup(LPSTR     lpCmdLine)
 	string32	ID			= BUILD_PROJECT_MARK;
 	string32	id;
 	IReader*	F			= xr_new<CFileStream> (prjName.c_str());
-	F->Read		(&id,8);
+	F->r		(&id,8);
 	if (0==strcmp(id,ID))	{
 		xr_delete		(F);
 		F				= xr_new<CCompressedStream> (prjName.c_str(),ID);

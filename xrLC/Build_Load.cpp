@@ -6,7 +6,7 @@ extern u32				dwInvalidFaces;
 template <class T>
 void transfer(const char *name, vector<T> &dest, IReader& F, u32 chunk)
 {
-	IReader*	O	= F.OpenChunk(chunk);
+	IReader*	O	= F.open_chunk(chunk);
 	u32		count	= O?(O->Length()/sizeof(T)):0;
 	clMsg			("* %16s: %d",name,count);
 	if (count)  
@@ -50,14 +50,14 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	//*******
 	Status					("Vertices...");
 	{
-		F = FS.OpenChunk		(EB_Vertices);
+		F = FS.open_chunk		(EB_Vertices);
 		u32 v_count			=	F->Length()/sizeof(b_vertex);
 		g_vertices.reserve		(3*v_count/2);
 		scene_bb.invalidate		();
 		for (i=0; i<v_count; i++)
 		{
 			Vertex*	pV			= VertexPool.create();
-			F->Rvector			(pV->P);
+			F->r_fvector3		(pV->P);
 			pV->N.set			(0,0,0);
 			pV->Color.set		(0,0,0,0);
 			scene_bb.modify		(pV->P);
@@ -70,7 +70,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	//*******
 	Status					("Faces...");
 	{
-		F = FS.OpenChunk		(EB_Faces);
+		F = FS.open_chunk		(EB_Faces);
 		R_ASSERT				(F);
 		u32 f_count			=	F->Length()/sizeof(b_face);
 		g_faces.reserve			(f_count);
@@ -80,7 +80,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 			{
 				Face*	_F			= FacePool.create();
 				b_face	B;
-				F->Read				(&B,sizeof(B));
+				F->r				(&B,sizeof(B));
 
 				_F->dwMaterial		= WORD(B.dwMaterial);
 				_F->dwMaterialGame	= B.dwMaterialGame;
@@ -118,7 +118,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 
 	//*******
 	Status	("Models and References");
-	F = FS.OpenChunk		(EB_MU_models);
+	F = FS.open_chunk		(EB_MU_models);
 	if (F)
 	{
 		while (!F->Eof())
@@ -128,7 +128,7 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		}
 		F->Close				();
 	}
-	F = FS.OpenChunk		(EB_MU_refs);
+	F = FS.open_chunk		(EB_MU_refs);
 	if (F)
 	{
 		while (!F->Eof())
@@ -153,17 +153,17 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	{
 		// Controlles/Layers
 		{
-			F = FS.OpenChunk		(EB_Light_control);
+			F = FS.open_chunk		(EB_Light_control);
 			L_control_data.assign	(LPBYTE(F->Pointer()),LPBYTE(F->Pointer())+F->Length());
 
 			R_Layer			temp;
 			
 			while (!F->Eof())
 			{
-				F->Read				(temp.control.name,sizeof(temp.control.name));
+				F->r				(temp.control.name,sizeof(temp.control.name));
 				u32 cnt				= F->r_u32();
 				temp.control.data.resize(cnt);
-				F->Read				(temp.control.data.begin(),cnt*sizeof(u32));
+				F->r				(temp.control.data.begin(),cnt*sizeof(u32));
 
 				L_layers.push_back	(temp);
 			}
@@ -172,13 +172,13 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 		}
 		// Static
 		{
-			F = FS.OpenChunk(EB_Light_static);
+			F = FS.open_chunk(EB_Light_static);
 			b_light_static	temp;
 			u32 cnt			= F->Length()/sizeof(temp);
 			for				(i=0; i<cnt; i++)
 			{
 				R_Light		RL;
-				F->Read		(&temp,sizeof(temp));
+				F->r		(&temp,sizeof(temp));
 				Flight&		L = temp.data;
 
 				// type
@@ -228,14 +228,14 @@ void CBuild::Load	(const b_params& Params, const IReader& _in_FS)
 	Status			("Processing textures...");
 	{
 		Surface_Init		();
-		F = FS.OpenChunk	(EB_Textures);
+		F = FS.open_chunk	(EB_Textures);
 		u32 tex_count	= F->Length()/sizeof(b_texture);
 		for (u32 t=0; t<tex_count; t++)
 		{
 			Progress		(float(t)/float(tex_count));
 
 			b_texture		TEX;
-			F->Read			(&TEX,sizeof(TEX));
+			F->r			(&TEX,sizeof(TEX));
 
 			b_BuildTexture	BT;
 			CopyMemory		(&BT,&TEX,sizeof(TEX));
