@@ -50,7 +50,7 @@ function multiplayer_dialog:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)	
 	
-	local btn = CUIButton()
+	btn = CUIButton()
 	btn:SetAutoDelete(true)
 	btn:SetWindowName("btn_create_server")
 	btn:Init("ui\\ui_button_01", btn_create_rect.x, btn_create_rect.y, btn_create_rect.width, btn_create_rect.height)
