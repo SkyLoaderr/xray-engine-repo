@@ -6,7 +6,7 @@ function main ()
 	wpn = get_level_object("wpn_walker")
 	actor = get_actor();
 	
-	wait(3000)
+	wait(300000)
 	
 	walker:script (true, zmey_walker.script_name())
 	
@@ -16,7 +16,7 @@ function main ()
 	       look(look.fire_point, actor),
 	       anim(anim.danger),
 	       move(move.standing, move.stand, move.line, actor),
-	       --object(walker.wpn, object.fire1),
+	       object(walker.wpn, object.fire1),
 	       cond(cond.time_end, time_infinite)
 	)
 
