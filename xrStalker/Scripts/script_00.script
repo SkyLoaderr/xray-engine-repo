@@ -239,7 +239,6 @@ function main()
 		wait(4000)			
 			prof_tupie_novichki:play_at_pos		(stalker1,stalker1:position(),0);
 		wait(3000)			
-			rainbow_tupih_hvataet
 			break
 		end
 		wait()			
