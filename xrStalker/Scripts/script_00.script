@@ -68,13 +68,13 @@ function main()
 			    stalker1,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				look	(look.fire_point, stalker2),
-				cond	(cond.time_end, 20000)
+				cond	(cond.time_end)
 			)
 			action(                                                                                                       
 			    stalker2,
 			  	move	(move.standing, move.walk,move.line,patrol("way0000")),
 				look	(look.fire_point, stalker1),
-				cond	(cond.time_end, 20000)
+				cond	(cond.time_end)
 			)
 
 
