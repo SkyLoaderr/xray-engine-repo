@@ -24,9 +24,8 @@ private:
 	u32						ll_dwReference;
 private:
 	EVENT					eQuit;
-	EVENT					eStartServer;
-	EVENT					eStartServerLoad;
-	EVENT					eStartClient;
+	EVENT					eStart;
+	EVENT					eStartLoad;
 	EVENT					eDisconnect;
 public:
 	CGameFont*				pFontSystem;

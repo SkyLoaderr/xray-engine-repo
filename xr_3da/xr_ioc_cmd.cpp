@@ -114,6 +114,12 @@ public:
 //-----------------------------------------------------------------------
 class CCC_Start : public CConsoleCommand
 {
+	void	parse		(LPSTR dest, args, LPCSTR name)
+	{
+		dest[0]	= 0;
+		if (strstr(args,name))
+			sscanf(strstr(args,name)+strlen(name),"(%[^)])",dest);
+	}
 public:
 	CCC_Start(LPCSTR N) : CConsoleCommand(N) {};
 	virtual void Execute(LPCSTR args) {
@@ -123,14 +129,15 @@ public:
 		}
 		string256	op_server,op_client;
 		
-		strcpy		(l_name,args);
-		if (strchr(l_name,'/'))		*strchr(l_name,'/') = 0;
-		int id		= pApp->Level_ID(l_name);
-		if (id>=0) {
-			Engine.Event.Defer("KERNEL:server",u32(xr_strdup(args)));
-		} else {
-			Log("! Cannot find level '%s'.",args);
+		parse		(op_server,args,"server");	// 1. server
+		parse		(op_client,args,"client");	// 2. client
+
+		if (0==strlen(op_client))	
+		{
+			Log("! Can't start game without client. Arguments: '%s'.",args);
+			return;
 		}
+		Engine.Event.Defer	("KERNEL:start",u32(strlen(op_server)?xr_strdup(op_server):0),u32(xr_strdup(op_client)));
 	}
 };
 

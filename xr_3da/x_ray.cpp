@@ -83,7 +83,7 @@ int APIENTRY WinMain(HINSTANCE hInstance,
                      int       nCmdShow)
 {
     // Init COM so we can use CoCreateInstance
-    CoInitializeEx	(NULL, COINIT_MULTITHREADED);
+    CoInitializeEx			(NULL, COINIT_MULTITHREADED);
 
 	// mmgrInitialize	(0);
 
@@ -126,11 +126,10 @@ CApplication::CApplication()
 	ll_dwReference	= 0;
 
 	// events
-	eQuit			= Engine.Event.Handler_Attach("KERNEL:quit",this);
-	eStartServer	= Engine.Event.Handler_Attach("KERNEL:server",this);
-	eStartServerLoad= Engine.Event.Handler_Attach("KERNEL:server_load",this);
-	eStartClient	= Engine.Event.Handler_Attach("KERNEL:client",this);
-	eDisconnect		= Engine.Event.Handler_Attach("KERNEL:disconnect",this);
+	eQuit						= Engine.Event.Handler_Attach("KERNEL:quit",this);
+	eStart						= Engine.Event.Handler_Attach("KERNEL:start",this);
+	eStartLoad					= Engine.Event.Handler_Attach("KERNEL:load",this);
+	eDisconnect					= Engine.Event.Handler_Attach("KERNEL:disconnect",this);
 
 	// levels
 	Level_Current				= 0;
@@ -154,27 +153,10 @@ CApplication::~CApplication()
 
 	// events
 	Engine.Event.Handler_Detach	(eDisconnect,this);
-	Engine.Event.Handler_Detach	(eStartClient,this);
-	Engine.Event.Handler_Detach	(eStartServerLoad,this);
-	Engine.Event.Handler_Detach	(eStartServer,this);
+	Engine.Event.Handler_Detach	(eStartLoad,this);
+	Engine.Event.Handler_Detach	(eStart,this);
 	Engine.Event.Handler_Detach	(eQuit,this);
 }
-
-/*
-BOOL StartGame(u32 num) 
-{
-	R_ASSERT(pCreator==NULL);
-	pCreator = (CCreator*)NEW_INSTANCE(CLSID_LEVEL);
-	Console.Hide();
-	if (!pCreator->Load(num)) {
-		Log("! Error loading level");
-		DEL_INSTANCE(pCreator);
-		Console.Show();
-	} else {
-	}
-	return true;
-}
-*/
 
 void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 {
@@ -186,23 +168,15 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 			_FREE(Levels[i].folder	);
 			_FREE(Levels[i].name	);
 		}
-	} else if (E==eStartServerLoad) 
-	{
-		/*
+	} else if (E==eStart) {
 		Console.Hide();
-		LPSTR		Name = LPSTR(P1);
+		LPCSTR		op_server		= LPCSTR(P1);
+		LPCSTR		op_client		= LPCSTR(P2);
 		R_ASSERT	(0==pCreator);
 		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
-		R_ASSERT	(pCreator->net_Server(Name,TRUE));
-		_FREE		(Name);
-		*/
-	} else if (E==eStartServer) {
-		Console.Hide();
-		LPSTR		Name = LPSTR(P1);
-		R_ASSERT	(0==pCreator);
-		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
-		R_ASSERT	(pCreator->net_Start(Name,TRUE));
-		_FREE		(Name);
+		R_ASSERT	(pCreator->net_Start(op_server,op_client));
+		_FREE		(op_server);
+		_FREE		(op_client);
 
 		// start any console command
 		if (strstr(Engine.Params,"-$")) {
@@ -211,18 +185,6 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 			strconcat			(buf,cmd," ",param);
 			Console.Execute		(buf);
 		}
-	} else if (E==eStartClient) {
-		Console.Hide();
-		LPSTR		Name = LPSTR(P1);
-		R_ASSERT	(0==pCreator);
-		pCreator	= (CCreator*)	NEW_INSTANCE(CLSID_LEVEL);
-		if			(!pCreator->net_Start(Name,FALSE))
-		{
-			Msg						("! FAILED TO CONNECT");
-			DEL_INSTANCE			(pCreator);
-			Console.Show			();
-		} 
-		_FREE		(Name);
 	} else if (E==eDisconnect) {
 		if (pCreator) {
 			Console.Hide			();
@@ -233,17 +195,6 @@ void CApplication::OnEvent(EVENT E, u32 P1, u32 P2)
 	}
 }
 
-/*
-LPSTR Name	= LPSTR(P1);
-int id		= Level_ID(Name);
-if (id<0)	
-{
-_FREE		(Name);
-return;
-}
-Level_Set	(id);
-
-*/
 void CApplication::LoadBegin()
 {
 	ll_dwReference++;
