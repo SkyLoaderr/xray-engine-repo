@@ -11,6 +11,16 @@
 		<texture>ui\ui_dg_inventory_multiplayer</texture>
 		<text x="40" y="7" font="graffiti22" r="255" g="255" b="255" a="130">ui_inv_items_list</text>
 	</bag_background_static>
+	
+	<!-- BACK BUTTON FOR BAG -->
+	<bag_back_btn x="199" y="0" width="67" height="32">
+			<texture_offset x="-26" y="0"/>
+			<texture_t>ui\ui_btn_mp_back_t</texture_t>
+			<texture_e>ui\ui_btn_mp_back_e</texture_e>
+			<texture_h>ui\ui_btn_mp_back_h</texture_h>
+			<texture_d>ui\ui_btn_mp_back_d</texture_d>
+			<sound_t>weapons\generic_close</sound_t>
+	</bag_back_btn>
 
 	<!-- DESCRIPTION WINDOW -->
 	<desc_static x="340" y="245" width="420" height="400">
@@ -109,6 +119,7 @@
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="181" g="170" b="148"/>
 			<text_d r="181" g="170" b="148"/>
+			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="202" y="0" width="150" height="52" accel="3">
 			<texture_offset x="-18" y="-62"/>
@@ -120,6 +131,7 @@
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="181" g="170" b="148"/>
 			<text_d r="181" g="170" b="148"/>
+			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="386" y="0" width="150" height="52" accel="4">
 			<texture_offset x="-18" y="-62"/>
@@ -131,6 +143,7 @@
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="181" g="170" b="148"/>
 			<text_d r="181" g="170" b="148"/>
+			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="570" y="0" width="150" height="52" accel="5">
 			<texture_offset x="-18" y="-62"/>
@@ -142,6 +155,7 @@
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="181" g="170" b="148"/>
 			<text_d r="181" g="170" b="148"/>
+			<sound_t>weapons\generic_close</sound_t>
 		</button>
 		<button x="753" y="0" width="150" height="52" accel="6">
 			<texture_offset x="-18" y="-62"/>
@@ -153,6 +167,7 @@
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="181" g="170" b="148"/>
 			<text_d r="181" g="170" b="148"/>
+			<sound_t>weapons\generic_close</sound_t>
 		</button>
 	</tab>
 		
@@ -164,6 +179,8 @@
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_shotguns</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
+			<sound_h>weapons\gen_empty</sound_h>
+			<sound_t>weapons\generic_close</sound_t>			
 	</btn_bag_shotgun>	
 	<btn_bag_assault x="5" y="120" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
@@ -173,6 +190,8 @@
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_rifles</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
+			<sound_h>weapons\gen_empty</sound_h>
+			<sound_t>weapons\generic_close</sound_t>
 	</btn_bag_assault>
 	<btn_bag_sniper x="5" y="210" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
@@ -182,6 +201,8 @@
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_sniper_rifles</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
+			<sound_h>weapons\gen_empty</sound_h>
+			<sound_t>weapons\generic_close</sound_t>
 	</btn_bag_sniper>
 	<btn_bag_heavy x="5" y="300" width="150" height="52">
 			<texture_offset x="-18" y="-62"/>
@@ -191,6 +212,8 @@
 			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_heavy_weapons</text>
 			<text_h r="255" g="187" b="51"/>
 			<text_t r="255" g="187" b="51"/>
+			<sound_h>weapons\gen_empty</sound_h>
+			<sound_t>weapons\generic_close</sound_t>
 	</btn_bag_heavy>
 
 	<!-- OK DIALOG BUTTON -->
