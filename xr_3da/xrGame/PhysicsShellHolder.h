@@ -62,9 +62,6 @@ public:
 	//для наследования CParticlesPlayer
 	virtual IRender_Sector*	Sector				()		{return inherited::Sector();}
 	virtual void			UpdateCL			();
-
-protected:
-private:
 };
 
 #endif
