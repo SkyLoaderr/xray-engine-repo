@@ -197,7 +197,7 @@ BOOL IPureClient::Connect(LPCSTR options)
 			NULL, 0,				// pvUserEnumData, size
 			2,						// dwEnumCount
 			0,						// dwRetryInterval
-			1000,					// dwTimeOut
+			1500,					// dwTimeOut
 			NULL,					// pvUserContext
 			NULL,					// pAsyncHandle
 			DPNENUMHOSTS_SYNC)		// dwFlags
