@@ -69,6 +69,23 @@ s32					game_sv_GameState::get_option_i				(LPCSTR lst, LPCSTR name, s32 def)
 	if (strstr(lst,op))	return atoi	(strstr(lst,op)+strlen(op));
 	else				return def;
 }
+string64			game_sv_GameState::get_option_s				(LPCSTR lst, LPCSTR name, LPCSTR def)
+{
+	string64		op,ret;
+	strconcat		(op,"//",name,"=");
+	LPCSTR			start	= strstr(lst,op);
+	if (start)		
+	{
+		LPCSTR			begin	= start + strlen(op); 
+		sscanf			(begin, "%[^\\]",ret);
+	}
+	else			
+	{
+		if (def)	strcpy		(ret,def);
+		else		ret[0]=0;
+	}
+	return ret;
+}
 void				game_sv_GameState::signal_Syncronize		()
 {
 	sv_force_sync	= TRUE;
