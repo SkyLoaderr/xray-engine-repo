@@ -8,7 +8,7 @@ class "se_monster" (cse_alife_monster_base)
 function se_monster:__init (section) super (section)
 	self.ini = nil
 	self.spawner_present = false
-	self.check_distance = 0
+	self.check_distance = 150
 end
 --------------------
 function se_monster:can_switch_offline ()
@@ -27,10 +27,10 @@ function se_monster:can_switch_online ()
 	if self.ini == nil then
 		self.ini = self:spawn_ini () 
 		self.spawner_present = self.ini:section_exist ("spawner")
-		if self.ini ~= nil and self.spawner_present == true and self.ini:line_exist ("spawner", "check_distance") == true then
-		   self.check_distance = self.ini:r_u32 ("spawner", "check_distance")
+		if self.ini ~= nil and self.spawner_present == true and self.ini:line_exist ("spawner", "min_distance") == true then
+		   self.check_distance = self.ini:r_u32 ("spawner", "min_distance")
 		   if self.check_distance == nil then 
-		      self.check_distance = 0
+		      self.check_distance = 150
 		   end   
 		end
 	end
