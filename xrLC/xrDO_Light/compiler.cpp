@@ -36,6 +36,28 @@ public:
 	void					select		(xr_vector<R_Light>& dest, xr_vector<R_Light>& src, Fvector& P, float R);
 	void					select		(base_lighting& from, Fvector& P, float R);
 };
+void	base_lighting::select	(xr_vector<R_Light>& dest, xr_vector<R_Light>& src, Fvector& P, float R)
+{
+	Fsphere		Sphere;
+	Sphere.set	(P,R);
+	dest.clear	();
+	R_Light*	L			= &*src.begin();
+	for (; L!=&*src.end(); L++)
+	{
+		if (L->type==LT_POINT) {
+			float dist						= Sphere.P.distance_to(L->position);
+			if (dist>(Sphere.R+L->range))	continue;
+		}
+		dest.push_back(*L);
+	}
+}
+void	base_lighting::select	(base_lighting& from, Fvector& P, float R)
+{
+	select(rgb,from.rgb,P,R);
+	select(hemi,from.hemi,P,R);
+	select(sun,from.sun,P,R);
+}
+
 class base_color
 {
 public:
@@ -162,8 +184,38 @@ void xrLoad(LPCSTR name)
 		dtFS->find_chunk		(2);
 		dtS					= (DetailSlot*)dtFS->pointer();
 	}
+
+	// Lights
+	{
+		IReader*			fs = FS.r_open("$level$","build.lights");
+		IReader*			F;	u32 cnt; R_Light* L;
+
+		// rgb
+		F		=			fs->open_chunk		(0);
+		cnt		=			F->length()/sizeof(R_Light);
+		L		=			(R_Light*)F->pointer();
+		g_lights.rgb.assign	(L,L+cnt);
+		F->close			();
+
+		// hemi
+		F		=			fs->open_chunk		(1);
+		cnt		=			F->length()/sizeof(R_Light);
+		L		=			(R_Light*)F->pointer();
+		g_lights.hemi.assign(L,L+cnt);
+		F->close			();
+
+		// sun
+		F		=			fs->open_chunk		(2);
+		cnt		=			F->length()/sizeof(R_Light);
+		L		=			(R_Light*)F->pointer();
+		g_lights.sun.assign	(L,L+cnt);
+		F->close			();
+
+		FS.r_close			(fs);
+	}
+
 	
-	// Load lights
+	// Load level data
 	{
 		IReader*	fs		= FS.r_open ("$level$","build.prj");
 		IReader*	F;
@@ -176,46 +228,10 @@ void xrLoad(LPCSTR name)
 		// Header
 		fs->r_chunk			(EB_Parameters,&g_params);
 
-
-		// Load lights
-		Status	("Loading lights...");
-		{
-			// Static
-			{
-				F = fs->open_chunk(EB_Light_static);
-				b_light_static	temp;
-				u32 cnt		= F->length()/sizeof(temp);
-				for				(u32 i=0; i<cnt; i++)
-				{
-					R_Light		RL;
-					F->r		(&temp,sizeof(temp));
-					Flight&		L = temp.data;
-
-					// type
-					if			(L.type == D3DLIGHT_DIRECTIONAL)	RL.type	= LT_DIRECT;
-					else											RL.type = LT_POINT;
-
-					// generic properties
-					RL.diffuse.normalize_rgb	(L.diffuse);
-					RL.position.set				(L.position);
-					RL.direction.normalize_safe	(L.direction);
-					RL.range				=	L.range*1.1f;
-					RL.range2				=	RL.range*RL.range;
-					RL.attenuation0			=	L.attenuation0;
-					RL.attenuation1			=	L.attenuation1;
-					RL.attenuation2			=	L.attenuation2;
-					RL.energy				=	color_intensity(L.diffuse);
-
-					g_lights.push_back		(RL);
-					// place into layer
-//					R_ASSERT	(temp.controller_ID<L_layers.size());
-//					L_layers	[temp.controller_ID].lights.push_back	(RL);
-				}
-				F->close		();
-			}
-		}
+		// Load level data
 		transfer("materials",	g_materials,			*fs,		EB_Materials);
 		transfer("shaders_xrlc",g_shader_compile,		*fs,		EB_Shaders_Compile);
+
 		// process textures
 		Status			("Processing textures...");
 		{
@@ -397,12 +413,10 @@ float rayTrace	(CDB::COLLIDER* DB, R_Light& L, Fvector& P, Fvector& D, float R)/
 	return 0;
 }
 
-void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags, Face* skip)
+void LightPoint(CDB::COLLIDER* DB, base_color &C, Fvector &P, Fvector &N, base_lighting& lights, u32 flags)
 {
 	Fvector		Ldir,Pnew;
 	Pnew.mad	(P,N,0.01f);
-
-	BOOL		bUseFaceDisable	= flags&LP_UseFaceDisable;
 
 	if (0==(flags&LP_dont_rgb))
 	{
@@ -416,7 +430,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				if( D <=0 ) continue;
 
 				// Trace Light
-				float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				float scale	=	D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);
 				C.rgb.x		+=	scale * L->diffuse.x; 
 				C.rgb.y		+=	scale * L->diffuse.y;
 				C.rgb.z		+=	scale * L->diffuse.z;
@@ -433,7 +447,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 
 				// Trace Light
 				float R		= _sqrt(sqD);
-				float scale = D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+				float scale = D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);
 				float A		= scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 
 				C.rgb.x += A * L->diffuse.x;
@@ -454,7 +468,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				if( D <=0 ) continue;
 
 				// Trace Light
-				float scale	=	L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				float scale	=	L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);
 				C.sun		+=	scale;
 			} else {
 				// Distance
@@ -469,7 +483,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 
 				// Trace Light
 				float R		=	_sqrt(sqD);
-				float scale =	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+				float scale =	D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);
 				float A		=	scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 
 				C.sun		+=	A;
@@ -488,7 +502,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 				if( D <=0 ) continue;
 
 				// Trace Light
-				float scale	=	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,1000.f,skip,bUseFaceDisable);
+				float scale	=	D*L->energy*rayTrace(DB,*L,Pnew,Ldir,1000.f);
 				C.hemi		+=	scale;
 			} else {
 				// Distance
@@ -503,7 +517,7 @@ void LightPoint(CDB::COLLIDER* DB, CDB::MODEL* MDL, base_color &C, Fvector &P, F
 
 				// Trace Light
 				float R		=	_sqrt(sqD);
-				float scale =	D*L->energy*rayTrace(DB,MDL, *L,Pnew,Ldir,R,skip,bUseFaceDisable);
+				float scale =	D*L->energy*rayTrace(DB,*L,Pnew,Ldir,R);
 				float A		=	scale / (L->attenuation0 + L->attenuation1*R + L->attenuation2*sqD);
 
 				C.hemi		+=	A;
@@ -547,9 +561,7 @@ public:
 		DB.ray_options		(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL		);
 		DB.box_options		(CDB::OPT_FULL_TEST							);
 
-		xr_vector<R_Light>	Lights = g_lights;
-
-		LSelection		Selected;
+		base_lighting		Selected;
 		for (u32 _z=Nstart; _z<Nend; _z++)
 		{
 			for (u32 _x=0; _x<dtH.size_x; _x++)
@@ -560,8 +572,8 @@ public:
 					continue;
 
 				// Build slot BB & sphere
-				int slt_z = int(_z)-int(dtH.offs_z);
-				int slt_x = int(_x)-int(dtH.offs_x);
+				int slt_z	= int(_z)-int(dtH.offs_z);
+				int slt_x	= int(_x)-int(dtH.offs_x);
 				
 				Fbox		BB;
 				BB.min.set	(slt_x*DETAIL_SLOT_SIZE,	DS.r_ybase(),				slt_z*DETAIL_SLOT_SIZE);
@@ -583,20 +595,11 @@ public:
 				CDB::TRI* tris		= RCAST_Model.get_tris();
 				
 				// select lights
-				Selected.clear();
-				for (u32 L=0; L<Lights.size(); L++)
-				{
-					R_Light&	R = g_lights[L];
-					if (R.type==LT_DIRECT)	Selected.push_back(&R);
-					else {
-						float dist = S.P.distance_to(R.position);
-						if ((dist - S.R) < R.range)	Selected.push_back(&R);
-					}
-				}
+				Selected.select		(g_lights,S.P,S.R);
 				
 				// lighting itself
-				float amount[4]	= {0,0,0,0};
-				u32 count[4]	= {0,0,0,0};
+				base_color		amount;
+				u32				count	= 0;
 				float coeff		= DETAIL_SLOT_SIZE_2/float(LIGHT_Count);
 				FPU::m64r		();
 				for (int x=-LIGHT_Count; x<=LIGHT_Count; x++) 
@@ -630,29 +633,19 @@ public:
 						}
 						if (P.y<BB.min.y) continue;
 						
-						// select part of slot
-						int pid = 0;
-						if (z>0)
-						{
-							if (x<0)	pid = 0;
-							else		pid = 1;
-						} else {
-							if (x<0)	pid = 2;
-							else		pid = 3;
-						}
-
 						// light point
-						amount	[pid]	+= LightPoint(&DB,P,t_n,Selected);
-						count	[pid]	+= 1;
+						LightPoint		(&DB,amount,P,t_n,Selected,0);
+						count			+= 1;
 					}
 				}
 				
 				// calculation of luminocity
-				DetailPalette* dc	= (DetailPalette*)&DS.color;	int LL; float	res;
-				res					= amount[0]/float(count[0]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a0	= LL;
-				res					= amount[1]/float(count[1]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a1	= LL;
-				res					= amount[2]/float(count[2]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a2	= LL;
-				res					= amount[3]/float(count[3]); LL = iFloor(7.f * res); clamp(LL,0,15); dc->a3	= LL;
+				amount.scale		(count);
+				DS.c_dir			= DS.w_qclr	(amount.sun,15);
+				DS.c_hemi			= DS.w_qclr	(amount.hemi,15);
+				DS.c_r				= DS.w_qclr	(amount.rgb.x,15);
+				DS.c_g				= DS.w_qclr	(amount.rgb.y,15);
+				DS.c_b				= DS.w_qclr	(amount.rgb.z,15);
 				thProgress			= float(_z-Nstart)/float(Nend-Nstart);
 				thPerformance		= float(double(t_count)/double(t_time*CPU::cycles2seconds))/1000.f;
 			}
@@ -662,7 +655,7 @@ public:
 
 void	xrLight			()
 {
-	u32	range			= dtH.size_z;
+	u32	range				= dtH.size_z;
 
 	// Start threads, wait, continue --- perform all the work
 	CThreadManager		Threads;
