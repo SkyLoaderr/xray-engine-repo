@@ -1019,62 +1019,62 @@ blowout_wind		= off
 spawn_blowout_artefacts = off
 
 [zone_flame_small]
-GroupControlSection	= spawn_group_zone
-$spawn 			= "zones\campfire"
-$prefetch 		= 16
-class			= Z_MBALD
-hit_impulse_scale	= .00
-sound			= 
-postprocess		= postprocess_flame
+GroupControlSection		= spawn_group_zone
+$spawn 					= "zones\campfire"
+$prefetch 				= 16
+class					= Z_MBALD
+hit_impulse_scale		= 1.00
+sound					= 
+postprocess				= postprocess_flame
 
-artefacts		= 
-BirthProbability = 0.01
+artefacts				= 
+BirthProbability 		= 0.01
 
-idle_particles		= explosions\campfire_05
-blowout_particles	= explosions\campfire_06
+idle_particles			= explosions\campfire_05
+blowout_particles		= explosions\campfire_06
 
-hit_small_particles			= damage_fx\burn_creatures
-hit_big_particles			= damage_fx\burn_creatures00
-idle_small_particles		= damage_fx\burn_creatures
-idle_big_particles			= damage_fx\burn_creatures00
-entrance_small_particles	= damage_fx\burn_creatures
-entrance_big_particles		= damage_fx\burn_creatures00 ;
+hit_small_particles		= damage_fx\burn_creatures
+hit_big_particles		= damage_fx\burn_creatures00
+idle_small_particles	= damage_fx\burn_creatures
+idle_big_particles		= damage_fx\burn_creatures00
+entrance_small_particles = damage_fx\burn_creatures
+entrance_big_particles	= damage_fx\burn_creatures00 ;
 
-idle_sound			= ambient\fire2						;постоянный звук
-blowout_sound		= ambient\fire2		;во время выброса(удара) в центре аномалии	
-hit_sound			= ambient\fire2								;на персонаже, когда тот получает хит
-entrance_sound		= ambient\fire2									;при попадании объекта в аномалию
+idle_sound				= ambient\fire2						;постоянный звук
+blowout_sound			= ambient\fire2		;во время выброса(удара) в центре аномалии	
+hit_sound				= ambient\fire2								;на персонаже, когда тот получает хит
+entrance_sound			= ambient\fire2									;при попадании объекта в аномалию
 
-hit_type		= burn
+hit_type				= burn
 
-disable_time		= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
-disable_time_small	= -1		;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
-disable_idle_time	= 50000	;время отключения idle партиклов
+disable_time			= 0	;время игнорирования неживого объекта в зоне (-1 если не нужно)
+disable_time_small		= 2	;время игнорирования маленького неживого объекта в зоне (-1 если не нужно)
+disable_idle_time		= 50000	;время отключения idle партиклов
 
-ignore_nonalive		= true
-ignore_small		= true
-ignore_artefacts	= true
+ignore_nonalive			= true
+ignore_small			= true
+ignore_artefacts		= true
 
-blowout_light		= on
-light_color		    = 1.8,1.7,1.4
-light_range		    = 6.0
-light_time 		    = 0.35
-light_height		= 0.75			;подъем источника света на высоту
+blowout_light			= on
+light_color		    	= 1.8,1.7,1.4
+light_range		    	= 8.0
+light_time 		    	= 0.35
+light_height			= 0.75			;подъем источника света на высоту
 
 
-idle_light			= on
-idle_light_range	= 6.0
-idle_light_range_delta = 0.25
-idle_light_anim		= koster_00
-idle_light_height	= 0.70			;подъем источника света на высоту
+idle_light				= on
+idle_light_range		= 8.0
+idle_light_range_delta 	= 0.25
+idle_light_anim			= koster_00
+idle_light_height		= 0.70			;подъем источника света на высоту
 
-awaking_time		= 1000
-blowout_time		= 300	
-accamulate_time		= 1000
+awaking_time			= 1000
+blowout_time			= 300	
+accamulate_time			= 1000
 
-visible_by_detector = off
+visible_by_detector 	= off
 
-blowout_wind		= off
+blowout_wind			= off
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;рождение артефактов во время срабатывания
