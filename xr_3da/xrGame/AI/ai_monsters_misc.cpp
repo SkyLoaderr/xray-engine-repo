@@ -260,7 +260,7 @@ IC bool bfInsideNode(CAI_Space &AI, NodeCompressed *tpNode, Fvector &tCurrentPos
 	);
 }
 
-void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
+void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, vector<Fvector> &tpaDeviations, vector<CTravelNode> &tpaPath, bool bLooped, bool bUseDeviations, float fRoundedDistanceMin, float fRoundedDistanceMax, float fRadiusMin, float fRadiusMax, float fSuitableAngle, float fSegmentSizeMin, float fSegmentSizeMax)
 {
 	CTravelNode tTravelNode;
 	Fvector tPrevPrevPoint,tTempPoint, tPrevPoint, tStartPoint, tFinishPoint, tCurrentPosition, tCircleCentre, tFinalPosition, t1, t2;
@@ -269,7 +269,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 	PContour tCurContour, tNextContour;
 	PSegment tSegment;
 	DWORD dwCurNode, dwPrevNode, dwPrevPrevNode;
-	int i, j, iCurrentPatrolPoint, iCount, iNodeIndex, iSavedIndex, iStartI;
+	int i, j, iCurrentPatrolPoint, iCount, iNodeIndex, iSavedIndex = -1, iStartI;
 	float fSuitAngleCosinus = cosf(fSuitableAngle), fHalfSubNodeSize = (Level().AI.GetHeader().size)*.5f, fSegmentSize, fDistance, fRadius, fAlpha0, fAlpha, fTemp, fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax), fPreviousRoundedDistance = fRoundedDistance;
 	bool bStop = false, bOk = false;
 	CAI_Space &AI = Level().AI;
@@ -285,6 +285,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 			tpaDeviations[i].set(0,0,0);
 		tTempPoint.add(tpaPoints[i],tpaDeviations[i]);
 	}
+	if (!bLooped)
+		tpaDeviations[tpaDeviations.size() - 1].set(0,0,0);
 		
 	// init start data
 	tpaPath.clear();
@@ -299,9 +301,18 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 	fDistance = COMPUTE_DISTANCE_2D(tStartPoint,tFinishPoint);
 
 	while (!bStop) {
+		
 		do {
 			// if distance is small enough - round the corner
-			if (COMPUTE_DISTANCE_2D(tPrevPoint,tFinishPoint) - fRoundedDistance < EPS_L) {
+			if (((COMPUTE_DISTANCE_2D(tPrevPoint,tFinishPoint) - fRoundedDistance < EPS_L)))// && (bLooped)))// || 
+				//((COMPUTE_DISTANCE_2D(tPrevPoint,tFinishPoint) - fRoundedDistance < EPS_L) && (!bLooped) && (iCurrentPatrolPoint != tpaPoints.size() - 1)))
+				{
+				/**/
+				if ((!bLooped) && (iCurrentPatrolPoint == tpaPoints.size() - 1)) {
+					bStop = true;
+					break;
+				}
+				/**/
 				iStartI = tpaPath.size() - 1;
 				dwPrevPrevNode = dwPrevNode;
 				dwPrevNode = dwCurNode;
@@ -314,8 +325,10 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 				tTravelNode.P = tCurrentPosition;
 				tpaPath[iStartI].P = tTravelNode.P;
 				tPrevPoint = tCurrentPosition;
-				vfComputeCircle(tCurrentPosition,tFinishPoint,tpaPoints[iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0],fRadius,tCircleCentre,tFinalPosition,fAlpha0);
+				//if (fRoundedDistance > 0.0)
+					vfComputeCircle(tCurrentPosition,tFinishPoint,tpaPoints[iCurrentPatrolPoint < tpaPoints.size() - 1 ? iCurrentPatrolPoint + 1 : 0],fRadius,tCircleCentre,tFinalPosition,fAlpha0);
 				// build circle points
+				//if ((fSuitableAngle < fAlpha0) && (fRoundedDistance > 0.0)) {
 				if (fSuitableAngle < fAlpha0) {
 					fSegmentSize = 2*fRadius*fRadius*(1 - fSuitAngleCosinus);
 					fAlpha0 = fSuitableAngle;
@@ -503,13 +516,26 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 				bStop = iCurrentPatrolPoint == 1;
 
 				fPreviousRoundedDistance = fRoundedDistance;
-				fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
+				if (bLooped)
+					fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
+				else
+					if (iCurrentPatrolPoint != tpaPoints.size() - 1)
+						fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
+					else
+						//fRoundedDistance = 0;
+						fRoundedDistance = ::Random.randF(fRoundedDistanceMin,fRoundedDistanceMax);
 
 				dwPrevNode = DWORD(-1);
 				
 				break;
 			}
 			else {
+				/**
+				if ((!bLooped) && (!iCurrentPatrolPoint)) {
+					bStop = true;
+					break;
+				}
+				/**/
 				UnpackContour(tCurContour,dwCurNode);
 				tpNode = AI.Node(dwCurNode);
 				taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
@@ -553,7 +579,8 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 
 				if (iSavedIndex > -1) {
 					tTravelNode.P = tTempPoint;
-					if (COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance) {
+					if ((COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance) || 
+						((!bLooped) && (iCurrentPatrolPoint == 1))) {
 						if (fabsf(tTravelNode.P.y - tPrevPoint.y) > 1.f/256.f)
 							tpaPath.push_back(tTravelNode);
 						else
@@ -648,7 +675,7 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 						}
 						if (iSavedIndex > -1) {
 							tTravelNode.P = tTempPoint;
-							if (COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance)
+							if ((COMPUTE_DISTANCE_2D(tPrevPoint,tStartPoint) >= fPreviousRoundedDistance) || ((!bLooped) && (iCurrentPatrolPoint == 1)))
 								tpaPath.push_back(tTravelNode);
 							tPrevPoint = tTravelNode.P;
 							dwPrevNode = dwCurNode;
@@ -664,29 +691,39 @@ void vfCreateFastRealisticPath(vector<Fvector> &tpaPoints, DWORD dwStartNode, ve
 		}
 		while (true);
 	}
-	// close the path
-	tpaPath.push_back(tpaPath[0]);
+	// close the path for looped ones
+	if (bLooped)
+		tpaPath.push_back(tpaPath[0]);
 }
 
-void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints)
+void vfCreatePointSequence(CLevel::SPatrolPath &tpPatrolPath,vector<Fvector> &tpaPoints, bool &bLooped)
 {
-	int iCurPoint = -1;
+	tpaPoints.clear();
+	int iStartPoint = -1, iCurPoint = -1;
 	for (int i=0; i<tpPatrolPath.tpaWayPoints.size(); i++)
 		if (tpPatrolPath.tpaWayPoints[i].dwFlags & START_WAYPOINT) {
 			tpaPoints.push_back(tpPatrolPath.tpaWayPoints[i].tWayPoint);
-			iCurPoint = i;
+			iStartPoint = iCurPoint = i;
 			break;
 		}
 	
-	tpaPoints.clear();
-	bool bStop = true;
+	bool bStop = false;
 	do {
 		for ( i=0; i<tpPatrolPath.tpaWayLinks.size(); i++)
 			if (tpPatrolPath.tpaWayLinks[i].wFrom == iCurPoint) {
-				tpaPoints.push_back(tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayLinks[i].wTo].tWayPoint);
-				bStop = !(tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayLinks[i].wTo].dwFlags & FINISH_WAYPOINT);
+				if (tpPatrolPath.tpaWayPoints[iCurPoint = tpPatrolPath.tpaWayLinks[i].wTo].dwFlags & FINISH_WAYPOINT) {
+					bStop = true;
+					if (iStartPoint != tpPatrolPath.tpaWayLinks[i].wTo) {
+						tpaPoints.push_back(tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayLinks[i].wTo].tWayPoint);
+						bLooped = false;
+					}
+					else
+						bLooped = true;
+				}
+				else
+					tpaPoints.push_back(tpPatrolPath.tpaWayPoints[tpPatrolPath.tpaWayLinks[i].wTo].tWayPoint);
 				break;
 			}
 	}
-	while(bStop);
+	while(!bStop);
 }

@@ -203,7 +203,7 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 					if ((strlen(monster_name)) && (strcmp(monster_name,cName())))
 						return;
 					
-					if (!(strlen(monster_name)) {
+					if (!(strlen(monster_name))) {
 						sscanf(buf2,"%d,%d,%d",&team,&squad,&group);
 						
 						if ((team != g_Team()) || (squad != g_Squad()) || (group != g_Group()))
@@ -219,7 +219,10 @@ void CAI_Soldier::OnEvent(EVENT E, DWORD P1, DWORD P2)
 				for (int i=0; i<tpaPatrolPaths.size(); i++)
 					if (!strcmp(buf2,tpaPatrolPaths[i].sName)) {
 						m_dwStartPatrolNode = tpaPatrolPaths[i].dwStartNode;
-						vfCreatePointSequence(tpaPatrolPaths[i],m_tpaPatrolPoints);
+						vfCreatePointSequence(tpaPatrolPaths[i],m_tpaPatrolPoints,m_bLooped);
+						m_tpaPointDeviations.resize(m_tpaPatrolPoints.size());
+						m_dwLoopCount = 0;
+						AI_Path.bNeedRebuild = FALSE;
 						return;
 					}
 				m_tpaPatrolPoints.clear();

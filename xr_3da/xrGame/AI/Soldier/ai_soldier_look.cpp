@@ -124,7 +124,7 @@ float ffCalcSquare(float fAngle, float fAngleOfView, float _b0, float _b1, float
 								float b0 = _b0, b1 = _b1, b2 = _b2, b3 = _b3, a1 = (b1 - b0)/(PI/2.f), a2 = (b1 - b2)/(PI/2.f), a3 = (b1 - b3)/(PI/2.f), fKsi = PI- fAngleOfView - fAngle;
 								fSquare = (CUBE(PI)*(_sqr(a3) + _sqr(a2))/24.f + _sqr(PI)*(a3*b3 + a2*b2)/4.f + PI*(_sqr(b3) + _sqr(b2))/2.f - (CUBE(fAngle)*_sqr(a1)/3.f + _sqr(fAngle)*a1*b1 + fAngle*_sqr(b1) + CUBE(fKsi)*_sqr(a3)/3.f + _sqr(fKsi)*a3*b3 + fKsi*_sqr(b3)))/2.f;
 							}
-							return(fSquare);
+	return(fSquare);
 }
 
 void CAI_Soldier::SetLessCoverLook(NodeCompressed *tNode, bool bSpine)
@@ -176,29 +176,29 @@ void CAI_Soldier::SetSmartLook(NodeCompressed *tNode, Fvector &tEnemyDirection)
 	/**
 	float fCover = 0;
 	if ((tEnemyDirection.x < 0) && (tEnemyDirection.z > 0)) {
-	float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-	fCover = cosf(fAlpha)*tNode->cover[0] + sinf(fAlpha)*tNode->cover[1];
+		float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
+		fCover = cosf(fAlpha)*tNode->cover[0] + sinf(fAlpha)*tNode->cover[1];
 	}
 	else 
-	if ((tEnemyDirection.x > 0) && (tEnemyDirection.z > 0)) {
-	float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
-	fCover = cosf(fAlpha)*tNode->cover[1] + sinf(fAlpha)*tNode->cover[2];
-	}
-	else 
-	if ((tEnemyDirection.x > 0) && (tEnemyDirection.z < 0)) {
+		if ((tEnemyDirection.x > 0) && (tEnemyDirection.z > 0)) {
+			float fAlpha = acosf(tEnemyDirection.dotproduct(tFront));
+			fCover = cosf(fAlpha)*tNode->cover[1] + sinf(fAlpha)*tNode->cover[2];
+		}
+		else 
+			if ((tEnemyDirection.x > 0) && (tEnemyDirection.z < 0)) {
 				float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
 				fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[2];
-				}
-				else 
+			}
+			else 
 				if ((tEnemyDirection.x < 0) && (tEnemyDirection.z < 0)) {
-				float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
-				fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[0];
+					float fAlpha = acosf(tEnemyDirection.dotproduct(tBack));
+					fCover = cosf(fAlpha)*tNode->cover[3] + sinf(fAlpha)*tNode->cover[0];
 				}
 				
-				  
-					//Msg("%8.2f",fCover);
-					if (fCover > -1.0f*255.f) {
-	/**/
+				
+				//Msg("%8.2f",fCover);
+	if (fCover > -1.0f*255.f) {
+					/**/
 	//q_look.setup(AI::AIC_Look::Look, AI::t_Direction, &(tEnemyDirection), 1000);
 	mk_rotation(tEnemyDirection,r_torso_target);
 	r_target.yaw = r_torso_target.yaw;
