@@ -11,7 +11,7 @@
 #define CROSS_TABLE_CHUNK_VERSION			0
 #define CROSS_TABLE_CHUNK_DATA				1
 
-class CCrossTable {
+class CALifeCrossTable {
 public:
 	#pragma pack(push,2)
 	typedef struct tagSCrossTableHeader {
@@ -30,13 +30,13 @@ public:
 	CVirtualFileStream						*m_tpCrossTableVFS;
 	SCrossTableCell							*m_tpaCrossTable;
 
-	CCrossTable								()
+	CALifeCrossTable						()
 	{
 		m_tpCrossTableVFS					= 0;
 		m_tpaCrossTable						= 0;
 	};
 
-	CCrossTable								(const FILE_NAME &fName)
+	CALifeCrossTable						(const FILE_NAME &fName)
 	{
 		m_tpCrossTableVFS					= 0;
 		m_tpaCrossTable						= 0;
