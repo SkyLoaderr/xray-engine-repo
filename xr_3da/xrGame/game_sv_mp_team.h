@@ -44,6 +44,10 @@
 		s16					m_iM_RoundWin		;
 		s16					m_iM_RoundLoose		;
 		s16					m_iM_RoundDraw		;		
+
+		s16					m_iM_RoundWin_Minor		;
+		s16					m_iM_RoundLoose_Minor	;
+
 	};
 
 	//массив данных по командам

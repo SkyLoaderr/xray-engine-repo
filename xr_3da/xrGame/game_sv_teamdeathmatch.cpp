@@ -255,7 +255,7 @@ void	game_sv_TeamDeathmatch::LoadTeams			()
 	LoadTeamData("teamdeathmatch_team2");
 };
 
-
+/*
 void	game_sv_TeamDeathmatch::OnTeamScore	(u32 Team)
 {
 	TeamStruct* pTeam		= GetTeamData(u8(Team));
@@ -274,3 +274,4 @@ void	game_sv_TeamDeathmatch::OnTeamScore	(u32 Team)
 			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundLoose;
 	}
 }
+*/

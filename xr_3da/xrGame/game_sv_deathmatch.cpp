@@ -1000,6 +1000,9 @@ void	game_sv_Deathmatch::LoadTeamData			(char* caSection)
 		NewTeam.m_iM_RoundWin			= pSettings->r_s16(caSection, "round_win");
 		NewTeam.m_iM_RoundLoose			= pSettings->r_s16(caSection, "round_loose");
 		NewTeam.m_iM_RoundDraw			= pSettings->r_s16(caSection, "round_draw");
+
+		NewTeam.m_iM_RoundWin_Minor		= pSettings->r_s16(caSection, "round_win_minor");
+		NewTeam.m_iM_RoundLoose_Minor	= pSettings->r_s16(caSection, "round_loose_minor");
 	};
 	//-------------------------------------------------------------
 	TeamList.push_back(NewTeam);
@@ -1099,7 +1102,7 @@ void	game_sv_Deathmatch::RemoveItemFromActor	(CSE_Abstract* pItem)
 	Level().Send(P,net_flags(TRUE,TRUE));
 };
 
-void	game_sv_Deathmatch::OnTeamScore	(u32 Team)
+void	game_sv_Deathmatch::OnTeamScore	(u32 Team, bool Minor)
 {
 	TeamStruct* pTeam		= GetTeamData(u8(Team));
 	if (!pTeam) return;
@@ -1112,9 +1115,9 @@ void	game_sv_Deathmatch::OnTeamScore	(u32 Team)
 		if (ps->Skip) continue;		
 
 		if (ps->team == s16(Team))
-			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundWin;
+			ps->money_for_round = ps->money_for_round + ((Minor) ? pTeam->m_iM_RoundWin_Minor : pTeam->m_iM_RoundWin);
 		else
-			ps->money_for_round = ps->money_for_round + pTeam->m_iM_RoundLoose;
+			ps->money_for_round = ps->money_for_round + ((Minor) ? pTeam->m_iM_RoundLoose_Minor : pTeam->m_iM_RoundLoose);
 	}
 }
 

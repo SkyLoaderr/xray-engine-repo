@@ -101,4 +101,5 @@ public:
 	//-------------------------------------------------------------------------------
 	virtual		void				RespawnAllNotAlivePlayers	();
 	virtual		bool				CheckAlivePlayersInTeam		(s16 Team);
+	virtual		void				MoveAllAlivePlayers			();
 };

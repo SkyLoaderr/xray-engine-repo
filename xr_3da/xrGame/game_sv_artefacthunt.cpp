@@ -129,7 +129,7 @@ void	game_sv_ArtefactHunt::OnPlayerKillPlayer		(ClientID id_killer, ClientID id_
 
 		if (m_iReinforcementTime<0 && !CheckAlivePlayersInTeam(ps_killed->team))
 		{
-			OnTeamScore(ps_killer->team);
+			OnTeamScore(ps_killer->team, true);
 			phase = u16((ps_killed->team == 2)?GAME_PHASE_TEAM2_ELIMINATED:GAME_PHASE_TEAM1_ELIMINATED);
 			switch_Phase(phase);
 			OnDelayedRoundEnd("Team Eliminated");
@@ -507,7 +507,7 @@ void		game_sv_ArtefactHunt::OnArtefactOnBase		(ClientID id_who)
 
 	if ( GetTeamScore(ps->team-1) >= artefactsNum) 
 	{
-		OnTeamScore(ps->team-1);
+		OnTeamScore(ps->team, false);
 		phase = u16((ps->team-1)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
 		switch_Phase		(phase);
 		OnDelayedRoundEnd("Team Final Score");
@@ -537,7 +537,11 @@ void	game_sv_ArtefactHunt::SpawnArtefact			()
 
 	signal_Syncronize();
 	//-------------------------------------------------
-	if (m_iReinforcementTime == -1) RespawnAllNotAlivePlayers();
+	if (m_iReinforcementTime == -1) 
+	{
+		MoveAllAlivePlayers();
+		RespawnAllNotAlivePlayers();
+	};
 	//-------------------------------------------------
 	if (m_bAnomaliesEnabled)	StartAnomalies();
 	//-------------------------------------------------
@@ -569,12 +573,22 @@ void	game_sv_ArtefactHunt::Update			()
 	{
 	case GAME_PHASE_TEAM1_SCORES :
 	case GAME_PHASE_TEAM2_SCORES :
-	case GAME_PHASE_TEAM1_ELIMINATED :
-	case GAME_PHASE_TEAM2_ELIMINATED :
 	case GAME_PHASE_TEAMS_IN_A_DRAW :
 		{
-			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync()) OnRoundEnd("Finish");
+			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync())
+				OnRoundEnd("Finish");
 		} break;
+	case GAME_PHASE_TEAM1_ELIMINATED :
+	case GAME_PHASE_TEAM2_ELIMINATED :
+		{
+			if(m_delayedRoundEnd && m_roundEndDelay < Device.TimerAsync())
+			{
+				switch_Phase	(GAME_PHASE_INPROGRESS);
+				
+				RemoveArtefact();
+				SpawnArtefact();
+			};
+		}break;
 	case GAME_PHASE_PENDING : 
 		{
 			//				if ((Device.TimerAsync()-start_time)>u32(30*1000)) OnRoundStart();
@@ -706,7 +720,7 @@ void				game_sv_ArtefactHunt::OnTimelimitExceed		()
 {
 	if ( GetTeamScore(0) == GetTeamScore(1) ) return;
 	u8 winning_team = (GetTeamScore(0) < GetTeamScore(1))? 1 : 0;
-	OnTeamScore(winning_team);
+	OnTeamScore(winning_team, false);
 	phase = u16((winning_team)?GAME_PHASE_TEAM2_SCORES:GAME_PHASE_TEAM1_SCORES);
 	switch_Phase		(phase);
 	OnDelayedRoundEnd("Team Final Score");
@@ -854,4 +868,8 @@ bool	game_sv_ArtefactHunt::CheckAlivePlayersInTeam	(s16 Team)
 		cnt_alive++;
 	};
 	return cnt_alive != 0;
+};
+
+void	game_sv_ArtefactHunt::MoveAllAlivePlayers			()
+{
 };
