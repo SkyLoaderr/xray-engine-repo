@@ -97,7 +97,6 @@
 		<article>zone_anomalies_heat</article>
 		<article>zone_anomalies_deadzone</article>
 		<article>zone_locations_escape</article>
-<!--
 		<article>equipment_items_med</article>
 		<article>equipment_items_capsule</article>
 		<article>equipment_items_detect1</article>
@@ -112,7 +111,6 @@
 		<article>equipment_armors_arm-light</article>
 		<article>equipment_armors_arm-medium</article>
 		<article>equipment_armors_arm-heavy</article>
--->
 		
 	</info_portion>
 
