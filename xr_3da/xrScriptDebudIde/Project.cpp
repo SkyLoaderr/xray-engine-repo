@@ -418,6 +418,31 @@ CString CProject::GetProjectDir()
 	return CString(drive)+dir;	
 }
 
+void CProject::FillBreakPoints(CMailSlotMsg* msg)
+{
+	if(!m_files.GetSize()){
+		msg->w_int(0);
+		return;
+	};
+		
+	int nCnt = 0;
+	CProjectFile* pf;
+	for(int i=0;i<m_files.GetSize();++i)
+	{
+		pf = m_files[i];
+		if( pf->HasBreakPoint() )
+			++nCnt;
+	};
+
+	msg->w_int(nCnt);
+	for(int i=0;i<m_files.GetSize();++i)
+	{
+		pf = m_files[i];
+		if( pf->HasBreakPoint() )
+			pf->FillBreakPoints(msg);
+	};
+}
+
 BOOL CProject::HasBreakPoint(const char *szFile, int nLine)
 {
 	CProjectFile *pPF = GetProjectFile(szFile);

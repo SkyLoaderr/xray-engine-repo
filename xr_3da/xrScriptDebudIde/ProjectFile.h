@@ -3,6 +3,7 @@
 #pragma once
 
 class CLuaEditor;
+class CMailSlotMsg;
 
 class CProjectFile
 {
@@ -31,7 +32,8 @@ public:
 	CString		GetName();
 	static CString	GetName(CString&);
 	CString		GetNameExt();
-
+	void		FillBreakPoints(CMailSlotMsg*);
+	BOOL		HasBreakPoint(){return m_breakPoints.GetSize();};
 protected:
 	CString							m_strPathName;
 	CMap<int, int, BOOL, BOOL>		m_breakPoints;

@@ -11,6 +11,7 @@
 #include "MDIClientWnd.h"
 #include "VariablesBar.h"
 #include "WatchBar.h"
+#include "ScriptThreadsBar.h"
 
 #define R_ASSERT(x) ASSERT(x)
 #include "../xrGame/mslotutils.h"
@@ -31,16 +32,17 @@ public:
 	} appMode;
 
 protected:
-	CWorkspaceWnd	m_wndWorkspace;
-	COutputWnd		m_wndOutput;
-	CCallStack		m_wndCallStack;
-	CProject		m_project;
-	CMDIClientWnd	m_wndMDIClient;
-	CVariablesBar	m_wndLocals;
-	CWatchBar		m_wndWatches;
-	HACCEL			m_hAccelDebug, m_hAccelDebugBreak, m_hAccelNoProject;
-	int				m_nAppMode;
-	BOOL			m_needAnswer;
+	CWorkspaceWnd			m_wndWorkspace;
+	COutputWnd				m_wndOutput;
+	CCallStack				m_wndCallStack;
+	CProject				m_project;
+	CMDIClientWnd			m_wndMDIClient;
+	CVariablesBar			m_wndLocals;
+	CWatchBar				m_wndWatches;
+	CScriptThreadsBar		m_wndThreads;
+	HACCEL					m_hAccelDebug, m_hAccelDebugBreak, m_hAccelNoProject;
+	int						m_nAppMode;
+	BOOL					m_needAnswer;
 
 	static UINT		StartListener( LPVOID pParam );	
 	UINT			StartListener();	
@@ -77,7 +79,7 @@ public:
 	BOOL			InitDockingWindows();
 	void			UpdateFrameTitleForDocument(LPCTSTR lpszDocName);
 	virtual			~CMainFrame();
-
+	void			SendBreakPoints();
 	void			OpenDefaultProject();
 
 #ifdef _DEBUG

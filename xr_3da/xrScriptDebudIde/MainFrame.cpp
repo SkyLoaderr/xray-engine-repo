@@ -32,6 +32,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_LOCALS, OnUpdateControlBarMenu)
 	ON_COMMAND_EX(ID_VIEW_WATCHES, OnBarCheck)
 	ON_UPDATE_COMMAND_UI(ID_VIEW_WATCHES, OnUpdateControlBarMenu)
+	ON_COMMAND_EX(ID_VIEW_THREADS, OnBarCheck)
+	ON_UPDATE_COMMAND_UI(ID_VIEW_THREADS, OnUpdateControlBarMenu)
 	//{{AFX_MSG_MAP(CMainFrame)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_FILE_OPENPROJECT, OnFileOpenproject)
@@ -209,11 +211,20 @@ BOOL CMainFrame::InitDockingWindows()
 		return -1;		// fail to create
 	}
 
+	if (!m_wndThreads.Create(this, ID_VIEW_THREADS,
+		_T("Script Threads"), CSize(200,100), CBRS_BOTTOM))
+	{
+		TRACE0("Failed to create dialog bar m_wndThreads\n");
+		return -1;		// fail to create
+	}
+	
+
 	m_wndWorkspace.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndOutput.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndCallStack.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndLocals.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 	m_wndWatches.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
+	m_wndThreads.EnableDockingOnSizeBar(CBRS_ALIGN_ANY);
 
 	EnableDockingSizeBar(CBRS_ALIGN_ANY);
 	DockSizeBar(&m_wndWorkspace);
@@ -221,6 +232,7 @@ BOOL CMainFrame::InitDockingWindows()
 	DockSizeBar(&m_wndCallStack);
 	DockSizeBar(&m_wndLocals);
 	DockSizeBar(&m_wndWatches);
+	DockSizeBar(&m_wndThreads);
 
 	return TRUE;
 }
@@ -252,16 +264,6 @@ void CMainFrame::OnProjectAddFiles()
 
 void CMainFrame::OnClose() 
 {
-	if ( m_nAppMode==modeDebug || m_nAppMode==modeDebugBreak)
-	{
-		if ( AfxMessageBox("This command will stop debugger", MB_OKCANCEL)==IDOK )
-			OnDebugStopdebugging();
-		else
-			return;
-	}
-
-	SaveBarState(_T("Build"));
-
 	if ( m_nAppMode!=modeNoProject )
 		GetProject()->SaveModified();
 	
@@ -349,6 +351,10 @@ LRESULT CMainFrame::DebugMessage(UINT nMsg, WPARAM wParam, LPARAM lParam)
 		break;
 	case DMSG_REDRAW_WATCHES:
 		m_wndWatches.Redraw();
+		break;
+	case DMSG_GET_BREAKPOINTS:
+		SendBreakPoints();
+		break;
 	}
 
 	return 0;
@@ -399,7 +405,14 @@ void CMainFrame::OnUpdateDebugMenu(CCmdUI* pCmdUI)
 
 void CMainFrame::OnDebugGo() 
 {
-	//	m_debug.Go();
+	if (!m_needAnswer)return;
+
+	CMailSlotMsg msg;
+	msg.w_int(DMSG_SHOW_IDE);
+	msg.w_int(DMSG_DEBUG_GO);
+	SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+
+	m_needAnswer = FALSE;
 }
 
 
@@ -438,6 +451,9 @@ void CMainFrame::OnDebugStepout()
 
 void CMainFrame::OnDebugRuntocursor() 
 {
+	GetOutputWnd()->GetOutput(COutputWnd::outputDebug)->Write("Not implemented yet...\n");
+	SendBreakPoints();
+	return;
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
 	msg.w_int(DMSG_SHOW_IDE);
@@ -465,6 +481,7 @@ void CMainFrame::OnDebugStopdebugging()
 {
 	if (!m_needAnswer)return;
 	CMailSlotMsg msg;
+	msg.w_int(DMSG_SHOW_IDE);
 	msg.w_int(DMSG_STOP_DEBUGGING);
 	SendMailslotMessage(DEBUGGER_MAIL_SLOT, msg);
 
@@ -630,6 +647,9 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 	msg.r_int(nType);
 	
 	switch(nType) {
+	case DMSG_GET_BREAKPOINTS:
+			SendMessage(DMSG_GET_BREAKPOINTS,0,0);
+		break;
 	case DMSG_NEW_CONNECTION:
 			SendMessage(DMSG_NEW_CONNECTION,0,0);
 		break;
@@ -719,6 +739,14 @@ void CMainFrame::TranslateMsg( CMailSlotMsg& msg )
 		break;
 	}
 }
+void CMainFrame::SendBreakPoints()
+{
+	CMailSlotMsg msg;
+	msg.w_int(DMSG_GET_BREAKPOINTS);
+	GetProject()->FillBreakPoints(&msg);
+	if( CheckExisting(DEBUGGER_MAIL_SLOT) )
+		SendMailslotMessage(DEBUGGER_MAIL_SLOT,msg);
+}
 
 UINT CMainFrame::StartListener( LPVOID pParam )
 {
@@ -727,7 +755,6 @@ UINT CMainFrame::StartListener( LPVOID pParam )
 
 UINT CMainFrame::StartListener()
 {
-	UINT u = GetTickCount();
 	CMailSlotMsg msg;
 	while(true){
 	if( CheckMailslotMessage(m_mailSlot, msg) )

@@ -52,7 +52,7 @@ public:
 	CString GetPathName() { return m_strPathName; };
 	CString GetName();
 	CString GetNameExt();
-
+	void FillBreakPoints(CMailSlotMsg* msg);
 protected:
 	BOOL m_bModified;
 

@@ -10,6 +10,8 @@
 #include "MainFrame.h"
 #include "ScintillaView.h"
 
+#include "../xrGame/mslotutils.h"
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -19,6 +21,23 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
+void CProjectFile::FillBreakPoints(CMailSlotMsg* msg)
+{
+	if( m_breakPoints.GetSize() ){
+		CString fName = GetName(GetName());
+		msg->w_string(fName.GetBuffer());
+		msg->w_int(m_breakPoints.GetSize());
+
+		POSITION pos = m_breakPoints.GetStartPosition();
+		int nLine, nTemp;
+		while (pos != NULL)
+		{
+			m_breakPoints.GetNextAssoc( pos, nLine, nTemp );
+			msg->w_int(nLine);
+		}
+	}
+
+}
 
 CProjectFile::CProjectFile()
 {
