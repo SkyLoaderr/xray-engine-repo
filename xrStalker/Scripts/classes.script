@@ -13,12 +13,14 @@ class "AnimationSet"
 
 function AnimationSet:__init (flags)
 	self.anims_list = {}
+	self.anims_flags = {}
 	self.flags = flags
 	self.current_animation = 0
 end
 
-function AnimationSet:add_animation (anim_name)
+function AnimationSet:add_animation (anim_name, flags)
 	table.insert (self.anims_list, anim_name)
+	table.insert (self.anims_flags, flags)
 end
 
 function AnimationSet:get_animation ()
@@ -27,10 +29,10 @@ function AnimationSet:get_animation ()
 	if self.flags == 0 then
 	   self.current_animation = self.current_animation  + 1
 	   if self.current_animation > size then self.current_animation = 1 end
-   	   return self.anims_list[self.current_animation]
+   	   return self.anims_list[self.current_animation], self.anims_flags[self.current_animation]
 	   end
 	self.current_animation = math.random (1, size)
- 	return self.anims_list[self.current_animation]
+ 	return self.anims_list[self.current_animation], self.anims_flags[self.current_animation]
 end
 
 ----------------------------------------------------------------------------------------------------
@@ -64,9 +66,45 @@ end
 ----------------------------------------------------------------------------------------------------
 class "SinglePatrol"
 
-function SinglePatrol:__init (npc, script_name)
+function SinglePatrol:__init (npc, script_name, path_name, anim_set)
 	self.npc = npc
 	self.script_name = script_name
+	self.probability = 10
+	self.started = false
+	self.path_name = path_name
+	self.current_state = 0
+	self.animations = anim_set
 end
 
+function SinglePatrol:process ()
+	if self.started == false then
+	   self.npc:script (true, self.script_name)
+	   action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+			   look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+	   self.started = true
+	   return 
+	   end
 
+	if self.current_state == 1 then
+	   if self.npc:action () then return 
+	   else		
+	      reset_action (self.npc, self.script_name)
+	      action (self.npc, move (move.standing, move.stand, move.line, patrol (self.path_name)),
+	   		      look (look.search), anim (anim.free), cond (cond.time_end, 10000000))
+		  self.current_state = 0
+		  return
+	  end
+    end		
+
+	if math.random (1, 100) > self.probability then return end
+
+    reset_action (self.npc, self.script_name)
+
+    action (self.npc, move (move.standing, move.stand, move.line, patrol ("way_ptr30")),
+		 	anim (self.animations::get_animation ()), cond (cond.anim_end))
+
+end
+
+function SinglePatrol:finish ()
+	self.npc:script (false, self.script_name)
+end
