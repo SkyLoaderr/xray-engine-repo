@@ -166,10 +166,11 @@ dispersion_experienced_k	= 1
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [monster_communities]
-communities = boar, 1, bloodsucker, 2
+communities = human, -1, boar, 1, bloodsucker, 2 
 
 [monster_relations]
-;			    boar,		bloodsucker
+;			    human,  boar, bloodsucker
 ;================================================================
-burer		=		1,				0
-bloodsucker	=		0,				1
+human		=		0,	   0,			0
+burer		=		1,	   0,			0
+bloodsucker	=		0,	   0,			1
