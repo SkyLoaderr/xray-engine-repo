@@ -66,7 +66,7 @@ public:
 	}
 };
 
-class ENGINE_API CSkeletonX_ST : public Fvisual, public CSkeletonX
+class ENGINE_API CSkeletonX_ST	: public Fvisual, public CSkeletonX
 {
 private:
 	typedef Fvisual	inherited;
@@ -77,7 +77,7 @@ public:
 	virtual void			Release			();
 };
 
-class ENGINE_API CSkeletonX_PM : public FProgressiveFixedVisual, public CSkeletonX
+class ENGINE_API CSkeletonX_PM	: public FProgressiveFixedVisual, public CSkeletonX
 {
 private:
 	typedef FProgressiveFixedVisual	inherited;

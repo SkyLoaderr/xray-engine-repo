@@ -6,7 +6,8 @@
 #define BodyInstanceH
 #pragma once
 
-#include "skeletonX.h"
+//#include "skeletonX.h"
+#include "fvisual.h"
 #include "fhierrarhyvisual.h"
 #include "bone.h"
 

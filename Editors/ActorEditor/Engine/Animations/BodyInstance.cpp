@@ -5,9 +5,10 @@
 #include "stdafx.h"
 #pragma hdrstop
 
-#include "BodyInstance.h"
-#include "fmesh.h"
-#include "motion.h"
+#include	"BodyInstance.h"
+#include	"SkeletonX.h"
+#include	"fmesh.h"
+#include	"motion.h"
 
 int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration
