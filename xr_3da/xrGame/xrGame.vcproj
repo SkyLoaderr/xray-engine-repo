@@ -6566,6 +6566,12 @@
 					RelativePath=".\UIDynamicItem.h">
 				</File>
 				<File
+					RelativePath=".\ui\UIFrameLine.cpp">
+				</File>
+				<File
+					RelativePath=".\ui\UIFrameLine.h">
+				</File>
+				<File
 					RelativePath="UIFrameRect.cpp">
 				</File>
 				<File
@@ -6989,6 +6995,12 @@
 					</File>
 					<File
 						RelativePath=".\ui\UIDialogWnd.h">
+					</File>
+					<File
+						RelativePath=".\ui\UIFrameLineWnd.cpp">
+					</File>
+					<File
+						RelativePath=".\ui\UIFrameLineWnd.h">
 					</File>
 					<File
 						RelativePath=".\ui\UIFrameWindow.cpp">
