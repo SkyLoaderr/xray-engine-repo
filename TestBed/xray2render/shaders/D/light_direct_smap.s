@@ -65,11 +65,16 @@ p2f 	p_main	( v2p_in IN )
   float4 s5		= tex2D		(s_shadowmap,uv0-jitter[1]);
   float4 s6		= tex2D		(s_shadowmap,uv0-jitter[2]);
   float4 s7		= tex2D		(s_shadowmap,uv0-jitter[3]);
+  float4 s8		= tex2D		(s_shadowmap,uv0-jitter[0]);
+  float4 s9		= tex2D		(s_shadowmap,uv0-jitter[1]);
+  float4 s10	= tex2D		(s_shadowmap,uv0-jitter[2]);
+  float4 s11	= tex2D		(s_shadowmap,uv0-jitter[3]);
   
   // Compare (if (depth_pixel > depth_smap) then in shadow)
-  float4 sC0	= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),0);
-  float4 sC1	= step		(float4(depth-s4.x,depth-s5.x,depth-s6.x,depth-s7.x),0);
-  float	 shadow	= (dot(sC0,sC0)+dot(sC1,sC1))/8;
+  float4 sC0	= step		(float4(depth-s0.x,depth-s1.x,depth-s2.x,depth-s3.x),	0);
+  float4 sC1	= step		(float4(depth-s4.x,depth-s5.x,depth-s6.x,depth-s7.x),	0);
+  float4 sC2	= step		(float4(depth-s8.x,depth-s9.x,depth-s10.x,depth-s11.x),	0);
+  float	 shadow	= (dot(sC0,sC0)+dot(sC1,sC1)+dot(sC2,sC2))/12;
   
   // Normal
   float3 N		= float3	(_N.x,_N.y,_N.z);
