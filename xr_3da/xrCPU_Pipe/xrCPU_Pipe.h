@@ -23,15 +23,15 @@ template<class T> struct ENGINE_API _matrix;
 // D: AGP,			32b aligned
 // S: SysMem		non-aligned
 // Bones: SysMem	64b aligned
-typedef void	__stdcall	xrSkin1W	(vertRender* D, vertBoned1W* S, DWORD vCount, CBoneInstance* Bones);
-typedef void	__stdcall	xrSkin2W	(vertRender* D, vertBoned2W* S, DWORD vCount, CBoneInstance* Bones);
+typedef void	__stdcall	xrSkin1W		(vertRender* D, vertBoned1W* S, DWORD vCount, CBoneInstance* Bones);
+typedef void	__stdcall	xrSkin2W		(vertRender* D, vertBoned2W* S, DWORD vCount, CBoneInstance* Bones);
 
 // Spherical-linear interpolation of quaternion
 // NOTE: Quaternions may be non-aligned in memory
-typedef void	__stdcall	xrBoneLerp	(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
+typedef void	__stdcall	xrBoneLerp		(CKey* D, CKeyQ* K1, CKeyQ* K2, float delta);
 
 // Matrix multiplication
-typedef void	__stdcall	xrM44_Mul	(MATRIX* D, MATRIX* M1, MATRIX* M2);
+typedef void	__stdcall	xrM44_Mul		(MATRIX* D, MATRIX* M1, MATRIX* M2);
 
 // Transfer of geometry into DynamicVertexBuffer & DynamicIndexBuffer with optional xform and index offset
 // NOTE: vCount and iCount usually small numbers (for example 20/40)
@@ -40,10 +40,14 @@ typedef void	__stdcall	xrM44_Mul	(MATRIX* D, MATRIX* M1, MATRIX* M2);
 // iDest: SysMem/AGP,non aligned
 // iSrc:  SysMem,    32b aligned
 // xform: SysMem,    non aligned, may be NULL
-typedef void	__stdcall	xrTransfer	(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
-										 LPWORD iDest, LPWORD iSrc, DWORD iCount, DWORD iOffset,
-										 MATRIX* xform);
+typedef void	__stdcall	xrTransfer		(LPVOID vDest, LPVOID vSrc, DWORD vCount, DWORD vStride,
+											 LPWORD iDest, LPWORD iSrc, DWORD iCount, DWORD iOffset,
+											 MATRIX* xform);
 
+// Memory routines
+typedef void	__stdcall	xrMemFill_32b	(LPVOID ptr,  DWORD count, DWORD value);
+typedef void	__stdcall	xrMemFill_8b	(LPVOID ptr,  DWORD count, DWORD value);
+typedef void	__stdcall	xrMemCopy_8b	(LPVOID dest, LPVOID src,  DWORD count);
 
 #pragma pack(push,8)
 struct xrDispatchTable
