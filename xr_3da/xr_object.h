@@ -1,8 +1,6 @@
 #ifndef __XR_OBJECT_H__
 #define __XR_OBJECT_H__
 
-// #include "fbasicvisual.h"
-// #include "xr_collide_form.h"
 #include "fcontroller.h"
 #include "xrSheduler.h"
 
@@ -14,8 +12,6 @@ class	ENGINE_API CSector;
 class	ENGINE_API CCustomHUD;
 class	ENGINE_API NET_Packet;
 struct	ENGINE_API NodeCompressed;
-
-enum ESectorMode						{EPM_AT_LOAD, EPM_AUTO };
 
 //-----------------------------------------------------------------------------------------------------------
 //	CObject
@@ -29,6 +25,8 @@ class	ENGINE_API						CObject :
 	public pureDeviceCreate
 {
 public:
+	enum ESectorMode					{EPM_AT_LOAD, EPM_AUTO, EPM_NONE };
+	
 	struct SavedPosition
 	{
 		DWORD	dwTime;
