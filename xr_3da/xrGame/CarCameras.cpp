@@ -20,19 +20,15 @@ void	CCar::cam_Update			(float dt)
 		//		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_2,dt);
 		XFORM().transform_tiny		(P,m_camera_position);
 
-		m_owner->Orientation().yaw	= -(active_camera->yaw-yaw_dest);
+		m_owner->Orientation().yaw	= -(active_camera->yaw);//-yaw_dest);
 		m_owner->Orientation().pitch= 0;//-active_camera->pitch;
 		//		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
 		}break;
 	case ectChase:
-//		angle_lerp					(active_camera->yaw,	-(yaw_dest+m_vCamDeltaHP.x),	PI_DIV_4,dt);
-//		angle_lerp					(active_camera->pitch,	-pitch_dest+m_vCamDeltaHP.y,	PI_DIV_4,dt);
-		Center					(P);
-//		m_vCamDeltaHP.x				= m_vCamDeltaHP.x*(1-PI*dt)+((active_camera->lim_yaw.y+active_camera->lim_yaw.x)/2.f)*PI*dt;
+		XFORM().transform_tiny		(P,m_camera_position);
 		break;
 	case ectFree:
-		Center					(P);
-		m_owner->Orientation().yaw	= -active_camera->yaw;
+		XFORM().transform_tiny		(P,m_camera_position);
 		break;
 	}
 
