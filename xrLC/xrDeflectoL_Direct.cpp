@@ -10,9 +10,9 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 	Fvector		vdir;
 	vdir.sub	(v2,v1);
 	
-	b_texture&	lm	= layer.lm;
+	lm_layer&	lm	= layer;
 	
-	Fvector2	size; 
+	Fvector2		size; 
 	size.x			= p2.x-p1.x;
 	size.y			= p2.y-p1.y;
 	int	du			= iCeil(_abs(size.x)/texel_size);
@@ -26,14 +26,13 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 		Fvector2	uv;
 		uv.x	= size.x*time+p1.x;
 		uv.y	= size.y*time+p1.y;
-		int	_x  = iFloor(uv.x*float(lm.dwWidth)); 
-		int _y	= iFloor(uv.y*float(lm.dwHeight));
+		int	_x  = iFloor(uv.x*float(lm.width)); 
+		int _y	= iFloor(uv.y*float(lm.height));
 		
-		if ((_x<0)||(_x>=(int)lm.dwWidth))	continue;
-		if ((_y<0)||(_y>=(int)lm.dwHeight))	continue;
+		if ((_x<0)||(_x>=(int)lm.width))	continue;
+		if ((_y<0)||(_y>=(int)lm.height))	continue;
 		
-		u32& Lumel	= lm.pSurface[_y*lm.dwWidth+_x];
-		if (color_get_A(Lumel))			continue;
+		if (lm.marker[_y*lm.width+_x])		continue;
 		
 		// ok - perform lighting
 		base_color	C;
@@ -41,7 +40,8 @@ void CDeflector::L_Direct_Edge (CDB::COLLIDER* DB, base_lighting* LightsSelected
 		LightPoint	(DB, RCAST_Model, C, P, N, *LightsSelected, LP_dont_hemi, skip);
 		
 		C.mul		(.5f);
-		Lumel		= R.get() | color_rgba(0,0,0,255);
+		lm.surface	[_y*lm.width+_x]	= C;
+		lm.marker	[_y*lm.width+_x]	= 255;
 	}
 }
 
@@ -50,34 +50,33 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 	R_ASSERT	(DB);
 	R_ASSERT	(LightsSelected);
 
-	b_texture&	lm = layers.back().lm;
+	lm_layer&	lm = layer;
 
 	// Setup variables
-	Fvector2		dim,half;
-	dim.set		(float(lm.dwWidth),float(lm.dwHeight));
+	Fvector2	dim,half;
+	dim.set		(float(lm.width),float(lm.height));
 	half.set	(.5f/dim.x,.5f/dim.y);
 	
 	// Jitter data
-	Fvector2		JS;
+	Fvector2	JS;
 	JS.set		(.499f/dim.x, .499f/dim.y);
 	
-	u32		Jcount;
+	u32			Jcount;
 	Fvector2*	Jitter;
 	Jitter_Select(Jitter, Jcount);
 	
 	// Lighting itself
 	DB->ray_options	(0);
 	
-	Fcolor		C[9];
-	for (u32 J=0; J<9; J++)	C[J].set(0,0,0,0);
-	for (u32 V=0; V<lm.dwHeight; V++)
+	for (u32 V=0; V<lm.height; V++)
 	{
-		for (u32 U=0; U<lm.dwWidth; U++)
+		for (u32 U=0; U<lm.width; U++)
 		{
-			u32		Fcount	= 0;
+			u32			Fcount	= 0;
+			base_color	C;
 			
 			try {
-				for (J=0; J<Jcount; J++) 
+				for (u32 J=0; J<Jcount; J++) 
 				{
 					// LUMEL space
 					Fvector2 P;
@@ -87,8 +86,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 					xr_vector<UVtri*>&	space	= H.query(P.x,P.y);
 					
 					// World space
-					Fvector wP,wN,B;
-					C[J].set	(0,0,0,0);
+					Fvector		wP,wN,B;
 					for (UVtri** it=&*space.begin(); it!=&*space.end(); it++)
 					{
 						if ((*it)->isInside(P,B)) {
@@ -101,7 +99,7 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 							if (F->Shader().flags.bLIGHT_Sharp)	{ wN.set(F->N); }
 							else								{ wN.from_bary(V1->N,V2->N,V3->N,B); wN.normalize(); }
 							try {
-								LightPoint	(DB, RCAST_Model, C[J], wP, wN, &*LightsSelected->begin(), &*LightsSelected->end(), F);
+								LightPoint	(DB, RCAST_Model, C, wP, wN, *LightsSelected, LP_dont_hemi, F);
 								Fcount		+= 1;
 							} catch (...) {
 								clMsg("* ERROR (CDB). Recovered. ");
@@ -115,23 +113,19 @@ void CDeflector::L_Direct	(CDB::COLLIDER* DB, base_lighting* LightsSelected, HAS
 			}
 			
 			if (Fcount) {
-				Fcolor	Lumel,R;
-				float	cnt		= float(Fcount);
-				R.r =			(C[0].r + C[1].r + C[2].r + C[3].r + C[4].r + C[5].r + C[6].r + C[7].r + C[8].r)/cnt;
-				R.g =			(C[0].g + C[1].g + C[2].g + C[3].g + C[4].g + C[5].g + C[6].g + C[7].g + C[8].g)/cnt;
-				R.b	=			(C[0].b + C[1].b + C[2].b + C[3].b + C[4].b + C[5].b + C[6].b + C[7].b + C[8].b)/cnt;
-				Lumel.lerp		(R,g_params.m_lm_amb_color,g_params.m_lm_amb_fogness);
-				Lumel.mul_rgb	(.5f);
-				Lumel.a			= 1.f;
-				lm.pSurface	[V*lm.dwWidth+U] = Lumel.get();
+				C.scale			(Fcount);
+				C.mul			(.5f);
+				lm.surface		[V*lm.width+U] = C;
+				lm.marker		[V*lm.width+U] = 255;
 			} else {
-				lm.pSurface	[V*lm.dwWidth+U] = 0;
+				lm.surface		[V*lm.width+U] = C;	// 0-0-0-0-0
+				lm.marker		[V*lm.width+U] = 0;
 			}
 		}
 	}
 
 	// *** Render Edges
-	float texel_size = (1.f/float(_max(lm.dwWidth,lm.dwHeight)))/8.f;
+	float texel_size = (1.f/float(_max(lm.width,lm.height)))/8.f;
 	for (u32 t=0; t<UVpolys.size(); t++)
 	{
 		UVtri&		T	= UVpolys[t];
