@@ -1314,9 +1314,10 @@ void CPHElement::CallBack1(CBoneInstance* B)
 			m_shell->m_object_in_root.invert();
 			m_shell->bActivating=false;
 		}
+		B->Callback_overwrite=TRUE;
 		return;
 	}
-
+	if(!dBodyIsEnabled(m_body))return;
 	if(!m_parent_element)
 	{
 			m_shell->InterpolateGlobalTransform(&(m_shell->mXFORM));
