@@ -350,6 +350,7 @@ void CAI_Biting::vfSetFireBones(CInifile *ini, const char *section)
 
 void CAI_Biting::shedule_Update(u32 dt)
 {
+	inherited::shedule_Update(dt);
 	////physics/////////////////////////////////////////////////////////////////////////////////////
 	if(m_pPhysicsShell)
 	{	
