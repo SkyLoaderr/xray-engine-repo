@@ -274,7 +274,8 @@ void CHelicopter::renderable_Render()
 void CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
-	
+	if(state() == CHelicopter::eDead ) return;
+
 	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 	if( PPhysicsShell()&&(GetfHealth() < 99.97f) ){
 		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
@@ -331,7 +332,8 @@ void CHelicopter::shedule_Update(u32 time_delta)
 	CPHSkeleton::Update(time_delta);
 //	if( GetfHealth() >= 0.0f ){
 
-	m_movMngr.shedule_Update (time_delta, this);
+	if(state() != CHelicopter::eDead)
+		m_movMngr.shedule_Update (time_delta, this);
 //	};
 
 //	if ( GetfHealth() <= 0.0f && !PPhysicsShell() )
@@ -397,6 +399,8 @@ void CHelicopter::Hit(	float P,
 						float impulse,  
 						ALife::EHitType hit_type/* = ALife::eHitTypeWound*/)
 {
+if(state() == CHelicopter::eDead ) return;
+
 if(who==this)
 	return;
 
@@ -488,7 +492,8 @@ void CHelicopter::Die()
 	if(!PPhysicsShell())
 		PPhysicsShell()=P_build_Shell	(this,false);
 //	setState(CHelicopter::eInitiateWaitBetweenPatrol);
-//	setState(CHelicopter::eDead);
+	setState(CHelicopter::eDead);
+	m_engineSound.stop();
 //	SetfHealth(100.0f);
 //	StartParticles();
 }
