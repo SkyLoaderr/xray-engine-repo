@@ -46,14 +46,14 @@ IC	CAgentMemberManager::MEMBER_STORAGE	&CAgentMemberManager::members	()
 	return				(m_members);
 }
 
-IC	const CSetupAction &CAgentMemberManager::action	(CAI_Stalker *object) const
+IC	CSetupAction &CAgentMemberManager::action	(CAI_Stalker *object)
 {
 	return				(member(object).action());
 }
 
-IC	const CMemberOrder &CAgentMemberManager::member	(const CAI_Stalker *object) const
+IC	CMemberOrder &CAgentMemberManager::member	(const CAI_Stalker *object)
 {
-	const_iterator		I = std::find_if(members().begin(), members().end(), CMemberPredicate(object));
+	iterator			I = std::find_if(members().begin(), members().end(), CMemberPredicate(object));
 	VERIFY				(I != members().end());
 	return				(*I);
 }
@@ -80,6 +80,10 @@ IC	CAgentMemberManager::iterator CAgentMemberManager::member		(MemorySpace::squa
 
 IC	bool CAgentMemberManager::group_behaviour					() const
 {
-	return							(members().size() > 1);
+	return				(members().size() > 1);
 }
 
+IC	const CAgentMemberManager::squad_mask_type &CAgentMemberManager::combat_mask() const
+{
+	return				(m_combat_mask);
+}

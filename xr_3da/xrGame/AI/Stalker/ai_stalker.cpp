@@ -46,8 +46,6 @@
 #include "../../setup_action.h"
 #include "../../script_space.h"
 
-#define IMPORTANT_BUILD
-
 extern int g_AI_inactive_time;
 
 CAI_Stalker::CAI_Stalker			()
@@ -502,10 +500,7 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 				Think					();
 		m_dwLastUpdateTime				= Device.dwTimeGlobal;
 		Device.Statistic.AI_Think.End	();
-#ifndef IMPORTANT_BUILD
-		Engine.Sheduler.Slice			();
-#endif
-		VERIFY				(_valid(Position()));
+		VERIFY							(_valid(Position()));
 
 		// Look and action streams
 		float							temp = conditions().health();

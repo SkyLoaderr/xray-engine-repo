@@ -73,8 +73,8 @@ protected:
 	xr_vector<u32>				m_enemies;
 	bool						m_processed;
 	u32							m_selected_enemy;
-	mutable CMemberDeathReaction m_member_death_reaction;
-	mutable CGrenadeReaction	m_grenade_reaction;
+	CMemberDeathReaction		m_member_death_reaction;
+	CGrenadeReaction			m_grenade_reaction;
 
 public:
 	IC							CMemberOrder			(CAI_Stalker *object);
@@ -87,8 +87,8 @@ public:
 	IC		bool				processed				() const;
 	IC		u32					selected_enemy			() const;
 	IC		CCoverPoint			*cover					() const;
-	IC		CMemberDeathReaction&member_death_reaction	() const;
-	IC		CGrenadeReaction	&grenade_reaction		() const;
+	IC		CMemberDeathReaction&member_death_reaction	();
+	IC		CGrenadeReaction	&grenade_reaction		();
 	IC		CSetupAction		&action					();
 	IC		xr_vector<u32>		&enemies				();
 	IC		void				cover					(CCoverPoint *object_cover) const;

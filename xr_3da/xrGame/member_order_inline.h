@@ -117,12 +117,12 @@ IC	CCoverPoint	*CMemberOrder::cover			() const
 	return			(m_cover);
 }
 
-IC	CMemberOrder::CMemberDeathReaction &CMemberOrder::member_death_reaction	() const
+IC	CMemberOrder::CMemberDeathReaction &CMemberOrder::member_death_reaction	()
 {
 	return			(m_member_death_reaction);
 }
 
-IC	CMemberOrder::CGrenadeReaction &CMemberOrder::grenade_reaction			() const
+IC	CMemberOrder::CGrenadeReaction &CMemberOrder::grenade_reaction			()
 {
 	return			(m_grenade_reaction);
 }
