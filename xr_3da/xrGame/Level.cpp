@@ -237,7 +237,7 @@ void CLevel::OnFrame	()
 			// Msg				("--- event[%d] for [%d]",type,dest);
 			CObject*	 O	= Objects.net_Find	(dest);
 			if (0==O)		{
-				Msg("! ERROR: c_EVENT[%d] : unknown dest",dest);
+				Msg("* WARNING: c_EVENT[%d] : unknown dest",dest);
 				continue;
 			}
 			CGameObject* GO = smart_cast<CGameObject*>(O);
