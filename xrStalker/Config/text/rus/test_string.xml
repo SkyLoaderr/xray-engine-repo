@@ -1,60 +1,45 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
-    <string id="net deneg_101">
-        <text>равра</text>
+    <string id="dialog_wounded_0">
+        <text>Помоги мне, брат!</text>
     </string>
-    <string id="net deneg_0">
-        <text>у меня тоже</text>
+    <string id="dialog_wounded_10">
+        <text>Что мне для тебя сделать?</text>
     </string>
-    <string id="proba_0">
-        <text>default text</text>
+    <string id="dialog_wounded_12">
+        <text>Бери скорее</text>
     </string>
-    <string id="vodka_0">
-        <text>У тебя водки нет случай-но</text>
+    <string id="dialog_wounded_121">
+        <text>Никогда тебе этого не забуду!!!</text>
     </string>
-    <string id="vodka_100">
-        <text>есть, но не дам</text>
+    <string id="dialog_wounded_13">
+        <text>Аптечка стоит денег…</text>
     </string>
-    <string id="test1_0">
-        <text>Вот тебя я и встретил</text>
+    <string id="dialog_wounded_131">
+        <text>Давай, чтоб ты сдох - на чужом несчастье наживаешься</text>
     </string>
-    <string id="test1_101">
-        <text>А ты кто такой</text>
+    <string id="dialog_wounded_14">
+        <text>Увы, нет у меня аптечки</text>
     </string>
-    <string id="test1_102">
-        <text>Я тебя давно искал</text>
+    <string id="dialog_wounded_141">
+        <text>Принеси мне ее поскорее, иначе я здесь умру!!!\n</text>
     </string>
-    <string id="test1_103">
-        <text>Беги быстрее от меня.</text>
+    <string id="dialog_wounded_15">
+        <text>Не дам я тебе ничего, а просто подожду, пока ты сдохнешь</text>
     </string>
-    <string id="test1_200">
-        <text>Пока</text>
+    <string id="dialog_wounded_151">
+        <text>И как таких негодяев еще земля носит...!!!</text>
     </string>
-    <string id="test_dialog_103">
-        <text>Пока</text>
+    <string id="dialog_wounded_20">
+        <text>У меня нет времени с тобой болтать</text>
     </string>
-    <string id="test_dialog_101">
-        <text>лучше чем у тебя</text>
+    <string id="dialog_wounded_21">
+        <text>Стой, не оставляй меня тут!!!</text>
     </string>
-    <string id="test_dialog_302">
-        <text>пошел в жопу</text>
+    <string id="dialog_wounded_11">
+        <text>Поделись аптечкой, помираю!</text>
     </string>
-    <string id="test_dialog_301">
-        <text>надо с тобой еще поболтать</text>
-    </string>
-    <string id="test_dialog_102">
-        <text>так себе</text>
-    </string>
-    <string id="test_dialog_0">
-        <text>Привет! Как дела?</text>
-    </string>
-    <string id="test_dialog_100">
-        <text>Плохо.</text>
-    </string>
-    <string id="test_dialog_200">
-        <text>так тебе и надо</text>
-    </string>
-    <string id="test_dialog_201">
-        <text>Хрен с тобой</text>
+    <string id="dialog_wounded_16">
+        <text>Ой, мне пора</text>
     </string>
 </string_table>

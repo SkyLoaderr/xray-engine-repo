@@ -1,102 +1,67 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <game_dialogs>
-    <dialog id="vodka">
+    <dialog id="dialog_wounded">
         <phrase_list>
             <phrase id="0">
-                <text>vodka_0</text>
-                <next>100</next>
+                <text>dialog_wounded_0</text>
+                <next>10</next>
+                <next>20</next>
             </phrase>
-            <phrase id="100">
-                <text>vodka_100</text>
+            <phrase id="10">
+                <text>dialog_wounded_10</text>
+                <next>11</next>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="test1">
-        <phrase_list>
-            <phrase id="0">
-                <text>test1_0</text>
-                <next>101</next>
-                <next>102</next>
-                <next>103</next>
+            <phrase id="12">
+                <text>dialog_wounded_12</text>
+                <next>121</next>
             </phrase>
-            <phrase id="101">
-                <text>test1_101</text>
-                <next>200</next>
-            </phrase>
-            <phrase id="102">
-                <text>test1_102</text>
-                <next>200</next>
-            </phrase>
-            <phrase id="103">
-                <text>test1_103</text>
-                <next>200</next>
-            </phrase>
-            <phrase id="200">
-                <text>test1_200</text>
-            </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="test_dialog">
-        <phrase_list>
-            <phrase id="103">
-                <text>test_dialog_103</text>
+            <phrase id="121">
+                <text>dialog_wounded_121</text>
                 <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="101">
-                <text>test_dialog_101</text>
+            <phrase id="13">
+                <text>dialog_wounded_13</text>
+                <next>131</next>
             </phrase>
-            <phrase id="302">
-                <text>test_dialog_302</text>
+            <phrase id="131">
+                <text>dialog_wounded_131</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="301">
-                <text>test_dialog_301</text>
-                <next>201</next>
+            <phrase id="14">
+                <text>dialog_wounded_14</text>
+                <next>141</next>
             </phrase>
-            <phrase id="102">
-                <text>test_dialog_102</text>
-                <next>201</next>
+            <phrase id="141">
+                <text>dialog_wounded_141</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="0">
-                <text>test_dialog_0</text>
-                <next>100</next>
-                <next>102</next>
-                <next>103</next>
-                <next>101</next>
+            <phrase id="15">
+                <text>dialog_wounded_15</text>
+                <next>151</next>
             </phrase>
-            <phrase id="100">
-                <text>test_dialog_100</text>
-                <next>200</next>
+            <phrase id="151">
+                <text>dialog_wounded_151</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
-            <phrase id="200">
-                <text>test_dialog_200</text>
+            <phrase id="20">
+                <text>dialog_wounded_20</text>
+                <next>21</next>
             </phrase>
-            <phrase id="201">
-                <text>test_dialog_201</text>
-                <give_info>test_info</give_info>
-                <next>301</next>
-                <next>302</next>
+            <phrase id="21">
+                <text>dialog_wounded_21</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
-        </phrase_list>
-    </dialog>
-    <dialog id="proba">
-        <phrase_list>
-            <phrase id="0">
-                <next>100</next>
+            <phrase id="11">
+                <text>dialog_wounded_11</text>
+                <next>12</next>
+                <next>13</next>
+                <next>14</next>
+                <next>15</next>
+                <next>16</next>
             </phrase>
-            <phrase id="100">
-                <text></text>
-                <next>202</next>
-            </phrase>
-            <phrase id="202">
-                <text></text>
-                <next>301</next>
-            </phrase>
-            <phrase id="301">
-                <text></text>
-                <next>401</next>
-            </phrase>
-            <phrase id="401">
-                <text></text>
+            <phrase id="16">
+                <text>dialog_wounded_16</text>
+                <action>dialogs.break_dialog</action>
             </phrase>
         </phrase_list>
     </dialog>
