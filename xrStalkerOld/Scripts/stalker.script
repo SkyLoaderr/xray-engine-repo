@@ -158,7 +158,20 @@ function process_task_changing(actor, info)
 
 	   (info == "garbage_meetstalker_start" and
 	   actor:dont_has_info("garbage_meetstalker_done") and
-	   actor:dont_has_info("garbage_meetstalker_die"))
+	   actor:dont_has_info("garbage_meetstalker_die")) or
+
+	   (info == "agroprom_military_case" and
+	   actor:dont_has_info("agroprom_military_case_have") and
+	   actor:dont_has_info("agroprom_military_case_done")) or
+
+	   (info == "agr_krot_band" and
+	   actor:dont_has_info("agr_krot_band_done")) or
+
+	   (info == "agr_find_gunslinger_cache" and
+	   actor:dont_has_info("agr_find_gunslinger_cache_done")) or
+
+	   (info == "agroprom_find_stalker_phantom" and
+	   actor:dont_has_info("agroprom_find_stalker_phantom_done"))
 	then
 		news_manager.send_task(actor, "new", info)
 	end
@@ -178,7 +191,10 @@ function process_task_changing(actor, info)
 
 	   ((info == "escape_dynamite_gain" or
 	   info == "escape_dynamite_have") and
-	   actor:dont_has_info("escape_dynamite_done"))
+	   actor:dont_has_info("escape_dynamite_done")) or
+
+	   (info == "agroprom_military_case_have" and
+	   actor:dont_has_info("agroprom_military_case_done"))
 	then
 		news_manager.send_task(actor, "update", info)
 	end
@@ -196,7 +212,15 @@ function process_task_changing(actor, info)
 	   
 	   info == "escape_dynamite_done" or
 	   
-	   info == "garbage_meetstalker_done"
+	   info == "garbage_meetstalker_done" or
+		
+	   info == "agroprom_military_case_done" or
+		
+	   info == "agr_krot_band_done" or
+
+	   info == "agr_find_gunslinger_cache_done" or
+		
+	   info == "agroprom_find_stalker_phantom_done"
 	then
 		news_manager.send_task(actor, "complete", info)
 	end
