@@ -24,6 +24,7 @@ protected:
 	R_constant*					c_wind;
 	R_constant*					c_c_bias;
 	R_constant*					c_c_scale;
+	R_constant*					c_c_sun;
 
 	_5color						c_scale;
 	_5color						c_bias;
