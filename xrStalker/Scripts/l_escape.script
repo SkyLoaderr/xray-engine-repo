@@ -6,40 +6,37 @@ local work = {}
 
 function main()
 --  escape_bobik.init_bobik  ()
-  scr_trader.init      ()
+--  scr_trader.init      ()
 --  escape_dogs.init    ()
-  escape1.init        ()
+--  escape1.init        ()
 
---     table.insert(work, "escape_bobik"  )
-  table.insert(work, "scr_trader"    )
---     table.insert(work, "escape_dogs"   )
-  table.insert(work, "escape1"     )
+--  table.insert(work, "escape_bobik"  )
+--  table.insert(work, "scr_trader"    )
+--  table.insert(work, "escape_dogs"   )
+--  table.insert(work, "escape1"     )
 
-      while(table.getn(work) > 0) do
-    local deleted = {}
-    for k,v in work do
-      if v == "escape_bobik" then
-        if escape_bobik.execute_bobik() == false then
-          escape_bobik.finalize_bobik()
-          table.insert(deleted, k)
-        end
-                elseif v == "scr_trader" then
-            scr_trader.execute()
-                elseif v == "escape_dogs" then
-                    if(escape_dogs.execute() == false) then
-                      escape_dogs.finalize()
-                        table.insert(deleted, k)
-                    end
-                    elseif v == "escape1" then
-                        if(escape1.execute() == false) then
-                            escape1.finalize()
-                            table.insert(deleted, k)
-                        end
-                    end
-    end
-    for k,v in deleted do
-                  table.remove(work, v)
-    end
+	while(table.getn(work) > 0) do
+
+		for k,v in work do
+			if v == "escape_bobik" then
+				if escape_bobik.execute_bobik() == false then
+					escape_bobik.finalize_bobik()
+					work[k] = nil
+				end
+            elseif v == "scr_trader" then
+				scr_trader.execute()
+            elseif v == "escape_dogs" then
+				if(escape_dogs.execute() == false) then
+                   escape_dogs.finalize()
+					work[k] = nil
+                end
+            elseif v == "escape1" then
+                if(escape1.execute() == false) then
+                   escape1.finalize()
+                    work[k] = nil
+                end
+            end
+		end
         wait()
-      end
+   end
 end
