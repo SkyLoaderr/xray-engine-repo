@@ -108,7 +108,7 @@ void CAI_Stalker::SetDirectionLook()
 	GetDirectionAngles(r_target.yaw,r_target.pitch);
 	r_target.yaw *= -1;
 	r_target.pitch = 0;
-	//r_torso_target = r_target;
+	r_torso_target = r_target;
 }
 
 void CAI_Stalker::SetLessCoverLook(NodeCompressed *tpNode, bool bDifferenceLook)
@@ -187,8 +187,8 @@ void CAI_Stalker::Exec_Look(float dt)
 	r_target.pitch			= angle_normalize_signed	(r_target.pitch);
 
 	// validating angles
+	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_target.yaw);
 	vfValidateAngleDependency(r_torso_current.yaw,r_torso_target.yaw,r_current.yaw);
-	vfValidateAngleDependency(r_current.yaw,r_target.yaw,r_torso_current.yaw);
 
 	// updating torso angles
 	//float					fAngleDifference = _abs(angle_normalize_signed(r_torso_current.yaw - r_torso_target.yaw));
