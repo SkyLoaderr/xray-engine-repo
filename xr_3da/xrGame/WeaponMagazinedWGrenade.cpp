@@ -295,7 +295,7 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
 	//перезарядка подствольного гранатомета
 	if(iAmmoElapsed && !m_pGrenade && m_bGrenadeMode) 
 	{
-		ref_str fake_grenade_name = pSettings->r_string(m_pAmmo->cNameSect(), "fake_grenade_name");
+		ref_str fake_grenade_name = pSettings->r_string(*m_pAmmo->cNameSect(), "fake_grenade_name");
 		SpawFakeGrenade(*fake_grenade_name);
 	}
 }

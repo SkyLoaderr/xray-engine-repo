@@ -165,13 +165,13 @@ void CMissile::spawn_fake_missile()
 #ifdef _DEBUG
 //	Msg					("Spawning fake missile for object %s",cName());
 #endif
-	CSE_Abstract		*D	= F_entity_Create(cNameSect());
+	CSE_Abstract		*D	= F_entity_Create(*cNameSect());
 	R_ASSERT			(D);
 	CSE_ALifeDynamicObject				*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
 	R_ASSERT							(l_tpALifeDynamicObject);
 	l_tpALifeDynamicObject->m_tNodeID	= level_vertex_id();
 	// Fill
-	strcpy				(D->s_name,cNameSect());
+	strcpy				(D->s_name,*cNameSect());
 	strcpy				(D->s_name_replace,"");
 	D->s_gameid			=	u8(GameID());
 	D->s_RP				=	0xff;

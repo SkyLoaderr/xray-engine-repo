@@ -66,25 +66,43 @@ public:
 	Root&		sections		( ){return DATA;}
 
 	CLASS_ID	r_clsid			( LPCSTR S, LPCSTR L );
+	CLASS_ID	r_clsid			( const ref_str& S, LPCSTR L )				{ return r_clsid(*S,L);			}
 	LPCSTR 		r_string		( LPCSTR S, LPCSTR L );
+	LPCSTR 		r_string		( const ref_str& S, LPCSTR L )				{ return r_string(*S,L);		}
 	u8	 		r_u8			( LPCSTR S, LPCSTR L );
+	u8	 		r_u8			( const ref_str& S, LPCSTR L )				{ return r_u8(*S,L);			}
 	u16	 		r_u16			( LPCSTR S, LPCSTR L );
+	u16	 		r_u16			( const ref_str& S, LPCSTR L )				{ return r_u16(*S,L);			}
 	u32	 		r_u32			( LPCSTR S, LPCSTR L );
+	u32	 		r_u32			( const ref_str& S, LPCSTR L )				{ return r_u32(*S,L);			}
 	s8	 		r_s8			( LPCSTR S, LPCSTR L );
+	s8	 		r_s8			( const ref_str& S, LPCSTR L )				{ return r_s8(*S,L);			}
 	s16	 		r_s16			( LPCSTR S, LPCSTR L );
+	s16	 		r_s16			( const ref_str& S, LPCSTR L )				{ return r_s16(*S,L);			}
 	s32	 		r_s32			( LPCSTR S, LPCSTR L );
+	s32	 		r_s32			( const ref_str& S, LPCSTR L )				{ return r_s32(*S,L);			}
 	float		r_float			( LPCSTR S, LPCSTR L );
+	float		r_float			( const ref_str& S, LPCSTR L )				{ return r_float(*S,L);			}
 	Fcolor		r_fcolor		( LPCSTR S, LPCSTR L );
+	Fcolor		r_fcolor		( const ref_str& S, LPCSTR L )				{ return r_fcolor(*S,L);		}
 	u32			r_color			( LPCSTR S, LPCSTR L );
+	u32			r_color			( const ref_str& S, LPCSTR L )				{ return r_color(*S,L);			}
 	Ivector2	r_ivector2		( LPCSTR S, LPCSTR L );
+	Ivector2	r_ivector2		( const ref_str& S, LPCSTR L )				{ return r_ivector2(*S,L);		}
 	Ivector3	r_ivector3		( LPCSTR S, LPCSTR L );
+	Ivector3	r_ivector3		( const ref_str& S, LPCSTR L )				{ return r_ivector3(*S,L);		}
 	Ivector4	r_ivector4		( LPCSTR S, LPCSTR L );
+	Ivector4	r_ivector4		( const ref_str& S, LPCSTR L )				{ return r_ivector4(*S,L);		}
 	Fvector2	r_fvector2		( LPCSTR S, LPCSTR L );
+	Fvector2	r_fvector2		( const ref_str& S, LPCSTR L )				{ return r_fvector2(*S,L);		}
 	Fvector3	r_fvector3		( LPCSTR S, LPCSTR L );
+	Fvector3	r_fvector3		( const ref_str& S, LPCSTR L )				{ return r_fvector3(*S,L);		}
 	Fvector4	r_fvector4		( LPCSTR S, LPCSTR L );
+	Fvector4	r_fvector4		( const ref_str& S, LPCSTR L )				{ return r_fvector4(*S,L);		}
 	BOOL		r_bool			( LPCSTR S, LPCSTR L );
+	BOOL		r_bool			( const ref_str& S, LPCSTR L )				{ return r_bool(*S,L);			}
 	int			r_token			( LPCSTR S, LPCSTR L,	const xr_token *token_list);
-	BOOL		r_line			( LPCSTR S, int L,		LPCSTR* N, LPCSTR* V );
+	BOOL		r_line			( LPCSTR S, int L,	LPCSTR* N, LPCSTR* V );
 
     void		w_string		( LPCSTR S, LPCSTR L, LPCSTR			V, LPCSTR comment=0 );
 	void		w_u8			( LPCSTR S, LPCSTR L, u8				V, LPCSTR comment=0 );

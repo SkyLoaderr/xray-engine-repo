@@ -306,7 +306,7 @@ LPCSTR CInventoryOwner::GetGameName()
 	
 	
 	if(pObject)
-		return pObject->cName();
+		return *pObject->cName();
 	else
 		return NULL;
 }
