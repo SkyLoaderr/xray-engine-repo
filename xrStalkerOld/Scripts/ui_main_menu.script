@@ -231,6 +231,7 @@ function main_menu:InitControls()
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 	
+--[[	
 	local combo = CUIComboBox()
 	combo:SetAutoDelete(true)
 	combo:SetWindowName("combo_box")
@@ -242,6 +243,7 @@ function main_menu:InitControls()
 	combo:AddItem("hello")
 	combo:AddItem("bla-bla-bla", true)
 	self.main_frame:AttachChild(combo)
+	]]
 end
 
 function main_menu:InitCallBacks()
