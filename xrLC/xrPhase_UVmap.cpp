@@ -15,7 +15,7 @@ void Face::OA_Unwarp()
 }
 void Detach			(vecFace* S)
 {
-	static map_v2v	verts;
+	map_v2v			verts;
 	verts.clear		();
 	
 	// Collect vertices
