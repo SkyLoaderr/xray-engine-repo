@@ -93,13 +93,6 @@ void CGroupHierarchyHolder::unregister_in_group			(CEntity *member)
 	MEMBER_REGISTRY::iterator	I = std::find(m_members.begin(),m_members.end(),member);
 	VERIFY3						(I != m_members.end(),"Specified group member cannot be found",*member->cName());
 	m_members.erase				(I);
-
-	if (!m_members.empty())
-		return;
-
-	xr_delete					(m_visible_objects);
-	xr_delete					(m_sound_objects);
-	xr_delete					(m_hit_objects);
 }
 
 void CGroupHierarchyHolder::unregister_in_squad			(CEntity *member)
@@ -119,8 +112,13 @@ void CGroupHierarchyHolder::unregister_in_agent_manager	(CEntity *member)
 	if (get_agent_manager())
 		agent_manager().member().remove	(member);
 
-	if (m_members.empty() && get_agent_manager())
-		xr_delete				(m_agent_manager);
+	if (m_members.empty()) {
+		if (get_agent_manager())
+			xr_delete					(m_agent_manager);
+		xr_delete						(m_visible_objects);
+		xr_delete						(m_sound_objects);
+		xr_delete						(m_hit_objects);
+	}
 }
 
 void CGroupHierarchyHolder::unregister_in_group_senses	(CEntity *member)
