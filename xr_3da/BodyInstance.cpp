@@ -8,12 +8,13 @@
 #include "BodyInstance.h"
 #include "fmesh.h"
 #include "xr_ini.h"
+#include "motion.h"
 
 int			psSkeletonUpdate	= 32;
 const float	fAA					= 1.5f;	// anim-change acceleration
 
 // High level control
-void CMotionDef::Load(CKinematics* P, CStream* MP, BOOL bCycle)
+void CMotionDef::Load(CKinematics* P, CStream* MP, DWORD fl)
 {
 	// params
 	bone_or_part= MP->Rword(); // bCycle?part_id:bone_id;
@@ -22,8 +23,8 @@ void CMotionDef::Load(CKinematics* P, CStream* MP, BOOL bCycle)
 	power		= Quantize(MP->Rfloat());
 	accrue		= Quantize(MP->Rfloat());
 	falloff		= Quantize(MP->Rfloat());
-	noloop		= MP->Rbyte();
-	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
+	flags		= fl;
+	if (!(flags&esmFX) && (falloff>=accrue)) falloff = accrue-1;
 }
 void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycle)
 {
@@ -53,7 +54,7 @@ void CMotionDef::Load(CKinematics* P, CInifile* INI, LPCSTR  section, BOOL bCycl
 	power		= Quantize(INI->ReadFLOAT(section,"power"));
 	accrue		= Quantize(INI->ReadFLOAT(section,"accrue"));
 	falloff		= Quantize(INI->ReadFLOAT(section,"falloff"));
-	noloop		= INI->ReadBOOL(section,"stop@end");
+	flags		|= INI->ReadBOOL(section,"stop@end")?esmStopAtEnd:0;
 
 	if (bCycle && (falloff>=accrue)) falloff = accrue-1;
 }
@@ -65,7 +66,7 @@ CBlend*	CMotionDef::PlayCycle(CKinematics* P, BOOL bMixIn, PlayCallback Callback
 		fAA*Dequantize(accrue),
 		fAA*Dequantize(falloff),
 		Dequantize(speed),
-		noloop,
+		flags&esmStopAtEnd,
 		Callback,Callback_Param
 		);
 }
@@ -618,90 +619,121 @@ void CKinematics::Load(const char* N, CStream *data, DWORD dwFlags)
 	MS->Close();
 
 	// Load definitions
-	CStream* MP = data->OpenChunk(OGF_SMPARAMS);
-	if (MP){
-		// partitions
-		WORD part_count;
-		part_count = MP->Rword();
-		string128 buf;
-		for (WORD part_i=0; part_i<part_count; part_i++){
-			CPartDef&	PART	= (*partition)[part_i];
-			MP->RstringZ(buf);
-			PART.Name			= _strlwr(xr_strdup(buf));
-			PART.bones.resize	(MP->Rword());
-			MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
-		}
+	CStream* MP = data->OpenChunk(OGF_SMPARAMS2);
+    if (MP){
+	    WORD vers = MP->Rword();
+        R_ASSERT(vers==xrOGF_SMParamsVersion);
+        // partitions
+        WORD part_count;
+        part_count = MP->Rword();
+        string128 buf;
+        for (WORD part_i=0; part_i<part_count; part_i++){
+            CPartDef&	PART	= (*partition)[part_i];
+            MP->RstringZ(buf);
+            PART.Name			= _strlwr(strdup(buf));
+            PART.bones.resize	(MP->Rword());
+            MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
+        }
 
-		m_cycle = new mdef;
-		m_fx	= new mdef;
+        m_cycle = new mdef;
+        m_fx	= new mdef;
 
-		// motion defs (cycle&fx)
-		WORD mot_count			= MP->Rword();
-		for (WORD mot_i=0; mot_i<mot_count; mot_i++){
-			MP->RstringZ(buf);
-			BYTE bCycle			= MP->Rbyte();
-			CMotionDef	D;		D.Load(this,MP,bCycle);
-            if (bCycle)			m_cycle->insert(make_pair(_strlwr(xr_strdup(buf)),D));
-            else				m_fx->insert(make_pair(_strlwr(xr_strdup(buf)),D));
-		}
+        // motion defs (cycle&fx)
+        WORD mot_count			= MP->Rword();
+        for (WORD mot_i=0; mot_i<mot_count; mot_i++){
+            MP->RstringZ(buf);
+	        DWORD dwFlags		= MP->Rdword();
+            CMotionDef	D;		D.Load(this,MP,dwFlags);
+            if (dwFlags&esmFX)	m_fx->insert(make_pair(_strlwr(strdup(buf)),D));
+            else				m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
+        }
         MP->Close();
-	}else{
-		// old variant (read params from ltx)
-		R_ASSERT(N && N[0]);
-		char def_N[MAX_PATH];
-		if (0==strext(N))	strconcat(def_N,N,".ltx");
-		else				{
-			strcpy(def_N,N);
-			strcpy(strext(def_N),".ltx");
-		}
-		m_cycle = new mdef;
-		m_fx	= new mdef;
+    }else{
+		CStream* MP = data->OpenChunk(OGF_SMPARAMS);
+        if (MP){
+            // partitions
+            WORD part_count;
+            part_count = MP->Rword();
+            string128 buf;
+            for (WORD part_i=0; part_i<part_count; part_i++){
+                CPartDef&	PART	= (*partition)[part_i];
+                MP->RstringZ(buf);
+                PART.Name			= _strlwr(strdup(buf));
+                PART.bones.resize	(MP->Rword());
+                MP->Read			(&*PART.bones.begin(),PART.bones.size()*sizeof(int));
+            }
 
-		CInifile DEF(def_N);
-		CInifile::SectIt I;
+            m_cycle = new mdef;
+            m_fx	= new mdef;
 
-		// partitions
-		CInifile::Sect& S = DEF.ReadSection("partition");
-		int pid = 0;
-		for (I=S.begin(); I!=S.end(); I++,pid++)
-		{
-			if (pid>=MAX_PARTS)	Device.Fatal("Too many partitions in motion description '%s'",def_N);
-			CPartDef&	PART		= (*partition)[pid];
-			LPSTR	N				= _strlwr(xr_strdup(I->first));
-			PART.Name				= N;
-			CInifile::Sect&		P	= DEF.ReadSection(N);
-			CInifile::SectIt	B	= P.begin();
-			for (; B!=P.end(); B++)
-			{
-				int bone			= LL_BoneID(B->first);
-				if (bone<0)			Device.Fatal("Partition '%s' has incorrect bone name ('%s')",N,B->first);
-				PART.bones.push_back(bone);
-			}
-		}
+            // motion defs (cycle&fx)
+            WORD mot_count			= MP->Rword();
+            for (WORD mot_i=0; mot_i<mot_count; mot_i++){
+                MP->RstringZ(buf);
+                BYTE bCycle			= MP->Rbyte();
+                CMotionDef	D;		D.Load(this,MP,bCycle);
+                if (bCycle)			m_cycle->insert(make_pair(_strlwr(strdup(buf)),D));
+                else				m_fx->insert(make_pair(_strlwr(strdup(buf)),D));
+            }
+            MP->Close();
+        }else{
+            // old variant (read params from ltx)
+            R_ASSERT(N && N[0]);
+            char def_N[MAX_PATH];
+            if (0==strext(N))	strconcat(def_N,N,".ltx");
+            else				{
+                strcpy(def_N,N);
+                strcpy(strext(def_N),".ltx");
+            }
+            m_cycle = new mdef;
+            m_fx	= new mdef;
 
-		// cycles
-		{
-			CInifile::Sect& S = DEF.ReadSection("cycle");
-			for (I=S.begin(); I!=S.end(); I++)
-			{
-				CMotionDef	D;
-				D.Load(this,&DEF,I->first, true);
-				m_cycle->insert(make_pair(_strlwr(xr_strdup(I->first)),D));
-			}
-		}
+            CInifile DEF(def_N);
+            CInifile::SectIt I;
 
-		// FXes
-		{
-			CInifile::Sect& F = DEF.ReadSection("fx");
-			for (I=F.begin(); I!=F.end(); I++)
-			{
-				CMotionDef	D;
-				D.Load(this,&DEF,I->first, false);
-				m_fx->insert(make_pair(_strlwr(xr_strdup(I->first)),D));
-			}
-		}
-	}
-	
+            // partitions
+            CInifile::Sect& S = DEF.ReadSection("partition");
+            int pid = 0;
+            for (I=S.begin(); I!=S.end(); I++,pid++)
+            {
+                if (pid>=MAX_PARTS)	Device.Fatal("Too many partitions in motion description '%s'",def_N);
+                CPartDef&	PART		= (*partition)[pid];
+                LPSTR	N				= _strlwr(strdup(I->first));
+                PART.Name				= N;
+                CInifile::Sect&		P	= DEF.ReadSection(N);
+                CInifile::SectIt	B	= P.begin();
+                for (; B!=P.end(); B++)
+                {
+                    int bone			= LL_BoneID(B->first);
+                    if (bone<0)			Device.Fatal("Partition '%s' has incorrect bone name ('%s')",N,B->first);
+                    PART.bones.push_back(bone);
+                }
+            }
+
+            // cycles
+            {
+                CInifile::Sect& S = DEF.ReadSection("cycle");
+                for (I=S.begin(); I!=S.end(); I++)
+                {
+                    CMotionDef	D;
+                    D.Load(this,&DEF,I->first, true);
+                    m_cycle->insert(make_pair(_strlwr(strdup(I->first)),D));
+                }
+            }
+
+            // FXes
+            {
+                CInifile::Sect& F = DEF.ReadSection("fx");
+                for (I=F.begin(); I!=F.end(); I++)
+                {
+                    CMotionDef	D;
+                    D.Load(this,&DEF,I->first, false);
+                    m_fx->insert(make_pair(_strlwr(strdup(I->first)),D));
+                }
+            }
+        }
+    }
+
 
 	// Init blend pool
 	IBlend_Startup();
