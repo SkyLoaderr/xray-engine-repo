@@ -189,4 +189,5 @@ void CPHShell::Deactivate(){
 	bActivating=false;
 	spatial_unregister();
 	ZeroCallbacks();
+	m_traced_geoms.clear();
 }

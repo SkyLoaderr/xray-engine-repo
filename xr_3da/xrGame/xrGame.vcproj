@@ -7564,6 +7564,16 @@
 							RelativePath=".\PHSynchronize.h">
 						</File>
 					</Filter>
+					<Filter
+						Name="MoveStorage"
+						Filter="">
+						<File
+							RelativePath=".\PHMoveStorage.cpp">
+						</File>
+						<File
+							RelativePath=".\PHMoveStorage.h">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Disabling"

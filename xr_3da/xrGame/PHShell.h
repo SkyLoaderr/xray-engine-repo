@@ -9,14 +9,15 @@ class CPHShellSplitterHolder;
 #include "PHElement.h"
 #include "PHDefs.h"
 #include "PHShellSplitter.h"
-
+#include "phmovestorage.h"
 class CPHShell: public CPhysicsShell,public CPHObject {
 
 	friend class CPHShellSplitterHolder;
 
 	ELEMENT_STORAGE			elements;
 	JOINT_STORAGE			joints;
-	CPHShellSplitterHolder* m_spliter_holder;
+	CPHShellSplitterHolder	*m_spliter_holder;
+	CPHMoveStorage			m_traced_geoms;
 protected:
 	dSpaceID			    m_space;
 public:
@@ -173,7 +174,7 @@ public:
 	virtual	void				ObjectToRootForm			(const Fmatrix& form);
 	virtual	dSpaceID			dSpace						(){return m_space;}
 	virtual void				SetTransform				(const Fmatrix& m0);
-	
+	virtual void				AddTracedGeom				(u16 element=0,u16 geom=0);
 	void CreateSpace()
 	{
 		if(!m_space) 

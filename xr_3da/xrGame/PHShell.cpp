@@ -1184,3 +1184,8 @@ void CPHShell::BonesBindCalculateRecursive(Fmatrix parent,u16 id)
 	for (vecBonesIt it=bone_data.children.begin(); it!=bone_data.children.end(); ++it)
 		BonesBindCalculateRecursive(bone_instance.mTransform,(*it)->SelfID);
 }
+
+void CPHShell::AddTracedGeom				(u16 element/*=0*/,u16 geom/*=0*/)
+{
+	m_traced_geoms.add(elements[element]->Geom(geom));
+}

@@ -27,10 +27,7 @@ protected:
 	dGeomID m_geom_transform;
 	u16		m_bone_id;
 protected:
-	IC dGeomID geom()
-	{
-		return dGeomTransformGetGeom(m_geom_transform);
-	}
+
 
 public:
 	//get
@@ -48,6 +45,11 @@ public:
 	virtual		void		get_max_area_dir_bt	(Fvector& dir)														=0;
 	virtual		float		radius				()																	=0;
 	virtual		void		get_extensions_bt	(const Fvector& axis,float center_prg,float& lo_ext, float& hi_ext) =0;
+
+	IC			dGeomID		geom()
+	{
+								return dGeomTransformGetGeom(m_geom_transform);
+	}
 	IC			dGeomID		geometry_transform   ()
 							{
 								return m_geom_transform;
@@ -55,6 +57,10 @@ public:
 	IC			dGeomID		geometry()
 							{
 								return m_geom_transform ? (geom() ? geom() : m_geom_transform) : NULL;
+							}
+	IC			bool		is_transformed_bt()
+							{
+								return dGeomGetClass(m_geom_transform)==dGeomTransformClass;
 							}
 	IC			u16&		element_position()
 							{
