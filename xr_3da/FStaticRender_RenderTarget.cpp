@@ -52,7 +52,7 @@ BOOL CRenderTarget::Create	()
 void CRenderTarget::OnDeviceCreate	()
 {
 	bAvailable					= Create	();
-	// set_blur					(1.f);
+	set_blur					(1.f);
 }
 
 void CRenderTarget::OnDeviceDestroy	()
