@@ -8,7 +8,9 @@
 
 #include "scenegraph.h"
 
-class CLightShadows  
+class ENGINE_API	CObject;
+
+class ENGINE_API	CLightShadows  
 {
 private:
 	CObject*	current;
