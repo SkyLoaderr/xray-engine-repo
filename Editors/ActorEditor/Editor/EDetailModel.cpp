@@ -85,6 +85,24 @@ int EDetail::_AddVert(const Fvector& p, float u, float v)
     return number_vertices-1;
 }
 
+IC BOOL isDegenerated(u16 v[3])
+{
+	return (v[0]==v[1] || v[0]==v[2] || v[1]==v[2]);
+};
+IC BOOL isEqual(U16Vec& ind, u16 v[3])
+{
+	for (U16It it=ind.begin(); it!=ind.end(); it+=3){
+        // Test for 6 variations
+        if ((*(it+0)==v[0]) && (*(it+1)==v[1]) && (*(it+2)==v[2])) return true;
+        if ((*(it+0)==v[0]) && (*(it+2)==v[1]) && (*(it+1)==v[2])) return true;
+        if ((*(it+2)==v[0]) && (*(it+0)==v[1]) && (*(it+1)==v[2])) return true;
+        if ((*(it+2)==v[0]) && (*(it+1)==v[1]) && (*(it+0)==v[2])) return true;
+        if ((*(it+1)==v[0]) && (*(it+0)==v[1]) && (*(it+2)==v[2])) return true;
+        if ((*(it+1)==v[0]) && (*(it+2)==v[1]) && (*(it+0)==v[2])) return true;
+    }
+    return false;
+}
+
 bool EDetail::Update	(LPCSTR name)
 {
 	m_sRefs				= name;
@@ -110,24 +128,32 @@ bool EDetail::Update	(LPCSTR name)
 
     // fill geometry
     CEditableMesh* M	= *m_pRefs->FirstMesh();
-	number_indices 		= M->GetFaceCount(false)*3;
-	indices				= (WORD*)xr_malloc(number_indices*sizeof(WORD));
+    U16Vec inds;
 
     // fill vertices
     bv_bb.invalidate();
     u32 idx			= 0;
     for (FaceIt f_it=M->GetFaces().begin(); f_it!=M->GetFaces().end(); f_it++){
+    	u16 ind[3];
     	for (int k=0; k<3; k++,idx++){
-        	WORD& i_it	= indices[idx];
         	st_Face& F 	= *f_it;
             Fvector& P  = M->GetPoints()[F.pv[k].pindex];
             
             st_VMapPt& vm=M->GetVMRefs()[F.pv[k].vmref][0];
             Fvector2& uv= M->GetVMaps()[vm.vmap_index]->getUV(vm.index);
-        	i_it 		= _AddVert	(P,uv.x,uv.y);
-	        bv_bb.modify(vertices[i_it].P);
+        	ind[k]		= _AddVert	(P,uv.x,uv.y);
+	        bv_bb.modify(vertices[ind[k]].P);
         }
+        if (isDegenerated(ind))	continue;
+        if (isEqual(inds,ind))	continue;
+        inds.push_back(ind[0]);
+        inds.push_back(ind[1]);
+        inds.push_back(ind[2]);
     }
+	number_indices 		= inds.size();
+	indices				= (u16*)xr_malloc(number_indices*sizeof(u16));
+    Memory.mem_copy		(indices,inds.begin(),number_indices*sizeof(u16));
+
 	bv_bb.getsphere		(bv_sphere.P,bv_sphere.R);
 
     OnDeviceCreate		();
