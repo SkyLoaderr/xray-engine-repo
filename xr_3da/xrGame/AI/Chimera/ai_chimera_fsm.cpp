@@ -59,30 +59,32 @@ void CAI_Chimera::Think()
 		Motion.m_tSeq.Cycle(m_dwCurrentUpdate);
 	}else {
 		//- FSM 1-level 
+		if (K) SetState(stateAttack);
+		else SetState(stateRest);
 
-		if (C && H && I)			SetState(stateHide);
-		else if (C && H && !I)		SetState(stateHide);
-		else if (C && !H && I)		SetState(stateHide);
-		else if (C && !H && !I) 	SetState(stateHide);
-		else if (D && H && I)		SetState(stateHide);
-		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (D && !H && I)		SetState(stateHide);
-		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
-		else if (E && H && I)		SetState(stateAttack); 
-		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
-		else if (E && !H && I) 		SetState(stateDetour); 
-		else if (E && !H && !I)		SetState(stateDetour); 
-		else if (F && H && I) 		SetState(stateAttack); 		
-		else if (F && H && !I)  	SetState(stateAttack); 
-		else if (F && !H && I)  	SetState(stateDetour); 
-		else if (F && !H && !I) 	SetState(stateDetour);	
-		else if (A && !K && !H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
-		else if (A && !K && H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
-		else if (B && !K && !H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
-		else if (B && !K && H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
-		else if (GetCorpseFromMem(ve, Position()))	SetState(stateEat);
-		else						SetState(stateRest); 
-		//---
+//		if (C && H && I)			SetState(stateHide);
+//		else if (C && H && !I)		SetState(stateHide);
+//		else if (C && !H && I)		SetState(stateHide);
+//		else if (C && !H && !I) 	SetState(stateHide);
+//		else if (D && H && I)		SetState(stateHide);
+//		else if (D && H && !I)		SetState(stateAttack);  //тихо подобраться и начать аттаку
+//		else if (D && !H && I)		SetState(stateHide);
+//		else if (D && !H && !I) 	SetState(stateHide);	// отход перебежками через укрытия
+//		else if (E && H && I)		SetState(stateAttack); 
+//		else if (E && H && !I)  	SetState(stateAttack);  //тихо подобраться и начать аттаку
+//		else if (E && !H && I) 		SetState(stateDetour); 
+//		else if (E && !H && !I)		SetState(stateDetour); 
+//		else if (F && H && I) 		SetState(stateAttack); 		
+//		else if (F && H && !I)  	SetState(stateAttack); 
+//		else if (F && !H && I)  	SetState(stateDetour); 
+//		else if (F && !H && !I) 	SetState(stateDetour);	
+//		else if (A && !K && !H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг не выгодный		(ExploreDNE)
+//		else if (A && !K && H)		SetState(stateDetour); // слышу опасный звук, но не вижу, враг выгодный			(ExploreDE)
+//		else if (B && !K && !H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг не выгодный	(ExploreNDNE)
+//		else if (B && !K && H)		SetState(stateDetour); // слышу не опасный звук, но не вижу, враг выгодный		(ExploreNDE)
+//		///else if (GetCorpseFromMem(ve, Position()))	SetState(stateEat);
+//		else						SetState(stateRest); 
+//		//---
 		
 		CurrentState->Execute(m_dwCurrentUpdate);
 		

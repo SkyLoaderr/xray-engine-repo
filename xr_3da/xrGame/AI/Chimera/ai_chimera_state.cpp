@@ -80,8 +80,8 @@ void CChimeraRest::Run()
 	// FSM 2-го уровня
 	switch (m_tAction) {
 		case ACTION_WALK:
-			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
+			pMonster->Motion.m_tParams.SetParams(eMotionWalkFwd,m_cfChimeraWalkSpeed,m_cfChimeraWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfChimeraWalkTurningSpeed,m_cfChimeraWalkTurnRSpeed,m_cfChimeraWalkMinAngle);
 			break;
 		case ACTION_STAND:
 			pMonster->Motion.m_tParams.SetParams(eMotionStandIdle,0,0,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
@@ -92,7 +92,7 @@ void CChimeraRest::Run()
 			pMonster->Motion.m_tTurn.Clear();
 			break;
 		case ACTION_TURN:
-			pMonster->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tParams.SetParams(eMotionStandTurnLeft,0,m_cfChimeraStandTurnRSpeed, 0, 0, MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Clear();
 			break;
 	}
@@ -107,7 +107,7 @@ void CChimeraRest::Replanning()
 	u32		rand_val = ::Random.randI(100);
 	u32		dwMinRand = 0, dwMaxRand = 0;
 
-	if (rand_val < 50) {	
+	if (rand_val < 90) {	
 		m_tAction = ACTION_WALK;
 
 		// Построить путь обхода точек графа
@@ -120,13 +120,13 @@ void CChimeraRest::Replanning()
 		dwMinRand = 3000;
 		dwMaxRand = 5000;
 
-	} else if (rand_val < 60) {	
+	} else if (rand_val < 100) {	
 		m_tAction = ACTION_STAND;
 
 		dwMinRand = 3000;
 		dwMaxRand = 5000;
 
-	} else if (rand_val < 70) {	
+	} else if (rand_val < 170) {	
 		m_tAction = ACTION_LIE;
 		// проверить лежит уже?
 		if (pMonster->m_tAnim != eMotionLieIdle) {
@@ -207,7 +207,7 @@ void CChimeraAttack::Init()
 		m_fDistMax = 2.8f;
 	} else {
 		m_fDistMin = 2.4f;
-		m_fDistMax = 3.8f;
+		m_fDistMax = 5.8f;
 	}
 
 	// Test
@@ -231,8 +231,8 @@ void CChimeraAttack::Run()
 			pMonster->m_tPathType = ePathTypeStraight;
 			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), true, 0);
 
-			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfRunAttackSpeed,m_cfRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
+			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfChimeraRunAttackTurnSpeed,m_cfChimeraRunAttackTurnRSpeed,m_cfChimeraRunAttackMinAngle);
 
 			break;
 		case ACTION_ATTACK_MELEE:		// атаковать вплотную
@@ -321,8 +321,8 @@ void CChimeraEat::Run()
 			pMonster->m_tPathType = ePathTypeStraight;
 			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), false, 0);
 
-			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfRunAttackSpeed,m_cfRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
+			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfChimeraRunAttackTurnSpeed,m_cfChimeraRunAttackTurnRSpeed,m_cfChimeraRunAttackMinAngle);
 
 			break;
 		case ACTION_EAT:
@@ -389,8 +389,8 @@ void CChimeraHide::Run()
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, true, 0);
 
 	// Установить параметры движения
-	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
+	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfChimeraWalkSpeed,m_cfChimeraWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfChimeraWalkTurningSpeed,m_cfChimeraWalkTurnRSpeed,m_cfChimeraWalkMinAngle);
 }
 
 bool CChimeraHide::CheckCompletion()
@@ -450,8 +450,8 @@ void CChimeraDetour::Run()
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorCover, 0, false, 0);
 
 	// Установить параметры движения
-	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfWalkSpeed,m_cfWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfWalkTurningSpeed,m_cfWalkTurnRSpeed,m_cfWalkMinAngle);
+	pMonster->Motion.m_tParams.SetParams	(eMotionWalkFwd,m_cfChimeraWalkSpeed,m_cfChimeraWalkRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Set			(eMotionWalkTurnLeft, eMotionWalkTurnRight,m_cfChimeraWalkTurningSpeed,m_cfChimeraWalkTurnRSpeed,m_cfChimeraWalkMinAngle);
 
 	SetNextThink(1000);
 }
@@ -504,8 +504,8 @@ void CChimeraPanic::Run()
 {
 	pMonster->vfChoosePointAndBuildPath(&pMonster->m_tSelectorFreeHunting, 0, false, 0);
 
-	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfRunAttackSpeed,m_cfRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
-	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfRunAttackTurnSpeed,m_cfRunAttackTurnRSpeed,m_cfRunAttackMinAngle);
+	pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfChimeraRunAttackSpeed,m_cfChimeraRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
+	pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfChimeraRunAttackTurnSpeed,m_cfChimeraRunAttackTurnRSpeed,m_cfChimeraRunAttackMinAngle);
 }
 
 bool CChimeraPanic::CheckCompletion()

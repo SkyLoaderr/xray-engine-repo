@@ -18,21 +18,6 @@
 
 class CCustomMonster;
 
-const float m_cfStandTurnRSpeed	=	PI_DIV_3;
-
-const float m_cfWalkSpeed		 =	1.7f;
-const float m_cfWalkTurningSpeed =	1.0f;
-const float m_cfWalkRSpeed		=	PI_DIV_4;		// когда SetDirLook
-const float m_cfWalkTurnRSpeed	=	PI_DIV_2;		// когда необходим поворот
-const float m_cfWalkMinAngle	=   PI_DIV_6;
-
-
-const float m_cfRunAttackSpeed		=	5.0f;
-const float m_cfRunAttackTurnSpeed	=	3.5f;
-const float m_cfRunAttackTurnRSpeed	=	5* PI_DIV_6;
-const float m_cfRunRSpeed			=	PI_DIV_2;
-const float m_cfRunAttackMinAngle	=   PI_DIV_6;
-
 #define		DEFAULT_ANIM	eMotionStandIdle
 
 #define		MASK_ANIM		(1 << 0)

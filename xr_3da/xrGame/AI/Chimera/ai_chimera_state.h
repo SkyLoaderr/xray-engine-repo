@@ -12,6 +12,22 @@
 
 class CAI_Chimera;
 
+const float m_cfChimeraStandTurnRSpeed	=	PI_DIV_3;
+
+const float m_cfChimeraWalkSpeed		=	1.7f;
+const float m_cfChimeraWalkTurningSpeed =	1.0f;
+const float m_cfChimeraWalkRSpeed		=	PI_DIV_4;		// когда SetDirLook
+const float m_cfChimeraWalkTurnRSpeed	=	PI_DIV_2;		// когда необходим поворот
+const float m_cfChimeraWalkMinAngle		=   PI_DIV_6;
+
+
+const float m_cfChimeraRunAttackSpeed		=	7.0f;
+const float m_cfChimeraRunAttackTurnSpeed	=	3.5f;
+const float m_cfChimeraRunAttackTurnRSpeed	=	5* PI_DIV_6;
+const float m_cfChimeraRunRSpeed			=	PI_DIV_2;
+const float m_cfChimeraRunAttackMinAngle	=   PI_DIV_6;
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CBitingMotion class
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
