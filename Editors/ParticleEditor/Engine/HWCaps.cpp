@@ -17,13 +17,19 @@ void CHWCaps::Update()
 	vertex.bMPS			= (caps.DeclTypes & D3DDTCAPS_UBYTE4)!=0;
 	vertex.dwRegisters	= (caps.MaxVertexShaderConst);
 	IDirect3DQuery9*	q_vc;
-	CHK_DX				(HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc));
-	q_vc->Issue			(D3DISSUE_END);
 	D3DDEVINFO_VCACHE	vc;
-	q_vc->GetData		(&vc,sizeof(vc),D3DGETDATA_FLUSH);
-	_RELEASE			(q_vc);
-	if (1==vc.OptMethod	)	vertex.dwVertexCache	= vc.CacheSize;
-	else					vertex.dwVertexCache	= 16;
+	HRESULT _hr			= HW.pDevice->CreateQuery(D3DQUERYTYPE_VCACHE,&q_vc);
+	if (FAILED(_hr)) 
+	{
+		vc.OptMethod	= 0;
+		vc.CacheSize	= 16;
+	} else {
+		q_vc->Issue			(D3DISSUE_END);
+		q_vc->GetData		(&vc,sizeof(vc),D3DGETDATA_FLUSH);
+		_RELEASE			(q_vc);
+		if (1==vc.OptMethod	)	vertex.dwVertexCache	= vc.CacheSize;
+		else					vertex.dwVertexCache	= 16;
+	}
 	Msg					("* GPU vertex cache: %s, %d",(1==vc.OptMethod)?"recognized":"unrecognized",u32(vertex.dwVertexCache));
 	
 	// ***************** PIXEL processing
