@@ -120,7 +120,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	}
 	
 	Debug.Stop	();
-	// Log			("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
 	CloseLog	();
 	mmgrDone	();
 

@@ -282,6 +282,7 @@ void CRenderDevice::Create	()
 void CRenderDevice::_Destroy	(BOOL bKeepTextures)
 {
 	Engine.mem_Compact			();
+
 	// before destroy
 	bReady						= FALSE;
 	Statistic.OnDeviceDestroy	();
