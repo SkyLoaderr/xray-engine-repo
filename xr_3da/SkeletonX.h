@@ -57,6 +57,7 @@ protected:
 	// render-mode specifics
 	u16						RenderMode;		
 	u16						RMS_boneid;		// single-bone-rendering
+	u16						RMS_bonecount;	// skinning, maximal bone ID
 	
 	void					_Copy			(CSkeletonX *V);
 	void					_Render_soft	(ref_geom& hGeom,	u32 vCount,		u32 pCount);
