@@ -94,6 +94,7 @@ function main_menu:InitControls()
 	btn:SetFont(self.button_font)
 	btn:SetTextAlign(CGameFont.alCenter)
 	btn:SetTextY(self.button_indent)
+	btn:Enable(false)
 	self:Register(btn)
 	self.main_frame:AttachChild(btn)
 
