@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
 <string_table>
+    <string id="esc_stalker_talk_level_0">
+        <text>Расскажи мне об этом месте.</text>
+    </string>
+    <string id="esc_stalker_talk_level_1">
+        <text>Это дорога в Зону. В погребе за деревеньке возле армейского блокпоста найдешь торговца. Соваться на блокпост и попадаться на глаза солдатам не советую, у них приказ стрелять без предупреждения… Убивать солдат нельзя, только в крайнем случае, за каждого убитого торговцу приходится расплачиваться и он не будет доволен таким раскладом. На равнинах крупные стаи слепых псов, соваться к ним новичкам опасно. Иногда сюда забегают мутанты.</text>
+    </string>
+    <string id="esc_stalker_talk_level_10">
+        <text>Спасибо.</text>
+    </string>
+    <string id="esc_stalker_talk_level_2">
+        <text>А что там дальше, по дороге на север?</text>
+    </string>
+    <string id="esc_stalker_talk_level_21">
+        <text>Там свалка. Мрачное место. Местами из-за мусора пройти невозможно.</text>
+    </string>
     <string id="escape_factory_assault_hello_2">
         <text>Ты, наверное, тот малый, о котором Волк говорил? Вообщем смотри, бандитов в принципе немного. Вот только мы своей толпой тудя врядли тихо проберемся. На втором этаже снайпер сидит, все подходы пасет. Если бы не он - мы бы их как следует наказали.</text>
     </string>
@@ -285,21 +300,6 @@
     <string id="escape_lager_volk_job_2">
         <text>Ничего нет.</text>
     </string>
-    <string id="esc_stalker_talk_level_0">
-        <text>Расскажи мне об этом месте.</text>
-    </string>
-    <string id="esc_stalker_talk_level_1">
-        <text>Это дорога в Зону. В погребе за деревеньке возле армейского блокпоста найдешь торговца. Соваться на блокпост и попадаться на глаза солдатам не советую, у них приказ стрелять без предупреждения… Убивать солдат нельзя, только в крайнем случае, за каждого убитого торговцу приходится расплачиваться и он не будет доволен таким раскладом. На равнинах крупные стаи слепых псов, соваться к ним новичкам опасно. Иногда сюда забегают мутанты.</text>
-    </string>
-    <string id="esc_stalker_talk_level_10">
-        <text>Спасибо.</text>
-    </string>
-    <string id="esc_stalker_talk_level_2">
-        <text>А что там дальше, по дороге на север?</text>
-    </string>
-    <string id="esc_stalker_talk_level_21">
-        <text>Там свалка. Мрачное место. Местами из-за мусора пройти невозможно.</text>
-    </string>
     <string id="escape_trader_done_artefact_0">
         <text>Вот твой артефакт! Подойдет?</text>
     </string>
@@ -353,6 +353,9 @@
     </string>
     <string id="escape_trader_done_tutorial_artefact_1">
         <text>Меченый, в следующий раз внимательно слушай мои сообщения. За артефакт спасибо, но немедленно дуй к раненому. Держи аптечку, смотри не потеряй.</text>
+    </string>
+    <string id="escape_trader_done_tutorial_artefact_1311">
+        <text>text in default</text>
     </string>
     <string id="escape_trader_done_tutorial_artefact_2">
         <text>Ну вот и ладненько. Нечего добру попусту валяться.</text>
