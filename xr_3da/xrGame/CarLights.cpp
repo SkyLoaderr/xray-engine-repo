@@ -45,7 +45,7 @@ void SCarLight::ParseDefinitions(LPCSTR section)
 	//fBrightness				= torch->spot_brightness;
 	light_render->set_range	(ini->r_float(section,"range"));
 	light_render->set_color	(clr);
-	light_render->set_cone	(ini->r_float(section,"cone_angle"));
+	light_render->set_cone	(deg2rad(ini->r_float(section,"cone_angle")));
 	light_render->set_texture(ini->r_string(section,"spot_texture"));
 
 	glow_render->set_texture(ini->r_string(section,"glow_texture"));
@@ -91,8 +91,11 @@ void SCarLight::Update()
 	Fmatrix M;
 	M.mul(pcar->XFORM(),BI.mTransform);
 	light_render->set_rotation	(M.k,M.i);
-	light_render->set_position	(M.c);
 	glow_render->set_position	(M.c);
+	M.k.mul(0.2);
+	M.c.add(M.k);
+	light_render->set_position	(M.c);
+
 }
 
 
