@@ -2231,11 +2231,6 @@
 									Filter="">
 									<File
 										RelativePath=".\Explosive.cpp">
-										<FileConfiguration
-											Name="Release|Win32">
-											<Tool
-												Name="VCCLCompilerTool"/>
-										</FileConfiguration>
 									</File>
 									<File
 										RelativePath=".\Explosive.h">
@@ -3159,6 +3154,12 @@
 				</File>
 				<File
 					RelativePath="GamePersistent.h">
+				</File>
+				<File
+					RelativePath=".\StatGraph.cpp">
+				</File>
+				<File
+					RelativePath=".\StatGraph.h">
 				</File>
 				<File
 					RelativePath=".\StdAfx.cpp">
