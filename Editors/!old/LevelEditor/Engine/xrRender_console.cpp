@@ -61,15 +61,15 @@ float		ps_r2_GI_refl				= .9f;				// .9f
 float		ps_r2_ls_depth_scale		= 1.00001f;			// 1.00001f
 float		ps_r2_ls_depth_bias			= -0.0001f;			// -0.0001f
 float		ps_r2_ls_squality			= 1.0f;				// 1.00f
-float		ps_r2_sun_tsm_projection	= 0.2f;				// 0.2f
-float		ps_r2_sun_tsm_bias			= 0.0f;				// 
-float		ps_r2_sun_near				= 10.f;				// 10.0f
-float		ps_r2_sun_near_border		= 1.0f;				// 1.0f
+float		ps_r2_sun_tsm_projection	= 0.18f;			// 0.18f
+float		ps_r2_sun_tsm_bias			= -0.05f;			// 
+float		ps_r2_sun_near				= 12.f;				// 12.0f
+float		ps_r2_sun_near_border		= 0.66f;			// 1.0f
 float		ps_r2_sun_depth_far_scale	= 1.00000f;			// 1.00001f
 float		ps_r2_sun_depth_far_bias	= 0.00000f;			// -0.0000f
-float		ps_r2_sun_depth_near_scale	= 1.00000f;			// 1.00001f
-float		ps_r2_sun_depth_near_bias	= -0.0005f;			// -0.0005f
-float		ps_r2_sun_lumscale			= 1.0f;				// 1.0f
+float		ps_r2_sun_depth_near_scale	= 1.00001f;			// 1.00001f
+float		ps_r2_sun_depth_near_bias	= -0.00004f;		// -0.00005f
+float		ps_r2_sun_lumscale			= 0.666f;			// 1.0f
 float		ps_r2_gmaterial				= 0.f;				// 
 
 #ifndef _EDITOR
