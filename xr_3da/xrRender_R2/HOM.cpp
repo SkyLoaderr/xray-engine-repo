@@ -287,10 +287,6 @@ BOOL CHOM::visible		(sPoly& P)
 	return Raster.test	(min.x,min.y,max.x,max.y,z);
 }
 
-void CHOM::occlude		(Fbox2&		space)
-{
-}
-
 void CHOM::Disable		()
 {
 	bEnabled			= FALSE;
