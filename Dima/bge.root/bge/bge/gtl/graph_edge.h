@@ -1,49 +1,33 @@
 ////////////////////////////////////////////////////////////////////////////
 //	Module 		: graph_edge.h
 //	Created 	: 14.01.2004
-//  Modified 	: 27.09.2004
+//  Modified 	: 19.02.2005
 //	Author		: Dmitriy Iassenev
-//	Description : Graph edge class
+//	Description : Graph edge class template
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
 
-template <typename _1, typename _2, typename _3, typename _4> class CGraphVertex;
-
 template <
-	typename _Data,
 	typename _edge_weight_type,
-	typename _vertex_id_type,
-	typename _vertex_index_type
+	typename _vertex_type
 >
-class CGraphEdge {
+class graph_edge {
 public:
-	typedef _Data				_Data;
-	typedef _edge_weight_type	_edge_weight_type;
-	typedef _vertex_id_type		_vertex_id_type;
-	typedef _vertex_index_type	_vertex_index_type;
-	typedef CGraphEdge<
-		_Data,
-		_edge_weight_type,
-		_vertex_id_type,
-		_vertex_index_type
-	>							CSGraphEdge;
+	typedef _edge_weight_type						_edge_weight_type;
+	typedef _vertex_type							_vertex_type;
+	typedef typename _vertex_type::_vertex_id_type	_vertex_id_type;
 
 private:
-	friend class CGraphVertex<_Data,_edge_weight_type,_vertex_id_type,_vertex_index_type>;
-
-private:
-	_edge_weight_type			m_weight;
-	_vertex_id_type				m_vertex_id;
-	_vertex_index_type			m_vertex_index;
+	_edge_weight_type				m_weight;
+	_vertex_type					*m_vertex;
 
 public:
-
-	IC							CGraphEdge		(const _edge_weight_type weight, const _vertex_id_type vertex_id, const _vertex_index_type vertex_index);
-	IC		_edge_weight_type	weight			() const;
-	IC		_vertex_id_type		vertex_id		() const;
-	IC		_vertex_index_type	vertex_index	() const;
-	IC		bool				operator==		(const _vertex_index_type &) const;
+	IC								graph_edge	(const _edge_weight_type &weight, _vertex_type *vertex);
+	IC		const _edge_weight_type	&weight		() const;
+	IC		_vertex_type			*vertex		() const;
+	IC		bool					operator==	(const _vertex_id_type &vertex_id) const;
+	IC		bool					operator==	(const graph_edge &obj) const;
 };
 
 #include "graph_edge_inline.h"
