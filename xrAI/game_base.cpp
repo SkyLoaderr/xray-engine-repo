@@ -65,9 +65,6 @@ game_GameState::game_GameState()
 	type				=	-1;
 	phase				=	GAME_PHASE_PENDING;
 	round				=	-1;
-//	fraglimit			=	-1;
-//	timelimit			=	-1;
-//	buy_time			=	60000; // 60 sec
 }
 
 CLASS_ID game_GameState::getCLASS_ID(LPCSTR game_type_name, bool isServer)

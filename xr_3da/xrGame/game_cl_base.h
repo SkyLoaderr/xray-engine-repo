@@ -14,7 +14,7 @@ struct SZoneMapEntityData{
 };
 
 
-class	game_cl_GameState	: public game_GameState
+class	game_cl_GameState	: public game_GameState, public ISheduled
 {
 	string256			m_game_type_name;
 public:
@@ -30,7 +30,7 @@ public:
 protected:
 	//for scripting enhancement
 	virtual		void				TranslateGameMessage	(u32 msg, NET_Packet& P);
-				void				UIMessageOut			(LPCSTR msg);
+				void				CommonMessageOut		(LPCSTR msg);
 public:
 									game_cl_GameState		();
 	virtual							~game_cl_GameState		();
@@ -47,4 +47,8 @@ public:
 	game_cl_GameState::Player*		GetPlayerByGameID		(u32 GameID);
 	virtual		CUIGameCustom*		createGameUI			(){return NULL;};
 	virtual		void				GetMapEntities(xr_vector<SZoneMapEntityData>& dst)	{};
+
+	virtual float					shedule_Scale		();
+	virtual void					shedule_Update		(u32 dt);
+
 };

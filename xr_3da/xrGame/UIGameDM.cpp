@@ -17,6 +17,7 @@
 #define MSGS_OFFS 510
 
 #define	TEAM0_MENU		"deathmatch_team0"
+#define TIME_MSG_COLOR		0xffff0000
 
 //--------------------------------------------------------------------
 CUIGameDM::CUIGameDM()
@@ -39,11 +40,18 @@ CUIGameDM::CUIGameDM()
 
 	m_bSkinSelected	= FALSE;
 
+/*
 	TimeMsgStatic.SetFont			(HUD().pFontDI);
 
 	TimeMsgDyn.SetFont				(HUD().pFontDI);
 	TimeMsgDyn.SetStyleParams		(CUITextBanner::tbsFade)->fPeriod = 0.5f;
 	TimeMsgDyn.SetTextColor			(0xffff0000);
+*/
+
+	m_time_caption = "timelimit";
+	m_gameCaptions.addCustomMessage(m_time_caption, 0.0f, -0.95f, 0.03f, HUD().pFontDI, TIME_MSG_COLOR, "");
+//	m_gameCaptions.customizeMessage(m_time_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
+
 	//-----------------------------------------------------------------------
 	m_iCurrentPlayersMoney = 0;
 }
@@ -145,20 +153,25 @@ void CUIGameDM::OnFrame()
 			{
 				if (Level().timeServer()<(m_game->start_time + m_game->timelimit))
 				{
-					u32 Rest = (m_game->start_time + m_game->timelimit) - Level().timeServer();
+					u32 lts = Level().timeServer();
+					u32 Rest = (m_game->start_time + m_game->timelimit) - lts;
 
 					u32 RHour = Rest / 3600000;
 					Rest %= 3600000;
 					u32 RMinutes = Rest / 60000;
 					Rest %= 60000;
 					u32 RSecs = Rest / 1000;
-					
-					TimeMsgStatic.Out			(0.f,-0.95f,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
+					string64 S;
+					sprintf(S,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
+					SetTimeMsgCaption(S);
+
+//					TimeMsgStatic.Out			(0.f,-0.95f,"%02d:%02d:%02d", RHour, RMinutes, RSecs);
 				}
 				else
 				{
-					TimeMsgDyn.Out				(0.f,-0.95f,"00:00:00");
-					TimeMsgDyn.Update			();
+					SetTimeMsgCaption("00:00:00");
+//					TimeMsgDyn.Out				(0.f,-0.95f,"00:00:00");
+//					TimeMsgDyn.Update			();
 				}
 			};
 			if (!m_bSkinSelected)
@@ -643,3 +656,8 @@ void		CUIGameDM::SetBuyMenuItems		()
 	pCurBuyMenu->SetMoneyAmount(P->money_for_round);
 	pCurBuyMenu->CheckBuyAvailabilityInSlots();
 };
+
+void CUIGameDM::SetTimeMsgCaption		(LPCSTR str)
+{
+		m_gameCaptions.setCaption(m_time_caption, str, TIME_MSG_COLOR, true);
+}

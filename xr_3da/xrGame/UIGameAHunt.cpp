@@ -14,6 +14,10 @@
 #define	TEAM1_MENU		"artefacthunt_team1"
 #define	TEAM2_MENU		"artefacthunt_team2"
 
+#define BUY_MSG_COLOR		0xffffff00
+#define SCORE_MSG_COLOR		0xffffffff
+#define ROUND_RESULT_COLOR	0xfff0fff0
+#define TODO_MSG_COLOR		0xff00ff00
 //--------------------------------------------------------------------
 CUIGameAHunt::CUIGameAHunt()
 {
@@ -89,35 +93,20 @@ void CUIGameAHunt::Init	()
 	pSkinMenuTeam2 = InitSkinMenu(2);
 	//----------------------------------------------------------------
 
-/*
-	BuyMsg.SetStyleParams			(CUITextBanner::tbsNone);
-	BuyMsg.SetFont					(HUD().pFontDI);
-	BuyMsg.SetTextColor				(0xffffff00);
-	
-	StaticMsg.SetFont				(HUD().pFontDI);
-
-	WarningMsg.SetStyleParams		(CUITextBanner::tbsFade)->fPeriod = 1;
-	WarningMsg.SetFont				(HUD().pFontDI);
-	WarningMsg.SetTextColor			(0xffff0000);
-
-	WarningMsg2.SetStyleParams		(CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
-	WarningMsg2.SetFont				(HUD().pFontDI);
-
-*/
 
 	m_score_caption					=	"ah_score";		
-	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.9f, HUD().pFontDI, 0xffffffff, "");
+	m_gameCaptions.addCustomMessage(m_score_caption, 0.0f, -0.9f, 0.03f, HUD().pFontDI, SCORE_MSG_COLOR, "");
 
 	m_round_result_caption			=	"ah_round_result";
-	m_gameCaptions.addCustomMessage(m_round_result_caption, 0.0f, 0.0f, HUD().pFontDI, 0xfff0fff0, "");
+	m_gameCaptions.addCustomMessage(m_round_result_caption, 0.0f, 0.0f, 0.03f, HUD().pFontDI, ROUND_RESULT_COLOR, "");
 
 	m_todo_caption					=	"ah_todo";
-	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.85f, HUD().pFontDI, 0xffffffff, "");
+	m_gameCaptions.addCustomMessage(m_todo_caption, 0.0f, -0.85f, 0.03f, HUD().pFontDI, TODO_MSG_COLOR, "");
 	m_gameCaptions.customizeMessage(m_todo_caption, CUITextBanner::tbsFlicker)->fPeriod = 0.5f;
 	
 
 	m_buy_msg_caption				=	"ah_buy";
-	m_gameCaptions.addCustomMessage(m_buy_msg_caption, 0.0f, 0.9f, HUD().pFontDI, 0xffffff00, "");
+	m_gameCaptions.addCustomMessage(m_buy_msg_caption, 0.0f, 0.9f, 0.03f, HUD().pFontDI, BUY_MSG_COLOR, "");
 
 };
 //--------------------------------------------------------------------
@@ -135,7 +124,7 @@ void		CUIGameAHunt::OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTe
 	};
 };
 
-void		CUIGameAHunt::OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)
+void CUIGameAHunt::OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone)
 {
 	CActor* pActor = dynamic_cast<CActor*> (tpObject);
 	if (tpObject == Level().CurrentEntity() && pActor->g_Team() == pTeamBaseZone->GetZoneTeam())
@@ -144,17 +133,18 @@ void		CUIGameAHunt::OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTe
 	};
 };
 //--------------------------------------------------------------------
-void			CUIGameAHunt::OnFrame()
+void CUIGameAHunt::OnFrame()
 {
 	inherited::OnFrame();
-
+/*
 	HUD().pFontDI->SetSize	(0.02f);
 	CActor* pCurActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 
-	m_gameCaptions.setCaption(m_buy_msg_caption, "");
-	m_gameCaptions.setCaption(m_score_caption, "");
-	m_gameCaptions.setCaption(m_todo_caption, "");
-	m_gameCaptions.setCaption(m_round_result_caption, "");
+	SetBuyMsgCaption("");
+	SetScoreCaption("");
+	SetTodoCaption("");
+	SetRoundResultCaption("");
+
 	switch (m_game->phase)
 	{
 	case GAME_PHASE_INPROGRESS:
@@ -165,9 +155,7 @@ void			CUIGameAHunt::OnFrame()
 			{
 				if (pCurActor && pCurActor->g_Alive() && !pCurBuyMenu->IsShown())
 				{
-//					BuyMsg.Out					(0.0f,0.9f,"Press B to access Buy Menu");
-//					BuyMsg.Update				();
-					m_gameCaptions.setCaption(m_buy_msg_caption, "Press B to access Buy Menu");
+					SetBuyMsgCaption("Press B to access Buy Menu");
 				};
 			};
 
@@ -176,49 +164,33 @@ void			CUIGameAHunt::OnFrame()
 				game_TeamState team0 = m_game->teams[0];
 				game_TeamState team1 = m_game->teams[1];
 
-//				StaticMsg.Out	(0.0f, -0.9f, "Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
-//					m_game->teams[pCurActor->g_Team()-1].score, 
-//					m_game->teams[1 - (pCurActor->g_Team()-1)].score, 
-//					m_game->artefactsNum);
-//
-//				StaticMsg.Update				();
-
 				string256 S;
 				sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
 								m_game->teams[pCurActor->g_Team()-1].score, 
 								m_game->teams[1 - (pCurActor->g_Team()-1)].score, 
 								m_game->artefactsNum);
-				m_gameCaptions.setCaption(m_score_caption, S);
+				SetScoreCaption(S);
 
 	
 			if ( (m_game->artefactBearerID==0) && (m_game->artefactID!=0) )
 				{
-//					StaticMsg.Out				(0.0f, -0.85f, "Grab the Artefact");
-//					StaticMsg.Update			();
-					m_gameCaptions.setCaption(m_todo_caption, "Grab the Artefact");
+					SetTodoCaption("Grab the Artefact");
 				}
 				else
 				{
 					if (m_game->teamInPossession != pCurActor->g_Team())
 					{
-//						WarningMsg.Out				(0.f,-0.85f,"Stop ArtefactBearer.");
-//						WarningMsg.Update			();
-					m_gameCaptions.setCaption(m_todo_caption, "Stop ArtefactBearer");
+						SetTodoCaption("Stop ArtefactBearer");
 					}
 					else
 					{
-//						WarningMsg2.SetTextColor		(0xff00ff00);
 						if (pCurActor->ID() == m_game->artefactBearerID)
 						{
-//							WarningMsg2.Out			(0.f,-0.85f,"You got the Artefact. Bring it to your base.");
-//							WarningMsg2.Update		();
-							m_gameCaptions.setCaption(m_todo_caption, "You got the Artefact. Bring it to your base.",0xff00ff00,true);
+							SetTodoCaption("You got the Artefact. Bring it to your base.");
 						}
 						else
 						{
-//							WarningMsg2.Out			(0.f,-0.85f,"Protect your ArtefactBearer.");
-//							WarningMsg2.Update		();
-							m_gameCaptions.setCaption(m_todo_caption, "Protect your ArtefactBearer",0xff00ff00,true);
+							SetTodoCaption("Protect your ArtefactBearer");
 						};
 					};
 				};
@@ -227,24 +199,19 @@ void			CUIGameAHunt::OnFrame()
 	case GAME_PHASE_TEAM1_SCORES:
 		{
 			HUD().GetUI()->HideIndicators();
-
-//			StaticMsg.SetTextColor		(0xfff0fff0);
-//			StaticMsg.Out				(0.f,0.0f,"Team Green WINS!");
-			m_gameCaptions.setCaption(m_round_result_caption, "Team Green WINS!");
+			SetRoundResultCaption("Team Green WINS!");
 		}break;
 	case GAME_PHASE_TEAM2_SCORES:
 		{
 			HUD().GetUI()->HideIndicators();
-
-//			StaticMsg.SetTextColor		(0xfff0fff0);
-//			StaticMsg.Out				(0.f,0.0f,"Team Blue WINS!");
-			m_gameCaptions.setCaption(m_round_result_caption, "Team Blue WINS!");
+			SetRoundResultCaption("Team Blue WINS!");
 		}break;
 	default:
 		{
 			
 		}break;
 	};
+*/
 };
 //--------------------------------------------------------------------
 BOOL		CUIGameAHunt::CanCallBuyMenu			()
@@ -273,3 +240,23 @@ bool		CUIGameAHunt::CanBeReady				()
 
 	return true;
 };
+
+void CUIGameAHunt::SetScoreCaption(LPCSTR str)
+{
+	m_gameCaptions.setCaption(m_score_caption, str, SCORE_MSG_COLOR, true);
+}
+
+void CUIGameAHunt::SetRoundResultCaption(LPCSTR str)
+{
+	m_gameCaptions.setCaption(m_round_result_caption, str, ROUND_RESULT_COLOR, true);
+}
+
+void CUIGameAHunt::SetTodoCaption(LPCSTR str)
+{
+	m_gameCaptions.setCaption(m_todo_caption, str, TODO_MSG_COLOR, true);
+}
+
+void CUIGameAHunt::SetBuyMsgCaption(LPCSTR str)
+{
+	m_gameCaptions.setCaption(m_buy_msg_caption, str, BUY_MSG_COLOR, true);
+}

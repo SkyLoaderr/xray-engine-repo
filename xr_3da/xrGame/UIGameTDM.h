@@ -54,8 +54,5 @@ public:
 	virtual void		OnTeamSelect		(int Result);
 
 	virtual bool		CanBeReady			();
-protected:
-	/////////
-	CUIInventoryWnd		InventoryMenu;
 };
 #endif // __XR_UIGAMETDM_H__

@@ -7,7 +7,7 @@
 
 game_cl_ArtefactHunt::game_cl_ArtefactHunt()
 {
-
+	m_gameUI = NULL;
 	pMessageSounds[0].create(TRUE, "messages\\multiplayer\\mp_artifact_lost");
 	pMessageSounds[1].create(TRUE, "messages\\multiplayer\\mp_artifact_on_base");
 	pMessageSounds[2].create(TRUE, "messages\\multiplayer\\mp_artifact_on_base_radio");
@@ -66,7 +66,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				pPlayer->name, 
 				Color_Main,
 				Color_Artefact);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 						
 			CActor* pActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 			if (!pActor) break;
@@ -92,7 +92,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				pPlayer->name, 
 				Color_Main,
 				Color_Artefact);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 
 			pMessageSounds[0].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
@@ -109,7 +109,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 				Color_Teams[Team], 
 				TeamsNames[Team], 
 				Color_Main);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 
 			CActor* pActor = dynamic_cast<CActor*> (Level().CurrentEntity());
 			if (!pActor) break;
@@ -131,7 +131,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		{
 			sprintf(Text, "%sArtefact has been spawned. Bring it to your base to score.", 
 				Color_Main);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 
 			pMessageSounds[5].play_at_pos(NULL, Device.vCameraPosition, sm_2D, 0);
 		}break;
@@ -139,7 +139,7 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 		{
 			sprintf(Text, "%sArtefact has been destroyed.", 
 				Color_Main);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 
 		}break;
 	
@@ -152,11 +152,11 @@ void game_cl_ArtefactHunt::TranslateGameMessage	(u32 msg, NET_Packet& P)
 CUIGameCustom* game_cl_ArtefactHunt::createGameUI()
 {
 	CLASS_ID clsid			= CLSID_GAME_UI_ARTEFACTHUNT;
-	CUIGameAHunt*			pUIGame	= dynamic_cast<CUIGameAHunt*> ( NEW_INSTANCE ( clsid ) );
-	R_ASSERT(pUIGame);
-	pUIGame->SetClGame(this);
-	pUIGame->Init();
-	return pUIGame;
+	m_gameUI	= dynamic_cast<CUIGameAHunt*> ( NEW_INSTANCE ( clsid ) );
+	R_ASSERT(m_gameUI);
+	m_gameUI->SetClGame(this);
+	m_gameUI->Init();
+	return m_gameUI;
 }
 
 void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
@@ -199,5 +199,85 @@ void game_cl_ArtefactHunt::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 		dst.push_back(D);
 		return;
 	}
+
+}
+
+void game_cl_ArtefactHunt::shedule_Update			(u32 dt)
+{
+	inherited::shedule_Update		(dt);
+
+	//out game information
+	m_gameUI->SetBuyMsgCaption		("");
+	m_gameUI->SetScoreCaption		("");
+	m_gameUI->SetTodoCaption		("");
+	m_gameUI->SetRoundResultCaption	("");
+
+	switch (phase)
+	{
+	case GAME_PHASE_INPROGRESS:
+		{
+			HUD().GetUI()->ShowIndicators();
+
+			if (m_gameUI->m_bBuyEnabled)
+			{
+				if (local_player/*pCurActor && pCurActor->g_Alive() && !m_gameUI->pCurBuyMenu->IsShown()*/ )
+				{
+					m_gameUI->SetBuyMsgCaption("Press B to access Buy Menu");
+				};
+			};
+
+			if (local_player/*pCurActor && !m_gameUI->pCurBuyMenu->IsShown()*/)
+			{
+				game_TeamState team0 = teams[0];
+				game_TeamState team1 = teams[1];
+
+				string256 S;
+				s16 lt = local_player->team;
+				sprintf(S,		"Your Team : %3d - Enemy Team %3d - from %3d Artefacts",
+								teams[lt].score, 
+								teams[(lt==1)?0:1].score, 
+								artefactsNum);
+				m_gameUI->SetScoreCaption(S);
+
+	
+			if ( (artefactBearerID==0) && (artefactID!=0) )
+				{
+					m_gameUI->SetTodoCaption("Grab the Artefact");
+				}
+				else
+				{
+					if (teamInPossession != local_player->team )
+					{
+						m_gameUI->SetTodoCaption("Stop ArtefactBearer");
+					}
+					else
+					{
+						if (local_player->GameID == artefactBearerID)
+						{
+							m_gameUI->SetTodoCaption("You got the Artefact. Bring it to your base.");
+						}
+						else
+						{
+							m_gameUI->SetTodoCaption("Protect your ArtefactBearer");
+						};
+					};
+				};
+			};
+		}break;
+	case GAME_PHASE_TEAM1_SCORES:
+		{
+			HUD().GetUI()->HideIndicators();
+			m_gameUI->SetRoundResultCaption("Team Green WINS!");
+		}break;
+	case GAME_PHASE_TEAM2_SCORES:
+		{
+			HUD().GetUI()->HideIndicators();
+			m_gameUI->SetRoundResultCaption("Team Blue WINS!");
+		}break;
+	default:
+		{
+			
+		}break;
+	};
 
 }

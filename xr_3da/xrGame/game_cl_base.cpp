@@ -10,10 +10,13 @@ game_cl_GameState::game_cl_GameState()
 {
 	local_player				= 0;
 	m_game_type_name[0]			= 0;
+
+	shedule_register();
 }
 
 game_cl_GameState::~game_cl_GameState()
 {
+	shedule_unregister();
 }
 
 
@@ -110,7 +113,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			P.r_stringZ(PlayerName);
 			
 			sprintf(Text, "%sPlayer %s%s %sconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 		}break;
 	case GMSG_PLAYER_DISCONNECTED:
 		{
@@ -118,7 +121,7 @@ void game_cl_GameState::TranslateGameMessage	(u32 msg, NET_Packet& P)
 			P.r_stringZ(PlayerName);
 
 			sprintf(Text, "%sPlayer %s%s %sdisconnected",Color_Main,Color_Teams[0],PlayerName,Color_Main);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 		}break;
 	default:
 		{
@@ -195,40 +198,17 @@ char*	game_cl_GameState::getTeamSection(int Team)
 };
 
 
-void game_cl_GameState::UIMessageOut (LPCSTR msg)
+void game_cl_GameState::CommonMessageOut (LPCSTR msg)
 {
 		HUD().GetUI()->UIMainIngameWnd.AddGameMessage(NULL, msg);
 }
 
-/*
-CLASS_ID game_cl_GameState::getGameUICLASS_ID(LPCSTR game_type_name)
+float game_cl_GameState::shedule_Scale		()
 {
-	string256		S;
-	FS.update_path	(S,"$game_data$","script.ltx");
-	CInifile		*l_tpIniFile = xr_new<CInifile>(S);
-	R_ASSERT		(l_tpIniFile);
-
-	string256				I;
-	strcpy(I,l_tpIniFile->r_string("common","ui_type_clsid_factory"));
-
-	luabind::functor<LPCSTR>	result;
-	R_ASSERT					(ai().script_engine().functor(I,result));
-	ref_str clsid = result		(game_type_name);
-
-	xr_delete			(l_tpIniFile);
-	
-	return TEXT2CLSID(*clsid);
-
+	return 1.0f;
 }
 
-CUIGameCustom*		game_cl_GameState::createGameUI	()
+void game_cl_GameState::shedule_Update		(u32 dt)
 {
-	return 0;
-	CLASS_ID clsid			= getGameUICLASS_ID( type_name() );
-	CUIGameCustom*			pUIGame	= dynamic_cast<CUIGameCustom*> ( NEW_INSTANCE ( clsid ) );
-
-	pUIGame->SetClGame(this);
-	pUIGame->Init();
-	return pUIGame;
+	ISheduled::shedule_Update(dt);
 }
-*/

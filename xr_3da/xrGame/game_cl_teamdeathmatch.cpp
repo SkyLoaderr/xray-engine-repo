@@ -26,7 +26,7 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 							Color_Main,
 							Color_Teams[Team],
 							TeamsNames[Team]);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 		}break;
 
 	case GMSG_PLAYER_SWITCH_TEAM://tdm
@@ -45,7 +45,7 @@ void game_cl_TeamDeathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 							Color_Main, 
 							Color_Teams[NewTeam], 
 							TeamsNames[NewTeam]);
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 		}break;
 
 	default:
@@ -72,7 +72,6 @@ void game_cl_TeamDeathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 
 	s16 local_team			=		local_player->team;
 
-	u32 s = players.size();
 	xr_map<u32,Player>::iterator it = players.begin();
 	for(;it!=players.end();++it){
 		if(local_team == it->second.team){

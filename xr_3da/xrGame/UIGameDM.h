@@ -50,12 +50,13 @@ protected:
 	PRESET_ITEMS			PresetItemsTeam0;
 	PRESET_ITEMS*			pCurPresetItems;
 
-	BOOL					m_bBuyEnabled;
 
 	CUISkinSelectorWnd*		pSkinMenuTeam0;
 	CUISkinSelectorWnd*		pCurSkinMenu;
 	
 	BOOL					m_bSkinSelected;
+
+	ref_str					m_time_caption;		
 
 	virtual	void					ClearLists				();
 	
@@ -71,6 +72,8 @@ protected:
 	virtual	void					CheckItem				(PIItem pItem, PRESET_ITEMS* pPresetItems);
 
 public:
+	BOOL							m_bBuyEnabled;
+
 									CUIGameDM				();
 	virtual 						~CUIGameDM				();
 
@@ -98,9 +101,11 @@ public:
 	virtual	void					SetBuyMenuItems			();
 	virtual void					ClearBuyMenu			();
 
+			void					SetTimeMsgCaption		(LPCSTR str);
 	/////////
 	CUIInventoryWnd					InventoryMenu;
-	CUITextBanner					TimeMsgStatic, TimeMsgDyn;
+//	CUITextBanner					TimeMsgStatic, TimeMsgDyn;
+
 //	CUIBuyWeaponWnd		UIBuyWeaponWnd;
 //	CUIStatsWnd*		pUIStatsWnd;
 };

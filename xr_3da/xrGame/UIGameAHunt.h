@@ -63,15 +63,16 @@ public:
 	virtual void		OnBuyMenu_Ok			();
 */
 	virtual bool		CanBeReady				();
-
+	
+			void		SetScoreCaption			(LPCSTR str);
+			void		SetRoundResultCaption	(LPCSTR str);
+			void		SetTodoCaption			(LPCSTR str);
+			void		SetBuyMsgCaption		(LPCSTR str);
 protected:
 	ref_str				m_score_caption;		
 	ref_str				m_round_result_caption;		
 	ref_str				m_todo_caption;			
 	ref_str				m_buy_msg_caption;		
 
-	/////////
-	CUIInventoryWnd		InventoryMenu;
-//	CUITextBanner		StaticMsg, BuyMsg, WarningMsg, WarningMsg2;
 };
 #endif // __XR_UIGAMEAHUNT_H__

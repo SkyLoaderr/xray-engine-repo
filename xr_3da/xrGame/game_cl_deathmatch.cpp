@@ -44,7 +44,7 @@ void game_cl_Deathmatch::TranslateGameMessage	(u32 msg, NET_Packet& P)
 								Color_Teams[pKiller->team],
 								pKiller->name);
 
-			UIMessageOut(Text);
+			CommonMessageOut(Text);
 		}break;
 	default:
 		inherited::TranslateGameMessage(msg,P);
