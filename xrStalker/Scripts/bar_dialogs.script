@@ -249,3 +249,28 @@ function give_lucky_pda(first_speaker, second_speaker)
 	first_speaker:transfer_item(lucky_pda, second_speaker)
 	level_tasks.set_task_state(task.completed, "bar_crazy_veterans_quest", 0)
 end
+
+-- Оплата информации осведомителю.
+function has_money_for_informer_1(actor, npc)
+	return actor:money() >= 1500
+end
+
+function give_money_for_informer_1(actor, npc)	
+	actor:transfer_money(1500, npc)
+end
+
+function has_money_for_informer_2(actor, npc)
+	return actor:money() >= 3000
+end
+
+function give_money_for_informer_1(actor, npc)	
+	actor:transfer_money(3000, npc)
+end
+
+function has_money_for_informer_3(actor, npc)
+	return actor:money() >= 4500
+end
+
+function give_money_for_informer_3(actor, npc)	
+	actor:transfer_money(4500, npc)
+end
