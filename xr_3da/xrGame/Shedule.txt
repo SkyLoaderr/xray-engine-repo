@@ -1,3 +1,7 @@
+	/ CORE
+		. TODO: Blender compiling for editor
+		. TODO: Blender compiling for different number of layers
+
 	/ OPTIMIZATION
 		. TODO: Batch culling
 		. TODO: collision database simplification
