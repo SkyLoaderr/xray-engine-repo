@@ -218,7 +218,7 @@ function action_follow:calculate_position ()
        end
     end
     
-    local need_id = level.vertex_in_direction (l_vid, dir, dist)
+    local need_id = self.object:vertex_in_direction (l_vid, dir, dist)
     if need_id == -1 then
        need_id = l_vid
     end
