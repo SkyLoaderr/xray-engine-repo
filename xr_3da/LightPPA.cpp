@@ -6,7 +6,7 @@
 #include "LightPPA.h"
 #include "collide\cl_rapid.h"
 #include "xr_creator.h"
-#include "frustum.h"
+#include "fstaticrender.h"
 
 const DWORD MAX_POLYGONS=1024;
 const float MAX_DISTANCE=50.f;
@@ -25,7 +25,7 @@ CLightPPA::~CLightPPA()
 
 }
 
-void CLightPPA::Render(Flight& D3D, CList<PPA_Vertex>&	vlist)
+void CLightPPA::Render(CList<PPA_Vertex>&	vlist)
 {
 	VERIFY	(pCreator);
 	vlist.clear();
@@ -130,7 +130,7 @@ void CLightPPA_Manager::Render()
 		float	alpha	= Device.vCameraPosition.distance_to(PPL.sphere.P)/MAX_DISTANCE;
 		if (alpha>=1)	continue;
 
-		if (!::Render.ViewBase->testSphereDirty(PPL.sphere.P,PPL.sphere.R))	continue;
+		if (!::Render.ViewBase.testSphereDirty(PPL.sphere.P,PPL.sphere.R))	continue;
 		
 	}
 
