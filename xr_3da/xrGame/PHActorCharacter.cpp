@@ -79,6 +79,6 @@ void CPHActorCharacter::SetAcceleration(Fvector accel)
 void CPHActorCharacter::SetObjectContactCallback(ObjectContactCallbackFun* callback)
 {
 	inherited::SetObjectContactCallback(callback);
-	if(!b_exist) return;
-	dGeomUserDataSetObjectContactCallback(m_cap,callback);
+///	if(!b_exist) return;
+//	dGeomUserDataSetObjectContactCallback(m_cap,callback);
 }
