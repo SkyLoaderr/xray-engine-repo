@@ -105,6 +105,7 @@ void set_time_factor(float time_factor)
 
 	Level().Server->game->SetGameTimeFactor(time_factor);
 }
+
 float get_time_factor()
 {
 	return			(Level().GetGameTimeFactor());
@@ -158,8 +159,6 @@ Fvector vertex_position(u32 level_vertex_id)
 {
 	return			(ai().level_graph().vertex_position(level_vertex_id));
 }
-
-
 
 void map_add_object_spot(u16 id, LPCSTR spot_type, LPCSTR text)
 {
@@ -247,15 +246,19 @@ void remove_call(const luabind::functor<bool> &condition,const luabind::functor<
 
 void add_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
 {
-	try{	
-	CPHScriptObjectCondition	*c=xr_new<CPHScriptObjectCondition>(lua_object,condition);
-	CPHScriptObjectAction		*a=xr_new<CPHScriptObjectAction>(lua_object,action);
-	Level().ph_commander_scripts().add_call_unique(c,c,a,a);
-	}
-	catch(...)
-	{
-		Msg("add_call exepted!!");
-	}
+//	try{	
+//		CPHScriptObjectCondition	*c=xr_new<CPHScriptObjectCondition>(lua_object,condition);
+//		CPHScriptObjectAction		*a=xr_new<CPHScriptObjectAction>(lua_object,action);
+		luabind::functor<bool>		_condition = object_cast<luabind::functor<bool> >(lua_object[condition]);
+		luabind::functor<void>		_action = object_cast<luabind::functor<void> >(lua_object[action]);
+		CPHScriptObjectConditionN	*c=xr_new<CPHScriptObjectConditionN>(lua_object,_condition);
+		CPHScriptObjectActionN		*a=xr_new<CPHScriptObjectActionN>(lua_object,_action);
+		Level().ph_commander_scripts().add_call_unique(c,c,a,a);
+//	}
+//	catch(...)
+//	{
+//		Msg("add_call excepted!!");
+//	}
 }
 
 void remove_call(const luabind::object &lua_object, LPCSTR condition,LPCSTR action)
