@@ -9,6 +9,11 @@
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_novice</team>
+		
+		<class>Monolit_novice</class>
+		<community>monolith</community>
+
+		
 		<rank>30</rank>
 		<reputation>50</reputation>
 
@@ -23,6 +28,10 @@
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_general</team>
+		
+		<class>Monolit_general</class>
+		<community>monolith</community>
+
 		<rank>50</rank>
 		<reputation>50</reputation>
 
@@ -37,6 +46,10 @@
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_veteran</team>
+
+		<class>Monolit_veteran</class>
+		<community>monolith</community>
+		
 		<rank>70</rank>
 		<reputation>50</reputation>
 
@@ -51,6 +64,11 @@
 		<bio>Представитель группировки "Монолит".</bio>
 
 		<team>Monolit_master</team>
+		
+		<class>Monolit_master</class>
+		<community>monolith</community>
+
+		
 		<rank>90</rank>
 		<reputation>50</reputation>
 
