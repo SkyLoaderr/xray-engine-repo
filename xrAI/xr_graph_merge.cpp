@@ -438,8 +438,10 @@ CGraphMerger::CGraphMerger(LPCSTR name)
 					VERTEX_PAIR_IT				M;
 					CGameGraph::CEdge			tGraphEdge;
 					SConnectionVertex			&tConnectionVertex = (*i).second;
-					R_ASSERT					((K = tpGraphs.find(tConnectionVertex.dwLevelID)) != tpGraphs.end());
-					R_ASSERT					((M = (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName)) != (*K).second->m_tVertexMap.end());
+					K							= tpGraphs.find(tConnectionVertex.dwLevelID);
+					R_ASSERT					(K != tpGraphs.end());
+					M							= (*K).second->m_tVertexMap.find(tConnectionVertex.caConnectName);
+					R_ASSERT3					(M != (*K).second->m_tVertexMap.end(),tConnectionVertex.caConnectName,(*K).second->m_tLevel.name());
 					tGraphEdge.dwVertexNumber	= (*M).second.tGraphID + (*K).second->m_dwOffset;
 					tGraphEdge.fPathDistance	= (*I).second->m_tpVertices[tConnectionVertex.tGraphID].tGlobalPoint.distance_to((*K).second->m_tpVertices[(*M).second.tGraphID].tGlobalPoint);
 					(*I).second->vfAddEdge		((*i).second.tGraphID,tGraphEdge);
