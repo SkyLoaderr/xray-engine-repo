@@ -127,6 +127,9 @@ void CBuild::xrPhase_AdaptiveHT	()
 	//////////////////////////////////////////////////////////////////////////
 	Status				("Gathering lighting information...");
 	u_SmoothVertColors	(7);
+
+	//////////////////////////////////////////////////////////////////////////
+	Status				("Exporting to SMF...");
 }
 
 void CBuild::u_Tesselate	(tesscb_estimator* cb_E, tesscb_face* cb_F, tesscb_vertex* cb_V)
