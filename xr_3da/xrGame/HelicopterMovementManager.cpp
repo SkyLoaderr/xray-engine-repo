@@ -168,7 +168,8 @@ void CHelicopterMovManager::insertKeyPoints(	float from_time,
 
 void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 {
-	float lt	= Level().timeServer()/1000.0f;;
+	float lt	= Level().timeServer()/1000.0f;
+	
 
 	if ( heli->state()==CHelicopter::eWaitForStart ) {
 		if(lt >= m_time_delay_before_start)
@@ -187,6 +188,22 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 		heli->setState(CHelicopter::eMovingByPatrolZonePath);
 	};
 
+
+	if (heli->state() == CHelicopter::eInitiateHunt) {
+
+//	Fmatrix f_before = heli->XFORM();
+//	getPathPosition (lt,Device.fTimeDelta, f_before );
+
+		addHuntPath(lt, heli->lastEnemyPos() );
+		heli->setState(CHelicopter::eMovingByAttackTraj);
+		m_endAttackTime = m_endTime;
+
+//	Fmatrix f_after = heli->XFORM();
+//	getPathPosition (lt,Device.fTimeDelta, f_after );
+//	float dist = f_before.c.distance_to(f_after.c);
+//	VERIFY(dist < 2.0f);
+	};
+
 	if ((heli->state() == CHelicopter::eMovingByPatrolZonePath) ||
 		(heli->state() == CHelicopter::eMovingByAttackTraj)		) {
 		updatePatrolPath(lt);	
@@ -194,12 +211,6 @@ void CHelicopterMovManager::shedule_Update(u32 timeDelta, CHelicopter* heli)
 		if( (heli->state()==CHelicopter::eMovingByPatrolZonePath) &&
 			(lt > m_time_last_patrol_start+m_time_patrol_period) )
 				heli->setState(CHelicopter::eInitiateWaitBetweenPatrol);
-	};
-
-	if (heli->state() == CHelicopter::eInitiateHunt) {
-		addHuntPath(lt, heli->lastEnemyPos() );
-		heli->setState(CHelicopter::eMovingByAttackTraj);
-		m_endAttackTime = m_endTime;
 	};
 
 
@@ -278,19 +289,23 @@ void CHelicopterMovManager::addPartolPath(float from_time)
 	
 	Fvector fromPos,fromRot;
 	
-	if( CHelicopterMotion::KeyCount() > 0 )
+	int kc = CHelicopterMotion::KeyCount();
+	if( kc > 0 )
 		CHelicopterMotion::_Evaluate(t,fromPos,fromRot);
 	else
 		fromPos = m_XFORM.c;
+
+	VERIFY( (fromPos.y >= m_boundingVolume.min.y) && (fromPos.y <= m_boundingVolume.max.y)   );
+	
 
 	xr_vector<Fvector> vAddedKeys;
 	createLevelPatrolTrajectory(6, fromPos, vAddedKeys);
 
 	xr_vector<Fvector> vSmoothKeys;
 	makeSmoothKeyPath(t, vAddedKeys, vSmoothKeys);
-	insertKeyPoints(t, vSmoothKeys, m_basePatrolSpeed,false, true);
+//	insertKeyPoints(t, vSmoothKeys, m_basePatrolSpeed,false, true);
+	insertKeyPoints(t, vSmoothKeys, m_basePatrolSpeed,false, false);
 	fixateKeyPath(t);
-//	CHelicopterMotion::NormalizeKeys(t,m_endTime,m_basePatrolSpeed);
 	updatePathHPB(t);
 }
 
@@ -300,14 +315,18 @@ void	CHelicopterMovManager::addHuntPath(float from_time, const Fvector& enemyPos
 
 	float safe_time;
 
-	truncatePathSafe(from_time, safe_time, fromPos);
 
+	truncatePathSafe(from_time, safe_time, fromPos);
+	
 	xr_vector<Fvector> vAddedKeys;
 
 	createHuntPathTrajectory(from_time, fromPos, enemyPos, vAddedKeys);
-	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, true);
+//	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, true);
+	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, false);
+
 	fixateKeyPath(safe_time);
-//	CHelicopterMotion::NormalizeKeys(safe_time,m_endTime,m_baseAttackSpeed);
+
+	
 	updatePathHPB(safe_time);
 
 }
@@ -329,9 +348,8 @@ void	CHelicopterMovManager::addHuntPath2(float from_time, const Fvector& enemyPo
 	}
 
 	createHuntPathTrajectory(from_time, fromPos, dstPos, vAddedKeys);
-	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, true);
+	insertKeyPoints(safe_time, vAddedKeys, m_baseAttackSpeed, false, false);
 	fixateKeyPath(safe_time);
-//	CHelicopterMotion::NormalizeKeys(safe_time,m_endTime,m_basePatrolSpeed);
 
 	dstPos = vAddedKeys.back();
 	
@@ -493,7 +511,7 @@ void CHelicopterMovManager::updatePatrolPath(float t)
 	float maxT = 0.0f;
 
 	u32 sz = CHelicopterMotion::KeyCount();
-	VERIFY(sz>=4);
+//fake	VERIFY(sz>=4);
 
 	CHelicopterMotion::FindNearestKey(t, minT, maxT, minIdx, maxIdx);
 
@@ -701,6 +719,8 @@ void CHelicopterMovManager::fixateKeyPath(float from_time)
 		CHelicopterMotion::_Evaluate(t,T,R);
 		getPathAltitude(T,m_baseAltitude);
 		vAddKeys.push_back(T);
+		VERIFY( (T.y >= m_boundingVolume.min.y) && (T.y <= m_boundingVolume.max.y)   );
+
 		vAddTime.push_back(t);
 	};
 

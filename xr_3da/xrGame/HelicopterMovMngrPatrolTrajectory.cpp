@@ -14,29 +14,30 @@ void CHelicopterMovManager::createLevelPatrolTrajectory(u32 keyCount,
 	Fvector					lastPoint;
 	Fvector					dir;
 
-	Fbox levelBox = m_boundingVolume;
 	keyPoint = fromPos;
-	VERIFY(Fbox(levelBox).scale(0.05f).contains(keyPoint));
+	VERIFY( (keyPoint.y >= m_boundingVolume.min.y) && (keyPoint.y <= m_boundingVolume.max.y)   );
+
 	keys.push_back(keyPoint);
 	lastPoint = keyPoint;
 	
 	if(CHelicopterMotion::KeyCount()>1) {
 		CHelicopterMotion::GetKeyT(CHelicopterMotion::KeyCount()-2, prevPoint);
-		makeNewPoint(prevPoint, lastPoint, levelBox, keyPoint);
+		makeNewPoint(prevPoint, lastPoint, m_boundingVolume, keyPoint);
 	}else {
-		selectSafeDir(lastPoint, levelBox, dir);
-		makeNewPoint(levelBox, lastPoint, dir, keyPoint);
+		selectSafeDir(lastPoint, m_boundingVolume, dir);
+		makeNewPoint(m_boundingVolume, lastPoint, dir, keyPoint);
 	};
 
-	VERIFY(Fbox(levelBox).scale(0.05f).contains(keyPoint));
+	VERIFY( (keyPoint.y >= m_boundingVolume.min.y) && (keyPoint.y <= m_boundingVolume.max.y)   );
+
 	keys.push_back(keyPoint);
 	prevPoint = lastPoint;
 
 	for(u32 i = 0; i<keyCount; ++i)	{
 		lastPoint = keyPoint;
 
-		makeNewPoint(prevPoint, lastPoint, levelBox, keyPoint);
-		VERIFY(Fbox(levelBox).scale(0.05f).contains(keyPoint));
+		makeNewPoint(prevPoint, lastPoint, m_boundingVolume, keyPoint);
+		VERIFY( (keyPoint.y >= m_boundingVolume.min.y) && (keyPoint.y <= m_boundingVolume.max.y)   );
 		
 		
 		prevPoint = lastPoint;
@@ -89,6 +90,7 @@ void CHelicopterMovManager::makeNewPoint(	const Fvector& prevPoint,
 											const Fbox& fbox,
 											Fvector& newPoint)
 {
+	VERIFY( (point.y >= m_boundingVolume.min.y) && (point.y <= m_boundingVolume.max.y)   );
 	u16 planeID		= getPlaneID(fbox, point); 
 
 	Fvector prevDir;
@@ -105,6 +107,8 @@ void CHelicopterMovManager::makeNewPoint(	const Fvector& prevPoint,
 
 	VERIFY(fsimilar(newDir.y, 0.0f));
 	makeNewPoint(fbox, point, newDir, newPoint);
+	VERIFY( (newPoint.y >= m_boundingVolume.min.y) && (newPoint.y <= m_boundingVolume.max.y)   );
+
 }
 
 u16 CHelicopterMovManager::getPlaneID(const Fbox& box, const Fvector& point)

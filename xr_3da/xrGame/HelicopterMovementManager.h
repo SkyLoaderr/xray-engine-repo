@@ -21,7 +21,6 @@ class CHelicopterMovManager :public CHelicopterMotion
 //	bool							m_bLoop;
 	Fmatrix							m_XFORM;
 	float							m_pitch_k;
-	Fbox							m_boundingVolume;
 	float							m_maxKeyDist;
 	float							m_endAttackTime;
 	Fvector							m_startDir;
@@ -87,5 +86,6 @@ public:
 	Fvector							m_via_point;//tmp, fix it
 	float							m_wait_in_point;//tmp, fix it
 
+	Fbox							m_boundingVolume;
 
 };

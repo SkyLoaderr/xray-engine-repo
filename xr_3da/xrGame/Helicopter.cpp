@@ -284,7 +284,6 @@ void CHelicopter::UpdateCL()
 
 	m_movMngr.getPathPosition (Level().timeServer()/1000.0f,Device.fTimeDelta, XFORM() );
 
-
 	m_engineSound.set_position(XFORM().c);
 
 	//weapon
@@ -444,7 +443,7 @@ void CHelicopter::doHunt(CObject* dest)
 {
 	VERIFY(this != dest);
 
-	if( m_curState==CHelicopter::eMovingByPatrolZonePath ){
+	if( !isOnAttack()  ){
 		m_destEnemy		= dest;
 		dest->Center	(m_destEnemyPos);
 		
