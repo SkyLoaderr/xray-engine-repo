@@ -310,9 +310,9 @@ void CSound::Load		(LPCSTR name, BOOL ctrl_freq)
 		if (!pBuffer)		THROW;
 	}
 
-	if (dwTimeTotal<200)
+	if (dwTimeTotal<250)
 	{
-		Msg	("! WARNING: Invalid wave length (must be at least 200ms), file: %s",fn);
+		Msg	("! WARNING: Invalid wave length (must be at least 250ms), file: %s",fn);
 	}
 }
 
