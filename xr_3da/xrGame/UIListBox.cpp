@@ -1,28 +1,31 @@
 #include "stdafx.h"
-#include "uilogo.h"
+#include "UIListBox.h"
 #include "hudmanager.h"
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CUILogo::CUILogo()
-{    
+
+CUIListBox::CUIListBox()
+{
 }
 //--------------------------------------------------------------------
 
-CUILogo::~CUILogo()
-{    
-}
-
-void CUILogo::Init(int left, int top, LPCSTR tex_name, u32 align)
+void CUIListBox::Init(LPCSTR tex, int x1, int y1, int w, int h, DWORD align)
 {
-	back.Init	(tex_name,	"hud\\default",left,top,align);
-//	back.SetRect(0,0,153,148);
+	frame.Init		(tex,x1,y1,w,h,align);
+	list_rect.set	(frame.rect);
+	list_rect.shrink(40,40);
+	Level().HUD()->ClientToScreen(list_rect, align);
 }
 //--------------------------------------------------------------------
 
-void CUILogo::Render()
+void CUIListBox::Render()
 {
-	back.Render		();
+	frame.Render	();
+}
+//--------------------------------------------------------------------
+
+void CUIListBox::OnFrame()
+{
 }
 //--------------------------------------------------------------------

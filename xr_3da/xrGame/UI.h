@@ -8,6 +8,7 @@
 #include "UIHealth.h"
 #include "UIGroup.h"
 #include "UIFragList.h"
+#include "UIDMPlayerList.h"
 #include "UIBuyMenu.h"
 
 #define UI_BASE_WIDTH	800
@@ -50,7 +51,10 @@ class CUI{
 	CUIHealth			UIHealth;
 	CUISquad			UISquad;
 
-	CUIFragList*		pUIFragList;
+	// deathmatch part
+	CUIFragList*		pUIDMFragList;
+	CUIDMPlayerList*	pUIDMPlayerList;
+	// cs part
 	CUIBuyMenu*			pUIBuyMenu;
 
 	CHUDManager*		m_Parent;

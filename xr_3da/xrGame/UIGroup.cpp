@@ -15,13 +15,13 @@
 
 CUIGroup::CUIGroup()
 {
-	back.Init		("ui\\hud_group_back",		"hud\\default",				0,		8,	64,	64,	alRight|alTop);
-	back_sel.Init	("ui\\hud_group_back_sel",	"hud\\default",				0,		8,	64,	64,	alRight|alTop);
-	list_top.Init	("ui\\hud_group_list_top",	"hud\\default",				0+3,	42,	64,	16,	alRight|alTop);
-	list_item.Init	("ui\\hud_group_list_item",	"hud\\default",				0+3,	0,	64,	16,	alRight|alTop);
-	list_bottom.Init("ui\\hud_group_list_bottom","hud\\default",			0+3,	0,	64,	4,	alRight|alTop);
-	list_item_health.Init	("ui\\hud_group_list_item_health","hud\\default",0+3,	0,	4,	8,	alRight|alTop);
-	list_item_ammo.Init		("ui\\hud_group_list_item_health","hud\\default",0+7,	0,	4,	8,	alRight|alTop);
+	back.Init		("ui\\hud_group_back",		"hud\\default",				0,		8,	alRight|alTop);
+	back_sel.Init	("ui\\hud_group_back_sel",	"hud\\default",				0,		8,	alRight|alTop);
+	list_top.Init	("ui\\hud_group_list_top",	"hud\\default",				0+3,	42,	alRight|alTop);
+	list_item.Init	("ui\\hud_group_list_item",	"hud\\default",				0+3,	0,	alRight|alTop);
+	list_bottom.Init("ui\\hud_group_list_bottom","hud\\default",			0+3,	0,	alRight|alTop);
+	list_item_health.Init	("ui\\hud_group_list_item_health","hud\\default",0+3,	0,	alRight|alTop);
+	list_item_ammo.Init		("ui\\hud_group_list_item_health","hud\\default",0+7,	0,	alRight|alTop);
 	back.SetRect	(0,0,50,43);
 }
 //--------------------------------------------------------------------

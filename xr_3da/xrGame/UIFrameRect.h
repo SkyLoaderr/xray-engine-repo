@@ -18,12 +18,12 @@ class CUIFrameRect
 		fmMax
 	};
 	CUIStaticItem	back;
-	CUIStaticItem	frame[8];
+	CUIStaticItem	frame[fmMax];
 public:
 	Irect			rect;
 public:
 					CUIFrameRect	();
-	void			Init			(LPCSTR base_name, int x, int y, int sx, int sy, int tex_x, int tex_y, u32 align);
+	void			Init			(LPCSTR base_name, int x, int y, int w, int h, DWORD align);
 	void			Render			();
 };
 

@@ -23,7 +23,8 @@ CUI::CUI(CHUDManager* p)
 	bShowFragList	= FALSE;
 	bShowBuyMenu	= FALSE;
 	pUIBuyMenu		= 0;
-	pUIFragList		= 0;
+	pUIDMFragList	= 0;
+	pUIDMPlayerList	= 0;
 
 	msgs_offs		= m_Parent->ClientToScreenScaledY(MSGS_OFFS,alLeft|alBottom)/Level().HUD()->pHUDFont->GetScale();
 }
@@ -33,8 +34,11 @@ CUI::~CUI()
 {
 	for (UIMsgIt it=messages.begin(); it!=messages.end(); it++)
 		_DELETE(*it);
+	// cs
 	_DELETE(pUIBuyMenu);
-	_DELETE(pUIFragList);
+	// dm
+	_DELETE(pUIDMFragList);
+	_DELETE(pUIDMPlayerList);
 }
 //--------------------------------------------------------------------
 
@@ -48,8 +52,10 @@ void CUI::Load()
 		pUIBuyMenu->Load				();
 		break;
 	case GAME_DEATHMATCH:
-		pUIFragList	= new CUIFragList	();
-		pUIFragList->Init				();
+		pUIDMFragList	= new CUIFragList		();
+		pUIDMPlayerList	= new CUIDMPlayerList	();
+		pUIDMFragList->Init						();
+		pUIDMPlayerList->Init					();
 		break;
 	}
 }
@@ -96,9 +102,17 @@ void CUI::OnFrame()
 			case GAME_SINGLE:		
 				break;
 			case GAME_DEATHMATCH:
-				if (bShowFragList){ 
-					VERIFY				(pUIFragList);
-					pUIFragList->OnFrame();
+				switch (Game().phase){
+				case GAME_PHASE_PENDING: 
+					VERIFY				(pUIDMPlayerList);
+					pUIDMPlayerList->OnFrame();
+				break;
+				case GAME_PHASE_INPROGRESS:
+					if (bShowFragList){ 
+						VERIFY				(pUIDMFragList);
+						pUIDMFragList->OnFrame	();
+					}
+				break;
 				}
 				break;
 			case GAME_CTF:			
@@ -149,9 +163,17 @@ bool CUI::Render()
 	case GAME_SINGLE:		
 		break;
 	case GAME_DEATHMATCH:
-		if (bShowFragList){ 
-			VERIFY				(pUIFragList);
-			pUIFragList->Render	();
+		switch (Game().phase){
+		case GAME_PHASE_PENDING: 
+			VERIFY				(pUIDMPlayerList);
+			pUIDMPlayerList->Render	();
+		break;
+		case GAME_PHASE_INPROGRESS:
+			if (bShowFragList){ 
+				VERIFY				(pUIDMFragList);
+				pUIDMFragList->Render	();
+			}
+		break;
 		}
 		break;
 	case GAME_CTF:			
@@ -184,8 +206,10 @@ bool CUI::OnKeyboardPress(int dik)
 		}
 	break;
 	case GAME_DEATHMATCH:
-		switch (dik){
-		case DIK_TAB:		ShowFragList(TRUE);	return true;
+		if (Game().phase==GAME_PHASE_INPROGRESS){
+			switch (dik){
+			case DIK_TAB:		ShowFragList(TRUE);	return true;
+			}
 		}
 	}
 	return false;
@@ -198,8 +222,10 @@ bool CUI::OnKeyboardRelease(int dik)
 		VERIFY(pUIBuyMenu);
 		return pUIBuyMenu->OnKeyboardRelease(dik);
 	}else{
-		switch (dik){
-		case DIK_TAB: ShowFragList	(FALSE);		break;
+		if (Game().phase==GAME_PHASE_INPROGRESS){
+			switch (dik){
+			case DIK_TAB: ShowFragList	(FALSE);		break;
+			}
 		}
 	}
 	return false;

@@ -2,18 +2,15 @@
 #define __XR_UIFRAGLIST_H__
 #pragma once
 
-#include "uistaticitem.h"
-#include "uiframerect.h"
+#include "uilistbox.h"
 
-class CUIFragList
+class CUIFragList:public CUIListBox
 {
-	Irect			list_rect;
-	CUIFrameRect	frame;
+	typedef CUIListBox inherited;
 public:
 					CUIFragList		();
 	void			Init			();
-	void			Render			();
-	void			OnFrame			();
+	virtual void	OnFrame			();
 };
 
 #endif //__XR_UIFRAGLIST_H__

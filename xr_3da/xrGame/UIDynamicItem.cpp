@@ -20,9 +20,8 @@ CUIDynamicItem::~CUIDynamicItem()
 }
 
 //--------------------------------------------------------------------
-void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh, int tx_width, int tx_height)
+void CUIDynamicItem::Init	(LPCSTR tex, LPCSTR sh)
 {
-	inherited::Init(tx_width,tx_height);
 	if (0==hVS)		hVS		= Device.Shader._CreateVS	(FVF::F_TL);
 	if (0==hShader)	hShader	= Device.Shader.Create		(sh,tex,FALSE);
 }

@@ -31,11 +31,11 @@ CUIZoneMap::~CUIZoneMap()
 
 void CUIZoneMap::Init()
 {
-	u32 align = alLeft|alTop;
-	back.Init	("ui\\hud_map_back",	"hud\\default",BASE_LEFT,BASE_TOP,256,256,align);
+	DWORD align = alLeft|alTop;
+	back.Init	("ui\\hud_map_back",	"hud\\default",BASE_LEFT,BASE_TOP,align);
 	back.SetRect(0,0,153,148);
-	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,32,32,align);
-	entity.Init	("ui\\hud_map_point",	"hud\\default",4,4);
+	compass.Init("ui\\hud_map_arrow",	"hud\\default",125,118,align);
+	entity.Init	("ui\\hud_map_point",	"hud\\default");
 	entity.SetRect(0,0,3,3);
 
 	Level().HUD()->ClientToScreen(map_center,MAP_LEFT+BASE_LEFT,MAP_TOP+BASE_TOP,align);

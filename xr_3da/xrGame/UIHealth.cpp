@@ -17,9 +17,9 @@ CUIHealth::CUIHealth()
 //--------------------------------------------------------------------
 
 void CUIHealth::Init(){
-	back.Init		("ui\\hud_health_back",			"hud\\default",15,525,128,64,alLeft|alBottom);
-	health_bar.Init	("ui\\hud_health_bar_health",	"hud\\default",18,539,128,16,alLeft|alBottom);
-	armor_bar.Init	("ui\\hud_health_bar_armor",	"hud\\default",18,556,128,16,alLeft|alBottom);
+	back.Init		("ui\\hud_health_back",			"hud\\default",15,525,alLeft|alBottom);
+	health_bar.Init	("ui\\hud_health_bar_health",	"hud\\default",18,539,alLeft|alBottom);
+	armor_bar.Init	("ui\\hud_health_bar_armor",	"hud\\default",18,556,alLeft|alBottom);
 	back.SetRect	(0,0,90,61);
 	health_rect.set	(0,0,84,16);
 	armor_rect.set	(0,0,84,16);
