@@ -722,7 +722,6 @@ void CPHWorld::Destroy(){
 //static dReal frame_time=0.f;
 void CPHWorld::Step(dReal step)
 {
-
 	// compute contact joints and forces
 
 	list<CPHObject*>::iterator iter;
