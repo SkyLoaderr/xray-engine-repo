@@ -76,7 +76,7 @@ ENGINE_API extern float psHUD_FOV;
 
 void CHUDManager::Render_Calcualte()
 {
-	if (0==(psHUD_Flags&HUD_DRAW))	return;
+	if (0==(psHUD_Flags&HUD_WEAPON))return;
 	if (0==pUI)						return;
 	CObject*	O					= pCreator->CurrentViewEntity();
 	if (0==O)						return;
