@@ -4,6 +4,7 @@ gradient                 = off
 source                   = on
 source_radius            = 0.05
 source_texture           = fx\fx_moon.tga
+source_shader            = effect\moon
 
 [flares_bbb]
 flares                   = off
@@ -15,11 +16,10 @@ default			= sect_default
 normal			= sect_normal
 
 [sect_default]
-a				=	default_01
-b				=	default_02
+00:00:00		=	default_01
+12:00:00		=	default_02
 
 [default_01]
-exec_time		= 	0:0:0
 flares			=	flares_aaa
 sky_texture		=	sky\sky_5_cube
 sky_rotation	=	0
@@ -38,7 +38,6 @@ sun_color		=	0.000, 0.100, 0.000
 sun_dir			=	-31.0, 180.0
 
 [default_02]
-exec_time		= 	12:00:00
 flares			=	flares_bbb	
 sky_texture		=	sky\sky_3_cube
 sky_rotation	=	0
@@ -57,11 +56,10 @@ sun_color		=	1.000, 1.000, 1.000
 sun_dir			=	-31.0, 180.0
 
 [sect_normal]
-a				=	normal_01
-b				=	normal_02
+00:00:00		=	normal_01
+05:00:00		=	normal_02
 
 [normal_01]
-exec_time		= 	0:0:0
 flares			=	flares_moon			
 sky_texture		=	sky\sky_13_cube_night
 sky_rotation	=	0
@@ -80,7 +78,6 @@ sun_color		=	0.0,    0.0,  	0.0
 sun_dir			=	-31.0, 296
 
 [normal_02]
-exec_time		= 	2:0:0
 flares			=	flares_gradient		
 sky_texture		=	sky\sky_5_cube
 sky_rotation	=	0
