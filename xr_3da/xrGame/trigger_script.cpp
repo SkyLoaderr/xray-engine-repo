@@ -23,7 +23,8 @@ void CTrigger::script_register(lua_State *L)
 	typedef CTrigger BaseType;
 	module(L)
 		[
-			class_<CTrigger>("CTrigger")
+			class_<CTrigger,CGameObject>("CTrigger")
+			.def(										constructor<>()		)
 			.def("GetState",							&BaseType::GetState)
 			.def("SetState",							&BaseType::SetState)
 			.def("PlayAnim",							&BaseType::PlayAnim)
