@@ -99,6 +99,7 @@ xrSE_DECLARE_BEGIN2(xrSE_HangingLamp,xrServerEntity,xrSE_Visualed)
     	flPhysic					= (1<<0)
     };
 	Flags16							flags;
+    float							mass;
 	u32								color;
 	string64						color_animator;
 	string64						spot_texture;

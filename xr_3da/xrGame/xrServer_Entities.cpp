@@ -1390,6 +1390,7 @@ void xrSE_Idol::FillProp(LPCSTR pref, PropItemVec& items)
 xrSE_HangingLamp::xrSE_HangingLamp(LPCSTR caSection) : xrServerEntity(caSection)
 {
 	flags.set				(flPhysic,TRUE);
+    mass					= 10.f;
 	spot_texture[0]			= 0;
 	color_animator[0]		= 0;
 	spot_bone[0]			= 0;
@@ -1415,6 +1416,8 @@ void xrSE_HangingLamp::STATE_Read		(NET_Packet& P, u16 size)
 		P.r_float			(spot_brightness);
     if (m_wVersion>11)
     	P.r_u16				(flags.flags);
+    if (m_wVersion>12)
+    	P.r_float			(mass);
 }
 void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 {
@@ -1428,6 +1431,7 @@ void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)
 	P.w_angle8				(spot_cone_angle);
 	P.w_float				(spot_brightness);
    	P.w_u16					(flags.flags);
+	P.w_float				(mass);
 }
 void xrSE_HangingLamp::UPDATE_Read		(NET_Packet& P)	{};
 void xrSE_HangingLamp::UPDATE_Write		(NET_Packet& P)	{};
@@ -1444,6 +1448,7 @@ void	xrSE_HangingLamp::FillProp		(LPCSTR pref, PropItemVec& values)
 	PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Range"),			&spot_range,		0.1f, 1000.f);
 	PHelper.CreateAngle		(values, PHelper.PrepareKey(pref,s_name,"Angle"),			&spot_cone_angle,	0, deg2rad(120.f));
     PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Brightness"),		&spot_brightness,	0.1f, 5.f);
+    PHelper.CreateFloat		(values, PHelper.PrepareKey(pref,s_name,"Mass"),			&mass,				1.f, 1000.f);
 }
 #endif
 
