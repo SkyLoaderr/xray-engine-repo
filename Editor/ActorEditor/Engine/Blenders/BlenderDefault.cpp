@@ -55,20 +55,13 @@ void	CBlender_default::Compile(CBlender_Compile& C)
 			C.PassBegin		();
 			{
 				C.PassSET_ZB			(TRUE,TRUE);
-				C.PassSET_Blend_SET	();
-				C.PassSET_LightFog	(FALSE,FALSE);
+				C.PassSET_Blend_SET		();
+				C.PassSET_LightFog		(FALSE,FALSE);
 				
 				// Stage0 - Lightmap
-				C.StageBegin		();
-				{
-					C.StageSET_Address	(D3DTADDRESS_WRAP);
-					C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
-					C.Stage_Texture		("$base1",	C.L_textures);
-					C.Stage_Matrix		("$null",	C.L_matrices,	1);
-					C.Stage_Constant		("$null",	C.L_constants);
-				}
-				C.StageEnd			();
+				C.StageBegin			();
+				C.StageTemplate_LMAP0	();
+				C.StageEnd				();
 			}
 			C.PassEnd			();
 		} else {
