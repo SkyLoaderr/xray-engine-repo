@@ -77,8 +77,7 @@ void st_LevelOptions::Read(IReader& F)
     R_ASSERT(F.find_chunk(CHUNK_LO_NAMES));
     F.r_stringZ 	(m_FNLevelPath);
 
-    if (F.find_chunk(CHUNK_LO_PREFIX));
-    F.r_stringZ 	(m_LevelPrefix);
+    if (F.find_chunk(CHUNK_LO_PREFIX)) F.r_stringZ 	(m_LevelPrefix);
 
     R_ASSERT(F.find_chunk(CHUNK_LO_BOP));
     F.r_stringZ 	(m_BOPText); 
