@@ -108,8 +108,8 @@ void CGameFont::OnRender()
 			String		&PS	= strings[i];
 			int			len	= strlen(PS.string);
 			if (len) {
-				float	X	= ConvertX(PS.x);
-				float	Y	= ConvertY(PS.y);
+				float	X	= iFloor(ConvertX(PS.x));
+				float	Y	= iFloor(ConvertY(PS.y));
 				float	S	= ConvertSize(PS.size);
 				float	Y2	= Y+S; 
 
