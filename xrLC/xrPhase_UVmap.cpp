@@ -110,6 +110,7 @@ void	CBuild::xrPhase_UVmap()
 				break;
 			}
 		}
+		_heapmin			();
 		HeapCompact			(GetProcessHeap(),0);
 	}
 	Msg("%d subdivisions...",g_XSplit.size());
