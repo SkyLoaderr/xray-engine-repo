@@ -120,7 +120,7 @@ function generic_object_binder:update(delta)
 	--	actor:give_info_portion(info_name)
 	--end
 
-	--
+	--[[
 	if self.object:name() == "m_trader" or self.object:name() == "escape_trader" then
 		local actor = level.actor()
 		if not actor then
