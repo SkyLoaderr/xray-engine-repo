@@ -5,7 +5,7 @@
 struct Shader_xrLC
 {
 public:
-	enum {
+	enum { 
 		flCollision			= 1<<0,
 		flRendering			= 1<<1,
 		flOptimizeUV		= 1<<2,
