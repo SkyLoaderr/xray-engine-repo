@@ -190,6 +190,7 @@ void CAI_Biting::load_shared(LPCSTR section)
 	get_sd()->m_fEatSliceWeight				= pSettings->r_float(section,"eat_slice_weight");
 
 	get_sd()->m_legs_number					= pSettings->r_u8(section, "LegsCount");
+	get_sd()->m_max_hear_dist				= pSettings->r_float(section, "max_hear_dist");
 
 	// Load attack postprocess --------------------------------------------------------
 	LPCSTR ppi_section = pSettings->r_string(section, "attack_effector");

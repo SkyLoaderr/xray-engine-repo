@@ -13,18 +13,9 @@
 
 #include "../ai_monster_effector.h"
 
-#define MAX_SOUND_DISTANCE 50
-
 void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position, float power)
 {
-	if (!g_Alive())
-		return;
-
-	///return;
-
-	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
-	if (script_monster)
-		script_monster->sound_callback(who,eType,Position,power);
+	if (!g_Alive()) return;
 
 	// ignore sounds from team
 	CEntityAlive* E = dynamic_cast<CEntityAlive*> (who);
@@ -33,11 +24,16 @@ void CAI_Biting::feel_sound_new(CObject* who, int eType, const Fvector &Position
 	// ignore unknown sounds
 	if (eType == 0xffffffff) return;
 
-	if (this->Position().distance_to(Position) > MAX_SOUND_DISTANCE) return;
+	// ignore distant sounds
+	if (this->Position().distance_to(Position) > get_sd()->m_max_hear_dist) return;
 
 	if ((eType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING)
-		power = 1.f;//expf(.1f*log(power));
+		power = 1.f;
 
+	CScriptMonster	*script_monster = dynamic_cast<CScriptMonster*>(this);
+	if (script_monster)
+		script_monster->sound_callback(who,eType,Position,power);
+	
 	if (power >= get_sd()->m_fSoundThreshold) {
 		if (this != who) {
 			SoundMemory.HearSound(who,eType,Position,power,m_current_update);
@@ -50,7 +46,6 @@ void CAI_Biting::HitEntity(const CEntity *pEntity, float fDamage, float impulse,
 	if (!g_Alive()) return;
 	if (!pEntity) return;
 
-	
 	if (!EnemyMan.get_enemy()) return;
 
 	if ((CLSID_ENTITY == EnemyMan.get_enemy()->CLS_ID) && (EnemyMan.get_enemy() == pEntity)) {

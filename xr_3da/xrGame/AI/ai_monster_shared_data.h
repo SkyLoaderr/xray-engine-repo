@@ -53,6 +53,8 @@ public:
 	u8						m_legs_number;
 	SAttackEffector			m_attack_effector;
 
+	float					m_max_hear_dist;
+
 };
 
 class _motion_shared : public CSharedResource {
