@@ -45,7 +45,7 @@ BOOL	R_shader::compile		(LPDIRECT3DDEVICE9 pDevice, LPCSTR name)
 				if (SUCCEEDED(hr) && data) 
 				{
 					pConstants		= LPD3DXSHADER_CONSTANTTABLE(data);
-					constants.parse	(pConstants,0x1);
+					constants.parse	(pConstants,0x2);
 				} else	hr = E_FAIL;
 			}
 		}

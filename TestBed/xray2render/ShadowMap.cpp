@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#include "r_shader.h"
+
 //-----------------------------------------------------------------------------
 // Globals variables and definitions
 //-----------------------------------------------------------------------------
@@ -69,10 +71,7 @@ class CMyD3DApplication : public CD3DApplication
 	LPDIRECT3DSURFACE9				d_Accumulator_S;
 
 	// Shaders
-	LPDIRECT3DVERTEXSHADER9			dvs_Scene2fat;
-	LPD3DXCONSTANTTABLE				dvs_Scene2fat_C;
-	LPDIRECT3DPIXELSHADER9			dps_Scene2fat;
-	LPD3DXCONSTANTTABLE				dps_Scene2fat_C;
+	R_shader						s_Scene2fat;
 
 	//  ************************
 	//	**** Shadow mapping ****
@@ -362,14 +361,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	CreateRT			(m_pd3dDevice,w,h,D3DFMT_A16B16G16R16F,&d_Accumulator,&d_Accumulator_S);
 
 	// Create shaders
-	hlsl_VertexShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dvs_Scene2fat,&dvs_Scene2fat_C);
-	hlsl_PixelShader	(m_pd3dDevice,"shaders\\D\\fat_base.hlsl",&dps_Scene2fat,&dps_Scene2fat_C);
-
-	// D3DXHANDLE			h_m_model2view	= dvs_Scene2fat_C->GetConstant		(NULL,0);
-	D3DXHANDLE			h_m_model2view	= dvs_Scene2fat_C->GetConstantByName(NULL,"$m_model2view");
-	D3DXCONSTANT_DESC	d_m_model2view;
-	UINT				count			= 1;
-	dvs_Scene2fat_C->GetConstantDesc(h_m_model2view,&d_m_model2view,&count);
+	s_Scene2fat.compile	(m_pd3dDevice,"shaders\\D\\fat_base.s");
 
 	/*
 	// Create shadow map texture and retrieve surface
