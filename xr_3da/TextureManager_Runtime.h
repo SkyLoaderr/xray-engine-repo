@@ -1,3 +1,4 @@
+// exxZERO Time Stamp AddIn. Document modified at : Thursday, March 07, 2002 12:21:28 , by user : Oles , from computer : OLES
 #pragma once
 
 #include "sh_texture.h"
@@ -65,7 +66,7 @@ IC void CShaderManager::set_Constants	(SConstantList* C, BOOL bPS)
 			} else {
 				CConstant* c	= (*C)[0];
 				c->Calculate	();
-				CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,c->const_dword))
+				CHK_DX(HW.pDevice->SetRenderState(D3DRS_TEXTUREFACTOR,c->const_dword));
 			}
 		}
 	}
