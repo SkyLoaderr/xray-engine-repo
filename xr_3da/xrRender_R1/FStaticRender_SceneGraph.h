@@ -15,13 +15,6 @@ namespace SceneGraph
 		Fvector			vCenter;
 		float			lod;
 	};
-	struct _PatchItem	{
-		ShaderElement*	S;
-		Fvector			P;
-		float			size;
-		float			angle;
-		BOOL			nearer;
-	};
 	struct _LodItem		{
 		float				ssa;
 		IRender_Visual*		pVisual;
@@ -59,6 +52,4 @@ namespace SceneGraph
 
 	typedef FixedMAP<float,_LodItem>				mapLOD_T;
 	typedef mapLOD_T::TNode							mapLOD_Node;
-
-	typedef xr_vector<_PatchItem>					vecPatches_T;
 };

@@ -89,7 +89,7 @@ void CRender::InsertSG_Static(IRender_Visual *pVisual)
 			for (u32 pass_id=0; pass_id<sh->Passes.size(); pass_id++)
 			{
 				SPass&						pass	= *(sh->Passes[pass_id]);
-				mapNormalCodes&				codes	= mapNormal	[sh->Flags.iPriority][pass_id];
+				mapNormalCodes&				codes	= mapNormal			[sh->Flags.iPriority/2][pass_id];
 				mapNormalCodes::TNode*		Ncode	= codes.insert		(pass.state->state);
 				mapNormalVS::TNode*			Nvs		= Ncode->val.insert	(pass.vs->vs);
 				mapNormalPS::TNode*			Nps		= Nvs->val.insert	(pass.ps->ps);

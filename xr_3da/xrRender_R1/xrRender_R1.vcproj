@@ -277,6 +277,9 @@
 				RelativePath="FStaticRender_LODs.cpp">
 			</File>
 			<File
+				RelativePath=".\FStaticRender_R_Dump.cpp">
+			</File>
+			<File
 				RelativePath="FStaticRender_RenderTarget.cpp">
 			</File>
 			<File

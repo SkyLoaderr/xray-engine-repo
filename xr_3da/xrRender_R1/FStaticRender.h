@@ -24,7 +24,7 @@ class CRender	:	public IRender_interface
 {
 public:
 	// Dynamic scene graph
-	SceneGraph::mapNormal_T									mapNormal	[4];	// 4=priority
+	SceneGraph::mapNormal_T									mapNormal	[2];	// 2==(priority/2)
 	SceneGraph::mapMatrix_T									mapMatrix;
 	SceneGraph::mapSorted_T									mapSorted;
 	SceneGraph::mapHUD_T									mapHUD;
@@ -93,8 +93,9 @@ private:
 	void							InsertSG_Static			(IRender_Visual	*pVisual);
 
 	void							flush_Patches			();
-	void							flush_Models			();
 	void							flush_LODs				();
+
+	void							r_dump					(u32		_priority);
 
 	void							calc_DetailTexturing	();
 	void							calc_FogPass			();

@@ -368,83 +368,6 @@ void __fastcall sorted_L1		(mapSorted_Node *N)
 	V->Render					(calcLOD(N->key,V->vis.sphere.R));
 }
 
-void CRender::flush_Models		()
-{
-	mapMatrix.traverseANY		(matrix_L1);
-	mapMatrix.clear				();
-}
-
-void CRender::flush_Patches		()
-{
-	// *** Fill VB
-	u32							vOffset;
-	FVF::TL*					V		= (FVF::TL*)RCache.Vertex.Lock	(vecPatches.size()*4,hGeomPatches->vb_stride, vOffset);
-	svector<int,max_patches>	groups;
-	ShaderElement*				cur_S=vecPatches[0].S;
-	int							cur_count=0;
-	float						w_2		= float	(getTarget()->get_width())	/ 2;
-	float						h_2		= float	(getTarget()->get_height()) / 2;
-	float						scale	= float	(getTarget()->get_width());
-	for (u32 i=0; i<vecPatches.size(); i++)
-	{
-		// sort out redundancy
-		_PatchItem	&P = vecPatches[i];
-		if (P.S==cur_S)	cur_count++;
-		else {
-			groups.push_back(cur_count);
-			cur_S			= P.S;
-			cur_count		= 1;
-		}
-
-		// xform
-		FVF::TL			TL;
-		TL.transform	(P.P,Device.mFullTransform);
-		if (P.nearer)	TL.p.z*=0.04f;
-		float size		= scale * P.size / TL.p.w;
-
-		// Convert to screen coords
-		float cx        = (TL.p.x+1)*w_2;
-		float cy        = (TL.p.y+1)*h_2;
-
-		// Rotation
-		float			_sin1,_cos1,_sin2,_cos2;
-		float			da	= P.angle;
-		_sin1			= _sin(da); _cos1 = _cos(da);
-		da				+= PI_DIV_2;
-		_sin2			= _sin(da); _cos2 = _cos(da);
-
-		V->set			(	cx + size * _sin1,	// sx
-			cy + size * _cos1,	// sy
-			TL.p.z, TL.p.w, 0xffffffff, 0,1 );		V++;
-		V->set			(	cx - size * _sin2,	// sx
-			cy - size * _cos2,	// sy
-			TL.p.z, TL.p.w, 0xffffffff, 0,0 );		V++;
-		V->set			(	cx + size * _sin2,	// sx
-			cy + size * _cos2,	// sy
-			TL.p.z, TL.p.w, 0xffffffff, 1,1 );		V++;
-		V->set			(	cx - size * _sin1,	// sx
-			cy - size * _cos1,	// sy
-			TL.p.z, TL.p.w, 0xffffffff, 1,0 );		V++;
-	}
-	groups.push_back				(cur_count);
-	RCache.Vertex.Unlock			(vecPatches.size()*4,hGeomPatches->vb_stride);
-
-	// *** Render
-	int current=0;
-	for (u32 g=0; g<groups.size(); g++)
-	{
-		int p_count				= groups[g];
-		RCache.set_Element		(vecPatches[current].S);
-		RCache.set_Geometry		(hGeomPatches);
-		RCache.Render			(D3DPT_TRIANGLELIST,vOffset,0,4*p_count,0,2*p_count);
-		current					+=	p_count;
-		vOffset					+=	4*p_count;
-	}
-
-	// *** Cleanup
-	vecPatches.clear	();
-}
-
 void	CRender::rmNear		()
 {
 	IRender_Target* T	=	getTarget	();
@@ -595,8 +518,6 @@ void	CRender::Render		()
 		RCache.set_xform_project	(Device.mProject);
 	}
 
-	// Environment render
-
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
 	RCache.set_xform_world			(Fidentity);
@@ -604,101 +525,12 @@ void	CRender::Render		()
 	// Sorting by SSA and changes minimizations
 	for (u32 pr=0; pr<4; pr++)
 	{
-		if (0==mapNormal[pr][0].size())	continue;
-
-		for (u32 pass_id=0; pass_id<SHADER_PASSES_MAX; pass_id++)	
-		{
-			mapNormalCodes&		codes		= mapNormal	[pr][pass_id];
-			if (0==codes.size())			break;
-			BOOL sort						= (pass_id==0);
-
-			codes.getANY_P		(lstCodes);
-			if (sort) std::sort	(lstCodes.begin(), lstCodes.end(), cmp_codes);
-			for (u32 code_id=0; code_id<lstCodes.size(); code_id++)
-			{
-				mapNormalCodes::TNode*	Ncode	= lstCodes[code_id];
-				RCache.set_States					(Ncode->key);	
-
-				mapNormalVS&	vs				= Ncode->val;	vs.ssa	= 0;
-				vs.getANY_P		(lstVS);	if (sort)		std::sort	(lstVS.begin(),lstVS.end(),cmp_vs);
-				for (u32 vs_id=0; vs_id<lstVS.size(); vs_id++)
-				{
-					mapNormalVS::TNode*		Nvs		= lstVS[vs_id];
-					RCache.set_VS						(Nvs->key);	
-
-					mapNormalPS&		ps			= Nvs->val;		ps.ssa	= 0;
-					ps.getANY_P						(lstPS);
-					std::sort						(lstPS.begin(), lstPS.end(), cmp_ps_nrm);
-
-					for (u32 ps_id=0; ps_id<lstPS.size(); ps_id++)
-					{
-						mapNormalPS::TNode*	Nps			= lstPS[ps_id];
-						RCache.set_PS					(Nps->key);	
-
-						mapNormalCS&	cs			= Nps->val;		cs.ssa	= 0;
-						cs.getANY_P		(lstCS);	if (sort)		std::sort	(lstCS.begin(),lstCS.end(),cmp_cs);
-						for (u32 cs_id=0; cs_id<lstCS.size(); cs_id++)
-						{
-							mapNormalCS::TNode*	Ncs	= lstCS[cs_id];
-							RCache.set_xform_world					(Fidentity);
-							RCache.set_Constants					(Ncs->key);
-
-							mapNormalTextures&	tex			= Ncs->val;		tex.ssa	= 0;
-							sort_tlist			(lstTextures,lstTexturesTemp,tex,sort);
-							for (u32 tex_id=0; tex_id<lstTextures.size(); tex_id++)
-							{
-								mapNormalTextures::TNode*	Ntex = lstTextures[tex_id];
-								RCache.set_Textures						(Ntex->key);	
-
-								mapNormalVB&		vb		= Ntex->val;		vb.ssa	= 0;
-								vb.getANY_P		(lstVB);	if (sort)	std::sort	(lstVB.begin(),lstVB.end(),cmp_vb);
-								for (u32 vb_id=0; vb_id<lstVB.size(); vb_id++)
-								{
-									mapNormalVB::TNode*		Nvb = lstVB[vb_id];
-									// RCache.set_Vertices					(Nvb->key);	
-
-									mapNormalMatrices&	mat		= Nvb->val;			mat.ssa	= 0;
-									mat.getANY_P	(lstMatrices);	if (sort)	std::sort	(lstMatrices.begin(),lstMatrices.end(),cmp_matrices);
-									for (u32 mat_id=0; mat_id<lstMatrices.size(); mat_id++)
-									{
-										mapNormalMatrices::TNode*	Nmat	= lstMatrices[mat_id];
-										RCache.set_Matrices						(Nmat->key);	
-
-										mapNormalItems&				items	= Nmat->val;		items.ssa	= 0;
-										mapNormal_Render						(items);
-									}
-									lstMatrices.clear		();
-									mat.clear				();
-								}
-								lstVB.clear				();
-								vb.clear				();
-							}
-							lstTextures.clear		();
-							lstTexturesTemp.clear	();
-							tex.clear				();
-						}
-						lstCS.clear				();
-						cs.clear				();
-					}
-					lstPS.clear				();
-					ps.clear				();
-				}
-				lstVS.clear				();
-				vs.clear				();
-			}
-			lstCodes.clear			();
-			codes.clear				();
-		}
 
 		if (1==pr)			{
 			RCache.set_xform_world	(Fidentity);
 			Details->Render			(Device.vCameraPosition);
 
 			g_pGamePersistent->Environment.RenderFirst	();
-
-			// NORMAL-matrix		*** actors and dyn. objects
-			mapMatrix.traverseANY	(matrix_L1);
-			mapMatrix.clear			();
 
 			RCache.set_xform_world	(Fidentity);
 			Wallmarks->Render		();		// Wallmarks has priority as normal geometry
