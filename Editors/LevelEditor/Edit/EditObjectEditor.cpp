@@ -78,7 +78,7 @@ void CEditableObject::Render(const Fmatrix& parent, int priority, bool strictB2F
     if (m_Flags.is(eoUsingLOD)&&(CalcSSA(v,r)<ssaLim)){
 		if ((1==priority)&&(true==strictB2F)) RenderLOD(parent);
     }else{
-		Device.SetTransform(D3DTS_WORLD,parent);
+		RCache.set_xform_world(parent);
         
 	    if (m_Flags.is(eoHOM)){
         	if ((1==priority)&&(false==strictB2F)){
@@ -126,7 +126,7 @@ void CEditableObject::RenderAnimation(const Fmatrix& parent){
 void CEditableObject::RenderBones(const Fmatrix& parent){
 	if (IsSkeleton()){
         // render
-        Device.SetTransform(D3DTS_WORLD,parent);
+        RCache.set_xform_world(parent);
         Device.SetShader(Device.m_WireShader);      
 		BoneVec& lst = m_Bones;
         for(BoneIt b_it=lst.begin(); b_it!=lst.end(); b_it++){
@@ -157,7 +157,7 @@ void CEditableObject::RenderSelection(const Fmatrix& parent, CEditableMesh* mesh
 {
     if (!(m_LoadState&EOBJECT_LS_DEFFEREDRP)) DefferedLoadRP();
 
-    Device.SetTransform(D3DTS_WORLD,parent);
+    RCache.set_xform_world(parent);
     Device.SetShader(Device.m_SelectionShader);
     Device.RenderNearer(0.0005);
     if(mesh) mesh->RenderSelection(parent, color);
@@ -232,7 +232,7 @@ void CEditableObject::RenderLOD(const Fmatrix& parent)
         Fvector2 	t[4];
     	GetLODFrame(max_frame,p,t);
         for (int i=0; i<4; i++){ LOD[i].p.set(p[i]); LOD[i].t.set(t[i]); }
-    	Device.SetTransform		(D3DTS_WORLD,parent);
+    	RCache.set_xform_world(parent);
         Device.SetShader		(m_LODShader?m_LODShader:Device.m_WireShader);
     	DU::DrawPrimitiveLIT	(D3DPT_TRIANGLEFAN, 2, LOD, 4, true, false);
     }

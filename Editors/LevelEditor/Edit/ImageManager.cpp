@@ -407,7 +407,7 @@ IC void SetCamera(float angle, const Fvector& C, float height, float radius, flo
     float np	= dist-4.f*radius; clamp(np,0.1f,fp);
     Device.m_Camera.Set		(hpb,D);
     P.build_projection_HAT	(ta,asp,np,fp);
-    Device.SetTransform		(D3DTS_PROJECTION,P);
+    RCache.set_xform_project(P);
 }
 
 IC void CopyLODImage(U32Vec& src, U32Vec& dest, u32 src_w, u32 src_h, int id, int pitch)
@@ -540,7 +540,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, u32 tgt_w, u32 
     dwClearColor	= DEFAULT_CLEARCOLOR;
 
 	Device.m_Camera.SetStyle(save_style);
-    Device.SetTransform	(D3DTS_PROJECTION,save_projection);
+    RCache.set_xform_project(save_projection);
     Device.m_Camera.Set(save_hpb,save_pos);
     Device.m_Camera.Set(save_hpb,save_pos);
     Device.m_Camera.SetDepth(save_far,false);

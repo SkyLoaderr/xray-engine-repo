@@ -43,11 +43,11 @@ void CEditableMesh::CreateRenderBuffers()
             num_face			= (v_cnt<V_LIM)?v_cnt/3:F_LIM;
 
             int buf_size		= D3DXGetFVFVertexSize(_S->_FVF())*rb.dwNumVertex;
-			rb.pVS		 		= Device.Shader._CreateVS(_S->_FVF());
-
 			BYTE*	bytes		= 0;
-			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &rb.pVB));
-			R_CHK				(rb.pVB->Lock(0,0,&bytes,0));
+			R_CHK(HW.pDevice->CreateVertexBuffer(buf_size, D3DUSAGE_WRITEONLY, 0, D3DPOOL_DEFAULT, &rb.pVB, 0));
+			rb.pGeom	 		= Device.Shader.CreateGeom(_S->_FVF(),rb.pVB,0);
+
+			R_CHK				(rb.pVB->Lock(0,0,(LPVOID*)&bytes,0));
 			FillRenderBuffer	(face_lst,start_face,num_face,_S,bytes);
 			rb.pVB->Unlock		();
 
@@ -67,7 +67,7 @@ void CEditableMesh::ClearRenderBuffers()
 {
     for (RBMapPairIt rbmp_it=m_RenderBuffers.begin(); rbmp_it!=m_RenderBuffers.end(); rbmp_it++){
         for(RBVecIt rb_it=rbmp_it->second.begin(); rb_it!=rbmp_it->second.end(); rb_it++){
-			Device.Shader._DeleteVS(rb_it->pVS);
+			Device.Shader.DeleteGeom(rb_it->pGeom);
 			_RELEASE(rb_it->pVB);
         }
     }
@@ -169,7 +169,7 @@ void CEditableMesh::Render(const Fmatrix& parent, CSurface* S)
     if (rb_pair!=m_RenderBuffers.end()){
         RBVector& rb_vec = rb_pair->second;
         for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
-            Device.DP(D3DPT_TRIANGLELIST,rb_it->pVS,rb_it->pVB,0,rb_it->dwNumVertex/3);
+            Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
     }
 }
 //----------------------------------------------------
@@ -183,7 +183,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 
 	if (fl.size()==0) return;
-	Device.SetTransform(D3DTS_WORLD,parent);
+	RCache.set_xform_world(parent);
 	Device.RenderNearer(0.0006);
 	RB_cnt = 0;
     if (bEdge){
@@ -209,7 +209,7 @@ void CEditableMesh::RenderList(const Fmatrix& parent, DWORD color, bool bEdge, D
 void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
     if (!m_LoadState.is(LS_RBUFFERS)) CreateRenderBuffers();
 //	if (!m_Visible) return;
-	Device.SetTransform(D3DTS_WORLD,parent);
+	RCache.set_xform_world(parent);
 	Device.SetShader(Device.m_WireShader);
 	Device.RenderNearer(0.001);
 
@@ -220,7 +220,7 @@ void CEditableMesh::RenderEdge(const Fmatrix& parent, DWORD color){
 		RBVector& rb_vec = p_it->second;
 	    DWORD vBase;
     	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
-            Device.DP(D3DPT_TRIANGLELIST,rb_it->pVS,rb_it->pVB,0,rb_it->dwNumVertex/3);
+            Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
     }
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
     Device.SetRS(D3DRS_FILLMODE,Device.dwFillMode);
@@ -235,13 +235,13 @@ void CEditableMesh::RenderSelection(const Fmatrix& parent, DWORD color){
     bb.xform(parent);
 	if (!::Render->occ_visible(bb)) return;
     // render
-	Device.SetTransform(D3DTS_WORLD,parent);
+	RCache.set_xform_world(parent);
     Device.SetRS(D3DRS_TEXTUREFACTOR,	color);
     for (RBMapPairIt p_it=m_RenderBuffers.begin(); p_it!=m_RenderBuffers.end(); p_it++){
 		RBVector& rb_vec = p_it->second;
 	    DWORD vBase;
     	for (RBVecIt rb_it=rb_vec.begin(); rb_it!=rb_vec.end(); rb_it++)
-            Device.DP(D3DPT_TRIANGLELIST,rb_it->pVS,rb_it->pVB,0,rb_it->dwNumVertex/3);
+            Device.DP(D3DPT_TRIANGLELIST,rb_it->pGeom,0,rb_it->dwNumVertex/3);
     }
     Device.SetRS(D3DRS_TEXTUREFACTOR,	0xffffffff);
 }

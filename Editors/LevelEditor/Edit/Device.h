@@ -8,9 +8,9 @@
 #include "pure.h"
 #include "ftimer.h"
 #include "estats.h"
-#include "primitivesR.h"
 #include "shader_xrlc.h"
 #include "ModelPool.h"
+#include "R_Backend.h"
 //---------------------------------------------------------------------------
 // refs
 class CGameFont;
@@ -70,10 +70,6 @@ public:
 	Fmatrix 				mProjection;
 	Fmatrix					mFullTransform;
 
-	CDraw					Primitive;
-	// Shared Streams
-	CSharedStreams	 	  	Streams;
-
 	CStats					Statistic;
 
 	CGameFont* 				pSystemFont;
@@ -110,47 +106,25 @@ public:
 	IC float 				_y2real			(float y)	
     { return (y+1)*m_RenderHeight_2;}
 
-    IC void					SetViewport		(u32 x, u32 y, u32 width, u32 height, float minZ=0.f, float maxZ=1.f)
-    { VERIFY(bReady); D3DVIEWPORT8 VP={x,y,width,height,minZ,maxZ}; CHK_DX(HW.pDevice->SetViewport(&VP)); }
-    IC void					ResetViewport	()
-    { VERIFY(bReady); D3DVIEWPORT8 VP={0,0,dwWidth,dwHeight,0.f,1.f}; CHK_DX(HW.pDevice->SetViewport(&VP)); }
-
-    IC void					SetTexture		(DWORD dwStage, IDirect3DTexture8* lpTexture)
-    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTexture( dwStage, lpTexture )); }
-    IC void					SetTSS			(DWORD dwStage, D3DTEXTURESTAGESTATETYPE dwState, DWORD dwValue)
-    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTextureStageState(dwStage,dwState,dwValue)); }
-    IC void					SetRS			(D3DRENDERSTATETYPE p1, DWORD p2)
-    { VERIFY(bReady); CHK_DX(HW.pDevice->SetRenderState(p1,p2)); }
-    IC void					SetTransform	(D3DTRANSFORMSTATETYPE p1, const Fmatrix& m)
-    { VERIFY(bReady); CHK_DX(HW.pDevice->SetTransform(p1,(D3DMATRIX*)&m)); }
-
-	IC void					set_xform		(DWORD ID, const Fmatrix& m)
-    { SetTransform((D3DTRANSFORMSTATETYPE)ID,m); }
-	IC void					set_xform_world	(const Fmatrix& M)	
-    { set_xform(D3DTS_WORLD,M);			}
-	IC void					set_xform_view	(const Fmatrix& M)	
-    { set_xform(D3DTS_VIEW,M);			}
-	IC void					set_xform_project(const Fmatrix& M)	
-    { set_xform(D3DTS_PROJECTION,M);	}
-
 	// draw
 	void			   		SetShader		(Shader* sh){m_CurrentShader = sh;}
-	void			   		DP				(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD pc);
-	IC void			   		DP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD pc)
-    { DP(pt,vs,Streams.Vertex.Buffer(),vBase,pc); }
-	void 					DIP				(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD vc, IDirect3DIndexBuffer8* ib, DWORD iBase, DWORD pc);
-	IC void 				DIP				(D3DPRIMITIVETYPE pt, CVS* vs, DWORD vBase, DWORD vc, DWORD iBase, DWORD pc)
-    { DIP(pt,vs,Streams.Vertex.Buffer(),vBase,vc,Streams.Index.Buffer(),iBase,pc); }
+	void			   		DP				(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 startV, u32 pc);
+	void 					DIP				(D3DPRIMITIVETYPE pt, SGeometry* geom, u32 baseV, u32 startV, u32 countV, u32 startI, u32 PC);
+
+    IC void					SetRS			(D3DRENDERSTATETYPE p1, DWORD p2)
+    { VERIFY(bReady); CHK_DX(HW.pDevice->SetRenderState(p1,p2)); }
+    IC void					SetTSS			(DWORD sampler, D3DSAMPLERSTATETYPE type, DWORD value)
+    { VERIFY(bReady); CHK_DX(HW.pDevice->SetSamplerState(sampler,type,value)); }
 
     // light&material
     IC void					LightEnable		(DWORD dwLightIndex, BOOL bEnable)
     { CHK_DX(HW.pDevice->LightEnable(dwLightIndex, bEnable));}
     IC void					SetLight		(DWORD dwLightIndex, Flight& lpLight)
-    { CHK_DX(HW.pDevice->SetLight(dwLightIndex, lpLight.d3d()));}
+    { CHK_DX(HW.pDevice->SetLight(dwLightIndex, (D3DLIGHT9*)&lpLight));}
 	IC void					SetMaterial		(Fmaterial& mat)
-    { CHK_DX(HW.pDevice->SetMaterial(mat.d3d()));}
+    { CHK_DX(HW.pDevice->SetMaterial((D3DMATERIAL9*)&mat));}
 	IC void					ResetMaterial	()
-    { CHK_DX(HW.pDevice->SetMaterial(m_DefaultMat.d3d()));}
+    { CHK_DX(HW.pDevice->SetMaterial((D3DMATERIAL9*)&m_DefaultMat));}
 
 	// update
     void					UpdateView		();
@@ -186,14 +160,12 @@ enum {
 #define DEFAULT_CLEARCOLOR 0x00555555
 extern DWORD dwClearColor;
 
-// textures
-#include "TextureManager_Runtime.h"
-#include "PrimitivesR_Runtime.h"
-
 #define		REQ_CREATE()	if (!Device.bReady)	return;
 #define		REQ_DESTROY()	if (Device.bReady)	return;
 
 #include "xrCPU_Pipe.h"
 ENGINE_API extern xrDispatchTable	PSGP;
+
+#include "R_Backend_Runtime.h"
 
 #endif

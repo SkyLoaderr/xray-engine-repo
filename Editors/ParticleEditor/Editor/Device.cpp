@@ -48,6 +48,7 @@ CRenderDevice::CRenderDevice()
     dwShadeMode		= D3DSHADE_GOURAUD;
 
     m_CurrentShader	= 0;
+    pSystemFont		= 0;
 }
 
 CRenderDevice::~CRenderDevice(){
@@ -80,12 +81,8 @@ void CRenderDevice::Initialize()
     	ELog.DlgMsg(mtInformation,"Can't find file '%s'",fn.c_str());
     }
 
-	// load blenders
-	Shader.xrStartUp	();
 	// Startup shaders
 	Create				();
-
-	pSystemFont			= xr_new<CGameFont>("hud_font_small");
 }
 
 void CRenderDevice::ShutDown()
@@ -99,7 +96,6 @@ void CRenderDevice::ShutDown()
 
 	// destroy shaders
 //	PSLib.xrShutDown	();
-	Shader.xrShutDown	();
 }
 
 void CRenderDevice::InitTimer(){
@@ -115,11 +111,11 @@ void CRenderDevice::InitTimer(){
 //---------------------------------------------------------------------------
 void CRenderDevice::RenderNearer(float n){
     mProjection._43=m_fNearer-n;
-    SetTransform(D3DTS_PROJECTION,mProjection);
+    RCache.set_xform_project(mProjection);
 }
 void CRenderDevice::ResetNearer(){
     mProjection._43=m_fNearer;
-    SetTransform(D3DTS_PROJECTION,mProjection);
+    RCache.set_xform_project(mProjection);
 }
 //---------------------------------------------------------------------------
 bool CRenderDevice::Create(){
@@ -141,6 +137,7 @@ bool CRenderDevice::Create(){
 	Engine.FS.Close		(FS);
 
 	ELog.Msg			(mtInformation, "D3D: initialized");
+
 	return true;
 }
 
@@ -161,7 +158,8 @@ void CRenderDevice::Destroy(){
 	ELog.Msg( mtInformation, "D3D: device cleared" );
 }
 //---------------------------------------------------------------------------
-void CRenderDevice::_Create(CStream* F){
+void CRenderDevice::_Create(CStream* F)
+{
 	bReady				= TRUE;
 
 	// Shaders part
@@ -174,7 +172,7 @@ void CRenderDevice::_Create(CStream* F){
 	HW.Caps.Update();
 	for (DWORD i=0; i<HW.Caps.pixel.dwStages; i++){
 		float fBias = -1.f;
-		CHK_DX(HW.pDevice->SetTextureStageState( i, D3DTSS_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
+		CHK_DX(HW.pDevice->SetSamplerState( i, D3DSAMP_MIPMAPLODBIAS, *((LPDWORD) (&fBias))));
 	}
 	Device.SetRS(D3DRS_DITHERENABLE,	TRUE				);
     Device.SetRS(D3DRS_COLORVERTEX,		TRUE				);
@@ -194,16 +192,19 @@ void CRenderDevice::_Create(CStream* F){
     ResetMaterial();
 	// signal another objects
 	seqDevCreate.Process		(rp_DeviceCreate);
-	Primitive.OnDeviceCreate	();
-    Streams.OnDeviceCreate		();
+    RCache.OnDeviceCreate		();
     UI.OnDeviceCreate			();
+
+	pSystemFont			= xr_new<CGameFont>("hud_font_small");
 }
 
-void CRenderDevice::_Destroy(BOOL	bKeepTextures){
+void CRenderDevice::_Destroy(BOOL	bKeepTextures)
+{
+	xr_delete			(pSystemFont);
+
 	bReady 						= FALSE;
     m_CurrentShader				= 0;
 
-    Streams.OnDeviceDestroy		();
     UI.OnDeviceDestroy			();
 
 	if (m_WireShader) Shader.Delete(m_WireShader);
@@ -214,8 +215,7 @@ void CRenderDevice::_Destroy(BOOL	bKeepTextures){
 
 	Shader.OnDeviceDestroy		(bKeepTextures);
 
-	Primitive.OnDeviceDestroy	();
-	Streams.OnDeviceDestroy		();
+	RCache.OnDeviceDestroy		();
 }
 
 //---------------------------------------------------------------------------
@@ -238,8 +238,8 @@ void __fastcall CRenderDevice::Resize(int w, int h, bool bRefreshDevice)
 
     if (bRefreshDevice) Create();
 
-    SetTransform	(D3DTS_PROJECTION,mProjection);
-    SetTransform	(D3DTS_WORLD,Fidentity);
+    RCache.set_xform_project(mProjection);
+    RCache.set_xform_world	(Fidentity);
 
     UI.RedrawScene	();
 }
@@ -259,7 +259,7 @@ void CRenderDevice::Begin( ){
 		(HW.Caps.bStencil?D3DCLEAR_STENCIL:0),
 		dwClearColor,1,0
 		));
-	Streams.BeginFrame();
+	RCache.OnFrameBegin();
 }
 
 //---------------------------------------------------------------------------
@@ -271,8 +271,7 @@ void CRenderDevice::End(){
 	pSystemFont->OnRender();
 
 	// end scene
-	Shader.OnFrameEnd();
-	Primitive.Reset	();
+	RCache.OnFrameEnd();
     CHK_DX(HW.pDevice->EndScene());
 
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));
@@ -282,7 +281,7 @@ void CRenderDevice::UpdateView(){
 // set camera matrix
 	m_Camera.GetView(mView);
 
-    SetTransform(D3DTS_VIEW,mView);
+    RCache.set_xform_view(mView);
     mFullTransform.mul(mProjection,mView);
 
 // frustum culling sets
@@ -306,17 +305,19 @@ void CRenderDevice::UpdateTimer(){
     m_Camera.Update(fTimeDelta);
 }
 
-void CRenderDevice::DP(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD pc){
+void CRenderDevice::DP(D3DPRIMITIVETYPE pt, SGeometry* geom, DWORD vBase, DWORD pc)
+{
 	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
     DWORD dwRequired		= S->lod0->Passes.size();
-	Primitive.setVertices	(vs->dwHandle,vs->dwStride,vb);
+    RCache.set_Geometry		(geom);
     for (DWORD dwPass = 0; dwPass<dwRequired; dwPass++){
-        Shader.set_Shader	(S,dwPass);
-		Primitive.Render	(pt,vBase,pc);
+    	RCache.set_Shader	(S,dwPass);
+//        Shader.set_Shader	();
+		RCache.Render		(pt,vBase,pc);
     }
 }
-
-void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb, DWORD vBase, DWORD vc, IDirect3DIndexBuffer8* ib, DWORD iBase, DWORD pc){
+/*
+void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, SGeometry* geom, DWORD vBase, DWORD vc, IDirect3DIndexBuffer8* ib, DWORD iBase, DWORD pc){
 	::Shader* S 			= m_CurrentShader?m_CurrentShader:m_WireShader;
     DWORD dwRequired		= S->lod0->Passes.size();
     Primitive.setIndices	(vBase, ib);
@@ -326,7 +327,7 @@ void CRenderDevice::DIP(D3DPRIMITIVETYPE pt, CVS* vs, IDirect3DVertexBuffer8* vb
 		Primitive.Render	(pt,vBase,vc,iBase,pc);
     }
 }
-
+*/
 void CRenderDevice::ReloadTextures()
 {
 	UI.SetStatus("Reload textures...");
@@ -359,7 +360,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
 
     // free managed resource
     Shader.Evict();
-    
+/*    
     IDirect3DSurface8* pZB=0;
     IDirect3DSurface8* pRT=0;
     IDirect3DSurface8* poldRT=0;
@@ -392,7 +393,7 @@ bool CRenderDevice::MakeScreenshot(U32Vec& pixels, u32& width, u32& height)
     _RELEASE(pZB);
     _RELEASE(pRT);
     _RELEASE(poldRT);
-
+ */
     return true;
 }
 

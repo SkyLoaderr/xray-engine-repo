@@ -52,9 +52,9 @@ static const WORD identboxindiceswire[identboxindexwirecount] = {
 
 #define SIGN(x) ((x<0)?-1:1)
 
-static CVS* 	vs_L=0;
-static CVS* 	vs_TL=0;
-static CVS* 	vs_LIT=0;
+static SGeometry* 	vs_L=0;
+static SGeometry* 	vs_TL=0;
+static SGeometry* 	vs_LIT=0;
 
 static FLvertexVec 	m_GridPoints;
 
@@ -140,15 +140,15 @@ void OnDeviceCreate(){
     	boxvert[i*6+5].set(p.x,p.y,p.z-S.z*0.25f);
     }
     // create render stream
-	vs_L 		= Device.Shader._CreateVS(FVF::F_L);
-    vs_TL		= Device.Shader._CreateVS(FVF::F_TL);
-    vs_LIT		= Device.Shader._CreateVS(FVF::F_LIT);
+	vs_L 		= Device.Shader.CreateGeom(FVF::F_L,RCache.Vertex.Buffer(),0);
+    vs_TL		= Device.Shader.CreateGeom(FVF::F_TL,RCache.Vertex.Buffer(),0);
+    vs_LIT		= Device.Shader.CreateGeom(FVF::F_LIT,RCache.Vertex.Buffer(),0);
 }
 
 void OnDeviceDestroy(){
-	Device.Shader._DeleteVS(vs_L);
-	Device.Shader._DeleteVS(vs_TL);
-	Device.Shader._DeleteVS(vs_LIT);
+	Device.Shader.DeleteGeom(vs_L);
+	Device.Shader.DeleteGeom(vs_TL);
+	Device.Shader.DeleteGeom(vs_LIT);
 }
 //----------------
 
@@ -188,15 +188,16 @@ void DrawDirectionalLight(const Fvector& p, const Fvector& d, float radius, floa
 	float sz=radius+range;
 
 	// fill VB
-	DWORD			vBase;
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(6,vs_L->dwStride,vBase);
+	_VertexStream*	Stream	= &RCache.Vertex; 
+	u32				vBase;
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
     pv->set			(0,0,r,		c); rot.transform_tiny(pv->p); pv++;
     pv->set			(0,0,sz,	c); rot.transform_tiny(pv->p); pv++;
     pv->set			(-r,0,r,	c); rot.transform_tiny(pv->p); pv++;
     pv->set			(-r,0,sz,	c); rot.transform_tiny(pv->p); pv++;
     pv->set			(r,0,r,		c); rot.transform_tiny(pv->p); pv++;
     pv->set			(r,0,sz,	c); rot.transform_tiny(pv->p); pv++;
-	Device.Streams.Vertex.Unlock	(6,vs_L->dwStride);
+	Stream->Unlock	(6,vs_L->vb_stride);
     
 	// and Render it as triangle list
     Device.DP		(D3DPT_LINELIST,vs_L,vBase,3);
@@ -216,14 +217,15 @@ void DrawPointLight(const Fvector& p, float radius, DWORD c)
 void DrawEntity(DWORD clr, Shader* s)
 {
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase;
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(5,vs_L->dwStride,vBase);
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
     pv->set			(0.f,0.f,0.f,clr); pv++;
     pv->set			(0.f,1.f,0.f,clr); pv++;
     pv->set			(0.f,1.f,.5f,clr); pv++;
     pv->set			(0.f,.5f,.5f,clr); pv++;
     pv->set			(0.f,.5f,0.f,clr); pv++;
-	Device.Streams.Vertex.Unlock	(5,vs_L->dwStride);
+	Stream->Unlock	(5,vs_L->vb_stride);
 	// render flagshtok
     Device.SetShader(Device.m_WireShader);
     Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,4);
@@ -231,14 +233,14 @@ void DrawEntity(DWORD clr, Shader* s)
     if (s) Device.SetShader(s);
     {
         // fill VB
-        FVF::LIT*	pv	 = (FVF::LIT*)Device.Streams.Vertex.Lock(6,vs_LIT->dwStride,vBase);
+        FVF::LIT*	pv	 = (FVF::LIT*)Stream->Lock(6,vs_LIT->vb_stride,vBase);
         pv->set		(0.f,1.f,0.f,clr,0.f,0.f);	pv++;
         pv->set		(0.f,1.f,.5f,clr,1.f,0.f);	pv++;
         pv->set		(0.f,.5f,.5f,clr,1.f,1.f);	pv++;
         pv->set		(0.f,.5f,0.f,clr,0.f,1.f);	pv++;
         pv->set		(0.f,.5f,.5f,clr,1.f,1.f);	pv++;
         pv->set		(0.f,1.f,.5f,clr,1.f,0.f);	pv++;
-        Device.Streams.Vertex.Unlock	(6,vs_LIT->dwStride);
+        Stream->Unlock	(6,vs_LIT->vb_stride);
         // and Render it as line list
         Device.DP		(D3DPT_TRIANGLEFAN,vs_LIT,vBase,4);
     }
@@ -246,11 +248,12 @@ void DrawEntity(DWORD clr, Shader* s)
 
 void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_fl, DWORD clr, bool bDrawEntity){
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase;
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(2,vs_L->dwStride,vBase);
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(2,vs_L->vb_stride,vBase);
     pv->set			(p,clr); pv++;
     pv->set			(p.x,p.y+height,p.z,clr); pv++;
-	Device.Streams.Vertex.Unlock	(2,vs_L->dwStride);
+	Stream->Unlock	(2,vs_L->vb_stride);
 	// and Render it as triangle list
     Device.DP		(D3DPT_LINELIST,vs_L,vBase,1);
 
@@ -258,7 +261,7 @@ void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_
 		// fill VB
         float rx		= sin(heading);
         float rz		= cos(heading);
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(6,vs_L->dwStride,vBase);
+		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
         sz				*= 0.8f;
         pv->set			(p.x,p.y+height,p.z,clr);											pv++;
         pv->set			(p.x+rx*sz,p.y+height,p.z+rz*sz,clr);                               pv++;
@@ -267,19 +270,19 @@ void DrawFlag(const Fvector& p, float heading, float height, float sz, float sz_
         pv->set			(p.x+rx*sz*0.6f,p.y+height*(1.f-sz_fl*.5f),p.z+rz*sz*0.75f,clr);   	pv++;
         pv->set			(p.x,p.y+height*(1.f-sz_fl),p.z,clr);                               pv++;
         pv->set			(p.x+rx*sz,p.y+height*(1.f-sz_fl),p.z+rz*sz,clr);                   pv++;
-		Device.Streams.Vertex.Unlock	(6,vs_L->dwStride);
+		Stream->Unlock	(6,vs_L->vb_stride);
 		// and Render it as line list
     	Device.DP		(D3DPT_LINELIST,vs_L,vBase,3);
     }else{
 		// fill VB
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(6,vs_L->dwStride,vBase);
+		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
 	    pv->set			(p.x,p.y+height*(1.f-sz_fl),p.z,clr); 								pv++;
     	pv->set			(p.x,p.y+height,p.z,clr); 											pv++;
 	    pv->set			(p.x+sin(heading)*sz,((pv-2)->p.y+(pv-1)->p.y)/2,p.z+cos(heading)*sz,clr); pv++;
     	pv->set			(*(pv-3)); 															pv++;
 	    pv->set			(*(pv-2)); 															pv++;
     	pv->set			(*(pv-4)); 															pv++;
-		Device.Streams.Vertex.Unlock	(6,vs_L->dwStride);
+		Stream->Unlock	(6,vs_L->vb_stride);
 		// and Render it as triangle list
     	Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,2);
     }
@@ -298,37 +301,39 @@ static const WORD IT[24]={2,4,0, 4,3,0, 3,5,0, 5,2,0, 4,2,1, 2,5,1, 5,3,1, 3,4,1
     DWORD c1 =		C.get();
 
 	// fill VB
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(6,vs_L->dwStride,vBase);
+	_VertexStream*	Stream	= &RCache.Vertex; 
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
     pv->set			(p.x,	p.y+r,	p.z,	c1); pv++;
     pv->set			(p.x,	p.y-r,	p.z,	c1); pv++;
     pv->set			(p.x,	p.y,	p.z-r,	c1); pv++;
     pv->set			(p.x,	p.y,	p.z+r,	c1); pv++;
     pv->set			(p.x-r,	p.y,	p.z,	c1); pv++;
     pv->set			(p.x+r,	p.y,	p.z,	c1); pv++;
-	Device.Streams.Vertex.Unlock	(6,vs_L->dwStride);
+	Stream->Unlock	(6,vs_L->vb_stride);
 
-    WORD* i 		= Device.Streams.Index.Lock(24,iBase);
+	_IndexStream*	StreamI	= &RCache.Index; 
+    WORD* i 		= StreamI->Lock(24,iBase);
     for (int k=0; k<24; k++,i++) *i=IT[k];
-    Device.Streams.Index.Unlock(24);
+    StreamI->Unlock(24);
 
 	// and Render it as triangle list
-	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,vBase,6, iBase,12);
+	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,0,vBase,6, iBase,12);
 
     // draw lines
-	pv	 			= (FVF::L*)Device.Streams.Vertex.Lock(6,vs_L->dwStride,vBase);
+	pv	 			= (FVF::L*)Stream->Lock(6,vs_L->vb_stride,vBase);
     pv->set			(p.x,	p.y+r,	p.z,	c); pv++;
     pv->set			(p.x,	p.y-r,	p.z,	c); pv++;
     pv->set			(p.x,	p.y,	p.z-r,	c); pv++;
     pv->set			(p.x,	p.y,	p.z+r,	c); pv++;
     pv->set			(p.x-r,	p.y,	p.z,	c); pv++;
     pv->set			(p.x+r,	p.y,	p.z,	c); pv++;
-	Device.Streams.Vertex.Unlock	(6,vs_L->dwStride);
+	Stream->Unlock	(6,vs_L->vb_stride);
 
-    i 				= Device.Streams.Index.Lock(24,iBase);
+    i 				= StreamI->Lock(24,iBase);
     for (k=0; k<24; k++,i++) *i=IL[k];
-    Device.Streams.Index.Unlock(24);
+    StreamI->Unlock	(24);
 
-	Device.DIP		(D3DPT_LINELIST,vs_L,vBase,6, iBase,12);
+	Device.DIP		(D3DPT_LINELIST,vs_L,0,vBase,6, iBase,12);
 }
 //------------------------------------------------------------------------------
 
@@ -341,44 +346,47 @@ void DrawSphere(const Fvector& p, float radius, DWORD clr)
 	DWORD			vBase,iBase;
 
 	// fill VB
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(DU_SPHERE_NUMVERTEX,vs_L->dwStride,vBase);
+	_VertexStream*	Stream	= &RCache.Vertex; 
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(DU_SPHERE_NUMVERTEX,vs_L->vb_stride,vBase);
     for (int k=0; k<DU_SPHERE_NUMVERTEX; k++,pv++){
     	Fvector& v	= du_sphere_vertices[k];
 	    pv->set		(v.x*radius+p.x,	v.y*radius+p.y,	v.z*radius+p.z,	clr); 
     }
-	Device.Streams.Vertex.Unlock	(DU_SPHERE_NUMVERTEX,vs_L->dwStride);
+	Stream->Unlock	(DU_SPHERE_NUMVERTEX,vs_L->vb_stride);
 
-    WORD* i 		= Device.Streams.Index.Lock(DU_SPHERE_NUMFACES*3,iBase);
+	_IndexStream*	StreamI	= &RCache.Index; 
+    WORD* i 		= StreamI->Lock(DU_SPHERE_NUMFACES*3,iBase);
     for (k=0; k<DU_SPHERE_NUMFACES*3; k++,i++) *i=du_sphere_faces[k];
-    Device.Streams.Index.Unlock(DU_SPHERE_NUMFACES*3);
+    StreamI->Unlock(DU_SPHERE_NUMFACES*3);
 
 	// and Render it as triangle list
-	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,vBase,DU_SPHERE_NUMVERTEX, iBase,DU_SPHERE_NUMFACES);
+	Device.DIP		(D3DPT_TRIANGLELIST,vs_L,0,vBase,DU_SPHERE_NUMVERTEX, iBase,DU_SPHERE_NUMFACES);
 }
 
 void DrawLineSphere(const Fvector& p, float radius, DWORD c, bool bCross)
 {
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase, iBase;
     int i;
 	FVF::L*	pv;
     // seg 0
-	pv	 			= (FVF::L*)Device.Streams.Vertex.Lock(LINE_DIVISION+1,vs_L->dwStride,vBase);
+	pv	 			= (FVF::L*)Stream->Lock(LINE_DIVISION+1,vs_L->vb_stride,vBase);
 	for( i=0; i<LINE_DIVISION; i++,pv++){ pv->p.mad(p,circledef1[i],radius); pv->color=c;}
     pv->set(*(pv-LINE_DIVISION));
-	Device.Streams.Vertex.Unlock	(LINE_DIVISION+1,vs_L->dwStride);
+	Stream->Unlock	(LINE_DIVISION+1,vs_L->vb_stride);
 	Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,LINE_DIVISION);
     // seg 1
-	pv	 			= (FVF::L*)Device.Streams.Vertex.Lock(LINE_DIVISION+1,vs_L->dwStride,vBase);
+	pv	 			= (FVF::L*)Stream->Lock(LINE_DIVISION+1,vs_L->vb_stride,vBase);
 	for( i=0; i<LINE_DIVISION; i++){ pv->p.mad(p,circledef2[i],radius); pv->color=c; pv++; }
     pv->set(*(pv-LINE_DIVISION)); pv++;
-	Device.Streams.Vertex.Unlock	(LINE_DIVISION+1,vs_L->dwStride);
+	Stream->Unlock	(LINE_DIVISION+1,vs_L->vb_stride);
 	Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,LINE_DIVISION);
     // seg 2
-	pv	 			= (FVF::L*)Device.Streams.Vertex.Lock(LINE_DIVISION+1,vs_L->dwStride,vBase);
+	pv	 			= (FVF::L*)Stream->Lock(LINE_DIVISION+1,vs_L->vb_stride,vBase);
 	for( i=0; i<LINE_DIVISION; i++){ pv->p.mad(p,circledef3[i],radius); pv->color=c; pv++; }
     pv->set(*(pv-LINE_DIVISION)); pv++;
-	Device.Streams.Vertex.Unlock	(LINE_DIVISION+1,vs_L->dwStride);
+	Stream->Unlock	(LINE_DIVISION+1,vs_L->vb_stride);
 	Device.DP		(D3DPT_LINESTRIP,vs_L,vBase,LINE_DIVISION);
 
     if (bCross) DrawCross(p, radius,radius,radius, radius,radius,radius, c);
@@ -396,14 +404,15 @@ void dbgDrawPlacement(const Fvector& p, int sz, DWORD clr, LPCSTR caption, DWORD
 	Device.mFullTransform.transform(c,p);
 	c.x = iFloor(Device._x2real(c.x)); c.y = iFloor(Device._y2real(-c.y));
 
+	_VertexStream*	Stream	= &RCache.Vertex; 
     DWORD vBase;      
-	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(5,vs_TL->dwStride,vBase);
+	FVF::TL* pv	= (FVF::TL*)Stream->Lock(5,vs_TL->vb_stride,vBase);
 	pv->p.set(c.x-s,c.y-s,0,1); pv->color=clr; pv++;
 	pv->p.set(c.x+s,c.y-s,0,1); pv->color=clr; pv++;
 	pv->p.set(c.x+s,c.y+s,0,1); pv->color=clr; pv++;
 	pv->p.set(c.x-s,c.y+s,0,1); pv->color=clr; pv++;
 	pv->p.set(c.x-s,c.y-s,0,1); pv->color=clr; pv++;
-	Device.Streams.Vertex.Unlock(5,vs_TL->dwStride);
+	Stream->Unlock(5,vs_TL->vb_stride);
 
 	// Render it as line strip
     Device.DP		(D3DPT_LINESTRIP,vs_TL,vBase,4);
@@ -441,11 +450,12 @@ void dbgDrawFace(const Fvector& p0,	const Fvector& p1, const Fvector& p2, DWORD 
 
 void DrawLine(const Fvector& p0, const Fvector& p1, DWORD c){
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase;
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(2,vs_L->dwStride,vBase);
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(2,vs_L->vb_stride,vBase);
     pv->set			(p0,c); pv++;
     pv->set			(p1,c); pv++;
-	Device.Streams.Vertex.Unlock	(2,vs_L->dwStride);
+	Stream->Unlock	(2,vs_L->vb_stride);
 	// and Render it as triangle list
     Device.DP		(D3DPT_LINELIST,vs_L,vBase,1);
 }
@@ -455,14 +465,15 @@ void DrawSelectionBox(const Fvector& C, const Fvector& S, DWORD* c){
     DWORD cc=(c)?*c:boxcolor;
 
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase,iBase;
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(boxvertcount,vs_L->dwStride,vBase);
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(boxvertcount,vs_L->vb_stride,vBase);
     for (int i=0; i<boxvertcount; i++,pv++){
 	    pv->p.mul(boxvert[i],S);
         pv->p.add(C);
         pv->color	= cc;
     }
-	Device.Streams.Vertex.Unlock	(boxvertcount,vs_L->dwStride);
+	Stream->Unlock	(boxvertcount,vs_L->vb_stride);
 
 	// and Render it as triangle list
 	Device.SetRS	(D3DRS_FILLMODE,D3DFILL_SOLID);
@@ -473,86 +484,93 @@ void DrawSelectionBox(const Fvector& C, const Fvector& S, DWORD* c){
 void DrawIdentBox(bool bSolid, bool bWire, u32 cc)
 {
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
     if (bWire){
         DWORD			vBase;
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(identboxwirecount,vs_L->dwStride,vBase);
+		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(identboxwirecount,vs_L->vb_stride,vBase);
         for (int i=0; i<identboxwirecount; i++,pv++)
             pv->set		(identboxwire[i],cc);
-		Device.Streams.Vertex.Unlock(identboxwirecount,vs_L->dwStride);
+		Stream->Unlock(identboxwirecount,vs_L->vb_stride);
 	    Device.DP		(D3DPT_LINELIST,vs_L,vBase,identboxwirecount/2);
     }
     if (bSolid){
         DWORD			vBase;
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(DU_BOX_NUMVERTEX2,vs_L->dwStride,vBase);
+		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(DU_BOX_NUMVERTEX2,vs_L->vb_stride,vBase);
         for (int i=0; i<DU_BOX_NUMVERTEX2; i++,pv++)
             pv->set		(du_box_vertices2[i],cc);
-		Device.Streams.Vertex.Unlock(DU_BOX_NUMVERTEX2,vs_L->dwStride);
+		Stream->Unlock(DU_BOX_NUMVERTEX2,vs_L->vb_stride);
 	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,DU_BOX_NUMFACES);
     }
 }
 
-void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c){
+void DrawBox(const Fvector& offs, const Fvector& Size, bool bWire, DWORD c)
+{
+	_VertexStream*	Stream	= &RCache.Vertex; 
     if (bWire){
         DWORD			vBase;
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(identboxwirecount,vs_L->dwStride,vBase);
+		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(identboxwirecount,vs_L->vb_stride,vBase);
         for (int i=0; i<identboxwirecount; i++, pv++){
             pv->p.mul	(identboxwire[i],Size);
             pv->p.mul	(2);
             pv->p.add	(offs);
             pv->color	= c;
         }
-		Device.Streams.Vertex.Unlock(identboxwirecount,vs_L->dwStride);
+		Stream->Unlock(identboxwirecount,vs_L->vb_stride);
 
 	    Device.DP		(D3DPT_LINELIST,vs_L,vBase,identboxwirecount/2);
     }else{
         DWORD			vBase;
-		FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(DU_BOX_NUMVERTEX2,vs_L->dwStride,vBase);
+		FVF::L*	pv	 	= (FVF::L*)Stream->Lock(DU_BOX_NUMVERTEX2,vs_L->vb_stride,vBase);
         for (int i=0; i<DU_BOX_NUMVERTEX2; i++, pv++){
             pv->p.mul	(du_box_vertices2[i],Size);
             pv->p.mul	(2);
             pv->p.add	(offs);
             pv->color	= c;
         }
-		Device.Streams.Vertex.Unlock(DU_BOX_NUMVERTEX2,vs_L->dwStride);
+		Stream->Unlock(DU_BOX_NUMVERTEX2,vs_L->vb_stride);
 
 	    Device.DP		(D3DPT_TRIANGLELIST,vs_L,vBase,DU_BOX_NUMFACES);
     }
 }
 //----------------------------------------------------
 
-void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb){
+void DrawPlane  (const Fvector& center, const Fvector2& scale, const Fvector& rotate, DWORD c, bool bCull, bool bBorder, DWORD cb)
+{
     Fmatrix M;
     M.setHPB(rotate.y,rotate.x,rotate.z);
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase;
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(4,vs_L->dwStride,vBase);
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(4,vs_L->vb_stride,vBase);
     pv->set			(-scale.x, 0, -scale.y, c); M.transform_tiny(pv->p); pv->p.add(center); pv++;
     pv->set			(+scale.x, 0, -scale.y, c); M.transform_tiny(pv->p); pv->p.add(center); pv++;
     pv->set			(+scale.x, 0, +scale.y, c); M.transform_tiny(pv->p); pv->p.add(center); pv++;
     pv->set			(-scale.x, 0, +scale.y, c); M.transform_tiny(pv->p); pv->p.add(center); pv++;
-	Device.Streams.Vertex.Unlock(4,vs_L->dwStride);
+	Stream->Unlock(4,vs_L->vb_stride);
 
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
     Device.DP		(D3DPT_TRIANGLEFAN,vs_L,vBase,2);
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_CCW);
 
     if (bBorder){
-		FVF::L*	pv	 = (FVF::L*)Device.Streams.Vertex.Lock(5,vs_L->dwStride,vBase);
+		FVF::L*	pv	 = (FVF::L*)Stream->Lock(5,vs_L->vb_stride,vBase);
         pv->set		(-scale.x, 0, -scale.y, cb); M.transform_tiny(pv->p); pv->p.add(center); pv++;
         pv->set		(+scale.x, 0, -scale.y, cb); M.transform_tiny(pv->p); pv->p.add(center); pv++;
         pv->set		(+scale.x, 0, +scale.y, cb); M.transform_tiny(pv->p); pv->p.add(center); pv++;
         pv->set		(-scale.x, 0, +scale.y, cb); M.transform_tiny(pv->p); pv->p.add(center); pv++;
         pv->set		(*(pv-4));
-		Device.Streams.Vertex.Unlock(5,vs_L->dwStride);
+		Stream->Unlock(5,vs_L->vb_stride);
 	    Device.DP	(D3DPT_LINESTRIP,vs_L,vBase,4);
     }
 }
 //----------------------------------------------------
 
-void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, DWORD clr, bool bRot45){
+void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2, float szy2, float szz2, DWORD clr, bool bRot45)
+{
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	// actual rendering
 	DWORD			vBase;
-	FVF::L*	pv	 	= (FVF::L*)Device.Streams.Vertex.Lock(bRot45?12:6,vs_L->dwStride,vBase);
+	FVF::L*	pv	 	= (FVF::L*)Stream->Lock(bRot45?12:6,vs_L->vb_stride,vBase);
     pv->set(p.x+szx2,p.y,p.z,clr); pv++;
     pv->set(p.x-szx1,p.y,p.z,clr); pv++;
     pv->set(p.x,p.y+szy2,p.z,clr); pv++;
@@ -570,7 +588,7 @@ void DrawCross(const Fvector& p, float szx1, float szy1, float szz1, float szx2,
         }
     }
 	// unlock VB and Render it as triangle list
-	Device.Streams.Vertex.Unlock(bRot45?12:6,vs_L->dwStride);
+	Stream->Unlock(bRot45?12:6,vs_L->vb_stride);
     Device.DP(D3DPT_LINELIST,vs_L,vBase,bRot45?6:3);
 }
 
@@ -579,7 +597,9 @@ void DrawPivot(const Fvector& pos, float sz){
     DrawCross(pos, sz, sz, sz, sz, sz, sz, 0xFF7FFF7F);
 }
 
-void DrawAxis(const Fmatrix& T){
+void DrawAxis(const Fmatrix& T)
+{
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	VERIFY( Device.bReady );
     Fvector p[6];
     DWORD 	c[6];
@@ -596,7 +616,7 @@ void DrawAxis(const Fmatrix& T){
     p[5].set(p[0]); p[5].z+=.015f;
 
     DWORD vBase;
-	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(6,vs_TL->dwStride,vBase);
+	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
     // transform to screen
     float dx=-float(Device.dwWidth)/2.2f;
     float dy=float(Device.dwHeight)/2.25f;
@@ -608,7 +628,7 @@ void DrawAxis(const Fmatrix& T){
     }
 
 	// unlock VB and Render it as triangle list
-	Device.Streams.Vertex.Unlock(6,vs_TL->dwStride);
+	Stream->Unlock(6,vs_TL->vb_stride);
 	Device.SetRS(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
 	Device.SetShader(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,vs_TL,vBase,3);
@@ -624,8 +644,10 @@ void DrawAxis(const Fmatrix& T){
     Device.pSystemFont->Out(p[5].x-1,p[5].y-1,"z");
 }
 
-void DrawObjectAxis(const Fmatrix& T){
+void DrawObjectAxis(const Fmatrix& T)
+{
 	VERIFY( Device.bReady );
+	_VertexStream*	Stream	= &RCache.Vertex; 
     Fvector c,r,n,d;
 	float w	= T.c.x*Device.mFullTransform._14 + T.c.y*Device.mFullTransform._24 + T.c.z*Device.mFullTransform._34 + Device.mFullTransform._44;
     if (w<0) return; // culling
@@ -641,14 +663,14 @@ void DrawObjectAxis(const Fmatrix& T){
     d.x = iFloor(Device._x2real(d.x)); d.y = iFloor(Device._y2real(-d.y));
 
     DWORD vBase;      
-	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(6,vs_TL->dwStride,vBase);
+	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
 	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
 	pv->p.set(d.x,d.y,0,1); pv->color=0xFF0000FF; pv++;
 	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
 	pv->p.set(r.x,r.y,0,1); pv->color=0xFFFF0000; pv++;
 	pv->p.set(c.x,c.y,0,1); pv->color=0xFF222222; pv++;
 	pv->p.set(n.x,n.y,0,1); pv->color=0xFF00FF00;
-	Device.Streams.Vertex.Unlock(6,vs_TL->dwStride);
+	Stream->Unlock(6,vs_TL->vb_stride);
 
 	// Render it as line list
 	Device.SetRS	(D3DRS_SHADEMODE,D3DSHADE_GOURAUD);
@@ -669,6 +691,7 @@ void DrawObjectAxis(const Fmatrix& T){
 void DrawSafeRect()
 {
 	VERIFY( Device.bReady );
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	// fill VB
     Irect rect;
     if ((0.75f*float(Device.dwWidth))>float(Device.dwHeight)) 
@@ -677,7 +700,7 @@ void DrawSafeRect()
     	rect.set(0,Device.m_RenderHeight_2-0.75f*float(Device.m_RenderWidth_2),Device.dwWidth-1,Device.m_RenderHeight_2+0.75f*float(Device.m_RenderWidth_2));
         
     DWORD vBase;
-	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(6,vs_TL->dwStride,vBase);
+	FVF::TL* pv	= (FVF::TL*)Stream->Lock(6,vs_TL->vb_stride,vBase);
     pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
     pv->set(Device.dwWidth, 0, m_ColorSafeRect,0.f,0.f); 						pv++;
     pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
@@ -685,7 +708,7 @@ void DrawSafeRect()
     pv->set(0, 0, m_ColorSafeRect,0.f,0.f); 									pv++;
     pv->set((int)Device.dwWidth,(int)Device.dwHeight,m_ColorSafeRect,0.f,0.f); 	pv++;
     pv->set(0, Device.dwHeight,m_ColorSafeRect,0.f,0.f); 						pv++;
-	Device.Streams.Vertex.Unlock(6,vs_TL->dwStride);
+	Stream->Unlock(6,vs_TL->vb_stride);
 	// Render it as triangle list
 	Device.SetShader(Device.m_SelectionShader);
 }
@@ -693,15 +716,16 @@ void DrawSafeRect()
 void DrawGrid()
 {
 	VERIFY( Device.bReady );
+	_VertexStream*	Stream	= &RCache.Vertex; 
     DWORD vBase,iBase;
 	// fill VB
-	FVF::L*	pv	= (FVF::L*)Device.Streams.Vertex.Lock(m_GridPoints.size(),vs_L->dwStride,vBase);
+	FVF::L*	pv	= (FVF::L*)Stream->Lock(m_GridPoints.size(),vs_L->vb_stride,vBase);
     for (FLvertexIt v_it=m_GridPoints.begin(); v_it!=m_GridPoints.end(); v_it++,pv++) pv->set(*v_it);
-	Device.Streams.Vertex.Unlock(m_GridPoints.size(),vs_L->dwStride);
+	Stream->Unlock(m_GridPoints.size(),vs_L->vb_stride);
 	// Render it as triangle list
     Fmatrix ddd;
     ddd.identity();
-    Device.SetTransform(D3DTS_WORLD,ddd);
+    RCache.set_xform_world(ddd);
 	Device.SetShader(Device.m_WireShader);
     Device.DP(D3DPT_LINELIST,vs_L,vBase,m_GridPoints.size()/2);
 }
@@ -709,13 +733,14 @@ void DrawGrid()
 void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd){
 	VERIFY( Device.bReady );
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
     DWORD vBase;
-	FVF::TL* pv	= (FVF::TL*)Device.Streams.Vertex.Lock(4,vs_TL->dwStride,vBase);
+	FVF::TL* pv	= (FVF::TL*)Stream->Lock(4,vs_TL->vb_stride,vBase);
     pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelStart.y*Device.m_ScreenQuality, m_SelectionRect,0.f,0.f); pv++;
     pv->set(m_SelStart.x*Device.m_ScreenQuality, m_SelEnd.y*Device.m_ScreenQuality,   m_SelectionRect,0.f,0.f); pv++;
     pv->set(m_SelEnd.x*Device.m_ScreenQuality,   m_SelEnd.y*Device.m_ScreenQuality,   m_SelectionRect,0.f,0.f); pv++;
     pv->set(m_SelEnd.x*Device.m_ScreenQuality,   m_SelStart.y*Device.m_ScreenQuality, m_SelectionRect,0.f,0.f); pv++;
-	Device.Streams.Vertex.Unlock(4,vs_TL->dwStride);
+	Stream->Unlock(4,vs_TL->vb_stride);
 	// Render it as triangle list
     Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
 	Device.SetShader(Device.m_SelectionShader);
@@ -725,12 +750,13 @@ void DrawSelectionRect(const Ivector2& m_SelStart, const Ivector2& m_SelEnd){
 
 void DrawPrimitiveL	(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, DWORD color, bool bCull, bool bCycle){
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase, dwNeed=(bCycle)?vc+1:vc;
-	FVF::L*	pv	= (FVF::L*)Device.Streams.Vertex.Lock(dwNeed,vs_L->dwStride,vBase);
+	FVF::L*	pv	= (FVF::L*)Stream->Lock(dwNeed,vs_L->vb_stride,vBase);
     for(int k=0; k<vc; k++,pv++)
     	pv->set		(vertices[k],color);
     if (bCycle)		pv->set(*(pv-vc));
-	Device.Streams.Vertex.Unlock(dwNeed,vs_L->dwStride);
+	Stream->Unlock(dwNeed,vs_L->vb_stride);
 
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
     Device.DP		(pt,vs_L,vBase,pc);
@@ -739,12 +765,13 @@ void DrawPrimitiveL	(D3DPRIMITIVETYPE pt, DWORD pc, Fvector* vertices, int vc, D
 
 void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, bool bCull, bool bCycle){
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase, dwNeed=(bCycle)?vc+1:vc;
-	FVF::TL* pv		= (FVF::TL*)Device.Streams.Vertex.Lock(dwNeed,vs_TL->dwStride,vBase);
+	FVF::TL* pv		= (FVF::TL*)Stream->Lock(dwNeed,vs_TL->vb_stride,vBase);
     for(int k=0; k<vc; k++,pv++)
     	pv->set		(vertices[k]);
     if (bCycle)		pv->set(*(pv-vc));
-	Device.Streams.Vertex.Unlock(dwNeed,vs_TL->dwStride);
+	Stream->Unlock(dwNeed,vs_TL->vb_stride);
 
     if (!bCull) 	Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
     Device.DP		(pt,vs_TL,vBase,pc);
@@ -753,12 +780,13 @@ void DrawPrimitiveTL(D3DPRIMITIVETYPE pt, DWORD pc, FVF::TL* vertices, int vc, b
 
 void DrawPrimitiveLIT(D3DPRIMITIVETYPE pt, DWORD pc, FVF::LIT* vertices, int vc, bool bCull, bool bCycle){
 	// fill VB
+	_VertexStream*	Stream	= &RCache.Vertex; 
 	DWORD			vBase, dwNeed=(bCycle)?vc+1:vc;
-	FVF::LIT* 	pv	= (FVF::LIT*)Device.Streams.Vertex.Lock(dwNeed,vs_LIT->dwStride,vBase);
+	FVF::LIT* 	pv	= (FVF::LIT*)Stream->Lock(dwNeed,vs_LIT->vb_stride,vBase);
     for(int k=0; k<vc; k++,pv++)
     	pv->set		(vertices[k]);
     if (bCycle)		pv->set(*(pv-vc));
-	Device.Streams.Vertex.Unlock(dwNeed,vs_LIT->dwStride);
+	Stream->Unlock(dwNeed,vs_LIT->vb_stride);
 
     if (!bCull) Device.SetRS(D3DRS_CULLMODE,D3DCULL_NONE);
     Device.DP		(pt,vs_LIT,vBase,pc);

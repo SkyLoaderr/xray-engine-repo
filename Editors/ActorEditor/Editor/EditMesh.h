@@ -106,10 +106,10 @@ class CSector;
 	struct st_RenderBuffer{
 		DWORD			dwStartVertex;
 	    DWORD			dwNumVertex;
-        CVS*			pVS;
-		IDirect3DVertexBuffer8*	pVB;
-//		IDirect3DIndexBuffer8*	pIB;
-		st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),pVS(0),pVB(0){;}
+        SGeometry*		pGeom;
+		IDirect3DVertexBuffer9*	pVB;
+//		IDirect3DIndexBuffer9*	pIB;
+		st_RenderBuffer	(DWORD sv, DWORD nv):dwStartVertex(sv),dwNumVertex(nv),pGeom(0),pVB(0){;}
 	};
 	DEFINE_VECTOR(st_RenderBuffer,RBVector,RBVecIt);
 	DEFINE_MAP(CSurface*,RBVector,RBMap,RBMapPairIt);

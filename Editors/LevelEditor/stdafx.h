@@ -65,18 +65,21 @@ __inline float expf	(float val)                           	{ return ::exp(val);}
 #define THROW			R_ASSERT2(0,"THROW");
 #define THROW2(a)		R_ASSERT2(0,a);
 
+
 // core
 #include <xrCore.h>
 
 // DirectX headers
-#include <d3d8.h>
-#include <d3dx8.h>
+#include <d3d9.h>
+#include <d3dx9.h>
 #include <dinput.h>
 #include <dsound.h>
 
 // some user components
 #include "engine\_d3d_extensions.h"
 #include "engine\clsid.h"
+
+#include "D3DX_Wrapper.h"
 
 DEFINE_VECTOR(bool,boolVec,boolIt);
 DEFINE_VECTOR(BYTE,BYTEVec,BYTEIt);
@@ -191,9 +194,8 @@ struct st_Version{
 // external dependencies
 #pragma comment(lib,"xrCoreB.lib")
 #pragma comment(lib,"dinput.lib")
-#pragma comment(lib,"d3dx8d.lib")
 #pragma comment(lib,"freeimage.lib")
-#pragma comment(lib,"d3d8.lib")
+#pragma comment(lib,"d3d9.lib")
 #pragma comment(lib,"xrCDB.lib")
 #pragma comment(lib,"dxt.lib")
 #pragma comment(lib,"xrProgressive.lib")

@@ -159,10 +159,10 @@ void __fastcall TfrmChoseItem::FillLAnim()
 void __fastcall TfrmChoseItem::FillShader()
 {
     form->Caption					= "Select Engine Shader";
-    CShaderManager::BlenderMap& blenders = Device.Shader._GetBlenders();
-	CShaderManager::BlenderPairIt _F = blenders.begin();
-	CShaderManager::BlenderPairIt _E = blenders.end();
-	for (CShaderManager::BlenderPairIt _S = _F; _S!=_E; _S++)AppendItem(_S->first);
+    CShaderManager::map_Blender& blenders = Device.Shader._GetBlenders();
+	CShaderManager::map_BlenderIt _S = blenders.begin();
+	CShaderManager::map_BlenderIt _E = blenders.end();
+	for (; _S!=_E; _S++)AppendItem(_S->first);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmChoseItem::FillShaderXRLC()

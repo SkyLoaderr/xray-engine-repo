@@ -443,13 +443,13 @@ void TUI::Redraw(){
     // filter
     for (DWORD k=0; k<HW.Caps.pixel.dwStages; k++){
         if( psDeviceFlags.is(rsFilterLinear)){
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_LINEAR);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_LINEAR);
+            Device.SetTSS(k,D3DSAMP_MAGFILTER,D3DTEXF_LINEAR);
+            Device.SetTSS(k,D3DSAMP_MINFILTER,D3DTEXF_LINEAR);
+            Device.SetTSS(k,D3DSAMP_MIPFILTER,D3DTEXF_LINEAR);
         } else {
-            Device.SetTSS(k,D3DTSS_MAGFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DTSS_MINFILTER,D3DTEXF_POINT);
-            Device.SetTSS(k,D3DTSS_MIPFILTER,D3DTEXF_POINT);
+            Device.SetTSS(k,D3DSAMP_MAGFILTER,D3DTEXF_POINT);
+            Device.SetTSS(k,D3DSAMP_MINFILTER,D3DTEXF_POINT);
+            Device.SetTSS(k,D3DSAMP_MIPFILTER,D3DTEXF_POINT);
         }
     }
 	// ligthing
