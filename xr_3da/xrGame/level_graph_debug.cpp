@@ -32,11 +32,105 @@
 
 void CLevelGraph::render()
 {
+	if (bDebug && psAI_Flags.test(aiDebug)) {
+		CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
+		Fvector	POSITION	= O->Position();
+		POSITION.y += 0.5f;
+
+		// display
+		Fvector P			= POSITION;
+
+		CPosition			Local;
+		vertex_position		(Local,P);
+
+		u32 ID				= O->level_vertex_id();
+
+		CGameFont* F		= HUD().pFontDI;
+		F->SetSize			(.02f);
+		F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
+	//	float				x,z;
+	//	unpack_xz			(Local,x,z);
+	//	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(x),iFloor(Local.y()),iFloor(z),u32(ID));
+
+		svector<u32,128>	linked;
+		{
+			const_iterator	i,e;
+			begin			(ID,i,e);
+			for(; i != e; ++i)
+				linked.push_back(value(ID,i));
+		}
+
+		// render
+		float	sc		= header().cell_size()/16;
+		float	st		= 0.98f*header().cell_size()/2;
+		float	tt		= 0.01f;
+
+		Fvector	DUP;	DUP.set(0,1,0);
+
+		RCache.set_Shader(sh_debug);
+		F->SetColor		(color_rgba(255,255,255,255));
+
+		for (u32 Nid=0; Nid<header().vertex_count(); ++Nid)
+		{
+			CLevelGraph::CVertex&	N	= *vertex(Nid);
+			Fvector			PC;
+			PC				= vertex_position(N);
+
+			if (Device.vCameraPosition.distance_to(PC)>30) continue;
+
+			float			sr	= header().cell_size();
+			if (::Render->ViewBase.testSphere_dirty(PC,sr)) {
+				u32	LL		= iFloor(float(N.light())/15.f*255.f);
+				u32	CC		= D3DCOLOR_XRGB(0,0,255);
+				u32	CT		= D3DCOLOR_XRGB(LL,LL,LL);
+				u32	CH		= D3DCOLOR_XRGB(0,128,0);
+
+				BOOL	bHL		= FALSE;
+				if (Nid==u32(ID))	{ bHL = TRUE; CT = D3DCOLOR_XRGB(0,255,0); }
+				else {
+					for (u32 t=0; t<linked.size(); ++t) {
+						if (linked[t]==Nid) { bHL = TRUE; CT = CH; break; }
+					}
+				}
+
+				// unpack plane
+				Fplane PL; Fvector vNorm;
+				pvDecompress(vNorm,N.plane());
+				PL.build	(PC,vNorm);
+
+				// create vertices
+				Fvector		v,v1,v2,v3,v4;
+				v.set(PC.x-st,PC.y,PC.z-st);	PL.intersectRayPoint(v,DUP,v1);	v1.mad(v1,PL.n,tt);	// minX,minZ
+				v.set(PC.x+st,PC.y,PC.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.mad(v2,PL.n,tt);	// maxX,minZ
+				v.set(PC.x+st,PC.y,PC.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.mad(v3,PL.n,tt);	// maxX,maxZ
+				v.set(PC.x-st,PC.y,PC.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
+
+				// render quad
+				RCache.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);
+				RCache.dbg_DrawTRI	(Fidentity,v1,v4,v3,CT);
+
+				// render center
+				RCache.dbg_DrawAABB	(PC,sc,sc,sc,CC);
+
+				// render id
+				if (bHL) {
+					Fvector		T;
+					Fvector4	S;
+					T.set		(PC); T.y+=0.3f;
+					Device.mFullTransform.transform	(S,T);
+					F->SetSize	(0.05f/_sqrt(_abs(S.w)));
+					F->SetColor	(0xffffffff);
+					F->Out		(S.x,-S.y,"~%d",Nid);
+				}
+			}
+		}
+	}
+
 	if (!psHUD_Flags.test(HUD_DRAW))
 		return;
-#ifdef DEBUG
+	
 	draw_travel_line();
-#endif
+	
 	if (psAI_Flags.test(aiBrain)) {
 		if (ai().get_level_graph()) {
 			if (!Level().CurrentEntity())
@@ -186,7 +280,6 @@ void CLevelGraph::render()
 		}
 	}
 
-#ifdef DEBUG
 	if (psAI_Flags.test(aiMotion)) {
 		xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 		xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
@@ -201,106 +294,7 @@ void CLevelGraph::render()
 			}
 		}
 	}
-#endif
 
-	if (!bDebug)	return;
-
-	//	if (0==sh_debug)				return;
-	if (!psAI_Flags.test(aiDebug))	return;
-
-	CGameObject*	O	= dynamic_cast<CGameObject*> (Level().CurrentEntity());
-	Fvector	POSITION	= O->Position();
-	POSITION.y += 0.5f;
-
-	// display
-	Fvector P			= POSITION;
-
-	CPosition			Local;
-	vertex_position		(Local,P);
-
-	u32 ID				= O->level_vertex_id();
-
-	CGameFont* F		= HUD().pFontDI;
-	F->SetSize			(.02f);
-	F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
-//	float				x,z;
-//	unpack_xz			(Local,x,z);
-//	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(x),iFloor(Local.y()),iFloor(z),u32(ID));
-
-	svector<u32,128>	linked;
-	{
-		const_iterator	i,e;
-		begin			(ID,i,e);
-		for(; i != e; ++i)
-			linked.push_back(value(ID,i));
-	}
-
-	// render
-	float	sc		= header().cell_size()/16;
-	float	st		= 0.98f*header().cell_size()/2;
-	float	tt		= 0.01f;
-
-	Fvector	DUP;	DUP.set(0,1,0);
-
-	RCache.set_Shader(sh_debug);
-	F->SetColor		(color_rgba(255,255,255,255));
-
-	for (u32 Nid=0; Nid<header().vertex_count(); ++Nid)
-	{
-		CLevelGraph::CVertex&	N	= *vertex(Nid);
-		Fvector			PC;
-		PC				= vertex_position(N);
-
-		if (Device.vCameraPosition.distance_to(PC)>30) continue;
-
-		float			sr	= header().cell_size();
-		if (::Render->ViewBase.testSphere_dirty(PC,sr)) {
-			u32	LL		= iFloor(float(N.light())/15.f*255.f);
-			u32	CC		= D3DCOLOR_XRGB(0,0,255);
-			u32	CT		= D3DCOLOR_XRGB(LL,LL,LL);
-			u32	CH		= D3DCOLOR_XRGB(0,128,0);
-
-			BOOL	bHL		= FALSE;
-			if (Nid==u32(ID))	{ bHL = TRUE; CT = D3DCOLOR_XRGB(0,255,0); }
-			else {
-				for (u32 t=0; t<linked.size(); ++t) {
-					if (linked[t]==Nid) { bHL = TRUE; CT = CH; break; }
-				}
-			}
-
-			// unpack plane
-			Fplane PL; Fvector vNorm;
-			pvDecompress(vNorm,N.plane());
-			PL.build	(PC,vNorm);
-
-			// create vertices
-			Fvector		v,v1,v2,v3,v4;
-			v.set(PC.x-st,PC.y,PC.z-st);	PL.intersectRayPoint(v,DUP,v1);	v1.mad(v1,PL.n,tt);	// minX,minZ
-			v.set(PC.x+st,PC.y,PC.z-st);	PL.intersectRayPoint(v,DUP,v2);	v2.mad(v2,PL.n,tt);	// maxX,minZ
-			v.set(PC.x+st,PC.y,PC.z+st);	PL.intersectRayPoint(v,DUP,v3);	v3.mad(v3,PL.n,tt);	// maxX,maxZ
-			v.set(PC.x-st,PC.y,PC.z+st);	PL.intersectRayPoint(v,DUP,v4);	v4.mad(v4,PL.n,tt);	// minX,maxZ
-
-			// render quad
-			RCache.dbg_DrawTRI	(Fidentity,v3,v2,v1,CT);
-			RCache.dbg_DrawTRI	(Fidentity,v1,v4,v3,CT);
-
-			// render center
-			RCache.dbg_DrawAABB	(PC,sc,sc,sc,CC);
-
-			// render id
-			if (bHL) {
-				Fvector		T;
-				Fvector4	S;
-				T.set		(PC); T.y+=0.3f;
-				Device.mFullTransform.transform	(S,T);
-				F->SetSize	(0.05f/_sqrt(_abs(S.w)));
-				F->SetColor	(0xffffffff);
-				F->Out		(S.x,-S.y,"~%d",Nid);
-			}
-		}
-	}
-
-#ifdef DEBUG
 	xr_vector<CObject*>::iterator	I = Level().Objects.objects.begin();
 	xr_vector<CObject*>::iterator	E = Level().Objects.objects.end();
 	for ( ; I != E; ++I) {
@@ -313,8 +307,6 @@ void CLevelGraph::render()
 			}
 		}
 	}
-#endif // DEBUG
-
 }
 
 void CLevelGraph::draw_oriented_bounding_box(Fmatrix &T,	Fvector &half_dim, u32 C,	u32 C1) const
@@ -490,6 +482,35 @@ void CLevelGraph::draw_dynamic_obstacles() const
 //	}
 }
 
+void write_trajectory_point(const CLevelGraph::STrajectoryPoint point, LPCSTR point_desc)
+{
+	Msg						("\n%s",point_desc);
+	Msg						("%f",point.angular_velocity);
+	Msg						("%f",point.linear_velocity);
+	Msg						("[%f][%f][%f]",VPUSH(point.position));
+	Msg						("[%f][%f][%f]",VPUSH(point.direction));
+}
+
+void CLevelGraph::set_start_point	()
+{
+	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
+	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
+	obj						= Level().Objects.FindObjectByName("localhost/dima");
+	CActor					*actor = dynamic_cast<CActor*>(obj);
+
+	start.angular_velocity	= PI_DIV_2;
+	start.linear_velocity	= 0.f;
+	start.position			= stalker->Position();
+	start.direction.setHP	(-stalker->m_body.current.yaw,0);
+	start.vertex_id			= vertex(start.position);
+
+	dest.angular_velocity	= PI_DIV_2;
+	dest.linear_velocity	= 0.f;
+	dest.position			= actor->Position();
+	dest.direction.setHP	(actor->r_model_yaw,0);
+	dest.vertex_id			= vertex(dest.position);
+}
+
 IC	void adjust_point(
 	const Fvector		&source, 
 	float				yaw, 
@@ -589,7 +610,7 @@ IC	bool compute_tangent(
 			if  (fsimilar(start_circle.radius,dest_circle.radius)) {
 				// so, our circles are equal
 				tangents[0]			= tangents[1] = start_circle;
-				if (start_cp > 0.f) {
+				if (start_cp >= 0.f) {
 					adjust_point	(start_circle.center,yaw1 + PI_DIV_2,	start_circle.radius,tangents[0].point);
 					assign_angle	(tangents[0].angle,start_yaw,angle_normalize(yaw1 + PI_DIV_2),true);
 				}
@@ -654,23 +675,41 @@ IC	bool compute_tangent(
 
 IC	bool build_circle_trajectory(
 	const CLevelGraph::STrajectoryPoint	&position, 
-	xr_vector<Fvector>		&path,
-	bool					start_point
+	xr_vector<Fvector>					*path,
+	bool								start_point
 )
 {
-	Fvector				direction;
-	if (start_point)
+	Fvector				direction, curr_pos;
+	u32					curr_vertex_id;
+	if (start_point) {
 		direction.sub	(position.position,position.center);
-	else
+		curr_pos		= position.position;
+		curr_vertex_id	= position.vertex_id;
+	}
+	else {
 		direction.sub	(position.point,position.center);
+		curr_pos		= position.point;
+		curr_vertex_id	= ai().level_graph().check_position_in_direction(position.vertex_id,position.position,curr_pos);
+		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
+			return		(false);
+		curr_pos.y		= ai().level_graph().vertex_plane_y(curr_vertex_id,curr_pos.x,curr_pos.z);
+	}
 
 	float				yaw,pitch;
 	direction.getHP		(yaw,pitch);
 	yaw					= angle_normalize(yaw);
 	u32					m = iFloor(_abs(position.angle)/position.angular_velocity*10.f +.5f);
 	for (u32 i=start_point ? 0 : 1, n=fis_zero(position.angular_velocity) ? 1 : m; i<=n; ++i) {
-		path.push_back	(Fvector());
-		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,path.back());
+		Fvector			t;
+		adjust_point	(position.center,yaw + float(i)*position.angle/float(n),position.radius,t);
+		if (!ai().level_graph().inside(curr_vertex_id,t))
+			curr_vertex_id = ai().level_graph().check_position_in_direction(curr_vertex_id,curr_pos,t);
+		if (!ai().level_graph().valid_vertex_id(curr_vertex_id))
+			return		(false);
+		t.y				= ai().level_graph().vertex_plane_y(curr_vertex_id,t.x,t.z);
+		curr_pos		= t;
+		if (path)
+			path->push_back(t);
 	}
 	return				(true);
 }
@@ -678,18 +717,19 @@ IC	bool build_circle_trajectory(
 IC	bool build_line_trajectory(
 	const CLevelGraph::STrajectoryPoint	&start, 
 	const CLevelGraph::STrajectoryPoint	&dest, 
-	xr_vector<Fvector>		&path
+	xr_vector<Fvector>					*path
 )
 {
 	xr_vector<u32>		node_path;
 	if (ai().level_graph().inside(start.vertex_id,dest.point)) {
-		path.push_back	(dest.point);
+		if (path)
+			path->push_back	(dest.point);
 		return			(true);
 	}
 	u32					vertex_id = ai().level_graph().check_position_in_direction(start.vertex_id,start.position,start.point);
 	if (!ai().level_graph().valid_vertex_id(vertex_id))
 		return			(false);
-	return				(ai().level_graph().create_straight_PTN_path(vertex_id,start.point,dest.point,path,node_path,false,false));
+	return				(path ? ai().level_graph().create_straight_PTN_path(vertex_id,start.point,dest.point,path,node_path,false,false) : true);
 }
 
 IC	bool build_trajectory(
@@ -716,11 +756,11 @@ IC	bool build_trajectory(
 
 struct SDist {
 	u32		index;
-	float	distance;
+	float	time;
 
 	bool operator<(const SDist &d1) const
 	{
-		return		(distance < d1.distance);
+		return		(time < d1.time);
 	}
 };
 
@@ -729,17 +769,21 @@ IC	bool build_trajectory(
 	CLevelGraph::STrajectoryPoint	&dest, 
 	const CLevelGraph::SCirclePoint	tangents[4][2], 
 	const u32						tangent_count,
-	xr_vector<Fvector>				&path
+	float							straight_velocity,
+	xr_vector<Fvector>				*path,
+	float							&time
 )
 {
-	SDist		dist[4];
+	time			= flt_max;
+	SDist			dist[4];
 	{
 		for (u32 i=0; i<tangent_count; ++i) {
 			dist[i].index = i;
-			dist[i].distance = 
-				_abs(tangents[i][0].angle)*tangents[i][0].radius + 
-				_abs(tangents[i][1].angle)*tangents[i][1].radius + 
-				tangents[i][0].point.distance_to_xz(tangents[i][1].point);
+			dist[i].time = 
+				_abs(tangents[i][0].angle)/start.angular_velocity +
+				_abs(tangents[i][1].angle)/dest.angular_velocity +
+				tangents[i][0].point.distance_to_xz(tangents[i][1].point)*
+				(fis_zero(straight_velocity) ? 0 : 1.f/straight_velocity); 
 		}
 	}
 	
@@ -749,10 +793,13 @@ IC	bool build_trajectory(
 		for (u32 i=0, j = path.size(); i<tangent_count; ++i) {
 			(CLevelGraph::SCirclePoint&)(start) = tangents[dist[i].index][0];
 			(CLevelGraph::SCirclePoint&)(dest)	= tangents[dist[i].index][1];
-			if (build_trajectory(start,dest,path))
+			if (build_trajectory(start,dest,path)) {
+				time	= dist[i].time;
 				return	(true);
+			}
 			else
-				path.resize(j);
+				if (path)
+					path->resize(j);
 		}
 	}
 
@@ -760,9 +807,11 @@ IC	bool build_trajectory(
 }
 
 IC	bool compute_trajectory(
-	CLevelGraph::STrajectoryPoint &start, 
-	CLevelGraph::STrajectoryPoint &dest, 
-	xr_vector<Fvector> &path
+	CLevelGraph::STrajectoryPoint	&start,
+	CLevelGraph::STrajectoryPoint	&dest,
+	float							straight_velocity,
+	xr_vector<Fvector>				*path,
+	float							&time
 )
 {
 	CLevelGraph::SCirclePoint	start_circles[2], dest_circles[2];
@@ -783,47 +832,254 @@ IC	bool compute_trajectory(
 			)
 				++tangent_count;
 
-	return			(build_trajectory(start,dest,tangent_points,tangent_count,path));
+	return			(build_trajectory(start,dest,tangent_points,tangent_count,straight_velocity,path,time));
 }
 
-void write_trajectory_point(const CLevelGraph::STrajectoryPoint point, LPCSTR point_desc)
+bool CLevelGraph::compute_path(
+	STrajectoryPoint						&start,
+	STrajectoryPoint						&dest,
+	xr_vector<CLevelGraph::STravelParams>	&start_set,
+	xr_vector<CLevelGraph::STravelParams>	&dest_set,
+	xr_vector<Fvector>						*m_tpTravelLine
+)
 {
-	Msg						("\n%s",point_desc);
-	Msg						("%f",point.angular_velocity);
-	Msg						("%f",point.linear_velocity);
-	Msg						("[%f][%f][%f]",VPUSH(point.position));
-	Msg						("[%f][%f][%f]",VPUSH(point.direction));
+	xr_vector<Fvector>		travel_line;
+	float					min_time = flt_max, time;
+	u32						size = m_tpTravelLine.size();
+	xr_vector<CLevelGraph::STravelParams>::const_iterator I = start_set.begin(), B = I;
+	xr_vector<CLevelGraph::STravelParams>::const_iterator E = start_set.end();
+	for ( ; I != E; ++I) {
+		(CLevelGraph::STravelParams&)start	= *I;
+		xr_vector<CLevelGraph::STravelParams>::const_iterator i = dest_set.begin(), b = i;
+		xr_vector<CLevelGraph::STravelParams>::const_iterator e = dest_set.end();
+		for ( ; i != e; ++i) {
+			(CLevelGraph::STravelParams&)dest	= *i;
+			travel_line.clear				();
+			if (compute_trajectory(start,dest,6.f,m_tpTravelLine ? travel_line : 0,time)) {
+				Msg		("[L=%f][A=%f][L=%f][A=%f] : %f",
+					start.linear_velocity,
+					start.angular_velocity,
+					dest.linear_velocity,
+					dest.angular_velocity,
+					time
+				);
+				if (time < min_time) {
+					min_time = time;
+					if (m_tpTravelLine) {
+						m_tpTravelLine.resize(size);
+						m_tpTravelLine.insert(m_tpTravelLine.end(),travel_line.begin(),travel_line.end());
+					}
+					else
+						return(true);
+				}
+			}
+		}
+	}
+	
+	if (fsimilar(min_time,flt_max)) {
+		write_trajectory_point	(start,"start");
+		write_trajectory_point	(dest, "dest");
+		return				(false);
+	}
+	
+	return					(true);
 }
 
-void CLevelGraph::set_start_point	()
+void fill_params(
+	CLevelGraph::STrajectoryPoint			&start,
+	CLevelGraph::STrajectoryPoint			&dest,
+	xr_vector<CLevelGraph::STravelParams>	&start_set,
+	xr_vector<CLevelGraph::STravelParams>	&dest_set
+)
 {
-	CObject					*obj = Level().Objects.FindObjectByName("m_stalker_e0000");
-	CAI_Stalker				*stalker = dynamic_cast<CAI_Stalker*>(obj);
-	obj						= Level().Objects.FindObjectByName("localhost/dima");
-	CActor					*actor = dynamic_cast<CActor*>(obj);
+	start.angular_velocity	= 0.01f;//PI_DIV_2;
+	start.linear_velocity	= 0.0001f;
+	start_set.push_back		(start);
+
+	start.angular_velocity	= PI;
+	start.linear_velocity	= 2.15f;
+	start_set.push_back		(start);
 
 	start.angular_velocity	= PI_DIV_2;
-	start.linear_velocity	= 1.f;
-	start.position			= stalker->Position();
-	start.direction.setHP	(-stalker->m_body.current.yaw,0);
-	start.vertex_id			= vertex(start.position);
+	start.linear_velocity	= 4.5f;
+	start_set.push_back		(start);
+
+	start.angular_velocity	= PI_DIV_4;
+	start.linear_velocity	= 6.f;
+	start_set.push_back		(start);
+
+	dest.angular_velocity	= 0.01f;//PI_DIV_2;
+	dest.linear_velocity	= 0.0001f;
+	dest_set.push_back		(dest);
+
+	dest.angular_velocity	= PI;
+	dest.linear_velocity	= 2.15f;
+	dest_set.push_back		(dest);
 
 	dest.angular_velocity	= PI_DIV_2;
-	dest.linear_velocity	= 2.f;
-	dest.position			= actor->Position();
-	dest.direction.setHP	(actor->r_model_yaw,0);
-	dest.vertex_id			= vertex(dest.position);
+	dest.linear_velocity	= 4.5f;
+	dest_set.push_back		(dest);
+
+	dest.angular_velocity	= PI_DIV_4;
+	dest.linear_velocity	= 6.f;
+	dest_set.push_back		(dest);
 }
 
-void CLevelGraph::compute_path()
+void CLevelGraph::build_detail_path()
 {
-	m_tpTravelLine.clear	();
-	if (!compute_trajectory(start,dest,m_tpTravelLine)) {
-		write_trajectory_point(start,"start");
-		write_trajectory_point(dest, "dest");
+	xr_vector<CLevelGraph::STravelParams>	start_set, dest_set;
+	xr_vector<Fvector>						travel_line, saved;
+	xr_vector<CLevelGraph::STravelPoint>	key_points;
+	CLevelGraph::STrajectoryPoint			s,d,t;
+
+	Device.Statistic.TEST0.Begin			();
+	
+	fill_params								(start,dest,start_set,dest_set);
+	m_tpTravelLine.clear					();
+	saved.clear								();
+
+	if (!ai().graph_engine().search(ai().level_graph(),start.vertex_id,dest.vertex_id,&m_tpaNodes,CGraphEngine::CBaseParameters())) {
+		Device.Statistic.TEST0.End			();
+		return;
 	}
-	return;
+	Device.Statistic.TEST0.End				();
+	Device.Statistic.TEST1.Begin			();
+
+	VERIFY									(!m_tpaNodes.empty());
+	if (m_tpaNodes.size() == 1) {
+		if (!compute_path(start,dest,start_set,dest_set,m_tpTravelLine))
+			m_tpTravelLine.clear			();
+	}
+	else {
+		if (compute_path(start,dest,start_set,dest_set,m_tpTravelLine)) {
+			Device.Statistic.TEST1.End		();
+			return;
+		}
+		
+		m_tpTravelLine.clear				();
+
+		CLevelGraph::STravelPoint			start_point;
+		start_point.vertex_id				= m_tpaNodes.front();
+		start_point.position				= start.position;
+
+		for (int _i=0, i=0, n=(int)m_tpaNodes.size() - 1, j = n, k; _i < n; ) {
+			k								= (i + j)/2;
+			if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,m_tpaNodes[j])) {
+				j							= k;
+				if (i >= j - 1)
+					return;
+			}
+			else {
+				_i							= i = j;
+				key_points.push_back		(start_point);
+				start_point.vertex_id		= m_tpaNodes[j];
+				start_point.position		= ai().level_graph().vertex_position(start_point.vertex_id);
+				j							= n;
+			}
+		}
+//		{
+//			xr_vector<u32>::const_iterator	I = m_tpaNodes.begin(), P = I;
+//			xr_vector<u32>::const_iterator	E = m_tpaNodes.end();
+//			for ( ; I != E; ++I) {
+//				if (!ai().level_graph().check_vertex_in_direction(start_point.vertex_id,start_point.position,*I)) {
+//					VERIFY					(I != P);
+//					key_points.push_back	(start_point);
+//					P						= I - 1;
+//					start_point.vertex_id	= *P;
+//					start_point.position	= ai().level_graph().vertex_position(*P);
+//				}
+//			}
+//		}
+//		key_points.push_back				(start_point);
+//		if (!ai().level_graph().valid_vertex_id(ai().level_graph().check_position_in_direction(start_point.vertex_id,start_point.position,dest.position))) {
+//			start_point.vertex_id			= m_tpaNodes.back();
+//			start_point.position			= ai().level_graph().vertex_position(start_point.vertex_id);
+//			key_points.push_back			(start_point);
+//		}
+//		start_point.vertex_id				= m_tpaNodes.back();
+//		start_point.position				= dest.position;
+//		key_points.push_back				(start_point);
+
+		s = t								= start;
+		xr_vector<CLevelGraph::STravelPoint>::const_iterator	I = key_points.begin();
+		xr_vector<CLevelGraph::STravelPoint>::const_iterator	E = key_points.end();
+		for ( ; I != E; ++I) {
+			// setting up destination
+			if ((I + 1) != E) {
+				(CLevelGraph::STravelPoint&)d = *I;
+				d.direction.sub				((I + 1)->position,d.position);
+				VERIFY						(!fis_zero(d.direction.magnitude()));
+			}
+			else
+				d							= dest;
+
+			if (!compute_path(s,d,start_set,dest_set,travel_line)) {
+				if (saved.empty()) {
+					m_tpTravelLine.clear	();
+					Device.Statistic.TEST1.End();
+					return;
+				}
+				m_tpTravelLine.insert		(m_tpTravelLine.end(),saved.begin(),saved.end());
+				saved.clear					();
+				s							= t;
+				VERIFY						(!fis_zero(s.direction.magnitude()));
+				if (!compute_path(s,d,start_set,dest_set,travel_line)) {
+					m_tpTravelLine.clear	();
+					Device.Statistic.TEST1.End();
+					return;
+				}
+				else {
+					saved					= travel_line;
+					travel_line.clear		();
+				}
+			}
+			else {
+				saved						= travel_line;
+				travel_line.clear			();
+			}
+			t								= d;
+		}
+		if (!saved.empty())
+			m_tpTravelLine.insert			(m_tpTravelLine.end(),saved.begin(),saved.end());
+
+//		s = t								= start;
+//		xr_vector<u32>::const_iterator		I = m_tpaNodes.begin();
+//		xr_vector<u32>::const_iterator		E = m_tpaNodes.end();
+//		for ( ; I != E; ) {
+//			// setting up destination
+//			if ((I + 1) != E) {
+//				d.vertex_id					= *I;
+//				d.position					= ai().level_graph().vertex_position(*I);
+//				d.direction.sub				(ai().level_graph().vertex_position(*(I + 1)),d.position);
+//				VERIFY						(!fis_zero(d.direction.magnitude()));
+//			}
+//			else
+//				d							= dest;
+//
+//			if (!compute_path(s,d,start_set,dest_set,travel_line)) {
+//				if (saved.empty()) {
+//					m_tpTravelLine.clear	();
+//					Device.Statistic.TEST1.End();
+//					return;
+//				}
+//				m_tpTravelLine.insert		(m_tpTravelLine.end(),saved.begin(),saved.end());
+//				saved.clear					();
+//				s							= t;
+//				VERIFY						(!fis_zero(s.direction.magnitude()));
+//			}
+//			else {
+//				saved						= travel_line;
+//				travel_line.clear			();
+//				++I;
+//			}
+//			t								= d;
+//		}
+//		if (!saved.empty())
+//			m_tpTravelLine.insert			(m_tpTravelLine.end(),saved.begin(),saved.end());
+	}
+	
+	Device.Statistic.TEST1.End				();
 }
 
+#endif // AI_COMPILER
 #endif // DEBUG
-#endif

@@ -194,12 +194,18 @@ private:
 	xr_vector<u32>		m_tpaNodes;
 	xr_vector<Fvector>	m_tpaTempPath;
 public:
-	struct SPathPoint {
-		Fvector			position;
-		Fvector			direction;
+	struct STravelParams {
 		float			linear_velocity;
 		float			angular_velocity; 
+	};
+
+	struct STravelPoint {
+		Fvector			position;
 		u32				vertex_id;
+	};
+
+	struct SPathPoint : public STravelParams, public STravelPoint {
+		Fvector			direction;
 	};
 
 	struct SCirclePoint {
@@ -225,7 +231,8 @@ public:
 			void	draw_oriented_bounding_box	(Fmatrix &T, Fvector &half_dim, u32 C,	u32 C1) const;
 			void	draw_travel_line			() const;
 			void	compute_travel_line			(xr_vector<u32> &path, u32 start_vertex_id, u32 finish_vertex_id) const;
-			void	compute_path				();
+			bool	compute_path				(STrajectoryPoint &start, STrajectoryPoint &dest, xr_vector<CLevelGraph::STravelParams>	&start_set, xr_vector<CLevelGraph::STravelParams> &dest_set, xr_vector<Fvector> &m_tpTravelLine);
+			void	build_detail_path			();
 			void	draw_dynamic_obstacles		() const;
 #endif
 #endif

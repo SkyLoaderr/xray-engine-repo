@@ -359,38 +359,39 @@ bool CLevelGraph::create_straight_PTN_path(u32 start_vertex_id, const Fvector &s
 			dwCurNode			= saved_index;
 		}
 		else {
-			int					node_id;
-			begin				(dwCurNode,I,E);
-			bool				bOk = false;
-			for ( ; I != E; ++I) {
-				node_id			= value(dwCurNode,I);
-				if (!valid_vertex_id(node_id))
-					continue;
-				CLevelGraph::CVertex *tpLastNode = vertex(node_id);
-				if (inside(tpLastNode,finish_point)) {
-					SContour			tNextContour;
-					SSegment			tNextSegment;
-					contour				(tNextContour,node_id);
-					intersect			(tNextSegment,tNextContour,_contour);
-					Fvector				tAdditionalPoint = finish_point.distance_to_xz(tNextSegment.v1) < finish_point.distance_to_xz(tNextSegment.v2) ? tNextSegment.v1 : tNextSegment.v2;
-					tAdditionalPoint.y	= vertex_plane_y(vertex(dwCurNode),tAdditionalPoint.x,tAdditionalPoint.z);
-
-					tpaOutputPoints.push_back(tAdditionalPoint);
-					tpaOutputNodes.push_back(node_id);
-
-					fCurDistance		= fDistance;
-					dwCurNode			= node_id;
-					bOk					= true;
-					break;
-				}
-			}
-			if (!bOk)
+//			int					node_id;
+//			begin				(dwCurNode,I,E);
+//			bool				bOk = false;
+//			for ( ; I != E; ++I) {
+//				node_id			= value(dwCurNode,I);
+//				if (!valid_vertex_id(node_id))
+//					continue;
+//				CLevelGraph::CVertex *tpLastNode = vertex(node_id);
+//				if (inside(tpLastNode,finish_point)) {
+//					SContour			tNextContour;
+//					SSegment			tNextSegment;
+//					contour				(tNextContour,node_id);
+//					intersect			(tNextSegment,tNextContour,_contour);
+//					Fvector				tAdditionalPoint = finish_point.distance_to_xz(tNextSegment.v1) < finish_point.distance_to_xz(tNextSegment.v2) ? tNextSegment.v1 : tNextSegment.v2;
+//					tAdditionalPoint.y	= vertex_plane_y(vertex(dwCurNode),tAdditionalPoint.x,tAdditionalPoint.z);
+//
+//					tpaOutputPoints.push_back(tAdditionalPoint);
+//					tpaOutputNodes.push_back(node_id);
+//
+//					fCurDistance		= fDistance;
+//					dwCurNode			= node_id;
+//					bOk					= true;
+//					break;
+//				}
+//			}
+//			if (!bOk)
 				return(false);
 		}
 	}
 
 	if (inside(vertex(dwCurNode),finish_point)) {
 		tpaOutputPoints.push_back(finish_point);
+		tpaOutputPoints.back().y = vertex_plane_y(dwCurNode,finish_point.x,finish_point.z);
 		tpaOutputNodes.push_back(dwCurNode);
 		return(true);
 	}
