@@ -31,7 +31,6 @@
 
 #pragma warning(default:4244)
 #pragma warning(default:4995)
-#pragma warning(default:4530)
 #pragma warning(default:4267)
 
 typedef lua_State CLuaVirtualMachine;

@@ -441,7 +441,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
     check_pathes	();
 
 	// correct path
-	string_path		fname,fname_copy;
+	string_path		fname;
 	strcpy			(fname,_fname);
 	strlwr			(fname);
 	if (path&&path[0]) update_path(fname,path,fname);
@@ -461,6 +461,7 @@ IReader* CLocatorAPI::r_open	(LPCSTR path, LPCSTR _fname)
 		// Normal file, 100% full path - check cache
 		// Release don't need this at all
 #ifdef	DEBUG
+		string_path	fname_copy;
 		if (pathes.size()>1)
 		{
 			LPCSTR		path_base		= get_path	("$server_root$")->m_Path;

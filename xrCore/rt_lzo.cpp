@@ -794,7 +794,8 @@ static lzo_bool basic_integral_check(void)
 	COMPILE_TIME_ASSERT(SIZE_T_MAX     == LZO_UTYPE_MAX(sizeof(size_t)));
 #endif
 
-	r &= __lzo_assert(LZO_BYTE(257) == 1);
+	// there is no hardware when following can fail:
+	// r &= __lzo_assert(LZO_BYTE(257) == 1);
 
 	return r;
 }

@@ -556,7 +556,7 @@ bool CSkeletonAnimated::LoadMotions(LPCSTR N, IReader *data)
                     }
                     part_bone_cnt		= part_bone_cnt + (u16)PART.bones.size();
                 }
-			    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=i;
+			    for (u32 i=0; i<bones->size(); i++) rm_bones[i]=u16(i);
             }else{
                 R_ASSERT3(vers==xrOGF_SMParamsVersion,"Invalid OGF/OMF version:",N);
                 // partitions
