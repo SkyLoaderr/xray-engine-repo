@@ -258,40 +258,40 @@
 					RelativePath=".\Config\gameplay\info_l01escape.xml">
 				</File>
 				<File
-					RelativePath=".\info_l02garbage.xml">
+					RelativePath=".\Config\gameplay\info_l02garbage.xml">
 				</File>
 				<File
-					RelativePath=".\info_l03agroprom.xml">
+					RelativePath=".\Config\gameplay\info_l03agroprom.xml">
 				</File>
 				<File
-					RelativePath=".\info_l04darkdolina.xml">
+					RelativePath=".\Config\gameplay\info_l04darkdolina.xml">
 				</File>
 				<File
-					RelativePath=".\info_l05rostok.xml">
+					RelativePath=".\Config\gameplay\info_l05rostok.xml">
 				</File>
 				<File
-					RelativePath=".\info_l06yantar.xml">
+					RelativePath=".\Config\gameplay\info_l06yantar.xml">
 				</File>
 				<File
-					RelativePath=".\info_l07military.xml">
+					RelativePath=".\Config\gameplay\info_l07military.xml">
 				</File>
 				<File
-					RelativePath=".\info_l08deadcity.xml">
+					RelativePath=".\Config\gameplay\info_l08deadcity.xml">
 				</File>
 				<File
-					RelativePath=".\info_l09marshes.xml">
+					RelativePath=".\Config\gameplay\info_l09marshes.xml">
 				</File>
 				<File
-					RelativePath=".\info_l10radar.xml">
+					RelativePath=".\Config\gameplay\info_l10radar.xml">
 				</File>
 				<File
-					RelativePath=".\info_l11pripyat.xml">
+					RelativePath=".\Config\gameplay\info_l11pripyat.xml">
 				</File>
 				<File
-					RelativePath=".\info_l12stanciya.xml">
+					RelativePath=".\Config\gameplay\info_l12stanciya.xml">
 				</File>
 				<File
-					RelativePath=".\info_l13generators.xml">
+					RelativePath=".\Config\gameplay\info_l13generators.xml">
 				</File>
 				<File
 					RelativePath=".\Config\gameplay\info_lchanger_ico.xml">
@@ -534,10 +534,10 @@
 					RelativePath=".\Config\ui\map_character.xml">
 				</File>
 				<File
-					RelativePath=".\Config\ui\motion_icon.xml">
+					RelativePath=".\motion_icon.xml">
 				</File>
 				<File
-					RelativePath=".\motion_icon.xml">
+					RelativePath=".\Config\ui\motion_icon.xml">
 				</File>
 				<File
 					RelativePath=".\Config\ui\news.xml">
