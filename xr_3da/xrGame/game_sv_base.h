@@ -69,6 +69,9 @@ public:
 	virtual		void				OnTeamScore				(u32 team)						{};				// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};				// ничья
 
+	virtual		void				OnHit					(u16 id_hitter, u16 id_hitted, NET_Packet& P);	//кто-то получил Hit
+	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P) = 0; //игрок получил Hit
+
 	// Main
 	virtual		void				Create					(LPSTR &options);
 	virtual		void				Update					();

@@ -131,7 +131,7 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 	case GE_HIT:
 		{
 			// Parse message
-			u16					/*id_dest		=	destination,*/ id_src;
+			u16					id_dest		=	destination, id_src;
 			P.r_u16				(id_src);
 			/*CSE_Abstract*	e_dest		= game->get_entity_from_eid	(id_dest);*/	// кто повредился
 			CSE_Abstract*		e_src		= game->get_entity_from_eid	(id_src	); if(!e_src) break; // @@@ WT		// благодаря кому
@@ -139,6 +139,11 @@ void xrServer::Process_event	(NET_Packet& P, DPNID sender)
 //			xrClientData*		c_from		= ID_to_client	(sender);
 //			R_ASSERT			(c_src == c_from);							// assure client ownership of event
 
+//			CSE_Abstract*		e_hitter = e_src;
+//			CSE_Abstract*		e_hitted = receiver;
+
+			game->OnHit(id_src, id_dest, P);
+			
 			// Signal just to destination (тому, кто повредился)
 			SendBroadcast		(0xffffffff,P,MODE);
 		}

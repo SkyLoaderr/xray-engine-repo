@@ -35,6 +35,7 @@ public:
 
 	virtual		void				OnTeamScore				(u32 /**team/**/)						{};		// команда выиграла
 	virtual		void				OnTeamsInDraw			()								{};		// ничья
+	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P) {}; //игрок получил Hit
 
 	virtual		BOOL				OnTouch					(u16 eid_who, u16 eid_what);
 	virtual		BOOL				OnDetach				(u16 eid_who, u16 eid_what);

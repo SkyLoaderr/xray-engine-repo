@@ -425,3 +425,19 @@ bool game_sv_GameState::change_level		(NET_Packet &net_packet, DPNID sender)
 {
 	return						(true);
 }
+
+void game_sv_GameState::OnHit					(u16 id_hitter, u16 id_hitted, NET_Packet& P)
+{
+	CSE_Abstract*		e_hitter		= get_entity_from_eid	(id_hitter	);
+	CSE_Abstract*		e_hitted		= get_entity_from_eid	(id_hitted	);
+	if (!e_hitter || !e_hitted) return;
+
+	CSE_Abstract*		a_hitter		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitter);
+	CSE_Abstract*		a_hitted		= dynamic_cast <CSE_ALifeCreatureActor*> (e_hitted);
+
+	if (a_hitted && a_hitter)
+	{
+		OnPlayerHitPlayer(id_hitter, id_hitted, P);
+		return;
+	};
+};

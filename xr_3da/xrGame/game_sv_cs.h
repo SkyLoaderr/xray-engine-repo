@@ -35,6 +35,7 @@ public:
 
 	virtual		void				OnFraglimitExceed		()								{};
 	virtual		void				OnTimelimitExceed		();
+	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P) {}; //игрок получил Hit
 
 	// Mains
 	virtual		void				Update					();

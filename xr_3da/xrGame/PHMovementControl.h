@@ -154,7 +154,7 @@ public:
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
 	const Fbox*			Boxes			( )			{return boxes;}
-	float				FootRadius		( )			{if(m_character)return m_character->FootRadius();}
+	float				FootRadius		( )			{if(m_character)return m_character->FootRadius(); else return 0.f;};
 	//const Fvector&		FootExtent		( )			{return vFootExt;}
 	void				SetBox			(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
 
