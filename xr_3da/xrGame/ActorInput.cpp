@@ -52,7 +52,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 				}
 			}
 			//обыск трупа
-			else
+			else if(Level().IR_GetKeyState(DIK_LSHIFT))
 			{
 				//только если находимся в режиме single
 				CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -61,7 +61,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 												 dynamic_cast<CGameObject*>(m_pPersonWeLookingAt));
 			}
 		}
-		else if(m_pCarWeLookingAt)
+		else if(m_pCarWeLookingAt && Level().IR_GetKeyState(DIK_LSHIFT))
 		{
 			//только если находимся в режиме single
 			CUIGameSP* pGameSP = dynamic_cast<CUIGameSP*>(HUD().GetUI()->UIGame());
@@ -211,6 +211,8 @@ void CActor::IR_OnMouseMove(int dx, int dy)
 
 void CActor::ActorUse()
 {
+	if(Level().IR_GetKeyState(DIK_LSHIFT)) return;
+
 	u16 element=BI_NONE;
 	CGameObject* object =pick_Object(element);	
 	if(use_Vehicle(object)) return;
