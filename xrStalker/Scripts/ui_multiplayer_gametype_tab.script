@@ -53,6 +53,18 @@ function gametype_tab:InitControls(x_pos, y_pos, width, height)
 	rbtn:SetAutoDelete(true)
 	rbtn:Init(rbtn_dm_rect.x, rbtn_dm_rect.y, rbtn_dm_rect.width, rbtn_dm_rect.height)
 	rgroup:AttachChild(rbtn)	
+	
+	rbtn = CUIRadioButton()
+	rbtn:SetWindowName("rbtn_tdm")
+	rbtn:SetAutoDelete(true)
+	rbtn:Init(rbtn_dm_rect.x, rbtn_tdm_rect.y, rbtn_tdm_rect.width, rbtn_tdm_rect.height)
+	rgroup:AttachChild(rbtn)	
+	
+	rbtn = CUIRadioButton()
+	rbtn:SetWindowName("rbtn_ah")
+	rbtn:SetAutoDelete(true)
+	rbtn:Init(rbtn_dm_rect.x, rbtn_ah_rect.y, rbtn_ah_rect.width, rbtn_ah_rect.height)
+	rgroup:AttachChild(rbtn)	
 end
 
 function gametype_tab:InitCallbacks()
