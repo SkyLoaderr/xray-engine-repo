@@ -16,12 +16,11 @@
 #pragma once
 
 #include <windows.h>
-//#include <tPixel.h>
 
-typedef HRESULT (__cdecl *MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
+typedef HRESULT (__cdecl*MIPcallback)(void * data, int miplevel, DWORD size, int width, int height, void * user_data);
 
 
-inline char * GetDXTCVersion() { return "Version 6.60";}
+inline char * GetDXTCVersion() { return "Version 6.50";}
 
 
 enum
@@ -78,8 +77,15 @@ enum
 
     dbPreviewDisableMIPmaps = 71,
 
-
-
+    // WarpSharp is currently disabled
+    /*dSharpenEdgeRadius = 71,
+    dSharpenLambda = 72,
+    dSharpenMu = 73,
+    dSharpenTheta = 74,
+    dbSharpenUseTwoComponents = 75,
+    dbSharpenNonMaximalSuppression = 76,
+    dbSharpenFlavor2 = 77,
+    dbSharpenSharpBlur = 78,*/
 
     dZoom = 79,
 
@@ -222,7 +228,11 @@ enum
     dXSharpenStrength = 2030,
     dXSharpenThreshold = 2031,
 
-
+    /*dWarpSharpenDisplaceAmount = 2032,
+    dWarpSharpenEdgeStrength = 2033,
+    dWarpSharpenRadius = 2034,
+    dWarpSharpenDepth = 2035,
+    dWarpSharpenElevation = 2036,*/
 
     dCustomFilterLast = dXSharpenThreshold,  
 
@@ -254,7 +264,22 @@ enum
 
 
 
+#ifndef TRGBA
+#define TRGBA
+typedef	struct	
+{
+	unsigned char	rgba[4];
+} rgba_t;
+#endif
 
+#ifndef TPIXEL
+#define TPIXEL
+union tPixel
+{
+  unsigned long u;
+  rgba_t c;
+};
+#endif
 
 
 // Windows handle for our plug-in (seen as a dynamically linked library):
@@ -346,9 +371,6 @@ enum TextureFormats
     k4  ,            // 16 bit color      
     kQ8W8V8U8,
     kA8L8,
-    kR32F,
-    kA32B32G32R32F,
-    kA16B16G16R16F,
     kTextureFormatLast
 };
 
@@ -376,25 +398,6 @@ enum NormalMapTypes
 
 #define CUSTOM_DATA_ENTRIES (CUSTOM_FILTER_ENTRIES+UNSHARP_ENTRIES+XSHARP_ENTRIES)
 #define SHARP_TIMES_ENTRIES 14
-
-typedef unsigned char Boolean;  // for photoshop scripting
-
-#ifndef TRGBA
-#define TRGBA
-typedef	struct	
-{
-	BYTE	rgba[4];
-} rgba_t;
-#endif
-
-#ifndef TPIXEL
-#define TPIXEL
-union tPixel
-{
-	unsigned long u;
-	rgba_t c;
-};
-#endif
 
 typedef struct CompressionOptions
 {
@@ -448,7 +451,26 @@ typedef struct CompressionOptions
         SharpenFilterType = kSharpenFilterNone;
         bErrorDiffusion = false;
 
+        // sharpening after creating each MIP map level
+        // warp sharp filter parameters
+        // look here for details:
+        //          
+        // "Enhancement by Image-Dependent Warping", 
+        // IEEE Transactions on Image Processing, 1999, Vol. 8, No. 8, S. 1063
+        // Nur Arad and Craig Gotsman
+        // http://www.cs.technion.ac.il/~gotsman/AmendedPubl/EnhancementByImage/EnhancementByI-D.pdf
 
+
+
+
+        /*SharpenEdgeRadius = 2;
+        SharpenLambda = 10.0f;
+        SharpenMu = 0.01f;
+        SharpenTheta =  0.75;
+        bSharpenUseTwoComponents = false;
+        bSharpenNonMaximalSuppression = false;
+        bSharpenSharpBlur = false;
+        bSharpenFlavor2 = false;*/
 
         // gamma value for Kaiser, Light Linear
         FilterGamma = 2.2f;
@@ -484,39 +506,40 @@ typedef struct CompressionOptions
     float           scaleX;
     float       scaleY;
 
-    long           MipMapType;         // dNoMipMaps, dSpecifyMipMaps, dUseExistingMipMaps, dGenerateMipMaps
+    //bool            bMipMapsInImage;    // mip have been loaded in during read
+    short           MipMapType;         // dNoMipMaps, dSpecifyMipMaps, dUseExistingMipMaps, dGenerateMipMaps
 
-    long           SpecifiedMipMaps;   // if dSpecifyMipMaps or dUseExistingMipMaps is set (number of mipmaps to generate)
+    short           SpecifiedMipMaps;   // if dSpecifyMipMaps or dUseExistingMipMaps is set (number of mipmaps to generate)
 
     MIPFilterTypes   MIPFilterType;      // for MIP map, select from MIPFilterTypes
 
-    Boolean        bBinaryAlpha;       // zero or one alpha channel
+    bool        bBinaryAlpha;       // zero or one alpha channel
 
     NormalMapTypes  normalMapType;  // 
 
-    Boolean        bAlphaBorder;       // make an alpha border
-    Boolean        bBorder;            // make a color border
+    bool        bAlphaBorder;       // make an alpha border
+    bool        bBorder;            // make a color border
     tPixel      BorderColor;        // color of border
 
 
-    Boolean        bFadeColor;         // fade color over MIP maps
-    Boolean        bFadeAlpha;         // fade alpha over MIP maps
+    bool        bFadeColor;         // fade color over MIP maps
+    bool        bFadeAlpha;         // fade alpha over MIP maps
 
     tPixel      FadeToColor;        // color to fade to
-    long         FadeToAlpha;        // alpha value to fade to (0-255)
+    int         FadeToAlpha;        // alpha value to fade to (0-255)
 
-    long         FadeToDelay;        // start fading after 'n' MIP maps
+    int         FadeToDelay;        // start fading after 'n' MIP maps
 
-    long         FadeAmount;         // percentage of color to fade in
+    int         FadeAmount;         // percentage of color to fade in
 
-    long         BinaryAlphaThreshold;  // When Binary Alpha is selected, below this value, alpha is zero
+    int         BinaryAlphaThreshold;  // When Binary Alpha is selected, below this value, alpha is zero
 
 
-    Boolean        bDitherColor;       // enable dithering during 16 bit conversion
-    Boolean        bDitherMIP0;// enable dithering during 16 bit conversion for each MIP level (after filtering)
-    Boolean        bGreyScale;         // treat image as a grey scale
-    Boolean        bQuickCompress;         // Fast compression scheme
-    Boolean        bForceDXT1FourColors;  // do not let DXT1 use 3 color representation
+    bool        bDitherColor;       // enable dithering during 16 bit conversion
+    bool        bDitherMIP0;// enable dithering during 16 bit conversion for each MIP level (after filtering)
+    bool        bGreyScale;         // treat image as a grey scale
+    bool        bQuickCompress;         // Fast compression scheme
+    bool        bForceDXT1FourColors;  // do not let DXT1 use 3 color representation
 
 
     // sharpening after creating each MIP map level
@@ -528,7 +551,26 @@ typedef struct CompressionOptions
 
     SharpenFilterTypes  SharpenFilterType; 
 
-    Boolean bErrorDiffusion; // diffuse error
+    bool bErrorDiffusion; // diffuse error
+
+
+
+    // warp sharp filter parameters (disabled)
+    // look here for details:
+    //          
+    // "Enhancement by Image-Dependent Warping", 
+    // IEEE Transactions on Image Processing, 1999, Vol. 8, No. 8, S. 1063
+    // Nur Arad and Craig Gotsman
+    // http://www.cs.technion.ac.il/~gotsman/AmendedPubl/EnhancementByImage/EnhancementByI-D.pdf
+
+    /*int SharpenEdgeRadius;
+    float SharpenLambda;
+    float SharpenMu;
+    float SharpenTheta;
+    bool bSharpenUseTwoComponents;
+    bool bSharpenNonMaximalSuppression;
+    bool bSharpenSharpBlur;
+    bool bSharpenFlavor2;*/
 
     // gamma value for Kaiser, Light Linear
     float FilterGamma;  // not implemented yet
@@ -537,12 +579,12 @@ typedef struct CompressionOptions
     // width of filter
     float FilterWidth;
 
-    Boolean bOverrideFilterWidth; // use the specified width,instead of the default
+    bool bOverrideFilterWidth; // use the specified width,instead of the default
 
 	TextureTypes 		TextureType;        
 	TextureFormats 		TextureFormat;	    
 
-    Boolean   bSwapRGB;           // swap color positions R and G
+    bool   bSwapRGB;           // swap color positions R and G
     void * user_data;
 
 } CompressionOptions;

@@ -4,12 +4,25 @@
 #include "ETextureParams.h"
 
 xr_token					tparam_token							[ ]={
-	{ "Box",				STextureParams::dMIPFilterBox				},
-	{ "Cubic",				STextureParams::dMIPFilterCubic				},
-	{ "Full DFT",			STextureParams::dMIPFilterFullDFT			},
-	{ "Kaiser",				STextureParams::dMIPFilterKaiser			},
-	{ "Linear light Kaiser",STextureParams::dMIPFilterLinearLightKaiser	},
-	{ "Advanced",			STextureParams::dMIPFilterAdvanced			},
+	{ "Advanced",			STextureParams::kMIPFilterAdvanced			},
+																		
+	{ "Point",				STextureParams::kMIPFilterPoint				},
+	{ "Box",				STextureParams::kMIPFilterBox				},
+	{ "Triangle",			STextureParams::kMIPFilterTriangle			},
+	{ "Quadratic",			STextureParams::kMIPFilterQuadratic			},
+	{ "Cubic",				STextureParams::kMIPFilterCubic				},
+																		
+	{ "Catrom",				STextureParams::kMIPFilterCatrom			},
+	{ "Mitchell",			STextureParams::kMIPFilterMitchell			},
+																		
+	{ "Gaussian",			STextureParams::kMIPFilterGaussian			},
+	{ "Sinc",				STextureParams::kMIPFilterSinc				},
+	{ "Bessel",				STextureParams::kMIPFilterBessel			},
+																		
+	{ "Hanning",			STextureParams::kMIPFilterHanning			},
+	{ "Hamming",			STextureParams::kMIPFilterHamming			},
+	{ "Blackman",			STextureParams::kMIPFilterBlackman			},
+	{ "Kaiser",				STextureParams::kMIPFilterKaiser			},
 	{ 0,					0											}
 };
 
@@ -25,7 +38,6 @@ xr_token					tfmt_token								[ ]={
 	{ "DXT1 Alpha",			STextureParams::tfADXT1						},
 	{ "DXT3",				STextureParams::tfDXT3						},
 	{ "DXT5",				STextureParams::tfDXT5						},
-	{ "16 bit (4:4:4:4)",	STextureParams::tf4444						},
 	{ "16 bit (1:5:5:5)",	STextureParams::tf1555						},
 	{ "16 bit (5:6:5)",		STextureParams::tf565						},
 	{ "32 bit (8:8:8:8)",	STextureParams::tfRGBA						},

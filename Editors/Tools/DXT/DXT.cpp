@@ -138,13 +138,10 @@ bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 // convert to Options
     CompressionOptions		nvOpt;
 	ZeroMemory				(&nvOpt,sizeof(nvOpt));
-//1	nvOpt.bMipMapsInImage	= false;
 
     if (fmt->flags.is(STextureParams::flGenerateMipMaps))	nvOpt.MipMapType=dGenerateMipMaps;
     else													nvOpt.MipMapType=dNoMipMaps;
     nvOpt.bBinaryAlpha	    = !!(fmt->flags.is(STextureParams::flBinaryAlpha));
-//1	nvOpt.bNormalMap		= 0;//fmt->type==STextureParams::ttNormalMap;
-//1	nvOpt.bDuDvMap			= 0;//fmt->type==STextureParams::ttDuDvMap;
     nvOpt.bAlphaBorder		= !!(fmt->flags.is(STextureParams::flAlphaBorder));
     nvOpt.bBorder			= !!(fmt->flags.is(STextureParams::flColorBorder));
     nvOpt.BorderColor.u		= fmt->border_color;
@@ -153,73 +150,87 @@ bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
     nvOpt.FadeToColor.u		= 0;//fmt->fade_color;
     nvOpt.FadeAmount		= 0;//fmt->fade_amount;
     nvOpt.bDitherColor		= !!(fmt->flags.is(STextureParams::flDitherColor));
-//1	nvOpt.bDitherEachMIPLevel=!!(fmt->flags.is(STextureParams::flDitherEachMIPLevel));
+	nvOpt.bDitherMIP0		= !!(fmt->flags.is(STextureParams::flDitherEachMIPLevel));
     nvOpt.bGreyScale		= !!(fmt->flags.is(STextureParams::flGreyScale));
 	nvOpt.TextureType		= (fmt->type==STextureParams::ttCubeMap)?kTextureTypeCube:kTextureType2D;
     switch(fmt->fmt){
-    case STextureParams::tfDXT1: 	nvOpt.TextureFormat = kDXT1; 	break;
-    case STextureParams::tfADXT1: 	nvOpt.TextureFormat = kDXT1a; 	break;
-    case STextureParams::tfDXT3: 	nvOpt.TextureFormat = kDXT3; 	break;
-    case STextureParams::tfDXT5: 	nvOpt.TextureFormat = kDXT5; 	break;
-    case STextureParams::tf4444: 	nvOpt.TextureFormat = k4444; 	break;
-    case STextureParams::tf1555: 	nvOpt.TextureFormat = k1555; 	break;
-    case STextureParams::tf565: 	nvOpt.TextureFormat = k565; 	break;
-    case STextureParams::tfRGB: 	nvOpt.TextureFormat = k888; 	break;
-    case STextureParams::tfRGBA: 	nvOpt.TextureFormat = k8888; 	break;
+    case STextureParams::tfDXT1				: 	nvOpt.TextureFormat = kDXT1	; 	break;
+    case STextureParams::tfADXT1			: 	nvOpt.TextureFormat = kDXT1a; 	break;
+    case STextureParams::tfDXT3				: 	nvOpt.TextureFormat = kDXT3	; 	break;
+    case STextureParams::tfDXT5				: 	nvOpt.TextureFormat = kDXT5	; 	break;
+	case STextureParams::tf4444				:
+    case STextureParams::tf1555				: 	nvOpt.TextureFormat = k1555	; 	break;
+    case STextureParams::tf565				: 	nvOpt.TextureFormat = k565	; 	break;
+    case STextureParams::tfRGB				: 	nvOpt.TextureFormat = k888	; 	break;
+    case STextureParams::tfRGBA				: 	nvOpt.TextureFormat = k8888	; 	break;
     }
-    switch(fmt->mip_filter){
-    case STextureParams::dMIPFilterBox:		nvOpt.MIPFilterType = kMIPFilterBox;	break;
-    case STextureParams::dMIPFilterCubic:	nvOpt.MIPFilterType = kMIPFilterCubic;	break;
-//1	case STextureParams::dMIPFilterFullDFT:	nvOpt.MIPFilterType = kMIPFilterFullDFT;break;
-    case STextureParams::dMIPFilterKaiser:	nvOpt.MIPFilterType = kMIPFilterKaiser; break;
-//1	case STextureParams::dMIPFilterLinearLightKaiser:	nvOpt.MIPFilterType = kMIPFilterLinearLightKaiser; break;
-    case STextureParams::dMIPFilterAdvanced: break;
+	
+	switch(fmt->mip_filter){
+	case STextureParams::kMIPFilterAdvanced	:	break;
+
+	case STextureParams::kMIPFilterPoint	:	nvOpt.MIPFilterType = kMIPFilterPoint		;	break;		
+	case STextureParams::kMIPFilterBox		:	nvOpt.MIPFilterType = kMIPFilterBox			;	break;
+	case STextureParams::kMIPFilterTriangle	:	nvOpt.MIPFilterType = kMIPFilterTriangle	;	break;	
+	case STextureParams::kMIPFilterQuadratic:	nvOpt.MIPFilterType = kMIPFilterQuadratic	;	break;	
+	case STextureParams::kMIPFilterCubic	:	nvOpt.MIPFilterType = kMIPFilterCubic		;	break;
+
+	case STextureParams::kMIPFilterCatrom	:	nvOpt.MIPFilterType = kMIPFilterCatrom		;	break;
+	case STextureParams::kMIPFilterMitchell	:	nvOpt.MIPFilterType = kMIPFilterMitchell	;	break;
+
+	case STextureParams::kMIPFilterGaussian	:	nvOpt.MIPFilterType = kMIPFilterGaussian	;	break;
+	case STextureParams::kMIPFilterSinc		:	nvOpt.MIPFilterType = kMIPFilterSinc		;	break;
+	case STextureParams::kMIPFilterBessel	:	nvOpt.MIPFilterType = kMIPFilterBessel		;	break;
+
+	case STextureParams::kMIPFilterHanning	:	nvOpt.MIPFilterType = kMIPFilterHanning		;	break;
+	case STextureParams::kMIPFilterHamming	:	nvOpt.MIPFilterType = kMIPFilterHamming		;	break;
+	case STextureParams::kMIPFilterBlackman	:	nvOpt.MIPFilterType = kMIPFilterBlackman	;	break;
+	case STextureParams::kMIPFilterKaiser	:	nvOpt.MIPFilterType = kMIPFilterKaiser		;	break;
 	}
 //-------------------
  
-	if ((fmt->flags.is(STextureParams::flGenerateMipMaps))&&
-		((STextureParams::dMIPFilterAdvanced==fmt->mip_filter)||
-		(fmt->flags.is(STextureParams::flFadeToColor))||
-		(fmt->flags.is(STextureParams::flFadeToAlpha))))
+	if ((fmt->flags.is(STextureParams::flGenerateMipMaps))&&((STextureParams::kMIPFilterAdvanced==fmt->mip_filter)||
+		(fmt->flags.is(STextureParams::flFadeToColor))||(fmt->flags.is(STextureParams::flFadeToAlpha))))
 	{
-		nvOpt.MipMapType=dUseExistingMipMaps;
+		nvOpt.MipMapType	= dUseExistingMipMaps;
 
-		u8* pImagePixels=0;
-		int numMipmaps=GetPowerOf2Plus1(__min(w,h));
-		u32 line_pitch=w*2*4;
-		pImagePixels	= xr_alloc<u8>(line_pitch*h);
-		u32 w_offs=0;
-		u32 dwW=w;
-		u32 dwH=h;
-		u32 dwP=pitch;
-		u32* pLastMip = xr_alloc<u32>(w*h*4);
-		CopyMemory(pLastMip,raw_data,w*h*4);
-		FillRect(pImagePixels,(u8*)pLastMip,w_offs,pitch,dwH,line_pitch);
-		w_offs+=dwP;
+		u8* pImagePixels	= 0;
+		int numMipmaps		= GetPowerOf2Plus1(__min(w,h));
+		u32 line_pitch		= w*2*4;
+		pImagePixels		= xr_alloc<u8>(line_pitch*h);
+		u32 w_offs			= 0;
+		u32 dwW				= w;
+		u32 dwH				= h;
+		u32 dwP				= pitch;
+		u32* pLastMip		= xr_alloc<u32>(w*h*4);
+		CopyMemory			(pLastMip,raw_data,w*h*4);
+		FillRect			(pImagePixels,(u8*)pLastMip,w_offs,pitch,dwH,line_pitch);
+		w_offs				+= dwP;
 
-		float	blend = 0;
-		float	d = (float(fmt->fade_amount)/100.f)*numMipmaps-1;
-		if (d<1.f) d=1.f;
+		float	blend		= 0;
+		float	d			= (float(fmt->fade_amount)/100.f)*numMipmaps-1;
+		if (d<1.f) d		= 1.f;
 		for (int i=1; i<numMipmaps; i++){
 			if ((fmt->flags.is(STextureParams::flFadeToColor))||(fmt->flags.is(STextureParams::flFadeToAlpha))){
-				blend = i/d;
+				blend		= i/d;
 				if (blend>1.f) blend=1.f;
 			}
-			u32* pNewMip = Build32MipLevel(dwW,dwH,dwP,pLastMip,fmt,blend);
-			FillRect(pImagePixels,(u8*)pNewMip,w_offs,dwP,dwH,line_pitch);
-			xr_free(pLastMip); pLastMip=pNewMip; pNewMip=0;
-			w_offs+=dwP;
+			u32* pNewMip	= Build32MipLevel(dwW,dwH,dwP,pLastMip,fmt,blend);
+			FillRect		(pImagePixels,(u8*)pNewMip,w_offs,dwP,dwH,line_pitch);
+			xr_free			(pLastMip); 
+			pLastMip		= pNewMip; 
+			pNewMip			= 0;
+			w_offs			+= dwP;
 		}
-		xr_free(pLastMip);
+		xr_free				(pLastMip);
 
-		hr = nvDXTcompress(pImagePixels, w*2, h, line_pitch, &nvOpt, depth, 0);
-		xr_free(pImagePixels);
+		hr					= nvDXTcompress(pImagePixels, w*2, h, line_pitch, &nvOpt, depth, 0);
+		xr_free				(pImagePixels);
 	}else{
-		hr = nvDXTcompress(raw_data, w, h, pitch, &nvOpt, depth, 0);
+		hr					= nvDXTcompress(raw_data, w, h, pitch, &nvOpt, depth, 0);
 	}
-    _close(gFileOut);
-	if (hr!=DD_OK) return false;
-	else return true;
+    _close					(gFileOut);
+	if (hr!=DD_OK)			return false;
+	else					return true;
 }
 
 extern bool DXTCompressBump(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);

@@ -40,13 +40,27 @@ struct XR_EPROPS_API STextureParams{
 		tmForceU32			= u32(-1)
     };
 	enum{
-        dMIPFilterBox				= 0,
-        dMIPFilterCubic				= 1,
-        dMIPFilterFullDFT			= 2,
-        dMIPFilterKaiser			= 3,
-        dMIPFilterLinearLightKaiser	= 4,
-		dMIPFilterAdvanced			= 5
+		kMIPFilterAdvanced			= 5,
+
+		kMIPFilterPoint				= 2,    
+		kMIPFilterBox				= 0,      
+		kMIPFilterTriangle			= 3, 
+		kMIPFilterQuadratic			= 4,
+		kMIPFilterCubic				= 1,    
+
+		kMIPFilterCatrom			= 6,   
+		kMIPFilterMitchell			= 7,
+
+		kMIPFilterGaussian			= 8,
+		kMIPFilterSinc				= 9,
+		kMIPFilterBessel			= 10,
+
+		kMIPFilterHanning			= 11,
+		kMIPFilterHamming			= 12,
+		kMIPFilterBlackman			= 13,
+		kMIPFilterKaiser			= 14,
 	};
+
 	enum{
 		flGenerateMipMaps	= (1<<0),
 		flBinaryAlpha		= (1<<1),
@@ -91,10 +105,11 @@ struct XR_EPROPS_API STextureParams{
 	{
 		ZeroMemory		(this,sizeof(STextureParams));
 		flags.set		(flGenerateMipMaps|flDitherColor,TRUE);
-		mip_filter		= dMIPFilterBox;
+		mip_filter		= kMIPFilterBox;
         width			= 0;
         height			= 0;
         detail_scale	= 1;
+		material		= tmBlin_Phong;
         bump_virtual_height = 0.05f;
 	}
     IC BOOL HasAlpha(){ // исходная текстура содержит альфа канал
