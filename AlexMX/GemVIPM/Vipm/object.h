@@ -79,12 +79,7 @@ struct MyPt
 
 	DWORD dwIndex;
 
-	int iMaterialNumber;	// Which material this belongs to.
-
-
-
 	// Temporary data.
-
 	MeshPt *pTempPt;	// Temporary data.
 
 	D3DXVECTOR4		v4ScrPos;		// Screen pos of this vert.
@@ -94,16 +89,12 @@ struct MyPt
 
 struct MyEdge
 {
-	int iMaterialNumber;	// Which material this belongs to.
-
 	// Temporary data.
 	BOOL			bFrontFaced;	// TRUE if not backfaced.
 };
 
 struct MyTri
 {
-	int iMaterialNumber;	// Which material this belongs to.
-
 	// Temporary data.
 	BOOL			bFrontFaced;	// TRUE if not backfaced.
 
@@ -113,11 +104,6 @@ struct MyTri
 	MeshTri *pOriginalTri;
 };
 
-
-// Some defines that mesh.h wants.
-#define MESHCTRL_EDGES_ALWAYS_ADDED_BEFORE_TRIS 1
-#define MESHCTRL_PTS_ALWAYS_ADDED_BEFORE_TRIS 1
-#define MESHCTRL_PTS_ALWAYS_ADDED_BEFORE_EDGES 1
 
 // The data that gets stored inside mesh.h's tris, pts and edges.
 #define MESHTRI_APP_DEFINED		MyTri	mytri;
@@ -293,15 +279,11 @@ struct Quad
 // The various types of VIPM
 enum VIPMTypeEnum
 {
-	VIPMType_Vanilla = 0,		// 0 must always be the first one.
 	VIPMType_SlidingWindow,
-	VIPMType_MultilevelSkiplist,
 	VIPMType_Last,				// bogus one to show the end of the list.
 };
 
 char *VIPMTypeName ( VIPMTypeEnum type );
-
-
 
 
 
@@ -368,7 +350,7 @@ public:
 	virtual char *GetTypeName ( void ) = 0;
 
 	// Renders the given material of the object with the given level of detail.
-	virtual void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iMaterialNumber, int iLoD ) = 0;
+	virtual void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iLoD ) = 0;
 
 	// True if this instance needs to redo its data, because the related optimesh has changed.
 	virtual BOOL bNeedsUpdate ( void ) = 0;
@@ -455,9 +437,9 @@ struct Object
 
 	// Renders the given material of the current state of the object.
 	// Set iSlidingWindowLevel to -1 if you don't care about level numbers.
-	void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iMaterialNumber, int iSlidingWindowLevel = -1 );
+	void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel = -1 );
 
-	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, int iMaterialNumber, BOOL bIgnoreBackFaced );
+	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, BOOL bIgnoreBackFaced );
 
 	// Creates and performs a collapse of pptBinned to pptKept.
 	// Make sure they actually share an edge!
@@ -521,11 +503,11 @@ struct ObjectInstance
 	~ObjectInstance ( void );
 
 
-	void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iMaterialNumber, int iSlidingWindowLevel = -1, BOOL bShowOptiMesh = FALSE );
+	void RenderCurrentObject ( LPDIRECT3DDEVICE8 pd3ddev, int iSlidingWindowLevel = -1, BOOL bShowOptiMesh = FALSE );
 
-	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, int iMaterialNumber, BOOL bIgnoreBackFaced )
+	void RenderCurrentEdges ( LPDIRECT3DDEVICE8 pd3ddev, BOOL bIgnoreBackFaced )
 	{
-		pObj->RenderCurrentEdges ( pd3ddev, iMaterialNumber, bIgnoreBackFaced );
+		pObj->RenderCurrentEdges ( pd3ddev, bIgnoreBackFaced );
 	}
 
 	void SetNumCollapses ( int iNum );

@@ -419,7 +419,7 @@ CMyD3DApplication::CMyD3DApplication()
 	m_bCreateCollapseMode = TRUE;
 	m_fSlidingWindowErrorTolerance = 0.1f;	// 10%
 	m_iFindBestErrorCountdown = 0;
-	m_vteCurrentDisplayStyle = VIPMType_Vanilla;
+	m_vteCurrentDisplayStyle = VIPMType_SlidingWindow;
 
 	m_iTargetNumCollapses = 0;
 	m_fTargetErrorFactor = 1.0f;
@@ -614,8 +614,6 @@ void DrawScreenSpaceEdge ( D3DXVECTOR4 &vecBig, D3DXVECTOR4 &vecSmall )
 //-----------------------------------------------------------------------------
 HRESULT CMyD3DApplication::Render()
 {
-
-
 	ObjectInstance *pFirstObjInst = m_ObjectInstRoot.ListNext();
 	ASSERT ( pFirstObjInst != NULL );
 	Object *pFirstObj = pFirstObjInst->pObj;
@@ -1015,11 +1013,11 @@ HRESULT CMyD3DApplication::Render()
 			m_pd3dDevice->SetRenderState ( D3DRS_TEXTUREFACTOR, 0xff000000 );
 			m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, FALSE );
 
-			pObjInst->RenderCurrentEdges ( m_pd3dDevice, 0, m_bIgnoreBackFaced );
+			pObjInst->RenderCurrentEdges ( m_pd3dDevice, m_bIgnoreBackFaced );
 			// Render visible edges again in a different colour.
 			m_pd3dDevice->SetRenderState ( D3DRS_TEXTUREFACTOR, 0xffffff00 );
 			m_pd3dDevice->SetRenderState( D3DRS_ZENABLE, TRUE );
-			pObjInst->RenderCurrentEdges ( m_pd3dDevice, 0, m_bIgnoreBackFaced );
+			pObjInst->RenderCurrentEdges ( m_pd3dDevice, m_bIgnoreBackFaced );
 
 
 			if ( pFirstObj->bSomethingHappened )
@@ -1262,7 +1260,7 @@ HRESULT CMyD3DApplication::Render()
 					pObjInst->SetNumCollapses ( m_iTargetNumCollapses );
 				}
 
-				pObjInst->RenderCurrentObject ( m_pd3dDevice, 0, -1, TRUE );
+				pObjInst->RenderCurrentObject ( m_pd3dDevice, -1, TRUE );
 
 
 				if ( pObjInst == pFirstObjInst )
@@ -2106,7 +2104,7 @@ LRESULT CMyD3DApplication::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam,
 				m_vteCurrentDisplayStyle = (VIPMTypeEnum)( ((int)m_vteCurrentDisplayStyle) + 1 );
 				if ( m_vteCurrentDisplayStyle == VIPMType_Last )
 				{
-					m_vteCurrentDisplayStyle = VIPMType_Vanilla;
+					m_vteCurrentDisplayStyle = VIPMType_SlidingWindow;
 				}
 
 				for ( ObjectInstance *pOI = m_ObjectInstRoot.ListNext(); pOI != NULL; pOI = pOI->ListNext() )

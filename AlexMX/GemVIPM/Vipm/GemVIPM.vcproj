@@ -23,7 +23,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\d3d8frame\include,..\MyInc"
+				AdditionalIncludeDirectories="MyInc"
 				PreprocessorDefinitions="_DEBUG;DEBUG;WIN32;_WINDOWS;DXVERSION=8"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="5"
@@ -95,7 +95,7 @@
 				FavorSizeOrSpeed="1"
 				OmitFramePointers="TRUE"
 				OptimizeForProcessor="3"
-				AdditionalIncludeDirectories="..\d3d8frame\include,..\MyInc"
+				AdditionalIncludeDirectories="MyInc"
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;DXVERSION=8"
 				StringPooling="TRUE"
 				RuntimeLibrary="2"
@@ -161,73 +161,40 @@
 			Name="MyInc"
 			Filter="">
 			<File
-				RelativePath="..\MyInc\mesh.h">
+				RelativePath=".\MyInc\mesh.h">
 			</File>
 			<File
-				RelativePath="..\MyInc\TomsD3DLib.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\MyInc\TomsD3DLib.cpp">
 			</File>
 			<File
-				RelativePath="..\MyInc\TomsD3DLib.h">
+				RelativePath=".\MyInc\TomsD3DLib.h">
 			</File>
 			<File
-				RelativePath="..\MyInc\TomsLib.cpp">
-				<FileConfiguration
-					Name="Debug|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="0"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""
-						BasicRuntimeChecks="3"
-						BrowseInformation="1"/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32">
-					<Tool
-						Name="VCCLCompilerTool"
-						Optimization="2"
-						AdditionalIncludeDirectories=""
-						PreprocessorDefinitions=""/>
-				</FileConfiguration>
+				RelativePath=".\MyInc\TomsLib.cpp">
 			</File>
 			<File
-				RelativePath="..\MyInc\TomsLib.h">
+				RelativePath=".\MyInc\TomsLib.h">
 			</File>
 		</Filter>
 		<Filter
 			Name="D3D files"
 			Filter="">
 			<File
-				RelativePath="..\D3D8FRAME\include\d3dapp.h">
+				RelativePath=".\MyInc\d3dapp.h">
 			</File>
 			<File
-				RelativePath="..\D3D8FRAME\include\d3dfont.h">
+				RelativePath=".\MyInc\d3dfont.h">
 			</File>
 			<File
-				RelativePath="..\D3D8FRAME\include\d3dutil.h">
+				RelativePath=".\MyInc\d3dutil.h">
 			</File>
 			<File
-				RelativePath="..\D3D8FRAME\include\dxutil.h">
+				RelativePath=".\MyInc\dxutil.h">
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\D3D8frame.lib">
+		</File>
 		<File
 			RelativePath="DirectX.ico">
 		</File>
