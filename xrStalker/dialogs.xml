@@ -21,7 +21,7 @@
 	<dialog id="trader_job1">
 		<phrase_list>
 			<phrase id="0">
-				<text>Артефакты?</text>
+				<text>Артефакты1?</text>
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
@@ -34,7 +34,7 @@
 	<dialog id="trader_job2">
 		<phrase_list>
 			<phrase id="0">
-				<text>Артефакты?</text>
+				<text>Артефакты2?</text>
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
@@ -48,7 +48,7 @@
 	<dialog id="trader_job3">
 		<phrase_list>
 			<phrase id="0">
-				<text>Артефакты?</text>
+				<text>Артефакты3?</text>
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
@@ -62,7 +62,7 @@
 	<dialog id="trader_job4">
 		<phrase_list>
 			<phrase id="0">
-				<text>Артефакты?</text>
+				<text>Артефакты4?</text>
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
@@ -76,7 +76,7 @@
 	<dialog id="trader_job5">
 		<phrase_list>
 			<phrase id="0">
-				<text>Артефакты?</text>
+				<text>Артефакты5?</text>
 				<next>1</next>
 			</phrase>
 			<phrase id="1">
