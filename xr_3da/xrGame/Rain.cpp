@@ -49,6 +49,8 @@ CEffect_Rain::~CEffect_Rain()
 	Device.seqDevDestroy.Remove	(this);
 
 	OnDeviceDestroy		();
+	Device.Shader.Delete(SH);
+	p_destroy			();
 }
 
 void	CEffect_Rain::OnDeviceDestroy	()
