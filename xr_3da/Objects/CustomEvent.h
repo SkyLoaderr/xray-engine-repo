@@ -6,7 +6,11 @@
 #define AFX_CUSTOMEVENT_H__092059D7_D2E8_4BC3_95C5_F2B3D48AAE5C__INCLUDED_
 #pragma once
 
-class CCustomEvent		: public CObject, public pureRender
+class CCustomEvent		: 
+	public CObject
+#ifdef DEBUG
+	,public pureRender
+#endif
 {
 private:
 	typedef CObject			inherited;

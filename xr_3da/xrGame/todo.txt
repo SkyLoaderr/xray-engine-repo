@@ -1,13 +1,13 @@
 	+ TODO: NET: Can't connect
 	+ TODO: Level-unload
 	+ TODO: ltx
-	. TODO: NET: Server Disconnect
+	+ TODO: NET: Server Disconnect
 	+ TODO: NET: Client Disconnect
+	. TODO: Weapons drop/take
+	. TODO: NET: Weapons drop/take
+	. TODO: NET: Weapons
+	
 	. TODO: Detail texturing
-
-
-
-
 
 
 --------------------------------------------------------

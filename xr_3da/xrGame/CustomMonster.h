@@ -17,7 +17,12 @@ class ENGINE_API CKinematics;
 class ENGINE_API CBoneInstance;
 class CWeaponList;
 
-class CCustomMonster : public CEntityAlive, public pureRender, public soundListener
+class CCustomMonster : 
+	public CEntityAlive, 
+	public soundListener
+#ifdef DEBUG
+	, public pureRender
+#endif
 {
 private:
 	typedef	CEntityAlive	inherited;

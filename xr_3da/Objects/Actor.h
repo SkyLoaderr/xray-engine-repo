@@ -18,7 +18,11 @@ class ENGINE_API CBlend;
 class CWeaponList;
 class CEffectorBobbing;
 
-class CActor: public CEntityAlive, public pureRender
+class CActor: 
+	public CEntityAlive
+#ifdef DEBUG
+	,public pureRender
+#endif
 {
 private:
 	typedef CEntityAlive	inherited;
