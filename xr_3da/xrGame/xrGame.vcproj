@@ -4000,6 +4000,12 @@
 										RelativePath=".\WeaponFakeGrenade.h">
 									</File>
 									<File
+										RelativePath=".\WeaponLightGrenade.cpp">
+									</File>
+									<File
+										RelativePath=".\WeaponLightGrenade.h">
+									</File>
+									<File
 										RelativePath=".\WeaponMagazined.cpp">
 									</File>
 									<File
