@@ -37,11 +37,11 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 		Application->Title 		= UI->EditorDesc();
         TfrmLog::CreateLog		();
 
-		xr_delete(frmSplash);
-        
 		Application->CreateForm(__classid(TfrmMain), &frmMain);
 		frmMain->SetHInst		(hInst);
 
+		xr_delete(frmSplash);
+        
 		Application->Run		();
 
 
