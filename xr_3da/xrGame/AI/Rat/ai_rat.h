@@ -143,7 +143,7 @@ class CAI_Rat : public CCustomMonster
 		virtual void  SelectAnimation			( const Fvector& _view, const Fvector& _move, float speed );
 		virtual void  Exec_Action				( float dt );
 		virtual void  Exec_Movement				( float dt );
-	 IC virtual bool  bfExecMovement			(){return(m_bAttackStarted && (!m_bAttackFinished));};
+	 IC virtual bool  bfExecMovement			(){return(true);};
 		static  void __stdcall SpinCallback(CBoneInstance* B);
 };
 		

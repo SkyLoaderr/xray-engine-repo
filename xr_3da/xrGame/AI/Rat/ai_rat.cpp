@@ -36,7 +36,7 @@ CAI_Rat::CAI_Rat()
 	m_dwLastUpdate = 0;
 	m_fSpin = 0.0;
 	m_fMultiplier = sinf(m_fSpin);
-	//AI_Path.m_bCollision = false;
+	AI_Path.m_bCollision = false;
 }
 
 CAI_Rat::~CAI_Rat()
