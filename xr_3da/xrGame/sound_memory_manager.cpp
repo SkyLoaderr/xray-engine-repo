@@ -117,12 +117,13 @@ void CSoundMemoryManager::add_sound_object(const CObject *object, int sound_type
 
 	// we do not want to save sounds from the teammates items
 	CEntityAlive	*me				= dynamic_cast<CEntityAlive*>(this);
-	if (object && object->H_Parent() && (dynamic_cast<const CEntityAlive*>(object->H_Parent())->g_Team() == me->g_Team()))
-		return;
+//	if (object && object->H_Parent() && (dynamic_cast<const CEntityAlive*>(object->H_Parent())->g_Team() == me->g_Team()))
+//	if (object && object->H_Parent() && (me->tfGetRelationType(dynamic_cast<const CEntityAlive*>(object->H_Parent())) == eRelationTypeFriend))
+//		return;
 
 	// we do not want ot save sounds from the teammates
 	const CEntityAlive	*entity_alive	= dynamic_cast<const CEntityAlive*>(object);
-	if (entity_alive && me && (entity_alive->g_Team() == me->g_Team()))
+	if (entity_alive && me && (me->tfGetRelationType(entity_alive) == ALife::eRelationTypeFriend))
 		return;
 
 	// we do not save sounds from the objects we see (?!)
