@@ -663,25 +663,29 @@ const AnsiString& CLocatorAPI::update_path(AnsiString& dest, LPCSTR initial, LPC
 
 int CLocatorAPI::get_file_age(LPCSTR nm)
 {
+	// проверить нужно ли пересканировать пути
+    check_pathes	();
+
 	files_it I 		= file_find(nm);
     return (I!=files.end())?I->modif:-1;
 }
 
 void CLocatorAPI::set_file_age(LPCSTR nm, int age)
 {
+	// проверить нужно ли пересканировать пути
+    check_pathes	();
+
+    // set file
+    _utimbuf	tm;
+    tm.actime	= age;
+    tm.modtime	= age;
+    R_ASSERT2	(0==_utime(nm,&tm),"Can't set file age.");
+    
+    // update record
 	files_it I 		= file_find(nm);
     if (I!=files.end()){
     	file& F		= (file&)*I;
     	F.modif		= age;
-        // actual update
-        _utimbuf	tm;
-        tm.actime	= age;
-        tm.modtime	= age;
-        R_ASSERT2	(0==_utime(nm,&tm),"Can't set file age.");
-/*
-        string256 err;
-        strcpy(err,_sys_errlist[errno]);
-*/
     }
 }
 

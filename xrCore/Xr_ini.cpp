@@ -478,12 +478,12 @@ void	CInifile::w_s32			( LPCSTR S, LPCSTR L, s32				V, LPCSTR comment )
 }
 void	CInifile::w_float		( LPCSTR S, LPCSTR L, float				V, LPCSTR comment )
 {
-	string128 temp; sprintf		(temp,"%.3f",V);
+	string128 temp; sprintf		(temp,"%f",V);
 	w_string	(S,L,temp,comment);
 }
 void	CInifile::w_fcolor		( LPCSTR S, LPCSTR L, const Fcolor&		V, LPCSTR comment )
 {
-	string128 temp; sprintf		(temp,"%.3f,%.3f,%.3f,%.3f", V.r, V.g, V.b, V.a);
+	string128 temp; sprintf		(temp,"%f,%f,%f,%f", V.r, V.g, V.b, V.a);
 	w_string	(S,L,temp,comment);
 }
 
@@ -512,19 +512,19 @@ void	CInifile::w_ivector4	( LPCSTR S, LPCSTR L, const Ivector4&	V, LPCSTR commen
 }
 void	CInifile::w_fvector2	( LPCSTR S, LPCSTR L, const Fvector2&	V, LPCSTR comment )
 {
-	string128 temp; sprintf		(temp,"%.3f,%.3f", V.x, V.y);
+	string128 temp; sprintf		(temp,"%f,%f", V.x, V.y);
 	w_string	(S,L,temp,comment);
 }
 
 void	CInifile::w_fvector3	( LPCSTR S, LPCSTR L, const Fvector3&	V, LPCSTR comment )
 {
-	string128 temp; sprintf		(temp,"%.3f,%.3f,%.3f", V.x, V.y, V.z);
+	string128 temp; sprintf		(temp,"%f,%f,%f", V.x, V.y, V.z);
 	w_string	(S,L,temp,comment);
 }
 
 void	CInifile::w_fvector4	( LPCSTR S, LPCSTR L, const Fvector4&	V, LPCSTR comment )
 {
-	string128 temp; sprintf		(temp,"%.3f,%.3f,%.3f,%.3f", V.x, V.y, V.z, V.w);
+	string128 temp; sprintf		(temp,"%f,%f,%f,%f", V.x, V.y, V.z, V.w);
 	w_string	(S,L,temp,comment);
 }
 
