@@ -655,6 +655,7 @@ function add_to_binder (object, ini, scheme, section, st)
    	
    	action = this.action_medkit ("action_medkit", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
+    action:add_precondition (world_property (stalker_ids.property_enemy,    false))
     action:add_precondition (world_property (properties["enable"],          true))
     action:add_precondition (world_property (properties["wound"],           true))
     action:add_precondition (world_property (properties["medikit"],         true))
