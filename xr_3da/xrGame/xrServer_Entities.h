@@ -69,7 +69,7 @@ xrSE_EDITOR_METHODS\
 };
 
 //***** Weapon
-xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeItem)
+xrSE_DECLARE_BEGIN(xrSE_Weapon,CALifeDynamicObject)
 	u32						timestamp;
 	u8						flags;
 	u8						state;
