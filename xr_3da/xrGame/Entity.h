@@ -15,6 +15,28 @@ class ENGINE_API CCameraBase;
 class ENGINE_API C3DSound;
 class CWeaponList;
 
+#define MAX_FUNCTION_COUNT 128
+
+class	CBaseFunction;
+class	CPatternFunction;
+
+class	CDistanceFunction;
+
+class	CPersonalHealthFunction;			
+class	CPersonalMoraleFunction;			
+class	CPersonalCreatureTypeFunction;	
+class	CPersonalWeaponTypeFunction;		
+
+class	CEnemyHealthFunction;			
+class	CEnemyMoraleFunction;			
+class	CEnemyCreatureTypeFunction;		
+class	CEnemyWeaponTypeFunction;		
+
+class	ENGINE_API CMotionDef;
+class	ENGINE_API CKinematics;
+class	ENGINE_API CBoneInstance;
+class	CWeaponList;
+
 //
 class CEntity : public CGameObject
 {
@@ -140,6 +162,10 @@ public:
 	CMovementControl		Movement;
 	EVENT					m_tpEventSay;
 	bool					m_bMobility;
+
+protected:
+	CWeaponList*			Weapons;
+
 public:
 	// General
 	CEntityAlive			();
@@ -156,6 +182,32 @@ public:
 	virtual void			GetVisible				(objVisible& R)	{};
 	virtual	float			ffGetFov				()				= 0;	
 	virtual	float			ffGetRange				()				= 0;	
+			CWeaponList		*tpfGetWeapons			()	{return Weapons;}
+
+			CEntityAlive					*m_tpCurrentEnemy;
+	// Data driven design properties
+	static	bool							bPatternFunctionLoaded;
+	// primary functions
+	static  CBaseFunction					*fpaBaseFunctions[MAX_FUNCTION_COUNT];
+
+	static	CDistanceFunction				pfDistance;
+
+	static  CPersonalHealthFunction			pfPersonalHealth;
+	static  CPersonalMoraleFunction			pfPersonalMorale;
+	static  CPersonalCreatureTypeFunction	pfPersonalCreatureType;
+	static  CPersonalWeaponTypeFunction		pfPersonalWeaponType;
+
+	static  CEnemyHealthFunction			pfEnemyHealth;
+	static  CEnemyMoraleFunction			pfEnemyMorale;
+	static  CEnemyCreatureTypeFunction		pfEnemyCreatureType;
+	static  CEnemyWeaponTypeFunction		pfEnemyWeaponType;
+
+	// complex functions
+	static  CPatternFunction				pfPersonalStatus;
+	static  CPatternFunction				pfEnemyStatus;
+	static  CPatternFunction				pfWeaponEffectiveness;
+	static  CPatternFunction				pfAttackSuccessProbability;
+	static  CPatternFunction				pfDefendSuccessProbability;
 };
 
 #endif // !defined(AFX_ENTITY_H__A2C7300B_20F0_4521_90D3_E883BEF837FE__INCLUDED_)

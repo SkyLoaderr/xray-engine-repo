@@ -6,9 +6,34 @@
  
 #include "hudmanager.h"
 #include "Entity.h"
+#include "ai_funcs.h"
 
 #define MAX_ARMOR		200
 #define MAX_HEALTH		100
+
+#define PATH_AI			"ai\\"
+
+bool							CEntityAlive::bPatternFunctionLoaded = false;
+CBaseFunction					*CEntityAlive::fpaBaseFunctions[MAX_FUNCTION_COUNT];
+// primary functions
+CDistanceFunction				CEntityAlive::pfDistance;
+
+CPersonalHealthFunction			CEntityAlive::pfPersonalHealth;
+CPersonalMoraleFunction			CEntityAlive::pfPersonalMorale;
+CPersonalCreatureTypeFunction	CEntityAlive::pfPersonalCreatureType;
+CPersonalWeaponTypeFunction		CEntityAlive::pfPersonalWeaponType;
+
+CEnemyHealthFunction			CEntityAlive::pfEnemyHealth;
+CEnemyMoraleFunction			CEntityAlive::pfEnemyMorale;
+CEnemyCreatureTypeFunction		CEntityAlive::pfEnemyCreatureType;
+CEnemyWeaponTypeFunction		CEntityAlive::pfEnemyWeaponType;
+
+// complex functions
+CPatternFunction				CEntityAlive::pfPersonalStatus;
+CPatternFunction				CEntityAlive::pfEnemyStatus;
+CPatternFunction				CEntityAlive::pfWeaponEffectiveness;
+CPatternFunction				CEntityAlive::pfAttackSuccessProbability;
+CPatternFunction				CEntityAlive::pfDefendSuccessProbability;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -258,6 +283,27 @@ void CEntityAlive::Load		(LPCSTR section)
 
 	// BOX activate
 	Movement.ActivateBox	(0);
+	
+	if (!bPatternFunctionLoaded) {
+		bPatternFunctionLoaded = true;
+		fpaBaseFunctions[0] = &pfDistance;
+		
+		fpaBaseFunctions[21] = &pfPersonalHealth;
+		fpaBaseFunctions[22] = &pfPersonalMorale;
+		fpaBaseFunctions[23] = &pfPersonalCreatureType;
+		fpaBaseFunctions[24] = &pfPersonalWeaponType;
+		
+		fpaBaseFunctions[41] = &pfEnemyHealth;
+		fpaBaseFunctions[42] = &pfEnemyMorale;
+		fpaBaseFunctions[43] = &pfEnemyCreatureType;
+		fpaBaseFunctions[44] = &pfEnemyWeaponType;
+
+		pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat",				fpaBaseFunctions);
+		pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat",			fpaBaseFunctions);
+		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat",		fpaBaseFunctions);
+		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat",fpaBaseFunctions);
+		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat",fpaBaseFunctions);
+	}
 }
 
 BOOL CEntityAlive::net_Spawn	(LPVOID DC)

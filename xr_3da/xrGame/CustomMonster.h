@@ -13,28 +13,6 @@
 #include "ai_commands.h"
 #include "ai_pathnodes.h"
 
-#define MAX_FUNCTION_COUNT 128
-
-class	CBaseFunction;
-class	CPatternFunction;
-
-class	CDistanceFunction;
-
-class	CPersonalHealthFunction;			
-class	CPersonalMoraleFunction;			
-class	CPersonalCreatureTypeFunction;	
-class	CPersonalWeaponTypeFunction;		
-
-class	CEnemyHealthFunction;			
-class	CEnemyMoraleFunction;			
-class	CEnemyCreatureTypeFunction;		
-class	CEnemyWeaponTypeFunction;		
-
-class	ENGINE_API CMotionDef;
-class	ENGINE_API CKinematics;
-class	ENGINE_API CBoneInstance;
-class	CWeaponList;
-
 class CCustomMonster : 
 	public CEntityAlive, 
 	public Feel::Vision, 
@@ -48,8 +26,6 @@ private:
 	typedef	CEntityAlive	inherited;
 protected:
 	// weapons
-	CWeaponList*		Weapons;
-	
 	struct				SAnimState
 	{
 		CMotionDef		*fwd;
@@ -262,34 +238,8 @@ public:
 	virtual objQualifier*	GetQualifier		();
 	virtual	float			ffGetFov			(){return eye_fov;}	
 	virtual	float			ffGetRange			(){return eye_range;}
-	CWeaponList			*	tpfGetWeapons		(){return Weapons;}
 	virtual	void			feel_touch_new		(CObject* O);
 	virtual	void			OnEvent				(NET_Packet& P, u16 type);
-
-			CCustomMonster					*m_tpCurrentEnemy;
-	// Data driven design properties
-	static	bool							bPatternFunctionLoaded;
-	// primary functions
-	static  CBaseFunction					*fpaBaseFunctions[MAX_FUNCTION_COUNT];
-
-	static	CDistanceFunction				pfDistance;
-
-	static  CPersonalHealthFunction			pfPersonalHealth;
-	static  CPersonalMoraleFunction			pfPersonalMorale;
-	static  CPersonalCreatureTypeFunction	pfPersonalCreatureType;
-	static  CPersonalWeaponTypeFunction		pfPersonalWeaponType;
-
-	static  CEnemyHealthFunction			pfEnemyHealth;
-	static  CEnemyMoraleFunction			pfEnemyMorale;
-	static  CEnemyCreatureTypeFunction		pfEnemyCreatureType;
-	static  CEnemyWeaponTypeFunction		pfEnemyWeaponType;
-
-	// complex functions
-	static  CPatternFunction				pfPersonalStatus;
-	static  CPatternFunction				pfEnemyStatus;
-	static  CPatternFunction				pfWeaponEffectiveness;
-	static  CPatternFunction				pfAttackSuccessProbability;
-	static  CPatternFunction				pfDefendSuccessProbability;
 };
 
 namespace AI{

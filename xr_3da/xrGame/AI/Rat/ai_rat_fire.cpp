@@ -14,7 +14,8 @@
 #include "..\\..\\ai_funcs.h"
 
 #define SPECIAL_SQUAD					6
-#define LIGHT_FITTING			
+#define LIGHT_FITTING					
+#define MIN_PROBABILITY					0.5f
 
 void CAI_Rat::Exec_Action(float dt)
 {
@@ -210,9 +211,49 @@ CAI_Rat::ERatStates CAI_Rat::sfChooseAction()
 			Members.push_back(Group.Members[k]);
 
 	int i = 0, j = 0;
+	float	fCurrentMemberProbability = 1.0f;
+	float	fCurrentEnemyProbability	= 1.0f;
+	bool	bMySide = true, bStarted = true;
 	do {
-		//float fProbability = pfAttackSuccessProbability.ffGetValue(this,fpaBaseFunctions);
-		//if (Members[i])
+		CCustomMonster *m_tpCurrentMember = dynamic_cast<CCustomMonster *>(Members[j]);
+		if (!m_tpCurrentMember) {
+			i++;
+			continue;
+		}
+		m_tpCurrentEnemy = dynamic_cast<CCustomMonster *>(VisibleEnemies[j].key);
+		if (!m_tpCurrentEnemy) {
+			j++;
+			continue;
+		}
+		float fProbability = pfAttackSuccessProbability.ffGetValue(this,fpaBaseFunctions);
+		if (bMySide) {
+			if (fCurrentMemberProbability*fProbability < MIN_PROBABILITY) {
+				if (bStarted)
+					bMySide = false;
+				fCurrentEnemyProbability = 1 - fProbability;
+				i++;
+				continue;
+			}
+			else {
+				fCurrentMemberProbability *= fProbability;
+				j++;
+				continue;
+			}
+		}
+		if (!bMySide) {
+			if (fCurrentEnemyProbability*(1.0f - fProbability) > MIN_PROBABILITY) {
+				if (bStarted)
+					bMySide = true;
+				fCurrentMemberProbability = fProbability;
+				j++;
+				continue;
+			}
+			else {
+				fCurrentMemberProbability *= fProbability;
+				i++;
+				continue;
+			}
+		}
 	}
 	while ((i < (int)Members.size()) && (j < (int)VisibleEnemies.size()));
 	return(aiRatAttackRun);

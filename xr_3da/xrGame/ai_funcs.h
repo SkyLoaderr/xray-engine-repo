@@ -13,14 +13,14 @@
 // included headers
 ////////////////////////////////////////////////////////////////////////////
 
-#include "CustomMonster.h"
+#include "Entity.h"
 #include "xr_weapon_list.h"
 
 class CBaseFunction {
 protected:
 	DWORD			m_dwLastUpdate;
 	float			m_fLastValue;
-	CCustomMonster	*m_tpLastMonster;
+	CEntity			*m_tpLastMonster;
 	float			m_fMinResultValue;
 	float			m_fMaxResultValue;
 	char			m_caName[64];
@@ -28,12 +28,12 @@ protected:
 public:
 
 	virtual	void	vfLoadEF(const char *caFileName, CBaseFunction **fpaBaseFunctions) {};
-	virtual float	ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions) = 0;
+	virtual float	ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions) = 0;
 					CBaseFunction() {m_caName[0] = 0;};
 	
-	virtual DWORD	dwfGetDiscreteValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions, DWORD dwDiscretizationValue)
+	virtual DWORD	dwfGetDiscreteValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions, DWORD dwDiscretizationValue)
 	{
-		float fTemp = ffGetValue(tpCustomMonster,fpaBaseFunctions);
+		float fTemp = ffGetValue(tpEntityAlive,fpaBaseFunctions);
 		if (fTemp <= m_fMinResultValue)
 			return(0);
 		else
@@ -93,7 +93,7 @@ public:
 				~CPatternFunction();
 
 	virtual	void	vfLoadEF(const char *caEFFileName, CBaseFunction **fpaBaseFunctions);
-	virtual float	ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions);
+	virtual float	ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions);
 };
 
 class CDistanceFunction : public CBaseFunction {
@@ -105,13 +105,13 @@ public:
 		strcat(m_caName,"Distance");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster;
-		return(m_fLastValue = tpCustomMonster->Position().distance_to(tpCustomMonster->m_tpCurrentEnemy->Position()));
+		m_tpLastMonster = tpEntityAlive;
+		return(m_fLastValue = tpEntityAlive->Position().distance_to(tpEntityAlive->m_tpCurrentEnemy->Position()));
 	};
 };
  
@@ -124,13 +124,13 @@ public:
 		strcat(m_caName,"PersonalHealth");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster;
-		return(m_fLastValue = tpCustomMonster->g_Health());
+		m_tpLastMonster = tpEntityAlive;
+		return(m_fLastValue = tpEntityAlive->g_Health());
 	};
 };
  
@@ -143,12 +143,12 @@ public:
 		strcat(m_caName,"PersonalMorale");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster;
+		m_tpLastMonster = tpEntityAlive;
 		return(m_fLastValue = m_fMaxResultValue);
 	};
 };
@@ -162,13 +162,13 @@ public:
 		strcat(m_caName,"PersonalCreatureType");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster;
-		switch (tpCustomMonster->SUB_CLS_ID) {
+		m_tpLastMonster = tpEntityAlive;
+		switch (tpEntityAlive->SUB_CLS_ID) {
 			case CLSID_AI_RAT				: {
 				m_fLastValue =  1;
 				break;
@@ -264,11 +264,11 @@ public:
  
 class CPersonalWeaponTypeFunction : public CBaseFunction {
 	
-	float ffGetTheBestWeapon(CCustomMonster *tpCustomMonster) 
+	float ffGetTheBestWeapon(CEntityAlive *tpEntityAlive) 
 	{
 		DWORD dwBestWeapon = 2;
-		for (int i=0; i<(int)tpCustomMonster->tpfGetWeapons()->getWeaponCount(); i++) {
-			CWeapon *tpCustomWeapon = tpCustomMonster->tpfGetWeapons()->getWeaponByIndex(i);
+		for (int i=0; i<(int)tpEntityAlive->tpfGetWeapons()->getWeaponCount(); i++) {
+			CWeapon *tpCustomWeapon = tpEntityAlive->tpfGetWeapons()->getWeaponByIndex(i);
 			if (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10) {
 				DWORD dwCurrentBestWeapon = 0;
 				switch (tpCustomWeapon->SUB_CLS_ID) {
@@ -319,13 +319,13 @@ public:
 		strcat(m_caName,"PersonalWeaponType");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster;
-		switch (tpCustomMonster->SUB_CLS_ID) {
+		m_tpLastMonster = tpEntityAlive;
+		switch (tpEntityAlive->SUB_CLS_ID) {
 			case CLSID_AI_RAT				: {
 				m_fLastValue =  1;
 				break;
@@ -360,7 +360,7 @@ public:
 				break;
 			}
 			case CLSID_AI_SCIENTIST			: {
-				m_fLastValue =  ffGetTheBestWeapon(tpCustomMonster);
+				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
 				break;
 			}
 			case CLSID_AI_PHANTOM			: {
@@ -381,19 +381,19 @@ public:
 				break;
 			}
 			case CLSID_AI_SOLDIER			: {
-				m_fLastValue =  ffGetTheBestWeapon(tpCustomMonster);
+				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
 				break;
 			}
 			case CLSID_AI_STALKER_DARK		: {
-				m_fLastValue =  ffGetTheBestWeapon(tpCustomMonster);
+				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
 				break;
 			}
 			case CLSID_AI_STALKER_MILITARY	: {
-				m_fLastValue =  ffGetTheBestWeapon(tpCustomMonster);
+				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
 				break;
 			}
 			case CLSID_AI_STALKER			: {
-				m_fLastValue =  ffGetTheBestWeapon(tpCustomMonster);
+				m_fLastValue =  ffGetTheBestWeapon(tpEntityAlive);
 				break;
 			}
 			case CLSID_AI_BURER				: {
@@ -430,13 +430,13 @@ public:
 		strcat(m_caName,"EnemyHealth");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
-		return(m_fLastValue = tpCustomMonster->pfPersonalHealth.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
+		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
+		return(m_fLastValue = tpEntityAlive->pfPersonalHealth.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
 	};
 };
  
@@ -449,13 +449,13 @@ public:
 		strcat(m_caName,"EnemyMorale");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
-		return(m_fLastValue = tpCustomMonster->pfPersonalMorale.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
+		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
+		return(m_fLastValue = tpEntityAlive->pfPersonalMorale.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
 	};
 };
  
@@ -468,13 +468,13 @@ public:
 		strcat(m_caName,"EnemyCreatureType");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
-		return(m_fLastValue = tpCustomMonster->pfPersonalCreatureType.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
+		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
+		return(m_fLastValue = tpEntityAlive->pfPersonalCreatureType.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
 	};
 };
  
@@ -487,13 +487,13 @@ public:
 		strcat(m_caName,"EnemyWeaponType");
 	}
 	
-	virtual float ffGetValue(CCustomMonster *tpCustomMonster, CBaseFunction **fpaBaseFunctions)
+	virtual float ffGetValue(CEntityAlive *tpEntityAlive, CBaseFunction **fpaBaseFunctions)
 	{
-		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpCustomMonster->m_tpCurrentEnemy))
+		if ((m_dwLastUpdate == Level().timeServer()) && (m_tpLastMonster == tpEntityAlive->m_tpCurrentEnemy))
 			return(m_fLastValue);
 		m_dwLastUpdate = Level().timeServer();
-		m_tpLastMonster = tpCustomMonster->m_tpCurrentEnemy;
-		return(m_fLastValue = tpCustomMonster->pfPersonalWeaponType.ffGetValue(tpCustomMonster->m_tpCurrentEnemy,fpaBaseFunctions));
+		m_tpLastMonster = tpEntityAlive->m_tpCurrentEnemy;
+		return(m_fLastValue = tpEntityAlive->pfPersonalWeaponType.ffGetValue(tpEntityAlive->m_tpCurrentEnemy,fpaBaseFunctions));
 	};
 };
  
