@@ -8,7 +8,7 @@
 
 #include "stdafx.h"
 #include "alife_registry_container.h"
-#include "alife_interfaces.h"
+#include "object_interfaces.h"
 #include "alife_space.h"
 #include <boost/type_traits/is_base_and_derived.hpp>
 

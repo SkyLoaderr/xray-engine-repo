@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////
-//	Module 		: alife_interfaces.h
+//	Module 		: object_interfaces.h
 //	Created 	: 05.01.2003
 //  Modified 	: 12.05.2004
 //	Author		: Dmitriy Iassenev

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "alife_interfaces.h"
+#include "object_interfaces.h"
 #include "xrserver_space.h"
 #include "alife_space.h"
 

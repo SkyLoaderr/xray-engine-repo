@@ -6418,9 +6418,6 @@
 					Name="ObjectBroker"
 					Filter="">
 					<File
-						RelativePath=".\alife_interfaces.h">
-					</File>
-					<File
 						RelativePath=".\object_broker.h">
 					</File>
 					<File
@@ -6431,6 +6428,9 @@
 					</File>
 					<File
 						RelativePath=".\object_destroyer.h">
+					</File>
+					<File
+						RelativePath=".\object_interfaces.h">
 					</File>
 					<File
 						RelativePath=".\object_loader.h">

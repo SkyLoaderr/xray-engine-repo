@@ -9,7 +9,7 @@
 #ifndef xrServer_Objects_AbstractH
 #define xrServer_Objects_AbstractH
 
-#include "alife_interfaces.h"
+#include "object_interfaces.h"
 #include "xrServer_Space.h"
 #include "xrCDB.h"
 #ifdef XRSE_FACTORY_EXPORTS

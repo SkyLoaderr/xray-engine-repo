@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "alife_interfaces.h"
+#include "object_interfaces.h"
 #include "object_broker.h"
 
 template <typename _index_type, typename _data_type>

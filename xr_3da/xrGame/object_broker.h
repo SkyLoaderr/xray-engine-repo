@@ -10,7 +10,7 @@
 #define XRAY_OBJECT_BROKER
 
 #include <queue>
-#include "alife_interfaces.h"
+#include "object_interfaces.h"
 #include "net_utils.h"
 #include "object_type_traits.h"
 #include "object_comparer.h"

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "alife_interfaces.h"
+#include "object_interfaces.h"
 
 class CALifeEventGroup : public IPureALifeLSObject {
 public:

@@ -8,7 +8,7 @@
 
 #pragma once
 
-#include "alife_interfaces.h"
+#include "object_interfaces.h"
 #include "alife_space.h"
 
 class CALifeTask : public IPureALifeLSObject {
