@@ -7,9 +7,9 @@
 #else
 	#define PARTICLEDLL_API __declspec(dllimport)
 	#ifdef _EDITOR
-		#pragma comment(lib,"x:\\ParticleDLL.lib")
-	#else
 		#pragma comment(lib,"x:\\ParticleDLLB.lib")
+	#else
+		#pragma comment(lib,"x:\\ParticleDLL.lib")
 	#endif
 #endif
 
