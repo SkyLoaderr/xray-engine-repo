@@ -1,10 +1,69 @@
--- класс 
+-- класс AnimationSet 
+
+--флаги для Animation Set
+-- 0 - последовательное проигрывание анимаций
+-- 1 - случайная анимация
+
+--флаги для добавленых анимаций
+-- 0 - проиграть один раз и забыть
+-- 1 - возможен повтор
+
+class "AnimationSet"
+
+function AnimationSet:__init (flags)
+	self.anims_list = {}
+	self.flags = flags
+	self.current_animation = 0
+end
+
+function AnimationSet:add_animation (anim_name)
+	table.insert (self.anims_list, anim_name)
+end
+
+function AnimationSet:get_animation ()
+	local size = table.getn (self.anims_list)
+	if size == 0 then return anim.free end
+	if self.flags == 0 then
+	   self.current_animation = self.current_animation  + 1
+	   if self.current_animation > size then self.current_animation = 1 end
+   	   return self.anims_list[self.current_animation]
+	   end
+	self.current_animation = math.random (1, size)
+ 	return self.anims_list[self.current_animation]
+end
+
+-- класс ActionSet
+class "ActionSet"
+
+
+function ActionSet:__init ()
+	self.actions = {}
+	self.current_action = 0
+end
+
+function ActionSet:add_action (act)
+	local size = table.getn (self.actions)
+	if act == nil then return -1 end
+	table.insert (self.actions, act)
+	return size + 1
+end
+
+function ActionSet:set_action (npc, num_act)
+	if npc == nil then return end
+	if num_act ~= -1 then npc:command (self.actions[num_act])	
+	else
+	   for a = 1, table.getn (self.actions), 1 do
+		   npc:command (self.actions[a])
+	   end	
+	end
+end
+
+
 class "SinglePatrol"
 
 function SinglePatrol:__init (npc, script_name)
 	self.npc = npc
 	self.script_name = script_name
-
 end
 
 
