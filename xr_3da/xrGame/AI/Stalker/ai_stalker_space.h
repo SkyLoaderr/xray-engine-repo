@@ -26,7 +26,7 @@
 
 #define R2D(x)							(angle_normalize(x)*180.f/PI)
 
-#define SILENCE
+//#define SILENCE
 
 #ifndef SILENCE
 	#define OUT_TEXT(S)						Msg(S);

@@ -135,7 +135,9 @@ void CAI_Stalker::vfBuildTravelLine(Fvector *tpDestinationPosition)
 		u32							N = AI_Path.Nodes.size();
 		if (!N) {
 			Msg("! Node list is empty!");
-			m_tPathState = ePathStateBuildNodePath;
+			AI_Path.Nodes.clear();
+			AI_Path.TravelPath.clear();
+			m_tPathState = ePathStateSearchNode;
 			return;
 		}
 		Fvector						tStartPosition = vPosition;

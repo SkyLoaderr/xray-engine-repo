@@ -14,13 +14,19 @@
 /**
 	Msg("Path state : %s",(m_tPathState == ePathStateSearchNode) ? "Searching for the node" : (m_tPathState == ePathStateBuildNodePath) ? "Building path" : (m_tPathState == ePathStateBuildTravelLine) ? "Building travel line" : "Dodging travel line");\
 	Msg("Monster %s : \n* State : %s\n* Time delta : %7.3f\n* Global time : %7.3f",cName(),s,m_fTimeUpdateDelta,float(Level().timeServer())/1000.f);\
-	Msg("Monster %s : \n* State : %s",cName(),s);\
 /**/
 
 #undef	WRITE_TO_LOG
-#define WRITE_TO_LOG(s) {\
-	m_bStopThinking = true;\
-}
+#ifdef SILENCE
+	#define WRITE_TO_LOG(s) {\
+		m_bStopThinking = true;\
+	}
+#else
+	#define WRITE_TO_LOG(s) {\
+		Msg("Monster %s : \n* State : %s",cName(),s);\
+		m_bStopThinking = true;\
+	}
+#endif
 
 #ifndef DEBUG
 	#undef	WRITE_TO_LOG
@@ -596,6 +602,11 @@ void CAI_Stalker::ExploreDE()
 //		}
 //		default : NODEFAULT;
 //	}
+	if (!m_inventory.ActiveItem() && M) {
+		TakeItems();
+		return;
+	}
+
 	m_tSavedEnemyPosition	= m_tpaDynamicSounds[m_iSoundIndex].tSavedPosition;
 	m_dwSavedEnemyNodeID	= m_tpaDynamicSounds[m_iSoundIndex].dwNodeID;
 	m_tMySavedPosition		= m_tpaDynamicSounds[m_iSoundIndex].tMySavedPosition;
@@ -726,6 +737,17 @@ void CAI_Stalker::Think()
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
 	int						iIndex;
+	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
+	if (m_tSavedEnemy && !m_tSavedEnemy->g_Alive()) {
+		_K = false;
+		_C = false;
+		_E = false;
+		_D = false;
+		_F = false;
+		_G = false;
+		_H = false;
+		_I = false;
+	}
 	if (!K && _K && (((iIndex = ifFindDynamicObject(m_tSavedEnemy)) != -1) && m_tSavedEnemy && m_tSavedEnemy->g_Alive() && (Level().timeServer() - m_tpaDynamicObjects[iIndex].dwTime < m_dwInertion)) && m_tpaDynamicObjects[iIndex].tpEntity->g_Alive()) {
 		K = true;
 		C = _C;
@@ -735,6 +757,7 @@ void CAI_Stalker::Think()
 		G = _G;
 		H = _H;
 		I = _I;
+		m_bStateChanged = false;
 		vfUpdateVisibilityBySensitivity();
 	}
 
@@ -749,7 +772,6 @@ void CAI_Stalker::Think()
 		Msg("%s : [A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",cName(),A,B,C,D,E,F,G,H,I,J,K,L,M);
 #endif
 	
-	m_bStateChanged = ((_A	!= A) || (_B	!= B) || (_C	!= C) || (_D	!= D) || (_E	!= E) || (_F	!= F) || (_G	!= G) || (_H	!= H) || (_I	!= I) || (_J	!= J) || (_K	!= K) || (_L	!= L));// || (_M	!= M));
 	if (!g_Alive()) {
 		Death				();
 	}				   
