@@ -187,7 +187,7 @@ void CSheduler::ProcessStep			()
 		}
 #endif
 
-		Slice						();
+		// Slice					();
 	}
 }
 
@@ -202,8 +202,8 @@ void CSheduler::Switch				()
 
 void CSheduler::Update				()
 {
-	u32	mcs						= psSheduler;
-	u32	dwTime					= Device.dwTimeGlobal;
+	u32	mcs							= psSheduler;
+	u32	dwTime						= Device.dwTimeGlobal;
 
 	// Log				("------------- CSheduler::Update: ",u32(Device.dwFrame));
 
@@ -221,8 +221,8 @@ void CSheduler::Update				()
 
 	// Normal (sheduled)
 	Device.Statistic.Sheduler.Begin	();
-	cycles_limit					= CPU::cycles_per_microsec * u64(mcs);
-	cycles_start					= CPU::GetCycleCount();
+	cycles_limit					= CPU::cycles_per_milisec * u64	(mcs);
+	cycles_start					= CPU::GetCycleCount			();
 	fibered							= TRUE;
 	SwitchToFiber					(fiber_thread);
 	Device.Statistic.Sheduler.End	();
