@@ -117,7 +117,8 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 		RCache.set_c				("m_texgen",		m_Texgen	);
 		RCache.set_c				("m_shadow",		m_Shadow	);
-		RCache.set_c				("m_lmap",			m_Lmap		);
+		RCache.set_ca				("m_lmap",		0,	m_Lmap._11, m_Lmap._21, m_Lmap._31, m_Lmap._41	);
+		RCache.set_ca				("m_lmap",		1,	m_Lmap._12, m_Lmap._22, m_Lmap._32, m_Lmap._42	);
 
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 		draw_volume					(L);
