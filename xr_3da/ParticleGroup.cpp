@@ -10,7 +10,7 @@
 using namespace PS;
 
 CPGDef::CPGDef()
-{
+{                             
 	m_Name[0]		= 0;
     m_Flags.zero	();
     m_fTimeLimit	= 0.f;

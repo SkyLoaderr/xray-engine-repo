@@ -144,12 +144,14 @@ void __fastcall TfraLeftBar::ebEngineApplyChangesClick(TObject *Sender)
 
 void __fastcall TfraLeftBar::ebEngineShaderRemoveClick(TObject *Sender)
 {
+	Tools.RemoveCurrent();
 //.	FHelper.RemoveItem(tvParticles,tvParticles->Selected,RemoveItem);
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TfraLeftBar::ebParticleCloneClick(TObject *Sender)
 {
+	Tools.CloneCurrent();
 /*
     TElTreeItem* pNode = tvParticles->Selected;
     if (pNode&&FHelper.IsObject(pNode)){

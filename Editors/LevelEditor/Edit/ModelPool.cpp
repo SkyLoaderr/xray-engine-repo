@@ -199,7 +199,7 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
         I = pV->children.begin			();
         E = pV->children.end			();
         for (; I!=E; I++){
-            IRender_Visual* V					= *I;
+            IRender_Visual* V			= *I;
 			if (_IsRender(V,mTransform,priority,strictB2F)){
 		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
 	            V->Render		 		(m_fLOD);
@@ -211,13 +211,8 @@ void 	CModelPool::Render(IRender_Visual* m_pVisual, const Fmatrix& mTransform, i
         xr_vector<IRender_Visual*>::iterator 		I,E;
         I = pV->children.begin			();
         E = pV->children.end			();
-        for (; I!=E; I++){
-            IRender_Visual* V					= *I;
-			if (_IsRender(V,Fidentity,priority,strictB2F)){
-		        RCache.set_Shader		(V->hShader?V->hShader:Device.m_WireShader);
-	            V->Render		 		(m_fLOD);
-            }
-        }
+        for (; I!=E; I++)
+            Render						(*I,Fidentity,priority,strictB2F);
     }break;
     case MT_PARTICLE_EFFECT:{
 		if (_IsRender(m_pVisual,Fidentity,priority,strictB2F)){

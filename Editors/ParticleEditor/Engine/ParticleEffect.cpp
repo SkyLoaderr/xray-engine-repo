@@ -24,6 +24,7 @@ CPEDef::CPEDef()
 	m_CachedShader		= 0;
 	m_fTimeLimit		= 0.f;
 }
+
 CPEDef::~CPEDef()
 {
     xr_free				(m_ShaderName);

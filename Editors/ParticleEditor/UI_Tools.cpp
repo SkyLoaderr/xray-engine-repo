@@ -324,6 +324,36 @@ void CParticleTools::RemovePS(LPCSTR name)
 	::Render->PSLibrary.Remove(name);
 }
 
+void CParticleTools::RemoveCurrent()
+{
+    TElTreeItem* pNode = m_PList->GetSelected();
+    if (pNode)
+		FHelper.RemoveItem(m_PList->tvItems,pNode,OnParticleItemRemove);
+}
+
+void CParticleTools::CloneCurrent()
+{
+    TElTreeItem* pNode = m_PList->GetSelected();
+    if (pNode&&FHelper.IsObject(pNode)){
+		AnsiString full_name;
+		FHelper.MakeName(pNode,0,full_name,false);
+        PS::CPEDef* PE=FindPE(full_name.c_str());
+        if (PE){
+        	AppendPE(PE);
+            Modified();
+        }else{
+	        PS::CPGDef* PG=FindPG(full_name.c_str());
+            if (PG){
+	        	AppendPG(PG);
+    	        Modified();
+            }
+//			Tools.SetCurrentPS(C);        
+        }
+    }else{                                    
+		ELog.DlgMsg(mtInformation, "At first select object.");
+    }
+}
+
 void CParticleTools::ResetCurrent()
 {
 	VERIFY(m_bReady);
@@ -778,7 +808,7 @@ PS::CPEDef* CParticleTools::AppendPE(PS::CPEDef* src)
 	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 new_name;
     string64 pref		={0};
-    if (src) 			strcat(pref,src->m_Name);
+    if (src){ 			strcpy(pref,src->m_Name);folder_name="";}
     ::Render->PSLibrary.GenerateName	(new_name,folder_name.c_str(),pref);
     PS::CPEDef* S 		= ::Render->PSLibrary.AppendPED(src);
     strcpy				(S->m_Name,new_name);
@@ -795,7 +825,7 @@ PS::CPGDef*	CParticleTools::AppendPG(PS::CPGDef* src)
 	FHelper.MakeName	(m_PList->GetSelected(),0,folder_name,true);
     string64 new_name;
     string64 pref		={0};
-    if (src) 			strcat(pref,src->m_Name);
+    if (src){ 			strcpy(pref,src->m_Name);folder_name="";}
     ::Render->PSLibrary.GenerateName	(new_name,folder_name.c_str(),pref);
     PS::CPGDef* S 		= ::Render->PSLibrary.AppendPGD(src);
     strcpy				(S->m_Name,new_name);

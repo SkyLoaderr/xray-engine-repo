@@ -83,6 +83,7 @@ public:
 	void __fastcall 	OnSourceTextEdit	(PropValue* sender, bool& bDataModified);
 	void __fastcall 	OnControlClick		(PropValue* sender, bool& bDataModified);
 	void				FillProp		   	(LPCSTR pref, ::PropItemVec& items, ::ListItem* owner);
+	void				Copy				(const CPEDef& src);
 #endif
 public:
     // api function

@@ -135,7 +135,9 @@ public:
     PS::SDef*			AppendPS			(PS::SDef* src);
     PS::SDef*			FindPS				(LPCSTR name);
     void				RemovePS			(LPCSTR name);
+	void 				CloneCurrent		();
     void				ResetCurrent		();
+    void				RemoveCurrent		();
     void 				SetCurrentPS		(PS::SDef* P);
     PS::SDef*			ClonePS				(LPCSTR name);
     PS::SDef*			GetCurrentPS		(){return m_LibPS?&m_EditPS:0;}

@@ -178,6 +178,10 @@ public:
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPS);      }
     IC ATextValue*	 	CreateALibPS	(PropItemVec& items, AnsiString key, AnsiString* val)
     {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPS);		}
+    IC TextValue*	 	CreateLibPE		(PropItemVec& items, AnsiString key, LPSTR val, int lim)
+    {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPE);		}
+    IC ATextValue*	 	CreateALibPE	(PropItemVec& items, AnsiString key, AnsiString* val)
+    {	return			(ATextValue*)	AppendValue		(items,key,xr_new<ATextValue>(val),PROP_A_LIBPE);       }
     IC TextValue*	 	CreateLibParticles	(PropItemVec& items, AnsiString key, LPSTR val, int lim)
     {	return			(TextValue*)	AppendValue		(items,key,xr_new<TextValue>(val,lim),PROP_LIBPARTICLES);		}
     IC ATextValue*	 	CreateALibParticles	(PropItemVec& items, AnsiString key, AnsiString* val)

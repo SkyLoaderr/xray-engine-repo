@@ -107,13 +107,13 @@ void CPSLibrary::Remove(const char* nm)
     	PS::PEDIt it = FindPEDIt(nm);
         if (it!=m_PEDs.end()){
 	    	(*it)->m_CachedShader.destroy();
-	       	m_PEDs.erase	(it);
         	xr_delete		(*it);
+	       	m_PEDs.erase	(it);
         }else{
             PS::PGDIt it = FindPGDIt(nm);
             if (it!=m_PGDs.end()){
-		       	m_PGDs.erase(it);
     	    	xr_delete	(*it);
+		       	m_PGDs.erase(it);
             }
         }
     }

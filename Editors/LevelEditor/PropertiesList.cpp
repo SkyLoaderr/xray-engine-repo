@@ -482,6 +482,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             break;
             case PROP_WAVE:
             case PROP_LIBPS:
+            case PROP_LIBPE:
             case PROP_LIBPARTICLES:
             case PROP_SOUNDSRC:
             case PROP_SOUNDENV:
@@ -494,6 +495,7 @@ void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
             case PROP_A_LIBOBJECT:
             case PROP_A_GAMEMTL:
             case PROP_A_LIBPS:
+            case PROP_A_LIBPE:
             case PROP_A_LIBPARTICLES:
             case PROP_A_SOUNDSRC:
             case PROP_A_SOUNDENV:
@@ -699,6 +701,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_COLOR: 			ColorClick(item); 			break;
                 case PROP_GAMEMTL:
                 case PROP_LIBPS:
+	            case PROP_LIBPE:
                 case PROP_LIBPARTICLES:
                 case PROP_SOUNDSRC:
                 case PROP_SOUNDENV:
@@ -713,6 +716,7 @@ void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
                 case PROP_A_LIBOBJECT:
                 case PROP_A_GAMEMTL:
                 case PROP_A_LIBPS:
+	            case PROP_A_LIBPE:
                 case PROP_A_LIBPARTICLES:
                 case PROP_A_SOUNDSRC:
                 case PROP_A_SOUNDENV:
@@ -1000,6 +1004,7 @@ void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
     case PROP_SOUNDSRC:		mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true; 	break;
     case PROP_SOUNDENV:		mode = TfrmChoseItem::smSoundEnv;						break;
     case PROP_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
+    case PROP_LIBPE:		mode = TfrmChoseItem::smPE;			                    break;
     case PROP_LIBPARTICLES:	mode = TfrmChoseItem::smParticles;	                    break;
     case PROP_GAMEMTL:		mode = TfrmChoseItem::smGameMaterial; 					break;
     case PROP_SCENE_ITEM:{ 
@@ -1041,6 +1046,7 @@ void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
     case PROP_A_SOUNDSRC:  	mode = TfrmChoseItem::smSoundSource;bIgnoreExt = true;  break;
     case PROP_A_SOUNDENV:	mode = TfrmChoseItem::smSoundEnv;						break;
     case PROP_A_LIBPS:		mode = TfrmChoseItem::smPS;			                    break;
+	case PROP_A_LIBPE:		mode= TfrmChoseItem::smPE;			                    break;
     case PROP_A_LIBPARTICLES:mode= TfrmChoseItem::smParticles;	                    break;
     case PROP_A_GAMEMTL:	mode = TfrmChoseItem::smGameMaterial; 					break;
     default: THROW2("Unknown prop type");

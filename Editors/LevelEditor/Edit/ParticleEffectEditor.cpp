@@ -8,6 +8,22 @@
 #include "PropertiesListHelper.h"
 #include "ui_tools.h"
 
+void PS::CPEDef::Copy(const CPEDef& src)
+{
+    strcpy				(m_Name,src.m_Name); VERIFY(strlen(m_Name)<sizeof(m_Name));
+    m_Flags				= src.m_Flags;
+    m_ShaderName		= src.m_ShaderName?xr_strdup(src.m_ShaderName):0;
+    m_TextureName		= src.m_TextureName?xr_strdup(src.m_TextureName):0;
+    m_Frame				= src.m_Frame;
+	m_fTimeLimit		= src.m_fTimeLimit;
+    m_MaxParticles		= src.m_MaxParticles;
+    m_ActionCount 		= 0;
+    m_ActionList		= 0;
+	m_CachedShader		= src.m_CachedShader;
+	m_SourceText		= src.m_SourceText;
+    Compile				();
+}
+
 void __fastcall PS::CPEDef::OnSourceTextEdit(PropValue* sender, bool& bDataModified)
 {
 	ButtonValue* B 		= dynamic_cast<ButtonValue*>(sender); R_ASSERT(B);

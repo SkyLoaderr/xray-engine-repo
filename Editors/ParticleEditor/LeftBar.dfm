@@ -2,7 +2,7 @@ object fraLeftBar: TfraLeftBar
   Left = 0
   Top = 0
   Width = 443
-  Height = 277
+  Height = 552
   HorzScrollBar.Visible = False
   VertScrollBar.Increment = 34
   VertScrollBar.Size = 13
@@ -22,7 +22,7 @@ object fraLeftBar: TfraLeftBar
     Left = 0
     Top = 0
     Width = 300
-    Height = 277
+    Height = 552
     Align = alLeft
     BevelInner = bvLowered
     BevelOuter = bvNone
@@ -32,7 +32,7 @@ object fraLeftBar: TfraLeftBar
     TabOrder = 0
     object Splitter1: TSplitter
       Left = 1
-      Top = 74
+      Top = 349
       Width = 298
       Height = 2
       Cursor = crVSplit
@@ -172,7 +172,7 @@ object fraLeftBar: TfraLeftBar
       Left = 1
       Top = 68
       Width = 298
-      Height = 6
+      Height = 281
       Align = alClient
       Color = 10528425
       ParentShowHint = False
@@ -194,7 +194,7 @@ object fraLeftBar: TfraLeftBar
         Left = 1
         Top = 14
         Width = 296
-        Height = 458
+        Height = 249
         Align = alClient
         BevelOuter = bvNone
         ParentColor = True
@@ -203,7 +203,7 @@ object fraLeftBar: TfraLeftBar
         TabOrder = 0
         object Bevel2: TBevel
           Left = 0
-          Top = 456
+          Top = 247
           Width = 296
           Height = 2
           Align = alBottom
@@ -225,9 +225,9 @@ object fraLeftBar: TfraLeftBar
           Color = 10528425
           TabOrder = 0
           object ebEngineShaderRemove: TExtBtn
-            Left = 93
+            Left = 139
             Top = 18
-            Width = 48
+            Width = 60
             Height = 15
             Align = alNone
             BevelShow = False
@@ -240,15 +240,15 @@ object fraLeftBar: TfraLeftBar
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            Margin = 13
             ParentFont = False
             Spacing = -1
-            Visible = False
             OnClick = ebEngineShaderRemoveClick
           end
           object ebEngineShaderClone: TExtBtn
-            Left = 151
+            Left = 70
             Top = 18
-            Width = 48
+            Width = 60
             Height = 15
             Align = alNone
             BevelShow = False
@@ -261,9 +261,9 @@ object fraLeftBar: TfraLeftBar
             Font.Height = -11
             Font.Name = 'MS Sans Serif'
             Font.Style = []
+            Margin = 13
             ParentFont = False
             Spacing = -1
-            Visible = False
             OnClick = ebParticleCloneClick
           end
           object ebFile: TExtBtn
@@ -301,7 +301,7 @@ object fraLeftBar: TfraLeftBar
           object ebCreate: TExtBtn
             Left = 1
             Top = 18
-            Width = 80
+            Width = 60
             Height = 15
             Align = alNone
             BevelShow = False
@@ -335,7 +335,7 @@ object fraLeftBar: TfraLeftBar
           Left = 0
           Top = 36
           Width = 296
-          Height = 420
+          Height = 211
           Align = alClient
           BevelOuter = bvNone
           ParentColor = True
@@ -344,7 +344,7 @@ object fraLeftBar: TfraLeftBar
       end
       object paAction: TPanel
         Left = 1
-        Top = -12
+        Top = 263
         Width = 296
         Height = 17
         Align = alBottom
@@ -395,7 +395,7 @@ object fraLeftBar: TfraLeftBar
     end
     object paProperties: TPanel
       Left = 1
-      Top = 76
+      Top = 351
       Width = 298
       Height = 200
       Align = alBottom

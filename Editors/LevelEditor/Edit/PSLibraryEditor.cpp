@@ -11,13 +11,13 @@ char* CPSLibrary::GenerateName(LPSTR buffer, LPCSTR folder, LPCSTR pref )
     int cnt = 0;
     string128 prefix; prefix[0]=0;
     if (pref&&pref[0]){
-    	strcpy( prefix, pref );
-        for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])) prefix[i]=0; else break;
-		sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++);
-    }else        sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
+    	strcpy( prefix, pref );                                     
+        for (int i=strlen(prefix)-1; i>=0; i--) if (isdigit(prefix[i])||(prefix[i]=='_')){ if (prefix[i]=='_') prefix[i]=0; }else break;
+		sprintf( buffer, "%s%s_%02d", folder?folder:"", prefix, cnt++);
+    }else        sprintf( buffer, "%sps_%02d", folder?folder:"", cnt++ );
     while (FindPS(buffer)||FindPED(buffer)||FindPGD(buffer)){
-        if (pref&&pref[0])	sprintf( buffer, "%s%s%04d", folder?folder:"", prefix, cnt++ );
-        else   	  			sprintf( buffer, "%sps_%04d", folder?folder:"", cnt++ );
+        if (pref&&pref[0])	sprintf( buffer, "%s%s_%02d", folder?folder:"", prefix, cnt++ );
+        else   	  			sprintf( buffer, "%sps_%02d", folder?folder:"", cnt++ );
 	}
     return buffer;
 }
@@ -36,7 +36,8 @@ PS::SDef* CPSLibrary::AppendPS(PS::SDef* src)
 
 PS::CPEDef* CPSLibrary::AppendPED(PS::CPEDef* src)
 {
-	m_PEDs.push_back(src?xr_new<PS::CPEDef>(*src):xr_new<PS::CPEDef>());
+	m_PEDs.push_back(xr_new<PS::CPEDef>());
+    if (src) m_PEDs.back()->Copy(*src);
     return m_PEDs.back();
 }
 //------------------------------------------------------------------------------
