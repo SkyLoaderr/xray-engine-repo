@@ -90,7 +90,8 @@ void CHangingLamp::OnVisible()
 
 void CHangingLamp::Hit(float P, Fvector &dir,	CObject* who, s16 element,Fvector p_in_object_space, float impulse)
 {
-	inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+	//inherited::Hit(P,dir,who,element,p_in_object_space,impulse);
+	if(m_pPhysicsShell) m_pPhysicsShell->applyImpulseTrace(p_in_object_space,dir,impulse,element);
 	light_render->set_active(false);
 }
 
@@ -109,7 +110,8 @@ void CHangingLamp::AddElement(CPhysicsElement* root_e, int id)
 	B.set_callback		(m_pPhysicsShell->GetBonesCallback(),E);
 	m_pPhysicsShell->add_Element	(E);
 
-	if (root_e){
+	//if (root_e)
+	{
 		CPhysicsJoint* J= P_create_Joint(CPhysicsJoint::full_control,root_e,E);
 		J->SetAnchorVsSecondElement	(0,0,0);
 		J->SetAxisVsSecondElement	(1,0,0,0);

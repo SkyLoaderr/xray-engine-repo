@@ -2622,16 +2622,38 @@ dynamic_cast<CPHElement*>(pFirst_element)
 
 void CPHJoint::CreateFullControl()
 {
-	m_joint=dJointCreateBall(phWorld,0);
-	m_joint1=dJointCreateAMotor(phWorld,0);
+
 	
 Fvector pos;
 Fmatrix first_matrix,second_matrix;
 Fvector axis;
 CPHElement* first=dynamic_cast<CPHElement*>(pFirst_element);
 CPHElement* second=dynamic_cast<CPHElement*>(pSecond_element);
-first->InterpolateGlobalTransform(&first_matrix);
-second->InterpolateGlobalTransform(&second_matrix);
+dBodyID body1=0;
+dBodyID body2=0;
+if(first)
+{
+	first->InterpolateGlobalTransform(&first_matrix);
+	body1=first->get_body();
+}
+else
+{
+	first_matrix.identity();
+}
+
+if(second)
+{
+	second->InterpolateGlobalTransform(&second_matrix);
+	body2=second->get_body();
+}
+else
+{
+	second_matrix.identity();
+
+}
+
+
+
 
 switch(vs_anchor){
 case vs_first :first_matrix.transform_tiny(pos,anchor); break;
@@ -2641,16 +2663,31 @@ default:pos.set(anchor);
 }
 //////////////////////////////////////
 
+if(!(body1&&body2)) 
+{
+	m_joint=dJointCreateHinge(phWorld,0);
+	dJointAttach(m_joint,body1,body2);
+	dJointSetHingeAnchor(m_joint,pos.x,pos.y,pos.z);
+	dJointSetHingeParam(m_joint,dParamLoStop ,0);
+	dJointSetHingeParam(m_joint,dParamHiStop ,0);
+	return;
+}
 
+m_joint=dJointCreateBall(phWorld,0);
+dJointAttach(m_joint,body1,body2);
+dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
+
+
+
+m_joint1=dJointCreateAMotor(phWorld,0);
 
 //dJointSetAMotorMode (m_joint1, dAMotorUser);
 dJointSetAMotorMode (m_joint1, dAMotorEuler);
 dJointSetAMotorNumAxes (m_joint1, 3);
 
-dJointAttach(m_joint,first->get_body(),second->get_body());
-dJointSetBallAnchor(m_joint,pos.x,pos.y,pos.z);
 
-dJointAttach(m_joint1,first->get_body(),second->get_body());
+
+dJointAttach(m_joint1,body1,body2);
 
 /////////////////////////////////////////////
 
