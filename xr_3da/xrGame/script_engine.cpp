@@ -10,16 +10,13 @@
 #include "script_engine.h"
 #include "ai_space.h"
 #include "object_factory.h"
+#include "script_process.h"
 
 #ifdef USE_DEBUGGER
 #	include "script_debugger.h"
 #endif
 
 extern void export_classes	(lua_State *L);
-
-#ifdef XRGAME_EXPORTS
-#	include "script_process.h"
-#endif
 
 CScriptEngine::CScriptEngine	()
 {
@@ -34,11 +31,9 @@ CScriptEngine::CScriptEngine	()
 
 CScriptEngine::~CScriptEngine			()
 {
-#ifdef XRGAME_EXPORTS
 	while (!m_script_processes.empty())
 		remove_script_process(m_script_processes.begin()->first);
 	flush_log				();
-#endif
 #ifdef USE_DEBUGGER
 	xr_delete (m_scriptDebugger);
 #endif
@@ -122,7 +117,6 @@ bool CScriptEngine::load_file(LPCSTR caScriptName, bool bCall)
 		return		(load_file_into_namespace(caScriptName,l_caNamespaceName,bCall));
 }
 
-#ifdef XRGAME_EXPORTS
 void CScriptEngine::remove_script_process	(LPCSTR process_name)
 {
 	CScriptProcessStorage::iterator	I = m_script_processes.find(process_name);
@@ -131,7 +125,6 @@ void CScriptEngine::remove_script_process	(LPCSTR process_name)
 		m_script_processes.erase		(I);
 	}
 }
-#endif
 
 void CScriptEngine::add_file			(LPCSTR file_name)
 {

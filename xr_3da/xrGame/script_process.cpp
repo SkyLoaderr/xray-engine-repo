@@ -12,7 +12,10 @@
 #include "script_process.h"
 #include "script_thread.h"
 #include "ai_space.h"
-#include "script_debugger.h"
+
+#ifdef USE_DEBUGGER
+#	include "script_debugger.h"
+#endif
 
 DEFINE_VECTOR(LPSTR,LPSTR_VECTOR,LPSTR_IT);
 

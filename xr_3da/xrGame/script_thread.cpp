@@ -12,7 +12,10 @@
 #include "script_engine.h"
 #include "script_thread.h"
 #include "ai_space.h"
-#include "script_debugger.h"
+
+#ifdef USE_DEBUGGER
+#	include "script_debugger.h"
+#endif
 
 CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 {
@@ -28,9 +31,11 @@ CScriptThread::CScriptThread(LPCSTR caNamespaceName)
 	VERIFY2				(lua(),"Cannot create new Lua thread");
 	m_thread_reference	= luaL_ref(ai().script_engine().lua(),LUA_REGISTRYINDEX);
 	
-#ifdef DEBUG
+#ifdef USE_DEBUGGER
 	if( !CScriptDebugger::GetDebugger()->Active() )
+#endif
 		lua_sethook		(lua(),CScriptEngine::lua_hook_call,	LUA_HOOKCALL | LUA_HOOKRET | LUA_HOOKLINE | LUA_HOOKTAILRET,	0);
+#ifdef USE_DEBUGGER
 	else
 		lua_sethook		(lua(), CDbgLuaHelper::hookLua,			LUA_MASKLINE|LUA_MASKCALL|LUA_MASKRET, 0);
 #endif
@@ -75,7 +80,10 @@ bool CScriptThread::Update()
 			ai().script_engine().script_log	(ScriptStorage::eLuaMessageTypeInfo,"Script %s is finished!",m_script_name);
 		}
 		else {
-			if( !CScriptDebugger::GetDebugger()->Active() ) {
+#ifdef USE_DEBUGGER
+			if( !CScriptDebugger::GetDebugger()->Active() ) 
+#endif
+			{
 				VERIFY		(m_current_stack_level);
 				--m_current_stack_level;
 			}

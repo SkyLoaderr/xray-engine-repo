@@ -13,23 +13,20 @@
 
 // #define DBG_DISABLE_SCRIPTS
 
-#ifdef XRGAME_EXPORTS
-	class CScriptProcess;
-	class CScriptThread;
+class CScriptProcess;
+class CScriptThread;
+
+#ifdef USE_DEBUGGER
 	class CScriptDebugger;
 #endif
 
 class CScriptEngine : public CScriptStorage {
 public:
 	typedef CScriptStorage inherited;
-#ifdef XRGAME_EXPORTS
 	typedef xr_map<LPCSTR,CScriptProcess*,pred_str> CScriptProcessStorage;
-#endif
 
 protected:
-#ifdef XRGAME_EXPORTS
 	CScriptProcessStorage		m_script_processes;
-#endif
 	xr_deque<LPSTR>				m_load_queue;
 	CScriptStackTracker 		*m_current_thread;
 	int							m_stack_level;
@@ -47,11 +44,9 @@ public:
 	static	void				lua_cast_failed				(CLuaVirtualMachine *L, LUABIND_TYPE_INFO info);
 			void				load_common_scripts			();
 			bool				load_file					(LPCSTR	caScriptName,	bool	bCall = true);
-#ifdef XRGAME_EXPORTS
 	IC		CScriptProcess		*script_process				(LPCSTR process_name) const;
 	IC		void				add_script_process			(LPCSTR process_name, CScriptProcess *script_process);
 			void				remove_script_process		(LPCSTR process_name);
-#endif
 			void				add_file					(LPCSTR file_name);
 			void				process						();
 			void				export						();
@@ -75,8 +70,8 @@ public:
 
 			void				load_class_registrators		();
 	
-#ifdef XRGAME_EXPORTS
-	CScriptDebugger	*			m_scriptDebugger;
+#ifdef USE_DEBUGGER
+	CScriptDebugger				*m_scriptDebugger;
 #endif
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };

@@ -8,7 +8,6 @@
 
 #pragma once
 
-#ifdef XRGAME_EXPORTS
 IC	void CScriptEngine::add_script_process		(LPCSTR process_name, CScriptProcess *script_process)
 {
 	CScriptProcessStorage::const_iterator	I = m_script_processes.find(process_name);
@@ -23,7 +22,6 @@ CScriptProcess *CScriptEngine::script_process	(LPCSTR process_name) const
 		return								((*I).second);
 	return									(0);
 }
-#endif
 
 IC	void CScriptEngine::set_current_thread		(CScriptStackTracker *new_thread)
 {

@@ -968,6 +968,30 @@
 					RelativePath=".\script_storage_space.h">
 				</File>
 			</Filter>
+			<Filter
+				Name="ScriptProcess"
+				Filter="">
+				<File
+					RelativePath=".\script_process.cpp">
+				</File>
+				<File
+					RelativePath=".\script_process.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="ScriptThread"
+				Filter="">
+				<File
+					RelativePath=".\script_thread.cpp">
+				</File>
+				<File
+					RelativePath=".\script_thread.h">
+				</File>
+			</Filter>
+			<Filter
+				Name="ScriptDebugger"
+				Filter="">
+			</Filter>
 		</Filter>
 		<Filter
 			Name="ServerStuff"
