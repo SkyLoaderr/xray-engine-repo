@@ -224,12 +224,16 @@ void CCharacterPhysicsSupport::CreateSkeleton(CPhysicsShell* &pShell)
 void CCharacterPhysicsSupport::CreateSkeleton()
 {
 	if(m_pPhysicsShell) return;
+Fvector velocity;
 #ifndef NO_PHYSICS_IN_AI_MOVE
+	m_PhysicMovementControl.GetCharacterVelocity(velocity);
 	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
 	m_PhysicMovementControl.DestroyCharacter();
 	//Position().y+=.1f;
 	//#else
 	//Position().y+=0.1f;
+#else
+	velocity.set(0,0,0);
 #endif
 
 	if (!m_EntityAlife.Visual())
@@ -249,7 +253,7 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 		m_pPhysicsShell->set_DisableParams(default_disl*ini->r_float("disable","linear_factor"),default_disw*ini->r_float("disable","angular_factor"));
 	}
 	m_pPhysicsShell->Activate(true);
-
+	m_pPhysicsShell->set_LinearVel(velocity);
 	PKinematics(m_EntityAlife.Visual())->Calculate();
 	b_death_anim_on=false;
 	m_eState=esDead;
@@ -257,9 +261,13 @@ void CCharacterPhysicsSupport::CreateSkeleton()
 void CCharacterPhysicsSupport::ActivateShell()
 {
 	if(m_pPhysicsShell) return;
+	Fvector velocity;
 #ifndef NO_PHYSICS_IN_AI_MOVE
+	m_PhysicMovementControl.GetCharacterVelocity(velocity);
 	m_PhysicMovementControl.GetDeathPosition	(m_EntityAlife.Position());
 	m_PhysicMovementControl.DestroyCharacter();
+#else
+	velocity.set(0,0,0);
 #endif
 	R_ASSERT2(m_physics_skeleton,"No skeleton created!!");
 
@@ -267,6 +275,7 @@ void CCharacterPhysicsSupport::ActivateShell()
 	m_pPhysicsShell->RunSimulation();
 	m_pPhysicsShell->mXFORM.set(mXFORM);
 	m_pPhysicsShell->SetCallbacks();
+	m_pPhysicsShell->set_LinearVel(velocity);
 	PKinematics(m_EntityAlife.Visual())->Calculate();
 	b_death_anim_on=false;
 	m_eState=esDead;

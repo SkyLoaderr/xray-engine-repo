@@ -131,6 +131,7 @@ public:
 	float				GetCurrentFriction()		{ return fFriction; }
 
 	const Fvector&		GetVelocity		( )			{ return vVelocity;	}
+	void				GetCharacterVelocity(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
 	float				GetVelocityMagnitude()		{ return vVelocity.magnitude();	}
 	float				GetVelocityActual	()		{ return fActualVelocity;	}
 	float				GetContactSpeed	()			{ return fContactSpeed; }

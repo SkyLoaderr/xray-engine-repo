@@ -165,7 +165,7 @@ void CPHAICharacter::InitContact(dContact* c){
 
 
 
-	m_friction_factor=c->surface.mu<1.f ? c->surface.mu : 1.f;
+	m_friction_factor=(c->surface.mu<1.f&&!object) ? c->surface.mu : 1.f;
 
 
 

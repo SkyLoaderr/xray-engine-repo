@@ -425,11 +425,13 @@ void CPHShell::get_AngularVel(Fvector& velocity)
 
 void	CPHShell::set_LinearVel(const Fvector& velocity)
 {
-	(*elements.begin())->set_LinearVel(velocity);
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(;i!=e;i++) (*i)->set_LinearVel(velocity);
 }
 void	CPHShell::set_AngularVel(const Fvector& velocity)
 {
-	(*elements.begin())->set_AngularVel(velocity);
+	ELEMENT_I i=elements.begin(),e=elements.end();
+	for(;i!=e;i++) (*i)->set_AngularVel(velocity);
 }
 
 void CPHShell::set_PushOut(u32 time,PushOutCallbackFun* push_out)
