@@ -34,7 +34,7 @@ void OGF::Save			(IWriter &fs)
 	OGF_Base::Save		(fs);
 
 	// clMsg			("* %d faces",faces.size());
-	geom_batch_average	(vertices.size(),faces.size());
+	geom_batch_average	((u32)vertices.size(),(u32)faces.size());
 
 	// Create header
 	ogf_header H;
@@ -115,14 +115,14 @@ void OGF_Reference::Save	(IWriter &fs)
 	fs.open_chunk		(OGF_VCONTAINER);
 	fs.w_u32			(vb_id);
 	fs.w_u32			(vb_start);
-	fs.w_u32			(model->vertices.size());
+	fs.w_u32			((u32)model->vertices.size());
 	fs.close_chunk		();
 	
 	// Faces
 	fs.open_chunk		(OGF_ICONTAINER);
 	fs.w_u32			(ib_id);
 	fs.w_u32			(ib_start);
-	fs.w_u32			(model->faces.size()*3);
+	fs.w_u32			((u32)model->faces.size()*3);
 	fs.close_chunk		();
 
 	// Special
@@ -144,7 +144,7 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL 
 	R_ASSERT		(0);
 	fs.open_chunk	(OGF_VERTICES);
 	fs.w_u32		(FVF);
-	fs.w_u32		(vertices.size());
+	fs.w_u32		((u32)vertices.size());
 	for (itOGF_V V=vertices.begin(); V!=vertices.end(); V++)
 	{
 		if (bNeedNormals)	fs.w(&*V,6*sizeof(float));	// Position & normal
@@ -156,10 +156,10 @@ void	OGF::Save_Cached		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL 
 	fs.close_chunk	();
 	
 	// Faces
-	fs.open_chunk(OGF_INDICES);
-	fs.w_u32	(faces.size()*3);
+	fs.open_chunk	(OGF_INDICES);
+	fs.w_u32		((u32)faces.size()*3);
 	for (itOGF_F F=faces.begin(); F!=faces.end(); F++)	fs.w(&*F,3*sizeof(WORD));
-	fs.close_chunk();
+	fs.close_chunk	();
 }
 
 void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BOOL bNeedNormals)
@@ -201,7 +201,7 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BO
 	fs.open_chunk	(OGF_VCONTAINER);
 	fs.w_u32		(ID);
 	fs.w_u32		(Start);
-	fs.w_u32		(vertices.size());
+	fs.w_u32		((u32)vertices.size());
 	fs.close_chunk	();
 	
 	// Faces
@@ -224,13 +224,13 @@ void	OGF::Save_Normal_PM		(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, BO
 		}
 		{
 			fs.open_chunk	(0x2);
-			fs.w			(&*pmap_vsplit.begin(),pmap_vsplit.size()*sizeof(Vsplit));
+			fs.w			(&*pmap_vsplit.begin(),(u32)pmap_vsplit.size()*sizeof(Vsplit));
 			fs.close_chunk	();
 		}
 		{
 			fs.open_chunk	(0x3);
 			fs.w_u32		(pmap_faces.size());
-			fs.w			(&*pmap_faces.begin(),pmap_faces.size()*sizeof(WORD));
+			fs.w			(&*pmap_faces.begin(),(u32)pmap_faces.size()*sizeof(WORD));
 			fs.close_chunk	();
 		}
 		fs.close_chunk();
@@ -245,7 +245,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, B
 
 	// Determining the number of samples
 	R_ASSERT				(I_Current>=0);
-	int verts_for_remove	= vertices.size()-dwMinVerts;
+	int verts_for_remove	= (u32)vertices.size()-dwMinVerts;
 	int samples				= 16;
 	int verts_per_sample	= verts_for_remove/samples;
 	while (verts_per_sample<4)
@@ -282,7 +282,7 @@ void	OGF::Save_Progressive	(IWriter &fs, ogf_header& H, u32 FVF, BOOL bColors, B
 		{
 			// ***** Perform COLLAPSE or VSPLIT
 			u32 dwCount		= dwMinVerts + verts_per_sample*dwSample;
-			if (dwSample==u32(samples-1))	dwCount = vertices.size	();
+			if (dwSample==u32(samples-1))	dwCount = (u32)vertices.size	();
 			
 			if (V_Current!=dwCount) {
 				WORD* Indices	= (WORD*)&*faces.begin();

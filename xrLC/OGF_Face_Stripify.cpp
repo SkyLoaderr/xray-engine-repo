@@ -28,7 +28,7 @@ void xrStripify		(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCache
 
 	// Generate strips
 	xr_vector<PrimitiveGroup>	PGROUP;
-	GenerateStrips	(&*indices.begin(),indices.size(),PGROUP);
+	GenerateStrips	(&*indices.begin(),(u32)indices.size(),PGROUP);
 	R_ASSERT		(PGROUP.size()==1);
 	R_ASSERT		(PGROUP[0].type==PT_LIST);
 	R_ASSERT		(indices.size()==PGROUP[0].numIndices);
@@ -50,7 +50,7 @@ void xrStripify		(xr_vector<WORD> &indices, xr_vector<WORD> &perturb, int iCache
 	}
 
 	// Copy indices
-	Memory.mem_copy	(&*indices.begin(),xPGROUP[0].indices,indices.size()*sizeof(WORD));
+	Memory.mem_copy	(&*indices.begin(),xPGROUP[0].indices,(u32)indices.size()*sizeof(WORD));
 
 	// Release memory
 	xPGROUP.clear	();
@@ -73,7 +73,7 @@ void OGF::Stripify()
 		xrStripify		(indices,permute,g_params.m_vCacheSize,0);
 		
 		// Copy faces
-		CopyMemory		(&*faces.begin(),&*indices.begin(),indices.size()*sizeof(WORD));
+		CopyMemory		(&*faces.begin(),&*indices.begin(),(u32)indices.size()*sizeof(WORD));
 		
 		// Permute vertices
 		vecOGF_V temp_list = vertices;

@@ -35,9 +35,9 @@ void xrMU_Model::calc_ogf()
 					R_ASSERT			(FF);
 
 					// Vertices
-					xrMU_Model::_vertex*	_V0		= FF->v[0];	u32 id0	= std::find(m_vertices.begin(),m_vertices.end(),_V0)-m_vertices.begin();
-					xrMU_Model::_vertex*	_V1		= FF->v[1];	u32 id1	= std::find(m_vertices.begin(),m_vertices.end(),_V1)-m_vertices.begin();
-					xrMU_Model::_vertex*	_V2		= FF->v[2];	u32 id2	= std::find(m_vertices.begin(),m_vertices.end(),_V2)-m_vertices.begin();
+					xrMU_Model::_vertex*	_V0		= FF->v[0];	u32 id0	= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V0)-m_vertices.begin());
+					xrMU_Model::_vertex*	_V1		= FF->v[1];	u32 id1	= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V1)-m_vertices.begin());
+					xrMU_Model::_vertex*	_V2		= FF->v[2];	u32 id2	= (u32)(std::find(m_vertices.begin(),m_vertices.end(),_V2)-m_vertices.begin());
 
 					// Geometry - POS
 					V0.P			= _V0->P;

@@ -424,10 +424,10 @@ extern "C"
 		// Iterate
 		for (i=0; i<h_count; i++)
 		{
-			float x		=	-float(hemi[i][h_table[0]]);
-			float y		=	-float(hemi[i][h_table[1]]);
-			float z		=	-float(hemi[i][h_table[2]]);
-			float mag	=	sqrtf(x*x + y*y + z*z);
+			float x		=	-float	(hemi[i][h_table[0]]);
+			float y		=	-float	(hemi[i][h_table[1]]);
+			float z		=	-float	(hemi[i][h_table[2]]);
+			float mag	=	_sqrt	(x*x + y*y + z*z);
 			x /= mag;	y /= mag;	z /= mag;
 
 			float E		=	((y<0)?ground_scale:1)/total;

@@ -30,7 +30,7 @@ int getTriByEdge	(xrMU_Model::_vertex *V1, xrMU_Model::_vertex *V2, xrMU_Model::
 	}
 	if (found) {
 		xrMU_Model::v_faces_it F = std::lower_bound(ids.begin(),ids.end(),found);
-		if (found == *F) return F-ids.begin();
+		if (found == *F) return (u32)(F-ids.begin());
 		else return -1;
 	} else {
 		return -1;
@@ -59,11 +59,11 @@ void xrMU_Reference::export_cform_game(CDB::CollectorPacked& CL)
 
 				for (u32 vit=0; vit<3; vit++)
 				{
-					u32 g_id		=  std::lower_bound
+					u32 g_id		=  u32(std::lower_bound
 						(
 							model->m_vertices.begin(),model->m_vertices.end(),F->v[vit]
 						) 
-						- model->m_vertices.begin	();
+						- model->m_vertices.begin	());
 					cfVertexMarks	[g_id] = true;
 				}
 			}
@@ -77,7 +77,7 @@ void xrMU_Reference::export_cform_game(CDB::CollectorPacked& CL)
 	}
 
 	// Collect faces
-	u32	Offset			= CL.getTS();
+	u32	Offset			= (u32)CL.getTS();
 	for (xrMU_Model::v_faces_it F = cfFaces->begin(); F!=cfFaces->end(); F++)
 	{
 		xrMU_Model::_face*	T = *F;

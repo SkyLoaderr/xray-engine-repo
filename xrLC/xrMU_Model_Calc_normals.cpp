@@ -3,7 +3,7 @@
 
 void xrMU_Model::calc_normals()
 {
-	u32	Vcount	= m_vertices.size();
+	u32		Vcount	= (u32)m_vertices.size();
 	float	p_total = 0;
 	float	p_cost  = 1.f/(Vcount);
 

@@ -46,7 +46,7 @@ inline int VertexCache::AddEntry(int entry)
 	removed = entries[entries.size() - 1];
 
 	//push everything right one
-	for(int i = entries.size() - 2; i >= 0; i--)
+	for(int i = (u32)entries.size() - 2; i >= 0; i--)
 	{
 		entries[i + 1] = entries[i];
 	}

@@ -18,8 +18,8 @@ IC REAL dfEvaluation(REAL &A, REAL &C, REAL &D)
 REAL dfComputeEvalResults(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<REAL> > &B, xr_vector<REAL> &C, xr_vector<REAL> &D)
 {
 	REAL dResult			= 0.0;
-	u32 dwTestCount			= B.size();
-	u32 dwParameterCount	= B[0].size();
+	u32 dwTestCount			= (u32)B.size();
+	u32 dwParameterCount	= (u32)B[0].size();
 	
 	for (u32 i=0; i<dwTestCount; i++) {
 		for (u32 j=0; j<dwParameterCount; j++) {
@@ -35,8 +35,8 @@ REAL dfComputeEvalResults(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vector<
 xr_vector<REAL> &dafGradient(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vector<REAL> &daResult, xr_vector<xr_vector<REAL> > &B, REAL dNormaFactor)
 {
 	REAL					dNorma = 0.0;
-	u32						dwTestCount = B.size();
-	u32 dwParameterCount	= B[0].size();
+	u32						dwTestCount = (u32)B.size();
+	u32 dwParameterCount	= (u32)B[0].size();
 	daResult.assign			(dwParameterCount,0);
 	
 	for (u32 i=0; i<dwParameterCount; i++) {
@@ -54,7 +54,7 @@ xr_vector<REAL> &dafGradient(xr_vector<xr_vector<REAL> >	&daEvalResults, xr_vect
 
 void vfOptimizeParameters(xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<REAL> > &B, xr_vector<REAL> &C, xr_vector<REAL> &D, REAL dEpsilon, REAL dAlpha, REAL dBeta, REAL dNormaFactor, u32 dwMaxIterationCount)
 {
-	u32						dwTestCount	= B.size();
+	u32						dwTestCount	= (u32)B.size();
 	xr_vector<REAL>			daGradient;
 	xr_vector<REAL>			daDelta;
 	xr_vector<xr_vector<REAL> >	daEvalResults; daEvalResults.resize(dwTestCount);
@@ -64,7 +64,7 @@ void vfOptimizeParameters(xr_vector<xr_vector<REAL> > &A, xr_vector<xr_vector<RE
 		return;
 	}
 	
-	u32						dwParameterCount = B[0].size();
+	u32						dwParameterCount = (u32)B[0].size();
 	C.assign				(dwParameterCount,0.0f);
 	D.assign				(dwParameterCount,0.0f);
 	daDelta.assign			(dwParameterCount,0);

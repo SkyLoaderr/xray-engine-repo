@@ -13,7 +13,7 @@ struct SExts{
     		exts.push_back(xr_strdup(ext));
         }
     }
-    u32 size(){return exts.size();}
+    u32 size()	{	return (u32)exts.size();	}
     LPSTR operator [](int k){return exts[k];}
 	~SExts()
     {
