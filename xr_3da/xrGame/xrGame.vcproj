@@ -921,6 +921,12 @@
 							<File
 								RelativePath="WeaponPistol.h">
 							</File>
+							<File
+								RelativePath=".\WeaponThrust.cpp">
+							</File>
+							<File
+								RelativePath=".\WeaponThrust.h">
+							</File>
 						</Filter>
 						<Filter
 							Name="Weapon M134"
@@ -1216,6 +1222,16 @@
 							</File>
 							<File
 								RelativePath="WeaponGroza.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Knife"
+							Filter="">
+							<File
+								RelativePath=".\Knife.cpp">
+							</File>
+							<File
+								RelativePath=".\Knife.h">
 							</File>
 						</Filter>
 					</Filter>
