@@ -22,28 +22,15 @@ public:
 extern CLog ELog;
 extern bool g_ErrorMode;
 
-#ifdef _EDITOR
-    void ENGINE_API __cdecl Msg	(LPCSTR format, ...);
-    void ENGINE_API	Log	(LPCSTR msg);
-    void ENGINE_API	Log	(LPCSTR msg);
-    void ENGINE_API	Log	(LPCSTR msg, LPCSTR 		dop);
-    void ENGINE_API	Log	(LPCSTR msg, DWORD			dop);
-    void ENGINE_API	Log	(LPCSTR msg, int  			dop);
-    void ENGINE_API	Log	(LPCSTR msg, float			dop);
-    void ENGINE_API	Log (LPCSTR msg, const Fvector& dop);
-    void ENGINE_API	Log	(LPCSTR msg, const Fmatrix& dop);
-#endif
-#ifdef _EXPORT
-    void ENGINE_API __cdecl Msg	(LPCSTR format, ...);
-    void ENGINE_API	Log	(LPCSTR msg);
-    void ENGINE_API	Log	(LPCSTR msg);
-    void ENGINE_API	Log	(LPCSTR msg, LPCSTR 		dop);
-    void ENGINE_API	Log	(LPCSTR msg, DWORD			dop);
-    void ENGINE_API	Log	(LPCSTR msg, int  			dop);
-    void ENGINE_API	Log	(LPCSTR msg, float			dop);
-    void ENGINE_API	Log (LPCSTR msg, const Fvector& dop);
-    void ENGINE_API	Log	(LPCSTR msg, const Fmatrix& dop);
-#endif
+void ENGINE_API __cdecl Msg	(LPCSTR format, ...);
+void ENGINE_API	Log	(LPCSTR msg);
+void ENGINE_API	Log	(LPCSTR msg);
+void ENGINE_API	Log	(LPCSTR msg, LPCSTR 		dop);
+void ENGINE_API	Log	(LPCSTR msg, DWORD			dop);
+void ENGINE_API	Log	(LPCSTR msg, int  			dop);
+void ENGINE_API	Log	(LPCSTR msg, float			dop);
+void ENGINE_API	Log (LPCSTR msg, const Fvector& dop);
+void ENGINE_API	Log	(LPCSTR msg, const Fmatrix& dop);
 
 #endif /*_INCDEF_NETDEVICELOG_H_*/
 

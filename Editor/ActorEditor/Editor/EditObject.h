@@ -18,6 +18,10 @@ class	Mtl;
 struct	FSChunkDef;
 struct	st_ObjectDB;
 
+#ifdef _IMPORT
+#include <lwobjimp.h>
+#endif
+
 class CSurface
 {
 #ifdef _ACTOR_EDITOR
@@ -312,6 +316,9 @@ public:
 #ifdef _LWO_EXPORT
 		// import routines
 	bool			Import_LWO				(st_ObjectDB *I);
+#endif
+#ifdef _LW_IMPORT
+	bool			Export_LW				(LWObjectImport *local);
 #endif
 };
 //----------------------------------------------------
