@@ -30,7 +30,7 @@ void CLight_Render_Direct::compute_xfs	(u32 m_phase, light* L)
 	L->X.S.transluent			= FALSE;
 	float	dist				= Device.vCameraPosition.distance_to(L->position)-L->range;
 	float	ssa					= 0.333f * ps_r2_ls_squality * L->range / ((dist<=EPS)?EPS:dist*dist);
-	u32		limit				= DSM_size/2;
+	u32		limit				= DSM_size;
 	if		(ssa >= 1)			L->X.S.size		= limit;
 	else	{
 		// ssa is quadratic

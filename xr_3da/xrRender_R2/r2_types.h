@@ -28,7 +28,7 @@
 #define r2_float2B			"$user$float2b"							// --- compression/encoding table
 #define r2_ds2_fade			"$user$ds2_fade"						// ---
 
-const u32					DSM_size			= 2048;
+const u32					DSM_size			= 1024;
 const float					DSM_distance_1		= 15.f;
 const float					DSM_distance_2		= 100.f;
 const float					DSM_d_range			= 100.f;
