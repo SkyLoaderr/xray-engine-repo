@@ -54,14 +54,14 @@ function load_dialog:InitControls()
 	
 	----- DATA ----	
 	local info_rect       = {x = 0, 
-						     y = 0,
+						     y = self.top_align_y,
 						     width = 148, 
 						     height = 148}
 	
 							 
 							 
 							 
-	local list_rect_f     = {x = self.left_align_x,
+	local list_rect_f     = {x = self.indent*2,
 						     y = info_rect.y + info_rect.height + self.indent,
 						     width = 0,
 						     height = 0}
