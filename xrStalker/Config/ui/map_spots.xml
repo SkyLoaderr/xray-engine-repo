@@ -358,7 +358,7 @@
 		<mini_map  spot="heli_mini_spot"  pointer="actor_pointer"></mini_map>
 	</heli_location>
 
-	<hit_sector_location hint="helicopter" ttl="10" pos_to_actor="1">
+	<hit_sector_location hint="hit_sector" ttl="10" pos_to_actor="1">
 		<mini_map  spot="hit_sector_mini_spot"></mini_map>
 	</hit_sector_location>
 <!-- test -->
@@ -401,7 +401,7 @@
 
 	<hit_sector_mini_spot x="0" y="0" width="64" height="64" heading="1" alignment="c"> 
 		<texture x="0" y="0" width="64" height="64"> ui\ui_minimap_hit_sector</texture>
-	</heli_mini_spot>
+	</hit_sector_mini_spot>
 
 	<heli_mini_spot x="0" y="0" width="11" height="13" heading="1" alignment="c"> 
 		<texture x="10" y="9" width="11" height="13"> ui\ui_map_arrow_02</texture>
