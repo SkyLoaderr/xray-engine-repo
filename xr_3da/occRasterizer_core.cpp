@@ -289,13 +289,13 @@ IC void i_section	(float *A, float *B, float *C, occTri* T, int Sect, BOOL bMidd
 	}
 }
 
-void i_section_b0	(float *A, float *B, float *C, occTri* T)
+void __stdcall i_section_b0	(float *A, float *B, float *C, occTri* T)
 {	i_section	(A,B,C,T,BOTTOM,0);	}
-void i_section_b1	(float *A, float *B, float *C, occTri* T)
+void __stdcall i_section_b1	(float *A, float *B, float *C, occTri* T)
 {	i_section	(A,B,C,T,BOTTOM,1);	}
-void i_section_t0	(float *A, float *B, float *C, occTri* T)
+void __stdcall i_section_t0	(float *A, float *B, float *C, occTri* T)
 {	i_section	(A,B,C,T,TOP,0);	}
-void i_section_t1	(float *A, float *B, float *C, occTri* T)
+void __stdcall i_section_t1	(float *A, float *B, float *C, occTri* T)
 {	i_section	(A,B,C,T,TOP,1);	}
 
 void occRasterizer::rasterize	(occTri* T)
