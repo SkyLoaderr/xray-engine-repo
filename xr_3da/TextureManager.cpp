@@ -570,9 +570,9 @@ void	CShaderManager::ED_UpdateTextures(vector<LPSTR>* names)
 {
 	// 1. Unload
     if (names){
-        for (DWORD nid=0; nid<names.size(); nid++)
+        for (DWORD nid=0; nid<names->size(); nid++)
         {
-            map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	(names[nid]);
+            map<LPSTR,CTexture*,str_pred>::iterator I = textures.find	((*names)[nid]);
             if (I!=textures.end())	I->second->Unload();
         }
     }else{
