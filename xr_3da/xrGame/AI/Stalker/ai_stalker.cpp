@@ -198,8 +198,9 @@ BOOL CAI_Stalker::net_Spawn			(LPVOID DC)
 
 void CAI_Stalker::net_Destroy()
 {
-	inherited::net_Destroy	();
-	m_pPhysics_support->in_NetDestroy();
+	inherited::net_Destroy				();
+	CInventoryOwner::net_Destroy		();
+	m_pPhysics_support->in_NetDestroy	();
 }
 
 void CAI_Stalker::net_Export		(NET_Packet& P)
