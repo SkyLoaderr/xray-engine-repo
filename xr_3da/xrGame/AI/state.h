@@ -36,7 +36,7 @@ protected:
 			void		add_state				(u32 state_id, CSState *s);
 
 	virtual void		setup_substates			(){}
-	
+			
 	u32					current_substate;
 	u32					prev_substate;
 

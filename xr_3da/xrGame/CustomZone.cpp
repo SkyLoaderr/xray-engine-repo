@@ -190,7 +190,7 @@ void CCustomZone::Load(LPCSTR section)
 
 BOOL CCustomZone::net_Spawn(LPVOID DC) 
 {
-	if (inherited::net_Spawn(DC))
+	if (!inherited::net_Spawn(DC))
 		return					(FALSE);
 
 	CSE_Abstract				*e = (CSE_Abstract*)(DC);

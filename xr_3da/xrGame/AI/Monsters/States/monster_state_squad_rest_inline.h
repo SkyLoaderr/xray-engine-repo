@@ -65,8 +65,14 @@ void CStateMonsterSquadRestAbstract::setup_substates()
 		if (!object->GetNodeInRadius(squad->GetLeader()->level_vertex_id(), 8.f, LEADER_RADIUS, FIND_POINT_ATTEMPTS, data.vertex)) {
 			data.point			= ai().level_graph().vertex_position(data.vertex);
 		} else {
-			data.point			= random_position(squad->GetLeader()->Position(), LEADER_RADIUS);
-			data.vertex			= u32(-1);
+			
+			Fvector dest_pos = random_position(squad->GetLeader()->Position(), LEADER_RADIUS);
+			if (object->accessible(dest_pos)) {
+				data.vertex		= object->accessible_nearest(dest_pos, data.point);
+			} else {
+				data.point		= dest_pos;
+				data.vertex		= u32(-1);
+			}
 		}
 
 		data.action.action	= ACT_WALK_FWD;

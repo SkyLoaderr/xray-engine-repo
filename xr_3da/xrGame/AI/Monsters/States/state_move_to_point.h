@@ -16,6 +16,23 @@ public:
 	virtual	void		execute						();
 
 	virtual bool		check_completion			();
+
+};
+
+
+template<typename _Object>
+class CStateMonsterMoveToPointEx : public CState<_Object> {
+	typedef CState<_Object> inherited;
+
+	SStateDataMoveToPointEx data;
+	u32		time_last_build;
+
+public:
+						CStateMonsterMoveToPointEx	(_Object *obj) : inherited(obj, ST_MoveToPoint, &data) {}
+	virtual				~CStateMonsterMoveToPointEx	() {}
+	virtual void		initialize					();
+	virtual	void		execute						();
+	virtual bool		check_completion			();
 };
 
 #include "state_move_to_point_inline.h"

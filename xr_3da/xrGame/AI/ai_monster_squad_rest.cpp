@@ -29,8 +29,9 @@ struct CPredicateSideSort {
 	}
 };
 
-#define CENTER_CIRCLE_DIST	15
-#define CIRCLE_RADIUS		10
+#define CENTER_CIRCLE_DIST  20
+#define CIRCLE_RADIUS_MIN	10
+#define CIRCLE_RADIUS_MAX	15
 
 void CMonsterSquad::Idle_AssignAction(ENTITY_VEC &members)
 {
@@ -38,8 +39,9 @@ void CMonsterSquad::Idle_AssignAction(ENTITY_VEC &members)
 	SMemberGoal &goal = GetGoal(leader);
 
 	if (goal.type == MG_WalkGraph) {
-		ENTITY_VEC front, back, left, right;
 		
+		front.clear();	back.clear();	left.clear();	right.clear();
+
 		for (ENTITY_VEC_IT IT = members.begin(); IT != members.end(); IT++) {
 			if ((*IT) == leader) continue;
 			
@@ -81,7 +83,7 @@ void CMonsterSquad::Idle_AssignAction(ENTITY_VEC &members)
 			Fvector random_dir;
 
 			random_dir.random_dir	();
-			random_r				= Random.randF(CIRCLE_RADIUS);
+			random_r				= Random.randF(CIRCLE_RADIUS_MIN, CIRCLE_RADIUS_MAX);
 
 			CEntity *entity = 0;
 			switch (cur_type) {

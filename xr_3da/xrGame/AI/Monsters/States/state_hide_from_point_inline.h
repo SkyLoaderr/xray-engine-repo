@@ -43,7 +43,6 @@ void CStateMonsterHideFromPointAbstract::execute()
 		else 
 			object->CSoundPlayer::play(data.action.sound_type);
 	}
-
 }
 
 TEMPLATE_SPECIALIZATION
