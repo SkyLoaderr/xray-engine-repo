@@ -64,6 +64,8 @@ void CAI_Rat::Die()
 	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	
 	pSounds->PlayAtPos(m_tpaSoundDie[Random.randI(SND_DIE_COUNT)],this,vPosition);
+
+	vfUpdateMoraleBroadcast(m_fMoraleDeathQuant,m_fMoraleDeathDistance);
 	
 	CGroup &Group = Level().get_group(g_Team(),g_Squad(),g_Group());
 	vfRemoveActiveMember();
@@ -116,10 +118,13 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fWallMinTurnValue				= pSettings->ReadFLOAT (section,"WallMinTurnValue")/180.f*PI;
 	m_fWallMaxTurnValue				= pSettings->ReadFLOAT (section,"WallMaxTurnValue")/180.f*PI;
 
-
 	m_fAngleSpeed					= pSettings->ReadFLOAT (section,"AngleSpeed");
 	m_fSafeGoalChangeDelta	 		= pSettings->ReadFLOAT (section,"GoalChangeDelta");
 	m_tGoalVariation	  			= pSettings->ReadVECTOR(section,"GoalVariation");
+
+	m_fMoraleDeathDistance	 		= pSettings->ReadFLOAT (section,"DeathDistance");
+
+	m_dwActionRefreshRate	 		= pSettings->ReadINT   (section,"ActionRefreshRate");
 
 	m_dwActiveScheduleMin			= shedule_Min;
 	m_dwActiveScheduleMax			= shedule_Max;

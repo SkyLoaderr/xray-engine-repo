@@ -117,12 +117,8 @@ public:
 		else
 			if (fTemp >= m_fMaxResultValue)
 				return(dwDiscretizationValue - 1);
-			else {
+			else
 				return(1);
-//				float fDummy = (m_fMaxResultValue - m_fMinResultValue)/float(dwDiscretizationValue);
-//				fDummy = (fTemp - m_fMinResultValue)/fDummy;
-//				return(iFloor(fDummy));
-			}
 	}
 };
  
@@ -245,8 +241,6 @@ public:
 	CEnemyWeaponTypeFunction		pfEnemyWeaponType;
 
 	// complex functions
-	//CPatternFunction				pfPersonalStatus;
-	//CPatternFunction				pfEnemyStatus;
 	CPatternFunction				pfWeaponEffectiveness;
 	CPatternFunction				pfAttackSuccessProbability;
 	CPatternFunction				pfDefendSuccessProbability;
@@ -265,8 +259,6 @@ public:
 		fpaBaseFunctions[43] = &pfEnemyCreatureType;
 		fpaBaseFunctions[44] = &pfEnemyWeaponType;
 
-		//pfPersonalStatus.			vfLoadEF("common\\PersonalStatus.dat");
-		//pfEnemyStatus.				vfLoadEF("common\\EnemyStatus.dat");
 		pfWeaponEffectiveness.		vfLoadEF("common\\WeaponEffectiveness.dat");
 		pfAttackSuccessProbability.	vfLoadEF("common\\AttackSuccessProbability.dat");
 		pfDefendSuccessProbability.	vfLoadEF("common\\DefendSuccessProbability.dat");

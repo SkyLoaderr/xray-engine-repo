@@ -69,6 +69,13 @@ class CAI_Rat : public CCustomMonster
 		// CLASS MEMBERS
 		//////////////////////////
 		
+		// FSM
+		stack<ERatStates>	tStateStack;
+		ERatStates			eCurrentState;
+		ERatStates			m_ePreviousState;
+		bool				bStopThinking;
+		bool				m_bStateChanged;
+
 		// ANIMATIONS
 		SRatAnimations		m_tRatAnimations;
 		CMotionDef*			m_tpCurrentGlobalAnimation;
@@ -120,6 +127,7 @@ class CAI_Rat : public CCustomMonster
 		Fvector				m_tCurrentDir;
 		Fvector				m_tHPB;
 		float				m_fDHeading;
+
 		// constants
 		float				m_fGoalChangeDelta;
 		float				m_fSpeed;
@@ -132,7 +140,6 @@ class CAI_Rat : public CCustomMonster
 		float				m_fAngleSpeed;
 		float				m_fSafeGoalChangeDelta;
 		Fvector				m_tGoalVariation;
-
 
 		// variables
 		float				m_fGoalChangeTime;
@@ -149,13 +156,7 @@ class CAI_Rat : public CCustomMonster
 		float				m_fMoraleMinValue;
 		float				m_fMoraleMaxValue;
 		float				m_fMoraleNormalValue;
-
-		// FSM
-		stack<ERatStates>	tStateStack;
-		ERatStates			eCurrentState;
-		ERatStates			m_ePreviousState;
-		bool				bStopThinking;
-		bool				m_bStateChanged;
+		float				m_fMoraleDeathDistance;
 
 		// active
 		float				m_fChangeActiveStateProbability;
@@ -287,6 +288,7 @@ class CAI_Rat : public CCustomMonster
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
+		void	vfUpdateMoraleBroadcast(float fValue, float fRadius);
 		void	vfComputeNextDirectionPosition();
 		void	vfUpdateMorale();
 		void	vfComputeNewPosition();
