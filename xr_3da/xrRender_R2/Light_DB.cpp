@@ -33,6 +33,8 @@ void CLight_DB::Load			(IReader *fs)
 			L->flags.bStatic			= true;
 			L->set_type					(IRender_Light::POINT);
 			L->set_shadow				(false);
+			u32 controller				= 0;
+			F->r						(&controller,4);
 			F->r						(&Ldata,sizeof(Flight));
 			if (Ldata.type==D3DLIGHT_DIRECTIONAL)
 			{
