@@ -134,6 +134,21 @@ function proceed(actor)
 		actor:give_info_portion("agroprom_find_stalker_phantom")
 	end
 	
+	
+	-- Dark valley
+	if actor:dont_has_info("val_player_knows_password") and
+	   actor:object("borov_flash") then
+		actor:give_info_portion("val_player_knows_password") 
+	end
+	
+	-- Bar Rostok
+	if actor:has_info("bar_resque_research_start") and
+	   actor:dont_has_info("bar_resque_research_gain") and
+	   actor:object("bar_ecolog_flash") then
+		actor:give_info_portion("bar_resque_research_gain") 
+	end
+	
+	
 	-- Military
 	if actor:dont_has_info("mil_max_flash_get") and
 	   actor:object("crazy_flash") then
@@ -159,13 +174,7 @@ function proceed(actor)
 	   db.actor:give_info_portion("mil_rg6_gain")  
 	end
 	   
-	
-	-- Dark valley
-	if actor:dont_has_info("val_player_knows_password") and
-	   actor:object("borov_flash") then
-		actor:give_info_portion("val_player_knows_password") 
-	end
-	
+		
 	-- Laboratory X18
 	if actor:dont_has_info("dar_password_info1") and
 	   actor:object("dar_pass_flash") then
@@ -339,11 +348,19 @@ function process_map_spot(info_id)
 
 	-- bar_rostok
 	elseif info_id == "bar_bar_hunter_quest_start" then
-		add_location (502, "bar_hunter_toz_location")
+		add_location(502, "bar_hunter_toz_location")
 
 	elseif info_id == "bar_bar_hunter_quest_find_rifle"
 		remove_location (502, "bar_hunter_toz_location")	
 		add_location (504, "bar_hunter_location")
+
+	elseif info_id == "bar_resque_research_start" then
+		add_location(503, "bar_ecolog_crush_location")
+		
+	elseif info_id == "bar_resque_research_gain" then
+		remove_location(503, "bar_ecolog_crush_location")
+		add_location(500, "bar_barman_location")
+		
 
 	-- military	
 	elseif info_id == "mil_max_job" then
