@@ -35,25 +35,12 @@ BOOL SceneBuilder::BuildLTX()
     if (FS.exist(ltx_filename.c_str()))
     	EFS.MarkFile(ltx_filename,true);
 
-	// -- defaults --
-    CMemoryWriter F;
+	// -- defaults --           
+    CMemoryWriter F;          
     F.w_string( "; level script file");
 	if( !Scene.m_LevelOp.m_BOPText.IsEmpty() )
 		F.w_stringZ( Scene.m_LevelOp.m_BOPText.c_str() );
 	F.save_to(ltx_filename.c_str());
-
-    CInifile* pIni = xr_new<CInifile>(ltx_filename.c_str(),false);
-/*
-//.
-    // required strings
-    pIni->w_string("static_sounds",		"; sounds","");
-    pIni->w_string("sound_environment",	"; sound environment","");
-
-    for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++)
-        if (!ParseLTX(pIni,(*it).second)){bResult = FALSE; break;}
-*/
-
-    xr_delete(pIni);
 
 	return bResult;
 }

@@ -533,11 +533,11 @@ bool CSpawnPoint::ExportGame(SExportStreams& F)
         break;
         case ptEnvMod:
 	        F.envmodif.stream.open_chunk(F.envmodif.chunk++);
-            F.envmodif.w_float			(m_EM_Radius);
-            F.envmodif.w_float			(m_EM_Power);
-            F.envmodif.w_float			(m_EM_ViewDist);
-            F.envmodif.w_u32			(m_EM_FogColor);
-            F.envmodif.w_float			(m_EM_FogDensity);
+            F.envmodif.stream.w_float	(m_EM_Radius);
+            F.envmodif.stream.w_float	(m_EM_Power);
+            F.envmodif.stream.w_float	(m_EM_ViewDist);
+            F.envmodif.stream.w_u32	 	(m_EM_FogColor);
+            F.envmodif.stream.w_float	(m_EM_FogDensity);
 			F.envmodif.stream.close_chunk();
         break;
         default: THROW;

@@ -72,7 +72,7 @@ public:
 	                CSpawnPoint    	(LPVOID data, LPCSTR name);
     void            Construct   	(LPVOID data);
     virtual         ~CSpawnPoint   	();
-    virtual bool	CanAttach		() {return false;}
+    virtual bool	CanAttach		() {return true;}
     
 	IC bool 		RefCompare		(LPCSTR ref){return ref&&ref[0]&&m_SpawnData.Valid()?(strcmp(ref,m_SpawnData.m_Data->s_name)==0):false; }
     IC LPCSTR		GetRefName		() 			{return m_SpawnData.Valid()?m_SpawnData.m_Data->s_name:0;}

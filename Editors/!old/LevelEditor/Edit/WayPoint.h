@@ -62,7 +62,7 @@ public:
     void            Construct   	(LPVOID data);
 	virtual			~CWayObject		();
     void			Clear			();
-    virtual bool	CanAttach		() {return false;}
+    virtual bool	CanAttach		() {return true;}
 
     EWayType		GetType			(){return m_Type;}
 

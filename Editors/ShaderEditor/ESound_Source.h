@@ -39,7 +39,7 @@ public:
 					ESoundSource	(LPVOID data, LPCSTR name);
 	void 			Construct		(LPVOID data);
 					~ESoundSource	();
-    virtual bool	CanAttach		() {return false;}
+    virtual bool	CanAttach		() {return true;}
     
     LPCSTR			GetSourceWAV	(){return m_WAVName.c_str();}
     void			SetSourceWAV	(LPCSTR fname);
