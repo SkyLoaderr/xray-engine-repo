@@ -13,22 +13,6 @@
 namespace LevelNavigationGraph {
 	struct CCellVertex {
 		u32				m_vertex_id;
-#ifdef OPTIMAL_GRAPH
-		union {
-			struct {
-				u32		m_right;
-				u32		m_down;
-			};
-			u32			m_dirs[2];
-		};
-		union {
-			struct {
-				u32		m_right_id;
-				u32		m_down_id;
-			};
-			u32			m_dirs_id[2];
-		};
-#endif
 		union {
 			typedef u8	_use_type;
 
@@ -47,15 +31,53 @@ namespace LevelNavigationGraph {
 			m_vertex_id	(vertex_id),
 			m_mark		(mark),
 			m_use		(use)
-#ifdef OPTIMAL_GRAPH
-			,
-			m_down		(0),
-			m_right		(0)
-#endif
 		{
 		}
 	};
 
+#ifdef OPTIMAL_GRAPH
+	struct CCellVertexEx {
+		union {
+			struct {
+				u16		m_right;
+				u16		m_down;
+			};
+			u16			m_dirs[2];
+		};
+		union {
+			struct {
+				u32		m_right_id;
+				u32		m_down_id;
+			};
+			u32			m_dirs_id[2];
+		};
+		union {
+			typedef u8	_use_type;
+
+			struct {
+				u32		m_mark : 24;
+				u32		m_use  : 8;
+			};
+			u32			m_data;
+		};
+
+		CCellVertexEx	() :
+			m_data		(0),
+			m_down		(0),
+			m_right		(0)
+		{
+		}
+
+		CCellVertexEx	(u32 vertex_id, u32 mark, u32 use) :
+			m_mark		(mark),
+			m_use		(use),
+			m_down		(0),
+			m_right		(0)
+		{
+		}
+	};
+#endif
+	
 	class CSector : public IPureSerializeObject<IReader,IWriter> {
 	private:
 		typedef u32		vertex_id_type;
