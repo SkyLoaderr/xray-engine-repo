@@ -148,7 +148,7 @@ float	CHM_Dynamic::Query	(Fvector2& pos)
 }
 
 //
-float CHeightMap::Query	(Fvector2& pos)
+float	CHeightMap::Query	(Fvector2& pos)
 {
 	if (dwFrame!=Device.dwFrame)
 	{
