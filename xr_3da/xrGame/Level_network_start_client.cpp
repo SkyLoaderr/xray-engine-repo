@@ -34,36 +34,11 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 		// ph_world->Create			();
 
 		// Waiting for connection completition
-		pApp->LoadTitle				("CLIENT: Spawning...");
-		while (!net_isCompleted_Connect()) Sleep(5);
-
-		// And receiving spawn information (game-state)
-		BOOL bFinished		= FALSE;
-		while (!bFinished) 
-		{
-			for (NET_Packet* P = net_msg_Retreive(); P; P=net_msg_Retreive())
-			{
-				u16			m_type;	
-				P->r_begin	(m_type);
-				switch (m_type)
-				{
-				case M_SV_CONFIG_GAME:		
-					{
-						u8				gametype;
-						u16				fraglimit;
-						u16				timelimit;
-						P->r_u8			(gametype);		GAME		= gametype;
-						P->r_u16		(fraglimit);	g_fraglimit	= fraglimit;
-						P->r_u16		(timelimit);	g_timelimit = timelimit;
-					}
-					break;
-				case M_SV_CONFIG_FINISHED:	bFinished = TRUE;	break;
-				case M_SPAWN:				g_sv_Spawn(P);		break;
-				}
-				net_msg_Release	();
-			}
-			Sleep	(1);
-		}
+		pApp->LoadTitle						("CLIENT: Spawning...");
+		while (!net_isCompleted_Connect())	Sleep(5);
+		ClientReceive						();
+		while (!net_isCompleted_Sync())		Sleep(5);
+		ClientReceive						();
 
 		// Textures
 		pApp->LoadTitle						("Loading textures...");
@@ -73,7 +48,6 @@ BOOL CLevel::net_Start_client	( LPCSTR name_of_server )
 
 		// Sync
 		pApp->LoadTitle						("CLIENT: Syncronising...");
-		while (!net_isCompleted_Sync())		Sleep(5);
 
 		if (strstr(Path.Current,"escape"))	Engine.Event.Signal	("level.weather.rain.start");
 
