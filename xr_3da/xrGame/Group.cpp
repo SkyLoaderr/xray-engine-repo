@@ -20,6 +20,8 @@ CGroup::CGroup()
 	m_tpaPatrolPath.clear();
 	m_dwLastActionTime = 0;
 	m_dwLastAction = 0;
+	m_dwActiveCount = 0;
+	m_dwAliveCount = 0;
 }
 
 const Fvector& CGroup::GetCentroid()

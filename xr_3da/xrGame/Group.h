@@ -52,6 +52,10 @@ public:
 	DWORD						m_dwLastActionTime;
 	DWORD						m_dwLastAction;
 
+	// active
+	DWORD						m_dwActiveCount;
+	DWORD						m_dwAliveCount;
+
 	// Constructor
 								CGroup				();
 	

@@ -110,6 +110,14 @@ void CAI_Rat::Load(LPCSTR section)
 	m_fMoraleUESDecreaseQuant		= (float)pSettings->ReadINT(section,"MoraleUESDecreaseQuant");
 	m_fMoraleMaxUESDistance			= (float)pSettings->ReadINT(section,"MoraleMaxUESDistance");
 	m_dwMoraleRestoreTimeInterval	= pSettings->ReadINT(section,"MoraleRestoreTimeInterval");
+
+	m_fChangeActiveStateProbability = pSettings->ReadFLOAT(section,"ChangeActiveStateProbability");
+	m_dwPassiveScheduleMin			= pSettings->ReadINT(section,"PassiveScheduleMin");
+	m_dwPassiveScheduleMax			= pSettings->ReadINT(section,"PassiveScheduleMax");
+	m_dwActiveCountPercent			= pSettings->ReadINT(section,"ActiveCountPercent");
+
+	m_dwActiveScheduleMin = shedule_Min;
+	m_dwActiveScheduleMax = shedule_Max;
 }
 
 BOOL CAI_Rat::net_Spawn	(LPVOID DC)
@@ -119,7 +127,10 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 	m_tOldPosition.set(vPosition);
 	m_tSpawnPosition.set(vPosition);
 	m_tSafeSpawnPosition.set(m_tSpawnPosition);
-	tStateStack.push(eCurrentState = aiRatFreeHunting);
+	tStateStack.push(eCurrentState = aiRatFreeHuntingActive);
+	vfAddActiveMember(true);
+	m_bStateChanged = true;
+
 	r_torso_current = r_current;
 	r_torso_target = r_target;
 	m_tHPB.x = r_torso_current.yaw;

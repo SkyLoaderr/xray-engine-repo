@@ -42,7 +42,8 @@ class CAI_Rat : public CCustomMonster
 		enum ERatStates 	{
 			aiRatDie = 0,
 			aiRatTurn,
-			aiRatFreeHunting,
+			aiRatFreeHuntingActive,
+			aiRatFreeHuntingPassive,
 			aiRatAttackFire,
 			aiRatAttackRun,
 			aiRatUnderFire,
@@ -164,6 +165,14 @@ class CAI_Rat : public CCustomMonster
 		bool				bStopThinking;
 		bool				m_bStateChanged;
 
+		// active
+		float				m_fChangeActiveStateProbability;
+		DWORD				m_dwActiveCountPercent;
+		DWORD				m_dwActiveScheduleMin;
+		DWORD				m_dwActiveScheduleMax;
+		DWORD				m_dwPassiveScheduleMin;
+		DWORD				m_dwPassiveScheduleMax;
+
 		//////////////////////////
 		// INLINE FUNCTIONS
 		//////////////////////////
@@ -188,7 +197,7 @@ class CAI_Rat : public CCustomMonster
 
 		IC void vfChooseNewSpeed()
 		{
-			int iRandom = ::Random.randI(0,3);
+			int iRandom = ::Random.randI(0,2);
 			switch (iRandom) {
 				case 0 : {
 					m_fSpeed = m_fMaxSpeed;
@@ -196,11 +205,6 @@ class CAI_Rat : public CCustomMonster
 				}
 				case 1 : {
 					m_fSpeed = m_fMinSpeed;
-					break;
-				}
-				case 2 : {
-					if (::Random.randI(0,4) == 0)
-						m_fSpeed = EPS_S;
 					break;
 				}
 			}
@@ -211,6 +215,27 @@ class CAI_Rat : public CCustomMonster
 		{
 			m_fGoalChangeTime -= fTimeDelta > .1f ? .1f : fTimeDelta;
 		};		
+
+		IC void vfAddActiveMember(bool bForceActive = false)
+		{
+			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+			if (bForceActive || (Group.m_dwAliveCount*m_dwActiveCountPercent/100 >= Group.m_dwActiveCount)) {
+				eCurrentState = aiRatFreeHuntingActive;
+				Group.m_dwActiveCount++;
+				shedule_Min	= m_dwActiveScheduleMin;
+				shedule_Max	= m_dwActiveScheduleMax;
+			}
+		};
+		
+		IC void vfRemoveActiveMember()
+		{
+			CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+			R_ASSERT(Group.m_dwActiveCount > 0);
+			Group.m_dwActiveCount--;
+			eCurrentState = aiRatFreeHuntingPassive;
+			shedule_Min	= m_dwPassiveScheduleMin;
+			shedule_Max	= m_dwPassiveScheduleMax;
+		};
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
@@ -230,7 +255,8 @@ class CAI_Rat : public CCustomMonster
 		// FSM STATES
 		//////////////////////////
 		void	Die();
-		void	FreeHunting();
+		void	FreeHuntingActive();
+		void	FreeHuntingPassive();
 		void	AttackFire();
 		void	AttackRun();
 		void	Turn();

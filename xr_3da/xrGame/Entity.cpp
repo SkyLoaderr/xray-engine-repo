@@ -143,6 +143,7 @@ BOOL CEntity::net_Spawn		(LPVOID DC)
 	CGroup& G				= Level().get_group	(id_Team,id_Squad,id_Group);
 	if (S.Leader==0)		S.Leader			=this;
 	else					G.Members.push_back	(this);
+	G.m_dwAliveCount++;
 	
 	// Initialize variables
 	//fHealth					= 100;

@@ -23,8 +23,12 @@ void CAI_Rat::Think()
 				Die();
 				break;
 			}
-			case aiRatFreeHunting : {
-				FreeHunting();
+			case aiRatFreeHuntingActive : {
+				FreeHuntingActive();
+				break;
+			}
+			case aiRatFreeHuntingPassive : {
+				FreeHuntingPassive();
 				break;
 			}
 			case aiRatAttackFire : {
@@ -116,9 +120,9 @@ void CAI_Rat::Turn()
 	vfSetMovementType(BODY_STATE_STAND,0);
 }
 
-void CAI_Rat::FreeHunting()
+void CAI_Rat::FreeHuntingActive()
 {
-	WRITE_TO_LOG("Free hunting");
+	WRITE_TO_LOG("Free hunting active");
 
 	bStopThinking = true;
 	
@@ -145,8 +149,13 @@ void CAI_Rat::FreeHunting()
 	m_tVarGoal.set			(10.0,0.0,20.0);
 	m_fASpeed				= .2f;
 	
-	if (bfCheckIfGoalChanged())
-		vfChooseNewSpeed();
+	if (bfCheckIfGoalChanged()) {
+		if (m_bStateChanged || (::Random.randF(0,1) > m_fChangeActiveStateProbability))
+			vfChooseNewSpeed();
+		else {
+			vfRemoveActiveMember();
+		}
+	}
 
 	vfUpdateTime(m_fTimeUpdateDelta);
 
@@ -202,6 +211,36 @@ void CAI_Rat::FreeHunting()
 			m_tpSoundBeingPlayed->feedback->SetPosition(eye_matrix.c);
 		
 	AI_Path.TravelPath.clear();
+}
+
+void CAI_Rat::FreeHuntingPassive()
+{
+	WRITE_TO_LOG("Free hunting passive");
+
+	bStopThinking = true;
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiRatDie)
+
+	SelectEnemy(m_Enemy);
+	
+	if (m_Enemy.Enemy) {
+		SelectEnemy(m_Enemy);
+		m_fGoalChangeTime = 0;
+		SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun)
+	}
+
+	if (m_tLastSound.dwTime >= m_dwLastUpdateTime){
+		if (((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) != SOUND_TYPE_WEAPON_SHOOTING) && (m_tLastSound.tpEntity->g_Team() != g_Team())) {
+			m_tSavedEnemy = m_tLastSound.tpEntity;
+			m_dwLostEnemyTime = Level().timeServer();
+			SWITCH_TO_NEW_STATE_THIS_UPDATE(aiRatAttackRun);
+		}
+		CHECK_IF_SWITCH_TO_NEW_STATE_THIS_UPDATE(((m_tLastSound.eSoundType != SOUND_TYPE_NO_SOUND) && ((m_tLastSound.tpEntity->g_Team() != g_Team()) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING))),aiRatUnderFire);
+	}
+	
+	m_fSpeed = 0.f;
+
+	vfAddActiveMember();
 }
 
 void CAI_Rat::UnderFire()
