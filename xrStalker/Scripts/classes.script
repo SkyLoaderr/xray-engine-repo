@@ -287,6 +287,7 @@ function NPC:is_looking()
 end
 
 function NPC:shoot_then_reload_actions(whom)
+	self.npc:set_queue_size(1)
 	action(self.npc,
 	       look(look.fire_point, whom),
 	       anim(anim.danger),
@@ -294,31 +295,27 @@ function NPC:shoot_then_reload_actions(whom)
 	       object(self.wpn, object.fire1),
 	       cond(cond.move_end)
 	)
-	
 	if true then return end
 	
 	for i = 1, 30 do
-		--[[
 		action(self.npc,
 		       move(move.act_run, move.line, patrol("way_attack_point")),
                        anim(anim.danger),
 		       cond(cond.move_end, time_infinite)
 		)
-		--]]
 		action(self.npc,
 		       look(look.fire_point, whom),
                        anim(anim.danger),
 		       move(move.standing, move.stand, move.line, whom),
 		       object(self.wpn, object.fire1),
-		       cond(cond.time_end, 100)
+		       cond(cond.time_end, 3000)
 		)
-		--[[
+		--printf("_bp: ammo=%d", self.wpn:get_ammo_in_magazine(self.wpn))
 		action(self.npc,
 		       move(move.act_walk_bkwd, move.line, patrol("way_reload_point")),
                        anim(anim.danger),
 		       cond(cond.move_end, time_infinite)
 		)
-		--]]
 		
 		--[[
 		action(self.npc,
@@ -330,12 +327,14 @@ function NPC:shoot_then_reload_actions(whom)
 		)
 		--]]
 		
+		--[[
 		action(self.npc,
 		       look(look.fire_point, whom),
 		       anim(anim.danger),
 		       move(move.standing, move.stand, move.line, whom),
 		       cond(cond.time_end, 2000)
 		)
+		--]]
 	end
 end
 

@@ -7,18 +7,7 @@
 -- way_reload_point
 
 -- Имена звуковых файлов
-local snd_davay_davay =     [[scripts\Rolik\stalker_hound\davay-davay]]
-local snd_ey_spryatalsa =   [[scripts\Rolik\stalker_hound\ey-spryatalsa]]
-local snd_gav_gav =         [[scripts\Rolik\stalker_hound\gav-gav1]]
-local snd_ispugalsa =       [[scripts\Rolik\stalker_hound\ispugalsa]]
-local snd_kashel =          [[scripts\Rolik\stalker_hound\kashel1]]
-local snd_kishki =          [[scripts\Rolik\stalker_hound\kishki1]]
-local snd_napali_v_volnu =  [[scripts\Rolik\stalker_hound\napali-v-volnu1]]
-local snd_nashi_podberut =  [[scripts\Rolik\stalker_hound\nashi-podberut]]
-local snd_padli =           [[scripts\Rolik\stalker_hound\padli]]
-local snd_po_sklonam =      [[scripts\Rolik\stalker_hound\po-sklonam]]
-local snd_skoti_truslivie = [[scripts\Rolik\stalker_hound\skoti-truslivie1]]
-local snd_vihodi_str =      [[scripts\Rolik\stalker_hound\vihodi-str]]
+local snd_prefix =                    [[scripts\Rolik\stalker_hound\]]
 
 ----------------------------------------------------------------------------------------------------
 -- MAIN
@@ -37,21 +26,27 @@ function main ()
 	-- 1) Напали в волну! 2) Падлы!
 	-- 1) Будем валить по склонам! 2) Наши подберут
 	dlg_nothing_happened_yet = classes.DialogueFSM()
-	dlg_nothing_happened_yet:set(false, 0, 0, snd_kashel, {3000, 5000})
-	dlg_nothing_happened_yet:set(false, 0, 1, snd_skoti_truslivie, {1000, 3000})
-	dlg_nothing_happened_yet:set(false, 0, 1, snd_napali_v_volnu, {1000, 3000})
-	dlg_nothing_happened_yet:set(false, 1, 0, snd_padli, {5000, 10000})
-	dlg_nothing_happened_yet:set(false, 0, 2, snd_po_sklonam, {1000, 2000})
-	dlg_nothing_happened_yet:set(false, 2, 0, snd_nashi_podberut, {5000, 10000})
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-1", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-2", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-3", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 0, snd_prefix .. "hound-08-4", {3000, 5000}) -- кашель
+	dlg_nothing_happened_yet:set(false, 0, 1, snd_prefix .. "hound-01", {1000, 3000}) -- скоты трусливые
+	dlg_nothing_happened_yet:set(false, 0, 1, snd_prefix .. "hound-02", {1000, 3000}) -- напали в волну
+	dlg_nothing_happened_yet:set(false, 1, 0, snd_prefix .. "hound-03", {3000, 7000}) -- падлы! (assholes)
+	dlg_nothing_happened_yet:set(false, 0, 2, snd_prefix .. "hound-04", {1000, 2000}) -- надо пересидеть и валить по склонам
+	dlg_nothing_happened_yet:set(false, 2, 0, snd_prefix .. "hound-05", {5000, 10000}) -- наши подберут
 	debug_log(zmey_gameplay_2.script_name(), "_bp: dlg_nothing_happened_yet created")
 	
 	-- 1) Только сунься - я тебе кишки выпущу
 	-- 1) Давай давай!
 	-- 1) Гав-гав-гав
 	dlg_see_enemy = classes.DialogueFSM()
-	dlg_see_enemy:set(false, 0, 0, snd_kishki, {2000, 5000})
-	dlg_see_enemy:set(false, 0, 0, snd_davay_davay, {2000, 5000})
-	dlg_see_enemy:set(false, 0, 0, snd_gav_gav, {2000, 5000})
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-06", {2000, 5000}) -- только сунься! кишки выпущу
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-07", {2000, 5000}) -- давай, давай!
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-1", {2000, 5000}) -- лай
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-2", {2000, 5000}) -- лай
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-1", {2000, 5000}) -- хриплый смех
+	dlg_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-2", {2000, 5000}) -- хриплый смех
 
 	-- 1) ха! испугался
 	-- 1) давай давай!
@@ -59,11 +54,13 @@ function main ()
 	-- 1) эй! куда ты спрятался?
 	-- 1) выходи, стреляться будем!
 	dlg_not_see_enemy = classes.DialogueFSM()
-	dlg_not_see_enemy:set(false, 0, 0, snd_ispugalsa, {1000, 3000})
-	dlg_not_see_enemy:set(false, 0, 0, snd_davay_davay, {1000, 3000})
-	dlg_not_see_enemy:set(false, 0, 0, snd_gav_gav, {5000, 10000})
-	dlg_not_see_enemy:set(false, 0, 0, snd_ey_spryatalsa, {1000, 2000})
-	dlg_not_see_enemy:set(false, 0, 0, snd_vihodi_str, {2000, 3000})
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-11", {1000, 3000}) -- ха! испугался?
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-12", {1000, 3000}) -- эй! куда ты спрятался?
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-13", {1000, 3000}) -- выходи! стреляться будем
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-1", {2000, 5000}) -- лай
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-09-2", {2000, 5000}) -- лай
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-1", {2000, 5000}) -- хриплый смех
+	dlg_not_see_enemy:set(false, 0, 0, snd_prefix .. "hound-10-2", {2000, 5000}) -- хриплый смех
 
 	debug_log(zmey_gameplay_2.script_name(), "_bp: npcs are about to be created")
 	local c_stalker_pes = classes.NPC(zmey_gameplay_2.script_name(), get_level_object("m_stalker_pes"), get_level_object("wpn_pes"))
