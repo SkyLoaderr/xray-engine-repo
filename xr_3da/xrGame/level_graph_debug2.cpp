@@ -55,8 +55,8 @@ void CLevelGraph::on_render1()
 	u32 ID				= O->ai_location().level_vertex_id();
 
 	CGameFont* F		= HUD().Font().pFontDI;
-	F->SetSize			(.02f);
-	F->Out				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
+	F->SetSizeI			(.02f);
+	F->OutI				(0.f,0.5f,"%f,%f,%f",VPUSH(P));
 //	float				x,z;
 //	unpack_xz			(Local,x,z);
 //	F->Out				(0.f,0.55f,"%3d,%4d,%3d -> %d",	iFloor(x),iFloor(Local.y()),iFloor(z),u32(ID));
@@ -157,9 +157,9 @@ void CLevelGraph::on_render1()
 				Fvector4	S;
 				T.set		(PC); T.y+=0.3f;
 				Device.mFullTransform.transform	(S,T);
-				F->SetSize	(0.05f/_sqrt(_abs(S.w)));
+				F->SetSizeI	(0.05f/_sqrt(_abs(S.w)));
 				F->SetColor	(0xffffffff);
-				F->Out		(S.x,-S.y,"~%d",Nid);
+				F->OutI		(S.x,-S.y,"~%d",Nid);
 			}
 		}
 	}

@@ -93,9 +93,9 @@ void CLevelGraph::on_render4	()
 		//T.y+= 1.5f;
 		T.y+= 1.5f/10.f;
 		Device.mFullTransform.transform (S,T);
-		F->SetSize	(0.05f/_sqrt(_abs(S.w)));
+		F->SetSizeI	(0.05f/_sqrt(_abs(S.w)));
 		F->SetColor(0xffffffff);
-		F->Out(S.x,-S.y,"%d",i);
+		F->OutI(S.x,-S.y,"%d",i);
 	}
 //			if ((m_tpAStar) && (m_tpAStar->m_tpaNodes.size())) {
 //				Fvector t1 = m_tpaGraph[m_tpAStar->m_tpaNodes[0]].tGlobalPoint;
@@ -136,9 +136,9 @@ void CLevelGraph::on_render4	()
 				//T.y+= 1.5f;
 				T.y+= 1.5f;
 				Device.mFullTransform.transform (S,T);
-				F->SetSize	(0.1f/_sqrt(_abs(S.w)));
+				F->SetSizeI	(0.1f/_sqrt(_abs(S.w)));
 				F->SetColor(0xffffffff);
-				F->Out(S.x,-S.y,"%d",i);
+				F->OutI(S.x,-S.y,"%d",i);
 			}
 		}
 

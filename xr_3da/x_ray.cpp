@@ -491,7 +491,7 @@ void CApplication::LoadTitle	(char *S, char *S2)
 		pFontSystem->SetAligment	(CGameFont::alCenter);
 		char *F = "%s";
 		if (S2) F="%s%s";
-		pFontSystem->Out			(0.f,0.93f,F,S,S2);
+		pFontSystem->OutI			(0.f,0.93f,F,S,S2);
 		pFontSystem->OnRender		();
 	}
 

@@ -36,8 +36,8 @@ void CUICursor::Render	()
 #ifdef DEBUG
 	CGameFont* F		= UI()->Font()->pFontDI;
 	F->SetAligment		(CGameFont::alCenter);
-	F->SetSize			(0.02f);
-	F->OutSet			(0.f,-0.9f);
+	F->SetSizeI			(0.02f);
+	F->OutSetI			(0.f,-0.9f);
 	F->SetColor			(0xffffffff);
 	Ivector2			pt = GetPos();
 	F->OutNext			("%d-%d",pt.x, pt.y);

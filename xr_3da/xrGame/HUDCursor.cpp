@@ -138,8 +138,8 @@ void CHUDCursor::Render()
 
 	CGameFont* F		= HUD().Font().pFontDI;
 	F->SetAligment		(CGameFont::alCenter);
-	F->SetSize			(0.02f);
-	F->OutSet			(0.f,0.f+di_size*2);
+	F->SetSizeI			(0.02f);
+	F->OutSetI			(0.f,0.f+di_size*2);
 #ifdef DEBUG
 	if (psHUD_Flags.test(HUD_CROSSHAIR_DIST)){
 		F->SetColor		(C);

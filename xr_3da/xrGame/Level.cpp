@@ -329,8 +329,8 @@ void CLevel::OnFrame	()
 		if (psDeviceFlags.test(rsStatistic))
 		{
 			const IServerStatistic* S = Server->GetStatistic();
-			F->SetSize	(0.015f);
-			F->OutSet	(0.0f,0.5f);
+			F->SetSizeI	(0.015f);
+			F->OutSetI	(0.0f,0.5f);
 			F->SetColor	(D3DCOLOR_XRGB(0,255,0));
 			F->OutNext	("IN:  %4d/%4d (%2.1f%%)",	S->bytes_in_real,	S->bytes_in,	100.f*float(S->bytes_in_real)/float(S->bytes_in));
 			F->OutNext	("OUT: %4d/%4d (%2.1f%%)",	S->bytes_out_real,	S->bytes_out,	100.f*float(S->bytes_out_real)/float(S->bytes_out));
@@ -372,8 +372,8 @@ void CLevel::OnFrame	()
 	} else {
 		if (psDeviceFlags.test(rsStatistic))
 		{
-			F->SetSize	(0.015f);
-			F->OutSet	(0.0f,0.5f);
+			F->SetSizeI	(0.015f);
+			F->OutSetI	(0.0f,0.5f);
 			F->SetColor	(D3DCOLOR_XRGB(0,255,0));
 			F->OutNext	("client_2_sever ping: %d",	net_Statistic.getPing());
 		}

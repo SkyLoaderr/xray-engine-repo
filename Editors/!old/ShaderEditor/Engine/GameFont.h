@@ -62,9 +62,10 @@ public:
 							CGameFont		(LPCSTR shader, LPCSTR texture, u32 flags=0);
 							~CGameFont		();
 
-	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
-	IC float				ConvertSize		(int sz)	{return (uFlags&fsDeviceIndependent)?(float)sz/Device.dwWidth:(float)sz;}
+//	IC float				ConvertSize		(float sz)	{return (uFlags&fsDeviceIndependent)?sz*Device.dwWidth:sz;}
+//	IC float				ConvertSize		(int sz)	{return (uFlags&fsDeviceIndependent)?(float)sz/Device.dwWidth:(float)sz;}
 	IC void					SetColor		(u32 C)		{dwCurrentColor=C;};
+	IC void					SetSizeI		(float S)	{fCurrentSize=S*Device.dwWidth;};
 	IC void					SetSize			(float S)	{fCurrentSize=S;};
 	IC float				GetSize			()			{return fCurrentSize;};
 	IC void					SetInterval		(float x, float y) {vInterval.set(x,y);};
@@ -75,10 +76,13 @@ public:
 	IC float				SizeOf			(char c){return SizeOf(c,fCurrentSize);}
 	float					SizeOf			(LPCSTR s, float size);
 	IC float				SizeOf			(LPCSTR s){return SizeOf(s,fCurrentSize);}
-	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
-	void					OutSet			(float x, float y)	{fCurrentX=x; fCurrentY=y;}
+//	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y*((uFlags&fsDeviceIndependent)?2.f:1.f);}
+	IC float				CurrentHeight	(){return fCurrentSize*vInterval.y;}
+	void					OutSetI			(float x, float y);
+	void					OutSet			(float x, float y);
 	void __cdecl            OutNext			(LPCSTR fmt, ...);
 	void __cdecl            OutPrev			(LPCSTR fmt, ...);
+	void __cdecl 			OutI			(float _x, float _y, LPCSTR fmt, ...);
 	void __cdecl 			Out				(float _x, float _y, LPCSTR fmt, ...);
 	void					OutSkip			(float val=1.f);
 

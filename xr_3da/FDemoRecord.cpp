@@ -190,21 +190,21 @@ BOOL CDemoRecord::Process(Fvector &P, Fvector &D, Fvector &N, float& fFov, float
 	}else{
 		if (psHUD_Flags.test(HUD_DRAW)){
 			if ((Device.dwTimeGlobal/750)%3!=0) {
-				pApp->pFontSystem->SetSize	(0.02f);
+				pApp->pFontSystem->SetSizeI	(0.02f);
 				pApp->pFontSystem->SetColor	(color_rgba(255,0,0,255));
 				pApp->pFontSystem->SetAligment(CGameFont::alCenter);
-				pApp->pFontSystem->OutSet	(0,-.05f);
+				pApp->pFontSystem->OutSetI	(0,-.05f);
 				pApp->pFontSystem->OutNext	("%s","RECORDING");
 				pApp->pFontSystem->OutNext	("Key frames count: %d",iCount);
 				pApp->pFontSystem->SetAligment(CGameFont::alLeft);
-				pApp->pFontSystem->OutSet	(-0.2f,+.05f);
+				pApp->pFontSystem->OutSetI	(-0.2f,+.05f);
 				pApp->pFontSystem->OutNext	("SPACE");
 				pApp->pFontSystem->OutNext	("BACK");
 				pApp->pFontSystem->OutNext	("ESC");
 				pApp->pFontSystem->OutNext	("F11");
 				pApp->pFontSystem->OutNext	("F12");
 				pApp->pFontSystem->SetAligment(CGameFont::alLeft);
-				pApp->pFontSystem->OutSet	(0,+.05f);
+				pApp->pFontSystem->OutSetI	(0,+.05f);
 				pApp->pFontSystem->OutNext	("= Append Key");
 				pApp->pFontSystem->OutNext	("= Cube Map");
 				pApp->pFontSystem->OutNext	("= Quit");

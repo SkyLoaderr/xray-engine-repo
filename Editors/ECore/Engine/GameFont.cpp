@@ -11,8 +11,11 @@ extern ENGINE_API BOOL g_bRendering;
 CGameFont::CGameFont(LPCSTR section, u32 flags)
 {
 	Initialize	(pSettings->r_string(section,"shader"),pSettings->r_string(section,"texture"),flags);
-	if (pSettings->line_exist(section,"size"))
-		SetSize(pSettings->r_float(section,"size"));
+	if (pSettings->line_exist(section,"size")){
+		float sz = pSettings->r_float(section,"size");
+		if (uFlags&fsDeviceIndependent)	SetSizeI(sz);
+		else							SetSize(sz);
+	}
 	if (pSettings->line_exist(section,"interval"))
 		SetInterval(pSettings->r_fvector2(section,"interval"));
 }
@@ -59,7 +62,7 @@ void CGameFont::Initialize		(LPCSTR cShader, LPCSTR cTexture, u32 flags)
 				TCMap[i].set		((i%cpl)*width,(i/cpl)*fHeight,width);
 		}
 	}
-	if (!(uFlags&fsDeviceIndependent))
+//	if (!(uFlags&fsDeviceIndependent))
 		SetSize					(fHeight);
 	CInifile::Destroy			(ini);
 
@@ -73,6 +76,20 @@ CGameFont::~CGameFont()
 	// Shading
 	pShader.destroy		();
 	pGeom.destroy		();
+}
+
+#define DI2PX(x) float(iFloor((x+1)*float(Device.dwWidth)*0.5f))
+#define DI2PY(y) float(iFloor((y+1)*float(Device.dwHeight)*0.5f))
+
+void CGameFont::OutSet			(float x, float y)
+{
+	fCurrentX=x; 
+	fCurrentY=y;
+}
+
+void CGameFont::OutSetI			(float x, float y)	
+{
+	OutSet(DI2PX(x),DI2PY(y));
 }
 
 void CGameFont::OnRender()
@@ -95,8 +112,8 @@ void CGameFont::OnRender()
 		uFlags			|= fsValid;
 	}
 
-	float				w_2		= float	(Device.dwWidth)	/ 2;
-	float				h_2		= float	(Device.dwHeight)	/ 2;
+//	float				w_2		= float	(Device.dwWidth)	/ 2;
+//	float				h_2		= float	(Device.dwHeight)	/ 2;
 
 	for (u32 i=0; i<strings.size(); )
 	{
@@ -124,9 +141,11 @@ void CGameFont::OnRender()
 			String		&PS	= strings[i];
 			int			len	= xr_strlen(PS.string);
 			if (len) {
-				float	X	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.x+1)*w_2:PS.x));
-				float	Y	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.y+1)*h_2:PS.y));
-				float	S	= ConvertSize	(PS.size);
+//				float	X	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.x+1)*w_2:PS.x));
+//				float	Y	= float			(iFloor((uFlags&fsDeviceIndependent)?(PS.y+1)*h_2:PS.y));
+				float	X	= PS.x;
+				float	Y	= PS.y;
+				float	S	= PS.size;		//ConvertSize	(PS.size);
 				float	Y2	= Y+S;
 				S			= (S*vTS.x)/fHeight;
 
@@ -195,6 +214,24 @@ void CGameFont::Add(float _x, float _y, LPCSTR s, u32 _c, float _size)
 	}
 }
 
+
+void __cdecl CGameFont::OutI(float _x, float _y, LPCSTR fmt,...)
+{
+	if (!Device.bActive)	return;
+	String		rs;
+	rs.x		=DI2PX(_x);
+	rs.y		=DI2PY(_y);
+	rs.c		=dwCurrentColor;
+	rs.size		=fCurrentSize;
+	rs.align	=eCurrentAlignment;
+
+	va_list		 p;
+	va_start	(p,fmt);
+	int vs_sz	= _vsnprintf(rs.string,sizeof(rs.string)-1,fmt,p); rs.string[sizeof(rs.string)-1]=0;
+	va_end		(p);
+	if (vs_sz)	strings.push_back(rs);
+
+}
 void __cdecl CGameFont::Out(float _x, float _y, LPCSTR fmt,...)
 {
 	if (!Device.bActive)	return;
@@ -257,7 +294,7 @@ void CGameFont::OutSkip(float val)
 
 float CGameFont::SizeOf(char s,float size)
 {
-	return		(uFlags&fsValid)?GetCharTC(s).z*ConvertSize(size)/fHeight*vInterval.x*vTS.x:0.f;
+	return		(uFlags&fsValid)?GetCharTC(s).z*size/fHeight*vInterval.x*vTS.x:0.f;
 }
 
 float CGameFont::SizeOf(LPCSTR s,float size)
@@ -269,7 +306,7 @@ float CGameFont::SizeOf(LPCSTR s,float size)
 			if (len) 
 				for (int j=0; j<len; j++) 
 					X			+= GetCharTC(s[j]).z;
-			return				X*ConvertSize(size)/fHeight*vInterval.x*vTS.x;
+			return				X*size/fHeight*vInterval.x*vTS.x;
 		}
 	}
 	return 0;
