@@ -88,7 +88,7 @@ public:
 	virtual void GetAnchorDynamic			(Fvector& anchor);
 	virtual void Deactivate();
 			void ReattachFirstElement		(CPHElement* new_element);
-CPHJointDestroyInfo*	JointDestroyInfo	(){return m_destroy_info;}
+virtual CPHJointDestroyInfo*	JointDestroyInfo(){return m_destroy_info;}
 				 CPHJoint(CPhysicsJoint::enumType type ,CPhysicsElement* first,CPhysicsElement* second);
 	virtual		 ~CPHJoint();
 	void SetShell					(CPHShell* p)			 {pShell=p;}

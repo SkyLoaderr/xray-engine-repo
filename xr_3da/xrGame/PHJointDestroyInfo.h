@@ -3,6 +3,7 @@
 class CPHJointDestroyInfo
 {
 friend class CPHShellSplitterHolder;
+friend class CPHShell;
 dJointFeedback			m_joint_feedback;
 float					m_sq_break_force;
 float					m_sq_break_torque;

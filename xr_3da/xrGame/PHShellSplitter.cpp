@@ -35,8 +35,8 @@ m_pShell->PassEndElements(start_element,end_element,new_shell_desc);
 m_pShell->PassEndJoints(start_joint+1,end_joint,new_shell_desc);
 shell_root ret = mk_pair(new_shell,(m_pShell->joints[start_joint])->JointDestroyInfo()->BoneID());
 m_pShell->DeleteJoint(start_joint);
-//m_splitters.erase(splitter);
-//aslp points to the next splitter after this was allready delleted
+
+
 CShellSplitInfo split_inf;
 split_inf.m_bone_id=m_pShell->joints[start_joint]->JointDestroyInfo()->BoneID();
 split_inf.m_start_el_num=start_element;
@@ -45,9 +45,8 @@ split_inf.m_start_jt_num=start_joint;
 split_inf.m_end_jt_num=end_joint;
 
 PassEndSplitters(split_inf,new_shell_desc,1,0);
+m_splitters.erase(splitter);
 
-//start_element+1 the number of elements leaved in source shell
-//start_joint+1 the number of joints leaved in source shell and the destroyed joint
 return ret;
 }
 

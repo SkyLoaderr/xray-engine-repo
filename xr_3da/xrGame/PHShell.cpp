@@ -6,6 +6,7 @@
 #include "tri-colliderknoopc/dTriList.h"
 #include "PHShellSplitter.h"
 #include "PHFracture.h"
+#include "PHJointDestroyInfo.h"
 ///////////////////////////////////////////////////////////////
 ///#pragma warning(disable:4995)
 //#include "..\ode\src\collision_kernel.h"
@@ -765,6 +766,7 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		}
 		else
 		{
+			setEndJointSplitter();
 			J->SetBreakable(id,joint_data.break_force,joint_data.break_torque);
 		}
 	}
@@ -786,7 +788,8 @@ void CPHShell::AddElementRecursive(CPhysicsElement* root_e, u16 id,Fmatrix globa
 		}
 		else
 		{
-			setEndJointSplitter();
+			J->JointDestroyInfo()->m_end_element=u16(elements.size());
+			J->JointDestroyInfo()->m_end_joint=u16(joints.size());
 		}
 	}
 

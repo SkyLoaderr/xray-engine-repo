@@ -28,6 +28,7 @@ class CPhysicsJoint;
 class CPhysicsElement;
 class CPhysicsShell;
 class CPHFracture;
+class CPHJointDestroyInfo;
 struct physicsBone
 {
 	CPhysicsJoint* joint;
@@ -183,17 +184,17 @@ IC CPhysicsElement* PSecond_element			()												{return pSecond_element;};
 	virtual void SetAnchorVsFirstElement	(const float x,const float y,const float z)						=0;
 	virtual void SetAnchorVsSecondElement	(const float x,const float y,const float z)						=0;
 
-	virtual void SetAxisDir					(const float x,const float y,const float z,const int axis_num)	=0;
+	virtual void SetAxisDir					(const float x,const float y,const float z,const int axis_num)		=0;
 	virtual void SetAxisDirVsFirstElement		(const float x,const float y,const float z,const int axis_num)	=0;
 	virtual void SetAxisDirVsSecondElement		(const float x,const float y,const float z,const int axis_num)	=0;
 
 
-	virtual void SetLimits					(const float low,const float high,const int axis_num)=0;
-	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)=0;
-	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)=0;
+	virtual void SetLimits					(const float low,const float high,const int axis_num)			  =0;
+	virtual void SetLimitsVsFirstElement	(const float low,const float high,const int axis_num)			  =0;
+	virtual void SetLimitsVsSecondElement	(const float low,const float high,const int axis_num)			  =0;
 
-	virtual void SetBreakable				(u16 bone_id, float force, float torque)			 =0;
-
+	virtual void SetBreakable				(u16 bone_id, float force, float torque)						  =0;
+virtual CPHJointDestroyInfo* JointDestroyInfo()																  =0;
 	virtual void SetForceAndVelocity		(const float force,const float velocity=0.f,const int axis_num=-1)=0;
 	virtual dJointID GetDJoint				()																  =0;
 	virtual void GetLimits					(float& lo_limit,float& hi_limit,int axis_num)					  =0;
