@@ -237,7 +237,7 @@ void CHelicopterMovManager::getPathAltitude (Fvector& point)
 
 	VERIFY( levelBox.max.y > point.y );
 
-	float minY = levelBox.min.y+(levelBox.max.y-levelBox.min.y)*0.7f;
+	float minY = levelBox.min.y+(levelBox.max.y-levelBox.min.y)*0.5f;
 	float maxY = levelBox.max.y-1.0f;
 //	minY = maxY-EPS_L;
 	clamp (point.y,minY,maxY);
