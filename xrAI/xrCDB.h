@@ -26,14 +26,14 @@ namespace CDB
 {
 	// Allocators / Deallocators
 	template <class T>
-	IC T*	cl_alloc	(u32 count)
+	IC T*	cl_alloc	(u32 count, HANDLE H)
 	{
-		return (T*) HeapAlloc	(GetProcessHeap(),0,count*sizeof(T));
+		return (T*) HeapAlloc	(H,0,count*sizeof(T));
 	}
 	template <class T>
-	IC void cl_free		(T* P)
+	IC void cl_free		(T* P, HANDLE H)
 	{
-		HeapFree	(GetProcessHeap(),0,P);
+		HeapFree	(H,0,P);
 	}
 
 	// Triangle
@@ -73,7 +73,7 @@ namespace CDB
 
 		IC TRI*			get_tris	()	{ return tris;	}
 
-		virtual DWORD	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt);
+		virtual DWORD	build		(Fvector* V, int Vcnt, TRI* T, int Tcnt, HANDLE H = GetProcessHeap());
 		virtual DWORD	memory		();
 	};
 
