@@ -15,12 +15,6 @@ function talking_or_tutor(actor, npc)
 	return actor:is_talking() or actor:has_info("esc_trader_experienced") or actor:has_info("esc_trader_newbie")
 end
 
---[[
-function unfriendly_or_has_enemy(actor, npc)
-	if actor:relation(npc) == game_object.enemy or npc:relation(actor) == game_object.enemy then
-		return true
-	end
-	return false
+function enemy_to_actor(actor, npc)
+	return npc:relation(actor) == game_object.enemy
 end
-]]
-
