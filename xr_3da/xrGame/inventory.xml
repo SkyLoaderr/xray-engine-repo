@@ -67,13 +67,13 @@
 	<!-- Sleep button -->
     <sleep_button x="800" y="715" width="150" height="40">
         <texture>ui\ui_button_01</texture>
-        <text>Sleep</text>
+        <text r="255" g="255" b="255">Sleep</text>
     </sleep_button>
 
 	<!-- Drop button -->
     <drop_button x="235" y="410" width="100" height="50">
-        <texture x="0" y="0">ui\ui_cm_drop_over</texture>
-        <text x="0" y="0" font="medium" r="240" g="217" b="182" a="255">Drop Item</text>
+        <texture x="10" y="10">ui\ui_cm_drop_over</texture>
+        <text x="20" y="-10" font="medium" r="240" g="217" b="182" a="255">Drop Item</text>
     </drop_button>
     
     <!-- BELT LIST -->

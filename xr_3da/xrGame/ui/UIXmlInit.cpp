@@ -160,33 +160,34 @@ bool CUIXmlInit::InitButton(CUIXml& xml_doc, LPCSTR path,
 {
 	R_ASSERT2(xml_doc.NavigateToNode(path,index), "XML node not found");
 
-	string256 buf;
+//	string256 buf;
+//
+//	int x = xml_doc.ReadAttribInt(path, index, "x");
+//	int y = xml_doc.ReadAttribInt(path, index, "y");
+//	int width = xml_doc.ReadAttribInt(path, index, "width");
+//	int height = xml_doc.ReadAttribInt(path, index, "height");
+//	
+//	pWnd->Init(x, y, width, height);
+//	InitTexture(xml_doc, path, index, pWnd);
+//
+//	// Init font from xml config file
+//	CGameFont *LocalFont = NULL;
+//	u32 cl;
+//
+//	ref_str text_path = strconcat(buf,path,":text");
+//	InitFont(xml_doc, *text_path, index, cl, LocalFont);
+//	if (LocalFont)
+//	{
+//		pWnd->SetFont(LocalFont);
+//		pWnd->SetTextColor(cl);
+//	}
+//
+//	LPCSTR  text = xml_doc.Read(buf, index, NULL);
+//	pWnd->SetText(text);
+	InitStatic(xml_doc, path, index, pWnd);
 
-	int x = xml_doc.ReadAttribInt(path, index, "x");
-	int y = xml_doc.ReadAttribInt(path, index, "y");
-	int width = xml_doc.ReadAttribInt(path, index, "width");
-	int height = xml_doc.ReadAttribInt(path, index, "height");
 	u32 accel = static_cast<u32>(xml_doc.ReadAttribInt(path, index, "accel", -1));
-	
-	pWnd->Init(x, y, width, height);
-	InitTexture(xml_doc, path, index, pWnd);
-
 	pWnd->SetAccelerator(accel);
-
-	// Init font from xml config file
-	CGameFont *LocalFont = NULL;
-	u32 cl;
-
-	ref_str text_path = strconcat(buf,path,":text");
-	InitFont(xml_doc, *text_path, index, cl, LocalFont);
-	if (LocalFont)
-	{
-		pWnd->SetFont(LocalFont);
-		pWnd->SetTextColor(cl);
-	}
-
-	LPCSTR  text = xml_doc.Read(buf, index, NULL);
-	pWnd->SetText(text);
 	
 	return true;
 }
