@@ -46,7 +46,7 @@
       intermediate\ESound_Environment.obj intermediate\ESound_Source.obj 
       intermediate\FS2.obj intermediate\Glow.obj intermediate\GroupObject.obj 
       intermediate\portal.obj intermediate\portalutils.obj 
-      intermediate\Scene.obj intermediate\Scene_Tools.obj 
+      intermediate\scene.obj intermediate\Scene_Tools.obj 
       intermediate\SceneIO.obj intermediate\SceneObject.obj 
       intermediate\SceneObjectIO.obj intermediate\ScenePick.obj 
       intermediate\SceneRender.obj intermediate\SceneSelection.obj 
