@@ -223,9 +223,9 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 //	CObject* pNewObject =  Level().Objects.net_Find(ps->GameID);
 	if (!pNewObject) return;
 
-	CObject* pOldObject = Level().CurrentViewEntity();
+//	CObject* pOldObject = Level().CurrentViewEntity();
 	Level().SetEntity(pNewObject);
-	
+	/*
 	if (pOldObject)
 	{
 		Engine.Sheduler.Unregister	(pOldObject);
@@ -233,6 +233,7 @@ void	game_sv_Deathmatch::SM_SwitchOnPlayer(CObject* pNewObject)
 	};
 	Engine.Sheduler.Unregister	(pNewObject);
 	Engine.Sheduler.Register	(pNewObject, TRUE);
+	*/
 
 	m_dwSM_CurViewEntity = pNewObject->ID();
 	m_dwSM_LastSwitchTime = Level().timeServer() + m_dwSM_SwitchDelta;
@@ -375,11 +376,19 @@ void game_sv_Deathmatch::OnPlayerConnect	(u32 id_who)
 	ClearPlayerState(ps_who);
 	ps_who->team				=	0;	
 	
-	if (g_pGamePersistent->bDedicatedServer && (xrCData == m_server->GetServer_client()) )
+	if (xrCData == m_server->GetServer_client())
 	{
-		ps_who->Skip = true;
-		return;
-	}
+		if (g_pGamePersistent->bDedicatedServer)
+		{
+			ps_who->Skip = true;
+			return;
+		}
+
+		if (m_bSpectatorMode)
+		{
+			ps_who->flags |= GAME_PLAYER_FLAG_READY;
+		}
+	};
 	ps_who->Skip = false;
 	SpawnPlayer(id_who, "spectator");
 
