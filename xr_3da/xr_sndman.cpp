@@ -255,7 +255,7 @@ void CSoundManager::SetFreq	()
 		case sf_22K:	wfm.nSamplesPerSec = 22050; break;
 		case sf_44K:	wfm.nSamplesPerSec = 44100; break;
 	}
-	wfm.nAvgBytesPerSec	= wfm.nSamplesPerSec * wfm.nBlockAlign;
+	wfm.nAvgBytesPerSec		= wfm.nSamplesPerSec * wfm.nBlockAlign;
 	pBuffer->SetFormat		(&wfm);
 	pSoundRender->Reload	();
 	p2DSounds->Reload		();
