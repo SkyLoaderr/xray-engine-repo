@@ -306,19 +306,15 @@ function action_idle:execute ()
     if self.object:animation_count () < 2 then 
        self.object:add_animation ("waunded_idle_0", true)
     end    
-    xr_sound.sound_update(self.object, self.sounds)		
     
-    --if self.a.on_medikit ~= nil then
-       --self.object:give_info_portion_via_pda (self.a.on_medikit.info, level.actor ())
-    --end   
+    if self.object:is_talking () == false then
+       xr_sound.sound_update(self.object, self.sounds)		
+    end   
+    
     if device ():time_global () - self.send_time > 15000 then    
-       this.send_sos (self.object)
-		--if self.actor ~= nil then
-			--news_manager.send_help(self.actor)
-		--else
-			--self.actor = level.actor()
-		--end
-       
+       if self.object:is_talking () == false then
+          this.send_sos (self.object)
+       end   
        self.send_time = device ():time_global ()
     end   
 end    
@@ -377,16 +373,14 @@ function action_help:execute ()
        self.object:add_animation ("waunded_idle_0", true)
     end    
 
-    --if self.object:active_sound_count() == 0 then
+    if self.object:is_talking () == false then
 	   xr_sound.sound_update(self.object, self.sounds)		
-	--end
+	end   
+	
     if device ():time_global () - self.send_time > 15000 then    
-       this.send_sos (self.object) 
-   		--if self.actor ~= nil then
-			--news_manager.send_help(self.actor)
-		--else
-			--self.actor = level.actor()
-		--end
+       if self.object:is_talking () == false then
+          this.send_sos (self.object) 
+       end   
        self.send_time = device ():time_global ()
     end   
     
@@ -571,12 +565,12 @@ function add_to_binder (object, ini, scheme, section, st)
     
     
     local manager = object:motivation_action_manager ()
-    manager:add_evaluator (properties["enable"],    this.evaluator_enable       ("enabled", st))
-    manager:add_evaluator (properties["wound"],     this.evaluator_wound        ("wound", st))
-    manager:add_evaluator (properties["sit"],       this.evaluator_sit          ("sit_down", st))
-    manager:add_evaluator (properties["friend"],    this.evaluator_friend       ("see_friend", st))
-    manager:add_evaluator (properties["cover"],     this.evaluator_cover        ("in_cover", st))
-    manager:add_evaluator (properties["medikit"],   this.evaluator_medikit      ("medikit", st))
+    manager:add_evaluator (properties["enable"],    this.evaluator_enable       ("wounded_enabled", st))
+    manager:add_evaluator (properties["wound"],     this.evaluator_wound        ("wounded_wound", st))
+    manager:add_evaluator (properties["sit"],       this.evaluator_sit          ("wounded_sit_down", st))
+    manager:add_evaluator (properties["friend"],    this.evaluator_friend       ("wounded_see_friend", st))
+    manager:add_evaluator (properties["cover"],     this.evaluator_cover        ("wounded_in_cover", st))
+    manager:add_evaluator (properties["medikit"],   this.evaluator_medikit      ("wounded_medikit", st))
 
     local action = this.action_cover ("action_cover", st)
     action:add_precondition (world_property (stalker_ids.property_alive,    true))
