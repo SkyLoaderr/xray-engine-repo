@@ -28,9 +28,21 @@ CMotivationActionManagerStalker::~CMotivationActionManagerStalker	()
 void CMotivationActionManagerStalker::init				()
 {
 #ifdef LOG_ACTION
-//	m_use_log				= true;
+	m_use_log				= true;
 #endif
 }
+
+#ifdef LOG_ACTION
+LPCSTR CMotivationActionManagerStalker::action2string	(const _action_id_type &action_id)
+{
+	return					(inherited::action2string(action_id));
+}
+
+LPCSTR CMotivationActionManagerStalker::property2string	(const _condition_type &property_id)
+{
+	return					(inherited::property2string(property_id));
+}
+#endif
 
 void CMotivationActionManagerStalker::Load				(LPCSTR section)
 {
@@ -43,7 +55,9 @@ void CMotivationActionManagerStalker::reinit			(CAI_Stalker *object, bool clear_
 	add_motivations			();
 	add_evaluators			();
 	add_actions				();
+
 	inherited::reinit		(object,clear_all);
+
 	m_storage.set_property	(eWorldPropertyDead,false);
 }
 
@@ -135,15 +149,3 @@ void CMotivationActionManagerStalker::add_actions			()
 	add_effect				(action,eWorldPropertyEnemies,		false);
 	add_operator			(eWorldOperatorKillEnemy,			action);
 }
-
-#ifdef LOG_ACTION
-LPCSTR CMotivationActionManagerStalker::action2string	(const _action_id_type &action_id)
-{
-	return					(inherited::action2string(action_id));
-}
-
-LPCSTR CMotivationActionManagerStalker::property2string	(const _condition_type &property_id)
-{
-	return					(inherited::property2string(property_id));
-}
-#endif
