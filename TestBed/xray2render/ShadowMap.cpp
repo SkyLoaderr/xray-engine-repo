@@ -1302,11 +1302,11 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 HRESULT CMyD3DApplication::RenderCombine_Normal	()
 {
 	// samplers and texture (diffuse + gloss)
-	m_pd3dDevice->SetTexture				(1, d_Accumulator);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
-	m_pd3dDevice->SetSamplerState			(1, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetTexture				(0, d_Color);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSU,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_ADDRESSV,	D3DTADDRESS_CLAMP);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MINFILTER,	D3DTEXF_POINT);
+	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_POINT);
 
 	// samplers and texture
 	m_pd3dDevice->SetTexture				(1, d_Accumulator);
