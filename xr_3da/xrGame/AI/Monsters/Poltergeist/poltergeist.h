@@ -49,8 +49,8 @@ public:
 	// FireBall
 
 			void	LoadFlame				(LPCSTR section);
-			void	FireFlame				(CObject *target_object);
-			bool	GetValidFlamePosition	(CObject *target_object, Fvector &res_pos);
+			void	FireFlame				(const CObject *target_object);
+			bool	GetValidFlamePosition	(const CObject *target_object, Fvector &res_pos);
 			void	UpdateFlame				();
 			void	RemoveFlames			();
 	
@@ -63,11 +63,11 @@ public:
 
 
 			struct SFlameElement {
-				CObject		*target_object;
-				Fvector		position;
-				Fvector		target_dir;
-				u32			time_started;
-				ref_sound	sound;
+				const CObject		*target_object;
+				Fvector				position;
+				Fvector				target_dir;
+				u32					time_started;
+				ref_sound			sound;
 			};
 			
 			DEFINE_VECTOR(SFlameElement*, FLAME_ELEMS_VEC, FLAME_ELEMS_IT);
@@ -83,11 +83,11 @@ public:
 
 	// Telekinesis
 	
-			void	ProcessTelekinesis	(CObject *target);
+			void	ProcessTelekinesis	(const CObject *target);
 			void	UpdateTelekinesis	();
 
 			u32					time_tele_start;
-			CObject				*tele_enemy;
+			const CObject		*tele_enemy;
 			CPhysicsShellHolder *tele_object;
 
 

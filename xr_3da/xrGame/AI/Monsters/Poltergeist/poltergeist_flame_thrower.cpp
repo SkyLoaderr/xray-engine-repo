@@ -18,7 +18,7 @@ void CPoltergeist::LoadFlame(LPCSTR section)
 	m_flame_hit_value			= pSettings->r_float(section,"flame_hit_value");
 }
 
-void CPoltergeist::FireFlame(CObject *target_object)
+void CPoltergeist::FireFlame(const CObject *target_object)
 {
 	Fvector position;
 	if (!GetValidFlamePosition(target_object, position)) return;
@@ -111,9 +111,9 @@ void CPoltergeist::UpdateFlame()
 	m_flames.erase(I,m_flames.end());
 }
 
-bool CPoltergeist::GetValidFlamePosition(CObject *target_object, Fvector &res_pos)
+bool CPoltergeist::GetValidFlamePosition(const CObject *target_object, Fvector &res_pos)
 {
-	CGameObject *Obj = dynamic_cast<CGameObject *>(target_object);
+	const CGameObject *Obj = dynamic_cast<const CGameObject *>(target_object);
 	if (!Obj) return (false);
 
 	Fvector dir;

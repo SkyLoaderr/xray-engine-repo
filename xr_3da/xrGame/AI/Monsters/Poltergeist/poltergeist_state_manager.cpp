@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "poltergeist.h"
 #include "poltergeist_state_manager.h"
+#include "../../ai_monster_utils.h"
 #include "../states/monster_state_rest.h"
 #include "../states/monster_state_rest_sleep.h"
 #include "../states/monster_state_rest_walk_graph.h"
+#include "poltergeist_state_attack_hidden.h"
 
 #include "../../ai_monster_debug.h"
 
@@ -15,6 +17,11 @@ CStateManagerPoltergeist::CStateManagerPoltergeist(CPoltergeist *obj) : inherite
 			xr_new<CStateMonsterRestSleep<CPoltergeist> >(obj), 
 			xr_new<CStateMonsterRestWalkGraph<CPoltergeist> >(obj)
 		)
+	);
+
+	add_state(
+		eStateAttackHidden,
+		xr_new<CStatePoltergeistAttackHidden<CPoltergeist> > (obj)
 	);
 
 	//add_state(
@@ -72,22 +79,33 @@ CStateManagerPoltergeist::~CStateManagerPoltergeist()
 {
 }
 
+void CStateManagerPoltergeist::initialize()
+{
+	inherited::initialize();
+	
+	time_next_flame_attack	= 0;
+	time_next_tele_attack	= 0;
+	time_next_scare_attack	= 0;
+
+}
 
 void CStateManagerPoltergeist::execute()
 {
 	u32 state_id = u32(-1);
 
-	//const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
 	//const CEntityAlive* corpse	= object->CorpseMan.get_corpse();
 
-	//if (enemy) {
-	//	if (object->m_hidden) {
-	//		state_id = eStateAttackHidden;
-	//	} else 
-	//		state_id = eStateAttack;
-	//}
-
-	state_id = eStateRest;
+	if (enemy) {
+		if (object->is_hidden()) {
+			state_id = eStateAttackHidden;
+		} 	
+		state_id = eStateAttackHidden;
+	} else
+		state_id = eStateRest;
+	
+	
+	if (state_id == eStateAttackHidden) polter_attack();
 	
 	select_state(state_id); 
 
@@ -95,4 +113,43 @@ void CStateManagerPoltergeist::execute()
 	get_state_current()->execute();
 
 	prev_substate = current_substate;
+}
+
+#define FLAME_DELAY_MIN			2000
+#define FLAME_DELAY_NORMAL		6000
+#define FLAME_DELAY_AGGRESSIVE  3000
+
+#define TELE_DELAY_MIN			3000
+#define TELE_DELAY_NORMAL		6000
+#define TELE_DELAY_AGGRESSIVE	4000
+
+#define SCARE_DELAY_MIN			500
+#define SCARE_DELAY_NORMAL		2000
+#define SCARE_DELAY_AGGRESSIVE	1000
+
+void CStateManagerPoltergeist::polter_attack()
+{
+	u32 cur_time = Level().timeServer();
+	const CEntityAlive* enemy	= object->EnemyMan.get_enemy();
+	
+	bool b_aggressive = object->GetHealth() < 0.5f;
+
+	if (time_next_flame_attack < cur_time) {
+		object->FireFlame(enemy);
+		time_next_flame_attack = cur_time + Random.randI(FLAME_DELAY_MIN, (b_aggressive) ? FLAME_DELAY_AGGRESSIVE : FLAME_DELAY_NORMAL);
+	}
+
+	if (time_next_tele_attack < cur_time) {
+		object->ProcessTelekinesis(enemy);
+		time_next_tele_attack = cur_time + Random.randI(TELE_DELAY_MIN, (b_aggressive) ? TELE_DELAY_AGGRESSIVE : TELE_DELAY_NORMAL);
+	}
+
+	if (time_next_scare_attack < cur_time) {
+		if (Random.randI(2))
+			object->PhysicalImpulse(enemy->Position());
+		else 
+			object->StrangeSounds(enemy->Position());
+		
+		time_next_scare_attack = cur_time + Random.randI(SCARE_DELAY_MIN, (b_aggressive) ? SCARE_DELAY_AGGRESSIVE : SCARE_DELAY_NORMAL);
+	}
 }

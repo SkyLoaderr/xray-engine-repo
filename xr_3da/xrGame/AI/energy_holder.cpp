@@ -7,6 +7,7 @@ CEnergyHolder::CEnergyHolder()
 {
 	m_auto_activate				= false;
 	m_auto_deactivate			= false;
+	m_enable					= true;
 }
 
 CEnergyHolder::~CEnergyHolder()
@@ -44,6 +45,8 @@ void CEnergyHolder::deactivate()
 
 void CEnergyHolder::schedule_update()
 {
+	if (!m_enable) return;
+	
 	// Обновить значение энергии
 	u32		cur_time	= Level().timeServer();
 	float	dt			= float(cur_time - m_time_last_update) / 1000.f;

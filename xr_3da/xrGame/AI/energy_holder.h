@@ -17,6 +17,9 @@ class CEnergyHolder {
 	bool		m_auto_activate;
 	bool		m_auto_deactivate;
 
+	// обновлене энергии разрешено
+	bool		m_enable;
+
 public:
 					CEnergyHolder			();
 	virtual			~CEnergyHolder			();
@@ -37,6 +40,9 @@ public:
 	IC		bool	should_deactivate		(){return (m_value < m_critical_value);}
 	IC		void	set_auto_activate		(bool b_auto = true)  {m_auto_activate = b_auto;}
 	IC		void	set_auto_deactivate		(bool b_auto = true)  {m_auto_deactivate = b_auto;}
+
+	IC		void	enable					(){m_enable = true;}
+	IC		void	disable					(){m_enable = false;}
 };
 
 

@@ -88,7 +88,7 @@ void CPoltergeist::reinit()
 
 	Energy::set_auto_activate();
 	Energy::set_auto_deactivate();
-
+	Energy::enable();
 }
 
 void CPoltergeist::Hide()
@@ -113,10 +113,10 @@ void CPoltergeist::Show()
 
 	m_hidden = false;
 	
-	setVisible(true);
-
 	MotionMan.Seq_Add	(eAnimMiscAction_00);
 	MotionMan.Seq_Switch();
+
+	setVisible(true);
 
 	Position() = m_current_position;
 	movement_control()->SetPosition(Position());
@@ -153,6 +153,7 @@ void CPoltergeist::net_Destroy()
 {
 	inherited::net_Destroy();
 	RemoveFlames();
+	Energy::disable();
 }
 
 void CPoltergeist::Die()
@@ -164,6 +165,7 @@ void CPoltergeist::Die()
 	}
 
 	inherited::Die();
+	Energy::disable();
 }
 
 void CPoltergeist::UpdateHeight()

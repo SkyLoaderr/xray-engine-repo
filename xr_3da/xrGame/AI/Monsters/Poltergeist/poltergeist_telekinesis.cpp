@@ -5,7 +5,7 @@
 #define TELE_RADIUS  10.f
 #define TIME_TO_HOLD 2000
 
-void CPoltergeist::ProcessTelekinesis(CObject *target)
+void CPoltergeist::ProcessTelekinesis(const CObject *target)
 {
 	if (CTelekinesis::is_active()) return;
 
@@ -16,7 +16,7 @@ void CPoltergeist::ProcessTelekinesis(CObject *target)
 
 	u32 index = Random.randI(tpObjects.size());
 
-	CPhysicsShellHolder  *obj = dynamic_cast<CPhysicsShellHolder *>(tpObjects[index]);
+	CPhysicsShellHolder  *obj = dynamic_cast<CPhysicsShellHolder *>(const_cast<CObject*>(tpObjects[index]));
 	if (!obj || !obj->m_pPhysicsShell) return;
 
 	CTelekinesis::activate(obj,1.5f, 2.f, 5000);

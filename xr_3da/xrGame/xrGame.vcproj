@@ -2814,12 +2814,6 @@
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist.h">
 						</File>
 						<File
-							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_ability.cpp">
-						</File>
-						<File
-							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_flame_thrower.cpp">
-						</File>
-						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_movement.cpp">
 						</File>
 						<File
@@ -2828,9 +2822,29 @@
 						<File
 							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_manager.h">
 						</File>
-						<File
-							RelativePath=".\ai\Monsters\Poltergeist\poltergeist_telekinesis.cpp">
-						</File>
+						<Filter
+							Name="Abilities"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_ability.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_flame_thrower.cpp">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_telekinesis.cpp">
+							</File>
+						</Filter>
+						<Filter
+							Name="Hidden Attack"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_attack_hidden.h">
+							</File>
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_attack_hidden_inline.h">
+							</File>
+						</Filter>
 					</Filter>
 				</Filter>
 				<Filter
