@@ -62,8 +62,6 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:reinit()
     object_binder.reinit(self)
-    
-    self.object:set_pda_callback(pda_call_back)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function motivator_binder:net_destroy()
@@ -346,7 +344,7 @@ xr_sos.add_to_binder (self.object, char_ini)
  
 end
 ----------------------------------------------------------------------------------------------------------------------
-function pda_call_back(recepient, who, msg, info_index)
+function pda_call_back(recepient, who, msg_type)
     printf("pda prishlo")
     recepient:answer_pda()
     printf("pda ushlo")
@@ -354,6 +352,7 @@ end
 ----------------------------------------------------------------------------------------------------------------------
 function AddToMotivator(npc)
     npc:bind_object(this.motivator_binder(npc))
+    npc:set_pda_callback(pda_call_back)
 end
 ----------------------------------------------------------------------------------------------------------------------
 function checkStorage(npc)
