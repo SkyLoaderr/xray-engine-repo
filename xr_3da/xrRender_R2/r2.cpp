@@ -188,6 +188,7 @@ CRender::~CRender()
 {
 }
 
+#include "GameFont.h"
 void	CRender::Statistics	(CGameFont* _F)
 {
 	CGameFont&	F	= *_F;
