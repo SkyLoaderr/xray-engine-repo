@@ -900,6 +900,44 @@ fake_grenade_name = wpn_fake_missile1
 ;могут ли боеприпасы быть неограниченными : 1 - могут, 0 - не могут
 can_be_unlimited = false
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+[ammo_m209]
+GroupControlSection	= spawn_group
+discovery_dependency = 
+$spawn			= "weapons\ammo\ammo_m209" ; option for Level Editor
+class			= AMMO
+cform                   = skeleton
+visual                  = weapon\ammo\ammo_m209.ogf
+$prefetch 		= 64
+
+cost					 = 80
+
+box_size		= 1
+
+inv_name		= "M209"
+inv_name_short	= "M209"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 9
+
+k_dist			= 1
+k_disp			= 1
+k_hit			= 1
+k_impulse		= 1
+k_pierce		= 1
+impair			= 1
+buck_shot		= 0
+tracer			= off
+wm_size         = 0.1
+
+fake_grenade_name = wpn_fake_missile1
+
+;могут ли боеприпасы быть неограниченными : 1 - могут, 0 - не могут
+can_be_unlimited = false
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Fake Missiles and Grenades
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -1073,7 +1111,88 @@ lights_enabled 		= true			;свет вокруг ракеты, во время полета
 trail_light_color 	= 0.6,0.5,0.3
 trail_light_range 	= 8.0
 
+[wpn_fake_missile2]
+visual                  = weapon\ammo\ammo_m209.ogf
+cform                    = skeleton
+class                    = G_FAKE
 
+inv_weight				= 0
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 0
+inv_grid_y			= 0
+
+
+cost					 = 100
+
+blast				= 350
+blast_r				= 10
+blast_impulse		= 350
+;delete
+blast_impulse_factor = 1
+
+
+frags				= 20
+frags_r				= 50
+frag_hit			= 85
+frag_hit_impulse	= 250
+
+hit_type_blast		= explosion
+hit_type_frag		= fire_wound
+
+up_throw_factor		= 0.8
+
+wm_name                  = wallmarks\wallmark_default
+wm_size                  = 0.1
+
+;trail				= weapons\rpg_trail_01, weapons\rpg_trail_02
+
+explode_particles	= explosions\explosion_01d
+
+
+light_color		         = 0.6,0.5,0.3
+light_range		         = 30.0
+light_time 		         = 0.5
+
+
+ph_mass			 = 5
+;engine_f			= 530
+;engine_u			= 90
+
+jump_height = 1
+
+;трассы от осколков
+tracer_head_speed	     = 100
+tracer_max_length		 = 3
+
+;!!!do be delete
+tracer_trail_scale	 = 0.75
+tracer_start_length	 = 1
+tracer_width		 = 0.01
+
+
+;звуки
+snd_explode = weapons\f1_explode
+
+;свойства которые читаются, но не используются
+inv_name		= "M209"
+inv_name_short	= "M209"
+inv_weight		= .2
+
+inv_grid_width		= 1
+inv_grid_height		= 1
+inv_grid_x			= 19
+inv_grid_y			= 9
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Свойства CustomRocket
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+engine_present		= false		;присутствует ли в ракете двигатель
+lights_enabled 		= true			;свет вокруг ракеты, во время полета
+trail_light_color 	= 0.6,0.5,0.3
+trail_light_range 	= 8.0
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Addons
