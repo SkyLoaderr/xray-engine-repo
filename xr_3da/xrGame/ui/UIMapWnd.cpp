@@ -262,8 +262,14 @@ void CUIMapWnd::InitMap()
 
     UIMapBackground.ConvertToLocal(pActor->Position(),P);
 	CUIMapSpot* map_spot;
+	
 	map_spot = xr_new<CUIMapSpot>();
 	map_spot->m_pObject = pActor;
+
+	// viewport
+	float h,p;
+	Device.vCameraDirection.getHP	(h,p);
+	map_spot->m_fHeading = h;
 	
 	map_spot->SetShader(GetCharIconsShader());
 	map_spot->SetWidth(MAP_ICON_WIDTH);
@@ -281,6 +287,7 @@ void CUIMapWnd::InitMap()
 
 	UIMapBackground.m_vMapSpots.push_back(map_spot);
 	UIMapBackground.AttachChild(map_spot);
+	m_pActorSpot = map_spot;
 
 	//информация о выбранном объекте
 	UIStaticInfo.Show(false);

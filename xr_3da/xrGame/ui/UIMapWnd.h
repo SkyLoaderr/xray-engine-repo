@@ -70,7 +70,8 @@ protected:
 	// Карта и скроллбары
 	CUIMapBackground	UIMapBackground;
 	CUIScrollBar		UIMapBgndV, UIMapBgndH;
-
+	//иконка актера
+	CUIMapSpot*			m_pActorSpot;
 
 	//подложка для карты
 	CUIStaticItem	landscape;

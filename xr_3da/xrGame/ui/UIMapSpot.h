@@ -40,4 +40,6 @@ public:
 	
 	//центрирование иконки (вкл/выкл)
 	bool m_bCenter;
+	//направление иконки
+	float m_fHeading;
 };

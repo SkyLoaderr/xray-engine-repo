@@ -247,6 +247,12 @@ void CPhraseDialog::load_shared	(LPCSTR xml_file)
 	R_ASSERT3(phrase_num, "dialog %s has no phrases at all", *m_sDialogID);
 
 	uiXml.SetLocalRoot(phrase_list_node);
+
+	LPCSTR wrong_phrase_id = uiXml.CheckUniqueAttrib(phrase_list_node, "phrase", "id");
+	R_ASSERT3(wrong_phrase_id == NULL, *m_sDialogID, wrong_phrase_id);
+	m_bCheckUniqueness = true;
+
+
 	//ищем стартовую фразу
 	XML_NODE* phrase_node = uiXml.NavigateToNodeWithAttribute("phrase", "id", START_PHRASE_STR);
 	VERIFY(phrase_node);

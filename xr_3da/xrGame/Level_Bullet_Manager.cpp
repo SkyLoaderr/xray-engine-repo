@@ -163,6 +163,8 @@ void CBulletManager::Update()
 }
 
 
+
+
 bool CBulletManager::CalcBullet (SBullet* bullet, u32 delta_time)
 {
 	VERIFY(bullet);

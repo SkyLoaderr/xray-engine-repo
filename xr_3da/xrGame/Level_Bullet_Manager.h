@@ -125,6 +125,11 @@ protected:
 	//попадание по статическому объекту
 	void StaticObjectHit	(SBullet* bullet, const Fvector& end_point, 
 							Collide::rq_result& R, u16 target_material);
+	//попадание по любому объекту, на выходе - импульс и сила переданные пулей объекту
+	std::pair<float, float> ObjectHit (SBullet* bullet, const Fvector& end_point, 
+							Collide::rq_result& R, u16 target_material, 
+							const Fvector& hit_normal);
+
 	//отметка на пораженном объекте
 	void FireShotmark		(const SBullet* bullet, const Fvector& vDir, 
 							 const Fvector &vEnd, Collide::rq_result& R, 
