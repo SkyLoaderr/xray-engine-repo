@@ -327,6 +327,7 @@ end
 function needRaid(fraction)
 	if xr_gulag.fraction[fraction] ~= nil then
 		local cc = xr_gulag.fraction[fraction]:getCasualities()
+		printf("seekraid %d of 3", cc)
 		if cc >= 3 then return true end
 	end
 	return false			
