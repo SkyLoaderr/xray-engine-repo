@@ -104,7 +104,8 @@ class CAI_Rat : public CCustomMonster
 			int	 ifDivideNearestNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes);
 		IC	bool bfInsideSubNode(const Fvector &tCenter, const SSubNode &tpSubNode);
 		IC	bool bfInsideSubNode(const Fvector &tCenter, const float fRadius, const SSubNode &tpSubNode);
-		IC	bool bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode);
+		//IC	bool bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode);
+		IC bool  bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode, const float fSubNodeSize);
 		IC float ffComputeCost(Fvector tLeaderPosition,SSubNode &tCurrentNeighbour);
 		IC	bool bfInsideNode(const Fvector &tCenter, const NodeCompressed *tpNode);
 		IC float ffGetY(NodeCompressed &tNode, float X, float Z);

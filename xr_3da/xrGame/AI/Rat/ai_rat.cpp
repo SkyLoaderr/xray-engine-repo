@@ -278,7 +278,7 @@ IC float CAI_Rat::ffGetY(NodeCompressed &tNode, float X, float Z)
 	return(v1.y);
 }
 
-/**/
+/**
 IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode)
 {
 	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON) &&
@@ -333,8 +333,41 @@ IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode
 }
 /**/
 
-#define MAX_NEIGHBOUR_COUNT 9
+/**/
+IC bool CAI_Rat::bfNeighbourNode(const SSubNode &tCurrentSubNode, const SSubNode &tMySubNode, const float fSubNodeSize)
+{
+	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPSILON + fSubNodeSize))
+		return(true);
+	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPSILON + fSubNodeSize))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPSILON + fSubNodeSize))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tRightUp.z - tMySubNode.tLeftDown.z) < EPSILON + fSubNodeSize))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tLeftDown.z) < EPSILON + fSubNodeSize))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tRightUp.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z) < EPSILON + fSubNodeSize))
+		return(true);
+	if ((fabs(tCurrentSubNode.tLeftDown.x - tMySubNode.tLeftDown.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z) < EPSILON + fSubNodeSize))
+		return(true);
+	if ((fabs(tCurrentSubNode.tRightUp.x - tMySubNode.tLeftDown.x) < EPSILON + fSubNodeSize) &&
+		(fabs(tCurrentSubNode.tLeftDown.z - tMySubNode.tRightUp.z) < EPSILON))
+		return(true);
+	// otherwise
+	return(false);
+}
+/**/
+
 //#define MAX_NEIGHBOUR_COUNT 5
+//#define MAX_NEIGHBOUR_COUNT 9
+#define MAX_NEIGHBOUR_COUNT 25
 
 int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition, vector<SSubNode> &tpSubNodes)
 {
@@ -377,7 +410,7 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 				iCount++;
 			}
 			else
-				if (bfNeighbourNode(tNode,tMySubNode)) {
+				if (bfNeighbourNode(tNode,tMySubNode,fSubNodeSize)) {
 					tNode.tLeftDown.y = ffGetY(*tpStartNode,i,j);
 					tNode.tRightUp.y = ffGetY(*tpStartNode,i + fSubNodeSize,j + fSubNodeSize);
 					tNode.bEmpty = true;
@@ -403,7 +436,7 @@ int CAI_Rat::ifDivideNode(NodeCompressed *tpStartNode, Fvector tCurrentPosition,
 				for (float j=tLeftDown.z - fSubNodeSize/2.f; j < tRightUp.z; j+=fSubNodeSize) {
 					tNode.tLeftDown.z = j;
 					tNode.tRightUp.z = j + fSubNodeSize;
-					if (bfNeighbourNode(tNode,tMySubNode)) {
+					if (bfNeighbourNode(tNode,tMySubNode,fSubNodeSize)) {
 						tNode.tLeftDown.y = ffGetY(*tpCurrentNode,i,j);
 						tNode.tRightUp.y = ffGetY(*tpCurrentNode,i + fSubNodeSize,j + fSubNodeSize);
 						tNode.bEmpty = true;
