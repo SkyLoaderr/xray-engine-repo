@@ -40,6 +40,9 @@ public:
 	void			clear		();
 	void			propagade	();
 	void			rasterize	(occTri* T);
+	
+	float*			dbg_depth	()	{ return &(bufDepth0[0][0]);	}
+	occTri**		dbg_frame	()	{ return &(bufFrame[0][0]);		}
 
 	occRasterizer	();
 	~occRasterizer	();

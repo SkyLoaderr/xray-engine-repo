@@ -23,6 +23,55 @@ public:
 
 int __cdecl main	(int argc, char* argv[])
 {
+	occRasterizer	occ;
+
+	// setup tri
+	occTri	T;
+	T.raster[0].x	= 0.1f;
+	T.raster[0].y	= 0.1f;
+	T.raster[0].z	= 0.01f;
+	
+	T.raster[1].x	= 60.f;
+	T.raster[1].y	= 10.f;
+	T.raster[1].z	= 0.1f;
+	
+	T.raster[2].x	= 20.f;
+	T.raster[2].y	= 50.f;
+	T.raster[2].z	= 0.99f;
+
+	// draw tri
+	occ.clear		();
+	occ.rasterize	(&T);
+	occ.propagade	();
+
+	// copy into surface
+	const DWORD		S = 8;
+	const DWORD		size = occ_dim0*S;
+	DWORD			buf[size*size];
+	for (int y=0; y<occ_dim0; y++)
+	{
+		for (int x=0; x<occ_dim0; x++)
+		{
+			float	A	= *(occ.dbg_depth() + y*occ_dim0 + x);
+			DWORD  gray	= int(A*255.f);
+			DWORD  mask	= (*(occ.dbg_frame() + y*occ_dim0 + x)) ? 255 : 0;
+			DWORD  C	= (mask << 24) | (gray << 16) | (gray << 8) | (gray << 0);
+
+			for (int by=0; by<S; by++)
+				for (int bx=0; bx<S; bx++)
+					buf[(y*S+by)*size + x*S+bx]	= C;
+		}
+	}
+
+	// save
+	TGAdesc	desc;
+	desc.format		= IMG_32B;
+	desc.scanlenght	= size*4;
+	desc.width		= size;
+	desc.height		= size;
+	desc.data		= buf;
+	desc.maketga	("c:\\occ.tga");
+
 	return 0;
 }
 

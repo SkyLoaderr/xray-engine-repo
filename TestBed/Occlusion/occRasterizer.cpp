@@ -76,7 +76,6 @@ void occRasterizer::propagade	()
 	propagade_depth<occ_dim3>	(bufDepth3,bufDepth2);
 }
 
-
 void occRasterizer::rasterize	(occTri* T)
 {
 	// Create local copy of the vertices
