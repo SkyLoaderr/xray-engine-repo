@@ -144,7 +144,7 @@ void CAI_Stalker::Camp(bool bWeapon)
 
 	if (vPosition.distance_to(m_tpaDynamicObjects[iIndex].tMySavedPosition) > .1f) {
 		AI_Path.DestNode		= m_tpaDynamicObjects[iIndex].dwMyNodeID;
-		vfSetParameters			(0,&(m_tpaDynamicObjects[iIndex].tMySavedPosition),true,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
+		vfSetParameters			(0,&(m_tpaDynamicObjects[iIndex].tMySavedPosition),false,eWeaponStateIdle,ePathTypeStraight,eBodyStateCrouch,eMovementTypeWalk,eStateTypeDanger,eLookTypeFirePoint,m_tpaDynamicObjects[iIndex].tSavedPosition);
 	}
 	else {
 		float fDistanceToCover = getAI().ffFindFarthestNodeInDirection(AI_NodeID,vPosition,m_tpaDynamicObjects[iIndex].tSavedPosition,AI_Path.DestNode);
@@ -377,6 +377,7 @@ void CAI_Stalker::SearchEnemy()
 					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
 						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
 							bOk = true;
+							AI_Path.DestNode	= m_dwSavedEnemyNodeID;
 							vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeStand,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
 							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
@@ -390,6 +391,7 @@ void CAI_Stalker::SearchEnemy()
 					{
 						Fvector				tPoint = m_tSavedEnemyPosition;
 						tPoint.y			+= 1.5f;
+						AI_Path.DestNode	= m_dwSavedEnemyNodeID;
 						vfSetParameters		(0,&m_tSavedEnemyPosition,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 					}
 			}
@@ -419,18 +421,23 @@ void CAI_Stalker::SearchEnemy()
 					if (!Group.m_tpaSuspiciousNodes[i].dwSearched) {
 						if (getAI().bfCheckNodeInDirection(AI_NodeID,vPosition,Group.m_tpaSuspiciousNodes[i].dwNodeID)) {
 							bOk = true;
+							AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 							vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID));
 							if (bfIf_I_SeePosition(getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID)))
 								Group.m_tpaSuspiciousNodes[i].dwSearched = 2;
 							break;
 						}
 					}
+				
 				if (!bOk)
-					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,m_tSavedEnemyPosition) == -1)
+					if (getAI().dwfCheckPositionInDirection(AI_NodeID,vPosition,getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID)) == -1) {
+						AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypeSearch);
+					}
 					else {
 						Fvector				tPoint = getAI().tfGetNodeCenter(Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID);
 						tPoint.y			+= 1.5f;
+						AI_Path.DestNode	= Group.m_tpaSuspiciousNodes[m_iCurrentSuspiciousNodeIndex].dwNodeID;
 						vfSetParameters		(0,0,false,eWeaponStateIdle,ePathTypeStraight,eBodyStateStand,eMovementTypeWalk,eStateTypeDanger,eLookTypePoint,tPoint);
 					}
 			}
