@@ -123,7 +123,7 @@ void FillRect(u8* data, u8* new_data, u32 offs, u32 pitch, u32 h, u32 full_pitch
 	for (u32 i=0; i<h; i++) CopyMemory(data+(full_pitch*i+offs),new_data+i*pitch,pitch);
 }
 
-bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
+int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
 						STextureParams* fmt, u32 depth)
 {
 	R_ASSERT((0!=w)&&(0!=h));
@@ -229,14 +229,14 @@ bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 		hr					= nvDXTcompress(raw_data, w, h, pitch, &nvOpt, depth, 0);
 	}
     _close					(gFileOut);
-	if (hr!=DD_OK)			return false;
-	else					return true;
+	if (hr!=DD_OK)			return 0;
+	else					return 1;
 }
 
-extern bool DXTCompressBump(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
+extern int DXTCompressBump(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth);
 
 extern "C" __declspec(dllexport) 
-bool DXTCompress	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
+int DXTCompress	(LPCSTR out_name, u8* raw_data, u8* normal_map, u32 w, u32 h, u32 pitch, 
 					STextureParams* fmt, u32 depth)
 {
 	switch (fmt->type){
@@ -245,7 +245,7 @@ bool DXTCompress	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch,
 		return DXTCompressImage	(out_name, raw_data, w, h, pitch, fmt, depth);
 	break;
 	case STextureParams::ttBumpMap: 
-		return DXTCompressBump	(out_name, raw_data, w, h, pitch, fmt, depth);
+		return DXTCompressBump	(out_name, raw_data, normal_map, w, h, pitch, fmt, depth);
 	break;
 	default: NODEFAULT;
 	}

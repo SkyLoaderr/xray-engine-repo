@@ -708,10 +708,10 @@ u32	hsample	(s32 w, s32 h, s32 p, s32 x, s32 y, u8* src)
 
 #include "ETextureParams.h"
 #include "Image_DXTC.h"
-extern bool DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
+extern int DXTCompressImage	(LPCSTR out_name, u8* raw_data, u32 w, u32 h, u32 pitch, 
 								 STextureParams* fmt, u32 depth);
 
-bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth)
+int DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u8* T_normal_map, u32 w, u32 h, u32 pitch, STextureParams* fmt, u32 depth)
 {
 	VERIFY				(4==depth);
 	NVI_Image* pSrc		= new NVI_Image();
@@ -721,7 +721,12 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 	// stage 0 
 	pitch				= w*4;
 	//tga_save			("x:\\0-height-gloss.tga",w,h,T_height_gloss,true);
-	ConvertToNormalMap	(pSrc,KERNEL_3x3,fmt->bump_virtual_height*200.f);
+	if (T_normal_map){
+		u8* ext_nm		= pSrc->GetImageDataPointer();
+		CopyMemory		(ext_nm,T_normal_map,w*h*sizeof(u32));
+	}else{
+		ConvertToNormalMap(pSrc,KERNEL_3x3,fmt->bump_virtual_height*200.f);
+	}
 	u8* T_normal_1		= pSrc->GetImageDataPointer();
 	//tga_save			("x:\\1-normal_1.tga",w,h,T_normal_1,true);
 	gloss_power			= 0.f;
@@ -733,10 +738,10 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 	fmt0.flags.assign	(STextureParams::flGenerateMipMaps);
 	fmt0.type			= STextureParams::ttImage;
 	fmt0.fmt			= STextureParams::tfDXT5;
-	bool bRes			= DXTCompressImage(out_name, T_normal_1, w, h, pitch, &fmt0, depth);
-
+	int res				= DXTCompressImage(out_name, T_normal_1, w, h, pitch, &fmt0, depth);
+	
 	// stage 1
-	if (bRes){
+	if (res==1){
 		// Decompress (back)
 		Image_DXTC* CI	= new Image_DXTC(); 
 		if (CI->LoadFromFile(out_name)){
@@ -816,24 +821,21 @@ bool DXTCompressBump(LPCSTR out_name, u8* T_height_gloss, u32 w, u32 h, u32 pitc
 			string256		out_name1;
 			strcpy			(out_name1,out_name); if (strext(out_name1)) *strext(out_name1)=0;
 			strcat			(out_name1,"#.dds");
-			bRes			|= DXTCompressImage(out_name1, T_normal_1D, w, h, pitch, &fmt0, depth);
+			res				|= DXTCompressImage(out_name1, T_normal_1D, w, h, pitch, &fmt0, depth);
 
 			free			(T_height_pf);
 			free			(T_normal_1D);
 		}else{
-			bRes			= false;
+			res				= 0;
 		}
 		delete				(CI);
 	}
 
 	delete					(pSrc);
 
-	if (gloss_power<0.1f){
-		MessageBox			(0,"Invalid gloss mask. Too low reflectance.","Error",MB_ICONERROR);
-		return				false;
-	}
+	if (gloss_power<0.1f)	res = -1000;
 
-	return bRes;
+	return res;
 }
 /*
 _BUMP:
