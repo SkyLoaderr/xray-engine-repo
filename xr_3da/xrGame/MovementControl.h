@@ -40,7 +40,6 @@ private:
 	Fvector				vVelocity;
 	Fvector				vPosition;
 
-	Fvector				vLastMotion;
 	float				fLastMotionMag;
 
 	float				fActualVelocity;

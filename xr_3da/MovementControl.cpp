@@ -19,10 +19,12 @@
 
 void CMovementControl::dbg_Draw()
 {
+	/*
 	Fvector P2; P2.add(vPosition,vVelocity);
 	Device.Primitive.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(255,255,255,255));
 	P2.add(vPosition,vLastMotion);
 	Device.Primitive.dbg_DrawLINE(Fidentity,vPosition,P2,D3DCOLOR_RGBA(0,255,0,255));
+	*/
 
 	Fvector sz,C; aabb.getsize(sz); sz.div(2); aabb.getcenter(C);
 	Fmatrix	M = pObject->svXFORM();
@@ -53,7 +55,6 @@ CMovementControl::CMovementControl()
 	fMaxCrashSpeed		= 25.0f;
 	vVelocity.set		(0,0,0);
 	vPosition.set		(0,0,0);
-	vLastMotion.set		(0,0,0);
 	vExternalImpulse.set(0,0,0);
 	fLastMotionMag		= 1.f;
 	fAirFriction		= AIR_FRICTION;
@@ -223,33 +224,32 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 	// Velocity stuff
 	float s_calc	= motion.magnitude();	// length of motion - dS - requested
 	motion.sub		(final_pos,vPosition);	// motion - resulting
-	vLastMotion.set	(motion);
-	float s_res		= motion.magnitude();	// length of motion - dS - resulting
-
-	float src		= 20*dt;	clamp(src,0.f,1.f);
-	float dst		= 1-src;
-/*
-	fLastMotionMag			= dst*fLastMotionMag + src*s_res;
-	float	fAvgVelocity	= fLastMotionMag/dt;
-	fActualVelocity			= dst*fActualVelocity+ src*fAvgVelocity;
-*/
-	fActualVelocity			= dst*vVelocity.magnitude()+src*vOldVelocity.magnitude();
 
 	//	Don't allow new velocity to go against original velocity unless told otherwise
 	Fvector vel_dir;
 	final_vel.normalize_safe	();
 	vel_dir.normalize_safe		(vVelocity);
+	float s_res					; // length of motion - dS - resulting
 	if (s_calc>EPS_S) 
 	{
-		if ((final_vel.dotproduct	(vel_dir)<0.f) || (s_res/s_calc)<0.001f){ 
+		s_res					= motion.magnitude();	
+		if ((final_vel.dotproduct	(vel_dir)<=0.f) || (s_res/s_calc)<0.001f){ 
 			vVelocity.set	(0,0,0);
 			final_pos.set	(vPosition);
+			s_res			= 0;
+			// dummy_s???
 		} else {
 			vPosition.set	(final_pos);
 		}
 	} else {
 		vPosition.set	(final_pos);
+		s_res			= 0;
 	}
+	float src				= 20*dt;	clamp(src,0.f,1.f);
+	float dst				= 1-src;
+	fLastMotionMag			= dst*fLastMotionMag + src*s_res;
+	float	fAvgVelocity	= fLastMotionMag/dt;
+	fActualVelocity			= dst*fActualVelocity+ src*fAvgVelocity;
 	
 	// Environment
 	if (fLastMotionMag>EPS_S)
@@ -281,6 +281,7 @@ void CMovementControl::Calculate(Fvector &_Accel, float ang_speed, float jump, f
 			float		dummy_s = 0;
 			float		a		= vAccel.magnitude();
 			Integrate	(fOldActVelocity,dummy_s,a,dt_x,fOldFriction);
+			// s_res, dummy_s ???
 //			Integrate	(vOldVelocity,dummy,,dt_x,fOldFriction);
 
 			// now vOldVelocity - average velocity at contact time
