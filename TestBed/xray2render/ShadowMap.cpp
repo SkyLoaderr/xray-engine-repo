@@ -550,7 +550,7 @@ HRESULT CreateRT(IDirect3DDevice9* D, DWORD w, DWORD h, D3DFORMAT f, LPDIRECT3DT
 	return S_OK;
 }
 
-HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DTEXTURE9* pT)
+HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DCUBETEXTURE9* pT)
 {
 	HRESULT hr;
 
@@ -624,6 +624,25 @@ HRESULT CreateNCM(IDirect3DDevice9* D, DWORD w, LPDIRECT3DTEXTURE9* pT)
 	return S_OK;
 }
 
+HRESULT CreatePower(IDirect3DDevice9* D, DWORD size, float P, LPDIRECT3DTEXTURE9* pT)
+{
+	std::vector				array;
+	array.resize			(size);
+	for (DWORD it=0; it<size; it++)
+	{
+		float	v		= float(it)/float(size - 1);
+		array	[it]	= powf		(v,P);
+	}
+	D->CreateTexture				(size,1, 1, 0, D3DFMT_R16F, D3DPOOL_MANAGED, pT, NULL);
+	D3DLOCKED_RECT					R;
+	LPDIRECT3DTEXTURE9 T			= *pT;
+	T->LockRect						(0,&R,0, 0);
+	D3DXFloat32To16Array			((D3DXFLOAT16*)R.pBits,array.begin(),size);
+	T->UnlockRect					(0);
+
+	return S_OK;
+}
+
 HRESULT CMyD3DApplication::RestoreDeviceObjects()
 {
 	m_pFont->RestoreDeviceObjects();
@@ -662,20 +681,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	hr = D3DXCreateTexture				(m_pd3dDevice,256,256,D3DX_DEFAULT,0,D3DFMT_A8R8G8B8,D3DPOOL_MANAGED, &t_Normals);
 	hr = D3DXComputeNormalMap			(t_Normals,height,0,0,D3DX_CHANNEL_RED,4.f);
 
-	{
-		const DWORD	size				= 256;
-		float		array[size];
-		for (DWORD it=0; it<size; it++)
-		{
-			float	v		= float(it)/float(size);
-			array	[it]	= powf		(v,48.f);
-		}
-		m_pd3dDevice->CreateTexture		(size,1, 1, 0, D3DFMT_R16F, D3DPOOL_MANAGED, &t_SpecularPower_32, NULL);
-		D3DLOCKED_RECT					R;
-		t_SpecularPower_32->LockRect	(0,&R,0, 0);
-		D3DXFloat32To16Array			((D3DXFLOAT16*)R.pBits,array,size);
-		t_SpecularPower_32->UnlockRect	(0);
-	}
+	hr = CreatePower					(m_pd3dDevice,256,48.f,&t_SpecularPower_32);
 
 	m_ArcBall.SetWindow		(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
 	m_ArcBall.SetRadius		(3.0f);
