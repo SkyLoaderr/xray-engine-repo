@@ -16,7 +16,6 @@
 
 CAI_Rat::CAI_Rat()
 {
-	r_torso_speed = q_look.o_look_speed = PI_DIV_2*2;
 	m_dwHitTime = 0;
 	m_tHitDir.set(0,0,1);
 	m_tSavedEnemy = 0;
@@ -27,7 +26,6 @@ CAI_Rat::CAI_Rat()
 	m_tpCurrentGlobalAnimation = 0;
 	m_tpCurrentGlobalBlend = 0;
 	m_bActionStarted = false;
-	m_bMobility = true;
 	m_bFiring = false;
 	m_dwLastVoiceTalk = 0;
 	m_tpSoundBeingPlayed = 0;
