@@ -2,7 +2,9 @@
 <game_information_portions>
 
 <!-- Нападение на игрока около входа на уровень -->
-<info_portion id="val_t1_ambush_started"></info_portion>
+<info_portion id="val_ambush_t1_started"></info_portion>
+<info_portion id="val_ambush_t1_kill_plr"></info_portion>
+<info_portion id="val_ambush_t1_plr_near"></info_portion>
 
 <!-- Сцена 2 - кровосос падает с обрыва -->
 <info_portion id="val_bs_deactivate"></info_portion>

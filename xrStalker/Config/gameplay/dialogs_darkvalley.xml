@@ -306,8 +306,8 @@
             </phrase>
             <phrase id="112">
                 <text>val_ambush_dialog_112</text>
+                <action>dialogs_darkvalley.val_punch_ambush</action>
                 <action>dialogs.break_dialog</action>
-                <action>dialogs.kickass</action>
             </phrase>
         </phrase_list>
     </dialog>
