@@ -85,7 +85,8 @@ function act_state_mgr_end:execute()
 	action_base.execute(self)
 
 	if state_lib.states[self.st.target_state].weapon ~= nil and
-	   state_lib.states[self.st.target_state].weapon ~= "strapped"
+	   state_lib.states[self.st.target_state].weapon ~= "strapped" and
+	   state_lib.states[self.st.target_state].weapon ~= "none"
 	then
 		if state_lib.states[self.st.target_state].weapon == "fire" and
 		   (self.object:best_enemy() ~= nil and
