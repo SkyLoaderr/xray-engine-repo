@@ -89,7 +89,8 @@ protected:
 		CUIDragDropItemMP(): slotNum			(0),
 							 sectionNum			(0),
 							 bAddonsAvailable	(false),
-							 cost				(0)
+							 cost				(0),
+							 m_bAlreadyPaid		(false)
 		{
 			std::strcpy(m_strAddonTypeNames[0], "Silencer");
 			std::strcpy(m_strAddonTypeNames[1], "Grenade Launcher");
@@ -157,6 +158,8 @@ protected:
 		// –абота с деньгами
 		void				SetCost(const int c)	{ cost = c; }
 		int					GetCost()	const		{ return cost; }
+		// ѕоднимаем флаг, если уже заплачено. Ќужно дл€ беспроблемного перемещени€ между слотами и по€сом
+		bool				m_bAlreadyPaid;
 
 		// ћассив дополнительных полей которые могут быть специфичны дл€ определенных типов вещей,
 		// например дл€ арморов храним координаты иконки в общей текстуре его представл€ющей

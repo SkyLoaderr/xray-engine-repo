@@ -311,6 +311,13 @@ bool CUIBuyWeaponWnd::SlotProc0(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, KNIFE_SLOT)) return false;
 
 	this_inventory->SlotToSection(KNIFE_SLOT);
+
+	// И отнимаем от денег стоимость вещи.
+	if (!pDDItemMP->m_bAlreadyPaid)
+	{
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - pDDItemMP->GetCost());
+		pDDItemMP->m_bAlreadyPaid = true;
+	}
 	return true;
 }
 
@@ -325,6 +332,13 @@ bool CUIBuyWeaponWnd::SlotProc1(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, PISTOL_SLOT)) return false;
 
 	this_inventory->SlotToSection(PISTOL_SLOT);
+
+	// И отнимаем от денег стоимость вещи.
+	if (!pDDItemMP->m_bAlreadyPaid)
+	{
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - pDDItemMP->GetCost());
+		pDDItemMP->m_bAlreadyPaid = true;
+	}
 	return true;
 }
 bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
@@ -361,6 +375,13 @@ bool CUIBuyWeaponWnd::SlotProc2(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		this_inventory->MenuLevelUp();
 	}
 
+	// И отнимаем от денег стоимость вещи.
+	if (!pDDItemMP->m_bAlreadyPaid)
+	{
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - pDDItemMP->GetCost());
+		pDDItemMP->m_bAlreadyPaid = true;
+	}
+
 	return true;
 }
 
@@ -378,6 +399,13 @@ bool CUIBuyWeaponWnd::SlotProc3(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		!pList->GetDragDropItemsList().empty()) 
 		return false;
 
+	// И отнимаем от денег стоимость вещи.
+	if (!pDDItemMP->m_bAlreadyPaid)
+	{
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - pDDItemMP->GetCost());
+		pDDItemMP->m_bAlreadyPaid = true;
+	}
+
 	return true;
 }
 bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
@@ -391,6 +419,14 @@ bool CUIBuyWeaponWnd::SlotProc4(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	if(!this_inventory->CanPutInSlot(pDDItemMP, APPARATUS_SLOT)) return false;
 
 	this_inventory->SlotToSection(APPARATUS_SLOT);
+
+	// И отнимаем от денег стоимость вещи.
+	if (!pDDItemMP->m_bAlreadyPaid)
+	{
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - pDDItemMP->GetCost());
+		pDDItemMP->m_bAlreadyPaid = true;
+	}
+
 	return true;
 }
 
@@ -421,6 +457,13 @@ bool CUIBuyWeaponWnd::OutfitSlotProc(CUIDragDropItem* pItem, CUIDragDropList* pL
 			static_cast<int>(*(it+1)),
 			SKIN_TEX_WIDTH, SKIN_TEX_HEIGHT - 15);
 		this_inventory->UIOutfitIcon.Show(true);
+
+		// И отнимаем от денег стоимость вещи.
+		if (!pDDItemMP->m_bAlreadyPaid)
+		{
+			this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - pDDItemMP->GetCost());
+			pDDItemMP->m_bAlreadyPaid = true;
+		}
 
 		return true;
 	}
@@ -454,6 +497,13 @@ bool CUIBuyWeaponWnd::BagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		DetachChild(pDDItemMP);
 	pDDItemMP->GetOwner()->AttachChild(pDDItemMP);
 
+	// И прибавляем к деньгам стоимость вещи.
+	if (pDDItemMP->m_bAlreadyPaid)
+	{
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + pDDItemMP->GetCost());
+		pDDItemMP->m_bAlreadyPaid = false;
+	}
+
 	// Если это армор, то убедимся, что он стал видимым
 	if (OUTFIT_SLOT == pDDItemMP->GetSlot())
 	{
@@ -480,6 +530,13 @@ bool CUIBuyWeaponWnd::BeltProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 		this_inventory->IsItemAnAddon(pDDItemMP, tmp)) 
 		return false;
 	
+	// И отнимаем от денег стоимость вещи.
+	if (!pDDItemMP->m_bAlreadyPaid)
+	{
+		this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - pDDItemMP->GetCost());
+		pDDItemMP->m_bAlreadyPaid = true;
+	}
+
 	return true;
 }
 
@@ -896,6 +953,12 @@ bool CUIBuyWeaponWnd::ToBelt()
 	static_cast<CUIDragDropList*>(m_pCurrentDragDropItem->GetParent())->DetachChild(m_pCurrentDragDropItem);
 	UITopList[BELT_SLOT].AttachChild(m_pCurrentDragDropItem);
 
+	if (!m_pCurrentDragDropItem->m_bAlreadyPaid)
+	{
+		SetMoneyAmount(GetMoneyAmount() - m_pCurrentDragDropItem->GetCost());
+		m_pCurrentDragDropItem->m_bAlreadyPaid = true;
+	}
+
 	m_pMouseCapturer = NULL;
 
 	return true;
@@ -1092,6 +1155,7 @@ void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::str
 			u32 iGridHeight = pSettings->r_u32(section, "inv_grid_height");
 			u32 iXPos = pSettings->r_u32(section, "inv_grid_x");
 			u32 iYPos = pSettings->r_u32(section, "inv_grid_y");
+			int cost  = pSettings->r_u32(section, "cost");
 
 			// А теперь создаем реальную вещь
 			CUIDragDropItemMP& UIDragDropItem = m_vDragDropItems[GetFirstFreeIndex()];
@@ -1106,6 +1170,8 @@ void CUIBuyWeaponWnd::InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const std::str
 
 			UIDragDropItem.SetGridHeight(iGridHeight);
 			UIDragDropItem.SetGridWidth(iGridWidth);
+
+			UIDragDropItem.SetCost(cost);
 
 			UIDragDropItem.GetUIStaticItem().SetOriginalRect(
 				iXPos		* INV_GRID_WIDTH,
@@ -1661,9 +1727,20 @@ void CUIBuyWeaponWnd::CUIDragDropItemMP::AttachDetachAddon(int iAddonIndex, bool
 	R_ASSERT(iAddonIndex >= 0 && iAddonIndex < 3);
 	if (m_AddonInfo[iAddonIndex].iAttachStatus != -1)
 	{
+		// И отнимаем от денег стоимость вещи.
+		CUIBuyWeaponWnd *this_inventory = dynamic_cast<CUIBuyWeaponWnd*>(GetOwner()->GetMessageTarget());
+
+		R_ASSERT(this_inventory);
+
+		if (!m_AddonInfo[iAddonIndex].iAttachStatus == bAttach)
+			0 == m_AddonInfo[iAddonIndex].iAttachStatus
+				? this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() - m_pAddon[iAddonIndex]->GetCost())
+				: this_inventory->SetMoneyAmount(this_inventory->GetMoneyAmount() + m_pAddon[iAddonIndex]->GetCost());
+
 		m_AddonInfo[iAddonIndex].iAttachStatus = bAttach ? 1 : 0;
 		m_pAddon[iAddonIndex]->GetUIStaticItem().SetColor(bAttach ? cAttached : cDetached);
 		m_pAddon[iAddonIndex]->EnableDragDrop(!bAttach);
+
 	}
 }
 
