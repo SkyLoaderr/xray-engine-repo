@@ -278,6 +278,8 @@ namespace ALife {
 								R_ASSERT2(false,"Unsupported hit type!");
 #ifndef _EDITOR
 		__assume(0);
+#else
+		return(0);
 #endif
 	}
 
@@ -294,6 +296,8 @@ namespace ALife {
 		}
 #ifndef _EDITOR
 		__assume(0);
+#else
+		return(0);
 #endif
 	}
 
