@@ -10,26 +10,26 @@
 #include "ai_script_sound.h"
 #include "ai_script_classes.h"
 
-void CLuaSound::Play			(CLuaGameObject *object)
+void CLuaSound::Play			(CLuaGameObject *object, float delay)
 {
 	VERIFY				(m_tpSound);
-	m_tpSound->play		(object->object());
+	m_tpSound->play		(object->object(),0,delay);
 }
 
-void CLuaSound::PlayUnlimited	(CLuaGameObject *object)
+void CLuaSound::PlayUnlimited	(CLuaGameObject *object, float delay)
 {
 	VERIFY				(m_tpSound);
-	m_tpSound->play_unlimited(object->object());
+	m_tpSound->play_unlimited(object->object(),0,delay);
 }
 
-void CLuaSound::PlayAtPos		(CLuaGameObject *object, const Fvector &position)
+void CLuaSound::PlayAtPos		(CLuaGameObject *object, const Fvector &position, float delay)
 {
 	VERIFY				(m_tpSound);
-	m_tpSound->play_at_pos(object->object(), position);
+	m_tpSound->play_at_pos(object->object(), position,0,delay);
 }
 
-void CLuaSound::PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position)
+void CLuaSound::PlayAtPosUnlimited(CLuaGameObject *object, const Fvector &position, float delay)
 {
 	VERIFY				(m_tpSound);
-	m_tpSound->play_at_pos_unlimited(object->object(), position);
+	m_tpSound->play_at_pos_unlimited(object->object(), position,0,delay);
 }
