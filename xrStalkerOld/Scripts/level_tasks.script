@@ -370,14 +370,20 @@ end
 
 
 function add_location(sid, location)
-	obj = alife():story_object(sid)
-	if obj then
-		level.map_add_object_spot(obj.id, location, "")
+	local sim = alife()
+	if sim then
+		obj = sim:story_object(sid)
+		if obj then
+			level.map_add_object_spot(obj.id, location, "")
+		end
 	end
 end
 function remove_location(sid, location)
-	obj = alife():story_object(sid)
-	if obj then
-		level.map_remove_object_spot(obj.id, location)
+	local sim = alife()
+	if sim then
+		obj = sim:story_object(sid)
+		if obj then
+			level.map_remove_object_spot(obj.id, location)
+		end
 	end
 end

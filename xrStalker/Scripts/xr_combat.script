@@ -20,11 +20,18 @@ function evaluator_check_combat:evaluate ()
 --			printf( "3" )
 			local actor = db.actor
 			if actor then
+				local overrides = xr_logic.generic_scheme_overrides( self.object )
+
+				-- условия из overrides
+				if overrides and overrides.on_combat then
+					xr_logic.pick_section_from_condlist( actor, self.object, overrides.on_combat.condlist )
+				end
+
+				-- условия из секции on_combat
 				if not xr_logic.try_switch_to_another_section(self.object, self.st, actor) then
 --					printf( "4" )
 
-					local overrides = xr_logic.generic_scheme_overrides( self.object )
-
+					-- тип боя
 					if overrides and overrides.combat_type then
 --						printf( "5.1" )
 
