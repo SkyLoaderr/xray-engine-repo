@@ -158,6 +158,16 @@ function proceed(actor)
 		set_task_state(task.completed, "bar_hunter_rifle", 1)
 	end 
 
+	if	actor:has_info("bar_dolg_veteran_start") and 
+ 		actor:dont_has_info("bar_dolg_veteran_gain") and
+		actor:object("dolg_arhive_documents") ~= nil 
+	then		
+		actor:give_info_portion("bar_dolg_veteran_gain")
+		set_task_state(task.completed, "bar_dolg_test_quest", 1)
+	end 
+
+
+
 	
 	
 	-- Military
