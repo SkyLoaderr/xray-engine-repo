@@ -237,7 +237,7 @@ void CSoundManager::GetDeviceInfo( )
 	Log("* CPU overhead SW buffers:     ", dsCaps.dwPlayCpuOverheadSwBuffers);
 	Log("\n");
 }
-
+/*
 void CSoundManager::SetFreq	()
 {
 	if (!bPresent)	return;
@@ -262,7 +262,6 @@ void CSoundManager::SetFreq	()
 	pMusicStreams->Reload	();
 	Log("* Changing freq:", wfm.nSamplesPerSec);
 }
-
 void CSoundManager::SetModel()
 {
 	if ( !bPresent ) return;
@@ -271,6 +270,7 @@ void CSoundManager::SetModel()
 	dwModel			= psSoundModel;
 	pSoundRender->Reload	();
 }
+*/
 
 void CSoundManager::SetVMusic( )
 {

@@ -36,8 +36,8 @@ private:
 	void					Initialize				( );
 	
 	void					SetVMusic				( );
-	void					SetFreq					( );
-	void					SetModel				( );
+//	void					SetFreq					( );
+//	void					SetModel				( );
 	
 public:
 	CSoundManager			( BOOL bCDA = false );
