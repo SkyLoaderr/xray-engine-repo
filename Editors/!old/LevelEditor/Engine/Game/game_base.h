@@ -48,6 +48,8 @@ struct	game_PlayerState
 
 	u16			ping;
 
+	u16			GameID;
+
 	game_PlayerState();
 };
 

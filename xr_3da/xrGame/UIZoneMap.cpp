@@ -179,23 +179,27 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	
 	if (bRender && (GameID() == GAME_DEATHMATCH || GameID() == GAME_TEAMDEATHMATCH))
 	{
-		for(u32 i=0; i<Level().Objects.objects.size(); i++)
-		{
-			CObject* pObj = Level().Objects.objects[i];
-			if (!pObj) continue;
-			CActor* pActor = dynamic_cast<CActor*>(pObj);
-			if (pActor && pActor != Level().CurrentEntity() && pActor->g_Alive())
+			for(u32 i=0; i<Level().Objects.objects.size(); i++)
 			{
-				ConvertToLocal(LM,pActor->Position(),P);
-				EntityOut(pActor->Position().y-Actor->Position().y,COLOR_ENEMY,P);
+				CObject* pObj = Level().Objects.objects[i];
+				if (!pObj) continue;
+				CActor* pObjActor = dynamic_cast<CActor*>(pObj);
+				if (pObjActor && pObjActor != Level().CurrentEntity() && pObjActor->g_Alive())
+				{
+					ConvertToLocal(LM,pObjActor->Position(),P);
+
+					if (pActor->id_Team == pObjActor->id_Team)
+						EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_SELF,P);
+					else
+						EntityOut(pObjActor->Position().y-Actor->Position().y,COLOR_ENEMY,P);
+				};
+				CInventoryItem* pItem = dynamic_cast<CInventoryItem*>(pObj);
+				if (pItem && !pItem->H_Parent())
+				{
+					ConvertToLocal(LM,pItem->Position(),P);
+					EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
+				};
 			};
-			CInventoryItem* pItem = dynamic_cast<CInventoryItem*>(pObj);
-			if (pItem && !pItem->H_Parent())
-			{
-				ConvertToLocal(LM,pItem->Position(),P);
-				EntityOut(pItem->Position().y-Actor->Position().y,COLOR_TARGET,P);
-			};
-		};
 	};
 /*	if (bRender)
 	{

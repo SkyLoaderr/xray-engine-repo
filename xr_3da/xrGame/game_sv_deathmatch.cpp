@@ -45,6 +45,8 @@ void	game_sv_Deathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 		ps_killer->kills			+=	1;
 		if (fraglimit && (ps_killer->kills >= fraglimit) )OnFraglimitExceed();
 	}
+
+	signal_Syncronize();
 }
 
 void	game_sv_Deathmatch::OnTimelimitExceed		()
@@ -312,7 +314,8 @@ void	game_sv_Deathmatch::AllowDeadBodyRemove		(u32 id)
 
 void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 {
-	game_PlayerState*	ps_who	=	get_id	(id);
+	xrClientData* CL	= Level().Server->ID_to_client(id);
+	game_PlayerState*	ps_who	=	&CL->ps;//get_id	(id);
 	ps_who->flags				|=	GAME_PLAYER_FLAG_VERY_VERY_DEAD;
 	
 	// Spawn "actor"
@@ -331,6 +334,7 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	{
 		pA->s_team				=	u8(ps_who->team);
 		assign_RP				(pA);
+		SetSkin(E, pA->s_team, 0);
 	}
 	else
 		if (pS)
@@ -348,6 +352,9 @@ void	game_sv_Deathmatch::SpawnActor				(u32 id, LPCSTR N)
 	spawn_end				(E,id);
 
 	ps_who->flags &= ~(GAME_PLAYER_FLAG_VERY_VERY_DEAD);
+	ps_who->GameID = CL->owner->ID;
+
+	signal_Syncronize();
 }
 
 void	game_sv_Deathmatch::SpawnItem4Actor			(u32 actorId, LPCSTR N)

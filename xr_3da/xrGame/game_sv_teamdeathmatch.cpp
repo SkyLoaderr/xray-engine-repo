@@ -182,3 +182,22 @@ void	game_sv_TeamDeathmatch::OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, N
 	};
 };
 
+void	game_sv_TeamDeathmatch::SetSkin					(CSE_Abstract* E, u16 Team, u16 ID)
+{
+	//-------------------------------------------
+	CSE_Visual* pV = dynamic_cast<CSE_Visual*>(E);
+	if (!E) return;
+	
+	switch (Team)
+	{
+	case 0:
+		break;
+	case 1:
+		pV->set_visual("actors\\Different_stalkers\\soldat_beret.ogf");
+		break;
+	case 2:
+		pV->set_visual("actors\\Different_stalkers\\stalker_black_mask.ogf");
+		break;
+	}	;
+	//-------------------------------------------
+};
