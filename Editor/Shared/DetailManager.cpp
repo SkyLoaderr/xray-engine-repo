@@ -68,28 +68,6 @@ void CDetail::Load		(CStream* S)
 	vertices		= (CDetail::fvfVertexIn *)	_aligned_malloc	(size_vertices,64);
 	S->Read			(vertices,size_vertices);
 
-	/*
-	struct face
-	{
-		WORD v[3];
-	};
-	struct Tverts
-	{
-		vector<CDetail::fvfVertexIn>	verts;
-		
-		WORD add_vert(CDetail::fvfVertexIn& L)
-	} Vl;
-	vector<face>					faces;
-	for (DWORD v=0; v<number_vertices; v+=3)
-	{
-		face	f;
-		f.v[0]	= add_vert(vertices[v+0]);
-		f.v[1]	= add_vert(vertices[v+1]);
-		f.v[2]	= add_vert(vertices[v+2]);
-		faces.push_back(f);
-	}
-	*/
-
 	// Indices
 	DWORD			size_indices		= number_indices*sizeof(WORD);
 	indices			= (WORD*)					_aligned_malloc	(size_indices,64);
