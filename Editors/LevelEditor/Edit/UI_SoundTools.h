@@ -5,21 +5,16 @@
 #include "ui_customtools.h"
 
 //---------------------------------------------------------------------------
-class TUI_SoundTools:public TUI_CustomTools{
+class TUI_SoundSrcTools:public TUI_CustomTools{
 public:
-                    TUI_SoundTools();
-    virtual         ~TUI_SoundTools(){;}
-	virtual	void 	OnActivate  ();
-	virtual void 	OnDeactivate();
+                    TUI_SoundSrcTools();
+    virtual         ~TUI_SoundSrcTools(){;}
 };
 //---------------------------------------------------------------------------
-class TUI_ControlSoundAdd: public TUI_CustomControl{
-    bool __fastcall AppendCallback(SBeforeAppendCallbackParams* p);
-	bool __fastcall AfterAppendCallback(TShiftState _Shift, CCustomObject* obj);
+class TUI_SoundEnvTools:public TUI_CustomTools{
 public:
-    TUI_ControlSoundAdd(int st, int act, TUI_CustomTools* parent);
-    virtual ~TUI_ControlSoundAdd(){;}
-	virtual bool Start  (TShiftState _Shift);
+                    TUI_SoundEnvTools();
+    virtual         ~TUI_SoundEnvTools(){;}
 };
 //---------------------------------------------------------------------------
 #endif

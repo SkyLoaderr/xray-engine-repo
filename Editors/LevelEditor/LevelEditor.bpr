@@ -20,25 +20,24 @@
       intermediate\EditMeshIO.obj intermediate\EditMeshPick.obj 
       intermediate\EditMeshModify.obj intermediate\Device.obj 
       intermediate\SceneIO.obj intermediate\EditMeshRender.obj 
-      intermediate\Event.obj intermediate\TopBar.obj intermediate\LeftBar.obj 
+      intermediate\TopBar.obj intermediate\LeftBar.obj 
       intermediate\BottomBar.obj intermediate\FrameObject.obj 
       intermediate\FrameSector.obj intermediate\FramePortal.obj 
       intermediate\SceneProperties.obj intermediate\ObjectList.obj 
       intermediate\EditorPref.obj intermediate\Splash.obj intermediate\main.obj 
-      intermediate\PropertiesEvent.obj intermediate\LogForm.obj 
-      intermediate\EditObjectIO.obj intermediate\EditObjectMotions.obj 
-      intermediate\FrameLight.obj intermediate\OneEnvironment.obj 
-      intermediate\PropertiesPS.obj intermediate\PSObject.obj 
-      intermediate\ChoseForm.obj intermediate\ImageEditor.obj 
-      intermediate\FramePS.obj intermediate\previewimage.obj 
-      intermediate\FrameEmitter.obj intermediate\FrameRPoint.obj 
-      intermediate\interp.obj intermediate\Envelope.obj intermediate\motion.obj 
-      intermediate\bone.obj intermediate\WayPoint.obj 
-      intermediate\FrameWayPoint.obj intermediate\DetailObjects.obj 
-      intermediate\FrameDetObj.obj intermediate\ColorPicker.obj 
-      intermediate\UI_WayPointTools.obj intermediate\UI_Camera.obj 
-      intermediate\ui_control.obj intermediate\UI_CustomTools.obj 
-      intermediate\UI_DOTools.obj intermediate\UI_EventTools.obj 
+      intermediate\LogForm.obj intermediate\EditObjectIO.obj 
+      intermediate\EditObjectMotions.obj intermediate\FrameLight.obj 
+      intermediate\OneEnvironment.obj intermediate\PropertiesPS.obj 
+      intermediate\PSObject.obj intermediate\ChoseForm.obj 
+      intermediate\ImageEditor.obj intermediate\FramePS.obj 
+      intermediate\previewimage.obj intermediate\FrameEmitter.obj 
+      intermediate\FrameRPoint.obj intermediate\interp.obj 
+      intermediate\Envelope.obj intermediate\motion.obj intermediate\bone.obj 
+      intermediate\WayPoint.obj intermediate\FrameWayPoint.obj 
+      intermediate\DetailObjects.obj intermediate\FrameDetObj.obj 
+      intermediate\ColorPicker.obj intermediate\UI_WayPointTools.obj 
+      intermediate\UI_Camera.obj intermediate\ui_control.obj 
+      intermediate\UI_CustomTools.obj intermediate\UI_DOTools.obj 
       intermediate\UI_GlowTools.obj intermediate\UI_LightTools.obj 
       intermediate\UI_Main.obj intermediate\UI_MainCommand.obj 
       intermediate\UI_ObjectTools.obj intermediate\UI_PortalTools.obj 
@@ -70,16 +69,16 @@
       intermediate\Blender_LaEmB.obj intermediate\Blender_Lm(EbB).obj 
       intermediate\Blender_LmBmmD.obj intermediate\fmesh.obj 
       intermediate\Blender_BmmD.obj intermediate\BuilderGame.obj 
-      intermediate\EventOneAction.obj intermediate\xrXRC.obj 
-      intermediate\FBasicVisual.obj intermediate\FHierrarhyVisual.obj 
-      intermediate\FProgressiveFixedVisual.obj intermediate\FVisual.obj 
-      intermediate\SkeletonCalculate.obj intermediate\SkeletonX.obj 
-      intermediate\BodyInstance.obj intermediate\ExportSkeleton.obj 
-      intermediate\Engine.obj intermediate\ModelPool.obj intermediate\SH_RT.obj 
+      intermediate\xrXRC.obj intermediate\FBasicVisual.obj 
+      intermediate\FHierrarhyVisual.obj intermediate\FProgressiveFixedVisual.obj 
+      intermediate\FVisual.obj intermediate\SkeletonCalculate.obj 
+      intermediate\SkeletonX.obj intermediate\BodyInstance.obj 
+      intermediate\ExportSkeleton.obj intermediate\Engine.obj 
+      intermediate\ModelPool.obj intermediate\SH_RT.obj 
       intermediate\EditLightAnim.obj intermediate\LightAnimLibrary.obj 
       intermediate\PropertiesEObject.obj intermediate\GroupObject.obj 
       intermediate\UI_GroupTools.obj intermediate\FrameGroup.obj 
-      intermediate\Blender_Shadow_Texture.obj intermediate\FrameEvent.obj 
+      intermediate\Blender_Shadow_Texture.obj 
       intermediate\Blender_Shadow_World.obj intermediate\TextForm.obj 
       intermediate\PropertiesWayPoint.obj intermediate\CustomObjectLE.obj 
       intermediate\Blender_Blur.obj intermediate\Blender_Model.obj 
@@ -106,10 +105,9 @@
       intermediate\r_constants.obj intermediate\r_constants_cache.obj 
       intermediate\R_DStreams.obj intermediate\R_Backend.obj 
       intermediate\Blender_detail_still.obj intermediate\Blender_tree.obj 
-      intermediate\ELog.obj intermediate\FS2.obj intermediate\ESound.obj 
-      intermediate\FrameSound.obj intermediate\ESound_Static.obj 
-      intermediate\ESound_Environment.obj intermediate\ESound_Custom.obj 
-      intermediate\SoundManager_LE.obj"/>
+      intermediate\ELog.obj intermediate\FS2.obj intermediate\ESound_Source.obj 
+      intermediate\ESound_Environment.obj intermediate\SoundManager_LE.obj 
+      intermediate\xrRender_console.obj intermediate\Blender_Palette.obj"/>
     <RESFILES value="LevelEditor.res resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -117,13 +115,12 @@
     <RESDEPEN value="$(RESFILES) EditLibrary.dfm NumericVector.dfm ShaderFunction.dfm 
       TopBar.dfm LeftBar.dfm BottomBar.dfm FrameObject.dfm FrameSector.dfm 
       FramePortal.dfm SceneProperties.dfm ObjectList.dfm EditorPref.dfm 
-      Splash.dfm main.dfm PropertiesEvent.dfm LogForm.dfm FrameLight.dfm 
-      OneEnvironment.dfm PropertiesPS.dfm ChoseForm.dfm ImageEditor.dfm 
-      FramePS.dfm previewimage.dfm FrameEmitter.dfm FrameRPoint.dfm 
-      FrameWayPoint.dfm FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm 
-      PropertiesDetailObject.dfm PropertiesList.dfm EventOneAction.dfm 
-      EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm FrameEvent.dfm 
-      TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm FrameSound.dfm"/>
+      Splash.dfm main.dfm LogForm.dfm FrameLight.dfm OneEnvironment.dfm 
+      PropertiesPS.dfm ChoseForm.dfm ImageEditor.dfm FramePS.dfm 
+      previewimage.dfm FrameEmitter.dfm FrameRPoint.dfm FrameWayPoint.dfm 
+      FrameDetObj.dfm DOShuffle.dfm DOOneColor.dfm PropertiesDetailObject.dfm 
+      PropertiesList.dfm EditLightAnim.dfm PropertiesEObject.dfm FrameGroup.dfm 
+      TextForm.dfm PropertiesWayPoint.dfm FrameShape.dfm"/>
     <LIBFILES value=""/>
     <LIBRARIES value="elpackB6.lib editor.lib bcbsmp.lib"/>
     <SPARELIBS value="rtl.lib vcl.lib bcbsmp.lib vclx.lib editor.lib elpackB6.lib"/>
@@ -202,7 +199,6 @@
       <FILE FILENAME="edit\Device.cpp" FORMNAME="" UNITNAME="Device" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SceneIO.cpp" FORMNAME="" UNITNAME="SceneIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditMeshRender.cpp" FORMNAME="" UNITNAME="EditMeshRender" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\Event.cpp" FORMNAME="" UNITNAME="Event" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="TopBar.cpp" FORMNAME="fraTopBar" UNITNAME="TopBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LeftBar.cpp" FORMNAME="fraLeftBar" UNITNAME="LeftBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="BottomBar.cpp" FORMNAME="fraBottomBar" UNITNAME="BottomBar" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -214,7 +210,6 @@
       <FILE FILENAME="EditorPref.cpp" FORMNAME="frmEditorPreferences" UNITNAME="EditorPref" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Splash.cpp" FORMNAME="frmSplash" UNITNAME="Splash" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="main.cpp" FORMNAME="frmMain" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="PropertiesEvent.cpp" FORMNAME="frmPropertiesEvent" UNITNAME="PropertiesEvent" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditObjectIO.cpp" FORMNAME="" UNITNAME="EditObjectIO" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\EditObjectMotions.cpp" FORMNAME="" UNITNAME="EditObjectMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -245,7 +240,6 @@
       <FILE FILENAME="edit\ui_control.cpp" FORMNAME="" UNITNAME="ui_control" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_CustomTools.cpp" FORMNAME="" UNITNAME="UI_CustomTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_DOTools.cpp" FORMNAME="" UNITNAME="UI_DOTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\UI_EventTools.cpp" FORMNAME="" UNITNAME="UI_EventTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_GlowTools.cpp" FORMNAME="" UNITNAME="UI_GlowTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_LightTools.cpp" FORMNAME="" UNITNAME="UI_LightTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\UI_Main.cpp" FORMNAME="" UNITNAME="UI_Main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -309,7 +303,6 @@
       <FILE FILENAME="Engine\fmesh.cpp" FORMNAME="" UNITNAME="fmesh" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_BmmD.cpp" FORMNAME="" UNITNAME="Blender_BmmD" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\BuilderGame.cpp" FORMNAME="" UNITNAME="BuilderGame" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="EventOneAction.cpp" FORMNAME="frmOneEventAction" UNITNAME="EventOneAction" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\xrXRC.cpp" FORMNAME="" UNITNAME="xrXRC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FBasicVisual.cpp" FORMNAME="" UNITNAME="FBasicVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Animations\FHierrarhyVisual.cpp" FORMNAME="" UNITNAME="FHierrarhyVisual" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -329,7 +322,6 @@
       <FILE FILENAME="edit\UI_GroupTools.cpp" FORMNAME="" UNITNAME="UI_GroupTools" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="FrameGroup.cpp" FORMNAME="fraGroup" UNITNAME="FrameGroup" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Shadow_Texture.cpp" FORMNAME="" UNITNAME="Blender_Shadow_Texture" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameEvent.cpp" FORMNAME="fraEvent" UNITNAME="FrameEvent" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
       <FILE FILENAME="Engine\Blenders\Blender_Shadow_World.cpp" FORMNAME="" UNITNAME="Blender_Shadow_World" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="TextForm.cpp" FORMNAME="frmText" UNITNAME="TextForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="PropertiesWayPoint.cpp" FORMNAME="frmPropertiesWayPoint" UNITNAME="PropertiesWayPoint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -386,12 +378,11 @@
       <FILE FILENAME="Engine\Blenders\Blender_tree.cpp" FORMNAME="" UNITNAME="Blender_tree" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ELog.cpp" FORMNAME="" UNITNAME="ELog" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\FS2.CPP" FORMNAME="" UNITNAME="FS2" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESound.cpp" FORMNAME="" UNITNAME="ESound" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="FrameSound.cpp" FORMNAME="fraSound" UNITNAME="FrameSound" CONTAINERID="CCompiler" DESIGNCLASS="TFrame" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESound_Static.cpp" FORMNAME="" UNITNAME="ESound_Static" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="edit\ESound_Source.cpp" FORMNAME="" UNITNAME="ESound_Source" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\ESound_Environment.cpp" FORMNAME="" UNITNAME="ESound_Environment" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="edit\ESound_Custom.cpp" FORMNAME="" UNITNAME="ESound_Custom" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="edit\SoundManager_LE.cpp" FORMNAME="" UNITNAME="SoundManager_LE" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\xrRender_console.cpp" FORMNAME="" UNITNAME="xrRender_console" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Blenders\Blender_Palette.cpp" FORMNAME="" UNITNAME="Blender_Palette" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

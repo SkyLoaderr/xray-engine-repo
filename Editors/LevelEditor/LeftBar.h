@@ -24,8 +24,8 @@ __published:	// IDE-managed Components
     TPanel *paTarget;
 	TExtBtn *ebTargetObject;
 	TExtBtn *ebTargetLight;
-	TExtBtn *ebTargetSound;
-	TExtBtn *ebTargetEvent;
+	TExtBtn *ebTargetSoundSrc;
+	TExtBtn *ebTargetSoundEnv;
     TPanel *paFrames;
 	TFormStorage *fsStorage;
     TExtBtn *ebTargetGlow;

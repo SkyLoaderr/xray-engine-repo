@@ -27,13 +27,13 @@ __fastcall TfraLeftBar::TfraLeftBar(TComponent* Owner)
     ebTargetObject->Tag     = etObject;
     ebTargetLight->Tag      = etLight;
     ebTargetShape->Tag		= etShape;
-    ebTargetSound->Tag      = etSound;
+    ebTargetSoundSrc->Tag   = etSoundSrc;
+    ebTargetSoundEnv->Tag   = etSoundEnv;
     ebTargetGlow->Tag       = etGlow;
     ebTargetSpawnPoint->Tag = etSpawnPoint;
     ebTargetWay->Tag  		= etWay;
     ebTargetSector->Tag 	= etSector;
     ebTargetPortal->Tag		= etPortal;
-    ebTargetEvent->Tag		= etEvent;
     ebTargetPS->Tag			= etPS;
     ebTargetDO->Tag			= etDO;
 
@@ -97,13 +97,13 @@ void TfraLeftBar::ChangeTarget(int tgt){
 	    case etObject:		btn=ebTargetObject; 	break;
 	    case etLight:		btn=ebTargetLight; 		break;
         case etShape:		btn=ebTargetShape;		break;
-	    case etSound:		btn=ebTargetSound; 		break;
+	    case etSoundSrc:	btn=ebTargetSoundSrc;	break;
+	    case etSoundEnv:	btn=ebTargetSoundEnv;	break;
 	    case etGlow:		btn=ebTargetGlow; 		break;
 	    case etSpawnPoint:	btn=ebTargetSpawnPoint; break;
 	    case etWay:			btn=ebTargetWay; 		break;
 	    case etSector:		btn=ebTargetSector; 	break;
 	    case etPortal:		btn=ebTargetPortal; 	break;
-	    case etEvent:		btn=ebTargetEvent; 		break;
         case etPS:			btn=ebTargetPS;			break;
         case etDO:			btn=ebTargetDO;			break;
         default: throw -1;

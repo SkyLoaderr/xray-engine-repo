@@ -6,6 +6,7 @@
 #include "vis_common.h"
 #include "blender.h"
 #include "blender_clsid.h"
+#include "xrRender_console.h"
 
 // definition (Renderer)
 class	CRender{
@@ -31,6 +32,7 @@ IC  float   CalcSSA(Fvector& C, float R)
     float distSQ  = Device.m_Camera.GetPosition().distance_to_sqr(C);
     return  R*R/distSQ;
 }
+extern CRender  RImplementation;
 extern CRender*	Render;
 
 #endif

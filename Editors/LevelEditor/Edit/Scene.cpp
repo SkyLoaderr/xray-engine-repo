@@ -493,10 +493,10 @@ void EScene::Render( const Fmatrix& camera )
 // priority #1
 	// draw lights, sounds, respawn points, pclipper, sector, event
     RENDER_CLASS_NORMAL		(1,OBJCLASS_LIGHT);
-    RENDER_CLASS			(1,OBJCLASS_SOUND,		false);
+    RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	false);
+    RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	false);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_SPAWNPOINT);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_WAY);
-    RENDER_CLASS_NORMAL		(1,OBJCLASS_EVENT);
     RENDER_CLASS			(1,OBJCLASS_SHAPE,		false);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_SECTOR);
     RENDER_CLASS_NORMAL		(1,OBJCLASS_PS);
@@ -507,9 +507,9 @@ void EScene::Render( const Fmatrix& camera )
     m_DetailObjects->Render	(1,false);
     m_DetailObjects->Render	(1,true);
 	// draw clip planes, glows, event, sectors, portals
-    RENDER_CLASS			(1,OBJCLASS_SOUND,		true);
+    RENDER_CLASS			(1,OBJCLASS_SOUND_SRC,	true);
+    RENDER_CLASS			(1,OBJCLASS_SOUND_ENV,	true);
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_GLOW);
-	RENDER_CLASS_ALPHA		(1,OBJCLASS_EVENT);
     RENDER_CLASS			(1,OBJCLASS_SHAPE,		true);
 	RENDER_CLASS_ALPHA		(1,OBJCLASS_SECTOR);
 	RENDER_CLASS			(1,OBJCLASS_GROUP,		true);
@@ -913,7 +913,7 @@ void SSceneSummary::FillProp(PropItemVec& items)
     temp.sprintf			("%d Kb",iFloor(base_mem_usage/1024));
     base_mem->ApplyValue	(&temp);
 
-    PropValue* base_count	= PHelper.CreateCaption(items,"Textures\\Detail\\Count",			det_textures.size());
+    PHelper.CreateCaption	(items,"Textures\\Detail\\Count",			det_textures.size());
     PropValue* det_mem		= PHelper.CreateCaption(items,"Textures\\Detail\\Memory Usage",	"");
     UI.ProgressStart(textures.size(),"Collect detail textures info: ");
     for (t_it=det_textures.begin(); t_it!=det_textures.end(); t_it++){

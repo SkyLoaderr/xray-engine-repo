@@ -3,10 +3,12 @@
 #define ESound_EnvironmentH
 //---------------------------------------------------------------------------
 
-#include "ESound_Custom.h"
+#include "CustomObject.h"
 #include "EShape.h"
 
-class ESoundEnvironment: public ISoundCustom{
+class ESoundEnvironment: public CCustomObject
+{
+	typedef CCustomObject inherited;
 	// Env
 	CEditShape*		m_Shape;
 	AnsiString		m_EnvRef;
@@ -16,9 +18,11 @@ public:
     virtual Fvector& GetRotation	()						{ return m_Shape->PRotation;	}
 	virtual void 	SetRotation		(const Fvector& rot)	{ m_Shape->PRotation = rot;		}
 public:
-					ESoundEnvironment();
+					ESoundEnvironment(LPVOID data, LPCSTR name);
+	void 			Construct		(LPVOID data);
 					~ESoundEnvironment();
-	virtual void 	Render			(int priority, bool strictB2F, bool bLocked, bool bSelected);
+                    
+	virtual void 	Render			(int priority, bool strictB2F);
 	virtual bool 	RayPick			(float& dist, const Fvector& S, const Fvector& D, SRayPickInfo* pinf = NULL);
     virtual bool 	FrustumPick		(const CFrustum& frustum);
     virtual	void	OnFrame			();
@@ -28,8 +32,6 @@ public:
 	virtual void 	Scale			(Fvector& amount);
 	virtual void	FillProp		(LPCSTR pref, PropItemVec& values);
 	virtual bool 	GetSummaryInfo	(SSceneSummary* inf);
-	virtual void 	InitDefault		();
-    virtual bool	ExportGame		(SExportStreams& data);
 };
 
 #endif

@@ -45,12 +45,12 @@ enum EObjClass{
     OBJCLASS_SCENEOBJECT= 2,
     OBJCLASS_LIGHT	   	= 3,
     OBJCLASS_SHAPE  	= 4,
-    OBJCLASS_SOUND	   	= 5,
+    OBJCLASS_SOUND_SRC 	= 5,
     OBJCLASS_SPAWNPOINT	= 6,
     OBJCLASS_WAY	  	= 7,
     OBJCLASS_SECTOR    	= 8,
     OBJCLASS_PORTAL    	= 9,
-    OBJCLASS_EVENT	   	= 10,
+    OBJCLASS_SOUND_ENV 	= 10,
     OBJCLASS_PS		   	= 11,
     OBJCLASS_DO			= 12,
     OBJCLASS_COUNT,
@@ -62,7 +62,6 @@ TUI_CustomTools*NewToolFromTarget		(int tgt);
 CCustomObject*	NewObjectFromClassID	(int _ClassID, LPVOID data, LPCSTR name);
 LPSTR 			GetNameByClassID		(EObjClass cls_id);
 LPSTR 			GetClassNameByClassID	(EObjClass cls_id);
-EObjClass		GetClassIDByClassName	(LPCSTR name);
 bool 			IsClassID				(EObjClass cls_id);
 bool 			IsObjectListClassID		(EObjClass cls_id);
 bool 			IsGroupClassID			(EObjClass cls_id);

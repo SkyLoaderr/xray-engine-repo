@@ -9,8 +9,8 @@ float ssaDONTSORT		= 32.f;
 float 	r_ssaDISCARD;
 float	g_fSCREEN;
 
-CRender 	Render_implementation;
-CRender* 	Render = &Render_implementation;
+CRender 	RImplementation;
+CRender* 	Render = &RImplementation;
 //---------------------------------------------------------------------------
 
 CRender::CRender	()

@@ -14,7 +14,6 @@ USEFORM("ObjectList.cpp", frmObjectList);
 USEFORM("EditorPref.cpp", frmEditorPreferences);
 USEFORM("Splash.cpp", frmSplash);
 USEFORM("main.cpp", frmMain);
-USEFORM("PropertiesEvent.cpp", frmPropertiesEvent);
 USEFORM("LogForm.cpp", frmLog);
 USEFORM("FrameLight.cpp", fraLight); /* TFrame: File Type */
 USEFORM("OneEnvironment.cpp", frmOneEnvironment);
@@ -31,15 +30,12 @@ USEFORM("DOShuffle.cpp", frmDOShuffle);
 USEFORM("DOOneColor.cpp", frmOneColor);
 USEFORM("PropertiesDetailObject.cpp", frmPropertiesDO);
 USEFORM("PropertiesList.cpp", Properties);
-USEFORM("EventOneAction.cpp", frmOneEventAction);
 USEFORM("EditLightAnim.cpp", frmEditLightAnim);
 USEFORM("PropertiesEObject.cpp", frmPropertiesEObject);
 USEFORM("FrameGroup.cpp", fraGroup); /* TFrame: File Type */
-USEFORM("FrameEvent.cpp", fraEvent); /* TFrame: File Type */
 USEFORM("TextForm.cpp", frmText);
 USEFORM("PropertiesWayPoint.cpp", frmPropertiesWayPoint);
 USEFORM("FrameShape.cpp", fraShape); /* TFrame: File Type */
-USEFORM("FrameSound.cpp", fraSound); /* TFrame: File Type */
 //---------------------------------------------------------------------------
 #include "main.h"
 #include "splash.h"

@@ -495,8 +495,8 @@ bool __fastcall TUI::ApplyShortCutExt(WORD Key, TShiftState Shift)
         }else{
             if (Key=='1')     			{Command(COMMAND_CHANGE_TARGET, etObject);      bExec=true;}
             else if (Key=='2')  		{Command(COMMAND_CHANGE_TARGET, etLight);       bExec=true;}
-            else if (Key=='3')  		{Command(COMMAND_CHANGE_TARGET, etSound);       bExec=true;}
-            else if (Key=='4')  		{Command(COMMAND_CHANGE_TARGET, etEvent);       bExec=true;}
+            else if (Key=='3')  		{Command(COMMAND_CHANGE_TARGET, etSoundSrc);    bExec=true;}
+            else if (Key=='4')  		{Command(COMMAND_CHANGE_TARGET, etSoundEnv);    bExec=true;}
             else if (Key=='5')  		{Command(COMMAND_CHANGE_TARGET, etGlow);        bExec=true;}
             else if (Key=='6')  		{Command(COMMAND_CHANGE_TARGET, etDO);          bExec=true;}
             else if (Key=='7')  		{Command(COMMAND_CHANGE_TARGET, etSpawnPoint);  bExec=true;}
