@@ -781,7 +781,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXMatrixInverse						(&mInvView,0,&dm_2view);
 	D3DXVec3TransformNormal					(&vLightDir,&vLightDir,&mInvView);
 	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
-	cc.set									(s_Light_Direct.constants.get("light_color"),		.8f,		.7f,		.9,			1	);
+	cc.set									(s_Light_Direct.constants.get("light_color"),		.3f,		.3f,		1.,			.7	);
 	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
