@@ -211,128 +211,58 @@ function Monster:__init (npc, attack_way, script_name)
 	self.npc = npc
 	self.way = attack_way
 	self.script = script_name
-	self.moving = true
 	self.first_start = true
-	self.target = nil
-	self.targets = {}
 	self.freemove = false
+	self.callback = nil
 end
+
+function Monster:set_callback (callback)
+	self.callback = callback
+end	
 
 
 
 function Monster:initialize ()
 	self.npc:script (true, self.script)
 	action (self.npc, move (move.act_stand_idle, move.default, self.npc:position()), cond (cond.time_end, time_infinite))
-	self.npc:set_callback (self, "callback", game_object.movement)
 end
 
-function Monster:callback (obj, action_type, index)
 
-    local ptr = patrol (obj:patrol ())
-
-  	if index < 0 then return end
-
-    if ptr:flag (index, 1) == true then 	
-	   self.moving = false 
-	   self.npc:clear_callback (game_object.movement)
-	   printf ("Callback called for object %s", self.npc:name ())	 
-	end
-
-end
-
-function Monster:set_enemyes (enemyes)
-	self.targets = enemyes
-end
-
-function Monster:is_alive ()
-	if self.npc ~= nil and self.npc:alive () == true then return true end
-	return false
-end
-
-function Monster:find_enemy ()
-	if table.getn (self.targets) == 0 then return nil end	
-	local dist = 100000000
-	local enemy = nil
-	for a = 1, table.getn (self.targets), 1 do
-		if self.targets[a]:is_alive () == true and self.targets[a].available == true then
-		   local tdist = distance_between (self.npc, self.targets[a].npc) 
-		   if tdist < dist and 
-			  self.targets[a]:get_num_attackers () < max_attackers and 
-			  self.targets[a]:attacker_present (self) == false and
-			  self.npc:see (self.targets[a].npc) then
-			  dist = tdist
-			  enemy = self.targets[a]
-		   end
-        end
-	end
-
-	if enemy ~= nil then enemy:add_attacker (self) end
-	
---	if enemy ~= nil then
---  	   printf ("Attacker %s find enemy %s", self.npc:name (), enemy.npc:name ())	
---	   if distance_between (enemy.npc, self.npc) > 30 then enemy = nil end
---	end
-
-	return enemy
-end
 
 function Monster:process ()
 
 	--если монстр отущен из под скрипта, то вываливаемся
-	if self.freemove == true then return end
+	if self.freemove == true or self.npc == nil or self.npc:alive () == false then return end
 
---	printf ("Process object %s : ", self.npc:name ())
-
-	--если первый заход, то двигаем монстра по пути
-	if self.first_start == true then
-	   self.first_start = false	
+	if self.first_start == true then	
 	   reset_action (self.npc, self.script)
 	   action (self.npc, move (move.act_run, move.force_type, self.way), cond (cond.move_end))
-	   printf ("Move attacker : %s", self.npc:name ())	
-	   return	
-	end
-
-	--если монстр еще двигается по пути, то выйдем
-	if self.moving == true then return
-	else
-	   printf ("FREE OBJECT %s", self.npc:name ())	
-   	   self.npc:script (false, self.script)
-	   self.freemove = true
-  	   return
-	end	
-
-	--если больше нет целей, то отпускаем зверя и флаг ему в руки 
-	if table.getn (self.targets) == 0 then 
-	   self.npc:script (false, self.script)
-	   self.freemove = true
-	   return	 
-	end
-
-	--ищем врага в списке. Критерий: враг рядом, он жив и не является целью для другого	мутанта
-	local enemy = nil
-	if self.target == nil or self.target:is_alive () == false then enemy = self:find_enemy () end
-	if enemy == nil then return 
-	else
-       if enemy ~= self.target then 
-		  reset_action (self.npc, self.script)
-		  action (self.npc, move (move.act_run, move.force_type, enemy.npc), cond (cond.time_end))
-	   end	  
+	   self.first_start = false
+	   return 
 	end   
-
-	--сохраняем цель
-	self.target = enemy
-
-	--если дистанция до цели меньше критической, то отиграем анимацию атаки
-	if distance_between (self.npc, self.target.npc) < 2 then
-       reset_action (self.npc, self.script)
-	   action_first (self.npc, move (act_attack, move.default, self.target.npc), cond (cond.time_end, 1000))
-	end
 	
-end	   
+	
+	if self.npc:action () then return end
+	
+	if self.callback ~= nil then 
+	   self.callback (self) 
+	   self.callback = nil
+    end
+    
+	self.freemove = true
+	self.npc:script (false, self.script)
+	
+end	
 
 -------------------------------------------------------------------------------------------------------------------------------------
 -- Все остальное
 -------------------------------------------------------------------------------------------------------------------------------------
+
+function boar_callback (monster)
+	reset_action (monster.npc, monster.script)
+  	action (monster.mpc, move (move.act_stand_idle, move.force_type, monster.npc:position ()), anim ("stand_attack_1"),
+      		sound ("monsters\\boar\\attack_0", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false),  cond (cond.anim_end))
+end      		
 
 
 function main ()
@@ -355,6 +285,8 @@ function main ()
                       m_attack_wave2.Monster (get_level_object ("m_pseudodog_e0003"),  patrol ("way0012"), scrname),
                       m_attack_wave2.Monster (get_level_object ("m_flesh_e0000"),  patrol ("way0013"), scrname)
 					  }
+					  
+	monsters[1]:set_callback (m_attack_wave2.boar_callback)					  
 
 	local stalkers = {
 					 m_attack_wave2.Defender (get_level_object ("stalker_young"), patrol ("way_young"), scrname, monsters, true, true),
@@ -370,7 +302,6 @@ function main ()
 					 }
 
 	for a = 1, table.getn (monsters), 1 do
-		monsters[a]:set_enemyes (stalkers)
 		monsters[a]:initialize ()
 	    if a <= table.getn (stalkers) then
 		   stalkers[a]:initialize ()
