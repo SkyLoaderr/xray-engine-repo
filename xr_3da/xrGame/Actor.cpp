@@ -190,8 +190,8 @@ void CActor::Load(CInifile* ini, const char* section )
 	pSounds->Create		(sndStep[0],		FALSE,	strconcat(buf,cName(),"\\stepL"));
 	pSounds->Create		(sndStep[1],		FALSE,	strconcat(buf,cName(),"\\stepR"));
 	pSounds->Create		(sndLanding,		FALSE,	strconcat(buf,cName(),"\\landing"));
-	pSounds->Create		(sndZoneHeart,		FALSE,	strconcat(buf,cName(),"\\heart\\1"));
-	pSounds->Create		(sndZoneDetector,	FALSE,	strconcat(buf,cName(),"\\detectors\\geiger"));
+	pSounds->Create		(sndZoneHeart,		FALSE,	"heart\\1");
+	pSounds->Create		(sndZoneDetector,	FALSE,	"detectors\\geiger");
 	pSounds->Create		(sndHit[0],			TRUE,	strconcat(buf,cName(),"\\hurt1"));
 	pSounds->Create		(sndHit[1],			TRUE,	strconcat(buf,cName(),"\\hurt2"));
 	pSounds->Create		(sndHit[2],			TRUE,	strconcat(buf,cName(),"\\hurt3"));
