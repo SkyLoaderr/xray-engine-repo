@@ -191,7 +191,7 @@ IC u32 it_height_rev	(u32 d, u32 s)	{	return	color_rgba	(
 	color_get_R(s)	);	// height
 }
 
-ENGINE_API IDirect3DBaseTexture9*	TWLoader2D
+IDirect3DBaseTexture9*	CRender::texture_load(LPCSTR fRName)
 (
 	u32&				mem,
 	const char *		fRName,
