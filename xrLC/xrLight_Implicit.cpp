@@ -194,7 +194,6 @@ public:
 		DB.RayMode	(0);
 		Fcolor		C[9];
 		for (DWORD J=0; J<9; J++)	C[J].set(0,0,0,0);
-		/*
 		for (DWORD V=y_start; V<y_end; V++)
 		{
 			for (DWORD U=0; U<defl.Width(); U++)
@@ -258,7 +257,6 @@ public:
 			}
 			thProgress	= float(V - y_start) / float(y_end-y_start);
 		}
-		*/
 	}
 };
 
