@@ -5,12 +5,12 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	// *** assume accumulator setted up ***
 	// *****************************	Mask by stencil		*************************************
 	{
-		float		s			= 2.f*L->range*_tan(L->cone);
+		float		s			= 2.f*L->range*tanf(L->cone);
 		Fmatrix		mScale;		mScale.scale(s,L->range,s);		// make range and radius
 		Fmatrix		mR_Z;		mR_Z.rotateX(deg2rad(90.f));	// align with Z
 		
 		// build final rotation / translation
-		Fvector					L_dir,L_up,L_right,L_pos;
+		Fvector					L_dir,L_up,L_right;
 		L_dir.set				(L->direction);			L_dir.normalize		();
 		L_up.set				(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
 		L_right.crossproduct	(L_up,L_dir);			L_right.normalize	();
@@ -25,6 +25,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		Fmatrix		xf;
 		xf.mul		(mR_Z,mScale);
 		xf.mulA		(mR);
+		xf.translate(L->position);
 
 		// setup xform
 		RCache.set_xform_world			(xf					);
@@ -74,6 +75,7 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 	RCache.set_xform_project		(xf_project	);
 
 	// Draw full-screen quad textured with our scene image
+	// Should be changed to near-plane intersection test + actual form rendering (front/back)
 	{
 		u32		Offset;
 		u32		C					= D3DCOLOR_RGBA	(255,255,255,255);
@@ -128,7 +130,8 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
-	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
+
+	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
 }
 
 void CRenderTarget::accum_spot_unshadow	(light* L)
