@@ -213,21 +213,21 @@ void CEntityAlive::BloodyWallmarks (float P, Fvector &dir, s16 element,
 	//потом несколько маленьких с большим разбросом
 	int blood_marks_num = iFloor(0.5f + P/m_fNominalHit);
 	clamp(blood_marks_num, 1, 6);
-	for(int i=0; i<blood_marks_num; i++)
+	//for(int i=0; i<blood_marks_num; i++)
 	{
 		float disp;
 		float main_mark;
-		if(i==0) 
+	//	if(i==0) 
 		{
 			//для основной отметки ставим совсем небольшую дисперсию
 			disp = 0.0f;
 			main_mark = 1.f;
 		}
-		else
+	/*	else
 		{
 			disp = m_fBloodMarkDispersion;
 			main_mark = 0.3f;
-		}
+		}*/
 
 		Fvector rnd_dir;
 		rnd_dir.random_dir(dir, disp, Random);

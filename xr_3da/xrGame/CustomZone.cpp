@@ -13,7 +13,14 @@ CCustomZone::CCustomZone(void)
 	m_fMaxPower = 100.f;
 	m_fAttenuation = 1.f;
 	m_dwPeriod = 1100;
+	
 	m_bZoneReady = false;
+	m_bZoneActive = false;
+
+	m_bIgnoreNonAlive = false;
+	m_bIgnoreSmall = false;
+
+
 	m_pLocalActor = NULL;
 
 
@@ -49,7 +56,8 @@ void CCustomZone::Load(LPCSTR section)
 	m_iDisableIdleTime = pSettings->r_s32(section,"disable_idle_time");	
 	m_fHitImpulseScale = pSettings->r_float(section,"hit_impulse_scale");	
 
-
+	m_bIgnoreNonAlive = !!pSettings->r_bool(section, "ignore_nonalive");
+	m_bIgnoreSmall	  = !!pSettings->r_bool(section, "ignore_small");
 	
 //////////////////////////////////////////////////////////////////////////
 	ISpatial*		self				=	dynamic_cast<ISpatial*> (this);
@@ -155,7 +163,7 @@ void CCustomZone::UpdateCL()
 	inherited::UpdateCL();
 
 	//вычислить время срабатывания зоны
-	if(!m_inZone.empty())
+	if(m_bZoneActive)
 		m_dwDeltaTime += Device.dwTimeDelta;	
 	else
 		m_dwDeltaTime = 0;
@@ -187,6 +195,8 @@ void CCustomZone::UpdateCL()
 
 void CCustomZone::shedule_Update(u32 dt)
 {
+	m_bZoneActive = false;
+
 	//пройтись по всем объектам в зоне
 	//и проверить их состояние
 	for(OBJECT_INFO_MAP_IT it = m_ObjectInfoMap.begin(); 
@@ -208,6 +218,11 @@ void CCustomZone::shedule_Update(u32 dt)
 			if(!pEntityAlive || !pEntityAlive->g_Alive())
 				StopObjectIdleParticles(dynamic_cast<CGameObject*>(pObject));
 		}
+
+		//если есть хотя бы один не дисабленый объект, то
+		//зона считается активной
+		if(info.zone_ignore == false) 
+			m_bZoneActive = true;
 	}
 
 	inherited::shedule_Update(dt);
@@ -221,9 +236,28 @@ void CCustomZone::feel_touch_new(CObject* O)
 					m_pLocalActor = dynamic_cast<CActor*>(O);
 
 	CGameObject* pGameObject =dynamic_cast<CGameObject*>(O);
+	CEntityAlive* pEntityAlive =dynamic_cast<CEntityAlive*>(pGameObject);
 	
 	SZoneObjectInfo object_info;
+	
+	if(pEntityAlive && pEntityAlive->g_Alive())
+		object_info.nonalive_object = false;
+	else
+		object_info.nonalive_object = true;
+
+	if(pGameObject->Radius()<SMALL_OBJECT_RADIUS)
+		object_info.small_object = true;
+	else
+		object_info.small_object = false;
+
+	if((object_info.small_object && m_bIgnoreSmall) ||
+		(object_info.nonalive_object && m_bIgnoreNonAlive))
+		object_info.zone_ignore = true;
+	else
+		object_info.zone_ignore = false;
+
 	m_ObjectInfoMap[O] = object_info;
+	
 
 	PlayEntranceParticles(pGameObject);
 	PlayObjectIdleParticles(pGameObject);

@@ -18,7 +18,13 @@ struct SZoneObjectInfo
 		time_in_zone = 0;
 		hit_num = 0;
 		total_damage = 0;
+		small_object = false;
+		nonalive_object = false;
 	};
+	
+
+	bool	small_object;
+	bool	nonalive_object;
 
 	//игнорирование объекта в зоне
 	bool	zone_ignore;
@@ -88,8 +94,14 @@ protected:
 
 	u32 m_dwDeltaTime;
 	u32 m_dwPeriod;
-	BOOL m_bZoneReady;
+	bool m_bZoneReady;
+	//если в зоне есть не disabled объекты
+	bool m_bZoneActive;
 	
+	//игнорирование воздействия зоны на виды объектов
+	bool m_bIgnoreNonAlive;
+	bool m_bIgnoreSmall;
+
 	//время, через которое, зона перестает реагировать 
 	//на объект мертвый объект (-1 если не указано)
 	int m_iDisableHitTime;
