@@ -33,22 +33,22 @@ CUIBag::CUIBag(CHECK_PROC proc){
 
 
 	// Заполняем массив информации о ящиках
-	m_boxesDefs[0].texName		= "ui\\ui_inv_box_misc_weapons";
+	m_boxesDefs[0].xmlTag		= "btn_bag_shotgun";
 	m_boxesDefs[0].filterString	= "shotgun";
 	m_boxesDefs[0].gridHeight		= 2;
 	m_boxesDefs[0].gridWidth		= 6;
 
-	m_boxesDefs[1].texName		= "ui\\ui_inv_box_assault_rifles";
+	m_boxesDefs[1].xmlTag		= "btn_bag_assault";
 	m_boxesDefs[1].filterString	= "assault_rifle";
 	m_boxesDefs[1].gridHeight		= 2;
 	m_boxesDefs[1].gridWidth		= 6;
 
-	m_boxesDefs[2].texName		= "ui\\ui_inv_box_sniper_rifles";
+	m_boxesDefs[2].xmlTag		= "btn_bag_sniper";
 	m_boxesDefs[2].filterString	= "sniper_rifle";
 	m_boxesDefs[2].gridHeight		= 2;
 	m_boxesDefs[2].gridWidth		= 6;
 
-	m_boxesDefs[3].texName		= "ui\\ui_inv_box_heavy_weapons";
+	m_boxesDefs[3].xmlTag		= "btn_bag_heavy";
 	m_boxesDefs[3].filterString	= "heavy_weapon";
 	m_boxesDefs[3].gridHeight		= 2;
 	m_boxesDefs[3].gridWidth		= 6;
@@ -157,7 +157,7 @@ void CUIBag::Init(CUIXml& xml, const char *path, LPCSTR strSectionName, LPCSTR s
 	for (int i = 0; i < NUMBER_OF_GROUPS; i++)
 		CUIXmlInit::InitDragDropList(xml, "dragdrop_list_bag", 0, &m_groups[i]);
 
-	InitBoxes();
+	InitBoxes(xml);
 	InitWpnSectStorage();
 	FillUpInfiniteItemsList();
 	FillUpGroups();
@@ -253,33 +253,6 @@ void CUIBag::Draw(){
 	CUIStatic::Draw();
 }
 
-void CUIBag::OnBoxDbClick(CUIDragDropItemMP* pDDItem){
-	R_ASSERT2(pDDItem, "OnBoxDbClick");
-
-	if (!IsItemInBag(pDDItem))
-		return;
-
-	shared_str section = pDDItem->GetSectionName();
-
-	int iActiveSection = -1;
-
-	if		(  0 == xr_strcmp(m_boxesDefs[0].filterString, section) )
-		iActiveSection = GROUP_31;
-
-	else if (  0 == xr_strcmp(m_boxesDefs[1].filterString, section) )
-		iActiveSection = GROUP_32;
-
-	else if (  0 == xr_strcmp(m_boxesDefs[2].filterString, section) )
-		iActiveSection = GROUP_33;
-
-	else if (  0 == xr_strcmp(m_boxesDefs[3].filterString, section) )
-		iActiveSection = GROUP_34;
-
-	R_ASSERT2( (-1 != iActiveSection), "CUIBag::OnBoxDbClick - invalid section");
-
-	ShowSectionEx(iActiveSection);
-}
-
 CUIDragDropItemMP * CUIBag::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDragDropItemMP::AddonIDs ID){
 	R_ASSERT(pAddonOwner);
 	// Пробегаемся по списку вещей и ищем там нужный аддон
@@ -299,10 +272,10 @@ CUIDragDropItemMP * CUIBag::GetAddonByID(CUIDragDropItemMP *pAddonOwner, CUIDrag
 	return NULL;
 }
 
-void CUIBag::OnItemClick(CUIDragDropItemMP* pDDItem){
-	if (IsItemInBag(pDDItem))
-        m_pCurrentDDItem = pDDItem;
-}
+//void CUIBag::OnItemClick(CUIDragDropItemMP* pDDItem){
+//	if (IsItemInBag(pDDItem))
+//        m_pCurrentDDItem = pDDItem;
+//}
 
 bool CUIBag::IsItemAnAddonSimple(CUIDragDropItemMP *pPossibleAddon) const
 {
@@ -321,22 +294,31 @@ void CUIBag::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	CUIDragDropItemMP* pDDItem = smart_cast<CUIDragDropItemMP*>(pWnd);
 	switch (msg)
 	{
+		// we using our super-puper tab buttons enstead of DragDropItems
+		// those buttons uses TAB_CHANGED message for Click event
+	case TAB_CHANGED:
+		if		(pWnd == m_boxesDefs[0].pButton)
+			ShowSectionEx(GROUP_31);
+		else if (pWnd == m_boxesDefs[1].pButton)
+			ShowSectionEx(GROUP_32);
+		else if (pWnd == m_boxesDefs[2].pButton)
+			ShowSectionEx(GROUP_33);
+		else if (pWnd == m_boxesDefs[3].pButton)
+			ShowSectionEx(GROUP_34);
+		break;
 	case DRAG_DROP_ITEM_DROP:
 		OnItemDrop(pDDItem);
 		return;
 
-	case DRAG_DROP_ITEM_DB_CLICK:
-		if (GetMenuLevel() == mlBoxes)
-			OnBoxDbClick(pDDItem);
-		else
-			OnItemClick(pDDItem);
-		break;
+	//case DRAG_DROP_ITEM_DB_CLICK:
+	//		OnItemClick(pDDItem);
+	//	break;
 
-	case DRAG_DROP_ITEM_RBUTTON_CLICK:
-		OnItemClick(pDDItem); break;
+	//case DRAG_DROP_ITEM_RBUTTON_CLICK:
+	//	OnItemClick(pDDItem); break;
 
-	case DRAG_DROP_ITEM_DRAG:
-		OnItemClick(pDDItem); break;
+	//case DRAG_DROP_ITEM_DRAG:
+	//	OnItemClick(pDDItem); break;
 	}
 	CUIWindow::SendMessage(pWnd, msg, pData);
 }
@@ -351,41 +333,20 @@ void CUIBag::HideAll(){
 }
 
 // Init Boxes SLOT
-void CUIBag::InitBoxes(){
+void CUIBag::InitBoxes(CUIXml& xml){
 	// Пробегаемся по всем ящичкам и создаем соответсвующие им айтемы
+	char buff[5];
 	for (u32 i = 0; i < 4; ++i)
 	{
-		CUIDragDropItemMP* pNewDDItem = xr_new<CUIDragDropItemMP>();
-		pNewDDItem->SetAutoDelete(true);
-		pNewDDItem->EnableDragDrop(false);
+		CUITabButtonMP* pNewBtn = xr_new<CUITabButtonMP>();
+		pNewBtn->SetAutoDelete(true);
+		pNewBtn->SetOrientation(O_HORIZONTAL);
+		pNewBtn->SetNumber(itoa(i+1, buff, 10));
+		pNewBtn->SetMessageTarget(this);
+		CUIXmlInit::Init3tButton(xml, *m_boxesDefs[i].xmlTag, 0, pNewBtn);
+		m_boxesDefs[i].pButton = pNewBtn;
 
-		m_boxesDefs[i].pDDItem = pNewDDItem;
-
-		pNewDDItem->CUIStatic::Init(*m_boxesDefs[i].texName, 0, 0, INV_GRID_WIDTH, INV_GRID_HEIGHT);
-		pNewDDItem->Rescale(SECTION_ICON_SCALE, SECTION_ICON_SCALE);
-		pNewDDItem->SetStretchTexture(true);
-		pNewDDItem->SetColor(0xffffffff);
-		
-		pNewDDItem->SetSlot(WEAPON_BOXES_SLOT);
-		pNewDDItem->SetSectionGroupID(WEAPON_BOXES_SLOT);
-		pNewDDItem->SetPosInSectionsGroup(i);
-
-		pNewDDItem->SetFont(UI()->Font()->pFontLetterica16Russian);
-
-		pNewDDItem->SetGridHeight(m_boxesDefs[i].gridHeight);
-		pNewDDItem->SetGridWidth(m_boxesDefs[i].gridWidth);
-		pNewDDItem->GetUIStaticItem().SetOriginalRect(
-			0, 0,
-			m_boxesDefs[i].gridWidth * INV_GRID_WIDTH - INV_GRID_WIDTH,
-			m_boxesDefs[i].gridHeight * INV_GRID_HEIGHT - INV_GRID_HEIGHT / 2);
-
-		pNewDDItem->SetSectionName(*m_boxesDefs[i].filterString);
-
-		m_groups[GROUP_BOXES].AttachChild(pNewDDItem);
-
-		pNewDDItem->SetOwner(&m_groups[GROUP_BOXES]);
-		pNewDDItem->SetMessageTarget(this);
-		pNewDDItem->SetCustomDraw(static_cast<CUSTOM_UPDATE_PROC>(WpnDrawIndex));
+		m_groups[GROUP_BOXES].AttachChild(pNewBtn);
 	}
 }
 

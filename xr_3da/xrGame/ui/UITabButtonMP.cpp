@@ -16,6 +16,7 @@ const int TEXT_INDENTION = 43;
 CUITabButtonMP::CUITabButtonMP(){
 	AttachChild(&m_staticNumber);
 	m_staticNumber.SetFont(UI()->Font()->pFontGraffiti32Russian);
+	m_orientation = O_VERTICAL;
 }
 
 CUITabButtonMP::~CUITabButtonMP(){
@@ -42,16 +43,40 @@ void CUITabButtonMP::SendMessage(CUIWindow* pWnd, s16 msg, void* pData /* = 0 */
 }
 
 void CUITabButtonMP::UpdateTextAlign(){
-	
-	if (CUIButton::BUTTON_PUSHED == m_eButtonState)
-        m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2 - TEXT_INDENTION;
-	else
-		m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
+	switch (m_orientation)
+	{
+	case O_VERTICAL:
+        if (CUIButton::BUTTON_PUSHED == m_eButtonState)
+            m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2 - TEXT_INDENTION;
+		else
+			m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
 
-	if(m_eTextAlign == CGameFont::alCenter)
-		m_iTextOffsetX = GetWidth()/2;
-	else if(m_eTextAlign == CGameFont::alRight)
-		m_iTextOffsetX = GetWidth();
+		if(m_eTextAlign == CGameFont::alCenter)
+			m_iTextOffsetX = GetWidth()/2;
+		else if(m_eTextAlign == CGameFont::alRight)
+			m_iTextOffsetX = GetWidth();
+
+		break;
+	case O_HORIZONTAL:
+   			m_iTextOffsetY = (GetHeight() - (int)GetFont()->CurrentHeight())/2;
+
+			if (m_bCursorOverWindow)
+				m_iTextOffsetX = GetWidth()/2 + 100;
+			else
+				m_iTextOffsetX = GetWidth()/2;
+
+		break;
+	default:
+		NODEFAULT;
+	}
+
+
+}
+
+void CUITabButtonMP::SetOrientation(int orientation){
+	m_orientation = orientation;
+
+	R_ASSERT2(orientation == O_HORIZONTAL || orientation == O_VERTICAL, "CUITabButtonMP - invalid orientation value");
 }
 
 void CUITabButtonMP::Update(){

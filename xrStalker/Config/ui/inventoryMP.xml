@@ -70,11 +70,6 @@
 			cell_width = "53" cell_height="53"
 			rows_num="4" cols_num="4" show_grid="0" />
 
-	<!-- STATIC BCAKGROUND FOR MP TABCONTROL -->
-	<!--static_tab x="0" y="690" width="1024" height="128">
-		<texture>ui\ui_dg_bottom_multiplayer</texture>
-	</static_tab -->
-
 	<!-- TOTAL MONEY AMOUNT -->
 	<total_money_header_static x="631" y="326" width="200" height="50">
 		<text font="small" r="240" g="217" b="182">You have:</text>
@@ -150,6 +145,43 @@
 			<text_t r="255" g="187" b="51"/>
 		</button>
 	</tab>
+		
+	<btn_bag_shotgun x="5" y="30" width="150" height="52">
+			<texture_offset x="-18" y="-62"/>
+			<texture_t>ui\ui_btn_shotgun_t</texture_t>
+			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_h>ui\ui_btn_shotgun_t</texture_h>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_shotgun</text>
+			<text_h r="255" g="187" b="51"/>
+			<text_t r="255" g="187" b="51"/>
+	</btn_bag_shotgun>	
+	<btn_bag_assault x="5" y="120" width="150" height="52">
+			<texture_offset x="-18" y="-62"/>
+			<texture_t>ui\ui_btn_assault_t</texture_t>
+			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_h>ui\ui_btn_assault_t</texture_h>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_assault</text>
+			<text_h r="255" g="187" b="51"/>
+			<text_t r="255" g="187" b="51"/>
+	</btn_bag_assault>
+	<btn_bag_sniper x="5" y="210" width="150" height="52">
+			<texture_offset x="-18" y="-62"/>
+			<texture_t>ui\ui_btn_sniper_t</texture_t>
+			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_h>ui\ui_btn_sniper_t</texture_h>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_sniper</text>
+			<text_h r="255" g="187" b="51"/>
+			<text_t r="255" g="187" b="51"/>
+	</btn_bag_sniper>
+	<btn_bag_heavy x="5" y="300" width="150" height="52">
+			<texture_offset x="-18" y="-62"/>
+			<texture_t>ui\ui_btn_heavy_t</texture_t>
+			<texture_e>ui\ui_btn_mp_e</texture_e>
+			<texture_h>ui\ui_btn_heavy_t</texture_h>
+			<text font="normal" r="181" g="170" b="148" align="c">ui_inv_heavy</text>
+			<text_h r="255" g="187" b="51"/>
+			<text_t r="255" g="187" b="51"/>
+	</btn_bag_heavy>
 
 	<!-- OK DIALOG BUTTON -->
 	<ok_button x="931" y="682" width="79" height="30" accel="28">		

@@ -12,6 +12,7 @@
 #include "xrXMLParser.h"
 #include "UIDragDropList.h"
 #include "UIDragDropItemMP.h"
+#include "UITabButtonMP.h"
 
 #include "UIBuyWeaponStd.h"
 
@@ -37,10 +38,10 @@ enum MENU_LEVELS {
 
 struct BoxInfo
 {
-	shared_str			texName;
+	shared_str			xmlTag;
 	shared_str			filterString;
 	int					gridWidth, gridHeight;
-	CUIDragDropItemMP*	pDDItem;
+	CUITabButtonMP*		pButton;
 };
 
 class CUIBag : public CUIStatic {	
@@ -78,13 +79,12 @@ protected:
 			void	ShowSectionEx(int iSection);
 			void	EnableDDItem(CUIDragDropItemMP* pDDItem, bool bEnable = true);			
 			void	OnItemSelect();
-			void	OnBoxDbClick(CUIDragDropItemMP* pDDItem);
-			void	OnItemClick(CUIDragDropItemMP* pDDItem);
+			//void	OnItemClick(CUIDragDropItemMP* pDDItem);
 			void	OnItemDrop(CUIDragDropItemMP* pItem);
     		int		GetMoneyAmount();
 
 	// INIT Functions
-			void	InitBoxes();
+			void	InitBoxes(CUIXml& pXml);
 			void	InitAddonsInfo(CUIDragDropItemMP &DDItemMP, const xr_string &sectioName);
 			void	PutItemToGroup(CUIDragDropItemMP* pDDItem, int iGroup);
 			void	InitWpnSectStorage();

@@ -8,6 +8,11 @@
 
 #include "UITabButton.h"
 
+enum Orientation{
+	O_HORIZONTAL,
+	O_VERTICAL
+};
+
 class CUITabButtonMP : public CUITabButton {
 public:
 	CUITabButtonMP();
@@ -21,8 +26,10 @@ public:
 
 	virtual bool IsEnabled(){ return true; }
 			void SetNumber(LPCSTR num);
+			void SetOrientation(int orientation);
 
 private:
 
-    CUIStatic m_staticNumber;
+    CUIStatic	m_staticNumber;
+    int			m_orientation;
 };
