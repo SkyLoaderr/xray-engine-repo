@@ -127,15 +127,15 @@ end
 
 function save_dialog:InitCallBacks()
     // main frame buttons
-	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED, self, "OnButton_ok_clicked")
-	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED, self, "OnButton_cancel_clicked")
+	self:AddCallback("button_ok",     ui_events.BUTTON_CLICKED, 			self.OnButton_ok_clicked,		self)
+	self:AddCallback("button_cancel", ui_events.BUTTON_CLICKED, 			self.OnButton_cancel_clicked,	self)
 	// message box buttons
-	self:AddCallback("message_box", ui_events.MESSAGE_BOX_OK_CLICKED,     self, "OnMsgOk")
-	self:AddCallback("message_box", ui_events.MESSAGE_BOX_CANCEL_CLICKED, self, "OnMsgCancel")
-	self:AddCallback("message_box", ui_events.MESSAGE_BOX_YES_CLICKED,    self, "OnMsgYes")
-	self:AddCallback("message_box", ui_events.MESSAGE_BOX_NO_CLICKED,     self, "OnMsgNo")
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_OK_CLICKED,		self.OnMsgOk,					self)
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_CANCEL_CLICKED,	self.OnMsgCancel,				self)
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_YES_CLICKED,		self.OnMsgYes,					self)
+	self:AddCallback("message_box", ui_events.MESSAGE_BOX_NO_CLICKED,		self.OnMsgNo,					self)
 	// list box click
-	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, self, "OnListItemClicked")
+	self:AddCallback("list_window", ui_events.LIST_ITEM_CLICKED, 			self.OnListItemClicked,			self)
 end
 
 function save_dialog:OnListItemClicked()
