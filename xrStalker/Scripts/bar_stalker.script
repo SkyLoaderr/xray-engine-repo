@@ -123,6 +123,7 @@ function action_bar_single:__init (name, storage) super (nil, name)
     self.count = 0
     self.set = 0
     self.in_talk = false
+    self.dir = vector ():set (0, 0, 0)
 end
 -------------------
 function action_bar_single:initialize ()
@@ -131,6 +132,7 @@ function action_bar_single:initialize ()
     self:recreate_animations ()
     self.object:set_use_callback (self, "use_callback")
     self.in_talk = false
+    self.dir = self.object:direction ()
 end
 -------------------
 function action_bar_single:execute ()
@@ -138,15 +140,17 @@ function action_bar_single:execute ()
 
     if self.object:is_talking () == true then
        self.in_talk = true 
-       if self.object:animation_count () < 2 then
-          self.object:add_animation ("drink_idle_0_talk", true)
-       end
+       --if self.object:animation_count () < 2 then
+         -- self.object:add_animation ("drink_idle_0_talk", true)
+       --end
        return   
     end
     
     if self.in_talk == true then
+       self.object:set_sight (look.direction, self.dir, 0) 
        self.object:clear_animations ()
        self.object:add_animation ("drink_idle_0_0", true)
+       self:recreate_animations ()
        self.in_talk = false
     end    
     
@@ -206,13 +210,21 @@ function action_bar_single:use_callback ()
        return 
     end
     
-    self.object:clear_animations ()
-    self.object:add_animation ("drink_idle_0_0", true)
-    self.object:add_animation ("drink_idle_0_talk", true)
+    --self.object:clear_animations ()
+    --self.object:add_animation ("drink_idle_0_0", true)
+    --self.object:add_animation ("drink_idle_0_talk", true)
     
     self.object:enable_talk ()
     
-    self:recreate_animations ()
+    self.object:clear_animations ()
+    
+    local v1 = level.actor ():position ()
+    local v2 = self.object:position ()
+    v1:sub (v2)
+    v1:normalize ()
+    self.object:set_sight (look.direction, v1, 0)
+    
+    --self:recreate_animations ()
 end
 
 
