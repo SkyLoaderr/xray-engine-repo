@@ -93,6 +93,7 @@ public:
 
 	IC Fvector&							Direction			() 					{ return renderable.xform.k;		}
 	IC Fvector&							Position			() 					{ return renderable.xform.c;		}
+	IC const Fvector&					Position			() 			const	{ return renderable.xform.c;		}
 	virtual float						Radius				()			const;
 	virtual const Fbox&					BoundingBox			()			const;
 	
