@@ -318,7 +318,7 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 				}
 			}
 		} catch (...) {
-			Msg		("imf_Process::3 (xscale<1.0)");
+			Msg		("imf_Process::3 (xscale>1.0)");
 		};
 	}
 
@@ -411,37 +411,42 @@ void	imf_Process	(LPDWORD dstI, DWORD dstW, DWORD dstH, LPDWORD srcI, DWORD srcW
 					contrib[i].p[k].weight	= weight;
 				}
 			}
-		} catch (...) {	Msg		("imf_Process::8 (yscale<1.0)");	};
+		} catch (...) {	Msg		("imf_Process::8 (yscale>1.0)");	};
 	}
 
 	/* apply filter to zoom vertically from tmp to dst */
-	raster = (Pixel *)calloc(tmp->ysize, sizeof(Pixel));
-	for(k = 0; k < dst.xsize; ++k) 
-	{
-		get_column	(raster, tmp, k);
-		for(i = 0; i < dst.ysize; ++i) 
+	try	{
+		raster = (Pixel *)calloc(tmp->ysize, sizeof(Pixel));
+	} catch (...) {	Msg		("imf_Process::9");	};
+	try	{
+		for(k = 0; k < dst.xsize; ++k) 
 		{
-			double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
-
-			for	(j = 0; j < contrib[i].n; ++j) 
+			get_column	(raster, tmp, k);
+			for(i = 0; i < dst.ysize; ++i) 
 			{
-				double	W	=	contrib[i].p[j].weight;
-				Pixel	P	=	raster[contrib[i].p[j].pixel];
-				w_r			+=	W*double(RGBA_GETRED(P));
-				w_g			+=	W*double(RGBA_GETGREEN(P));
-				w_b			+=	W*double(RGBA_GETBLUE(P));
-				w_a			+=	W*double(RGBA_GETALPHA(P));
-			}
-			put_pixel(&dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
-		}
+				double	w_r	= 0., w_g = 0., w_b	= 0., w_a = 0.;
 
-	}
-	_FREE(raster);
+				for	(j = 0; j < contrib[i].n; ++j) 
+				{
+					double	W	=	contrib[i].p[j].weight;
+					Pixel	P	=	raster[contrib[i].p[j].pixel];
+					w_r			+=	W*double(RGBA_GETRED(P));
+					w_g			+=	W*double(RGBA_GETGREEN(P));
+					w_b			+=	W*double(RGBA_GETBLUE(P));
+					w_a			+=	W*double(RGBA_GETALPHA(P));
+				}
+				put_pixel(&dst, k, i, RGBA_MAKE(CC(w_r),CC(w_g),CC(w_b),CC(w_a+.5)));
+			}
+
+		}
+		_FREE(raster);
+	} catch (...) {	Msg		("imf_Process::A");	};
 
 	/* _FREE the memory allocated for vertical filter weights */
-	for	(i = 0; i < dst.ysize; ++i) _FREE(contrib[i].p);
-	_FREE(contrib);
+	try	{
+		for	(i = 0; i < dst.ysize; ++i) _FREE(contrib[i].p);
+		_FREE(contrib);
+	} catch (...) {	Msg		("imf_Process::A");	};
 
 	free_image(tmp);
 }
-
