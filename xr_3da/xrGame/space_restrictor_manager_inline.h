@@ -11,3 +11,10 @@
 IC	CSpaceRestrictorManager::CSpaceRestrictorManager	()
 {
 }
+
+IC	const CSpaceRestriction *CSpaceRestrictorManager::restriction	(ALife::_OBJECT_ID id)
+{
+	CLIENT_REGISTRY::const_iterator	I = m_clients.find(id);
+	VERIFY							(m_clients.end() != I);
+	return							((*I).second);
+}

@@ -29,6 +29,11 @@ float CSpaceRestrictor::Radius		() const
 BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 {
 	CSE_Abstract					*abstract = (CSE_Abstract*)data;
+	cName_set						(abstract->s_name);
+	cNameSect_set					(abstract->s_name);
+	if (abstract->s_name_replace[0])
+		cName_set					(abstract->s_name_replace);
+		
 	CShapeData						*se_shape = dynamic_cast<CShapeData*>(abstract);
 	R_ASSERT						(se_shape);
 
@@ -61,12 +66,12 @@ BOOL CSpaceRestrictor::net_Spawn	(LPVOID data)
 	setEnabled						(false);
 	setVisible						(false);
 
-	Level().space_restrictor_manager().add(this);
+	Level().space_restrictor_manager().restriction(cName());
 
 	return							(result);
 }
 
-bool CSpaceRestrictor::inside		(const Fvector &position, float radius) const
+bool CCF_Shape_inside				(const CCF_Shape *self, const Fvector &position, float radius)
 {
 	// Build object-sphere in World-Space
 	Fsphere							S;
@@ -74,8 +79,8 @@ bool CSpaceRestrictor::inside		(const Fvector &position, float radius) const
 	S.R								= radius;
 
 	// Get our matrix
-	const Fmatrix					&XF	= XFORM();
-	xr_vector<CCF_Shape::shape_def>	&shapes = ((CCF_Shape*)collidable.model)->shapes;
+	const Fmatrix					&XF	= self->Owner()->XFORM();
+	const xr_vector<CCF_Shape::shape_def>	&shapes = self->shapes;
 
 	// Iterate
 	for (u32 el=0; el<shapes.size(); el++)
@@ -85,7 +90,7 @@ bool CSpaceRestrictor::inside		(const Fvector &position, float radius) const
 		case 0: // sphere
 			{
 				Fsphere		Q;
-				Fsphere&	T		= shapes[el].data.sphere;
+				const Fsphere&	T		= shapes[el].data.sphere;
 				XF.transform_tiny	(Q.P,T.P);
 				Q.R					= T.R;
 				if (S.intersect(Q))	return true;
@@ -94,7 +99,7 @@ bool CSpaceRestrictor::inside		(const Fvector &position, float radius) const
 		case 1:	// box
 			{
 				Fmatrix		Q;
-				Fmatrix&	T		= shapes[el].data.box;
+				const Fmatrix&	T		= shapes[el].data.box;
 				Q.mul_43			( XF,T);
 
 				// Build points
@@ -121,4 +126,9 @@ bool CSpaceRestrictor::inside		(const Fvector &position, float radius) const
 		}
 	}
 	return false;
+}
+
+bool CSpaceRestrictor::inside	(const Fvector &position, float radius) const
+{
+	return		(CCF_Shape_inside((CCF_Shape*)collidable.model,position,radius));
 }

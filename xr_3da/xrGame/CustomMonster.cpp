@@ -5,19 +5,14 @@
 #include "stdafx.h"
 #include "ai_debug.h"
 #include "CustomMonster.h"
-//#include "customitem.h"
 #include "hudmanager.h"
 #include "ai_space.h"
-#ifdef IGNORE_ACTOR
-	#include "actor.h"
-#endif
-
-//#include "script_entity_action.h"
 #include "ai/rat/ai_rat.h"
 #include "ai/biting/ai_biting.h"
 #include "ai/stalker/ai_stalker.h"
 #include "xrserver_objects_alife_monsters.h"
 #include "xrserver.h"
+#include "space_restrictor_manager.h"
 
 Flags32		psAI_Flags	= {aiLua};
  
@@ -671,6 +666,8 @@ BOOL CCustomMonster::net_Spawn	(LPVOID DC)
 
 	CSE_Abstract				*e	= (CSE_Abstract*)(DC);
 	CSE_ALifeMonsterAbstract	*E	= dynamic_cast<CSE_ALifeMonsterAbstract*>(e);
+
+	Level().space_restrictor_manager().associate(ID(),E->m_space_restrictors);
 	
 	eye_matrix.identity			();
 	m_body.current.yaw			= m_body.target.yaw	= -E->o_Angle.y;

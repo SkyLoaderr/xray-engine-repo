@@ -23,8 +23,6 @@
 #include "selector_manager.h"
 #include "sound_player.h"
 
-//#define IGNORE_ACTOR
-
 using namespace MonsterSpace;
 
 class CAI_Rat;

@@ -8,11 +8,62 @@
 
 #include "stdafx.h"
 #include "space_restrictor_manager.h"
+#include "space_restriction.h"
+#include "object_broker.h"
 
-CSpaceRestrictorManager::~CSpaceRestrictorManager	()
+CSpaceRestrictorManager::~CSpaceRestrictorManager		()
 {
+	delete_data				(m_space_registry);
 }
 
-void CSpaceRestrictorManager::add					(CSpaceRestrictor *space_restrictor)
+CSpaceRestriction *CSpaceRestrictorManager::restriction	(ref_str space_restrictors)
 {
+	if (!xr_strlen(space_restrictors))
+		return				(0);
+
+	space_restrictors		= normalize(space_restrictors);
+	
+	SPACE_REGISTRY::const_iterator	I = m_space_registry.find(space_restrictors);
+	if (I != m_space_registry.end())
+		return				((*I).second);
+
+	CSpaceRestriction		*temp = xr_new<CSpaceRestriction>(space_restrictors);
+	m_space_registry.insert	(std::make_pair(space_restrictors,temp));
+	return					(temp);
+}
+
+void CSpaceRestrictorManager::associate					(ALife::_OBJECT_ID id, ref_str space_restrictors)
+{
+	VERIFY					(m_clients.end() == m_clients.find(id));
+	m_clients.insert		(std::make_pair(id,restriction(space_restrictors)));
+}
+
+ref_str CSpaceRestrictorManager::normalize				(ref_str space_restrictors)
+{
+	u32						n = _GetItemCount(*space_restrictors);
+	if (n < 2)
+		return				(space_restrictors);
+
+	m_temp.resize			(n);
+	for (u32 i=0; i<n ;++i)
+		m_temp[i]			= ref_str(_GetItem(*space_restrictors,i,m_temp_string));
+
+	std::sort				(m_temp.begin(),m_temp.end());
+
+	strcpy					(m_temp_string,"");
+	xr_vector<ref_str>::const_iterator	I = m_temp.begin(), B = I;
+	xr_vector<ref_str>::const_iterator	E = m_temp.end();
+	for ( ; I != E; ++I) {
+		if (I != B)
+			strcat			(m_temp_string,",");
+		strcat				(m_temp_string,**I);
+	}
+
+	return					(ref_str(m_temp_string));
+}
+
+bool CSpaceRestrictorManager::accessible			(ALife::_OBJECT_ID id, const Fvector &position)
+{
+	const CSpaceRestriction *_restriction = restriction(id);
+	return					(_restriction ? _restriction->inside(position) : true);
 }
