@@ -30,7 +30,7 @@ public:
 	IC Fmatrix&			Transform		()	{ return mTransform; }
 
 	// Animations
-	void				animPlay		(CMotionDef* M, BOOL bMixIn=FALSE, CWeapon* W=0);
+	void				animPlay		(CMotionDef* M, BOOL bMixIn=TRUE, CWeapon* W=0);
 	CMotionDef*			animGet			(LPCSTR name);
 	
 	void				UpdatePosition	(const Fmatrix& transform);

@@ -94,7 +94,7 @@ void CWeaponAK74::switch2_Empty	(BOOL bHUDView)
 void CWeaponAK74::switch2_Reload(BOOL bHUDView)
 {
 	pSounds->Play3DAtPos		(sndReload,vLastFP);
-	m_pHUD->animPlay			(mhud_reload);
+	m_pHUD->animPlay			(mhud_reload,TRUE,this);
 }
 void CWeaponAK74::OnShot		(BOOL bHUDView)
 {
@@ -102,7 +102,7 @@ void CWeaponAK74::OnShot		(BOOL bHUDView)
 		CEffectorShot*	S = dynamic_cast<CEffectorShot*>(Level().Cameras.GetEffector(cefShot));
 		if (S)			S->Shot();
 	}
-	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())]);
+	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
 }
 void CWeaponAK74::OnEmptyClick	(BOOL bHUDView)
 {
@@ -126,6 +126,10 @@ void CWeaponAK74::OnDrawFlame	(BOOL bHUDView)
 }
 void CWeaponAK74::OnAnimationEnd()
 {
+	switch (st_current)
+	{
+	case eReload:	st_target = eIdle;	break;	// End of reload animation
+	}
 }
 void CWeaponAK74::OnShotmark	(const Fvector &vDir, const Fvector &vEnd, Collide::ray_query& R)
 {
