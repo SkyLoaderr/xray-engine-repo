@@ -751,6 +751,10 @@ void CSE_ALifeMonsterAbstract::UPDATE_Read	(NET_Packet &tNetPacket)
 void CSE_ALifeMonsterAbstract::FillProps		(LPCSTR pref, PropItemVec& items)
 {
   	inherited1::FillProps		(pref,items);
+	if (pSettings->line_exist(s_name,"SpaceRestrictionSection")) {
+		LPCSTR					gcs = pSettings->r_string(s_name,"SpaceRestrictionSection");
+		PHelper().CreateChoose	(items, PrepareKey(pref,s_name,"space restrictions"),&m_caGroupControl, smSpawnItem, 0, (void*)gcs);
+	}
 }
 
 bool CSE_ALifeMonsterAbstract::need_update	(CSE_ALifeDynamicObject *object)
