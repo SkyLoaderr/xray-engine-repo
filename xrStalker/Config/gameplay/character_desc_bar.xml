@@ -293,6 +293,35 @@
 		<actor_dialog>bar_bar_drunk_dolg_quest_finish</actor_dialog>
 	</specific_character>	
 
+<!---------------------------BAR NIGHT SNIPER---------------------->
+	<specific_character id="bar_bar_night_sniper" team_default = "1">
+		<name>Неизвестный наемник</name>
+		<icon x="16" y="4"></icon>
+		<map_icon x="0" y="0"></map_icon>
+		<bio>Неизвестный наемник. Детальная информация отсутствует.</bio>
+
+		<class>stalker_bar_night_sniper</class>
+		<community>killer</community>
+		
+		<rank>30</rank>
+		<reputation>0</reputation>
+ 
+		<<visual>actors\killer\stalker_ki_mask</visual>
+		<supplies>
+			[spawn] \n
+			wpn_beretta \n
+			ammo_9x19_pbp = 1 \n
+			wpn_svu \n
+			ammo_7.62x54_ap = 1 \n
+			bar_sniper_pda \n
+		</supplies>
+		
+		<start_dialog>hello_dialog</start_dialog>
+		<actor_dialog>general_pda_talk</actor_dialog>
+		<actor_dialog>esc_stalker_talk_level</actor_dialog>
+	</specific_character>	
+
+
 
 </xml>
 
