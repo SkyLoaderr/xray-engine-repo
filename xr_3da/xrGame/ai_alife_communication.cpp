@@ -250,16 +250,16 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 	m_tpBlockedItems2		= tpALifeHumanAbstract2->children;
 	
 	{
-		ITEM_P_IT			I = tpTrader2.begin();
-		ITEM_P_IT			E = tpTrader2.end();
+		INT_IT				I = tpIndexes2.begin();
+		INT_IT				E = tpIndexes2.end();
 		for ( ; I != E; I++)
-			tpALifeHumanAbstract1->children.push_back((*I)->ID);
+			tpALifeHumanAbstract1->children.push_back(tpTrader2[*I]->ID);
 	}
 	{
-		ITEM_P_IT			I = tpTrader1.begin();
-		ITEM_P_IT			E = tpTrader1.end();
+		INT_IT				I = tpIndexes1.begin();
+		INT_IT				E = tpIndexes1.end();
 		for ( ; I != E; I++)
-			tpALifeHumanAbstract2->children.push_back((*I)->ID);
+			tpALifeHumanAbstract2->children.push_back(tpTrader1[*I]->ID);
 	}
 	{
 		INT_IT				I = tpIndexes1.begin();
@@ -276,10 +276,13 @@ bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpA
 
 	bool					l_bResult = tpALifeHumanAbstract1->bfCanGetItem(0) && tpALifeHumanAbstract2->bfCanGetItem(0);
 
-	tpALifeHumanAbstract1->children	= m_tpBlockedItems1;
-	tpALifeHumanAbstract2->children	= m_tpBlockedItems2;
-
-	return					(l_bResult);
+	if (!l_bResult) {
+		tpALifeHumanAbstract1->children	= m_tpBlockedItems1;
+		tpALifeHumanAbstract2->children	= m_tpBlockedItems2;
+		return				(false);
+	}
+	else
+		return				(true);
 }
 
 bool CSE_ALifeSimulator::bfCheckForInventoryCapacity(CSE_ALifeHumanAbstract *tpALifeHumanAbstract1, ITEM_P_VECTOR &tpTrader1, int iSum1, int iMoney1, CSE_ALifeHumanAbstract *tpALifeHumanAbstract2, ITEM_P_VECTOR &tpTrader2, int iSum2, int iMoney2, int iBallance)
@@ -530,8 +533,13 @@ void CSE_ALifeSimulator::vfPerformTrading(CSE_ALifeHumanAbstract *tpALifeHumanAb
 				
 				m_tpBlockedItems2.clear();
 				m_tpBlockedItems2.insert(m_tpBlockedItems2.end(),tpALifeHumanAbstract1->children.end() - l_iItemCount1,tpALifeHumanAbstract1->children.end());
-				
+
 				vfRunFunctionByIndex(tpALifeHumanAbstract2,m_tpBlockedItems2,m_tpItems2,j,l_iItemCount2);
+				
+				m_tpBlockedItems1.clear();
+				m_tpBlockedItems1.insert(m_tpBlockedItems1.end(),tpALifeHumanAbstract2->children.end() - l_iItemCount2,tpALifeHumanAbstract2->children.end());
+
+				vfRunFunctionByIndex(tpALifeHumanAbstract1,m_tpBlockedItems1,m_tpItems1,j,l_iItemCount1);
 				break;
 			}
 		}
