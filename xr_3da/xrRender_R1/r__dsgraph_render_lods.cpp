@@ -11,7 +11,7 @@
 
 extern float r_ssaLOD_A;
 extern float	r_ssaLOD_B;
-enIC Fvector3		color			(Fvector& N, u32 rgbh, u8 sun)
+enIC Fvector3		color			(const Fvector& N, u32 rgbh, u8 sun)
 {
 	CEnvDescriptor&	desc		= g_pGamePersistent->Environment.CurrentEnv;
 	Fvector						c_sun,c_ambient,c_lmap,c_hemi,c_sun_dir;
@@ -44,12 +44,11 @@ _dsgrstruct LOD	{
 		Fvector3	c0	= color	(_n,F0.v[id].c_rgb_hemi,F0.v[id].c_sun);
 		Fvector3	c1	= color	(_n,F1.v[id].c_rgb_hemi,F1.v[id].c_sun);
 		Fvector3	cf;	cf.lerp	(c0,c1,factor);
-		color0			= subst_alpha	(color_rgba_f(cf.x,cf.y,cf.z,0),Alpha);
+		color0			= subst_alpha	(color_rgba_f(cf.x,cf.y,cf.z,0),alpha);
 		color1			= factor_u;		
 		t[0].set		(F0.v[id].t.x,F0.v[id].t.y);
 		t[1].set		(F1.v[id].t.x,F1.v[id].t.y);
 grou};
-const u32 F_LOD	= D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1;
 graph_structure::r_dsgraph_render_lods	()
 {
 	mapLOD.getRL				(lstLODs);
