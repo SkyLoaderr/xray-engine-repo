@@ -238,6 +238,17 @@ void CActor::ActorUse()
 {
 	PickupModeOn();
 
+		
+	if (m_holder)
+	{
+		CGameObject* holder			= smart_cast<CGameObject*>(m_holder);
+		switch (holder->SUB_CLS_ID)
+		{
+		case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
+		case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
+		}
+	}
+				
 	if(m_PhysicMovementControl->PHCapture())
 		m_PhysicMovementControl->PHReleaseObject();
 
@@ -304,18 +315,7 @@ void CActor::ActorUse()
 				case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(object))	return;	break;
 				}
 			}
-			else
-			{
-				if (m_holder)
-				{
-					CGameObject* holder			= smart_cast<CGameObject*>(m_holder);
-					switch (holder->SUB_CLS_ID)
-					{
-					case CLSID_CAR:					if(use_Vehicle(0))			return;	break;
-					case CLSID_OBJECT_W_MOUNTED:	if(use_MountedWeapon(0))	return;	break;
-					}
-				}
-			}
+
 		}
 	}
 
