@@ -697,7 +697,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_talk_level" priority="2">
-        <has_info>tutorial_artefact_done</has_info>
+        <has_info>tutorial_end</has_info>
         <phrase_list>
             <phrase id="2">
                 <text>escape_trader_talk_level_2</text>
@@ -765,7 +765,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_talk_info">
-        <has_info>tutorial_artefact_done</has_info>
+        <has_info>tutorial_end</has_info>
         <phrase_list>
             <phrase id="1">
                 <text>escape_trader_talk_info_1</text>
@@ -1055,7 +1055,7 @@
         </phrase_list>
     </dialog>
     <dialog id="escape_trader_jobs" priority="5">
-        <has_info>tutorial_artefact_done</has_info>
+        <has_info>tutorial_end</has_info>
         <phrase_list>
             <phrase id="6">
                 <text>escape_trader_jobs_6</text>
