@@ -93,6 +93,7 @@ void	CBlender_Vertex_aref::Compile(CBlender_Compile& C)
 		case SE_R1_LPOINT:
 			C.r_Pass		("vert_point","add_point",FALSE,TRUE,FALSE,TRUE,D3DBLEND_ONE,D3DBLEND_ONE,TRUE,oAREF.value);
 			C.r_Sampler		("s_base",	C.L_textures[0]);
+			C.r_Sampler_clf	("s_lmap",	TEX_POINT_ATT		);
 			C.r_Sampler_clf	("s_att",	TEX_POINT_ATT		);
 			C.r_End			();
 			break;
