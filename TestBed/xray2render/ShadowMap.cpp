@@ -605,7 +605,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 
 	m_ArcBall.SetWindow		(m_d3dsdBackBuffer.Width, m_d3dsdBackBuffer.Height, 1.0f);
 	m_ArcBall.SetRadius		(3.0f);
-	m_ArcBall.SetRightHanded(TRUE);
+	m_ArcBall.SetRightHanded(FALSE);
 
 	return S_OK;
 }
