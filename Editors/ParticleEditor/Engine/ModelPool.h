@@ -52,7 +52,7 @@ public:
 
 	IRender_Visual*			CreatePE			(PS::CPEDef* source);
 	IRender_Visual*			CreatePG			(PS::CPGDef* source);
-	IRender_Visual*			Create				(LPCSTR name);
+	IRender_Visual*			Create				(LPCSTR name, IReader* data=0);
 	IRender_Visual*			CreateChild			(LPCSTR name, IReader* data);
 	void					Delete				(IRender_Visual* &V, BOOL bDiscard=FALSE);
 	void					Discard				(IRender_Visual* &V);

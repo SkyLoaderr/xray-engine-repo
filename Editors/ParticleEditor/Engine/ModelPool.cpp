@@ -212,7 +212,7 @@ IRender_Visual* CModelPool::Instance_Find(LPCSTR N)
 	return Model;
 }
 
-IRender_Visual* CModelPool::Create(const char* name)
+IRender_Visual* CModelPool::Create(const char* name, IReader* data)
 {
 	// Msg					("-CREATE %s",name);
 	string128 low_name;		R_ASSERT(xr_strlen(name)<128);
@@ -238,7 +238,8 @@ IRender_Visual* CModelPool::Create(const char* name)
 			Registry.insert	(mk_pair(Model,xr_strdup(low_name)));
 		} else {
 			// 3. If not found
-            Model			= Instance_Load(low_name);
+			if (data)		Model = Instance_Load(low_name,data);
+            else			Model = Instance_Load(low_name);
 #ifdef _EDITOR
 			if (!Model)		return 0;
 #endif
