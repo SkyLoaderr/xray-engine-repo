@@ -11,28 +11,9 @@ void CRenderTarget::accum_spot	(light* L)
 
 	BOOL	bIntersect			= FALSE; //enable_scissor(L);
 	{
-		// scale to account range and angle
-		float		s			= 2.f*L->range*tanf(L->cone/2.f);	
-		Fmatrix		mScale;		mScale.scale(s,s,L->range);		// make range and radius
-		
-		// build final rotation / translation
-		Fvector					L_dir,L_up,L_right;
-		L_dir.set				(L->direction);			L_dir.normalize		();
-		L_up.set				(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
-		L_right.crossproduct	(L_up,L_dir);			L_right.normalize	();
-		L_up.crossproduct		(L_dir,L_right);		L_up.normalize		();
-
-		Fmatrix		mR;
-		mR.i					= L_right;		mR._14	= 0;
-		mR.j					= L_up;			mR._24	= 0;
-		mR.k					= L_dir;		mR._34	= 0;
-		mR.c					= L->position;	mR._44	= 1;
-
-		// final xform
-		Fmatrix		xf;			xf.mul			(mR,mScale);
-
 		// setup xform
-		RCache.set_xform_world			(xf					);
+		L->xform_calc					();
+		RCache.set_xform_world			(L->m_xform			);
 		RCache.set_xform_view			(Device.mView		);
 		RCache.set_xform_project		(Device.mProject	);
 		bIntersect						= enable_scissor	(L);
@@ -42,24 +23,23 @@ void CRenderTarget::accum_spot	(light* L)
 		// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
 		RCache.set_ColorWriteEnable		(FALSE);
 		RCache.set_Element				(shader->E[0]);			// masker
-		RCache.set_Geometry				(g_accum_spot);
 
 		// backfaces: if (stencil>=1 && zfail)			stencil = light_id
 		RCache.set_CullMode				(CULL_CW);
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
-		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
+		draw_volume						(L);
 
 		// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
 		RCache.set_CullMode				(CULL_CCW);
 		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
-		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
-		RCache.set_ColorWriteEnable		();
+		draw_volume						(L);
 	}
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
-	if (bIntersect)	RCache.set_CullMode			(CULL_CW);		// back
-	else			RCache.set_CullMode			(CULL_CCW);		// front
+	RCache.set_ColorWriteEnable				();
+	if (bIntersect)	RCache.set_CullMode		(CULL_CW);		// back
+	else			RCache.set_CullMode		(CULL_CCW);		// front
 
 	// 2D texgen (texture adjustment matrix)
 	Fmatrix			m_Texgen;
@@ -138,8 +118,7 @@ void CRenderTarget::accum_spot	(light* L)
 		}
 
 		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
-		RCache.set_Geometry			(g_accum_spot);
-		RCache.Render				(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
+		draw_volume					(L);
 	}
 	// CHK_DX	(Q->Issue	(D3DISSUE_END));
 	// DWORD	pixels	= 0;

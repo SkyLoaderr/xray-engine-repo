@@ -37,5 +37,7 @@ void	CBlender_accum_point::Compile(CBlender_Compile& C)
 		C.r_Sampler_clf		("s_attenuate",			r2_attenuate);
 		C.r_End				();
 		break;
+	case 3:	// OCC-Q
+		break;
 	}
 }

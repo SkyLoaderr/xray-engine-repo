@@ -116,3 +116,86 @@ Fvector	light::spatial_sector_point	()
 { 
 	return position; 
 }
+
+//////////////////////////////////////////////////////////////////////////
+#if RENDER==R_R2
+const	u32	delay_small_min			= 1;
+const	u32	delay_small_max			= 3;
+const	u32	delay_large_min			= 10;
+const	u32	delay_large_max			= 20;
+
+void	light::vis_prepare			()
+{
+	//	. test is sheduled for future	= keep old result
+	//	. test time comes :)
+	//		. camera inside light volume	= visible,	shedule for 'small' interval
+	//		. perform testing				= ???,		pending
+
+	u32	frame	= Device.dwFrame;
+	if (frame	<	vis.frame2test)	return;
+	if (Device.vCameraPosition.distance_to(spatial.center)<=spatial.radius)	{
+		vis.visible		=	true;
+		vis.pending		=	false;
+		vis.frame2test	=	frame	+ ::Random.randI(delay_small_min,delay_small_max);
+		return;
+	}
+
+	// testing
+	RImplementation.occq_begin	(vis.query_id);
+	RImplementation.Target.
+	RImplementation.occq_end	(vis.query_id);
+}
+
+void	light::vis_update			()
+{
+	//	. not pending	->>> return (early out)
+	//	. test-result:	visible:
+	//		. shedule for 'large' interval
+	//	. test-result:	invisible:
+	//		. shedule for 'next-frame' interval
+}
+
+// Xforms
+void	light::xform_calc			()
+{
+	if	(Device.dwFrame == m_xform_frame)	return;
+	m_xform_frame	= Device.dwFrame;
+
+	switch(flags.type)	{
+	case IRender_Light::POINT	:
+		{
+			// scale of identity sphere
+			float		L_R			= range;
+			m_xform.scale			(L_R,L_R,L_R);
+			m_xform.translate_over	(position);
+		}
+		break;
+	case IRender_Light::SPOT	:
+		{
+			// scale to account range and angle
+			float		s			= 2.f*L->range*tanf(L->cone/2.f);	
+			Fmatrix		mScale;		mScale.scale(s,s,L->range);		// make range and radius
+
+			// build final rotation / translation
+			Fvector					L_dir,L_up,L_right;
+			L_dir.set				(L->direction);			L_dir.normalize		();
+			L_up.set				(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
+			L_right.crossproduct	(L_up,L_dir);			L_right.normalize	();
+			L_up.crossproduct		(L_dir,L_right);		L_up.normalize		();
+
+			Fmatrix		mR;
+			mR.i					= L_right;		mR._14	= 0;
+			mR.j					= L_up;			mR._24	= 0;
+			mR.k					= L_dir;		mR._34	= 0;
+			mR.c					= L->position;	mR._44	= 1;
+
+			// final xform
+			m_xform.mul_43			(mR,mScale);
+		}
+		break;
+	default:
+		m_xform.identity	();
+		break;
+	}
+}
+#endif

@@ -17,10 +17,23 @@ public:
 	float			cone;
 	Fcolor			color;
 
+	u32				dwFrame;
+
+#if RENDER==R_R2
 	ref_shader		s_spot;
 	ref_shader		s_point;
 
-	u32				dwFrame;
+	u32				m_xform_frame;
+	Fmatrix			m_xform;
+
+	struct _vis		{
+		u32			frame2test;		// frame the test is sheduled to
+		u32			query_id;		// ID of occlusion query
+		bool		visible;		// visible/invisible
+		bool		pending;		// test is still pending
+	}				vis;
+#endif
+
 public:
 	virtual void	set_type		(LT type)						{ flags.type = type;		}
 	virtual void	set_active		(bool b);
@@ -34,8 +47,14 @@ public:
 	virtual void	set_color		(float r, float g, float b)		{ color.set(r,g,b,1);		}
 	virtual void	set_texture		(LPCSTR name);
 
-	virtual	void	spatial_move		();
-	virtual	Fvector	spatial_sector_point();
+	virtual	void	spatial_move			();
+	virtual	Fvector	spatial_sector_point	();
+
+#if RENDER==R_R2
+	void			xform_calc				();
+	void			vis_prepare				();
+	void			vis_update				();
+#endif
 
 	light();
 	virtual ~light();

@@ -351,6 +351,9 @@
 					RelativePath="r2_rendertarget_decompress.cpp">
 				</File>
 				<File
+					RelativePath=".\r2_rendertarget_draw_volume.cpp">
+				</File>
+				<File
 					RelativePath=".\r2_rendertarget_enable_scissor.cpp">
 				</File>
 				<File

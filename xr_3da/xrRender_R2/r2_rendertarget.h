@@ -121,6 +121,7 @@ public:
 	void						phase_accumulator_init	();
 	void						shadow_direct			(u32 dls_phase);
 	BOOL						enable_scissor			(light* L);		// true if intersects near plane
+	void						draw_volume				(light* L);
 	void						accum_direct			();
 	void						accum_point				(light* L);
 	void						accum_spot				(light* L);

@@ -15,10 +15,8 @@ void CRenderTarget::accum_point		(light* L)
 	Device.mView.transform_tiny		(L_pos,L->position);
 
 	// Xforms
-	Fmatrix		mW;
-	mW.scale						(L_R,L_R,L_R);
-	mW.translate_over				(L->position);
-	RCache.set_xform_world			(mW);
+	L->xform_calc					();
+	RCache.set_xform_world			(L->m_xform);
 	RCache.set_xform_view			(Device.mView);
 	RCache.set_xform_project		(Device.mProject);
 	BOOL	bIntersect				= enable_scissor	(L);
@@ -28,24 +26,23 @@ void CRenderTarget::accum_point		(light* L)
 	// *** thus can cope without stencil clear with 127 lights
 	// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
 	RCache.set_Element				(shader->E[0]);			// masker
-	RCache.set_Geometry				(g_accum_point);
 	RCache.set_ColorWriteEnable		(FALSE);
 
 	// backfaces: if (stencil>=1 && zfail)	stencil = light_id
 	RCache.set_CullMode				(CULL_CW);
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
-	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
+	draw_volume						(L);
 
 	// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
 	RCache.set_CullMode				(CULL_CCW);
 	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
-	RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
-	RCache.set_ColorWriteEnable		();
+	draw_volume						(L);
 
 	// *****************************	Minimize overdraw	*************************************
 	// Select shader (front or back-faces), *** back, if intersect near plane
-	if (bIntersect)	RCache.set_CullMode			(CULL_CW);		// back
-	else			RCache.set_CullMode			(CULL_CCW);		// front
+	RCache.set_ColorWriteEnable				();
+	if (bIntersect)	RCache.set_CullMode		(CULL_CW);		// back
+	else			RCache.set_CullMode		(CULL_CCW);		// front
 
 	// 2D texgen (texture adjustment matrix)
 	float	_w						= float(Device.dwWidth);
@@ -83,10 +80,9 @@ void CRenderTarget::accum_point		(light* L)
 	}
 
 	// Render if (stencil >= light_id && z-pass)
-	RCache.set_Stencil					(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
-	RCache.set_Geometry					(g_accum_point);
-	RCache.Render						(D3DPT_TRIANGLELIST,0,0,DU_SPHERE_NUMVERTEX,0,DU_SPHERE_NUMFACES);
-	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
+	RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
+	draw_volume						(L);
+	dwLightMarkerID					+=	2;	// keep lowest bit always setted up
 
 	CHK_DX		(HW.pDevice->SetRenderState(D3DRS_SCISSORTESTENABLE,FALSE));
 }
