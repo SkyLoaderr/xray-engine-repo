@@ -21,27 +21,10 @@
 
 float fSize,fYSize,fSize2,fYSize2,fCriteriaLightWeight,fCriteriaCoverWeight,fCriteriaDistanceWeight,fCriteriaEnemyViewWeight;
 
-static u32 dwAStarStaticCounter = 0;
-TNode		*taHeap;
-TIndexNode	*tpaIndexes;
-
 void vfLoadSearch()
 {
 	fSize2		= _sqr(fSize = m_header.size)/4;
 	fYSize2		= _sqr(fYSize = (float)(m_header.size_y/32767.0))/4;
-	u32 S1		= (m_header.count)*sizeof(TNode);
-	taHeap		= (TNode *)xr_malloc(S1);
-	ZeroMemory	(taHeap,S1);
-	u32 S2		= (m_header.count)*sizeof(TIndexNode);
-	tpaIndexes	= (TIndexNode *)xr_malloc(S2);
-	ZeroMemory	(tpaIndexes,S2);
-	Msg			("* AI path-finding structures: %d K",(S1 + S2)/(1024));
-}
-
-void vfUnloadSearch()
-{
-	_FREE(taHeap);
-	_FREE(tpaIndexes);
 }
 
 IC float ffCriteria(NodeCompressed &tNode0, NodeCompressed &tNode1)
@@ -89,7 +72,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 	}
 }
 
-void vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance)
+void vfFindTheShortestPath(TNode *taHeap, TIndexNode *tpaIndexes, u32 &dwAStarStaticCounter, u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance)
 {
 	// initialization
 	dwAStarStaticCounter++;

@@ -11,9 +11,11 @@
 
 #include "compiler.h"
 #include "xrThread.h"
+#include "xrSyncronize.h"
 
-#include "ai_nodes.h"
 #include "xrGraph.h"
+#include "ai_nodes.h"
+#include "ai_a_star.h"
 
 extern CStream*					vfs;			// virtual file
 extern hdrNODES					m_header;		// m_header
@@ -94,6 +96,69 @@ public:
 		thProgress = 0.0f;
 		for (int i = (int)m_dwStart; i<(int)m_dwEnd; thProgress = float(++i - (int)m_dwStart)/dwSize)
 			tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint);
+		thProgress = 1.0f;
+	}
+};
+
+class CGraphThread : public CThread
+{
+	u32					m_dwStart;
+	u32					m_dwEnd;
+	u32					m_dwAStarStaticCounter;
+	TNode				*m_tpHeap;
+	TIndexNode			*m_tpIndexes;
+	float				m_fMaxDistance;
+	CCriticalSection	*m_tpCriticalSection;
+
+public:
+	CGraphThread (u32 ID, u32 dwStart, u32 dwEnd, float fMaxDistance, CCriticalSection &tCriticalSection) : CThread(ID)
+	{
+		m_dwAStarStaticCounter	= 0;
+		u32 S1					= (m_header.count)*sizeof(TNode);
+		m_tpHeap				= (TNode *)xr_malloc(S1);
+		ZeroMemory				(m_tpHeap,S1);
+		u32 S2					= (m_header.count)*sizeof(TIndexNode);
+		m_tpIndexes				= (TIndexNode *)xr_malloc(S2);
+		ZeroMemory				(m_tpIndexes,S2);
+		
+		m_dwStart				= dwStart;
+		m_dwEnd					= dwEnd;
+		m_fMaxDistance			= fMaxDistance;
+		m_tpCriticalSection		= &tCriticalSection;
+	}
+
+	~CGraphThread()
+	{
+		_FREE(m_tpHeap);
+		_FREE(m_tpIndexes);
+	}
+	
+	virtual void Execute()
+	{
+		u32 dwSize = m_dwEnd - m_dwStart + 1;
+		float fDistance;
+		u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2, MM = M*m_dwStart - m_dwStart*(m_dwStart + 1)/2;
+		thProgress = 0.0f;
+		for (int i=(int)m_dwStart; i<(int)m_dwEnd; i++) {
+			SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
+			for (int j = i + 1; j<(int)M; thProgress = (float(M)*i - i*(i + 1)/2 + ++j - i - 1 - MM)/K) {
+				SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
+				if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < m_fMaxDistance) {
+					vfFindTheShortestPath(m_tpHeap, m_tpIndexes, m_dwAStarStaticCounter, tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance,m_fMaxDistance);
+					if (fDistance < m_fMaxDistance) {
+						m_tpCriticalSection->Enter();
+						tCurrentGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tCurrentGraphVertex.tpaEdges,(++tCurrentGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
+						tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].dwVertexNumber = j;
+						tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
+						
+						tNeighbourGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tNeighbourGraphVertex.tpaEdges,(++tNeighbourGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
+						tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].dwVertexNumber = i;
+						tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
+						m_tpCriticalSection->Leave();
+					}
+				}
+			}
+		}
 		thProgress = 1.0f;
 	}
 };

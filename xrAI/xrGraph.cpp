@@ -149,34 +149,6 @@ bool bfCheckForGraphConnectivity()
 	return(true);
 }
 
-void vfBuildGraph()
-{
-	float fDistance;
-	u32 N = tpaGraph.size() - 1, M = N + 1, K = N*M/2;
-	Progress(0.0f);
-	for (int i=0; i<(int)N; i++) {
-		SGraphVertex &tCurrentGraphVertex = tpaGraph[i];
-		for (int j = i + 1; j<(int)M; Progress((float(M)*i - i*(i + 1)/2 + ++j - i - 1)/K)) {
-			SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
-			if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < MAX_DISTANCE_TO_CONNECT) {
-				vfFindTheShortestPath(tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance,MAX_DISTANCE_TO_CONNECT);
-				if (fDistance < MAX_DISTANCE_TO_CONNECT) {
-					tCurrentGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tCurrentGraphVertex.tpaEdges,(++tCurrentGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
-					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].dwVertexNumber = j;
-					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
-					
-					tNeighbourGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tNeighbourGraphVertex.tpaEdges,(++tNeighbourGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
-					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].dwVertexNumber = i;
-					tNeighbourGraphVertex.tpaEdges[tNeighbourGraphVertex.dwNeighbourCount - 1].fPathDistance  = fDistance;
-				}
-			}
-		}
-		Status("%d vertexes processed",i + 1);
-	}
-	Status("%d vertexes processed",M);
-	Progress(1.0f);
-}
-
 u32 dwfErasePoints()
 {
 	u32 dwPointsWONodes = 0, dwTemp = 0;
@@ -192,7 +164,9 @@ u32 dwfErasePoints()
 
 void xrBuildGraph(LPCSTR name)
 {
-	CThreadManager tThreadManager;
+	CThreadManager		tThreadManager;
+	CCriticalSection	tCriticalSection;
+
 	Msg("Building Level %s",name);
 
 	Phase("Loading AI map");
@@ -206,18 +180,25 @@ void xrBuildGraph(LPCSTR name)
 	u32 dwAIPoints;
 	Msg("%d vertexes loaded",int(dwAIPoints = tpaGraph.size()));
 
-	Phase("Loading AI path-finding structures");
+	Phase("Initalizing AI path-finding structures");
 	vfLoadSearch();
 
 	Phase("Searching AI map for corresponding nodes");
 	START_THREADS(tpaGraph.size(),CNodeThread);
 	tThreadManager.wait();
 	
-	Phase("Erasing points without corresponding nodes");
+	//Phase("Erasing points without corresponding nodes");
 	Msg("%d points don't have corresponding nodes (they are deleted)",dwfErasePoints());
 
 	Phase("Building graph");
-	vfBuildGraph();
+	{
+		u32 dwThreadCount = 2*NUM_THREADS;
+		u32	stride	= tpaGraph.size()/dwThreadCount;
+		u32	last	= tpaGraph.size() - stride*(dwThreadCount - 1);
+		for (u32 thID=0; thID<dwThreadCount; thID++)
+			tThreadManager.start(new CGraphThread(thID,thID*stride,thID*stride+((thID==(dwThreadCount - 1))?last:stride),MAX_DISTANCE_TO_CONNECT,tCriticalSection));
+	}
+	tThreadManager.wait();
 	for (int i=0, j=0; i<(int)tpaGraph.size(); i++)
 		j += tpaGraph[i].dwNeighbourCount;
 	Msg("%d edges built",j);
@@ -233,9 +214,6 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Saving graph");
 	vfSaveGraph(name);
 
-	Phase("Freeing AI path-finding structures");
-	vfUnloadSearch();
-	
 	Phase("Freeing graph being built");
 	Progress(0.0f);
 	for (i=0; i<(int)tpaGraph.size(); Progress(float(++i)/(tpaGraph.size() - 1)))
