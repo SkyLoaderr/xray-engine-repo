@@ -122,7 +122,6 @@
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;XR_PARTICLES_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
-				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"

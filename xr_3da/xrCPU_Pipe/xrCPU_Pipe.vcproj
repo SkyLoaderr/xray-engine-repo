@@ -203,7 +203,6 @@
 				PreprocessorDefinitions="MIXED,WIN32;NDEBUG;_WINDOWS;_USRDLL;XRCPU_PIPE_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
-				SmallerTypeCheck="FALSE"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"

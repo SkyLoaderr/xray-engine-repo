@@ -121,7 +121,6 @@
 				PreprocessorDefinitions="NDEBUG;WIN32;_WINDOWS;XRXMLPARSER_EXPORTS"
 				StringPooling="TRUE"
 				ExceptionHandling="FALSE"
-				BasicRuntimeChecks="0"
 				RuntimeLibrary="2"
 				BufferSecurityCheck="FALSE"
 				EnableFunctionLevelLinking="FALSE"
