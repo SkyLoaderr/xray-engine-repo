@@ -144,15 +144,22 @@ ISpatial_DB::ISpatial_DB()
 
 void			ISpatial_DB::initialize(Fbox& BB)
 {
-	Fvector bbc,bbd;
-	BB.get_CD				(bbc,bbd);
+	if (0==m_root)			
+	{
+		// initialize
+		Fvector bbc,bbd;
+		BB.get_CD				(bbc,bbd);
 
-	allocator_pool.reserve	(128);
-	m_center.set			(bbc);
-	m_bounds				= _max(_max(bbd.x,bbd.y),bbd.z);
-	rt_insert_object		= NULL;
-	if (0==m_root)	m_root	= _node_create();
-	m_root->_init			(NULL);
+		bbc.set					(0,0,0);			// generic
+		bbd.set					(1024,1024,1024);	// generic
+
+		allocator_pool.reserve	(128);
+		m_center.set			(bbc);
+		m_bounds				= _max(_max(bbd.x,bbd.y),bbd.z);
+		rt_insert_object		= NULL;
+		if (0==m_root)	m_root	= _node_create();
+		m_root->_init			(NULL);
+	}
 }
 ISpatial_NODE*	ISpatial_DB::_node_create		()
 {
