@@ -24,7 +24,7 @@ private:
 	float		bufDepth0	[occ_dim0][occ_dim0];
 	float		bufDepth1	[occ_dim1][occ_dim1];
 	float		bufDepth2	[occ_dim2][occ_dim2];
-	float		bufDepth2	[occ_dim3][occ_dim3];
+	float		bufDepth3	[occ_dim3][occ_dim3];
 public:
 	occRasterizer	();
 	~occRasterizer	();
