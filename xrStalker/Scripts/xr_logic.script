@@ -221,6 +221,7 @@ function disable_generic_schemes(npc, stype)
 		xr_meet.disable_scheme(npc, "actor_dialogs")
 		xr_wounded.disable_scheme(npc, "wounded")
 		xr_heli_hunter.disable_scheme(npc, "heli_hunter")
+		xr_combat_ignore.disable_scheme(npc, "combat_ignore")
 	elseif stype == modules.stype_mobile then
 		mob_death.disable_scheme(npc, "mob_death")
 		mob_trade.disable_scheme(npc, "mob_trade")
@@ -259,6 +260,13 @@ function enable_generic_schemes(ini, npc, stype, section)
 		--if heli_hunter_section then
 			xr_heli_hunter.set_scheme(npc, ini, "heli_hunter", heli_hunter_section)
 		--end
+
+		local combat_ignore_section = utils.cfg_get_string(ini, section, "combat_ignore", npc, false, "")
+		if combat_ignore_section then
+			printf( "combat_ignore_section= '%s'", combat_ignore_section )
+			xr_combat_ignore.set_combat_ignore_checker(npc, ini, "combat_ignore", combat_ignore_section)
+		end
+
 	elseif stype == modules.stype_mobile then
 		local death_section = utils.cfg_get_string(ini, section, "on_death", npc, false, "")
 		if death_section then
@@ -839,6 +847,7 @@ function cfg_get_overrides(ini, section, npc)
 	l.reactions    = parse_names(utils.cfg_get_string(ini, section, "reactions", npc, false, "", ""))
 	l.heli_hunter  = utils.cfg_get_bool(ini, section, "heli_hunter", npc, false)
 	l.wounded_enabled = utils.cfg_get_bool(ini, section, "wounded_enabled", npc, false)
+	l.combat_ignore   = cfg_get_condlist(ini, section, "combat_ignore_cond", npc)
 
 	return l
 end

@@ -31,6 +31,7 @@ load_scheme("xr_hit",	      "hit",         stype_stalker)
 load_scheme("xr_wounded",     "wounded",     stype_stalker)
 load_scheme("xr_rest",        "rest",        stype_stalker)
 load_scheme("xr_meet",        "actor_dialogs",stype_stalker)
+load_scheme("xr_combat_ignore", "combat_ignore", stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:
@@ -65,6 +66,3 @@ load_scheme("sr_no_weapon",   "sr_no_weapon", stype_restrictor)
 load_scheme("sr_tip",         "sr_tip",       stype_restrictor)
 load_scheme("sr_sound",       "sr_sound",     stype_restrictor)
 load_scheme("sr_idle",        "sr_idle",      stype_restrictor)
-
-
-

@@ -59,3 +59,8 @@ end
 function is_day (actor, npc)
     return utils.is_day ()
 end    
+
+
+function enemy_actor(actor, npc)
+	return db.storage[npc:id()].enemy:id() == actor:id()
+end    
