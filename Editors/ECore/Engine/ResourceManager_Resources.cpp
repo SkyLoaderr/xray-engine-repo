@@ -436,12 +436,13 @@ void		CResourceManager::DeleteGeom		(const SGeometry* Geom)
 }
 
 //--------------------------------------------------------------------------------------------------------------
-CTexture* CResourceManager::_CreateTexture	(LPCSTR Name)
+CTexture* CResourceManager::_CreateTexture	(LPCSTR _Name)
 {
-	VERIFY			(0==strext(Name));
 	// DBG_VerifyTextures	();
-	if (0==xr_strcmp(Name,"null"))	return 0;
-	R_ASSERT(Name && Name[0]);
+	if (0==xr_strcmp(_Name,"null"))	return 0;
+	R_ASSERT		(_Name && _Name[0]);
+	string_path		Name;
+	strcpy			(Name,_Name); if (strext(Name)) *strext(Name)=0;
 
 	// ***** first pass - search already loaded texture
 	LPSTR N			= LPSTR(Name);
