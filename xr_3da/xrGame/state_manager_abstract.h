@@ -9,6 +9,7 @@
 #pragma once
 
 #include "graph_manager.h"
+#include "state_management_config.h"
 
 namespace StateManagerAbstract {
 	template <typename T>

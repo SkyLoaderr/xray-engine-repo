@@ -13,6 +13,7 @@
 #include "ai/stalker/ai_stalker.h"
 #include "script_zone.h"
 #include "ai/trader/ai_trader.h"
+#include "ai_script_actions.h"
 
 class CLuaEffector : public CEffectorPP {
 public:
@@ -407,7 +408,18 @@ public:
 	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControl,	CScriptMonster,	GetScriptControl,	bool,								false);
 	BIND_FUNCTION10	(m_tpGameObject,	GetScriptControlName,CScriptMonster,GetScriptControlName,LPCSTR,							"");
 //	BIND_FUNCTION02	(m_tpGameObject,	AddAction,			CScriptMonster,	AddAction,			const CEntityAction *,				bool,					const CEntityAction *,	bool);
-	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CEntityAction *,				0);
+//	BIND_FUNCTION10	(m_tpGameObject,	GetCurrentAction,	CScriptMonster,	GetCurrentAction,	const CEntityAction *,				0);
+
+	IC		CEntityAction	*GetCurrentAction	() const
+	{
+		CScriptMonster		*l_tpScriptMonster = dynamic_cast<CScriptMonster*>(m_tpGameObject);
+		if (!l_tpScriptMonster)
+			LuaOut		(Lua::eLuaMessageTypeError,"CSciptMonster : cannot access class member GetCurrentAction!");
+		else
+			if (l_tpScriptMonster->GetCurrentAction())
+				return		(xr_new<CEntityAction>(l_tpScriptMonster->GetCurrentAction()));
+		return				(0);
+	}
 
 	IC		void			AddAction	(const CEntityAction *tpEntityAction, bool bHighPriority = false)
 	{

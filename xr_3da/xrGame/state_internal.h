@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "state_management_config.h"
+
 template <
 	typename _Object
 >

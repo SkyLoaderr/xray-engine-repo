@@ -17,8 +17,8 @@ protected:
 	typedef CStateManagerState<CAI_Stalker> inherited;
 
 	enum ECombatStates {
-		eCombatStateXXXX	= u32(0),
-		eCombatStateDummy	= u32(-1),
+		eCombatStateAttackWeak	= u32(0),
+		eCombatStateDummy		= u32(-1),
 	};
 public:
 						CStateManagerCombat		();

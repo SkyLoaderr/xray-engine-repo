@@ -31,6 +31,9 @@ void CStateManagerCombat::Load			(LPCSTR section)
 void CStateManagerCombat::reinit		(CAI_Stalker *object)
 {
 	inherited::reinit		(object);
+	add_state				(xr_new<CStateAttackWeak>(),	eCombatStateAttackWeak,		0);
+	set_current_state		(eCombatStateAttackWeak);
+	set_dest_state			(eCombatStateAttackWeak);
 }
 
 void CStateManagerCombat::reload		(LPCSTR section)
@@ -45,6 +48,7 @@ void CStateManagerCombat::initialize	()
 
 void CStateManagerCombat::execute		()
 {
+	set_dest_state			(eCombatStateAttackWeak);
 	inherited::execute		();
 }
 

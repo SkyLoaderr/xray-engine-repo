@@ -603,6 +603,9 @@
 				<Filter
 					Name="StateManagement"
 					Filter="">
+					<File
+						RelativePath=".\state_management_config.h">
+					</File>
 					<Filter
 						Name="StateBase"
 						Filter="">
@@ -1269,11 +1272,6 @@
 								Filter="">
 								<File
 									RelativePath=".\state_combat_attack_weak.cpp">
-									<FileConfiguration
-										Name="Debug|Win32">
-										<Tool
-											Name="VCCLCompilerTool"/>
-									</FileConfiguration>
 								</File>
 								<File
 									RelativePath=".\state_combat_attack_weak.h">

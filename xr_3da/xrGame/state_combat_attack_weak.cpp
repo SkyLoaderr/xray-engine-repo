@@ -48,30 +48,17 @@ void CStateAttackWeak::initialize		()
 
 void CStateAttackWeak::execute			()
 {
-//	m_object->play					(eStalkerSoundHumming,60000,10000);
-//	m_object->vfSetParameters		(0,0,0,MonsterSpace::eObjectActionStrap,CMovementManager::ePathTypeGamePath,CMovementManager::eDetailPathTypeSmooth,eBodyStateStand,eMovementTypeWalk,eMentalStateFree,eLookTypePathDirection);
-
-//	m_object->CStalkerMovementManager::update	(0,0,0,
-//		CMovementManager::ePathTypeGamePath,
-//		CMovementManager::eDetailPathTypeSmooth,
-//		eBodyStateStand,
-//		eMovementTypeStand,
-//		eMentalStateDanger
-	//	);
-	//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
+	VERIFY										(m_object->enemy());
 	m_object->CObjectHandler::set_dest_state	(eObjectActionFire1,m_object->best_weapon());
-
-	m_object->CStalkerMovementManager::update	(0,0,0,0,
-		CMovementManager::ePathTypeGamePath,
+	m_object->CSightManager::update				(eLookTypePathDirection);
+	m_object->set_level_dest_vertex				(m_object->enemy()->level_vertex_id());
+	m_object->CStalkerMovementManager::update	(0,0,&m_object->enemy()->Position(),0,
+		CMovementManager::ePathTypeLevelPath,
 		CMovementManager::eDetailPathTypeSmooth,
 		eBodyStateStand,
 		eMovementTypeWalk,
 		eMentalStateDanger
-		);
-//	m_object->CSightManager::update				(eLookTypeCurrentDirection);
-	m_object->CSightManager::update				(eLookTypePathDirection);
-//	m_object->CObjectHandler::set_dest_state	(eObjectActionIdle);
-	m_object->play								(eStalkerSoundHumming,60000,10000);
+	);
 }
 
 void CStateAttackWeak::finalize		()

@@ -139,8 +139,8 @@ public:
 			void	update					(
 						PathManagers::CAbstractVertexEvaluator	*tpNodeEvaluator,
 						PathManagers::CAbstractVertexEvaluator	*tpPathEvaluator,
-						Fvector									*tpDesiredPosition,
-						Fvector									*tpDesiredDirection,
+						const Fvector							*tpDesiredPosition,
+						const Fvector							*tpDesiredDirection,
 						EPathType								tGlobalPathType,
 						EDetailPathType							tPathType,
 						EBodyState								tBodyState,
