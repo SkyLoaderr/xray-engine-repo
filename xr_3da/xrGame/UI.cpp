@@ -100,10 +100,12 @@ void CUI::OnFrame()
 
 bool CUI::Render()
 {
-	UIZoneMap.Render();
-	UIWeapon.Render();
-	UIHealth.Render();
-
+	CEntity* m_Actor = dynamic_cast<CEntity*>(Level().CurrentEntity());
+	if (m_Actor){
+		UIZoneMap.Render();
+		UIWeapon.Render();
+		UIHealth.Render();
+	}
 	// out GAME-style depend information
 	if (pUIGame) pUIGame->Render	();
 	return false;
