@@ -24,8 +24,8 @@ void CPatrolPathStorage::load				(IReader &stream)
 	if (!chunk)
 		return;
 		
-	int						chunk_iterator = 0;
-	for (IReader *sub_chunk = chunk->open_chunk(chunk_iterator++); sub_chunk; sub_chunk = chunk->open_chunk(chunk_iterator++)) {
+	u32						chunk_iterator;
+	for (IReader *sub_chunk = chunk->open_chunk_iterator(chunk_iterator); sub_chunk; sub_chunk = chunk->open_chunk_iterator(chunk_iterator,sub_chunk)) {
 		R_ASSERT			(sub_chunk->find_chunk(WAYOBJECT_CHUNK_VERSION));
 		R_ASSERT			(sub_chunk->r_u16() == WAYOBJECT_VERSION);
 		R_ASSERT			(sub_chunk->find_chunk(WAYOBJECT_CHUNK_NAME));
@@ -33,8 +33,6 @@ void CPatrolPathStorage::load				(IReader &stream)
 		shared_str				patrol_name;
 		sub_chunk->r_stringZ(patrol_name);
 		m_registry.insert	(std::make_pair(patrol_name,&xr_new<CPatrolPath>()->load_path(*sub_chunk)));
-
-		sub_chunk->close	();
 	}
 	
 	chunk->close			();

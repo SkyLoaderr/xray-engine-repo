@@ -12,21 +12,17 @@ void xrServer::SLS_Default	()
 	string256				fn_spawn;
 	if (FS.exist(fn_spawn, "$level$", "level.spawn")) {
 		IReader*			SP		= FS.r_open(fn_spawn);
-		IReader*			S		= 0;
-		int					S_id	= 0;
 		NET_Packet			P;
-		while (0 != (S = SP->open_chunk(S_id))) {
+		u32					S_id;
+		for (IReader *S = SP->open_chunk_iterator(S_id); S; S = SP->open_chunk_iterator(S_id,S)) {
 			P.B.count		= S->length();
 			S->r			(P.B.data,P.B.count);
-			S->close		();
-
+			
 			u16				ID;
 			P.r_begin		(ID);
 			R_ASSERT		(M_SPAWN==ID);
 			ClientID clientID;clientID.set(0);
 			Process_spawn	(P,clientID);
-
-			++S_id;
 		}
 		FS.r_close			(SP);
 	}

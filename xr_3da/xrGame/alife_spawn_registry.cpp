@@ -130,15 +130,13 @@ void CALifeSpawnRegistry::save_updates			(IWriter &stream)
 
 void CALifeSpawnRegistry::load_updates			(IReader &stream)
 {
-	SPAWN_GRAPH::vertex_iterator			I = m_spawns.vertices().begin();
-	SPAWN_GRAPH::vertex_iterator			E = m_spawns.vertices().end();
-	for ( ; I != E; ++I) {
-		if ((*I).second->edges().empty())
-			continue;
-
-		IReader								*chunk = stream.open_chunk((*I).second->vertex_id());
-		(*I).second->data()->load_update	(*chunk);
-		chunk->close						();
+	u32								vertex_id;
+	for (IReader *chunk = stream.open_chunk_iterator(vertex_id); chunk; chunk = stream.open_chunk_iterator(vertex_id,chunk)) {
+		VERIFY						(u32(ALife::_SPAWN_ID(-1)) > vertex_id);
+		const SPAWN_GRAPH::CVertex	*vertex = m_spawns.vertex(ALife::_SPAWN_ID(vertex_id));
+		VERIFY						(vertex);
+		VERIFY						(!vertex->edges().empty());
+		vertex->data()->load_update	(*chunk);
 	}
 }
 

@@ -28,6 +28,8 @@
 #include "map_manager.h"
 #include "map_location.h"
 
+//#include <luabind/adopt_policy.hpp>
+
 using namespace luabind;
 
 #ifdef DEBUG

@@ -425,6 +425,16 @@ void CGameObject::validate_ai_locations			(bool decrement_reference)
 #endif
 	VERIFY							(ai().level_graph().valid_vertex_id(l_dwNewLevelVertexID));
 
+#if 0
+	if (decrement_reference && (ai_location().level_vertex_id() != l_dwNewLevelVertexID)) {
+		Fvector						new_position = ai().level_graph().vertex_position(l_dwNewLevelVertexID);
+		if (Position().y - new_position.y >= 1.5f) {
+			u32						new_vertex_id = ai().level_graph().vertex(ai_location().level_vertex_id(),center);
+			new_vertex_id			= new_vertex_id;
+		}
+	}
+#endif
+
 	if (decrement_reference && (ai_location().level_vertex_id() == l_dwNewLevelVertexID))
 		return;
 

@@ -38,11 +38,11 @@ BOOL CLevel::Load_GameSpecific_After()
 		IReader *F = FS.r_open	(fn_game);
 		IRender_Sector* S;
 		CParticlesObject* pStaticParticles;
-		int				chunk = 0;
+		u32				chunk = 0;
 		string256		ref_name;
 		Fmatrix			transform;
 		Fvector			zero_vel={0.f,0.f,0.f};
-		for (IReader *OBJ = F->open_chunk(chunk++); OBJ; OBJ = F->open_chunk(chunk++)){
+		for (IReader *OBJ = F->open_chunk_iterator(chunk); OBJ; OBJ = F->open_chunk_iterator(chunk,OBJ)) {
 			OBJ->r_stringZ				(ref_name,sizeof(ref_name));
 			OBJ->r						(&transform,sizeof(Fmatrix));transform.c.y+=0.01f;
 			S							= ::Render->detectSector	(transform.c);
@@ -50,17 +50,16 @@ BOOL CLevel::Load_GameSpecific_After()
 			pStaticParticles->UpdateParent	(transform,zero_vel);
 			pStaticParticles->Play			();
 			m_StaticParticles.push_back		(pStaticParticles);
-			OBJ->close	();
 		}
 		FS.r_close		(F);
 	}
 	// loading static sounds
 	if (FS.exist(fn_game, "$level$", "level.sound_static")) {
 		IReader *F		= FS.r_open	(fn_game);
-		int				chunk = 0;
+		u32				chunk = 0;
 		string256		wav_name;
 		CSound_params	params;
-		for (IReader *OBJ = F->open_chunk(chunk++); OBJ; OBJ = F->open_chunk(chunk++)){
+		for (IReader *OBJ = F->open_chunk_iterator(chunk); OBJ; OBJ = F->open_chunk_iterator(chunk,OBJ)) {
 			static_Sounds.push_back	(xr_new<ref_sound>());
 			ref_sound* S			= static_Sounds.back();
 
@@ -73,7 +72,6 @@ BOOL CLevel::Load_GameSpecific_After()
 			params.max_distance	= OBJ->r_float();
 			S->play				(0,true);
 			S->set_params		(&params);
-			OBJ->close			();
 		}
 		FS.r_close				(F);
 	}

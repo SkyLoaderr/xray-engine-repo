@@ -550,8 +550,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 		};
 	};
 
-	if (OnClient() && pActor)
-	{
+	if (g_pGameLevel && OnClient() && pActor) {
 		switch(cmd)
 		{
 		case kUSE:
@@ -592,7 +591,7 @@ bool CInventory::Action(s32 cmd, u32 flags)
 	}
 
 
-	if(m_iActiveSlot < m_slots.size() && 
+	if (m_iActiveSlot < m_slots.size() && 
 			m_slots[m_iActiveSlot].m_pIItem && 
 			m_slots[m_iActiveSlot].m_pIItem->Action(cmd, flags)) 
 											return true;

@@ -65,29 +65,25 @@ void CGameMtlLibrary::Load()
     material_pairs.clear();
 
     IReader* OBJ 		= fs.open_chunk(GAMEMTLS_CHUNK_MTLS);
-    if (OBJ){
-        IReader* O   	= OBJ->open_chunk(0);
-        for (int count=1; O; ++count) {
-        	SGameMtl* M	= xr_new<SGameMtl> ();
+    if (OBJ) {
+        u32				count;
+        for (IReader* O = OBJ->open_chunk_iterator(count); O; O = OBJ->open_chunk_iterator(count,O)) {
+        	SGameMtl*	M = xr_new<SGameMtl> ();
 	        M->Load		(*O);
         	materials.push_back(M);
-    	    O->close	();
-        	O 			= OBJ->open_chunk(count);
         }
-        OBJ->close();
+        OBJ->close		();
     }
 
     OBJ 				= fs.open_chunk(GAMEMTLS_CHUNK_MTLS_PAIR);
     if (OBJ){
-        IReader* O   	= OBJ->open_chunk(0);
-        for (int count=1; O; ++count) {
+        u32				count;
+        for (IReader* O = OBJ->open_chunk_iterator(count); O; O = OBJ->open_chunk_iterator(count,O)) {
         	SGameMtlPair* M	= xr_new<SGameMtlPair> (this);
 	        M->Load		(*O);
         	material_pairs.push_back(M);
-    	    O->close	();
-        	O 			= OBJ->open_chunk(count);
         }
-        OBJ->close();
+        OBJ->close		();
     }
 
 #ifndef _EDITOR
