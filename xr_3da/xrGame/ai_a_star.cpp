@@ -211,8 +211,8 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 				// checking if that node is in the path of the BESTNODE ones
 				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
-				if (q_mark[iNodeIndex])
-					continue;
+//				if (q_mark[iNodeIndex])
+//					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
@@ -393,8 +393,8 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 				// checking if that node is in the path of the BESTNODE ones
 				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
-				if (q_mark[iNodeIndex])
-					continue;
+//				if (q_mark[iNodeIndex])
+//					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;
@@ -574,8 +574,8 @@ float CAI_Space::vfFindTheXestPath(DWORD dwStartNode, DWORD dwGoalNode, AI::Path
 				// checking if that node is in the path of the BESTNODE ones
 				iNodeIndex = this->UnpackLink(taLinks[i]);
 				// checking if that node the node of the moving object 
-				if (q_mark[iNodeIndex])
-					continue;
+//				if (q_mark[iNodeIndex])
+//					continue;
 				// checking if that node is in the path of the BESTNODE ones
 				if (tpaIndexes[iNodeIndex].dwTime == dwAStarStaticCounter) {
 					bool bOk = true;

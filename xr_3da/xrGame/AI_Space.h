@@ -65,6 +65,7 @@ public:
 	const hdrNODES	GetHeader		(){return m_header;};
 	void			q_Range(DWORD StartNode, const Fvector& BasePos, float Range, AI::NodeEstimator& Estimator, float &fOldCost, DWORD dwTimeDifference);
 	void			q_Range			(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
+	void			q_Range_Bit		(DWORD StartNode, const Fvector& Pos,	float Range,	AI::NodeEstimator& Estimator, float &fOldCost);
 	void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
 	void			q_Range_Bit_X	(DWORD StartNode, const Fvector& BasePos, float Range, NodePosition* QueryPosition, DWORD &BestNode, float &BestCost);
 	//void			q_Range_Bit		(DWORD StartNode, const Fvector& BasePos, float Range, DWORD &BestNode, float &BestCost);

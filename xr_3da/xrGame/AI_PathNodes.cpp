@@ -388,7 +388,7 @@ void CPathNodes::BuildTravelLine(const Fvector& current_pos)
 			Msg("AI_BuildTravelLine : suspicious Y-point found");
 		}
 	/**/
-	Engine.Sheduler.Slice	();
+	//Engine.Sheduler.Slice	();
 }
 
 void CPathNodes::Calculate(CCustomMonster* Me, Fvector& p_dest, Fvector& p_src, float speed, float dt)

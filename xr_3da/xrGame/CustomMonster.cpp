@@ -529,6 +529,7 @@ void CCustomMonster::OnRender()
 	}
 	*/
 	{
+	
 	for (DWORD I=0; I<AI_Path.Segments.size(); I++)
 	{
 		PSegment& S = AI_Path.Segments[I];
@@ -540,46 +541,47 @@ void CCustomMonster::OnRender()
 	}
 	}
 
-	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
-	for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++)
-	{
-		Fvector tP0 = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
-		tP0.y += .35f;
-		if (Group.m_tpaSuspiciousNodes[i].dwSearched == 0)		
-			Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
-		else
-			if (Group.m_tpaSuspiciousNodes[i].dwSearched == 1)		
-				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
+	if (this == Level().Teams[g_Team()].Squads[g_Squad()].Leader) {
+		CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
+		for (int i=0; i<Group.m_tpaSuspiciousNodes.size(); i++) {
+			Fvector tP0 = Level().AI.tfGetNodeCenter(Group.m_tpaSuspiciousNodes[i].dwNodeID);
+			tP0.y += .35f;
+			if (Group.m_tpaSuspiciousNodes[i].dwSearched == 0)		
+				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,0,0));
 			else
-				Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
-		switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
-			case 0 : {
-				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
-				break;
-			}
-			case 1 : {
-				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
-				break;
-			}
-			case 2 : {
-				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
-				break;
-			}
-			case 3 : {
-				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
-				break;
-			}
-			case 4 : {
-				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
-				break;
-			}
-			case 5 : {
-				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
-				break;
-			}
-			default : {
-				Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
-				break;
+				if (Group.m_tpaSuspiciousNodes[i].dwSearched == 1)		
+					Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(0,255,0));
+				else
+					Device.Primitive.dbg_DrawAABB(tP0,.35f,.35f,.35f,D3DCOLOR_XRGB(255,255,0));
+			switch (Group.m_tpaSuspiciousNodes[i].dwGroup) {
+				case 0 : {
+					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,0));
+					break;
+				}
+				case 1 : {
+					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,0));
+					break;
+				}
+				case 2 : {
+					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,0,255));
+					break;
+				}
+				case 3 : {
+					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,0));
+					break;
+				}
+				case 4 : {
+					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,0,255));
+					break;
+				}
+				case 5 : {
+					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(0,255,255));
+					break;
+				}
+				default : {
+					Device.Primitive.dbg_DrawAABB(tP0,.1f,.1f,.1f,D3DCOLOR_XRGB(255,255,255));
+					break;
+				}
 			}
 		}
 	}

@@ -34,7 +34,7 @@ void CAI_Soldier::vfBuildPathToDestinationPoint(CSoldierSelectorAttack *S)
 	else
 		Level().AI.vfFindTheXestPath(AI_NodeID,AI_Path.DestNode,AI_Path);
 	
-	if (AI_Path.Nodes.size() > 1) {
+	if (AI_Path.Nodes.size() > 0) {
 		// if path is long enough then build travel line
 		AI_Path.BuildTravelLine(Position());
 		AI_Path.TravelStart = 0;
@@ -137,10 +137,10 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 		// search for the best node according to the 
 		// selector evaluation function in the radius N meteres
 		float fOldCost;
-		if (bLastSearch)
-			Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
-		else
-			Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
+//		if (bLastSearch)
+//			Level().AI.q_Range(AI_NodeID,Position(),S.fSearchRange,S,fOldCost,dwTimeDifference);
+//		else
+			Level().AI.q_Range_Bit(AI_NodeID,Position(),S.fSearchRange,S,fOldCost);
 		// if search has found new best node then 
 		if (((AI_Path.DestNode != S.BestNode) || (!bfCheckPath(AI_Path))) && (S.BestCost < (fOldCost - S.fLaziness))){
 			AI_Path.DestNode		= S.BestNode;
@@ -148,10 +148,10 @@ void CAI_Soldier::vfSearchForBetterPosition(CAISelectorBase &S, CSquad &Squad, C
 			vfAddToSearchList();
 		} 
 		
-		if (AI_Path.Nodes.size() <= 2)
-			AI_Path.bNeedRebuild = TRUE;
+		//if (AI_Path.Nodes.size() <= 2)
+		//	AI_Path.bNeedRebuild = TRUE;
 		
-		if (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart)
+		if (AI_Path.TravelPath.empty() || (AI_Path.TravelPath.size() - 1 <= AI_Path.TravelStart))
 			AI_Path.bNeedRebuild = TRUE;
 		
 		if (AI_Path.bNeedRebuild)
