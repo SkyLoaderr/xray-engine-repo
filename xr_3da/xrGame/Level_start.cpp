@@ -61,7 +61,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 	// Start client
 	bResult						= net_Start_client(*m_caClientOptions);
 	// Send Ready message to server
-	if (bResult && GameID() != GAME_SINGLE) 
+	if (bResult)// && GameID() != GAME_SINGLE) 
 	{
 		NET_Packet		NP;
 		NP.w_begin		(M_CLIENTREADY);

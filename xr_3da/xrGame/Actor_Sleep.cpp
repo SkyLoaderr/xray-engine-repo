@@ -145,9 +145,8 @@ void CActor::UpdateSleep()
 	if(CSleepEffectorPP::BEFORE_SLEEPING == m_pSleepEffectorPP->m_eSleepState)
 	{
 		m_fOldTimeFactor = Level().GetGameTimeFactor();
-		
 		Level().Server->game->SetGameTimeFactor(m_fSleepTimeFactor);
-
+		
 		if ((GameID() == GAME_SINGLE) && ai().get_alife()) {
 			m_fOldOnlineRadius = ai().alife().switch_distance();
 //			ai().alife().set_switch_distance(ONLINE_RADIUS);

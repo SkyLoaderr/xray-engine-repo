@@ -735,7 +735,8 @@ void CUIInventoryWnd::SendMessage(CUIWindow *pWnd, s16 msg, void *pData)
 			break;
 		}
 
-		HUD().GetUI()->UIMainIngameWnd.AddInfoMessage(sleep_msg);
+		if(sleep_msg)
+			HUD().GetUI()->UIMainIngameWnd.AddInfoMessage(sleep_msg);
 
 		Game().StartStopMenu(this);
 	}
