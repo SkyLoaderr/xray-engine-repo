@@ -84,8 +84,6 @@ void	game_cl_GameState::net_import_state	(NET_Packet& P)
 	players = players_new;
 }
 
-#include "date_time.h"
-
 void	game_cl_GameState::net_import_update(NET_Packet& P)
 {
 	// Read
@@ -112,11 +110,6 @@ void	game_cl_GameState::net_import_update(NET_Packet& P)
 	//Syncronize GameTime
 	u64				GameTime;
 	P.r_u64			(GameTime);
-	{
-		u32			y,m,d,h,mi,s,ms;
-		split_time	(GameTime,y,m,d,h,mi,s,ms);
-		Msg			("[%d][%d][%d][%d][%d][%d][%d]",y,m,d,h,mi,s,ms);
-	}
 	float			TimeFactor;
 	P.r_float		(TimeFactor);
 
