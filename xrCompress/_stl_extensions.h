@@ -14,13 +14,12 @@
 
 #else
 
-template <typename T>
+template <class T>
 class	xr_allocator	: public std::allocator<T>	{
 public:
-	static pointer		allocate	(size_type n, xr_allocator<void>::const_pointer p=0)	{	return xr_alloc<T>((u32)n);	}
-	static pointer		allocate	(size_type n)											{	return xr_alloc<T>((u32)n);	}
-	static void			deallocate	(pointer p, size_type n)								{	xr_free	(p);				}
-	static void			deallocate	(pointer p)												{	xr_free	(p);				}
+	T*					allocate	(size_type n, const void* = 0) const					{ 	return xr_alloc<T>((u32)n);	}
+	void				deallocate	(pointer p, size_type n)								{	xr_free	(p);				}
+	void				deallocate	(pointer p)												{	xr_free	(p);				}
 };
 
 template	<typename T>							class	xr_vector	: public std::vector<T,xr_allocator<T> >		{};
