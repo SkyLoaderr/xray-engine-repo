@@ -106,10 +106,16 @@ void CEntity::Load(CInifile* ini, const char* section)
 	Fbox	bb;
 	
 	// Movement: BOX
-	Fvector	vBOX_center	= ini->ReadVECTOR	(section,"ph_box_center"	);
-	Fvector	vBOX_size	= ini->ReadVECTOR	(section,"ph_box_size"		);
-	bb.set	(vBOX_center,vBOX_center); bb.grow	(vBOX_size);
-	Movement.SetBox		(bb);
+	Fvector	vBOX0_center= ini->ReadVECTOR	(section,"ph_box0_center"	);
+	Fvector	vBOX0_size	= ini->ReadVECTOR	(section,"ph_box0_size"		);
+	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
+	Movement.SetBox		(0,bb);
+	
+	// Movement: BOX
+	Fvector	vBOX1_center= ini->ReadVECTOR	(section,"ph_box1_center"	);
+	Fvector	vBOX1_size	= ini->ReadVECTOR	(section,"ph_box1_size"		);
+	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
+	Movement.SetBox		(1,bb);
 	
 	// Movement: Foots
 	Fvector	vFOOT_center= ini->ReadVECTOR	(section,"ph_foot_center"	);

@@ -24,6 +24,7 @@ private:
 	EEnvironment		eOldEnvironment;
 	EEnvironment		eEnvironment;
 	Fbox				aabb;
+	Fbox				boxes	[4];
 	Fvector				vFootCenter;			// задаются относительно vPosition
 	Fvector				vFootExt;				//
 
@@ -73,9 +74,11 @@ public:
 	void				CalcMaximumVelocity	(Fvector& dest, Fvector& accel, float friction);
 	void				CalcMaximumVelocity	(float& dest, float accel, float friction);
 
+	void				ActivateBox		(DWORD id)	{ aabb.set(boxes[id]);	}
+
 	const EEnvironment	Environment		( )			{ return eEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
-	void				SetBox			(const Fbox &BB){ aabb.set(BB); }
+	void				SetBox			(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
 
 	void				SetParent		(CObject* P){ pObject = P; }
 
