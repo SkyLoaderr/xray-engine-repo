@@ -137,5 +137,4 @@ void	CLightDB_Static::add_sector_lights(vector<WORD> &L)
 			T.dwFrame=Device.dwFrame;
 		}
 	}
-};
-
+}
