@@ -2,26 +2,26 @@
 <!-- CHARACTER INFO IN THE INVENTORY MENU -->
 <window>
 	<!-- ICON -->
-	<icon_static x="12" y="60" width="128" height="95"></icon_static>
+	<icon_static x="9" y="28" width="130" height="112"></icon_static>
 
 	<!-- NAME -->
-	<static x="20" y="162" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="128" b="64"></text>
+	<static x="20" y="5" width="145" height="16">
+		<text x="0" y="0" font="graffiti22" r="238" g="155" b="23"></text>
 	</static>
 
 	<!-- RANK -->
-	<static x="20" y="172" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255">Rank</text>
+	<static x="15" y="145" width="145" height="16">
+		<text x="0" y="0" font="letterica16" r="238" g="155" b="23">Rank</text>
 	</static>
 
 	<!-- COMMUNITY -->
-	<static x="20" y="182" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+	<static x="15" y="161" width="145" height="16">
+		<text x="0" y="0" font="letterica16" r="238" g="155" b="23"></text>
 	</static>
 
 	<!-- RELATION -->
-	<relation_static x="20" y="192" width="240" height="60">
-		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
+	<relation_static x="15" y="177" width="145" height="16">
+		<text x="0" y="0" font="letterica16" r="238" g="155" b="23"></text>
 	</relation_static>
 </window>
 
