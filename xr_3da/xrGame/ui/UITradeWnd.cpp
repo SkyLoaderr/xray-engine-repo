@@ -11,12 +11,12 @@
 
 
 
-#include "..\\Entity.h"
-#include "..\\HUDManager.h"
-#include "..\\WeaponAmmo.h"
-#include "..\\Actor.h"
-#include "..\\Trade.h"
-#include "..\\UIGameSP.h"
+#include "../Entity.h"
+#include "../HUDManager.h"
+#include "../WeaponAmmo.h"
+#include "../Actor.h"
+#include "../Trade.h"
+#include "../UIGameSP.h"
 
 #include "UIInventoryUtilities.h"
 using namespace InventoryUtilities;
@@ -235,7 +235,7 @@ void CUITradeWnd::Update()
 		if(pGameSP)pGameSP->StartStopMenu(this);
 	}*/
 	//убрать объект drag&drop для уже использованной вещи
-	for(int i = 0; i <m_iUsedItems; i++) 
+	for(int i = 0; i <m_iUsedItems; ++i) 
 	{
 		CInventoryItem* pItem = (CInventoryItem*)m_vDragDropItems[i].GetData();
 		if(pItem && !pItem->Useful())
@@ -287,7 +287,7 @@ bool CUITradeWnd::OurBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
-	if(pItem->GetParent() != &this_trade_wnd->UIOurTradeList) return false;
+	if(&this_trade_wnd->UIOurTradeList != pItem->GetParent()) return false;
 
 	return true;
 }
@@ -296,7 +296,7 @@ bool CUITradeWnd::OthersBagProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
-	if(pItem->GetParent() != &this_trade_wnd->UIOthersTradeList) return false;
+	if(&this_trade_wnd->UIOthersTradeList != pItem->GetParent()) return false;
 
 	return true;
 }
@@ -305,7 +305,7 @@ bool CUITradeWnd::OurTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList)
 	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
-	if(pItem->GetParent() != &this_trade_wnd->UIOurBagList) return false;
+	if(&this_trade_wnd->UIOurBagList != pItem->GetParent()) return false;
 
 	return this_trade_wnd->IsEnoughtOthersRoom(pItem);
 }
@@ -314,7 +314,7 @@ bool CUITradeWnd::OthersTradeProc(CUIDragDropItem* pItem, CUIDragDropList* pList
 	CUITradeWnd* this_trade_wnd =  dynamic_cast<CUITradeWnd*>(pList->GetParent()->GetParent());
 	R_ASSERT2(this_trade_wnd, "wrong parent addressed as trade wnd");
 
-	if(pItem->GetParent() != &this_trade_wnd->UIOthersBagList) return false;
+	if(&this_trade_wnd->UIOthersBagList != pItem->GetParent()) return false;
 
 	return this_trade_wnd->IsEnoughtOurRoom(pItem);
 }
@@ -328,7 +328,7 @@ bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
 	ruck_list.push_back((PIItem)pItem->GetData());
 	
 /*	for(WINDOW_LIST_it it = UIOurBagWnd.GetChildWndList().begin(); 
- 	  				   it!= UIOurBagWnd.GetChildWndList().end(); it++)
+ 	  				   UIOurBagWnd.GetChildWndList().end() != it; ++it)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)
@@ -339,7 +339,7 @@ bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
 
 
 	for(WINDOW_LIST_it it = UIOthersTradeWnd.GetChildWndList().begin(); 
- 	  				   it!= UIOthersTradeWnd.GetChildWndList().end(); it++)
+ 	  				   UIOthersTradeWnd.GetChildWndList().end() != it; ++it)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)
@@ -348,16 +348,16 @@ bool CUITradeWnd::IsEnoughtOurRoom(CUIDragDropItem* pItem)
 		}
 	}*/
 	for(DRAG_DROP_LIST_it it = UIOurBagList.GetDragDropItemsList().begin(); 
- 						  it!= UIOurBagList.GetDragDropItemsList().end(); 
-						  it++)
+ 						  UIOurBagList.GetDragDropItemsList().end() != it; 
+						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		ruck_list.push_back((PIItem)pDragDropItem->GetData());
 	}
 
 	for(DRAG_DROP_LIST_it it = UIOthersTradeList.GetDragDropItemsList().begin(); 
- 			  			  it!= UIOthersTradeList.GetDragDropItemsList().end(); 
-						  it++)
+ 			  			  UIOthersTradeList.GetDragDropItemsList().end() != it; 
+						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		ruck_list.push_back((PIItem)pDragDropItem->GetData());
@@ -376,16 +376,16 @@ bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
 
 	//вещи из рюкзака и окна торговли
 	for(DRAG_DROP_LIST_it it = UIOthersBagList.GetDragDropItemsList().begin(); 
- 			  			  it!= UIOthersBagList.GetDragDropItemsList().end(); 
-						  it++)
+ 			  			  UIOthersBagList.GetDragDropItemsList().end() != it; 
+						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		ruck_list.push_back((PIItem)pDragDropItem->GetData());
 	}
 
 	for(DRAG_DROP_LIST_it it = UIOurTradeList.GetDragDropItemsList().begin(); 
- 			  			  it!= UIOurTradeList.GetDragDropItemsList().end(); 
-						  it++)
+ 			  			  UIOurTradeList.GetDragDropItemsList().end() != it; 
+						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		ruck_list.push_back((PIItem)pDragDropItem->GetData());
@@ -393,7 +393,7 @@ bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
 
 
 	/*for(WINDOW_LIST_it it = UIOthersBagList.GetChildWndList().begin(); 
- 	  				   it!= UIOthersBagList.GetChildWndList().end(); it++)
+ 	  				   UIOthersBagList.GetChildWndList().end() != it; ++it)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)
@@ -403,7 +403,7 @@ bool CUITradeWnd::IsEnoughtOthersRoom(CUIDragDropItem* pItem)
 	}
 
 	for(WINDOW_LIST_it it = UIOurTradeList.GetChildWndList().begin(); 
- 	  				   it!= UIOurTradeList.GetChildWndList().end(); it++)
+ 	  				   UIOurTradeList.GetChildWndList().end() != it; ++it)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)
@@ -466,7 +466,7 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 	u32 iPrice = 0;
 	
 	/*for(WINDOW_LIST_it it = pList->GetChildWndList().begin(); 
- 	  				   it!= pList->GetChildWndList().end(); it++)
+ 	  				   pList->GetChildWndList().end() != it; ++it)
 	{
 		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 		if(pDragDropItem)
@@ -475,8 +475,8 @@ u32 CUITradeWnd::CalcItemsPrice(CUIDragDropList* pList, CTrade* pTrade)
 		}
 	}*/
 	for(DRAG_DROP_LIST_it it = pList->GetDragDropItemsList().begin(); 
- 			  			  it!= pList->GetDragDropItemsList().end(); 
-						  it++)
+ 			  			  pList->GetDragDropItemsList().end() != it; 
+						  ++it)
 	{
 		CUIDragDropItem* pDragDropItem = *it;
 		iPrice += pTrade->GetItemPrice((PIItem)pDragDropItem->GetData());
@@ -559,10 +559,10 @@ void CUITradeWnd::SellItems(CUIDragDropList* pSellList,
 {
 
 	for(DRAG_DROP_LIST_it it = pSellList->GetDragDropItemsList().begin(); 
- 			  			  it!= pSellList->GetDragDropItemsList().end(); 
-						  it++)
+ 			  			  pSellList->GetDragDropItemsList().end() != it; 
+						  ++it)
 //	for(WINDOW_LIST_it it = pSellList->GetChildWndList().begin(); 
- //				   it!=  pSellList->GetChildWndList().end(); it++)
+ //				   pSellList->GetChildWndList().end() != it; ++it)
 	{	
 //		CUIDragDropItem* pDragDropItem = dynamic_cast<CUIDragDropItem*>(*it);
 //		if(pDragDropItem)
@@ -600,7 +600,7 @@ void CUITradeWnd::UpdateLists()
 	UIOthersTradeList.DropAll();
 
 
-	for(u32 i = 0; i <MAX_ITEMS; i++) 
+	for(u32 i = 0; i <MAX_ITEMS; ++i) 
 	{
 		m_vDragDropItems[i].SetData(NULL);
 		m_vDragDropItems[i].SetWndRect(0,0,0,0);
@@ -613,7 +613,7 @@ void CUITradeWnd::UpdateLists()
 
 	//Наш рюкзак
 	PPIItem it;
-	for(it =  ruck_list.begin(); it !=  ruck_list.end(); it++) 
+	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
 			if((*it)) 
 			{
@@ -645,7 +645,7 @@ void CUITradeWnd::UpdateLists()
 				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
 				UIOurBagList.AttachChild(&UIDragDropItem);
-				m_iUsedItems++;
+				++m_iUsedItems;
 			}
 	}
 
@@ -667,7 +667,7 @@ void CUITradeWnd::UpdateLists()
 
 
 	//Чужой рюкзак
-	for(it =  ruck_list.begin(); it !=  ruck_list.end(); it++) 
+	for(it =  ruck_list.begin(); ruck_list.end() != it; ++it) 
 	{
 			if((*it)) 
 			{
@@ -698,7 +698,7 @@ void CUITradeWnd::UpdateLists()
 				UIDragDropItem.SetTextureScale(TRADE_ICONS_SCALE);
 				
 				UIOthersBagList.AttachChild(&UIDragDropItem);
-				m_iUsedItems++;
+				++m_iUsedItems;
 			}
 	}
 }
