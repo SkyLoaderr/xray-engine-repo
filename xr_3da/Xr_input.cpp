@@ -240,6 +240,11 @@ void CInput::iRelease(CController *p)
 void CInput::OnAppActivate		(void)
 {
 	SetAllAcquire	( true );
+	ZeroMemory		( mouseState,	sizeof(mouseState) );
+	ZeroMemory		( KBState,		sizeof(KBState) );
+	ZeroMemory		( timeStamp,	sizeof(timeStamp) );
+	ZeroMemory		( timeSave,		sizeof(timeStamp) );
+	ZeroMemory		( offs,			sizeof(offs) );
 }
 
 void CInput::OnAppDeactivate	(void)
