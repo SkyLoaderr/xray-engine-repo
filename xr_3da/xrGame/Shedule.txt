@@ -1,5 +1,29 @@
-	.TODO: Batch culling
-	.TODO: Blurred output
-	.TODO: Rain with collisions
-	.TODO: Sound-wave-tracing
-	.TODO: Flash-lighting (ala Kreed :)
+	. TODO: Batch culling
+	. TODO: Blurred output
+	. TODO: Rain with collisions
+	. TODO: Sound-wave-tracing
+	. TODO: collision database simplification
+
+	. TODO: Lighting model
+		. TODO: Flash-lighting (ala Kreed :)
+		. TODO: Environment on models (ground lighting)
+		+ TODO: Dynamic lights (per-pixel attenuation)
+			. TODO: Geometric occlusion - shadowing
+		. TODO: BumpMapping on models
+		. TODO: Shadows from static_light+dynamic_models
+			. TODO: Geometric occlusion
+	. TODO: Console Aliases
+	. TODO: Ground Fog
+	. TODO:	Shaders
+			. TODO: N-Patches + tesselation level
+			? TODO: PixelShaders
+			+ TODO: Priority (sort order)
+			+ TODO: Disable optimize UV
+			. TODO: Conditions!!!	(scripts? = easy extendable) 
+			+ TODO: Strip out every building params
+			? TODO: Vertex shaders / ffp
+			+ TODO: Comments
+			+ TODO: Folders
+			+ TODO: Cubemaps
+			. TODO: Parametric shaders 
+			+ TODO: Compiler:Lighting:LM:Smooth/Sharp

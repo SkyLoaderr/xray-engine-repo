@@ -161,10 +161,10 @@ Sanya:
 			+ TODO: Read textures (any format) from editor's folder
 				+ 25 formats supported, including Photoshop's PSD
 			+ TODO: "unique" textures (lighting on landscape, etc)
-			. TODO: Actual (calculated) per-pixel(texel) lightmap packer
-			. TODO: partial lightmap calculation
-			. TODO: partial lightmap shrinking
-			. TODO: partial lightmap merging (don't scale uv's)
+			+ TODO: Actual (calculated) per-pixel(texel) lightmap packer
+			+ TODO: partial lightmap calculation
+			+ TODO: partial lightmap shrinking
+			+ TODO: partial lightmap merging (don't scale uv's)
 			+ TODO: Auto merging visual's (Cached)
 				. TODO: Don't inter-merge, if strictly sorted
 			. TODO: относительный объем CHULLa от сферы - коеффициент
