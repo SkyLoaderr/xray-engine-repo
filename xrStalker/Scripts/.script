@@ -67,6 +67,7 @@ function pp_effector:__init(effector_type,start_time,dest_power,life_time) super
 end
 
 function pp_effector:process(pp)
+	printf("inherited")
 	effector.process(self,pp)
 
 	local curr_time	= device():time_global()
@@ -83,6 +84,7 @@ function pp_effector:process(pp)
 		end
 	end
 	
+	printf("computing")
 	local dual		= duality()
 	local noise		= noise()
 	local blend		= color()
@@ -105,6 +107,7 @@ function pp_effector:process(pp)
 	blend.b			= self.max_power.blend_color.b 		* d 
 	blend.a			= self.max_power.blend_color.a 		* d 
 
+	printf("assigning")
 	pp.blend_color	= blend
 	
 	noise.color		= color
@@ -114,6 +117,7 @@ function pp_effector:process(pp)
 	self.info		= pp
 	
 	return          true
+	printf("exiting")
 end
 
 function pp_effector:finished()
