@@ -107,7 +107,7 @@ void CAI_Space::Load(LPCSTR name)
 	CALifeCrossTable::Load(fName);
 }
 
-#define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x -= 0.f, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z -= 40.f;
+#define NORMALIZE_VECTOR(t) t.x /= 10.f, t.x -= 70.f, t.y /= 10.f, t.y += 20.f, t.z /= 10.f, t.z -= 10.f;
 void CAI_Space::Render()
 {
 	if (bfCheckIfGraphLoaded())
@@ -168,7 +168,6 @@ void CAI_Space::Render()
 //						RCache.dbg_DrawAABB(t1,.05f,.05f,.05f,D3DCOLOR_XRGB(0,0,0));
 //					}
 					{
-						CALifeDynamicObject *tpALifeDynamicObject = dynamic_cast<CALifeDynamicObject*>((*I).second);
 						CALifeMonsterAbstract *tpALifeMonsterAbstract = dynamic_cast<CALifeMonsterAbstract *>((*I).second);
 						if (tpALifeMonsterAbstract && tpALifeMonsterAbstract->m_bDirectControl && !tpALifeMonsterAbstract->m_bOnline) {
 							CALifeHuman *tpALifeHuman = dynamic_cast<CALifeHuman *>(tpALifeMonsterAbstract);

@@ -32,7 +32,7 @@ public:
 		tMemoryStream.close_chunk	();
 	};
 	
-	virtual void					Load(IReader	&tFileStream)
+	virtual void					Load(CStream	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.find_chunk(GAME_TIME_CHUNK_DATA));
 		tFileStream.r				(&m_tGameTime,		sizeof(m_tGameTime));
@@ -75,7 +75,7 @@ public:
 		tMemoryStream.close_chunk	();
 	}
 	
-	virtual void					Load(IReader	&tFileStream)
+	virtual void					Load(CStream	&tFileStream)
 	{
 		R_ASSERT					(tFileStream.find_chunk(ALIFE_CHUNK_DATA));
 		tFileStream.r			(&m_tALifeVersion,	sizeof(m_tALifeVersion));
@@ -90,7 +90,7 @@ public:
 	u32								m_tSpawnVersion;
 	u32								m_dwSpawnCount;
 	u32								m_dwLevelCount;
-	 
+	
 	virtual void					Load(IReader	&tFileStream)
 	{
 		R_ASSERT(tFileStream.find_chunk(SPAWN_POINT_CHUNK_VERSION));

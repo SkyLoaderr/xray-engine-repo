@@ -38,6 +38,7 @@ void CAI_ALife::vfSwitchObjectOnline(CALifeDynamicObject *tpALifeDynamicObject)
 				//Fvector tTemp;
 				//tTemp.set(::Random.randF(0,.35f),0,::Random.randF(0,.35f));
 				//(*J).second->o_Position.add(tpALifeDynamicObject->o_Position,tTemp);
+				(*J).second->o_Position	= tpALifeDynamicObject->o_Position;
 				xrSE_Enemy				*tpEnemy = dynamic_cast<xrSE_Enemy*>((*J).second);
 				if (tpEnemy)
 					tpEnemy->o_torso.yaw = angle_normalize_signed((I - B)/N*PI_MUL_2);
