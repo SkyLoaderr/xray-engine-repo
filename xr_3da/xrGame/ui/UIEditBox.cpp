@@ -156,7 +156,7 @@ bool CUIEditBox::KeyPressed(int dik)
 		//нажата клавиша с буквой 
 		if (gs_DIK2CHR.end() != it)
 		{
-			AddLetter(it.second);
+			AddLetter((*it).second);
 			str_updated = true; 
 		}
 		break;
