@@ -21,6 +21,7 @@ void FLOD::Load			(LPCSTR N, CStream *data, DWORD dwFlags)
 		T.mknormal				(v[3].v,v[0].v,v[1].v);	N.add	(T);
 		N.div					(4.f);
 		facets[f].N.normalize	(N);
+		facets[f].N.invert		();
 	}
 
 	// VS
@@ -63,5 +64,6 @@ void FLOD::Render		(float LOD		)
 
 	// Draw IT
 	Device.Primitive.setVertices	(hVS->dwHandle,hVS->dwStride,Device.Streams.Vertex.Buffer());
+	Device.Primitive.setIndices		(0,0);
 	Device.Primitive.Render			(D3DPT_TRIANGLEFAN,vOffset,2);
 }
