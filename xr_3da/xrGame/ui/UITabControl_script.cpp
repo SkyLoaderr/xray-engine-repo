@@ -3,6 +3,8 @@
 #include "UITabButton.h"
 
 #include "../script_space.h"
+#include <luabind/adopt_policy.hpp>
+
 
 using namespace luabind;
 
@@ -12,7 +14,7 @@ void CUITabControl::script_register(lua_State *L)
 	[
 		class_<CUITabControl, CUIWindow>("CUITabControl")
 		.def(					constructor<>())
-		.def("AddItem",			(bool (CUITabControl::*)(CUIButton*))	&CUITabControl::AddItem)
+		.def("AddItem",			(bool (CUITabControl::*)(CUIButton*))(&CUITabControl::AddItem), adopt(_2))
 		.def("AddItem",			(bool (CUITabControl::*)(const char*, const char*,int,int, int,int))	&CUITabControl::AddItem)
 		.def("RemoveItem",		&CUITabControl::RemoveItem)
 		.def("RemoveAll",		&CUITabControl::RemoveAll)
