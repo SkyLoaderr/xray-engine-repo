@@ -4,16 +4,17 @@
 ----------------------------------------------------------------------------------------------------------------------
 
 -- эвалуаторы Глобальные
-global_evaluators           = stalker_ids.property_script
-final_trade_init            = stalker_ids.property_script + 1
-final_trade_processed       = stalker_ids.property_script + 2
+global_evaluators       = stalker_ids.property_script
+final_trade_init        = stalker_ids.property_script + 1
+final_trade_processed   = stalker_ids.property_script + 2
+state_change		= stalker_ids.property_script + 3
 
 -- эвалуаторы Стохе
-stohe_evaluators = stalker_ids.property_script + 1000
-stohe_tradeseller_base      = stohe_evaluators
-stohe_kamp_base        = stohe_evaluators + 20
-stohe_meet_base        = stohe_evaluators + 30
-stohe_reactions_base    = stohe_evaluators + 40
+stohe_evaluators 		= stalker_ids.property_script + 1000
+stohe_tradeseller_base      	= stohe_evaluators
+stohe_kamp_base        		= stohe_evaluators + 20
+stohe_meet_base        		= stohe_evaluators + 30
+stohe_reactions_base    	= stohe_evaluators + 40
 
 --эвалуаторы Сидоровича
 sidor_evaluator                     =   stalker_ids.property_script + 2000
