@@ -110,9 +110,11 @@ void CLightShadows::calculate	()
 			CFrustum	F;
 			F.CreateFromMatrix		(mCombine,FRUSTUM_P_ALL);
 
-			// Render object
-			int		s_x		= slot_id%slot_line;
-			int		s_y		= slot_id/slot_line;
+			// Select slot and set viewport
+			int		s_x			=	slot_id%slot_line;
+			int		s_y			=	slot_id/slot_line;
+			D3DVIEWPORT8 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
+			CHK_DX					(HW.pDevice->SetViewport(&VP));
 		}
 	}
 }
