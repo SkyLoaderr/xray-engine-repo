@@ -48,17 +48,17 @@ public:
 	// Sector detection and visibility
 	CSector*												pLastSector;
 	Fvector													vLastCameraPos;
-	xr_vector<IRender_Portal*>									Portals;
-	xr_vector<IRender_Sector*>									Sectors;
+	xr_vector<IRender_Portal*>								Portals;
+	xr_vector<IRender_Sector*>								Sectors;
 	CDB::MODEL*												rmPortals;
 	CHOM													HOM;
 	
 	// Global vertex-buffer container
 	typedef svector<D3DVERTEXELEMENT9,MAXD3DDECLLENGTH+1>	VertexDeclarator;
 	xr_vector<VertexDeclarator>								DCL;
-	xr_vector<IDirect3DVertexBuffer9*>							VB;
-	xr_vector<IDirect3DIndexBuffer9*>							IB;
-	xr_vector<IRender_Visual*>										Visuals;
+	xr_vector<IDirect3DVertexBuffer9*>						VB;
+	xr_vector<IDirect3DIndexBuffer9*>						IB;
+	xr_vector<IRender_Visual*>								Visuals;
 	CPSLibrary												PSystems;
 
 	CLightDB_Static											L_DB;

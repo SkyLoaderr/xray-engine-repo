@@ -25,7 +25,7 @@ IRender_DetailModel*	CRender::model_CreateDM			(IReader*	F)
 	D->Load				(F);
 	return D;
 }
-void					CRender::model_Delete			(IRender_DetailModel* & F)
+void						CRender::model_Delete			(IRender_DetailModel* & F)
 {
 	if (F)
 	{
@@ -84,7 +84,7 @@ void		CRender::add_Wallmark		(Shader* S, const Fvector& P, float s, CDB::TRI* T)
 	Wallmarks->AddWallmark	(T,P,S,s);
 }
 void		CRender::set_Object			(IRenderable*		O )	
-{ 
+{
 	val_pObject				= O;		// NULL is OK, trust me :)
 	L_Shadows.set_object	(O);
 	L_Projector.set_object	(O);
@@ -310,14 +310,16 @@ void CRender::Calculate()
 					{
 						// renderable
 						IRenderable*	renderable		= dynamic_cast<IRenderable*>(spatial);
-						R_ASSERT						(renderable);
+						VERIFY							(renderable);
 						set_Object						(renderable);
 						renderable->renderable_Render	();
 						set_Object						(0);
 #pragma todo("Oles to Oles: verify if it is needed at all")
 					} else {
 						// lightsource
-#pragma todo("Oles to Oles: need to do something with light-sources")
+						R1_light*		source			= dynamic_cast<R1_light*>(spatial);
+						VERIFY							(source);
+						L_DB.add_light					(source->ID);
 					}
 				}
 			}
