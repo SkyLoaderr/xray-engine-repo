@@ -133,11 +133,12 @@ void CLightmap::Save()
 	// Saving			(DXT5.dds)
 	Status			("Compression...");
 	{
-		char					FN[_MAX_PATH];
-		sprintf					(lm.name,"lmap#%d",lmapNameID			); 
-		sprintf					(FN,"%s%s.dds",	pBuild->path,lm.name	);
 		xr_vector<u32>			packed;
 		lm.Pack					(packed);
+
+		char					FN[_MAX_PATH];
+		sprintf					(lm_texture.name,"lmap#%d",lmapNameID			); 
+		sprintf					(FN,"%s%s.dds",	pBuild->path,lm_texture.name	);
 		BYTE*	raw_data		= LPBYTE(&*packed.begin());
 		u32	w					= lm.width;
 		u32	h					= lm.height;
@@ -151,5 +152,9 @@ void CLightmap::Save()
 		DXTCompress				(FN,raw_data,w,h,pitch,&fmt,4);
 	}
 
-	lm.destroy	();
+	lm_texture.bHasAlpha		= TRUE;
+	lm_texture.dwWidth			= lm.width;
+	lm_texture.dwHeight			= lm.height;
+	lm_texture.pSurface			= NULL;
+	lm.destroy					();
 }

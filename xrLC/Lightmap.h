@@ -14,6 +14,7 @@ class CLightmap
 {
 public:
 	lm_layer					lm;
+	b_texture					lm_texture;
 public:
 	CLightmap					();
 	~CLightmap					();
