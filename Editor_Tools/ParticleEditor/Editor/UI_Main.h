@@ -116,8 +116,8 @@ public:
     void OnDestroy						();
 
     char* GetEditFileName()             {   return m_LastFileName; }
-    char* GetCaption()					{   return GetEditFileName()[0]?GetEditFileName():"noname"; }
-    char* GetTitle()					{   return "Level Editor"; }
+    char* GetCaption();
+    char* GetTitle();
 
     bool IsModified						();
 

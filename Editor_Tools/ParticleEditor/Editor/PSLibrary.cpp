@@ -27,19 +27,23 @@ PS::SDef* CPSLibrary::FindPS(const char* name){
 	return psLibrary_Find(name,m_PSs);
 }
 
-PS::SDef* CPSLibrary::AddPS(const char* name, PS::SDef* src){
+void CPSLibrary::RenamePS(PS::SDef* src, LPCSTR new_name){
+	R_ASSERT(src&&new_name&&new_name[0]);
+	src->SetName(new_name);
+    Sort();
+}
+
+PS::SDef* CPSLibrary::AppendPS(PS::SDef* src){
 	if (src)
     	m_PSs.push_back(*src);
 	else{
     	m_PSs.push_back(PS::SDef());
 	    m_PSs.back().InitDefault();
     }
-    m_PSs.back().SetName(name);
-    Sort();
-    return FindPS(name);
+    return &m_PSs.back();
 }
 
-void CPSLibrary::DeletePS(const char* nm){
+void CPSLibrary::RemovePS(const char* nm){
     PS::SDef* sh = FindPS(nm);
     if (sh) m_PSs.erase(sh);
 }
@@ -48,14 +52,14 @@ void CPSLibrary::Sort(){
 	psLibrary_Sort(m_PSs);
 }
 
-char* CPSLibrary::GenerateName(char* buffer, const char* pref){
-    int m_LastAvail = 0;
-	do{
-    	if (!pref) 	sprintf(buffer, "ps_%04d", m_LastAvail);
-        else		sprintf(buffer, "%s_%d", pref, m_LastAvail);
-		m_LastAvail++;
-	} while( FindPS( buffer ) );
-    return buffer;
+char* CPSLibrary::GenerateName(char* name, const char* source){
+    int cnt = 0;
+	char fld[128]; strcpy(fld,name);
+    if (source) strcpy(name,source); else sprintf(name,"%s\ps_%02d",fld,cnt++);
+	while (FindPS(name))
+    	if (source) sprintf(name,"%s_%02d",source,cnt++);
+        else sprintf(name,"%s\ps_%02d",fld,cnt++);
+	return name;
 }
 //----------------------------------------------------
 bool CPSLibrary::Load(const char* nm){
@@ -76,7 +80,7 @@ void CPSLibrary::Save(const char* nm){
 //----------------------------------------------------
 int CPSLibrary::Merge(const char* nm){
 	int cnt = 0;
-    CPSLibrary L0;
+/*    CPSLibrary L0;
     CPSLibrary L1;
     L0.OnCreate();
     L1.Load(nm);
@@ -86,7 +90,7 @@ int CPSLibrary::Merge(const char* nm){
         	char pref[255], name[255];
             strcpy(pref,l1->m_Name);
             strcat(pref,"_merge");
-            AddPS((const char*)GenerateName(name,pref),l1);
+            AppendPS((const char*)GenerateName(name,pref),l1);
             cnt++;
         }
     }
@@ -95,6 +99,7 @@ int CPSLibrary::Merge(const char* nm){
         	AddPS(l1_it->m_Name,l1_it);
             cnt++;
         }
+*/
 	return cnt;
 }
 //----------------------------------------------------

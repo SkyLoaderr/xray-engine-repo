@@ -11,8 +11,8 @@ DEFINE_VECTOR(PS::SDef, PSList, PSIt);
 
 class CPSLibrary{
     PSList				m_PSs;
-    bool 				Load			(const char* nm);
-    void				Save			(const char* nm);
+    bool 				Load			(LPCSTR nm);
+    void				Save			(LPCSTR nm);
     AnsiString			m_CurrentPS;
 public:
 						CPSLibrary		(){;}
@@ -25,18 +25,19 @@ public:
 
     void				OnCreate		();
     void				OnDestroy		();
-    int 				Merge			(const char* nm);
+    int 				Merge			(LPCSTR nm);
     void				Save			();
     void				Reload			();
     void 				Backup			();
     void 				RestoreBackup	();
 
-    char*				GenerateName	(char* buffer, const char* pref=0);
+    char*				GenerateName	(char* buffer, LPCSTR pref=0);
 
-    PS::SDef*			AddPS			(const char* name, PS::SDef* src=0);
-    void				DeletePS		(const char* name);
-    PS::SDef*			FindPS			(const char* name);
+    PS::SDef*			AppendPS		(PS::SDef* src=0);
+    void				RemovePS		(LPCSTR name);
+    PS::SDef*			FindPS			(LPCSTR name);
     void				Sort			();
+    void				RenamePS		(PS::SDef* src, LPCSTR new_name);
 
 	PS::SDef*			GetCurrentPS	(){return m_CurrentPS.IsEmpty()?0:FindPS(m_CurrentPS.c_str());}
     PS::SDef*			ChoosePS		(bool bSetCurrent=true);
