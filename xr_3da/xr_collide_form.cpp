@@ -3,7 +3,6 @@
 #include "xr_object.h"
 #include "xr_creator.h"
 #include "xr_area.h"
-#include "cl_collector.h"
 #include "x_ray.h"
 #include "xrLevel.h"
 #include "fmesh.h"
