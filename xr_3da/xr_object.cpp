@@ -153,7 +153,7 @@ void CObject::UpdateCL			()
 {
 	// consistency check
 	if (Device.dwFrame==chk_update_cl)	
-		Debug.fatal	("UpdateCL called twice per frame");
+		Debug.fatal	("UpdateCL called twice per frame for %s",cName());
 	chk_update_cl	= Device.dwFrame;
 }
 
@@ -161,7 +161,7 @@ void CObject::shedule_Update	( u32 T )
 {
 	// consistency check
 	if (Device.dwFrame==chk_update_shedule)	
-		Debug.fatal	("UpdateCL called twice per frame");
+		Debug.fatal	("'shedule_Update' called twice per frame for %s",cName());
 	chk_update_shedule	= Device.dwFrame;
 
 	//
