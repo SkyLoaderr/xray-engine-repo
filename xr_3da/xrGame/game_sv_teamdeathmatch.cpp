@@ -117,8 +117,11 @@ void	game_sv_TeamDeathmatch::OnPlayerKillPlayer		(u32 id_killer, u32 id_killed)
 
 u32		game_sv_TeamDeathmatch::RP_2_Use				(CSE_Abstract* E)
 {
+	return 0;
+	/*
 	CSE_ALifeCreatureActor	*pA	=	dynamic_cast<CSE_ALifeCreatureActor*>(E);
 	if (!pA) return 0;
 
 	return u32(pA->s_team);
+	*/
 };

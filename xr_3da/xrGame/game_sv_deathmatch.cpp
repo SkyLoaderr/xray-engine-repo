@@ -446,7 +446,10 @@ void	game_sv_Deathmatch::assign_RP				(CSE_Abstract* E)
 
 	if (pEnemies.empty()) 
 	{
+		u8 OldTeam = pA->s_team;
+		pA->s_team = u8(Team);
 		game_sv_GameState::assign_RP(E);
+		pA->s_team = OldTeam;
 		return;
 	};
 //-------------------------------------------------------------------------------	
