@@ -1082,12 +1082,13 @@ int dcTriListCollider::CollideSphere(dxGeom* Sphere, int Flags, dContactGeom* Co
 
 #ifdef DEBUG
 void dcTriListCollider::OnRender()
-{
+{/*
 	if (!bDebug && BoxCenter){
 		Fvector C;
 		C.set(0,0,0);
 		RCache.dbg_DrawAABB(*BoxCenter,AABB.x,AABB.y,AABB.z,D3DCOLOR_XRGB(255,255,255));
 	}
+	*/
 }
 #endif
 
