@@ -29,6 +29,7 @@ public:
 	typedef PathManagers::SObstaclesLightCover<_dist_type,_index_type,_iteration_type>		CObstaclesLightCover;
 	typedef PathManagers::SObstaclesLightCoverEnemy<_dist_type,_index_type,_iteration_type> CObstaclesLightCoverEnemy;
 	typedef PathManagers::SPosition<_dist_type,_index_type,_iteration_type>					CPositionParameters;
+	typedef PathManagers::SStraightLineParams<_dist_type,_index_type,_iteration_type>		CStraightLineParams;
 protected:
 
 	// data storage type definition

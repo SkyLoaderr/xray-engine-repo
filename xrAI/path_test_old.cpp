@@ -7,9 +7,79 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ai_nodes.h"
+#include "ai_a_star_search.h"
+#include "level_graph.h"
 
 #define TEST_COUNT 1000
+
+class CAIMapShortestPathNode {
+public:
+	typedef		CLevelGraph::const_iterator const_iterator;
+	float		y1;
+	int			x2;
+	float		y2;
+	int			z2;
+	int			x3;
+	float		y3;
+	int			z3;
+	SAIMapData	tData;
+	float		m_fYSize2;
+	CLevelGraph::CVertex	*m_tpNode;
+	float		m_sqr_distance_xz;
+
+
+	IC CAIMapShortestPathNode(const SAIMapData &tAIMapData)
+	{
+		tData					= tAIMapData;
+		const CLevelGraph::CVertex	&tNode1	= *tData.m_tpAI_Map->vertex(tData.dwFinishNode);
+		tData.m_tpAI_Map->unpack_xz(tNode1,x3,z3);
+		m_sqr_distance_xz		= _sqr(tData.m_tpAI_Map->header().cell_size());
+		y3						= (float)(tNode1.position().y);
+		m_fYSize2				= _sqr(tData.m_tpAI_Map->header().factor_y());
+	}
+
+	IC void begin(u32 dwNode, const_iterator &tIterator, const_iterator &tEnd)
+	{
+		tData.m_tpAI_Map->begin	(dwNode,tIterator,tEnd);
+		m_tpNode				= tData.m_tpAI_Map->vertex(dwNode);
+		const CLevelGraph::CVertex	&tNode0	= *m_tpNode;
+		y1						= (float)(tNode0.position().y);
+	}
+
+	IC u32 get_value(const_iterator &tIterator)
+	{
+		return(m_tpNode->link(tIterator));
+	}
+
+	IC bool bfCheckIfAccessible(u32 dwNode)
+	{
+		return(true);
+	}
+
+	IC float ffEvaluate(u32 dwStartNode, u32 dwFinishNode, const_iterator &tIterator)
+	{
+		const CLevelGraph::CVertex	&tNode1 = *tData.m_tpAI_Map->vertex(dwFinishNode);
+
+		y2						= (float)(tNode1.position().y);
+
+		return					(_sqrt(m_fYSize2*_sqr(y2 - y1) + m_sqr_distance_xz));
+	}
+
+	IC float ffAnticipate(u32 dwStartNode)
+	{
+		const CLevelGraph::CVertex	&tNode0 = *tData.m_tpAI_Map->vertex(dwStartNode);
+		
+		tData.m_tpAI_Map->unpack_xz(tNode0,x2,z2);
+		y2						= (float)(tNode0.position().y);
+
+		return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
+	}
+
+	IC float ffAnticipate()
+	{
+		return					(_sqrt((float)(m_sqr_distance_xz*float(_sqr(x3 - x2) + _sqr(z3 - z2)) + m_fYSize2*_sqr(y3 - y2))));
+	}
+};
 
 class CSearch {
 	u32					m_dwAStarStaticCounter;
