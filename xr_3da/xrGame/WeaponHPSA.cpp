@@ -17,3 +17,7 @@ void CWeaponHPSA::OnShot(BOOL bHUDView)
 	inherited::OnShot	(bHUDView);
 //	FireEnd				();
 }
+
+void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
+{
+}

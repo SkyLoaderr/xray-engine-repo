@@ -153,7 +153,7 @@ void CObject::OnDeviceCreate	()
 	// visual and shadow
 	REQ_CREATE					();
 	pVisual						= Render.Models.Create	(pVisualName);
-	sh_Shader					= Device.Shader.Create	("effects\\shadow","effects\\shadow",false);
+	sh_Shader					= Device.Shader.Create	("effects\\shadow","fx\\shadow",false);
 	sh_Size						= Radius()/2;
 }
 
