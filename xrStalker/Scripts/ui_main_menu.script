@@ -248,10 +248,13 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 				console:execute("main_menu off")
 			end
 		end
-	
-	
-		if bind == key_bindings.kCONSOLE then
+		
+		if dik == DIK_keys.DIK_S then
+			self:OnButton_load_spawn()
+			
+		elseif bind == key_bindings.kCONSOLE then
 			console:show()
+			
 		end
 	
 	end
