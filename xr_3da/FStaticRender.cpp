@@ -419,7 +419,7 @@ IC	bool	cmp_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, SceneGraph::
 	return (N1->val.ssa > N2->val.ssa);		
 }
 
-const float	ssa_important		= .3f;
+const float	ssa_important		= .05f;
 IC	bool	fnd_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, const float val)
 {
 	return	(N1->val.ssa > ssa_important);
@@ -427,14 +427,17 @@ IC	bool	fnd_textures_ssa	(SceneGraph::mapNormalTextures::TNode* N1, const float 
 
 void		sort_tlist			(vector<SceneGraph::mapNormalTextures::TNode*>& lst)
 {
-	// sort 
-	std::sort					(lst.begin(),lst.end(), cmp_textures_ssa);
+	if (psDeviceFlags&rsOverdrawView)
+	{
+		// sort 
+		std::sort					(lst.begin(),lst.end(), cmp_textures_ssa);
 
-	// find delimiter
-	vector<SceneGraph::mapNormalTextures::TNode*>::iterator	it = std::lower_bound	(lst.begin(),lst.end(),ssa_important,fnd_textures_ssa);
+		// find delimiter
+		vector<SceneGraph::mapNormalTextures::TNode*>::iterator	it = std::lower_bound	(lst.begin(),lst.end(),ssa_important,fnd_textures_ssa);
 
-	// sort remainder lexicographically
-	std::sort					(it, lst.end(), cmp_textures_lex);
+		// sort remainder lexicographically
+		std::sort					(it, lst.end(), cmp_textures_lex);
+	}
 }
 
 void	CRender::Render		()
