@@ -46,6 +46,6 @@ function multiplayer_create_dialog:InitCallbacks()
 	self:AddCallback("btn_back",			ui_events.BUTTON_CLICKED, self, "OnButton_back")
 end
 
-function multiplayer_find_dialog:OnButton_back()
+function multiplayer_create_dialog:OnButton_back()
 	level.start_stop_menu(self, true)
 end
