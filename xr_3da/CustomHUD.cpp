@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "CustomHUD.h"
 
-Flags32 psHUD_Flags = {HUD_CROSSHAIR_RT};
+Flags32 psHUD_Flags = {HUD_CROSSHAIR_RT|HUD_WEAPON_RT};
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
