@@ -16,9 +16,13 @@ BOOL CTargetCS::net_Spawn(LPVOID DC) {
 	inherited::net_Spawn(DC);
 	setVisible					(true);
 	setEnabled					(true);
-	//xrSE_Target_CS* E = (xrSE_Target_CS*)DC;
-	//cNameVisual_set(E->s_Model);
+	Game().targets.push_back	(this);
 	return TRUE;
+}
+void CTargetCS::net_Destroy			()
+{
+	Game().targets.erase(find(Game().targets.begin(), Game().targets.end(), this));
+	inherited::net_Destroy();
 }
 
 void CTargetCS::OnH_A_Chield() {

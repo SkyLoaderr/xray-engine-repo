@@ -91,6 +91,7 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 	case GAME_DEATHMATCH:	break;
 	case GAME_ASSAULT:		bRender = TRUE;	break;
 	case GAME_CTF:			bRender = TRUE;	break;
+	case GAME_CS:			bRender = TRUE;	break;
 	}
 	if (bRender)
 	{
@@ -107,6 +108,10 @@ void CUIZoneMap::UpdateRadar(CEntity* Actor, CTeam& Team)
 					}
 				}
 			}
+		}
+		for(u32 i=0; i<Game().targets.size(); i++) {
+			ConvertToLocal(LM,Game().targets[i]->Position(),P);
+			entity.Out	(P.x,P.y,COLOR_FRIEND,alLeft|alTop);
 		}
 	}
 }
