@@ -86,6 +86,24 @@ void	CEffect_Rain::Born		(Item& dest, float radius, float height)
 	dest.fLifetime		= (height*2)/dest.fSpeed;
 }
 
+// initialize particles pool
+void CEffect_Rain::p_initialize()
+{
+	// pool
+	particle_pool.resize	(max_particles);
+	for (DWORD it=0; it<particle_pool.size(); it++)
+	{
+		Particle&	P	= particle_pool[it];
+		P.prev			= it?(&particle_pool[it-1]):0;
+		P.next			= (it<(particle_pool.size()-1))?(&particle_pool[it+1]):0;
+		P.visual		= (CPSVisual*) ::Render.Models.CreatePS("rain_drops",&P.emitter);
+	}
+
+	// active and idle lists
+	particle_active	= 0;
+	particle_idle	= &particle_pool.front();
+}
+
 // delete node from list
 void CEffect_Rain::p_remove	(Particle* P, Particle* &LST)
 {
@@ -96,6 +114,8 @@ void CEffect_Rain::p_remove	(Particle* P, Particle* &LST)
 	if (next) next->prev	= prev;
 	if ((0==prev) && (0==next))	LST = 0;
 }
+
+// insert node at the top of the head
 void CEffect_Rain::p_insert	(Particle* P, Particle* &LST)
 {
 	VERIFY		(P);
@@ -105,6 +125,7 @@ void CEffect_Rain::p_insert	(Particle* P, Particle* &LST)
 	LST						= P;
 }
 
+// alloc node
 CEffect_Rain::Particle*	CEffect_Rain::p_allocate	()
 {
 	Particle*	P			= particle_idle;
@@ -114,14 +135,21 @@ CEffect_Rain::Particle*	CEffect_Rain::p_allocate	()
 	return		P;
 }
 
+// free node
 void	CEffect_Rain::p_free(Particle* P)
 {
 	p_remove	(P,particle_active);
 	p_insert	(P,particle_idle);
 }
 
+// startup new particle system
 void	CEffect_Rain::Hit		(Fvector& pos)
 {
+	Particle*	P	= p_allocate();
+	if (0==P)	return;
+
+	P->emitter.m_Position.set	(pos);
+	P->emitter.Play				();
 }
 
 void	CEffect_Rain::Render	()
