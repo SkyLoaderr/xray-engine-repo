@@ -5,7 +5,7 @@
 
 #pragma once
 #include "artifact.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 
 #include "entity.h"
 
@@ -40,7 +40,7 @@ public:
 	virtual void feel_touch_delete	(CObject* O);
 	virtual BOOL feel_touch_contact	(CObject* O);
 
-	bool IsAttacking() {return m_AttakingEntity!=NULL;}
+	bool IsAttacking() {return NULL!=m_AttakingEntity;}
 
 protected:
 	static void __stdcall ObjectContactCallback(bool& do_colide,dContact& c);
