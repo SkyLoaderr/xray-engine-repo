@@ -375,8 +375,8 @@ void CAI_Stalker::vfUpdateParameters(bool &A, bool &B, bool &C, bool &D, bool &E
 
 void CAI_Stalker::vfValidatePosition(Fvector &tPosition, u32 dwNodeID)
 {
-	if ((dwNodeID <= 0) || (dwNodeID >= getAI().Header().count) || (getAI().dwfCheckPositionInDirection(dwNodeID,getAI().tfGetNodeCenter(dwNodeID),tPosition) == u32(-1)))
-		m_tSavedEnemyPosition = getAI().tfGetNodeCenter(dwNodeID);
+//	if ((dwNodeID <= 0) || (dwNodeID >= getAI().Header().count) || (getAI().dwfCheckPositionInDirection(dwNodeID,getAI().tfGetNodeCenter(dwNodeID),tPosition) == u32(-1)))
+//		m_tSavedEnemyPosition = getAI().tfGetNodeCenter(dwNodeID);
 }
 
 bool CAI_Stalker::bfIfHuman(CEntity *tpEntity)

@@ -10,7 +10,7 @@
 
 #include "ai_alife_registries.h"
 
-#define DEBUG_LOG
+//#define DEBUG_LOG
 
 class CSE_ALifeSimulator : 
 	public CSE_ALifeHeader, 
