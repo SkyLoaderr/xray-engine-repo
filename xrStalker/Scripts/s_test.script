@@ -19,7 +19,9 @@ function main ()
 	action (boar, move (move.act_walk_fwd, move.default, patrol ("boar_way")), cond (cond.move_end))
 
 	while true do
-		  printf ("Boar health : %f", boar.health)
+--		  printf ("Boar health : %f", boar.health)
+		  if boar:alive () == true then printf ("Boar is alive")
+		  else printf ("Boar is dead") end
 		  wait ()
 	end		
 
