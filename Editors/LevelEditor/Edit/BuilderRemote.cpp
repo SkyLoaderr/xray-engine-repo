@@ -837,7 +837,7 @@ BOOL SceneBuilder::CompileStatic()
         }
 	UI->ProgressEnd();
 // process lods
-	if (bResult){
+	if (bResult&&!l_lods.empty()){
         UI->ProgressStart	(l_lods.size()*2,"Merge LOD textures...");
         Fvector2Vec			offsets;
         Fvector2Vec			scales;
