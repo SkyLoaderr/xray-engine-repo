@@ -660,7 +660,7 @@ bool CExportSkeleton::ExportGeometry(IWriter& F)
     int bone_idx=0;
     for (BoneIt bone_it=m_Source->FirstBone(); bone_it!=m_Source->LastBone(); bone_it++,bone_idx++){
         F.w_stringZ	((*bone_it)->Name());
-        F.w_stringZ	((*bone_it)->Parent()?(*bone_it)->ParentName():"");
+        F.w_stringZ	((*bone_it)->Parent()?(*bone_it)->ParentName().c_str():"");
         Fobb	obb;
         ComputeOBB	(obb,bone_points[bone_idx]);
         F.w			(&obb,sizeof(Fobb));

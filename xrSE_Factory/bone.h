@@ -190,9 +190,9 @@ public:
 	void			    SetWMap			(const char* p){wmap		= p;}
 	void			    SetRestParams	(float length, const Fvector& offset, const Fvector& rotate){rest_offset.set(offset);rest_rotate.set(rotate);rest_length=length;};
 
-	const char*		    Name			(){return *name;}
-	const char*		    ParentName		(){return *parent_name;}
-	const char*		    WMap			(){return *wmap;}
+	shared_str		    Name			(){return name;}
+	shared_str		    ParentName		(){return parent_name;}
+	shared_str		    WMap			(){return wmap;}
     IC int			    Index			(){return index;}
     IC CBone*		    Parent			(){return parent;}
     IC BOOL			    IsRoot			(){return (parent==0);}

@@ -111,7 +111,7 @@ void 	CommandInitialize(u32 p1, u32 p2, u32& res)
         Lib.OnCreate	();
         LALib.OnCreate	();
         if (Tools->OnCreate()){
-            Device.seqAppCycleStart.Process(rp_AppCycleStart);
+            Device.seqAppStart.Process(rp_AppStart);
             ExecCommand	(COMMAND_RESTORE_UI_BAR);
             ExecCommand	(COMMAND_REFRESH_UI_BAR);
             ExecCommand	(COMMAND_CLEAR);
@@ -130,7 +130,7 @@ void 	CommandDestroy(u32 p1, u32 p2, u32& res)
     ExecCommand			(COMMAND_SAVE_UI_BAR);
     EPrefs.OnDestroy	();
     ExecCommand			(COMMAND_CLEAR);
-    Device.seqAppCycleEnd.Process(rp_AppCycleEnd);
+    Device.seqAppEnd.Process(rp_AppEnd);
     xr_delete			(g_pGamePersistent);
     LALib.OnDestroy		();
     Tools->OnDestroy	();

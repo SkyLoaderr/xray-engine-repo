@@ -25,10 +25,10 @@ void CEditableObject::ResetBones()
 }
 
 class fBoneNameEQ {
-	AnsiString	name;
+	shared_str	name;
 public:
-	fBoneNameEQ(const char *N) : name(N) {};
-	IC bool operator() (CBone* B) { return (stricmp(B->Name(),name.c_str())==0); }
+	fBoneNameEQ(shared_str N) : name(N) {};
+	IC bool operator() (CBone* B) { return (xr_strcmp(B->Name(),name)==0); }
 };
 
 bool CEditableObject::LoadBoneData(IReader& F)
@@ -150,7 +150,7 @@ void CEditableObject::RenderBones(const Fmatrix& parent)
             	parent.transform_tiny(p1);
             	u32 c = (*b_it)->flags.is(CBone::flSelected)?0xFFFFFFFF:0xFF000000;
             	u32 s = (*b_it)->flags.is(CBone::flSelected)?0xFF000000:0xFF909090;
-            	DU.DrawText(p1,(*b_it)->Name(),c,s);
+            	DU.DrawText(p1,(*b_it)->Name().c_str(),c,s);
             }
 			if (EPrefs.object_flags.is(epoDrawBoneShapes)){ 
 		        Device.SetShader(Device.m_SelectionShader);

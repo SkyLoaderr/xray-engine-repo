@@ -289,7 +289,6 @@ void CObjectOGFCollectorPacked::CalculateTB()
 	input.push_back	(NVMeshMender::VertexAttribute());	// pos
 	input.push_back	(NVMeshMender::VertexAttribute());	// norm
 	input.push_back	(NVMeshMender::VertexAttribute());	// tex0
-	input.push_back	(NVMeshMender::VertexAttribute());	// w_b0_b1                
 	input.push_back	(NVMeshMender::VertexAttribute());	// *** faces
 
 	input[0].Name_= "position";	xr_vector<float>&	i_position	= input[0].floatVector_;	i_position.reserve	(v_count_reserve);
@@ -304,7 +303,6 @@ void CObjectOGFCollectorPacked::CalculateTB()
 	output.push_back(NVMeshMender::VertexAttribute());	// tangent
 	output.push_back(NVMeshMender::VertexAttribute());	// binormal
 	output.push_back(NVMeshMender::VertexAttribute());	// tex0
-	output.push_back(NVMeshMender::VertexAttribute());	// w_b0_b1
 	output.push_back(NVMeshMender::VertexAttribute());	// *** faces
 
 	output[0].Name_= "position";

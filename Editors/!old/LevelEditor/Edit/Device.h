@@ -88,10 +88,10 @@ public:
 	// registrators
 //	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
 //	CRegistrator <pureDeviceCreate>		seqDevCreate;
-	CRegistrator <pureFrame>			seqFrame;
-	CRegistrator <pureRender>			seqRender;
-	CRegistrator <pureAppCycleStart>	seqAppCycleStart;
-	CRegistrator <pureAppCycleEnd>		seqAppCycleEnd;
+	CRegistrator <pureFrame>	seqFrame;
+	CRegistrator <pureRender>	seqRender;
+	CRegistrator <pureAppStart>	seqAppStart;
+	CRegistrator <pureAppEnd>	seqAppEnd;
 public:
 							CRenderDevice 	();
     virtual 				~CRenderDevice	();

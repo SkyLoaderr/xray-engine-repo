@@ -318,13 +318,14 @@ void CEditableObject::GenerateSMotionName(char* buffer, const char* start_name, 
 
 bool	pred_sort_B(const CBone* A, const CBone* B)	
 {
-	int idxA	= A->parent?A->parent->index:-1;
-	int idxB	= B->parent?B->parent->index:-1;
-	return (idxA<idxB)||((idxA==idxB)&&(xr_strcmp(A->Name(),B->Name())));
+	int p 	= xr_strcmp(A->ParentName(),B->ParentName());
+	int n 	= xr_strcmp(A->Name(),B->Name());
+	return (p<0)||((0==p)&&(n<0));
 }
 
 void CEditableObject::PrepareBones()
 {
+    std::sort		(m_Bones.begin(),m_Bones.end(),pred_sort_B);
     // update parenting
     for (BoneIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
         (*b_it)->index 		= b_it-m_Bones.begin();
@@ -333,14 +334,10 @@ void CEditableObject::PrepareBones()
             (*b_it)->parent	= (parent==m_Bones.end())?0:*parent;
         }
     }
-    std::sort		(m_Bones.begin(),m_Bones.end(),pred_sort_B);
-    for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-        (*b_it)->index 		= b_it-m_Bones.begin();
-        if ((*b_it)->ParentName().size()){
-            BoneIt parent	= std::find_if(m_Bones.begin(),m_Bones.end(),fBoneNameEQ((*b_it)->ParentName()));
-            (*b_it)->parent	= (parent==m_Bones.end())?0:*parent;
-        }
-    }
+/*    
+    for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+    	Msg("%20s - %20s",(*b_it)->Name().c_str(),(*b_it)->ParentName().c_str());
+*/
     CalculateBindPose		();
 }
 

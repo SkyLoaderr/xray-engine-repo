@@ -267,7 +267,7 @@ public:
     IC BoneIt		LastBone				()	{return m_Bones.end();}
 	IC BoneVec&		Bones					()	{return m_Bones;}
     IC int			BoneCount				()	{return m_Bones.size();}
-    LPCSTR			BoneNameByID			(int id);
+    shared_str		BoneNameByID			(int id);
     int				GetRootBoneID			();
     int				PartIDByName			(LPCSTR name);
     IC CBone*		GetBone					(u32 idx){VERIFY(idx<m_Bones.size()); return m_Bones[idx];}

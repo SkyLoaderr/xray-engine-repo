@@ -300,10 +300,7 @@ bool CEditableObject::Load(IReader& F)
                 }
                 PrepareBones();
             }
-        }
-
-		// skeleton motions
-        if (bRes){
+    		// skeleton motions
             if (F.find_chunk(EOBJ_CHUNK_SMOTIONS)){
                 m_SMotions.resize(F.r_u32());
                 for (SMotionIt s_it=m_SMotions.begin(); s_it!=m_SMotions.end(); s_it++){
@@ -314,6 +311,8 @@ bool CEditableObject::Load(IReader& F)
                         m_SMotions.clear();
                         break;                 
                     }
+                    // resort bone_mots
+	                (*s_it)->SortBonesBySkeleton(m_Bones);
                 }
             }
             if (F.find_chunk(EOBJ_CHUNK_SMOTIONS2)){

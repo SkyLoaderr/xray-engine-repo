@@ -203,6 +203,7 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
 	FS_QueryMap M_THUM;
     FS_QueryMap M_GAME;
     FS_QueryMap M_GAME_DEL;
+    FS_QueryMap M_THM_DEL;
 
     if (source_list) M_BASE = *source_list;
     else FS.file_list(M_BASE,_sounds_,FS_ListFiles|FS_ClampExt,".wav");
@@ -273,7 +274,15 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
     	if (bs==M_BASE.end())
         	M_GAME_DEL.insert	(mk_pair(it->first,it->second));
     }
-    if (bProgress) pb = UI->ProgressStart(M_GAME_DEL.size(),"Mark as delete sounds...");
+    it	= M_THUM.begin();
+	_E 	= M_THUM.end();
+	for (; it!=_E; it++){
+        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+		FS_QueryPairIt bs 		= M_BASE.find(base_name);
+    	if (bs==M_BASE.end())
+        	M_THM_DEL.insert	(mk_pair(it->first,it->second));
+    }
+    if (bProgress) pb = UI->ProgressStart(M_GAME_DEL.size()+M_THM_DEL.size(),"Mark invalid sounds...");
     // mark game del sounds
     it	= M_GAME_DEL.begin();
 	_E 	= M_GAME_DEL.end();
@@ -281,6 +290,16 @@ void CSoundManager::SynchronizeSounds(bool sync_thm, bool sync_game, bool bForce
         std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
         std::string 			fn;
         FS.update_path			(fn,_game_sounds_,EFS.ChangeFileExt(base_name,".ogg").c_str());
+        EFS.MarkFile			(fn.c_str(),true);
+        if (bProgress) 		    pb->Inc	();
+    }
+    // mark game del sounds
+    it	= M_THM_DEL.begin();
+	_E 	= M_THM_DEL.end();
+	for (; it!=_E; it++){
+        std::string base_name	= EFS.ChangeFileExt(it->first,""); xr_strlwr(base_name);
+        std::string 			fn;
+        FS.update_path			(fn,_sounds_,EFS.ChangeFileExt(base_name,".thm").c_str());
         EFS.MarkFile			(fn.c_str(),true);
         if (bProgress) 		    pb->Inc	();
     }

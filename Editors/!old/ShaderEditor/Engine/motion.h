@@ -141,7 +141,7 @@ public:
 
     void			CopyMotion		(CSMotion* src);
 
-    st_BoneMotion*	FindBoneMotion	(LPCSTR name);
+    st_BoneMotion*	FindBoneMotion	(shared_str name);
     BoneMotionVec&	BoneMotions		()				{return bone_mots;}
 	Flags8			GetMotionFlags	(int bone_idx)	{return bone_mots[bone_idx].m_Flags;}
 

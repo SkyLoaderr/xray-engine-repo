@@ -62,7 +62,7 @@
       Intermediate\Engine.obj Intermediate\EStats.obj 
       Intermediate\ExportObjectOGF.obj Intermediate\ExportSkeleton.obj 
       Intermediate\ImageEditor.obj Intermediate\ImageManager.obj 
-      Intermediate\Library.obj Intermediate\LightAnimLibrary.obj 
+      Intermediate\library.obj Intermediate\LightAnimLibrary.obj 
       Intermediate\LogForm.obj Intermediate\render.obj 
       Intermediate\SoundEditor.obj Intermediate\SoundManager.obj 
       Intermediate\TLSPRITE.obj Intermediate\UI_Camera.obj 
@@ -83,7 +83,8 @@
       Intermediate\WmlMatrix3.obj Intermediate\WmlSystem.obj 
       Intermediate\WmlWinSystem.obj Intermediate\WmlContBox3.obj 
       Intermediate\WmlQuaternion.obj Intermediate\WmlApprGaussPointsFit3.obj 
-      Intermediate\WmlEigen.obj Intermediate\RAPIDMinBox.obj"/>
+      Intermediate\WmlEigen.obj Intermediate\RAPIDMinBox.obj 
+      Intermediate\SkeletonMotions.obj"/>
     <RESFILES value="resource.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -250,7 +251,7 @@
       <FILE FILENAME="Editor\ExportSkeleton.cpp" FORMNAME="" UNITNAME="ExportSkeleton.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageEditor.cpp" FORMNAME="frmImageLib" UNITNAME="ImageEditor" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\ImageManager.cpp" FORMNAME="" UNITNAME="ImageManager.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="Editor\Library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Editor\library.cpp" FORMNAME="" UNITNAME="Library.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LightAnimLibrary.cpp" FORMNAME="" UNITNAME="LightAnimLibrary.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\LogForm.cpp" FORMNAME="frmLog" UNITNAME="LogForm" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="Editor\render.cpp" FORMNAME="" UNITNAME="render.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
@@ -306,6 +307,7 @@
       <FILE FILENAME="WildMagic\WmlApprGaussPointsFit3.cpp" FORMNAME="" UNITNAME="WmlApprGaussPointsFit3.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="WildMagic\WmlEigen.cpp" FORMNAME="" UNITNAME="WmlEigen" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="WildMagic\RAPIDMinBox.cpp" FORMNAME="" UNITNAME="RAPIDMinBox" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="Engine\Visuals\SkeletonMotions.cpp" FORMNAME="" UNITNAME="SkeletonMotions" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
