@@ -62,12 +62,12 @@ void CLight_DB::Load			(IReader *fs)
 
 	// fake spot
 	{
-		Fvector	P;			P.set(-140.93f,	-0.20f + 1, -217.43f);
+		Fvector	P;			P.set(-140.93f,	-0.20f + 2, -217.43f);
 		Fvector	D;			D.set(0,-1,0);
 		light*	fake		= Create();
 		fake->set_type		(IRender_Light::SPOT);
 		fake->set_color		(1,1,1);
-		fake->set_cone		(deg2rad(30.f));
+		fake->set_cone		(deg2rad(60.f));
 		fake->set_direction	(D);
 		fake->set_position	(P);
 		fake->set_range		(3.f);
