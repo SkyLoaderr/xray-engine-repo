@@ -10,5 +10,4 @@
 #pragma comment(lib,	"x:\\xrCore"		)
 #pragma comment(lib,	"x:\\xrCDB"			)
 #pragma comment(lib,	"dsound"			)
-#pragma comment(lib,	"dxguid"			)
 #pragma comment(lib,	"msacm32"			)
