@@ -61,11 +61,11 @@ void CWeaponHUD::Load(CInifile* ini, const char* section)
 	mFireCycled					= PKinematics(Visual())->ID_Cycle_Safe("fire");
 	mFireSpinup					= PKinematics(Visual())->ID_Cycle_Safe("spinup");
 	char name[64];
-	for (int i=0; ; i++)
+	for (int i=0; i<32; i++)
 	{
 		sprintf(name,"shoot%d",i);
 		CMotionDef* M			= PKinematics(Visual())->ID_FX_Safe(name);
-		if (!M)					break;
+		if (!M)					continue;
 		mShoots.push_back		(M);
 	}
 	
