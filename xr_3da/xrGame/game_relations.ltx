@@ -1,6 +1,7 @@
 [game_relations]
 rating			= novice, 10, veteran, 50, master, 100, super_master
 reputation		= bad, -20, neutral, 20, good, 40, very_good
+goodwill        = deadly_enemy, -20, enemy, 0, hostile, 20, indifferent, 40, companionable, 50, friendly
 
 ;пороговые значения для отношения персонажей
 attitude_neutal_threshold = -25 
@@ -17,7 +18,7 @@ goodwill_friend = 100
 communities		= stalker, 1, monolith, 2, military, 3, killer, 4, ecolog, 5, dolg, 6, freedom, 7, bandit, 8
 
 [communities_relations]
-;;				stalker, monolith, military, killer, ecolog, dolg, svoboda, bandit
+;				stalker, monolith, military, killer, ecolog, dolg, svoboda, bandit
 ======================================================================================
 stalker		=         0,        0,      -20,      0,      0,    0,       0,      0 
 monolith	=         0,        0,        0,      0,      0,    0,       0,      0 
@@ -27,3 +28,21 @@ ecolog		=         0,        0,        0,      0,      0,    0,       0,      0
 dolg		=         0,        0,        0,      0,      0,    0,       0,      0 
 freedom		=         0,        0,        0,      0,      0,    0,       0,      0 
 bandit		=         0,        0,        0,      0,      0,    0,       0,      0 
+
+
+[rank_relations]
+;			  	   novice,   veteran,   master,   super_master
+;================================================================
+novice        =         0,         0,        0,            0
+veteran       =         0,         0,        0,            0
+master        =         0,         0,        0,            0
+super_master  =         0,         0,        0,            0
+
+
+[reputation_relations]
+;				   bad,      neutral,   good,     very_good
+;================================================================
+bad			  =      0,         0,        0,         0	
+neutral		  =      0,         0,        0,         0
+good		  =      0,         0,        0,         0
+very_good     =      0,         0,        0,         0
