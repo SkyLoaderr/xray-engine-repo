@@ -402,6 +402,16 @@ void CDeflector::Save()
 		_FREE(lm_rad);
 	}
 
+	// Saving
+	sprintf			(lm.name,"L#%d_base",deflNameID);
+	TGAdesc			p;
+	p.format		= IMG_32B;
+	p.scanlenght	= lm.dwWidth*4;
+	p.width			= lm.dwWidth;
+	p.height		= lm.dwHeight;
+	p.data			= surf;
+	p.maketga		(lm.name);
+	
 	// Borders correction
 	for (DWORD ref=254; ref>0; ref--)
 		if (!ApplyBorders(lm,ref)) break;
@@ -410,18 +420,6 @@ void CDeflector::Save()
 	char FN[_MAX_PATH];
 	sprintf	(lm.name,"L#%d",deflNameID);
 	sprintf	(FN,"%s%s.dds",g_params.L_path,lm.name);
-
-	/*
-	{
-		TGAdesc			p;
-		p.format		= IMG_24B;
-		p.scanlenght	= lm.dwWidth*4;
-		p.width			= lm.dwWidth;
-		p.height		= lm.dwHeight;
-		p.data			= lm.pSurface;
-		p.maketga		(lm.name);
-	}
-	*/
 
 	R_ASSERT(
 		xrDXTC_Compress(FN,eDXT1,FALSE,lm.pSurface,lm.dwWidth,lm.dwHeight,0xff)
