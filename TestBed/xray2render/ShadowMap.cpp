@@ -857,7 +857,7 @@ HRESULT CMyD3DApplication::RestoreDeviceObjects()
 	s_Filter_Bloom.compile			(m_pd3dDevice,"shaders\\D\\filter_bloom.s");
 
 	// Create bloom filter
-	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.2f,2.f,w/2,h/2);
+	CalcGauss						(bloom_W,bloom_H,bloom_V,7,3.3,1.2f,2.f,w/2.f,h/2.f);
 
 	// Create special textures
 	LPDIRECT3DTEXTURE9				height	= 0;
