@@ -37,6 +37,7 @@ public:
 		u32										m_start_time;
 		u32										m_stop_time;
 		bool									m_started;
+		u16										m_bone_id;
 
 				CSoundSingle					()
 		{
@@ -88,7 +89,7 @@ private:
 	u32											m_sound_mask;
 
 			void	load					(xr_vector<ref_sound*> &sounds, LPCSTR	prefix, u32 max_count, ESoundTypes type);
-	IC		Fvector compute_sound_point		(const CSoundParams &sound);
+	IC		Fvector compute_sound_point		(const CSoundSingle &sound);
 			void	remove_inappropriate_sounds(u32 sound_mask);
 			void	update_playing_sounds	();
 			bool	check_sound_legacy		(u32 internal_type) const;

@@ -8,15 +8,12 @@
 
 #pragma once
 
-IC	Fvector CSoundPlayer::compute_sound_point(const CSoundParams &sound)
+IC	Fvector CSoundPlayer::compute_sound_point(const CSoundSingle &sound)
 {
 	CObject								*object = dynamic_cast<CObject*>(this);
 	VERIFY								(object);
-
 	Fmatrix								l_tMatrix;
-	CBoneInstance						&l_tBoneInstance = PKinematics(object->Visual())->LL_GetBoneInstance(PKinematics(object->Visual())->LL_BoneID(*sound.m_bone_name));
-	l_tMatrix							= l_tBoneInstance.mTransform;
-	l_tMatrix.mulA						(object->XFORM());
+	l_tMatrix.mul_43					(object->XFORM(),PKinematics(object->Visual())->LL_GetBoneInstance(sound.m_bone_id).mTransform);
 	return								(l_tMatrix.c);
 }
 

@@ -131,8 +131,12 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 
 	remove_inappropriate_sounds	(sound.m_synchro_mask);
 
+	CObject						*object = dynamic_cast<CObject*>(this);
+	VERIFY						(object);
+
 	CSoundSingle				sound_single;
 	(CSoundParams&)sound_single	= (CSoundParams&)sound;
+	sound_single.m_bone_id		= PKinematics(object->Visual())->LL_BoneID(*sound.m_bone_name);
 	sound_single.m_sound		= sound.m_sounds[id == u32(-1) ? ::Random.randI(sound.m_sounds.size()) : id];
 	VERIFY						(sound_single.m_sound->handle);
 	VERIFY						(max_start_time >= min_start_time);
@@ -141,9 +145,6 @@ void CSoundPlayer::play				(u32 internal_type, u32 max_start_time, u32 min_start
 	sound_single.m_stop_time	= sound_single.m_start_time + sound_single.m_sound->handle->length_ms() + (max_stop_time ? ::Random.randI(min_stop_time,max_stop_time) : max_stop_time);
 	m_playing_sounds.push_back	(sound_single);
 	
-	CObject						*object = dynamic_cast<CObject*>(this);
-	VERIFY						(object);
-
 	if (Level().timeServer() >= m_playing_sounds.back().m_start_time)
 		m_playing_sounds.back().play_at_pos(object,compute_sound_point(m_playing_sounds.back()));
 }
