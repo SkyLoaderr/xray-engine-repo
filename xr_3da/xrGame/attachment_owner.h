@@ -15,14 +15,14 @@ class CInventoryItem;
 class CAttachmentOwner {
 protected:
 	xr_vector<shared_str>			m_attach_item_sections;
-	xr_vector<CAttachableItem*>	m_attached_objects;
+	xr_vector<CAttachableItem*>		m_attached_objects;
+
+public:
+	virtual CGameObject*	cast_game_object	() = 0;
+
 public:
 	IC						CAttachmentOwner	();
 	virtual					~CAttachmentOwner	();
-public:
-	virtual CGameObject*	cast_game_object	() = 0;
-public:
-
 	virtual	void			reinit				();
 	virtual	void			reload				(LPCSTR section);
 	virtual void			net_Destroy			();
