@@ -52,6 +52,7 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 	lods()->r			(nSWI.sw,nSWI.count*sizeof(FSlideWindow));
 
 	// fast
+#if RENDER==R_R2
 	if (m_fast)			{
 		destructor<IReader>	geomdef	(data->open_chunk		(OGF_FASTPATH));
 		destructor<IReader>	def		(geomdef()->open_chunk	(OGF_SWIDATA));
@@ -65,20 +66,43 @@ void FProgressive::Load		(const char* N, IReader *data, u32 dwFlags)
 		xSWI->sw			= xr_alloc<FSlideWindow>(xSWI->count);
 		def()->r			(xSWI->sw,xSWI->count*sizeof(FSlideWindow));
 	}
+#endif
 }
 
 void FProgressive::Render	(float LOD)
 {
+#if RENDER==R_R2
+	if (m_fast && RImplementation.phase==CRender::PHASE_SMAP)
+	{
+		int lod_id			= iFloor((1.f-clampr(LOD,0.f,1.f))*float(xSWI->count-1)+0.5f);
+		VERIFY				(lod_id>=0 && lod_id<int(xSWI->count));
+		FSlideWindow& SW	= xSWI->sw[lod_id];
+		RCache.set_Geometry	(m_fast->geom);
+		RCache.Render		(D3DPT_TRIANGLELIST,m_fast->vBase,0,SW.num_verts,m_fast->iBase+SW.offset,SW.num_tris);
+	} else {
+		int lod_id		= last_lod;
+		if (LOD>=0.f){
+			clamp			(LOD,0.f,1.f);
+			lod_id			= iFloor((1.f-LOD)*float(nSWI.count-1)+0.5f);
+			last_lod		= lod_id;
+		}
+		VERIFY				(lod_id>=0 && lod_id<int(nSWI.count));
+		FSlideWindow& SW	= nSWI.sw[lod_id];
+		RCache.set_Geometry	(geom);
+		RCache.Render		(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
+	}
+#else
 	int lod_id		= last_lod;
 	if (LOD>=0.f){
 		clamp		(LOD,0.f,1.f);
 		lod_id		= iFloor((1.f-LOD)*float(nSWI.count-1)+0.5f);
 		last_lod	= lod_id;
 	}
-	VERIFY			(lod_id>=0 && lod_id<int(nSWI.count));
+	VERIFY				(lod_id>=0 && lod_id<int(nSWI.count));
 	FSlideWindow& SW	= nSWI.sw[lod_id];
 	RCache.set_Geometry	(geom);
 	RCache.Render		(D3DPT_TRIANGLELIST,vBase,0,SW.num_verts,iBase+SW.offset,SW.num_tris);
+#endif
 }
 
 #define PCOPY(a)	a = pFrom->a
@@ -86,5 +110,6 @@ void	FProgressive::Copy	(IRender_Visual *pSrc)
 {
 	Fvisual::Copy	(pSrc);
 	FProgressive	*pFrom = (FProgressive *)pSrc;
-	PCOPY			(pSWI);
+	PCOPY			(nSWI);
+	PCOPY			(xSWI);
 }
