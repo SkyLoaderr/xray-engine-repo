@@ -1386,6 +1386,13 @@
 							RelativePath=".\scripts\state_mgr_weapon.script">
 						</File>
 					</Filter>
+					<Filter
+						Name="Gulags"
+						Filter="">
+						<File
+							RelativePath=".\Scripts\gulag_military.script">
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Libraries"
