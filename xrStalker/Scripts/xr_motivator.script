@@ -165,7 +165,7 @@ function motivator_binder:reload (section)
     xr_meet.add_to_binder_pda(self.object, char_ini)
 
     xr_motivator.storage[self.object:id()].helper = {   
-			position
+			position,
             enabled = false
         }
     //xr_meet.add_to_binder_pda(self.object, char_ini)
@@ -331,7 +331,8 @@ xr_formation.add_to_binder( self.object )
 -- помощник, мля !!!
 xr_motivator.storage[self.object:id ()].sos = 
     {
-    enabled = false
+    enabled = false,
+    npc = nil
     }
 xr_sos.add_to_binder (self.object, char_ini)
  
