@@ -74,3 +74,11 @@ float CGameObject::OnVisible	()
 	LL				= l_i*LL + l_f*CL;
 	return LL;
 }
+
+CObject::SavedPosition CGameObject::ps_Element(DWORD ID)
+{
+	VERIFY(ID<ps_Size());
+	CObject::SavedPosition	SP	=	PositionStack[ID];
+	SP.dwTime					+=	Level().timeServer_Delta();
+	return SP;
+}
