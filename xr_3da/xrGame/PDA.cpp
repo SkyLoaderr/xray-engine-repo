@@ -44,7 +44,6 @@ BOOL CPda::net_Spawn(LPVOID DC)
 	CSE_ALifeItemPDA	*pda = dynamic_cast<CSE_ALifeItemPDA*>(abstract);
 	R_ASSERT			(pda);
 	m_idOriginalOwner	= pda->m_original_owner;
-	TurnOn				();
 	return				(TRUE);
 }
 
@@ -169,6 +168,8 @@ BOOL CPda::feel_touch_contact(CObject* O)
 void CPda::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
+	if (H_Parent()->ID() == m_idOriginalOwner)
+		TurnOn		();
 }
 
 void CPda::OnH_B_Independent() 
