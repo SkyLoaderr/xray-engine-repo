@@ -91,13 +91,8 @@ function action_remark_activity:activate_sound()
 	self.snd_start_time = device():time_global()
 	self.snd_scheduled = true				
 
-	local snd = {}
-	--snd.rnd = snd_prob
-	snd.maxidle = 1
-	snd.sumidle = -1
-	snd.themes = parse_names(self.st.snd)
 	printf("_bp1 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
-	xr_sound.sound_update(self.object, snd, true)
+	xr_sound.set_sound(self.object, self.st.snd, true)
 	printf("_bp2 [%s]: num_snd = %d", self.object:name(), self.object:active_sound_count())
 end
 
@@ -296,7 +291,8 @@ function action_remark_activity:execute()
 end
 
 function action_remark_activity:finalize()
-	--self.object:clear_animations()
+	xr_sound.set_sound(self.object, nil)
+	
 	action_base.finalize(self)
 end
 

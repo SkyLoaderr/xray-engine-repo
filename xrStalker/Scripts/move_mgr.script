@@ -208,7 +208,6 @@ function move_mgr:reset(path_walk, path_walk_info, path_look, path_look_info, te
 
 	self.sound = nil
 	self.play_sound_after_anim_start = false
-	self.play_once = false
 
 	self.move_cb_info = move_cb_info
 	 
@@ -268,12 +267,11 @@ end
 
 function move_mgr:update_sound()
 	if self.sound then
-		-- if self.dialog_mgr:active() == nil then UNCOMMENT ME
-			xr_sound.sound_update(self.object, self.sound)
-		-- end UNCOMMENT ME
-		if self.play_once then
-			self.sound = nil
+		local prob = self.sound.prob
+		if prob == 100 or prob >= math.random(1, 100) then
+			xr_sound.set_sound(self.object, self.sound.themes)
 		end
+		self.sound = nil
 	end
 end
 
@@ -347,6 +345,8 @@ function move_mgr:finalize(npc)
 	self:reset_sl() -- отпустить прожектор
 	
 	self.at_terminal_waypoint_flag = false
+	
+	xr_sound.set_sound(self.object, nil)
 end
 
 function move_mgr:reset_sl()
@@ -520,11 +520,13 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 	if suggested_snd then
 		local snd_from = self.path_walk_info[index]["sf"]
 		if snd_from then
-			snd_from = tonumber(snd_from)
+			utils.abort("move_mgr: object '%s': 'sf' field is deprecated",
+				self.object:name())
 		end
 		local snd_to = self.path_walk_info[index]["st"]
 		if snd_to then
-			snd_to = tonumber(snd_to)
+			utils.abort("move_mgr: object '%s': 'st' field is deprecated",
+				self.object:name())
 		end
 
 		local snd_prob = self.path_walk_info[index]["sp"]
@@ -535,10 +537,9 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 		end
 
 		local suggested_snd_cont = self.path_walk_info[index]["sc"]
-		if suggested_snd_cont == "true" then
-			self.play_once = false
-		else
-			self.play_once = true
+		if suggested_snd_cont then
+			utils.abort("move_mgr: object '%s': 'sc' field is deprecated",
+				self.object:name())
 		end
 
 		local snd_wait_anim = self.path_walk_info[index]["sa"]
@@ -548,25 +549,10 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 			self.play_sound_after_anim_start = false
 		end
 
-		if not self.sound then
-			self.sound = {}
-		end
-		if snd_from and snd_to then
-			self.sound.rnd = snd_prob
-			self.sound.maxidle = snd_to - snd_from + 1
-			self.sound.sumidle = snd_from - 1
-			self.sound.themes = parse_names(suggested_snd)
-		else
-			self.sound.rnd = snd_prob
-			self.sound.maxidle = 10 - 5 + 1    -- 1  -- т.е. по умолчанию пауза от 5 до 10 сек
-			self.sound.sumidle = 5 - 1         -- 1
-			self.sound.themes = parse_names(suggested_snd)
-		end
+		self.sound = { prob = snd_prob, themes = suggested_snd }
 		-- Этот звук играть прямо сейчас, а не когда начнется анимация на позиции (после поворота и т.д.):
 		if not self.play_sound_after_anim_start then
-			-- if self.dialog_mgr:active() == nil then UNCOMMENT ME
-				self:update_sound()
-			-- end
+			self:update_sound()
 		end
 	else
 		self.sound = nil
@@ -658,17 +644,9 @@ function move_mgr:waypoint_callback(obj, action_type, index)
 				else
 					snd_prob = 100
 				end
-				if not self.sound then
-					self.sound = {}
-				end
-				self.sound.rnd = snd_prob
-				self.sound.maxidle = 1
-				self.sound.sumidle = -1
-				self.sound.themes = parse_names(suggested_snd)
+				self.sound = { prob = snd_prob, themes = suggested_snd }
 				-- Этот звук играть не прямо сейчас, а когда начнется анимация на позиции (после поворота и т.д.):
 				self.play_sound_after_anim_start = true
-				-- И только один раз:
-				self.play_once = true
 			end
 		end
 

@@ -159,7 +159,7 @@ function action_companion_activity:beh_wait_simple()
 	end 
 
 	-- 4. Если стоим на точке - петь песенки и прочую херню
-	xr_sound.sound_update(self.object, self.sound_wait) 
+	xr_sound.set_sound(self.object, sound_wait) 
 end
 
 function action_companion_activity:execute()
@@ -175,7 +175,7 @@ end
 function action_companion_activity:finalize()
 	--local enemy = self.object:best_enemy()
 	--if enemy then
-	--	xr_sound.sound_update(self.object, get_sound_for_enemy(enemy))
+	--	xr_sound.set_sound(self.object, get_sound_for_enemy(enemy))
 	--end
 
 	xr_sound.set_sound(self.object, nil) 
