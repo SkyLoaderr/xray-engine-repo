@@ -2,8 +2,8 @@
 #include "trade.h"
 #include "inventory.h"
 #include "actor.h"
-#include "ai\\stalker\\ai_stalker.h"
-#include "ai\\trader\\ai_trader.h"
+#include "ai/stalker/ai_stalker.h"
+#include "ai/trader/ai_trader.h"
 
 #include "artifact.h"
 
@@ -64,7 +64,7 @@ bool CTrade::CanTrade()
 	Level().ObjectSpace.GetNearest(pThis.base->Position(),2.f);
 	if (!Level().ObjectSpace.q_nearest.empty()) 
 	{
-		for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; i++) 
+		for (u32 i=0, n = Level().ObjectSpace.q_nearest.size(); i<n; ++i) 
 		{
 			// Может ли объект торговать
 			pEntity = dynamic_cast<CEntity *>(Level().ObjectSpace.q_nearest[i]);
@@ -260,9 +260,9 @@ void CTrade::ShowItems()
 	PSPIItem	B = GetTradeInv(pThis).m_all.begin(), I = B;
 	PSPIItem	E = GetTradeInv(pThis).m_all.end();
 
-	for ( ; I != E; I++) {
-		if (strcmp(CurName, (*I)->Name()) != 0) {
-			if (num != 0) {
+	for ( ; I != E; ++I) {
+		if (0 != strcmp(CurName, (*I)->Name())) {
+			if (!num) {
 				Msg("--TRADE:: [%s]: %i. %s ($%i) /%i items/ ",
 					pThis.base->cName(),++i,
 					CurName,l_dwCost, num);
@@ -271,7 +271,7 @@ void CTrade::ShowItems()
 			num = 1;
 			strcpy(CurName,(*I)->Name());
 		} else {
-			num ++;
+			++num;
 		}
 	}
 
@@ -301,13 +301,13 @@ void CTrade::ShowArtifactPrices()
 		Msg							("--TRADE:: [%s]: I need the following artefacts :",pThis.base->cName());
 		ARTEFACT_TRADER_ORDER_PAIR_IT	ii = l_pTrader->m_tpOrderedArtefacts.begin();
 		ARTEFACT_TRADER_ORDER_PAIR_IT	ee = l_pTrader->m_tpOrderedArtefacts.end();
-		for ( ; ii != ee; ii++) {
+		for ( ; ii != ee; ++ii) {
 			u32						l_dwAlreadyPurchased = GetTradeInv(pThis).dwfGetSameItemCount((*ii).second->m_caSection);
 			R_ASSERT				(l_dwAlreadyPurchased <= (*ii).second->m_dwTotalCount);
 			Msg						("-   Artefact %s (total %d items) :",pSettings->r_string((*ii).second->m_caSection,"inv_name"),(*ii).second->m_dwTotalCount - l_dwAlreadyPurchased);
 			ARTEFACT_ORDER_IT		iii = (*ii).second->m_tpOrders.begin();
 			ARTEFACT_ORDER_IT		eee = (*ii).second->m_tpOrders.end();
-			for ( ; iii != eee; iii++)
+			for ( ; iii != eee; ++iii)
 				if (l_dwAlreadyPurchased < (*iii).m_dwCount) {
 					Msg				("-       %d items for $%d for organization %s",(*iii).m_dwCount - l_dwAlreadyPurchased,(*iii).m_dwPrice,(*iii).m_caSection);
 					l_dwAlreadyPurchased = 0;
@@ -333,9 +333,9 @@ void CTrade::SellItem(int id)
 	CInventory &pPartnerInv		= GetTradeInv(pPartner);
 
 	PSPIItem first_in_group_it;
-	for (PSPIItem  it = first_in_group_it = pThisInv.m_all.begin(); it != pThisInv.m_all.end(); it++) {
+	for (PSPIItem  it = first_in_group_it = pThisInv.m_all.begin(); pThisInv.m_all.end() != it; ++it) {
 		if ((it != first_in_group_it) && (strcmp((*first_in_group_it)->Name(), (*it)->Name()) != 0)) {
-			i++;
+			++i;
 			first_in_group_it = it;
 		}
 
@@ -386,7 +386,7 @@ void CTrade::SellItem(CInventoryItem* pItem)
 	// актер цену не говорит никогда, все делают за него
 	u32	dwTransferMoney;
 
-	if (pPartner.type != TT_ACTOR) 
+	if (TT_ACTOR != pPartner.type) 
 		dwTransferMoney = GetPartnerTrade()->GetItemPrice(pItem);
 	else
 		dwTransferMoney = GetItemPrice(pItem);
@@ -415,9 +415,9 @@ void CTrade::SellItem(CInventoryItem* pItem)
 
 CInventory& CTrade::GetTradeInv(SInventoryOwner owner)
 {
-	R_ASSERT(owner.type != TT_NONE);
+	R_ASSERT(TT_NONE != owner.type);
 
-	return ((owner.type == TT_TRADER) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
+	return ((TT_TRADER == owner.type) ? (owner.inv_owner->m_trade_storage) : (owner.inv_owner->m_inventory));
 }
 
 CTrade*	CTrade::GetPartnerTrade()

@@ -81,9 +81,7 @@ public:
 	//список индексов выданной информации в index_list
 	virtual bool AskQuestion(SInfoQuestion& question, INFO_INDEX_LIST& index_list);
 	//персонаж получил новую порцию информации
-	virtual void OnReceiveInfo(int info_index) {};
-
-
+	virtual void OnReceiveInfo(int /**info_index/**/) {};
 
 protected:
 	// торговля
