@@ -20,7 +20,7 @@ function main ()
 	local door = get_level_object ("door")
 	local bones = {"bone16"}
 
-	local starthit = 1;
+	local starthit = 10;
 	while true do
 		  wait (500)
 		  local h = hit ()	
@@ -31,7 +31,7 @@ function main ()
           h.impulse = starthit
           h.type  = hit.strike
           door:hit (h)
-		  starthit = starthit + math.random (5, 10)
+		  starthit = starthit + math.random (100, 200)
 	end			
 
  end
