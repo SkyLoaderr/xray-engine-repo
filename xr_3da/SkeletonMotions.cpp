@@ -16,6 +16,23 @@ u16 find_bone_id(vecBones* bones, shared_str nm)
 		if (bones->at(i)->name==nm) return i;
 	return BI_NONE;
 }
+CMotionDef* find_motiondef(mdef* mots, u16 mid)
+{
+	mdef::const_iterator I,E;
+	I = mots->begin(); 
+	E = mots->end(); 
+	for ( ; I != E; ++I)
+		if ((*I).second.motion==mid) return (CMotionDef*)&(*I).second;
+	return 0;
+}
+bool find_bone_in_part(CPartition* parts, u16 part_id, u16 bid)
+{
+	VERIFY(part_id!=BI_NONE);
+	CPartDef&	P = (*parts)[part_id];
+	for (u16 i=0; i<P.bones.size(); i++)
+		if (P.bones[i]==bid) return true;
+	return false;
+}
 
 //-----------------------------------------------------------------------
 BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
@@ -24,6 +41,12 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 	// Load definitions
 	U16Vec rm_bones	(bones->size(),BI_NONE);
 	IReader* MP 	= data->open_chunk(OGF_S_SMPARAMS);
+
+	u32 p_c[4]={0,0,0,0};
+	u32 p_cnt=0;
+	u32 m_cnt=0;
+
+
 	if (MP){
 		u16 		vers 			= MP->r_u16();
 		u16 		part_bone_cnt	= 0;
@@ -74,6 +97,14 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 				CMotionDef	D;		D.Load			(MP,dwFlags);
 				if (dwFlags&esmFX)	m_fx.insert		(mk_pair(nm,D));
 				else				m_cycle.insert	(mk_pair(nm,D));
+				
+				if (!(dwFlags&esmFX)){
+					m_cnt++;
+					if (D.bone_or_part!=BI_NONE){
+						p_c[D.bone_or_part]++;
+						p_cnt++;
+					}
+				}
 			}
 		}
 		MP->close();
@@ -94,6 +125,9 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 	for (u32 i=0; i<bones->size(); i++)
 		m_motions[bones->at(i)->name].resize(dwCNT);
 	// load motions
+	u32 m_total = 0;
+	u32 m_load	= 0;
+	u32 m_r		= 0;
 	for (u32 m_idx=0; m_idx<dwCNT; m_idx++){
 		string128			mname;
 		R_ASSERT			(MS->find_chunk(m_idx+1));             
@@ -102,26 +136,42 @@ BOOL motions_value::load		(LPCSTR N, IReader *data, vecBones* bones)
 		shared_str	m_key	= shared_str(strlwr(mname));
 		m_motion_map.insert	(mk_pair(m_key,m_idx));
 
+		CMotionDef* MD		= find_motiondef(&m_cycle,(u16)m_idx);
+
 		u32 dwLen			= MS->r_u32();
 		for (u32 i=0; i<bones->size(); i++){
-			VERIFY2			(rm_bones[i]!=BI_NONE,"Invalid remap index.");
-			CMotion&		M	= m_motions[bones->at(rm_bones[i])->name][m_idx];
+			u16 bone_id		= rm_bones[i];
+			VERIFY2			(bone_id!=BI_NONE,"Invalid remap index.");
+
+			bool bNeedLoad	= true;
+			if (MD){
+				if (MD->bone_or_part!=BI_NONE){
+					bNeedLoad= find_bone_in_part(&m_partition,MD->bone_or_part,bone_id);
+					m_r		++;
+				}
+			}
+
+			m_total			++;
+			m_load			+= bNeedLoad?1:0;
+
+			CMotion&		M	= m_motions[bones->at(bone_id)->name][m_idx];
 			M._count			= dwLen;
 			u8	t_present		= MS->r_u8	();
 			u32 crc_q			= MS->r_u32	();
-			M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
+			if (bNeedLoad)		M._keysR.create		(crc_q,dwLen,(CKeyQR*)MS->pointer());
 			MS->advance			(dwLen * sizeof(CKeyQR));
 			if (t_present)	{
-				u32 crc_t			= MS->r_u32	();
-				M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
-				MS->advance			(dwLen * sizeof(CKeyQT));
-				MS->r_fvector3		(M._sizeT);
-				MS->r_fvector3		(M._initT);
+				u32 crc_t		= MS->r_u32	();
+				if (bNeedLoad)	M._keysT.create		(crc_t,dwLen,(CKeyQT*)MS->pointer());
+				MS->advance		(dwLen * sizeof(CKeyQT));
+				MS->r_fvector3	(M._sizeT);
+				MS->r_fvector3	(M._initT);
 			}else{
-				MS->r_fvector3		(M._initT);
+				MS->r_fvector3	(M._initT);
 			}
 		}
 	}
+	Msg("Motions %d/%d %4d/%4d/%d, %s",p_cnt,m_cnt, m_load,m_total,m_r,N);
 	MS->close();
 	return bRes;
 }
