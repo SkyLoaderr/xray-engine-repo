@@ -81,7 +81,7 @@ void CStateManagerZombie::initialize()
 
 void CStateManagerZombie::execute()
 {
-	u32 state_id = u32(-1);
+	//u32 state_id = u32(-1);
 
 	select_state(eStateRest); 
 
