@@ -18,7 +18,7 @@ function Dialog:is_speech ()
 end
 
 function Dialog:stop_speech ()
-	if self.speech = false then return end
+	if self.speech == false then return end
 	self.current = self.current + 1
 	self.speech_id = 0
 end
