@@ -14,7 +14,7 @@ SCarLight::~SCarLight()
 {
 
 	if(light_render) ::Render->light_destroy	(light_render)	;
-	if(glow_render)  ::Render->glow_destroy	(glow_render)		;
+	if(glow_render)  ::Render->glow_destroy		(glow_render)	;
 	light_render	=NULL										;
 	glow_render		=NULL										;
 	bone_id			=BI_NONE									;
@@ -64,6 +64,18 @@ void SCarLight::Switch()
 	glow_render ->set_active(state);
 	light_render->set_active(state);
 }
+void SCarLight::TurnOn()
+{
+	if(isOn()) return;
+	glow_render ->set_active(true);
+	light_render->set_active(true);
+}
+void SCarLight::TurnOff()
+{
+	if(!isOn()) return;
+	glow_render ->set_active(false);
+	light_render->set_active(false);
+}
 
 bool SCarLight::isOn()
 {
@@ -82,6 +94,8 @@ void SCarLight::Update()
 	light_render->set_position	(M.c);
 	glow_render->set_position	(M.c);
 }
+
+
 CCarLights::CCarLights()
 {
 	m_pcar=NULL;
@@ -120,7 +134,20 @@ void CCarLights::SwitchHeadLights()
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();
 	for(;i!=e;++i) (*i)->Switch();
 }
-
+bool CCarLights::IsLight(u16 bone_id)
+{
+	SCarLight* light=NULL;
+	return findLight(bone_id,light);
+}
+bool CCarLights::findLight(u16 bone_id,SCarLight* light)
+{
+	LIGHTS_I i,e=m_lights.end();
+	SCarLight find_light;
+	find_light.bone_id=bone_id;
+	i=std::find_if(m_lights.begin(),e,SFindLightPredicate(&find_light));
+	light=*i;
+	return i!=e;
+}
 CCarLights::~CCarLights()
 {
 	LIGHTS_I i =m_lights.begin(),e=m_lights.end();

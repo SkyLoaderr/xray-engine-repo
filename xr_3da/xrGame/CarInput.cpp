@@ -75,19 +75,19 @@ bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 		}
 		return		(false);
 	}
-/*
-	if (light_bone(l_sBoneID)) {
+	SCarLight* light=NULL;
+	if (m_lights.findLight(l_sBoneID,light)) {
 		switch(l_tObjectAction.m_tGoalType) {
 			case MonsterSpace::eObjectActionActivate : {
-				light_on	(l_sBoneID);
+				light->TurnOn();
 				return		((l_tObjectAction.m_bCompleted = true) == false);
 			}
 			case MonsterSpace::eObjectActionDeactivate : {
-				light_off	(l_sBoneID);
+				light->TurnOff();
 				return		((l_tObjectAction.m_bCompleted = true) == false);
 			}
 			case MonsterSpace::eObjectActionUse : {
-				light_switch(l_sBoneID);
+				light->Switch();
 				return		((l_tObjectAction.m_bCompleted = true) == false);
 			}
 			default : 
@@ -95,7 +95,7 @@ bool CCar::bfAssignObject(CEntityAction *tpEntityAction)
 		}
 		return		(false);
 	}
-	*/
+	
 	return			(false);
 }
 
