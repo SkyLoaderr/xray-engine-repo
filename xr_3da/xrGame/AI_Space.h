@@ -48,12 +48,27 @@ private:
 
 	// Debug
 	Shader*							sh_debug;
+
+	typedef struct tagSGraphEdge {
+		u32		dwVertexNumber;
+		float	fPathDistance;
+	} SGraphEdge;
+
+	typedef struct tagSGraphVertex {
+		Fvector				tPoint;
+		u32					dwNodeID;
+		unsigned char		ucVertexType;
+		u32					dwNeighbourCount;
+		tagSGraphEdge		*tpaEdges;
+	} SGraphVertex;
+
+	vector<SGraphVertex>			tpaGraph;		// graph
 public:
 	// Query
 	vector<bool>					q_mark_bit;		// temporal usage mark for queries
 	vector<bool>					q_mark_bit_x;		// temporal usage mark for queries
 	vector<BYTE>					q_mark;			// temporal usage mark for queries
-	vector<u32>					q_stack;
+	vector<u32>						q_stack;
 	
 	CAI_Space		();
 	~CAI_Space		();

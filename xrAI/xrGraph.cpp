@@ -15,7 +15,7 @@
 #include "ai_nodes.h"
 #include "ai_a_star.h"
 
-#define MAX_DISTANCE_TO_CONNECT		200.f
+#define MAX_DISTANCE_TO_CONNECT		20.f
 #define THREAD_COUNT				6
 
 #define GET_INDEX(N,K)				iFloor((2*N - 1 - sqrtf((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
@@ -203,8 +203,6 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Searching AI map for corresponding nodes");
 	START_THREADS(tpaGraph.size(),CNodeThread);
 	tThreadManager.wait();
-	
-	//Phase("Erasing points without corresponding nodes");
 	Msg("%d points don't have corresponding nodes (they are deleted)",dwfErasePoints());
 
 	Phase("Building graph");

@@ -270,12 +270,49 @@ void CAI_Space::Load(LPCSTR name)
 
 	// for a* search
 	vfLoadSearch();
-	//
+	
+	// for graph
+	
+	strconcat	(fName,name,"level.graph");
+	
+	if (!Engine.FS.Exist(fName))
+		return;
+
+	CStream		*tpGraph = Engine.FS.Open(fName);
+	
+	VERIFY(m_header.version == tpGraph->Rdword());	
+	while (!tpGraph->Eof()) {
+		SGraphVertex tGraphVertex;
+		tpGraph->Rvector(tGraphVertex.tPoint);
+		tGraphVertex.ucVertexType = tpGraph->Rbyte();
+		tGraphVertex.dwNodeID = tpGraph->Rdword();	
+		tGraphVertex.dwNeighbourCount = tpGraph->Rdword();	
+		tGraphVertex.tpaEdges = (SGraphEdge *)xr_malloc(tGraphVertex.dwNeighbourCount*sizeof(SGraphEdge));
+		for (int j=0; j<(int)tGraphVertex.dwNeighbourCount; j++) {
+			tGraphVertex.tpaEdges[j].dwVertexNumber = tpGraph->Rdword();
+			tGraphVertex.tpaEdges[j].fPathDistance = tpGraph->Rfloat();
+		}
+		tpaGraph.push_back(tGraphVertex);
+	}
+	Engine.FS.Close(tpGraph);
 }
 
 void CAI_Space::Render()
 {
 	if (!bDebug)	return;
+
+	{
+		for (int i=0; i<(int)tpaGraph.size(); i++) {
+			Fvector t1 = tpaGraph[i].tPoint;
+			t1.y += .6f;
+			Device.Primitive.dbg_DrawAABB(t1,.5f,.5f,.5f,D3DCOLOR_XRGB(0,0,255));
+			for (int j=0; j<(int)tpaGraph[i].dwNeighbourCount; j++) {
+				Fvector t2 = tpaGraph[tpaGraph[i].tpaEdges[j].dwVertexNumber].tPoint;
+				t2.y += .6f;
+				Device.Primitive.dbg_DrawLINE(Fidentity,t1,t2,D3DCOLOR_XRGB(0,255,0));
+			}
+		}
+	}
 
 	// temporary
 	for (int i=0; i<3; i++) {
@@ -292,6 +329,7 @@ void CAI_Space::Render()
 		}
 
 	}
+
 	if (0==vfs)						return;
 	if (0==sh_debug)				return;
 	if (0==(psAI_Flags&aiDebug))	return;
@@ -422,6 +460,7 @@ int	CAI_Space::q_LoadSearch(const Fvector& pos)
 	return selected;
 }
 
+#ifdef DEBUG
 #define MAP_AVAILABLE_CELL		'.'
 #define MAP_UNAVAILABLE_CELL	'x'
 #define ABC_SIZE				62
@@ -555,3 +594,4 @@ void CAI_Space::vfCreate2DMap(char *caFile0, char *caFile1, char *caFile2)
 		_FREE(tppMap[i]);
 	_FREE(tppMap);
 }
+#endif
