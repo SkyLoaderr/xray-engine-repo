@@ -4,19 +4,18 @@
 
 #include "Blender.h"
 
-class ENGINE_API CBlender_Editor_Wire : public CBlender  
+class ENGINE_API CBlender_ShTex : public CBlender  
 {
-	string64	oT_Factor;
 public:
-	virtual		LPCSTR		getComment()	{ return "EDITOR: wire";	}
+	virtual		LPCSTR		getComment()	{ return "INTERNAL: shadow rendering";	}
 
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);
 
 	virtual		void		Compile			(CBlender_Compile& C);
 
-	CBlender_Editor_Wire();
-	virtual ~CBlender_Editor_Wire();
+	CBlender_ShTex();
+	virtual ~CBlender_ShTex();
 };
 
 #endif //BLENDER_EDITOR_WIRE_H

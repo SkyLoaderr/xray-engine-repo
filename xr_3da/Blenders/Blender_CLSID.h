@@ -19,6 +19,7 @@
 #define		B_SCREEN_GRAY	MK_CLSID('S','_','G','R','A','Y',' ',' ')
 
 #define		B_LIGHT			MK_CLSID('L','I','G','H','T',' ',' ',' ')
+#define		B_SHADOW_TEX	MK_CLSID('S','H','_','T','E','X',' ',' ')
 
 // Editor
 #define		B_EDITOR_WIRE	MK_CLSID('E','_','W','I','R','E',' ',' ')

@@ -11,7 +11,7 @@
 class ENGINE_API CBlender_Screen_GRAY : public CBlender  
 {
 public:
-	virtual		LPCSTR		getComment()	{ return "screen-space gray-scale set"; }
+	virtual		LPCSTR		getComment()	{ return "INTERNAL: gray-scale effect"; }
 	
 	virtual		void		Save			(CFS_Base&  FS);
 	virtual		void		Load			(CStream&	FS, WORD version);

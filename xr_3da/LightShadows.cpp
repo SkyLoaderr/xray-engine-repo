@@ -96,7 +96,7 @@ void CLightShadows::calculate	()
 
 	Device.Shader.set_RT		(RT->pRT,0);
 	Device.Statistic.TEST.Begin	();
-	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,255,255),1,0);
+	HW.pDevice->Clear			(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(0,0,0),1,0);
 	
 	// set shader
 	Device.Shader.set_Shader	(sh_Texture);
@@ -156,7 +156,6 @@ void CLightShadows::calculate	()
 			int		s_y			=	slot_id/slot_line;
 			D3DVIEWPORT8 VP		=	{s_x*S_size,s_y*S_size,S_size,S_size,0,1 };
 			CHK_DX					(HW.pDevice->SetViewport(&VP));
-			HW.pDevice->Clear		(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,0,0),1,0);
 			
 			// Render object-parts
 			for (int n_it=0; n_it<C.nodes.size(); n_it++)
@@ -164,7 +163,7 @@ void CLightShadows::calculate	()
 				NODE& N			=	C.nodes[n_it];
 				CVisual *V		=	N.val.pVisual;
 				Device.set_xform_world	(N.val.Matrix);
-				// V->Render				(.7f);
+				V->Render				(.7f);
 			}
 			
 			// register shadow and increment slot
@@ -179,6 +178,9 @@ void CLightShadows::calculate	()
 	id.clear		();
 	
 	Device.Statistic.TEST.End	();
+
+	Device.set_xform_project	(Device.mProject);
+	Device.set_xform_view		(Device.mView);
 }
 
 void CLightShadows::render	()

@@ -7,30 +7,30 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CBlender_Editor_Wire::CBlender_Editor_Wire()
+CBlender_ShTex::CBlender_ShTex()
 {
 	description.CLS		= B_EDITOR_WIRE;
 	strcpy				(oT_Factor,"$null");
 }
 
-CBlender_Editor_Wire::~CBlender_Editor_Wire()
+CBlender_ShTex::~CBlender_ShTex()
 {
 
 }
 
-void	CBlender_Editor_Wire::Save	( CFS_Base& FS	)
+void	CBlender_ShTex::Save	( CFS_Base& FS	)
 {
 	CBlender::Save	(FS);
 	xrPWRITE_PROP	(FS,"TFactor",	xrPID_CONSTANT, oT_Factor);
 }
 
-void	CBlender_Editor_Wire::Load	( CStream& FS, WORD version	)
+void	CBlender_ShTex::Load	( CStream& FS, WORD version	)
 {
 	CBlender::Load	(FS,version);
 	xrPREAD_PROP	(FS,xrPID_CONSTANT,	oT_Factor);
 }
 
-void CBlender_Editor_Wire::Compile	(CBlender_Compile& C)
+void CBlender_ShTex::Compile	(CBlender_Compile& C)
 {
 	CBlender::Compile		(C);
 	C.PassBegin		();
