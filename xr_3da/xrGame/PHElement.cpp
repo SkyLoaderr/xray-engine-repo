@@ -790,11 +790,13 @@ void CPHElement::ReEnable(){
 
 void	CPHElement::Freeze()
 {
+	if(!m_body) return;
 	was_enabled_before_freeze=!!dBodyIsEnabled(m_body);
 	dBodyDisable(m_body);
 }
 void	CPHElement::UnFreeze()
 {
+	if(!m_body) return;
 	if(was_enabled_before_freeze)dBodyEnable(m_body);
 }
 void	CPHElement::	applyImpulseTrace		(const Fvector& pos, const Fvector& dir, float val,u16 id)
