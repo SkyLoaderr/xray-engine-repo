@@ -61,7 +61,7 @@ function main_menu:InitControls()
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	local btn_bonus_rect   = {x = self.btn_rect.x,
-							 y = btn_quit_rect.y - btn_rect.height - self.indent,
+							 y = btn_quit_rect.y - self.btn_rect.height - self.indent,
 							 width = self.btn_rect.width,
 							 height = self.btn_rect.height}
 	
