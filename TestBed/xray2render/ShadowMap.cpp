@@ -72,14 +72,16 @@ struct TVERTEXbloom
 	D3DXVECTOR2 tc2;
 	D3DXVECTOR2 tc3;
 };
-#define TVERTEXbloom_FVF (D3DFVF_XYZRHW | D3DFVF_TEX1)
+#define TVERTEXbloom_FVF (D3DFVF_XYZRHW | D3DFVF_TEX4)
 D3DVERTEXELEMENT9 decl_vert2Dbloom[] =
 {
 	{ 0, 0,		D3DDECLTYPE_FLOAT4, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITIONT,	0 },
 	{ 0, 16,	D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,	0 },
+	{ 0, 24,	D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,	0 },
+	{ 0, 32,	D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,	0 },
+	{ 0, 40,	D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD,	0 },
 	D3DDECL_END()
 };
-
 
 //-----------------------------------------------------------------------------
 // Name: class CMyD3DApplication
@@ -549,11 +551,16 @@ HRESULT CMyD3DApplication::InitDeviceObjects()
 
 	// Bloom-combine VB
 	{
+		TVERTEXbloom	*V;
 		const float	 w	= float(m_d3dsdBackBuffer.Width),	h = float(m_d3dsdBackBuffer.Height);
 		const float  eps= 0.01f;
 		const float _w	= w-1.f, _h = h-1.f;
 		const float thw = .5f/w;
 		const float thh = .5f/h;
+
+		// uv-offsets
+		D3DXVECTOR2		offs[4];
+		offs[0]			= D3DXVECTOR2();
 
 		m_pd3dDevice->CreateVertexBuffer	(4 * sizeof(TVERTEX), D3DUSAGE_WRITEONLY, 0, D3DPOOL_MANAGED, &m_pQuadVB, NULL);
 		m_pQuadVB->Lock						(0, 0, (void**)&pDstT, 0);
