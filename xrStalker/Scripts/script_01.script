@@ -113,7 +113,7 @@ function main()
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				look	(look.fire_point, stalker1),
 				anim	(anim.danger),
-				cond	(cond.time_end, 9000)
+				cond	(cond.time_end, 000)
 				)
 			action(
 				stalker2,
@@ -122,6 +122,7 @@ function main()
 				anim	(anim.danger),
 				cond	(cond.time_end, 9000)
 				)
+				wait(20000)
                	break		
 		end
 		wait()
