@@ -193,8 +193,6 @@ public:
 	}
 	void			_stab		(const AABBNoLeafNode* node)
 	{
-		Fvector	P;
-		
 		// Actual ray/aabb test
 		if (!_box((Fvector&)node->mAABB.mCenter,(Fvector&)node->mAABB.mExtents))	return;
 		
