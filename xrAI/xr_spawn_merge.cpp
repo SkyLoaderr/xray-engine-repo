@@ -272,7 +272,6 @@ void xrMergeSpawns()
 	Phase						("Searching for corresponding graph vertices");
 	for (u32 i=0, N = tpLevels.size(); i<N; i++)
 		tThreadManager.start	(tpLevels[i]);
-		//tpLevels[i]->Execute();
 	tThreadManager.wait();
 	
 	Phase						("Merging spawn files");
