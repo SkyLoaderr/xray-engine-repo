@@ -112,5 +112,22 @@ void CActor::OnEvent		(NET_Packet& P, u16 type)
 			//Wfrom->setDestroy	(TRUE);
 		}
 		break;
+	case GE_INV_ACTION:
+		{
+			P.r_u16		(id);
+			CObject* O	= Level().Objects.net_Find	(id);
+			
+			if(0 == O) break;
+			CActor* pActor = dynamic_cast<CActor*>(O);
+			if(NULL == pActor) break;
+
+			s32 cmd;
+			P.r_s32		(cmd);
+			u32 flags;
+			P.r_u32		(flags);
+			
+			pActor->m_inventory.Action(cmd, flags);
+		}
+		break;
 	}
 }

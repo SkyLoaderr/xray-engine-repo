@@ -755,6 +755,27 @@ PIItem CInventory::ActiveItem()const
 
 bool CInventory::Action(s32 cmd, u32 flags) 
 {
+	CActor *pActor = dynamic_cast<CActor*>(m_pOwner);
+	
+	if(!Level().Server->client_Count() && pActor)
+	{
+		switch(cmd)
+		{
+		case kUSE:
+		case kDROP:
+			{
+				//создать и отправить пакет
+				NET_Packet		P;
+				pActor->u_EventGen		(P,GE_INV_ACTION, pActor->ID());
+				P.w_s32					(cmd);
+				P.w_u32					(flags);
+				pActor->u_EventSend		(P);
+			}
+			break;
+		}
+	}
+
+
 	if(m_activeSlot < m_slots.size() && 
 			m_slots[m_activeSlot].m_pIItem && 
 			m_slots[m_activeSlot].m_pIItem->Action(cmd, flags)) 
@@ -784,7 +805,6 @@ bool CInventory::Action(s32 cmd, u32 flags)
 			if(flags&CMD_START && m_pTarget && m_pTarget->Useful()) 
 			{
 				// Generate event
-				CActor *pActor = dynamic_cast<CActor*>(m_pOwner);
 				if(pActor) 
 				{
 					NET_Packet P;
