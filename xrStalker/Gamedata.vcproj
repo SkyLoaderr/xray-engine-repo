@@ -134,6 +134,13 @@
 			<File
 				RelativePath=".\dialogs_yantar.xml">
 			</File>
+			<Filter
+				Name="string_table"
+				Filter="">
+				<File
+					RelativePath=".\stable_dialogs_escape.xml">
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="others"
