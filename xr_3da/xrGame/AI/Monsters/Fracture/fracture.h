@@ -1,5 +1,6 @@
 #pragma once
-#include "../../monsters/BaseMonster/base_monster.h"
+#include "../BaseMonster/base_monster.h"
+#include "../../../script_export_space.h"
 
 class CStateManagerFracture;
 
@@ -12,5 +13,10 @@ public:
 
 	virtual void	Load				(LPCSTR section);
 	virtual void	CheckSpecParams		(u32 spec_params);
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
+add_to_type_list(CFracture)
+#undef script_type_list
+#define script_type_list save_type_list(CFracture)

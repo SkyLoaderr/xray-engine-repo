@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../jump_ability.h"
+#include "../../../script_export_space.h"
 
 class CStateManagerChimera;
 
@@ -45,6 +46,10 @@ public:
 	virtual void	HitEntityInJump				(const CEntity *pEntity);
 
 	IC		void	SetUpperState				(bool state = true) {b_upper_state = state;}
+	
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
-
+add_to_type_list(CChimera)
+#undef script_type_list
+#define script_type_list save_type_list(CChimera)

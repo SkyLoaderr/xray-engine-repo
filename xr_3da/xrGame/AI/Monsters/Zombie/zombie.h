@@ -2,6 +2,7 @@
 #include "../BaseMonster/base_monster.h"
 #include "../ai_monster_bones.h"
 #include "../anim_triple.h"
+#include "../../../script_export_space.h"
 
 #define FAKE_DEATH_TYPES_COUNT	3
 
@@ -43,4 +44,10 @@ public:
 	u8				fake_death_count;
 	float			health_death_threshold;
 	float			last_health_fake_death;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CZombie)
+#undef script_type_list
+#define script_type_list save_type_list(CZombie)

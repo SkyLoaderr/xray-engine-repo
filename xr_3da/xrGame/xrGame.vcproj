@@ -2927,6 +2927,13 @@
 								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_vampire_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Bloodsucker\bloodsucker_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Boar"
@@ -2943,6 +2950,13 @@
 						<File
 							RelativePath=".\ai\Monsters\Boar\boar_state_manager.h">
 						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Boar\boar_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Crow"
@@ -2969,6 +2983,13 @@
 						<File
 							RelativePath=".\ai\Monsters\Dog\dog_state_manager.h">
 						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Dog\dog_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Flesh"
@@ -2985,6 +3006,13 @@
 						<File
 							RelativePath=".\ai\Monsters\Flesh\flesh_state_manager.h">
 						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Flesh\flesh_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Rat"
@@ -3060,6 +3088,13 @@
 						<File
 							RelativePath=".\ai\Monsters\Pseudodog\pseudodog_state_manager.h">
 						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Pseudodog\pseudodog_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Burer"
@@ -3115,6 +3150,13 @@
 						<File
 							RelativePath=".\ai\Monsters\Burer\burer_states.h">
 						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Burer\burer_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Chimera"
@@ -3181,6 +3223,13 @@
 								RelativePath=".\ai\Monsters\Chimera\chimera_state_hunting_move_to_cover_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Chimera\chimera_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="PseudoGigant"
@@ -3203,6 +3252,13 @@
 						<File
 							RelativePath=".\ai\Monsters\PseudoGigant\pseudogigant_state_manager.h">
 						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\PseudoGigant\pseudogigant_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Poltergeist"
@@ -3245,6 +3301,13 @@
 								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_state_attack_hidden_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Poltergeist\poltergeist_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Zombie"
@@ -3271,6 +3334,13 @@
 								RelativePath=".\ai\Monsters\Zombie\zombie_state_attack_run_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Zombie\zombie_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Fracture"
@@ -3287,6 +3357,13 @@
 						<File
 							RelativePath=".\ai\Monsters\Fracture\fracture_state_manager.h">
 						</File>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Fracture\fracture_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Snork"
@@ -3311,6 +3388,13 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\Snork\snork_jump.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Snork\snork_script.cpp">
 							</File>
 						</Filter>
 					</Filter>
@@ -3377,6 +3461,13 @@
 								RelativePath=".\controller_state_panic_inline.h">
 							</File>
 						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Controller\controller_script.cpp">
+							</File>
+						</Filter>
 					</Filter>
 					<Filter
 						Name="Cat"
@@ -3413,6 +3504,13 @@
 							</File>
 							<File
 								RelativePath=".\ai\Monsters\Cat\cat_state_attack_rat_run_inline.h">
+							</File>
+						</Filter>
+						<Filter
+							Name="Script"
+							Filter="">
+							<File
+								RelativePath=".\ai\Monsters\Cat\cat_script.cpp">
 							</File>
 						</Filter>
 					</Filter>

@@ -5,6 +5,7 @@
 #include "../invisibility.h"
 #include "../controlled_actor.h"
 #include "../anim_triple.h"
+#include "../../../script_export_space.h"
 
 class CAI_Bloodsucker : public CBaseMonster, 
 						public CInvisibility,
@@ -64,4 +65,9 @@ public:
 	virtual	void			on_activate				();
 	virtual	void			on_deactivate			();
 	virtual	void			on_change_visibility	(bool b_visibility);
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CAI_Bloodsucker)
+#undef script_type_list
+#define script_type_list save_type_list(CAI_Bloodsucker)

@@ -4,6 +4,7 @@
 #include "../ai_monster_jump.h"
 #include "../../../UIStaticItem.h"
 #include "controller_psy_aura.h"
+#include "../../../script_export_space.h"
 
 class CController : public CBaseMonster, 
 					public CJumping,
@@ -69,5 +70,11 @@ public:
 
 public:
 	CAnimTriple		anim_triple_control;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CController)
+#undef script_type_list
+#define script_type_list save_type_list(CController)
 

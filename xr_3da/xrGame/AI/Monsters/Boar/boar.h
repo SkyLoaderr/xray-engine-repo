@@ -2,6 +2,7 @@
 
 #include "../BaseMonster/base_monster.h"
 #include "../controlled_entity.h"
+#include "../../../script_export_space.h"
 
 class CAI_Boar : public CBaseMonster,
 				 public CControlledEntity<CAI_Boar> {
@@ -30,5 +31,11 @@ public:
 			bool	look_at_enemy;
 	
 	virtual bool	ability_can_drag	() {return true;}
+	
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 
 };
+
+add_to_type_list(CAI_Boar)
+#undef script_type_list
+#define script_type_list save_type_list(CAI_Boar)

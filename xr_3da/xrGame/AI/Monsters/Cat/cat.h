@@ -1,6 +1,7 @@
 #pragma once
 #include "../BaseMonster/base_monster.h"
 #include "../jump_ability.h"
+#include "../../../script_export_space.h"
 
 class CCat : public CBaseMonster, public CJumpingAbility {
 	typedef		CBaseMonster	inherited;
@@ -18,6 +19,12 @@ public:
 			void	try_to_jump			();
 
 	virtual	void	HitEntityInJump		(const CEntity *pEntity);
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CCat)
+#undef script_type_list
+#define script_type_list save_type_list(CCat)
 
 
