@@ -20,10 +20,10 @@ CCustom2DProjector::CCustom2DProjector()
     shader_blended	= 0;
 }
 
-bool CCustom2DProjector::LoadImage(LPCSTR nm)
+bool CCustom2DProjector::LoadImage(AnsiString nm)
 {
 	name			= nm;
-    ImageLib.LoadTextureData(nm,data,w,h);
+    ImageLib.LoadTextureData(name.c_str(),data,w,h);
     return Valid();
 }
 

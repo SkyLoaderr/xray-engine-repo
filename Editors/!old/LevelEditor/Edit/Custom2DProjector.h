@@ -24,7 +24,7 @@ public:
     void			Render				(bool blended);
     void			CreateShader		();
     void			DestroyShader		();
-    bool			LoadImage			(LPCSTR nm);
+    bool			LoadImage			(AnsiString nm);
     IC LPCSTR 		GetName				(){ return name.c_str(); }
     IC bool 		GetColor			(u32& color, int U, int V){
         if (Valid()&&(U<(int)w)&&(V<(int)h)){

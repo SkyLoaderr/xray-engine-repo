@@ -406,9 +406,9 @@ void CSE_ALifeObject::UPDATE_Read			(NET_Packet &tNetPacket)
 {
 };
 
-#ifdef _EDITOR
+#ifdef _EDITOR      
 #include "scene.h"
-void __fastcall	CSE_ALifeObject::OnChooseGroupControl(PropValue* sender, ChooseItemVec& lst)
+void __fastcall	CSE_ALifeObject::OnChooseGroupControl(ChooseItemVec& lst)
 {
 	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
     ObjectList objects;
@@ -423,7 +423,7 @@ void CSE_ALifeObject::FillProp				(LPCSTR pref, PropItemVec& items)
 	PHelper.CreateFloat				(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
     RChooseValue* V;
     V=PHelper.CreateChoose			(items, FHelper.PrepareKey(pref,s_name,"ALife\\Group control"),		&m_caGroupControl, smCustom);
-    V->OnChooseEvent				= OnChooseGroupControl;
+    V->OnChooseFillEvent			= OnChooseGroupControl;
 	if (m_flags.is(flUseSwitches)) {
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
 		PHelper.CreateFlag<Flags32>	(items,	FHelper.PrepareKey(pref,s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
@@ -821,7 +821,7 @@ void __fastcall	CSE_ALifeObjectPhysic::OnChangeAnim(PropValue* sender)
 	PlayAnimation				(*startup_animation);
 }
 
-void __fastcall	CSE_ALifeObjectPhysic::OnChooseAnim(PropValue* sender, ChooseItemVec& lst)
+void __fastcall	CSE_ALifeObjectPhysic::OnChooseAnim(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
     CSkeletonAnimated::accel_map::iterator _I, _E;
@@ -830,7 +830,7 @@ void __fastcall	CSE_ALifeObjectPhysic::OnChooseAnim(PropValue* sender, ChooseIte
     for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
 
-void __fastcall	CSE_ALifeObjectPhysic::OnChooseBone(PropValue* sender, ChooseItemVec& lst)
+void __fastcall	CSE_ALifeObjectPhysic::OnChooseBone(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel  	*ll_bones	= PKinematics(visual)->LL_Bones();
     CSkeletonAnimated::accel::iterator _I, _E;
@@ -850,14 +850,14 @@ void CSE_ALifeObjectPhysic::FillProp		(LPCSTR pref, PropItemVec& values) {
     {
         RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup animation"), &startup_animation, smCustom);
         V->OnChangeEvent		= OnChangeAnim;
-        V->OnChooseEvent		= OnChooseAnim;
+        V->OnChooseFillEvent	= OnChooseAnim;
     }
 
     // bones
     if (visual && PKinematics(visual))
     {
 	    RChooseValue* V 		= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Fixed bones"),		&fixed_bones, smCustom);
-        V->OnChooseEvent		= OnChooseBone;
+        V->OnChooseFillEvent	= OnChooseBone;
         V->Owner()->subitem		= 8;
     }
 }
@@ -1013,7 +1013,7 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChangeAnim(PropValue* sender)
 	PlayAnimation				(*startup_animation);
 }
 
-void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseAnim(PropValue* sender, ChooseItemVec& lst)
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseAnim(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map *ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
     CSkeletonAnimated::accel_map::iterator _I, _E;
@@ -1022,7 +1022,7 @@ void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseAnim(PropValue* sender, Choo
     for (; _I!=_E; ++_I) 		lst.push_back(SChooseItem(*_I->first,""));
 }
 
-void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseBone(PropValue* sender, ChooseItemVec& lst)
+void __fastcall	CSE_ALifeObjectHangingLamp::OnChooseBone(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel  	*ll_bones	= PKinematics(visual)->LL_Bones();
     CSkeletonAnimated::accel::iterator _I, _E;
@@ -1064,7 +1064,7 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     {
         RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Visual\\Startup animation"), &startup_animation, smCustom);
         V->OnChangeEvent		= OnChangeAnim;
-        V->OnChooseEvent		= OnChooseAnim;
+        V->OnChooseFillEvent	= OnChooseAnim;
     }
 
     // bones
@@ -1072,10 +1072,10 @@ void CSE_ALifeObjectHangingLamp::FillProp	(LPCSTR pref, PropItemVec& values)
     {
 	    RChooseValue* V;
         V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Visual\\Fixed bones"),		&fixed_bones, smCustom);
-        V->OnChooseEvent		= OnChooseBone;
+        V->OnChooseFillEvent	= OnChooseBone;
         V->Owner()->subitem		= 8;
         V        				= PHelper.CreateChoose	(values, 	FHelper.PrepareKey(pref,s_name,"Visual\\Guid bone"),		&guid_bone, smCustom);
-        V->OnChooseEvent		= OnChooseBone;
+        V->OnChooseFillEvent	= OnChooseBone;
     }
     if (flags.is(flPointAmbient)){
         PHelper.CreateFloat		(values, FHelper.PrepareKey(pref,s_name,"Ambient\\Radius"),		&m_ambient_radius,	0.f, 1000.f);
@@ -1214,7 +1214,7 @@ void __fastcall	CSE_ALifeHelicopter::OnChangeAnim(PropValue* sender)
 	CSE_Visual::PlayAnimation	(*startup_animation);
 }
 
-void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(PropValue* sender, ChooseItemVec& lst)
+void __fastcall	CSE_ALifeHelicopter::OnChooseAnim(ChooseItemVec& lst)
 {
     CSkeletonAnimated::accel_map  	*ll_motions	= PSkeletonAnimated(visual)->LL_Motions();
     CSkeletonAnimated::accel_map::iterator _I, _E;
@@ -1231,7 +1231,7 @@ void CSE_ALifeHelicopter::FillProp(LPCSTR pref, PropItemVec& values)
     {
         RChooseValue* V			= PHelper.CreateChoose	(values,	FHelper.PrepareKey(pref,s_name,"Startup Animation"), &startup_animation, smCustom);
         V->OnChangeEvent		= OnChangeAnim;
-        V->OnChooseEvent		= OnChooseAnim;
+        V->OnChooseFillEvent	= OnChooseAnim;
     }
 
 	CSE_Motion::FillProp		(FHelper.PrepareKey(pref,s_name).c_str(),	 values);
@@ -1411,6 +1411,6 @@ void CSE_ALifeTeamBaseZone::UPDATE_Write	(NET_Packet	&tNetPacket)
 void CSE_ALifeTeamBaseZone::FillProp		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProp			(pref,items);
-	PHelper.CreateU8			(values, FHelper.PrepareKey(pref,s_name,"team"),			&m_team,			0, 16);
+	PHelper.CreateU8			(items, FHelper.PrepareKey(pref,s_name,"team"),			&m_team,			0, 16);
 }
 #endif
