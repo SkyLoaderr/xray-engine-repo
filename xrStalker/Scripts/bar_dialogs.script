@@ -4,7 +4,7 @@ function has_dolg_deposite(actor, npc)
 end
 
 function give_dolg_deposite(actor, npc)	
-	dialogs.relocate_money(actor, 1000, "out")
+	dialogs.relocate_money(npc, 1000, "out")
 end
 
 
