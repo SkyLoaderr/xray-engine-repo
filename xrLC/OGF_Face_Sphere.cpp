@@ -37,7 +37,7 @@ void				OGF_Base::CalcBounds	()
 
 	// 1: calc first variation
 	Fsphere	S1;
-	S1.compute					(V.begin(),V.size());
+	Fsphere_compute				(S1,V.begin(),V.size());
 	BOOL B1						= SphereValid(V,S1);
 
 	// 2: calc ordinary algorithm (2nd)

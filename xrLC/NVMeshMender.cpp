@@ -104,9 +104,9 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 					       const Option _FixCylindricalTexGen,
                            const Option _WeightNormalsByFaceSize )
 {
-    typedef std::xr_map< std::string, unsigned int > Mapping;
-	typedef std::xr_set< Edge > EdgeSet;
-    typedef xr_vector< std::xr_set< unsigned int > > IdenticalVertices;
+    typedef xr_map< std::string, unsigned int > Mapping;
+	typedef xr_set< Edge > EdgeSet;
+    typedef xr_vector< xr_set< unsigned int > > IdenticalVertices;
 
     IdenticalVertices IdenticalVertices_;
 
@@ -166,7 +166,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
     VertexAttribute::FloatVector& positions = output[ (*pos).second ].floatVector_;
     vec3* pPositions = (vec3*)( &( positions[ 0 ] ) );
 
-    std::xr_set< unsigned int > EmptySet;
+    xr_set< unsigned int > EmptySet;
 
     for ( unsigned int i = 0; i < positions.size(); i += 3 )
     {
@@ -895,7 +895,7 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
             for ( unsigned int v = 0; v < IdenticalVertices_.size(); ++v )
             {
                 // go through each vertex & sum up it's true neighbors
-                for ( std::xr_set< unsigned int >::iterator iter = IdenticalVertices_[ v ].begin();
+                for ( xr_set< unsigned int >::iterator iter = IdenticalVertices_[ v ].begin();
                       iter != IdenticalVertices_[ v ].end();
                       ++iter )
                 {
