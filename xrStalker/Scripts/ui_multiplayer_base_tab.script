@@ -8,7 +8,7 @@
 --
 
 function main()
-	local dlg = ui_multiplayer_create_base_tab.multiplayer_create_base_tab()
+	local dlg = ui_multiplayer_base_tab.multiplayer_create_base_tab()
 	level.start_stop_menu(dlg,true)
 	dlg:InitControls("Test base tab", 200, 200)
 	while true do
