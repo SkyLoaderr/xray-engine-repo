@@ -1767,7 +1767,10 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 		if (UIWeaponsTabControl.OnKeyboard(dik, keyboard_action))
 		{
 			if (mlRoot == m_mlCurrLevel)
+			{
 				MenuLevelUp();
+				return true;
+			};
 		}
 		break;
 
@@ -1783,6 +1786,7 @@ bool CUIBuyWeaponWnd::OnKeyboard(int dik, EUIMessages keyboard_action)
 				{
 					ApplyFilter(RIFLE_SLOT, weaponFilterName, pDDItemMP->GetSectionName());
 					MenuLevelUp();
+					return true;
 					break;
 				}
 			}
