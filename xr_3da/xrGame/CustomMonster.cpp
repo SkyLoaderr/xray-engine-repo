@@ -311,8 +311,7 @@ void CCustomMonster::Update	( DWORD DT )
 	}
 
 	// weapons
-	if (Weapons)
-		Weapons->Update		(dt,false);
+	if (Weapons)		Weapons->Update		(dt,false);
 	
 	// *** general stuff
 	inherited::Update	(DT);

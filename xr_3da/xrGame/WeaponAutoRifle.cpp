@@ -106,7 +106,7 @@ void CWeaponAutoRifle::switch2_Idle	(BOOL bHUDView)
 void CWeaponAutoRifle::switch2_Fire	(BOOL bHUDView)
 {
 }
-void CWeaponAutoRifle::switch2_Empty	(BOOL bHUDView)
+void CWeaponAutoRifle::switch2_Empty(BOOL bHUDView)
 {
 	if (bHUDView)	Level().Cameras.RemoveEffector	(cefShot);
 }
@@ -147,7 +147,8 @@ void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
 	Fvector P = vLastFP;
 	Fvector D; D.mul(vLastFD,::Random.randF(fFlameLength)/float(iFlameDiv));
 	float f = fFlameSize;
-	for (int i=0; i<iFlameDiv; i++){
+	for (int i=0; i<iFlameDiv; i++)
+	{
 		f*=0.9f;
 		float	S = f+f*::Random.randF	();
 		float	A = ::Random.randF		(PI_MUL_2);
@@ -155,7 +156,6 @@ void CWeaponAutoRifle::OnDrawFlame	(BOOL bHUDView)
 		P.add(D);
 	}
 }
-
 void CWeaponAutoRifle::OnAnimationEnd()
 {
 	switch (st_current)

@@ -220,7 +220,7 @@ void CWeaponMagazined::Update			(float dt, BOOL bHUDView)
 	case eShowing:		st_name = "showing";break;
 	case eHiding:		st_name = "hiding";	break;
 	}
-	pApp->pFont->Out(0,0,"state: %s",st_name);
+	if (!bHUDView)		pApp->pFont->Out(0,0,"state: %s",st_name);
 	
 	// cycle update
 	switch (st_current)
