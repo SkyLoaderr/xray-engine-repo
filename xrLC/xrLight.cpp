@@ -51,6 +51,7 @@ void CBuild::Light()
 		Sleep	(300);
 	}
 
+	/*
 	Phase("Saving shadowmaps...");
 	for (it = g_deflectors.begin(); it!=g_deflectors.end(); it++)
 	{
@@ -59,6 +60,7 @@ void CBuild::Light()
 		Progress(float(N)/float(g_deflectors.size()));
 		(*it)->Save();
 	}
+	*/
 }
 
 //-----------------------------------------------------------------------
