@@ -171,6 +171,105 @@
     <string id="mil_cook_dialog_0">
         <text>Да ты присаживайся... Посидим...</text>
     </string>
+    <string id="mil_cook_drink_for_rg6_1_0">
+        <text>Давай выпьем, а?</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_1_1">
+        <text>Не вопрос брат. Наливай скорее.</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_1_2">
+        <text>Держи. ...иэх, хлопнули!</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_1_3">
+        <text>Бульк, бульк... Ух! Держи бутылку... там еще что-то осталось.</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_1_4">
+        <text>Ну что, еще стопочку?</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_1_5">
+        <text>Бууульк... иээх, кайф!!! Эх, жаль кончилась бутылка. Еще есть?</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_1_6">
+        <text>Сейчас посмотрю.</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_2_0">
+        <text>Ага, во! Держи еще стопку.</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_2_1">
+        <text>Бууульк... бульк, бульк, бульк... хехе, а ловко ты это... ррраз и еще бутылка. У тебя там склад чтоли?</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_2_2">
+        <text>Дык... эта... ты пей, пей. Ик... давно что-то я не пил.</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_2_3">
+        <text>За нашу победу!!! Вот. Бууульк... э-э-э ооо...</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_2_4">
+        <text>Дааа... за нашу победу!</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_2_5">
+        <text>...еще давай ...есть, а?</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_2_6">
+        <text>Гляжу...</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_3_0">
+        <text>Ик... последняя, потомушто я ужо не осилю Ик... больше</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_3_1">
+        <text>Давай ее Ик... ее сюда! Бульк, бульк, бульк, бульк, бульк...</text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_3_2">
+        <text>Ну даешь ик... тыж ее всю оприходовал... </text>
+    </string>
+    <string id="mil_cook_drink_for_rg6_3_3">
+        <text>Ик... эээ... мнэээ... Ик... мда... Ик...</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_1_0">
+        <text>Я слышал что у Свободы есть РГ6, очень хочу взглянуть на эту штучку. Я б и купил, только никто не продает</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_1_1">
+        <text>Чего? Ты куда клонишь, братишка? Чтоб я тебе вот так вот выложил все тайны Свободы??? Да за кого ты меня держишь?</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_1_2">
+        <text>Эй, эй. Я не знал что для тебя это так серьезно. Нет так нет, я ж не заставляю тебя.</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_1_3">
+        <text>Так то, нечего тебе о РГ6 разнюхивать. Ты вообще кто такой, а? Я тебя первый раз вижу, а ты мне тут с такими вопросами лезешь.</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_1_4">
+        <text>Да брось ты, просто спросил.</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_1_5">
+        <text>Ты поосторожнее с таким, понял?</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_1_6">
+        <text>Заметано</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_2_0">
+        <text>Я …ик …слышал что у …эта …у вас РГ6 есть… мне б глазком глянуть, ну ооочень хочется… а? ну глазочком бы.</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_2_1">
+        <text>Чегооо? …а …дык эта… сходи к… блин, как же там… черт забыл…Чего ты там спрашивал?</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_2_2">
+        <text>РГ6 бы глянуть.</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_2_3">
+        <text>Не, вот РГ6 нельзя… другое я б для тебя б, так бы б… ну вообще… вот. А РГ6 нельзя.</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_2_4">
+        <text>Ну и ладно... я эээ... так, просто спросил.</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_3_0">
+        <text>…ик … РГ6, а?</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_3_1">
+        <text>чччего? эээ… А! Так это… в деревне они … у нас их вообще две всего было… а эти дятлы его в деревне посеяли… нда…</text>
+    </string>
+    <string id="mil_cook_drunk_question_about_rg6_3_2">
+        <text>Да, ну и эээ... болваны.</text>
+    </string>
     <string id="mil_dolg_dialog_1000">
         <text>Привет. Что делаем ?</text>
     </string>

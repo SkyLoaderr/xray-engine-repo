@@ -11,5 +11,13 @@
 	
 	<!-- Атака Свободы -->
 	<info_portion id="mil_freedom_attack"></info_portion>
-	
+
+	<!-- Пьянство с Поваром -->
+	<info_portion id="mil_freedom_cook_drink_1"></info_portion>
+	<info_portion id="mil_freedom_cook_drink_2"></info_portion>
+	<info_portion id="mil_freedom_cook_drink_3"></info_portion>
+	<info_portion id="mil_freedom_cook_rg6_1"></info_portion>
+	<info_portion id="mil_freedom_cook_rg6_2"></info_portion>	
+	<info_portion id="mil_freedom_cook_rg6_3"></info_portion>
+
 </game_information_portions>
