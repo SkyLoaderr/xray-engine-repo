@@ -147,11 +147,12 @@ function action_patrol:callback (mode, number)
        self.stage = 1
        return true
     elseif number == 1 then
-           xr_logic.try_switch_to_another_section(self.object, self.a) 
-           --local st = xr_gulag.isUnderFraction (self.object)
-           --if st ~= nil then
-              --xr_gulag.resetJob (st, self.object)
-           --end
+           local st = xr_gulag.isUnderFraction (self.object)
+           if st ~= nil then
+              xr_gulag.resetJob (st, self.object)
+           else
+              xr_logic.try_switch_to_another_section (self.object, self.a)   
+           end
     elseif number == 2 then
            self.a.raid_process = true
     end

@@ -280,11 +280,12 @@ function action_follow:move_callback (obj, action_type, index)
     if patrol (self.object:patrol ()):flag (index, 6) == true then
        self.a.stage = 0 
        self.a.enabled = false
-       xr_logic.try_switch_to_another_section(self.object, self.a)
-       --local st = xr_gulag.isUnderFraction (self.object)
-       --if st ~= nil then
-          --xr_gulag.resetJob (st, self.object)
-       --end -  
+       local st = xr_gulag.isUnderFraction (self.object)
+       if st ~= nil then
+          xr_gulag.resetJob (st, self.object)
+       else   
+          xr_logic.try_switch_to_another_section(self.object, self.a)
+       end
     end   
 end
 --------------
