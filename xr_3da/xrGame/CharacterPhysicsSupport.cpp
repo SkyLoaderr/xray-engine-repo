@@ -59,13 +59,10 @@ void CCharacterPhysicsSupport::in_Load(LPCSTR section)
 
 	skel_airr_ang_factor			= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
 	skel_airr_lin_factor			= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
-	hinge_force_factor				= pSettings->r_float(section,"ph_skeleton_hinger_factor");
 	hinge_force_factor1				= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
 	skel_ddelay						= pSettings->r_s32(section,"ph_skeleton_ddelay");
-	hinge_force_factor2				= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
-	hinge_vel						= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor		= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
-	if(pSettings->line_exist(section,"ph_shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_shot_up_factor");
+	if(pSettings->line_exist(section,"ph_skel_shot_up_factor")) m_shot_up_factor=pSettings->r_float(section,"ph_skel_shot_up_factor");
 	if(pSettings->line_exist(section,"ph_after_death_velocity_factor")) m_after_death_velocity_factor=pSettings->r_float(section,"ph_after_death_velocity_factor");
 }
 

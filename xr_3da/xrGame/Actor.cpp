@@ -47,10 +47,7 @@ const float		respawn_auto	= 7.f;
 
 float	CActor::skel_airr_lin_factor;
 float	CActor::skel_airr_ang_factor;
-float	CActor::hinge_force_factor;
 float	CActor::hinge_force_factor1;
-float	CActor::hinge_force_factor2;
-float	CActor::hinge_vel;
 float	CActor::skel_fatal_impulse_factor;
 
 static const float	s_fLandingTime1		= 0.1f;// через сколько снять флаг Landing1 (т.е. включить следующую анимацию)
@@ -210,7 +207,7 @@ void CActor::Load	(LPCSTR section )
 	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
 	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	m_PhysicMovementControl->SetFoots	(vFOOT_center,vFOOT_size);
+	//m_PhysicMovementControl->SetFoots	(vFOOT_center,vFOOT_size);
 
 	// m_PhysicMovementControl: Crash speed and mass
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
@@ -222,11 +219,11 @@ void CActor::Load	(LPCSTR section )
 
 	// m_PhysicMovementControl: Frictions
 
-	float af, gf, wf;
-	af					= pSettings->r_float	(section,"ph_friction_air"	);
-	gf					= pSettings->r_float	(section,"ph_friction_ground");
-	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	m_PhysicMovementControl->SetFriction	(af,wf,gf);
+	//float af, gf, wf;
+	//af					= pSettings->r_float	(section,"ph_friction_air"	);
+	//gf					= pSettings->r_float	(section,"ph_friction_ground");
+	//wf					= pSettings->r_float	(section,"ph_friction_wall"	);
+	//m_PhysicMovementControl->SetFriction	(af,wf,gf);
 
 	// BOX activate
 	m_PhysicMovementControl->ActivateBox	(0);
@@ -240,11 +237,8 @@ void CActor::Load	(LPCSTR section )
 	m_fCrouchFactor				= pSettings->r_float(section,"crouch_coef");
 	skel_airr_lin_factor		= pSettings->r_float(section,"ph_skeleton_airr_lin_factor");
 	skel_airr_ang_factor		= pSettings->r_float(section,"ph_skeleton_airr_ang_factor");
-	hinge_force_factor  		= pSettings->r_float(section,"ph_skeleton_hinger_factor");
 	hinge_force_factor1 		= pSettings->r_float(section,"ph_skeleton_hinger_factor1");
 	skel_ddelay					= pSettings->r_s32	(section,"ph_skeleton_ddelay");
-	hinge_force_factor2 		= pSettings->r_float(section,"ph_skeleton_hinger_factor2");
-	hinge_vel					= pSettings->r_float(section,"ph_skeleton_hinge_vel");
 	skel_fatal_impulse_factor	= pSettings->r_float(section,"ph_skel_fatal_impulse_factor");
 	m_fCamHeightFactor			= pSettings->r_float(section,"camera_height_factor");
 	m_PhysicMovementControl->SetJumpUpVelocity(m_fJumpSpeed);
@@ -1123,18 +1117,17 @@ void CActor::g_cl_ValidateMState(float dt, u32 mstate_wf)
 			start_pos.add		(Position());
 			//if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,bbStandBox))
 			Fbox stand_box=m_PhysicMovementControl->Boxes()[0];
-			stand_box.y1+=m_PhysicMovementControl->FootExtent().y;
+			//stand_box.y1+=m_PhysicMovementControl->FootExtent().y;
 			m_PhysicMovementControl->GetPosition(start_pos);
 			start_pos.y+=(
 				//-(m_PhysicMovementControl->Box().y2-m_PhysicMovementControl->Box().y1)+
 				(m_PhysicMovementControl->Boxes()[0].y2-m_PhysicMovementControl->Boxes()[0].y1)
 				)/2.f;
-			start_pos.y+=m_PhysicMovementControl->FootExtent().y/2.f;
+			//start_pos.y+=m_PhysicMovementControl->FootExtent().y/2.f;
 			if (!g_pGameLevel->ObjectSpace.EllipsoidCollide(CFORM(),XFORM(),start_pos,stand_box))
 			{
 				mstate_real &= ~mcCrouch;
 				m_PhysicMovementControl->ActivateBox	(0);
-				//m_PhysicMovementControl->ActivateBox(0);
 			}
 		}
 	}

@@ -33,10 +33,7 @@ CPHMovementControl& m_PhysicMovementControl;
 
 float					skel_airr_lin_factor;
 float					skel_airr_ang_factor;
-float					hinge_force_factor;
 float					hinge_force_factor1;
-float					hinge_force_factor2;
-float					hinge_vel;
 float					skel_fatal_impulse_factor;
 int						skel_ddelay;
 bool					b_death_anim_on;

@@ -59,7 +59,7 @@ private:
 
 	CPHCharacter*		m_character;
 	CPHCapture  *		m_capture;
-	string16			m_capture_bone;
+	//string16			m_capture_bone;
 
 	float				m_fGroundDelayFactor;
 	BOOL				bIsAffectedByGravity;
@@ -69,13 +69,13 @@ private:
 	EEnvironment		eEnvironment;
 	Fbox				aabb;
 	Fbox				boxes	[4];
-	Fvector				vFootCenter;			// задаются относительно Position()
-	Fvector				vFootExt;				//
+	//Fvector				vFootCenter;			// задаются относительно Position()
+	//Fvector				vFootExt;				//
 
-	float				fAirFriction;
-	float				fWallFriction;
-	float				fGroundFriction;
-	float				fFriction;				// Current friction
+	//float				fAirFriction;
+	//float				fWallFriction;
+	//float				fGroundFriction;
+	//float				fFriction;				// Current friction
 
 	float				fMass;
 	float				fMinCrashSpeed;
@@ -119,14 +119,14 @@ public:
 	};
 #endif
 
-	void				SetFriction(float air, float wall, float ground)
-	{
-		fAirFriction	= air;
-		fWallFriction	= wall;
-		fGroundFriction	= ground;
-	}
+	//void				SetFriction(float air, float wall, float ground)
+	//{
+	//	fAirFriction	= air;
+	//	fWallFriction	= wall;
+	//	fGroundFriction	= ground;
+	//}
 	void SetPLastMaterial(u16* p){m_character->SetPLastMaterial(p);}
-	float				GetCurrentFriction()		{ return fFriction; }
+	//float				GetCurrentFriction()		{ return fFriction; }
 
 	const Fvector&		GetVelocity			( )		{ return vVelocity;	}
 	void				GetCharacterVelocity(Fvector& velocity )		{if(m_character)m_character->GetVelocity(velocity); else velocity.set(0.f,0.f,0.f);}
@@ -156,7 +156,7 @@ public:
 	EEnvironment		OldEnvironment	( )			{ return eOldEnvironment; }
 	const Fbox&			Box				( )			{ return aabb; }
 	const Fbox*			Boxes			( )			{return boxes;}
-	const Fvector&		FootExtent		( )			{return vFootExt;}
+	//const Fvector&		FootExtent		( )			{return vFootExt;}
 	void				SetBox			(DWORD id, const Fbox &BB)	{ boxes[id].set(BB); aabb.set(BB); }
 
 	void				SetParent		(CObject* P){ pObject = P; }
@@ -167,8 +167,8 @@ public:
 	}
 	float				GetMass			()			{ return fMass;	}
 
-	void				SetFoots		(Fvector& C, Fvector &E)
-	{	vFootCenter.set	(C); vFootExt.set	(E); 	}
+	//void				SetFoots		(Fvector& C, Fvector &E)
+	//{	vFootCenter.set	(C); vFootExt.set	(E); 	}
 
 	void				SetCrashSpeeds	(float min, float max)
 	{	fMinCrashSpeed	= min; 	fMaxCrashSpeed	= max; 	}

@@ -169,10 +169,7 @@ protected:
 
 	static	float			skel_airr_lin_factor;
 	static	float			skel_airr_ang_factor;
-	static	float			hinge_force_factor;
 	static	float			hinge_force_factor1;
-	static	float			hinge_force_factor2;
-	static	float			hinge_vel;
 	static	float			skel_fatal_impulse_factor;
 #ifdef DEBUG
 	friend class CLevelGraph;

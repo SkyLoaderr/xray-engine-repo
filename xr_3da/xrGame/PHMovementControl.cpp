@@ -30,8 +30,8 @@ CPHMovementControl::CPHMovementControl(void)
 	eOldEnvironment =	peInAir;
 	eEnvironment =		peInAir;
 	aabb.set			(-def_X_SIZE_2,0,-def_Z_SIZE_2, def_X_SIZE_2, def_Y_SIZE_2*2, def_Z_SIZE_2);
-	vFootCenter.set		(0,0,0);
-	vFootExt.set		(0,0,0);
+	///vFootCenter.set		(0,0,0);
+	//vFootExt.set		(0,0,0);
 	fMass				= 100;
 	fMinCrashSpeed		= 12.0f;
 	fMaxCrashSpeed		= 25.0f;
@@ -39,10 +39,10 @@ CPHMovementControl::CPHMovementControl(void)
 	vPosition.set		(0,0,0);
 	vExternalImpulse.set(0,0,0);
 	fLastMotionMag		= 1.f;
-	fAirFriction		= AIR_FRICTION;
-	fWallFriction		= WALL_FRICTION;
-	fGroundFriction		= GROUND_FRICTION;
-	fFriction			= fAirFriction;
+	//fAirFriction		= AIR_FRICTION;
+	//fWallFriction		= WALL_FRICTION;
+	//fGroundFriction		= GROUND_FRICTION;
+	//fFriction			= fAirFriction;
 	bIsAffectedByGravity= TRUE;
 	fActualVelocity		= 0;
 	m_fGroundDelayFactor= 1.f;
@@ -612,7 +612,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 
 	//capture
 	
-	strcpy(m_capture_bone,pSettings->r_string(section,"capture_bone"));
+	//strcpy(m_capture_bone,pSettings->r_string(section,"capture_bone"));
 	
 	Fbox	bb;
 
@@ -632,7 +632,7 @@ void CPHMovementControl::Load					(LPCSTR section){
 	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
 	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
 	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	SetFoots	(vFOOT_center,vFOOT_size);
+	//SetFoots	(vFOOT_center,vFOOT_size);
 
 	// m_PhysicMovementControl: Crash speed and mass
 	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
