@@ -906,29 +906,6 @@ function load_states(gname, type)
 				end
 			end
 		end
-
-
-//		return function (gulag)
-//			if gulag.alarm_start == nil or
-//				game.get_game_time():diffSec(gulag.alarm_start) > 500 
-//			then
-//				gulag.alarm_start = game.get_game_time()
-//				if gulag.state == nil then
-//					return math.random(0, 2)
-//				else
-//					local t = math.random(0, 1)
-//					if t <= gulag.state then
-//						return t
-//					else
-//						return t+1
-//					end					
-//				end				
-//			else
-//				return gulag.state
-//			end				
-//		
-//			return 0
-//		end
 	end
 
 end
