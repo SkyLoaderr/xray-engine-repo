@@ -34,7 +34,7 @@ void CAI_Stalker::Think()
 	m_tEnemy.Enemy			= 0;
 	vfUpdateDynamicObjects	();
 	vfUpdateParameters		(A,B,C,D,E,F,G,H,I,J,K,L,M);
-	Msg("[A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",A,B,C,D,E,F,G,H,I,J,K,L,M);
+//	Msg("[A=%d][B=%d][C=%d][D=%d][E=%d][F=%d][G=%d][H=%d][I=%d][J=%d][K=%d][L=%d][M=%d]",A,B,C,D,E,F,G,H,I,J,K,L,M);
 	m_dwUpdateCount++;
 	m_ePreviousState		= m_eCurrentState;
 	
@@ -134,13 +134,13 @@ void CAI_Stalker::Think()
 	if (K) {
 		switch (m_dwRandomState) {
 			case 0 : {
-				Msg("Back dodge");
+///				Msg("Back dodge");
 				ForwardDodge();
 //				BackDodge();
 				break;
 			}
 			case 1 : {
-				Msg("Back cover");
+//				Msg("Back cover");
 //				BackCover();
 				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
 					m_bStateChanged = true;
@@ -148,19 +148,19 @@ void CAI_Stalker::Think()
 				break;
 			}
 			case 2 : {
-				Msg("Forward cover");
+//				Msg("Forward cover");
 				if ((m_tActionState != eActionStateStand) && (m_tActionState != eActionStateRun))
 					m_bStateChanged = true;
 				ForwardCover();
 				break;
 			}
 			case 3 : {
-				Msg("Forward dodge");
+//				Msg("Forward dodge");
 				ForwardDodge();
 				break;
 			}
 			case 4 : {
-				Msg("Forward straight");
+//				Msg("Forward straight");
 				ForwardStraight();
 				break;
 			}
@@ -274,7 +274,7 @@ void CAI_Stalker::ForwardCover()
 	}
 	switch (m_tActionState) {
 		case eActionStateRun : {
-			Msg							("State RUN");
+//			Msg							("State RUN");
 			
 			CWeapon						*tpWeapon = dynamic_cast<CWeapon*>(m_inventory.ActiveItem());
 			if (tpWeapon && (tpWeapon->STATE == CWeapon::eIdle) && (!tpWeapon->GetAmmoElapsed())) {
@@ -295,7 +295,7 @@ void CAI_Stalker::ForwardCover()
 			break;
 		}
 		case eActionStateStand : {
-			Msg							("State STAND");
+//			Msg							("State STAND");
 			
 			float						fDistance = m_tEnemy.Enemy->Position().distance_to(vPosition);
 			m_tSelectorCover.m_fMaxEnemyDistance = max(fDistance - 3.f,m_tSelectorCover.m_fOptEnemyDistance + 3.f);

@@ -9,6 +9,7 @@
 #include "stdafx.h"
 #include "ai_funcs.h"
 #include "ai_space.h"
+#include "inventory.h"
 
 //#define WRITE_TO_LOG
 #define AI_PATH			"ai\\"
@@ -282,50 +283,56 @@ float CPersonalCreatureTypeFunction::ffGetValue()
 
 float CPersonalWeaponTypeFunction::ffGetTheBestWeapon() 
 {
-	u32 dwBestWeapon = 2;
-	if (getAI().m_tpCurrentMember->GetItemList())
-		for (int i=0; i<(int)getAI().m_tpCurrentMember->GetItemList()->getWeaponCount(); i++) {
-			CWeapon *tpCustomWeapon = getAI().m_tpCurrentMember->GetItemList()->getWeaponByIndex(i);
-			if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
-				u32 dwCurrentBestWeapon = 0;
-				switch (tpCustomWeapon->SUB_CLS_ID) {
-					case CLSID_OBJECT_W_M134	: {
-						dwCurrentBestWeapon = 9;
-						break;
+	u32 dwBestWeapon = 0;
+	CInventoryOwner *tpInventoryOwner = dynamic_cast<CInventoryOwner*>(getAI().m_tpCurrentMember);
+	if (tpInventoryOwner) {
+		vector<CInventorySlot>::iterator I = tpInventoryOwner->m_inventory.m_slots.begin(), B = I;
+		vector<CInventorySlot>::iterator E = tpInventoryOwner->m_inventory.m_slots.end();
+		u32 best_slot = -1;
+		for ( ; I != E; I++)
+			if ((*I).m_pIItem) {
+				CWeapon *tpCustomWeapon = dynamic_cast<CWeapon*>((*I).m_pIItem);
+				if (tpCustomWeapon && (tpCustomWeapon->GetAmmoCurrent() > tpCustomWeapon->GetAmmoMagSize()/10)) {
+					u32 dwCurrentBestWeapon = 0;
+					switch (tpCustomWeapon->SUB_CLS_ID) {
+						case CLSID_OBJECT_W_M134	: {
+							dwCurrentBestWeapon = 9;
+							break;
+						}
+						case CLSID_OBJECT_W_FN2000	: {
+							dwCurrentBestWeapon = 8;
+							break;
+						}
+						case CLSID_OBJECT_W_AK74	: {
+							dwCurrentBestWeapon = 6;
+							break;
+						}
+						case CLSID_OBJECT_W_LR300	: {
+							dwCurrentBestWeapon = 6;
+							break;
+						}
+						case CLSID_OBJECT_W_HPSA	: {
+							dwCurrentBestWeapon = 5;
+							break;
+						}
+						case CLSID_OBJECT_W_PM		: {
+							dwCurrentBestWeapon = 5;
+							break;
+						}
+						case CLSID_OBJECT_W_FORT	: {
+							dwCurrentBestWeapon = 5;
+							break;
+						}
+						default						: {
+							dwCurrentBestWeapon = 0;
+							break;
+						}
 					}
-					case CLSID_OBJECT_W_FN2000	: {
-						dwCurrentBestWeapon = 8;
-						break;
-					}
-					case CLSID_OBJECT_W_AK74	: {
-						dwCurrentBestWeapon = 6;
-						break;
-					}
-					case CLSID_OBJECT_W_LR300	: {
-						dwCurrentBestWeapon = 6;
-						break;
-					}
-					case CLSID_OBJECT_W_HPSA	: {
-						dwCurrentBestWeapon = 5;
-						break;
-					}
-					case CLSID_OBJECT_W_PM		: {
-						dwCurrentBestWeapon = 5;
-						break;
-					}
-					case CLSID_OBJECT_W_FORT	: {
-						dwCurrentBestWeapon = 5;
-						break;
-					}
-					default						: {
-						dwCurrentBestWeapon = 0;
-						break;
-					}
+					if (dwCurrentBestWeapon > dwBestWeapon)
+						dwBestWeapon = dwCurrentBestWeapon;
 				}
-				if (dwCurrentBestWeapon > dwBestWeapon)
-					dwBestWeapon = dwCurrentBestWeapon;
 			}
-		}
+	}	
 	return(float(dwBestWeapon));
 }
 

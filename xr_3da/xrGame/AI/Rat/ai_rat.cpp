@@ -211,6 +211,7 @@ BOOL CAI_Rat::net_Spawn	(LPVOID DC)
 
 	vfLoadAnimations				();
 
+	getGroup()->m_dwLastActionTime		= 0;
 	return							(TRUE);
 }
 

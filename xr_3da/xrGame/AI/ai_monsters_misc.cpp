@@ -553,8 +553,7 @@ bool bfGetActionSuccessProbability(EntityVec &Members, objVisible &VisibleEnemie
 
 u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinProbability1, float fMinProbability2, float fMinProbability3, u32 dwTeam, u32 dwSquad, u32 dwGroup, u32 a0, u32 a1, u32 a2, u32 a3, u32 a4)
 {
-	//return(a1);
-	CGroup &Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
+	CGroup		&Group = Level().Teams[dwTeam].Squads[dwSquad].Groups[dwGroup];
 	
 	if (Level().timeServer() - Group.m_dwLastActionTime < dwActionRefreshRate) {
 		switch (Group.m_dwLastAction) {
@@ -567,7 +566,7 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 		}
 	}
 
-	objVisible &VisibleEnemies = Level().Teams[dwTeam].Squads[dwSquad].KnownEnemys;
+	objVisible	&VisibleEnemies = Level().Teams[dwTeam].Squads[dwSquad].KnownEnemys;
 	
 	if (!VisibleEnemies.size())
 		switch (Group.m_dwLastAction) {
@@ -587,32 +586,37 @@ u32 dwfChooseAction(u32 dwActionRefreshRate, float fMinProbability0, float fMinP
 
 	WRITE_QUERY_TO_LOG("\nNew query");
 	if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability0,getAI().pfVictoryProbability)) {
-		Group.m_dwLastActionTime = Level().timeServer();
-		WRITE_QUERY_TO_LOG("Attack");
-		return(Group.m_dwLastAction = a0);
+		Group.m_dwLastActionTime	= Level().timeServer();
+		Group.m_dwLastAction		= 0;
+		WRITE_QUERY_TO_LOG			("Attack");
+		return						(a0);
 	}
 	else
 		if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability1,getAI().pfVictoryProbability)) {
-			Group.m_dwLastActionTime = Level().timeServer();
-			WRITE_QUERY_TO_LOG("Attack 1");
-			return(Group.m_dwLastAction = a1);
+			Group.m_dwLastActionTime	= Level().timeServer();
+			Group.m_dwLastAction		= 1;
+			WRITE_QUERY_TO_LOG			("Attack 1");
+			return						(a1);
 		}
 		else
 			if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability2,getAI().pfVictoryProbability)) {
-				Group.m_dwLastActionTime = Level().timeServer();
-				WRITE_QUERY_TO_LOG("Defend");
-				return(Group.m_dwLastAction = a2);
+				Group.m_dwLastActionTime	= Level().timeServer();
+				Group.m_dwLastAction		= 2;
+				WRITE_QUERY_TO_LOG			("Defend");
+				return						(a2);
 			}
 			else
 				if (bfGetActionSuccessProbability(Members,VisibleEnemies,fMinProbability3,getAI().pfVictoryProbability)) {
-					Group.m_dwLastActionTime = Level().timeServer();
-					WRITE_QUERY_TO_LOG("Defend 1");
-					return(Group.m_dwLastAction = a3);
+					Group.m_dwLastActionTime	= Level().timeServer();
+					Group.m_dwLastAction		= 3;
+					WRITE_QUERY_TO_LOG			("Defend 1");
+					return						(a3);
 				}
 				else {
-					Group.m_dwLastActionTime = Level().timeServer();
-					WRITE_QUERY_TO_LOG("Retreat");
-					return(Group.m_dwLastAction = a4);
+					Group.m_dwLastActionTime	= Level().timeServer();
+					Group.m_dwLastAction		= 4;
+					WRITE_QUERY_TO_LOG			("Retreat");
+					return						(a4);
 				}
 }
 
