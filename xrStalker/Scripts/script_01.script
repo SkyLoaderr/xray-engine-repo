@@ -102,7 +102,7 @@ function main()
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
 				cond	(cond.time_end, 3000)
-
+				)
 				script_01.play_sound_object("stalker2","scripts\\prover",0)
 
                	break		
