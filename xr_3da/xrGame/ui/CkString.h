@@ -22,7 +22,7 @@ class CkString
 
 	CkString();
 #pragma todo("Dima to Yura : check if you need here a non-virtual destructor!")
-	virtual ~CkString();
+	~CkString();
 
 	CkString(const CkString &);
 	CkString &operator=(const CkString &);
