@@ -28,6 +28,9 @@ private:
 	// DirectSound interface
     LPDIRECTSOUND		    pDevice;				// The device itself
     LPDIRECTSOUNDBUFFER		pBuffer;				// The primary buffer (mixer destination)
+
+	// Geometry
+	RAPID::Model*			pGeometry;
 private:
 	BOOL					CreatePrimaryBuffer		( );
 	void					Initialize				( );
@@ -66,7 +69,8 @@ public:
 	void					Play3DAtPos				( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Play3DAtPos_Unlimited	( sound3D& S, const Fvector &pos, BOOL bLoop=false, int iLoopCnt=0);
 	void					Delete3D				( sound3D& S);
-	void					SetGeometry				( RAPID::Model* M );
+	void					SetGeometry				( RAPID::Model* M )	{ pGeometry=M; }
+	RAPID::Model*			GetGeometry				( )					{ return pGeometry;	}
 	
 	// Stream interface
 	CSoundStream*			CreateStream			( CInifile* ini, LPCSTR section );

@@ -36,9 +36,6 @@ private:
 	// Containers
 	vector <vector<C3DSound*> >	sounds;
 	vector <int>				refcounts;
-
-	// Geometry
-	RAPID::Model*				pGeometry;
 private:
 	C3DSound*					GetFreeSound		(int hSound);
 	int							FindByName			(LPCSTR name, BOOL bFreq);
@@ -50,8 +47,6 @@ public:
 	void						DeleteSound			(int& hSound);
 	void						Play				(int  hSound, C3DSound** P, BOOL bLoop=false, int iLoopCnt=0);
 
-	void						SetGeometry			( RAPID::Model* M );
-	
 	void						Reload				();
 
 	void						OnMove				(void);

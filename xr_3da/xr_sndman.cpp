@@ -80,7 +80,10 @@ void CSoundManager::SetGeometry	( RAPID::Model* M )
 {
 	pSoundRender->SetGeometry	(M);
 }
+RAPID::Model*	CSoundManager::GetGeometry( )
+{
 
+}
 
 void CSoundManager::Restart()
 {
