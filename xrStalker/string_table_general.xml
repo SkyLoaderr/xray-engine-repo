@@ -7,8 +7,8 @@
 	<string id="test2">
 		<text>This is a another GENERAL test string</text>
 	</string>
-	<string id="Weapons">
-		<text>Weapons</text>
+	<string id="Weapon">
+		<text>Weapon</text>
 		<text ln="rus">Оружие</text>
 	</string>
 
