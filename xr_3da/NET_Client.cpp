@@ -478,7 +478,7 @@ HRESULT	IPureClient::net_Handler(u32 dwMessageType, PVOID pMessage)
 			}
 			else
 			{
-				Msg("- Session terminated : %s", (::Debug.error2string(m_hResultCode)).c_str());
+				Msg("- Session terminated : %s", (::Debug.error2string(m_hResultCode)));
 			}
 		};
 		break;

@@ -12,7 +12,7 @@ public:
 	void		_destroy	();
 	
 public:
-	xr_string	error2string(long  code	);
+	LPCSTR		error2string(long  code	);
 	void		fail		(const char *e1, const char *file, int line);
 	void		fail		(const char *e1, const char *e2, const char *file, int line);
 	void		fail		(const char *e1, const char *e2, const char *e3, const char *file, int line);

@@ -105,28 +105,27 @@ void xrDebug::backend(const char* reason, const char *file, int line)
 	CS.Leave			();
 }
 
-xr_string xrDebug::error2string	(long code)
+LPCSTR xrDebug::error2string	(long code)
 {
-	xr_string			desc;
+	LPCSTR				result	= 0;
+	static	string1024	desc_storage;
 
 #ifdef _M_AMD64
 #else
-	desc				= DXGetErrorDescription9	(code);
+	result				= DXGetErrorDescription9	(code);
 #endif
-	if (desc.empty()) 
+	if (0==result) 
 	{
-		LPVOID lpMsgBuf = NULL;
-		FormatMessage	(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,0,code,0,(LPTSTR)&lpMsgBuf,0,0);
-		desc			= (LPCSTR)lpMsgBuf;
-		LocalFree		(lpMsgBuf);
+		FormatMessage	(FORMAT_MESSAGE_FROM_SYSTEM,0,code,0,desc_storage,sizeof(desc_storage)-1,0);
+		result			= desc_storage;
 	}
-	return		desc;
+	return		result	;
 }
 
 void xrDebug::error		(long hr, const char* expr, const char *file, int line)
 {
 	string1024	reason;
-	sprintf		(reason,"*** API-failure ***\n%s\nExpression: %s",error2string(hr).c_str(),expr);
+	sprintf		(reason,"*** API-failure ***\n%s\nExpression: %s",error2string(hr),expr);
 	backend		(reason,file,line);
 }
 

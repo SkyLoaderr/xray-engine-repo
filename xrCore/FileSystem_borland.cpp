@@ -16,7 +16,7 @@ bool EFS_Utils::GetOpenName(LPCSTR initial, xr_string& buffer, bool bMulti, LPCS
 	string4096 buf;
 	strcpy(buf,buffer.c_str());
 	bool bRes = GetOpenName(initial,buf,sizeof(buf),bMulti,offset,start_flt_ext);
-	if (bRes) buffer=buf;
+	if (bRes) buffer=(char*)buf;
 	return bRes;
 }
 
