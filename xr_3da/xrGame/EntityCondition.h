@@ -22,6 +22,9 @@ public:
 	float GetSatiety() {return m_fSatiety;}
 	float GetRadiation() {return m_fRadiation;}
 
+	float GetCircumspection() {return m_fCircumspection;}
+	float GetEntityMorale() {return m_fEntityMorale;}
+
 	float GetMaxHealth() {return m_fHealthMax;}
 	float GetHealthLost() {return m_fHealthLost;}
 
