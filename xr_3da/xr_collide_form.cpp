@@ -20,8 +20,8 @@ using namespace	Collide;
 CCFModel::CCFModel( CObject* _owner )
 {
 	owner				= _owner;
-	Sphere.identity		( );
-	last_rect.null		( );
+	bv_sphere.identity	( );
+	rect_last.null		( );
 	enabled_prev=enabled= true;
 }
 
@@ -33,18 +33,14 @@ CCFModel::~CCFModel( )
 
 void CCFModel::OnMove( )
 {
-	VERIFY( pCreator );
-	VERIFY( owner );
-
-	Fvector X; s_box.getcenter(X);
-	Sphere.P.set(owner->Position());
-	Sphere.P.add(X);
+	VERIFY	( pCreator );
+	VERIFY	( owner );
 	pCreator->ObjectSpace.Object_Move(owner);
 }
+
 //----------------------------------------------------------------------------------
 CCF_Polygonal::CCF_Polygonal(CObject* O) : CCFModel(O)
 {
-
 }
 
 BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
@@ -67,9 +63,8 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 	f->Read				(&H,sizeof(hdrCFORM));
 	R_ASSERT			(CFORM_CURRENT_VERSION==H.version);
 
-	H.aabb.getcenter	(Sphere.P);
-	Sphere.R			 = H.aabb.getradius	();
-	s_box.set			(H.aabb);
+	bv_box.set			(H.aabb);
+	bv_box.getsphere	(bv_sphere.P,bv_sphere.R);
 
 	Fvector*	verts	= (Fvector*)f->Pointer();
 	CDB::TRI*	tris	= (CDB::TRI*)(verts+H.vertcount);
@@ -82,15 +77,16 @@ BOOL CCF_Polygonal::LoadModel( CInifile* ini, const char *section )
 
 BOOL CCF_Polygonal::_clRayTest( RayQuery& Q)
 {
-	if (!Sphere.intersect(Q.start,Q.dir))	return FALSE;
-	
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
 	temp.invert			(owner->clXFORM());
 	temp.transform_tiny	(dS,Q.start);
 	temp.transform_dir	(dD,Q.dir);
-	
+
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+
 	// Query
 	XRC.ray_query		(&model,dS,dD,Q.range);
 	if (XRC.r_count()) 	{
@@ -106,8 +102,6 @@ BOOL CCF_Polygonal::_clRayTest( RayQuery& Q)
 
 BOOL CCF_Polygonal::_svRayTest( RayQuery& Q)
 {
-	if (!Sphere.intersect(Q.start,Q.dir))	return FALSE;
-	
 	// Convert ray into local model space
 	Fvector dS, dD;
 	Fmatrix temp; 
@@ -115,6 +109,9 @@ BOOL CCF_Polygonal::_svRayTest( RayQuery& Q)
 	temp.transform_tiny	(dS,Q.start);
 	temp.transform_dir	(dD,Q.dir);
 	
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
+
 	// Query
 	XRC.ray_query		(&model,dS,dD,Q.range);
 	if (XRC.r_count()) 	{
@@ -134,18 +131,18 @@ void CCF_Polygonal::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 	{
 		// Return only top level
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
-		Q.AddBox			(owner->svXFORM(),s_box);
+		Q.AddBox			(owner->svXFORM(),bv_box);
 	} else {
 		// XForm box
 		const Fmatrix&	T = owner->svXFORM();
-		Fmatrix		w2m,b2m;
-		w2m.invert	(T);
-		b2m.mul_43	(w2m,M);
+		Fmatrix			w2m,b2m;
+		w2m.invert		(T);
+		b2m.mul_43		(w2m,M);
 		
-		Fvector		bc,bd;
-		Fbox		xf; 
-		xf.xform	(B,b2m);
-		xf.get_CD	(bc,bd);
+		Fvector			bc,bd;
+		Fbox			xf; 
+		xf.xform		(B,b2m);
+		xf.get_CD		(bc,bd);
 		
 		// Return actual tris
 		XRC.box_query (&model, bc, bd );
@@ -194,8 +191,8 @@ CCF_Skeleton::CCF_Skeleton(CObject* O) : CCFModel(O)
 	model.resize	(K->LL_BoneCount());
 
 	base_box.set	(K->bv_BBox);
-	s_box.set		(K->bv_BBox);
-	Sphere.R		= K->bv_Radius;
+	bv_box.set		(K->bv_BBox);
+	bv_box.getsphere(bv_sphere.P,bv_sphere.R);
 }
 
 void CCF_Skeleton::BuildState()
@@ -227,19 +224,27 @@ void CCF_Skeleton::BuildTopLevel()
 	dwFrameTL			= Device.dwFrame;
 	CVisual* K			= owner->Visual();
 	Fbox& B				= K->bv_BBox;
-	s_box.min.average	(B.min);
-	s_box.max.average	(B.max);
-	s_box.grow			(0.05f);
-
-	owner->clCenter		(Sphere.P);
-	Sphere.R			+= K->bv_Radius;
-	Sphere.R			*= 0.5f;
+	bv_box.min.average	(B.min);
+	bv_box.max.average	(B.max);
+	bv_box.grow			(0.05f);
+	bv_sphere.P.average	(K->bv_Position);
+	bv_sphere.R			+= K->bv_Radius;
+	bv_sphere.R			*= 0.5f;
 }
 
 BOOL CCF_Skeleton::_svRayTest( RayQuery& Q)
 {
 	if (dwFrameTL!=Device.dwFrame)			BuildTopLevel();
-	if (!Sphere.intersect(Q.start,Q.dir))	return FALSE;
+
+	// Convert ray into local model space
+	Fvector dS, dD;
+	Fmatrix temp; 
+	temp.invert			(owner->svXFORM());
+	temp.transform_tiny	(dS,Q.start);
+	temp.transform_dir	(dD,Q.dir);
+
+	// 
+	if (!bv_sphere.intersect(dS,dD))	return FALSE;
 
 	if (dwFrame!=Device.dwFrame)			BuildState();
 
@@ -267,7 +272,7 @@ void CCF_Skeleton::_BoxQuery( const Fbox& B, const Fmatrix& M, u32 flags)
 		if (dwFrameTL!=Device.dwFrame) BuildTopLevel();
 		// Return only top level
 		clQueryCollision& Q = pCreator->ObjectSpace.q_result;
-		Q.AddBox			(owner->svXFORM(),s_box);
+		Q.AddBox			(owner->svXFORM(),bv_box);
 	} else { 
 		if (dwFrame!=Device.dwFrame) BuildState();
 
@@ -301,10 +306,10 @@ CCF_EventBox::CCF_EventBox( CObject* O ) : CCFModel(O)
 		A[i].mul(.5f);
 		T.transform_tiny(B[i],A[i]);
 	}
-	s_box.set		(-.5f,-.5f,-.5f,+.5f,+.5f,+.5f);
-	Fvector R; R.set(s_box.min);
+	bv_box.set		(-.5f,-.5f,-.5f,+.5f,+.5f,+.5f);
+	Fvector R; R.set(bv_box.min);
 	T.transform_dir	(R);
-	Sphere.R		= R.magnitude();
+	bv_sphere.R		= R.magnitude();
 
 	Planes[0].build(B[0],B[3],B[5]);
 	Planes[1].build(B[1],B[2],B[3]);
@@ -364,7 +369,7 @@ void CCF_Shape::add_box		(Fmatrix& B )
 
 void CCF_Shape::ComputeBounds()
 {
-	s_box.invalidate	();
+	bv_box.invalidate	();
 
 	for (u32 el=0; el<shapes.size(); el++)
 	{
@@ -374,8 +379,8 @@ void CCF_Shape::ComputeBounds()
 			{
 				Fsphere		T		= shapes[el].data.sphere;
 				Fvector		P;
-				P.set		(T.P);	P.sub(T.R);	s_box.modify(P);
-				P.set		(T.P);	P.add(T.R);	s_box.modify(P);
+				P.set		(T.P);	P.sub(T.R);	bv_box.modify(P);
+				P.set		(T.P);	P.add(T.R);	bv_box.modify(P);
 			}
 			break;
 		case 1:	// box
@@ -384,20 +389,19 @@ void CCF_Shape::ComputeBounds()
 				Fmatrix&	T		= shapes[el].data.box;
 				
 				// Build points
-				A.set( -.5f, -.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				A.set( -.5f, -.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				A.set( -.5f, +.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				A.set( -.5f, +.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				A.set( +.5f, +.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				A.set( +.5f, +.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				A.set( +.5f, -.5f, +.5f); T.transform_tiny	(B,A); s_box.modify(B);
-				A.set( +.5f, -.5f, -.5f); T.transform_tiny	(B,A); s_box.modify(B);
+				A.set( -.5f, -.5f, -.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+				A.set( -.5f, -.5f, +.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+				A.set( -.5f, +.5f, +.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+				A.set( -.5f, +.5f, -.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+				A.set( +.5f, +.5f, +.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+				A.set( +.5f, +.5f, -.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+				A.set( +.5f, -.5f, +.5f); T.transform_tiny	(B,A); bv_box.modify(B);
+				A.set( +.5f, -.5f, -.5f); T.transform_tiny	(B,A); bv_box.modify(B);
 			}
 			break;
 		}
 	}
-	s_box.getsphere						(Sphere.P,Sphere.R);
-	Owner()->clXFORM().transform_tiny	(Sphere.P);
+	bv_box.getsphere		(bv_sphere.P,bv_sphere.R);
 }
 
 BOOL CCF_Shape::Contact		( CObject* O )

@@ -83,7 +83,7 @@ namespace Feel {
 			// Fetch data
 			Fvector				OP;
 			Fmatrix				mE;
-			const Fbox&			B = I->O->CFORM()->GetBBox();
+			const Fbox&			B = I->O->CFORM()->getBBox();
 			const Fmatrix&		M = I->O->svXFORM();
 
 			// Build OBB + Ellipse and X-form point

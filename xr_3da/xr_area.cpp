@@ -57,7 +57,7 @@ IC void CObjectSpace::Object_Register		( CObject *O )
 	R_ASSERT			(M);
 
 	GetRect				(M, rect);
-	M->last_rect		= rect;
+	M->rect_last		= rect;
 	
 	// add to slots
 	for (int ix=rect.x1; ix<=rect.x2; ix++)	
@@ -152,17 +152,12 @@ IC void CObjectSpace::GetRect	( const Fvector &center, Irect &rect, float range 
 IC void CObjectSpace::GetRect	( const CCFModel *obj, Irect &rect ){
 	VERIFY				( obj );
 	VERIFY				( obj->owner );
-	Fvector				min, max;
-	min.set				(obj->s_box.min);
-	max.set				(obj->s_box.max);
-	obj->owner->svXFORM().transform(min);
-	obj->owner->svXFORM().transform(max);
-	minmax				(min.x, max.x);
-	minmax				(min.z, max.z);
-	rect.x1				= TransX(min.x);
-	rect.y1				= TransZ(min.z);
-	rect.x2				= TransX(max.x);
-	rect.y2				= TransZ(max.z);
+	Fbox				bb;
+	bb.xform			(obj->s_box,obj->Owner()->svXFORM());
+	rect.x1				= TransX(bb.min.x);
+	rect.y1				= TransZ(bb.min.z);
+	rect.x2				= TransX(bb.max.x);
+	rect.y2				= TransZ(bb.max.z);
 }
 //----------------------------------------------------------------------
 void CObjectSpace::Load	(CStream *F)

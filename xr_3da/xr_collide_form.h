@@ -88,12 +88,11 @@ protected:
 	BOOL			enabled, enabled_prev;
 
 	CObject*		owner;			// владелец
-	Irect			last_rect;		// последние занимаемые слоты
-	Fbox			s_box;			// BBox объекта
+	Irect			rect_last;		// последние занимаемые слоты
 	u32				dwQueryID;
-
-public:
-	Fsphere			Sphere;
+protected:
+	Fbox			bv_box;			// (Local) BBox объекта
+	Fsphere			bv_sphere;		// (Local) Sphere 
 public:
 
 					CCFModel		( CObject* _owner );
@@ -108,9 +107,9 @@ public:
 	void			Enable 			( BOOL _enable )		{ enabled_prev = enabled; enabled = _enable; }
 	void			EnableRollback	( )						{ enabled = enabled_prev; }
 
-	const Fbox&		GetBBox			( )						{ return s_box;}
-	float			GetRadius		( )						{ return Sphere.R;}
-	Fsphere&		GetSphere		( )						{ return Sphere; }
+	const Fbox&		getBBox			( )						{ return bv_box;		}
+	float			getRadius		( )						{ return bv_sphere.R;	}
+	Fsphere&		getSphere		( )						{ return bv_sphere;		}
 
 	void			OnMove			( );
 };
