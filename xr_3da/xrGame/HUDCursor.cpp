@@ -7,8 +7,8 @@
 #include "hudcursor.h"
 #include "hudmanager.h"
 
-#include "..\Environment.h"
-#include "..\CustomHUD.h"
+#include "../Environment.h"
+#include "../CustomHUD.h"
 #include "Entity.h"
 
 #include "inventory.h"
@@ -123,10 +123,10 @@ void CHUDCursor::Render()
 	float cx        = (PT.p.x+1)*w_2;
 	float cy        = (PT.p.y+1)*h_2;
 	
-	pv->set(cx - size, cy + size, PT.p.z, PT.p.w, C, 0, 1); pv++;
-	pv->set(cx - size, cy - size, PT.p.z, PT.p.w, C, 0, 0); pv++;
-	pv->set(cx + size, cy + size, PT.p.z, PT.p.w, C, 1, 1); pv++;
-	pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); pv++;
+	pv->set(cx - size, cy + size, PT.p.z, PT.p.w, C, 0, 1); ++pv;
+	pv->set(cx - size, cy - size, PT.p.z, PT.p.w, C, 0, 0); ++pv;
+	pv->set(cx + size, cy + size, PT.p.z, PT.p.w, C, 1, 1); ++pv;
+	pv->set(cx + size, cy - size, PT.p.z, PT.p.w, C, 1, 0); ++pv;
 	
 	// unlock VB and Render it as triangle LIST
 	RCache.Vertex.Unlock(4,hGeom.stride());

@@ -4,7 +4,7 @@
 const float fade_speed = 8.0f;
 
 CContextMenu::~CContextMenu(){
-	for (xr_vector<MenuItem>::iterator I=Items.begin(); I!=Items.end(); I++){
+	for (xr_vector<MenuItem>::iterator I=Items.begin(); Items.end()!=I; ++I){
 		Engine.Event.Destroy(I->Event);
 		xr_free(I->Name);
 		xr_free(I->Param);
@@ -13,7 +13,7 @@ CContextMenu::~CContextMenu(){
 }
 void CContextMenu::Load(CInifile* INI, LPCSTR SECT){
 	CInifile::Sect& S = INI->r_section(SECT);
-	for (CInifile::SectIt I=S.begin(); I!=S.end(); I++){
+	for (CInifile::SectIt I=S.begin(); S.end()!=I; ++I){
 		char	Event[128],Param[128];
 		Event[0]=0; Param[0]=0;
 		sscanf		(*I->second,"%[^,],%s",Event,Param);
@@ -31,7 +31,7 @@ void CContextMenu::Render(CGameFont* F, u32 cT, u32 cI, float s)
 	F->OutNext	("%s",Name);
 	F->SetColor	(cI);
 	F->SetSize	(0.03f);
-	for (u32 i=0; i<Items.size(); i++)
+	for (u32 i=0; i<Items.size(); ++i)
 		F->OutNext("%d. %s", i, (char*)Items[i].Name);
 }
 void CContextMenu::Select(int I){
