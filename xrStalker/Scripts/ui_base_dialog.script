@@ -65,7 +65,7 @@ function base_dialog:InitControls(caption)
 	-- Left Top Frame
 	self.lt_frame_indent = {x = 20, y = 45}
 	-- Caption text rect
-	self.caption_text_rect = {x = 60, y = -30, width = 500, height = 50 }
+	self.caption_text_rect = {x = 60, y = -33, width = 500, height = 50 }
 	
 	-- Fonts
 	self.caption_font = GetFontLetterica25()
