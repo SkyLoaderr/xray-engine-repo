@@ -15,14 +15,15 @@ done, works OK			:	fixed coordinate system for point lights - should minimize fl
 						:	clip every-light frustums against real frustum - difficult
 						:	scissoring ???
 ----------------------------
+3*32	bit RTs		- position/normal compression
+xrLC geometry selection for point/spot lights
+
 bilinear/q-linear filter for cubemaps
 bicubic filter for spot shadows
-3*32	bit RTs		- position/normal compression
 2*DXT5	bumpmaps	- better quality, 16bit total
 detail	bumpmaps	- better quality
 work out blooming	(again)
 work out skybox		(again)
-xrLC geometry selection for point/spot lights
-reverse culling	for spot/point with initial clears - should avoid most biasing
+reverse culling	for spot/point with initial clears - should avoid most biasing ?
 ----------------------------
 perspective shadow maps and all that stuff Gary talks about
