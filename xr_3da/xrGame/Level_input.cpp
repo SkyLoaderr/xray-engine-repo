@@ -163,7 +163,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 	*/
 #endif
 
-#ifdef DEBUG
+
 	case DIK_DIVIDE:
 		if( OnServer() ){
 //			float NewTimeFactor				= pSettings->r_float("alife","time_factor");
@@ -189,7 +189,7 @@ void CLevel::IR_OnKeyboardPress(int key)
 			};
 		}
 		break;
-
+#ifdef DEBUG
 	case DIK_NUMPAD5: 
 		{
 			if (GameID() != GAME_SINGLE) 
