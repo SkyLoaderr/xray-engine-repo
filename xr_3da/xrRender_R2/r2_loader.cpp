@@ -75,12 +75,12 @@ void CRender::level_Load(IReader* fs)
 	pApp->LoadTitle		("Loading sectors & portals...");
 	LoadSectors			(fs);
 
+	// HOM
+	HOM.Load			();
+
 	// Lights
 	pApp->LoadTitle		("Loading lights...");
 	LoadLights			(fs);
-
-	// HOM
-	HOM.Load			();
 
 	// End
 	pApp->LoadEnd		();

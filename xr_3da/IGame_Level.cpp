@@ -70,9 +70,6 @@ BOOL IGame_Level::Load			(u32 dwNum)
 	IReader* LL_Stream			= FS.r_open	("$level$","level");
 	IReader	&fs					= *LL_Stream;
 
-	// HUD + Environment
-	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
-
 	// Header
 	hdrLEVEL					H;
 	fs.r_chunk_safe				(fsL_HEADER,&H,sizeof(H));
@@ -82,6 +79,9 @@ BOOL IGame_Level::Load			(u32 dwNum)
 	pApp->LoadTitle				("Loading CFORM...");
 	ObjectSpace.Load			();
 	pApp->LoadSwitch			();
+
+	// HUD + Environment
+	pHUD						= (CCustomHUD*)NEW_INSTANCE	(CLSID_HUDMANAGER);
 
 	// Render-level Load
 	Render->level_Load			(LL_Stream);
