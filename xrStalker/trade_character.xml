@@ -6,22 +6,22 @@
 
 	<!-- NAME -->
 	<static x="20" y="162" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="128" b="64"></text>
+		<text x="0" y="0" font="letterica16" r="255" g="128" b="64"></text>
 	</static>
 
 	<!-- RANK -->
 	<static x="20" y="172" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="255" b="255">Rank</text>
+		<text x="0" y="0" font="letterica16" r="255" g="255" b="255">Rank</text>
 	</static>
 
 	<!-- COMMUNITY -->
 	<static x="20" y="182" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
+		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
 	</static>
 
 	<!-- RELATION -->
 	<relation_static x="20" y="192" width="240" height="60">
-		<text x="0" y="0" font="small" r="255" g="255" b="255"></text>
+		<text x="0" y="0" font="letterica16" r="255" g="255" b="255"></text>
 	</relation_static>
 </window>
 
