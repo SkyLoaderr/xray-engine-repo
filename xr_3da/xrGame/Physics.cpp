@@ -2,8 +2,8 @@
 #include "PHDynamicData.h"
 #include "Physics.h"
 #include "tri-colliderknoopc/dTriList.h"
-#include "..\ode\src\collision_kernel.h"
-#include <..\ode\src\joint.h>
+//#include "..\ode\src\collision_kernel.h"
+//#include <..\ode\src\joint.h>
 //#include "dRay/include/dRay.h"
 #include "ExtendedGeom.h"
 union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
@@ -1327,6 +1327,26 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	bActive=true;
 }
 
+
+
+void CPHShell::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel){
+	if(bActive)
+		return;
+	m_ident=ph_world->AddObject(this);
+
+	vector<CPHElement*>::iterator i;
+
+	mXFORM.set(transform);
+	m_space=dSimpleSpaceCreate(ph_world->GetSpace());
+	//dSpaceSetCleanup (m_space, 0);
+	for(i=elements.begin();i!=elements.end();i++){
+		//(*i)->Start();
+		//(*i)->SetTransform(m0);
+		(*i)->Activate(transform,lin_vel, ang_vel);
+	}
+	bActive=true;
+}
+
 void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disable){
 	mXFORM.set(m0);
 	Start();
@@ -1369,6 +1389,53 @@ void CPHElement::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool di
 	m_body_interpolation.SetBody(m_body);
 	//previous_f[0]=dInfinity;
 	if(disable) dBodyDisable(m_body);
+	bActive=true;
+}
+
+void CPHElement::Activate(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel){
+	mXFORM.set(transform);
+	Start();
+	SetTransform(transform);
+	//i=elements.begin();
+	//m_body=(*i)->get_body();
+	//m_inverse_local_transform.set((*i)->m_inverse_local_transform);
+	//Fmatrix33 m33;
+	//Fmatrix m,m1;
+	//m1.set(m0);
+	//m1.identity();
+	//m1.invert();
+	//m.mul(m1,m2);
+	//m.mul(1.f/dt01);
+	//m33.set(m);
+	//dMatrix3 R;
+	//PHDynamicData::FMX33toDMX(m33,R);
+	dBodySetLinearVel(m_body,lin_vel.x,lin_vel.y,lin_vel.z);
+	
+	dBodySetAngularVel(m_body,ang_vel.x,ang_vel.y,ang_vel.z);
+
+
+	Memory.mem_copy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	Memory.mem_copy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+
+
+	//////////////////////////////////////////////////////////////
+	//initializing values for disabling//////////////////////////
+	//////////////////////////////////////////////////////////////
+	/*
+	mean_w[0]=0.f;
+	mean_w[1]=0.f;
+	mean_w[2]=0.f;
+	mean_v[0]=0.f;
+	mean_v[1]=0.f;
+	mean_v[2]=0.f;
+	*/
+	previous_p[0]=dInfinity;
+	previous_r[0]=0.f;
+	dis_count_f=0;
+
+	m_body_interpolation.SetBody(m_body);
+	//previous_f[0]=dInfinity;
+	//if(disable) dBodyDisable(m_body);
 	bActive=true;
 }
 
@@ -2728,13 +2795,13 @@ dBodyGetMass(b,&m);
 	//	R_ASSERT3(mtl_pair,strconcat(buf,"Undefined material pair:  # ", GMLib.GetMaterial(T->material)->name),GMLib.GetMaterial(data->material)->name);
 		if(mtl_pair)
 		{
-		 if(vel_cret>20.f && !mtl_pair->HitMarks.empty())
+		 if(vel_cret>30.f && !mtl_pair->HitMarks.empty())
 			::Render->add_Wallmark	(
 			 SELECT_RANDOM(mtl_pair->HitMarks),
 			 *((Fvector*)c->pos),
 			 0.09f,
 			 T);
-		 if(vel_cret>5.f && !mtl_pair->HitSounds.empty())
+		 if(vel_cret>15.f && !mtl_pair->HitSounds.empty())
 		 {
 			  ::Sound->play_at_pos(
 			  SELECT_RANDOM(mtl_pair->HitSounds) ,0,*((Fvector*)c->pos)

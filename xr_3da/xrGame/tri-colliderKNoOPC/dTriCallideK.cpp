@@ -165,7 +165,6 @@ contact->pos[2] = pos[2];
 
 contact->depth = outDepth;
 
-
  for (i=0; i<ret; i++) {
     CONTACT(contact,i*skip)->g1 = const_cast<dxGeom*> (o2);
     CONTACT(contact,i*skip)->g2 = const_cast<dxGeom*> (o1);
@@ -177,8 +176,9 @@ contact->depth = outDepth;
 	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
 	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
+//	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
   }
+  if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
   return ret;
 
 
@@ -708,8 +708,9 @@ contact->depth = outDepth;
 	SURFACE(contact,i*skip)->bounce_vel=GMLib.GetMaterial(T->material)->fPHBounceStartVelocity;
 	SURFACE(contact,i*skip)->soft_cfm=GMLib.GetMaterial(T->material)->fPHSpring;
 	SURFACE(contact,i*skip)->soft_erp=GMLib.GetMaterial(T->material)->fPHDamping;
-	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
+//	if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,CONTACT(contact,i*skip));
   }
+  if(dGeomGetUserData(o1)->callback)dGeomGetUserData(o1)->callback(T,contact);
   return ret;
 
 

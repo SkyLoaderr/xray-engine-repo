@@ -283,6 +283,7 @@ public:
 	virtual void			SetMaterial				(u32 m){ul_material=m;}
 	virtual void			SetMaterial				(LPCSTR m){ul_material=GMLib.GetMaterialIdx(m);}
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
+	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel);
 	virtual void			Activate				();
 	virtual void			Deactivate				();
 	virtual void			setMass					(float M);
@@ -296,7 +297,7 @@ public:
 																					};
 	virtual void			Update					();
 	CPHElement(dSpaceID a_space){ 
-		if(!hWallmark)hWallmark	= Device.Shader.Create("effects\\wallmark", "wallmarks\\wallmark_default");
+	///	if(!hWallmark)hWallmark	= Device.Shader.Create("effects\\wallmark", "wallmarks\\wallmark_default");
 		contact_callback=ContactShotMark;
 		m_space=a_space;
 		m_body=NULL;
@@ -466,6 +467,7 @@ public:
 	virtual void			Update					()	;											
 
 	virtual void			Activate				(const Fmatrix& m0, float dt01, const Fmatrix& m2,bool disable=false);
+	virtual void			Activate				(const Fmatrix &transform,const Fvector& lin_vel,const Fvector& ang_vel);
 	virtual void			Activate				();
 	virtual void			Deactivate				()		;
 
