@@ -23,7 +23,7 @@ const	float		S_tess		= .5f;
 const	int 		S_ambient	= 64;
 const	int 		S_clip		= 256-24;
 const	D3DFORMAT	S_rtf		= D3DFMT_A8R8G8B8;
-const	float		S_blur_kernel	= .5f;
+const	float		S_blur_kernel	= .75f;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
