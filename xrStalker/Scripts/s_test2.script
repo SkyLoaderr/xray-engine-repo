@@ -73,6 +73,8 @@ function main ()
 	local azone = get_level_object ("attack_zone")
 	azone:set_callback (s_test.zone_callback, true)
 	
+	wait (10000)		
+	
 	while entered == false do
 		  monster:process ()
 		  wait ()
