@@ -136,6 +136,7 @@ void	Compress			(LPCSTR path)
 				printf				("VFS (R)");
 			} else {
 				// Compressed OK
+				filesVFS			++;
 				c_mode				= 0;		// Normal file
 				fs->write			(c_data,c_size);
 				printf				("%3.1f%%",100.f*float(c_size)/float(src.Length()));
