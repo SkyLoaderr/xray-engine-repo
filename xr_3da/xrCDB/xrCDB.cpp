@@ -108,10 +108,9 @@ void	MODEL::build_internal	(Fvector* V, int Vcnt, TRI* T, int Tcnt, build_callba
 	u32*		temp_ptr	= temp_tris;
 	for (int i=0; i<tris_count; i++)
 	{
-		*temp_ptr++	= tris[i].IDverts()[0];
-		*temp_ptr++	= tris[i].IDverts()[1];
-		*temp_ptr++	= tris[i].IDverts()[2];
-		tris[i].convert_I2P(verts);
+		*temp_ptr++	= tris[i].verts[0];
+		*temp_ptr++	= tris[i].verts[1];
+		*temp_ptr++	= tris[i].verts[2];
 	}
 	
 	// Build a non quantized no-leaf tree
