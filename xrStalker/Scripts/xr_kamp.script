@@ -313,6 +313,19 @@ function action_go_patrol:initialize()
 	self.begin = false
 	xr_kamp.change_state(self.object, self.a, 0)
 	self.final_point = {}
+	self.relax_point = {}
+	self.relax_time = {idle = nil,
+			begin = nil,
+			max_idle = 5,
+			sum_idle = 5 }
+	self.relax_idle = {time = 5,
+			begin = nil }
+
+	-- Описание предназначения флагов:
+	-- 0 - начало пути
+	-- 1 - конец пути
+	-- 2 - точка для останова и потягиваний
+	-- 5+ - если он находится в этой точке, то он разворачивается и смотрит в одну из точек с установленным аналогичным флагом
 end
 function action_go_patrol:execute()
 	action_base.execute (self)
@@ -353,8 +366,41 @@ function action_go_patrol:execute()
 				ii = ii + 1
 			end
 		end
+		-- Определение индексов точек релаксирования
+		local ii = 1
+		for i=0, self.ptr:count()-1, 1 do
+			if self.ptr:flag(i, 2) == true then
+				self.relax_point[ii] = i
+				ii = ii + 1
+			end
+		end
 	end
 
+	-- тут нужно сделать проверку на отыгрывание разных релаксных анимаций
+	for key,value in self.relax_point do
+		if self.object:level_vertex_id() == self.ptr:level_vertex_id(value) then
+			-- стоим и смотрим, отыгрывая разные анимации
+			if self.relax_time.begin == nil and
+				self.relax_idle.begin ~= nil and
+                               	device():time_global() - self.relax_idle.begin >= self.relax_idle.idle
+			then
+				-- инициализируем остановку
+				self.relax_time.begin = device():time_global()
+				self.relax_time.idle = math.random(self.relax_time.max_idle) + self.relax_time.sum_idle
+			else
+				-- Обработка остановки
+				self.object:set_movement_type(move.stand)				
+
+				-- Выход из остановки
+				if device():time_global() - self.relax_time_begin >= self.relax_time.idle then
+					self.object:set_movement_type(move.walk)				
+					self.relax_time.begin = nil
+					self.relax_idle.begin = device():time_global()
+				end
+			end
+		end
+	end
+	
 	-- Тут нужно будет сделать проверку что мы закончили патрулирование
 	for key,value in self.final_point do
 		if self.object:level_vertex_id() == self.ptr:level_vertex_id(value) then

@@ -339,6 +339,7 @@ xr_motivator.storage[self.object:id()].reactions = {
     self.object:disable_talk()
 
     xr_reactions.add_to_binder(self.object)
+    xr_state.add_to_binder(self.object)
     xr_patrol.add_to_binder (self.object)
     xr_meet.add_to_binder(self.object)
     xr_tradeseller.add_to_binder(self.object)
