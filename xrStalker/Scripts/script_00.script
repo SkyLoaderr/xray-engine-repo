@@ -236,14 +236,14 @@ function main()
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
-				cond	(cond.time_end, 20000)
+				cond	(cond.time_end, 50000)
 			)
 			action(
 				stalker2,
 			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
 				look	(look.fire_point, actor),
 				anim	(anim.danger),
-				cond	(cond.time_end, 20000)
+				cond	(cond.time_end, 50000)
 			)
 			prof_stoyat_pristrelu:play_at_pos		(stalker1,stalker1:position(),0);
 			wait(5000)			
@@ -270,7 +270,7 @@ function main()
 			prof_blin:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(1000)			
 			prof_uviju_pristrelu:play_at_pos	(stalker1,stalker1:position(),0);
-			wait(6000)			
+			wait(15000)			
 			prof_sam_naprosilsya:play_at_pos	(stalker1,stalker1:position(),0);
 			wait(2000)			
 
