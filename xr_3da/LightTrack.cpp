@@ -123,7 +123,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 		clamp			(I->test,-.5f,1.f);
 		I->energy		= .9f*I->energy + .1f*I->test;
 
-		float	E		= I->energy * xrL->color.magnitude_rgb();
+		float	E		= I->energy * xrL->color.intensity();
 		if (E > EPS)
 		{
 			// Select light
@@ -131,7 +131,7 @@ void	CLightTrack::ltrack	(IRenderable* O)
 			CLightTrack::Light&	L	= lights.back();
 			L.source				= xrL;
 			L.color.mul_rgb			(xrL->color,I->energy/2);
-			L.energy				= E;
+			L.energy				= I->energy;
 		}
 	}
 	
