@@ -155,6 +155,7 @@ void CHelicopter::reload(LPCSTR section)
 
 BOOL CHelicopter::net_Spawn(LPVOID	DC)
 {
+	SetfHealth(100.0f);
 	if (!inherited::net_Spawn(DC))
 		return			(FALSE);
 
@@ -231,11 +232,8 @@ BOOL CHelicopter::net_Spawn(LPVOID	DC)
 	m_stayPos			= XFORM().c;
 
 
-	if ( GetfHealth() <= 0.0f )
-		Die();
 
-	
-	m_movMngr.init		(XFORM());
+    m_movMngr.init		(XFORM());
 
 	return				(TRUE);
 }

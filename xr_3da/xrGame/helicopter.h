@@ -14,7 +14,7 @@ class CHelicopter :
 	public CRocketLauncher,
 	public CPHSkeleton
 {
-	typedef CGameObject inherited;
+	typedef CPhysicsShellHolder inherited;
 public:
 	enum EHeliState {
 		eIdleState							= u32(0),
