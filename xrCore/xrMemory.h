@@ -18,11 +18,9 @@ public:
 	void				_destroy		();
 
 	BOOL				debug_mode;
-#ifdef DEBUG
 	xrCriticalSection	debug_cs;
 	std::vector<mdbg>	debug_info;
 	u32					debug_info_update;
-#endif
 
 	u32					stat_calls;
 	s32					stat_counter;
