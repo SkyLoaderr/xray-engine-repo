@@ -578,8 +578,8 @@ public:
 	{
 		DetailSlot::verify	();
 		CDB::COLLIDER		DB;
-		DB.ray_options		(CDB::OPT_ONLYNEAREST | CDB::OPT_CULL		);
-		DB.box_options		(CDB::OPT_FULL_TEST							);
+		DB.ray_options		(CDB::OPT_CULL		);
+		DB.box_options		(CDB::OPT_FULL_TEST	);
 
 		base_lighting		Selected;
 		for (u32 _z=Nstart; _z<Nend; _z++)
