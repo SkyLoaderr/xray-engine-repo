@@ -207,28 +207,28 @@
     <!-------------------------------- Bald ----------------------------->
 
     <article id="zone_anomalies_bald" name="Bald" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="0" y="400" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_bald</text>
     </article>
 
     <!-------------------------------- Gravi ----------------------------->
 
     <article id="zone_anomalies_gravi" name="Gravi" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="0" y="550" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_gravi</text>
     </article>
 
     <!-------------------------------- Meat ----------------------------->
 
     <article id="zone_anomalies_meat" name="Meat" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="0" y="850" width="200" height="150">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_meat</text>
     </article>
 
     <!-------------------------------- Zharka ----------------------------->
 
     <article id="zone_anomalies_zharka" name="Zharka" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_zharka</text>
     </article>
 
@@ -242,42 +242,42 @@
     <!------------------------------ Rusty --------------------------->
 
     <article id="zone_anomalies_rusty" name="Rusty" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_rusty</text>
     </article>
 
     <!-------------------------------- Fuzz ----------------------------->
 
     <article id="zone_anomalies_fuzz" name="Fuzz" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_fuzz</text>
     </article>
 
     <!-------------------------------- Radioactive ----------------------------->
 
     <article id="zone_anomalies_radioactive" name="Radioactive" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_radioactive</text>
     </article>
 
     <!-------------------------------- Ameba ----------------------------->
 
     <article id="zone_anomalies_ameba" name="Ameba" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_ameba</text>
     </article>
 
     <!-------------------------------- Time ----------------------------->
 
     <article id="zone_anomalies_time" name="Time" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_time</text>
     </article>
 
     <!-------------------------------- Lift ----------------------------->
 
     <article id="zone_anomalies_lift" name="Lift" group="Zone/Anomalies">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_anomalies_lift</text>
     </article>
 
@@ -292,7 +292,7 @@
     <!-------------------------------- Escape ----------------------------->
 
     <article id="zone_locations_escape" name="Escape" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="600" y="150" width="150" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_escape</text>
     </article>
 
@@ -300,7 +300,7 @@
     <!-------------------------------- Garbage ----------------------------->
 
     <article id="zone_locations_garbage" name="Garbage" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="750" y="150" width="150" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_garbage</text>
     </article>
 
@@ -308,7 +308,7 @@
     <!-------------------------------- Agroprom ----------------------------->
 
     <article id="zone_locations_agroprom" name="Agroprom" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="600" y="250" width="150" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_agroprom</text>
     </article>
 
@@ -316,7 +316,7 @@
     <!-------------------------------- Darkdolina ----------------------------->
 
     <article id="zone_locations_darkdolina" name="Darkdolina" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_darkdolina</text>
     </article>
 
@@ -324,7 +324,7 @@
     <!-------------------------------- Darklab ----------------------------->
 
     <article id="zone_locations_darklab" name="Darklab" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_darklab</text>
     </article>
 
@@ -332,7 +332,7 @@
     <!-------------------------------- Bar ----------------------------->
 
     <article id="zone_locations_bar" name="Bar" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_bar</text>
     </article>
 
@@ -340,7 +340,7 @@
     <!-------------------------------- Rostok ----------------------------->
 
     <article id="zone_locations_rostok" name="Rostok" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_rostok</text>
     </article>
 
@@ -348,7 +348,7 @@
     <!-------------------------------- Yantar ----------------------------->
 
     <article id="zone_locations_yantar" name="Yantar" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_yantar</text>
     </article>
 
@@ -356,7 +356,7 @@
     <!-------------------------------- Military-loc ----------------------------->
 
     <article id="zone_locations_military-loc" name="Military-loc" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_military-loc</text>
     </article>
 
@@ -364,7 +364,7 @@
     <!-------------------------------- Deadcity ----------------------------->
 
     <article id="zone_locations_deadcity" name="Deadcity" group="Zone/Locations">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_locations_deadcity</text>
     </article>
 
@@ -380,13 +380,13 @@
     <!-------------------------------- Surge ----------------------------->
 
     <article id="zone_phenomena_surge_general" name="General" group="Zone/Phenomena/Surge">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_phenomena_surge_general</text>
     </article>
 
 
     <article id="zone_phenomena_surge_surge-story" name="Surge-story" group="Zone/Phenomena/Surge">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_phenomena_surge_surge-story</text>
     </article>
 
@@ -402,7 +402,7 @@
     <!-------------------------------- Story-2006 ----------------------------->
 
     <article id="zone_zone-story_story-2006" name="Story-2006" group="Zone/Zone-story">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_zone-story_story-2006</text>
     </article>
 
@@ -410,7 +410,7 @@
     <!-------------------------------- Story-2008 ----------------------------->
 
     <article id="zone_zone-story_story-2008" name="Story-2008" group="Zone/Zone-story">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_zone-story_story-2008</text>
     </article>
 
@@ -418,7 +418,7 @@
     <!-------------------------------- Story-2010 ----------------------------->
 
     <article id="zone_zone-story_story-2010" name="Story-2010" group="Zone/Zone-story">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_zone-story_story-2010</text>
     </article>
 
@@ -426,7 +426,7 @@
     <!-------------------------------- Story-raid ----------------------------->
 
     <article id="zone_zone-story_story-raid" name="Story-raid" group="Zone/Zone-story">
-        <texture x="250" y="250" width="250" height="100">ui\ui_icon_equipment</texture>
+        <texture x="500" y="150" width="100" height="100">ui\ui_icon_photo</texture>
         <text>enc_zone_zone-story_story-raid</text>
     </article>
 
