@@ -130,7 +130,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject *object, bool upd
 			if (child) {
 				int					_n = n;
 				release				(child);
-				VERIFY				(object->children.size() == (_n - 1));
+				VERIFY				((int)object->children.size() == (_n - 1));
 				--i;
 				--n;
 			}
