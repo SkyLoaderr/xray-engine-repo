@@ -323,7 +323,7 @@ private:
 	virtual	void			Init							();
 	IC		void			GetDirectionAnglesByPrevPositions(float &yaw, float &pitch)
 	{
-		yaw						= pitch = 0;
+		// yaw					= pitch = 0;
 		Fvector					tDirection;
 		int						i = ps_Size	();
 		
@@ -342,7 +342,7 @@ private:
 
 	IC		void			GetDirectionAngles				(float &yaw, float &pitch)
 	{
-		yaw						= pitch = 0;
+//		yaw						= pitch = 0;
 //		Fvector					tDirection;
 //		
 //		if (!CDetailPathManager::m_path.empty() && (CDetailPathManager::m_current_travel_point <= (CDetailPathManager::m_path.size() - 1)) && (CDetailPathManager::m_current_travel_point >= 0))

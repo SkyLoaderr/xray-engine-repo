@@ -291,6 +291,7 @@ public:
 		eGoalTypeObject = u32(0),
 		eGoalTypeWatchType,
 		eGoalTypeDirection,
+		eGoalTypeCurrent,
 		eGoalTypeDummy = u32(-1),
 	};
 	CObject							*m_tpObjectToWatch;
@@ -303,7 +304,7 @@ public:
 		m_tpObjectToWatch	= 0;
 		m_tWatchType		= MonsterSpace::eLookTypePathDirection;
 		m_tWatchVector.set	(0,0,0);
-		m_tGoalType			= eGoalTypeWatchType;
+		m_tGoalType			= eGoalTypeCurrent;
 	}
 
 							CWatchAction		(MonsterSpace::ELookType tWatchType)

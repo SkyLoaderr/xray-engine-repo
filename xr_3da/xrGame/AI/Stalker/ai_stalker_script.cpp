@@ -121,6 +121,12 @@ bool CAI_Stalker::bfAssignWatch(CEntityAction *tpEntityAction)
 		case CWatchAction::eGoalTypeWatchType : {
 			break;
 		}
+		case CWatchAction::eGoalTypeCurrent : {
+			m_body.target				= m_body.current;
+			m_head.target				= m_head.current;
+			l_tWatchAction.m_bCompleted = true;
+			return						(false);
+		}
 		default : NODEFAULT;
 	}
 
