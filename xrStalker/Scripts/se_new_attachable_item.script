@@ -10,7 +10,7 @@ end
 
 function CSE_NewAttachableItem:init			()
 	log							("CSE_NewAttachableItem::init called!")
-	return						(cse_alife_item.init(self))
+	return						(self)
 end
 
 function CSE_NewAttachableItem:STATE_Write	(packet)
