@@ -1,13 +1,20 @@
 <?xml version='1.0' encoding="windows-1251"?>
 <!-- таблица строк-подсказок -->
 <string_table>
-	<string id="Local Ma111p">
-		<text>To Local Map</text>
-		<text ln="rus">Локальная карта</text>
+	<string id="inventory_item_use">
+		<text>Pickup item (default E)</text>
 	</string>
-	<string id="Global Map22221">
-		<text>To Global Map</text>
-		<text ln="rus">Глобальная карта</text>
+	<string id="character_use">
+		<text>Talk with the person (default E)</text>
+	</string>
+	<string id="dead_character_use">
+		<text>Search corpse (default E)</text>
+	</string>
+	<string id="car_use">
+		<text>Open door (default E)</text>
+	</string>
+	<string id="physic_shell_use">
+		<text>Move object (default shift+E)</text>
 	</string>
 </string_table>
 
