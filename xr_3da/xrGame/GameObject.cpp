@@ -298,7 +298,6 @@ CObject::SavedPosition CGameObject::ps_Element(u32 ID)
 void CGameObject::UpdateCL	()
 {
 	inherited::UpdateCL	();
-	PHUpdate();
 }
 
 void CGameObject::u_EventGen(NET_Packet& P, u32 type, u32 dest)
@@ -416,19 +415,7 @@ void CGameObject::PHSetPushOut(u32 time /* = 5000 */)
 		m_pPhysicsShell->set_PushOut(time,PushOutCallback1);
 }
 
-PHSHELL_PAIR_VECTOR out_shels;
-void CGameObject::PHUpdate()
-{
-	if(m_pPhysicsShell && m_pPhysicsShell->isFractured()) 
-	{
-		out_shels.clear();
-		m_pPhysicsShell->SplitProcess(out_shels);
-	}
-}
 
-void CGameObject::PHSplit()
-{
-}
 f32 CGameObject::GetMass() { return m_pPhysicsShell?m_pPhysicsShell->getMass():0; }
 ///void CGameObject::OnH_A_Independent()
 //{

@@ -4,9 +4,17 @@
 CPhysicObject::CPhysicObject(void) {
 	m_type = epotBox;
 	m_mass = 10.f;
+	
 }
 
-CPhysicObject::~CPhysicObject(void) {
+CPhysicObject::~CPhysicObject(void)
+{
+	SHELL_PAIR_I i=m_unsplited_shels.begin(),e=m_unsplited_shels.end();
+	for(;i!=e;i++)
+	{
+		i->first->Deactivate();
+		xr_delete(i->first);
+	}
 }
 
 BOOL CPhysicObject::net_Spawn(LPVOID DC)
@@ -103,6 +111,8 @@ void CPhysicObject::AddElement(CPhysicsElement* root_e, int id)
 
 
 void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
+	if(po->flags.test(CSE_ALifeObjectPhysic::flSpawnCopy))return;
+	if(m_pPhysicsShell) return;
 	m_pPhysicsShell		= P_create_Shell();
 	switch(m_type) {
 		case epotBox : {
@@ -111,7 +121,7 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 			m_pPhysicsShell->add_Element(E);
 			m_pPhysicsShell->setMass(m_mass);
 			if(!H_Parent())
-				m_pPhysicsShell->Activate(XFORM(),0,XFORM(),!po->flags.and(CSE_ALifeObjectPhysic::flActive).get());
+				m_pPhysicsShell->Activate(XFORM(),0,XFORM(),!po->flags.test(CSE_ALifeObjectPhysic::flActive));
 			m_pPhysicsShell->mDesired.identity();
 			m_pPhysicsShell->fDesiredStrength = 0.f;
 		} break;
@@ -176,7 +186,7 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 
 	m_pPhysicsShell->set_PhysicsRefObject(this);
 	m_pPhysicsShell->mXFORM.set(XFORM());
-	m_pPhysicsShell->Activate(true,!po->flags.and(CSE_ALifeObjectPhysic::flActive).get());//,
+	m_pPhysicsShell->Activate(true,!po->flags.test(CSE_ALifeObjectPhysic::flActive));//,
 	//m_pPhysicsShell->SmoothElementsInertia(0.3f);
 	m_pPhysicsShell->SetAirResistance();//0.0014f,1.5f
 	if(fixed_element)
@@ -201,6 +211,87 @@ void CPhysicObject::net_Import(NET_Packet& P)
 	R_ASSERT						(Remote());
 }
 
+
+void CPhysicObject::shedule_Update(u32 dt)
+{
+	inherited::shedule_Update(dt);
+	if(m_pPhysicsShell && m_pPhysicsShell->isFractured()) 
+	{
+		PHSplit();
+	}
+}
+
+void CPhysicObject::SpawnCopy()
+{
+	if(Local()) {
+		CSE_Abstract*				D	= F_entity_Create(cNameSect());
+		R_ASSERT					(D);
+		CSE_ALifeDynamicObject		*l_tpALifeDynamicObject = dynamic_cast<CSE_ALifeDynamicObject*>(D);
+		R_ASSERT					(l_tpALifeDynamicObject);
+		CSE_ALifeObjectPhysic		*l_tpALifePhysicObject = dynamic_cast<CSE_ALifeObjectPhysic*>(D);
+		R_ASSERT					(l_tpALifePhysicObject);
+		
+		l_tpALifeDynamicObject->m_tNodeID	= AI_NodeID;
+		l_tpALifePhysicObject->set_visual(cNameVisual());
+		l_tpALifePhysicObject->type=u32(m_type);
+		//char mask=0;
+		//mask&= (1>>1);
+		l_tpALifePhysicObject->flags.set(CSE_ALifeObjectPhysic::flSpawnCopy,1);
+		//l_tpALifePhysicObject->flags.set(mask);
+		// Fill
+		D->m_wVersion		=40;
+		strcpy				(D->s_name,cNameSect());
+		strcpy				(D->s_name_replace,"");
+		D->s_gameid			=	u8(GameID());
+		D->s_RP				=	0xff;
+		D->ID				=	0xffff;
+		D->ID_Parent		=	u16(ID());
+		D->ID_Phantom		=	0xffff;
+		D->o_Position		=	Position();
+		D->s_flags.set		(M_SPAWN_OBJECT_LOCAL);
+		D->RespawnTime		=	0;
+		// Send
+		NET_Packet			P;
+		D->Spawn_Write		(P,TRUE);
+		Level().Send		(P,net_flags(TRUE));
+		// Destroy
+		F_entity_Destroy	(D);
+	}
+}
+void CPhysicObject::PHSplit()
+{
+	m_pPhysicsShell->SplitProcess(m_unsplited_shels);
+	u16 i=u16(m_unsplited_shels.size());
+	for(;i;i--) SpawnCopy();
+}
+
+void CPhysicObject::OnEvent		(NET_Packet& P, u16 type)
+{
+	inherited::OnEvent		(P,type);
+	u16 id;
+	switch (type)
+	{
+	case GE_OWNERSHIP_TAKE:
+		{
+			P.r_u16		(id);
+			UnsplitSingle( dynamic_cast<CGameObject*>(Level().Objects.net_Find	(id)));
+		}
+	}
+}
+
+void CPhysicObject::UnsplitSingle(CGameObject* O)
+{
+	R_ASSERT2(m_unsplited_shels.size(),"NO_SHELLS !!");
+	R_ASSERT2(!O->m_pPhysicsShell,"this has shell already!!!");
+	O->m_pPhysicsShell=m_unsplited_shels.back().first;
+	//////////////////////////////////////////////////////////////////////////
+
+
+
+
+	//////////////////////////////////////////////////////////////////////////
+	m_unsplited_shels.erase(m_unsplited_shels.end()-1);
+}
 //////////////////////////////////////////////////////////////////////////
 /*
 DEFINE_MAP_PRED	(LPCSTR,	CPhysicsJoint*,	JOINT_P_MAP,	JOINT_P_PAIR_IT,	pred_str);

@@ -229,6 +229,7 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeObjectPhysic,CSE_ALifeDynamicObjectVisual)
 	string32						startup_animation;
     enum{
     	flActive					= (1<<0),
+		flSpawnCopy					= (1<<1),
     };
     Flags8							flags;
 									CSE_ALifeObjectPhysic	(LPCSTR caSection);

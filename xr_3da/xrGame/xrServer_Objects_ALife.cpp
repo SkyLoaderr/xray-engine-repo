@@ -759,6 +759,8 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if (m_wVersion > 28)
 		tNetPacket.r_string		(startup_animation);
 
+	if	(m_wVersion>39)	//>39 		
+		 tNetPacket.r_u8		(flags.flags);
 #ifdef _EDITOR    
 	PlayAnimation				(startup_animation[0]?startup_animation:"$editor");
 #endif
@@ -771,6 +773,7 @@ void CSE_ALifeObjectPhysic::STATE_Write		(NET_Packet	&tNetPacket)
 	tNetPacket.w_float			(mass);
 	tNetPacket.w_string			(fixed_bone);
 	tNetPacket.w_string			(startup_animation);
+	tNetPacket.w_u8				(flags.flags);
 }
 
 void CSE_ALifeObjectPhysic::UPDATE_Read		(NET_Packet	&tNetPacket)
