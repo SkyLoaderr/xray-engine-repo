@@ -91,7 +91,8 @@ void FTreeVisual::Render	(float LOD)
 
 	// fog
 	float	f_near			= pCreator->Environment.c_FogNear;
-	float	f_far			= pCreator->Environment.c_FogFar - f_near;
+	float	f_far			= 1/(pCreator->Environment.c_FogFar - f_near);
+	Fvector& V				= Device.vCameraPosition;
 
 	// setup constants
 	RCache.set_c			(c_consts,	scale,		scale,		0,					0);
@@ -101,8 +102,8 @@ void FTreeVisual::Render	(float LOD)
 	RCache.set_c			(c_c_bias,	c_bias);																		// bias
 	RCache.set_c			(c_m_m2w,	xform);																			// xform
 	RCache.set_c			(c_m_w2v2p,	Device.mFullTransform);															// view-projection
-	RCache.set_c			(c_eye,		Device.vCameraPosition);														// view-pos
-	RCache.set_c			(c_fog,		f_near,	f_far,	0,	0);															// fog-params
+	RCache.set_c			(c_eye,		V.x,	V.y,	V.z,	0);														// view-pos
+	RCache.set_c			(c_fog,		f_near,	f_far,	0,		0);														// fog-params
 
 	// render
 	RCache.set_Shader		(hShader);
