@@ -40,7 +40,7 @@ function base_dialog:InitControls(caption)
 	-----------------------------------------------------------------
 	self.left_align_x   = self.indent
 	self.right_align_x  = self.main_rect.width - self.indent
-	self.top_aling_y    = self.indent
+	self.top_align_y    = self.indent
 	self.bottom_align_y = self.main_rect.height - self.indent
 	------------------------------------------------------------------
 	
