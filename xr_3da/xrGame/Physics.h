@@ -228,6 +228,8 @@ class CPHShell: public CPhysicsShell,public CPHObject {
 	Fmatrix m_inverse_local_transform;
 //dVector3 mean_w;
 //dVector3 mean_v;
+dVector3 m_safe_position;
+dVector3 m_safe_velocity;
 dVector3 previous_p;
 dMatrix3 previous_r;
 dVector3 previous_p1;

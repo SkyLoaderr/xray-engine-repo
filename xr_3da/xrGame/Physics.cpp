@@ -749,76 +749,48 @@ static void NearCallback(void* /*data*/, dGeomID o1, dGeomID o2){
 		n=N;
 	ULONG i;
 
-//if(dGeomGetClass(o1)==2/*dGeomTransformClass*/){
-/*	for(i = 0; i < n; ++i)
-	{
 
-        contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 2500;
-		contacts[i].surface.bounce = 0.3f;
-		contacts[i].surface.bounce_vel = 0.005f;
-		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-		dJointAttach(c, dGeomGetBody(o1), dGeomGetBody(contacts[i].geom.g2));
-		}
-
-	}
-	*/
-//else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
-/*		for(i = 0; i < n; ++i)
-		{
-
-        contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 2500.f;
-		contacts[i].surface.bounce = 0.1f;
-		contacts[i].surface.bounce_vel = 0.005f;
-		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
-		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(o2));
-		}
-	}
-
-else
-*/
 	for(i = 0; i < n; ++i)
 	{
 
         contacts[i].surface.mode =dContactBounce|dContactApprox1;
 		contacts[i].surface.mu =1.f;// 5000.f;
 		bool pushing_neg=false;
-		if(dGeomGetUserData(contacts[i].geom.g2)){ 
+
+		dxGeomUserData* usr_data_1 = dGeomGetUserData(contacts[i].geom.g1);
+		dxGeomUserData* usr_data_2 = dGeomGetUserData(contacts[i].geom.g2);
+
+		if(usr_data_2){ 
 			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g2)->friction;
 			if(dGeomGetClass(contacts[i].geom.g2)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g2);
-				if(dGeomGetUserData(geom))
-				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
+				dxGeomUserData* usr_data_geom = dGeomGetUserData(geom);
+				if(usr_data_geom)
+				pushing_neg=usr_data_geom->pushing_b_neg||usr_data_geom->pushing_neg;
 			}
 			else
-				pushing_neg=dGeomGetUserData(contacts[i].geom.g2)->pushing_b_neg||
-				dGeomGetUserData(contacts[i].geom.g2)->pushing_neg;
-	
-			if(dGeomGetUserData(contacts[i].geom.g2)->ph_object){
-					dGeomGetUserData(contacts[i].geom.g2)->ph_object->InitContact(&contacts[i]);
+				pushing_neg=usr_data_2->pushing_b_neg||usr_data_2->pushing_neg;
+			if(usr_data_2->ph_object){
+					usr_data_2->ph_object->InitContact(&contacts[i]);
 					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					continue;
 			}
 		}
-		if(dGeomGetUserData(contacts[i].geom.g1)){ 
+		if(usr_data_1){ 
 			//contacts[i].surface.mu=dGeomGetUserData(contacts[i].geom.g1)->friction;
 			if(dGeomGetClass(contacts[i].geom.g1)==dGeomTransformClass){
 				const dGeomID geom=dGeomTransformGetGeom(contacts[i].geom.g1);
-				if(dGeomGetUserData(geom))
-				pushing_neg=dGeomGetUserData(geom)->pushing_b_neg||dGeomGetUserData(geom)->pushing_neg;
+				dxGeomUserData* usr_data_geom = dGeomGetUserData(geom);
+				if(usr_data_geom)
+				pushing_neg=usr_data_geom->pushing_b_neg||usr_data_geom->pushing_neg;
 			}
 			else
-				pushing_neg=dGeomGetUserData(contacts[i].geom.g1)->pushing_b_neg||
-				dGeomGetUserData(contacts[i].geom.g1)->pushing_neg;
+				pushing_neg=usr_data_1->pushing_b_neg||
+				usr_data_1->pushing_neg;
 
-			if(dGeomGetUserData(contacts[i].geom.g1)->ph_object){
-					dGeomGetUserData(contacts[i].geom.g1)->ph_object->InitContact(&contacts[i]);
-					//pushing_neg=dGeomGetUserData(contacts[i].geom.g1)->pushing_b_neg||
-					//dGeomGetUserData(contacts[i].geom.g1)->pushing_neg;
-					//if(pushing_neg) contacts[i].surface.mu=
-					//									dInfinity;
+			if(usr_data_1->ph_object){
+					usr_data_1->ph_object->InitContact(&contacts[i]);
 					dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 					dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 					continue;
@@ -1135,6 +1107,9 @@ void CPHShell::Activate(const Fmatrix &m0,float dt01,const Fmatrix &m2,bool disa
 	PHDynamicData::FMX33toDMX(m33,R);
 	dBodySetLinearVel(m_body,m2.c.x-m0.c.x,m2.c.y-m0.c.y,m2.c.z-m0.c.z);
 	//dBodySetPosition(m_body,m0.c.x,m0.c.y+1.,m0.c.z);
+
+	memcpy(m_safe_position,dBodyGetPosition(m_body),sizeof(dVector3));
+	memcpy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
 	bActive=true;
 
 //////////////////////////////////////////////////////////////
@@ -1180,16 +1155,32 @@ void CPHShell::PhDataUpdate(dReal step){
 				dReal mag;
 				const dReal* pos = dBodyGetLinearVel(m_body);
 				mag=sqrtf(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
-				if(mag>l_limit){
+				if(!(mag>-dInfinity && mag<dInfinity)) 
+					dBodySetLinearVel(m_body,0.f,0.f,0.f);
+				else if(mag>l_limit){
 					dReal f=mag/l_limit;
 					dBodySetLinearVel(m_body,pos[0]/f,pos[1]/f,pos[2]/f);
 				}
+				const dReal* position=dBodyGetPosition(m_body);
+				if(!(position[0]<dInfinity && position[0]>-dInfinity &&
+					 position[1]<dInfinity && position[1]>-dInfinity &&
+					 position[2]<dInfinity && position[2]>-dInfinity)
+					 ) 
+					 dBodySetPosition(m_body,m_safe_position[0]-m_safe_velocity[0]*fixed_step,
+											   m_safe_position[1]-m_safe_velocity[1]*fixed_step,
+											   m_safe_position[2]-m_safe_velocity[2]*fixed_step);
+				else{
+					memcpy(m_safe_position,position,sizeof(dVector3));
+					memcpy(m_safe_velocity,dBodyGetLinearVel(m_body),sizeof(dVector3));
+					}
 				//const dReal k_l=0.1f;
 				//dBodyAddForce(m_body,-pos[0]*k_l,-pos[1]*k_l,-pos[2]*k_l);
 				//dBodyAddForce(m_body, u * pos[0]*mag, u * pos[1]*mag, u * pos[2]*mag);
 				const dReal* rot = dBodyGetAngularVel(m_body);
 				mag=sqrtf(rot[0]*rot[0]+rot[1]*rot[1]+rot[2]*rot[2]);
-				if(mag>w_limit){
+				if(!(mag>-dInfinity && mag<dInfinity)) 
+					dBodySetAngularVel(m_body,0.f,0.f,0.f);
+				else if(mag>w_limit){
 					dReal f=mag/w_limit;
 					dBodySetAngularVel(m_body,rot[0]/f,rot[1]/f,rot[2]/f);
 				}
