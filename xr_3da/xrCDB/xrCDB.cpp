@@ -155,6 +155,10 @@ extern "C" {
 	{
 		delete (MODEL*)P;
 	}
+	void		__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt)
+	{
+		m_def->build(V,Vcnt,T,Tcnt);
+	}
 	void*		__cdecl		cdb_collider_create	()
 	{
 		return new COLLIDER;

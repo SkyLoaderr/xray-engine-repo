@@ -133,6 +133,7 @@ extern "C"
 {
 	XRCDB_API	void*	__cdecl		cdb_model_create	();
 	XRCDB_API	void	__cdecl		cdb_model_destroy	(void*);
+	XRCDB_API	void	__cdecl		cdb_model_build		(CDB::MODEL *m_def, Fvector* V, int Vcnt, CDB::TRI* T, int Tcnt);
 	XRCDB_API	void*	__cdecl		cdb_collider_create	();
 	XRCDB_API	void	__cdecl		cdb_collider_destroy(void*);
 	XRCDB_API	void	__cdecl		cdb_query_ray		(const CDB::COLLIDER* C, const CDB::MODEL *m_def, const Fvector& r_start,  const Fvector& r_dir, float r_range = 10000.f);
