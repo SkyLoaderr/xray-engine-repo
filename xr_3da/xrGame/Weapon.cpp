@@ -650,9 +650,12 @@ BOOL CWeapon::FireTrace		(const Fvector& P, const Fvector& Peff, Fvector& D)
 	{
 		if (Local() && RQ.O) 
 		{
-			float power		= float(iHitPower);
-			CEntity* E		= dynamic_cast<CEntity*>(RQ.O);
-			if (E) power	*= E->HitScale(RQ.element);
+			float power		=	float(iHitPower);
+			float scale		=	1-(RQ.range/fireDistance);	clamp(scale,0.f,1.f);
+			power			*=	_sqrt(_sqrt(scale));
+			CEntity* E		=	dynamic_cast<CEntity*>(RQ.O);
+			if (E) power	*=	E->HitScale(RQ.element);
+
 			// 
 			NET_Packet		P;
 			u_EventGen		(P,GE_HIT,RQ.O->ID());
