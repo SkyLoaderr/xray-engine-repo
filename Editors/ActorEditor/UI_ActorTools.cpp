@@ -749,3 +749,27 @@ void CActorTools::MakeThumbnail()
         ELog.DlgMsg(mtError,"Can't create thumbnail. Empty scene.");
     }
 }
+
+bool CActorTools::BatchConvert(LPCSTR fn)
+{
+	CInifile* ini = CInifile::Create(fn); VERIFY(ini);
+    if (ini->section_exist("ogf")){
+    	CInifile::Sect& sect	= ini->r_section("ogf");
+        for (CInifile::Item* it=sect.begin(); it!=sect.end(); it++){
+        	std::string 		src_name;
+            std::string 		tgt_name;
+            FS.update_path		(src_name,_objects_,		it->first.c_str());
+            FS.update_path		(tgt_name,_game_meshes_, 	it->second.c_str());
+            if (FS.exist(src_name.c_str())){
+            	Msg				("Converting '%s' to '%s'",it->first.c_str(),it->second.c_str());
+            }else{
+            	Log				("!Invalid source file name:",it->first.c_str());
+            }
+        }
+    	return true;
+    }else{
+    	return false;
+    }
+}
+
+
