@@ -252,7 +252,7 @@ void CParticleEffect::OnFrame(u32 frame_dt)
                         m_ElapsedLimit 	= m_Def->m_TimeLimit;
                         Stop		(true);
 //                        Msg			("timelimit(%s)",GetDefinition()->m_Name);
-                        return;
+//                        return;
                     }
                 }
             }
