@@ -592,14 +592,16 @@ void CDetailPathManager::build_path_via_key_points(
 			if (!compute_path(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative)) {
 				compute_path			(s,d,0,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
 				compute_path			(s,d,&m_path,m_start_params,m_dest_params,straight_line_index,straight_line_index_negative);
-				VERIFY					(false);
+				m_path.clear			();
+				return;
+				//VERIFY				(false);
 			}
 			P							= I - 1;
 			d							= p;
 			s							= t;
 			if (!m_path.empty()) {
 				xr_map<u32,STravelParams>::const_iterator I = m_movement_params.find(m_path.back().velocity);
-				VERIFY				(m_movement_params.end() != I);
+				VERIFY					(m_movement_params.end() != I);
 				if (is_negative((*I).second.linear_velocity))
 					s.direction.mul		(-1.f);
 			}
@@ -614,9 +616,11 @@ void CDetailPathManager::build_path_via_key_points(
 	}
 
 	if (!compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative)) {
-		compute_path(s,d,0,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
-		compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
-		VERIFY							(false);
+//		compute_path(s,d,0,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
+//		compute_path(s,d,&m_path,m_start_params,finish_params,straight_line_index,straight_line_index_negative);
+		m_path.clear					();
+		return;
+//		VERIFY							(false);
 	}
 
 	add_patrol_point					();
