@@ -121,7 +121,9 @@ void CRenderTarget::accum_spot	(light* L)
 		RCache.set_Element			(shader->E[ _id ]	);
 
 		// Constants
-		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,1/(L->range*L->range));
+		float	att_R				= L->range*.95f;
+		float	att_factor			= 1.f/(att_R*att_R);
+		RCache.set_c				("Ldynamic_pos",	L_pos.x,L_pos.y,L_pos.z,att_factor);
 		RCache.set_c				("Ldynamic_color",	L_clr.x,L_clr.y,L_clr.z,L_spec);
 		RCache.set_c				("m_texgen",		m_Texgen	);
 		RCache.set_c				("m_texgen_J",		m_Texgen_J	);
