@@ -28,6 +28,10 @@
 	. TODO: NET: Actor camera
 	+ TODO: HUD rendering
 	. TODO: Usage list
+	+ TODO: Single VB/IB
+	+ TODO: Native vertex-shaders
+	+ TODO: xrLC: merge IB
+	. TODO: xrLC: aligned split-plane heuristics
 	
 	. TODO: Detail texturing
 
