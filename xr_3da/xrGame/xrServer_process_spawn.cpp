@@ -17,7 +17,7 @@ void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 	if (!((GAME==E->s_gameid)||(GAME_ANY==E->s_gameid)))
 	{
 		Msg				("- SERVER: Entity [%s] incompatible with current game type.",E->s_name);
-		entity_Destroy	(E);
+		F_entity_Destroy(E);
 		return;
 	}
  
