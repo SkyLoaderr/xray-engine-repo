@@ -22,7 +22,7 @@
 #define MIN_SPINE_TURN_ANGLE			PI_DIV_6
 #define EYE_WEAPON_DELTA				(0*PI/30.f)
 #define TORSO_START_SPEED				PI_DIV_4
-#define DISTANCE_NEAR					30.f
+#define DISTANCE_NEAR					0.f
 
 /**
 void CAI_Soldier::OnAttackFire()
@@ -281,24 +281,6 @@ void CAI_Soldier::OnJumping()
 				GO_TO_PREV_STATE
 		}
 	}
-}
-
-void CAI_Soldier::OnStandingUp()
-{
-	WRITE_TO_LOG("Standing up...");
-	
-	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
-
-	//if (m_cBodyState == BODY_STATE_LIE)
-	//	m_tpCurrentGlobalAnimation = m_tpCurrentTorsoAnimation = m_tpCurrentHandsAnimation = m_tpCurrentLegsAnimation = 0;
-
-	vfSetMovementType(BODY_STATE_STAND,0);
-	
-	AI_Path.TravelPath.clear();
-	
-	CHECK_IF_GO_TO_PREV_STATE(true)
-	//if ((m_tpCurrentGlobalAnimation == tSoldierAnimations.tLie.tGlobal.tpLieDown) && (Level().timeServer() - dwHitTime > 500)) {
-	//}
 }
 
 void CAI_Soldier::OnSitting()
@@ -1384,6 +1366,11 @@ void CAI_Soldier::OnLyingDown()
 	
 	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
 
+	DWORD dwCurTime = Level().timeServer();
+	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = dwCurTime;
+
 	vfSetMovementType(BODY_STATE_LIE,0);
 	vfSetFire(false,Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]);
 	
@@ -1391,7 +1378,28 @@ void CAI_Soldier::OnLyingDown()
 	AI_Path.TravelPath.clear();
 	
 	//CHECK_IF_GO_TO_PREV_STATE(((m_tpCurrentGlobalAnimation == tSoldierAnimations.tNormal.tGlobal.tpaLieDown[0]) || (m_tpCurrentGlobalAnimation == tSoldierAnimations.tCrouch.tGlobal.tpaLieDown[0])) && (Level().timeServer() - dwHitTime > 2500))
-	CHECK_IF_GO_TO_PREV_STATE(Level().timeServer() - dwHitTime > 2000)
+	CHECK_IF_GO_TO_PREV_STATE(dwCurTime - m_dwLastRangeSearch > 2500)
+}
+
+void CAI_Soldier::OnStandingUp()
+{
+	WRITE_TO_LOG("Standing up...");
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	DWORD dwCurTime = Level().timeServer();
+	
+	if (m_bStateChanged)
+		m_dwLastRangeSearch = dwCurTime;
+
+	vfSetFire(false,Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()]);
+	
+	AI_Path.TravelPath.clear();
+	
+	if (dwCurTime - m_dwLastRangeSearch > 2500) {
+		vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+		GO_TO_PREV_STATE;
+	}
 }
 
 void CAI_Soldier::OnPatrolHurt()
@@ -1432,9 +1440,12 @@ void CAI_Soldier::OnPatrolHurt()
 	if (fabsf(r_torso_target.yaw - r_torso_current.yaw) >= PI/30)
 		return;
                
+	if (fDistance < DISTANCE_NEAR)
+		CHECK_IF_SWITCH_TO_NEW_STATE(!m_bStateChanged,aiSoldierAttackAim);
+
 	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierDefendFireAlone)
 
-	dwHitTime = 0;
+	//dwHitTime = 0;
 	GO_TO_NEW_STATE(aiSoldierHurtAloneDefend);
 }
 
@@ -1447,10 +1458,67 @@ void CAI_Soldier::OnHurtAloneDefend()
 {
 	WRITE_TO_LOG("Hurt alone defend");
 
+	CHECK_IF_SWITCH_TO_NEW_STATE(g_Health() <= 0,aiSoldierDie)
+
+	SelectEnemy(Enemy);
+	
+	CHECK_IF_SWITCH_TO_NEW_STATE(Enemy.Enemy,aiSoldierDefendFireAlone)
+
 	DWORD dwCurTime = Level().timeServer();
+	
 	CHECK_IF_SWITCH_TO_NEW_STATE((dwCurTime - dwHitTime < HIT_JUMP_TIME) && (dwHitTime),aiSoldierPatrolHurt)
 
-	//if (m_cBodyState)
+	INIT_SQUAD_AND_LEADER
+	
+	CGroup &Group = Squad.Groups[g_Group()];
+
+	tSavedEnemyPosition = tHitPosition;
+	
+	switch (m_cBodyState) {
+		case BODY_STATE_LIE : {
+			vfInitSelector(SelectorUnderFire,Squad,Leader);
+
+			SelectorPatrol.m_tEnemyPosition = tHitPosition;
+
+			if (AI_Path.bNeedRebuild)
+				vfBuildPathToDestinationPoint(0);
+			else
+				vfSearchForBetterPositionWTime(SelectorUnderFire,Squad,Leader);
+
+			break;
+		}
+	}
+		
+	vfAimAtEnemy();
+	
+	vfSetFire(false,Group);
+
+	switch (m_cBodyState) {
+		case BODY_STATE_STAND : {
+			if (dwCurTime - dwHitTime > 25000) {
+				vfSetMovementType(BODY_STATE_STAND,m_fMaxSpeed);
+				SetDirectionLook();
+			}
+			else
+				vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+			break;
+		}
+		case BODY_STATE_CROUCH : {
+			if (dwCurTime - dwHitTime > 25000)
+				vfSetMovementType(BODY_STATE_STAND,m_fMinSpeed);
+			else
+				vfSetMovementType(BODY_STATE_CROUCH,m_fMinSpeed);
+			break;
+		}
+		case BODY_STATE_LIE : {
+			if (dwCurTime - dwHitTime > 15000) {
+				SWITCH_TO_NEW_STATE(aiSoldierStandingUp);
+			}
+			else
+				vfSetMovementType(m_cBodyState,m_fMinSpeed);
+			break;
+		}
+	}
 }
 
 void CAI_Soldier::Think()
@@ -1486,10 +1554,6 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierInjuring : {
 				Injuring();
-				break;
-			}
-			case aiSoldierStandingUp : {
-				StandingUp();
 				break;
 			}
 			case aiSoldierSitting : {
@@ -1599,6 +1663,10 @@ void CAI_Soldier::Think()
 			}
 			case aiSoldierHurtAloneDefend : {
 				OnHurtAloneDefend();
+				break;
+			}
+			case aiSoldierStandingUp : {
+				OnStandingUp();
 				break;
 			}
 			/**/

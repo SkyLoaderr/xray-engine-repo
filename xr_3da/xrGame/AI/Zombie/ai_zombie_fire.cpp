@@ -92,7 +92,7 @@ void CAI_Zombie::HitSignal(int amount, Fvector& vLocalDir, CEntity* who)
 	pSounds->PlayAtPos		(S,this,vPosition);
 	
 	if (iHealth > 0) {
-		/**
+		/**/
 		if (::Random.randI(0,2))
 			PKinematics(pVisual)->PlayFX(tZombieAnimations.tNormal.tTorso.tpDamageLeft);
 		else

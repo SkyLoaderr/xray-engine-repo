@@ -63,19 +63,24 @@ void CAI_Zombie::vfLoadAnimations()
 	
 	// loading normal animations
 	tZombieAnimations.tNormal.tGlobal.tpaDeath[0] = tpVisualObject->ID_Cycle("norm_death");
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle("norm_death_2");
-	tZombieAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle("norm_death_3");
+	tZombieAnimations.tNormal.tGlobal.tpaDeath[1] = tpVisualObject->ID_Cycle("norm_death_1");
+	tZombieAnimations.tNormal.tGlobal.tpaDeath[2] = tpVisualObject->ID_Cycle("norm_death_2");
 	
 	tZombieAnimations.tNormal.tGlobal.tpaAttack[0] = tpVisualObject->ID_Cycle("attack");
 	tZombieAnimations.tNormal.tGlobal.tpaAttack[1] = tpVisualObject->ID_Cycle("attack_1");
 	
-	tZombieAnimations.tNormal.tGlobal.tWalk.Create(tpVisualObject, "norm_walk");
+	tZombieAnimations.tNormal.tGlobal.tWalk.fwd = tpVisualObject->ID_Cycle("norm_walk_fwd");
+	tZombieAnimations.tNormal.tGlobal.tWalk.back = tpVisualObject->ID_Cycle("norm_walk_back");
+	tZombieAnimations.tNormal.tGlobal.tWalk.ls = tpVisualObject->ID_Cycle("norm_walk_ls");
+	tZombieAnimations.tNormal.tGlobal.tWalk.rs = tpVisualObject->ID_Cycle("norm_walk_rs");
+
 	tZombieAnimations.tNormal.tGlobal.tpIdle = tpVisualObject->ID_Cycle("norm_idle");
 	
-	tZombieAnimations.tNormal.tLegs.tpTurn = tpVisualObject->ID_Cycle("norm_turn");
+	tZombieAnimations.tNormal.tLegs.tpTurnLeft = tpVisualObject->ID_Cycle("norm_turn_ls");
+	tZombieAnimations.tNormal.tLegs.tpTurnRight = tpVisualObject->ID_Cycle("norm_turn_rs");
 	
-	tZombieAnimations.tNormal.tGlobal.tpDamageLeft = tpVisualObject->ID_Cycle("norm_torso_damage_left");
-	tZombieAnimations.tNormal.tGlobal.tpDamageRight = tpVisualObject->ID_Cycle("norm_torso_damage_right");
+	tZombieAnimations.tNormal.tTorso.tpDamageLeft = tpVisualObject->ID_FX("norm_damage_ls");
+	tZombieAnimations.tNormal.tTorso.tpDamageRight = tpVisualObject->ID_FX("norm_damage_rs");
 	
 	tpVisualObject->PlayCycle(tZombieAnimations.tNormal.tGlobal.tpIdle);
 }
@@ -111,8 +116,8 @@ void CAI_Zombie::SelectAnimation(const Fvector& _view, const Fvector& _move, flo
 		if (speed<0.2f) {
 			switch (m_cBodyState) {
 				case BODY_STATE_STAND : {
-					if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
-						tpLegsAnimation = tZombieAnimations.tNormal.tLegs.tpTurn;
+					//if ((fabsf(r_torso_target.yaw - r_torso_current.yaw) > TORSO_ANGLE_DELTA) && (fabsf(PI_MUL_2 - fabsf(r_torso_target.yaw - r_torso_current.yaw)) > TORSO_ANGLE_DELTA))
+					//	tpLegsAnimation = tZombieAnimations.tNormal.tLegs.tpTurn;
 					break;
 				}
 				case BODY_STATE_CROUCH : {
