@@ -427,3 +427,44 @@ void CAI_ALife::Generate()
 	m_tALifeVersion				= ALIFE_VERSION;
 	m_tGameTime					= u64(Level().timeServer());
 }
+
+void CAI_ALife::vfGenerateArtefacts()
+{
+}
+
+void CAI_ALife::vfCreateZoneShot()
+{
+}
+
+void CAI_ALife::vfSellArtefacts(CALifeTrader &tTrader)
+{
+}
+
+void CAI_ALife::vfUpdateArtefactOrders(CALifeTrader &tTrader)
+{
+}
+
+void CAI_ALife::vfGiveMilitariesBribe(CALifeTrader &tTrader)
+{
+}
+
+void CAI_ALife::vfBuySupplies(CALifeTrader &tTrader)
+{
+}
+
+void CAI_ALife::vfBuyZoneShot(CALifeTrader &tTrader)
+{
+}
+
+void CAI_ALife::vfAssignPrices(CALifeTrader &tTrader)
+{
+}
+
+void CAI_ALife::vfBallanceCreatures()
+{
+}
+
+void CAI_ALife::vfUpdateCreatures()
+{
+}
+
