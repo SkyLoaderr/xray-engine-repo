@@ -20,6 +20,7 @@ __published:	// IDE-managed Components
 	TExtBtn *ebClearSelected;
 	TExtBtn *ebClose;
 	TFormStorage *fsStorage;
+	TExtBtn *ebFlush;
 	void __fastcall ebClearClick(TObject *Sender);
 	void __fastcall lbLogDrawItem(TWinControl *Control, int Index,
           TRect &Rect, TOwnerDrawState State);
@@ -28,6 +29,7 @@ __published:	// IDE-managed Components
 	void __fastcall ebClearSelectedClick(TObject *Sender);
 	void __fastcall ebCloseClick(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
+	void __fastcall ebFlushClick(TObject *Sender);
 private:	// User declarations
 	static TfrmLog *form;
 public:		// User declarations

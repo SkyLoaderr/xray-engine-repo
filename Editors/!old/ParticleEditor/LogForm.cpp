@@ -113,7 +113,6 @@ void __fastcall TfrmLog::ebCloseClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TfrmLog::FormShow(TObject *Sender)
 {
 	// check window position
@@ -121,4 +120,9 @@ void __fastcall TfrmLog::FormShow(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TfrmLog::ebFlushClick(TObject *Sender)
+{
+	FlushLog();	
+}
+//---------------------------------------------------------------------------
 

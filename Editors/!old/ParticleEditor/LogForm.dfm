@@ -1,8 +1,8 @@
 object frmLog: TfrmLog
-  Left = 664
-  Top = 783
+  Left = 484
+  Top = 601
   Width = 400
-  Height = 83
+  Height = 222
   BorderStyle = bsSizeToolWin
   Caption = 'Log'
   Color = clBtnFace
@@ -23,14 +23,14 @@ object frmLog: TfrmLog
   TextHeight = 13
   object Panel1: TPanel
     Left = 0
-    Top = 36
+    Top = 175
     Width = 392
     Height = 20
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 0
     object ebClear: TExtBtn
-      Left = 104
+      Left = 184
       Top = 2
       Width = 82
       Height = 18
@@ -43,7 +43,7 @@ object frmLog: TfrmLog
       OnClick = ebClearClick
     end
     object ebClearSelected: TExtBtn
-      Left = 186
+      Left = 266
       Top = 2
       Width = 82
       Height = 18
@@ -68,12 +68,25 @@ object frmLog: TfrmLog
       FlatAlwaysEdge = True
       OnClick = ebCloseClick
     end
+    object ebFlush: TExtBtn
+      Left = 82
+      Top = 2
+      Width = 82
+      Height = 18
+      Align = alNone
+      BevelShow = False
+      CloseButton = False
+      Caption = 'Flush'
+      Transparent = False
+      FlatAlwaysEdge = True
+      OnClick = ebFlushClick
+    end
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
     Width = 392
-    Height = 36
+    Height = 175
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 1
@@ -81,7 +94,7 @@ object frmLog: TfrmLog
       Left = 0
       Top = 0
       Width = 392
-      Height = 36
+      Height = 175
       Style = lbOwnerDrawFixed
       Align = alClient
       Color = 15263976
