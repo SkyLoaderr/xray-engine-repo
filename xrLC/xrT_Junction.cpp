@@ -24,15 +24,25 @@ IC float	SqrDistance2Segment(const Fvector& P, const Fvector& A, const Fvector& 
 	return P.distance_to_sqr(R);
 }
 
+struct record
+{
+	Vertex	*E1,*E2;
+	Vertex	*T;
+};
+
+vector<record>	vecJunctions;
+
 void check(Vertex* vE1, Vertex* vE2, Vertex* vTEST)
 {
 	if (_sqrt(SqrDistance2Segment(vTEST->P,vE1->P,vE2->P))<0.005f)	
 	{
+	}
+}
+/*
 		Msg	("ERROR. edge [%3.1f,%3.1f,%3.1f]-[%3.1f,%3.1f,%3.1f], vertex [%3.1f,%3.1f,%3.1f]",
 			VPUSH(vE1->P),VPUSH(vE2->P),VPUSH(vTEST->P)
 			);
-	}
-}
+*/
 
 void CBuild::CorrectTJunctions()
 {
