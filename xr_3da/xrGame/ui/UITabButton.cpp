@@ -57,9 +57,15 @@ void CUITabButton::SendMessage(CUIWindow* pWnd, s16 msg, void* pData){
 	{
 	case TAB_SELECT:
 		if (this == pWnd)
+		{
             m_eButtonState = BUTTON_PUSHED;
+			ShowAssociatedWindow(true);
+		}
 		else		
+		{
 			m_eButtonState = BUTTON_NORMAL;
+			ShowAssociatedWindow(false);
+		}
 		break;
 	default:
 		;
