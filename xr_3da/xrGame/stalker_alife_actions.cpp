@@ -114,9 +114,8 @@ void CStalkerActionNoALife::initialize	()
 	object().movement().set_desired_direction	(0);
 	object().movement().set_path_type			(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type	(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_level_dest_vertex	(object().ai_location().level_vertex_id());
-	object().movement().set_desired_position	(&object().Position());
-//	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
+	object().movement().set_nearest_accessible_position();
+	//	Fvector							direction = Fvector().set(0.f,0.f,1.f);//Fvector().set(::Random.randF(1.f),0.f,::Random.randF(1.f));
 //	direction.normalize_safe		();
 //	object().movement().set_desired_direction	(&direction);
 //	object().movement().set_desired_position	(0);

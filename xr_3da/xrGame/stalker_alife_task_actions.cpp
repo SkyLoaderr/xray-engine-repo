@@ -280,10 +280,9 @@ void CStalkerActionCommunicateWithCustomer::initialize	()
 	object().movement().set_desired_direction		(0);
 	object().movement().set_path_type				(MovementManager::ePathTypeLevelPath);
 	object().movement().set_detail_path_type		(DetailPathManager::eDetailPathTypeSmooth);
-	object().movement().set_level_dest_vertex		(object().ai_location().level_vertex_id());
-	object().movement().set_desired_position		(&object().Position());
+	object().movement().set_nearest_accessible_position();
 	object().movement().set_body_state			(eBodyStateStand);
-	object().movement().set_movement_type			(eMovementTypeStand);
+	object().movement().set_movement_type			(eMovementTypeWalk);
 	object().movement().set_mental_state			(eMentalStateFree);
 	object().sight().setup				(CSightAction(SightManager::eSightTypeCover,false,true));
 	object().CObjectHandler::set_goal	(eObjectActionIdle);

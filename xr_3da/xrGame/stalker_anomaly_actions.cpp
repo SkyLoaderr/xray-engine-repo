@@ -88,10 +88,6 @@ void CStalkerActionGetOutOfAnomaly::execute	()
 	}
 	
 	object().movement().restrictions().add_restrictions	(m_temp1,m_temp0);
-
-	if (object().movement().accessible(object().Position()))
-		return;
-
 	object().movement().set_nearest_accessible_position();
 }
 
