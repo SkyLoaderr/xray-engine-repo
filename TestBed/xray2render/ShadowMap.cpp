@@ -671,7 +671,21 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetSamplerState			(0, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
 	// Setup stencil and culling
-	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE, D3DCULL_CCW);
+	m_pd3dDevice->SetRenderState			( D3DRS_CULLMODE,			D3DCULL_CCW			);
+
+	//
+/*
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
+
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_ALWAYS		);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0xffffffff			);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xffffffff			);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILWRITEMASK,	0xffffffff			);
+
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILPASS,		D3DSTENCILOP_REPLACE);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
+*/
 
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Scene2fat.ps);
@@ -691,6 +705,8 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
 	m_pd3dDevice->SetRenderTarget			(1, 0	);
 	m_pd3dDevice->SetRenderTarget			(2, 0	);
+
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		FALSE				);
 
 	return S_OK;
 }
@@ -736,6 +752,17 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MINFILTER,	D3DTEXF_LINEAR);
 	m_pd3dDevice->SetSamplerState			(2, D3DSAMP_MAGFILTER,	D3DTEXF_LINEAR);
 
+	// Set up the stencil states
+	/*
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		TRUE				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFUNC,		D3DCMP_GREATER		);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILREF,			0x00				);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILMASK,		0xffffffff			);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILFAIL,		D3DSTENCILOP_KEEP	);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILPASS,		D3DSTENCILOP_KEEP	);
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILZFAIL,		D3DSTENCILOP_KEEP	);
+	*/
+
 	// Shader and params
 	m_pd3dDevice->SetPixelShader			(s_Light_Direct.ps);
 	m_pd3dDevice->SetVertexShader			(s_Light_Direct.vs);
@@ -774,6 +801,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetTexture				(2, NULL);
 	m_pd3dDevice->SetRenderTarget			(0, pBaseTarget	);
 	pBaseTarget->Release					();
+
+	m_pd3dDevice->SetRenderState			( D3DRS_STENCILENABLE,		FALSE				);
 
 	return S_OK;
 }
