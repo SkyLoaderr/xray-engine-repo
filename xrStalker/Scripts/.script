@@ -35,6 +35,7 @@ module ("xr_trivial")
 module ("xr_report")
 
 module ("escape_factory_bandits")
+module ("agroprom_military_commander")
 
 function printf(fmt,...)
     log(string.format(fmt,unpack(arg)))
