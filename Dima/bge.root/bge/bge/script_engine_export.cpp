@@ -7,13 +7,14 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "ui.h"
 #include <typeinfo.h>
-#include "script_space.h"
 
 #define SCRIPT_REGISTRATOR
 #include "script_export_space.h"
 #include "script_engine_export.h"
+
+#include "ui.h"
+#include "script_space.h"
 
 template <typename TList> struct Register
 {
@@ -23,7 +24,7 @@ template <typename TList> struct Register
 	{
 		Register<TList::Tail>::_Register(L);
 #ifdef _DEBUG
-		ui().log	("Exporting %s",typeid(TList::Head).name());
+		ui().log	("	Exporting %s\n",typeid(TList::Head).name());
 #endif
 		TList::Head::script_register(L);
 	}

@@ -105,5 +105,5 @@ void CPU::detect	()
 	if (CPU::processor_info.features() & CProcessorInfo::CPU_FEATURE_SSE2)	
 		strcat			(features,", SSE2");
 
-	ui().log			("  CPU Features: %s\n", features);
+	ui().log			("  CPU Features: %s\n\n", features);
 }

@@ -31,6 +31,7 @@ CScriptEngine::CScriptEngine	()
 #ifdef _DEBUG
 	luaopen_debug		(lua());
 #endif
+	luabind::open		(lua());
 }
 
 CScriptEngine::~CScriptEngine	()
@@ -41,7 +42,10 @@ CScriptEngine::~CScriptEngine	()
 
 void CScriptEngine::init		()
 {
-	ui().log			("Scripting engine is initializing...");
+	ui().log			("Scripting engine is initializing... ");
+#ifdef _DEBUG
+	ui().log			("\n");
+#endif
 	export_classes		(lua());
 	ui().log			("completed\n");
 }
