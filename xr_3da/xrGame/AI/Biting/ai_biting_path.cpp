@@ -226,11 +226,13 @@ void CAI_Biting::vfBuildTravelLine(Fvector *tpDestinationPosition)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 // ¬ыбор точки, построение пути, построение TravelLine
-void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath)
+void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath, u32 TimeToRebuild)
 {
 	if (m_tPathState == ePathStateBuilt) {
+		if (m_dwPathBuiltLastTime + TimeToRebuild > m_dwCurrentUpdate) return;
 		m_tPathState = ePathStateSearchNode;
 	}
+
 
 	INIT_SQUAD_AND_LEADER;
 
@@ -266,6 +268,7 @@ void CAI_Biting::vfChoosePointAndBuildPath(IBaseAI_NodeEvaluator *tpNodeEvaluato
 			case ePathStateBuildTravelLine : 
 							vfBuildTravelLine(tpDestinationPosition);
 							m_tPathState = ePathStateBuilt;
+							m_dwPathBuiltLastTime = m_dwCurrentUpdate;
 							break;
 											
 		}	

@@ -174,4 +174,42 @@ bool CAI_Biting::AttackMelee(CObject *obj, bool bAttackRat)
 	return false;
 }	
 
+void CAI_Biting::FillAttackStructure(u32 i, TTime t)
+{
+	
+	m_tAttack.i_anim		= i;
+	m_tAttack.time_started	= t;
+	Fvector tempV;
+
+	switch (m_tAttack.i_anim) {
+		case 0:
+			m_tAttack.time_from = 700;
+			m_tAttack.time_to	= 800;
+			m_tAttack.dist		= 2.f;
+			Center(m_tAttack.TraceFrom);
+			break;
+		case 1:
+			m_tAttack.time_from = 600;
+			m_tAttack.time_to	= 800;
+			m_tAttack.dist		= 2.5f;
+			Center(m_tAttack.TraceFrom);
+			break;
+		case 2:
+			m_tAttack.time_from = 1300;
+			m_tAttack.time_to	= 1400;
+			m_tAttack.dist		= 2.f;
+			Center(m_tAttack.TraceFrom);
+			tempV.set(0.1f,0.f,0.f);
+			m_tAttack.TraceFrom.add(tempV);
+			break;
+		case 3:
+			m_tAttack.time_from = 1300;
+			m_tAttack.time_to	= 1400;
+			m_tAttack.dist		= 1.5f;
+			Center(m_tAttack.TraceFrom);
+			tempV.set(0.1f,0.f,0.f);
+			m_tAttack.TraceFrom.sub(tempV);
+			break;
+	}
+}
 

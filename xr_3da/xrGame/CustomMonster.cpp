@@ -55,6 +55,7 @@ CCustomMonster::CCustomMonster()
 	vfResetPatrolData	();
 	m_dwLastUpdateTime	= 0xffffffff;
 	m_tEyeShift.set		(0,0,0);
+	m_fEyeShiftYaw		= 0.f;
 	NET_WasExtrapolating = FALSE;
 
 	ISpatial*		self				= dynamic_cast<ISpatial*> (this);
@@ -457,7 +458,7 @@ void CCustomMonster::eye_pp_s0			( )
 	V->Calculate							();
 	Fmatrix&	mEye						= V->LL_GetTransform(eye_bone);
 	Fmatrix		X;							X.mul_43	(XFORM(),mEye);
-	eye_matrix.setHPB						(-r_current.yaw,-r_current.pitch,0);
+	eye_matrix.setHPB						(-r_current.yaw + m_fEyeShiftYaw,-r_current.pitch,0);
 //	eye_matrix.c.set						(X.c);
 	eye_matrix.c.add						(X.c,m_tEyeShift);
 	Device.Statistic.TEST0.End				();

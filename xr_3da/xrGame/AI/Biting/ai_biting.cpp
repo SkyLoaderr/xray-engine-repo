@@ -112,6 +112,11 @@ void CAI_Biting::Init()
 
 	Motion.Init						();
 
+	m_dwPathBuiltLastTime			= 0;
+	CurrentBlend					= 0;
+
+	m_fEyeShiftYaw					= PI_DIV_6;
+	ZeroMemory						(&m_tAttack,sizeof(m_tAttack));
 }
 
 void CAI_Biting::Die()
@@ -286,6 +291,39 @@ void CAI_Biting::UpdateCL()
 {
 	SetText();
 	inherited::UpdateCL();
+
+	TTime cur_time = Level().timeServer();
+	
+	VisionElem ve;
+	if (!GetEnemy(ve)) return;
+	CObject *obj = dynamic_cast<CObject *>(ve.obj);
+
+
+	if (m_tAttack.time_started != 0) {
+
+		//Msg("CurTime = [%i] Started = [%i] From [%i] To [%i]",cur_time,m_tAttack.time_started, m_tAttack.time_from, m_tAttack.time_to);
+
+		if ((m_tAttack.time_started + m_tAttack.time_from < cur_time) && 
+			(m_tAttack.time_started + m_tAttack.time_to > cur_time) && 
+			(m_tAttack.LastAttack + 1000 < cur_time)) {
+
+			// пробовать аттаковать
+			//Msg("Try to attack");
+			
+			this->setEnabled(false);
+			Collide::ray_query	l_rq;
+
+			if (Level().ObjectSpace.RayPick(m_tAttack.TraceFrom, Direction(), m_tAttack.dist, l_rq)) {
+				if ((l_rq.O == obj) && (l_rq.range < m_tAttack.dist)) {
+					// аттаковать
+					Msg("-- ATTACK_NOW CurTime [%i], LastAttack [%i]",cur_time, m_tAttack.LastAttack);
+
+					m_tAttack.LastAttack = cur_time;
+				}
+			}
+			this->setEnabled(true);			
+		}
+	}
 
 }
 

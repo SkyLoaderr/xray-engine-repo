@@ -246,7 +246,7 @@ void CBitingAttack::Run()
 	switch (m_tAction) {	
 		case ACTION_RUN:		// бежать на врага
 			pMonster->AI_Path.DestNode = pEnemy->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0);
+			pMonster->vfChoosePointAndBuildPath(0,&pEnemy->Position(), false, 0, 300);
 
 			pMonster->Motion.m_tParams.SetParams(eMotionRun,m_cfBitingRunAttackSpeed,m_cfBitingRunRSpeed,0,0,MASK_ANIM | MASK_SPEED | MASK_R_SPEED);
 			pMonster->Motion.m_tTurn.Set(eMotionRunTurnLeft,eMotionRunTurnRight, m_cfBitingRunAttackTurnSpeed,m_cfBitingRunAttackTurnRSpeed,m_cfBitingRunAttackMinAngle);

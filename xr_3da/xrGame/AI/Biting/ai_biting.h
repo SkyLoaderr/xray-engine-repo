@@ -32,6 +32,20 @@ class CAI_Biting : public CCustomMonster,
 		SND_VOICE_COUNT=2,
 	};
 
+	typedef struct {
+		u32		i_anim;				// анимация аттаки
+
+		TTime	time_started;		//
+		TTime	time_from;			// диапазон времени когда можно наносить hit
+		TTime	time_to;
+
+		Fvector	TraceFrom;
+		float	dist;
+
+		TTime	LastAttack;
+
+	} SAttackAnimation;
+
 public:
 
 	typedef	CCustomMonster inherited;
@@ -60,8 +74,12 @@ private:
 			void			vfSearchForBetterPosition		(IBaseAI_NodeEvaluator &tNodeEvaluator, CSquad &Squad, CEntity* &Leader);
 			void			vfBuildPathToDestinationPoint	(IBaseAI_NodeEvaluator *tpNodeEvaluator);
 			void			vfBuildTravelLine				(Fvector *tpDestinationPosition);
-			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false);
+			void			vfChoosePointAndBuildPath		(IBaseAI_NodeEvaluator *tpNodeEvaluator, Fvector *tpDestinationPosition, bool bSearchForNode, bool bSelectorPath = false, u32 TimeToRebuild = 0);
 			void			vfChooseNextGraphPoint			();
+
+			u32				m_dwPathBuiltLastTime;
+
+
 			void			vfSaveEnemy						();
 			void			vfValidatePosition				(Fvector &tPosition, u32 dwNodeID);
 			void			vfUpdateParameters				();
@@ -283,4 +301,8 @@ private:
 	EMotionAnim		m_tAnimPrevFrame;
 	void			MotionToAnim(EMotionAnim motion, int &index1, int &index2, int &index3);
 
+	CBlend	*CurrentBlend;
+
+	SAttackAnimation	m_tAttack;
+	void				FillAttackStructure(u32, TTime);
 };

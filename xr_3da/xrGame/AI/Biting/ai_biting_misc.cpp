@@ -11,6 +11,10 @@
 #include "..\\..\\actor.h"
 #include "..\\..\\hudmanager.h"
 
+//test
+//#include "..\\rat\\ai_rat.h"
+
+
 using namespace AI_Biting;
 
 const float tempCrouchFactor = 0.5f;
@@ -119,7 +123,17 @@ void CAI_Biting::vfUpdateParameters()
 	//------------------------------------
 	// вероятность победы
 	C = D = E = F = G	= false;
-	
+
+//	Msg("Enemies = [%i]", VisibleEnemies.size());
+//	CObject *obj;
+//	for (u32 i=0; i<VisibleEnemies.size(); i++) {
+//		obj = VisibleEnemies[i].key;
+//		CAI_Rat *r = dynamic_cast<CAI_Rat *>(obj);
+//		CActor *a = dynamic_cast<CActor *>(obj);
+//		if (r) Msg("Enemy %i - rat",i+1);
+//		if (a) Msg("Enemy %i - actor",i+1);
+//	}
+
 	if (bfIsAnyAlive(VisibleEnemies)) {
 		switch (dwfChooseAction(0,m_fAttackSuccessProbability0,m_fAttackSuccessProbability1,m_fAttackSuccessProbability2,m_fAttackSuccessProbability3,g_Team(),g_Squad(),g_Group(),0,1,2,3,4,this,30.f)) {
 			case 4 : 
@@ -168,21 +182,15 @@ void CAI_Biting::vfUpdateParameters()
 void CAI_Biting::SetText()
 {
 #ifdef DEBUG
-	float yaw, pitch;
-	float yaw2, pitch2;
+	if (CurrentBlend) {
+		HUD().pFontSmall->OutSet (300,420);	
+		HUD().pFontSmall->OutNext("frame [%i]		time current = [%.4f] time total = [%.4f]",
+			CurrentBlend->dwFrame, CurrentBlend->timeCurrent, CurrentBlend->timeTotal);
+	} else {
+		HUD().pFontSmall->OutSet (300,420);	
+		HUD().pFontSmall->OutNext("NO CURRENT BLEND");
+	}
 
-	Direction().getHP(yaw,pitch);
-	Level().CurrentEntity()->Direction().getHP(yaw2,pitch2);
-	yaw = angle_normalize(yaw);
-	yaw2 = angle_normalize(yaw2);
-	
-	float Res = R2D(_abs(yaw - yaw2) < PI ? _abs(yaw - yaw2) : PI_MUL_2 - _abs(yaw - yaw2));
-
-	HUD().pFontSmall->OutSet (300,420);	
-	HUD().pFontSmall->OutNext("Current angle = [%f][%f][%f]", R2D(yaw),R2D(yaw2),Res);
-
-	if (Res > 165.f && Res < 195) HUD().pFontSmall->OutNext("CanTrade ?      YESSS");
-	else HUD().pFontSmall->OutNext("CanTrade ?      NOOO");
 #endif
 }
 
