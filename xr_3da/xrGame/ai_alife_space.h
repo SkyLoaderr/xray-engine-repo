@@ -131,6 +131,15 @@ namespace ALife {
 		u32						m_dwCount;
 		float					m_fMinFactor;
 		float					m_fMaxFactor;
+#ifdef _EDITOR
+        STraderSupply()
+        {
+            m_caSections[0]		= 0;
+            m_dwCount			= 1;
+            m_fMinFactor		= 0.f;
+            m_fMaxFactor		= 1.f;
+        }
+#endif
 	};
 
 	DEFINE_VECTOR		(STraderSupply,					TRADER_SUPPLY_VECTOR,			TRADER_SUPPLY_IT);

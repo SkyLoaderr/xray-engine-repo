@@ -515,7 +515,7 @@ void CSE_ALifeDynamicObjectVisual::UPDATE_Read(NET_Packet &tNetPacket)
 #ifdef _EDITOR
 void CSE_ALifeDynamicObjectVisual::FillProp	(LPCSTR pref, PropItemVec& items)
 {
-	inherited1::FillProp		(pref,items);
+	inherited1::FillProp		(FHelper.PrepareKey(pref,s_name),items);
 	inherited2::FillProp		(FHelper.PrepareKey(pref,s_name),items);
 }
 #endif

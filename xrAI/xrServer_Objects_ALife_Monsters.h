@@ -47,6 +47,11 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 									CSE_ALifeTrader	(LPCSTR caSection);
 	virtual							~CSE_ALifeTrader();
 
+#ifdef _EDITOR
+	int 							supplies_count;
+    void __fastcall   				OnSuppliesCountChange	(PropValue* sender);
+#endif    
+    
 	ARTEFACT_ORDER_VECTOR			m_tpOrderedArtefacts;
 	TRADER_SUPPLY_VECTOR			m_tpSupplies;
 SERVER_ENTITY_DECLARE_END

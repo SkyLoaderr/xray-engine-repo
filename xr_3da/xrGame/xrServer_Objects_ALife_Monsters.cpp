@@ -70,26 +70,7 @@ CSE_ALifeTrader::CSE_ALifeTrader			(LPCSTR caSection) : CSE_ALifeDynamicObjectVi
 		set_visual				(pSettings->r_string(caSection,"visual"));
 	
 	m_tpOrderedArtefacts.clear	();
-	LPCSTR						l_caSupplies = pSettings->r_string(caSection,"supplies");
 	m_tpSupplies.clear			();
-	string64					S;
-	for (u32 i=0, n=_GetItemCount(l_caSupplies); i<n; ) {
-		STraderSupply			l_tTraderSupply;
-		l_tTraderSupply.m_caSections[0] = 0;
-		for (;;i++) {
-			_GetItem(l_caSupplies,i,S);
-			if (!strlen(S) || ((S[0] > '0') && (S[0] <= '9')))
-				break;
-			strcat				(l_tTraderSupply.m_caSections,S);
-			strcat				(l_tTraderSupply.m_caSections,",");
-		}
-		R_ASSERT2				(strlen(l_tTraderSupply.m_caSections),"No sections in supplies string");
-		l_tTraderSupply.m_caSections[strlen(l_tTraderSupply.m_caSections) - 1] = 0;
-		l_tTraderSupply.m_dwCount		= atoi(_GetItem(l_caSupplies,i++,S));
-		l_tTraderSupply.m_fMinFactor	= (float)atof(_GetItem(l_caSupplies,i++,S));
-		l_tTraderSupply.m_fMaxFactor	= (float)atof(_GetItem(l_caSupplies,i++,S));
-		m_tpSupplies.push_back	(l_tTraderSupply);
-	}
 }
 
 CSE_ALifeTrader::~CSE_ALifeTrader			()
@@ -167,18 +148,33 @@ void CSE_ALifeTrader::UPDATE_Read			(NET_Packet &tNetPacket)
 };
 
 #ifdef _EDITOR
-void CSE_ALifeTrader::FillProp				(LPCSTR pref, PropItemVec& items)
+#include "ui_main.h"
+void CSE_ALifeTrader::OnSuppliesCountChange	(PropValue* sender)
 {
-	inherited1::FillProp		(pref,items);
-	inherited2::FillProp		(pref,items);
+    m_tpSupplies.resize			(supplies_count);
+	UI.Command					(COMMAND_UPDATE_PROPERTIES);
+}
+
+void CSE_ALifeTrader::FillProp				(LPCSTR _pref, PropItemVec& items)
+{
+	inherited1::FillProp		(_pref,items);
+	inherited2::FillProp		(_pref,items);
+	AnsiString					S;
+    AnsiString pref 			= FHelper.PrepareKey(_pref,s_name,"ALife\\Supplies");
+
+    supplies_count				= m_tpSupplies.size();
+	PropValue* V=PHelper.CreateS32(items, FHelper.PrepareKey(pref.c_str(),"Count"), 	&supplies_count,	0, 64);
+    V->OnChangeEvent			= OnSuppliesCountChange;
+    
 	TRADER_SUPPLY_IT			B = m_tpSupplies.begin(), I = B;
 	TRADER_SUPPLY_IT			E = m_tpSupplies.end();
-	string64					S;
 	for ( ; I != E; I++) {
-		PHelper.CreateText		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",itoa(int(I - B),S,10)), (*I).m_caSections, sizeof((*I).m_caSections));
-		PHelper.CreateU32		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_dwCount,	1, 256);
-		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMinFactor,0.f, 1.f);
-		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref,s_name,"ALife\\Supplies",S),					 &(*I).m_fMaxFactor,0.f, 1.f);
+    	S.sprintf				("Slot #%d",I-B+1).c_str();
+		V=PHelper.CreateEntity	(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Sections"), 	(*I).m_caSections, sizeof((*I).m_caSections));
+        V->Owner()->subitem		= 8;
+		PHelper.CreateU32		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Count"), 	&(*I).m_dwCount,	1, 256);
+		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Min Factor"),&(*I).m_fMinFactor,0.f, 1.f);
+		PHelper.CreateFloat		(items, FHelper.PrepareKey(pref.c_str(),S.c_str(),"Max Factor"),&(*I).m_fMaxFactor,0.f, 1.f);
 	}
 }
 #endif
