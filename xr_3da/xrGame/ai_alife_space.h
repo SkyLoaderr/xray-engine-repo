@@ -97,6 +97,15 @@ namespace ALife {
 		eTaskTypeDummy = u32(-1),
 	};
 
+	enum ETaskState {
+		eTaskStateNone = u32(0),
+		eTaskStateGoing,
+		eTaskStateSearching,
+		eTaskStateReturningSuccess,
+		eTaskStateReturningFailed,
+		eTaskStateDummy = u32(-1),
+	};
+
 	typedef struct tagSTask {
 		_TASK_ID					tTaskID;
 		_TIME_ID					tTimeID;
