@@ -13,14 +13,18 @@
 // refs
 class CEditableObject;
 class TfrmText;
+class CStatGraph;
 
 enum EEditMode{
+	emNone,
     emEffect,
     emGroup
 };
 
 class CParticleTools: public CToolsCustom
 {
+	CStatGraph* stat_graph;
+
 	typedef CToolsCustom inherited;
 	friend class TfraLeftBar;
 

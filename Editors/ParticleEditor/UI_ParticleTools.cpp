@@ -19,6 +19,7 @@
 
 #include "TextForm.h"
 #include "d3dutils.h"
+#include "StatGraph.h"
 //------------------------------------------------------------------------------
 CParticleTools*&	PTools=(CParticleTools*)Tools;
 //------------------------------------------------------------------------------
@@ -27,6 +28,7 @@ static Fvector zero_vec={0.f,0.f,0.f};
 
 CParticleTools::CParticleTools()
 {
+	m_EditMode			= emNone;
     m_ItemProps 		= 0;
 	m_EditObject		= 0;
     m_EditText			= 0;
@@ -72,14 +74,21 @@ bool CParticleTools::OnCreate()
     m_PList->OnItemRemove	= OnParticleItemRemove;
     m_PList->SetImages		(fraLeftBar->ilModeIcons);
 
+	stat_graph				= xr_new<CStatGraph>();
+    stat_graph->SetRect		(100,0,300,200, 0xFFFF0000, 0xFFFF0000);
+    stat_graph->SetMinMax	(0,1,100);
+    stat_graph->SetStyle	(CStatGraph::stBar);  
+    stat_graph->SetGrid		(20,1,0xFF00a000);
+    
+
     return true;
 }
 
 void CParticleTools::OnDestroy()
 {
-	VERIFY(m_bReady);
-    m_bReady			= false;
-	// unlock
+	VERIFY(m_bReady);                                
+    m_bReady			= false;                      
+	// unlock                                       
     EFS.UnlockFile		(_game_data_,PSLIB_FILENAME);
 
 	Lib.RemoveEditObject(m_EditObject);
@@ -89,6 +98,8 @@ void CParticleTools::OnDestroy()
     xr_delete			(m_EditPE);
     Device.seqDevCreate.Remove(this);
     Device.seqDevDestroy.Remove(this);
+
+	xr_delete			(stat_graph);
 }
 //---------------------------------------------------------------------------
 
@@ -112,7 +123,7 @@ void CParticleTools::Modified()
 }
 //---------------------------------------------------------------------------
 
-void CParticleTools::OnItemModified()
+void CParticleTools::OnItemModified()  
 {
 	Modified();
     if (m_LibPED){
@@ -137,8 +148,9 @@ void CParticleTools::Render()
     Device.SetShader(Device.m_WireShader);
     DU.DrawCross	(zero_vec,0.20f,0.25f,0.20f,0.20f,0.25f,0.20f,0xFFFFEBAA,false);
 	// Draw the particles.
-	RCache.set_xform_world		(Fidentity);
+	RCache.set_xform_world		(Fidentity);   
     switch(m_EditMode){
+    case emNone: break;
     case emEffect:{	
 		if (m_Flags.is(flDrawDomain)&&m_EditPE&&m_EditPE->GetDefinition())	
         	m_EditPE->GetDefinition()->Render();
@@ -173,10 +185,11 @@ void CParticleTools::OnFrame()
 
 	if (m_Flags.is(flApplyParent))
     	RealApplyParent();
-
-    AnsiString tmp;
-    switch(m_EditMode){
-    case emEffect:	
+                                          
+    AnsiString tmp;                              
+    switch(m_EditMode){                 
+    case emNone: break;            
+    case emEffect:	                       
     	if (m_EditPE->IsPlaying())
         	UI->SetStatus(AnsiString().sprintf(" PE Playing...[%d]",m_EditPE->ParticlesCount()).c_str(),false); 
         else 
@@ -190,6 +203,9 @@ void CParticleTools::OnFrame()
     break;
     default: THROW;
     }
+
+//    Sleep(200);
+    stat_graph->AppendItem(Random.randF(),0xFFFFFFFF);
 }
 
 void CParticleTools::ZoomObject(bool bSelOnly)
@@ -200,6 +216,7 @@ void CParticleTools::ZoomObject(bool bSelOnly)
 	}else{
     	Fbox box; box.invalidate();
         switch(m_EditMode){
+        case emNone: break;
         case emEffect:	box.set(m_EditPE->vis.box);	break;
         case emGroup:	box.set(m_EditPG->vis.box);	break;
 	    default: THROW;
@@ -522,6 +539,7 @@ void CParticleTools::PlayCurrent()
 	VERIFY(m_bReady);
     StopCurrent		(false);
     switch(m_EditMode){
+    case emNone: break;
     case emEffect:	m_EditPE->Play(); break;
     case emGroup:	m_EditPG->Play(); break;
     default: THROW;
@@ -533,6 +551,7 @@ void CParticleTools::StopCurrent(bool bFinishPlaying)
 {
 	VERIFY(m_bReady);
     switch(m_EditMode){
+    case emNone: break;
     case emEffect:	m_EditPE->Stop(bFinishPlaying);	break;
     case emGroup:	m_EditPG->Stop(bFinishPlaying);	break;
     default: THROW;
@@ -618,6 +637,7 @@ void __fastcall CParticleTools::MouseMove(TShiftState Shift)
 void CParticleTools::RealApplyParent()
 {
     switch(m_EditMode){
+    case emNone: break;
     case emEffect:	m_EditPE->UpdateParent(m_Transform,zero_vec,FALSE); break;    
     case emGroup:	m_EditPG->UpdateParent(m_Transform,zero_vec,FALSE); break;
     default: THROW;

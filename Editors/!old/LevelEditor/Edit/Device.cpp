@@ -274,6 +274,8 @@ void CRenderDevice::End()
 	VERIFY(HW.pDevice);
 	VERIFY(bReady);
 
+    seqRender.Process						(rp_Render);
+    
 	Statistic.Show(pSystemFont);
 	Device.SetRS	(D3DRS_FILLMODE,D3DFILL_SOLID);
 	pSystemFont->OnRender();

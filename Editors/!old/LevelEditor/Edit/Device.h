@@ -87,6 +87,7 @@ public:
 	CRegistrator <pureDeviceDestroy>	seqDevDestroy;
 	CRegistrator <pureDeviceCreate>		seqDevCreate;
 	CRegistrator <pureFrame>			seqFrame;
+	CRegistrator <pureRender>			seqRender;
 	CRegistrator <pureAppCycleStart>	seqAppCycleStart;
 	CRegistrator <pureAppCycleEnd>		seqAppCycleEnd;
 public:
