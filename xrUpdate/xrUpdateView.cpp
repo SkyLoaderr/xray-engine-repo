@@ -52,7 +52,7 @@ BEGIN_MESSAGE_MAP(CxrUpdateView, CFormView)
 	ON_COMMAND(ID_COPYFILESTASK_COPYFOLDERTASK,  OnAddCopyFolderTask)
 	ON_COMMAND(ID_COPYFILESTASK_EXECUTEPROCESS,  OnAddExecuteTask)
 	ON_COMMAND(ID_COPYFILESTASK_BATCHEXECUTE,  OnAddBatchExecuteTask)
-
+	ON_COMMAND(ID_COPYFILESTASK_ROOT,           OnAddRootTask)
 	ON_MESSAGE(ADD_LOG_MSG, OnAddLogMsg)
 
 	ON_EN_CHANGE(IDC_EDIT_TASK_NAME, OnEnChangeEditTaskName)
@@ -371,6 +371,11 @@ void CxrUpdateView::OnAddExecuteTask()
 void CxrUpdateView::OnAddBatchExecuteTask()
 {
 	TryAddNewTask(eTaskBatchExecute);
+}
+
+void CxrUpdateView::OnAddRootTask ()
+{
+	TryAddNewTask(eTaskRoot);
 }
 
 void CxrUpdateView::TryAddNewTask(int t)

@@ -66,6 +66,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 protected:
 	virtual void			OnUpdate											(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
+	afx_msg void			OnAddRootTask										();
 	afx_msg void			OnAddCopyFilesTask									();
 	afx_msg void			OnAddCopyFolderTask									();
 	afx_msg void			OnAddExecuteTask									();
