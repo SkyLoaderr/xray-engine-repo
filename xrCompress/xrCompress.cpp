@@ -194,10 +194,9 @@ int __cdecl main	(int argc, char* argv[])
 	}
 	printf			("[settings] SKIP: '*.key','build.*'\n");
 	printf			("[settings] VFS:  'level.*'\n");
-	printf			("\nCompressing files...");
 
 	string256		folder;		strlwr(strconcat(folder,argv[1],"\\"));
-	FS.update_path				(folder,"$app_root$",folder);
+	printf			("\nCompressing files (%s)...",folder);
 	xr_vector<char*>*	list	= FS.file_list_open	(folder,FS_ListFiles);
 	R_ASSERT2			(list,	"Unable to open folder!!!");
 	if (!list->empty())
