@@ -67,7 +67,7 @@ void CSoundStream::Update( )
 
 void CSoundStream::Play	( BOOL loop, int cnt )
 {
-	VERIFY(pSounds);
+	VERIFY(Sound);
 
 	if (isPause) { Pause(); return; }
 	if (dwStatus & DSBSTATUS_PLAYING) return;
