@@ -601,6 +601,10 @@ public:
 			int id = 0;
 			sscanf(param2 ,"%d",&id);
 			pActor->m_trade->SellItem(id);
+		} else if (strcmp(param1,"buy") == 0) {
+			int id = 0;
+			sscanf(param2 ,"%d",&id);
+			pActor->m_trade->pPartner.inv_owner->m_trade->SellItem(id);
 		} 
 
 	}
