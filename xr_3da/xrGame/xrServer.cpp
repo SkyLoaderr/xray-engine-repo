@@ -74,8 +74,8 @@ void xrServer::Update	()
 BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 {
 	// Get list of respawn points
-	if (EEE->s_team >= int(Level().Teams.size()))	return FALSE;
-	svector<Fvector4,maxRP>&	RP					= Level().Teams[EEE->s_team].RespawnPoints;
+	if (EEE->g_team() >= int(Level().Teams.size()))	return FALSE;
+	svector<Fvector4,maxRP>&	RP					= Level().Teams[EEE->g_team()].RespawnPoints;
 	if (RP.empty())									return FALSE;
 	
 	DWORD	selected	= 0;
@@ -104,7 +104,7 @@ BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 					float	dist		= POS.distance_to(E->o_Position);
 					float	e_cost		= 0;
 					
-					if (EEE->s_team == E->s_team)	{
+					if (EEE->g_team() == E->g_team())	{
 						// same teams, try to spawn near them, but not so near
 						if (dist<5)		e_cost += 3*(5-dist);
 					} else {
@@ -125,7 +125,7 @@ BOOL xrServer::ProcessRP	(xrServerEntity* EEE)
 	}
 
 	// Perform spawn
-	Fvector4&			P = Level().Teams[EEE->s_team].RespawnPoints[selected];
+	Fvector4&			P = Level().Teams[EEE->g_team()].RespawnPoints[selected];
 	EEE->o_Position.set	(P.x,P.y,P.z);
 	EEE->o_Angle.set	(0,P.w,0);
 	return TRUE;
@@ -210,7 +210,7 @@ DWORD xrServer::OnMessage(NET_Packet& P, DPNID sender)	// Non-Zero means broadca
 			ids_used[ID]		= true;	
 			
 			// log
-			Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->s_team, E->s_squad, E->s_group, E->ID, CL->Name);
+			Level().HUD()->outMessage	(0xffffffff,"SERVER","Spawning '%s'(%d,%d,%d) as #%d, on '%s'", E->s_name_replace, E->g_team(), E->g_squad(), E->g_group(), E->ID, CL->Name);
 
 			// create packet and broadcast packet to everybody
 			NET_Packet			Packet;

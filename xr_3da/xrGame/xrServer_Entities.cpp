@@ -86,7 +86,7 @@ public:
 };
 
 //---------------------------------------------------------------------------------------------
-class xrSE_Enemy : public xrServerEntity
+class xrSE_Enemy : public xrSE_Teamed
 {
 public:
 	u32						dwTimeStamp;			// server(game) timestamp
