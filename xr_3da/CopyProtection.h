@@ -1,5 +1,10 @@
 #pragma once
 
+#ifndef DEBUG
+#define USE_COPYPROTECTION
+#endif
+
+// [4/28/2004]
 #ifdef	USE_COPYPROTECTION
 
 #pragma pack(push,1)
