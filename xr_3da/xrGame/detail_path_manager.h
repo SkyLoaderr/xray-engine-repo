@@ -139,6 +139,7 @@ protected:
 	friend class CScriptEntity;
 	friend class CMovementManager;
 	friend class CPoltergeist;
+	friend class CDetailPathBuilder;
 #ifdef DEBUG
 	friend class CLevelGraph;
 	friend class CCustomMonster;

@@ -19,6 +19,8 @@
 #include "detail_path_manager.h"
 #include "ai_object_location.h"
 #include "custommonster.h"
+#include "level_path_builder.h"
+#include "detail_path_builder.h"
 
 void CMovementManager::process_game_path()
 {
@@ -84,19 +86,37 @@ void CMovementManager::process_game_path()
 					);
 				}
 
+				if (!m_build_at_once) {
+					level_path_builder().setup(
+						object().ai_location().level_vertex_id(),
+						dest_level_vertex_id
+					);
+
+					m_path_state	= ePathStateComputeLevelPath;
+				
+					break;
+				}
+
 				level_path().build_path(
 					object().ai_location().level_vertex_id(),
 					dest_level_vertex_id
 				);
 
-				if (level_path().failed())
+				if (level_path().failed()) {
+					m_path_state	= ePathStateBuildLevelPath;
 					break;
+				}
 				
 				m_path_state		= ePathStateContinueLevelPath;
 				
 				break;
 			}
+			case ePathStateComputeLevelPath : {
+				break;
+			}
 			case ePathStateContinueLevelPath : {
+				VERIFY				(!level_path().failed());
+
 				level_path().select_intermediate_vertex();
 				
 				m_path_state		= ePathStateBuildDetailPath;
@@ -113,6 +133,17 @@ void CMovementManager::process_game_path()
 						level_path().intermediate_vertex_id()
 					)
 				);
+
+				if (!m_build_at_once) {
+					detail_path_builder().setup(
+						level_path().path(),
+						level_path().intermediate_index()
+					);
+
+					m_path_state	= ePathStateComputeDetailPath;
+
+					break;
+				}
 				
 				detail().build_path(
 					level_path().path(),
@@ -126,6 +157,9 @@ void CMovementManager::process_game_path()
 
 				m_path_state		= ePathStatePathVerification;
 				
+				break;
+			}
+			case ePathStateComputeDetailPath : {
 				break;
 			}
 			case ePathStatePathVerification : {
@@ -162,7 +196,7 @@ void CMovementManager::process_game_path()
 			default : NODEFAULT;
 		}
 
-		if (time_over() || (m_path_state == prev_state))
+		if (time_over() || (m_path_state == prev_state) || wait_for_distributed_computation())
 			break;
 
 		prev_state		= m_path_state;

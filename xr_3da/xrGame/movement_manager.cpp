@@ -19,6 +19,8 @@
 #include "ai_object_location.h"
 #include "custommonster.h"
 #include "location_manager.h"
+#include "level_path_builder.h"
+#include "detail_path_builder.h"
 
 using namespace MovementManager;
 
@@ -43,7 +45,12 @@ CMovementManager::CMovementManager	(CCustomMonster *object)
 	m_detail_path_manager		= xr_new<CDetailPathManager		>(m_restricted_object);
 	m_patrol_path_manager		= xr_new<CPatrolPathManager		>(m_restricted_object,m_object);
 
+	m_level_path_builder		= xr_new<CLevelPathBuilder>(this);
+	m_detail_path_builder		= xr_new<CDetailPathBuilder>(this);
+
 	extrapolate_path			(false);
+
+	m_wait_for_distributed_computation = false;
 }
 
 CMovementManager::~CMovementManager	()
@@ -61,6 +68,9 @@ CMovementManager::~CMovementManager	()
 	xr_delete					(m_level_path_manager		);
 	xr_delete					(m_detail_path_manager		);
 	xr_delete					(m_patrol_path_manager		);
+
+	xr_delete					(m_level_path_builder		);
+	xr_delete					(m_detail_path_builder		);
 }
 
 void CMovementManager::Load			(LPCSTR section)
@@ -142,7 +152,11 @@ const xr_vector<DetailPathManager::STravelPathPoint>	&CMovementManager::path	() 
 
 void CMovementManager::update_path	()
 {
-	if (!enabled() || ((m_last_update > Device.dwTimeGlobal) && !path_completed()))
+	if	(
+			!enabled() || 
+			wait_for_distributed_computation() || 
+			((m_last_update > Device.dwTimeGlobal) && !path_completed())
+		)
 		return;
 
 	m_last_update			= Device.dwTimeGlobal + m_refresh_rate;

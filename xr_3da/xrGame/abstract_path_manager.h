@@ -17,24 +17,27 @@ template <
 	typename _index_type
 >
 class CAbstractPathManager {
+public:
+	typedef xr_vector<_vertex_id_type> PATH;
+
 private:
-	const _Graph								*m_graph;
-	_VertexEvaluator							*m_evaluator;
+	const _Graph		*m_graph;
+	_VertexEvaluator	*m_evaluator;
 
 protected:
-	_index_type									m_current_index;
-	_index_type									m_intermediate_index;
-	_vertex_id_type								m_dest_vertex_id;
-	bool										m_actuality;
-	bool										m_failed;
-	xr_vector<_vertex_id_type>					m_path;
-	CRestrictedObject							*m_object;
+	_index_type			m_current_index;
+	_index_type			m_intermediate_index;
+	_vertex_id_type		m_dest_vertex_id;
+	bool				m_actuality;
+	bool				m_failed;
+	PATH				m_path;
+	CRestrictedObject	*m_object;
 
 protected:
 	IC	_vertex_id_type	intermediate_vertex_id		() const;
 	IC			u32		intermediate_index			() const;
 
-	IC	const xr_vector<_vertex_id_type> &path		() const;
+	IC	const PATH		&path						() const;
 
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC	const _VertexEvaluator	*evaluator			() const;

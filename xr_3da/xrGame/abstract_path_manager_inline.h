@@ -105,7 +105,7 @@ IC	void CPathManagerTemplate::set_evaluator(_VertexEvaluator *evaluator)
 }
 
 TEMPLATE_SPECIALIZATION
-IC	const xr_vector<_vertex_id_type> &CPathManagerTemplate::path	() const
+IC	const typename CPathManagerTemplate::PATH &CPathManagerTemplate::path	() const
 {
 	return					(m_path);
 }

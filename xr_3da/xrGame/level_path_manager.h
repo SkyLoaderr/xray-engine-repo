@@ -37,6 +37,7 @@ class
 	> inherited;
 private:
 	friend class CMovementManager;
+	friend class CLevelPathBuilder;
 
 protected:
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id, bool use_selector_path = false);

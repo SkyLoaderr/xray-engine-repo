@@ -941,6 +941,9 @@
 							Name="DetailPathManager"
 							Filter="">
 							<File
+								RelativePath=".\detail_path_builder.h">
+							</File>
+							<File
 								RelativePath=".\detail_path_manager.cpp">
 							</File>
 							<File
@@ -969,6 +972,9 @@
 						<Filter
 							Name="LevelPathManager"
 							Filter="">
+							<File
+								RelativePath=".\level_path_builder.h">
+							</File>
 							<File
 								RelativePath=".\level_path_manager.h">
 							</File>

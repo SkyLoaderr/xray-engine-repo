@@ -181,3 +181,20 @@ IC	CCustomMonster &CMovementManager::object							() const
 	VERIFY					(m_object);
 	return					(*m_object);
 }
+
+IC	CLevelPathBuilder &CMovementManager::level_path_builder				() const
+{
+	VERIFY					(m_level_path_builder);
+	return					(*m_level_path_builder);
+}
+
+IC	CDetailPathBuilder &CMovementManager::detail_path_builder			() const
+{
+	VERIFY					(m_detail_path_builder);
+	return					(*m_detail_path_builder);
+}
+
+IC	bool CMovementManager::wait_for_distributed_computation				() const
+{
+	return					(m_wait_for_distributed_computation);
+}

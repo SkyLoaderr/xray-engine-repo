@@ -73,9 +73,13 @@ namespace DetailPathManager {
 };
 
 class CLevelPathBuilder;
-class CDetaillPathBuilder;
+class CDetailPathBuilder;
 
 class CMovementManager {
+private:
+	friend class CLevelPathBuilder;
+	friend class CDetailPathBuilder;
+
 protected:
 	typedef MonsterSpace::SBoneRotation			CBoneRotation;
 	typedef MovementManager::EPathType			EPathType;
@@ -162,8 +166,7 @@ private:
 	u32						m_last_update;
 	bool					m_extrapolate_path;
 	bool					m_build_at_once;
-//	CLevelPathBuilder		*m_level_path_builder;
-//	CDetailPathBuilder		*m_detail_path_builder;
+	bool					m_wait_for_distributed_computation;
 
 public:
 	CBaseParameters			*m_base_game_selector;
@@ -177,6 +180,8 @@ public:
 	CRestrictedObject		*m_restricted_object;
 	CSelectorManager		*m_selector_manager;
 	CLocationManager		*m_location_manager;
+	CLevelPathBuilder		*m_level_path_builder;
+	CDetailPathBuilder		*m_detail_path_builder;
 	CCustomMonster			*m_object;
 
 private:
@@ -234,6 +239,8 @@ public:
 	IC		void	extrapolate_path		(bool value);
 	IC		bool	extrapolate_path		() const;
 
+	IC		bool	wait_for_distributed_computation			() const;
+
 public:
 	IC		CBaseParameters			*base_game_params			() const;
 	IC		CBaseParameters			*base_level_params			() const;
@@ -247,6 +254,8 @@ public:
 	IC		CSelectorManager		&selectors					() const;
 	IC		CLocationManager		&locations					() const;
 	IC		CCustomMonster			&object						() const;
+	IC		CLevelPathBuilder		&level_path_builder			() const;
+	IC		CDetailPathBuilder		&detail_path_builder		() const;
 };
 
 #include "movement_manager_inline.h"
