@@ -377,7 +377,7 @@ void Script::vfExportActions(CLuaVirtualMachine *tpLuaVirtualMachine)
 			.def("nearest",						(u32			(CPatrolPathParams::*)(const Fvector &) const)	(CPatrolPathParams::point))
 			.def("flag",						&CPatrolPathParams::flag),
 
-			class_<CMovementAction>("move")
+		class_<CMovementAction>("move")
 			.enum_("body")
 			[
 				value("crouch",					int(MonsterSpace::eBodyStateCrouch)),
