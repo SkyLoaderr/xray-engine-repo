@@ -45,6 +45,15 @@ void CScriptEngine::export_server_entities()
 			.def("interactive",				(bool (CSE_ALifeObject::*)	() const)(CSE_ALifeObject::interactive)),
 
 		class_<CSE_ALifeDynamicObject,CSE_ALifeObject>("alife_dynamic_object")
+			.def(							constructor<LPCSTR>()),
+
+		class_<CSE_ALifeDynamicObjectVisual,bases<CSE_ALifeDynamicObject,CSE_Visual> >("alife_dynamic_object_visual")
+			.def(							constructor<LPCSTR>()),
+
+		class_<CSE_ALifeInventoryItem>("alife_inventory_item")
+			.def(							constructor<LPCSTR>()),
+
+		class_<CSE_ALifeItem,bases<CSE_ALifeDynamicObjectVisual,CSE_ALifeInventoryItem> >("alife_item")
 			.def(							constructor<LPCSTR>())
 	];
 }
