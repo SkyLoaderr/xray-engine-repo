@@ -52,29 +52,30 @@ function bandit:update()
 	if self.state == 0 then
 		self.state = 1
 		self.begin = game.time()
+		self.idle = math.random(2*60*60*1000) + 60*60*1000
 	end
 	if self.state == 1 then
 		if game.time() - self.begin >= self.idle then
 			self.state = 2
-			self.begin = game.time()
-			self.idle = math_random(2*60*60*1000) + 60*60*1000
 		end
 	end
 	if self.state == 2 then
 		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
 			self.state = 3
+			self.begin = game.time()
+			self.idle = math.random(3*60*60*1000) + 2*60*60*1000
 		end
 	end
 	if self.state == 4 then
 		if self.leader ~= nil and xr_patrol.is_patrol_end(self.leader) == true then
 			self.state = 1
+			self.begin = game.time()
+			self.idle = math.random(2*60*60*1000) + 60*60*1000
 		end
 	end	
 	if self.state == 3 then
 		if game.time() - self.begin >= self.idle then
 			self.state = 4
-			self.begin = game.time()
-			self.idle = math_random(3*60*60*1000) + 2*60*60*1000
 		end
 	end
 	self:updateJob()
@@ -154,7 +155,7 @@ function bandit:updateJob()
 			end
         	end
 	end
---	self:print()
+	self:print()
 end
 function bandit:setJob(npc, job) 
 	-- удаляем у этого npc все работы (в сторадже)

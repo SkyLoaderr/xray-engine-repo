@@ -114,6 +114,8 @@ function fract:calculate() -- просчет лагеря
 	-- рассылка по всем гостям в лагере
 	if self.territory == nil and self.territory_name ~= nil then
 	        self.territory = level.object(self.territory_name)
+        	self.territory:set_callback (self, "zone_enter", true)
+        	self.territory:set_callback (self, "zone_exit", false)
 	end
 	if self.broadcastBegin == nil or
 	   game.time() - self.broadcastBegin > self.broadcastTime then
