@@ -19,7 +19,7 @@ public:
 
 class XRNETSERVER_API IPureClient
 {
-	friend void __cdecl		sync_thread(void*);
+	friend void 				sync_thread(void*);
 protected:
 	struct HOST_NODE
 	{
