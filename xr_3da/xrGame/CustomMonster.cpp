@@ -29,6 +29,8 @@
 #include "movement_manager.h"
 #include "entitycondition.h"
 
+#define IMPORTANT_BUILD
+
 extern int g_AI_inactive_time;
 
 #ifdef DEBUG
@@ -279,7 +281,9 @@ void CCustomMonster::shedule_Update	( u32 DT )
 		Device.Statistic.TEST1.End();
 		Device.Statistic.AI_Think.End	();
 
+#ifndef IMPORTANT_BUILD
 		Engine.Sheduler.Slice			();
+#endif
 
 		// Look and action streams
 		float							temp = conditions().health();
@@ -479,7 +483,9 @@ void CCustomMonster::Exec_Visibility	( )
 	if (IsMyCamera())						
 		g_pGameLevel->Cameras.Update	(eye_matrix.c,eye_matrix.k,eye_matrix.j,eye_fov,1.f,eye_range);
 
+#ifndef IMPORTANT_BUILD
 	Engine.Sheduler.Slice();
+#endif
 }
 
 #ifdef DEBUG

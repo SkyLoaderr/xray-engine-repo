@@ -40,6 +40,8 @@
 #include "../../stalker_movement_manager.h"
 #include "../../entitycondition.h"
 
+#define IMPORTANT_BUILD
+
 extern int g_AI_inactive_time;
 
 CAI_Stalker::CAI_Stalker			()
@@ -466,7 +468,9 @@ void CAI_Stalker::shedule_Update		( u32 DT )
 				Think					();
 		m_dwLastUpdateTime				= Level().timeServer();
 		Device.Statistic.AI_Think.End	();
+#ifndef IMPORTANT_BUILD
 		Engine.Sheduler.Slice			();
+#endif
 		VERIFY				(_valid(Position()));
 
 		// Look and action streams
