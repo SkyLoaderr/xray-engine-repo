@@ -954,7 +954,7 @@ CSE_ALifeHumanAbstract::CSE_ALifeHumanAbstract(LPCSTR caSection) : CSE_ALifeTrad
 	m_dwCurTaskLocation			= u32(-1);
 	m_fSearchSpeed				= pSettings->r_float(caSection, "search_speed");
 	m_dwCurNode					= u32(-1);
-	strcpy						(m_caKnownCustomers,"m_trader0000");
+	m_caKnownCustomers			= "m_trader0000";
 	m_tpKnownCustomers.clear	();
 #ifndef _EDITOR
 #ifndef AI_COMPILER
@@ -1006,7 +1006,9 @@ void CSE_ALifeHumanAbstract::STATE_Read		(NET_Packet &tNetPacket, u16 size)
 		load_data				(m_tpPath,tNetPacket);
 		load_data				(m_baVisitedVertices,tNetPacket);
 		if (m_wVersion > 35) {
-			tNetPacket.r_string	(m_caKnownCustomers);
+			string256			caKnownCustomers;
+			tNetPacket.r_string	(caKnownCustomers);
+			m_caKnownCustomers	= caKnownCustomers;
 			load_data			(m_tpKnownCustomers,tNetPacket);
 			if (m_wVersion > 37) {
 				load_data		(m_cpEquipmentPreferences,tNetPacket);

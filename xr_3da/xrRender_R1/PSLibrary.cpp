@@ -41,7 +41,7 @@ void CPSLibrary::OnDeviceCreate			()
 {
 	for (PS::PSIt s_it = m_PSs.begin(); s_it!=m_PSs.end(); s_it++)
 		if (s_it->m_ShaderName[0]&&s_it->m_TextureName[0])	
-			s_it->m_CachedShader.create(s_it->m_ShaderName,s_it->m_TextureName);
+			s_it->m_CachedShader.create(*s_it->m_ShaderName,*s_it->m_TextureName);
 	for (PS::PEDIt g_it = m_PEDs.begin(); g_it!=m_PEDs.end(); g_it++)
 		if (((*g_it)->m_ShaderName&&(*g_it)->m_ShaderName[0]&&(*g_it)->m_TextureName&&(*g_it)->m_TextureName[0]))	
 			(*g_it)->m_CachedShader.create((*g_it)->m_ShaderName,(*g_it)->m_TextureName);
