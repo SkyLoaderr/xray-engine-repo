@@ -127,6 +127,8 @@ void CSpawnPoint::SSpawnData::Create(LPCSTR _entity_ref)
             }
         }
         m_ClassID 			= pSettings->r_clsid(m_Data->name(),"class");
+    }else{
+    	Log("!Can't create entity: ",_entity_ref);
     }
 }
 void CSpawnPoint::SSpawnData::Destroy()
@@ -240,25 +242,25 @@ void CSpawnPoint::Construct(LPVOID data)
 	ClassID			= OBJCLASS_SPAWNPOINT;
     m_AttachedObject= 0;
     if (data){
-	    CreateSpawnData(LPCSTR(data));
-    	if (!m_SpawnData.Valid()){
-    		if (strcmp(LPSTR(data),RPOINT_CHOOSE_NAME)==0){
-	        	m_Type 		= ptRPoint;
-			    m_RP_TeamID	= 0;
-    		}else if (strcmp(LPSTR(data),ENVMOD_CHOOSE_NAME)==0){
-	        	m_Type 				= ptEnvMod;
-                m_EM_Radius			= 10.f;
-                m_EM_Power			= 1.f;
-                m_EM_ViewDist		= 300.f;
-                m_EM_FogColor		= 0x00808080;
-                m_EM_FogDensity		= 1.f;
-	    		m_EM_AmbientColor	= 0x00000000;
-    	        m_EM_LMapColor		= 0x00FFFFFF;
-    	    }else{
-        		SetValid(false);
-	        }
+        if (strcmp(LPSTR(data),RPOINT_CHOOSE_NAME)==0){
+            m_Type 		= ptRPoint;
+            m_RP_TeamID	= 0;
+        }else if (strcmp(LPSTR(data),ENVMOD_CHOOSE_NAME)==0){
+            m_Type 				= ptEnvMod;
+            m_EM_Radius			= 10.f;
+            m_EM_Power			= 1.f;
+            m_EM_ViewDist		= 300.f;
+            m_EM_FogColor		= 0x00808080;
+            m_EM_FogDensity		= 1.f;
+            m_EM_AmbientColor	= 0x00000000;
+            m_EM_LMapColor		= 0x00FFFFFF;
         }else{
-        	m_Type			= ptSpawnPoint;
+            CreateSpawnData(LPCSTR(data));
+            if (!m_SpawnData.Valid()){
+            	SetValid(false);
+            }else{
+	        	m_Type			= ptSpawnPoint;
+            }
         }
     }else{
 		SetValid(false);

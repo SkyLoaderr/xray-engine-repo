@@ -3,6 +3,7 @@
 #pragma hdrstop
 
 #include "ESound_Source.h"
+#include "SoundRender_Source.h"
 #include "d3dutils.h"
 #include "PropertiesListHelper.h"
 #include "ui_main.h"
@@ -190,14 +191,14 @@ void ESoundSource::FillProp(LPCSTR pref, PropItemVec& values)
     PropValue* V;
     V=PHelper().CreateChoose	(values,PrepareKey(pref,"WAVE name"),	&m_WAVName,				smSoundSource);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeWAV);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Min dist"),		&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
-    V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Max dist"),		&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
-    V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
 	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Frequency"),	&m_Params.freq,			0.0f,2.f);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
-	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,2.f);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Volume"),		&m_Params.volume,		0.0f,1.f);
     V->OnChangeEvent.bind		(this,&ESoundSource::OnChangeSource);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Min dist"),	&m_Params.min_distance,	0.1f,1000.f,0.1f,1);
+    V->Owner()->Enable			(FALSE);
+	V=PHelper().CreateFloat		(values,PrepareKey(pref,"Max dist"),	&m_Params.max_distance,	0.1f,1000.f,0.1f,1);
+    V->Owner()->Enable			(FALSE);
 //	V=PHelper().CreateFlag32		(values,PHelper().PrepareKey(pref,"Looped"),		&m_Flags,				flLooped);
 //    V->OnChangeEvent			= OnChangeSource;
 }
@@ -233,7 +234,13 @@ void ESoundSource::OnFrame()
 void ESoundSource::ResetSource()
 {
 	m_Source.destroy();
-	if (m_WAVName.size()) m_Source.create	(1,*m_WAVName);
+	if (m_WAVName.size()){ 
+    	m_Source.create		(1,*m_WAVName);
+        CSoundRender_Source* src= (CSoundRender_Source*)m_Source.handle;
+        m_Params.min_distance	= src->m_fMinDist;
+        m_Params.max_distance	= src->m_fMaxDist;
+        ExecCommand			(COMMAND_UPDATE_PROPERTIES);
+    }
 	m_Source.set_params(&m_Params);
 }
 

@@ -18,7 +18,7 @@ public:
     IC LPCSTR			ClassDesc				(){return "Sound Environment";}
     IC int				RenderPriority			(){return 10;}
 
-    virtual void		Clear					(bool bSpecific=false){inherited::Clear(bSpecific);}
+    virtual void		Clear					(bool bSpecific=false);
     // IO
     virtual bool   		IsNeedSave				(){return inherited::IsNeedSave();}
     virtual bool   		Load            		(IReader&);

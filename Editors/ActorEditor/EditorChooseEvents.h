@@ -21,6 +21,7 @@ void __stdcall  FillEntity(ChooseItemVec& items, void* param)
 //---------------------------------------------------------------------------
 void __stdcall  SelectSoundSource(SChooseItem* item, PropItemVec& info_items)
 {
+	choose_snd->stop			();
 	choose_snd->create			(true,item->name.c_str(),0);
     choose_snd->play			(0,sm_2D);
 //    snd.pla

@@ -34,7 +34,7 @@ bool CLevelSoundManager::Validate()
 void CLevelSoundManager::RealRefreshEnvGeometry()
 {
 	CMemoryWriter F;
-	if (MakeEnvGeometry(F,true)){
+	if (MakeEnvGeometry(F,false)){
         IReader R(F.pointer(), F.size());
         ::Sound->set_geometry_env(&R);
     }

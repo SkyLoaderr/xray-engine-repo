@@ -49,7 +49,7 @@ bool SBPart::prepare				(SBAdjVec& adjs, u32 bone_face_min)
         (*f_it)->marked				= false;
         for (int k=0; k<3; k++)		pts.push_back((*f_it)->o[k]);
     }
-    ComputeOBB						(m_OBB,pts);
+    ComputeOBB_RAPID				(m_OBB,pts,pts.size()/3);
     // fill adjacent
     for (SBFaceVecIt a_it=m_Faces.begin(); a_it!=m_Faces.end(); a_it++){
         SBFace* A					= *a_it;
@@ -270,8 +270,8 @@ bool SBPart::Export	(IWriter& F)
         F.w_stringZ	(bone.name.c_str());
         F.w_stringZ	(bone.parent.c_str());
         Fobb		obb;
-        ComputeOBB	(obb,bone_points[bone_idx]);
-        F.w			(&obb,sizeof(Fobb));
+        ComputeOBB_WML	(obb,bone_points[bone_idx]);
+        F.w				(&obb,sizeof(Fobb));
     }
     F.close_chunk();
 
@@ -286,8 +286,8 @@ bool SBPart::Export	(IWriter& F)
         SBoneShape	shape;
         shape.type	= SBoneShape::stBox;
         shape.flags.assign(SBoneShape::sfRemoveAfterBreak);
-        ComputeOBB	(shape.box,bone_points[bone_idx]);
-	    F.w			(&shape,sizeof(SBoneShape));
+        ComputeOBB_WML	(shape.box,bone_points[bone_idx]);
+	    F.w				(&shape,sizeof(SBoneShape));
         // IK data
         SJointIKData 	ik_data;
         ik_data.Reset	();
