@@ -26,6 +26,7 @@
 				EnableFiberSafeOptimizations="TRUE"
 				OptimizeForProcessor="2"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;_WINDOWS;_USRDLL;XRSE_FACTORY_EXPORTS;MSVC"
+				GeneratePreprocessedFile="0"
 				MinimalRebuild="TRUE"
 				ExceptionHandling="FALSE"
 				BasicRuntimeChecks="3"
@@ -136,6 +137,9 @@
 		<Filter
 			Name="Core"
 			Filter="">
+			<File
+				RelativePath=".\FastDelegate.h">
+			</File>
 			<File
 				RelativePath=".\import_export.h">
 			</File>

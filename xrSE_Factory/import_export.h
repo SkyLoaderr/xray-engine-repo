@@ -9,9 +9,14 @@
 #ifndef IMPORT_EXPORT_H
 #	define IMPORT_EXPORT_H
 
+#include "fastdelegate.h"
+
+using namespace fastdelegate;
+
 struct CTestInterface {
-	virtual LPCSTR get_string() = 0;
+	virtual void							get_string(LPCSTR&) = 0;
+			FastDelegate1<LPCSTR&>			OnGetString;
 };
 
-#endif
+#endif // IMPORT_EXPORT_H
 

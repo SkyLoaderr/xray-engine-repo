@@ -21,17 +21,30 @@ DLL_API LPCSTR	__cdecl get_string()
 	return				("Ok!");
 }
 
+#define _CLOSURE_THIS(A,C)	C.bind(this,&A)
+#define _CLOSURE(A,B,C)		C.bind(B,&A)
+
 struct CTestInterface0 : public CTestInterface {
-	virtual LPCSTR get_string()
+					CTestInterface0	()
 	{
-		return			("CTestInterface0!");
+		_CLOSURE_THIS				(CTestInterface0::get_string,OnGetString);
+	}
+
+	virtual void	get_string		(LPCSTR &text)
+	{
+		text			= "CTestInterface0!";
 	}
 };
 
 struct CTestInterface1 : public CTestInterface {
-	virtual LPCSTR get_string()
+					CTestInterface1	()
 	{
-		return			("CTestInterface1!");
+		_CLOSURE_THIS				(CTestInterface1::get_string,OnGetString);
+	}
+
+	virtual void	get_string		(LPCSTR &text)
+	{
+		text			= "CTestInterface1!";
 	}
 };
 
