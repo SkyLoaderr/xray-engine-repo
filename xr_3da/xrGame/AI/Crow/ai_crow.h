@@ -101,6 +101,8 @@ public:
 	virtual void	shedule_Update	(u32 DT);
 	virtual void	UpdateCL		();
 
+	virtual CEntity*cast_entity		()						{return this;}
+
 	virtual void	net_Export		(NET_Packet& P);
 	virtual void	net_Import		(NET_Packet& P);
 
