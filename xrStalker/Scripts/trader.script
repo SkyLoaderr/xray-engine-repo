@@ -179,9 +179,10 @@ function Trader:process_idle ()
 end
 ----------------------------------------------------------------------------------------------------------------------
 function Trader:set_idle ()
-    --printf ("Set idle")
     reset_action (self.npc, self.script)
+    
     local variant = self:get_random (1, 3, self.previous)
+    
     if variant == 1 then
        self.current.start_anim = "idle"
        self.current.process_anim = "idle"
@@ -276,12 +277,12 @@ function Trader:play_queue ()
 
 end
 ----------------------------------------------------------------------------------------------------------------------
-function Trader:get_random (min, max, exclude)
+function Trader:get_random (_min, _max, _exclude)
 
-    if min == max and exclude == min then return exclude end
-    local rnd = math.random (min, max)
-    while rnd == exclude then
-          rnd = math.random (min, max)
+    if _min == _max and _exclude == _min then return exclude end
+    local rnd = math.random (_min, _max)
+    while rnd == _exclude do
+          rnd = math.random (_min, _max)
     end
     return rnd
     
