@@ -1,0 +1,56 @@
+function alarm()
+
+	local stalker1	= get_level_object("m_stalker_e0000")
+	local stalker2	= get_level_object("m_stalker_e0001")
+	local actor   	= get_actor()
+
+	stalker1:script	(true,script_01.script_name())
+	stalker2:script	(true,script_01.script_name())
+
+	while stalker1:action() and stalker2:action() do		
+		if stalker1:see(actor) or stalker2:see(actor) then
+			printf("script 2!")
+			flush()
+			stalker1:script	(false, script_01.script_name())
+			stalker1:script	(true,  script_01.script_name())
+			stalker2:script	(false, script_01.script_name())
+			stalker2:script	(true,  script_01.script_name())
+			action(
+				stalker1,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				sound	("scripts\\ne_dvigatsya","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 3000)
+			)
+			wait(2000)
+			action(
+				stalker1,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				sound	("scripts\\kto_ti","bip01_spine2",vector():set(0,0,0),vector():set(0,0,0),false),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 2000)
+			)
+			action(
+				stalker2,
+			  	move	(move.standing, move.stand,move.line,patrol("way0000")),
+				look	(look.fire_point, actor),
+				anim	(anim.danger),
+				cond	(cond.time_end, 100000)
+			)
+			wait		(1500)			
+                	break		
+		end
+		wait()			
+	end
+
+	while stalker1:action() and stalker2:action() do
+	    wait	()
+
+	end
+
+	stalker1:script	(false, script_01.script_name())
+	stalker2:script	(false, script_01.script_name())
+
+end
