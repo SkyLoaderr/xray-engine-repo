@@ -78,7 +78,7 @@ const int CLASSNAME##workaround = sizeof( void (xr_stdcall CLASSNAME::*)(void));
 
 #endif
 
-namespace fastdelegate {
+namespace fastdelegate {              
 namespace detail {	// we'll hide the implementation details in a nested namespace.
 
 //		implicit_cast< >
@@ -662,7 +662,7 @@ public:
 #define DLGT_DECLAREDELEGATE(NUM, FUNCLIST, INVOKELIST)							\
 class FastDelegate##NUM { 														\
 private:																		\
-	typedef void (xr_stdcall detail::GenericClass::*GenericMemFn)FUNCLIST;					\
+	typedef void (xr_stdcall detail::GenericClass::*GenericMemFn)FUNCLIST;		\
 	typedef void (*StaticFunctionPtr)FUNCLIST;									\
 	detail::ClosurePtr<GenericMemFn, StaticFunctionPtr> m_Closure;				\
 public:																			\
@@ -680,22 +680,30 @@ public:																			\
 	FastDelegate##NUM(Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST ) {		\
 	m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);}	\
 	template < class X, class Y >												\
-	inline void bind(Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST ) {			\
-		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	}	\
+	inline FastDelegate##NUM& bind(Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST ) {			\
+		m_Closure.bindmemfunc(detail::implicit_cast<X*>(pthis), function_to_bind);	\
+        return *this;\
+        }	\
 	/* Binding to const member functions. */									\
 	template < class X, class Y >												\
 	FastDelegate##NUM(const Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST const) {	\
 		m_Closure.bindconstmemfunc(detail::implicit_cast<const X*>(pthis), function_to_bind);	}	\
 	template < class X, class Y >												\
-	inline void bind(const Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST const) {	\
-		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	}	\
+	inline FastDelegate##NUM& bind(const Y *pthis, void (xr_stdcall X::* function_to_bind)FUNCLIST const) {	\
+		m_Closure.bindconstmemfunc(detail::implicit_cast<const X *>(pthis), function_to_bind);	\
+        return *this;\
+        }	\
 	/* Static functions. We convert them into a member function call. */		\
 	/* Note that this also provides a conversion from static functions. */		\
+	FastDelegate##NUM(int a) {													\
+		VERIFY(a==0);};															\
 	FastDelegate##NUM(void (*function_to_bind)FUNCLIST ) {						\
 		bind(function_to_bind);	};												\
-	inline void bind(void (*function_to_bind)FUNCLIST) {						\
+	inline FastDelegate##NUM& bind(void (*function_to_bind)FUNCLIST) {						\
 		m_Closure.bindstaticfunc(this,											\
-			&FastDelegate##NUM::InvokeStaticFunction, function_to_bind); };		\
+			&FastDelegate##NUM::InvokeStaticFunction, function_to_bind); 		\
+        return *this;\
+        }	\
 																				\
 	void operator() FUNCLIST const { /* Invoke the delegate */					\
 		/* this next line is the only one that violates the standard */			\
