@@ -54,7 +54,8 @@ BOOL	xrServerEntity::Spawn_Read		(NET_Packet& P)
 	if (s_flags.is(M_SPAWN_VERSION))
 		P.r_u16			(m_wVersion);
 	
-	if ((0==m_wVersion)||(m_wVersion>SPAWN_VERSION)) {
+//	if ((0==m_wVersion)||(m_wVersion>SPAWN_VERSION)) {
+	if (0==m_wVersion) {
 		P.r_pos -= sizeof(u16);
 		m_wVersion = 0;
         return FALSE;
