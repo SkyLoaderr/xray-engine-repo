@@ -11,7 +11,7 @@
 
 #include "script_export_space.h"
 
-#define SERVER_ENTITY_EDITOR_METHODS					virtual void FillProp(LPCSTR pref, PropItemVec& values);
+#define SERVER_ENTITY_EDITOR_METHODS					virtual void __stdcall	FillProp(LPCSTR pref, PropItemVec& values);
 #define SERVER_ENTITY_SCRIPT_METHODS					DECLARE_SCRIPT_REGISTER_FUNCTION
 #define SERVER_ENTITY_DECLARE_BEGIN0(__A)				class __A	{ public: SERVER_ENTITY_SCRIPT_METHODS
 #define SERVER_ENTITY_DECLARE_BEGIN(__A,__B)			class __A : public __B	{ typedef __B inherited; public: SERVER_ENTITY_SCRIPT_METHODS
@@ -20,10 +20,10 @@
 
 #define	SERVER_ENTITY_DECLARE_END \
 public:\
-	virtual void 						UPDATE_Read		(NET_Packet& P); \
-	virtual void 						UPDATE_Write	(NET_Packet& P); \
-	virtual void 						STATE_Read		(NET_Packet& P, u16 size); \
-	virtual void 						STATE_Write		(NET_Packet& P); \
+	virtual void 			UPDATE_Read		(NET_Packet& P); \
+	virtual void 			UPDATE_Write	(NET_Packet& P); \
+	virtual void 			STATE_Read		(NET_Packet& P, u16 size); \
+	virtual void 			STATE_Write		(NET_Packet& P); \
 	SERVER_ENTITY_EDITOR_METHODS \
 };
 

@@ -44,18 +44,18 @@ bool CPHSkeleton::Spawn(CSE_Abstract *D)
 	CSE_PHSkeleton *po	= dynamic_cast<CSE_PHSkeleton*>(D);
 	R_ASSERT				(po);
 
-	m_flags					= po->flags;
+	m_flags					= po->_flags;
 	m_startup_anim			= po->startup_animation;
 	
 
 
-	if(po->flags.test(CSE_PHSkeleton::flSpawnCopy))
+	if(po->_flags.test(CSE_PHSkeleton::flSpawnCopy))
 	{
 		CPHSkeleton* source=dynamic_cast<CPHSkeleton*>(Level().Objects.net_Find(po->source_id));
 		R_ASSERT2(source,"no source");
 		source->UnsplitSingle(this);
 		m_flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
-		po->flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
+		po->_flags.set				(CSE_PHSkeleton::flSpawnCopy,FALSE);
 		return true;
 	}
 	else 
@@ -178,7 +178,7 @@ void CPHSkeleton::LoadNetState(NET_Packet& P)
 }
 void CPHSkeleton::RestoreNetState(CSE_PHSkeleton* po)
 {
-	if(!po->flags.test(CSE_PHSkeleton::flSavedData))return;
+	if(!po->_flags.test(CSE_PHSkeleton::flSavedData))return;
 	CPhysicsShellHolder* obj=PPhysicsShellHolder();
 	PHNETSTATE_VECTOR& saved_bones=po->saved_bones.bones;
 	PHNETSTATE_I i=saved_bones.begin(),e=saved_bones.end();
@@ -188,7 +188,7 @@ void CPHSkeleton::RestoreNetState(CSE_PHSkeleton* po)
 		obj->PHGetSyncItem(bone)->set_State(*i);
 	}
 	saved_bones.clear();
-	po->flags.set(CSE_PHSkeleton::flSavedData,FALSE);
+	po->_flags.set(CSE_PHSkeleton::flSavedData,FALSE);
 	m_flags.set(CSE_PHSkeleton::flSavedData,FALSE);
 }
 
@@ -346,7 +346,7 @@ void CPHSkeleton::InitServerObject(CSE_Abstract * D)
 
 
 
-	l_tpALifePhysicObject->flags.set	(CSE_PHSkeleton::flSpawnCopy,1);
+	l_tpALifePhysicObject->_flags.set	(CSE_PHSkeleton::flSpawnCopy,1);
 	l_tpALifePhysicObject->source_id	= u16(obj->ID());
 	l_tpALifePhysicObject->startup_animation=m_startup_anim;
 	strcpy				(D->s_name,"ph_skeleton_object");//*cNameSect()

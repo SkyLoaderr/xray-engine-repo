@@ -84,7 +84,7 @@ void CPhysicObject::CreateSkeleton(CSE_ALifeObjectPhysic* po)
 	if(m_pPhysicsShell) return;
 	if(!Visual()) return;
 	LPCSTR	fixed_bones=*po->fixed_bones;
-	m_pPhysicsShell=P_build_Shell(this,!po->flags.test(CSE_PHSkeleton::flActive),fixed_bones);
+	m_pPhysicsShell=P_build_Shell(this,!po->_flags.test(CSE_PHSkeleton::flActive),fixed_bones);
 }
 
 void CPhysicObject::Load(LPCSTR section)
@@ -168,7 +168,7 @@ void CPhysicObject::CreateBody(CSE_ALifeObjectPhysic* po) {
 	CKinematics* pKinematics=PKinematics(Visual());
 	switch(m_type) {
 		case epotBox : {
-			m_pPhysicsShell=P_build_SimpleShell(this,m_mass,!po->flags.test(CSE_ALifeObjectPhysic::flActive));
+			m_pPhysicsShell=P_build_SimpleShell(this,m_mass,!po->_flags.test(CSE_ALifeObjectPhysic::flActive));
 					   } break;
 		case epotFixedChain : 
 		case epotFreeChain  :

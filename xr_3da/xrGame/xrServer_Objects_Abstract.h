@@ -9,7 +9,6 @@
 #ifndef xrServer_Objects_AbstractH
 #define xrServer_Objects_AbstractH
 
-#include "object_interfaces.h"
 #include "xrServer_Space.h"
 #include "xrCDB.h"
 #include "ShapeData.h"
@@ -22,63 +21,16 @@
 #pragma warning(push)
 #pragma warning(disable:4005)
 
-SERVER_ENTITY_DECLARE_BEGIN(CPureServerObject,IPureServerObject)
-	virtual							~CPureServerObject(){}
-	virtual void					load(IReader	&tFileStream);
-	virtual void					save(IWriter	&tMemoryStream);
-	virtual void					load(NET_Packet	&tNetPacket);
-	virtual void					save(NET_Packet	&tNetPacket);
+struct ISE_Abstract {
+	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal) = 0;
+	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket) = 0;
+    virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items) = 0;
+	virtual LPSTR		__stdcall	name			() = 0;
+	virtual LPSTR		__stdcall	replace_name	() = 0;
+	virtual Fvector&	__stdcall	position		() = 0;
+	virtual Fvector&	__stdcall	angle			() = 0;
+	virtual Flags16&	__stdcall	flags			() = 0;
 };
-add_to_type_list(CPureServerObject)
-#define script_type_list save_type_list(CPureServerObject)
-
-class xrClientData;
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_Abstract,CPureServerObject)
-public:
-	BOOL							net_Ready;
-	BOOL							net_Processed;	// Internal flag for connectivity-graph
-	
-	u16								m_wVersion;
-	u16								RespawnTime;
-
-	u16								ID;				// internal ID
-	u16								ID_Parent;		// internal ParentID, 0xffff means no parent
-	u16								ID_Phantom;		// internal PhantomID, 0xffff means no phantom
-	xrClientData*					owner;
-
-	// spawn data
-	string64						s_name;
-	string64						s_name_replace;
-	u8								s_gameid;
-	u8								s_RP;
-	Flags16							s_flags;		// state flags
-
-	// update data
-	Fvector							o_Position;
-	Fvector							o_Angle;
-
-	// for ALife control
-	bool							m_bALifeControl;
-	ref_str							m_ini_string;
-	xr_vector<u16>*					children;
-
-									CSE_Abstract	(LPCSTR caSection);
-	virtual							~CSE_Abstract	();
-	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
-	void							Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
-	BOOL							Spawn_Read		(NET_Packet &tNetPacket);
-	IC		const Fvector			&Position		() const					{return o_Position;};
-	// we need this to prevent virtual inheritance :-(
-	virtual CSE_Abstract			*base			();
-	virtual const CSE_Abstract		*base			() const;
-	virtual CSE_Abstract			*init			();
-	// end of the virtual inheritance dependant code
-	// editor integration
-    virtual void					FillProp		(LPCSTR pref, PropItemVec &items);
-};
-add_to_type_list(CSE_Abstract)
-#define script_type_list save_type_list(CSE_Abstract)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Shape,CShapeData)
 public:

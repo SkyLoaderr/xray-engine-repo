@@ -12,6 +12,7 @@
 #include "xrMessages.h"
 #include "xrServer_Objects_Abstract.h"
 #include "phnetstate.h"
+#include "object_interfaces.h"
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -87,6 +88,72 @@
 //		CSE_ALifeMonsterBiting			heritage changed
 // 69	object broker changed from this version
 //------------------------------------------------------------------------------
+
+SERVER_ENTITY_DECLARE_BEGIN(CPureServerObject,IPureServerObject)
+	virtual							~CPureServerObject(){}
+	virtual void					load(IReader	&tFileStream);
+	virtual void					save(IWriter	&tMemoryStream);
+	virtual void					load(NET_Packet	&tNetPacket);
+	virtual void					save(NET_Packet	&tNetPacket);
+};
+add_to_type_list(CPureServerObject)
+#define script_type_list save_type_list(CPureServerObject)
+
+class xrClientData;
+
+SERVER_ENTITY_DECLARE_BEGIN2(CSE_Abstract,ISE_Abstract,CPureServerObject)
+public:
+	BOOL							net_Ready;
+	BOOL							net_Processed;	// Internal flag for connectivity-graph
+	
+	u16								m_wVersion;
+	u16								RespawnTime;
+
+	u16								ID;				// internal ID
+	u16								ID_Parent;		// internal ParentID, 0xffff means no parent
+	u16								ID_Phantom;		// internal PhantomID, 0xffff means no phantom
+	xrClientData*					owner;
+
+	// spawn data
+	string64						s_name;
+	string64						s_name_replace;
+	u8								s_gameid;
+	u8								s_RP;
+	Flags16							s_flags;		// state flags
+
+	// update data
+	Fvector							o_Position;
+	Fvector							o_Angle;
+
+	// for ALife control
+	bool							m_bALifeControl;
+	ref_str							m_ini_string;
+	xr_vector<u16>					children;
+
+									CSE_Abstract	(LPCSTR caSection);
+	virtual							~CSE_Abstract	();
+	virtual void					OnEvent			(NET_Packet &tNetPacket, u16 type, u32 time, u32 sender ){};
+	//
+	virtual void		__stdcall	Spawn_Write		(NET_Packet &tNetPacket, BOOL bLocal);
+	virtual BOOL		__stdcall	Spawn_Read		(NET_Packet &tNetPacket);
+    virtual void		__stdcall	FillProp		(LPCSTR pref, PropItemVec &items);
+	virtual LPSTR		__stdcall	name			();
+	virtual LPSTR		__stdcall	replace_name	();
+	virtual Fvector&	__stdcall	position		();
+	virtual Fvector&	__stdcall	angle			();
+	virtual Flags16&	__stdcall	flags			();
+	//
+
+	IC		const Fvector			&Position		() const					{return o_Position;};
+	// we need this to prevent virtual inheritance :-(
+	virtual CSE_Abstract			*base			();
+	virtual const CSE_Abstract		*base			() const;
+	virtual CSE_Abstract			*init			();
+	// end of the virtual inheritance dependant code
+	// editor integration
+};
+add_to_type_list(CSE_Abstract)
+#define script_type_list save_type_list(CSE_Abstract)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_Spectator,CSE_Abstract)
 									CSE_Spectator	(LPCSTR caSection);
@@ -182,7 +249,7 @@ enum{
 	flNotSave					= (1<<3),
 };
 ref_str							startup_animation;
-Flags8							flags;
+Flags8							_flags;
 SPHBonesData					saved_bones;
 u16								source_id;//for break only
 	virtual	void					load					(NET_Packet &tNetPacket);

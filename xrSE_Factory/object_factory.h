@@ -13,7 +13,7 @@
 
 #include "script_export_space.h"
 #include "object_item_abstract.h"
-#include "xrServer_Objects_Abstract.h"
+#include "xrServer_Objects.h"
 
 class CObjectFactory {
 public:

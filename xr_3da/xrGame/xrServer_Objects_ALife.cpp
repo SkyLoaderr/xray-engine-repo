@@ -536,7 +536,7 @@ void CSE_ALifePHSkeletonObject::UPDATE_Read(NET_Packet &tNetPacket)
 
 bool CSE_ALifePHSkeletonObject::can_save			() const
 {
-	return						(!flags.test(flNotSave));
+	return						(!_flags.test(flNotSave));
 }
 
 bool CSE_ALifePHSkeletonObject::used_ai_locations () const
@@ -705,12 +705,12 @@ void CSE_ALifeObjectPhysic::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 	if(m_wVersion<64)
 		{
 		if	(m_wVersion > 39)		// > 39 		
-			tNetPacket.r_u8			(flags.flags);
+			tNetPacket.r_u8			(_flags.flags);
 
 		if (m_wVersion>56)
 			tNetPacket.r_u16		(source_id);
 
-		if (m_wVersion>60	&&	flags.test(flSavedData)) {
+		if (m_wVersion>60	&&	_flags.test(flSavedData)) {
 			data_load(tNetPacket);
 		}
 	}
@@ -820,7 +820,7 @@ bool CSE_ALifeObjectPhysic::used_ai_locations	() const
 
 bool CSE_ALifeObjectPhysic::can_save			() const
 {
-	return						(!flags.test(flNotSave));
+	return						(!_flags.test(flNotSave));
 }
 
 ////////////////////////////////////////////////////////////////////////////

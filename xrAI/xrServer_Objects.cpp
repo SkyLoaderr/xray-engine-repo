@@ -57,7 +57,6 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 	s_gameid					= 0;
 	s_RP						= 0xFE;			// Use supplied coords
 	s_flags.assign				(0);
-	children					= 0;
 	Memory.mem_copy				(s_name,caSection,((u32)xr_strlen(caSection) + 1)*sizeof(char));
 	ZeroMemory					(s_name_replace,sizeof(string64));
 	o_Angle.set					(0.f,0.f,0.f);
@@ -74,8 +73,8 @@ void CSE_Abstract::Spawn_Write				(NET_Packet	&tNetPacket, BOOL bLocal)
 {
 	// generic
 	tNetPacket.w_begin			(M_SPAWN);
-	tNetPacket.w_stringZ			(s_name			);
-	tNetPacket.w_stringZ			(s_name_replace	);
+	tNetPacket.w_stringZ		(s_name			);
+	tNetPacket.w_stringZ		(s_name_replace	);
 	tNetPacket.w_u8				(s_gameid		);
 	tNetPacket.w_u8				(s_RP			);
 	tNetPacket.w_vec3			(o_Position		);
@@ -153,6 +152,31 @@ CSE_Abstract *CSE_Abstract::init	()
 	return						(this);
 }
 
+LPSTR		CSE_Abstract::name			()
+{
+	return	(s_name);
+}
+
+LPSTR		CSE_Abstract::replace_name	()
+{
+	return	(s_name_replace);
+}
+
+Fvector&	CSE_Abstract::position		()
+{
+	return	(o_Position);
+}
+
+Fvector&	CSE_Abstract::angle			()
+{
+	return	(o_Angle);
+}
+
+Flags16&	CSE_Abstract::flags			()
+{
+	return	(s_flags);
+}
+
 xr_token game_types[]={
 	{ "Any game",		GAME_ANY		},
 	{ "Single",			GAME_SINGLE		},
@@ -169,113 +193,6 @@ void CSE_Abstract::FillProp					(LPCSTR pref, PropItemVec& items)
 {
 	PHelper().CreateToken8		(items,	PHelper().PrepareKey(pref,"Game Type"),			&s_gameid,		game_types);
     PHelper().CreateU16			(items,	PHelper().PrepareKey(pref, "Respawn Time (s)"),	&RespawnTime,	0,43200);
-}
-
-////////////////////////////////////////////////////////////////////////////
-// CSE_Shape
-////////////////////////////////////////////////////////////////////////////
-CSE_Shape::CSE_Shape						()
-{
-}
-
-CSE_Shape::~CSE_Shape						()
-{
-}
-
-void CSE_Shape::cform_read					(NET_Packet	&tNetPacket)
-{
-	shapes.clear				();
-	u8							count;
-	tNetPacket.r_u8				(count);
-	
-	while (count) {
-		shape_def				S;
-		tNetPacket.r_u8			(S.type);
-		switch (S.type) {
-			case 0 :	
-				tNetPacket.r	(&S.data.sphere,sizeof(S.data.sphere));	
-				break;
-			case 1 :	
-				tNetPacket.r_matrix(S.data.box);
-				break;
-		}
-		shapes.push_back		(S);
-		--count;
-	}
-}
-
-void CSE_Shape::cform_write					(NET_Packet	&tNetPacket)
-{
-	tNetPacket.w_u8				(u8(shapes.size()));
-	for (u32 i=0; i<shapes.size(); ++i) {
-		shape_def				&S = shapes[i];
-		tNetPacket.w_u8			(S.type);
-		switch (S.type) {
-			case 0:	
-				tNetPacket.w	(&S.data.sphere,sizeof(S.data.sphere));
-				break;
-			case 1:	
-				tNetPacket.w_matrix	(S.data.box);
-				break;
-		}
-	}
-}
-
-////////////////////////////////////////////////////////////////////////////
-// CSE_Visual
-////////////////////////////////////////////////////////////////////////////
-CSE_Visual::CSE_Visual		   	(LPCSTR name)
-{
-	visual_name					= name;
-}
-
-CSE_Visual::~CSE_Visual			()
-{
-}
-
-void CSE_Visual::set_visual	   	(LPCSTR name, bool load)
-{
-	string_path tmp;
-    strcpy						(tmp,name);
-    if (strext(tmp))		 	*strext(tmp) = 0;
-	visual_name					= tmp; 
-}
-
-void CSE_Visual::visual_read   	(NET_Packet	&tNetPacket)
-{
-	tNetPacket.r_stringZ		(visual_name);
-}
-
-void CSE_Visual::visual_write  	(NET_Packet	&tNetPacket)
-{
-	tNetPacket.w_stringZ			(visual_name);
-}
-
-////////////////////////////////////////////////////////////////////////////
-// CSE_Animated
-////////////////////////////////////////////////////////////////////////////
-CSE_Motion::CSE_Motion			(LPCSTR name)
-{
-	motion_name					= name;
-}
-
-CSE_Motion::~CSE_Motion			()
-{
-}
-
-void CSE_Motion::set_motion		(LPCSTR name)
-{
-	motion_name					= name;
-}
-
-void CSE_Motion::motion_read	(NET_Packet	&tNetPacket)
-{
-	tNetPacket.r_stringZ		(motion_name);
-}
-
-void CSE_Motion::motion_write	(NET_Packet	&tNetPacket)
-{
-	tNetPacket.w_stringZ			(motion_name);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -638,7 +555,7 @@ void CSE_SpawnGroup::FillProp				(LPCSTR pref, PropItemVec& values)
 CSE_PHSkeleton::CSE_PHSkeleton(LPCSTR caSection)
 {
 	source_id					= u16(-1);
-	flags.zero					();
+	_flags.zero					();
 }
 
 CSE_PHSkeleton::~CSE_PHSkeleton()
@@ -650,20 +567,20 @@ void CSE_PHSkeleton::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
 {
 
 	tNetPacket.r_stringZ	(startup_animation);
-	tNetPacket.r_u8			(flags.flags);
+	tNetPacket.r_u8			(_flags.flags);
 	tNetPacket.r_u16		(source_id);
-	if (flags.test(flSavedData)) {
+	if (_flags.test(flSavedData)) {
 		data_load(tNetPacket);
 	}
 }
 
 void CSE_PHSkeleton::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	tNetPacket.w_stringZ			(startup_animation);
-	tNetPacket.w_u8				(flags.flags);
+	tNetPacket.w_stringZ		(startup_animation);
+	tNetPacket.w_u8				(_flags.flags);
 	tNetPacket.w_u16			(source_id);
 	////////////////////////saving///////////////////////////////////////
-	if(flags.test(flSavedData))
+	if(_flags.test(flSavedData))
 	{
 		data_save(tNetPacket);
 	}
@@ -672,18 +589,18 @@ void CSE_PHSkeleton::STATE_Write		(NET_Packet	&tNetPacket)
 void CSE_PHSkeleton::data_load(NET_Packet &tNetPacket)
 {
 	saved_bones.net_Load(tNetPacket);
-	flags.set(flSavedData,TRUE);
+	_flags.set(flSavedData,TRUE);
 }
 
 void CSE_PHSkeleton::data_save(NET_Packet &tNetPacket)
 {
 	saved_bones.net_Save(tNetPacket);
-	flags.set(flSavedData,FALSE);
+	_flags.set(flSavedData,FALSE);
 }
 
 void CSE_PHSkeleton::load(NET_Packet &tNetPacket)
 {
-	flags.assign				(tNetPacket.r_u8());
+	_flags.assign				(tNetPacket.r_u8());
 	data_load					(tNetPacket);
 }
 void CSE_PHSkeleton::UPDATE_Write(NET_Packet &tNetPacket)

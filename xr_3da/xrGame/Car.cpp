@@ -174,7 +174,7 @@ void CCar::SaveNetState(NET_Packet& P)
 
 void CCar::RestoreNetState(CSE_PHSkeleton* po)
 {
-	if(!po->flags.test(CSE_PHSkeleton::flSavedData))return;
+	if(!po->_flags.test(CSE_PHSkeleton::flSavedData))return;
 	CPHSkeleton::RestoreNetState(po);
 	CSE_ALifeCar* co=dynamic_cast<CSE_ALifeCar*>(po);
 	xr_map<u16,SDoor>::iterator i,e;
@@ -188,7 +188,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {
-	if(po->flags.test(CSE_PHSkeleton::flSavedData))return;
+	if(po->_flags.test(CSE_PHSkeleton::flSavedData))return;
 	xr_map<u16,SDoor>::iterator i,e;
 	i=m_doors.begin();
 	e=m_doors.end();
