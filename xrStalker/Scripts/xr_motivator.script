@@ -41,7 +41,7 @@ if false then
 end
 
 --' Проверка потери жизни
-if true then
+if false then
 	printf("%f * %f", self.object.health, self.object.health - lasthealth)
 	lasthealth = self.object.health
 end
