@@ -328,7 +328,8 @@ CHelicopter::shedule_Update(u32	time_delta)
 				CExplosiveRocket* pGrenade = dynamic_cast<CExplosiveRocket*>(m_pRocket);
 				VERIFY(pGrenade);
 				pGrenade->SetCurrentParentID(this->ID());
-				LaunchRocket(ParticlesXFORM(),  m_fire_dir, zero_vel);
+				Fmatrix rocketXFORM = ParticlesXFORM();
+				LaunchRocket(rocketXFORM,  m_fire_dir, zero_vel);
 
 				NET_Packet P;
 				u_EventGen(P,GE_OWNERSHIP_REJECT,ID());

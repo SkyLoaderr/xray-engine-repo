@@ -44,6 +44,9 @@ protected:
 	CHelicopterMovementManager		m_movementMngr;
 	xr_map<s16,float>				m_hitBones;
 
+	Fmatrix							m_left_rocket_bone_xform;
+	Fmatrix							m_right_rocket_bone_xform;
+
 	Fvector							m_fire_pos;
 	Fvector							m_fire_dir;
 	Fmatrix							m_fire_bone_xform;
