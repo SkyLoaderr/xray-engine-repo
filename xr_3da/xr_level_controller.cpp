@@ -57,8 +57,28 @@ _keybind  keybind[]		= {
 	{ "screenshot",		kSCREENSHOT	},	
 	{ "quit",			kQUIT		},
 	{ "console",		kCONSOLE	},
-
 	{ "hyperkick",		kHyperKick	},
+	{ "inventory",		kINVENTORY	},
+	{ "buy_menu",		kBUY		},
+	{ "skin_menu",		kSKIN		},
+	{ "team_menu",		kTEAM		},
+	{ "pda",			kPDA		},
+
+	{ "ext_1",			kEXT_1		},
+	{ "ext_2",			kEXT_2		},
+	{ "ext_3",			kEXT_3		},
+	{ "ext_4",			kEXT_4		},
+	{ "ext_5",			kEXT_5		},
+	{ "ext_6",			kEXT_6		},
+	{ "ext_7",			kEXT_7		},
+	{ "ext_8",			kEXT_8		},
+	{ "ext_9",			kEXT_9		},
+	{ "ext_10",			kEXT_10		},
+	{ "ext_11",			kEXT_11		},
+	{ "ext_12",			kEXT_12		},
+	{ "ext_13",			kEXT_13		},
+	{ "ext_14",			kEXT_14		},
+	{ "ext_15",			kEXT_15		},
 
 	{ NULL, 			0			}
 };
