@@ -19,6 +19,10 @@ CArtifact::CArtifact(void)
 {
 	shedule.t_min = 20;
 	shedule.t_max = 50;
+
+	m_sParticlesName = NULL;
+
+	m_pTrailLight = NULL;
 }
 
 
@@ -40,33 +44,84 @@ void CArtifact::Load(LPCSTR section)
 	SoundCreate(m_detectorSound, m_detectorSoundName);
 
 	m_fDetectionDist = pSettings->r_float(section,"detector_dist");
+
+	if (pSettings->line_exist(section, "particles"))
+	{
+		m_sParticlesName = pSettings->r_string(section, "particles");
+	}
+
+	m_bLightsEnabled = !!pSettings->r_bool(section, "lights_enabled");
+	if(m_bLightsEnabled)
+	{
+		sscanf(pSettings->r_string(section,"trail_light_color"), "%f,%f,%f", 
+			&m_TrailLightColor.r, &m_TrailLightColor.g, &m_TrailLightColor.b);
+		m_fTrailLightRange	= pSettings->r_float(section,"trail_light_range");
+	}
 }
 
 BOOL CArtifact::net_Spawn(LPVOID DC) 
 {
+	BOOL result = inherited::net_Spawn(DC);
 	m_all.insert(this);
-	return		(inherited::net_Spawn(DC));
+	if (*m_sParticlesName) 
+	{
+		Fvector dir;
+		dir.set(0,1,0);
+		CParticlesPlayer::StartParticles(m_sParticlesName,dir,ID(),-1, false);
+	}
+
+	VERIFY(m_pTrailLight == NULL);
+	m_pTrailLight = ::Render->light_create();
+	m_pTrailLight->set_shadow(true);
+
+	StartLights();
+
+	return result;	
 }
 
 void CArtifact::net_Destroy() 
 {
 	m_all.erase(this);
+	if (*m_sParticlesName) 
+	{	
+		CParticlesPlayer::StopParticles(m_sParticlesName);
+	}
 	inherited::net_Destroy();
+
+	StopLights();
+	::Render->light_destroy(m_pTrailLight);
+	m_pTrailLight = NULL;
 }
 
 void CArtifact::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield		();
+
+	StopLights();
+	if (*m_sParticlesName) 
+	{	
+		CParticlesPlayer::StopParticles(m_sParticlesName);
+	}
 }
 
 void CArtifact::OnH_B_Independent() 
 {
 	inherited::OnH_B_Independent();
+
+	StartLights();
+	if (*m_sParticlesName) 
+	{
+		Fvector dir;
+		dir.set(0,1,0);
+		CParticlesPlayer::StartParticles(m_sParticlesName,dir,ID(),-1, false);
+	}
 }
 
 void CArtifact::UpdateCL() 
 {
 	inherited::UpdateCL();
+
+	UpdateLights();
 }
 
 void CArtifact::shedule_Update	(u32 dt) 
@@ -98,4 +153,33 @@ void CArtifact::SoundDestroy(ref_sound& dest)
 void CArtifact::create_physic_shell	()
 {
 	create_box2sphere_physic_shell	();
+}
+
+//////////////////////////////////////////////////////////////////////////
+//	Lights
+//////////////////////////////////////////////////////////////////////////
+void CArtifact::StartLights()
+{
+	if(!m_bLightsEnabled) return;
+
+	//включить световую подсветку от двигателя
+	m_pTrailLight->set_color(m_TrailLightColor.r, 
+		m_TrailLightColor.g, 
+		m_TrailLightColor.b);
+
+	m_pTrailLight->set_range(m_fTrailLightRange);
+	m_pTrailLight->set_position(Position()); 
+	m_pTrailLight->set_active(true);
+}
+
+void CArtifact::StopLights()
+{
+	if(!m_bLightsEnabled) return;
+	m_pTrailLight->set_active(false);
+}
+
+void CArtifact::UpdateLights()
+{
+	if(!m_bLightsEnabled || !m_pTrailLight->get_active()) return;
+	m_pTrailLight->set_position(Position());
 }
