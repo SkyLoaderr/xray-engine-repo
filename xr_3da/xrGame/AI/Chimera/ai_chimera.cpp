@@ -105,7 +105,7 @@ BOOL CAI_Chimera::net_Spawn (LPVOID DC)
 	vfAssignBones(pSettings,cNameSect());
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0, PS_STAND);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);

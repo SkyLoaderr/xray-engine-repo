@@ -116,3 +116,29 @@ void CAI_Dog::StateSelector()
 //	m_tAttackAnim.PushAttackAnim(0, 10, 2, 600, 700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 //}
 
+
+BOOL CAI_Dog::net_Spawn (LPVOID DC) 
+{
+	if (!inherited::net_Spawn(DC))
+		return(FALSE);
+
+	// define animation set
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0, PS_STAND);
+
+	// define links from Action to animations
+	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);
+	MotionMan.LinkAction(ACT_SIT_IDLE,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_RUN,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_EAT,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_SLEEP,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_DRAG,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimStandIdle);
+	MotionMan.LinkAction(ACT_STEAL,			eAnimStandIdle);
+	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
+
+	return TRUE;
+}
+

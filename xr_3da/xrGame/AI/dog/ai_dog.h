@@ -12,4 +12,5 @@ public:
 	virtual void	Init					();
 	virtual void	StateSelector			();
 
+	virtual	BOOL	net_Spawn				(LPVOID DC);
 };

@@ -28,10 +28,10 @@ class CBitingRest : public IState {
 	
 	enum {
 			ACTION_WALK,
-			ACTION_STAND,
-			ACTION_LIE,
-			ACTION_TURN,
-			ACTION_WALK_GRAPH_END
+			ACTION_SATIETY_GOOD,
+			ACTION_SLEEP,
+			ACTION_WALK_CIRCUMSPECTION,
+			ACTION_WALK_PATH_END
 	} m_tAction;
 	
 	TTime			m_dwReplanTime;						//!< время через, которое делать планирование
@@ -119,6 +119,7 @@ class CBitingEat : public IState {
 	Fvector			SavedPos;					// сохранённая позиция до трупа
 	float			m_fDistToDrag;				// на какое расстояние тащить
 	bool			bDragging;
+	bool			bEatRat;
 
 	bool			flag_once_1;
 	TTime			m_dwStandStart;

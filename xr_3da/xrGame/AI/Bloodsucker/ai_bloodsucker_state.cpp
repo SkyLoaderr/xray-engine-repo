@@ -136,12 +136,7 @@ void CBloodsuckerRest::Run()
 
 TTime CBloodsuckerRest::UnlockState(TTime cur_time)
 {
-	TTime dt = inherited::UnlockState(cur_time);
-
-	m_dwReplanTime		+= dt;
-	m_dwLastPlanTime	+= dt;
-
-	return dt;
+	return cur_time;
 }
 
 

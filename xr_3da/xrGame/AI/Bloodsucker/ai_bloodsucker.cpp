@@ -47,11 +47,6 @@ void CAI_Bloodsucker::Load(LPCSTR section)
 	m_fPowerThreshold	= pSettings->r_float(section,"PowerThreshold");	
 
 	m_tSelectorHearSnd.Load(section,"selector_hear_sound");				// like _free hunting
-
-	m_dwDayTimeBegin	= pSettings->r_u32	(section,"DayTime_Begin");
-	m_dwDayTimeEnd		= pSettings->r_u32	(section,"DayTime_End");		
-	m_fMinSatiety		= pSettings->r_float(section,"Min_Satiety");
-	m_fMaxSatiety		= pSettings->r_float(section,"Max_Satiety");
 }
 
 
@@ -63,7 +58,7 @@ BOOL CAI_Bloodsucker::net_Spawn (LPVOID DC)
 	vfAssignBones	();
 
 	// define animation set
-	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0);
+	MotionMan.AddAnim(eAnimStandIdle,		"stand_idle_",			-1, 0, 0, PS_STAND);
 
 	// define links from Action to animations
 	MotionMan.LinkAction(ACT_STAND_IDLE,	eAnimStandIdle);

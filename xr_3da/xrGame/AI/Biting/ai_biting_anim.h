@@ -11,6 +11,48 @@ class CAI_Biting;
 
 typedef string64 anim_string;
 
+#define		DEFAULT_ANIM	eAnimStandIdle
+
+enum EMotionAnim {
+	eAnimStandIdle = 0,
+	eAnimStandTurnLeft,
+	eAnimStandTurnRight,
+	eAnimStandDamaged,
+
+	eAnimSitIdle,
+	eAnimLieIdle,
+
+	eAnimSitToSleep,
+	eAnimStandSitDown,
+	eAnimStandLieDown,
+	eAnimLieStandUp,
+	eAnimSitStandUp,
+	eAnimStandLieDownEat,
+
+	eAnimWalkFwd,
+	eAnimWalkBkwd,
+	eAnimWalkTurnLeft,
+	eAnimWalkTurnRight,
+
+	eAnimRun,
+	eAnimRunTurnLeft,
+	eAnimRunTurnRight,
+	eAnimFastTurn,					
+
+	eAnimAttack,
+	eAnimAttackRat,
+
+	eAnimEat,
+	eAnimSleep,
+	eAnimDie,
+
+	eAnimDragCorpse,
+	eAnimCheckCorpse,
+	eAnimScared,
+	eAnimAttackJump,
+};
+
+
 enum EAction {
 	ACT_STAND_IDLE = 0,
 	ACT_SIT_IDLE,
@@ -20,14 +62,27 @@ enum EAction {
 	ACT_RUN,
 	ACT_EAT,
 	ACT_SLEEP,
+	ACT_REST,
 	ACT_DRAG,
 	ACT_ATTACK,
 	ACT_STEAL,
 	ACT_LOOK_AROUND
 };
 
-DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
+enum EPState {
+	PS_STAND,
+	PS_SIT, 
+	PS_LIE,
+	PS_TRANSIT,
+};
 
+// специальные параметры анимаций (animation spec params)
+#define ASP_MOVE_BKWD			(1 << 0) 
+#define ASP_DRAG_CORPSE			(1 << 1) 
+#define ASP_CHECK_CORPSE		(1 << 2)
+
+
+DEFINE_VECTOR	(CMotionDef*, ANIM_VECTOR, ANIM_IT);
 struct SAnimItem {
 
 	anim_string	target_name;	// "stand_idle_"
@@ -39,11 +94,19 @@ struct SAnimItem {
 		float	linear;
 		float	angular;
 	} speed;
+
+	EPState		pos_state;
 };
 
 struct STransition {
+	bool			ps_from_used;
 	EMotionAnim		anim_from;
+	EPState			state_from;
+	
+	bool			ps_target_used;
 	EMotionAnim		anim_target;
+	EPState			state_target;
+
 	EMotionAnim		anim_transition;
 	bool			chain;
 };
@@ -114,8 +177,10 @@ class CMotionManager {
 	// работа с анимациями атаки
 	TTime					aa_time_started;		// время начала анимации	
 	TTime					aa_time_last_attack;	// время последнего нанесения хита
-	ATTACK_ANIM				aa_all;		// список всех атак
-	ATTACK_ANIM				aa_stack;	// список атак для текущей анимации
+	ATTACK_ANIM				aa_all;					// список всех атак
+	ATTACK_ANIM				aa_stack;				// список атак для текущей анимации
+
+	u32						spec_params;			// дополнительные параметры
 
 public:
 
@@ -130,8 +195,12 @@ public:
 	void		Destroy					();
 	
 	// создание карты анимаций, переходов 
-	void		AddAnim					(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed);
-	void		AddTransition			(EMotionAnim from, EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddAnim					(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed, EPState p_s);
+	
+	void		AddTransition			(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddTransition			(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain);
+	void		AddTransition			(EPState from,		EMotionAnim to, EMotionAnim trans, bool chain);
+	void		AddTransition			(EPState from,		EPState to,		EMotionAnim trans, bool chain);
 	
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
@@ -147,7 +216,10 @@ public:
 	void		OnAnimationEnd			();
 	void		ShowDeath				();
 
+	void		SetSpecParams			(u32 param) {spec_params |= param;}
+	
 private:	
+	bool		CheckSpecParams			();	
 
 	// работа с последовательностями
 	void		Seq_Init				();
@@ -168,6 +240,10 @@ public:
 										 float dist, float damage, float yaw, float pitch, u32 flags = 0);
 	bool		AA_CheckTime			(TTime cur_time, SAttackAnimation &anim); 
 	void		AA_UpdateLastAttack		(TTime cur_time) {aa_time_last_attack = cur_time;}
+
+private:
+
+	EPState		GetState				(EMotionAnim a);
 };
 
 

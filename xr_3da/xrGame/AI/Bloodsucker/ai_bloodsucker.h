@@ -60,10 +60,7 @@ public:
 
 	CAI_NodeEvaluatorTemplate<aiSearchRange | aiEnemyDistance> m_tSelectorHearSnd;
 
-	u32						m_dwDayTimeBegin;
-	u32						m_dwDayTimeEnd;
-	float					m_fMinSatiety;
-	float					m_fMaxSatiety;
+
 
 };
 

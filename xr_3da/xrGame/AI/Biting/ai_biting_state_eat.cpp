@@ -38,8 +38,10 @@ void CBitingEat::Init()
 	if (!pMonster->GetCorpse(ve)) R_ASSERT(false);
 	pCorpse = ve.obj;
 
-	CAI_Rat	*tpRat = dynamic_cast<CAI_Rat *>(pCorpse);
-	m_fDistToCorpse = ((tpRat)? 1.0f : 2.5f);
+	bEatRat = (dynamic_cast<CAI_Rat *>(pCorpse) ? true : false);
+	m_fDistToCorpse = ((bEatRat)? 1.0f : 1.8f);
+	
+	if (bEatRat) Msg("Eat Rat");
 
 	SavedPos			= pCorpse->Position();		// сохранить позицию трупа
 	m_fDistToDrag		= 20.f;
@@ -69,34 +71,43 @@ void CBitingEat::Run()
 		case ACTION_RUN:	// бежать к трупу
 
 			pMonster->AI_Path.DestNode = pCorpse->AI_NodeID;
-			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0,2000);
+			pMonster->vfChoosePointAndBuildPath(0,&pCorpse->Position(), true, 0);
 
 			pMonster->MotionMan.m_tAction = ACT_RUN;
-
+			
 			if (cur_dist < m_fDistToCorpse) {
-				// пытаться взять труп
-				pMonster->Movement.PHCaptureObject(pCorpse);
+				
+				// Если труп крысы
+				if (!bEatRat) {
+					// пытаться взять труп
+					pMonster->Movement.PHCaptureObject(pCorpse);
 
-				if (pMonster->Movement.PHCapture()->Failed()) {
-					// если не получилось взять
+					if (pMonster->Movement.PHCapture()->Failed()) {
+						// если не получилось взять
+						bDragging = false;
+						m_tAction = ACTION_EAT;
+					}else {
+						// тащить труп
+						bDragging = true;
+						m_tAction = ACTION_DRAG;
+					}
+
+				} else {
 					bDragging = false;
 					m_tAction = ACTION_EAT;
-				}else {
-					// тащить труп
-					bDragging = true;
-					m_tAction = ACTION_DRAG;
 				}
 
 				// если монстр подбежал к трупу, необходимо отыграть проверку трупа
-				// Set Spec Params
+				pMonster->MotionMan.SetSpecParams(ASP_CHECK_CORPSE);
 			}
 			break;
 
 		case ACTION_DRAG:
-			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 5000);
+			pMonster->Path_GetAwayFromPoint(pCorpse, pCorpse->Position(), saved_dist, 500);
 
 			// Установить параметры движения
 			pMonster->MotionMan.m_tAction = ACT_WALK_BKWD; 
+			pMonster->MotionMan.SetSpecParams(ASP_DRAG_CORPSE | ASP_MOVE_BKWD);
 
 			// если не может тащить
 			if (pMonster->Movement.PHCapture() == 0) m_tAction = ACTION_WALK_LITTLE_AWAY; 
@@ -106,7 +117,7 @@ void CBitingEat::Run()
 				pMonster->Movement.PHReleaseObject();
 
 				bDragging = false; 
-				m_tAction = ((::Random.randI(2)) ? ACTION_LOOK_AROUND : ACTION_EAT);
+				m_tAction = ((::Random.randI(3)) ? ACTION_LOOK_AROUND : ACTION_EAT);
 			}
 
 			break;
@@ -137,9 +148,6 @@ void CBitingEat::Run()
 
 			if (cur_dist  + 0.5f  < m_fDistToCorpse) {
 				m_tAction = ACTION_EAT;
-
-				// лечь и есть
-				// set spec flags
 			}
 
 			break;

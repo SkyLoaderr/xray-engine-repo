@@ -31,16 +31,12 @@ void IState::Reset()
 	m_dwTimeLocked		= 0;
 	m_tState			= STATE_NOT_ACTIVE;	
 
-	m_bLocked			= false;
-
 	m_dwInertia			= 0;
 }
 
 
 void IState::Execute(TTime cur_time) 
 {
-	if (m_bLocked) return;
-
 	m_dwCurrentTime = cur_time;
 
 	switch (m_tState) {
@@ -74,22 +70,4 @@ void IState::Run()
 void IState::Done()
 {
 	Reset();
-}
-
-void IState::LockState()
-{
-	m_dwTimeLocked = m_dwCurrentTime;
-	m_bLocked		= true;
-}
-
-//Info: если в классах-потомках, используются дополнительные поля времени,
-//      метод UnlockState() должен быть переопределен
-TTime IState::UnlockState(TTime cur_time)
-{
-	TTime dt = (m_dwCurrentTime = cur_time) - m_dwTimeLocked;
-
-	m_dwNextThink  += dt;
-	m_bLocked		= false;
-
-	return dt;
 }

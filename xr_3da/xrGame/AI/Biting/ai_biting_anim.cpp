@@ -19,12 +19,9 @@ static void __stdcall vfPlayEndCallBack(CBlend* B)
 
 void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, float speed )
 {
-//	if (g_Alive() && MotionMan.PrepareAnimation()) {
-//		MotionMan.m_tpCurAnim = PKinematics(Visual())->ID_Cycle_Safe("stand_idle_0");
-//		PKinematics(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
-//	}
-	PKinematics(Visual())->PlayCycle(PKinematics(Visual())->ID_Cycle("stand_walk_fwd_0"),TRUE,vfPlayEndCallBack,this);
-
+	if (g_Alive() && MotionMan.PrepareAnimation()) {
+		PKinematics(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
+	}
 }
 
 void CAI_Biting::CheckAttackHit()
@@ -79,6 +76,7 @@ void CMotionManager::Init (CAI_Biting	*pM, CKinematics *tpKin)
 	prev_anim				= cur_anim	= eAnimStandIdle; 
 	m_tAction				= ACT_STAND_IDLE;
 	m_tpCurAnim				= 0;
+	spec_params				= 0;
 
 	// сейчас всё должно грузиться на NetSpawn - исправить!
 	m_tAnims.clear			();
@@ -95,7 +93,7 @@ void CMotionManager::Destroy()
 }
 
 // Загрузка параметров анимации
-void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed)
+void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed, EPState p_s)
 {
 	SAnimItem new_item;
 
@@ -103,6 +101,7 @@ void CMotionManager::AddAnim(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, 
 	new_item.spec_id		= s_id;
 	new_item.speed.linear	= speed;
 	new_item.speed.angular	= r_speed;
+	new_item.pos_state		= p_s;
 
 	Load					(new_item.target_name, &new_item.pMotionVect);
 
@@ -113,8 +112,60 @@ void CMotionManager::AddTransition(EMotionAnim from, EMotionAnim to, EMotionAnim
 {
 	STransition new_item;
 
+	new_item.ps_from_used		= false;
 	new_item.anim_from			= from;
+
+	new_item.ps_target_used		= false;
 	new_item.anim_target		= to;
+	new_item.anim_transition	= trans;
+	new_item.chain				= chain;
+
+	m_tTransitions.push_back(new_item);
+}
+
+
+void CMotionManager::AddTransition(EMotionAnim from, EPState to, EMotionAnim trans, bool chain)
+{
+	STransition new_item;
+
+	new_item.ps_from_used		= false;
+	new_item.anim_from			= from;
+
+	new_item.ps_target_used		= true;
+	new_item.state_target		= to;
+	
+	new_item.anim_transition	= trans;
+	new_item.chain				= chain;
+
+	m_tTransitions.push_back(new_item);
+}
+
+void CMotionManager::AddTransition(EPState from, EMotionAnim to, EMotionAnim trans, bool chain)
+{
+	STransition new_item;
+
+	new_item.ps_from_used		= true;
+	new_item.state_from			= from;
+
+	new_item.ps_target_used		= false;
+	new_item.anim_target		= to;
+	
+	new_item.anim_transition	= trans;
+	new_item.chain				= chain;
+
+	m_tTransitions.push_back(new_item);
+}
+
+void CMotionManager::AddTransition(EPState from, EPState to, EMotionAnim trans, bool chain)
+{
+	STransition new_item;
+
+	new_item.ps_from_used		= true;
+	new_item.state_from			= from;
+
+	new_item.ps_target_used		= true;
+	new_item.state_target		= to;
+
 	new_item.anim_transition	= trans;
 	new_item.chain				= chain;
 
@@ -175,9 +226,7 @@ bool CMotionManager::PrepareAnimation()
 	}
 
 	// установить анимацию
-//	m_tpCurAnim = anim_it->second.pMotionVect[index];
-		
-	
+	m_tpCurAnim = anim_it->second.pMotionVect[index];
 
 	// установить параметры атаки
 	AA_SwitchAnimation(cur_anim, index);
@@ -189,19 +238,27 @@ bool CMotionManager::CheckTransition(EMotionAnim from, EMotionAnim to)
 {
 	// поиск соответствующего перехода
 	bool		bActivated	= false;
-	EMotionAnim cur_from = from, cur_to = to; 
+	EMotionAnim cur_from = from; 
+	EPState		state_from	= GetState(cur_from);
+	EPState		state_to	= GetState(to);
 
 	TRANSITION_ANIM_VECTOR_IT I;
 	for (I = m_tTransitions.begin(); I != m_tTransitions.end(); I++) {
-		if ((I->anim_from == cur_from) && (I->anim_target == cur_to)) {
-	
+		
+		bool from_is_good	= ((I->ps_from_used) ? (I->state_from == state_from) : (I->anim_from == cur_from));
+		bool target_is_good = ((I->ps_target_used) ? (I->state_target == state_to) : (I->anim_target == to));
+
+		if (from_is_good && target_is_good) {
+			// переход годится
 			Seq_Add(I->anim_transition);
 			bActivated	= true;	
-			
+
 			if (I->chain) {
-				cur_from = I->anim_transition;
+				cur_from	= I->anim_transition;
+				state_from	= GetState(cur_from);
 				I = m_tTransitions.begin();			// начать сначала
 			} else break;
+
 		}
 	}
 	
@@ -217,13 +274,13 @@ void CMotionManager::ProcessAction()
 	if (seq_playing) {
 		cur_anim = *seq_it;
 	} else {
-
+		
 		// преобразовать Action в Motion и получить новую анимацию
 		SMotionItem MI = m_tMotions[m_tAction];
 		cur_anim = MI.anim;
 
 		// установить target.yaw
-		if (!pMonster->AI_Path.TravelPath.empty()) pMonster->SetDirectionLook();
+		if (!pMonster->AI_Path.TravelPath.empty()) pMonster->SetDirectionLook( ((spec_params & ASP_MOVE_BKWD) == ASP_MOVE_BKWD) );
 
 		// проверить необходимость поворота
 		float &cur_yaw		= pMonster->r_torso_current.yaw;
@@ -240,13 +297,15 @@ void CMotionManager::ProcessAction()
 					cur_anim = MI.turn.anim_left;
 				}
 			}
-
+			// Проверить ASP
+			if (CheckSpecParams()) return;
+			
 			// если новая анимация не совпадает с предыдущей, проверить переход
 			if (prev_anim != cur_anim) {
 				if (CheckTransition	(prev_anim, cur_anim)) return;
 			}
-	}
-
+	} // sequence playing
+	
 	ApplyParams();
 
 	// если установленная анимация отличается от предыдущей - установить новую анимацию
@@ -254,8 +313,25 @@ void CMotionManager::ProcessAction()
 		FORCE_ANIMATION_SELECT();		
 	}
 
-	prev_anim = cur_anim;
+	prev_anim	= cur_anim;
+	spec_params = 0;
 }
+
+// возвращает true, если после выполнения этой функции необходимо прервать обработку
+bool CMotionManager::CheckSpecParams()
+{
+	if ((spec_params & ASP_DRAG_CORPSE) == 	ASP_DRAG_CORPSE) {
+		cur_anim = eAnimDragCorpse;
+	}
+
+	if ((spec_params & ASP_CHECK_CORPSE) == ASP_CHECK_CORPSE) {
+		Seq_Add(eAnimCheckCorpse);
+		Seq_Switch();
+		return true;
+	}
+	return false;
+}
+
 
 // Установка линейной и угловой скоростей для cur_anim
 void CMotionManager::ApplyParams()
@@ -291,10 +367,8 @@ void CMotionManager::Seq_Add(EMotionAnim a)
 void CMotionManager::Seq_Switch()
 {
 	if (!seq_playing) {
+		// активация последовательностей
 		seq_it = seq_states.begin();
-		// Set parameters according to seq activayed
-		pMonster->CurrentState->LockState();
-
 	} else {
 		seq_it++; 
 		if (seq_it == seq_states.end()) {
@@ -313,7 +387,6 @@ void CMotionManager::Seq_Switch()
 void CMotionManager::Seq_Finish()
 {
 	Seq_Init(); 
-	pMonster->CurrentState->UnlockState(pMonster->m_dwCurrentUpdate);
 	ProcessAction();	// выполнить текущие установки
 }
 
@@ -388,4 +461,11 @@ bool CMotionManager::AA_CheckTime(TTime cur_time, SAttackAnimation &anim)
 }
 
 
+EPState	CMotionManager::GetState (EMotionAnim a)
+{
+	// найти анимацию 
+	ANIM_ITEM_MAP_IT  item_it = m_tAnims.find(a);
+	R_ASSERT(item_it != m_tAnims.end());
 
+	return item_it->second.pos_state;
+}
