@@ -10,7 +10,7 @@
 #include "fcontroller.h"
 #include "effector.h"
 
-class CDemoRecord :
+class ENGINE_API CDemoRecord :
 	public CController,
 	public CEffector
 {
