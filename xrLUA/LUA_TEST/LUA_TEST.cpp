@@ -1089,20 +1089,12 @@ struct CEDSA {
 
 template <typename DSBE, typename DSAE>
 struct CEDSBA {
-
-	template <template <typename _T> class T1>
-	struct DSBA {
-		template<typename T2>
-		struct GV : public T1<T2> {
-		};
-	};
-
 	template <template <typename _T> class PGV> 
 	struct DS : 
-		public DSBE::DS<DSBA<PGV>::GV>,
-		public DSAE::DS<typename DSBE::DS<DSBA<PGV>::GV>::CGraphNode>
+		public DSBE::DS<PGV>,
+		public DSAE::DS<typename DSBE::DS<PGV>::CGraphNode>
 	{
-		typedef typename DSBE::DS<DSBA<PGV>::GV>::CGraphNode CGraphNode;
+		typedef typename DSBE::DS<PGV>::CGraphNode CGraphNode;
 	};
 };
 
@@ -1151,27 +1143,6 @@ struct CEDSIBA {
 	};
 };
 
-template <
-	typename EDSI, 
-	typename EDSB, 
-	typename EDSA,
-	template <
-		typename _1,
-		typename _2
-	>
-	class	 EDSBA = CEDSBA,
-	template <
-		typename _1, 
-		typename _2,
-		typename _3,
-		template <
-			typename _1,
-			typename _2
-		>
-		class	 _4
-	>
-	class	 EDSIBA = CEDSIBA
->
 struct CEDLSL {
 
 	template <template <typename _T> class T1>
@@ -1193,10 +1164,64 @@ struct CEDLSL {
 		};
 	};
 
-	template <template <typename _T> class PGV = CEmptyClassTemplate> 
-	struct DS : public EDSIBA<EDSI,EDSB,EDSA,EDSBA>::DS<DLSL<PGV>::GV> {
-		typedef typename EDSIBA<EDSI,EDSB,EDSA,EDSBA>::DS<DLSL<PGV>::GV>::CGraphNode CGraphNode;
+	template <
+		typename EDSIBA,
+		template <typename _T> class PGV = CEmptyClassTemplate
+	>
+	struct DS : public EDSIBA::DS<DLSL<PGV>::GV> {
+		typedef typename EDSIBA::DS<DLSL<PGV>::GV>::CGraphNode CGraphNode;
 	};
+};
+
+struct CESLSL {
+
+	template <template <typename _T> class T1>
+	struct SLSL {
+		template<typename T2>
+		struct GV : public T1<T2> {
+			T2	*_next;
+
+			IC	T2	*&next()
+			{
+				return	(_next);
+			}
+		};
+	};
+
+	template <
+		typename EDSIBA,
+		template <typename _T> class PGV = CEmptyClassTemplate
+	>
+	struct DS : public EDSIBA::DS<SLSL<PGV>::GV> {
+		typedef typename EDSIBA::DS<SLSL<PGV>::GV>::CGraphNode CGraphNode;
+	};
+};
+
+template <
+	typename EDSD, 
+	typename EDSI, 
+	typename EDSB, 
+	typename EDSA,
+	template <typename _T> class GV = CEmptyClassTemplate,
+	template <
+		typename _1,
+		typename _2
+	>
+	class	 EDSBA = CEDSBA,
+	template <
+		typename _1, 
+		typename _2,
+		typename _3,
+		template <
+			typename _1,
+			typename _2
+		>
+		class	 _4
+	>
+	class	 EDSIBA = CEDSIBA
+>
+struct CDSC : public EDSD::DS<EDSIBA<EDSI,EDSB,EDSA,EDSBA>,GV> {
+	typedef typename EDSD::DS<EDSIBA<EDSI,EDSB,EDSA,EDSBA>,GV>::CGraphNode CGraphNode;
 };
 
 int __cdecl main(char argc, char *argv[])
@@ -1205,15 +1230,15 @@ int __cdecl main(char argc, char *argv[])
 //	typedef CEDSBA<_data_storage_base,CDSA>						_data_storage_base_allocator;
 //	typedef CEDSIBA<u32,_data_storage_base_allocator>			_data_storage_index_base_allocator;
 //	typedef CEDLSL<_data_storage_index_base_allocator>			_data_storage;
-	typedef CEDLSL<CEDSI<u32>,CEDSB<float>,CEDSA>				_data_storage;
+	typedef CDSC<CESLSL,CEDSI<u32>,CEDSB<float>,CEDSA>				_data_storage;
 
-	_data_storage::DS<>::CGraphNode	g;
+	_data_storage::CGraphNode	g;
 	g.f()		= 1.f;
 	g.g()		= 2.f;
 	g.h()		= 3.f;
 	g.index()	= 4;
 	g.back()	= &g;
-	g.prev()	= &g;
+//	g.prev()	= &g;
 	g.next()	= &g;
 
 	return		(0);
