@@ -17,7 +17,7 @@
 #define BLINK_TIME 300.f
 
 //----------------------------------------------------
-CSceneObject::CSceneObject(LPVOID data):CCustomObject(data){
+CSceneObject::CSceneObject(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct	(data);
 }
 

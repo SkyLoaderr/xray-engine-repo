@@ -24,7 +24,6 @@ class CCustomObject {
 	BOOL 			m_bVisible;
     BOOL 			m_bLocked;
     BOOL 			m_bValid;
-
 public:
 	string64		FName;
 
@@ -54,6 +53,10 @@ public:
 	IC BOOL 		Locked			(){return m_bLocked; }
 	IC BOOL 		Selected		(){return m_bSelected; }
     IC BOOL			Valid			(){return m_bValid;}
+
+	// editor integration
+	virtual void	PropWrite		(CFS_Base& F){;}
+	virtual void	PropRead		(CStream& F){;}
 
 	virtual void 	Select			(int  flag);
 	virtual void 	Show			(BOOL flag);
@@ -101,7 +104,7 @@ public:
 	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
     virtual bool	ExportSpawn		(CFS_Base&, int chunk_id){return false;}
-    virtual bool	ExportGame		(CFS_Base&, int chunk_id){return false;}
+    virtual bool	ExportGame		(CFS_Base&, int chunk_id, LPVOID data){return false;}
 
 	virtual bool 	GetBox			(Fbox& box){return false;}
 	virtual bool 	GetUTBox		(Fbox& box){return false;}
@@ -114,9 +117,10 @@ public:
 	virtual void 	OnSynchronize	(){;}
     virtual void    OnShowHint      (AStringVec& dest);
 
-					CCustomObject	(LPVOID data){
+					CCustomObject	(LPVOID data, LPCSTR name){
                         ClassID 	= OBJCLASS_DUMMY;
                         FName[0] 	= 0;
+                        if (name) 	strcpy(FName, name);
                         m_bSelected = false;
                         m_bVisible 	= true;
                         m_bLocked 	= false;

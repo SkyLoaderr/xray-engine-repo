@@ -6,7 +6,7 @@
 #define _INCDEF_WayPoint_H_                                
 
 #include "CustomObject.h"
-#include "WayPointDef.h"
+#include "LevelGameDef.h"
 
 class CFrustum;
 class CWayPoint;
@@ -44,7 +44,7 @@ protected:
     WPVec			m_WayPoints;
     typedef CCustomObject inherited;
 public:
-					CWayObject		(LPVOID data);
+					CWayObject		(LPVOID data, LPCSTR name);
     void            Construct   	(LPVOID data);
 	virtual			~CWayObject		();
     void			Clear			();
@@ -79,7 +79,7 @@ public:
     virtual bool 	FrustumPick		(const CFrustum& frustum);
   	virtual bool 	Load			(CStream&);
 	virtual void 	Save			(CFS_Base&);
-    virtual bool	ExportGame		(CFS_Base&, int chunk_id);
+    virtual bool	ExportGame		(CFS_Base&, int chunk_id, LPVOID data);
 
     static bool		IsPointMode		();
 };

@@ -44,7 +44,7 @@ protected:
     virtual Fvector& GetPosition	()	{ return m_D3D.position; 	}
     virtual void 	SetPosition		(Fvector& pos)	{ m_D3D.position.set(pos);	UpdateTransform();}
 public:
-					CLight		(LPVOID data);
+					CLight		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
 	virtual 		~CLight		();
     void			CopyFrom	(CLight* src);

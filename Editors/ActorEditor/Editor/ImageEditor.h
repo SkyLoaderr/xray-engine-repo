@@ -16,7 +16,7 @@
 //---------------------------------------------------------------------------
 // refs
 class EImageThumbnail;
-class TfrmProperties;
+class TProperties;
 //---------------------------------------------------------------------------
 
 class TfrmImageLib : public TForm
@@ -77,7 +77,7 @@ private:	// User declarations
     static FileMap modif_map;
 	void __fastcall SaveTextureParams();
     bool bCheckMode;
-    TfrmProperties* ImageProps;
+    TProperties* ImageProps;
     static AnsiString m_LastSelection;
     void __fastcall UpdateImageLib();
     void ExtractCompValue(int val, int& A, int& M){	A = val/1000; M = val-A*1000; }

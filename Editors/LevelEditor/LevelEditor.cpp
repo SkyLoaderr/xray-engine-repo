@@ -36,7 +36,7 @@ USEFORM("FrameDetObj.cpp", fraDetailObject); /* TFrame: File Type */
 USEFORM("DOShuffle.cpp", frmDOShuffle);
 USEFORM("DOOneColor.cpp", frmOneColor);
 USEFORM("PropertiesDetailObject.cpp", frmPropertiesDO);
-USEFORM("PropertiesList.cpp", frmProperties);
+USEFORM("PropertiesList.cpp", Properties);
 USEFORM("PropertiesSceneObject.cpp", frmPropertiesSceneObject);
 USEFORM("EventOneAction.cpp", frmOneEventAction);
 USEFORM("EditLightAnim.cpp", frmEditLightAnim);

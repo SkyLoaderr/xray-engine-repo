@@ -52,7 +52,7 @@ void	xrServerEntity::Spawn_Read		(NET_Packet& P)
 }
 void	xrServerEntity::P_Read			(CStream& FS)
 {
-	FS.Read				(&desc,sizeof(desc));
+//	FS.Read				(&desc,sizeof(desc));
 
 	// Active
 	xrP_BOOL			dB;
@@ -62,7 +62,7 @@ void	xrServerEntity::P_Read			(CStream& FS)
 }
 void	xrServerEntity::P_Write			(CFS_Base& FS)
 {
-	FS.write			(&desc,sizeof(desc));
+//	FS.write			(&desc,sizeof(desc));
 
 	// Active
 	xrP_BOOL			dB;
@@ -480,6 +480,8 @@ public:
 //--------------------------------------------------------------------
 xrServerEntity*	F_entity_Create		(LPCSTR name)
 {
+	if (!pSettings->SectionExists(name)) return 0;
+    
 	CLASS_ID cls = pSettings->ReadCLSID(name,"class");
 
 	switch (cls){

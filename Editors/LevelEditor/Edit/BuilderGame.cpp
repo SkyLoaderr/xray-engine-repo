@@ -35,14 +35,28 @@ bool SceneBuilder::BuildGame()
 	if (Scene.ObjCount(OBJCLASS_WAY)) {
 		ObjectIt _F  = Scene.FirstObj(OBJCLASS_WAY);
         ObjectIt _E  = Scene.LastObj(OBJCLASS_WAY);
-        for (EWayType t=0; t<wtMaxType; t++){
-        	GAME.open_chunk(t+0x1000);
+        for (EWayType t=EWayType(0); t<wtMaxType; t++){
+        	GAME.open_chunk(t+WAY_BASE);
         	chunk=0;
 	        for(ObjectIt it=_F; it!=_E; it++){
     	    	CWayObject* P = (CWayObject*)(*it);
                 if (P->GetType()==t){
-                    if (P->ExportGame(GAME,chunk)) chunk++;
+                    if (P->ExportGame(GAME,chunk,0)) chunk++;
                 }
+			}
+        	GAME.close_chunk();
+        }
+    }
+	// points
+	if (Scene.ObjCount(OBJCLASS_SPAWNPOINT)) {
+		ObjectIt _F  = Scene.FirstObj(OBJCLASS_SPAWNPOINT);
+        ObjectIt _E  = Scene.LastObj(OBJCLASS_SPAWNPOINT);
+        for (EPointType t=EPointType(0); t<ptMaxType; t++){
+        	GAME.open_chunk(t+POINT_BASE);
+        	chunk=0;
+	        for(ObjectIt it=_F; it!=_E; it++){
+    	    	CSpawnPoint* P = (CSpawnPoint*)(*it);
+				if (P->ExportGame(GAME,chunk,(LPVOID)t)) chunk++;
 			}
         	GAME.close_chunk();
         }

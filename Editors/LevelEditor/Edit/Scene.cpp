@@ -536,7 +536,7 @@ void EScene::Render( const Fmatrix& camera )
 void EScene::UpdateSkydome(){
 	_DELETE(m_SkyDome);
     if (!m_LevelOp.m_SkydomeObjName.IsEmpty()){
-        m_SkyDome = new CSceneObject("$Sky");
+        m_SkyDome = new CSceneObject(0,"$sky");
         CEditableObject* EO = m_SkyDome->SetReference(m_LevelOp.m_SkydomeObjName.c_str());
         if (!EO||!EO->IsDynamic()){
         	ELog.DlgMsg(mtError,"Object %s can't find in library or non dynamic model",m_LevelOp.m_SkydomeObjName.c_str());

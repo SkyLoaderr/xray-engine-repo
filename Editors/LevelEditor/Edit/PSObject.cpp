@@ -24,7 +24,7 @@
 
 //using namespace PS;
 
-CPSObject::CPSObject(LPVOID data):CCustomObject(data){
+CPSObject::CPSObject(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct(data);
 }
 //----------------------------------------------------

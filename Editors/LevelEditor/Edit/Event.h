@@ -62,7 +62,7 @@ public:
     void			RemoveSelectedForm	();
 	void 			GetRenderBox		(Fbox& box);
 public:
-					CEvent		(LPVOID data);
+					CEvent		(LPVOID data, LPCSTR name);
 	virtual 		~CEvent		();
 	void 			Construct	(LPVOID data);
 

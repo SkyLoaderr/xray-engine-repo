@@ -43,7 +43,7 @@ bool __fastcall TUI_ControlPSAdd::Start(TShiftState Shift){
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm)){
         char namebuffer[MAX_OBJ_NAME];
         Scene.GenObjectName( OBJCLASS_PS, namebuffer, PS->m_Name );
-        CPSObject *obj = new CPSObject( namebuffer );
+        CPSObject *obj = new CPSObject( 0, namebuffer );
         obj->Compile(PS);
         obj->MoveTo(p,up);
         Scene.SelectObjects(false,OBJCLASS_PS);

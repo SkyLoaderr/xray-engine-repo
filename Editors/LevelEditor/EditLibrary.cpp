@@ -45,7 +45,7 @@ __fastcall TfrmEditLibrary::TfrmEditLibrary(TComponent* Owner)
     : TForm(Owner)
 {
     DEFINE_INI(fsStorage);
-	m_pEditObject = new CSceneObject(0);
+	m_pEditObject = new CSceneObject(0,0);
     m_Props = TfrmPropertiesEObject::CreateProperties(0,alNone,OnModified);
 }
 //---------------------------------------------------------------------------

@@ -25,14 +25,14 @@ void frmPropertiesLightRun(ObjectList* pObjects, bool& bChange){
 __fastcall TfrmPropertiesLight::TfrmPropertiesLight(TComponent* Owner)
     : TForm(Owner)
 {
-    m_Props = TfrmProperties::CreateProperties(tsSun,alClient);
+    m_Props = TProperties::CreateForm(tsSun,alClient);
 	DEFINE_INI(fsStorage);
 }
 //----------------------------------------------------
 void __fastcall TfrmPropertiesLight::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
-	TfrmProperties::DestroyProperties(m_Props);
+	TProperties::DestroyForm(m_Props);
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmPropertiesLight::Run(ObjectList* pObjects, bool& bChange)

@@ -37,7 +37,7 @@
 #define NORM_DYN_COLOR 	0x0000FF00
 #define LOCK_COLOR 		0x00FF0000
 
-CLight::CLight(LPVOID data):CCustomObject(data){
+CLight::CLight(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct(data);
 }
 

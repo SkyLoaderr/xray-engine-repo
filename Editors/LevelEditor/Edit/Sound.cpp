@@ -24,8 +24,8 @@
 #define SOUND_CHUNK_PARAMS				0x0212
 #define SOUND_CHUNK_PARAMS2				0x0213
 //----------------------------------------------------
-CSound::CSound(LPVOID data)
-	:CCustomObject(data)
+CSound::CSound(LPVOID data, LPCSTR name)
+	:CCustomObject(data,name)
 {
 	Construct(data);
 }

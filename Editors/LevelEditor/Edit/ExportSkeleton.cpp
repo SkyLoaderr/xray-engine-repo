@@ -454,7 +454,7 @@ bool CExportSkeleton::ExportMotions(CFS_Base& F)
     		F.WstringZ(bp_it->alias.c_str());
             F.Wword(bp_it->bones.size());
 //	        F.write(bp_it->bones.begin(),bp_it->bones.size()*sizeof(int));
-	        for (int i=0; i<bp_it->bones.size(); i++)
+	        for (int i=0; i<int(bp_it->bones.size()); i++)
             	F.Wdword(bp_it->bones[i]);
     	}
     }else{

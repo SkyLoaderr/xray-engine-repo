@@ -45,8 +45,8 @@ class SceneBuilder{
     void    BuildGlow       (b_glow* b, CGlow* e);
     void    BuildLight      (b_light* b, CLight* e);
     void    BuildPortal   	(b_portal* b, CPortal* e);
-    void    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num);
-    void    BuildObject     (CSceneObject* obj);
+    BOOL    BuildMesh       (const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sector_num);
+    BOOL    BuildObject     (CSceneObject* obj);
 
     void    ResetStructures ();
 
@@ -84,8 +84,8 @@ protected:
 	void 	AddUniqueTexName        (const char *name);
 
     bool 	BuildSkyModel			();
-    void	ParseStaticObjects		(ObjectList& lst);
-    bool 	CompileStatic		   	();
+    BOOL	ParseStaticObjects		(ObjectList& lst);
+    BOOL 	CompileStatic		   	();
 
 	int 	m_iDefaultSectorNum;
 	bool 	RenumerateSectors		();

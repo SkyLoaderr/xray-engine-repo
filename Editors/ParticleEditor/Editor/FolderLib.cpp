@@ -447,6 +447,7 @@ bool FOLDER::RenameItem(TElTree* tv, TElTreeItem* node, AnsiString& new_text, TO
 		OnRename(full_name.c_str(),new_full_name);
     }
     tv->Selected=node;
+    return true;
 }
 //------------------------------------------------------------------------------
 

@@ -506,7 +506,7 @@ void CImageManager::CreateLODTexture(Fbox bbox, LPCSTR tex_name, int tgt_w, int 
         *it=(RGBA_GETALPHA(*it)>200)?subst_alpha(*it,0xFF):subst_alpha(*it,0x00);
     for (DWORD ref=254; ref>0; ref--)
         ApplyBorders(new_pixels,pitch,src_h,ref);
-    for (int t=0; t<new_pixels.size(); t++)
+    for (int t=0; t<int(new_pixels.size()); t++)
         new_pixels[t]=subst_alpha(new_pixels[t],RGBA_GETALPHA(border_pixels[t]));
 
     AnsiString out_name=tex_name;

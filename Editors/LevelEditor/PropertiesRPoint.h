@@ -18,7 +18,6 @@
 
 // refs
 class CCustomObject;
-class TfrmProperties;
 
 class TfrmPropertiesSpawnPoint : public TForm
 {
@@ -39,7 +38,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormDestroy(TObject *Sender);
 private:	// User declarations
 	static TfrmPropertiesSpawnPoint* form;
-    TfrmProperties* m_Props;
+    TProperties* m_Props;
     CFS_Memory 		m_SPData;
     CSpawnPoint* 	m_SPObject;
     void GetObjectInfo	();

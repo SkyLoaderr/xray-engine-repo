@@ -21,19 +21,19 @@
 #include "GroupObject.h"
 //----------------------------------------------------
 
-CCustomObject *NewObjectFromClassID( int _ClassID, LPVOID data ){
+CCustomObject *NewObjectFromClassID( int _ClassID, LPVOID data, LPCSTR name ){
 	switch( _ClassID ){
-    	case OBJCLASS_GROUP:		return new CGroupObject(data);
-		case OBJCLASS_SCENEOBJECT: 	return new CSceneObject(data);
-		case OBJCLASS_LIGHT:    	return new CLight(data);
-		case OBJCLASS_SOUND:    	return new CSound(data);
-		case OBJCLASS_GLOW:     	return new CGlow(data);
-        case OBJCLASS_SPAWNPOINT:	return new CSpawnPoint(data);
-        case OBJCLASS_WAY:			return new CWayObject(data);
-        case OBJCLASS_SECTOR:		return new CSector(data);
-        case OBJCLASS_PORTAL:		return new CPortal(data);
-        case OBJCLASS_EVENT:		return new CEvent(data);
-        case OBJCLASS_PS:			return new CPSObject(data);
+    	case OBJCLASS_GROUP:		return new CGroupObject(data,name);
+		case OBJCLASS_SCENEOBJECT: 	return new CSceneObject(data,name);
+		case OBJCLASS_LIGHT:    	return new CLight(data,name);
+		case OBJCLASS_SOUND:    	return new CSound(data,name);
+		case OBJCLASS_GLOW:     	return new CGlow(data,name);
+        case OBJCLASS_SPAWNPOINT:	return new CSpawnPoint(data,name);
+        case OBJCLASS_WAY:			return new CWayObject(data,name);
+        case OBJCLASS_SECTOR:		return new CSector(data,name);
+        case OBJCLASS_PORTAL:		return new CPortal(data,name);
+        case OBJCLASS_EVENT:		return new CEvent(data,name);
+        case OBJCLASS_PS:			return new CPSObject(data,name);
         default: throw -1;
 	}
 }

@@ -73,14 +73,14 @@ bool CEditableObject::Import_LWO(const char* fn, bool bNeedOptimize){
                     }else
 						ELog.Msg(mtError,"CEditableObject: Shader not found on surface '%s'.",Osf->_Name());
 
-//					if (!Device.Shader._FindBlender(en_shader.c_str())){
-//						ELog.Msg(mtError,"CEditableObject: Render shader '%s' - can't find in library.\nUsing 'default' shader on surface '%s'.", en_shader.c_str(), Osf->_Name());
-//	                    en_shader = "default";
-//					}
-//					if (!Device.ShaderXRLC.Get(lc_shader.c_str())){
-//						ELog.Msg(mtError,"CEditableObject: Compiler shader '%s' - can't find in library.\nUsing 'default' shader on surface '%s'.", lc_shader.c_str(), Osf->_Name());
-//	                    lc_shader = "default";
-//					}
+					if (!Device.Shader._FindBlender(en_shader.c_str())){
+						ELog.Msg(mtError,"CEditableObject: Render shader '%s' - can't find in library.\nUsing 'default' shader on surface '%s'.", en_shader.c_str(), Osf->_Name());
+	                    en_shader = "default";
+					}
+					if (!Device.ShaderXRLC.Get(lc_shader.c_str())){
+						ELog.Msg(mtError,"CEditableObject: Compiler shader '%s' - can't find in library.\nUsing 'default' shader on surface '%s'.", lc_shader.c_str(), Osf->_Name());
+	                    lc_shader = "default";
+					}
                     // fill texture layers
                     int cidx;
                     st_lwClip* Icl;

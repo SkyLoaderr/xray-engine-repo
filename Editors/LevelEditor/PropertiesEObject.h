@@ -63,8 +63,8 @@ __published:	// IDE-managed Components
 	void __fastcall fsStorageSavePlacement(TObject *Sender);
 	void __fastcall pbImagePaint(TObject *Sender);
 private:	// User declarations
-    TfrmProperties* m_Basic;
-    TfrmProperties* m_Surfaces;
+    TProperties* 	m_Basic;
+    TProperties* 	m_Surfaces;
     bool			bModified;
     TOnModifiedEvent OnModifiedEvent;
     void __fastcall	OnSurfaceFocused	   	(TElTreeItem* item);

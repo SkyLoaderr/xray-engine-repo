@@ -75,7 +75,7 @@ LPCSTR 	AnsiTextValue::GetText(){
 }
 
 //---------------------------------------------------------------------------
-TElTreeItem* __fastcall TfrmProperties::BeginEditMode(LPCSTR section)
+TElTreeItem* __fastcall TProperties::BeginEditMode(LPCSTR section)
 {
 	iFillMode++;
 	tvProperties->IsUpdating = true;
@@ -85,7 +85,7 @@ TElTreeItem* __fastcall TfrmProperties::BeginEditMode(LPCSTR section)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::EndEditMode(TElTreeItem* expand_node)
+void __fastcall TProperties::EndEditMode(TElTreeItem* expand_node)
 {
 	iFillMode--;
 	if (expand_node) expand_node->Expand(true);
@@ -93,7 +93,7 @@ void __fastcall TfrmProperties::EndEditMode(TElTreeItem* expand_node)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
+void __fastcall TProperties::BeginFillMode(const AnsiString& title, LPCSTR section)
 {
 	iFillMode++;
 	tvProperties->IsUpdating = true;
@@ -113,7 +113,7 @@ void __fastcall TfrmProperties::BeginFillMode(const AnsiString& title, LPCSTR se
     Caption = title;
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
+void __fastcall TProperties::EndFillMode(bool bFullExpand)
 {
 	iFillMode--;
     bModified=false;
@@ -122,13 +122,13 @@ void __fastcall TfrmProperties::EndFillMode(bool bFullExpand)
     tvProperties->Selected = FOLDER::FindItem(tvProperties,last_selected_item.c_str());
 };
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::ResetProperties()
+void __fastcall TProperties::ResetProperties()
 {
     for (PropValIt it=m_Params.begin(); it!=m_Params.end(); it++)
         (*it)->Reset();
 }
 //---------------------------------------------------------------------------
-void TfrmProperties::ClearParams(TElTreeItem* node)
+void TProperties::ClearParams(TElTreeItem* node)
 {
 	if (node){
     	//S когда будут все итемы удалить у каждого
@@ -149,7 +149,7 @@ void TfrmProperties::ClearParams(TElTreeItem* node)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::ClearProperties()
+void __fastcall TProperties::ClearProperties()
 {
 	tvProperties->IsUpdating = true;
     tvProperties->Items->Clear();
@@ -158,7 +158,7 @@ void __fastcall TfrmProperties::ClearProperties()
 }
 //---------------------------------------------------------------------------
 
-__fastcall TfrmProperties::TfrmProperties(TComponent* Owner)
+__fastcall TProperties::TProperties(TComponent* Owner)
 	: TForm(Owner)
 {
 	bModified 		= false;
@@ -175,9 +175,9 @@ __fastcall TfrmProperties::TfrmProperties(TComponent* Owner)
 }
 //---------------------------------------------------------------------------
 
-TfrmProperties* TfrmProperties::CreateProperties	(TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused)
+TProperties* TProperties::CreateForm(TWinControl* parent, TAlign align, TOnModifiedEvent modif, TOnItemFocused focused)
 {
-	TfrmProperties* props = new TfrmProperties(parent);
+	TProperties* props = new TProperties(parent);
     props->OnModifiedEvent 	= modif;
     props->OnItemFocused    = focused;
     if (parent){
@@ -190,26 +190,26 @@ TfrmProperties* TfrmProperties::CreateProperties	(TWinControl* parent, TAlign al
 	return props;
 }
 
-void TfrmProperties::DestroyProperties(TfrmProperties*& props)
+void TProperties::DestroyForm(TProperties*& props)
 {
 	VERIFY(props);
 	props->ClearProperties();
 	props->Close();
     _DELETE(props);
 }
-void __fastcall TfrmProperties::ShowProperties(){
+void __fastcall TProperties::ShowProperties(){
 	Show();
 }
 
-void __fastcall TfrmProperties::ShowPropertiesModal(){
+void __fastcall TProperties::ShowPropertiesModal(){
 	ShowModal();
 }
 
-void __fastcall TfrmProperties::HideProperties(){
+void __fastcall TProperties::HideProperties(){
 	Hide();
 }
 
-void __fastcall TfrmProperties::FormClose(TObject *Sender,
+void __fastcall TProperties::FormClose(TObject *Sender,
       TCloseAction &Action)
 {
     _DELETE(m_BMCheck);
@@ -219,10 +219,9 @@ void __fastcall TfrmProperties::FormClose(TObject *Sender,
 //---------------------------------------------------------------------------
 
 //CBlender* CSHEngineTools::AppendBlender(CLASS_ID cls_id, LPCSTR folder_name, CBlender* parent){
-void __fastcall TfrmProperties::AddItems(TElTreeItem* parent, CStream& data, int adv)
+void __fastcall TProperties::AddItems(TElTreeItem* parent, CStream& data)
 {
 	// parse data
-    data.Advance(adv);
     DWORD type;
     char key[255];
 	TElTreeItem* marker_parent=parent;
@@ -261,7 +260,7 @@ void __fastcall TfrmProperties::AddItems(TElTreeItem* parent, CStream& data, int
 }
 //---------------------------------------------------------------------------
 
-TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, EPropType type, LPCSTR key, LPVOID value)
+TElTreeItem* __fastcall TProperties::AddItem(TElTreeItem* parent, EPropType type, LPCSTR key, LPVOID value)
 {
 	R_ASSERT(iFillMode>0);
     TElTreeItem* TI     = tvProperties->Items->AddChildObject(parent,key,(TObject*)value);
@@ -301,7 +300,7 @@ TElTreeItem* __fastcall TfrmProperties::AddItem(TElTreeItem* parent, EPropType t
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::tvPropertiesClick(TObject *Sender)
+void __fastcall TProperties::tvPropertiesClick(TObject *Sender)
 {
 	int HS;
     TElTreeItem* 	Item;
@@ -314,7 +313,7 @@ void __fastcall TfrmProperties::tvPropertiesClick(TObject *Sender)
     	tvProperties->EditItem(Item, HS);
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
+void __fastcall TProperties::tvPropertiesItemDraw(TObject *Sender,
       TElTreeItem *Item, TCanvas *Surface, TRect &R, int SectionIndex)
 {
 	TRect  R1;
@@ -423,7 +422,7 @@ void __fastcall TfrmProperties::tvPropertiesItemDraw(TObject *Sender,
   	}
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
+void __fastcall TProperties::tvPropertiesMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	CancelEditControl();
@@ -537,7 +536,7 @@ void __fastcall TfrmProperties::tvPropertiesMouseDown(TObject *Sender,
     };
 }
 //---------------------------------------------------------------------------
-void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
+void __fastcall TProperties::PMItemClick(TObject *Sender)
 {
     TMenuItem* mi = dynamic_cast<TMenuItem*>(Sender);
     if (mi){
@@ -606,7 +605,7 @@ void __fastcall TfrmProperties::PMItemClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::CustomClick(TElTreeItem* item)
+void __fastcall TProperties::CustomClick(TElTreeItem* item)
 {
 	DWORD type = item->Tag;
     switch (type){
@@ -618,7 +617,7 @@ void __fastcall TfrmProperties::CustomClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::ColorClick(TElTreeItem* item)
+void __fastcall TProperties::ColorClick(TElTreeItem* item)
 {
 	DWORD type = item->Tag;
     LPDWORD color = (LPDWORD)item->Data;
@@ -630,7 +629,7 @@ void __fastcall TfrmProperties::ColorClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::VectorClick(TElTreeItem* item)
+void __fastcall TProperties::VectorClick(TElTreeItem* item)
 {
 	DWORD type = item->Tag;
     VERIFY(type==PROP_VECTOR);
@@ -651,7 +650,7 @@ void __fastcall TfrmProperties::VectorClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::CustomTextClick(TElTreeItem* item)
+void __fastcall TProperties::CustomTextClick(TElTreeItem* item)
 {
 	TextValue* V			= (TextValue*)item->Data;
 	AnsiString old_val		= V->val;
@@ -674,7 +673,7 @@ void __fastcall TfrmProperties::CustomTextClick(TElTreeItem* item)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::CustomAnsiTextClick(TElTreeItem* item)
+void __fastcall TProperties::CustomAnsiTextClick(TElTreeItem* item)
 {
 	AnsiTextValue* V		= (AnsiTextValue*)item->Data;
 	AnsiString old_val		= *V->val;
@@ -700,18 +699,18 @@ void __fastcall TfrmProperties::CustomAnsiTextClick(TElTreeItem* item)
 //---------------------------------------------------------------------------
 // LW style inplace editor
 //---------------------------------------------------------------------------
-void TfrmProperties::CancelLWNumber()
+void TProperties::CancelLWNumber()
 {
     HideLWNumber();
 }
 
-void TfrmProperties::HideLWNumber()
+void TProperties::HideLWNumber()
 {
     seNumber->Tag	= 0;
     seNumber->Hide	();
 }
 //---------------------------------------------------------------------------
-void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
+void TProperties::PrepareLWNumber(TElTreeItem* item)
 {
 	DWORD type 		= item->Tag;
     switch (type){
@@ -743,7 +742,7 @@ void TfrmProperties::PrepareLWNumber(TElTreeItem* item)
     seNumber->Tag 	= (int)item;
     tvProperties->Refresh();
 }
-void TfrmProperties::ShowLWNumber(TRect& R)
+void TProperties::ShowLWNumber(TRect& R)
 {
     seNumber->Left 	= R.Left;
     seNumber->Top  	= R.Top+tvProperties->HeaderHeight;
@@ -753,7 +752,7 @@ void TfrmProperties::ShowLWNumber(TRect& R)
     seNumber->SetFocus();
 }
 
-void TfrmProperties::ApplyLWNumber()
+void TProperties::ApplyLWNumber()
 {
 	TElTreeItem* item = (TElTreeItem*)seNumber->Tag;
     if (item){
@@ -782,14 +781,14 @@ void TfrmProperties::ApplyLWNumber()
     }
 }
 
-void __fastcall TfrmProperties::seNumberExit(TObject *Sender)
+void __fastcall TProperties::seNumberExit(TObject *Sender)
 {
 	ApplyLWNumber();
 	HideLWNumber();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
+void __fastcall TProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 	if (VK_RETURN==Key){
@@ -804,18 +803,18 @@ void __fastcall TfrmProperties::seNumberKeyDown(TObject *Sender, WORD &Key,
 //---------------------------------------------------------------------------
 // Textinplace editor
 //---------------------------------------------------------------------------
-void TfrmProperties::CancelLWText()
+void TProperties::CancelLWText()
 {
     HideLWText();
 }
 
-void TfrmProperties::HideLWText()
+void TProperties::HideLWText()
 {
     edText->Tag	= 0;
     edText->Hide	();
 }
 //---------------------------------------------------------------------------
-void TfrmProperties::PrepareLWText(TElTreeItem* item)
+void TProperties::PrepareLWText(TElTreeItem* item)
 {
 	DWORD type 		= item->Tag;
     switch (type){
@@ -837,7 +836,7 @@ void TfrmProperties::PrepareLWText(TElTreeItem* item)
     edText->Tag 	= (int)item;
     tvProperties->Refresh();
 }
-void TfrmProperties::ShowLWText(TRect& R)
+void TProperties::ShowLWText(TRect& R)
 {
     edText->Left 	= R.Left-1;
     edText->Top  	= R.Top+tvProperties->HeaderHeight;
@@ -847,7 +846,7 @@ void TfrmProperties::ShowLWText(TRect& R)
     edText->SetFocus();
 }
 
-void TfrmProperties::ApplyLWText()
+void TProperties::ApplyLWText()
 {
 	TElTreeItem* item = (TElTreeItem*)edText->Tag;
     if (item){
@@ -878,14 +877,14 @@ void TfrmProperties::ApplyLWText()
     }
 }
 
-void __fastcall TfrmProperties::edTextExit(TObject *Sender)
+void __fastcall TProperties::edTextExit(TObject *Sender)
 {
 	ApplyLWText();
 	HideLWText();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::edTextKeyDown(TObject *Sender, WORD &Key,
+void __fastcall TProperties::edTextKeyDown(TObject *Sender, WORD &Key,
       TShiftState Shift)
 {
 	if (VK_RETURN==Key){
@@ -897,7 +896,7 @@ void __fastcall TfrmProperties::edTextKeyDown(TObject *Sender, WORD &Key,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::edTextDblClick(TObject *Sender)
+void __fastcall TProperties::edTextDblClick(TObject *Sender)
 {
 	TElTreeItem* item = (TElTreeItem*)edText->Tag;
     if (item){
@@ -918,20 +917,20 @@ void __fastcall TfrmProperties::edTextDblClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::tvPropertiesItemFocused(TObject *Sender)
+void __fastcall TProperties::tvPropertiesItemFocused(TObject *Sender)
 {
 	if (OnItemFocused) OnItemFocused(tvProperties->Selected);
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::tvPropertiesHeaderColumnResize(
+void __fastcall TProperties::tvPropertiesHeaderColumnResize(
       TObject *Sender, int SectionIndex)
 {
 	ApplyEditControl();
 }
 //---------------------------------------------------------------------------
 
-void TfrmProperties::ApplyEditControl()
+void TProperties::ApplyEditControl()
 {
 	ApplyLWText		();
 	HideLWText		();
@@ -940,14 +939,14 @@ void TfrmProperties::ApplyEditControl()
 }
 //---------------------------------------------------------------------------
 
-void TfrmProperties::CancelEditControl()
+void TProperties::CancelEditControl()
 {
 	CancelLWNumber();
 	CancelLWText();
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TfrmProperties::FormDeactivate(TObject *Sender)
+void __fastcall TProperties::FormDeactivate(TObject *Sender)
 {
 	ApplyEditControl();
 }

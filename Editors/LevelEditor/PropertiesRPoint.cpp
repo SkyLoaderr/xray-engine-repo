@@ -19,7 +19,7 @@ TfrmPropertiesSpawnPoint* TfrmPropertiesSpawnPoint::form = 0;
 __fastcall TfrmPropertiesSpawnPoint::TfrmPropertiesSpawnPoint(TComponent* Owner)
     : TForm(Owner)
 {
-	m_Props = TfrmProperties::CreateProperties(paProps,alClient,OnModified);
+	m_Props = TProperties::CreateForm(paProps,alClient,OnModified);
 	DEFINE_INI(fsStorage);
 }
 //---------------------------------------------------------------------------
@@ -28,19 +28,18 @@ void TfrmPropertiesSpawnPoint::GetObjectInfo()
 {
     m_Props->BeginFillMode();
     TElTreeItem* M=0;
-	M = m_Props->AddItem(0,PROP_MARKER2,	"Entity",	m_SPObject->m_SpawnData->s_name);
+//	M = m_Props->AddItem(0,PROP_MARKER2,	"Entity",	m_SPObject->m_SpawnData->s_name);
 	m_Props->AddItem	(0,PROP_TEXT,		"Name",		m_Props->MakeTextValue(m_SPObject->FName,sizeof(m_SPObject->FName),OnNameAfterEdit));
-	M = m_Props->AddItem(0,PROP_MARKER,		"Spawn data");
-    m_SPObject->m_SpawnData->P_Write(m_SPData);
+    m_SPObject->PropWrite(m_SPData);
     CStream F(m_SPData.pointer(),m_SPData.size());
-    m_Props->AddItems(M,F,sizeof(xrServerEntity_DESC));
+    m_Props->AddItems	(M,F);
     m_Props->EndFillMode();
 }
 //---------------------------------------------------------------------------
 
 bool TfrmPropertiesSpawnPoint::ApplyObjectInfo(){
     CStream F(m_SPData.pointer(),m_SPData.size());
-    m_SPObject->m_SpawnData->P_Read(F);
+    m_SPObject->PropRead(F);
     return true;
 }
 //---------------------------------------------------------------------------
@@ -130,7 +129,7 @@ void __fastcall TfrmPropertiesSpawnPoint::fsStorageSavePlacement(
 
 void __fastcall TfrmPropertiesSpawnPoint::FormDestroy(TObject *Sender)
 {
-	TfrmProperties::DestroyProperties(m_Props);
+	TProperties::DestroyForm(m_Props);
 }
 //---------------------------------------------------------------------------
 

@@ -24,7 +24,7 @@
 
 #define VIS_RADIUS 		0.25f
 
-CGlow::CGlow(LPVOID data):CCustomObject(data){
+CGlow::CGlow(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct(data);
 }
 

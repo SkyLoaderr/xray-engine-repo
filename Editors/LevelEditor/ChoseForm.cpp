@@ -10,6 +10,7 @@
 #include "xr_trims.h"
 #include "Library.h"
 #include "EditObject.h"
+#include "LevelGameDef.h"
 #include "D3DUtils.h"
 #include "ImageThumbnail.h"
 #include "FolderLib.h"
@@ -46,6 +47,9 @@ LPCSTR __fastcall TfrmChoseItem::SelectEntity(LPCSTR init_name)
 	form->tvItems->IsUpdating		= true;
     form->tvItems->Selected 		= 0;
     form->tvItems->Items->Clear		();
+    // append specific type
+    FOLDER::AppendObject(form->tvItems,AIPOINT_CHOOSE_NAME);
+    FOLDER::AppendObject(form->tvItems,RPOINT_CHOOSE_NAME);
     // fill object list
 	AnsiString fld;
     CInifile* sys_ini;

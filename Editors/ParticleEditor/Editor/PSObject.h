@@ -34,7 +34,7 @@ protected:
 public:
     PS::SEmitter		m_Emitter;
 public:
-	                	CPSObject   (LPVOID data);
+	                	CPSObject   (LPVOID data, LPCSTR name);
     void            	Construct   (LPVOID data);
 	virtual         	~CPSObject  ();
 

@@ -1,7 +1,7 @@
 object fraSpawnPoint: TfraSpawnPoint
   Left = 0
   Top = 0
-  Width = 443
+  Width = 123
   Height = 277
   VertScrollBar.Visible = False
   Align = alClient
@@ -19,7 +19,7 @@ object fraSpawnPoint: TfraSpawnPoint
   object paCommands: TPanel
     Left = 0
     Top = 0
-    Width = 443
+    Width = 123
     Height = 35
     Align = alTop
     Constraints.MaxWidth = 123
@@ -29,11 +29,11 @@ object fraSpawnPoint: TfraSpawnPoint
     object APHeadLabel1: TLabel
       Left = 1
       Top = 1
-      Width = 441
+      Width = 121
       Height = 13
       Align = alTop
       Alignment = taCenter
-      Caption = 'Current Entity'
+      Caption = 'Current Spawn'
       Color = clGray
       ParentColor = False
       OnClick = ExpandClick
@@ -85,6 +85,7 @@ object fraSpawnPoint: TfraSpawnPoint
   object fsStorage: TFormStorage
     IniSection = 'FrameRPoint'
     Options = []
+    Version = 1
     StoredProps.Strings = (
       'paCommands.Tag'
       'paCommands.Height')

@@ -63,6 +63,8 @@ public:
     virtual LPCSTR		GetText			()=0;
     virtual bool		IsChanged		()=0;
     virtual void		Reset			()=0;
+//	virtual void		Load			(CStream& F){;}
+//	virtual void		Save			(CFS_Base& F){;}
 };
 class TextValue: public PropValue{
 	AnsiString			init_val;
@@ -203,15 +205,15 @@ public:
 //---------------------------------------------------------------------------
 DEFINE_VECTOR(PropValue*,PropValVec,PropValIt)
 
-class TfrmProperties : public TForm
+class TProperties : public TForm
 {
 __published:	// IDE-managed Components
-	TElTree *tvProperties;
-	TMxPopupMenu *pmEnum;
-	TFormStorage *fsStorage;
-	TMultiObjSpinEdit *seNumber;
-	TEdit *edText;
-	TBevel *Bevel1;
+	TElTree 			*tvProperties;
+	TMxPopupMenu 		*pmEnum;
+	TFormStorage 		*fsStorage;
+	TMultiObjSpinEdit 	*seNumber;
+	TEdit 				*edText;
+	TBevel 				*Bevel1;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall tvPropertiesClick(TObject *Sender);
 	void __fastcall tvPropertiesItemDraw(TObject *Sender, TElTreeItem *Item,
@@ -265,9 +267,9 @@ private:	// User declarations
     void ApplyEditControl();
     void CancelEditControl();
 public:		// User declarations
-	__fastcall TfrmProperties		        (TComponent* Owner);
-	static TfrmProperties* CreateProperties	(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0);
-	static void 	DestroyProperties		(TfrmProperties*& props);
+	__fastcall TProperties		        	(TComponent* Owner);
+	static TProperties* CreateForm			(TWinControl* parent=0, TAlign align=alNone, TOnModifiedEvent modif=0, TOnItemFocused focused=0);
+	static void 	DestroyForm				(TProperties*& props);
     void __fastcall ShowPropertiesModal		();
     void __fastcall ShowProperties			();
     void __fastcall HideProperties			();                                   
@@ -283,7 +285,7 @@ public:		// User declarations
     TElTreeItem* __fastcall BeginEditMode	(LPCSTR section=0);
     void __fastcall EndEditMode				(TElTreeItem* expand_node=0);
 	TElTreeItem* __fastcall AddItem			(TElTreeItem* parent, EPropType type, LPCSTR key, LPVOID value=0);
-	void __fastcall AddItems				(TElTreeItem* parent, CStream& F, int adv);
+	void __fastcall AddItems				(TElTreeItem* parent, CStream& F);
     void __fastcall GetColumnWidth			(int& c0, int& c1)
     {
     	c0=tvProperties->HeaderSections->Item[0]->Width;

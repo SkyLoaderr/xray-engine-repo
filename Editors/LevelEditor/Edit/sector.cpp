@@ -46,7 +46,7 @@ bool CSectorItem::IsItem(const char* O, const char* M){
 }
 //------------------------------------------------------------------------------
 
-CSector::CSector(LPVOID data):CCustomObject(data){
+CSector::CSector(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct(data);
 }
 

@@ -26,7 +26,7 @@
 #define PORTAL_CHUNK_VERTICES				0xFA50
 //------------------------------------------------------------------------------
 
-CPortal::CPortal(LPVOID data):CCustomObject(data){
+CPortal::CPortal(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct(data);
 }
 //------------------------------------------------------------------------------

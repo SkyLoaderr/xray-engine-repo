@@ -208,7 +208,7 @@ CCustomObject* EScene::ReadObject( CStream* F ){
     DWORD clsid=0;
     R_ASSERT(F->FindChunk(CHUNK_OBJECT_CLASS));
     clsid = F->Rdword();
-	currentobject  = NewObjectFromClassID(clsid,0);
+	currentobject  = NewObjectFromClassID(clsid,0,0);
 
     CStream* S = F->OpenChunk(CHUNK_OBJECT_BODY);
     R_ASSERT(S);

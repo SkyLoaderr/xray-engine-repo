@@ -493,7 +493,7 @@ void CDetailManager::UpdateCache	(int limit)
 				Item.P.y	= y;
 
 				// Angles and scale
-				R_ASSERT(ID<m_Objects.size());
+				R_ASSERT(ID<int(m_Objects.size()));
 				Item.scale	= r_scale.randF		(m_Objects[ID]->m_fMinScale,m_Objects[ID]->m_fMaxScale);
 				Item.phase_x= ::Random.randFs	(phase_range);
 				Item.phase_z= ::Random.randF	(phase_range);

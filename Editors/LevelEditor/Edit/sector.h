@@ -57,7 +57,7 @@ class CSector : public CCustomObject {
     // only for build
     int				sector_num;
 public:
-					CSector		(LPVOID data);
+					CSector		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
 	virtual 		~CSector	();
 

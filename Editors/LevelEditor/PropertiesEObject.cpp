@@ -38,8 +38,8 @@ TfrmPropertiesEObject* TfrmPropertiesEObject::CreateProperties(TWinControl* pare
 	    props->BorderStyle = bsNone;
         props->ShowProperties();
     }
-    props->m_Basic 		= TfrmProperties::CreateProperties(props->paBasic,alClient,props->OnModifiedEvent);
-    props->m_Surfaces 	= TfrmProperties::CreateProperties(props->paSurfaces,alClient,props->OnModifiedEvent,props->OnSurfaceFocused);
+    props->m_Basic 		= TProperties::CreateForm(props->paBasic,alClient,props->OnModifiedEvent);
+    props->m_Surfaces 	= TProperties::CreateForm(props->paSurfaces,alClient,props->OnModifiedEvent,props->OnSurfaceFocused);
 	return props;
 }
 //---------------------------------------------------------------------------
@@ -138,8 +138,8 @@ void TfrmPropertiesEObject::UpdateProperties(CSceneObject* S)
 void __fastcall TfrmPropertiesEObject::FormDestroy(TObject *Sender)
 {
 	_DELETE(m_Thumbnail);
-    TfrmProperties::DestroyProperties(m_Basic);
-    TfrmProperties::DestroyProperties(m_Surfaces);
+    TProperties::DestroyForm(m_Basic);
+    TProperties::DestroyForm(m_Surfaces);
 }
 //---------------------------------------------------------------------------
 
@@ -163,12 +163,12 @@ void __fastcall TfrmPropertiesEObject::OnSurfaceFocused(TElTreeItem* item)
 {
 	_DELETE(m_Thumbnail);
 	if (item){
-    	EPropType type	= TfrmProperties::GetItemType(item);
+    	EPropType type	= TProperties::GetItemType(item);
         TElTreeItem* parent	= item->Parent?item->Parent:item;
 		CSurface* surf 		= (CSurface*)parent->Data;
     	switch (type){
         	case PROP_ANSI_TEXTURE:
-                m_Thumbnail = new EImageThumbnail(TfrmProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
+                m_Thumbnail = new EImageThumbnail(TProperties::GetItemColumn(item,0),EImageThumbnail::EITTexture);
                 lbWidth->Caption 	= m_Thumbnail->_Width();
                 lbHeight->Caption 	= m_Thumbnail->_Height();
                 lbAlpha->Caption 	= (m_Thumbnail->_Alpha())?"present":"absent";

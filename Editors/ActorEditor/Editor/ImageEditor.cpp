@@ -34,7 +34,7 @@ __fastcall TfrmImageLib::TfrmImageLib(TComponent* Owner)
 
 void __fastcall TfrmImageLib::FormCreate(TObject *Sender)
 {
-	ImageProps = TfrmProperties::CreateProperties(paProperties,alClient);
+	ImageProps = TProperties::CreateForm(paProperties,alClient);
 }
 //---------------------------------------------------------------------------
 
@@ -124,7 +124,7 @@ void __fastcall TfrmImageLib::FormClose(TObject *Sender, TCloseAction &Action)
 	_DELETE(m_Thm);
     m_SelectedName = "";
 
-    TfrmProperties::DestroyProperties(ImageProps);
+    TProperties::DestroyForm(ImageProps);
 
 	form = 0;
 	Action = caFree;

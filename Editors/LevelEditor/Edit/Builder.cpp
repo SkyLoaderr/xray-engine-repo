@@ -30,7 +30,7 @@ SceneBuilder::~SceneBuilder(){
 //------------------------------------------------------------------------------
 #define CHECK_BREAK     	if (UI.NeedAbort()) break;
 #define VERIFY_COMPILE(x,c) CHECK_BREAK \
-							if (!x){ELog.DlgMsg( mtError, "Error: %s.", c); break;}
+							if (!x){error_text.sprintf("Error: %s", c); break;}
 //------------------------------------------------------------------------------
 BOOL SceneBuilder::Compile()
 {
@@ -45,14 +45,11 @@ BOOL SceneBuilder::Compile()
             UI.Command( COMMAND_RESET_ANIMATION );
 	        // check debug
             bool bTestPortal = Scene.ObjCount(OBJCLASS_SECTOR)||Scene.ObjCount(OBJCLASS_PORTAL);
-//    	    if ((Scene.ObjCount(OBJCLASS_SECTOR)==0)&&(Scene.ObjCount(OBJCLASS_PORTAL)==0))
-//        	    if (mrYes==ELog.DlgMsg(mtConfirmation,TMsgDlgButtons()<<mbYes<<mbNo,"Can't find sector and portal in scene. Create default?")) PortalUtils.CreateDebugCollection();
-//            	else { error_text="Building canceled"; break; }
 	        // validate scene
     	    VERIFY_COMPILE(Scene.Validate(false,bTestPortal),"Validation failed. Invalid scene.");
         	// build
             VERIFY_COMPILE(PreparePath(),				"Failed to prepare level path.");
-            VERIFY_COMPILE(LightenObjects(),			"Failed to prepare level folders.");
+            VERIFY_COMPILE(LightenObjects(),			"Failed to lighten objects.");
             VERIFY_COMPILE(PrepareFolders(),			"Failed to prepare level folders.");
             VERIFY_COMPILE(GetBounding(),				"Failed to acquire level bounding volume.");
             VERIFY_COMPILE(RenumerateSectors(),			"Failed to renumerate sectors.");
@@ -64,8 +61,8 @@ BOOL SceneBuilder::Compile()
         } while(0);
 
         if (!error_text.IsEmpty()) 	ELog.DlgMsg(mtError,error_text.c_str());
-        else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated...");
-        else						ELog.DlgMsg(mtInformation,"Building OK...");
+        else if (UI.NeedAbort())	ELog.DlgMsg(mtInformation,"Building terminated.");
+        else						ELog.DlgMsg(mtInformation,"Building OK.");
     }catch(...){
     	ELog.DlgMsg(mtError,"Error has occured in builder routine. Editor aborted.");
         abort();

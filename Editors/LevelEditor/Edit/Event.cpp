@@ -202,7 +202,7 @@ void CEvent::SForm::Scale( Fvector& amount )
 }
 //------------------------------------------------------------------------------
 
-CEvent::CEvent(LPVOID data):CCustomObject(data){
+CEvent::CEvent(LPVOID data, LPCSTR name):CCustomObject(data,name){
 	Construct(data);
 }
 

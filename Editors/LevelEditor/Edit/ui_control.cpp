@@ -66,12 +66,11 @@ CCustomObject* __fastcall TUI_CustomControl::DefaultAddObject(TShiftState Shift,
     if (UI.PickGround(p,UI.m_CurrentRStart,UI.m_CurrentRNorm,1,&n)){
 		char namebuffer[MAX_OBJ_NAME];
 		Scene.GenObjectName(parent_tool->objclass, namebuffer, prefix);
-		obj = NewObjectFromClassID(parent_tool->objclass, data);
+		obj = NewObjectFromClassID(parent_tool->objclass, data, namebuffer);
         if (!obj->Valid()){
         	_DELETE(obj);
             return 0;
         }
-        obj->Name = namebuffer;
 		obj->MoveTo(p,n);
         Scene.SelectObjects(false,parent_tool->objclass);
 		Scene.AddObject(obj);

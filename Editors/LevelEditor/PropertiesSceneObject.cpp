@@ -465,8 +465,8 @@ void __fastcall TfrmPropertiesSceneObject::OnRemoveSoundItem(LPCSTR name)
 void __fastcall TfrmPropertiesSceneObject::ebSoundAppendClick(
       TObject *Sender)
 {
-    LPCSTR N=0;
-    if (N=TfrmChoseItem::SelectSound(false,0,true)){
+    LPCSTR N=TfrmChoseItem::SelectSound(false,0,true);
+    if (N){
     	if (m_EditObject->AppendSound(N)){
             // append to list
             TElTreeItem* Item = FOLDER::AppendObject(tvSounds,N);

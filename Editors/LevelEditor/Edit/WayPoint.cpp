@@ -147,7 +147,7 @@ bool CWayPoint::RemoveLink(CWayPoint* P)
 //------------------------------------------------------------------------------
 // Way Object
 //------------------------------------------------------------------------------
-CWayObject::CWayObject(LPVOID data):CCustomObject(data)
+CWayObject::CWayObject(LPVOID data, LPCSTR name):CCustomObject(data,name)
 {
 	Construct(data);
 }
@@ -433,7 +433,7 @@ bool CWayObject::Load(CStream& F)
     }
 
 	R_ASSERT(F.FindChunk(WAYOBJECT_CHUNK_TYPE));
-    m_Type			= F.Rdword();
+    m_Type			= EWayType(F.Rdword());
 
     return true;
 }
@@ -477,7 +477,7 @@ void CWayObject::Save(CFS_Base& F)
     F.close_chunk	();
 }
 
-bool CWayObject::ExportGame(CFS_Base& F, int chunk_id){
+bool CWayObject::ExportGame(CFS_Base& F, int chunk_id, LPVOID data){
 	F.open_chunk	(chunk_id);
 	{
         F.open_chunk	(WAYOBJECT_CHUNK_VERSION);

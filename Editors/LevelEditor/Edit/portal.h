@@ -21,7 +21,7 @@ class CPortal: public CCustomObject {
     CSector*		m_SectorFront;
     CSector*		m_SectorBack;
 public:
-					CPortal		(LPVOID data);
+					CPortal		(LPVOID data, LPCSTR name);
 	void 			Construct	(LPVOID data);
 	virtual 		~CPortal	();
 

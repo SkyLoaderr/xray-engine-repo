@@ -86,7 +86,9 @@ void SceneBuilder::ResetStructures (){
 //------------------------------------------------------------------------------
 // CEditObject build functions
 //------------------------------------------------------------------------------
-void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num){
+BOOL SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEditableMesh* mesh, int sect_num)
+{
+	BOOL bResult = TRUE;
     int point_offs;
     point_offs = l_vertices_it;  // save offset
 
@@ -120,8 +122,13 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
 	    for (INTIt f_it=face_lst.begin(); f_it!=face_lst.end(); f_it++){
 			st_Face& face = mesh->m_Faces[*f_it];
         	{
-                b_face& new_face = l_faces[l_faces_it++];
-                new_face.dwMaterial = BuildMaterial(mesh,surf,sect_num);
+                b_face& new_face 	= l_faces[l_faces_it++];
+                int m_id			= BuildMaterial(mesh,surf,sect_num);
+                if (m_id<0){
+                	bResult 		= FALSE;
+                    break;
+                }
+                new_face.dwMaterial = m_id;
                 for (int k=0; k<3; k++){
                     st_FaceVert& fv = face.pv[k];
                     // vertex index
@@ -167,10 +174,12 @@ void SceneBuilder::BuildMesh(const Fmatrix& parent, CEditableObject* object, CEd
                 }
             }
         }
+        if (!bResult) break;
     }
+    return bResult;
 }
 
-void SceneBuilder::BuildObject(CSceneObject* obj){
+BOOL SceneBuilder::BuildObject(CSceneObject* obj){
 	CEditableObject *O = obj->GetReference();
     AnsiString temp; temp.sprintf("Building object: %s",O->GetName());
     UI.SetStatus(temp.c_str());
@@ -179,8 +188,9 @@ void SceneBuilder::BuildObject(CSceneObject* obj){
     for(EditMeshIt M=O->FirstMesh();M!=O->LastMesh();M++){
 		CSector* S = PortalUtils.FindSector(obj,*M);
 	    int sect_num = S?S->sector_num:m_iDefaultSectorNum;
-    	BuildMesh(T,O,*M,sect_num);
+    	if (!BuildMesh(T,O,*M,sect_num)) return FALSE;
     }
+    return TRUE;
 }
 
 //------------------------------------------------------------------------------
@@ -200,26 +210,30 @@ void SceneBuilder::BuildLight(b_light* b, CLight* e){
     }
 
     if (b->type==D3DLIGHT_POINT){
-        // test fully and partial inside
-        ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
-        ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
-        for(;_F!=_E;_F++){
-			if (b->sectors.size()>=16) break;
-            CSector* _S=(CSector*)(*_F);
-            EVisible vis=_S->Intersect(b->position,b->range);
-            if ((vis==fvPartialInside)||(vis==fvFully))
-            	b->sectors.push_back(_S->sector_num);
+    	if (Scene.ObjCount(OBJCLASS_SECTOR)){
+            // test fully and partial inside
+            ObjectIt _F = Scene.FirstObj(OBJCLASS_SECTOR);
+            ObjectIt _E = Scene.LastObj(OBJCLASS_SECTOR);
+            for(;_F!=_E;_F++){
+                if (b->sectors.size()>=16) break;
+                CSector* _S=(CSector*)(*_F);
+                EVisible vis=_S->Intersect(b->position,b->range);
+                if ((vis==fvPartialInside)||(vis==fvFully))
+                    b->sectors.push_back(_S->sector_num);
+            }
+            // test partial outside
+            _F = Scene.FirstObj(OBJCLASS_SECTOR);
+            for(;_F!=_E;_F++){
+                if (b->sectors.size()>=16) break;
+                CSector* _S=(CSector*)(*_F);
+                EVisible vis=_S->Intersect(b->position,b->range);
+                if (vis==fvPartialOutside)
+                    b->sectors.push_back(_S->sector_num);
+            }
+            R_ASSERT(b->sectors.size());
+        }else{
+			b->sectors.push_back(m_iDefaultSectorNum);
         }
-        // test partial outside
-        _F = Scene.FirstObj(OBJCLASS_SECTOR);
-        for(;_F!=_E;_F++){
-			if (b->sectors.size()>=16) break;
-            CSector* _S=(CSector*)(*_F);
-            EVisible vis=_S->Intersect(b->position,b->range);
-            if (vis==fvPartialOutside)
-            	b->sectors.push_back(_S->sector_num);
-        }
-        R_ASSERT(b->sectors.size());
     }
 }
 //------------------------------------------------------------------------------
@@ -275,6 +289,10 @@ int SceneBuilder::BuildShader(const char * s){
     strcpy(sh.name,s);
     int sh_id = FindInShaders(&sh);
     if (sh_id<0){
+        if (!Device.Shader._FindBlender(sh.name)){ 
+        	ELog.DlgMsg(mtError,"Can't find engine shader: %s",sh.name);
+            return -1;
+        }
         l_shaders.push_back(sh);
         return l_shaders.size()-1;
     }
@@ -298,6 +316,10 @@ int SceneBuilder::BuildShaderXRLC(const char * s){
     int sh_id = FindInShadersXRLC(&sh);
     if (sh_id<0){
         l_shaders_xrlc.push_back(sh);
+        if (!Device.ShaderXRLC.Get(sh.name)){ 
+        	ELog.DlgMsg(mtError,"Can't find compiler shader: %s",sh.name);
+            return -1;
+        }
         return l_shaders_xrlc.size()-1;
     }
     return sh_id;
@@ -347,8 +369,11 @@ int SceneBuilder::BuildMaterial(CEditableMesh* m, CSurface* surf, int sector_num
     VERIFY(sector_num>=0);
     int mtl_idx;
 	DWORD tex_cnt 	= ((surf->_FVF()&D3DFVF_TEXCOUNT_MASK)>>D3DFVF_TEXCOUNT_SHIFT); VERIFY(tex_cnt==1);
-    mtl.shader      = BuildShader(surf->_ShaderName());
-    mtl.shader_xrlc	= BuildShaderXRLC(surf->_ShaderXRLCName());
+    int en_sh_idx	= BuildShader(surf->_ShaderName());
+    int cl_sh_idx	= BuildShaderXRLC(surf->_ShaderXRLCName());
+    if ((en_sh_idx<0)||(cl_sh_idx<0)) return -1;
+    mtl.shader      = en_sh_idx;
+    mtl.shader_xrlc	= cl_sh_idx;
     mtl.sector		= sector_num;
 	mtl.surfidx		= BuildTexture(surf->_Texture());
     mtl_idx 		= FindInMaterials(&mtl);
@@ -360,8 +385,9 @@ int SceneBuilder::BuildMaterial(CEditableMesh* m, CSurface* surf, int sector_num
 }
 //------------------------------------------------------------------------------
 
-void SceneBuilder::ParseStaticObjects(ObjectList& lst)
+BOOL SceneBuilder::ParseStaticObjects(ObjectList& lst)
 {
+	BOOL bResult = TRUE;
     for(ObjectIt _F = lst.begin();_F!=lst.end();_F++){
         UI.ProgressInc();
         if (UI.NeedAbort()) break;
@@ -380,25 +406,28 @@ void SceneBuilder::ParseStaticObjects(ObjectList& lst)
             break;
         case OBJCLASS_SCENEOBJECT:{
             CSceneObject *obj = (CSceneObject*)(*_F);
-            if (!obj->IsDynamic()) BuildObject(obj);
+            if (!obj->IsDynamic()) bResult = BuildObject(obj);
         }break;
         case OBJCLASS_GROUP:{ 
             CGroupObject* group = (CGroupObject*)(*_F);
-            ParseStaticObjects(group->GetObjects());
+            bResult = ParseStaticObjects(group->GetObjects());
         }break;
         }// end switch
+        if (!bResult) break;
     }
+    return bResult;
 }
 //------------------------------------------------------------------------------
 
-bool SceneBuilder::CompileStatic()
+BOOL SceneBuilder::CompileStatic()
 {
+	BOOL bResult = TRUE;
     b_transfer  TSData;
 
     ResetStructures();
 
 	int objcount = Scene.ObjCount();
-	if( objcount <= 0 )	return true;
+	if( objcount <= 0 )	return FALSE;
 
 // Build Options
     ZeroMemory(&TSData, sizeof(b_transfer));
@@ -430,10 +459,10 @@ bool SceneBuilder::CompileStatic()
     UI.ProgressStart(Scene.ObjCount(OBJCLASS_SCENEOBJECT),"Parse static objects...");
 // parse scene
     for(ObjectPairIt it=Scene.FirstClass(); it!=Scene.LastClass(); it++)
-        ParseStaticObjects((*it).second);
+        if (!ParseStaticObjects((*it).second)){bResult = FALSE; break;}
 	UI.ProgressEnd();
 
-    if (!UI.NeedAbort()){
+    if (bResult&&!UI.NeedAbort()){
 	    UI.ProgressStart(11,"Saving geometry to file...");
     // shaders
         TSData.shader_count = l_shaders.size();
@@ -513,7 +542,7 @@ bool SceneBuilder::CompileStatic()
 
     ResetStructures();
 
-    return true;
+    return bResult;
 }
 
 

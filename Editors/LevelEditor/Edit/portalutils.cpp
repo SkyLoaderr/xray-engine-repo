@@ -103,7 +103,7 @@ bool CPortalUtils::CreateDefaultSector(){
 
     Fbox box;
 	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
-		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
+		CSector* sector_def=new CSector(0,DEFAULT_SECTOR_NAME);
         sector_def->sector_color.set(1,0,0,0);
         sector_def->m_bDefault=true;
         sector_def->CaptureAllUnusedMeshes();
@@ -185,7 +185,7 @@ bool CPortalUtils::Validate(bool bMsg){
     Fbox box;
     bool bResult = false;
 	if (Scene.GetBox(box,OBJCLASS_SCENEOBJECT)){
-		CSector* sector_def=new CSector(DEFAULT_SECTOR_NAME);
+		CSector* sector_def=new CSector(0,DEFAULT_SECTOR_NAME);
         sector_def->CaptureAllUnusedMeshes();
         int f_cnt;
         sector_def->GetCounts(0,0,&f_cnt);
@@ -236,7 +236,7 @@ void CPortalUtils::CreateDebugCollection(){
 	UI.ProgressInc();
 
 	// create debug object
-    CSceneObject* O = new CSceneObject("$debug_object_0x247d05e9");
+    CSceneObject* O = new CSceneObject(0,"$debug_object_0x247d05e9");
     if (!O->SetReference("editor\\debug_sector")){ ELog.DlgMsg(mtError,"Creating failed."); _DELETE(O); UI.ProgressEnd(); return; }
 
 	UI.ProgressInc();
@@ -554,7 +554,7 @@ public:
                 // append portal
                 char namebuffer[MAX_OBJ_NAME];
                 Scene.GenObjectName( OBJCLASS_PORTAL, namebuffer );
-                CPortal* _O = new CPortal(namebuffer);
+                CPortal* _O = new CPortal(0,namebuffer);
                 for (DWORD i=0; i<vlist.size(); i++) {
 	                _O->Vertices().push_back(verts[vlist[i]]);
                 }
