@@ -284,13 +284,11 @@ HRESULT	CRender::CompileShader			(
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	/*
-	if (b_distortion)	{
-		defines[def_it].Name		=	"USE_DISTORT";
+	if (HW.Caps.raster_major >= 3)	{
+		defines[def_it].Name		=	"USE_SHADER3";
 		defines[def_it].Definition	=	"1";
 		def_it						++;
 	}
-	*/
 	
 	// finish
 	defines[def_it].Name			=	0;
