@@ -26,8 +26,8 @@ function main()
 		if guard01.health < 95 or guard02.health < 95 then
 			wait(1000)			
 			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
-			guard01:script	(false,script_guards_pr00.script_name())
-			guard02:script	(false,script_guards_pr00.script_name())
+			guard01:script	(false,script_guards_00.script_name())
+			guard02:script	(false,script_guards_00.script_name())
 		break
 		end
 	    wait	()
