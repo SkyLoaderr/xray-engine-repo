@@ -155,6 +155,8 @@ void CObject::UpdateCL			()
 {
 	// consistency check
 #ifdef DEBUG
+	VERIFY								(_valid(renderable.xform));
+
 	if (Device.dwFrame==dbg_update_cl)	Debug.fatal	("'UpdateCL' called twice per frame for %s",*cName());
 	dbg_update_cl	= Device.dwFrame;
 
