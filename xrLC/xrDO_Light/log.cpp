@@ -182,8 +182,7 @@ void __cdecl logThread(void *dummy)
 	float	PrSave	= 0;
 	while (TRUE)
 	{
-		if (GetPriorityClass(GetCurrentProcess())>NORMAL_PRIORITY_CLASS)
-			SetPriorityClass(GetCurrentProcess(),NORMAL_PRIORITY_CLASS);
+		SetPriorityClass	(GetCurrentProcess(),IDLE_PRIORITY_CLASS);
 		
 		// transfer data
 		while (!csLog.TryEnter())	{
