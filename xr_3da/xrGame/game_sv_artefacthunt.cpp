@@ -529,7 +529,7 @@ void	game_sv_ArtefactHunt::RemoveArtefact			()
 	//-----------------------------------------------
 	NET_Packet	P;
 	u_EventGen(P, GE_DESTROY, m_dwArtefactID);
-	u_EventSend(P);
+	Level().Send(P,net_flags(TRUE,TRUE));
 	//-----------------------------------------------
 	P.w_begin			(M_GAMEMESSAGE);
 	P.w_u32				(GMSG_ARTEFACT_DESTROYED);
