@@ -772,7 +772,7 @@ function add_novice3(obj)
 
     action:add_precondition     	(world_property(stalker_ids.property_enemy, false))
     action:add_precondition         (world_property ( properties["attack"],     false ) )
-    action:add_precondition     	(world_property (properties["event"],       false))
+    action:add_precondition     	(world_property ( properties["event"],       false))
     action:add_precondition         (world_property ( properties["work"],       true ) )
     action:add_effect               (world_property ( properties["work"],       false ) )
     manager:add_action              (operators["stalker_novice"], action)
