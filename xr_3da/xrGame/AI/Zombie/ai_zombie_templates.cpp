@@ -47,62 +47,89 @@ void CAI_Zombie::vfAdjustSpeed()
 	clamp(fAngle,0.f,.99999f);
 	fAngle = acosf(fAngle);
 	
+	float fMinASpeed = PI_MUL_2, fNullASpeed = PI_MUL_2, fMaxASpeed = .2f, fAttackASpeed = .15f;
+	
 	if (fabsf(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 3*PI_DIV_2) {
 			m_fSpeed = 0;
-			m_fASpeed = PI;
+			m_fASpeed = fNullASpeed;
 			r_torso_target.yaw = fAngle;
 		}
 		else 
 		{
 			m_fSpeed = m_fMinSpeed;
-			m_fASpeed = .4f;
+			m_fASpeed = fMinASpeed;
 		}
 	}
 	else
 		if (fabsf(m_fSpeed - m_fMaxSpeed) <= EPS_L)	{
 			if (fAngle >= 3*PI_DIV_2) {
 				m_fSpeed = 0;
-				m_fASpeed = PI;
+				m_fASpeed = fNullASpeed;
 				r_torso_target.yaw = fAngle;
 			}
 			else
 				if (fAngle >= PI_DIV_2) {
 					m_fSpeed = m_fMinSpeed;
-					m_fASpeed = .4f;
+					m_fASpeed = fMinASpeed;
 				}
 				else {
 					m_fSpeed = m_fMaxSpeed;
-					m_fASpeed = .2f;
+					m_fASpeed = fMaxASpeed;
 				}
 		}
 		else
 			if (fabsf(m_fSpeed - m_fAttackSpeed) <= EPS_L)	{
 				if (fAngle >= 3*PI_DIV_2) {
 					m_fSpeed = 0;
-					m_fASpeed = PI;
+					m_fASpeed = fNullASpeed;
 					r_torso_target.yaw = fAngle;
 				}
 				else
 					if (fAngle >= PI_DIV_2) {
 						m_fSpeed = m_fMinSpeed;
-						m_fASpeed = .4f;
+						m_fASpeed = fMinASpeed;
 					}
 					else
 						if (fAngle >= PI_DIV_4) {
 							m_fSpeed = m_fMaxSpeed;
-							m_fASpeed = .2f;
+							m_fASpeed = fMaxASpeed;
 						}
 						else {
 							m_fSpeed = m_fAttackSpeed;
-							m_fASpeed = .15f;
+							m_fASpeed = fAttackASpeed;
 						}
 			}
 			else {
 				r_torso_target.yaw = fAngle;
 				m_fSpeed = 0;
-				m_fASpeed = PI;
+				m_fASpeed = fNullASpeed;
 			}
+	
+	tTemp2 = mRotate.k;
+	tTemp2.normalize_safe();
+	
+	tTemp1 = vPosition;
+	tTemp1.mad(tTemp2,1*m_fSpeed*m_fTimeUpdateDelta);
+	if (bfCheckIfOutsideAIMap(tTemp1)) {
+		tTemp1 = vPosition;
+		if (fabsf(m_fSpeed - m_fAttackSpeed) < EPS_L) {
+			tTemp1.mad(tTemp2,1*m_fMaxSpeed*m_fTimeUpdateDelta);
+			if (bfCheckIfOutsideAIMap(tTemp1)) {
+				m_fSpeed = m_fMinSpeed;
+				m_fASpeed = fMinASpeed;
+			}
+			else {
+				m_fSpeed = m_fMaxSpeed;
+				m_fASpeed = fMaxASpeed;
+			}
+		}
+		else 
+		{
+			m_fSpeed = m_fMinSpeed;
+			m_fASpeed = fMinASpeed;
+		}
+	}
 }
 
 bool CAI_Zombie::bfComputeNewPosition(bool bCanAdjustSpeed, bool bStraightForward)

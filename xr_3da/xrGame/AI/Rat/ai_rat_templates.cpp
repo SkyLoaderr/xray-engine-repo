@@ -47,7 +47,7 @@ void CAI_Rat::vfAdjustSpeed()
 	clamp(fAngle,0.f,.99999f);
 	fAngle = acosf(fAngle);
 	
-	float fMinASpeed = PI_MUL_2, fNullASpeed = PI_MUL_2;
+	float fMinASpeed = PI_MUL_2, fNullASpeed = PI_MUL_2, fMaxASpeed = .2f, fAttackASpeed = .15f;
 	
 	if (fabsf(m_fSpeed - m_fMinSpeed) <= EPS_L)	{
 		if (fAngle >= 3*PI_DIV_2) {
@@ -75,7 +75,7 @@ void CAI_Rat::vfAdjustSpeed()
 				}
 				else {
 					m_fSpeed = m_fMaxSpeed;
-					m_fASpeed = .2f;
+					m_fASpeed = fMaxASpeed;
 				}
 		}
 		else
@@ -93,11 +93,11 @@ void CAI_Rat::vfAdjustSpeed()
 					else
 						if (fAngle >= PI_DIV_4) {
 							m_fSpeed = m_fMaxSpeed;
-							m_fASpeed = .2f;
+							m_fASpeed = fMaxASpeed;
 						}
 						else {
 							m_fSpeed = m_fAttackSpeed;
-							m_fASpeed = .15f;
+							m_fASpeed = fAttackASpeed;
 						}
 			}
 			else {
@@ -108,20 +108,27 @@ void CAI_Rat::vfAdjustSpeed()
 	
 	tTemp2 = mRotate.k;
 	tTemp2.normalize_safe();
+	
 	tTemp1 = vPosition;
 	tTemp1.mad(tTemp2,1*m_fSpeed*m_fTimeUpdateDelta);
-	
-	u32 dwNewNode = AI_NodeID;
-	NodeCompressed *tpNewNode = AI_Node;
-	NodePosition	QueryPos;
-	Level().AI.PackPosition	(QueryPos,tTemp1);
-	if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
-		dwNewNode = Level().AI.q_Node(AI_NodeID,tTemp1);
-		tpNewNode = Level().AI.Node(dwNewNode);
-	}
-	if (!dwNewNode || !Level().AI.u_InsideNode(*tpNewNode,QueryPos)) {
-		m_fSpeed = m_fMinSpeed;
-		m_fASpeed = fMinASpeed;
+	if (bfCheckIfOutsideAIMap(tTemp1)) {
+		tTemp1 = vPosition;
+		if (fabsf(m_fSpeed - m_fAttackSpeed) < EPS_L) {
+			tTemp1.mad(tTemp2,1*m_fMaxSpeed*m_fTimeUpdateDelta);
+			if (bfCheckIfOutsideAIMap(tTemp1)) {
+				m_fSpeed = m_fMinSpeed;
+				m_fASpeed = fMinASpeed;
+			}
+			else {
+				m_fSpeed = m_fMaxSpeed;
+				m_fASpeed = fMaxASpeed;
+			}
+		}
+		else 
+		{
+			m_fSpeed = m_fMinSpeed;
+			m_fASpeed = fMinASpeed;
+		}
 	}
 }
 

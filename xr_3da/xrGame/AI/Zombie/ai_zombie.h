@@ -270,6 +270,18 @@ class CAI_Zombie : public CCustomMonster
 			return(((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_BULLET_RICOCHET) == SOUND_TYPE_WEAPON_BULLET_RICOCHET) || ((m_tLastSound.eSoundType & SOUND_TYPE_WEAPON_SHOOTING) == SOUND_TYPE_WEAPON_SHOOTING));
 		};
 		
+		IC bool bfCheckIfOutsideAIMap(Fvector &tTemp1)
+		{
+			u32 dwNewNode = AI_NodeID;
+			NodeCompressed *tpNewNode = AI_Node;
+			NodePosition	QueryPos;
+			Level().AI.PackPosition	(QueryPos,tTemp1);
+			if (!AI_NodeID || !Level().AI.u_InsideNode(*AI_Node,QueryPos)) {
+				dwNewNode = Level().AI.q_Node(AI_NodeID,tTemp1);
+				tpNewNode = Level().AI.Node(dwNewNode);
+			}
+			return(!dwNewNode || !Level().AI.u_InsideNode(*tpNewNode,QueryPos));
+		};
 		//////////////////////////
 		// MISCELLANIOUS FUNCTIONS
 		//////////////////////////
