@@ -1408,7 +1408,7 @@ void xrSE_HangingLamp::STATE_Read		(NET_Packet& P, u16 size)
 	P.r_string				(spot_bone);
 	P.r_float				(spot_range);
 	P.r_angle8				(spot_cone_angle);
-    if (m_wVersion>9)
+    if (m_wVersion>10)
 		P.r_float			(spot_brightness);
 }
 void xrSE_HangingLamp::STATE_Write		(NET_Packet& P)

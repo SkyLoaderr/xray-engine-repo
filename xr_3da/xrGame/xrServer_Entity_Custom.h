@@ -4,11 +4,12 @@
 #include "xrMessages.h"
 #include "ai_alife_interfaces.h"
 
-#define SPAWN_VERSION	u16(10)
+#define SPAWN_VERSION	u16(11)
 //------------------------------------------------------------------------------
 // Version history
 //------------------------------------------------------------------------------
 // 10 - xrSE_PhysicObject append 	'fixed_bone'
+// 11 - xrSE_HangingLamp append 	'spot_brightness'
 //------------------------------------------------------------------------------
 
 class xrClientData;
