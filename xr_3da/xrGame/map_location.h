@@ -13,8 +13,10 @@ class CMapLocation
 public:
 enum ELocationFlags
 {
-	eSerailizable		= 0x01,
-	eHideInOffline		= 0x02,
+	eSerailizable		= (1<<0),
+	eHideInOffline		= (1<<1),
+	eTTL				= (1<<2),
+	ePosToActor			= (1<<3),
 };
 
 private:
@@ -26,6 +28,7 @@ private:
 	CMapSpotPointer*		m_minimap_spot_pointer;
 	u16						m_objectID;
 	u16						m_refCount;
+	u32						m_actual_time;
 	Fvector2				m_position_global; //last global position, actual time only current frame 
 	Ivector2 				m_position_on_map; //last position on parent map, actual time only current frame
 private:

@@ -23,6 +23,7 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	m_minimap_spot			= NULL;
 	m_minimap_spot_pointer	= NULL;
 	m_objectID				= object_id;
+	m_actual_time			= 0;
 
 	LoadSpot				(type);
 	m_refCount				= 1;
@@ -58,6 +59,17 @@ void CMapLocation::LoadSpot(LPCSTR type)
 	s = uiXml.ReadAttrib(path_base, 0, "no_offline", NULL);
 	if(s)
 		m_flags.set( eHideInOffline, TRUE);
+
+	int ttl = uiXml.ReadAttribInt(path_base, 0, "ttl", 0);
+	if(ttl>0){
+		m_flags.set( eTTL, TRUE);
+		m_actual_time = Device.dwTimeGlobal+ttl*1000;
+	}
+
+	s = uiXml.ReadAttrib(path_base, 0, "pos_to_actor", NULL);
+	if(s)
+		m_flags.set( ePosToActor, TRUE);
+
 
 	strconcat(path,path_base,":level_map");
 	node = uiXml.NavigateToNode(path,0);
@@ -95,6 +107,12 @@ Fvector2 CMapLocation::Position()
 	Fvector2 pos;
 	pos.set(0.0f,0.0f);
 
+	if(m_flags.test( ePosToActor)){
+		Fvector p = Level().CurrentEntity()->Position();
+		pos.set(p.x, p.z);
+		return pos;
+	}
+
 	CObject* pObject =  Level().Objects.net_Find(m_objectID);
 	if(!pObject){
 		if(ai().get_alife())		
@@ -116,14 +134,34 @@ Fvector2 CMapLocation::Position()
 
 Fvector2 CMapLocation::Direction()
 {
-	if(Level().CurrentViewEntity()&&Level().CurrentViewEntity()->ID()==m_objectID )
-		return Fvector2().set(Device.vCameraDirection.x,Device.vCameraDirection.z);
+	Fvector2 res;
+	res.set(0.0f,0.0f);
 
-	CObject* pObject =  Level().Objects.net_Find(m_objectID);
-	if(!pObject)return Fvector2().set(0.0f, 0.0f);
+	if(Level().CurrentViewEntity()&&Level().CurrentViewEntity()->ID()==m_objectID ){
+		res.set(Device.vCameraDirection.x,Device.vCameraDirection.z);
+	}else{
+		CObject* pObject =  Level().Objects.net_Find(m_objectID);
+		if(!pObject)
+			res.set(0.0f, 0.0f);
+		else{
+			const Fvector& op = pObject->Direction();
+			res.set(op.x, op.z);
+		}
+	}
 
-	const Fvector& op = pObject->Direction();
-	return Fvector2().set(op.x, op.z);
+	if(m_flags.test(ePosToActor)){
+		CObject* pObject =  Level().Objects.net_Find(m_objectID);
+		if(pObject){
+			Fvector2 dcp,obj_pos;
+			dcp.set(Device.vCameraPosition.x, Device.vCameraPosition.z);
+			obj_pos.set(pObject->Position().x, pObject->Position().z);
+			res.sub(obj_pos, dcp);
+			res.normalize_safe();
+		}
+		
+	}
+	
+	return res;
 }
 
 shared_str CMapLocation::LevelName()
@@ -148,6 +186,11 @@ shared_str CMapLocation::LevelName()
 
 bool CMapLocation::Update() //returns actual
 {
+	if(	m_flags.test(eTTL) ){
+		if( m_actual_time < Device.dwTimeGlobal)
+			return false;
+	}
+
 	CObject* pObject =  Level().Objects.net_Find(m_objectID);
 	
 	//mp
