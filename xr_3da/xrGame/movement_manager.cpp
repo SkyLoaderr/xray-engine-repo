@@ -79,6 +79,9 @@ void CMovementManager::update_path()
 		CLevelPathManager::set_evaluator(m_base_level_selector);
 
 	if (!actual()) {
+		CGamePathManager::make_inactual();
+		CLevelPathManager::make_inactual();
+		CPatrolPathManager::make_inactual();
 		switch (m_path_type) {
 			case ePathTypeGamePath : {
 				m_path_state	= ePathStateSelectGameVertex;

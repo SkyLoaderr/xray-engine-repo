@@ -136,5 +136,11 @@ IC	const _VertexEvaluator *CPathManagerTemplate::evaluator	() const
 	return					(m_evaluator);
 }
 
+TEMPLATE_SPECIALIZATION
+IC	void CPathManagerTemplate::make_inactual				()
+{
+	m_actuality				= false;
+}
+
 #undef CPathManagerTemplate
 #undef TEMPLATE_SPECIALIZATION

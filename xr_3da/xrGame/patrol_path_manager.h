@@ -56,6 +56,7 @@ public:
 	IC			void	Init						();
 	IC	virtual	void	reinit						();
 	IC	virtual	void	set_callback				(const CScriptMonster::SMemberCallback &callback);
+	IC			void	make_inactual				();
 };
 
 #include "patrol_path_manager_inline.h"

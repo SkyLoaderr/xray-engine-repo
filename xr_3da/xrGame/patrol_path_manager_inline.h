@@ -91,3 +91,8 @@ IC	void CPatrolPathManager::set_callback(const CScriptMonster::SMemberCallback &
 {
 	m_callback				= &callback;
 }
+
+IC	void CPatrolPathManager::make_inactual	()
+{
+	m_actuality				= false;
+}

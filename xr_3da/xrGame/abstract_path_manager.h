@@ -41,6 +41,7 @@ protected:
 	IC			void	build_path					(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
 	IC			void	select_intermediate_vertex	();
 	IC	const _VertexEvaluator	*evaluator			() const;
+	IC			void	make_inactual				();
 
 public:
 
