@@ -1047,11 +1047,12 @@ HRESULT CMyD3DApplication::RenderShadowMap	()
 	m_pd3dDevice->SetVertexShader			(s_Scene2smap_direct.vs);
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
 	cc.set									(s_Scene2smap_direct.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection_smap));
-	cc.flush								(m_pd3dDevice);
 
 	// Render model
 	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
 	m_pd3dDevice->SetIndices				(m_pModelIB);
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
 
 	// Restore old render target
@@ -1129,11 +1130,12 @@ HRESULT CMyD3DApplication::RenderFAT	()
 	m_pd3dDevice->SetVertexDeclaration		(m_pDeclVert);
 	cc.set									(S.constants.get("m_model2view"),				*((Fmatrix*)&dm_model2world2view));
 	cc.set									(S.constants.get("m_model2view2projection"),	*((Fmatrix*)&dm_model2world2view2projection));
-	cc.flush								(m_pd3dDevice);
 
 	// Render model
 	m_pd3dDevice->SetStreamSource			(0, m_pModelVB, 0, sizeof(VERTEX));
 	m_pd3dDevice->SetIndices				(m_pModelIB);
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawIndexedPrimitive		(D3DPT_TRIANGLELIST, 0, 0, m_dwModelNumVerts, 0, m_dwModelNumFaces);
 
 	// Cleanup
@@ -1223,7 +1225,6 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	D3DXVec3Normalize						(&vLightDir, &vLightDir);
 	cc.set									(s_Light_Direct.constants.get("light_direction"),	vLightDir.x,vLightDir.y,vLightDir.z,0	);
 	cc.set									(s_Light_Direct.constants.get("light_color"),		.8f,		.8f,		1.,			.7	);
-	cc.flush								(m_pd3dDevice);
 
 	// Blend mode - directional light comes first - means no blending
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
@@ -1231,6 +1232,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	// Render Quad
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Second light
@@ -1239,6 +1242,7 @@ HRESULT CMyD3DApplication::RenderLight_Direct	()
 	m_pd3dDevice->SetRenderState			(D3DRS_DESTBLEND,	D3DBLEND_ONE);
 	cc.set									(s_Light_Direct.constants.get("light_direction"),	-vLightDir.x,-vLightDir.y,-vLightDir.z,0	);
 	cc.set									(s_Light_Direct.constants.get("light_color"),		.9f,		.3f,		.0,			.7		);
+
 	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 	m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
@@ -1357,6 +1361,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 
 		// Render Quad
 		m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+		cc.flush								(m_pd3dDevice);
 		m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 	} else {
 		cc.set									(s_Light_Direct_smap.constants.get("light_color"),		.3f/2,		.3f/2,		1./2,		.9/2);
@@ -1368,13 +1374,14 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 		J.set(12, 20, 27, 20);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
 		J.set(42, 20, 2,  21);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
 		J.set(52, 21, 20, 27);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
-		cc.flush								(m_pd3dDevice);
 
 		// Blend mode - directional light comes first - means no blending
 		m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 
 		// Render Quad
 		m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+		cc.flush								(m_pd3dDevice);
 		m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 		// Second part
@@ -1384,7 +1391,6 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 		J.set(20, 42, 34, 42);	J.sub(27); J.mul(scale); cc.seta	(C,3,J.x,J.y,J.w,J.z);
 		J.set(9,  45, 45, 45);	J.sub(27); J.mul(scale); cc.seta	(C,4,J.x,J.y,J.w,J.z);
 		J.set(21, 52, 33, 52);	J.sub(27); J.mul(scale); cc.seta	(C,5,J.x,J.y,J.w,J.z);
-		cc.flush								(m_pd3dDevice);
 
 		// Blend mode - directional light comes first - means no blending
 		m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, TRUE);
@@ -1393,6 +1399,8 @@ HRESULT CMyD3DApplication::RenderLight_Direct_smap	()
 
 		// Render Quad
 		m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+		cc.flush								(m_pd3dDevice);
 		m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 		m_pd3dDevice->SetRenderState			(D3DRS_ALPHABLENDENABLE, FALSE);
 	}
@@ -1426,11 +1434,12 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Normals	()
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Normals.ps);
 	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Normals.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
-	cc.flush								(m_pd3dDevice);
 
 	// Render Quad
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
@@ -1455,11 +1464,12 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Base	()
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Base.ps);
 	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Base.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
-	cc.flush								(m_pd3dDevice);
 
 	// Render Quad
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
@@ -1491,11 +1501,12 @@ HRESULT CMyD3DApplication::RenderCombineDBG_Accumulator	()
 	m_pd3dDevice->SetPixelShader			(s_CombineDBG_Accumulator.ps);
 	m_pd3dDevice->SetVertexShader			(s_CombineDBG_Accumulator.vs);
 	m_pd3dDevice->SetFVF					(TVERTEX_FVF);
-	cc.flush								(m_pd3dDevice);
 
 	// Render Quad
 	m_pd3dDevice->SetRenderState			(D3DRS_CULLMODE,	D3DCULL_NONE);
 	m_pd3dDevice->SetStreamSource			(0, m_pQuadVB, 0, sizeof(TVERTEX));
+
+	cc.flush								(m_pd3dDevice);
 	m_pd3dDevice->DrawPrimitive				(D3DPT_TRIANGLESTRIP, 0, 2);
 
 	// Cleanup
