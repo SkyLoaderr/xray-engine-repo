@@ -59,10 +59,10 @@ function main ()
 	
 	action (
 		stalker, 
---		move		(move.standing, move.walk, move.line, patrol ("way0000")),
---		look		(look.path_dir),
+		move		(move.standing, move.walk, move.line, patrol ("way0000")),
+		look		(look.path_dir),
 		anim		(anim.free),
-		cond		(cond.time_end,1000000000)
+		cond		(cond.move_end)
 	)
 	
 --	wait			(2000)
