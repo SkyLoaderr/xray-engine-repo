@@ -33,8 +33,8 @@ void	CBlender_Recorder::PassBegin	()
 void	CBlender_Recorder::PassEnd		()
 {
 	// Last Stage - disable
-	RS.SetTSS	(Stage()+1,D3DTSS_COLOROP,D3DTOP_DISABLE);
-	RS.SetTSS	(Stage()+1,D3DTSS_ALPHAOP,D3DTOP_DISABLE);
+	RS.SetTSS	(Stage(),D3DTSS_COLOROP,D3DTOP_DISABLE);
+	RS.SetTSS	(Stage(),D3DTSS_ALPHAOP,D3DTOP_DISABLE);
 
 	// Create pass
 	CPass	P;
