@@ -989,7 +989,7 @@ disable_idle_time	= 10000	;время отключения idle партиклов
 GroupControlSection	= spawn_group_zone
 $spawn 			= "zone\burning fuzz"
 $prefetch 		= 16
-class			= Z_BFUZZ
+class			= Z_MBALD
 hit_impulse_scale	= .1
 sound			= zone_mosquito_bald
 postprocess		= postprocess_anomaly
@@ -999,6 +999,21 @@ artefacts		= af_magnet,0.7
 BirthProbability = 0.9
 
 hit_type		= burn
+
+idle_particles		= anomaly2\pux_idle
+blowout_particles	= anomaly2\pux_blast
+
+;hit_small_particles			= hit_fx\hit_metal_02
+;hit_big_particles			= anomaly2\
+idle_small_particles		= anomaly2\pux_damage_smoke_01
+idle_big_particles			= anomaly2\pux_damage_smoke_02
+;entrance_small_particles	= anomaly2\electra_entrance_small
+;entrance_big_particles		= anomaly2\electra_entrance_big
+
+;idle_sound			= anomaly\anomaly_gravy_idle
+blowout_sound		= anomaly\pux_blast
+hit_sound			= anomaly\electra_hit
+;entrance_sound		= anomaly\electra_hit
 
 disable_time		= -1	;время игнорирования неживого объекта в зоне (-1 если не нужно)
 disable_idle_time	= -1	;время отключения idle партиклов
