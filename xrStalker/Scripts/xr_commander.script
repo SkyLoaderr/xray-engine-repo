@@ -1008,12 +1008,14 @@ function add_to_binder( npc, ini, scheme, section, a )
 
     local action = this.action_look_at_actor( "action_look_at_actor", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
+    xr_motivator.addCommonPrecondition(action)
     action:add_effect( world_property( prop_actor_is_close, false ) )
     manager:add_action( act_look_at_actor, action )
 
     action = this.action_commander( "action_commander", a )
     action:add_precondition( world_property( stalker_ids.property_enemy,    false ) )
     action:add_precondition( world_property( prop_actor_is_close, false ) )
+    xr_motivator.addCommonPrecondition(action)
     action:add_effect( world_property( prop_commander, false ) )
     manager:add_action( act_commander, action )
 
