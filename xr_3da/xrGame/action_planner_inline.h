@@ -31,14 +31,14 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::Load				(LPCSTR section)
 {
 	{
-		OPERATOR_VECTOR::iterator	I = operators().begin();
-		OPERATOR_VECTOR::iterator	E = operators().end();
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I)
 			(*I).get_operator()->Load(section);
 	}
 	{
-		EVALUATOR_MAP::iterator		I = evaluators().begin();
-		EVALUATOR_MAP::iterator		E = evaluators().end();
+		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
+		EVALUATOR_MAP::iterator		E = m_evaluators.end();
 		for ( ; I != E; ++I)
 			(*I).second->Load		(section);
 	}
@@ -49,14 +49,14 @@ void CPlanner::reinit				(_object_type *object, bool clear_all)
 {
 	inherited::reinit		(clear_all);
 	{
-		OPERATOR_VECTOR::iterator	I = operators().begin();
-		OPERATOR_VECTOR::iterator	E = operators().end();
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I)
-			(*I).get_operator->reinit(object);
+			(*I).get_operator()->reinit(object);
 	}
 	{
-		EVALUATOR_MAP::iterator		I = evaluators().begin();
-		EVALUATOR_MAP::iterator		E = evaluators().end();
+		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
+		EVALUATOR_MAP::iterator		E = m_evaluators.end();
 		for ( ; I != E; ++I)
 			(*I).second->reinit		(object);
 	}
@@ -67,14 +67,14 @@ TEMPLATE_SPECIALIZATION
 void CPlanner::reload				(LPCSTR section)
 {
 	{
-		OPERATOR_VECTOR::iterator	I = operators().begin();
-		OPERATOR_VECTOR::iterator	E = operators().end();
+		OPERATOR_VECTOR::iterator	I = m_operators.begin();
+		OPERATOR_VECTOR::iterator	E = m_operators.end();
 		for ( ; I != E; ++I)
-			(*I).get_operator->reload(section);
+			(*I).get_operator()->reload(section);
 	}
 	{
-		EVALUATOR_MAP::iterator		I = evaluators().begin();
-		EVALUATOR_MAP::iterator		E = evaluators().end();
+		EVALUATOR_MAP::iterator		I = m_evaluators.begin();
+		EVALUATOR_MAP::iterator		E = m_evaluators.end();
 		for ( ; I != E; ++I)
 			(*I).second->reload		(section);
 	}
