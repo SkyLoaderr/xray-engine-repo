@@ -64,9 +64,10 @@ void ParseFile(LPCSTR path, CMemoryWriter& W, IReader *F )
 				ParseFile(path, W, I);
 				FS.r_close	(I);
 			}
-			F->r_string		(str,sizeof(str));
+//			F->r_string		(str,sizeof(str));
 		}else
 			W.w_string		(str);
+
 	}
 }
 //инициализация и загрузка XML файла
