@@ -232,22 +232,18 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
    return true
 end
 
-function load_dialog:AddItemToList(item)
+function load_dialog:AddItemToList(file_name, date_time)
 	local new_item = CUIListItemPair()
-	new_item:SetTextDateTime("date-time")
-	new_item:SetTextFileName("file-name")
-	--new_item:SetText("fuck")
-	local list_box = self:GetListWnd("list_window")
-	local shift = 0
-	local color = GetARGB(255,0,255,255)
-	local parse = false	
 	
-	--list_box:AddText(item, shift, GetARGB(255,0,255,255), GetFontArialN21Russian(), parse)
+	new_item:SetTextFileName(file_name)
+	new_item:SetTextDateTime(date_time)
+	
+	
+	local list_box = self:GetListWnd("list_window")
+	
 	list_box:AddItem(new_item)
 	
 end
 
-function load_dialog:ItemIsInList(item)
-	return false
-end
+
 
