@@ -82,12 +82,18 @@ bool __fastcall CLevelTools::MouseStart(TShiftState Shift)
 //---------------------------------------------------------------------------
 void __fastcall CLevelTools::MouseMove(TShiftState Shift) 
 {
-    if(pCurTools&&pCurTools->pCurControl) pCurTools->pCurControl->Move(Shift);
+    if(pCurTools&&pCurTools->pCurControl){
+	    if (HiddenMode())	UI->Command(COMMAND_UPDATE_PROPERTIES);
+     	pCurTools->pCurControl->Move(Shift);
+    }
 }
 //---------------------------------------------------------------------------
 bool __fastcall CLevelTools::MouseEnd(TShiftState Shift)
 {
-    if(pCurTools&&pCurTools->pCurControl)	return pCurTools->pCurControl->End(Shift);
+    if(pCurTools&&pCurTools->pCurControl){	
+	    if (HiddenMode())	UI->Command(COMMAND_UPDATE_PROPERTIES);
+    	return pCurTools->pCurControl->End(Shift);
+    }
     return false;
 }
 //---------------------------------------------------------------------------

@@ -20,7 +20,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         frmSplash->Repaint		();
         frmSplash->SetStatus	("Core initializing...");
 
-    	Core._initialize		("editor",ELogCallback);
+    	Core._initialize		("particle",ELogCallback);
 
         Application->Initialize	();
                                        
@@ -39,8 +39,11 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
 
 		Application->Run		();
 
-
         TfrmLog::DestroyLog		();
+
+        xr_delete				(Tools);
+        xr_delete				(UI);
+
     	Core._destroy			();
 //    }
 //    catch (Exception &exception)

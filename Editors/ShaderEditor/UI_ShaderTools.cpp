@@ -17,6 +17,7 @@ CShaderTools*&	STools=(CShaderTools*)Tools;
 
 CShaderTools::CShaderTools()
 {
+	m_Current			= 0;
     m_ItemProps			= 0;
     m_PreviewProps		= 0;
     fFogness			= 0.9f;

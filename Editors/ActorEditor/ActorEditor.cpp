@@ -45,7 +45,7 @@ WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int)
         
 		Application->Run		();
 
-        TfrmLog::DestroyLog		();
+        TfrmLog::DestroyLog		(); 
 
         xr_delete				(Tools);
         xr_delete				(UI);
