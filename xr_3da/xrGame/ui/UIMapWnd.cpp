@@ -263,8 +263,7 @@ void CUIMapWnd::Init()
 
 			l = xr_new<CUILevelMap>();
 			l->Init(it->first, gameLtx);
-			if( l->BoundRect().width() > l->BoundRect().height() )	l->FitToHeight( m_UILevelFrame.GetHeight()	);
-			else													l->FitToWidth(	m_UILevelFrame.GetWidth()	);
+			l->FitToWidth( m_UILevelFrame.GetWidth()	);
 		}
 	}
 }
@@ -294,7 +293,7 @@ void CUIMapWnd::SetActiveMap			(shared_str level_name)
 	if( m_GameMaps.end()==it) return;
 	
 	m_activeLevelMap = it->second;
-	AttachChild(m_activeLevelMap);
+	m_UILevelFrame.AttachChild(m_activeLevelMap);
 }
 
 void CUIMapWnd::Draw()
