@@ -36,6 +36,7 @@ function HeliManager:initialize( name, path, patrol_speed, attack_speed )
 end
 
 function HeliManager:HeliOnHit( p )
+	do return end
 --	printf( "HeliOnHit" )
 
 	if self.b_prepared_to_die then
@@ -202,11 +203,11 @@ function HeliManager:set_enemy( enemy, attack_passes )
 		self.attack_passes     = attack_passes or max_attack_passes
 --		self.heliObject.on_point_range_dist = 30
 
-		if self.heli:position():distance_to_sqr( self.enemy:position() ) >= pass_dist then
-			printf( "fly straight" )
+		if self.heli:position():distance_to_sqr( self.enemy:position() ) >= pass_dist * pass_dist then
+--			printf( "fly straight" )
 			self.heliObject:SetDestPosition( enemy:position() )
 		else
-			printf( "fly far" )
+--			printf( "fly far" )
 			self:HeliOnPoint()
 		end
 	end
