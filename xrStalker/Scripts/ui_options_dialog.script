@@ -227,11 +227,13 @@ function options_dialog:OnButton_profiles()
 end
 
 function options_dialog:OnButton_accept()
-	level.start_stop_menu(self,true)
+--	level.start_stop_menu(self,true)
+	self:GetHolder():start_stop_menu(self,true)
 end
 
 function options_dialog:OnButton_cancel()
-	level.start_stop_menu(self,true)
+	self:GetHolder():start_stop_menu(self,true)
+--level.start_stop_menu(self,true)
 end
 
 function options_dialog:OnKeyboard(dik, keyboard_action)  --virtual function

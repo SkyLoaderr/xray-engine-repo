@@ -186,7 +186,8 @@ function load_dialog:OnButton_load_clicked()
 end
 
 function load_dialog:OnButton_back_clicked()
-	level.start_stop_menu(self,true)
+--	level.start_stop_menu(self,true)
+	self:GetHolder():start_stop_menu(self,true)
 end
 
 function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
@@ -196,7 +197,7 @@ function load_dialog:OnKeyboard(dik, keyboard_action)  --virtual function
 	WINDOW_KEY_PRESSED = 6
 	
 	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-		level.start_stop_menu(self,true)
+		self:GetHolder():start_stop_menu(self,true)
 	end
    
 	return true

@@ -131,7 +131,7 @@ function new_game_dlg:OnButton_easy_clicked()
 end
 
 function new_game_dlg:OnButton_back_clicked()
-	level.start_stop_menu(self,true)
+	self:GetHolder():start_stop_menu(self,true)
 end
 
 function new_game_dlg:OnKeyboard(dik, keyboard_action)  --virtual function
@@ -141,7 +141,7 @@ function new_game_dlg:OnKeyboard(dik, keyboard_action)  --virtual function
    WINDOW_KEY_PRESSED = 6
 
 	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-		level.start_stop_menu(self,true)
+		self:GetHolder():start_stop_menu(self,true)
 	end
    
 	return true

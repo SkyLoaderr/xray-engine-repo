@@ -297,12 +297,14 @@ end
 
 function main_menu:OnButton_findsrv()
 	local dlg = ui_multiplayer_find.multiplayer_find_dialog()
-	level.start_stop_menu(dlg, true)
+		self:GetHolder():start_stop_menu(dlg, true)
+--andy	level.start_stop_menu(dlg, true)
 end
 
 function main_menu:OnButton_createsrv()
 	local dlg = ui_multiplayer_create.multiplayer_create_dialog()
-	level.start_stop_menu(dlg, true)	
+		self:GetHolder():start_stop_menu(dlg, true)
+--andy	level.start_stop_menu(dlg, true)	
 end
 
 function main_menu:HideAllTabs()
@@ -323,12 +325,14 @@ end
 
 function main_menu:OnButton_options_clicked()
 	local dlg = ui_options_dialog.options_dialog()
-	level.start_stop_menu(dlg, true)
+		self:GetHolder():start_stop_menu(dlg, true)
+--andy	level.start_stop_menu(dlg, true)	
 end
 
 function main_menu:OnButton_load_clicked()
 	local dlg = ui_load_dialog.load_dialog()
-	level.start_stop_menu(dlg, true)
+		self:GetHolder():start_stop_menu(dlg, true)
+--andy	level.start_stop_menu(dlg, true)	
 end
 
 function main_menu:OnButton_multiplayer_clicked()
@@ -338,7 +342,8 @@ end
 
 function main_menu:OnButton_quit_clicked()	
 	local console = get_console()
-	console:execute("quit")	
+	console:show()
+--	console:execute("quit")	
 end
 
 function main_menu:OnMsgOk()
@@ -367,14 +372,16 @@ function main_menu:OnKeyboard(dik, keyboard_action)  --virtual function
 	
 	local bind = dik_to_bind(dik)
 	if bind == key_bindings.kQUIT then
-		level.start_stop_menu(self,true)
+		self:GetHolder():start_stop_menu(dlg, true)
+		--andy	level.start_stop_menu(dlg, true)	
 	end  
 	
 	DIK_RETURN = 28
 	WINDOW_KEY_PRESSED = 6
 	
 	if dik == DIK_RETURN and keyboard_action == WINDOW_KEY_PRESSED then
-		level.start_stop_menu(self,true)
+		self:GetHolder():start_stop_menu(self, true)
+		--andy	level.start_stop_menu(self, true)	
 	end
    
 	return true

@@ -100,14 +100,14 @@ end
 
 function multiplayer_dialog:OnButton_find()
 	local dlg = ui_multiplayer_find.multiplayer_find_dialog()
-	level.start_stop_menu(dlg, true)	
+	self:GetHolder():start_stop_menu(dlg, true)	
 end
 
 function multiplayer_dialog:OnButton_create()
 	local dlg = ui_multiplayer_create.multiplayer_create_dialog()
-	level.start_stop_menu(dlg, true)	
+	self:GetHolder():start_stop_menu(dlg, true)	
 end
 
 function multiplayer_dialog:OnButton_back()
-	level.start_stop_menu(self, true)
+	self:GetHolder():start_stop_menu(self, true)
 end

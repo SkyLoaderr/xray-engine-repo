@@ -159,7 +159,8 @@ function base_dialog:OnKeyboard(dik, keyboard_action)
 	
 	local bind = dik_to_bind(dik)
 	if bind == key_bindings.kQUIT then
-		level.start_stop_menu(self,true)
+		self:GetHolder():start_stop_menu(self,true)
+--level.start_stop_menu(self,true)
 	end  
 
 	return true
