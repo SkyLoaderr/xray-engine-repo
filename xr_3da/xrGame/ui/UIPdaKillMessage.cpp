@@ -65,7 +65,7 @@ int CUIPdaKillMessage::InitText(CUIStatic& refStatic, int x, PlayerInfo& info){
 	int height = (int)pFont->CurrentHeight();
 	y = (selfHeight - height)/2;
 
-	refStatic.Init(x, y, width, height);
+	refStatic.Init(x, y, width + 1, height);
 	refStatic.SetText(*info.m_name);
 	refStatic.SetTextColor(info.m_color);
 
@@ -86,7 +86,7 @@ int CUIPdaKillMessage::InitIcon(CUIStatic& refStatic, int x, IconInfo& info){
 	scale = ((float)selfHeight)/((float)height);
 	refStatic.Init(x, y, width, height);
 	refStatic.SetOriginalRect(info.m_rect);
-	refStatic.SetShader(GetCharIconsShader());
+	refStatic.SetShader(info.m_shader/*GetEquipmentIconsShader()*/);
 	refStatic.SetTextureScaleXY(scale, scale);
 
 	return (int)((float)width*scale);
