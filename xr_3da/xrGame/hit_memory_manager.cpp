@@ -49,6 +49,9 @@ void CHitMemoryManager::add_hit_object		(float amount, const Fvector &vLocalDir,
 		return;
 	}
 
+	if (who && (self->ID() == who->ID()))
+		return;
+
 	CScriptMonster			*script_monster = dynamic_cast<CScriptMonster*>(self);
 	if (script_monster)
 		script_monster->hit_callback(amount,vLocalDir,who,element);
