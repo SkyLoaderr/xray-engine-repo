@@ -311,8 +311,10 @@ void CActor::g_sv_AnalyzeNeighbours	()
 	CObjectSpace::NL_IT		n_begin						= Level().ObjectSpace.q_nearest.begin	();
 	CObjectSpace::NL_IT		n_end						= Level().ObjectSpace.q_nearest.end		();
 	if (n_end==n_begin)		return;
-
+    
 	// Process results
+	std::sort				(n_begin,n_end);
+
 	for (CObjectSpace::NL_IT it = n_begin; it!=n_end; it++)
 	{
 		CObject* O = *it;
@@ -326,7 +328,11 @@ void CActor::g_sv_AnalyzeNeighbours	()
 			if (T)	
 			{
 				// We have similar weapon - just get ammo out of it
-				T->Ammo_add	(W->Ammo_eject());
+				if (W->Local())	T->Ammo_add	(W->Ammo_eject());
+				else			
+				{
+					Device.Fatal("Ammo eject from non local weapon not implemented");
+				}
 				continue;
 			} else {
 				// We doesn't have similar weapon - pick up it

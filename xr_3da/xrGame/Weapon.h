@@ -143,20 +143,21 @@ public:
 	virtual void			Hide				();
 	virtual void			Show				();
 
-	IC BOOL					IsWorking			()				{ return bWorking;							}
-	IC BOOL					IsValid				()				{ return iAmmoCurrent || iAmmoElapsed;		}
-	IC BOOL					IsVisible			()				{ return bVisible;							}	// Weapon change occur only after visibility change
-	IC BOOL					IsUpdating			()				{ return bWorking || bPending || bVisible;	}	// Does weapon need's update?
-	virtual BOOL			HasOpticalAim		()				{ return FALSE; }
-	virtual float			GetZoomFactor		()				{ return DEFAULT_FOV; }
+	IC BOOL					IsWorking			()				{	return bWorking;							}
+	IC BOOL					IsValid				()				{	return iAmmoCurrent || iAmmoElapsed;		}
+	IC BOOL					IsVisible			()				{	return bVisible;							}	// Weapon change occur only after visibility change
+	IC BOOL					IsUpdating			()				{	return bWorking || bPending || bVisible;	}	// Does weapon need's update?
+	virtual BOOL			HasOpticalAim		()				{	return FALSE;								}
+	virtual float			GetZoomFactor		()				{	return DEFAULT_FOV;							}
 
-	IC LPCSTR				GetName				()				{return m_WpnName;		}
-	IC int					GetAmmoElapsed		()				{return iAmmoElapsed;	}
-	IC int					GetAmmoLimit		()				{return iAmmoLimit;		}
-	IC int					GetAmmoCurrent		()				{return iAmmoCurrent;	}
-	IC int					GetAmmoMagSize		()				{return iMagazineSize;	}
-	IC Shader*				GetUIIcon			()				{return hUIIcon;		}
-	
+	IC LPCSTR				GetName				()				{	return m_WpnName;							}
+	IC int					GetAmmoElapsed		()				{	return iAmmoElapsed;						}
+	IC int					GetAmmoLimit		()				{	return iAmmoLimit;							}
+	IC int					GetAmmoCurrent		()				{	return iAmmoCurrent;						}
+	IC int					GetAmmoMagSize		()				{	return iMagazineSize;						}
+	IC Shader*				GetUIIcon			()				{	return hUIIcon;								}
+	IC void					SetHUDmode			(BOOL H)		{	hud_mode = H;								}
+
 	virtual void			OnDeviceCreate		();
 	virtual void			OnDeviceDestroy		();
 };

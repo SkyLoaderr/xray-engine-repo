@@ -212,6 +212,9 @@ void CWeaponList::Update	(float dt, BOOL bHUDView)
 		}
 	}
 
+	// Setup HUD mode
+	if (m_iActiveWeapon>=0)		m_Weapons[m_iActiveWeapon]->SetHUDmode(bHUDView);
+
 	// Update all needed weapons
 	/*
 	for (DWORD it=0; it<m_Weapons.size(); it++)
