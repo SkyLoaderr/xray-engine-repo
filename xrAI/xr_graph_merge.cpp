@@ -283,8 +283,9 @@ void xrMergeGraphs(LPCSTR name)
 		vector<CALifeGraph::SLevel>::iterator	I = tGraphHeader.tpLevels.begin();
 		vector<CALifeGraph::SLevel>::iterator	E = tGraphHeader.tpLevels.end();
 		for ( ; I != E; I++) {
-			F.w_stringZ((*I).caLevelName);
+			F.w_stringZ	((*I).caLevelName);
 			F.w_fvector3((*I).tOffset);
+			F.w_u32		((*I).dwLevelID);
 		}
 	}
 
