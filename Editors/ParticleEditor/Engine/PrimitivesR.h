@@ -17,6 +17,14 @@ class ENGINE_API CDraw
 	DWORD					vCurShader;
 	DWORD					vCurBase;
 	DWORD					vCurStride;
+
+public:
+	DWORD					stat_polys;
+	DWORD					stat_verts;
+	DWORD					stat_calls;
+	DWORD					stat_vs;
+	DWORD					stat_vb;
+	DWORD					stat_ib;
 public:
 	// Tight interface
 	IDirect3DIndexBuffer8*	&CurrentIB()	{ return pCurIB; }
@@ -25,25 +33,44 @@ public:
 	// Main interface
 	IC void setVertices		(DWORD vs,  DWORD STRIDE, IDirect3DVertexBuffer8* VB)
 	{
-		if (vs!=vCurShader)	HW.pDevice->SetVertexShader(vCurShader=vs);
+		if (vs!=vCurShader)	
+		{
+			stat_vs++;
+			HW.pDevice->SetVertexShader(vCurShader=vs);
+		}
 		if ((VB!=pCurVB)||(STRIDE!=vCurStride))
+		{
+			stat_vb++;
 			HW.pDevice->SetStreamSource(0,pCurVB=VB,vCurStride=STRIDE);
+		}
 	}
 	IC void setIndices		(DWORD BASE, IDirect3DIndexBuffer8* IB)
 	{
 		if ((IB!=pCurIB)||(BASE!=vCurBase))	
+		{
+			stat_ib++;
 			HW.pDevice->SetIndices(pCurIB=IB,vCurBase=BASE);
+		}
 	}
-
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD CV, DWORD SI, DWORD PC)
-	{	HW.pDevice->DrawIndexedPrimitive(T,SV,CV,SI,PC);	}
+	{	
+		stat_calls			++;
+		stat_verts			+= CV;
+		stat_polys			+= PC;		
+		HW.pDevice->DrawIndexedPrimitive(T,SV,CV,SI,PC);	
+	}
 	IC void Render			(D3DPRIMITIVETYPE T, DWORD SV, DWORD PC)
-	{	HW.pDevice->DrawPrimitive(T,	SV, PC);			}
+	{	
+		stat_calls			++;
+		stat_verts			+= 3*PC;
+		stat_polys			+= PC;
+		HW.pDevice->DrawPrimitive(T,	SV, PC);			
+	}
 	IC void Reset			()
 	{
-		vCurShader = 0;
-		HW.pDevice->SetStreamSource(0,pCurVB=0,0);
-		HW.pDevice->SetIndices(pCurIB=0,0);
+		vCurShader					= 0;
+		HW.pDevice->SetStreamSource	(0,pCurVB=0,vCurStride=0);
+		HW.pDevice->SetIndices		(pCurIB=0,vCurBase=0);
 	}
 	
 	// Device create / destroy

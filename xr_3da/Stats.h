@@ -16,8 +16,6 @@ public:
 	CFontHUD*	font;
 
 	float		fFPS,fRFPS,fTPS;	// FPS, RenderFPS, TPS
-	DWORD		dwPoly, dwVert;
-	DWORD		dwCalls;			// Number of primitive-render calls
 	DWORD		dwShader_Codes;		// Number of times the shader-code changes
 	DWORD		dwShader_Textures;	// Number of times the shader-tex changes
 	DWORD		dwShader_Matrices;	// Number of times the shader-xform changes
@@ -78,7 +76,5 @@ public:
 	CStats	();
 	~CStats	();
 };
-
-#define UPDATEC(vert,poly,pass)		{ Device.Statistic.dwVert+=(vert)*(pass); Device.Statistic.dwPoly+=(poly)*pass; Device.Statistic.dwCalls+=pass; }
 
 #endif // !defined(AFX_STATS_H__4C8D1860_0EE2_11D4_B4E3_4854E82A090D__INCLUDED_)
