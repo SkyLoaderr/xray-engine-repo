@@ -23,6 +23,17 @@ function main()
 			)
 
 	while guard01:action() and guard02:action() do
+		if guard01.health < 95 or guard02.health < 95 then
+			wait(1000)			
+			rainbow_mochi_ego:play_at_pos			(guard01,guard01:position(),0);
+			guard01:script	(false,script_guards_pr00.script_name())
+			guard02:script	(false,script_guards_pr00.script_name())
+		break
+		end
+	    wait	()
+	end
+
+	while guard01:action() and guard02:action() do
 		if guard01:see(actor) and distance_between(guard01,actor) <= 20 then
 			prof_oba:play_at_pos						(guard01,guard01:position(),0);
 			wait(1000)			
