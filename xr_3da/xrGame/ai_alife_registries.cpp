@@ -338,10 +338,11 @@ void CSE_ALifeGraphRegistry::vfChangeEventGraphPoint(CSE_ALifeEvent *tpEvent, _G
 
 void CSE_ALifeGraphRegistry::vfAttachItem(CSE_Abstract &tAbstract, CSE_ALifeItem *tpALifeItem, _GRAPH_ID tGraphID, bool bALifeRequest)
 {
-	vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
+	if (bALifeRequest)
+		vfRemoveObjectFromGraphPoint(tpALifeItem,tGraphID);
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
-	R_ASSERT2					(bALifeRequest && l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
+	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot attach an item to a non-trader object");
 
 	if (l_tpALifeTraderAbstract) {
 		l_tpALifeTraderAbstract->children.push_back(tpALifeItem->ID);
@@ -360,7 +361,7 @@ void CSE_ALifeGraphRegistry::vfDetachItem(CSE_Abstract &tAbstract, CSE_ALifeItem
 	vfAddObjectToGraphPoint		(tpALifeItem,tGraphID);
 
 	CSE_ALifeTraderAbstract		*l_tpALifeTraderAbstract = dynamic_cast<CSE_ALifeTraderAbstract*>(&tAbstract);
-	R_ASSERT2					(bALifeRequest && l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
+	R_ASSERT2					(!bALifeRequest || l_tpALifeTraderAbstract,"Cannot detach an item from non-trader object");
 
 	if (l_tpALifeTraderAbstract) {
 		OBJECT_IT				I = std::find	(l_tpALifeTraderAbstract->children.begin(),l_tpALifeTraderAbstract->children.end(),tpALifeItem->ID);
