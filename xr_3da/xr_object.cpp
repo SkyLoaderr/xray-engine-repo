@@ -232,7 +232,8 @@ void CObject::Sector_Detect	()
 		Fvector		Pos;
 		pVisual->bv_BBox.getcenter(Pos);
 		Pos.add		(vPosition);
-		P			= Render->detectSector(vPosition);
+		Pos.y		+=	EPS_L;
+		P			=	Render->detectSector(vPosition);
 		Sector_Move	(P);
 	}
 }

@@ -58,6 +58,7 @@ BOOL CDummyObject::Spawn	(BOOL bLocal, int server_id, Fvector& o_pos, Fvector& o
 	bVisible				= TRUE;
 
 	UpdateTransform			();
+	clTransform.set			(svTransform);
 	relation.set			(svTransform);
 
 	P.r_u8					(style);
