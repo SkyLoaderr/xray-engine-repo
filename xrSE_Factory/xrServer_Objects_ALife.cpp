@@ -151,7 +151,7 @@ void CSE_ALifeGraphPoint::FillProps			(LPCSTR pref, PropItemVec& items)
 	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\2"),				&m_tLocations[1],			&*fp_data.locations[1].begin(), fp_data.locations[1].size());
 	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\3"),				&m_tLocations[2],			&*fp_data.locations[2].begin(), fp_data.locations[2].size());
 	PHelper().CreateRToken8		(items,	PrepareKey(pref,s_name,"Location\\4"),				&m_tLocations[3],			&*fp_data.locations[3].begin(), fp_data.locations[3].size());
-	PHelper().CreateList	 	(items,	PrepareKey(pref,s_name,"Connection\\Level name"),	&m_caConnectionLevelName,	&*fp_data.level_ids.begin(),	fp_data.level_ids.size());
+	PHelper().CreateRList	 	(items,	PrepareKey(pref,s_name,"Connection\\Level name"),	&m_caConnectionLevelName,	&*fp_data.level_ids.begin(),	fp_data.level_ids.size());
 	PHelper().CreateRText	 	(items,	PrepareKey(pref,s_name,"Connection\\Point name"),	&m_caConnectionPointName);
 }
 
@@ -648,7 +648,7 @@ void CSE_ALifeLevelChanger::FillProps		(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref,items);
 	
-	PHelper().CreateList		(items,PrepareKey(pref,s_name,"Level to change"),		&m_caLevelToChange,		&*fp_data.level_ids.begin(), fp_data.level_ids.size());
+	PHelper().CreateRList		(items,PrepareKey(pref,s_name,"Level to change"),		&m_caLevelToChange,		&*fp_data.level_ids.begin(), fp_data.level_ids.size());
 	PHelper().CreateRText		(items,PrepareKey(pref,s_name,"Level point to change"),	&m_caLevelPointToChange);
 }
 

@@ -414,9 +414,9 @@ RToken32Value*	CScriptPropertiesListHelper::CreateRToken32	(PropItemVec* items, 
 }
 */
 
-ListValue* CScriptPropertiesListHelper::CreateList	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, CScriptRTokenList *tokens)
+RListValue* CScriptPropertiesListHelper::CreateRList	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, CScriptRTokenList *tokens)
 {
-	return		(PHelper().CreateList(*items,key,wrap_value<ref_str>(object,name),&*tokens->tokens().begin(),tokens->size()));
+	return		(PHelper().CreateRList(*items,key,wrap_value<ref_str>(object,name),&*tokens->tokens().begin(),tokens->size()));
 }
 
 U32Value*  CScriptPropertiesListHelper::CreateColor	(PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name)

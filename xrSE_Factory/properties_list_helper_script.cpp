@@ -55,7 +55,7 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 //		class_<RToken8Value>("rtoken8_value"),
 //		class_<RToken16Value>("rtoken16_value"),
 //		class_<RToken32Value>("rtoken32_value"),
-		class_<ListValue>	("list_value"),
+		class_<RListValue>	("list_value"),
 		
 		class_<CChooseType>	("choose_type")
 			.enum_("choose_type")
@@ -166,7 +166,7 @@ void CScriptPropertiesListHelper::script_register(lua_State *L)
 //			.def("create_rtoken16",	&CScriptPropertiesListHelper::CreateRToken16)
 //			.def("create_rtoken32",	&CScriptPropertiesListHelper::CreateRToken32)
 
-			.def("create_list",	&CScriptPropertiesListHelper::CreateList)
+			.def("create_list",	&CScriptPropertiesListHelper::CreateRList)
 
 			.def("create_color",&CScriptPropertiesListHelper::CreateColor)
 			.def("create_fcolor",&CScriptPropertiesListHelper::CreateFColor)

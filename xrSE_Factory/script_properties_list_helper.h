@@ -106,7 +106,7 @@ public:
 //			RToken16Value* 		CreateRToken16	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, RTokenVec* token);
 //			RToken32Value* 		CreateRToken32	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, RTokenVec* token);
 //			TokenValueSH*   	CreateTokenSH	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, u32 cnt, const TokenValueSH::Item* lst);
-			ListValue* 	 		CreateList		    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, CScriptRTokenList *tokens);
+			RListValue* 	 	CreateRList		    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name, CScriptRTokenList *tokens);
 			U32Value*  			CreateColor		    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name);
 			ColorValue*			CreateFColor	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name);
 			VectorValue*		CreateVColor	    (PropItemVec* items, LPCSTR key, luabind::object object, LPCSTR name);
