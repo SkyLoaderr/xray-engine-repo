@@ -11,7 +11,7 @@ extern CPHWorld*	ph_world;
 
 CCar::CCar(void)
 {
-	camera		= new CCameraLook		(this, pSettings, "actor_look_cam",		false);
+	camera		= new CCameraLook		(this, pSettings, "actor_look_cam",		true);
 }
 
 CCar::~CCar(void)
