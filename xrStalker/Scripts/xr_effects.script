@@ -315,20 +315,30 @@ function military_max_dead (actor, npc)
     if db.actor:has_info ("mil_max_job") then
        db.actor:set_task_state (task.fail, "mil_mad_job", 0)
        db.actor:set_task_state (task.fail, "mil_mad_job", 2)
-       level_tasks.remove_location (1002, "mil_max_location")
-       level_tasks.remove_location (1007, "mil_lukash_location")
+       level_tasks.remove_location (707, "mil_lukash_location")
     end   
+    
+    if db.actor:has_info ("mil_lukash_get_job") then
+       db.actor:set_task_state (task.fail, "mil_lukash_job", 0)
+       db.actor:set_task_state (task.fail, "mil_lukash_job", 1)
+       db.actor:set_task_state (task.fail, "mil_lukash_job", 2)
+       db.actor:set_task_state (task.fail, "mil_lukash_job", 3)
+       level_tasks.remove_location (708, "mil_dolg_location")
+    end
+    
     if db.actor:has_info ("mil_max_lukash_call") then
-       level_tasks.remove_location (1007, "mil_lukash_location")
+       level_tasks.remove_location (707, "mil_lukash_location")
     end    
+    
+    level_tasks.remove_location (702, "mil_max_location")
 end
 
 function military_lukash_dead (actor, npc)
     if db.actor:has_info ("mil_lukash_get_job") then
        db.actor:set_task_state (task.fail, "mil_lukash_job", 0)
        db.actor:set_task_state (task.fail, "mil_lukash_job", 3)
-       level_tasks.remove_location (1007, "mil_lukash_location")
-       level_tasks.remove_location (1002, "mil_max_location")
+       level_tasks.remove_location (707, "mil_lukash_location")
+       level_tasks.remove_location (702, "mil_max_location")
     end
 end
 
