@@ -697,6 +697,7 @@ function Projector:process ()
 	   point = self.points[self.current]
 	end
 
+	printf ("Set projector target  x:%f, y:%f, z:%f", point.x, point.y, point.z)
 	action (self.projector, look (point, self.speedh, self.speedv))
 
 	self.time = game.time () + 5000
