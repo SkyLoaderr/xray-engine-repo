@@ -10,6 +10,32 @@ function callback_static(object,action,index)
 	printf			("[%6d] Object %s reached waypoint %d",device():time_global(),object:name(),index)
 end
 
+function hit_callback(self, amount,local_direction,who,bone_index)
+	printf			("[%6d] Object %s was hit by object %s with power %d in bone %d and direction [%f][%f][%f]",
+						device():time_global(),
+						self:name(),
+						who:name(),
+						amount,
+						bone_index,
+						local_direction.x,
+						local_direction.y,
+						local_direction.z
+					)
+end
+
+function hear_callback(self, who, sound_type, sound_position, sound_power)
+	printf			("[%6d] Object %s hears sound by object %s with power %d , type %d from position [%f][%f][%f]",
+						device():time_global(),
+						self:name(),
+						who:name(),
+						sound_power,
+						sound_type,
+						sound_position.x,
+						sound_position.y,
+						sound_position.z
+					)
+end
+
 function main ()
     actor				= get_actor()
     stalker				= get_level_object ("m_stalker_e0000")
@@ -18,27 +44,32 @@ function main ()
     
     stalker:script		(true,stalker_test:script_name());
     
+    stalker:set_hit_callback(stalker_test.hit_callback);
+    stalker:set_hear_callback(stalker_test.hear_callback);
+    
     wait				(3000)
     
-    action				(
-		stalker,
-		object			(vodka,object.activate),
-		cond			(cond.object_end)
-    )
+--    action				(
+--		stalker,
+--		object			(vodka,object.activate),
+--		cond			(cond.object_end)
+--    )
+--    
+--    action				(
+--		stalker,
+--		object			(vodka,object.fire),
+--		cond			(cond.object_end)
+--    )
+--    
+--    action				(
+--		stalker,
+--		object			(vodka,object.reload),
+--		cond			(cond.object_end)
+--    )
     
-    action				(
-		stalker,
-		object			(vodka,object.fire),
-		cond			(cond.object_end)
-    )
-    
-    action				(
-		stalker,
-		object			(vodka,object.reload),
-		cond			(cond.object_end)
-    )
-    
-    while stalker:action() do
+--  while stalker:action() do
+
+	while true do
 		wait			()
     end
     
