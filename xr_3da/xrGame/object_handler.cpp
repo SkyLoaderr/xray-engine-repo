@@ -110,6 +110,10 @@ void CObjectHandler::OnItemDropUpdate	()
 CInventoryItem *CObjectHandler::best_weapon() const
 {
 	CInventoryItem	*best_weapon = 0;
+
+	if (!m_object->g_Alive())
+		return		(0);
+
 	u32				best_weapon_type = 0;
 	ai().ef_storage().m_tpCurrentMember = m_object;
 	TIItemSet::const_iterator	I = inventory().m_all.begin();
