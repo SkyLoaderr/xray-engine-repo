@@ -21,7 +21,7 @@
 #include "game_base.h"
 #include "xr_spawn_merge.h"
 
-#define THREAD_COUNT				6
+#define THREAD_COUNT				1
 
 #define GET_INDEX(N,K)				iFloor((2*N - 1 - _sqrt((2*N - 1)*(2*N - 1) - 4*float(N)*(N - 1)/float(K)))/2.f)
 

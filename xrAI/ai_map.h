@@ -461,67 +461,164 @@ public:
 		return(((tSegment.v1.x - EPS_L <= tPoint.x) && (tSegment.v1.z - EPS_L <= tPoint.z) && (tSegment.v2.x + EPS_L >= tPoint.x) && (tSegment.v2.z + EPS_L >= tPoint.z)) || ((tSegment.v2.x - EPS_L <= tPoint.x) && (tSegment.v2.z - EPS_L <= tPoint.z) && (tSegment.v1.x + EPS_L >= tPoint.x) && (tSegment.v1.z + EPS_L >= tPoint.z)));
 	}
 
-	float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, float fMaxDistance) const
+	void vfChoosePoint(Fvector &tStartPoint, Fvector &tFinishPoint, SContour	&tCurContour, int iNodeIndex, Fvector &tTempPoint, int &iSavedIndex) const
 	{
-		NodeCompressed *tpNode;
-		NodeLink *taLinks;
-		SContour tCurContour, tNextContour;
-		SSegment tSegment;
-		int i, iNodeIndex, iCount, iSavedIndex;
-		Fvector tPrevPoint, tPoint;
-		float fCurDistance = 0.f, fCumulativeDistance = 0.f;
-		u32 dwCurNode, dwPrevNode = u32(-1);
-
-		dwCurNode = dwStartNode;
-		tPrevPoint = tStartPoint;
-
-		while (true) {
-			if (fCumulativeDistance > fMaxDistance)
-				return(fCumulativeDistance);
-			if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint))
-				if (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint,true))
-					return(MAX_VALUE);
-				else 
-					break;
-			UnpackContour(tCurContour,dwCurNode);
-			tpNode = Node(dwCurNode);
-			vfGetIntersectionPoints(*tpNode,tCurContour,tStartPoint,tFinishPoint,tPoint);
-			taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
-			iCount = tpNode->links;
-			iSavedIndex = -1;
-			for ( i=0; i < iCount; i++) {
-				iNodeIndex = UnpackLink(taLinks[i]);
-				UnpackContour(tNextContour,iNodeIndex);
-				vfIntersectContours(tSegment,tCurContour,tNextContour);
-				if (bfBetweenPoints(tSegment,tPoint) && (iNodeIndex != (int)dwPrevNode)) {
-					iSavedIndex = iNodeIndex;
+		SContour					tNextContour;
+		SSegment					tNextSegment;
+		Fvector						tCheckPoint1 = tStartPoint, tCheckPoint2 = tStartPoint, tIntersectPoint;
+		UnpackContour				(tNextContour,iNodeIndex);
+		vfIntersectContours			(tNextSegment,tNextContour,tCurContour);
+		u32							dwIntersect = lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tNextSegment.v1.x,tNextSegment.v1.z,tNextSegment.v2.x,tNextSegment.v2.z,&tIntersectPoint.x,&tIntersectPoint.z);
+		if (!dwIntersect)
+			return;
+		for (int i=0; i<4; i++) {
+			switch (i) {
+				case 0 : {
+					tCheckPoint1	= tNextContour.v1;
+					tCheckPoint2	= tNextContour.v2;
 					break;
 				}
+				case 1 : {
+					tCheckPoint1	= tNextContour.v2;
+					tCheckPoint2	= tNextContour.v3;
+					break;
+				}
+				case 2 : {
+					tCheckPoint1	= tNextContour.v3;
+					tCheckPoint2	= tNextContour.v4;
+					break;
+				}
+				case 3 : {
+					tCheckPoint1	= tNextContour.v4;
+					tCheckPoint2	= tNextContour.v1;
+					break;
+				}
+				default : NODEFAULT;
 			}
-
-			if (iSavedIndex > -1) {
-				fCumulativeDistance += tPrevPoint.distance_to(tPoint);
-				fCurDistance = tStartPoint.distance_to_xz(tPoint);
-				tPrevPoint = tPoint;
-				dwPrevNode = dwCurNode;
-				dwCurNode = iSavedIndex;
+			dwIntersect				= lines_intersect(tStartPoint.x,tStartPoint.z,tFinishPoint.x,tFinishPoint.z,tCheckPoint1.x,tCheckPoint1.z,tCheckPoint2.x,tCheckPoint2.z,&tIntersectPoint.x,&tIntersectPoint.z);
+			if (dwIntersect == LI_INTERSECT) {
+				if (tFinishPoint.distance_to_xz(tIntersectPoint) < tFinishPoint.distance_to_xz(tTempPoint) + EPS_L) {
+					tTempPoint = tIntersectPoint;
+					iSavedIndex = iNodeIndex;
+				}
 			}
 			else
-				if (bfInsideNode(tpNode,tFinishPoint)) {
-					dwPrevNode = dwCurNode;
-					break;
+				if (dwIntersect == LI_EQUAL) {
+					if (tStartPoint.distance_to_xz(tCheckPoint1) > tStartPoint.distance_to_xz(tTempPoint))
+						if (tStartPoint.distance_to_xz(tCheckPoint1) > tStartPoint.distance_to_xz(tCheckPoint2)) {
+							tTempPoint = tCheckPoint1;
+							iSavedIndex = iNodeIndex;
+						}
+						else {
+							tTempPoint = tCheckPoint2;
+							iSavedIndex = iNodeIndex;
+						}
+					else
+						if (tStartPoint.distance_to_xz(tCheckPoint2) > tStartPoint.distance_to_xz(tTempPoint)) {
+							tTempPoint = tCheckPoint2;
+							iSavedIndex = iNodeIndex;
+						}
+
 				}
-				else
-					return(MAX_VALUE);
 		}
-		if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint)) {
-			fCumulativeDistance += tPrevPoint.distance_to(tFinishPoint);
-			return(fCumulativeDistance);
+	}
+
+//	float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPoint, Fvector tFinishPoint, float fMaxDistance) const
+//	{
+//		NodeCompressed *tpNode;
+//		NodeLink *taLinks;
+//		SContour tCurContour, tNextContour;
+//		SSegment tSegment;
+//		int i, iNodeIndex, iCount, iSavedIndex;
+//		Fvector tPrevPoint, tPoint;
+//		float fCurDistance = 0.f, fCumulativeDistance = 0.f;
+//		u32 dwCurNode, dwPrevNode = u32(-1);
+//
+//		dwCurNode = dwStartNode;
+//		tPrevPoint = tStartPoint;
+//
+//		while (true) {
+//			if (fCumulativeDistance > fMaxDistance)
+//				return(fCumulativeDistance);
+//			if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint))
+//				if (!bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint,true))
+//					return(MAX_VALUE);
+//				else 
+//					break;
+//			UnpackContour(tCurContour,dwCurNode);
+//			tpNode = Node(dwCurNode);
+//			vfGetIntersectionPoints(*tpNode,tCurContour,tStartPoint,tFinishPoint,tPoint);
+//			taLinks = (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+//			iCount = tpNode->links;
+//			iSavedIndex = -1;
+//			for ( i=0; i < iCount; i++) {
+//				iNodeIndex = UnpackLink(taLinks[i]);
+//				UnpackContour(tNextContour,iNodeIndex);
+//				vfIntersectContours(tSegment,tCurContour,tNextContour);
+//				if (bfBetweenPoints(tSegment,tPoint) && (iNodeIndex != (int)dwPrevNode)) {
+//					iSavedIndex = iNodeIndex;
+//					break;
+//				}
+//			}
+//
+//			if (iSavedIndex > -1) {
+//				fCumulativeDistance += tPrevPoint.distance_to(tPoint);
+//				fCurDistance = tStartPoint.distance_to_xz(tPoint);
+//				tPrevPoint = tPoint;
+//				dwPrevNode = dwCurNode;
+//				dwCurNode = iSavedIndex;
+//			}
+//			else
+//				if (bfInsideNode(tpNode,tFinishPoint)) {
+//					dwPrevNode = dwCurNode;
+//					break;
+//				}
+//				else
+//					return(MAX_VALUE);
+//		}
+//		if (bfInsideNode(m_nodes_ptr[dwCurNode],tFinishPoint)) {
+//			fCumulativeDistance += tPrevPoint.distance_to(tFinishPoint);
+//			return(fCumulativeDistance);
+//		}
+//		else
+//			return(MAX_VALUE);
+//	}
+	
+	float ffCheckPositionInDirection(u32 dwStartNode, Fvector tStartPosition, Fvector tFinishPosition, float fMaxDistance) const
+	{
+		SContour				tCurContour;
+		NodeCompressed			*tpNode;
+		NodeLink				*taLinks;
+		int						i, iCount, iSavedIndex, iPrevIndex = -1, iNextNode;
+		Fvector					tStartPoint = tStartPosition, tTempPoint = tStartPosition, tFinishPoint = tFinishPosition;
+		float					fCurDistance = 0.f, fDistance = tStartPosition.distance_to_xz(tFinishPosition);
+		u32						dwCurNode = dwStartNode;
+
+		while (!bfInsideNode(Node(dwCurNode),tFinishPosition) && (fCurDistance < (fDistance + EPS_L))) {
+			tpNode				= Node(dwCurNode);
+			taLinks				= (NodeLink *)((BYTE *)tpNode + sizeof(NodeCompressed));
+			iCount				= tpNode->links;
+			iSavedIndex			= -1;
+			UnpackContour		(tCurContour,dwCurNode);
+			for ( i=0; i < iCount; i++)
+				if ((iNextNode = UnpackLink(taLinks[i])) != iPrevIndex)
+					vfChoosePoint	(tStartPoint,tFinishPoint,tCurContour, iNextNode,tTempPoint,iSavedIndex);
+
+			if (iSavedIndex > -1) {
+				fCurDistance	= tStartPoint.distance_to_xz(tTempPoint);
+				iPrevIndex		= dwCurNode;
+				dwCurNode		= iSavedIndex;
+			}
+			else
+				return(MAX_VALUE);
 		}
+
+		if (bfInsideNode(Node(dwCurNode),tFinishPosition) && (_abs(ffGetY(*Node(dwCurNode),tFinishPosition.x,tFinishPosition.z) - tFinishPosition.y) < .5f))
+			return(tStartPosition.distance_to(tFinishPosition));
 		else
 			return(MAX_VALUE);
 	}
-	
+
 	u32 dwfFindCorrespondingNode(Fvector &tLocalPoint) const
 	{
 		NodePosition	P;
