@@ -34,17 +34,43 @@ function get_actor()
 	return db.actor
 end
 
-function get_level_object( name )
+function get_zone( name )
 	local o
 
-	o = level.debug_object( name )
+	o = db.zone_by_name[name]
 
 	while not o do
 		wait()
-		o = level.debug_object( name )
+		o = db.zone_by_name[name]
 	end
 
 	return o
+end
+
+function get_level_object_by_id( id )
+	local o
+
+	o = level.object_by_id( id )
+
+	while not o do
+		wait()
+		o = level.object_by_id( id )
+	end
+
+	return o
+end
+
+function get_level_object_by_sid( sid )
+	local sim = alife()
+
+	if sim then
+		local se_obj = sim:story_object( sid )
+		if se_obj then
+			return get_level_object_by_id( se_obj.id )
+		end
+	end
+
+	return nil
 end
 
 function chst( new_state )
@@ -115,11 +141,11 @@ function update()
 		end]]
 
 		if not newbies[1] then
-			newbies[1] = level.debug_object( "esc_vagon_newbie1" )
+			newbies[1] = get_level_object_by_sid( 12 ) --"esc_vagon_newbie1"
 		end
 
 		if not newbies[2] then
-			newbies[2] = level.debug_object( "esc_vagon_newbie2" )
+			newbies[2] = get_level_object_by_sid( 13 ) -- "esc_vagon_newbie2"
 		end
 
 		if newbies[1] and newbies[2] then
@@ -250,13 +276,13 @@ end
 
 function main()
 	actor       = get_actor()
-	wounded_tip = get_level_object( "esc_tip_vagon_medikit" )
+	wounded_tip = get_zone( "esc_tip_vagon_medikit" )
 
 --	local snd = sound_object( [[characters_voice\human_01\scenario\helicopter\heli_attack]] )
 --	snd:play_at_pos( actor, actor:position():add( vector():set( 80, 0, 0 ) ) )
 
 	heli_mgr = xr_heli.HeliManager()
-	heli_mgr:initialize( "heli", nil, 30, 30 )
+	heli_mgr:initialize( 14, nil, 30, 30 )
 
 	if not state then
 		chst( state_before )

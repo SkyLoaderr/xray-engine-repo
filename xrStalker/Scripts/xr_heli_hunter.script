@@ -7,6 +7,19 @@
 
 local def_attack_dist = 100 * 100 -- рассто€ние, на котором вертолЄт может быть атакован
 
+function level_object_by_sid( sid )
+	local sim = alife()
+
+	if sim then
+		local se_obj = sim:story_object( sid )
+		if se_obj then
+			return level.object_by_id( se_obj.id )
+		end
+	end
+
+	return nil
+end
+
 ---------------------------------------------------------------------------------------------------------------------
 -- Ёвалуатор свойства "можно пострел€ть по вертолЄту"
 ---------------------------------------------------------------------------------------------------------------------
@@ -27,7 +40,8 @@ function evaluator_shoot:evaluate()
 	if overrides and overrides.heli_hunter then
 		if not self.a.heli then
 --			self.a.heli = db.actor--level.object( "heli" ) or level.object( "heli1" )
-			self.a.heli = level.debug_object( "heli" )
+--			self.a.heli = level.debug_object( "heli" )
+			self.a.heli = level_object_by_sid( 14 )
 			return false
 		else
 			return self.a.heli:position():distance_to_sqr( self.object:position() ) <= self.a.attack_dist_sqr

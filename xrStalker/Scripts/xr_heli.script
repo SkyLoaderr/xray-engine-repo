@@ -17,27 +17,14 @@ local max_attack_passes = 3
 local zone_attack_probability = 33  -- вероятность того, что вертолёт начнёт атаковать сталкера, вошедшего в какую-то зону
 
 ----------
-function get_level_object( name )
-	local o
-
-	o = level.debug_object( name )
-
-	while not o do
-		wait()
-		o = level.debug_object( name )
-	end
-
-	return o
-end
-----------
 
 class "HeliManager"
 
 function HeliManager:__init()
 end
 
-function HeliManager:initialize( name, path, patrol_speed, attack_speed )
-	self.heli       = get_level_object( name )
+function HeliManager:initialize( sid, path, patrol_speed, attack_speed )
+	self.heli       = escape_heli.get_level_object_by_sid( sid )
 	self.heliObject = self.heli:get_helicopter()
 
 --	self.heli:AddEventCallback( CHelicopter.on_point, self, "HeliOnPoint" )
@@ -60,7 +47,7 @@ function HeliManager:initialize( name, path, patrol_speed, attack_speed )
 	end
 end
 
-function HeliManager:HeliOnHit( p )
+function HeliManager:HeliOnHit( power, impulse, hit_type, enemy_id )
 --	printf( "HeliOnHit" )
 
 	if self.b_prepared_to_die then
@@ -74,18 +61,13 @@ function HeliManager:HeliOnHit( p )
 		return
 	end
 
---	format:
-	power      = p:r_float()
-	impulse    = p:r_float()
-	hit_type   = p:r_u32()
-	enemy_name = p:r_stringZ()
-
-	printf( "ENEMY NAME=%s", enemy_name )
-	self:set_enemy( level.object( enemy_name ) )
+	local enemy = level.object_by_id( enemy_id )
+	printf( "[heli] enemy name = %s", enemy:name() )
+	self:set_enemy( enemy )
 end
 
 -- не использует информацию из net_packet!
-function HeliManager:HeliOnPoint( p )
+function HeliManager:HeliOnPoint( distance, position, path_idx )
 --	format:
 --	local dist_to_point =	p:r_float()
 --	local point  = p:r_vec3()
