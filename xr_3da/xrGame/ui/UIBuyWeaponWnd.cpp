@@ -157,12 +157,12 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 	UIGreenIndicator.Init("ui\\ui_bt_multiplayer_over", 0, 0, uIndicatorWidth, uIndicatorHeight);
 
 	//  нопки OK и Cancel дл€ выходи из диалога покупки оружи€
-	AttachChild(&UIBtnOK);
+	AttachChild(&UIBtnOK);	UIBtnOK.SetAutoDelete(false);
 	xml_init.InitButton(uiXml, "ok_button", 0, &UIBtnOK);
 	UIBtnOK.SetTextAlign(CGameFont::alCenter);
 	g_iOkAccelerator = uiXml.ReadAttribInt("ok_button", 0, "accel");
 
-	AttachChild(&UIBtnCancel);
+	AttachChild(&UIBtnCancel);	UIBtnCancel.SetAutoDelete(false);
 	xml_init.InitButton(uiXml, "cancel_button", 0, &UIBtnCancel);
 	UIBtnCancel.SetTextAlign(CGameFont::alCenter);
 	g_iCancelAccelerator = uiXml.ReadAttribInt("cancel_button", 0, "accel");
