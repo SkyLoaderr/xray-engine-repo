@@ -32,6 +32,7 @@ public:
 			u32				point				(const Fvector &point) const;
 			LPCSTR			name				(u32 index) const;	
 			bool			flag				(u32 index, u8 flag_index) const;
+			int				flags				(u32 index) const;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CPatrolPathParams)
