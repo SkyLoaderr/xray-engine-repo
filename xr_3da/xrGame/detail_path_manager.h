@@ -112,7 +112,6 @@ private:
 
 	xr_vector<STravelParamsIndex>				m_start_params;
 	xr_vector<STravelParamsIndex>				m_dest_params;
-	xr_vector<STravelPathPoint>					m_travel_line;
 	xr_vector<STravelPathPoint>					m_temp_path;
 	xr_vector<STravelPoint>						m_key_points;
 	u32											m_desirable_mask;

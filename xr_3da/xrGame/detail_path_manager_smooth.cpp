@@ -346,7 +346,6 @@ bool CDetailPathManager::compute_path(
 	const xr_vector<STravelParamsIndex> &dest_params
 )
 {
-	m_temp_path.clear		();
 	float					min_time = flt_max, time;
 	u32						size = m_tpTravelLine ? m_tpTravelLine->size() : 0;
 	xr_vector<STravelParamsIndex>::const_iterator I = start_params.begin(), B = I;
