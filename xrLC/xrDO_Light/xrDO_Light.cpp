@@ -48,10 +48,11 @@ void Startup(LPSTR     lpCmdLine)
 	
 	// Load project
 	name[0]=0; sscanf	(strstr(cmd,"-f")+2,"%s",name);
-	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
+	FS.update_path		(name,"$game_levels$",name);
+	FS.get_path			("$level$")->_set	(name);
 
 	DWORD				dwStartupTime	= timeGetTime();
-	xrCompiler			(prjName.c_str());
+	xrCompiler			(0);
 
 	// Show statistic
 	char	stats[256];

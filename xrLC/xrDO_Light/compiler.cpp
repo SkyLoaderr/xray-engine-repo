@@ -126,8 +126,7 @@ void xrLoad(LPCSTR name)
 
 	// Load CFORM
 	{
-		strconcat			(N,name,"build.cform");
-		IReader*			fs = FS.r_open(N);
+		IReader*			fs = FS.r_open("$level$","build.cform");
 		
 		R_ASSERT			(fs->find_chunk(0));
 		hdrCFORM			H;
