@@ -3,7 +3,7 @@
 void CRenderTarget::accum_spot_shadow	(light* L)
 {
 	// *** assume accumulator setted up ***
-	float			z_bias				= -0.001f;
+	float			z_bias				= +0.005f;
 
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / SSM_size);
