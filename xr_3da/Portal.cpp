@@ -52,6 +52,10 @@ void drawPoly(sPoly &P, CPortal* Portal)
 }
 
 
+CPortal::~CPortal()
+{
+}
+
 //
 void	CPortal::Setup	(Fvector* V, int vcnt, CSector* face, CSector* back)
 {

@@ -502,7 +502,8 @@ void	CRender::Render		()
 
 	// HUD render
 	{
-		extern float psHUD_FOV;
+		ENGINE_API extern float		psHUD_FOV;
+		
 		// Change projection
 		Fmatrix Pold				= Device.mProject;
 		Fmatrix FTold				= Device.mFullTransform;
