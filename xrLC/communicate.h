@@ -11,7 +11,7 @@ const u32 XR_MAX_PORTAL_VERTS	= 6;
 #define LCONTROL_STATIC "$static"			// all other static lights
 
 // internal use
-struct b_c_face
+struct b_rc_face
 {
 	struct{
 		u16				bOpaque:1;
