@@ -204,7 +204,11 @@ function action_bodyguard_activity:execute()
 			local pos = actor:position()
 			local look_pt = this.vector_copy_by_val(pos):sub(self.object:position())
 			--self.object:set_mental_state(anim.danger)
-			self.object:set_mental_state(anim.free)
+			if self.path_active ~= self.path_main then
+				self.object:set_mental_state(anim.free)
+			else
+				self.object:set_mental_state(anim.danger)
+			end
 			self.object:set_sight(look.direction, look_pt, 0)
 			--self.object:set_sight(look.fire_point, actor:position(), 0)
 		else
