@@ -6,7 +6,6 @@
 void xrServer::Process_spawn(NET_Packet& P, DPNID sender)
 {
 	// read spawn information
-	u16					s_respawntime;
 	string64			s_name;
 	P.r_string			(s_name);
 
