@@ -563,9 +563,9 @@ void CScriptEntity::clear_callback	(const ScriptEntity::EActionType tActionType)
 	
 	m_tpCallbacks[tActionType].clear();
 
-	if (tActionType) {
+	if (tActionType == eActionTypeMovement) {
 		if (m_monster)
-			m_monster->movement().patrol().set_callback(m_tpCallbacks[tActionType]);
+			m_monster->movement().patrol().set_callback();
 	}
 }
 
