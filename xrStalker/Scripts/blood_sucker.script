@@ -403,7 +403,7 @@ function CStateRest:__init(_npc, _mem)
     self.path       = nil
     printf("Name = %s", self.npc:name())
     self.path       = patrol(self.npc:spawn_ini():r_string ("blood_sucker", "point_path"))
-    self.point_rest = point_with_bit(0)
+    self.point_rest = point_with_bit(self.path, 0)
 end
 
 function CStateRest:initialize()
@@ -418,7 +418,7 @@ function CStateRest:execute()
         if(self.npc:position():distance_to(self.point_rest) < 1) then
           action(self.npc, move(move.walk_fwd, self.point_rest), sound(sound.idle), cond(cond.move_end))
         end
-        action(self.npc, anim(anim.turn, 0), look(look.point, point_with_bit(1)), cond(cond.look_end))
+        action(self.npc, anim(anim.turn, 0), look(look.point, point_with_bit(self.path, 1)), cond(cond.look_end))
         action(self.npc, anim(anim.sit_idle, 0), sound(sound.idle, 10000), cond(cond.time_end, 60000))
     end
 end
