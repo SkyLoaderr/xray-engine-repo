@@ -30,12 +30,14 @@ CGameObject::CGameObject		()
 	//-----------------------------------------
 	m_bCrPr_Activated			= false;
 	m_dwCrPr_ActivationStep		= 0;
+	m_ini_file					= 0;
+	m_lua_game_object			= 0;
 }
 
 CGameObject::~CGameObject		()
 {
 	VERIFY						(!m_ini_file);
-	xr_delete					(m_lua_game_object);
+	VERIFY						(!m_lua_game_object);
 }
 
 void CGameObject::init			()
@@ -119,7 +121,10 @@ void CGameObject::net_Destroy	()
 
 	//удалить партиклы из ParticlePlayer
 	CParticlesPlayer::net_DestroyParticles	();
-	CScriptBinder::net_Destroy			();
+	
+	CScriptBinder::net_Destroy				();
+
+	xr_delete								(m_lua_game_object);
 }
 
 void CGameObject::OnEvent		(NET_Packet& P, u16 type)
