@@ -272,6 +272,5 @@ BOOL CHOM::visible		(sPoly& P)
 	if (xform_b0(min,max,z,XF, P.front().x, P.front().y, P.front().z)) return TRUE;
 	for (u32 it=1; it<P.size(); it++)
 		if (xform_b1(min,max,z,XF, P[it].x, P[it].y, P[it].z)) return TRUE;
-
-	return Raster.test	(x1,y1,x2,y2,z);
+	return Raster.test	(min.x,min.y,max.x,max.y,z);
 }
