@@ -11,7 +11,7 @@
 	<!-- BUTTONS -->
 	<button x="437" y="726" width="138" height="30">
 		<texture>ui\ui_button_04</texture>
-		<text>Trade</text>
+		<text align="c">Trade</text>
 	</button>
 
 	<!-- DIALOG FRAME -->
