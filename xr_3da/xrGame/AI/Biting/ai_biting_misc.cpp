@@ -175,8 +175,8 @@ void CAI_Biting::vfUpdateParameters()
 
 	prev_pos	= cur_pos;
 
-	// Setup additional flags
-
+	// Setup is own additional flags
+	m_bDamaged = ((GetHealth() < m_fDamagedThreshold) ? true : false);
 }
 
 bool CAI_Biting::IsStanding (TTime time)

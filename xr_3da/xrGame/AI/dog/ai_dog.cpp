@@ -65,7 +65,10 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.AddAnim(eAnimLieSitUp,		"lie_sit_up_",			-1, 0,						0,							PS_LIE);
 	MotionMan.AddAnim(eAnimStandSitDown,	"stand_sit_down_",		-1, 0,						0,							PS_STAND);	
 	MotionMan.AddAnim(eAnimAttack,			"stand_attack_",		 1, 0,						m_fsRunAngular,				PS_STAND);
-	MotionMan.AddAnim(eAnimStandDamaged,	"stand_damaged_",		-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimStandDamaged,	"stand_idle_dmg_",		-1, 0,						0,							PS_STAND);
+	MotionMan.AddAnim(eAnimWalkDamaged,		"stand_walk_dmg_",		-1, m_fsWalkFwdNormal,		m_fsWalkAngular,			PS_STAND);
+	MotionMan.AddAnim(eAnimRunDamaged,		"stand_run_dmg_",		-1, m_fsRunFwdNormal,		m_fsRunAngular,				PS_STAND);
+
 	MotionMan.AddAnim(eAnimDragCorpse,		"stand_drag_",			-1, m_fsDrag,				m_fsWalkAngular,			PS_STAND);
 	//...
 	MotionMan.AddAnim(eAnimSteal,			"stand_drag_",			-1, m_fsSteal,				m_fsWalkAngular,			PS_STAND);
@@ -96,24 +99,28 @@ void CAI_Dog::Load(LPCSTR section)
 	MotionMan.LinkAction(ACT_LIE_IDLE,		eAnimLieIdle);
 	MotionMan.LinkAction(ACT_WALK_FWD,		eAnimWalkFwd);
 	MotionMan.LinkAction(ACT_WALK_BKWD,		eAnimWalkFwd);
-	MotionMan.LinkAction(ACT_RUN,			eAnimRun,	eAnimJumpLeft, eAnimJumpRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_RUN,			eAnimRun,	eAnimJumpLeft, eAnimJumpRight, PI_DIV_3);
 	MotionMan.LinkAction(ACT_EAT,			eAnimEat);
 	MotionMan.LinkAction(ACT_SLEEP,			eAnimSleep);
 	MotionMan.LinkAction(ACT_REST,			eAnimLieIdle);
 	MotionMan.LinkAction(ACT_DRAG,			eAnimDragCorpse);
-	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimJumpLeft, eAnimJumpRight, PI_DIV_6);
+	MotionMan.LinkAction(ACT_ATTACK,		eAnimAttack, eAnimJumpLeft, eAnimJumpRight, PI_DIV_3);
 	MotionMan.LinkAction(ACT_STEAL,			eAnimSteal);
 	MotionMan.LinkAction(ACT_LOOK_AROUND,	eAnimStandIdle);
 
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimRun,		eAnimRunDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimWalkFwd,	eAnimWalkDamaged);
+	MotionMan.AddReplacedAnim(&m_bDamaged, eAnimStandIdle,	eAnimStandDamaged);
+
 	Fvector center;
-	center.set		(0.f,0.f,0.f);
+	center.set		(0.f,1.f,0.f);
 
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 0, 700,	800,	center,		2.0f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 1, 600,	800,	center,		2.5f, m_fHitPower, 0.f, 0.f);
 	MotionMan.AA_PushAttackAnim(eAnimAttack, 2, 600,	700,	center,		1.5f, m_fHitPower, 0.f, 0.f);
 
 //	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
-	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, 0.f);
+	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_1"), JT_GLIDE,	false,	0.f, m_fsRunAngular);
 //	CJumping::AddState(PSkeletonAnimated(Visual())->ID_Cycle_Safe("run_jump_0"), JT_CUSTOM,	true,	0.f, 0.f);
 }
 
@@ -241,10 +248,6 @@ void CAI_Dog::UpdateCL()
 
 	float trace_dist = 1.0f;
 
-	//show pos
-	Msg("My cur yaw = [%f], My target yaw = [%f], My r_speed = [%f]", r_torso_current.yaw, r_torso_target.yaw, r_torso_speed);
-
-
 	// Проверить на нанесение хита во время прыжка
 	if (CJumping::IsGlide()) {
 		
@@ -271,7 +274,6 @@ void CAI_Dog::UpdateCL()
 		// !!!
 		LookPosition(pE->Position());
 	}
-
 
 	
 }

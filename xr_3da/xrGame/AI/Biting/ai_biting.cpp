@@ -154,6 +154,8 @@ void CAI_Biting::Load(LPCSTR section)
 	m_fMinAttackDist				= pSettings->r_float(section,"MinAttackDist");
 	m_fMaxAttackDist				= pSettings->r_float(section,"MaxAttackDist");
 
+	m_fDamagedThreshold				= pSettings->r_float(section,"DamagedThreshold");
+
 	m_fCurMinAttackDist				= m_fMinAttackDist;
 
 	LoadSounds						(section);

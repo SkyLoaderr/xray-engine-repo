@@ -24,6 +24,8 @@ void CMotionManager::Init (CAI_Biting	*pM)
 	should_play_die_anim	= true;			//этот флаг на NetSpawn должен устанавливатьс€ в true
 
 	Seq_Init				();
+
+	AA_Clear				();
 }
 
 // «агрузка параметров анимации. ¬ызывать необходимо на Monster::Load
@@ -139,6 +141,18 @@ void CMotionManager::LinkAction(EAction act, EMotionAnim pmt_motion)
 
 	m_tMotions.insert	(mk_pair(act, new_item));
 }
+
+void CMotionManager::AddReplacedAnim(bool *b_flag, EMotionAnim pmt_cur_anim, EMotionAnim pmt_new_anim)
+{
+	SReplacedAnim ra;
+
+	ra.flag		= b_flag;
+	ra.cur_anim = pmt_cur_anim;
+	ra.new_anim = pmt_new_anim;
+
+	m_tReplacedAnims.push_back(ra);
+}
+
 
 // загрузка анимаций из модели начинающиес€ с pmt_name в вектор pMotionVect
 void CMotionManager::Load(LPCTSTR pmt_name, ANIM_VECTOR	*pMotionVect)
@@ -266,6 +280,9 @@ void CMotionManager::ProcessAction()
 			// ѕроверить ASP и доп. параметры анимации (kinda damaged)
 			pMonster->CheckSpecParams(spec_params); 
 
+			// проверить подмну анимаций
+			CheckReplacedAnim();
+
 			// если монстр стоит на месте и играет анимацию движени€, прин€ть stand_idle
 			FixBadState();
 		}
@@ -332,6 +349,15 @@ void CMotionManager::FixBadState()
 	}
 
 	prev_action = m_tAction;
+}
+
+void CMotionManager::CheckReplacedAnim()
+{
+	for (REPLACED_ANIM_IT it=m_tReplacedAnims.begin(); it!= m_tReplacedAnims.end();it++) 
+		if ((cur_anim == it->cur_anim) && (*(it->flag) == true)) { 
+			cur_anim = it->new_anim;
+			return;
+		}
 }
 
 bool CMotionManager::IsMoving()

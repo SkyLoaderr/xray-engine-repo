@@ -20,7 +20,6 @@ void CAI_Biting::SelectAnimation(const Fvector &_view, const Fvector &_move, flo
 {
 	if (MotionMan.PrepareAnimation()) {
 		PSkeletonAnimated(Visual())->PlayCycle(MotionMan.m_tpCurAnim,TRUE,vfPlayEndCallBack,this);
-		Msg("Animation Selected: PTR = [%u] Time = [%u]", MotionMan.m_tpCurAnim, m_dwCurrentTime);
 	}
 }
 
@@ -46,7 +45,13 @@ bool CAI_Biting::AA_CheckHit()
 		this->setEnabled(false);
 		Collide::ray_query	l_rq;
 
-		if (Level().ObjectSpace.RayPick(trace_from, Direction(), apt_anim.dist, l_rq)) {
+		Fvector dir = Direction();
+//		Fvector center;
+//		obj->Center(center);
+//		dir.sub(center,trace_from);
+//		dir.normalize_safe();
+
+		if (Level().ObjectSpace.RayPick(trace_from, dir, apt_anim.dist, l_rq)) {
 			if ((l_rq.O == obj) && (l_rq.range < apt_anim.dist)) {
 				DoDamage(ve.obj, apt_anim.damage,apt_anim.dir_yaw,apt_anim.dir_pitch);
 				was_hit = true;

@@ -14,7 +14,6 @@ enum EMotionAnim {
 	eAnimStandIdle = 0,
 	eAnimStandTurnLeft,
 	eAnimStandTurnRight,
-	eAnimStandDamaged,
 
 	eAnimSitIdle,
 	eAnimLieIdle,
@@ -62,6 +61,11 @@ enum EMotionAnim {
 
 	eAnimJumpLeft,
 	eAnimJumpRight,
+
+	eAnimStandDamaged,
+	eAnimWalkDamaged,
+	eAnimRunDamaged,
+
 };
 
 // Generic actions
@@ -140,6 +144,13 @@ struct SMotionItem {
 	} turn;
 };
 
+// подмена анимаций (если *flag == true, то необходимо заменить анимацию)
+struct SReplacedAnim {
+	EMotionAnim cur_anim;
+	EMotionAnim new_anim;
+	bool		*flag;
+};
+
 #define AA_FLAG_ATTACK_RAT		(1 << 0)			// аттака крыс?
 #define AA_FLAG_FIRE_ANYWAY		(1 << 1)			// трассировка не нужна
 
@@ -172,10 +183,12 @@ class CMotionManager {
 	DEFINE_MAP		(EAction,			SMotionItem,			MOTION_ITEM_MAP,	MOTION_ITEM_MAP_IT);
 	DEFINE_VECTOR	(EMotionAnim,		SEQ_VECTOR,				SEQ_VECTOR_IT);
 	DEFINE_VECTOR	(SAttackAnimation,	ATTACK_ANIM,			ATTACK_ANIM_IT);
+	DEFINE_VECTOR	(SReplacedAnim,		REPLACED_ANIM,			REPLACED_ANIM_IT);
 
 	ANIM_ITEM_MAP			m_tAnims;			// карта анимаций
 	MOTION_ITEM_MAP			m_tMotions;			// карта соответсвий EAction к SMotionItem
 	TRANSITION_ANIM_VECTOR	m_tTransitions;		// вектор переходов из одной анимации в другую
+	REPLACED_ANIM			m_tReplacedAnims;	// анимации подмены
 
 	CAI_Biting				*pMonster;
 	CJumping				*pJumping;
@@ -219,6 +232,8 @@ public:
 	// создание карты анимаций (выполнять на Monster::Load)
 	void		AddAnim					(EMotionAnim ma, LPCTSTR tn, int s_id, float speed, float r_speed, EPState p_s);
 
+	// -------------------------------------
+
 	// добавить анимацию перехода (A - Animation, S - Position)
 	void		AddTransition_A2A		(EMotionAnim from,	EMotionAnim to, EMotionAnim trans, bool chain);
 	void		AddTransition_A2S		(EMotionAnim from,	EPState to,		EMotionAnim trans, bool chain);
@@ -230,6 +245,10 @@ public:
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion, EMotionAnim pmt_left, EMotionAnim pmt_right, float pmt_angle);
 	void		LinkAction				(EAction act, EMotionAnim pmt_motion);
 
+	// -------------------------------------
+
+	void		AddReplacedAnim			(bool *b_flag, EMotionAnim pmt_cur_anim, EMotionAnim pmt_new_anim);
+	
 	// -------------------------------------
 	void		ApplyParams				();
 
@@ -286,6 +305,8 @@ private:
 
 	void		FixBadState				();
 	bool		IsMoving				();
+
+	void		CheckReplacedAnim		();
 
 	// sctipting
 public:

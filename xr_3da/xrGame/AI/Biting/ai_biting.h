@@ -188,6 +188,9 @@ public:
 	float					m_fAttackSuccessProbability[4];
 	bool					A,B,C,D,E,F,G,H,I,J,K,L,M;
 
+	// State flags
+	bool					m_bDamaged;
+
 	// Combat flags 
 	u32						flagsEnemy; 
 
@@ -237,6 +240,8 @@ public:
 	float					m_fMaxAttackDist;
 
 	float					m_fCurMinAttackDist;		// according to attack stops
+
+	float					m_fDamagedThreshold;		// порог здоровья, ниже которого устанавливается флаг m_bDamaged
 
 	// Biting-specific states
 	CBitingRest				*stateRest;

@@ -84,7 +84,7 @@ void CJumping::ApplyParams()
 {
 	pMonster->m_fCurSpeed		= ptr_cur->speed.linear;
 	pMonster->r_torso_speed		= ptr_cur->speed.angular;
-	Msg("Apply params..., cur_time = [%i]", pMonster->m_dwCurrentTime);
+	Msg("Apply params..., cur_time = [%i] angular speed = [%f]", pMonster->m_dwCurrentTime, pMonster->r_torso_speed);
 }
 
 void CJumping::NextState()
@@ -171,6 +171,7 @@ bool CJumping::Check(Fvector from_pos, Fvector to_pos, CObject *pO)
 	ph_time			= 0.f;
 
 	pMonster->r_torso_target.yaw = target_yaw;
+	Msg("TARGET YAW CHANGED:: jumping / target_yaw = [%f]", pMonster->r_torso_target.yaw);
 	pMonster->AI_Path.TravelPath.clear();
 
 	Start();
