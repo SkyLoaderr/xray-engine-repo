@@ -44,6 +44,7 @@ IC	bool CStalkerMovementManager::turn_in_place			() const
 
 IC	void CStalkerMovementManager::set_body_state(EBodyState body_state)
 {
+	THROW						((body_state != eBodyStateCrouch) || (m_target.m_mental_state != eMentalStateFree));
 	m_target.m_body_state		= body_state;
 }
 
@@ -54,6 +55,7 @@ IC	void CStalkerMovementManager::set_movement_type(EMovementType movement_type)
 
 IC	void CStalkerMovementManager::set_mental_state(EMentalState mental_state)
 {
+	THROW						((m_target.m_body_state != eBodyStateCrouch) || (mental_state != eMentalStateFree));
 	m_target.m_mental_state		= mental_state;
 }
 
