@@ -19,6 +19,7 @@ void _pSendAction(ParticleAction *S, PActionEnum type, int size)
 	_ParticleState &_ps = _GetPState();
 
 	S->type = type;
+	S->flags.zero();
 	
 	if(_ps.in_new_list)
 	{
