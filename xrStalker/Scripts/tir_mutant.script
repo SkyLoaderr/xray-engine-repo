@@ -1,3 +1,22 @@
 function main ()
 
+    local monsters = {get_level_object ("boar00")}
+    local ways = {patrol ("way_boar00")}
+    
+    for a = 1, table.getn (monsters), 1 do
+        monsters[a]:script (true, tir_mutant.script_name ())
+        if ways[a] ~= nil then
+           if math.random (1, 100) > 50 then 
+              action (monsters[a], move (move.act_run, move.force_type, ways[a], cond (cond.move_end))
+           else
+              action (monsters[a], move (move.act_walk_fwd, move.force_type, ways[a], cond (cond.move_end))
+           end
+        else
+           action (monsters[a], move (move.act_idle, move.default, monsters[a]:position ()), cond (cond.time_end, time_infinite))    
+        end      
+    end
+    
+    while true do wait () end        
+    
+
 end
