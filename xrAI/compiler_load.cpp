@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "compiler.h"
 #include "communicate.h"
-#include "levelgamedefs.h"
+#include "levelgamedef.h"
 
 void xrLoad(LPCSTR name)
 {
 	// Load CFORM
-	FILE_NAME			N;
+	string256				N;
 	{
 		strconcat			(N,name,"level.");
 		CVirtualFileStream	FS(N);
@@ -44,23 +44,24 @@ void xrLoad(LPCSTR name)
 	
 	// Load emitters
 	{
-	strconcat			(N,name,"level.game");
-	CFileStream			F(N);
-	CStream *O = 0;
-	if (0!=(O = F.OpenChunk	(RPOINT_CHUNK)))
-	{
-		for (int id=0; O->FindChunk(id); id++)
+		strconcat			(N,name,"level.game");
+		CFileStream			F(N);
+		CStream *O = 0;
+		if (0!=(O = F.OpenChunk	(RPOINT_CHUNK)))
 		{
-			Fvector		pos,angles;
-			int			team;
+			for (int id=0; O->FindChunk(id); id++)
+			{
+				Fvector		pos,angles;
+				int			team;
 
-			O->Rvector	(pos);
-			O->Rvector	(angles);
-			team		= O->Rdword	();
+				O->Rvector	(pos);
+				O->Rvector	(angles);
+				team		= O->Rdword	();
 
-			Emitters.push_back(pos);
+				Emitters.push_back(pos);
+			}
+			O->Close();
 		}
-		O->Close();
 	}
 
 	// Load lights
@@ -73,7 +74,7 @@ void xrLoad(LPCSTR name)
 		F->Read		(&id,8);
 		if (0==strcmp(id,ID))	{
 			_DELETE		(F);
-			F			= new CCompressedStream(N);
+			F			= new CCompressedStream(N,ID);
 		}
 		CStream&				FS	= *F;
 
@@ -91,7 +92,7 @@ void xrLoad(LPCSTR name)
 			F = FS.OpenChunk(EB_Light_static);
 			b_light_static	temp;
 			DWORD cnt		= F->Length()/sizeof(temp);
-			for				(i=0; i<cnt; i++)
+			for				(DWORD i=0; i<cnt; i++)
 			{
 				R_Light		RL;
 				F->Read		(&temp,sizeof(temp));
@@ -102,7 +103,6 @@ void xrLoad(LPCSTR name)
 				else											RL.type = LT_POINT;
 
 				// generic properties
-				RL.diffuse.normalize_rgb	(L.diffuse);
 				RL.position.set				(L.position);
 				RL.direction.normalize_safe	(L.direction);
 				RL.range				=	L.range*1.1f;
