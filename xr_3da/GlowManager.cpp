@@ -90,7 +90,7 @@ void CGlowManager::Unload()
 	Selected_Count	= 0;
 
 	// stream
-	Stream = 0;
+	VS				= 0;
 }
 
 IC bool glow_compare(CGlow* g1, CGlow *g2)
@@ -177,7 +177,7 @@ void CGlowManager::Render()
 			
 			DWORD		vOffset;
 			DWORD		end		= pos+count;
-			FVF::TL	*	pvs		= pv = (FVF::TL*) Stream->Lock(count*4,VS->dwStride,vOffset);
+			FVF::TL	*	pvs		= pv = (FVF::TL*) Device.Streams.Vertex.Lock(count*4,VS->dwStride,vOffset);
 			for (; pos<end; pos++)
 			{
 				CGlow&	G			= *Selected[pos];
@@ -199,8 +199,8 @@ void CGlowManager::Render()
 				pv->set(cx + size, cy - size, TL.p.z, TL.p.w, clr, 1, 0); pv++;
 			}
 			int vCount				= pv-pvs;
-			Stream->Unlock			(vCount,VS->dwStride);
-			if (verts) {
+			Device.Streams.Vertex.Unlock		(vCount,VS->dwStride);
+			if (vCount) {
 				Device.Shader.set_Shader		(T);
 				Device.Primitive.setVertices	(VS->dwHandle,VS->dwStride,Device.Streams.Vertex.getBuffer());
 				Device.Primitive.setIndices		(vOffset,Device.Streams_QuadIB);
