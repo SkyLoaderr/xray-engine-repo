@@ -11,7 +11,7 @@ function evaluator_check_combat:evaluate ()
 		local actor = level.actor()
 		if actor then
 			if xr_logic.try_switch_to_another_section(self.object, self.a, actor) then
-				return true
+				return
 			end
 		end
 	end
