@@ -1,8 +1,9 @@
+local this = trader_test
 
 function main ()
 
     local trader = trader.Trader (get_level_object ("trader"), get_level_object ("trader_zone"),       
-                                  trader_test.script_name ())
+                                  this.script_name ())
 
     while true do
           trader:process ()
