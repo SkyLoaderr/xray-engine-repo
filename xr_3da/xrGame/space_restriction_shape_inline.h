@@ -8,8 +8,6 @@
 
 #pragma once
 
-extern bool CCF_Shape_inside(const CCF_Shape *self, const Fvector &position, float radius);
-
 IC	Fvector	CSpaceRestrictionShape::position		(const CCF_Shape::shape_def &data) const
 {
 	switch (data.type) {

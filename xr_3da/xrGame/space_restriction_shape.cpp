@@ -200,7 +200,7 @@ bool CSpaceRestrictionShape::inside	(const Fvector &position, float radius)
 {
 	VERIFY							(m_initialized);
 	VERIFY							(m_restrictor);
-	return							(CCF_Shape_inside((CCF_Shape*)m_restrictor->collidable.model,position,radius));
+	return							(m_restrictor->inside(position,radius));
 }
 
 shared_str	CSpaceRestrictionShape::name() const
