@@ -157,6 +157,7 @@ void msParse			(LPCSTR c)
 
 void	CEventAPI::OnFrame	()
 {
+	msRead		();
 	CS.Enter	();
 	if (Events_Deferred.empty())	return;
 	for (DWORD I=0; I<Events_Deferred.size(); I++)
