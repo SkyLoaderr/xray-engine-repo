@@ -42,7 +42,7 @@ void EFS_Utils::MarkFile(LPCSTR fn, bool bDeleteSource)
 	}
 }
 
-#define BACKUP_FILE_LEVEL 15
+#define BACKUP_FILE_LEVEL 5
 
 void EFS_Utils::BackupFile(LPCSTR initial, LPCSTR fname, bool bMsg)
 {

@@ -113,13 +113,13 @@ void CLocatorAPI::ClearEventNotification()
 
 void CLocatorAPI::lock_rescan()
 {
-	m_Flags.set(flLockRescan,TRUE);
+	m_iLockRescan++;
 }
 
 void CLocatorAPI::unlock_rescan()
 {
-	m_Flags.set(flLockRescan,FALSE);
-	if (m_Flags.is(flNeedRescan)) 
+	m_iLockRescan--;  VERIFY(m_iLockRescan>=0);
+	if ((0==m_iLockRescan)&&m_Flags.is(flNeedRescan)) 
     	rescan_pathes();
 }
 

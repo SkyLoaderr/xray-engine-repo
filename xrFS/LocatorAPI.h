@@ -96,16 +96,16 @@ public:
     CFS_PathNotificator*		FThread;
 	enum{
     	flNeedRescan			= (1<<0),
-        flLockRescan			= (1<<1),
-		flBuildCopy				= (1<<2),
-		flReady					= (1<<3),
-		flEBuildCopy			= (1<<4),
-        flEventNotificator      = (1<<5),
-		flTargetFolderOnly		= (1<<6),
-		flCacheFiles			= (1<<7),
-		flScanAppRoot			= (1<<8),
+		flBuildCopy				= (1<<1),
+		flReady					= (1<<2),
+		flEBuildCopy			= (1<<3),
+        flEventNotificator      = (1<<4),
+		flTargetFolderOnly		= (1<<5),
+		flCacheFiles			= (1<<6),
+		flScanAppRoot			= (1<<7),
     };    
     Flags32						m_Flags;
+    int							m_iLockRescan;
     void						rescan_path		(LPCSTR full_path, BOOL bRecurse);
     void						rescan_pathes	();
     void						check_pathes	();

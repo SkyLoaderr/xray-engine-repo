@@ -334,19 +334,17 @@ public:
 		R.z = s1 * (m[2][0] * V1.x + m[2][1] * V1.y + m[2][2] * V1.z) + V2.z;
 		return *this;
 	}
-	IC SelfRef MTxV(Tvector& R, const Tvector& V1) const
+	IC void MTxV(Tvector& R, const Tvector& V1) const
 	{
 		R.x = (m[0][0] * V1.x + m[1][0] * V1.y + m[2][0] * V1.z);
 		R.y = (m[0][1] * V1.x + m[1][1] * V1.y + m[2][1] * V1.z);
 		R.z = (m[0][2] * V1.x + m[1][2] * V1.y + m[2][2] * V1.z);
-		return *this;
 	}
-	IC SelfRef MTxVpV(Tvector& R, const Tvector& V1, const Tvector& V2) const
+	IC void MTxVpV(Tvector& R, const Tvector& V1, const Tvector& V2) const
 	{
 		R.x = (m[0][0] * V1.x + m[1][0] * V1.y + m[2][0] * V1.z + V2.x);
 		R.y = (m[0][1] * V1.x + m[1][1] * V1.y + m[2][1] * V1.z + V2.y);
 		R.z = (m[0][2] * V1.x + m[1][2] * V1.y + m[2][2] * V1.z + V2.z);
-		return *this;
 	}
 	IC SelfRef MTxVmV(Tvector& R, const Tvector& V1, const Tvector& V2) const
 	{

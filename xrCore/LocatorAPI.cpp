@@ -100,10 +100,12 @@ CLocatorAPI::CLocatorAPI()
 	SYSTEM_INFO			sys_inf;
 	GetSystemInfo		(&sys_inf);
 	dwAllocGranularity	= sys_inf.dwAllocationGranularity;
+    m_iLockRescan		= 0;
 }
 
 CLocatorAPI::~CLocatorAPI()
 {
+	VERIFY				(0==m_iLockRescan);
 }
 
 void CLocatorAPI::Register		(LPCSTR name, u32 vfs, u32 ptr, u32 size_real, u32 size_compressed, u32 modif)
@@ -981,7 +983,7 @@ void CLocatorAPI::set_file_age(LPCSTR nm, u32 age)
     _utimbuf	tm;
     tm.actime	= age;
     tm.modtime	= age;
-    R_ASSERT2	(0==_utime(nm,&tm),"Can't set file age.");
+    R_ASSERT3	(0==_utime(nm,&tm),"Can't set file age.",nm);
     
     // update record
 	files_it I 		= file_find_it(nm);
@@ -1030,8 +1032,11 @@ void  CLocatorAPI::rescan_pathes()
 
 void CLocatorAPI::check_pathes()
 {
-	if (m_Flags.is(flNeedRescan)&&(!m_Flags.is(flLockRescan))) 
-    	rescan_pathes();
+	if (m_Flags.is(flNeedRescan)&&(0==m_iLockRescan)){
+    	lock_rescan		();
+    	rescan_pathes	();
+    	unlock_rescan	();
+    }
 }
 
 void CLocatorAPI::register_archieve(LPCSTR path)
