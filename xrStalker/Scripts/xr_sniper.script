@@ -65,6 +65,7 @@ function near_point_with_bit(point, patrol_path, bit)
         end
     end
 
+    printf("___________camper point is %d", index)
 	return index
 end
 
