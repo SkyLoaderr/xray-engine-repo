@@ -57,7 +57,7 @@ function load_dialog:InitControls()
 						     width = 128, 
 						     height = 300}
 	info_rect.x = self.right_align_x - info_rect.width
-	local btn_load_rect   = {x = self.left_aling_x,
+	local btn_load_rect   = {x = self.left_align_x,
 							 y = 0,
 							 width  = self.btn_rect.width,
 							 height = self.btn_rect.height}
