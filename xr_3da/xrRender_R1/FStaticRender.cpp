@@ -345,12 +345,8 @@ void	CRender::Render		()
 
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
-	RCache.set_xform_world			(Fidentity);
 
 	// Sorting by SSA and changes minimizations
-	for (u32 pr=0; pr<4; pr++)
-	{
-
 		if (1==pr)			{
 			RCache.set_xform_world	(Fidentity);
 			Details->Render			(Device.vCameraPosition);
@@ -366,7 +362,6 @@ void	CRender::Render		()
 			RCache.set_xform_world	(Fidentity);
 			L_Shadows->render		();
 		}
-	}
 
 	// LODs
 	r_dsgraph_render_lods	();
