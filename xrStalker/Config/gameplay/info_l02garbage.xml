@@ -22,6 +22,8 @@
 	<info_portion id="gar_dolg_help_kill_rush"></info_portion>
 	<info_portion id="gar_dolg_warning_done"></info_portion>
 	<info_portion id="gar_dolg_access_rostok"></info_portion>
+	<info_portion id="gar_dolg_access_rostok_friend"></info_portion>
+	<info_portion id="gar_dolg_access_rostok_superfriend"></info_portion>
 
 
   <!-- Драм-момент -->
