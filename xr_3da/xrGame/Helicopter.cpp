@@ -198,6 +198,12 @@ void
 CHelicopter::UpdateCL()
 {
 	inherited::UpdateCL	();
+	
+	if(PPhysicsShell())
+	{
+		PPhysicsShell()->InterpolateGlobalTransform(&XFORM());
+		return;
+	};
 
 	m_movementMngr.onFrame( XFORM(),Device.fTimeDelta );
 
@@ -246,7 +252,7 @@ CHelicopter::shedule_Update(u32	time_delta)
 
 	if ( GetfHealth() <= 0.0f )
 	{//die
-
+		PPhysicsShell()=P_build_Shell	(this,false);
 	}
 
 /*	if(state()==CHelicopter::eMovingByAttackTraj)
