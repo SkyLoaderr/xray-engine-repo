@@ -123,7 +123,7 @@ void CShaderTools::SelectPreviewObject(int p){
         case 1: fn="editor\\ShaderTest_Box"; 	break;
         case 2: fn="editor\\ShaderTest_Sphere"; break;
         case 3: fn="editor\\ShaderTest_Teapot";	break;
-        case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,true,0,fn); if (!fn) return; break;
+        case -1: fn=m_EditObject?m_EditObject->GetName():""; fn=TfrmChoseItem::SelectObject(false,0,fn); if (!fn) return; break;
         default: THROW2("Failed select test object.");
     }
     m_EditObject = Lib.GetEditObject(fn);

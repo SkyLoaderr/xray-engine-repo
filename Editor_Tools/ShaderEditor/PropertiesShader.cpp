@@ -426,7 +426,7 @@ void __fastcall TfrmShaderProperties::PMItemClick(TObject *Sender)
         	if (mi->MenuIndex==0){
             	LPCSTR name = TfrmChoseItem::SelectTexture(false,tex);
 //S оставить нужные фолдеры
-            	if (strcmp(tex,name)!=0){
+            	if (name&&name[0]&&strcmp(tex,name)!=0){
 					strcpy(tex,name);
 		            item->ColumnText->Strings[0]= name;
 			    	Tools.Modified();
