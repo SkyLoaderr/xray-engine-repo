@@ -73,6 +73,7 @@ SERVER_ENTITY_DECLARE_BEGIN2(CSE_ALifeTrader,CSE_ALifeDynamicObjectVisual,CSE_AL
 	virtual CSE_Abstract			*init					();
 	virtual CSE_Abstract			*base					();
 	virtual const CSE_Abstract		*base					() const;
+	virtual void					on_surge				();
 	int 							supplies_count;
 			void 	__stdcall		OnSuppliesCountChange	(PropValue* sender);
 

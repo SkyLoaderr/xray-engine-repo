@@ -287,6 +287,12 @@ const CSE_Abstract *CSE_ALifeTrader::base	() const
 	return						(inherited1::base());
 }
 
+void CSE_ALifeTrader::on_surge				()
+{
+	inherited1::on_surge		();
+	m_tpOrderedArtefacts.clear	();
+}
+
 void CSE_ALifeTrader::STATE_Write			(NET_Packet &tNetPacket)
 {
 	inherited1::STATE_Write		(tNetPacket);
@@ -1492,6 +1498,7 @@ void CSE_ALifeHumanAbstract::on_surge				()
 	m_baVisitedVertices.clear	();
 	m_tpPath.clear				();
 	m_dwCurNode					= u32(-1);
+//	m_tpKnownCustomers.clear	();
 }
 
 void CSE_ALifeHumanAbstract::STATE_Write	(NET_Packet &tNetPacket)

@@ -39,16 +39,14 @@ void CALifeSurgeManager::surge		()
 	}
 #endif
 	
+	random().seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 	m_alive_spawn_objects.assign		(spawns().header().count(),false);
 	
+	// update all the objects
 	D_OBJECT_P_MAP::const_iterator		I = objects().objects().begin();
 	D_OBJECT_P_MAP::const_iterator		E = objects().objects().end();
 	for ( ; I != E; ++I)
 		(*I).second->on_surge			();
-
-	tasks().clear						();
-
-	random().seed						(u32(CPU::GetCycleCount() & 0xffffffff));
 	
 	generate_anomalies					();
 	generate_anomaly_map				();

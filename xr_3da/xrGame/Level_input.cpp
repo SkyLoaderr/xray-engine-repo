@@ -4,6 +4,7 @@
 #include "entity_alive.h"
 #include "game_sv_single.h"
 #include "alife_simulator.h"
+#include "alife_simulator_header.h"
 #include "level_graph.h"
 
 #include "../fdemorecord.h"
@@ -145,23 +146,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 		break;
 
 	case DIK_F9:{
-		CStalkerMovementManager* move = smart_cast<CStalkerMovementManager*>(Objects.FindObjectByName("m_stalker_e"));
-		if (!move)
-			return;
-
-		move->enable_movement(false);
-		move->enable_movement(true);
-//		ai().level_graph().set_start_point();
-//		if (!Objects.FindObjectByName("m_stalker_e0000") || !Objects.FindObjectByName("localhost/dima"))
-//			return;
-//		if (!m_bSynchronization) {
-//			m_bSynchronization	= true;
-//			ai().level_graph().select_cover_point();
-//			m_bSynchronization	= false;
-//		}
-//		luabind::functor<void>	functor;
-//		ai().script_engine().functor("alife_test.set_switch_online",functor);
-//		functor(0,true);
+		if (!ai().get_alife())
+			break;
+		const_cast<CALifeSimulatorHeader&>(ai().alife().header()).set_state(ALife::eZoneStateSurge);
+		break;
 	}
 		return;
 	case DIK_F10:{
