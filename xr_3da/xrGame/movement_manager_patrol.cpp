@@ -18,7 +18,11 @@ void CMovementManager::process_patrol_path()
 				CPatrolPathManager::select_point(Position(),CLevelPathManager::m_dest_vertex_id);
 				if (CPatrolPathManager::failed())
 					break;
-				m_path_state		= ePathStateBuildLevelPath;
+				if (CPatrolPathManager::completed()) {
+					m_path_state	= ePathStatePathCompleted;
+					break;
+				}else
+					m_path_state	= ePathStateBuildLevelPath;
 				if (time_over())
 					break;
 			}
@@ -73,7 +77,7 @@ void CMovementManager::process_patrol_path()
 						m_path_state	= ePathStateContinueLevelPath;
 						if (CLevelPathManager::completed()) {
 							m_path_state	= ePathStateSelectPatrolPoint;
-							if (CPatrolPathManager::completed())
+							if (CPatrolPathManager::completed()) 
 								m_path_state	= ePathStatePathCompleted;
 						}
 					}
