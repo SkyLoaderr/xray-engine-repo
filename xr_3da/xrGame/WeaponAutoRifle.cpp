@@ -133,7 +133,7 @@ void CWeaponAutoRifle::OnShot		(BOOL bHUDView)
 		if (S)			S->Shot();
 	}
 	m_pHUD->animPlay	(mhud_shots[Random.randI(mhud_shots.size())],FALSE);
-	pSounds->Play3D		(sndShot,vLastFP);
+	pSounds->Play3DAtPos(sndShot,vLastFP);
 }
 void CWeaponAutoRifle::OnEmptyClick	(BOOL bHUDView)
 {
@@ -193,9 +193,9 @@ void CWeaponAutoRifle::Update		(float dt, BOOL bHUDView)
 	// sound fire loop
 	inherited::Update			(dt,bHUDView);
 	UpdateFP					(bHUDView);
-	if (sndShow.feedback)		sndShow.feedback->SetPosition	(vLastFP);
-	if (sndHide.feedback)		sndHide.feedback->SetPosition	(vLastFP);
-	if (sndFireLoop.feedback)	sndFireLoop.feedback->SetPosition	(vLastFP);
+	if (sndShow.feedback)		sndShow.feedback->SetPosition		(vLastFP);
+	if (sndHide.feedback)		sndHide.feedback->SetPosition		(vLastFP);
+	if (sndShot.feedback)		sndShot.feedback->SetPosition		(vLastFP);
 	if (sndReload.feedback)		sndReload.feedback->SetPosition		(vLastFP);
 	if (sndEmptyClick.feedback)	sndEmptyClick.feedback->SetPosition	(vLastFP);
 }
