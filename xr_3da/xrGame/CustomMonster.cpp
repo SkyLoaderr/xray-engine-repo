@@ -441,7 +441,7 @@ void CCustomMonster::Exec_Visibility	( float dt )
 	R_ASSERT			(pSector);
 	objSET				seen;
 	seen.clear			();
-	pSector->GetObjects	(Frustum,seen,GetQualifier(),&id_Team);
+	pSector->GetObjects	(Frustum,eye_matrix.c,mFull,seen,GetQualifier(),&id_Team);
 	Device.Statistic.AI_Vis_Query.End	();
 
 	// 4. Visibility processing
