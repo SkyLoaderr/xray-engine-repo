@@ -787,6 +787,7 @@ function yaw_degree( v1, v2 )
 end
 
 //¬ращает вектор вокруг оси y против часовой стрелки
+
 function vector_rotate_y (v, angle)
     angle = angle * 0.017453292519943295769236907684886
     local c = math.cos (angle)
