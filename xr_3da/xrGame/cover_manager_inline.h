@@ -12,10 +12,10 @@ IC	bool CCoverManager::edge_vertex		(u32 index)
 {
 	CLevelGraph::CVertex	*v = ai().level_graph().vertex(index);
 	return					(
-		!ai().level_graph().valid_vertex_id(v->link(0)) ||
-		!ai().level_graph().valid_vertex_id(v->link(1)) ||
-		!ai().level_graph().valid_vertex_id(v->link(2)) ||
-		!ai().level_graph().valid_vertex_id(v->link(3))
+		(!ai().level_graph().valid_vertex_id(v->link(0)) && (v->cover(0) < 17)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(1)) && (v->cover(1) < 17)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(2)) && (v->cover(2) < 17)) ||
+		(!ai().level_graph().valid_vertex_id(v->link(3)) && (v->cover(3) < 17))
 	);
 }
 
@@ -24,7 +24,7 @@ IC	bool CCoverManager::cover			(CLevelGraph::CVertex *v, u32 index0, u32 index1)
 	return					(
 		ai().level_graph().valid_vertex_id(v->link(index0)) &&
 		ai().level_graph().valid_vertex_id(ai().level_graph().vertex(v->link(index0))->link(index1)) &&
-		temp[ai().level_graph().vertex(v->link(index0))->link(index1)]
+		m_temp[ai().level_graph().vertex(v->link(index0))->link(index1)]
 	);
 }
 

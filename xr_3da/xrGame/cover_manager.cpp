@@ -24,12 +24,12 @@ void CCoverManager::compute_static_cover	()
 {
 	xr_delete				(m_covers);
 	m_covers				= xr_new<CPointQuadTree>(ai().level_graph().header().box(),ai().level_graph().header().cell_size()*.5f,65536,65536);
-	temp.resize				(ai().level_graph().header().vertex_count());
+	m_temp.resize			(ai().level_graph().header().vertex_count());
 
 	for (u32 i=0, n = ai().level_graph().header().vertex_count(); i<n; ++i)
-		temp[i]				= edge_vertex(i);
+		m_temp[i]			= edge_vertex(i);
 
 	for (u32 i=0; i<n; ++i)
-		if (temp[i] && critical_cover(i))
+		if (m_temp[i] && critical_cover(i))
 			m_covers->insert(xr_new<CCoverPoint>(ai().level_graph().vertex_position(ai().level_graph().vertex(i)),i));
 }

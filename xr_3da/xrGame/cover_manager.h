@@ -18,7 +18,7 @@ public:
 
 protected:
 	CPointQuadTree		*m_covers;
-	xr_vector<bool>		temp;
+	xr_vector<bool>		m_temp;
 
 protected:
 	IC		bool					edge_vertex			(u32 index);
