@@ -6,24 +6,14 @@
 //. following "include" section directly copied from PracticalPSM.cpp
 //. why nVidia (or Gary :) dislike precompiled headers? :(
 #define STRICT
-#include <Windows.h>
-#include <commctrl.h>
 #include <math.h>
 #include <D3DX9.h>
-#include <d3dx9math.h>
-#include <d3dx9effect.h>
-#include <d3dx9shader.h>
 #include <DX9SDKSampleFramework/DX9SDKSampleFramework.h>
-#include <shared/GetFilePath.h>
 #pragma warning(disable : 4786)
 #include <vector>
 #pragma warning(disable : 4786)
 #include <assert.h>
-//#include <shared/NVFileDialog.h>
-//#include "MouseUIs.h"
 #include "PracticalPSM.h"
-//#include "Util.h"
-//#include "Bounding.h"
 
 #include "common.h"
 
@@ -50,10 +40,10 @@ void	xform_array		(vector3* dst, const vector3* src, const matrix& m, int count)
 {
 	for (int p=0; p<count; p++)	dst[p] = xform(src[p],m);
 }
-void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, int count) 
+void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m, size_t count) 
 {
 	min = max = xform(ps[0],m);
-	for (int i=1; i<count; i++)
+	for (size_t i=1; i<count; i++)
 	{
 		const vector3	p = xform(ps[i],m);
 		for (int j=0; j<3; j++)
@@ -66,7 +56,7 @@ void	calc_xaabb		(vector3& min, vector3 &max, const vector3* ps, const matrix& m
 // refit to unit cube (in D3D way :)
 // this operation calculates a scale translate matrix that
 // maps the two extreme points min and max into (-1,-1,0) and (1,1,1)
-matrix	calc_refit		(vector3& min, vector3& max)
+matrix	calc_refit		(const vector3& min, const vector3& max)
 {
 	matrix	refit;
 	vector3	size			=	max - min;
@@ -76,7 +66,7 @@ matrix	calc_refit		(vector3& min, vector3& max)
 	matrix	translate,scale;
 	D3DXMatrixTranslation	(&translate,-center.x,-center.y,-center.z);		//*. translate center to (0,0,0)
 	D3DXMatrixScaling		(&scale,	2.f/size.x,2.f/size.y,1.f/size.z);	//*. scale: sx=2,sy=2,sz=1
-	D3DXMatrixMultiply		(&refit,	&translate, &scale);					//*. final: first-translate, then scale
+	D3DXMatrixMultiply		(&refit,	&translate, &scale);				//*. final: first-translate, then scale
 	return refit;
 }
 
@@ -90,9 +80,9 @@ struct	DumbClipper
 	vector<D3DXPLANE>	planes;
 	BOOL				clip	(vector3& p0, vector3& p1)		// returns TRUE if result meaningfull
 	{
-		float	t,denum;
+		float	denum;
 		vector3	D;
-		for (int it=0; it<planes.size(); it++)
+		for (int it=0; it<int(planes.size()); it++)
 		{
 			D3DXPLANE&	P		= planes			[it];
 			float		cls0	= D3DXPlaneDotCoord	(&P,&p0);
@@ -112,6 +102,7 @@ struct	DumbClipper
 				if (denum!=0) p1 = - D * cls1 / denum;
 			}
 		}
+		return	true;
 	}
 	void				clipboxes(vector<vector3>& dst, vector<BoundingBox>& src, matrix& xf)
 	{
@@ -119,7 +110,7 @@ struct	DumbClipper
 
 		dst.clear		();
 		dst.reserve		(src.size()*12*2);
-		for (int it=0; it<src.size(); it++)	{
+		for (int it=0; it<int(src.size()); it++)	{
 			BoundingBox&	bb		= src[it];
 			for (int e=0; e<12; e++)	{
 				vector3		p0		= xform(bb.point(edgetable[e][0]),xf);
@@ -163,7 +154,7 @@ public:
 public:
 	void				compute_planes	()
 	{
-		for (int it=0; it<polys.size(); it++)
+		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&			P	= polys[it];
 			vector3			t1	= points[P.points[0]]-points[P.points[1]], t2 = points[P.points[0]]-points[P.points[2]];
@@ -176,7 +167,7 @@ public:
 	{
 		// Planes and Export
 		compute_planes	();
-		for (int it=0; it<polys.size(); it++)
+		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&			P	= polys[it];
 			dest.planes.push_back(D3DXPLANE(P.planeN.x,P.planeN.y,P.planeN.z,P.planeD));
@@ -186,14 +177,14 @@ public:
 	{
 		// COG
 		vector3	cog(0,0,0);
-		for		(int it=0; it<points.size(); it++)	cog+=points[it];
+		for		(int it=0; it<int(points.size()); it++)	cog+=points[it];
 		cog		/= float(points.size());
 
 		// planes
 		compute_planes	();
 
 		// remove faceforward polys, build list of edges -> find open ones
-		for (int it=0; it<polys.size(); it++)
+		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&	base		= polys	[it];
 			assert	(base.classify(cog)<0);					// debug
@@ -202,11 +193,11 @@ public:
 
 			// register edges
 			vector<int>&	plist		= polys[it].points;
-			for (int p=0; p<plist.size(); p++)
+			for (int p=0; p<int(plist.size()); p++)
 			{
 				_edge	E		(plist[p],plist[ (p+1)%plist.size() ], marker);
 				bool	found	= false;
-				for (int e=0; e<edges.size(); e++)	
+				for (int e=0; e<int(edges.size()); e++)	
 					if (edges[e].equal(E))	{ edges[e].counter += marker; found=true; break; }
 				if		(!found)	edges.push_back	(E);
 			}
@@ -219,7 +210,7 @@ public:
 		}
 
 		// Extend model to infinity, the volume is not capped, so this is indeed up to infinity
-		for (int e=0; e<edges.size(); e++)
+		for (int e=0; e<int(edges.size()); e++)
 		{
 			if	(edges[e].counter != 0)	continue;
 			_edge&		E		= edges[e];
@@ -227,15 +218,16 @@ public:
 			points.push_back	(points[E.p1]-direction);
 			polys.push_back		(_poly());
 			_poly&		P		= polys.back();	
+			int			pend	= int(points.size());
 			P.points.push_back	(E.p0);
 			P.points.push_back	(E.p1);
-			P.points.push_back	(points.size()-1);
-			P.points.push_back	(points.size()-2);
+			P.points.push_back	(pend-1);
+			P.points.push_back	(pend-2);
 		}
 
 		// Reorient planes (try to write more inefficient code :)
 		compute_planes	();
-		for (int it=0; it<polys.size(); it++)
+		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&	base				= polys	[it];
 			if (base.classify(cog)>0)	reverse(base.points.begin(),base.points.end());
@@ -243,7 +235,7 @@ public:
 		compute_planes	();
 
 		// Export
-		for (int it=0; it<polys.size(); it++)
+		for (int it=0; it<int(polys.size()); it++)
 		{
 			_poly&			P	= polys[it];
 			dest.planes.push_back(D3DXPLANE(P.planeN.x,P.planeN.y,P.planeN.z,P.planeD));
