@@ -301,11 +301,11 @@ BOOL CWeaponRPG7Grenade::net_Spawn(LPVOID DC)
 		//m_pPhysicsShell->setDensity			(8000.f);
 		m_pPhysicsShell->setMass			(m_mass);
 		//m_pPhysicsShell->Activate			(XFORM(),0,XFORM());
-		m_pPhysicsShell->Activate			();
+		//m_pPhysicsShell->Activate			();
 		m_pPhysicsShell->mDesired.identity	();
 		m_pPhysicsShell->fDesiredStrength	= 0.f;
 		m_pPhysicsShell->SetAirResistance(.000f, 0.f);
-		m_pPhysicsShell->Deactivate();
+		//m_pPhysicsShell->Deactivate();
 	}
 	return l_res;
 }
