@@ -24,8 +24,7 @@ void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/
 	SCurrentAnimationInfo &info = MotionMan.cur_anim_info();
 	
 	if (MotionMan.PrepareAnimation()) {
-		info.blend		= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), bone_part, TRUE, vfPlayEndCallBack, this);
-	//	Msg("Time = [%u], anim_name = [%s]", Level().timeServer(), smart_cast<CSkeletonAnimated*>(Visual())->LL_MotionDefName_dbg(info.blend->motionID));
+		info.blend		= MotionMan.m_tpCurAnim->PlayCycle(smart_cast<CSkeletonAnimated*>(Visual()), m_default_bone_part, TRUE, vfPlayEndCallBack, this);
 	}
 
 	// установить скорость текущей анимации
@@ -37,11 +36,10 @@ void CBaseMonster::SelectAnimation(const Fvector &/**_view/**/, const Fvector &/
 
 void CBaseMonster::AA_CheckHit()
 {
-	SAAParam params;
-	
 	if (!EnemyMan.get_enemy()) return;
-	const CObject *obj = smart_cast<const CObject *>(EnemyMan.get_enemy());
+	const CEntityAlive *enemy = EnemyMan.get_enemy();
 
+	SAAParam params;
 	if (!MotionMan.AA_TimeTest(params))  return;
 	
 	CSoundPlayer::play(MonsterSpace::eMonsterSoundAttackHit);
@@ -49,7 +47,7 @@ void CBaseMonster::AA_CheckHit()
 	bool should_hit = true;
 	// определить дистанцию до врага
 	Fvector d;
-	d.sub(obj->Position(),Position());
+	d.sub(enemy->Position(),Position());
 	if (d.magnitude() > params.dist) should_hit = false;
 	
 	// проверка на  Field-Of-Hit
@@ -63,19 +61,18 @@ void CBaseMonster::AA_CheckHit()
 	float to	= angle_normalize(my_h + params.foh.to_yaw);
 	
 	if (!is_angle_between(h, from, to)) should_hit = false;
-	
+
 	from	= angle_normalize(my_p + params.foh.from_pitch);
 	to		= angle_normalize(my_p + params.foh.to_pitch);
 
 	if (!is_angle_between(p, from, to)) should_hit = false;
 
-	const CEntityAlive *entity = EnemyMan.get_enemy();
-	if (should_hit) HitEntity(entity, params.hit_power, params.impulse, params.impulse_dir);
+	if (should_hit) HitEntity(enemy, params.hit_power, params.impulse, params.impulse_dir);
 	
 	// если жертва убита - добавить в список трупов	
-	if (!entity->g_Alive()) CorpseMemory.add_corpse(entity);
+	if (!enemy->g_Alive()) CorpseMemory.add_corpse(enemy);
 
-	if (AS_Active()) AS_Check(should_hit);
-	MotionMan.AA_UpdateLastAttack(m_dwCurrentTime);
+	MeleeChecker.on_hit_attempt		(should_hit);
+	MotionMan.AA_UpdateLastAttack	(Level().timeServer());
 }
 
