@@ -42,10 +42,10 @@ void CLevel::IR_OnKeyboardPress(int key)
 		return;
 	case DIK_F6: {
 		if (GameID() != GAME_SINGLE) return;
-		if (!autosave_manager().ready_for_autosave()) {
-			Msg("! Cannot save the game right now!");
-			return;
-		}
+//		if (!autosave_manager().ready_for_autosave()) {
+//			Msg("! Cannot save the game right now!");
+//			return;
+//		}
 		NET_Packet					net_packet;
 		net_packet.w_begin			(M_SAVE_GAME);
 		net_packet.w_stringZ		("quick_save");
