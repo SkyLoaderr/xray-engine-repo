@@ -1,9 +1,9 @@
 #ifndef __CLENSFLARE_HPP
 #define __CLENSFLARE_HPP
 
-class CInifile;
+class ENGINE_API CInifile;
 
-class CLensFlare
+class ENGINE_API CLensFlare
 #ifndef _EDITOR
 	:public pureDeviceCreate,
 	public pureDeviceDestroy
@@ -18,6 +18,7 @@ protected:
 	Fvector			vecLight;
 	Fvector			vecX, vecY, vecDir, vecAxis, vecCenter;
 	BOOL			bRender;
+
 	// variable
     Fcolor			LightColor;
 	float			fGradientValue;
