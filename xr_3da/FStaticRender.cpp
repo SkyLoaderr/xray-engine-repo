@@ -428,7 +428,6 @@ void	CRender::Render		()
 	}
 
 	// Environment render
-	// pCreator->Environment.RenderFirst		();
 	
 	// NORMAL			*** mostly the main level
 	// Perform sorting based on ScreenSpaceArea
@@ -495,6 +494,8 @@ void	CRender::Render		()
 		}
 
 		if (1==pr)			{
+			pCreator->Environment.RenderFirst	();
+
 			// NORMAL-matrix		*** actors and dyn. objects
 			mapMatrix.traverseANY	(matrix_L1);
 			mapMatrix.clear			();

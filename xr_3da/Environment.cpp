@@ -214,6 +214,8 @@ void CEnvironment::RenderFirst()
 {
 
 	if (pSkydome) {
+		::Render->rmFar				();
+
 		Fmatrix						mSky;
 		mSky.translate				(Device.vCameraPosition);
 		Device.set_xform_world		(mSky);
@@ -241,6 +243,8 @@ void CEnvironment::RenderFirst()
 			pSkydome->Render			(1.f);
 			break;
 		}
+
+		::Render->rmNormal			();
 	}
 
 	// Sun sources
