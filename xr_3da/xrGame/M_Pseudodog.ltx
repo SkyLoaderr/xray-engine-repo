@@ -3,9 +3,9 @@
 ;	anim			| time[0..1] | hit_power | impulse | impulse_dir (x,y,z)  |	Field of hit_test  (left,right, top, bottom) |	Test Dist
 ;---------------------------------------------------------------------------------------------------------------------------------------------
 ;Bite
-stand_attack_0	=	  	0.45,		25,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
+stand_attack_0	=	  	0.35,		25,		    100,        0.0, 1.0, 1.0,		 -1.6, 1.6, -1.6, 1.6,								  3.5
 ;Jump attack
-jump_glide_0	=		0.45,		10,		    350,        0.0, 1.0, 3.0,		 -1.8, 1.8, -1.8, 1.8,								  3.8
+jump_glide_0	=		0.55,		10,		    350,        0.0, 1.0, 3.0,		 -1.8, 1.8, -1.8, 1.8,								  3.8
 
 [m_pseudodog_attack_effector]
 
@@ -107,11 +107,11 @@ Accel_Calm				= 2.5
 Accel_Aggressive		= 20.0
 
 ;attack parameters
-MinAttackDist		= 0.4	;2.1
-MaxAttackDist		= 2.0
+MinAttackDist		= 0.6	
+MaxAttackDist		= 1.8
 
-as_min_dist				= 0.2
-as_step					= 0.4
+as_min_dist				= 0.1
+as_step					= 0.3
 
 transparency_threshold  = 0.25
 
