@@ -11,6 +11,8 @@
 #include "..\feel_touch.h"
 #include "entity.h"
 #include "phmovementcontrol.h"
+#include "ai_space.h"
+#include "ai_commands.h"
 
 class CCustomMonster : 
 	public CEntityAlive, 
