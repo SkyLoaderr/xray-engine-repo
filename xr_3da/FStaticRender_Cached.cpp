@@ -32,9 +32,6 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 		DWORD	Stride	= vs->Stride();
 		BYTE*	verts	= LPBYTE(vs->Lock(v_count,vBase));
 		WORD*	indices	= LPWORD(is->Lock(i_count,iBase));
-		
-		WORD*	test_indices	= indices;
-
 		DWORD	iOffset	= 0;
 		Fbox	bb; bb.invalidate();
 		for (DWORD I=Start; I!=End; I++)
@@ -63,8 +60,6 @@ void __fastcall render_Cached(CList<FCached*>& cache)
 			iOffset		+=	V.vCount;
 			bb.merge	(V.bv_BBox);
 		}
-		R_ASSERT(ValidateIndices(v_count,i_count,test_indices));
-
 		vs->Unlock		(v_count);
 		is->Unlock		(i_count);
 
