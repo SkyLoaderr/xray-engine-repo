@@ -17,9 +17,8 @@ end
 ]]
 
 function main()
-for i in 1,100000	do
-		printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
-	end
+	printf("spam log qwekfjqhwkjbvfqldjkvhqljkefvhqlkerjh")
+
 end
 --[[
 function main_()
