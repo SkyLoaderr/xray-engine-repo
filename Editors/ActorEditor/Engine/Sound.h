@@ -130,7 +130,7 @@ struct	ref_sound
 		\sa play(), etc
 	*/
 	IC void					stop 					( );
-
+	IC void					set_2D_mode				( );
 	IC void					set_position			( const Fvector &pos);
 	IC void					set_frequency			( float freq);
 	IC void					set_range				( float min, float max );
