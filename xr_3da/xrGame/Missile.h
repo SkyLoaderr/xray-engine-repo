@@ -48,8 +48,8 @@ public:
 
 	virtual bool Action(s32 cmd, u32 flags);
 
-	u32 State();
-	virtual u32 State(u32 state);
+	IC u32		 State			()				{return m_state;}
+	virtual u32	 State			(u32 state);
 	virtual void OnStateSwitch	(u32 S);
 protected:
 	virtual void UpdateFP();

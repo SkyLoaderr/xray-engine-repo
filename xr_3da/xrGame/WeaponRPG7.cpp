@@ -24,6 +24,9 @@ void CWeaponRPG7::Load	(LPCSTR section)
 {
 	inherited::Load			(section);
 	fMaxZoomFactor			= pSettings->r_float	(section,"max_zoom_factor");
+
+	m_sGrenadeBoneName		= pSettings->r_string	(section,"grenade_bone");
+	m_sHudGrenadeBoneName	= pSettings->r_string	(hud_sect,"grenade_bone");
 }
 
 BOOL CWeaponRPG7::net_Spawn(LPVOID DC) 
@@ -33,9 +36,10 @@ BOOL CWeaponRPG7::net_Spawn(LPVOID DC)
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	CKinematics* V = PKinematics(m_pHUD->Visual()); R_ASSERT(V);
-	V->LL_GetBoneInstance(V->LL_BoneID("grenade_0")).set_callback(GrenadeCallback, this);
+	V->LL_GetBoneInstance(V->LL_BoneID(*m_sHudGrenadeBoneName)).set_callback(GrenadeCallback, this);
+	
 	V = PKinematics(Visual()); R_ASSERT(V);
-	V->LL_GetBoneInstance(V->LL_BoneID("grenade")).set_callback(GrenadeCallback, this);
+	V->LL_GetBoneInstance(V->LL_BoneID(*m_sGrenadeBoneName)).set_callback(GrenadeCallback, this);
 
 	m_hideGrenade = !iAmmoElapsed;
 	if(iAmmoElapsed && !m_pGrenade) 

@@ -48,6 +48,8 @@ void CInventoryOwner::reload				(LPCSTR section)
 void CInventoryOwner::reinit				()
 {
 	CAttachmentOwner::reinit	();
+
+	inventory().Clear			();
 	inventory().m_pOwner		= this;
 	m_trade_storage->m_pOwner	= this;
 
@@ -56,7 +58,6 @@ void CInventoryOwner::reinit				()
 
 	m_bTalking					= false;
 	m_pTalkPartner				= NULL;
-	inventory().Clear			();
 }
 
 BOOL CInventoryOwner::net_Spawn		(LPVOID DC)

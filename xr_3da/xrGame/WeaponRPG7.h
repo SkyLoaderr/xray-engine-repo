@@ -7,6 +7,8 @@ class CWeaponRPG7 :	public CWeaponCustomPistol
 {
 private:
 	typedef CWeaponCustomPistol inherited;
+
+	friend CWeaponRPG7Grenade;
 public:
 	CWeaponRPG7(void);
 	virtual ~CWeaponRPG7(void);
@@ -25,9 +27,13 @@ public:
 
 	static void	__stdcall GrenadeCallback(CBoneInstance*);
 
-	
+
+protected:
 	CWeaponRPG7Grenade *m_pGrenade;
 	Fvector *m_pGrenadePoint;
 	float	fMaxZoomFactor;
-	bool m_hideGrenade;
+	bool	m_hideGrenade;
+
+	ref_str	m_sGrenadeBoneName;
+	ref_str	m_sHudGrenadeBoneName;
 };

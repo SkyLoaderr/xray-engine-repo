@@ -34,7 +34,6 @@ void CMissile::reinit		()
 	m_fMaxForce			= 200.f;
 	m_fForceGrowSpeed	= 50.f;
 	m_dwDestroyTime		= 0xffffffff;
-	m_pInventory		= 0;
 	m_bPending			= false;
 	m_fake_missile		= NULL;
 	hud_mode			= FALSE;
@@ -80,9 +79,6 @@ void CMissile::Load(LPCSTR section)
 
 BOOL CMissile::net_Spawn(LPVOID DC) 
 {
-#pragma todo("Dima to Yura : find out why m_pInventory != NULL on net_spawn after net_destroy")
-	//R_ASSERT(!m_pInventory);
-	m_pInventory = 0;
 	BOOL l_res = inherited::net_Spawn(DC);
 
 	CSE_Abstract						*abstract = (CSE_Abstract*)DC;
@@ -97,14 +93,16 @@ BOOL CMissile::net_Spawn(LPVOID DC)
 	m_throw_direction.set(0.0f, 1.0f, 0.0f);
 	m_throw_matrix.identity();
 	///////////////////////////////////
+
+	m_state = MS_HIDDEN;
+
 	return l_res;
 }
 
 void CMissile::net_Destroy() 
 {
-	//R_ASSERT(!m_pInventory);
 	inherited::net_Destroy();
-	m_pInventory = 0;
+
 	DestroySound(sndPlaying);
 	m_fake_missile = 0;
 }
@@ -203,11 +201,6 @@ void CMissile::UpdateCL()
 	else
 		if (H_Parent())
 			UpdateXForm();
-}
-
-u32 CMissile::State() 
-{
-	return m_state;
 }
 
 u32 CMissile::State(u32 state) 
@@ -483,7 +476,13 @@ bool CMissile::Action(s32 cmd, u32 flags)
         	if(flags&CMD_START) 
 			{
 				m_throw = false;
-				if(State() == MS_IDLE) SwitchState(MS_THREATEN);
+				if(State() == MS_IDLE) 
+					SwitchState(MS_THREATEN);
+				else if(State() == MS_READY)
+				{
+					m_throw = true; 
+				}
+
 			} 
 			else if(State() == MS_READY || State() == MS_THREATEN
 				    || State() == MS_IDLE) 

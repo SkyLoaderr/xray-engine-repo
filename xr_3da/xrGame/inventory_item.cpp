@@ -294,6 +294,8 @@ bool CInventoryItem::Detach(const char* item_section_name)
 /////////// network ///////////////////////////////
 BOOL CInventoryItem::net_Spawn			(LPVOID DC)
 {
+	VERIFY(!m_pInventory);
+
 	if (!frame_check(m_dwFrameSpawn))
 		return	(TRUE);
 
@@ -316,6 +318,9 @@ void CInventoryItem::net_Destroy		()
 {
 	if (!frame_check(m_dwFrameDestroy))
 		return;
+
+	//инвентарь которому мы принадлежали
+	m_pInventory = NULL;
 
 	inherited::net_Destroy	();
 }
@@ -597,6 +602,8 @@ void CInventoryItem::reinit		()
 {
 	if (!frame_check(m_dwFrameReload))
 		return;
+
+	m_pInventory		= 0;
 
 	inherited::reinit	();
 }

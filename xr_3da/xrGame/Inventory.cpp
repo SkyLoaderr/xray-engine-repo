@@ -68,6 +68,23 @@ CInventory::~CInventory()
 {
 }
 
+
+
+void CInventory::Clear()
+{
+	m_all.clear();
+	m_ruck.clear();
+	m_belt.clear();
+	
+	for(u32 i=0; i<m_slots.size(); i++)
+	{
+		m_slots[i].m_pIItem = NULL;
+	}
+	
+
+	m_pOwner = NULL;
+}
+
 //разместились ли вещи в рюкзаке
 bool CInventory::FreeRuckRoom()
 {
@@ -557,13 +574,6 @@ float CInventory::TotalWeight() const
 					weight += (*it)->Weight();
 	
 	return weight;
-}
-
-void CInventory::Clear()
-{
-	m_all.clear();
-	m_ruck.clear();
-	m_belt.clear();
 }
 
 u32 CInventory::dwfGetSameItemCount(LPCSTR caSection)

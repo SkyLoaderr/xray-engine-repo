@@ -160,6 +160,9 @@ void CHudItem::OnAnimationEnd()
 
 void CHudItem::SwitchState(u32 S)
 {
+	//!!!
+	Msg("SwitchState(%d)",S);
+
 	if (Local()/* && (S!=NEXT_STATE)*/)	
 	{
 		// !!! Just single entry for given state !!!
