@@ -51,7 +51,6 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 			
 			// Stage1 - Base texture
 			C.StageBegin		();
-			C.StageSET_Address	(D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_MODULATE,		D3DTA_DIFFUSE);
 			C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
@@ -59,7 +58,6 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 			
 			// Stage2 - Second texture
 			C.StageBegin		();
-			C.StageSET_Address	(D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
 			C.StageSET_TMC		(oT2_Name,oT2_xform,"$null",0);
@@ -75,7 +73,6 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 			
 			// Stage1 - Base texture
 			C.StageBegin		();
-			C.StageSET_Address	(D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 			C.StageSET_TMC		(oT_Name,oT_xform,"$null",0);
@@ -83,7 +80,6 @@ void	CBlender_BmmD::Compile	(CBlender_Compile& C)
 			
 			// Stage2 - Second texture
 			C.StageBegin		();
-			C.StageSET_Address	(D3DTADDRESS_WRAP);
 			C.StageSET_Color	(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
 			C.StageSET_Alpha	(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);
 			C.StageSET_TMC		(oT2_Name,oT2_xform,"$null",0);

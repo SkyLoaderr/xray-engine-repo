@@ -41,15 +41,12 @@ void CBlender_Editor_Wire::Compile	(CBlender_Compile& C)
 
 		// Stage0 - Base texture
 		C.StageBegin		();
-		{
-			C.StageSET_Address	(D3DTADDRESS_WRAP);
-			C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-			C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
-			C.Stage_Texture		("$null");
-			C.Stage_Matrix		("$null",	0);
-			C.Stage_Constant	("$null");
-//			C.Stage_Constant	("$base0",	"$user$wire");
-		}
+		C.StageSET_Color	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+		C.StageSET_Alpha	(D3DTA_DIFFUSE,	  D3DTOP_MODULATE,		D3DTA_TFACTOR);
+		C.Stage_Texture		("$null");
+		C.Stage_Matrix		("$null",	0);
+		C.Stage_Constant	("$null");
+//		C.Stage_Constant	("$base0",	"$user$wire");
 		C.StageEnd			();
 	}
 	C.PassEnd			();

@@ -72,7 +72,6 @@ void CBlender_default_aref::Compile(CBlender_Compile& C)
 				
 				// Stage1 - Base texture
 				C.StageBegin			();
-				C.StageSET_Address		(D3DTADDRESS_WRAP);
 				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG2,	D3DTA_CURRENT);	// color from lmap
 				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);	// alpha from base
 				C.StageSET_TMC			(oT_Name, oT_xform, "$null", 0);
@@ -93,7 +92,6 @@ void CBlender_default_aref::Compile(CBlender_Compile& C)
 				
 				// Stage1 - Base texture
 				C.StageBegin			();
-				C.StageSET_Address		(D3DTADDRESS_WRAP);
 				C.StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_MODULATE2X,	D3DTA_CURRENT);
 				C.StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_CURRENT);
 				C.StageSET_TMC			(oT_Name, oT_xform, "$null", 0);

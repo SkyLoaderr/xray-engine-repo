@@ -114,7 +114,7 @@ void	CBlender_Compile::StageSET_TMC		(LPCSTR T, LPCSTR M, LPCSTR C, int UVW_chan
 
 void	CBlender_Compile::StageTemplate_LMAP0	(CBlender_Compile& C)
 {
-	StageSET_Address	(D3DTADDRESS_WRAP);
+	StageSET_Address	(D3DTADDRESS_CLAMP);
 	StageSET_Color		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 	StageSET_Alpha		(D3DTA_TEXTURE,	  D3DTOP_SELECTARG1,	D3DTA_DIFFUSE);
 	StageSET_TMC		("$base1","$null","$null",1);
