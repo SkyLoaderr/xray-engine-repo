@@ -52,6 +52,7 @@ function main()
 	local prof_vrode_nikogo = sound_object("scripts\\stalker_prof\\prof_vrode_nikogo")
 	local prof_vzdoh = sound_object("scripts\\stalker_prof\\prof_vzdoh")
 	local prof_valim_otsuda = sound_object("scripts\\stalker_prof\\prof_valim_otsuda")
+	local prof_zaslujil_eto_zasranec = sound_object("scripts\\stalker_prof_replics\\prof_zaslujil_eto_zasranec")
 
 	event:clear_callback(true)
 	event:clear_callback(false)
@@ -137,6 +138,15 @@ function main()
 
 	stalker1:script	(false, this.script_name())
 	stalker2:script	(false, this.script_name())
+
+	while true do
+		if actor.health <= 0 and stalker1.health > 0 then
+		wait(2000)			
+			prof_zaslujil_eto_zasranec:play_at_pos		(stalker1,stalker1:position(),0);
+			break
+		end
+		wait()			
+	end
 
 end
 
