@@ -1,12 +1,12 @@
 module("monsters")
-local trader = nil
 
-function init()
-	trader = Trader ( "escape_trader", "trader_zone", script_name())
-end
+function main()
+	local trader = Trader ( "escape_trader", "trader_zone", script_name())
 
-function execute()
-	trader:process()
+	while(true) do
+		trader:process()
+		wait()
+	end
 end
 
 local actor_id   = 0
