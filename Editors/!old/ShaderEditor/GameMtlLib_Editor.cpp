@@ -22,7 +22,8 @@ void SGameMtl::FillProp		(PropItemVec& items, TElTreeItem* owner)
 	// flags                                                      	
 	V=PHelper.CreateFlag<Flags32>	(items,	"Flags\\Dynamic",			&Flags,	flDynamic);	V->Owner()->Enable(FALSE);
 	PHelper.CreateFlag<Flags32>		(items,	"Flags\\Passable",			&Flags,	flPassable);
-    PHelper.CreateFlag<Flags32>		(items,	"Flags\\Breakable",			&Flags,	flBreakable);
+    if (Flags.is(flDynamic))
+	    PHelper.CreateFlag<Flags32>	(items,	"Flags\\Breakable",			&Flags,	flBreakable);
     PHelper.CreateFlag<Flags32>		(items,	"Flags\\Bounceable",		&Flags,	flBounceable);
     PHelper.CreateFlag<Flags32>		(items,	"Flags\\Skidmark",			&Flags,	flSkidmark);
     PHelper.CreateFlag<Flags32>		(items,	"Flags\\Bloodmark",			&Flags,	flBloodmark);

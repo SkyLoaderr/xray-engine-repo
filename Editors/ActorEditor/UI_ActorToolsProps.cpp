@@ -356,7 +356,8 @@ void CActorTools::FillBoneProperties(PropItemVec& items, LPCSTR pref, ListItem* 
         PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Center Of Mass"),			&BONE->center_of_mass, 	-10000.f, 10000.f);
         V=PHelper.CreateVector		(items, FHelper.PrepareKey(pref,"Bone\\Bind Position"),				&BONE->_RestOffset(),	-10000.f, 10000.f);	V->OnChangeEvent = OnBindTransformChange;
         V=PHelper.CreateAngle3		(items, FHelper.PrepareKey(pref,"Bone\\Bind Rotation"),				&BONE->_RestRotate());						V->OnChangeEvent = OnBindTransformChange;
-        V=PHelper.CreateFlag<Flags16>(items,FHelper.PrepareKey(pref,"Bone\\Flags\\No Pickable"),		&BONE->shape.flags, SBoneShape::sfNoPickable);
+        PHelper.CreateFlag<Flags16>	(items, FHelper.PrepareKey(pref,"Bone\\Flags\\No Pickable"),		&BONE->shape.flags, SBoneShape::sfNoPickable);
+        PHelper.CreateFlag<Flags16>	(items, FHelper.PrepareKey(pref,"Bone\\Flags\\Remove After Break"),	&BONE->shape.flags, SBoneShape::sfRemoveAfterBreak);
 		V=PHelper.CreateToken<u16>	(items,	FHelper.PrepareKey(pref,"Bone\\Shape\\Type"),				&BONE->shape.type, shape_types);			V->OnChangeEvent = OnShapeTypeChange;
         switch (BONE->shape.type){
         case SBoneShape::stBox:

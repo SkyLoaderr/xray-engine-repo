@@ -321,6 +321,14 @@ class ECORE_API ATextValue: public CustomValue<AnsiString>{
 public:
 						ATextValue		(TYPE* val):CustomValue<AnsiString>(val){};
     virtual LPCSTR		GetText			(TOnDrawTextEvent OnDrawText);
+    virtual bool		ApplyValue		(LPVOID val)
+    {
+        if (0!=xr_strcmp(value->c_str(),LPCSTR(val))){
+            *value		= LPCSTR(val);
+            return		true;
+        }
+        return 			false;
+    }
 };
 
 class ECORE_API RTextValue: public CustomValue<ref_str>{

@@ -1388,7 +1388,7 @@ void TProperties::ApplyLWText()
 			ATextValue* V		= dynamic_cast<ATextValue*>(prop->GetFrontValue()); R_ASSERT(V);
 			AnsiString new_val	= edText->Text;
 			prop->OnAfterEdit	(&new_val);
-            if (prop->ApplyValue(&new_val)){
+            if (prop->ApplyValue(new_val.c_str())){
             	Modified();
             }
             item->ColumnText->Strings[0] = prop->GetText();
@@ -1489,7 +1489,7 @@ void TProperties::ExecTextEditor(PropItem* prop)
             prop->OnBeforeEdit	(&edit_val);
             if (TfrmText::RunEditor(edit_val,AnsiString(prop->Item()->Text).c_str(),false)){
                 prop->OnAfterEdit	(&edit_val);
-                if (prop->ApplyValue(&edit_val))
+                if (prop->ApplyValue(edit_val.c_str()))
                     Modified();
                 prop->Item()->ColumnText->Strings[0] = prop->GetText();
             }

@@ -135,6 +135,13 @@ void CSpawnPoint::SSpawnData::FillProp(LPCSTR pref, PropItemVec& items)
 void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int priority, bool strictB2F)
 {
     CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
+	if (V&&V->visual)			::Render->model_Render(V->visual,parent,priority,strictB2F,1.f);
+    if (bSelected&&(1==priority)&&(false==strictB2F)){
+        CSE_Motion* M			= dynamic_cast<CSE_Motion*>(m_Data);
+        if (M&&M->animator)		M->animator->DrawPath();
+    }
+}
+/*
     if (bSelected&&(1==priority)&&(false==strictB2F)){
         if (V&&V->visual){
             CKinematics* K			= PKinematics(V->visual);
@@ -147,8 +154,7 @@ void CSpawnPoint::SSpawnData::Render(bool bSelected, const Fmatrix& parent,int p
         CSE_Motion* M			= dynamic_cast<CSE_Motion*>(m_Data);
         if (M&&M->animator)		M->animator->DrawPath();
     }
-    if (V->visual) ::Render->model_Render(V->visual,parent,priority,strictB2F,1.f);
-}
+*/
 void CSpawnPoint::SSpawnData::OnFrame()
 {
     CSE_Visual* V				= dynamic_cast<CSE_Visual*>(m_Data);
