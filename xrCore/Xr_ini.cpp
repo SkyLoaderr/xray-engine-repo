@@ -139,6 +139,7 @@ void	CInifile::Load(IReader* F, LPCSTR path)
 			if (*Current.Name && Current.Name[0])
 			{
 				RootIt I		= std::lower_bound(DATA.begin(),DATA.end(),*Current.Name,sect_pred);
+				if ((I!=DATA.end())&&(I->Name==Current.Name)) Debug.fatal("Duplicate section '%s' found.",*Current.Name);
 				DATA.insert		(I,Current);
 				Current.clear	();
 			}
