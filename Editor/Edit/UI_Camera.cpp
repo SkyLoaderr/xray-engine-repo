@@ -246,11 +246,12 @@ void CUI_Camera::MouseRayFromPoint( Fvector& start, Fvector& direction, const Ip
 
 void CUI_Camera::ZoomExtents(const Fbox& bb){
 	Fvector C,D,P;
-    float R,H;
+    float R,H1,H2;
     bb.getsphere(C,R);
 	D.mul(m_CamMat.k,-1);
-    H = 2.5f*R*tanf(m_FOV/m_Aspect*0.5f);
-    m_Position.direct(C,D,H);
+    H1 = R/sinf(m_FOV*0.5f);
+    H2 = R/sinf(m_FOV*0.5f/m_Aspect);
+    m_Position.direct(C,D,_MAX(H1,H2));
 	m_Target.set(C);
 
 	BuildCamera();
