@@ -4,7 +4,6 @@
 
 #include "script_lua_helper.h"
 #include "script_debugger.h"
-#include "script_file.h"
 
 CDbgLuaHelper*	CDbgLuaHelper::m_pThis	= NULL;
 lua_State*		CDbgLuaHelper::L		= NULL;
@@ -22,32 +21,6 @@ extern "C" void PrintDebugString(const char* str)
 {
 	CScriptDebugger::GetDebugger()->Write(str);
 }
-
-#ifdef SCRIPT_FILE
-bool CDbgLuaHelper::LoadDebugLines(CScriptFile* pPF)
-{
-	lua_State* L = lua_open();
-//	BOOL bOk = luaL_loadfile(L , pPF->GetOutputPathNameExt() )==0;
-	BOOL bOk = luaL_loadfile(L , pPF->GetName() )==0;
-
-	if ( bOk )
-	{
-		pPF->RemoveAllDebugLines();
-
-		int		size=lua_getlineinfo(L,NULL);
-		int*	lines=new int[size];
-		lua_getlineinfo(L,lines);
-
-		for(int i=0;i<size;i++)
-			pPF->AddDebugLine(lines[i]);
-		delete lines;	
-	}
-
-	lua_close(L);
-
-	return bOk;
-}
-#endif
 
 void CDbgLuaHelper::UnPrepareLua(lua_State* l, int idx)
 {

@@ -355,17 +355,9 @@ void CScriptDebugger::WaitForReply(bool bWaitForModalResult)//UINT nMsg)
 	bool mr = false;
 	do{
 		CMailSlotMsg msg;
-		u32 t = GetTickCount();
 		while (true){
 			if(CheckMailslotMessage(m_mailSlot,msg)) break;
 			Sleep(100);
-/*
-			if( bWaitForModalResult && (t+3000)<GetTickCount() ){
-				CMailSlotMsg m;
-				m.w_int(DMSG_ACTIVATE_IDE);
-				SendMessageToIde(m);
-				t = GetTickCount();
-			};*/
 		};
 		R_ASSERT(msg.GetLen());
 		

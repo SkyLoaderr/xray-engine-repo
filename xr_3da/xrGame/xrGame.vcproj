@@ -5047,18 +5047,6 @@
 						RelativePath=".\script_debugger_threads.h">
 					</File>
 					<File
-						RelativePath=".\script_debugger_utils.cpp">
-					</File>
-					<File
-						RelativePath=".\script_debugger_utils.h">
-					</File>
-					<File
-						RelativePath=".\script_file.cpp">
-					</File>
-					<File
-						RelativePath=".\script_file.h">
-					</File>
-					<File
 						RelativePath=".\script_lua_helper.cpp">
 					</File>
 					<File
