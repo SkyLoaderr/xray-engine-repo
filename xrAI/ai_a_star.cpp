@@ -29,13 +29,13 @@ void vfLoadSearch()
 {
 	fSize2		= _sqr(fSize = m_header.size)/4;
 	fYSize2		= _sqr(fYSize = (float)(m_header.size_y/32767.0))/4;
-	u32 S1	= (m_header.count)*sizeof(TNode);
+	u32 S1		= (m_header.count)*sizeof(TNode);
 	taHeap		= (TNode *)xr_malloc(S1);
-	ZeroMemory(taHeap,S1);
-	u32 S2	= (m_header.count)*sizeof(TIndexNode);
+	ZeroMemory	(taHeap,S1);
+	u32 S2		= (m_header.count)*sizeof(TIndexNode);
 	tpaIndexes	= (TIndexNode *)xr_malloc(S2);
-	ZeroMemory(tpaIndexes,S2);
-	Msg("* AI path-finding structures: %d K",(S1 + S2)/(1024));
+	ZeroMemory	(tpaIndexes,S2);
+	Msg			("* AI path-finding structures: %d K",(S1 + S2)/(1024));
 }
 
 void vfUnloadSearch()
@@ -89,7 +89,7 @@ IC void vfUpdateSuccessors(TNode *tpList, float dDifference)
 	}
 }
 
-void vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
+void vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance)
 {
 	// initialization
 	dwAStarStaticCounter++;
@@ -119,6 +119,12 @@ void vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance)
 		
 		// finding the node being estimated as the cheapest among the opened ones
 		tpBestNode = tpOpenedList->tpOpenedNext;
+
+		// checking if distance is too big
+		if (tpBestNode->f >= fMaxDistance) {
+			fDistance = MAX_VALUE;
+			return;
+		}
 		
 		// remove that node from the opened list and put that node to the closed list
 		tpOpenedList->tpOpenedNext = tpBestNode->tpOpenedNext;

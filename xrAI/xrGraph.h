@@ -9,6 +9,21 @@
 #ifndef __XRAI_XR_GRAPH__
 #define __XRAI_XR_GRAPH__
 
+typedef struct tagSGraphEdge {
+	u32		dwVertexNumber;
+	float	fPathDistance;
+} SGraphEdge;
+
+typedef struct tagSGraphVertex {
+	Fvector				tPoint;
+	u32					dwNodeID;
+	unsigned char		ucVertexType;
+	u32					dwNeighbourCount;
+	tagSGraphEdge		*tpaEdges;
+} SGraphVertex;
+
+extern vector<SGraphVertex>	tpaGraph;		// graph
+
 void xrBuildGraph(LPCSTR name);
 
 #endif

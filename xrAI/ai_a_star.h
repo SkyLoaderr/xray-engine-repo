@@ -39,6 +39,6 @@ typedef struct tagTIndexNode {
 
 extern void		vfLoadSearch();
 extern void		vfUnloadSearch();
-extern void		vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance);
+extern void		vfFindTheShortestPath(u32 dwStartNode, u32 dwGoalNode, float &fDistance, float fMaxDistance);
 
 #endif

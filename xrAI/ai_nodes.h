@@ -9,6 +9,12 @@
 #ifndef __XRAI_AI_NODES__
 #define __XRAI_AI_NODES__
 
+#include "compiler.h"
+#include "xrThread.h"
+
+#include "ai_nodes.h"
+#include "xrGraph.h"
+
 extern CStream*					vfs;			// virtual file
 extern hdrNODES					m_header;		// m_header
 extern BYTE*					m_nodes;		// virtual nodes DATA array
@@ -42,5 +48,54 @@ IC	void UnpackPosition(Fvector& Pdest, const NodePosition& Psrc)
 	Pdest.y = (float(Psrc.y)/65535)*m_header.size_y + m_header.aabb.min.y;
 	Pdest.z = float(Psrc.z)*m_header.size;
 }
+
+class CNodeThread : public CThread
+{
+	u32	m_dwStart;
+	u32 m_dwEnd;
+
+	u32 dwfFindCorrespondingNode(Fvector &tPoint)
+	{
+		NodePosition	P;
+		PackPosition	(P,tPoint);
+		short min_dist	= 32767;
+		int selected	= -1;
+		for (int i=0; i<(int)m_header.count; i++) {
+			NodeCompressed& N = *m_nodes_ptr[i];
+			if (u_InsideNode(N,P)) {
+				Fvector	DUP, vNorm, v, v1, P0;
+				DUP.set(0,1,0);
+				pvDecompress(vNorm,N.plane);
+				Fplane PL; 
+				UnpackPosition(P0,N.p0);
+				PL.build(P0,vNorm);
+				v.set(tPoint.x,P0.y,tPoint.z);	
+				PL.intersectRayPoint(v,DUP,v1);
+				int dist = iFloor((v1.y - tPoint.y)*(v1.y - tPoint.y));
+				if (dist < min_dist) {
+					min_dist = (short)dist;
+					selected = i;
+				}
+			}
+		}
+		return(selected);
+	}
+
+public:
+	CNodeThread	(u32 ID, u32 dwStart, u32 dwEnd) : CThread(ID)
+	{
+		m_dwStart = dwStart;
+		m_dwEnd	  = dwEnd;
+	}
+	
+	virtual void Execute()
+	{
+		u32 dwSize = m_dwEnd - m_dwStart + 1;
+		thProgress = 0.0f;
+		for (int i = (int)m_dwStart; i<(int)m_dwEnd; thProgress = float(++i - (int)m_dwStart)/dwSize)
+			tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint);
+		thProgress = 1.0f;
+	}
+};
 
 #endif

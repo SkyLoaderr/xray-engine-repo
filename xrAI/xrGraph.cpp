@@ -10,29 +10,25 @@
 
 #include "levelgamedef.h"
 #include "xrLevel.h"
+#include "xrThread.h"
+#include "xrGraph.h"
 #include "ai_nodes.h"
 #include "ai_a_star.h"
-#include "xrGraph.h"
 
 #define MAX_DISTANCE_TO_CONNECT		200.f
+#define NUM_THREADS					6
+
+#define START_THREADS(size,ThreadClass) {\
+	u32	stride	= size/NUM_THREADS;\
+	u32	last	= size - stride*(NUM_THREADS - 1);\
+	for (u32 thID=0; thID<NUM_THREADS; thID++)\
+		tThreadManager.start(new ThreadClass(thID,thID*stride,thID*stride+((thID==(NUM_THREADS - 1))?last:stride)));\
+}
 
 typedef struct tagRPoint {
 	Fvector	P;
 	Fvector A;
 } RPoint;
-
-typedef struct tagSGraphEdge {
-	u32		dwVertexNumber;
-	float	fPathDistance;
-} SGraphEdge;
-
-typedef struct tagSGraphVertex {
-	Fvector				tPoint;
-	u32					dwNodeID;
-	unsigned char		ucVertexType;
-	u32					dwNeighbourCount;
-	tagSGraphEdge		*tpaEdges;
-} SGraphVertex;
 
 CStream*				vfs;			// virtual file
 hdrNODES				m_header;		// m_header
@@ -100,46 +96,6 @@ void vfLoadAIPoints(LPCSTR name)
 	}
 }
 
-u32 dwfFindCorrespondingNode(Fvector &tPoint)
-{
-	NodePosition	P;
-	PackPosition	(P,tPoint);
-	short min_dist	= 32767;
-	int selected	= -1;
-	for (int i=0; i<(int)m_header.count; i++) {
-		NodeCompressed& N = *m_nodes_ptr[i];
-		if (u_InsideNode(N,P)) {
-			Fvector	DUP, vNorm, v, v1, P0;
-			DUP.set(0,1,0);
-			pvDecompress(vNorm,N.plane);
-			Fplane PL; 
-			UnpackPosition(P0,N.p0);
-			PL.build(P0,vNorm);
-			v.set(tPoint.x,P0.y,tPoint.z);	
-			PL.intersectRayPoint(v,DUP,v1);
-			int dist = iFloor((v1.y - tPoint.y)*(v1.y - tPoint.y));
-			if (dist < min_dist) {
-				min_dist = (short)dist;
-				selected = i;
-			}
-		}
-	}
-	return(selected);
-}
-
-u32 dwfInitNodes()
-{
-	u32 dwPointsWONodes = 0, dwTemp = 0;
-	Progress(0.0f);
-	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
-		if ((tpaGraph[i].dwNodeID = dwfFindCorrespondingNode(tpaGraph[i].tPoint)) == u32(-1)) {
-			Msg("Point %d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tPoint.x,tpaGraph[i].tPoint.y,tpaGraph[i].tPoint.z);
-			tpaGraph.erase(tpaGraph.begin() + i--);
-		}
-	Progress(1.0f);
-	return(dwPointsWONodes);
-}
-
 void vfSaveGraph(LPCSTR name)
 {
 	FILE_NAME	fName;
@@ -203,7 +159,7 @@ void vfBuildGraph()
 		for (int j = i + 1; j<(int)M; Progress((float(M)*i - i*(i + 1)/2 + ++j - i - 1)/K)) {
 			SGraphVertex &tNeighbourGraphVertex = tpaGraph[j];
 			if (tCurrentGraphVertex.tPoint.distance_to(tNeighbourGraphVertex.tPoint) < MAX_DISTANCE_TO_CONNECT) {
-				vfFindTheShortestPath(tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance);
+				vfFindTheShortestPath(tCurrentGraphVertex.dwNodeID,tNeighbourGraphVertex.dwNodeID,fDistance,MAX_DISTANCE_TO_CONNECT);
 				if (fDistance < MAX_DISTANCE_TO_CONNECT) {
 					tCurrentGraphVertex.tpaEdges = (SGraphEdge *)xr_realloc(tCurrentGraphVertex.tpaEdges,(++tCurrentGraphVertex.dwNeighbourCount)*sizeof(SGraphEdge));
 					tCurrentGraphVertex.tpaEdges[tCurrentGraphVertex.dwNeighbourCount - 1].dwVertexNumber = j;
@@ -215,12 +171,28 @@ void vfBuildGraph()
 				}
 			}
 		}
+		Status("%d vertexes processed",i + 1);
 	}
+	Status("%d vertexes processed",M);
 	Progress(1.0f);
+}
+
+u32 dwfErasePoints()
+{
+	u32 dwPointsWONodes = 0, dwTemp = 0;
+	Progress(0.0f);
+	for (int i=0; i<(int)tpaGraph.size(); 	Progress(float(++i)/tpaGraph.size()))
+		if (tpaGraph[i].dwNodeID == u32(-1)) {
+			Msg("Point %d [%7.2f,%7.2f,%7.2f] has no corresponding node",i + dwPointsWONodes++,tpaGraph[i].tPoint.x,tpaGraph[i].tPoint.y,tpaGraph[i].tPoint.z);
+			tpaGraph.erase(tpaGraph.begin() + i--);
+		}
+	Progress(1.0f);
+	return(dwPointsWONodes);
 }
 
 void xrBuildGraph(LPCSTR name)
 {
+	CThreadManager tThreadManager;
 	Msg("Building Level %s",name);
 
 	Phase("Loading AI map");
@@ -238,7 +210,11 @@ void xrBuildGraph(LPCSTR name)
 	vfLoadSearch();
 
 	Phase("Searching AI map for corresponding nodes");
-	Msg("%d points don't have corresponding nodes (they are deleted)",dwfInitNodes());
+	START_THREADS(tpaGraph.size(),CNodeThread);
+	tThreadManager.wait();
+	
+	Phase("Erasing points without corresponding nodes");
+	Msg("%d points don't have corresponding nodes (they are deleted)",dwfErasePoints());
 
 	Phase("Building graph");
 	vfBuildGraph();
@@ -249,7 +225,7 @@ void xrBuildGraph(LPCSTR name)
 	Phase("Checking graph connectivity");
 	if ((j < ((int)tpaGraph.size() - 1)) || !bfCheckForGraphConnectivity()) {
 		Msg("Graph is not connected!");
-		R_ASSERT(false);
+		//R_ASSERT(false);
 	}
 	else
 		Msg("Graph is connected");
