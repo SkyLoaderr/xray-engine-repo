@@ -67,7 +67,7 @@ typedef xr_vector<VERTEX_VECTOR>				VERTEX_VECTOR1;
 typedef xr_vector<VERTEX_VECTOR1>				VERTEX_VECTOR2;
 typedef xr_vector<CCellInfo>					CROSS_VECTOR;
 
-IC	CCellVertex get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
+IC	const CCellVertex &get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
 {
 	VERTEX_VECTOR::iterator	I = vertices.begin();
 	VERTEX_VECTOR::iterator	E = vertices.end();
@@ -76,7 +76,10 @@ IC	CCellVertex get_vertex_by_group_id(VERTEX_VECTOR &vertices, u32 group_id)
 			return			(*I);
 
 	NODEFAULT;
-	return					(CCellVertex(u32(-1),0));
+#ifdef DEBUG
+	static CCellVertex		last_result(u32(-1),0);
+	return					(last_result);
+#endif
 }
 
 IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECTOR &vertices, u32 group_id, u32 link, CROSS_VECTOR &cross, u8 use)
@@ -87,8 +90,9 @@ IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex, VERTEX_VECT
 	for ( ; I != E; ++I)
 		if (!(*I).m_mark && (_link == (*I).m_vertex_id)) {
 			(*I).m_mark		= group_id;
-			cross[_link].m_cell	= &*I;
-			cross[_link].m_use	|= use;
+			CCellInfo		&i = cross[_link];
+			i.m_cell		= &*I;
+			i.m_use			|= use;
 			vertex			= *I;
 			return			(true);
 		}
@@ -106,8 +110,9 @@ IC	bool connect(const CLevelGraph &level_graph, CCellVertex &vertex1, CCellVerte
 			if (link2 != (*I).m_vertex_id)
 				return		(false);
 			(*I).m_mark		= group_id;
-			cross[link2].m_cell	= &*I;
-			cross[link2].m_use	|= use;
+			CCellInfo		&i = cross[link2];
+			i.m_cell		= &*I;
+			i.m_use			|= use;
 			return			(true);
 		}
 	return					(false);
@@ -119,9 +124,10 @@ IC	void remove_mark(VERTEX_VECTOR &vertices, u32 group_id, CROSS_VECTOR &cross)
 	VERTEX_VECTOR::iterator	E = vertices.end();
 	for ( ; I != E; ++I)
 		if ((*I).m_mark == group_id) {
-			(*I).m_mark			= 0;
-			cross[(*I).m_vertex_id].m_cell	= 0;
-			cross[(*I).m_vertex_id].m_use	= 0;
+			(*I).m_mark		= 0;
+			CCellInfo		&i = cross[(*I).m_vertex_id];
+			i.m_cell		= 0;
+			i.m_use			= 0;
 			return;
 		}
 	NODEFAULT;
@@ -153,12 +159,11 @@ IC	void fill_mark(
 
 	VERTEX_VECTOR1				&vi = table[i];
 	for (u32 j2 = j + 1; j2<=max_x; ++j2)
-		if (vi[j2].empty() || !connect(level_graph,v,vi[j2],group_id,2,cross,up)) {
-			v					= get_vertex_by_group_id(vi[j2-1],group_id);
-			cross[v.m_vertex_id].m_use |= right;
+		if (vi[j2].empty() || !connect(level_graph,v,vi[j2],group_id,2,cross,up))
 			break;
-		}
 
+	v							= get_vertex_by_group_id(vi[j2-1],group_id);
+	cross[v.m_vertex_id].m_use	|= right;
 	bool						ok = true;
 
 	VERTEX_VECTOR1::iterator	_j2, j1, j1_1, i1_1_j1;
@@ -393,7 +398,7 @@ void test_hierarchy		(LPCSTR name)
 
 	Msg							("Total time %f (%d tests : %f)",CPU::cycles2seconds*float(f - s),TEST_COUNT,CPU::cycles2microsec*float(f - s)/float(TEST_COUNT));
 
-#if 1
+#if 0
 	CMemoryWriter				stream;
 	save_data					(sector_graph,stream);
 	stream.save_to				("x:\\sector_graph.dat");
