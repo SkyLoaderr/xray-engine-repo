@@ -159,6 +159,7 @@ public:
 
 	IC int					GetPort				()			{ return psNET_Port; };
 	virtual bool			DisconnectClient	(IClient* C);
+	virtual bool			DisconnectAddress	(char* Address);
 	virtual void			BanClient			(IClient* C, u32 BanTime);
 	virtual void			BanAddress			(char* Address, u32 BanTime);
 };

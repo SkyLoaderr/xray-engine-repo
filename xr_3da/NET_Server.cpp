@@ -535,6 +535,30 @@ bool			IPureServer::DisconnectClient	(IClient* C)
 	return true;
 };
 
+bool			IPureServer::DisconnectAddress	(char* Address)
+{
+	IClient* PlayersToDisconnect[256];
+	u32 NumPlayers = 0;
+	IBannedClient	tmpBanCl(Address, 0);
+	for (u32 it = 0; it<net_Players.size(); it++)
+	{
+		char ClAddress[4];
+		GetClientAddress(net_Players[it]->ID, ClAddress);
+		if (tmpBanCl == ClAddress)
+		{
+			PlayersToDisconnect[NumPlayers++] = net_Players[it];
+		};
+	};
+
+	if (!NumPlayers) return false;
+
+	for (it = 0; it<NumPlayers; it++)
+	{
+		DisconnectClient(PlayersToDisconnect[it]);
+	};
+	return true;
+};
+
 void			IPureServer::GetClientAddress	(IDirectPlay8Address* pClientAddress, char* Address)
 {
 	if (!Address) return;
@@ -597,3 +621,4 @@ void			IPureServer::BanAddress			(char* Address, u32 BanTime)
 	IBannedClient* pNewClient = xr_new<IBannedClient>(Address, BanTime);
 	if (pNewClient) BannedAddresses.push_back(pNewClient);
 };
+
