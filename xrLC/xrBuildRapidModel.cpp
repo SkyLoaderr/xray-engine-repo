@@ -25,7 +25,7 @@ void CBuild::BuildRapid()
 	}
 	Status			("Building OBB tree..");
 	RCAST_Model.BuildModel(CL.getV(),CL.getVS(),CL.getT(),CL.getTS());
-	Msg				("%d K memory usage",RCAST_Model.getMemoryUsage()/1024);
+	Msg				("%d K memory usage",RCAST_Model.MemoryUsage()/1024);
 	
 	// Saving for AI/DO usage
 	Status			("Saving...");
