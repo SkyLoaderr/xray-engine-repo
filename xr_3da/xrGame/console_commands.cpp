@@ -557,6 +557,7 @@ public:
 	}
 };
 
+
 //-----------------------------------------------------------------------
 class CCC_DemoRecord : public IConsole_Command
 {
@@ -828,7 +829,21 @@ public:
 		p_zone->m_effector.SetParam(type,value);
 	}
 };
-
+class CCC_PHIterations : public CCC_Integer {
+private: 
+int	value;
+public:
+		CCC_PHIterations(LPCSTR N) :
+		CCC_Integer(N,&value,0,500)
+		{};
+	  virtual void	Execute	(LPCSTR args)
+	  {
+		  CCC_Integer::Execute(args);
+		  dxWorld w;
+		  dWorldSetQuickStepNumIterations(&w,value);
+		  phIterations=value;
+	  }
+};
 
 void CCC_RegisterCommands()
 {
@@ -904,7 +919,7 @@ void CCC_RegisterCommands()
 
 	// Physics
 	CMD4(CCC_Integer,			"ph_fps",				&phFPS,			10,		100);
-	CMD4(CCC_Integer,			"ph_iterations",		&phIterations,	1,		50)	;
+	CMD1(CCC_PHIterations,		"ph_iterations");
 
 	CMD4( CCC_FloatBlock,		"ph_timefactor",		&phTimefactor,	0.0001f,1000.f);
 

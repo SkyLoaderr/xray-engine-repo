@@ -33,10 +33,9 @@ const dReal default_w_scale	=1.01f;
 const dReal	default_k_l		=0.0002f;//square resistance !!
 const dReal	default_k_w		=0.05f;
 
-
 #ifndef  ODE_SLOW_SOLVER
-const dReal world_cfm		=1.1363636e-008f;
-const dReal world_erp		=0.74545456f;
+const dReal world_cfm		=1.1363636e-006f;
+const dReal world_erp		=0.54545456f;
 #else
 const dReal world_cfm		=1.1363636e-006f;
 const dReal world_erp		=0.54545456f;
