@@ -62,6 +62,9 @@ protected:
 	virtual		bool				OnKeyboardPress			(int key);
 	virtual		bool				OnKeyboardRelease		(int key);
 
+	virtual		void				LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* pBuyMenu, PRESET_ITEMS* pPresetItems);
+	virtual		s16					GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID);
+
 public:
 	virtual		char*				getTeamSection			(int Team);
 	virtual	void					SetCurrentBuyMenu		();

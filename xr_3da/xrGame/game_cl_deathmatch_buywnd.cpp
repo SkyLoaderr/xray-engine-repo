@@ -15,6 +15,13 @@ static	u16 SlotsToCheck [] = {
 		OUTFIT_SLOT		,		// 5
 };
 
+s16	game_cl_Deathmatch::GetBuyMenuItemIndex		(u8 SlotID, u8 ItemID)
+{
+	R_ASSERT2(SlotID != 0xff && ItemID != 0xff, "Bad Buy Manu Item");
+	if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
+	s16	ID = (s16(SlotID) << 0x08) | s16(ItemID);
+	return ID;
+};
 
 void game_cl_Deathmatch::OnBuyMenu_Ok	()
 {
@@ -38,8 +45,9 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 		u8 ItemID = pCurBuyMenu->GetWeaponIndex(SlotsToCheck[s]);
 		if (ItemID == 0xff) continue;
 		u16 SlotID = SlotsToCheck[s];
-		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
-		s16	ID = (s16(SlotID) << 0x08) | s16(ItemID);
+//		if (SlotID == OUTFIT_SLOT) SlotID = APPARATUS_SLOT;
+//		s16	ID = (s16(SlotID) << 0x08) | s16(ItemID);
+		s16 ID = GetBuyMenuItemIndex(u8(SlotID), ItemID);
 		pCurPresetItems->push_back(ID);
 	}
 
@@ -47,7 +55,8 @@ void game_cl_Deathmatch::OnBuyMenu_Ok	()
 	{
 		u8 SectID, ItemID;
 		pCurBuyMenu->GetWeaponIndexInBelt(i, SectID, ItemID);
-		s16	ID = (s16(SectID) << 0x08) | s16(ItemID);
+//		s16	ID = (s16(SectID) << 0x08) | s16(ItemID);
+		s16 ID = GetBuyMenuItemIndex(SectID, ItemID);
 		pCurPresetItems->push_back(ID);
 	};	
 	//-------------------------------------------------------------------------------
@@ -138,7 +147,8 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 	//-----------------------------------------------------
 	pCurBuyMenu->SectionToSlot(SlotID, ItemID, true);
 	//-----------------------------------------------------
-	s16 BigID = (s16(SlotID) << 0x08) | s16(ItemID);
+//	s16 BigID = (s16(SlotID) << 0x08) | s16(ItemID);
+	s16 BigID = GetBuyMenuItemIndex(SlotID, ItemID);
 	s16 DesiredAddons = 0;
 	PRESET_ITEMS_it It = pPresetItems->begin();
 	PRESET_ITEMS_it Et = pPresetItems->end();
@@ -199,5 +209,29 @@ void game_cl_Deathmatch::CheckItem			(PIItem pItem, PRESET_ITEMS* pPresetItems)
 				}
 			}
 		};
+	};
+};
+
+void	game_cl_Deathmatch::LoadTeamDefaultPresetItems	(LPCSTR caSection, CUIBuyWeaponWnd* BuyMenu, PRESET_ITEMS* pPresetItems)
+{
+	if (!pSettings->line_exist(caSection, "default_items")) return;
+
+	pPresetItems->clear();
+
+	string256			ItemName;
+	string4096			DefItems;
+	// Читаем данные этого поля
+	std::strcpy(DefItems, pSettings->r_string(caSection, "default_items"));
+	u32 count	= _GetItemCount(DefItems);
+	// теперь для каждое имя оружия, разделенные запятыми, заносим в массив
+	for (u32 i = 0; i < count; ++i)
+	{
+		_GetItem(DefItems, i, ItemName);
+
+		u8 SlotID, ItemID;
+		pCurBuyMenu->GetWeaponIndexByName(ItemName, SlotID, ItemID);
+		if (SlotID == 0xff || ItemID == 0xff) continue;
+		s16 ID = GetBuyMenuItemIndex(SlotID, ItemID);
+		pPresetItems->push_back(ID);
 	};
 };

@@ -38,6 +38,9 @@ public:
 
 	virtual		void				OnRoundStart			();												// старт раунда
 	virtual		void				OnRoundEnd				(LPCSTR reason);								// конец раунда
+	virtual		bool				OnNextMap				();
+	virtual		void				OnPrevMap				();
+
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 	virtual		void				Update					();
 				void				KillPlayer				(ClientID id_who, u16 GameID);

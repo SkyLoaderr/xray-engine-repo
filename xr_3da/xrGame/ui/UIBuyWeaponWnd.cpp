@@ -198,7 +198,12 @@ void CUIBuyWeaponWnd::Init(LPCSTR strSectionName)
 
 	AttachChild(&UITopList[0]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 2, &UITopList[0]);
+	//-----------------------------------------------------
+	//чтобы нельзя было продать нож
 	UITopList[0].BlockCustomPlacement();
+	UITopList[0].EnableDoubleClick(false);
+	UITopList[0].Enable(false);
+	//-----------------------------------------------------
 
 	AttachChild(&UITopList[1]);
 	xml_init.InitDragDropList(uiXml, "dragdrop_list", 3, &UITopList[1]);

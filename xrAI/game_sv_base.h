@@ -31,6 +31,14 @@ public:
 	BOOL							sv_force_sync;
 	xr_vector<RPoint>				rpoints	[TEAM_COUNT];
 	
+	// Вектор имен скинов комманды
+	DEF_DEQUE(MAP_ROTATION_LIST,	std::string);
+
+	bool							m_bMapRotation;
+	bool							m_bMapNeedRotation;
+	MAP_ROTATION_LIST				m_pMapRotation_List;
+
+	virtual		void				SaveMapList				();
 /*	
 	// scripts
 	u64								m_qwStartProcessorTime;
@@ -43,8 +51,13 @@ public:
 	virtual		void				OnPlayerReady			(ClientID id_who)							   {};
 				void				GenerateGameMessage		(NET_Packet &P);
 
-	virtual		void				OnRoundStart			()									{}// старт раунда
-	virtual		void				OnRoundEnd				(LPCSTR reason)						{}// конец раунда
+	virtual		void				OnRoundStart			();									// старт раунда
+	virtual		void				OnRoundEnd				(LPCSTR reason);					// конец раунда
+
+	virtual		void				MapRotation_AddMap		(LPCSTR MapName);
+	virtual		bool				OnNextMap				()									{return false;}
+	virtual		void				OnPrevMap				()									{}
+	virtual		bool				SwitchToNextMap			()	{ return m_bMapNeedRotation; };
 
 public:
 									game_sv_GameState		();

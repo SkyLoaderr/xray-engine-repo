@@ -8,6 +8,7 @@
 #include "xrserver_objects_alife_monsters.h"
 #include "actor.h"
 #include "clsid_game.h"
+#include "../XR_IOConsole.h"
 
 u32		g_dwMaxCorpses = 10;
 
@@ -34,17 +35,13 @@ void	game_sv_mp::Update	()
 
 void game_sv_mp::OnRoundStart			()
 {
+	inherited::OnRoundStart();
+
 	m_CorpseList.clear();
 
 	switch_Phase	(GAME_PHASE_INPROGRESS);
 	++round;
-//---------------------------------------------------
-//	for (u32 i=0; i<m_dm_data.teams.size(); ++i)
-//	{
-//		teams[i].score			= 0;
-//		teams[i].num_targets	= 0;
-//	}
-//---------------------------------------------------
+
 	// clear "ready" flag
 	u32		cnt		= get_players_count	();
 	for		(u32 it=0; it<cnt; ++it)	
@@ -71,6 +68,8 @@ void game_sv_mp::OnRoundStart			()
 
 void game_sv_mp::OnRoundEnd				(LPCSTR reason)
 {
+	inherited::OnRoundEnd( reason );
+
 	switch_Phase		(GAME_PHASE_PENDING);
 	//send "RoundOver" Message To All clients
 	NET_Packet			P;
@@ -79,6 +78,7 @@ void game_sv_mp::OnRoundEnd				(LPCSTR reason)
 	P.w_u32				(GAME_EVENT_ROUND_END);
 	P.w_stringZ			(reason);
 	u_EventSend(P);
+	//-------------------------------------------------------
 }
 
 
@@ -449,4 +449,41 @@ void game_sv_mp::OnDestroyObject			(u16 eid_who)
 		}
 		else i++;
 	};
+};
+
+bool game_sv_mp::OnNextMap				()
+{
+	if (!m_bMapRotation) return false;
+	if (!m_pMapRotation_List.size()) return false;
+
+	std::string MapName = m_pMapRotation_List.front();
+	m_pMapRotation_List.pop_front();
+	m_pMapRotation_List.push_back(MapName);
+
+	MapName = m_pMapRotation_List.front();
+
+	Msg("Goint to level %s", MapName.c_str());
+
+	if (!stricmp(MapName.c_str(), Level().name().c_str())) return false;
+	string1024 Command;
+	sprintf(Command, "sv_changelevel %s", MapName.c_str());
+	Console->Execute(Command);
+	return true;
+};
+
+void game_sv_mp::OnPrevMap				()
+{
+	if (!m_bMapRotation) return;
+	if (!m_pMapRotation_List.size()) return;
+	
+	std::string MapName = m_pMapRotation_List.back();
+	m_pMapRotation_List.pop_back();
+	m_pMapRotation_List.push_front(MapName);
+
+	Msg("Goint to level %s", MapName.c_str());
+	if (!stricmp(MapName.c_str(), Level().name().c_str())) return;
+
+	string1024	Command;
+	sprintf(Command, "sv_changelevel %s", MapName.c_str());
+	Console->Execute(Command);
 };

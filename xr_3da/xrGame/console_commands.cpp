@@ -869,7 +869,13 @@ public:
 		{
 			xrClientData *l_pC = (xrClientData*)	Level().Server->client_Get	(it);
 			if (!l_pC) continue;
-			Msg("%d : %s", it+1, l_pC->ps->getName());
+			char Address[4];
+			Level().Server->GetClientAddress(l_pC->ID, Address);
+			Msg("%d : %s - %i.%i.%i.%i", it+1, l_pC->ps->getName(),
+				unsigned char(Address[0]), 
+				unsigned char(Address[1]), 
+				unsigned char(Address[2]), 
+				unsigned char(Address[3]));
 		};
 		Msg("------------------------");
 	};
@@ -880,6 +886,54 @@ public:
 	}
 };
 
+class CCC_AddMap : public IConsole_Command {
+public:
+	CCC_AddMap(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = false; };
+	virtual void Execute(LPCSTR args) 
+	{
+		char	MapName[256] = {0};
+		sscanf	(args,"%s", MapName);
+
+		Level().Server->game->MapRotation_AddMap(MapName);
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Adds map to map rotation list"); 
+	}
+};
+
+class CCC_NextMap : public IConsole_Command {
+public:
+	CCC_NextMap(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+
+		Level().Server->game->OnNextMap();
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Switch to Next Map in map rotation list"); 
+	}
+};
+
+class CCC_PrevMap : public IConsole_Command {
+public:
+	CCC_PrevMap(LPCSTR N) : IConsole_Command(N)  { bEmptyArgsHandled = true; };
+	virtual void Execute(LPCSTR args) 
+	{
+		if (!OnServer())	return;
+
+		Level().Server->game->OnPrevMap();
+	};
+
+	virtual void	Info	(TInfo& I)		
+	{
+		strcpy(I,"Switch to Previous Map in map rotation list"); 
+	}
+};
 
 
 class CCC_ChangeLevelGameType : public IConsole_Command {
@@ -1346,5 +1400,9 @@ void CCC_RegisterCommands()
 	CMD1(CCC_ChangeGameType,	"sv_changegametype"			);
 	CMD1(CCC_ChangeLevel,		"sv_changelevel"				);
 	CMD1(CCC_ChangeLevelGameType,		"sv_changelevelgametype"				);	
+
+	CMD1(CCC_AddMap,		"sv_addmap"				);	
+	CMD1(CCC_NextMap,		"sv_nextmap"				);	
+	CMD1(CCC_PrevMap,		"sv_prevmap"				);	
 }
 

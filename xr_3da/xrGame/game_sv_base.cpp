@@ -8,7 +8,9 @@
 #include "xrserver.h"
 #include "ai_space.h"
 #include "game_sv_event_queue.h"
+#include "../XR_IOConsole.h"
 
+#define		MAPROT_LIST				"maprot_list.ltx"
 // Main
 game_PlayerState*	game_sv_GameState::get_it					(u32 it)
 {
@@ -294,6 +296,8 @@ void game_sv_GameState::Create					(shared_str &options)
 	else m_fFriendlyFireModifier = 0.000001f;
 
 	m_RPointFreezeTime = get_option_i(*options, "rpfrz", 1) * 1000;
+
+	Console->ExecuteScript(MAPROT_LIST);
 }
 
 void	game_sv_GameState::assign_RP				(CSE_Abstract* E)
@@ -410,12 +414,20 @@ game_sv_GameState::game_sv_GameState()
 	m_server					= Level().Server;
 
 	m_event_queue = xr_new<GameEventQueue>();
+
+	m_bMapRotation = false;
+	m_bMapNeedRotation = false;
+	m_pMapRotation_List.clear();
 }
 
 game_sv_GameState::~game_sv_GameState()
 {
 	ai().script_engine().remove_script_process("game");
 	xr_delete(m_event_queue);
+
+	SaveMapList();
+
+	m_pMapRotation_List.clear();
 }
 /*
 ALife::_TIME_ID game_sv_GameState::GetGameTime()
@@ -569,3 +581,35 @@ RPoint game_sv_GameState::getRP (u16 team_idx, u32 rp_idx)
 void game_sv_GameState::teleport_object	(NET_Packet &packet, u16 id)
 {
 }
+
+
+void game_sv_GameState::MapRotation_AddMap		(LPCSTR MapName)
+{
+	m_pMapRotation_List.push_back(MapName);
+	m_bMapRotation = true;
+
+};
+
+void game_sv_GameState::OnRoundStart			()
+{ 
+	m_bMapNeedRotation = false;
+}// старт раунда
+
+void game_sv_GameState::OnRoundEnd				(LPCSTR reason)						
+{ 
+	if (stricmp(reason, "GAME_restarted") != NULL)
+		m_bMapNeedRotation = true; 
+}// конец раунда
+
+void game_sv_GameState::SaveMapList				()
+{
+	IWriter*		fs	= FS.w_open(MAPROT_LIST);
+	while(m_pMapRotation_List.size())
+	{
+		std::string MapName = m_pMapRotation_List.front();
+		m_pMapRotation_List.pop_front();
+
+		fs->w_printf("sv_addmap %s\n", MapName.c_str());
+	};
+	FS.w_close		(fs);
+};

@@ -39,8 +39,7 @@ void game_cl_Deathmatch::Init ()
 	//-----------------------------------------------------------
 	string64	Team0;
 	std::strcpy(Team0, TEAM0_MENU);
-	m_aTeamSections.push_back(Team0);
-
+	m_aTeamSections.push_back(Team0);	
 }
 
 game_cl_Deathmatch::~game_cl_Deathmatch()
@@ -49,7 +48,6 @@ game_cl_Deathmatch::~game_cl_Deathmatch()
 	xr_delete(pBuyMenuTeam0);
 	xr_delete(pSkinMenuTeam0);
 	xr_delete(pInventoryMenu);
-//	xr_delete(pChatWnd);
 }
 
 
@@ -65,6 +63,7 @@ CUIGameCustom* game_cl_Deathmatch::createGameUI()
 	//-----------------------------------------------------------
 	pBuyMenuTeam0	= InitBuyMenu("deathmatch_base_cost", 0);
 	pCurBuyMenu		= pBuyMenuTeam0;
+	LoadTeamDefaultPresetItems(TEAM0_MENU, pBuyMenuTeam0, &PresetItemsTeam0);
 	//-----------------------------------------------------------
 	pSkinMenuTeam0	= InitSkinMenu(0);
 	pCurSkinMenu	= pSkinMenuTeam0;
@@ -183,7 +182,7 @@ bool game_cl_Deathmatch::CanBeReady				()
 	};
 
 	u8 res = 0xff;
-	res &=	pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT);
+//	res &=	pCurBuyMenu->GetWeaponIndex(KNIFE_SLOT);
 	res &=	pCurBuyMenu->GetWeaponIndex(PISTOL_SLOT);
 	res &=	pCurBuyMenu->GetWeaponIndex(RIFLE_SLOT);
 	res &=	pCurBuyMenu->GetWeaponIndex(GRENADE_SLOT);

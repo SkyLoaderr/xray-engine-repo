@@ -31,14 +31,6 @@ public:
 	virtual 			~CUIGameAHunt			();
 
 	virtual	void		Init					();
-
-
-// moved to game_cl_artefactHunt
-//	virtual BOOL		CanCallBuyMenu			();
-//	virtual bool		CanBeReady				();
-//	virtual void		OnObjectEnterTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
-//	virtual void		OnObjectLeaveTeamBase	(CObject *tpObject, CTeamBaseZone* pTeamBaseZone);
-	
 			void		SetReinforcementCaption	(LPCSTR str);
 			void		SetScoreCaption			(LPCSTR str);
 			void		SetRoundResultCaption	(LPCSTR str);

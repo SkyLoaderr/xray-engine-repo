@@ -189,8 +189,10 @@ void	game_sv_Deathmatch::Update					()
 bool game_sv_Deathmatch::checkForRoundStart()
 {
 
-	if( (Level().timeServer())>u32(10*1000) && AllPlayers_Ready() ){
-		OnRoundStart();
+	if( (Level().timeServer())>u32(10*1000) && AllPlayers_Ready() )
+	{
+		if (!SwitchToNextMap() || !OnNextMap())
+			OnRoundStart();
 		return true;
 	};
 
@@ -651,9 +653,6 @@ void	game_sv_Deathmatch::SetPlayersDefItems		(game_PlayerState* ps)
 
 		for (u16 i=0; i<aDefItems.size(); i++)
 		{
-//			game_PlayerState::PlayersItem NewItem;
-//			NewItem.ItemID		= aDefItems[i];
-//			NewItem.ItemCost	= 0;
 			ps->pItemList.push_back(aDefItems[i]);
 		}
 	};
