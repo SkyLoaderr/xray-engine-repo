@@ -402,7 +402,7 @@ BOOL CCF_Shape::Contact		( CObject* O )
 {
 	// Build object-sphere
 	Fsphere			S;
-	CVisual* V = O->Visual();
+	CVisual* V		= O->Visual();
 	if (0==V)		return FALSE;
 	Fvector& P		= V->bv_Position;
 	S.R				= V->bv_Radius;
