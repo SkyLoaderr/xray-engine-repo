@@ -259,5 +259,7 @@ CPhysicsJoint*				P_create_Joint			(CPhysicsJoint::enumType type ,CPhysicsElemen
 CPhysicsElement*			P_create_Element		();
 CPhysicsShell*				P_create_Shell			();
 CPhysicsShell*				P_create_splited_Shell	();
-
+CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,LPCSTR	fixed_bones);
+CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map,LPCSTR	fixed_bones);
+CPhysicsShell*				P_build_Shell			(CGameObject* obj,bool not_active_state,BONE_P_MAP* bone_map=NULL);
 #endif // PhysicsShellH
