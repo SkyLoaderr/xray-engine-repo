@@ -156,17 +156,17 @@ void CHUDCursor::Render()
 			string256 name_buf;
 			LPCSTR object_name = *RQ.O->cName();
 
-
-
-			if (E && (E->g_Health()>0)){
-				if (GameID() == GAME_SINGLE){
+			if (GameID() == GAME_SINGLE)
+			{
+				if (E && (E->g_Health()>0))
+				{
 					CInventoryOwner* our_inv_owner		= smart_cast<CInventoryOwner*>(pCurEnt);
 					CInventoryOwner* others_inv_owner	= smart_cast<CInventoryOwner*>(E);
 
 					if(our_inv_owner && others_inv_owner){
 						CStringTable strtbl;
 						sprintf(name_buf, "%s, %s", *strtbl(others_inv_owner->CharacterInfo().Community().id()),
-													*strtbl(others_inv_owner->Name()));
+							*strtbl(others_inv_owner->Name()));
 						object_name = name_buf;
 
 						switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
@@ -185,7 +185,21 @@ void CHUDCursor::Render()
 						F->OutNext	("%s", object_name);
 					}
 					fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
-				}else{
+				}
+				else 
+					if (l_pI)
+					{
+						if (fuzzyShowInfo>0.5f){
+							F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
+							F->OutNext	("%s",l_pI->NameComplex());
+						}
+						fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
+					}
+			}
+			else
+			{
+				if (E && (E->g_Health()>0))
+				{
 					if (pCurEnt){	
 						if (GameID() == GAME_DEATHMATCH)			C = C_ON_ENEMY;
 						else{	
@@ -208,15 +222,10 @@ void CHUDCursor::Render()
 							F->SetColor	(subst_alpha(C,alpha_b));
 							F->OutNext	("%s",*RQ.O->cName());
 						}
-					};
+					}
 				};
-			}else if (l_pI){
-				if (fuzzyShowInfo>0.5f){
-					F->SetColor	(subst_alpha(C,u8(iFloor(255.f*(fuzzyShowInfo-0.5f)*2.f))));
-					F->OutNext	("%s",l_pI->NameComplex());
-				}
-				fuzzyShowInfo += SHOW_INFO_SPEED*Device.fTimeDelta;
-			}
+			};
+
 		}else{
 			fuzzyShowInfo -= HIDE_INFO_SPEED*Device.fTimeDelta;
 		}
