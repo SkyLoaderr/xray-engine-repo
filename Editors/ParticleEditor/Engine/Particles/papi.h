@@ -226,6 +226,9 @@ extern "C"{
 	PARTICLEDLL_API void __stdcall pTargetSize(float size_x, float size_y, float size_z,
 		float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);
 
+	PARTICLEDLL_API void __stdcall pTargetRotate(float rot_x, float rot_y, float rot_z,
+		float scale_x = 0.0f, float scale_y = 0.0f, float scale_z = 0.0f);
+
 	PARTICLEDLL_API void __stdcall pTargetVelocity(float vel_x, float vel_y, float vel_z, float scale);
 
 	PARTICLEDLL_API void __stdcall pVertex(float x, float y, float z);
