@@ -637,6 +637,8 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 
 	if ( bComputeTangentSpace )
 	{
+        EdgeSet Edges;
+
 		Mapping::iterator texIter = outmap.find( "tex0" );
 
         vec3* tex = (vec3*)&( output[ (*texIter).second ].floatVector_[ 0 ] );
@@ -795,8 +797,6 @@ bool NVMeshMender::Munge(  const NVMeshMender::VAVector& input,
 					// order vertex indices ( low, high )
 					edge.v0 = (unsigned int)nv_min( (nv_scalar)indices[ start ], (nv_scalar)indices[ end ] );
 					edge.v1 = (unsigned int)nv_max( (nv_scalar)indices[ start ], (nv_scalar)indices[ end ] );
-
-                    EdgeSet Edges;
 
 					EdgeSet::iterator iter = Edges.find( edge );
 
