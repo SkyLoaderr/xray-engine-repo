@@ -20,6 +20,13 @@ struct CLevelInfo {
 		name		= strlwr(xr_strdup(_name));
 	}
 
+	CLevelInfo(const CLevelInfo &info)
+	{
+		id = info.id;
+		name = xr_strdup(info.name);
+		offset = info.offset;
+	}
+
 	IC	bool	operator< (const CLevelInfo &info) const
 	{
 		return		(id < info.id);

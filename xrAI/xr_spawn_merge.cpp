@@ -426,7 +426,7 @@ LPCSTR cafGetActorLevelName(xr_vector<CSpawn *> &tpLevels, string256 &S)
 			if (!actor)
 				continue;
 			Msg				("Actor is on the level %s",tpGraph->header().levels().find(tpGraph->vertex(actor->m_tGraphID)->level_id())->second.name());
-			VERIFY2			(!l_tpActor,"There must the SINGLE level with ACTOR!");
+			VERIFY2			(!l_tpActor,"There must be the SINGLE level with ACTOR!");
 			l_tpActor		= actor;
 			level_id		= i;
 		}
