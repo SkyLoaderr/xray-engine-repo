@@ -4,6 +4,7 @@
 #include "WeaponHUD.h"
 #include "entity.h"
 #include "..\PSObject.h"
+#include "..\PGObject.h"
 
 CGrenade::CGrenade(void) {
 	m_pFake = NULL;
@@ -176,6 +177,8 @@ void CGrenade::Explode() {
 			FragWallmark(l_dir, l_end, RQ);
 		}
 	}
+	CPGObject* pStaticPG = xr_new<CPGObject>("expl_02_smoke",Sector());
+	pStaticPG->play_at_pos(vPosition);
 	setEnabled(true);
 }
 
@@ -225,6 +228,7 @@ void CGrenade::FragWallmark	(const Fvector& vDir, const Fvector &vEnd, Collide::
 		PS->m_Emitter.m_ConeDirection.set(D);
 		PS->play_at_pos		(vEnd);
 	}
+
 }
 
 void CGrenade::feel_touch_new(CObject* O) {
