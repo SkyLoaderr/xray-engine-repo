@@ -22,7 +22,7 @@ dBodyID body;
 dGeomID geom;
 PHDynamicData* Childs;
 unsigned int numOfChilds;
-
+Fmatrix ZeroTransform;
 public:
 	PHDynamicData& operator [] (unsigned int i) {return Childs[i];};
 	void Destroy();
@@ -30,6 +30,8 @@ public:
 	void CalculateData(void);
 	PHDynamicData * GetChild(unsigned int ChildNum);
 	bool SetChild(unsigned int ChildNum,unsigned int numOfchilds,dBodyID body);
+	void SetAsZero();
+	void SetAsZeroRecursive();
 	PHDynamicData(unsigned int numOfchilds,dBodyID body);
 	PHDynamicData();
 	virtual ~PHDynamicData();

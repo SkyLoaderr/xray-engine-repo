@@ -34,7 +34,7 @@ numOfChilds=numOfchilds;
 body=Body;
 geom=NULL;
 Childs=new PHDynamicData[numOfChilds];
-
+ZeroTransform.identity();
 }
 
 bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBodyID body)
@@ -44,6 +44,7 @@ bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBod
 		Childs[childNum].body=body;
 		Childs[childNum].geom=NULL;
 		Childs[childNum].numOfChilds=numOfchilds;
+		Childs[childNum].ZeroTransform.identity();
 
 		if(numOfchilds>0)
 			Childs[childNum].Childs=new PHDynamicData[numOfchilds];
@@ -58,10 +59,15 @@ bool PHDynamicData::SetChild(unsigned int childNum,unsigned int numOfchilds,dBod
 
 void PHDynamicData::CalculateR_N_PosOfChilds(dBodyID parent)
 {
-Fmatrix parent_transform;
+Fmatrix parent_transform,mYM;
+mYM.rotateY			(deg2rad(-90.f));
 DMXPStoFMX(dBodyGetRotation(parent),dBodyGetPosition(parent),parent_transform);
 DMXPStoFMX(dBodyGetRotation(body),dBodyGetPosition(body),BoneTransform);
+parent_transform.mulB(ZeroTransform);
+//parent_transform.mulA(mYM);
 parent_transform.invert();
+
+//BoneTransform.mulA(mYM);
 BoneTransform.mulA(parent_transform);
 
 for(unsigned int i=0;i<numOfChilds;i++){
@@ -92,7 +98,7 @@ for(unsigned int i=0;i<numOfChilds;i++){
 
 void PHDynamicData::Create(unsigned int numOfchilds, dBodyID Body)
 {
-
+ZeroTransform.identity();
 numOfChilds=numOfchilds;
 body=Body;
 geom=NULL;
@@ -119,4 +125,16 @@ bool PHDynamicData::SetGeom(dGeomID ageom)
 		}
 	else
 		return false;
+}
+
+void PHDynamicData::SetAsZero(){
+	ZeroTransform.set(BoneTransform);
+}
+
+void PHDynamicData::SetAsZeroRecursive(){
+ZeroTransform.set(BoneTransform);
+for(unsigned int i=0;  i<numOfChilds;i++)
+		{
+				Childs[i].SetAsZeroRecursive();
+		}
 }

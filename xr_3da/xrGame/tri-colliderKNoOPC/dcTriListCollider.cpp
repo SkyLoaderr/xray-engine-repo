@@ -55,6 +55,7 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
 	memcpy( &RM.i,R+0,sizeof(Fvector));
 	memcpy( &RM.j,R+4,sizeof(Fvector));
 	memcpy( &RM.k,R+8,sizeof(Fvector));
+	RM.transpose();
 
 
 	AABB.x=dFabs(BoxSides[0]*R[0])+dFabs(BoxSides[1]*R[4])+dFabs(BoxSides[2]*R[8]);
@@ -82,7 +83,9 @@ int dcTriListCollider::CollideBox(dxGeom* Box, int Flags, dContactGeom* Contacts
                // T->verts[2];
               
                 // 
-                if(CDB::TestBBoxTri(RM,*BoxCenter,BoxExtents,T->verts,false))
+                if(	true
+					//CDB::TestBBoxTri(RM,*BoxCenter,BoxExtents,T->verts,false)
+					)
                 {
 ///reinterpret_cast<dReal*> (&(*(T->verts))[1])
 				OutTriCount+=dTriBox ((dReal*)T->verts[0],(dReal*)T->verts[1],(dReal*)T->verts[2],

@@ -19,15 +19,29 @@ class CPHJeep {
 	dBodyID Bodies[NofBodies];
 	dGeomID Geoms[NofGeoms];
 	dJointID Joints[NofJoints];
-
+	dVector3 startPosition;
 
 	void CreateDynamicData();
 public:
 	//CPHJeep(){}
 	void Create(dSpaceID space, dWorldID world);
+	void Create1(dSpaceID space, dWorldID world);
 	void Destroy();
-	void Steer(const char& velocity, const char& steering);
-
+	void Steer1(const char& velocity, const char& steering);
+	void Steer(const char& steering);
+	void Drive(const char& velocity);
+	void SetStartPosition(Fvector pos){dBodySetPosition(Bodies[0],pos.x,pos.y,pos.z);}
+	void SetPosition(Fvector pos){
+	const dReal* currentPos=dBodyGetPosition(Bodies[0]);	
+	Fvector v={pos.x-currentPos[0],pos.y+1.f-currentPos[1],pos.z-currentPos[2]};
+	dBodySetPosition(Bodies[0],pos.x,pos.y+1.f,pos.z);
+	for(unsigned int i=1;i<NofBodies; i++ ){
+		const dReal* currentPos=dBodyGetPosition(Bodies[i]);
+		dVector3 newPos={currentPos[0]+v.x,currentPos[1]+v.y,currentPos[2]+v.z};
+		dBodySetPosition(Bodies[i],newPos[0],newPos[1],newPos[2]);
+		}
+	}
+	
 	PHDynamicData DynamicData;
 	dVector3 jeepBox;
 	dVector3 cabinBox;

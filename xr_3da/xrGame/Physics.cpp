@@ -17,6 +17,7 @@ static void FUNCCALL NearCallback(void* /*data*/, dGeomID o1, dGeomID o2);
 
 void CPHWorld::Render()
 {
+	return;
 	Device.Shader.OnFrameEnd		();
 	Device.set_xform_world			(Fidentity);
 	Fvector center;
@@ -79,19 +80,19 @@ void CPHMesh ::Destroy(){
 /////////////CPHJeep////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
 
-void CPHJeep::Create(dSpaceID space, dWorldID world){
+void CPHJeep::Create1(dSpaceID space, dWorldID world){
 	
 	static const dReal scaleParam=1.f;
 	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
 	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
 	jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
-	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]/1.01;
+	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
 
-	static const dReal wheelRadius = REAL(0.28)* scaleParam, wheelWidth = REAL(0.25)* scaleParam;
+	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
 	
 
-	static const dVector3 startPosition={6.199f,15.f,0.f};
-	static const dReal weelSepX=jeepBox[0]/2-jeepBox[0]/8,weelSepZ=jeepBox[2]/2-wheelRadius/2.f,weelSepY=jeepBox[1];
+	static const dVector3 startPosition={6.0f,12.f,0.f};
+	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
 
 	dMass m;
 
@@ -110,7 +111,7 @@ void CPHJeep::Create(dSpaceID space, dWorldID world){
 	//dGeomSetBody(Geoms[5], Bodies[5]);
 	Geoms[5]=dCreateGeomTransform(space);
 	//Geoms[7]=dCreateGeomTransform(0);
-	dGeomSetPosition(Geoms[6], -jeepBox[0]/2+cabinBox[0]/2+0.1, cabinBox[1]/2+jeepBox[1]/2, 0); // x,y,z
+	dGeomSetPosition(Geoms[6], -jeepBox[0]/2+cabinBox[0]/2+0.55, cabinBox[1]/2+jeepBox[1]/2, 0); // x,y,z
 	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
 	dGeomTransformSetGeom(Geoms[5],Geoms[6]);
 	//dGeomTransformSetGeom(Geoms[7],Geoms[0]);
@@ -181,22 +182,121 @@ CreateDynamicData();
 }
 
 /////////////////////////////////////////////////////////////////////////////
+void CPHJeep::Create(dSpaceID space, dWorldID world){
+	
+	static const dReal scaleParam=1.f;
+	static const dVector3 scaleBox={scaleParam, scaleParam, scaleParam};
+	//jeepBox={scaleBox[0],scaleBox[0],scaleBox[0]};
+	jeepBox[0]=REAL(4.2)*scaleBox[0];jeepBox[1]=REAL(1.)*scaleBox[1];jeepBox[2]=REAL(2.08)*scaleBox[2];
+	cabinBox[0]=scaleBox[0]*1.9f;cabinBox[1]=scaleBox[1]*0.6;cabinBox[2]=scaleBox[2]*2.08;
+
+	static const dReal wheelRadius = REAL(0.79/2.)* scaleParam;
+	
+
+	startPosition[0]=10.0f;startPosition[1]=1.f;startPosition[2]=0.f;
+	static const dReal weelSepX=scaleBox[0]*2.74f/2.f,weelSepZ=scaleBox[2]*1.7f/2.f,weelSepY=scaleBox[1]*0.6f;
+
+	dMass m;
+
+	// car body
+	//dMass m;
+	dMassSetBox(&m, 1, jeepBox[0], jeepBox[1], jeepBox[2]); // density,lx,ly,lz
+	dMassAdjust(&m, 50); // mass
+
+	Bodies[0] = dBodyCreate(world);
+	dBodySetMass(Bodies[0], &m);
+	dBodySetPosition(Bodies[0], startPosition[0], startPosition[1], startPosition[2]); // x,y,z
+
+	Geoms[0] = dCreateBox(0, jeepBox[0], jeepBox[1], jeepBox[2]); // lx,ly,lz
+	Geoms[6] = dCreateBox(0, cabinBox[0], cabinBox[1], cabinBox[2]); // lx,ly,lz
+
+	//dGeomSetBody(Geoms[5], Bodies[5]);
+	Geoms[5]=dCreateGeomTransform(space);
+	//Geoms[7]=dCreateGeomTransform(0);
+	dGeomSetPosition(Geoms[6], -jeepBox[0]/2+cabinBox[0]/2+0.55, cabinBox[1]/2+jeepBox[1]/2, 0); // x,y,z
+	//dGeomSetPosition(Geoms[0], 0,0/*-jeepBox[1]-wheelRadius*/, 0); // x,y,z
+	dGeomTransformSetGeom(Geoms[5],Geoms[6]);
+	//dGeomTransformSetGeom(Geoms[7],Geoms[0]);
 
 
+	dGeomSetBody(Geoms[5], Bodies[0]);
+	dGeomSetBody(Geoms[0], Bodies[0]);
+
+
+
+	
+
+	// wheel bodies
+	dMassSetSphere(&m, 1, wheelRadius); // density, radius
+	dMassAdjust(&m, 10); // mass
+	dQuaternion q;
+	dQFromAxisAndAngle(q, 1, 0, 0, M_PI * 0.5);
+	UINT i;
+	for(i = 1; i <= 4; ++i)
+	{
+		Bodies[i] = dBodyCreate(world);
+		dBodySetMass(Bodies[i], &m);
+		dBodySetQuaternion(Bodies[i], q);
+		Geoms[i] = dCreateSphere(0, wheelRadius);
+		dGeomSetBody(Geoms[i], Bodies[i]);
+	}
+
+
+
+
+	dBodySetPosition(Bodies[1], startPosition[0]-weelSepX, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z
+	dBodySetPosition(Bodies[2], startPosition[0]-weelSepX, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z-0.9, 2.6,   9.3); // x,y,z
+	dBodySetPosition(Bodies[3], startPosition[0]+weelSepX, startPosition[1]-weelSepY,  startPosition[2]+weelSepZ); // x,y,z 0.9, 2.6,  10.7); // x,y,z
+	dBodySetPosition(Bodies[4], startPosition[0]+weelSepX, startPosition[1]-weelSepY,  startPosition[2]-weelSepZ); // x,y,z 0.9, 2.6,   9.3); // x,y,z
+
+
+
+	// wheel joints
+	for(i = 0; i < 4; ++i)
+	{
+		Joints[i] = dJointCreateHinge2(world, 0);
+		dJointAttach(Joints[i], Bodies[0], Bodies[i+1]);
+		const dReal* const wPos = dBodyGetPosition(Bodies[i+1]);
+		dJointSetHinge2Anchor(Joints[i], wPos[0], wPos[1], wPos[2]);
+		dJointSetHinge2Axis1(Joints[i], 0, 1, 0);
+		dJointSetHinge2Axis2(Joints[i], 0, 0, ((i % 2) == 0) ? -1 : 1);
+
+		dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
+		dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
+		dJointSetHinge2Param(Joints[i], dParamFMax, 50);
+
+		dJointSetHinge2Param(Joints[i], dParamVel2, 0);
+		dJointSetHinge2Param(Joints[i], dParamFMax2, 80);
+
+		dJointSetHinge2Param(Joints[i], dParamSuspensionERP, 0.4f);
+		dJointSetHinge2Param(Joints[i], dParamSuspensionCFM, 0.005f);
+	}
+
+	GeomsGroup = dCreateGeomGroup(space);  
+	for(i = 0; i < NofGeoms-1; ++i)
+		dGeomGroupAdd(GeomsGroup, Geoms[i]);
+
+
+
+	//dynamic data
+CreateDynamicData();
+
+}
+/////////
 void CPHJeep::Destroy(){
 	for(UINT i=0;i<NofJoints;i++) dJointDestroy(Joints[i]);
 	for(UINT i=0;i<NofBodies;i++) dBodyDestroy(Bodies[i]);
 	for(UINT i=0;i<NofGeoms;i++) dGeomDestroy(Geoms[i]);
-	//dGeomDestroy(GeomsGroup);
+	dGeomDestroy(GeomsGroup);
 	DynamicData.Destroy();
 
 }
 
-void CPHJeep::Steer(const char& velocity, const char& steering)
+void CPHJeep::Steer1(const char& velocity, const char& steering)
 {
 	static const dReal steeringRate = M_PI * 4 / 3;
 	static const dReal steeringLimit = M_PI / 6;
-	static const dReal wheelVelocity = 16 * M_PI;
+	static const dReal wheelVelocity = 1.f * M_PI;
 	ULONG i;
 	switch(steering)
 	{
@@ -255,8 +355,76 @@ DynamicData.SetChild(1,0,Bodies[2]);
 DynamicData.SetChild(2,0,Bodies[3]);
 DynamicData.SetChild(3,0,Bodies[4]);
 DynamicData.SetGeom(Geoms[5]);
+DynamicData.CalculateData();
+DynamicData.SetAsZeroRecursive();
 
 }
+
+void CPHJeep::Steer(const char& steering)
+{
+	static const dReal steeringRate = M_PI * 4 / 3;
+	static const dReal steeringLimit = M_PI / 6;
+	
+	ULONG i;
+	switch(steering)
+	{
+	case 1:
+	case -1:
+		for(i = 2; i < 4; ++i)
+		{
+			dJointSetHinge2Param(Joints[i], dParamHiStop, steeringLimit);
+			dJointSetHinge2Param(Joints[i], dParamLoStop, -steeringLimit);
+			dJointSetHinge2Param(Joints[i], dParamVel, ((i < 2) ? steering : -steering) * steeringRate);
+		}
+		break;
+
+	default: // case 0
+		for(i = 0; i < 4; ++i)
+		{
+			dReal angle = dJointGetHinge2Angle1(Joints[i]);
+			if(angle < 0)
+			{
+				dJointSetHinge2Param(Joints[i], dParamHiStop, 0);
+				dJointSetHinge2Param(Joints[i], dParamVel, steeringRate);
+			}
+			else
+			{
+				dJointSetHinge2Param(Joints[i], dParamLoStop, 0);
+				dJointSetHinge2Param(Joints[i], dParamVel, -steeringRate);
+			}
+		}
+		break;
+	}
+
+}
+////////////////////////////////////////////////////////////////
+void CPHJeep::Drive(const char& velocity)
+{
+
+	static const dReal wheelVelocity = 6.f * M_PI;//3*18.f * M_PI;
+	ULONG i;
+
+
+	switch(velocity)
+	{
+	case 1:
+        for(i = 0; i < 4; ++i)
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? -wheelVelocity : wheelVelocity);
+		break;
+
+	case -1:
+        for(i = 0; i < 4; ++i)
+			dJointSetHinge2Param(Joints[i], dParamVel2, ((i % 2) == 0) ? wheelVelocity : -wheelVelocity);
+		break;
+
+	default: // case 0
+        for(i = 0; i < 4; ++i)
+			dJointSetHinge2Param(Joints[i], dParamVel2, 0);
+		break;
+	}
+}
+//////////////////////////////////////////////////////////
+
 ////////////////////////////////////////////////////////////////////////////
 ///////////CPHWorld/////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////
@@ -270,8 +438,9 @@ void CPHWorld::Create(){
 	Mesh.Create(Space,phWorld);
 	Jeep.Create(Space,phWorld);
 	Gun.Create(Space);
-	dWorldSetCFM(phWorld, 0.001f);
-	dWorldSetERP(phWorld, 0.99f);
+	dWorldSetCFM(phWorld, 0.0001f);
+	dWorldSetERP(phWorld, 0.9999f);
+	Jeep.DynamicData.CalculateData();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -291,7 +460,7 @@ void CPHWorld::Destroy(){
 
 void CPHWorld::Step(dReal step){
 			// compute contact joints and forces
-	return;
+	///return;
 			dSpaceCollide(Space, 0, &NearCallback);
 		
 			
@@ -306,7 +475,7 @@ void CPHWorld::Step(dReal step){
 				
 			dWorldStep(phWorld, step);
 			Jeep.DynamicData.CalculateData();
-			//Jeep.Steer(-1,-1);
+	
 			dJointGroupEmpty(ContactGroup);
 	
 			isShooting=false;
@@ -365,9 +534,9 @@ if(dGeomGetClass(o1)==2/*dGeomTransformClass*/){
 	{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 500;
+		contacts[i].surface.mu = 250;
 		contacts[i].surface.bounce = 0.3f;
-		contacts[i].surface.bounce_vel = 0.05f;
+		contacts[i].surface.bounce_vel = 0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(o1), dGeomGetBody(contacts[i].geom.g2));
 		}
@@ -378,9 +547,9 @@ else if(dGeomGetClass(o2)==2/*dGeomTransformClass*/){
 		{
 
         contacts[i].surface.mode = dContactBounce;
-		contacts[i].surface.mu = 500.f;
+		contacts[i].surface.mu = 250.f;
 		contacts[i].surface.bounce = 0.3f;
-		contacts[i].surface.bounce_vel = 0.05f;
+		contacts[i].surface.bounce_vel = 0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(o2));
 		}
@@ -392,8 +561,8 @@ else
 
         contacts[i].surface.mode = dContactBounce;
 		contacts[i].surface.mu = 250.f;
-		contacts[i].surface.bounce = 0.3f;
-		contacts[i].surface.bounce_vel =0.05f;
+		contacts[i].surface.bounce = 0.01f;
+		contacts[i].surface.bounce_vel =0.005f;
 		dJointID c = dJointCreateContact(phWorld, ContactGroup, &contacts[i]);
 		dJointAttach(c, dGeomGetBody(contacts[i].geom.g1), dGeomGetBody(contacts[i].geom.g2));
 		}
