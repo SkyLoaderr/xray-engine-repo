@@ -7,3 +7,20 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #pragma once
+
+IC	const CAgentManager::MEMBER_STORAGE	&CAgentManager::members	() const
+{
+	return			(m_members);
+}
+
+IC	const CSetupAction &CAgentManager::action	(CAI_Stalker *object) const
+{
+	return			(member(object).action());
+}
+
+IC	const CMemberOrder &CAgentManager::member	(CAI_Stalker *object) const
+{
+	const_iterator	I = std::find_if(members().begin(), members().end(), CMemberPredicate(object));
+	VERIFY			(I != members().end());
+	return			(*I);
+}

@@ -30,4 +30,11 @@ namespace AgentManager {
 		eOperatorScript,
 		eOperatorDummy			= u32(-1),
 	};
+
+	enum EOrderType {
+		eOrderTypeNoOrder		= u32(0),
+		eOrderTypeAction,
+		eOrderTypeGoal,
+		eOrderTypeNoDummy		= u32(-1),
+	};
 };

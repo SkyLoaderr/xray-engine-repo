@@ -12,7 +12,6 @@
 #include "agent_manager_actions.h"
 #include "agent_manager_motivations.h"
 #include "agent_manager_properties.h"
-#include "agent_manager_space.h"
 
 using namespace AgentManager;
 
@@ -45,15 +44,31 @@ BOOL CAgentManager::shedule_Ready	()
 	return						(!m_members.empty());
 }
 
+void CAgentManager::reload			(LPCSTR section)
+{
+	shedule.t_min				= pSettings->r_s32	(section,"schedule_min");
+	shedule.t_max				= pSettings->r_s32	(section,"schedule_max");
+	shedule_register			();
+
+	inherited::reload			(section);
+
+	clear						();
+	add_motivations				();
+	add_evaluators				();
+	add_actions					();
+
+	inherited::reinit			(this);
+}
+
 void CAgentManager::add				(CEntity *member)
 {
 	CAI_Stalker					*stalker = dynamic_cast<CAI_Stalker*>(member);
 	if (!stalker)
 		return;
 
-	iterator					I = std::find(m_members.begin(),m_members.end(), stalker);
+	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
 	VERIFY						(I == m_members.end());
-	m_members.push_back			(stalker);
+	m_members.push_back			(CMemberOrder(stalker));
 }
 
 void CAgentManager::remove			(CEntity *member)
@@ -62,25 +77,9 @@ void CAgentManager::remove			(CEntity *member)
 	if (!stalker)
 		return;
 
-	iterator					I = std::find(m_members.begin(),m_members.end(), stalker);
+	iterator					I = std::find_if(m_members.begin(),m_members.end(), CMemberPredicate(stalker));
 	VERIFY						(I != m_members.end());
 	m_members.erase				(I);
-}
-
-void CAgentManager::reload			(LPCSTR section)
-{
-	shedule.t_min				= pSettings->r_s32	(section,"schedule_min");
-	shedule.t_max				= pSettings->r_s32	(section,"schedule_max");
-	shedule_register			();
-	
-	inherited::reload			(section);
-
-	clear						();
-	add_motivations				();
-	add_evaluators				();
-	add_actions					();
-	
-	inherited::reinit			(this);
 }
 
 void CAgentManager::add_motivations	()

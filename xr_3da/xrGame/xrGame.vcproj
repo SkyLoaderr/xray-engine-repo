@@ -309,6 +309,19 @@
 						</File>
 					</Filter>
 					<Filter
+						Name="member_order"
+						Filter="">
+						<File
+							RelativePath=".\member_order.cpp">
+						</File>
+						<File
+							RelativePath=".\member_order.h">
+						</File>
+						<File
+							RelativePath=".\member_order_inline.h">
+						</File>
+					</Filter>
+					<Filter
 						Name="motivations"
 						Filter="">
 						<File
