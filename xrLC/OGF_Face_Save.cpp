@@ -63,6 +63,59 @@ void OGF::Save			(CFS_Base &fs)
 	fs.close_chunk		();
 }
 
+void OGF_Reference::Save	(CFS_Base &fs)
+{
+	OGF_Base::Save		(fs);
+
+	// clMsg			("* %d faces",faces.size());
+	// geom_batch_average	(vertices.size(),faces.size());	// don't use reference(s) as batch estimate
+
+	// Create header
+	ogf_header			H;
+	H.format_version	= xrOGF_FormatVersion;
+	H.flags				= 0;
+	H.type				= MT_TREE;
+
+	// Texture & shader
+	fs.open_chunk		(OGF_TEXTURE_L);
+	string Tname;
+	for (DWORD i=0; i<textures.size(); i++)
+	{
+		if (!Tname.empty()) Tname += ',';
+		char *fname = textures[i].name;
+		if (strchr(fname,'.')) *strchr(fname,'.')=0;
+		Tname += fname;
+	}
+	fs.Wdword			(RegisterString(Tname));
+	fs.Wdword			(RegisterString(string(pBuild->shader_render[pBuild->materials[material].shader].name)));
+	fs.close_chunk		();
+
+	// Vertices
+	fs.open_chunk		(OGF_VCONTAINER);
+	fs.Wdword			(vb_id);
+	fs.Wdword			(vb_start);
+	fs.Wdword			(model->vertices.size());
+	fs.close_chunk		();
+	
+	// Faces
+	fs.open_chunk		(OGF_ICONTAINER);
+	fs.Wdword			(ib_id);
+	fs.Wdword			(ib_start);
+	fs.Wdword			(model->faces.size()*3);
+	fs.close_chunk		();
+
+	// Special
+	fs.open_chunk		(OGF_TREEDEF);
+	fs.write			(&xform,sizeof(xform));
+	fs.write			(&c_scale,sizeof(c_scale));
+	fs.write			(&c_bias,sizeof(c_bias));
+
+	// Header
+	fs.open_chunk		(OGF_HEADER);
+	fs.write			(&H,sizeof(H));
+	fs.close_chunk		();
+}
+
 void	OGF::Save_Cached		(CFS_Base &fs, ogf_header& H, DWORD FVF, BOOL bColors, BOOL bNeedNormals)
 {
 //	clMsg			("- saving: cached");

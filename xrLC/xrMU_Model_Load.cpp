@@ -9,6 +9,9 @@ void xrMU_Reference::Load(CStream& F)
 	xform				= R.transform;
 	flags				= R.flags;
 	sector				= R.sector;
+
+	c_scale.set			(1,1,1,1);
+	c_bias.set			(0,0,0,0);
 }
 
 void xrMU_Model::Load	(CStream& F)
