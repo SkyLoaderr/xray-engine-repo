@@ -10,7 +10,7 @@
 // tir2.xrdemo		-> 45.2
 // tir2.xrdemo		-> 61.8
 
-const	float		P_distance		= 48;					// switch distance between LOW-q light and HIGH-q light
+const	float		P_distance		= 50;					// switch distance between LOW-q light and HIGH-q light
 const	float		P_distance2		= P_distance*P_distance;
 const	float		P_cam_dist		= 200;
 const	float		P_cam_range		= 7.f;
@@ -196,8 +196,8 @@ void CLightProjector::calculate	()
 		min.set					(R.C.x-p_R,	R.C.y-(p_R+P_cam_range),	R.C.z-p_R);
 		max.set					(R.C.x+p_R,	R.C.y+0,					R.C.z+p_R);
 		BB.set					(min,max);
-		R.UVclamp_min.set		(min);
-		R.UVclamp_max.set		(max);
+		R.UVclamp_min.set		(min).add	(.05f);	// shrink a little
+		R.UVclamp_max.set		(max).sub	(.05f);	// shrink a little
 		ISpatial*	spatial		= dynamic_cast<ISpatial*>	(O);
 		if (spatial)			RImplementation.r_dsgraph_render_R1_box		(spatial->spatial.sector,BB,SE_R1_LMODELS);
 		//if (spatial)		RImplementation.r_dsgraph_render_subspace	(spatial->spatial.sector,mCombine,v_C,FALSE);
