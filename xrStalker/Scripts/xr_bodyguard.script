@@ -158,7 +158,7 @@ function action_bodyguard_activity:execute()
 
 		if actor then
 			local active_item = actor:active_item()
-		        if active_item and isWeapon(active_item:clsid()) then
+		        if active_item and isWeapon(active_item) then
 				if dist <= 5 and
 				   (not this.warn_rem_weapon_time or device():time_global() > this.warn_rem_weapon_time + 60000) then
 					self.object:play_sound(xr_sounds_id.zmey_bodyguard_base, 1, 0, 1, 0, 1)
