@@ -53,6 +53,8 @@ snd_files = {
 	esc_f_band_place               = "script_replics\\bandit_1\\replics\\bandit_hiding_place_",
 	esc_f_band_novice_again        = "script_replics\\bandit_1\\replics\\bandit_novice_again_",
 	esc_f_band_on_actor            = "script_replics\\bandit_1\\replics\\bandit_on_actor_",
+	place1                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_1",
+	place2                         = "script_replics\\bandit_1\\replics\\bandit_hiding_place_2",
 ------ GARBAGE  -------
 
 ------ AGROPROM -------
@@ -167,11 +169,13 @@ function load_sound(obj)
 ----- сюжетные/одноразовые темы
 ------ ESCAPE --------
 	-- бандиты на заводе
-	theme["escape_factory_bandits_novice"]        = load_theme("esc_f_band_novice")
+--[[	theme["escape_factory_bandits_novice"]        = load_theme("esc_f_band_novice")
 	theme["escape_factory_bandits_zone"]          = load_theme("esc_f_band_zone")
 	theme["escape_factory_bandits_place"]         = load_theme("esc_f_band_place")
 	theme["escape_factory_bandits_novice_again"]  = load_theme("esc_f_band_place")
-	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_place")
+	theme["escape_factory_bandits_on_actor"]      = load_theme("esc_f_band_place")]]
+	theme["place1"] = load_theme("place1")
+	theme["place2"] = load_theme("place2")
 ------ GARBAGE  -------
 
 ------ AGROPROM -------
@@ -235,7 +239,7 @@ function sound_update(npc, sound, now)
 		end
 
 		-- проиграть один звук
-		if sound.rnd == nil or math.random(100) < sound.rnd or now then
+		if now or sound.rnd == nil or math.random(100) < sound.rnd then
 			local sum = 0
 			local id
 			local num
@@ -243,6 +247,7 @@ function sound_update(npc, sound, now)
 			for k, w in sounds_ids do
 				sum = sum + w
 			end
+
 			repeat
 				local r = math.random(0, sum - 1)
 				local cur_sum = 0
