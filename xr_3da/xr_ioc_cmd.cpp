@@ -26,8 +26,10 @@ xr_token							snd_model_token							[ ]={
 	{ 0,							0											}
 };
 xr_token							vid_mode_token							[ ]={
+#ifdef DEBUG
 	{ "320x240",					320											},
 	{ "512x384",					512											},
+#endif
 	{ "640x480",					640											},
 	{ "800x600",					800											},
 	{ "1024x768",					1024										},
@@ -302,11 +304,11 @@ void CCC_Register()
 	CMD3(CCC_Mask,		"mt_network",			&psDeviceFlags,			mtNetwork);
 	CMD4(CCC_Integer,	"mt_sheduler",			&psSheduler,			1000,	100000	);
 	CMD4(CCC_Float,		"mt_sheduler_load",		&psShedulerLoadBalance,	.1f,	10.f	);
-#endif
 	
 	// Events
 	CMD1(CCC_E_Dump,	"e_list"				);
 	CMD1(CCC_E_Signal,	"e_signal"				);
+#endif
 
 	// Render device states
 	CMD3(CCC_Mask,		"rs_no_v_sync",			&psDeviceFlags,		rsNoVSync);
