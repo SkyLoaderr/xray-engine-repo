@@ -872,9 +872,10 @@ dInternalStepIslandFast (dxWorld * world, dxBody * const *bodies, int nb, dxJoin
 		for (b = 0; b < nb; b++) {
 			body = bodies[b];
 			if (0==ccounter[b])		continue;
+			dReal	invcounter		= dReal(1) / dReal(ccounter[b]);
 			for (j = 0; j < 4; j++)	{
-				body->facc[j] += scale*cforces[j + b*8];
-				body->tacc[j] += scale*cforces[j + b*8 + 4];
+				body->facc[j] += scale*cforces[j + b*8]		* invcounter;
+				body->tacc[j] += scale*cforces[j + b*8 + 4]	* invcounter;
 			}
 		}
 	}

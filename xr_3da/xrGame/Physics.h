@@ -9,7 +9,7 @@
 #include "_cylinder.h"
 #include "BlockAllocator.h"
 #include "PhysicsCommon.h"
-//#define ODE_SLOW_SOLVER
+// #define ODE_SLOW_SOLVER
 ///////////////////////////////////////////////////////////////////////////////
 
 void BodyCutForce	(dBodyID body,float l_limit,float w_limit)			;
