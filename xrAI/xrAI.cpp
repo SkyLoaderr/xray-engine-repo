@@ -66,20 +66,23 @@ void Startup(LPSTR     lpCmdLine)
 			if (strstr(cmd,"-c"))
 				sscanf	(strstr(cmd,"-c")+2,"%s",name);
 
-	string prjName		= "gamedata\\levels\\"+string(name)+"\\";
+	strcat				(name,"\\");
+	char				prjName[256];
+	prjName				[0] = 0;
+	FS.update_path		(prjName,"$game_levels$",name);
 
 	DWORD				dwStartupTime	= timeGetTime();
 	
 	pSettings = xr_new<CInifile>(SYSTEM_LTX);
 
 	if (strstr(cmd,"-f"))
-		xrCompiler			(prjName.c_str());
+		xrCompiler			(prjName);
 	else
 		if (strstr(cmd,"-g"))
-			xrBuildGraph		(prjName.c_str());
+			xrBuildGraph		(prjName);
 		else
 			if (strstr(cmd,"-c"))
-				xrBuildCrossTable	(prjName.c_str());
+				xrBuildCrossTable	(prjName);
 			else {
 				if (strstr(cmd,"-m")) {
 					xrMergeGraphs		();

@@ -8,7 +8,7 @@ void xrLoad(LPCSTR name)
 	// Load CFORM
 	string256				N;
 	{
-		strconcat			(N,name,"level.");
+		strconcat			(N,name,"level");
 		IReader				*F = FS.r_open(N);
 		
 		IReader				*fs	= F->open_chunk(fsL_CFORM);
