@@ -305,17 +305,17 @@ void CSE_ALifeObject::FillProps				(LPCSTR pref, PropItemVec& items)
 {
 	inherited::FillProps		(pref, 	items);
 	PHelper().CreateRText		(items,	PrepareKey(pref,*s_name,"Custom data"),&m_ini_string);
-	PHelper().CreateFloat		(items,	PrepareKey(pref,*s_name,"ALife\\Probability"),		&m_fProbability,	0,100);
+	PHelper().CreateFloat		(items,	PrepareKey(pref,*s_name,"ALife\\Probability"),			&m_fProbability,	0.f,1.f);
 	LPCSTR gcs					= pSettings->r_string(s_name,"GroupControlSection");
-    PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"ALife\\Group control"),		&m_caGroupControl, smSpawnItem, 0, (void*)gcs);
+    PHelper().CreateChoose		(items, PrepareKey(pref,*s_name,"ALife\\Group control"),		&m_caGroupControl,	smSpawnItem,	0, (void*)gcs);
 	if (m_flags.is(flUseSwitches)) {
 		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch online"),	&m_flags,			flSwitchOnline);
-		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch offline"),&m_flags,			flSwitchOffline);
+		PHelper().CreateFlag32	(items,	PrepareKey(pref,*s_name,"ALife\\Can switch offline"),	&m_flags,			flSwitchOffline);
 	}                            
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Interactive"),		&m_flags,			flInteractive);
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Visible for AI"),	&m_flags,			flVisibleForAI);
-	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\No move in offline"),&m_flags,			flOfflineNoMove);
-	PHelper().CreateRToken32	(items,	PrepareKey(pref,*s_name,"ALife\\Story ID"),			&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Interactive"),			&m_flags,			flInteractive);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\Visible for AI"),		&m_flags,			flVisibleForAI);
+	PHelper().CreateFlag32		(items,	PrepareKey(pref,*s_name,"ALife\\No move in offline"),	&m_flags,			flOfflineNoMove);
+	PHelper().CreateRToken32	(items,	PrepareKey(pref,*s_name,"ALife\\Story ID"),				&m_story_id,		&*fp_data.story_names.begin(), fp_data.story_names.size());
 }
 
 bool CSE_ALifeObject::used_ai_locations		() const
