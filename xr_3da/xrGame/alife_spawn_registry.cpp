@@ -112,12 +112,28 @@ void CALifeSpawnRegistry::load	(IReader &file_stream)
 
 void CALifeSpawnRegistry::save_updates			(IWriter &stream)
 {
-	stream.w_u32				(0);
+	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
+	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
+	for ( ; I != E; ++I) {
+		if (!(*I)->edges().empty())
+			continue;
+		stream.open_chunk			((*I)->vertex_id());
+		(*I)->data()->save_update	(stream);
+		stream.close_chunk			();
+	}
 }
 
 void CALifeSpawnRegistry::load_updates			(IReader &stream)
 {
-	stream.r_u32				();
+	SPAWN_GRAPH::vertex_iterator	I = m_spawns.vertices().begin();
+	SPAWN_GRAPH::vertex_iterator	E = m_spawns.vertices().end();
+	for ( ; I != E; ++I) {
+		if (!(*I)->edges().empty())
+			continue;
+		IReader						*chunk = stream.open_chunk((*I)->vertex_id());
+		(*I)->data()->load_update	(*chunk);
+		chunk->close				();
+	}
 }
 
 void CALifeSpawnRegistry::build_spawn_anomalies	()
