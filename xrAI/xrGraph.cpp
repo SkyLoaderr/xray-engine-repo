@@ -180,40 +180,6 @@ void vfPreprocessEdges(u32 dwEdgeCount)
 	Progress(1.0f);
 }
 
-void vfOptimizeGraph(u32 dwEdgeCount)
-{
-	q_mark_bit.resize(dwEdgeCount);
-	q_mark_bit.assign(dwEdgeCount,false);
-	Progress(0.0f);
-	for (int i=dwEdgeCount - 1; i>=1; Progress((float(dwEdgeCount) - (i--))/dwEdgeCount)) {
-		if (q_mark_bit[dwaSortOrder[i]])
-			continue;
-		float fDistance = tpaEdges[dwaSortOrder[i]].fPathDistance;
-		u32 dwVertex0 = dwaEdgeOwner[dwaSortOrder[i]];
-		u32 dwVertex1 = tpaEdges[dwaSortOrder[i]].dwVertexNumber;
-		SGraphVertex &tVertex0 = tpaGraph[dwVertex0];
-		SGraphVertex &tVertex1 = tpaGraph[dwVertex1];
-		bool bOk = true;
-		for (int i0=0; (i0<(int)tVertex0.dwNeighbourCount) && bOk; i0++) {
-			if (q_mark_bit[tVertex0.tpaEdges + i0 - tpaEdges])
-				continue;
-			SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
-			for (int i1=0; i1<(int)tVertex1.dwNeighbourCount; i1++)
-				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !q_mark_bit[tpaEdges + i1 - tpaEdges]) {
-					q_mark_bit[dwaSortOrder[i]] = true;
-					for (int j=0; j<(int)tVertex1.dwNeighbourCount; j++)
-						if (tVertex1.tpaEdges[j].dwVertexNumber == dwVertex0) {
-							q_mark_bit[tVertex1.tpaEdges + j - tpaEdges] = true;
-							break;
-						}
-					bOk = false;
-					break;
-				}
-		}
-	}
-	Progress(1.0f);
-}
-
 void vfSaveGraph(LPCSTR name)
 {
 	FILE_NAME	fName;
@@ -253,6 +219,40 @@ void vfSaveGraph(LPCSTR name)
 	tGraph.SaveTo(fName,0);
 	Progress(1.0f);
 	Msg("%d bytes saved",int(tGraph.size()));
+}
+
+void vfOptimizeGraph(u32 dwEdgeCount)
+{
+	q_mark_bit.resize(dwEdgeCount);
+	q_mark_bit.assign(dwEdgeCount,false);
+	Progress(0.0f);
+	for (int i=dwEdgeCount - 1; i>=0; Progress((float(dwEdgeCount) - (i--))/dwEdgeCount)) {
+		if (q_mark_bit[dwaSortOrder[i]])
+			continue;
+		float fDistance = tpaEdges[dwaSortOrder[i]].fPathDistance;
+		u32 dwVertex0 = dwaEdgeOwner[dwaSortOrder[i]];
+		u32 dwVertex1 = tpaEdges[dwaSortOrder[i]].dwVertexNumber;
+		SGraphVertex &tVertex0 = tpaGraph[dwVertex0];
+		SGraphVertex &tVertex1 = tpaGraph[dwVertex1];
+		bool bOk = true;
+		for (int i0=0; (i0<(int)tVertex0.dwNeighbourCount) && bOk; i0++) {
+			if (q_mark_bit[tVertex0.tpaEdges + i0 - tpaEdges])
+				continue;
+			SGraphEdge &tEdge0 = tVertex0.tpaEdges[i0];
+			for (int i1=0; i1<(int)tVertex1.dwNeighbourCount; i1++)
+				if ((tEdge0.dwVertexNumber == tVertex1.tpaEdges[i1].dwVertexNumber) && !q_mark_bit[tVertex1.tpaEdges + i1 - tpaEdges]) {
+					q_mark_bit[dwaSortOrder[i]] = true;
+					for (int j=0; j<(int)tVertex1.dwNeighbourCount; j++)
+						if (tVertex1.tpaEdges[j].dwVertexNumber == dwVertex0) {
+							q_mark_bit[tVertex1.tpaEdges + j - tpaEdges] = true;
+							break;
+						}
+					bOk = false;
+					break;
+				}
+		}
+	}
+	Progress(1.0f);
 }
 
 void xrBuildGraph(LPCSTR name)
