@@ -117,9 +117,10 @@ void CWeaponMagazined::FireStart		()
 {
 	if (!IsWorking() && IsValid())
 	{
-		if (st_current==eReload)		return;
-		if ((0==iAmmoElapsed))			st_target	= eMagEmpty;
-		else							{
+		if (st_current==eReload)			return;
+		if (!iAmmoElapsed && iAmmoCurrent)	st_target	= eMagEmpty;
+		else							
+		{
 			st_target			= eFire;
 			CWeapon::FireStart	();
 		}
