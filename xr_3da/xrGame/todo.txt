@@ -1,6 +1,11 @@
-	+ TODO: ***Sheduler***					| Core
-	+ TODO: Adaptive Texture Sorter			| Optimization
-	+ TODO: Detail stripifier				| Optimization
+	+ TODO: Engine: ***Sheduler***			
+	+ TODO: Engine: Adaptive Texture Sorter
+	+ TODO: Engine: Detail stripifier
+	+ TODO: Engine: Disable VS on Ge4 MX
+	+ TODO: Engine: LOD rendering
+	+ TODO: Engine: Single VB/IB
+	+ TODO: Engine: Native vertex-shaders
+
 	+ TODO: Weapons as 'native' objects
 	+ BUG:  NET: Can't connect
 	+ TODO: Level-unload / reload
@@ -15,7 +20,6 @@
 	+ TODO: SE : Weapon
 	+ TODO: NET: Migrate
 	+ TODO: NET: Ownership
-	+ TODO: Disable VS on Ge4 MX
 	+ TODO: Weapons take
     + TODO: Merge shadows from weapon and entity
 	+ TODO: HUD rendering
@@ -26,15 +30,16 @@
    ?+ TODO: NET: Save/Load
 	. TODO: NET: Demo Record/Replay
 	. TODO: NET: Actor camera
-	+ TODO: Single VB/IB
-	+ TODO: Native vertex-shaders
+	
 	+ TODO: xrLC: merge IB
 	. TODO: xrLC: aligned split-plane heuristics
+	+ TODO: xrLC: LOD-building
+	+ TODO: xrLC: LOD-lighting
 	
 	. TODO: Detail texturing
+	. TODO: Mip-maps
 	. TODO: Fog-pass
 	. TODO: Usage list
-
 
 --------------------------------------------------------
 11.09.2001
