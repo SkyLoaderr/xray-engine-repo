@@ -263,6 +263,7 @@ function sound_update(npc, sound, now)
 --				npc:play_sound(id, now+1, now, 1, 0, num)
 --			else
 				printf("_bp: play_sound: %d, %d", id, num)
+				--npc:set_sound_mask (0) -- DELME
 				npc:play_sound(id, 1, 0, 1, 0, num)
 --			end
 		end

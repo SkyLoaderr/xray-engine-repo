@@ -20,16 +20,7 @@ function mob_remark:reset_scheme()
 		self.object:enable_talk()
 	end
 
-	if not self.st.no_reset then
-		printf("_bp: mob_remark:reset_scheme: %s: reset_action()", self.object:name())
-		--printf("__bp: action reset: %d", device():time_global())
-		reset_action(self.object, script_name())
-	else
-		if not self.object:get_script() then
-			printf("_bp8")
-			self.object:script(true, script_name())
-		end
-	end
+	xr_logic.mob_capture(self.object, not self.st.no_reset)
 
 	local anims = parse_names(self.st.anim)
 	
@@ -114,7 +105,7 @@ function mob_remark:update(delta)
 	--printf("_bp: mob_remark:update [%s]", self.object:name())
 	
 	if self.object:get_script() and not self.object:action() then
-		self.object:script(false, script_name())
+		--self.object:script(false, script_name())
 		--printf("__bp: free from script: %d", device():time_global())
 
 		if not self.action_end_signalled then

@@ -98,13 +98,14 @@ load_scheme("xr_test",        "test",        stype_stalker)
 load_scheme("xr_heli_hunter", "heli_hunter", stype_stalker)
 load_scheme("xr_zoneguard",   "zoneguard",   stype_stalker)
 load_scheme("xr_commander",   "commander",   stype_stalker)
-load_scheme("xr_combat",	  "combat",      stype_stalker)
-load_scheme("xr_death",		  "death",       stype_stalker)
+load_scheme("xr_combat",      "combat",      stype_stalker)
+load_scheme("xr_death",	      "death",       stype_stalker)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей монстров:
 ----------------------------------------------------------------------
 load_scheme("mob_remark",     "mob_remark",  stype_mobile)
+load_scheme("mob_walker",     "mob_walker",  stype_mobile)
 
 ----------------------------------------------------------------------
 -- Загрузка модулей физических объектов:

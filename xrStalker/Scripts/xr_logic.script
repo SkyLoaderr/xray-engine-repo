@@ -184,6 +184,8 @@ function enable_scripts(npc, ini, stype)
 			if death_section then
 				xr_death.set_death_checker(npc, actual_ini, "death", death_section)
 			end
+
+			-- Здесь включить heli_hunter: add_to_binder без доп. условий
 		end
 	
 		local active_section = utils.cfg_get_string(actual_ini, "logic", "active", npc, true, "")
@@ -269,6 +271,7 @@ function reset_generic_schemes_on_scheme_switch(npc)
 		printf("_bp: disabling talk")
 		npc:disable_talk()
 		xr_meet.dialog_manager_reset(npc)
+		mob_release(npc)
 	elseif st.stype == modules.stype_item then
 		npc:clear_use_callback()
 		npc:set_nonscript_usable(false)
@@ -688,7 +691,8 @@ function cfg_get_overrides(ini, section, npc)
 
 	l.meet_enabled = utils.cfg_get_bool(ini, section, "meet_enabled", npc, false)
 	l.meet_dialog  = utils.cfg_get_string(ini, section, "meet_dialog", npc, false, "")
-	l.reactions	   = parse_names(utils.cfg_get_string(ini, section, "reactions", npc, false, "", ""))
+	l.reactions    = parse_names(utils.cfg_get_string(ini, section, "reactions", npc, false, "", ""))
+	l.heli_hunter  = utils.cfg_get_bool(ini, section, "heli_hunter", npc, false)
 
 	return l
 end
@@ -697,4 +701,24 @@ end
 -- либо nil, если ни одна из секций не активна, или оверрайдов нет.
 function generic_scheme_overrides(npc)
 	return xr_motivator.storage[npc:id()].overrides
+end
+
+function mob_release(mob)
+	if mob:get_script() then
+		mob:script(false, script_name())
+	end
+end
+
+function mob_capture(mob, reset_actions)
+	if reset_actions == nil then
+		utils.abort("mob_capture: no_reset parameter's value is not specified")
+	end
+
+	if reset_actions then
+		reset_action(mob, script_name())
+	else
+		if not mob:get_script() then
+			mob:script(true, script_name())
+		end
+	end
 end
