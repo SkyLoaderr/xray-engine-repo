@@ -18,6 +18,7 @@ enum
 
 #ifndef _EDITOR
 extern DWORD	GAME;
+extern int		g_team;	
 extern int		g_fraglimit;
 extern int		g_timelimit;
 extern DWORD	g_flags;

@@ -71,6 +71,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 		CMD3(CCC_Token,		"g_type",				&GAME,			game_type_token);
 		CMD4(CCC_Integer,	"g_fraglimit",			&g_fraglimit,	0,1000);
 		CMD4(CCC_Integer,	"g_timelimit",			&g_timelimit,	0,1440);
+		CMD4(CCC_Integer,	"g_team",				&g_team,		0,7);
 
 		// hud
 		CMD3(CCC_Mask,		"hud_crosshair",		&psHUD_Flags,	HUD_CROSSHAIR);
