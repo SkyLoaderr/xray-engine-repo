@@ -13,7 +13,6 @@
 // Screen space blenders
 #define		B_SCREEN_SET	MK_CLSID('S','_','S','E','T',' ',' ',' ')
 #define		B_SCREEN_GRAY	MK_CLSID('S','_','G','R','A','Y',' ',' ')
-#define		B_SCREEN_BLEND	MK_CLSID('S','_','B','L','E','N','D',' ')
 
 // Editor
 #define		B_EDITOR_WIRE	MK_CLSID('E','_','W','I','R','E',' ',' ')
