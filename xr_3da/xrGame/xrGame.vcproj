@@ -605,13 +605,13 @@
 							RelativePath="AI\Rat\ai_rat_animations.cpp">
 						</File>
 						<File
+							RelativePath="AI\Rat\ai_rat_feel.cpp">
+						</File>
+						<File
 							RelativePath="AI\Rat\ai_rat_fire.cpp">
 						</File>
 						<File
 							RelativePath="AI\Rat\ai_rat_fsm.cpp">
-						</File>
-						<File
-							RelativePath="AI\Rat\ai_rat_look.cpp">
 						</File>
 						<File
 							RelativePath="AI\Rat\ai_rat_templates.cpp">
