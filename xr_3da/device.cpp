@@ -78,11 +78,9 @@ void CRenderDevice::overdrawEnd		()
 	CHK_DX(HW.pDevice->Clear(0,0,D3DCLEAR_TARGET,D3DCOLOR_XRGB(255,0,0),0,0));
 
 	// Draw a rectangle wherever the count equal I
-	Primitive.Reset	();
-	Shader.SetNULL	();
-	Shader.SetupPass(0);
-
-	CHK_DX(HW.pDevice->SetVertexShader	( FVF::F_TL ));
+	Primitive.Reset		();
+	Shader.OnFrameEnd	();
+	CHK_DX	(HW.pDevice->SetVertexShader( FVF::F_TL ));
 
 	// Render gradients
 	for (int I=0; I<12; I++ ) 
@@ -131,8 +129,8 @@ void CRenderDevice::End(void)
 	if (HW.Caps.bShowOverdraw)	overdrawEnd		();
 
 	// end scene
-	Shader.SetNULL	();
-	Primitive.Reset	();
+	Shader.OnFrameEnd	();
+	Primitive.Reset		();
     CHK_DX(HW.pDevice->EndScene());
 
 	CHK_DX(HW.pDevice->Present( NULL, NULL, NULL, NULL ));

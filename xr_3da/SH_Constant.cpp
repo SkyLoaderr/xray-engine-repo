@@ -3,8 +3,8 @@
 void	CConstant::Load	(CStream* fs)
 {
 	dwMode		= modeWaveForm;
-	fs->read	(&_R,sizeof(WaveForm));
-	fs->read	(&_G,sizeof(WaveForm));
-	fs->read	(&_B,sizeof(WaveForm));
-	fs->read	(&_A,sizeof(WaveForm));
+	fs->Read	(&_R,sizeof(WaveForm));
+	fs->Read	(&_G,sizeof(WaveForm));
+	fs->Read	(&_B,sizeof(WaveForm));
+	fs->Read	(&_A,sizeof(WaveForm));
 }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "fs.h"
+#include "blender.h"
 
 void CShaderManager::xrStartUp()
 {
@@ -38,7 +39,7 @@ void CShaderManager::xrStartUp()
 			fs->Read		(&desc,sizeof(desc));
 			CBlender*		B = CBlender::Create(desc.CLS);
 			fs->Seek		(fs->Tell()-sizeof(desc));
-			B->Load			(fs);
+			B->Load			(*fs);
 			blenders.insert	(make_pair(strdup(desc.cName),B));
 		}
 		fs->Close();
@@ -51,27 +52,9 @@ void CShaderManager::xrShutDown()
 	{
 		for (map<LPSTR,CBlender*>::iterator I=blenders.begin(); I!=blenders.end(); I++)
 		{
-			_FREE	(I->first);
-			_DELETE (I->second);
+			free	(I->first);
+			delete	I->second;
 		}
 		blenders.clear();
-	}
-	// Release matrices
-	{
-		for (map<LPSTR,CMatrix*>::iterator I=matrices.begin(); I!=matrices.end(); I++)
-		{
-			_FREE	(I->first);
-			_DELETE (I->second);
-		}
-		matrices.clear();
-	}
-	// Release constants
-	{
-		for (map<LPSTR,CConstant*>::iterator I=constants.begin(); I!=constants.end(); I++)
-		{
-			_FREE	(I->first);
-			_DELETE (I->second);
-		}
-		constants.clear();
 	}
 }
