@@ -225,8 +225,8 @@ public:
 	};
 	IC void		EdgeVerts(int e, Vertex** A, Vertex** B)
 	{
-		*A = v[edge2idx[edge][0]];
-		*B = v[edge2idx[edge][1]];
+		*A = v[edge2idx[e][0]];
+		*B = v[edge2idx[e][1]];
 	}
 
 	float		CalcArea	();
