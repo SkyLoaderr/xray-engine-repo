@@ -1,6 +1,6 @@
 #pragma once
 #include "customtarget.h"
-#include "..\feel_touch.h"
+#include "../feel_touch.h"
 
 class CTargetCSBase :
 	public CCustomTarget,

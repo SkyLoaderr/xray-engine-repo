@@ -31,7 +31,7 @@ CBastArtifact::~CBastArtifact(void)
 }
 
 //вызывается при столкновении мочалки с чем-то
-void __stdcall CBastArtifact::ObjectContactCallback(bool& do_colide,dContact& c) 
+void __stdcall CBastArtifact::ObjectContactCallback(bool& /**do_colide/**/,dContact& c) 
 {
 	dxGeomUserData *l_pUD1 = NULL;
 	dxGeomUserData *l_pUD2 = NULL;
