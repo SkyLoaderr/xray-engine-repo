@@ -75,9 +75,9 @@ static void r_vec_q16(NET_Packet& P,Fvector& vec,const Fvector& min,const Fvecto
 	P.r_float_q16(vec.y,min.y,max.y);
 	P.r_float_q16(vec.z,min.z,max.z);
 	
-	clamp(vec.x,min.x,max.x);
-	clamp(vec.y,min.y,max.y);
-	clamp(vec.z,min.z,max.z);
+	//clamp(vec.x,min.x,max.x);
+	//clamp(vec.y,min.y,max.y);
+	//clamp(vec.z,min.z,max.z);
 }
 static void w_qt_q16(NET_Packet& P,const Fquaternion& q)
 {
@@ -108,10 +108,10 @@ static void r_qt_q16(NET_Packet& P,Fquaternion& q)
 	P.r_float_q16(q.z,-1.f,1.f);
 	P.r_float_q16(q.w,-1.f,1.f);
 
-	clamp(q.x,-1.f,1.f);
-	clamp(q.y,-1.f,1.f);
-	clamp(q.z,-1.f,1.f);
-	clamp(q.w,-1.f,1.f);
+	//clamp(q.x,-1.f,1.f);
+	//clamp(q.y,-1.f,1.f);
+	//clamp(q.z,-1.f,1.f);
+	//clamp(q.w,-1.f,1.f);
 }
 ///////////////////////////////////////////////////////////////////////////////////
 void	SPHNetState::net_Export(NET_Packet& P)

@@ -167,6 +167,7 @@ void CCharacterPhysicsSupport::in_UpdateCL()
 				{
 						PSkeletonAnimated(m_EntityAlife.Visual())->PlayCycle("death_init");
 				}
+	
 				b_death_anim_on=true;
 			}
 

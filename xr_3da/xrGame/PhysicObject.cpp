@@ -22,6 +22,9 @@ void CPhysicObject::SaveNetState(NET_Packet& P)
 {
 
 	CKinematics* K	=PKinematics(Visual());
+	if(m_pPhysicsShell&&m_pPhysicsShell->bActive)
+		m_flags.set(CSE_ALifeObjectPhysic::flActive,m_pPhysicsShell->isEnabled());
+
 	P.w_u8 (m_flags.get());
 	if(K)
 	{
