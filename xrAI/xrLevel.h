@@ -82,7 +82,7 @@ public:
 	friend struct CNodePositionConverter;
 };
 
-class NodeCompressed {
+struct NodeCompressed {
 public:
 	u8				data[11];
 private:
