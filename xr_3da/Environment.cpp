@@ -1,22 +1,18 @@
-// Environment.cpp: implementation of the CEnvironment class.
-//
-//////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
-#include "igame_level.h"
+#pragma hdrstop
+
 #include "resourcemanager.h"
 #include "blenders\blender.h"
 #include "render.h"
 
 #include "Environment.h"
-#include "xr_effsun.h"
+#include "xr_efflensflare.h"
 #include "xr_trims.h"
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 ENGINE_API float	psGravity	= 20.f;
-ENGINE_API Flags32	psEnvFlags	= {effSunGlare};
 
 //////////////////////////////////////////////////////////////////////////
 // shader/blender
@@ -104,7 +100,6 @@ CEnvironment::CEnvironment	()
 }
 CEnvironment::~CEnvironment	()
 {
-	for(u32 i=0; i<Suns.size(); i++) xr_delete(Suns[i]);
 }
 
 void CEnvDescriptor::load	(LPCSTR S)
@@ -152,26 +147,6 @@ void CEnvironment::load		()
 		D.load				(pSettings->r_string(sect,name));
 		Palette.push_back	(D);
 	}
-
-	/*
-	if (pIni->line_exist(section,"suns"))
-	{
-		LPCSTR		S;
-		string256	name;
-		CSun*		pSun;
-		S = pIni->r_string(section,"suns");
-		u32 scnt = _GetItemCount(S);
-		for (u32 i=0; i<scnt; i++){
-			_GetItem(S,i,name);
-			pSun	= xr_new<CSun> (pIni, name);
-			Suns.push_back(pSun);
-		}
-		R_ASSERT2	(Suns.size(), "Should be at least one 'sun' source in level");
-	}
-	*/
-
-	// update suns
-	for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
 }
 
 void CEnvironment::OnFrame()
@@ -191,8 +166,6 @@ void CEnvironment::OnFrame()
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGCOLOR,	c_fog.get	( ) )); 
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGSTART,	*(u32 *)(&Current.fog_near)	));
 	CHK_DX(HW.pDevice->SetRenderState( D3DRS_FOGEND,	*(u32 *)(&Current.fog_far)	));
-
-	for(u32 i=0; i<Suns.size(); i++) Suns[i]->Update();
 }
 
 extern float psHUD_FOV;
@@ -238,6 +211,6 @@ void CEnvironment::RenderFirst	()
 
 void CEnvironment::RenderLast	()
 {
-	if (psEnvFlags.test(effSunGlare))
-		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
+//	if (psEnvFlags.test(effSunGlare))
+//		for(u32 i=0; i<Suns.size(); i++) Suns[i]->RenderFlares();
 }

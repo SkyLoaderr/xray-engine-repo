@@ -1,18 +1,9 @@
-// Environment.h: interface for the CEnvironment class.
-//
-//////////////////////////////////////////////////////////////////////
+#ifndef EnvironmentH
+#define EnvironmentH
 
-#if !defined(AFX_ENVIRONMENT_H__155A6D9E_2ECC_4DCC_80B2_27CD3F070B41__INCLUDED_)
-#define AFX_ENVIRONMENT_H__155A6D9E_2ECC_4DCC_80B2_27CD3F070B41__INCLUDED_
-
-class ENGINE_API CSun;
+class ENGINE_API CLensFlare;
 class ENGINE_API IRender_Visual;
 class ENGINE_API CInifile;
-
-enum {
-	effSunGlare		= (1ul<<0ul),
-	effGlows		= (1ul<<1ul)
-};
 
 class ENGINE_API	CEnvDescriptor
 {
@@ -36,6 +27,8 @@ public:
 	Fvector3			sun_color;
 	Fvector3			sun_dir;
 
+	CLensFlare*			lens_flare;
+
 	void				load		(LPCSTR sect);
 	void				lerp		(CEnvDescriptor& A, CEnvDescriptor& B, float f);
 };
@@ -44,7 +37,6 @@ class ENGINE_API	CEnvironment
 {
 public:
 	// Environments
-	xr_vector<CSun*>			Suns;
 	CEnvDescriptor				Current;
 	xr_vector<CEnvDescriptor>	Palette;
 	ref_shader					sh_2sky;
@@ -64,4 +56,7 @@ public:
 ENGINE_API extern Flags32	psEnvFlags;
 ENGINE_API extern float		psGravity;
 
-#endif // !defined(AFX_ENVIRONMENT_H__155A6D9E_2ECC_4DCC_80B2_27CD3F070B41__INCLUDED_)
+#endif //EnvironmentH
+y;
+
+#endif //EnvironmentH
