@@ -182,7 +182,7 @@ void CLightShadows::calculate	()
 	id.clear		();
 	
 	// Blur
-	Device.Shader.set_RT		(RT->pRT,0);
+	// Device.Shader.set_RT		(RT->pRT,0);
 	
 	// Finita la comedia
 	Device.Statistic.TEST.End	();
