@@ -304,7 +304,7 @@ void				game_sv_GameState::assign_RP				(CSE_Abstract* E)
 	if (tpSpectator)
 		l_uc_team = tpSpectator->g_team();
 	else {
-		CSE_ALifeMonsterAbstract	*tpTeamed = dynamic_cast<CSE_ALifeMonsterAbstract*>(E);
+		CSE_ALifeCreatureAbstract	*tpTeamed = dynamic_cast<CSE_ALifeCreatureAbstract*>(E);
 		if (tpTeamed)
 			l_uc_team = tpTeamed->g_team();
 		else

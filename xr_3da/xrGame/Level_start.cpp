@@ -18,7 +18,7 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 		
 		// Connect
 		Server					= xr_new<xrServer>();
-		Server->Connect			(m_caServerOptions);
+
 
 		string64				l_name;
 		strcpy					(l_name,m_caServerOptions);
@@ -34,7 +34,8 @@ BOOL CLevel::net_Start	( LPCSTR op_server, LPCSTR op_client )
 			return				FALSE;
 		}
 		pApp->Level_Set			(id);
-		
+
+		Server->Connect			(m_caServerOptions);	
 		Server->SLS_Default		();
 		
 		strcpy					(m_caServerOptions,op_server);
