@@ -909,16 +909,16 @@ LUA_TUSERDATA		7
 LUA_TTHREAD			8
 /**/		
 //		vfPrintTable(L,argv[1]);
-		lua_pushstring(L,"test");
-		print_stack	(L);
-		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TFUNCTION)  ? "true" : "false");
-		print_stack	(L);
-		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TUSERDATA)  ? "true" : "false");
-		print_stack	(L);
-		printf		("%s\n",object_presented(L,argv[1],"_main",LUA_TFUNCTION) ? "true" : "false");
-		print_stack	(L);
-		printf		("%s\n",object_presented(L,argv[1],"Main",LUA_TFUNCTION)  ? "true" : "false");
-		print_stack	(L);
+//		lua_pushstring(L,"test");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TFUNCTION)  ? "true" : "false");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"main",LUA_TUSERDATA)  ? "true" : "false");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"_main",LUA_TFUNCTION) ? "true" : "false");
+//		print_stack	(L);
+//		printf		("%s\n",object_presented(L,argv[1],"Main",LUA_TFUNCTION)  ? "true" : "false");
+//		print_stack	(L);
 	}
 
 	lua_close		(L);
