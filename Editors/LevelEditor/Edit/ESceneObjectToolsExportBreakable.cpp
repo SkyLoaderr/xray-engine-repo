@@ -83,8 +83,11 @@ struct SBPart: public CExportSkeletonCustom
     
     Fvector			m_RefOffset;
     Fvector			m_RefRotate;
+
+    bool 			m_bValid;
 public:
-					SBPart				(){m_Reference=0;}
+					SBPart				(){m_Reference=0;m_bValid=true;}
+	bool			Valid				(){return m_bValid;}
     virtual bool 	Export				(IWriter& F);
 	void			append_face			(SBFace* F)
     {
@@ -118,8 +121,9 @@ public:
             } 
         }
     }
-    void			prepare				(SBAdjVec& adjs)
+    bool			prepare				(SBAdjVec& adjs)
     {
+    	m_bValid	= true;
         // compute OBB
         FvectorVec pts; pts.reserve		(m_Faces.size()*3);
 		for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
@@ -154,91 +158,107 @@ public:
         // transform vertices & calculate bounding box
 		for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
         	SBFace* F					= (*f_it);
+            if (F->adjs.empty()){	
+            	ELog.Msg(mtError,"Error face found at pos: [%3.2f,%3.2f,%3.2f]",VPUSH(F->p[0])); 
+                Scene.m_CompilerErrors.AppendFace(F->p[0],F->p[1],F->p[2]);
+                m_bValid				= false;
+            }
         	for (int k=0; k<3; k++){ 
             	M.transform_tiny		(F->p[k]);
                 m_BBox.modify			(F->p[k]);
             }
-            if (F->adjs.empty())		ELog.Msg(mtError,"Error"); //.
         }   
-        // calculate bone params
-        int bone_face_min				= 2;
-        int bone_cnt_calc				= iFloor(float(m_Faces.size())/bone_face_min);
-        int bone_cnt_max				= (bone_cnt_calc<62)?bone_cnt_calc:62;
-        int bone_face_max				= iFloor(float(m_Faces.size())/bone_cnt_max+0.5f); bone_face_max *= 4.f;
-        int bone_idx					= 0;
-        // create big fragment
-        u32 face_accum_total			= 0;
-        AnsiString parent_bone			= "";
-        do{
-        	SBFace* F					= 0;
-        	// find unused face
-            for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-            	if (!(*f_it)->marked){
-	            	F					= *f_it;
-                	int cnt 			= 0;
-		            for (SBFaceVecIt a_it=F->adjs.begin(); a_it!=F->adjs.end(); a_it++) cnt+=(*a_it)->marked?0:1;
-                    if ((cnt==0)||(cnt>=2))	break;
+        if (m_bValid){
+            // calculate bone params
+            int bone_face_min				= 2;
+            int bone_cnt_calc				= iFloor(float(m_Faces.size())/bone_face_min);
+            int bone_cnt_max				= (bone_cnt_calc<62)?bone_cnt_calc:62;
+            int bone_face_max				= iFloor(float(m_Faces.size())/bone_cnt_max+0.5f); bone_face_max *= 4.f;
+            int bone_idx					= 0;
+            // create big fragment
+            u32 face_accum_total			= 0;
+            AnsiString parent_bone			= "";
+            do{
+                SBFace* F					= 0;
+                // find unused face
+                for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+                    if (!(*f_it)->marked){
+                        F					= *f_it;
+                        int cnt 			= 0;
+                        for (SBFaceVecIt a_it=F->adjs.begin(); a_it!=F->adjs.end(); a_it++) cnt+=(*a_it)->marked?0:1;
+                        if ((cnt==0)||(cnt>=2))	break;
+                    }
                 }
-            }
-            if (!F)						break;
-            float area					= 0;
-	        u32 face_accum				= 0;
-            u32 face_max_count 			= Random.randI(bone_face_min,bone_face_max+1);
-            // fill faces
-            recurse_fragment			(F,face_accum,bone_idx,face_max_count,area);
-            if (face_accum==1){
-//            	F->marked				= false;
-                F->bone_id				= -1;
-            }else{
-                m_Bones.push_back		(SBBone(bone_idx,parent_bone,F->surf->_GameMtlName(),face_accum,area));
-                parent_bone				= "0";
-                bone_idx				++;
-                face_accum_total		+= face_accum;
-            }
-            // create bone
-        }while(bone_idx<bone_cnt_max);
+                if (!F)						break;
+                float area					= 0;
+                u32 face_accum				= 0;
+                u32 face_max_count 			= Random.randI(bone_face_min,bone_face_max+1);
+                // fill faces
+                recurse_fragment			(F,face_accum,bone_idx,face_max_count,area);
+                if (face_accum==1){
+    //            	F->marked				= false;
+                    F->bone_id				= -1;
+                }else{
+                    m_Bones.push_back		(SBBone(bone_idx,parent_bone,F->surf->_GameMtlName(),face_accum,area));
+                    parent_bone				= "0";
+                    bone_idx				++;
+                    face_accum_total		+= face_accum;
+                }
+                // create bone
+            }while(bone_idx<bone_cnt_max);
         
-		// attach small single face to big fragment
-        while (face_accum_total<m_Faces.size()){
-            for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-            	SBFace* F				= *f_it;
-            	if (-1==F->bone_id){
-	            	SBFace* P			= 0;
-		            for (SBFaceVecIt a_it=F->adjs.begin(); a_it!=F->adjs.end(); a_it++){ 
-                    	P				= *a_it;
-                    	if (-1!=P->bone_id)	break;
+            // attach small single face to big fragment
+            while (face_accum_total<m_Faces.size()){
+                for (SBFaceVecIt f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+                    SBFace* F				= *f_it;
+                    if (-1==F->bone_id){
+                        SBFace* P			= 0;
+                        if (F->adjs.empty()){
+                            F->marked		= true;
+                            F->bone_id		= 0;
+                            face_accum_total++;
+                        }else{
+                            for (SBFaceVecIt a_it=F->adjs.begin(); a_it!=F->adjs.end(); a_it++){ 
+                                P				= *a_it;
+                                if (-1!=P->bone_id)	break;
+                            }
+                        }
+                        if (P){
+    //.			            float area		= 0;
+    //.                    	use_face		(F,face_accum_total,P->bone_id,area);
+    //.						m_Bones[P->bone_id].area += area;
+                            F->marked		= true;
+                            F->bone_id		= P->bone_id;
+                            face_accum_total++;
+                        }
                     }
-                    if (P){
-                        F->marked		= true;
-                        F->bone_id		= P->bone_id;
-                        face_accum_total++;
-                    }
-            	}
-            } 
-        }
+                } 
+            }
         
-        // calculate bone offset
-        for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-            SBFace* F					= *f_it;
-            SBBone& B					= m_Bones[F->bone_id];
-            for (int k=0; k<3; k++)		B.offset.add(F->p[k]);
-        }
-        for (SBBoneVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
-            SBBone& B					= *b_it;
-            VERIFY						(0!=B.f_cnt);
-            B.offset.div				(B.f_cnt*3);
-        }
-        Fvector& offs					= m_Bones.front().offset;
-        for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
-            b_it->offset.sub			(offs);
+            // calculate bone offset
+            for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+                SBFace* F					= *f_it;
+                SBBone& B					= m_Bones[F->bone_id];
+                for (int k=0; k<3; k++)		B.offset.add(F->p[k]);
+            }
+            for (SBBoneVecIt b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++){
+                SBBone& B					= *b_it;
+                VERIFY						(0!=B.f_cnt);
+                B.offset.div				(B.f_cnt*3);
+            }
+            Fvector& offs					= m_Bones.front().offset;
+            for (b_it=m_Bones.begin(); b_it!=m_Bones.end(); b_it++)
+                b_it->offset.sub			(offs);
         
-		// calculate vertices offset
-		for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
-        	SBFace* F					= (*f_it);	VERIFY(F->bone_id>=0);	
-            SBBone& B					= m_Bones	[F->bone_id]; 
-        	for (int k=0; k<3; k++)		F->o[k].sub	(F->p[k],B.offset);
-            F->n.mknormal				(F->o[0],F->o[1],F->o[2]);
+            // calculate vertices offset
+            for (f_it=m_Faces.begin(); f_it!=m_Faces.end(); f_it++){
+                SBFace* F					= (*f_it);	VERIFY(F->bone_id>=0);	
+                SBBone& B					= m_Bones	[F->bone_id]; 
+                for (int k=0; k<3; k++)		F->o[k].sub	(F->p[k],B.offset);
+                F->n.mknormal				(F->o[0],F->o[1],F->o[2]);
+            }
         }
+	    return m_bValid;
     }
 };
 DEFINE_VECTOR		(SBPart*,SBPartVec,SBPartVecIt);
@@ -515,35 +535,39 @@ bool ESceneObjectTools::ExportBreakableObjects(SExportStreams& F)
 	    UI->ProgressStart(parts.size(),"Export Parts...");
         for (SBPartVecIt p_it=parts.begin(); p_it!=parts.end(); p_it++){	
             UI->ProgressInc		();
-        	SBPart*	P			= *p_it;
-            // export visual
-            AnsiString sn		= AnsiString().sprintf("meshes\\obj_%d.ogf",(p_it-parts.begin()));
-            AnsiString fn		= Scene.LevelPath()+sn;
-            IWriter* W			= FS.w_open(fn.c_str()); VERIFY(W);
-            if (!P->Export(*W)){
-            	ELog.DlgMsg		(mtError,"Invalid breakable object.");
-            	bResult 		= false;
-                break;
-            }
-            FS.w_close			(W);
-            // export spawn object
-            {
-            	AnsiString entity_ref		= "breakable_object";
-				CSE_ALifeObjectBreakable*	m_Data	= dynamic_cast<CSE_ALifeObjectBreakable*>(F_entity_Create(entity_ref.c_str())); VERIFY(m_Data);
-                // set params
-                strcpy	  					(m_Data->s_name,entity_ref.c_str());
-                strcpy	  					(m_Data->s_name_replace,sn.c_str());
-                m_Data->o_Position.set		(P->m_RefOffset); 
-                m_Data->o_Angle.set			(P->m_RefRotate);
-                m_Data->set_visual			(sn.c_str(),false);
-                m_Data->m_health			= 100.f;
+            SBPart*	P			= *p_it;
+        	if (P->Valid()){
+                // export visual
+                AnsiString sn		= AnsiString().sprintf("meshes\\obj_%d.ogf",(p_it-parts.begin()));
+                AnsiString fn		= Scene.LevelPath()+sn;
+                IWriter* W			= FS.w_open(fn.c_str()); VERIFY(W);
+                if (!P->Export(*W)){
+                    ELog.DlgMsg		(mtError,"Invalid breakable object.");
+                    bResult 		= false;
+                    break;
+                }
+                FS.w_close			(W);
+                // export spawn object
+                {
+                    AnsiString entity_ref		= "breakable_object";
+                    CSE_ALifeObjectBreakable*	m_Data	= dynamic_cast<CSE_ALifeObjectBreakable*>(F_entity_Create(entity_ref.c_str())); VERIFY(m_Data);
+                    // set params
+                    strcpy	  					(m_Data->s_name,entity_ref.c_str());
+                    strcpy	  					(m_Data->s_name_replace,sn.c_str());
+                    m_Data->o_Position.set		(P->m_RefOffset); 
+                    m_Data->o_Angle.set			(P->m_RefRotate);
+                    m_Data->set_visual			(sn.c_str(),false);
+                    m_Data->m_health			= 100.f;
 
-                NET_Packet					Packet;
-                m_Data->Spawn_Write			(Packet,TRUE);
+                    NET_Packet					Packet;
+                    m_Data->Spawn_Write			(Packet,TRUE);
 
-                F.spawn.stream.open_chunk	(F.spawn.chunk++);
-                F.spawn.stream.w			(Packet.B.data,Packet.B.count);
-                F.spawn.stream.close_chunk	();
+                    F.spawn.stream.open_chunk	(F.spawn.chunk++);
+                    F.spawn.stream.w			(Packet.B.data,Packet.B.count);
+                    F.spawn.stream.close_chunk	();
+                }
+            }else{
+            	ELog.Msg(mtError,"Can't export invalid part #%d",p_it-parts.begin());
             }
         }
 	    UI->ProgressEnd();

@@ -85,6 +85,8 @@ BOOL SceneBuilder::MakeGame( )
     UI->BeginEState(esBuildLevel);
     try{
         do{
+	        // clear error
+		    Scene.m_CompilerErrors.Clear();
 	        // validate scene
     	    VERIFY_COMPILE(Scene.Validate(false,false,false,false,false),	"Validation failed. Invalid scene.");
         	// build
