@@ -48,7 +48,7 @@ void CSoundMemoryManager::reload				(LPCSTR section)
 {
 }
 
-//#define SILENCE
+#define SILENCE
 
 void CSoundMemoryManager::feel_sound_new(CObject *object, int sound_type, const Fvector &position, float sound_power)
 {
