@@ -120,6 +120,7 @@ public:
 	virtual void			set_DynamicScales				(float l_scale=default_l_scale,float w_scale=default_w_scale);
 	virtual void			set_ObjectContactCallback		(ObjectContactCallbackFun* callback);
 	virtual void			set_PhysicsRefObject			(CPhysicsRefObject* ref_object);
+	virtual CPhysicsRefObject*	PhysicsRefObject			(){return m_phys_ref_object;}
 	virtual void			set_PushOut						(u32 time,PushOutCallbackFun* push_out=PushOutCallback);
 	virtual void			get_LinearVel					(Fvector& velocity);
 	virtual void			get_AngularVel					(Fvector& velocity);

@@ -6,7 +6,7 @@
 #include "Physics.h"
 #include "PHAICharacter.h"
 #include "PHActorCharacter.h"
-
+#include "PHCapture.h"
 
 
 #define GROUND_FRICTION	10.0f
@@ -21,7 +21,8 @@
 CPHMovementControl::CPHMovementControl(void)
 {
 	//m_character->Create();
-	b_exect_position		=true;
+	m_capture			=NULL;
+	b_exect_position	=true;
 	m_start_index		=0;
 	pObject	=			NULL;
 	eOldEnvironment =	peInAir;
@@ -61,6 +62,12 @@ CPHMovementControl::~CPHMovementControl(void)
 
 void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,float dt,bool bLight){
 
+	
+	if(m_capture) 
+	{
+		if(m_capture->Failed()) xr_delete(m_capture);
+	}
+	
 	m_character->IPosition(vPosition);
 
 	vAccel.y=jump;
@@ -93,6 +100,13 @@ void CPHMovementControl::Calculate(Fvector& vAccel,float ang_speed,float jump,fl
 
 void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,float dt){
 
+	
+	if(m_capture) 
+	{
+		if(m_capture->Failed()) xr_delete(m_capture);
+	}
+	
+	
 	m_character->IPosition(vPosition);
 
 
@@ -127,6 +141,13 @@ void CPHMovementControl::Calculate(const Fvector& desired_pos,float velocity,flo
 
 void CPHMovementControl::Calculate(const xr_vector<CTravelNode>& path,float speed,  u32& travel_point,  float& precesition  )
 {
+	
+	if(m_capture) 
+	{
+		if(m_capture->Failed()) xr_delete(m_capture);
+	}
+	
+	
 	Fvector new_position;
 	m_character->IPosition(new_position);
 
@@ -584,6 +605,10 @@ void CPHMovementControl::PathDIrPoint(const xr_vector<CTravelNode> &path,  int i
 }
 void CPHMovementControl::Load					(LPCSTR section){
 
+	//capture
+	
+	strcpy(m_capture_bone,pSettings->r_string(section,"capture_bone"));
+	
 	Fbox	bb;
 
 	// Movement: BOX
@@ -613,11 +638,11 @@ void CPHMovementControl::Load					(LPCSTR section){
 
 
 	// Movement: Frictions
-	float af, gf, wf;
-	af					= pSettings->r_float	(section,"ph_friction_air"	);
-	gf					= pSettings->r_float	(section,"ph_friction_ground");
-	wf					= pSettings->r_float	(section,"ph_friction_wall"	);
-	SetFriction	(af,wf,gf);
+	//float af, gf, wf;
+	//af					= pSettings->r_float	(section,"ph_friction_air"	);
+	//gf					= pSettings->r_float	(section,"ph_friction_ground");
+	//wf					= pSettings->r_float	(section,"ph_friction_wall"	);
+	//SetFriction	(af,wf,gf);
 
 	// BOX activate
 	ActivateBox	(0);
@@ -663,7 +688,25 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 
 void	CPHMovementControl::PHCaptureObject(CGameObject* object)
 {
+if(m_capture) return;
+if(!object->m_pPhysicsShell) return;
+if(m_capture_bone[0]=='0')   return;
 
+CObject* capturer_object=dynamic_cast<CObject*>(m_character->PhysicsRefObject());
+CKinematics* p_kinematics=PKinematics(capturer_object->Visual());
+CBoneInstance * capture_bone_instance=&p_kinematics->LL_GetInstance(p_kinematics->LL_BoneID(m_capture_bone));
+
+
+
+m_capture=xr_new<CPHCapture>(m_character,
+							 object->m_pPhysicsShell->NearestToPoint(capture_bone_instance->mTransform.c),
+							 capture_bone_instance,
+							 0.1f,					//distance
+							 500000,				//time
+							 10000.f,					//pull force
+							 10000.f					//capture force
+							 );
+//CPHCapture::CPHCapture()
 }
 
 void	CPHMovementControl::DeleteCharacterObject()

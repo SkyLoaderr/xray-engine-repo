@@ -76,32 +76,33 @@ void CCustomMonster::Load		(LPCSTR section)
 	///////////
 	// Movement: General
 	Movement.SetParent		(this);
-	Fbox	bb;
+	Movement.Load			(section);
+	//Fbox	bb;
 
-	// Movement: BOX
-	Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
-	Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
-	bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
-	Movement.SetBox		(0,bb);
+	//// Movement: BOX
+	//Fvector	vBOX0_center= pSettings->r_fvector3	(section,"ph_box0_center"	);
+	//Fvector	vBOX0_size	= pSettings->r_fvector3	(section,"ph_box0_size"		);
+	//bb.set	(vBOX0_center,vBOX0_center); bb.grow(vBOX0_size);
+	//Movement.SetBox		(0,bb);
 
-	// Movement: BOX
-	Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
-	Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
-	bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
-	Movement.SetBox		(1,bb);
+	//// Movement: BOX
+	//Fvector	vBOX1_center= pSettings->r_fvector3	(section,"ph_box1_center"	);
+	//Fvector	vBOX1_size	= pSettings->r_fvector3	(section,"ph_box1_size"		);
+	//bb.set	(vBOX1_center,vBOX1_center); bb.grow(vBOX1_size);
+	//Movement.SetBox		(1,bb);
 
-	// Movement: Foots
-	Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
-	Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
-	bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
-	Movement.SetFoots	(vFOOT_center,vFOOT_size);
+	//// Movement: Foots
+	//Fvector	vFOOT_center= pSettings->r_fvector3	(section,"ph_foot_center"	);
+	//Fvector	vFOOT_size	= pSettings->r_fvector3	(section,"ph_foot_size"		);
+	//bb.set	(vFOOT_center,vFOOT_center); bb.grow(vFOOT_size);
+	//Movement.SetFoots	(vFOOT_center,vFOOT_size);
 
-	// Movement: Crash speed and mass
-	float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
-	float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
-	float	mass		= pSettings->r_float	(section,"ph_mass"				);
-	Movement.SetCrashSpeeds	(cs_min,cs_max);
-	Movement.SetMass		(mass);
+	//// Movement: Crash speed and mass
+	//float	cs_min		= pSettings->r_float	(section,"ph_crash_speed_min"	);
+	//float	cs_max		= pSettings->r_float	(section,"ph_crash_speed_max"	);
+	//float	mass		= pSettings->r_float	(section,"ph_mass"				);
+	//Movement.SetCrashSpeeds	(cs_min,cs_max);
+	//Movement.SetMass		(mass);
 	
 
 	// Movement: Frictions

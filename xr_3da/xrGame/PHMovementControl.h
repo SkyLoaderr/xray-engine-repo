@@ -8,12 +8,13 @@ using namespace AI;
 
 class CPHAICharacter;
 class CPHSimpleCharacter;
-
+class CPHCapture;
 class CPHMovementControl 
 {
 static const path_few_point=10;
 public:
 void			PHCaptureObject(CGameObject* object);
+CPHCapture*		Capture        (){return m_capture;}
 bool			b_exect_position;
 public:
 
@@ -31,8 +32,11 @@ public:
 private:
 	void				CheckEnvironment	(const Fvector& V);
 
-	//CPHSimpleCharacter  m_character;
+
 	CPHCharacter*		m_character;
+	CPHCapture  *		m_capture;
+	string16			m_capture_bone;
+
 	float				m_fGroundDelayFactor;
 	BOOL				bIsAffectedByGravity;
 	//------------------------------
@@ -116,6 +120,7 @@ public:
 
 	void				ActivateBox		(DWORD id)	{ 
 														aabb.set(boxes[id]);
+														if(!m_character) return;
 													    if(!m_character->b_exist) return;
 														m_character->Destroy();
 														CreateCharacter();	

@@ -76,6 +76,7 @@ virtual		void		SetVelocity							(Fvector vel)	=0	;
 virtual		void		GetPosition							(Fvector& vpos)	=0	;
 virtual		void		SetMas								(dReal mass)	=0	;
 virtual		void		SetPhysicsRefObject					(CPhysicsRefObject* ref_object)=0;
+virtual		CPhysicsRefObject* PhysicsRefObject				(){return m_phys_ref_object;}
 
 //AICharacter
 virtual		void		GetDesiredPosition					(Fvector& dpos)	{}

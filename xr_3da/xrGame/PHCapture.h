@@ -4,7 +4,7 @@
 class CPHCapture : public CPHObject
 {
 public:
-					CPHCapture							(CPHCharacter   *a_character, 
+					CPHCapture							(CPHCharacter   *a_character,
 														 CPhysicsElement*a_taget,
 														 CBoneInstance  *a_capture_bone,
 														 float			a_capture_distance,
@@ -25,7 +25,8 @@ float				m_capture_force;
 float				m_capture_distance;
 u32					m_capture_time;
 u32					m_time_start;
-CBoneInstance*		m_capture_bone;
+CBoneInstance		*m_capture_bone;
+dBodyID				m_body;
 bool				b_failed;
 
 private:
@@ -37,6 +38,10 @@ private:
 
 			void PullingUpdate();
 			void CapturedUpdate();
+			void CreateBody();
+
+static void object_contactCallbackFun(bool& do_colide,dContact& c);
+
 ///////////CPHObject/////////////////////////////
 	virtual void PhDataUpdate(dReal step);
 	virtual void PhTune(dReal step){};

@@ -88,6 +88,7 @@ class	CPhysicsElement		: public CPhysicsBase
 public:
 	int						m_SelfID;
 	virtual void			set_ContactCallback		(ContactCallbackFun* callback)					= 0;
+	virtual CPhysicsRefObject*	PhysicsRefObject	()												= 0;
 	virtual	void			add_Sphere				(const Fsphere&		V)							= 0;
 	virtual	void			add_Box					(const Fobb&		V)							= 0;
 	virtual	void			add_Cylinder			(const Fcylinder&	V)							= 0;
@@ -207,6 +208,7 @@ IC	CKinematics*				PKinematics				()					{return m_pKinematics;};
 	virtual void				SmoothElementsInertia	(float k)											= 0;
 	virtual CPhysicsElement*	get_Element				(s16 bone_id)										= 0;
 	virtual CPhysicsElement*	get_Element				(LPCSTR bone_name)									= 0;
+	virtual CPhysicsElement*	NearestToPoint			(const Fvector& point)								= 0;
 	virtual void				build_FromKinematics	(CKinematics* K,BONE_P_MAP* p_geting_map=NULL)		= 0;
 	virtual void				UpdateRoot				()													= 0;
 	virtual void                ZeroCallbacks			()													= 0;

@@ -120,6 +120,7 @@ virtual ~CPHShell				()
 	virtual void				SetMaterial				  (LPCSTR m);
 	virtual CPhysicsElement*	get_Element				  (s16 bone_id);
 	virtual CPhysicsElement*	get_Element				  (LPCSTR bone_name);
+	virtual CPhysicsElement*	NearestToPoint			  (const Fvector& point);
 	virtual void				Enable						();
 
 	virtual	void				PhDataUpdate				(dReal step);

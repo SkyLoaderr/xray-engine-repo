@@ -760,3 +760,25 @@ void CPHShell::GetGlobalPositionDynamic(Fvector* v)
 {
 (*elements.begin())->GetGlobalPositionDynamic(v);
 }
+
+CPhysicsElement* CPHShell::NearestToPoint(const Fvector& point)
+{
+	xr_vector<CPHElement*>::iterator i,e;
+	i=elements.begin(); e=elements.end();
+	float min_distance	=dInfinity;
+	CPHElement* nearest_element=NULL;
+	for( ;i!=e;i++)
+	{
+		Fvector tmp;
+		float	distance;
+		(*i)->GetGlobalPositionDynamic(&tmp);
+		tmp.sub(point);
+		distance=tmp.magnitude();
+		if(distance<min_distance)
+		{
+			min_distance=distance;
+			nearest_element=*i;
+		}
+	}
+	return nearest_element;
+}
