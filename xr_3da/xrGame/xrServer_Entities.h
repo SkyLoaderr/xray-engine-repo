@@ -4,7 +4,7 @@
 #include "xrMessages.h"
 #ifdef _EDITOR
 	#include "net_utils.h"
-	#include "PropertiesListTypes.h"
+	#include "PropertiesListHelper.h"
 #endif
 
 // refs
