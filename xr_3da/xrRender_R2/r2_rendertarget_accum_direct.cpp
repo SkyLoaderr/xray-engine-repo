@@ -90,7 +90,7 @@ void CRenderTarget::accum_direct		(u32 sub_phase)
 			m_shadow.mul	(xf_project,	xf_invview);
 
 			// tsm-bias
-			if (SE_SUN_FAR == sub_phase)
+			if ( (SE_SUN_FAR == sub_phase) && (RImplementation.o.HW_smap) )
 			{
 				Fvector		bias;	bias.mul		(L_dir,ps_r2_sun_tsm_bias);
 				Fmatrix		bias_t;	bias_t.translate(bias);
