@@ -108,12 +108,11 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 	if (!g_Alive()) return;
 	if (!pEntity) return;
 
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-	// if (!Mem.IsEnemy()) return;
-
-#pragma todo("Oles to Jim: CMonsterMemory - commented out")
-	// VisionElem &ve = Mem.GetNearestObject(Position());
 	VisionElem ve;
+	if (!Mem.SelectEnemy(ve)) return;
+
+	VisionElem &ve = Mem.GetNearestObject(vPosition);
+
 	if ((ve.obj->CLS_ID == CLSID_ENTITY) && (ve.obj == pEntity)) {
 		Fvector tDirection;
 		Fvector position_in_bone_space;
@@ -122,9 +121,9 @@ void CAI_Biting::DoDamage(CEntity *pEntity)
 		tDirection.normalize();
 
 		pEntity->Hit(m_fHitPower,tDirection,this,0,position_in_bone_space,0);
-		
-		m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
-		::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
+//		
+//		m_tpSoundBeingPlayed = &(m_tpaSoundHit[::Random.randI(SND_HIT_COUNT)]);
+//		::Sound->play_at_pos(*m_tpSoundBeingPlayed,this,eye_matrix.c);
 	}
 }
 
