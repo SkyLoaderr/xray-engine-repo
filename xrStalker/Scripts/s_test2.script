@@ -29,10 +29,7 @@ function main ()
 	while true do 
 		  if game.time () - time > 5000 then
 			 time = game.time ()
-			 s_test2.update_action (mover, 
-									s_test2.script_name (), 
-									sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false)
-									)
+			 s_test2.update_action (mover, s_test2.script_name (), sound ("scripts\\stalker_prof\\prof_do_basi_bi_dobratsya", "bip01_head", vector():set(0,0,0), vector():set(0,0,0), false))
 		  end
 		  wait ()
 	end	
