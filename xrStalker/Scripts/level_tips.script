@@ -1,25 +1,26 @@
 tips = {}
 
-function fill_tips(object, name, distance, type, cond)
+function fill_tips(object, name, distance, type, sender, cond)
 	if tips[object:id()..name] == nil then
 		t = { info = name,
 			position = object:position(),
 			radius = distance,
 			type = type,
+			sender = sender,
 			conditions = cond}
 		tips[object:id()..name] = t
-	end
+	end	
 end
 
 function get_tips(actor)
---	print_table(tips)
+	--print_table(tips)
 	for k,v in tips do
 		if actor:position():distance_to(v.position) <= v.radius then
 			if v.conditions == nil or
 				xr_logic.pick_section_from_condlist(actor,nil,v.conditions.condlist) ~= nil 
 			then
 				if v.type == "tips" then
-					news_manager.send_tip(actor, v.info)
+					news_manager.send_tip(actor, v.info, nil, v.sender)
 				elseif v.type == "news" then
 					news_manager.send_news(actor, v.info)
 				end

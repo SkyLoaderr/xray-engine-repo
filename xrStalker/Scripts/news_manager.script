@@ -30,7 +30,7 @@ function send_news(actor, news_id, timeout)
 	actor:set_news_show_time(news_id, 5000)
 end
 
-function send_tip(actor, news_id, timeout)
+function send_tip(actor, news_id, timeout, sender)
 	if actor == nil or news_id == nil then return false end
 	
 	if timeout == nil then timeout = 0 end
@@ -47,7 +47,15 @@ function send_tip(actor, news_id, timeout)
 	if snd_obj ~= nil then
 		snd_obj:play(actor, timeout, sound_object.s2d)
 	end
-	actor:give_game_news(news_id, "ui\\ui_icons_task", 50,100,50,50, timeout*1000)
+	local x = 50
+	local y = 100
+	if sender ~= nil then
+		if sender == "dolg" then
+			x = 150
+			y = 0
+		end	
+	end
+	actor:give_game_news(news_id, "ui\\ui_icons_task", x,y,50,50, timeout*1000)	
 	actor:set_news_show_time(news_id, 5000)	
 end
 

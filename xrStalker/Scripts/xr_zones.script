@@ -92,11 +92,16 @@ function zone_binder:net_spawn( server_object )
 			if 	ini:line_exist("tips", "type") then
 				type = ini:r_string("tips", "type")
 			end
+			local sender = nil
+			if 	ini:line_exist("tips", "sender") then
+				sender = ini:r_string("tips", "sender")
+			end
 			
 			level_tips.fill_tips(self.object, 
 								ini:r_string("tips", "name"), 
 								distance,
 								type,
+								sender,
 								xr_logic.cfg_get_condlist(ini,"tips","conditions",self.object))
 		end
 	end
