@@ -71,5 +71,6 @@ void Touch::feel_touch_update	(Fvector& C, float R)
 			d--;
 		}
 	}
-	Engine.Sheduler.Slice	();
+
+	//. Engine.Sheduler.Slice	();	
 }
