@@ -3,6 +3,55 @@
 void CRenderTarget::accum_spot_shadow	(light* L)
 {
 	// *** assume accumulator setted up ***
+	// *****************************	Mask by stencil		*************************************
+	{
+		float		s			= 2.f*L->range*_tan(L->cone);
+		Fmatrix		mScale;		mScale.scale(s,L->range,s);		// make range and radius
+		Fmatrix		mR_Z;		mR_Z.rotateX(deg2rad(90.f));	// align with Z
+		
+		// build final rotation / translation
+		Fvector					L_dir,L_up,L_right,L_pos;
+		L_dir.set				(L->direction);			L_dir.normalize		();
+		L_up.set				(0,1,0);				if (_abs(L_up.dotproduct(L_dir))>.99f)	L_up.set(0,0,1);
+		L_right.crossproduct	(L_up,L_dir);			L_right.normalize	();
+		L_up.crossproduct		(L_dir,L_right);		L_up.normalize		();
+		Fmatrix		mR;
+		mR.i					= L_right;		mR._14		= 0;
+		mR.j					= L_up;			mR._24		= 0;
+		mR.k					= L_dir;		mR._34		= 0;
+		mR.c					= L->position;	mR._44		= 1;
+
+		// final xform
+		Fmatrix		xf;
+		xf.mul		(mR_Z,mScale);
+		xf.mulA		(mR);
+
+		// setup xform
+		RCache.set_xform_world			(xf					);
+		RCache.set_xform_view			(Device.mView		);
+		RCache.set_xform_project		(Device.mProject	);
+
+		// *** similar to "Carmack's reverse", but assumes convex, non intersecting objects,
+		// *** thus can cope without stencil clear with 127 lights
+		// *** in practice, 'cause we "clear" it back to 0x1 it usually allows us to > 200 lights :)
+		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	0	));
+
+		RCache.set_Element				(s_accum_spot_s->E[0]);			// masker
+		RCache.set_Geometry				(g_accum_spot);
+
+		// backfaces: if (stencil>=1 && zfail)	stencil = light_id
+		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CW			));
+		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0x01,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
+		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
+
+		// frontfaces: if (stencil>=light_id && zfail)	stencil = 0x1
+		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_CULLMODE,			D3DCULL_CCW			));
+		RCache.set_Stencil				(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0xff,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_REPLACE);
+		RCache.Render					(D3DPT_TRIANGLELIST,0,0,DU_CONE_NUMVERTEX,0,DU_CONE_NUMFACES);
+
+		CHK_DX							(HW.pDevice->SetRenderState	( D3DRS_COLORWRITEENABLE,	D3DCOLORWRITEENABLE_RED | D3DCOLORWRITEENABLE_GREEN | D3DCOLORWRITEENABLE_BLUE | D3DCOLORWRITEENABLE_ALPHA ));
+	}
+
 	// texture adjustment matrix
 	float			fTexelOffs			= (.5f / DSM_size);
 	u32				uRange				= 1; 
@@ -76,9 +125,10 @@ void CRenderTarget::accum_spot_shadow	(light* L)
 			J.set(13, 15, 7,  13);		J.sub(11); J.mul(scale);	RCache.set_ca	(_C,5,J.x,J.y,J.w,J.z);
 		}
 
-		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,0x01,0xff,0x00);
+		RCache.set_Stencil			(TRUE,D3DCMP_LESSEQUAL,dwLightMarkerID,0xff,0x00,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP,D3DSTENCILOP_KEEP);
 		RCache.Render				(D3DPT_TRIANGLELIST,Offset,0,4,0,2);
 	}
+	dwLightMarkerID						+=	2;	// keep lowest bit always setted up
 }
 
 void CRenderTarget::accum_spot_unshadow	(light* L)
