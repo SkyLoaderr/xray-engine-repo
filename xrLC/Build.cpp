@@ -231,6 +231,7 @@ void CBuild::Run()
 	Phase			("Resolving materials...");
 	mem_Compact		();
 	xrPhase_ResolveMaterials	();
+	IsolateVertices	();
 	
 	FPU::m64r		();
 	Phase			("Build UV mapping...");
