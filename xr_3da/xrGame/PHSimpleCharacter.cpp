@@ -695,7 +695,7 @@ void CPHSimpleCharacter::ApplyAcceleration()
 	{
 		m_control_force[0]=m_acceleration.x*m.mass*m_air_control_factor;
 		m_control_force[1]=m_acceleration.y*m.mass*m_air_control_factor;
-		m_control_force[2]=m_acceleration.x*m.mass*m_air_control_factor;
+		m_control_force[2]=m_acceleration.z*m.mass*m_air_control_factor;
 		return;
 	}
 
