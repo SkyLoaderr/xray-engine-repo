@@ -61,7 +61,7 @@ void CLevel::g_sv_Spawn		(NET_Packet* Packet)
 		if (s_flags&M_SPAWN_OBJECT_ACTIVE)							O->OnActivate	( );
 		if (0xffff != s_server_parent_id)	
 		{
-			// Generate event
+			// Generate ownership-event
 			NET_Packet		GEN;
 			GEN.w_begin		(M_EVENT);
 			GEN.w_u32		(Level().timeServer()-NET_Latency);
