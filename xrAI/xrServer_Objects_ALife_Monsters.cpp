@@ -1146,7 +1146,7 @@ CSE_ALifeMonsterAbstract::CSE_ALifeMonsterAbstract(LPCSTR caSection)	: CSE_ALife
 		if(pSettings->line_exist(caSection, "immunities_sect"))
 			imm_section = pSettings->r_string(caSection, "immunities_sect");
 		for ( ; I != E; ++I)
-			*I					= pSettings->r_float(imm_section,strcat(strcpy(S,ALife::g_cafHitType2String(ALife::EHitType(I - B))),"_immunity"));
+			*I					= READ_IF_EXISTS(pSettings,r_float,imm_section,strcat(strcpy(S,ALife::g_cafHitType2String(ALife::EHitType(I - B))),"_immunity"),1.f);
 	}
 
 	if (pSettings->line_exist(caSection,"retreat_threshold"))
