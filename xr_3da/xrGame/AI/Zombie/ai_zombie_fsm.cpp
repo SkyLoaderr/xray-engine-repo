@@ -110,9 +110,6 @@ void CAI_Zombie::Death()
 	CGroup &Group = Level().Teams[g_Team()].Squads[g_Squad()].Groups[g_Group()];
 	vfSetFire(false,Group);
 	
-	Fvector	dir;
-	AI_Path.Direction(dir);
-	SelectAnimation(clTransform.k,dir,AI_Path.fSpeed);
 	AI_Path.TravelPath.clear();
 
 	UpdateTransform();
@@ -165,6 +162,11 @@ void CAI_Zombie::FreeHuntingActive()
 
 	bStopThinking = true;
 	
+	if (!g_Alive()) {
+		m_fSpeed = m_fSafeSpeed = 0;
+		return;
+	}
+
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy) {
@@ -300,6 +302,11 @@ void CAI_Zombie::AttackFire()
 {
 	WRITE_TO_LOG("Attacking enemy...");
 
+	if (!g_Alive()) {
+		m_fSpeed = m_fSafeSpeed = 0;
+		return;
+	}
+
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy)
@@ -340,6 +347,11 @@ void CAI_Zombie::AttackRun()
 {
 	WRITE_TO_LOG("Attack enemy");
 	bStopThinking = true;
+
+	if (!g_Alive()) {
+		m_fSpeed = m_fSafeSpeed = 0;
+		return;
+	}
 
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
@@ -441,6 +453,11 @@ void CAI_Zombie::Pursuit()
 {
 	WRITE_TO_LOG("Pursuit something");
 
+	if (!g_Alive()) {
+		m_fSpeed = m_fSafeSpeed = 0;
+		return;
+	}
+
 	if (m_Enemy.Enemy)
 		m_dwLostEnemyTime = Level().timeServer();
 
@@ -507,6 +524,11 @@ void CAI_Zombie::ReturnHome()
 
 	bStopThinking = true;
 	
+	if (!g_Alive()) {
+		m_fSpeed = m_fSafeSpeed = 0;
+		return;
+	}
+
 	SelectEnemy(m_Enemy);
 	
 	if (m_Enemy.Enemy && (m_tSafeSpawnPosition.distance_to(m_Enemy.Enemy->Position()) < m_fMaxPursuitRadius)) {
