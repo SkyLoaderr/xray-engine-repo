@@ -89,16 +89,16 @@ end
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
 --///////////////////////////////////////////////////
-class "stalker_script" (object_binder)
+class "stalker_binder" (object_binder)
 
-function stalker_script:__init		(object) super(object)
+function stalker_binder:__init		(object) super(object)
 end
 
-function stalker_script:reinit		()
+function stalker_binder:reinit		()
 	object_binder.reinit	(self)
 end
 
-function stalker_script:reload		(section)
+function stalker_binder:reload		(section)
 	object_binder.reload	(self,section)
 	local					motivations	= {}
 	local					operators	= {}
@@ -152,25 +152,25 @@ function stalker_script:reload		(section)
 	manager:add_action		(operators["free"],			action)
 end
 
-function stalker_script:net_spawn	(server_object)
+function stalker_binder:net_spawn	(server_object)
 	if (object_binder.net_spawn(self,server_object) == false) then
 		return		false
 	end
 	return			true
 end
 
-function stalker_script:net_destroy	()
+function stalker_binder:net_destroy	()
 	object_binder.net_destroy	(self)
 end
 
-function stalker_script:net_export	(packet)
+function stalker_binder:net_export	(packet)
 	object_binder.net_export	(self,packet)
 end
 
-function stalker_script:net_import	(packet)
+function stalker_binder:net_import	(packet)
 	object_binder.net_import	(self,packet)
 end
 
 function init		(obj)
-	obj:bind_object	(this.stalker_script(obj))
+	obj:bind_object	(this.stalker_binder(obj))
 end
