@@ -105,10 +105,6 @@ end
 function change_state(object, new, emerg)
 	local st = xr_motivator.storage[object:id()].state
 
-	if new == st.target_state then
-		return false
-	end
-	   	            
 	if st.body_state ~= new then 
 --		if emerg == "true" then
 --			printf("Called emerg change state for %s: old %d, new %d", object:name(), st.body_state, new)
