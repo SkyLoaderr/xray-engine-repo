@@ -19,13 +19,6 @@ protected:
 	u32							iCount;
 	u32							dwPrimitives;
 
-	ref_str						c_consts;
-	ref_str						c_wave;
-	ref_str						c_wind;
-	ref_str						c_c_bias;
-	ref_str						c_c_scale;
-	ref_str						c_c_sun;
-
 	_5color						c_scale;
 	_5color						c_bias;
 public:

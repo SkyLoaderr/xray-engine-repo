@@ -7,6 +7,13 @@
 
 #include "ftreevisual.h"
 
+ref_str						c_consts;
+ref_str						c_wave;
+ref_str						c_wind;
+ref_str						c_c_bias;
+ref_str						c_c_scale;
+ref_str						c_c_sun;
+
 FTreeVisual::FTreeVisual	(void)
 {
 	pVertices			= 0;
@@ -135,13 +142,6 @@ void	FTreeVisual::Copy			(IRender_Visual *pSrc)
 	PCOPY(iBase);
 	PCOPY(iCount);
 	PCOPY(dwPrimitives);
-
-	PCOPY(c_consts);
-	PCOPY(c_wave);
-	PCOPY(c_wind);
-	PCOPY(c_c_bias);
-	PCOPY(c_c_scale);
-	PCOPY(c_c_sun);
 
 	PCOPY(xform);
 	PCOPY(c_scale);
