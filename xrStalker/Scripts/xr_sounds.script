@@ -115,9 +115,9 @@ function create_sound_constructor (theme, sub_theme)
     local num = this.get_num_phrases (theme, sub_theme)
     for a = 1, num, 1 do
         local index = themes[theme][sub_theme][a + 1]
-        printf( "%d", index )
+--        printf( "%d", index )
         t.sounds[a] = {pack = themes[theme][sub_theme][1] + a - 1, id = math.random (1, index) - 1}
-        printf( "ok" )
+--        printf( "ok" )
     end
     return t
 end
