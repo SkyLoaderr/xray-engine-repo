@@ -221,6 +221,37 @@
 				RelativePath=".\NVI_Image.h">
 			</File>
 		</Filter>
+		<Filter
+			Name="lib"
+			Filter="">
+			<File
+				RelativePath=".\Lib\nvDXTlib.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlib6.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlib_S.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlibMT.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlibMT6.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlibMT_S.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlibMTDLL.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlibMTDLL6.lib">
+			</File>
+			<File
+				RelativePath=".\Lib\nvDXTlibMTDLL_S.lib">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\dds.h">
 		</File>
